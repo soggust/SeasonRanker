@@ -19,8 +19,10 @@
 //   gate      time-split: fit (shrunk the same way) on the older CAL_SPLIT of the rows, judged on the newest
 //             (CAL_HOLD_MIN of them or more); kept only where their log loss is lower with it. Not kept, too few
 //             rows, or none: 0 (fail safe, no evidence no change)
-//   step      a kept spot moves at most CAL_STEP from the shift the last run left (state.calib), so one night's
-//             results can't swing it; one that loses the gate goes to 0 at once
+//   step      a spot moves at most CAL_STEP a UTC day from the shift it began the day at (state.calib's anchor and
+//             day: the hourly runs share the day's step, so one day's results can't swing it), toward its target
+//             when kept, toward 0 when it loses the gate or its rows (symmetric: a gain flipping on a +-0.0001 no
+//             longer drops a spot to 0 at once and back, the oscillation the loss review's B12 found)
 //
 // 2026-10-18 (the audit: out of sample since 10-08 the raw model said .538 on lines of 1.5 or under for .481, .579 on
 // 2 to 3.5 for .493, and no spot had ever been shifted: each sat under CAL_MIN rows since the epoch). Made active:
@@ -39,6 +41,8 @@
 export const CAL_MIN = 200;
 export const CAL_K = 600;
 export const CAL_CAP = 0.25;
+// (the most a rung moves in a UTC day, toward its target or toward 0: B12, 2026-10-18; it was a run's, and the desk
+// runs hourly, so -0.03 to -0.129 in three hours)
 export const CAL_STEP = 0.03;
 export const CAL_SPLIT = 0.7;
 export const CAL_HOLD_MIN = 60;
@@ -107,7 +111,21 @@ export const shrinkOf = (n) => (n < CAL_MIN ? 0 : (n - CAL_MIN) / (n - CAL_MIN +
 // (a fit shrunk by its evidence and held to the cap)
 export const shrunk = (raw, n) => Math.max(-CAL_CAP, Math.min(CAL_CAP, raw * shrinkOf(n))) || 0;
 
-// One spot's shift from its rows and the last run's: { n, shift, target, raw, gain, held, kept, why }
+// (the UTC day a run is in, and where a rung steps from that day: the shift it began the day at (anchor), so every
+// run of the day moves it CAL_STEP in all; a new day (or a state from before the anchors) the last run's shift.
+// prev: the rung's last state ({ shift, anchor, day }, or the spots' { own, ownAnchor, day }), or a number)
+export const calDay = (now) => new Date(now ?? Date.now()).toISOString().slice(0, 10);
+export function anchorOf(prev, day, key = 'shift', anchorKey = 'anchor') {
+  if (prev === null || prev === undefined) return 0;
+  if (typeof prev !== 'object') return Number.isFinite(prev) ? prev : 0;
+  const last = Number.isFinite(prev[key]) ? prev[key] : 0;
+  return prev.day === day && Number.isFinite(prev[anchorKey]) ? prev[anchorKey] : last;
+}
+// (a step from a shift toward another, at most CAL_STEP)
+const stepFrom = (from, to) => from + Math.max(-CAL_STEP, Math.min(CAL_STEP, to - from));
+
+// One spot's shift from its rows and where it steps from today (anchorOf): { n, shift, target, raw, gain, held,
+// passed (its gate: enough rows and a held-out gain), kept (its shift not 0: passed, or fading to 0), why }
 export function fitSpot(rows, prev = 0) {
   const n = rows.length;
   const sorted = [...rows].sort((a, b) => a.t - b.t || a.id.localeCompare(b.id));
@@ -115,16 +133,21 @@ export function fitSpot(rows, prev = 0) {
   const old = sorted.slice(0, cut);
   const held = sorted.slice(cut);
   const raw = fitShift(sorted);
-  const base = { n, raw: r4(raw), held: held.length, prev: r4(prev || 0) };
-  if (n < CAL_MIN) return { ...base, shift: 0, target: 0, gain: null, kept: false, why: `too few rows (${CAL_MIN} needed)` };
-  if (old.length < CAL_MIN || held.length < CAL_HOLD_MIN) return { ...base, shift: 0, target: 0, gain: null, kept: false, why: `too few to hold out (${CAL_MIN} to fit, ${CAL_HOLD_MIN} held out)` };
+  const p0 = Number.isFinite(prev) ? prev : 0;
+  const base = { n, raw: r4(raw), held: held.length, prev: r4(p0) };
+  // (its gate not passed: 0 is the target, reached a step a day from where it stands, never at once)
+  const fade = (why, target, gain) => {
+    const shift = r4(stepFrom(p0, 0)) || 0;
+    return { ...base, shift, target, gain, passed: false, kept: shift !== 0, why: shift ? `${why}: fading to 0 by ${CAL_STEP} a day` : why };
+  };
+  if (n < CAL_MIN) return fade(`too few rows (${CAL_MIN} needed)`, 0, null);
+  if (old.length < CAL_MIN || held.length < CAL_HOLD_MIN) return fade(`too few to hold out (${CAL_MIN} to fit, ${CAL_HOLD_MIN} held out)`, 0, null);
   const sOld = shrunk(fitShift(old), old.length);
   const gain = r4(logLoss(held, 0) - logLoss(held, sOld));
   const target = shrunk(raw, n);
-  if (!(gain > 0) || !sOld) return { ...base, shift: 0, target: r4(target), gain, kept: false, why: !sOld ? 'its older rows fit no shift' : 'no held-out gain' };
-  const p0 = Number.isFinite(prev) ? prev : 0;
-  const shift = p0 + Math.max(-CAL_STEP, Math.min(CAL_STEP, target - p0));
-  return { ...base, shift: r4(shift), target: r4(target), gain, kept: true, why: null };
+  if (!(gain > 0) || !sOld) return fade(!sOld ? 'its older rows fit no shift' : 'no held-out gain', r4(target), gain);
+  const shift = r4(stepFrom(p0, target)) || 0;
+  return { ...base, shift, target: r4(target), gain, passed: true, kept: shift !== 0, why: null };
 }
 
 const capped = (s) => Math.max(-CAL_CAP, Math.min(CAL_CAP, s)) || 0;
@@ -137,24 +160,33 @@ const groupBy = (rows, keyOf) => {
 
 // Every spot's from the ledger's bets, pooled (see the header): { from, rows, poolRows, min, cap, step, pool: { cls:
 // fitSpot's }, sport: { cls: fitSpot's }, spots: { key: fitSpot's, own (its rung's), shift (the three's sum, held to
-// CAL_CAP), kept (not 0) } }. from: the rows' (null every one); prev: the last run's state.calib (each rung steps
-// from its own last shift, across epochs as the rows are); pool: the other sports' bets (line-pool.mjs)
-export function fitCalib(bets, from = null, prev = null, pool = []) {
+// CAL_CAP), kept (not 0), why (its own rung's; pooled only where the rungs above carry it) } }. from: the rows'
+// (null every one); prev: the last run's state.calib (each rung steps from where it began the UTC day, anchorOf,
+// across epochs as the rows are); pool: the other sports' bets (line-pool.mjs); now: the run's time (its UTC day)
+export function fitCalib(bets, from = null, prev = null, pool = [], now = new Date()) {
+  const day = calDay(now);
   const rows = calRows(bets, from);
   const others = calRows(pool, from);
+  const rung = (list, last) => {
+    const anchor = r4(anchorOf(last, day));
+    return { ...fitSpot(list, anchor), anchor, day };
+  };
   const pools = {};
-  for (const [cls, list] of groupBy([...others, ...rows], (x) => x.cls)) pools[cls] = fitSpot(list, prev?.pool?.[cls]?.shift ?? 0);
+  for (const [cls, list] of groupBy([...others, ...rows], (x) => x.cls)) pools[cls] = rung(list, prev?.pool?.[cls]);
   const sport = {};
-  for (const [cls, list] of groupBy(rows, (x) => x.cls)) sport[cls] = fitSpot(list.map((x) => ({ ...x, o: keptShift(pools[cls]) })), prev?.sport?.[cls]?.shift ?? 0);
+  for (const [cls, list] of groupBy(rows, (x) => x.cls)) sport[cls] = rung(list.map((x) => ({ ...x, o: keptShift(pools[cls]) })), prev?.sport?.[cls]);
   const spots = {};
   for (const [key, list] of groupBy(rows, (x) => x.key)) {
     const cls = list[0].cls;
     const above = keptShift(pools[cls]) + keptShift(sport[cls]);
-    const f = fitSpot(list.map((x) => ({ ...x, o: above })), prev?.spots?.[key]?.own ?? 0);
+    const ownAnchor = r4(anchorOf(prev?.spots?.[key], day, 'own', 'ownAnchor'));
+    const f = fitSpot(list.map((x) => ({ ...x, o: above })), ownAnchor);
     const total = r4(capped(above + keptShift(f)));
-    spots[key] = { ...f, own: keptShift(f), shift: total, kept: total !== 0, ownKept: f.kept };
+    // (its words its own rung's; a spot shifted by the rungs above alone says so, never "too few rows" beside kept)
+    const why = f.passed ? null : total !== 0 && !f.kept ? `pooled only (its own rung: ${f.why})` : f.why;
+    spots[key] = { ...f, own: keptShift(f), shift: total, kept: total !== 0, ownKept: f.kept, ownPassed: f.passed, why, ownAnchor, day };
   }
-  return { from, rows: rows.length, poolRows: others.length, min: CAL_MIN, cap: CAL_CAP, step: CAL_STEP, pool: pools, sport, spots };
+  return { from, rows: rows.length, poolRows: others.length, min: CAL_MIN, cap: CAL_CAP, step: CAL_STEP, day, pool: pools, sport, spots };
 }
 
 // (a spot's shift as priced: its sum (fitCalib), 0 where it isn't kept; a spot with no rows of its own the pool's

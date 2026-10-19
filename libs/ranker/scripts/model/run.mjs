@@ -1244,7 +1244,7 @@ function refitCalib(r) {
     // (no time on it: a run that learned nothing new writes the same state)
     // (2026-10-18: every graded prop across epochs, the other sports' pooled where a spot's sparse: calib.mjs; the
     // gates and the trust still count from the epoch)
-    const c = fitCalib(r.ledger?.bets ?? [], null, state.calib ?? null, readLinePool(ROOT, '1970-01-01T00:00:00Z', sport));
+    const c = fitCalib(r.ledger?.bets ?? [], null, state.calib ?? null, readLinePool(ROOT, '1970-01-01T00:00:00Z', sport), r.now ?? new Date());
     const was = state.calib?.spots ?? {};
     for (const [key, s] of Object.entries(c.spots)) {
       const from = was[key]?.kept ? was[key].shift : 0;
@@ -2481,12 +2481,14 @@ async function betProps(r) {
   consensusLog(r, 'props');
 }
 
-// The slate's practice picks this run: id -> { rank, quota, slate, edge } (desk.mjs practiceTop), none without the
-// correction (the trusted chance's edges are the old shrink's) or a PRACTICE_N for the sport
+// The slate's practice picks this run: id -> { rank, quota, slate, edge } (desk.mjs practiceTop), by the corrected
+// edge (the trusted one's without the correction); none without a PRACTICE_N for the sport
 function practicePicks(r, candidates) {
   const { sport, ledger } = r;
   const forced = new Map();
-  if (!r.correction?.fit || !PRACTICE_N[sport]) return forced;
+  // (without the correction (too few rows, or its fit failed this run) the trusted chance's edges rank them: the
+  // slate is still played (DECISIONS.md D2, the owner's 2026-10-18: never a sport at zero bets for its record))
+  if (!PRACTICE_N[sport]) return forced;
   const slateGames = new Map();
   const add = (day, id) => slateGames.set(day, new Set([...(slateGames.get(day) ?? []), String(id)]));
   for (const u of r.upcoming ?? []) add(etDay(u.game.date), u.game.id);
@@ -2941,8 +2943,17 @@ const RUNNING = path.join(CACHE, 'running');
 let GAP = null;
 // (the owner's notes, read once a process: notes.mjs readDeskNotes)
 let NOTES = null;
+// (DECISIONS.md D13, the owner's: GitHub is the only bettor. A run that writes the ledgers goes only on GitHub's
+// runner (GITHUB_ACTIONS), or with MODEL_DESK_LOCAL=1 for a deliberate local run (pull first, push right after);
+// anything else must be --dry. 2026-10-09 a local run's ledgers collided with GitHub's commits)
+export const liveRunAllowed = ({ dry = false, env = process.env } = {}) => !!dry || env?.GITHUB_ACTIONS === 'true' || env?.MODEL_DESK_LOCAL === '1';
+const IS_MAIN = !!process.argv[1] && path.relative(process.argv[1], fileURLToPath(import.meta.url)) === '';
+if (IS_MAIN && !liveRunAllowed({ dry: DRY })) {
+  console.error('run.mjs: refused: not on GitHub and not --dry. GitHub is the only bettor (DECISIONS.md D13); run with --dry, or set MODEL_DESK_LOCAL=1 for a deliberate local run');
+  process.exitCode = 2;
+}
 // (only when run as the script itself: imported (a check, a test), it bets nothing and asks nothing)
-if (process.argv[1] && path.relative(process.argv[1], fileURLToPath(import.meta.url)) === '') {
+else if (IS_MAIN) {
   const args = process.argv.slice(2).filter((a) => !a.startsWith('--'));
   const sports = args.length ? args : Object.keys(LEAGUES);
   // (the runs' recent gap, before this one is added; a run that's only the picks doesn't count)

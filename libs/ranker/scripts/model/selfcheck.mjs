@@ -1295,10 +1295,10 @@ export function c21(x) {
   const n = c.rows ?? rows.reduce((t, r) => t + r.n, 0);
   return check('C21', {
     status: !rows.length ? 'thin' : 'info',
-    headline: !rows.length ? 'No graded props since the epoch yet: every shift 0' : kept.length ? `${kept.length} of ${rows.length} spots shifted: ${kept.map((r) => `${r.key} ${sgn(r.shift, 3)} (n ${r.n}, held-out gain +${r.gain})`).join(', ')}` : `${n} graded props since the epoch in ${rows.length} spots, none shifted (each needs ${c.min ?? CAL_MIN} rows and a held-out gain)`,
+    headline: !rows.length ? 'No graded props since the epoch yet: every shift 0' : kept.length ? `${kept.length} of ${rows.length} spots shifted: ${kept.map((r) => `${r.key} ${sgn(r.shift, 3)} (n ${r.n}${r.why ? `, ${r.why}` : `, held-out gain +${r.gain}`})`).join(', ')}` : `${n} graded props since the epoch in ${rows.length} spots, none shifted (each needs ${c.min ?? CAL_MIN} rows and a held-out gain)`,
     metric: 'spots shifted',
     value: kept.length,
-    threshold: `a report: a spot's shift is 0 under ${c.min ?? CAL_MIN} graded rows, pulled toward 0 by its evidence, at most ${c.cap ?? CAL_CAP} on the log-odds and ${c.step ?? CAL_STEP} a run, and kept only where the newest rows' log loss is lower with it`,
+    threshold: `a report: a spot's shift is 0 under ${c.min ?? CAL_MIN} graded rows, pulled toward 0 by its evidence, at most ${c.cap ?? CAL_CAP} on the log-odds and ${c.step ?? CAL_STEP} a UTC day (toward 0 too), and kept only where the newest rows' log loss is lower with it`,
     n,
     rows: rows.sort((a, b) => b.n - a.n),
     how: "state.calib as the last run left it (calib.mjs fitCalib: every graded prop since MODEL_EPOCH, the tracked rows among them, by its raw model chance), each spot's shift, target and held-out gain; the week's graded props of each spot, the sum of their raw chances (said), of the chances as shifted (shifted) and their wins. Never more than the desk applies: it says where the model's been running hot or cold",

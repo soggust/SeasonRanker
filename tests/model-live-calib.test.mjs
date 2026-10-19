@@ -102,8 +102,12 @@ test('the gate: a spot running hot on old and new rows alike kept (the shift dow
   // (hot on the older rows, cold on the newest: the newest's log loss worse with the old rows' shift, 0)
   const turned = [...bets(840, 0.5, 0.3, { seed: 3 }), ...bets(360, 0.5, 0.7, { seed: 5, from: 840 })];
   const t = fitSpot(calRows(turned, EPOCH), -0.1);
-  assert.equal(t.kept, false);
-  assert.equal(t.shift, 0, 'losing the gate: 0 at once, whatever the last run had');
+  assert.equal(t.passed, false);
+  // (B12, 2026-10-18: losing the gate steps toward 0, a day's CAL_STEP, never 0 at once: no oscillation)
+  assert.ok(Math.abs(t.shift - (-0.1 + CAL_STEP)) < 1e-9, 'losing the gate: a step toward 0');
+  assert.equal(t.kept, true);
+  assert.match(t.why, /fading to 0/);
+  assert.equal(fitSpot(calRows(turned, EPOCH), -0.02).shift, 0, 'within a step of 0: at 0');
   assert.ok(t.gain <= 0);
   // (well calibrated: nothing to fit, no gain, 0)
   const fine = fitSpot(calRows(bets(1500, 0.5, 0.5, { seed: 11 }), EPOCH), 0);
@@ -123,14 +127,18 @@ test('the step: a kept spot moves at most CAL_STEP from the last run, so one nig
   // (fitCalib carries the last run's shift by rung: the pool's, the sport's and the spot's own each a step, the spot
   // their sum; across epochs too, the rows being every graded prop's (2026-10-18))
   const list = bets(1500, 0.5, 0.36);
-  const c1 = fitCalib(list, EPOCH, null);
-  const c2 = fitCalib(list, EPOCH, c1);
+  const DAY1 = new Date('2026-10-19T01:00:00Z');
+  const c1 = fitCalib(list, EPOCH, null, [], DAY1);
+  // (B12: the step is a UTC day's, the hourly runs sharing it: a second run the same day stands where the first left)
+  const same = fitCalib(list, EPOCH, c1, [], new Date('2026-10-19T23:00:00Z'));
+  assert.ok(Math.abs(same.spots['pts|over|0.5'].shift + 3 * CAL_STEP) < 1e-9, 'the same UTC day: no second step');
+  const c2 = fitCalib(list, EPOCH, same, [], new Date('2026-10-20T01:00:00Z'));
   assert.equal(c1.pool['0.5'].shift, -CAL_STEP);
   assert.equal(c1.sport['0.5'].shift, -CAL_STEP);
   assert.equal(c1.spots['pts|over|0.5'].own, -CAL_STEP);
   assert.ok(Math.abs(c1.spots['pts|over|0.5'].shift + 3 * CAL_STEP) < 1e-9);
   assert.ok(Math.abs(c2.spots['pts|over|0.5'].shift + 6 * CAL_STEP) < 1e-9);
-  const c3 = fitCalib(list, EPOCH, { ...c2, epoch: '2026-01-01T00:00:00Z' });
+  const c3 = fitCalib(list, EPOCH, { ...c2, epoch: '2026-01-01T00:00:00Z' }, [], new Date('2026-10-21T01:00:00Z'));
   assert.ok(c3.spots['pts|over|0.5'].shift < c2.spots['pts|over|0.5'].shift, 'no restart on another epoch');
   assert.ok(Math.abs(c3.spots['pts|over|0.5'].shift) <= CAL_CAP + 1e-12);
 });
