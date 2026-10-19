@@ -105,7 +105,7 @@ export function resolveVersion(spec) {
 }
 
 // (a version's code by part, as hashes: what changed between two)
-const PARTS = { props: ['project.mjs', 'props.mjs', 'matchups.mjs', 'playerlogs.mjs'], games: ['ratings.mjs', 'context.mjs', 'margins.mjs', 'football.mjs', 'hockey.mjs', 'baseball.mjs', 'teamstats.mjs', 'terms.mjs', 'officials.mjs', 'leagues.mjs'], pricing: ['correct.mjs', 'desk.mjs', 'calib.mjs', 'backtest.mjs', 'clv.mjs', 'anchor.mjs'], live: ['run.mjs', 'timing.mjs', 'checks.mjs', 'check-learn.mjs', 'check-patterns.mjs', 'research.mjs', 'picks.mjs', 'board.mjs', 'news.mjs', 'notes.mjs', 'playchance.mjs', 'anytime.mjs', 'oddsapi.mjs', 'espn.mjs'], mma: ['fights-model.mjs', 'fights-totals.mjs', 'fights-venue.mjs', 'mma-desk.mjs'] };
+const PARTS = { props: ['project.mjs', 'props.mjs', 'matchups.mjs', 'playerlogs.mjs'], games: ['ratings.mjs', 'context.mjs', 'margins.mjs', 'football.mjs', 'hockey.mjs', 'baseball.mjs', 'teamstats.mjs', 'terms.mjs', 'officials.mjs', 'leagues.mjs'], pricing: ['correct.mjs', 'desk.mjs', 'calib.mjs', 'backtest.mjs', 'clv.mjs', 'anchor.mjs'], live: ['run.mjs', 'timing.mjs', 'lineup-risk.mjs', 'suggest.mjs', 'checks.mjs', 'check-learn.mjs', 'check-patterns.mjs', 'research.mjs', 'picks.mjs', 'board.mjs', 'news.mjs', 'notes.mjs', 'playchance.mjs', 'anytime.mjs', 'oddsapi.mjs', 'espn.mjs'], mma: ['fights-model.mjs', 'fights-totals.mjs', 'fights-venue.mjs', 'mma-desk.mjs'] };
 export function codeOf(dir) {
   const out = {};
   for (const [part, files] of Object.entries(PARTS)) {
@@ -433,7 +433,7 @@ export async function scoreVersion(dir, sport, { refit = false, propsLayer = tru
   // (the history's props first: its anchor fit walk-forward by season (gate-history.mjs propHistoryRows, D33) prices
   // the ledger's replayed rows at the newest season's pull, the one the live desk reads)
   const histProps = histMatches.length ? propHistoryRows(V, sport, histIndex, histMatches, current) : { open: [], close: [], anchor: null };
-  if (hist.props.length) say(`history props: ${histIndex.size} player games in the history, ${histProps.close.length} closes and ${histProps.open.length} opens matched to the replay${histProps.anchor ? `; the anchor's pull by stat: ${V.anchor.anchorText(histProps.anchor.all)}` : ''}`);
+  if (hist.props.length) say(`history props: ${histIndex.size} player games in the history, ${histProps.close.length} closes and ${histProps.open.length} opens matched to the replay${histProps.anchor ? `; the anchor's pull by stat: ${V.anchor.anchorText(histProps.anchor.all)}` : ''}${histProps.risk && V.lineupRisk?.riskText ? `; the lineup risk by stat: ${V.lineupRisk.riskText(histProps.risk)}` : ''}`);
   for (const [id, { b, mu, params: fp, mix }] of ledgerMatches) {
     const fairOver = b.side === 'over' ? b.fair : 1 - b.fair;
     const a = V.anchor && histProps.anchor?.on ? V.anchor.anchoredChances(b.line, mu, fp, mix, fairOver, V.anchor.anchorEntry(histProps.anchor.current, b.propType)) : null;
@@ -470,6 +470,8 @@ export async function scoreVersion(dir, sport, { refit = false, propsLayer = tru
     // (the anchor (D33): the fit on every season to date (all: what --record writes for the live desk), each
     // season's as the replay read it (bySeason), the newest season's (current))
     anchor: histProps.anchor ?? null,
+    // (the lineup risk (D37): each stat's survival of the Bot's edge from the open to the close, what --record writes)
+    risk: histProps.risk ?? null,
     meta: { practiceN, practiceUnits: V.desk.PRACTICE_UNITS ?? 0.5, trust, sigma: params.sigma, sigmaT: params.sigmaT, matched: replayM.size, priced: mineProps.length },
   };
 }
@@ -699,6 +701,13 @@ function recordScore(version, sport, score, frozen) {
     const rowsOut = path.join(ROOT, 'apps', sport, 'scripts/model/history-rows.json');
     writeFileSync(rowsOut, `${JSON.stringify({ sport, epoch: score.epoch, commit: entry.commit, at: entry.at, current: score.current, n: rows.length, rows })}\n`);
     console.log(`${sport}: the history's trust prior written (${path.relative(ROOT, out)}: ${Object.entries(prior).filter(([k]) => k !== 'periods' && k !== 'match').map(([k, v]) => `${k} ${v.trust} on ${v.rows} rows`).join(', ')}; ${rows.length} rows in ${path.relative(ROOT, rowsOut)})`);
+  }
+  // (the lineup risk's fit on the priced history (D37): what the live desk reads, apps/<sport>/src/StaticData/model/
+  // lineup-risk.json; a version without it leaves the file as it is)
+  if (score.risk?.stats) {
+    const out = path.join(ROOT, 'apps', sport, 'src/StaticData/model/lineup-risk.json');
+    writeFileSync(out, `${JSON.stringify({ ...score.risk, sport, epoch: score.epoch, commit: entry.commit }, null, 1)}\n`);
+    console.log(`${sport}: the lineup risk by stat written (${path.relative(ROOT, out)}): ${Object.entries(score.risk.stats).map(([k, v]) => `${k} ${v.kept ?? 'none'}`).join(', ')}`);
   }
   const hrows = score.bet?.history?.replay ?? [];
   if (hrows.length) {
