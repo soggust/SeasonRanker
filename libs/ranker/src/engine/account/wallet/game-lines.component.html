@@ -32,9 +32,9 @@
       </button>
       @if (!compact) {
         <div class="tile-foot">
-          <span class="tile-tag" [ngClass]="t ?? 'none'" [attr.aria-hidden]="t ? null : 'true'">{{ t === 'check' ? '?' : (t ?? '·') }}</span>
+          <span class="tile-tag" [ngClass]="t ?? 'none'" [attr.aria-hidden]="t ? null : 'true'" [attr.title]="passTag(t, c.reason)">{{ t === 'check' ? '?' : (t ?? '·') }}</span>
           @if (c.kelly !== null) {
-            <button type="button" class="tile-k" [ngClass]="kTone(c.kelly)" [attr.aria-label]="'Kelly score ' + kellyText(c.kelly) + ': how it’s made'" title="Its Kelly score: the edge on the price, scaled by what it pays. Tap it for the math" (click)="askWhy({ bot: c.bot, kelly: c.kelly, chance: c.chance, odds: price.odds, tier: t, words: label, market: price.market, side: price.side }, $event)">K {{ kellyText(c.kelly) }}</button>
+            <button type="button" class="tile-k" [ngClass]="kTone(c.kelly)" [attr.aria-label]="'Kelly score ' + kellyText(c.kelly) + ': how it’s made'" title="Its Kelly score: the edge on the price, scaled by what it pays. Tap it for the math" (click)="askWhy({ bot: c.bot, kelly: c.kelly, chance: c.chance, odds: price.odds, tier: t, words: label, market: price.market, side: price.side, reason: c.reason }, $event)">K {{ kellyText(c.kelly) }}</button>
           }
         </div>
       }
@@ -72,9 +72,9 @@
             <span class="tile-odds">{{ oddsText(s.odds) }}</span>
           </button>
           <div class="tile-foot">
-            <span class="tile-tag" [ngClass]="s.tier ?? 'none'" [attr.aria-hidden]="s.tier ? null : 'true'">{{ s.tier === 'check' ? '?' : (s.tier ?? '·') }}</span>
+            <span class="tile-tag" [ngClass]="s.tier ?? 'none'" [attr.aria-hidden]="s.tier ? null : 'true'" [attr.title]="passTag(s.tier, r.pass ? r.passReason : null)">{{ s.tier === 'check' ? '?' : (s.tier ?? '·') }}</span>
             @if (s.kelly !== null) {
-              <button type="button" class="tile-k" [ngClass]="kTone(s.kelly)" [attr.aria-label]="'Kelly score ' + kellyText(s.kelly) + ': how it’s made'" title="Its Kelly score: the edge on the price, scaled by what it pays. Tap it for the math" (click)="askWhy({ bot: s.bot ? r.pick : null, kelly: s.kelly, chance: r.chance === null ? null : s.side === 'over' ? r.chance : 1 - r.chance, odds: s.odds, tier: s.tier, words: sideWords(r, s), market: 'prop', side: s.side }, $event)">K {{ kellyText(s.kelly) }}</button>
+              <button type="button" class="tile-k" [ngClass]="kTone(s.kelly)" [attr.aria-label]="'Kelly score ' + kellyText(s.kelly) + ': how it’s made'" title="Its Kelly score: the edge on the price, scaled by what it pays. Tap it for the math" (click)="askWhy({ bot: s.bot ? r.pick : null, kelly: s.kelly, chance: r.chance === null ? null : s.side === 'over' ? r.chance : 1 - r.chance, odds: s.odds, tier: s.tier, words: sideWords(r, s), market: 'prop', side: s.side, reason: r.pass ? (r.passReason ?? null) : null }, $event)">K {{ kellyText(s.kelly) }}</button>
             }
           </div>
         </div>

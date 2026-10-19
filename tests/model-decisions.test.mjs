@@ -32,7 +32,8 @@ import { CAL_STEP, fitCalib, fitSpot, calRows } from '../libs/ranker/scripts/mod
 import { CORR_PRICING, LAMBDAS, MOVE_MAX, SEG_MIN, capMove, corrRows, moveCap, oneSe } from '../libs/ranker/scripts/model/correct.mjs';
 import { mainCardOf, mmaPracticePicks } from '../libs/ranker/scripts/model/mma-desk.mjs';
 import { EV_SUSPECT, choose, suspectOf } from '../libs/ranker/scripts/model/desk.mjs';
-import { ROLE, farOf, lineZ } from '../libs/ranker/scripts/model/props.mjs';
+import { MOVE_FOLLOWED, ROLE, farOf, lineZ, moveFollowed } from '../libs/ranker/scripts/model/props.mjs';
+import { boardMarkets, boardProp, skipReason } from '../libs/ranker/scripts/model/board.mjs';
 import { RESEARCH_LEVEL_N, hollow, researchDecision, researchGateOf, researchLevelOf, verdictOf } from '../libs/ranker/scripts/model/research.mjs';
 import { CAP_WINDOWS, MISS_CAPS, NEWS_CAPS, RESEARCH_CAPS, DAY_CAP, MONTH_CAP, capsFrom, scheduledCaps } from '../libs/ranker/scripts/model/ai-budget.mjs';
 import { MAX_RATE, preResolve } from '../libs/ranker/scripts/model/check-patterns.mjs';
@@ -449,4 +450,26 @@ test('D30 every bet at the price offered the moment it is placed: never a stored
     const src = fs.readFileSync(path.join(dir, f), 'utf8');
     assert.ok(!/odds-history|gate-history/.test(src), `${f} must not read the odds history`);
   }
+});
+
+test("D31 no silent skip: a line move the projection followed is priced, and every skip carries its reason to the board", () => {
+  // (Rachaad White, 2026-10-19: rush yards opened 20.5, 47.5 with the two backs ahead of him out on the report, his
+  // projection 47.15 with them out: the move is the inputs' own, priced; a projection left at the open still skips)
+  assert.equal(MOVE_FOLLOWED, 0.5);
+  assert.equal(moveFollowed({ open: 20.5, line: 47.5, mu: 47.15, r: 2.5 }), true);
+  assert.equal(moveFollowed({ open: 20.5, line: 47.5, mu: 22, r: 2.5 }), false);
+  assert.equal(moveFollowed({ open: 47.5, line: 47.5, mu: 47.15, r: 2.5 }), false);
+  // (the guard chain reads the followed move: never a skip by it alone, nor the "also" that strips a CHECK's kind)
+  const props = src('props.mjs');
+  assert.ok(props.includes('const movedSkip = Math.abs(moved) >= 2 * limit && !followed'));
+  assert.ok(!props.includes('Math.abs(moved) >= 2 * limit ? movedWhy'));
+  assert.ok(props.includes("else if (movedSkip) guard = { skip: true, kind: 'moved'"));
+  // (every pass on the board says why: a prop's sr, a gapped game market's sides' sr)
+  const row = (guard) => ({ prop: { athlete: { id: 1, name: 'A', team: 2 }, stat: { key: 'rushYds', label: 'Rush Yds' }, line: 47.5, prices: { over: -110, under: -114 } }, side: 'under', sides: [{ side: 'over', p: 0.46, ev: -0.1 }, { side: 'under', p: 0.54, ev: 0.01 }], guard });
+  assert.equal(boardProp(row({ skip: true, kind: 'moved', why: 'line moved +27 since it opened, against it' }), 'T').sr, 'line moved +27 since it opened, against it');
+  assert.ok(boardProp(row({ skip: true }), 'T').sr.length > 0);
+  assert.equal(boardProp(row({ why: 'flagged only' }), 'T').sr, undefined);
+  assert.ok(skipReason({ why: 'x'.repeat(500) }).length <= 200);
+  const gapped = boardMarkets([{ market: 'total', sides: [{ side: 'over', line: 45.5, odds: -110, model: 0.85, fair: 0.5 }, { side: 'under', line: 45.5, odds: -110, model: 0.15, fair: 0.5 }] }], () => 1);
+  assert.ok(gapped.total.every((s) => s.b === 'low' && /too far from the market/.test(s.sr)));
 });

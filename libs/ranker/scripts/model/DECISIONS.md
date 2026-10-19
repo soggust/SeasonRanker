@@ -284,6 +284,14 @@ Started 2026-10-18, after about 20 bettor changes in one day. The owner: "keep i
 - **Code:** `checks.mjs` (`STORED_FRESH`, `storedFresh`, `storedBet`), `run.mjs` `betProps` (`stale-owed`).
 - **Never:** a bet's `odds` or `placedAt` price from a stored, snapshot or historical price.
 
+### D31. No silent skip: a line move the projection followed is priced, and every skip says why on the board
+- **Date:** 2026-10-18 (the owner's Rachaad White question: Under 47.5 Rush Yds, WSH @ SF, K +1.05%, `sk` with no `sw`).
+- **What happened:** his line opened at 20.5 with Croskey-Merritt and McNichols healthy and moved to 47.5 with both out on the report. His projection already had them out (47.15). The 23:05Z run was before the depth chart's QB change (8867ecdd), so he was a qb-change role row, and the line-move skip (twice `limit`) stripped the role's kind (the "also" rule): a skip with no kind, no shadow, no reason on the page. On the current code (Kaliakmanis Out by the depth chart: qb1-out, whose safe side is the under) the line-move guard alone skipped it.
+- **Rule:**
+  - A line move the projection followed is the inputs' own reason, priced (D5). `moveFollowed`: the line now within `MOVE_FOLLOWED` (0.5) of the open's distance from the model's mean, both in SDs of the count (`lineZ`, D24). Such a row is flagged (the guard's half stake), never skipped by the move, and the move no longer strips a role, news or gap CHECK of its kind. A move the projection didn't follow still skips, as kind `moved`.
+  - Every skip carries its reason to the board: `sr`, the guard's own words (`skipReason`, at most `SR_MAX` 200 characters; a guard with none says so). A prop's on the row, a gapped game market's on each side. The page shows it on the PASS tag's hover, the price's hover and the K score's popover.
+- **Code:** `props.mjs` (`MOVE_FOLLOWED`, `moveFollowed`, `movedSkip` in `priceProps`), `board.mjs` (`skipReason`, `sr`), `lines.service.ts`, `game-lines.component.ts` (`passReason`, `passTag`, `PriceWhy.reason`), `book-page.component.ts` `priceWhy`.
+
 ## Loops
 
 Each loop below runs by itself. For each one: what it changes, how often, what it reads, and what it must never touch.

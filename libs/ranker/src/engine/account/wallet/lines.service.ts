@@ -25,6 +25,8 @@ export interface BoardSide {
   c: number;
   ks: number;
   b: BoardBand;
+  // (a guard's pass: its reason in words (board.mjs skipReason, DECISIONS.md D31: no silent skip))
+  sr?: string;
   bot?: 'bet' | 'check';
 }
 export interface BoardProp {
@@ -42,6 +44,9 @@ export interface BoardProp {
   // (a skipped prop's why, where it's a CHECK the rule drops (checks.mjs shadowOf): the gap, or a role change
   // under the CHECK bar)
   sw?: 'gap' | 'small';
+  // (every skip's reason in words, the guard's own (board.mjs skipReason, D31): the PASS tag's hover and the K
+  // score's popover say it)
+  sr?: string;
   bot?: string;
   bk?: 'bet' | 'check';
 }

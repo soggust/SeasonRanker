@@ -30,7 +30,7 @@
 //   side's starter his projection weighs isn't listed yet (an NHL goalie, an MLB pitcher), an MLB starter's
 //   first start in LONG_REST days or more or his first of the season from LATE_DEBUT, his team's roster
 //   can't be read (the NFL, NBA, NHL) or (the NFL) the snap counts are missing for some games of the
-//   history; skipped at twice the move or when he's out (or not in a posted lineup, or not the probable
+//   history; skipped at twice the move (one his projection followed, moveFollowed: priced, flagged, D31) or when he's out (or not in a posted lineup, or not the probable
 //   starting pitcher or goalie), an MLB starter's first start in LAYOFF days or more (or his first of the
 //   season from May on: back from injury, his pitch count held down), when the work his group is missing now
 //   differs from what it was in the games his numbers come from and the projection can't size it (teammates
@@ -175,6 +175,19 @@ export function lineZ(implied, mu, r = null) {
   if (!Number.isFinite(implied) || !(mu > 0)) return null;
   const v = mu + (Number.isFinite(r) && r > 0 ? (mu * mu) / r : 0);
   return (implied - mu) / Math.sqrt(v);
+}
+// A line's move the projection already followed (DECISIONS.md D31, 2026-10-18: Rachaad White's rush yards, opened at
+// 20.5 with the two backs ahead of him healthy, 47.5 with both out on the report, his projection 47.2 with them out):
+// the line now within MOVE_FOLLOWED of the open's distance from the model's mean, both in SDs of his count (lineZ, as
+// D24 reads every gap). Such a move is the inputs' own reason (a teammate out, a quarterback changed), already in the
+// price, so the line-move guard doesn't skip it (D5: a reason in the inputs is priced, never an automatic pass); it's
+// flagged, at the guard's half stake. A move the projection didn't follow still skips. False where it can't be read
+export const MOVE_FOLLOWED = 0.5;
+export function moveFollowed({ open, line, mu, r = null }) {
+  const zNow = lineZ(line, mu, r);
+  const zOpen = lineZ(open, mu, r);
+  if (zNow === null || zOpen === null || open === line) return false;
+  return Math.abs(zNow) <= MOVE_FOLLOWED * Math.abs(zOpen);
 }
 // (each reason's safe side: the one the model's known error there makes conservative, by the role backtest
 // (2026-10-11): a role growing (group-out, snap-jump, part-time, a backup's or a new starter's rushing) the
@@ -2134,7 +2147,11 @@ export function priceProps(sport, game, props, fitted, idx, exp, info, live, tru
     // move alone: the NHL's props sit at 0.5 and 1.5 and the market moves them by the price, so its 691
     // 'unmoved' bets hold every price-only move, and the NHL's figures don't test the question. The open price
     // is kept from 2026-10-13 (move.openFair, nowFair) for C19 to read; this guard still reads the line alone)
-    const movedWhy = `line moved ${moved > 0 ? '+' : ''}${round(moved, 1)} since it opened${moved && (moved > 0) !== (side === 'over') ? ', against it' : moved ? ', its way' : ''}`;
+    // (a move the projection followed (moveFollowed, D31): the inputs' reason, priced, flagged and never a skip; the
+    // rest twice the limit, a skip)
+    const followed = Math.abs(moved) >= limit && moveFollowed({ open: prop.open, line: prop.line, mu, r: rAt(f.params, mu) });
+    const movedSkip = Math.abs(moved) >= 2 * limit && !followed;
+    const movedWhy = `line moved ${moved > 0 ? '+' : ''}${round(moved, 1)} since it opened${moved && (moved > 0) !== (side === 'over') ? ', against it' : moved ? ', its way' : ''}${followed ? `, his projection (${round(mu, 1)}) with it: the inputs' reason, priced` : ''}`;
     let guard = null;
     // (his group's missing work now against what it was in the games his numbers come from, where the
     // projection can't size it (the stat's fit left the term out, or has none): teammates out shift his role
@@ -2208,7 +2225,7 @@ export function priceProps(sport, game, props, fitted, idx, exp, info, live, tru
     // can be, a long shot, a line moved twice the limit), skipped with both their words, no CHECK)
     else if (newsFlag) {
       const why = `news (${newsFlag.unit}): ${newsFlag.headline}`;
-      const also = unpriced ?? (prop.prices && fair < 0.25 ? 'a long shot' : Math.abs(moved) >= 2 * limit ? movedWhy : null);
+      const also = unpriced ?? (prop.prices && fair < 0.25 ? 'a long shot' : movedSkip ? movedWhy : null);
       guard = also ? { skip: true, why: `${why}; ${also}` } : { skip: true, kind: 'news', news: newsFlag.unit, why };
     }
     // (his role changing (the NFL's, roleChangeOf): the book reprices a role on the news and the model only on
@@ -2221,7 +2238,7 @@ export function priceProps(sport, game, props, fitted, idx, exp, info, live, tru
     // (a cause the graded CHECKs say pays on the model's side (roleGateOf: ROLE_BET, 40 graded or more): not a CHECK,
     // bet at the untested cap's half (roleBet, below), the other guards still read)
     else if (roleChange && roleRisky && !roleOn) {
-      const also = unpriced ?? (prop.prices && fair < 0.25 ? 'a long shot' : Math.abs(moved) >= 2 * limit ? movedWhy : null);
+      const also = unpriced ?? (prop.prices && fair < 0.25 ? 'a long shot' : movedSkip ? movedWhy : null);
       guard = also ? { skip: true, why: `${roleChange.why}; ${also}` } : { skip: true, kind: 'role', role: roleChange.key, why: roleChange.why };
     }
     else if (vacUnsized && vacNow > vacThen) guard = { skip: true, why: `teammates out (${out.names.join(', ') || 'off the roster'}): a role change the Bot can't size` };
@@ -2237,7 +2254,7 @@ export function priceProps(sport, game, props, fitted, idx, exp, info, live, tru
     // line moved twice the limit; a juiced price it can't know is the unpriced skip's, above) is skipped with
     // both their words, no CHECK, so the CHECKs' hit rate is the gap's
     else if (gapped && !roleOn) {
-      const also = prop.prices && fair < 0.25 ? 'a long shot' : Math.abs(moved) >= 2 * limit ? movedWhy : null;
+      const also = prop.prices && fair < 0.25 ? 'a long shot' : movedSkip ? movedWhy : null;
       guard = also ? { skip: true, why: `${gapped.why}; ${also}` } : { ...gapped, kind: 'gap' };
     }
     // (the side against its own projection: an under with the mean above the line, an over with it below. Its
@@ -2254,7 +2271,7 @@ export function priceProps(sport, game, props, fitted, idx, exp, info, live, tru
     // (a long shot at the book's own price: where a projection's errors are biggest and the book is most
     // likely right)
     else if (prop.prices && fair < 0.25) guard = { skip: true, why: `a long shot (the Book's fair chance ${Math.round(fair * 100)}%)` };
-    else if (Math.abs(moved) >= 2 * limit) guard = { skip: true, why: movedWhy };
+    else if (movedSkip) guard = { skip: true, kind: 'moved', why: movedWhy };
     else if (Math.abs(moved) >= limit) guard = { why: movedWhy };
     else if (status.why) guard = { why: status.why };
     else if (weatherBlind) guard = { why: 'no forecast for an outdoor game: the weather its projection weighs unseen' };

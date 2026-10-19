@@ -917,7 +917,10 @@ export class BookPageComponent implements OnInit, OnDestroy {
     this.checkWhy = null;
     const w = betWhy([row], 0);
     const wi = whatIfOf(row, !!at.bot);
-    this.why = { ...w, at: popoverAt(tile, 420), sheet: phoneSheet(), look: this.whyLook(w, row, at.game), wi };
+    // (a guard's pass (the board's sr, DECISIONS.md D31: no silent skip): the popover says the bot passes and why, not
+    // its rank)
+    const look = this.whyLook(w, row, at.game);
+    this.why = { ...w, at: popoverAt(tile, 420), sheet: phoneSheet(), look: at.reason ? { ...look, sentence: 'The Bot passes on this one: a guard stops it, whatever its Kelly score.', reason: `Why: ${at.reason}.` } : look, wi };
     this.priceTo(wi?.odds ?? null);
     this.whyTile = tile;
     setTimeout(() => this.whyPop?.nativeElement.focus({ preventScroll: true }));

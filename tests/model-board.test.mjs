@@ -72,6 +72,11 @@ test('boardProp: both prices, each side’s Kelly and band; an unknown side null
   assert.deepEqual([gap.b, gap.sk, gap.sw], [['low', 'low'], 1, 'gap']);
   const pass = boardProp(prop(-115, -105, { guard: { skip: true, why: 'out' } }), 'T');
   assert.deepEqual([pass.b, pass.sk, pass.sw], [['low', 'low'], 1, undefined]);
+  // (every skip carries its reason, sr (D31: no silent skip); a shown CHECK or an unguarded row none)
+  assert.equal(pass.sr, 'out');
+  assert.equal(gap.sr, 'a guard with no reason recorded');
+  assert.equal(chk.sr, undefined);
+  assert.equal(p.sr, undefined);
 });
 
 test('buildBoard: the games not started, the bot’s sides marked, a prop kept between asks unless its line moved', () => {

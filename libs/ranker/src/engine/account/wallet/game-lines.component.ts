@@ -34,6 +34,8 @@ export interface PriceCall {
   // (the Kelly score as a fraction; null where there's none to show: no price of the bot's, or a CHECK)
   kelly: number | null;
   chance: number | null;
+  // (a guard's pass: its reason, the board's (sr))
+  reason?: string | null;
 }
 
 // (a price's K score button clicked: what the page needs to open the why popover for it: the bot's pick where it's
@@ -48,6 +50,8 @@ export interface PriceWhy {
   market: PlayMarket;
   side: string;
   game: { sport: string; matchup: string; start: string | null } | null;
+  // (a guard's pass: why the bot passes it (board.mjs sr, D31), the popover's reason)
+  reason?: string | null;
 }
 
 // (one side of a prop on the board: its price, the bot's Kelly score and band on it, the bot's side or not)
@@ -73,6 +77,8 @@ export interface PropRow {
   pass: boolean;
   // (why it passes, where the board says: board.mjs sw)
   passWhy?: 'gap' | 'small';
+  // (its reason in words, the guard's (board.mjs sr, D31))
+  passReason?: string;
   pick: BotPick | null;
   sides: PropSide[];
   // (the player's first stat: his face and name on it, the rest under it)
@@ -493,10 +499,11 @@ export class GameLinesComponent implements OnInit, OnDestroy {
     }
     if (!side || price.odds === null) return { bot: null, tier: 'pass', kelly: null, chance: null };
     if (side.b === 'check' && !this.desk) return { bot: null, tier: 'pass', kelly: null, chance: side.c };
-    if (side.o === price.odds || side.b === 'check') return { bot: null, tier: tierOfBand(side.b), kelly: side.b === 'check' ? null : side.ks, chance: side.c };
+    const reason = side.sr ?? null;
+    if (side.o === price.odds || side.b === 'check') return { bot: null, tier: tierOfBand(side.b), kelly: side.b === 'check' ? null : side.ks, chance: side.c, reason };
     const kelly = kellyOf(side.c, price.odds) ?? side.ks;
-    const band = side.b === 'low' && side.ks > 0 ? 'low' : confidenceOf(kelly, side.c, true);
-    return { bot: null, tier: tierOf(band), kelly, chance: side.c };
+    const band = side.b === 'low' && (side.ks > 0 || reason) ? 'low' : confidenceOf(kelly, side.c, true);
+    return { bot: null, tier: tierOf(band), kelly, chance: side.c, reason };
   }
 
   // (a price's hover: what it is, what 10 units win at it, and the bot's word on it)
@@ -510,7 +517,7 @@ export class GameLinesComponent implements OnInit, OnDestroy {
         : bot
         ? ` · The Bot's pick: ${c.tier?.toUpperCase()}, Kelly ${this.kellyText(bot.sureness)}${bot.chance != null ? `, ${bot.chance}% to win` : ''}${bot.line !== undefined && bot.line !== null && bot.line !== price.line ? ` (it took ${lineText(bot.line)})` : ''}`
         : c.kelly !== null
-        ? ` · The Bot: ${c.tier?.toUpperCase()}, Kelly ${this.kellyText(c.kelly)}${c.chance != null ? `, ${Math.round(c.chance * 100)}% to win` : ''}`
+        ? ` · The Bot: ${c.tier?.toUpperCase()}, Kelly ${this.kellyText(c.kelly)}${c.chance != null ? `, ${Math.round(c.chance * 100)}% to win` : ''}${c.reason ? ` (it passes: ${c.reason})` : ''}`
         : '';
     return `${at}${botWords}${this.open ? '' : ' · Betting closed: the game has started'}`;
   }
@@ -555,6 +562,7 @@ export class GameLinesComponent implements OnInit, OnDestroy {
       check,
       pass: !!x.sk,
       ...(x.sw ? { passWhy: x.sw } : {}),
+      ...(x.sk && x.sr ? { passReason: x.sr } : {}),
       pick,
       sides,
       first: true,
@@ -595,6 +603,11 @@ export class GameLinesComponent implements OnInit, OnDestroy {
     return `${r.player ? r.player + ' ' : ''}${s.side === 'over' ? 'Over' : 'Under'} ${r.line} ${r.label}`;
   }
 
+  // (a band tag's hover: a guard's pass says why (board.mjs sr, D31); else none)
+  passTag(tier: Tier | null, reason: string | null | undefined): string | null {
+    return tier === 'pass' && reason ? `PASS: ${reason}` : null;
+  }
+
   // (a prop side's hover: the bet, its price, the bot's word on it)
   propTitle(r: PropRow, s: PropSide): string {
     const at = `${this.sideWords(r, s)} ${s.odds !== null ? oddsText(s.odds) : ''}`;
@@ -605,7 +618,7 @@ export class GameLinesComponent implements OnInit, OnDestroy {
         : r.check
         ? ' · The other side of the Bot’s CHECK'
         : s.tier
-        ? ` · ${s.bot ? 'The Bot’s pick' : 'The Bot'}: ${s.tier.toUpperCase()}${s.kelly !== null ? ', Kelly ' + this.kellyText(s.kelly) : ''}${chance !== null ? `, ${chance}% to win` : ''}${r.pass ? (r.passWhy === 'gap' ? ' (it passes: the Bot is too far off the Book here to trust)' : r.passWhy === 'small' ? ' (it passes: his role is changing, and the edge isn’t big enough to look into)' : ' (it passes on this player for now)') : ''}`
+        ? ` · ${s.bot ? 'The Bot’s pick' : 'The Bot'}: ${s.tier.toUpperCase()}${s.kelly !== null ? ', Kelly ' + this.kellyText(s.kelly) : ''}${chance !== null ? `, ${chance}% to win` : ''}${r.pass ? (r.passReason ? ` (it passes: ${r.passReason})` : r.passWhy === 'gap' ? ' (it passes: the Bot is too far off the Book here to trust)' : r.passWhy === 'small' ? ' (it passes: his role is changing, and the edge isn’t big enough to look into)' : ' (it passes on this player for now)') : ''}`
         : '';
     return `${at}${word}${this.open ? '' : ' · Betting closed: the game has started'}`;
   }

@@ -14,7 +14,7 @@
 //             chance it wins, ks: its Kelly score (picks.mjs kellyOf, the picks' order), b: its band (picks.mjs
 //             level: lock, high (LOVE), medium (LIKE), low (PASS); check where the market is a CHECK the page
 //             shows, on the model's side: never a game market's now, the gap's a shadow (checks.mjs shadowOf),
-//             both sides PASS), bot: 'bet' or 'check' where the bot has that side open (its ledger); fc: the
+//             both sides PASS; sr its reason, D31), bot: 'bet' or 'check' where the bot has that side open (its ledger); fc: the
 //             other books' consensus fair chance of that side at the book's line and cn how many books (none
 //             without a consensus: oddsapi.mjs consensusOf), dv: 1 where the book's price beats it by OUTLIER
 //             or more (the data's: nothing is priced off it) }
@@ -23,7 +23,8 @@
 //             over, ks: [over's Kelly, under's] and b: [over's band, under's] (null where unpriced), sk: 1 where a
 //             guard has the bot pass on it (his status, the line's move, a layoff, a gap or a small role CHECK's
 //             shadow (checks.mjs shadowOf, as the run judges it): its bands PASS), sw: a shadow's passAs
-//             ('gap' or 'small', why it's a PASS), at: when priced, bot and bk: the side the bot has open and
+//             ('gap' or 'small', why it's a PASS), sr: every skip's reason in words (skipReason: the guard's why,
+//             DECISIONS.md D31: no silent skip), at: when priced, bot and bk: the side the bot has open and
 //             'bet' or 'check', fc and cn: the other books' consensus fair chance over and how many books, dv:
 //             the side ('over' or 'under') the book's price beats it on by OUTLIER or more (as the game markets') }
 //
@@ -64,11 +65,20 @@ export function boardMarkets(markets, trustOf, consensus = null) {
       const p = s.anchored === false ? s.fair : chanceAt(m.market, s.fair, s.model, trustOf(m.market));
       const ev = (1 - (s.push ?? 0)) * (p * decimal(s.odds) - 1);
       const ks = kellyOf(s.odds, p);
-      return { s: s.side, l: m.market === 'ml' ? null : s.line, o: s.odds, c: round(p, 3), ks, b: bandOf(ks, p, ev, { check: s.side === checkSide, pass }), ...consensusOf(consensus?.[m.market], s.side, s0.side) };
+      return { s: s.side, l: m.market === 'ml' ? null : s.line, o: s.odds, c: round(p, 3), ks, b: bandOf(ks, p, ev, { check: s.side === checkSide, pass }), ...(pass ? { sr: skipReason(gapped) } : {}), ...consensusOf(consensus?.[m.market], s.side, s0.side) };
     });
   }
   return out;
 }
+
+// A skip's reason as the board says it (DECISIONS.md D31: no silent skip): the guard's own words, its first SR_MAX
+// characters; a guard with none says so, never an empty PASS
+export const SR_MAX = 200;
+export const skipReason = (guard) => {
+  const why = String(guard?.why ?? '').trim();
+  if (!why) return 'a guard with no reason recorded';
+  return why.length > SR_MAX ? `${why.slice(0, SR_MAX - 1).trimEnd()}…` : why;
+};
 
 // A priced prop (props.mjs priceProps's) as the board's, at its book price (none: null)
 export function boardProp(x, at) {
@@ -101,6 +111,7 @@ export function boardProp(x, at) {
     b: [over.b, under.b],
     ...(pass ? { sk: 1 } : {}),
     ...(pass && shadow ? { sw: shadow.passAs } : {}),
+    ...(pass ? { sr: skipReason(x.guard) } : {}),
     ...(Number.isFinite(x.prop.consensus?.fair) ? { fc: x.prop.consensus.fair, cn: x.prop.consensus.n, ...(x.prop.consensus.outlier ? { dv: x.prop.consensus.outlier } : {}) } : {}),
     at,
   };
