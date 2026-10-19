@@ -1,65 +1,65 @@
 {
  "v": 1,
- "at": "2026-10-19T15:11:26.253Z",
+ "at": "2026-10-19T17:10:10.016Z",
  "rows": 117594,
  "pooled": {
-  "n": 9268,
+  "n": 12553,
   "rows": 117594,
-  "keptRaw": 0.8819,
-  "kept": 0.8819,
+  "keptRaw": 0.8761,
+  "kept": 0.8761,
   "moved": 0.084,
   "lead": 12.028,
-  "edgeOpen": 0.0149,
-  "edgeClose": 0.0131,
+  "edgeOpen": 0.0147,
+  "edgeClose": 0.0129,
   "ok": true
  },
  "stats": {
   "hits": {
-   "n": 1522,
+   "n": 3519,
    "rows": 66514,
-   "keptRaw": 0.7815,
-   "kept": 0.7815,
+   "keptRaw": 0.6787,
+   "kept": 0.6787,
    "moved": 0.067,
    "lead": 12.026,
-   "edgeOpen": 0.011,
-   "edgeClose": 0.0086,
+   "edgeOpen": 0.0136,
+   "edgeClose": 0.0092,
    "from": "own"
   },
   "k": {
-   "n": 269,
+   "n": 456,
    "rows": 7684,
-   "keptRaw": 0.8819,
-   "kept": 0.8819,
+   "keptRaw": 0.7962,
+   "kept": 0.7962,
    "moved": 0.256,
    "lead": 12.026,
-   "edgeOpen": 0.0229,
-   "edgeClose": 0.0191,
-   "from": "pooled"
+   "edgeOpen": 0.0194,
+   "edgeClose": 0.0154,
+   "from": "own"
   },
   "outs": {
-   "n": 204,
+   "n": 640,
    "rows": 6361,
-   "keptRaw": 0.8819,
-   "kept": 0.8819,
+   "keptRaw": 1.0239,
+   "kept": 1,
    "moved": 0.273,
    "lead": 12.025,
-   "edgeOpen": 0.0233,
-   "edgeClose": 0.0178,
-   "from": "pooled"
+   "edgeOpen": 0.0176,
+   "edgeClose": 0.018,
+   "from": "own"
   },
   "tb": {
-   "n": 7273,
+   "n": 7938,
    "rows": 37035,
-   "keptRaw": 0.9048,
-   "kept": 0.9048,
+   "keptRaw": 0.9493,
+   "kept": 0.9493,
    "moved": 0.046,
    "lead": 12.032,
-   "edgeOpen": 0.0152,
-   "edgeClose": 0.0137,
+   "edgeOpen": 0.0146,
+   "edgeClose": 0.0139,
    "from": "own"
   }
  },
  "sport": "mlb",
- "epoch": "2026-10-19T16:00:00Z",
- "commit": "3c9e1f9b"
+ "epoch": "2026-10-19T17:15:00Z",
+ "commit": "b783feda"
 }

@@ -591,7 +591,9 @@ export function scorecardOf(score, frozen, { now = Date.now() } = {}) {
       const s = betSummary(rows, { n, practice, stakeOf: stakeOfRow });
       return { n: s.rows, clv: s.top.clv, hit: s.top.hit, picks: s.top.n, units: s.top.units };
     };
-    out.historyPicks = { all: picksOf(hist), props: picksOf(hist.filter((x) => x.market === 'prop')), lines: picksOf(hist.filter((x) => x.market !== 'prop')) };
+    // (a slimmed row carries its stat, a game line's its market (gate-history.mjs slim, lineHistoryRows))
+    const isLine = (x) => MARKETS.includes(x.market ?? x.stat);
+    out.historyPicks = { all: picksOf(hist), props: picksOf(hist.filter((x) => !isLine(x))), lines: picksOf(hist.filter(isLine)) };
   }
   // (the anchor's pull by stat (D33): the fit on every season to date, the readout the owner watches fall as the
   // bot's own numbers improve; 0 a stat priced at the bot's own number)
