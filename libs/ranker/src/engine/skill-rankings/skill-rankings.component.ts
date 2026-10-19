@@ -40,6 +40,7 @@ import { drawRowsInView } from './rows-in-view';
 import { boxWidth, columnWidth, watchColumns } from './column-fit';
 import { TabRanker } from './tab-ranker';
 import { groupOfKey, groupSortValue, groupStat } from './group-sort';
+import { groupRankTint } from './group-ranks';
 import { RankWhy, rankWhy, scoreText, signedScore } from './rank-why';
 import { scoreClass } from '@ranker/engine/result-class';
 import { Breakdown, barWidths } from '@ranker/core/breakdown';
@@ -467,12 +468,13 @@ export class SkillRankingsComponent implements OnChanges, AfterViewInit, CardHos
     this.isoPlaces = sorted.places;
   }
 
-  // A column the grid shows now (not in a collapsed group), by its key
+  // A column the grid shows now (not in a collapsed group), by its key; a group's own column sorts only while
+  // the group is collapsed (open, its name is hidden: the stats' headers sort)
   private shownStat(key: string): SkillStat | null {
     const own = groupOfKey(key);
     if (own) {
       const group = this.visibleGroups.find((g) => g.id === own);
-      return group ? groupStat(group) : null;
+      return group && this.isCollapsed(group.id) ? groupStat(group) : null;
     }
     for (const group of this.visibleGroups) {
       if (this.isCollapsed(group.id)) continue;
@@ -1196,6 +1198,11 @@ export class SkillRankingsComponent implements OnChanges, AfterViewInit, CardHos
   groupPlace(player: SkillPlayer, id: string): number | null {
     if (this.isUr(player)) return null;
     return this.groupPlaces.get(id)?.get(player) ?? null;
+  }
+
+  // (its color: the grid's value tint, as a stat cell's, with Color Values on)
+  groupPlaceColor(place: number | null, id: string): string | null {
+    return this.settings.colorValues ? groupRankTint(this.groupPlaces.get(id), place) : null;
   }
 
   groupRankTitle(group: { title: string }): string {

@@ -35,9 +35,10 @@
                  the rows by their rank within it, as a stat's header does), and each row's rank within the group -->
             @let gs = groupStat(group);
             @let gcan = canIsolate(gs);
-            <div class="group-rank-col" [attr.data-col]="gs.key" [style.--label-w]="columnWidth(gs)" [class.isolated]="isolatedKey === gs.key" [class.isolatable]="gcan" (click)="isolate(gs, $event)">
+            @let gc = isCollapsed(group.id);
+            <div class="group-rank-col" [class.open]="!gc" [attr.data-col]="gc ? gs.key : null" [style.--label-w]="gc ? columnWidth(gs) : null" [class.isolated]="isolatedKey === gs.key" [class.isolatable]="gc && gcan" (click)="gc && isolate(gs, $event)">
               <button type="button" class="group-toggle" [title]="collapseTitle(group)" [attr.aria-label]="collapseTitle(group)" [attr.aria-expanded]="!isCollapsed(group.id)" (click)="toggleCollapsed(group.id, $event)"><mat-icon class="group-chevron" aria-hidden="true" [fontIcon]="isCollapsed(group.id) ? 'chevron_right' : 'expand_more'"></mat-icon><mat-icon class="group-icon" aria-hidden="true" [fontIcon]="group.icon"></mat-icon></button>
-              <p class="stat-label" [title]="labelTitle(gs, gcan)" [attr.role]="gcan ? 'button' : null" [attr.tabindex]="gcan ? 0 : null" [attr.aria-pressed]="gcan ? isolatedKey === gs.key : null" [attr.aria-label]="gcan ? isoLabel(gs) : null" (keydown.enter)="isolate(gs, $event)" (keydown.space)="isolate(gs, $event)">{{ group.title }}</p>@if (isolatedKey === gs.key) {<span class="isolate-tools" (pointerdown)="$event.stopPropagation()" (keydown.enter)="$event.stopPropagation()" (keydown.space)="$event.stopPropagation()"><button type="button" class="isolate-dir" [title]="isoDirTitle()" [attr.aria-label]="isoDirTitle()" (click)="flipIsoDir($event)"><mat-icon aria-hidden="true" [fontIcon]="isoAscending ? 'arrow_upward' : 'arrow_downward'"></mat-icon></button><button type="button" class="isolate-dir isolate-close" title="Back to the ranking (Esc)" aria-label="Back to the ranking" (click)="$event.stopPropagation(); endIsolation(true)"><mat-icon aria-hidden="true" fontIcon="close"></mat-icon></button></span>}
+              @if (gc) {<p class="stat-label" [title]="labelTitle(gs, gcan)" [attr.role]="gcan ? 'button' : null" [attr.tabindex]="gcan ? 0 : null" [attr.aria-pressed]="gcan ? isolatedKey === gs.key : null" [attr.aria-label]="gcan ? isoLabel(gs) : null" (keydown.enter)="isolate(gs, $event)" (keydown.space)="isolate(gs, $event)">{{ group.title }}</p>@if (isolatedKey === gs.key) {<span class="isolate-tools" (pointerdown)="$event.stopPropagation()" (keydown.enter)="$event.stopPropagation()" (keydown.space)="$event.stopPropagation()"><button type="button" class="isolate-dir" [title]="isoDirTitle()" [attr.aria-label]="isoDirTitle()" (click)="flipIsoDir($event)"><mat-icon aria-hidden="true" [fontIcon]="isoAscending ? 'arrow_upward' : 'arrow_downward'"></mat-icon></button><button type="button" class="isolate-dir isolate-close" title="Back to the ranking (Esc)" aria-label="Back to the ranking" (click)="$event.stopPropagation(); endIsolation(true)"><mat-icon aria-hidden="true" fontIcon="close"></mat-icon></button></span>}}
             </div>
             <!-- (collapsed: that column alone) -->
             @if (isCollapsed(group.id)) {
@@ -199,8 +200,9 @@
                    a UR row, or none of the group's stats counted). Only a look: the order stays. -->
               @let gs = groupStat(group);
               @let place = groupPlace(player, group.id);
-              <div class="group-rank-col" [class.isolated]="isolatedKey === gs.key" [style.--label-w]="columnWidth(gs)">
-                <p>{{ place ?? '-' }}</p>
+              @let gc = isCollapsed(group.id);
+              <div class="group-rank-col" [class.open]="!gc" [class.isolated]="isolatedKey === gs.key" [style.--label-w]="gc ? columnWidth(gs) : null">
+                <p [style.color]="groupPlaceColor(place, group.id)">{{ place ?? '-' }}</p>
                 <p class="stat-label" [title]="place === null ? groupRankTitle(group) + ': none' : groupRankTitle(group) + ': #' + place">{{ group.title }}</p>
               </div>
               @if (isCollapsed(group.id)) {

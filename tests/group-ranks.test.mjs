@@ -9,6 +9,8 @@ import path from 'node:path';
 import { loadEngine } from './support/engine.mjs';
 
 const entry = path.join(import.meta.dirname, 'support/group-ranks-entry.ts');
+// (a score as the grid shows it: rank-why.ts scoreText, two places)
+const round2 = (v) => Number(v.toFixed(2)) + 0;
 
 test('groupRanks: best share first, ties sharing a place (1, 1, 3), a group with no counted stat has none', async () => {
   const { groupRanks } = await loadEngine('nfl', { entry });
@@ -30,6 +32,11 @@ test('groupRanks: best share first, ties sharing a place (1, 1, 3), a group with
   // (a float tie: 0.1 + 0.2 against 0.3 is one place)
   const float = groupRanks(['p', 'q'], new Map([['p', new Map([['x', 0.1 + 0.2]])], ['q', new Map([['x', 0.3]])]]), new Map([['x', 'g']]));
   assert.deepEqual([float.get('g').get('p'), float.get('g').get('q')], [1, 1]);
+  // Ties as the grid shows a score, to two places: 2.3081 and 2.3126 both read 2.31 and share #1; a run of
+  // three tied, then the next at #4 (competition ranking); 2.304 reads 2.30, its own place; −0.001 and 0 tie
+  const near = new Map([['p', 2.3081], ['q', 2.3126], ['r', 2.31], ['s', 2.304], ['t', -0.001], ['u', 0]].map(([k, v]) => [k, new Map([['x', v]])]));
+  const nearPlaces = groupRanks(['p', 'q', 'r', 's', 't', 'u'], near, new Map([['x', 'g']])).get('g');
+  assert.deepEqual(['p', 'q', 'r', 's', 't', 'u'].map((k) => nearPlaces.get(k)), [1, 1, 1, 4, 5, 5]);
   // A group with no counted stat: no places (the strip's dash)
   assert.equal(places.get('g3'), undefined);
   // Only a look: the rows as they were
@@ -70,10 +77,16 @@ test("nfl QB: each group's places follow its share of the score, move with the s
     const own = places.get(group);
     assert.equal(own.size, ranked.length);
     for (const row of ranked) {
-      const better = ranked.filter((other) => share(other) > share(row) + 1e-9 * Math.max(1, Math.abs(share(row)))).length;
+      // (competition ranking on the score as the grid shows one, to two places)
+      const better = ranked.filter((other) => round2(share(other)) > round2(share(row))).length;
       assert.equal(own.get(row), better + 1, `${group} ${row.name}`);
     }
   }
+  // Results on the QBs: the records that tie (the undefeated starters) all read 1, the next row after them all
+  const results = places.get('results');
+  const ones = ranked.filter((row) => results.get(row) === 1);
+  assert.ok(ones.length >= 2, 'tied rows at #1 in Results');
+  assert.ok(ranked.every((row) => results.get(row) === 1 || results.get(row) > ones.length), 'a place inside the tie');
   // Only a look: the list's order is the same, places or not
   assert.deepEqual(ranker.ranked(reader, listed, 'QB', SKILL_UNITS), ranked);
 
@@ -180,4 +193,48 @@ test('a sort by a group never reaches a share link', async () => {
   const service = new PositionService();
   assert.equal(new URL(service.shareLink()).searchParams.has('list'), false);
   assert.ok(!JSON.stringify(service.layout).includes('group:'));
+});
+
+test("a group's ranks take the grid's value tint: #1 green, the last red, the middle plain, none uncolored", async () => {
+  const { groupRankTint } = await loadEngine('nfl', { entry });
+  const places = new Map(Array.from({ length: 41 }, (_, i) => [`r${i}`, i + 1]));
+  // (the tint's strength, color-mix(in srgb, var(--tint-good, ...) 85%, ...), when it's that hue)
+  const share = (tint, hue) => (new RegExp(hue).test(tint) ? Number(tint.match(/\) (\d+)%/)?.[1] ?? 0) : 0);
+  const best = groupRankTint(places, 1);
+  const worst = groupRankTint(places, 41);
+  assert.match(best, /tint-good/);
+  assert.match(worst, /tint-bad/);
+  assert.ok(share(best, 'tint-good') > 50 && share(worst, 'tint-bad') > 50, `${best} / ${worst}`);
+  // (the middle: barely tinted; a better rank greener than a worse one)
+  assert.ok(share(groupRankTint(places, 21), 'tint-(good|bad)') <= 5);
+  assert.ok(share(groupRankTint(places, 3), 'tint-good') > share(groupRankTint(places, 9), 'tint-good'));
+  assert.equal(groupRankTint(places, null), null);
+  assert.equal(groupRankTint(undefined, 1), null);
+  // (one row: nothing to compare)
+  assert.equal(groupRankTint(new Map([['a', 1]]), 1), null);
+});
+
+// Ties in every state: the places come from the scoring alone (the same whether the group shows open or
+// collapsed: nothing in them reads the collapse), with Combine on or off, and sorted by the group (isolation's
+// places, the rank tiles' then) the tied rows still share one place, the next after them all
+test('nfl QB: tied Results share a place open, collapsed, combined and sorted by the group', async () => {
+  const engine = await loadEngine('nfl', { entry });
+  const { presetWeights, groupSortValue, isolateRows, DEFAULT_SETTINGS } = engine;
+  for (const combineStats of [false, true]) {
+    const saved = DEFAULT_SETTINGS.combineStats;
+    DEFAULT_SETTINGS.combineStats = combineStats;
+    try {
+      const { ranked, places } = harness(engine, presetWeights('QB', 'default'));
+      const results = places.get('results');
+      const ones = ranked.filter((row) => results.get(row) === 1);
+      assert.ok(ones.length >= 2, `combine ${combineStats}: tied rows at #1`);
+      // (sorted by the group: isolation over its places, the tile's places)
+      const sorted = isolateRows(ranked, ranked.length, groupSortValue(places, 'results'), true);
+      assert.deepEqual(sorted.rows.slice(0, ones.length).map((row) => sorted.places.get(row)), ones.map(() => 1));
+      assert.equal(sorted.places.get(sorted.rows[ones.length]), ones.length + 1, 'the next row after the tie');
+      for (const row of ranked) assert.equal(sorted.places.get(row), results.get(row), `${row.name}: the tile's place is the column's`);
+    } finally {
+      DEFAULT_SETTINGS.combineStats = saved;
+    }
+  }
 });

@@ -920,13 +920,25 @@ section ul li.player {
   // still counted): the slot for its chevron and icon, then as wide as the group's name in the header
   // (measured, column-fit.ts), each row's rank within the group under it; the same width in every row, so
   // the cells line up under the header's
+  // (open: the chevron and icon alone in the header, the stats' own headers saying the rest; just room
+  // for the ranks)
   > .col-group > div.group-rank-col {
     flex: 0 0 auto;
     max-width: none;
     min-width: 0;
-    padding-left: 36px;
+    padding-left: 50px;
     padding-right: 0.2em;
     width: max(3.5em, var(--label-w, 0px));
+
+    &.open {
+      width: 2.5em;
+    }
+  }
+
+  // (sorted by its group: the strip down the ranks alone, not the chevron's slot)
+  > .col-group > div.group-rank-col.isolated {
+    background-clip: content-box !important;
+    background-origin: content-box !important;
   }
 
   // Recent and the grade boxes: one panel across their columns
@@ -1305,8 +1317,8 @@ section ul li.player.header-row:hover {
       height: 32px;
       justify-content: flex-start;
       left: 0;
-      min-width: 34px;
-      padding: 0 2px 0 0;
+      min-width: 40px;
+      padding: 0 2px 0 2px;
       position: absolute;
       top: 50%;
       transform: translateY(-50%);
@@ -1315,7 +1327,7 @@ section ul li.player.header-row:hover {
       .group-chevron {
         color: v.$neutral;
         @include v.icon-size(16px);
-        margin-right: -2px;
+        margin-right: 4px;
         transition: color v.$t-fast ease;
       }
 
