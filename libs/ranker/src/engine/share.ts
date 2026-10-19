@@ -19,8 +19,8 @@ interface Shared {
   // the settings menu's settings that differ, and the sport's own
   s?: Partial<Omit<RankerSettings, 'sport'>>;
   sp?: Record<string, string | boolean>;
-  // the grid as it looks (PositionService.layout): each tab's hand-dragged order, opened groups (x; c, an
-  // older link's collapsed ones from when groups started open, still read), dragged columns ("QB.box") and
+  // the grid as it looks (PositionService.layout): each tab's hand-dragged order, groups opened (x) and collapsed (c)
+  // by hand (the rest start by the width), dragged columns ("QB.box") and
   // the sidebar's card order
   o?: Record<string, string[]>;
   x?: Record<string, string[]>;
@@ -68,9 +68,10 @@ export function shareLink(service: PositionService, defaults: RankerSettings): s
   };
   shared.o = some(layout.orders);
   shared.x = some(layout.expanded);
+  shared.c = some(layout.collapsed ?? {});
   shared.k = some(layout.columns);
   shared.go = some(layout.groups);
-  for (const key of ['o', 'x', 'k', 'go'] as const) if (!shared[key]) delete shared[key];
+  for (const key of ['o', 'x', 'c', 'k', 'go'] as const) if (!shared[key]) delete shared[key];
 
   const url = new URL(location.href);
   url.hash = '';

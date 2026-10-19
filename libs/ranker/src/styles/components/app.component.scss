@@ -119,7 +119,8 @@
     }
   }
 
-  // Phones: the names a size down to suit the slimmer bar, and just the podium (the sports fill the bar)
+  // Phones: the names a size down to suit the slimmer bar, and no brand (the owner's note, 2026-10-19: the sports
+  // and the account keep the bar; hidden by the width, not left out, so nothing moves as the account comes in)
   @include v.down(phone) {
     a {
       font-size: v.$fs-11;
@@ -127,11 +128,7 @@
     }
 
     a.brand {
-      gap: v.$space-6;
-
-      &::before {
-        margin-right: 0;
-      }
+      display: none;
     }
 
     // (a phone's toggle is padded 6px, not 10)

@@ -123,11 +123,13 @@
             class="player-info"
             [style]="teamLook(player).chip"
           >
-            <!-- The rank tile: plain, its place (its hover says it); the Score bar beside it opens why it ranks here -->
+            <!-- The rank tile: plain, its place (its hover says it); the Score bar beside it opens why it ranks here (on a
+                 phone scrolled sideways, the Score cell hidden to keep the pinned columns' room, the tile opens it) -->
             <span
               [ngClass]="ur ? 'count unranked' : isoStat ? 'count isolate-place' : rankClasses(n)"
               class="rank-tile"
               [title]="rankTitle(player, n, i)"
+              (click)="rankTileWhy(player, n, $event)"
             >@if (ur) {UR} @else if (isoStat) {{{ isoAt ?? '-' }}} @else if (n === 0) {<span class="trophy" aria-hidden="true"></span
               ><span class="visually-hidden">1</span>} @else {{{ n + 1 }}}</span
           >
@@ -174,7 +176,7 @@
             >
             <!-- The badge through the end of the name opens the player card (the rest of the cell picks the row) -->
             <p class="player-name">
-              <strong class="card-link card-target" role="button" (click)="openCard(player)" tabindex="0" aria-keyshortcuts="C" [attr.aria-label]="picked.includes(player.gsisId) ? player.name + ', picked for Compare' : null" [attr.data-name]="player.name" (keydown.enter)="openCard(player)" (keydown.space)="$event.preventDefault(); openCard(player)">{{ player.name }}</strong>
+              <strong class="card-link card-target" role="button" (click)="openCard(player)" tabindex="0" aria-keyshortcuts="C" [attr.aria-label]="picked.includes(player.gsisId) ? player.name + ', picked for Compare' : null" [attr.data-name]="player.name" (keydown.enter)="openCard(player)" (keydown.space)="$event.preventDefault(); openCard(player)">{{ rowName(player) }}</strong>
               @if (statsBehind(player); as n) {
                 <!-- His stats don't cover every game in his record yet (the data source catching up) -->
                 <mat-icon

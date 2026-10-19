@@ -58,7 +58,12 @@ test('the popover opens from the bar: the Score cell and the Book meter are the 
   const rows = html.slice(html.indexOf('@for (player of gridRows'));
   const tile = rows.match(/<span\s+\[ngClass\][^>]*class="rank-tile"[^>]*>/)?.[0];
   assert.ok(tile, 'the rank tile is in the row');
-  assert.doesNotMatch(tile, /\(click\)|role="button"|tabindex/);
+  // (its one click: on a phone scrolled sideways, the Score cell hidden, the tile opens why in its place; rankTileWhy
+  // does nothing while the cell is showing)
+  assert.doesNotMatch(tile, /role="button"|tabindex/);
+  assert.deepEqual(tile.match(/\(click\)="[^"]*"/g), ['(click)="rankTileWhy(player, n, $event)"']);
+  const ts = fs.readFileSync(path.join(import.meta.dirname, '../libs/ranker/src/engine/skill-rankings/skill-rankings.component.ts'), 'utf8');
+  assert.match(ts, /rankTileWhy\([^)]*\): void \{\s*const cell = [^;]*':scope > \.score-cell'\);\s*if \(!cell \|\| cell\.offsetParent !== null\) return;/);
   const cell = rows.match(/<span\s+class="score-cell"[^>]*>/)?.[0];
   assert.ok(cell, 'the score cell is in the row');
   for (const bit of ['role="button"', 'tabindex="0"', 'aria-haspopup="dialog"', '(click)="toggleWhy(player, n, $event)"', '(keydown.enter)="toggleWhy', '(keydown.space)="toggleWhy']) assert.ok(cell.includes(bit), bit);

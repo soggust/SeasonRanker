@@ -130,27 +130,6 @@ test("nfl QB: each group's places follow its share of the score, move with the s
   assert.ok(moved, `${group}: the places didn't move with its sliders`);
 });
 
-test('every group starts collapsed; a group opened stays open, and closes again', async () => {
-  globalThis.location ??= new URL('https://ranker.test/nfl/');
-  globalThis.history ??= { replaceState: () => {} };
-  const { PositionService, skillGroups } = await loadEngine('nfl', { entry });
-  const service = new PositionService();
-  const ids = skillGroups('QB').map((g) => g.id);
-  assert.ok(ids.every((id) => service.isGroupCollapsed('QB', id)), 'a group started open');
-  service.toggleGroupCollapsed('QB', ids[0]);
-  assert.equal(service.isGroupCollapsed('QB', ids[0]), false);
-  assert.ok(ids.slice(1).every((id) => service.isGroupCollapsed('QB', id)));
-  assert.deepEqual(service.layout.expanded, { QB: [ids[0]] });
-  service.toggleGroupCollapsed('QB', ids[0]);
-  assert.equal(service.isGroupCollapsed('QB', ids[0]), true);
-  assert.deepEqual(service.layout.expanded, { QB: [] });
-  // (an older link's collapsed list: collapsed, the rest as they are)
-  service.toggleGroupCollapsed('QB', ids[1]);
-  service.applyLayout({ collapsed: { QB: [ids[1]] }, expanded: { QB: [ids[2]] } });
-  assert.equal(service.isGroupCollapsed('QB', ids[1]), true);
-  assert.equal(service.isGroupCollapsed('QB', ids[2]), false);
-});
-
 // A group is never sorted by (the owner, 2026-10-19: the category sort went): only a stat's header sorts. The
 // collapsed header opens the group wherever it's clicked (chevron, icon or name), nothing in the grid's header
 // isolates a group, the grid's isolation has no group column, and a saved list keeps only stat columns; a share
@@ -287,19 +266,21 @@ test('a one-stat group is never collapsed: no chevron, its saved state ignored',
   service.applyLayout({ collapsed: { TM: ['fielding'] }, expanded: { TM: ['fielding'] } });
   assert.equal(service.isGroupCollapsed('TM', 'fielding'), false, "a link's state is ignored");
   assert.ok(!(service.layout.expanded.TM ?? []).includes('fielding'), 'nothing written for it');
-  // (the tab's other groups: collapsed until opened, as ever)
+  // (the tab's other groups: open wide, as they start off a phone (phone-grid.test.mjs has the width), and
+  // collapsing by hand)
   const multi = skillGroups('TM').find((g) => g.stats.length > 1);
-  assert.equal(service.isGroupCollapsed('TM', multi.id), true);
-  service.toggleGroupCollapsed('TM', multi.id);
   assert.equal(service.isGroupCollapsed('TM', multi.id), false);
+  service.toggleGroupCollapsed('TM', multi.id);
+  assert.equal(service.isGroupCollapsed('TM', multi.id), true);
 
-  // Every sport: each tab's one-stat groups open from the start, the rest collapsed
+  // Every sport: each tab's one-stat groups never collapse, the rest can (and start open wide)
   for (const sport of ['nfl', 'mlb', 'nba', 'nhl', 'mma']) {
     const engine = await loadEngine(sport, { entry });
     const fresh = new engine.PositionService();
     for (const position of engine.POSITIONS) {
       for (const group of engine.skillGroups(position)) {
-        assert.equal(fresh.isGroupCollapsed(position, group.id), group.stats.length > 1, `${sport} ${position} ${group.id}`);
+        assert.equal(fresh.isGroupCollapsible(position, group.id), group.stats.length > 1, `${sport} ${position} ${group.id}`);
+        assert.equal(fresh.isGroupCollapsed(position, group.id), false, `${sport} ${position} ${group.id}`);
       }
     }
   }

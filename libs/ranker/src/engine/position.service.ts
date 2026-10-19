@@ -6,6 +6,7 @@ import { connectRosterGrades } from '@ranker/engine/roster-grades';
 import { DEFAULT_SPORT_SETTINGS, SKILL_UNITS, defaultRanking, rebuildUnits } from '@ranker/engine/unit-scoring';
 import { defaultMin } from '@ranker/engine/playing-time';
 import { homeTab, isPooled } from '@ranker/engine/pooled-tabs';
+import { groupsStartCollapsed } from '@ranker/engine/phone-grid';
 import { CardAsk, CardLink, GAME_PARAM, LinkedCard, cardLink, clearCardParams, clearGameParams, findLinkedCard, gameLink, readCardAsk, readGameAsk } from '@ranker/engine/card-link';
 import type { GameTab } from '@ranker/engine/game-view/game-view.service';
 import { COMPARE_PARAM, SharedCompare, SharedSide, applySharedLink, compareCode, readCompareCode, shareLink } from '@ranker/engine/share';
@@ -130,8 +131,8 @@ function linkedCompare(): SharedCompare | null {
 }
 
 // A grid's look for a shared link (PositionService.layout): tab -> row ids in their dragged order,
-// tab -> the group ids opened (every group starts collapsed), "TAB.group" -> column keys, tab -> the
-// sidebar's group order (collapsed: an older link's collapsed group ids, read only)
+// tab -> the group ids opened and collapsed by hand (the rest start by the width: groupsStartCollapsed),
+// "TAB.group" -> column keys, tab -> the sidebar's group order
 export interface GridLayout {
   orders: Record<string, string[]>;
   expanded: Record<string, string[]>;
@@ -533,12 +534,16 @@ export class PositionService {
   }
 
   // Stat groups collapsed to a strip in the grid, each row's place within the group in it: out of sight,
-  // still counted. Every group starts collapsed, on every tab (the owner, 2026-10-19); the ones opened (their
-  // group icon clicked) are the only ones kept (true here: opened)
+  // still counted. A group no one has touched starts open on a desktop or tablet and collapsed on a phone (the
+  // grid's phone width: groupsStartCollapsed; the owner, 2026-10-19); one opened or collapsed by hand (its group
+  // icon clicked, or a saved list's or link's state) stays that way at every width (true here: opened; false:
+  // collapsed)
   private expandedGroups: Partial<Record<SkillPosition, Partial<Record<StatGroupId, boolean>>>> = {};
 
   isGroupCollapsed(position: SkillPosition, id: StatGroupId): boolean {
-    return this.isGroupCollapsible(position, id) && !this.expandedGroups[position]?.[id];
+    if (!this.isGroupCollapsible(position, id)) return false;
+    const own = this.expandedGroups[position]?.[id];
+    return own === undefined ? groupsStartCollapsed() : !own;
   }
 
   // A group of one stat never collapses (the owner, 2026-10-19): it's always its one column, under the stat's
@@ -557,8 +562,7 @@ export class PositionService {
 
   private setGroupExpanded(position: SkillPosition, id: StatGroupId, open: boolean): void {
     if (!this.isGroupCollapsible(position, id)) return;
-    const { [id]: _, ...rest } = this.expandedGroups[position] ?? {};
-    this.expandedGroups = { ...this.expandedGroups, [position]: open ? { ...rest, [id]: true } : rest };
+    this.expandedGroups = { ...this.expandedGroups, [position]: { ...this.expandedGroups[position], [id]: open } };
   }
 
   // How the grid looks beyond its settings, for a shared link (share.ts): each tab's hand-dragged order,
@@ -568,7 +572,10 @@ export class PositionService {
     return {
       orders: Object.fromEntries(orders.map(([position, order]) => [position, order!.ids])),
       expanded: Object.fromEntries(
-        Object.entries(this.expandedGroups).map(([position, groups]) => [position, Object.keys(groups ?? {}).filter((id) => groups?.[id as StatGroupId])]),
+        Object.entries(this.expandedGroups).map(([position, groups]) => [position, Object.keys(groups ?? {}).filter((id) => groups?.[id as StatGroupId] === true)]),
+      ),
+      collapsed: Object.fromEntries(
+        Object.entries(this.expandedGroups).map(([position, groups]) => [position, Object.keys(groups ?? {}).filter((id) => groups?.[id as StatGroupId] === false)]),
       ),
       columns: { ...this.columnOrders },
       groups: { ...this.groupOrders } as Record<string, StatGroupId[]>,
@@ -578,7 +585,7 @@ export class PositionService {
   // ...and a shared link's, put in place (before the tabs first draw)
   applyLayout(layout: Partial<GridLayout>): void {
     for (const [position, ids] of Object.entries(layout.orders ?? {})) this.setUnitOrder(position as SkillPosition, ids, true);
-    // (an older link's collapsed groups: collapsed, as every group is until opened)
+    // (a link's groups collapsed by hand: collapsed at every width; its opened ones open)
     for (const [position, ids] of Object.entries(layout.collapsed ?? {})) for (const id of ids) this.setGroupExpanded(position as SkillPosition, id as StatGroupId, false);
     for (const [position, ids] of Object.entries(layout.expanded ?? {})) for (const id of ids) this.setGroupExpanded(position as SkillPosition, id as StatGroupId, true);
     this.columnOrders = { ...this.columnOrders, ...layout.columns };

@@ -28,6 +28,10 @@ $row-wash: rgba(255, 255, 255, 0.07);
 $score-col: 100px;
 $score-gap: 1em;
 $score-add: calc(#{$score-col} + #{$score-gap});
+// (a phone's (the owner's notes, 2026-10-19): the score alone, no bar, so the pinned columns keep their room;
+// scrolled sideways the cell goes too, the rank tile opening why in its place)
+$score-col-phone: 2.75em;
+$score-add-phone: calc(#{$score-col-phone} + #{$score-gap});
 
 @mixin bar-panel {
   align-items: center;
@@ -1315,7 +1319,7 @@ section ul li.player.header-row:hover {
       }
 
       @include v.down(phone) {
-        margin-left: calc(106px + #{$score-add});
+        margin-left: calc(106px + #{$score-add-phone});
       }
     }
   }
@@ -1792,7 +1796,8 @@ section ul.scrolled-x li.player > div.player-info {
     left: calc(-0.5em - var(--pin-left));
     position: absolute;
     top: -0.25em;
-    width: calc(12em + #{$score-add} + var(--pin-left));
+    // (a phone's: no score in it, --pin-score 0)
+    width: calc(12em + var(--pin-score, #{$score-add}) + var(--pin-left));
     z-index: -1;
   }
 
@@ -1883,23 +1888,37 @@ section ul li.player > div.player-info .player-name {
   }
 
   section ul li.player {
+    --pin-score: 0px;
     font-size: v.$fs-11;
 
     &.header-row {
       height: 36px;
     }
 
-    // (the grid scrolls sideways here anyway: the name column takes the room for a whole name)
-    div.player-info {
-      min-width: calc(30em + #{$score-add});
-      width: calc(30em + #{$score-add});
-    }
-
+    // (a name too long for the phone's column, short as it is (shortName), trails off)
     div .player-name strong {
-      overflow: visible;
-      text-overflow: clip;
       white-space: nowrap;
     }
+  }
+
+  // (the name column on a phone: short names ("T. Brady", "Chiefs": phone-grid.ts) and the score without its
+  // bar, so the pinned columns take less of the screen and the stats more; the list's id over the wider rules)
+  // (flex items in a row: the basis sets the width)
+  #rankings .player-info {
+    flex-basis: calc(22em + #{$score-add-phone});
+    min-width: 0;
+  }
+
+  #rankings .score-cell {
+    flex-basis: $score-col-phone;
+  }
+
+  // (no bar; scrolled sideways, the pinned columns compacted, just the rank tile and the card: the score cell
+  // goes, the rank tile opening why the row ranks here in its place, rankTileWhy)
+  #rankings .score-track,
+  #rankings.scrolled-x .score-cell,
+  #rankings.scrolled-x .score-head {
+    display: none;
   }
 
   section ul li.player:not(.header-row) .badge-slot {

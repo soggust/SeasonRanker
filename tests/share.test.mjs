@@ -76,7 +76,11 @@ for (const sport of SPORTS) {
     a.updateSettings(settingChanges);
     for (const setting of SPORT.settings ?? []) a.stepSportSetting(setting.key);
     a.setUnitOrder(first, ['row-b', 'row-a'], true);
+    // (groups set by hand, both ways: one collapsed (they start open off a phone), one closed and opened again)
     a.toggleGroupCollapsed(first, group);
+    const opened = skillGroups(first).find((g) => g.id !== group && a.isGroupCollapsible(first, g.id)).id;
+    a.toggleGroupCollapsed(first, opened);
+    a.toggleGroupCollapsed(first, opened);
     // (unicode, and runs of ? and ~, whose base64 has / and +: the link must carry them URL-safe)
     a.setColumnOrder(`${first}.${group}`, COLUMNS);
     a.setGroupOrder(second, reversed);
@@ -97,8 +101,8 @@ for (const sport of SPORTS) {
     assert.deepEqual(shared.g, { [second]: [group] });
     assert.deepEqual(Object.keys(shared.sp ?? {}).sort(), (SPORT.settings ?? []).map((s) => s.key).sort());
     assert.deepEqual(shared.o, { [first]: ['row-b', 'row-a'] });
-    assert.deepEqual(shared.x, { [first]: [group] });
-    assert.equal(shared.c, undefined);
+    assert.deepEqual(shared.x, { [first]: [opened] });
+    assert.deepEqual(shared.c, { [first]: [group] });
     assert.deepEqual(shared.k, { [`${first}.${group}`]: COLUMNS });
     assert.deepEqual(shared.go, { [second]: reversed });
 

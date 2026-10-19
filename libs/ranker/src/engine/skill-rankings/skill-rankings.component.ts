@@ -52,6 +52,7 @@ import { draftTitle, gridDraft } from '@ranker/engine/account/lists/grid-draft';
 import { listPath } from '@ranker/engine/account/lists/lists-helpers';
 import { AccountService } from '@ranker/engine/account/account.service';
 import { TeamFilterService, rowTeamName, teamOptions, teamPlaceText, teamRows } from '@ranker/engine/team-filter';
+import { isPhoneGrid, shortPlayerName, shortTeamName } from '@ranker/engine/phone-grid';
 
 // (a card's link naming nobody in that season's rows)
 const CARD_MISSING = "Couldn't find that player";
@@ -554,6 +555,28 @@ export class SkillRankingsComponent implements OnChanges, AfterViewInit, CardHos
   // A row's team by name (a team tab's row is its team)
   private teamNameOf(row: SkillPlayer): string | null {
     return rowTeamName(row, SKILL_UNITS) ?? (SPORT.teamTabs?.includes(this.position) ? row.name : null);
+  }
+
+  // A row's name in the name column: at the phone width (phone-grid.ts) short, for the pinned column's room (the
+  // owner's note, 2026-10-19): a team's nickname ("Chiefs"), a player's first initial and last name ("T. Brady");
+  // wider, the whole name. (The window resizing runs change detection: listMoved.)
+  rowName(row: SkillPlayer): string {
+    if (!isPhoneGrid()) return row.name;
+    const team = !!SPORT.teamTabs?.includes(this.position);
+    const key = (team ? 't:' : 'p:') + row.name;
+    let short = this.shortNames.get(key);
+    if (short === undefined) this.shortNames.set(key, (short = (team ? shortTeamName : shortPlayerName)(row.name)));
+    return short;
+  }
+
+  private shortNames = new Map<string, string>();
+
+  // The rank tile clicked: on a phone with the Score cell out of sight (scrolled sideways, the pinned columns
+  // compacted), the tile opens why the row ranks here in its place; otherwise it's plain (the bar opens it)
+  rankTileWhy(player: SkillPlayer, index: number, event: Event): void {
+    const cell = (event.currentTarget as HTMLElement | null)?.parentElement?.querySelector<HTMLElement>(':scope > .score-cell');
+    if (!cell || cell.offsetParent !== null) return;
+    this.toggleWhy(player, index, event);
   }
 
   // A ranked row's place in the whole list (0 the first), shown or not
