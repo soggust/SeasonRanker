@@ -132,7 +132,7 @@ export const BAND_LABELS = { lock: 'LOCK', high: 'LOVE', medium: 'LIKE', low: 'P
 export const TITLES = {
   C1: 'Inputs changed after placement',
   C2: 'Line already moving against at placement',
-  C3: "Market moved after the bet, the bot didn't",
+  C3: "Market moved after the bet, the Bot didn't",
   C4: 'Over/under drift by stat',
   C5: 'Favorite/dog drift',
   C6: 'CLV by bet type',
@@ -152,7 +152,7 @@ export const TITLES = {
   C20: 'Line far from the projection (all graded)',
   C21: 'Live calibration by spot',
   C22: 'Research repeat reasons',
-  C23: 'Leaks against the book (priced history)',
+  C23: 'Leaks against the Book (priced history)',
 };
 
 // ---- helpers ----
@@ -300,7 +300,7 @@ export function c1(x) {
   ];
   return check('C1', {
     status: partialIf(status, needs),
-    headline: n ? `${changed.length} of ${n} graded bets (${pct(share)}) saw the book move against them after placement; they went ${recOf(zc)}` : 'No graded bets with a later price this week',
+    headline: n ? `${changed.length} of ${n} graded bets (${pct(share)}) saw the Book move against them after placement; they went ${recOf(zc)}` : 'No graded bets with a later price this week',
     metric: 'share',
     value: share,
     threshold: 'watch 30% (15+ bets), flag 40% or the changed group z -2 (20+)',
@@ -530,7 +530,7 @@ export function cellsOf(b, teams = {}) {
     if (p.role) cells.push(['role', p.role]);
     if (fin(p.vacF)) cells.push(['vacated', p.vacF < 0.97 ? 'under 0.97' : p.vacF > 1.03 ? 'over 1.03' : 'about 1']);
     cells.push(['teammates out', p.out?.length ? 'some' : 'none'], ['teammates questionable', p.questionable?.length ? 'some' : 'none']);
-    cells.push(['price', b.oddsAssumed ? 'assumed -110' : 'the book']);
+    cells.push(['price', b.oddsAssumed ? 'assumed -110' : 'the Book']);
     if (b.pricesFrom) cells.push(['prices from', b.pricesFrom]);
   } else {
     const c = b.context ?? {};
@@ -623,7 +623,7 @@ export function c8(x) {
     for (const [k, v] of Object.entries(skipped).sort()) rows.push({ key: `skipped: ${k}`, status: 'ok', n: v, share: r4(placedN + v ? v / (placedN + v) : null), shareBase: null, ratio: null });
   }
   rows.sort((a, b) => RANK[a.status] - RANK[b.status] || b.n - a.n);
-  const needs = tallies ? [] : ['state.tallies (the guards\' skips by day: the bot keeps only the bets it placed)'];
+  const needs = tallies ? [] : ['state.tallies (the guards\' skips by day: the Bot keeps only the bets it placed)'];
   const top = rows[0];
   const status = now.length < 10 ? 'thin' : rows.length ? worst(...rows.map((r) => r.status)) : 'ok';
   return check('C8', {
@@ -1163,7 +1163,7 @@ export function c19(x) {
       if (src !== 'bets') continue;
       const [a, r] = [overBook(against), overBook(rest)];
       const zA = zBetween(a, r);
-      if (a.n >= MOVE_MIN && r.n >= MOVE_MIN && fin(zA) && Math.abs(zA) >= MOVE_Z) advice.push(zA < 0 ? `${kind}: the bets moved against did worse against the book than the rest (z ${round(zA, 2)}): cut their stake or pass` : `${kind}: the bets moved against did better against the book than the rest (z ${round(zA, 2)}): the move isn't the market knowing more`);
+      if (a.n >= MOVE_MIN && r.n >= MOVE_MIN && fin(zA) && Math.abs(zA) >= MOVE_Z) advice.push(zA < 0 ? `${kind}: the bets moved against did worse against the Book than the rest (z ${round(zA, 2)}): cut their stake or pass` : `${kind}: the bets moved against did better against the Book than the rest (z ${round(zA, 2)}): the move isn't the market knowing more`);
       const [w, none] = [overBook(way('with', true)), overBook(way('none'))];
       const zW = zBetween(w, none);
       if (kind === 'props' && w.n >= MOVE_MIN && none.n >= MOVE_MIN && fin(zW) && zW >= MOVE_Z) advice.push(`props: the ones moved past the guard's limit their way did better than the unmoved (z ${round(zW, 2)}): the guard could let a move with the side through`);
@@ -1191,7 +1191,7 @@ export function c19(x) {
     const zRec = zBetween(overBook(early), overBook(late));
     // (the close and the results the same way: a CLV difference the results go against is a price that moved
     // for news the early bet didn't have, not an edge in betting early)
-    if (fin(zClv) && Math.abs(zClv) >= MOVE_Z && fin(zRec) && Math.sign(zRec) === Math.sign(zClv) && Math.abs(zRec) >= 1) advice.push(`${kind}: the bets placed ${MOVE_EARLY}h or more before the start beat the close ${zClv > 0 ? 'more' : 'less'} than the later ones (CLV z ${round(zClv, 2)}, the record against the book z ${round(zRec, 2)}): bet ${zClv > 0 ? 'earlier' : 'later'}`);
+    if (fin(zClv) && Math.abs(zClv) >= MOVE_Z && fin(zRec) && Math.sign(zRec) === Math.sign(zClv) && Math.abs(zRec) >= 1) advice.push(`${kind}: the bets placed ${MOVE_EARLY}h or more before the start beat the close ${zClv > 0 ? 'more' : 'less'} than the later ones (CLV z ${round(zClv, 2)}, the record against the Book z ${round(zRec, 2)}): bet ${zClv > 0 ? 'earlier' : 'later'}`);
     rows.push({ key: `bets ${kind}: ${MOVE_EARLY}h or more before, against later`, n: list.length, clvZ: r4(zClv), recordZ: r4(zRec) });
   }
   const n = bets.length + checks.length;
@@ -1201,10 +1201,10 @@ export function c19(x) {
     headline: advice.length ? advice.join('; ') : n ? `${n} graded (${bets.length} bets, ${checks.length} CHECKs), ${moved} with a line moved since it opened: no difference past z ${MOVE_Z} by the move's way or the lead time` : 'No graded bets yet',
     metric: 'graded',
     value: n,
-    threshold: `a watch when the bets moved against do better or worse against the book's chance than the rest, the props moved past the guard's limit their way better than the unmoved, the game lines moved past it their way worse, or the bets ${MOVE_EARLY}h or more early beat the close more or less than the later ones (CLV z ${MOVE_Z}) with their record against the book the same way at z 1 or more: z ${MOVE_Z}, ${MOVE_MIN}+ a side; else a report`,
+    threshold: `a watch when the bets moved against do better or worse against the Book's chance than the rest, the props moved past the guard's limit their way better than the unmoved, the game lines moved past it their way worse, or the bets ${MOVE_EARLY}h or more early beat the close more or less than the later ones (CLV z ${MOVE_Z}) with their record against the Book the same way at z 1 or more: z ${MOVE_Z}, ${MOVE_MIN}+ a side; else a report`,
     n,
     rows,
-    how: "every graded bet and CHECK: the line's move from its open to when it was bet, its side's way (a prop's line, a game's spread, total or moneyline chance, as C2; a prop's unmoved line by its fair chance's move, 2.5 points or more, where its open price was kept, since 2026-10-13: before that a prop's move is its line's alone, so 'unmoved' holds the ones the market moved by the price only, most of the NHL's at 0.5 and 1.5), the record against the book's fair chance (overBook: won less the chance, a bet, weighted as zOf); by the hours before the start it was placed, the CLV chance (clvProb, its standard error clvSe) and the share that beat the close. Never applied: it says where to look",
+    how: "every graded bet and CHECK: the line's move from its open to when it was bet, its side's way (a prop's line, a game's spread, total or moneyline chance, as C2; a prop's unmoved line by its fair chance's move, 2.5 points or more, where its open price was kept, since 2026-10-13: before that a prop's move is its line's alone, so 'unmoved' holds the ones the market moved by the price only, most of the NHL's at 0.5 and 1.5), the record against the Book's fair chance (overBook: won less the chance, a bet, weighted as zOf); by the hours before the start it was placed, the CLV chance (clvProb, its standard error clvSe) and the share that beat the close. Never applied: it says where to look",
   });
 }
 
@@ -1259,10 +1259,10 @@ export function c20(x) {
     const against = pick((r) => r.band !== 'near' && r.b.side === LINE_AGAINST[r.band]);
     const near = pick((r) => r.band === 'near');
     for (const [label, l] of [
-      ['far over, the bot against it', pick((r) => r.band === 'hi' && r.b.side === 'under')],
-      ['far over, the bot with it', pick((r) => r.band === 'hi' && r.b.side !== 'under')],
-      ['far under, the bot against it', pick((r) => r.band === 'lo' && r.b.side === 'over')],
-      ['far under, the bot with it', pick((r) => r.band === 'lo' && r.b.side !== 'over')],
+      ['far over, the Bot against it', pick((r) => r.band === 'hi' && r.b.side === 'under')],
+      ['far over, the Bot with it', pick((r) => r.band === 'hi' && r.b.side !== 'under')],
+      ['far under, the Bot against it', pick((r) => r.band === 'lo' && r.b.side === 'over')],
+      ['far under, the Bot with it', pick((r) => r.band === 'lo' && r.b.side !== 'over')],
       ['near the projection', near],
     ]) {
       if (l.length) rows.push(rowOf(`${src}: line ${label}`, l));
@@ -1272,19 +1272,19 @@ export function c20(x) {
     if (src === 'CHECKs') continue;
     const [a, r, al] = [overBook(against), overBook(near), overBook(alarm)];
     const z = zBetween(a, r);
-    if (a.n >= MOVE_MIN && r.n >= MOVE_MIN && fin(z) && Math.abs(z) >= MOVE_Z) advice.push(z < 0 ? `the props bet with their line far from the projection, the bot against it, did worse against the book than the near ones (z ${round(z, 2)}): the far line alone is news, a PASS` : `the props bet with their line far from the projection, the bot against it, did better against the book than the near ones (z ${round(z, 2)})`);
+    if (a.n >= MOVE_MIN && r.n >= MOVE_MIN && fin(z) && Math.abs(z) >= MOVE_Z) advice.push(z < 0 ? `the props bet with their line far from the projection, the Bot against it, did worse against the Book than the near ones (z ${round(z, 2)}): the far line alone is news, a PASS` : `the props bet with their line far from the projection, the Bot against it, did better against the Book than the near ones (z ${round(z, 2)})`);
     const zA = zBetween(al, r);
-    if (al.n >= MOVE_MIN && r.n >= MOVE_MIN && fin(zA) && zA <= -MOVE_Z) advice.push(`the props bet with the line alarm's label (a far line with its cause) did worse against the book than the near ones (z ${round(zA, 2)}): the alarm could be a role CHECK (props.mjs lineAlarmOf)`);
+    if (al.n >= MOVE_MIN && r.n >= MOVE_MIN && fin(zA) && zA <= -MOVE_Z) advice.push(`the props bet with the line alarm's label (a far line with its cause) did worse against the Book than the near ones (z ${round(zA, 2)}): the alarm could be a role CHECK (props.mjs lineAlarmOf)`);
   }
   return check('C20', {
     status: advice.length ? 'watch' : n < MOVE_MIN ? 'thin' : 'info',
-    headline: advice.length ? advice.join('; ') : n ? `${n} graded props at the book's price (${est} with the ratio estimated): no difference past z ${MOVE_Z} between the far lines the bot bet against, or the line alarm's, and the near ones` : "No graded props at the book's price yet",
+    headline: advice.length ? advice.join('; ') : n ? `${n} graded props at the Book's price (${est} with the ratio estimated): no difference past z ${MOVE_Z} between the far lines the Bot bet against, or the line alarm's, and the near ones` : "No graded props at the Book's price yet",
     metric: 'graded props',
     value: n,
-    threshold: `a watch when the props bet against a line far from the projection (its implied mean ${ROLE.zHi} or more SDs of the count over the bot's, or ${ROLE.zLo} under) do better or worse against the book's chance than the near ones, or the line alarm's labeled bets worse: z ${MOVE_Z}, ${MOVE_MIN}+ a side; else a report`,
+    threshold: `a watch when the props bet against a line far from the projection (its implied mean ${ROLE.zHi} or more SDs of the count over the Bot's, or ${ROLE.zLo} under) do better or worse against the Book's chance than the near ones, or the line alarm's labeled bets worse: z ${MOVE_Z}, ${MOVE_MIN}+ a side; else a report`,
     n,
     rows,
-    how: `every graded prop bet and CHECK at the book's own price: the mean its price implies at its line over the bot's projection (projection.lineRatio since 2026-10-13, else estimated from the line, the fair chance and the projection's dispersion), far over, far under or near (in SDs of the count: props.mjs lineZ), the bot's side against the market's reading or with it; each row's record against the book's fair chance (overBook, weighted as zOf). The line alarm's labeled rows (props.mjs lineAlarmOf: a far line with a cause known before the game that the fit doesn't size, on the side against the market's reading; a label, bet or not by the other guards) apart, the bets' set against the near ones. Never applied: it says where to look`,
+    how: `every graded prop bet and CHECK at the Book's own price: the mean its price implies at its line over the Bot's projection (projection.lineRatio since 2026-10-13, else estimated from the line, the fair chance and the projection's dispersion), far over, far under or near (in SDs of the count: props.mjs lineZ), the Bot's side against the market's reading or with it; each row's record against the Book's fair chance (overBook, weighted as zOf). The line alarm's labeled rows (props.mjs lineAlarmOf: a far line with a cause known before the game that the fit doesn't size, on the side against the market's reading; a label, bet or not by the other guards) apart, the bets' set against the near ones. Never applied: it says where to look`,
   });
 }
 // C21: the props' live calibration (calib.mjs, state.calib): each spot's (a stat, a side, a line class) graded rows
@@ -1362,12 +1362,12 @@ export function c23(x) {
     ...(hist?.n ? { history: { at: hist.at, n: hist.n, tested: hist.tested, leaks: hist.leaks, rows: hist.rows ?? [] } } : {}),
     metric: 'leaks',
     value: h.leaks,
-    threshold: `a leak: ${LEAK_N} rows in ${LEAK_GAMES} games or more, losing to the book's no-vig beyond a ${LEAK_FDR * 100}% false discovery rate (Benjamini-Hochberg over every segment tested), its shrunk loss (n / (n + ${LEAK_K})) under 0; a trend: this week worse than the weeks before by ${TREND_Z} standard errors; a flag with a leak staked into in the last ${RISK_DAYS} days`,
+    threshold: `a leak: ${LEAK_N} rows in ${LEAK_GAMES} games or more, losing to the Book's no-vig beyond a ${LEAK_FDR * 100}% false discovery rate (Benjamini-Hochberg over every segment tested), its shrunk loss (n / (n + ${LEAK_K})) under 0; a trend: this week worse than the weeks before by ${TREND_Z} standard errors; a flag with a leak staked into in the last ${RISK_DAYS} days`,
     n: h.n,
     tested: h.tested,
     rows: h.rows.slice(0, WORST * 2),
     examples: [],
-    how: "each graded row's log loss gain over the book (its priced chance against the book's no-vig: on the result and against the close, half each), a game's rows sharing their weight; a segment's mean, its standard error by game, z; the leaks ranked by the units staked into them in the last 28 days. Each leak's fix a candidate only: it ships when the replay gate passes it (node libs/ranker/scripts/model/gate.mjs --candidate <the fix>)",
+    how: "each graded row's log loss gain over the Book (its priced chance against the Book's no-vig: on the result and against the close, half each), a game's rows sharing their weight; a segment's mean, its standard error by game, z; the leaks ranked by the units staked into them in the last 28 days. Each leak's fix a candidate only: it ships when the replay gate passes it (node libs/ranker/scripts/model/gate.mjs --candidate <the fix>)",
   });
 }
 

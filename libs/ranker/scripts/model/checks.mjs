@@ -125,12 +125,12 @@ const kellyText = (k) => `${k >= 0 ? '+' : '-'}${Math.abs(k * 100).toFixed(2)}`;
 export function shadowOf({ cause, odds, model, fair, oddsAssumed = false, market = 'prop', trust = null, line = null }) {
   if (cause === 'gap') {
     const pts = Number.isFinite(model) && Number.isFinite(fair) ? Math.round(Math.abs(model - fair) * 100) : null;
-    return { passAs: 'gap', why: `the bot is ${pts === null ? 'far' : `${pts} points`} off the book with nothing to explain it; that is usually the bot missing something` };
+    return { passAs: 'gap', why: `the Bot is ${pts === null ? 'far' : `${pts} points`} off the Book with nothing to explain it; that is usually the Bot missing something` };
   }
   if (cause === 'role') {
     if (oddsAssumed) return { passAs: 'small', why: 'no real price to judge it by (an assumed -110): under the CHECK bar' };
     const k = checkKelly({ market, odds, model, fair, trust, line });
-    if (k === null || !(k >= CHECK_KELLY)) return { passAs: 'small', why: k === null ? 'no Kelly to judge it by: under the CHECK bar' : `a ${kellyText(k)} Kelly with the doubt cleared (the bot's own ${Math.round(model * 100)}%): under the CHECK bar (+${(CHECK_KELLY * 100).toFixed(0)})` };
+    if (k === null || !(k >= CHECK_KELLY)) return { passAs: 'small', why: k === null ? 'no Kelly to judge it by: under the CHECK bar' : `a ${kellyText(k)} Kelly with the doubt cleared (the Bot's own ${Math.round(model * 100)}%): under the CHECK bar (+${(CHECK_KELLY * 100).toFixed(0)})` };
   }
   return null;
 }

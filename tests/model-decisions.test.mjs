@@ -25,6 +25,7 @@ import {
 } from '../libs/ranker/scripts/model/desk.mjs';
 import { BOOK, MODEL_EPOCH } from '../libs/ranker/scripts/model/leagues.mjs';
 import { CLV_V } from '../libs/ranker/scripts/model/clv.mjs';
+import { PROMPT_V } from '../libs/ranker/scripts/model/writeups.mjs';
 import { BET_DECIDE, ERAS, gateVerdict, seasonWeight, sportVerdict } from '../libs/ranker/scripts/model/gate-score.mjs';
 import { CHECKS as SELF_CHECKS } from '../libs/ranker/scripts/model/selfcheck.mjs';
 import { CAL_STEP, fitCalib, fitSpot, calRows } from '../libs/ranker/scripts/model/calib.mjs';
@@ -212,12 +213,59 @@ test('D15 the slot machine is gone for good', () => {
   }
 });
 
-test('D26 users read "the bot", never "the model": the Book\'s page text and the Claude write-ups\' prompt', () => {
-  const page = fs.readFileSync(path.resolve(import.meta.dirname, '../libs/ranker/src/engine/book/book-page.component.html'), 'utf8').replace(/<!--[\s\S]*?-->/g, '');
-  assert.doesNotMatch(page, /\b[Tt]he model\b|\bModel(['’]s)? /, 'book-page: the bot');
-  assert.match(src('writeups.mjs'), /Call the betting side the bot \(the bot projects, the bot's chance\), never the model\./);
-});
+// (the text users read: the site's Book, wallet and game view, the bettor's scripts that write the page's fields,
+// and the NFL analysis prompts; each file's code with its comments cut out (a // outside quotes, a comment line,
+// an HTML comment), so only strings and markup are read)
+function userText() {
+  const root = path.resolve(import.meta.dirname, '..');
+  const dirs = ['libs/ranker/src/engine/book', 'libs/ranker/src/engine/account/wallet', 'libs/ranker/src/engine/game-view', 'libs/ranker/scripts/model', 'apps/nfl/scripts/analysis'];
+  const cut = (line) => {
+    let q = null;
+    for (let i = 0; i < line.length; i++) {
+      const c = line[i];
+      if (q) {
+        if (c === '\\') i++;
+        else if (c === q) q = null;
+      } else if (c === '"' || c === "'" || c === '`') q = c;
+      else if (c === '/' && line[i + 1] === '/' && line[i - 1] !== ':') return line.slice(0, i);
+    }
+    return line;
+  };
+  const out = [];
+  for (const d of dirs)
+    for (const f of fs.readdirSync(path.join(root, d))) {
+      if (!/\.(ts|html|mjs)$/.test(f) || f.endsWith('.spec.ts')) continue;
+      const text = fs.readFileSync(path.join(root, d, f), 'utf8');
+      if (f.endsWith('.html')) {
+        text.replace(/<!--[\s\S]*?-->/g, '').split('\n').forEach((line, i) => out.push({ at: d + '/' + f + ':' + (i + 1), line }));
+        continue;
+      }
+      let block = false;
+      text.split('\n').forEach((line, i) => {
+        const t = line.trim();
+        if (block) return void (t.includes('*/') && (block = false));
+        if (t.startsWith('/*')) return void (!t.includes('*/') && (block = true));
+        if (t.startsWith('//') || t.startsWith('*')) return;
+        out.push({ at: d + '/' + f + ':' + (i + 1), line: cut(line) });
+      });
+    }
+  return out;
+}
 
+test('D26 users read "the Bot" and "the Book", never "the model" or "DraftKings": the site\'s text, the bettor\'s, the Claude prompts', () => {
+  const page = fs.readFileSync(path.resolve(import.meta.dirname, '../libs/ranker/src/engine/book/book-page.component.html'), 'utf8').replace(/<!--[\s\S]*?-->/g, '');
+  assert.doesNotMatch(page, /\b[Tt]he model\b|\bModel(['’]s)? /, 'book-page: the Bot');
+  const lines = userText();
+  assert.ok(lines.length > 10000, 'the files read');
+  // (DraftKings stays only as data: the ledger's book field and the ESPN provider it's read from)
+  const named = lines.filter(({ line }) => /DraftKings/.test(line) && !/book: (b\.book \?\? |o \? )?'DraftKings'|book \?\? 'DraftKings'|book: o \? 'DraftKings'/.test(line));
+  assert.deepEqual(named.map((x) => x.at), [], 'the sportsbook is the Book');
+  // (both are names: "the Bot", "the Book", capitalized mid-sentence too)
+  const lower = lines.filter(({ line }) => /\b[Tt]he (bot|book)\b/.test(line));
+  assert.deepEqual(lower.map((x) => x.at), [], 'the Bot and the Book, capitalized');
+  assert.match(src('writeups.mjs'), /Call the betting side the Bot \(the Bot projects, the Bot's chance\), never the model, and the sportsbook the Book \(the Book's price, the Book's chance\), never by its name/);
+  assert.ok(PROMPT_V >= 3, 'the write-ups written again with the words');
+});
 test("D16 a stale inactive list is ignored: only the names new since the team's last game count", () => {
   const prev = { inactive: [{ id: '1' }, { id: '2' }] };
   assert.deepEqual(freshInactives({ inactive: [{ id: '1' }, { id: '2' }] }, prev).inactive, []);

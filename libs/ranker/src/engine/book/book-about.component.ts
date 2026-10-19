@@ -162,7 +162,7 @@ export class BookAboutComponent implements OnInit {
   // (the CHECK rule as the bettor publishes it (picks.json's checkRule.kelly, the Book's read): null till read)
   @Input() checkKelly: number | null = null;
   checkBarText(): string {
-    return this.checkKelly === null ? 'the bar the bot publishes' : `+${(this.checkKelly * 100).toFixed(0)}`;
+    return this.checkKelly === null ? 'the bar the Bot publishes' : `+${(this.checkKelly * 100).toFixed(0)}`;
   }
   @Output() closed = new EventEmitter<void>();
 
@@ -171,8 +171,8 @@ export class BookAboutComponent implements OnInit {
   readonly bands = [
     { tier: 'lock', name: 'LOCK', rule: `Kelly score ${pct(BANDS.lock)} or more and a ${pct(BANDS.lockChance)}+ chance to win`, text: 'A big edge on a likely result. Rare.' },
     { tier: 'love', name: 'LOVE', rule: `Kelly score ${pct(BANDS.high)} or more`, text: 'A strong edge at the price.' },
-    { tier: 'like', name: 'LIKE', rule: `Any edge: a Kelly score over 0, under ${pct(BANDS.high)}`, text: 'A real but modest edge. Every bet the bot places is a LIKE or better.' },
-    { tier: 'pass', name: 'PASS', rule: 'No edge: a Kelly score of 0 or under', text: "Priced, but not worth a bet in the bot's eyes: never bet (since Oct 13, 2026 it's tracked to learn from, not bet)." },
+    { tier: 'like', name: 'LIKE', rule: `Any edge: a Kelly score over 0, under ${pct(BANDS.high)}`, text: 'A real but modest edge. Every bet the Bot places is a LIKE or better.' },
+    { tier: 'pass', name: 'PASS', rule: 'No edge: a Kelly score of 0 or under', text: "Priced, but not worth a bet in the Bot's eyes: never bet (since Oct 13, 2026 it's tracked to learn from, not bet)." },
   ];
 
   // (each sport's model, as its last run left it; loading till they're in)

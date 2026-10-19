@@ -205,7 +205,7 @@
                   @if (sportCount(s.sport)) {
                     <span class="game-pill">{{ sportCount(s.sport) }} {{ sportCount(s.sport) === 1 ? 'pick' : 'picks' }}</span>
                   } @else {
-                    <span class="game-lines" title="Lines only: the bot has no pick in it">lines</span>
+                    <span class="game-lines" title="Lines only: the Bot has no pick in it">lines</span>
                   }
                 </div>
                 @for (g of isOpen(d.day, s.sport) ? s.games : []; track g.key) {
@@ -233,7 +233,7 @@
                     <span class="game-label">{{ g.name }}</span>
                     <span class="game-when">{{ g.time ?? '' }}</span>
                     @if (g.count === null) {
-                      <span class="game-lines" title="Lines only: the bot has no pick on it">lines</span>
+                      <span class="game-lines" title="Lines only: the Bot has no pick on it">lines</span>
                     } @else {
                       <span class="game-pill small">{{ g.count }} {{ g.count === 1 ? 'pick' : 'picks' }}</span>
                     }
@@ -280,7 +280,7 @@
     } @else if (!inGame.length && !game) {
       <div class="board-empty" role="status">
         <p class="empty-title">No favorable bets right now</p>
-        <p class="empty-sub">The bot checks every hour; pick a game in the dropdown to bet any line yourself.</p>
+        <p class="empty-sub">The Bot checks every hour; pick a game in the dropdown to bet any line yourself.</p>
       </div>
     } @else {
       <!-- One row: the chevron that opens it, its rank tile (a button of its own: how its score is built), its circle
@@ -380,7 +380,7 @@
                 </small>
                 <!-- (a slate's practice pick: bet at 0.5u for the slate, short of the vig, on its own Practice line) -->
                 @if (r.practice) {
-                  <small class="bet-practice" title="A practice pick: the bot plays its best few a slate even when none clears the vig, at 0.5u, tallied on its own Practice line">practice</small>
+                  <small class="bet-practice" title="A practice pick: the Bot plays its best few a slate even when none clears the vig, at 0.5u, tallied on its own Practice line">practice</small>
                 }
                 @if (placedOn(r); as staked) {
                   <small class="bet-placed" [title]="'You have ' + staked + 'u on this, still open'"><mat-icon aria-hidden="true" fontIcon="check_circle"></mat-icon>{{ staked }}u placed</small>
@@ -397,8 +397,8 @@
                 [class.open]="why?.id === r.id || checkWhy?.id === r.id"
                 aria-haspopup="dialog"
                 [attr.aria-expanded]="why?.id === r.id || checkWhy?.id === r.id"
-                [attr.aria-label]="'Why: the bot’s ' + m.model + '% against the book’s ' + (m.book !== null ? m.book + '%' : 'price')"
-                [attr.title]="'The bot: ' + m.model + '% to win' + (m.book !== null ? ' · the book’s price says ' + m.book + '%' : '') + ' · tap for the math'"
+                [attr.aria-label]="'Why: the Bot’s ' + m.model + '% against the Book’s ' + (m.book !== null ? m.book + '%' : 'price')"
+                [attr.title]="'The Bot: ' + m.model + '% to win' + (m.book !== null ? ' · the Book’s price says ' + m.book + '%' : '') + ' · tap for the math'"
                 (click)="toggleWhy(i, $event)"
               >
                 <span class="meter-words"><span class="meter-model">Bot {{ m.model }}%</span>@if (m.book !== null) {<span class="meter-book">Book {{ m.book }}%</span>}</span>
@@ -444,9 +444,9 @@
                     @if (passed(r)) {
                       <span><b>Passed:</b> {{ r.resolved?.why || 'under the CHECK bar now' }}. No longer a CHECK; it's still graded at the price it was shown at.</span>
                     } @else if (r.checkCause === 'role') {
-                      <span><b>Not bet on this side:</b> {{ r.checkReason || 'his role is changing' }}. The bot sees value here, but its known error in a role change could be making this side; the other side bets as usual.</span>
+                      <span><b>Not bet on this side:</b> {{ r.checkReason || 'his role is changing' }}. The Bot sees value here, but its known error in a role change could be making this side; the other side bets as usual.</span>
                     } @else if (r.checkCause === 'news') {
-                      <span><b>Not bet either way:</b> {{ r.checkReason || 'news on his team' }}. The market prices news faster than the bot reads it from the logs.</span>
+                      <span><b>Not bet either way:</b> {{ r.checkReason || 'news on his team' }}. The market prices news faster than the Bot reads it from the logs.</span>
                     } @else {
                       <span><b>Not bet:</b> {{ r.checkReason || 'too far from the market' }}. Either side bets as any line does.</span>
                     }
@@ -472,8 +472,8 @@
               <div class="bet-meta">
                 <span class="bet-meta-place">@if (where(r); as w) {<span class="bet-where" [class.windy]="w.windy"><mat-icon [fontIcon]="w.icon"></mat-icon>{{ w.text }}</span>}</span>
                 <span class="bet-meta-bet">
-                  @if (edgePoints(r); as edge) {<span [attr.title]="r.check ? 'The bot’s chance less the book’s' : 'The bot’s chance less the book’s: the edge the list runs on, scaled by what the price pays'">Edge {{ edge > 0 ? '+' : '' }}{{ edge }}</span> · }
-                  <span [title]="r.check ? 'Its Kelly with the doubt cleared: the stake’s Kelly at the chance it would be bet at (the bot’s own ' + (r.chance ?? '–') + '% leaned only part way)' : 'Its Kelly score: the edge on the price, scaled by what it pays (held to -110’s, as the stake is); the list runs by it'">Kelly {{ betScoreText((r.check ? (checkKelly(r) ?? 0) : r.sureness) * 100) }}</span>
+                  @if (edgePoints(r); as edge) {<span [attr.title]="r.check ? 'The Bot’s chance less the Book’s' : 'The Bot’s chance less the Book’s: the edge the list runs on, scaled by what the price pays'">Edge {{ edge > 0 ? '+' : '' }}{{ edge }}</span> · }
+                  <span [title]="r.check ? 'Its Kelly with the doubt cleared: the stake’s Kelly at the chance it would be bet at (the Bot’s own ' + (r.chance ?? '–') + '% leaned only part way)' : 'Its Kelly score: the edge on the price, scaled by what it pays (held to -110’s, as the stake is); the list runs by it'">Kelly {{ betScoreText((r.check ? (checkKelly(r) ?? 0) : r.sureness) * 100) }}</span>
                   @if (r.by === 'claude') { · <span>Analysis by Claude@if (r.read === 'thin') { (a thin read)}</span>}
                 </span>
               </div>
@@ -515,7 +515,7 @@
           @if (!favorable) {
             <li class="board-empty" role="status">
               <p class="empty-title">No favorable bets right now</p>
-              <p class="empty-sub">The bot checks every hour; pick a game in the dropdown to bet any line yourself.</p>
+              <p class="empty-sub">The Bot checks every hour; pick a game in the dropdown to bet any line yourself.</p>
             </li>
           }
           <ng-container *ngTemplateOutlet="bandList; context: { locks: locks, n: n }"></ng-container>
@@ -536,7 +536,7 @@
               <span class="visually-hidden">: {{ s.rows.length }} {{ s.rows.length === 1 ? 'pick' : 'picks' }}</span>
               <span class="band-space"></span>
               @if (bandRecord(s.band); as rec) {
-                <span class="band-record" title="The bot's record on this band's picks this season, every sport's, and the units it made or lost">This season <b>{{ rec.record }}</b> · <b class="band-units" [class.down]="!rec.up">{{ rec.units }}</b></span>
+                <span class="band-record" title="The Bot's record on this band's picks this season, every sport's, and the units it made or lost">This season <b>{{ rec.record }}</b> · <b class="band-units" [class.down]="!rec.up">{{ rec.units }}</b></span>
               }
             </button>
             @if (bandOpen(s.band)) {
@@ -567,7 +567,7 @@
         [attr.aria-label]="'Why ' + c.name + ' is a CHECK'"
       >
         <div class="why-top">
-          <span class="why-led" [ngClass]="(c.kelly ?? 0) >= 0.005 ? 'good' : (c.kelly ?? 0) > 0 ? 'flat' : 'bad'" title="Its Kelly with the doubt cleared: the stake's Kelly at the chance it would be bet at, the book's leaned part way toward the bot's (the bot's own chance shows below, as context)">{{ c.kelly === null ? '–' : betScoreText(c.kelly * 100) }}</span>
+          <span class="why-led" [ngClass]="(c.kelly ?? 0) >= 0.005 ? 'good' : (c.kelly ?? 0) > 0 ? 'flat' : 'bad'" title="Its Kelly with the doubt cleared: the stake's Kelly at the chance it would be bet at, the Book's leaned part way toward the Bot's (the Bot's own chance shows below, as context)">{{ c.kelly === null ? '–' : betScoreText(c.kelly * 100) }}</span>
           <div class="why-head">
             <span class="why-kicker">{{ c.passed ? 'Passed' : 'Check' }} · cleared Kelly</span>
             <span class="why-name">{{ c.name }}</span>
@@ -586,7 +586,7 @@
             <p><span>Gap</span> <b>{{ c.gap }} points</b></p>
           }
           @if (c.means) {
-            <p title="The bot's projection against the mean the book's price implies at this line"><span>Bot vs book mean</span> <b>{{ c.means }}</b></p>
+            <p title="The Bot's projection against the mean the Book's price implies at this line"><span>Bot vs Book mean</span> <b>{{ c.means }}</b></p>
           }
           @if (c.record) {
             <p title="His own record at this line (this season, and last season's at half weight): context, never a rule"><span>His record at the line</span> <b>{{ c.record }}</b></p>
@@ -629,10 +629,10 @@
                 }
               </p>
             }
-            <p class="why-fine">Claude searched the news{{ rs.when ? ' on ' + rs.when : '' }}.{{ rs.applied ? ' Its finding was put into this game’s injury report for the bot’s pricing.' : '' }}</p>
+            <p class="why-fine">Claude searched the news{{ rs.when ? ' on ' + rs.when : '' }}.{{ rs.applied ? ' Its finding was put into this game’s injury report for the Bot’s pricing.' : '' }}</p>
           </div>
         }
-        <p class="why-fine">A CHECK is a market a guard stopped with a cleared Kelly (the stake's, at the chance it would be bet at with its doubt answered) of {{ checkBar === null ? 'the bar' : betScoreText(checkBar * 100) }} or more (the news's at any): worth a look before it's bet. It's graded as if bet, so the bot learns whether the market or its own number was right.</p>
+        <p class="why-fine">A CHECK is a market a guard stopped with a cleared Kelly (the stake's, at the chance it would be bet at with its doubt answered) of {{ checkBar === null ? 'the bar' : betScoreText(checkBar * 100) }} or more (the news's at any): worth a look before it's bet. It's graded as if bet, so the Bot learns whether the market or its own number was right.</p>
       </div>
     }
     @if (why; as w) {
@@ -734,7 +734,7 @@
             <div><span class="form-label">Streak</span><span class="form-value streak">{{ f.streak }}</span></div>
           </div>
           @if (f.practice) {
-            <p class="form-practice" title="The bot's practice picks (its best few a slate, short of the vig, at 0.5u): apart from its record">Practice · {{ f.practice }}</p>
+            <p class="form-practice" title="The Bot's practice picks (its best few a slate, short of the vig, at 0.5u): apart from its record">Practice · {{ f.practice }}</p>
           }
           @if (f.last.length) {
             <ol class="form-list">
@@ -748,7 +748,7 @@
             </ol>
           }
         } @else {
-          <p class="form-none">{{ card.side === 'you' ? 'No settled bets of yours yet.' : 'The bot has nothing settled yet.' }}</p>
+          <p class="form-none">{{ card.side === 'you' ? 'No settled bets of yours yet.' : 'The Bot has nothing settled yet.' }}</p>
         }
       </section>
     }

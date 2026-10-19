@@ -187,7 +187,7 @@ test("the Book's words and bars: Best Bets, the views bar only with more than th
   const none = { desk: false, open: false, closed: false, live: false };
   assert.equal(bets.viewsShown(none), false);
   for (const k of Object.keys(none)) assert.equal(bets.viewsShown({ ...none, [k]: true }), true, k);
-  assert.equal(bets.gamePicksHead(3), "The bot's picks · 3");
+  assert.equal(bets.gamePicksHead(3), "The Bot's picks · 3");
 });
 
 test("rowClickToggles: a click on the row toggles it, not one on its controls or inside its open content", () => {

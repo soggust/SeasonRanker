@@ -867,7 +867,7 @@ export class BookPageComponent implements OnInit, OnDestroy {
   checkCauseText(r: BetRow): string {
     // (outside the NFL a role CHECK of 2026-10-13 is a far line with its cause (props.mjs lineAlarmOf: line-rest,
     // line-goalie...), its cause in plain words)
-    if (r.checkCause === 'role' && /^line-/.test(r.roleReason ?? '')) return `The line reads news the bot hasn't (${LINE_CAUSE[r.roleReason!] ?? 'a role change'})`;
+    if (r.checkCause === 'role' && /^line-/.test(r.roleReason ?? '')) return `The line reads news the Bot hasn't (${LINE_CAUSE[r.roleReason!] ?? 'a role change'})`;
     if (r.checkCause === 'role') return `His role is changing${r.roleReason ? ` (${r.roleReason})` : ''}`;
     if (r.checkCause === 'news') return `News on his team's ${r.newsUnit ?? 'unit'}`;
     return 'Too far from the market';
@@ -883,10 +883,10 @@ export class BookPageComponent implements OnInit, OnDestroy {
   rankTitle(r: BetRow, i: number, n: number, locks: number): string {
     if (r.check) {
       const k = this.checkKelly(r);
-      const chances = `the bot ${r.chance ?? '–'}%, the book's ${Number.isFinite(r.fair) ? Math.round(r.fair! * 100) : '–'}%`;
+      const chances = `the Bot ${r.chance ?? '–'}%, the Book's ${Number.isFinite(r.fair) ? Math.round(r.fair! * 100) : '–'}%`;
       if (this.passed(r)) return `Passed · no longer a CHECK: ${r.resolved?.why ?? 'under the CHECK bar now'} (${chances})`;
       // (too big to bet blind only where it is: at the bar or over; a news CHECK's held for the news, at any Kelly)
-      const kText = k === null ? 'the bot' : `a ${betScoreText(k * 100)} Kelly with its doubt cleared`;
+      const kText = k === null ? 'the Bot' : `a ${betScoreText(k * 100)} Kelly with its doubt cleared`;
       const held = r.checkCause === 'news' ? 'held for the news' : k !== null && this.checkBar !== null && k >= this.checkBar ? 'too big to bet blind' : 'kept for a look';
       return `CHECK · ${kText}, ${held}: ${this.checkCauseText(r).toLowerCase()} (${chances})`;
     }
@@ -933,7 +933,7 @@ export class BookPageComponent implements OnInit, OnDestroy {
     const m = this.meter({ chance: r.chance, price: r.price, fair: r.fair } as BetRow);
     // (its place alone: the comparison with its neighbors dropped, the owner's, 2026-10-19: keep it lean)
     let sentence: string;
-    if (w.noEdge) sentence = `${w.levelText}: the bot tracks it, it doesn't bet it.`;
+    if (w.noEdge) sentence = `${w.levelText}: the Bot tracks it, it doesn't bet it.`;
     else if (w.place === 'Lock') sentence = 'A lock, above the ranks.';
     else if (w.of <= 1) sentence = 'The one bet on this board.';
     else sentence = `Ranked ${w.place} of ${w.of} on the board.`;

@@ -660,7 +660,7 @@
             }
           </tbody>
         </table>
-        <p class="desk-note">No edge, so not bet: graded at a unit each as if it had been, for the data the bot learns from (since Oct 13, 2026; before it, no-edge markets were bet at 0.5u as action bets, still on the record).</p>
+        <p class="desk-note">No edge, so not bet: graded at a unit each as if it had been, for the data the Bot learns from (since Oct 13, 2026; before it, no-edge markets were bet at 0.5u as action bets, still on the record).</p>
       </div>
     </card-panel>
     }
@@ -682,7 +682,7 @@
             }
           </tbody>
         </table>
-        <p class="desk-note">Each slate's best few picks by edge before the vig, bet at 0.5u though none clears the vig, so the bot keeps playing and learning: shown on the Book as a LIKE with a practice tag, graded and learned from, kept out of the record above.</p>
+        <p class="desk-note">Each slate's best few picks by edge before the vig, bet at 0.5u though none clears the vig, so the Bot keeps playing and learning: shown on the Book as a LIKE with a practice tag, graded and learned from, kept out of the record above.</p>
       </div>
     </card-panel>
     }
@@ -748,7 +748,7 @@
     @if (scorecardOn) {
       <card-panel class="tab-card group-support desk-wide desk-score-panel" label="Scorecard" icon="query_stats" [startOpen]="false">
         <div class="group-body">
-          <p class="desk-note">Every version of the bot replayed on the same history before it ships, and kept only if it doesn't do worse. Each point is a version: its edge over the book's own log loss, in nats per 100 rows (above the dashed line it beats the book), on a fixed benchmark and on the last 28 days. Hover a point for its top picks' CLV and hit rate.</p>
+          <p class="desk-note">Every version of the Bot replayed on the same history before it ships, and kept only if it doesn't do worse. Each point is a version: its edge over the Book's own log loss, in nats per 100 rows (above the dashed line it beats the Book), on a fixed benchmark and on the last 28 days. Hover a point for its top picks' CLV and hit rate.</p>
           @if (!scorecards.length) {
             <p class="desk-note">No version scored for this sport yet</p>
           }
@@ -1093,7 +1093,7 @@
               <ng-container *ngTemplateOutlet="th; context: { $implicit: 'settings', key: 'kO', label: 'Scoring rate' }"></ng-container>
               <ng-container *ngTemplateOutlet="th; context: { $implicit: 'settings', key: 'sigma', label: 'Margin spread' }"></ng-container>
               <ng-container *ngTemplateOutlet="th; context: { $implicit: 'settings', key: 'sigmaT', label: 'Total spread' }"></ng-container>
-              <ng-container *ngTemplateOutlet="th; context: { $implicit: 'settings', key: 'trust', label: 'Trust in the bot' }"></ng-container>
+              <ng-container *ngTemplateOutlet="th; context: { $implicit: 'settings', key: 'trust', label: 'Trust in the Bot' }"></ng-container>
               <ng-container *ngTemplateOutlet="th; context: { $implicit: 'settings', key: 'history', label: 'Games' }"></ng-container>
               <ng-container *ngTemplateOutlet="th; context: { $implicit: 'settings', key: 'book', label: 'Book' }"></ng-container>
             </tr>

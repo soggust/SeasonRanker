@@ -21,7 +21,7 @@ import { botObservations, checkPrice } from '../libs/ranker/scripts/accounts/set
 
 const now = new Date('2026-10-09T12:00:00Z');
 const bet = (over = {}) => ({ id: 'x', event: '401', sport: 'nfl', start: '2026-10-10T17:00:00Z', placedAt: '2026-10-09T11:00:00Z', matchup: 'TB @ DAL', market: 'spread', side: 'home', line: -3, pick: 'DAL -3', odds: -110, model: 0.6, fair: 0.5, p: 0.535, ev: 0.0214, units: 1, status: 'open', profit: 0, ...over });
-const GAP_WHY = { skip: true, kind: 'gap', why: "the model's 70% against the book's 50%: too far from the market to trust" };
+const GAP_WHY = { skip: true, kind: 'gap', why: "the model's 70% against the Book's 50%: too far from the market to trust" };
 // (a gap CHECK as an older one was kept, shown: the gap's are shadows now (checks.mjs shadowOf), so the
 // lifecycle's tests take one made before the rule)
 const shown = ({ hidden: _h, passAs: _p, passWhy: _w, ...c }) => c;
@@ -32,7 +32,7 @@ test("gapGuard: past the market's gap it skips, kind 'gap' (a CHECK); inside it,
   assert.equal(gapGuard('prop', 0.6, 0.5), null);
 });
 
-test("modelSide: the side whose chance is over the book's, whatever the price; the other beside it", () => {
+test("modelSide: the side whose chance is over the Book's, whatever the price; the other beside it", () => {
   const over = { side: 'over', model: 0.3, fair: 0.5, ev: 0.01, odds: -105 };
   const under = { side: 'under', model: 0.7, fair: 0.5, ev: -0.02, odds: -115 };
   const s = modelSide([over, under]);
@@ -191,9 +191,9 @@ test("buildPicks: the CHECKs in their own list, never the picks (the page's rows
   // (its write-up leads with its cleared Kelly (checks.mjs checkKelly: 50% leaned to 53.75% at the game market's 0.5,
   // a +2.87 at -110), never the model's own +58.00; then the chances, then why; the guard's words in checkReason)
   assert.equal(c.checkKelly, checkKelly({ market: 'ml', odds: -110, model: 0.8, fair: 0.5 }));
-  assert.match(c.reason, /Would be a \+2\.87 Kelly bet with its doubt cleared \(DAL 80% against DraftKings' no-vig 50%\)\. Not bet: a 30-point gap with nothing to explain it/);
+  assert.match(c.reason, /Would be a \+2\.87 Kelly bet with its doubt cleared \(DAL 80% against the Book's no-vig 50%\)\. Not bet: a 30-point gap with nothing to explain it/);
   assert.match(c.reason, /The question: /);
-  assert.match(c.risk, /more often been the bot missing something than an edge/);
+  assert.match(c.risk, /more often been the Bot missing something than an edge/);
   assert.match(c.checkReason, /too far from the market/);
   assert.equal(out.picks.find((p) => p.id === 'prop').otherOdds, -120);
   assert.equal(out.picks.find((p) => p.id === 'love').otherOdds, null);
@@ -202,7 +202,7 @@ test("buildPicks: the CHECKs in their own list, never the picks (the page's rows
   assert.deepEqual(out.picks.map((p) => p.rank), out.picks.map((_, i) => i + 1));
 });
 
-test("the settler's price check: a prop's other side at its otherOdds, so a bet against the bot's is checked", () => {
+test("the settler's price check: a prop's other side at its otherOdds, so a bet against the Bot's is checked", () => {
   const obs = botObservations([{ market: 'prop', side: 'over', propType: 'recYds', athlete: 9, line: 50.5, odds: -105, otherOdds: -120, placedAt: '2026-10-09T20:00Z' }]);
   const play = { market: 'prop', side: 'under', propType: 'recYds', athlete: '9', line: 50.5, odds: -120, placedAt: '2026-10-10T10:00Z' };
   assert.ok(checkPrice(play, obs).ok);

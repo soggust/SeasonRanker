@@ -201,7 +201,7 @@ export function fixOf(dim, level, causes) {
     line: `the correction's line-size term at ${level}s (correct.mjs sport|bucket) or the count's spread there (project.mjs rAt)`,
     side: `the lean to the ${level} (correct.mjs dir terms; the projection's bias by side)`,
     team: `${level}'s data: its roster, injuries and depth as the feeds read them, then an opponent term`,
-    price: `the ${level} prices (correct.mjs price term; the book's no-vig at that price, fairPair)`,
+    price: `the ${level} prices (correct.mjs price term; the Book's no-vig at that price, fairPair)`,
     timing: `the placement timing (leagues.mjs TIMING): bets placed ${level} before the start`,
     'stat+side': `the correction's ${level} lean (correct.mjs sport|stat|bucket|dir)`,
     'stat+line': `the correction's ${level} term (correct.mjs sport|stat|bucket) or the stat's spread at small counts`,
@@ -293,8 +293,8 @@ export function huntLeaks(bets, { sport, now = new Date(), teams = {}, review = 
       : nLeaks || nTrends
         ? list
             .slice(0, 3)
-            .map((x) => `${x.segment} ${x.kind === 'leak' ? `losing ${x.loss.toFixed(2)} nats per 100 rows to the book, shrunk (n ${x.n}, z ${x.z.toFixed(2)})` : `losing more this week (${x.week} nats per 100 rows)`}${x.atRisk ? `, ${x.atRisk}u at risk` : ''}`)
+            .map((x) => `${x.segment} ${x.kind === 'leak' ? `losing ${x.loss.toFixed(2)} nats per 100 rows to the Book, shrunk (n ${x.n}, z ${x.z.toFixed(2)})` : `losing more this week (${x.week} nats per 100 rows)`}${x.atRisk ? `, ${x.atRisk}u at risk` : ''}`)
             .join('; ')
-        : `${tested.length} segments tested on ${rows.length} priced rows: none losing to the book beyond the false discovery rate, none trending worse`,
+        : `${tested.length} segments tested on ${rows.length} priced rows: none losing to the Book beyond the false discovery rate, none trending worse`,
   };
 }

@@ -276,7 +276,7 @@ test("the Algorithm tab's Self-check panel: flags, watches and partial ones show
   assert.equal(desk.selfCheckCell('x', null), '-');
 });
 
-test("C19: a line's move its side's way; the bets moved against doing worse against the book a watch to cut them, and too few a report", () => {
+test("C19: a line's move its side's way; the bets moved against doing worse against the Book a watch to cut them, and too few a report", () => {
   // (an over's line down a point is against it; under the prop guard's limit (12% of 10.5): not past it)
   assert.deepEqual(moveWayOf({ market: 'prop', side: 'over', line: 9.5, context: { move: { open: 10.5, now: 9.5 } } }, 'nfl'), { way: 'against', pts: 1, past: false });
   assert.deepEqual(moveWayOf({ market: 'prop', side: 'under', line: 4.5, context: { move: { open: 2.5, now: 4.5 } } }, 'nfl'), { way: 'against', pts: 2, past: true });
@@ -289,7 +289,7 @@ test("C19: a line's move its side's way; the bets moved against doing worse agai
   const c = c19(ctxOf([...moved, ...still]));
   assert.equal(c.id, 'C19');
   assert.equal(c.status, 'watch');
-  assert.match(c.headline, /^props: the bets moved against did worse against the book than the rest \(z -3\.16\): cut their stake or pass/);
+  assert.match(c.headline, /^props: the bets moved against did worse against the Book than the rest \(z -3\.16\): cut their stake or pass/);
   const row = c.rows.find((r) => r.key === 'bets props: moved against');
   assert.equal(row.n, 80);
   assert.equal(row.overBook, -0.1875);
@@ -324,10 +324,10 @@ test("C19: a prop's unmoved line read by its kept open price; a premise-broken b
   const buckets = t.rows.filter((r) => /^bets props: placed/.test(r.key)).reduce((s, r) => s + r.n, 0);
   assert.equal(split.n, buckets);
   assert.equal(split.n, 10);
-  assert.match(t.threshold, /record against the book the same way at z 1 or more/);
+  assert.match(t.threshold, /record against the Book the same way at z 1 or more/);
 });
 
-test('C19: the CHECKs graded in their own rows, never in the advice; bets placed early beating the close and the book a watch to bet earlier', () => {
+test('C19: the CHECKs graded in their own rows, never in the advice; bets placed early beating the close and the Book a watch to bet earlier', () => {
   const checks = many(70, 10, { context: { move: { open: 1.5, now: 0.5 } } }).map((b) => ({ ...b, status: 'check', units: 0, profit: 0, checkResult: { status: b.status, profit: b.profit } }));
   const c = c19(ctxOf(many(70, 40, { context: { move: { open: 0.5, now: 0.5 } } }), { checks }));
   assert.equal(c.status, 'info');
@@ -339,7 +339,7 @@ test('C19: the CHECKs graded in their own rows, never in the advice; bets placed
   const late = many(80, 38, (i) => ({ placedAt: at(52), clv: { prob: i % 2 ? 0.01 : -0.01, beat: false } }));
   const t = c19(ctxOf([...early, ...late]));
   assert.equal(t.status, 'watch');
-  assert.match(t.headline, /^props: the bets placed 6h or more before the start beat the close more than the later ones \(CLV z 12\.86, the record against the book z 1\.9\): bet earlier$/);
+  assert.match(t.headline, /^props: the bets placed 6h or more before the start beat the close more than the later ones \(CLV z 12\.86, the record against the Book z 1\.9\): bet earlier$/);
   assert.ok(t.rows.find((r) => r.key === 'bets props: placed 6-12h before'));
   assert.ok(t.rows.find((r) => r.key === 'bets props: placed 0-3h before'));
 });

@@ -6,23 +6,23 @@
       <p>
         The Book is Season Ranker's sportsbook for fun. Every account gets a <b>500-unit wallet</b>
         of play money to bet with: no real money goes in or comes out, ever. The lines and prices are real ones,
-        from a major U.S. sportsbook, and the picks come from our betting bot, which prices every game and prop on its own,
+        from a major U.S. sportsbook, and the picks come from the Bot, our betting bot, which prices every game and prop on its own,
         in the NFL, NBA, NHL and MLB and on UFC fights.
       </p>
       <h4>Best Bets, a sport or a game</h4>
       <ul>
-        <li><b>Best Bets</b> (the dropdown's first choice) is the bot's best picks across every sport, the biggest edge first.</li>
-        <li><b>Choose a sport</b> from the dropdown for its picks alone, or <b>a game</b> to see that game's whole betting board. Games the bot has no pick on are listed at the bottom, lines only, so you can still bet them.</li>
+        <li><b>Best Bets</b> (the dropdown's first choice) is the Bot's best picks across every sport, the biggest edge first.</li>
+        <li><b>Choose a sport</b> from the dropdown for its picks alone, or <b>a game</b> to see that game's whole betting board. Games the Bot has no pick on are listed at the bottom, lines only, so you can still bet them.</li>
         <li>The <b>chips</b> filter by kind of bet: <b>ATS</b> (the spread), <b>O/U</b> (the total), <b>TT</b> (team totals), <b>ML</b> (moneylines), <b>PROP</b> (player props) and <b>TEAM</b> (team stats).</li>
-        <li>Every pick shows its <b>band</b> and a <b>meter</b> of the bot's chance against the book's; <b>click</b> either for the reasoning: the bot's chance, the market's, and how its score adds up.</li>
+        <li>Every pick shows its <b>band</b> and a <b>meter</b> of the Bot's chance against the Book's; <b>click</b> either for the reasoning: the Bot's chance, the market's, and how its score adds up.</li>
         <li><b>Click a price</b> to put it on your <b>ticket</b> (on a phone, the ticket folds to a stub at the bottom; tap Expand to see it). Set a stake and place it.</li>
       </ul>
     }
     @case ('board') {
       <h3>The betting board</h3>
       <p>
-        A game's board has every market the bot priced: the spread, the total, the moneyline and the player props.
-        Each price shows the bot's <b>Kelly score</b> and its <b>band</b>. The bot's own picks are highlighted, but
+        A game's board has every market the Bot priced: the spread, the total, the moneyline and the player props.
+        Each price shows the Bot's <b>Kelly score</b> and its <b>band</b>. The Bot's own picks are highlighted, but
         they're only suggestions: you can bet anything on the board.
       </p>
       <h4>The bands</h4>
@@ -34,29 +34,29 @@
           </li>
         }
       </ul>
-      <p class="muted">The cuts above are read from the bot's own settings, so they always match the board.</p>
+      <p class="muted">The cuts above are read from the Bot's own settings, so they always match the board.</p>
     }
     @case ('kelly') {
       <h3>What the Kelly score means</h3>
       <p>
-        The Kelly score is the bot's edge at the price, scaled by what the bet pays. A bet the bot gives a 55% chance
+        The Kelly score is the Bot's edge at the price, scaled by what the bet pays. A bet the Bot gives a 55% chance
         at even money scores higher than the same 55% at -150, because the first pays more for the same chance.
         It's the share of a bankroll the Kelly formula would stake: 2% means "bet 2% of your bankroll".
-        On a heavy favorite it's held to what the same edge in chance would score at -110, the way the bot stakes it,
+        On a heavy favorite it's held to what the same edge in chance would score at -110, the way the Bot stakes it,
         so a small lean on a short price never reads as a LOCK. Lines of 1.5 or under, and 2 to 3.5, earn their own
-        trust: a count that small is where the bot has been most overconfident.
+        trust: a count that small is where the Bot has been most overconfident.
       </p>
-      <h4>Where the bot's chance comes from</h4>
+      <h4>Where the Bot's chance comes from</h4>
       <p>
-        The bot starts from the <b>market's fair price</b> (the book's odds with its margin taken out), then moves
+        The Bot starts from the <b>market's fair price</b> (the Book's odds with its margin taken out), then moves
         toward its own number by how much it has <b>earned the right to disagree</b>:
       </p>
-      <div class="callout">The bot's chance = the market's fair chance + trust × (its raw chance − the market's)</div>
+      <div class="callout">The Bot's chance = the market's fair chance + trust × (its raw chance − the market's)</div>
       <p>
-        Trust is earned per market and per prop type, from how the bot's past bets did against the closing line and
-        the results. A market where the bot hasn't proven itself stays close to the market's price, so its scores stay
+        Trust is earned per market and per prop type, from how the Bot's past bets did against the closing line and
+        the results. A market where the Bot hasn't proven itself stays close to the market's price, so its scores stay
         small. A score at zero or under means no edge at that price: PASS. Any score over zero is an edge, a LIKE at
-        the least: every bet the bot places is a LIKE or better.
+        the least: every bet the Bot places is a LIKE or better.
       </p>
     }
     @case ('bets') {
@@ -72,8 +72,8 @@
     @case ('writeups') {
       <h3>The write-ups</h3>
       <ul>
-        <li>Every pick has a <b>plain write-up</b>: the case for it in a few lines, built straight from the bot's numbers, and the most likely way it loses.</li>
-        <li><b>LOVE</b> and <b>LOCK</b> picks also get an <b>analysis written by Claude</b>, an AI model. It's grounded in the bot's own numbers (its projection, the line, the matchup, injuries and weather), and it's checked before it's shown, so it can't invent facts the bot didn't have.</li>
+        <li>Every pick has a <b>plain write-up</b>: the case for it in a few lines, built straight from the Bot's numbers, and the most likely way it loses.</li>
+        <li><b>LOVE</b> and <b>LOCK</b> picks also get an <b>analysis written by Claude</b>, an AI model. It's grounded in the Bot's own numbers (its projection, the line, the matchup, injuries and weather), and it's checked before it's shown, so it can't invent facts the Bot didn't have.</li>
       </ul>
     }
     @case ('pipeline') {
@@ -85,7 +85,7 @@
         <li><b>ESPN</b>: schedules, scores, rosters, injuries, depth charts and box scores.</li>
         <li><b>nflverse</b>: NFL play-by-play, snap counts and player logs.</li>
         <li><b>NHL StatsAPI</b> and <b>MLB StatsAPI</b>: their player logs, lineups, goalies and probable starters.</li>
-        <li><b>The Odds API</b>: odds from a major U.S. sportsbook (the book the bot bets and the board shows), with a sharp book as the fair-price anchor (fair prices and closing-line value).</li>
+        <li><b>The Odds API</b>: odds from a major U.S. sportsbook (the Book the Bot bets and the board shows), with a sharp book as the fair-price anchor (fair prices and closing-line value).</li>
         <li><b>Open-Meteo</b>: kickoff weather for outdoor games (wind, cold, rain and snow).</li>
       </ul>
 
@@ -103,38 +103,38 @@
       <h4>The props projection</h4>
       <ul>
         <li><b>Rate</b>: his average this season, pulled toward a <b>prior</b> (last season, or players like him) by a fitted number of games, with his last five weighted in.</li>
-        <li><b>Start of season</b> (NFL): early in a season a veteran's projection leans mostly on last season, which can be too trusting. The bot learns from past seasons how players like him (by position, by age, and whether he changed teams) have opened against last season's numbers, and moves his starting point that way. Older players and players on a new team usually come down, young ones go up. The adjustment fades as his own games come in. It's kept on rushing, receiving and rush+rec yards, where it priced past seasons' openers better. It wasn't kept on the passing stats, carries or receptions. The NBA's history doesn't have a second season yet: it needs one season's openers to learn from and the next season's to test on, so it can't be tried there before 2027-28. It's tested against lines set at each player's usual number; real books already shade some of those for age and moves, so the real edge is likely smaller.</li>
+        <li><b>Start of season</b> (NFL): early in a season a veteran's projection leans mostly on last season, which can be too trusting. The Bot learns from past seasons how players like him (by position, by age, and whether he changed teams) have opened against last season's numbers, and moves his starting point that way. Older players and players on a new team usually come down, young ones go up. The adjustment fades as his own games come in. It's kept on rushing, receiving and rush+rec yards, where it priced past seasons' openers better. It wasn't kept on the passing stats, carries or receptions. The NBA's history doesn't have a second season yet: it needs one season's openers to learn from and the next season's to test on, so it can't be tried there before 2027-28. It's tested against lines set at each player's usual number; real books already shade some of those for age and moves, so the real edge is likely smaller.</li>
         <li><b>Role-aware</b> (NFL): a quarterback by his starts, a back or pass-catcher by his snap share as expected tonight.</li>
         <li><b>Minutes first</b> (NBA): what he makes a minute times the minutes he's expected tonight (his season's, leaning to his last three games), so a player whose minutes just jumped or fell isn't read off his old ones. An overtime game counts as a full 48; early in a season his minutes lean on last season's till his own games cover them; and a jump made while teammates were out, with them back tonight, is held as a check on the over, not bet.</li>
-        <li><b>Ice time first</b> (NHL shots): what a skater makes a minute on the ice times the ice time he's expected tonight (his season's, leaning to his last three games), so a forward moved up the lineup isn't read off his old minutes. On top of it, his share of his team's power-play time lately against his season's: a skater who lost his spot on the top unit shoots less, one who won it more. A jump in his ice time over his last three games is a CHECK on his over: the bot has run high after one. Points read how many shots his team is expected to take tonight (its shots a game against the other side's allowed). Points took no ice-time base, and neither stat took the betting total; each was kept only where the held-out games got better with it.</li>
+        <li><b>Ice time first</b> (NHL shots): what a skater makes a minute on the ice times the ice time he's expected tonight (his season's, leaning to his last three games), so a forward moved up the lineup isn't read off his old minutes. On top of it, his share of his team's power-play time lately against his season's: a skater who lost his spot on the top unit shoots less, one who won it more. A jump in his ice time over his last three games is a CHECK on his over: the Bot has run high after one. Points read how many shots his team is expected to take tonight (its shots a game against the other side's allowed). Points took no ice-time base, and neither stat took the betting total; each was kept only where the held-out games got better with it.</li>
         <li><b>Pace</b> (NBA): a game against a fast team, or one both teams are expected to play fast, has more possessions to go around, so points, threes and points+rebounds+assists move with it. Each team's pace is its possessions a game so far this season, measured against the league's, or against the pace of the games the player has already played this season (his own team's pace is already in his numbers, so it isn't counted again). The opponent's table then learns what a defense allows beyond its pace. It was kept only where the held-out games got better with it.</li>
         <li><b>Opponent</b>: what the defense allows his position, and his role (WR1, RB1, starters and bench). For NBA rebounds its latest games can count most (kept only while the held-out games get better with it); elsewhere the whole season counts alike: weighting recent games made some held-out games better but moved the projections' overall lean the wrong way, or didn't help at all. Who the defense is missing tonight (an NBA team's players out, an NHL team's top defensemen, an NFL team's starting cornerbacks, safeties, linemen and linebackers) was measured too: those games ran a few percent over, but not by enough to pass the checks, so it isn't used yet.</li>
         <li><b>Funnel and pace</b>: whether a defense pushes teams to pass or run, and how many plays its opponents run.</li>
         <li><b>Expected plays</b> (NFL): how many plays his team should run tonight, from how many plays a game both teams' games usually have and how much of the ball each side usually keeps (its share of the plays, standing in for time of possession), against the games he's played this season. His own team's pace is already in his numbers, so only tonight's difference counts, and it replaces the defense's pace rather than adding to it. It's kept on passing attempts, where it priced the held-out games better; it was tried on the other yardage and catch stats and left out.</li>
-        <li><b>Week 18</b> (NFL): a quarterback's passing yards and attempts are trimmed in his team's last regular-season game, when contenders rest starters and others play it out. Kept only because the held-out games (week 18s the bot hadn't seen) came out better with it.</li>
-        <li><b>Red zone</b> (NFL passing TDs): how often a quarterback's team gets inside the 20 and how often it throws there, against the league's, from the play-by-play's field position. Measured on games the bot hadn't seen, it didn't help: a quarterback's own touchdown rate already carries his team's red-zone volume, and the busiest red-zone passers tend to come back to the pack. Every fit tries it again, so it comes in (at full size, or as a soft term) only once the held-out games are better with it.</li>
+        <li><b>Week 18</b> (NFL): a quarterback's passing yards and attempts are trimmed in his team's last regular-season game, when contenders rest starters and others play it out. Kept only because the held-out games (week 18s the Bot hadn't seen) came out better with it.</li>
+        <li><b>Red zone</b> (NFL passing TDs): how often a quarterback's team gets inside the 20 and how often it throws there, against the league's, from the play-by-play's field position. Measured on games the Bot hadn't seen, it didn't help: a quarterback's own touchdown rate already carries his team's red-zone volume, and the busiest red-zone passers tend to come back to the pack. Every fit tries it again, so it comes in (at full size, or as a soft term) only once the held-out games are better with it.</li>
         <li><b>Tonight's lineup</b> (MLB): a starting pitcher's strikeouts read the other side's posted lineup, each batter's strikeout rate weighted by how often his slot bats, against the league's. His props (strikeouts and outs) wait for that lineup to post.</li>
         <li><b>Ballpark and weather</b> (MLB): a batter's total bases move with tonight's park against the parks his own numbers came from (Coors up, Petco down; a Rockie's own numbers already carry half a season at Coors), the temperature and the wind blowing out or in, as one adjustment. The game's expected runs already carry some of it; this is what's left. Kept on total bases, where the held-out games came out better; on hits it fell just short, so it isn't used there.</li>
         <li><b>Team allocation</b>: each team's game is projected first (its own total of the stat a game, in some forms against the opponent's allowed or with the betting lines' implied points), then every player's projection is pulled part of the way toward his share of it, so a team's players add up to the team's: its backs' carries to its runs, the NBA's assists to the team's. A starter back from an absence counts in his teammates' total, so his return doesn't lift them. It's kept on NFL carries and NBA assists, where it priced the held-out games better; tried on NFL rushing yards and receiving stats, the NBA's other stats and the NHL's shots and points, it didn't help or pushed the projections' overall lean the wrong way, so it's left out there.</li>
         <li><b>Vacated work</b>: teammates out leave work behind; his cut of it lifts him, a starter back takes it away. Who takes it can be learned from past absences instead of shared evenly (NFL: by position and depth, so the third receiver or the backup back, not just the top target; NBA: by position and starter or bench), across positions, with some of it lost. Measured against the even split, it did no better on the history yet, so the even split stays; it would be used only where the held-out games got better with it.</li>
-        <li><b>Soft terms</b>: a term needs a clear win on games the bot hadn't seen to count in full. One that helps a little, steadily, isn't thrown away: it counts at part of its size, shown as its weight ("soft 0.4x"), set by how sure the bot is it's real. Every run measures it again, so the weight grows as the evidence piles up and shrinks to nothing if the effect fades or flips. A weight moves at most a quarter of the way a day, and the soft terms only stay in together while the bot's held-out games are better with them and no more biased. A soft term stays at a quarter or less unless the earlier and the later half of those games each show it on their own, so a lucky streak can't grow into a big weight.</li>
+        <li><b>Soft terms</b>: a term needs a clear win on games the Bot hadn't seen to count in full. One that helps a little, steadily, isn't thrown away: it counts at part of its size, shown as its weight ("soft 0.4x"), set by how sure the Bot is it's real. Every run measures it again, so the weight grows as the evidence piles up and shrinks to nothing if the effect fades or flips. A weight moves at most a quarter of the way a day, and the soft terms only stay in together while the Bot's held-out games are better with them and no more biased. A soft term stays at a quarter or less unless the earlier and the later half of those games each show it on their own, so a lucky streak can't grow into a big weight.</li>
         <li><b>Game script</b>: the game model's expected score; a blowout or a shootout moves volume.</li>
         <li><b>Context</b>: wind, cold, rain or snow, a backup QB, back-to-backs, the power play, the other goalie or starter, the plate umpire.</li>
         <li>The spread around the projection is a fitted negative binomial, so the chance of clearing any line is priced, not guessed.</li>
-        <li><b>Early exit</b>: a player can leave a game early (hurt, benched or pulled), which a single curve around his projection doesn't capture. The bot learns from past games how often players ran under half their usual share of the snaps or minutes: by role, after a short game last time, and in a first game back from injury. It prices the line as a mix of a full game and a short one, keeping his projected average the same. The book's line is still read on the plain curve for the role and line checks, so this can't loosen them. It's kept on NFL receiving yards, where past games it hadn't seen were priced better with it, including the players coming off a short game or back from injury. It wasn't kept on interceptions, rushing yards or rush+rec yards (it priced those players worse), on receptions, carries, the passing stats or the NBA's stats, and the NHL's skaters almost never leave early.</li>
+        <li><b>Early exit</b>: a player can leave a game early (hurt, benched or pulled), which a single curve around his projection doesn't capture. The Bot learns from past games how often players ran under half their usual share of the snaps or minutes: by role, after a short game last time, and in a first game back from injury. It prices the line as a mix of a full game and a short one, keeping his projected average the same. The Book's line is still read on the plain curve for the role and line checks, so this can't loosen them. It's kept on NFL receiving yards, where past games it hadn't seen were priced better with it, including the players coming off a short game or back from injury. It wasn't kept on interceptions, rushing yards or rush+rec yards (it priced those players worse), on receptions, carries, the passing stats or the NBA's stats, and the NHL's skaters almost never leave early.</li>
       </ul>
 
       <h4>Guards</h4>
       <ul>
-        <li><b>CHECK</b>: a market a guard stopped where its Kelly with the doubt cleared (the stake's Kelly at the chance it would be bet at, the book's leaned part way toward the bot's, never the bot's own number) is {{ checkBarText() }} or more: worth a look before it's bet, so it's kept for the owner to look into. News on his team (a new play-caller, coordinator or starter) always makes one, whatever the Kelly. It's graded as if bet, never staked.</li>
-        <li><b>Gap</b>: a market where the bot is too far from the book isn't bet. It's a PASS, not a CHECK: a gap that size has mostly been the bot missing something, not value. It's still graded privately, to check the rule.</li>
-        <li><b>Role</b>: a player whose role just changed isn't bet on the side the bot's known error could be making. It's a CHECK at a cleared Kelly of {{ checkBarText() }} or more; under that, a PASS graded privately.</li>
+        <li><b>CHECK</b>: a market a guard stopped where its Kelly with the doubt cleared (the stake's Kelly at the chance it would be bet at, the Book's leaned part way toward the Bot's, never the Bot's own number) is {{ checkBarText() }} or more: worth a look before it's bet, so it's kept for the owner to look into. News on his team (a new play-caller, coordinator or starter) always makes one, whatever the Kelly. It's graded as if bet, never staked.</li>
+        <li><b>Gap</b>: a market where the Bot is too far from the Book isn't bet. It's a PASS, not a CHECK: a gap that size has mostly been the Bot missing something, not value. It's still graded privately, to check the rule.</li>
+        <li><b>Role</b>: a player whose role just changed isn't bet on the side the Bot's known error could be making. It's a CHECK at a cleared Kelly of {{ checkBarText() }} or more; under that, a PASS graded privately.</li>
         <li><b>The line as news</b>: in the NBA, NHL and MLB, a line well below his projection (at a line of 1.5 or more) is marked when something known before the game, and not already in the projection, explains it (he's questionable, an unconfirmed goalie, a lineup not posted, a starter's back-to-back, a pitcher's short pitch count). It's only a mark for now: the bet stands or not on the other checks, and the self-check measures the marked ones before they'd ever be held back. A far line with no reason isn't marked: it hasn't done worse than the rest.</li>
         <li><b>His record at the line</b> is shown with every CHECK as context. It isn't a rule: it hasn't told winners from losers.</li>
         <li><b>Skew</b>: a side whose only edge is the spread's own skew (an under with the projection above the line, an over below it) is skipped.</li>
         <li><b>Timing and news</b>: bets are placed only inside each sport's window before the start, and re-priced when news breaks.</li>
         <li><b>Injuries</b>: out, doubtful and IR players are read from the injury report; their work is handed to teammates (vacated work), and a game's open bets are re-priced on news.</li>
-        <li><b>Inactives and starting lineups</b>: in the last two and a half hours before an NFL kickoff (two before an NBA tip) the bot reads each team's posted game-day roster. A questionable player ruled inactive counts as out, and the game's open bets are re-priced on it; a regular inactive the report never listed counts as out for the props (the game lines don't read him). In the NBA, a posted starting five that differs from the usual one (by who has been starting this season) holds the risky side of the affected players' props as a CHECK. It's caught only when a bot run lands between the posting and the lock, which GitHub's schedule doesn't promise.</li>
+        <li><b>Inactives and starting lineups</b>: in the last two and a half hours before an NFL kickoff (two before an NBA tip) the Bot reads each team's posted game-day roster. A questionable player ruled inactive counts as out, and the game's open bets are re-priced on it; a regular inactive the report never listed counts as out for the props (the game lines don't read him). In the NBA, a posted starting five that differs from the usual one (by who has been starting this season) holds the risky side of the affected players' props as a CHECK. It's caught only when a bot run lands between the posting and the lock, which GitHub's schedule doesn't promise.</li>
         <li><b>Caps</b>: one prop per player per game, 1 unit on an untested prop type (3 once tested), and 5 units per game across all its markets. Before the cap, a game's edge props are sized together with its other props by how much a game's props have won or lost together, a player's own two props read apart from any other two (same-game sizing, below each sport; each used only once the games after it was read bear it out): only ever cut, never raised.</li>
       </ul>
 
@@ -142,22 +142,22 @@
       <p>
         Stakes come from the Kelly fraction: 0.5 units at the smallest edge, rising to 3 units at the desk's edge
         scale, in half-unit steps (a heavy favorite's stake held to what its edge in chance would stake at -110). The
-        chance already includes the trust, so an unproven market bets small. The bot's lean tapers as it nears each
+        chance already includes the trust, so an unproven market bets small. The Bot's lean tapers as it nears each
         market's gap limit (12 points on spreads and totals, 15 on moneylines and props); past it, not bet.
       </p>
       <p>
         <b>Tracked, not bet</b>: from Oct 13, 2026, a market with no edge (or one a guard would have cut to the
-        minimum) is tracked, not bet. Before then the bot placed it at 0.5 units for the data (an action bet); those
+        minimum) is tracked, not bet. Before then the Bot placed it at 0.5 units for the data (an action bet); those
         stay on the record as they were. A tracked market is graded like a bet and still teaches the trust, the
         closing-line value and the self-check, but it's never in the record, the bankroll or the picks.
       </p>
 
       <p>
-        <b>Anytime touchdowns</b> (NFL backs, receivers and tight ends): tracked only, never bet. The bot prices the book's
+        <b>Anytime touchdowns</b> (NFL backs, receivers and tight ends): tracked only, never bet. The Bot prices the Book's
         "anytime TD scorer" from its own model: a player's red-zone looks a game (targets and carries inside the 20, the
         10 and the 5, end-zone targets), what a look of each kind is worth in touchdowns league-wide, how well he has
         finished his own looks, his long touchdowns, and how many points his team is expected to score tonight against
-        its usual. On games the bot hadn't seen it beat the same model without the red zone and the base rate, and its
+        its usual. On games the Bot hadn't seen it beat the same model without the red zone and the base rate, and its
         chances matched how often players scored. Each one is graded on his rushing and receiving touchdowns and shows
         with the other tracked markets; it's asked of the odds service only while the month's credits have room.
       </p>
@@ -165,22 +165,22 @@
       <h4>Trust and CLV</h4>
       <p>
         Trust (0 to 1) is fit per market and prop type on graded bets and <b>closing-line value</b>: did the price
-        move toward the bot after it bet? Beating the close is the surest sign of a real edge. Before enough bets are
-        graded, a type starts at its starting trust; the backtest replays past games with today's bot to fit the
+        move toward the Bot after it bet? Beating the close is the surest sign of a real edge. Before enough bets are
+        graded, a type starts at its starting trust; the backtest replays past games with today's Bot to fit the
         game lines.
       </p>
 
       <h4>The model epoch</h4>
       <p>
-        Every major change to how the bot projects or prices bumps the <b>model epoch</b>. Trust is then fit only on
-        bets placed since (plus the backtest, which replays history with the current bot), so a new version earns its
+        Every major change to how the Bot projects or prices bumps the <b>model epoch</b>. Trust is then fit only on
+        bets placed since (plus the backtest, which replays history with the current Bot), so a new version earns its
         trust on its own record. Older bets stay on the record; they just don't count toward trust. UI-only changes
         don't bump it.
       </p>
 
       <h4>Self-checks</h4>
       <ul>
-        <li><b>The weekly self-check</b> grades the bot against itself: calibration, closing-line value, each guard's hit rate, and flags what needs a look. Over every graded bet it also checks whether a line that had already moved against a pick (or its way) before the bet (a player prop's price too, from Oct 13 on, since hockey's props move by the price more than the line), or how many hours before the start it was placed, made a difference against the book's own odds.</li>
+        <li><b>The weekly self-check</b> grades the Bot against itself: calibration, closing-line value, each guard's hit rate, and flags what needs a look. Over every graded bet it also checks whether a line that had already moved against a pick (or its way) before the bet (a player prop's price too, from Oct 13 on, since hockey's props move by the price more than the line), or how many hours before the start it was placed, made a difference against the Book's own odds.</li>
         <li><b>CHECK self-evaluation</b>: every CHECK is graded as if it had been bet, by cause. A cause that keeps winning is a blind spot to fix; one that keeps losing is a guard earning its keep. The advice is never applied automatically.</li>
         <li><b>Owner notes</b>: a note on a CHECK or an open bet is read by the bettor on its next run.</li>
       </ul>

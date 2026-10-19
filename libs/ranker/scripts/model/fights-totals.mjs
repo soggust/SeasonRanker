@@ -288,7 +288,7 @@ export function totalReasonOf(bet) {
     .slice(0, 3);
   const carried = parts.filter(([, v]) => v > 0).map(([k, v]) => `${label[k] ?? k} (+${round(v, 2)})`);
   const against = parts.filter(([, v]) => v < 0).map(([k, v]) => `${label[k] ?? k} (${round(v, 2)})`);
-  const from = bet.fairFrom === 'its own prices' ? "the book's own prices, the vig out" : `${bet.fairFrom === SHARP ? 'a sharp book' : 'another book'}'s line, the vig out`;
+  const from = bet.fairFrom === 'its own prices' ? "the Book's own prices, the vig out" : `${bet.fairFrom === SHARP ? 'a sharp book' : 'another book'}'s line, the vig out`;
   const pieces = [`The model gives ${bet.pick} a ${pct(bet.model)} chance against the market's ${pct(bet.fair)} (${from}); a bout like it goes past ${bet.line} ${pct(bet.side === 'over' ? bet.context.base : 1 - bet.context.base)} of the time.`];
   if (carried.length) pieces.push(`For it: ${carried.join(', ')}.`);
   if (against.length) pieces.push(`Against it: ${against.join(', ')}.`);

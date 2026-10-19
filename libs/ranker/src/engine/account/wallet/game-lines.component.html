@@ -18,7 +18,7 @@
         type="button"
         class="tile-price"
         [attr.aria-pressed]="wallet.slipKeys().has(keyOf(price))"
-        [attr.aria-label]="(wallet.slipKeys().has(keyOf(price)) ? 'Take off the ticket: ' : 'Add to the ticket: ') + label + ' ' + oddsText(price.odds) + (c.bot ? ', the bot’s pick (' + t + ')' : '')"
+        [attr.aria-label]="(wallet.slipKeys().has(keyOf(price)) ? 'Take off the ticket: ' : 'Add to the ticket: ') + label + ' ' + oddsText(price.odds) + (c.bot ? ', the Bot’s pick (' + t + ')' : '')"
         [title]="priceTitle(price, c)"
         [disabled]="!open"
         (click)="take(price)"
@@ -60,7 +60,7 @@
             type="button"
             class="tile-price"
             [attr.aria-pressed]="wallet.slipKeys().has(propKey(r, s.side))"
-            [attr.aria-label]="(wallet.slipKeys().has(propKey(r, s.side)) ? 'Take off the ticket: ' : 'Add to the ticket: ') + sideWords(r, s) + ' ' + oddsText(s.odds) + (s.tier ? ', ' + s.tier : '') + (s.bot ? ', the bot’s pick' : '')"
+            [attr.aria-label]="(wallet.slipKeys().has(propKey(r, s.side)) ? 'Take off the ticket: ' : 'Add to the ticket: ') + sideWords(r, s) + ' ' + oddsText(s.odds) + (s.tier ? ', ' + s.tier : '') + (s.bot ? ', the Bot’s pick' : '')"
             [title]="propTitle(r, s)"
             [disabled]="!open"
             (click)="takeProp(r, s)"
@@ -219,8 +219,8 @@
     @if (sectionOpen('preview')) {
       <div class="section-body lines-props preview-props" role="list" aria-label="Preview props">
         <p class="preview-note">
-          <b>Preview props</b> · the book's lines via ESPN, no price posted yet: bet either side at <b>-110</b> (assumed).
-          No band or Kelly score: the bot hasn't priced them.
+          <b>Preview props</b> · the Book's lines via ESPN, no price posted yet: bet either side at <b>-110</b> (assumed).
+          No band or Kelly score: the Bot hasn't priced them.
           @if (previewWindow; as w) {
             It prices this game's props from {{ w.hours }} hours before the start ({{ w.at | date: 'EEE h:mm a' }}), and they show here then.
           }
@@ -259,7 +259,7 @@
       </div>
     }
   } @else if (!compact && previewLoading() && !onlyPick()) {
-    <p class="lines-note" role="status">Reading the book's prop lines…</p>
+    <p class="lines-note" role="status">Reading the Book's prop lines…</p>
   }
 
   <!-- (a game begun: its prices the last ones) -->

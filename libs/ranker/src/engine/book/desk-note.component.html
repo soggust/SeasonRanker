@@ -1,7 +1,7 @@
 <!-- An admin's note on a CHECK or a bet: saved, it reads back with Edit (and whether the bot prices with it); else (or
      editing) the form: a reason, a player the pick involves (or someone else by his ESPN id) and his status, a
      line of their own -->
-<section class="desk-note" aria-label="Your note to the bot">
+<section class="desk-note" aria-label="Your note to the Bot">
   @if (loading()) {
     <!-- (nothing while it reads: the row stays as it was) -->
   } @else if (saved() && !editing()) {
@@ -10,15 +10,15 @@
       <!-- (a CHECK's: noted till the bot's next run re-prices it (picks.json's resolved, after the note), then what
            came of it, or why it couldn't (held: re-priced once its props are priced again); a closed or bet one's
            row is gone) -->
-      <span><b>Your note:</b> {{ text }} <span class="note-quiet">· {{ check ? (state === 'still' ? 'Re-priced with it: still a CHECK' : state === 'held' ? 'Not re-priced yet: ' + held + '. Still a CHECK till its props are priced again' : 'Noted: the bot re-prices it on its next run') : prices ? 'the bot will re-price with it on its next run' : 'saved; the bot prices only a player and his status' }}</span></span>
+      <span><b>Your note:</b> {{ text }} <span class="note-quiet">· {{ check ? (state === 'still' ? 'Re-priced with it: still a CHECK' : state === 'held' ? 'Not re-priced yet: ' + held + '. Still a CHECK till its props are priced again' : 'Noted: the Bot re-prices it on its next run') : prices ? 'the Bot will re-price with it on its next run' : 'saved; the Bot prices only a player and his status' }}</span></span>
       <button type="button" class="note-link" (click)="edit()">Edit</button>
     </p>
   } @else if (!saved() && !opened()) {
     <!-- (no note yet: a small button, the form only once it's asked for, so the bet buttons stay in reach) -->
-    <button type="button" class="note-open" (click)="opened.set(true)"><mat-icon aria-hidden="true" fontIcon="edit_note"></mat-icon>Tell the bot why</button>
+    <button type="button" class="note-open" (click)="opened.set(true)"><mat-icon aria-hidden="true" fontIcon="edit_note"></mat-icon>Tell the Bot why</button>
   } @else {
     <form class="note-form" (ngSubmit)="save()">
-      <p class="note-title"><mat-icon aria-hidden="true" fontIcon="edit_note"></mat-icon>Tell the bot why</p>
+      <p class="note-title"><mat-icon aria-hidden="true" fontIcon="edit_note"></mat-icon>Tell the Bot why</p>
       <div class="note-fields">
         <label class="note-field">
           <span>Reason</span>
@@ -58,7 +58,7 @@
       </div>
       <label class="note-field note-text">
         <span>Note <small>(optional)</small></span>
-        <textarea name="note" rows="2" [(ngModel)]="form.note" [attr.maxlength]="max" placeholder="What the bot doesn't know"></textarea>
+        <textarea name="note" rows="2" [(ngModel)]="form.note" [attr.maxlength]="max" placeholder="What the Bot doesn't know"></textarea>
       </label>
       <div class="note-actions">
         @if (problem(); as p) {

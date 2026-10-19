@@ -133,7 +133,7 @@ test('gate: the projection layer pairs by key, decides on the deciding seasons, 
 // (the over-frame rows from the fixture's priced props, at a chance of the version's)
 const frame = (bets, pOf = (b) => (b.side === 'over' ? b.p : 1 - b.p)) => bets.map((b) => propRow(b, pOf(b), { over: 1, under: 1 }));
 
-test("gate: the betting layer's numbers on a slate: the gap to the book, the top picks, the edge picks", () => {
+test("gate: the betting layer's numbers on a slate: the gap to the Book, the top picks, the edge picks", () => {
   const rows = frame(slate({ days: 6 }));
   const s = betSummary(rows, { n: 4, practice: 0.5, stakeOf: (ev, o, x, side) => x.stake[side] });
   assert.equal(s.rows, rows.length);
@@ -249,7 +249,7 @@ test('gate: a flag candidate is the working tree with its env set', () => {
 
 // ---- leaks.mjs and the self-check's C23 ----
 
-test('leaks: the gain over the book, the rows read and the false discovery rate', () => {
+test('leaks: the gain over the Book, the rows read and the false discovery rate', () => {
   assert.ok(rowGain({ p: 0.7, fair: 0.5, status: 'won', clv: { q: 0.6 } }).gain > 0);
   assert.ok(rowGain({ p: 0.3, fair: 0.5, status: 'won', clv: { q: 0.6 } }).gain < 0);
   assert.equal(rowGain({ p: 0.5, fair: 0.5, status: 'open' }), null);
@@ -286,7 +286,7 @@ test('leaks: a planted leak is found and ranked with its causes and fix; plain n
 
 test('self-check: C23 the leak hunt runs with the others and reads whole', () => {
   assert.ok(CHECKS.some((f) => f.name === 'c23'));
-  assert.equal(TITLES.C23, 'Leaks against the book (priced history)');
+  assert.equal(TITLES.C23, 'Leaks against the Book (priced history)');
   const bets = slate({ days: 10, k: 30, seed: 2 });
   const out = selfCheck({ sport: 'nhl', now: new Date('2026-10-19T12:00:00Z'), ledger: { bets }, checks: [], state: {}, snaps: [], prev: null, teams: {} });
   const c = out.checks.find((x) => x.id === 'C23');
@@ -299,7 +299,7 @@ test('self-check: C23 the leak hunt runs with the others and reads whole', () =>
 
 // ---- the Algorithm tab's Scorecard (scorecard.ts) ----
 
-test("scorecard panel: a chart a sport, a point per version, the edge's sign turned so up beats the book", async () => {
+test("scorecard panel: a chart a sport, a point per version, the edge's sign turned so up beats the Book", async () => {
   const desk_ = await loadEngine('nfl', { entry: path.join(import.meta.dirname, 'support', 'book-entry.ts'), data: {} });
   const n = (gap, clv = 0.01) => ({ n: 100, gap, clv, hit: 0.55 });
   const file = {
@@ -320,7 +320,7 @@ test("scorecard panel: a chart a sport, a point per version, the edge's sign tur
   assert.equal(fz.points.length, 2);
   assert.equal(roll.points.length, 1, 'a version with no rolling numbers: no point');
   assert.ok(fz.points[1].y < fz.points[0].y, 'the better version higher on the chart');
-  assert.ok(fz.points[1].y < c.zeroY && fz.points[0].y > c.zeroY, 'above the zero line beats the book');
+  assert.ok(fz.points[1].y < c.zeroY && fz.points[0].y > c.zeroY, 'above the zero line beats the Book');
   assert.match(fz.points[1].title, /bbb/);
   assert.match(fz.path, /^M[\d.]+,[\d.]+ L/);
   assert.match(c.latest, /bbb: frozen \+0\.30/);

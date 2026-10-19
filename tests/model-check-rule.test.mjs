@@ -29,7 +29,7 @@ test('shadowOf: the gap a PASS always; a role a CHECK only at a cleared Kelly of
   assert.equal(modelKelly(139, 0.5745), kellyOf(139, 0.5745));
   assert.ok(modelKelly(139, 0.5745) > 0.26);
   assert.equal(shadowOf({ cause: 'gap', odds: 139, model: 0.5745, fair: 0.3947 }).passAs, 'gap');
-  assert.match(shadowOf({ cause: 'gap', odds: 139, model: 0.5745, fair: 0.3947 }).why, /18 points off the book with nothing to explain it/);
+  assert.match(shadowOf({ cause: 'gap', odds: 139, model: 0.5745, fair: 0.3947 }).why, /18 points off the Book with nothing to explain it/);
   // (judged by the cleared Kelly: the lean held to half the GAP at the trust, 0.3947 + 0.5 x 0.075 = 0.4322 at +139,
   // a +2.37 Kelly, a CHECK; the model's own +26.80 only context)
   assert.ok(Math.abs(checkKelly({ odds: 139, model: 0.5745, fair: 0.3947, trust: 0.5, line: 1.5 }) - kellyOf(139, 0.4322)) < 1e-9);
@@ -38,7 +38,7 @@ test('shadowOf: the gap a PASS always; a role a CHECK only at a cleared Kelly of
   assert.equal(shadowOf({ cause: 'role', odds: 139, model: 0.5745, fair: 0.3947, line: 1.5 }).passAs, 'small');
   const small = shadowOf({ cause: 'role', odds: -110, model: 0.55, fair: 0.45, trust: 0.5 });
   assert.equal(small.passAs, 'small');
-  assert.match(small.why, /a -7\.63 Kelly with the doubt cleared \(the bot's own 55%\): under the CHECK bar \(\+1\)/);
+  assert.match(small.why, /a -7\.63 Kelly with the doubt cleared \(the Bot's own 55%\): under the CHECK bar \(\+1\)/);
   // (no price or chance to judge it by: a shadow, never a confident CHECK)
   assert.equal(shadowOf({ cause: 'role', odds: null, model: 0.7 }).passAs, 'small');
   assert.equal(shadowOf({ cause: 'role', odds: 100, model: 0.7 }).passAs, 'small');
@@ -51,7 +51,7 @@ test('shadowOf: the gap a PASS always; a role a CHECK only at a cleared Kelly of
 test("checkOf: a shadow marked hidden with its passAs and words; a shown one as before", () => {
   const gap = checkOf(prop(), GAP);
   assert.deepEqual([gap.hidden, gap.passAs, gap.cause], [true, 'gap', 'gap']);
-  assert.match(gap.passWhy, /usually the bot missing something/);
+  assert.match(gap.passWhy, /usually the Bot missing something/);
   const small = checkOf(prop({ odds: -110, model: 0.55 }), ROLE);
   assert.deepEqual([small.hidden, small.passAs, small.cause], [true, 'small', 'role']);
   const big = checkOf(prop(), ROLE);
@@ -149,7 +149,7 @@ test('buildPicks: the shown CHECKs alone (a passed one a while, in its passed st
   // (the cleared Kelly the one shown and judged, a +2.37, never the model's own +26.80: context only)
   assert.ok(big.checkKelly > 0.02 && big.checkKelly < 0.03 && big.modelKelly > 0.26);
   // (the write-up: the cleared Kelly first, then the chances, the means to two decimals, then why)
-  assert.match(big.reason, /Would be a \+2\.37 Kelly bet with its doubt cleared \(the under 57% against DraftKings' no-vig 39%\); the bot's 1\.48 vs the book's 2\.20 catches\. Not bet on this side/);
+  assert.match(big.reason, /Would be a \+2\.37 Kelly bet with its doubt cleared \(the under 57% against the Book's no-vig 39%\); the Bot's 1\.48 vs the Book's 2\.20 catches\. Not bet on this side/);
   assert.doesNotMatch(big.reason, /model's own number/);
   assert.match(big.risk, /isn't value by itself/);
   const p = out.checks.find((c) => c.id === 'p');
@@ -236,7 +236,7 @@ test("a CHECK's risk calls its Kelly big only where it is: never a news CHECK's,
   const news = plainOf(sheetOf({ cause: 'news', checkCause: 'news', newsUnit: 'offense', odds: -110, model: 0.51 })).risk;
   assert.doesNotMatch(news, /big/i);
   const small = plainOf(sheetOf({ cause: 'role', checkCause: 'role', roleReason: 'group-out', odds: -110, model: 0.55 })).risk;
-  assert.match(small, /^The bot's own number isn't value by itself/);
+  assert.match(small, /^The Bot's own number isn't value by itself/);
   const big = plainOf(sheetOf({ cause: 'role', checkCause: 'role', roleReason: 'group-out' })).risk;
-  assert.match(big, /^A big Kelly on the bot's own number/);
+  assert.match(big, /^A big Kelly on the Bot's own number/);
 });

@@ -35,7 +35,7 @@ test('nothing favorable: one centred line and a smaller one, the CHECK bands sti
   const empty = html.slice(at, html.indexOf('</li>', at));
   assert.match(empty, /class="board-empty"/);
   assert.match(empty, /No favorable bets right now/);
-  assert.match(empty, /The bot checks every hour; pick a game in the dropdown to bet any line yourself\./);
+  assert.match(empty, /The Bot checks every hour; pick a game in the dropdown to bet any line yourself\./);
   assert.ok(html.indexOf('bandList; context', at) > at, 'the bands (an admin\'s CHECKs) after it');
   assert.equal(html.match(/No favorable bets right now/g).length, 2, 'and the same line with no picks at all');
   assert.doesNotMatch(html, /picks right now: the algorithm posts/);

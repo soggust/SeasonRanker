@@ -334,7 +334,7 @@ export function trophies(bets: PlayBet[], tally: TallyDoc | null, runs: RunCard[
     make('first', 'First Blood', 'Cash your first ticket.', firstWon, 1, full ? (won[0]?.settledAt ?? null) : null),
     make('heater', 'Heater', 'Win 5 tickets in a row.', best >= 5 ? 5 : streak, 5, heaterWhen),
     make('longshot', 'Longshot', 'Cash a ticket at +300 or longer.', longshots.length, 1, longshots[0]?.settledAt ?? null),
-    make('tail', 'Tailgater', 'Win 20 bets the bot picked.', tails.length, 20, tails[19]?.settledAt ?? null),
+    make('tail', 'Tailgater', 'Win 20 bets the Bot picked.', tails.length, 20, tails[19]?.settledAt ?? null),
     make('parlay', 'Parlay Prince', 'Cash a parlay of 3 legs or more.', parlays.length, 1, parlays[0]?.settledAt ?? null),
     make('phoenix', 'Phoenix', 'Bust a run, then finish the next one up.', phoenix, 2, phoenixWhen),
     make('iron', 'Iron Stomach', 'Place 50 bets in a single week.', busiest?.[1] ?? 0, 50, busiest && busiest[1] >= 50 ? busiest[0] : null),

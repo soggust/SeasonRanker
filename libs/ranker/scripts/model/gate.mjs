@@ -608,11 +608,11 @@ export function tableOf(c) {
     row(`b: ${layer} top picks' hit`, b.topHit, 'higher');
     row(`b: ${layer} edge units a slate`, b.units, 'higher');
     const s = c.summary[layer];
-    if (s) for (const [who, x] of [['champion', s.champion], ['candidate', s.candidate]]) lines.push(`    ${who}: ${x.rows} rows, gap to the book ${sgn(x.gap)} (close ${sgn(x.closeGap)}), top ${x.top.n} picks hit ${pct(x.top.hit)} CLV ${sgn(x.top.clv, 3)} ${sgn(x.top.units, 2)}u at the practice stake; edge ${x.edge.n} picks ${sgn(x.edge.units, 2)}u on ${x.edge.staked}u`);
+    if (s) for (const [who, x] of [['champion', s.champion], ['candidate', s.candidate]]) lines.push(`    ${who}: ${x.rows} rows, gap to the Book ${sgn(x.gap)} (close ${sgn(x.closeGap)}), top ${x.top.n} picks hit ${pct(x.top.hit)} CLV ${sgn(x.top.clv, 3)} ${sgn(x.top.units, 2)}u at the practice stake; edge ${x.edge.n} picks ${sgn(x.edge.units, 2)}u on ${x.edge.staked}u`);
   }
   const vb = c.vsBook?.candidate;
   if (vb) {
-    lines.push("  the candidate against the book at the history's closes (log loss on the results, recency-weighted; lower better):");
+    lines.push("  the candidate against the Book at the history's closes (log loss on the results, recency-weighted; lower better):");
     for (const k of ['lines', 'props']) {
       const x = vb[k];
       if (x) lines.push(`    ${k.padEnd(6)} model ${x.model} (raw ${x.raw}) / book ${x.book}: ${sgn(x.gap)} [${sgn(x.lo)}, ${sgn(x.hi)}] ${x.verdict} (${x.n} rows, ${x.games} games)`);

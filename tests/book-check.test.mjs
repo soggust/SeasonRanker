@@ -68,7 +68,7 @@ test("noteOf: the form's note in the rules' shape, the bettor reading it back as
   // (the reasons and statuses the form offers: the bettor's own, and the rules')
   assert.deepEqual(desk.NOTE_REASONS.map((r) => r.value), REASONS);
   assert.deepEqual(desk.NOTE_STATUSES.map((s) => s.value), Object.keys(NOTE_STATUS));
-  assert.equal(desk.NOTE_REASONS.find((r) => r.value === 'market-wrong').label, "Market is wrong, bot's right");
+  assert.equal(desk.NOTE_REASONS.find((r) => r.value === 'market-wrong').label, "Market is wrong, the Bot's right");
 
   assert.equal(desk.noteOf({ reason: '', player: '', status: '', note: '' }, 'nfl', players), 'Pick a reason');
   assert.match(desk.noteOf({ reason: 'other', player: '', status: '', note: 'x'.repeat(501) }, 'nfl', players), /500 at most/);
@@ -95,9 +95,9 @@ test("noteOf: the form's note in the rules' shape, the bettor reading it back as
 test('readNote, noteText, formOf: a saved note read back, in words, and into the form again', () => {
   const players = [{ id: '4040715', name: 'Jalen Hurts', team: '21' }];
   const n = desk.readNote({ reason: 'news', player: '4040715', status: 'out', team: '21', sport: 'nfl', note: 'ruled out', by: 'root', at: {} });
-  assert.equal(desk.noteText(n, players), 'News the bot missed · Jalen Hurts Out · “ruled out”');
-  assert.equal(desk.noteText({ ...n, player: '77' }, players), 'News the bot missed · player 77 Out · “ruled out”');
-  assert.equal(desk.noteText(desk.readNote({ reason: 'market-wrong' }), players), "Market is wrong, bot's right");
+  assert.equal(desk.noteText(n, players), 'News the Bot missed · Jalen Hurts Out · “ruled out”');
+  assert.equal(desk.noteText({ ...n, player: '77' }, players), 'News the Bot missed · player 77 Out · “ruled out”');
+  assert.equal(desk.noteText(desk.readNote({ reason: 'market-wrong' }), players), "Market is wrong, the Bot's right");
   assert.equal(desk.readNote({ reason: 'gossip' }), null);
   assert.equal(desk.readNote(null), null);
   assert.deepEqual(desk.formOf(n, players), { reason: 'news', player: '4040715', athlete: '', status: 'out', note: 'ruled out' });

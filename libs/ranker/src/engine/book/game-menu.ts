@@ -235,5 +235,5 @@ export function viewsShown(v: { desk: boolean; open: boolean; closed: boolean; l
 
 // A chosen game's picks section's header: "The bot's picks · 3"
 export function gamePicksHead(n: number): string {
-  return `The bot's picks · ${n}`;
+  return `The Bot's picks · ${n}`;
 }

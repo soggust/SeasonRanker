@@ -414,7 +414,7 @@ export async function backfillBot(db, { now = Date.now(), botSeen = readBotBoard
     if (bot) filled++;
     if (!dry) await d.ref.update({ bot });
   }
-  log(`bot calls: ${todo.length} settled bet${todo.length === 1 ? '' : 's'} looked at, ${filled} with the bot's side${dry ? ' (dry)' : ''}`);
+  log(`bot calls: ${todo.length} settled bet${todo.length === 1 ? '' : 's'} looked at, ${filled} with the Bot's side${dry ? ' (dry)' : ''}`);
   return { looked: todo.length, filled };
 }
 

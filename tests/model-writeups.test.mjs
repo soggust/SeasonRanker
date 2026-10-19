@@ -27,7 +27,7 @@ function sportData({ n = 1, level = 'lock', start = null } = {}) {
 const GOOD = {
   headline: 'Kmet over 8.5 on volume the market doubts',
   reason:
-    "The case is volume: Cole Kmet projects for 19.5 receiving yards, well over 8.5, and 66.7% of his weighted games cleared the line. His blended rate is 17.9 over 4 games, and GB's defense takes 6.7% off. DraftKings' no-vig price says 50.6%; the desk bets 63.9% against a 53.5% break-even.",
+    "The case is volume: Cole Kmet projects for 19.5 receiving yards, well over 8.5, and 66.7% of his weighted games cleared the line. His blended rate is 17.9 over 4 games, and GB's defense takes 6.7% off. The Book's no-vig price says 50.6%; the desk bets 63.9% against a 53.5% break-even.",
   risk: 'The model sits 26.5 points from the market, past the 15-point gap the desk now bets, and his recent 12 gets no weight.',
   stance: 'thin',
   numbers: [
@@ -164,7 +164,7 @@ test('a good answer: written, the pick patched in place (its headline, its read)
   const e = data.writeups.items[p.id];
   assert.equal(e.ai.status, 'ok');
   assert.equal(e.ai.hash, e.plain.hash);
-  assert.equal(e.ai.v, 2);
+  assert.equal(e.ai.v, 3);
   assert.equal(e.ai.effort, 'high');
   assert.equal(e.ai.sheet.bet.band, 'LOCK');
   const [logged] = budget.list();

@@ -387,7 +387,7 @@ export class GameLinesComponent implements OnInit, OnDestroy {
 
   previewTitle(r: PreviewPropRow, side: 'over' | 'under'): string {
     const opened = r.open !== null && r.open !== r.line ? ` (it opened at ${r.open})` : '';
-    return `${this.previewWords(r, side)} ${oddsText(PREVIEW_ODDS)} assumed · the book's line via ESPN${opened}, no price posted yet; the bot hasn't priced it: no band, no Kelly score${this.open ? '' : ' · Betting closed: the game has started'}`;
+    return `${this.previewWords(r, side)} ${oddsText(PREVIEW_ODDS)} assumed · the Book's line via ESPN${opened}, no price posted yet; the Bot hasn't priced it: no band, no Kelly score${this.open ? '' : ' · Betting closed: the game has started'}`;
   }
 
   // A preview side clicked: onto the slip at -110 (or off it), tagged preview, never the bot's pick; its line the
@@ -502,15 +502,15 @@ export class GameLinesComponent implements OnInit, OnDestroy {
   // (a price's hover: what it is, what 10 units win at it, and the bot's word on it)
   priceTitle(price: Price, c: PriceCall): string {
     const words = pickWords(price, this.matchupText);
-    const at = `${words} ${oddsText(price.odds)} at the book`;
+    const at = `${words} ${oddsText(price.odds)} at the Book`;
     const bot = c.bot;
     const botWords =
       c.tier === 'check'
-        ? ` · The bot's CHECK: a big Kelly on its own number that a guard stopped (a role changing, news on his team), kept for a look, not bet${bot?.chance != null ? ` (the bot: ${bot.chance}%)` : ''}`
+        ? ` · The Bot's CHECK: a big Kelly on its own number that a guard stopped (a role changing, news on his team), kept for a look, not bet${bot?.chance != null ? ` (the Bot: ${bot.chance}%)` : ''}`
         : bot
-        ? ` · The bot's pick: ${c.tier?.toUpperCase()}, Kelly ${this.kellyText(bot.sureness)}${bot.chance != null ? `, ${bot.chance}% to win` : ''}${bot.line !== undefined && bot.line !== null && bot.line !== price.line ? ` (it took ${lineText(bot.line)})` : ''}`
+        ? ` · The Bot's pick: ${c.tier?.toUpperCase()}, Kelly ${this.kellyText(bot.sureness)}${bot.chance != null ? `, ${bot.chance}% to win` : ''}${bot.line !== undefined && bot.line !== null && bot.line !== price.line ? ` (it took ${lineText(bot.line)})` : ''}`
         : c.kelly !== null
-        ? ` · The bot: ${c.tier?.toUpperCase()}, Kelly ${this.kellyText(c.kelly)}${c.chance != null ? `, ${Math.round(c.chance * 100)}% to win` : ''}`
+        ? ` · The Bot: ${c.tier?.toUpperCase()}, Kelly ${this.kellyText(c.kelly)}${c.chance != null ? `, ${Math.round(c.chance * 100)}% to win` : ''}`
         : '';
     return `${at}${botWords}${this.open ? '' : ' · Betting closed: the game has started'}`;
   }
@@ -601,11 +601,11 @@ export class GameLinesComponent implements OnInit, OnDestroy {
     const chance = r.chance === null ? null : Math.round((s.side === 'over' ? r.chance : 1 - r.chance) * 100);
     const word =
       s.tier === 'check'
-        ? ' · The bot’s CHECK: a guard stopped it (a role changing, news on his team), kept for a look, not bet'
+        ? ' · The Bot’s CHECK: a guard stopped it (a role changing, news on his team), kept for a look, not bet'
         : r.check
-        ? ' · The other side of the bot’s CHECK'
+        ? ' · The other side of the Bot’s CHECK'
         : s.tier
-        ? ` · ${s.bot ? 'The bot’s pick' : 'The bot'}: ${s.tier.toUpperCase()}${s.kelly !== null ? ', Kelly ' + this.kellyText(s.kelly) : ''}${chance !== null ? `, ${chance}% to win` : ''}${r.pass ? (r.passWhy === 'gap' ? ' (it passes: the bot is too far off the book here to trust)' : r.passWhy === 'small' ? ' (it passes: his role is changing, and the edge isn’t big enough to look into)' : ' (it passes on this player for now)') : ''}`
+        ? ` · ${s.bot ? 'The Bot’s pick' : 'The Bot'}: ${s.tier.toUpperCase()}${s.kelly !== null ? ', Kelly ' + this.kellyText(s.kelly) : ''}${chance !== null ? `, ${chance}% to win` : ''}${r.pass ? (r.passWhy === 'gap' ? ' (it passes: the Bot is too far off the Book here to trust)' : r.passWhy === 'small' ? ' (it passes: his role is changing, and the edge isn’t big enough to look into)' : ' (it passes on this player for now)') : ''}`
         : '';
     return `${at}${word}${this.open ? '' : ' · Betting closed: the game has started'}`;
   }

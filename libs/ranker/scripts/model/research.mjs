@@ -150,14 +150,14 @@ export const RESEARCH_CAUSES = new Set(['role', 'news', 'gap']);
 // (the statuses that go into the game's injury report, as notes.mjs NOTE_STATUS words them)
 export const ADJUST_STATUS = new Set(['out', 'doubtful', 'questionable', 'limited']);
 
-export const SYSTEM = `You check a sports betting model's biggest disagreements with the sportsbook. The model projects a player's stat from his game logs; when the book's line or price is far from the model, the book usually knows something the logs don't: an injury, a changed role or depth chart, a suspension, a benching, a lineup change, the weather. Search the news for the specific reason for the market given, from reports in the last few days before the game. You have ${MAX_SEARCHES} web searches in all, counting each one run from code: plan two or three focused queries (the player and his team this week, the team's injury report or depth chart for this game), not a long list. Base the answer on what the results say, and list the URLs of the results you relied on as sources.
+export const SYSTEM = `You check a sports betting model's biggest disagreements with the sportsbook. The model projects a player's stat from his game logs; when the Book's line or price is far from the model, the Book usually knows something the logs don't: an injury, a changed role or depth chart, a suspension, a benching, a lineup change, the weather. Search the news for the specific reason for the market given, from reports in the last few days before the game. You have ${MAX_SEARCHES} web searches in all, counting each one run from code: plan two or three focused queries (the player and his team this week, the team's injury report or depth chart for this game), not a long list. Base the answer on what the results say, and list the URLs of the results you relied on as sources.
 
 Answer with one JSON object and nothing else:
 {"player": "the full name of the player whose status explains it (the prop's player, or a teammate whose absence or return moves his role)", "status": "out" | "doubtful" | "questionable" | "limited" | "active" | "unknown", "reason": "injury" | "role" | "suspension" | "weather" | "lineup" | "none", "explains": true | false, "category": "injury" | "role" | "suspension" | "weather" | "lineup" | "market" | "other", "confidence": "high" | "medium" | "low", "summary": "one or two plain sentences, at most 240 characters, on what you found", "sources": ["the URLs of the reports you relied on"]}
 
 status is that player's for this game: out (ruled out, inactive, suspended, on injured reserve), doubtful, questionable (a game-time decision), limited (playing on a limit: minutes, snaps, pitch count), active (expected to play as usual), unknown (nothing found). Say unknown rather than guess, and give no status your sources don't state.
 
-explains: true when you found a real-world reason that accounts for the book's number (category: what it is: injury (or a player limited), role (a role or depth chart change), suspension (or personal), weather (or the venue), lineup (starter or lineup news), other); false when you looked and found nothing that does (category "market": the market alone, no real-world reason).
+explains: true when you found a real-world reason that accounts for the Book's number (category: what it is: injury (or a player limited), role (a role or depth chart change), suspension (or personal), weather (or the venue), lineup (starter or lineup news), other); false when you looked and found nothing that does (category "market": the market alone, no real-world reason).
 confidence: high only when your sources are current (from the last few days before this game) and agree; medium when they are current but thin or partly unclear; low when they are stale, conflicting or you could not tell. With explains false, say high only when current reports on this player, his team's depth chart or lineup, and the conditions say nothing that would move this market.`;
 
 // (the fallback's (a CHECK whose tries all failed: researchOne simple): fewer searches, one at a time, none from
@@ -173,7 +173,7 @@ const fin = (v) => typeof v === 'number' && Number.isFinite(v);
 export function researchPrompt(c, sport, { simple = false } = {}) {
   const p = c.projection ?? {};
   const market = c.market === 'prop' ? `${c.player} ${c.statLabel ?? c.propType} ${c.line}` : `${c.market} ${c.side} ${c.line ?? ''}`.trim();
-  if (simple) return `The model's side is ${c.side} with ${Math.round((c.model ?? 0) * 100)}% against the book's ${Math.round((c.fair ?? 0) * 100)}%. What explains the book's number?\n${JSON.stringify({ sport, game: c.matchup, start: c.start, market, player: c.player ?? null, modelSide: c.side })}`;
+  if (simple) return `The model's side is ${c.side} with ${Math.round((c.model ?? 0) * 100)}% against the Book's ${Math.round((c.fair ?? 0) * 100)}%. What explains the Book's number?\n${JSON.stringify({ sport, game: c.matchup, start: c.start, market, player: c.player ?? null, modelSide: c.side })}`;
   const facts = {
     sport,
     game: c.matchup,
@@ -189,7 +189,7 @@ export function researchPrompt(c, sport, { simple = false } = {}) {
     teammatesOutSeen: p.out ?? [],
     diagnosis: c.diagnosis ? { cause: c.diagnosis.cause, sub: c.diagnosis.sub ?? null, why: c.diagnosis.why } : null,
   };
-  return `The model's side is ${c.side} with ${Math.round((c.model ?? 0) * 100)}% against the book's ${Math.round((c.fair ?? 0) * 100)}%. What explains the book's number?\n${JSON.stringify(facts)}`;
+  return `The model's side is ${c.side} with ${Math.round((c.model ?? 0) * 100)}% against the Book's ${Math.round((c.fair ?? 0) * 100)}%. What explains the Book's number?\n${JSON.stringify(facts)}`;
 }
 
 // (an answer that says its own search failed: "I hit the search limit", "the search tool hit its usage limit",
@@ -768,20 +768,20 @@ export function researchDecision(call, x, trust = 0.5, { keyed = false, priced =
   if (call.act === 'bet' && call.side && x.side !== call.side) return null;
   const p = r4(clearedChanceAt('prop', x.fair, x.model, trust));
   const ev = r4((1 - (x.push ?? 0)) * (p * decimal(x.odds) - 1));
-  const words = `ev ${ev > 0 ? '+' : ''}${ev} on the ${x.side} at ${p} (the trust ${r2(trust)}, its lean held inside the GAP; the book's ${r4(x.fair)})`;
+  const words = `ev ${ev > 0 ? '+' : ''}${ev} on the ${x.side} at ${p} (the trust ${r2(trust)}, its lean held inside the GAP; the Book's ${r4(x.fair)})`;
   if (waiting?.length) return { as: 'check', p, ev, why: `still a CHECK this run: waiting on the news: ${waiting.join(', ')}` };
   const noPrice = !priced && keyed;
-  if (noPrice && !fresh && asksLeft) return { as: 'check', p, ev, why: "still a CHECK this run: no price of the book's yet, its props owed an ask" };
-  if (noPrice || stored === 'pulled') return { as: 'pass', p, ev, why: `passed: the book has no price for it now (${noPrice ? 'not on its board' : 'taken down'})` };
+  if (noPrice && !fresh && asksLeft) return { as: 'check', p, ev, why: "still a CHECK this run: no price of the Book's yet, its props owed an ask" };
+  if (noPrice || stored === 'pulled') return { as: 'pass', p, ev, why: `passed: the Book has no price for it now (${noPrice ? 'not on its board' : 'taken down'})` };
   // (a skip no research answers (a juiced price it can't know, a long shot, the skew): passed with its words)
   if (hard) return { as: 'pass', p, ev, why: `passed: ${hard} (a skip the research's ${call.act === 'bet' ? 'finding' : 'input'} doesn't answer), out of the CHECKs` };
   const at = stored === 'stale' ? ' (at its stored price: none newer to be had this run)' : '';
   if (call.act === 'bet' && low) {
     const cp = Number.isFinite(corrected?.p) ? r4(corrected.p) : p;
     const cev = Number.isFinite(corrected?.ev) ? r4(corrected.ev) : ev;
-    const cw = `ev ${cev > 0 ? '+' : ''}${cev} on the ${x.side} at ${cp} (${Number.isFinite(corrected?.p) ? 'the corrected chance' : 'the trusted chance, no correction this run'}; the book's ${r4(x.fair)})`;
+    const cw = `ev ${cev > 0 ? '+' : ''}${cev} on the ${x.side} at ${cp} (${Number.isFinite(corrected?.p) ? 'the corrected chance' : 'the trusted chance, no correction this run'}; the Book's ${r4(x.fair)})`;
     if (cev > 0) return { as: 'bet', p: cp, ev: cev, why: `found nothing on a small line, its corrected chance clearing the vig (${cw})${at}: bet ${call.earned ? 'at its Kelly stake (the research has earned its level)' : `at ${RESEARCH_UNITS}u at most`} (researchBet), out of the CHECKs` };
-    return { as: 'practice', p: cp, ev: cev, why: `found nothing on a small line, short of the vig (${cw})${at}: the bot's side as a practice pick (0.5u, D25), out of the CHECKs` };
+    return { as: 'practice', p: cp, ev: cev, why: `found nothing on a small line, short of the vig (${cw})${at}: the Bot's side as a practice pick (0.5u, D25), out of the CHECKs` };
   }
   if (ev > 0) return { as: 'bet', p, ev, why: `an edge (${words})${at}: bet ${call.earned ? 'at its Kelly stake (the research has earned its level)' : `at ${RESEARCH_UNITS}u at most`} (${call.act === 'bet' ? 'researchBet' : 'researchAdjusted'}), out of the CHECKs` };
   return { as: 'pass', p, ev, why: `no edge (${words})${at}: passed, out of the CHECKs` };

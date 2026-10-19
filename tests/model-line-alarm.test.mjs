@@ -19,7 +19,7 @@ test('lineAlarmOf: a far low line with an unsized cause its way, its safe side t
   const q = lineAlarmOf({ sport: 'nba', name: 'A', mu: 20, implied: 10, line: 9.5, status: { why: 'A questionable' } });
   assert.equal(q.key, 'line-questionable');
   assert.equal(q.safe, 'under');
-  assert.match(q.why, /^A questionable, and the line's price puts him at 10 against the bot's 20: the market reading a minutes cap or an early exit, which the projection doesn't size$/);
+  assert.match(q.why, /^A questionable, and the line's price puts him at 10 against the Bot's 20: the market reading a minutes cap or an early exit, which the projection doesn't size$/);
   // (an NBA starter's back-to-back where b2bS isn't kept; not a bench player's (b2bB: his ran high), not with
   // b2bS kept, never the NHL's (a confirmed goalie isn't resting) nor MLB's)
   assert.equal(lineAlarmOf({ sport: 'nba', mu: 20, implied: 10, line: 9.5, b2b: 1, roleKnown: 'S' }).key, 'line-rest');
@@ -156,8 +156,8 @@ test('C20: the far lines bet against the market doing worse than the near ones a
   const c = c20({ sport: 'nhl', bets, checks });
   assert.equal(c.id, 'C20');
   assert.equal(c.status, 'watch');
-  assert.match(c.headline, /did worse against the book than the near ones \(z -2\.54\): the far line alone is news, a PASS/);
-  assert.equal(c.rows.find((r) => r.key === 'bets: line far over, the bot against it').n, 70);
+  assert.match(c.headline, /did worse against the Book than the near ones \(z -2\.54\): the far line alone is news, a PASS/);
+  assert.equal(c.rows.find((r) => r.key === 'bets: line far over, the Bot against it').n, 70);
   assert.equal(c.rows.find((r) => r.key === "CHECKs: the line alarm's (a far line with its cause)").n, 1);
   const few = c20({ sport: 'nhl', bets: bets.slice(50, 100), checks: [] });
   assert.equal(few.status, 'thin');
@@ -165,7 +165,7 @@ test('C20: the far lines bet against the market doing worse than the near ones a
   const labeled = Array.from({ length: 70 }, (_, i) => prop(0.4, 'over', i < 20, { projection: { mean: 2, lineRatio: 0.4, lineAlarm: { key: 'line-questionable' } } }));
   const a = c20({ sport: 'nba', bets: [...labeled, ...bets.slice(70)], checks: [] });
   assert.equal(a.rows.find((r) => r.key === "bets: the line alarm's (a far line with its cause)").n, 70);
-  assert.match(a.headline, /the line alarm's label .* did worse against the book than the near ones \(z -2\.54\): the alarm could be a role CHECK/);
+  assert.match(a.headline, /the line alarm's label .* did worse against the Book than the near ones \(z -2\.54\): the alarm could be a role CHECK/);
 });
 
 test('checkTrim keeps the line ratio and the alarm key C20 reads', () => {

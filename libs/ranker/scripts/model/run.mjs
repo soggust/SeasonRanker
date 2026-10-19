@@ -505,7 +505,7 @@ async function liveLines(r) {
     // (listed, but not by the book yet: its markets rest too, rather than buying the call again each hour; the
     // game stays off ESPN's board, betGames holding it till LAST_CALL)
     if (!l) {
-      if (linesDue(r, u.game)) for (const m of MARKETS) if (!placed.has(`${u.game.id}:${m}`)) rest(r, `${u.game.id}:${m}`, 'not priced by the book on The Odds API');
+      if (linesDue(r, u.game)) for (const m of MARKETS) if (!placed.has(`${u.game.id}:${m}`)) rest(r, `${u.game.id}:${m}`, 'not priced by the Book on The Odds API');
       continue;
     }
     const odds = { spread: l.spreads, total: l.totals, ml: l.h2h };
@@ -543,7 +543,7 @@ function consensusSeen(r, kind, list, of) {
 const consensusOn = (lines, key, side) => consensusFields(lines?.consensus?.[key], side, key === 'total' ? 'over' : 'home');
 function consensusLog(r, kind) {
   const c = r.consensusSeen?.[kind];
-  if (c?.markets) console.log(`${r.sport}: the other books' consensus on ${c.with} of ${c.markets} ${kind === 'lines' ? 'game markets' : 'props'} at DraftKings' line, DraftKings ${Math.round(OUTLIER * 100)}%+ better on a side on ${c.outliers} (logged, not priced off)`);
+  if (c?.markets) console.log(`${r.sport}: the other books' consensus on ${c.with} of ${c.markets} ${kind === 'lines' ? 'game markets' : 'props'} at the Book's line, the Book ${Math.round(OUTLIER * 100)}%+ better on a side on ${c.outliers} (logged, not priced off)`);
 }
 
 // (The Odds API's events matched to the coming ESPN games: the same two teams, by nickname, within six hours,
@@ -699,8 +699,8 @@ async function researchCalls(r, checks, notes, rosterOf = async () => null) {
       } else if (got.uncarried) {
         // (a real reason the model lacks and no input of its can carry (a role alone, another reason with no
         // player's status): passed, out of the CHECKs, the research's reason on it (recordChecks closes it))
-        call = { act: 'pass', decided: true, why: `passed: the research's reason is real and no input of the bot's can carry it (${got.why}); ${call.why}` };
-      } else call = { act: 'check', why: `no input of the bot's takes it (${got.why}); ${call.why}` };
+        call = { act: 'pass', decided: true, why: `passed: the research's reason is real and no input of the Bot's can carry it (${got.why}); ${call.why}` };
+      } else call = { act: 'check', why: `no input of the Bot's takes it (${got.why}); ${call.why}` };
     }
     r.researchCalls.set(c.id, { ...call, side: c.side, category: rs.category ?? null });
     by[call.act] = (by[call.act] ?? 0) + 1;
@@ -1198,7 +1198,7 @@ function refitTrust(r) {
     .filter((b) => sharp(b) && evidence(b))
     .map((b) => timed(b, 'lines'));
   for (const market of MARKETS) {
-    refit(market, [...backtest.filter((b) => b.market === market), ...live.filter((b) => b.market === market)], { what: `${market} trust in the bot`, bets: `${market} bets (backtest and live)` });
+    refit(market, [...backtest.filter((b) => b.market === market), ...live.filter((b) => b.market === market)], { what: `${market} trust in the Bot`, bets: `${market} bets (backtest and live)` });
     trust[market].backtest = (r.backtestBets ?? []).filter((b) => b.market === market).length;
   }
   // (start 0.5, refit once 40 of its bets are graded)
@@ -1496,7 +1496,7 @@ async function statCorrections(r) {
       console.warn(`${sport}: stat corrections for ${id} not read (${err.message})`);
     }
   }
-  if (changed) console.log(`${sport}: ${changed} props' counts corrected in the box score since (noted; graded as the book graded them, at the final)`);
+  if (changed) console.log(`${sport}: ${changed} props' counts corrected in the box score since (noted; graded as the Book graded them, at the final)`);
 }
 
 // 4c. the CHECKs (checks.mjs: the markets too far from the book to bet, kept anyway) graded as a bet would be,
@@ -1727,7 +1727,7 @@ function betGames(r) {
     // (every market priced, both sides, on the betting board: writeBoard)
     (r.boardGames ??= new Map()).set(game.id, { game, markets: boardMarkets(priced, (m) => trust[m]?.trust ?? START_TRUST, lines.consensus), at });
     // (a market the book didn't price, by The Odds API's word: rests)
-    if (apiLines && !notYet) for (const m of MARKETS) if (!priced.some((x) => x.market === m) && !r.placed.has(`${game.id}:${m}`)) rest(r, `${game.id}:${m}`, 'not priced by the book');
+    if (apiLines && !notYet) for (const m of MARKETS) if (!priced.some((x) => x.market === m) && !r.placed.has(`${game.id}:${m}`)) rest(r, `${game.id}:${m}`, 'not priced by the Book');
     let picks = [];
     for (const market of priced) {
       const id = `${game.id}:${market.market}`;
@@ -2234,7 +2234,7 @@ async function betProps(r) {
         run.storedMoved = (run.storedMoved ?? 0) + sp.moved.size;
       }
       if (!board_.length) {
-        holdNoted(openChecks, "not on the board, and no price of the book's kept");
+        holdNoted(openChecks, "not on the board, and no price of the Book's kept");
         continue;
       }
       run.games++;
@@ -2343,7 +2343,7 @@ async function betProps(r) {
           }
           if (d?.as === 'practice') {
             const rule = call.rule ? { rule: call.rule } : {};
-            candidates.push({ game, x: { ...x, p: d.p, ev: d.ev, guard: { why: `the research's ${input}: a small line short of the vig, the bot's side as practice` }, units: PRACTICE_UNITS, researchBet: { check: id, category: 'market', confidence: call.confidence ?? 'high', why: call.why, practice: true, ...rule }, researchPractice: { rank: 1, quota: 1, slate: 'research', edge: round(d.p - x.fair, 4) } }, exp });
+            candidates.push({ game, x: { ...x, p: d.p, ev: d.ev, guard: { why: `the research's ${input}: a small line short of the vig, the Bot's side as practice` }, units: PRACTICE_UNITS, researchBet: { check: id, category: 'market', confidence: call.confidence ?? 'high', why: call.why, practice: true, ...rule }, researchPractice: { rank: 1, quota: 1, slate: 'research', edge: round(d.p - x.fair, 4) } }, exp });
           }
           if (d?.as === 'bet') {
             // (its level earned (research.mjs researchLevelOf): its Kelly stake at the cleared chance, else RESEARCH_UNITS)
@@ -2355,7 +2355,7 @@ async function betProps(r) {
           const before = (ledger.checks ?? []).find((c) => c.id === id);
           const p = d?.p ?? round(x.p, 4);
           const ev = d?.ev ?? round(x.ev, 4);
-          const moved = { id, input: input === null ? "none: a reason no input of the bot's carries" : call.act === 'bet' ? input : `${input} (${call.note.held ? "on the injury report already: the bot's input as it stood" : 'the injury report, this run'})`, inputs: call.note?.inputs ?? undefined, before: { mean: before?.projection?.mean ?? null, model: before?.model ?? null, side: before?.side ?? null, p: before?.p ?? null }, after: { mean: round(x.projection.mean, 2), model: round(x.model, 4), side: x.side, ...(d?.p === null ? {} : { p, ev }) }, now };
+          const moved = { id, input: input === null ? "none: a reason no input of the Bot's carries" : call.act === 'bet' ? input : `${input} (${call.note.held ? "on the injury report already: the Bot's input as it stood" : 'the injury report, this run'})`, inputs: call.note?.inputs ?? undefined, before: { mean: before?.projection?.mean ?? null, model: before?.model ?? null, side: before?.side ?? null, p: before?.p ?? null }, after: { mean: round(x.projection.mean, 2), model: round(x.model, 4), side: x.side, ...(d?.p === null ? {} : { p, ev }) }, now };
           (r.researchMoved ??= []).push(moved);
           console.log(`${sport}${DRY ? ' (dry)' : ''}: research ${d?.as ?? 'priced'} ${x.prop.athlete.name} ${x.prop.stat.label} ${x.prop.line}: ${moved.input}: projection ${moved.before.mean ?? '?'} -> ${moved.after.mean}, model ${moved.before.side ?? '?'} ${moved.before.model ?? '?'} -> ${moved.after.side} ${moved.after.model}${d?.p === null ? '' : `, p ${moved.before.p ?? '?'} -> ${p}, ev ${ev}`}; ${now}`);
         }
@@ -2367,7 +2367,7 @@ async function betProps(r) {
             continue;
           }
           if (!x.priced && hasKey()) {
-            if (!heldWhy.has(id)) heldWhy.set(id, fresh ? 'the book has no price for it now' : "no price of the book's kept, and its props not asked again this run");
+            if (!heldWhy.has(id)) heldWhy.set(id, fresh ? 'the Book has no price for it now' : "no price of the Book's kept, and its props not asked again this run");
             continue;
           }
           if (newsMissing(sport, r.live.get(game.id), { kind: 'props', home: String(x.prop.athlete.team) === String(game.home), pitcher: !!x.prop.stat.pitcher }).length && phase !== 'last') {
@@ -2391,7 +2391,7 @@ async function betProps(r) {
         }
       }
       // (a noted open CHECK this game's run didn't re-price: why, kept on it (resolveChecks' held))
-      for (const c of openChecks) if (!heldWhy.has(c.id)) heldWhy.set(c.id, Date.parse(game.date) - Date.now() < 5 * 60e3 ? 'its game about to start' : "not on the board, and no price of the book's kept");
+      for (const c of openChecks) if (!heldWhy.has(c.id)) heldWhy.set(c.id, Date.parse(game.date) - Date.now() < 5 * 60e3 ? 'its game about to start' : "not on the board, and no price of the Book's kept");
       for (const c of openChecks) holdNoted([c], heldWhy.get(c.id));
       // (an open CHECK the research answered (nothing explains the gap, or the reason in the inputs) that this run
       // neither decided nor held with its own words (researchDecision): why it's still a CHECK, on its research's
@@ -2483,7 +2483,7 @@ async function betProps(r) {
     // (a slate's practice pick: placed at the practice stake for the slate, not for clearing the vig, a LIKE at most)
     // (the sanity guard (desk.mjs suspectOf, D23): an ev past the bar at the practice stake, a LIKE at most, marked)
     if (x.suspect) Object.assign(bet, { suspect: x.suspect, ...(placed.intent === 'edge' ? { units: Math.min(bet.units, PRACTICE_UNITS), practice: bet.practice ?? `suspect: ${x.suspect.why}` } : {}) });
-    if (topN && placed.intent === 'edge') Object.assign(bet, { units: PRACTICE_UNITS, topN: { rank: topN.rank, quota: topN.quota, slate: topN.slate, edge: topN.edge }, practice: bet.practice ?? (topN.slate === 'research' ? `practice: the research found nothing on a small line, its chance short of the vig (D25): the model's side (${topN.edge >= 0 ? '+' : ''}${round(topN.edge * 100, 1)} points over the book's no-vig)` : `practice: its game's #${topN.rank} of ${topN.quota} by edge before the vig (+${round(topN.edge * 100, 1)} points over the book's no-vig), short of the vig`) });
+    if (topN && placed.intent === 'edge') Object.assign(bet, { units: PRACTICE_UNITS, topN: { rank: topN.rank, quota: topN.quota, slate: topN.slate, edge: topN.edge }, practice: bet.practice ?? (topN.slate === 'research' ? `practice: the research found nothing on a small line, its chance short of the vig (D25): the model's side (${topN.edge >= 0 ? '+' : ''}${round(topN.edge * 100, 1)} points over the Book's no-vig)` : `practice: its game's #${topN.rank} of ${topN.quota} by edge before the vig (+${round(topN.edge * 100, 1)} points over the Book's no-vig), short of the vig`) });
     if (x.researchBet) Object.assign(bet, { researchBet: x.researchBet, context: { ...bet.context, research: x.researchBet.why } });
     // (a research-adjusted CHECK decided by its price (above): its own market, tagged and held, researchTag)
     if (x.researchAdjusted) Object.assign(bet, { researchAdjusted: x.researchAdjusted, context: { ...bet.context, research: `priced with the research's ${x.researchAdjusted.input}` } });
@@ -2786,7 +2786,7 @@ function saveState(r) {
     const why = `What they were priced on changed before the start: ${games.join(' | ')}`;
     state.changelog.push({ at, what: 'Open bets priced again on news', from: back.length, to: again, why: why.length > 600 ? `${why.slice(0, 597)}...` : why });
   }
-  if (r.replaced) state.changelog.push({ at, what: 'Open bets replaced', from: r.replaced, to: r.newBets, why: 'Priced again with the context the bot has now (its terms as fit this run: see Context)' });
+  if (r.replaced) state.changelog.push({ at, what: 'Open bets replaced', from: r.replaced, to: r.newBets, why: 'Priced again with the context the Bot has now (its terms as fit this run: see Context)' });
   if (r.madeRoom && !DRY) state.changelog.push({ at, what: 'Action bets taken back for room', from: r.madeRoom, to: 0, why: `Open action bets (no edge) taken back so this run's edge bets on their games fit the ${GAME_CAP}u cap` });
   const abbr = new Map();
   for (const g of history) {
@@ -2820,7 +2820,7 @@ function saveState(r) {
     sources: Object.fromEntries([...new Set([...Object.keys(r.times ?? {}), ...Object.keys(r.asked ?? {})])].map((k) => [k, { ...(r.times?.[k] ?? {}), asked: r.asked?.[k] ?? 'always', feeds: OPTIONAL[sport]?.[k] ?? null }])),
     props: r.props
       ? {
-          odds: "DraftKings' prices where the board has them (NBA, NHL, MLB); else -110 a side assumed, lines far from the player's usual not bet (NFL)",
+          odds: "the Book's prices where the board has them (NBA, NHL, MLB); else -110 a side assumed, lines far from the player's usual not bet (NFL)",
           perGame: PER_GAME,
           lastRun: r.propRun,
           // (the fit that priced the run (fitcache.mjs): when it was searched, its fit day and its code's hash, the

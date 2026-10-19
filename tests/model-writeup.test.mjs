@@ -39,19 +39,19 @@ const sheetOf = (id, extra = {}) => {
 test('the four samples: their plain reason and risk, word for word, each passing the grounding checks', () => {
   const want = {
     '401872990:prop:recYds': {
-      reason: "Over 8.5 receiving yards for Cole Kmet: the bot projects 19.5, 11 over the line. His blended rate is 17.9 a game (4 games this season, 18 last season); the fit scaling every player's receiving yards up (+16.6% here) pushes it up to the projection. We make the over 64%; at -115 it needs 53%, and DraftKings' no-vig price says 51%, so the edge is the projection, at half weight while Rec Yds props are untested.",
-      risk: "The bot is 26.5 points from the market, past the 15-point gap the desk now bets; a gap that size is more often news it hasn't seen than an edge.",
+      reason: "Over 8.5 receiving yards for Cole Kmet: the Bot projects 19.5, 11 over the line. His blended rate is 17.9 a game (4 games this season, 18 last season); the fit scaling every player's receiving yards up (+16.6% here) pushes it up to the projection. 67% of his weighted games went over 8.5. We make the over 64%; at -115 it needs 53%, and the Book's no-vig price says 51%, so the edge is the projection, at half weight while Rec Yds props are untested.",
+      risk: "The Bot is 26.5 points from the market, past the 15-point gap the desk now bets; a gap that size is more often news it hasn't seen than an edge.",
     },
     '401892478:prop:saves': {
-      reason: "Under 23.5 saves for Mackenzie Blackwood: the bot projects 20.9, 2.6 under the line. His blended rate is 23 a game (3 starts this season, 37 last season), 22.7 over his last 5; the game script, with TOR expected to score 2.4 (-5% here), brings it down to the projection. We make the under 59%; at -105 it needs 51%, and DraftKings' no-vig price says 48%, so the edge is the projection, at half weight while Saves props are untested.",
-      risk: "The bot is 21.6 points from the market, past the 15-point gap the desk now bets; a gap that size is more often news it hasn't seen than an edge.",
+      reason: "Under 23.5 saves for Mackenzie Blackwood: the Bot projects 20.9, 2.6 under the line. His blended rate is 23 a game (3 starts this season, 37 last season), 22.7 over his last 5; the game script, with TOR expected to score 2.4 (-5% here), brings it down to the projection. We make the under 59%; at -105 it needs 51%, and the Book's no-vig price says 48%, so the edge is the projection, at half weight while Saves props are untested.",
+      risk: "The Bot is 21.6 points from the market, past the 15-point gap the desk now bets; a gap that size is more often news it hasn't seen than an edge.",
     },
     '401891805:spread': {
-      reason: "MIN +1.5: the bot has MIN winning 3.4 to 2.9, so it loses only if FLA wins by 2 or more. We make MIN 70.3% to cover; at -217 it needs 68.5%, and DraftKings' no-vig price says 65.7%, so the edge is the bot's read of the game, with the desk leaning only part of the way toward it. Jesper Wallstedt vs Jacob Markstrom in net, a term the bot counts. The situational factors barely move it.",
-      risk: "The bot is 13.2 points from the market, past the 12-point gap the desk now bets; a gap that size is more often news it hasn't seen than an edge.",
+      reason: "MIN +1.5: the Bot has MIN winning 3.4 to 2.9, so it loses only if FLA wins by 2 or more. We make MIN 70.3% to cover; at -217 it needs 68.5%, and the Book's no-vig price says 65.7%, so the edge is the Bot's read of the game, with the desk leaning only part of the way toward it. Jesper Wallstedt vs Jacob Markstrom in net, a term the Bot counts. The situational factors barely move it.",
+      risk: "The Bot is 13.2 points from the market, past the 12-point gap the desk now bets; a gap that size is more often news it hasn't seen than an edge.",
     },
     '401907994:prop:k': {
-      reason: "Over 4.5 strikeouts for Sean Burke: the bot projects 5.2, 0.7 over the line. His blended rate is 5.6 a game (24 starts this season, 21 last season); CLE's lineup, which strikes out less than usual (-5.6% here), brings it down to the projection. We make the over 54.1%; at -101 it needs 50.2%, and DraftKings' no-vig price says 47.4%, so the edge is the projection, at half weight while Strikeouts props are untested.",
+      reason: "Over 4.5 strikeouts for Sean Burke: the Bot projects 5.2, 0.7 over the line. His blended rate is 5.6 a game (24 starts this season, 21 last season); CLE's lineup, which strikes out less than usual (-5.6% here), brings it down to the projection. We make the over 54.1%; at -101 it needs 50.2%, and the Book's no-vig price says 47.4%, so the edge is the projection, at half weight while Strikeouts props are untested.",
       risk: "When this was priced, the game's own lines were held (a starting pitcher not announced).",
     },
   };
@@ -175,28 +175,28 @@ test("the validator: places, invented names, number words, fractions and banned 
       '401872990:prop:recYds',
       {},
       'Kmet over 8.5 on volume, against a market that strongly disagrees',
-      "The case is volume: his blended rate is 17.9 receiving yards over 4 games, the model projects 19.5, 11 over the line, and 67% of his weighted games cleared 8.5. Two things inside that number argue for caution. The fit scales every receiver up 16.6%, yet across all players its receiving-yards projections have run 6.4 yards above what happened, and GB's defense takes 6.7% off. CHI starting a backup QB, Tyson Bagent, is a term the game model counts, and the spread had moved 5.5 points before the bet. DraftKings' no-vig price makes the over 51% against the model's 77%; at half weight for an untested prop type the desk bets 63.9% against a 53.5% break-even.",
+      "The case is volume: his blended rate is 17.9 receiving yards over 4 games, the model projects 19.5, 11 over the line, and 67% of his weighted games cleared 8.5. Two things inside that number argue for caution. The fit scales every receiver up 16.6%, yet across all players its receiving-yards projections have run 6.4 yards above what happened, and GB's defense takes 6.7% off. CHI starting a backup QB, Tyson Bagent, is a term the game model counts, and the spread had moved 5.5 points before the bet. The Book's no-vig price makes the over 51% against the model's 77%; at half weight for an untested prop type the desk bets 63.9% against a 53.5% break-even.",
       'The model sits 26.5 points from the market, past the 15-point gap the desk now bets, and his recent 12 gets no weight; a backup QB and a quiet game keep him under 8.5.',
     ],
     [
       '401892478:prop:saves',
       {},
       "Blackwood under 23.5 saves on TOR's light expected volume",
-      "This is a workload bet: the model projects 20.9 saves, 2.6 under the line, because both things that drive a goalie's night point down. Goalies facing TOR make fewer saves, worth 4.5% here, and with TOR expected to score only 2.4 to COL's 4.1, the game script takes off another 5%. The saves projection has earned a hearing: over 852 back-tested games it missed by 5.04 saves against 5.58 for a goalie's own average, and at this chance it said 64.3% and saw 64.4% happen. DraftKings' no-vig price says 48%; at half weight for an untested prop type the desk bets 58.8% against a 51.2% break-even.",
+      "This is a workload bet: the model projects 20.9 saves, 2.6 under the line, because both things that drive a goalie's night point down. Goalies facing TOR make fewer saves, worth 4.5% here, and with TOR expected to score only 2.4 to COL's 4.1, the game script takes off another 5%. The saves projection has earned a hearing: over 852 back-tested games it missed by 5.04 saves against 5.58 for a goalie's own average, and at this chance it said 64.3% and saw 64.4% happen. The Book's no-vig price says 48%; at half weight for an untested prop type the desk bets 58.8% against a 51.2% break-even.",
       'The model is 21.6 points from the market, past the 15-point gap the desk now bets, on 3 starts of his season, and the line had already dropped from 24.5 before the bet.',
     ],
     [
       '401891805:spread',
       { ledger: NHL_LEDGER },
       'MIN +1.5 likely cashes, but -217 leaves almost no edge',
-      "This is a likely winner at a price that leaves little over. The model has MIN ahead outright, 3.4 goals to FLA's 2.9, so the bet loses only if FLA wins by 2 or more, and it rates the cover 78.9% against DraftKings' no-vig 65.7%. The goalie matchup is the one context term the model keeps: Jesper Wallstedt has saved 0.28 goals a game above expected and Jacob Markstrom sits at -0.21, but measured against each team's usual starter it moves the margin only 0.05. At -217 the break-even is 68.5% and the desk bets 70.3%, an edge of 1.9 points.",
+      "This is a likely winner at a price that leaves little over. The model has MIN ahead outright, 3.4 goals to FLA's 2.9, so the bet loses only if FLA wins by 2 or more, and it rates the cover 78.9% against the Book's no-vig 65.7%. The goalie matchup is the one context term the model keeps: Jesper Wallstedt has saved 0.28 goals a game above expected and Jacob Markstrom sits at -0.21, but measured against each team's usual starter it moves the margin only 0.05. At -217 the break-even is 68.5% and the desk bets 70.3%, an edge of 1.9 points.",
       "The model is 13.2 points from the market, past the 12-point gap the desk now bets, for a 1.9-point edge; at -217 one loss takes 2.17 wins to repay, and the desk's 15 graded NHL spreads went 10-5 yet lost 1.3 units.",
     ],
     [
       '401907994:prop:k',
       {},
       "Burke over 4.5 strikeouts on a full season's rate",
-      "The over rests on a long record: a blended 5.6 strikeouts a game over 24 starts this season with 21 last season behind it, and 61.6% of his weighted starts cleared 4.5. Even after CLE's lineup takes 5.6% off, the model projects 5.2, 0.7 over the line. The strikeout fit has been close to honest near this chance, saying 64.2% where 61.8% happened over 89 back-tested games. DraftKings' no-vig price says 47.4%; the desk bets 54.1% against a 50.2% break-even, an edge of 3.9 points with the lean already tapered because the model sits 13.4 points from the market.",
+      "The over rests on a long record: a blended 5.6 strikeouts a game over 24 starts this season with 21 last season behind it, and 61.6% of his weighted starts cleared 4.5. Even after CLE's lineup takes 5.6% off, the model projects 5.2, 0.7 over the line. The strikeout fit has been close to honest near this chance, saying 64.2% where 61.8% happened over 89 back-tested games. The Book's no-vig price says 47.4%; the desk bets 54.1% against a 50.2% break-even, an edge of 3.9 points with the lean already tapered because the model sits 13.4 points from the market.",
       'His last 5 starts averaged 4.2, under the line, and the fit gives recent form no weight; the game\'s lines were held because a starting pitcher was not announced and lineups were not posted.',
     ],
   ];
@@ -329,7 +329,7 @@ test('buildPicks: each pick its plain reason and risk (by plain), kept in writeu
   const live = buildPicks('nfl', pickLedger(), {}, GAMES, NOW, { state: STATE }).picks.find((x) => x.id === p.id);
   assert.equal(live.reason, frozen.reason);
   // (the old text kept a release, to diff against)
-  assert.match(legacyReasonOf(kmetBet(), sample('401872990').game), /^Bot 77% vs the book 51%/);
+  assert.match(legacyReasonOf(kmetBet(), sample('401872990').game), /^Bot 77% vs the Book 51%/);
 });
 
 test("applyWriteups: Claude's analysis only for the facts it was written from (its hash), else the plain text", () => {
@@ -344,15 +344,15 @@ test("applyWriteups: Claude's analysis only for the facts it was written from (i
 
 test("a CHECK's write-up: the disagreement and its question in place of the price; its risk the gap's", () => {
   const { bet, sib, game } = sample('401892478');
-  const check = { ...bet, intent: 'check', units: 0, reason: "the model's 70% against the book's 48%: too far from the market to trust" };
+  const check = { ...bet, intent: 'check', units: 0, reason: "the model's 70% against the Book's 48%: too far from the market to trust" };
   const sheet = factsOf(check, { game, sib, state: STATE });
   const { reason, risk } = plainOf(sheet);
   assert.match(reason, /^Under 23\.5 saves for Mackenzie Blackwood/);
-  assert.match(reason, /Would be a \+\d+\.\d\d Kelly bet with its doubt cleared \(the under 70% against DraftKings' no-vig 48%\)/);
-  assert.match(reason, /Not bet: a 21\.6-point gap with nothing to explain it is more often the bot missing something than value\./);
+  assert.match(reason, /Would be a \+\d+\.\d\d Kelly bet with its doubt cleared \(the under 70% against the Book's no-vig 48%\)/);
+  assert.match(reason, /Not bet: a 21\.6-point gap with nothing to explain it is more often the Bot missing something than value\./);
   assert.match(reason, /The question: is Mackenzie Blackwood confirmed in net/);
   assert.doesNotMatch(reason, /We make/);
-  assert.match(risk, /^A gap that size has more often been the bot missing something/);
+  assert.match(risk, /^A gap that size has more often been the Bot missing something/);
   assert.deepEqual(validate(`${reason} ${risk}`, sheet), []);
 });
 
@@ -362,7 +362,7 @@ test("a CHECK's question kept in its last resort, past every trim; a write-up th
   const { reason } = plainOf(factsOf(long, { game, sib, state: STATE }));
   assert.ok(reason.length <= 450, reason);
   assert.match(reason, /The question:/);
-  assert.deepEqual(applyWriteups({ reason: 'x' }, { plain: { reason: 'Model 70% vs the book 48%.', legacy: true } }), { reason: 'Model 70% vs the book 48%.', by: 'legacy' });
+  assert.deepEqual(applyWriteups({ reason: 'x' }, { plain: { reason: 'Model 70% vs the Book 48%.', legacy: true } }), { reason: 'Model 70% vs the Book 48%.', by: 'legacy' });
 });
 
 test("buildPicks: the CHECKs' write-ups kept only while they show (not graded, closed or bet after all)", () => {

@@ -342,7 +342,7 @@ export function pickFor(model, lines, trust, { edge, untested, guard = null, api
     units = 0.5;
   }
   // (the sanity guard, desk.mjs suspectOf (D23): an ev past EV_SUSPECT at the practice stake, flagged loudly)
-  const suspect = suspectOf(pick.ev, `p ${Math.round(pick.p * 10000) / 10000}, the book's no-vig ${Math.round(pick.fair * 10000) / 10000}`);
+  const suspect = suspectOf(pick.ev, `p ${Math.round(pick.p * 10000) / 10000}, the Book's no-vig ${Math.round(pick.fair * 10000) / 10000}`);
   if (suspect) {
     flags.push(`suspect: ${suspect.why}`);
     units = 0.5;
@@ -395,7 +395,7 @@ export function reasonOf(bet) {
   const label = Object.fromEntries(TERMS);
   const carried = parts.filter(([, v]) => v > 0).map(([k, v]) => `${label[k] ?? k} (+${round(v, 2)} in log odds)`);
   const against = parts.filter(([, v]) => v < 0).map(([k, v]) => `${label[k] ?? k} (${round(v, 2)})`);
-  const pieces = [`The model gives ${bet.pick} a ${pct(bet.model)} chance against the book's ${pct(bet.fair)} (${bet.fairFrom === 'pinnacle' ? "Pinnacle's line, the vig out" : bet.fairFrom === 'espn bet' ? "ESPN BET's line, the vig out" : "DraftKings' own prices, the vig out"}).`];
+  const pieces = [`The Bot gives ${bet.pick} a ${pct(bet.model)} chance against the Book's ${pct(bet.fair)} (${bet.fairFrom === 'pinnacle' ? "Pinnacle's line, the vig out" : bet.fairFrom === 'espn bet' ? "ESPN BET's line, the vig out" : "the Book's own prices, the vig out"}).`];
   if (carried.length) pieces.push(`For it: ${carried.join(', ')}.`);
   if (against.length) pieces.push(`Against it: ${against.join(', ')}.`);
   pieces.push(`The desk bets at ${pct(bet.p)} (trust ${round(bet.context?.trust ?? 0, 2)}${bet.context?.untested ? ', untested: the lean halfway' : ''}); the price needs ${pct(1 / decimal(bet.odds))} to break even.`);
@@ -937,7 +937,7 @@ export async function runMma({ dry = false, gap = null, now = new Date(), log = 
     const t = forced.get(b.id);
     if (!t) continue;
     delete b.trackUnits;
-    Object.assign(b, { intent: 'edge', units: PRACTICE_UNITS, topN: t, practice: `practice: its card's #${t.rank} of ${t.quota}${t.main ? ' (main card)' : ''} by edge before the vig (+${Math.round(t.edge * 1000) / 10} points over the book's no-vig), short of the vig` });
+    Object.assign(b, { intent: 'edge', units: PRACTICE_UNITS, topN: t, practice: `practice: its card's #${t.rank} of ${t.quota}${t.main ? ' (main card)' : ''} by edge before the vig (+${Math.round(t.edge * 1000) / 10} points over the Book's no-vig), short of the vig` });
   }
   if (forced.size) log.log(`${SPORT}${dry ? ' (dry)' : ''}: the card's practice picks: ${forced.size} (${PRACTICE_N.mma} a card, every main-card bout with an edge before the vig, at ${PRACTICE_UNITS}u): ${mlNew.filter((b) => forced.has(b.id)).map((b) => `${b.pick} ${b.odds > 0 ? '+' : ''}${b.odds} +${forced.get(b.id).edge}`).join(', ')}`);
   for (const b of pending) {

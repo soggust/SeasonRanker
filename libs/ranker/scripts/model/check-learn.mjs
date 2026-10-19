@@ -118,9 +118,9 @@ function diagnoseProp(c) {
     gap: fin(c.gap) ? c.gap : fin(c.model) && fin(c.fair) ? round(c.model - c.fair, 4) : null,
   };
   const tags = [];
-  if (c.cause === 'news') tags.push({ cause: 'news', sub: c.newsUnit ?? 'news', why: `the news on his team's ${c.newsUnit ?? 'unit'} (${c.reason ?? 'a change'}): the book reprices that on the news, the model on the logs` });
-  if (c.cause === 'role') tags.push({ cause: 'role', sub: c.roleReason ?? 'role', why: `his role changing (${c.roleReason ?? 'role'}): the book reprices a role on the news, the model on the logs` });
-  if (c.oddsAssumed) tags.push({ cause: 'unpriced', why: 'priced at an assumed -110: the book’s chance an even guess, so the gap is against no real price' });
+  if (c.cause === 'news') tags.push({ cause: 'news', sub: c.newsUnit ?? 'news', why: `the news on his team's ${c.newsUnit ?? 'unit'} (${c.reason ?? 'a change'}): the Book reprices that on the news, the model on the logs` });
+  if (c.cause === 'role') tags.push({ cause: 'role', sub: c.roleReason ?? 'role', why: `his role changing (${c.roleReason ?? 'role'}): the Book reprices a role on the news, the model on the logs` });
+  if (c.oddsAssumed) tags.push({ cause: 'unpriced', why: 'priced at an assumed -110: the Book’s chance an even guess, so the gap is against no real price' });
   const seen = (fin(p.vac) && p.vac >= 0.05) || has(p.out);
   const lm = n.zMean;
   const lr = n.zRecent ?? lm;
@@ -252,7 +252,7 @@ export function loosenFor(cause, sub = null, market = 'prop') {
 export const FIXES = {
   news: 'the news guard is right to hold these: keep it, and read what the change does to his role before betting them',
   role: 'the role guard is right to hold these: keep it, and build the projection a new role needs before betting them',
-  unpriced: 'the assumed -110 hides the real price: keep these unpriced lines out of the CHECKs, or wait for the book’s price',
+  unpriced: 'the assumed -110 hides the real price: keep these unpriced lines out of the CHECKs, or wait for the Book’s price',
   'missing-starter-not-seen': 'the injury report and roster miss who is out: read the inactives and depth charts (or research these) before pricing',
   'vacated-fade': 'the vacated term (vc) sizes a missing teammate’s work wrongly here: refit vc for these stats, or cap vacF',
   'early-season-prior': 'the prior holds too long early in a season: refit kd (K shrinking with his games) or a smaller K for these stats',

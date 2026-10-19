@@ -126,7 +126,7 @@ export const pastGap = (market, model, fair) => !!GAP[market] && Math.abs(model 
 export function gapGuard(market, model, fair) {
   const limit = GAP[market];
   if (!limit || !Number.isFinite(model) || !Number.isFinite(fair) || Math.abs(model - fair) <= limit) return null;
-  return { skip: true, kind: 'gap', why: `the bot's ${Math.round(model * 100)}% against the book's ${Math.round(fair * 100)}%: too far from the market to trust` };
+  return { skip: true, kind: 'gap', why: `the Bot's ${Math.round(model * 100)}% against the Book's ${Math.round(fair * 100)}%: too far from the market to trust` };
 }
 
 // Each market's two sides, priced: the line, the price, the model's chance (a push left out: margins.mjs cond)
@@ -182,7 +182,7 @@ export function choose(market, trust, evScale) {
     // (a push gives the stake back: only the rest of the chance is won or lost)
     const ev0 = (1 - (s.push ?? 0)) * (p * decimal(s.odds) - 1);
     // (the sanity guard: an ev past EV_SUSPECT held to the bar, the practice stake, and the row marked)
-    const suspect = suspectOf(ev0, `${market.market} ${s.side}${s.line !== null && s.line !== undefined ? ` ${s.line}` : ''} at ${s.odds}: p ${Math.round(p * 10000) / 10000}, the book's no-vig ${Math.round(s.fair * 10000) / 10000}`);
+    const suspect = suspectOf(ev0, `${market.market} ${s.side}${s.line !== null && s.line !== undefined ? ` ${s.line}` : ''} at ${s.odds}: p ${Math.round(p * 10000) / 10000}, the Book's no-vig ${Math.round(s.fair * 10000) / 10000}`);
     if (suspect) return { ...s, p, ev: Math.sign(ev0) * EV_SUSPECT, units: PRACTICE_UNITS, suspect };
     return { ...s, p, ev: ev0, units: stakeFor(ev0, evScale, s.odds) };
   });

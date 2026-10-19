@@ -298,7 +298,7 @@ test('buildFightPicks: the open edge bets by their Kelly score with the page’s
   assert.equal(edge.published, true);
   assert.ok(!isTracked(edge));
   const reason = reasonOf(edge);
-  assert.match(reason, /60% chance against the book's 52%/);
+  assert.match(reason, /60% chance against the Book's 52%/);
   assert.match(reason, /the rating/);
   assert.match(reason, /untested/);
   assert.match(reason, /56%/);
@@ -309,7 +309,7 @@ test('buildFightPicks: the open edge bets by their Kelly score with the page’s
 
 const totals = (key, pairs) => ({ key, markets: [{ key: 'totals', outcomes: pairs.flatMap(([point, over, under]) => [{ name: 'Over', price: over, point }, { name: 'Under', price: under, point }]) }] });
 
-test("totalLinesOf: the book's main point (the pair nearest even), Pinnacle's pair at that point the fair chance, else the listed book with the least vig, else the book's own", () => {
+test("totalLinesOf: the Book's main point (the pair nearest even), Pinnacle's pair at that point the fair chance, else the listed book with the least vig, else the Book's own", () => {
   const ev = { bookmakers: [totals('draftkings', [[2.5, 1.87, 1.95], [1.5, 1.4, 2.9]]), totals('pinnacle', [[2.5, 1.95, 1.95]]), totals('betus', [[2.5, 1.8, 1.9]])] };
   const t = totalLinesOf(ev);
   assert.equal(t.line, 2.5);
@@ -403,7 +403,7 @@ test("round totals' fit: every bout once at each of its rounds' lines, weighing 
   assert.ok(Math.abs(mean - actual) < 0.02, `${mean} vs ${actual}`);
 });
 
-test("buildMmaBoard: a bout's round total as k.total, Over then Under at the book's line with the trusted chance, Kelly and band; the last board's total kept where this run asked none", () => {
+test("buildMmaBoard: a bout's round total as k.total, Over then Under at the Book's line with the trusted chance, Kelly and band; the last board's total kept where this run asked none", () => {
   const now = new Date('2026-10-17T12:00:00Z');
   const b = bout('Home Guy', 'Away Guy', '2026-10-18T02:00:00Z');
   const lines = new Map([[b.key, { lines: { odds: { home: -150, away: 130 }, fair: 0.58 }, src: null, total: { line: 2.5, odds: { over: -120, under: 100 }, fair: 0.53 } }]]);

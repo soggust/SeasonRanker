@@ -369,7 +369,7 @@ export function parlayProblem(list: Pick<Selection, 'sport' | 'event' | 'market'
   const markets = list.map(market);
   if (new Set(markets).size < markets.length) return 'Both sides of one market can’t go in a parlay';
   const games = list.map((s) => `${s.sport}|${s.event}`);
-  if (new Set(games).size < games.length) return 'No same-game parlays: their prices carry correlation adjustments the book makes, which can’t be replicated here. One leg per game';
+  if (new Set(games).size < games.length) return 'No same-game parlays: their prices carry correlation adjustments the Book makes, which can’t be replicated here. One leg per game';
   return null;
 }
 

@@ -169,7 +169,7 @@ const shiftPts = (s: number): string => {
 // (the live calibration in plain words, for the About and the Algorithm tab; null where the state predates it)
 export function calibText(c: LiveCalib | null | undefined): string | null {
   if (!c?.spots) return null;
-  const how = `The bot nudges its own chance on a prop where its graded props show it running hot or cold, one spot at a time (a stat, over or under, the line's size). A spot with few graded props borrows from the ones around it: every sport's props at the same line size, then this sport's, then the spot's own, each nudge 0 till ${c.min} props are graded there and the newest of them come out better with it; then it grows slowly with the evidence, at most ${shiftPts(c.cap).slice(1)} of a coin flip in all, and moves only a little each run.`;
+  const how = `The Bot nudges its own chance on a prop where its graded props show it running hot or cold, one spot at a time (a stat, over or under, the line's size). A spot with few graded props borrows from the ones around it: every sport's props at the same line size, then this sport's, then the spot's own, each nudge 0 till ${c.min} props are graded there and the newest of them come out better with it; then it grows slowly with the evidence, at most ${shiftPts(c.cap).slice(1)} of a coin flip in all, and moves only a little each run.`;
   const spots = Object.entries(c.spots);
   const kept = spots.filter(([, s]) => s.kept);
   if (!spots.length) return `${how} No props graded yet: no nudges.`;
