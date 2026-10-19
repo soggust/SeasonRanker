@@ -25,6 +25,8 @@
 // self-check, the same-game fit: learnView reads it as the action bet it once was), but never in the record, the
 // bankroll, the caps, the same-game exposure or the picks (record, capGame, makeRoom, sizeJointly; picks.mjs).
 
+import { existsSync, readFileSync } from 'node:fs';
+import path from 'node:path';
 import { round } from './ratings.mjs';
 import { cond, mlModel, spreadChances, totalChances, totalSplit } from './margins.mjs';
 import { etDay } from './sources.mjs';
@@ -933,3 +935,237 @@ export function gatedPlacement(edge, units, gate) {
 // RESEARCH_UNITS: run.mjs researchTag), the why saying so. The bets it reads: the caller's, since the epoch
 export const practiceGates = (gates) =>
   Object.fromEntries(Object.entries(gates ?? {}).map(([k, g]) => [k, g.on ? { ...g, practice: false } : { ...g, on: true, practice: true, why: `practice stake (${PRACTICE_UNITS}u at most): ${String(g.why).replace(/: off, the research a label only for them$/, '')}` }]));
+
+// ---- The game lines' history bar (DECISIONS.md D51, 2026-10-19) ----
+//
+// The priced history's verdict on the Bot's line "edges": a positive-edge game-line pick, graded flat at its own
+// price, loses in every sport and market at the close (NFL −11.6% on 874, NHL −6.3% on 1,904, MLB −4.0% on 1,525,
+// NBA −0.1% on 949), and no minimum edge (in points or Kelly) nor any side makes a market net positive walk-forward
+// beyond noise. Most of the "edge" is no lean of the Bot's at all: at a trust of 0 the trusted chance is the fair
+// chance, Pinnacle's no-vig where it posts the line (oddsapi.mjs linesFromEvent), so the row's return at
+// DraftKings' price is the two books' disagreement, a dog's most of all (the proportional de-vig's shade: NFL ML
+// dogs −19.5% on 321). So a line's real stake has to be earned by its segment: its market and the side class the
+// Book's own chance puts it in (segmentOf: the favored side (over .5) or the dog, the over or the under). A segment
+// whose flat record (the history's closes as the shipped version prices them, recency-weighted by season, written by
+// gate.mjs --record to apps/<sport>/src/StaticData/model/line-bar.json; pooled with the live line bets placed since
+// the epoch, whole, the practice ones among them: they are what can earn a segment its stake back) is net positive
+// past BAR_Z standard errors over BAR_MIN picks' worth bets at full stakes; any other segment, and one with no
+// history, bets by its normal rules at the practice stake (PRACTICE_UNITS, a LIKE at most: gatedPlacement), never
+// turned off (D1): an edge is still needed, the pick is still placed, graded, on the Book and in the Practice
+// line (D3). Free to rise: a season of live bets weighs as much as the history. The desk reads the file and never
+// writes it
+export const BAR_Z = 1;
+export const BAR_MIN = 40;
+export const SIDE_CLASSES = ['fav', 'dog', 'over', 'under'];
+// (the timing classes: a line bet placed EARLY_HOURS or more before its start is an early one, nearer a late one.
+// The priced history's clean opens (DraftKings' first price, 8 to 14 hours out in the NBA, NHL and MLB, days out in
+// the NFL) are early, its closes (inside 3 hours) late; the live desk bets inside its 26-hour window, so a line
+// bet at the window's open is early and one at the last chance late. The two are segments of their own: the
+// history's opens beat its closes in every sport, the two books' disagreement most of all, so neither timing's
+// record decides the other's stake)
+export const EARLY_HOURS = 6;
+export const TIMINGS = ['early', 'late'];
+export const timingOf = (hours) => (Number.isFinite(hours) && hours >= EARLY_HOURS ? 'early' : 'late');
+// (a pick's segment: "<market>:<class>:<timing>", the class by the pick's own side's fair chance, a total's by its
+// side; the timing by the hours before the start it was placed at (timingOf; none, late))
+export const segmentOf = (market, side, fair, hours) => `${market}:${market === 'total' ? (side === 'under' ? 'under' : 'over') : Number.isFinite(fair) && fair < 0.5 ? 'dog' : 'fav'}:${timingOf(hours)}`;
+// (the minimum edges a key is judged at: its picks at a return of each or more; the smallest at which they are net
+// positive beyond noise is the key's minimum edge, below it a pick is the practice stake)
+export const EDGE_GRID = [0, 0.01, 0.02, 0.03, 0.05];
+// (a pick's flat-unit profit at its price by its result)
+export const flatProfit = (odds, status) => (status === 'won' ? decimal(Number.isFinite(odds) && odds ? odds : -110) - 1 : status === 'lost' ? -1 : 0);
+// (the sufficient statistics of a set of flat picks { profit, w }: the picks' worth, the weighted sum and sum of
+// squares of their profit; two sets add)
+export function barStats(picks) {
+  let n = 0;
+  let sum = 0;
+  let sum2 = 0;
+  for (const p of picks ?? []) {
+    const w = Number.isFinite(p.w) ? p.w : 1;
+    if (!(w > 0) || !Number.isFinite(p.profit)) continue;
+    n += w;
+    sum += w * p.profit;
+    sum2 += w * p.profit * p.profit;
+  }
+  return { n: round(n, 3), sum: round(sum, 4), sum2: round(sum2, 4) };
+}
+export const addStats = (a, b) => ({ n: (a?.n ?? 0) + (b?.n ?? 0), sum: (a?.sum ?? 0) + (b?.sum ?? 0), sum2: (a?.sum2 ?? 0) + (b?.sum2 ?? 0) });
+// (a key's statistics by minimum edge: the picks { profit, w, ev } whole (an edge of 0), and edges: the ones at a
+// return of each EDGE_GRID step or more; two add step by step)
+export function edgeStats(picks) {
+  const list = picks ?? [];
+  const edges = {};
+  for (const t of EDGE_GRID.slice(1)) edges[t] = barStats(list.filter((p) => !Number.isFinite(p.ev) || p.ev >= t));
+  return { ...barStats(list), edges };
+}
+export function addEdgeStats(a, b) {
+  const edges = {};
+  for (const t of EDGE_GRID.slice(1)) edges[t] = addStats(a?.edges?.[t], b?.edges?.[t]);
+  return { ...addStats(a, b), edges };
+}
+// (a segment's verdict from its stats: on at full stakes where its mean profit a pick is over z standard errors
+// above 0 with min picks' worth; else the practice stake. { on, n, mean, se, why })
+export function barOf(stats, { min = BAR_MIN, z = BAR_Z } = {}) {
+  const n = stats?.n ?? 0;
+  const pctOf = (v) => `${v >= 0 ? '+' : ''}${round(v * 100, 1)}%`;
+  if (!(n >= min)) return { on: false, n: round(n, 1), mean: null, se: null, why: `${round(n, 1)} picks' worth of history and live bets: under ${min}, the practice stake till the segment earns it` };
+  const mean = stats.sum / n;
+  const se = Math.sqrt(Math.max(0, stats.sum2 / n - mean * mean) / n);
+  const on = mean - z * se > 0;
+  return { on, n: round(n, 1), mean: round(mean, 4), se: round(se, 4), why: on ? `net ${pctOf(mean)} a pick over ${round(n, 1)} picks' worth, past ${z} SE (${pctOf(se)}): full stakes` : `practice stake: net ${pctOf(mean)} a pick over ${round(n, 1)} picks' worth, not past ${z} SE (${pctOf(se)})` };
+}
+// (a key's verdict with its minimum edge: the smallest EDGE_GRID step whose picks at that return or more are on
+// (barOf); none, the whole set's verdict, off. { on, minEdge, n, mean, se, why })
+export function keyVerdict(stats, opts) {
+  for (const t of EDGE_GRID) {
+    const st = t === 0 ? stats : stats?.edges?.[t];
+    if (!st) continue;
+    const v = barOf(st, opts);
+    if (v.on) return { ...v, minEdge: t, why: t > 0 ? `${v.why} at a return of ${round(t * 100, 1)}% or more` : v.why };
+  }
+  return { ...barOf(stats, opts), on: false, minEdge: null };
+}
+// The named reasons a line may be bet on (the lines round's winners table, DECISIONS.md D51: the pre-game facts the
+// sides that beat the close shared in most seasons, past the false-discovery guard): each is a key of the bar of its
+// own, "reason:<key>:<market>", its flat record on the history's picks that carry it pooled with the live bets that
+// did; a pick carrying a reason whose record is on bets at full stakes whatever its segment's. Soft: a reason is only
+// a key the record judges, never a weight on the chance; one whose record isn't net positive beyond noise does
+// nothing. From the schedule alone (scheduleRest), so a coming game has it as a final did
+//   restedVsB2b  the other side played yesterday and this one didn't (the NHL: the side against a back-to-back beat
+//                the close by about 4 points, 7 of 7 seasons; every such moneyline +4.1% flat at the close, +6.1%
+//                at the open)
+//   rest2        two or more days more rest than the other side (the NBA: spreads +5.2% at the close, 5 of 6
+//                seasons; the NHL's spreads +7.6% at the open)
+export const LINE_REASONS = {
+  nhl: [
+    { key: 'restedVsB2b', markets: ['ml', 'spread'], label: 'rested against a back-to-back', test: (me, op) => op.b2b && !me.b2b },
+    { key: 'rest2', markets: ['spread'], label: 'two or more days more rest', test: (me, op) => me.rest - op.rest >= 2 },
+  ],
+  nba: [{ key: 'rest2', markets: ['ml', 'spread'], label: 'two or more days more rest', test: (me, op) => me.rest - op.rest >= 2 }],
+  nfl: [],
+  mlb: [],
+};
+export const REST_CAP = 4;
+// (each game's rest by side from the schedule: { rest: [home, away] days since each side's last game by the US
+// Eastern calendar, REST_CAP at most (a first game the cap), b2b: [home, away] a game the day before }, by game id)
+export function scheduleRest(games) {
+  const sorted = [...(games ?? [])].filter((g) => g?.date && g.home != null && g.away != null).sort((a, b) => a.date.localeCompare(b.date));
+  const last = new Map();
+  const out = new Map();
+  const days = (a, b) => Math.round((Date.parse(`${etDay(Date.parse(b))}T12:00:00Z`) - Date.parse(`${etDay(Date.parse(a))}T12:00:00Z`)) / 864e5);
+  for (const g of sorted) {
+    const side = (tm) => {
+      const prev = last.get(String(tm));
+      const rest = prev ? Math.min(REST_CAP, Math.max(0, days(prev, g.date))) : REST_CAP;
+      return { rest, b2b: !!prev && rest === 1 };
+    };
+    const h = side(g.home);
+    const a = side(g.away);
+    out.set(String(g.id), { rest: [h.rest, a.rest], b2b: [h.b2b, a.b2b] });
+    last.set(String(g.home), g.date);
+    last.set(String(g.away), g.date);
+  }
+  return out;
+}
+// (the named reasons a pick carries: its sport's LINE_REASONS whose test the pick's side meets, as bar keys; side
+// 'home' or 'away'; sched a game's scheduleRest entry, or its context's info ({ rest, b2b } [home, away]))
+export function reasonsOf(sport, market, side, sched) {
+  if (!sched || !Array.isArray(sched.rest) || (side !== 'home' && side !== 'away')) return [];
+  const i = side === 'home' ? 0 : 1;
+  const me = { rest: sched.rest[i], b2b: !!sched.b2b?.[i] };
+  const op = { rest: sched.rest[1 - i], b2b: !!sched.b2b?.[1 - i] };
+  if (!Number.isFinite(me.rest) || !Number.isFinite(op.rest)) return [];
+  return (LINE_REASONS[sport] ?? []).filter((x) => x.markets.includes(market) && x.test(me, op)).map((x) => `reason:${x.key}:${market}`);
+}
+export const reasonLabel = (sport, key) => (LINE_REASONS[sport] ?? []).find((x) => key.startsWith(`reason:${x.key}:`))?.label ?? key;
+// (a live line bet's hours before its start at placement)
+const hoursOf = (b) => (Number.isFinite(Date.parse(b.start)) && Number.isFinite(Date.parse(b.placedAt)) ? (Date.parse(b.start) - Date.parse(b.placedAt)) / 36e5 : null);
+// The bar this run: the file's keys (prior: line-bar.json's { segments: { <key>: stats by edge } }: the segments and
+// the named reasons) pooled with the sport's live line bets placed since the epoch (graded, not void, never a
+// tracked row; practice bets included, each at its flat result, by its own segment (its timing from its placement)
+// and the reasons it carried (b.reasons)). { <key>: { on, practice, minEdge, n, mean, se, why, prior, live } }
+export function lineBar(prior, bets, sport, epoch = MODEL_EPOCH) {
+  const live = (bets ?? []).filter((b) => b.sport === sport && MARKETS.includes(b.market) && !b.void && !isTracked(b) && ['won', 'lost', 'push'].includes(b.status) && Number.isFinite(b.fair) && Number.isFinite(b.odds)).filter(sinceEpoch(epoch));
+  const keysOf = (b) => [segmentOf(b.market, b.side, b.fair, hoursOf(b)), ...(Array.isArray(b.reasons) ? b.reasons : [])];
+  const keys = new Set([...Object.keys(prior?.segments ?? {}), ...live.flatMap(keysOf)]);
+  const out = {};
+  for (const k of keys) {
+    const l = edgeStats(live.filter((b) => keysOf(b).includes(k)).map((b) => ({ profit: flatProfit(b.odds, b.status), w: 1, ev: b.ev })));
+    const p = prior?.segments?.[k] ?? { n: 0, sum: 0, sum2: 0 };
+    const v = keyVerdict(addEdgeStats(p, l));
+    out[k] = { ...v, practice: !v.on, prior: { n: round(p.n ?? 0, 1), mean: p.n ? round(p.sum / p.n, 4) : null }, live: { n: round(l.n, 1), mean: l.n ? round(l.sum / l.n, 4) : null }, z: BAR_Z, min: BAR_MIN, epoch };
+  }
+  return out;
+}
+// (a pick's gate from the bar: its segment's (by its market, side class and timing) at the segment's minimum edge;
+// else a named reason it carries whose record is on at its edge; else the practice stake, said so. at: { hours
+// before the start, ev the pick's return, reasons its keys (reasonsOf) })
+export function barGate(bar, market, side, fair, { hours = null, ev = null, reasons = [] } = {}) {
+  const segment = segmentOf(market, side, fair, hours);
+  const g = bar?.[segment];
+  const clears = (v) => v?.on && (!Number.isFinite(ev) || ev >= (v.minEdge ?? 0));
+  if (clears(g)) return { ...g, segment, reasons };
+  for (const k of reasons ?? []) if (clears(bar?.[k])) return { ...bar[k], segment, reason: k, reasons, why: `${k}: ${bar[k].why}` };
+  const below = g?.on && Number.isFinite(ev) && ev < g.minEdge;
+  const why = !g ? `${segment}: no history priced yet, the practice stake till it earns it` : below ? `${segment}: a return of ${round(ev * 100, 1)}%, under the segment's minimum edge of ${round(g.minEdge * 100, 1)}%: the practice stake` : `${segment}: ${g.why}`;
+  return { ...(g ?? { n: 0 }), on: false, practice: true, segment, reasons, why };
+}
+// (two gates on one row (the sport's CLV gate and the pick's segment's): both on, the first; either failing, the
+// practice stake with each failing one's reason)
+export function bothGates(a, b) {
+  if (!a) return b;
+  if (!b) return a;
+  if (a.on && b.on) return a;
+  return { on: false, practice: true, why: [a.on ? null : a.why, b.on ? null : b.why].filter(Boolean).join('; ') };
+}
+// The bar walk-forward (the replayed record, replay-record.mjs, D47 and D51): picks { t, season, keys, ev, profit }
+// (the history's line picks at the close and the clean opens, flat; keys their segment and named reasons);
+// at(t, keys, ev) is whether any of the keys is on at that return, judged on the picks of the months before t's
+// month alone, recency-weighted by season from that month's, so a replayed line bet is staked as the live desk
+// would have staked it with the history to that day. No month priced yet: the practice stake
+export function walkBar(picks) {
+  const monthOf = (t) => new Date(t).toISOString().slice(0, 7);
+  const byMonth = new Map();
+  for (const p of picks ?? []) {
+    const keys = p?.keys ?? (p?.segment ? [p.segment] : []);
+    if (!Number.isFinite(p?.t) || !Number.isFinite(p.profit) || !keys.length) continue;
+    (byMonth.get(monthOf(p.t)) ?? byMonth.set(monthOf(p.t), []).get(monthOf(p.t))).push({ ...p, keys });
+  }
+  const months = [...byMonth.keys()].sort();
+  const verdicts = new Map();
+  const prior = new Map();
+  for (const m of months) {
+    const season = byMonth.get(m).find((p) => Number.isFinite(p.season))?.season;
+    const v = new Map();
+    for (const [k, list] of prior) v.set(k, keyVerdict(edgeStats(list.map((p) => ({ profit: p.profit, ev: p.ev, w: Number.isFinite(season) && Number.isFinite(p.season) ? 0.5 ** Math.max(0, season - p.season) : 1 })))));
+    verdicts.set(m, v);
+    for (const p of byMonth.get(m)) for (const k of p.keys) (prior.get(k) ?? prior.set(k, []).get(k)).push(p);
+  }
+  return (t, keys, ev = null) => {
+    const m = monthOf(t);
+    let use = null;
+    for (const k of months) {
+      if (k > m) break;
+      use = k;
+    }
+    if (use === null) return false;
+    const list = typeof keys === 'string' ? [keys] : (keys ?? []);
+    return list.some((k) => {
+      const v = verdicts.get(use).get(k);
+      return !!v?.on && (!Number.isFinite(ev) || ev >= v.minEdge);
+    });
+  };
+}
+// The sport's bar file as the live desk reads it: apps/<sport>/src/StaticData/model/line-bar.json, written by
+// gate.mjs --record (the shipped version's picks on the priced history's closes); null with none or one it can't
+// read (every segment at the practice stake then, till the live bets earn it)
+export function readLineBar(root, sport) {
+  const file = path.join(root, 'apps', sport, 'src/StaticData/model/line-bar.json');
+  try {
+    if (!existsSync(file)) return null;
+    const bar = JSON.parse(readFileSync(file, 'utf8'));
+    return bar && bar.segments && typeof bar.segments === 'object' ? bar : null;
+  } catch {
+    return null;
+  }
+}

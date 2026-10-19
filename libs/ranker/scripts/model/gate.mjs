@@ -44,7 +44,7 @@ import { existsSync, mkdirSync, readFileSync, writeFileSync } from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath, pathToFileURL } from 'node:url';
 import { createHash } from 'node:crypto';
-import { BET_DECIDE, betCompare, betSummary, binLoss, dec, gateVerdict, normalCrps, normalLoss, projCompare, r4, seasonWeight, sportVerdict } from './gate-score.mjs';
+import { BET_DECIDE, betCompare, betSummary, binLoss, dec, edgePicks, gateVerdict, gradeSide, normalCrps, normalLoss, projCompare, r4, seasonWeight, sportVerdict } from './gate-score.mjs';
 import { historyLeakBets, huntLeaks } from './leaks.mjs';
 import { extendedGames, historyPropIndex, lineHistoryRows, loadHistory, propHistoryRows, slim, vsBook, vsBookBySeason } from './gate-history.mjs';
 import { MARKETS as MMA_MARKETS, scoreMma } from './gate-mma.mjs';
@@ -164,6 +164,41 @@ export function propRow(b, pOver, stake = null) {
 // A game line's row: its own side the 'over' (a line's other side has no saved price: never picked)
 export function lineRow(b, p, stake = null) {
   return { id: String(b.id) + (b.when ? `:${b.when}` : ''), event: String(b.event ?? b.id), sport: b.sport, stat: b.market, line: b.line ?? null, day: etDay(Date.parse(b.start)), t: Date.parse(b.start), f: b.fair, p, y: yOf(b), q: fin(b.clv?.q) ? b.clv.q : null, overOdds: b.odds, underOdds: null, units: fin(b.units) ? b.units : 0, intent: b.intent ?? null, ...(stake ? { stake } : {}) };
+}
+
+// The lines' history bar of a version (desk.mjs edgeStats, segmentOf, reasonsOf; DECISIONS.md D51): its
+// positive-edge picks on the history's close rows and its clean opens (seen after both teams' previous game:
+// replay-record.mjs cleanOpenOf) (gate-score.mjs edgePicks: each side whose return at its own price is over 0), each
+// graded flat (gradeSide's profit), weighted by its season (the row's w) and summed by key: its segment (the
+// market, the side class, the timing by the hours before the start it was priced at) and each named reason its side
+// carries (the schedule's rest: desk.mjs scheduleRest), by minimum edge. { z, min, picks, from, to, segments: {
+// <key>: { n, sum, sum2, edges, mean, se, on, minEdge } } }
+export function lineBarOf(V, closeRows, current, { openRows = [], clean = () => true, sched = null, sport = null } = {}) {
+  const by = new Map();
+  let picks = 0;
+  let from = null;
+  let to = null;
+  const rows = [...closeRows, ...openRows.filter((x) => clean(x))];
+  for (const s of edgePicks(rows, () => 1)) {
+    const x = s.x;
+    const g = gradeSide(x, s.side);
+    if (g.won === null) continue;
+    const fairSide = s.side === 'over' ? x.f : 1 - x.f;
+    const side = x.market === 'total' ? s.side : s.side === 'over' ? 'home' : 'away';
+    const hours = fin(x.at) && fin(x.t) ? (x.t - x.at) / 36e5 : x.kind === 'o' ? 24 : 1;
+    const keys = [V.desk.segmentOf(x.market, side, fairSide, hours), ...(V.desk.reasonsOf && sched ? V.desk.reasonsOf(sport, x.market, side, sched.get(String(x.event))) : [])];
+    for (const k of keys) (by.get(k) ?? by.set(k, []).get(k)).push({ profit: g.profit, w: fin(x.w) ? x.w : 1, ev: s.ev });
+    picks++;
+    from = from === null || x.t < from ? x.t : from;
+    to = to === null || x.t > to ? x.t : to;
+  }
+  const segments = {};
+  for (const [k, list] of [...by].sort(([a], [b]) => a.localeCompare(b))) {
+    const st = V.desk.edgeStats ? V.desk.edgeStats(list) : V.desk.barStats(list);
+    const v = V.desk.keyVerdict ? V.desk.keyVerdict(st) : V.desk.barOf(st);
+    segments[k] = { ...st, rows: list.length, mean: v.mean, se: v.se, on: v.on, minEdge: v.minEdge ?? null };
+  }
+  return { z: V.desk.BAR_Z, min: V.desk.BAR_MIN, picks, from: from === null ? null : etDay(from), to: to === null ? null : etDay(to), current, segments };
 }
 
 // ---- scoring one version (the child process) ----
@@ -394,6 +429,12 @@ export async function scoreVersion(dir, sport, { refit = false, propsLayer = tru
     say(`history lines as of their snapshots: ${expAtOf ? `${histLines.close.length + histLines.open.length - histLines.whole} priced as of their own time, ${histLines.whole} at the game's own expectation` : "none (the version's ratings replay has no asOf): every row at the game's own expectation, stamped with its facts"}`);
     say(`history lines: ${histLines.close.length} closes and ${histLines.open.length} opens priced (${new Set(histLines.close.map((x) => x.season)).size} seasons; ${histGames.length - history.length} games past games.json's replayed from the history's)`);
   } else say('history: none committed (odds-history.mjs)');
+  // (the lines' history bar (desk.mjs lineBar, DECISIONS.md D51): the version's positive-edge picks on the history's
+  // closes, each graded flat at its own price, by segment (the market and the side class the Book's chance puts the
+  // pick in), recency-weighted by season: the sufficient statistics --record writes for the live desk, and each
+  // segment's verdict as the desk would read it with no live bets. A version from before the bar has none)
+  const lineBar = V.desk.barStats && V.desk.segmentOf && histLines.close.length ? lineBarOf(V, histLines.close, current, V.desk.scheduleRest ? { openRows: histLines.open, clean: V.replay?.cleanOpenOf ? V.replay.cleanOpenOf(hist.events) : () => false, sched: V.desk.scheduleRest(histGames), sport } : {}) : null;
+  if (lineBar) say(`history bar: ${Object.entries(lineBar.segments).map(([k, s]) => `${k} ${s.on ? 'on' : 'practice'} (${s.mean === null ? '-' : `${s.mean >= 0 ? '+' : ''}${r4(s.mean * 100)}%`} on ${s.n})`).join(', ')}`);
 
   // (layer a and the replay's chances, props: the players' games replayed under the saved fit's settings)
   const ledgers = Object.fromEntries(SPORTS.map((s) => [s, ledgerOf(s)]));
@@ -520,7 +561,7 @@ export async function scoreVersion(dir, sport, { refit = false, propsLayer = tru
     };
     const labelOf = Object.fromEntries((H.props.STATS?.[sport] ?? []).map((s) => [s.key, s.label]));
     for (const x of [...histProps.open, ...histProps.close]) x.label = labelOf[x.stat] ?? x.stat;
-    replay = V.replay.replayRecord(V, sport, { open: [...histLines.open, ...histProps.open], close: [...histLines.close, ...histProps.close] }, { events: hist.events, names, epoch: V.leagues.MODEL_EPOCH ?? null, evScale });
+    replay = V.replay.replayRecord(V, sport, { open: [...histLines.open, ...histProps.open], close: [...histLines.close, ...histProps.close] }, { events: hist.events, names, epoch: V.leagues.MODEL_EPOCH ?? null, evScale, sched: V.desk.scheduleRest ? V.desk.scheduleRest(histGames) : null });
     say(`replayed record: ${replay.overall.won}-${replay.overall.lost}-${replay.overall.push} ${replay.overall.profit >= 0 ? '+' : ''}${replay.overall.profit}u (ROI ${replay.overall.roi === null ? '-' : `${(replay.overall.roi * 100).toFixed(1)}%`}) on ${replay.n.bets} bets (${replay.flags.timing.open} at a clean open, ${replay.flags.timing.close} at the close), ${replay.n.practice} practice picks; by band ${Object.entries(replay.byBand).map(([k, v]) => `${k} ${v.won}-${v.lost}-${v.push} ${v.profit >= 0 ? '+' : ''}${v.profit}u`).join(', ')}`);
   }
   return {
@@ -538,6 +579,8 @@ export async function scoreVersion(dir, sport, { refit = false, propsLayer = tru
     anchor: histProps.anchor ?? null,
     // (the lineup risk (D42): each stat's survival of the Bot's edge from the open to the close, what --record writes)
     risk: histProps.risk ?? null,
+    // (the lines' history bar (D51): what --record writes for the live desk)
+    lineBar,
     meta: { practiceN, practiceUnits: V.desk.PRACTICE_UNITS ?? 0.5, trust, sigma: params.sigma, sigmaT: params.sigmaT, matched: replayM.size, priced: mineProps.length },
   };
 }
@@ -775,6 +818,13 @@ function recordScore(version, sport, score, frozen) {
     const out = path.join(ROOT, 'apps', sport, 'src/StaticData/model/anchor.json');
     writeFileSync(out, `${JSON.stringify({ ...score.anchor.all, sport, epoch: score.epoch, commit: entry.commit }, null, 1)}\n`);
     console.log(`${sport}: the anchor's pull by stat written (${path.relative(ROOT, out)}${score.anchor.all.on === false ? ', the readout only: the anchor is off for this sport' : ''}): ${Object.entries(score.anchor.all.stats).map(([k, v]) => `${k} ${v.pull}`).join(', ')}`);
+  }
+  // (the lines' history bar (desk.mjs lineBar, D51): each segment's flat record on the priced history's closes as this
+  // version priced them, what the live desk reads (desk.mjs readLineBar) and pools with its own line bets)
+  if (score.lineBar?.segments) {
+    const out = path.join(ROOT, 'apps', sport, 'src/StaticData/model/line-bar.json');
+    writeFileSync(out, `${JSON.stringify({ sport, epoch: score.epoch, commit: entry.commit, at: entry.at, current: score.current, ...score.lineBar }, null, 1)}\n`);
+    console.log(`${sport}: the lines' history bar written (${path.relative(ROOT, out)}): ${Object.entries(score.lineBar.segments).map(([k, s]) => `${k} ${s.on ? 'ON' : 'practice'} (${s.mean === null ? '-' : `${s.mean >= 0 ? '+' : ''}${r4(s.mean * 100)}%`} on ${s.n})`).join(', ')}`);
   }
   // (the MMA's history prior (gate-mma.mjs trustPrior, DECISIONS.md D36): each market's trust fit on the priced history,
   // what the live desk reads (mma-desk.mjs readTrustPrior), and the rows it pools with its own bets)

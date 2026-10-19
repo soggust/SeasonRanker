@@ -32,6 +32,7 @@ import { CAL_STEP, fitCalib, fitSpot, calRows } from '../libs/ranker/scripts/mod
 import { CORR_PRICING, LAMBDAS, MOVE_MAX, SEG_MIN, capMove, corrRows, moveCap, oneSe } from '../libs/ranker/scripts/model/correct.mjs';
 import { mainCardOf, mmaPracticePicks } from '../libs/ranker/scripts/model/mma-desk.mjs';
 import { EV_SUSPECT, choose, suspectOf } from '../libs/ranker/scripts/model/desk.mjs';
+import { BAR_MIN, BAR_Z, barGate, barOf, bothGates, lineBar as lineBarOf, segmentOf } from '../libs/ranker/scripts/model/desk.mjs';
 import { MOVE_FOLLOWED, ROLE, farOf, lineZ, moveFollowed } from '../libs/ranker/scripts/model/props.mjs';
 import { boardMarkets, boardProp, skipReason } from '../libs/ranker/scripts/model/board.mjs';
 import { RESEARCH_LEVEL_N, hollow, researchDecision, researchGateOf, researchLevelOf, verdictOf } from '../libs/ranker/scripts/model/research.mjs';
@@ -830,4 +831,42 @@ test('D50 the NBA season start: an unread allocation at its running mean, not 1;
   assert.equal(nbaStat('Total Points, Rebounds, and Assists'), 'pra');
   const decisions = fs.readFileSync(path.resolve('libs/ranker/scripts/model/DECISIONS.md'), 'utf8');
   assert.ok(decisions.includes('### D50.'));
+});
+
+test("D51 the game lines' history bar: a segment (market and side class) earns full stakes only net positive past one SE over 40 picks' worth on the history pooled with the live bets; else the practice stake, never 0 or tracked; the live bets can lift it; the desk never writes the file", () => {
+  assert.equal(BAR_Z, 1);
+  assert.equal(BAR_MIN, 40);
+  // (the segment: the market and the side the Book's chance favors or not; a total's side)
+  assert.equal(segmentOf('ml', 'away', 0.3), 'ml:dog:late');
+  assert.equal(segmentOf('spread', 'home', 0.56), 'spread:fav:late');
+  assert.equal(segmentOf('total', 'over', 0.5), 'total:over:late');
+  // (a losing history: practice; a winning one inside the noise: practice; past it: on)
+  const stats = (n, m, sd = 1) => ({ n, sum: n * m, sum2: n * (sd * sd + m * m) });
+  assert.equal(barOf(stats(500, -0.05)).on, false);
+  assert.equal(barOf(stats(100, 0.05)).on, false);
+  assert.equal(barOf(stats(400, 0.1)).on, true);
+  assert.equal(barOf(stats(BAR_MIN - 1, 0.5)).on, false);
+  // (the live bets since the epoch lift a losing segment when they win; pre-epoch and tracked rows never count)
+  const prior = { segments: { 'ml:dog:late': stats(100, -0.05) } };
+  const live = (n, placedAt, extra = {}) => Array.from({ length: n }, (_, i) => ({ id: `l${i}`, sport: 'nhl', market: 'ml', side: 'away', fair: 0.4, odds: 150, status: 'won', placedAt, ...extra }));
+  const after = new Date(Date.parse(MODEL_EPOCH) + 36e5).toISOString();
+  const before = new Date(Date.parse(MODEL_EPOCH) - 36e5).toISOString();
+  assert.equal(lineBarOf(prior, [], 'nhl')['ml:dog:late'].on, false);
+  assert.equal(lineBarOf(prior, live(120, after), 'nhl')['ml:dog:late'].on, true);
+  assert.equal(lineBarOf(prior, live(120, before), 'nhl')['ml:dog:late'].on, false);
+  assert.equal(lineBarOf(prior, live(120, after, { intent: 'track', units: 0 }), 'nhl')['ml:dog:late'].on, false);
+  // (the placement under it: an edge still bet at the practice stake, a LIKE at most; no edge tracked as ever)
+  const g = bothGates(lineGate([], 'nhl'), barGate(lineBarOf(prior, [], 'nhl'), 'ml', 'away', 0.4));
+  assert.equal(g.on, false);
+  const placed = gatedPlacement(true, 3, g);
+  assert.equal(placed.intent, 'edge');
+  assert.equal(placed.units, PRACTICE_UNITS);
+  assert.match(placed.practice, /practice stake/);
+  assert.equal(gatedPlacement(false, 3, g).intent, 'track');
+  // (the desk reads the file the record writes, never writes it; every line pick goes through the segment's gate)
+  assert.match(src('gate.mjs'), /line-bar\.json/);
+  assert.doesNotMatch(src('run.mjs'), /write[A-Za-z]*\([^\n]*line-bar/);
+  assert.match(src('run.mjs'), /bothGates\(r\.lineGate, segment\)/);
+  const decisions = fs.readFileSync(path.resolve('libs/ranker/scripts/model/DECISIONS.md'), 'utf8');
+  assert.ok(decisions.includes('### D51.'));
 });

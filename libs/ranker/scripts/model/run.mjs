@@ -154,7 +154,7 @@ import { fitCode, fitDay, fitDiffs, fitPlan, readFit, refitWhy, saveFit } from '
 import { corrRows, correctionText, tuneCorrection } from './correct.mjs';
 import { PRACTICE_N, PRACTICE_SPLIT, lineBucket, practiceRecord, practiceTop, slateQuota } from './desk.mjs';
 import { TRUST_START } from './desk.mjs';
-import { BANKROLL, MARKETS, PRACTICE_UNITS, gatedPlacement, stakeFor, practiceGates, choose, decimal, isTracked, trackedRecord, lineGate, propGate, fairPair, placeGame, sameGameOf, sameGameRhoText, fitTrust, fitBuckets, bucketTrustOf, BUCKETS, gapGuard, guardOf, oneSide, pickText, placement, price, record, settle, voidOf } from './desk.mjs';
+import { BANKROLL, MARKETS, PRACTICE_UNITS, gatedPlacement, stakeFor, practiceGates, choose, decimal, isTracked, trackedRecord, lineGate, lineBar, barGate, bothGates, readLineBar, reasonsOf, scheduleRest, propGate, fairPair, placeGame, sameGameOf, sameGameRhoText, fitTrust, fitBuckets, bucketTrustOf, BUCKETS, gapGuard, guardOf, oneSide, pickText, placement, price, record, settle, voidOf } from './desk.mjs';
 import { CHECK_KELLY, CHECK_KINDS, atUnit, causeOf, checkLocked, checkOf, rejudgeChecks, shadowOf, checkResultOf, checkSummary, closeChecks, markPlaced, modelSide, noteOpen, openCheck, priceAtOf, resolveChecks, STORED_FRESH, storedBet, storedFresh, upsertCheck, withStoredPrices } from './checks.mjs';
 import { ledgerWrites, readChecks, readKept } from './checks-file.mjs';
 import { readLinePool } from './line-pool.mjs';
@@ -1780,6 +1780,14 @@ function betGames(r) {
   // above, kept for the state and the Algorithm tab)
   r.lineGate = lineGate(r.ledger?.bets ?? [], sport, MODEL_EPOCH);
   if (!r.lineGate.on) console.log(`${sport}: the game lines at the practice stake this run: ${r.lineGate.why}`);
+  // (the lines' history bar by segment (desk.mjs lineBar, DECISIONS.md D51): the priced history's flat record of the
+  // Bot's line picks (line-bar.json, written by gate.mjs --record, never here) pooled with the live line bets since
+  // the epoch; a segment (a market's favored side or dog, a total's over or under) not net positive beyond noise bets
+  // at the practice stake, never turned off)
+  r.lineBar = lineBar(readLineBar(ROOT, sport), r.ledger?.bets ?? [], sport, MODEL_EPOCH);
+  console.log(`${sport}: the lines' history bar: ${Object.entries(r.lineBar).map(([k, g]) => `${k} ${g.on ? 'full stakes' : 'practice'} (${g.mean === null ? '-' : `${g.mean >= 0 ? '+' : ''}${round(g.mean * 100, 1)}%`} on ${g.n}, live ${g.live.n})`).join(', ') || 'no segment priced yet: every line at the practice stake'}`);
+  // (each game's rest by side from the schedule, for the named reasons a line pick carries: desk.mjs reasonsOf)
+  const sched = scheduleRest(r.history);
   const held = new Map();
   r.pending = [];
   // (this run's CHECKs, game markets' and props': recordChecks; and the markets it priced that the gap guard
@@ -1930,13 +1938,20 @@ function betGames(r) {
       if (noPrice) guard = { why: [guard?.why, "no Odds API price (ESPN's board)"].filter(Boolean).join('; ') };
       // (the sport's lines under their CLV gate (r.lineGate): bet as ever, at the practice stake, the gate's word on
       // the row: a cut, as a guard's, never an off switch (the owner's, 2026-10-17))
-      const practice = !r.lineGate?.on;
-      if (practice) guard = { ...(guard ?? {}), why: [guard?.why, r.lineGate.why].filter(Boolean).join('; ') };
+      // (and under its segment's history bar (r.lineBar, desk.mjs barGate; D51): the two gates together, either
+      // failing the practice stake with its reason)
+      // (its segment by its market, side class and timing (the hours to the start now), at the segment's minimum
+      // edge, or a named reason it carries (D51))
+      const reasons = reasonsOf(sport, key, pick.side, sched.get(String(game.id)));
+      const segment = barGate(r.lineBar, key, pick.side, pick.fair, { hours: ahead / 36e5, ev: pick.ev, reasons });
+      const gate = bothGates(r.lineGate, segment);
+      const practice = !gate?.on;
+      if (practice) guard = { ...(guard ?? {}), why: [guard?.why, gate.why].filter(Boolean).join('; ') };
       const units = guard ? PRACTICE_UNITS : pick.units;
       // (an edge bet at its stake, a flagged one (a guard's cut: questionable, weather, a moved line) at the
       // minimum, still a LIKE or better (the owner's: an edge is bet); with no edge, or off ESPN's board alone,
       // tracked, not bet: desk.mjs placement)
-      const placed = gatedPlacement(pick.ev > 0 && !noPrice, units, r.lineGate);
+      const placed = gatedPlacement(pick.ev > 0 && !noPrice, units, gate);
       const bet = {
         id,
         event: game.id,
@@ -1955,6 +1970,8 @@ function betGames(r) {
         ...(Number.isFinite(pick.named) ? { named: round(pick.named, 4) } : {}),
         p: round(pick.p, 4),
         ev: round(pick.ev, 4),
+        // (the named reasons its side carried (desk.mjs reasonsOf, D51): the bar pools its result into each)
+        ...(reasons.length ? { reasons } : {}),
         // (edge: it sees value, bet; track: no edge (or a guard cut it), not bet, units 0, graded and learned
         // from like a bet (the old action bet, 0.5u for the data: its stake kept, trackUnits))
         ...placed,
@@ -3069,6 +3086,9 @@ function saveState(r) {
     tracked: trackedRecord(ledger.bets),
     // (the game lines' CLV gate (desk.mjs lineGate): whether this sport's lines are bet or tracked only, and why)
     lineGate: lineGate(ledger.bets, r.sport, MODEL_EPOCH),
+    // (the lines' history bar by segment (desk.mjs lineBar, D51), as this run read it: each segment's full stakes or
+    // practice, its record on the history and the live bets since the epoch)
+    lineBar: r.lineBar ?? lineBar(readLineBar(ROOT, r.sport), ledger.bets, r.sport, MODEL_EPOCH),
     // (the props' CLV gate by stat (desk.mjs propGate) and the CHECK bar by cause (props.mjs roleGateOf), as this run
     // read them)
     propGate: r.propGate ?? propGate(ledger.bets, r.sport, MODEL_EPOCH),

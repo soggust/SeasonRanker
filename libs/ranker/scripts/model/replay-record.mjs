@@ -175,7 +175,7 @@ function beatOf(x, over, odds, close) {
 // together; each row's at its snapshot's time, t its start, p its priced chance, f the Book's no-vig, y the result);
 // events the history's (the clean-open test); names(x) -> { home, away, matchup } the words; epoch the version's
 // (only rows whose game starts before it); evScale the state's. Returns the file's content
-export function replayRecord(V, sport, rows, { events = null, names = () => ({ home: 'Home', away: 'Away', matchup: '' }), epoch = null, evScale = 0.08, now = Date.now() } = {}) {
+export function replayRecord(V, sport, rows, { events = null, names = () => ({ home: 'Home', away: 'Away', matchup: '' }), epoch = null, evScale = 0.08, now = Date.now(), sched = null } = {}) {
   const epochT = epoch ? Date.parse(epoch) : Infinity;
   const timing = V.leagues?.TIMING?.[sport] ?? { lines: 26, props: 26, lastChance: 3 };
   const practiceN = V.desk.PRACTICE_N?.[sport] ?? 3;
@@ -198,9 +198,29 @@ export function replayRecord(V, sport, rows, { events = null, names = () => ({ h
   }
   const risk = walkRisk(V, pairs);
   const survival = V.lineupRisk?.survivalAt ?? (() => 0);
+  // (the lines' history bar (desk.mjs walkBar, segmentOf, reasonsOf; D51): a line bet judged on the line picks (the
+  // closes and the clean opens) of the months before its own, by its segment (its market, side class and timing) and
+  // the named reasons its side carries (sched: desk.mjs scheduleRest by game id), each at its minimum edge, so the
+  // replay stakes it as the live desk would have with the history to that day: none on at its return, the practice
+  // stake, a LIKE at most; a version without the bar as before)
+  const sideName = (x, sd) => (x.market === 'total' ? (sd.over ? 'over' : 'under') : sd.over ? 'home' : 'away');
+  const hoursAt = (x) => (fin(x.at) && fin(x.t) ? (x.t - x.at) / 36e5 : x.kind === 'o' ? 24 : 1);
+  const keysOf = (x, sd) => [V.desk.segmentOf(x.market, sideName(x, sd), sd.fS, hoursAt(x)), ...(V.desk.reasonsOf && sched ? V.desk.reasonsOf(sport, x.market, sideName(x, sd), sched.get(String(x.event))) : [])];
+  const barAt =
+    sport !== 'mma' && V.desk.walkBar && V.desk.segmentOf
+      ? V.desk.walkBar(
+          [...closes.values(), ...[...opens.values()].filter((o) => clean(o))]
+            .filter((x) => isLine(x) && (x.y === 0 || x.y === 1))
+            .map((x) => {
+              const sd = sideOf(V, x, x.p);
+              return sd.ev > 0 ? { t: x.t, season: x.season, keys: keysOf(x, sd), ev: sd.ev, profit: (x.y === 1) === sd.over ? dec(sd.odds) - 1 : -1 } : null;
+            })
+            .filter(Boolean),
+        )
+      : null;
   const bets = [];
   const passes = [];
-  const flags = { open: 0, close: 0, openSeen: 0, openClean: 0, openInWindow: 0, openHeld: 0, closeHeld: 0 };
+  const flags = { open: 0, close: 0, openSeen: 0, openClean: 0, openInWindow: 0, openHeld: 0, closeHeld: 0, barred: 0 };
   const keys = new Set([...opens.keys(), ...closes.keys()]);
   for (const k of keys) {
     const o = opens.get(k);
@@ -237,10 +257,14 @@ export function replayRecord(V, sport, rows, { events = null, names = () => ({ h
       const { x, sd } = placed;
       const suspect = Math.abs(sd.ev) > evSuspect;
       const ev = suspect ? Math.sign(sd.ev) * evSuspect : sd.ev;
-      const units = suspect ? practiceUnits : V.desk.stakeFor(ev, evScale, sd.odds);
+      // (a line whose segment hasn't earned its stake by that day: the practice stake, a LIKE, in the record as the
+      // live desk's gated bets are)
+      const barred = !!barAt && isLine(x) && !barAt(x.t, keysOf(x, sd), sd.ev);
+      if (barred) flags.barred++;
+      const units = suspect || barred ? practiceUnits : V.desk.stakeFor(ev, evScale, sd.odds);
       let band = level(sd.kelly, sd.pS);
       if (band === 'low') band = 'medium';
-      if (suspect && band !== 'medium') band = 'medium';
+      if ((suspect || barred) && band !== 'medium') band = 'medium';
       bets.push(betOf(x, sd, { units, band, practice: false, timing: placed.timing, beat: placed.timing === 'open' ? beatOf(x, sd.over, sd.odds, placed.close) : null, names, survival: placed.s }));
       flags[placed.timing]++;
     }
@@ -335,7 +359,7 @@ export function summarize(sport, bets, passed, { epoch, now, flags, rows, season
     brokeAt: decided[n] ? new Date(settledAt(decided[n])).toISOString() : null,
     last: [...bets].sort(order).slice(0, REPLAY_LAST).map(entry),
     flags: {
-      timing: { open: flags.open, close: flags.close, openSeen: flags.openSeen, openClean: flags.openClean, openInWindow: flags.openInWindow },
+      timing: { open: flags.open, close: flags.close, openSeen: flags.openSeen, openClean: flags.openClean, openInWindow: flags.openInWindow, barred: flags.barred ?? 0 },
       // (D48, no look-ahead by timestamp: the bets with a factsAt stamp, those past their placement (0), the opens held
       // to the close and the closes left unbet because their price read a fact posted after them)
       facts: { stamped: bets.filter((b) => fin(b.factsAt)).length, late: lateFacts(bets).length, openHeld: flags.openHeld ?? 0, closeHeld: flags.closeHeld ?? 0 },
