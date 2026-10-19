@@ -25,6 +25,8 @@ import {
 } from '../libs/ranker/scripts/model/desk.mjs';
 import { BOOK, MODEL_EPOCH } from '../libs/ranker/scripts/model/leagues.mjs';
 import { CLV_V } from '../libs/ranker/scripts/model/clv.mjs';
+import { BET_DECIDE, ERAS, gateVerdict, seasonWeight, sportVerdict } from '../libs/ranker/scripts/model/gate-score.mjs';
+import { CHECKS as SELF_CHECKS } from '../libs/ranker/scripts/model/selfcheck.mjs';
 import { CAL_STEP, fitCalib, fitSpot, calRows } from '../libs/ranker/scripts/model/calib.mjs';
 import { corrRows } from '../libs/ranker/scripts/model/correct.mjs';
 import { RESEARCH_LEVEL_N, hollow, researchDecision, researchGateOf, researchLevelOf, verdictOf } from '../libs/ranker/scripts/model/research.mjs';
@@ -242,4 +244,18 @@ test('D20 role bets: never under 40 graded CHECKs of a cause', () => {
 test('D21 bands and the book: DraftKings alone; LIKE any edge, LOVE 2%, LOCK 5% at 55%', () => {
   assert.equal(BOOK, 'draftkings');
   assert.deepEqual(BANDS, { lock: 0.05, lockChance: 0.55, high: 0.02, medium: 0 });
+});
+
+test('D22 every change faces the gate: a layer worse beyond noise holds it, the old seasons only flag, the eras split, C23 hunts leaks', () => {
+  assert.deepEqual(BET_DECIDE, ['ll', 'close', 'topClv']);
+  assert.deepEqual([ERAS.nfl.start, ERAS.mlb.start], [2024, 2023]);
+  assert.equal(seasonWeight('nfl', 2023, 2026).decides, false, 'before the 2024 kickoff: sanity only');
+  assert.equal(seasonWeight('nfl', 2024, 2026).decides, true);
+  const worse = { verdict: 'worse', diff: 0.01, lo: 0.001, hi: 0.02 };
+  const tie = { verdict: 'tie', diff: 0, lo: -0.01, hi: 0.01 };
+  assert.equal(gateVerdict({ nfl: sportVerdict({ proj: { games: { decide: worse, sanity: tie } } }) }).verdict, 'HOLD');
+  assert.equal(gateVerdict({ nfl: sportVerdict({ proj: { games: { decide: tie, sanity: worse } } }) }).verdict, 'SHIP', 'older seasons flag, never decide');
+  assert.equal(gateVerdict({ nfl: sportVerdict({ bet: { props: { ll: tie, close: tie, topClv: { ...worse, verdict: 'worse' } } } }) }).verdict, 'HOLD');
+  assert.ok(SELF_CHECKS.some((f) => f.name === 'c23'), 'the weekly leak hunt');
+  assert.ok(fs.existsSync(path.join(import.meta.dirname, '../libs/ranker/scripts/model/gate.mjs')));
 });

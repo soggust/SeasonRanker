@@ -1,0 +1,275 @@
+{
+ "v": 1,
+ "sport": "nhl",
+ "frozen": "2026-10-19T00:00:00Z",
+ "entries": [
+  {
+   "sport": "nhl",
+   "epoch": "2026-10-18T15:58:00Z",
+   "commit": "940fd86a",
+   "commitAt": "2026-10-18T10:58:55-05:00",
+   "label": "940fd86a",
+   "at": "2026-10-19T01:18:06.583Z",
+   "frozenTo": "2026-10-19T00:00:00Z",
+   "frozen": {
+    "props": {
+     "mode": "replay",
+     "n": 1736,
+     "gap": 0.0001,
+     "closeGap": 0,
+     "clv": -0.0524,
+     "hit": 0.4688,
+     "picks": 32,
+     "units": -1.595,
+     "edgeUnits": 0,
+     "edgeN": 0
+    },
+    "lines": {
+     "mode": "replay",
+     "n": 1243,
+     "gap": -0.0001,
+     "closeGap": 0,
+     "clv": -0.0284,
+     "hit": 0.5114,
+     "picks": 88,
+     "units": -3.37,
+     "edgeUnits": -2.4802,
+     "edgeN": 15
+    }
+   },
+   "rolling": {
+    "props": {
+     "mode": "replay",
+     "n": 1759,
+     "gap": 0.0001,
+     "closeGap": 0,
+     "clv": -0.0524,
+     "hit": 0.4688,
+     "picks": 32,
+     "units": -1.595,
+     "edgeUnits": 0,
+     "edgeN": 0,
+     "from": "2026-09-20"
+    },
+    "lines": {
+     "mode": "replay",
+     "n": 229,
+     "gap": -0.0002,
+     "closeGap": 0,
+     "clv": -0.0378,
+     "hit": 0.6087,
+     "picks": 23,
+     "units": 1.7785,
+     "edgeUnits": 0,
+     "edgeN": 0,
+     "from": "2026-09-20"
+    }
+   },
+   "proj": {
+    "games": 4.5919,
+    "props": 1.5127
+   }
+  },
+  {
+   "sport": "nhl",
+   "epoch": "2026-10-18T22:40:00Z",
+   "commit": "a454c624",
+   "commitAt": "2026-10-18T18:41:59-05:00",
+   "label": "a454c624",
+   "at": "2026-10-19T01:19:34.065Z",
+   "frozenTo": "2026-10-19T00:00:00Z",
+   "frozen": {
+    "props": {
+     "mode": "replay",
+     "n": 1736,
+     "gap": 0.0004,
+     "closeGap": 0.002,
+     "clv": -0.0499,
+     "hit": 0.6364,
+     "picks": 66,
+     "units": 5.2115,
+     "edgeUnits": -16.3465,
+     "edgeN": 257
+    },
+    "lines": {
+     "mode": "replay",
+     "n": 1243,
+     "gap": -0.0001,
+     "closeGap": 0,
+     "clv": -0.0284,
+     "hit": 0.5114,
+     "picks": 88,
+     "units": -3.37,
+     "edgeUnits": -2.4802,
+     "edgeN": 15
+    }
+   },
+   "rolling": {
+    "props": {
+     "mode": "replay",
+     "n": 1759,
+     "gap": 0.0004,
+     "closeGap": 0.002,
+     "clv": -0.0492,
+     "hit": 0.6462,
+     "picks": 66,
+     "units": 5.7115,
+     "edgeUnits": -16.3465,
+     "edgeN": 257,
+     "from": "2026-09-20"
+    },
+    "lines": {
+     "mode": "replay",
+     "n": 229,
+     "gap": -0.0002,
+     "closeGap": 0,
+     "clv": -0.0378,
+     "hit": 0.6087,
+     "picks": 23,
+     "units": 1.7785,
+     "edgeUnits": 0,
+     "edgeN": 0,
+     "from": "2026-09-20"
+    }
+   },
+   "proj": {
+    "games": 4.5919,
+    "props": 1.5127
+   }
+  },
+  {
+   "sport": "nhl",
+   "epoch": "2026-10-19T00:19:00Z",
+   "commit": "1c8364a0",
+   "commitAt": "2026-10-18T19:16:39-05:00",
+   "label": "1c8364a0",
+   "at": "2026-10-19T01:21:04.331Z",
+   "frozenTo": "2026-10-19T00:00:00Z",
+   "frozen": {
+    "props": {
+     "mode": "replay",
+     "n": 1736,
+     "gap": 0.0004,
+     "closeGap": 0.002,
+     "clv": -0.0499,
+     "hit": 0.6364,
+     "picks": 66,
+     "units": 5.2115,
+     "edgeUnits": -16.3465,
+     "edgeN": 257
+    },
+    "lines": {
+     "mode": "replay",
+     "n": 1243,
+     "gap": -0.0001,
+     "closeGap": 0,
+     "clv": -0.0284,
+     "hit": 0.5114,
+     "picks": 88,
+     "units": -3.37,
+     "edgeUnits": -2.4802,
+     "edgeN": 15
+    }
+   },
+   "rolling": {
+    "props": {
+     "mode": "replay",
+     "n": 1759,
+     "gap": 0.0004,
+     "closeGap": 0.002,
+     "clv": -0.0492,
+     "hit": 0.6462,
+     "picks": 66,
+     "units": 5.7115,
+     "edgeUnits": -16.3465,
+     "edgeN": 257,
+     "from": "2026-09-20"
+    },
+    "lines": {
+     "mode": "replay",
+     "n": 229,
+     "gap": -0.0002,
+     "closeGap": 0,
+     "clv": -0.0378,
+     "hit": 0.6087,
+     "picks": 23,
+     "units": 1.7785,
+     "edgeUnits": 0,
+     "edgeN": 0,
+     "from": "2026-09-20"
+    }
+   },
+   "proj": {
+    "games": 4.5919,
+    "props": 1.5127
+   }
+  },
+  {
+   "sport": "nhl",
+   "epoch": "2026-10-19T00:19:00Z",
+   "commit": "088b7c5d",
+   "commitAt": "2026-10-18T20:12:28-05:00",
+   "label": "088b7c5d",
+   "at": "2026-10-19T01:23:00.433Z",
+   "frozenTo": "2026-10-19T00:00:00Z",
+   "frozen": {
+    "props": {
+     "mode": "replay",
+     "n": 1736,
+     "gap": 0.0004,
+     "closeGap": 0.002,
+     "clv": -0.0499,
+     "hit": 0.6364,
+     "picks": 66,
+     "units": 5.2115,
+     "edgeUnits": -16.3465,
+     "edgeN": 257
+    },
+    "lines": {
+     "mode": "replay",
+     "n": 1243,
+     "gap": -0.0001,
+     "closeGap": 0,
+     "clv": -0.0284,
+     "hit": 0.5114,
+     "picks": 88,
+     "units": -3.37,
+     "edgeUnits": -2.4802,
+     "edgeN": 15
+    }
+   },
+   "rolling": {
+    "props": {
+     "mode": "replay",
+     "n": 1759,
+     "gap": 0.0004,
+     "closeGap": 0.002,
+     "clv": -0.0492,
+     "hit": 0.6462,
+     "picks": 66,
+     "units": 5.7115,
+     "edgeUnits": -16.3465,
+     "edgeN": 257,
+     "from": "2026-09-20"
+    },
+    "lines": {
+     "mode": "replay",
+     "n": 229,
+     "gap": -0.0002,
+     "closeGap": 0,
+     "clv": -0.0378,
+     "hit": 0.6087,
+     "picks": 23,
+     "units": 1.7785,
+     "edgeUnits": 0,
+     "edgeN": 0,
+     "from": "2026-09-20"
+    }
+   },
+   "proj": {
+    "games": 4.5919,
+    "props": 1.5127
+   }
+  }
+ ]
+}

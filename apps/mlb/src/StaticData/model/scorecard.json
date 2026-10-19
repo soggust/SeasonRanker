@@ -1,0 +1,275 @@
+{
+ "v": 1,
+ "sport": "mlb",
+ "frozen": "2026-10-19T00:00:00Z",
+ "entries": [
+  {
+   "sport": "mlb",
+   "epoch": "2026-10-18T15:58:00Z",
+   "commit": "940fd86a",
+   "commitAt": "2026-10-18T10:58:55-05:00",
+   "label": "940fd86a",
+   "at": "2026-10-19T01:18:42.683Z",
+   "frozenTo": "2026-10-19T00:00:00Z",
+   "frozen": {
+    "props": {
+     "mode": "saved",
+     "n": 154,
+     "gap": 0.0004,
+     "closeGap": 0,
+     "clv": -0.0552,
+     "hit": 0.56,
+     "picks": 25,
+     "units": -0.1121,
+     "edgeUnits": 0,
+     "edgeN": 0
+    },
+    "lines": {
+     "mode": "replay",
+     "n": 1388,
+     "gap": -0.001,
+     "closeGap": 0.0001,
+     "clv": -0.0535,
+     "hit": 0.4576,
+     "picks": 60,
+     "units": -3.0877,
+     "edgeUnits": 8.6898,
+     "edgeN": 28
+    }
+   },
+   "rolling": {
+    "props": {
+     "mode": "saved",
+     "n": 154,
+     "gap": 0.0004,
+     "closeGap": 0,
+     "clv": -0.0552,
+     "hit": 0.56,
+     "picks": 25,
+     "units": -0.1121,
+     "edgeUnits": 0,
+     "edgeN": 0,
+     "from": "2026-09-20"
+    },
+    "lines": {
+     "mode": "replay",
+     "n": 29,
+     "gap": -0.0031,
+     "closeGap": 0.0001,
+     "clv": -0.0453,
+     "hit": 0.5,
+     "picks": 16,
+     "units": 0.3548,
+     "edgeUnits": -0.5,
+     "edgeN": 1,
+     "from": "2026-09-20"
+    }
+   },
+   "proj": {
+    "games": 5.8311,
+    "props": 1.5326
+   }
+  },
+  {
+   "sport": "mlb",
+   "epoch": "2026-10-18T22:40:00Z",
+   "commit": "a454c624",
+   "commitAt": "2026-10-18T18:41:59-05:00",
+   "label": "a454c624",
+   "at": "2026-10-19T01:20:10.388Z",
+   "frozenTo": "2026-10-19T00:00:00Z",
+   "frozen": {
+    "props": {
+     "mode": "saved",
+     "n": 154,
+     "gap": 0.0025,
+     "closeGap": 0.0025,
+     "clv": -0.0681,
+     "hit": 0.3333,
+     "picks": 27,
+     "units": -4.6834,
+     "edgeUnits": -15.1554,
+     "edgeN": 31
+    },
+    "lines": {
+     "mode": "replay",
+     "n": 1388,
+     "gap": -0.001,
+     "closeGap": 0.0001,
+     "clv": -0.0535,
+     "hit": 0.4576,
+     "picks": 60,
+     "units": -3.0877,
+     "edgeUnits": 8.6898,
+     "edgeN": 28
+    }
+   },
+   "rolling": {
+    "props": {
+     "mode": "saved",
+     "n": 154,
+     "gap": 0.0025,
+     "closeGap": 0.0025,
+     "clv": -0.0681,
+     "hit": 0.3333,
+     "picks": 27,
+     "units": -4.6834,
+     "edgeUnits": -15.1554,
+     "edgeN": 31,
+     "from": "2026-09-20"
+    },
+    "lines": {
+     "mode": "replay",
+     "n": 29,
+     "gap": -0.0031,
+     "closeGap": 0.0001,
+     "clv": -0.0453,
+     "hit": 0.5,
+     "picks": 16,
+     "units": 0.3548,
+     "edgeUnits": -0.5,
+     "edgeN": 1,
+     "from": "2026-09-20"
+    }
+   },
+   "proj": {
+    "games": 5.8311,
+    "props": 1.5326
+   }
+  },
+  {
+   "sport": "mlb",
+   "epoch": "2026-10-19T00:19:00Z",
+   "commit": "1c8364a0",
+   "commitAt": "2026-10-18T19:16:39-05:00",
+   "label": "1c8364a0",
+   "at": "2026-10-19T01:21:45.894Z",
+   "frozenTo": "2026-10-19T00:00:00Z",
+   "frozen": {
+    "props": {
+     "mode": "saved",
+     "n": 154,
+     "gap": 0.0025,
+     "closeGap": 0.0025,
+     "clv": -0.0681,
+     "hit": 0.3333,
+     "picks": 27,
+     "units": -4.6834,
+     "edgeUnits": -15.1554,
+     "edgeN": 31
+    },
+    "lines": {
+     "mode": "replay",
+     "n": 1388,
+     "gap": -0.001,
+     "closeGap": 0.0001,
+     "clv": -0.0535,
+     "hit": 0.4576,
+     "picks": 60,
+     "units": -3.0877,
+     "edgeUnits": 8.6898,
+     "edgeN": 28
+    }
+   },
+   "rolling": {
+    "props": {
+     "mode": "saved",
+     "n": 154,
+     "gap": 0.0025,
+     "closeGap": 0.0025,
+     "clv": -0.0681,
+     "hit": 0.3333,
+     "picks": 27,
+     "units": -4.6834,
+     "edgeUnits": -15.1554,
+     "edgeN": 31,
+     "from": "2026-09-20"
+    },
+    "lines": {
+     "mode": "replay",
+     "n": 29,
+     "gap": -0.0031,
+     "closeGap": 0.0001,
+     "clv": -0.0453,
+     "hit": 0.5,
+     "picks": 16,
+     "units": 0.3548,
+     "edgeUnits": -0.5,
+     "edgeN": 1,
+     "from": "2026-09-20"
+    }
+   },
+   "proj": {
+    "games": 5.8311,
+    "props": 1.5326
+   }
+  },
+  {
+   "sport": "mlb",
+   "epoch": "2026-10-19T00:19:00Z",
+   "commit": "088b7c5d",
+   "commitAt": "2026-10-18T20:12:28-05:00",
+   "label": "088b7c5d",
+   "at": "2026-10-19T01:24:07.097Z",
+   "frozenTo": "2026-10-19T00:00:00Z",
+   "frozen": {
+    "props": {
+     "mode": "saved",
+     "n": 154,
+     "gap": 0.0025,
+     "closeGap": 0.0025,
+     "clv": -0.0681,
+     "hit": 0.3333,
+     "picks": 27,
+     "units": -4.6834,
+     "edgeUnits": -15.1554,
+     "edgeN": 31
+    },
+    "lines": {
+     "mode": "replay",
+     "n": 1388,
+     "gap": -0.001,
+     "closeGap": 0.0001,
+     "clv": -0.0535,
+     "hit": 0.4576,
+     "picks": 60,
+     "units": -3.0877,
+     "edgeUnits": 8.6898,
+     "edgeN": 28
+    }
+   },
+   "rolling": {
+    "props": {
+     "mode": "saved",
+     "n": 154,
+     "gap": 0.0025,
+     "closeGap": 0.0025,
+     "clv": -0.0681,
+     "hit": 0.3333,
+     "picks": 27,
+     "units": -4.6834,
+     "edgeUnits": -15.1554,
+     "edgeN": 31,
+     "from": "2026-09-20"
+    },
+    "lines": {
+     "mode": "replay",
+     "n": 29,
+     "gap": -0.0031,
+     "closeGap": 0.0001,
+     "clv": -0.0453,
+     "hit": 0.5,
+     "picks": 16,
+     "units": 0.3548,
+     "edgeUnits": -0.5,
+     "edgeN": 1,
+     "from": "2026-09-20"
+    }
+   },
+   "proj": {
+    "games": 5.8311,
+    "props": 1.5326
+   }
+  }
+ ]
+}

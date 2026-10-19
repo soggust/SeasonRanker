@@ -1335,6 +1335,120 @@ mat-icon.desk-gloves {
   }
 }
 
+// (the Scorecard: a small chart a sport, a point per version, in the sport's chip line color; the frozen benchmark
+// solid, the last 28 days dashed and fainter; the zero line even, as the profit curve's)
+.desk-score-panel {
+  @each $sport, $line in chip.$sport-line {
+    --line-#{$sport}: #{$line};
+  }
+}
+
+.desk-score-grid {
+  display: grid;
+  gap: v.$space-10 v.$space-16;
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+}
+
+.desk-score {
+  --line: #f2c54b;
+  min-width: 0;
+
+  .desk-score-head {
+    align-items: baseline;
+    display: flex;
+    flex-wrap: wrap;
+    gap: v.$space-4 v.$space-10;
+
+    b {
+      font-size: v.$fs-13;
+      font-weight: 800;
+    }
+
+    small {
+      color: v.$text-faint;
+      font-size: v.$fs-11;
+      font-weight: 600;
+    }
+  }
+
+  svg {
+    display: block;
+    height: 80px;
+    margin-top: 6px;
+    overflow: visible;
+    width: 100%;
+  }
+
+  .desk-start {
+    stroke: rgba(255, 255, 255, 0.25);
+    stroke-dasharray: 4 4;
+    vector-effect: non-scaling-stroke;
+  }
+
+  .desk-score-line {
+    fill: none;
+    stroke: var(--line);
+    stroke-linejoin: round;
+    stroke-width: 2;
+    vector-effect: non-scaling-stroke;
+
+    &.is-rolling {
+      opacity: 0.7;
+      stroke-dasharray: 5 4;
+      stroke-width: 1.5;
+    }
+  }
+
+  // (a version: a dot that stays round however the chart stretches; its numbers on the hover)
+  .desk-score-dot {
+    cursor: help;
+    stroke: var(--line);
+    stroke-linecap: round;
+    stroke-width: 7px;
+    vector-effect: non-scaling-stroke;
+
+    &.is-rolling {
+      opacity: 0.7;
+      stroke-width: 5px;
+    }
+
+    &:hover {
+      filter: drop-shadow(0 0 3px var(--line));
+    }
+  }
+
+  .desk-score-legend {
+    display: flex;
+    flex-wrap: wrap;
+    gap: v.$space-4 v.$space-14;
+    list-style: none;
+    margin: 4px 0 0;
+    padding: 0;
+
+    li {
+      align-items: center;
+      color: v.$text-dim;
+      display: flex;
+      font-size: v.$fs-11;
+      font-weight: 800;
+      gap: v.$space-6;
+      letter-spacing: 0.04em;
+    }
+
+    i {
+      background: var(--line);
+      border-radius: v.$radius-xxs;
+      height: 3px;
+      width: 14px;
+    }
+
+    .is-rolling i {
+      background: repeating-linear-gradient(90deg, var(--line) 0 5px, transparent 5px 8px);
+      opacity: 0.7;
+    }
+  }
+}
+
 // (the weekly self-check: each sport's counts as chips, its checks a row each, flags first; a flag the desk's
 // loss red, a watch orange, ok muted, thin, partial and info grey. A row's chevron lightens on hover, never
 // yellow)

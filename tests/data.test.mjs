@@ -321,6 +321,34 @@ for (const sport of SPORTS) {
     }
     for (const s of OK) assert.equal(sc.summary?.[s], sc.checks.filter((c) => c.status === s).length, `selfcheck.json: summary.${s}`);
   });
+
+  // The replay gate's scorecard (libs/ranker/scripts/model/gate.mjs --record): a version an entry, oldest epoch first,
+  // each keyed by its epoch and commit once, its numbers finite or null
+  test(`${sport}: model scorecard is whole`, () => {
+    const file = path.join(dir, 'scorecard.json');
+    if (!fs.existsSync(file)) return;
+    const sc = readJson(file);
+    assert.equal(sc.sport, sport, 'scorecard.json: sport');
+    assert.ok(Array.isArray(sc.entries), 'scorecard.json: entries');
+    const keys = new Set();
+    let last = '';
+    for (const e of sc.entries) {
+      const at = `${sport} scorecard ${e.epoch} ${e.commit}`;
+      assert.equal(e.sport, sport, `${at}: sport`);
+      assert.ok(isDate(e.at), `${at}: at`);
+      assert.ok(!keys.has(`${e.epoch}|${e.commit}`), `${at}: twice`);
+      keys.add(`${e.epoch}|${e.commit}`);
+      assert.ok(String(e.epoch) >= last, `${at}: out of order`);
+      last = String(e.epoch);
+      for (const set of ['frozen', 'rolling'])
+        for (const layer of ['props', 'lines']) {
+          const s = e[set]?.[layer];
+          if (s === null || s === undefined) continue;
+          assert.ok(Number.isInteger(s.n) && s.n > 0, `${at}: ${set}.${layer}.n`);
+          for (const k of ['gap', 'closeGap', 'clv', 'hit']) assert.ok(s[k] === null || s[k] === undefined || Number.isFinite(s[k]), `${at}: ${set}.${layer}.${k} ${s[k]}`);
+        }
+    }
+  });
 }
 
 // The game view's kept highlights (libs/ranker/scripts/highlights.mjs writes StaticData/highlights/<season>.json):

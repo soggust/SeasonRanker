@@ -87,6 +87,13 @@
 //                 status) and whether our own feeds held them (inOurFeeds: known, unused, a model gap; else a
 //                 missing source), ranked by count with the stats they hit: what the next round fixes so the
 //                 same reason stops making CHECKs. A watch at REPEAT_MIN of one reason a week; never applied
+//             C23 the leak hunt (leaks.mjs, 2026-10-18 with the replay gate): every graded priced row, all-time,
+//                 against the book's no-vig by segment (the sport, the stat, the line's size, the side, the team, the
+//                 price, the timing; the stat with the side and with the line's size): a leak one losing beyond
+//                 Benjamini-Hochberg's false discovery rate with a shrunk loss, a trend one worse this week than the
+//                 weeks before; ranked by the units at risk, the miss review's recurring causes on each, each a
+//                 candidate fix that must pass the gate (gate.mjs) before it ships. A flag with a leak the desk
+//                 stakes into; never applied
 //   output    { v, sport, at, window, baseline, summary: { flag, watch, ..., headline }, checks: [...], writeups,
 //             notes, prevC6 (the CLV rows C6 compares with next week) }: each check { id, title, status, headline, metric, value, threshold, n, rows, examples,
 //             how, needs, tested }, every number in a headline from its rows; keys sorted and numbers rounded to
@@ -107,6 +114,7 @@ import { levelOf, scoreParts } from './picks.mjs';
 import { impliedMean } from './project.mjs';
 import { ALARM_MIN, farOf, ROLE } from './props.mjs';
 import { round } from './ratings.mjs';
+import { LEAK_FDR, LEAK_GAMES, LEAK_K, LEAK_N, RISK_DAYS, TREND_Z, huntLeaks } from './leaks.mjs';
 
 export const SELFCHECK_V = 1;
 export const STATUSES = ['flag', 'watch', 'partial', 'ok', 'thin', 'info'];
@@ -144,6 +152,7 @@ export const TITLES = {
   C20: 'Line far from the projection (all graded)',
   C21: 'Live calibration by spot',
   C22: 'Research repeat reasons',
+  C23: 'Leaks against the book (priced history)',
 };
 
 // ---- helpers ----
@@ -1338,7 +1347,25 @@ export function c22(x) {
   });
 }
 
-export const CHECKS = [c1, c2, c3, c4, c5, c6, c7, c8, c9, c10, c11, c12, c13, c14, c15, c16, c17, c18, c19, c20, c21, c22];
+// C23: the leak hunt (see the header and leaks.mjs): the raw ledger's rows (a tracked row stakes 0 here: what's at
+// risk is what the desk bets)
+export function c23(x) {
+  const h = huntLeaks(x.ledger?.bets ?? [], { sport: x.sport, now: x.now, teams: x.teams, review: x.review ?? null });
+  return check('C23', {
+    status: h.status,
+    headline: h.headline,
+    metric: 'leaks',
+    value: h.leaks,
+    threshold: `a leak: ${LEAK_N} rows in ${LEAK_GAMES} games or more, losing to the book's no-vig beyond a ${LEAK_FDR * 100}% false discovery rate (Benjamini-Hochberg over every segment tested), its shrunk loss (n / (n + ${LEAK_K})) under 0; a trend: this week worse than the weeks before by ${TREND_Z} standard errors; a flag with a leak staked into in the last ${RISK_DAYS} days`,
+    n: h.n,
+    tested: h.tested,
+    rows: h.rows.slice(0, WORST * 2),
+    examples: [],
+    how: "each graded row's log loss gain over the book (its priced chance against the book's no-vig: on the result and against the close, half each), a game's rows sharing their weight; a segment's mean, its standard error by game, z; the leaks ranked by the units staked into them in the last 28 days. Each leak's fix a candidate only: it ships when the replay gate passes it (node libs/ranker/scripts/model/gate.mjs --candidate <the fix>)",
+  });
+}
+
+export const CHECKS = [c1, c2, c3, c4, c5, c6, c7, c8, c9, c10, c11, c12, c13, c14, c15, c16, c17, c18, c19, c20, c21, c22, c23];
 
 // The spans: the week (the 7 days to now), the baseline (the 28 before it), recent (the 28 to now)
 export function spansOf(now) {
@@ -1502,6 +1529,8 @@ export function readSport(sport, now) {
     gamesInWindow: games,
     writeups: readJsonOr(path.join(ROOT, 'apps', sport, 'scripts/model/writeups.json'), null),
     aiLog: readJsonOr(path.join(ROOT, '.cache/model/ai-usage.json'), null)?.entries ?? null,
+    // (the miss review's causes, the leak hunt's (C23))
+    review: readJsonOr(path.join(model, 'miss-review.json'), null),
     teams,
   };
 }

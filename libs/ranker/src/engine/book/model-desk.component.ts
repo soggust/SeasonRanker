@@ -6,6 +6,7 @@ import { BetGroup, SportGroup, TableSorts, backtestValue, betValue, byGame, game
 import { DESK_HELP } from './desk-help';
 import { NewsSignalRow, NewsSignalsFile, newsSignalRows } from './news-signals';
 import { MissPanel, MissReviewFile, missPanelOf } from './miss-review';
+import { SCORE_H, SCORE_W, ScoreChart, ScorecardFile, scorecardPanelOf } from './scorecard';
 import {
   BANKROLL,
   CURVE_W,
@@ -228,6 +229,13 @@ export class ModelDeskComponent implements OnInit, OnDestroy {
   missPanel: MissPanel = { days: [], tally: [], recommendations: [], line: '' };
   missOn = false;
   private allMisses: (MissReviewFile | null)[] = [];
+  // (the Scorecard panel: each version of the model scored by the replay gate, a point per version (scorecard.ts);
+  // shown once a sport has the file)
+  scorecards: ScoreChart[] = [];
+  scorecardOn = false;
+  readonly scoreW = SCORE_W;
+  readonly scoreH = SCORE_H;
+  private allScorecards: (ScorecardFile | null)[] = [];
   private allSelfChecks: (SelfCheckFile | null)[] = [];
   private selfOpen = new Set<string>();
 
@@ -253,7 +261,7 @@ export class ModelDeskComponent implements OnInit, OnDestroy {
     // (every sport's files asked at once, not each sport's one after another)
     const files = await Promise.all(
       SPORTS.map(async (sport) => {
-        const [ledger, state, checks, selfcheck, news, misses] = await Promise.all([
+        const [ledger, state, checks, selfcheck, news, misses, scorecard] = await Promise.all([
           getJson<{ bets?: ModelBet[] }>(`/${sport}/data/model/ledger.json`, { cache: 'no-cache' }),
           getJson<ModelState>(`/${sport}/data/model/state.json`, { cache: 'no-cache' }),
           // (none before the bettor's first CHECK file: no CHECK row)
@@ -264,8 +272,10 @@ export class ModelDeskComponent implements OnInit, OnDestroy {
           getJson<NewsSignalsFile>(`/${sport}/data/model/news-signals.json`, { cache: 'no-cache' }),
           // (none till the miss review's first run: no panel)
           getJson<MissReviewFile>(`/${sport}/data/model/miss-review.json`, { cache: 'no-cache' }),
+          // (none till the replay gate records a version (gate.mjs --record): no panel)
+          getJson<ScorecardFile>(`/${sport}/data/model/scorecard.json`, { cache: 'no-cache' }),
         ]);
-        return { ledger, state, checks, selfcheck, news, misses };
+        return { ledger, state, checks, selfcheck, news, misses, scorecard };
       }),
     );
     this.allSelfChecks = files.map((f) => f.selfcheck);
@@ -273,6 +283,8 @@ export class ModelDeskComponent implements OnInit, OnDestroy {
     this.newsSignalsOn = this.allNewsSignals.some((f) => !!f);
     this.allMisses = files.map((f) => f.misses);
     this.missOn = this.allMisses.some((f) => !!f);
+    this.allScorecards = files.map((f) => f.scorecard);
+    this.scorecardOn = this.allScorecards.some((f) => !!f?.entries?.length);
     this.allStates = files.map((f) => f.state).filter((s): s is ModelState => !!s);
     const rows = files.flatMap((f) => f.ledger?.bets ?? []);
     const split = this.allStates.some((s) => s.practiceSplit);
@@ -510,6 +522,10 @@ export class ModelDeskComponent implements OnInit, OnDestroy {
     );
     this.newsSignals = newsSignalRows(this.allNewsSignals, Object.fromEntries(this.allStates.map((s) => [s.sport, s.label])), this.sport);
     this.missPanel = missPanelOf(this.allMisses, Object.fromEntries(this.allStates.map((s) => [s.sport, s.label])), this.sport);
+    this.scorecards = scorecardPanelOf(
+      this.allScorecards.filter((f) => !!f && (!this.sport || f.sport === this.sport)),
+      Object.fromEntries(this.allStates.map((s) => [s.sport, s.label])),
+    );
     this.checkCauses = panel.rows;
     this.checkAdvice = panel.advice;
     this.researchRows = researchPanelOf(this.states);

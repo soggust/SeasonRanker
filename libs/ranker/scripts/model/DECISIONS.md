@@ -201,7 +201,14 @@ Started 2026-10-18, after about 20 bettor changes in one day. The owner: "keep i
 - **Date:** 2026-10-18.
 - **Owner:** "I fuckin love this."
 - **Rule:** a change ships only if it doesn't worsen projection accuracy (recency-weighted, split at the rule eras) and beats or ties the current version against the book. Results go on the dated scorecard.
-- **Status:** being built (backtest, selfcheck, model-desk UI) by its own agent. Add its code pointers and pinning test here when it lands.
+- **Every bettor change runs it before it ships** (its projections, pricing, stakes or selection): `node libs/ranker/scripts/model/gate.mjs --candidate <ref|worktree|env:NAME=value> [--champion origin/master] [sports] [--refit] [--record]`. A HOLD doesn't ship. A shipped version is recorded with `--record`.
+- **Layer a (projections, price-free):** each final's margin and total (normal log score; CRPS reported) and each eligible player game's stat (the version's own count distribution), replayed from the games before it. Weighted by season (halving each season back) and split at the rule eras (`gate-score.mjs` `ERAS`: NFL 2024 kickoff, MLB 2023 pitch clock and shift ban, NBA 2016-17's three-point jump, NHL post-2005 rules). The current season and the two before it inside the era decide. Older seasons are a sanity check at a tenth of their weight: they can flag, never decide.
+- **Layer b (every saved price):** the ledgers' graded props and game lines since 2026-10-08, bets and tracked rows, and the game-line backtest. Each row is priced again walk-forward by the version: its correction fit only on the slates before the row's day; a version from before `correct.mjs` by the trust's shrink by line size. Measured: log loss on results and against the close's no-vig, each slate's top picks (`PRACTICE_N`) hit rate, CLV (v2) and units at the practice stake, and the edge picks at the stake table.
+- **The rule in code:** `gate-score.mjs` `sportVerdict`, `gateVerdict`. SHIP when every sport's deciding layer a isn't worse beyond noise and layer b's log loss, close log loss and top picks' CLV beat or tie. Worse beyond noise means the clustered bootstrap's 95% interval (seeded, by day, slate or game) is wholly worse.
+- **Scorecard:** `apps/<sport>/src/StaticData/model/scorecard.json`, an entry per version keyed by `MODEL_EPOCH` and commit, on the frozen benchmark (`gate-frozen.json`, fixed 2026-10-18) and the last 28 days. The Algorithm tab's Scorecard panel draws a point per version (`scorecard.ts`).
+- **Leaks:** the weekly self-check's C23 (`leaks.mjs`) replays the priced history by segment (sport, stat, line size, side, team, price, timing; stat with side, stat with line size). A leak loses to the book beyond a 10% false discovery rate (Benjamini-Hochberg), at 40 rows in 8 games or more, with a shrunk loss. Trends are segments worse this week than before. Leaks are ranked by units at risk, carry the miss review's causes, and each is a candidate fix that must pass the gate.
+- **Limits:** the props' layer needs the desk's cache (`.cache/model`: players' games and the saved fit; a dry run fills it). Both versions replay under the saved fit's settings unless `--refit`, which a change to the fit's search itself needs (the NFL's is about 27 minutes a version). Live-only code (news, CHECKs, timing, ladder rungs) can't be replayed. The gate says so and reads it as a tie.
+- **Code:** `gate.mjs`, `gate-score.mjs`, `leaks.mjs`, `selfcheck.mjs` `c23`, `libs/ranker/src/engine/book/scorecard.ts`. Tests: `tests/model-gate.test.mjs`.
 
 ## Loops
 
@@ -234,7 +241,7 @@ Each loop below runs by itself. For each one: what it changes, how often, what i
 - **No fit uses 25-year-old seasons.** The NFL's history starts in 2016 and the others' at the last season.
 - **Gaps:**
   - The fitted settings are flat over 2019 to 2023 for the NFL.
-  - There is no rule-era split (D22 adds one for its gate).
+  - The fits have no rule-era split; the gate's layer a has one (D22).
   - The prior lumps older seasons at 0.5.
   - The MMA fit, the calibration and the correction weight all their rows flat. The last two only have rows since 2026-10-08.
 

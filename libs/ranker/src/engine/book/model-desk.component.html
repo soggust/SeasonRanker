@@ -741,6 +741,45 @@
       </div>
     </card-panel>
 
+    <!-- Scorecard: each version of the model scored by the replay gate (libs/ranker/scripts/model/gate.mjs --record):
+         a small chart a sport, a point per version, oldest on the left: the edge over the book's own log loss in nats
+         per 100 rows (above the dashed 0 the model better than the book) on the frozen benchmark and the last 28
+         days; the top picks' CLV and hit rate on the hover. Shown once a sport has the file -->
+    @if (scorecardOn) {
+      <card-panel class="tab-card group-support desk-wide desk-score-panel" label="Scorecard" icon="query_stats" [startOpen]="false">
+        <div class="group-body">
+          <p class="desk-note">Every version of the model replayed on the same history before it ships, and kept only if it doesn't do worse. Each point is a version: its edge over the book's own log loss, in nats per 100 rows (above the dashed line it beats the book), on a fixed benchmark and on the last 28 days. Hover a point for its top picks' CLV and hit rate.</p>
+          @if (!scorecards.length) {
+            <p class="desk-note">No version scored for this sport yet</p>
+          }
+          <div class="desk-score-grid">
+            @for (c of scorecards; track c.sport) {
+              <section class="desk-score" [style.--line]="'var(--line-' + c.sport + ')'">
+                <header class="desk-score-head">
+                  <b>{{ c.label }}</b>
+                  <small>{{ c.layer === 'props' ? 'props' : 'game lines' }} · {{ c.versions }} version{{ c.versions === 1 ? '' : 's' }} · {{ c.min.toFixed(2) }} to {{ c.max.toFixed(2) }}</small>
+                </header>
+                <svg [attr.viewBox]="'0 0 ' + scoreW + ' ' + scoreH" preserveAspectRatio="none" role="img" [attr.aria-label]="c.label + ' scorecard: ' + c.latest">
+                  <line class="desk-start" x1="0" [attr.x2]="scoreW" [attr.y1]="c.zeroY" [attr.y2]="c.zeroY" />
+                  @for (s of c.series; track s.key) {
+                    <path class="desk-score-line" [class.is-rolling]="s.key === 'rolling'" [attr.d]="s.path" />
+                    @for (p of s.points; track $index) {
+                      <line class="desk-score-dot" [class.is-rolling]="s.key === 'rolling'" [attr.x1]="p.x" [attr.x2]="p.x" [attr.y1]="p.y" [attr.y2]="p.y"><title>{{ p.title }}</title></line>
+                    }
+                  }
+                </svg>
+                <ul class="desk-legend desk-score-legend">
+                  <li><i></i>Frozen benchmark</li>
+                  <li class="is-rolling"><i></i>Last 28 days</li>
+                </ul>
+                <p class="desk-note">{{ c.latest }}</p>
+              </section>
+            }
+          </div>
+        </div>
+      </card-panel>
+    }
+
     <!-- News signals: the teams' news read once a day for role changes
          (libs/ranker/scripts/model/news-signals.mjs, a small Claude model), the last two days'; log only: they
          move no price till a fit shows they help. Shown once a sport has the file (NEWS_SIGNALS on) -->
