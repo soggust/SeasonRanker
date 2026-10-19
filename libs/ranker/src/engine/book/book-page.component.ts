@@ -17,7 +17,7 @@ import { SPORTS } from './desk-math';
 import { insteadText } from '../player-card/analysis';
 import { TickerSide, TickerTarget, americanOdds, headshot, leagueLogo, tickerAria, tickerSide, tickerTarget } from './bet-format';
 import { GameViewService } from '../game-view/game-view.service';
-import { BetWhy, BetWhyRow, Confidence, PriceAt, PriceFlip, WhatIfBase, betScoreText, betWhy, clearedKellyOf, flipsAt, priceAt, signedPoints, stepPrice, whatIfCaption, whatIfOf } from './bet-why';
+import { BetWhy, BetWhyRow, Confidence, PriceAt, WhatIfBase, betScoreText, betWhy, clearedKellyOf, flipLine, priceAt, signedPoints, stepPrice, whatIfCaption, whatIfOf } from './bet-why';
 import { BET_KINDS, BandTally, BetKind, BetRow, ByLevel, GameInfo, Picks, dropSportRows, fileRows, mergeSportRows, playerCardHref, playerRefOf, rowClickToggles, sportRows, sumRecords } from './book-rows';
 // (the rows' types, for the page's other parts: book-rows.ts)
 export { BET_KINDS, BetKind, BetRow, CheckResearch } from './book-rows';
@@ -67,8 +67,8 @@ interface WhatIfView {
   tier: string;
   band: string;
   stake: string;
-  flips: PriceFlip[];
-  caption: string;
+  flips: { text: string; title: string };
+  caption: { text: string; title: string };
   held: string | null;
 }
 
@@ -1002,12 +1002,11 @@ export class BookPageComponent implements OnInit, OnDestroy {
     setTimeout(() => this.whyPop?.nativeElement.focus({ preventScroll: true }));
   }
 
-  // The what-if price: a step up the books' ladder (+1, a price that pays more) or down, or back to the bot's own
-  nudgePrice(dir: 1 | -1): void {
+  // The what-if price: a step up the books' ladder (+1, a price that pays more) or down
+  // (its own click kept to itself: never the outside click that shuts the popover)
+  nudgePrice(dir: 1 | -1, event?: Event): void {
+    event?.stopPropagation();
     if (this.whatIf) this.priceTo(stepPrice(this.whatIf.at.odds, dir));
-  }
-  resetPrice(): void {
-    this.priceTo(this.why?.wi?.odds ?? null);
   }
   private priceTo(odds: number | null): void {
     const base = this.why?.wi;
@@ -1016,7 +1015,7 @@ export class BookPageComponent implements OnInit, OnDestroy {
       return;
     }
     const at = priceAt(base, odds);
-    const flips = flipsAt(base, odds);
+    const flips = flipLine(base, odds);
     const sign = (v: number) => (v >= 0 ? '+' : '−');
     this.whatIf = {
       at,
@@ -1030,9 +1029,9 @@ export class BookPageComponent implements OnInit, OnDestroy {
       tier: tierOf(at.level) ?? 'pass',
       band: tierLabel(at.level).toUpperCase(),
       stake: at.units === null ? 'no bet' : `${at.units}u`,
-      flips: [flips.better, flips.worse].filter((f): f is PriceFlip => !!f),
+      flips,
       caption: whatIfCaption(base),
-      held: at.units === null ? null : base.unitsCap !== null ? `Stake held to ${base.unitsCap}u, as the bot's was.` : base.cap === 'medium' ? "Held to LIKE, as the bot's pick is." : at.suspect ? 'Past the 15% sanity bar: a LIKE at the practice stake.' : null,
+      held: at.units === null ? null : base.unitsCap !== null ? `Held to ${base.unitsCap}u, the Bot's own stake` : base.cap === 'medium' ? "Held to LIKE, as the Bot's pick is" : at.suspect ? 'Past the 15% sanity bar: a LIKE at the practice stake' : null,
     };
   }
 

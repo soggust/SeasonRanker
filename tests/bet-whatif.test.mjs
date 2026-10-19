@@ -93,7 +93,9 @@ test('the picks files: every pick reads back its own Kelly, band, stake and retu
   close(at.ev, row.ev, 'its return', 1e-12);
   assert.equal(at.units, row.units);
   assert.equal(at.level, 'medium');
-  assert.match(desk.whatIfCaption(wi), /^The bot's chance held at 53\.5%: its own 60\.0% blended with the book's no-vig 50\.0% at trust 0\.50, kept fixed for this what-if/);
+  const cap = desk.whatIfCaption(wi);
+  assert.equal(cap.text, "The Bot's chance held at 53.5% · what-if only, nothing saved");
+  assert.match(cap.title, /^The Bot's own 60.0% blended with the Book's no-vig 50.0% at trust 0.50/);
   assert.ok(n >= 0);
 });
 
@@ -129,6 +131,12 @@ test('flipsAt: the exact whole-cent prices where the band changes, either way', 
   // (PASS: the break-even at 53.5%, −115.05: −115 the last LIKE)
   assert.equal(desk.flipsAt(b, -113).worse.text, 'PASS past −115');
   assert.equal(desk.flipsAt(b, -113).better.text, 'LOVE from −110 or better');
+  // (the one line: this band's run first, then either side; the sanity bar's LIKE again, capped)
+  assert.equal(desk.flipLine(b, -110).text, 'LOVE from −110 to +114 · LIKE past −110 · LIKE again from +115 (capped)');
+  assert.match(desk.flipLine(b, -110).title, /Capped: past a 15% expected return/);
+  assert.equal(desk.flipLine(b, -113).text, 'LIKE from −115 to −111 · PASS past −115 · LOVE from −110');
+  assert.equal(desk.flipLine(base(0.535, -110, { cap: 'medium' }), -110).text, 'LIKE at every price', 'a held LIKE never flips');
+
 });
 
 test('the popover kept lean: no neighbor comparison, no Kelly definition paragraph; the what-if stepper in it', () => {
@@ -140,6 +148,12 @@ test('the popover kept lean: no neighbor comparison, no Kelly definition paragra
   assert.doesNotMatch(ts, /It edges \$\{/);
   assert.doesNotMatch(ts, /sits over it by/);
   assert.match(html, /class="why-whatif"/);
-  assert.match(html, /\(click\)="nudgePrice\(-1\)"/);
-  assert.match(html, /\(click\)="resetPrice\(\)"/);
+  // (the lean's 'bot 57.1%' in its hover, not its label: no label cut off)
+  assert.match(html, /part.value && part.key !== 'lean'/);
+  assert.doesNotMatch(html, /q.held }}}/);
+  // (the stepper's clicks kept from the outside click that shuts the popover; no reset link, the owner's,
+  // 2026-10-19: the Bot's own price shows beside the stepper)
+  assert.match(html, /\(click\)="nudgePrice\(-1, \$event\)"/);
+  assert.match(ts, /nudgePrice\(dir: 1 \| -1, event\?: Event\): void \{\s+event\?\.stopPropagation\(\);/);
+  assert.doesNotMatch(html, /resetPrice|wi-reset/);
 });

@@ -657,7 +657,7 @@
         <div class="why-parts" role="list">
           @for (part of w.parts; track part.key) {
             <div role="listitem" class="why-part" [class.hurts]="part.amount < 0" [title]="part.title">
-              <span class="why-label">{{ part.label }}@if (part.value) {{{ ' ' }}<em>{{ part.value }}</em>}</span>
+              <span class="why-label">{{ part.label }}@if (part.value && part.key !== 'lean') {{{ ' ' }}<em>{{ part.value }}</em>}</span>
               <span class="why-bar" aria-hidden="true"><i [style.width.%]="part.width"></i></span>
               <span class="why-amount">{{ signedPoints(part.amount) }}</span>
             </div>
@@ -688,24 +688,22 @@
             <div class="wi-top">
               <span class="wi-kicker">What if</span>
               <div class="wi-step">
-                <button type="button" class="wi-btn" aria-label="A shorter price" (click)="nudgePrice(-1)">−</button>
+                <button type="button" class="wi-btn" aria-label="A shorter price" (click)="nudgePrice(-1, $event)">−</button>
                 <span class="wi-price" aria-live="polite">{{ q.odds }}</span>
-                <button type="button" class="wi-btn" aria-label="A longer price" (click)="nudgePrice(1)">+</button>
+                <button type="button" class="wi-btn" aria-label="A longer price" (click)="nudgePrice(1, $event)">+</button>
               </div>
-              <span class="wi-own">@if (q.moved) {the bot's {{ q.own }} · <button type="button" class="wi-reset" (click)="resetPrice()">reset</button>} @else {the bot's price}</span>
+              <span class="wi-own">@if (q.moved) {the Bot's {{ q.own }}} @else {the Bot's price}</span>
             </div>
             <dl class="wi-grid">
               <div><dt>Break-even</dt><dd>{{ q.breakEven }}</dd></div>
               <div><dt>Edge</dt><dd [class.up]="q.at.edge > 0" [class.down]="q.at.edge < 0">{{ q.edge }} pts</dd></div>
               <div><dt>EV</dt><dd [class.up]="q.at.ev > 0" [class.down]="q.at.ev < 0">{{ q.ev }}</dd></div>
               <div><dt>Kelly</dt><dd>{{ q.kelly }}</dd></div>
-              <div><dt>Band</dt><dd><span class="wi-tag" [ngClass]="q.tier">{{ q.band }}</span></dd></div>
-              <div><dt>Stake</dt><dd>{{ q.stake }}</dd></div>
+              <div><dt>Band</dt><dd [title]="q.held ?? ''"><span class="wi-tag" [ngClass]="q.tier">{{ q.band }}</span></dd></div>
+              <div><dt>Stake</dt><dd [title]="q.held ?? ''">{{ q.stake }}@if (q.held) {<sup aria-hidden="true">*</sup>}</dd></div>
             </dl>
-            @if (q.flips.length) {
-              <p class="wi-flips">@for (f of q.flips; track f.dir) {<span [class.better]="f.dir === 'better'">{{ f.text }}</span>}</p>
-            }
-            <p class="why-fine">{{ q.caption }}@if (q.held) {{{ ' ' + q.held }}}</p>
+            <p class="wi-flips" [title]="q.flips.title">{{ q.flips.text }}</p>
+            <p class="why-fine" [title]="q.caption.title">{{ q.caption.text }}</p>
           </div>
         }
       </div>

@@ -2389,9 +2389,10 @@ $font-mono: "IBM Plex Mono", "Courier New", monospace;
     gap: v.$space-8;
     grid-template-columns: 112px minmax(0, 1fr) 44px;
 
+    // (never cut off: a long label wraps)
     .why-label {
       color: v.$grey-light;
-      @include v.ellipsis;
+      overflow-wrap: anywhere;
 
       em {
         color: v.$text-faint;
@@ -2584,20 +2585,6 @@ $font-mono: "IBM Plex Mono", "Courier New", monospace;
     margin-left: auto;
   }
 
-  .wi-reset {
-    background: none;
-    border: 0;
-    color: chip.$gold-led;
-    cursor: pointer;
-    font: inherit;
-    padding: 0;
-    text-decoration: underline;
-
-    &:hover {
-      filter: brightness(1.25);
-    }
-  }
-
   .wi-grid {
     display: grid;
     gap: v.$space-4 v.$space-8;
@@ -2639,14 +2626,7 @@ $font-mono: "IBM Plex Mono", "Courier New", monospace;
 
   .wi-flips {
     color: v.$text-soft;
-    display: flex;
-    flex-wrap: wrap;
     font-size: v.$fs-11;
-    gap: v.$space-4 v.$space-12;
-
-    .better {
-      color: v.$text-strong;
-    }
   }
 
   // A CHECK's facts, a line each

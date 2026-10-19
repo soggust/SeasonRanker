@@ -458,6 +458,27 @@ export function flipsAt(base: WhatIfBase, american: number): { better: PriceFlip
   return { better: walk(1), worse: walk(-1) };
 }
 
+// The flips as one line, this band's run first, then either side of it: "LOVE from −107 to +118 · LIKE past −107 ·
+// LIKE again from +119"; a band the sanity bar holds marked capped, its why in the hover
+export function flipLine(base: WhatIfBase, american: number): { text: string; title: string } {
+  const here = priceAt(base, american).level;
+  const { better, worse } = flipsAt(base, american);
+  const name = (l: Confidence) => tierLabel(l).toUpperCase();
+  const top = better ? nextCent(better.odds, -1) : null;
+  const run = worse && top !== null ? `from ${odds(worse.odds)} to ${odds(top)}` : worse ? `from ${odds(worse.odds)} or better` : top !== null ? `up to ${odds(top)}` : 'at every price';
+  const parts = [`${name(here)} ${run}`];
+  if (worse) parts.push(`${name(worse.level)} past ${odds(worse.odds)}`);
+  const capped = !!better && priceAt(base, better.odds).suspect && !priceAt(base, top!).suspect;
+  if (better) parts.push(`${name(better.level)}${worse && worse.level === better.level ? ' again' : ''} from ${odds(better.odds)}${capped ? ' (capped)' : ''}`);
+  const title = [
+    "Where the band changes, the Bot's chance held: the whole-cent prices either side",
+    capped ? 'Capped: past a 15% expected return the bettor treats a price as suspect, a LIKE at the practice stake at most' : null,
+  ]
+    .filter(Boolean)
+    .join('\n');
+  return { text: parts.join(' · '), title };
+}
+
 // The held numbers for a row with a chance and a price (none without them), from what the page's row carries;
 // placed: a pick the bot bet (a board price it didn't take: false)
 export function whatIfOf(r: BetWhyRow, placed = true): WhatIfBase | null {
@@ -480,8 +501,11 @@ export function whatIfOf(r: BetWhyRow, placed = true): WhatIfBase | null {
 }
 
 // The caption under the what-if: the chance held, and where it comes from when it's a blend
-export function whatIfCaption(base: WhatIfBase): string {
-  const held = `The bot's chance held at ${pct(base.p)}`;
-  if (!base.blend) return `${held}. A what-if only: nothing saved, no bet changed.`;
-  return `${held}: its own ${pct(base.blend.model)} blended with the book's no-vig ${pct(base.blend.fair)} at trust ${base.blend.trust.toFixed(2)}, kept fixed for this what-if. Nothing saved, no bet changed.`;
+// (one line, the owner's, 2026-10-19: less text; the blend's makings in its hover)
+export function whatIfCaption(base: WhatIfBase): { text: string; title: string } {
+  const text = `The Bot's chance held at ${pct(base.p)} · what-if only, nothing saved`;
+  const title = base.blend
+    ? `The Bot's own ${pct(base.blend.model)} blended with the Book's no-vig ${pct(base.blend.fair)} at trust ${base.blend.trust.toFixed(2)}, kept fixed at every price. No bet changes`
+    : "The Bot's chance kept fixed at every price. No bet changes";
+  return { text, title };
 }
