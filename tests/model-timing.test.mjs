@@ -28,7 +28,9 @@ test('phaseOf: early before the window, open in it, last inside the last chance'
   assert.equal(phaseOf('nba', 'props', 25 * H), 'open');
   assert.equal(phaseOf('nhl', 'props', 25 * H), 'open');
   assert.equal(phaseOf('mlb', 'lines', 25 * H), 'open');
-  assert.equal(phaseOf('mma', 'lines', 73 * H), 'early');
+  // (MMA's window is four weeks since the open round, D37: a bout 73 hours out is open, one 29 days out early)
+  assert.equal(phaseOf('mma', 'lines', 73 * H), 'open');
+  assert.equal(phaseOf('mma', 'lines', 29 * 24 * H), 'early');
 });
 
 test('cadenceOf / phaseOf: runs coming further apart than the last chance stretch it (1.5 times the median gap, 12 hours at most)', () => {
