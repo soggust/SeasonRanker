@@ -1,0 +1,316 @@
+{
+ "v": 1,
+ "sport": "mma",
+ "frozen": "2026-10-19T00:00:00Z",
+ "entries": [
+  {
+   "sport": "mma",
+   "epoch": "2026-10-18T02:00:00Z",
+   "commit": "52b1caec",
+   "commitAt": "2026-10-19T10:22:12-05:00",
+   "label": "worktree",
+   "at": "2026-10-19T15:23:24.297Z",
+   "frozenTo": "2026-10-19T00:00:00Z",
+   "frozen": {
+    "props": null,
+    "lines": {
+     "mode": "replay",
+     "n": 14,
+     "gap": 0,
+     "closeGap": 0,
+     "clv": null,
+     "hit": null,
+     "picks": 0,
+     "units": 0,
+     "edgeUnits": 0,
+     "edgeN": 0
+    }
+   },
+   "rolling": {
+    "props": null,
+    "lines": {
+     "mode": "replay",
+     "n": 14,
+     "gap": 0,
+     "closeGap": 0,
+     "clv": null,
+     "hit": null,
+     "picks": 0,
+     "units": 0,
+     "edgeUnits": 0,
+     "edgeN": 0,
+     "from": "2026-09-20"
+    }
+   },
+   "history": {
+    "lines": {
+     "n": 2884,
+     "games": 1973,
+     "model": 0.6192,
+     "raw": 0.6518,
+     "anch": null,
+     "book": 0.6192,
+     "gap": 0.0001,
+     "lo": -0.0001,
+     "hi": 0.0003,
+     "rawGap": 0.0326,
+     "anchGap": null,
+     "verdict": "tie"
+    },
+    "props": null,
+    "linesBySeason": {
+     "2020": {
+      "n": 117,
+      "games": 117,
+      "model": 0.647,
+      "raw": 0.6624,
+      "anch": null,
+      "book": 0.6462,
+      "gap": 0.0009,
+      "lo": -0.0051,
+      "hi": 0.0066,
+      "rawGap": 0.0162,
+      "anchGap": null,
+      "verdict": "tie"
+     },
+     "2021": {
+      "n": 270,
+      "games": 270,
+      "model": 0.6408,
+      "raw": 0.6571,
+      "anch": null,
+      "book": 0.6408,
+      "gap": 0,
+      "lo": 0,
+      "hi": 0,
+      "rawGap": 0.0163,
+      "anchGap": null,
+      "verdict": "tie"
+     },
+     "2022": {
+      "n": 339,
+      "games": 339,
+      "model": 0.585,
+      "raw": 0.6406,
+      "anch": null,
+      "book": 0.5849,
+      "gap": 0.0001,
+      "lo": 0,
+      "hi": 0.0002,
+      "rawGap": 0.0557,
+      "anchGap": null,
+      "verdict": "tie"
+     },
+     "2023": {
+      "n": 366,
+      "games": 343,
+      "model": 0.612,
+      "raw": 0.654,
+      "anch": null,
+      "book": 0.6118,
+      "gap": 0.0002,
+      "lo": -0.0004,
+      "hi": 0.0008,
+      "rawGap": 0.0422,
+      "anchGap": null,
+      "verdict": "tie"
+     },
+     "2024": {
+      "n": 594,
+      "games": 301,
+      "model": 0.6038,
+      "raw": 0.6293,
+      "anch": null,
+      "book": 0.6041,
+      "gap": -0.0003,
+      "lo": -0.001,
+      "hi": 0.0004,
+      "rawGap": 0.0252,
+      "anchGap": null,
+      "verdict": "tie"
+     },
+     "2025": {
+      "n": 681,
+      "games": 343,
+      "model": 0.6239,
+      "raw": 0.6397,
+      "anch": null,
+      "book": 0.6239,
+      "gap": 0.0001,
+      "lo": 0,
+      "hi": 0.0002,
+      "rawGap": 0.0158,
+      "anchGap": null,
+      "verdict": "tie"
+     },
+     "2026": {
+      "n": 517,
+      "games": 260,
+      "model": 0.6207,
+      "raw": 0.6663,
+      "anch": null,
+      "book": 0.6205,
+      "gap": 0.0002,
+      "lo": -0.0001,
+      "hi": 0.0005,
+      "rawGap": 0.0457,
+      "anchGap": null,
+      "verdict": "tie"
+     }
+    },
+    "linesByMarket": {
+     "ml": {
+      "n": 1968,
+      "games": 1968,
+      "model": 0.5804,
+      "raw": 0.6214,
+      "anch": null,
+      "book": 0.5804,
+      "gap": 0,
+      "lo": 0,
+      "hi": 0,
+      "rawGap": 0.0409,
+      "anchGap": null,
+      "verdict": "tie"
+     },
+     "total": {
+      "n": 916,
+      "games": 916,
+      "model": 0.6586,
+      "raw": 0.6827,
+      "anch": null,
+      "book": 0.6585,
+      "gap": 0.0002,
+      "lo": -0.0002,
+      "hi": 0.0005,
+      "rawGap": 0.0242,
+      "anchGap": null,
+      "verdict": "tie"
+     }
+    },
+    "openByMarket": {
+     "ml": {
+      "n": 3052,
+      "games": 3052,
+      "model": 0.6566,
+      "raw": 0.6222,
+      "anch": null,
+      "book": 0.6558,
+      "gap": 0.0009,
+      "lo": -0.0005,
+      "hi": 0.0024,
+      "rawGap": -0.0336,
+      "anchGap": null,
+      "verdict": "tie"
+     },
+     "total": {
+      "n": 1476,
+      "games": 1476,
+      "model": 0.6616,
+      "raw": 0.6839,
+      "anch": null,
+      "book": 0.6604,
+      "gap": 0.0012,
+      "lo": -0.0001,
+      "hi": 0.0025,
+      "rawGap": 0.0235,
+      "anchGap": null,
+      "verdict": "tie"
+     }
+    }
+   },
+   "proj": {
+    "games": null,
+    "props": null,
+    "bouts": 0.6241,
+    "totals": 0.6376
+   },
+   "markets": {
+    "close": {
+     "ml": {
+      "n": 1968,
+      "games": 1968,
+      "model": 0.5804,
+      "raw": 0.6214,
+      "anch": null,
+      "book": 0.5804,
+      "gap": 0,
+      "lo": 0,
+      "hi": 0,
+      "rawGap": 0.0409,
+      "anchGap": null,
+      "verdict": "tie"
+     },
+     "total": {
+      "n": 916,
+      "games": 916,
+      "model": 0.6586,
+      "raw": 0.6827,
+      "anch": null,
+      "book": 0.6585,
+      "gap": 0.0002,
+      "lo": -0.0002,
+      "hi": 0.0005,
+      "rawGap": 0.0242,
+      "anchGap": null,
+      "verdict": "tie"
+     }
+    },
+    "open": {
+     "ml": {
+      "n": 3052,
+      "games": 3052,
+      "model": 0.6566,
+      "raw": 0.6222,
+      "anch": null,
+      "book": 0.6558,
+      "gap": 0.0009,
+      "lo": -0.0005,
+      "hi": 0.0024,
+      "rawGap": -0.0336,
+      "anchGap": null,
+      "verdict": "tie"
+     },
+     "total": {
+      "n": 1476,
+      "games": 1476,
+      "model": 0.6616,
+      "raw": 0.6839,
+      "anch": null,
+      "book": 0.6604,
+      "gap": 0.0012,
+      "lo": -0.0001,
+      "hi": 0.0025,
+      "rawGap": 0.0235,
+      "anchGap": null,
+      "verdict": "tie"
+     }
+    }
+   },
+   "trust": {
+    "ml": {
+     "trust": 0.05,
+     "n": 3512,
+     "clvN": 1350,
+     "eff": 2981.8,
+     "fitted": true
+    },
+    "total": {
+     "trust": 0,
+     "n": 1914,
+     "clvN": 703,
+     "eff": 1600,
+     "fitted": true
+    },
+    "match": {
+     "total": 3935,
+     "matched": 3121,
+     "closed": 2120,
+     "closedMatched": 2080,
+     "rate": 0.7931,
+     "closedRate": 0.9811
+    }
+   }
+  }
+ ]
+}
