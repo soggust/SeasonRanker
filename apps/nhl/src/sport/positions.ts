@@ -348,27 +348,40 @@ export function presetWeights(position: SkillPosition, preset: SkillPreset): Ski
 // (stat-groups.ts resolves them; a key a tab lacks, a winger's Faceoff %, is skipped). Only a look: where
 // a column sits, the strip's name, icon and color, and what the sidebar's eye on the group switches off
 // together. The ranking reads the sliders alone.
+//
+// A skater's profile (the owner, 2026-10-19): Results | Scoring | Shooting | Possession | Defense | Support.
+// Scoring is the scoresheet (goals, assists, points), Shooting the volume, quality and finishing (shots,
+// S%, ixG, G - xG, high-danger shots), Possession the on-ice share family (+/-, xGF %, CF %; a center's
+// faceoffs win possession, so Faceoff % sits there), Defense the hits, blocks, takeaways, giveaways and the
+// discipline (PIM: staying out of the box). A goalie: Results | Saves | Support (the raw and the expected
+// save numbers together). A team: Results | Offense | Defense | Possession | Support. A head coach: Results
+// | Offense | Defense | Coaching (his lift and his points over the goal differential). Tones (colors):
+// Results 0, Support 3, the profile strips 1, 2, 4, 5 in order.
 // ---------------------------------------------------------------------------
 type Group = GroupDef<SkillColumnKey>;
 const group = (id: string, title: string, icon: string, tone: number, keys: SkillColumnKey[], box = false): Group => (box ? { id, title, icon, tone, keys, box } : { id, title, icon, tone, keys });
 
 const results = (keys: SkillColumnKey[]) => group('results', 'Results', 'emoji_events', 0, keys);
-const basic = (keys: SkillColumnKey[]) => group('box', 'Basic', 'bar_chart', 1, keys);
-const advanced = (keys: SkillColumnKey[]) => group('advanced', 'Advanced', 'insights', 2, keys);
 const support = (keys: SkillColumnKey[]) => group('support', 'Support', 'groups', 3, keys, true);
+const offense = (keys: SkillColumnKey[]) => group('offense', 'Offense', 'bolt', 1, keys);
+const defense = (keys: SkillColumnKey[], tone = 2) => group('defense', 'Defense', 'shield', tone, keys);
+const possession = (keys: SkillColumnKey[]) => group('possession', 'Possession', 'pie_chart', 4, keys);
 
 const SKATER_GROUPS: Group[] = [
-  results(['games', 'toi', 'winPct']),
-  basic(['goals', 'assists', 'points', 'plusMinus', 'ppPoints', 'shots', 'shootingPct', 'gwg', 'hits', 'blocks', 'takeaways', 'giveaways', 'pim', 'faceoffPct']),
-  advanced(['gameScore', 'xgfPct', 'xgfRel', 'cfPct', 'ixg', 'goalsAboveX', 'hdShots']),
+  results(['games', 'toi', 'winPct', 'gameScore']),
+  group('scoring', 'Scoring', 'sports_hockey', 1, ['goals', 'assists', 'points', 'ppPoints', 'gwg']),
+  group('shooting', 'Shooting', 'ads_click', 2, ['shots', 'shootingPct', 'ixg', 'goalsAboveX', 'hdShots']),
+  possession(['plusMinus', 'xgfPct', 'xgfRel', 'cfPct', 'faceoffPct']),
+  defense(['hits', 'blocks', 'takeaways', 'giveaways', 'pim'], 5),
   support(['linemates', 'coaching']),
 ];
 
 export const GROUPS: Record<SkillPosition, Group[]> = {
   TM: [
-    results(['games', 'winPct', 'recent', 'playoffWins']),
-    basic(['goalDiff', 'offRank', 'defRank', 'ppPct', 'pkPct']),
-    advanced(['xgfPct', 'cfPct', 'gsaxTeam', 'ptsOver', 'pdo']),
+    results(['games', 'winPct', 'recent', 'playoffWins', 'goalDiff', 'ptsOver', 'pdo']),
+    offense(['offRank', 'ppPct']),
+    defense(['defRank', 'pkPct', 'gsaxTeam']),
+    possession(['xgfPct', 'cfPct']),
     support(['forwards', 'blueline', 'goaltending']),
   ],
   TOP: SKATER_GROUPS,
@@ -376,13 +389,31 @@ export const GROUPS: Record<SkillPosition, Group[]> = {
   LW: SKATER_GROUPS,
   RW: SKATER_GROUPS,
   D: SKATER_GROUPS,
-  G: [results(['games', 'gamesStarted', 'winPct']), basic(['savePct', 'gaa', 'shutouts', 'saves']), advanced(['gsax', 'gsaxPer60', 'hdSavePct']), support(['defense', 'coaching'])],
-  HC: [results(['games', 'winPct', 'playoffWins']), basic(['offRank', 'defRank']), advanced(['lift', 'ptsOver'])],
+  G: [
+    results(['games', 'gamesStarted', 'winPct', 'shutouts']),
+    group('saves', 'Saves', 'front_hand', 1, ['savePct', 'gaa', 'saves', 'gsax', 'gsaxPer60', 'hdSavePct']),
+    support(['defense', 'coaching']),
+  ],
+  HC: [results(['games', 'winPct', 'playoffWins']), offense(['offRank']), defense(['defRank']), group('coaching', 'Coaching', 'sports', 4, ['lift', 'ptsOver'])],
 };
 
-// The groups a tab retired, each its stats of the day it went (legacy-groups.ts: a link, preset or pin that
-// hid one hides those stats one by one, so it ranks as its author saw it)
-export const LEGACY_GROUPS: Partial<Record<SkillPosition, Record<string, SkillColumnKey[]>>> = {};
+// The groups every tab retired, each its stats of the day it went (legacy-groups.ts: a link, preset or pin
+// that hid one hides those stats one by one, so it ranks as its author saw it): Basic and Advanced, as they
+// were on 2026-10-19
+const SKATER_LEGACY: Record<string, SkillColumnKey[]> = {
+  box: ['goals', 'assists', 'points', 'plusMinus', 'ppPoints', 'shots', 'shootingPct', 'gwg', 'hits', 'blocks', 'takeaways', 'giveaways', 'pim'],
+  advanced: ['gameScore', 'xgfPct', 'xgfRel', 'cfPct', 'ixg', 'goalsAboveX', 'hdShots'],
+};
+export const LEGACY_GROUPS: Partial<Record<SkillPosition, Record<string, SkillColumnKey[]>>> = {
+  TM: { box: ['goalDiff', 'offRank', 'defRank', 'ppPct', 'pkPct'], advanced: ['xgfPct', 'cfPct', 'gsaxTeam', 'ptsOver', 'pdo'] },
+  TOP: SKATER_LEGACY,
+  C: { ...SKATER_LEGACY, box: [...SKATER_LEGACY['box'], 'faceoffPct'] },
+  LW: SKATER_LEGACY,
+  RW: SKATER_LEGACY,
+  D: SKATER_LEGACY,
+  G: { box: ['savePct', 'gaa', 'shutouts', 'saves'], advanced: ['gsax', 'gsaxPer60', 'hdSavePct'] },
+  HC: { box: ['offRank', 'defRank'], advanced: ['lift', 'ptsOver'] },
+};
 
 export function statGroup(stat: SkillStat, position: SkillPosition): StatGroupId {
   return groupOfKey(GROUPS[position], stat.key) ?? GROUPS[position][0].id;
