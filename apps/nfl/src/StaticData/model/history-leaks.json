@@ -1,0 +1,12 @@
+{
+ "at": "2026-10-19T05:07:35.884Z",
+ "epoch": "2026-10-19T04:56:00Z",
+ "commit": "950a1010",
+ "n": 33198,
+ "tested": 61,
+ "leaks": 0,
+ "trends": 3,
+ "status": "watch",
+ "headline": "stat+line: rushAtt high line losing more this week (0.53 this week, 0.01 before (-2.9 se) nats per 100 rows); stat: rushAtt losing more this week (0.46 this week, 0.00 before (-2.4 se) nats per 100 rows); stat+side: rushAtt under losing more this week (0.57 this week, -0.03 before (-2.3 se) nats per 100 rows)",
+ "rows": []
+}

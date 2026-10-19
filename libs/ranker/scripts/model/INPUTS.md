@@ -133,6 +133,16 @@ Gains are held-out log loss per line, without minus with. Above 0 is better. The
 - **Not done.** Team-level claims (spreads, totals) and categorical claims (a "trend" direction, a confidence level) weren't tested. Neither is fed into pricing.
 - **To revisit.** If the owner turns the angles back on, they come in through the same test: a structured claim, a held-out gain over the model, and the gate.
 
+## The odds history (2026-10-19, DECISIONS.md D29 and D30)
+
+The Odds API's archive, bought once on the 5M-credit month: every NFL, NBA, NHL, MLB and MMA game's lines since 2020-06-06 and props since 2023-05-03, DraftKings and Pinnacle, the open and the close. `apps/<sport>/scripts/model/odds-history/<season>.jsonl.gz` (`odds-history.mjs`), kept growing by the morning snapshot (`morning/<day>.jsonl.gz`).
+
+| Data | Status | Where it goes |
+|---|---|---|
+| Archived opens and closes, lines and props | **not useful** as a pricing input | Never a price the bettor bets at (D30: only a price quoted in the current run). It is the gate's priced history (layer b `history`, `gate-history.mjs`) and the leak hunt's (C23). |
+| The morning snapshot | **not useful** as a pricing input | The same: history, learning and the gate only. |
+| The close's line movement as a feature (open to close) | candidate | Would be look-ahead at bet time unless read only up to the bet's own moment. Not wired. |
+
 ## The replay gate (2026-10-18, gate.mjs --refit against origin/master)
 
 - **NFL: SHIP.** Projections better beyond noise: props -0.0002 (95% -0.0004 to -0.0001) in the deciding seasons, and the same in the older ones.
