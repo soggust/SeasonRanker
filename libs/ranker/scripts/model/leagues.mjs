@@ -177,7 +177,11 @@ export const GAME_CAP = 5;
 // sanity guard (desk.mjs EV_SUSPECT, D23); the far-line and diagnosis gaps in SDs, never ratios (props.mjs lineZ,
 // D24); research's found-nothing on a small line a practice pick (D25); the MMA's practice picks a card (D2); the
 // rule era's weight in the props' fits (project.mjs ERAS). Set to the push time.
-export const MODEL_EPOCH = '2026-10-19T03:05:00Z';
+// 2026-10-19, the feeds round (the owner's: every stat the site has; INPUTS.md, D28): the NFL's Next Gen Stats, weekly as
+// published (ngs.mjs), a passer's aggressiveness on his attempts, an efficient back's yards over expected on his
+// carries, yards after the catch over expected on receptions (soft), the NBA's shot zones on points (on the ctx, not
+// taken yet); the replay gate SHIP (NFL props better beyond noise, the rest tied). Set to the push time.
+export const MODEL_EPOCH = '2026-10-19T04:56:00Z';
 
 // TIMING (run.mjs, timing.mjs): when a coming game is bet, in hours before its start, so its bets wait for the
 // news rather than being locked in days ahead on a guess at who plays.

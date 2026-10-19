@@ -772,7 +772,17 @@ const DRAFT_GAIN = 0.0003;
 // whole stat's gate (the air and home signed, each side's bias no larger: SIGNED); the NFL's own line changed,
 // a back's late-season load and the last regular-season game on their own rows' (SUBGROUP), the pass rate over
 // expected on the whole stat's, a passing-down back by the script signed)
-export const ROUND_C = ['c_lineupK', 'c_lineupKd', 'c_lineupOb', 'c_parkH', 'c_parkTB', 'c_paX', 'c_airTemp', 'c_windOutB', 'c_homeBat', 'c_olOut', 'c_proe', 'c_rbLoad', 'c_rbPass', 'c_lastGame', 'c_parkRel', 'c_hitEnv', 'c_rzPass', 'c_rzPassM', 'c_rzGap'];
+// (and the feeds round (the owner, 2026-10-18: every stat the site has, INPUTS.md): the NFL's Next Gen Stats
+// (ngs.mjs) and the other sports' new inputs, each a value 0 at the league's level and about 1 a unit either way,
+// a late term on the same floor and the whole stat's gate, signed (each side's bias no larger: SIGNED), soft where
+// its gain is real but small (softable: a c_ term). FEEDS: their keys, each on its stats' ctx in props.mjs only
+// where it's measured and kept or left for the gate to judge again)
+export const FEEDS = ['c_cpoe', 'c_ttt', 'c_aggr', 'c_sep', 'c_cush', 'c_yacoe', 'c_ryoe', 'c_box8', 'c_oppBox', 'c_shOn', 'c_shSlot', 'c_shDist', 'c_oppBlk', 'c_zoneEdge', 'c_opp3', 'c_zone3', 'c_ryoeP', 'c_xHit', 'c_xTb', 'c_hardHit', 'c_pullAir'];
+const FEED_GRID = [-0.06, -0.03, -0.015, 0.015, 0.03, 0.06];
+// (a feed that's 0 on one side by its form (ryoeP: over 0 or 0), judged on the whole stat's gate, not each side's:
+// its other side has no rows to judge)
+const FEED_ONE_SIDED = new Set(['c_ryoeP']);
+export const ROUND_C = ['c_lineupK', 'c_lineupKd', 'c_lineupOb', 'c_parkH', 'c_parkTB', 'c_paX', 'c_airTemp', 'c_windOutB', 'c_homeBat', 'c_olOut', 'c_proe', 'c_rbLoad', 'c_rbPass', 'c_lastGame', 'c_parkRel', 'c_hitEnv', 'c_rzPass', 'c_rzPassM', 'c_rzGap', ...FEEDS];
 const ROUND_C_GRID = {
   c_lineupK: [0.25, 0.5, 0.75, 1, 1.25],
   c_lineupKd: [0.25, 0.5, 0.75, 1, 1.25],
@@ -794,6 +804,13 @@ const ROUND_C_GRID = {
   c_rzPass: [-0.02, -0.01, 0.01, 0.02, 0.03, 0.05],
   c_rzPassM: [-0.02, -0.01, 0.01, 0.02, 0.03, 0.05],
   c_rzGap: [-0.01, 0.005, 0.01, 0.02, 0.03, 0.05],
+  ...Object.fromEntries(FEEDS.map((k) => [k, FEED_GRID])),
+  // (a rusher's yards over expected on its good side alone (ryoeP: ngs.mjs), its sizes larger: an efficient back's
+  // carries ran 11% over his projection held out, the grid's 0.06 taking back half of it)
+  c_ryoeP: [0.03, 0.06, 0.1, 0.15],
+  // (a batter's expected hits on contact over his hits (xHit: matchups.mjs contactTable), its sizes larger: taken at the
+  // grid's 0.06 on hits and total bases, each side's held-out bias cut by two thirds or more)
+  c_xHit: [-0.03, 0.03, 0.06, 0.1, 0.15],
 };
 // The soft terms (the owner's ask, 2026-10-15: a small real effect kept at a small weight the runs keep re-tuning,
 // not all or nothing at the floor). A late term the gate leaves out on its gain alone (under MIN_GAIN, over 0; or
@@ -988,7 +1005,7 @@ const SUBGROUP = new Set(['bq', 'c_rbOutPass', 'c_backupRun', 'vl', 'c_newCoach'
 // sign's rows too (its value over SIGNED_AT, and under -SIGNED_AT: the favorites' rows and the underdogs',
 // every player's, SUBGROUP_N or more each), each one's held-out bias no larger: a size that over-corrects one
 // side and under-corrects the other passes the whole stat's gate alone)
-const SIGNED = new Set(['c_mSpread', 'c_rbPass', 'c_homeBat', 'c_airTemp', 'c_windOutB', 'c_hitEnv', 'c_rzPass', 'c_rzPassM', 'c_rzGap']);
+const SIGNED = new Set(['c_mSpread', 'c_rbPass', 'c_homeBat', 'c_airTemp', 'c_windOutB', 'c_hitEnv', 'c_rzPass', 'c_rzPassM', 'c_rzGap', ...FEEDS.filter((k) => !FEED_ONE_SIDED.has(k))]);
 const SIGNED_AT = 0.3;
 // (the late terms' settings tried: a flag's sizes (GRID); the next man up's role with nu of the missing
 // one's snap share (0: the role alone); the injury return's weight on a game he was eased back in or left

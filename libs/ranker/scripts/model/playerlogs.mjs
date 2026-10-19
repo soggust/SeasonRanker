@@ -34,6 +34,9 @@
 
 import path from 'node:path';
 import { summary } from './espn.mjs';
+import { nflNgs } from './ngs.mjs';
+import { CONTACT_ON, mlbContact } from './savant.mjs';
+import { nbaShots, nhlShots } from './plays.mjs';
 import { CACHE, etDay, mlbPeople, nflverseRows, pool, readJson, writeJson } from './sources.mjs';
 
 // (a row's receiving air yards: unread (undefined) where nflverse left them NA or blank, or the column's missing,
@@ -56,7 +59,9 @@ const save = (sport) => {
 // power-play time; 3, the NBA's with the starter flag, threes tried, offensive and defensive rebounds, turnovers
 // and fouls, and the game's betting lines (m) where the summary has them; the NHL's with the game's total (t: the
 // betting lines' goals, where the summary has them; audit #13, props.mjs CTX mTotal))
-const LINES_V = { nba: 3, nhl: 3 };
+// 4, both with the game's shots by shooter (sh: plays.mjs, the feeds round's shot zones and rink zones; a summary
+// with no play-by-play, none)
+const LINES_V = { nba: 4, nhl: 4 };
 
 // An NBA or NHL final's player lines from its summary, kept: context.mjs reads each new final's summary for
 // its own facts and hands it here too, so a final's summary is asked for once. An NBA final's betting lines
@@ -75,7 +80,8 @@ export function recordBox(sport, g, body) {
   if (sides.h && sides.a) {
     const m = pickLines(body);
     const lines = sport === 'nba' ? (m ? { m } : {}) : m?.[1] > 0 ? { t: m[1] } : {};
-    load(sport)[g.id] = { ...sides, ...lines, v: LINES_V[sport] };
+    const sh = sport === 'nba' ? nbaShots(body) : nhlShots(body);
+    load(sport)[g.id] = { ...sides, ...lines, ...(Object.keys(sh).length ? { sh } : {}), v: LINES_V[sport] };
     kept.get(sport).dirty = true;
   }
 }
@@ -115,7 +121,13 @@ export function boxTotals(sport) {
 
 // Every player row for a sport, the kept ones brought up to date
 export async function playerRows(sport, cfg, history, facts) {
-  if (sport === 'nfl') return nflRows(cfg, history, facts);
+  // (the NFL's Next Gen Stats too, weekly as published (ngs.mjs: the feeds round's terms, read by nflMatchups from
+  // facts.ngs), with the rows that both the desk and the gate (gate.mjs) read; not kept with the facts' cache
+  // (non-enumerable), read again each run from nflverse's file (12 hours))
+  if (sport === 'nfl') {
+    if (facts && typeof facts === 'object') Object.defineProperty(facts, 'ngs', { value: await nflNgs(history), enumerable: false, configurable: true, writable: true });
+    return nflRows(cfg, history, facts);
+  }
   if (sport === 'mlb') return mlbRows(history, facts);
   return boxRows(sport, cfg, history);
 }
@@ -291,7 +303,10 @@ async function boxRows(sport, cfg, history) {
             : pos === 'G'
               ? { toi: v[0], saves: v[1] }
               : { toi: v[0], sog: v[1], pts: v[2] + v[3], goals: v[2], pptoi: v[4] ?? undefined };
-        out.push({ pid, name, pos, date: g.date, season: g.season, team, opp, game: g.id, home: where === 'h', s });
+        // (his shots in the game by kind or zone (plays.mjs; none of his in a game read, 0s): the feeds round's, read
+        // only after the game's day (matchups.mjs); a final kept without them, none)
+        const sh = k.sh && pos !== 'G' ? (k.sh[pid] ?? [0, 0, 0, 0, 0, 0]) : undefined;
+        out.push({ pid, name, pos, date: g.date, season: g.season, team, opp, game: g.id, home: where === 'h', s, ...(sh ? { sh } : {}) });
       }
     }
   }
@@ -386,12 +401,18 @@ async function mlbRows(history, facts) {
     console.log(`mlb: batters' game logs for ${season} (${Object.keys(got).length})`);
   }
   const team = (id) => espnOfTeam.get(facts.mlbTeams?.[id]) ?? null;
+  // (each batter's balls in play by game, Statcast's (savant.mjs: the feeds round's contact terms, matchups.mjs
+  // contactTable): a game Statcast has, his row's sv (0s with none of his in it); a game it doesn't, none)
+  const days = history.map((g) => g.date.slice(0, 10)).sort();
+  const contact = CONTACT_ON && days.length ? await mlbContact(days[0], days[days.length - 1]).catch(() => new Map()) : new Map();
+  const seenPk = new Set([...contact.keys()].map((k) => k.split('|')[0]));
   for (const [season, logs] of Object.entries(mine.logs)) {
     for (const [id, { n, rows }] of Object.entries(logs)) {
       for (const [ymd, pk, teamId, oppId, home, pa, h, tb, hr, so, bb] of rows) {
         const g = byPk.get(pk);
         const date = g?.date ?? `${String(ymd).slice(0, 4)}-${String(ymd).slice(4, 6)}-${String(ymd).slice(6, 8)}T23:00Z`;
-        out.push({ pid: `mlb:${id}`, name: n, pos: 'B', date, season: Number(season), team: team(teamId), opp: team(oppId), game: g?.id ?? null, home: !!home, s: { pa, hits: h, tb, hr, ...(Number.isFinite(so) ? { so, bb: Number.isFinite(bb) ? bb : 0 } : {}) } });
+        const sv = seenPk.has(String(pk)) ? (contact.get(`${pk}|${id}`) ?? [0, 0, 0, 0, 0, 0, 0, 0]) : undefined;
+        out.push({ pid: `mlb:${id}`, name: n, pos: 'B', date, season: Number(season), team: team(teamId), opp: team(oppId), game: g?.id ?? null, home: !!home, s: { pa, hits: h, tb, hr, ...(Number.isFinite(so) ? { so, bb: Number.isFinite(bb) ? bb : 0 } : {}) }, ...(sv ? { sv } : {}) });
       }
     }
   }

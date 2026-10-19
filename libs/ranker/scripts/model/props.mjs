@@ -78,7 +78,7 @@ import path from 'node:path';
 import { calSides } from './calib.mjs';
 import { EV_SUSPECT, bucketTrustOf, chanceAt, decimal, fairPair, gapGuard, outcomeOf, stakeFor, suspectOf, trustedUnits } from './desk.mjs';
 import { correctSides } from './correct.mjs';
-import { SKEW_MIN_LINE, TRY_VL, ctxFactor, ctxKeys, exitMix, factorProduct, fitStat, fullMin, impliedMean, lineChances, makeModel, middleF, rAt, squadF, squadIn, squadMkt, squadSum } from './project.mjs';
+import { FEEDS, SKEW_MIN_LINE, TRY_VL, ctxFactor, ctxKeys, exitMix, factorProduct, fitStat, fullMin, impliedMean, lineChances, makeModel, middleF, rAt, squadF, squadIn, squadMkt, squadSum } from './project.mjs';
 import { mlbMatchups, nbaMatchups, nflMatchups, nhlMatchups } from './matchups.mjs';
 import { CACHE, get, nflverseGames, nflverseRows, pool } from './sources.mjs';
 import { ANYTIME_TD, PROP_BOOKS, SPORT_KEYS, american, anytimeOn, call, canSpend, consensusOf, hasKey, propAsks } from './oddsapi.mjs';
@@ -1007,21 +1007,51 @@ const RC_OUTS = [...PITCHER_CTX, 'homeBat'];
 // strikeouts and outs, homeBat on strikeouts (+0.0013) and outs (+0.0004) with both sides' bias halved but the
 // whole stat's larger (0.0101 to 0.0114, 0.0355 to 0.0373): left out by the gate's rule, a candidate)
 const RC_TB = [...BATTER_CTX, 'hitEnv'];
+// (the feeds round, 2026-10-18 (the owner: "the bettor should ABSOLUTELY be knowing about any stats we have
+// including NGS"; INPUTS.md has the whole inventory): every new input measured with fitStat as fitProps runs it
+// (held out the last 30%), its candidates on each stat together, each a late term on the gate (project.mjs FEEDS).
+// Kept: a passer's aggressiveness on attempts (aggr -0.015: held out 0.6236 to 0.6231, +0.0005; bias 0.4295 to
+// 0.4115), a rusher's yards over expected on its good side on carries (ryoeP 0.06: +0.0017, 0.6312 to 0.6295; an
+// efficient back's carries 11% over projected to 7%; its two-sided form ryoe +0.0018 but the poor backs' side
+// overshot, -0.0082 to +0.038), a pass-catcher's yards after the catch over expected on receptions (yacoe: +0.0006,
+// the whole stat's bias larger, so soft at 0.25 of 0.03). Left on the ctx for the gate to judge again: the NBA's
+// zone edge (+0.0004, the bias larger) and threes allowed (+0.0003, the bias larger) on points. Left out (off the
+// ctx, CTX keeps each for a measure on demand): cpoe (completions -0.0013, passing yards -0.0009, attempts +0.0001),
+// ttt (completions +0.0008, the under side's bias larger; attempts -0.0012; yards not taken), aggr on completions
+// (+0.0001) and yards (not taken), sep (receiving yards -0.0001, receptions -0.0001, rush+rec -0.0002), cush (0,
+// +0.0001), yacoe on receiving yards (0) and rush+rec (-0.0001), ryoe on rushing yards (-0.0003) and rush+rec
+// (-0.0007), ryoeP on rushing yards (not taken) and rush+rec (-0.0006), box8 (0, +0.0001), oppBox (not taken;
+// rush+rec -0.0001); the NHL's rink zones on shots (shOn +0.0002, shSlot -0.0003, shDist and oppBlk not taken) and
+// points (0 each); the NBA's zone3 and the zone edge on rebounds, assists, threes and pts+reb+ast (-0.0007 to
+// +0.0002), opp3 on assists (+0.0003, a side's bias larger), rebounds (-0.0004))
+const FEED_PASS_ATT = [...RC_PASS, 'aggr'];
+const FEED_RUSH_ATT = [...RUSHING, 'ryoeP'];
+const FEED_CATCH = [...CATCHING, 'yacoe'];
+const FEED_NBA_PTS = [...PTS_CTX, 'zoneEdge', 'opp3'];
+// (and MLB's contact (Statcast's balls in play: savant.mjs, matchups.mjs contactTable), on 2025-26's history: kept, a
+// batter's expected hits on contact over his hits on hits (xHit 0.06: held out 0.5401 to 0.5392, +0.0009; the
+// over-0 side's bias -0.0622 to -0.0187, the under-0 side's 0.0374 to 0.0032) and total bases (xHit 0.06: 0.6315
+// to 0.631, +0.0005; -0.0803 to -0.0066, 0.0567 to 0.0007). Left out: xTb (0, +0.0002 with the bias larger),
+// hardHit (not taken), pullAir (+0.0002 each, a side's bias larger))
+// Held by the replay gate (gate.mjs, D22: 2026-10-18): its projections better beyond noise (props -0.0008, 95%
+// -0.0013 to -0.0003) but against the book worse on the 154 saved MLB props (the close's log loss +0.0025, 95% +0.0002
+// to +0.0058; the top picks' CLV -0.0129), so off the ctx and Statcast not read (savant.mjs CONTACT_ON) till a
+// re-check with more priced rows (spring) passes the gate
 export const STATS = {
   nfl: [
     stat('passYds', 'Pass Yds', /^Total Passing Yards \(/, { played: QB, ctx: RC_PASS, volume: 'pass', ...ROLE_BASE_QB }),
-    stat('passAtt', 'Pass Att', /^Total Passing Attempts/, { played: QB, ctx: RC_PASS, volume: 'pass', ...ROLE_BASE_QB, ...PLAYS }),
+    stat('passAtt', 'Pass Att', /^Total Passing Attempts/, { played: QB, ctx: FEED_PASS_ATT, volume: 'pass', ...ROLE_BASE_QB, ...PLAYS }),
     stat('passCmp', 'Completions', /^Total Pass Completions/, { played: QB, ctx: PASSING, volume: 'pass', ...ROLE_BASE_QB }),
     stat('passTd', 'Pass TDs', /^Total Passing Touchdowns/, { played: QB, ctx: RZ_PASS, ...ROLE_BASE_QB, ...MIDDLE }),
     stat('passInt', 'INTs', /^Total Passing Interceptions/, { played: QB, ctx: INT_CTX, ...ROLE_BASE_QB }),
     stat('rushYds', 'Rush Yds', /^Total Rushing Yards \(/, { played: RUSH, ctx: CARRYING, roles: true, volume: 'rush', ...NFL_VAC, ...ROLE_BASE_QB, ...ROLE_BASE, ...RUSH_OPP, ...START, ...TEAM }),
-    stat('rushAtt', 'Carries', /^Total Carries/, { played: RUSH, ctx: RUSHING, roles: true, volume: 'rush', ...NFL_VAC, ...ROLE_BASE_QB, ...ROLE_BASE, ...RUSH_OPP, ...TEAM }),
+    stat('rushAtt', 'Carries', /^Total Carries/, { played: RUSH, ctx: FEED_RUSH_ATT, roles: true, volume: 'rush', ...NFL_VAC, ...ROLE_BASE_QB, ...ROLE_BASE, ...RUSH_OPP, ...TEAM }),
     stat('recYds', 'Rec Yds', /^Total Receiving Yards \(/, { played: CATCH, ctx: CARRYING, roles: true, volume: 'pass', targets: true, ...NFL_VAC, ...ROLE_BASE, ...CATCH_OPP, ...PER_TARGET, ...EXIT, ...START }),
-    stat('rec', 'Receptions', /^Total Receptions/, { played: CATCH, ctx: CATCHING, roles: true, volume: 'pass', targets: true, ...NFL_VAC, ...ROLE_BASE, ...CATCH_OPP }),
+    stat('rec', 'Receptions', /^Total Receptions/, { played: CATCH, ctx: FEED_CATCH, roles: true, volume: 'pass', targets: true, ...NFL_VAC, ...ROLE_BASE, ...CATCH_OPP }),
     stat('rushRecYds', 'Rush+Rec Yds', /^Total Rushing Plus Receiving Yards/, { played: (r) => (RUSH(r) && r.pos !== 'QB') || CATCH(r), ctx: RUSH_REC, roles: true, targets: true, ...NFL_VAC, ...ROLE_BASE, ...CATCH_OPP, ...START, ...TEAM_NORM }),
   ],
   nba: [
-    stat('pts', 'Points', /^Total Points( \(|$)/, { played: MIN, ctx: PTS_CTX, posGroup: () => 'all', roles: true, ...NBA_VAC, ...NBA_MINUTES, ...NBA_POS_PACE, ...START, ...NBA_TEAM }),
+    stat('pts', 'Points', /^Total Points( \(|$)/, { played: MIN, ctx: FEED_NBA_PTS, posGroup: () => 'all', roles: true, ...NBA_VAC, ...NBA_MINUTES, ...NBA_POS_PACE, ...START, ...NBA_TEAM }),
     stat('reb', 'Rebounds', /^Total Rebounds/, { played: MIN, ctx: NBA_CTX, posGroup: () => 'all', roles: true, ...NBA_VAC, ...NBA_MINUTES, ...NBA_POS_PACE, ...START, ...NBA_TEAM }),
     stat('ast', 'Assists', /^Total Assists/, { played: MIN, ctx: NBA_CTX, posGroup: () => 'all', roles: true, ...NBA_VAC, ...NBA_MINUTES, ...NBA_POS_PACE, ...START, ...NBA_TEAM }),
     stat('fg3', 'Threes', /^Total (3-Point|Three|Made 3)/i, { played: MIN, ctx: NBA_CTX, posGroup: () => 'all', roles: true, ...NBA_VAC, ...NBA_MINUTES, ...NBA_POS_PACE, ...START, ...NBA_TEAM }),
@@ -1390,6 +1420,11 @@ export const CTX = {
   rzPass: (info, home, pts, row) => (Number.isFinite(row?.rzPass) ? row.rzPass * 10 : 0),
   rzPassM: (info, home, pts, row) => (Number.isFinite(row?.rzPassM) ? row.rzPassM * 10 : 0),
   rzGap: (info, home, pts, row) => (Number.isFinite(row?.rzGap) ? row.rzGap * 10 : 0),
+  // (the feeds round (project.mjs FEEDS; INPUTS.md): each the row's own value, 0 at the league's level and per its
+  // unit either way, from what was published before the game; 0 unread. The NFL's Next Gen Stats (ngs.mjs: cpoe,
+  // ttt, aggr a passer's; sep, cush, yacoe a pass-catcher's; ryoe, box8 a rusher's; oppBox the other side's
+  // defense's stacked boxes))
+  ...Object.fromEntries(FEEDS.map((c) => c.slice(2)).map((k) => [k, (info, home, pts, row) => (Number.isFinite(row?.[k]) ? row[k] : 0)])),
 };
 // (a game's blowout by its betting lines: the spread either way, per 10 points; 0 without)
 export function blowOf(row) {
@@ -1509,7 +1544,7 @@ export function fitProps(sport, rows, expPts, info, facts = null, market = null,
   // the learned split of the work missing read only where it's searched: project.mjs TRY_VL)
   // (MLB's: each batter's start, slot and platoon edge, each starter's leash and rest, the batters' history's
   // start (STATS played) among them, so they're marked before the rows are picked)
-  const matchups = sport === 'nfl' ? nflMatchups(rows, facts?.plays, { learned: TRY_VL, listed, rz: facts?.rz ?? null }) : sport === 'nba' ? nbaMatchups(rows, { learned: TRY_VL }) : sport === 'nhl' ? nhlMatchups(rows, facts) : sport === 'mlb' ? mlbMatchups(rows, facts) : null;
+  const matchups = sport === 'nfl' ? nflMatchups(rows, facts?.plays, { learned: TRY_VL, listed, rz: facts?.rz ?? null, ngs: facts?.ngs ?? null }) : sport === 'nba' ? nbaMatchups(rows, { learned: TRY_VL }) : sport === 'nhl' ? nhlMatchups(rows, facts) : sport === 'mlb' ? mlbMatchups(rows, facts) : null;
   if (sport === 'nhl') markStarters(rows, facts);
   for (const st of STATS[sport]) {
     const mine = statRows(sport, st, rows, market, totals);

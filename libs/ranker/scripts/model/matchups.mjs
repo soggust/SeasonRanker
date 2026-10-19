@@ -427,7 +427,7 @@ export function nflRedZone() {
 // (a game's side from football.mjs redZoneOf: the home team's [trips, plays, passes], or the away's)
 export const sideOfRz = (x, home) => (x ? (home ? x.h : x.a) : null) ?? null;
 
-export function nflMatchups(rows, pbp = null, { learned = false, listed = null, rz = null } = {}) {
+export function nflMatchups(rows, pbp = null, { learned = false, listed = null, rz = null, ngs = null } = {}) {
   const games = new Map();
   for (const r of rows) {
     if (!r.team || !r.opp || !r.game) continue;
@@ -923,6 +923,9 @@ export function nflMatchups(rows, pbp = null, { learned = false, listed = null, 
         r.oppFront = dOut?.FR ?? 0;
         Object.assign(r, roundC.of(r.pid, g.team, g.season, r.pos, r.teamGame));
         Object.assign(r, redZone.of(g.team, g.opp, g.season));
+        // (his Next Gen Stats as published before the game (ngs.mjs: a week's rows count from its last kickoff
+        // plus NGS_PUB_HOURS); none read, every value 0)
+        if (ngs) Object.assign(r, ngs.of(r.pid, g.opp, g.season, Date.parse(r.date)));
       }
     }
     // (the red zone learned from the day's games, after they're read: each team-game once)
@@ -1074,7 +1077,7 @@ export function nflMatchups(rows, pbp = null, { learned = false, listed = null, 
       const p = POS(pos);
       // (the other side's key defenders out: extra.oppMiss, its players missing it by id (props.mjs); none, 0)
       const dOut = extra?.oppMiss ? defs.missing(oppId, season, extra.oppMiss) : null;
-      return { qbBackup: qbBackupOf(teamId, season, pid, pos, true), oppDB: dOut?.DB ?? 0, oppFront: dOut?.FR ?? 0, role: roleOf(pid, teamId, season, pos), roleW: roleOf(pid, teamId, season, pos, null, true), aheadOut: aheadOf(pid, teamId, season, pos, (id) => missOf(id) >= 1), trend: p && p !== 'QB' ? trendOf(pid, season) : null, sameGames: sameOf(pid, teamId, season, pos, (id) => missOf(id) >= 1), ...promotion(pid, teamId, season, pos, (id) => missOf(id) >= 1), ...returnOf(pid, teamId, season), ...defense(oppId, season, POS(pos)), ...playsOf(teamId, oppId, season), vacs, vac: Math.max(...vacs), rb1Out: rb1Out(teamId, season, pos, missOf), qb1Out: q1.v, qb1Miss: q1.miss, dep, qbDeep: qbDeepOf(q1.v, dep, pos), teamGame: gameNo(teamId, season), ...roundC.of(pid, teamId, season, pos, gameNo(teamId, season)), ...redZone.of(teamId, oppId, season), ...(past ? { vacPast: past } : {}), ...(snap ? { snap } : {}) };
+      return { qbBackup: qbBackupOf(teamId, season, pid, pos, true), oppDB: dOut?.DB ?? 0, oppFront: dOut?.FR ?? 0, role: roleOf(pid, teamId, season, pos), roleW: roleOf(pid, teamId, season, pos, null, true), aheadOut: aheadOf(pid, teamId, season, pos, (id) => missOf(id) >= 1), trend: p && p !== 'QB' ? trendOf(pid, season) : null, sameGames: sameOf(pid, teamId, season, pos, (id) => missOf(id) >= 1), ...promotion(pid, teamId, season, pos, (id) => missOf(id) >= 1), ...returnOf(pid, teamId, season), ...defense(oppId, season, POS(pos)), ...playsOf(teamId, oppId, season), vacs, vac: Math.max(...vacs), rb1Out: rb1Out(teamId, season, pos, missOf), qb1Out: q1.v, qb1Miss: q1.miss, dep, qbDeep: qbDeepOf(q1.v, dep, pos), teamGame: gameNo(teamId, season), ...roundC.of(pid, teamId, season, pos, gameNo(teamId, season)), ...redZone.of(teamId, oppId, season), ...(ngs ? ngs.of(pid, oppId, season, Math.min(Date.parse(extra?.game?.date ?? ''), Date.now())) : {}), ...(past ? { vacPast: past } : {}), ...(snap ? { snap } : {}) };
     },
     // (the role guard's absence already seen (props.mjs settledAbsenceOf): the regulars at his position surely
     // missing tonight (missOf over 0, recent work 1.5 a game or more: vacated's), and his games this season for
@@ -1367,6 +1370,71 @@ export function nbaPossessions(list) {
 // other side's pace (pace) and the game's expected possessions (paceG), each over the league's. The same for a
 // coming game (live: missing, the teammates out by the injury report, none of them a starter). learned: the learned
 // split read (teamWork's; false, the default, the split in proportion in its place)
+// The NBA's shot zones by player and defense (the feeds round, the owner's 2026-10-18; INPUTS.md): each player's
+// field-goal attempts and makes at the rim, the other twos and threes (row.sh, plays.mjs nbaShots), and each side's
+// defense's allowed by zone (its opponents' shots against it), this season's with last season's at half, older
+// none; read before a game, learned after its day. Each value 0 at the league's level (its running totals), 0 unread:
+//   zoneEdge  his points from the field tonight at the other side's allowed make rates by zone over the league's,
+//             on his zone mix (his attempts' shares pulled toward the league's by ZONE_MIX_K attempts; the
+//             defense's make rates by ZONE_DEF_K attempts a zone), as a share per 10%: a rim-heavy scorer against a
+//             defense weak at the rim over 0
+//   opp3      the other side's share of the attempts against it from three over the league's, pulled by ZONE_DEF_K,
+//             per 5 points: more threes allowed over 0
+//   zone3     the other side's three-point make rate allowed over the league's, pulled by ZONE_DEF_K, per 10%
+export const ZONE_MIX_K = 50;
+export const ZONE_DEF_K = 300;
+const ZONE_PTS = [2, 2, 3];
+export function zoneTable() {
+  const me = new Map();
+  const def = new Map();
+  const lg = [0, 0, 0, 0, 0, 0];
+  const r3 = (x) => Math.round(x * 1000) / 1000;
+  const at = (m, id, season) => {
+    const t = m.get(id);
+    const w = !t ? 0 : t.season === season ? 1 : t.season === season - 1 ? 0.5 : 0;
+    return w ? t.v.map((x) => w * x) : null;
+  };
+  const add = (m, id, season, v) => {
+    const t = m.get(id);
+    const k = !t ? 0 : t.season === season ? 1 : t.season === season - 1 ? 0.5 : 0;
+    m.set(id, { season, v: v.map((x, i) => (t?.v?.[i] ?? 0) * k + x) });
+  };
+  return {
+    of: (pid, oppId, season) => {
+      const out = { zoneEdge: 0, opp3: 0, zone3: 0 };
+      const att = lg[0] + lg[2] + lg[4];
+      if (!(att > 5000)) return out;
+      const L = [0, 1, 2].map((z) => lg[2 * z + 1] / lg[2 * z]);
+      const mixL = [0, 1, 2].map((z) => lg[2 * z] / att);
+      const d = at(def, String(oppId), season);
+      if (!d) return out;
+      const f = [0, 1, 2].map((z) => (d[2 * z + 1] + ZONE_DEF_K * L[z]) / (d[2 * z] + ZONE_DEF_K));
+      const dAtt = d[0] + d[2] + d[4];
+      out.opp3 = r3(((d[4] + ZONE_DEF_K * mixL[2]) / (dAtt + ZONE_DEF_K) - mixL[2]) * 20);
+      out.zone3 = r3((f[2] / L[2] - 1) * 10);
+      const x = at(me, String(pid), season);
+      if (!x) return out;
+      const mine = x[0] + x[2] + x[4];
+      const mix = [0, 1, 2].map((z) => (x[2 * z] + ZONE_MIX_K * mixL[z]) / (mine + ZONE_MIX_K));
+      const base = mix.reduce((t, m, z) => t + m * ZONE_PTS[z] * L[z], 0);
+      const edge = mix.reduce((t, m, z) => t + m * ZONE_PTS[z] * (f[z] - L[z]), 0);
+      out.zoneEdge = r3((edge / base) * 10);
+      return out;
+    },
+    // (a team-game's rows (one side's), learned after its day: each player's, and the other side's defense's)
+    learn: (list) => {
+      const side = [0, 0, 0, 0, 0, 0];
+      for (const r of list) {
+        const v = r.sh;
+        if (!Array.isArray(v) || v.length < 6) continue;
+        v.forEach((x, i) => ((side[i] += x), (lg[i] += x)));
+        if (v[0] + v[2] + v[4] > 0) add(me, String(r.pid), r.season, v);
+      }
+      if (side[0] + side[2] + side[4] > 0 && list[0]?.opp) add(def, String(list[0].opp), list[0].season, side);
+    },
+  };
+}
+
 export function nbaMatchups(rows, { learned = false } = {}) {
   const team = new Map();
   const work = teamWork({ groupOf: () => 'all', measures: [(r) => r.s.min, nbaUsage], regular: [15, 8], floor: [10, 6], absorb: { ...ABSORB_NBA, learned } });
@@ -1418,6 +1486,8 @@ export function nbaMatchups(rows, { learned = false } = {}) {
     const o = paceTeam(oppId, season, lg) / lg;
     return { pace: o, paceG: (paceTeam(teamId, season, lg) / lg) * o, paceKnown: true };
   };
+  // (the feeds round's shot zones: zoneTable above)
+  const zones = zoneTable();
   byDay(rows, (batch) => {
     const games = new Map();
     for (const r of batch) {
@@ -1441,8 +1511,11 @@ export function nbaMatchups(rows, { learned = false } = {}) {
         r.share = r.s.min > 0 ? r.s.min / 48 : null;
         r.startLast = startLastOf(r.pid, r.team, r.season);
         Object.assign(r, paceOf(r.team, r.opp, r.season));
+        Object.assign(r, zones.of(r.pid, r.opp, r.season));
       }
     }
+    // (the day's shots by zone learned, after its rows were read)
+    for (const list of games.values()) zones.learn(list);
     // (the day's games' possessions, the two sides' averaged (one side's where only it reads), learned after
     // the day's rows were all given theirs)
     const byGame = new Map();
@@ -1488,7 +1561,7 @@ export function nbaMatchups(rows, { learned = false } = {}) {
     live: (pid, teamId, oppId, pos, season, missing = null) => {
       const missOf = missFn(missing);
       const vacs = work.vacated(teamId, season, pid, pos, work.gate(teamId, season, missOf, () => NBA_CORE));
-      return { role: roleOf(pid, teamId, season, (id) => missOf(id) >= 1), roleKnown: roleOf(pid, teamId, season, (id) => missOf(id) >= 1, true), startLast: startLastOf(pid, teamId, season), funnel: 0, ...paceOf(teamId, oppId, season), tgt: 1, vacs, vac: Math.max(...vacs) };
+      return { role: roleOf(pid, teamId, season, (id) => missOf(id) >= 1), roleKnown: roleOf(pid, teamId, season, (id) => missOf(id) >= 1, true), startLast: startLastOf(pid, teamId, season), funnel: 0, ...paceOf(teamId, oppId, season), tgt: 1, vacs, vac: Math.max(...vacs), ...zones.of(pid, oppId, season) };
     },
     // (the learned split's table as it stands (absorbTable dump): the log's)
     absorbed: () => work.absorbed(),
@@ -1508,6 +1581,71 @@ export function nbaMatchups(rows, { learned = false } = {}) {
 // A share, not his minutes (the review of 2026-10-13): his minutes swing with how many power plays the last
 // opponents gave his team, tonight's opponent's penalties another term's (c_pp); this season's alone, so a new
 // season's first games aren't read against last season's
+// The NHL's rink zones by skater (the feeds round, the owner's 2026-10-18; INPUTS.md): each skater's shot attempts
+// (row.sh, plays.mjs nhlShots: on goal, missed, blocked, from the slot, distance), this season's with last season's
+// at half, older none, and each side's defense's attempts against it blocked, the same way. Each value 0 at the
+// league's level (its running average over the attempts learned), 0 unread:
+//   shOn    his share of attempts on goal pulled toward the league's by SHOT_K attempts over his own (with a
+//           half attempt each way), as a log per 10%: one whose attempts miss or are blocked more than the league's
+//           over 0 (his shots on goal so far run under his attempts); under SHOT_MIN attempts, 0
+//   shSlot  his share of attempts from the slot (plays.mjs SLOT_FT) over the league's, pulled by SHOT_K, per 10 points
+//   shDist  his attempts' average distance over the league's, pulled by SHOT_K, per 5 feet
+//   oppBlk  the other side's share of the attempts against it blocked over the league's, pulled by BLK_K, per 5 points
+export const SHOT_K = 40;
+export const SHOT_MIN = 10;
+export const BLK_K = 300;
+export function shotTable() {
+  const me = new Map();
+  const def = new Map();
+  const lg = { a: 0, s: 0, slot: 0, d: 0, dn: 0, blk: 0 };
+  const r3 = (x) => Math.round(x * 1000) / 1000;
+  const at = (m, id, season) => {
+    const t = m.get(id);
+    const w = !t ? 0 : t.season === season ? 1 : t.season === season - 1 ? 0.5 : 0;
+    return w ? { a: w * t.a, s: w * t.s, slot: w * t.slot, d: w * t.d, dn: w * t.dn, blk: w * t.blk } : null;
+  };
+  const add = (m, id, season, x) => {
+    const t = m.get(id);
+    const k = !t ? 0 : t.season === season ? 1 : t.season === season - 1 ? 0.5 : 0;
+    const o = { season, a: 0, s: 0, slot: 0, d: 0, dn: 0, blk: 0 };
+    for (const f of ['a', 's', 'slot', 'd', 'dn', 'blk']) o[f] = (t?.[f] ?? 0) * k + (x[f] ?? 0);
+    m.set(id, o);
+  };
+  return {
+    of: (pid, oppId, season) => {
+      const out = { shOn: 0, shSlot: 0, shDist: 0, oppBlk: 0 };
+      if (!(lg.a > 1000) || !(lg.dn > 1000)) return out;
+      const pOn = lg.s / lg.a;
+      const pSlot = lg.slot / lg.a;
+      const dist = lg.d / lg.dn;
+      const x = at(me, String(pid), season);
+      if (x && x.a >= SHOT_MIN) {
+        out.shOn = r3(10 * Math.log((x.s + SHOT_K * pOn) / (x.a + SHOT_K) / ((x.s + 0.5) / (x.a + 1))));
+        out.shSlot = r3(((x.slot + SHOT_K * pSlot) / (x.a + SHOT_K) - pSlot) * 10);
+        if (x.dn > 0) out.shDist = r3(((x.d + SHOT_K * dist) / (x.dn + SHOT_K) - dist) / 5);
+      }
+      const o = at(def, String(oppId), season);
+      const pBlk = lg.blk / lg.a;
+      if (o && o.a > 0) out.oppBlk = r3(((o.blk + BLK_K * pBlk) / (o.a + BLK_K) - pBlk) * 20);
+      return out;
+    },
+    // (a team-game's rows (one side's), learned after its day: each skater's, and the other side's defense's)
+    learn: (list) => {
+      const side = { a: 0, blk: 0 };
+      for (const r of list) {
+        const v = r.sh;
+        if (!Array.isArray(v) || r.pos === 'G') continue;
+        const x = { a: v[0] + v[1] + v[2], s: v[0], slot: v[3], d: v[4], dn: v[5], blk: v[2] };
+        side.a += x.a;
+        side.blk += x.blk;
+        if (x.a > 0) add(me, String(r.pid), r.season, x);
+        for (const f of ['a', 's', 'slot', 'd', 'dn', 'blk']) lg[f] += x[f];
+      }
+      if (side.a > 0 && list[0]?.opp) add(def, String(list[0].opp), list[0].season, side);
+    },
+  };
+}
+
 export function nhlMatchups(rows, facts = null) {
   const grp = (pos) => (pos === 'F' || pos === 'D' ? pos : null);
   const work = teamWork({ groupOf: grp, measures: [(r) => r.s.toi, (r) => r.s.pptoi], regular: [10, 1], floor: [8, 0.5] });
@@ -1551,7 +1689,11 @@ export function nhlMatchups(rows, facts = null) {
     const lg = lgShare[pos];
     return v === undefined || !lg ? null : Math.round((v - lg.v) * 1000) / 1000;
   };
+  // (the feeds round's rink zones (shotTable below, from the summaries' play-by-play: plays.mjs nhlShots), read
+  // before a game, learned after its day)
+  const shots = shotTable();
   const stamp = (r) => {
+    Object.assign(r, shots.of(r.pid, r.opp, r.season));
     r.ppShare = shareOf(r.pid, r.pos);
     r.ppTime = ppOf(r.pid);
     r.ppLean = ppLeanOf(r.pid, r.season);
@@ -1583,7 +1725,8 @@ export function nhlMatchups(rows, facts = null) {
         r.share = r.pos !== 'G' && r.s.toi > 0 ? r.s.toi / 60 : null;
       }
     }
-    // (then learned: each side's work and power-play time, each team's penalties once a game)
+    // (then learned: each side's work and power-play time, each team's penalties once a game; the shots)
+    for (const list of games.values()) shots.learn(list);
     const seen = new Set();
     for (const list of games.values()) {
       const r0 = list[0];
@@ -1640,7 +1783,7 @@ export function nhlMatchups(rows, facts = null) {
     live: (pid, teamId, oppId, pos, season, missing = null, extra = {}) => {
       const vacs = work.vacated(teamId, season, pid, pos, work.gate(teamId, season, missFn(missing), (g) => NHL_CORE[g] ?? 0));
       const oppD = extra?.oppMiss ? defMissing(oppId, season, work.gate(oppId, season, missFn(extra.oppMiss), (g) => NHL_CORE[g] ?? 0)) : 0;
-      return { role: null, funnel: 0, pace: 1, tgt: 1, vacs, vac: Math.max(...vacs), ppTime: ppOf(pid), ppLean: ppLeanOf(pid, season), ppShare: shareOf(pid, pos), ppOpp: pensOf(oppId, season), ppAvg: lg.pp, oppD };
+      return { role: null, funnel: 0, pace: 1, tgt: 1, vacs, vac: Math.max(...vacs), ppTime: ppOf(pid), ppLean: ppLeanOf(pid, season), ppShare: shareOf(pid, pos), ppOpp: pensOf(oppId, season), ppAvg: lg.pp, oppD, ...shots.of(pid, oppId, season) };
     },
   };
 }
@@ -1880,6 +2023,43 @@ export function batterTables() {
 // (facts.games[id].lo: the lineups in order; hp, ap: the probable starters; facts.hands: how each bats and
 // throws; facts.pitchers: the starters' logs), each from before the game. The same for a coming game (live's
 // extra: the game's live facts (its posted lineups, its probables), whether he's home)
+// MLB's contact by batter (the feeds round, the owner's 2026-10-18; INPUTS.md): each batter's balls in play (row.sv,
+// savant.mjs: Statcast's, by game), this season's with last season's at half, older none, read before a game and
+// learned after its day. Each value 0 at the league's level, 0 unread:
+//   xHit     his expected hits on contact (xBA summed) less his hits, over his balls in play with CONTACT_K more at
+//            0, per .020: an unlucky hitter over 0 (his hits so far run under his contact)
+//   xTb      the same on total bases (xSLG), per .050
+//   hardHit  his hard-hit share (95 mph or more) over the league's, pulled by CONTACT_K, per 5 points
+//   pullAir  his share pulled in the air (savant.mjs SPRAY_PULL) over the league's, pulled by CONTACT_K, per 5 points
+export const CONTACT_K = 150;
+export function contactTable() {
+  const me = new Map();
+  const lg = [0, 0, 0, 0, 0, 0, 0, 0];
+  const r3 = (x) => Math.round(x * 1000) / 1000;
+  return {
+    of: (pid, season) => {
+      const out = { xHit: 0, xTb: 0, hardHit: 0, pullAir: 0 };
+      const t = me.get(String(pid));
+      const w = !t ? 0 : t.season === season ? 1 : t.season === season - 1 ? 0.5 : 0;
+      if (!w || !(lg[0] > 2000)) return out;
+      const x = t.v.map((y) => w * y);
+      const n = x[0] + CONTACT_K;
+      out.xHit = r3((x[3] - x[1]) / n / 0.02);
+      out.xTb = r3((x[4] - x[2]) / n / 0.05);
+      out.hardHit = r3(((x[5] + CONTACT_K * (lg[5] / lg[0])) / n - lg[5] / lg[0]) / 0.05);
+      out.pullAir = r3(((x[7] + CONTACT_K * (lg[7] / lg[0])) / n - lg[7] / lg[0]) / 0.05);
+      return out;
+    },
+    learn: (r) => {
+      if (!Array.isArray(r.sv) || !(r.sv[0] > 0)) return;
+      const t = me.get(String(r.pid));
+      const k = !t ? 0 : t.season === r.season ? 1 : t.season === r.season - 1 ? 0.5 : 0;
+      me.set(String(r.pid), { season: r.season, v: r.sv.map((y, i) => (t?.v?.[i] ?? 0) * k + y) });
+      r.sv.forEach((y, i) => (lg[i] += y));
+    },
+  };
+}
+
 export function mlbMatchups(rows, facts = null) {
   const hist = new Map();
   const bat = batterTables();
@@ -1903,19 +2083,22 @@ export function mlbMatchups(rows, facts = null) {
     const edge = edgeOf(handOf(id)?.[0] ?? null, sp ? (handOf(sp)?.[1] ?? null) : null);
     return { start: known ? slot > 0 : null, slot: slot || null, edge };
   };
+  // (the feeds round's contact: contactTable above)
+  const contact = contactTable();
   byDay(rows, (batch) => {
     for (const r of batch) {
       const f = r.game ? facts?.games?.[r.game] : null;
       if (r.pos === 'B') {
         const b = batter(r.pid, r.home, f?.lo, f ? f[r.home ? 'ap' : 'hp'] : null);
-        Object.assign(r, { start: b.start, slot: b.slot, edgeNow: b.edge }, shifts(r.pid, b.slot, b.edge), bat.batterOf(r.pid, r.season, b.slot, r.home, f?.v ?? null));
+        Object.assign(r, { start: b.start, slot: b.slot, edgeNow: b.edge }, shifts(r.pid, b.slot, b.edge), bat.batterOf(r.pid, r.season, b.slot, r.home, f?.v ?? null), contact.of(r.pid, r.season));
       } else if (r.pos === 'SP') {
         const p = pitcherBefore(facts?.pitchers?.[String(r.pid).replace(/^mlb:/, '')]?.logs, r.season, d8Of(r.date));
         Object.assign(r, { leash: p.leash, rest: p.rest, restDays: p.restDays }, bat.lineupOf(f?.lo?.[r.home ? 1 : 0] ?? null, r.season, r.opp));
       }
     }
-    // (the day learned once its games are read: each batter's rates, the parks' and the slots' tables)
+    // (the day learned once its games are read: each batter's rates, the parks' and the slots' tables, his contact)
     bat.learn(batch, (r) => facts?.games?.[r.game]?.v ?? null);
+    for (const r of batch) if (r.pos === 'B') contact.learn(r);
     for (const r of batch) {
       if (r.pos !== 'B' || r.start === false) continue;
       const h = hist.get(r.pid) ?? { slotSum: 0, slotN: 0, edgeSum: 0, edgeN: 0 };
@@ -1934,7 +2117,7 @@ export function mlbMatchups(rows, facts = null) {
         return { role: null, leash: p.leash, rest: p.rest, restDays: p.restDays, debut: p.debut, pitches: p.pitches, ...bat.lineupOf(l.lineups?.[extra.home ? 1 : 0] ?? null, season, oppId) };
       }
       const b = batter(pid, extra.home, l.lineups, l[extra.home ? 'ap' : 'hp'] ?? null);
-      return { role: null, start: b.start, slot: b.slot, edgeNow: b.edge, ...shifts(pid, b.slot, b.edge), ...bat.batterOf(pid, season, b.slot, !!extra.home, l.v ?? null) };
+      return { role: null, start: b.start, slot: b.slot, edgeNow: b.edge, ...shifts(pid, b.slot, b.edge), ...bat.batterOf(pid, season, b.slot, !!extra.home, l.v ?? null), ...contact.of(pid, season) };
     },
   };
 }

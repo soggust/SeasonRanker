@@ -342,3 +342,15 @@ test('D27 every bet the bot placed is a pick: a guard’s 0.5u cut one and a pra
   assert.ok(!src('mma-desk.mjs').includes('!b.context?.guard'), 'mma-desk.mjs buildFightPicks hides guarded bets');
   assert.ok(!src('mma-desk.mjs').includes('scored.slice(0, TOP)'), 'mma-desk.mjs buildFightPicks cuts to TOP');
 });
+
+test('D28 every input with no look-ahead: an NGS week informs only later weeks, week-0 totals never; the inventory kept', async () => {
+  const { NGS_PUB_HOURS, ngsTable, pubTimes } = await import('../libs/ranker/scripts/model/ngs.mjs');
+  assert.equal(NGS_PUB_HOURS, 36);
+  const pubOf = pubTimes([{ season: '2025', week: '5', gameday: '2025-10-06', gametime: '20:15' }]);
+  const rec = (week, pid, sep, targets) => ({ kind: 'receiving', season: '2025', week: String(week), pid, pos: 'WR', targets: String(targets), receptions: '5', avg_separation: String(sep), avg_cushion: '6', avg_yac_above_expectation: '0' });
+  const t = ngsTable([rec(5, 'lg', 3, 100), rec(5, 'me', 5, 10), rec(0, 'me', 9, 100)], pubOf);
+  assert.equal(t.of('me', null, 2025, Date.parse('2025-10-06T20:15:00-04:00')).sep, 0);
+  assert.ok(t.of('me', null, 2025, Date.parse('2025-10-09T20:15:00-04:00')).sep > 0);
+  const inputs = fs.readFileSync(path.join(import.meta.dirname, '../libs/ranker/scripts/model/INPUTS.md'), 'utf8');
+  for (const sport of ['## NFL', '## NBA', '## NHL', '## MLB', '## MMA', '## The AI analyses']) assert.ok(inputs.includes(sport), sport);
+});

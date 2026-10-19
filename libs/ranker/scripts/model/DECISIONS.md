@@ -256,6 +256,15 @@ Started 2026-10-18, after about 20 bettor changes in one day. The owner: "keep i
 - **Code:** `picks.mjs` `buildPicks`, `mma-desk.mjs` `buildFightPicks`; `tests/data.test.mjs` (every open placed bet is in picks.json).
 - **Never:** a placed bet left off picks.json, whatever its guard, practice tag or rank.
 
+### D28. Every stat the site has is weighed for the bettor, with no look-ahead
+- **Date:** 2026-10-18 (the feeds round).
+- **Owner:** "the bettor should ABSOLUTELY be knowing about any stats we have including NGS and any analysis I have etc etc etc... bot should be as smart as possible."
+- **Rule:** `INPUTS.md` lists every data set the site has against what the bettor reads, each marked in, new, left out (with its held-out gain), in another form, or not useful. A new input:
+  - reads only what was published before the bet. A per-game table learns a game after its day. NGS's weekly rows count from their week's last kickoff plus `NGS_PUB_HOURS` (36), and NGS's week-0 season totals are never read. A season-to-date site file is never read for a game in its own season.
+  - is a late term on the gate (`project.mjs` `FEEDS`), soft where small (D8), kept on its stat's ctx only with a held-out gain or for the gate to judge again, and runs the replay gate (D22).
+  - never comes from free text. An AI analysis's structured claims are tested held out first; the NFL's (2026-10-18: 80 claims, leave-one-out log loss worse) are left out.
+- **Code:** `ngs.mjs`, `plays.mjs`, `savant.mjs`, `matchups.mjs` (`shotTable`, `zoneTable`, `contactTable`), `props.mjs` `CTX` and `STATS`, `INPUTS.md`. Tests: `tests/model-ngs.test.mjs`, `tests/model-shots.test.mjs`.
+
 ## Loops
 
 Each loop below runs by itself. For each one: what it changes, how often, what it reads, and what it must never touch.

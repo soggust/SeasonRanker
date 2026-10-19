@@ -164,7 +164,9 @@ test('CTX hitEnv: the park against his usual plus 4% a 10°F and 4% a 10 mph out
 test('kept where the held-out games bore them out: lineupK on MLB strikeouts, lastGame on NFL passing yards and attempts, hitEnv on MLB total bases; the rest on no stat', async () => {
   const { STATS } = await import('../libs/ranker/scripts/model/props.mjs');
   const { ctxKeys, ROUND_C } = await import('../libs/ranker/scripts/model/project.mjs');
-  const on = Object.entries(STATS).flatMap(([sport, list]) => list.flatMap((st) => ctxKeys(st).filter((k) => ROUND_C.includes(`c_${k}`)).map((k) => `${sport} ${st.key} ${k}`)));
+  // (the feeds round's (project.mjs FEEDS, 2026-10-18) pinned on their own: tests/model-ngs)
+  const { FEEDS } = await import('../libs/ranker/scripts/model/project.mjs');
+  const on = Object.entries(STATS).flatMap(([sport, list]) => list.flatMap((st) => ctxKeys(st).filter((k) => ROUND_C.includes(`c_${k}`) && !FEEDS.includes(`c_${k}`)).map((k) => `${sport} ${st.key} ${k}`)));
   // (and the red zone on passing TDs (rzPass, 2026-10-15): on its ctx so the gate judges it each fit, left out so far:
   // tests/model-red-zone)
   // (and the starter's home or away (homeBat) on MLB strikeouts and outs (round D, 2026-10-17): on their ctx so the soft
