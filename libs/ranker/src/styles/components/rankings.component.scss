@@ -916,47 +916,17 @@ section ul li.player {
     margin-left: 1.1em;
   }
 
-  // A collapsed group: its icon's slot, then a column as wide as the group's name in the header (measured,
-  // column-fit.ts) and at least a place's tile, each row's place within the group under it (its stats
-  // hidden, still counted); the same width in every row, so the strips line up under the header's
-  > .col-group > div.collapsed-strip {
+  // A group's own column, first in the group (all of it when the group is collapsed, its stats hidden but
+  // still counted): the slot for its chevron and icon, then as wide as the group's name in the header
+  // (measured, column-fit.ts), each row's rank within the group under it; the same width in every row, so
+  // the cells line up under the header's
+  > .col-group > div.group-rank-col {
     flex: 0 0 auto;
     max-width: none;
     min-width: 0;
+    padding-left: 36px;
     padding-right: 0.2em;
-    width: max(34px, var(--label-w, 0px));
-  }
-
-  // (the place: a small LED tile like the rank's, lit the same, the top 10 green and the bottom 10 red;
-  // a dash in grey when there's none)
-  .group-rank {
-    @include v.led-tile($radius: v.$radius-sm);
-    font-size: v.$fs-13;
-    font-weight: 900;
-    height: 24px;
-    line-height: 1;
-    min-width: 34px;
-    padding: 1px 4px 0;
-
-    &.rank-top {
-      color: var(--tint-good, #{v.$good-bright});
-      text-shadow: 0 0 6px rgba(v.$good-bright, 0.55);
-    }
-
-    &.rank-bottom {
-      color: v.$bad-soft;
-      text-shadow: 0 0 6px rgba(v.$bad-soft, 0.6);
-    }
-
-    &.none {
-      color: v.$neutral;
-      text-shadow: none;
-    }
-
-    @include v.down(phone) {
-      font-size: v.$fs-11;
-      height: 20px;
-    }
+    width: max(3.5em, var(--label-w, 0px));
   }
 
   // Recent and the grade boxes: one panel across their columns
@@ -1143,8 +1113,8 @@ section.spread ul li.player > .col-group {
     min-width: var(--label-w, auto);
   }
 
-  // (a collapsed group's strip: its own fixed width, above)
-  > div.collapsed-strip {
+  // (a group's own column: its own width, above)
+  > div.group-rank-col {
     flex: 0 0 auto;
     min-width: 0;
   }
@@ -1321,57 +1291,79 @@ section ul li.player.header-row:hover {
       right: -1.1em;
     }
 
-    > .group-icon {
-      color: var(--group-color);
+    // The group's control, in its column's slot: a chevron (grey at rest, lighter on hover; never yellow)
+    // and the group's icon, one button that collapses and opens the group, a 32px target or more
+    > .group-toggle {
+      align-items: center;
+      background: none;
+      border: 0;
+      border-radius: v.$radius-sm;
+      color: inherit;
       cursor: pointer;
-      @include v.icon-size(17px);
-      left: 0.35em;
-      line-height: 1;
+      display: flex;
+      gap: 0;
+      height: 32px;
+      justify-content: flex-start;
+      left: 0;
+      min-width: 34px;
+      padding: 0 2px 0 0;
       position: absolute;
-      text-shadow: none;
       top: 50%;
       transform: translateY(-50%);
-      transition:
-        filter v.$t-fast ease,
-        text-shadow v.$t-fast ease,
-        transform v.$t-fast ease;
       z-index: 1;
 
-      // (it collapses and opens the group: a lift, a little brighter, a glow in the group's color)
-      &:hover {
-        filter: brightness(1.3);
-        text-shadow: 0 0 8px color-mix(in srgb, var(--group-color) 70%, transparent);
-        transform: translateY(-50%) scale(1.18);
+      .group-chevron {
+        color: v.$neutral;
+        @include v.icon-size(16px);
+        margin-right: -2px;
+        transition: color v.$t-fast ease;
       }
 
-      // (the keyboard on it: brighter and glowing as on hover, without the lift)
-      @include v.focus-lit {
+      .group-icon {
+        color: var(--group-color);
+        @include v.icon-size(17px);
+        line-height: 1;
+        text-shadow: none;
+        transition:
+          filter v.$t-fast ease,
+          text-shadow v.$t-fast ease;
+      }
+
+      // (hover: the chevron lightens to white, the icon brighter with a glow in the group's color)
+      &:hover .group-chevron {
+        color: #fff;
+      }
+
+      &:hover .group-icon {
         filter: brightness(1.3);
         text-shadow: 0 0 8px color-mix(in srgb, var(--group-color) 70%, transparent);
+      }
+
+      @include v.focus-lit {
+        .group-chevron {
+          color: #fff;
+        }
+
+        .group-icon {
+          filter: brightness(1.3);
+        }
       }
 
       @media (prefers-reduced-motion: reduce) {
-        transition: none;
+        .group-chevron,
+        .group-icon {
+          transition: none;
+        }
       }
 
-      // (touch: a thumb-sized target around the small icon, the icon the same)
+      // (touch: a thumb-sized target)
       @media (pointer: coarse) {
         &::after {
           content: "";
-          inset: -12px;
+          inset: -6px;
           position: absolute;
         }
       }
-    }
-
-    // (a collapsed strip's name, in its group's color, lights up with its icon)
-    &.collapsed-strip > .strip-label {
-      color: var(--group-color);
-    }
-
-    &.collapsed-strip:has(> .group-icon:hover) > .strip-label,
-    &.collapsed-strip:has(> .group-icon:focus-visible) > .strip-label {
-      filter: brightness(1.3);
     }
   }
 }

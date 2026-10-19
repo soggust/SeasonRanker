@@ -127,3 +127,57 @@ test('every group starts collapsed; a group opened stays open, and closes again'
   assert.equal(service.isGroupCollapsed('QB', ids[1]), true);
   assert.equal(service.isGroupCollapsed('QB', ids[2]), false);
 });
+
+// Sorting by a group (its name clicked): the grid's isolation over a stand-in column keyed "group:<id>", a rank
+// (lower first), so the rows go by their rank within the group, ties in the list's order, UR rows below with
+// none; the list itself, its order and what a saved list or a link keeps, untouched.
+test('a group sorts like a stat: its stand-in column, best rank first, ties in list order, UR last', async () => {
+  const { groupStat, groupOfKey, groupSortValue, isolateRows, lowerIsBetter, gridColumns, GROUP_KEY } = await loadEngine('nfl', { entry });
+  const group = { id: 'advanced', title: 'Advanced Stats' };
+  const stat = groupStat(group);
+  assert.equal(stat.key, `${GROUP_KEY}advanced`);
+  assert.equal(stat.label, 'Advanced Stats');
+  assert.equal(groupStat(group), stat, 'the same stand-in each time (the grid compares them)');
+  assert.equal(groupOfKey(stat.key), 'advanced');
+  assert.equal(groupOfKey('passYds'), null);
+  assert.equal(groupOfKey(null), null);
+  assert.equal(lowerIsBetter(stat), true, 'a rank: #1 first');
+
+  // The list's order (by score) and each row's rank within the group; u1, u2: UR rows under it
+  const rows = ['a', 'b', 'c', 'd', 'e', 'u1', 'u2'];
+  const before = [...rows];
+  const places = new Map([['advanced', new Map([['a', 3], ['b', 1], ['c', 4], ['d', 1], ['e', 2]])]]);
+  const value = groupSortValue(places, 'advanced');
+  const best = isolateRows(rows, 5, value, lowerIsBetter(stat));
+  assert.deepEqual(best.rows, ['b', 'd', 'e', 'a', 'c', 'u1', 'u2']);
+  assert.deepEqual(best.rows.slice(0, 5).map((r) => best.places.get(r)), [1, 1, 3, 4, 5]);
+  assert.equal(best.places.get('u1'), undefined);
+  // (the arrow: worst first)
+  assert.deepEqual(isolateRows(rows, 5, value, !lowerIsBetter(stat)).rows, ['c', 'a', 'e', 'b', 'd', 'u1', 'u2']);
+  // A group with no places (nothing counted): every row without a value, the list's order kept
+  assert.deepEqual(isolateRows(rows, 5, groupSortValue(places, 'box'), true).rows, rows);
+  // Only a look: the list itself as it was
+  assert.deepEqual(rows, before);
+
+  // A saved list keeps the grid's own order (playerList, never the isolated rows) and its stat columns, never
+  // a group's stand-in column
+  const statOf = (key) => ({ key, label: key, format: 'int' });
+  const grid = {
+    visibleGroups: [{ id: 'box', title: 'Basic', stats: [statOf('yds')] }, { id: 'advanced', title: 'Advanced Stats', stats: [statOf('epa')] }],
+    isCollapsed: (id) => id === 'box',
+    reader: { label: (s) => s.label },
+  };
+  assert.deepEqual(gridColumns(grid).map((c) => c.stat.key), ['epa']);
+  assert.ok(gridColumns({ ...grid, isCollapsed: () => true }).every((c) => !groupOfKey(c.stat.key)));
+});
+
+test('a sort by a group never reaches a share link', async () => {
+  globalThis.location = new URL('https://ranker.test/nfl/?pos=QB');
+  globalThis.history = { replaceState: (_s, _t, url) => (globalThis.location = new URL(String(url))) };
+  const { PositionService } = await loadEngine('nfl', { entry });
+  // (the sort is the grid's own state: the service, which writes the link, has nothing of it, so the link of
+  // a list at its defaults stays bare)
+  const service = new PositionService();
+  assert.equal(new URL(service.shareLink()).searchParams.has('list'), false);
+  assert.ok(!JSON.stringify(service.layout).includes('group:'));
+});
