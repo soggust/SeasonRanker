@@ -4,7 +4,7 @@
 // is an admin's alone, so the owner's page learns it should show the UFC picks after it has drawn the rest. No
 // Angular here (tested under Node: tests/book-sports.test.mjs)
 import { byBand, CheckResolved } from './desk-notes';
-import { Confidence, PickWhy, confidenceOf, kellyOf } from './bet-why';
+import { Confidence, EV_SUSPECT, PickWhy, confidenceOf, kellyOf } from './bet-why';
 import { americanOdds } from './bet-format';
 import { PlayerRef, playerCardPath } from '../player-link';
 import type { BotRecent } from './recent-form';
@@ -171,6 +171,9 @@ export interface Pick {
   level: Confidence;
   // (a slate's practice pick: bet for the slate at the practice stake, short of the vig; a LIKE, tagged)
   practice?: boolean;
+  // (the desk's cap on its band, picks.mjs capOf: 'medium' a LIKE at most whatever its Kelly (a practice stake, a
+  // suspect price, a role or unearned research bet); files before it carry none)
+  cap?: 'medium' | null;
   // (when the Bot placed it: files that don't carry it, none)
   placedAt?: string | null;
   kind: BetKind;
@@ -246,6 +249,12 @@ export function pickKey(sport: string, matchup: string, kind: BetKind, pick: str
   return `${game}|${kind}|${pick.toLowerCase()}`;
 }
 
+// (a band held to the desk's cap: a LIKE at most where the file caps it, or where its return is suspect)
+function cappedBand(band: Confidence, p: Pick): Confidence {
+  const cap = p.cap === 'medium' || (Number.isFinite(p.ev) && Math.abs(p.ev!) > EV_SUSPECT);
+  return cap && (band === 'lock' || band === 'high') ? 'medium' : band;
+}
+
 // (a pick as a row, its id given when it joins the list (mergeSportRows); a bet's band from its score, a CHECK's
 // its own, its gap and why it wasn't bet kept)
 export function rowOf(sport: string, p: Pick, check: boolean): BetRow {
@@ -262,7 +271,9 @@ export function rowOf(sport: string, p: Pick, check: boolean): BetRow {
     ...(p.headline ? { headline: p.headline } : {}),
     ...(p.by ? { by: p.by } : {}),
     ...(p.read ? { read: p.read } : {}),
-    confidence: p.practice ? 'medium' : confidenceOf(sureness, p.p ?? (p.chance != null ? p.chance / 100 : null), p.edge),
+    // (its Kelly's band held to the desk's cap (picks.json cap, picks.mjs levelOf), so the row reads the band the desk
+    // gave it; a file before the cap: a suspect return (an ev past EV_SUSPECT, D23) a LIKE at most the same)
+    confidence: p.practice ? 'medium' : cappedBand(confidenceOf(sureness, p.p ?? (p.chance != null ? p.chance / 100 : null), p.edge), p),
     ...(p.practice ? { practice: true } : {}),
     id: -1,
     key: pickKey(sport, p.matchup, p.kind, p.pick),

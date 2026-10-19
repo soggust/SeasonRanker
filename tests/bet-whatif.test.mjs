@@ -101,6 +101,29 @@ test('the picks files: every pick reads back its own Kelly, band, stake and retu
   assert.ok(n >= 0);
 });
 
+// (desk run 39294305911: the MMA early band (D37) priced Josh Hokit +205 at a trusted 37.86%, its Kelly a LOVE, its
+// return +15.5% past the sanity bar: the desk held it to a LIKE at the practice stake (picks.mjs levelOf, suspect), the
+// page's row banded its Kelly alone and read LOVE where the what-if read LIKE. The file carries the cap (picks.json
+// cap, capOf) and the row bands as the desk does; a file before the cap, the suspect return the same)
+test('an MMA early-band pick the desk caps reads back the desk’s band, with or without the file’s cap', () => {
+  const k = kellyOf(205, 0.3786);
+  assert.ok(['high', 'lock'].includes(edgeLevel(k, 0.3786)), 'its Kelly alone a LOVE');
+  const pick = (over = {}) => ({ id: 'mma-x', sport: 'mma', score: k, chance: 38, level: 'medium', cap: 'medium', edge: true, kind: 'moneyline', market: 'Moneyline', pick: 'Josh Hokit', side: 'away', line: null, odds: 205, book: 'DraftKings', start: '2026-11-15T03:00:00Z', matchup: 'Josh Hokit @ Ciryl Gane', teams: [], where: null, reason: '', model: 0.3957, fair: 0.3271, p: 0.3786, ev: 0.1547, units: PRACTICE_UNITS, why: { fair: 0.3271, trust: 0.75, lean: 0, fitted: true, from: 'book' }, ...over });
+  for (const file of [pick(), pick({ cap: undefined })]) {
+    const row = desk.rowOf('mma', file, false);
+    assert.equal(row.confidence, 'medium', 'the row: the desk’s LIKE');
+    const at = desk.priceAt(desk.whatIfOf(row), row.price);
+    assert.equal(at.level, row.confidence, 'the what-if reads back its band');
+    assert.equal(at.units, row.units, 'and its practice stake');
+  }
+  // (an early-band LOVE the desk doesn't cap (Amanda Nunes +164 at 40.21%, untapered) stays a LOVE on the row and the what-if)
+  const kn = kellyOf(164, 0.4021);
+  const ev = 0.4021 * decimal(164) - 1;
+  const love = desk.rowOf('mma', pick({ pick: 'Amanda Nunes', odds: 164, p: 0.4021, score: kn, level: edgeLevel(kn, 0.4021), cap: undefined, ev, units: stakeFor(ev, 0.08, 164) }), false);
+  assert.equal(love.confidence, 'high');
+  assert.equal(desk.priceAt(desk.whatIfOf(love), 164).level, 'high');
+});
+
 test('flipsAt: the exact whole-cent prices where the band changes, either way', () => {
   for (const [p, odds] of [[0.535, -110], [0.56, -118], [0.62, -150], [0.45, 150], [0.58, 105], [0.3, 260]]) {
     const b = base(p, odds);

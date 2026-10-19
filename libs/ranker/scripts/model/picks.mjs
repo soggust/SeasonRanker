@@ -19,6 +19,10 @@
 //   chance   what the page shows beside it: the trusted chance the bet wins, as a whole percent
 //   level    its band, the row's color and chip, by its Kelly score (BANDS): lock (5% or more, and a 55%
 //            chance), high (2%: LOVE), medium (any edge under that: LIKE), low (PASS: no edge, never a bet)
+//   cap      'medium' where a rule holds the band to a LIKE whatever its Kelly (capOf: a practice pick, a practice
+//            stake (a gate's, a suspect price's: an ev past desk.mjs EV_SUSPECT, D23), a role bet, a research bet
+//            not yet earned); none where the band is its Kelly's. The page bands the row as the desk does
+//            (book-rows.ts rowOf: its Kelly's band held to the cap), so its what-if reads back its own band (D46)
 //   check    besides the bets, the CHECKs (checks.mjs: markets too far from the book to bet, kept to look into
 //            and learn from), in their own list (checks, never picks: the Book reads every pick as a bet
 //            the bot made, so a CHECK there would be shown, lit and staked as one), level 'check', no units,
@@ -420,6 +424,8 @@ export function buildPicks(sport, ledger, trust, games, now, extra = {}) {
       // (a CHECK's the model's: its trusted chance, past the gap, is about the book's)
       chance: Math.round((check ? b.model : b.p) * 100),
       level: check ? 'check' : levelOf(b, score),
+      // (the rule's cap on its band, as the page must band it: a suspect early-band MMA price a LIKE at its Kelly's LOVE)
+      ...(!check && capOf(b) ? { cap: capOf(b) } : {}),
       edge: intentOf(b) === 'edge',
       // (a slate's practice pick: bet for the slate at the practice stake, short of the vig; the Book's practice tag)
       ...(isPracticeTop(b) ? { practice: true } : {}),
