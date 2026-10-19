@@ -33,11 +33,14 @@ export function rankTab(engine, rows, season, position, { settings, hidden = {},
 export const ids = (list) => list.slice(0, TOP).map((row) => row.gsisId);
 export const scored = ({ ranked, totals }) => ranked.slice(0, TOP).map((row) => [row.gsisId, round(totals.get(row) ?? 0)]);
 
-// The seasons a sport's fixture covers: the one being played and the latest finished one it keeps
+// The season a sport's fixture covers: the latest FINISHED one it keeps, whose files never change (the season
+// being played is updated hourly by the data jobs, so a fixture of it failed CI on every update: 2026-10-19,
+// cf31529f). A sport with no finished season on hand (MMA, in its first) has no ranking fixture at all, only its
+// groups and headlines: its files change with every card.
 export function fixtureSeasons(engine, sport) {
   const { CURRENT_SEASON, SEASONS } = engine;
   const last = SEASONS.find((season) => season !== CURRENT_SEASON && seasonExists(sport, season, CURRENT_SEASON));
-  return last ? [CURRENT_SEASON, last] : [CURRENT_SEASON];
+  return last ? [last] : [];
 }
 
 function seasonExists(sport, season, current) {
