@@ -354,3 +354,51 @@ test('D28 every input with no look-ahead: an NGS week informs only later weeks, 
   const inputs = fs.readFileSync(path.join(import.meta.dirname, '../libs/ranker/scripts/model/INPUTS.md'), 'utf8');
   for (const sport of ['## NFL', '## NBA', '## NHL', '## MLB', '## MMA', '## The AI analyses']) assert.ok(inputs.includes(sport), sport);
 });
+
+test('D29 the priced history and the morning snapshot: archived closes graded in the gate; the snapshot its own capped budget, cut first', async () => {
+  const { SNAPSHOT, RESERVE, spendable } = await import('../libs/ranker/scripts/model/oddsapi.mjs');
+  const { LINES_FROM, PROPS_FROM, MORNING_HOUR, morningDue, morningRows, readHistory } = await import('../libs/ranker/scripts/model/odds-history.mjs');
+  assert.equal(SNAPSHOT.dayCap, 300);
+  assert.equal(MORNING_HOUR, 10);
+  assert.deepEqual([LINES_FROM.slice(0, 10), PROPS_FROM.slice(0, 10)], ['2020-06-06', '2023-05-03']);
+  const b = (remaining, snapshot = 0, historyLeft = 0) => ({ remaining, historyLeft, today: { snapshot, lines: 0, props: 0 }, allowance: { lines: 1000, props: 1000 } });
+  assert.equal(spendable('snapshot', 10, b(20000)), true);
+  assert.equal(spendable('snapshot', 10, b(20000, 295)), false, "the day's cap");
+  // (cut first: with credits low the snapshot stops while history and the live features still spend)
+  const low = b(RESERVE + SNAPSHOT.hold + 5, 0, 0);
+  assert.equal(spendable('snapshot', 10, low), false);
+  assert.equal(spendable('lines', 10, low), true);
+  assert.equal(spendable('history', 10, { ...low, historyLeft: 100 }), true);
+  // (due from 10 AM Eastern, once a day: its day's file written, not again)
+  assert.equal(morningDue('nba', Date.parse('2026-10-20T13:30:00Z'), () => false), false, '9:30 AM Eastern');
+  assert.equal(morningDue('nba', Date.parse('2026-10-20T14:05:00Z'), () => false), true);
+  assert.equal(morningDue('nba', Date.parse('2026-10-20T14:05:00Z'), () => true), false);
+  // (a morning's rows: kind 'm', the coming games only, both books' lines and DraftKings' props)
+  const ev = { id: 'x1', commence_time: '2026-10-20T23:30:00Z', home_team: 'Boston Celtics', away_team: 'New York Knicks', bookmakers: [{ key: 'draftkings', markets: [{ key: 'h2h', outcomes: [{ name: 'Boston Celtics', price: -150 }, { name: 'New York Knicks', price: 130 }] }] }] };
+  const past = { ...ev, id: 'x0', commence_time: '2026-10-20T13:00:00Z' };
+  const props = new Map([['x1', { bookmakers: [{ key: 'draftkings', markets: [{ key: 'player_points', outcomes: [{ name: 'Over', description: 'Jayson Tatum', point: 27.5, price: -115 }, { name: 'Under', description: 'Jayson Tatum', point: 27.5, price: -105 }] }] }] }]]);
+  const games = [{ id: '401', date: '2026-10-20T23:30Z', season: 2027, type: 2, home: '2', away: '18' }];
+  const teams = [{ id: '2', name: 'Boston Celtics', nick: 'Celtics', place: 'Boston' }, { id: '18', name: 'New York Knicks', nick: 'Knicks', place: 'New York' }];
+  const rows = morningRows('nba', [ev, past], props, games, teams, '2026-10-20T14:17:00Z');
+  assert.deepEqual(rows.map((r) => r[0]), ['E', 'L', 'P']);
+  assert.equal(rows[0][2], '401', 'matched to its ESPN game');
+  assert.deepEqual(rows[1].slice(2, 9), ['m', '2026-10-20T14:17:00Z', 'dk', 'h2h', null, -150, 130]);
+  assert.deepEqual(rows[2].slice(4), ['dk', 'player_points', 'Jayson Tatum', 27.5, -115, -105]);
+  assert.equal(typeof readHistory, 'function');
+});
+
+test('D30 every bet at the price offered the moment it is placed: never a stored price, a snapshot or the odds history', async () => {
+  const { STORED_FRESH, storedBet, storedFresh } = await import('../libs/ranker/scripts/model/checks.mjs');
+  const now = new Date('2026-10-20T15:00:00Z');
+  assert.equal(STORED_FRESH, 0, 'only a price quoted in the current run');
+  assert.equal(storedFresh('2026-10-20T14:59:59Z', now), false);
+  assert.equal(storedBet({ id: 'a', at: '2026-10-20T14:00:00Z' }, true, now), 'stale');
+  assert.equal(storedBet({ id: 'a', at: '2026-10-20T14:00:00Z' }, false, now), 'stale', 'no key: no fresher');
+  // (the history and the morning snapshot are for history, learning and the gate only: nothing that prices or
+  // places a bet reads them)
+  const dir = path.join(import.meta.dirname, '../libs/ranker/scripts/model');
+  for (const f of ['run.mjs', 'desk.mjs', 'props.mjs', 'checks.mjs', 'picks.mjs', 'board.mjs', 'mma-desk.mjs', 'fights-totals.mjs', 'research.mjs', 'timing.mjs', 'anytime.mjs', 'clv.mjs', 'backtest.mjs']) {
+    const src = fs.readFileSync(path.join(dir, f), 'utf8');
+    assert.ok(!/odds-history|gate-history/.test(src), `${f} must not read the odds history`);
+  }
+});

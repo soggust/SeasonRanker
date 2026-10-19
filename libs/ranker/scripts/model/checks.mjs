@@ -45,8 +45,8 @@
 //            other's, never an assumed -110), only while its line is still the board's (or the board shows
 //            none for him): its projection and every guard run again as for a priced prop, so it's written
 //            again (still a CHECK), closed (no guard keeps it one), or bet (as any prop: its timing, news and
-//            caps; with The Odds API to hand only at a stored price STORED_FRESH old or less (priceAt: when the
-//            API last gave it), else only closed, the bet left to the next ask). An owner's note not yet
+//            caps; never at a stored price (D30: only a price quoted this run; STORED_FRESH 0): its game owed a
+//            fresh ask, the bet left to that ask's run). An owner's note not yet
 //            answered (noteOpen) is answered the same way the next run, its line moved owing its game an ask
 //            (run.mjs betProps). One off a board that still shows his market (his other props, or the stat's
 //            for others: pulled, the book took it down) is never bet from its stored price, only kept or closed
@@ -276,21 +276,26 @@ export function closeChecks(ledger, ids, now) {
 // its stored price: nothing it could become is shown)
 export const openCheck = (c, now) => !!c && !c.hidden && !c.checkResult && !c.closedAt && !c.bet && !checkLocked(c, now);
 
-// (how old a CHECK's stored price may be and still be bet at, with The Odds API to hand: a real price that
-// recent stands in for the one the run didn't ask for; older, the CHECK is only closed, the bet left to the next
-// ask. When it was priced: priceAt, The Odds API's ask (an older one without it, when it was last written))
-export const STORED_FRESH = 6 * 3600e3;
+// (how old a CHECK's stored price may be and still be bet at: never older than the run. The owner's rule
+// (2026-10-18, DECISIONS.md D30): every bet is judged at the price offered the moment it's placed, so a bet is placed
+// only at a price quoted in the current run (the live board, or a fresh Odds API call this run; never a stored
+// price, a morning snapshot or the odds history). A stored price is an earlier run's, so it's stale: its CHECK is
+// still evaluated, kept or closed, and a row about to be bet owes its game a fresh ask (run.mjs betProps), bet on
+// that ask's run at the price then. Was 6 hours till 2026-10-18. now: the run's start; priceAt: when The Odds API
+// gave it (an older one without it, when it was last written))
+export const STORED_FRESH = 0;
 export const priceAtOf = (c) => c?.priceAt ?? c?.placedAt ?? null;
-export const storedFresh = (at, now) => now.getTime() - Date.parse(at ?? '') <= STORED_FRESH;
+export const storedFresh = (at, now) => Date.parse(at ?? '') >= now.getTime() - STORED_FRESH;
 
 // (whether a prop priced from its CHECK's stored price (withStoredPrices' stored) may be bet: null if so, else
 // why not: 'pulled' (off a board that still shows his market: the book took it down, on news as often as not,
-// whatever the price's age) or 'stale' (with The Odds API to hand, keyed, older than STORED_FRESH). Either way
-// its CHECK is still evaluated, kept or closed; a prop with a price of its own this run (no stored), null)
+// whatever the price's age) or 'stale' (not quoted this run: storedFresh; with the key or without, D27). Either
+// way its CHECK is still evaluated, kept or closed; a prop with a price of its own this run (no stored), null.
+// keyed: kept for the callers, no longer read (without the key a stored price is no fresher)
 export function storedBet(stored, keyed, now) {
   if (!stored) return null;
   if (stored.pulled) return 'pulled';
-  if (keyed && !storedFresh(stored.at, now)) return 'stale';
+  if (!storedFresh(stored.at, now)) return 'stale';
   return null;
 }
 

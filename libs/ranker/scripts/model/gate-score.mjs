@@ -286,7 +286,8 @@ export function betSummary(rows, { n = 6, practice = 0.5, stakeOf = () => 1 } = 
 // edge picks' units, by slate. Deciding: ll, close and topClv
 export const BET_DECIDE = ['ll', 'close', 'topClv'];
 export function betCompare(rowsA, rowsB, { n = 6, practice = 0.5, stakeOf = () => 1, ...opts } = {}) {
-  const lossRows = (rows, f) => rows.map((x) => ({ k: x.id, c: x.event, v: f(x) })).filter((r) => fin(r.v));
+  // (a row's weight w where it has one: the priced history's by season, gate-history.mjs; else 1)
+  const lossRows = (rows, f) => rows.map((x) => ({ k: x.id, c: x.event, w: x.w ?? 1, v: f(x) })).filter((r) => fin(r.v));
   const pairOn = (f) => {
     const p = pairRows(lossRows(rowsA, f), lossRows(rowsB, f));
     const cmp = bootDiff(p.clusters, opts);
@@ -298,7 +299,7 @@ export function betCompare(rowsA, rowsB, { n = 6, practice = 0.5, stakeOf = () =
   const pa = picks(rowsA);
   const pb = picks(rowsB);
   const slateCmp = (f) => {
-    const cmp = bootDiff(clusterRows(pa.map(({ s, g }) => ({ c: s.day, v: f(g) })), pb.map(({ s, g }) => ({ c: s.day, v: f(g) }))), opts);
+    const cmp = bootDiff(clusterRows(pa.map(({ s, g }) => ({ c: s.day, w: s.x.w ?? 1, v: f(g) })), pb.map(({ s, g }) => ({ c: s.day, w: s.x.w ?? 1, v: f(g) }))), opts);
     return cmp;
   };
   const topClv = slateCmp((g) => g.clv);

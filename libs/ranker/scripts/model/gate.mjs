@@ -45,6 +45,8 @@ import path from 'node:path';
 import { fileURLToPath, pathToFileURL } from 'node:url';
 import { createHash } from 'node:crypto';
 import { BET_DECIDE, betCompare, betSummary, binLoss, dec, gateVerdict, normalCrps, normalLoss, projCompare, r4, seasonWeight, sportVerdict } from './gate-score.mjs';
+import { historyLeakBets, huntLeaks } from './leaks.mjs';
+import { extendedGames, historyPropIndex, lineHistoryRows, loadHistory, propHistoryRows, slim, vsBook, vsBookBySeason } from './gate-history.mjs';
 
 const ROOT = path.resolve(import.meta.dirname, '../../../..');
 const MODEL = path.join(ROOT, 'libs/ranker/scripts/model');
@@ -252,7 +254,7 @@ export async function scoreVersion(dir, sport, { refit = false, propsLayer = tru
   const V = {};
   for (const n of ['leagues', 'ratings', 'context', 'margins', 'backtest', 'desk', 'props', 'project', 'correct']) V[n] = await load(dir, n);
   // (the loaders: this checkout's, so both versions read the same history)
-  const H = { context: await import('./context.mjs'), logs: await import('./playerlogs.mjs'), props: await import('./props.mjs'), fitcache: await import('./fitcache.mjs') };
+  const H = { context: await import('./context.mjs'), logs: await import('./playerlogs.mjs'), props: await import('./props.mjs'), fitcache: await import('./fitcache.mjs'), espn: await import('./espn.mjs') };
   const cfg = V.leagues.LEAGUES[sport];
   const state = readJson(path.join(ROOT, 'apps', sport, 'src/StaticData/model/state.json'), {});
   const history = readJson(path.join(ROOT, 'apps', sport, 'scripts/model/games.json'), []).filter((g) => g.type === 2 || g.type === 3).sort((a, b) => a.date.localeCompare(b.date));
@@ -324,12 +326,30 @@ export async function scoreVersion(dir, sport, { refit = false, propsLayer = tru
   const linesSaved = [...linesAt(btRep, expAll), ...linesAt(ledgerLines, (b) => (fin(b.expMargin) && fin(b.expTotal) ? { margin: b.expMargin, total: b.expTotal } : null))];
   say(`game lines: ${btRep.length} backtest bets and ${ledgerLines.length} ledger rows priced (trust ${MARKETS.map((m) => `${m} ${trust[m]}`).join(', ')})`);
 
+  // (layer b, the priced history (gate-history.mjs, odds-history.mjs): every archived open and close since 2020,
+  // the games games.json doesn't keep replayed by the ratings from the history's own ESPN games (their context
+  // none), games.json's at the desk's own expectation)
+  const hist = loadHistory(sport);
+  let histLines = { open: [], close: [] };
+  let histGames = history;
+  if (hist.events.size) {
+    histGames = extendedGames(history, hist.events);
+    const expExt = new Map();
+    if (histGames.length > history.length) V.ratings.replay(histGames, params, 0, ctxFit?.ctx ?? null, (g, e) => expExt.set(String(g.id), e));
+    const expOf = (id) => expAll.get(id) ?? expAll.get(String(id)) ?? expExt.get(String(id)) ?? null;
+    histLines = lineHistoryRows(V, sport, params, shape, expOf, histGames, hist, current);
+    say(`history lines: ${histLines.close.length} closes and ${histLines.open.length} opens priced (${new Set(histLines.close.map((x) => x.season)).size} seasons; ${histGames.length - history.length} games past games.json's replayed from the history's)`);
+  } else say('history: none committed (odds-history.mjs)');
+
   // (layer a and the replay's chances, props: the players' games replayed under the saved fit's settings)
   const ledgers = Object.fromEntries(SPORTS.map((s) => [s, ledgerOf(s)]));
   const priced = pricedProps(ledgers);
   const mineProps = priced.filter((b) => b.sport === sport);
   let propsProj = null;
   const replayM = new Map();
+  // (the history's props by player game, and the replay's games matched to them)
+  const histIndex = hist.props.length ? historyPropIndex(hist.events, hist.props, Object.fromEntries(Object.entries(H.props.API_MARKETS?.[sport] ?? {}))) : new Map();
+  const histMatches = [];
   if (propsLayer && mineProps.length + finals.length > 0) {
     try {
       const saved = H.fitcache.readFit(sport);
@@ -368,6 +388,10 @@ export async function scoreVersion(dir, sport, { refit = false, propsLayer = tru
           const elig = list.filter((x) => x.row.eligible !== false).length >= 200;
           for (const x of list) {
             const mix = V.project.exitMix(f.params, x.p);
+            if (histIndex.size && x.row.name && x.row.game && histIndex.has(`${st.key}|${H.espn.nameKey(x.row.name)}|${x.row.game}`)) {
+              const mu = x.p.mu;
+              histMatches.push({ stat: st.key, name: x.row.name, game: String(x.row.game), pid: String(x.row.pid), v: x.v, over: (line) => V.project.lineChances(line, mu, f.params, mix).over });
+            }
             const ll = -V.project.chanceLog(x.v, x.p.mu, f.params, mix);
             if (fin(ll) && (!elig || x.row.eligible !== false)) {
               out.stat.push(si);
@@ -409,6 +433,16 @@ export async function scoreVersion(dir, sport, { refit = false, propsLayer = tru
   const propsSaved = mineProps.length ? priceWith(savedM, 'saved chances') : [];
   const propsReplay = mineProps.length && replayM.size ? priceWith((b) => (b.sport === sport ? (replayM.get(String(b.id)) ?? savedM(b)) : savedM(b)), 'replayed chances') : null;
   const practiceN = V.desk.PRACTICE_N?.[sport] ?? { nfl: 15, nhl: 6, mlb: 3, nba: 8 }[sport];
+  const histProps = histMatches.length ? propHistoryRows(V, sport, histIndex, histMatches, current) : { open: [], close: [] };
+  if (hist.props.length) say(`history props: ${histIndex.size} player games in the history, ${histProps.close.length} closes and ${histProps.open.length} opens matched to the replay`);
+  // (the version against the book at the close, every season recency-weighted, and season by season)
+  const vs = {
+    lines: vsBook(histLines.close),
+    props: vsBook(histProps.close),
+    linesBySeason: vsBookBySeason(histLines.close),
+    propsBySeason: vsBookBySeason(histProps.close),
+    linesByMarket: Object.fromEntries(MARKETS.map((m) => [m, vsBook(histLines.close.filter((x) => x.market === m))])),
+  };
   return {
     sport,
     notes,
@@ -416,7 +450,8 @@ export async function scoreVersion(dir, sport, { refit = false, propsLayer = tru
     code: codeOf(dir),
     epoch: V.leagues.MODEL_EPOCH ?? null,
     proj: { games, props: propsProj },
-    bet: { props: { saved: propsSaved, replay: propsReplay }, lines: { saved: linesSaved, replay: linesReplay } },
+    bet: { props: { saved: propsSaved, replay: propsReplay }, lines: { saved: linesSaved, replay: linesReplay }, history: { saved: [], replay: slim([...histLines.open, ...histProps.open]) } },
+    vsBook: vs,
     meta: { practiceN, practiceUnits: V.desk.PRACTICE_UNITS ?? 0.5, trust, sigma: params.sigma, sigmaT: params.sigmaT, matched: replayM.size, priced: mineProps.length },
   };
 }
@@ -464,7 +499,7 @@ export function compareScores(sport, a, b, opts = {}) {
   const practice = a.meta?.practiceUnits ?? 0.5;
   const bet = {};
   const summary = {};
-  for (const layer of ['props', 'lines']) {
+  for (const layer of ['props', 'lines', 'history']) {
     const r = betRows(a, b, layer);
     if (!r.a.length || !r.b.length) {
       bet[layer] = null;
@@ -477,7 +512,7 @@ export function compareScores(sport, a, b, opts = {}) {
   const ga = crpsRows(a);
   const gb = crpsRows(b);
   const info = { crps: ga.length && gb.length ? projCompare(sport, ga, gb, current, opts) : null };
-  return { sport, proj, bet, summary, info, verdict };
+  return { sport, proj, bet, summary, info, verdict, vsBook: { champion: a.vsBook ?? null, candidate: b.vsBook ?? null } };
 }
 
 // ---- the scorecard ----
@@ -517,6 +552,8 @@ export function scorecardOf(score, frozen, { now = Date.now() } = {}) {
     out.frozen[layer] = sum(inFrozen) && { mode, ...sum(inFrozen) };
     out.rolling[layer] = sum(roll) && { mode, ...sum(roll), from: new Date(from).toISOString().slice(0, 10) };
   }
+  // (the priced history against the book at the close: every season recency-weighted, and by season)
+  if (score.vsBook) out.history = score.vsBook;
   // (layer a's deciding seasons' mean loss a row: games, props)
   const pr = projRows(score);
   const projMean = (rows) => {
@@ -559,7 +596,7 @@ export function tableOf(c) {
   row('a: games CRPS (reported)', c.info?.crps?.decide);
   row('a: props, deciding', c.proj.props?.decide);
   row('a: props, older (sanity)', c.proj.props?.sanity);
-  for (const layer of ['props', 'lines']) {
+  for (const layer of ['props', 'lines', 'history']) {
     const b = c.bet[layer];
     if (!b) {
       lines.push(`  b: ${layer}: no priced rows`);
@@ -572,6 +609,14 @@ export function tableOf(c) {
     row(`b: ${layer} edge units a slate`, b.units, 'higher');
     const s = c.summary[layer];
     if (s) for (const [who, x] of [['champion', s.champion], ['candidate', s.candidate]]) lines.push(`    ${who}: ${x.rows} rows, gap to the book ${sgn(x.gap)} (close ${sgn(x.closeGap)}), top ${x.top.n} picks hit ${pct(x.top.hit)} CLV ${sgn(x.top.clv, 3)} ${sgn(x.top.units, 2)}u at the practice stake; edge ${x.edge.n} picks ${sgn(x.edge.units, 2)}u on ${x.edge.staked}u`);
+  }
+  const vb = c.vsBook?.candidate;
+  if (vb) {
+    lines.push("  the candidate against the book at the history's closes (log loss on the results, recency-weighted; lower better):");
+    for (const k of ['lines', 'props']) {
+      const x = vb[k];
+      if (x) lines.push(`    ${k.padEnd(6)} model ${x.model} (raw ${x.raw}) / book ${x.book}: ${sgn(x.gap)} [${sgn(x.lo)}, ${sgn(x.hi)}] ${x.verdict} (${x.n} rows, ${x.games} games)`);
+    }
   }
   return lines.join('\n');
 }
@@ -600,6 +645,14 @@ function recordScore(version, sport, score, frozen) {
   const next = addEntry(readJson(file, null), entry);
   writeFileSync(file, `${JSON.stringify(next, null, 1)}\n`);
   console.log(`${sport}: scorecard entry for ${version.label} (epoch ${score.epoch}) written: ${path.relative(ROOT, file)}`);
+  // (the leak hunt on the priced history, every season: the weekly self-check's C23 reports it beside the ledger's)
+  const hrows = score.bet?.history?.replay ?? [];
+  if (hrows.length) {
+    const h = huntLeaks(historyLeakBets(hrows), { sport });
+    const out = path.join(ROOT, 'apps', sport, 'src/StaticData/model/history-leaks.json');
+    writeFileSync(out, `${JSON.stringify({ at: entry.at, epoch: score.epoch, commit: entry.commit, n: h.n, tested: h.tested, leaks: h.leaks, trends: h.trends, status: h.status, headline: h.headline, rows: h.rows.filter((x) => x.kind === 'leak').slice(0, 12) }, null, 1)}\n`);
+    console.log(`${sport}: the priced history's leak hunt: ${h.leaks} leaks of ${h.tested} segments on ${h.n} rows (${path.relative(ROOT, out)})`);
+  }
 }
 
 async function main() {

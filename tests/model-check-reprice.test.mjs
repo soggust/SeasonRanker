@@ -157,11 +157,12 @@ test("a stored-price re-evaluation with an edge: bet at the stored price, resolv
   assert.deepEqual(out.picks.map((p) => [p.id, p.level !== 'check']), [[ID, true]]);
 });
 
-test('storedFresh: a stored price bet with The Odds API to hand only while STORED_FRESH old', () => {
-  assert.equal(STORED_FRESH, 6 * 3600e3);
-  assert.equal(storedFresh('2026-10-11T10:00:00Z', now), true);
-  assert.equal(storedFresh('2026-10-11T09:00:00Z', now), true);
-  assert.equal(storedFresh('2026-10-11T06:00:00Z', now), false);
+test('D30 storedFresh: only a price quoted in the current run is fresh (STORED_FRESH 0); an earlier run\'s, any age, is not', () => {
+  assert.equal(STORED_FRESH, 0);
+  assert.equal(storedFresh(now.toISOString(), now), true);
+  assert.equal(storedFresh('2026-10-11T15:00:30Z', now), true);
+  assert.equal(storedFresh('2026-10-11T14:59:00Z', now), false);
+  assert.equal(storedFresh('2026-10-11T10:00:00Z', now), false);
   assert.equal(storedFresh(null, now), false);
 });
 
@@ -206,15 +207,15 @@ test("withStoredPrices: off a board that still shows his market (his other props
   assert.equal(withStoredPrices([], ledger.checks, game, now, statOf).board[0].stored.pulled, undefined);
 });
 
-test("storedBet (betProps' bets loop): a stored price bet only while fresh with The Odds API to hand, and never one pulled; a fresh price's prop untouched", () => {
-  const fresh = { id: ID, at: '2026-10-11T12:00:00Z' };
-  const stale = { id: ID, at: '2026-10-11T06:00:00Z' };
+test("D30 storedBet (betProps' bets loop): a stored price bet only when quoted this run, key or no key, and never one pulled; a fresh price's prop untouched", () => {
+  const fresh = { id: ID, at: '2026-10-11T15:00:10Z' };
+  const stale = { id: ID, at: '2026-10-11T14:00:00Z' };
   assert.equal(storedBet(undefined, true, now), null);
   assert.equal(storedBet(fresh, true, now), null);
   assert.equal(storedBet(stale, true, now), 'stale');
   assert.equal(storedBet({ id: ID }, true, now), 'stale');
-  // (no key: the stored price the best there is)
-  assert.equal(storedBet(stale, false, now), null);
+  // (no key: a stored price is no fresher; it waits for a price quoted this run)
+  assert.equal(storedBet(stale, false, now), 'stale');
   // (pulled: whatever its age or the key)
   for (const keyed of [true, false]) assert.equal(storedBet({ ...fresh, offBoard: true, pulled: true }, keyed, now), 'pulled');
   assert.equal(storedBet({ ...fresh, offBoard: true }, true, now), null);

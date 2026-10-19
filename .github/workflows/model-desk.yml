@@ -173,6 +173,20 @@ jobs:
             git clean -fdq -- "apps/$sport/scripts/model" "apps/$sport/src/StaticData/model" || true
           done
 
+      # (the morning odds snapshot, libs/ranker/scripts/model/odds-history.mjs morning (DECISIONS.md D29): once a
+      # day from 10 AM Eastern, the first run then, every coming game's lines and the day's props at DraftKings and
+      # Pinnacle into the priced history (apps/<sport>/scripts/model/odds-history/morning/<day>.jsonl.gz, committed
+      # below); its own Odds API budget (oddsapi.mjs SNAPSHOT: 300 credits a day at most, the first cut when credits
+      # run low). For history, learning and the gate only: the bettor never prices off it (D30). Never failing the
+      # run. Before the cache is saved (its calls logged there))
+      - name: Take the morning odds snapshot
+        if: ${{ !cancelled() }}
+        continue-on-error: true
+        timeout-minutes: 6
+        env:
+          ODDS_API_KEY: ${{ secrets.ODDS_API_KEY }}
+        run: node libs/ranker/scripts/model/odds-history.mjs morning || echo "::warning::the morning odds snapshot failed: none today"
+
       # (Claude's analysis for the strong picks, libs/ranker/scripts/model/writeups.mjs: only with the repository
       # variable WRITEUPS set to on (off till the owner's measured run, writeups.mjs --validate) and the
       # ANTHROPIC_API_KEY secret; skipped quietly otherwise, and never failing the run (the plain write-ups

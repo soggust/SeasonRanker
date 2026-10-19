@@ -1352,9 +1352,14 @@ export function c22(x) {
 // risk is what the desk bets)
 export function c23(x) {
   const h = huntLeaks(x.ledger?.bets ?? [], { sport: x.sport, now: x.now, teams: x.teams, review: x.review ?? null });
+  // (the priced history's hunt, every season since 2020: the gate's, written with each --record (gate.mjs,
+  // history-leaks.json); reported beside the ledger's, a leak there a candidate fix as any)
+  const hist = x.historyLeaks ?? null;
+  const histLine = hist?.n ? ` The priced history (every season, the gate's run of ${String(hist.at ?? '').slice(0, 10)}): ${hist.leaks ? `${hist.leaks} leaks: ${hist.headline}` : `none of ${hist.tested} segments losing on ${hist.n} rows`}.` : '';
   return check('C23', {
-    status: h.status,
-    headline: h.headline,
+    status: h.status === 'ok' && hist?.leaks ? 'watch' : h.status,
+    headline: `${h.headline}${histLine}`,
+    ...(hist?.n ? { history: { at: hist.at, n: hist.n, tested: hist.tested, leaks: hist.leaks, rows: hist.rows ?? [] } } : {}),
     metric: 'leaks',
     value: h.leaks,
     threshold: `a leak: ${LEAK_N} rows in ${LEAK_GAMES} games or more, losing to the book's no-vig beyond a ${LEAK_FDR * 100}% false discovery rate (Benjamini-Hochberg over every segment tested), its shrunk loss (n / (n + ${LEAK_K})) under 0; a trend: this week worse than the weeks before by ${TREND_Z} standard errors; a flag with a leak staked into in the last ${RISK_DAYS} days`,
@@ -1532,6 +1537,8 @@ export function readSport(sport, now) {
     aiLog: readJsonOr(path.join(ROOT, '.cache/model/ai-usage.json'), null)?.entries ?? null,
     // (the miss review's causes, the leak hunt's (C23))
     review: readJsonOr(path.join(model, 'miss-review.json'), null),
+    // (the priced history's leak hunt, the gate's: C23)
+    historyLeaks: readJsonOr(path.join(model, 'history-leaks.json'), null),
     teams,
   };
 }

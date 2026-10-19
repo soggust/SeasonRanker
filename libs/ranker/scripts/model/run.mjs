@@ -78,7 +78,7 @@
 //      a note on a bet or a game market's CHECK owes none). A prop CHECK with no fresh price this run (the
 //      NFL's board has none; The Odds API not asked for its game) is priced from its own stored prices while
 //      its line is still the board's (checks.mjs withStoredPrices), its projection and guards run again: still a
-//      CHECK, closed, or bet (with The Odds API to hand, only at a price STORED_FRESH old or less); an owner's
+//      CHECK, closed, or bet (never at the stored price, D27: its game owed a fresh ask, bet at that price); an owner's
 //      note on it answered the same way the next run (its line moved, its game owed an ask), and how it came out
 //      kept on it (resolved: checks.mjs resolveChecks); one off a board still showing his market (the book
 //      pulled it) never bet from its stored price (storedBet), and a noted one the run couldn't re-price
@@ -2273,13 +2273,22 @@ async function betProps(r) {
       if (Date.parse(game.date) - Date.now() >= 5 * 60e3) {
         for (const x of bets) {
           if (!x.priced && hasKey()) continue;
-          // (priced from its CHECK's stored price (withStoredPrices): with The Odds API to hand, a real price only
-          // while STORED_FRESH old; an older one's CHECK is only closed, the bet left to the next ask)
+          // (priced from its CHECK's stored price (withStoredPrices): never bet, a stored price being an earlier
+          // run's (D30: only a price quoted this run is bet). The row about to be bet owes its game a fresh ask, once
+          // a stored price (asked when its props are next considered, PROP_ASKS at most), and bets at that price)
           // (and one off a board still showing his market (pulled: the book took it down) never: storedBet)
           const notBet = storedBet(x.prop.stored, hasKey(), r.now);
           if (notBet) {
             if (notBet === 'pulled') run.storedPulled = (run.storedPulled ?? 0) + 1;
-            else run.storedStale = (run.storedStale ?? 0) + 1;
+            else {
+              run.storedStale = (run.storedStale ?? 0) + 1;
+              const key = `${game.id}:stale-owed`;
+              if (hasKey() && !DRY && asked[key] !== x.prop.stored.at) {
+                asked[key] = x.prop.stored.at;
+                asked[`${game.id}:owed`] = 1;
+                write(PROPS_ASKED, asked);
+              }
+            }
             continue;
           }
           const news = newsMissing(sport, r.live.get(game.id), { kind: 'props', home: String(x.prop.athlete.team) === String(game.home), pitcher: !!x.prop.stat.pitcher });

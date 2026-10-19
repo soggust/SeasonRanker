@@ -45,6 +45,11 @@ const USAGE = path.join(CACHE, 'odds-usage.json');
 export const MONTHLY = 20000;
 export const RESERVE = 2000;
 export const HISTORY_BUDGET = 6000;
+// The morning snapshot (odds-history.mjs morning, once a day from 10 AM Eastern: every coming game's lines and the
+// day's props at the desk's book and Pinnacle, kept in the priced history; the owner's ask of 2026-10-18,
+// DECISIONS.md D29): its own feature, at most dayCap a UTC day, and the first cut when credits run low: it stops
+// while hold more than the reserve and history's unspent share is left, before history, props or lines feel it
+export const SNAPSHOT = { dayCap: 300, hold: 2000 };
 // (the daily split of what's left for the live features, after the reserve and history's share)
 const SHARES = { lines: 0.3, props: 0.7 };
 // (a busy day may spend up to this many days' worth: the NFL's props come nearly all on a Sunday, and a day's
@@ -104,8 +109,8 @@ function cycleOf(u, now = Date.now()) {
 export function budget(now = Date.now()) {
   const u = usage();
   const cycle = cycleOf(u, now);
-  const spent = { lines: 0, props: 0, history: 0, other: 0 };
-  const today = { lines: 0, props: 0, history: 0, other: 0 };
+  const spent = { lines: 0, props: 0, history: 0, snapshot: 0, other: 0 };
+  const today = { lines: 0, props: 0, history: 0, snapshot: 0, other: 0 };
   const day = new Date(now).toISOString().slice(0, 10);
   for (const c of u.calls) {
     if (cycle && Date.parse(c.at) < cycle.start.getTime()) continue;
@@ -133,11 +138,16 @@ export function budget(now = Date.now()) {
 }
 
 // Whether a feature may spend cost credits now: history from its own budget, while the reserve holds; lines and
-// props from today's allowance (cut in that order as credits run low: history, props, lines)
+// props from today's allowance; the morning snapshot to its day's cap while SNAPSHOT.hold is left over the reserve
+// and history's share (cut in that order as credits run low: snapshot, history, props, lines)
 export function canSpend(feature, cost) {
   if (!hasKey()) return false;
-  const b = budget();
+  return spendable(feature, cost, budget());
+}
+// (canSpend's rule on a budget (budget()'s, or a test's), the key aside)
+export function spendable(feature, cost, b) {
   if (b.remaining - cost < RESERVE) return false;
+  if (feature === 'snapshot') return b.remaining - cost >= RESERVE + (b.historyLeft ?? 0) + SNAPSHOT.hold && (b.today?.snapshot ?? 0) + cost <= SNAPSHOT.dayCap;
   if (feature === 'history') return b.historyLeft >= cost;
   return (b.today[feature] ?? 0) + cost <= (b.allowance[feature] ?? 0);
 }
@@ -161,7 +171,7 @@ export function projectedMonth(b = budget(), now = Date.now()) {
   const used = Number.isFinite(b.used) ? b.used : MONTHLY - (b.remaining ?? MONTHLY);
   if (!b.cycleStart) return used;
   const elapsed = Math.max(1, (now - Date.parse(b.cycleStart)) / 864e5);
-  const live = (b.spent?.lines ?? 0) + (b.spent?.props ?? 0) + (b.spent?.other ?? 0);
+  const live = (b.spent?.lines ?? 0) + (b.spent?.props ?? 0) + (b.spent?.snapshot ?? 0) + (b.spent?.other ?? 0);
   return Math.round(used + (live / elapsed) * (b.daysLeft ?? 0));
 }
 

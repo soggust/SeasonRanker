@@ -66,6 +66,40 @@ export const DIMS = {
   'stat+line': (b) => (b.market === 'prop' ? `${marketOf(b)} ${lineBucket(b.line)} line` : null),
 };
 
+// The priced history's rows (gate-history.mjs: a version's open rows, its priced chance against the open's no-vig,
+// the close's chance at the same line, the result; every season since 2020, its season's weight w) as the hunt reads
+// a bet: on the side the version leans, staked 0 (never bet: nothing at risk), weight w. The gate writes the hunt
+// on them with each --record (apps/<sport>/src/StaticData/model/history-leaks.json), which C23 reports beside the
+// ledger's (DECISIONS.md D22, D29)
+export function historyLeakBets(rows) {
+  const out = [];
+  for (const x of rows ?? []) {
+    if (!fin(x.p) || !fin(x.f)) continue;
+    const over = x.p >= x.f;
+    const prop = x.stat !== 'ml' && x.stat !== 'spread' && x.stat !== 'total';
+    const side = over ? (prop || x.stat === 'total' ? 'over' : 'home') : prop || x.stat === 'total' ? 'under' : 'away';
+    const y = x.y === null || x.y === undefined ? null : over ? x.y : 1 - x.y;
+    out.push({
+      id: x.id,
+      event: x.event,
+      market: prop ? 'prop' : x.stat,
+      propType: prop ? x.stat : undefined,
+      line: x.line,
+      side,
+      odds: over ? x.overOdds : x.underOdds,
+      p: over ? x.p : 1 - x.p,
+      fair: over ? x.f : 1 - x.f,
+      status: y === 1 ? 'won' : y === 0 ? 'lost' : 'push',
+      ...(fin(x.q) ? { clv: { q: over ? x.q : 1 - x.q } } : {}),
+      start: new Date(x.t).toISOString(),
+      units: 0,
+      intent: 'track',
+      weight: fin(x.w) ? x.w : 1,
+    });
+  }
+  return out;
+}
+
 // A row's gain over the book (gain: see the header) and its parts: { gain, result, close } or null with neither
 export function rowGain(b) {
   if (!fin(b.p) || !fin(b.fair)) return null;
