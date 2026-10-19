@@ -1,18 +1,6 @@
 {
  "sport": "nba",
  "days": 2,
- "signals": [
-  {
-   "team": "20",
-   "abbr": "PHI",
-   "athlete": "3904625",
-   "player": "Tacko Fall",
-   "kind": "role",
-   "direction": "none",
-   "confidence": 0.3,
-   "headline": "76ers, needing frontcourt help, convert 7-foot-6 Tacko Fall to two-way contract",
-   "at": "2026-10-17T16:23:33.000Z"
-  }
- ],
- "at": "2026-10-19T15:33:55.310Z"
+ "signals": [],
+ "at": "2026-10-19T16:30:27.154Z"
 }
