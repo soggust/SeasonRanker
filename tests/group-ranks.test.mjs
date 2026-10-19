@@ -1,6 +1,7 @@
 // A collapsed group's places (group-ranks.ts, TabRanker.groupPlaces): each row's rank within the group, by
 // what the group's stats added to its score (the list's own scoring: the same sliders and normalization),
-// tied scores sharing a place, a group with nothing counted having none; only a look, the list's order
+// tied scores sharing a place and the next score the next place (dense: 1, 1, 2), a group with nothing
+// counted having none; only a look, the list's order
 // untouched. Then on real data (the NFL's QBs): the places follow the group's share of each score, move
 // with the sliders, and a group whose sliders are all at 0 has no places.
 import { test } from 'node:test';
@@ -12,7 +13,7 @@ const entry = path.join(import.meta.dirname, 'support/group-ranks-entry.ts');
 // (a score as the grid shows it: rank-why.ts scoreText, two places)
 const round2 = (v) => Number(v.toFixed(2)) + 0;
 
-test('groupRanks: best share first, ties sharing a place (1, 1, 3), a group with no counted stat has none', async () => {
+test('groupRanks: best share first, ties sharing a place and the next the next (1, 1, 2), a group with no counted stat has none', async () => {
   const { groupRanks } = await loadEngine('nfl', { entry });
   const rows = ['a', 'b', 'c', 'd', 'e'];
   const parts = new Map([
@@ -26,17 +27,23 @@ test('groupRanks: best share first, ties sharing a place (1, 1, 3), a group with
   const before = [...rows];
   const places = groupRanks(rows, parts, groupOf);
   // g1: a 3, b 3 (tied), c 0.3, e 0, d -2
-  assert.deepEqual(rows.map((r) => places.get('g1').get(r)), [1, 1, 3, 5, 4]);
+  assert.deepEqual(rows.map((r) => places.get('g1').get(r)), [1, 1, 2, 4, 3]);
   // g2: d 9, a 5, c 0, e 0 (tied), b -1
-  assert.deepEqual(rows.map((r) => places.get('g2').get(r)), [2, 5, 3, 1, 3]);
+  assert.deepEqual(rows.map((r) => places.get('g2').get(r)), [2, 4, 3, 1, 3]);
   // (a float tie: 0.1 + 0.2 against 0.3 is one place)
   const float = groupRanks(['p', 'q'], new Map([['p', new Map([['x', 0.1 + 0.2]])], ['q', new Map([['x', 0.3]])]]), new Map([['x', 'g']]));
   assert.deepEqual([float.get('g').get('p'), float.get('g').get('q')], [1, 1]);
   // Ties as the grid shows a score, to two places: 2.3081 and 2.3126 both read 2.31 and share #1; a run of
-  // three tied, then the next at #4 (competition ranking); 2.304 reads 2.30, its own place; −0.001 and 0 tie
+  // three tied, then the next at #2 (dense ranking); 2.304 reads 2.30, its own place; −0.001 and 0 tie
   const near = new Map([['p', 2.3081], ['q', 2.3126], ['r', 2.31], ['s', 2.304], ['t', -0.001], ['u', 0]].map(([k, v]) => [k, new Map([['x', v]])]));
   const nearPlaces = groupRanks(['p', 'q', 'r', 's', 't', 'u'], near, new Map([['x', 'g']])).get('g');
-  assert.deepEqual(['p', 'q', 'r', 's', 't', 'u'].map((k) => nearPlaces.get(k)), [1, 1, 1, 4, 5, 5]);
+  assert.deepEqual(['p', 'q', 'r', 's', 't', 'u'].map((k) => nearPlaces.get(k)), [1, 1, 1, 2, 3, 3]);
+  // A shared grade (the Support strip: every player of a team the same): 400 rows on 30 teams rank 1 to 30,
+  // never to the size of the list
+  const teams = Array.from({ length: 400 }, (_, i) => [`p${i}`, new Map([['x', (i % 30) / 10]])]);
+  const teamPlaces = [...groupRanks(teams.map(([k]) => k), new Map(teams), new Map([['x', 'g']])).get('g').values()];
+  assert.equal(Math.max(...teamPlaces), 30);
+  assert.equal(teamPlaces.filter((p) => p === 1).length, 13);
   // A group with no counted stat: no places (the strip's dash)
   assert.equal(places.get('g3'), undefined);
   // Only a look: the rows as they were
@@ -77,16 +84,19 @@ test("nfl QB: each group's places follow its share of the score, move with the s
     const own = places.get(group);
     assert.equal(own.size, ranked.length);
     for (const row of ranked) {
-      // (competition ranking on the score as the grid shows one, to two places)
-      const better = ranked.filter((other) => round2(share(other)) > round2(share(row))).length;
+      // (dense ranking on the score as the grid shows one, to two places: one more than the distinct
+      // better scores)
+      const better = new Set(ranked.map((other) => round2(share(other))).filter((v) => v > round2(share(row)))).size;
       assert.equal(own.get(row), better + 1, `${group} ${row.name}`);
     }
   }
-  // Results on the QBs: the records that tie (the undefeated starters) all read 1, the next row after them all
+  // Results on the QBs: the records that tie (the undefeated starters) all read 1, the next score after them 2
   const results = places.get('results');
   const ones = ranked.filter((row) => results.get(row) === 1);
   assert.ok(ones.length >= 2, 'tied rows at #1 in Results');
-  assert.ok(ranked.every((row) => results.get(row) === 1 || results.get(row) > ones.length), 'a place inside the tie');
+  assert.ok(ranked.some((row) => results.get(row) === 2), 'the next score after the tie at #2');
+  // (no place past the count of distinct places: dense)
+  for (const own of places.values()) assert.equal(Math.max(...own.values()), new Set(own.values()).size);
   // Only a look: the list's order is the same, places or not
   assert.deepEqual(ranker.ranked(reader, listed, 'QB', SKILL_UNITS), ranked);
 
@@ -161,9 +171,13 @@ test('a group sorts like a stat: its stand-in column, best rank first, ties in l
   const before = [...rows];
   const places = new Map([['advanced', new Map([['a', 3], ['b', 1], ['c', 4], ['d', 1], ['e', 2]])]]);
   const value = groupSortValue(places, 'advanced');
-  const best = isolateRows(rows, 5, value, lowerIsBetter(stat));
+  const best = isolateRows(rows, 5, value, lowerIsBetter(stat), true);
   assert.deepEqual(best.rows, ['b', 'd', 'e', 'a', 'c', 'u1', 'u2']);
-  assert.deepEqual(best.rows.slice(0, 5).map((r) => best.places.get(r)), [1, 1, 3, 4, 5]);
+  // (dense, as the group's own places: the tiles read the column's numbers)
+  assert.deepEqual(best.rows.slice(0, 5).map((r) => best.places.get(r)), [1, 1, 2, 3, 4]);
+  // (a stat's isolation stays competition style: 1, 1, 3)
+  const comp = isolateRows(rows, 5, value, lowerIsBetter(stat));
+  assert.deepEqual(comp.rows.slice(0, 5).map((r) => comp.places.get(r)), [1, 1, 3, 4, 5]);
   assert.equal(best.places.get('u1'), undefined);
   // (the arrow: worst first)
   assert.deepEqual(isolateRows(rows, 5, value, !lowerIsBetter(stat)).rows, ['c', 'a', 'e', 'b', 'd', 'u1', 'u2']);
@@ -216,7 +230,7 @@ test("a group's ranks take the grid's value tint: #1 green, the last red, the mi
 
 // Ties in every state: the places come from the scoring alone (the same whether the group shows open or
 // collapsed: nothing in them reads the collapse), with Combine on or off, and sorted by the group (isolation's
-// places, the rank tiles' then) the tied rows still share one place, the next after them all
+// places, the rank tiles' then) the tied rows still share one place, the next score the next place (dense)
 test('nfl QB: tied Results share a place open, collapsed, combined and sorted by the group', async () => {
   const engine = await loadEngine('nfl', { entry });
   const { presetWeights, groupSortValue, isolateRows, DEFAULT_SETTINGS } = engine;
@@ -229,9 +243,9 @@ test('nfl QB: tied Results share a place open, collapsed, combined and sorted by
       const ones = ranked.filter((row) => results.get(row) === 1);
       assert.ok(ones.length >= 2, `combine ${combineStats}: tied rows at #1`);
       // (sorted by the group: isolation over its places, the tile's places)
-      const sorted = isolateRows(ranked, ranked.length, groupSortValue(places, 'results'), true);
+      const sorted = isolateRows(ranked, ranked.length, groupSortValue(places, 'results'), true, true);
       assert.deepEqual(sorted.rows.slice(0, ones.length).map((row) => sorted.places.get(row)), ones.map(() => 1));
-      assert.equal(sorted.places.get(sorted.rows[ones.length]), ones.length + 1, 'the next row after the tie');
+      assert.equal(sorted.places.get(sorted.rows[ones.length]), 2, 'the next score after the tie');
       for (const row of ranked) assert.equal(sorted.places.get(row), results.get(row), `${row.name}: the tile's place is the column's`);
     } finally {
       DEFAULT_SETTINGS.combineStats = saved;

@@ -464,7 +464,7 @@ export class SkillRankingsComponent implements OnChanges, AfterViewInit, CardHos
     // (a group's own column: each row's rank within the group)
     const group = groupOfKey(stat.key);
     const value = group ? groupSortValue(this.groupPlaces, group) : (row: SkillPlayer, ur: boolean) => shownValue(ur ? this.urReader : this.reader, row, stat);
-    const sorted = isolateRows(this.formalRows, this.rankedShown, value, lowerIsBetter(stat) !== this.isoReversed);
+    const sorted = isolateRows(this.formalRows, this.rankedShown, value, lowerIsBetter(stat) !== this.isoReversed, !!group);
     this.gridRows = sorted.rows;
     this.isoPlaces = sorted.places;
   }

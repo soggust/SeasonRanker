@@ -3,6 +3,7 @@
 // (apps/<sport>/src/theme/_sport-global.scss), which can override the tokens below.
 // ===========================================================================
 @use "sass:color";
+@use "sass:list";
 @use "sass:map";
 @use "sass:math";
 @use "sport-settings" as sport;
@@ -88,23 +89,39 @@ html:not(.sheet-view) .mat-mdc-menu-panel.account-menu {
 
 // Column-group colors, shared by the filter panels, the grid chips, the column markers and the card's
 // panels: worked out from the sport's accent (sport-settings $accent), so each sport's sit in its own
-// palette. Six slots (a group's tone, StatGroup.tone): the first four a quarter turn apart around the wheel,
-// starting a sixth of a turn past the accent (so none lands on it), the last two halfway between the first
-// and second and the third and fourth; slot 0 is Results and slot 3 Support in every sport. Their saturation
-// and lightness follow the accent's, kept lively (never washed out, even from a soft accent) and in a
-// range that reads on the dark panels. (.group-results and the other named classes: the first four slots
-// by their old names, for the card panels that still wear them.)
+// palette. Six slots (a group's tone, StatGroup.tone); slot 0 is Results and slot 3 Support in every sport.
+// The first four sit about a quarter turn apart around the wheel, starting about a sixth of a turn past the
+// accent (so none lands on it): the NFL's green, blue, purple and brown. The last two were once halfway
+// between them at the same lightness, and read as twins of their neighbours (the NFL's pink beside its
+// purple, its teal beside its green; the owner, 2026-10-19), so each slot now has its own turn, saturation
+// and lightness, picked so that every pair of the six stays far apart in OKLab in all five sports (the
+// closest pair about 0.13, from about 0.05): slot 4 a deeper blue-violet or steel, slot 5 a light sand or
+// blush, set apart by its lightness. Saturation and lightness start from the accent's, kept lively (never
+// washed out, even from a soft accent) and in a range that reads on the dark panels. (.group-results and
+// the other named classes: the first four slots by their old names, for the card panels that still wear
+// them.)
 $-accent-hue: color.channel(sport.$accent, "hue", $space: hsl);
 $-category-saturation: math.clamp(55%, color.channel(sport.$accent, "saturation", $space: hsl) * 0.6, 60%);
 $-category-lightness: math.clamp(61%, color.channel(sport.$accent, "lightness", $space: hsl), 69%);
 
-$-category-turns: (0: 0deg, 1: 90deg, 2: 180deg, 3: 270deg, 4: 45deg, 5: 225deg);
+// (each slot: its turn past the accent's hue, then its saturation and lightness against the base ones)
+$-category-slots: (
+  0: (55deg, -10%, -4%),
+  1: (145deg, 10%, -4%),
+  2: (235deg, 10%, -4%),
+  3: (325deg, -10%, -4%),
+  4: (180deg, -10%, -4%),
+  5: (340deg, 10%, 14%),
+);
 
 @function -category($slot) {
-  @return hsl($-accent-hue + 60deg + map.get($-category-turns, $slot), $-category-saturation, $-category-lightness);
+  $turn: list.nth(map.get($-category-slots, $slot), 1);
+  $saturation: list.nth(map.get($-category-slots, $slot), 2);
+  $lightness: list.nth(map.get($-category-slots, $slot), 3);
+  @return hsl($-accent-hue + $turn, $-category-saturation + $saturation, $-category-lightness + $lightness);
 }
 
-@each $slot, $turn in $-category-turns {
+@each $slot, $spec in $-category-slots {
   .group-#{$slot} {
     --group-color: #{-category($slot)};
   }

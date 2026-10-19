@@ -103,7 +103,7 @@ test('nba team shooting: the TM tab lists them, lower-is-better against, DEFAULT
     assert.ok(stat && stat.label && stat.description && !stat.infoOnly, `${key}: on the tab`);
     assert.equal(Boolean(stat.negative), AGAINST.includes(key), `${key}: direction`);
     // (the Teams tab's profile: the rates under Shooting, Rebounding, Offense or Defense, never Results)
-    assert.ok(['shooting', 'rebounding', 'offense', 'defense'].includes(statGroup(stat, 'TM')), `${key}: in a profile category (${statGroup(stat, 'TM')})`);
+    assert.ok(['rebounding', 'offense', 'defense'].includes(statGroup(stat, 'TM')), `${key}: in a profile category (${statGroup(stat, 'TM')})`);
     assert.equal(presetWeights('TM', 'default')[key], 50, `${key}: DEFAULT 50`);
     for (const preset of SKILL_PRESETS.TM) if (!(key in preset.weights)) assert.equal(presetWeights('TM', preset.key)[key], 0, `${preset.key} ${key}: 0`);
   }

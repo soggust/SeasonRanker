@@ -9,7 +9,10 @@ import { scoreText } from './rank-why';
 // share of its total by stat key; groupOf: each counted stat's group (only stats that added to the scores:
 // a slider at 0 or a stat with no spread isn't one, so a group with none has no ranks, a dash).
 // Scores that read the same to two places (as the grid shows a score: rank-why.ts scoreText) are tied and
-// share a place, competition style (1, 1, 1, 4); a row with no share in the group scores 0 in it.
+// share a place, dense style (1, 1, 1, 2: the next score after a tie takes the next place, so a group's
+// places never outnumber its distinct scores; the Support grades, shared by every player of a team, rank
+// about one to thirty, not to the size of the list); a row with no share in the group scores 0 in it.
+// (The list's own overall rank stays competition style: only the group strips are dense.)
 export function groupRanks<T>(rows: T[], parts: Map<T, Map<string, number>>, groupOf: Map<string, string>): Map<string, Map<T, number>> {
   const keys = new Map<string, string[]>();
   for (const [key, group] of groupOf) (keys.get(group) ?? keys.set(group, []).get(group)!).push(key);
@@ -23,11 +26,11 @@ export function groupRanks<T>(rows: T[], parts: Map<T, Map<string, number>>, gro
     const shown = new Map(scored.map(({ row, score }) => [row, scoreText(score)]));
     const rounded = (row: T) => Number(shown.get(row)!.replace('−', '-'));
     scored.sort((a, b) => rounded(b.row) - rounded(a.row));
-    // (competition ranking: tied rows share the first place among them, the next row after them all, 1, 1, 1, 4)
+    // (dense ranking: tied rows share a place, the next score after them the next place, 1, 1, 1, 2)
     const places = new Map<T, number>();
     scored.forEach(({ row }, i) => {
       const prev = scored[i - 1];
-      places.set(row, prev && shown.get(prev.row) === shown.get(row) ? places.get(prev.row)! : i + 1);
+      places.set(row, !prev ? 1 : shown.get(prev.row) === shown.get(row) ? places.get(prev.row)! : places.get(prev.row)! + 1);
     });
     out.set(group, places);
   }
