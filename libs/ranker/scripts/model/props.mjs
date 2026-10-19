@@ -1082,7 +1082,10 @@ export const STATS = {
   ],
   mlb: [
     stat('k', 'Strikeouts', /^Total Strikeouts$/, { played: (r) => r.pos === 'SP', script: 'opp', ctx: RC_K, pitcher: true }),
-    stat('outs', 'Outs', /^Total Outs Recorded/, { played: (r) => r.pos === 'SP', script: 'opp', ctx: RC_OUTS, pitcher: true }),
+    // (flip: the reflected count's caps the fit tries (project.mjs chanceLog, D38): a start's outs are left-skewed (a hook
+    // ends it early, a long start sits near the cap), so M - outs is shaped; strikeouts stay plain (their count's shape is
+    // right, measured 2026-10-19: the plain log loss on the counts 2.187 against 2.28 to 2.49 reflected))
+    stat('outs', 'Outs', /^Total Outs Recorded/, { played: (r) => r.pos === 'SP', script: 'opp', ctx: RC_OUTS, pitcher: true, flip: [21, 24, 27] }),
     stat('hits', 'Hits', /^Total Hits$/, { played: BATTED, ctx: BATTER_CTX, ...MIDDLE }),
     stat('tb', 'Total Bases', /^Total Bases$/, { played: BATTED, ctx: RC_TB }),
   ],

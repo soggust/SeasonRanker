@@ -673,19 +673,51 @@ const mixParts = (mu, mix) => {
   const full = mu / (1 - mix.q * (1 - mix.f));
   return [[1 - mix.q, full], [mix.q, Math.max(1e-3, full * mix.f)]];
 };
-// The log chance of k at a projection, with the early exit's mixture where it's on (mix), else nbLog's
+// The reflected count (flip, DECISIONS.md D38, 2026-10-19): a left-skewed stat (a starter's outs: a hook ends the
+// start early, so the long tail runs toward 0 and the mass sits near a cap; the median above the mean) is shaped
+// as M - k at mean M - mu, a negative binomial on the outs still to get, M the stat's cap (props.mjs STATS flip:
+// the grid the fit tries, kept only where the held-out games are better with it, as rk is). The plain negative
+// binomial is right-skewed, so on outs its chance over the line ran 3 to 7 points low at any mean (the Bot's over
+// chance .433 where overs landed .512; the shape's own log loss on the counts 2.80 against 2.67 to 2.73 reflected).
+// A mean at or past the cap, or a line the cap can't clear (a complete game's 27 at a cap of 24), reads the plain
+// shape, so nothing is ever priced impossible
+const flipOf = (params, mu, line = null) => (params?.flip > 0 && mu < params.flip - 0.05 && (line === null || line < params.flip - 0.5) ? params.flip : null);
+const flipLog = (k, mu, r, M) => nbLog(Math.max(0, M - Math.min(k, M)), M - mu, r);
+// (over the line: k > line, so M - k < M - line, that is M - k at most M - floor(line) - 1)
+function flipOver(line, mu, r, M) {
+  const top = M - Math.floor(line) - 1;
+  if (top < 0) return 0;
+  const m = M - mu;
+  let p = Math.pow(r / (r + m), r);
+  let cdf = p;
+  for (let k = 0; k < top; k++) {
+    p *= ((k + r) / (k + 1)) * (m / (r + m));
+    cdf += p;
+  }
+  return Math.min(1, Math.max(0, cdf));
+}
+const logAt = (k, mu, params) => {
+  const M = flipOf(params, mu);
+  return M ? flipLog(k, mu, rAt(params, mu), M) : nbLog(k, mu, rAt(params, mu));
+};
+const overAt = (line, mu, params) => {
+  const M = flipOf(params, mu, line);
+  return M ? flipOver(line, mu, rAt(params, mu), M) : nbOver(line, mu, rAt(params, mu));
+};
+// The log chance of k at a projection, with the early exit's mixture where it's on (mix), else nbLog's (the
+// reflected count's where the fit kept a cap: flip)
 export function chanceLog(k, mu, params, mix = null) {
-  if (!mix) return nbLog(k, mu, rAt(params, mu));
+  if (!mix) return logAt(k, mu, params);
   const [[w1, m1], [w2, m2]] = mixParts(mu, mix);
-  const a = Math.log(w1) + nbLog(k, m1, rAt(params, m1));
-  const b = Math.log(w2) + nbLog(k, m2, rAt(params, m2));
+  const a = Math.log(w1) + logAt(k, m1, params);
+  const b = Math.log(w2) + logAt(k, m2, params);
   const top = Math.max(a, b);
   return top + Math.log(Math.exp(a - top) + Math.exp(b - top));
 }
 // The chance of going over a line at a projection, the same way (nbOver's)
 export function chanceOver(line, mu, params, mix = null) {
-  if (!mix) return nbOver(line, mu, rAt(params, mu));
-  return mixParts(mu, mix).reduce((t, [w, m]) => t + w * nbOver(line, m, rAt(params, m)), 0);
+  if (!mix) return overAt(line, mu, params);
+  return mixParts(mu, mix).reduce((t, [w, m]) => t + w * overAt(line, m, params), 0);
 }
 
 // A line's chances at a projection: over and under with a push left out (each the chance given no push, so
@@ -707,7 +739,8 @@ export function impliedMean(line, fairOver, params, mix = null) {
   if (!Number.isFinite(line) || !(fairOver > 0 && fairOver < 1) || !params) return null;
   const plain = { ...params, cal: null, calSide: null };
   let lo = Math.log(0.01);
-  let hi = Math.log(Math.max(10, line * 20 + 10));
+  // (a reflected count's mean searched under its cap: past it the shape reads plain, and the halves need one curve)
+  let hi = Math.log(flipOf(plain, 0, line) ? plain.flip - 0.06 : Math.max(10, line * 20 + 10));
   if (lineChances(line, Math.exp(hi), plain, mix).over < fairOver) return null;
   for (let i = 0; i < 50; i++) {
     const mid = (lo + hi) / 2;
@@ -2591,13 +2624,20 @@ export function fitStat(stat, rows, env) {
   const firstOut = replayStat(stat, sorted, params, env, cuts).out;
   const fitVals = scored(firstOut, 1);
   const rm = fitVals.length ? Math.round((fitVals.reduce((t, x) => t + x.v, 0) / fitVals.length) * 1000) / 1000 : 1;
-  const plain = { r: best.r, rk: 0 };
+  const plain = { r: best.r, rk: 0, flip: 0 };
   let shape = plain;
   let shapeLl = best.ll;
   for (const rk of RK) {
     const s = scoreOf(firstOut, 1, { rk, rm });
     if (s.ll > shapeLl) (shapeLl = s.ll), (shape = { r: s.r, rk });
   }
+  // (the reflected count (flip, D38): a left-skewed stat's cap, each tried at its own best r and growth on the fit
+  // window; kept below only if the held-out games are better with it, as rk is)
+  for (const flip of Array.isArray(stat.flip) ? stat.flip : [])
+    for (const rk of [0, ...RK]) {
+      const s = scoreOf(firstOut, 1, { rk, rm, flip });
+      if (s.ll > shapeLl) (shapeLl = s.ll), (shape = { r: s.r, rk, flip });
+    }
   params = { ...params, ...shape, rm };
   // (what's left of a lean on the eligible players once the rest is fit: their total over their projection;
   // fit again below once the held-out games have left terms out, as the lean was measured with them in)
@@ -2691,7 +2731,7 @@ export function fitStat(stat, rows, env) {
     if (dropped.some((k) => k.startsWith('a_'))) {
       let aBest = null;
       for (const v of GRID.a) {
-        const s = scoreOf(replayStat(stat, sorted, { ...params, a: v, scale: 1 }, env, cuts).out, 1, { rk: params.rk ?? 0, rm });
+        const s = scoreOf(replayStat(stat, sorted, { ...params, a: v, scale: 1 }, env, cuts).out, 1, { rk: params.rk ?? 0, rm, flip: params.flip ?? 0 });
         if (!aBest || s.ll > aBest.ll) aBest = { ll: s.ll, a: v };
       }
       if (aBest.a !== params.a) {
@@ -2705,11 +2745,19 @@ export function fitStat(stat, rows, env) {
     current = nextCheck;
   }
   // (the dispersion's growth, the same way: the plain negative binomial unless the held-out games say so)
-  if (params.rk) {
+  // (and the reflected count (flip, D38) the same way, judged first as a package with the growth it was picked with:
+  // not better held out than the plain shape, both go)
+  if (params.flip) {
     const without = heldOut({ ...params, ...plain });
     const raw = gainOf(without.check, current.check);
-    gains.rk = r4(raw);
+    gains.flip = r4(raw);
     if (!(raw > 0)) (params = { ...params, ...plain }), (current = without);
+  } else gains.flip = null;
+  if (params.rk) {
+    const without = heldOut({ ...params, ...plain, flip: params.flip ?? 0 });
+    const raw = gainOf(without.check, current.check);
+    gains.rk = r4(raw);
+    if (!(raw > 0)) (params = { ...params, ...plain, flip: params.flip ?? 0 }), (current = without);
   } else gains.rk = null;
   // (the context flags with a floor (MIN_GAIN: a new head coach's first games, a 0-or-1 flag on a few hundred
   // team-games), tried on top of the rest as fit and left as they are, as the draft's prior below: each size
@@ -2856,7 +2904,7 @@ export function fitStat(stat, rows, env) {
       continue;
     }
     const spT0 = Date.now();
-    const shape = { rk: params.rk ?? 0, rm };
+    const shape = { rk: params.rk ?? 0, rm, flip: params.flip ?? 0 };
     let s0;
     let sBest;
     let v = null;
@@ -3057,7 +3105,7 @@ export function fitStat(stat, rows, env) {
   let draftTaken = 0;
   let rookie = null;
   if (has(stat, 'dp')) {
-    const shape = { rk: params.rk ?? 0, rm, ex: params.ex ?? 0 };
+    const shape = { rk: params.rk ?? 0, rm, ex: params.ex ?? 0, flip: params.flip ?? 0 };
     const d0 = scoreOf(replayStat(stat, sorted, { ...params, dp: 0 }, env, cuts).out, 1, shape);
     let dBest = d0;
     for (const v of GRID.dp) {
@@ -3116,7 +3164,7 @@ export function fitStat(stat, rows, env) {
   gains.hl = null;
   if (TRY_HL) {
     const hlT0 = Date.now();
-    const shape = { rk: params.rk ?? 0, rm, ex: params.ex ?? 0 };
+    const shape = { rk: params.rk ?? 0, rm, ex: params.ex ?? 0, flip: params.flip ?? 0 };
     const o1 = replayStat(stat, sorted, { ...params, scale: 1 }, env, cuts).out;
     const fitE = o1.filter((x) => x.win === 1 && x.row.eligible !== false);
     const fitL = scored(o1, 1);
