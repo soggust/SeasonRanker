@@ -82,7 +82,8 @@
   "50216130": "2026-10-19",
   "50218251": "2026-10-19",
   "50219371": "2026-10-19",
-  "50219596": "2026-10-19"
+  "50219596": "2026-10-19",
+  "50222033": "2026-10-19"
  },
  "signals": [
   {
@@ -248,6 +249,21 @@
    "confidence": 0.3,
    "story": "50219596",
    "headline": "Guardians using bullpen for Game 6, line up Williams for potential Game 7",
+   "model": "claude-haiku-5-5"
+  },
+  {
+   "id": "50222033|10|aaronboone|coaching",
+   "day": "2026-10-19",
+   "at": "2026-10-19T22:31:20.000Z",
+   "team": "10",
+   "abbr": "NYY",
+   "athlete": null,
+   "player": "Aaron Boone",
+   "kind": "coaching",
+   "direction": "none",
+   "confidence": 0.6,
+   "story": "50222033",
+   "headline": "Aaron Boone returning as Yankees manager in 2027, source says",
    "model": "claude-haiku-5-5"
   }
  ]

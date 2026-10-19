@@ -4,7 +4,7 @@
   "adamscheftermirror.bsky.social": "2026-10-19T23:07:10.156Z",
   "rapsheet.bsky.social": "2026-10-19T23:18:11.078Z",
   "nflnewsreposterbot.bsky.social": "2026-10-19T20:52:46.431Z",
-  "insidenflnews.bsky.social": "2026-10-19T20:58:31.294Z",
+  "insidenflnews.bsky.social": "2026-10-19T23:40:03.922Z",
   "nflnewsposter.bsky.social": "2026-10-19T22:51:33.670Z",
   "rotoworld-fb.bsky.social": "2026-10-19T22:51:40.000Z",
   "rotowirenfl.bsky.social": "2026-10-19T23:21:45.000Z"
@@ -1309,6 +1309,19 @@
    "kind": "status",
    "confidence": 0.9,
    "text": "All hands on deck: Both #Commanders WR Stefon Diggs and 49ers WR Mike Evans are officially active tonight. Evans did not practice all week"
+  },
+  {
+   "id": "at://did:plc:mbr4badgf6yu56mquzackzew/app.bsky.feed.post/3mybc64e3fk2z|stefondiggs|active|status",
+   "at": "2026-10-19T23:39:58.023Z",
+   "seen": "2026-10-19T23:44:19.396Z",
+   "handle": "insidenflnews.bsky.social",
+   "post": "at://did:plc:mbr4badgf6yu56mquzackzew/app.bsky.feed.post/3mybc64e3fk2z",
+   "player": "Stefon Diggs",
+   "team": null,
+   "status": "active",
+   "kind": "status",
+   "confidence": 0.9,
+   "text": "Stefon Diggs (hamstring) active for Week 6."
   }
  ]
 }

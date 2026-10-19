@@ -3,6 +3,17 @@
  "days": 2,
  "signals": [
   {
+   "team": "10",
+   "abbr": "NYY",
+   "athlete": null,
+   "player": "Aaron Boone",
+   "kind": "coaching",
+   "direction": "none",
+   "confidence": 0.6,
+   "headline": "Aaron Boone returning as Yankees manager in 2027, source says",
+   "at": "2026-10-19T22:31:20.000Z"
+  },
+  {
    "team": "5",
    "abbr": "CLE",
    "athlete": "33499",
@@ -25,5 +36,5 @@
    "at": "2026-10-19T17:42:15.000Z"
   }
  ],
- "at": "2026-10-19T19:29:13.362Z"
+ "at": "2026-10-19T23:44:19.396Z"
 }
