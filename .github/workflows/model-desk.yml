@@ -185,7 +185,8 @@ jobs:
         timeout-minutes: 6
         env:
           ODDS_API_KEY: ${{ secrets.ODDS_API_KEY }}
-        run: node libs/ranker/scripts/model/odds-history.mjs morning || echo "::warning::the morning odds snapshot failed: none today"
+        run: |
+          node libs/ranker/scripts/model/odds-history.mjs morning || echo "::warning::the morning odds snapshot failed, none today"
 
       # (Claude's analysis for the strong picks, libs/ranker/scripts/model/writeups.mjs: only with the repository
       # variable WRITEUPS set to on (off till the owner's measured run, writeups.mjs --validate) and the
