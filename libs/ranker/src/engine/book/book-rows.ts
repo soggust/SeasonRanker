@@ -333,6 +333,22 @@ export function mergeSportRows(rows: readonly BetRow[], sport: string, added: re
   return [...kept, ...added.map((r) => ({ ...r, id: next++ }))].sort(byBand);
 }
 
+// Whether the Book lists a row (the owner's note, 2026-10-19: "Why are we showing super negative Kelly practice
+// bets in Best Bets?"): Best Bets, the Live tab's card and a game's picks show only rows with an edge at the
+// current price. The Bot's bets clear the vig and suggestions are listed only with an edge, so both show; a
+// practice pick (the slate's top few, placed short of the vig: picks.json's practice) shows only where its
+// Kelly at the live price (the locked one without it) is above 0, its practice tag kept. Hidden, it is still
+// the Bot's bet: its Practice line (PRACTICE_SPLIT), the wallet, the Algorithm tab and the ledger all keep it
+export function bookShows(r: BetRow): boolean {
+  if (!r.practice || r.suggested || r.check) return true;
+  const live = Number.isFinite(r.livePrice) && r.livePrice ? r.livePrice : null;
+  const k = kellyOf(r.p, live ?? (typeof r.price === 'number' ? r.price : null)) ?? (live === null && Number.isFinite(r.sureness) ? r.sureness : null);
+  return k !== null && k > 0;
+}
+export function bookRows(rows: readonly BetRow[]): BetRow[] {
+  return rows.filter(bookShows);
+}
+
 // The page's rows without a sport's (the flag that let it in gone)
 export function dropSportRows(rows: readonly BetRow[], sport: string): BetRow[] {
   return rows.filter((r) => r.sport !== sport);

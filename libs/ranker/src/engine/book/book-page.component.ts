@@ -18,7 +18,7 @@ import { insteadText } from '../player-card/analysis';
 import { TickerSide, TickerTarget, americanOdds, headshot, leagueLogo, tickerAria, tickerSide, tickerTarget } from './bet-format';
 import { GameViewService } from '../game-view/game-view.service';
 import { BetWhy, BetWhyRow, Confidence, PriceAt, WhatIfBase, betScoreText, betWhy, clearedKellyOf, flipLine, priceAt, signedPoints, stepPrice, whatIfCaption, whatIfOf } from './bet-why';
-import { BET_KINDS, BandTally, BetKind, BetRow, ByLevel, GameInfo, Picks, dropSportRows, fileRows, mergeSportRows, playerCardHref, playerRefOf, rowClickToggles, sportRows, sumRecords } from './book-rows';
+import { BET_KINDS, BandTally, BetKind, BetRow, ByLevel, GameInfo, Picks, bookRows, dropSportRows, fileRows, mergeSportRows, playerCardHref, playerRefOf, rowClickToggles, sportRows, sumRecords } from './book-rows';
 // (the rows' types, for the page's other parts: book-rows.ts)
 export { BET_KINDS, BetKind, BetRow, CheckResearch } from './book-rows';
 import { PopoverAt, phoneSheet, popoverAt } from '@ranker/core/breakdown';
@@ -593,7 +593,8 @@ export class BookPageComponent implements OnInit, OnDestroy {
     const at = this.lines.loadedAt();
     const f = this.listedFor;
     if (!f || f.rows !== this.rows || f.desk !== desk || f.boards !== boards || f.models !== models || f.at !== at || f.minute !== this.minute) {
-      const rows = this.rows === null ? [] : this.withSuggestions(this.rows, boards, models, at);
+      // (a practice pick without an edge at the current price off the list: book-rows.ts bookShows)
+      const rows = this.rows === null ? [] : bookRows(this.withSuggestions(this.rows, boards, models, at));
       this.listedFor = { rows: this.rows, desk, boards, models, at, minute: this.minute, list: desk ? rows : rows.filter((r) => !r.check) };
     }
     return this.listedFor!.list;
