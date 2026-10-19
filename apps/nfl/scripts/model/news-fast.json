@@ -1,13 +1,13 @@
 {
  "sport": "nfl",
  "cursor": {
-  "adamscheftermirror.bsky.social": "2026-10-19T21:52:14.717Z",
-  "rapsheet.bsky.social": "2026-10-19T21:11:23.769Z",
+  "adamscheftermirror.bsky.social": "2026-10-19T23:07:10.156Z",
+  "rapsheet.bsky.social": "2026-10-19T23:18:11.078Z",
   "nflnewsreposterbot.bsky.social": "2026-10-19T20:52:46.431Z",
   "insidenflnews.bsky.social": "2026-10-19T20:58:31.294Z",
-  "nflnewsposter.bsky.social": "2026-10-19T22:39:06.160Z",
-  "rotoworld-fb.bsky.social": "2026-10-19T21:00:36.000Z",
-  "rotowirenfl.bsky.social": "2026-10-19T21:32:23.000Z"
+  "nflnewsposter.bsky.social": "2026-10-19T22:51:33.670Z",
+  "rotoworld-fb.bsky.social": "2026-10-19T22:51:40.000Z",
+  "rotowirenfl.bsky.social": "2026-10-19T23:21:45.000Z"
  },
  "claims": [
   {
@@ -1283,6 +1283,32 @@
    "kind": "status",
    "confidence": 0.5,
    "text": "[Garafolo] Rams are working out veteran kickers Brandon McManus and Matt Prater tomorrow, sources say. Over three decades of NFL experience combined between the two as Sean McVay & Co. look for a repl"
+  },
+  {
+   "id": "at://did:plc:hlvr2omhnmvdmfnvmcuhyevz/app.bsky.feed.post/3mybax5xdus2l|stefondiggs|active|status",
+   "at": "2026-10-19T23:18:11.078Z",
+   "seen": "2026-10-19T23:32:18.543Z",
+   "handle": "rapsheet.bsky.social",
+   "post": "at://did:plc:hlvr2omhnmvdmfnvmcuhyevz/app.bsky.feed.post/3mybax5xdus2l",
+   "player": "Stefon Diggs",
+   "team": "WSH",
+   "status": "active",
+   "kind": "status",
+   "confidence": 0.92,
+   "text": "All hands on deck: Both #Commanders WR Stefon Diggs and 49ers WR Mike Evans are officially active tonight. Evans did not practice all week"
+  },
+  {
+   "id": "at://did:plc:hlvr2omhnmvdmfnvmcuhyevz/app.bsky.feed.post/3mybax5xdus2l|mikeevans|active|status",
+   "at": "2026-10-19T23:18:11.078Z",
+   "seen": "2026-10-19T23:32:18.543Z",
+   "handle": "rapsheet.bsky.social",
+   "post": "at://did:plc:hlvr2omhnmvdmfnvmcuhyevz/app.bsky.feed.post/3mybax5xdus2l",
+   "player": "Mike Evans",
+   "team": "SF",
+   "status": "active",
+   "kind": "status",
+   "confidence": 0.9,
+   "text": "All hands on deck: Both #Commanders WR Stefon Diggs and 49ers WR Mike Evans are officially active tonight. Evans did not practice all week"
   }
  ]
 }

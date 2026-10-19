@@ -364,6 +364,90 @@
     "own": "2026-10-19T14:44:46.000Z",
     "why": "@rotowirenfl.bsky.social: Caleb Douglas: Set for limited practice Monday \n\n http"
    }
+  },
+  "401873008|kurtisrourke|out": {
+   "game": "401873008",
+   "start": "2026-10-20T00:15Z",
+   "team": "25",
+   "name": "Kurtis Rourke",
+   "status": "out",
+   "athlete": "4430431",
+   "espn": {
+    "seen": "2026-10-19T23:12:39.624Z",
+    "own": "2026-10-19T22:56:00.000Z"
+   }
+  },
+  "401873008|naquanjones|out": {
+   "game": "401873008",
+   "start": "2026-10-20T00:15Z",
+   "team": "25",
+   "name": "Naquan Jones",
+   "status": "out",
+   "athlete": "4046716",
+   "espn": {
+    "seen": "2026-10-19T23:12:39.624Z",
+    "own": "2026-10-19T22:56:00.000Z"
+   }
+  },
+  "401873008|enriquecruz|out": {
+   "game": "401873008",
+   "start": "2026-10-20T00:15Z",
+   "team": "25",
+   "name": "Enrique Cruz Jr.",
+   "status": "out",
+   "athlete": "4691556",
+   "espn": {
+    "seen": "2026-10-19T23:12:39.624Z",
+    "own": "2026-10-19T22:56:00.000Z"
+   }
+  },
+  "401873008|isaacyiadom|out": {
+   "game": "401873008",
+   "start": "2026-10-20T00:15Z",
+   "team": "28",
+   "name": "Isaac Yiadom",
+   "status": "out",
+   "athlete": "3122797",
+   "espn": {
+    "seen": "2026-10-19T23:12:39.624Z",
+    "own": "2026-10-19T22:52:00.000Z"
+   }
+  },
+  "401873008|tanoatogiai|out": {
+   "game": "401873008",
+   "start": "2026-10-20T00:15Z",
+   "team": "28",
+   "name": "Tanoa Togiai",
+   "status": "out",
+   "athlete": "4605488",
+   "espn": {
+    "seen": "2026-10-19T23:12:39.624Z",
+    "own": "2026-10-19T22:52:00.000Z"
+   }
+  },
+  "401873008|tjmaguranyanga|out": {
+   "game": "401873008",
+   "start": "2026-10-20T00:15Z",
+   "team": "28",
+   "name": "T.J. Maguranyanga",
+   "status": "out",
+   "athlete": "5278092",
+   "espn": {
+    "seen": "2026-10-19T23:12:39.624Z",
+    "own": "2026-10-19T22:52:00.000Z"
+   }
+  },
+  "401873008|fabianmoreau|out": {
+   "game": "401873008",
+   "start": "2026-10-20T00:15Z",
+   "team": "28",
+   "name": "Fabian Moreau",
+   "status": "out",
+   "athlete": "2971586",
+   "espn": {
+    "seen": "2026-10-19T23:12:39.624Z",
+    "own": "2026-10-19T22:52:00.000Z"
+   }
   }
  }
 }
