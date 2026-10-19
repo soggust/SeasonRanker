@@ -142,7 +142,7 @@ import { CLV_V, closeOf, closingLines, clvOf, clvSummary, propCarry, propCloseOf
 import { ANYTIME_TD, OUTLIER, SPORT_KEYS, anytimeOn, call, canSpend, consensusFields, gameLines, hasKey, linesFromEvent, matchNearest, usageSummary } from './oddsapi.mjs';
 import { backtestBets, evaluate, repriced, snapshots, trustBets } from './backtest.mjs';
 import { buildPicks, kellyOf, levelOf, unlock } from './picks.mjs';
-import { boardMarkets, boardProp, buildBoard, seenUpdate } from './board.mjs';
+import { boardMarkets, boardProp, buildBoard, seenUpdate, termParts } from './board.mjs';
 import { boxMarket, boxTotals, playerRows } from './playerlogs.mjs';
 import { nflPlayChance, nflPractice, playAt, playChanceSummary } from './playchance.mjs';
 import { boardMissText, nflBoardMiss } from './board-miss.mjs';
@@ -1809,7 +1809,9 @@ function betGames(r) {
     // (every market priced, both sides, on the betting board: writeBoard; held to the desk's caps, D46: the lines'
     // CLV gate's LIKE, and a PASS saying so where the desk bets only at The Odds API's price and this is ESPN's)
     const off = hasKey() && !apiLines ? "ESPN's line, not the Book's own price: the Bot bets only at the Book's (it's tracked till then)" : null;
-    (r.boardGames ??= new Map()).set(game.id, { game, markets: boardMarkets(priced, (m) => trust[m]?.trust ?? START_TRUST, lines.consensus, rctx, { gate: r.lineGate, off }), at });
+    // (each side's why for the Book's popover (board.mjs w): the facts a bet on it would carry, its write-up's)
+    const explain = { sport, game, exp, seen, fairFrom, state: { trust, context: r.context ?? r.state?.context ?? null }, terms: termParts(r.feats?.terms, f, r.weights), fitted: (m) => !!trust[m]?.fitted };
+    (r.boardGames ??= new Map()).set(game.id, { game, markets: boardMarkets(priced, (m) => trust[m]?.trust ?? START_TRUST, lines.consensus, rctx, { gate: r.lineGate, off, explain }), at });
     // (a market the book didn't price, by The Odds API's word: rests)
     if (apiLines && !notYet) for (const m of MARKETS) if (!priced.some((x) => x.market === m) && !r.placed.has(`${game.id}:${m}`)) rest(r, `${game.id}:${m}`, 'not priced by the Book');
     let picks = [];
@@ -2433,7 +2435,7 @@ async function betProps(r) {
       // (the betting board's props: the ones at the book's own price (a CHECK's stored one while it'd still be
       // bet: storedBet), the game's whole board when it was asked fresh, else over the last board's: writeBoard)
       const onBoard = priced.filter((x) => x.priced && !storedBet(x.prop.stored, hasKey(), r.now));
-      (r.boardProps ??= new Map()).set(game.id, { rows: onBoard.map((x) => boardProp(x, x.prop.stored?.at ?? at, { gate: x.fastCap && r.propGate?.[x.prop.stat.key]?.on !== false ? { on: false, why: 'at the practice stake: bet early on fast news (D49) till those bets beat the close' } : (r.propGate?.[x.prop.stat.key] ?? null) })), whole: fresh || board_.some((p) => p.prices && !p.stored), lines: new Map(board_.filter((p) => !p.stored?.offBoard).map((p) => [`${p.stat.key}:${p.athlete.id}`, p.line])) });
+      (r.boardProps ??= new Map()).set(game.id, { rows: onBoard.map((x) => boardProp(x, x.prop.stored?.at ?? at, { gate: x.fastCap && r.propGate?.[x.prop.stat.key]?.on !== false ? { on: false, why: 'at the practice stake: bet early on fast news (D49) till those bets beat the close' } : (r.propGate?.[x.prop.stat.key] ?? null), explain: { sport, game, exp, sib: { market: 'spread', expMargin: round(exp.margin, 2), expTotal: round(exp.total, 2), context: f?.info ?? null }, state: { trust }, fitted: !!trust[`prop:${x.prop.stat.key}`]?.fitted, tested: !!trust[`prop:${x.prop.stat.key}`]?.fitted } })), whole: fresh || board_.some((p) => p.prices && !p.stored), lines: new Map(board_.filter((p) => !p.stored?.offBoard).map((p) => [`${p.stat.key}:${p.athlete.id}`, p.line])) });
       // (the skips by kind: the market-gap guard's counted on its own)
       for (const x of priced) if (x.guard?.skip) run.skipped = { ...(run.skipped ?? {}), [x.guard.kind ?? 'other']: (run.skipped?.[x.guard.kind ?? 'other'] ?? 0) + 1 };
       run.under += priced.filter((x) => x.side === 'under').length;

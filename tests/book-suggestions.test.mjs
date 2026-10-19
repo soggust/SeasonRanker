@@ -217,3 +217,36 @@ test('the K popover says the edge in points at its price (bet-why.ts edgeLine): 
   assert.equal(at.level, 'high');
   assert.ok(book.edgeLine(0.5, book.priceAt({ ...base, p: 0.5 }, -120)).startsWith('Edge −4.5 pts'));
 });
+
+// (the owner, 2026-10-19: a suggestion's K-score popover says as much as a bet's: the board's why (w) gives its row the
+// Bot's own chance, the Book's no-vig, the trust, the terms and the desk's plain write-up, so betWhy splits its score
+// into the price and the lean and whyFacts says the rest)
+test("a suggestion with the board's why reads as a bet in the popover: its parts, its facts, the desk's write-up", () => {
+  const w = { pr: -5, ln: 8.4, t: 0.5, m: 0.6, f: 0.5, ft: 1, tm: [['Starting QB', 1.2], ['Rest', -0.4]], r: 'WSH +7.5: the Bot has it close.' };
+  const g = game();
+  g.k.spread[1] = { ...g.k.spread[1], w };
+  const rows = suggestionsOf('nfl', { sport: 'nfl', at: BOARD_AT, games: [g] }, NOW, () => ({}));
+  const s = rows.find((r) => r.pick === 'WSH +7.5');
+  assert.ok(s, 'the spread suggestion');
+  assert.equal(s.model, 0.6);
+  assert.equal(s.fair, 0.5);
+  assert.equal(s.why.trust, 0.5);
+  assert.equal(s.reason, "WSH +7.5: the Bot has it close. The Bot makes it 54%; at −110 it needs 52.4%, and the Book's no-vig price says 50%.", "the desk's write-up, the price said at the latest");
+  const bw = book.betWhy([s], 0);
+  assert.deepEqual(bw.parts.map((p) => p.key), ['price', 'lean']);
+  assert.ok(Math.abs(bw.parts[0].amount + bw.parts[1].amount - bw.score) < 1e-9, 'the parts add to the score');
+  assert.ok(Math.abs(bw.parts[0].amount - w.pr) < 0.01, "the price's part the board's at its price");
+  assert.deepEqual(bw.facts.map((f) => f.label), ['What moved it']);
+  assert.equal(bw.facts[0].value, 'Starting QB +1.2 pts · Rest −0.4 pts');
+  // (at another price: the parts worked again there, the price sentence that price's)
+  const moved = repriced(s, -105, 'espn');
+  assert.match(moved.reason, /^WSH \+7\.5: the Bot has it close\. The Bot makes it 54%; at −105 it needs 51\.2%/);
+  const mw = book.betWhy([moved], 0);
+  assert.ok(Math.abs(mw.parts[0].amount + mw.parts[1].amount - mw.score) < 1e-9);
+  // (a prop's: its projection against the Book's implied mean, and his usage)
+  const facts = book.whyFacts({ market: 'Passing Yards', player: 'J. Daniels', mean: 262.4, implied: 246.66, usage: [36.5, 'dropbacks'], terms: [['the opponent', 4.1]] });
+  assert.deepEqual(facts.map((f) => `${f.label}: ${f.value}`), ['Bot vs Book mean: 262.40 vs 246.66', 'Usage: 36.5 dropbacks', 'What moved it: the opponent +4.1%']);
+  // (a side without a why: the price's words alone, as before)
+  const bare = suggestionsOf('nfl', { sport: 'nfl', at: BOARD_AT, games: [game()] }, NOW, () => ({})).find((r) => r.pick === 'WSH +7.5');
+  assert.match(bare.reason, /^Suggested by price/);
+});

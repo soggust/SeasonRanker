@@ -371,6 +371,47 @@ for (const sport of SPORTS) {
         }
     }
   });
+
+  // The betting board (board.mjs): its games, each side's price, chance and Kelly, and a side's why (w) where it carries
+  // one: on an edge side or the Bot's side alone, its parts adding to its Kelly, its chances and terms finite, its
+  // reason a short string. A dry run's board too (BOARD_CHECK_DIR: run.mjs --board-out's board-<sport>.json)
+  const boards = [path.join(dir, 'board.json'), ...(process.env.BOARD_CHECK_DIR ? [path.join(process.env.BOARD_CHECK_DIR, `board-${sport}.json`)] : [])];
+  for (const file of boards) {
+    test(`${sport}: betting board ${path.basename(file)} is whole, its whys too`, () => {
+      if (!fs.existsSync(file)) return;
+      const b = readJson(file);
+      assert.equal(b.sport, sport, `${file}: sport`);
+      assert.ok(Array.isArray(b.games), `${file}: games`);
+      const whyOk = (w, ks, at) => {
+        for (const k of ['pr', 'ln', 'm', 'f']) assert.ok(Number.isFinite(w[k]), `${at}: w.${k} ${w[k]}`);
+        assert.ok(w.m > 0 && w.m < 1 && w.f > 0 && w.f < 1, `${at}: w chances ${w.m} ${w.f}`);
+        assert.ok(Math.abs(w.pr + w.ln - ks * 100) < 0.05, `${at}: w parts ${w.pr} + ${w.ln} vs Kelly ${ks}`);
+        if (w.t !== undefined) assert.ok(Number.isFinite(w.t), `${at}: w.t ${w.t}`);
+        for (const [n, v] of w.tm ?? []) assert.ok(typeof n === 'string' && n && Number.isFinite(v), `${at}: w.tm ${n} ${v}`);
+        assert.ok((w.tm ?? []).length <= 3, `${at}: w.tm over 3`);
+        for (const k of ['mn', 'im']) if (w[k] !== undefined) assert.ok(Number.isFinite(w[k]), `${at}: w.${k} ${w[k]}`);
+        if (w.u !== undefined) assert.ok(Number.isFinite(w.u[0]) && typeof w.u[1] === 'string', `${at}: w.u ${w.u}`);
+        if (w.r !== undefined) assert.ok(typeof w.r === 'string' && w.r.length > 0 && w.r.length <= 450, `${at}: w.r ${w.r?.length}`);
+      };
+      for (const g of b.games) {
+        for (const [market, sides] of Object.entries(g.k ?? {})) {
+          const best = Math.max(...sides.map((s) => (Number.isFinite(s.ks) ? s.ks : -Infinity)));
+          for (const s of sides) {
+            const at = `${sport} board ${g.id} ${market} ${s.s}`;
+            assert.ok(Number.isFinite(s.o) && Number.isFinite(s.c) && Number.isFinite(s.ks), `${at}: o, c, ks`);
+            if (!s.w) continue;
+            assert.ok(s.ks > 0 || s.ks === best, `${at}: a why on a side with no edge, not the Bot's`);
+            whyOk(s.w, s.ks, at);
+          }
+        }
+        for (const p of g.p ?? []) {
+          if (p.w === undefined) continue;
+          assert.ok(Array.isArray(p.w) && p.w.length === 2, `${sport} board ${g.id} ${p.k}:${p.id}: w`);
+          p.w.forEach((w, i) => w && whyOk(w, p.ks[i], `${sport} board ${g.id} ${p.k}:${p.id} ${i ? 'under' : 'over'}`));
+        }
+      }
+    });
+  }
 }
 
 // The game view's kept highlights (libs/ranker/scripts/highlights.mjs writes StaticData/highlights/<season>.json):

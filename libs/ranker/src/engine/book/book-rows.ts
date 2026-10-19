@@ -114,6 +114,13 @@ export interface BetRow {
   moved?: boolean;
   // (when the Bot placed it, where the picks file says: its "Bet at −109 · 2:05 PM")
   placedAt?: string | null;
+  // (the popover's analysis beside the score's parts (bet-why.ts whyFacts): a prop's usage tonight (usage.mjs, D41:
+  // [expected, unit]), the terms that moved it most ([name, amount]: a game line's in points of its margin or total,
+  // a prop's in percent of his projection; a suggestion's, board.json w.tm), and a suggestion's plain write-up at
+  // the board's price (board.json w.r: the desk's own words for a bet, the same generator))
+  usage?: [number, string] | null;
+  terms?: [string, number][] | null;
+  plain?: string | null;
 }
 
 // A CHECK's news research (picks.json's research: research.mjs findingOf, picks.mjs researchRow): what Claude found
@@ -218,6 +225,8 @@ export interface Pick {
   lineRecord?: { over: number; n: number } | null;
   resolved?: CheckResolved | null;
   research?: CheckResearch | null;
+  // (a prop's usage tonight (usage.mjs, D41): files before it carry none)
+  usage?: { expected?: number | null; unit?: string | null; kind?: string | null } | null;
 }
 export type ByLevel = Record<string, { wins?: number; losses?: number; pushes?: number; profit?: number } | undefined>;
 export interface Picks {
@@ -299,6 +308,7 @@ export function rowOf(sport: string, p: Pick, check: boolean): BetRow {
     line: p.line,
     pickId: p.id,
     ...(p.placedAt ? { placedAt: p.placedAt } : {}),
+    ...(Number.isFinite(p.usage?.expected) ? { usage: [p.usage!.expected!, String(p.usage!.unit ?? p.usage!.kind ?? '')] as [number, string] } : {}),
     ...(check
       ? {
           check: true,

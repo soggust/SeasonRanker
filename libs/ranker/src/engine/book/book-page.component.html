@@ -652,6 +652,15 @@
             </div>
           }
         </div>
+        <!-- (the analysis beside the parts, a bet's or a suggestion's alike: a prop's projection against the Book's
+             implied mean, his usage, the terms that moved it most: bet-why.ts whyFacts) -->
+        @if (w.facts.length) {
+          <div class="why-facts">
+            @for (f of w.facts; track f.label) {
+              <p [title]="f.title"><span>{{ f.label }}</span> <b>{{ f.value }}</b></p>
+            }
+          </div>
+        }
         <!-- (the model against the book, and what a unit's expected to return at the price) -->
         @if (w.look.model !== null) {
           <div class="why-meter" [title]="w.chanceTitle">

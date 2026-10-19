@@ -138,3 +138,46 @@ test('the settler takes a bet on any market the board showed, at its price', () 
   assert.equal(checkPrice({ ...bet, placedAt: '2026-10-11T13:31:00Z' }, obs).ok, false);
   assert.equal(checkPrice({ ...bet, placedAt: '2026-10-11T13:29:00Z' }, obs).ok, true);
 });
+
+test('a side’s why (w): on the edge sides and the Bot’s side alone, its parts adding to its Kelly, the plain reason on an edge side', () => {
+  const terms = { m: [['Starting QB', 1.24], ['Rest', -0.3], ['Travel', 0.12], ['Wind', 0.05]], t: [['Wind', -1.5]] };
+  const explain = { sport: 'nfl', game, exp: { margin: 3.1, total: 46 }, seen: null, fairFrom: { spread: 'pinnacle' }, state: { trust: {} }, terms, fitted: (m) => m === 'spread' };
+  const k = boardMarkets(markets, () => 0.5, null, null, { explain });
+  const [home, away] = k.spread;
+  assert.ok(home.ks > 0 && home.w, 'the edge side has its why');
+  assert.equal(away.w, undefined, 'a side with no edge, not the Bot’s: none');
+  assert.ok(Math.abs(home.w.pr + home.w.ln - home.ks * 100) < 0.02, `parts ${home.w.pr} + ${home.w.ln} vs ${home.ks * 100}`);
+  assert.equal(home.w.t, 0.5);
+  assert.equal(home.w.m, 0.56);
+  assert.equal(home.w.f, 0.5);
+  assert.equal(home.w.ft, 1);
+  assert.equal(home.w.fr, 'pinnacle');
+  assert.deepEqual(home.w.tm, [['Starting QB', 1.2], ['Rest', -0.3], ['Travel', 0.1]], 'the biggest three, for the home side');
+  assert.equal(typeof home.w.r, 'string');
+  assert.match(home.w.r, /BUF/);
+  assert.doesNotMatch(home.w.r, /needs/, 'the price sentence out: the page says the price at the latest one');
+  // (a market with no edge either side: the Bot's side alone, its reason too (a better price can make it a
+  // suggestion); the terms its side's sign)
+  const [mlHome, mlAway] = k.ml;
+  assert.equal([mlHome, mlAway].filter((s) => s.w).length, 1);
+  const bot = mlHome.ks >= mlAway.ks ? mlHome : mlAway;
+  assert.ok(bot.w && typeof bot.w.r === 'string');
+  if (bot === mlAway) assert.equal(bot.w.tm[0][1], -1.2);
+  // (no explain: no why, the board as before)
+  assert.equal(boardMarkets(markets, () => 0.5).spread[0].w, undefined);
+});
+
+test('a prop’s why: [over’s, under’s], the projection, the implied mean and the usage', () => {
+  const projection = { mean: 262.4, rate: 250, recent: 270, lineRatio: 0.94, usage: { expected: 36.5, unit: 'dropbacks' }, applied: { scale: 1, w: 0.3 } };
+  const x = prop(-115, -105, { model: 0.6, fair: 0.5, projection });
+  const p = boardProp(x, 'T', { explain: { sport: 'nfl', game, exp: { margin: 3, total: 46 }, state: { trust: {} }, fitted: false } });
+  assert.ok(Array.isArray(p.w) && p.w.length === 2);
+  const [over, under] = p.w;
+  assert.equal(under, null, 'the under: no edge, not the Bot’s side');
+  assert.ok(Math.abs(over.pr + over.ln - p.ks[0] * 100) < 0.02);
+  assert.equal(over.mn, 262.4);
+  assert.equal(over.im, 246.66);
+  assert.deepEqual(over.u, [36.5, 'dropbacks']);
+  assert.equal(typeof over.r, 'string');
+  assert.equal(boardProp(x, 'T').w, undefined);
+});

@@ -42,6 +42,12 @@ export interface BetWhyRow {
   price?: number;
   book?: string;
   why?: PickWhy | null;
+  // (the analysis beside the parts (whyFacts): a prop's projection and the Book's implied mean, his usage, the terms
+  // that moved it most; book-rows.ts BetRow's)
+  mean?: number | null;
+  implied?: number | null;
+  usage?: [number, string] | null;
+  terms?: [string, number][] | null;
   // (a practice pick's tag, and the desk's cap on a board side (board.json cap, DECISIONS.md D46): a LIKE at most at
   // every price, its stake the practice one)
   practice?: boolean;
@@ -93,6 +99,8 @@ export interface BetWhy {
   edgeUp: boolean;
   edgeTitle: string | null;
   parts: BetWhyPart[];
+  // (the analysis beside them: whyFacts)
+  facts: WhyFact[];
   vs: BetWhyVs[];
   // (only the chance to show: a picks file from before the prices and chances were kept)
   partial: boolean;
@@ -171,7 +179,8 @@ function partsOf(r: BetWhyRow): { parts: Omit<BetWhyPart, 'width'>[]; partial: b
   let partial = false;
   if (Number.isFinite(b) && b > 0) {
     const p0 = r.why?.p0 ?? 1 / (b + 1);
-    const scale = (b + 1) / b;
+    // (held to -110's scale, as the score is (kellyOf, desk.mjs kellyScale): the parts add up to it at any price)
+    const scale = Math.min((b + 1) / b, STAKE_SCALE);
     const at = Number.isFinite(r.price) ? ` at ${odds(r.price!)}` : '';
     if (Number.isFinite(fair)) {
       // (the price's part as written, or worked out the same way; the lean the rest: price + lean is the score,
@@ -236,6 +245,36 @@ function partsOf(r: BetWhyRow): { parts: Omit<BetWhyPart, 'width'>[]; partial: b
     });
   }
   return { parts, partial };
+}
+
+// The analysis beside the score's parts, a bet's or a suggestion's alike (the owner, 2026-10-19: a suggestion's popover
+// says as much as a bet's): a prop's projection against the mean the Book's price implies at its line, his usage
+// tonight (usage.mjs, D41), and the terms that moved it most (a game line's in points of its margin or total for this
+// side, a prop's in percent of his projection). Only what the row carries
+export interface WhyFact {
+  label: string;
+  value: string;
+  title: string;
+}
+const signed1 = (v: number) => `${v < 0 ? '−' : '+'}${Math.abs(v).toFixed(1)}`;
+export function whyFacts(r: Pick<BetWhyRow, 'mean' | 'implied' | 'usage' | 'terms' | 'market' | 'player'>): WhyFact[] {
+  const out: WhyFact[] = [];
+  const prop = !!r.player && !['Spread', 'Game total', 'Moneyline'].includes(r.market);
+  if (Number.isFinite(r.mean) && Number.isFinite(r.implied))
+    out.push({ label: 'Bot vs Book mean', value: `${r.mean!.toFixed(2)} vs ${r.implied!.toFixed(2)}`, title: "The Bot's projection against the mean the Book's price implies at this line" });
+  else if (Number.isFinite(r.mean)) out.push({ label: 'Projection', value: r.mean!.toFixed(2), title: "The Bot's projection of the stat tonight" });
+  if (Array.isArray(r.usage) && Number.isFinite(r.usage[0]))
+    out.push({ label: 'Usage', value: `${r.usage[0]}${r.usage[1] ? ` ${r.usage[1]}` : ''}`, title: 'The work the projection reads for him tonight (usage first, rate second: D41)' });
+  const terms = (r.terms ?? []).filter(([n, v]) => n && Number.isFinite(v));
+  if (terms.length) {
+    const unit = prop ? '%' : ' pts';
+    out.push({
+      label: 'What moved it',
+      value: terms.map(([n, v]) => `${n} ${signed1(v)}${unit}`).join(' · '),
+      title: prop ? "The steps that took his rate to the projection, each by the effect it had here, the biggest first" : "The game's context terms that moved the Bot's number most, in points of the margin (or the total) for this side",
+    });
+  }
+  return out;
 }
 
 export function betWhy(list: BetWhyRow[], index: number): BetWhy {
@@ -329,6 +368,7 @@ export function betWhy(list: BetWhyRow[], index: number): BetWhy {
     edgeUp,
     edgeTitle,
     parts,
+    facts: whyFacts(row),
     vs,
     partial,
   };

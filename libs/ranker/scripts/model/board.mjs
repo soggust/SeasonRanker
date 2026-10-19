@@ -41,6 +41,27 @@
 //             cap: [over's, under's] the desk's cap as a game side's (the stat's CLV gate at the practice stake on
 //             both, a role bet's on its own side; null none) and cr its why, there only where a side has one }
 //
+// And a side's why (w; the owner, 2026-10-19: a suggestion's K-score popover says as much as a bet's): on every
+// side with an edge at the board's price (ks over 0) and on the Bot's side of each market (the higher Kelly, as
+// botSidesOf), none on the rest. A game side's w, a prop's w: [over's, under's] (null a side without one):
+//     pr, ln  the Kelly score's two parts in points (picks.mjs scoreParts: pr + ln = ks × 100): the price's (the
+//             Book's no-vig chance against the price's break-even, scaled as the stake's Kelly is) and the Bot's lean
+//     t       the trust the lean was taken at ((c − f) / (m − f); none where the Bot and the Book agree)
+//     m, f    the Bot's own chance of the side and the Book's no-vig one (3 places)
+//     ft      1 where the market's trust is fitted (else the untested start);  fr  'pinnacle' where the no-vig
+//             chance is a sharp book's (else the Book's own two prices)
+//     tm      the terms that moved it most, WHY_TERMS at most, [name, amount]: a game line's context terms in points
+//             of its margin (spread, ml) or total, for this side (context.mjs's labels, their weights' parts:
+//             termParts); a prop's drivers in percent of his projection (writeup.mjs driversOf, its words)
+//     mn, im  a prop's projection and the mean the Book's price implies at the line (props.mjs lineRatio)
+//     u       a prop's usage (usage.mjs, D41): [expected, unit], where the projection reads one
+//     r       the plain reason the desk writes for a bet (writeup.mjs plainOf over the side as a bet would stand:
+//             the same generator, no AI) without its price sentence (priceSentence: the page says the price at the
+//             latest one, which can be another than the board's), on a side the desk would bet (not a PASS); none
+//             where the price sentence can't be taken out cleanly
+// tm, mn, im, u and r only on a side within WHY_REACH of an edge (its Kelly over −3 points), the rest its numbers
+// alone, so the board stays small. Built only where run.mjs gives the side's facts (explain); else no w.
+//
 // A side the desk wouldn't bet at the board's price at all (boardMarkets off: a price not the Book's own, ESPN's
 // line where the desk asks The Odds API, tracked only) is a PASS with its reason (sr): never a band the Bot
 // couldn't give (D46).
@@ -52,9 +73,84 @@
 // with the first and last time a board showed it (ms), so a bet takes it only while it was on show.
 
 import { round } from './ratings.mjs';
-import { EV_SUSPECT, chanceAt, decimal, gapGuard, isTracked, sideCtx } from './desk.mjs';
+import { EV_SUSPECT, chanceAt, decimal, gapGuard, isTracked, kellyScale, pickText, sideCtx } from './desk.mjs';
 import { CHECK_KINDS, causeOf, shadowOf } from './checks.mjs';
 import { capBand, capOf, edgeLevel, kellyOf } from './picks.mjs';
+import { factsOf, plainOf, priceSentence } from './writeup.mjs';
+
+// ---------------------------------------------------------------------------------------------------------
+// A side's why (w, the header's)
+
+// (the terms a why names, the biggest first, and the least it names: a hundredth of a point, a tenth of a percent)
+export const WHY_TERMS = 3;
+// (the Kelly under 0 past which a why carries its numbers alone, no terms, projection or reason: a side that far
+// from an edge is a few prices from any suggestion; 3 points, about a +140 side priced +150)
+export const WHY_REACH = 0.03;
+const fin = (v) => typeof v === 'number' && Number.isFinite(v);
+
+// The game's context terms as the board names them: each term's part of the margin (the home's) and of the total
+// (its value times its weight, as run.mjs expectFor sums them), by its label; terms: context.mjs featurize's
+// ({ m, t }), f the game's features, weights the fit's. None without them
+export function termParts(terms, f, weights) {
+  if (!terms || !f || !weights) return null;
+  const on = (k) => (f[k] ?? []).map((v, i) => [terms[k]?.[i]?.label ?? terms[k]?.[i]?.key ?? `term ${i + 1}`, v * (weights[k]?.[i] ?? 0)]).filter(([, v]) => fin(v) && Math.abs(v) >= 0.05);
+  return { m: on('m'), t: on('t') };
+}
+
+// (the biggest few, rounded: [name, amount])
+const topTerms = (list, digits = 1) =>
+  (list ?? [])
+    .filter(([n, v]) => n && fin(v) && Math.abs(round(v, digits)) > 0)
+    .sort((a, b) => Math.abs(b[1]) - Math.abs(a[1]))
+    .slice(0, WHY_TERMS)
+    .map(([n, v]) => [String(n), round(v, digits)]);
+
+// A side's Kelly parts and chances (picks.mjs scoreParts' math, in points): { pr, ln, t, m, f } at its price
+export function whyParts(odds, p, model, fair) {
+  const p0 = 1 / decimal(odds);
+  const score = kellyOf(odds, p) * 100;
+  const pr = round((fair - p0) * kellyScale(odds) * 100, 2);
+  const gap = model - fair;
+  return { pr, ln: round(score - pr, 2), ...(Math.abs(gap) > 1e-6 ? { t: round((p - fair) / gap, 2) + 0 } : {}), m: round(model, 3), f: round(fair, 3) };
+}
+
+// A side's why from the side as a bet would stand (bet: the ledger's fields, run.mjs betGames' and propBet's), its
+// facts (ex: { game, sib, state }: writeup.mjs factsOf's), its terms (a game line's, termParts' for its side), and
+// whether the reason's written (an edge the desk would bet). A write-up that fails is left out, never the board
+function whyOf(bet, { ex, fitted = false, terms = null, reason = false }) {
+  const w = { ...whyParts(bet.odds, bet.p, bet.model, bet.fair), ...(fitted ? { ft: 1 } : {}), ...(bet.fairFrom === 'pinnacle' ? { fr: 'pinnacle' } : {}) };
+  // (the words only on a side within reach of an edge (WHY_REACH): the board stays small, the numbers on every why)
+  if (!(kellyOf(bet.odds, bet.p) > -WHY_REACH)) return w;
+  let sheet = null;
+  try {
+    sheet = factsOf(bet, { game: ex?.game ?? null, sib: ex?.sib ?? null, state: ex?.state ?? null });
+  } catch {
+    sheet = null;
+  }
+  const tm = topTerms(bet.market === 'prop' ? (sheet?.drivers ?? []).map((d) => [d.what, d.appliedPct]) : terms);
+  if (tm.length) w.tm = tm;
+  const pj = bet.projection;
+  if (bet.market === 'prop' && pj) {
+    if (fin(pj.mean)) w.mn = round(pj.mean, 2);
+    const im = fin(pj.implied) ? pj.implied : fin(pj.lineRatio) && fin(pj.mean) ? pj.lineRatio * pj.mean : null;
+    if (fin(im)) w.im = round(im, 2);
+    if (fin(pj.usage?.expected)) w.u = [round(pj.usage.expected, pj.usage.expected < 1 ? 2 : 1), String(pj.usage.unit ?? pj.usage.kind ?? '')];
+  }
+  if (reason && sheet) {
+    try {
+      const whole = plainOf(sheet).reason;
+      const price = priceSentence(sheet);
+      const r = typeof whole === 'string' && price && whole.includes(price) ? whole.replace(price, '').replace(/\s+/g, ' ').trim() : '';
+      if (r) w.r = r;
+    } catch {
+      // (no reason: the numbers alone)
+    }
+  }
+  return w;
+}
+
+// (the Bot's side of a market: the higher Kelly, as botSidesOf)
+const botIndex = (ks) => (fin(ks[0]) && (!fin(ks[1]) || ks[0] >= ks[1]) ? 0 : fin(ks[1]) ? 1 : -1);
 
 // (a game's seen prices kept this long past its start: past the settler's longest wait, props.mjs PROP_WAIT)
 export const SEEN_KEEP = 8 * 864e5;
@@ -83,7 +179,10 @@ export function sideCap(marks) {
 // ctx: the game's, for the residual model (desk.mjs sideCtx, D32), so the board shows the chance the desk bets at.
 // gate: the lines' CLV gate (desk.mjs lineGate's; off, every side at the practice stake: cap LIKE); off: why the desk
 // wouldn't bet these prices at all (not the Book's own: ESPN's line), every side a PASS saying so (D31, D46)
-export function boardMarkets(markets, trustOf, consensus = null, ctx = null, { gate = null, off = null } = {}) {
+// explain: the facts for each side's why (w, the header's): { sport, game (run.mjs's upcoming game), exp (its
+// expected margin and total), seen (the context it saw, a bet's context), fairFrom (by market), state ({ trust,
+// context }: the write-ups'), terms (termParts'), fitted (market -> whether its trust is fitted) }; none, no w
+export function boardMarkets(markets, trustOf, consensus = null, ctx = null, { gate = null, off = null, explain = null } = {}) {
   const capped = gate && gate.on === false ? sideCap({ practice: String(gate.why || 'the game lines at the practice stake') }) : {};
   const out = {};
   for (const m of markets ?? []) {
@@ -95,12 +194,48 @@ export function boardMarkets(markets, trustOf, consensus = null, ctx = null, { g
     const checkSide = gapped && !shadowOf({ cause: 'gap', odds: mine.odds, model: mine.model, fair: mine.fair }) ? mine.side : null;
     const pass = (!!gapped && !checkSide) || !!off;
     const sr = off ? skipReason({ why: off }) : pass ? skipReason(gapped) : null;
-    out[m.market] = m.sides.map((s) => {
+    const rows = m.sides.map((s) => {
       const p = s.anchored === false ? s.fair : chanceAt(m.market, s.fair, s.model, trustOf(m.market), sideCtx(m, s, ctx));
       const ev = (1 - (s.push ?? 0)) * (p * decimal(s.odds) - 1);
       const ks = kellyOf(s.odds, p);
-      return { s: s.side, l: m.market === 'ml' ? null : s.line, o: s.odds, c: round(p, 3), ks, b: bandOf(ks, p, ev, { check: s.side === checkSide && !off, pass, cap: capped.cap }), ...(sr ? { sr } : {}), ...(pass ? {} : capped), ...consensusOf(consensus?.[m.market], s.side, s0.side) };
+      return { s: s.side, l: m.market === 'ml' ? null : s.line, o: s.odds, c: round(p, 3), ks, b: bandOf(ks, p, ev, { check: s.side === checkSide && !off, pass, cap: capped.cap }), ...(sr ? { sr } : {}), ...(pass ? {} : capped), ...consensusOf(consensus?.[m.market], s.side, s0.side), _p: p, _ev: ev };
     });
+    // (each side's why: the edge sides' and the Bot's side's, the header's w)
+    const bot = botIndex(rows.map((x) => x.ks));
+    rows.forEach((row, i) => {
+      const s = m.sides[i];
+      const { _p: p, _ev: ev } = row;
+      delete row._p;
+      delete row._ev;
+      if (!explain || !(row.ks > 0 || i === bot) || !fin(s.odds) || !fin(s.model) || !fin(s.fair)) return;
+      const g = explain.game;
+      const bet = {
+        id: `${g?.id ?? ''}:${m.market}`,
+        event: g?.id,
+        sport: explain.sport,
+        start: g?.date,
+        matchup: g ? `${g.awayAbbr} @ ${g.homeAbbr}` : '',
+        market: m.market,
+        side: s.side,
+        line: m.market === 'ml' ? null : s.line,
+        odds: s.odds,
+        model: round(s.model, 4),
+        fair: round(s.fair, 4),
+        p: round(p, 4),
+        ev: round(ev, 4),
+        ...(s.push ? { push: round(s.push, 4) } : {}),
+        intent: 'edge',
+        ...(fin(explain.exp?.margin) ? { expMargin: round(explain.exp.margin, 2), expTotal: round(explain.exp.total, 2) } : {}),
+        fairFrom: explain.fairFrom?.[m.market] ?? null,
+        context: explain.seen ?? null,
+      };
+      if (g) bet.pick = pickText(bet, g);
+      // (the terms on this side: the margin's for the home and its negative for the away; the total's for the over)
+      const sign = s.side === 'away' || s.side === 'under' ? -1 : 1;
+      const terms = (explain.terms?.[m.market === 'total' ? 't' : 'm'] ?? []).map(([n, v]) => [n, sign * v]);
+      row.w = whyOf(bet, { ex: { game: g, state: explain.state }, fitted: !!explain.fitted?.(m.market), terms, reason: !pass });
+    });
+    out[m.market] = rows;
   }
   return out;
 }
@@ -116,7 +251,9 @@ export const skipReason = (guard) => {
 
 // A priced prop (props.mjs priceProps's) as the board's, at its book price (none: null); gate: its stat's CLV gate
 // (desk.mjs propGate's; off, both sides at the practice stake: cap LIKE), and a role bet's cap on its own side
-export function boardProp(x, at, { gate = null } = {}) {
+// explain: the facts for each side's why (w, the header's): { sport, game, exp, sib (its game's context, a bet's
+// sibling: writeup.mjs sibOf), state, fitted (whether the stat's trust is fitted) }; none, no w
+export function boardProp(x, at, { gate = null, explain = null } = {}) {
   const by = Object.fromEntries((x.sides ?? []).map((s) => [s.side, s]));
   // (a CHECK the page shows: a CHECK's guard and not a shadow, judged on the model's side's price and chances as
   // the run's CHECK is (checks.mjs checkOf); a shadow a PASS)
@@ -137,6 +274,43 @@ export function boardProp(x, at, { gate = null } = {}) {
   const over = side('over');
   const under = side('under');
   const cr = over.c.cr ?? under.c.cr;
+  // (each side's why: the edge sides' and the Bot's side's, the header's w; the model's and the Book's chances of
+  // the side the run didn't pick are its pick's complements)
+  const bot = botIndex([over.ks, under.ks]);
+  const w = ['over', 'under'].map((k, i) => {
+    const one = i ? under : over;
+    const s = by[k];
+    if (!explain || !s || !fin(one.o) || !(one.ks > 0 || i === bot) || !fin(x.model) || !fin(x.fair)) return null;
+    const mine = x.side === k;
+    const g = explain.game;
+    const bet = {
+      id: `${g?.id ?? ''}:prop:${x.prop.stat.key}:${x.prop.athlete.id}`,
+      event: g?.id,
+      sport: explain.sport,
+      start: g?.date,
+      matchup: g ? `${g.awayAbbr} @ ${g.homeAbbr}` : '',
+      market: 'prop',
+      propType: x.prop.stat.key,
+      statLabel: x.prop.stat.label,
+      player: x.prop.athlete.name,
+      athlete: x.prop.athlete.id,
+      team: x.prop.athlete.team ?? null,
+      side: k,
+      line: x.prop.line,
+      odds: one.o,
+      model: round(mine ? x.model : 1 - x.model, 4),
+      fair: round(mine ? x.fair : 1 - x.fair, 4),
+      p: round(s.p, 4),
+      ev: round(s.ev, 4),
+      intent: 'edge',
+      ...(fin(explain.exp?.margin) ? { expMargin: round(explain.exp.margin, 2), expTotal: round(explain.exp.total, 2) } : {}),
+      ...(typeof explain.tested === 'boolean' ? { tested: explain.tested } : {}),
+      projection: x.projection ?? null,
+      context: { move: x.move ?? null },
+    };
+    bet.pick = `${bet.player} ${k === 'over' ? 'Over' : 'Under'} ${bet.line} ${bet.statLabel}`;
+    return whyOf(bet, { ex: { game: g, sib: explain.sib ?? null, state: explain.state }, fitted: !!explain.fitted, reason: !pass });
+  });
   return {
     n: x.prop.athlete.name,
     id: String(x.prop.athlete.id),
@@ -155,6 +329,7 @@ export function boardProp(x, at, { gate = null } = {}) {
     ...(Number.isFinite(x.prop.consensus?.fair) ? { fc: x.prop.consensus.fair, cn: x.prop.consensus.n, ...(x.prop.consensus.outlier ? { dv: x.prop.consensus.outlier } : {}) } : {}),
     // (the suggestion (D42): the side the Bot sees an edge on at the latest known price, run.mjs betProps)
     ...(x.sug ? { sug: x.sug } : {}),
+    ...(w.some(Boolean) ? { w } : {}),
     at,
   };
 }

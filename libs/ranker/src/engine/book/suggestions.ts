@@ -8,7 +8,7 @@
 // past its edge drops off (PASS). The Bot's own bets (picks.json, D27: every open bet) keep the price it locked,
 // with the live one beside it and a "moved" note where they differ; a suggestion the Bot has since bet becomes
 // that bet (one row a market). No Angular here (tests/book-suggestions.test.mjs)
-import type { BoardGame, BoardProp, BoardSide, ModelBoard } from '../account/wallet/lines.service';
+import type { BoardGame, BoardProp, BoardSide, BoardWhy, ModelBoard } from '../account/wallet/lines.service';
 import type { GameBoard, Price } from '../account/wallet/wallet-math';
 import { americanOdds, teamLogo } from './bet-format';
 import { priceAt, whatIfOf } from './bet-why';
@@ -116,8 +116,18 @@ export function repriced(row: BetRow, odds: number, from: LiveQuote['from'] = 'b
     ...(at.units === null ? {} : { units: at.units }),
     livePrice: at.odds,
     liveFrom: from,
-    reason: suggestionReason(base.p, at.odds),
+    reason: reasonAt(row, base.p, at.odds),
   };
+}
+
+// (a suggestion's words: the desk's plain write-up (board.json w.r, its price sentence out) and the price's at the
+// latest price: the Bot's chance, the break-even, the Book's no-vig where the board has it; without a write-up, the
+// price's alone)
+export function reasonAt(row: Pick<BetRow, 'plain' | 'fair'>, p: number, odds: number): string {
+  if (!row.plain) return suggestionReason(p, odds);
+  const d = odds > 0 ? 1 + odds / 100 : 1 + 100 / -odds;
+  const fair = Number.isFinite(row.fair) ? `, and the Book's no-vig price says ${Math.round(row.fair! * 1000) / 10}%` : '';
+  return `${row.plain} The Bot makes it ${Math.round(p * 1000) / 10}%; at ${sign(odds)} it needs ${Math.round(1000 / d) / 10}%${fair}.`;
 }
 
 // (a game's two sides as the rows show them: their abbreviations and logos (ESPN's where the page has its board, a
@@ -153,7 +163,7 @@ export function suggestionsOf(sport: string, board: ModelBoard | null | undefine
         const pick = market === 'total' ? `${s.s === 'over' ? 'Over' : 'Under'} ${s.l}` : market === 'spread' ? `${team} ${lineText(s.l)}` : `${team} ML`;
         const kind = KIND[market];
         push({
-          ...base(sport, g, game, s.c, s.o, sugOf(s.sug) === 'practice', s.cap ?? null, s.cr),
+          ...base(sport, g, game, s.c, s.o, sugOf(s.sug) === 'practice', s.cap ?? null, s.cr, s.w),
           market: LABEL[market],
           pick,
           key: pickKey(sport, g.m, kind, pick),
@@ -172,7 +182,7 @@ export function suggestionsOf(sport: string, board: ModelBoard | null | undefine
         if (!priced(o) || !open(x.b[i], x.ks[i], x.sr, x.bk, x.sug)) return;
         const pick = `${x.n} ${side === 'over' ? 'Over' : 'Under'} ${x.l} ${x.lb}`;
         push({
-          ...base(sport, g, game, i ? 1 - x.c! : x.c!, o, sugOf(x.sug) === 'practice', x.cap?.[i] ?? null, x.cr),
+          ...base(sport, g, game, i ? 1 - x.c! : x.c!, o, sugOf(x.sug) === 'practice', x.cap?.[i] ?? null, x.cr, x.w?.[i] ?? null),
           market: x.lb,
           pick,
           key: pickKey(sport, g.m, 'player', pick),
@@ -191,9 +201,11 @@ export function suggestionsOf(sport: string, board: ModelBoard | null | undefine
 }
 
 // (what every suggestion row has: its game, the Bot's chance, the board's price till it's priced again)
-// (cap, why: the desk's cap on the side, board.json's cap and cr)
-function base(sport: string, _g: BoardGame, game: BetRow['game'], p: number, odds: number, practice: boolean, cap: 'medium' | null = null, why?: string) {
+// (cap, why: the desk's cap on the side, board.json's cap and cr; w its why, board.json's: the K-score popover's
+// makings as a bet's (whyOf))
+function base(sport: string, _g: BoardGame, game: BetRow['game'], p: number, odds: number, practice: boolean, cap: 'medium' | null = null, why?: string, w?: BoardWhy | null) {
   return {
+    ...whyOf(w),
     id: -1,
     sport,
     game,
@@ -210,6 +222,24 @@ function base(sport: string, _g: BoardGame, game: BetRow['game'], p: number, odd
     odds: americanOdds(odds),
     book: 'DraftKings',
     suggested: true,
+  };
+}
+
+// A board side's why as a row's (board.json w): the Bot's own chance and the Book's no-vig (model, fair), the
+// trust and where the no-vig came from (why: the price's part worked again at whatever price the row is shown at,
+// bet-why.ts partsOf, the lean the rest), a prop's projection and implied mean, his usage, the terms that moved it
+// and the desk's plain write-up. None without a why
+export function whyOf(w: BoardWhy | null | undefined): Partial<BetRow> {
+  if (!w || !Number.isFinite(w.m) || !Number.isFinite(w.f)) return {};
+  return {
+    model: w.m,
+    fair: w.f,
+    why: { lean: w.ln / 100, fair: w.f, trust: Number.isFinite(w.t) ? w.t! : null, fitted: w.ft === 1, from: w.fr === 'pinnacle' ? 'pinnacle' : 'book' },
+    ...(Number.isFinite(w.mn) ? { mean: w.mn! } : {}),
+    ...(Number.isFinite(w.im) ? { implied: w.im! } : {}),
+    ...(Array.isArray(w.u) && Number.isFinite(w.u[0]) ? { usage: w.u } : {}),
+    ...(Array.isArray(w.tm) && w.tm.length ? { terms: w.tm } : {}),
+    ...(typeof w.r === 'string' && w.r ? { plain: w.r } : {}),
   };
 }
 

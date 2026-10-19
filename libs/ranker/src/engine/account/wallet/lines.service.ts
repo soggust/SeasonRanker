@@ -35,6 +35,26 @@ export interface BoardSide {
   // stake, a role or research pick: picks.mjs capOf), cr its why; the band at any price held to it (DECISIONS.md D36))
   cap?: 'medium';
   cr?: string;
+  // (its why, on an edge side and the Bot's side (board.mjs w): the K-score popover's makings for a suggestion)
+  w?: BoardWhy;
+}
+// A side's why on the board (board.mjs w): the Kelly's price and lean parts in points, the trust, the Bot's own and
+// the Book's no-vig chance, fitted (ft) and the no-vig's source (fr), the terms that moved it most ([name, points of
+// the margin or total; a prop's, percent of his projection]), a prop's projection, implied mean and usage, and the
+// plain reason the desk writes for a bet (r, an edge side's)
+export interface BoardWhy {
+  pr: number;
+  ln: number;
+  t?: number;
+  m: number;
+  f: number;
+  ft?: 1;
+  fr?: 'pinnacle';
+  tm?: [string, number][];
+  mn?: number;
+  im?: number;
+  u?: [number, string];
+  r?: string;
 }
 export interface BoardProp {
   n: string;
@@ -61,6 +81,8 @@ export interface BoardProp {
   // (the desk's cap on each side, [over's, under's], as a game side's cap; cr its why (D36))
   cap?: ['medium' | null, 'medium' | null];
   cr?: string;
+  // (each side's why, [over's, under's], as a game side's w)
+  w?: [BoardWhy | null, BoardWhy | null];
 }
 export interface BoardGame {
   id: string;

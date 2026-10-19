@@ -613,8 +613,8 @@ export function factsOf(bet, { game = null, sib = null, state = null, ledger = n
 // (a chance at the sheet's precision)
 const P = (sheet, k) => fmt.pct(sheet.price[k], sheet.price.decimals);
 
-// (the price sentence: our chance, the break-even, the book's no-vig chance, where the edge comes from)
-function priceSentence(sheet) {
+// (the price sentence: our chance, the break-even, the book's no-vig chance, where the edge comes from) (board.mjs takes it out of a side's reason: the page says the price at the latest one)
+export function priceSentence(sheet) {
   const { bet, price } = sheet;
   if (!fin(price.betPct) || !fin(price.breakEvenPct)) return null;
   const who = bet.kind === 'prop' || bet.kind === 'total' ? `the ${bet.side}` : bet.sideWord ?? 'it';
