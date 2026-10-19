@@ -170,6 +170,24 @@ function beatOf(x, over, odds, close) {
   return d > 0 ? 1 : d < 0 ? 0 : null;
 }
 
+// The bar's own place (D51): lines bets { season, profit, full? } (full: a barred bet's units, band and profit at its
+// full stake); by season, whether the bar applied (the seasons before it, unweighted: the bar's units at least the
+// full stakes'; the first season the bar's), and applies, the verdict on every season for what comes next
+export function barPlace(bets) {
+  const seasons = [...new Set(bets.map((b) => b.season))].filter(fin).sort((a, b) => a - b);
+  const bySeason = {};
+  let barU = 0;
+  let fullU = 0;
+  for (const s of seasons) {
+    bySeason[s] = barU >= fullU - 1e-9;
+    for (const b of bets.filter((x) => x.season === s)) {
+      barU += b.profit;
+      fullU += b.full ? b.full.profit : b.profit;
+    }
+  }
+  return { applies: barU >= fullU - 1e-9, barUnits: r4(barU), fullUnits: r4(fullU), bySeason };
+}
+
 // The replay: every key (a game's market, a player's prop) bet once at most at the Bot's own placement, the slate's
 // practice picks, and the record from them. rows: { open, close } of the gate's priced rows (lines and props
 // together; each row's at its snapshot's time, t its start, p its priced chance, f the Book's no-vig, y the result);
@@ -261,13 +279,31 @@ export function replayRecord(V, sport, rows, { events = null, names = () => ({ h
       // live desk's gated bets are)
       const barred = !!barAt && isLine(x) && !barAt(x.t, keysOf(x, sd), sd.ev);
       if (barred) flags.barred++;
-      const units = suspect || barred ? practiceUnits : V.desk.stakeFor(ev, evScale, sd.odds);
+      const fullUnits = suspect ? practiceUnits : V.desk.stakeFor(ev, evScale, sd.odds);
+      const units = barred ? practiceUnits : fullUnits;
       let band = level(sd.kelly, sd.pS);
       if (band === 'low') band = 'medium';
+      const fullBand = suspect && band !== 'medium' ? 'medium' : band;
       if ((suspect || barred) && band !== 'medium') band = 'medium';
-      bets.push(betOf(x, sd, { units, band, practice: false, timing: placed.timing, beat: placed.timing === 'open' ? beatOf(x, sd.over, sd.odds, placed.close) : null, names, survival: placed.s }));
+      const bet = betOf(x, sd, { units, band, practice: false, timing: placed.timing, beat: placed.timing === 'open' ? beatOf(x, sd.over, sd.odds, placed.close) : null, names, survival: placed.s });
+      // (a barred line keeps what it would have staked at full: the bar's own place below)
+      if (barred) bet.full = { units: fullUnits, band: fullBand, profit: units > 0 ? r4((bet.profit * fullUnits) / units) : 0 };
+      bets.push(bet);
       flags[placed.timing]++;
     }
+  }
+  // (the bar's own place (DECISIONS.md D51), walk-forward by season: the bar stakes a season's lines only where, on
+  // every season before, the lines as it staked them earned at least what they would have at full stakes (the first
+  // season, none to judge on, the bar's); where full stakes out-earned it, that season's lines are at their full
+  // stakes and bands. So the bar never costs a sport whose staked lines it can't beat (MLB's: its Kelly stakes won
+  // where its flat picks lost). barPlace(bets) is the same verdict for what comes next, from every season
+  const bar = sport === 'mma' || !barAt ? null : barPlace(bets.filter((b) => b.market !== 'prop'));
+  if (bar) {
+    for (const b of bets) if (b.full && bar.bySeason[b.season] === false) {
+      Object.assign(b, { units: b.full.units, band: b.full.band, profit: b.full.profit });
+      flags.barred--;
+    }
+    flags.bar = { applies: bar.applies, barUnits: bar.barUnits, fullUnits: bar.fullUnits, bySeason: bar.bySeason };
   }
   // (the slate's practice picks: each game's quota (PRACTICE_N over the ET day's games, at least one) less its bets
   // that clear the vig, from its PASS rows with an edge before the vig, best first, at the practice stake)
@@ -360,6 +396,8 @@ export function summarize(sport, bets, passed, { epoch, now, flags, rows, season
     last: [...bets].sort(order).slice(0, REPLAY_LAST).map(entry),
     flags: {
       timing: { open: flags.open, close: flags.close, openSeen: flags.openSeen, openClean: flags.openClean, openInWindow: flags.openInWindow, barred: flags.barred ?? 0 },
+      // (the bar's own place (D51): whether it stakes the lines, by season and for what comes next)
+      ...(flags.bar ? { bar: flags.bar } : {}),
       // (D48, no look-ahead by timestamp: the bets with a factsAt stamp, those past their placement (0), the opens held
       // to the close and the closes left unbet because their price read a fact posted after them)
       facts: { stamped: bets.filter((b) => fin(b.factsAt)).length, late: lateFacts(bets).length, openHeld: flags.openHeld ?? 0, closeHeld: flags.closeHeld ?? 0 },

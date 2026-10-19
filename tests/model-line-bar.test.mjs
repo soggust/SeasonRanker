@@ -133,7 +133,7 @@ test('a pick\'s gate: its segment\'s; one the bar never priced is the practice s
   // (a LIKE at most on the Book)
   assert.equal(levelOf({ ...placed, market: 'ml', odds: 150, p: 0.5, fair: 0.4, ev: 0.25, status: 'open' }), 'low');
   // (the bar's segment on the bet is the pick's side's)
-  assert.match(src('run.mjs'), /barGate\(r\.lineBar, key, pick\.side, pick\.fair, \{ hours: ahead \/ 36e5, ev: pick\.ev, reasons \}\)/);
+  assert.match(src('run.mjs'), /barGate\(r\.lineBar, key, pick\.side, pick\.fair, \{ hours: ahead \/ 36e5, ev: pick\.ev, reasons, aside: r\.lineBarAside \}\)/);
   assert.match(src('run.mjs'), /gatedPlacement\(pick\.ev > 0 && !noPrice, units, gate\)/);
 });
 
@@ -154,7 +154,7 @@ test('the bar walk-forward (the replayed record): a segment is on only from the 
   // (the replayed record stakes a barred line at the practice units, a LIKE, and counts it)
   const src_ = src('replay-record.mjs');
   assert.match(src_, /V\.desk\.walkBar\(/);
-  assert.match(src_, /const units = suspect \|\| barred \? practiceUnits/);
+  assert.match(src_, /const units = barred \? practiceUnits : fullUnits/);
   assert.match(src_, /barred: flags\.barred/);
 });
 
@@ -291,4 +291,38 @@ test('the bar walk-forward by keys and edge: a pick is on where any of its keys 
   // (the replay judges a line by its keys and its return; the gate's bar reads the clean opens and the reasons)
   assert.match(src('replay-record.mjs'), /barAt\(x\.t, keysOf\(x, sd\), sd\.ev\)/);
   assert.match(src('gate.mjs'), /openRows: histLines\.open, clean: V\.replay\?\.cleanOpenOf/);
+});
+
+test("the bar's own place: by season, the bar stakes a season's lines only where, on every season before, its lines earned at least the full stakes'; the first season the bar's; the verdict for what comes next from every season; where it stands aside every line is at its own stake, said so", async () => {
+  const { barPlace } = await import('../libs/ranker/scripts/model/replay-record.mjs');
+  const { barAside } = await import('../libs/ranker/scripts/model/desk.mjs');
+  // (MLB's shape: the barred lines won at their Kelly stakes; the bar cost units every season)
+  const bets = [];
+  for (const season of [2021, 2022, 2023]) {
+    for (let i = 0; i < 10; i++) bets.push({ season, profit: i % 2 ? 0.5 : -0.5, full: { units: 2, band: 'high', profit: i % 2 ? 2 : -1 } });
+    bets.push({ season, profit: 1 });
+  }
+  const p = barPlace(bets);
+  assert.deepEqual(p.bySeason, { 2021: true, 2022: false, 2023: false });
+  assert.equal(p.applies, false);
+  assert.ok(p.fullUnits > p.barUnits);
+  // (a bar that saves units keeps its place)
+  const saves = bets.map((b) => (b.full ? { ...b, full: { ...b.full, profit: b.profit - 1 } } : b));
+  assert.equal(barPlace(saves).applies, true);
+  assert.equal(barPlace([]).applies, true, 'nothing to judge on: the bar');
+  // (the desk reads the file's verdict: aside, every line at its own stake with the reason; the gate on)
+  assert.equal(barAside(null), null);
+  assert.equal(barAside({ applies: true }), null);
+  const why = barAside({ applies: false, place: { fullUnits: 2.5, barUnits: -13.7 } });
+  assert.match(why, /stands aside/);
+  const bar = lineBar({ segments: { 'ml:dog:late': { n: 400, sum: -20, sum2: 420, edges: {} } } }, [], 'mlb');
+  assert.equal(barGate(bar, 'ml', 'away', 0.4, { hours: 1, ev: 0.03 }).on, false);
+  const aside = barGate(bar, 'ml', 'away', 0.4, { hours: 1, ev: 0.03, aside: why });
+  assert.equal(aside.on, true);
+  assert.equal(aside.aside, true);
+  // (the replay restores a season's barred lines to their full stakes where the bar stands aside; the record writes
+  // the place into line-bar.json; the desk passes it to every line's gate)
+  assert.match(src('replay-record.mjs'), /bar\.bySeason\[b\.season\] === false/);
+  assert.match(src('gate.mjs'), /applies: place\.applies, place/);
+  assert.match(src('run.mjs'), /aside: r\.lineBarAside/);
 });

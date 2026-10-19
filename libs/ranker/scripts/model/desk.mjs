@@ -1100,8 +1100,11 @@ export function lineBar(prior, bets, sport, epoch = MODEL_EPOCH) {
 // (a pick's gate from the bar: its segment's (by its market, side class and timing) at the segment's minimum edge;
 // else a named reason it carries whose record is on at its edge; else the practice stake, said so. at: { hours
 // before the start, ev the pick's return, reasons its keys (reasonsOf) })
-export function barGate(bar, market, side, fair, { hours = null, ev = null, reasons = [] } = {}) {
+export function barGate(bar, market, side, fair, { hours = null, ev = null, reasons = [], aside = null } = {}) {
   const segment = segmentOf(market, side, fair, hours);
+  // (the bar standing aside in a sport whose full stakes out-earned it on the history (the file's applies false,
+  // D51's barPlace): every line at its own stake, said so)
+  if (aside) return { on: true, segment, reasons, aside: true, why: aside };
   const g = bar?.[segment];
   const clears = (v) => v?.on && (!Number.isFinite(ev) || ev >= (v.minEdge ?? 0));
   if (clears(g)) return { ...g, segment, reasons };
@@ -1159,6 +1162,12 @@ export function walkBar(picks) {
 // The sport's bar file as the live desk reads it: apps/<sport>/src/StaticData/model/line-bar.json, written by
 // gate.mjs --record (the shipped version's picks on the priced history's closes); null with none or one it can't
 // read (every segment at the practice stake then, till the live bets earn it)
+// (the bar's own place from the file: null where it stakes the lines; else why it stands aside)
+export function barAside(file) {
+  if (!file || file.applies !== false) return null;
+  const p = file.place ?? {};
+  return `the history bar stands aside: the lines at full stakes earned ${p.fullUnits ?? '-'}u on the history against ${p.barUnits ?? '-'}u as the bar staked them`;
+}
 export function readLineBar(root, sport) {
   const file = path.join(root, 'apps', sport, 'src/StaticData/model/line-bar.json');
   try {

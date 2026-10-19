@@ -823,7 +823,9 @@ function recordScore(version, sport, score, frozen) {
   // version priced them, what the live desk reads (desk.mjs readLineBar) and pools with its own line bets)
   if (score.lineBar?.segments) {
     const out = path.join(ROOT, 'apps', sport, 'src/StaticData/model/line-bar.json');
-    writeFileSync(out, `${JSON.stringify({ sport, epoch: score.epoch, commit: entry.commit, at: entry.at, current: score.current, ...score.lineBar }, null, 1)}\n`);
+    // (with the bar's own place (D51, replay-record.mjs barPlace): whether it stakes this sport's lines at all)
+    const place = score.replay?.flags?.bar ?? null;
+    writeFileSync(out, `${JSON.stringify({ sport, epoch: score.epoch, commit: entry.commit, at: entry.at, current: score.current, ...score.lineBar, ...(place ? { applies: place.applies, place } : {}) }, null, 1)}\n`);
     console.log(`${sport}: the lines' history bar written (${path.relative(ROOT, out)}): ${Object.entries(score.lineBar.segments).map(([k, s]) => `${k} ${s.on ? 'ON' : 'practice'} (${s.mean === null ? '-' : `${s.mean >= 0 ? '+' : ''}${r4(s.mean * 100)}%`} on ${s.n})`).join(', ')}`);
   }
   // (the MMA's history prior (gate-mma.mjs trustPrior, DECISIONS.md D36): each market's trust fit on the priced history,
