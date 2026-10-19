@@ -639,7 +639,7 @@ test("picks.mjs bands, by the Kelly score: 2% and up high, any edge under it med
   assert.equal(levelOf({ ev: 0.02 }, 0.07), 'high');
 });
 
-test('buildPicks: the open bets not started, likeliest first, at most TOP, each marked shown with its band then, published once locked', () => {
+test('buildPicks: the open bets not started, likeliest first, every one (D27), each marked shown with its band then, published once locked', () => {
   const now = new Date('2026-10-09T12:00:00Z');
   const future = '2026-10-10T17:00:00Z';
   const bets = [
@@ -647,7 +647,7 @@ test('buildPicks: the open bets not started, likeliest first, at most TOP, each 
     bet({ id: 'mid', start: future, p: 0.54, ev: 0.02, intent: 'edge' }),
     bet({ id: 'fav', start: future, p: 0.7, odds: -300, ev: -0.0667, intent: 'action' }),
     bet({ id: 'started', start: '2026-10-09T11:00:00Z', p: 0.9, ev: 0.1 }),
-    bet({ id: 'guarded', start: future, p: 0.8, ev: 0.1, context: { guard: 'line moved' } }),
+    bet({ id: 'tracked', start: future, p: 0.8, ev: -0.01, intent: 'track', units: 0, trackUnits: 0.5 }),
     bet({ id: 'old', start: '2026-10-01T17:00:00Z', status: 'won', profit: 1.36, published: true, publishedLevel: 'high' }),
     bet({ id: 'void', start: '2026-10-01T17:00:00Z', status: 'push', void: true, published: true, publishedLevel: 'low' }),
   ];
@@ -672,15 +672,15 @@ test('buildPicks: the open bets not started, likeliest first, at most TOP, each 
   bets.find((b) => b.id === 'mid').status = 'won';
   buildPicks('nfl', ledger, {}, new Map(), new Date('2026-10-11T12:00:00Z'));
   assert.ok(bets.find((b) => b.id === 'mid').published);
-  // (one never shown isn't published)
-  assert.equal(bets.find((b) => b.id === 'guarded').published, undefined);
+  // (one never shown isn't published: a tracked row)
+  assert.equal(bets.find((b) => b.id === 'tracked').published, undefined);
   // (the record: the published ones graded, a void prop not counted)
   assert.equal(out.record.graded, 2);
   assert.deepEqual([out.record.overall.wins, out.record.overall.losses, out.record.overall.pushes], [1, 0, 0]);
   assert.equal(out.record.byLevel.high.wins, 1);
-  // (and no more than TOP)
+  // (and every one, past TOP too: TOP is the page's Best Bets count, D27)
   const many = { bets: Array.from({ length: TOP + 9 }, (_, i) => bet({ id: `m${i}`, start: future, p: 0.5 + i / 1000 })) };
-  assert.equal(buildPicks('nfl', many, {}, new Map(), now).picks.length, TOP);
+  assert.equal(buildPicks('nfl', many, {}, new Map(), now).picks.length, TOP + 9);
 });
 
 test('unlock: a bet published before it was locked (the old rule) made shown again; a locked or graded one stays published', () => {

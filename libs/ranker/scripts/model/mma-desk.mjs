@@ -511,7 +511,7 @@ function writeIfChanged(file, data, dry) {
   return true;
 }
 
-// The picks file: the open edge bets on bouts not started, by their Kelly score, TOP at most; each published
+// The picks file: the open edge bets on bouts not started, by their Kelly score, every one (D27); each published
 // once locked (REPRICE_BY before the start), its chance, score and band fixed when first shown; the published
 // record by band. The rows as picks.mjs buildPicks makes them, for the Book
 export function buildFightPicks(ledger, trust, bouts, now) {
@@ -522,15 +522,14 @@ export function buildFightPicks(ledger, trust, bouts, now) {
       delete b.shown;
     }
   }
-  const open = ledger.bets.filter((b) => b.status === 'open' && Date.parse(b.start) > now.getTime() && !isTracked(b) && !b.context?.guard);
+  // (every bet it placed, a guard's 0.5u cut one too, and all of them: picks.mjs buildPicks, D27)
+  const open = ledger.bets.filter((b) => b.status === 'open' && Date.parse(b.start) > now.getTime() && !isTracked(b));
   const scored = open.map((b) => {
     const { score, ...why } = scoreParts(b, trust);
     return { b, score, why };
   });
   scored.sort((x, y) => y.score - x.score || x.b.start.localeCompare(y.b.start));
-  const top = scored.slice(0, TOP);
-  const inTop = new Set(top.map((x) => x.b));
-  for (const { b } of scored) if (!inTop.has(b) && b.shown) for (const k of ['shown', 'publishedP', 'publishedKelly', 'publishedLevel']) delete b[k];
+  const top = scored;
   for (const { b, score } of top) {
     if (locked(b)) {
       if (!b.published) Object.assign(b, { published: true, publishedAt: now.toISOString() });

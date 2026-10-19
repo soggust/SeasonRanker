@@ -327,3 +327,18 @@ test('D22 every change faces the gate: a layer worse beyond noise holds it, the 
   assert.ok(SELF_CHECKS.some((f) => f.name === 'c23'), 'the weekly leak hunt');
   assert.ok(fs.existsSync(path.join(import.meta.dirname, '../libs/ranker/scripts/model/gate.mjs')));
 });
+
+test('D27 every bet the bot placed is a pick: a guard’s 0.5u cut one and a practice one too, past TOP too', async () => {
+  const { buildPicks, TOP } = await import('../libs/ranker/scripts/model/picks.mjs');
+  const now = new Date('2026-10-18T12:00:00Z');
+  const row = (id, extra = {}) => ({ id, sport: 'nfl', event: '1', start: '2026-10-20T00:15:00Z', matchup: 'WSH @ SF', market: 'ml', side: 'away', line: null, odds: 150, model: 0.45, fair: 0.4, p: 0.42, ev: 0.05, intent: 'edge', units: 0.5, pick: 'WSH ML', status: 'open', profit: 0, context: {}, ...extra });
+  const bets = [row('plain', { units: 1 }), row('guarded', { context: { guard: 'line moved +0.101 since it opened, against it' } }), row('practice', { topN: 1 }), row('tracked', { intent: 'track', units: 0, trackUnits: 0.5 })];
+  const out = buildPicks('nfl', { bets }, {}, new Map(), now);
+  assert.deepEqual(out.picks.map((p) => p.id).sort(), ['guarded', 'plain', 'practice']);
+  assert.equal(out.picks.find((p) => p.id === 'practice').practice, true);
+  const many = Array.from({ length: TOP + 5 }, (_, i) => row(`m${i}`));
+  assert.equal(buildPicks('nfl', { bets: many }, {}, new Map(), now).picks.length, TOP + 5);
+  // (the fights' picks the same: no guard filter, no TOP cut)
+  assert.ok(!src('mma-desk.mjs').includes('!b.context?.guard'), 'mma-desk.mjs buildFightPicks hides guarded bets');
+  assert.ok(!src('mma-desk.mjs').includes('scored.slice(0, TOP)'), 'mma-desk.mjs buildFightPicks cuts to TOP');
+});

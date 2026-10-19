@@ -242,6 +242,19 @@ for (const sport of SPORTS) {
     }
   });
 
+  // Every bet the bot placed is a pick (D27, picks.mjs buildPicks): each open one not tracked, on a game not started
+  // when picks.json was written and placed by then, is in its picks (a guard's 0.5u cut one, a practice pick too)
+  test(`${sport}: every open placed bet is in picks.json`, () => {
+    const picksPath = path.join(dir, 'picks.json');
+    const ledgerPath = path.join(dir, 'ledger.json');
+    if (!fs.existsSync(picksPath) || !fs.existsSync(ledgerPath)) return;
+    const file = readJson(picksPath);
+    const at = Date.parse(file.at);
+    const ids = new Set((file.picks ?? []).map((p) => p.id));
+    const missing = readJson(ledgerPath).bets.filter((b) => b.status === 'open' && !isTracked(b) && Date.parse(b.start) > at && !(Date.parse(b.placedAt) > at) && !ids.has(b.id));
+    assert.deepEqual(missing.map((b) => `${b.matchup} ${b.pick}`), [], `${sport}: placed bets missing from picks.json`);
+  });
+
   // The public Book's picks (libs/ranker/scripts/model/picks.mjs): the algorithm's top bets, ranked
   test(`${sport}: model picks are whole and ranked`, () => {
     const picksPath = path.join(dir, 'picks.json');

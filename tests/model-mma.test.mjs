@@ -270,7 +270,7 @@ test("backtest: walks forward by half-year over the fit's leagues, each half sco
   assert.equal(fitRows(rows.map((r) => ({ ...r, league: 'lfa' }))).length, 0, 'the regional archive is not fit on');
 });
 
-test('buildFightPicks: the open edge bets by their Kelly score with the page’s fields, published once locked; tracked rows and guarded bets never; the plain write-up reads the bet’s own numbers', () => {
+test('buildFightPicks: the open edge bets by their Kelly score with the page’s fields, published once locked; tracked rows never, a guard’s 0.5u bet as any (D27); the plain write-up reads the bet’s own numbers', () => {
   const start = new Date(NOW.getTime() + 30 * H).toISOString();
   const base = { event: '1', boutKey: '1:h-a', sport: 'mma', start, placedAt: NOW.toISOString(), matchup: 'Mike Malott @ Joaquin Buckley', fighters: { home: { id: 'h', name: 'Joaquin Buckley' }, away: { id: 'a', name: 'Mike Malott' } }, market: 'ml', line: null, book: 'DraftKings', fairFrom: 'pinnacle', status: 'open', profit: 0 };
   const edge = { ...base, id: '1:ml', side: 'home', odds: -125, model: 0.6, fair: 0.52, p: 0.56, ev: 0.008, intent: 'edge', units: 1, pick: 'Joaquin Buckley', context: { parts: { rating: 0.3, age: -0.1, strDef: 0.05 }, trust: 0.5, untested: true, flags: [] } };
@@ -280,8 +280,8 @@ test('buildFightPicks: the open edge bets by their Kelly score with the page’s
   const trust = { ml: { trust: 0.5, fitted: false } };
   const out = buildFightPicks(ledger, trust, new Map(), NOW);
   assert.equal(out.sport, 'mma');
-  assert.equal(out.picks.length, 1);
-  const row = out.picks[0];
+  assert.deepEqual(out.picks.map((p) => p.id).sort(), ['1:ml', '3:ml']);
+  const row = out.picks.find((p) => p.id === '1:ml');
   assert.equal(row.pick, 'Joaquin Buckley');
   assert.equal(row.kind, 'moneyline');
   assert.equal(row.level, 'medium');

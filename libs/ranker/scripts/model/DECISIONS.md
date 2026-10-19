@@ -249,6 +249,13 @@ Started 2026-10-18, after about 20 bettor changes in one day. The owner: "keep i
   - Code identifiers, file names, JSON fields (`model`, `modelPct`, data/model) and comments are unchanged.
 - **Code:** `libs/ranker/src/engine/book/`, `account/wallet/game-lines.component.ts`, `writeup.mjs`, `writeups.mjs` `SYSTEM`, `picks.mjs` `legacyReasonOf`, `checks.mjs`, `desk.mjs` `gapGuard`, `props.mjs`, `research.mjs`, `run.mjs`, `selfcheck.mjs`.
 
+### D27. Every bet the bot placed is a pick on the Book
+- **Date:** 2026-10-18 (the owner's bug: WSH @ SF showed one of its four open bets).
+- **Rule:** every open bet on a game not started that isn't a tracked row goes in picks.json: a guard's 0.5u cut one (`context.guard`: a moved line, a questionable player, the line gate) and a practice pick (its practice tag) too, and all of them, never cut to `TOP`. `TOP` (40) is only the page's Best Bets count across the sports. Each is shown, then published once locked, so the record by band covers every placed bet.
+- **Why:** before 2026-10-13 a guard's cut was an action bet, kept off the Book. Since then a guard's cut with an edge is a real 0.5u bet, but the old filter still hid it, and `TOP` cut a 50-bet NFL Sunday.
+- **Code:** `picks.mjs` `buildPicks`, `mma-desk.mjs` `buildFightPicks`; `tests/data.test.mjs` (every open placed bet is in picks.json).
+- **Never:** a placed bet left off picks.json, whatever its guard, practice tag or rank.
+
 ## Loops
 
 Each loop below runs by itself. For each one: what it changes, how often, what it reads, and what it must never touch.

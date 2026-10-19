@@ -1,7 +1,7 @@
 // The public picks: the algorithm's best bets on the games not started yet, for the site's Book
 // (apps/<sport>/src/StaticData/model/picks.json, written by every run when they change).
 //
-//   which    every bet it's placed on a game not started, a game market's or a prop's (not a guarded one): the
+//   which    every bet it's placed on a game not started, a game market's or a prop's (a guard's cut one too, D27): the
 //            user wants the bot's bets shown, the best first. Since 2026-10-13 every bet is an edge bet (a
 //            LIKE or better): a market with no edge is tracked, not bet (desk.mjs TRACK), never a pick, never
 //            in the record. Only a showcase: nothing here feeds the bettor's learning
@@ -36,7 +36,7 @@
 //            resolveChecks; the page's "Noted" till it's after the owner's note); one closed or bet by it is gone
 //            from the list, the bet a pick like any other
 //   other   a prop's other side's price (otherOdds; null where unknown): the page shows both sides
-//   N        the 40 best a sport (TOP) by the Kelly score, the page's 40 across all the sports. An edge bet's
+//   N        every one (D27) by the Kelly score; TOP (40) the page's Best Bets across all the sports. An edge bet's
 //            band is its score's, LIKE at the least; one without an edge is low, whatever its score (a favorite
 //            at a short price isn't a strong bet: an older action bet's, still open)
 //   reason   its plain write-up (writeup.mjs): the pick and what the model sees (a prop's projection against
@@ -340,8 +340,10 @@ export function buildPicks(sport, ledger, trust, games, now, extra = {}) {
     delete b.shown;
   }
   // (a tracked row (desk.mjs TRACK: no edge, not bet) never: the page reads every pick as a bet the bot made)
-  // (a slate's practice pick shows whatever its guard's word: it's on the Book as a LIKE with its practice tag)
-  const open = ledger.bets.filter((b) => b.status === 'open' && Date.parse(b.start) > now.getTime() && (!b.context?.guard || isPracticeTop(b)) && !isTracked(b));
+  // (every bet it placed, D27: a guard's cut one too (context.guard: a moved line, a questionable player, the
+  // line gate's practice stake), bet at 0.5u with its edge since 2026-10-13, no longer the old action bet the
+  // guard once hid; a slate's practice pick on the Book as a LIKE with its practice tag)
+  const open = ledger.bets.filter((b) => b.status === 'open' && Date.parse(b.start) > now.getTime() && !isTracked(b));
   // (one a bet: a --dry run prices placed bets again in memory)
   const once = [...new Map(open.map((b) => [b.id, b])).values()];
   // (the order: its Kelly score; its edge score kept beside it)
@@ -350,13 +352,9 @@ export function buildPicks(sport, ledger, trust, games, now, extra = {}) {
     return { b, score, why, edgeScore: scoreOf(b, trust) };
   });
   scored.sort((x, y) => y.score - x.score || y.edgeScore - x.edgeScore || x.b.start.localeCompare(y.b.start));
-  const top = scored.slice(0, TOP);
-  const inTop = new Set(top.map((x) => x.b));
-  // (one shown before that's dropped out of the top, not yet locked: no longer shown)
-  for (const { b } of scored) {
-    if (inTop.has(b) || !b.shown) continue;
-    for (const k of ['shown', 'publishedP', 'publishedKelly', 'publishedLevel']) delete b[k];
-  }
+  // (all of them, D27: TOP is the Book's count for Best Bets, never a cut here; a sport's 41st bet is still on
+  // its game's list, so shown, and published once locked like the rest)
+  const top = scored;
   for (const { b, score } of top) {
     // (shown now; published once locked: at REPRICE_BY before the start, here or the next run)
     if (locked(b, now)) {
