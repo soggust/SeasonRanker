@@ -17,15 +17,12 @@ export function lowerIsBetter(stat: Pick<StatDef, 'negative' | 'format'>): boole
 }
 
 // rows: the rows shown (the Teams Included filter already applied), the first `ranked` of them ranked, in
-// the list's order; value: a row's value as its column shows it (null or not a number: none); dense: the
-// places dense style (1, 1, 2: a group's own column, whose values are its dense places, so a tile reads the
-// column's number), else competition style (1, 1, 3), a stat's
+// the list's order; value: a row's value as its column shows it (null or not a number: none)
 export function isolateRows<Row>(
   rows: Row[],
   ranked: number,
   value: (row: Row, ur: boolean) => number | null,
   lowerBetter: boolean,
-  dense = false,
 ): IsolatedRows<Row> {
   const sorted = (part: Row[], ur: boolean) => {
     const keyed = part.map((row, i) => {
@@ -43,11 +40,9 @@ export function isolateRows<Row>(
   const ur = sorted(rows.slice(ranked), true);
   // (a place: one more than the rows ahead with a better value, so tied values share it)
   const places = new Map<Row, number | null>();
-  let last = 0;
   top.forEach((entry, i) => {
     const before = top[i - 1];
-    const place = entry.v === null ? null : before && before.v === entry.v ? places.get(before.row)! : dense ? last + 1 : i + 1;
-    if (place !== null) last = place;
+    const place = entry.v === null ? null : before && before.v === entry.v ? places.get(before.row)! : i + 1;
     places.set(entry.row, place);
   });
   return { rows: [...top, ...ur].map((entry) => entry.row), places };

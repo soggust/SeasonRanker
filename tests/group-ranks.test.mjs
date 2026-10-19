@@ -151,43 +151,26 @@ test('every group starts collapsed; a group opened stays open, and closes again'
   assert.equal(service.isGroupCollapsed('QB', ids[2]), false);
 });
 
-// Sorting by a group (its name clicked): the grid's isolation over a stand-in column keyed "group:<id>", a rank
-// (lower first), so the rows go by their rank within the group, ties in the list's order, UR rows below with
-// none; the list itself, its order and what a saved list or a link keeps, untouched.
-test('a group sorts like a stat: its stand-in column, best rank first, ties in list order, UR last', async () => {
-  const { groupStat, groupOfKey, groupSortValue, isolateRows, lowerIsBetter, gridColumns, GROUP_KEY } = await loadEngine('nfl', { entry });
-  const group = { id: 'advanced', title: 'Advanced Stats' };
-  const stat = groupStat(group);
-  assert.equal(stat.key, `${GROUP_KEY}advanced`);
-  assert.equal(stat.label, 'Advanced Stats');
-  assert.equal(groupStat(group), stat, 'the same stand-in each time (the grid compares them)');
-  assert.equal(groupOfKey(stat.key), 'advanced');
-  assert.equal(groupOfKey('passYds'), null);
-  assert.equal(groupOfKey(null), null);
-  assert.equal(lowerIsBetter(stat), true, 'a rank: #1 first');
+// A group is never sorted by (the owner, 2026-10-19: the category sort went): only a stat's header sorts. The
+// collapsed header opens the group wherever it's clicked (chevron, icon or name), nothing in the grid's header
+// isolates a group, the grid's isolation has no group column, and a saved list keeps only stat columns; a share
+// link carries nothing of a sort.
+test('a group never sorts: its header only opens and closes it, a saved list and a link carry stat columns only', async () => {
+  const fs = await import('node:fs');
+  const dir = path.join(import.meta.dirname, '../libs/ranker/src/engine/skill-rankings');
+  assert.equal(fs.existsSync(path.join(dir, 'group-sort.ts')), false, 'group-sort.ts is gone');
+  const html = fs.readFileSync(path.join(dir, 'skill-rankings.component.html'), 'utf8');
+  const ts = fs.readFileSync(path.join(dir, 'skill-rankings.component.ts'), 'utf8');
+  assert.doesNotMatch(html + ts, /groupStat|groupSortValue|groupOfKey|group-sort/);
+  // (the collapsed header: one click target, the toggle)
+  const head = html.split(/\r?\n/).find((l) => l.includes('class="group-rank-col"') && l.includes('data-col'));
+  assert.match(head, /\(click\)="headToggle\(group\.id, \$event\)"/);
+  assert.doesNotMatch(head, /isolate\(/);
+  // (every isolate( in the template is a stat's)
+  for (const m of html.matchAll(/isolate\((\w+), \$event\)/g)) assert.equal(m[1], 'stat');
 
-  // The list's order (by score) and each row's rank within the group; u1, u2: UR rows under it
-  const rows = ['a', 'b', 'c', 'd', 'e', 'u1', 'u2'];
-  const before = [...rows];
-  const places = new Map([['advanced', new Map([['a', 3], ['b', 1], ['c', 4], ['d', 1], ['e', 2]])]]);
-  const value = groupSortValue(places, 'advanced');
-  const best = isolateRows(rows, 5, value, lowerIsBetter(stat), true);
-  assert.deepEqual(best.rows, ['b', 'd', 'e', 'a', 'c', 'u1', 'u2']);
-  // (dense, as the group's own places: the tiles read the column's numbers)
-  assert.deepEqual(best.rows.slice(0, 5).map((r) => best.places.get(r)), [1, 1, 2, 3, 4]);
-  // (a stat's isolation stays competition style: 1, 1, 3)
-  const comp = isolateRows(rows, 5, value, lowerIsBetter(stat));
-  assert.deepEqual(comp.rows.slice(0, 5).map((r) => comp.places.get(r)), [1, 1, 3, 4, 5]);
-  assert.equal(best.places.get('u1'), undefined);
-  // (the arrow: worst first)
-  assert.deepEqual(isolateRows(rows, 5, value, !lowerIsBetter(stat)).rows, ['c', 'a', 'e', 'b', 'd', 'u1', 'u2']);
-  // A group with no places (nothing counted): every row without a value, the list's order kept
-  assert.deepEqual(isolateRows(rows, 5, groupSortValue(places, 'box'), true).rows, rows);
-  // Only a look: the list itself as it was
-  assert.deepEqual(rows, before);
-
-  // A saved list keeps the grid's own order (playerList, never the isolated rows) and its stat columns, never
-  // a group's stand-in column
+  // A saved list keeps the grid's own order and its open groups' stat columns only
+  const { gridColumns } = await loadEngine('nfl', { entry });
   const statOf = (key) => ({ key, label: key, format: 'int' });
   const grid = {
     visibleGroups: [{ id: 'box', title: 'Basic', stats: [statOf('yds')] }, { id: 'advanced', title: 'Advanced Stats', stats: [statOf('epa')] }],
@@ -195,15 +178,13 @@ test('a group sorts like a stat: its stand-in column, best rank first, ties in l
     reader: { label: (s) => s.label },
   };
   assert.deepEqual(gridColumns(grid).map((c) => c.stat.key), ['epa']);
-  assert.ok(gridColumns({ ...grid, isCollapsed: () => true }).every((c) => !groupOfKey(c.stat.key)));
+  assert.ok(gridColumns({ ...grid, isCollapsed: () => true }).every((c) => ['yds', 'epa'].includes(c.stat.key)), 'stat columns only');
 });
 
-test('a sort by a group never reaches a share link', async () => {
+test('a share link carries no sort', async () => {
   globalThis.location = new URL('https://ranker.test/nfl/?pos=QB');
   globalThis.history = { replaceState: (_s, _t, url) => (globalThis.location = new URL(String(url))) };
   const { PositionService } = await loadEngine('nfl', { entry });
-  // (the sort is the grid's own state: the service, which writes the link, has nothing of it, so the link of
-  // a list at its defaults stays bare)
   const service = new PositionService();
   assert.equal(new URL(service.shareLink()).searchParams.has('list'), false);
   assert.ok(!JSON.stringify(service.layout).includes('group:'));
@@ -229,11 +210,11 @@ test("a group's ranks take the grid's value tint: #1 green, the last red, the mi
 });
 
 // Ties in every state: the places come from the scoring alone (the same whether the group shows open or
-// collapsed: nothing in them reads the collapse), with Combine on or off, and sorted by the group (isolation's
-// places, the rank tiles' then) the tied rows still share one place, the next score the next place (dense)
-test('nfl QB: tied Results share a place open, collapsed, combined and sorted by the group', async () => {
+// collapsed: nothing in them reads the collapse), with Combine on or off: the tied rows share one place, the
+// next score the next place (dense)
+test('nfl QB: tied Results share a place open, collapsed and combined, the next score at #2', async () => {
   const engine = await loadEngine('nfl', { entry });
-  const { presetWeights, groupSortValue, isolateRows, DEFAULT_SETTINGS } = engine;
+  const { presetWeights, DEFAULT_SETTINGS } = engine;
   for (const combineStats of [false, true]) {
     const saved = DEFAULT_SETTINGS.combineStats;
     DEFAULT_SETTINGS.combineStats = combineStats;
@@ -242,16 +223,30 @@ test('nfl QB: tied Results share a place open, collapsed, combined and sorted by
       const results = places.get('results');
       const ones = ranked.filter((row) => results.get(row) === 1);
       assert.ok(ones.length >= 2, `combine ${combineStats}: tied rows at #1`);
-      // (sorted by the group: isolation over its places, the tile's places)
-      const sorted = isolateRows(ranked, ranked.length, groupSortValue(places, 'results'), true, true);
-      assert.deepEqual(sorted.rows.slice(0, ones.length).map((row) => sorted.places.get(row)), ones.map(() => 1));
-      assert.equal(sorted.places.get(sorted.rows[ones.length]), 2, 'the next score after the tie');
-      for (const row of ranked) assert.equal(sorted.places.get(row), results.get(row), `${row.name}: the tile's place is the column's`);
+      assert.ok(ranked.some((row) => results.get(row) === 2), `combine ${combineStats}: the next score at #2`);
     } finally {
       DEFAULT_SETTINGS.combineStats = saved;
     }
   }
 });
+
+// The chevron turns a half turn as its group opens sideways (right folded, left open), eased, still under
+// reduced motion; the columns slide and fade in and out on transform and opacity only, none under reduced motion
+test('the group motion: a half-turn chevron and a transform/opacity slide, none under reduced motion', async () => {
+  const fs = await import('node:fs');
+  const html = fs.readFileSync(path.join(import.meta.dirname, '../libs/ranker/src/engine/skill-rankings/skill-rankings.component.html'), 'utf8');
+  for (const l of html.split(/\r?\n/).filter((x) => x.includes('class="group-chevron"'))) {
+    assert.match(l, /\[class\.open\]="!isCollapsed\(group\.id\)" aria-hidden="true" fontIcon="chevron_right"/);
+  }
+  const scss = fs.readFileSync(path.join(import.meta.dirname, '../libs/ranker/src/styles/components/rankings.component.scss'), 'utf8');
+  assert.match(scss, /&\.open \{\s*transform: rotate\(180deg\);/);
+  for (const name of ['group-cols-in', 'group-cols-out']) {
+    const body = scss.match(new RegExp(`@keyframes ${name} \\{([\\s\\S]*?)\\n\\}`))[1];
+    assert.doesNotMatch(body, /width|left|margin/, `${name}: transform and opacity only`);
+  }
+  assert.match(scss, /@media \(prefers-reduced-motion: reduce\) \{\s*section ul li\.player > \.col-group\.group-opening > div,\s*section ul li\.player > \.col-group\.group-closing > div \{\s*animation: none;/);
+});
+
 
 // An open group renders no rank cells: the grid's template draws a group's own column (header and rows) only
 // inside the collapsed branch, and nothing in the open branches reads a group's rank
@@ -272,4 +267,47 @@ test('the grid template: a group\'s rank column only while it is collapsed, none
     const above = lines.slice(0, i).reverse().find((x) => /^\s*(@if|\} @else)/.test(x));
     assert.equal(above.trim(), '@if (isCollapsed(group.id)) {', `line ${i + 1} reads a rank under "${above.trim()}"`);
   });
+});
+
+// A group of one stat (MLB's Teams tab Fielding: Fielding Runs alone) never collapses (the owner, 2026-10-19):
+// it starts open, a toggle, a link's or a saved list's state for it changes nothing and isn't written, while the
+// tab's other groups collapse as ever; in every sport and tab, each one-stat group is open from the start. The
+// template draws a chevron button only for a collapsible group (a one-stat group keeps its icon alone).
+test('a one-stat group is never collapsed: no chevron, its saved state ignored', async () => {
+  globalThis.location ??= new URL('https://ranker.test/mlb/');
+  globalThis.history ??= { replaceState: () => {} };
+  const { PositionService, skillGroups } = await loadEngine('mlb', { entry });
+  const service = new PositionService();
+  const fielding = skillGroups('TM').find((g) => g.id === 'fielding');
+  assert.equal(fielding?.stats.length, 1, "MLB TM's Fielding is one stat");
+  assert.equal(service.isGroupCollapsible('TM', 'fielding'), false);
+  assert.equal(service.isGroupCollapsed('TM', 'fielding'), false, 'open from the start');
+  service.toggleGroupCollapsed('TM', 'fielding');
+  assert.equal(service.isGroupCollapsed('TM', 'fielding'), false, 'a toggle changes nothing');
+  service.applyLayout({ collapsed: { TM: ['fielding'] }, expanded: { TM: ['fielding'] } });
+  assert.equal(service.isGroupCollapsed('TM', 'fielding'), false, "a link's state is ignored");
+  assert.ok(!(service.layout.expanded.TM ?? []).includes('fielding'), 'nothing written for it');
+  // (the tab's other groups: collapsed until opened, as ever)
+  const multi = skillGroups('TM').find((g) => g.stats.length > 1);
+  assert.equal(service.isGroupCollapsed('TM', multi.id), true);
+  service.toggleGroupCollapsed('TM', multi.id);
+  assert.equal(service.isGroupCollapsed('TM', multi.id), false);
+
+  // Every sport: each tab's one-stat groups open from the start, the rest collapsed
+  for (const sport of ['nfl', 'mlb', 'nba', 'nhl', 'mma']) {
+    const engine = await loadEngine(sport, { entry });
+    const fresh = new engine.PositionService();
+    for (const position of engine.POSITIONS) {
+      for (const group of engine.skillGroups(position)) {
+        assert.equal(fresh.isGroupCollapsed(position, group.id), group.stats.length > 1, `${sport} ${position} ${group.id}`);
+      }
+    }
+  }
+
+  // The template: every chevron button sits under a collapsible group's branch
+  const fs = await import('node:fs');
+  const html = fs.readFileSync(path.join(import.meta.dirname, '../libs/ranker/src/engine/skill-rankings/skill-rankings.component.html'), 'utf8');
+  const buttons = html.split(/\r?\n/).filter((l) => l.includes('class="group-chevron"'));
+  assert.ok(buttons.length >= 4);
+  for (const l of buttons) assert.match(l, /@if \(isCollapsible\(group\.id\)\) \{<button type="button" class="group-toggle"/);
 });

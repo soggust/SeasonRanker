@@ -12,6 +12,7 @@ import type { StatDef, StatGroup } from './sport';
 export interface GroupDef<Key extends string = string> {
   id: string;
   title: string;
+  fullTitle?: string;
   icon: string;
   tone: number;
   box?: boolean;

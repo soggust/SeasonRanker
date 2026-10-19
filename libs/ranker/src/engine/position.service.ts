@@ -538,14 +538,25 @@ export class PositionService {
   private expandedGroups: Partial<Record<SkillPosition, Partial<Record<StatGroupId, boolean>>>> = {};
 
   isGroupCollapsed(position: SkillPosition, id: StatGroupId): boolean {
-    return !this.expandedGroups[position]?.[id];
+    return this.isGroupCollapsible(position, id) && !this.expandedGroups[position]?.[id];
   }
+
+  // A group of one stat never collapses (the owner, 2026-10-19): it's always its one column, under the stat's
+  // own header, with no chevron; a saved list's or link's state for it is ignored
+  isGroupCollapsible(position: SkillPosition, id: StatGroupId): boolean {
+    let singles = this.singleGroups.get(position);
+    if (!singles) this.singleGroups.set(position, (singles = new Set(skillGroups(position).filter((group) => group.stats.length === 1).map((group) => group.id))));
+    return !singles.has(id);
+  }
+
+  private singleGroups = new Map<SkillPosition, Set<StatGroupId>>();
 
   toggleGroupCollapsed(position: SkillPosition, id: StatGroupId): void {
     this.setGroupExpanded(position, id, this.isGroupCollapsed(position, id));
   }
 
   private setGroupExpanded(position: SkillPosition, id: StatGroupId, open: boolean): void {
+    if (!this.isGroupCollapsible(position, id)) return;
     const { [id]: _, ...rest } = this.expandedGroups[position] ?? {};
     this.expandedGroups = { ...this.expandedGroups, [position]: open ? { ...rest, [id]: true } : rest };
   }

@@ -39,7 +39,6 @@ import { RowGlide } from './row-glide';
 import { drawRowsInView } from './rows-in-view';
 import { boxWidth, columnWidth, watchColumns } from './column-fit';
 import { TabRanker } from './tab-ranker';
-import { groupOfKey, groupSortValue, groupStat } from './group-sort';
 import { groupRankTint } from './group-ranks';
 import { RankWhy, rankWhy, scoreText, signedScore } from './rank-why';
 import { ScoreBar, maxScoreOf, scoreBar } from './score-bar';
@@ -74,6 +73,9 @@ interface GradeView extends GradeWhy {
 
 // A tab's rankings: the button bar, then the grid (a row per player, best first by the sliders, or as
 // dragged by hand), and the player card for a name clicked
+// (the viewer asks for less motion: the groups fold without their slide)
+const reducedMotion = () => typeof matchMedia === 'function' && matchMedia('(prefers-reduced-motion: reduce)').matches;
+
 @Component({
   selector: 'skill-rankings',
   templateUrl: './skill-rankings.component.html',
@@ -443,8 +445,6 @@ export class SkillRankingsComponent implements OnChanges, AfterViewInit, CardHos
 
   // A column that can be sorted by: one with values this season (a season from before it was kept has none)
   canIsolate(stat: SkillStat): boolean {
-    const group = groupOfKey(stat.key);
-    if (group) return this.groupPlaces.has(group);
     return this.reader.hasValues(stat);
   }
 
@@ -461,22 +461,14 @@ export class SkillRankingsComponent implements OnChanges, AfterViewInit, CardHos
       return;
     }
     // (on what the column shows: with Show Ranks, its places, which go by the per-game rate)
-    // (a group's own column: each row's rank within the group)
-    const group = groupOfKey(stat.key);
-    const value = group ? groupSortValue(this.groupPlaces, group) : (row: SkillPlayer, ur: boolean) => shownValue(ur ? this.urReader : this.reader, row, stat);
-    const sorted = isolateRows(this.formalRows, this.rankedShown, value, lowerIsBetter(stat) !== this.isoReversed, !!group);
+    const sorted = isolateRows(this.formalRows, this.rankedShown, (row, ur) => shownValue(ur ? this.urReader : this.reader, row, stat), lowerIsBetter(stat) !== this.isoReversed);
     this.gridRows = sorted.rows;
     this.isoPlaces = sorted.places;
   }
 
-  // A column the grid shows now (not in a collapsed group), by its key; a group's own column sorts only while
-  // the group is collapsed (open, its name is hidden: the stats' headers sort)
+  // A column the grid shows now (not in a collapsed group), by its key (a stat's only: a group never sorts,
+  // the owner, 2026-10-19)
   private shownStat(key: string): SkillStat | null {
-    const own = groupOfKey(key);
-    if (own) {
-      const group = this.visibleGroups.find((g) => g.id === own);
-      return group && this.isCollapsed(group.id) ? groupStat(group) : null;
-    }
     for (const group of this.visibleGroups) {
       if (this.isCollapsed(group.id)) continue;
       const stat = group.stats.find((s) => s.key === key);
@@ -498,7 +490,7 @@ export class SkillRankingsComponent implements OnChanges, AfterViewInit, CardHos
     this.closeWhy();
     this.isolatedKey = stat.key;
     this.isoReversed = false;
-    this.sayIso(`Sorted by ${this.statName(stat)} only, ${lowerIsBetter(stat) ? 'lowest' : 'highest'} first. The ranking is unchanged; Escape goes back`);
+    this.sayIso(`Sorted by ${this.reader.name(stat)} only, ${lowerIsBetter(stat) ? 'lowest' : 'highest'} first. The ranking is unchanged; Escape goes back`);
     // (from the top, the best by it in view; the rows glide when the list is there already)
     const list = this.rankingsList?.nativeElement;
     const from = list?.scrollTop ? null : this.glide.measure(list);
@@ -550,7 +542,7 @@ export class SkillRankingsComponent implements OnChanges, AfterViewInit, CardHos
 
   // A header's name for screen readers: what a press does
   isoLabel(stat: SkillStat): string {
-    const name = this.statName(stat);
+    const name = this.reader.name(stat);
     return this.isolatedKey === stat.key ? `Sorted by ${name} only: press to go back to the ranking` : `Sort by ${name} only`;
   }
 
@@ -770,9 +762,8 @@ export class SkillRankingsComponent implements OnChanges, AfterViewInit, CardHos
   // Header hover: the stat written out, plus the list average of what the column shows, and what a click does
   // (can: false, no values to sort by, so no click to offer)
   labelTitle(stat: SkillStat, can = true): string {
-    const name = this.statName(stat);
-    // (a group's own column: no average)
-    const avg = groupOfKey(stat.key) ? null : this.reader.averageText(stat);
+    const name = this.reader.name(stat);
+    const avg = this.reader.averageText(stat);
     if (!can) return avg === null ? name : `${name} (Avg: ${avg})`;
     const click = this.isolatedKey === stat.key ? 'Click to go back to the ranking (Esc)' : 'Click to sort by it alone';
     return `${avg === null ? name : `${name} (Avg: ${avg})`}\n${click}`;
@@ -847,7 +838,7 @@ export class SkillRankingsComponent implements OnChanges, AfterViewInit, CardHos
     const total = this.totals.get(player);
     // (isolated: its place by the stat, then the ranking's)
     if (this.isoStat) {
-      const name = this.statName(this.isoStat);
+      const name = this.reader.name(this.isoStat);
       const place = this.isoPlace(player);
       return `${place === null ? `No ${name}` : `#${place} by ${name}`} · #${index + 1} overall${total === undefined ? '' : ` · Score ${scoreText(total)}`}`;
     }
@@ -1181,8 +1172,41 @@ export class SkillRankingsComponent implements OnChanges, AfterViewInit, CardHos
     return this.positionService.isGroupCollapsed(this.position, id);
   }
 
+  // A group of one stat: never collapsed, no chevron, no line to click (its stat's header sorts as usual)
+  isCollapsible(id: StatGroupId): boolean {
+    return this.positionService.isGroupCollapsible(this.position, id);
+  }
+
   toggleCollapsed(id: StatGroupId, event: Event): void {
     event.stopPropagation();
+    if (!this.isCollapsible(id)) return;
+    // (the motion: an opening group's columns slide and fade in from its edge; a closing one's out first, then
+    // it folds; none under reduced motion)
+    if (this.groupMotion?.dir === 'closing') return;
+    const opening = this.isCollapsed(id);
+    clearTimeout(this.groupMotionTimer);
+    if (!opening && !reducedMotion()) {
+      this.groupMotion = { id, dir: 'closing' };
+      this.groupMotionTimer = setTimeout(() => {
+        this.groupMotion = null;
+        this.foldGroup(id);
+      }, 170);
+      return;
+    }
+    this.groupMotion = opening && !reducedMotion() ? { id, dir: 'opening' } : null;
+    if (this.groupMotion) this.groupMotionTimer = setTimeout(() => (this.groupMotion = null), 260);
+    this.foldGroup(id);
+  }
+
+  // A group's columns in motion (the CSS: group-opening, group-closing on its cells)
+  groupMotion: { id: StatGroupId; dir: 'opening' | 'closing' } | null = null;
+  private groupMotionTimer: ReturnType<typeof setTimeout> | undefined;
+
+  groupMotionOf(id: StatGroupId): 'opening' | 'closing' | null {
+    return this.groupMotion?.id === id ? this.groupMotion.dir : null;
+  }
+
+  private foldGroup(id: StatGroupId): void {
     this.positionService.toggleGroupCollapsed(this.position, id);
     // (the isolated column folded away: back to the ranking)
     if (this.isolatedKey && !this.shownStat(this.isolatedKey)) this.endIsolation();
@@ -1195,8 +1219,8 @@ export class SkillRankingsComponent implements OnChanges, AfterViewInit, CardHos
     this.toggleCollapsed(id, event);
   }
 
-  collapseTitle(group: { id: StatGroupId; title: string }): string {
-    return `${group.title}: Click to ${this.isCollapsed(group.id) ? 'Expand' : 'Collapse'}`;
+  collapseTitle(group: { id: StatGroupId; title: string; fullTitle?: string }): string {
+    return `${group.fullTitle ?? group.title}: Click to ${this.isCollapsed(group.id) ? 'Expand' : 'Collapse'}`;
   }
 
   // A collapsed group's strip: each ranked row's place within the group (what its stats added to the row's
@@ -1224,22 +1248,23 @@ export class SkillRankingsComponent implements OnChanges, AfterViewInit, CardHos
     return this.settings.colorValues ? groupRankTint(this.groupPlaces.get(id), place) : null;
   }
 
-  groupRankTitle(group: { title: string }): string {
-    return `Rank within ${group.title}`;
+  groupRankTitle(group: { title: string; fullTitle?: string }): string {
+    return `Rank within ${group.fullTitle ?? group.title}`;
   }
 
-  // A group's own column, as a column the grid sorts by (group-sort.ts)
-  readonly groupStat = groupStat;
-
-  // A column's name in words: a stat's, or a group's own column ("Rank within Advanced Stats")
-  statName(stat: SkillStat): string {
-    const group = groupOfKey(stat.key);
-    return group ? `Rank within ${stat.label}` : this.reader.name(stat);
+  // A collapsed group's own column: its width, measured from its header like a stat's (column-fit.ts), keyed
+  // "group-<id>"
+  groupCol(group: { id: StatGroupId }): string {
+    return `group-${group.id}`;
   }
 
-  // ...and as its header reads
-  statLabel(stat: SkillStat): string {
-    return groupOfKey(stat.key) ? stat.label : this.reader.label(stat);
+  readonly groupWidth = (group: { id: StatGroupId }) => columnWidth(this.groupCol(group));
+
+  // The collapsed header clicked anywhere (its chevron, icon or name): the group opens. A group's column is
+  // never sorted by (the owner, 2026-10-19): only a stat's header sorts.
+  headToggle(id: StatGroupId, event: Event): void {
+    if ((event.target as Element | null)?.closest('.group-toggle')) return;
+    this.toggleCollapsed(id, event);
   }
 
   // Games in a row's record its stats don't cover yet (the data's statsBehind; the current season only)
@@ -1349,7 +1374,7 @@ export class SkillRankingsComponent implements OnChanges, AfterViewInit, CardHos
   // The list as text, then "List copied" for two seconds, just under the button
   // (isolated: the rows as shown, each at its place by the stat and with its value, under a line saying so)
   copyList(button: HTMLElement): void {
-    const note = this.isoStat ? `Sorted by ${this.statName(this.isoStat)}${this.isoReversed ? ', worst first' : ''}` : undefined;
+    const note = this.isoStat ? `Sorted by ${this.reader.name(this.isoStat)}${this.isoReversed ? ', worst first' : ''}` : undefined;
     copyRankingsToClipboard(this.rankingsList.nativeElement, this.settings.copyStats, note)
       .then(() => this.toast(button, 'List copied to clipboard!'))
       .catch((err) => console.error('Failed to copy: ', err));
@@ -1367,14 +1392,14 @@ export class SkillRankingsComponent implements OnChanges, AfterViewInit, CardHos
     // (a team's own row, or a sport without teams: no team beside the name)
     const teams = !SPORT.noTeams && !SPORT.teamTabs?.includes(this.position);
     const text = isolatedCopyText(
-      this.statName(stat),
+      this.reader.name(stat),
       this.gridRows,
       this.rankedShown,
       (player) => ({
         place: this.isoPlace(player),
         name: player.name,
         team: teams ? isolatedTeam(this.teamNameOf(player), player.teamLogo) : null,
-        value: groupOfKey(stat.key) ? String(this.groupPlace(player, groupOfKey(stat.key)!) ?? '-') : stat.format === 'recent' ? recentText(this.reader.lastFive(player)) : this.reader.cellText(player, stat),
+        value: stat.format === 'recent' ? recentText(this.reader.lastFive(player)) : this.reader.cellText(player, stat),
       }),
       this.isoReversed,
     );

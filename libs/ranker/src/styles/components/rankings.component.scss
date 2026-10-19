@@ -1329,11 +1329,19 @@ section ul li.player.header-row:hover {
       transform: translateY(-50%);
       z-index: 1;
 
+      // (it points right while the group is folded and turns a half turn to point left as it opens: the
+      // group opens and closes sideways)
       .group-chevron {
         color: v.$neutral;
         @include v.icon-size(16px);
         margin-right: 4px;
-        transition: color v.$t-fast ease;
+        transition:
+          color v.$t-fast ease,
+          transform 0.2s v.$ease-out;
+
+        &.open {
+          transform: rotate(180deg);
+        }
       }
 
       .group-icon {
@@ -2391,4 +2399,47 @@ section ul li.player:not(.header-row) .group-line {
 section ul li.player:not(.header-row) > .col-group > div:has(> .group-line:hover)::before {
   filter: brightness(1.6);
   opacity: 0.9 !important;
+}
+
+// A group of one stat (never collapsible, the owner, 2026-10-19): its icon stays in the header's slot, with no
+// chevron and nothing to click (a click falls through to the stat's header, which sorts as usual), and its
+// line down the rows is only a line
+section ul li.header-row > .col-group > div > .group-toggle.single {
+  cursor: default;
+  pointer-events: none;
+}
+
+section ul li.player:not(.header-row) .group-line.single {
+  display: none;
+}
+
+// A group opening: its columns slide and fade in from its edge; closing, out the same way before it folds
+// (skill-rankings.component.ts: groupMotion). Transform and opacity only, so nothing is laid out again.
+@keyframes group-cols-in {
+  from {
+    opacity: 0;
+    transform: translateX(-10px);
+  }
+}
+
+@keyframes group-cols-out {
+  to {
+    opacity: 0;
+    transform: translateX(-10px);
+  }
+}
+
+section ul li.player > .col-group.group-opening:not(.collapsed) > div {
+  animation: group-cols-in 0.2s v.$ease-out backwards;
+}
+
+section ul li.player > .col-group.group-closing > div {
+  animation: group-cols-out 0.17s v.$ease-out forwards;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  section ul li.player > .col-group.group-opening > div,
+  section ul li.player > .col-group.group-closing > div {
+    animation: none;
+  }
 }

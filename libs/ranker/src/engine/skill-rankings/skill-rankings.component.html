@@ -19,7 +19,7 @@
           @if (isoStat; as iso) {
             <span class="isolate-chip">
               <mat-icon class="isolate-chip-icon" aria-hidden="true" fontIcon="sort"></mat-icon>
-              <span class="isolate-chip-text"><span class="isolate-chip-by">Sorted by </span><b>{{ statLabel(iso) }}</b><span class="isolate-chip-hint"> · Esc to clear</span></span>
+              <span class="isolate-chip-text"><span class="isolate-chip-by">Sorted by </span><b>{{ reader.label(iso) }}</b><span class="isolate-chip-hint"> · Esc to clear</span></span>
               <button type="button" class="isolate-chip-close" aria-label="Back to the ranking" title="Back to the ranking (Esc)" (click)="endIsolation(true)">
                 <mat-icon aria-hidden="true" fontIcon="close"></mat-icon>
               </button>
@@ -31,21 +31,19 @@
           }
         </div>
         @for (group of groups; track group.id) {
-          <div class="col-group" [ngClass]="'group-' + group.tone" [class.collapsed]="isCollapsed(group.id)">
+          <div class="col-group" [ngClass]="'group-' + group.tone" [class.collapsed]="isCollapsed(group.id)" [class.group-opening]="groupMotionOf(group.id) === 'opening'" [class.group-closing]="groupMotionOf(group.id) === 'closing'">
             <!-- Collapsed, a group is its own column alone: the chevron and the group's icon in the slot at its start
                  (a click opens the group again), its name (a click sorts the rows by their rank within it, as a stat's
                  header does) and each row's rank within the group under it. Open, the group is its stat columns alone,
                  the chevron and icon in the first one's slot. -->
             @if (isCollapsed(group.id)) {
-              @let gs = groupStat(group);
-              @let gcan = canIsolate(gs);
-              <div class="group-rank-col" [attr.data-col]="gs.key" [style.--label-w]="columnWidth(gs)" [class.isolated]="isolatedKey === gs.key" [class.isolatable]="gcan" (click)="isolate(gs, $event)">
-                <button type="button" class="group-toggle" [title]="collapseTitle(group)" [attr.aria-label]="collapseTitle(group)" [attr.aria-expanded]="!isCollapsed(group.id)" (click)="toggleCollapsed(group.id, $event)"><mat-icon class="group-chevron" aria-hidden="true" [fontIcon]="isCollapsed(group.id) ? 'chevron_right' : 'expand_more'"></mat-icon><mat-icon class="group-icon" aria-hidden="true" [fontIcon]="group.icon"></mat-icon></button>
-                <p class="stat-label" [title]="labelTitle(gs, gcan)" [attr.role]="gcan ? 'button' : null" [attr.tabindex]="gcan ? 0 : null" [attr.aria-pressed]="gcan ? isolatedKey === gs.key : null" [attr.aria-label]="gcan ? isoLabel(gs) : null" (keydown.enter)="isolate(gs, $event)" (keydown.space)="isolate(gs, $event)">{{ group.title }}</p>@if (isolatedKey === gs.key) {<span class="isolate-tools" (pointerdown)="$event.stopPropagation()" (keydown.enter)="$event.stopPropagation()" (keydown.space)="$event.stopPropagation()"><button type="button" class="isolate-dir" [title]="isoDirTitle()" [attr.aria-label]="isoDirTitle()" (click)="flipIsoDir($event)"><mat-icon aria-hidden="true" [fontIcon]="isoAscending ? 'arrow_upward' : 'arrow_downward'"></mat-icon></button><button type="button" class="isolate-dir isolate-close" title="Back to the ranking (Esc)" aria-label="Back to the ranking" (click)="$event.stopPropagation(); endIsolation(true)"><mat-icon aria-hidden="true" fontIcon="close"></mat-icon></button></span>}
+              <div class="group-rank-col" [attr.data-col]="groupCol(group)" [style.--label-w]="groupWidth(group)" [title]="collapseTitle(group)" (click)="headToggle(group.id, $event)">
+                @if (isCollapsible(group.id)) {<button type="button" class="group-toggle" [title]="collapseTitle(group)" [attr.aria-label]="collapseTitle(group)" [attr.aria-expanded]="!isCollapsed(group.id)" (click)="toggleCollapsed(group.id, $event)"><mat-icon class="group-chevron" [class.open]="!isCollapsed(group.id)" aria-hidden="true" fontIcon="chevron_right"></mat-icon><mat-icon class="group-icon" aria-hidden="true" [fontIcon]="group.icon"></mat-icon></button>} @else {<span class="group-toggle single" [title]="group.fullTitle ?? group.title"><mat-icon class="group-icon" aria-hidden="true" [fontIcon]="group.icon"></mat-icon></span>}
+                <p class="stat-label">{{ group.title }}</p>
               </div>
             } @else if (group.box) {
               <div class="box support-box" [attr.data-box]="group.id" [style.min-width]="boxWidth(group)">
-                <button type="button" class="group-toggle" [title]="collapseTitle(group)" [attr.aria-label]="collapseTitle(group)" [attr.aria-expanded]="!isCollapsed(group.id)" (click)="toggleCollapsed(group.id, $event)"><mat-icon class="group-chevron" aria-hidden="true" [fontIcon]="isCollapsed(group.id) ? 'chevron_right' : 'expand_more'"></mat-icon><mat-icon class="group-icon" aria-hidden="true" [fontIcon]="group.icon"></mat-icon></button>
+                @if (isCollapsible(group.id)) {<button type="button" class="group-toggle" [title]="collapseTitle(group)" [attr.aria-label]="collapseTitle(group)" [attr.aria-expanded]="!isCollapsed(group.id)" (click)="toggleCollapsed(group.id, $event)"><mat-icon class="group-chevron" [class.open]="!isCollapsed(group.id)" aria-hidden="true" fontIcon="chevron_right"></mat-icon><mat-icon class="group-icon" aria-hidden="true" [fontIcon]="group.icon"></mat-icon></button>} @else {<span class="group-toggle single" [title]="group.fullTitle ?? group.title"><mat-icon class="group-icon" aria-hidden="true" [fontIcon]="group.icon"></mat-icon></span>}
                 @for (stat of group.stats; track stat.key) {
                   @let can = canIsolate(stat);
                   <div [columnDrag]="{ list: position + '.' + group.id, id: columnId(stat) }" [attr.data-col]="stat.key" [style.--label-w]="columnWidth(stat)" [class.isolated]="isolatedKey === stat.key" [class.isolatable]="can" (click)="isolate(stat, $event)">
@@ -59,7 +57,7 @@
                 @if (stat.format === 'recent') {
                   <div class="box support-box recent-box" [columnDrag]="{ list: position + '.' + group.id, id: columnId(stat) }" [attr.data-col]="stat.key" [style.--label-w]="columnWidth(stat)" [class.isolated]="isolatedKey === stat.key" [class.isolatable]="can" (click)="isolate(stat, $event)">
                     @if (first) {
-                      <button type="button" class="group-toggle" [title]="collapseTitle(group)" [attr.aria-label]="collapseTitle(group)" [attr.aria-expanded]="!isCollapsed(group.id)" (click)="toggleCollapsed(group.id, $event)"><mat-icon class="group-chevron" aria-hidden="true" [fontIcon]="isCollapsed(group.id) ? 'chevron_right' : 'expand_more'"></mat-icon><mat-icon class="group-icon" aria-hidden="true" [fontIcon]="group.icon"></mat-icon></button>
+                      @if (isCollapsible(group.id)) {<button type="button" class="group-toggle" [title]="collapseTitle(group)" [attr.aria-label]="collapseTitle(group)" [attr.aria-expanded]="!isCollapsed(group.id)" (click)="toggleCollapsed(group.id, $event)"><mat-icon class="group-chevron" [class.open]="!isCollapsed(group.id)" aria-hidden="true" fontIcon="chevron_right"></mat-icon><mat-icon class="group-icon" aria-hidden="true" [fontIcon]="group.icon"></mat-icon></button>} @else {<span class="group-toggle single" [title]="group.fullTitle ?? group.title"><mat-icon class="group-icon" aria-hidden="true" [fontIcon]="group.icon"></mat-icon></span>}
                     }
                     <div class="last-five">
                       <div></div>
@@ -69,7 +67,7 @@
                 } @else {
                   <div [columnDrag]="{ list: position + '.' + group.id, id: columnId(stat) }" [attr.data-col]="stat.key" [style.--label-w]="columnWidth(stat)" [class.isolated]="isolatedKey === stat.key" [class.isolatable]="can" (click)="isolate(stat, $event)">
                     @if (first) {
-                      <button type="button" class="group-toggle" [title]="collapseTitle(group)" [attr.aria-label]="collapseTitle(group)" [attr.aria-expanded]="!isCollapsed(group.id)" (click)="toggleCollapsed(group.id, $event)"><mat-icon class="group-chevron" aria-hidden="true" [fontIcon]="isCollapsed(group.id) ? 'chevron_right' : 'expand_more'"></mat-icon><mat-icon class="group-icon" aria-hidden="true" [fontIcon]="group.icon"></mat-icon></button>
+                      @if (isCollapsible(group.id)) {<button type="button" class="group-toggle" [title]="collapseTitle(group)" [attr.aria-label]="collapseTitle(group)" [attr.aria-expanded]="!isCollapsed(group.id)" (click)="toggleCollapsed(group.id, $event)"><mat-icon class="group-chevron" [class.open]="!isCollapsed(group.id)" aria-hidden="true" fontIcon="chevron_right"></mat-icon><mat-icon class="group-icon" aria-hidden="true" [fontIcon]="group.icon"></mat-icon></button>} @else {<span class="group-toggle single" [title]="group.fullTitle ?? group.title"><mat-icon class="group-icon" aria-hidden="true" [fontIcon]="group.icon"></mat-icon></span>}
                     }
                     @let parts = labelParts(stat);<p class="stat-label" [title]="labelTitle(stat, can)" [attr.role]="can ? 'button' : null" [attr.tabindex]="can ? 0 : null" [attr.aria-pressed]="can ? isolatedKey === stat.key : null" [attr.aria-label]="can ? isoLabel(stat) : null" (keydown.enter)="isolate(stat, $event)" (keydown.space)="isolate(stat, $event)">{{ parts[0] }}@if (parts[1]; as tag) {<span class="label-tag">{{ ' ' + tag }}</span>}</p>@if (isolatedKey === stat.key) {<span class="isolate-tools" (pointerdown)="$event.stopPropagation()" (keydown.enter)="$event.stopPropagation()" (keydown.space)="$event.stopPropagation()"><button type="button" class="isolate-dir" [title]="isoDirTitle()" [attr.aria-label]="isoDirTitle()" (click)="flipIsoDir($event)"><mat-icon aria-hidden="true" [fontIcon]="isoAscending ? 'arrow_upward' : 'arrow_downward'"></mat-icon></button><button type="button" class="isolate-dir isolate-close" title="Back to the ranking (Esc)" aria-label="Back to the ranking" (click)="$event.stopPropagation(); endIsolation(true)"><mat-icon aria-hidden="true" fontIcon="close"></mat-icon></button></span>}
                   </div>
@@ -134,7 +132,7 @@
               tabindex="0"
               aria-haspopup="dialog"
               [attr.aria-expanded]="why?.id === player.gsisId"
-              [attr.aria-label]="ur ? player.name + ': unranked (UR)' : (isoStat ? (isoAt === null ? 'No value' : '#' + isoAt) + ' by ' + statName(isoStat) + ', #' + (n + 1) + ' overall' : '#' + (n + 1)) + ': why ' + player.name + ' ranks here'"
+              [attr.aria-label]="ur ? player.name + ': unranked (UR)' : (isoStat ? (isoAt === null ? 'No value' : '#' + isoAt) + ' by ' + reader.name(isoStat) + ', #' + (n + 1) + ' overall' : '#' + (n + 1)) + ': why ' + player.name + ' ranks here'"
               [title]="rankTitle(player, n, i)"
               (click)="toggleWhy(player, n, $event)"
               (keydown.enter)="toggleWhy(player, n, $event)"
@@ -213,15 +211,14 @@
           </div>
 
           @for (group of groups; track group.id) {
-            <div class="col-group" [ngClass]="'group-' + group.tone" [class.collapsed]="isCollapsed(group.id)">
+            <div class="col-group" [ngClass]="'group-' + group.tone" [class.collapsed]="isCollapsed(group.id)" [class.group-opening]="groupMotionOf(group.id) === 'opening'" [class.group-closing]="groupMotionOf(group.id) === 'closing'">
               @if (isCollapsed(group.id)) {
                 <!-- A collapsed group: its own column alone, the row's rank within the group, a plain value like any
                      cell's, tinted like one (a dash: a UR row, or none of the group's stats counted). Only a look. -->
-                @let gs = groupStat(group);
                 @let place = groupPlace(player, group.id);
-                <div class="group-rank-col" [class.isolated]="isolatedKey === gs.key" [style.--label-w]="columnWidth(gs)">
+                <div class="group-rank-col" [style.--label-w]="groupWidth(group)">
                   <!-- (the group's line down the row: a click collapses or opens the group, as its chevron does) -->
-                  <span class="group-line" aria-hidden="true" [title]="collapseTitle(group)" (click)="lineToggle(group.id, $event)"></span>
+                  <span class="group-line" [class.single]="!isCollapsible(group.id)" aria-hidden="true" [title]="isCollapsible(group.id) ? collapseTitle(group) : ''" (click)="lineToggle(group.id, $event)"></span>
                   <p [style.color]="groupPlaceColor(place, group.id)">{{ place ?? '-' }}</p>
                   <p class="stat-label" [title]="place === null ? groupRankTitle(group) + ': none' : groupRankTitle(group) + ': #' + place">{{ group.title }}</p>
                 </div>
@@ -229,7 +226,7 @@
                 <!-- Support grades share a dark box -->
                 <div class="box support-box" [attr.data-box]="group.id" [style.min-width]="boxWidth(group)">
                   <!-- (the group's line down the row: a click collapses or opens the group, as its chevron does) -->
-                  <span class="group-line" aria-hidden="true" [title]="collapseTitle(group)" (click)="lineToggle(group.id, $event)"></span>
+                  <span class="group-line" [class.single]="!isCollapsible(group.id)" aria-hidden="true" [title]="isCollapsible(group.id) ? collapseTitle(group) : ''" (click)="lineToggle(group.id, $event)"></span>
                   @for (stat of group.stats; track stat.key) {
                     @if (stat.format === 'grade' && r.value(player, stat) !== null) {
                       <!-- A grade: a click (or Enter / Space) opens what makes it (its inputs, their weights, the curve) -->
@@ -264,7 +261,7 @@
                     <!-- The latest results as squares (the game log's W and L), newest first; empty slots for games not
                          played yet. The pointer resting on them loads the team's scores for their hovers -->
                     <div class="box support-box recent-box" [class.isolated]="isolatedKey === stat.key" [style.--label-w]="columnWidth(stat)">
-                      @if (first) {<span class="group-line" aria-hidden="true" [title]="collapseTitle(group)" (click)="lineToggle(group.id, $event)"></span>}
+                      @if (first) {<span class="group-line" [class.single]="!isCollapsible(group.id)" aria-hidden="true" [title]="isCollapsible(group.id) ? collapseTitle(group) : ''" (click)="lineToggle(group.id, $event)"></span>}
                       <div class="last-five" [class.many]="manyRecent" [recentPrime]="player" [recentSeason]="season">
                         <div>
                           @for (result of r.lastFive(player); track $index) {
@@ -288,14 +285,14 @@
                   } @else if (stat.format === 'rank' && r.value(player, stat) === 0) {
                     <!-- Rank 0, above #1: the champion (the UFC's), shown as the sport's trophy -->
                     <div [class.isolated]="isolatedKey === stat.key" [style.--label-w]="columnWidth(stat)">
-                      @if (first) {<span class="group-line" aria-hidden="true" [title]="collapseTitle(group)" (click)="lineToggle(group.id, $event)"></span>}
+                      @if (first) {<span class="group-line" [class.single]="!isCollapsible(group.id)" aria-hidden="true" [title]="isCollapsible(group.id) ? collapseTitle(group) : ''" (click)="lineToggle(group.id, $event)"></span>}
                       <p class="rank-value"><span class="trophy rank-champ" title="Champion"></span></p>
                       <p class="stat-label" [title]="valueTitle(player, stat)">{{ r.label(stat) }}</p>
                     </div>
                   } @else if (stat.format === 'rank' && r.value(player, stat) !== null) {
                     <!-- League rank: a small dimmed "#" and a small "(t)" for ties, so the number reads first -->
                     <div [class.isolated]="isolatedKey === stat.key" [style.--label-w]="columnWidth(stat)">
-                      @if (first) {<span class="group-line" aria-hidden="true" [title]="collapseTitle(group)" (click)="lineToggle(group.id, $event)"></span>}
+                      @if (first) {<span class="group-line" [class.single]="!isCollapsible(group.id)" aria-hidden="true" [title]="isCollapsible(group.id) ? collapseTitle(group) : ''" (click)="lineToggle(group.id, $event)"></span>}
                       <p class="rank-value" [style.color]="r.valueColor(player, stat)"
                         ><span class="rank-hash">#</span>{{ r.value(player, stat) }}@if (r.rankTied(player, stat)) {<span class="rank-tie">(t)</span>}</p
                       >
@@ -304,7 +301,7 @@
                   } @else if (r.showsRank(stat) && r.listRank(player, stat); as place) {
                     <!-- Show Ranks: the value's place in the list, styled like a rank column -->
                     <div [class.isolated]="isolatedKey === stat.key" [style.--label-w]="columnWidth(stat)">
-                      @if (first) {<span class="group-line" aria-hidden="true" [title]="collapseTitle(group)" (click)="lineToggle(group.id, $event)"></span>}
+                      @if (first) {<span class="group-line" [class.single]="!isCollapsible(group.id)" aria-hidden="true" [title]="isCollapsible(group.id) ? collapseTitle(group) : ''" (click)="lineToggle(group.id, $event)"></span>}
                       <p class="rank-value" [style.color]="r.gradeColor(player, stat) ?? r.valueColor(player, stat)"
                         ><span class="rank-hash">#</span>{{ place.rank }}@if (place.tied) {<span class="rank-tie">(t)</span>}</p
                       >
@@ -312,7 +309,7 @@
                     </div>
                   } @else {
                     <div [class.isolated]="isolatedKey === stat.key" [style.--label-w]="columnWidth(stat)">
-                      @if (first) {<span class="group-line" aria-hidden="true" [title]="collapseTitle(group)" (click)="lineToggle(group.id, $event)"></span>}
+                      @if (first) {<span class="group-line" [class.single]="!isCollapsible(group.id)" aria-hidden="true" [title]="isCollapsible(group.id) ? collapseTitle(group) : ''" (click)="lineToggle(group.id, $event)"></span>}
                       <p [style.color]="r.gradeColor(player, stat) ?? r.valueColor(player, stat)">{{ r.cellText(player, stat) }}</p>
                       <p class="stat-label" [title]="valueTitle(player, stat)">
                         {{ r.label(stat) }}

@@ -1713,7 +1713,7 @@ export const GROUPS: Record<SkillPosition, Group[]> = {
     results(['winPct', 'recent', 'pointDiffPerGame', 'turnoverDiffPerGame', 'netEpa', 'oneScoreWinPct', 'topPerGame']),
     offense(['offRank', 'offEpa']),
     defense(['defRank', 'defEpaAllowed']),
-    group('special', 'Special Teams', 'sports_football', 4, ['stEpaPerGame']),
+    { ...group('special', 'Special', 'sports_football', 4, ['stEpaPerGame']), fullTitle: 'Special Teams' },
     support(['qbPlay', 'rbPlay', 'weapons', 'oline', 'defense', 'coaching']),
   ],
   OFF: [

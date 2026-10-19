@@ -98,6 +98,8 @@ export type StatGroupId = string;
 export interface StatGroup<Stat extends StatDef = StatDef> {
   id: StatGroupId;
   title: string;
+  // (the name written out, for hovers, when the title is short for it: "Special" for Special Teams)
+  fullTitle?: string;
   icon: string;
   tone: number;
   box?: boolean;
