@@ -133,7 +133,7 @@ import { anchorText, readAnchor } from './anchor.mjs';
 import { MAX_LAST, OUT_STATUS, REPRICE_BY, cadenceOf, inputChanges, inputsOf, lastChanceOf, lineupNow, lostAsk, newsMissing, phaseOf, propAsk, putInactives, reach } from './timing.mjs';
 import { fitMargins } from './margins.mjs';
 import { ROSTER_MIN, eventOf, gameOf, json, linesOf, roster, scoreboard, teamIds, teamSchedule, ymd } from './espn.mjs';
-import { adjust, expect, fit, fitContext, gateOf, replay, round } from './ratings.mjs';
+import { adjust, dynamicTerms, expect, fit, fitContext, gateOf, replay, round, setDynamic } from './ratings.mjs';
 import { OPTIONAL, enrich, featurize, gather } from './context.mjs';
 import { RECHECK, finalSummary, postmortems, propPostmortem, recheckSummary, usualRoles } from './postmortem.mjs';
 import { CLV_V, closeOf, closingLines, clvOf, clvSummary, propCarry, propCloseOf, revalueClv } from './clv.mjs';
@@ -924,6 +924,8 @@ function wantSource(r) {
 function expectFor(r, game) {
   const base = expect(r.teams, game, r.params);
   const f = r.feats?.feats.get(game.id);
+  // (the dynamic terms (lopsidedT): the ratings' own expectation of this game, as the replay sets them for a final)
+  if (f) setDynamic(dynamicTerms(r.feats.terms), f, base);
   const adjM = f && r.weights ? f.m.reduce((s, v, i) => s + v * r.weights.m[i], 0) : 0;
   const adjT = f && r.weights ? f.t.reduce((s, v, i) => s + v * r.weights.t[i], 0) : 0;
   return { exp: adjust(base, adjM, adjT), f, adjM, adjT };
@@ -2917,6 +2919,8 @@ function contextState(fitted, weights) {
       unit: t.unit,
       size: sig(weights?.[on][i] ?? 0),
       kept: !fitted.ctx.off.has(gateOf(t)),
+      // (a soft term (context.mjs SCHEDULE_TERMS, D34): in at its own ridge, never gated one by one)
+      ...(t.soft ? { soft: true } : {}),
       games: fitted.seen[on][i],
       gain: fitted.gain[gateOf(t)] === undefined ? null : round(fitted.gain[gateOf(t)] * 100, 3),
     })),
@@ -2945,7 +2949,7 @@ function contextState(fitted, weights) {
       });
     }
   }
-  return { lambda: fitted.ctx.lambda, lambdaParks: fitted.ctx.lambdaSet ?? undefined, terms, test: { games: fitted.after.n, before: test(fitted.before), after: test(fitted.after) } };
+  return { lambda: fitted.ctx.lambda, lambdaParks: fitted.ctx.lambdaSet ?? undefined, lambdaSoft: fitted.ctx.lambdaSoft ?? undefined, terms, test: { games: fitted.after.n, before: test(fitted.before), after: test(fitted.after) } };
 }
 
 const DRY = process.argv.includes('--dry');

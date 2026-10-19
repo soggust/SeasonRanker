@@ -94,9 +94,11 @@ export function replay(games, params, burnIn = 0.3, ctx = null, onGame = null) {
   let totalAbs = 0;
   let winLoss = 0;
   let winHits = 0;
+  const dyn = ctx ? dynamicTerms(ctx.terms) : [];
   finals.forEach((g, i) => {
     const base = expect(state, g, params);
     const f = ctx?.feats.get(g.id);
+    if (f && dyn.length) setDynamic(dyn, f, base);
     const exp = f ? adjust(base, fitM.predict(f.m), fitT.predict(f.t)) : base;
     onGame?.(g, exp);
     if (i >= from) {
@@ -135,6 +137,15 @@ export function replay(games, params, burnIn = 0.3, ctx = null, onGame = null) {
 // A term's gate: what's kept or left out together (a park's terms come and go as one; any other term alone)
 export const gateOf = (t) => t.gate ?? t.key;
 
+// A dynamic term (context.mjs lopsidedT, D34): its value is the ratings' own expectation of the game, set the moment
+// the game is predicted, before the context's terms are added on. dyn: { of: 'absMargin', center }: how far the
+// expected margin, either way, sits over the sport's usual. The same for a final in the replay and for a coming
+// game (run.mjs expectFor), so there's no look-ahead: the expectation is from the games before it
+export const dynamicTerms = (terms) => ['m', 't'].flatMap((on) => terms[on].map((t, i) => (t.dyn ? { on, i, t } : null)).filter(Boolean));
+export function setDynamic(dyn, f, base) {
+  for (const { on, i, t } of dyn) f[on][i] = t.dyn.of === 'absMargin' ? Math.abs(base.margin) - t.dyn.center : 0;
+}
+
 // One side's terms (m or t) learned online: the running sums of least squares, solved when asked, each term's
 // row starting with lambda made-up games of its typical size and no effect (scale: its typical square). With
 // many terms (MLB's parks) it's solved again every few games rather than every one: still only ever from
@@ -142,7 +153,9 @@ export const gateOf = (t) => t.gate ?? t.key;
 function online(ctx, on) {
   const k = ctx.terms[on].length;
   const off = ctx.terms[on].map((t) => ctx.off.has(gateOf(t)));
-  const lambda = ctx.terms[on].map((t) => (t.gate && ctx.lambdaSet ? ctx.lambdaSet : ctx.lambda));
+  // (a soft term's ridge is its own, lambdaSoft (fitContext): never under the fit's, so a soft term is shrunk at least
+  // as hard as a gated one and can only earn its way up from near 0)
+  const lambda = ctx.terms[on].map((t) => (t.soft && ctx.lambdaSoft ? ctx.lambdaSoft : t.gate && ctx.lambdaSet ? ctx.lambdaSet : ctx.lambda));
   const A = Array.from({ length: k }, (_, i) => Array.from({ length: k }, (_, j) => (i === j ? lambda[i] * (ctx.scale[on][i] || 1) + 1e-9 : 0)));
   const b = new Array(k).fill(0);
   const every = k > 16 ? Math.ceil(k / 10) : 1;
@@ -248,12 +261,22 @@ export function fitContext(games, params, feats, terms) {
       });
   }
   for (const on of ['m', 't']) scale[on] = scale[on].map((s, i) => (seen[on][i] ? s / seen[on][i] : 1));
+  // (a dynamic term's values are set as the replay predicts (setDynamic): seen on every final with features, its
+  // typical square about half its center's)
+  const withFeats = finals.filter((g) => feats.has(g.id)).length;
+  for (const { on, i, t } of dynamicTerms(terms)) {
+    seen[on][i] = withFeats;
+    scale[on][i] = (t.dyn.center ** 2) / 2 || 1;
+  }
   const all = [...terms.m, ...terms.t];
   const gates = [...new Set(all.map(gateOf))];
+  // (the soft terms (context.mjs SCHEDULE_TERMS, D34): in at their own ridge, never gated one by one)
+  const softGates = new Set(all.filter((t) => t.soft).map(gateOf));
   const score = (r) => Math.log(r.sigma) + Math.log(r.sigmaT);
   let lambdaSet = null;
+  let lambdaSoft = null;
   const run = (lambda, off) => {
-    const r = replay(games, params, 0.3, { feats, terms, scale, lambda, lambdaSet, off });
+    const r = replay(games, params, 0.3, { feats, terms, scale, lambda, lambdaSet, lambdaSoft, off });
     return { r, score: score(r) };
   };
   const before = replay(games, params);
@@ -261,6 +284,8 @@ export function fitContext(games, params, feats, terms) {
   // (terms never seen at all are left out from the start)
   const seenGate = (gate) => all.some((t) => gateOf(t) === gate && (t.on === 'm' ? seen.m[terms.m.indexOf(t)] : seen.t[terms.t.indexOf(t)]));
   const off = new Set(gates.filter((g) => !seenGate(g)));
+  // (the main lambda is fit with the soft terms out, so they can't tilt it)
+  for (const g of softGates) off.add(g);
   let best = null;
   for (const lambda of [4, 16, 64, 256, 1024]) {
     const tried = run(lambda, off);
@@ -276,9 +301,29 @@ export function fitContext(games, params, feats, terms) {
     lambdaSet = set.lambdaSet;
     best = set;
   }
-  // (each term must pay for itself on the held-out games, or it's left out: selectTerms)
-  best = selectTerms(gates.filter(seenGate), off, best, (o) => run(best.lambda, o), n);
-  // (each term's worth: how much worse the held-out games were without it, or better with it, per game)
+  // (each term must pay for itself on the held-out games, or it's left out: selectTerms; the soft ones aren't asked)
+  best = selectTerms(gates.filter((g) => seenGate(g) && !softGates.has(g)), off, best, (o) => run(best.lambda, o), n);
+  // (the soft terms: all in together at one ridge of their own, the one whose held-out games were best, from the
+  // fit's own lambda up to 1024 times it (at the top a term is all but 0: the shrink is the dial, not a switch). The
+  // only switch is the safety fallback (D8): the whole set stays out when every ridge is worse than none by more
+  // than 1 nat over the held-out games)
+  const softSeen = [...softGates].filter(seenGate);
+  const softOff = new Set([...off].filter((g) => !softGates.has(g) || !seenGate(g)));
+  if (softSeen.length) {
+    let pick = null;
+    for (const mult of [1, 4, 16, 64, 256, 1024]) {
+      lambdaSoft = best.lambda * mult;
+      const tried = run(best.lambda, softOff);
+      if (!pick || tried.score < pick.score) pick = { lambdaSoft, ...tried };
+    }
+    if ((pick.score - best.score) * n <= 1) {
+      lambdaSoft = pick.lambdaSoft;
+      for (const g of softSeen) off.delete(g);
+      best = { ...best, ...pick };
+    } else lambdaSoft = null;
+  }
+  // (each term's worth: how much worse the held-out games were without it, or better with it, per game; a soft
+  // term's read the same way, at its ridge)
   const gain = {};
   for (const gate of gates) {
     if (!seenGate(gate)) continue;
@@ -288,7 +333,7 @@ export function fitContext(games, params, feats, terms) {
     const other = run(best.lambda, flipped);
     gain[gate] = off.has(gate) ? best.score - other.score : other.score - best.score;
   }
-  const ctx = { feats, terms, scale, lambda: best.lambda, lambdaSet, off };
+  const ctx = { feats, terms, scale, lambda: best.lambda, lambdaSet, lambdaSoft, off };
   const final = replay(games, params, 0, ctx).state.weights;
   return { ctx, before, after: best.r, gain, seen, weights: final };
 }

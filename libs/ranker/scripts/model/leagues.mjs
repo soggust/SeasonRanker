@@ -184,7 +184,13 @@ export const GAME_CAP = 5;
 // 2026-10-19, the sharpen round (DECISIONS.md D33): the anchored projection (anchor.mjs: the bot's mean pulled toward
 // the book's implied mean by a per-stat weight the priced history sets, 0 the bot's own number, the trust free to
 // reach 1); the season-start vacancy fix measured and held by the gate (D33's note). Set to the push time.
-export const MODEL_EPOCH = '2026-10-19T07:30:00Z';
+// 2026-10-19, the misses round (the owner's: the Book's closes read backwards by situation; DECISIONS.md D32): the game
+// model's schedule terms, soft (context.mjs SCHEDULE_TERMS at their own ridge, never gated one by one): time zones from
+// home and crossed since the last game, the start by the side's own clock, the last result (a blowout win or loss, on
+// the margin and the total), games in the last 7 nights, the long road trip, the home stand's opener, altitude on the
+// total, the lopsided matchup on the total (the model's own expected margin); the replay gate SHIP (NFL game lines'
+// top picks' CLV better beyond noise, every other layer tied). Set to the push time.
+export const MODEL_EPOCH = '2026-10-19T09:00:00Z';
 
 // TIMING (run.mjs, timing.mjs): when a coming game is bet, in hours before its start, so its bets wait for the
 // news rather than being locked in days ahead on a guess at who plays.

@@ -553,3 +553,60 @@ test('D33 the anchor prices the sports the gate passed (NFL, NBA, NHL) and not M
   assert.equal(A.readAnchor(path.resolve(import.meta.dirname, '..'), 'mlb'), null, 'the desk reads no MLB anchor');
   assert.ok(/anchorOn/.test(src('gate-history.mjs')), 'the gate prices only the sports the anchor is on for');
 });
+
+test("D34 the game model's schedule terms are soft: every one from the schedule alone, in at its own ridge (never under the fit's), never gated one by one, off only as the whole set's safety fallback; the loops can't touch them", async () => {
+  const { SCHEDULE_TERMS, BLOWOUT, TERMS, featurize } = await import('../libs/ranker/scripts/model/context.mjs');
+  const { fitContext } = await import('../libs/ranker/scripts/model/ratings.mjs');
+  const { LEAGUES } = await import('../libs/ranker/scripts/model/leagues.mjs');
+  // (every schedule term is soft, on the margin or the total, and none is a gated term's twin)
+  for (const [sport, list] of Object.entries(SCHEDULE_TERMS)) {
+    assert.ok(list.length >= 4, `${sport} has schedule terms`);
+    for (const t of list) {
+      assert.equal(t.soft, true, `${sport} ${t.key} soft`);
+      assert.ok(['m', 't'].includes(t.on));
+      assert.ok(!TERMS[sport].some((x) => x.key === t.key), `${sport} ${t.key} is not also a gated term`);
+    }
+    assert.ok(BLOWOUT[sport] > 0);
+  }
+  // (from the schedule alone: a coming game with no facts cache at all still gets every schedule term, as a final does)
+  const g = (id, date, home, away, hs, as) => ({ id, date, season: 2026, type: 2, home, away, homeAbbr: home, awayAbbr: away, neutral: false, final: hs !== null, hs, as, venue: `${home}|XX|USA` });
+  const games = [g('1', '2026-01-02T00:00Z', 'A', 'B', 130, 100), g('2', '2026-01-03T00:00Z', 'B', 'A', 100, 99), g('3', '2026-01-05T00:00Z', 'A', 'B', null, null)];
+  const f = featurize('nba', LEAGUES.nba, games, {}, new Map());
+  const soft = f.terms.m.filter((t) => t.soft).map((t) => t.key);
+  assert.ok(soft.includes('letdown') && soft.includes('density7'));
+  const v = (id, key) => f.feats.get(id).m[f.terms.m.findIndex((t) => t.key === key)];
+  assert.equal(v('2', 'letdown'), 1, 'A (away) won game 1 by 30: a blowout, the term reads +1 for the home side');
+  assert.equal(v('3', 'density7'), 0, 'both have played the same two games in the week');
+  assert.ok(Number.isFinite(v('3', 'letdown')), 'a coming game has its schedule terms');
+  // (the fit: soft gates never in off while the set isn't the fallback; lambdaSoft from the fit's own lambda up by a grid
+  // of multiples, never under it)
+  const rs = src('ratings.mjs');
+  assert.ok(rs.includes('const softGates = new Set(all.filter((t) => t.soft).map(gateOf))'));
+  assert.ok(rs.includes('selectTerms(gates.filter((g) => seenGate(g) && !softGates.has(g))'), 'the soft terms are never asked one by one');
+  assert.ok(rs.includes('for (const mult of [1, 4, 16, 64, 256, 1024])') && rs.includes('lambdaSoft = best.lambda * mult'), "the soft ridge is a multiple of the fit's, 1 or more");
+  assert.ok(rs.includes('if ((pick.score - best.score) * n <= 1)'), 'the fallback: the whole set, only past 1 nat worse');
+  assert.ok(rs.includes('t.soft && ctx.lambdaSoft ? ctx.lambdaSoft'), 'online() shrinks a soft term at lambdaSoft');
+  // (a tiny fit: two soft terms, one real, neither gated off, the ridge at or over the fit's)
+  let seed = 5;
+  const rnd = () => ((seed = (seed * 1103515245 + 12345) % 2147483648) / 2147483648);
+  const list = [];
+  const feats = new Map();
+  let day = Date.parse('2026-01-01T00:00Z');
+  for (let i = 0; i < 600; i++) {
+    const x = [rnd() < 0.5 ? 1 : -1, rnd() < 0.5 ? 1 : -1];
+    const id = String(i);
+    const home = String(i % 5);
+    const away = String((i + 1 + Math.floor(i / 5)) % 5);
+    if (home === away) continue;
+    list.push({ id, date: new Date((day += 36e5 * 8)).toISOString(), season: 2026, type: 2, home, away, final: true, hs: 100 + Math.round(3 * x[0] + 10 * (rnd() - 0.5)), as: 100 });
+    feats.set(id, { m: x, t: [] });
+  }
+  const terms = { m: [{ key: 'sReal', group: 'x', on: 'm', label: 'a', unit: 'u', soft: true }, { key: 'sNoise', group: 'x', on: 'm', label: 'b', unit: 'u', soft: true }], t: [] };
+  const fit = fitContext(list, { k: 0.05, hfa: 2, revert: 0.7, kO: 0.03, sigma: 12, sigmaT: 18, avg: 100 }, feats, terms);
+  assert.equal(fit.ctx.off.size, 0, 'no soft term gated off');
+  assert.ok(fit.ctx.lambdaSoft >= fit.ctx.lambda);
+  // (the loops: the miss review never writes a weight (D10); the calibration, the correction and check-learn read props
+  // only; nothing but ratings.mjs sets a context term's size)
+  for (const f of ['miss-review.mjs', 'calib.mjs', 'correct.mjs', 'check-learn.mjs', 'selfcheck.mjs', 'desk.mjs']) assert.ok(!/lambdaSoft|SCHEDULE_TERMS|fitContext/.test(src(f)), `${f} leaves the game context's terms alone`);
+  assert.ok(src('DECISIONS.md').includes('### D34.'));
+});

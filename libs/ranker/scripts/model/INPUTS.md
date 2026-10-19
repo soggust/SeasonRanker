@@ -145,6 +145,23 @@ The Odds API's archive, bought once on the 5M-credit month: every NFL, NBA, NHL,
 | The priced history as training rows for the residual model (every open and close, the Bot's replayed chance, the result) | **in the residual model** (D31) | `residual-train.mjs` replays it as the gate does; monthly snapshots fit only on rows settled before each month (`residual.mjs` fitWalk, snapshotFor), so a row is never priced by a fit that saw it. Still never a price the bettor bets at (D30). |
 | The live line's implied mean as the projection's anchor (D33, 2026-10-19) | **in** (the current run's price, never the history's) | `anchor.mjs`: the bot's mean pulled toward the mean the board's line and price imply, by a per-stat weight fit walk-forward on the priced history (the history fits the weight, the live board gives the mean). 0 where the bot's own number beats the book's out of sample. Measured on the history: the bot's disagreement with the close is 75% to 90% noise (the slope of the result on it .10 to .25 by sport); anchored, NFL props go from a tie with the book to -0.0012 better at the close, NBA -0.0003, NHL and MLB ties. The pull by stat is in `apps/<sport>/src/StaticData/model/anchor.json` and on the scorecard. |
 
+## The schedule's situations (2026-10-19, the misses round; DECISIONS.md D34)
+
+Every game with a close in the odds history, joined to the schedule, the lines and the facts cache (`scratchpad/misses/situations.mjs`, `analyze.mjs`, `FINDINGS.md`), each feature tagged with when it is known. The close's residual by situation, shrunk, with q-values and sign stability by season. What came of it for the game model:
+
+| Situation (known from) | Sports | Bettor | What the close showed |
+|---|---|---|---|
+| Time zones from home and crossed since the last game, the start by the side's own clock (schedule) | all | **new, soft** (`tzHome`, `tzMove`, `clockLate`, `clockEarly`) | NHL home side in 21:00 ET starts -2.9 pts (7/8 seasons); NFL side 2-3 zones west of home +7.8 (n 214, 6/6); NBA 2-3 zones east +1.8. |
+| The last result: off a blowout win or loss (schedule) | all | **new, soft** (`letdown`, `bounce`, `letdownT`) | NHL off a blowout win -1.9 ML (7/8); NBA totals -1.2 pts with a side off one (5/7). |
+| Games in the last 7 nights (schedule) | NBA, NHL | **new, soft** (`density7`) | NHL rested (2 or fewer in 7) +3.1 ML (7/8); the back-to-back -2.8 (8/8), -4.4 against a rested side. The b2b, dense3 and rest terms were already in (gated). |
+| The long road trip, the home stand's opener (schedule) | all | **new, soft** (`tripLong`, `firstHome`) | NHL road games 4-5 -2.7; NBA home game 1 -1.7. |
+| Altitude on the total (schedule) | NBA, NHL | **new, soft** (`altitudeT`) | NBA +2.2 pts over (6/7). |
+| The totals' skew by line level (close) | NHL, MLB | **held** | High totals run 0.2 goals under the market's own mean, low ones over: a shape for `margins.mjs` (totals are "the base alone"), not a situation. |
+| The favorite-longshot bias (close) | NHL | **held** | Favorites of .75+ +5 pts, every season: a pricing read; the game trust's. |
+| DraftKings against Pinnacle at the close (close) | MLB | **not useful** | Look-ahead at bet time (D30). |
+| Referees, umpires (dayof) | all | **not useful** | One or two seasons each, n under 100: noise until proven. |
+| Division, conference, day of week, start hour, month, postseason, roof, surface, temperature, wind, week, the starter's rest and last pitch count, the quarterback change, the starting goalie's back-to-back, line moves, favorite and total size | all | measured, **left out** | Nothing at q under 0.2 that held across seasons. |
+
 ## The replay gate (2026-10-18, gate.mjs --refit against origin/master)
 
 - **NFL: SHIP.** Projections better beyond noise: props -0.0002 (95% -0.0004 to -0.0001) in the deciding seasons, and the same in the older ones.

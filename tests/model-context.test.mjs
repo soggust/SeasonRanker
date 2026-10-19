@@ -157,3 +157,168 @@ test("selectTerms (the loss review's B7): a term dropped while a correlated one 
   assert.equal(both.size, 2);
   assert.ok(!both.has('a') || !both.has('b'));
 });
+
+// ---- the schedule's situations (the misses round, 2026-10-19; DECISIONS.md D34) ----
+
+test("zoneOf, daylightAt, clockAt: a place's clock from its coordinates; outside North America none", async () => {
+  const { zoneOf, daylightAt, clockAt } = await import('../libs/ranker/scripts/model/context.mjs');
+  const LA = [34.05, -118.24];
+  const NY = [40.71, -74.0];
+  const DEN = [39.74, -104.99];
+  const PHX = [33.45, -112.07];
+  const CGY = [51.05, -114.07];
+  const LV = [36.17, -115.14];
+  const IND = [39.77, -86.16];
+  const NSH = [36.16, -86.78];
+  assert.deepEqual([zoneOf(LA), zoneOf(NY), zoneOf(DEN), zoneOf(CGY), zoneOf(LV), zoneOf(IND), zoneOf(NSH)], [-8, -5, -7, -7, -8, -5, -6]);
+  assert.equal(zoneOf([51.5, -0.1]), null, 'London: no clock read');
+  assert.equal(zoneOf(null), null);
+  // (a 10 PM Eastern tip in January: 7 PM by a Los Angeles clock; in July Phoenix keeps standard time)
+  const jan = Date.parse('2026-01-15T03:00Z');
+  assert.equal(clockAt(jan, NY), 22);
+  assert.equal(clockAt(jan, LA), 19);
+  assert.equal(daylightAt(jan, NY), false);
+  const jul = Date.parse('2026-07-15T02:00Z');
+  assert.equal(daylightAt(jul, DEN), true);
+  assert.equal(daylightAt(jul, PHX), false);
+  assert.equal(clockAt(jul, DEN), 20);
+  assert.equal(clockAt(jul, PHX), 19);
+  // (the second Sunday of March 2026 is the 8th; the first of November the 1st)
+  assert.equal(daylightAt(Date.parse('2026-03-08T12:00Z'), NY), true);
+  assert.equal(daylightAt(Date.parse('2026-03-07T12:00Z'), NY), false);
+  assert.equal(daylightAt(Date.parse('2026-11-01T12:00Z'), NY), false);
+  assert.equal(daylightAt(Date.parse('2026-10-31T12:00Z'), NY), true);
+  assert.equal(clockAt(jan, [51.5, -0.1]), null);
+});
+
+// (a made-up schedule: an East team (home Boston) and a West team (home Los Angeles) and two more, over a fortnight;
+// the places by venue)
+function schedule() {
+  const places = { 'Boston|MA|USA': [42.36, -71.06], 'Los Angeles|CA|USA': [34.05, -118.24], 'Denver|CO|USA': [39.74, -104.99], 'Chicago|IL|USA': [41.88, -87.63] };
+  const elev = { 'Denver|CO|USA': 1609, 'Boston|MA|USA': 5, 'Los Angeles|CA|USA': 90, 'Chicago|IL|USA': 180 };
+  const g = (id, date, home, away, venue, hs, as) => ({ id, date, season: 2026, type: 2, home, away, homeAbbr: home, awayAbbr: away, neutral: false, final: hs !== null, hs, as, venue });
+  const games = [
+    g('1', '2026-01-02T00:00Z', 'E', 'C', 'Boston|MA|USA', 100, 70),
+    g('2', '2026-01-03T00:00Z', 'W', 'D', 'Los Angeles|CA|USA', 90, 120),
+    g('3', '2026-01-04T00:00Z', 'E', 'D', 'Boston|MA|USA', 100, 99),
+    g('4', '2026-01-05T00:00Z', 'C', 'E', 'Chicago|IL|USA', 95, 100),
+    g('5', '2026-01-06T00:00Z', 'D', 'E', 'Denver|CO|USA', 95, 100),
+    // (the East team's third road game in a row, a 10 PM Eastern tip in Los Angeles)
+    g('6', '2026-01-08T03:00Z', 'W', 'E', 'Los Angeles|CA|USA', 100, 90),
+    // (the West team home again the next night, off a win by 10; its home stand runs on)
+    g('7', '2026-01-09T03:00Z', 'W', 'C', 'Los Angeles|CA|USA', 100, 80),
+    g('8', '2026-01-11T00:00Z', 'E', 'W', 'Boston|MA|USA', null, null),
+  ];
+  return { games, facts: { places, elev } };
+}
+
+test('featurize: the schedule terms from the games alone, each soft; a coming game gets them too', async () => {
+  const { featurize, SCHEDULE_TERMS, BLOWOUT } = await import('../libs/ranker/scripts/model/context.mjs');
+  const { LEAGUES } = await import('../libs/ranker/scripts/model/leagues.mjs');
+  const { games, facts } = schedule();
+  const f = featurize('nba', LEAGUES.nba, games, facts, new Map());
+  const at = (id, key) => {
+    const i = f.terms.m.findIndex((t) => t.key === key);
+    if (i >= 0) return f.feats.get(id).m[i];
+    return f.feats.get(id).t[f.terms.t.findIndex((t) => t.key === key)];
+  };
+  for (const t of SCHEDULE_TERMS.nba) assert.equal(t.soft, true, `${t.key} is soft`);
+  assert.equal(BLOWOUT.nba, 20);
+  // game 6: the East team (away) sits three zones west of its home clock; the tip at 10 PM Eastern is an hour past 9
+  // by its clock, none by the West team's own (7 PM); its third road game in a row (4 at Chicago, 5 at Denver, 6 here)
+  // is not yet a long trip; the West team's stand runs from game 2, so it's no opener
+  assert.equal(at('6', 'tzHome'), -3);
+  assert.equal(at('6', 'tzMove'), -1, 'E flew Denver to Los Angeles, one zone west; W stayed');
+  assert.equal(at('8', 'tzMove'), 0, 'both flew Los Angeles to Boston: the difference is 0');
+  assert.equal(at('5', 'tzMove'), 1, 'E came from Chicago (one zone west), D from Boston (two): the home side moved more');
+  assert.equal(at('2', 'tzMove'), -1, "a season's first game counts from home: D from Denver");
+  assert.equal(at('6', 'clockLate'), 1);
+  assert.equal(at('6', 'clockEarly'), 0);
+  assert.equal(at('6', 'tripLong'), 0, 'the third road game is not yet a long trip');
+  assert.equal(at('6', 'firstHome'), 0);
+  assert.equal(at('6', 'density7'), 5 - 2, 'E has played 5 in 7 nights (games 1, 3, 4, 5, 6), W 2 (games 2, 6)');
+  // game 7: the West team is off a win by 10 (no blowout), Chicago off a loss by 5: no letdown, no bounce; the game is
+  // not at altitude
+  assert.equal(at('7', 'letdown'), 0);
+  assert.equal(at('7', 'bounce'), 0);
+  assert.equal(at('7', 'altitudeT'), 0);
+  // game 2: the West team's first game, D's too: no last game, so every term off the last game is 0; the clocks are the
+  // schedule's (D's home is Denver, one zone east of Los Angeles: tzHome -1 for the away side)
+  for (const key of ['clockLate', 'letdown', 'bounce', 'density7', 'tripLong', 'letdownT']) assert.equal(at('2', key), 0, `${key} at a first game`);
+  assert.equal(at('2', 'tzHome'), -1);
+  // game 3: E won game 1 by 30 and D won game 2 by 30 (120-90 at Los Angeles): both off a blowout win, so the margin's
+  // letdown cancels (0) and the total's letdownT counts both (2); no bounce
+  assert.equal(at('3', 'letdown'), 0);
+  assert.equal(at('3', 'bounce'), 0);
+  assert.equal(at('3', 'letdownT'), 2);
+  // game 6: W is off its blowout loss of game 2 (a bounce for the home side: -1); E off a win by 5
+  assert.equal(at('6', 'bounce'), -1);
+  assert.equal(at('6', 'letdown'), 0);
+  // game 5 at Denver: altitude on the total
+  assert.equal(at('5', 'altitudeT'), 1);
+  assert.equal(at('5', 'tripLong'), 0);
+  // game 8, a coming game: E home after its trip (its stand opens: firstHome 1); W (away) sits three zones east of its
+  // home clock; the 7 PM Eastern tip is 4 PM by its clock: neither late nor early
+  assert.equal(at('8', 'firstHome'), 1);
+  assert.equal(at('8', 'tzHome'), 3);
+  assert.equal(at('8', 'clockLate'), 0);
+  assert.equal(at('8', 'clockEarly'), 0);
+  assert.equal(at('8', 'tripLong'), 0);
+  assert.deepEqual(f.feats.get('6').info.schedule.tzHome, [0, -3]);
+  // (no places at all: every clock term 0, nothing thrown)
+  const bare = featurize('nba', LEAGUES.nba, games, {}, new Map());
+  for (const key of ['tzHome', 'clockLate', 'clockEarly']) assert.equal(bare.feats.get('6').m[bare.terms.m.findIndex((t) => t.key === key)], 0);
+  // (the lopsided matchup is a dynamic term: 0 as featurized, set from the ratings' own expectation as a game is
+  // predicted, the replay's and a coming game's alike)
+  const { dynamicTerms, setDynamic, replay } = await import('../libs/ranker/scripts/model/ratings.mjs');
+  const lop = f.terms.t.find((t) => t.key === 'lopsidedT');
+  assert.deepEqual(lop.dyn, { of: 'absMargin', center: 6 });
+  assert.equal(lop.soft, true);
+  assert.equal(at('6', 'lopsidedT'), 0);
+  const dyn = dynamicTerms(f.terms);
+  assert.deepEqual(dyn.map((d) => [d.on, d.t.key]), [['t', 'lopsidedT']]);
+  const probe = { m: [], t: f.terms.t.map(() => 0) };
+  setDynamic(dyn, probe, { margin: -10.5 });
+  assert.equal(probe.t[dyn[0].i], 4.5);
+  setDynamic(dyn, probe, { margin: 2 });
+  assert.equal(probe.t[dyn[0].i], -4);
+  // (in the replay: each final's value is its own expectation's, set before the fit reads it)
+  const seenValues = [];
+  replay(games, { ...LEAGUES.nba.priors }, 0, { feats: f.feats, terms: f.terms, scale: { m: f.terms.m.map(() => 1), t: f.terms.t.map(() => 1) }, lambda: 64, lambdaSet: null, lambdaSoft: 64, off: new Set() }, (g, e) => seenValues.push([g.id, f.feats.get(g.id).t[dyn[0].i]]));
+  assert.equal(seenValues.length, 7);
+  assert.ok(seenValues.every(([, v]) => Number.isFinite(v)));
+  assert.ok(seenValues.some(([, v]) => v !== 0), 'the expectation moves the term once the ratings have learned');
+});
+
+test("fitContext: a soft term is never gated off; it is shrunk at its own ridge, never under the fit's; a nothing stays near 0", async () => {
+  const { fitContext, gateOf } = await import('../libs/ranker/scripts/model/ratings.mjs');
+  const { term } = await import('../libs/ranker/scripts/model/terms.mjs');
+  // (a made-up season: a real soft term worth 3 points a game, a noise soft term, a real gated term; seeded)
+  let seed = 11;
+  const rnd = () => ((seed = (seed * 1103515245 + 12345) % 2147483648) / 2147483648);
+  const gauss = () => Math.sqrt(-2 * Math.log(rnd() + 1e-12)) * Math.cos(2 * Math.PI * rnd());
+  const teams = ['a', 'b', 'c', 'd', 'e', 'f'];
+  const games = [];
+  const feats = new Map();
+  const terms = { m: [term('real', 'x', 'm', 'Real', 'u'), { ...term('softReal', 'x', 'm', 'Soft real', 'u'), soft: true }, { ...term('softNoise', 'x', 'm', 'Soft noise', 'u'), soft: true }], t: [] };
+  let day = Date.parse('2026-01-01T00:00Z');
+  for (let i = 0; i < 900; i++) {
+    const h = teams[i % 6];
+    const a = teams[(i + 1 + Math.floor(i / 6)) % 6];
+    if (h === a) continue;
+    const x = [rnd() < 0.5 ? 1 : -1, rnd() < 0.5 ? 1 : -1, rnd() < 0.5 ? 1 : -1];
+    const margin = Math.round(2 + 3 * x[0] + 3 * x[1] + 10 * gauss());
+    const id = String(i);
+    games.push({ id, date: new Date((day += 36e5 * 8)).toISOString(), season: 2026, type: 2, home: h, away: a, final: true, hs: 100 + margin, as: 100 });
+    feats.set(id, { m: x, t: [] });
+  }
+  const params = { k: 0.05, hfa: 2, revert: 0.7, kO: 0.03, sigma: 12, sigmaT: 18, avg: 100 };
+  const fit = fitContext(games, params, feats, terms);
+  assert.ok(!fit.ctx.off.has('softReal') && !fit.ctx.off.has('softNoise'), 'soft terms are in, never gated one by one');
+  assert.ok(fit.ctx.lambdaSoft >= fit.ctx.lambda, "the soft ridge is never under the fit's");
+  const size = (key) => fit.weights.m[terms.m.findIndex((t) => t.key === key)];
+  assert.ok(size('softReal') > 1.5 && size('softReal') < 3.5, `the real soft term earns its size (${size('softReal')})`);
+  assert.ok(Math.abs(size('softNoise')) < 0.8, `the noise stays near 0 (${size('softNoise')})`);
+  assert.ok(size('real') > 1.5, `the gated real term is in (${size('real')})`);
+  assert.equal(gateOf(terms.m[1]), 'softReal');
+});

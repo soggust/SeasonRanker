@@ -40,6 +40,81 @@ const EAST = term('b2bEast', 'rest', 'm', 'Back-to-back flying east', 'when the 
 const ALTITUDE = term('altitude', 'travel', 'm', 'Back-to-back at altitude', "per 1,000 meters the other side climbed since last night's game");
 const TRAVEL = term('travel', 'travel', 'm', 'Travel edge', 'per 1,000 miles less travel since its last game');
 
+// The schedule's situations (the misses round, 2026-10-19: the Book's closes read backwards by situation; DECISIONS.md
+// D34), each soft: never dropped by the fit's gate, shrunk by its own ridge (ratings.mjs lambdaSoft) toward 0, so a
+// small real effect stays in at a small size and a nothing stays near 0. All from the schedule alone (the games list,
+// the places and their clocks), known months ahead: no box score, no report, no line.
+//   tzHome     time zones the away side sits east of its own home clock (west negative), less the home side's (0 at
+//              home; a neutral site counts both)
+//   tzMove     time zones a side has flown east since its last game (west negative; a season's first game from its
+//              home), the other side's less its own: the clock lost flying east is the harder one
+//   clockLate  hours the start falls past 9 PM by the other side's own home clock (an East team tipping at 10 ET on
+//              the West coast: 1), less its own
+//   clockEarly hours the start falls before noon by the other side's own home clock, less its own (the NFL's early
+//              flag is football.mjs bodyClock, so it isn't here)
+//   letdown    when the other side won its last game by a blowout (the sport's margin: NFL 17, NBA 20, NHL 3, MLB 6),
+//              less its own; bounce the same for a blowout loss
+//   density7   games the other side has played in the last 7 days, this one counted, less its own
+//   tripLong   when the away side is on its 4th road game or more in a row
+//   firstHome  when the home side opens a home stand (its first home game after a trip)
+//   altitudeT  to the total at a venue over 1,000 m (Denver, Salt Lake City): the ball flies, legs tire
+//   letdownT   to the total per side coming off a blowout win
+//   lopsidedT  to the total per point the model's own expected margin (either way) sits over the sport's usual gap:
+//              a dynamic term, set as the game is predicted from the ratings (ratings.mjs setDynamic), not a fact
+const soft = (t) => ({ ...t, soft: true });
+const TZ_HOME = soft(term('tzHome', 'travel', 'm', 'Time zones from home', 'per time zone the other side sits east of its own home clock (west negative), less its own'));
+const TZ_MOVE = soft(term('tzMove', 'travel', 'm', 'Time zones crossed', 'per time zone the other side has flown east since its last game (west negative), less its own'));
+const CLOCK_LATE = soft(term('clockLate', 'travel', 'm', 'Late by its clock', "per hour the start falls past 9 PM by the other side's own home clock, less its own"));
+const CLOCK_EARLY = soft(term('clockEarly', 'travel', 'm', 'Early by its clock', "per hour the start falls before noon by the other side's own home clock, less its own"));
+const LETDOWN = soft(term('letdown', 'rest', 'm', 'Off a blowout win', 'when the other side won its last game by a blowout, less its own'));
+const BOUNCE = soft(term('bounce', 'rest', 'm', 'Off a blowout loss', 'when the other side lost its last game by a blowout, less its own'));
+const DENSITY7 = soft(term('density7', 'rest', 'm', 'Games in 7 days', 'per game more the other side has played in the last seven days, this one counted'));
+const TRIP_LONG = soft(term('tripLong', 'travel', 'm', 'Long road trip', 'when the away side is on its fourth road game or more in a row'));
+const FIRST_HOME = soft(term('firstHome', 'travel', 'm', 'Home stand opener', 'when the home side is back from a trip (its first home game after it)'));
+const ALTITUDE_T = soft(term('altitudeT', 'travel', 't', 'Altitude (total)', 'to the total at a venue over 1,000 meters'));
+const LETDOWN_T = soft(term('letdownT', 'rest', 't', 'Off a blowout win (total)', 'to the total per side coming off a blowout win'));
+// (the lopsided matchup, a dynamic term (ratings.mjs setDynamic): the model's own expected margin, either way, over
+// the sport's usual gap, set as each game is predicted; the close's totals ran about a point over in the NBA's
+// lopsided games and a point under in its coin flips, 7 of 7 seasons (the NFL's coin flips under too). Its center is
+// the sport's typical expected gap, so a usual game reads 0)
+const lopsided = (center) => soft({ ...term('lopsidedT', 'matchups', 't', 'Lopsided matchup (total)', "to the total per point the model's own expected margin, either way, sits over the usual gap"), dyn: { of: 'absMargin', center } });
+// (a blowout, by sport: the margin that reads as one)
+export const BLOWOUT = { nfl: 17, nba: 20, nhl: 3, mlb: 6 };
+export const SCHEDULE_TERMS = {
+  nfl: [TZ_HOME, TZ_MOVE, LETDOWN, BOUNCE, LETDOWN_T, lopsided(5)],
+  nba: [TZ_HOME, TZ_MOVE, CLOCK_LATE, CLOCK_EARLY, LETDOWN, BOUNCE, DENSITY7, TRIP_LONG, FIRST_HOME, ALTITUDE_T, LETDOWN_T, lopsided(6)],
+  nhl: [TZ_HOME, TZ_MOVE, CLOCK_LATE, CLOCK_EARLY, LETDOWN, BOUNCE, DENSITY7, TRIP_LONG, FIRST_HOME, ALTITUDE_T, LETDOWN_T],
+  mlb: [TZ_HOME, TZ_MOVE, CLOCK_LATE, CLOCK_EARLY, LETDOWN, BOUNCE, TRIP_LONG, FIRST_HOME, LETDOWN_T],
+};
+
+// A place's clock: its standard-time offset from UTC in hours, by its coordinates (North America by longitude bands:
+// Eastern east of 86.5 W (Indianapolis in, Nashville out), Central to 102 W, Mountain to 114.5 W (Calgary in, Las
+// Vegas out), Pacific beyond); outside North America null (an international game: no body clock read)
+export function zoneOf(at) {
+  if (!at || !Number.isFinite(at[0]) || !Number.isFinite(at[1])) return null;
+  const [lat, lon] = at;
+  if (lon < -130 || lon > -50 || lat < 14 || lat > 60) return null;
+  return lon > -86.5 ? -5 : lon > -102 ? -6 : lon > -114.5 ? -7 : -8;
+}
+// (daylight time: the second Sunday of March to the first of November, everywhere but Phoenix)
+export function daylightAt(t, at) {
+  if (at && Math.abs(at[0] - 33.45) < 0.4 && Math.abs(at[1] + 112.07) < 0.4) return false;
+  const d = new Date(t);
+  const m = d.getUTCMonth();
+  const firstSunday = (month) => 1 + ((7 - new Date(Date.UTC(d.getUTCFullYear(), month, 1)).getUTCDay()) % 7);
+  if (m > 2 && m < 10) return true;
+  if (m === 2) return d.getUTCDate() >= firstSunday(2) + 7;
+  if (m === 10) return d.getUTCDate() < firstSunday(10);
+  return false;
+}
+// The hour (0 to 24, fractional) a start falls on by the clock of a place; null where the place has no clock
+export function clockAt(t, at) {
+  const z = zoneOf(at);
+  if (z === null) return null;
+  const d = new Date(t);
+  return (d.getUTCHours() + d.getUTCMinutes() / 60 + z + (daylightAt(t, at) ? 1 : 0) + 48) % 24;
+}
+
 export const TERMS = {
   nfl: [
     REST,
@@ -897,7 +972,8 @@ export function featurize(sport, cfg, games, facts, live) {
   const list = [...games].sort((a, b) => a.date.localeCompare(b.date));
   const lineups = sport === 'mlb' ? lineupsOf(list, facts, live) : null;
   const more = { nfl: FOOTBALL_TERMS, nhl: HOCKEY_TERMS, mlb: BASEBALL_TERMS }[sport] ?? [];
-  const terms = [...TERMS[sport], ...more, ...OFFICIAL_TERMS[sport], ...RANKER_TERMS[sport], ...(lineups?.terms ?? [])];
+  const terms = [...TERMS[sport], ...(SCHEDULE_TERMS[sport] ?? []), ...more, ...OFFICIAL_TERMS[sport], ...RANKER_TERMS[sport], ...(lineups?.terms ?? [])];
+  const blowout = BLOWOUT[sport] ?? Infinity;
   const mTerms = terms.filter((t) => t.on === 'm');
   const tTerms = terms.filter((t) => t.on === 't');
   const ranker = rankerOf(sport, facts.teams ?? []);
@@ -919,21 +995,37 @@ export function featurize(sport, cfg, games, facts, live) {
     const t = Date.parse(g.date);
     const at = where(g);
     const elev = elevOf(g);
-    const side = (id) => {
+    const side = (id, isHome) => {
       const prev = last.get(id);
       const fresh = !prev || prev.season !== g.season;
       const rest = fresh ? cfg.context.restCap : Math.min(cfg.context.restCap, Math.round((t - prev.t) / DAY));
-      const from = fresh ? (facts.places?.[home.get(id)] ?? null) : prev.at;
+      const own = facts.places?.[home.get(id)] ?? null;
+      const from = fresh ? own : prev.at;
       const b2b = !fresh && rest <= 1 ? 1 : 0;
-      // (games in the last four and five nights, this one counted; a back-to-back's clock and climb)
+      // (games in the last four, five and seven nights, this one counted; a back-to-back's clock and climb)
       const times = fresh ? [t] : [...prev.times, t];
       const within = (days) => times.filter((x) => t - x < days * DAY - 6 * 36e5).length;
       const east = b2b && at && prev.at && at[1] - prev.at[1] >= 10 ? 1 : 0;
       const climb = b2b && elev !== null && prev.elev !== null ? Math.max(0, elev - prev.elev) / 1000 : 0;
-      return { rest, b2b, miles: at && from ? Math.round(miles(from, at)) : 0, times: times.slice(-5), dense3: within(4) >= 3 ? 1 : 0, dense4: within(5) >= 4 ? 1 : 0, east, climb };
+      // (the schedule's situations, SCHEDULE_TERMS: the side's clock against its home's, the start by its own home
+      // clock, its last result, its trip or stand so far)
+      const zHere = zoneOf(at);
+      const zOwn = zoneOf(own);
+      const zFrom = zoneOf(from);
+      const tzHome = zHere !== null && zOwn !== null ? zHere - zOwn : 0;
+      const tzMove = zHere !== null && zFrom !== null ? zHere - zFrom : 0;
+      const clock = clockAt(t, own);
+      const late = clock === null ? 0 : Math.max(0, clock - 21);
+      const early = clock === null ? 0 : Math.max(0, 12 - clock);
+      const prevMargin = fresh || !Number.isFinite(prev.margin) ? null : prev.margin;
+      const letdown = prevMargin !== null && prevMargin >= blowout ? 1 : 0;
+      const bounce = prevMargin !== null && prevMargin <= -blowout ? 1 : 0;
+      const trip = isHome ? 0 : fresh || !prev.away ? 1 : prev.trip + 1;
+      const stand = !isHome ? 0 : fresh || prev.away ? 1 : prev.stand + 1;
+      return { rest, b2b, miles: at && from ? Math.round(miles(from, at)) : 0, times: times.slice(-6), dense3: within(4) >= 3 ? 1 : 0, dense4: within(5) >= 4 ? 1 : 0, east, climb, tzHome, tzMove, late, early, letdown, bounce, in7: within(7), trip, stand };
     };
-    const h = side(g.home);
-    const a = side(g.away);
+    const h = side(g.home, true);
+    const a = side(g.away, false);
     const s = starters(g, { b2b: [h.b2b, a.b2b] });
     const w = weather(g);
     const r = ranker(g);
@@ -953,6 +1045,20 @@ export function featurize(sport, cfg, games, facts, live) {
       b2b: a.b2b - h.b2b,
       b2bT: a.b2b + h.b2b,
       travel: (a.miles - h.miles) / 1000,
+      // (the schedule's situations: SCHEDULE_TERMS)
+      tzHome: a.tzHome - h.tzHome,
+      tzMove: a.tzMove - h.tzMove,
+      clockLate: a.late - h.late,
+      clockEarly: a.early - h.early,
+      letdown: a.letdown - h.letdown,
+      bounce: a.bounce - h.bounce,
+      density7: a.in7 - h.in7,
+      tripLong: a.trip >= 4 ? 1 : 0,
+      firstHome: h.stand === 1 && !g.neutral ? 1 : 0,
+      altitudeT: elev !== null && elev > 1000 ? 1 : 0,
+      letdownT: a.letdown + h.letdown,
+      // (lopsidedT: set as the game is predicted, from the ratings' own expectation: ratings.mjs setDynamic)
+      lopsidedT: 0,
       // (the NFL's home field above the visitors' own: its elevation less theirs (their home's), per 1,000 m)
       ...(sport === 'nfl' ? { altitudeHome: g.neutral || elev === null ? 0 : Math.max(0, elev - (facts.elev?.[home.get(g.away)] ?? elev)) / 1000 } : {}),
       ...(s?.terms ?? {}),
@@ -961,13 +1067,16 @@ export function featurize(sport, cfg, games, facts, live) {
     out.set(g.id, {
       m: mTerms.map((x) => v[x.key] ?? 0),
       t: tTerms.map((x) => v[x.key] ?? 0),
-      info: { rest: [h.rest, a.rest], b2b: [h.b2b, a.b2b], miles: [h.miles, a.miles], ...(s?.info ? { starters: s.info } : {}), ...(w?.info ? { weather: w.info } : {}), ...(r ? { ranker: r.info } : {}), ...(lu?.info ? { lineups: lu.info } : {}), ...(x2?.info ? { more: x2.info } : {}), ...(o?.info ? { officials: o.info } : {}), schedule: { dense: [h.dense3 + h.dense4, a.dense3 + a.dense4], east: [h.east, a.east], climb: [h.climb, a.climb] }, flags: [...(s?.flags ?? []), ...(x2?.flags ?? []), ...(w?.flags ?? [])] },
+      info: { rest: [h.rest, a.rest], b2b: [h.b2b, a.b2b], miles: [h.miles, a.miles], ...(s?.info ? { starters: s.info } : {}), ...(w?.info ? { weather: w.info } : {}), ...(r ? { ranker: r.info } : {}), ...(lu?.info ? { lineups: lu.info } : {}), ...(x2?.info ? { more: x2.info } : {}), ...(o?.info ? { officials: o.info } : {}), schedule: { dense: [h.dense3 + h.dense4, a.dense3 + a.dense4], east: [h.east, a.east], climb: [h.climb, a.climb], tzHome: [h.tzHome, a.tzHome], tzMove: [h.tzMove, a.tzMove], clock: [h.late - h.early, a.late - a.early], last: [h.letdown - h.bounce, a.letdown - a.bounce], in7: [h.in7, a.in7], trip: a.trip, stand: h.stand }, flags: [...(s?.flags ?? []), ...(x2?.flags ?? []), ...(w?.flags ?? [])] },
     });
-    for (const [id, x] of [
-      [g.home, h],
-      [g.away, a],
+    // (each side's game kept for its next: when and where, its margin once final (the schedule terms' last result),
+    // whether it was away and how long its trip or stand has run)
+    const margin = g.final && g.hs !== null && g.as !== null ? g.hs - g.as : null;
+    for (const [id, x, isHome] of [
+      [g.home, h, true],
+      [g.away, a, false],
     ])
-      last.set(id, { t, season: g.season, at, elev, times: x.times });
+      last.set(id, { t, season: g.season, at, elev, times: x.times, margin: margin === null ? null : isHome ? margin : -margin, away: !isHome, trip: x.trip, stand: x.stand });
     if (g.final) {
       x2?.learn?.();
       o?.learn?.();
