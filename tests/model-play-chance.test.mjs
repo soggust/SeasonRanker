@@ -5,7 +5,8 @@
 // guard by the share's swing times the chance's spread); none, every one at half as before.
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { PLAY_FINAL, choosePlayTable, fitPlayTable, missChance, playAt, playChanceSummary, playGone, playPos, playPractice } from '../libs/ranker/scripts/model/playchance.mjs';
+import { PLAY_FINAL, PLAY_LEVELS, PLAY_UNREAD, boardMissChance, choosePlayTable, fitPlayTable, missChance, playAt, playChanceSummary, playGone, playPos, playPractice, practiceFrom } from '../libs/ranker/scripts/model/playchance.mjs';
+import { BOARD_K, PLAY_MISSING_MIN } from '../libs/ranker/scripts/model/board-miss.mjs';
 import { nflMatchups } from '../libs/ranker/scripts/model/matchups.mjs';
 
 // (n reports of a kind, a share p of them played)
@@ -116,12 +117,13 @@ test('priceProps: a questionable teammate missing by his chance (the play table)
   assert.equal(seen[0], 0.5);
 });
 
-test("choosePlayTable: a side (the quarterbacks') not beating the flat half held out read at half; practice measured, not read live", () => {
+test("choosePlayTable: a side (the quarterbacks') not beating the flat half held out read at half; practice kept and read live (D40)", () => {
   const rows = [];
   for (let season = 2016; season <= 2025; season++) {
     // (the rest: 75% whatever the practice; quarterbacks: their share falling season by season, 80% to 20%)
     for (const practice of ['DNP', 'LP', 'FP']) rows.push(...reports(60, 0.75, { season, gone: 0, pos: 'WR', practice }));
-    rows.push(...reports(40, 0.8 - (season - 2016) * 0.067, { season, gone: 0, pos: 'QB', practice: 'LP' }));
+    // (the quarterbacks with no practice status read: their falling share is the side's, not a practice cell's)
+    rows.push(...reports(40, 0.8 - (season - 2016) * 0.067, { season, gone: 0, pos: 'QB', practice: null }));
     // (a practice that matters: a DNP plays a third of the time)
     rows.push(...reports(60, 0.33, { season, gone: 0, pos: 'TE', practice: 'DNP' }), ...reports(60, 0.9, { season, gone: 0, pos: 'TE', practice: 'FP' }));
   }
@@ -131,12 +133,13 @@ test("choosePlayTable: a side (the quarterbacks') not beating the flat half held
   assert.ok(t.check.sides.other.loss < t.check.flat);
   assert.equal(t.chance({ pos: 'QB', gone: 0 }), 0.5);
   assert.notEqual(t.chance({ pos: 'WR', gone: 0 }), 0.5);
-  // (practice: measured with the report's own, a gain, never kept)
+  // (practice: a level read live since D40, kept on its held-out gain)
   const practice = t.check.tried.find((x) => x.level === 'practice');
-  assert.equal(practice.unread, true);
-  assert.equal(practice.kept, false);
+  assert.equal(practice.unread, undefined);
+  assert.equal(practice.kept, true);
   assert.ok(practice.gain > 0.003);
-  assert.ok(!t.levels.includes('practice'));
+  assert.ok(t.levels.includes('practice'));
+  assert.ok(t.chance({ pos: 'TE', gone: 0, practice: 'DNP' }) < t.chance({ pos: 'TE', gone: 0, practice: 'FP' }), 'a DNP plays less than an FP');
   assert.deepEqual(playChanceSummary(t).half, ['QB']);
 });
 
@@ -190,4 +193,67 @@ test("priceProps: the questionable guard over his position's regulars alone (a q
   priceProps('nfl', gameRow, props, notReg, idx, { homePts: 24, awayPts: 21 }, null, report([q]), {}, 0.1, sure);
   assert.equal(seen[0], 0.5);
   assert.equal(missChance(sure, { pos: 'LB', gone: null }), 0.5);
+});
+
+test("D40 the practice days read live: the week's rows by ESPN id, another week's and an unknown player's left out; the level is in PLAY_LEVELS and no longer unread", () => {
+  assert.deepEqual(PLAY_LEVELS, ['qb', 'gone', 'practice']);
+  assert.deepEqual(PLAY_UNREAD, []);
+  const espnOf = new Map([['00-1', '123'], ['00-2', '456']]);
+  const rows = [{ week: '7', gsis_id: '00-1', practice_status: 'Did Not Participate In Practice' }, { week: '6', gsis_id: '00-2', practice_status: 'Full Participation in Practice' }, { week: '7', gsis_id: '00-9', practice_status: 'Limited Participation in Practice' }, { week: '7', gsis_id: '00-2', practice_status: '' }];
+  assert.deepEqual([...practiceFrom(rows, espnOf, 7)], [['123', 'DNP']]);
+  assert.equal(practiceFrom(rows, espnOf, 6).get('456'), 'FP');
+  assert.equal(practiceFrom(null, espnOf, 7).size, 0);
+});
+
+test('D40 the missing-prop signal: the rates by report status group, none without them; the constants', () => {
+  const rates = { none: { missing: 0.28, listed: 0.08 }, q: { missing: 0.45, listed: 0.27 } };
+  assert.equal(boardMissChance(rates, 'none'), 0.28);
+  assert.equal(boardMissChance(rates, 'q'), 0.45);
+  assert.equal(boardMissChance(rates, 'q', false), 0.27);
+  assert.equal(boardMissChance(null, 'none'), null);
+  assert.equal(boardMissChance({ none: {} }, 'none'), null);
+  assert.equal(BOARD_K, 25);
+  assert.equal(PLAY_MISSING_MIN, 2);
+});
+
+test("D40 priceProps: a regular with no prop on the board while two teammates at his position have one misses by the rate (not on the report: none's; questionable: q's); a guard's fixed view as it was; nothing without the rates", async () => {
+  const { priceProps, STATS } = await import('../libs/ranker/scripts/model/props.mjs');
+  const st = STATS.nfl.find((s) => s.key === 'recYds');
+  const seen = [];
+  const matchups = {
+    live: (pid, team, opp, pos, season, missOf) => {
+      seen.push({ m: missOf('m'), q: missOf('q'), b: missOf('b') });
+      return { vacs: [0, 0, 0], vac: 0, snap: { latest: 0.7, avg: 0.7, n: 3 } };
+    },
+    qb1: () => null,
+    absent: () => new Map(),
+    regulars: () => [{ id: 'm', v: 6 }, { id: 'q', v: 5 }, { id: 'a', v: 7 }, { id: 'b', v: 4 }],
+    goneOf: () => 0,
+  };
+  const project = () => ({ mu: 50, rate: 50, recent: 50, base: 50, opp: 1, posOpp: 1, roleOpp: null, role: null, funnel: null, funnelF: 1, paceF: 1, tgtF: 1, vac: 0, vacHist: 0, vacF: 1, games: 4, prevGames: 16 });
+  const fitted = { recYds: { stat: st, env: { mean: 50, avg: 1 }, model: { project, roleTable: () => [] }, values: new Map([['a', [[2026, 40], [2026, 45], [2026, 55], [2026, 60]]]]), matchups, params: { r: 6, a: 1, b: 0, scale: 1 }, snapGap: null } };
+  const idx = { pid: (a) => a.id, pos: () => 'WR', name: (id) => `N${id}` };
+  const gameRow = { id: 'g', date: '2026-10-11T17:00Z', season: 2026, home: '1', away: '2', homeAbbr: 'H', awayAbbr: 'A' };
+  const rosterSet = new Set(['a', 'b', 'm', 'q']);
+  rosterSet.out = new Map();
+  const rates = { none: { missing: 0.28, listed: 0.08 }, q: { missing: 0.45, listed: 0.27 } };
+  const live = { injuries: new Map([['1', [{ id: 'q', name: 'Q Receiver', pos: 'WR', status: 'Questionable' }]]]), rosters: new Map([['1', rosterSet]]), boardMiss: rates };
+  // (a and b listed at the position; m and q not)
+  const props = ['a', 'b'].map((id) => ({ athlete: { id, name: id.toUpperCase(), team: '1' }, stat: st, line: 50.5, open: null, prices: { over: -110, under: -110 } }));
+  const play = fitPlayTable(reports(400, 0.75, { gone: 0, pos: 'WR' }), ['gone']);
+  seen.length = 0;
+  priceProps('nfl', gameRow, props, fitted, idx, { homePts: 24, awayPts: 21 }, null, live, {}, 0.1, play);
+  assert.equal(seen[0].m, 0.28, 'not on the report, no prop: the none rate');
+  assert.equal(seen[0].q, 0.45, "questionable with no prop: the q rate, not the table's 0.25");
+  assert.equal(seen[0].b, 0, 'listed: as before');
+  // (one listed teammate only: no signal; the questionable one reads the table)
+  seen.length = 0;
+  priceProps('nfl', gameRow, props.slice(0, 1), fitted, idx, { homePts: 24, awayPts: 21 }, null, live, {}, 0.1, play);
+  assert.equal(seen[0].m, 0);
+  assert.equal(seen[0].q, 0.25);
+  // (no rates: as before)
+  seen.length = 0;
+  priceProps('nfl', gameRow, props, fitted, idx, { homePts: 24, awayPts: 21 }, null, { ...live, boardMiss: null }, {}, 0.1, play);
+  assert.equal(seen[0].m, 0);
+  assert.equal(seen[0].q, 0.25);
 });

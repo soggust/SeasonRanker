@@ -45,8 +45,11 @@ export const PLAY_K = 25;
 export const PLAY_FLOOR = 0.003;
 export const PLAY_HELD = 3;
 export const PLAY_MIN = 1000;
-export const PLAY_LEVELS = ['qb', 'gone'];
-export const PLAY_UNREAD = ['practice'];
+// (practice read live since D40 (2026-10-19): the week's practice status from nflverse's injuries file, the one the
+// table was fit on (the final practice of the week, which is the one posted by the time the window opens, 26 hours
+// before the kickoff, PLAY_FINAL); measured +0.0203 held out 2023-2025, the largest level)
+export const PLAY_LEVELS = ['qb', 'gone', 'practice'];
+export const PLAY_UNREAD = [];
 
 // (his position's group: QB, RB (a fullback too), WR, TE, the rest one)
 export const playPos = (pos) => {
@@ -141,7 +144,7 @@ function heldOf(rows, levels, held, k, sub = null, live = true) {
   for (const s of held) {
     const t = fitPlayTable(rows.filter((x) => x.season < s), levels, k);
     if (!t) return null;
-    for (const x of rows.filter((r) => r.season === s)) scored.push({ ...x, p: t.chance(live ? { ...x, practice: null } : x) });
+    for (const x of rows.filter((r) => r.season === s)) scored.push({ ...x, p: t.chance(live && PLAY_UNREAD.includes('practice') ? { ...x, practice: null } : x) });
   }
   const by = (x) => [playPos(x.pos), ...(sub && valueOf(x, sub) !== null ? [`${sub}=${valueOf(x, sub)}`] : [])];
   return scoreOf((x) => x.p, scored, by);
@@ -263,6 +266,37 @@ export async function nflPlayChance(from, current) {
   const table = rows ? choosePlayTable(rows) : null;
   if (!table) console.warn(`nfl: play chance: ${rows ? `${rows.length} questionable regulars' reports, too few` : 'no reports'}: a questionable player at half, as before`);
   return table;
+}
+
+// The week's practice status by ESPN id (D40): nflverse's injuries rows (the current season's file, read again every
+// 12 hours: its practice_status is the latest practice posted) for the week given, through the players file's gsis
+// to ESPN ids. practiceFrom: the pure part (rows: { week, gsis_id, practice_status }; espnOf: gsis -> ESPN id)
+export function practiceFrom(rows, espnOf, week) {
+  const out = new Map();
+  for (const x of rows ?? []) {
+    if (Number(x.week) !== Number(week)) continue;
+    const id = espnOf.get(x.gsis_id);
+    const p = playPractice(x.practice_status);
+    if (id && p) out.set(String(id), p);
+  }
+  return out;
+}
+export async function nflPractice(season, week) {
+  if (!Number.isFinite(Number(week))) return new Map();
+  const players = await nflverseRows('players', 'players.csv.gz', ['gsis_id', 'espn_id'], 24 * 7).catch(() => null);
+  const espnOf = new Map((players ?? []).filter((p) => p.espn_id && p.espn_id !== 'NA').map((p) => [p.gsis_id, String(Number(p.espn_id))]));
+  if (!espnOf.size) return new Map();
+  const inj = await nflverseRows('injuries', `injuries_${season}.csv.gz`, ['week', 'gsis_id', 'practice_status'], 12).catch(() => null);
+  return practiceFrom(inj ?? [], espnOf, week);
+}
+
+// A regular's chance of missing the game when his props are missing from the board while teammates' are listed
+// (board-miss.mjs nflBoardMiss's rates, D40): by his report status group ('q' questionable, else 'none'); null
+// without the rates
+export function boardMissChance(rates, status, missing = true) {
+  const g = rates?.[status === 'q' ? 'q' : 'none'];
+  const r = g ? (missing ? g.missing : g.listed) : null;
+  return Number.isFinite(r) ? r : null;
 }
 
 // The table's reports are the final ones (a Sunday game's Friday's, a Monday's Saturday's, a Thursday's

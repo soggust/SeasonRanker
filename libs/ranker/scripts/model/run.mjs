@@ -144,11 +144,12 @@ import { backtestBets, evaluate, repriced, snapshots, trustBets } from './backte
 import { buildPicks, kellyOf, levelOf, unlock } from './picks.mjs';
 import { boardMarkets, boardProp, buildBoard, seenUpdate } from './board.mjs';
 import { boxMarket, boxTotals, playerRows } from './playerlogs.mjs';
-import { nflPlayChance, playAt, playChanceSummary } from './playchance.mjs';
+import { nflPlayChance, nflPractice, playAt, playChanceSummary } from './playchance.mjs';
+import { boardMissText, nflBoardMiss } from './board-miss.mjs';
 import { ROUND_C } from './project.mjs';
 import { ANY_KEY, ANY_LABEL, ANY_LINE, anytimePlacement, priceAnytime, trackOnly } from './anytime.mjs';
 import { API_MARKETS, PER_GAME, PROP_WAIT, ROLE, STATS, apiProps, board, fitProps, marketPts, nameKey, nflListed, nflMarket, nflTookSnap, priceProps, readDepth, depthQbChangeOf, roleGateOf, rowsIndex, settleProp, statInFinal, statRows, withApiPrices } from './props.mjs';
-import { CACHE, DAY, etDay, get, isoSecond, readJson, writeAtomic, writeJson } from './sources.mjs';
+import { CACHE, DAY, etDay, get, isoSecond, nflverseGames, readJson, writeAtomic, writeJson } from './sources.mjs';
 import { fitCode, fitDay, fitDiffs, fitPlan, readFit, refitWhy, saveFit } from './fitcache.mjs';
 import { corrRows, correctionText, tuneCorrection } from './correct.mjs';
 import { PRACTICE_N, PRACTICE_SPLIT, lineBucket, practiceRecord, practiceTop, slateQuota } from './desk.mjs';
@@ -1017,6 +1018,9 @@ async function fitTheProps(r) {
     // history, last season's reports are in the table all the same))
     const nflNow = r.now.getUTCMonth() >= 2 ? r.now.getUTCFullYear() : r.now.getUTCFullYear() - 1;
     r.playChance = sport === 'nfl' ? await nflPlayChance(cfg.deepen ?? 2016, Math.max(nflNow, ...history.map((g) => g.season))) : null;
+    // (the missing-prop rates (board-miss.mjs, D40): the history's opens against the snap counts, read once a run)
+    r.boardMiss = sport === 'nfl' ? await nflBoardMiss(2023, Math.max(nflNow, ...history.map((g) => g.season))).catch((err) => (console.warn(`nfl: the missing-prop rates not read (${err.message})`), null)) : null;
+    if (r.boardMiss) console.log(`${sport}: the missing-prop signal: ${boardMissText(r.boardMiss)}`);
     if (r.playChance) {
       const c = r.playChance.check;
       console.log(`${sport}: play chance: ${r.playChance.n} questionable regulars' reports, ${Math.round(r.playChance.rate * 100)}% played; levels ${r.playChance.levels.join(', ') || 'none'} (held out ${c.held.join(', ')}, as read live: ${c.n} reports, log loss ${c.loss} against the flat half's ${c.flat}; ${Object.entries(c.sides).map(([g, x]) => `${g} ${x.n} ${x.loss}${x.half ? ', at half' : ''}`).join(', ')}; ${c.tried.map((x) => `${x.level} ${x.gain >= 0 ? '+' : ''}${x.gain}${x.unread ? ', measured, not read live' : x.kept ? '' : `, left out${x.worse ? `: ${x.worse.join(', ')}` : ''}`}`).join('; ')})`);
@@ -2179,6 +2183,16 @@ async function betProps(r) {
     if (!rosters.has(String(team))) rosters.set(String(team), await roster(cfg.league, team, ROSTER_MIN[sport] ?? 40).catch(() => null));
     return rosters.get(String(team));
   };
+  // (the week's practice status, the NFL's, read once a week a run (D40): the game's week from nflverse's schedule)
+  const practiceWeeks = new Map();
+  const practiceFor = async (game) => {
+    if (sport !== 'nfl') return null;
+    const week = (r.nflWeekOf ??= new Map((await nflverseGames().catch(() => [])).filter((g) => g.espn).map((g) => [String(g.espn), Number(g.week)]))).get(String(game.id));
+    if (!Number.isFinite(week)) return null;
+    const k = `${game.season}|${week}`;
+    if (!practiceWeeks.has(k)) practiceWeeks.set(k, await nflPractice(game.season, week).catch(() => new Map()));
+    return practiceWeeks.get(k);
+  };
   const firstAsks = [...r.upcoming].sort((a, b) => Number((asked[a.game.id] ?? 0) > 0) - Number((asked[b.game.id] ?? 0) > 0));
   for (const u of firstAsks) {
     const game = u.game;
@@ -2307,7 +2321,9 @@ async function betProps(r) {
       const exp = { ...exp0, market: marketPts(u.lines?.total?.line, homeMargin), marketSpread: homeMargin, marketTotal: Number.isFinite(u.lines?.total?.line) ? u.lines.total.line : null };
       const live0 = ROSTER_MIN[sport] ? { ...(r.live.get(game.id) ?? {}), rosters: new Map([[String(game.home), await rosterOf(game.home)], [String(game.away), await rosterOf(game.away)]]) } : r.live.get(game.id);
       // (the NFL's depth charts now, the site's (props.mjs readDepth: the role guard's depth CHECK), read once a run)
-      const live = sport === 'nfl' ? { ...(live0 ?? {}), depth: (r.depth ??= readDepth(path.join(ROOT, 'apps/nfl/src/StaticData/depth'))) } : live0;
+      // (the NFL's: the week's practice status by player (playchance.mjs nflPractice, D40: the table's practice level,
+      // read live) and the missing-prop rates (r.boardMiss) ride on the game's live facts for the price)
+      const live = sport === 'nfl' ? { ...(live0 ?? {}), depth: (r.depth ??= readDepth(path.join(ROOT, 'apps/nfl/src/StaticData/depth'))), practice: await practiceFor(game), boardMiss: r.boardMiss ?? null } : live0;
       // (the NFL's questionable players at their play chance once the final injury report's out, before it at
       // half: playchance.mjs playAt)
       const priceNow = () => priceProps(sport, game, board_, r.props, idx, exp, f?.info ?? null, live, trust, EV_SCALE, playAt(r.playChance ?? null, game.date, r.now.getTime()), r.players ?? null, r.calib ?? null, r.roleGate ?? null, r.loosen?.role ?? null, r.correction?.fit ?? null, r.anchor ?? null);

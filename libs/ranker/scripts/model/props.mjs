@@ -92,7 +92,8 @@ import { OUT_STATUS, Q_STATUS, usualStarters } from './timing.mjs';
 import { usageOf } from './usage.mjs';
 import { kindOf, newsOn } from './news.mjs';
 import { COACH_GAMES } from './football.mjs';
-import { missChance } from './playchance.mjs';
+import { boardMissChance, missChance } from './playchance.mjs';
+import { PLAY_MISSING_MIN } from './board-miss.mjs';
 import { ANY_KEY, anytimeModel, anytimeRows, fitAnytime } from './anytime.mjs';
 
 const CORE = 'https://sports.core.api.espn.com/v2/sports';
@@ -1850,6 +1851,9 @@ export function priceProps(sport, game, props, fitted, idx, exp, info, live, tru
   // (the players with a prop on this game's board, by id, and each team's quarterbacks among them (the NFL's
   // role guard: a change at quarterback))
   const onBoard = new Set();
+  // (each listed player's team, for the missing-prop read below (D40): a regular at the position with no prop while
+  // PLAY_MISSING_MIN teammates there have one)
+  const boardTeam = new Map();
   const boardQbs = new Map();
   // (a CHECK's prop the board doesn't show, priced from its stored prices (checks.mjs withStoredPrices): not
   // the board's, so it changes no one's role)
@@ -1858,6 +1862,7 @@ export function priceProps(sport, game, props, fitted, idx, exp, info, live, tru
     const id = idx.pid(x.athlete);
     if (!id) continue;
     onBoard.add(String(id));
+    boardTeam.set(String(id), String(x.athlete.team));
     if (sport === 'nfl' && (idx.pos(id) ?? x.athlete.pos) === 'QB') {
       const t = String(x.athlete.team);
       if (!boardQbs.has(t)) boardQbs.set(t, new Set());
@@ -1911,9 +1916,30 @@ export function priceProps(sport, game, props, fitted, idx, exp, info, live, tru
     const qMiss = (id) => {
       if (!play || sport !== 'nfl') return 0.5;
       const p = idx.pos(id) ?? idx.pos(String(id)) ?? qPos.get(String(id));
-      return missChance(play, { pos: p, gone: f.matchups?.goneOf?.(row.team, game.season, id) ?? null, regular: isReg(id, p) });
+      // (his practice status this week where the live read has it (playchance.mjs nflPractice, D40): the table's
+      // practice level)
+      return missChance(play, { pos: p, gone: f.matchups?.goneOf?.(row.team, game.season, id) ?? null, regular: isReg(id, p), practice: live?.practice?.get?.(String(id)) ?? null });
     };
-    const missOf = (q) => (id) => (out.ids.has(String(id)) || gone(id) || (roster && !roster.has(String(id))) ? 1 : out.questionable.has(String(id)) ? (typeof q === 'function' ? q(id) : q) : 0);
+    // (the missing-prop signal (D40, board-miss.mjs): a regular at the position with no prop on this game's board while
+    // PLAY_MISSING_MIN teammates at his position group have one, the NFL's, with the rates read: his chance of missing
+    // the game by his report status (none, questionable) in place of 0 or the table's; a guard's fixed view (q a
+    // number) as it was. Logged once a game and player)
+    const listedMates = (team, p) => [...onBoard].filter((id) => boardTeam.get(id) === String(team) && groupOf(sport, idx.pos(id) ?? '') === groupOf(sport, p)).length;
+    const boardMissing = (id, p) => sport === 'nfl' && !!live?.boardMiss && !!p && !onBoard.has(String(id)) && isReg(id, p) && listedMates(row.team, p) >= PLAY_MISSING_MIN;
+    const missOf = (q) => (id) => {
+      const sid = String(id);
+      if (out.ids.has(sid) || gone(id) || (roster && !roster.has(sid))) return 1;
+      const p = idx.pos(id) ?? idx.pos(sid) ?? qPos.get(sid);
+      const missing = boardMissing(id, p);
+      const bm = missing ? boardMissChance(live.boardMiss, out.questionable.has(sid) ? 'q' : 'none', true) : null;
+      if (bm !== null && !settledLogged.has(`${game.id}:${sid}:board`)) {
+        settledLogged.add(`${game.id}:${sid}:board`);
+        console.log(`${sport}: ${idx.name?.(id) ?? sid} (${p}) has no prop on the board while ${listedMates(row.team, p)} teammates at the position do: ${Math.round(bm * 100)}% to miss ${game.awayAbbr} @ ${game.homeAbbr} (${out.questionable.has(sid) ? 'questionable' : 'not on the report'}; D40)`);
+      }
+      if (out.questionable.has(sid)) return typeof q === 'function' ? (bm ?? q(id)) : q;
+      if (bm !== null) return typeof q === 'function' ? bm : q;
+      return 0;
+    };
     // (their names among the ones out at his position whose work counts (its regulars): the write-up's and the
     // CHECK's words)
     const atPos = (p) => !p || groupOf(sport, p) === groupOf(sport, row.pos);

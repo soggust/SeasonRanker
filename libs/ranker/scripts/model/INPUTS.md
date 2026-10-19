@@ -38,6 +38,8 @@ Gains are held-out log loss per line, without minus with. Above 0 is better. The
 | Snap counts | nflverse `snap_counts`, per game | **in** | Who played, snap share, role, a starter's start, the defenders out. |
 | Play-by-play: xpass, EPA, red zone | nflverse pbp, per play | **in** | `proe` (measured, left out), `rzPass`, the funnel, the anytime TD. |
 | Injuries and weekly rosters | nflverse, per week | **in** | `qb1Out`, `qbDeep`, the play chance. |
+| Practice status (DNP, LP, FP) | nflverse injuries, weekly, the current week read live every 12 hours | **in** (D40) | The play table's practice level (+0.0203 held out 2023-2025), read live since 2026-10-19 (`playchance.mjs nflPractice`). |
+| The board's missing props (a regular with no prop while teammates have one) | the game's board at pricing time; the rates from the odds history's opens against the snap counts, 2023 on | **in** (D40) | His chance of missing the game by report status group (`board-miss.mjs`: not on the report 28%, questionable 45%), into the vacated work and the guards; never a price. |
 | Depth charts | site `StaticData/depth` (current) | **in** (live only) | The pre-game role guard (`depthRoleOf`). It is a snapshot, so the history can't use it. |
 | Schedule, closing lines | nflverse games, per game | **in** | Script, `mSpread`, the market terms. |
 | Players file (draft, birth date) | nflverse, static | **in** | Draft prior (`dp`), age prior (`sp`). |
