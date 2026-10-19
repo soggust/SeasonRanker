@@ -1218,15 +1218,21 @@ $font-mono: "IBM Plex Mono", "Courier New", monospace;
 }
 
 // A band's header: a button that folds its rows, sticky to the top of the scroller while they pass: the
-// chevron in the rows' chevron column, the band's icon and name in its color with a glow, and at the right its
+// chevron in the rows' chevron column, the band's icon centered over the rows' rank tiles and its name lined up
+// with the rows' circles (the owner's note, 2026-10-19), both in its color with a glow, and at the right its
 // season (the record white, the units in the win's green or the loss's red). Its ground a wash of the band's
-// color fading out by 70%, its bottom edge the color at about 45%. The passes and fades' line at the bottom the
-// same button, dim, without a color
+// color fading out by 70%, no bottom edge (the owner's note, 2026-10-19). The passes and fades' line at the
+// bottom the same button, dim, without a color
 .band-head {
+  // (the rows' measures the icon and name line up with: the rank tile's width, the rows' gap, the header's own
+  // gap; phones set their own below)
+  --head-gap: #{v.$space-12};
+  --icon-w: 20px;
+  --rank-w: 34px;
+  --row-gap: #{v.$space-14};
   align-items: center;
   background: linear-gradient(90deg, var(--band-wash), transparent 70%), var(--scoreboard-dots), var(--scoreboard);
   border: none;
-  border-bottom: 1px solid var(--band-edge);
   color: #fff;
   cursor: pointer;
   display: flex;
@@ -1271,9 +1277,11 @@ $font-mono: "IBM Plex Mono", "Courier New", monospace;
   .band-icon {
     color: var(--band-color);
     flex: none;
-    // (its left edge the rows' rank tiles' exactly: straight after the chevron's column, the gap taken back (the
-    // owner's note, 2026-10-17; phones the same with their 8px gap))
-    margin-left: calc(-1 * #{v.$space-12});
+    // (centered over the rows' rank tiles: straight after the chevron's column, the gap taken back, then half the
+    // tile's spare width; after it the tile's other half and the rows' gap, so the name starts where the rows'
+    // circles do (the owner's note, 2026-10-19))
+    margin-left: calc((var(--rank-w) - var(--icon-w)) / 2 - var(--head-gap));
+    margin-right: calc((var(--rank-w) - var(--icon-w)) / 2 + var(--row-gap) - var(--head-gap));
   }
 
   .band-name {
@@ -1335,34 +1343,29 @@ $font-mono: "IBM Plex Mono", "Courier New", monospace;
   --band-color: #{v.$text-faint};
   --band-glow: transparent;
   --band-wash: transparent;
-  --band-edge: #{v.$panel-rule};
 
   &.lock {
     --band-color: #{chip.$lock-light};
     --band-glow: rgba(210, 105, 30, 0.6);
     --band-wash: rgba(210, 105, 30, 0.28);
-    --band-edge: rgba(210, 105, 30, 0.5);
   }
 
   &.check {
     --band-color: #{chip.$check-light};
     --band-glow: rgba(169, 156, 240, 0.55);
     --band-wash: rgba(169, 156, 240, 0.22);
-    --band-edge: rgba(169, 156, 240, 0.45);
   }
 
   &.love {
     --band-color: #{v.$good-bright};
     --band-glow: rgba(62, 224, 122, 0.5);
     --band-wash: rgba(29, 138, 78, 0.3);
-    --band-edge: rgba(62, 224, 122, 0.4);
   }
 
   &.like {
     --band-color: #{v.$caution};
     --band-glow: rgba(255, 205, 0, 0.45);
     --band-wash: rgba(255, 205, 0, 0.16);
-    --band-edge: rgba(255, 205, 0, 0.35);
   }
 
 }
@@ -2014,11 +2017,10 @@ $font-mono: "IBM Plex Mono", "Courier New", monospace;
   }
 
   .band-head {
+    --head-gap: #{v.$space-8};
+    --rank-w: 30px;
+    --row-gap: #{v.$space-8};
     gap: v.$space-8;
-
-    .band-icon {
-      margin-left: calc(-1 * #{v.$space-8});
-    }
     padding: 10px;
 
     .band-chev {
