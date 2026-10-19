@@ -3,6 +3,17 @@
  "days": 2,
  "signals": [
   {
+   "team": "3",
+   "abbr": "CHI",
+   "athlete": "4361093",
+   "player": "Kyler Gordon",
+   "kind": "return",
+   "direction": "up",
+   "confidence": 0.9,
+   "headline": "Bears' Kyler Gordon returns with vengeance, answers critics",
+   "at": "2026-10-19T11:11:55.000Z"
+  },
+  {
    "team": "19",
    "abbr": "NYG",
    "athlete": null,
@@ -122,18 +133,7 @@
    "confidence": 0.9,
    "headline": "Taylor Moton among 3 Panthers activated ahead of Eagles game",
    "at": "2026-10-17T19:23:52.000Z"
-  },
-  {
-   "team": "24",
-   "abbr": "LAC",
-   "athlete": "4685382",
-   "player": "Omarion Hampton",
-   "kind": "restriction",
-   "direction": "down",
-   "confidence": 0.4,
-   "headline": "Why is Chargers RB Omarion Hampton's snap count decreasing?",
-   "at": "2026-10-17T10:00:01.000Z"
   }
  ],
- "at": "2026-10-19T00:24:33.878Z"
+ "at": "2026-10-19T11:24:25.432Z"
 }
