@@ -112,13 +112,13 @@ test('a bet watched: a total under on pace, an over needing more, pending before
   const w = betWatch(bet(), game(), null, NOW);
   assert.equal(w.status, 'WINNING');
   assert.equal(w.tone, 'good');
-  assert.equal(w.left, 'On pace for 214');
-  assert.equal(w.right, 'Under by 7.2');
+  assert.equal(w.left, '142 pts · 79.5 to spare');
+  assert.equal(w.right, 'On pace for 214');
   assert.equal(w.value, 142);
   assert.ok(w.fill > 0 && w.fill < w.tick && w.proj !== null && w.proj < w.tick);
   // (the over: needs 79.5 more, on a pace short of the line)
   const over = betWatch(bet({ side: 'over', pick: 'Over 221.5' }), game(), null, NOW);
-  assert.equal(over.status, 'NEEDS 80');
+  assert.equal(over.status, 'BEHIND');
   assert.equal(over.tone, 'close');
   assert.equal(over.left, '142 pts · needs 80 more');
   assert.equal(over.right, 'On pace for 214');
@@ -147,17 +147,17 @@ test('a bet watched: a total under on pace, an over needing more, pending before
 test('a prop watched: on pace, needing more, the count from the box score; no count yet is none so far', () => {
   const prop = bet({ market: 'prop', side: 'over', line: 24.5, pick: 'Jaylen Brown Over 24.5 Points', propType: 'pts', athlete: '1', player: 'Jaylen Brown', statLabel: 'pts', botPick: false, odds: -115 });
   const w = betWatch(prop, game(), 20, NOW);
-  assert.equal(w.status, 'ON PACE');
+  assert.equal(w.status, 'WINNING');
   assert.equal(w.tone, 'good');
   assert.equal(w.left, '20 pts · needs 5 more');
   assert.equal(w.right, 'On pace for 30');
   assert.ok(w.proj > w.tick);
   const short = betWatch(prop, game(), 12, NOW);
-  assert.equal(short.status, 'NEEDS 13');
+  assert.equal(short.status, 'BEHIND');
   assert.equal(short.tone, 'bad');
   // (just short of the pace: close, gold)
   const close = betWatch(prop, game({ share: 0.5 }), 12, NOW);
-  assert.equal(close.status, 'NEEDS 13');
+  assert.equal(close.status, 'BEHIND');
   assert.equal(close.tone, 'close');
   assert.equal(betWatch(prop, game(), null, NOW).left, '0 pts · needs 25 more');
   // (past the line: won)
@@ -166,12 +166,17 @@ test('a prop watched: on pace, needing more, the count from the box score; no co
   assert.equal(betWatch({ ...prop, side: 'under' }, game(), 25, NOW).status, 'LOST');
   const under = betWatch({ ...prop, side: 'under' }, game(), 12, NOW);
   assert.equal(under.status, 'WINNING');
-  assert.equal(under.right, 'Under by 6.4');
+  assert.equal(under.left, '12 pts · 12.5 to spare');
+  assert.equal(under.right, 'On pace for 18');
+  // (an under past its pace: behind, the pace named once)
+  const hot = betWatch({ ...prop, side: 'under' }, game({ share: 0.5 }), 20, NOW);
+  assert.deepEqual([hot.status, hot.tone, hot.right], ['BEHIND', 'bad', 'On pace for 40']);
+  for (const x of [w, short, under, hot]) assert.equal(`${x.status} ${x.left} ${x.right}`.match(/pace/gi).length, 1);
   assert.equal(shortPick(prop), 'J. Brown o24.5 pts');
   assert.equal(shortPick(bet()), 'Under 221.5');
   assert.equal(shortPick(bet({ market: 'spread', pick: 'CLE -4.5' })), 'CLE −4.5');
-  assert.equal(betSub(prop), '1.0u to win 0.87u · YOUR CALL');
-  assert.equal(betSub(bet()), '1.0u to win 0.93u · LOVE · the bot’s pick');
+  assert.equal(betSub(prop), '1.0u to win 0.87u');
+  assert.equal(betSub(bet()), '1.0u to win 0.93u');
 });
 
 test('a side watched: covering, down, level; the sweat summary and the panel’s header', () => {

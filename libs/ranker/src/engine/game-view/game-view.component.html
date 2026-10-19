@@ -168,11 +168,12 @@
         </div>
       </ng-template>
 
-      <!-- The leaders, each team's in a column: the season's (a preview's) or the game's. On a phone the panel
-           folds, starting shut; a player the user has a prop on wears YOUR BET by his name, his row washed gold -->
+      <!-- The leaders, each team's in a column: the season's (a preview's) or the game's. The panel folds like the
+           others beside it, open on a computer, shut on a phone; a player the user has a prop on wears YOUR BET by his
+           name, his row washed gold (bet-lit: not the Your Bets panel's own your-bet row) -->
       <ng-template #leaders let-label>
         @if (g.leaders.length) {
-          <card-panel class="tab-card group-box game-leaders" [expandable]="phone()" [startOpen]="false" [label]="label" icon="military_tech">
+          <card-panel class="tab-card group-box game-leaders" [startOpen]="!phone()" [label]="label" icon="military_tech">
             <div class="group-body game-two">
               @for (t of g.leaders; track t.side) {
                 @let team = t.side === 'away' ? g.away : g.home;
@@ -180,7 +181,7 @@
                   <h3 class="depth-unit">{{ team.short }}</h3>
                   @for (l of t.rows; track $index) {
                     @let yourBet = leaderBet(g, l.name);
-                    <div class="game-leader" [class.your-bet]="yourBet">
+                    <div class="game-leader" [class.bet-lit]="yourBet">
                       <ng-container *ngTemplateOutlet="face; context: { $implicit: l }"></ng-container>
                       <span class="game-leader-main">
                         <small>{{ l.category }}</small>
@@ -471,7 +472,7 @@
                         </thead>
                         <tbody>
                           @for (r of grp.rows; track $index) {
-                            <tr [class.bench-start]="$index > 0 && grp.rows[$index - 1].starter && !r.starter" [class.your-bet]="propIds.has(r.id)">
+                            <tr [class.bench-start]="$index > 0 && grp.rows[$index - 1].starter && !r.starter" [class.bet-lit]="propIds.has(r.id)">
                               <td class="name">
                                 <ng-container *ngTemplateOutlet="who; context: { $implicit: r.name, text: r.short }"></ng-container>
                                 @if (r.position) {

@@ -1916,7 +1916,7 @@ $row-rule: 1px solid rgba(255, 255, 255, 0.05);
   text-transform: none;
 }
 
-// A bet's row: the pick and its odds with the stake, band and whose pick it was under it, the status tag at the
+// A bet's row: the pick and its odds with the stake and its payout under it, the status tag at the
 // right of that line, then the meter full width (the fill to where it stands in its tone, a white tick at the
 // line, a prop's dashed outline to its projected finish) and the two captions
 .your-bet {
@@ -1960,6 +1960,7 @@ $row-rule: 1px solid rgba(255, 255, 255, 0.05);
 
 .your-bet-odds {
   color: v.$text-faint;
+  margin-left: 4px;
   font-size: v.$fs-12;
   font-weight: 600;
 }
@@ -2114,7 +2115,7 @@ $row-rule: 1px solid rgba(255, 255, 255, 0.05);
 
 // (a player the user has a prop on: YOUR BET by his name among the leaders, his row washed gold; the same wash on
 // his box score row)
-.game-leader.your-bet {
+.game-leader.bet-lit {
   background: linear-gradient(90deg, rgba(chip.$gold-led, 0.12), transparent 80%);
 }
 
@@ -2131,7 +2132,7 @@ $row-rule: 1px solid rgba(255, 255, 255, 0.05);
   vertical-align: 2px;
 }
 
-.game-box-table tr.your-bet {
+.game-box-table tr.bet-lit {
   background: linear-gradient(90deg, rgba(chip.$gold-led, 0.14), transparent 80%);
 }
 

@@ -54,11 +54,11 @@ function countMeter(value: number, line: number, proj: number | null): Pick<BetW
   return { fill: clamp((value / span) * 100), tick: clamp((line / span) * 100), proj: proj === null ? null : clamp((proj / span) * 100) };
 }
 
-// (the stake and its payout, the band or YOUR CALL: the row's sub line, "1.0u to win 0.91u · LOVE · the bot's pick")
-export function betSub(b: Pick<PlayBet, 'stake' | 'odds' | 'botPick' | 'tier'>): string {
+// (the stake and its payout: the row's sub line, "1.0u to win 0.91u"; the band and whose pick it was stay on the
+// Book's own rows, not the sweat's)
+export function betSub(b: Pick<PlayBet, 'stake' | 'odds'>): string {
   const win = b.odds > 0 ? (b.stake * b.odds) / 100 : (b.stake * 100) / -b.odds;
-  const who = b.botPick ? `${(b.tier ?? 'like').toUpperCase()} · the bot’s pick` : 'YOUR CALL';
-  return `${b.stake.toFixed(1)}u to win ${(Math.round(win * 100) / 100).toFixed(2)}u · ${who}`;
+  return `${b.stake.toFixed(1)}u to win ${(Math.round(win * 100) / 100).toFixed(2)}u`;
 }
 
 // A bet's words, short, for a card row: "Under 221.5", "J. Brown o24.5 pts", "Cavaliers −4.5" (the pick as the
@@ -124,20 +124,21 @@ function sideWatch(d: ModelBet, bet: PlayBet, game: GameRead, decided: ReturnTyp
   return { ...meter, status: 'LEVEL', tone: 'close', left: standing, right: bet.market === 'spread' ? 'On the number' : 'Tied', value: margin };
 }
 
-// (a count against its line with a pace: an over on pace or needing more, an under winning or over its pace)
+// (a count against its line with a pace, each fact said once: the status the verdict (WINNING, or BEHIND, gold
+// when close), the left caption where it stands (the count and what it needs, or what it has to spare), the right
+// the pace, the one place it's named)
 function paceWords(over: boolean, count: number, line: number, proj: number, unit: string): Pick<BetWatch, 'status' | 'tone' | 'left' | 'right'> {
   const of = unit ? ` ${unit}` : '';
-  const pace = `On pace for ${Math.round(proj)}`;
+  const right = `On pace for ${Math.round(proj)}`;
   if (over) {
     // (what it needs, whole: points, shots and yards come in ones)
-    const needs = Math.ceil(round1(line - count));
-    if (proj >= line) return { status: 'ON PACE', tone: 'good', left: `${fmt(count)}${of} · needs ${needs} more`, right: pace };
-    const short = line - proj;
-    return { status: `NEEDS ${needs}`, tone: short <= line * CLOSE ? 'close' : 'bad', left: `${fmt(count)}${of} · needs ${needs} more`, right: pace };
+    const left = `${fmt(count)}${of} · needs ${Math.ceil(round1(line - count))} more`;
+    if (proj >= line) return { status: 'WINNING', tone: 'good', left, right };
+    return { status: 'BEHIND', tone: line - proj <= line * CLOSE ? 'close' : 'bad', left, right };
   }
-  if (proj <= line) return { status: 'WINNING', tone: 'good', left: pace, right: `Under by ${fmt(round1(line - proj))}` };
-  const by = proj - line;
-  return { status: by <= line * CLOSE ? 'CLOSE' : `PACE +${fmt(round1(by))}`, tone: by <= line * CLOSE ? 'close' : 'bad', left: pace, right: `Over the line by ${fmt(round1(by))}` };
+  const left = `${fmt(count)}${of} · ${fmt(round1(line - count))} to spare`;
+  if (proj <= line) return { status: 'WINNING', tone: 'good', left, right };
+  return { status: 'BEHIND', tone: proj - line <= line * CLOSE ? 'close' : 'bad', left, right };
 }
 
 function finalWords(status: 'won' | 'lost' | 'push'): Pick<BetWatch, 'status' | 'tone'> {
