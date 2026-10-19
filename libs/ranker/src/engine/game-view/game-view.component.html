@@ -252,7 +252,7 @@
           @case ('injuries') {
             @for (t of g.injuries; track t.side) {
               @let team = t.side === 'away' ? g.away : g.home;
-              <card-panel class="tab-card game-injuries" [expandable]="false" [label]="team.name" icon="healing">
+              <card-panel class="tab-card team-panel game-injuries" [expandable]="false" [label]="team.name" icon="healing" [style.--group-color]="team.color">
                 <div class="group-body">
                   @for (i of t.rows; track $index) {
                     <div class="game-leader">
@@ -468,7 +468,7 @@
               @let team = t.side === 'away' ? g.away : g.home;
               <!-- (each team's players fold, both starting shut; a player the user has a prop on, his row washed gold) -->
               @let propIds = propPlayers(g);
-              <card-panel class="tab-card game-box" [label]="team.name" icon="groups">
+              <card-panel class="tab-card team-panel game-box" [label]="team.name" icon="groups" [style.--group-color]="team.color">
                 <div class="group-body">
                   @for (grp of t.groups; track $index) {
                     @if (grp.title) {
@@ -564,7 +564,7 @@
                 @for (t of ch.teams; track t.side) {
                   @if (games.chartSide === 'both' || games.chartSide === t.side) {
                     @let team = t.side === 'away' ? g.away : g.home;
-                    <card-panel class="tab-card game-chart-panel" [label]="team.short + ' Passing'" icon="call_made" [style.--zone-color]="team.color">
+                    <card-panel class="tab-card team-panel game-chart-panel" [label]="team.short + ' Passing'" icon="call_made" [style.--zone-color]="team.color" [style.--group-color]="team.color">
                       <div class="group-body">
                         <p class="game-drive-sub">{{ t.passers.join(', ') }}</p>
                         <div class="pass-zones">
@@ -865,6 +865,8 @@
                 <card-panel
                   class="tab-card game-plays"
                   [class.group-results]="grp.scoring"
+                  [class.team-panel]="!!grp.side"
+                  [style.--group-color]="grp.side === 'away' ? g.away.color : grp.side === 'home' ? g.home.color : null"
                   [label]="grp.title + (grp.result ? ' · ' + grp.result : '')"
                   [open]="games.openPlays.has(i) || games.playsFilter !== 'all'"
                   (toggled)="games.togglePlays(i)"

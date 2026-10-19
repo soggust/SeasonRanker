@@ -52,6 +52,32 @@ $row-rule: 1px solid rgba(255, 255, 255, 0.05);
   --group-color: #{chip.$gold-led};
 }
 
+// (...but a panel that belongs to one team (its box score, its injuries, its passing chart, its drive, its
+// half-inning) in that team's color instead, set on the panel ([style.--group-color]: game.ts's team.color, the
+// team's color as a side, the same as its half of the header, its Team Stats bars and its win probability line:
+// team-look.ts's accent, made to read on the dark board, the home side's other color when the two are too
+// close): its bar's tint, its icon, its line and the sport's rim. Opened from the Book, whose panels carry the
+// gold rim and bar (card-panel.scss), that rim, line and bar the team's color too, a light-to-deep sheen of it)
+book-page .game-card card-panel.team-panel {
+  $rim: linear-gradient(135deg, color-mix(in srgb, var(--group-color) 55%, #000), color-mix(in srgb, var(--group-color) 70%, #fff) 30%, var(--group-color) 60%, color-mix(in srgb, var(--group-color) 60%, #000));
+
+  &,
+  &:not(.panel-plain) {
+    background:
+      var(--scoreboard-dots) padding-box,
+      linear-gradient(var(--scoreboard), var(--scoreboard)) padding-box,
+      $rim border-box;
+  }
+
+  &:not(.closed) > .group-bar {
+    border-image: $rim 1;
+  }
+
+  > .group-bar {
+    background: linear-gradient(90deg, color-mix(in srgb, var(--group-color) 10%, transparent), transparent 60%), var(--scoreboard-dots), var(--scoreboard);
+  }
+}
+
 // ---- the hero: away on the left, home on the right, each half in its own team's hue (team-look.ts: lighter
 // at the outer edge, darkening into the deep version of the same hue), meeting at a crisp angled seam with a
 // thin light line; a soft diagonal sheen and a faint texture over both

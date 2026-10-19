@@ -272,7 +272,10 @@ export async function loadGame(league: string, eventId: string): Promise<GameVie
     const groups = new Map<string, GamePlayGroup>();
     for (const p of list) {
       const title = periodName(p);
-      if (!groups.has(title)) groups.set(title, { title, sub: null, result: null, side: null, logo: null, scoring: false, plays: [] });
+      // (a half-inning is the batting team's: the top the away side's, the bottom the home side's)
+      const half = baseball ? (p.period?.type ?? '').toLowerCase() : '';
+      const side = half === 'top' ? 'away' : half === 'bottom' ? 'home' : null;
+      if (!groups.has(title)) groups.set(title, { title, sub: null, result: null, side, logo: null, scoring: false, plays: [] });
       const g = groups.get(title)!;
       g.plays.push(toPlay(p));
       if (p.scoringPlay) g.scoring = true;
