@@ -1677,6 +1677,13 @@ export function presetWeights(position: SkillPosition, preset: SkillPreset): Ski
 // Stat groups (categories): each tab's, in the grid's order, each group its stats in column order
 // (stat-groups.ts resolves them). Only a look: where a column sits, the strip's name, icon and color, and
 // what the sidebar's eye on the group switches off together. The ranking reads the sliders alone.
+//
+// The players, Offenses, Defenses, O-Lines, kickers and punters keep Results | Basic | Advanced | Support
+// (the owner, 2026-10-19). The Teams tab reads as a team's profile (Results | Offense | Defense | Special
+// Teams | Support), a head coach's as his (Results | Offense | Defense | Coaching | Support: Coaching his own
+// calls, 4th-down aggressiveness, discipline and the third phase), the Special Teams tab by its units
+// (Results | Kicking | Punting | Returns | Support; Returns the return game both ways, the block units with
+// it). Tones (colors): Results 0, Support 3, the profile strips 1, 2, 4, 5 in order.
 // ---------------------------------------------------------------------------
 type Group = GroupDef<SkillColumnKey>;
 const group = (id: string, title: string, icon: string, tone: number, keys: SkillColumnKey[], box = false): Group => (box ? { id, title, icon, tone, keys, box } : { id, title, icon, tone, keys });
@@ -1685,6 +1692,8 @@ const results = (keys: SkillColumnKey[]) => group('results', 'Results', 'emoji_e
 const basic = (keys: SkillColumnKey[]) => group('box', 'Basic', 'bar_chart', 1, keys);
 const advanced = (keys: SkillColumnKey[]) => group('advanced', 'Advanced', 'insights', 2, keys);
 const support = (keys: SkillColumnKey[]) => group('support', 'Support', 'groups', 3, keys, true);
+const offense = (keys: SkillColumnKey[]) => group('offense', 'Offense', 'bolt', 1, keys);
+const defense = (keys: SkillColumnKey[]) => group('defense', 'Defense', 'shield', 2, keys);
 
 const RECEIVER_GROUPS: Group[] = [
   results(['games']),
@@ -1701,9 +1710,10 @@ const COVERAGE_ADVANCED: SkillColumnKey[] = ['compPctAllowed', 'yardsAllowed', '
 
 export const GROUPS: Record<SkillPosition, Group[]> = {
   TM: [
-    results(['winPct', 'recent', 'offRank', 'defRank', 'topPerGame']),
-    basic(['pointDiffPerGame', 'turnoverDiffPerGame']),
-    advanced(['netEpa', 'offEpa', 'defEpaAllowed', 'stEpaPerGame', 'oneScoreWinPct']),
+    results(['winPct', 'recent', 'pointDiffPerGame', 'turnoverDiffPerGame', 'netEpa', 'oneScoreWinPct', 'topPerGame']),
+    offense(['offRank', 'offEpa']),
+    defense(['defRank', 'defEpaAllowed']),
+    group('special', 'Special Teams', 'sports_football', 4, ['stEpaPerGame']),
     support(['qbPlay', 'rbPlay', 'weapons', 'oline', 'defense', 'coaching']),
   ],
   OFF: [
@@ -1756,24 +1766,34 @@ export const GROUPS: Record<SkillPosition, Group[]> = {
     advanced(COVERAGE_ADVANCED),
   ],
   ST: [
-    results(['games', 'stRank']),
-    basic(['fgMade', 'fgPct', 'patPct', 'netAvg', 'inside20Pct', 'kickReturnAvg', 'puntReturnAvg', 'returnTds', 'oppReturnAvg', 'blocksMade', 'kicksBlocked']),
-    advanced(['stEpaPerPlay', 'fgEpa', 'puntEpa', 'returnEpa', 'kickoffEpa']),
+    results(['games', 'stRank', 'stEpaPerPlay']),
+    group('kicking', 'Kicking', 'sports_football', 1, ['fgMade', 'fgPct', 'patPct', 'fgEpa', 'kickoffEpa', 'kicksBlocked']),
+    group('punting', 'Punting', 'arrow_outward', 2, ['netAvg', 'inside20Pct', 'puntEpa']),
+    group('returns', 'Returns', 'u_turn_left', 4, ['kickReturnAvg', 'puntReturnAvg', 'returnTds', 'returnEpa', 'oppReturnAvg', 'blocksMade']),
     support(['coaching']),
   ],
   K: [results(['games']), basic(['fgMade', 'fgAtt', 'fgPct', 'fg50', 'fgLong', 'patPct']), advanced(['epaPerKick', 'fgOverExp', 'fantasy'])],
   P: [results(['games']), basic(['punts', 'grossAvg', 'netAvg', 'inside20', 'inside20Pct', 'touchbacks', 'fairCatchPct']), advanced(['epaPerPunt'])],
   HC: [
-    results(['winPct', 'winsOverExpected', 'atsPct', 'offRank', 'defRank']),
-    basic(['penaltiesPerGame']),
-    advanced(['stEpaPerGame', 'oneScoreWinPct', 'fourthDownGoPct']),
+    results(['winPct', 'winsOverExpected', 'atsPct', 'oneScoreWinPct']),
+    offense(['offRank']),
+    defense(['defRank']),
+    group('coaching', 'Coaching', 'sports', 4, ['fourthDownGoPct', 'penaltiesPerGame', 'stEpaPerGame']),
     support(['qbPlay', 'weapons', 'oline', 'defense']),
   ],
 };
 
 // The groups a tab retired, each its stats of the day it went (legacy-groups.ts: a link, preset or pin that
-// hid one hides those stats one by one, so it ranks as its author saw it)
-export const LEGACY_GROUPS: Partial<Record<SkillPosition, Record<string, SkillColumnKey[]>>> = {};
+// hid one hides those stats one by one, so it ranks as its author saw it). The Teams, Head Coaches and
+// Special Teams tabs' Basic and Advanced, as they were on 2026-10-19.
+export const LEGACY_GROUPS: Partial<Record<SkillPosition, Record<string, SkillColumnKey[]>>> = {
+  TM: { box: ['pointDiffPerGame', 'turnoverDiffPerGame'], advanced: ['netEpa', 'offEpa', 'defEpaAllowed', 'stEpaPerGame', 'oneScoreWinPct'] },
+  HC: { box: ['penaltiesPerGame'], advanced: ['stEpaPerGame', 'oneScoreWinPct', 'fourthDownGoPct'] },
+  ST: {
+    box: ['fgMade', 'fgPct', 'patPct', 'netAvg', 'inside20Pct', 'kickReturnAvg', 'puntReturnAvg', 'returnTds', 'oppReturnAvg', 'blocksMade', 'kicksBlocked'],
+    advanced: ['stEpaPerPlay', 'fgEpa', 'puntEpa', 'returnEpa', 'kickoffEpa'],
+  },
+};
 
 // A stat's group on a tab (a combined column, Total Yds: its parts')
 export function statGroup(stat: SkillStat, position: SkillPosition): StatGroupId {
