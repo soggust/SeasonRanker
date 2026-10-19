@@ -19,7 +19,10 @@
 //   hi, lo   a hero's wash: lighter at the outer edge (hi) darkening into the deep version of the same hue
 //            (lo); never grey but for a black team, never another team's color
 //   whiteLogo   the logo drawn in white on its face (the Giants' "ny", the Colts' horseshoe, the Jets')
-//   logo     the logo's file that season (an old era's own)
+//   darkLogo    the logo doesn't read on the bare dark board, no chip behind it (the Capitals' navy, the
+//            Nets' black): where the Book and the game view draw it so (its rows, dropdown, ticker, Live and
+//            Algorithm tabs), it gets a light halo (.logo-lift; darkLogoOf for a logo known only by its address)
+//   logo    the logo's file that season (an old era's own)
 //   watermark  a hero's big faint logo: that logo in white, as opaque as it's light, its lettering and inner
 //            shapes kept (assets/watermarks/, drawn by scripts/team-looks/watermark.mjs)
 import { distance, TOO_CLOSE } from './colors';
@@ -40,6 +43,7 @@ export interface TeamLook {
   face: string;
   rim: string;
   whiteLogo: boolean;
+  darkLogo: boolean;
   accent: string;
   accentSafe: string;
   other: string;
@@ -63,12 +67,14 @@ export interface TeamLookOverride {
   whiteLogo?: boolean;
 }
 
-// (the generated file: each look's colors in its fields' order, then 1 for a white logo; each current logo's
-// team by ESPN's abbreviation and id, and its old eras' files by season)
+// (the generated file: each look's colors in its fields' order, then 1 for a white logo, then 1 for a logo dark
+// on the bare board; each current logo's team by ESPN's abbreviation and id, its old eras' files by season, and
+// espn: which of ESPN's drawings of its logo are dark on the bare board, 1 its plain one (500), 2 its one for
+// a dark background (500-dark))
 interface LooksFile {
   dir: string;
   fields: string[];
-  teams: Record<string, { abbr?: string; id?: string; eras?: [number, number, string][] }>;
+  teams: Record<string, { abbr?: string; id?: string; eras?: [number, number, string][]; espn?: number }>;
   looks: Record<string, (string | number)[]>;
   default?: (string | number)[];
 }
@@ -81,6 +87,7 @@ const NEUTRAL: Colors = {
   face: '#2c3330',
   rim: '#8a8f8c',
   whiteLogo: false,
+  darkLogo: false,
   accent: '#b9c2bf',
   accentSafe: '#b9c2bf',
   other: '#8a8f8c',
@@ -155,7 +162,26 @@ function unpack(file: LooksFile, row: (string | number)[]): Colors {
   const look = { ...NEUTRAL } as Record<string, string | boolean>;
   file.fields.forEach((field, i) => (look[field] = row[i] as string));
   look['whiteLogo'] = row[file.fields.length] === 1;
+  look['darkLogo'] = row[file.fields.length + 1] === 1;
   return look as unknown as Colors;
+}
+
+// Whether a logo drawn on the bare board needs its halo (darkLogo), known by its address alone: the site's own
+// file ("assets/NHL_Icons/WSH.svg", another sport's "/nhl/assets/...", the NFL's sharp hd/ copy by its own), or
+// ESPN's by its drawing and the abbreviation in it (".../teamlogos/nhl/500/wsh.png&w=40" the plain one,
+// ".../500-dark/bkn.png" the one for a dark background), each measured by the build. A fighter's face, a
+// league's mark, anything else: no.
+const ESPN_LOGO = /\/teamlogos\/([a-z]+)\/500(-dark)?\/(?:scoreboard\/)?([a-z0-9]+)\.png/i;
+export function darkLogoOf(src: string | null | undefined): boolean {
+  if (!src) return false;
+  const espn = src.match(ESPN_LOGO);
+  if (espn) {
+    const s = sportLooks(espn[1].toLowerCase());
+    const key = s?.byEspn.get(espn[3].toUpperCase());
+    return !!key && ((s!.file.teams[key]?.espn ?? 0) & (espn[2] ? 2 : 1)) !== 0;
+  }
+  const own = src.match(/assets\/(NFL|NBA|NHL|MLB)_Icons\//);
+  return !!own && teamLook(own[1].toLowerCase(), src.replace('_Icons/hd/', '_Icons/')).darkLogo;
 }
 
 // (each sport's watermarks, beside its logos: scripts/build-team-looks.mjs)

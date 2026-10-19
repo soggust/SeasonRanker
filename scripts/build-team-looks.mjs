@@ -21,16 +21,20 @@
 //   the washes: a deep tone of its own hue, and a hero's two ends in it (charcoal for a black team)
 // A logo reads on a face when its silhouette's edge stands off it (a light ring round a same-color body is
 // how teams draw one), or most of it does: each color counts as standing off at a CIEDE2000 distance of 20.
+// And whether it reads on the bare board, no chip behind it (look.mjs darkBy; the Book's rows and the game
+// view's bets draw it so): that logo's, and ESPN's two drawings of each team's current one (it fetches them).
 import { spawn } from 'node:child_process';
 import fs from 'node:fs';
 import os from 'node:os';
 import path from 'node:path';
-import { ROOT, contrast, dominantOf, fromLch, lch, load, lookOf, sha, sourceHash, visibility } from './team-looks/look.mjs';
+import { ROOT, contrast, dominantOf, fromLch, lch, load, darkBy, lookOf, onBoard, sha, sourceHash, visibility } from './team-looks/look.mjs';
 import { WATERMARK, watermarkDir, watermarkName, watermarkSource } from './team-looks/watermark.mjs';
 
 const OUT = path.join(ROOT, 'libs/ranker/src/engine/team-looks');
 const ICONS = { nfl: 'NFL_Icons', nba: 'NBA_Icons', nhl: 'NHL_Icons', mlb: 'MLB_Icons' };
 const SPORTS = [...Object.keys(ICONS), 'mma'];
+// (ESPN's two drawings of a team's logo the site shows: teamlogos/<sport>/<variant>/<abbr>.png)
+const ESPN_VARIANTS = ['500', '500-dark'];
 
 // ---------------------------------------------------------------------------
 // Drawing the logos: a headless Chrome (or Edge) driven over its DevTools protocol
@@ -205,7 +209,12 @@ async function buildSport(sport, chrome) {
       era: isEra(file) ? { listed: !!listed } : null,
       over: inputs.OVERRIDES[file],
     });
-    looks[file] = [...fields.map((f) => look[f]), look.whiteLogo ? 1 : 0];
+    // (and on the board itself, no chip behind it: the Book's rows, its dropdown and ticker, the game view's
+    // bets, the Live tab and the Algorithm tab draw a logo straight on the dark board (look.mjs BARE_BOARD),
+    // where a navy one vanishes; one that doesn't read there is drawn with a light halo: team-look.ts darkLogo)
+    const board = onBoard(logo);
+    const dark = darkBy(board);
+    looks[file] = [...fields.map((f) => look[f]), look.whiteLogo ? 1 : 0, ...(dark ? [1] : [])];
     const v = look.whiteLogo ? { vis: 1, edge: 1 } : visibility(logo, look.face);
     // (its watermark: scripts/team-looks/watermark.mjs)
     const wm = watermarkSource(sport, iconDir, file);
@@ -214,7 +223,7 @@ async function buildSport(sport, chrome) {
     const wmFile = path.join(watermarkDir(sport), watermarkName(file));
     fs.mkdirSync(path.dirname(wmFile), { recursive: true });
     fs.writeFileSync(wmFile, Buffer.from(webp.slice(webp.indexOf(',') + 1), 'base64'));
-    checks.logos[file] = { hash: sha(buf, file.endsWith('.svg')), wm: wm.hash, ...(wm.asIs ? { override: true } : {}), vis: +v.vis.toFixed(3), edge: +v.edge.toFixed(3), ...(look.whiteLogo ? { white: +contrast('#ffffff', look.face).toFixed(2) } : {}) };
+    checks.logos[file] = { hash: sha(buf, file.endsWith('.svg')), wm: wm.hash, ...(wm.asIs ? { override: true } : {}), vis: +v.vis.toFixed(3), edge: +v.edge.toFixed(3), board: board.map((x) => +x.toFixed(3)), ...(dark ? { dark: true } : {}), ...(look.whiteLogo ? { white: +contrast('#ffffff', look.face).toFixed(2) } : {}) };
     if (!isEra(file) && /^[^_]+\.(png|svg)$/.test(file)) teams[file] = { ...(abbr ? { abbr } : {}), ...(id ? { id } : {}) };
   }
   // (each team's eras: by logoForSeason, or for the NHL by its logos' names)
@@ -227,6 +236,31 @@ async function buildSport(sport, chrome) {
             .sort((a, b) => a[0] - b[0])
         : erasOf(logoForSeason, dir, current);
     if (eras.length) teams[current].eras = eras;
+  }
+  // (ESPN's own drawings of each team's logo, which the Book's rows, ticker and Algorithm tab show: its plain one
+  // (500, the bettor's picks.json) and its one for a dark background (500-dark), each measured on the board the
+  // same way; a team's espn: 1 its plain one doesn't read there, 2 its dark one, 3 both. Off the network: a
+  // drawing that can't be fetched keeps what the last build measured)
+  const before = fs.existsSync(path.join(OUT, `${sport}.checks.json`)) ? JSON.parse(fs.readFileSync(path.join(OUT, `${sport}.checks.json`), 'utf8')).espn ?? {} : {};
+  checks.espn = {};
+  for (const [file, team] of Object.entries(teams)) {
+    if (!team.abbr) continue;
+    const measured = [];
+    for (const variant of ESPN_VARIANTS) {
+      let board = before[file]?.[variant] ?? null;
+      try {
+        const res = await fetch(`https://a.espncdn.com/i/teamlogos/${sport}/${variant}/${team.abbr.toLowerCase()}.png`);
+        if (!res.ok) throw new Error(`${res.status}`);
+        const px = await chrome.evaluate(`(${SAMPLE})(${JSON.stringify(`data:image/png;base64,${Buffer.from(await res.arrayBuffer()).toString('base64')}`)})`);
+        if (px.n) board = onBoard(px).map((x) => +x.toFixed(3));
+      } catch (e) {
+        console.warn(`${sport} ${team.abbr} ${variant}: ${e.message}; kept the last build's`);
+      }
+      measured.push(board);
+    }
+    checks.espn[file] = Object.fromEntries(ESPN_VARIANTS.map((v, i) => [v, measured[i]]));
+    const bits = measured.reduce((sum, board, i) => sum | (board && darkBy(board) ? 1 << i : 0), 0);
+    if (bits) team.espn = bits;
   }
   return { file: { dir, fields, teams, looks }, checks };
 }

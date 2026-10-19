@@ -98,7 +98,7 @@
                  two faces before "CAR @ WPG", a sport's league mark before "NFL · Best Bets", a small gold trophy before
                  Best Bets) -->
             @if (chosenGame; as g) {
-              <span class="book-game-label">@for (f of g.faces; track $index) {@if (f.logo) {<img class="pill-mark" [class.face]="g.sport === 'mma'" [src]="f.logo" alt="" />}}{{ g.label }}</span>
+              <span class="book-game-label">@for (f of g.faces; track $index) {@if (f.logo) {<img class="pill-mark" [class.face]="g.sport === 'mma'" [class.logo-lift]="darkLogo(f.logo)" [src]="f.logo" alt="" />}}{{ g.label }}</span>
               <span class="book-game-count">{{ g.count === null ? 'lines' : g.count + (g.count === 1 ? ' pick' : ' picks') }}</span>
             } @else if (chosenSport; as s) {
               <span class="book-game-label">@if (leagueMark(sport); as mark) {<img class="pill-mark" [src]="mark" alt="" />} @else {<mat-icon class="pill-mark" [class.gloves]="sport === 'mma'" aria-hidden="true" [fontIcon]="s.icon"></mat-icon>}{{ s.label }}</span>
@@ -212,7 +212,7 @@
                     <span class="game-faces" aria-hidden="true">
                       @for (f of g.faces; track $index) {
                         @if (f.logo) {
-                          <img class="game-face" [src]="f.logo" alt="" loading="lazy" />
+                          <img class="game-face" [class.logo-lift]="darkLogo(f.logo)" [src]="f.logo" alt="" loading="lazy" />
                         } @else {
                           <span class="game-face game-face-abbr">{{ f.abbr.slice(0, 3) }}</span>
                         }
@@ -333,7 +333,7 @@
             } @else {
               <span class="bet-circle team" aria-hidden="true" [style.border-color]="pickColor(r)">
                 @if (pickLogo(r); as logo) {
-                  <img [src]="logo" alt="" (error)="hide($event)" />
+                  <img [class.logo-lift]="darkLogo(logo)" [src]="logo" alt="" (error)="hide($event)" />
                 }
               </span>
             }
@@ -781,7 +781,7 @@
        alone when there's no picture or it fails) -->
   <ng-template #tickSide let-s>
     @if (s.pic && !s.failed) {
-      <img class="tick-pic" [class.face]="s.face" [src]="s.pic" alt="" width="14" height="14" loading="lazy" (error)="tickImgError($event, s)" />
+      <img class="tick-pic" [class.face]="s.face" [class.logo-lift]="darkLogo(s.pic)" [src]="s.pic" alt="" width="14" height="14" loading="lazy" (error)="tickImgError($event, s)" />
     }
     <span class="tick-team">{{ s.label }}</span>
   </ng-template>

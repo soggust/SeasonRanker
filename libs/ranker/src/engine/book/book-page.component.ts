@@ -24,7 +24,7 @@ export { BET_KINDS, BetKind, BetRow, CheckResearch } from './book-rows';
 import { PopoverAt, phoneSheet, popoverAt } from '@ranker/core/breakdown';
 import { pickTeamColor, splitPick } from './pick-style';
 import { BEST_BETS_LABEL, MenuDay, allKey, allLabel, allOf, MenuGame, MenuGameIn, MenuTeam, chosenSport, dayBand, defaultClosed, gameLine, gameMenu, gamePicksHead, groupKey, groupOf, linesOnlyGames, menuKey, menuOptionId, menuValues, shownEvents, sportChoice, sportFace, viewsShown } from './game-menu';
-import { teamLook } from '../team-look';
+import { darkLogoOf, teamLook } from '../team-look';
 import { LiveService } from './live.service';
 import { QuoteSources, joinSuggestions, lockedText, movedTitle, quoteOf, suggestionsOf, withLive } from './suggestions';
 import type { LivePicks } from './live-tab.component';
@@ -179,6 +179,8 @@ export class BookPageComponent implements OnInit, OnDestroy {
 
   // (a prop's player's card, his sport's app by his name: book-rows.ts playerCardHref; the face and the name link it)
   readonly cardHref = playerCardHref;
+  // (a team logo too dark for the bare board: its halo, .logo-lift)
+  readonly darkLogo = darkLogoOf;
   readonly playerRef = playerRefOf;
 
   hide(event: Event): void {

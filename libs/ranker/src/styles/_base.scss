@@ -915,3 +915,11 @@ section footer .mat-mdc-select.season-select {
   display: inline-flex;
   flex: none;
 }
+
+// (a team logo too dark for the bare board, no chip behind it (the Capitals' navy-edged wordmark, the Nets'
+// black, the Yankees' navy: team-look.ts darkLogoOf, measured by scripts/build-team-looks.mjs): a thin light
+// halo round its outline so it reads there; the Book's rows, dropdown and ticker, the game view's bets, form
+// and win-probability marks, the Algorithm tab's rows)
+img.logo-lift {
+  filter: drop-shadow(0 0 1px rgba(255, 255, 255, 0.85)) drop-shadow(0 0 2px rgba(255, 255, 255, 0.4));
+}

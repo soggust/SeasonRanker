@@ -1,6 +1,7 @@
 import { ChangeDetectorRef, Component, NgZone, OnDestroy, OnInit, inject } from '@angular/core';
 import { TIERS } from './tiers';
 import { americanOdds, compactCount, compactRecord, countTip, deskLeagueLogo, recordTip, fightPick, fightSides, headshot, hideImage, num, pct, signed, teamLogo, units } from './bet-format';
+import { darkLogoOf } from '../team-look';
 import { matchupName } from './game-menu';
 import { BetGroup, SportGroup, TableSorts, backtestValue, betValue, byGame, gamesBySport, calibrationValue, contextValue, modelVsMarket, pinnacleEdge, propValue, sportValue, stateValue, tallyValue } from './desk-columns';
 import { DESK_HELP } from './desk-help';
@@ -822,6 +823,8 @@ export class ModelDeskComponent implements OnInit, OnDestroy {
   }
 
   teamLogo = teamLogo;
+  // (a team logo too dark for the bare board: its halo, .logo-lift)
+  darkLogo = darkLogoOf;
   leagueLogo = deskLeagueLogo;
   fightSides = fightSides;
   fightPick = fightPick;

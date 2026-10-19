@@ -10,6 +10,7 @@ import { GameArsenal, GameChart, GameFantasy, GameMark, GameMoment, GamePitch, G
 import { GameWeather } from './venue';
 import { videoPlay, youtubeThumb, youtubeWatch } from './highlights';
 import { lineHead } from './wp-moments';
+import { darkLogoOf } from '../team-look';
 import { resultClass } from '../result-class';
 import { PositionService } from '../position.service';
 import { WalletService } from '../account/wallet/wallet.service';
@@ -120,6 +121,9 @@ export class GameViewComponent implements AfterViewChecked, OnDestroy {
     const w = this.games.weather;
     return w && w !== 'loading' ? w : null;
   }
+
+  // (a team logo too dark for the bare board (its form, win-probability and Your Bets marks): its halo, .logo-lift)
+  readonly darkLogo = darkLogoOf;
 
   // A team's card like the grid's: the site's own logo that season on its chip (team-look.ts; this sport's the
   // sharp one where it has it, another sport's from its app), white where the logo needs it; ESPN's logo, on a

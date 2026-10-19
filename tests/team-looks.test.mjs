@@ -6,7 +6,7 @@ import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import path from 'node:path';
-import { ROOT, contrast, distance, isResult, readsBy, sha, sourceHash } from '../scripts/team-looks/look.mjs';
+import { ROOT, contrast, darkBy, distance, isResult, readsBy, sha, sourceHash } from '../scripts/team-looks/look.mjs';
 import { OVERRIDES, watermarkDir, watermarkName, watermarkSource } from '../scripts/team-looks/watermark.mjs';
 
 const OUT = path.join(ROOT, 'libs/ranker/src/engine/team-looks');
@@ -167,4 +167,25 @@ test('team colors are painted only on chips, washes and discs, never behind a va
   assert.ok(found.length >= 20, `the team fills found: ${found.length}`);
   const stray = found.filter(([, selector]) => !TEAM_FILLS.some((allowed) => selector === allowed || selector?.startsWith(allowed + '(') || selector?.endsWith(' ' + allowed)));
   assert.deepEqual(stray.map(([file, selector]) => `${file}: ${selector}`), [], 'a team color painted somewhere new: a chip, a wash or a disc? add it here; a value? keep it on a neutral tile');
+});
+
+// A logo too dark for the bare board (no chip behind it: the Book's rows, ticker and dropdown, the game view's
+// bets, the Algorithm tab) is flagged for its halo (team-look.ts darkLogoOf, .logo-lift): the site's own files
+// and ESPN's two drawings of each team's, as measured; the owner's case, the Capitals' plain ESPN logo on the
+// Book's Best Bets rows (2026-10-19), among them
+test('every logo too dark for the bare board is flagged for its halo, as measured', () => {
+  for (const sport of Object.keys(ICONS)) {
+    const file = read(sport);
+    const checks = read(sport, '.checks');
+    for (const [key, c] of Object.entries(checks.logos)) {
+      assert.equal(file.looks[key][file.fields.length + 1] === 1, darkBy(c.board), `${sport} ${key}: its board flag`);
+    }
+    for (const [key, team] of Object.entries(file.teams)) {
+      if (!team.abbr) continue;
+      const m = checks.espn[key];
+      const bits = (m['500'] && darkBy(m['500']) ? 1 : 0) | (m['500-dark'] && darkBy(m['500-dark']) ? 2 : 0);
+      assert.equal(team.espn ?? 0, bits, `${sport} ${key}: ESPN's logos' board flags`);
+    }
+  }
+  assert.ok(read('nhl').teams['WSH.svg'].espn & 1, "the Capitals' plain ESPN logo is dark on the board");
 });

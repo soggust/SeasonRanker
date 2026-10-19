@@ -229,7 +229,7 @@
                           <span class="log-vs">{{ x.at }}</span>
                           <button type="button" class="game-form-team" title="Open their season" (click)="openTeam(x.opponent, g)">
                             @if (x.logo) {
-                              <img [src]="x.logo" alt="" loading="lazy" />
+                              <img [class.logo-lift]="darkLogo(x.logo)" [src]="x.logo" alt="" loading="lazy" />
                             }
                             <b>{{ x.opponent }}</b>
                           </button>
@@ -348,7 +348,7 @@
                       @let t = side === 'home' ? g.home : g.away;
                       <span class="win-prob-pen-team" [ngClass]="side" [style.--team]="t.color">
                         @if (t.logo) {
-                          <img [src]="t.logo" alt="" />
+                          <img [class.logo-lift]="darkLogo(t.logo)" [src]="t.logo" alt="" />
                         }
                       </span>
                     }
@@ -383,7 +383,7 @@
                           } @else {
                             <span class="your-bet-circle team" aria-hidden="true" [style.border-color]="r.color">
                               @if (r.logo) {
-                                <img [src]="r.logo" alt="" />
+                                <img [class.logo-lift]="darkLogo(r.logo)" [src]="r.logo" alt="" />
                               }
                             </span>
                           }

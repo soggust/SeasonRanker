@@ -188,3 +188,29 @@ export function sourceHash(sport) {
   const files = ['scripts/build-team-looks.mjs', 'scripts/team-looks/look.mjs', 'scripts/team-looks/watermark.mjs', `apps/${sport}/src/sport/team-colors.ts`, `apps/${sport}/src/sport/logo-eras.ts`];
   return sha(files.map((f) => path.join(ROOT, f)).filter((f) => fs.existsSync(f)).map((f) => fs.readFileSync(f, 'utf8')).join(''), true);
 }
+
+// ---------------------------------------------------------------------------
+// A logo on the bare board
+// ---------------------------------------------------------------------------
+// The board a logo sits on with no chip behind it: the Book's row circles' grey (styles/_variables.scss
+// $panel-rule), the darkest a logo meets there
+export const BARE_BOARD = '#2c2c2c';
+
+// (a logo on the board: the share of its colors, and of its silhouette's edge, under 2.5:1 in contrast with it
+// (a navy, a black, a deep red: dim there), and the share of its colors under 1.6:1 (all but gone))
+export function onBoard(logo) {
+  const share = (buckets, ratio) => {
+    let lost = 0;
+    let n = 0;
+    for (const [r, g, b, c] of buckets) {
+      n += c;
+      if (contrast(hex([r, g, b]), BARE_BOARD) < ratio) lost += c;
+    }
+    return n ? lost / n : 0;
+  };
+  return [share(logo.buckets, 2.5), share(logo.edge, 2.5), share(logo.buckets, 1.6)];
+}
+// (it's lost on the board: its outline is dim and a good part of it with it (the Capitals' navy-edged
+// wordmark, the Giants' navy "ny"), or most of it is all but gone (the Panthers' black cat); then it's drawn
+// with a light halo there, team-look.ts darkLogo)
+export const darkBy = ([body, edge, gone]) => (edge >= 0.5 && body >= 0.25) || gone >= 0.7;

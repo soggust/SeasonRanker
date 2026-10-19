@@ -101,7 +101,7 @@
   } @else {
     @let teams = teamsOf(b);
     <span class="desk-game">
-      <img [src]="teamLogo(b.sport, teams[0])" alt="" (error)="hide($event)" />{{ teams[0] }}<span class="desk-at">@</span><img [src]="teamLogo(b.sport, teams[1])" alt="" (error)="hide($event)" />{{ teams[1] }}
+      <img [class.logo-lift]="darkLogo(teamLogo(b.sport, teams[0]))" [src]="teamLogo(b.sport, teams[0])" alt="" (error)="hide($event)" />{{ teams[0] }}<span class="desk-at">@</span><img [class.logo-lift]="darkLogo(teamLogo(b.sport, teams[1]))" [src]="teamLogo(b.sport, teams[1])" alt="" (error)="hide($event)" />{{ teams[1] }}
     </span>
   }
   @if (when === 'live') {
@@ -140,7 +140,7 @@
   } @else {
     @let team = teamsOf(b)[b.side === 'home' ? 1 : 0];
     <span class="desk-pick">
-      <span class="desk-badge" aria-hidden="true"><img [src]="teamLogo(b.sport, team)" alt="" (error)="hide($event)" /></span>
+      <span class="desk-badge" aria-hidden="true"><img [class.logo-lift]="darkLogo(teamLogo(b.sport, team))" [src]="teamLogo(b.sport, team)" alt="" (error)="hide($event)" /></span>
       @let parts = pickParts(b);
       <b>{{ parts[0] }}<span class="desk-key" [style.color]="pickColor(b)">{{ parts[1] }}</span></b>
     </span>
