@@ -106,16 +106,35 @@ const SUN = 'Sunday, Oct 18';
 const NHL = bets.groupKey(SAT, 'nhl');
 const MMA = bets.groupKey(SAT, 'mma');
 const NFL = bets.groupKey(SUN, 'nfl');
+const ALL_NHL = bets.allKey(SAT, 'nhl');
+const ALL_MMA = bets.allKey(SAT, 'mma');
+const ALL_NFL = bets.allKey(SUN, 'nfl');
 
-test("menuValues: Best Bets first, then each day its sports (the heading, its own by day, before its games) in the list's order; a folded heading keeps its games out", () => {
-  assert.deepEqual(bets.menuValues(MENU), ['', NHL, 'nhl|CAR @ WPG', 'nhl|VAN @ TB', MMA, 'mma|B @ A', NFL, 'nfl|NYJ @ NE']);
-  assert.deepEqual(bets.menuValues(MENU, new Set([NHL, NFL])), ['', NHL, MMA, 'mma|B @ A', NFL]);
+test("menuValues: Best Bets first, then each day its sports (the heading, its own by day, then its \"All ...\" row, then its games) in the list's order; a folded heading keeps its row and games out", () => {
+  assert.deepEqual(bets.menuValues(MENU), ['', NHL, ALL_NHL, 'nhl|CAR @ WPG', 'nhl|VAN @ TB', MMA, ALL_MMA, 'mma|B @ A', NFL, ALL_NFL, 'nfl|NYJ @ NE']);
+  assert.deepEqual(bets.menuValues(MENU, new Set([NHL, NFL])), ['', NHL, MMA, ALL_MMA, 'mma|B @ A', NFL]);
   assert.deepEqual(bets.menuValues([]), ['']);
   // (a heading's value is still its sport when chosen; a game's and Best Bets' none)
   assert.equal(bets.chosenSport(NHL), 'nhl');
   assert.equal(bets.chosenSport('sport:nhl'), 'nhl');
   assert.equal(bets.groupOf(MENU, 'mma|B @ A'), MMA);
+  assert.equal(bets.groupOf(MENU, ALL_NFL), NFL);
   assert.equal(bets.groupOf(MENU, 'nhl|gone'), null);
+});
+
+test("allKey: a sport's \"All ...\" row chooses the sport (allOf), never reads as a heading (chosenSport) or a game; its words per sport", () => {
+  assert.equal(ALL_NHL, 'all:nhl|Saturday, Oct 17');
+  assert.equal(bets.allOf(ALL_NHL), 'nhl');
+  assert.equal(bets.allOf(NHL), null);
+  assert.equal(bets.allOf('nhl|CAR @ WPG'), null);
+  assert.equal(bets.allOf(''), null);
+  assert.equal(bets.chosenSport(ALL_NHL), null);
+  assert.notEqual(bets.menuOptionId(ALL_NHL), bets.menuOptionId(NHL));
+  assert.equal(bets.allLabel('nhl', 'NHL'), 'All NHL games');
+  assert.equal(bets.allLabel('nfl', 'NFL'), 'All NFL games');
+  assert.equal(bets.allLabel('nba', 'NBA'), 'All NBA games');
+  assert.equal(bets.allLabel('mlb', 'MLB'), 'All MLB games');
+  assert.equal(bets.allLabel('mma', 'MMA'), 'All UFC fights');
 });
 
 test('defaultClosed: a quiet list opens every sport; a busy one (more than 12 games) folds every sport but the chosen game\'s and the chosen sport\'s', () => {
@@ -133,6 +152,10 @@ test('defaultClosed: a quiet list opens every sport; a busy one (more than 12 ga
 test('menuKey: the arrows walk the list and hold at its ends, Home/End and PageUp/PageDown jump, Enter and Space take, Escape and Tab shut', () => {
   const values = bets.menuValues(MENU);
   assert.deepEqual(bets.menuKey('ArrowDown', values, ''), { kind: 'move', value: NHL });
+  // (the heading, then its "All ..." row, then its games)
+  assert.deepEqual(bets.menuKey('ArrowDown', values, NHL), { kind: 'move', value: ALL_NHL });
+  assert.deepEqual(bets.menuKey('ArrowDown', values, ALL_NHL), { kind: 'move', value: 'nhl|CAR @ WPG' });
+  assert.deepEqual(bets.menuKey('ArrowUp', values, 'nhl|CAR @ WPG'), { kind: 'move', value: ALL_NHL });
   assert.deepEqual(bets.menuKey('ArrowDown', values, 'nhl|CAR @ WPG'), { kind: 'move', value: 'nhl|VAN @ TB' });
   assert.deepEqual(bets.menuKey('ArrowUp', values, NHL), { kind: 'move', value: '' });
   // (Right and Left: unfold and fold, the page's to apply to a heading)
@@ -143,12 +166,13 @@ test('menuKey: the arrows walk the list and hold at its ends, Home/End and PageU
   assert.deepEqual(bets.menuKey('ArrowDown', values, 'nfl|NYJ @ NE'), { kind: 'move', value: 'nfl|NYJ @ NE' });
   assert.deepEqual(bets.menuKey('End', values, ''), { kind: 'move', value: 'nfl|NYJ @ NE' });
   assert.deepEqual(bets.menuKey('Home', values, MMA), { kind: 'move', value: '' });
-  assert.deepEqual(bets.menuKey('PageDown', values, ''), { kind: 'move', value: 'nfl|NYJ @ NE' });
-  assert.deepEqual(bets.menuKey('PageUp', values, 'nfl|NYJ @ NE'), { kind: 'move', value: '' });
+  assert.deepEqual(bets.menuKey('PageDown', values, ''), { kind: 'move', value: NFL });
+  assert.deepEqual(bets.menuKey('PageUp', values, 'nfl|NYJ @ NE'), { kind: 'move', value: ALL_NHL });
   // (a lit choice gone from the list (a game dropped): the walk starts from the top)
   assert.deepEqual(bets.menuKey('ArrowDown', values, 'nhl|gone'), { kind: 'move', value: NHL });
   assert.deepEqual(bets.menuKey('Enter', values, NHL), { kind: 'choose' });
   assert.deepEqual(bets.menuKey(' ', values, NHL), { kind: 'choose' });
+  assert.deepEqual(bets.menuKey('Enter', values, ALL_NHL), { kind: 'choose' });
   assert.deepEqual(bets.menuKey('Escape', values, NHL), { kind: 'close' });
   assert.deepEqual(bets.menuKey('Tab', values, ''), { kind: 'close' });
   assert.deepEqual(bets.menuKey('Escape', [], ''), { kind: 'close' });

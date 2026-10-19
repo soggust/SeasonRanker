@@ -23,7 +23,7 @@ import { BET_KINDS, BandTally, BetKind, BetRow, ByLevel, GameInfo, Picks, bookRo
 export { BET_KINDS, BetKind, BetRow, CheckResearch } from './book-rows';
 import { PopoverAt, phoneSheet, popoverAt } from '@ranker/core/breakdown';
 import { pickTeamColor, splitPick } from './pick-style';
-import { BEST_BETS_LABEL, MenuDay, MenuGame, MenuGameIn, MenuTeam, chosenSport, dayBand, defaultClosed, gameLine, gameMenu, gamePicksHead, groupKey, groupOf, linesOnlyGames, menuKey, menuOptionId, menuValues, shownEvents, sportChoice, sportFace, viewsShown } from './game-menu';
+import { BEST_BETS_LABEL, MenuDay, allKey, allLabel, allOf, MenuGame, MenuGameIn, MenuTeam, chosenSport, dayBand, defaultClosed, gameLine, gameMenu, gamePicksHead, groupKey, groupOf, linesOnlyGames, menuKey, menuOptionId, menuValues, shownEvents, sportChoice, sportFace, viewsShown } from './game-menu';
 import { teamLook } from '../team-look';
 import { LiveService } from './live.service';
 import { QuoteSources, joinSuggestions, lockedText, movedTitle, quoteOf, suggestionsOf, withLive } from './suggestions';
@@ -732,6 +732,8 @@ export class BookPageComponent implements OnInit, OnDestroy {
   readonly sportChoice = sportChoice;
   readonly dayBand = dayBand;
   readonly groupKey = groupKey;
+  readonly allKey = allKey;
+  readonly allLabel = allLabel;
   // (a sport row's mark in the list: the league's own logo (bet-format.ts leagueLogo, ESPN's, as the wallet's and
   // the desk's tables show it) for the four leagues; MMA keeps its gloves icon)
   leagueMark(sport: string): string | null {
@@ -769,8 +771,9 @@ export class BookPageComponent implements OnInit, OnDestroy {
   openMenu(): void {
     this.menuOpen = true;
     this.folded = defaultClosed(this.gameMenu, this.game, this.sport);
-    // (the lit row: the chosen game, or the chosen sport's first heading, or Best Bets)
-    this.active = this.game || (this.sport ? (menuValues(this.gameMenu, this.folded).find((v) => chosenSport(v) === this.sport) ?? '') : '');
+    // (the lit row: the chosen game, or the chosen sport's first "All ..." row (its heading when folded), or Best Bets)
+    const values = menuValues(this.gameMenu, this.folded);
+    this.active = this.game || (this.sport ? (values.find((v) => allOf(v) === this.sport) ?? values.find((v) => chosenSport(v) === this.sport) ?? '') : '');
     // (the list is in the DOM on the next check: then the focus and the lit row into view)
     setTimeout(() => {
       this.gameList?.nativeElement.focus({ preventScroll: true });
@@ -799,7 +802,12 @@ export class BookPageComponent implements OnInit, OnDestroy {
     if (action.kind === 'move') {
       this.active = action.value;
       this.showActive();
-    } else if (action.kind === 'choose') this.pick(this.active, true);
+    } else if (action.kind === 'choose') {
+      // (a heading's Enter folds or unfolds it, the list staying open; an "All ..." row's chooses its sport)
+      const all = allOf(this.active);
+      if (chosenSport(this.active) !== null) this.toggleGroup(this.active);
+      else this.pick(all !== null ? sportChoice(all) : this.active, true);
+    }
     else if (action.kind === 'expand' || action.kind === 'collapse') {
       // (on a heading: unfold or fold its games; Left on a game: up to its heading)
       if (chosenSport(this.active) !== null) {

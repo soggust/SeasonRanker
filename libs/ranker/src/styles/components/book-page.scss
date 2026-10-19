@@ -389,8 +389,17 @@ $font-mono: "IBM Plex Mono", "Courier New", monospace;
   }
 }
 
+// (MMA's gloves in the list and the pill: the octagon red, MMA's own accent (apps/mma's $accent), whichever
+// sport's site the Book is on (the owner, 2026-10-19))
+$mma-red: #ff3b3b;
+
+mat-icon.gloves {
+  color: $mma-red !important;
+}
+
 // (a day's caption: the LED white at 70% on the panel's own neutral dot-matrix band, no gold (the owner's note,
-// 2026-10-17: the sports' marks and the picked games keep the list's gold))
+// 2026-10-17: the sports' marks and the picked games keep the list's gold); room above and a little below, so
+// each day reads as its own block (the owner, 2026-10-19))
 .game-day {
   background:
     linear-gradient(90deg, rgba(255, 255, 255, 0.06), transparent 70%),
@@ -403,8 +412,8 @@ $font-mono: "IBM Plex Mono", "Courier New", monospace;
   font-size: v.$fs-10;
   font-weight: 800;
   letter-spacing: 2px;
-  margin-top: 6px;
-  padding: 6px 12px 5px;
+  margin: 14px 0 4px;
+  padding: 9px 12px 8px;
   text-transform: uppercase;
 }
 
@@ -518,12 +527,12 @@ $font-mono: "IBM Plex Mono", "Courier New", monospace;
   }
 }
 
-// (a sport's row: 44px, the league's mark (MMA's gloves in gold) and its name in white caps, lifted a touch when
+// (a sport's row: 38px (a touch shorter than the home row, the owner's 2026-10-19 note), the league's mark (MMA's gloves in gold) and its name in white caps, lifted a touch when
 // lit; no accent in the sport's colour, the owner's note. At its start the fold chevron, the site's way for a row
 // that opens: a 44px button of its own, right with the games folded, turned down with them shown, lighter on hover)
 .game-sport {
   grid-template-columns: auto auto minmax(0, 1fr) auto;
-  height: 44px;
+  height: 38px;
   margin-top: 2px;
 
   .game-fold {
@@ -534,7 +543,7 @@ $font-mono: "IBM Plex Mono", "Courier New", monospace;
     color: v.$text-faint;
     cursor: pointer;
     display: inline-flex;
-    height: 44px;
+    height: 38px;
     justify-content: center;
     margin: 0 -10px 0 -12px;
     padding: 0;
@@ -564,6 +573,18 @@ $font-mono: "IBM Plex Mono", "Courier New", monospace;
   &.active {
     background: rgba(255, 255, 255, 0.09);
     transform: translateY(-1px);
+  }
+}
+
+// (a sport's "All NHL games" row: a game's indent and height, a quiet list mark in the faces' slot, the words
+// in the games' type; chosen, gold as a picked game)
+.game-row.game-sport-all {
+  grid-template-columns: auto minmax(0, 1fr) auto;
+
+  .game-all-icon {
+    @include v.icon-size(18px);
+    color: v.$text-faint;
+    margin: 3px 2px 0;
   }
 }
 

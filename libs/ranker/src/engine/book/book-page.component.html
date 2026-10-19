@@ -101,7 +101,7 @@
               <span class="book-game-label">@for (f of g.faces; track $index) {@if (f.logo) {<img class="pill-mark" [class.face]="g.sport === 'mma'" [src]="f.logo" alt="" />}}{{ g.label }}</span>
               <span class="book-game-count">{{ g.count === null ? 'lines' : g.count + (g.count === 1 ? ' pick' : ' picks') }}</span>
             } @else if (chosenSport; as s) {
-              <span class="book-game-label">@if (leagueMark(sport); as mark) {<img class="pill-mark" [src]="mark" alt="" />} @else {<mat-icon class="pill-mark" aria-hidden="true" [fontIcon]="s.icon"></mat-icon>}{{ s.label }}</span>
+              <span class="book-game-label">@if (leagueMark(sport); as mark) {<img class="pill-mark" [src]="mark" alt="" />} @else {<mat-icon class="pill-mark" [class.gloves]="sport === 'mma'" aria-hidden="true" [fontIcon]="s.icon"></mat-icon>}{{ s.label }}</span>
               <span class="book-game-count">{{ sportCount(sport) }} {{ sportCount(sport) === 1 ? 'pick' : 'picks' }}</span>
             } @else {
               <span class="book-game-label"><mat-icon class="pill-mark best-trophy" aria-hidden="true" fontIcon="emoji_events"></mat-icon>{{ bestBetsLabel }}</span>
@@ -136,21 +136,22 @@
             @for (d of gameMenu; track d.day) {
               <div class="game-day" role="presentation">{{ dayBand(d.day) }}</div>
               @for (s of d.sports; track s.sport) {
-                <!-- (a sport's row: the row chooses the sport (its best bets, every day's); the chevron at its start folds
-                     its games, Right and Left on the keyboard the same; a busy list opens with every sport folded) -->
+                <!-- (a sport's row: the row only folds and unfolds its games (the owner, 2026-10-19), as its chevron, Enter,
+                     Right and Left do; choosing the sport is its "All ..." row's, the first under it; a busy list opens
+                     with every sport folded) -->
                 @let gk = groupKey(d.day, s.sport);
                 <div
                   class="game-opt game-sport"
                   [ngClass]="'sport-' + s.sport"
                   role="option"
                   [id]="optId(gk)"
-                  [attr.aria-selected]="choice === sportChoice(s.sport)"
+                  aria-selected="false"
                   [attr.aria-expanded]="isOpen(d.day, s.sport)"
                   [class.active]="active === gk"
                   [class.folded]="!isOpen(d.day, s.sport)"
-                  [title]="'Every ' + s.name + ' pick, every day'"
+                  [title]="(isOpen(d.day, s.sport) ? 'Hide ' : 'Show ') + s.name + (s.sport === 'mma' ? ' fights' : ' games')"
                   (mousemove)="active = gk"
-                  (click)="pick(sportChoice(s.sport))"
+                  (click)="toggleGroup(gk)"
                 >
                   <!-- (first, the site's way for a row that opens (the board's band headers): the fold chevron, pointing
                        right with the games folded, turned down with them shown) -->
@@ -162,7 +163,7 @@
                   @if (leagueMark(s.sport); as mark) {
                     <img class="game-icon game-mark" [src]="mark" alt="" />
                   } @else {
-                    <mat-icon class="game-icon" aria-hidden="true" [fontIcon]="s.icon"></mat-icon>
+                    <mat-icon class="game-icon" [class.gloves]="s.sport === 'mma'" aria-hidden="true" [fontIcon]="s.icon"></mat-icon>
                   }
                   <span class="game-sport-name">{{ s.name }}</span>
                   @if (sportCount(s.sport)) {
@@ -171,6 +172,30 @@
                     <span class="game-lines" title="Lines only: the Bot has no pick in it">lines</span>
                   }
                 </div>
+                @if (isOpen(d.day, s.sport)) {
+                  <!-- (the sport's first row: "All NHL games" (MMA's "All UFC fights"), the sport's best bets, every
+                       day's; gold when the sport is the choice) -->
+                  @let ak = allKey(d.day, s.sport);
+                  <div
+                    class="game-opt game-row game-sport-all"
+                    role="option"
+                    [id]="optId(ak)"
+                    [attr.aria-selected]="choice === sportChoice(s.sport)"
+                    [class.active]="active === ak"
+                    [class.chosen]="choice === sportChoice(s.sport)"
+                    [title]="'Every ' + s.name + ' pick, every day'"
+                    (mousemove)="active = ak"
+                    (click)="pick(sportChoice(s.sport))"
+                  >
+                    <mat-icon class="game-all-icon" aria-hidden="true" fontIcon="format_list_bulleted"></mat-icon>
+                    <span class="game-label">{{ allLabel(s.sport, s.name) }}</span>
+                    @if (sportCount(s.sport)) {
+                      <span class="game-pill small">{{ sportCount(s.sport) }} {{ sportCount(s.sport) === 1 ? 'pick' : 'picks' }}</span>
+                    } @else {
+                      <span class="game-lines" title="Lines only: the Bot has no pick in it">lines</span>
+                    }
+                  </div>
+                }
                 @for (g of isOpen(d.day, s.sport) ? s.games : []; track g.key) {
                   <div
                     class="game-opt game-row"
