@@ -239,7 +239,7 @@ export const TIMING = {
   nba: { lines: 26, props: 26, lastChance: 3 },
   nhl: { lines: 26, props: 26, lastChance: 3 },
   mlb: { lines: 26, props: 26, lastChance: 2.5 },
-  // (MMA: a bout's lines open four weeks before it (the open round, 2026-10-19, DECISIONS.md D47: the Bot's edge on
+  // (MMA: a bout's lines open four weeks before it (the open round, 2026-10-19, DECISIONS.md D37: the Bot's edge on
   // the moneyline lives two weeks or more out, where the Book's opening line is soft, and is gone inside 48 hours; a
   // fighter pulled or replaced voids the bet rather than moving it, mma-desk.mjs; was 72 hours), the last chance 4;
   // no props on this plan)

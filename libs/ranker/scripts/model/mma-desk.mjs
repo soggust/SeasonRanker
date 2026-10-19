@@ -451,7 +451,7 @@ export function reasonOf(bet) {
 // the desk would give the row (DECISIONS.md D36, board.mjs bandOf): ESPN BET's line a PASS saying so (the desk bets
 // only at the Book's price: pickFor apiPrice, tracked); a side whose lean (the model's chance less the Book's no-vig)
 // is under the league's edge (cfg.edge: pickFor tracks it, a card's practice pick at most) capped LIKE (cap, cr)
-// key: the pricing key (gate-mma.mjs priceKey: 'ml', or 'mlOpen' at the early band, untapered and never gapped; D47)
+// key: the pricing key (gate-mma.mjs priceKey: 'ml', or 'mlOpen' at the early band, untapered and never gapped; D37)
 export function boardSidesOf(lines, chance, trust, src = null, { edge = null, key = 'ml' } = {}) {
   const gap = gapGuard(key, chance, lines.fair);
   const off = src === 'espn bet' ? skipReason({ why: "ESPN BET's line, not the Book's own price: the Bot bets only at the Book's (it's tracked till then)" }) : null;
@@ -471,7 +471,7 @@ export function boardSidesOf(lines, chance, trust, src = null, { edge = null, ke
 // Kelly and band at its line). total: fights-totals.mjs totalLinesOf's { line, odds: { over, under }, fair (over's) };
 // over: the model's chance of Over at its line. live: false till TOTAL_LIVE are graded (totalPickFor: the practice
 // stake, capped LIKE); edge: the league's (a lean under it is tracked, never bet: a PASS saying so) (D36)
-// key: the pricing key ('total', or 'totalOpen' at the early band; D47)
+// key: the pricing key ('total', or 'totalOpen' at the early band; D37)
 export function boardTotalOf(total, over, trust, { live = true, edge = null, key = 'total' } = {}) {
   const gap = gapGuard(key, over, total.fair);
   return ['over', 'under'].map((side) => {
