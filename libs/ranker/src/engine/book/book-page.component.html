@@ -366,16 +366,14 @@
                   @if (meter(r); as m) {<span class="bet-sub-meter"> · <b>{{ m.model }}%@if (m.book !== null) { vs {{ m.book }}%}</b></span>}
                 </small>
                 <!-- (its tags in one line: a slate's practice pick (bet at 0.5u for the slate, short of the vig, on its own
-                     Practice line), else a suggestion's "suggested" (a side on the board with an edge at the latest price,
-                     not one of the Bot's bets: suggestions.ts); a bet's locked price and when, "Bet at −109 · 2:05 PM";
-                     "moved" where the live price on its button isn't the one the Bot locked) -->
+                     Practice line); a bet's locked price and when, "Bet at −109 · 2:05 PM"; "moved" where the live price
+                     on its button isn't the one the Bot locked. A suggestion carries no tag (the owner's, 2026-10-19:
+                     "obviously it's suggested"): its button's live price is all it shows) -->
                 @let locked = lockedText(r);
-                @if (r.practice || r.suggested || locked || r.moved) {
+                @if (r.practice || locked || r.moved) {
                   <small class="bet-tags">
                     @if (r.practice) {
                       <span class="bet-practice" title="A practice pick: the Bot plays its best few a slate even when none clears the vig, at 0.5u, tallied on its own Practice line">practice</span>
-                    } @else if (r.suggested) {
-                      <span class="bet-practice bet-suggested" title="A suggestion: the Bot's chance has an edge at the latest price. Not one of the Bot's bets (it bets on its own clock); its band moves as the price does">suggested</span>
                     }
                     @if (locked) {
                       <span class="bet-locked" title="The price the Bot locked when it bet this, and when; the button has the latest price">{{ locked }}</span>

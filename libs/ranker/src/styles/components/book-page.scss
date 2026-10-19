@@ -1629,7 +1629,7 @@ $font-mono: "IBM Plex Mono", "Courier New", monospace;
   width: max-content;
 }
 
-// (the row's tags in one line under the pick: practice or suggested, a bet's locked price and when, moved)
+// (the row's tags in one line under the pick: practice, a bet's locked price and when, moved)
 .bet-tags {
   align-items: center;
   color: v.$text-faint;
@@ -1639,12 +1639,6 @@ $font-mono: "IBM Plex Mono", "Courier New", monospace;
   gap: v.$space-2 v.$space-6;
   line-height: 1.4;
   min-width: 0;
-}
-
-// (a suggestion: the practice tag's quiet outline, in the board's LED gold)
-.bet-suggested {
-  color: var(--scoreboard-led);
-  opacity: 0.85;
 }
 
 // (a bet's locked price and when: "Bet at −109 · 2:05 PM")

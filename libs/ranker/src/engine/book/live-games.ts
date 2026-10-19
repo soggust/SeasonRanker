@@ -204,7 +204,7 @@ export function botRead(picks: { pick: string; confidence?: string | null; stren
 }
 
 // The same read with the Book's split (the owner's, 2026-10-19): the Bot's own bet first, with the price it locked
-// ("Thunder −5.5 · LIKE · bet at −109"); none, its best suggestion at the latest price ("· suggested at −105");
+// ("Thunder −5.5 · LIKE · bet at −109"); none, its best suggestion at the latest price ("· at −105");
 // neither, the plain read (a pass, or null)
 type ReadPick = { pick: string; confidence?: string | null; strength?: string | null; odds?: string | null };
 export function splitRead(bets: ReadPick[], suggestions: ReadPick[] = []): string | null {
@@ -213,7 +213,7 @@ export function splitRead(bets: ReadPick[], suggestions: ReadPick[] = []): strin
   const bet = bets.find((p) => p.strength !== 'fade' && p.confidence && p.confidence !== 'low' && p.confidence !== 'check');
   if (bet) return `${read} · bet${price(bet)}`;
   const sug = suggestions.find((p) => p.confidence && p.confidence !== 'low' && p.confidence !== 'check');
-  if (sug) return `${botRead([sug])} · suggested${price(sug)}`;
+  if (sug) return `${botRead([sug])} ·${price(sug)}`;
   return read;
 }
 

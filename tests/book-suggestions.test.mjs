@@ -2,7 +2,7 @@
 // an edge at the latest price, priced again live from the Bot's chance (the K popover's what-if math: a
 // suggestion's band moves with its price and drops off at PASS); the Bot's bets keep the price they locked, the
 // live one beside it and "moved" where they differ; a suggestion on a market the Bot holds is that row; the tags
-// ("suggested", practice, "Bet at −109 · 2:05 PM"); and the Live tab's read with the same split.
+// (practice, "Bet at −109 · 2:05 PM"; a suggestion untagged); and the Live tab's read with the same split.
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import path from 'node:path';
@@ -182,7 +182,7 @@ test('tags: "Bet at −109 · 2:05 PM" with the time, the price alone without; t
 test('splitRead: the Live tab reads the Bot\'s bet with its locked price, else its suggestion', () => {
   const { splitRead } = live;
   assert.equal(splitRead([{ pick: 'WSH +7.5', confidence: 'high', odds: '-109' }], [{ pick: 'Over 51.5', confidence: 'lock', odds: '-105' }]), 'WSH +7.5 · LOVE · bet at −109');
-  assert.equal(splitRead([], [{ pick: 'Over 51.5', confidence: 'medium', odds: '-105' }]), 'Over 51.5 · LIKE · suggested at −105');
+  assert.equal(splitRead([], [{ pick: 'Over 51.5', confidence: 'medium', odds: '-105' }]), 'Over 51.5 · LIKE · at −105');
   assert.equal(splitRead([{ pick: 'SF -7.5', confidence: 'low' }], []), 'pass');
   assert.equal(splitRead([], []), null);
 });

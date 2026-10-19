@@ -93,7 +93,7 @@ const lineText = (l: number | null) => (l === null ? '' : l > 0 ? `+${l}` : Stri
 // A suggestion's words in its open row, at its price: the Bot's chance against the price's break-even
 export function suggestionReason(chance: number, odds: number): string {
   const d = odds > 0 ? 1 + odds / 100 : 1 + 100 / -odds;
-  return `Suggested by price: the Bot makes it ${Math.round(chance * 1000) / 10}% to win, and at ${sign(odds)} it needs ${Math.round(1000 / d) / 10}%. Not one of the Bot's bets: it bets on its own clock, and its bets lock their price.`;
+  return `Suggested by price: the Bot makes it ${Math.round(chance * 1000) / 10}% to win, and at ${sign(odds)} it needs ${Math.round(1000 / d) / 10}%.`;
 }
 const sign = (odds: number) => americanOdds(odds).replace('-', '−');
 
