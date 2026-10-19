@@ -231,7 +231,14 @@
   "50219761": "2026-10-19",
   "50219961": "2026-10-19",
   "50220069": "2026-10-19",
-  "50220546": "2026-10-19"
+  "50220546": "2026-10-19",
+  "50220744": "2026-10-19",
+  "50220866": "2026-10-19",
+  "50220990": "2026-10-19",
+  "50221053": "2026-10-19",
+  "50221241": "2026-10-19",
+  "50221307": "2026-10-19",
+  "50221426": "2026-10-19"
  },
  "signals": [
   {
@@ -907,6 +914,81 @@
    "confidence": 0.6,
    "story": "50219961",
    "headline": "Mayfield to practice this week but Buccaneers to prep as if Daniels will play",
+   "model": "claude-haiku-5-5"
+  },
+  {
+   "id": "50221241|19|2969939|starting",
+   "day": "2026-10-19",
+   "at": "2026-10-19T21:07:40.000Z",
+   "team": "19",
+   "abbr": "NYG",
+   "athlete": "2969939",
+   "player": "Jameis Winston",
+   "kind": "starting",
+   "direction": "none",
+   "confidence": 0.3,
+   "story": "50221241",
+   "headline": "John Harbaugh: Giants 'honing in on' QB decision for Sunday vs. Texans",
+   "model": "claude-haiku-5-5"
+  },
+  {
+   "id": "50221241|19|4433970|starting",
+   "day": "2026-10-19",
+   "at": "2026-10-19T21:07:40.000Z",
+   "team": "19",
+   "abbr": "NYG",
+   "athlete": "4433970",
+   "player": "JJ McCarthy",
+   "kind": "starting",
+   "direction": "none",
+   "confidence": 0.3,
+   "story": "50221241",
+   "headline": "John Harbaugh: Giants 'honing in on' QB decision for Sunday vs. Texans",
+   "model": "claude-haiku-5-5"
+  },
+  {
+   "id": "50221053|28|4575131|benched",
+   "day": "2026-10-19",
+   "at": "2026-10-19T20:50:47.000Z",
+   "team": "28",
+   "abbr": "WSH",
+   "athlete": "4575131",
+   "player": "Jacory Croskey-Merritt",
+   "kind": "benched",
+   "direction": "down",
+   "confidence": 0.9,
+   "story": "50221053",
+   "headline": "Commanders place starting RB Jacory Croskey-Merritt (groin) on IR",
+   "model": "claude-haiku-5-5"
+  },
+  {
+   "id": "50220990|34|4366031|return",
+   "day": "2026-10-19",
+   "at": "2026-10-19T20:29:26.000Z",
+   "team": "34",
+   "abbr": "HOU",
+   "athlete": "4366031",
+   "player": "Tank Dell",
+   "kind": "return",
+   "direction": "up",
+   "confidence": 0.9,
+   "story": "50220990",
+   "headline": "Texans WR Tank Dell to play Sunday in 1st game since major 2024 knee injury",
+   "model": "claude-haiku-5-5"
+  },
+  {
+   "id": "50220744|11|3917792|starting",
+   "day": "2026-10-19",
+   "at": "2026-10-19T20:12:07.000Z",
+   "team": "11",
+   "abbr": "IND",
+   "athlete": "3917792",
+   "player": "Daniel Jones",
+   "kind": "starting",
+   "direction": "up",
+   "confidence": 0.9,
+   "story": "50220744",
+   "headline": "Colts to stick with Daniel Jones at quarterback vs. Vikings",
    "model": "claude-haiku-5-5"
   }
  ]

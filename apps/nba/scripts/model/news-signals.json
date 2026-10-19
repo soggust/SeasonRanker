@@ -65,7 +65,8 @@
   "50214632": "2026-10-19",
   "50215968": "2026-10-19",
   "50217446": "2026-10-19",
-  "50220158": "2026-10-19"
+  "50220158": "2026-10-19",
+  "50220689": "2026-10-19"
  },
  "signals": [
   {
@@ -231,6 +232,21 @@
    "confidence": 0.3,
    "story": "50201671",
    "headline": "76ers, needing frontcourt help, convert 7-foot-6 Tacko Fall to two-way contract",
+   "model": "claude-haiku-5-5"
+  },
+  {
+   "id": "50220689|9|3975|return",
+   "day": "2026-10-19",
+   "at": "2026-10-19T19:49:20.000Z",
+   "team": "9",
+   "abbr": "GS",
+   "athlete": "3975",
+   "player": "Stephen Curry",
+   "kind": "return",
+   "direction": "up",
+   "confidence": 0.6,
+   "story": "50220689",
+   "headline": "Warriors expect Steph Curry (ankle) to play in opener vs. Lakers",
    "model": "claude-haiku-5-5"
   }
  ]
