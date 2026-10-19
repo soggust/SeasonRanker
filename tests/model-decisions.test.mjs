@@ -727,7 +727,7 @@ test('D35 the season-start vacancy: a regular gone since last season vacates his
   assert.ok(decisions.includes('### D35.'));
 });
 
-test('D36 a suggestion never shows a band the Bot could not give the row: the desk caps on board.json (cap, cr), the same rule as levelOf; the bands themselves unchanged', async () => {
+test('D46 a suggestion never shows a band the Bot could not give the row: the desk caps on board.json (cap, cr), the same rule as levelOf; the bands themselves unchanged', async () => {
   const { BANDS, capBand, capOf, edgeLevel, levelOf } = await import('../libs/ranker/scripts/model/picks.mjs');
   const { bandOf, boardMarkets, boardProp, sideCap } = await import('../libs/ranker/scripts/model/board.mjs');
   const { boardSidesOf, boardTotalOf } = await import('../libs/ranker/scripts/model/mma-desk.mjs');
@@ -777,5 +777,5 @@ test('D36 a suggestion never shows a band the Bot could not give the row: the de
   assert.equal(tot[0].cap, 'medium');
   assert.equal(tot[0].b, 'medium');
   const decisions = fs.readFileSync(path.resolve('libs/ranker/scripts/model/DECISIONS.md'), 'utf8');
-  assert.ok(decisions.includes('### D36.'));
+  assert.ok(decisions.includes('### D46.'));
 });

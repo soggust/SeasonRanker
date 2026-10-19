@@ -99,7 +99,7 @@ const sign = (odds: number) => americanOdds(odds).replace('-', '−');
 
 // A suggestion at a price: its band, Kelly score, expected return and stake worked again from the Bot's chance
 // (whatIfOf over the row, a price the Bot didn't take; priceAt at the new price), a practice side held a LIKE, and
-// one the desk caps (board.json cap: a gate's practice stake, a role pick; DECISIONS.md D36) a LIKE at most at the
+// one the desk caps (board.json cap: a gate's practice stake, a role pick; DECISIONS.md D46) a LIKE at most at the
 // practice stake, never a band the Bot couldn't give it; no edge there (PASS), none
 export function repriced(row: BetRow, odds: number, from: LiveQuote['from'] = 'board'): BetRow | null {
   const base = whatIfOf({ ...row, confidence: null, ev: undefined, units: undefined }, false);

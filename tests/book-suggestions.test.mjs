@@ -187,7 +187,7 @@ test('splitRead: the Live tab reads the Bot\'s bet with its locked price, else i
   assert.equal(splitRead([], []), null);
 });
 
-test('a side the desk caps (board.json cap, DECISIONS.md D36): a LIKE at most at the practice stake at every price, a PASS still with no edge; the what-if held the same', () => {
+test('a side the desk caps (board.json cap, DECISIONS.md D46): a LIKE at most at the practice stake at every price, a PASS still with no edge; the what-if held the same', () => {
   const g = game();
   g.k.spread[1] = { ...g.k.spread[1], cap: 'medium', cr: 'the lines at the practice stake' };
   g.p[0] = { ...g.p[0], cap: ['medium', null], cr: 'rushYds at the practice stake' };

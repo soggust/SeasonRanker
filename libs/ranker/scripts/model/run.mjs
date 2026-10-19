@@ -1747,7 +1747,7 @@ function betGames(r) {
     const priced = price(game, exp, lines, params, r.shape);
     // (the game as the residual model's ctx (desk.mjs sideCtx, residual.mjs; D32): its start, the bet's moment now)
     const rctx = { sport, t: Date.parse(game.date), at: Date.now(), hours: until / 36e5 };
-    // (every market priced, both sides, on the betting board: writeBoard; held to the desk's caps, D36: the lines'
+    // (every market priced, both sides, on the betting board: writeBoard; held to the desk's caps, D46: the lines'
     // CLV gate's LIKE, and a PASS saying so where the desk bets only at The Odds API's price and this is ESPN's)
     const off = hasKey() && !apiLines ? "ESPN's line, not the Book's own price: the Bot bets only at the Book's (it's tracked till then)" : null;
     (r.boardGames ??= new Map()).set(game.id, { game, markets: boardMarkets(priced, (m) => trust[m]?.trust ?? START_TRUST, lines.consensus, rctx, { gate: r.lineGate, off }), at });

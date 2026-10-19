@@ -132,7 +132,7 @@ export const levelOf = (b, kelly, p = b.p) =>
 // slate's practice pick, a practice stake (a gate's, a suspect price's), a role bet, and a research bet or a
 // research-adjusted one not yet earned; null where its band is its Kelly's. The board carries it per side
 // (board.mjs cap), so the Book's suggestions and the what-if never show a band the Bot couldn't give the row:
-// DECISIONS.md D36. levelOf(b, k, p) is capBand(edgeLevel(k, p), capOf(b)) for every edge bet with an edge)
+// DECISIONS.md D46. levelOf(b, k, p) is capBand(edgeLevel(k, p), capOf(b)) for every edge bet with an edge)
 export const capOf = (b) =>
   isPracticeTop(b) ? 'medium'
   : earnedBet(b) && !b.practice && !b.suspect ? null

@@ -412,7 +412,7 @@ Started 2026-10-18, after about 20 bettor changes in one day. The owner: "keep i
 
 - **Verdict: HOLD, nothing to ship.** The live trust already sits where the history puts it: every sport's `state.trust` has spreads, totals and moneylines at 0 to 0.15 (fit on the backtest's Pinnacle closes and the live bets since the epoch, D17's grid reaching 1 either way), and the priced chance ties the Book at the close in every market but NHL totals, where the walk-forward trust of 0.3 is worth +0.0001 in the seasons it was earned and costs 0.0008 to 0.0033 in 2026-27 as the lean turned against it. A history prior would move the first months of 2020-21 (the sanity set) and nothing the desk prices now. The totals lean is noise at the close, as the deep dive said; the fit already reads it so.
 
-### D36. A suggestion never shows a band the Bot couldn't give the row; the bands stay
+### D46. A suggestion never shows a band the Bot couldn't give the row; the bands stay
 - **Date:** 2026-10-19.
 - **Owner:** on a Book suggestion, Alexander Volkov ML at −120 (the Bot 55.8%, break-even 54.5%) shown as a LOVE: "Why is this a LOVE? The edge seems super small." Then: "a LOVE at 2.0 is fine."
 - **Rule:**

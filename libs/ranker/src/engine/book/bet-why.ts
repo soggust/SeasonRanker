@@ -42,7 +42,7 @@ export interface BetWhyRow {
   price?: number;
   book?: string;
   why?: PickWhy | null;
-  // (a practice pick's tag, and the desk's cap on a board side (board.json cap, DECISIONS.md D36): a LIKE at most at
+  // (a practice pick's tag, and the desk's cap on a board side (board.json cap, DECISIONS.md D46): a LIKE at most at
   // every price, its stake the practice one)
   practice?: boolean;
   cap?: 'medium' | null;
@@ -397,7 +397,7 @@ export interface WhatIfBase {
   bet: boolean;
   // (a LIKE a rule holds it to at every price: picks.mjs levelOf's practice, role and research picks)
   cap: Confidence | null;
-  // (a ceiling: the desk's cap on a side it hasn't bet (board.json cap, D36; a practice side): a LIKE at most, a PASS
+  // (a ceiling: the desk's cap on a side it hasn't bet (board.json cap, D46; a practice side): a LIKE at most, a PASS
   // still where the price has no edge)
   most?: Confidence | null;
   unitsCap: number | null;
@@ -501,7 +501,7 @@ export function whatIfOf(r: BetWhyRow, placed = true): WhatIfBase | null {
   // (a LIKE the score doesn't make: a practice, role or research pick's, held there at every price)
   if (bet && r.confidence === 'medium' && at.level !== 'medium') base.cap = 'medium';
   if (bet && Number.isFinite(r.units) && at.units !== null && r.units! < at.units) base.unitsCap = r.units!;
-  // (the desk's cap on a side, or a practice side, it hasn't bet at this price: a LIKE at most at every price, D36)
+  // (the desk's cap on a side, or a practice side, it hasn't bet at this price: a LIKE at most at every price, D46)
   if (!base.cap && (r.cap === 'medium' || r.practice)) base.most = 'medium';
   const fair = r.why?.fair ?? r.fair;
   const trust = r.why?.trust;

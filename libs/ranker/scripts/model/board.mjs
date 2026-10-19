@@ -20,7 +20,7 @@
 //             or more (the data's: nothing is priced off it), cap: 'medium' where the desk holds any bet on that
 //             side to a LIKE at most whatever its price (cr: why, the desk's words: sideCap below, picks.mjs
 //             capOf; the lines' CLV gate at the practice stake), so the Book's suggestions and the what-if never
-//             show a band the Bot couldn't give it (DECISIONS.md D36). A suspect price's LIKE (desk.mjs
+//             show a band the Bot couldn't give it (DECISIONS.md D46). A suspect price's LIKE (desk.mjs
 //             EV_SUSPECT, D23) is the price's: in b here, worked again by the page at any other price }
 //     p      its props, each { n: player, id: ESPN athlete id, t: his team's ESPN id, k: the stat's key, lb: its
 //             label, l: line, o: [over price, under price] (null a side unknown), c: the bot's trusted chance
@@ -43,7 +43,7 @@
 //
 // A side the desk wouldn't bet at the board's price at all (boardMarkets off: a price not the Book's own, ESPN's
 // line where the desk asks The Odds API, tracked only) is a PASS with its reason (sr): never a band the Bot
-// couldn't give (D36).
+// couldn't give (D46).
 //
 // And the board seen (seenUpdate: apps/<sport>/scripts/model/board-seen.json, committed, not deployed): every
 // market, side, line and price each game's board has shown, kept a week past its start, so the play-money
@@ -68,7 +68,7 @@ export const bandOf = (kelly, p, ev, { check = false, pass = false, cap = null }
   check ? 'check' : pass || !(ev > 0) ? 'low' : capBand(edgeLevel(kelly, p), Math.abs(ev) > EV_SUSPECT ? 'medium' : cap);
 
 // The desk's cap on a side from the marks a bet on it would carry (picks.mjs capOf: a gate's practice stake, a role
-// bet, a research pick not earned): the board's { cap, cr } where there is one (DECISIONS.md D36), else {}
+// bet, a research pick not earned): the board's { cap, cr } where there is one (DECISIONS.md D46), else {}
 export function sideCap(marks) {
   const cap = marks ? capOf(marks) : null;
   if (!cap) return {};
@@ -82,7 +82,7 @@ export function sideCap(marks) {
 // consensus: the other books' by market (the lines', oddsapi.mjs consensusOf's), the data's, beside each side;
 // ctx: the game's, for the residual model (desk.mjs sideCtx, D32), so the board shows the chance the desk bets at.
 // gate: the lines' CLV gate (desk.mjs lineGate's; off, every side at the practice stake: cap LIKE); off: why the desk
-// wouldn't bet these prices at all (not the Book's own: ESPN's line), every side a PASS saying so (D31, D36)
+// wouldn't bet these prices at all (not the Book's own: ESPN's line), every side a PASS saying so (D31, D46)
 export function boardMarkets(markets, trustOf, consensus = null, ctx = null, { gate = null, off = null } = {}) {
   const capped = gate && gate.on === false ? sideCap({ practice: String(gate.why || 'the game lines at the practice stake') }) : {};
   const out = {};
