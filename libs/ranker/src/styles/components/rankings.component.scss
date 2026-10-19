@@ -906,11 +906,11 @@ section ul li.player {
     min-width: 6em;
     width: 6em;
 
-    // Every row reserves the group icon's slot and a little room after the last column, so the columns
-    // stay aligned under their headers; an extra gap between groups
+    // Every row reserves the slot for the group's chevron and icon and a little room after the last column,
+    // so the columns stay aligned under their headers; an extra gap between groups
     &:first-child {
       margin-left: 0.6em;
-      padding-left: 1.8em;
+      padding-left: 44px;
     }
 
     &:last-child {
@@ -922,12 +922,10 @@ section ul li.player {
     margin-left: 1.1em;
   }
 
-  // A group's own column, first in the group (all of it when the group is collapsed, its stats hidden but
-  // still counted): the slot for its chevron and icon, then as wide as the group's name in the header
-  // (measured, column-fit.ts), each row's rank within the group under it; the same width in every row, so
-  // the cells line up under the header's
-  // (open: the chevron and icon alone in the header, the stats' own headers saying the rest; just room
-  // for the ranks)
+  // A collapsed group's own column, the group's only one (its stats hidden, still counted): the slot for its
+  // chevron and icon, then as wide as the group's name in the header (measured, column-fit.ts), each row's
+  // rank within the group under it; the same width in every row, so the cells line up under the header's.
+  // An open group has none: its stat columns alone.
   > .col-group > div.group-rank-col {
     flex: 0 0 auto;
     max-width: none;
@@ -935,10 +933,6 @@ section ul li.player {
     padding-left: 50px;
     padding-right: 0.2em;
     width: max(3.5em, var(--label-w, 0px));
-
-    &.open {
-      width: 2.5em;
-    }
   }
 
   // (sorted by its group: the strip down the ranks alone, not the chevron's slot)

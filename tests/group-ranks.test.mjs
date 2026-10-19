@@ -238,3 +238,23 @@ test('nfl QB: tied Results share a place open, collapsed, combined and sorted by
     }
   }
 });
+
+// An open group renders no rank cells: the grid's template draws a group's own column (header and rows) only
+// inside the collapsed branch, and nothing in the open branches reads a group's rank
+test('the grid template: a group\'s rank column only while it is collapsed, none in an open group', async () => {
+  const fs = await import('node:fs');
+  const html = fs.readFileSync(path.join(import.meta.dirname, '../libs/ranker/src/engine/skill-rankings/skill-rankings.component.html'), 'utf8');
+  const lines = html.split(/\r?\n/);
+  const cols = lines.map((l, i) => [l, i]).filter(([l]) => l.includes('class="group-rank-col"'));
+  assert.equal(cols.length, 2, 'the header\'s and each row\'s');
+  for (const [, i] of cols) {
+    // (the nearest branch above it: the collapsed one, with no else between)
+    const above = lines.slice(0, i).reverse().find((l) => /^\s*(@if|\} @else)/.test(l));
+    assert.equal(above.trim(), '@if (isCollapsed(group.id)) {', `line ${i + 1} under "${above.trim()}"`);
+  }
+  // (each collapsed branch closes before the open ones, which read no group rank)
+  for (const branch of html.split(/\} @else if \(group\.id === 'support'\) \{/).slice(1)) {
+    const open = branch.split(/\n\s*\}\n\s*<\/div>\n/)[0];
+    assert.ok(!/groupPlace|group-rank-col/.test(open), 'an open group reads a rank');
+  }
+});
