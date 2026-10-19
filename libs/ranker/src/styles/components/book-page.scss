@@ -126,20 +126,26 @@ $page-gutter: 16px;
   width: 46px;
 }
 
-// The views (The board, Open, Cashed, an admin's Algorithm): a scoreboard bar like the sport pages' position
-// bar, equal tabs, the one showing lit on the dots
+// The views (The board, Live, Open, Cashed, an admin's Algorithm): a pill of the game dropdown's own make (the
+// player's card: the black-to-gold fade in its 1px gold rail, 44px, the dropdown's and the About button's height),
+// equal tabs inside it, each a pill of its own. The one showing as the dropdown's chosen row: washed gold, its words
+// gold with the glow, a faint gold light along its top; the others white, lighter on hover (the dropdown's lit
+// row's light), never gold (the owner's note, 2026-10-19: the bar to sit with the dropdown and the About button)
 .book-views {
-  @include v.scoreboard-panel(v.$tab-r, 0 2px 6px rgba(0, 0, 0, 0.35));
+  @include chip.player-card(v.$radius-pill);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.45);
   box-sizing: border-box;
   display: flex;
   flex: 1 1 420px;
+  gap: v.$space-2;
   height: 44px;
   max-width: 640px;
-  overflow: hidden;
+  padding: 3px;
 
   button {
     background: transparent;
     border: none;
+    border-radius: v.$radius-pill;
     color: #fff;
     cursor: pointer;
     flex: 1;
@@ -151,24 +157,25 @@ $page-gutter: 16px;
     padding: 0 1.1em;
     text-shadow: 0 1px 2px rgba(0, 0, 0, 0.4);
     text-transform: uppercase;
-    transition:
-      color v.$t-hover ease,
-      box-shadow v.$t-hover ease;
+    transition: background v.$t-hover ease;
     white-space: nowrap;
 
-    // (pressed in, a faint dark shade)
+    // (lighter: the dropdown's lit row's light)
     &:hover:not(.active) {
-      box-shadow: inset 0 0 0 100vmax rgba(0, 0, 0, 0.1);
-      color: var(--scoreboard-led);
-    }
-
-    @include v.focus-lit {
-      box-shadow: inset 0 0 0 100vmax rgba(0, 0, 0, 0.1);
-      color: var(--scoreboard-led);
+      background: rgba(255, 255, 255, 0.07);
     }
 
     &.active {
-      @include v.lit-tab;
+      @include glow;
+      background: rgba(chip.$gold-led, 0.12);
+      box-shadow: inset 0 1px 0 rgba(chip.$gold-led, 0.25);
+      cursor: default;
+    }
+
+    // (the keyboard's: the light and a thin white ring inside the pill)
+    @include v.focus-lit {
+      background: rgba(255, 255, 255, 0.07);
+      box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.75);
     }
   }
 }
@@ -2137,15 +2144,9 @@ $font-mono: "IBM Plex Mono", "Courier New", monospace;
 .book-ticker {
   @include v.scoreboard-panel(0, none);
   align-items: center;
-  // (the board's gold rim, the even-edge way: 1px of chip.$felt-gold on the border box behind the face on the padding
-  // box, along the top and bottom only, the ends square: the strip a band (the owner's notes, 2026-10-17))
-  background:
-    var(--scoreboard-dots) padding-box,
-    linear-gradient(var(--scoreboard), var(--scoreboard)) padding-box,
-    chip.$felt-gold border-box;
-  border-color: transparent;
-  border-style: solid;
-  border-width: 1px 0;
+  // (no rim: the scoreboard's face alone, edge to edge, no gold or panel edge along its top or bottom (the owner's
+  // note, 2026-10-19))
+  border: none;
   box-sizing: border-box;
   bottom: 0;
   display: flex;

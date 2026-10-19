@@ -1,6 +1,6 @@
 // Best Bets' board (book-page.component.html/.ts, book-page.scss): no "Off the board" fold (the passes and fades
 // show only as a game's own lines' PASS / FADE tags), one centred line when nothing favorable is on it (no LOCK,
-// LOVE or LIKE; an admin's CHECKs don't count and stay under it), and the ticker's gold rim top and bottom only.
+// LOVE or LIKE; an admin's CHECKs don't count and stay under it), the ticker with no rim, and the views' bar as the game dropdown's pill.
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
@@ -44,13 +44,24 @@ test('nothing favorable: one centred line and a smaller one, the CHECK bands sti
   assert.match(css, /\.empty-title \{[^}]*rgba\(255, 255, 255, 0\.72\)/);
 });
 
-test('the ticker: its gold rim along the top and bottom only, the ends square', () => {
+test('the ticker: the scoreboard face, no rim along its top or bottom', () => {
   const at = scss.indexOf('.book-ticker {');
   const rule = scss.slice(at, scss.indexOf('\n}', at));
   assert.match(rule, /scoreboard-panel\(0, none\)/);
-  assert.match(rule, /border-width: 1px 0;/);
-  assert.match(rule, /chip\.\$felt-gold border-box/);
-  assert.doesNotMatch(rule, /border: 1px solid transparent/);
+  assert.match(rule, /border: none;/);
+  assert.doesNotMatch(rule, /felt-gold|border-width/);
+});
+
+test('the views\' bar: the game dropdown\'s player-card pill, the chosen tab washed gold, hover lighter not gold', () => {
+  const at = scss.indexOf('.book-views {');
+  const rule = scss.slice(at, scss.indexOf('\n}', at));
+  assert.match(rule, /@include chip\.player-card\(v\.\$radius-pill\)/);
+  assert.match(rule, /height: 44px/);
+  assert.doesNotMatch(rule, /scoreboard-panel|overflow: hidden/);
+  const hover = rule.match(/&:hover:not\(\.active\) \{([^}]*)\}/);
+  assert.ok(hover && /rgba\(255, 255, 255/.test(hover[1]) && !/gold|scoreboard-led/.test(hover[1]), 'lighter on hover, not gold');
+  const active = rule.match(/&\.active \{([^}]*)\}/);
+  assert.ok(active && /@include glow/.test(active[1]) && /chip\.\$gold-led/.test(active[1]));
 });
 
 test('the ticket\'s title in Outfit at 2px, on the slip, the wallet\'s stubs and the corkboard; the rest Plex Mono', () => {
