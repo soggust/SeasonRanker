@@ -8,6 +8,7 @@ import type { ModelBet } from './desk-model';
 import type { PlayBet } from '../account/wallet/wallet-math';
 import { asDeskBet } from '../account/wallet/wallet-math';
 import type { GameState } from './live-games';
+import type { HurtStatus } from './in-game-injury';
 
 export type WatchTone = 'good' | 'close' | 'bad' | 'wait';
 
@@ -36,6 +37,9 @@ export interface BetWatch {
   right: string;
   // (the bet's count so far (a prop's stat, a total's points), or a side's margin; null before the start)
   value: number | null;
+  // (a prop's player hurt in the game (in-game-injury.ts): the status says it in orange in place of WINNING or
+  // BEHIND, the meter and pace kept but toned down; none otherwise)
+  hurt?: HurtStatus | null;
 }
 
 // (pace is hidden this early in the game)
@@ -54,11 +58,11 @@ function countMeter(value: number, line: number, proj: number | null): Pick<BetW
   return { fill: clamp((value / span) * 100), tick: clamp((line / span) * 100), proj: proj === null ? null : clamp((proj / span) * 100) };
 }
 
-// (the stake and its payout: the row's sub line, "1.0u to win 0.91u"; the band and whose pick it was stay on the
-// Book's own rows, not the sweat's)
+// (the stake, its price and its payout: the row's sub line, "1.0u at +112 to win 1.12u" (the price here, off the
+// pick line: the owner, 2026-10-18); the band and whose pick it was stay on the Book's own rows, not the sweat's)
 export function betSub(b: Pick<PlayBet, 'stake' | 'odds'>): string {
   const win = b.odds > 0 ? (b.stake * b.odds) / 100 : (b.stake * 100) / -b.odds;
-  return `${b.stake.toFixed(1)}u to win ${(Math.round(win * 100) / 100).toFixed(2)}u`;
+  return `${b.stake.toFixed(1)}u at ${b.odds > 0 ? '+' : ''}${b.odds} to win ${(Math.round(win * 100) / 100).toFixed(2)}u`;
 }
 
 // A bet's words, short, for a card row: "Under 221.5", "J. Brown o24.5 pts", "Cavaliers −4.5" (the pick as the
@@ -70,6 +74,29 @@ export function shortPick(b: Pick<PlayBet, 'pick' | 'market' | 'player' | 'side'
     return `${name} ${b.side === 'under' ? 'u' : 'o'}${b.line ?? ''}${b.statLabel ? ` ${b.statLabel}` : ''}`;
   }
   return b.pick.replace(/^(.*?) -(\d)/, '$1 −$2');
+}
+
+// The short pick split round its one word (pick-style.ts, as the Book's): a prop's over or under with its line
+// ("o2.5"), a total's Over or Under, a side's line or ML last; [before, the word, after]
+export function shortPickParts(b: Pick<PlayBet, 'pick' | 'market' | 'player' | 'side' | 'line' | 'statLabel'>): [string, string, string] {
+  const text = shortPick(b);
+  if (b.market === 'prop' && b.player) {
+    const m = text.match(/^(.*? )([ou][\d.]+)(.*)$/);
+    return m ? [m[1], m[2], m[3]] : ['', text, ''];
+  }
+  if (b.market === 'total') {
+    const at = text.indexOf(' ');
+    return at < 0 ? ['', text, ''] : ['', text.slice(0, at), text.slice(at)];
+  }
+  const at = text.lastIndexOf(' ');
+  return at < 0 ? ['', text, ''] : [text.slice(0, at + 1), text.slice(at + 1), ''];
+}
+
+// A bet's watch with its player's injury tag where he's hurt (live-view.ts hurtOf): the tag (INJURED, QUESTIONABLE,
+// OUT) in WINNING's or BEHIND's place while the bet's undecided; a final's WON, LOST or PUSH stays
+export function withHurt(w: BetWatch, hurt: HurtStatus | null | undefined): BetWatch {
+  if (!hurt || w.status === 'WON' || w.status === 'LOST' || w.status === 'PUSH' || w.status === 'PENDING') return w;
+  return { ...w, status: hurt, hurt };
 }
 
 export function betWatch(bet: PlayBet, game: GameRead | null, propNow: number | null | undefined, now = Date.now()): BetWatch {
@@ -125,18 +152,17 @@ function sideWatch(d: ModelBet, bet: PlayBet, game: GameRead, decided: ReturnTyp
 }
 
 // (a count against its line with a pace, each fact said once: the status the verdict (WINNING, or BEHIND, gold
-// when close), the left caption where it stands (the count and what it needs, or what it has to spare), the right
-// the pace, the one place it's named)
+// when close), the left caption the count alone, an over's and an under's alike (what's needed or to spare is the
+// meter's to show: the owner, 2026-10-18, dropped "2.5 to spare", and "needs N more" went with it so the two read
+// the same), the right the pace, the one place it's named)
 function paceWords(over: boolean, count: number, line: number, proj: number, unit: string): Pick<BetWatch, 'status' | 'tone' | 'left' | 'right'> {
   const of = unit ? ` ${unit}` : '';
   const right = `On pace for ${Math.round(proj)}`;
+  const left = `${fmt(count)}${of}`;
   if (over) {
-    // (what it needs, whole: points, shots and yards come in ones)
-    const left = `${fmt(count)}${of} · needs ${Math.ceil(round1(line - count))} more`;
     if (proj >= line) return { status: 'WINNING', tone: 'good', left, right };
     return { status: 'BEHIND', tone: line - proj <= line * CLOSE ? 'close' : 'bad', left, right };
   }
-  const left = `${fmt(count)}${of} · ${fmt(round1(line - count))} to spare`;
   if (proj <= line) return { status: 'WINNING', tone: 'good', left, right };
   return { status: 'BEHIND', tone: proj - line <= line * CLOSE ? 'close' : 'bad', left, right };
 }

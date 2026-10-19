@@ -238,6 +238,7 @@ export async function loadGame(league: string, eventId: string): Promise<GameVie
     side: sideOf(p.team?.id),
     kind: p.type?.text ?? null,
     ...((face) => ({ headshot: face?.headshot ?? null, scorer: face?.name ?? null }))(scorerFace(p)),
+    at: p.wallclock ?? null,
   });
   // (a play's period by name: ESPN's, or from its number: the NFL's scoring plays carry just that)
   const ORDINAL = ['1st', '2nd', '3rd', '4th'];
@@ -334,6 +335,7 @@ export async function loadGame(league: string, eventId: string): Promise<GameVie
     preview,
     predictor: awayChance !== null && homeChance !== null ? { away: awayChance, home: homeChance } : null,
     injuries,
+    rulings: inGameRulings(s.injuries, comp.date),
     form,
     broadcast: comp.broadcasts?.[0]?.media?.shortName ?? null,
     status,
@@ -404,6 +406,18 @@ export function injuryReport(
     }))
     .filter((t): t is GameView['injuries'][number] => !!t.side && t.rows.length > 0)
     .sort(awayFirst);
+}
+
+// The injuries list's entries posted at or after the kickoff: the game's own rulings (a player hurt in it,
+// Questionable or Out), not the week's report
+export function inGameRulings(teams: EspnSummary['injuries'], date: string | undefined): GameView['rulings'] {
+  const kickoff = date ? Date.parse(date) : NaN;
+  if (Number.isNaN(kickoff)) return [];
+  return (teams ?? []).flatMap((t) =>
+    (t.injuries ?? [])
+      .filter((i) => !!i.date && Date.parse(i.date) >= kickoff)
+      .map((i) => ({ athlete: i.athlete?.id ? String(i.athlete.id) : null, name: i.athlete?.displayName ?? '', status: i.status ?? '', date: i.date ?? null })),
+  );
 }
 
 // "Oct 11": a return date's own day (read in UTC: the plain day "2026-10-11" is its midnight there, so in

@@ -504,6 +504,22 @@ $grey: #7a7a7a;
   @include v.ellipsis;
 }
 
+// (the pick's one word in its team's color, set on it; a total's the board's light)
+.bet-key {
+  color: var(--scoreboard-led);
+}
+
+// (a bet whose player was hurt in the game: the tag orange (INJURED, QUESTIONABLE, OUT), the meter toned down, the
+// row's wash with it)
+.game-bet.hurt {
+  --tone: #{v.$doubtful};
+
+  .bet-meter {
+    filter: saturate(0.4);
+    opacity: 0.5;
+  }
+}
+
 .bet-meter {
   background: v.$panel-rule;
   border-radius: v.$radius-pill;

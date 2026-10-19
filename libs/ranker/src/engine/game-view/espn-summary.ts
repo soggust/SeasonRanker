@@ -38,6 +38,8 @@ export interface EspnPlay {
   coordinate?: { x?: number; y?: number };
   hitCoordinate?: { x?: number; y?: number };
   team?: { id?: string };
+  // (when it was logged, for ordering it against an in-game injury ruling)
+  wallclock?: string;
 }
 export interface EspnSummary {
   // (the game's videos, a few days after it: the NBA's and the NHL's highlights)
@@ -79,7 +81,7 @@ export interface EspnSummary {
   predictor?: { homeTeam?: { id?: string; gameProjection?: string }; awayTeam?: { id?: string; gameProjection?: string } };
   injuries?: {
     team?: { id?: string };
-    injuries?: { status?: string; athlete?: EspnAthlete; details?: { type?: string; detail?: string; returnDate?: string } }[];
+    injuries?: { status?: string; date?: string; athlete?: EspnAthlete; details?: { type?: string; detail?: string; returnDate?: string } }[];
   }[];
   lastFiveGames?: {
     team?: { id?: string };

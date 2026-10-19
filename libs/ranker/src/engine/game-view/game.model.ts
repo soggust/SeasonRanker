@@ -142,6 +142,8 @@ export interface GamePlay {
   // text)
   headshot: string | null;
   scorer: string | null;
+  // (when ESPN logged it, its wallclock: in-game-injury.ts orders a ruling against the plays)
+  at: string | null;
 }
 
 export interface GamePlayGroup {
@@ -175,6 +177,9 @@ export interface GameView {
   preview: boolean;
   // (a preview's: ESPN's matchup predictor, each team's chance to win, 0-1)
   predictor: { away: number; home: number } | null;
+  // (the injuries list's entries posted at or after the kickoff: the game's own rulings, Questionable or Out,
+  // for the bets' injury tags (book/in-game-injury.ts))
+  rulings: { athlete: string | null; name: string; status: string; date: string | null }[];
   injuries: { side: 'away' | 'home'; rows: { name: string; position: string | null; status: string; detail: string | null; headshot: string | null }[] }[];
   // each team's last five games, newest first (ESPN's: each opens its game), the opponent by its abbreviation
   // (when: "Week 4" for the NFL, else the day "05/21/2025"; us and them: the team's score and the opponent's)

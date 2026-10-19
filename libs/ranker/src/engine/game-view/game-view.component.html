@@ -169,8 +169,8 @@
       </ng-template>
 
       <!-- The leaders, each team's in a column: the season's (a preview's) or the game's. The panel folds like the
-           others beside it, open on a computer, shut on a phone; a player the user has a prop on wears YOUR BET by his
-           name, his row washed gold (bet-lit: not the Your Bets panel's own your-bet row) -->
+           others beside it, open on a computer, shut on a phone; no mark for a player the user has a prop on (Your
+           Bets beside it says so: the owner, 2026-10-18) -->
       <ng-template #leaders let-label>
         @if (g.leaders.length) {
           <card-panel class="tab-card group-box game-leaders" [startOpen]="!phone()" [label]="label" icon="military_tech">
@@ -180,12 +180,11 @@
                 <div class="game-leader-col">
                   <h3 class="depth-unit">{{ team.short }}</h3>
                   @for (l of t.rows; track $index) {
-                    @let yourBet = leaderBet(g, l.name);
-                    <div class="game-leader" [class.bet-lit]="yourBet">
+                    <div class="game-leader">
                       <ng-container *ngTemplateOutlet="face; context: { $implicit: l }"></ng-container>
                       <span class="game-leader-main">
                         <small>{{ l.category }}</small>
-                        <b><ng-container *ngTemplateOutlet="who; context: { $implicit: l.name }"></ng-container>@if (yourBet) {<span class="your-bet-tag">Your bet</span>}</b>
+                        <b><ng-container *ngTemplateOutlet="who; context: { $implicit: l.name }"></ng-container></b>
                       </span>
                       <span class="game-leader-line">{{ l.line }}</span>
                     </div>
@@ -367,10 +366,31 @@
                   <span panel-actions class="your-bets-sum">{{ onTrackWords(rowWatches(rows)) }}</span>
                   <div class="group-body">
                     @for (r of rows; track r.bet.id) {
-                      <div class="your-bet" [ngClass]="r.w.tone">
-                        <span class="your-bet-main">
-                          <span class="your-bet-pick"><pick-text [pick]="r.pick" [player]="betPlayer(r.bet)"></pick-text> <span class="your-bet-odds">{{ r.odds }}</span></span>
-                          <span class="your-bet-sub">{{ r.sub }}</span>
+                      <!-- (its circle beside the pick and the line under it, in the height those two take: a prop's
+                           player's face linking his card, a side's team's logo, a total's arrow; the pick's one word in
+                           its team's color (pick-style.ts, as the Book's); his injury tag, orange, in the status's
+                           place, the meter toned down) -->
+                      <div class="your-bet" [ngClass]="r.w.tone" [class.hurt]="!!r.w.hurt">
+                        <span class="your-bet-head">
+                          @if (r.face !== null) {
+                            @if (r.player) {
+                              <a class="your-bet-circle" [playerLink]="r.player" playerLinkFace [style.border-color]="r.color">@if (r.face) {<img [src]="r.face" alt="" (error)="r.face = ''" />}</a>
+                            } @else {
+                              <span class="your-bet-circle" aria-hidden="true" [style.border-color]="r.color">@if (r.face) {<img [src]="r.face" alt="" (error)="r.face = ''" />}</span>
+                            }
+                          } @else if (r.bet.market === 'total') {
+                            <span class="your-bet-circle total" aria-hidden="true"><mat-icon [fontIcon]="r.bet.side === 'under' ? 'arrow_downward' : 'arrow_upward'"></mat-icon></span>
+                          } @else {
+                            <span class="your-bet-circle team" aria-hidden="true" [style.border-color]="r.color">
+                              @if (r.logo) {
+                                <img [src]="r.logo" alt="" />
+                              }
+                            </span>
+                          }
+                          <span class="your-bet-main">
+                            <span class="your-bet-pick">@if (r.player) {<a [playerLink]="r.player">{{ r.player.name }}</a>{{ ' ' }}}{{ r.parts[0] }}<span class="your-bet-key" [style.color]="r.color">{{ r.parts[1] }}</span>{{ r.parts[2] }}</span>
+                            <span class="your-bet-sub">{{ r.sub }}</span>
+                          </span>
                         </span>
                         <span class="your-bet-status">{{ r.w.status }}</span>
                         <span class="your-bet-meter-wrap">

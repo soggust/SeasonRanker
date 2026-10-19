@@ -4,3 +4,4 @@ export * from '../../libs/ranker/src/engine/book/live-games';
 export * from '../../libs/ranker/src/engine/book/live-bets';
 export * from '../../libs/ranker/src/engine/book/bet-impact';
 export * from '../../libs/ranker/src/engine/book/live-mma';
+export * from '../../libs/ranker/src/engine/book/in-game-injury';

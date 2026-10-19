@@ -89,8 +89,12 @@
     <span class="game-space"></span>
     <span class="game-bets">
       @for (b of c.bets; track b.key) {
-        <span class="game-bet" [ngClass]="b.w.tone">
-          <span class="bet-short">{{ b.short }}</span>
+        <span class="game-bet" [ngClass]="b.w.tone" [class.hurt]="!!b.w.hurt">
+          @if (b.parts; as p) {
+            <span class="bet-short">{{ p[0] }}<span class="bet-key" [style.color]="b.color">{{ p[1] }}</span>{{ p[2] }}</span>
+          } @else {
+            <span class="bet-short">{{ b.short }}</span>
+          }
           <span class="bet-meter" aria-hidden="true">
             <i class="bet-fill" [style.width.%]="b.w.fill"></i>
             <i class="bet-tick" [style.left]="'calc(' + b.w.tick + '% - 1px)'"></i>

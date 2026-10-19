@@ -14,20 +14,28 @@ import { resultClass } from '../result-class';
 import { PositionService } from '../position.service';
 import { WalletService } from '../account/wallet/wallet.service';
 import { PlayBet, legBets } from '../account/wallet/wallet-math';
-import { BetWatch, betSub, betWatch, onTrackWords } from '../book/live-bets';
+import { BetWatch, betSub, betWatch, onTrackWords, withHurt } from '../book/live-bets';
 import { boardLabel } from '../book/live-games';
-import { PlayAt, betsByGame, gameReadOf, impactBetOf, impactPlaysOf, propNowOf, sportOf } from '../book/live-view';
+import { PlayAt, betPickColor, betsByGame, gameReadOf, hurtOf, impactBetOf, impactPlaysOf, propNowOf, sportOf } from '../book/live-view';
+import { splitPick } from '../book/pick-style';
+import { headshot } from '../book/bet-format';
 import { PlayImpacts, importantPlays, walkPlays } from '../book/bet-impact';
 
-import { GameTab, GameViewService, nameKey, phoneModal } from './game-view.service';
-import { betPlayer } from '../player-link';
+import { GameTab, GameViewService, phoneModal } from './game-view.service';
+import { PlayerRef, betPlayer } from '../player-link';
 
-// (a bet on the game, as the Your Bets panel shows it: the pick and its odds, the stake, band and whose pick it
-// was, and its watch (live-bets.ts): status, meter and captions)
+// (a bet on the game, as the Your Bets panel shows it: its circle (a prop's player's face, linking his card; a
+// side's team's logo; a total's arrow, in the circle the Book draws), the pick with its one word in its team's
+// color (pick-style.ts: a prop's after his name, linked), the stake, price and payout under it, and its watch
+// (live-bets.ts): status (or his injury tag), meter and captions)
 interface BetRowView {
   bet: PlayBet;
-  pick: string;
-  odds: string;
+  player: PlayerRef | null;
+  // (the pick after a prop's player's name, split round its word: [before, the word, after])
+  parts: [string, string, string];
+  color: string | null;
+  face: string | null;
+  logo: string | null;
   sub: string;
   w: BetWatch;
 }
@@ -53,8 +61,6 @@ interface PlayTags {
   standalone: false,
 })
 export class GameViewComponent implements AfterViewChecked, OnDestroy {
-  // (a bet's player: his name and face link his card, player-link.ts)
-  readonly betPlayer = betPlayer;
   // (the hero's share button: a link to this game, on its tab)
   @Input() share: ((button: HTMLElement) => void) | null = null;
 
@@ -545,10 +551,29 @@ export class GameViewComponent implements AfterViewChecked, OnDestroy {
       this.rowsFor = {
         game,
         bets,
-        rows: bets.map((b) => ({ bet: b, pick: b.pick, odds: b.odds > 0 ? `+${b.odds}` : String(b.odds), sub: betSub(b), w: betWatch(b, read, propNowOf(b, game)) })),
+        rows: bets.map((b) => this.betRow(b, game, read)),
       };
     }
     return this.rowsFor.rows;
+  }
+
+  private betRow(b: PlayBet, game: GameView, read: ReturnType<typeof gameReadOf>): BetRowView {
+    const player = b.market === 'prop' ? betPlayer(b) : null;
+    const prop = b.market === 'prop' && !!b.player;
+    const text = prop && b.pick.startsWith(b.player!) ? b.pick.slice(b.player!.length).trimStart() : b.pick;
+    const side = b.side === 'home' ? game.home : b.side === 'away' ? game.away : null;
+    // (his face: the box score's, else ESPN's by his id)
+    const row = prop && b.athlete ? game.box.flatMap((t) => t.groups.flatMap((g) => g.rows)).find((r) => r.id === String(b.athlete)) : undefined;
+    return {
+      bet: b,
+      player,
+      parts: splitPick(text, prop || b.market === 'total'),
+      color: betPickColor(b, game),
+      face: prop ? (row?.headshot ?? (b.athlete ? headshot(b.sport, b.athlete) : null)) : null,
+      logo: !prop && b.market !== 'total' && side ? this.teamLogo(side, game) : null,
+      sub: betSub(b),
+      w: withHurt(betWatch(b, read, propNowOf(b, game)), hurtOf(b, game)),
+    };
   }
 
   // (the share of the game played, for the pace captions: hidden before a tenth of it)
@@ -603,15 +628,10 @@ export class GameViewComponent implements AfterViewChecked, OnDestroy {
     return this.importantFor.rows;
   }
 
-  // (the players the user has a prop on: a gold wash on their box score row, YOUR BET by their name among the
-  // leaders)
+  // (the players the user has a prop on: a gold wash on their box score row; Game Leaders marks none, Your Bets
+  // beside it says so (the owner, 2026-10-18))
   propPlayers(game: GameView): Set<string> {
     return new Set(this.gameBets(game).filter((b) => b.market === 'prop' && b.athlete).map((b) => String(b.athlete)));
-  }
-
-  leaderBet(game: GameView, name: string): boolean {
-    const key = nameKey(name);
-    return this.gameBets(game).some((b) => b.market === 'prop' && b.player && nameKey(b.player) === key);
   }
 
   // The LED board's label while the game's on: its period and clock ("3RD QTR · 4:12") in green with the live

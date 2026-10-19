@@ -1,0 +1,394 @@
+{
+ "note": "ESPN summary for DAL @ GB, 2026-10-18 (event 401873007), read at 2:00 of the 2nd quarter, trimmed to the plays (text, wallclock) and the injuries list: KaVontae Turpin hurt on the opening kickoff, ruled questionable at 00:52Z",
+ "date": "2026-10-19T00:20Z",
+ "plays": [
+  {
+   "text": "T.Smack kicks 56 yards from GB 35 to DAL 9. K.Turpin to DAL 34 for 25 yards (T.Hopper). DAL-K.Turpin was injured during the play.",
+   "wallclock": "2026-10-19T00:22:29Z"
+  },
+  {
+   "text": "J.Williams right tackle to DAL 42 for 8 yards (K.Brooks; L.Van Ness).",
+   "wallclock": "2026-10-19T00:23:11Z"
+  },
+  {
+   "text": "J.Williams right tackle to DAL 40 for -2 yards (K.Brooks, B.Sorrell).",
+   "wallclock": "2026-10-19T00:23:42Z"
+  },
+  {
+   "text": "(Shotgun) D.Prescott pass short right to R.Flournoy to DAL 47 for 7 yards (K.Nixon) [X.McKinney].",
+   "wallclock": "2026-10-19T00:24:21Z"
+  },
+  {
+   "text": "D.Prescott pass short right to H.Luepke to DAL 49 for 2 yards (K.Nixon).",
+   "wallclock": "2026-10-19T00:24:53Z"
+  },
+  {
+   "text": "(Shotgun) J.Williams left guard to GB 47 for 4 yards (B.Sorrell).",
+   "wallclock": "2026-10-19T00:25:29Z"
+  },
+  {
+   "text": "(Shotgun) D.Prescott pass short right to J.Williams to GB 47 for no gain (E.Williams; B.Cox).",
+   "wallclock": "2026-10-19T00:26:05Z"
+  },
+  {
+   "text": "B.Anger punts 37 yards to GB 10, Center-T.Sieg, fair catch by C.Owen.",
+   "wallclock": "2026-10-19T00:26:46Z"
+  },
+  {
+   "text": "Official Timeout at 11:13.",
+   "wallclock": "2026-10-19T00:27:13Z"
+  },
+  {
+   "text": "M.Lloyd up the middle to GB 8 for -2 yards (J.Porter).",
+   "wallclock": "2026-10-19T00:29:46Z"
+  },
+  {
+   "text": "(No Huddle, Shotgun) J.Love pass short middle to S.Williams to GB 15 for 7 yards (M.Bell; C.Downs) [R.Gary].",
+   "wallclock": "2026-10-19T00:30:05Z"
+  },
+  {
+   "text": "(Shotgun) J.Love pass short middle to S.Williams to GB 30 for 15 yards (C.Downs).",
+   "wallclock": "2026-10-19T00:30:40Z"
+  },
+  {
+   "text": "M.Lloyd left end to GB 27 for -3 yards (D.Bland).",
+   "wallclock": "2026-10-19T00:31:16Z"
+  },
+  {
+   "text": "(Shotgun) J.Love pass incomplete short left to M.Lloyd.",
+   "wallclock": "2026-10-19T00:31:56Z"
+  },
+  {
+   "text": "(Shotgun) J.Love pass deep middle to C.Watson to DAL 46 for 27 yards.",
+   "wallclock": "2026-10-19T00:32:42Z"
+  },
+  {
+   "text": "(Shotgun) P.Strong left guard to DAL 46 for no gain (J.Barham).",
+   "wallclock": "2026-10-19T00:33:32Z"
+  },
+  {
+   "text": "(No Huddle, Shotgun) J.Love pass deep left to M.Golden pushed ob at DAL 9 for 37 yards (S.Revel).PENALTY on GB-M.Golden, Taunting, 15 yards, enforced at DAL 9.",
+   "wallclock": "2026-10-19T00:33:54Z"
+  },
+  {
+   "text": "(Shotgun) J.Love pass incomplete deep left to S.Williams.PENALTY on GB-T.Glover, Ineligible Downfield Pass, 5 yards, enforced at DAL 24 - No Play.",
+   "wallclock": "2026-10-19T00:35:17Z"
+  },
+  {
+   "text": "(Shotgun) PENALTY on DAL-K.Clark, Neutral Zone Infraction, 5 yards, enforced at DAL 29 - No Play.",
+   "wallclock": "2026-10-19T00:36:35Z"
+  },
+  {
+   "text": "(Shotgun) J.Love pass incomplete deep middle to C.Watson.",
+   "wallclock": "2026-10-19T00:37:30Z"
+  },
+  {
+   "text": "(Shotgun) J.Love sacked at DAL 27 for -3 yards (Q.Williams).",
+   "wallclock": "2026-10-19T00:38:11Z"
+  },
+  {
+   "text": "(Shotgun) J.Love pass short right to P.Strong to DAL 13 for 14 yards (M.Hooker).",
+   "wallclock": "2026-10-19T00:38:53Z"
+  },
+  {
+   "text": "(No Huddle) P.Strong left tackle to DAL 12 for 1 yard (C.Downs).",
+   "wallclock": "2026-10-19T00:39:19Z"
+  },
+  {
+   "text": "M.Lloyd left end pushed ob at DAL 9 for 3 yards (A.Speed).",
+   "wallclock": "2026-10-19T00:40:05Z"
+  },
+  {
+   "text": "(Shotgun) J.Love pass short middle to M.Golden for 9 yards, TOUCHDOWN. T.Smack extra point is GOOD, Center-M.Orzech, Holder-D.Whelan.",
+   "wallclock": "2026-10-19T00:40:51Z"
+  },
+  {
+   "text": "Official Timeout at 04:43.",
+   "wallclock": "2026-10-19T00:42:57Z"
+  },
+  {
+   "text": "T.Smack kicks 55 yards from GB 35 to DAL 10. T.Goodson to DAL 32 for 22 yards (I.McDuffie).",
+   "wallclock": "2026-10-19T00:44:58Z"
+  },
+  {
+   "text": "(Shotgun) PENALTY on DAL-T.Guyton, False Start, 5 yards, enforced at DAL 32 - No Play.",
+   "wallclock": "2026-10-19T00:45:41Z"
+  },
+  {
+   "text": "(Shotgun) D.Prescott pass short left to J.Williams pushed ob at DAL 43 for 16 yards (X.McKinney).PENALTY on DAL-T.Booker, Ineligible Downfield Pass, 5 yards, enforced at DAL 27 - No Play.",
+   "wallclock": "2026-10-19T00:46:13Z"
+  },
+  {
+   "text": "(Shotgun) D.Prescott pass short right to C.Lamb to DAL 28 for 6 yards (K.Nixon).",
+   "wallclock": "2026-10-19T00:47:14Z"
+  },
+  {
+   "text": "(Shotgun) D.Prescott pass short left to R.Flournoy to DAL 30 for 2 yards (B.Cisse).",
+   "wallclock": "2026-10-19T00:47:50Z"
+  },
+  {
+   "text": "(Shotgun) D.Prescott pass incomplete short left to C.Lamb.",
+   "wallclock": "2026-10-19T00:48:33Z"
+  },
+  {
+   "text": "B.Anger punts 45 yards to GB 25, Center-T.Sieg. C.Owen pushed ob at GB 41 for 16 yards (S.James).",
+   "wallclock": "2026-10-19T00:49:19Z"
+  },
+  {
+   "text": "Official Timeout at 02:36.",
+   "wallclock": "2026-10-19T00:50:07Z"
+  },
+  {
+   "text": "J.Love sacked at GB 39 for -2 yards (E.Garcia).",
+   "wallclock": "2026-10-19T00:52:27Z"
+  },
+  {
+   "text": "(Shotgun) J.Love pass short left intended for M.Golden INTERCEPTED by D.Winters at GB 42. D.Winters for 42 yards, TOUCHDOWN.The Replay Official reviewed the runner was not down by contact ruling, and the play was REVERSED.(Shotgun) J.Love pass short left intended for M.Golden INTERCEPTED by D.Winters at GB 42. D.Winters to GB 42 for no gain (M.Golden). GB-M.Lloyd was injured during the play.",
+   "wallclock": "2026-10-19T00:53:10Z"
+  },
+  {
+   "text": "D.Prescott pass short middle to T.Goodson to GB 33 for 9 yards (J.Bullard).",
+   "wallclock": "2026-10-19T00:57:53Z"
+  },
+  {
+   "text": "T.Goodson up the middle to GB 35 for -2 yards (B.Sorrell).",
+   "wallclock": "2026-10-19T00:58:26Z"
+  },
+  {
+   "text": "(Shotgun) D.Prescott pass short left to C.Lamb to GB 19 for 16 yards (J.Bullard).",
+   "wallclock": "2026-10-19T00:59:00Z"
+  },
+  {
+   "text": "END QUARTER 1",
+   "wallclock": "2026-10-19T00:59:00Z"
+  },
+  {
+   "text": "B.Jones reported in as eligible.  T.Goodson left tackle to GB 17 for 2 yards (B.Cisse).",
+   "wallclock": "2026-10-19T01:02:47Z"
+  },
+  {
+   "text": "(Shotgun) D.Prescott pass incomplete deep left to C.Lamb (B.Cisse) [Z.Franklin].",
+   "wallclock": "2026-10-19T01:03:19Z"
+  },
+  {
+   "text": "(Shotgun) D.Prescott pass short middle intended for C.Lamb INTERCEPTED by E.Williams at GB 3. E.Williams to GB 20 for 17 yards (J.Ferguson).",
+   "wallclock": "2026-10-19T01:04:06Z"
+  },
+  {
+   "text": "Official Timeout at 14:15.",
+   "wallclock": "2026-10-19T01:05:11Z"
+  },
+  {
+   "text": "(Shotgun) P.Strong right guard to GB 22 for 2 yards (J.Barham).",
+   "wallclock": "2026-10-19T01:07:13Z"
+  },
+  {
+   "text": "(Shotgun) J.Love pass incomplete short right to C.Watson (J.Porter).",
+   "wallclock": "2026-10-19T01:07:48Z"
+  },
+  {
+   "text": "(Shotgun) J.Love pass short left to P.Strong to GB 32 for 10 yards (D.Bland). DAL-D.Winters was injured during the play.",
+   "wallclock": "2026-10-19T01:08:27Z"
+  },
+  {
+   "text": "Official Timeout at 13:14.",
+   "wallclock": "2026-10-19T01:10:52Z"
+  },
+  {
+   "text": "J.Love scrambles left tackle to GB 40 for 8 yards (S.James).PENALTY on GB-A.Belton, Offensive Holding, 10 yards, enforced at GB 32 - No Play.",
+   "wallclock": "2026-10-19T01:11:53Z"
+  },
+  {
+   "text": "(Shotgun) J.Love pass short left to S.Williams to GB 29 for 7 yards (S.James; O.Ogbonnia). ** Injury Update: GB-M.Lloyd has returned to the game.",
+   "wallclock": "2026-10-19T01:12:50Z"
+  },
+  {
+   "text": "(Shotgun) J.Love pass deep middle to C.Watson pushed ob at DAL 43 for 28 yards (C.Downs; A.Speed) [J.Barham].",
+   "wallclock": "2026-10-19T01:13:40Z"
+  },
+  {
+   "text": "(Shotgun) J.Love pass incomplete deep left to M.Golden.",
+   "wallclock": "2026-10-19T01:14:26Z"
+  },
+  {
+   "text": "(Shotgun) S.Williams right end pushed ob at DAL 38 for 5 yards (C.Downs; D.Bland).",
+   "wallclock": "2026-10-19T01:15:11Z"
+  },
+  {
+   "text": "(Shotgun) J.Love right end to DAL 25 for 13 yards (J.Porter).PENALTY on DAL-J.Porter, Illegal Use of Hands, 5 yards, enforced at DAL 25.",
+   "wallclock": "2026-10-19T01:15:53Z"
+  },
+  {
+   "text": "(Shotgun) J.Love pass short middle to M.Golden to DAL 16 for 4 yards (M.Bell).",
+   "wallclock": "2026-10-19T01:16:59Z"
+  },
+  {
+   "text": "S.Williams left end to DAL 12 for 4 yards (J.Porter).",
+   "wallclock": "2026-10-19T01:17:34Z"
+  },
+  {
+   "text": "(Shotgun) P.Strong left end to DAL 6 for 6 yards (M.Bell).",
+   "wallclock": "2026-10-19T01:18:12Z"
+  },
+  {
+   "text": "P.Strong right tackle to DAL 1 for 5 yards (Q.Williams; M.Hooker).",
+   "wallclock": "2026-10-19T01:18:55Z"
+  },
+  {
+   "text": "P.Strong up the middle to DAL 2 for -1 yards (Q.Williams).",
+   "wallclock": "2026-10-19T01:19:36Z"
+  },
+  {
+   "text": "(Shotgun) J.Love pass short left to T.Kraft to DAL 2 for no gain (M.Hooker).",
+   "wallclock": "2026-10-19T01:20:19Z"
+  },
+  {
+   "text": "Timeout #1 by DAL at 06:01.",
+   "wallclock": "2026-10-19T01:21:09Z"
+  },
+  {
+   "text": "(Shotgun) PENALTY on GB, Delay of Game, 5 yards, enforced at DAL 2 - No Play.",
+   "wallclock": "2026-10-19T01:22:26Z"
+  },
+  {
+   "text": "T.Smack 25 yard field goal is GOOD, Center-M.Orzech, Holder-D.Whelan.",
+   "wallclock": "2026-10-19T01:22:57Z"
+  },
+  {
+   "text": "Official Timeout at 05:58.",
+   "wallclock": "2026-10-19T01:23:17Z"
+  },
+  {
+   "text": "T.Smack kicks 58 yards from GB 35 to DAL 7. T.Goodson to DAL 28 for 21 yards (K.Welch).",
+   "wallclock": "2026-10-19T01:26:14Z"
+  },
+  {
+   "text": "(Shotgun) D.Prescott pass short right to J.Williams ran ob at DAL 37 for 9 yards (Z.Franklin).  The ball spot was assisted by replay.",
+   "wallclock": "2026-10-19T01:26:56Z"
+  },
+  {
+   "text": "D.Prescott pass short middle to B.Spann-Ford to 50 for 13 yards (X.McKinney).",
+   "wallclock": "2026-10-19T01:28:40Z"
+  },
+  {
+   "text": "(No Huddle) J.Williams left tackle to GB 45 for 5 yards (E.Williams).",
+   "wallclock": "2026-10-19T01:29:21Z"
+  },
+  {
+   "text": "J.Williams left tackle to GB 41 for 4 yards (I.McDuffie).",
+   "wallclock": "2026-10-19T01:29:57Z"
+  },
+  {
+   "text": "B.Jones reported in as eligible.  J.Williams up the middle to GB 39 for 2 yards (K.Brooks).",
+   "wallclock": "2026-10-19T01:30:34Z"
+  },
+  {
+   "text": "(Shotgun) D.Prescott pass deep left to G.Pickens to GB 23 for 16 yards (E.Williams).",
+   "wallclock": "2026-10-19T01:31:10Z"
+  },
+  {
+   "text": "T.Goodson right end to GB 14 for 9 yards (I.McDuffie; X.McKinney).PENALTY on DAL-R.Flournoy, Offensive Holding, 10 yards, enforced at GB 23 - No Play.",
+   "wallclock": "2026-10-19T01:31:50Z"
+  },
+  {
+   "text": "Two-Minute Warning",
+   "wallclock": "2026-10-19T01:32:46Z"
+  },
+  {
+   "text": " (Shotgun) PENALTY on GB-L.Van Ness, Neutral Zone Infraction, 5 yards, enforced at GB 33 - No Play.",
+   "wallclock": "2026-10-19T01:35:36Z"
+  }
+ ],
+ "injuries": [
+  {
+   "team": "GB",
+   "injuries": [
+    {
+     "status": "Out",
+     "date": "2026-10-18T23:11Z",
+     "athlete": {
+      "id": "4242390",
+      "displayName": "Aaron Banks"
+     }
+    },
+    {
+     "status": "Out",
+     "date": "2026-10-18T22:52Z",
+     "athlete": {
+      "id": "4258206",
+      "displayName": "Benjamin St-Juste"
+     }
+    },
+    {
+     "status": "Out",
+     "date": "2026-10-18T22:52Z",
+     "athlete": {
+      "id": "4360887",
+      "displayName": "Donovan Jennings"
+     }
+    },
+    {
+     "status": "Out",
+     "date": "2026-10-18T22:52Z",
+     "athlete": {
+      "id": "4569661",
+      "displayName": "Jager Burton"
+     }
+    },
+    {
+     "status": "Injured Reserve",
+     "date": "2026-10-18T02:56Z",
+     "athlete": {
+      "id": "4259762",
+      "displayName": "Jonathan Ford"
+     }
+    }
+   ]
+  },
+  {
+   "team": "DAL",
+   "injuries": [
+    {
+     "status": "Questionable",
+     "date": "2026-10-19T01:19Z",
+     "athlete": {
+      "id": "4428914",
+      "displayName": "Dee Winters"
+     }
+    },
+    {
+     "status": "Questionable",
+     "date": "2026-10-19T00:52Z",
+     "athlete": {
+      "id": "3676833",
+      "displayName": "KaVontae Turpin"
+     }
+    },
+    {
+     "status": "Out",
+     "date": "2026-10-18T23:06Z",
+     "athlete": {
+      "id": "4362478",
+      "displayName": "Emari Demercado"
+     }
+    },
+    {
+     "status": "Out",
+     "date": "2026-10-18T22:55Z",
+     "athlete": {
+      "id": "4685554",
+      "displayName": "Drew Shelton"
+     }
+    },
+    {
+     "status": "Out",
+     "date": "2026-10-18T22:55Z",
+     "athlete": {
+      "id": "4362088",
+      "displayName": "DeMarvion Overshown"
+     }
+    }
+   ]
+  }
+ ]
+}

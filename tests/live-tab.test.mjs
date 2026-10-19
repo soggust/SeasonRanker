@@ -8,7 +8,7 @@ import path from 'node:path';
 import { loadEngine } from './support/engine.mjs';
 
 const live = await loadEngine('nfl', { entry: path.join(import.meta.dirname, 'support', 'live-entry.ts'), data: {} });
-const { readDetail, gameShare, boardShare, clockWords, boardLabel, todayGames, cardState, sparkPath, botRead, shortTeam, betWatch, sweatOf, onTrackWords, shortPick, betSub, periodNumber, clockSeconds } = live;
+const { readDetail, gameShare, boardShare, clockWords, boardLabel, todayGames, cardState, sparkPath, botRead, shortTeam, betWatch, sweatOf, onTrackWords, shortPick, shortPickParts, betSub, withHurt, inGameInjury, nameForms, periodNumber, clockSeconds } = live;
 
 // (Saturday Oct 17, 2026, 7pm Eastern)
 const NOW = Date.parse('2026-10-17T23:00:00Z');
@@ -112,15 +112,16 @@ test('a bet watched: a total under on pace, an over needing more, pending before
   const w = betWatch(bet(), game(), null, NOW);
   assert.equal(w.status, 'WINNING');
   assert.equal(w.tone, 'good');
-  assert.equal(w.left, '142 pts · 79.5 to spare');
+  // (the count alone: what's to spare is the meter's to show)
+  assert.equal(w.left, '142 pts');
   assert.equal(w.right, 'On pace for 214');
   assert.equal(w.value, 142);
   assert.ok(w.fill > 0 && w.fill < w.tick && w.proj !== null && w.proj < w.tick);
-  // (the over: needs 79.5 more, on a pace short of the line)
+  // (the over: on a pace short of the line; its caption the count alone, as the under's)
   const over = betWatch(bet({ side: 'over', pick: 'Over 221.5' }), game(), null, NOW);
   assert.equal(over.status, 'BEHIND');
   assert.equal(over.tone, 'close');
-  assert.equal(over.left, '142 pts · needs 80 more');
+  assert.equal(over.left, '142 pts');
   assert.equal(over.right, 'On pace for 214');
   // (a pace well short: red)
   assert.equal(betWatch(bet({ side: 'over' }), game({ as: 50, hs: 50, share: 0.6 }), null, NOW).tone, 'bad');
@@ -149,7 +150,7 @@ test('a prop watched: on pace, needing more, the count from the box score; no co
   const w = betWatch(prop, game(), 20, NOW);
   assert.equal(w.status, 'WINNING');
   assert.equal(w.tone, 'good');
-  assert.equal(w.left, '20 pts · needs 5 more');
+  assert.equal(w.left, '20 pts');
   assert.equal(w.right, 'On pace for 30');
   assert.ok(w.proj > w.tick);
   const short = betWatch(prop, game(), 12, NOW);
@@ -159,14 +160,16 @@ test('a prop watched: on pace, needing more, the count from the box score; no co
   const close = betWatch(prop, game({ share: 0.5 }), 12, NOW);
   assert.equal(close.status, 'BEHIND');
   assert.equal(close.tone, 'close');
-  assert.equal(betWatch(prop, game(), null, NOW).left, '0 pts · needs 25 more');
+  assert.equal(betWatch(prop, game(), null, NOW).left, '0 pts');
   // (past the line: won)
   assert.equal(betWatch(prop, game(), 25, NOW).status, 'WON');
   // (an under, past its line: lost; under the line on pace: winning)
   assert.equal(betWatch({ ...prop, side: 'under' }, game(), 25, NOW).status, 'LOST');
   const under = betWatch({ ...prop, side: 'under' }, game(), 12, NOW);
   assert.equal(under.status, 'WINNING');
-  assert.equal(under.left, '12 pts · 12.5 to spare');
+  assert.equal(under.left, '12 pts');
+  // (neither side says what's needed or to spare)
+  for (const x of [w, short, close, under]) assert.doesNotMatch(x.left, /spare|needs/);
   assert.equal(under.right, 'On pace for 18');
   // (an under past its pace: behind, the pace named once)
   const hot = betWatch({ ...prop, side: 'under' }, game({ share: 0.5 }), 20, NOW);
@@ -175,8 +178,65 @@ test('a prop watched: on pace, needing more, the count from the box score; no co
   assert.equal(shortPick(prop), 'J. Brown o24.5 pts');
   assert.equal(shortPick(bet()), 'Under 221.5');
   assert.equal(shortPick(bet({ market: 'spread', pick: 'CLE -4.5' })), 'CLE −4.5');
-  assert.equal(betSub(prop), '1.0u to win 0.87u');
-  assert.equal(betSub(bet()), '1.0u to win 0.93u');
+  assert.equal(betSub(prop), '1.0u at -115 to win 0.87u');
+  assert.equal(betSub(bet()), '1.0u at -108 to win 0.93u');
+  assert.equal(betSub(bet({ odds: 112 })), '1.0u at +112 to win 1.12u');
+  // (the pick's one word: a prop's over or under with its line, a total's first word, a side's line)
+  assert.deepEqual(shortPickParts(prop), ['J. Brown ', 'o24.5', ' pts']);
+  assert.deepEqual(shortPickParts(bet()), ['', 'Under', ' 221.5']);
+  assert.deepEqual(shortPickParts(bet({ market: 'spread', pick: 'CLE -4.5' })), ['CLE ', '−4.5', '']);
+});
+
+// (a play as the injury reader takes it)
+const play = (text, at = null, athletes = []) => ({ text, at, athletes });
+const TURPIN = { id: '3676833', name: 'KaVontae Turpin' };
+
+test('a bet’s player hurt in the game: the plays’ words and the in-game rulings, back when he plays again', () => {
+  assert.ok(nameForms('KaVontae Turpin').test('DAL-K.Turpin was injured'));
+  assert.ok(nameForms('Luther Burden III').test('to L.Burden for 9 yards'));
+  assert.ok(!nameForms('KaVontae Turpin').test('J.Turpin was injured'));
+  const kick = play('T.Smack kicks 56 yards from GB 35 to DAL 9. K.Turpin to DAL 34 for 25 yards (T.Hopper). DAL-K.Turpin was injured during the play.', '2026-10-19T00:22:29Z');
+  const other = play('(Shotgun) D.Prescott pass short right to C.Lamb to DAL 40 for 6 yards (X.McKinney).', '2026-10-19T00:30:00Z');
+  // (hurt, no ruling yet: INJURED)
+  assert.equal(inGameInjury(TURPIN, [kick, other], [], '2026-10-19T00:20Z'), 'INJURED');
+  // (the words name another player hurt on a play he was in: not him)
+  assert.equal(inGameInjury(TURPIN, [play('K.Turpin to DAL 30 for 12 yards (T.Hopper). GB-T.Hopper was injured during the play.')], [], null), null);
+  // (questionable to return, ruled out, in the words)
+  assert.equal(inGameInjury(TURPIN, [kick, play('** Injury Update: DAL-K.Turpin is questionable to return with a rib injury.')], [], null), 'QUESTIONABLE');
+  assert.equal(inGameInjury(TURPIN, [kick, play('** Injury Update: DAL-K.Turpin has been ruled out.')], [], null), 'OUT');
+  assert.equal(inGameInjury({ id: '1', name: 'Jaylen Brown' }, [play('Jaylen Brown is being evaluated for a concussion.')], [], null), 'INJURED');
+  // (a ruling posted after the kickoff, once the plays reach it; one posted before it is the week's report)
+  const ruled = [{ athlete: '3676833', name: 'KaVontae Turpin', status: 'Questionable', date: '2026-10-19T00:52Z' }];
+  assert.equal(inGameInjury(TURPIN, [kick, other], ruled, '2026-10-19T00:20Z'), 'QUESTIONABLE');
+  assert.equal(inGameInjury(TURPIN, [kick, other], [{ ...ruled[0], status: 'Out' }], '2026-10-19T00:20Z'), 'OUT');
+  assert.equal(inGameInjury(TURPIN, [other], [{ ...ruled[0], status: 'Out', date: '2026-10-18T22:00Z' }], '2026-10-19T00:20Z'), null);
+  // (back: the words say so, or a later play names him, or carries him among its participants)
+  assert.equal(inGameInjury(TURPIN, [kick, play('** Injury Update: DAL-K.Turpin has returned to the game.')], [], null), null);
+  assert.equal(inGameInjury(TURPIN, [kick, play('D.Prescott pass short left to K.Turpin to DAL 45 for 8 yards.')], [], null), null);
+  assert.equal(inGameInjury(TURPIN, [kick, play('A catch.', null, ['3676833'])], [], null), null);
+  assert.equal(inGameInjury(TURPIN, [kick, other, play('D.Prescott pass short left to K.Turpin for 8 yards.', '2026-10-19T01:00:00Z')], ruled, '2026-10-19T00:20Z'), null);
+  // (the watch: the tag in WINNING's or BEHIND's place, the meter as it was; a final keeps its grade)
+  const prop = bet({ market: 'prop', side: 'over', line: 2.5, pick: 'KaVontae Turpin Over 2.5 Receptions', propType: 'rec', athlete: '3676833', player: 'KaVontae Turpin', statLabel: 'rec' });
+  const live = betWatch(prop, game(), 1, NOW);
+  const hurt = withHurt(live, 'QUESTIONABLE');
+  assert.deepEqual([hurt.status, hurt.hurt, hurt.fill, hurt.right], ['QUESTIONABLE', 'QUESTIONABLE', live.fill, live.right]);
+  assert.equal(withHurt(live, null), live);
+  assert.equal(withHurt(betWatch(prop, game(), 3, NOW), 'OUT').status, 'WON');
+});
+
+test('a bet’s player hurt, read off the real DAL @ GB summary: Turpin questionable, Lloyd back, Winters questionable', () => {
+  const s = JSON.parse(fs.readFileSync(path.join(import.meta.dirname, 'support', 'espn-nfl-dal-gb-injury.json'), 'utf8'));
+  const plays = s.plays.map((p) => play(p.text, p.wallclock));
+  const kickoff = Date.parse(s.date);
+  const rulings = s.injuries.flatMap((t) => t.injuries.filter((i) => Date.parse(i.date) >= kickoff).map((i) => ({ athlete: i.athlete.id, name: i.athlete.displayName, status: i.status, date: i.date })));
+  assert.equal(inGameInjury(TURPIN, plays, rulings, s.date), 'QUESTIONABLE');
+  // (before his ruling was posted: hurt, no ruling yet)
+  const early = (at) => Date.parse(at) < Date.parse('2026-10-19T00:52Z');
+  assert.equal(inGameInjury(TURPIN, plays.filter((p) => early(p.at)), rulings.filter((r) => early(r.date)), s.date), 'INJURED');
+  // (Lloyd hurt on the interception, back three plays on: nothing)
+  assert.equal(inGameInjury({ id: null, name: 'MarShawn Lloyd' }, plays, rulings, s.date), null);
+  assert.equal(inGameInjury({ id: '4428914', name: 'Dee Winters' }, plays, rulings, s.date), 'QUESTIONABLE');
+  assert.equal(inGameInjury({ id: null, name: 'Dak Prescott' }, plays, rulings, s.date), null);
 });
 
 test('a side watched: covering, down, level; the sweat summary and the panel’s header', () => {

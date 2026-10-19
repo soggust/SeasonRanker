@@ -10,10 +10,10 @@ import { teamLook } from '../team-look';
 import { walkPlays } from './bet-impact';
 import type { GameInfo } from './book-rows';
 import { ESPN_LEAGUES } from './desk-math';
-import { BetWatch, betWatch, shortPick, sweatOf } from './live-bets';
+import { BetWatch, betWatch, shortPick, shortPickParts, sweatOf, withHurt } from './live-bets';
 import { boardShare, botRead, cardState, clockWords, livePool, shortTeam, sparkPath, startWords } from './live-games';
 import { LiveBout, fightWatch, fightWords } from './live-mma';
-import { impactBetOf, impactPlaysOf, propNowOf } from './live-view';
+import { betPickColor, hurtOf, impactBetOf, impactPlaysOf, propNowOf } from './live-view';
 import { LiveGame, LiveService } from './live.service';
 import type { Confidence } from './tiers';
 
@@ -41,6 +41,10 @@ interface LiveTeam {
 interface LiveBetRow {
   key: string;
   short: string;
+  // (the short pick split round its one word, that word in its team's color (pick-style.ts, as the Book's); a
+  // fight's row the words alone)
+  parts?: [string, string, string];
+  color?: string | null;
   w: BetWatch;
 }
 
@@ -163,7 +167,14 @@ export class LiveTabComponent implements OnInit, OnDestroy {
       const st = summary ? (side === 'away' ? summary.away : summary.home) : null;
       return { abbr: t.abbr, name: shortTeam(t.name), logo: own ?? t.logo, espnLogo: t.logo, chip: look.chip, whiteLogo: look.whiteLogo, score, unlit: '8'.repeat(score.length), lead: live && (side === 'away' ? lead > 0 : lead < 0), record: st?.record ?? null };
     };
-    const rows: LiveBetRow[] = bets.map((b) => ({ key: b.id, short: shortPick(b), w: betWatch(b, read, summary ? propNowOf(b, summary) : null) }));
+    const rows: LiveBetRow[] = bets.map((b) => ({
+      key: b.id,
+      short: shortPick(b),
+      parts: shortPickParts(b),
+      color: betPickColor(b, summary, { away: g.away.abbr, home: g.home.abbr }),
+      // (his injury tag over the status, where he's hurt: the summary's plays and rulings, as the game view reads them)
+      w: withHurt(betWatch(b, read, summary ? propNowOf(b, summary) : null), summary ? hurtOf(b, summary) : null),
+    }));
     // (the last play, tinted when it moved one of the user's bets: bet-impact over the summary's plays)
     let last: LiveCard['last'] = null;
     let spark: string | null = null;

@@ -9,6 +9,8 @@ import { SummaryBox, athleteTeam, liveStat } from './live-props';
 import type { ImpactBet, ImpactPlay } from './bet-impact';
 import { clockSeconds, gameShare, readDetail } from './live-games';
 import type { GameRead } from './live-bets';
+import { HurtStatus, inGameInjury } from './in-game-injury';
+import { pickTeamColor } from './pick-style';
 
 // (a league's sport: "basketball/nba" → "nba")
 export const sportOf = (league: string): string => league.split('/').pop() ?? league;
@@ -106,6 +108,28 @@ export function gameReadOf(game: GameView): GameRead {
   const sport = sportOf(game.league);
   const share = game.state === 'in' ? (sport === 'mlb' ? ((r) => (r ? gameShare('mlb', 'in', r.period, null, r.half) : null))(readDetail('mlb', game.status)) : gameShare(sport, 'in', game.period, clockSeconds(game.clock))) : gameShare(sport, game.state, null, null);
   return { as: Number(game.away.score) || 0, hs: Number(game.home.score) || 0, state: game.state, final: game.state === 'post', share, away: game.away.abbr, home: game.home.abbr };
+}
+
+// A prop's player hurt in the game while it's on (in-game-injury.ts: the plays' words and the in-game rulings);
+// null for anything else, before the start and after the final (the grade says it then)
+export function hurtOf(bet: Pick<PlayBet, 'market' | 'player' | 'athlete'>, game: GameView): HurtStatus | null {
+  if (bet.market !== 'prop' || !bet.player || game.state !== 'in') return null;
+  const plays = impactPlaysOf(game).map((p) => ({ text: p.text, athletes: p.athletes, at: p.ref.at }));
+  return inGameInjury({ id: bet.athlete ? String(bet.athlete) : null, name: bet.player }, plays, game.rulings ?? [], game.date || null);
+}
+
+// A pick's word's color (pick-style.ts, as the Book's): a prop its player's team's (his side in the box score, else
+// none), a side the team it took's; a total none. Without the game (the Live tab before its summary loads), a prop
+// none and a side by the board's letters
+export function betPickColor(bet: Pick<PlayBet, 'sport' | 'market' | 'side' | 'athlete'>, game: GameView | null | undefined, abbrs?: { away: string; home: string }): string | null {
+  if (bet.market === 'total') return null;
+  if (bet.market === 'prop') {
+    const side = game ? playerSide(bet.athlete, game) : null;
+    const team = side && game ? game[side] : null;
+    return team ? pickTeamColor(bet.sport, { total: false, teamId: team.id }) : null;
+  }
+  const abbr = bet.side === 'home' ? (game?.home.abbr ?? abbrs?.home) : bet.side === 'away' ? (game?.away.abbr ?? abbrs?.away) : null;
+  return pickTeamColor(bet.sport, { total: false, abbr: abbr ?? null });
 }
 
 // The user's open bets on a game, straight bets and the open legs of parlays, by "sport|event"

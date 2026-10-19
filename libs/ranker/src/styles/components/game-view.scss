@@ -44,6 +44,14 @@ $row-rule: 1px solid rgba(255, 255, 255, 0.05);
   z-index: v.z(game);
 }
 
+// (the game view's panels, every tab's (Summary, Box Score, Plays, the charts, the clips): their bars, icons and lines
+// the board's gold, as the Book's and the Algorithm's are (card-panel.scss), to match their gold rims, whether the
+// view opens from the Book or from a sport's own pages; each sport's own panel box and lines stay. .tab-card and the
+// game card's class outweigh the .group-* category colors and the card's team accent)
+.game-card card-panel.tab-card {
+  --group-color: #{chip.$gold-led};
+}
+
 // ---- the hero: away on the left, home on the right, each half in its own team's hue (team-look.ts: lighter
 // at the outer edge, darkening into the deep version of the same hue), meeting at a crisp angled seam with a
 // thin light line; a soft diagonal sheen and a faint texture over both
@@ -262,8 +270,13 @@ $row-rule: 1px solid rgba(255, 255, 255, 0.05);
 
 // ---- the win probability: the home team's chance, up; each side's lead in its color
 
+// (room above and below it: the panels under it (Your Bets and Game Leaders) sat right against it)
 .game-wp {
-  margin-top: 12px;
+  margin: v.$space-16 0;
+}
+
+.game-wp + .game-summary-row {
+  margin-top: v.$space-16;
 }
 
 .win-prob-chart {
@@ -1945,6 +1958,56 @@ $row-rule: 1px solid rgba(255, 255, 255, 0.05);
   }
 }
 
+// (the circle beside the pick and its line, no taller than the two: a prop's player's face (a link to his card), a
+// side's team's logo, a total's arrow, as the Book's rows draw them; its rim the pick's team color)
+.your-bet-head {
+  align-items: center;
+  display: flex;
+  gap: v.$space-10;
+  min-width: 0;
+}
+
+.your-bet-circle {
+  align-items: center;
+  background: v.$panel-rule;
+  border: 2px solid rgba(255, 255, 255, 0.35);
+  border-radius: v.$radius-round;
+  box-sizing: border-box;
+  display: inline-flex;
+  flex: none;
+  height: 32px;
+  justify-content: center;
+  overflow: hidden;
+  width: 32px;
+
+  img {
+    height: 100%;
+    object-fit: cover;
+    object-position: 50% 15%;
+    width: 100%;
+  }
+
+  &.team img {
+    height: 20px;
+    object-fit: contain;
+    width: 20px;
+  }
+
+  &.total {
+    background: v.$panel-dark;
+    border-color: rgba(255, 255, 255, 0.25);
+
+    .mat-icon {
+      @include v.icon-size(16px);
+      color: v.$grey-light;
+    }
+  }
+
+  &.player-link:hover {
+    filter: brightness(1.2);
+  }
+}
+
 .your-bet-main {
   display: flex;
   flex-direction: column;
@@ -1958,11 +2021,9 @@ $row-rule: 1px solid rgba(255, 255, 255, 0.05);
   line-height: 1.2;
 }
 
-.your-bet-odds {
-  color: v.$text-faint;
-  margin-left: 4px;
-  font-size: v.$fs-12;
-  font-weight: 600;
+// (the pick's one word, in its team's color (set on it); a total's the board's light)
+.your-bet-key {
+  color: var(--scoreboard-led);
 }
 
 .your-bet-sub {
@@ -2039,6 +2100,20 @@ $row-rule: 1px solid rgba(255, 255, 255, 0.05);
   font-weight: 700;
 }
 
+// (a bet whose player was hurt in the game: the tag orange (INJURED, QUESTIONABLE, OUT), the meter and the pace
+// kept but toned down)
+.your-bet.hurt {
+  .your-bet-status {
+    --tone: #{v.$doubtful};
+  }
+
+  .your-bet-meter,
+  .your-bet-captions {
+    filter: saturate(0.4);
+    opacity: 0.5;
+  }
+}
+
 // A play that moved a bet, wherever it shows: its text over the tag (the bet in caps, a dot, what changed; green
 // with ▲ when it helped, red with ▼ when it hurt), the row faintly tinted the same
 .game-play-main {
@@ -2113,25 +2188,8 @@ $row-rule: 1px solid rgba(255, 255, 255, 0.05);
   text-align: right;
 }
 
-// (a player the user has a prop on: YOUR BET by his name among the leaders, his row washed gold; the same wash on
-// his box score row)
-.game-leader.bet-lit {
-  background: linear-gradient(90deg, rgba(chip.$gold-led, 0.12), transparent 80%);
-}
-
-.your-bet-tag {
-  background: chip.$gold-led;
-  border-radius: v.$radius-xs;
-  color: v.$chip-ink;
-  font-size: 9px;
-  font-weight: 900;
-  letter-spacing: 0.8px;
-  margin-left: 4px;
-  padding: 2px 5px;
-  text-transform: uppercase;
-  vertical-align: 2px;
-}
-
+// (a player the user has a prop on: his box score row washed gold; Game Leaders marks none, Your Bets beside it
+// says so)
 .game-box-table tr.bet-lit {
   background: linear-gradient(90deg, rgba(chip.$gold-led, 0.14), transparent 80%);
 }

@@ -57,7 +57,7 @@ const TEMPLATES = {
   'account/wallet/wallet-page.component.html': { picks: 2 },
   'account/wallet/bet-slip.component.html': { picks: 1 },
   'account/profile/user-profile.component.html': { picks: 1 },
-  'game-view/game-view.component.html': { picks: 1 },
+  'game-view/game-view.component.html': { faces: 1, names: 1 },
   'book/model-desk.component.html': { faces: 2, names: 2 },
   'book/book-page.component.html': { faces: 2, names: 2, picks: 1 },
 };
