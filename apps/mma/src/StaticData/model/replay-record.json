@@ -2,7 +2,7 @@
  "v": 1,
  "sport": "mma",
  "epoch": "2026-10-19T17:00:00Z",
- "at": "2026-10-20T01:19:11.650Z",
+ "at": "2026-10-20T01:50:20.263Z",
  "from": "2020-06-06T23:00:00.000Z",
  "through": "2026-10-18T02:45:00.000Z",
  "n": {
@@ -1620,6 +1620,38 @@
   "split": "games that start before the epoch replayed; the live ledger from the epoch on",
   "notSeen": "the live desk's CLV gates, CHECKs, research and news"
  },
- "commit": "a9a7292e",
- "note": "D52. The confidence layer: bands and stakes earned on the record, LIKE until a tier earns it"
+ "commit": "b587d968",
+ "note": "D52. The confidence layer: bands and stakes earned on the record, LIKE until a tier earns it",
+ "inputs": {
+  "v": 1,
+  "sport": "mma",
+  "code": {
+   "mma": "5a7a260d7565",
+   "games": "426c66896f46",
+   "pricing": "bac16608a54e",
+   "record": "e4821f446539",
+   "harness": "4091a60d2d14"
+  },
+  "rows": {
+   "replay": 7512,
+   "keys": 4592,
+   "bets": 1491
+  },
+  "units": 290.72,
+  "frozen": {
+   "props": {
+    "mode": "saved",
+    "n": 0,
+    "ids": 0,
+    "want": 0
+   },
+   "lines": {
+    "mode": "replay",
+    "n": 14,
+    "ids": 14,
+    "want": 14
+   }
+  },
+  "hash": "aa7897900d2f3f1b"
+ }
 }

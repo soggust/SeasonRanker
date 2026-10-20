@@ -2,7 +2,7 @@
  "v": 1,
  "sport": "nba",
  "epoch": "2026-10-19T17:15:00Z",
- "at": "2026-10-20T00:00:40.566Z",
+ "at": "2026-10-20T01:47:14.596Z",
  "from": "2020-07-30T22:30:00.000Z",
  "through": "2026-06-14T00:45:00.000Z",
  "n": {
@@ -17,9 +17,9 @@
   "won": 1601,
   "lost": 1994,
   "push": 2,
-  "staked": 2738.5,
-  "profit": -33.39,
-  "roi": -0.0122,
+  "staked": 2651.5,
+  "profit": -32.74,
+  "roi": -0.0123,
   "beat": 0.6293,
   "beatN": 321
  },
@@ -47,37 +47,37 @@
  },
  "byBand": {
   "lock": {
-   "bets": 50,
-   "won": 25,
-   "lost": 25,
+   "bets": 0,
+   "won": 0,
+   "lost": 0,
    "push": 0,
-   "staked": 121,
-   "profit": -11.09,
-   "roi": -0.0917,
+   "staked": 0,
+   "profit": 0,
+   "roi": null,
    "beat": null,
    "beatN": 0
   },
   "high": {
-   "bets": 543,
-   "won": 283,
-   "lost": 260,
+   "bets": 4,
+   "won": 3,
+   "lost": 1,
    "push": 0,
-   "staked": 757.5,
-   "profit": 18.24,
-   "roi": 0.0241,
-   "beat": 1,
-   "beatN": 1
+   "staked": 5.5,
+   "profit": 6.9,
+   "roi": 1.2545,
+   "beat": null,
+   "beatN": 0
   },
   "medium": {
-   "bets": 3004,
-   "won": 1293,
-   "lost": 1709,
+   "bets": 3593,
+   "won": 1598,
+   "lost": 1993,
    "push": 2,
-   "staked": 1860,
-   "profit": -40.54,
-   "roi": -0.0218,
-   "beat": 0.6281,
-   "beatN": 320
+   "staked": 2646,
+   "profit": -39.64,
+   "roi": -0.015,
+   "beat": 0.6293,
+   "beatN": 321
   }
  },
  "byMarket": {
@@ -86,9 +86,9 @@
    "won": 380,
    "lost": 784,
    "push": 2,
-   "staked": 601,
-   "profit": -5.57,
-   "roi": -0.0093,
+   "staked": 600.5,
+   "profit": -6.27,
+   "roi": -0.0104,
    "beat": 0.6293,
    "beatN": 321
   },
@@ -97,9 +97,9 @@
    "won": 1221,
    "lost": 1210,
    "push": 0,
-   "staked": 2137.5,
-   "profit": -27.82,
-   "roi": -0.013,
+   "staked": 2051,
+   "profit": -26.47,
+   "roi": -0.0129,
    "beat": null,
    "beatN": 0
   }
@@ -388,9 +388,9 @@
    "won": 1268,
    "lost": 1313,
    "push": 0,
-   "staked": 2217.5,
-   "profit": -32.59,
-   "roi": -0.0147,
+   "staked": 2130.5,
+   "profit": -31.94,
+   "roi": -0.015,
    "beat": 0.7321,
    "beatN": 56,
    "practice": {
@@ -409,9 +409,9 @@
     "won": 47,
     "lost": 103,
     "push": 0,
-    "staked": 80,
-    "profit": -4.77,
-    "roi": -0.0596,
+    "staked": 79.5,
+    "profit": -5.47,
+    "roi": -0.0688,
     "beat": 0.7321,
     "beatN": 56
    },
@@ -420,9 +420,9 @@
     "won": 1221,
     "lost": 1210,
     "push": 0,
-    "staked": 2137.5,
-    "profit": -27.82,
-    "roi": -0.013,
+    "staked": 2051,
+    "profit": -26.47,
+    "roi": -0.0129,
     "beat": null,
     "beatN": 0
    }
@@ -859,35 +859,35 @@
    },
    "byBand": {
     "lock": {
-     "bets": 1,
+     "bets": 0,
      "won": 0,
-     "lost": 1,
+     "lost": 0,
      "push": 0,
-     "staked": 2,
-     "profit": -2,
-     "roi": -1,
+     "staked": 0,
+     "profit": 0,
+     "roi": null,
      "beat": null,
      "beatN": 0
     },
     "high": {
-     "bets": 3,
+     "bets": 2,
      "won": 1,
-     "lost": 2,
+     "lost": 1,
      "push": 0,
-     "staked": 6,
-     "profit": -0.92,
-     "roi": -0.1533,
+     "staked": 3.5,
+     "profit": 1.58,
+     "roi": 0.4514,
      "beat": null,
      "beatN": 0
     },
     "medium": {
-     "bets": 397,
+     "bets": 399,
      "won": 166,
-     "lost": 231,
+     "lost": 233,
      "push": 0,
-     "staked": 241,
-     "profit": -9.95,
-     "roi": -0.0413,
+     "staked": 245.5,
+     "profit": -14.45,
+     "roi": -0.0589,
      "beat": 0.6111,
      "beatN": 54
     }
@@ -921,9 +921,9 @@
     "won": 1142,
     "lost": 1191,
     "push": 0,
-    "staked": 2055,
-    "profit": -34.13,
-    "roi": -0.0166,
+    "staked": 1968,
+    "profit": -33.48,
+    "roi": -0.017,
     "beat": 0.7273,
     "beatN": 44
    },
@@ -940,37 +940,37 @@
    },
    "byBand": {
     "lock": {
-     "bets": 49,
-     "won": 25,
-     "lost": 24,
+     "bets": 0,
+     "won": 0,
+     "lost": 0,
      "push": 0,
-     "staked": 119,
-     "profit": -9.09,
-     "roi": -0.0764,
+     "staked": 0,
+     "profit": 0,
+     "roi": null,
      "beat": null,
      "beatN": 0
     },
     "high": {
-     "bets": 538,
-     "won": 280,
-     "lost": 258,
+     "bets": 0,
+     "won": 0,
+     "lost": 0,
      "push": 0,
-     "staked": 749.5,
-     "profit": 13.84,
-     "roi": 0.0185,
-     "beat": 1,
-     "beatN": 1
+     "staked": 0,
+     "profit": 0,
+     "roi": null,
+     "beat": null,
+     "beatN": 0
     },
     "medium": {
-     "bets": 1746,
-     "won": 837,
-     "lost": 909,
+     "bets": 2333,
+     "won": 1142,
+     "lost": 1191,
      "push": 0,
-     "staked": 1186.5,
-     "profit": -38.88,
-     "roi": -0.0328,
-     "beat": 0.7209,
-     "beatN": 43
+     "staked": 1968,
+     "profit": -33.48,
+     "roi": -0.017,
+     "beat": 0.7273,
+     "beatN": 44
     }
    },
    "lines": {
@@ -978,9 +978,9 @@
     "won": 30,
     "lost": 86,
     "push": 0,
-    "staked": 63,
-    "profit": -15.45,
-    "roi": -0.2452,
+    "staked": 62.5,
+    "profit": -16.15,
+    "roi": -0.2584,
     "beat": 0.7273,
     "beatN": 44
    },
@@ -989,9 +989,9 @@
     "won": 1112,
     "lost": 1105,
     "push": 0,
-    "staked": 1992,
-    "profit": -18.68,
-    "roi": -0.0094,
+    "staked": 1905.5,
+    "profit": -17.33,
+    "roi": -0.0091,
     "beat": null,
     "beatN": 0
    }
@@ -1009,22 +1009,22 @@
    1,
    5,
    0,
-   4,
-   -2.19
+   3,
+   -2.1
   ],
   "2026-06-08": [
    2,
    2,
    0,
-   2.5,
-   0.58
+   2,
+   0.01
   ],
   "2026-06-10": [
    2,
    2,
    0,
-   3,
-   0.04
+   2,
+   0
   ],
   "2026-06-13": [
    1,
@@ -1346,9 +1346,9 @@
    "kelly": 0.0089,
    "band": "medium",
    "practice": false,
-   "units": 1,
+   "units": 0.5,
    "res": "W",
-   "profit": 1.08,
+   "profit": 0.54,
    "timing": "close",
    "beat": null,
    "survival": 1,
@@ -1458,9 +1458,9 @@
    "kelly": 0.0095,
    "band": "medium",
    "practice": false,
-   "units": 1,
+   "units": 0.5,
    "res": "L",
-   "profit": -1,
+   "profit": -0.5,
    "timing": "close",
    "beat": null,
    "survival": 1,
@@ -1542,9 +1542,9 @@
    "kelly": 0.0112,
    "band": "medium",
    "practice": false,
-   "units": 1,
+   "units": 0.5,
    "res": "W",
-   "profit": 1.13,
+   "profit": 0.56,
    "timing": "close",
    "beat": null,
    "survival": 1,
@@ -1649,8 +1649,8 @@
   },
   "bar": {
    "applies": true,
-   "barUnits": -5.57,
-   "fullUnits": -21.35,
+   "barUnits": -6.27,
+   "fullUnits": -26.61,
    "bySeason": {
     "2020": true,
     "2021": true,
@@ -1685,6 +1685,72 @@
   "split": "games that start before the epoch replayed; the live ledger from the epoch on",
   "notSeen": "the live desk's CLV gates, CHECKs, research and news"
  },
- "commit": "281a2f28",
- "note": "D51. The game lines' history bar: a line's real stake is earned by its segment (market, side, timing) or a named reason on the priced history, at its minimum edge, else the practice stake"
+ "commit": "b587d968",
+ "note": "D52. The confidence layer: bands and stakes earned on the record, LIKE until a tier earns it",
+ "inputs": {
+  "v": 1,
+  "sport": "nba",
+  "code": {
+   "props": "87335d02c0eb",
+   "games": "426c66896f46",
+   "pricing": "bac16608a54e",
+   "record": "e4821f446539",
+   "harness": "4091a60d2d14",
+   "residual": "66866487722581f3"
+  },
+  "fit": {
+   "code": "4a1aee79b7ad0a80",
+   "expected": "4a1aee79b7ad0a80",
+   "day": "2026-10-19",
+   "at": "2026-10-20T00:07:58.741Z",
+   "finals": 1316,
+   "stats": [
+    "pts",
+    "reb",
+    "ast",
+    "fg3",
+    "pra"
+   ],
+   "want": 5,
+   "hash": "babbcfc0cc43e367"
+  },
+  "context": {
+   "facts": true,
+   "on": true,
+   "failed": [],
+   "bySeason": {
+    "2026": {
+     "games": 1312
+    }
+   }
+  },
+  "injuries": null,
+  "files": {
+   "state": true,
+   "backtest": 954,
+   "residual": true,
+   "evScale": 0.08
+  },
+  "rows": {
+   "replay": 177056,
+   "keys": 97075,
+   "bets": 3597
+  },
+  "units": -32.74,
+  "frozen": {
+   "props": {
+    "mode": "saved",
+    "n": 0,
+    "ids": 0,
+    "want": 0
+   },
+   "lines": {
+    "mode": "replay",
+    "n": 954,
+    "ids": 0,
+    "want": 0
+   }
+  },
+  "hash": "af6abe4e54b86b9a"
+ }
 }

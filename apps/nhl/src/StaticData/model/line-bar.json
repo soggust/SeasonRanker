@@ -1,8 +1,8 @@
 {
  "sport": "nhl",
  "epoch": "2026-10-19T17:15:00Z",
- "commit": "281a2f28",
- "at": "2026-10-19T23:59:51.339Z",
+ "commit": "b587d968",
+ "at": "2026-10-20T01:50:28.926Z",
  "current": 2027,
  "z": 1,
  "min": 40,
@@ -495,7 +495,7 @@
  "place": {
   "applies": true,
   "barUnits": -33.39,
-  "fullUnits": -48.5,
+  "fullUnits": -47.75,
   "bySeason": {
    "2021": true,
    "2022": true,

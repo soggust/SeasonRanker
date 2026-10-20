@@ -2,7 +2,7 @@
  "v": 1,
  "sport": "mlb",
  "epoch": "2026-10-19T17:15:00Z",
- "at": "2026-10-20T00:03:40.635Z",
+ "at": "2026-10-20T01:50:07.419Z",
  "from": "2021-07-18T17:06:00.000Z",
  "through": "2026-10-18T00:00:00.000Z",
  "n": {
@@ -17,9 +17,9 @@
   "won": 573,
   "lost": 696,
   "push": 9,
-  "staked": 856.5,
-  "profit": -10.19,
-  "roi": -0.0119,
+  "staked": 859,
+  "profit": -7.19,
+  "roi": -0.0084,
   "beat": 0.6354,
   "beatN": 384
  },
@@ -58,24 +58,24 @@
    "beatN": 0
   },
   "high": {
-   "bets": 88,
-   "won": 44,
+   "bets": 89,
+   "won": 45,
    "lost": 43,
    "push": 1,
-   "staked": 113.5,
-   "profit": 5.91,
-   "roi": 0.0521,
+   "staked": 116.5,
+   "profit": 9.51,
+   "roi": 0.0816,
    "beat": 0.625,
    "beatN": 24
   },
   "medium": {
-   "bets": 1190,
-   "won": 529,
+   "bets": 1189,
+   "won": 528,
    "lost": 653,
    "push": 8,
-   "staked": 743,
-   "profit": -16.1,
-   "roi": -0.0217,
+   "staked": 742.5,
+   "profit": -16.7,
+   "roi": -0.0225,
    "beat": 0.6361,
    "beatN": 360
   }
@@ -86,9 +86,9 @@
    "won": 535,
    "lost": 654,
    "push": 9,
-   "staked": 797,
-   "profit": -6.38,
-   "roi": -0.008,
+   "staked": 799.5,
+   "profit": -3.38,
+   "roi": -0.0042,
    "beat": 0.6354,
    "beatN": 384
   },
@@ -158,9 +158,9 @@
    "won": 102,
    "lost": 111,
    "push": 2,
-   "staked": 143.5,
-   "profit": 6.95,
-   "roi": 0.0484,
+   "staked": 146,
+   "profit": 9.95,
+   "roi": 0.0682,
    "beat": 0.7368,
    "beatN": 76,
    "practice": {
@@ -179,9 +179,9 @@
     "won": 102,
     "lost": 111,
     "push": 2,
-    "staked": 143.5,
-    "profit": 6.95,
-    "roi": 0.0484,
+    "staked": 146,
+    "profit": 9.95,
+    "roi": 0.0682,
     "beat": 0.7368,
     "beatN": 76
    },
@@ -470,9 +470,9 @@
     "won": 102,
     "lost": 111,
     "push": 2,
-    "staked": 143.5,
-    "profit": 6.95,
-    "roi": 0.0484,
+    "staked": 146,
+    "profit": 9.95,
+    "roi": 0.0682,
     "beat": 0.7368,
     "beatN": 76
    },
@@ -500,24 +500,24 @@
      "beatN": 0
     },
     "high": {
-     "bets": 12,
-     "won": 3,
+     "bets": 13,
+     "won": 4,
      "lost": 9,
      "push": 0,
-     "staked": 15,
-     "profit": -6.29,
-     "roi": -0.4193,
+     "staked": 18,
+     "profit": -2.69,
+     "roi": -0.1494,
      "beat": 0.5,
      "beatN": 2
     },
     "medium": {
-     "bets": 203,
-     "won": 99,
+     "bets": 202,
+     "won": 98,
      "lost": 102,
      "push": 2,
-     "staked": 128.5,
-     "profit": 13.24,
-     "roi": 0.103,
+     "staked": 128,
+     "profit": 12.64,
+     "roi": 0.0988,
      "beat": 0.7432,
      "beatN": 74
     }
@@ -527,9 +527,9 @@
     "won": 102,
     "lost": 111,
     "push": 2,
-    "staked": 143.5,
-    "profit": 6.95,
-    "roi": 0.0484,
+    "staked": 146,
+    "profit": 9.95,
+    "roi": 0.0682,
     "beat": 0.7368,
     "beatN": 76
    },
@@ -1545,7 +1545,7 @@
   "bar": {
    "applies": false,
    "barUnits": -13.22,
-   "fullUnits": 1.98,
+   "fullUnits": 4.98,
    "bySeason": {
     "2021": true,
     "2022": false,
@@ -1578,6 +1578,74 @@
   "split": "games that start before the epoch replayed; the live ledger from the epoch on",
   "notSeen": "the live desk's CLV gates, CHECKs, research and news"
  },
- "commit": "281a2f28",
- "note": "D51. The game lines' history bar: a line's real stake is earned by its segment (market, side, timing) or a named reason on the priced history, at its minimum edge, else the practice stake"
+ "commit": "b587d968",
+ "note": "D52. The confidence layer: bands and stakes earned on the record, LIKE until a tier earns it",
+ "inputs": {
+  "v": 1,
+  "sport": "mlb",
+  "code": {
+   "props": "87335d02c0eb",
+   "games": "426c66896f46",
+   "pricing": "bac16608a54e",
+   "record": "e4821f446539",
+   "harness": "4091a60d2d14",
+   "residual": "c0bf15b36bbc79e6"
+  },
+  "fit": {
+   "code": "4a1aee79b7ad0a80",
+   "expected": "4a1aee79b7ad0a80",
+   "day": "2026-10-19",
+   "at": "2026-10-20T00:07:58.751Z",
+   "finals": 4940,
+   "stats": [
+    "k",
+    "outs",
+    "hits",
+    "tb"
+   ],
+   "want": 4,
+   "hash": "5ecd5c98dc5514ca"
+  },
+  "context": {
+   "facts": true,
+   "on": true,
+   "failed": [],
+   "bySeason": {
+    "2025": {
+     "games": 2477
+    },
+    "2026": {
+     "games": 2463
+    }
+   }
+  },
+  "injuries": null,
+  "files": {
+   "state": true,
+   "backtest": 1537,
+   "residual": true,
+   "evScale": 0.08
+  },
+  "rows": {
+   "replay": 349276,
+   "keys": 189288,
+   "bets": 1278
+  },
+  "units": -7.19,
+  "frozen": {
+   "props": {
+    "mode": "saved",
+    "n": 154,
+    "ids": 154,
+    "want": 154
+   },
+   "lines": {
+    "mode": "replay",
+    "n": 1388,
+    "ids": 29,
+    "want": 29
+   }
+  },
+  "hash": "23e974c61c4adbf7"
+ }
 }

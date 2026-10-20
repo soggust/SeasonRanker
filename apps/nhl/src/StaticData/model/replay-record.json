@@ -2,7 +2,7 @@
  "v": 1,
  "sport": "nhl",
  "epoch": "2026-10-19T17:15:00Z",
- "at": "2026-10-19T23:59:49.555Z",
+ "at": "2026-10-20T01:41:56.021Z",
  "from": "2021-01-27T00:00:00.000Z",
  "through": "2026-10-19T00:10:00.000Z",
  "n": {
@@ -1620,7 +1620,7 @@
   "bar": {
    "applies": true,
    "barUnits": -33.39,
-   "fullUnits": -48.5,
+   "fullUnits": -47.75,
    "bySeason": {
     "2021": true,
     "2022": true,
@@ -1655,6 +1655,73 @@
   "split": "games that start before the epoch replayed; the live ledger from the epoch on",
   "notSeen": "the live desk's CLV gates, CHECKs, research and news"
  },
- "commit": "281a2f28",
- "note": "D51. The game lines' history bar: a line's real stake is earned by its segment (market, side, timing) or a named reason on the priced history, at its minimum edge, else the practice stake"
+ "commit": "b587d968",
+ "note": "D52. The confidence layer: bands and stakes earned on the record, LIKE until a tier earns it",
+ "inputs": {
+  "v": 1,
+  "sport": "nhl",
+  "code": {
+   "props": "87335d02c0eb",
+   "games": "426c66896f46",
+   "pricing": "bac16608a54e",
+   "record": "e4821f446539",
+   "harness": "4091a60d2d14",
+   "residual": "e5bdfc3cdce79b9e"
+  },
+  "fit": {
+   "code": "4a1aee79b7ad0a80",
+   "expected": "4a1aee79b7ad0a80",
+   "day": "2026-10-19",
+   "at": "2026-10-20T00:07:58.753Z",
+   "finals": 1530,
+   "stats": [
+    "sog",
+    "pts",
+    "saves"
+   ],
+   "want": 3,
+   "hash": "7495e36cc82aa40d"
+  },
+  "context": {
+   "facts": true,
+   "on": true,
+   "failed": [],
+   "bySeason": {
+    "2026": {
+     "games": 1394
+    },
+    "2027": {
+     "games": 136
+    }
+   }
+  },
+  "injuries": null,
+  "files": {
+   "state": true,
+   "backtest": 1014,
+   "residual": true,
+   "evScale": 0.08
+  },
+  "rows": {
+   "replay": 130449,
+   "keys": 71402,
+   "bets": 1802
+  },
+  "units": -33.47,
+  "frozen": {
+   "props": {
+    "mode": "replay",
+    "n": 1736,
+    "ids": 1736,
+    "want": 1736
+   },
+   "lines": {
+    "mode": "replay",
+    "n": 1243,
+    "ids": 229,
+    "want": 229
+   }
+  },
+  "hash": "665e928d5b9c8aac"
+ }
 }
