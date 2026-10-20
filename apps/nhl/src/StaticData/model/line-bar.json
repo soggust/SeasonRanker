@@ -1,8 +1,8 @@
 {
  "sport": "nhl",
  "epoch": "2026-10-19T17:15:00Z",
- "commit": "f49645cf",
- "at": "2026-10-19T22:53:52.572Z",
+ "commit": "281a2f28",
+ "at": "2026-10-19T23:59:51.339Z",
  "current": 2027,
  "z": 1,
  "min": 40,
@@ -489,6 +489,21 @@
    "se": 0.1575,
    "on": false,
    "minEdge": null
+  }
+ },
+ "applies": true,
+ "place": {
+  "applies": true,
+  "barUnits": -33.39,
+  "fullUnits": -48.5,
+  "bySeason": {
+   "2021": true,
+   "2022": true,
+   "2023": true,
+   "2024": true,
+   "2025": true,
+   "2026": true,
+   "2027": true
   }
  }
 }

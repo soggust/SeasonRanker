@@ -2,7 +2,7 @@
  "v": 1,
  "sport": "nhl",
  "epoch": "2026-10-19T17:15:00Z",
- "at": "2026-10-19T22:53:50.905Z",
+ "at": "2026-10-19T23:59:49.555Z",
  "from": "2021-01-27T00:00:00.000Z",
  "through": "2026-10-19T00:10:00.000Z",
  "n": {
@@ -1617,6 +1617,20 @@
    "openInWindow": 56846,
    "barred": 1709
   },
+  "bar": {
+   "applies": true,
+   "barUnits": -33.39,
+   "fullUnits": -48.5,
+   "bySeason": {
+    "2021": true,
+    "2022": true,
+    "2023": true,
+    "2024": true,
+    "2025": true,
+    "2026": true,
+    "2027": true
+   }
+  },
   "facts": {
    "stamped": 7302,
    "late": 0,
@@ -1641,6 +1655,6 @@
   "split": "games that start before the epoch replayed; the live ledger from the epoch on",
   "notSeen": "the live desk's CLV gates, CHECKs, research and news"
  },
- "commit": "f49645cf",
+ "commit": "281a2f28",
  "note": "D51. The game lines' history bar: a line's real stake is earned by its segment (market, side, timing) or a named reason on the priced history, at its minimum edge, else the practice stake"
 }

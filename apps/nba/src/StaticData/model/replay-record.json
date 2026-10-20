@@ -2,24 +2,24 @@
  "v": 1,
  "sport": "nba",
  "epoch": "2026-10-19T17:15:00Z",
- "at": "2026-10-19T22:54:44.617Z",
+ "at": "2026-10-20T00:00:40.566Z",
  "from": "2020-07-30T22:30:00.000Z",
  "through": "2026-06-14T00:45:00.000Z",
  "n": {
   "rows": 177056,
   "keys": 97075,
-  "bets": 3608,
+  "bets": 3597,
   "practice": 2799,
-  "pass": 90668
+  "pass": 90679
  },
  "overall": {
-  "bets": 3608,
-  "won": 1605,
-  "lost": 2001,
+  "bets": 3597,
+  "won": 1601,
+  "lost": 1994,
   "push": 2,
-  "staked": 2746,
-  "profit": -34.31,
-  "roi": -0.0125,
+  "staked": 2738.5,
+  "profit": -33.39,
+  "roi": -0.0122,
   "beat": 0.6293,
   "beatN": 321
  },
@@ -29,18 +29,18 @@
   "lost": 1361,
   "push": 21,
   "staked": 1399.5,
-  "profit": -58.11,
+  "profit": -58.08,
   "roi": -0.0415,
   "beat": null,
   "beatN": 0
  },
  "pass": {
-  "bets": 90668,
-  "won": 46515,
-  "lost": 43996,
+  "bets": 90679,
+  "won": 46518,
+  "lost": 44004,
   "push": 157,
-  "staked": 90668,
-  "profit": -3740.74,
+  "staked": 90679,
+  "profit": -3745.93,
   "roi": -0.0413,
   "beat": null,
   "beatN": 0
@@ -58,24 +58,24 @@
    "beatN": 0
   },
   "high": {
-   "bets": 545,
+   "bets": 543,
    "won": 283,
-   "lost": 262,
+   "lost": 260,
    "push": 0,
-   "staked": 759.5,
-   "profit": 16.24,
-   "roi": 0.0214,
+   "staked": 757.5,
+   "profit": 18.24,
+   "roi": 0.0241,
    "beat": 1,
    "beatN": 1
   },
   "medium": {
-   "bets": 3013,
-   "won": 1297,
-   "lost": 1714,
+   "bets": 3004,
+   "won": 1293,
+   "lost": 1709,
    "push": 2,
-   "staked": 1865.5,
-   "profit": -39.46,
-   "roi": -0.0212,
+   "staked": 1860,
+   "profit": -40.54,
+   "roi": -0.0218,
    "beat": 0.6281,
    "beatN": 320
   }
@@ -93,13 +93,13 @@
    "beatN": 321
   },
   "props": {
-   "bets": 2442,
-   "won": 1225,
-   "lost": 1217,
+   "bets": 2431,
+   "won": 1221,
+   "lost": 1210,
    "push": 0,
-   "staked": 2145,
-   "profit": -28.74,
-   "roi": -0.0134,
+   "staked": 2137.5,
+   "profit": -27.82,
+   "roi": -0.013,
    "beat": null,
    "beatN": 0
   }
@@ -384,13 +384,13 @@
   {
    "season": 2026,
    "context": "full",
-   "bets": 2592,
-   "won": 1272,
-   "lost": 1320,
+   "bets": 2581,
+   "won": 1268,
+   "lost": 1313,
    "push": 0,
-   "staked": 2225,
-   "profit": -33.51,
-   "roi": -0.0151,
+   "staked": 2217.5,
+   "profit": -32.59,
+   "roi": -0.0147,
    "beat": 0.7321,
    "beatN": 56,
    "practice": {
@@ -399,7 +399,7 @@
     "lost": 384,
     "push": 0,
     "staked": 426,
-    "profit": 0.28,
+    "profit": 0.31,
     "roi": 0.0007,
     "beat": null,
     "beatN": 0
@@ -416,13 +416,13 @@
     "beatN": 56
    },
    "props": {
-    "bets": 2442,
-    "won": 1225,
-    "lost": 1217,
+    "bets": 2431,
+    "won": 1221,
+    "lost": 1210,
     "push": 0,
-    "staked": 2145,
-    "profit": -28.74,
-    "roi": -0.0134,
+    "staked": 2137.5,
+    "profit": -27.82,
+    "roi": -0.013,
     "beat": null,
     "beatN": 0
    }
@@ -836,24 +836,24 @@
   },
   "2025": {
    "all": {
-    "bets": 400,
-    "won": 166,
+    "bets": 401,
+    "won": 167,
     "lost": 234,
     "push": 0,
-    "staked": 248,
-    "profit": -13.75,
-    "roi": -0.0554,
+    "staked": 249,
+    "profit": -12.87,
+    "roi": -0.0517,
     "beat": 0.6111,
     "beatN": 54
    },
    "practice": {
-    "bets": 864,
-    "won": 448,
+    "bets": 863,
+    "won": 447,
     "lost": 410,
     "push": 6,
-    "staked": 432,
-    "profit": -9.63,
-    "roi": -0.0223,
+    "staked": 431.5,
+    "profit": -10.03,
+    "roi": -0.0232,
     "beat": null,
     "beatN": 0
    },
@@ -881,13 +881,13 @@
      "beatN": 0
     },
     "medium": {
-     "bets": 396,
-     "won": 165,
+     "bets": 397,
+     "won": 166,
      "lost": 231,
      "push": 0,
-     "staked": 240,
-     "profit": -10.83,
-     "roi": -0.0451,
+     "staked": 241,
+     "profit": -9.95,
+     "roi": -0.0413,
      "beat": 0.6111,
      "beatN": 54
     }
@@ -904,37 +904,37 @@
     "beatN": 54
    },
    "props": {
-    "bets": 213,
-    "won": 108,
+    "bets": 214,
+    "won": 109,
     "lost": 105,
     "push": 0,
-    "staked": 144.5,
-    "profit": -10.02,
-    "roi": -0.0693,
+    "staked": 145.5,
+    "profit": -9.14,
+    "roi": -0.0628,
     "beat": null,
     "beatN": 0
    }
   },
   "2026": {
    "all": {
-    "bets": 2345,
-    "won": 1147,
-    "lost": 1198,
+    "bets": 2333,
+    "won": 1142,
+    "lost": 1191,
     "push": 0,
-    "staked": 2063.5,
-    "profit": -34.17,
+    "staked": 2055,
+    "profit": -34.13,
     "roi": -0.0166,
     "beat": 0.7273,
     "beatN": 44
    },
    "practice": {
-    "bets": 386,
-    "won": 214,
+    "bets": 387,
+    "won": 215,
     "lost": 172,
     "push": 0,
-    "staked": 193,
-    "profit": -1.07,
-    "roi": -0.0055,
+    "staked": 193.5,
+    "profit": -0.64,
+    "roi": -0.0033,
     "beat": null,
     "beatN": 0
    },
@@ -951,24 +951,24 @@
      "beatN": 0
     },
     "high": {
-     "bets": 540,
+     "bets": 538,
      "won": 280,
-     "lost": 260,
+     "lost": 258,
      "push": 0,
-     "staked": 751.5,
-     "profit": 11.84,
-     "roi": 0.0158,
+     "staked": 749.5,
+     "profit": 13.84,
+     "roi": 0.0185,
      "beat": 1,
      "beatN": 1
     },
     "medium": {
-     "bets": 1756,
-     "won": 842,
-     "lost": 914,
+     "bets": 1746,
+     "won": 837,
+     "lost": 909,
      "push": 0,
-     "staked": 1193,
-     "profit": -36.92,
-     "roi": -0.0309,
+     "staked": 1186.5,
+     "profit": -38.88,
+     "roi": -0.0328,
      "beat": 0.7209,
      "beatN": 43
     }
@@ -985,12 +985,12 @@
     "beatN": 44
    },
    "props": {
-    "bets": 2229,
-    "won": 1117,
-    "lost": 1112,
+    "bets": 2217,
+    "won": 1112,
+    "lost": 1105,
     "push": 0,
-    "staked": 2000.5,
-    "profit": -18.72,
+    "staked": 1992,
+    "profit": -18.68,
     "roi": -0.0094,
     "beat": null,
     "beatN": 0
@@ -1285,9 +1285,9 @@
    "line": 28.5,
    "side": "under",
    "odds": -110,
-   "p": 0.5237,
+   "p": 0.5236,
    "fair": 0.4948,
-   "kelly": -0.0002,
+   "kelly": -0.0004,
    "band": "medium",
    "practice": true,
    "units": 0.5,
@@ -1453,9 +1453,9 @@
    "line": 27.5,
    "side": "under",
    "odds": -116,
-   "p": 0.5417,
+   "p": 0.5416,
    "fair": 0.5062,
-   "kelly": 0.0097,
+   "kelly": 0.0095,
    "band": "medium",
    "practice": false,
    "units": 1,
@@ -1483,7 +1483,7 @@
    "odds": -129,
    "p": 0.5599,
    "fair": 0.531,
-   "kelly": -0.0071,
+   "kelly": -0.0072,
    "band": "medium",
    "practice": true,
    "units": 0.5,
@@ -1641,14 +1641,28 @@
  "flags": {
   "timing": {
    "open": 363,
-   "close": 3245,
+   "close": 3234,
    "openSeen": 80406,
    "openClean": 79927,
    "openInWindow": 76842,
    "barred": 1039
   },
+  "bar": {
+   "applies": true,
+   "barUnits": -5.57,
+   "fullUnits": -21.35,
+   "bySeason": {
+    "2020": true,
+    "2021": true,
+    "2022": true,
+    "2023": true,
+    "2024": true,
+    "2025": true,
+    "2026": true
+   }
+  },
   "facts": {
-   "stamped": 6403,
+   "stamped": 6392,
    "late": 0,
    "openHeld": 56698,
    "closeHeld": 0
@@ -1671,6 +1685,6 @@
   "split": "games that start before the epoch replayed; the live ledger from the epoch on",
   "notSeen": "the live desk's CLV gates, CHECKs, research and news"
  },
- "commit": "f49645cf",
+ "commit": "281a2f28",
  "note": "D51. The game lines' history bar: a line's real stake is earned by its segment (market, side, timing) or a named reason on the priced history, at its minimum edge, else the practice stake"
 }
