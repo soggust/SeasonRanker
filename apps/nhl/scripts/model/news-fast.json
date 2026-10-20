@@ -3,7 +3,7 @@
  "cursor": {
   "johnston-bot.bsky.social": "2026-10-19T14:14:39.946Z",
   "notfriedgehnic.bsky.social": "2026-10-20T18:14:44.045Z",
-  "dailyfaceoff.bsky.social": "2026-10-20T22:15:31.000Z",
+  "dailyfaceoff.bsky.social": "2026-10-20T23:00:55.000Z",
   "dfotoronto.bsky.social": "2026-10-20T22:15:35.000Z",
   "marklazerus.bsky.social": "2026-10-20T19:02:33.217Z"
  },
@@ -254,6 +254,19 @@
    "kind": "status",
    "confidence": 0.93,
    "text": "Flames’ Mikael Backlund day-to-day with upper-body injury"
+  },
+  {
+   "id": "at://did:plc:3uus7y6h3rlrk6sbctzxm4bg/app.bsky.feed.post/3mydqh7ub6b2k|jakesanderson|active|return",
+   "at": "2026-10-20T23:00:55.000Z",
+   "seen": "2026-10-20T23:01:16.881Z",
+   "handle": "dailyfaceoff.bsky.social",
+   "post": "at://did:plc:3uus7y6h3rlrk6sbctzxm4bg/app.bsky.feed.post/3mydqh7ub6b2k",
+   "player": "Jake Sanderson",
+   "team": "OTT",
+   "status": "active",
+   "kind": "return",
+   "confidence": 0.9,
+   "text": "Jake Sanderson is set to make his return to the Ottawa Senators lineup! #nhl #nhlhockey #dailyfaceoff"
   }
  ]
 }
