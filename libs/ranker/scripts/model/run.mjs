@@ -162,6 +162,7 @@ import { readLinePool } from './line-pool.mjs';
 import { applyNotes, keptNote, noteWords, readDeskNotes, teamNotes } from './notes.mjs';
 import { SOON_HOURS, newsFlags, newsWords, readNews } from './news.mjs';
 import { FAST_EARN_N, FAST_TIMING, fastEarned, fastFor, fastNotes, readClaims, sleeperPlayers, speedFile, speedUpdate, withSleeperPractice } from './fastnews.mjs';
+import { logNews, logPrices, priceRows } from './newslog.mjs';
 import { checkLearning, loosenings, reopened } from './check-learn.mjs';
 import { patternBook, patternKey, preResolve, ruleFinding, unitOf } from './check-patterns.mjs';
 import { readSeeds } from './check-seeds.mjs';
@@ -308,6 +309,8 @@ async function runSport(sport) {
   await timed(r, writePicks);
   await timed(r, writeBoard);
   await timed(r, saveState);
+  // (the news log and the price log, D54: after the bets are placed and saved, logging only)
+  await timed(r, logTheNews);
   console.log(`${sport}: the run's steps: ${r.steps.map(([name, ms]) => `${name} ${Math.round(ms / 100) / 10}s`).join(', ')}`);
 }
 
@@ -333,6 +336,26 @@ function logTheLines(r) {
     r.state.lineLog = { ...(n > 0 ? { since: month } : {}), ...(lost ? { lost: [...(log.lost ?? []), { at: r.now.toISOString(), since: log.since }].slice(-10) } : log?.lost ? { lost: log.lost } : {}) };
   }
   if (n !== null) console.log(`${r.sport}: the line log ${n} new of ${(r.lineRows ?? []).length} seen${DRY ? ' (dry: not written)' : ''}`);
+}
+
+// The news log and the price log (newslog.mjs, DECISIONS.md D54): every news item the run read for a coming game,
+// written the first run it was seen and again when it changes, with the Book's prices the run had for the game; and
+// every price the run read (the line log's rows, Pinnacle's no-vig chance), only what changed since, with a
+// heartbeat a game. The run's last step: it reads the run and changes nothing in it (no bet, stake or price reads
+// it); --dry counts and writes nothing. Never fails the run
+function logTheNews(r) {
+  try {
+    const claims = ['nfl', 'nba', 'nhl'].includes(r.sport) ? readClaims(r.sport) : [];
+    const news = logNews({ sport: r.sport, now: r.now, upcoming: r.upcoming, live: r.live, inputs: r.inputs, sleeper: r.sleeper, claims, fastApplied: r.fastApplied, lineRows: r.lineRows }, { dry: DRY, board: readJson(r.files.board, null) });
+    const games = new Map();
+    for (const g of r.games?.values?.() ?? []) games.set(String(g.id), { start: g.date, m: `${g.awayAbbr} @ ${g.homeAbbr}` });
+    for (const { game } of r.upcoming ?? []) games.set(String(game.id), { start: game.date, m: `${game.awayAbbr} @ ${game.homeAbbr}` });
+    const prices = logPrices(r.sport, priceRows(r.lineRows ?? [], r.upcoming ?? []), { now: r.now, games, dry: DRY });
+    const kinds = Object.entries(news.items.reduce((t, x) => ((t[`${x.kind}:${x.src}`] = (t[`${x.kind}:${x.src}`] ?? 0) + 1), t), {})).map(([k, n]) => `${k} ${n}`).join(', ');
+    console.log(`${r.sport}${DRY ? ' (dry)' : ''}: the news log ${news.n} new of ${news.seen} read${kinds ? ` (${kinds})` : ''}; the price log ${prices.n} changed of ${prices.seen} prices, ${prices.beats} games' heartbeats, ${prices.bytes} bytes${DRY ? ' (dry: not written)' : ''}`);
+  } catch (err) {
+    console.warn(`${r.sport}: the news and price logs skipped (${err.message})`);
+  }
 }
 
 // The league's teams' colors for the desk (ESPN's team list, which a browser can't ask: it sends no CORS

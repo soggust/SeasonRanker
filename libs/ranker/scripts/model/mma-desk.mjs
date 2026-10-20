@@ -81,6 +81,7 @@ import { SHARP, american, call, canSpend, hasKey, usageSummary } from './oddsapi
 import { REPRICE_BY, lastChanceOf, phaseOf } from './timing.mjs';
 import { CACHE, DAY, get, readJson, writeAtomic, writeJson } from './sources.mjs';
 import { round } from './ratings.mjs';
+import { logNewsItems, logPrices, mmaNewsItems } from './newslog.mjs';
 
 const ROOT = path.resolve(import.meta.dirname, '../../../..');
 export const SPORT = 'mma';
@@ -784,6 +785,32 @@ export function seedFiles(model, bt, now) {
   writeAtomic(FILES.picks, JSON.stringify(buildFightPicks(ledger, trust, new Map(), now)));
 }
 
+// The price log's rows for this run's prices (newslog.mjs, D54): each bout's moneyline (ml: a, b the home and away
+// prices; src 'o' The Odds API's, 'e' ESPN BET's), Pinnacle's no-vig chance where it set the fair one (pin:ml, the
+// home side's), the round total (total: line, over, under) and its Pinnacle chance (pin:total)
+export function mmaPriceRows(linesNow, bouts) {
+  const byKey = new Map((bouts ?? []).map((b) => [b.key, b]));
+  const rows = [];
+  const games = new Map();
+  const n = (v) => (Number.isFinite(v) ? v : null);
+  for (const [key, x] of linesNow ?? []) {
+    const bout = byKey.get(key);
+    if (!bout) continue;
+    const game = String(bout.id);
+    games.set(game, { start: bout.start ?? bout.date, m: `${bout.away?.name ?? '?'} vs ${bout.home?.name ?? '?'}` });
+    const src = x.src === 'espn bet' ? 'e' : 'o';
+    if (x.lines?.odds) {
+      rows.push({ game, key: 'ml', line: null, a: n(x.lines.odds.home), b: n(x.lines.odds.away), src });
+      if (x.lines.fairFrom === 'pinnacle' && Number.isFinite(x.lines.fair)) rows.push({ game, key: 'pin:ml', line: null, a: Math.round(x.lines.fair * 1e4) / 1e4, b: null, src });
+    }
+    if (x.total?.odds) {
+      rows.push({ game, key: 'total', line: n(x.total.line), a: n(x.total.odds.over), b: n(x.total.odds.under), src: 'o' });
+      if (/pinnacle/i.test(x.total.fairFrom ?? '') && Number.isFinite(x.total.fair)) rows.push({ game, key: 'pin:total', line: n(x.total.line), a: Math.round(x.total.fair * 1e4) / 1e4, b: null, src: 'o' });
+    }
+  }
+  return { rows, games };
+}
+
 export async function runMma({ dry = false, gap = null, now = new Date(), log = console, boardOut = null } = {}) {
   const at = now.toISOString();
   const cfg = LEAGUES.mma;
@@ -1152,6 +1179,20 @@ export async function runMma({ dry = false, gap = null, now = new Date(), log = 
   }
   const mmaBoard = buildMmaBoard({ bouts, lines: linesNow, chance: (b, day) => boutChance(model, b, day).p, trust: (b, day) => trustFor(trust, 'ml', (day - now.getTime()) / 36e5), over: (b, day, line) => overChance(b, day, line)?.p ?? null, totalTrust: (line, day) => trustFor(trust, 'total', (day - now.getTime()) / 36e5, line), bets: ledger.bets, prev: prevBoard, now, edge: cfg.edge, totalsLive });
   const seen = seenUpdate(readJson(FILES.boardSeen, null), mmaBoard, now);
+  // (the price log, D54: every price this run read, by the bout, only what changed since and a heartbeat a bout;
+  // logging only, nothing above reads it; --dry counts and writes nothing)
+  const priced = mmaPriceRows(linesNow, bouts);
+  const pl = logPrices(SPORT, priced.rows, { now, games: priced.games, dry });
+  const pxOf = (ev) => {
+    const mine = priced.rows.filter((x) => x.game === String(ev));
+    if (!mine.length) return null;
+    const px = { src: mine.find((x) => x.key === 'ml')?.src ?? 'o' };
+    for (const x of mine) px[x.key.replace('pin:', 'pin_')] = x.key === 'ml' ? [x.a, x.b] : x.key.startsWith('pin:') ? x.a : [x.line, x.a, x.b];
+    return px;
+  };
+  const nl = logNewsItems(SPORT, mmaNewsItems(bouts.filter((b) => !b.final), now), { now, dry, px: pxOf });
+  log.log(`${SPORT}${dry ? ' (dry)' : ''}: the news log ${nl.n} new of ${nl.seen} read`);
+  log.log(`${SPORT}${dry ? ' (dry)' : ''}: the price log ${pl.n} changed of ${pl.seen} prices, ${pl.beats} bouts' heartbeats, ${pl.bytes} bytes${dry ? ' (dry: not written)' : ''}`);
   const espnPriced = mmaBoard.games.filter((g) => g.k.ml?.some((s) => s.src)).length;
   const withTotal = mmaBoard.games.filter((g) => g.k.total).length;
   log.log(`${SPORT}${dry ? ' (dry)' : ''}: board of ${mmaBoard.games.length} bouts (${espnPriced} at ESPN BET's line, ${withTotal} with a round total) of ${coming.length} coming`);

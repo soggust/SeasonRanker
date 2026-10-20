@@ -964,3 +964,48 @@ test('D53 an open bet placed under a band or stake rule changed since is taken b
   const decisions = fs.readFileSync(path.resolve('libs/ranker/scripts/model/DECISIONS.md'), 'utf8');
   assert.ok(decisions.includes('### D53.'));
 });
+
+test('D54 the news log and the price log are logging only: the run\'s last step, nothing it reads changed, no source asked, nothing written on --dry', async () => {
+  const N = await import('../libs/ranker/scripts/model/newslog.mjs');
+  const os = await import('node:os');
+  const root = fs.mkdtempSync(path.join(os.tmpdir(), 'd54-'));
+  const game = { id: '401', date: '2026-10-25T17:00:00Z', home: '25', away: '9', homeAbbr: 'SF', awayAbbr: 'GB' };
+  const r = {
+    sport: 'nfl',
+    now: new Date('2026-10-23T21:00:00Z'),
+    upcoming: [{ game, lines: { source: 'the odds api', spread: { home: { line: -3 } }, fair: { spread: 0.51 }, fairSource: { spread: 'pinnacle' } } }],
+    live: new Map([[game.id, { injuries: new Map([['25', [{ id: '111', name: 'Christian Kirk', status: 'Questionable', date: '2026-10-23T20:00:00Z' }]]]), news: [{ team: '25', unit: 'offense', kind: 'coach', headline: 'New OC', at: '2026-10-23T18:00:00Z', id: 'n1', from: 'espn' }] }]]),
+    inputs: new Map([[game.id, { parts: { 'qb:h': 'Brock Purdy', 'qb:a': 'Jordan Love' }, names: {} }]]),
+    sleeper: { at: '2026-10-23T20:00:00Z', rows: [{ sid: '9', espn: '111', name: 'Christian Kirk', key: 'christiankirk', team: 'SF', status: 'out', raw: 'Out', news: Date.parse('2026-10-23T19:00:00Z') }] },
+    claims: [{ post: 'at://did:plc:a/app.bsky.feed.post/1', player: 'Christian Kirk', team: 'SF', status: 'out', confidence: 0.9, at: '2026-10-23T19:30:00Z' }],
+    fastApplied: [],
+    lineRows: [{ game: '401', key: 'spread', line: -3, a: -110, b: -110, src: 'o' }],
+  };
+  const before = structuredClone(r);
+  // (the bets' inputs untouched: the run reads the same after both logs as before them, written or dry)
+  const news = N.logNews(r, { root });
+  const prices = N.logPrices('nfl', N.priceRows(r.lineRows, r.upcoming), { now: r.now, games: new Map(), root });
+  assert.ok(news.n >= 5 && prices.n === 2);
+  assert.deepEqual(r, before);
+  const dryRoot = fs.mkdtempSync(path.join(os.tmpdir(), 'd54-dry-'));
+  assert.ok(N.logNews(r, { root: dryRoot, dry: true }).n >= 5);
+  N.logPrices('nfl', N.priceRows(r.lineRows, r.upcoming), { now: r.now, dry: true, root: dryRoot });
+  assert.deepEqual(fs.readdirSync(dryRoot), []);
+  assert.deepEqual(r, before);
+  // (no source asked: newslog.mjs fetches nothing)
+  const src = fs.readFileSync(path.resolve('libs/ranker/scripts/model/newslog.mjs'), 'utf8');
+  assert.doesNotMatch(src, /\bfetch\(|(?<![.\w])get\(|from '\.\/(sources|oddsapi)\.mjs'/);
+  // (run.mjs: the run's last step, after the bets are placed, the picks and board written and the state saved; a
+  // failure warned of, never the run's)
+  const run = fs.readFileSync(path.resolve('libs/ranker/scripts/model/run.mjs'), 'utf8');
+  assert.match(run, /await timed\(r, saveState\);\s*\/\/[^\n]*\n\s*await timed\(r, logTheNews\);\s*console\.log\(`\$\{sport\}: the run's steps/);
+  assert.match(run, /function logTheNews\(r\) \{\s*try \{/);
+  // (only run.mjs and mma-desk.mjs import it, and MMA's after its picks and board are built)
+  const dir = path.resolve('libs/ranker/scripts/model');
+  const importers = fs.readdirSync(dir).filter((f) => f.endsWith('.mjs') && fs.readFileSync(path.join(dir, f), 'utf8').includes("from './newslog.mjs'"));
+  assert.deepEqual(importers.sort(), ['mma-desk.mjs', 'run.mjs']);
+  const mma = fs.readFileSync(path.join(dir, 'mma-desk.mjs'), 'utf8');
+  assert.ok(mma.indexOf('const pl = logPrices(') > mma.indexOf('const mmaBoard = buildMmaBoard(') && mma.indexOf('const pl = logPrices(') > mma.indexOf('const picks = buildFightPicks('));
+  const decisions = fs.readFileSync(path.resolve('libs/ranker/scripts/model/DECISIONS.md'), 'utf8');
+  assert.ok(decisions.includes('### D54.'));
+});
