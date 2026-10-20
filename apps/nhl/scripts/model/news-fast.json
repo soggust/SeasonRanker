@@ -3,9 +3,9 @@
  "cursor": {
   "johnston-bot.bsky.social": "2026-10-19T14:14:39.946Z",
   "notfriedgehnic.bsky.social": "2026-10-20T18:14:44.045Z",
-  "dailyfaceoff.bsky.social": "2026-10-20T18:14:05.000Z",
-  "dfotoronto.bsky.social": "2026-10-20T17:40:16.000Z",
-  "marklazerus.bsky.social": "2026-10-20T15:58:40.887Z"
+  "dailyfaceoff.bsky.social": "2026-10-20T19:06:08.000Z",
+  "dfotoronto.bsky.social": "2026-10-20T19:10:53.000Z",
+  "marklazerus.bsky.social": "2026-10-20T19:02:33.217Z"
  },
  "claims": [
   {
@@ -228,6 +228,19 @@
    "kind": "status",
    "confidence": 0.95,
    "text": "Stars’ Esa Lindell out against Bruins with lower-body injury"
+  },
+  {
+   "id": "at://did:plc:3uus7y6h3rlrk6sbctzxm4bg/app.bsky.feed.post/3mydddff5ci2p|sanderson|active|return",
+   "at": "2026-10-20T19:06:08.000Z",
+   "seen": "2026-10-20T19:13:14.932Z",
+   "handle": "dailyfaceoff.bsky.social",
+   "post": "at://did:plc:3uus7y6h3rlrk6sbctzxm4bg/app.bsky.feed.post/3mydddff5ci2p",
+   "player": "Sanderson",
+   "team": "OTT",
+   "status": "active",
+   "kind": "return",
+   "confidence": 0.8,
+   "text": "Sanderson’s return much needed for Senators’ injury-riddled blueline"
   }
  ]
 }

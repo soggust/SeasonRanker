@@ -1,7 +1,7 @@
 {
  "sport": "nba",
  "cursor": {
-  "rotowirenba.bsky.social": "2026-10-20T17:53:43.000Z",
+  "rotowirenba.bsky.social": "2026-10-20T19:10:17.000Z",
   "insidenbanews.bsky.social": "2026-10-20T14:31:09.380Z",
   "shamsbot.bsky.social": "2026-10-20T15:50:34.000Z"
  },
@@ -395,6 +395,45 @@
    "kind": "status",
    "confidence": 0.85,
    "text": "Fred VanVleet: To miss back-to-backs \n\n https://www.rotowire.com/basketball/player/fred-vanvleet-3935"
+  },
+  {
+   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mydblzmrkc2a|mitchellrobinson|none|starting",
+   "at": "2026-10-20T18:35:10.000Z",
+   "seen": "2026-10-20T19:13:14.932Z",
+   "handle": "rotowirenba.bsky.social",
+   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mydblzmrkc2a",
+   "player": "Mitchell Robinson",
+   "team": null,
+   "status": "none",
+   "kind": "starting",
+   "confidence": 0.9,
+   "text": "Mitchell Robinson: Draws start at center \n\n https://www.rotowire.com/basketball/player/mitchell-robinson-4426"
+  },
+  {
+   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mydc2lrwht2r|zachcollins|active|status",
+   "at": "2026-10-20T18:43:19.000Z",
+   "seen": "2026-10-20T19:13:14.932Z",
+   "handle": "rotowirenba.bsky.social",
+   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mydc2lrwht2r",
+   "player": "Zach Collins",
+   "team": null,
+   "status": "active",
+   "kind": "status",
+   "confidence": 0.7,
+   "text": "Zach Collins: Draws probable tag \n\n https://www.rotowire.com/basketball/player/zach-collins-4162"
+  },
+  {
+   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mydcitnhat2r|brandinpodziemski|questionable|status",
+   "at": "2026-10-20T18:51:17.000Z",
+   "seen": "2026-10-20T19:13:14.932Z",
+   "handle": "rotowirenba.bsky.social",
+   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mydcitnhat2r",
+   "player": "Brandin Podziemski",
+   "team": null,
+   "status": "questionable",
+   "kind": "status",
+   "confidence": 0.6,
+   "text": "Brandin Podziemski: Misses practice Tuesday \n\n https://www.rotowire.com/basketball/player/brandin-podziemski-5889"
   }
  ]
 }

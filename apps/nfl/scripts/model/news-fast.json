@@ -1,12 +1,12 @@
 {
  "sport": "nfl",
  "cursor": {
-  "adamscheftermirror.bsky.social": "2026-10-20T17:42:20.091Z",
+  "adamscheftermirror.bsky.social": "2026-10-20T19:12:25.695Z",
   "rapsheet.bsky.social": "2026-10-20T15:28:24.072Z",
   "nflnewsreposterbot.bsky.social": "2026-10-19T20:52:46.431Z",
-  "insidenflnews.bsky.social": "2026-10-20T17:11:04.474Z",
-  "nflnewsposter.bsky.social": "2026-10-20T17:45:55.136Z",
-  "rotoworld-fb.bsky.social": "2026-10-20T18:07:57.000Z",
+  "insidenflnews.bsky.social": "2026-10-20T19:05:24.684Z",
+  "nflnewsposter.bsky.social": "2026-10-20T19:06:22.059Z",
+  "rotoworld-fb.bsky.social": "2026-10-20T19:10:23.000Z",
   "rotowirenfl.bsky.social": "2026-10-20T15:06:34.000Z"
  },
  "claims": [
@@ -1621,6 +1621,19 @@
    "kind": "status",
    "confidence": 0.5,
    "text": "Alec Pierce won't return to practice this week"
+  },
+  {
+   "id": "at://did:plc:qre6zxbmr3ixhdmgsgdretb5/app.bsky.feed.post/3myddon7vuh2u|terrymclaurin|out|status",
+   "at": "2026-10-20T19:12:25.695Z",
+   "seen": "2026-10-20T19:13:14.932Z",
+   "handle": "adamscheftermirror.bsky.social",
+   "post": "at://did:plc:qre6zxbmr3ixhdmgsgdretb5/app.bsky.feed.post/3myddon7vuh2u",
+   "player": "Terry McLaurin",
+   "team": "WSH",
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.9,
+   "text": "Commanders Pro Bowl WR Terry McLaurin tore his patellar tendon and will miss the rest of the season, per HC Dan Quinn.\n\nOriginal post"
   }
  ]
 }
