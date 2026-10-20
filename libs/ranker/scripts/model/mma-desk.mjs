@@ -75,6 +75,8 @@ import { BANDS as LEAD_BAND_KEYS, calFair, leadBand, priceKey, unpackRows } from
 import { BANKROLL, BUCKETS, MAX_REPRICES, PRACTICE_N, PRACTICE_SPLIT, PRACTICE_STAKED, PRACTICE_UNITS, bucketTrustOf, chanceAt, decimal, fairPair, fitBuckets, fitTrust, gapGuard, isTracked, placement, practiceRecord, practiceTop, record, rulesAt, rulesChanged, rulesOf, stakeFor, suspectOf, trackedRecord } from './desk.mjs';
 import { readLinePool } from './line-pool.mjs';
 import { BANDS, TOP, capOf, edgeLevel, kellyOf, levelOf, recordBlocks, scoreParts } from './picks.mjs';
+import { readReplay } from './replay-record.mjs';
+import { placed as placedBand, tierUnits } from './reasons.mjs';
 import { bandOf, buildBoard, seenUpdate, skipReason } from './board.mjs';
 import { clvOf, clvSummary } from './clv.mjs';
 import { SHARP, american, call, canSpend, hasKey, usageSummary } from './oddsapi.mjs';
@@ -1171,6 +1173,17 @@ export async function runMma({ dry = false, gap = null, now = new Date(), log = 
     pending.push(bet);
   }
   if (unmatched.length) log.warn(`${SPORT}: ${unmatched.length} due bouts not on The Odds API's board by name (not guessed): ${unmatched.join('; ')}`);
+  // (the Kelly bands' own place (DECISIONS.md D65): a LOVE or a LOCK the replayed record hasn't earned (its would-be
+  // bets before beat the band below on return and beat-the-close) shows and stakes as the band below)
+  const mmaPlace = readReplay(ROOT, SPORT)?.flags?.mmaPlace ?? null;
+  if (mmaPlace) for (const b of pending) {
+    if (b.intent !== 'edge' || b.practice || b.suspect || !Number.isFinite(b.p) || !Number.isFinite(b.odds)) continue;
+    const band = edgeLevel(kellyOf(b.odds, b.p), b.p);
+    const to = placedBand(band, mmaPlace);
+    if (to === band) continue;
+    b.conf = { ...(b.conf ?? {}), cap: to, placeHeld: `the ${band === 'lock' ? 'LOCK' : 'LOVE'} band hasn't earned its place on the record (D65)` };
+    if (Number.isFinite(b.units)) b.units = Math.max(PRACTICE_UNITS, tierUnits(b.units, to));
+  }
   // (the card's practice picks (mmaPracticePicks, D2): the main card's bouts and the best prelims short of the vig
   // with an edge before it, at the practice stake, marked topN)
   const mlNew = pending.filter((b) => b.market === 'ml');

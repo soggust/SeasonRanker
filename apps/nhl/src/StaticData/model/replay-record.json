@@ -2,7 +2,7 @@
  "v": 1,
  "sport": "nhl",
  "epoch": "2026-10-20T05:45:00Z",
- "at": "2026-10-20T08:42:01.770Z",
+ "at": "2026-10-20T15:26:07.564Z",
  "from": "2021-01-27T00:00:00.000Z",
  "through": "2026-10-14T01:55:00.000Z",
  "n": {
@@ -1711,6 +1711,51 @@
     "2027": true
    }
   },
+  "windows": {
+   "keys": 8796,
+   "final": {
+    "ml:dog": {
+     "policy": "legacy",
+     "n": 93,
+     "gain": 0,
+     "se": null
+    },
+    "ml:fav": {
+     "policy": "legacy",
+     "n": 46,
+     "gain": 0,
+     "se": null
+    },
+    "spread:fav": {
+     "policy": "legacy",
+     "n": 19,
+     "gain": 0,
+     "se": null
+    },
+    "spread:dog": {
+     "policy": "legacy",
+     "n": 154,
+     "gain": 0,
+     "se": null
+    },
+    "total:over": {
+     "policy": "legacy",
+     "n": 176,
+     "gain": 0,
+     "se": null
+    },
+    "total:under": {
+     "policy": "legacy",
+     "n": 221,
+     "gain": 0,
+     "se": null
+    }
+   },
+   "placed": {
+    "legacy:c": 260,
+    "legacy:o": 91
+   }
+  },
   "tiers": {
    "lock": 0,
    "high": 0,
@@ -1749,24 +1794,24 @@
   "split": "games that start before the epoch replayed; the live ledger from the epoch on",
   "notSeen": "the live desk's CLV gates, CHECKs, research and news"
  },
- "commit": "e4fa67cd",
- "note": "D58. Reason-based confidence tiers: a LOVE needs a proven reason, a LOCK two; the Kelly size is one candidate among them",
+ "commit": "c982565c",
+ "note": "D65. MMA's Kelly bands earn their place (D58's place check on MMA)",
  "inputs": {
   "v": 1,
   "sport": "nhl",
   "code": {
    "props": "87335d02c0eb",
    "games": "1ec04d860019",
-   "pricing": "2bd20c0f76aa",
-   "record": "f3fa572d0af8",
-   "harness": "dcbbea1a35a7",
+   "pricing": "3ecedb70ec72",
+   "record": "fdca035c3211",
+   "harness": "23986d676e0d",
    "residual": "e5bdfc3cdce79b9e"
   },
   "fit": {
    "code": "ae0a4265112cf136",
    "expected": "ae0a4265112cf136",
-   "day": "2026-10-19",
-   "at": "2026-10-20T08:25:24.214Z",
+   "day": "2026-10-20",
+   "at": "2026-10-20T14:03:14.278Z",
    "finals": 1534,
    "stats": [
     "sog",
@@ -1774,7 +1819,7 @@
     "saves"
    ],
    "want": 3,
-   "hash": "f800d7cf2b26bea1"
+   "hash": "caa23a4c629fb761"
   },
   "context": {
    "facts": true,
@@ -1816,6 +1861,6 @@
     "want": 229
    }
   },
-  "hash": "c08ce0757e12a629"
+  "hash": "a18097889bde1bd8"
  }
 }

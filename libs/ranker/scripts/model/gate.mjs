@@ -48,7 +48,8 @@ import { fileURLToPath, pathToFileURL } from 'node:url';
 import { createHash } from 'node:crypto';
 import { BET_DECIDE, betCompare, betSummary, binLoss, dec, edgePicks, gateVerdict, gradeSide, normalCrps, normalLoss, projCompare, r4, seasonWeight, sportVerdict } from './gate-score.mjs';
 import { historyLeakBets, huntLeaks } from './leaks.mjs';
-import { extendedGames, historyPropIndex, lineHistoryRows, loadHistory, propHistoryRows, slim, vsBook, vsBookBySeason } from './gate-history.mjs';
+import { extendedGames, historyPropIndex, intradayLines, lineHistoryRows, loadHistory, propHistoryRows, slim, vsBook, vsBookBySeason } from './gate-history.mjs';
+import { OFFSETS as INTRA_OFFSETS, readIntraday } from './intraday.mjs';
 import { MARKETS as MMA_MARKETS, scoreMma } from './gate-mma.mjs';
 
 const ROOT = path.resolve(import.meta.dirname, '../../../..');
@@ -175,6 +176,27 @@ export function lineRow(b, p, stake = null) {
 // market, the side class, the timing by the hours before the start it was priced at) and each named reason its side
 // carries (the schedule's rest: desk.mjs scheduleRest), by minimum edge. { z, min, picks, from, to, segments: {
 // <key>: { n, sum, sum2, edges, mean, se, on, minEdge } } }
+// The props' stat bar's history (D64): every positive-edge prop close as the version prices it, flat, by
+// "prop:<stat>:<side>" (desk.mjs propKey), recency-weighted by season; the live desk pools it with its own prop bets
+export function propBarOf(V, closeRows, current) {
+  const by = new Map();
+  let picks = 0;
+  for (const s of edgePicks(closeRows.filter((x) => x.market === 'prop'), () => 1)) {
+    const x = s.x;
+    const g = gradeSide(x, s.side);
+    if (g.won === null) continue;
+    const k = V.desk.propKey(x.stat, s.side);
+    (by.get(k) ?? by.set(k, []).get(k)).push({ profit: g.profit, w: fin(x.w) ? x.w : 1, ev: s.ev });
+    picks++;
+  }
+  const segments = {};
+  for (const [k, list] of [...by].sort(([a], [b]) => a.localeCompare(b))) {
+    const st = V.desk.edgeStats(list);
+    const v = V.desk.keyVerdict(st);
+    segments[k] = { ...st, rows: list.length, mean: v.mean, se: v.se, on: v.on, minEdge: v.minEdge ?? null };
+  }
+  return { z: V.desk.BAR_Z, min: V.desk.BAR_MIN, picks, current, segments };
+}
 export function lineBarOf(V, closeRows, current, { openRows = [], clean = () => true, sched = null, sport = null } = {}) {
   const by = new Map();
   let picks = 0;
@@ -340,9 +362,12 @@ export async function scoreVersion(dir, sport, { refit = false, propsLayer = tru
   // the finals over by then, the day-of terms at what was known then; ratings.mjs replay's asOf. A version from before
   // it has none: its rows read the game's own expectation, stamped with the game's facts)
   const hist = loadHistory(sport);
+  // (the intraday snapshots (D61, D63): the lines at the offset hours before each start, kind 'i', priced as of their
+  // own time like the opens; only the replay's placement reads them (rows.intra), never the bar, the fits or the legs)
+  if (process.env.GATE_NO_INTRA !== '1') for (const l of intradayLines(hist.events, readIntraday(sport), INTRA_OFFSETS[sport] ?? [])) hist.lines.push(l);
   const asked = new Map();
   for (const l of hist.lines) {
-    if (l.kind !== 'o' && l.kind !== 'c') continue;
+    if (l.kind !== 'o' && l.kind !== 'c' && l.kind !== 'i') continue;
     const e = hist.events.get(l.oid);
     const at = Date.parse(l.ts);
     if (!e?.id || !fin(at)) continue;
@@ -529,6 +554,7 @@ export async function scoreVersion(dir, sport, { refit = false, propsLayer = tru
   // (the history's props first: its anchor fit walk-forward by season (gate-history.mjs propHistoryRows, D33) prices
   // the ledger's replayed rows at the newest season's pull, the one the live desk reads)
   const histProps = histMatches.length ? propHistoryRows(V, sport, histIndex, histMatches, current, { factsLead: H.context.dayOfMinLead?.(sport) ?? null }) : { open: [], close: [], anchor: null };
+  if (process.env.REPLAY_DUMP && histProps.close.length) { try { writeFileSync(path.join(process.env.REPLAY_DUMP, `${sport}-propclose.json`), JSON.stringify(histProps.close.map((x) => [x.event, x.stat, x.name, x.line, x.f, x.p, x.y, x.mu ?? null, x.t, x.season]))); } catch {} }
   if (hist.props.length) say(`history props: ${histIndex.size} player games in the history, ${histProps.close.length} closes and ${histProps.open.length} opens matched to the replay${histProps.anchor ? `; the anchor's pull by stat: ${V.anchor.anchorText(histProps.anchor.all)}` : ''}${histProps.risk && V.lineupRisk?.riskText ? `; the lineup risk by stat: ${V.lineupRisk.riskText(histProps.risk)}` : ''}`);
   // (the confidence layer (confidence.mjs, D52): the quality model fit walk-forward on the closes and the props' opens
   // (the lines' opens left out: the replay's ratings read the game's own facts there), its blend weight stepped
@@ -587,8 +613,9 @@ export async function scoreVersion(dir, sport, { refit = false, propsLayer = tru
     };
     const labelOf = Object.fromEntries((H.props.STATS?.[sport] ?? []).map((s) => [s.key, s.label]));
     for (const x of [...histProps.open, ...histProps.close]) x.label = labelOf[x.stat] ?? x.stat;
-    replay = V.replay.replayRecord(V, sport, { open: [...histLines.open, ...histProps.open], close: [...histLines.close, ...histProps.close] }, { confidence, events: hist.events, names, epoch: V.leagues.MODEL_EPOCH ?? null, evScale, sched: V.desk.scheduleRest ? (V.desk.withTravel ? V.desk.withTravel(V.desk.scheduleRest(histGames), feats?.feats) : V.desk.scheduleRest(histGames)) : null });
+    replay = V.replay.replayRecord(V, sport, { open: [...histLines.open, ...histProps.open], close: [...histLines.close, ...histProps.close], intra: histLines.intra ?? [] }, { confidence, events: hist.events, names, epoch: V.leagues.MODEL_EPOCH ?? null, evScale, sched: V.desk.scheduleRest ? (V.desk.withTravel ? V.desk.withTravel(V.desk.scheduleRest(histGames), feats?.feats) : V.desk.scheduleRest(histGames)) : null });
     say(`replayed record: ${replay.overall.won}-${replay.overall.lost}-${replay.overall.push} ${replay.overall.profit >= 0 ? '+' : ''}${replay.overall.profit}u (ROI ${replay.overall.roi === null ? '-' : `${(replay.overall.roi * 100).toFixed(1)}%`}) on ${replay.n.bets} bets (${replay.flags.timing.open} at a clean open, ${replay.flags.timing.close} at the close), ${replay.n.practice} practice picks; by band ${Object.entries(replay.byBand).map(([k, v]) => `${k} ${v.won}-${v.lost}-${v.push} ${v.profit >= 0 ? '+' : ''}${v.profit}u`).join(', ')}`);
+    if (replay.flags?.windows) say(`betting windows (D63): ${replay.flags.windows.keys} keys with intraday snapshots; placed ${JSON.stringify(replay.flags.windows.placed)}; final ${Object.entries(replay.flags.windows.final).map(([k, v]) => `${k} ${v.policy}${v.policy === "legacy" ? "" : ` +${v.gain} (se ${v.se}, n ${v.n})`}`).join(", ")}`);
   }
   return {
     sport,
@@ -607,6 +634,7 @@ export async function scoreVersion(dir, sport, { refit = false, propsLayer = tru
     risk: histProps.risk ?? null,
     // (the lines' history bar (D51): what --record writes for the live desk)
     lineBar,
+    propBar: V.desk.propBar && histProps.close.length ? propBarOf(V, histProps.close, current) : null,
     // (the confidence layer (D52): the quality model, its blend weight and its tiers, what --record writes)
     confidence,
     // (the reason tiers (D58, reasons.mjs): the file --record writes, from the replay's walk)
@@ -861,6 +889,14 @@ function recordScore(version, sport, score, frozen, inputs = null) {
     writeFileSync(out, `${JSON.stringify({ sport, epoch: score.epoch, commit: entry.commit, at: entry.at, current: score.current, ...score.lineBar, ...(place ? { applies: place.applies, place } : {}) }, null, 1)}\n`);
     console.log(`${sport}: the lines' history bar written (${path.relative(ROOT, out)}): ${Object.entries(score.lineBar.segments).map(([k, s]) => `${k} ${s.on ? 'ON' : 'practice'} (${s.mean === null ? '-' : `${s.mean >= 0 ? '+' : ''}${r4(s.mean * 100)}%`} on ${s.n})`).join(', ')}`);
   }
+  // (the props' stat bar (D64, desk.mjs propBar): each stat and side's flat record on the priced history's prop closes
+  // as this version priced them, with its own place; what the live desk reads (readPropBar) where it's on)
+  if (score.propBar?.segments && score.replay?.flags?.propBar) {
+    const out = path.join(ROOT, 'apps', sport, 'src/StaticData/model/prop-bar.json');
+    const place = score.replay.flags.propBar;
+    writeFileSync(out, `${JSON.stringify({ sport, epoch: score.epoch, commit: entry.commit, at: entry.at, current: score.current, ...score.propBar, applies: place.applies, place }, null, 1)}\n`);
+    console.log(`${sport}: the props' stat bar written (${path.relative(ROOT, out)}): ${place.applies ? 'stakes the props' : 'stands aside'}; ${Object.entries(score.propBar.segments).filter(([, s]) => s.on).map(([k]) => k).join(', ') || 'no key on'}`);
+  }
   // (the MMA's history prior (gate-mma.mjs trustPrior, DECISIONS.md D36): each market's trust fit on the priced history,
   // what the live desk reads (mma-desk.mjs readTrustPrior), and the rows it pools with its own bets)
   if (score.trustPrior) {
@@ -889,6 +925,14 @@ function recordScore(version, sport, score, frozen, inputs = null) {
   // (the reason-based tiers (D58, reasons.mjs): each market's reasons with their records and verdicts on the replayed
   // record's bets, and the tiers' own place; what the live desk reads (reasons.mjs readReasons), apps/<sport>/src/
   // StaticData/model/reasons.json. A version without them leaves the file as it is)
+  // (the betting windows (D63, windows.mjs): each line segment's policy on the whole history, what the live desk reads
+  // (readWindows), apps/<sport>/src/StaticData/model/windows.json; a version or sport without them leaves it as it is)
+  if (score.replay?.flags?.windows?.final) {
+    const out = path.join(ROOT, 'apps', sport, 'src/StaticData/model/windows.json');
+    const segs = score.replay.flags.windows.final;
+    writeFileSync(out, `${JSON.stringify({ v: 1, sport, at: new Date().toISOString(), epoch: score.epoch, commit: entry.commit, segments: segs }, null, 1)}\n`);
+    console.log(`${sport}: the betting windows written: ${Object.entries(segs).map(([k, v]) => `${k} ${v.policy}`).join(', ')}`);
+  }
   if (score.reasons?.markets) {
     const out = path.join(ROOT, 'apps', sport, 'src/StaticData/model/reasons.json');
     writeFileSync(out, `${JSON.stringify({ ...score.reasons, epoch: score.epoch, commit: entry.commit }, null, 1)}\n`);

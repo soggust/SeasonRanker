@@ -953,7 +953,7 @@ test('D53 an open bet placed under a band or stake rule changed since is taken b
   // (the new bet keeps the withdrawn one honestly: its price, band, stake, the rules it was placed under, the reason)
   const re = M.withdrawnOf(hokit, now.toISOString());
   assert.equal(re.n, 1);
-  assert.match(re.why[0], /^rule changed \(placed under cap1, now cap3/);
+  assert.match(re.why[0], /^rule changed \(placed under cap1, now cap4/);
   assert.deepEqual([re.from.odds, re.from.units, re.from.band, re.from.rules], [205, 0.5, 'medium', 'cap1']);
   // (every new bet is stamped; the withdrawal only at a fresh Odds API price (D30); run.mjs takes one back like news)
   const mma = fs.readFileSync(path.resolve('libs/ranker/scripts/model/mma-desk.mjs'), 'utf8');
@@ -1277,4 +1277,67 @@ test('D61 the big plan\'s leftover month: the desk may spend past MONTHLY till B
   const s = Date.parse('2025-01-10T00:30:00Z');
   const times = I.snapshotTimes([s], [24, 1], { now: s + 864e5 });
   assert.deepEqual(times.map((t) => new Date(t).toISOString()), ['2025-01-09T00:00:00.000Z', '2025-01-09T23:00:00.000Z']);
+});
+
+test('D63 the betting windows: a line segment leaves the old placement only on a paired gain past 1.645 SEs over 60 games, never at worse prices against the fair close; live a held pick bets at its hour and always at the last chance', async () => {
+  const W = await import('../libs/ranker/scripts/model/windows.mjs');
+  assert.equal(W.WIN_Z, 1.645);
+  assert.equal(W.WIN_MIN, 60);
+  assert.deepEqual(W.POLICIES, ['legacy', 'h24', 'h12', 'h6', 'h3', 'h1']);
+  // (the old placement: the archive's open, else the close; a window: the first snapshot from its hour on with an edge)
+  const cands = [{ kind: 'i', hours: 24, ev: 0.02, seg: 'ml:dog' }, { kind: 'o', hours: 12, ev: 0.01, seg: 'ml:dog' }, { kind: 'i', hours: 6, ev: 0.03, seg: 'ml:dog' }, { kind: 'c', hours: 0, ev: 0.01, seg: 'ml:dog' }];
+  assert.equal(W.placeBy(cands, () => 'legacy').kind, 'o');
+  assert.equal(W.placeBy(cands, () => 'h6').hours, 6);
+  assert.equal(W.placeBy(cands, () => 'h24').hours, 24);
+  assert.equal(W.placeBy(cands.filter((c) => c.kind !== 'o'), () => 'legacy').kind, 'c');
+  // (the walk: a month reads only games settled before it; too few or within noise stays legacy)
+  const t0 = Date.parse('2025-01-01T00:00:00Z');
+  const many = Array.from({ length: 80 }, (_, i) => ({ t: t0 + i * 36e5, seg: 'ml:dog', any: true, by: { legacy: -1, h24: -1, h12: -1, h3: -1, h1: -1, h6: i % 5 ? 1 : -1 }, clv: { h6: { beat: 1, clv: 0.02 } } }));
+  const w = W.walkWindows(many);
+  assert.equal(w.at(t0, 'ml:dog'), 'legacy');
+  assert.equal(w.final['ml:dog'].policy, 'h6');
+  assert.equal(W.walkWindows(many.slice(0, 50)).final['ml:dog'].policy, 'legacy');
+  // (unchecked against the fair close, or under D60's 52.5% there, or at worse prices than the old placement: refused)
+  assert.equal(W.walkWindows(many.map((o) => ({ ...o, clv: {} }))).final['ml:dog'].policy, 'legacy');
+  assert.equal(W.walkWindows(many.map((o, i) => ({ ...o, clv: { h6: { beat: i % 2, clv: 0.01 } } }))).final['ml:dog'].policy, 'legacy');
+  const worse = many.map((o) => ({ ...o, clv: { legacy: { beat: 1, clv: 0.02 }, h6: { beat: 0, clv: -0.02 } } }));
+  assert.equal(W.walkWindows(worse).final['ml:dog'].policy, 'legacy');
+  // (live: held while the game is further than the hour; never inside the last chance; legacy never held)
+  const file = { segments: { 'ml:dog': { policy: 'h6' }, 'ml:fav': { policy: 'legacy' } } };
+  assert.equal(W.heldNow(file, 'ml', 'dog', 10, 3), true);
+  assert.equal(W.heldNow(file, 'ml', 'dog', 6.5, 3), false);
+  assert.equal(W.heldNow(file, 'ml', 'fav', 20, 3), false);
+  assert.equal(W.heldNow({ segments: { 'ml:dog': { policy: 'h1' } } }, 'ml', 'dog', 2.5, 3), false);
+});
+
+test('D64 the props\' stat bar: D51\'s bar by stat and side, on only in the sports the gate shipped it for, a key without an earned record at the practice stake, never off', async () => {
+  const D = await import('../libs/ranker/scripts/model/desk.mjs');
+  assert.equal(D.propKey('reb', 'under'), 'prop:reb:under');
+  assert.deepEqual(D.PROP_BAR_SPORTS, ['nba', 'nfl']);
+  const file = { applies: true, segments: { 'prop:reb:under': { n: 200, sum: 20, sum2: 200 } } };
+  const bar = D.propBar(file, [], 'nba');
+  const on = D.propBarGate(bar, file, 'nba', 'reb', 'under', 0.05);
+  const off = D.propBarGate(bar, file, 'nba', 'ast', 'under', 0.05);
+  assert.equal(off.on, false);
+  assert.equal(off.practice, true);
+  assert.equal(typeof on.on, 'boolean');
+  // (not on in a sport the gate didn't ship it for, nor where the file's own place stands aside)
+  assert.equal(D.propBarGate(bar, file, 'nhl', 'ast', 'under', 0.05), null);
+  assert.equal(D.propBarGate(bar, { ...file, applies: false }, 'nba', 'ast', 'under', 0.05), null);
+  // (a barred prop still bets: the practice stake through gatedPlacement)
+  const placed = D.gatedPlacement(0.05, 1, off);
+  assert.equal(placed.units, D.PRACTICE_UNITS);
+});
+
+test('D65 MMA\'s Kelly bands earn their place: a LOVE or LOCK whose earlier would-be bets didn\'t beat the band below (return and beat-the-close) falls a band, its stake to that band\'s cap', async () => {
+  const R = await import('../libs/ranker/scripts/model/reasons.mjs');
+  const t0 = Date.parse('2025-01-01T00:00:00Z');
+  // (LOVEs that lose more than the LIKEs: never placed)
+  const bets = [...Array.from({ length: 60 }, (_, i) => ({ t: t0 + i * 864e5, tier: 'high', profit: -1, beat: 0 })), ...Array.from({ length: 60 }, (_, i) => ({ t: t0 + i * 864e5, tier: 'medium', profit: 0.1, beat: 1 }))];
+  const p = R.placeTiers(bets);
+  assert.equal(p.final.love, false);
+  assert.equal(R.placed('high', p.final), 'medium');
+  assert.equal(R.tierUnits(2.5, 'medium'), 1);
+  const src = fs.readFileSync(path.join(import.meta.dirname, '../libs/ranker/scripts/model/replay-record.mjs'), 'utf8');
+  assert.ok(src.includes("sport === 'mma' && REASONS?.placeTiers"));
 });

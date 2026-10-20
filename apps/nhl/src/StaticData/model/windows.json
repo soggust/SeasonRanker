@@ -1,0 +1,45 @@
+{
+ "v": 1,
+ "sport": "nhl",
+ "at": "2026-10-20T15:27:33.611Z",
+ "epoch": "2026-10-20T05:45:00Z",
+ "commit": "c982565c",
+ "segments": {
+  "ml:dog": {
+   "policy": "legacy",
+   "n": 93,
+   "gain": 0,
+   "se": null
+  },
+  "ml:fav": {
+   "policy": "legacy",
+   "n": 46,
+   "gain": 0,
+   "se": null
+  },
+  "spread:fav": {
+   "policy": "legacy",
+   "n": 19,
+   "gain": 0,
+   "se": null
+  },
+  "spread:dog": {
+   "policy": "legacy",
+   "n": 154,
+   "gain": 0,
+   "se": null
+  },
+  "total:over": {
+   "policy": "legacy",
+   "n": 176,
+   "gain": 0,
+   "se": null
+  },
+  "total:under": {
+   "policy": "legacy",
+   "n": 221,
+   "gain": 0,
+   "se": null
+  }
+ }
+}

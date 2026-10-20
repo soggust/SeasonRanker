@@ -63,14 +63,16 @@ export function historyLineBets(events, lines, games) {
   const byGame = new Map(games.map((g) => [String(g.id), g]));
   const by = new Map();
   for (const l of lines) {
-    if (l.kind !== 'o' && l.kind !== 'c') continue;
-    const k = `${l.oid}|${l.kind}`;
+    if (l.kind !== 'o' && l.kind !== 'c' && l.kind !== 'i') continue;
+    // (an intraday snapshot (D63, intradayLines): one row set a snapshot hour, both books read at its time)
+    const k = l.kind === 'i' ? `${l.oid}|i|${l.h}` : `${l.oid}|${l.kind}`;
     const m = by.get(k) ?? by.set(k, {}).get(k);
     (m[l.book] ??= {})[l.market] = l;
   }
   const out = [];
   for (const [k, books] of by) {
-    const [oid, kind] = k.split('|');
+    const [oid, kind, hh] = k.split('|');
+    const h = kind === 'i' ? Number(hh) : null;
     const e = events.get(oid);
     const g = e?.id ? byGame.get(String(e.id)) : null;
     if (!g?.final || !fin(g.hs)) continue;
@@ -102,7 +104,7 @@ export function historyLineBets(events, lines, games) {
       if (!MARKET[mk] || !fin(d.a) || !fin(d.b)) continue;
       const market = MARKET[mk];
       if (market !== 'ml' && !fin(d.line)) continue;
-      out.push({ id: `h:${g.id}:${market}`, event: String(g.id), when: kind === 'o' ? 'open' : 'close', kind, market, side: market === 'total' ? 'over' : 'home', line: market === 'ml' ? null : d.line, odds: d.a, otherOdds: d.b, fair: fairOf(mk), pin: pinOf(mk), anchor: 'pinnacle', ...(market === 'ml' ? { spreadHome: spread && seenBy(dk.spreads, d.ts) ? spread : false } : {}), start: e.t, season: g.season, at: d.ts });
+      out.push({ id: `h:${g.id}:${market}`, event: String(g.id), when: kind === 'o' ? 'open' : kind === 'c' ? 'close' : `i${h}`, kind, ...(kind === 'i' ? { h } : {}), market, side: market === 'total' ? 'over' : 'home', line: market === 'ml' ? null : d.line, odds: d.a, otherOdds: d.b, fair: fairOf(mk), pin: pinOf(mk), anchor: 'pinnacle', ...(market === 'ml' ? { spreadHome: spread && seenBy(dk.spreads, d.ts) ? spread : false } : {}), start: e.t, season: g.season, at: d.ts });
     }
   }
   return out;
@@ -216,13 +218,13 @@ export function lineHistoryRows(V, sport, params, shape, expOf, games, hist, cur
     const at = Date.parse(b.at);
     const e = expAtOf && fin(at) ? expAtOf(b.event, at) : null;
     if (e) {
-      factsAt.set(`${b.id}|${b.kind}`, e.factsAt ?? null);
+      factsAt.set(`${b.id}|${b.when}`, e.factsAt ?? null);
       return e;
     }
     const w = expOf(b.event);
     if (w) {
       whole++;
-      factsAt.set(`${b.id}|${b.kind}`, factsOf?.(b.event) ?? Date.parse(b.start));
+      factsAt.set(`${b.id}|${b.when}`, factsOf?.(b.event) ?? Date.parse(b.start));
     }
     return w;
   };
@@ -234,7 +236,7 @@ export function lineHistoryRows(V, sport, params, shape, expOf, games, hist, cur
     const s = V.desk.settle(b, g);
     if (s.void) continue;
     const y = s.status === 'won' ? 1 : s.status === 'lost' ? 0 : null;
-    rows.push({ id: `${b.id}:${b.kind}`, key: b.id, event: b.event, sport, market: b.market, stat: b.market, kind: b.kind, line: b.line, day: etDay(Date.parse(b.start)), t: Date.parse(b.start), at: fin(Date.parse(b.at)) ? Date.parse(b.at) : null, factsAt: factsAt.get(`${b.id}|${b.kind}`) ?? null, season: b.season, f: b.fair, raw: Math.min(0.999, Math.max(0.001, b.model)), y, q: null, overOdds: b.odds, underOdds: b.otherOdds, w: seasonWeight(sport, b.season, current).w, pin: !!b.pin, ...(fin(b.named) ? { named: b.named } : {}) });
+    rows.push({ id: b.kind === 'i' ? `${b.id}:i${b.h}` : `${b.id}:${b.kind}`, key: b.id, event: b.event, sport, market: b.market, stat: b.market, kind: b.kind, ...(b.kind === 'i' ? { h: b.h } : {}), line: b.line, day: etDay(Date.parse(b.start)), t: Date.parse(b.start), at: fin(Date.parse(b.at)) ? Date.parse(b.at) : null, factsAt: factsAt.get(`${b.id}|${b.when}`) ?? null, season: b.season, f: b.fair, raw: Math.min(0.999, Math.max(0.001, b.model)), y, q: null, overOdds: b.odds, underOdds: b.otherOdds, w: seasonWeight(sport, b.season, current).w, pin: !!b.pin, ...(fin(b.named) ? { named: b.named } : {}) });
   }
   // (a version with the totals rule (D44, desk.mjs trustStart): its totals' trust walks forward from 0, the named
   // terms' shift on each row at full weight)
@@ -249,9 +251,9 @@ export function finish(V, rows, keyOf, start, kind) {
   const close = new Map(rows.filter((x) => x.kind === 'c').map((x) => [x.key, x]));
   const open = new Map(rows.filter((x) => x.kind === 'o').map((x) => [x.key, x]));
   for (const x of rows) {
-    const other = x.kind === 'o' ? close.get(x.key) : open.get(x.key);
+    const other = x.kind !== 'c' ? close.get(x.key) : open.get(x.key);
     if (!other || !(other.line === x.line || (other.line === null && x.line === null))) continue;
-    if (x.kind === 'o') x.q = other.f;
+    if (x.kind !== 'c') x.q = other.f;
     else x.fo = other.f;
   }
   const closeRows = rows.filter((x) => x.kind === 'c');
@@ -263,15 +265,54 @@ export function finish(V, rows, keyOf, start, kind) {
   // (a close row at its own month's trust; an open row at the trust as of its own snapshot (the months before the
   // snapshot's: no result after it), its game's close row's where it has no snapshot time)
   for (const x of rows) {
-    const t = x.kind === 'o' && fin(x.at) ? trust.at(keyOf(x), x.at) : (trustOf.get(x.kind === 'c' ? x.id : close.get(x.key)?.id) ?? start(keyOf(x)));
-    const ctx = { sport: x.sport, market: kind === 'lines' ? x.market : 'prop', stat: x.stat, line: x.line, side: 'over', f: x.f, raw: modelOf(x), overOdds: x.overOdds, underOdds: x.underOdds, t: x.t, at: fin(x.at) ? x.at : x.t - (x.kind === 'o' ? 24 * 36e5 : 36e5), kind: x.kind, fo: x.fo ?? null, home: x.home ?? null, season: x.season, ...(fin(x.named) ? { named: x.named } : {}) };
+    const t = x.kind !== 'c' && fin(x.at) ? trust.at(keyOf(x), x.at) : (trustOf.get(x.kind === 'c' ? x.id : close.get(x.key)?.id) ?? start(keyOf(x)));
+    const ctx = { sport: x.sport, market: kind === 'lines' ? x.market : 'prop', stat: x.stat, line: x.line, side: 'over', f: x.f, raw: modelOf(x), overOdds: x.overOdds, underOdds: x.underOdds, t: x.t, at: fin(x.at) ? x.at : x.t - (x.kind === 'o' ? 24 * 36e5 : 36e5), kind: x.kind, ...(x.kind === 'i' && fin(x.at) ? { hours: (x.t - x.at) / 36e5 } : {}), fo: x.fo ?? null, home: x.home ?? null, season: x.season, ...(fin(x.named) ? { named: x.named } : {}) };
     x.p = Math.min(0.999, Math.max(0.001, V.desk.chanceAt(kind === 'lines' ? x.market : 'prop', x.f, modelOf(x), t, ctx)));
     // (the current price before the residual blend (the trust's chance), what the confidence layer reads as the
     // blend's start: confidence.mjs features, D52)
     x.pCur = Math.min(0.999, Math.max(0.001, V.desk.chanceAt(kind === 'lines' ? x.market : 'prop', x.f, modelOf(x), t)));
     x.trust = t;
   }
-  return { open: rows.filter((x) => x.kind === 'o'), close: closeRows };
+  return { open: rows.filter((x) => x.kind === 'o'), close: closeRows, intra: rows.filter((x) => x.kind === 'i') };
+}
+
+// The intraday lines (DECISIONS.md D63, intraday.mjs readIntraday's { rows, snaps }) as the archive's line rows of kind
+// 'i': each event's book and market as they stood at the snapshot nearest each offset hour before its start (within
+// SNAP_TOL), h the offset; both books read at the snapshot's time (a change-only row stands until its next one)
+export const SNAP_TOL = 0.75 * 36e5;
+export function intradayLines(events, intra, offsets) {
+  const snaps = [...new Set(intra?.snaps ?? [])].map((s) => Date.parse(s)).filter(fin).sort((a, b) => a - b);
+  const nearest = (t) => {
+    let lo = 0;
+    let hi = snaps.length;
+    while (lo < hi) {
+      const m = (lo + hi) >> 1;
+      if (snaps[m] < t) lo = m + 1;
+      else hi = m;
+    }
+    const c = [snaps[lo - 1], snaps[lo]].filter(fin).sort((a, b) => Math.abs(a - t) - Math.abs(b - t))[0];
+    return fin(c) && Math.abs(c - t) <= SNAP_TOL ? c : null;
+  };
+  const out = [];
+  for (const [oid, list] of intra?.rows ?? []) {
+    const e = events.get(oid);
+    const start = Date.parse(e?.t);
+    if (!e || !fin(start)) continue;
+    const seen = new Set();
+    for (const h of offsets ?? []) {
+      const T = nearest(start - h * 36e5);
+      if (!fin(T) || T >= start || seen.has(T)) continue;
+      seen.add(T);
+      const last = new Map();
+      for (const x of list) {
+        if (x.ts > T) break;
+        last.set(`${x.book}|${x.market}`, x);
+      }
+      const ts = new Date(T).toISOString();
+      for (const x of last.values()) out.push({ oid, kind: 'i', h, ts, book: x.book, market: x.market, line: x.line, a: x.a, b: x.b });
+    }
+  }
+  return out;
 }
 
 // The props' history rows: the replay's player games (each { stat, name, game, pid, v (what he did), mu (the

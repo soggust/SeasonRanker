@@ -106,8 +106,8 @@ export const suspectOf = (ev, why = '', p = null) => {
 // the rules were kept reads as placed under today's, except one held by the old ev bar (its suspect with no edge in
 // points: CAP_RULES 1). DECISIONS.md D53
 // (1: D23 by the return, ev past 0.15; 2: D23 by the edge in points and SDs, 27a9d205; 3: the reason tiers, D58: the
-// band from the proven reasons, the stake held to the tier's cap)
-export const CAP_RULES = 3;
+// band from the proven reasons, the stake held to the tier's cap; 4: the props' stat bar, D64, and MMA's bands' place, D65)
+export const CAP_RULES = 4;
 // (an open bet's re-prices on news or a rule change: at most this many, counted across runs)
 export const MAX_REPRICES = 6;
 export const rulesOf = (bands) => `cap${CAP_RULES} suspect ${EDGE_SUSPECT}/${Z_SUSPECT}/${EV_SUSPECT} bands ${bands.lock}/${bands.lockChance}/${bands.high}/${bands.medium}`;
@@ -1011,6 +1011,8 @@ export const practiceGates = (gates) =>
 // writes it
 export const BAR_Z = 1;
 export const BAR_MIN = 40;
+// (the props' stat bar (DECISIONS.md D64): D51's bar on the props by stat and side, in the replay and the live desk; PROP_BAR=0 off)
+export const PROP_BAR = process.env.PROP_BAR !== '0';
 export const SIDE_CLASSES = ['fav', 'dog', 'over', 'under'];
 // (the timing classes: a line bet placed EARLY_HOURS or more before its start is an early one, nearer a late one.
 // The priced history's clean opens (DraftKings' first price, 8 to 14 hours out in the NBA, NHL and MLB, days out in
@@ -1235,6 +1237,48 @@ export function barAside(file) {
   if (!file || file.applies !== false) return null;
   const p = file.place ?? {};
   return `the history bar stands aside: the lines at full stakes earned ${p.fullUnits ?? '-'}u on the history against ${p.barUnits ?? '-'}u as the bar staked them`;
+}
+// ---- The props' stat bar (DECISIONS.md D64, 2026-10-20) ----
+// D51's bar on the props: a prop pick's real stake is earned by its key, "prop:<stat>:<over|under>", on the priced
+// history's prop picks (every positive-edge close, flat, recency-weighted by season: gate.mjs propBarOf, written by
+// --record to prop-bar.json) pooled with the sport's live prop bets since the epoch, at the key's minimum edge; else
+// the practice stake (never off, D1). Its own place by season as the lines' (replay-record.mjs barPlace on the props):
+// a file with applies false stands aside. On in the sports the gate shipped it for (PROP_BAR_SPORTS: the replay's
+// verdict by sport, as anchor.mjs anchorOn)
+export const PROP_BAR_SPORTS = ['nba', 'nfl'];
+export const propBarOn = (sport) => PROP_BAR && PROP_BAR_SPORTS.includes(sport);
+export const propKey = (stat, side) => `prop:${stat}:${side}`;
+export function propBar(prior, bets, sport, epoch = MODEL_EPOCH) {
+  const live = (bets ?? []).filter((b) => b.sport === sport && b.market === 'prop' && !b.void && !isTracked(b) && ['won', 'lost', 'push'].includes(b.status) && Number.isFinite(b.odds) && (!epoch || Date.parse(b.placedAt ?? b.start) >= Date.parse(epoch)));
+  const keyOf = (b) => propKey(b.propType ?? b.stat, b.side);
+  const keys = new Set([...Object.keys(prior?.segments ?? {}), ...live.map(keyOf)]);
+  const out = {};
+  for (const k of keys) {
+    const l = edgeStats(live.filter((b) => keyOf(b) === k).map((b) => ({ profit: flatProfit(b.odds, b.status), w: 1, ev: b.ev })));
+    const p = prior?.segments?.[k] ?? { n: 0, sum: 0, sum2: 0 };
+    const v = keyVerdict(addEdgeStats(p, l));
+    out[k] = { ...v, practice: !v.on, prior: { n: round(p.n ?? 0, 1), mean: p.n ? round(p.sum / p.n, 4) : null }, live: { n: round(l.n, 1), mean: l.n ? round(l.sum / l.n, 4) : null }, z: BAR_Z, min: BAR_MIN, epoch };
+  }
+  return out;
+}
+// (a prop pick's gate from the bar: null where the bar isn't on in the sport or stands aside)
+export function propBarGate(bar, file, sport, stat, side, ev = null) {
+  if (!propBarOn(sport) || !file || file.applies === false) return null;
+  const k = propKey(stat, side);
+  const g = bar?.[k];
+  if (g?.on && (!Number.isFinite(ev) || ev >= (g.minEdge ?? 0))) return { ...g, key: k };
+  const why = !g ? `${k}: no history priced yet, the practice stake till it earns it` : g.on ? `${k}: a return of ${round(ev * 100, 1)}%, under the stat's minimum edge of ${round(g.minEdge * 100, 1)}%` : `${k}: ${g.why ?? 'not net positive beyond noise on the record'}`;
+  return { ...(g ?? { n: 0 }), on: false, practice: true, key: k, why };
+}
+export function readPropBar(root, sport) {
+  const file = path.join(root, 'apps', sport, 'src/StaticData/model/prop-bar.json');
+  try {
+    if (!existsSync(file)) return null;
+    const bar = JSON.parse(readFileSync(file, 'utf8'));
+    return bar && bar.segments && typeof bar.segments === 'object' ? bar : null;
+  } catch {
+    return null;
+  }
 }
 export function readLineBar(root, sport) {
   const file = path.join(root, 'apps', sport, 'src/StaticData/model/line-bar.json');

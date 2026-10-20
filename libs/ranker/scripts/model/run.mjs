@@ -156,6 +156,7 @@ import { fitCode, fitDay, fitDiffs, fitPlan, readFit, refitWhy, saveFit } from '
 import { corrRows, correctionText, tuneCorrection } from './correct.mjs';
 import { PRACTICE_N, PRACTICE_SPLIT, PRACTICE_STAKED, lineBucket, practiceRecord, practiceTop, slateQuota } from './desk.mjs';
 import { MAX_REPRICES, TRUST_START, rulesChanged, rulesOf } from './desk.mjs';
+import { propBar, propBarGate, readPropBar } from './desk.mjs';
 import { BANKROLL, MARKETS, PRACTICE_UNITS, EARLY_HOURS, stakeKelly, gatedPlacement, stakeFor, practiceGates, choose, decimal, isTracked, trackedRecord, lineGate, lineBar, barGate, bothGates, readLineBar, barAside, reasonsOf, scheduleRest, withTravel, propGate, fairPair, placeGame, sameGameOf, sameGameRhoText, fitTrust, fitBuckets, bucketTrustOf, BUCKETS, gapGuard, guardOf, oneSide, pickText, placement, price, record, settle, voidOf } from './desk.mjs';
 import { CHECK_KELLY, CHECK_KINDS, atUnit, causeOf, checkLocked, checkOf, rejudgeChecks, shadowOf, checkResultOf, checkSummary, closeChecks, markPlaced, modelSide, noteOpen, openCheck, priceAtOf, resolveChecks, STORED_FRESH, storedBet, storedFresh, upsertCheck, withStoredPrices } from './checks.mjs';
 import { ledgerWrites, readChecks, readKept } from './checks-file.mjs';
@@ -171,6 +172,7 @@ import { RESEARCH_UNITS, causeKey, callChecks, feedCheck, hollow, unplacedCall, 
 import { researchBudget } from './ai-budget.mjs';
 import { gameRows, logLines, lostSince, propRows } from './linelog.mjs';
 import { runMma } from './mma-desk.mjs';
+import { heldNow, holdFor, readWindows } from './windows.mjs';
 import { CORRECT_WINDOW, officialLookup } from './nhl-official.mjs';
 
 const ROOT = path.resolve(import.meta.dirname, '../../../..');
@@ -1863,6 +1865,8 @@ function betGames(r) {
   // at the practice stake, never turned off)
   const barFile = readLineBar(ROOT, sport);
   r.lineBar = lineBar(barFile, r.ledger?.bets ?? [], sport, MODEL_EPOCH);
+  // (the betting windows (D63, windows.mjs): a line pick whose segment's record says to wait is held till its hour)
+  r.windows = readWindows(ROOT, sport);
   // (the bar's own place (D51): where full stakes out-earned it on the history, it stands aside)
   r.lineBarAside = barAside(barFile);
   if (r.lineBarAside) console.log(`${sport}: ${r.lineBarAside}`);
@@ -1919,7 +1923,18 @@ function betGames(r) {
         held.set(hold, (held.get(hold) ?? 0) + 1);
         continue;
       }
-      picks.push({ market: market.market, id, pick: choose(market, trust[market.market]?.trust ?? START_TRUST, EV_SCALE, rctx) });
+      const pick = choose(market, trust[market.market]?.trust ?? START_TRUST, EV_SCALE, rctx);
+      // (its segment's window (D63): a pick with an edge whose record says it's better bet nearer the start waits for
+      // that hour, at the price then; the last chance always bets)
+      if (pick && pick.ev > 0 && r.windows) {
+        const cls = market.market === 'total' ? pick.side : pick.fair >= 0.5 ? 'fav' : 'dog';
+        if (heldNow(r.windows, market.market, cls, ahead / 36e5, lastChanceOf(sport, r.gap))) {
+          const why = `waiting for its betting window (${holdFor(r.windows, market.market, cls)}h before the start)`;
+          held.set(why, (held.get(why) ?? 0) + 1);
+          continue;
+        }
+      }
+      picks.push({ market: market.market, id, pick });
     }
     // (the guards: the model too far from the book skips the market (desk.mjs gapGuard: the market knowing
     // something it doesn't); a line that's moved a lot against its side since it opened (less what the context
@@ -2264,6 +2279,8 @@ async function betProps(r) {
     }
   }
   r.propGate = propGate(ledger.bets ?? [], sport, MODEL_EPOCH);
+  r.propBarFile = readPropBar(ROOT, sport);
+  r.propBar = propBar(r.propBarFile, ledger.bets ?? [], sport, MODEL_EPOCH);
   for (const [k, g] of Object.entries(r.propGate)) if (!g.on) console.log(`${sport}: ${k} props at the practice stake this run: ${g.why}`);
   // (the NFL's anytime touchdown market this run: asked with the props while the month can pay for it)
   if (sport === 'nfl') {
@@ -2778,7 +2795,8 @@ async function betProps(r) {
     const edge = x.ev > 0 || !!x.researchBet || !!x.roleBet || !!topN;
     if (topN) x.units = PRACTICE_UNITS;
     // (the stat's CLV gate (r.propGate): failing, bet as ever at the practice stake, the gate's word on the row)
-    const gate = r.propGate?.[x.prop.stat.key] ?? null;
+    // (and the props' stat bar (D64): a stat and side the record hasn't earned at this return, the practice stake)
+    const gate = bothGates(r.propGate?.[x.prop.stat.key] ?? null, propBarGate(r.propBar, r.propBarFile, sport, x.prop.stat.key, x.side, x.ev));
     const practice = !!gate && !gate.on;
     if (practice) x.guard = { ...(x.guard ?? {}), why: [x.guard?.why, `${x.prop.stat.key} ${gate.why}`].filter(Boolean).join('; ') };
     // (a research bet whose level is earned (research.mjs researchLevelOf) keeps its Kelly stake under its own

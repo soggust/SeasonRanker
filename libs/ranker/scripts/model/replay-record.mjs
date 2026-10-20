@@ -34,6 +34,8 @@
 //              convention). Small: no row list
 import { existsSync, readFileSync, writeFileSync } from 'node:fs';
 import path from 'node:path';
+import * as WINDOWS from './windows.mjs';
+import * as REASONS from './reasons.mjs';
 
 export const REPLAY_V = 1;
 export const REPLAY_LAST = 20;
@@ -202,6 +204,7 @@ export function barPlace(bets) {
 // withConfidence), so the replayed record is the record the Bot would have shown
 export function replayRecord(V, sport, rows, { events = null, names = () => ({ home: 'Home', away: 'Away', matchup: '' }), epoch = null, evScale = 0.08, now = Date.now(), sched = null, confidence = null } = {}) {
   const epochT = epoch ? Date.parse(epoch) : Infinity;
+  const W = process.env.REPLAY_WINDOWS === '0' ? null : WINDOWS;
   const timing = V.leagues?.TIMING?.[sport] ?? { lines: 26, props: 26, lastChance: 3 };
   const practiceN = V.desk.PRACTICE_N?.[sport] ?? 3;
   const practiceUnits = V.desk.PRACTICE_UNITS ?? 0.5;
@@ -243,16 +246,98 @@ export function replayRecord(V, sport, rows, { events = null, names = () => ({ h
             .filter(Boolean),
         )
       : null;
+  // (the props' stat bar (DECISIONS.md D64): D51's bar on the props, a prop pick judged on the prop picks (every
+  // positive-edge close) of the months before its own by its stat and side, "prop:<stat>:<over|under>", at its minimum
+  // edge: none on at its return, the practice stake, a LIKE at most; its own place by season below, as the lines'.
+  // So a stat the model beats the Book on earns its stakes and one it doesn't bets small. A version without it: none)
+  const propKeyOf = (x, sd) => [`prop:${x.stat}:${sd.over ? 'over' : 'under'}`];
+  const propBarAt =
+    sport !== 'mma' && V.desk.walkBar && (process.env.PROP_BAR_ALL === '1' ? V.desk.PROP_BAR : V.desk.propBarOn?.(sport))
+      ? V.desk.walkBar(
+          [...closes.values()]
+            .filter((x) => x.market === 'prop' && (x.y === 0 || x.y === 1))
+            .map((x) => {
+              const sd = sideOf(V, x, x.p);
+              return sd.ev > 0 ? { t: x.t, season: x.season, keys: propKeyOf(x, sd), ev: sd.ev, profit: (x.y === 1) === sd.over ? dec(sd.odds) - 1 : -1 } : null;
+            })
+            .filter(Boolean),
+        )
+      : null;
   const bets = [];
   const passes = [];
   const hold = new Map();
   const flags = { open: 0, close: 0, openSeen: 0, openClean: 0, openInWindow: 0, openHeld: 0, closeHeld: 0, barred: 0 };
   const keys = new Set([...opens.keys(), ...closes.keys()]);
+  // (the betting windows (DECISIONS.md D63, windows.mjs): a game line's intraday snapshots (rows.intra, D61) beside its
+  // open and close, each a candidate placement at its own price and hours; each segment's policy (the archive's open,
+  // else the close, as before; or held till an hour before the start, then the first snapshot whose edge clears)
+  // learned walk-forward from the games settled before the bet's moment, paired against the old placement on the same
+  // games. A key with no intraday snapshot, a prop, MMA, or a version without the module: placed as before)
+  const intraBy = new Map();
+  if (W && sport !== 'mma') for (const x of rows.intra ?? []) if (ok(x)) (intraBy.get(x.key) ?? intraBy.set(x.key, []).get(x.key)).push(x);
+  for (const list of intraBy.values()) list.sort((a, b) => a.at - b.at);
+  const candOf = (x, kind) => {
+    if (!x) return null;
+    const hours = kind === 'c' ? 0 : fin(x.at) ? (x.t - x.at) / 36e5 : null;
+    if (kind !== 'c') {
+      if (!(fin(hours) && hours <= timing.lines && clean(x) && knownAt(x))) return null;
+      const s = survival(risk.entryFor(x.season, x.stat, true), hours, { last: timing.lastChance ?? 3 });
+      const p = s < 1 ? x.f + Math.min(1, Math.max(0, s)) * (x.p - x.f) : x.p;
+      const sd = sideOf(V, x, p);
+      return { x, sd, kind, hours, ev: sd.ev, s, seg: W.segOf(x.market, W.classOf(x.market, sd.over, sd.fS)) };
+    }
+    if (!knownAt(x)) return null;
+    const sd = sideOf(V, x, x.p);
+    return { x, sd, kind, hours, ev: sd.ev, s: 1, seg: W.segOf(x.market, W.classOf(x.market, sd.over, sd.fS)) };
+  };
+  const candsOf = (k) => [candOf(opens.get(k), 'o'), ...(intraBy.get(k) ?? []).map((x) => candOf(x, 'i')), candOf(closes.get(k), 'c')].filter(Boolean);
+  const flatOf = (c) => (c.x.y === 1 || c.x.y === 0 ? ((c.x.y === 1) === c.sd.over ? dec(c.sd.odds) - 1 : -1) : 0);
+  let win = null;
+  if (intraBy.size) {
+    const outcomes = [];
+    for (const k of intraBy.keys()) {
+      const cands = candsOf(k);
+      const x0 = closes.get(k) ?? opens.get(k) ?? intraBy.get(k)[0];
+      for (const seg of new Set(cands.map((c) => c.seg))) {
+        const by = {};
+        const clv = {};
+        let any = false;
+        for (const P of W.POLICIES) {
+          const c = W.placeBy(cands, () => P, seg);
+          by[P] = c ? flatOf(c) : 0;
+          if (c) any = true;
+          // (its price against the fair close (D56), where it was placed before the close at the close's line)
+          const fb = c && c.kind !== 'c' ? fairBeatOf(c.x, c.sd.over, c.sd.odds, closes.get(k) ?? null) : null;
+          if (fb) clv[P] = fb;
+        }
+        outcomes.push({ t: x0.t + GAME_HOURS * 36e5, seg, by, clv, any });
+      }
+    }
+    win = W.walkWindows(outcomes);
+    flags.windows = { keys: intraBy.size, final: win.final, placed: {} };
+  }
   for (const k of keys) {
     const o = opens.get(k);
     const c = closes.get(k);
     let placed = null;
-    if (o) {
+    if (win && intraBy.has(k)) {
+      if (o) {
+        flags.openSeen++;
+        const hours = fin(o.at) ? (o.t - o.at) / 36e5 : null;
+        if (clean(o)) flags.openClean++;
+        if (fin(hours) && hours <= timing.lines) flags.openInWindow++;
+        if (clean(o) && fin(hours) && hours <= timing.lines && !knownAt(o)) flags.openHeld++;
+      }
+      const cands = candsOf(k);
+      const pick = W.placeBy(cands, (cd) => win.at(cd.x.at ?? cd.x.t, cd.seg));
+      if (pick) {
+        const pol = win.at(pick.x.at ?? pick.x.t, pick.seg);
+        flags.windows.placed[`${pol}:${pick.kind}`] = (flags.windows.placed[`${pol}:${pick.kind}`] ?? 0) + 1;
+        placed = { x: pick.x, sd: pick.sd, timing: pick.kind === 'c' ? 'close' : 'open', s: pick.s, close: pick.kind === 'c' ? null : (c ?? null), hours: pick.hours, window: pol };
+      } else if (c && !knownAt(c)) flags.closeHeld++;
+      else if (c) passes.push({ x: c, sd: sideOf(V, c, c.p) });
+      else if (o && knownAt(o)) passes.push({ x: o, sd: sideOf(V, o, o.p) });
+    } else if (o) {
       flags.openSeen++;
       const hours = fin(o.at) ? (o.t - o.at) / 36e5 : null;
       // (inside the live desk's window, MMA's too (D56: TIMING.mma 672 hours, mma-desk.mjs AHEAD_DAYS 28): an open
@@ -273,7 +358,9 @@ export function replayRecord(V, sport, rows, { events = null, names = () => ({ h
       }
     }
     // (a close, or a lone open, whose price read a fact posted after it: neither bet nor picked (D48))
-    if (!placed && c && !knownAt(c)) flags.closeHeld++;
+    if (win && intraBy.has(k)) {
+      // (placed above, by the windows)
+    } else if (!placed && c && !knownAt(c)) flags.closeHeld++;
     else if (!placed && c) {
       const sd = sideOf(V, c, c.p);
       if (sd.ev > 0) placed = { x: c, sd, timing: 'close', s: 1, close: null };
@@ -287,7 +374,7 @@ export function replayRecord(V, sport, rows, { events = null, names = () => ({ h
       const ev = suspect ? Math.sign(sd.ev) * Math.min(Math.abs(sd.ev), evSuspect) : sd.ev;
       // (a line whose segment hasn't earned its stake by that day: the practice stake, a LIKE, in the record as the
       // live desk's gated bets are)
-      const barred = !!barAt && isLine(x) && !barAt(x.t, keysOf(x, sd), sd.ev);
+      const barred = (!!barAt && isLine(x) && !barAt(x.t, keysOf(x, sd), sd.ev)) || (!!propBarAt && x.market === 'prop' && !propBarAt(x.t, propKeyOf(x, sd), sd.ev));
       if (barred) flags.barred++;
       let fullUnits = suspect ? practiceUnits : V.desk.stakeFor(ev, evScale, sd.odds);
       let units = barred ? practiceUnits : fullUnits;
@@ -315,6 +402,8 @@ export function replayRecord(V, sport, rows, { events = null, names = () => ({ h
         }
       }
       const bet = betOf(x, sd, { units, band, practice: false, timing: placed.timing, fb: placed.timing === 'open' ? fairBeatOf(x, sd.over, sd.odds, placed.close) : null, names, survival: placed.s });
+      // (where a window placed it (D63): its hours before the start and the policy)
+      if (placed.window) Object.assign(bet, { hours: r2(placed.hours), window: placed.window });
       // (a barred line keeps what it would have staked at full: the bar's own place below)
       if (barred) bet.full = { units: fullUnits, band: fullBand, profit: units > 0 ? r4((bet.profit * fullUnits) / units) : 0 };
       // (what the reason tiers read (D58, below): the pick's context at its placement and the rules that hold it)
@@ -340,6 +429,17 @@ export function replayRecord(V, sport, rows, { events = null, names = () => ({ h
       flags.barred--;
     }
     flags.bar = { applies: bar.applies, barUnits: bar.barUnits, fullUnits: bar.fullUnits, bySeason: bar.bySeason };
+  }
+  const pbar = propBarAt ? barPlace(bets.filter((b) => b.market === 'prop')) : null;
+  if (pbar) {
+    flags.propsBarred = bets.filter((b) => b.market === 'prop' && b.full).length;
+    for (const b of bets) if (b.market === 'prop' && b.full && pbar.bySeason[b.season] === false) {
+      Object.assign(b, { units: b.full.units, band: b.full.band, profit: b.full.profit });
+      if (hold.has(b)) hold.get(b).barred = false;
+      flags.propsBarred--;
+    }
+    flags.barred -= bets.filter((b) => b.market === 'prop' && b.full).length;
+    flags.propBar = { applies: pbar.applies, barUnits: pbar.barUnits, fullUnits: pbar.fullUnits, bySeason: pbar.bySeason };
   }
   // (the reason tiers (DECISIONS.md D58, reasons.mjs): each bet's reasons, judged walk-forward on the bets settled
   // before its moment (each market's picks flat, recency-weighted), its would-be tier from the proven ones (a LOVE one,
@@ -384,12 +484,32 @@ export function replayRecord(V, sport, rows, { events = null, names = () => ({ h
     // (the scratch dump for the round's tables: every bet with its band before and after)
     if (process.env.REPLAY_DUMP) {
       try {
-        writeFileSync(path.join(process.env.REPLAY_DUMP, `${sport}-bets.json`), JSON.stringify(mine.map((b) => ({ t: b.t, at: b.at, season: b.season, market: b.market, stat: b.stat, odds: b.odds, kelly: b.kelly, p: b.p, res: b.res, timing: b.timing, beat: b.beat, ids: hold.get(b).ids, before: hold.get(b).before, would: hold.get(b).would, band: b.band, units: b.units, profit: b.profit }))));
-        writeFileSync(path.join(process.env.REPLAY_DUMP, `${sport}-pass.json`), JSON.stringify(passes.filter((r) => !r.practice && (r.x.y === 0 || r.x.y === 1)).map((r) => ({ t: r.x.t, market: r.x.market, kind: r.x.kind, win: (r.x.y === 1) === r.sd.over ? 1 : 0, odds: r.sd.odds, beat: r.x.kind === 'o' ? beatOf(r.x, r.sd.over, r.sd.odds, closes.get(r.x.key ?? r.x.id.replace(/:o$/, '')) ?? null) : null }))));
+        writeFileSync(path.join(process.env.REPLAY_DUMP, `${sport}-bets.json`), JSON.stringify(mine.map((b) => ({ t: b.t, at: b.at, season: b.season, market: b.market, stat: b.stat, odds: b.odds, kelly: b.kelly, p: b.p, res: b.res, timing: b.timing, hours: b.hours ?? null, window: b.window ?? null, id: b.id, side: b.side, fair: b.fair, clv: b.clv, beat: b.beat, ids: hold.get(b).ids, before: hold.get(b).before, would: hold.get(b).would, band: b.band, units: b.units, profit: b.profit }))));
+        writeFileSync(path.join(process.env.REPLAY_DUMP, `${sport}-pass.json`), JSON.stringify(passes.filter((r) => !r.practice && (r.x.y === 0 || r.x.y === 1)).map((r) => ({ t: r.x.t, market: r.x.market, kind: r.x.kind, win: (r.x.y === 1) === r.sd.over ? 1 : 0, odds: r.sd.odds, beat: r.x.kind === 'o' ? fairBeatOf(r.x, r.sd.over, r.sd.odds, closes.get(r.x.key ?? r.x.id.replace(/:o$/, '')) ?? null) : null }))));
       } catch (err) {
         console.warn(`replay dump failed: ${err.message}`);
       }
     }
+  }
+  // (MMA's Kelly bands earn their place (DECISIONS.md D65): D58's place check on the bands MMA bets by (D37's Kelly
+  // bands): LOVE shows only where the LOVEs and LOCKs before that month beat the LIKEs by flat return and beat-the-close
+  // on PLACE_MIN of them, LOCK only where its own beat the LOVEs; a band not earned falls to the one below, its stake
+  // held to that band's cap (TIER_UNITS). MMA_PLACE=0 off; a version without reasons.mjs: none)
+  if (sport === 'mma' && REASONS?.placeTiers && process.env.MMA_PLACE !== '0') {
+    const flatOfBet = (b) => (b.res === 'W' ? dec(b.odds) - 1 : b.res === 'L' ? -1 : 0);
+    const mine = bets.filter((b) => !b.practice);
+    const place = REASONS.placeTiers(mine.map((b) => ({ t: b.t + GAME_HOURS * 36e5, tier: b.band, profit: flatOfBet(b), beat: b.beat })));
+    let moved = 0;
+    for (const b of mine) {
+      const band = REASONS.placed(b.band, place.at(b.at));
+      if (band === b.band) continue;
+      const units = REASONS.tierUnits(b.units, band);
+      b.profit = b.units > 0 ? r2((b.profit * units) / b.units) : 0;
+      b.units = units;
+      b.band = band;
+      moved++;
+    }
+    flags.mmaPlace = { love: place.final.love, lock: place.final.lock, would: place.final.would, moved };
   }
   // (the slate's practice picks: each game's quota (PRACTICE_N over the ET day's games, at least one) less its bets
   // that clear the vig, from its PASS rows with an edge before the vig, best first, at the practice stake)
@@ -543,6 +663,12 @@ export function summarize(sport, bets, passed, { epoch, now, flags, rows, season
       timing: { open: flags.open, close: flags.close, openSeen: flags.openSeen, openClean: flags.openClean, openInWindow: flags.openInWindow, barred: flags.barred ?? 0 },
       // (the bar's own place (D51): whether it stakes the lines, by season and for what comes next)
       ...(flags.bar ? { bar: flags.bar } : {}),
+      // (the betting windows (D63): each line segment's policy on the whole history (what --record writes as
+      // windows.json for the live desk) and the placements by policy and kind)
+      ...(flags.windows ? { windows: flags.windows } : {}),
+      // (the props' stat bar (D64) and MMA's bands' place (D65))
+      ...(flags.propBar ? { propBar: { ...flags.propBar, barred: flags.propsBarred ?? 0 } } : {}),
+      ...(flags.mmaPlace ? { mmaPlace: flags.mmaPlace } : {}),
       // (the reason tiers (D58): the bets by band and by would-be band, and whether LOVE and LOCK have earned their place)
       ...(flags.tiers ? { tiers: flags.tiers } : {}),
       // (D48, no look-ahead by timestamp: the bets with a factsAt stamp, those past their placement (0), the opens held
