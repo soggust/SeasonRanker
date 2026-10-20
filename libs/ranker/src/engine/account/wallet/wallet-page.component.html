@@ -126,7 +126,7 @@
           @let res = stampOf(b);
           <div class="board-pinned" [style.rotate.deg]="tilt(b)">
             <span class="pin" aria-hidden="true" [style.--pin]="pinColor(b)"></span>
-            <article class="ticket" [attr.aria-label]="'Ticket ' + ticketNo(b) + ', ' + b.status">
+            <article class="ticket" [class.lost]="b.status === 'lost'" [class.won]="b.status === 'won'" [attr.aria-label]="'Ticket ' + ticketNo(b) + ', ' + b.status">
               <div class="ticket-top">
                 <div class="ticket-brand"><span>The Book</span><small>Ticket {{ ticketNo(b) }} · {{ b.placedAt | date: 'EEE h:mm a' }}</small></div>
                 <span class="ticket-status">Settled</span>

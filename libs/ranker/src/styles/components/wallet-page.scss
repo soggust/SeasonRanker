@@ -2152,6 +2152,16 @@ $heads-cols: minmax(0, 1fr) 260px minmax(0, 1fr);
       color: $ink-soft;
     }
   }
+
+  // (a settled lost ticket's words faded to half, the barcode and the stamp left as they are; a cashed one's
+  // Pays in the HIT line's and the stamp's green: the owner, 2026-10-19)
+  &.lost > :not(.ticket-barcode, .ticket-stamp) {
+    opacity: 0.5;
+  }
+
+  &.won .ticket-sums .pays span:last-child {
+    color: #1d8a4e;
+  }
 }
 
 // The boards (the Book's Open tickets and Cashed, and the wallet's open and settled bets): a panel under the felt bar,
