@@ -72,8 +72,11 @@ const COORD_D = /\bdefensive coordinator\b|\bDC\b/;
 const HEAD = /\bhead coach\b|(?<!\bgeneral )\bmanager\b/i;
 // (a position's coach, an assistant: not the team's head coach, nor a coordinator)
 const POS_COACH = /\b(?:line|linebackers?|receivers?|quarterbacks?|QBs?|running backs?|RBs?|tight ends?|secondary|backs?|special teams|position|assistant|associate|pitching|hitting|bullpen|base|bench|strength|conditioning|goalie|goaltending|skills|passing game|run game)\s+coach(?:es)?\b/i;
-// (the front office's: a firing of theirs changes no one on the field)
-const FRONT = /\bgeneral manager\b|\bGM\b|\bpresident\b|\bexecutive\b|\bowner\b|\bscout\w*|\btrainer\b|\bdoctor\b/i;
+// (the front office's, the broadcast's, the staff's, the board's or a court's: a firing or ouster of theirs changes no
+// one on the field (the owner, 2026-10-20: "Trail Blazers fire new announcer" and the Buss family's trustee filing read
+// as the head coach fired, 11 NBA CHECKs on opening night))
+const FRONT =
+  /\bgeneral manager\b|\bGM\b|\bpresident\b|\bexecutive\b|\bowner\w*|\bscout\w*|\btrainer\b|\bdoctor\b|\bannouncer\b|\bbroadcast\w*|\bplay-by-play\b|\banalyst\b|\bcommentator\b|\breporter\b|\bstaffer\b|\bemployee\b|\bmascot\b|\bdancers?\b|\btrustees?\b|\bpetition\b|\blawsuit\b|\bfiling\b|\bcourt\b|\bboard\b|\bCEO\b|\bchairman\b|\bspokes\w+|\bsponsor\w*/i;
 // (fire's other senses, taken out before anything's read: on fire, under fire, fired up, fires back)
 const IDIOM = /\bon fire\b|\bunder fire\b|\b(?:catch(?:es|ing)?|caught) fire\b|\bfire[sd]?[- ](?:back|up|away)\b|\bfiring (?:back|away|on)\b/gi;
 const FIRE_ACT = /\bfire[sd]?\b|\bfiring\b|\bous(?:t|ts|ted)\b/i;

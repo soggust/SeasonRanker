@@ -332,3 +332,11 @@ test("football.mjs: a new head coach's first COACH_GAMES games (newCoach), and a
   // (a hire between seasons: a new coach's, not a midseason one's)
   assert.deepEqual([out.c1.n, out.c1.mid, out.c1.newCoach, out.c1.coachMid, out.c1.ctx], [1, 0, -1, 0, 1]);
 });
+
+test("a firing or ouster off the court flags nothing; a coach's firing still does (the owner, 2026-10-20: 11 NBA CHECKs on opening night from an announcer and an ownership filing)", () => {
+  for (const h of ['Trail Blazers fire new announcer over past inappropriate posts', "Buss siblings' filing challenges Jeanie's petition to oust them as trustees", 'Bulls fire general manager', 'Team fires play-by-play broadcaster']) {
+    assert.equal(readHeadline('nba', h).unit, null, h);
+  }
+  for (const h of ['Lakers fire head coach JJ Redick', 'Lakers fire Redick after 0-10 start']) assert.equal(readHeadline('nba', h).unit, 'team', h);
+  assert.equal(readHeadline('nfl', 'Jets fire Saleh').unit, 'team');
+});
