@@ -1849,6 +1849,11 @@
     "seen": "2026-10-20T20:34:12.073Z",
     "own": "2026-10-20T20:33:22.000Z",
     "why": "@rotowirenba.bsky.social: Kon Knueppel: Ruled out for Wednesday \n\n https://www.r"
+   },
+   "athlete": "5061575",
+   "espn": {
+    "seen": "2026-10-20T20:41:41.441Z",
+    "own": "2026-10-20T20:33:00.000Z"
    }
   },
   "401909837|cobywhite|out": {
@@ -1861,6 +1866,18 @@
     "seen": "2026-10-20T20:34:12.073Z",
     "own": "2026-10-20T20:28:17.000Z",
     "why": "@rotowirenba.bsky.social: Coby White: Ruled out for season opener \n\n https://www"
+   }
+  },
+  "401909836|grantwilliams|out": {
+   "game": "401909836",
+   "start": "2026-10-21T23:30Z",
+   "team": "30",
+   "name": "Grant Williams",
+   "status": "out",
+   "athlete": "4066218",
+   "espn": {
+    "seen": "2026-10-20T20:41:41.441Z",
+    "own": "2026-10-20T20:30:00.000Z"
    }
   }
  }
