@@ -1,18 +1,6 @@
 {
  "sport": "nhl",
  "days": 2,
- "signals": [
-  {
-   "team": "28",
-   "abbr": "WPG",
-   "athlete": "3020225",
-   "player": "Connor Hellebuyck",
-   "kind": "return",
-   "direction": "up",
-   "confidence": 0.6,
-   "headline": "Still awaiting trade, Connor Hellebuyck could rejoin Jets when suspension ends",
-   "at": "2026-10-18T02:48:49.000Z"
-  }
- ],
- "at": "2026-10-18T23:07:20.109Z"
+ "signals": [],
+ "at": "2026-10-20T03:30:07.903Z"
 }

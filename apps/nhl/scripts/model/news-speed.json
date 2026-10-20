@@ -1640,6 +1640,18 @@
     "own": "2026-10-19T17:21:03.000Z",
     "why": "@dailyfaceoff.bsky.social: Islanders’ Maccelli, Ritchie to miss time with lower-"
    }
+  },
+  "401892539|alexanderwennberg|q": {
+   "game": "401892539",
+   "start": "2026-10-20T23:00Z",
+   "team": "18",
+   "name": "Alexander Wennberg",
+   "status": "q",
+   "athlete": "3042017",
+   "espn": {
+    "seen": "2026-10-20T03:21:18.715Z",
+    "own": "2026-10-20T03:00:00.000Z"
+   }
   }
  }
 }
