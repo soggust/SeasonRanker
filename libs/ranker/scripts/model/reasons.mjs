@@ -131,9 +131,15 @@ export function reasonsFor(c) {
     out.push({ id: `seg:${c.market}:${cls}:${c.early ? 'early' : 'late'}`, family: 'segment', label: `${c.early ? 'early' : 'late'} ${c.market === 'total' ? '' : `${MARKET_NAME[c.market]} `}${SIDE_WORD[cls]}`.replace(/\s+/g, ' ') });
   } else if (c.market === 'prop' && c.stat && (c.side === 'over' || c.side === 'under')) {
     out.push({ id: `stat:${c.stat}:${c.side}`, family: 'stat', label: `${c.stat} ${c.side}s` });
+    // (D70: the news lag split by stat, so the points overs, which carried the history's measurement, earn on their
+    // own; the same family as the pooled tag, never a LOCK's second reason beside it)
+    if (c.newsLag && NEWS_LAG_SPORTS.includes(c.sport)) out.push({ id: `newsLag:${c.stat}`, family: 'news', label: `a star ruled out, his teammates' ${c.stat} lines not moved yet` });
   }
   return out;
 }
+const NEWS_LAG_SPORTS = ['nba', 'nfl', 'nhl'];
+// (a reason the live ledger alone judges (D66): the fixed live ones and the news lag's by stat)
+export const isLive = (id) => LIVE_REASONS.includes(id) || String(id).startsWith('newsLag:');
 // (a reason id's family and label, from the fixed list or its own shape)
 export function reasonMeta(id) {
   const r = REASONS.find((x) => x.id === id);
@@ -146,6 +152,7 @@ export function reasonMeta(id) {
     const [, stat, side] = id.split(':');
     return { family: 'stat', label: `${stat} ${side}s` };
   }
+  if (id.startsWith('newsLag:')) return { family: 'news', label: `a star ruled out, his teammates' ${id.slice(8)} lines not moved yet` };
   return { family: id, label: id };
 }
 
@@ -386,8 +393,9 @@ export function liveTier(file, ctx, { units = null, live = null } = {}) {
   const ids = reasonsFor(ctx).map((r) => r.id);
   // (a live-only reason's verdict from the live ledger's record alone (liveVerdicts), never the replay's)
   const v = { ...(file.markets[ctx.market] ?? {}) };
-  for (const id of LIVE_REASONS) delete v[id];
-  for (const [id, x] of live?.get?.(ctx.market) ?? []) if (LIVE_REASONS.includes(id)) v[id] = x;
+  for (const id of Object.keys(v)) if (isLive(id)) delete v[id];
+  // (under the closing-line bands (D70), every reason's verdict is the record's tallies merged with the live ledger's)
+  for (const [id, x] of live?.get?.(ctx.market) ?? []) if (isLive(id) || file.rule?.love) v[id] = x;
   const t = tierOf(ids, v, ctx.kelly);
   const band = placed(t.tier, file.place);
   return { tier: band, raw: t.tier, reasons: ids, proven: t.proven.map((p) => ({ id: p.id, label: p.label, text: reasonText(ctx.sport, ctx.market, p), n: p.n, roi: p.roi, seasons: p.seasons })), ...(fin(units) ? { units: tierUnits(units, band) } : {}) };
@@ -414,11 +422,11 @@ export function liveVerdicts(bets, sport, now = Date.now()) {
     if (!fin(t) || t > now || !fin(b.odds)) continue;
     const profit = b.status === 'won' ? dec(b.odds) - 1 : b.status === 'lost' ? -1 : 0;
     const beat = b.clv && fin(b.clv.prob) ? (b.clv.prob > 0 ? 1 : 0) : null;
-    picks.push({ t, season: seasonOfStart(sport, b.start), market: b.market, reasons: b.newsLag ? ['newsLag'] : [], profit, beat });
+    picks.push({ t, season: seasonOfStart(sport, b.start), market: b.market, reasons: b.newsLag ? ['newsLag', ...(b.propType ? [`newsLag:${b.propType}`] : [])] : [], profit, beat, clv: b.clv && fin(b.clv.ev) ? b.clv.ev : null });
   }
   const out = new Map();
   for (const [market, m] of walkReasons(picks).final) {
-    const keep = new Map([...m].filter(([id]) => LIVE_REASONS.includes(id)));
+    const keep = new Map([...m].filter(([id]) => isLive(id)));
     if (keep.size) out.set(market, keep);
   }
   return out;

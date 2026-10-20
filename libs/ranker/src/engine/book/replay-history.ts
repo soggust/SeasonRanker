@@ -78,6 +78,16 @@ export interface ReplayRecordFile {
   flags: { timing: { open: number; close: number; openSeen: number; openClean: number; openInWindow: number }; context: { full: number[]; ratingsOnly: number[] }; price: string; placement: string; split: string; notSeen: string };
 }
 
+// The band lab's staged records (band-lab.mjs --write, DECISIONS.md D70): a sport's replay under each band rule tried,
+// by its name, in the order tried; the Algorithm tab's Live / Staged switch reads one in place of the live replay
+export interface StagedReplayFile {
+  v: number;
+  sport: string;
+  at: string;
+  order: string[];
+  variants: Record<string, ReplayRecordFile & { staged?: { variant: string } }>;
+}
+
 // The panel: a tally row (the desk's Tally with its closing-line share), the strip's bets, the seasons
 export interface HistoryRow extends Tally {
   // (the replay's part and the live part, so a row can say what each gave)

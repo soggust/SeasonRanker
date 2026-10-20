@@ -1,12 +1,12 @@
 {
  "sport": "mlb",
  "epoch": "2026-10-20T05:45:00Z",
- "commit": "c982565c",
- "at": "2026-10-20T15:14:32.041Z",
+ "commit": "f7943b13",
+ "at": "2026-10-20T18:29:39.515Z",
  "current": 2026,
  "z": 1,
  "min": 40,
- "picks": 1513,
+ "picks": 1512,
  "from": "2021-07-18",
  "to": "2026-10-15",
  "segments": {
@@ -43,9 +43,9 @@
    "minEdge": null
   },
   "ml:dog:late": {
-   "n": 266.975,
-   "sum": -36.5385,
-   "sum2": 368.5727,
+   "n": 266.475,
+   "sum": -36.0385,
+   "sum2": 368.0727,
    "edges": {
     "0.01": {
      "n": 146.437,
@@ -68,9 +68,9 @@
      "sum2": 7.3015
     }
    },
-   "rows": 507,
-   "mean": -0.1369,
-   "se": 0.0714,
+   "rows": 506,
+   "mean": -0.1352,
+   "se": 0.0715,
    "on": false,
    "minEdge": null
   },
@@ -398,7 +398,7 @@
  "applies": false,
  "place": {
   "applies": false,
-  "barUnits": -14.02,
+  "barUnits": -13.52,
   "fullUnits": 3.75,
   "bySeason": {
    "2021": true,

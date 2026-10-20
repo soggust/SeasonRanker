@@ -1460,3 +1460,53 @@ test('D68 the fast lane: the watcher every minute; news on one game dispatches t
   const decisions = fs.readFileSync(path.resolve('libs/ranker/scripts/model/DECISIONS.md'), 'utf8');
   assert.ok(decisions.includes('### D68.'));
 });
+
+test("D69 every season with prop odds is priced: the props' replay reads the older seasons' finals from the archive's first props season (the NBA, the NHL, MLB with its teams' codes); the NFL's already reach; GATE_PROPS_EXTEND=0 off", async () => {
+  const { propsHistory, PROPS_EXTEND } = await import('../libs/ranker/scripts/model/gate.mjs');
+  assert.deepEqual([...PROPS_EXTEND].sort(), ['mlb', 'nba', 'nhl']);
+  const history = [{ id: '10', date: '2025-10-01T00:00Z', season: 2026, home: '1', away: '2', homeAbbr: 'NYY', awayAbbr: 'BOS', final: true }];
+  const older = [
+    { id: '7', date: '2023-05-01T00:00Z', season: 2023, home: '1', away: '2', homeAbbr: '', awayAbbr: '', final: true },
+    { id: '5', date: '2022-05-01T00:00Z', season: 2022, home: '1', away: '2', homeAbbr: '', awayAbbr: '', final: true },
+  ];
+  const events = new Map([['o1', { season: 2023 }]]);
+  const props = [{ oid: 'o1' }];
+  const histGames = [...older, ...history];
+  const nba = propsHistory('nba', history, histGames, props, events);
+  assert.deepEqual(nba.map((g) => g.id), ['7', '10']);
+  const mlb = propsHistory('mlb', history, histGames, props, events);
+  assert.equal(mlb[0].homeAbbr, 'NYY');
+  assert.equal(propsHistory('nfl', history, histGames, props, events), history);
+  process.env.GATE_PROPS_EXTEND = '0';
+  try {
+    assert.equal(propsHistory('nba', history, histGames, props, events), history);
+  } finally {
+    delete process.env.GATE_PROPS_EXTEND;
+  }
+});
+
+test("D70 the closing-line bands: Gemini's bars with the results guard shipped; live closing lines merged with the record's tallies; a live-only reason takes no prior from the file", async () => {
+  const C = await import('../libs/ranker/scripts/model/clv-bands.mjs');
+  const R = await import('../libs/ranker/scripts/model/reasons.mjs');
+  assert.equal(C.SHIPPED.k, 100);
+  assert.deepEqual(C.SHIPPED.love, { n: 50, ev: 0.02, beat: 0.515 });
+  assert.deepEqual(C.SHIPPED.lock, { n: 150, ev: 0.04, beat: 0.535 });
+  assert.deepEqual(C.SHIPPED.results, { n: 50, roi: 0, z: 0 });
+  assert.equal(C.SHIPPED.kellyFloor, R.LOVE_FLOOR);
+  // (the record's 30 checks at +10%, and the live ledger's: 15 more short of LOVE's 50, 30 more LOVE between records)
+  const stats = { n: 30, s: 3, s2: 0.3, beat: 30, rn: 30, rs: 3, rs2: 30 };
+  const file = { rule: C.ruleFile(C.SHIPPED), k: 100, markets: { ml: { 'seg:ml:dog:early': { on: false, stats } }, prop: { newsLag: { on: true, stats: { ...stats, n: 400, s: 80, beat: 400, rn: 400, rs: 80 } } } } };
+  assert.equal(C.isClvFile(file), true);
+  const live = Array.from({ length: 15 }, () => ({ market: 'ml', ids: ['seg:ml:dog:early'], clv: 0.1, profit: 0.5 }));
+  const v = C.liveMerged(file, live);
+  assert.equal(v.get('ml').get('seg:ml:dog:early').on, false);
+  assert.equal(C.liveMerged(file, [...live, ...live]).get('ml').get('seg:ml:dog:early').on, true);
+  // (the news lag: the file's entry ignored, no live bets: nothing earned)
+  assert.equal(v.get('prop').get('newsLag').on, false);
+  // (the live desk's tier reads the merged verdicts for every reason under the rule)
+  const ctx = R.contextOf({ sport: 'nba', market: 'ml', side: 'away', fS: 0.4, pS: 0.47, kelly: 0.05, odds: 150, early: true });
+  const t = R.liveTier({ ...file, place: { love: true, lock: true } }, ctx, { live: C.liveMerged(file, [...live, ...live]) });
+  assert.equal(t.tier, 'high');
+  const decisions = fs.readFileSync(path.resolve('libs/ranker/scripts/model/DECISIONS.md'), 'utf8');
+  assert.ok(decisions.includes('### D70.') && decisions.includes('### D69.'));
+});

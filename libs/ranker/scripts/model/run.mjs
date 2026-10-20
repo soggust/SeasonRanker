@@ -131,7 +131,8 @@ import { BOOK, GAME_CAP, LEAGUES, MODEL_EPOCH, PROP_CAPS, TIMING } from './leagu
 import { CAL_CAP, CAL_STEP, calibText, fitCalib } from './calib.mjs';
 import { anchorText, readAnchor } from './anchor.mjs';
 import { loadModel as readConfidence, qualityOf, unitsOf } from './confidence.mjs';
-import { contextOf as reasonContext, liveTier, liveVerdicts, readReasons, tierUnits } from './reasons.mjs';
+import { contextOf as reasonContext, liveTier, liveVerdicts, readReasons, reasonsFor, tierUnits } from './reasons.mjs';
+import { isClvFile, liveMerged } from './clv-bands.mjs';
 import { LAG_SPORTS, lagFile, lagPending, lagPrune, lagTag, lagUpdate, readLag } from './news-lag.mjs';
 import { ledgerRisk, readLineupRisk, riskAt, riskChance, riskText } from './lineup-risk.mjs';
 import { morningPrices, withSnapshot } from './suggest.mjs';
@@ -1386,7 +1387,7 @@ function refitCalib(r) {
   // the committed file the gate records on the replayed record (reasons.json), never fit here)
   r.reasons = readReasons(sport, ROOT);
   // (the live-only reasons' verdicts (D66: the news lag) from the live ledger's own graded bets, the same bar)
-  r.liveReasons = liveVerdicts(r.ledger?.bets ?? [], sport);
+  r.liveReasons = isClvFile(r.reasons) ? liveMerged(r.reasons, livePicksOf(r.ledger?.bets ?? [], sport)) : liveVerdicts(r.ledger?.bets ?? [], sport);
   if (r.reasons) {
     const on = Object.entries(r.reasons.markets ?? {}).flatMap(([m, rs]) => Object.entries(rs).filter(([, v]) => v.on).map(([id, v]) => `${m} ${id}${v.strong ? ' (strong)' : ''}`));
     console.log(`${sport}: the reason tiers: LOVE ${r.reasons.place?.love ? 'shown' : 'held'}, LOCK ${r.reasons.place?.lock ? 'shown' : 'held'}; proven: ${on.length ? on.join(', ') : 'none'}`);
@@ -2967,6 +2968,24 @@ function withQuality(r, bet, x = {}) {
     if (Number.isFinite(u)) bet.units = Math.max(PRACTICE_UNITS, Math.min(bet.units, u));
   }
   return bet;
+}
+
+// The live ledger's graded, staked edge bets since the epoch as the closing-line bands read them (D70, clv-bands.mjs
+// liveMerged): each with its reasons as the desk read them at its placement (the schedule's rest aside: not kept on
+// the bet), its closing-line return (clv.ev: its price against the close's no-vig at its line) and its flat result
+export function livePicksOf(bets, sport, { epoch = MODEL_EPOCH, now = Date.now() } = {}) {
+  const from = Date.parse(epoch ?? '') || -Infinity;
+  const out = [];
+  for (const b of bets ?? []) {
+    if (b.sport !== sport || b.void || !(b.units > 0) || (b.intent && b.intent !== 'edge') || b.practice || b.topN || !['won', 'lost', 'push'].includes(b.status)) continue;
+    const t = Date.parse(b.start);
+    const at = Date.parse(b.placedAt ?? b.start);
+    if (!Number.isFinite(t) || t < from || t > now || !Number.isFinite(b.odds) || !Number.isFinite(b.p) || !Number.isFinite(b.fair)) continue;
+    const ids = reasonsFor(reasonContext({ sport, market: b.market, side: b.side, stat: b.propType ?? null, fS: b.fair, pS: b.p, kelly: stakeKelly(b.odds, b.p), odds: b.odds, early: (t - at) / 36e5 >= EARLY_HOURS, pin: b.fairFrom === 'pinnacle', newsLag: !!b.newsLag })).map((x) => x.id);
+    const profit = b.status === 'won' ? decimal(b.odds) - 1 : b.status === 'lost' ? -1 : 0;
+    out.push({ market: b.market, ids, clv: b.clv && Number.isFinite(b.clv.ev) ? b.clv.ev : null, profit });
+  }
+  return out;
 }
 
 // The reason tier on a bet (reasons.mjs liveTier, DECISIONS.md D58): its reasons from what the Bot knows at

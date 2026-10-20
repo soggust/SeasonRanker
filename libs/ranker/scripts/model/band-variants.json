@@ -1,0 +1,13 @@
+{
+  "about": "Band rules band-lab.mjs tries on the replayed history (DECISIONS.md D70). mode d58: the rule as it was (D58 results walk and place; MMA D65). Every other variant is clv-bands.mjs's rule: k the shrink (n/(n+k); 'eb' fit walk-forward by month), prior 'zero' or 'market' (the market's own mean EV at the fair close), love/lock bars (n with a closing check, shrunk EV at the fair close, beat share), twoLove (two LOVE reasons of different families make a LOCK), results (a reason's flat results must also clear roi - z*se over n), fallback 'results' (a reason with under fallbackBelow closing checks earns on D58's results bar instead), place (D58's place check on top), units (each band's stake cap). newsLag is live-only: the replay never carries it, so no variant here moves it.",
+  "variants": {
+    "d58": { "mode": "d58" },
+    "clv": { "k": 100, "prior": "zero", "love": { "n": 50, "ev": 0.02, "beat": 0.515 }, "lock": { "n": 150, "ev": 0.04, "beat": 0.535 }, "twoLove": true },
+    "clv-eb": { "k": "eb", "prior": "market", "love": { "n": 50, "ev": 0.02, "beat": 0.515 }, "lock": { "n": 150, "ev": 0.04, "beat": 0.535 }, "twoLove": true },
+    "clv-loose": { "k": 50, "prior": "zero", "love": { "n": 30, "ev": 0.01, "beat": 0.51 }, "lock": { "n": 100, "ev": 0.03, "beat": 0.525 }, "twoLove": true },
+    "clv-strict": { "k": 200, "prior": "market", "love": { "n": 80, "ev": 0.025, "beat": 0.525 }, "lock": { "n": 200, "ev": 0.05, "beat": 0.55 }, "twoLove": false },
+    "clv-results": { "k": 100, "prior": "zero", "love": { "n": 50, "ev": 0.02, "beat": 0.515 }, "lock": { "n": 150, "ev": 0.04, "beat": 0.535 }, "twoLove": true, "results": { "n": 50, "roi": 0, "z": 0 } },
+    "clv-hybrid": { "k": 100, "prior": "zero", "love": { "n": 50, "ev": 0.02, "beat": 0.515 }, "lock": { "n": 150, "ev": 0.04, "beat": 0.535 }, "twoLove": true, "fallback": "results", "fallbackBelow": 30 },
+    "clv-place": { "k": 100, "prior": "zero", "love": { "n": 50, "ev": 0.02, "beat": 0.515 }, "lock": { "n": 150, "ev": 0.04, "beat": 0.535 }, "twoLove": true, "place": true }
+  }
+}

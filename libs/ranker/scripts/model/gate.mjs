@@ -325,7 +325,7 @@ export async function scoreVersion(dir, sport, { refit = false, propsLayer = tru
   // (lineupRisk: the lineup risk's fit on the history's opens against their closes (lineup-risk.mjs, D42); none before it)
   // (picks, replay: the bands (picks.mjs edgeLevel) and the replayed record (replay-record.mjs, the Bot's history);
   // a version from before them has no replayed record)
-  for (const n of ['leagues', 'ratings', 'context', 'margins', 'backtest', 'desk', 'props', 'project', 'correct', 'anchor', 'lineup-risk', 'picks', 'replay-record', 'confidence', 'reasons']) V[n === 'lineup-risk' ? 'lineupRisk' : n === 'replay-record' ? 'replay' : n] = await load(dir, n);
+  for (const n of ['leagues', 'ratings', 'context', 'margins', 'backtest', 'desk', 'props', 'project', 'correct', 'anchor', 'lineup-risk', 'picks', 'replay-record', 'confidence', 'reasons', 'clv-bands']) V[n === 'lineup-risk' ? 'lineupRisk' : n === 'replay-record' ? 'replay' : n === 'clv-bands' ? 'clvBands' : n] = await load(dir, n);
   // (the loaders: this checkout's, so both versions read the same history)
   const H = { context: await import('./context.mjs'), logs: await import('./playerlogs.mjs'), props: await import('./props.mjs'), fitcache: await import('./fitcache.mjs'), espn: await import('./espn.mjs') };
   const cfg = V.leagues.LEAGUES[sport];
@@ -429,9 +429,9 @@ export async function scoreVersion(dir, sport, { refit = false, propsLayer = tru
   // none), games.json's at the desk's own expectation)
   let histLines = { open: [], close: [] };
   let histGames = history;
+  const expExt = new Map();
   if (hist.events.size) {
     histGames = extendedGames(history, hist.events);
-    const expExt = new Map();
     const expAtExt = new Map();
     if (histGames.length > history.length) V.ratings.replay(histGames, params, 0, ctxFit?.ctx ?? null, (g, e) => expExt.set(String(g.id), e), asOfInto(expAtExt));
     const expOf = (id) => expAll.get(id) ?? expAll.get(String(id)) ?? expExt.get(String(id)) ?? null;
@@ -485,14 +485,18 @@ export async function scoreVersion(dir, sport, { refit = false, propsLayer = tru
       const saved = H.fitcache.readFit(sport);
       if (!saved.fit && !refit) say(`props' projections not scored: ${saved.why} (run the desk once, or --refit)`);
       else {
-        const rows = await H.logs.playerRows(sport, cfg, history, facts);
+        // (the players' games of every season the history has props for (propsHistory, D69: the older seasons' box
+        // scores from ESPN, free), so each such season's props are priced, not the last two alone)
+        const propGames = propsHistory(sport, history, histGames, hist.props, hist.events);
+        if (propGames.length > history.length) say(`props: the players' games read for ${propGames.length - history.length} finals past games.json's (the seasons with the history's props: ${[...new Set(propGames.map((g) => g.season))].sort().join(', ')})`);
+        const rows = await H.logs.playerRows(sport, cfg, propGames, facts);
         const info = new Map([...(feats?.feats ?? new Map())].map(([id, f]) => [id, f.info]));
         const market = sport === 'nfl' ? await H.props.nflMarket(history) : sport === 'nba' ? H.logs.boxMarket('nba') : null;
         rowSeasons = [...new Set(rows.map((x) => x.season))].sort();
         const listed = sport === 'nfl' ? await H.props.nflListed(history, facts, rowSeasons) : null;
         const totals = sport === 'nhl' ? H.logs.boxTotals('nhl') : null;
         const soft = { prev: Object.fromEntries((state.props?.types ?? []).map((t) => [t.key, t.params?.soft ?? null])), now: Date.now() };
-        const expPts = new Map([...expAll].map(([id, e]) => [id, [e.homePts, e.awayPts]]));
+        const expPts = new Map([...expExt, ...expAll].map(([id, e]) => [id, [e.homePts, e.awayPts]]));
         const stats = V.props.STATS[sport] ?? [];
         const reuse = refit ? null : Object.fromEntries(stats.map((st) => [st.key, saved.fit.fits[st.key] ?? null]));
         const t0 = Date.now();
@@ -555,6 +559,13 @@ export async function scoreVersion(dir, sport, { refit = false, propsLayer = tru
   // the ledger's replayed rows at the newest season's pull, the one the live desk reads)
   const histProps = histMatches.length ? propHistoryRows(V, sport, histIndex, histMatches, current, { factsLead: H.context.dayOfMinLead?.(sport) ?? null }) : { open: [], close: [], anchor: null };
   if (process.env.REPLAY_DUMP && histProps.close.length) { try { writeFileSync(path.join(process.env.REPLAY_DUMP, `${sport}-propclose.json`), JSON.stringify(histProps.close.map((x) => [x.event, x.stat, x.name, x.line, x.f, x.p, x.y, x.mu ?? null, x.t, x.season]))); } catch {} }
+  if (hist.props.length) {
+    // (by season: the history's player games with a DraftKings close, and the closes priced (D69's coverage check))
+    const by = {};
+    for (const h of histIndex.values()) if (h.c) (by[h.season] ??= [0, 0])[0]++;
+    for (const x of histProps.close) (by[x.season] ??= [0, 0])[1]++;
+    say(`history props by season (closes in the history / priced): ${Object.entries(by).map(([s, [a, b]]) => `${s} ${a}/${b}`).join(', ')}`);
+  }
   if (hist.props.length) say(`history props: ${histIndex.size} player games in the history, ${histProps.close.length} closes and ${histProps.open.length} opens matched to the replay${histProps.anchor ? `; the anchor's pull by stat: ${V.anchor.anchorText(histProps.anchor.all)}` : ''}${histProps.risk && V.lineupRisk?.riskText ? `; the lineup risk by stat: ${V.lineupRisk.riskText(histProps.risk)}` : ''}`);
   // (the confidence layer (confidence.mjs, D52): the quality model fit walk-forward on the closes and the props' opens
   // (the lines' opens left out: the replay's ratings read the game's own facts there), its blend weight stepped
@@ -1225,6 +1236,30 @@ export function recordGuard(next, prev, { champion = null, refit = false, accept
   return { ok, sport, hard, held, same, accepted: ok && held.length ? accept : null };
 }
 
+// The games whose players' games the props' replay reads (D69): games.json's, and for the NBA and the NHL the
+// history's finals of every season its props reach (box scores, ESPN's, read once into the cache; the NFL's
+// nflverse rows already reach 2016; MLB's starters and batters read the context's games: not extended here)
+export const PROPS_EXTEND = new Set(['nba', 'nhl', 'mlb']);
+export function propsHistory(sport, history, histGames, props, events) {
+  if (!PROPS_EXTEND.has(sport) || !props?.length || histGames === history || process.env.GATE_PROPS_EXTEND === '0') return history;
+  const seasons = new Set();
+  for (const p of props) {
+    const e = events.get(p.oid);
+    if (e?.season) seasons.add(e.season);
+  }
+  if (!seasons.size) return history;
+  const from = Math.min(...seasons);
+  const have = new Set(history.map((g) => String(g.id)));
+  // (MLB's games matched to StatsAPI's by their teams' codes: the older ones' from games.json's teams)
+  const abbr = new Map();
+  for (const g of history) {
+    if (g.homeAbbr) abbr.set(String(g.home), g.homeAbbr);
+    if (g.awayAbbr) abbr.set(String(g.away), g.awayAbbr);
+  }
+  const older = histGames.filter((g) => !have.has(String(g.id)) && g.final && g.season >= from).map((g) => (sport === 'mlb' && !g.homeAbbr ? { ...g, homeAbbr: abbr.get(String(g.home)) ?? '', awayAbbr: abbr.get(String(g.away)) ?? '' } : g));
+  return [...history, ...older].sort((a, b) => a.date.localeCompare(b.date));
+}
+
 // The full cache a record needs, built for a sport with this checkout's code (no bets, no odds bought: the free
 // sources only): the context facts gathered and saved, the players' games fetched, the NFL's history lines and
 // injury listings read, and the props' fit searched and saved when the cache has none this code can use (refit:
@@ -1258,6 +1293,24 @@ export async function rebuildCache(sport, { refit = false, log = console.log } =
   if (ctxFit) Object.assign(params, { sigma: Math.round(ctxFit.after.sigma * 1000) / 1000, sigmaT: Math.round(ctxFit.after.sigmaT * 1000) / 1000 });
   const expPts = new Map();
   R.replay(history, params, 0, ctxFit?.ctx ?? null, (g, e) => expPts.set(g.id, [e.homePts, e.awayPts]));
+  // (the older seasons' box scores the props' replay reads (propsHistory, D69), fetched once into the cache; the fit
+  // itself stays on games.json's, as the desk's)
+  if (PROPS_EXTEND.has(sport)) {
+    const hist = loadHistory(sport);
+    const propGames = propsHistory(sport, history, extendedGames(history, hist.events), hist.props, hist.events);
+    if (propGames.length > history.length) {
+      const t2 = Date.now();
+      // (MLB's older games' starters and lineups from StatsAPI first (context.mjs mlbOlder), saved with the facts)
+      if (sport === 'mlb') {
+        const have = new Set(history.map((g) => String(g.id)));
+        await C.mlbOlder(propGames.filter((g) => !have.has(String(g.id))), facts);
+        const { nfl: _r, ...keep } = facts;
+        writeFileSync(file, JSON.stringify(keep));
+      }
+      const all = await PL.playerRows(sport, cfg, propGames, facts);
+      log(`${sport}: ${all.length} player games with the history's older seasons (${propGames.length - history.length} finals past games.json's, ${Math.round((Date.now() - t2) / 1000)}s)`);
+    }
+  }
   const rows = await PL.playerRows(sport, cfg, history, facts);
   const info = new Map([...(feats?.feats ?? new Map())].map(([id, f]) => [id, f.info]));
   const market = sport === 'nfl' ? await P.nflMarket(history) : sport === 'nba' ? PL.boxMarket('nba') : null;

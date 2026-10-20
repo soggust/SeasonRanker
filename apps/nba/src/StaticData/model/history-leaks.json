@@ -1,12 +1,12 @@
 {
- "at": "2026-10-20T15:14:29.758Z",
+ "at": "2026-10-20T18:29:34.969Z",
  "epoch": "2026-10-20T05:45:00Z",
- "commit": "c982565c",
- "n": 80240,
+ "commit": "f7943b13",
+ "n": 171691,
  "tested": 46,
  "leaks": 0,
  "trends": 0,
  "status": "ok",
- "headline": "46 segments tested on 80240 priced rows: none losing to the Book beyond the false discovery rate, none trending worse",
+ "headline": "46 segments tested on 171691 priced rows: none losing to the Book beyond the false discovery rate, none trending worse",
  "rows": []
 }

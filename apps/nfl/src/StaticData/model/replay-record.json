@@ -2,7 +2,7 @@
  "v": 1,
  "sport": "nfl",
  "epoch": "2026-10-20T05:45:00Z",
- "at": "2026-10-20T15:27:31.580Z",
+ "at": "2026-10-20T18:31:36.919Z",
  "from": "2020-09-11T00:20:00.000Z",
  "through": "2026-10-19T00:23:00.000Z",
  "n": {
@@ -1856,9 +1856,10 @@
     "medium": 3244
    },
    "place": {
-    "love": false,
-    "lock": false
-   }
+    "love": true,
+    "lock": true
+   },
+   "rule": "clv-results"
   },
   "facts": {
    "stamped": 3244,
@@ -1884,24 +1885,24 @@
   "split": "games that start before the epoch replayed; the live ledger from the epoch on",
   "notSeen": "the live desk's CLV gates, CHECKs, research and news"
  },
- "commit": "c982565c",
- "note": "D65. MMA's Kelly bands earn their place (D58's place check on MMA)",
+ "commit": "f7943b13",
+ "note": "D70. The closing-line bands (Gemini's design): a reason earns LOVE or LOCK by its shrunk return at the fair close, its beat share and results that don't lose; the band lab stages every rule before one ships",
  "inputs": {
   "v": 1,
   "sport": "nfl",
   "code": {
    "props": "87335d02c0eb",
-   "games": "1ec04d860019",
+   "games": "9c08190c0c31",
    "pricing": "3ecedb70ec72",
-   "record": "fdca035c3211",
-   "harness": "23986d676e0d",
+   "record": "c27335718370",
+   "harness": "1134888049f8",
    "residual": "d3cd8edb82cf945d"
   },
   "fit": {
    "code": "ae0a4265112cf136",
    "expected": "ae0a4265112cf136",
    "day": "2026-10-20",
-   "at": "2026-10-20T14:14:16.599Z",
+   "at": "2026-10-20T16:38:46.572Z",
    "finals": 2854,
    "stats": [
     "passYds",
@@ -1916,7 +1917,7 @@
     "rushRecYds"
    ],
    "want": 10,
-   "hash": "1c2d81818324ea67"
+   "hash": "9778bb6269380bfc"
   },
   "context": {
    "facts": true,
@@ -2045,6 +2046,6 @@
     "want": 55
    }
   },
-  "hash": "6362c9a6b4ee0d23"
+  "hash": "1911419eeee65025"
  }
 }

@@ -1681,3 +1681,29 @@ mat-icon.desk-gloves {
   font-weight: 700;
 }
 
+
+// (the band lab's Live / Staged switch (D70, admins only): two small pills and the staged rule's name)
+.desk-stage {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin: v.$space-10 2px 0;
+  font-size: v.$fs-11;
+}
+.desk-stage-btn,
+.desk-stage-pick {
+  font: inherit;
+  color: inherit;
+  background: transparent;
+  border: 1px solid color-mix(in srgb, currentColor 30%, transparent);
+  border-radius: 999px;
+  padding: 2px 10px;
+  cursor: pointer;
+}
+.desk-stage-btn.active {
+  border-color: currentColor;
+  font-weight: 600;
+}
+.desk-stage-pick option {
+  color: #000;
+}

@@ -458,14 +458,25 @@ export function replayRecord(V, sport, rows, { events = null, names = () => ({ h
       h.ids = R.reasonsFor(h.ctx).map((r) => r.id);
       h.before = { band: b.band, units: b.units, profit: b.profit };
     }
-    const walk = R.walkReasons(mine.map((b) => ({ t: settle(b), season: b.season, market: b.market, reasons: hold.get(b).ids, profit: flat(b), beat: b.beat })));
-    for (const b of mine) {
+    // (the closing-line bands (D70, clv-bands.mjs SHIPPED): a reason earns on its bets' shrunk return at the fair
+    // close and their beat share, with its results not losing, walk-forward by each bet's placement; REPLAY_BANDS=d58
+    // the results tiers (D58) as they were. A version without the module: D58's)
+    const C = process.env.REPLAY_BANDS === 'd58' ? null : V.clvBands?.SHIPPED ? V.clvBands : null;
+    const rule = C ? C.SHIPPED : null;
+    const walk = C ? C.walkClv(mine.map((b) => ({ t: settle(b), at: b.at, market: b.market, ids: hold.get(b).ids, clv: fin(b.clv) ? b.clv : null, profit: flat(b), season: b.season, beat: b.beat })), rule) : R.walkReasons(mine.map((b) => ({ t: settle(b), season: b.season, market: b.market, reasons: hold.get(b).ids, profit: flat(b), beat: b.beat })));
+    mine.forEach((b, i) => {
       const h = hold.get(b);
+      if (C) {
+        const t = C.tierClv(h.ids, walk.at(i), b.kelly, rule);
+        h.would = t.tier;
+        h.proven = t.proven.map((id) => ({ id }));
+        return;
+      }
       const t = R.tierOf(h.ids, walk.at(b.at, b.market), b.kelly);
       h.would = t.tier;
       h.proven = t.proven;
-    }
-    const place = R.placeTiers(mine.map((b) => ({ t: settle(b), tier: hold.get(b).would, profit: flat(b), beat: b.beat })));
+    });
+    const place = C && !rule.place ? { at: () => ({ love: true, lock: true }), final: { love: true, lock: true } } : R.placeTiers(mine.map((b) => ({ t: settle(b), tier: hold.get(b).would, profit: flat(b), beat: b.beat })));
     const counts = { lock: 0, high: 0, medium: 0, would: { lock: 0, high: 0, medium: 0 } };
     for (const b of mine) {
       const h = hold.get(b);
@@ -480,7 +491,8 @@ export function replayRecord(V, sport, rows, { events = null, names = () => ({ h
       counts.would[h.would]++;
     }
     flags.tiers = { ...counts, place: { love: place.final.love, lock: place.final.lock } };
-    reasonsFile = R.fileOf(sport, walk, place, { at: new Date(now).toISOString(), epoch });
+    reasonsFile = C ? C.clvFileOf(sport, walk, rule, rule.place ? place : null, { at: new Date(now).toISOString(), epoch, version: R.REASONS_V }) : R.fileOf(sport, walk, place, { at: new Date(now).toISOString(), epoch });
+    if (C) flags.tiers.rule = rule.name;
     // (the scratch dump for the round's tables: every bet with its band before and after)
     if (process.env.REPLAY_DUMP) {
       try {
@@ -495,11 +507,13 @@ export function replayRecord(V, sport, rows, { events = null, names = () => ({ h
   // bands): LOVE shows only where the LOVEs and LOCKs before that month beat the LIKEs by flat return and beat-the-close
   // on PLACE_MIN of them, LOCK only where its own beat the LOVEs; a band not earned falls to the one below, its stake
   // held to that band's cap (TIER_UNITS). MMA_PLACE=0 off; a version without reasons.mjs: none)
+  const mmaBefore = new Map();
   if (sport === 'mma' && REASONS?.placeTiers && process.env.MMA_PLACE !== '0') {
     const flatOfBet = (b) => (b.res === 'W' ? dec(b.odds) - 1 : b.res === 'L' ? -1 : 0);
     const mine = bets.filter((b) => !b.practice);
     const place = REASONS.placeTiers(mine.map((b) => ({ t: b.t + GAME_HOURS * 36e5, tier: b.band, profit: flatOfBet(b), beat: b.beat })));
     let moved = 0;
+    for (const b of mine) mmaBefore.set(b, { band: b.band, units: b.units, profit: b.profit });
     for (const b of mine) {
       const band = REASONS.placed(b.band, place.at(b.at));
       if (band === b.band) continue;
@@ -537,7 +551,22 @@ export function replayRecord(V, sport, rows, { events = null, names = () => ({ h
   }
   bets.sort((a, b) => a.t - b.t || a.id.localeCompare(b.id));
   const passed = passes.filter((r) => !r.practice);
-  const out = summarize(sport, bets, passed, { epoch, now, flags, rows: { open: opens.size, close: closes.size }, seasonsWithProps: new Set([...opens.values(), ...closes.values()].filter((x) => x.market === 'prop').map((x) => x.season)), seasonsAll: new Set([...opens.values(), ...closes.values()].map((x) => x.season)) });
+  const sumArgs = { epoch, now, flags, rows: { open: opens.size, close: closes.size }, seasonsWithProps: new Set([...opens.values(), ...closes.values()].filter((x) => x.market === 'prop').map((x) => x.season)), seasonsAll: new Set([...opens.values(), ...closes.values()].map((x) => x.season)) };
+  // (the band lab's dump (band-lab.mjs): every bet as placed before the bands, its reasons and holds, the passes in
+  // brief and the summary's arguments, so a band rule can be tried on the whole replay without a refit)
+  if (process.env.REPLAY_DUMP) {
+    try {
+      const lab = bets.map((b) => {
+        const h = hold.get(b);
+        const m = mmaBefore.get(b);
+        return { ...b, lab: h ? { ids: h.ids ?? [], before: h.before ?? null, suspect: !!h.suspect, barred: !!h.barred, would: h.would ?? null } : m ? { ids: [], before: m, suspect: false, barred: false, would: null } : null };
+      });
+      writeFileSync(path.join(process.env.REPLAY_DUMP, `${sport}-lab.json`), JSON.stringify({ v: 1, sport, at: new Date(now).toISOString(), practiceUnits, beatBar: fin(V.desk.BEAT_BAR) ? { bar: V.desk.BEAT_BAR, min: V.desk.LINE_GATE_MIN ?? 40, window: V.desk.LINE_GATE_N ?? 200 } : null, bets: lab, passed: passed.map((r) => [r.x.y ?? null, r.sd.over ? 1 : 0, r.sd.odds]), args: { ...sumArgs, seasonsWithProps: [...sumArgs.seasonsWithProps], seasonsAll: [...sumArgs.seasonsAll] } }));
+    } catch (err) {
+      console.warn(`replay lab dump failed: ${err.message}`);
+    }
+  }
+  const out = summarize(sport, bets, passed, sumArgs);
   // (the reason tiers' file (D58): what gate.mjs --record writes as reasons.json, kept off the replay's own file)
   if (reasonsFile) out.reasonsFile = reasonsFile;
   return out;

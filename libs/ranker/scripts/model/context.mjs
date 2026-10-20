@@ -812,6 +812,14 @@ function nhlGoalies(p, story) {
 // (StatsAPI's team codes that differ from ESPN's)
 const MLB_CODES = { AZ: 'ARI', CWS: 'CHW' };
 
+// MLB's older seasons for the props' replay (DECISIONS.md D69): the history's finals past games.json's matched to
+// StatsAPI's schedule, their probable starters and lineups, and the starters' game logs, into the facts (free; kept
+// in the context's cache like the rest). The games need their teams' codes (gate.mjs propsHistory fills them)
+export async function mlbOlder(games, facts) {
+  facts.games ??= {};
+  await mlbFacts(games, [], facts, new Map());
+}
+
 // MLB: StatsAPI's schedule matched to ESPN's games (probable pitchers, lineups by hand, the weather, which
 // ballpark and where), the coming games' too, and every starter's pitching lines (this season's game log and
 // last season's)

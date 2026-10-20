@@ -2,27 +2,27 @@
  "v": 1,
  "sport": "mma",
  "epoch": "2026-10-20T13:40:00Z",
- "at": "2026-10-20T15:14:29.087Z",
+ "at": "2026-10-20T18:29:33.937Z",
  "from": "2020-06-06T23:10:00.000Z",
  "through": "2026-10-18T01:45:00.000Z",
  "n": {
   "rows": 7773,
   "keys": 4497,
-  "bets": 1036,
+  "bets": 1038,
   "practice": 0,
-  "pass": 3461
+  "pass": 3459
  },
  "overall": {
-  "bets": 1036,
-  "won": 655,
-  "lost": 369,
+  "bets": 1038,
+  "won": 656,
+  "lost": 370,
   "push": 12,
-  "staked": 567.5,
-  "profit": -16.52,
-  "roi": -0.0291,
-  "beat": 0.3694,
-  "beatN": 509,
-  "clv": -0.0227
+  "staked": 568.5,
+  "profit": -15.97,
+  "roi": -0.0281,
+  "beat": 0.3686,
+  "beatN": 510,
+  "clv": -0.023
  },
  "practice": {
   "bets": 0,
@@ -37,13 +37,13 @@
   "clv": null
  },
  "pass": {
-  "bets": 3461,
-  "won": 2034,
-  "lost": 1375,
+  "bets": 3459,
+  "won": 2033,
+  "lost": 1374,
   "push": 52,
-  "staked": 3461,
-  "profit": -84.55,
-  "roi": -0.0244,
+  "staked": 3459,
+  "profit": -86.05,
+  "roi": -0.0249,
   "beat": null,
   "beatN": 0,
   "clv": null
@@ -74,30 +74,30 @@
    "clv": null
   },
   "medium": {
-   "bets": 1036,
-   "won": 655,
-   "lost": 369,
+   "bets": 1038,
+   "won": 656,
+   "lost": 370,
    "push": 12,
-   "staked": 567.5,
-   "profit": -16.52,
-   "roi": -0.0291,
-   "beat": 0.3694,
-   "beatN": 509,
-   "clv": -0.0227
+   "staked": 568.5,
+   "profit": -15.97,
+   "roi": -0.0281,
+   "beat": 0.3686,
+   "beatN": 510,
+   "clv": -0.023
   }
  },
  "byMarket": {
   "lines": {
-   "bets": 1036,
-   "won": 655,
-   "lost": 369,
+   "bets": 1038,
+   "won": 656,
+   "lost": 370,
    "push": 12,
-   "staked": 567.5,
-   "profit": -16.52,
-   "roi": -0.0291,
-   "beat": 0.3694,
-   "beatN": 509,
-   "clv": -0.0227
+   "staked": 568.5,
+   "profit": -15.97,
+   "roi": -0.0281,
+   "beat": 0.3686,
+   "beatN": 510,
+   "clv": -0.023
   },
   "props": {
    "bets": 0,
@@ -166,16 +166,16 @@
   {
    "season": 2021,
    "context": "ratings",
-   "bets": 77,
-   "won": 25,
-   "lost": 50,
+   "bets": 79,
+   "won": 26,
+   "lost": 51,
    "push": 2,
-   "staked": 38.5,
-   "profit": -5.47,
-   "roi": -0.1421,
-   "beat": 0.3947,
-   "beatN": 38,
-   "clv": -0.0326,
+   "staked": 39.5,
+   "profit": -4.92,
+   "roi": -0.1246,
+   "beat": 0.3846,
+   "beatN": 39,
+   "clv": -0.036,
    "practice": {
     "bets": 0,
     "won": 0,
@@ -189,16 +189,16 @@
     "clv": null
    },
    "lines": {
-    "bets": 77,
-    "won": 25,
-    "lost": 50,
+    "bets": 79,
+    "won": 26,
+    "lost": 51,
     "push": 2,
-    "staked": 38.5,
-    "profit": -5.47,
-    "roi": -0.1421,
-    "beat": 0.3947,
-    "beatN": 38,
-    "clv": -0.0326
+    "staked": 39.5,
+    "profit": -4.92,
+    "roi": -0.1246,
+    "beat": 0.3846,
+    "beatN": 39,
+    "clv": -0.036
    },
    "props": {
     "bets": 0,
@@ -555,16 +555,16 @@
   },
   "2021": {
    "all": {
-    "bets": 77,
-    "won": 25,
-    "lost": 50,
+    "bets": 79,
+    "won": 26,
+    "lost": 51,
     "push": 2,
-    "staked": 38.5,
-    "profit": -5.47,
-    "roi": -0.1421,
-    "beat": 0.3947,
-    "beatN": 38,
-    "clv": -0.0326
+    "staked": 39.5,
+    "profit": -4.92,
+    "roi": -0.1246,
+    "beat": 0.3846,
+    "beatN": 39,
+    "clv": -0.036
    },
    "practice": {
     "bets": 0,
@@ -604,29 +604,29 @@
      "clv": null
     },
     "medium": {
-     "bets": 77,
-     "won": 25,
-     "lost": 50,
+     "bets": 79,
+     "won": 26,
+     "lost": 51,
      "push": 2,
-     "staked": 38.5,
-     "profit": -5.47,
-     "roi": -0.1421,
-     "beat": 0.3947,
-     "beatN": 38,
-     "clv": -0.0326
+     "staked": 39.5,
+     "profit": -4.92,
+     "roi": -0.1246,
+     "beat": 0.3846,
+     "beatN": 39,
+     "clv": -0.036
     }
    },
    "lines": {
-    "bets": 77,
-    "won": 25,
-    "lost": 50,
+    "bets": 79,
+    "won": 26,
+    "lost": 51,
     "push": 2,
-    "staked": 38.5,
-    "profit": -5.47,
-    "roi": -0.1421,
-    "beat": 0.3947,
-    "beatN": 38,
-    "clv": -0.0326
+    "staked": 39.5,
+    "profit": -4.92,
+    "roi": -0.1246,
+    "beat": 0.3846,
+    "beatN": 39,
+    "clv": -0.036
    },
    "props": {
     "bets": 0,
@@ -1442,7 +1442,7 @@
    "odds": -250,
    "p": 0.7157,
    "fair": 0.6854,
-   "kelly": 0.003,
+   "kelly": 0.0029,
    "band": "medium",
    "practice": false,
    "units": 0.5,
@@ -1471,7 +1471,7 @@
    "odds": -148,
    "p": 0.6012,
    "fair": 0.589,
-   "kelly": 0.0093,
+   "kelly": 0.0092,
    "band": "medium",
    "practice": false,
    "units": 0.5,
@@ -1500,7 +1500,7 @@
    "odds": -290,
    "p": 0.7464,
    "fair": 0.7136,
-   "kelly": 0.0059,
+   "kelly": 0.0058,
    "band": "medium",
    "practice": false,
    "units": 0.5,
@@ -1527,7 +1527,7 @@
    "line": null,
    "side": "away",
    "odds": -230,
-   "p": 0.7005,
+   "p": 0.7004,
    "fair": 0.669,
    "kelly": 0.0073,
    "band": "medium",
@@ -1643,7 +1643,7 @@
    "line": null,
    "side": "home",
    "odds": -278,
-   "p": 0.7369,
+   "p": 0.7368,
    "fair": 0.7047,
    "kelly": 0.0029,
    "band": "medium",
@@ -1779,7 +1779,7 @@
  ],
  "flags": {
   "timing": {
-   "open": 586,
+   "open": 588,
    "close": 450,
    "openSeen": 3767,
    "openClean": 3767,
@@ -1797,22 +1797,22 @@
      "beatN": 10
     },
     "high": {
-     "n": 237,
-     "roi": 0.015,
-     "beat": 0.3171,
-     "beatN": 123
+     "n": 236,
+     "roi": 0.0064,
+     "beat": 0.3197,
+     "beatN": 122
     },
     "medium": {
-     "n": 772,
-     "roi": -0.0505,
-     "beat": 0.391,
-     "beatN": 376
+     "n": 775,
+     "roi": -0.0463,
+     "beat": 0.3889,
+     "beatN": 378
     }
    },
-   "moved": 248
+   "moved": 235
   },
   "facts": {
-   "stamped": 1036,
+   "stamped": 1038,
    "late": 0,
    "openHeld": 0,
    "closeHeld": 0
@@ -1834,24 +1834,24 @@
   "split": "games that start before the epoch replayed; the live ledger from the epoch on",
   "notSeen": "the live desk's CLV gates, CHECKs, research and news"
  },
- "commit": "c982565c",
- "note": "D65. MMA's Kelly bands earn their place (D58's place check on MMA)",
+ "commit": "f7943b13",
+ "note": "D70. The closing-line bands (Gemini's design): a reason earns LOVE or LOCK by its shrunk return at the fair close, its beat share and results that don't lose; the band lab stages every rule before one ships",
  "inputs": {
   "v": 1,
   "sport": "mma",
   "code": {
-   "mma": "6c78142989a6",
-   "games": "1ec04d860019",
+   "mma": "da10b2738d86",
+   "games": "9c08190c0c31",
    "pricing": "3ecedb70ec72",
-   "record": "fdca035c3211",
-   "harness": "23986d676e0d"
+   "record": "c27335718370",
+   "harness": "1134888049f8"
   },
   "rows": {
    "replay": 7773,
    "keys": 4497,
-   "bets": 1036
+   "bets": 1038
   },
-  "units": -16.52,
+  "units": -15.97,
   "frozen": {
    "props": {
     "mode": "saved",
@@ -1866,6 +1866,6 @@
     "want": 14
    }
   },
-  "hash": "39a82feb55d2c0d7"
+  "hash": "19eb5b9e24a14b13"
  }
 }

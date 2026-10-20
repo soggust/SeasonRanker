@@ -5,7 +5,7 @@ import { darkLogoOf } from '../team-look';
 import { matchupName } from './game-menu';
 import { BetGroup, SportGroup, TableSorts, betValue, byGame, gamesBySport } from './desk-columns';
 import { DESK_HELP } from './desk-help';
-import { BotHistory, HISTORY_RANGES, HistoryRange, HistoryRow, ReplayRecordFile, beatText, beatTip, botHistoryOf, buildLabel, buildOf, emptyRow, isHistoryRange, recordText } from './replay-history';
+import { BotHistory, HISTORY_RANGES, HistoryRange, HistoryRow, ReplayRecordFile, StagedReplayFile, beatText, beatTip, botHistoryOf, buildLabel, buildOf, emptyRow, isHistoryRange, recordText } from './replay-history';
 import { DeskPanel, ESPN_LEAGUES, SPORTS, deskPanelOpen, UNIT_WORDS, DeskEpoch, epochFor, epochShared, countNowOf, deskEpochOf, edgeColorOf, epochLabel, isTracked, meterOf, propState, provisional, sideTextOf, sideTitleOf, toWin } from './desk-math';
 import { Board, Meter, ModelBet, ModelState, Settled } from './desk-model';
 import { SummaryBox, athleteTeam, liveStat } from './live-props';
@@ -98,6 +98,13 @@ export class ModelDeskComponent implements OnInit, OnDestroy {
   // joined to the live ledger's bets since)
   history: BotHistory | null = null;
   private allReplays: (ReplayRecordFile | null)[] = [];
+  // (the band lab's staged records (band-lab.mjs --write, D70): each sport's replay under every variant tried; the
+  // Live / Staged switch on By Sport and By Confidence reads one, named, in place of the live replay. Admins only,
+  // as the whole tab is)
+  private allStaged: (StagedReplayFile | null)[] = [];
+  stagedNames: string[] = [];
+  view: 'live' | 'staged' = 'live';
+  variant: string | null = null;
   private allLedgerBets: ModelBet[] = [];
   readonly recordText = recordText;
   // (Beat close: the share that beat the fair close from BEAT_MIN bets, the count and mean return on hover, D56)
@@ -231,16 +238,20 @@ export class ModelDeskComponent implements OnInit, OnDestroy {
     // (every sport's files asked at once, not each sport's one after another)
     const files = await Promise.all(
       SPORTS.map(async (sport) => {
-        const [ledger, state, replay] = await Promise.all([
+        const [ledger, state, replay, staged] = await Promise.all([
           getJson<{ bets?: ModelBet[] }>(`/${sport}/data/model/ledger.json`, { cache: 'no-cache' }),
           getJson<ModelState>(`/${sport}/data/model/state.json`, { cache: 'no-cache' }),
           // (none till the gate records a version with the replayed record: the live desk alone)
           getJson<ReplayRecordFile>(`/${sport}/data/model/replay-record.json`, { cache: 'no-cache' }),
+          getJson<StagedReplayFile>(`/${sport}/data/model/replay-record.staged.json`, { cache: 'no-cache' }),
         ]);
-        return { ledger, state, replay };
+        return { ledger, state, replay, staged };
       }),
     );
     this.allReplays = files.map((f) => f.replay);
+    this.allStaged = files.map((f) => f.staged);
+    this.stagedNames = [...new Set(this.allStaged.flatMap((f) => f?.order ?? []))];
+    this.variant = this.stagedNames[0] ?? null;
     this.allStates = files.map((f) => f.state).filter((s): s is ModelState => !!s);
     const rows = files.flatMap((f) => f.ledger?.bets ?? []);
     this.allLedgerBets = rows;
@@ -286,11 +297,28 @@ export class ModelDeskComponent implements OnInit, OnDestroy {
     return this.allBets.filter((b) => b.status === 'open' && (!sport || b.sport === sport)).length;
   }
 
+  // (the replays on show: the live ones, or the staged variant's where a sport has it)
+  private replays(): (ReplayRecordFile | null)[] {
+    const name = this.variant;
+    if (this.view !== 'staged' || !name) return this.allReplays;
+    return this.allReplays.map((r, i) => this.allStaged[i]?.variants?.[name] ?? r);
+  }
+
+  setView(view: 'live' | 'staged'): void {
+    this.view = view;
+    this.show();
+  }
+
+  setVariant(name: string): void {
+    this.variant = name;
+    this.show();
+  }
+
   // (what's on show changed: its bets and states picked, the history built, the scores asked)
   private show(): void {
     this.bets = this.allBets.filter((b) => b.status === 'open' && (!this.sport || b.sport === this.sport));
     this.states = this.sport ? this.allStates.filter((s) => s.sport === this.sport) : this.allStates;
-    const h = botHistoryOf(this.allReplays, this.allLedgerBets, this.sport, Object.fromEntries(this.allStates.map((s) => [s.sport, s.label])), { range: this.range });
+    const h = botHistoryOf(this.replays(), this.allLedgerBets, this.sport, Object.fromEntries(this.allStates.map((s) => [s.sport, s.label])), { range: this.range });
     this.history = h;
     const histBand = (label: string) => h.byBand.find((r) => r.label === label) ?? emptyRow(label);
     this.bandRows = [histBand('LOCK'), histBand('LOVE'), histBand('LIKE'), h.practice, histBand('PASS')];
