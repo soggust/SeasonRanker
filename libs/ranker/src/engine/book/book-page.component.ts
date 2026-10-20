@@ -26,7 +26,7 @@ import { pickTeamColor, splitPick } from './pick-style';
 import { BEST_BETS_LABEL, MenuDay, allKey, allLabel, allOf, MenuGame, MenuGameIn, MenuTeam, chosenSport, dayBand, defaultClosed, gameLine, gameMenu, gamePicksHead, groupKey, groupOf, linesOnlyGames, menuKey, menuOptionId, menuValues, shownEvents, sportChoice, sportFace, viewsShown } from './game-menu';
 import { darkLogoOf, teamLook } from '../team-look';
 import { LiveService } from './live.service';
-import { QuoteSources, joinSuggestions, lockedText, movedTitle, quoteOf, suggestionsOf, withLive } from './suggestions';
+import { QuoteSources, joinSuggestions, quoteOf, suggestionsOf, withLive } from './suggestions';
 import type { LivePicks } from './live-tab.component';
 import type { ModelBoard } from '../account/wallet/lines.service';
 import type { GameBoard } from '../account/wallet/wallet-math';
@@ -1271,11 +1271,6 @@ export class BookPageComponent implements OnInit, OnDestroy {
   priceText(r: BetRow): string | undefined {
     return Number.isFinite(r.livePrice) && r.livePrice ? americanOdds(r.livePrice) : r.odds;
   }
-  // (a bet's locked price and when, "Bet at −109 · 2:05 PM"; a moved one's hover)
-  lockedText(r: BetRow): string | null {
-    return r.suggested || r.check ? null : lockedText(r);
-  }
-  readonly movedTitle = movedTitle;
   onSlip(r: BetRow): boolean {
     const sel = this.rowSelection(r);
     return !!sel && this.wallet.slipKeys().has(selectionKey(sel));

@@ -353,22 +353,13 @@
                   <!-- (a phone's: the model against the book in the line, the meter being off the row) -->
                   @if (meter(r); as m) {<span class="bet-sub-meter"> · <b>{{ m.model }}%@if (m.book !== null) { vs {{ m.book }}%}</b></span>}
                 </small>
-                <!-- (its tags in one line: a slate's practice pick (bet at 0.5u for the slate, short of the vig, on its own
-                     Practice line); a bet's locked price and when, "Bet at −109 · 2:05 PM"; "moved" where the live price
-                     on its button isn't the one the Bot locked. A suggestion carries no tag (the owner's, 2026-10-19:
-                     "obviously it's suggested"): its button's live price is all it shows) -->
-                @let locked = lockedText(r);
-                @if (r.practice || locked || r.moved) {
+                <!-- (its tag: a slate's practice pick (bet at 0.5u for the slate, short of the vig, on its own Practice
+                     line). No locked price or "moved": Best Bets reads at the latest price, the Bot's own tickets are the
+                     Algorithm tab's and Open Bets' (the owner, 2026-10-19). A suggestion carries no tag ("obviously it's
+                     suggested"): its button's live price is all it shows) -->
+                @if (r.practice) {
                   <small class="bet-tags">
-                    @if (r.practice) {
-                      <span class="bet-practice" title="A practice pick: the Bot plays its best few a slate even when none clears the vig, at 0.5u, tallied on its own Practice line">practice</span>
-                    }
-                    @if (locked) {
-                      <span class="bet-locked" title="The price the Bot locked when it bet this, and when; the button has the latest price">{{ locked }}</span>
-                    }
-                    @if (r.moved) {
-                      <span class="bet-moved" [attr.title]="movedTitle(r)">moved</span>
-                    }
+                    <span class="bet-practice" title="A practice pick: the Bot plays its best few a slate even when none clears the vig, at 0.5u, tallied on its own Practice line">practice</span>
                   </small>
                 }
                 @if (placedOn(r); as staked) {
