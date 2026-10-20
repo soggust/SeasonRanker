@@ -1,65 +1,71 @@
 {
  "sport": "mma",
- "epoch": "2026-10-20T06:30:00Z",
- "commit": "e4fa67cd",
- "at": "2026-10-20T08:43:20.231Z",
+ "epoch": "2026-10-20T13:40:00Z",
+ "commit": "007ede34",
+ "at": "2026-10-20T13:40:12.099Z",
  "ml": {
   "trust": 0,
-  "n": 2055,
-  "clvN": 68,
-  "eff": 2024.5,
+  "n": 1932,
+  "clvN": 65,
+  "eff": 1902.9,
   "fitted": true,
-  "logLoss": 0.5781,
+  "logLoss": 0.5851,
   "rows": 4941,
   "from": "2020-06-06",
   "to": "2026-10-18",
   "all": {
-   "trust": 0,
-   "n": 3614,
-   "clvN": 1461,
-   "eff": 3020.4,
+   "trust": 0.05,
+   "n": 3395,
+   "clvN": 1368,
+   "eff": 2861.4,
    "fitted": true,
-   "logLoss": 0.581,
+   "logLoss": 0.5775,
    "rows": 4941,
    "from": "2020-06-06",
    "to": "2026-10-18"
   },
   "bands": {
    "early": {
-    "trust": 0.1,
+    "trust": 0.15,
     "n": 877,
     "clvN": 743,
     "eff": 892,
     "fitted": true,
-    "logLoss": 0.6074,
+    "logLoss": 0.5976,
     "rows": 892,
     "from": "2020-06-21",
     "to": "2026-10-04"
    },
    "mid": {
     "trust": 0,
-    "n": 911,
-    "clvN": 840,
-    "eff": 923,
+    "n": 840,
+    "clvN": 771,
+    "eff": 852,
     "fitted": true,
-    "logLoss": 0.5576,
+    "logLoss": 0.5467,
     "rows": 1262,
     "from": "2020-06-13",
     "to": "2026-10-18"
    },
    "late": {
     "trust": 0,
-    "n": 2055,
-    "clvN": 68,
-    "eff": 2024.5,
+    "n": 1932,
+    "clvN": 65,
+    "eff": 1902.9,
     "fitted": true,
-    "logLoss": 0.5781,
+    "logLoss": 0.5851,
     "rows": 2787,
     "from": "2020-06-06",
     "to": "2026-10-18"
    }
   },
-  "fairCal": null
+  "fairCal": {
+   "b": [
+    1.0543,
+    0.128
+   ],
+   "n": 2668
+  }
  },
  "total": {
   "trust": 0,
