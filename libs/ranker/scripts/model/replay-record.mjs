@@ -32,7 +32,7 @@
 //              version; the Loops rule: never the hourly desk): the summaries, the last REPLAY_LAST bets, the last
 //              REPLAY_DAYS days, and the honesty flags (open against close, context coverage by season, the price
 //              convention). Small: no row list
-import { existsSync, readFileSync } from 'node:fs';
+import { existsSync, readFileSync, writeFileSync } from 'node:fs';
 import path from 'node:path';
 
 export const REPLAY_V = 1;
@@ -245,6 +245,7 @@ export function replayRecord(V, sport, rows, { events = null, names = () => ({ h
       : null;
   const bets = [];
   const passes = [];
+  const hold = new Map();
   const flags = { open: 0, close: 0, openSeen: 0, openClean: 0, openInWindow: 0, openHeld: 0, closeHeld: 0, barred: 0 };
   const keys = new Set([...opens.keys(), ...closes.keys()]);
   for (const k of keys) {
@@ -316,6 +317,12 @@ export function replayRecord(V, sport, rows, { events = null, names = () => ({ h
       const bet = betOf(x, sd, { units, band, practice: false, timing: placed.timing, fb: placed.timing === 'open' ? fairBeatOf(x, sd.over, sd.odds, placed.close) : null, names, survival: placed.s });
       // (a barred line keeps what it would have staked at full: the bar's own place below)
       if (barred) bet.full = { units: fullUnits, band: fullBand, profit: units > 0 ? r4((bet.profit * fullUnits) / units) : 0 };
+      // (what the reason tiers read (D58, below): the pick's context at its placement and the rules that hold it)
+      if (V.reasons?.contextOf) {
+        const sideWord = x.market === 'prop' || x.market === 'total' ? (sd.over ? 'over' : 'under') : sd.over ? 'home' : 'away';
+        const sdEdge = x.market === 'prop' && fin(x.mu) && fin(x.sd) && x.sd > 0 && fin(x.line) ? ((sd.over ? 1 : -1) * (x.mu - x.line)) / x.sd : null;
+        hold.set(bet, { suspect, barred, ctx: V.reasons.contextOf({ sport, market: x.market, side: sideWord, stat: x.stat ?? null, fS: sd.fS, pS: sd.pS, kelly: sd.kelly, odds: sd.odds, early: placed.timing === 'open', pin: !!x.pin, sched: sched && x.market !== 'prop' ? (sched.get(String(x.event)) ?? null) : null, sdEdge }) });
+      }
       bets.push(bet);
       flags[placed.timing]++;
     }
@@ -329,9 +336,60 @@ export function replayRecord(V, sport, rows, { events = null, names = () => ({ h
   if (bar) {
     for (const b of bets) if (b.full && bar.bySeason[b.season] === false) {
       Object.assign(b, { units: b.full.units, band: b.full.band, profit: b.full.profit });
+      if (hold.has(b)) hold.get(b).barred = false;
       flags.barred--;
     }
     flags.bar = { applies: bar.applies, barUnits: bar.barUnits, fullUnits: bar.fullUnits, bySeason: bar.bySeason };
+  }
+  // (the reason tiers (DECISIONS.md D58, reasons.mjs): each bet's reasons, judged walk-forward on the bets settled
+  // before its moment (each market's picks flat, recency-weighted), its would-be tier from the proven ones (a LOVE one,
+  // a LOCK two of different families or one strong; the Kelly floor under both), held to the tiers' own place (the
+  // would-be tiers' record before its month: LOVE over LIKE, LOCK over LOVE, by return and beat-the-close), and to
+  // the rules' caps (a suspect price or a barred line a LIKE at most); its stake held to its tier's cap. This
+  // replaces D52's quality caps on the band; D52's stake on the calibrated chance stays under the tier's cap)
+  let reasonsFile = null;
+  if (V.reasons?.walkReasons && hold.size) {
+    const R = V.reasons;
+    const flat = (b) => (b.res === 'W' ? dec(b.odds) - 1 : b.res === 'L' ? -1 : 0);
+    const settle = (b) => b.t + GAME_HOURS * 36e5;
+    const mine = bets.filter((b) => hold.has(b));
+    for (const b of mine) {
+      const h = hold.get(b);
+      h.ids = R.reasonsFor(h.ctx).map((r) => r.id);
+      h.before = { band: b.band, units: b.units, profit: b.profit };
+    }
+    const walk = R.walkReasons(mine.map((b) => ({ t: settle(b), season: b.season, market: b.market, reasons: hold.get(b).ids, profit: flat(b), beat: b.beat })));
+    for (const b of mine) {
+      const h = hold.get(b);
+      const t = R.tierOf(h.ids, walk.at(b.at, b.market), b.kelly);
+      h.would = t.tier;
+      h.proven = t.proven;
+    }
+    const place = R.placeTiers(mine.map((b) => ({ t: settle(b), tier: hold.get(b).would, profit: flat(b), beat: b.beat })));
+    const counts = { lock: 0, high: 0, medium: 0, would: { lock: 0, high: 0, medium: 0 } };
+    for (const b of mine) {
+      const h = hold.get(b);
+      let band = R.placed(h.would, place.at(b.at));
+      if ((h.suspect || h.barred) && band !== 'medium') band = 'medium';
+      const units = h.suspect || h.barred ? b.units : R.tierUnits(b.units, band);
+      b.profit = b.units > 0 ? r2((b.profit * units) / b.units) : 0;
+      b.units = units;
+      b.band = band;
+      if (h.proven.length) b.reasons = h.proven.map((p) => p.id);
+      counts[band]++;
+      counts.would[h.would]++;
+    }
+    flags.tiers = { ...counts, place: { love: place.final.love, lock: place.final.lock } };
+    reasonsFile = R.fileOf(sport, walk, place, { at: new Date(now).toISOString(), epoch });
+    // (the scratch dump for the round's tables: every bet with its band before and after)
+    if (process.env.REPLAY_DUMP) {
+      try {
+        writeFileSync(path.join(process.env.REPLAY_DUMP, `${sport}-bets.json`), JSON.stringify(mine.map((b) => ({ t: b.t, at: b.at, season: b.season, market: b.market, stat: b.stat, odds: b.odds, kelly: b.kelly, p: b.p, res: b.res, timing: b.timing, beat: b.beat, ids: hold.get(b).ids, before: hold.get(b).before, would: hold.get(b).would, band: b.band, units: b.units, profit: b.profit }))));
+        writeFileSync(path.join(process.env.REPLAY_DUMP, `${sport}-pass.json`), JSON.stringify(passes.filter((r) => !r.practice && (r.x.y === 0 || r.x.y === 1)).map((r) => ({ t: r.x.t, market: r.x.market, kind: r.x.kind, win: (r.x.y === 1) === r.sd.over ? 1 : 0, odds: r.sd.odds, beat: r.x.kind === 'o' ? beatOf(r.x, r.sd.over, r.sd.odds, closes.get(r.x.key ?? r.x.id.replace(/:o$/, '')) ?? null) : null }))));
+      } catch (err) {
+        console.warn(`replay dump failed: ${err.message}`);
+      }
+    }
   }
   // (the slate's practice picks: each game's quota (PRACTICE_N over the ET day's games, at least one) less its bets
   // that clear the vig, from its PASS rows with an edge before the vig, best first, at the practice stake)
@@ -354,7 +412,10 @@ export function replayRecord(V, sport, rows, { events = null, names = () => ({ h
   }
   bets.sort((a, b) => a.t - b.t || a.id.localeCompare(b.id));
   const passed = passes.filter((r) => !r.practice);
-  return summarize(sport, bets, passed, { epoch, now, flags, rows: { open: opens.size, close: closes.size }, seasonsWithProps: new Set([...opens.values(), ...closes.values()].filter((x) => x.market === 'prop').map((x) => x.season)), seasonsAll: new Set([...opens.values(), ...closes.values()].map((x) => x.season)) });
+  const out = summarize(sport, bets, passed, { epoch, now, flags, rows: { open: opens.size, close: closes.size }, seasonsWithProps: new Set([...opens.values(), ...closes.values()].filter((x) => x.market === 'prop').map((x) => x.season)), seasonsAll: new Set([...opens.values(), ...closes.values()].map((x) => x.season)) });
+  // (the reason tiers' file (D58): what gate.mjs --record writes as reasons.json, kept off the replay's own file)
+  if (reasonsFile) out.reasonsFile = reasonsFile;
+  return out;
 }
 
 function betOf(x, sd, { units, band, practice, timing, fb = null, names, survival }) {
@@ -429,6 +490,8 @@ export function summarize(sport, bets, passed, { epoch, now, flags, rows, season
       timing: { open: flags.open, close: flags.close, openSeen: flags.openSeen, openClean: flags.openClean, openInWindow: flags.openInWindow, barred: flags.barred ?? 0 },
       // (the bar's own place (D51): whether it stakes the lines, by season and for what comes next)
       ...(flags.bar ? { bar: flags.bar } : {}),
+      // (the reason tiers (D58): the bets by band and by would-be band, and whether LOVE and LOCK have earned their place)
+      ...(flags.tiers ? { tiers: flags.tiers } : {}),
       // (D48, no look-ahead by timestamp: the bets with a factsAt stamp, those past their placement (0), the opens held
       // to the close and the closes left unbet because their price read a fact posted after them)
       facts: { stamped: bets.filter((b) => fin(b.factsAt)).length, late: lateFacts(bets).length, openHeld: flags.openHeld ?? 0, closeHeld: flags.closeHeld ?? 0 },

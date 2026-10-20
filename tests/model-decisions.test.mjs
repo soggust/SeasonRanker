@@ -953,7 +953,7 @@ test('D53 an open bet placed under a band or stake rule changed since is taken b
   // (the new bet keeps the withdrawn one honestly: its price, band, stake, the rules it was placed under, the reason)
   const re = M.withdrawnOf(hokit, now.toISOString());
   assert.equal(re.n, 1);
-  assert.match(re.why[0], /^rule changed \(placed under cap1, now cap2/);
+  assert.match(re.why[0], /^rule changed \(placed under cap1, now cap3/);
   assert.deepEqual([re.from.odds, re.from.units, re.from.band, re.from.rules], [205, 0.5, 'medium', 'cap1']);
   // (every new bet is stamped; the withdrawal only at a fresh Odds API price (D30); run.mjs takes one back like news)
   const mma = fs.readFileSync(path.resolve('libs/ranker/scripts/model/mma-desk.mjs'), 'utf8');

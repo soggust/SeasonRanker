@@ -277,6 +277,10 @@ for (const sport of SPORTS) {
     // every pick as a bet the bot made, so they're in their own list, checks)
     const LEVELS = new Set(['lock', 'high', 'medium', 'low']);
     let last = Infinity;
+    // (the Book's order since 2026-10-19: the band first (LOCK, LOVE, LIKE, the practice picks, PASS), the Kelly score
+    // within a band, the rank the row's place)
+    const groupOf = (p) => (p.practice ? 3 : { lock: 0, high: 1, medium: 2, low: 4 }[p.level]);
+    let group = -1;
     for (const [i, p] of file.picks.entries()) {
       const at = `${sport} pick ${i + 1}`;
       assert.equal(p.sport, sport, `${at}: sport`);
@@ -288,7 +292,12 @@ for (const sport of SPORTS) {
       assert.ok(LEVELS.has(p.level), `${at}: level ${p.level}`);
       // (a Kelly score: 0 or under for a pick with no edge on its price; files before it, the chance)
       assert.ok(Number.isFinite(p.score), `${at}: score ${p.score}`);
-      assert.ok(p.score <= last, `${at}: not in score order`);
+      if (Number.isFinite(p.rank)) assert.equal(p.rank, i + 1, `${at}: rank ${p.rank}`);
+      const g = groupOf(p);
+      assert.ok(g >= group, `${at}: band ${p.level} after a lower band`);
+      if (g > group) last = Infinity;
+      group = g;
+      assert.ok(p.score <= last, `${at}: not in score order within its band`);
       last = p.score;
       assert.ok(Number.isFinite(p.odds), `${at}: odds`);
       assert.ok(isDate(p.start), `${at}: start`);

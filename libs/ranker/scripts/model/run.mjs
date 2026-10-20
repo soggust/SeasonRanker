@@ -131,6 +131,7 @@ import { BOOK, GAME_CAP, LEAGUES, MODEL_EPOCH, PROP_CAPS, TIMING } from './leagu
 import { CAL_CAP, CAL_STEP, calibText, fitCalib } from './calib.mjs';
 import { anchorText, readAnchor } from './anchor.mjs';
 import { loadModel as readConfidence, qualityOf, unitsOf } from './confidence.mjs';
+import { contextOf as reasonContext, liveTier, readReasons, tierUnits } from './reasons.mjs';
 import { ledgerRisk, readLineupRisk, riskAt, riskChance, riskText } from './lineup-risk.mjs';
 import { morningPrices, withSnapshot } from './suggest.mjs';
 import { MAX_LAST, OUT_STATUS, REPRICE_BY, cadenceOf, inputChanges, inputsOf, lastChanceOf, lineupNow, lostAsk, newsMissing, phaseOf, propAsk, putInactives, reach } from './timing.mjs';
@@ -155,7 +156,7 @@ import { fitCode, fitDay, fitDiffs, fitPlan, readFit, refitWhy, saveFit } from '
 import { corrRows, correctionText, tuneCorrection } from './correct.mjs';
 import { PRACTICE_N, PRACTICE_SPLIT, PRACTICE_STAKED, lineBucket, practiceRecord, practiceTop, slateQuota } from './desk.mjs';
 import { MAX_REPRICES, TRUST_START, rulesChanged, rulesOf } from './desk.mjs';
-import { BANKROLL, MARKETS, PRACTICE_UNITS, gatedPlacement, stakeFor, practiceGates, choose, decimal, isTracked, trackedRecord, lineGate, lineBar, barGate, bothGates, readLineBar, barAside, reasonsOf, scheduleRest, propGate, fairPair, placeGame, sameGameOf, sameGameRhoText, fitTrust, fitBuckets, bucketTrustOf, BUCKETS, gapGuard, guardOf, oneSide, pickText, placement, price, record, settle, voidOf } from './desk.mjs';
+import { BANKROLL, MARKETS, PRACTICE_UNITS, EARLY_HOURS, stakeKelly, gatedPlacement, stakeFor, practiceGates, choose, decimal, isTracked, trackedRecord, lineGate, lineBar, barGate, bothGates, readLineBar, barAside, reasonsOf, scheduleRest, propGate, fairPair, placeGame, sameGameOf, sameGameRhoText, fitTrust, fitBuckets, bucketTrustOf, BUCKETS, gapGuard, guardOf, oneSide, pickText, placement, price, record, settle, voidOf } from './desk.mjs';
 import { CHECK_KELLY, CHECK_KINDS, atUnit, causeOf, checkLocked, checkOf, rejudgeChecks, shadowOf, checkResultOf, checkSummary, closeChecks, markPlaced, modelSide, noteOpen, openCheck, priceAtOf, resolveChecks, STORED_FRESH, storedBet, storedFresh, upsertCheck, withStoredPrices } from './checks.mjs';
 import { ledgerWrites, readChecks, readKept } from './checks-file.mjs';
 import { readLinePool } from './line-pool.mjs';
@@ -1376,6 +1377,13 @@ function refitCalib(r) {
   // (the confidence layer (confidence.mjs, DECISIONS.md D52): the quality model, its blend weight and its tiers, read
   // from the committed file the gate records on the priced history (confidence.json), never fit here)
   r.confidence = readConfidence(sport, ROOT);
+  // (the reason tiers (reasons.mjs, DECISIONS.md D58): each market's proven reasons and the tiers' place, read from
+  // the committed file the gate records on the replayed record (reasons.json), never fit here)
+  r.reasons = readReasons(sport, ROOT);
+  if (r.reasons) {
+    const on = Object.entries(r.reasons.markets ?? {}).flatMap(([m, rs]) => Object.entries(rs).filter(([, v]) => v.on).map(([id, v]) => `${m} ${id}${v.strong ? ' (strong)' : ''}`));
+    console.log(`${sport}: the reason tiers: LOVE ${r.reasons.place?.love ? 'shown' : 'held'}, LOCK ${r.reasons.place?.lock ? 'shown' : 'held'}; proven: ${on.length ? on.join(', ') : 'none'}`);
+  }
   console.log(`${sport}: the confidence layer: ${r.confidence ? `${r.confidence.snapshots?.length ?? 0} snapshots to ${r.confidence.snapshots?.at(-1)?.cutoff ?? '?'}, the blend's weight ${r.confidence.blend?.weight ?? 0}, tiers LOVE ${r.confidence.tiers?.love ?? 'not earned'} LOCK ${r.confidence.tiers?.lock ?? 'not earned'}` : 'no file: the Kelly bands and stakes as they are'}`);
   r.calib = null;
   try {
@@ -2070,7 +2078,7 @@ function betGames(r) {
         Object.assign(bet, { suspect: pick.suspect, ...(bet.intent === 'edge' ? { units: Math.min(bet.units, PRACTICE_UNITS), practice: bet.practice ?? `suspect: ${pick.suspect.why}` } : {}) });
       }
       bet.pick = pickText(bet, game);
-      withConfidence(r, bet, { otherOdds: pick.other?.odds ?? null, trust: trust[market.market]?.trust ?? START_TRUST });
+      withConfidence(r, bet, { otherOdds: pick.other?.odds ?? null, trust: trust[market.market]?.trust ?? START_TRUST, sched: sched.get(String(game.id)) ?? null });
       r.pending.push({ bet, game });
       r.placed.add(id);
     }
@@ -2883,6 +2891,10 @@ function practicePicks(r, candidates) {
 // role or research bet) keeps its stake. A sport without the file, or a row without both prices, is left as it is.
 // x: { otherOdds (a game side's other side's price), trust (the market's) }
 function withConfidence(r, bet, x = {}) {
+  withQuality(r, bet, x);
+  return withTier(r, bet, x);
+}
+function withQuality(r, bet, x = {}) {
   const m = r.confidence;
   if (!m || bet.oddsAssumed || !Number.isFinite(bet.p) || !Number.isFinite(bet.fair) || !Number.isFinite(bet.odds)) return bet;
   const a = bet.side === 'over' || bet.side === 'home';
@@ -2909,6 +2921,37 @@ function withConfidence(r, bet, x = {}) {
     const u = unitsOf(qy, bet.odds, EV_SCALE, { push: bet.push ?? 0 });
     if (Number.isFinite(u)) bet.units = Math.max(PRACTICE_UNITS, Math.min(bet.units, u));
   }
+  return bet;
+}
+
+// The reason tier on a bet (reasons.mjs liveTier, DECISIONS.md D58): its reasons from what the Bot knows at
+// placement (the schedule's rest for a line (x.sched), its timing (6 hours or more before the start: early), the
+// sharp book's fair, its segment, a prop's stat and side and its projection past the line, its Kelly), the file's
+// verdicts on them and the tiers' place: LIKE any edge, LOVE a proven reason, LOCK two of different families or one
+// strong, never a LOVE under the 2% Kelly floor; on the bet as conf.tier and conf.reasons (the proven ones with their
+// records, the Book's popover lists them), which picks.mjs levelOf reads in place of D52's quality cap. Its stake held
+// to the tier's cap (a LIKE 1u, a LOVE 2u, a LOCK 3u) where no rule already holds it. A sport without the file, as it is
+function withTier(r, bet, x = {}) {
+  const file = r.reasons;
+  if (!file || bet.intent !== 'edge' || bet.oddsAssumed || !Number.isFinite(bet.p) || !Number.isFinite(bet.fair) || !Number.isFinite(bet.odds)) return bet;
+  const t = Date.parse(bet.start);
+  const at = Date.parse(bet.placedAt ?? '') || Date.now();
+  const proj = bet.projection ?? null;
+  const mu = proj && Number.isFinite(proj.mean) ? proj.mean : null;
+  const sd = mu !== null && Number.isFinite(proj.r) && proj.r > 0 ? Math.sqrt(mu + (mu * mu) / proj.r) : mu !== null ? Math.sqrt(Math.max(0, mu)) : null;
+  const sdEdge = bet.market === 'prop' && mu !== null && sd > 0 && Number.isFinite(bet.line) ? ((bet.side === 'over' ? 1 : -1) * (mu - bet.line)) / sd : null;
+  let lt = null;
+  try {
+    const ctx = reasonContext({ sport: bet.sport, market: bet.market, side: bet.side, stat: bet.propType ?? null, fS: bet.fair, pS: bet.p, kelly: stakeKelly(bet.odds, bet.p), odds: bet.odds, early: Number.isFinite(t) && (t - at) / 36e5 >= EARLY_HOURS, pin: bet.fairFrom === 'pinnacle', sched: x.sched ?? null, sdEdge });
+    lt = liveTier(file, ctx);
+  } catch (err) {
+    console.warn(`${r.sport}: the reason tiers failed on ${bet.id} (${err.message}): the bet as it is`);
+    return bet;
+  }
+  if (!lt) return bet;
+  bet.conf = { ...(bet.conf ?? {}), tier: lt.tier, ...(lt.proven.length ? { reasons: lt.proven.map((p) => p.text) } : {}) };
+  const plain = !bet.practice && !bet.suspect && !bet.topN && !bet.researchBet && !bet.researchAdjusted && !bet.context?.guard && !bet.context?.roleBet;
+  if (plain && Number.isFinite(bet.units)) bet.units = Math.max(PRACTICE_UNITS, tierUnits(bet.units, lt.tier));
   return bet;
 }
 

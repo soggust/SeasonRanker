@@ -4,7 +4,7 @@
 // is an admin's alone, so the owner's page learns it should show the UFC picks after it has drawn the rest. No
 // Angular here (tested under Node: tests/book-sports.test.mjs)
 import { byBand, CheckResolved } from './desk-notes';
-import { Confidence, PickWhy, confidenceOf, isSuspect, kellyOf } from './bet-why';
+import { BANDS, Confidence, PickWhy, confidenceOf, isSuspect, kellyOf } from './bet-why';
 import { heldTo } from './tiers';
 import type { BandCap } from './tiers';
 import { americanOdds } from './bet-format';
@@ -57,6 +57,10 @@ export interface BetRow {
   // at most at every price, 'high' a LOVE at most; capWhy its why)
   cap?: BandCap | null;
   capWhy?: string;
+  // (the reason tier (picks.json tier, DECISIONS.md D58): the band its proven reasons give it where the Kelly clears
+  // the 2% floor, and those reasons with their records (the popover lists them))
+  tier?: Confidence | null;
+  reasons?: string[];
   // (its side, and a prop's player, his ESPN id and his team's: its circle and its color)
   side?: string | null;
   player?: string | null;
@@ -190,6 +194,9 @@ export interface Pick {
   // calibrated chance, the quality (the stake's Kelly at it) and the tier cap)
   cap?: BandCap | null;
   conf?: { pc: number; q: number; cap: BandCap | null };
+  // (the reason tier (D58): the band its proven reasons give it before the Kelly floor and the caps; the reasons in words)
+  tier?: Confidence | null;
+  reasons?: string[];
   // (when the Bot placed it: files that don't carry it, none)
   placedAt?: string | null;
   kind: BetKind;
@@ -269,6 +276,13 @@ export function pickKey(sport: string, matchup: string, kind: BetKind, pick: str
 
 // (a band held to the desk's cap: a LIKE at most where the file caps it 'medium', a LOVE at most where the confidence
 // layer caps it 'high' (D52), and a LIKE at most where its price is suspect: D23's edge bar)
+export const isTier = (t: unknown): t is Confidence => t === 'lock' || t === 'high' || t === 'medium';
+// (a Kelly band read by the reason tier (D58, picks.mjs levelOf): a PASS as it is; the tier where the Kelly clears the
+// owner's 2% LOVE floor, else a LIKE; no tier, the Kelly's own)
+export function tierBand(band: Confidence, kelly: number, tier: Confidence | null | undefined): Confidence {
+  if (!isTier(tier) || band === 'low' || band === 'check') return band;
+  return kelly >= BANDS.high ? tier : 'medium';
+}
 function cappedBand(band: Confidence, p: Pick): Confidence {
   const held = heldTo(band, p.cap === 'medium' || p.cap === 'high' ? p.cap : null);
   return isSuspect(p.p ?? (p.chance != null ? p.chance / 100 : null), p.ev) ? heldTo(held, 'medium') : held;
@@ -293,8 +307,11 @@ export function rowOf(sport: string, p: Pick, check: boolean): BetRow {
     // (its band: the Kelly's, held to the cap the desk put on it (picks.json cap: a rule's LIKE, the confidence layer's
     // tier cap, D52), as picks.mjs levelOf gave it; a file before the cap: a suspect price (an edge past the bar, bet-why.ts isSuspect, D23)
     // a LIKE at most the same)
-    confidence: p.practice ? 'medium' : cappedBand(confidenceOf(sureness, p.p ?? (p.chance != null ? p.chance / 100 : null), p.edge), p),
+    // (a reason tier (D58): the tier where the Kelly clears the 2% floor, else a LIKE; a PASS where there's no edge)
+    confidence: p.practice ? 'medium' : cappedBand(tierBand(confidenceOf(sureness, p.p ?? (p.chance != null ? p.chance / 100 : null), p.edge), sureness, p.tier), p),
     ...(p.practice ? { practice: true } : {}),
+    ...(isTier(p.tier) ? { tier: p.tier } : {}),
+    ...(Array.isArray(p.reasons) && p.reasons.length ? { reasons: p.reasons.slice(0, 4) } : {}),
     ...(p.cap === 'medium' || p.cap === 'high' ? { cap: p.cap } : {}),
     id: -1,
     key: pickKey(sport, p.matchup, p.kind, p.pick),

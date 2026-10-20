@@ -2596,6 +2596,29 @@ mat-icon.gloves {
     color: v.$text-soft;
   }
 
+  // (the bet's proven reasons with their records, D58: why a LOVE is a LOVE)
+  .why-reasons {
+    margin-top: 6px;
+    line-height: 1.45;
+
+    .why-reasons-head {
+      color: v.$text-soft;
+      font-size: 0.8em;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+
+    ul {
+      margin: 2px 0 0;
+      padding-left: 18px;
+      color: v.$text-strong;
+    }
+
+    li {
+      font-variant-numeric: tabular-nums;
+    }
+  }
+
   .why-edge {
     font-variant-numeric: tabular-nums;
   }

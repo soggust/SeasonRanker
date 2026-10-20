@@ -91,12 +91,18 @@ export function historyLineBets(events, lines, games) {
       if (p && p.line === d.line && fin(p.a) && fin(p.b) && seenBy(p, d.ts)) return devig(p.a, p.b);
       return devig(d.a, d.b);
     };
+    // (whether a market's fair is the sharp book's, seen by DraftKings' snapshot: the reason tiers' books' gap, D58)
+    const pinOf = (market) => {
+      const d = dk[market];
+      const p = books.pin?.[market];
+      return !!(p && p.line === d.line && fin(p.a) && fin(p.b) && seenBy(p, d.ts));
+    };
     const spread = dk.spreads && fin(dk.spreads.a) && fin(dk.spreads.b) ? { line: dk.spreads.line, fair: fairOf('spreads') } : null;
     for (const [mk, d] of Object.entries(dk)) {
       if (!MARKET[mk] || !fin(d.a) || !fin(d.b)) continue;
       const market = MARKET[mk];
       if (market !== 'ml' && !fin(d.line)) continue;
-      out.push({ id: `h:${g.id}:${market}`, event: String(g.id), when: kind === 'o' ? 'open' : 'close', kind, market, side: market === 'total' ? 'over' : 'home', line: market === 'ml' ? null : d.line, odds: d.a, otherOdds: d.b, fair: fairOf(mk), anchor: 'pinnacle', ...(market === 'ml' ? { spreadHome: spread && seenBy(dk.spreads, d.ts) ? spread : false } : {}), start: e.t, season: g.season, at: d.ts });
+      out.push({ id: `h:${g.id}:${market}`, event: String(g.id), when: kind === 'o' ? 'open' : 'close', kind, market, side: market === 'total' ? 'over' : 'home', line: market === 'ml' ? null : d.line, odds: d.a, otherOdds: d.b, fair: fairOf(mk), pin: pinOf(mk), anchor: 'pinnacle', ...(market === 'ml' ? { spreadHome: spread && seenBy(dk.spreads, d.ts) ? spread : false } : {}), start: e.t, season: g.season, at: d.ts });
     }
   }
   return out;
@@ -228,7 +234,7 @@ export function lineHistoryRows(V, sport, params, shape, expOf, games, hist, cur
     const s = V.desk.settle(b, g);
     if (s.void) continue;
     const y = s.status === 'won' ? 1 : s.status === 'lost' ? 0 : null;
-    rows.push({ id: `${b.id}:${b.kind}`, key: b.id, event: b.event, sport, market: b.market, stat: b.market, kind: b.kind, line: b.line, day: etDay(Date.parse(b.start)), t: Date.parse(b.start), at: fin(Date.parse(b.at)) ? Date.parse(b.at) : null, factsAt: factsAt.get(`${b.id}|${b.kind}`) ?? null, season: b.season, f: b.fair, raw: Math.min(0.999, Math.max(0.001, b.model)), y, q: null, overOdds: b.odds, underOdds: b.otherOdds, w: seasonWeight(sport, b.season, current).w, ...(fin(b.named) ? { named: b.named } : {}) });
+    rows.push({ id: `${b.id}:${b.kind}`, key: b.id, event: b.event, sport, market: b.market, stat: b.market, kind: b.kind, line: b.line, day: etDay(Date.parse(b.start)), t: Date.parse(b.start), at: fin(Date.parse(b.at)) ? Date.parse(b.at) : null, factsAt: factsAt.get(`${b.id}|${b.kind}`) ?? null, season: b.season, f: b.fair, raw: Math.min(0.999, Math.max(0.001, b.model)), y, q: null, overOdds: b.odds, underOdds: b.otherOdds, w: seasonWeight(sport, b.season, current).w, pin: !!b.pin, ...(fin(b.named) ? { named: b.named } : {}) });
   }
   // (a version with the totals rule (D44, desk.mjs trustStart): its totals' trust walks forward from 0, the named
   // terms' shift on each row at full weight)

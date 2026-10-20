@@ -87,6 +87,8 @@ interface WhyLook {
   book: number | null;
   sentence: string;
   reason: string | null;
+  // (the bet's proven reasons with their records (picks.json reasons, D58): why a LOVE is a LOVE)
+  reasons: string[];
 }
 
 // (one game on the ticker: the two sides (a logo or a fighter's face, the words if it fails: failed), their scores
@@ -1046,6 +1048,7 @@ export class BookPageComponent implements OnInit, OnDestroy {
       book: m?.book ?? null,
       sentence,
       reason: pass && r.reason ? (r.strength === 'fade' ? insteadText(r.pick) : r.reason) : null,
+      reasons: !pass && Array.isArray(r.reasons) ? r.reasons : [],
     };
   }
 

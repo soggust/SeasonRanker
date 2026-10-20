@@ -303,7 +303,7 @@ export async function scoreVersion(dir, sport, { refit = false, propsLayer = tru
   // (lineupRisk: the lineup risk's fit on the history's opens against their closes (lineup-risk.mjs, D42); none before it)
   // (picks, replay: the bands (picks.mjs edgeLevel) and the replayed record (replay-record.mjs, the Bot's history);
   // a version from before them has no replayed record)
-  for (const n of ['leagues', 'ratings', 'context', 'margins', 'backtest', 'desk', 'props', 'project', 'correct', 'anchor', 'lineup-risk', 'picks', 'replay-record', 'confidence']) V[n === 'lineup-risk' ? 'lineupRisk' : n === 'replay-record' ? 'replay' : n] = await load(dir, n);
+  for (const n of ['leagues', 'ratings', 'context', 'margins', 'backtest', 'desk', 'props', 'project', 'correct', 'anchor', 'lineup-risk', 'picks', 'replay-record', 'confidence', 'reasons']) V[n === 'lineup-risk' ? 'lineupRisk' : n === 'replay-record' ? 'replay' : n] = await load(dir, n);
   // (the loaders: this checkout's, so both versions read the same history)
   const H = { context: await import('./context.mjs'), logs: await import('./playerlogs.mjs'), props: await import('./props.mjs'), fitcache: await import('./fitcache.mjs'), espn: await import('./espn.mjs') };
   const cfg = V.leagues.LEAGUES[sport];
@@ -609,6 +609,8 @@ export async function scoreVersion(dir, sport, { refit = false, propsLayer = tru
     lineBar,
     // (the confidence layer (D52): the quality model, its blend weight and its tiers, what --record writes)
     confidence,
+    // (the reason tiers (D58, reasons.mjs): the file --record writes, from the replay's walk)
+    reasons: replay?.reasonsFile ?? null,
     meta: { practiceN, practiceUnits: V.desk.PRACTICE_UNITS ?? 0.5, trust, sigma: params.sigma, sigmaT: params.sigmaT, matched: replayM.size, priced: mineProps.length },
     // (the record's input fingerprint (inputsOf): what --record checks before it writes, and writes beside the record)
     inputs: inputsOf({ dir, sport, V, H, history, facts: hadFacts ? facts : null, ctxFit, gatherTimes, rowSeasons, backtest: bt.filter((b) => b.anchor === 'pinnacle').length, state, replay, propsLayer }),
@@ -879,9 +881,18 @@ function recordScore(version, sport, score, frozen, inputs = null) {
   // history before its epoch; picks.mjs merges it with the live ledger since. A version without it leaves the file)
   if (score.replay) {
     const out = path.join(ROOT, 'apps', sport, 'src/StaticData/model/replay-record.json');
-    writeFileSync(out, `${JSON.stringify({ ...score.replay, commit: entry.commit, note: decisionNote(), ...(inputs ? { inputs } : {}) }, null, 1)}\n`);
+    writeFileSync(out, `${JSON.stringify({ ...score.replay, reasonsFile: undefined, commit: entry.commit, note: decisionNote(), ...(inputs ? { inputs } : {}) }, null, 1)}\n`);
     const r = score.replay;
     console.log(`${sport}: the replayed record written (${path.relative(ROOT, out)}): ${r.overall.won}-${r.overall.lost}-${r.overall.push} ${r.overall.profit >= 0 ? '+' : ''}${r.overall.profit}u on ${r.n.bets} bets through ${r.through?.slice(0, 10) ?? '-'} (${r.flags.timing.open} at a clean open, ${r.flags.timing.close} at the close; full context ${r.flags.context.full.join(', ') || 'none'}; ratings only ${r.flags.context.ratingsOnly.join(', ') || 'none'})`);
+  }
+  // (the reason-based tiers (D58, reasons.mjs): each market's reasons with their records and verdicts on the replayed
+  // record's bets, and the tiers' own place; what the live desk reads (reasons.mjs readReasons), apps/<sport>/src/
+  // StaticData/model/reasons.json. A version without them leaves the file as it is)
+  if (score.reasons?.markets) {
+    const out = path.join(ROOT, 'apps', sport, 'src/StaticData/model/reasons.json');
+    writeFileSync(out, `${JSON.stringify({ ...score.reasons, epoch: score.epoch, commit: entry.commit }, null, 1)}\n`);
+    const on = Object.entries(score.reasons.markets).flatMap(([m, rs]) => Object.entries(rs).filter(([, v]) => v.on).map(([id, v]) => `${m} ${id}${v.strong ? ' (strong)' : ''} ${v.roi >= 0 ? '+' : ''}${r4(v.roi * 100)}% on ${v.n}`));
+    console.log(`${sport}: the reason tiers written (${path.relative(ROOT, out)}): LOVE ${score.reasons.place?.love ? 'shown' : 'held'}, LOCK ${score.reasons.place?.lock ? 'shown' : 'held'}; proven: ${on.length ? on.join(', ') : 'none'}`);
   }
   // (the confidence layer (D52): the quality model fit on the priced history, its blend weight and its tiers, what the
   // live desk reads (confidence.mjs loadModel), apps/<sport>/src/StaticData/model/confidence.json)

@@ -105,8 +105,9 @@ export const suspectOf = (ev, why = '', p = null) => {
 // (run.mjs repriceOpen, mma-desk.mjs runMma), at most MAX_REPRICES times like a re-price on news. A bet from before
 // the rules were kept reads as placed under today's, except one held by the old ev bar (its suspect with no edge in
 // points: CAP_RULES 1). DECISIONS.md D53
-// (1: D23 by the return, ev past 0.15; 2: D23 by the edge in points and SDs, 27a9d205)
-export const CAP_RULES = 2;
+// (1: D23 by the return, ev past 0.15; 2: D23 by the edge in points and SDs, 27a9d205; 3: the reason tiers, D58: the
+// band from the proven reasons, the stake held to the tier's cap)
+export const CAP_RULES = 3;
 // (an open bet's re-prices on news or a rule change: at most this many, counted across runs)
 export const MAX_REPRICES = 6;
 export const rulesOf = (bands) => `cap${CAP_RULES} suspect ${EDGE_SUSPECT}/${Z_SUSPECT}/${EV_SUSPECT} bands ${bands.lock}/${bands.lockChance}/${bands.high}/${bands.medium}`;

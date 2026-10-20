@@ -671,6 +671,17 @@
         }
         <!-- (its place, in a sentence; a pass's or a fade's, why) -->
         <p class="why-note">{{ w.look.sentence }}</p>
+        <!-- (its proven reasons with their records (D58): what makes a LOVE a LOVE and a LOCK a LOCK) -->
+        @if (w.look.reasons.length) {
+          <div class="why-reasons">
+            <span class="why-reasons-head">Why the Bot is confident</span>
+            <ul>
+              @for (x of w.look.reasons; track x) {
+                <li>{{ x }}</li>
+              }
+            </ul>
+          </div>
+        }
         @if (w.look.reason) {
           <p class="why-note why-reason">{{ w.look.reason }}</p>
         }

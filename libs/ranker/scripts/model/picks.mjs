@@ -134,7 +134,16 @@ const earnedBet = (b) => !!b.researchBet?.earned;
 // owner's Kelly bands stay as the floors under it (never a LOVE under 2%), and a bet without one (no model file, a
 // sport without a fit, MMA) keeps its Kelly's band)
 const confCap = (b) => (b?.conf?.cap === 'medium' || b?.conf?.cap === 'high' ? b.conf.cap : null);
-export const levelOf = (b, kelly, p = b.p) => capBand(ruleLevel(b, kelly, p), confCap(b));
+// (the reason tier (reasons.mjs, DECISIONS.md D58), where the desk read one: the band in place of the Kelly's and of
+// D52's quality cap: LIKE any edge, the tier (LOVE or LOCK) where the Kelly clears the owner's 2% floor, held to the
+// rules' caps (a practice pick, a gate, a suspect price, a role or research pick: a LIKE at most))
+const TIERED = new Set(['lock', 'high', 'medium']);
+const tierOn = (b) => TIERED.has(b?.conf?.tier);
+export const levelOf = (b, kelly, p = b.p) => {
+  const base = ruleLevel(b, kelly, p);
+  if (!tierOn(b) || base === 'low') return capBand(base, confCap(b));
+  return capBand(kelly >= BANDS.high ? b.conf.tier : 'medium', ruleCap(b));
+};
 const ruleLevel = (b, kelly, p = b.p) =>
   intentOf(b) !== 'edge' ? 'low'
   : isPracticeTop(b) ? 'medium'
@@ -147,7 +156,10 @@ const ruleLevel = (b, kelly, p = b.p) =>
 // research-adjusted one not yet earned; null where its band is its Kelly's. The board carries it per side
 // (board.mjs cap), so the Book's suggestions and the what-if never show a band the Bot couldn't give the row:
 // DECISIONS.md D46. levelOf(b, k, p) is capBand(edgeLevel(k, p), capOf(b)) for every edge bet with an edge)
-export const capOf = (b) => lower(ruleCap(b), confCap(b));
+// (a pick's place among the bands as the Book lists them: LOCK 0, LOVE 1, LIKE 2, a practice pick 3, a PASS 4)
+const SHOWN = { lock: 0, high: 1, medium: 2, low: 4 };
+export const displayOrder = (b, kelly) => (isPracticeTop(b) ? 3 : (SHOWN[levelOf(b, kelly)] ?? 4));
+export const capOf = (b) => (tierOn(b) ? ruleCap(b) : lower(ruleCap(b), confCap(b)));
 const ruleCap = (b) =>
   isPracticeTop(b) ? 'medium'
   : earnedBet(b) && !b.practice && !b.suspect ? null
@@ -397,6 +409,10 @@ export function buildPicks(sport, ledger, trust, games, now, extra = {}) {
     if (!Number.isFinite(b.publishedKelly)) b.publishedKelly = score;
     b.publishedLevel = levelOf(b, b.publishedKelly, b.publishedP);
   }
+  // (the rank follows the Book's order (the coordinator's, 2026-10-19: "#2 Amanda Nunes" atop LOVE over "#1 Josh Hokit"
+  // in LIKE): the band first, LOCK, LOVE, LIKE, then the practice picks, then the Kelly score within a band, so #1 is
+  // always the top row)
+  scored.sort((x, y) => displayOrder(x.b, x.score) - displayOrder(y.b, y.score) || y.score - x.score || y.edgeScore - x.edgeScore || x.b.start.localeCompare(y.b.start));
   // (the CHECKs: a guard's skip worth a person's look (checks.mjs), on games not started and not bet after all
   // (an open bet on the market: that one shows) and not closed since (closedAt), a shadow never (a passed one for
   // a while, in its passed state: listedCheck); the biggest model Kelly first, CHECK_TOP at most. Their own list,
@@ -443,6 +459,9 @@ export function buildPicks(sport, ledger, trust, games, now, extra = {}) {
       // page and its what-if show the band the Bot could give it, at any price)
       ...(!check && capOf(b) ? { cap: capOf(b) } : {}),
       ...(!check && b.conf ? { conf: { pc: b.conf.pc, q: b.conf.q, cap: b.conf.cap ?? null } } : {}),
+      // (the reason tier (D58): the band the Bot's proven reasons give it before the Kelly floor and the rules' caps,
+      // and those reasons with their records, the popover's list)
+      ...(!check && tierOn(b) ? { tier: b.conf.tier, ...(Array.isArray(b.conf.reasons) && b.conf.reasons.length ? { reasons: b.conf.reasons.slice(0, 4) } : {}) } : {}),
       kind: KIND[b.market] ?? 'player',
       market: b.market === 'prop' ? b.statLabel : LABEL[b.market],
       pick: b.pick,
