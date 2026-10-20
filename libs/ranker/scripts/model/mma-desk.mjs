@@ -123,7 +123,10 @@ const FAR_H = 14 * 24;
 const REST_FAR = 24 * 36e5;
 // (the band and stake rules a bet is placed under, kept on it; an open bet placed under others is taken back and
 // priced again at this run's Odds API quote: rulesBack, DECISIONS.md D53)
-export const RULES_V = rulesOf(BANDS);
+// (MMA's own part: its trust's version, bumped when a refit changes how a bout is priced, so its open bets are priced
+// again at the new trust (D53's path): 2, D56's refit on the cleaned history (early moneyline 0.85 to 0.1; the owner, 2026-10-20)
+export const MMA_TRUST_RULES = 2;
+export const RULES_V = `${rulesOf(BANDS)} trust${MMA_TRUST_RULES}`;
 // The open bets to price again because the rules that set their band or stake changed since they were placed (D53):
 // on a bout not yet locked (REPRICE_BY before its start), not priced again MAX_REPRICES times already. By the
 // market and the bout's key. Each is withdrawn only once a fresh Odds API price for it is in hand (D30), then

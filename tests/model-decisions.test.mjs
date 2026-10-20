@@ -934,7 +934,7 @@ test('D53 an open bet placed under a band or stake rule changed since is taken b
   const { BANDS } = await import('../libs/ranker/scripts/model/picks.mjs');
   const now = new Date('2026-10-19T20:00:00Z');
   const V = D.rulesOf(BANDS);
-  assert.equal(M.RULES_V, V);
+  assert.equal(M.RULES_V, `${V} trust${M.MMA_TRUST_RULES}`);
   assert.match(V, new RegExp(`^cap${D.CAP_RULES} suspect ${D.EDGE_SUSPECT}/${D.Z_SUSPECT}/${D.EV_SUSPECT} bands `));
   // (Hokit as placed: a suspect by the return alone, no edge in points: the old rule; a bet with no suspect from
   // before the rules were kept reads as today's; a stamped bet compares its own)
@@ -946,8 +946,9 @@ test('D53 an open bet placed under a band or stake rule changed since is taken b
   assert.equal(D.rulesChanged({ ...hokit, rules: V }, V), null);
   assert.equal(D.rulesChanged({ ...hokit, rules: 'cap1' }, V), 'cap1');
   // (taken back only on a bout not locked, open, not priced again MAX_REPRICES times; by market and bout)
-  const back = M.rulesBack([hokit, { ...hokit, boutKey: 'k2', start: '2026-10-19T20:10:00Z' }, { ...hokit, boutKey: 'k3', repriced: { n: D.MAX_REPRICES } }, { ...hokit, boutKey: 'k4', status: 'won' }, { ...hokit, boutKey: 'k5', rules: V }], now);
-  assert.deepEqual([...back.ml.keys()], ['k1']);
+  // (k6: placed under today's band rules but MMA's trust before D56's refit: priced again, the owner's call, 2026-10-20)
+  const back = M.rulesBack([hokit, { ...hokit, boutKey: 'k2', start: '2026-10-19T20:10:00Z' }, { ...hokit, boutKey: 'k3', repriced: { n: D.MAX_REPRICES } }, { ...hokit, boutKey: 'k4', status: 'won' }, { ...hokit, boutKey: 'k5', rules: M.RULES_V }, { ...hokit, boutKey: 'k6', rules: V }], now);
+  assert.deepEqual([...back.ml.keys()], ['k1', 'k6']);
   assert.equal(back.total.size, 0);
   // (the new bet keeps the withdrawn one honestly: its price, band, stake, the rules it was placed under, the reason)
   const re = M.withdrawnOf(hokit, now.toISOString());
