@@ -1,8 +1,8 @@
 {
  "sport": "nba",
  "cursor": {
-  "rotowirenba.bsky.social": "2026-10-20T22:12:22.000Z",
-  "insidenbanews.bsky.social": "2026-10-20T21:41:09.176Z",
+  "rotowirenba.bsky.social": "2026-10-20T22:35:31.000Z",
+  "insidenbanews.bsky.social": "2026-10-20T22:30:47.905Z",
   "shamsbot.bsky.social": "2026-10-20T15:50:34.000Z"
  },
  "claims": [
@@ -551,6 +551,19 @@
    "kind": "status",
    "confidence": 0.95,
    "text": "Isaiah Stewart: Doubtful for Wednesday \n\n https://www.rotowire.com/basketball/player/isaiah-stewart-5137"
+  },
+  {
+   "id": "at://did:plc:ykcnnf6kqnn3lasmobrczoem/app.bsky.feed.post/3mydordxcrc2l|deanwade|out|status",
+   "at": "2026-10-20T22:30:47.905Z",
+   "seen": "2026-10-20T22:40:53.052Z",
+   "handle": "insidenbanews.bsky.social",
+   "post": "at://did:plc:ykcnnf6kqnn3lasmobrczoem/app.bsky.feed.post/3mydordxcrc2l",
+   "player": "Dean Wade",
+   "team": null,
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.9,
+   "text": "Dean Wade (ankle) listed out Tuesday."
   }
  ]
 }
