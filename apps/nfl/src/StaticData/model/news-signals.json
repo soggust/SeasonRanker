@@ -3,6 +3,17 @@
  "days": 2,
  "signals": [
   {
+   "team": "15",
+   "abbr": "MIA",
+   "athlete": "4243371",
+   "player": "Riley Patterson",
+   "kind": "benched",
+   "direction": "down",
+   "confidence": 0.7,
+   "headline": "Sources: Dolphins release Riley Patterson amid problems defending kickoffs",
+   "at": "2026-10-20T17:18:55.000Z"
+  },
+  {
    "team": "9",
    "abbr": "GB",
    "athlete": "4047365",
@@ -201,5 +212,5 @@
    "at": "2026-10-18T21:52:14.000Z"
   }
  ],
- "at": "2026-10-20T16:50:42.610Z"
+ "at": "2026-10-20T17:33:37.181Z"
 }

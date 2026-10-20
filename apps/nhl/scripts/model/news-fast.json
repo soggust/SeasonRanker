@@ -3,7 +3,7 @@
  "cursor": {
   "johnston-bot.bsky.social": "2026-10-19T14:14:39.946Z",
   "notfriedgehnic.bsky.social": "2026-10-19T18:17:18.476Z",
-  "dailyfaceoff.bsky.social": "2026-10-20T17:04:35.000Z",
+  "dailyfaceoff.bsky.social": "2026-10-20T17:13:10.000Z",
   "dfotoronto.bsky.social": "2026-10-20T16:09:05.000Z",
   "marklazerus.bsky.social": "2026-10-20T15:58:40.887Z"
  },
@@ -202,6 +202,19 @@
    "kind": "status",
    "confidence": 0.9,
    "text": "Panthers’ Jacob Markstrom to miss 10-14 days; Cooper Black recalled"
+  },
+  {
+   "id": "at://did:plc:3uus7y6h3rlrk6sbctzxm4bg/app.bsky.feed.post/3myd4zfrp4k2h|mattroy|active|return",
+   "at": "2026-10-20T17:13:10.000Z",
+   "seen": "2026-10-20T17:33:37.181Z",
+   "handle": "dailyfaceoff.bsky.social",
+   "post": "at://did:plc:3uus7y6h3rlrk6sbctzxm4bg/app.bsky.feed.post/3myd4zfrp4k2h",
+   "player": "Matt Roy",
+   "team": "WSH",
+   "status": "active",
+   "kind": "return",
+   "confidence": 0.9,
+   "text": "Capitals’ Matt Roy to return against Kings after missing six games"
   }
  ]
 }

@@ -251,7 +251,8 @@
   "50226663": "2026-10-20",
   "50226804": "2026-10-20",
   "50228692": "2026-10-20",
-  "50228752": "2026-10-20"
+  "50228752": "2026-10-20",
+  "50229491": "2026-10-20"
  },
  "signals": [
   {
@@ -1017,6 +1018,21 @@
    "confidence": 0.6,
    "story": "50221818",
    "headline": "LaFleur enthused Packers RB Jacobs, 'an elite-level back,' might play Sunday",
+   "model": "claude-haiku-5-5"
+  },
+  {
+   "id": "50229491|15|4243371|benched",
+   "day": "2026-10-20",
+   "at": "2026-10-20T17:18:55.000Z",
+   "team": "15",
+   "abbr": "MIA",
+   "athlete": "4243371",
+   "player": "Riley Patterson",
+   "kind": "benched",
+   "direction": "down",
+   "confidence": 0.7,
+   "story": "50229491",
+   "headline": "Sources: Dolphins release Riley Patterson amid problems defending kickoffs",
    "model": "claude-haiku-5-5"
   }
  ]
