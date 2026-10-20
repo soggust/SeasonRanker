@@ -2,7 +2,7 @@
  "v": 1,
  "sport": "nba",
  "epoch": "2026-10-19T17:15:00Z",
- "at": "2026-10-20T01:47:14.596Z",
+ "at": "2026-10-20T02:51:16.269Z",
  "from": "2020-07-30T22:30:00.000Z",
  "through": "2026-06-14T00:45:00.000Z",
  "n": {
@@ -17,9 +17,9 @@
   "won": 1601,
   "lost": 1994,
   "push": 2,
-  "staked": 2651.5,
-  "profit": -32.74,
-  "roi": -0.0123,
+  "staked": 2708,
+  "profit": -40.47,
+  "roi": -0.0149,
   "beat": 0.6293,
   "beatN": 321
  },
@@ -73,9 +73,9 @@
    "won": 1598,
    "lost": 1993,
    "push": 2,
-   "staked": 2646,
-   "profit": -39.64,
-   "roi": -0.015,
+   "staked": 2702.5,
+   "profit": -47.37,
+   "roi": -0.0175,
    "beat": 0.6293,
    "beatN": 321
   }
@@ -86,9 +86,9 @@
    "won": 380,
    "lost": 784,
    "push": 2,
-   "staked": 600.5,
-   "profit": -6.27,
-   "roi": -0.0104,
+   "staked": 601,
+   "profit": -6.77,
+   "roi": -0.0113,
    "beat": 0.6293,
    "beatN": 321
   },
@@ -97,9 +97,9 @@
    "won": 1221,
    "lost": 1210,
    "push": 0,
-   "staked": 2051,
-   "profit": -26.47,
-   "roi": -0.0129,
+   "staked": 2107,
+   "profit": -33.7,
+   "roi": -0.016,
    "beat": null,
    "beatN": 0
   }
@@ -388,9 +388,9 @@
    "won": 1268,
    "lost": 1313,
    "push": 0,
-   "staked": 2130.5,
-   "profit": -31.94,
-   "roi": -0.015,
+   "staked": 2187,
+   "profit": -39.67,
+   "roi": -0.0181,
    "beat": 0.7321,
    "beatN": 56,
    "practice": {
@@ -409,9 +409,9 @@
     "won": 47,
     "lost": 103,
     "push": 0,
-    "staked": 79.5,
-    "profit": -5.47,
-    "roi": -0.0688,
+    "staked": 80,
+    "profit": -5.97,
+    "roi": -0.0746,
     "beat": 0.7321,
     "beatN": 56
    },
@@ -420,9 +420,9 @@
     "won": 1221,
     "lost": 1210,
     "push": 0,
-    "staked": 2051,
-    "profit": -26.47,
-    "roi": -0.0129,
+    "staked": 2107,
+    "profit": -33.7,
+    "roi": -0.016,
     "beat": null,
     "beatN": 0
    }
@@ -921,9 +921,9 @@
     "won": 1142,
     "lost": 1191,
     "push": 0,
-    "staked": 1968,
-    "profit": -33.48,
-    "roi": -0.017,
+    "staked": 2024.5,
+    "profit": -41.21,
+    "roi": -0.0204,
     "beat": 0.7273,
     "beatN": 44
    },
@@ -966,9 +966,9 @@
      "won": 1142,
      "lost": 1191,
      "push": 0,
-     "staked": 1968,
-     "profit": -33.48,
-     "roi": -0.017,
+     "staked": 2024.5,
+     "profit": -41.21,
+     "roi": -0.0204,
      "beat": 0.7273,
      "beatN": 44
     }
@@ -978,9 +978,9 @@
     "won": 30,
     "lost": 86,
     "push": 0,
-    "staked": 62.5,
-    "profit": -16.15,
-    "roi": -0.2584,
+    "staked": 63,
+    "profit": -16.65,
+    "roi": -0.2643,
     "beat": 0.7273,
     "beatN": 44
    },
@@ -989,9 +989,9 @@
     "won": 1112,
     "lost": 1105,
     "push": 0,
-    "staked": 1905.5,
-    "profit": -17.33,
-    "roi": -0.0091,
+    "staked": 1961.5,
+    "profit": -24.56,
+    "roi": -0.0125,
     "beat": null,
     "beatN": 0
    }
@@ -1009,15 +1009,15 @@
    1,
    5,
    0,
-   3,
-   -2.1
+   4,
+   -2.19
   ],
   "2026-06-08": [
    2,
    2,
    0,
-   2,
-   0.01
+   2.5,
+   0.58
   ],
   "2026-06-10": [
    2,
@@ -1542,9 +1542,9 @@
    "kelly": 0.0112,
    "band": "medium",
    "practice": false,
-   "units": 0.5,
+   "units": 1,
    "res": "W",
-   "profit": 0.56,
+   "profit": 1.13,
    "timing": "close",
    "beat": null,
    "survival": 1,
@@ -1649,8 +1649,8 @@
   },
   "bar": {
    "applies": true,
-   "barUnits": -6.27,
-   "fullUnits": -26.61,
+   "barUnits": -6.77,
+   "fullUnits": -26.16,
    "bySeason": {
     "2020": true,
     "2021": true,
@@ -1685,7 +1685,7 @@
   "split": "games that start before the epoch replayed; the live ledger from the epoch on",
   "notSeen": "the live desk's CLV gates, CHECKs, research and news"
  },
- "commit": "b587d968",
+ "commit": "f7f1c202",
  "note": "D52. The confidence layer: bands and stakes earned on the record, LIKE until a tier earns it",
  "inputs": {
   "v": 1,
@@ -1694,7 +1694,7 @@
    "props": "87335d02c0eb",
    "games": "426c66896f46",
    "pricing": "bac16608a54e",
-   "record": "e4821f446539",
+   "record": "fc07c5f6072e",
    "harness": "4091a60d2d14",
    "residual": "66866487722581f3"
   },
@@ -1702,7 +1702,7 @@
    "code": "4a1aee79b7ad0a80",
    "expected": "4a1aee79b7ad0a80",
    "day": "2026-10-19",
-   "at": "2026-10-20T00:07:58.741Z",
+   "at": "2026-10-20T02:36:17.679Z",
    "finals": 1316,
    "stats": [
     "pts",
@@ -1712,7 +1712,7 @@
     "pra"
    ],
    "want": 5,
-   "hash": "babbcfc0cc43e367"
+   "hash": "33aae50465ca214e"
   },
   "context": {
    "facts": true,
@@ -1736,7 +1736,7 @@
    "keys": 97075,
    "bets": 3597
   },
-  "units": -32.74,
+  "units": -40.47,
   "frozen": {
    "props": {
     "mode": "saved",
@@ -1751,6 +1751,6 @@
     "want": 0
    }
   },
-  "hash": "af6abe4e54b86b9a"
+  "hash": "274acdb92bf27da6"
  }
 }

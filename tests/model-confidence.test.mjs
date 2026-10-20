@@ -4,7 +4,7 @@
 // the desk's wiring (picks.mjs levelOf and capOf, board.mjs sides). Made-up rows, no files, no network.
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { BLEND_START, BLEND_STEP, TIER_MIN, Z_CAP, blendChance, blendFit, capOf, features, fitConfidence, fitTiers, fitWalk, pickOf, qualityOf, scoreRows, snapshotFor, unitsOf } from '../libs/ranker/scripts/model/confidence.mjs';
+import { BLEND_NEW, BLEND_START, BLEND_STEP, TIER_MIN, Z_CAP, blendChance, blendFit, capOf, features, fitConfidence, fitTiers, fitWalk, pickOf, qualityOf, scoreRows, snapshotFor, unitsOf } from '../libs/ranker/scripts/model/confidence.mjs';
 import { PRACTICE_UNITS, decimal, stakeFor, stakeKelly } from '../libs/ranker/scripts/model/desk.mjs';
 import { BANDS, capBand, capOf as betCapOf, edgeLevel, levelOf } from '../libs/ranker/scripts/model/picks.mjs';
 import { boardMarkets, boardProp } from '../libs/ranker/scripts/model/board.mjs';
@@ -120,19 +120,35 @@ test('the model is honest where the Bot has no edge: with the picks a coin at th
   assert.equal(unitsOf(null, -110, 0.08), null);
 });
 
-test('the blend weight: 0 to start, never over 0 unless the calibrated chance beats the priced one held out, stepped at most BLEND_STEP a record', () => {
+test('the blend weight moves by evidence alone: 0 to start, a step up or down only on new graded bets, the same data recorded twice the same weight', () => {
   assert.equal(BLEND_START, 0);
   const rows = history(8000, { months: 30, signal: 0, seed: 11, big: true });
   const model = fitWalk(rows, { sport: 'nba', min: 500 });
   const raw = scoreRows(model, rows, { weight: 0 });
-  const b = blendFit(raw, 0);
+  const b = blendFit(raw, null);
   assert.ok(b.target > 0, 'the calibration helps where the Bot has no edge');
-  assert.equal(b.weight, Math.min(BLEND_STEP, b.target), 'one step at a time');
-  assert.equal(blendFit(raw, 0.5).weight, Math.max(0, Math.min(1, 0.5 + Math.max(-BLEND_STEP, Math.min(BLEND_STEP, b.target - 0.5)))));
-  // (the calibrated chance worse than the priced one: the weight stays at 0; from 0.25 it steps back)
+  assert.equal(b.weight, BLEND_STEP, 'one step on the first evidence');
+  assert.ok(Number.isFinite(b.through) && b.fresh >= BLEND_NEW);
+  // (the same data recorded again: no new bets, the weight and its through hold, however many times)
+  let again = b;
+  for (let i = 0; i < 4; i++) again = blendFit(raw, again);
+  assert.equal(again.weight, b.weight, 'same data twice, the same weight');
+  assert.equal(again.through, b.through);
+  assert.equal(again.fresh, 0);
+  // (a file from before the rule: its weight is no evidence, read as BLEND_START, one step from there)
+  assert.equal(blendFit(raw, { weight: 1 }).weight, BLEND_STEP);
+  assert.equal(blendFit(raw, 0.75).weight, BLEND_STEP);
+  // (new bets after through: under BLEND_NEW the weight holds; past it one step where they say so)
+  const cut = [...raw].filter((r) => r.bet && r.k.y !== null).map((r) => r.k.row.t).sort((x, y) => x - y);
+  const early = { weight: BLEND_STEP, through: cut[cut.length - 50] };
+  assert.equal(blendFit(raw, early).weight, BLEND_STEP, 'fewer than BLEND_NEW new bets: held');
+  assert.equal(blendFit(raw, early).through, early.through, 'and through stays, so they pile up');
+  const mid = { weight: BLEND_STEP, through: cut[Math.floor(cut.length / 2)] };
+  assert.ok(Math.abs(blendFit(raw, mid).weight - BLEND_STEP) <= BLEND_STEP + 1e-9, 'one step at most');
+  // (the calibrated chance worse on the new bets: down a step, and 0 at the guard)
   const worse = raw.map((r) => ({ ...r, pcRaw: r.k.y ? Math.max(0.05, r.k.pS - 0.2) : Math.min(0.95, r.k.pS + 0.2) }));
-  assert.equal(blendFit(worse, 0).weight, 0);
-  assert.equal(blendFit(worse, 0.25).weight, 0);
+  assert.equal(blendFit(worse, null).weight, 0);
+  assert.equal(blendFit(worse, { weight: 0.5, through: cut[Math.floor(cut.length / 2)] }).weight, 0, 'the guard: never over 0 where it loses to the priced chance');
   // (the blend itself: 0 the priced chance, 1 the calibrated one, between on the logit scale)
   assert.equal(blendChance(0.55, 0.5, 0), 0.55);
   assert.equal(blendChance(0.55, 0.5, 1), 0.5);

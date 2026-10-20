@@ -1,8 +1,8 @@
 {
  "sport": "nba",
  "epoch": "2026-10-19T17:15:00Z",
- "commit": "b587d968",
- "at": "2026-10-20T01:50:29.716Z",
+ "commit": "f7f1c202",
+ "at": "2026-10-20T02:51:18.721Z",
  "current": 2026,
  "z": 1,
  "min": 40,
@@ -462,8 +462,8 @@
  "applies": true,
  "place": {
   "applies": true,
-  "barUnits": -6.27,
-  "fullUnits": -26.61,
+  "barUnits": -6.77,
+  "fullUnits": -26.16,
   "bySeason": {
    "2020": true,
    "2021": true,

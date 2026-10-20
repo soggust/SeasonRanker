@@ -2,7 +2,7 @@
  "v": 1,
  "sport": "nhl",
  "epoch": "2026-10-19T17:15:00Z",
- "at": "2026-10-20T01:41:56.021Z",
+ "at": "2026-10-20T02:49:54.330Z",
  "from": "2021-01-27T00:00:00.000Z",
  "through": "2026-10-19T00:10:00.000Z",
  "n": {
@@ -1655,7 +1655,7 @@
   "split": "games that start before the epoch replayed; the live ledger from the epoch on",
   "notSeen": "the live desk's CLV gates, CHECKs, research and news"
  },
- "commit": "b587d968",
+ "commit": "f7f1c202",
  "note": "D52. The confidence layer: bands and stakes earned on the record, LIKE until a tier earns it",
  "inputs": {
   "v": 1,
@@ -1664,7 +1664,7 @@
    "props": "87335d02c0eb",
    "games": "426c66896f46",
    "pricing": "bac16608a54e",
-   "record": "e4821f446539",
+   "record": "fc07c5f6072e",
    "harness": "4091a60d2d14",
    "residual": "e5bdfc3cdce79b9e"
   },
@@ -1672,7 +1672,7 @@
    "code": "4a1aee79b7ad0a80",
    "expected": "4a1aee79b7ad0a80",
    "day": "2026-10-19",
-   "at": "2026-10-20T00:07:58.753Z",
+   "at": "2026-10-20T02:32:23.163Z",
    "finals": 1530,
    "stats": [
     "sog",
@@ -1680,7 +1680,7 @@
     "saves"
    ],
    "want": 3,
-   "hash": "7495e36cc82aa40d"
+   "hash": "e9f2b38f37d787c5"
   },
   "context": {
    "facts": true,
@@ -1722,6 +1722,6 @@
     "want": 229
    }
   },
-  "hash": "665e928d5b9c8aac"
+  "hash": "f00a78d69e357494"
  }
 }

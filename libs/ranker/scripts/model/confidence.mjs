@@ -82,10 +82,12 @@ export const TIER_MIN = 200;
 export const CLV_MIN = 300;
 export const CLV_LEAD = 0.05;
 // (the blend of the calibrated chance into the priced one: starts at the priced chance (no evidence, no weight), moves
-// at most BLEND_STEP a record toward the weight with the lowest held-out loss on the newest BLEND_MONTHS months)
+// by evidence alone: at most BLEND_STEP a record, up or down, and only on BLEND_NEW graded bets since the last record's
+// (its `through`); the same data recorded again leaves it where it is)
 export const BLEND_START = 0;
 export const BLEND_STEP = 0.25;
 export const BLEND_MONTHS = 12;
+export const BLEND_NEW = 100;
 export const BOOT = 400;
 const fin = Number.isFinite;
 const r4 = (v) => (fin(v) ? Math.round(v * 1e4) / 1e4 : null);
@@ -525,23 +527,42 @@ export function scoreRows(model, rows, { suspect = 0.15, weight = model?.blend?.
   return out;
 }
 
-// The blend's weight on the calibrated chance, from the scored bets of the newest BLEND_MONTHS months (each scored
-// walk-forward): the grid 0 to 1 by 0.25 with the lowest log loss on the results, stepped at most BLEND_STEP from
-// the previous file's weight (soft, D8), and never over 0 unless the calibrated chance beats the priced one there
-// (the guard: with no held-out gain the stake stays on the priced chance). { weight, target, losses, n }
+// The blend's weight on the calibrated chance, by evidence (the coordinator, 2026-10-19: a weight that stepped up on
+// every record of the same data is no evidence). previous: the last file's blend ({ weight, through }; a number or a
+// file before `through`, as no evidence yet: BLEND_START, every bet new). The new evidence is the graded bets after
+// `through`, each scored walk-forward; with fewer than BLEND_NEW of them the weight holds. Else it moves one
+// BLEND_STEP to the neighbor (down, or up) with the lower log loss on those new bets, or holds where neither is
+// lower; and never over 0 where the calibrated chance doesn't beat the priced one on them (the guard). `through`
+// moves only when the weight is judged, so held bets pile up to the next record. The newest BLEND_MONTHS months'
+// grid (target, losses) stays a readout. { weight, through, target, losses, n, fresh }
 export function blendFit(scored, previous = BLEND_START) {
+  const prev = typeof previous === 'number' ? { weight: BLEND_START, through: null } : { weight: fin(previous?.weight) && fin(previous?.through) ? previous.weight : BLEND_START, through: fin(previous?.through) ? previous.through : null };
   const bets = scored.filter((r) => r.bet && r.k.y !== null && fin(r.pcRaw));
-  if (!bets.length) return { weight: Math.min(previous, 0), target: 0, losses: null, n: 0 };
+  const lossAt = (list, lam) => list.reduce((t, r) => t + binLoss(blendChance(r.k.pS, r.pcRaw, lam), r.k.y), 0) / Math.max(1, list.length);
+  if (!bets.length) return { weight: Math.min(prev.weight, 0), through: prev.through, target: 0, losses: null, n: 0, fresh: 0 };
   const newest = Math.max(...bets.map((r) => r.k.row.t));
   const since = newest - BLEND_MONTHS * 30.4375 * 864e5;
   const held = bets.filter((r) => r.k.row.t >= since);
   const grid = [0, 0.25, 0.5, 0.75, 1];
-  const losses = grid.map((lam) => held.reduce((s, r) => s + binLoss(blendChance(r.k.pS, r.pcRaw, lam), r.k.y), 0) / Math.max(1, held.length));
+  const losses = grid.map((lam) => lossAt(held, lam));
   let best = 0;
   for (let i = 1; i < grid.length; i++) if (losses[i] < losses[best] - 1e-9) best = i;
   const target = held.length >= 100 ? grid[best] : 0;
-  const weight = Math.max(0, Math.min(1, previous + Math.max(-BLEND_STEP, Math.min(BLEND_STEP, target - previous))));
-  return { weight: Math.round(weight * 100) / 100, target, losses: losses.map(r6), n: held.length };
+  const fresh = prev.through === null ? bets : bets.filter((r) => r.k.row.t > prev.through);
+  let weight = prev.weight;
+  let through = prev.through;
+  if (fresh.length >= BLEND_NEW) {
+    const at = lossAt(fresh, weight);
+    const down = weight > 0 ? Math.max(0, weight - BLEND_STEP) : null;
+    const up = weight < 1 ? Math.min(1, weight + BLEND_STEP) : null;
+    const lDown = down === null ? Infinity : lossAt(fresh, down);
+    const lUp = up === null ? Infinity : lossAt(fresh, up);
+    if (lDown < at - 1e-9 && lDown <= lUp) weight = down;
+    else if (lUp < at - 1e-9) weight = up;
+    if (weight > 0 && !(lossAt(fresh, weight) < lossAt(fresh, 0) - 1e-9)) weight = 0;
+    through = newest;
+  }
+  return { weight: Math.round(weight * 100) / 100, through, target, losses: losses.map(r6), n: held.length, fresh: fresh.length };
 }
 export const blendChance = (pCur, pRes, weight) => (!(weight > 0) ? pCur : clip(sigmoid(logit(pCur) + weight * (logit(pRes) - logit(pCur))), 0.005, 0.995));
 
@@ -552,7 +573,7 @@ export const blendChance = (pCur, pRes, weight) => (!(weight > 0) ? pCur : clip(
 export function fitConfidence(rows, { sport = null, log = () => {}, previous = null, ...opts } = {}) {
   const model = fitWalk(rows, { sport, log, ...opts });
   const raw = scoreRows(model, rows, { weight: 0 });
-  model.blend = blendFit(raw, fin(previous?.blend?.weight) ? previous.blend.weight : BLEND_START);
+  model.blend = blendFit(raw, previous?.blend ?? null);
   const scored = scoreRows(model, rows);
   const forTiers = scored.filter((r) => r.bet && (r.k.row.kind === 'c' || r.k.row.market === 'prop'));
   model.tiers = fitTiers(forTiers);
