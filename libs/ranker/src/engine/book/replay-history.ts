@@ -85,7 +85,17 @@ export interface StagedReplayFile {
   sport: string;
   at: string;
   order: string[];
+  // (each rule's readable name, band-variants.json's label (D72); a file from before it has none: the id shows)
+  labels?: Record<string, string>;
   variants: Record<string, ReplayRecordFile & { staged?: { variant: string } }>;
+}
+
+// (By Confidence's pyramid (the owner, 2026-10-20): LOCK's, LOVE's and LIKE's share of the bets the three hold; the
+// practice picks, PASS and an empty board none)
+export function bandSharesOf(rows: { label: string; bets: number }[]): Record<string, number | null> {
+  const bands = ['LOCK', 'LOVE', 'LIKE'];
+  const total = rows.filter((r) => bands.includes(r.label)).reduce((t, r) => t + r.bets, 0);
+  return Object.fromEntries(rows.map((r) => [r.label, total && bands.includes(r.label) ? r.bets / total : null]));
 }
 
 // The panel: a tally row (the desk's Tally with its closing-line share), the strip's bets, the seasons

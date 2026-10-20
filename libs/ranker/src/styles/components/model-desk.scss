@@ -1495,6 +1495,45 @@ mat-icon.desk-gloves {
   }
 }
 
+// (By Confidence's pyramid (the owner, 2026-10-20): each band's share of the bets, a thin bar in the band's colour
+// beside its percent)
+.desk-history-table .desk-share {
+  --band-color: #{v.$text-faint};
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+
+  .desk-share-bar {
+    background: color-mix(in srgb, var(--band-color) 14%, transparent);
+    border-radius: v.$radius-pill;
+    display: inline-block;
+    height: 6px;
+    margin-right: 6px;
+    overflow: hidden;
+    vertical-align: middle;
+    width: 48px;
+
+    > span {
+      background: var(--band-color);
+      border-radius: inherit;
+      display: block;
+      height: 100%;
+      min-width: 2px;
+    }
+  }
+}
+
+.desk-history-table .desk-tier-lock .desk-share {
+  --band-color: #{chip.$lock-light};
+}
+
+.desk-history-table .desk-tier-love .desk-share {
+  --band-color: #{v.$good};
+}
+
+.desk-history-table .desk-tier-like .desk-share {
+  --band-color: #{v.$caution};
+}
+
 // (By Confidence's PASS: the row muted, as a PASS bet in Recently closed, apart from the practice picks' faint name
 // (the owner, 2026-10-19: Practice and PASS swapped looks))
 .desk-history-table .desk-tier-pass {

@@ -571,6 +571,12 @@ export function replayRecord(V, sport, rows, { events = null, names = () => ({ h
         const m = mmaBefore.get(b);
         return { ...b, lab: h ? { ids: h.ids ?? [], before: h.before ?? null, suspect: !!h.suspect, barred: !!h.barred, would: h.would ?? null } : m ? { ids: [], before: m, suspect: false, barred: false, would: null } : null };
       });
+      // (research only (REPLAY_ATTR, D72): every close row's pieces on the over's (or home's) side, its fair and result:
+      // what the band lab's reliability is fit on, walk-forward)
+      if (process.env.REPLAY_ATTR === '1') {
+        const att = [...closes.values()].filter((x) => x.attr && (x.y === 0 || x.y === 1)).map((x) => [x.t, x.market, x.stat, r4(x.f), x.y, Object.fromEntries(Object.entries(x.attr).filter(([, v]) => Math.abs(v) >= 1e-5).map(([k, v]) => [k, Math.round(v * 1e5) / 1e5])), x.overOdds, x.underOdds, x.key ?? x.id.replace(/:c$/, ''), x.season, knownAt(x) ? 1 : 0]);
+        writeFileSync(path.join(process.env.REPLAY_DUMP, `${sport}-attr.json`), JSON.stringify(att));
+      }
       writeFileSync(path.join(process.env.REPLAY_DUMP, `${sport}-lab.json`), JSON.stringify({ v: 1, sport, at: new Date(now).toISOString(), practiceUnits, beatBar: fin(V.desk.BEAT_BAR) ? { bar: V.desk.BEAT_BAR, min: V.desk.LINE_GATE_MIN ?? 40, window: V.desk.LINE_GATE_N ?? 200 } : null, bets: lab, passed: passed.map((r) => [r.x.y ?? null, r.sd.over ? 1 : 0, r.sd.odds]), args: { ...sumArgs, seasonsWithProps: [...sumArgs.seasonsWithProps], seasonsAll: [...sumArgs.seasonsAll] } }));
     } catch (err) {
       console.warn(`replay lab dump failed: ${err.message}`);
@@ -630,8 +636,15 @@ export function beatBar(bets, { bar, min = 40, window = 200, practiceUnits = 0.5
   return out;
 }
 
-function betOf(x, sd, { units, band, practice, timing, fb = null, names, survival }) {
+function betOf(x, sd, { units, band, practice, timing, fb = null, names, survival, noAttr = false }) {
+  if (noAttr) x = { ...x, attr: null };
   const res = x.y === null || x.y === undefined ? 'P' : (x.y === 1) === sd.over ? 'W' : 'L';
+  // (research only (REPLAY_ATTR, D72): the row's pieces of the edge on the bet's own side)
+  if (x.attr && process.env.REPLAY_ATTR === '1') {
+    const s = sd.over ? 1 : -1;
+    const attr = Object.fromEntries(Object.entries(x.attr).map(([k, v]) => [k, Math.round(s * v * 1e5) / 1e5]));
+    return { ...betOf(x, sd, { units, band, practice, timing, fb, names, survival, noAttr: true }), attr, lam: r4(x.lam) };
+  }
   const profit = res === 'W' ? r2(units * (dec(sd.odds) - 1)) : res === 'L' ? -units : 0;
   const w = wordsOf(x, sd.over, names);
   return { factsAt: fin(x.factsAt) ? x.factsAt : null, id: x.key ?? x.id, event: String(x.event), sport: x.sport, season: x.season, market: x.market, stat: x.stat, line: x.line ?? null, side: sd.over ? (x.market === 'prop' || x.market === 'total' ? 'over' : 'home') : x.market === 'prop' || x.market === 'total' ? 'under' : 'away', pick: w.pick, matchup: w.matchup, player: w.player, odds: sd.odds, p: r4(sd.pS), fair: r4(sd.fS), kelly: r4(sd.kelly), band, practice, units, res, profit, timing, beat: fb ? fb.beat : null, clv: fb ? fb.clv : null, survival: r4(survival), t: x.t, at: fin(x.at) ? x.at : timing === 'open' ? x.t - 24 * 36e5 : x.t - 36e5 };

@@ -16,6 +16,7 @@ import path from 'node:path';
 import { beatBar, summarize } from './replay-record.mjs';
 import { placeTiers, placed, tierOf, tierUnits, walkReasons } from './reasons.mjs';
 import { CLV_RULE, GAME_HOURS, bandBets } from './clv-bands.mjs';
+import { trustBands, walkTrust } from './trusted.mjs';
 
 const ROOT = path.resolve(import.meta.dirname, '../../../..');
 const SPORTS = ['nfl', 'nba', 'nhl', 'mlb', 'mma'];
@@ -46,6 +47,13 @@ function mmaIds(b) {
 
 // The bets under a variant: a copy of the dump's, reset to their stakes before the bands, banded, then D60's
 // beat-the-close bar as the replay applies it
+// (D72: the reliability walk on a sport's close rows, once per its options)
+const walks = new Map();
+export function trustWalk(dump, opts = {}) {
+  const k = `${dump.sport}|${JSON.stringify(opts ?? {})}`;
+  if (!walks.has(k)) walks.set(k, walkTrust(dump.attrRows, opts ?? {}));
+  return walks.get(k);
+}
 export function applyVariant(dump, variant) {
   const bets = dump.bets.map((b) => ({ ...b, lab: b.lab ? { ...b.lab } : null }));
   for (const b of bets) {
@@ -56,7 +64,22 @@ export function applyVariant(dump, variant) {
   }
   const mine = bets.filter((b) => b.lab?.before && !b.practice);
   let counts = null;
-  if (variant.mode === 'd58') {
+  if (variant.mode === 'trusted' && dump.sport !== 'mma' && dump.attrRows) {
+    // (D72's trusted edge: each bet's pieces times their reliability walk-forward, the bars on it and the Kelly score;
+    // the caps (a suspect price, a barred line or stat: a LIKE at most) as every rule's, unless the variant's caps is
+    // false (a diagnostic: does the trusted edge order the results at all))
+    const walk = trustWalk(dump, variant.trust);
+    const caps = variant.caps !== false;
+    const out = trustBands(mine.map((b) => ({ t: b.t, at: b.at, market: b.market, kelly: b.kelly, attr: b.attr, suspect: caps && b.lab.suspect, barred: caps && b.lab.barred })), walk, variant);
+    mine.forEach((b, i) => {
+      const band = out[i].band;
+      // (a suspect or barred bet keeps its stake (D60, D64) whatever its band reads)
+      const units = b.lab.suspect || b.lab.barred ? b.units : tierUnits(b.units, band);
+      b.profit = b.units > 0 ? r2((b.profit * units) / b.units) : 0;
+      Object.assign(b, { units, band, te: out[i].te, trusted: out[i].pieces.map(([k, v]) => [k, Math.round(v * 1e4) / 1e4]) });
+    });
+    counts = { lock: mine.filter((b) => b.band === 'lock').length, high: mine.filter((b) => b.band === 'high').length, medium: mine.filter((b) => b.band === 'medium').length };
+  } else if (variant.mode === 'd58' || variant.mode === 'trusted') {
     // (the current rule: D58's results walk and place for the team sports; D65's Kelly bands with their place for MMA)
     if (dump.sport === 'mma') {
       const place = placeTiers(mine.map((b) => ({ t: b.t + GAME_HOURS * 36e5, tier: b.band, profit: flat(b), beat: b.beat })));
@@ -133,12 +156,22 @@ export function labOf(dump, name, variant) {
   return { name, variant, bets, flags, counts, by, mono: monotonic(by) };
 }
 
+const SHARE = (lab, k) => (lab.by.all.bets ? `${r1((lab.by[k].bets / lab.by.all.bets) * 100)}%` : '-');
 const NAME = { lock: 'LOCK', high: 'LOVE', medium: 'LIKE', all: 'All' };
 export function tableOf(sport, lab) {
-  const rows = [`${sport.toUpperCase()} — ${lab.name}`, '| Band | Bets | Record | Units | ROI | Flat ROI | Beat fair close | Book expects |', '|---|---|---|---|---|---|---|---|'];
+  const rows = [`${sport.toUpperCase()} — ${lab.name}`, '| Band | Bets | Share | Record | Units | ROI | Flat ROI | Beat fair close | Book expects |', '|---|---|---|---|---|---|---|---|---|'];
   for (const k of ['lock', 'high', 'medium', 'all']) {
     const t = lab.by[k];
-    rows.push(`| ${NAME[k]} | ${t.bets} | ${t.w}-${t.l}-${t.p} | ${t.profit >= 0 ? '+' : ''}${t.profit}u | ${t.roi === null ? '-' : `${r1(t.roi * 100)}%`} | ${t.flatRoi === null ? '-' : `${r1(t.flatRoi * 100)}%`} | ${t.beatN ? `${r1(t.beatShare * 100)}% of ${t.beatN}` : '-'} | ${t.book >= 0 ? '+' : ''}${t.book}u |`);
+    rows.push(`| ${NAME[k]} | ${t.bets} | ${SHARE(lab, k)} | ${t.w}-${t.l}-${t.p} | ${t.profit >= 0 ? '+' : ''}${t.profit}u | ${t.roi === null ? '-' : `${r1(t.roi * 100)}%`} | ${t.flatRoi === null ? '-' : `${r1(t.flatRoi * 100)}%`} | ${t.beatN ? `${r1(t.beatShare * 100)}% of ${t.beatN}` : '-'} | ${t.book >= 0 ? '+' : ''}${t.book}u |`);
+  }
+  if (lab.seasons) {
+    const real = lab.bets.filter((b) => !b.practice);
+    const seasons = [...new Set(real.map((b) => b.season))].sort();
+    const cell = (s, k) => {
+      const t = tally(real.filter((b) => b.season === s && b.band === k));
+      return `${NAME[k]} ${t.bets}${t.bets ? ` ${r1(t.flatRoi * 100)}%` : ''}`;
+    };
+    rows.push(`by season (bets, flat ROI): ${seasons.map((s) => `${s} ${['lock', 'high', 'medium'].map((k) => cell(s, k)).join(' / ')}`).join('; ')}`);
   }
   rows.push(`monotonic: ${lab.mono.map((m) => `${m.pair} ${m.ok === null ? 'n/a' : m.ok ? 'yes' : 'NO'}${m.roi ? ` (flat ${m.roi[0]}% vs ${m.roi[1]}%${m.beat[0] !== null && m.beat[1] !== null ? `, beat ${m.beat[0]}% vs ${m.beat[1]}%` : ''})` : ''}`).join('; ')}`);
   return rows.join('\n');
@@ -168,10 +201,16 @@ async function main() {
       continue;
     }
     const dump = JSON.parse(readFileSync(file, 'utf8'));
-    const staged = { v: 1, sport, at: new Date().toISOString(), order: [], variants: {} };
+    // (D72: the close rows' pieces (REPLAY_ATTR=1 on the replay), what the trusted variants' reliability walks on)
+    const attrFile = path.join(dir, `${sport}-attr.json`);
+    if (existsSync(attrFile)) dump.attrRows = JSON.parse(readFileSync(attrFile, 'utf8'));
+    const staged = { v: 1, sport, at: new Date().toISOString(), order: [], labels: {}, variants: {} };
     for (const name of names) {
       if (!variants[name]) throw new Error(`no variant ${name} in ${VARIANTS_FILE}`);
+      // (a trusted variant (D72) needs the replay's pieces (<sport>-attr.json); MMA's replay has none: not staged there)
+      if (variants[name].mode === 'trusted' && !dump.attrRows) continue;
       const lab = labOf(dump, name, variants[name]);
+      lab.seasons = args.includes('--seasons');
       console.log(`${tableOf(sport, lab)}\n`);
       // (--reasons: each reason's closing-line evidence on the whole history, the groups with 30 checks or more)
       if (args.includes('--reasons') && variants[name].mode !== 'd58') {
@@ -193,6 +232,8 @@ async function main() {
         for (const [key, g] of rows) console.log(`  ${key}: ${g.n} checks, EV ${r1((g.s / g.n) * 100)}% (shrunk ${r1(((g.s / g.n) * g.n * 100) / (g.n + k))}%), beat ${r1((g.beat / g.n) * 100)}%; ${g.rn} graded, flat ${r1((g.rs / g.rn) * 100)}%`);
       }
       staged.order.push(name);
+      // (the switch's readable name, band-variants.json's label (D72))
+      staged.labels[name] = variants[name].label ?? name;
       staged.variants[name] = stagedOf(dump, lab);
     }
     if (args.includes('--write')) writeFileSync(stagedFile(sport), JSON.stringify(staged));

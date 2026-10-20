@@ -2,6 +2,7 @@
   "v": 1,
   "about": "The Algorithm tab's Findings panel (admins only): what the research has learned, one line each. Each round appends entries; never edit the template. group: shipped | dropped | watching. sport: nfl | nba | nhl | mlb | mma, or null for every sport. ref: the DECISIONS.md entry.",
   "entries": [
+    { "date": "2026-10-20", "group": "dropped", "sport": null, "ref": "D72", "text": "Trusted-piece bands: props' pieces proven, lines' not; no LOCK > LOVE > LIKE beyond noise (top edges lose again); staged only" },
     { "date": "2026-10-20", "group": "shipped", "sport": "mma", "ref": "D56, D59", "text": "MMA price swap fixed (mirrored opens repaired) and the favorite-longshot calibration on" },
     { "date": "2026-10-20", "group": "shipped", "sport": "nba", "ref": "D69", "text": "Props priced on every season with prop odds: NBA record -10.1u to +29.3u" },
     { "date": "2026-10-20", "group": "shipped", "sport": null, "ref": "D57", "text": "Practice picks are tracked only, never staked" },
@@ -14,6 +15,6 @@
     { "date": "2026-10-20", "group": "dropped", "sport": null, "ref": "Measured and held", "text": "Props lagging line moves: they don't lag; taking the lagging side lost 8%" },
     { "date": "2026-10-19", "group": "dropped", "sport": null, "ref": "Measured and held", "text": "Last-result overreaction: the Book doesn't overreact once the Bot's own lean is in" },
     { "date": "2026-10-20", "group": "dropped", "sport": "nfl", "ref": "D71", "text": "NFL lines bet earlier (24h to 1h, 2020-26): no hour beats the close; early dogs beat the fair close 60-65% but lose 13-17% flat" },
-    { "date": "2026-10-20", "group": "watching", "sport": null, "ref": "D67", "text": "Best price across 9 US books instead of DraftKings: 1-8 cents better (+1-2% of return), better than DraftKings on 27-48% of picks (FanDuel, BetRivers, Caesars most); adds 0.5-1.6 points flat ROI on the same picks but turns no lines sport clearly green (NBA, NFL re-selected +1.4%, inside noise)" }
+    { "date": "2026-10-20", "group": "watching", "sport": null, "ref": "D67", "text": "Best price across 9 US books vs DraftKings: 1-8 cents better, +0.5-1.6 pts flat ROI; no lines sport clearly green (noise)" }
   ]
 }

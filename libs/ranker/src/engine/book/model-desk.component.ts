@@ -5,7 +5,7 @@ import { darkLogoOf } from '../team-look';
 import { matchupName } from './game-menu';
 import { BetGroup, SportGroup, TableSorts, betValue, byGame, gamesBySport } from './desk-columns';
 import { DESK_HELP } from './desk-help';
-import { BotHistory, HISTORY_RANGES, HistoryRange, HistoryRow, ReplayRecordFile, StagedReplayFile, beatText, beatTip, botHistoryOf, buildLabel, buildOf, emptyRow, isHistoryRange, recordText } from './replay-history';
+import { BotHistory, HISTORY_RANGES, HistoryRange, HistoryRow, ReplayRecordFile, StagedReplayFile, bandSharesOf, beatText, beatTip, botHistoryOf, buildLabel, buildOf, emptyRow, isHistoryRange, recordText } from './replay-history';
 import { DeskPanel, FindingsFile, findingsOf, ESPN_LEAGUES, SPORTS, deskPanelOpen, UNIT_WORDS, DeskEpoch, epochFor, epochShared, countNowOf, deskEpochOf, edgeColorOf, epochLabel, isTracked, meterOf, propState, provisional, sideTextOf, sideTitleOf, toWin } from './desk-math';
 import { Board, Meter, ModelBet, ModelState, Settled } from './desk-model';
 import { SummaryBox, athleteTeam, liveStat } from './live-props';
@@ -103,6 +103,7 @@ export class ModelDeskComponent implements OnInit, OnDestroy {
   // as the whole tab is)
   private allStaged: (StagedReplayFile | null)[] = [];
   stagedNames: string[] = [];
+  stagedLabels: Record<string, string | undefined> = {};
   view: 'live' | 'staged' = 'live';
   variant: string | null = null;
   private allLedgerBets: ModelBet[] = [];
@@ -118,6 +119,8 @@ export class ModelDeskComponent implements OnInit, OnDestroy {
   readonly buildLabel = buildLabel;
   // (By Confidence's rows, LOCK first, PASS last, the practice picks between LIKE and PASS, the history's)
   bandRows: HistoryRow[] = [];
+  // (the pyramid (the owner, 2026-10-20): LOCK's, LOVE's and LIKE's share of the bets the three hold, a bar each)
+  bandShares: Record<string, number | null> = {};
   // (the build's time at the top: the version's epoch, replay-history.ts buildOf)
   buildAt: string | null = null;
 
@@ -256,6 +259,8 @@ export class ModelDeskComponent implements OnInit, OnDestroy {
     this.findingsFile = await findings;
     this.allStaged = files.map((f) => f.staged);
     this.stagedNames = [...new Set(this.allStaged.flatMap((f) => f?.order ?? []))];
+    // (each rule's readable name, band-variants.json's label (D72), else its id)
+    this.stagedLabels = Object.assign({}, ...this.allStaged.map((f) => f?.labels ?? {}));
     this.variant = this.stagedNames[0] ?? null;
     this.allStates = files.map((f) => f.state).filter((s): s is ModelState => !!s);
     const rows = files.flatMap((f) => f.ledger?.bets ?? []);
@@ -328,6 +333,7 @@ export class ModelDeskComponent implements OnInit, OnDestroy {
     this.findings = findingsOf(this.findingsFile, this.sport);
     const histBand = (label: string) => h.byBand.find((r) => r.label === label) ?? emptyRow(label);
     this.bandRows = [histBand('LOCK'), histBand('LOVE'), histBand('LIKE'), h.practice, histBand('PASS')];
+    this.bandShares = bandSharesOf(this.bandRows);
     this.buildAt = buildOf(this.allReplays, this.sport, this.epoch ? ((this.sport ? epochFor(this.epoch, this.sport) : null) ?? epochShared(this.epoch)) : null).at;
     this.splitOpen(Date.now());
     this.loadScores();

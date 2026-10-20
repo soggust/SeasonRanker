@@ -56,6 +56,29 @@ import { MARKETS as MMA_MARKETS, scoreMma } from './gate-mma.mjs';
 const ROOT = path.resolve(import.meta.dirname, '../../../..');
 const MODEL = path.join(ROOT, 'libs/ranker/scripts/model');
 const GATE = path.join(ROOT, '.cache/gate');
+// (research only (REPLAY_ATTR, DECISIONS.md D72): a prop projection's pieces as log factors on its mean (project.mjs
+// projection's own parts, as writeup.mjs driversOf reads them): form (his recent games' weight against his season
+// rate), role (the trend, ramp and share steps), vacated (teammates' work left or taken back), opponent, funnel,
+// targets, pace, script, context, and the fit's scale and middle; the rest (his own rate against the Book) is the base)
+const lnOf = (v) => (Number.isFinite(v) && v > 0 ? Math.log(v) : 0);
+export function propParts(p, P) {
+  if (!p || !P) return {};
+  const blend = Number.isFinite(p.rate) && Number.isFinite(p.recent) && Number.isFinite(P.w) ? (1 - P.w) * p.rate + P.w * p.recent : null;
+  const role = (Number.isFinite(p.trendF) ? p.trendF : 1) * (Number.isFinite(p.ramp) ? p.ramp : 1) * (Number.isFinite(p.sp?.f) ? p.sp.f : 1);
+  const base0 = blend !== null ? role * blend : null;
+  return {
+    form: blend !== null && p.rate > 0 ? lnOf(blend / p.rate) : 0,
+    role: lnOf(role),
+    vacated: lnOf(p.vacF) + (base0 > 0 && p.base > 0 ? Math.log(p.base / base0) : 0),
+    opponent: Number.isFinite(p.opp) ? (p.oppA ?? P.a ?? 0) * lnOf(p.opp) : 0,
+    funnel: lnOf(p.funnelF),
+    targets: lnOf(p.tgtF),
+    pace: lnOf(p.paceF),
+    script: Number.isFinite(p.script) ? (P.b ?? 0) * lnOf(p.script) : 0,
+    context: lnOf(p.ctxF),
+    fit: lnOf(P.scale ?? 1) + lnOf(p.slF),
+  };
+}
 // (MMA since 2026-10-19: the fights league scored by gate-mma.mjs on the archive and its priced history)
 export const SPORTS = ['nfl', 'nhl', 'nba', 'mlb', 'mma'];
 export const ROLLING_DAYS = 28;
@@ -547,7 +570,7 @@ export async function scoreVersion(dir, sport, { refit = false, propsLayer = tru
             const mix = V.project.exitMix(f.params, x.p);
             if (histIndex.size && x.row.name && x.row.game && histIndex.has(`${st.key}|${H.espn.nameKey(x.row.name)}|${x.row.game}`)) {
               const mu = x.p.mu;
-              histMatches.push({ stat: st.key, name: x.row.name, game: String(x.row.game), pid: String(x.row.pid), v: x.v, home: x.row.home ?? null, mu, params: f.params, mix, over: (line) => V.project.lineChances(line, mu, f.params, mix).over });
+              histMatches.push({ stat: st.key, name: x.row.name, game: String(x.row.game), pid: String(x.row.pid), v: x.v, home: x.row.home ?? null, mu, params: f.params, mix, over: (line) => V.project.lineChances(line, mu, f.params, mix).over, ...(process.env.REPLAY_ATTR === '1' ? { parts: propParts(x.p, f.params), overMu: (line, m2) => V.project.lineChances(line, Math.max(0.05, m2), f.params, mix).over } : {}) });
             }
             const ll = -V.project.chanceLog(x.v, x.p.mu, f.params, mix);
             if (fin(ll) && (!elig || x.row.eligible !== false)) {

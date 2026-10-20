@@ -88,9 +88,15 @@
 
 <!-- (a history row: its record compact (bet-format.ts compactRecord, the exact one on hover), units, return and the
      share that beat the fair close, from 30 bets with a close at their line (replay-history.ts beatText, D56)) -->
-<ng-template #histRow let-t let-total="total" let-label="label">
+<ng-template #histRow let-t let-total="total" let-label="label" let-shares="shares">
   <tr [class.desk-total]="total" [ngClass]="'desk-tier-' + t.label.split(' ')[0].toLowerCase()">
     <th>@if (t.sport) {<span class="desk-history-league"><ng-container *ngTemplateOutlet="leagueMark; context: { $implicit: t.sport, titled: true }"></ng-container></span>} @else { {{ label ?? t.label }} }</th>
+    <!-- (By Confidence's pyramid: the band's share of the LOCK, LOVE and LIKE bets, a small bar in its colour) -->
+    @if (shares) {
+      <td class="desk-share" [attr.title]="shares[t.label] === null || shares[t.label] === undefined ? null : t.bets + ' bets'">
+        @if (!total && shares[t.label] !== null && shares[t.label] !== undefined) {<span class="desk-share-bar" aria-hidden="true"><span [style.width.%]="shares[t.label] * 100"></span></span>{{ (shares[t.label] * 100).toFixed(shares[t.label] < 0.1 ? 1 : 0) }}%}
+      </td>
+    }
     <td [attr.title]="recordTip(t)">{{ recordText(t) }}</td>
     <td [class.up]="t.profit > 0" [class.down]="t.profit < 0">{{ units(t.profit) }}</td>
     <td [class.up]="(t.roi ?? 0) > 0" [class.down]="(t.roi ?? 0) < 0">{{ pct(t.roi) }}</td>
@@ -164,7 +170,7 @@
         <button type="button" class="desk-stage-btn" [class.active]="view === 'staged'" [attr.aria-pressed]="view === 'staged'" (click)="setView('staged')">Staged</button>
         @if (view === 'staged') {
           <select class="desk-stage-pick" aria-label="Staged rule" (change)="setVariant($any($event.target).value)">
-            @for (n of stagedNames; track n) {<option [value]="n" [selected]="n === variant">{{ n }}</option>}
+            @for (n of stagedNames; track n) {<option [value]="n" [selected]="n === variant">{{ stagedLabels[n] ?? n }}</option>}
           </select>
         }
       </div>
@@ -195,13 +201,13 @@
         <div class="group-body">
           <table class="desk-table desk-history-table">
             <thead>
-              <tr><th></th><th [title]="help['historyRecord']">Record</th><th [title]="help['historyProfit']">Units</th><th [title]="help['roi']">ROI</th><th [title]="help['historyBeat']">Beat close</th></tr>
+              <tr><th></th><th title="The band's share of the LOCK, LOVE and LIKE bets: most should be LIKE, fewer LOVE, fewest LOCK">Share</th><th [title]="help['historyRecord']">Record</th><th [title]="help['historyProfit']">Units</th><th [title]="help['roi']">ROI</th><th [title]="help['historyBeat']">Beat close</th></tr>
             </thead>
             <tbody>
               @for (t of bandRows; track t.label) {
-                <ng-container *ngTemplateOutlet="histRow; context: { $implicit: t }"></ng-container>
+                <ng-container *ngTemplateOutlet="histRow; context: { $implicit: t, shares: bandShares }"></ng-container>
               }
-              <ng-container *ngTemplateOutlet="histRow; context: { $implicit: h.overall, total: true, label: 'Confident' }"></ng-container>
+              <ng-container *ngTemplateOutlet="histRow; context: { $implicit: h.overall, total: true, label: 'Confident', shares: bandShares }"></ng-container>
             </tbody>
           </table>
         </div>

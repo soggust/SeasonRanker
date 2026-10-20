@@ -83,6 +83,18 @@ function learn(state, game, exp, params) {
 // onGame: told each final's expectation before it's learned from (the props' game script)
 // (the replay prices a game as of a moment too (asOf, DECISIONS.md D48): the version supports it)
 export const REPLAY_AS_OF = true;
+// (research only: REPLAY_ATTR=1 puts each prediction's context terms' parts by group on it (am: the margin's, at: the
+// total's), what the band lab's attribution reads (DECISIONS.md D72); never set by the desk or a record)
+const ATTR = process.env.REPLAY_ATTR === '1';
+function groupsOf(terms, vec) {
+  const out = {};
+  vec.forEach((v, i) => {
+    if (!v) return;
+    const g = terms[i]?.group ?? 'other';
+    out[g] = (out[g] ?? 0) + v;
+  });
+  return out;
+}
 // A game's terms as of a moment (DECISIONS.md D48): each day-of term (context.mjs featurize's dayOf) whose fact wasn't
 // known yet at that moment read at its value before (the prior game's, the no-probable rule's, none); with the latest
 // of the facts it did read (factsAt, null for none). A game's terms with no dayOf: as they are
@@ -153,6 +165,7 @@ export function replay(games, params, burnIn = 0.3, ctx = null, onGame = null, a
         if (dyn.length) setDynamic(dyn, fx, base);
         exp = adjust(base, fitM.peek(fx.m), fitT.peek(fx.t));
         exp.namedT = namedT.length ? fitT.part(fx.t, namedT) : 0;
+        if (ATTR) Object.assign(exp, { am: groupsOf(ctx.terms.m, fitM.vec(fx.m, true)), at: groupsOf(ctx.terms.t, fitT.vec(fx.t, true)) });
         if (x.factsAt !== null) factsAt = Math.max(factsAt ?? -Infinity, x.factsAt);
       } else if (ctx) exp = { ...base, namedT: 0 };
       asOf.on(g, at, { ...exp, factsAt });
@@ -167,6 +180,7 @@ export function replay(games, params, burnIn = 0.3, ctx = null, onGame = null, a
     // (the named terms' part of the total's shift (D44): what a totals bet is earned by; 0 with no context)
     if (f && namedT.length) exp.namedT = fitT.part(f.t, namedT);
     else if (ctx) exp.namedT = 0;
+    if (ATTR && f) Object.assign(exp, { am: groupsOf(ctx.terms.m, fitM.vec(f.m)), at: groupsOf(ctx.terms.t, fitT.vec(f.t)) });
     onGame?.(g, exp);
     if (i >= from) {
       const m = g.hs - g.as - exp.margin;
@@ -268,6 +282,13 @@ function online(ctx, on) {
     },
     // (the part of a prediction the terms in idx carry, at the weights predict last used: no solve, so it reads
     // exactly what predict read for the same game)
+    // (research only (REPLAY_ATTR): each term's part at the weights a prediction read, peek's aside where peeked)
+    vec(x, peeked = false) {
+      const u = peeked && pending >= every ? (aside ?? (aside = solve(A, b))) : w;
+      const out = new Array(k).fill(0);
+      for (const i of live(x)) out[i] = x[i] * u[i];
+      return out;
+    },
     part(x, idx) {
       let s = 0;
       const nz = new Set(live(x));

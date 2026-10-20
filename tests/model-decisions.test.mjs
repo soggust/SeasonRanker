@@ -1553,3 +1553,18 @@ test('D71 the Algorithm tab\'s Findings: one shared file, one dated line an entr
   const math = fs.readFileSync(path.resolve('libs/ranker/src/engine/book/desk-math.ts'), 'utf8');
   assert.match(math, /DESK_PANELS_OPEN: readonly DeskPanel\[\] = \['sport', 'confidence'\]/);
 });
+
+test("D72 the trusted-edge bands: measured and staged, none shipped; By Confidence shows each band's share (the pyramid), the staged rules by their names", () => {
+  const decisions = fs.readFileSync(path.resolve('libs/ranker/scripts/model/DECISIONS.md'), 'utf8');
+  assert.ok(decisions.includes('### D72.') && decisions.includes('### D71.'));
+  const html = fs.readFileSync(path.resolve('libs/ranker/src/engine/book/model-desk.component.html'), 'utf8');
+  assert.ok(html.includes('desk-share-bar') && html.includes('shares: bandShares') && html.includes('stagedLabels[n] ?? n'));
+  const hist = fs.readFileSync(path.resolve('libs/ranker/src/engine/book/replay-history.ts'), 'utf8');
+  assert.ok(hist.includes('export function bandSharesOf(') && hist.includes('labels?: Record<string, string>'));
+  // (a staged file names its rules; the live record is untouched by the lab)
+  for (const sport of ['nfl', 'nba', 'nhl', 'mlb']) {
+    const f = JSON.parse(fs.readFileSync(path.resolve('apps', sport, 'src/StaticData/model/replay-record.staged.json'), 'utf8'));
+    assert.ok(f.order.some((n) => n.startsWith('trust-')), sport);
+    for (const n of f.order) assert.ok(f.labels?.[n], `${sport} ${n}`);
+  }
+});

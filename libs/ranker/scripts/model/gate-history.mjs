@@ -236,7 +236,7 @@ export function lineHistoryRows(V, sport, params, shape, expOf, games, hist, cur
     const s = V.desk.settle(b, g);
     if (s.void) continue;
     const y = s.status === 'won' ? 1 : s.status === 'lost' ? 0 : null;
-    rows.push({ id: b.kind === 'i' ? `${b.id}:i${b.h}` : `${b.id}:${b.kind}`, key: b.id, event: b.event, sport, market: b.market, stat: b.market, kind: b.kind, ...(b.kind === 'i' ? { h: b.h } : {}), line: b.line, day: etDay(Date.parse(b.start)), t: Date.parse(b.start), at: fin(Date.parse(b.at)) ? Date.parse(b.at) : null, factsAt: factsAt.get(`${b.id}|${b.when}`) ?? null, season: b.season, f: b.fair, raw: Math.min(0.999, Math.max(0.001, b.model)), y, q: null, overOdds: b.odds, underOdds: b.otherOdds, w: seasonWeight(sport, b.season, current).w, pin: !!b.pin, ...(fin(b.named) ? { named: b.named } : {}) });
+    rows.push({ id: b.kind === 'i' ? `${b.id}:i${b.h}` : `${b.id}:${b.kind}`, key: b.id, event: b.event, sport, market: b.market, stat: b.market, kind: b.kind, ...(b.kind === 'i' ? { h: b.h } : {}), line: b.line, day: etDay(Date.parse(b.start)), t: Date.parse(b.start), at: fin(Date.parse(b.at)) ? Date.parse(b.at) : null, factsAt: factsAt.get(`${b.id}|${b.when}`) ?? null, season: b.season, f: b.fair, raw: Math.min(0.999, Math.max(0.001, b.model)), y, q: null, overOdds: b.odds, underOdds: b.otherOdds, w: seasonWeight(sport, b.season, current).w, pin: !!b.pin, ...(fin(b.named) ? { named: b.named } : {}), ...(b.attr ? { attr: b.attr } : {}) });
   }
   // (a version with the totals rule (D44, desk.mjs trustStart): its totals' trust walks forward from 0, the named
   // terms' shift on each row at full weight)
@@ -272,6 +272,25 @@ export function finish(V, rows, keyOf, start, kind) {
     // blend's start: confidence.mjs features, D52)
     x.pCur = Math.min(0.999, Math.max(0.001, V.desk.chanceAt(kind === 'lines' ? x.market : 'prop', x.f, modelOf(x), t)));
     x.trust = t;
+    // (research only (REPLAY_ATTR, D72): the pieces' parts of the edge (p - f): each projection piece's part of the
+    // Bot's own chance less the fair, scaled by what the anchor and the trust kept of it (pCur - f over raw - f), the
+    // rest of the projection's gap the base (the ratings, or the player's own rate, against the Book), and the
+    // calibration's (the residual blend: p - pCur))
+    if (x.attr || process.env.REPLAY_ATTR === '1') {
+      x.attr ??= {};
+      const gap = x.raw - x.f;
+      const lam = Math.abs(gap) > 1e-4 ? (x.pCur - x.f) / gap : 0;
+      const out = {};
+      let sum = 0;
+      for (const [k, v] of Object.entries(x.attr)) {
+        out[k] = v * lam;
+        sum += out[k];
+      }
+      out.base = x.pCur - x.f - sum;
+      out.cal = x.p - x.pCur;
+      x.attr = out;
+      x.lam = lam;
+    }
   }
   return { open: rows.filter((x) => x.kind === 'o'), close: closeRows, intra: rows.filter((x) => x.kind === 'i') };
 }
@@ -326,6 +345,17 @@ export function intradayLines(events, intra, offsets) {
 // dayOfMinLead); the player game's projection reads the game's context whole (its info, its expected points), so each
 // row's factsAt is the start less it: a row priced before then read facts it couldn't have had, and the replay never
 // bets it there)
+// (research only (REPLAY_ATTR, D72): a prop row's pieces, each the over's chance less the one with that piece's factor
+// taken out of the projection (m.parts: each driver's log factor, gate.mjs))
+function propAttr(m, line, raw) {
+  const out = {};
+  for (const [k, lf] of Object.entries(m.parts)) {
+    if (!fin(lf) || !lf) continue;
+    const q0 = m.overMu(line, m.mu / Math.exp(lf));
+    if (fin(q0)) out[k] = raw - q0;
+  }
+  return out;
+}
 export function propHistoryRows(V, sport, index, matches, current, { factsLead = null } = {}) {
   const rows = [];
   for (const m of matches) {
@@ -338,7 +368,7 @@ export function propHistoryRows(V, sport, index, matches, current, { factsLead =
       if (!fin(raw)) continue;
       const y = m.v > x.line ? 1 : m.v < x.line ? 0 : null;
       const id = `p:${m.stat}:${m.pid}:${m.game}`;
-      rows.push({ id: `${id}:${kind}`, key: id, event: String(m.game), sport, market: 'prop', stat: m.stat, name: m.name ?? null, kind, line: x.line, day: etDay(Date.parse(h.start)), t: Date.parse(h.start), at: fin(Date.parse(x.ts)) ? Date.parse(x.ts) : null, factsAt: fin(factsLead) ? Date.parse(h.start) - factsLead * 36e5 : null, home: m.home ?? null, season: h.season, f: x.fair, raw: Math.min(0.999, Math.max(0.001, raw)), y, q: null, overOdds: x.over, underOdds: x.under, w: seasonWeight(sport, h.season, current).w, m });
+      rows.push({ id: `${id}:${kind}`, key: id, event: String(m.game), sport, market: 'prop', stat: m.stat, name: m.name ?? null, kind, line: x.line, day: etDay(Date.parse(h.start)), t: Date.parse(h.start), at: fin(Date.parse(x.ts)) ? Date.parse(x.ts) : null, factsAt: fin(factsLead) ? Date.parse(h.start) - factsLead * 36e5 : null, home: m.home ?? null, season: h.season, f: x.fair, raw: Math.min(0.999, Math.max(0.001, raw)), y, q: null, overOdds: x.over, underOdds: x.under, w: seasonWeight(sport, h.season, current).w, m, ...(m.parts && m.overMu ? { attr: propAttr(m, x.line, raw) } : {}) });
     }
   }
   let anchor = null;
