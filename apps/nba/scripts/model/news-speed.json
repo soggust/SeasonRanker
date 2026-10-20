@@ -1650,6 +1650,150 @@
     "seen": "2026-10-20T19:11:35.009Z",
     "own": "2026-10-20T19:02:00.000Z"
    }
+  },
+  "401909089|brandinpodziemski|q": {
+   "game": "401909089",
+   "start": "2026-10-20T23:00Z",
+   "team": "18",
+   "name": "Brandin Podziemski",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-10-20T19:13:14.932Z",
+    "own": "2026-10-20T18:51:17.000Z",
+    "why": "@rotowirenba.bsky.social: Brandin Podziemski: Misses practice Tuesday \n\n https:/"
+   }
+  },
+  "401909090|brandinpodziemski|q": {
+   "game": "401909090",
+   "start": "2026-10-21T01:30Z",
+   "team": "24",
+   "name": "Brandin Podziemski",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-10-20T19:13:14.932Z",
+    "own": "2026-10-20T18:51:17.000Z",
+    "why": "@rotowirenba.bsky.social: Brandin Podziemski: Misses practice Tuesday \n\n https:/"
+   }
+  },
+  "401909834|brandinpodziemski|q": {
+   "game": "401909834",
+   "start": "2026-10-21T23:00Z",
+   "team": "19",
+   "name": "Brandin Podziemski",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-10-20T19:13:14.932Z",
+    "own": "2026-10-20T18:51:17.000Z",
+    "why": "@rotowirenba.bsky.social: Brandin Podziemski: Misses practice Tuesday \n\n https:/"
+   }
+  },
+  "401909835|brandinpodziemski|q": {
+   "game": "401909835",
+   "start": "2026-10-21T23:00Z",
+   "team": "27",
+   "name": "Brandin Podziemski",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-10-20T19:13:14.932Z",
+    "own": "2026-10-20T18:51:17.000Z",
+    "why": "@rotowirenba.bsky.social: Brandin Podziemski: Misses practice Tuesday \n\n https:/"
+   }
+  },
+  "401909091|brandinpodziemski|q": {
+   "game": "401909091",
+   "start": "2026-10-21T23:30Z",
+   "team": "14",
+   "name": "Brandin Podziemski",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-10-20T19:13:14.932Z",
+    "own": "2026-10-20T18:51:17.000Z",
+    "why": "@rotowirenba.bsky.social: Brandin Podziemski: Misses practice Tuesday \n\n https:/"
+   }
+  },
+  "401909836|brandinpodziemski|q": {
+   "game": "401909836",
+   "start": "2026-10-21T23:30Z",
+   "team": "17",
+   "name": "Brandin Podziemski",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-10-20T19:13:14.932Z",
+    "own": "2026-10-20T18:51:17.000Z",
+    "why": "@rotowirenba.bsky.social: Brandin Podziemski: Misses practice Tuesday \n\n https:/"
+   }
+  },
+  "401909837|brandinpodziemski|q": {
+   "game": "401909837",
+   "start": "2026-10-21T23:30Z",
+   "team": "28",
+   "name": "Brandin Podziemski",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-10-20T19:13:14.932Z",
+    "own": "2026-10-20T18:51:17.000Z",
+    "why": "@rotowirenba.bsky.social: Brandin Podziemski: Misses practice Tuesday \n\n https:/"
+   }
+  },
+  "401909838|brandinpodziemski|q": {
+   "game": "401909838",
+   "start": "2026-10-22T00:00Z",
+   "team": "29",
+   "name": "Brandin Podziemski",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-10-20T19:13:14.932Z",
+    "own": "2026-10-20T18:51:17.000Z",
+    "why": "@rotowirenba.bsky.social: Brandin Podziemski: Misses practice Tuesday \n\n https:/"
+   }
+  },
+  "401909839|brandinpodziemski|q": {
+   "game": "401909839",
+   "start": "2026-10-22T00:00Z",
+   "team": "3",
+   "name": "Brandin Podziemski",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-10-20T19:13:14.932Z",
+    "own": "2026-10-20T18:51:17.000Z",
+    "why": "@rotowirenba.bsky.social: Brandin Podziemski: Misses practice Tuesday \n\n https:/"
+   }
+  },
+  "401909840|julianphillips|q": {
+   "game": "401909840",
+   "start": "2026-10-22T00:30Z",
+   "team": "10",
+   "name": "Julian Phillips",
+   "status": "q",
+   "athlete": "5105553",
+   "espn": {
+    "seen": "2026-10-20T19:31:37.347Z",
+    "own": "2026-10-20T19:04:00.000Z"
+   }
+  },
+  "401909840|brandinpodziemski|q": {
+   "game": "401909840",
+   "start": "2026-10-22T00:30Z",
+   "team": "10",
+   "name": "Brandin Podziemski",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-10-20T19:13:14.932Z",
+    "own": "2026-10-20T18:51:17.000Z",
+    "why": "@rotowirenba.bsky.social: Brandin Podziemski: Misses practice Tuesday \n\n https:/"
+   }
+  },
+  "401909096|julianphillips|q": {
+   "game": "401909096",
+   "start": "2026-10-24T01:30Z",
+   "team": "10",
+   "name": "Julian Phillips",
+   "status": "q",
+   "athlete": "5105553",
+   "espn": {
+    "seen": "2026-10-20T19:31:37.347Z",
+    "own": "2026-10-20T19:04:00.000Z"
+   }
   }
  }
 }

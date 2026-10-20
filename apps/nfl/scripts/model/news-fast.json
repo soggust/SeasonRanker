@@ -1,13 +1,13 @@
 {
  "sport": "nfl",
  "cursor": {
-  "adamscheftermirror.bsky.social": "2026-10-20T19:12:25.695Z",
+  "adamscheftermirror.bsky.social": "2026-10-20T19:27:26.157Z",
   "rapsheet.bsky.social": "2026-10-20T15:28:24.072Z",
   "nflnewsreposterbot.bsky.social": "2026-10-19T20:52:46.431Z",
   "insidenflnews.bsky.social": "2026-10-20T19:05:24.684Z",
   "nflnewsposter.bsky.social": "2026-10-20T19:06:22.059Z",
-  "rotoworld-fb.bsky.social": "2026-10-20T19:10:23.000Z",
-  "rotowirenfl.bsky.social": "2026-10-20T15:06:34.000Z"
+  "rotoworld-fb.bsky.social": "2026-10-20T19:14:54.000Z",
+  "rotowirenfl.bsky.social": "2026-10-20T19:18:07.000Z"
  },
  "claims": [
   {
@@ -1634,6 +1634,19 @@
    "kind": "status",
    "confidence": 0.9,
    "text": "Commanders Pro Bowl WR Terry McLaurin tore his patellar tendon and will miss the rest of the season, per HC Dan Quinn.\n\nOriginal post"
+  },
+  {
+   "id": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3myddt32tdg2q|terrymclaurin|out|status",
+   "at": "2026-10-20T19:14:54.000Z",
+   "seen": "2026-10-20T19:33:13.835Z",
+   "handle": "rotoworld-fb.bsky.social",
+   "post": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3myddt32tdg2q",
+   "player": "Terry McLaurin",
+   "team": "WAS",
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.9,
+   "text": "Terry McLaurin tore patellar tendon, out for season"
   }
  ]
 }
