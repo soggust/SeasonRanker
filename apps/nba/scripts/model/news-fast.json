@@ -1,7 +1,7 @@
 {
  "sport": "nba",
  "cursor": {
-  "rotowirenba.bsky.social": "2026-10-20T01:59:46.000Z",
+  "rotowirenba.bsky.social": "2026-10-20T15:11:26.000Z",
   "insidenbanews.bsky.social": "2026-10-20T14:31:09.380Z",
   "shamsbot.bsky.social": "2026-10-20T02:08:34.000Z"
  },
@@ -343,6 +343,19 @@
    "kind": "status",
    "confidence": 0.9,
    "text": "Injuries 10/20\n\nBOS:\nNone\n\nDET:\nTaurean Prince - Out\n\nPHI:\nAnfernee Simons - Questionable\nDean Wade - Questionable\nAdem Bona - Questionable\nAriel Hukporti - Out\nDominick Barlow - Out\nTacko Fall - Out\n"
+  },
+  {
+   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mycw7pvdnx2o|naeqwantomlin|out|status",
+   "at": "2026-10-20T15:11:26.000Z",
+   "seen": "2026-10-20T15:22:54.974Z",
+   "handle": "rotowirenba.bsky.social",
+   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mycw7pvdnx2o",
+   "player": "Nae'Qwan Tomlin",
+   "team": null,
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.8,
+   "text": "Nae'Qwan Tomlin: Set to miss several weeks \n\n https://www.rotowire.com/basketball/player/naeqwan-tomlin-6311"
   }
  ]
 }
