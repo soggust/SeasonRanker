@@ -1838,6 +1838,30 @@
     "seen": "2026-10-20T20:29:53.025Z",
     "own": "2026-10-20T20:27:00.000Z"
    }
+  },
+  "401909836|konknueppel|out": {
+   "game": "401909836",
+   "start": "2026-10-21T23:30Z",
+   "team": "30",
+   "name": "Kon Knueppel",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-10-20T20:34:12.073Z",
+    "own": "2026-10-20T20:33:22.000Z",
+    "why": "@rotowirenba.bsky.social: Kon Knueppel: Ruled out for Wednesday \n\n https://www.r"
+   }
+  },
+  "401909837|cobywhite|out": {
+   "game": "401909837",
+   "start": "2026-10-21T23:30Z",
+   "team": "4",
+   "name": "Coby White",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-10-20T20:34:12.073Z",
+    "own": "2026-10-20T20:28:17.000Z",
+    "why": "@rotowirenba.bsky.social: Coby White: Ruled out for season opener \n\n https://www"
+   }
   }
  }
 }
