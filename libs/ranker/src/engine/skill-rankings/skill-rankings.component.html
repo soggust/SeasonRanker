@@ -224,13 +224,13 @@
           @for (group of groups; track group.id) {
             <div class="col-group" [ngClass]="'group-' + group.tone" [class.collapsed]="isCollapsed(group.id)" [class.single]="!isCollapsible(group.id)" [class.group-opening]="groupMotionOf(group.id) === 'opening'" [class.group-closing]="groupMotionOf(group.id) === 'closing'">
               @if (isCollapsed(group.id)) {
-                <!-- A collapsed group: its own column alone, the row's rank within the group, a plain value like any
-                     cell's, tinted like one (a dash: a UR row, or none of the group's stats counted). Only a look. -->
+                <!-- A collapsed group: its own column alone, the row's rank within the group ("#3", as Show Ranks writes a place)
+                     tinted like any cell (a dash: a UR row, or none of the group's stats counted). Only a look. -->
                 @let place = groupPlace(player, group.id);
                 <div class="group-rank-col" [style.--label-w]="groupWidth(group)">
                   <!-- (the group's line down the row: a click collapses or opens the group, as its chevron does) -->
                   <span class="group-line" [class.single]="!isCollapsible(group.id)" aria-hidden="true" [title]="isCollapsible(group.id) ? collapseTitle(group) : ''" (click)="lineToggle(group.id, $event)"></span>
-                  <p [style.color]="groupPlaceColor(place, group.id)">{{ place ?? '-' }}</p>
+                  <p [style.color]="groupPlaceColor(place, group.id)">{{ place === null ? '-' : '#' + place }}</p>
                   <p class="stat-label" [title]="place === null ? groupRankTitle(group) + ': none' : groupRankTitle(group) + ': #' + place">{{ group.title }}</p>
                 </div>
               } @else if (group.box) {
