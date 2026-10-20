@@ -117,41 +117,6 @@ $sport-line: (
   }
 }
 
-// A chip-shaped control's rim (the wallet's chips): its wrapper draws the rim's spots over it
-// (<a class="wallet-chip">…<svg class="chip-rim"><rect pathLength="220" /></svg></a>)
-@mixin dropdown-rim {
-  display: inline-flex;
-  position: relative;
-
-  .chip-rim {
-    height: 100%;
-    inset: 0;
-    overflow: visible;
-    pointer-events: none;
-    position: absolute;
-    width: 100%;
-  }
-
-  rect {
-    fill: none;
-    height: calc(100% - 4px);
-    // (round ends: half its height, the 52px chip less its 4px border)
-    rx: 24px;
-    stroke: $rim-cream;
-    stroke-dasharray: 4 6;
-    stroke-width: 4px;
-    width: calc(100% - 4px);
-    x: 2px;
-    y: 2px;
-    @include rim-turn;
-  }
-
-  &:hover rect,
-  &:focus-within rect {
-    stroke-dashoffset: -20;
-  }
-}
-
 // ---------------------------------------------------------------------------
 // The card table: a panel on the Book, the Algorithm and the wallet on the scoreboard inside a thin
 // brushed-gold rail; its bar every sport's panel bar (the scoreboard, tinted with its category color). The felt
@@ -454,21 +419,6 @@ $check-deep: #4a3f8e;
     color: v.$text-dim;
   }
 
-  // (a LOCK tag's padlock before its word, a touch under the letters' size, the two centered together)
-  &:has(.tier-lock) {
-    align-items: center;
-    display: inline-flex;
-    gap: v.$space-2;
-  }
-
-  .tier-lock {
-    font-size: 1.05em;
-    height: 1em;
-    line-height: 1;
-    // (the glyph sits high in its box: down to the letters' middle)
-    transform: translateY(1px);
-    width: 1em;
-  }
 }
 
 // A LOCK tag that wants the eye: a glint sweeping across it every few seconds and a soft glowing pulse round it

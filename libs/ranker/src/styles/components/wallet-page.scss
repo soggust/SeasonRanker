@@ -258,37 +258,6 @@ $bar-tint: rgba(chip.$felt-light, 0.16);
   }
 }
 
-// A dropdown in a bar (the settled history's date range): a dark pill, its caret in the sand
-.wp-select {
-  appearance: none;
-  background:
-    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='14' viewBox='0 0 24 24'%3E%3Cpath d='M6 9l6 6 6-6' fill='none' stroke='%23d8b98a' stroke-width='2.6' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") right 10px center / 12px no-repeat,
-    rgba(0, 0, 0, 0.35);
-  border: 1px solid v.$panel-edge;
-  border-radius: v.$radius-pill;
-  color: #fff;
-  cursor: pointer;
-  font-family: v.$font-base;
-  font-size: v.$fs-11;
-  font-weight: 700;
-  height: 28px;
-  letter-spacing: 0.5px;
-  padding: 0 28px 0 12px;
-
-  &:hover {
-    border-color: #777;
-  }
-
-  @include v.focus-lit {
-    border-color: #fff;
-  }
-
-  option {
-    background: #1a1a1a;
-    color: #fff;
-  }
-}
-
 // (a small-caps key over a figure: BALANCE, YOUR RUNS, a scoreboard's period)
 .wp-key {
   color: v.$text-faint;
@@ -488,23 +457,6 @@ $bar-tint: rgba(chip.$felt-light, 0.16);
       --c: #8a8a8a;
     }
   }
-}
-
-// (the settled history's date range, over its panel on the left, as the Algorithm's)
-.wallet-range {
-  margin: 0 0 12px;
-}
-
-// (the settled history's next page, under its table)
-.wallet-more {
-  display: flex;
-  justify-content: center;
-  padding: 12px 0 4px;
-}
-
-// (one panel beside the bot's or the board: the whole width)
-.desk-grid.wallet-one {
-  grid-template-columns: minmax(0, 1fr);
 }
 
 .wallet-note {
@@ -1353,86 +1305,6 @@ $heads-cols: minmax(0, 1fr) 260px minmax(0, 1fr);
   }
 }
 
-// (the bot's band beside a pick it made: the Book's chip, small)
-// (in the Bot column, a cell of its own, centered under its header: a size up from the pick's old tag)
-.wallet-bets .wallet-bot {
-  text-align: center;
-  white-space: nowrap;
-}
-
-.wallet-tier {
-  @include chip.tier-tag(10px, 3px 6px, 0.05em);
-  display: inline-block;
-}
-
-.wallet-void {
-  color: v.$text-faint;
-  font-style: italic;
-}
-
-// A parlay: a gold chip with its legs linked in the sport column, "Parlay" in the game's, and in the Result column
-// a pip a leg (green hit, red missed, dim pushed or void, empty still to come) over "2 of 4 hit"; its legs under
-// it, opened, on a gold rail
-.wallet-parlay-badge {
-  align-items: center;
-  background: radial-gradient(circle at 35% 30%, color-mix(in srgb, #{$gold} 85%, #fff), #{$gold} 60%, color-mix(in srgb, #{$gold} 70%, #000));
-  border: 2px dashed rgba(0, 0, 0, 0.35);
-  border-radius: v.$radius-round;
-  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
-  box-sizing: border-box;
-  color: v.$chip-ink;
-  display: inline-flex;
-  height: 24px;
-  justify-content: center;
-  vertical-align: middle;
-  width: 24px;
-
-  .mat-icon {
-    @include v.icon-size(15px);
-    transform: rotate(-45deg);
-  }
-}
-
-.wallet-parlay-name {
-  color: $gold;
-  letter-spacing: 0.04em;
-  text-transform: uppercase;
-}
-
-.wallet-legs {
-  display: inline-flex;
-  flex-wrap: wrap;
-  gap: v.$space-4;
-  justify-content: flex-end;
-  margin-bottom: 3px;
-
-  i {
-    border: 1.5px solid rgba(255, 255, 255, 0.4);
-    border-radius: v.$radius-round;
-    height: 8px;
-    width: 8px;
-
-    &.won {
-      background: v.$good;
-      border-color: v.$good;
-    }
-
-    &.lost {
-      background: v.$bad;
-      border-color: v.$bad;
-    }
-
-    &.out {
-      background: rgba(255, 255, 255, 0.25);
-      border-color: transparent;
-    }
-  }
-}
-
-.wallet-bets tr.wallet-leg > th {
-  box-shadow: inset 3px 0 0 color-mix(in srgb, #{$gold} 55%, transparent);
-}
-
 .wallet-fine {
   color: v.$text-faint;
   font-size: v.$fs-11;
@@ -1547,11 +1419,6 @@ $heads-cols: minmax(0, 1fr) 260px minmax(0, 1fr);
   text-align: right;
 }
 
-// (a pick's chip beside its words in the tables)
-.wallet-bets .desk-pick {
-  align-items: center;
-}
-
 // (a note's link: lit in the room's light)
 .desk-note a,
 .wp-note a,
@@ -1571,16 +1438,6 @@ $heads-cols: minmax(0, 1fr) 260px minmax(0, 1fr);
 // shows its teams), the picks wrap, and the columns come in closer)
 .group-body {
   overflow-x: auto;
-}
-
-// (the settled history's date: the game's day, the column that orders it, in the game's type)
-.wallet-settled .wallet-date {
-  white-space: nowrap;
-}
-
-// (the game under a pick: phones only, where the game's column goes; over the tables' block smalls)
-.wallet-bets .wallet-phone-game {
-  display: none;
 }
 
 // (the bar's link and the open tickets' link: a 44px touch target on a line of text, the layout untouched)
@@ -1625,10 +1482,6 @@ $heads-cols: minmax(0, 1fr) 260px minmax(0, 1fr);
     &::after {
       content: none;
     }
-  }
-
-  .wp-select {
-    height: 44px;
   }
 
   .chips-head,
@@ -1729,91 +1582,6 @@ $heads-cols: minmax(0, 1fr) 260px minmax(0, 1fr);
     padding: 10px;
   }
 
-  .wallet-bets {
-    font-size: v.$fs-12;
-
-    th,
-    td {
-      padding: 5px 4px;
-    }
-
-    tr > :first-child {
-      display: none;
-    }
-
-    td.desk-left {
-      white-space: normal;
-    }
-
-    .desk-pick b {
-      white-space: normal;
-    }
-
-    .desk-game img,
-    .desk-badge {
-      flex-shrink: 0;
-    }
-  }
-
-  // (a sport's row over its games keeps its one cell, the columns' hiding aside)
-  .wallet-bets .desk-sport-group > td:first-child {
-    display: table-cell;
-  }
-
-  .wallet-bets {
-    tr > :nth-child(2) {
-      display: none;
-    }
-
-    .wallet-phone-game {
-      color: v.$text-faint;
-      display: block;
-      font-size: v.$fs-11;
-      font-weight: 700;
-      margin: 2px 0 0 36px;
-    }
-
-    .desk-group-count .wallet-phone-game {
-      margin-left: 0;
-    }
-
-    // (the live column's score under its count or its side's words)
-    .desk-score .wallet-phone-game {
-      margin-left: 0;
-      white-space: normal;
-    }
-  }
-
-  .wallet-bets {
-    // (a game's own bets under its row: the game said once, above them)
-    .desk-grouped .wallet-phone-game {
-      display: none;
-    }
-
-    // (a result's words wrap under its amount: the last column's, or the open bets' To win, the live column after it)
-    td:last-child,
-    td:last-child small,
-    td.wallet-paid,
-    td.wallet-paid small {
-      white-space: normal;
-    }
-
-    td:last-child small,
-    td.wallet-paid small {
-      display: block;
-      max-width: 96px;
-      margin-left: auto;
-    }
-
-    // (the live column's meter: a shorter bar, a long row of pips wrapping)
-    .desk-meter {
-      flex-wrap: wrap;
-
-      .bar {
-        width: 72px;
-      }
-    }
-  }
 }
 
 // ===========================================================================
@@ -1888,26 +1656,10 @@ $heads-cols: minmax(0, 1fr) 260px minmax(0, 1fr);
   }
 }
 
-.tickets-note,
-.tickets-empty {
+.tickets-note {
   color: v.$text-faint;
   margin: 0;
   padding: 18px 6px;
-}
-
-.tickets-empty {
-  align-items: flex-start;
-  display: flex;
-  flex-direction: column;
-  gap: v.$space-12;
-
-  p {
-    margin: 0;
-  }
-
-  b {
-    color: #fff;
-  }
 }
 
 // A ticket: the paper, THE BOOK and its number over the status, a perforation, the kind, each leg, the sums and
@@ -2181,8 +1933,7 @@ $heads-cols: minmax(0, 1fr) 260px minmax(0, 1fr);
     color: v.$bad-soft !important;
   }
 
-  .tickets-note,
-  .tickets-empty {
+  .tickets-note {
     padding: 18px 20px;
   }
 

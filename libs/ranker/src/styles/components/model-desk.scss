@@ -1019,9 +1019,6 @@ mat-icon.desk-gloves {
       text-overflow: ellipsis;
     }
 
-    td.wallet-paid small {
-      white-space: normal;
-    }
   }
 
   // (the sport's header with its sort arrow)
@@ -1061,10 +1058,6 @@ mat-icon.desk-gloves {
     width: 68px;
   }
 
-  // (no sorting there: the sport's header without an arrow)
-  .wallet-bets .desk-c-sport {
-    width: 58px;
-  }
 }
 
 // (By Confidence: each band's name in its color, the Book's; the total under a firmer line)

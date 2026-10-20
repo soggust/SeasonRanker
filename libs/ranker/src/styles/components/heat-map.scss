@@ -53,10 +53,6 @@ $hm-rim: #ff7a1a;
   gap: 6px;
 }
 
-.hm-visually-hidden {
-  @include v.visually-hidden;
-}
-
 // (the season: the sport's dropdown, sized for the bar as the compare view's arcs dropdown is)
 // (in the grid's year dropdown lettering: capitals, spaced, a soft shadow; room after it before the split)
 .hm-season-select {
