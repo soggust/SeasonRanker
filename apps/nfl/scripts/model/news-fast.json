@@ -1,13 +1,13 @@
 {
  "sport": "nfl",
  "cursor": {
-  "adamscheftermirror.bsky.social": "2026-10-20T02:12:17.767Z",
+  "adamscheftermirror.bsky.social": "2026-10-20T03:32:12.186Z",
   "rapsheet.bsky.social": "2026-10-20T02:03:12.852Z",
   "nflnewsreposterbot.bsky.social": "2026-10-19T20:52:46.431Z",
-  "insidenflnews.bsky.social": "2026-10-20T03:24:14.875Z",
-  "nflnewsposter.bsky.social": "2026-10-20T03:23:44.622Z",
-  "rotoworld-fb.bsky.social": "2026-10-20T01:35:33.000Z",
-  "rotowirenfl.bsky.social": "2026-10-20T02:02:06.000Z"
+  "insidenflnews.bsky.social": "2026-10-20T03:48:59.767Z",
+  "nflnewsposter.bsky.social": "2026-10-20T03:37:10.630Z",
+  "rotoworld-fb.bsky.social": "2026-10-20T03:53:56.000Z",
+  "rotowirenfl.bsky.social": "2026-10-20T03:53:47.000Z"
  },
  "claims": [
   {
@@ -1530,6 +1530,71 @@
    "kind": "status",
    "confidence": 0.7,
    "text": "[Fowler] Bears OG Jonah Jackson has a hip flexor injury and is considered week-to-week, per source. Status for TNF in doubt but shouldn’t be long term. twitter.com/JFowlerESPN/..."
+  },
+  {
+   "id": "at://did:plc:mbr4badgf6yu56mquzackzew/app.bsky.feed.post/3mybpdlczp22y|mikeevans|out|status",
+   "at": "2026-10-20T03:35:40.130Z",
+   "seen": "2026-10-20T03:59:22.749Z",
+   "handle": "insidenflnews.bsky.social",
+   "post": "at://did:plc:mbr4badgf6yu56mquzackzew/app.bsky.feed.post/3mybpdlczp22y",
+   "player": "Mike Evans",
+   "team": "SF",
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.55,
+   "text": "Mike Evans’ Achilles is in tact but he will miss a little time, per Jennifer Lee Chan."
+  },
+  {
+   "id": "at://did:plc:fuqjc7x4gxvnwzksnlxwbe4x/app.bsky.feed.post/3mybpgbmsnkbn|mikeevans|out|status",
+   "at": "2026-10-20T03:37:10.630Z",
+   "seen": "2026-10-20T03:59:22.749Z",
+   "handle": "nflnewsposter.bsky.social",
+   "post": "at://did:plc:fuqjc7x4gxvnwzksnlxwbe4x/app.bsky.feed.post/3mybpgbmsnkbn",
+   "player": "Mike Evans",
+   "team": "SF",
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.55,
+   "text": "[Chan] Hearing 49ers WR Mike Evans’ Achilles is in tact but he will miss a little time. Potentially after the bye week if all things stay according to plan. twitter.com/jenniferleec..."
+  },
+  {
+   "id": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3mybpjbuj4k2p|mikeevans|out|status",
+   "at": "2026-10-20T03:38:51.000Z",
+   "seen": "2026-10-20T03:59:22.749Z",
+   "handle": "rotowirenfl.bsky.social",
+   "post": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3mybpjbuj4k2p",
+   "player": "Mike Evans",
+   "team": null,
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.5,
+   "text": "Mike Evans: Expected to miss some time \n\n https://www.rotowire.com/football/player/mike-evans-9253"
+  },
+  {
+   "id": "at://did:plc:mbr4badgf6yu56mquzackzew/app.bsky.feed.post/3mybpyje5vs2y|christiankirk|questionable|status",
+   "at": "2026-10-20T03:47:22.715Z",
+   "seen": "2026-10-20T03:59:22.749Z",
+   "handle": "insidenflnews.bsky.social",
+   "post": "at://did:plc:mbr4badgf6yu56mquzackzew/app.bsky.feed.post/3mybpyje5vs2y",
+   "player": "Christian Kirk",
+   "team": "SF",
+   "status": "questionable",
+   "kind": "status",
+   "confidence": 0.4,
+   "text": "Shanahan: Christian Kirk (calf) is a possibility to play Week 7."
+  },
+  {
+   "id": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3mybqeatrh62f|mikeevans|out|status",
+   "at": "2026-10-20T03:53:56.000Z",
+   "seen": "2026-10-20T03:59:22.749Z",
+   "handle": "rotoworld-fb.bsky.social",
+   "post": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3mybqeatrh62f",
+   "player": "Mike Evans",
+   "team": null,
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.5,
+   "text": "Report: Mike Evans' Achilles intact, to miss time"
   }
  ]
 }
