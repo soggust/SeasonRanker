@@ -460,7 +460,10 @@ async function loadHistory(r) {
   const upcoming = [];
   // (the last few days and the next two; and the day of any bet still open from before then, should the
   // runs ever have stopped a while)
-  const days = new Set(Array.from({ length: 7 }, (_, i) => ymd(new Date(now.getTime() + (i - 4) * DAY))));
+  // (ahead as far as the sport's widest window reaches (D55: the props' window opens when the Book posts them, the
+  // NFL's 96 hours), two days at least: every listed coming game's free ESPN lines on the board)
+  const ahead = Math.max(2, Math.ceil((reach(sport) + 6) / 24));
+  const days = new Set(Array.from({ length: 5 + ahead }, (_, i) => ymd(new Date(now.getTime() + (i - 4) * DAY))));
   // (the CHECKs not yet graded too: checks.mjs)
   const kept = readKept(r.files.ledger, { bets: [] });
   const open = [...kept.bets.filter((b) => b.status === 'open'), ...readChecks(r, kept).filter((c) => !c.checkResult)];
