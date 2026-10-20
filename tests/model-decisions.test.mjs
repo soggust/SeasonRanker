@@ -1341,3 +1341,77 @@ test('D65 MMA\'s Kelly bands earn their place: a LOVE or LOCK whose earlier woul
   const src = fs.readFileSync(path.join(import.meta.dirname, '../libs/ranker/scripts/model/replay-record.mjs'), 'utf8');
   assert.ok(src.includes("sport === 'mma' && REASONS?.placeTiers"));
 });
+
+test('D66 the news lag: a star newly out with his teammates\' lines unmoved tags their overs newsLag, the props asked again first, a live-only reason judged on its own record (no prior), the popover\'s "Star out" line', async () => {
+  const L = await import('../libs/ranker/scripts/model/news-lag.mjs');
+  const R = await import('../libs/ranker/scripts/model/reasons.mjs');
+  const { propAsk } = await import('../libs/ranker/scripts/model/timing.mjs');
+  const { TIERS } = await import('../libs/ranker/scripts/model/oddsapi.mjs');
+  const game = { id: 'g1', home: '1', away: '2', date: '2026-10-21T23:30:00Z' };
+  const row = (id, name, stat, line, over = -110, under = -110, team = '1') => ({ athlete: { id, name, team }, stat: { key: stat }, line, prices: { over, under } });
+  const board = [row('s', 'Star Guard', 'pts', 27.5), row('m', 'Mate One', 'pts', 14.5), row('b', 'Bench', 'pts', 6.5), row('o', 'Other Star', 'pts', 25.5, -110, -110, '2')];
+  // (the stars by the Book's own lines: the top two, or 17.5 points or more)
+  assert.deepEqual([...L.starsOf('nba', board, '1')].sort(), ['m', 's']);
+  const state = { games: {} };
+  const t0 = Date.parse('2026-10-21T12:00:00Z');
+  // (a run before the news: the stars kept, the lines then)
+  assert.deepEqual(L.lagUpdate(state, { sport: 'nba', game, board, injuries: new Map(), now: t0 }), []);
+  const inj = new Map([['1', [{ id: 's', name: 'Star Guard', status: 'Out', from: 'bluesky' }]]]);
+  // (the next run: newly out, not yet asked for: the props asked again ahead of the routine asks, at the top tier)
+  assert.deepEqual(L.lagPending(state, game, inj, []), ['s']);
+  assert.deepEqual(L.lagPending(state, game, inj, ['s']), []);
+  assert.equal(propAsk({ starOut: true, times: 2, max: 6, boardPriced: true, until: 9e6, refresh: true, sinceAsk: 9e7 }), 'newsLag');
+  assert.equal(propAsk({ starOut: true, times: 6, max: 6, until: 9e6 }), null);
+  assert.ok(TIERS.newsLag > TIERS.refresh && TIERS.newsLag >= TIERS.news);
+  const t1 = t0 + 10 * 6e4;
+  const outs = L.lagUpdate(state, { sport: 'nba', game, board, injuries: inj, now: t1 });
+  assert.equal(outs.length, 1);
+  assert.equal(outs[0].then['pts:m'][0], 14.5);
+  const x = { side: 'over', prop: board[1], projection: { vacF: 1.12, out: ['Star Guard'] } };
+  const tag = L.lagTag('nba', outs, x, { now: t1 + 5 * 6e4, board });
+  assert.equal(tag.player, 'Star Guard');
+  assert.equal(tag.min, 5);
+  assert.deepEqual(tag.then, { line: 14.5, odds: -110 });
+  // (no tag: the under; no vacancy to him; the line already moved; the star's own prop pulled (the NBA's); stale news)
+  assert.equal(L.lagTag('nba', outs, { ...x, side: 'under' }, { now: t1, board }), null);
+  assert.equal(L.lagTag('nba', outs, { ...x, projection: { vacF: 1, out: ['Star Guard'] } }, { now: t1, board }), null);
+  assert.equal(L.lagTag('nba', outs, { ...x, prop: { ...board[1], line: 15.5 } }, { now: t1, board }), null);
+  assert.equal(L.lagTag('nba', outs, { ...x, prop: { ...board[1], prices: { over: -135, under: 105 } } }, { now: t1, board }), null);
+  assert.equal(L.lagTag('nba', outs, x, { now: t1, board: board.filter((p) => p.athlete.id !== 's') }), null);
+  assert.equal(L.lagTag('nba', outs, x, { now: t1 + (L.LAG_FRESH_H + 1) * 36e5, board }), null);
+  assert.equal(L.lagTag('mlb', outs, x, { now: t1, board }), null);
+  // (a star already out the first run the desk saw the game: no price then, no tag)
+  const s2 = { games: {} };
+  const o2 = L.lagUpdate(s2, { sport: 'nba', game, board, injuries: inj, now: t1 });
+  assert.equal(L.lagTag('nba', o2, x, { now: t1, board }), null);
+  // (the reason: family news, prop only, live-only; the replay's file never speaks for it; no prior: unproven till
+  // its own graded bets clear D58's bar)
+  const ctx = R.contextOf({ sport: 'nba', market: 'prop', side: 'over', stat: 'pts', kelly: 0.05, newsLag: true });
+  const r = R.reasonsFor(ctx).find((y) => y.id === 'newsLag');
+  assert.equal(r.family, 'news');
+  assert.ok(R.LIVE_REASONS.includes('newsLag'));
+  assert.equal(R.reasonsFor(R.contextOf({ sport: 'nba', market: 'prop', side: 'over', stat: 'pts' })).some((y) => y.id === 'newsLag'), false);
+  const file = { markets: { prop: { newsLag: { on: true, strong: true, n: 999 } } }, place: { love: true, lock: true } };
+  assert.equal(R.liveTier(file, ctx).tier, 'medium');
+  assert.equal(R.liveVerdicts([], 'nba').size, 0);
+  const bet = (i, lag, won) => ({ sport: 'nba', market: 'prop', intent: 'edge', units: 1, odds: -110, status: won ? 'won' : 'lost', start: new Date(Date.parse('2025-11-01T00:00:00Z') + i * 864e5 * (i % 2 ? 1 : 200)).toISOString(), ...(lag ? { newsLag: { player: 'S' } } : {}) });
+  const few = Array.from({ length: 20 }, (_, i) => bet(i, true, true));
+  const v = R.liveVerdicts([...few, ...Array.from({ length: 100 }, (_, i) => bet(i, false, i % 2))], 'nba');
+  assert.equal(v.get('prop').get('newsLag').on, false);
+  // (the popover's line)
+  assert.equal(L.starOutText({ player: 'Star Guard', first: new Date(t1).toISOString() }, t1 + 12 * 6e4), 'Star out: Star Guard (news 12 min ago)');
+  const rows = fs.readFileSync(path.join(MODEL, '../../src/engine/book/book-rows.ts'), 'utf8');
+  assert.ok(rows.includes('Star out: ${lag.player}') && rows.includes('(news ${min} min ago)'));
+  const page = fs.readFileSync(path.join(MODEL, '../../src/engine/book/book-page.component.ts'), 'utf8');
+  assert.ok(page.includes('starOutText(r.lag)'));
+  // (the review: t_news, t_bet, the Book's move after the bet from the price log, the delta; Pinnacle's props not logged)
+  const b = { id: 'x', event: 'g1', propType: 'pts', athlete: 'm', line: 14.5, odds: -110, otherOdds: -110, placedAt: new Date(t1 + 5 * 6e4).toISOString(), newsLag: { player: 'Star Guard', first: new Date(t1).toISOString() } };
+  const rv = L.lagReview(b, [[Math.floor((t1 + 2 * 6e4) / 1000), 'g1', 'p:pts:m', 16.5, -110, -110, 'e'], [Math.floor((t1 + 40 * 6e4) / 1000), 'g1', 'p:pts:m', 16.5, -110, -110, 'e']]);
+  assert.equal(rv.latencyMin, 5);
+  assert.equal(rv.dkAfterMin, 35);
+  assert.equal(rv.delta, '+2 line');
+  assert.equal(rv.pinMove, null);
+  // (live: the run tags the bet and the tier reads the live verdicts)
+  const run = fs.readFileSync(path.join(MODEL, 'run.mjs'), 'utf8');
+  assert.ok(run.includes('newsLag: !!bet.newsLag') && run.includes('{ live: r.liveReasons ?? null }') && run.includes("why === 'newsLag' && boardPriced"));
+});

@@ -122,9 +122,11 @@ export function lostAsk({ times, dk = [], markets = null, published = 0, boardPr
 // late price is the one worth betting; held), and 'refresh' (mid-window, the last ask REFRESH_H old or more, only while
 // the month projects under its target: refresh). Each spends its tier's share of the day's allowance (oddsapi.mjs TIERS)
 export const REFRESH_H = 6;
-export function propAsk({ times, max, owed = false, boardPriced = false, nearAsked = false, until, open = 0, outsChanged = false, held = 0, lateAsked = false, last = false, sinceAsk = 0, refresh = false }) {
+export function propAsk({ starOut = false, times, max, owed = false, boardPriced = false, nearAsked = false, until, open = 0, outsChanged = false, held = 0, lateAsked = false, last = false, sinceAsk = 0, refresh = false }) {
   if (times >= max) return null;
   if (times === 0) return 'first';
+  // (D66: a star newly Out or Doubtful: his teammates' lines lag the news, so asked again ahead of the rest)
+  if (starOut) return 'newsLag';
   if (owed && !boardPriced) return 'owed';
   if (!boardPriced && outsChanged) return 'news';
   if (!boardPriced && last && !lateAsked && held > 0) return 'late';

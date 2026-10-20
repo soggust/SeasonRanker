@@ -21,6 +21,16 @@ export type BetGame = { week: number; date: string; kickoff?: string | null; mat
 // lists) gets a minimal card by it (SPORT.stubPlayer). Not a prop or a fight, or no player on it: none
 // (player-link.ts playerCardPath)
 type CardRow = { sport: string; betType: BetKind; player?: string | null; athleteId?: string | number | null };
+// The news lag's tag on a pick (DECISIONS.md D66, news-lag.mjs): the star ruled out, when the desk first saw it
+export type NewsLag = { player: string; first?: string | null; min?: number | null };
+// The popover's line for it, under "Why the Bot is confident": "Star out: Name (news 12 min ago)"
+export function starOutText(lag: NewsLag | null | undefined, now = Date.now()): string | null {
+  if (!lag?.player) return null;
+  const t = lag.first ? Date.parse(lag.first) : NaN;
+  const min = Number.isFinite(t) ? Math.max(0, Math.round((now - t) / 60000)) : lag.min;
+  return `Star out: ${lag.player}${typeof min === 'number' && Number.isFinite(min) ? ` (news ${min} min ago)` : ''}`;
+}
+
 export function playerCardHref(r: CardRow): string | null {
   const ref = playerRefOf(r);
   return ref ? playerCardPath(ref) : null;
@@ -61,6 +71,8 @@ export interface BetRow {
   // the 2% floor, and those reasons with their records (the popover lists them))
   tier?: Confidence | null;
   reasons?: string[];
+  // (the news lag's tag (picks.json lag, DECISIONS.md D66): the star out and when the desk first saw the news)
+  lag?: NewsLag | null;
   // (its side, and a prop's player, his ESPN id and his team's: its circle and its color)
   side?: string | null;
   player?: string | null;
@@ -197,6 +209,7 @@ export interface Pick {
   // (the reason tier (D58): the band its proven reasons give it before the Kelly floor and the caps; the reasons in words)
   tier?: Confidence | null;
   reasons?: string[];
+  lag?: NewsLag | null;
   // (when the Bot placed it: files that don't carry it, none)
   placedAt?: string | null;
   kind: BetKind;
@@ -312,6 +325,7 @@ export function rowOf(sport: string, p: Pick, check: boolean): BetRow {
     ...(p.practice ? { practice: true } : {}),
     ...(isTier(p.tier) ? { tier: p.tier } : {}),
     ...(Array.isArray(p.reasons) && p.reasons.length ? { reasons: p.reasons.slice(0, 4) } : {}),
+    ...(p.lag?.player ? { lag: p.lag } : {}),
     ...(p.cap === 'medium' || p.cap === 'high' ? { cap: p.cap } : {}),
     id: -1,
     key: pickKey(sport, p.matchup, p.kind, p.pick),

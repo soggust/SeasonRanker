@@ -56,6 +56,8 @@ export interface BetWhyRow {
   // the reasons in words, with their records)
   tier?: Confidence | null;
   reasons?: string[];
+  // (the news lag's tag (picks.json lag, D66): the popover's "Star out" line)
+  lag?: { player: string; first?: string | null; min?: number | null } | null;
 }
 
 // One ingredient: what it added to the score, its bar against the largest, its hover

@@ -79,7 +79,7 @@ export const AHEAD_DAYS = 3;
 // first asks (props soon after their window opens) come before the asks on news or owed (bets taken back), those
 // before the late ones (the last chance, where the stat's line moves by the close: D42's lineup risk) and the near
 // ones (the close's line for the open bets), and the optional refreshes last)
-export const TIERS = { first: 1, news: 0.9, owed: 0.9, late: 0.8, near: 0.8, refresh: 0.6 };
+export const TIERS = { first: 1, newsLag: 1, news: 0.9, owed: 0.9, late: 0.8, near: 0.8, refresh: 0.6 };
 // (the tally mirrored where the desk commits (GitHub only: a local run's calls are that machine's), so a lost cache
 // can't reset the month: read back when the cache has no cycle, or a smaller tally of the same cycle)
 export const SPEND_FILE = path.resolve(import.meta.dirname, '../../../../apps/nfl/scripts/model/odds-spend.json');

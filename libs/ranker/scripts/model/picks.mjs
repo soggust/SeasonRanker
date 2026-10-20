@@ -461,6 +461,8 @@ export function buildPicks(sport, ledger, trust, games, now, extra = {}) {
       ...(!check && b.conf ? { conf: { pc: b.conf.pc, q: b.conf.q, cap: b.conf.cap ?? null } } : {}),
       // (the reason tier (D58): the band the Bot's proven reasons give it before the Kelly floor and the rules' caps,
       // and those reasons with their records, the popover's list)
+      // (the news lag's tag (D66): the star out and when the desk first saw it; the popover's "Star out" line)
+      ...(!check && b.newsLag?.player ? { lag: { player: b.newsLag.player, first: b.newsLag.first ?? null, min: b.newsLag.min ?? null } } : {}),
       ...(!check && tierOn(b) ? { tier: b.conf.tier, ...(Array.isArray(b.conf.reasons) && b.conf.reasons.length ? { reasons: b.conf.reasons.slice(0, 4) } : {}) } : {}),
       kind: KIND[b.market] ?? 'player',
       market: b.market === 'prop' ? b.statLabel : LABEL[b.market],

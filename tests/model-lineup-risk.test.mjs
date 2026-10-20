@@ -103,7 +103,8 @@ test('D42 the snapshot prices a suggestion, never a bet: rows marked, a moved li
   // early bet carries its hours and survival)
   const run = src('run.mjs');
   assert.ok(/if \(x\.prop\.snapshot\) \{\s*run\.snapshotHeld = \(run\.snapshotHeld \?\? 0\) \+ 1;\s*continue;/.test(run));
-  assert.ok(/const defer = why === 'first' && phase !== 'last' && !owed && !!u\.lines\.oddsEvent && !DRY && !r\.propsSuggestOnly && \(boardPriced \|\| \(snap\?\.size \?\? 0\) > 0\)/.test(run));
+  // (D66: the news lag's re-ask deferred the same way where the board has its own prices)
+  assert.ok(/const defer = \(why === 'first' \|\| \(why === 'newsLag' && boardPriced\)\) && phase !== 'last' && !owed && !!u\.lines\.oddsEvent && !DRY && !r\.propsSuggestOnly && \(boardPriced \|\| \(snap\?\.size \?\? 0\) > 0\)/.test(run));
   assert.ok(/const want = bets\.some\(\(x\) => x\.priced && !x\.guard\?\.skip && riskOf\(game, x, phase\)\.ev > 0\);\s*if \(want && \(await askNow\(\)\)\)/.test(run));
   assert.ok(/if \(!\(rk\.ev > 0\)\) \{\s*run\.heldRisk = \(run\.heldRisk \?\? 0\) \+ 1;\s*continue;/.test(run));
   assert.ok(/\.\.\.\(x\.early \? \{ early: x\.early \} : \{\}\)/.test(run));

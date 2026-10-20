@@ -83,6 +83,9 @@ export const REASONS = [
   { id: 'openGap', family: 'timing', label: "the Book's opening price past the sharp book's", markets: 'lines', test: (c) => c.early && c.pin && fin(c.gap) && c.gap > 0 },
   { id: 'cleanOpen', family: 'timing', label: 'bet early, at a clean open', markets: 'all', test: (c) => c.early },
   { id: 'sd1', family: 'proj', label: 'the projection a full SD past the line', markets: ['prop'], test: (c) => fin(c.sdEdge) && c.sdEdge >= 1 },
+  // (D66: a star newly ruled out while the Book's lines on his teammates haven't moved: a live-only reason (the replay
+  // can't time the news), judged on the live ledger's own tagged bets, the same bar as every reason: liveVerdicts)
+  { id: 'newsLag', family: 'news', label: "a star ruled out, his teammates' lines not moved yet", markets: ['prop'], sports: ['nba', 'nfl', 'nhl'], live: true, test: (c) => !!c.newsLag },
   { id: 'kelly2', family: 'size', label: 'a Kelly score of 2% or more', markets: 'all', test: (c) => fin(c.kelly) && c.kelly >= 0.02 },
   { id: 'kelly5', family: 'size', label: 'a Kelly score of 5% or more at a 55% chance', markets: 'all', test: (c) => fin(c.kelly) && c.kelly >= 0.05 && fin(c.pS) && c.pS >= 0.55 },
 ];
@@ -94,7 +97,7 @@ const SIDE_WORD = { fav: 'favorites', dog: 'underdogs', over: 'overs', under: 'u
 // early (placed EARLY at a clean open (the replay) or 6 hours or more before the start (the live desk)), pin (the
 // fair is the sharp book's), sched (the game's rest: desk.mjs scheduleRest's { rest, b2b } [home, away]), sdEdge (a
 // prop's projection past the line on its side, in SDs) }
-export function contextOf({ sport, market, side, stat = null, fS = null, pS = null, kelly = null, odds = null, early = false, pin = false, sched = null, sdEdge = null }) {
+export function contextOf({ sport, market, side, stat = null, fS = null, pS = null, kelly = null, odds = null, early = false, pin = false, sched = null, sdEdge = null, newsLag = false }) {
   const i = side === 'home' ? 0 : side === 'away' ? 1 : -1;
   const tr = (k, j) => (sched?.trav && Array.isArray(sched.trav[k]) && fin(sched.trav[k][j]) ? sched.trav[k][j] : null);
   const at = (j) => (sched && Array.isArray(sched.rest) && j >= 0 ? { rest: sched.rest[j], b2b: !!sched.b2b?.[j], miles: tr('miles', j), tz: tr('tz', j), climb: tr('climb', j) } : null);
@@ -102,7 +105,7 @@ export function contextOf({ sport, market, side, stat = null, fS = null, pS = nu
   const me = at(i);
   const op = i >= 0 ? at(1 - i) : null;
   const fatigue = me && op && sched?.trav ? fatigueOf(op) - fatigueOf(me) : null;
-  return { sport, market, side, stat, fS, pS, kelly, odds, early: !!early, pin: !!pin, me, op, gap, sdEdge, fatigue };
+  return { sport, market, side, stat, fS, pS, kelly, odds, early: !!early, pin: !!pin, me, op, gap, sdEdge, fatigue, newsLag: !!newsLag };
 }
 // The stacked fatigue index of a side (D62): a back-to-back 1, a thousand miles since its last game 1, a time zone
 // moved east a half, a thousand meters climbed 1 (the context's own travel facts; unknown parts 0)
@@ -378,13 +381,47 @@ export function readReasons(sport, root = ROOT) {
 
 // The live desk's read of a bet: its reasons, the file's verdicts on them, its tier held to the place: { tier, raw,
 // proven: [{ id, label, text, n, roi, seasons }], units (its stake held to the tier's cap) }; null without a file
-export function liveTier(file, ctx, { units = null } = {}) {
+export function liveTier(file, ctx, { units = null, live = null } = {}) {
   if (!file?.markets) return null;
   const ids = reasonsFor(ctx).map((r) => r.id);
-  const v = file.markets[ctx.market] ?? {};
+  // (a live-only reason's verdict from the live ledger's record alone (liveVerdicts), never the replay's)
+  const v = { ...(file.markets[ctx.market] ?? {}) };
+  for (const id of LIVE_REASONS) delete v[id];
+  for (const [id, x] of live?.get?.(ctx.market) ?? []) if (LIVE_REASONS.includes(id)) v[id] = x;
   const t = tierOf(ids, v, ctx.kelly);
   const band = placed(t.tier, file.place);
   return { tier: band, raw: t.tier, reasons: ids, proven: t.proven.map((p) => ({ id: p.id, label: p.label, text: reasonText(ctx.sport, ctx.market, p), n: p.n, roi: p.roi, seasons: p.seasons })), ...(fin(units) ? { units: tierUnits(units, band) } : {}) };
+}
+
+// The live-only reasons (D66): the replay can't see them, so their verdicts come from the live ledger's graded bets
+export const LIVE_REASONS = REASONS.filter((r) => r.live).map((r) => r.id);
+// (a sport's season by a game's start: the NBA's and the NHL's from August, the NFL's from March, MLB's the year)
+export const seasonOfStart = (sport, start) => {
+  const d = new Date(start);
+  const y = d.getUTCFullYear();
+  const m = d.getUTCMonth() + 1;
+  return sport === 'nba' || sport === 'nhl' ? (m >= 8 ? y : y - 1) : sport === 'nfl' ? (m >= 3 ? y : y - 1) : y;
+};
+// The live-only reasons' verdicts from the live ledger (every graded, staked edge bet of the sport, flat 1u at its
+// price, its tag on the bet; beat-the-close from its CLV): the walk's final verdicts on the bets graded by now, so a
+// live reason is judged on its own record at D58's bar (R_MIN picks, Z_LOVE SEs over the rest of its market, most
+// seasons, the close) with no prior. Map(market -> Map(id -> verdict)), the live ids alone
+export function liveVerdicts(bets, sport, now = Date.now()) {
+  const picks = [];
+  for (const b of bets ?? []) {
+    if (b.sport !== sport || b.intent !== 'edge' || b.void || !(b.units > 0) || !['won', 'lost', 'push'].includes(b.status)) continue;
+    const t = Date.parse(b.gradedAt ?? b.start);
+    if (!fin(t) || t > now || !fin(b.odds)) continue;
+    const profit = b.status === 'won' ? dec(b.odds) - 1 : b.status === 'lost' ? -1 : 0;
+    const beat = b.clv && fin(b.clv.prob) ? (b.clv.prob > 0 ? 1 : 0) : null;
+    picks.push({ t, season: seasonOfStart(sport, b.start), market: b.market, reasons: b.newsLag ? ['newsLag'] : [], profit, beat });
+  }
+  const out = new Map();
+  for (const [market, m] of walkReasons(picks).final) {
+    const keep = new Map([...m].filter(([id]) => LIVE_REASONS.includes(id)));
+    if (keep.size) out.set(market, keep);
+  }
+  return out;
 }
 
 export const bandRank = (b) => RANK[b] ?? 0;

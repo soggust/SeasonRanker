@@ -19,7 +19,7 @@ import { insteadText } from '../player-card/analysis';
 import { TickerSide, TickerTarget, americanOdds, compactRecord, recordTip, headshot, leagueLogo, tickerAria, tickerSide, tickerTarget } from './bet-format';
 import { GameViewService } from '../game-view/game-view.service';
 import { BetWhy, BetWhyRow, Confidence, PRACTICE_UNITS, PriceAt, WhatIfBase, betScoreText, betWhy, clearedKellyOf, edgeLine, flipLine, priceAt, signedPoints, stepPrice, whatIfCaption, whatIfOf } from './bet-why';
-import { BET_KINDS, BandTally, BetKind, BetRow, ByLevel, GameInfo, Picks, bookRows, dropSportRows, fileRows, mergeSportRows, playerCardHref, playerRefOf, rowClickToggles, sportRows, sumRecords } from './book-rows';
+import { BET_KINDS, BandTally, BetKind, BetRow, ByLevel, GameInfo, Picks, bookRows, dropSportRows, fileRows, mergeSportRows, playerCardHref, playerRefOf, rowClickToggles, sportRows, starOutText, sumRecords } from './book-rows';
 // (the rows' types, for the page's other parts: book-rows.ts)
 export { BET_KINDS, BetKind, BetRow, CheckResearch } from './book-rows';
 import { PopoverAt, phoneSheet, popoverAt } from '@ranker/core/breakdown';
@@ -1048,7 +1048,8 @@ export class BookPageComponent implements OnInit, OnDestroy {
       book: m?.book ?? null,
       sentence,
       reason: pass && r.reason ? (r.strength === 'fade' ? insteadText(r.pick) : r.reason) : null,
-      reasons: !pass && Array.isArray(r.reasons) ? r.reasons : [],
+      // (the news lag's "Star out" line first where the pick carries the tag (D66), then its proven reasons)
+      reasons: pass ? [] : [starOutText(r.lag), ...(Array.isArray(r.reasons) ? r.reasons : [])].filter((x): x is string => !!x),
     };
   }
 

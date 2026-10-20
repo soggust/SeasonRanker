@@ -131,7 +131,8 @@ import { BOOK, GAME_CAP, LEAGUES, MODEL_EPOCH, PROP_CAPS, TIMING } from './leagu
 import { CAL_CAP, CAL_STEP, calibText, fitCalib } from './calib.mjs';
 import { anchorText, readAnchor } from './anchor.mjs';
 import { loadModel as readConfidence, qualityOf, unitsOf } from './confidence.mjs';
-import { contextOf as reasonContext, liveTier, readReasons, tierUnits } from './reasons.mjs';
+import { contextOf as reasonContext, liveTier, liveVerdicts, readReasons, tierUnits } from './reasons.mjs';
+import { LAG_SPORTS, lagFile, lagPending, lagPrune, lagTag, lagUpdate, readLag } from './news-lag.mjs';
 import { ledgerRisk, readLineupRisk, riskAt, riskChance, riskText } from './lineup-risk.mjs';
 import { morningPrices, withSnapshot } from './suggest.mjs';
 import { MAX_LAST, OUT_STATUS, REPRICE_BY, cadenceOf, inputChanges, inputsOf, lastChanceOf, lineupNow, lostAsk, newsMissing, phaseOf, propAsk, putInactives, reach } from './timing.mjs';
@@ -1382,6 +1383,8 @@ function refitCalib(r) {
   // (the reason tiers (reasons.mjs, DECISIONS.md D58): each market's proven reasons and the tiers' place, read from
   // the committed file the gate records on the replayed record (reasons.json), never fit here)
   r.reasons = readReasons(sport, ROOT);
+  // (the live-only reasons' verdicts (D66: the news lag) from the live ledger's own graded bets, the same bar)
+  r.liveReasons = liveVerdicts(r.ledger?.bets ?? [], sport);
   if (r.reasons) {
     const on = Object.entries(r.reasons.markets ?? {}).flatMap(([m, rs]) => Object.entries(rs).filter(([, v]) => v.on).map(([id, v]) => `${m} ${id}${v.strong ? ' (strong)' : ''}`));
     console.log(`${sport}: the reason tiers: LOVE ${r.reasons.place?.love ? 'shown' : 'held'}, LOCK ${r.reasons.place?.lock ? 'shown' : 'held'}; proven: ${on.length ? on.join(', ') : 'none'}`);
@@ -2439,7 +2442,9 @@ async function betProps(r) {
       const outsNow = outsKey(r.inputs?.get(game.id));
       const outsChanged = times > 0 && outsNow !== null && asked[`${game.id}:outs`] !== undefined && asked[`${game.id}:outs`] !== outsNow;
       const sinceAsk = asked[`${game.id}:at`] ? r.now.getTime() - Date.parse(asked[`${game.id}:at`]) : 0;
-      const why = propAsk({ times, max: PROP_ASKS, owed, boardPriced, nearAsked: !!asked[`${game.id}:near`], until, open: open.length, outsChanged, held: asked[`${game.id}:held`] ?? 0, lateAsked: !!asked[`${game.id}:late`], last: phase === 'last', sinceAsk, refresh: (r.propsRefresh ??= refreshOn()) });
+      // (D66: a star newly Out or Doubtful on either report since the game's last ask: its props asked again first)
+      const lagNew = LAG_SPORTS.has(sport) ? lagPending((r.lagState ??= readLag(sport)), game, r.live.get(game.id)?.injuries, asked[`${game.id}:lag`]) : [];
+      const why = propAsk({ starOut: lagNew.length > 0, times, max: PROP_ASKS, owed, boardPriced, nearAsked: !!asked[`${game.id}:near`], until, open: open.length, outsChanged, held: asked[`${game.id}:held`] ?? 0, lateAsked: !!asked[`${game.id}:late`], last: phase === 'last', sinceAsk, refresh: (r.propsRefresh ??= refreshOn()) });
       // (an ask that found none of the Book's props posted yet (free: an empty answer costs nothing) isn't counted; it's
       // tried again EMPTY_RETRY later, so the first ask lands soon after the Book posts them)
       const emptyWait = why === 'first' && asked[`${game.id}:empty`] && r.now.getTime() - Date.parse(asked[`${game.id}:empty`]) < EMPTY_RETRY;
@@ -2457,7 +2462,7 @@ async function betProps(r) {
       // suggestions off (the Book's board, or the snapshot) and the last chance not yet here, the game's props are
       // priced first; the ask comes only where a row's surviving lean clears the free price (askNow below), else the
       // run shows the suggestions and spends nothing. An owed ask, the near one and the last chance ask as before)
-      const defer = why === 'first' && phase !== 'last' && !owed && !!u.lines.oddsEvent && !DRY && !r.propsSuggestOnly && (boardPriced || (snap?.size ?? 0) > 0);
+      const defer = (why === 'first' || (why === 'newsLag' && boardPriced)) && phase !== 'last' && !owed && !!u.lines.oddsEvent && !DRY && !r.propsSuggestOnly && (boardPriced || (snap?.size ?? 0) > 0);
       const askNow = async () => {
         // (the other books asked only for the markets the book returned on this game's last ask (:dk), so they
         // add none: props.mjs apiProps, oddsapi.mjs propAsks; their consensus the data's, never priced off)
@@ -2478,6 +2483,7 @@ async function betProps(r) {
           (run.asks ??= {})[why ?? 'first'] = (run.asks[why ?? 'first'] ?? 0) + 1;
           asked[`${game.id}:at`] = r.now.toISOString();
           if (outsNow !== null) asked[`${game.id}:outs`] = outsNow;
+          if (lagNew.length) asked[`${game.id}:lag`] = [...new Set([...(asked[`${game.id}:lag`] ?? []), ...lagNew])];
           delete asked[`${game.id}:empty`];
           delete asked[`${game.id}:owed`];
           write(PROPS_ASKED, asked);
@@ -2546,6 +2552,18 @@ async function betProps(r) {
           ({ priced, bets } = priceNow());
           run.askedToBet = (run.askedToBet ?? 0) + 1;
         } else run.deferred = (run.deferred ?? 0) + 1;
+      }
+      // (the news lag (D66, news-lag.mjs): a star's first Out or Doubtful kept with his teammates' lines from the run
+      // before; a teammate's over his absence feeds, its line not moved since, carries the newsLag tag: a reason D58's
+      // tier judges on its own live record, never a chance or a stake)
+      if (LAG_SPORTS.has(sport)) {
+        const outs = lagUpdate((r.lagState ??= readLag(sport)), { sport, game, board: board_, injuries: r.live.get(game.id)?.injuries, now: r.now.getTime() });
+        for (const x of new Set([...priced, ...bets])) {
+          const tag = lagTag(sport, outs, x, { now: r.now.getTime(), board: board_ });
+          if (tag) x.newsLag = tag;
+        }
+        run.newsLag = (run.newsLag ?? 0) + priced.filter((x) => x.newsLag).length;
+        if (!DRY) write(lagFile(sport), lagPrune(r.lagState, r.now.getTime()));
       }
       // (the suggestions (D42): each priced row's side with an edge at the latest known price, at the surviving lean
       // before the news is in; on the board (board.mjs sug))
@@ -2961,8 +2979,8 @@ function withTier(r, bet, x = {}) {
   const sdEdge = bet.market === 'prop' && mu !== null && sd > 0 && Number.isFinite(bet.line) ? ((bet.side === 'over' ? 1 : -1) * (mu - bet.line)) / sd : null;
   let lt = null;
   try {
-    const ctx = reasonContext({ sport: bet.sport, market: bet.market, side: bet.side, stat: bet.propType ?? null, fS: bet.fair, pS: bet.p, kelly: stakeKelly(bet.odds, bet.p), odds: bet.odds, early: Number.isFinite(t) && (t - at) / 36e5 >= EARLY_HOURS, pin: bet.fairFrom === 'pinnacle', sched: x.sched ?? null, sdEdge });
-    lt = liveTier(file, ctx);
+    const ctx = reasonContext({ sport: bet.sport, market: bet.market, side: bet.side, stat: bet.propType ?? null, fS: bet.fair, pS: bet.p, kelly: stakeKelly(bet.odds, bet.p), odds: bet.odds, early: Number.isFinite(t) && (t - at) / 36e5 >= EARLY_HOURS, pin: bet.fairFrom === 'pinnacle', sched: x.sched ?? null, sdEdge, newsLag: !!bet.newsLag });
+    lt = liveTier(file, ctx, { live: r.liveReasons ?? null });
   } catch (err) {
     console.warn(`${r.sport}: the reason tiers failed on ${bet.id} (${err.message}): the bet as it is`);
     return bet;
@@ -3031,6 +3049,8 @@ function propBet(r, game, x, exp, { id, intent, units, trackUnits, tested }) {
     projection: x.projection,
     // (an early bet (D42): the hours before the start it was placed, the survival its lean was held to, the full lean)
     ...(x.early ? { early: x.early } : {}),
+    // (the news lag's tag (D66): the star out, when the desk first saw it, the teammate's price then)
+    ...(x.newsLag ? { newsLag: x.newsLag } : {}),
     tested,
     context: { move: x.move, ...(x.guard && intent !== 'check' ? { guard: x.guard.why } : {}), ...(x.roleBet ? { roleBet: `${x.roleBet.key}: ${x.roleBet.why}; ${x.roleBet.gate}` } : {}), ...(noted.length ? { ownerNotes: noted } : {}) },
     status: 'open',
