@@ -1980,6 +1980,66 @@
     "seen": "2026-10-20T22:14:44.029Z",
     "own": "2026-10-20T22:06:00.000Z"
    }
+  },
+  "401909838|isaiahstewart|q": {
+   "game": "401909838",
+   "start": "2026-10-22T00:00Z",
+   "team": "29",
+   "name": "Isaiah Stewart",
+   "status": "q",
+   "athlete": "4432810",
+   "espn": {
+    "seen": "2026-10-20T22:16:44.417Z",
+    "own": "2026-10-20T22:13:00.000Z"
+   }
+  },
+  "401909840|calebmartin|out": {
+   "game": "401909840",
+   "start": "2026-10-22T00:30Z",
+   "team": "6",
+   "name": "Caleb Martin",
+   "status": "out",
+   "athlete": "3138160",
+   "espn": {
+    "seen": "2026-10-20T22:16:44.417Z",
+    "own": "2026-10-20T22:14:00.000Z"
+   }
+  },
+  "401909840|tarikbiberovic|out": {
+   "game": "401909840",
+   "start": "2026-10-22T00:30Z",
+   "team": "6",
+   "name": "Tarik Biberovic",
+   "status": "out",
+   "athlete": "5148538",
+   "espn": {
+    "seen": "2026-10-20T22:16:44.417Z",
+    "own": "2026-10-20T22:13:00.000Z"
+   }
+  },
+  "401909840|derecklively|out": {
+   "game": "401909840",
+   "start": "2026-10-22T00:30Z",
+   "team": "6",
+   "name": "Dereck Lively II",
+   "status": "out",
+   "athlete": "4683688",
+   "espn": {
+    "seen": "2026-10-20T22:16:44.417Z",
+    "own": "2026-10-20T22:10:00.000Z"
+   }
+  },
+  "401909840|santialdama|out": {
+   "game": "401909840",
+   "start": "2026-10-22T00:30Z",
+   "team": "6",
+   "name": "Santi Aldama",
+   "status": "out",
+   "athlete": "4593125",
+   "espn": {
+    "seen": "2026-10-20T22:16:44.417Z",
+    "own": "2026-10-20T22:09:00.000Z"
+   }
   }
  }
 }
