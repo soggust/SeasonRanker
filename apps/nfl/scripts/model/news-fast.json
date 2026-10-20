@@ -1,13 +1,13 @@
 {
  "sport": "nfl",
  "cursor": {
-  "adamscheftermirror.bsky.social": "2026-10-20T01:12:12.126Z",
-  "rapsheet.bsky.social": "2026-10-19T23:18:11.078Z",
+  "adamscheftermirror.bsky.social": "2026-10-20T02:12:17.767Z",
+  "rapsheet.bsky.social": "2026-10-20T02:03:12.852Z",
   "nflnewsreposterbot.bsky.social": "2026-10-19T20:52:46.431Z",
-  "insidenflnews.bsky.social": "2026-10-20T00:51:49.764Z",
-  "nflnewsposter.bsky.social": "2026-10-20T01:13:00.874Z",
-  "rotoworld-fb.bsky.social": "2026-10-20T00:55:21.000Z",
-  "rotowirenfl.bsky.social": "2026-10-20T00:58:07.000Z"
+  "insidenflnews.bsky.social": "2026-10-20T02:43:35.841Z",
+  "nflnewsposter.bsky.social": "2026-10-20T02:43:13.616Z",
+  "rotoworld-fb.bsky.social": "2026-10-20T01:35:33.000Z",
+  "rotowirenfl.bsky.social": "2026-10-20T02:02:06.000Z"
  },
  "claims": [
   {
@@ -1439,6 +1439,97 @@
    "kind": "status",
    "confidence": 0.97,
    "text": "Commanders officially ruled out WR Terry McLaurin due to a knee injury.\n\nOriginal post"
+  },
+  {
+   "id": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3mybj2atprj22|mikeevans|questionable|status",
+   "at": "2026-10-20T01:43:04.000Z",
+   "seen": "2026-10-20T02:43:44.619Z",
+   "handle": "rotowirenfl.bsky.social",
+   "post": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3mybj2atprj22",
+   "player": "Mike Evans",
+   "team": "SF",
+   "status": "questionable",
+   "kind": "status",
+   "confidence": 0.9,
+   "text": "Mike Evans: Questionable to return Monday \n\n https://www.rotowire.com/football/player/mike-evans-9253"
+  },
+  {
+   "id": "at://did:plc:qre6zxbmr3ixhdmgsgdretb5/app.bsky.feed.post/3mybjtibjas2w|mikeevans|questionable|status",
+   "at": "2026-10-20T01:57:11.243Z",
+   "seen": "2026-10-20T02:43:44.619Z",
+   "handle": "adamscheftermirror.bsky.social",
+   "post": "at://did:plc:qre6zxbmr3ixhdmgsgdretb5/app.bsky.feed.post/3mybjtibjas2w",
+   "player": "Mike Evans",
+   "team": "SF",
+   "status": "questionable",
+   "kind": "status",
+   "confidence": 0.9,
+   "text": "49ers say WR Mike Evans (achilles) is questionable to return tonight.\n\nOriginal post"
+  },
+  {
+   "id": "at://did:plc:mbr4badgf6yu56mquzackzew/app.bsky.feed.post/3mybjx3ak4s2v|mikeevans|out|status",
+   "at": "2026-10-20T01:59:11.911Z",
+   "seen": "2026-10-20T02:43:44.619Z",
+   "handle": "insidenflnews.bsky.social",
+   "post": "at://did:plc:mbr4badgf6yu56mquzackzew/app.bsky.feed.post/3mybjx3ak4s2v",
+   "player": "Mike Evans",
+   "team": "SF",
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.85,
+   "text": "Status alert: Mike Evans (Achilles) won't return Monday."
+  },
+  {
+   "id": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3mybk4bsaxg22|mikeevans|out|status",
+   "at": "2026-10-20T02:02:06.000Z",
+   "seen": "2026-10-20T02:43:44.619Z",
+   "handle": "rotowirenfl.bsky.social",
+   "post": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3mybk4bsaxg22",
+   "player": "Mike Evans",
+   "team": "SF",
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.8,
+   "text": "Mike Evans: Ruled out for remainder of MNF \n\n https://www.rotowire.com/football/player/mike-evans-9253"
+  },
+  {
+   "id": "at://did:plc:hlvr2omhnmvdmfnvmcuhyevz/app.bsky.feed.post/3mybk6azh3s2m|mikeevans|out|status",
+   "at": "2026-10-20T02:03:12.852Z",
+   "seen": "2026-10-20T02:43:44.619Z",
+   "handle": "rapsheet.bsky.social",
+   "post": "at://did:plc:hlvr2omhnmvdmfnvmcuhyevz/app.bsky.feed.post/3mybk6azh3s2m",
+   "player": "Mike Evans",
+   "team": "SF",
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.8,
+   "text": "49ers WR Mike Evans (Achilles) has been ruled out for rest of game."
+  },
+  {
+   "id": "at://did:plc:qre6zxbmr3ixhdmgsgdretb5/app.bsky.feed.post/3mybkois7oo2u|mikeevans|out|status",
+   "at": "2026-10-20T02:12:17.767Z",
+   "seen": "2026-10-20T02:43:44.619Z",
+   "handle": "adamscheftermirror.bsky.social",
+   "post": "at://did:plc:qre6zxbmr3ixhdmgsgdretb5/app.bsky.feed.post/3mybkois7oo2u",
+   "player": "Mike Evans",
+   "team": "SF",
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.8,
+   "text": "Mike Evans (achilles) is out for the remainder of the game.\n\nOriginal post"
+  },
+  {
+   "id": "at://did:plc:fuqjc7x4gxvnwzksnlxwbe4x/app.bsky.feed.post/3myblgqklys2t|jonahjackson|questionable|status",
+   "at": "2026-10-20T02:25:51.320Z",
+   "seen": "2026-10-20T02:43:44.619Z",
+   "handle": "nflnewsposter.bsky.social",
+   "post": "at://did:plc:fuqjc7x4gxvnwzksnlxwbe4x/app.bsky.feed.post/3myblgqklys2t",
+   "player": "Jonah Jackson",
+   "team": "CHI",
+   "status": "questionable",
+   "kind": "status",
+   "confidence": 0.7,
+   "text": "[Fowler] Bears OG Jonah Jackson has a hip flexor injury and is considered week-to-week, per source. Status for TNF in doubt but shouldn’t be long term. twitter.com/JFowlerESPN/..."
   }
  ]
 }
