@@ -314,6 +314,16 @@ export function replayRecord(V, sport, rows, { events = null, names = () => ({ h
       }
     }
     win = W.walkWindows(outcomes);
+    // (research only (D71): REPLAY_WINDOW_FORCE=h24 places every line segment by that policy, the walk's verdict aside,
+    // so the band lab can read the reasons' closing checks had the Bot bet that early; never set by a record)
+    const forced = process.env.REPLAY_WINDOW_FORCE;
+    if (forced && W.POLICIES.includes(forced)) win = { ...win, at: () => forced };
+    // (the band lab's dump (D70) carries the windows' outcomes too (D71), for reading each policy's paired evidence)
+    if (process.env.REPLAY_DUMP) {
+      try {
+        writeFileSync(path.join(process.env.REPLAY_DUMP, `${sport}-windows.json`), JSON.stringify(outcomes));
+      } catch {}
+    }
     flags.windows = { keys: intraBy.size, final: win.final, placed: {} };
   }
   for (const k of keys) {

@@ -977,6 +977,27 @@ Started 2026-10-18, after about 20 bettor changes in one day. The owner: "keep i
 - **Props lagging a game line's move (an NBA total or spread moving 1.5 or more between snapshots):** the props don't follow (a total's move: 27% moved with it by the next snapshot, 25% against, 48% flat; a spread's move runs against more often: the injury news D66 reads); taking the lagging side at the next snapshot −8.2% (2025, 2,710) and −8.0% (2026, 3,605), beating the fair close 5-6% of the time; the NFL's moves of 3 or more: 4 pairs in the history.
 - **Held:** no rule for any of the three (no edge past the vig that holds by season and at the fair close).
 
+### D71. The NFL's lines bet earlier: D63's windows read the deep history's dense NFL lines (2020 on), and the walk keeps the close (no hour earned)
+- **Date:** 2026-10-20 (the owner's approval to test: every NFL line in the replay was bet at the close (the archive's opens are 48 hours out, outside the 26-hour lines window), so none had a fair-close check and no NFL reason could earn a D70 band).
+- **Rule (`windows.mjs` `DENSE_SPORTS`, `DENSE_OFFSETS`, `DENSE_BOOKS`; `gate.mjs`):** for a version whose `windows.mjs` exports `DENSE_SPORTS` (the NFL), the gate reads D67's `intraday/dense/` lines (`deep-history.mjs readDeep`) beside D61's files as more kind-'i' candidates (`intradayLines`, the same nearest-snapshot reading, within 45 minutes) at 24, 12, 6, 3, 2 and 1 hours (inside `TIMING.nfl.lines` 26; the 48-hour snapshots stay research), DraftKings and Pinnacle only; an event's hour D61's files already have is D61's (`seenIntra`). Everything else is D63's: the same policies (the 2-hour snapshot a candidate under "not before 3h", no policy of its own), the same walk by market and side class (1.645 SEs over 60 games, D60's 52.5% on 30 checks and the guard), the same live hold (`windows.json`, `run.mjs heldNow`). `GATE_NO_DENSE=1` leaves them out. A version without the export (the champion before D71) reads D61's files alone, so the gate compares like with like.
+- **Research hooks (env only, never a record):** `REPLAY_DUMP` also writes `<sport>-windows.json` (the walk's outcomes: each game's flat result and fair-close check under every policy); `REPLAY_WINDOW_FORCE=<policy>` places every line segment by one policy so the band lab can read the reasons' closing checks had the Bot bet that early.
+- **Measured (the NFL, 5,286 line keys with snapshots, 2020-2026, was 1,989; every policy's pick against the close's on the same games):**
+
+| Segment | Bets at the close | Best hour, paired | Beat the fair close there |
+|---|---|---|---|
+| ml:fav | 42, −8.0u | 6h +0.2% (z 0.04) | 45% of 100 |
+| ml:dog | 316, −49.4u | 6h +0.4% (z 0.13) | 65% of 353 (EV +1.9%) |
+| spread:fav | 84, −4.7u | 12h +6.9% (z 1.47) | 36% of 106 |
+| spread:dog | 3, +1.0u | 24h (7 games) | 3 checks |
+| total:over | 231, +8.1u | 24h +1.6% (z 0.53) | 7% of 127 |
+| total:under | 54, −1.9u | 3h +1.4% (z 0.29) | 6% of 36 |
+
+  No segment clears the walk's bar in any month: every verdict is `legacy` (the close), the replay places every NFL line where it did, and the record ties (3,244 bets 1592-1642-10, −27.6u, the Book's own expectation −73.3u). Forced: every line at 24 hours −43.7u (3,904 bets, beat the fair close 44.3% of 837), at 6 hours −28.6u (3,752, 44.4% of 732): neither beats the close. The early moneyline dogs are D61's and D70's story again: they beat a fair close that overrates them 60-65% of the time at +1.6% to +2.0% and lose 13-17% flat.
+- **The bands (the band lab on the forced dumps, the shipped `clv-results`):** no NFL reason earns LOVE or LOCK at either hour. The closest: `seg:ml:dog:early` (433 checks at 24h, +1.6% raw, +1.3% shrunk, beat 60.5%, flat −16.9%; 350 at 6h, +2.0%, +1.5% shrunk, beat 65.1%, flat −12.8%), `openGap` moneylines (523, +1.2% shrunk, beat 60.4%, flat −14.5%) and `fatigue` moneylines (54, +0.8% shrunk, beat 68.5%, flat −30.8%): short of +2% shrunk, and the results guard (flat ROI ≥ 0) refuses them anyway. `clv-loose` would make 8 LOCKs at 6 hours, 1-7 −6.3u. So the NFL earns no band on the history, and earns live only as the desk's own earlier bets add closing checks (D70's live merge).
+- **Gate (D22):** SHIP, ties everywhere (no chance, projection, placement or stake moves). Not an epoch change (D4: nothing priced or placed moved). The NFL re-recorded (its `windows.json` now on the 2020-2026 evidence).
+- **Code:** `windows.mjs`, `gate.mjs` (the dense read, `windows` among the version's modules), `replay-record.mjs` (the windows' dump, `REPLAY_WINDOW_FORCE`). Tests: `tests/model-decisions.test.mjs` D71.
+- **Never:** a dense hour outside the lines window; the forced window in a record; the dense lines in the bar, the fits or the legs (D63's: the replay's placement alone).
+
 ## Loops
 
 Each loop below runs by itself. For each one: what it changes, how often, what it reads, and what it must never touch.

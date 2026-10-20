@@ -472,6 +472,24 @@
         </div>
       </card-panel>
     }
+
+    <!-- (Findings (the owner, 2026-10-20): what the research has learned, one line each, dated, by Shipped / Tested
+         and dropped / Watching; shut till opened, at the foot; from the shared findings.json (desk-math.ts findingsOf),
+         the chip's sport and the shared ones) -->
+    @if (findings.length) {
+      <card-panel class="tab-card group-support desk-wide desk-findings" label="Findings" icon="science" [open]="panelOpen('findings')" (toggled)="togglePanel('findings')">
+        <div class="group-body">
+          @for (g of findings; track g.group) {
+            <h4 class="desk-findings-head">{{ g.label }}</h4>
+            <ul class="desk-findings-list">
+              @for (f of g.entries; track $index) {
+                <li><span class="desk-findings-date">{{ f.date.slice(5) }}</span>@if (f.sport) {<span class="desk-findings-sport">{{ f.sport.toUpperCase() }}</span>}<span class="desk-findings-text">{{ f.text }}</span></li>
+              }
+            </ul>
+          }
+        </div>
+      </card-panel>
+    }
   }
   <!-- (the version on show, small and muted at the board's foot: its epoch, MODEL_EPOCH as the replay recorded it;
        each sport's on hover) -->

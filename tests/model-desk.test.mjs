@@ -559,10 +559,12 @@ test("the Algorithm tab (the owner, 2026-10-19): the time range and the chips on
       ["'In Play · ' + liveRisk.toFixed(1) + 'u'", 'live', true],
       ['Open Bets', 'open', true],
       ['Recently closed', 'closed', true],
+      // (the research's Findings at the foot, shut (the owner, 2026-10-20))
+      ['Findings', 'findings', true],
     ],
   );
   // (open from the start: the two breakdowns alone; a tap the other way, kept)
-  assert.deepEqual(['sport', 'confidence', 'open', 'live', 'closed'].map((k) => desk.deskPanelOpen(k)), [true, true, false, false, false]);
+  assert.deepEqual(['sport', 'confidence', 'open', 'live', 'closed', 'findings'].map((k) => desk.deskPanelOpen(k)), [true, true, false, false, false, false]);
   assert.deepEqual(['sport', 'open'].map((k) => desk.deskPanelOpen(k, new Set(['sport', 'open']))), [false, true]);
   // (the time range and the chips in one bar, before the board; the build after every panel, at the board's foot; no
   // commit, no note; no "Live since this version" line; every panel inside the board)

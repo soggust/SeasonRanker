@@ -6,7 +6,7 @@ import { matchupName } from './game-menu';
 import { BetGroup, SportGroup, TableSorts, betValue, byGame, gamesBySport } from './desk-columns';
 import { DESK_HELP } from './desk-help';
 import { BotHistory, HISTORY_RANGES, HistoryRange, HistoryRow, ReplayRecordFile, StagedReplayFile, beatText, beatTip, botHistoryOf, buildLabel, buildOf, emptyRow, isHistoryRange, recordText } from './replay-history';
-import { DeskPanel, ESPN_LEAGUES, SPORTS, deskPanelOpen, UNIT_WORDS, DeskEpoch, epochFor, epochShared, countNowOf, deskEpochOf, edgeColorOf, epochLabel, isTracked, meterOf, propState, provisional, sideTextOf, sideTitleOf, toWin } from './desk-math';
+import { DeskPanel, FindingsFile, findingsOf, ESPN_LEAGUES, SPORTS, deskPanelOpen, UNIT_WORDS, DeskEpoch, epochFor, epochShared, countNowOf, deskEpochOf, edgeColorOf, epochLabel, isTracked, meterOf, propState, provisional, sideTextOf, sideTitleOf, toWin } from './desk-math';
 import { Board, Meter, ModelBet, ModelState, Settled } from './desk-model';
 import { SummaryBox, athleteTeam, liveStat } from './live-props';
 import { pickTeamColor, splitPick } from './pick-style';
@@ -106,6 +106,9 @@ export class ModelDeskComponent implements OnInit, OnDestroy {
   view: 'live' | 'staged' = 'live';
   variant: string | null = null;
   private allLedgerBets: ModelBet[] = [];
+  // (the research's findings (desk-math.ts findingsOf): one shared file; the sport chip's own and the shared ones)
+  private findingsFile: FindingsFile | null = null;
+  findings: ReturnType<typeof findingsOf> = [];
   readonly recordText = recordText;
   // (Beat close: the share that beat the fair close from BEAT_MIN bets, the count and mean return on hover, D56)
   readonly beatText = beatText;
@@ -236,6 +239,7 @@ export class ModelDeskComponent implements OnInit, OnDestroy {
 
   async ngOnInit(): Promise<void> {
     // (every sport's files asked at once, not each sport's one after another)
+    const findings = getJson<FindingsFile>('/nfl/data/model/findings.json', { cache: 'no-cache' });
     const files = await Promise.all(
       SPORTS.map(async (sport) => {
         const [ledger, state, replay, staged] = await Promise.all([
@@ -249,6 +253,7 @@ export class ModelDeskComponent implements OnInit, OnDestroy {
       }),
     );
     this.allReplays = files.map((f) => f.replay);
+    this.findingsFile = await findings;
     this.allStaged = files.map((f) => f.staged);
     this.stagedNames = [...new Set(this.allStaged.flatMap((f) => f?.order ?? []))];
     this.variant = this.stagedNames[0] ?? null;
@@ -320,6 +325,7 @@ export class ModelDeskComponent implements OnInit, OnDestroy {
     this.states = this.sport ? this.allStates.filter((s) => s.sport === this.sport) : this.allStates;
     const h = botHistoryOf(this.replays(), this.allLedgerBets, this.sport, Object.fromEntries(this.allStates.map((s) => [s.sport, s.label])), { range: this.range });
     this.history = h;
+    this.findings = findingsOf(this.findingsFile, this.sport);
     const histBand = (label: string) => h.byBand.find((r) => r.label === label) ?? emptyRow(label);
     this.bandRows = [histBand('LOCK'), histBand('LOVE'), histBand('LIKE'), h.practice, histBand('PASS')];
     this.buildAt = buildOf(this.allReplays, this.sport, this.epoch ? ((this.sport ? epochFor(this.epoch, this.sport) : null) ?? epochShared(this.epoch)) : null).at;

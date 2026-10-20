@@ -1707,3 +1707,45 @@ mat-icon.desk-gloves {
 .desk-stage-pick option {
   color: #000;
 }
+
+// (Findings (2026-10-20): the research's one-line findings by group, dated; compact, the dates and sports muted)
+.desk-findings .group-body {
+  padding-bottom: v.$space-8;
+}
+
+.desk-findings-head {
+  color: v.$text-faint;
+  font-family: v.$font-heading;
+  font-size: v.$fs-12;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  margin: v.$space-8 0 v.$space-4;
+  text-transform: uppercase;
+}
+
+.desk-findings-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+
+  li {
+    display: flex;
+    font-family: v.$font-heading;
+    font-size: v.$fs-13;
+    font-weight: 500;
+    gap: v.$space-8;
+    line-height: 1.35;
+    padding: 2px 0;
+  }
+}
+
+.desk-findings-date,
+.desk-findings-sport {
+  color: v.$text-faint;
+  flex: none;
+  font-variant-numeric: tabular-nums;
+}
+
+.desk-findings-sport {
+  font-weight: 700;
+}

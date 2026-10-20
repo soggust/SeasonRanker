@@ -1,0 +1,18 @@
+{
+  "v": 1,
+  "about": "The Algorithm tab's Findings panel (admins only): what the research has learned, one line each. Each round appends entries; never edit the template. group: shipped | dropped | watching. sport: nfl | nba | nhl | mlb | mma, or null for every sport. ref: the DECISIONS.md entry.",
+  "entries": [
+    { "date": "2026-10-20", "group": "shipped", "sport": "mma", "ref": "D56, D59", "text": "MMA price swap fixed (mirrored opens repaired) and the favorite-longshot calibration on" },
+    { "date": "2026-10-20", "group": "shipped", "sport": "nba", "ref": "D69", "text": "Props priced on every season with prop odds: NBA record -10.1u to +29.3u" },
+    { "date": "2026-10-20", "group": "shipped", "sport": null, "ref": "D57", "text": "Practice picks are tracked only, never staked" },
+    { "date": "2026-10-20", "group": "shipped", "sport": null, "ref": "D70", "text": "Closing-line bands: LOVE/LOCK earned by beating the fair close with results that don't lose; the band lab stages rules first" },
+    { "date": "2026-10-20", "group": "watching", "sport": "nba", "ref": "D66", "text": "News lag: teammates' points overs +9.4% on 1,700 at 6h, but hindsight-picked; earning live only" },
+    { "date": "2026-10-20", "group": "watching", "sport": null, "ref": "D61", "text": "Timing: NBA/NHL line gaps worth +1-2% at 6h or more out, gone by 3h; no betting window earned yet" },
+    { "date": "2026-10-20", "group": "watching", "sport": null, "ref": "D70", "text": "CLV bands: none earned yet; closest NBA early moneyline dogs (+1.6% shrunk, beat 51%)" },
+    { "date": "2026-10-20", "group": "dropped", "sport": null, "ref": "Measured and held", "text": "Blowout props: the unders hit, but only win the vig back" },
+    { "date": "2026-10-20", "group": "dropped", "sport": "mlb", "ref": "Measured and held", "text": "MLB pitch caps: the Book already shades early-season starters" },
+    { "date": "2026-10-20", "group": "dropped", "sport": null, "ref": "Measured and held", "text": "Props lagging line moves: they don't lag; taking the lagging side lost 8%" },
+    { "date": "2026-10-19", "group": "dropped", "sport": null, "ref": "Measured and held", "text": "Last-result overreaction: the Book doesn't overreact once the Bot's own lean is in" },
+    { "date": "2026-10-20", "group": "dropped", "sport": "nfl", "ref": "D71", "text": "NFL lines bet earlier (24h to 1h, 2020-26): no hour beats the close; early dogs beat the fair close 60-65% but lose 13-17% flat" }
+  ]
+}

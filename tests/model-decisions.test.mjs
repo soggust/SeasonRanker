@@ -1510,3 +1510,46 @@ test("D70 the closing-line bands: Gemini's bars with the results guard shipped; 
   const decisions = fs.readFileSync(path.resolve('libs/ranker/scripts/model/DECISIONS.md'), 'utf8');
   assert.ok(decisions.includes('### D70.') && decisions.includes('### D69.'));
 });
+
+test('D71 the NFL lines bet earlier: the dense history (D67) read as the replay\'s intraday candidates inside the lines window, D61\'s hours first; the walk keeps the close until an hour earns it', async () => {
+  const W = await import('../libs/ranker/scripts/model/windows.mjs');
+  const { TIMING } = await import('../libs/ranker/scripts/model/leagues.mjs');
+  const { intradayLines } = await import('../libs/ranker/scripts/model/gate-history.mjs');
+  assert.deepEqual(W.DENSE_SPORTS, ['nfl']);
+  assert.deepEqual(W.DENSE_BOOKS, ['dk', 'pin']);
+  // (every dense hour inside the NFL's lines window: the 48-hour snapshots stay research)
+  for (const h of W.DENSE_OFFSETS.nfl) assert.ok(h <= TIMING.nfl.lines, `${h}h`);
+  assert.ok(!W.DENSE_OFFSETS.nfl.includes(48));
+  // (the policies unchanged: the 2-hour snapshot is a candidate under "not before 3h", not a policy of its own)
+  assert.deepEqual(W.POLICIES, ['legacy', 'h24', 'h12', 'h6', 'h3', 'h1']);
+  // (a dense snapshot's state read as D61's: the last change at or before the snapshot)
+  const start = Date.parse('2021-10-17T17:00:00Z');
+  const at = (h) => new Date(start - h * 36e5).toISOString();
+  const events = new Map([['e1', { t: new Date(start).toISOString() }]]);
+  const rows = new Map([['e1', [{ ts: Date.parse(at(48)), book: 'dk', market: 'h2h', line: null, a: -150, b: 130 }, { ts: Date.parse(at(2)), book: 'dk', market: 'h2h', line: null, a: -170, b: 145 }]]]);
+  const out = intradayLines(events, { rows, snaps: [at(48), at(24), at(2)] }, W.DENSE_OFFSETS.nfl);
+  assert.equal(out.find((l) => l.h === 24).a, -150);
+  assert.equal(out.find((l) => l.h === 2).a, -170);
+  // (the gate reads them for a version that exports DENSE_SPORTS (the champion before D71 reads D61's alone), D61's
+  // hours first; the research's forced window is env-only, never in a record)
+  const gate = fs.readFileSync(path.resolve('libs/ranker/scripts/model/gate.mjs'), 'utf8');
+  assert.ok(gate.includes('V.windows?.DENSE_SPORTS?.includes(sport)') && gate.includes('seenIntra.has('));
+  assert.ok(!gate.includes('REPLAY_WINDOW_FORCE'));
+  const decisions = fs.readFileSync(path.resolve('libs/ranker/scripts/model/DECISIONS.md'), 'utf8');
+  assert.ok(decisions.includes('### D71.'));
+});
+
+test('D71 the Algorithm tab\'s Findings: one shared file, one dated line an entry, grouped Shipped / Tested and dropped / Watching', () => {
+  const f = JSON.parse(fs.readFileSync(path.resolve('apps/nfl/src/StaticData/model/findings.json'), 'utf8'));
+  assert.ok(Array.isArray(f.entries) && f.entries.length > 0);
+  for (const e of f.entries) {
+    assert.match(e.date, /^\d{4}-\d{2}-\d{2}$/);
+    assert.ok(['shipped', 'dropped', 'watching'].includes(e.group), e.text);
+    assert.ok(e.sport == null || ['nfl', 'nba', 'nhl', 'mlb', 'mma'].includes(e.sport), e.text);
+    assert.ok(typeof e.text === 'string' && e.text.length > 0 && e.text.length <= 140 && !e.text.includes('\n'), e.text);
+  }
+  const html = fs.readFileSync(path.resolve('libs/ranker/src/engine/book/model-desk.component.html'), 'utf8');
+  assert.ok(html.includes('label="Findings"') && html.includes("panelOpen('findings')"));
+  const math = fs.readFileSync(path.resolve('libs/ranker/src/engine/book/desk-math.ts'), 'utf8');
+  assert.match(math, /DESK_PANELS_OPEN: readonly DeskPanel\[\] = \['sport', 'confidence'\]/);
+});

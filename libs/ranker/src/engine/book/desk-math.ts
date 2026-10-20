@@ -286,7 +286,33 @@ export function epochLabel(at: string): string {
 }
 
 // (the board's panels, open or shut: By Sport and By Confidence open from the start, Open Bets, In Play and
-// Recently closed shut (the owner, 2026-10-19))
-export type DeskPanel = 'sport' | 'confidence' | 'open' | 'live' | 'closed';
+// Recently closed shut (the owner, 2026-10-19); Findings shut at the foot (2026-10-20))
+export type DeskPanel = 'sport' | 'confidence' | 'open' | 'live' | 'closed' | 'findings';
 export const DESK_PANELS_OPEN: readonly DeskPanel[] = ['sport', 'confidence'];
 export const deskPanelOpen = (panel: DeskPanel, flipped: ReadonlySet<string> = new Set()): boolean => DESK_PANELS_OPEN.includes(panel) !== flipped.has(panel);
+
+// (the research's findings (the owner, 2026-10-20: "update algo page with findings"): one shared file,
+// apps/nfl/src/StaticData/model/findings.json, each round appending entries; one line each, dated, grouped Shipped /
+// Tested and dropped / Watching, newest first in each group; an entry with a sport shows under that sport's chip and
+// All, one without under every chip)
+export type FindingGroup = 'shipped' | 'dropped' | 'watching';
+export interface Finding {
+  date: string;
+  group: FindingGroup;
+  text: string;
+  sport?: string | null;
+  ref?: string | null;
+}
+export interface FindingsFile {
+  v?: number;
+  entries?: Finding[];
+}
+export const FINDING_GROUPS: readonly { group: FindingGroup; label: string }[] = [
+  { group: 'shipped', label: 'Shipped' },
+  { group: 'dropped', label: 'Tested and dropped' },
+  { group: 'watching', label: 'Watching' },
+];
+export function findingsOf(file: FindingsFile | null, sport: string | null): { group: FindingGroup; label: string; entries: Finding[] }[] {
+  const all = (file?.entries ?? []).filter((e) => !!e?.text && FINDING_GROUPS.some((g) => g.group === e.group) && (!sport || !e.sport || e.sport === sport));
+  return FINDING_GROUPS.map((g) => ({ ...g, entries: all.filter((e) => e.group === g.group).sort((a, b) => String(b.date).localeCompare(String(a.date))) })).filter((g) => g.entries.length);
+}

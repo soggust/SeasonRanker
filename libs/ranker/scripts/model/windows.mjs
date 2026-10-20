@@ -19,6 +19,13 @@
 // Free; reads only what it is given. Never moves a chance or a stake: only the moment a pick is placed.
 
 export const WINDOWS_V = 1;
+// (D71: the deep history's dense lines (D67) beside D61's as the replay's intraday candidates, for the sports whose
+// archive opens outside the lines' window (the NFL's opens are 48 hours out, so its replay bet every line at the close
+// and none had a fair-close check), at DENSE_OFFSETS' hours (inside TIMING's 26-hour window), the Book's and the sharp
+// book's prices alone. gate.mjs reads them for a version that exports these; a version without them, D61's files only)
+export const DENSE_SPORTS = ['nfl'];
+export const DENSE_OFFSETS = { nfl: [24, 12, 6, 3, 2, 1] };
+export const DENSE_BOOKS = ['dk', 'pin'];
 export const POLICY_HOURS = [24, 12, 6, 3, 1];
 export const POLICIES = ['legacy', ...POLICY_HOURS.map((h) => `h${h}`)];
 // (a snapshot is up to 45 minutes off its offset hour: intraday.mjs's nearest snapshot)

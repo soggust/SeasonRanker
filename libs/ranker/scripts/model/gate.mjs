@@ -50,6 +50,7 @@ import { BET_DECIDE, betCompare, betSummary, binLoss, dec, edgePicks, gateVerdic
 import { historyLeakBets, huntLeaks } from './leaks.mjs';
 import { extendedGames, historyPropIndex, intradayLines, lineHistoryRows, loadHistory, propHistoryRows, slim, vsBook, vsBookBySeason } from './gate-history.mjs';
 import { OFFSETS as INTRA_OFFSETS, readIntraday } from './intraday.mjs';
+import { readDeep } from './deep-history.mjs';
 import { MARKETS as MMA_MARKETS, scoreMma } from './gate-mma.mjs';
 
 const ROOT = path.resolve(import.meta.dirname, '../../../..');
@@ -325,7 +326,7 @@ export async function scoreVersion(dir, sport, { refit = false, propsLayer = tru
   // (lineupRisk: the lineup risk's fit on the history's opens against their closes (lineup-risk.mjs, D42); none before it)
   // (picks, replay: the bands (picks.mjs edgeLevel) and the replayed record (replay-record.mjs, the Bot's history);
   // a version from before them has no replayed record)
-  for (const n of ['leagues', 'ratings', 'context', 'margins', 'backtest', 'desk', 'props', 'project', 'correct', 'anchor', 'lineup-risk', 'picks', 'replay-record', 'confidence', 'reasons', 'clv-bands']) V[n === 'lineup-risk' ? 'lineupRisk' : n === 'replay-record' ? 'replay' : n === 'clv-bands' ? 'clvBands' : n] = await load(dir, n);
+  for (const n of ['leagues', 'ratings', 'context', 'margins', 'backtest', 'desk', 'props', 'project', 'correct', 'anchor', 'lineup-risk', 'picks', 'replay-record', 'confidence', 'reasons', 'clv-bands', 'windows']) V[n === 'lineup-risk' ? 'lineupRisk' : n === 'replay-record' ? 'replay' : n === 'clv-bands' ? 'clvBands' : n] = await load(dir, n);
   // (the loaders: this checkout's, so both versions read the same history)
   const H = { context: await import('./context.mjs'), logs: await import('./playerlogs.mjs'), props: await import('./props.mjs'), fitcache: await import('./fitcache.mjs'), espn: await import('./espn.mjs') };
   const cfg = V.leagues.LEAGUES[sport];
@@ -364,7 +365,28 @@ export async function scoreVersion(dir, sport, { refit = false, propsLayer = tru
   const hist = loadHistory(sport);
   // (the intraday snapshots (D61, D63): the lines at the offset hours before each start, kind 'i', priced as of their
   // own time like the opens; only the replay's placement reads them (rows.intra), never the bar, the fits or the legs)
-  if (process.env.GATE_NO_INTRA !== '1') for (const l of intradayLines(hist.events, readIntraday(sport), INTRA_OFFSETS[sport] ?? [])) hist.lines.push(l);
+  if (process.env.GATE_NO_INTRA !== '1') {
+    const seenIntra = new Set();
+    for (const l of intradayLines(hist.events, readIntraday(sport), INTRA_OFFSETS[sport] ?? [])) {
+      seenIntra.add(`${l.oid}|${l.h}`);
+      hist.lines.push(l);
+    }
+    // (D71: a version's dense sports (windows.mjs DENSE_SPORTS) read the deep history's lines too (D67's dense/ folder,
+    // 2020 on): each event's snapshot hours D61's files don't have, the two books alone. A version without it: as before)
+    if (V.windows?.DENSE_SPORTS?.includes(sport) && process.env.GATE_NO_DENSE !== '1') {
+      const deep = readDeep(sport);
+      const books = new Set(V.windows.DENSE_BOOKS ?? ['dk', 'pin']);
+      const rows = new Map();
+      for (const [oid, list] of deep.lines) rows.set(oid, list.filter((x) => books.has(x.book)));
+      let added = 0;
+      for (const l of intradayLines(hist.events, { rows, snaps: deep.snaps }, V.windows.DENSE_OFFSETS?.[sport] ?? INTRA_OFFSETS[sport] ?? [])) {
+        if (seenIntra.has(`${l.oid}|${l.h}`)) continue;
+        hist.lines.push(l);
+        added++;
+      }
+      say(`dense intraday lines (D71): ${added} rows beside D61's`);
+    }
+  }
   const asked = new Map();
   for (const l of hist.lines) {
     if (l.kind !== 'o' && l.kind !== 'c' && l.kind !== 'i') continue;
