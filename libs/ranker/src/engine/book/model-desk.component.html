@@ -177,7 +177,7 @@
       </card-panel>
 
       <!-- (By Confidence: the Book's bands on the history, LOCK at the top to PASS at the bottom, the practice picks
-           (each slate's best few short of the vig, at 0.5u) muted between LIKE and PASS, the total under them) -->
+           (each slate's best few short of the vig, at 0.5u) faint between LIKE and PASS, PASS muted, the total under them) -->
       <card-panel class="tab-card group-results desk-history-panel" label="By Confidence" icon="local_fire_department" [open]="panelOpen('confidence')" (toggled)="togglePanel('confidence')" [hint]="h.caveat">
         <div class="group-body">
           <table class="desk-table desk-history-table">
@@ -431,7 +431,7 @@
 
     <!-- (Recently closed: the last 20 settled on the history, newest first: the result, the league's mark, the pick
          with its game muted under it, then the bet: its band in the Book's colour, the price, the stake and what it
-         came to; a replayed bet a small muted "replay", a practice pick dimmed) -->
+         came to; a replayed bet a small muted "replay", a PASS bet dimmed, a practice pick's tag faint) -->
     @if (history?.last?.length || history?.range !== 'all') {
       <card-panel class="tab-card group-results desk-wide desk-history-panel" label="Recently closed" icon="history" [open]="panelOpen('closed')" (toggled)="togglePanel('closed')" [hint]="history!.caveat">
         <div class="group-body">
@@ -440,7 +440,7 @@
           }
           <ol class="desk-history-strip" aria-label="The last 20 bets">
             @for (b of history!.last; track $index) {
-              <li class="desk-history-bet" [ngClass]="b.res" [class.is-practice]="b.practice">
+              <li class="desk-history-bet" [ngClass]="b.res" [class.is-pass]="!b.practice && b.band === 'PASS'">
                 <span class="desk-history-res" [attr.aria-label]="b.res === 'W' ? 'Won' : b.res === 'L' ? 'Lost' : 'Push'">{{ b.res }}</span>
                 <span class="desk-history-league"><ng-container *ngTemplateOutlet="leagueMark; context: { $implicit: b.sport, titled: true }"></ng-container></span>
                 <span class="desk-history-words">

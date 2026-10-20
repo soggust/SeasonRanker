@@ -1081,7 +1081,8 @@ mat-icon.desk-gloves {
     color: v.$caution;
   }
 
-  .desk-tier-pass th {
+  // (the practice picks' name faint, PASS's row muted below: the owner's 2026-10-19 swap)
+  .desk-tier-practice th {
     color: v.$text-faint;
   }
 
@@ -1337,7 +1338,7 @@ mat-icon.desk-gloves {
 // ---------------------------------------------------------------------------
 // The Bot's history panel (replay-history.ts): the record tiles, the caveat, the by-band and by-sport tables side
 // by side, each sport's seasons, and the last 20 bets in the Recent form's style (a replayed bet tagged with where
-// it was placed, a practice pick dimmed)
+// it was placed, a PASS bet dimmed)
 // ---------------------------------------------------------------------------
 .desk-history-panel {
   .desk-history-table {
@@ -1368,7 +1369,7 @@ mat-icon.desk-gloves {
     grid-template-columns: 26px 22px minmax(0, 1fr) auto;
     padding: 6px 0;
 
-    &.is-practice {
+    &.is-pass {
       opacity: 0.7;
     }
 
@@ -1457,7 +1458,7 @@ mat-icon.desk-gloves {
   }
 }
 
-// (a band's tag, the Book's pill: its colour on a wash of it; Practice muted, PASS faint)
+// (a band's tag, the Book's pill: its colour on a wash of it; Practice faint, PASS muted (the owner's 2026-10-19 swap))
 .desk-history-tag {
   --band-color: #{v.$text-faint};
   background: color-mix(in srgb, var(--band-color) 18%, transparent);
@@ -1485,7 +1486,7 @@ mat-icon.desk-gloves {
     --band-color: #{v.$caution};
   }
 
-  &.practice {
+  &.pass {
     --band-color: #{v.$grey-light};
     opacity: 0.75;
   }
@@ -1501,8 +1502,9 @@ mat-icon.desk-gloves {
   }
 }
 
-// (By Confidence's practice picks: the row muted, as a practice pick in Recently closed, apart from PASS's faint name)
-.desk-history-table .desk-tier-practice {
+// (By Confidence's PASS: the row muted, as a PASS bet in Recently closed, apart from the practice picks' faint name
+// (the owner, 2026-10-19: Practice and PASS swapped looks))
+.desk-history-table .desk-tier-pass {
   opacity: 0.6;
 
   th {
