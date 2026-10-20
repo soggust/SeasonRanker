@@ -1,7 +1,7 @@
 {
  "sport": "nba",
  "cursor": {
-  "rotowirenba.bsky.social": "2026-10-20T15:47:50.000Z",
+  "rotowirenba.bsky.social": "2026-10-20T16:21:52.000Z",
   "insidenbanews.bsky.social": "2026-10-20T14:31:09.380Z",
   "shamsbot.bsky.social": "2026-10-20T15:50:34.000Z"
  },
@@ -356,6 +356,19 @@
    "kind": "status",
    "confidence": 0.8,
    "text": "Nae'Qwan Tomlin: Set to miss several weeks \n\n https://www.rotowire.com/basketball/player/naeqwan-tomlin-6311"
+  },
+  {
+   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3myczve7xde2a|dailynswain|out|status",
+   "at": "2026-10-20T16:17:13.000Z",
+   "seen": "2026-10-20T16:23:22.520Z",
+   "handle": "rotowirenba.bsky.social",
+   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3myczve7xde2a",
+   "player": "Dailyn Swain",
+   "team": null,
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.9,
+   "text": "Dailyn Swain: Out with illness \n\n https://www.rotowire.com/basketball/player/dailyn-swain-6986"
   }
  ]
 }

@@ -1892,6 +1892,42 @@
     "seen": "2026-10-20T15:21:40.233Z",
     "own": "2026-09-17T20:53:00.000Z"
    }
+  },
+  "401892545|esalindell|out": {
+   "game": "401892545",
+   "start": "2026-10-21T00:00Z",
+   "team": "9",
+   "name": "Esa Lindell",
+   "status": "out",
+   "athlete": "3069352",
+   "espn": {
+    "seen": "2026-10-20T16:21:58.267Z",
+    "own": "2026-10-20T15:58:00.000Z"
+   }
+  },
+  "401892550|samcarrick|q": {
+   "game": "401892550",
+   "start": "2026-10-21T23:30Z",
+   "team": "2",
+   "name": "Sam Carrick",
+   "status": "q",
+   "athlete": "5474",
+   "espn": {
+    "seen": "2026-10-20T16:21:58.267Z",
+    "own": "2026-10-20T16:06:00.000Z"
+   }
+  },
+  "401892551|jacobmarkstrom|out": {
+   "game": "401892551",
+   "start": "2026-10-21T23:30Z",
+   "team": "26",
+   "name": "Jacob Markstrom",
+   "status": "out",
+   "athlete": "5452",
+   "espn": {
+    "seen": "2026-10-20T16:21:58.267Z",
+    "own": "2026-10-20T16:11:00.000Z"
+   }
   }
  }
 }
