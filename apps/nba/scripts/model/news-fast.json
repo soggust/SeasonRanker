@@ -1,8 +1,8 @@
 {
  "sport": "nba",
  "cursor": {
-  "rotowirenba.bsky.social": "2026-10-20T21:15:12.000Z",
-  "insidenbanews.bsky.social": "2026-10-20T14:31:09.380Z",
+  "rotowirenba.bsky.social": "2026-10-20T22:12:22.000Z",
+  "insidenbanews.bsky.social": "2026-10-20T21:41:09.176Z",
   "shamsbot.bsky.social": "2026-10-20T15:50:34.000Z"
  },
  "claims": [
@@ -499,6 +499,58 @@
    "kind": "status",
    "confidence": 0.9,
    "text": "Anthony Black: Won't play Wednesday \n\n https://www.rotowire.com/basketball/player/anthony-black-5910"
+  },
+  {
+   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mydlppbspn27|aaronnesmith|out|status",
+   "at": "2026-10-20T21:36:11.000Z",
+   "seen": "2026-10-20T22:25:24.744Z",
+   "handle": "rotowirenba.bsky.social",
+   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mydlppbspn27",
+   "player": "Aaron Nesmith",
+   "team": null,
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.95,
+   "text": "Aaron Nesmith: Ruled out for regular-season opener \n\n https://www.rotowire.com/basketball/player/aaron-nesmith-5120"
+  },
+  {
+   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mydltptyz42x|tjmcconnell|out|status",
+   "at": "2026-10-20T21:38:26.000Z",
+   "seen": "2026-10-20T22:25:24.744Z",
+   "handle": "rotowirenba.bsky.social",
+   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mydltptyz42x",
+   "player": "T.J. McConnell",
+   "team": null,
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.95,
+   "text": "T.J. McConnell: Ruled out for Wednesday \n\n https://www.rotowire.com/basketball/player/tj-mcconnell-3760"
+  },
+  {
+   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mydnh5kecv2j|kylefilipowski|active|status",
+   "at": "2026-10-20T22:07:11.000Z",
+   "seen": "2026-10-20T22:25:24.744Z",
+   "handle": "rotowirenba.bsky.social",
+   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mydnh5kecv2j",
+   "player": "Kyle Filipowski",
+   "team": null,
+   "status": "active",
+   "kind": "status",
+   "confidence": 0.5,
+   "text": "Kyle Filipowski: Not listed on injury report \n\n https://www.rotowire.com/basketball/player/kyle-filipowski-6264"
+  },
+  {
+   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mydnqfpc242d|isaiahstewart|doubtful|status",
+   "at": "2026-10-20T22:12:22.000Z",
+   "seen": "2026-10-20T22:25:24.744Z",
+   "handle": "rotowirenba.bsky.social",
+   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mydnqfpc242d",
+   "player": "Isaiah Stewart",
+   "team": null,
+   "status": "doubtful",
+   "kind": "status",
+   "confidence": 0.95,
+   "text": "Isaiah Stewart: Doubtful for Wednesday \n\n https://www.rotowire.com/basketball/player/isaiah-stewart-5137"
   }
  ]
 }

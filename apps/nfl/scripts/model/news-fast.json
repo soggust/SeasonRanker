@@ -1,13 +1,13 @@
 {
  "sport": "nfl",
  "cursor": {
-  "adamscheftermirror.bsky.social": "2026-10-20T20:57:23.731Z",
+  "adamscheftermirror.bsky.social": "2026-10-20T21:57:26.173Z",
   "rapsheet.bsky.social": "2026-10-20T15:28:24.072Z",
   "nflnewsreposterbot.bsky.social": "2026-10-20T20:30:06.105Z",
-  "insidenflnews.bsky.social": "2026-10-20T19:39:44.095Z",
-  "nflnewsposter.bsky.social": "2026-10-20T21:17:44.497Z",
-  "rotoworld-fb.bsky.social": "2026-10-20T21:15:59.000Z",
-  "rotowirenfl.bsky.social": "2026-10-20T21:20:28.000Z"
+  "insidenflnews.bsky.social": "2026-10-20T21:43:58.700Z",
+  "nflnewsposter.bsky.social": "2026-10-20T22:13:01.986Z",
+  "rotoworld-fb.bsky.social": "2026-10-20T22:18:34.000Z",
+  "rotowirenfl.bsky.social": "2026-10-20T22:01:50.000Z"
  },
  "claims": [
   {
@@ -1699,6 +1699,84 @@
    "kind": "status",
    "confidence": 0.5,
    "text": "Kyle Monangai: Sits out Tuesday's walk-through \n\n https://www.rotowire.com/football/player/kyle-monangai-18520"
+  },
+  {
+   "id": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3mydlqcbqsp2d|davanteadams|out|status",
+   "at": "2026-10-20T21:36:31.000Z",
+   "seen": "2026-10-20T22:25:24.744Z",
+   "handle": "rotowirenfl.bsky.social",
+   "post": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3mydlqcbqsp2d",
+   "player": "Davante Adams",
+   "team": "LAR",
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.95,
+   "text": "Davante Adams: Placed on injured reserve by Rams \n\n https://www.rotowire.com/football/player/davante-adams-9455"
+  },
+  {
+   "id": "at://did:plc:fuqjc7x4gxvnwzksnlxwbe4x/app.bsky.feed.post/3mydm2z5pdsg5|terranceferguson|out|status",
+   "at": "2026-10-20T21:42:30.899Z",
+   "seen": "2026-10-20T22:25:24.744Z",
+   "handle": "nflnewsposter.bsky.social",
+   "post": "at://did:plc:fuqjc7x4gxvnwzksnlxwbe4x/app.bsky.feed.post/3mydm2z5pdsg5",
+   "player": "Terrance Ferguson",
+   "team": "LAR",
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.9,
+   "text": "[Schefter] Rams TE Terrance Ferguson, who is eligible to come off IR next week, is not expected to be ready at that time. His recovery, in the words of a source, “will take some time.” twitter.com/Ada"
+  },
+  {
+   "id": "at://did:plc:mbr4badgf6yu56mquzackzew/app.bsky.feed.post/3mydm5mv6j22l|terranceferguson|out|status",
+   "at": "2026-10-20T21:43:58.700Z",
+   "seen": "2026-10-20T22:25:24.744Z",
+   "handle": "insidenflnews.bsky.social",
+   "post": "at://did:plc:mbr4badgf6yu56mquzackzew/app.bsky.feed.post/3mydm5mv6j22l",
+   "player": "Terrance Ferguson",
+   "team": "LAR",
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.9,
+   "text": "Schefter: Terrance Ferguson (ankle) not expected to come off IR when eligible.\n\nFerguson's recovery \"will take some time.\""
+  },
+  {
+   "id": "at://did:plc:qre6zxbmr3ixhdmgsgdretb5/app.bsky.feed.post/3mydmvozsnf2q|terranceferguson|out|status",
+   "at": "2026-10-20T21:57:26.173Z",
+   "seen": "2026-10-20T22:25:24.744Z",
+   "handle": "adamscheftermirror.bsky.social",
+   "post": "at://did:plc:qre6zxbmr3ixhdmgsgdretb5/app.bsky.feed.post/3mydmvozsnf2q",
+   "player": "Terrance Ferguson",
+   "team": "LAR",
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.9,
+   "text": "Rams TE Terrance Ferguson, who is eligible to come off IR next week, is not expected to be ready at that time. His recovery, in the words of a source, “will take some time.”\n\nOriginal post"
+  },
+  {
+   "id": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3mydn5kwmr22b|ajbrown|limited|status",
+   "at": "2026-10-20T22:01:50.000Z",
+   "seen": "2026-10-20T22:25:24.744Z",
+   "handle": "rotowirenfl.bsky.social",
+   "post": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3mydn5kwmr22b",
+   "player": "A.J. Brown",
+   "team": "PHI",
+   "status": "limited",
+   "kind": "status",
+   "confidence": 0.85,
+   "text": "A.J. Brown: Remains listed as limited Tuesday \n\n https://www.rotowire.com/football/player/aj-brown-13432"
+  },
+  {
+   "id": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3mydo3iv7zg2r|terranceferguson|out|status",
+   "at": "2026-10-20T22:18:34.000Z",
+   "seen": "2026-10-20T22:25:24.744Z",
+   "handle": "rotoworld-fb.bsky.social",
+   "post": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3mydo3iv7zg2r",
+   "player": "Terrance Ferguson",
+   "team": "LAR",
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.9,
+   "text": "Schefter: Terrance Ferguson (ankle) 'will take some time' to come off IR"
   }
  ]
 }
