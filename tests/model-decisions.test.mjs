@@ -1415,3 +1415,48 @@ test('D66 the news lag: a star newly out with his teammates\' lines unmoved tags
   const run = fs.readFileSync(path.join(MODEL, 'run.mjs'), 'utf8');
   assert.ok(run.includes('newsLag: !!bet.newsLag') && run.includes('{ live: r.liveReasons ?? null }') && run.includes("why === 'newsLag' && boardPriced"));
 });
+
+test('D68 the fast lane: the watcher every minute; news on one game dispatches that game\'s props alone, never a refit or a line, in the full desk\'s concurrency group, its own rate', async () => {
+  const watch = await import('../scripts/desk-watch.mjs');
+  // (the rates: the full lane's unchanged, the fast lane's its own)
+  assert.equal(watch.POLL_MIN, 1);
+  assert.equal(watch.COOLDOWN_MIN, 20);
+  assert.equal(watch.MAX_PER_DAY, 40);
+  assert.equal(watch.FAST_COOLDOWN_MIN, 5);
+  assert.equal(watch.FAST_MAX_PER_DAY, 30);
+  assert.match(fs.readFileSync(path.resolve('scripts/desk-watch.ps1'), 'utf8'), /\[int\]\$EveryMinutes = 1\b/);
+  const src = fs.readFileSync(path.resolve('scripts/desk-watch.mjs'), 'utf8');
+  assert.ok(!/ODDS_API_KEY|the-odds-api|run\.mjs|sleeper\.app/.test(src.replace(/^\/\/.*$/gm, '')), 'the watcher spends no credit, never runs the bettor, never polls Sleeper');
+  // (never a fast dispatch while a fast run is queued or running or a full one queued)
+  const now = Date.now();
+  const pending = [{ key: 'k', sport: 'nba', game: '1', fast: true, until: now + 36e5 }];
+  assert.equal(watch.fastDecision({ pending, runs: [{ status: 'in_progress', createdAt: new Date(now - 6e4).toISOString() }], now }).go, false);
+  assert.equal(watch.fastDecision({ pending, others: [{ status: 'pending', createdAt: new Date(now - 6e4).toISOString() }], now }).go, false);
+  assert.equal(watch.fastDecision({ pending, now }).go, true);
+  // (the workflow: one game's props by run.mjs --fast, the full desk's concurrency group and cache, no AI step, the data checked and committed by rebase)
+  const wf = fs.readFileSync(path.resolve('.github/workflows/model-desk-fast.yml'), 'utf8');
+  assert.match(wf, /concurrency:\s*\n\s*group: model-desk\s*\n\s*cancel-in-progress: false/);
+  assert.match(wf, /run\.mjs "\$SPORT" "--fast=\$GAME"/);
+  assert.match(wf, /key: model-desk-\$\{\{ github\.run_id \}\}/);
+  assert.match(wf, /restore-keys: model-desk-/);
+  assert.match(wf, /run-name: "Model desk fast: \$\{\{ inputs\.sport \}\} \$\{\{ inputs\.game \}\}"/);
+  assert.ok(!/ANTHROPIC_API_KEY|CHECK_RESEARCH|--replace|--refit|odds-history\.mjs/.test(wf), 'no AI step, no re-price of everything, no refit, no snapshot');
+  assert.match(wf, /git pull --rebase && git push/);
+  assert.match(wf, /LIVE_DATA_SOFT: "1"/);
+  assert.match(fs.readFileSync(path.resolve('.github/workflows/model-desk.yml'), 'utf8'), /concurrency:\s*\n\s*group: model-desk\s*\n/);
+  // (run.mjs: the fast run never refits the props, buys no lines, prices no line, takes back only its game's props, isn't in the cadence)
+  const run = fs.readFileSync(path.join(MODEL, 'run.mjs'), 'utf8');
+  assert.ok(run.includes("export const FAST = process.argv.find((a) => a.startsWith('--fast='))"));
+  assert.ok(run.includes('spent: FAST ? Infinity : FIT_SPENT'));
+  assert.ok(run.includes("if (FAST || !unbet || !canSpend('lines', 3))"));
+  assert.ok(run.includes('of FAST ? [] : r.upcoming'));
+  assert.ok(run.includes("if (FAST && (b.market !== 'prop' || String(b.event) !== FAST)) continue;"));
+  assert.ok(run.includes('if (FAST && String(game.id) !== FAST) continue;'));
+  assert.ok(run.includes('!DRY && !PICKS_ONLY && !FAST) write(RUNS'));
+  const { fitPlan } = await import('../libs/ranker/scripts/model/fitcache.mjs');
+  assert.equal(fitPlan({ fit: { fits: {}, seconds: 60 } }, { refit: true, must: false }, { sport: 'nba', spent: Infinity }), 'reuse');
+  assert.equal(fitPlan({ fit: { fits: {}, seconds: 60 } }, { refit: true, must: true }, { sport: 'nba', spent: Infinity }), 'suggest');
+  assert.equal(fitPlan(null, { refit: true, must: true }, { sport: 'nba', spent: Infinity }), 'wait');
+  const decisions = fs.readFileSync(path.resolve('libs/ranker/scripts/model/DECISIONS.md'), 'utf8');
+  assert.ok(decisions.includes('### D68.'));
+});

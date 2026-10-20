@@ -546,7 +546,8 @@ async function liveLines(r) {
   const wants = dueUnbet.map((u) => [u, DRY ? 'dry' : linesWant(quoted[u.game.id], espnSig.get(u), phaseNow(u), r.now.getTime(), { refresh })]).filter(([, why]) => why);
   if (dueUnbet.length && !wants.length) console.log(`${r.sport}: The Odds API's lines not bought: ${dueUnbet.length} due games, none moved on ESPN's board or gone stale since its quote`);
   const unbet = wants.length > 0;
-  if (!unbet || !canSpend('lines', 3)) {
+  // (the fast lane buys no lines: the free event list alone, for its props' ask, D68)
+  if (FAST || !unbet || !canSpend('lines', 3)) {
     const list = await call('events', `/sports/${SPORT_KEYS[r.sport]}/events`, range);
     if (Array.isArray(list)) for (const [u, ev] of matchGames(list, r.upcoming)) u.lines.oddsEvent = ev.id;
     return;
@@ -1064,7 +1065,8 @@ async function fitTheProps(r) {
     const finals = history.filter((g) => g.final).length;
     const saved = REFIT ? null : readFit(sport);
     const due = refitWhy(saved, { sport, now: r.now, finals, force: REFIT });
-    const plan = fitPlan(saved, due, { sport, spent: FIT_SPENT });
+    // (the fast lane never refits: a saved fit rebuilt, or none this run, D68)
+    const plan = fitPlan(saved, due, { sport, spent: FAST ? Infinity : FIT_SPENT });
     if (plan === 'wait') {
       console.warn(`::warning::${sport}: no props this run: their fit (${due.why}) waits for the next run, ${Math.round(FIT_SPENT / 1000)}s already spent refitting this one`);
       return;
@@ -1774,6 +1776,8 @@ function repriceOpen(r) {
     const ruled = b.status === 'open' && !b.void ? rulesChanged(b, RULES_V) : null;
     if (b.status !== 'open' || b.void || (!b.inputs && !ruled)) continue;
     if (Date.parse(b.start) - Date.now() < REPRICE_BY) continue;
+    // (the fast lane prices its game's props alone: only those taken back, D68)
+    if (FAST && (b.market !== 'prop' || String(b.event) !== FAST)) continue;
     const now = r.inputs.get(b.event);
     if (!now) continue;
     const prev = before[b.event];
@@ -1821,7 +1825,8 @@ function repriceOpen(r) {
     for (const id of r.takenBack.keys()) r.placed.delete(id);
     write(TAKEN_BACK(sport), Object.fromEntries(r.backKept));
     // (each coming game's inputs as seen now, for the next run's words on who joined or left a list)
-    write(INPUTS(sport), Object.fromEntries([...r.inputs].map(([id, x]) => [id, { at, parts: x.parts, names: x.names }])));
+    // (the fast lane's game's over the last run's, so the other games' stay as the full run left them, D68)
+    write(INPUTS(sport), { ...(FAST ? before : {}), ...Object.fromEntries([...r.inputs].filter(([id]) => !FAST || String(id) === FAST).map(([id, x]) => [id, { at, parts: x.parts, names: x.names }])) });
   }
 }
 
@@ -1883,7 +1888,8 @@ function betGames(r) {
   // didn't skip, whose CHECKs are closed: checks.mjs closeChecks)
   r.checks = [];
   r.unchecked = new Set();
-  for (const { game, lines } of r.upcoming) {
+  // (the fast lane prices no game line, D68)
+  for (const { game, lines } of FAST ? [] : r.upcoming) {
     const { exp, f, adjM, adjT } = expectFor(r, game);
     const fairFrom = lines.fairSource ?? {};
     r.snapshot.exp[game.id] = [round(exp.margin, 4), round(exp.total, 4)];
@@ -2384,6 +2390,8 @@ async function betProps(r) {
   const firstAsks = [...r.upcoming].sort((a, b) => Number((asked[a.game.id] ?? 0) > 0) - Number((asked[b.game.id] ?? 0) > 0));
   for (const u of firstAsks) {
     const game = u.game;
+    // (the fast lane: its one game's props, D68)
+    if (FAST && String(game.id) !== FAST) continue;
     try {
       // (not this run: a game whose context or injury report couldn't be read (blindOf), or, with The Odds API to
       // hand, one it doesn't list (outside its range or not matched): its props wait for a run that can see it)
@@ -3422,6 +3430,13 @@ const BOARD_OUT = process.argv.find((a) => a.startsWith('--board-out='))?.slice(
 const REFIT = process.argv.includes('--refit');
 // (--fit-check: a fresh fit compared with its rebuild from the saved fit, fitTheProps)
 const FIT_CHECK = process.argv.includes('--fit-check');
+// (--fast=<game id>: the fast lane (DECISIONS.md D68, model-desk-fast.yml, the watcher's dispatch on news on one game):
+// one sport's run for that game's props alone. The props' fit only rebuilt from the saved one, never refit (fitPlan
+// as if past its budget); no game line priced or bought (The Odds API's free event list only, for the props' ask);
+// only that game's open props taken back on news; not counted in the runs' cadence (GAP). Everything else as any
+// run: the grading, the cheap refits (trust, calibration: seconds), the props' asks by tier under the paced
+// allowance (D55), PROP_ASKS, the fresh quote to bet (D30, D53), the board and picks)
+export const FAST = process.argv.find((a) => a.startsWith('--fast='))?.slice(7) || null;
 let FIT_SPENT = 0;
 // (when this process started, for DESK_DEADLINE_MIN; and where a running sport's mark is kept)
 const STARTED = Date.now();
@@ -3443,10 +3458,11 @@ if (IS_MAIN && !liveRunAllowed({ dry: DRY })) {
 else if (IS_MAIN) {
   const args = process.argv.slice(2).filter((a) => !a.startsWith('--'));
   const sports = args.length ? args : Object.keys(LEAGUES);
-  // (the runs' recent gap, before this one is added; a run that's only the picks doesn't count)
+  if (FAST && (sports.length !== 1 || !LEAGUES[sports[0]] || LEAGUES[sports[0]].fights)) throw new Error('run.mjs --fast=<game id>: one team sport (nfl, nba, nhl or mlb) and its game');
+  // (the runs' recent gap, before this one is added; a run that's only the picks, or a fast one, doesn't count)
   const runs = read(RUNS, []);
   GAP = cadenceOf(Array.isArray(runs) ? runs : []);
-  if (!DRY && !PICKS_ONLY) write(RUNS, [...(Array.isArray(runs) ? runs : []), new Date().toISOString()].slice(-24));
+  if (!DRY && !PICKS_ONLY && !FAST) write(RUNS, [...(Array.isArray(runs) ? runs : []), new Date().toISOString()].slice(-24));
   // (each sport marked running (.cache/model/running/<sport>) till it ends well: a sport that throws, or a run
   // killed in it (the step's timeout, a cancelled job), leaves its mark, and the workflow puts that sport's
   // committed files back as they were (model-desk.yml) while the sports that finished are still committed; one

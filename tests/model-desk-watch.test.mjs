@@ -1,10 +1,12 @@
 // The desk's watcher (scripts/desk-watch.mjs; DECISIONS.md D55): ESPN's DraftKings lines read free and compared,
 // a material move, a window crossed, the NFL's inactives, a new out and a reporter's high-impact post made pending;
 // a desk run started after an item was seen settles it; the dispatch's rate limit (no run queued or running, the
-// cooldown after the last run's start, the day's cap).
+// cooldown after the last run's start, the day's cap). And D68: the poll every minute (the far days every 5), the news on
+// one game the fast lane's, its own rate, and the two lanes never stepping on each other.
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { COOLDOWN_MIN, HIGH, INACTIVES, MAX_PER_DAY, MOVE, advance, dispatchDecision, gamesOf, injuriesOf, material, phaseAt, settle, severe, sigOf } from '../scripts/desk-watch.mjs';
+import fs from 'node:fs';
+import { COOLDOWN_MIN, FAR_EVERY_MIN, FAST_COOLDOWN_MIN, FAST_MAX_PER_DAY, FAST_WORKFLOW, HIGH, INACTIVES, MAX_PER_DAY, MOVE, POLL_MIN, advance, dispatchDecision, fastDecision, fastGameOf, gamesOf, injuriesOf, material, phaseAt, postGame, settle, severe, sigOf } from '../scripts/desk-watch.mjs';
 import { linesOf } from '../libs/ranker/scripts/model/espn.mjs';
 
 const H = 36e5;
@@ -148,4 +150,101 @@ test('D55 the dispatch rate limit: nothing pending, a run queued or running, the
   assert.equal(dispatchDecision({ pending, runs: [{ status: 'completed', createdAt: ago(120) }], dispatched: full, now: NOW }).go, false);
   assert.equal(COOLDOWN_MIN, 20);
   assert.equal(MAX_PER_DAY, 40);
+});
+
+// ---- D68: the fast lane (model-desk-fast.yml), the poll every minute ----
+
+test('D68 the rates: a poll a minute, the far days every 5, the full lane 20 minutes and 40 a day unchanged, the fast lane 5 minutes a game and 30 a day', () => {
+  assert.equal(POLL_MIN, 1);
+  assert.equal(FAR_EVERY_MIN, 5);
+  assert.equal(COOLDOWN_MIN, 20);
+  assert.equal(MAX_PER_DAY, 40);
+  assert.equal(FAST_COOLDOWN_MIN, 5);
+  assert.equal(FAST_MAX_PER_DAY, 30);
+  assert.equal(FAST_WORKFLOW, 'model-desk-fast.yml');
+  const ps1 = fs.readFileSync('scripts/desk-watch.ps1', 'utf8');
+  assert.match(ps1, /\[int\]\$EveryMinutes = 1\b/);
+  assert.match(ps1, /-ExecutionTimeLimit \(New-TimeSpan -Minutes 3\)/);
+  assert.match(ps1, /-MultipleInstances IgnoreNew/);
+});
+
+test('D68 the far scoreboard days read every FAR_EVERY_MIN, kept between; the days inside the lines\' window every poll', async () => {
+  const urls = [];
+  const fetchJson = async (u) => {
+    urls.push(u);
+    return { events: [event('1', 5), event('3', 40)] };
+  };
+  const boards = {};
+  const a = await gamesOf('nba', { now: NOW, fetchJson, boards });
+  const first = urls.length;
+  assert.ok(first >= 3, `${first} days read`);
+  assert.ok(Object.keys(boards).length >= 1, 'a far day kept');
+  urls.length = 0;
+  const b = await gamesOf('nba', { now: NOW + 6e4, fetchJson, boards });
+  assert.ok(urls.length < first, `the next minute reads only the near days (${urls.length} of ${first})`);
+  assert.deepEqual([...b.keys()].sort(), [...a.keys()].sort());
+  assert.equal(b.get('3').phase, 'window');
+  assert.deepEqual(b.get('1').names, ['Home1', 'Away1']);
+  urls.length = 0;
+  await gamesOf('nba', { now: NOW + FAR_EVERY_MIN * 6e4, fetchJson, boards });
+  assert.equal(urls.length, first, 'after FAR_EVERY_MIN every day read again');
+});
+
+test('D68 the news on one game is the fast lane\'s: a new out on the player\'s team\'s game, a post by the team\'s name or a listed player\'s; one naming none or two games the full lane\'s', () => {
+  const games = (...ids) => new Map(ids.map((id) => [id, { id, sport: 'nba', name: `A${id} @ H${id}`, start: NOW + 5 * H, hours: 5, phase: 'window', lines: true, teams: [`h${id}`, `a${id}`], names: [`Home${id}`, `Away${id}`], sig: null }]));
+  const base = advance(null, { games: { nba: games('1', '2') }, injuries: { nba: new Map() } }, NOW).state;
+  const later = NOW + 6e4;
+  const post = (uri, text) => ({ sport: 'nba', uri, at: new Date(later - 3e4).toISOString(), text, handle: 'r.bsky.social' });
+  const { added } = advance(base, {
+    games: { nba: games('1', '2') },
+    injuries: { nba: new Map([['h1:9', { status: 'Out', name: 'A Star', team: 'h1' }], ['a2:7', { status: 'Questionable', name: 'B Guard', team: 'a2' }]]) },
+    posts: [post('at://a', 'Home2 say their center is ruled out tonight'), post('at://b', 'B Guard will not play'), post('at://c', 'Someone is out tonight'), post('at://d', 'Home1 and Away2 both: X ruled out')],
+  }, later);
+  const by = Object.fromEntries(added.map((x) => [x.key, x]));
+  assert.equal(by['nba:injury:h1:9:Out'].fast, true);
+  assert.equal(by['nba:injury:h1:9:Out'].game, '1');
+  assert.equal(by['nba:injury:h1:9:Out'].until, NOW + 5 * H, 'held till the game starts');
+  assert.equal(by['nba:post:at://a'].game, '2');
+  assert.equal(by['nba:post:at://b'].game, '2', 'a listed player named: his team\'s game');
+  assert.ok(!by['nba:post:at://c'].fast && !by['nba:post:at://c'].game, 'no game named: the full lane');
+  assert.ok(!by['nba:post:at://d'].fast, 'two games named: the full lane');
+  assert.equal(postGame('Home1 out', [...games('1').values()]).id, '1');
+  assert.equal(postGame('home1 out', [...games('1').values()]), null, 'a team\'s name as written');
+});
+
+test('D68 the fast lane\'s rate: none while a fast run is queued or running or a full one queued; a running full one doesn\'t stop it; 5 minutes a game; 30 a day, then the full lane', () => {
+  const ago = (min) => new Date(NOW - min * 6e4).toISOString();
+  const item = (game, startH = 5) => ({ key: `k${game}`, sport: 'nba', game, fast: true, until: NOW + startH * H, why: 'w' });
+  const pending = [item('1')];
+  assert.equal(fastDecision({ pending: [], now: NOW }).go, false);
+  assert.equal(fastDecision({ pending, runs: [{ status: 'queued', createdAt: ago(1), displayTitle: 'Model desk fast: nba 2' }], now: NOW }).go, false);
+  assert.equal(fastDecision({ pending, runs: [{ status: 'in_progress', createdAt: ago(1), displayTitle: 'Model desk fast: nba 2' }], now: NOW }).go, false);
+  assert.equal(fastDecision({ pending, others: [{ status: 'queued', createdAt: ago(1) }], now: NOW }).go, false);
+  const go = fastDecision({ pending, others: [{ status: 'in_progress', createdAt: ago(3) }], now: NOW });
+  assert.deepEqual([go.go, go.sport, go.game, go.items.length], [true, 'nba', '1', 1]);
+  // (the game's own cooldown, by the watcher's dispatch or the run's title; another game goes)
+  assert.equal(fastDecision({ pending, dispatched: [{ at: ago(FAST_COOLDOWN_MIN - 1), sport: 'nba', game: '1' }], now: NOW }).go, false);
+  assert.equal(fastDecision({ pending, runs: [{ status: 'completed', createdAt: ago(2), displayTitle: 'Model desk fast: nba 1' }], now: NOW }).go, false);
+  assert.equal(fastDecision({ pending, dispatched: [{ at: ago(FAST_COOLDOWN_MIN + 1), sport: 'nba', game: '1' }], now: NOW }).go, true);
+  assert.equal(fastDecision({ pending: [item('1'), item('2')], dispatched: [{ at: ago(1), sport: 'nba', game: '1' }], now: NOW }).game, '2');
+  // (the soonest game first)
+  assert.equal(fastDecision({ pending: [item('1', 20), item('2', 3)], now: NOW }).game, '2');
+  const full = Array.from({ length: FAST_MAX_PER_DAY }, (_, i) => ({ at: new Date(Date.parse('2026-10-20T00:00:00Z') + i * 6e4).toISOString(), sport: 'nba', game: String(100 + i) }));
+  const capped = fastDecision({ pending, dispatched: full, now: NOW });
+  assert.equal(capped.go, false);
+  assert.equal(capped.capped, true);
+  assert.deepEqual(fastGameOf({ displayTitle: 'Model desk fast: nhl 401892543' }), { sport: 'nhl', game: '401892543' });
+  assert.equal(fastGameOf({ displayTitle: 'Model Desk - Bets' }), null);
+});
+
+test('D68 the full lane with two lanes: none while a fast run is queued or running; a fast run\'s start not its cooldown; a fast run settles only its own game\'s news', () => {
+  const ago = (min) => new Date(NOW - min * 6e4).toISOString();
+  const pending = [{ key: 'k', why: 'w' }];
+  assert.equal(dispatchDecision({ pending, runs: [{ status: 'completed', createdAt: ago(90) }], others: [{ status: 'in_progress', createdAt: ago(1) }], now: NOW }).go, false);
+  assert.equal(dispatchDecision({ pending, runs: [{ status: 'completed', createdAt: ago(90) }], others: [{ status: 'completed', createdAt: ago(1) }], now: NOW }).go, true);
+  const seenAt = new Date(NOW - 5 * 6e4).toISOString();
+  const state = { pending: [{ key: 'a', sport: 'nba', game: '1', fast: true, seen: seenAt }, { key: 'b', sport: 'nba', game: '2', fast: true, seen: seenAt }, { key: 'c', sport: 'nba', game: '1', seen: seenAt }], baseline: {} };
+  const s = settle(state, [{ status: 'completed', createdAt: ago(60) }], [{ status: 'in_progress', createdAt: ago(1), displayTitle: 'Model desk fast: nba 1' }]);
+  assert.deepEqual(s.done.map((p) => p.key), ['a']);
+  assert.deepEqual(settle(state, [{ status: 'in_progress', createdAt: ago(1) }], []).done.map((p) => p.key), ['a', 'b', 'c']);
 });

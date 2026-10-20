@@ -1,0 +1,154 @@
+name: Model Desk - Fast lane
+
+# The fast lane (libs/ranker/scripts/model/DECISIONS.md D68): the desk for one game's props, dispatched by the
+# owner's PC's watcher (scripts/desk-watch.mjs) when news lands on that game (a new Out or Doubtful on ESPN's list,
+# a reporter's out or scratch post), so its props are priced again within minutes of the news, not at the next
+# full run. libs/ranker/scripts/model/run.mjs <sport> --fast=<game id>: the props' fit rebuilt from the saved one,
+# never refit; no game line priced or bought; the props' asks as any run's (the paced allowance by tier, D55;
+# PROP_ASKS; the fresh quote to bet, D30 and D53). No AI step (the research, the write-ups, the news, the miss
+# review: the full lane's), no morning snapshot. Its cache is the full desk's (the same key's prefix: the Odds
+# API's tally and the saved fits carry over both ways), and it runs in the full desk's concurrency group, so the
+# two lanes never run side by side, never read a ledger the other is writing, and never race a commit.
+run-name: "Model desk fast: ${{ inputs.sport }} ${{ inputs.game }}"
+
+on:
+  workflow_dispatch:
+    inputs:
+      sport:
+        description: The game's sport (nfl, nba, nhl, mlb)
+        type: choice
+        options: [nfl, nba, nhl, mlb]
+      game:
+        description: The game's ESPN id
+        type: string
+      reason:
+        description: Why this run was started (logged)
+        type: string
+        default: ""
+
+# (the full desk's group (model-desk.yml): one desk run at a time across both lanes. GitHub keeps one waiting run a
+# group, a newer one replacing it: the watcher never dispatches while a desk run waits, and a full run that
+# replaces a waiting fast one reads the same news)
+concurrency:
+  group: model-desk
+  cancel-in-progress: false
+
+permissions:
+  contents: write
+
+jobs:
+  desk:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    outputs:
+      picks: ${{ steps.commit.outputs.picks }}
+
+    steps:
+      - name: Why this run
+        env:
+          REASON: ${{ inputs.reason }}
+          SPORT: ${{ inputs.sport }}
+          GAME: ${{ inputs.game }}
+        run: 'echo "Fast lane: $SPORT game $GAME: $REASON"'
+
+      - name: Checkout repository
+        uses: actions/checkout@v7
+        with:
+          ref: ${{ github.ref_name }}
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v7
+        with:
+          node-version: "22"
+          cache: "npm"
+
+      - name: Restore the desk's cache
+        uses: actions/cache/restore@v6
+        with:
+          path: .cache/model
+          key: model-desk-${{ github.run_id }}
+          restore-keys: model-desk-
+
+      - name: Price the game's props
+        id: bet
+        continue-on-error: true
+        timeout-minutes: 10
+        env:
+          ODDS_API_KEY: ${{ secrets.ODDS_API_KEY }}
+          FIREBASE_SERVICE_ACCOUNT: ${{ secrets.FIREBASE_SERVICE_ACCOUNT }}
+          SPORT: ${{ inputs.sport }}
+          GAME: ${{ inputs.game }}
+        run: |
+          case "$GAME" in ''|*[!0-9]*) echo "::error::not a game id: $GAME"; exit 1 ;; esac
+          node libs/ranker/scripts/model/run.mjs "$SPORT" "--fast=$GAME"
+
+      # (as the full desk: a sport whose run didn't end well has its committed files put back)
+      - name: Put back a failed sport's files
+        if: ${{ !cancelled() }}
+        run: |
+          for mark in .cache/model/running/*; do
+            [ -e "$mark" ] || continue
+            sport=$(basename "$mark")
+            rm -f "$mark"
+            case "$sport" in nfl|nba|nhl|mlb) ;; *) continue ;; esac
+            echo "::warning::$sport: its run didn't finish: its files put back as committed"
+            git checkout -- "apps/$sport/scripts/model" "apps/$sport/src/StaticData/model" || true
+            git clean -fdq -- "apps/$sport/scripts/model" "apps/$sport/src/StaticData/model" || true
+          done
+
+      - name: Save the desk's cache
+        if: always()
+        uses: actions/cache/save@v6
+        with:
+          path: .cache/model
+          key: model-desk-${{ github.run_id }}
+
+      - name: Install dependencies
+        uses: ./.github/actions/npm-install
+
+      # (the data's checks alone (whole ledgers and state, the live data's quality), not the full suite: the next
+      # full run's npm test runs the rest)
+      - name: Check the data
+        env:
+          LIVE_DATA_SOFT: "1"
+        run: node --test tests/data.test.mjs tests/model-reliability.test.mjs tests/model-writeup.test.mjs
+
+      - name: Commit the desk
+        id: commit
+        env:
+          SPORT: ${{ inputs.sport }}
+          GAME: ${{ inputs.game }}
+        run: |
+          git add apps/*/scripts/model apps/*/src/StaticData/model
+          if git diff --cached --quiet; then
+            echo "Nothing new"
+            echo "picks=false" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+          picks=false
+          if git diff --cached --name-only | grep -q 'src/StaticData/model/picks.json'; then picks=true; fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git commit -m "Model desk fast: $SPORT $GAME props"
+          for attempt in 1 2 3; do
+            if git pull --rebase && git push; then
+              echo "picks=$picks" >> "$GITHUB_OUTPUT"
+              exit 0
+            fi
+            git rebase --abort 2>/dev/null || true
+            sleep $((attempt * 10))
+          done
+          exit 1
+
+      - name: Fail on a failed sport
+        if: ${{ !cancelled() && steps.bet.outcome == 'failure' }}
+        run: |
+          echo "::error::the fast run failed: see its log"
+          exit 1
+
+  deploy:
+    needs: desk
+    if: ${{ !cancelled() && needs.desk.outputs.picks == 'true' }}
+    uses: ./.github/workflows/deploy.yml
+    secrets:
+      FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}
