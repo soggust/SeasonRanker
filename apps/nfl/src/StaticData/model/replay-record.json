@@ -1,143 +1,154 @@
 {
  "v": 1,
  "sport": "nfl",
- "epoch": "2026-10-19T17:15:00Z",
- "at": "2026-10-20T04:41:40.288Z",
+ "epoch": "2026-10-20T05:45:00Z",
+ "at": "2026-10-20T06:20:44.045Z",
  "from": "2020-09-11T00:20:00.000Z",
  "through": "2026-10-19T00:23:00.000Z",
  "n": {
   "rows": 77894,
   "keys": 44714,
-  "bets": 3241,
-  "practice": 2475,
-  "pass": 38998
+  "bets": 3240,
+  "practice": 2477,
+  "pass": 38997
  },
  "overall": {
-  "bets": 3241,
-  "won": 1611,
+  "bets": 3240,
+  "won": 1610,
   "lost": 1620,
   "push": 10,
-  "staked": 2146,
-  "profit": -5.62,
-  "roi": -0.0026,
+  "staked": 1992.5,
+  "profit": -12.04,
+  "roi": -0.006,
   "beat": null,
-  "beatN": 0
+  "beatN": 0,
+  "clv": null
  },
  "practice": {
-  "bets": 2475,
-  "won": 1240,
-  "lost": 1230,
+  "bets": 2477,
+  "won": 1241,
+  "lost": 1231,
   "push": 5,
-  "staked": 1237.5,
+  "staked": 1238.5,
   "profit": -71.04,
   "roi": -0.0574,
   "beat": null,
-  "beatN": 0
+  "beatN": 0,
+  "clv": null
  },
  "pass": {
-  "bets": 38998,
-  "won": 19932,
+  "bets": 38997,
+  "won": 19931,
   "lost": 19019,
   "push": 47,
-  "staked": 38998,
-  "profit": -1540.55,
+  "staked": 38997,
+  "profit": -1541.52,
   "roi": -0.0395,
   "beat": null,
-  "beatN": 0
+  "beatN": 0,
+  "clv": null
  },
  "byBand": {
   "lock": {
-   "bets": 15,
-   "won": 7,
-   "lost": 8,
+   "bets": 0,
+   "won": 0,
+   "lost": 0,
    "push": 0,
-   "staked": 37.5,
-   "profit": -6.77,
-   "roi": -0.1805,
+   "staked": 0,
+   "profit": 0,
+   "roi": null,
    "beat": null,
-   "beatN": 0
+   "beatN": 0,
+   "clv": null
   },
   "high": {
-   "bets": 73,
-   "won": 36,
-   "lost": 37,
+   "bets": 0,
+   "won": 0,
+   "lost": 0,
    "push": 0,
-   "staked": 114,
-   "profit": -7.36,
-   "roi": -0.0646,
+   "staked": 0,
+   "profit": 0,
+   "roi": null,
    "beat": null,
-   "beatN": 0
+   "beatN": 0,
+   "clv": null
   },
   "medium": {
-   "bets": 3153,
-   "won": 1568,
-   "lost": 1575,
+   "bets": 3240,
+   "won": 1610,
+   "lost": 1620,
    "push": 10,
-   "staked": 1994.5,
-   "profit": 8.51,
-   "roi": 0.0043,
+   "staked": 1992.5,
+   "profit": -12.04,
+   "roi": -0.006,
    "beat": null,
-   "beatN": 0
+   "beatN": 0,
+   "clv": null
   }
  },
  "byMarket": {
   "lines": {
-   "bets": 741,
-   "won": 293,
+   "bets": 740,
+   "won": 292,
    "lost": 438,
    "push": 10,
-   "staked": 370.5,
-   "profit": -27.21,
-   "roi": -0.0734,
+   "staked": 370,
+   "profit": -27.66,
+   "roi": -0.0748,
    "beat": null,
-   "beatN": 0
+   "beatN": 0,
+   "clv": null
   },
   "props": {
    "bets": 2500,
    "won": 1318,
    "lost": 1182,
    "push": 0,
-   "staked": 1775.5,
-   "profit": 21.59,
-   "roi": 0.0122,
+   "staked": 1622.5,
+   "profit": 15.62,
+   "roi": 0.0096,
    "beat": null,
-   "beatN": 0
+   "beatN": 0,
+   "clv": null
   }
  },
  "bySeason": [
   {
    "season": 2020,
    "context": "ratings",
-   "bets": 148,
-   "won": 51,
+   "bets": 147,
+   "won": 50,
    "lost": 94,
    "push": 3,
-   "staked": 74,
-   "profit": -15.8,
-   "roi": -0.2135,
+   "staked": 73.5,
+   "profit": -16.25,
+   "roi": -0.2211,
    "beat": null,
    "beatN": 0,
+   "clv": null,
    "practice": {
-    "bets": 180,
+    "bets": 181,
     "won": 96,
-    "lost": 83,
+    "lost": 84,
     "push": 1,
-    "staked": 90,
-    "profit": 1.97,
-    "roi": 0.0219,
+    "staked": 90.5,
+    "profit": 1.47,
+    "roi": 0.0162,
     "beat": null,
-    "beatN": 0
+    "beatN": 0,
+    "clv": null
    },
    "lines": {
-    "bets": 148,
-    "won": 51,
+    "bets": 147,
+    "won": 50,
     "lost": 94,
     "push": 3,
-    "staked": 74,
-    "profit": -15.8,
-    "roi": -0.2135,
+    "staked": 73.5,
+    "profit": -16.25,
+    "roi": -0.2211,
     "beat": null,
-    "beatN": 0
+    "beatN": 0,
+    "clv": null
    },
    "props": {
     "bets": 0,
@@ -148,7 +159,8 @@
     "profit": 0,
     "roi": null,
     "beat": null,
-    "beatN": 0
+    "beatN": 0,
+    "clv": null
    }
   },
   {
@@ -163,16 +175,18 @@
    "roi": 0.4611,
    "beat": null,
    "beatN": 0,
+   "clv": null,
    "practice": {
-    "bets": 252,
-    "won": 112,
+    "bets": 253,
+    "won": 113,
     "lost": 139,
     "push": 1,
-    "staked": 126,
-    "profit": -19.26,
-    "roi": -0.1529,
+    "staked": 126.5,
+    "profit": -18.76,
+    "roi": -0.1483,
     "beat": null,
-    "beatN": 0
+    "beatN": 0,
+    "clv": null
    },
    "lines": {
     "bets": 74,
@@ -183,7 +197,8 @@
     "profit": 17.06,
     "roi": 0.4611,
     "beat": null,
-    "beatN": 0
+    "beatN": 0,
+    "clv": null
    },
    "props": {
     "bets": 0,
@@ -194,7 +209,8 @@
     "profit": 0,
     "roi": null,
     "beat": null,
-    "beatN": 0
+    "beatN": 0,
+    "clv": null
    }
   },
   {
@@ -209,6 +225,7 @@
    "roi": -0.4812,
    "beat": null,
    "beatN": 0,
+   "clv": null,
    "practice": {
     "bets": 182,
     "won": 91,
@@ -218,7 +235,8 @@
     "profit": -3.3,
     "roi": -0.0363,
     "beat": null,
-    "beatN": 0
+    "beatN": 0,
+    "clv": null
    },
    "lines": {
     "bets": 96,
@@ -229,7 +247,8 @@
     "profit": -23.1,
     "roi": -0.4812,
     "beat": null,
-    "beatN": 0
+    "beatN": 0,
+    "clv": null
    },
    "props": {
     "bets": 0,
@@ -240,7 +259,8 @@
     "profit": 0,
     "roi": null,
     "beat": null,
-    "beatN": 0
+    "beatN": 0,
+    "clv": null
    }
   },
   {
@@ -250,11 +270,12 @@
    "won": 220,
    "lost": 224,
    "push": 3,
-   "staked": 370.5,
-   "profit": -10.25,
-   "roi": -0.0277,
+   "staked": 306.5,
+   "profit": -2.14,
+   "roi": -0.007,
    "beat": null,
    "beatN": 0,
+   "clv": null,
    "practice": {
     "bets": 548,
     "won": 267,
@@ -264,7 +285,8 @@
     "profit": -27.29,
     "roi": -0.0996,
     "beat": null,
-    "beatN": 0
+    "beatN": 0,
+    "clv": null
    },
    "lines": {
     "bets": 97,
@@ -275,18 +297,20 @@
     "profit": -2.42,
     "roi": -0.0499,
     "beat": null,
-    "beatN": 0
+    "beatN": 0,
+    "clv": null
    },
    "props": {
     "bets": 350,
     "won": 185,
     "lost": 165,
     "push": 0,
-    "staked": 322,
-    "profit": -7.83,
-    "roi": -0.0243,
+    "staked": 258,
+    "profit": 0.28,
+    "roi": 0.0011,
     "beat": null,
-    "beatN": 0
+    "beatN": 0,
+    "clv": null
    }
   },
   {
@@ -296,11 +320,12 @@
    "won": 92,
    "lost": 126,
    "push": 2,
-   "staked": 138,
-   "profit": 5.69,
-   "roi": 0.0412,
+   "staked": 129,
+   "profit": -1.62,
+   "roi": -0.0126,
    "beat": null,
    "beatN": 0,
+   "clv": null,
    "practice": {
     "bets": 783,
     "won": 382,
@@ -310,7 +335,8 @@
     "profit": -27.6,
     "roi": -0.0705,
     "beat": null,
-    "beatN": 0
+    "beatN": 0,
+    "clv": null
    },
    "lines": {
     "bets": 134,
@@ -321,18 +347,20 @@
     "profit": -4.05,
     "roi": -0.0604,
     "beat": null,
-    "beatN": 0
+    "beatN": 0,
+    "clv": null
    },
    "props": {
     "bets": 86,
     "won": 37,
     "lost": 49,
     "push": 0,
-    "staked": 71,
-    "profit": 9.74,
-    "roi": 0.1372,
+    "staked": 62,
+    "profit": 2.43,
+    "roi": 0.0392,
     "beat": null,
-    "beatN": 0
+    "beatN": 0,
+    "clv": null
    }
   },
   {
@@ -342,11 +370,12 @@
    "won": 1022,
    "lost": 941,
    "push": 1,
-   "staked": 1306,
-   "profit": 4.86,
-   "roi": 0.0037,
+   "staked": 1228,
+   "profit": -2.1,
+   "roi": -0.0017,
    "beat": null,
    "beatN": 0,
+   "clv": null,
    "practice": {
     "bets": 394,
     "won": 214,
@@ -356,7 +385,8 @@
     "profit": 0.2,
     "roi": 0.001,
     "beat": null,
-    "beatN": 0
+    "beatN": 0,
+    "clv": null
    },
    "lines": {
     "bets": 153,
@@ -367,18 +397,20 @@
     "profit": -3.72,
     "roi": -0.0486,
     "beat": null,
-    "beatN": 0
+    "beatN": 0,
+    "clv": null
    },
    "props": {
     "bets": 1811,
     "won": 958,
     "lost": 853,
     "push": 0,
-    "staked": 1229.5,
-    "profit": 8.58,
-    "roi": 0.007,
+    "staked": 1151.5,
+    "profit": 1.62,
+    "roi": 0.0014,
     "beat": null,
-    "beatN": 0
+    "beatN": 0,
+    "clv": null
    }
   },
   {
@@ -388,11 +420,12 @@
    "won": 158,
    "lost": 133,
    "push": 1,
-   "staked": 172.5,
-   "profit": 15.92,
-   "roi": 0.0923,
+   "staked": 170.5,
+   "profit": 16.11,
+   "roi": 0.0945,
    "beat": null,
    "beatN": 0,
+   "clv": null,
    "practice": {
     "bets": 136,
     "won": 78,
@@ -402,7 +435,8 @@
     "profit": 4.24,
     "roi": 0.0624,
     "beat": null,
-    "beatN": 0
+    "beatN": 0,
+    "clv": null
    },
    "lines": {
     "bets": 39,
@@ -413,44 +447,48 @@
     "profit": 4.82,
     "roi": 0.2472,
     "beat": null,
-    "beatN": 0
+    "beatN": 0,
+    "clv": null
    },
    "props": {
     "bets": 253,
     "won": 138,
     "lost": 115,
     "push": 0,
-    "staked": 153,
-    "profit": 11.1,
-    "roi": 0.0725,
+    "staked": 151,
+    "profit": 11.29,
+    "roi": 0.0748,
     "beat": null,
-    "beatN": 0
+    "beatN": 0,
+    "clv": null
    }
   }
  ],
  "byYear": {
   "2020": {
    "all": {
-    "bets": 143,
-    "won": 48,
+    "bets": 142,
+    "won": 47,
     "lost": 92,
     "push": 3,
-    "staked": 71.5,
-    "profit": -16.15,
-    "roi": -0.2259,
+    "staked": 71,
+    "profit": -16.6,
+    "roi": -0.2338,
     "beat": null,
-    "beatN": 0
+    "beatN": 0,
+    "clv": null
    },
    "practice": {
-    "bets": 153,
+    "bets": 154,
     "won": 77,
-    "lost": 75,
+    "lost": 76,
     "push": 1,
-    "staked": 76.5,
-    "profit": -2.52,
-    "roi": -0.0329,
+    "staked": 77,
+    "profit": -3.02,
+    "roi": -0.0392,
     "beat": null,
-    "beatN": 0
+    "beatN": 0,
+    "clv": null
    },
    "byBand": {
     "lock": {
@@ -462,7 +500,8 @@
      "profit": 0,
      "roi": null,
      "beat": null,
-     "beatN": 0
+     "beatN": 0,
+     "clv": null
     },
     "high": {
      "bets": 0,
@@ -473,30 +512,33 @@
      "profit": 0,
      "roi": null,
      "beat": null,
-     "beatN": 0
+     "beatN": 0,
+     "clv": null
     },
     "medium": {
-     "bets": 143,
-     "won": 48,
+     "bets": 142,
+     "won": 47,
      "lost": 92,
      "push": 3,
-     "staked": 71.5,
-     "profit": -16.15,
-     "roi": -0.2259,
+     "staked": 71,
+     "profit": -16.6,
+     "roi": -0.2338,
      "beat": null,
-     "beatN": 0
+     "beatN": 0,
+     "clv": null
     }
    },
    "lines": {
-    "bets": 143,
-    "won": 48,
+    "bets": 142,
+    "won": 47,
     "lost": 92,
     "push": 3,
-    "staked": 71.5,
-    "profit": -16.15,
-    "roi": -0.2259,
+    "staked": 71,
+    "profit": -16.6,
+    "roi": -0.2338,
     "beat": null,
-    "beatN": 0
+    "beatN": 0,
+    "clv": null
    },
    "props": {
     "bets": 0,
@@ -507,7 +549,8 @@
     "profit": 0,
     "roi": null,
     "beat": null,
-    "beatN": 0
+    "beatN": 0,
+    "clv": null
    }
   },
   "2021": {
@@ -520,18 +563,20 @@
     "profit": 16.39,
     "roi": 0.4683,
     "beat": null,
-    "beatN": 0
+    "beatN": 0,
+    "clv": null
    },
    "practice": {
-    "bets": 233,
-    "won": 111,
+    "bets": 234,
+    "won": 112,
     "lost": 121,
     "push": 1,
-    "staked": 116.5,
-    "profit": -10.8,
-    "roi": -0.0927,
+    "staked": 117,
+    "profit": -10.3,
+    "roi": -0.088,
     "beat": null,
-    "beatN": 0
+    "beatN": 0,
+    "clv": null
    },
    "byBand": {
     "lock": {
@@ -543,7 +588,8 @@
      "profit": 0,
      "roi": null,
      "beat": null,
-     "beatN": 0
+     "beatN": 0,
+     "clv": null
     },
     "high": {
      "bets": 0,
@@ -554,7 +600,8 @@
      "profit": 0,
      "roi": null,
      "beat": null,
-     "beatN": 0
+     "beatN": 0,
+     "clv": null
     },
     "medium": {
      "bets": 70,
@@ -565,7 +612,8 @@
      "profit": 16.39,
      "roi": 0.4683,
      "beat": null,
-     "beatN": 0
+     "beatN": 0,
+     "clv": null
     }
    },
    "lines": {
@@ -577,7 +625,8 @@
     "profit": 16.39,
     "roi": 0.4683,
     "beat": null,
-    "beatN": 0
+    "beatN": 0,
+    "clv": null
    },
    "props": {
     "bets": 0,
@@ -588,7 +637,8 @@
     "profit": 0,
     "roi": null,
     "beat": null,
-    "beatN": 0
+    "beatN": 0,
+    "clv": null
    }
   },
   "2022": {
@@ -601,7 +651,8 @@
     "profit": -14.94,
     "roi": -0.3515,
     "beat": null,
-    "beatN": 0
+    "beatN": 0,
+    "clv": null
    },
    "practice": {
     "bets": 203,
@@ -612,7 +663,8 @@
     "profit": -10.03,
     "roi": -0.0988,
     "beat": null,
-    "beatN": 0
+    "beatN": 0,
+    "clv": null
    },
    "byBand": {
     "lock": {
@@ -624,7 +676,8 @@
      "profit": 0,
      "roi": null,
      "beat": null,
-     "beatN": 0
+     "beatN": 0,
+     "clv": null
     },
     "high": {
      "bets": 0,
@@ -635,7 +688,8 @@
      "profit": 0,
      "roi": null,
      "beat": null,
-     "beatN": 0
+     "beatN": 0,
+     "clv": null
     },
     "medium": {
      "bets": 85,
@@ -646,7 +700,8 @@
      "profit": -14.94,
      "roi": -0.3515,
      "beat": null,
-     "beatN": 0
+     "beatN": 0,
+     "clv": null
     }
    },
    "lines": {
@@ -658,7 +713,8 @@
     "profit": -14.94,
     "roi": -0.3515,
     "beat": null,
-    "beatN": 0
+    "beatN": 0,
+    "clv": null
    },
    "props": {
     "bets": 0,
@@ -669,7 +725,8 @@
     "profit": 0,
     "roi": null,
     "beat": null,
-    "beatN": 0
+    "beatN": 0,
+    "clv": null
    }
   },
   "2023": {
@@ -678,11 +735,12 @@
     "won": 180,
     "lost": 194,
     "push": 3,
-    "staked": 295,
-    "profit": -8.91,
-    "roi": -0.0302,
+    "staked": 250.5,
+    "profit": -3.3,
+    "roi": -0.0132,
     "beat": null,
-    "beatN": 0
+    "beatN": 0,
+    "clv": null
    },
    "practice": {
     "bets": 514,
@@ -693,41 +751,45 @@
     "profit": -20.53,
     "roi": -0.0799,
     "beat": null,
-    "beatN": 0
+    "beatN": 0,
+    "clv": null
    },
    "byBand": {
     "lock": {
-     "bets": 10,
-     "won": 5,
-     "lost": 5,
+     "bets": 0,
+     "won": 0,
+     "lost": 0,
      "push": 0,
-     "staked": 24.5,
-     "profit": -1.08,
-     "roi": -0.0441,
+     "staked": 0,
+     "profit": 0,
+     "roi": null,
      "beat": null,
-     "beatN": 0
+     "beatN": 0,
+     "clv": null
     },
     "high": {
-     "bets": 51,
-     "won": 23,
-     "lost": 28,
+     "bets": 0,
+     "won": 0,
+     "lost": 0,
      "push": 0,
-     "staked": 80.5,
-     "profit": -11.94,
-     "roi": -0.1483,
+     "staked": 0,
+     "profit": 0,
+     "roi": null,
      "beat": null,
-     "beatN": 0
+     "beatN": 0,
+     "clv": null
     },
     "medium": {
-     "bets": 316,
-     "won": 152,
-     "lost": 161,
+     "bets": 377,
+     "won": 180,
+     "lost": 194,
      "push": 3,
-     "staked": 190,
-     "profit": 4.11,
-     "roi": 0.0216,
+     "staked": 250.5,
+     "profit": -3.3,
+     "roi": -0.0132,
      "beat": null,
-     "beatN": 0
+     "beatN": 0,
+     "clv": null
     }
    },
    "lines": {
@@ -739,18 +801,20 @@
     "profit": -9.06,
     "roi": -0.1647,
     "beat": null,
-    "beatN": 0
+    "beatN": 0,
+    "clv": null
    },
    "props": {
     "bets": 267,
     "won": 145,
     "lost": 122,
     "push": 0,
-    "staked": 240,
-    "profit": 0.15,
-    "roi": 0.0006,
+    "staked": 195.5,
+    "profit": 5.76,
+    "roi": 0.0295,
     "beat": null,
-    "beatN": 0
+    "beatN": 0,
+    "clv": null
    }
   },
   "2024": {
@@ -759,11 +823,12 @@
     "won": 121,
     "lost": 163,
     "push": 2,
-    "staked": 210.5,
-    "profit": -5.15,
-    "roi": -0.0245,
+    "staked": 182.5,
+    "profit": -10.46,
+    "roi": -0.0573,
     "beat": null,
-    "beatN": 0
+    "beatN": 0,
+    "clv": null
    },
    "practice": {
     "bets": 723,
@@ -774,41 +839,45 @@
     "profit": -31.89,
     "roi": -0.0882,
     "beat": null,
-    "beatN": 0
+    "beatN": 0,
+    "clv": null
    },
    "byBand": {
     "lock": {
-     "bets": 5,
-     "won": 2,
-     "lost": 3,
+     "bets": 0,
+     "won": 0,
+     "lost": 0,
      "push": 0,
-     "staked": 13,
-     "profit": -5.69,
-     "roi": -0.4377,
+     "staked": 0,
+     "profit": 0,
+     "roi": null,
      "beat": null,
-     "beatN": 0
+     "beatN": 0,
+     "clv": null
     },
     "high": {
-     "bets": 22,
-     "won": 13,
-     "lost": 9,
+     "bets": 0,
+     "won": 0,
+     "lost": 0,
      "push": 0,
-     "staked": 33.5,
-     "profit": 4.58,
-     "roi": 0.1367,
+     "staked": 0,
+     "profit": 0,
+     "roi": null,
      "beat": null,
-     "beatN": 0
+     "beatN": 0,
+     "clv": null
     },
     "medium": {
-     "bets": 259,
-     "won": 106,
-     "lost": 151,
+     "bets": 286,
+     "won": 121,
+     "lost": 163,
      "push": 2,
-     "staked": 164,
-     "profit": -4.04,
-     "roi": -0.0246,
+     "staked": 182.5,
+     "profit": -10.46,
+     "roi": -0.0573,
      "beat": null,
-     "beatN": 0
+     "beatN": 0,
+     "clv": null
     }
    },
    "lines": {
@@ -820,18 +889,20 @@
     "profit": -7.33,
     "roi": -0.1222,
     "beat": null,
-    "beatN": 0
+    "beatN": 0,
+    "clv": null
    },
    "props": {
     "bets": 166,
     "won": 75,
     "lost": 91,
     "push": 0,
-    "staked": 150.5,
-    "profit": 2.18,
-    "roi": 0.0145,
+    "staked": 122.5,
+    "profit": -3.13,
+    "roi": -0.0256,
     "beat": null,
-    "beatN": 0
+    "beatN": 0,
+    "clv": null
    }
   },
   "2025": {
@@ -840,11 +911,12 @@
     "won": 838,
     "lost": 778,
     "push": 1,
-    "staked": 1070,
-    "profit": 1.56,
-    "roi": 0.0015,
+    "staked": 1008.5,
+    "profit": -2.35,
+    "roi": -0.0023,
     "beat": null,
-    "beatN": 0
+    "beatN": 0,
+    "clv": null
    },
    "practice": {
     "bets": 506,
@@ -855,7 +927,8 @@
     "profit": 0.49,
     "roi": 0.0019,
     "beat": null,
-    "beatN": 0
+    "beatN": 0,
+    "clv": null
    },
    "byBand": {
     "lock": {
@@ -867,7 +940,8 @@
      "profit": 0,
      "roi": null,
      "beat": null,
-     "beatN": 0
+     "beatN": 0,
+     "clv": null
     },
     "high": {
      "bets": 0,
@@ -878,18 +952,20 @@
      "profit": 0,
      "roi": null,
      "beat": null,
-     "beatN": 0
+     "beatN": 0,
+     "clv": null
     },
     "medium": {
      "bets": 1617,
      "won": 838,
      "lost": 778,
      "push": 1,
-     "staked": 1070,
-     "profit": 1.56,
-     "roi": 0.0015,
+     "staked": 1008.5,
+     "profit": -2.35,
+     "roi": -0.0023,
      "beat": null,
-     "beatN": 0
+     "beatN": 0,
+     "clv": null
     }
    },
    "lines": {
@@ -901,18 +977,20 @@
     "profit": -2.64,
     "roi": -0.0343,
     "beat": null,
-    "beatN": 0
+    "beatN": 0,
+    "clv": null
    },
    "props": {
     "bets": 1463,
     "won": 774,
     "lost": 689,
     "push": 0,
-    "staked": 993,
-    "profit": 4.2,
-    "roi": 0.0042,
+    "staked": 931.5,
+    "profit": 0.29,
+    "roi": 0.0003,
     "beat": null,
-    "beatN": 0
+    "beatN": 0,
+    "clv": null
    }
   },
   "2026": {
@@ -921,11 +999,12 @@
     "won": 356,
     "lost": 306,
     "push": 1,
-    "staked": 421.5,
-    "profit": 21.58,
-    "roi": 0.0512,
+    "staked": 402.5,
+    "profit": 19.22,
+    "roi": 0.0478,
     "beat": null,
-    "beatN": 0
+    "beatN": 0,
+    "clv": null
    },
    "practice": {
     "bets": 143,
@@ -936,7 +1015,8 @@
     "profit": 4.24,
     "roi": 0.0593,
     "beat": null,
-    "beatN": 0
+    "beatN": 0,
+    "clv": null
    },
    "byBand": {
     "lock": {
@@ -948,7 +1028,8 @@
      "profit": 0,
      "roi": null,
      "beat": null,
-     "beatN": 0
+     "beatN": 0,
+     "clv": null
     },
     "high": {
      "bets": 0,
@@ -959,18 +1040,20 @@
      "profit": 0,
      "roi": null,
      "beat": null,
-     "beatN": 0
+     "beatN": 0,
+     "clv": null
     },
     "medium": {
      "bets": 663,
      "won": 356,
      "lost": 306,
      "push": 1,
-     "staked": 421.5,
-     "profit": 21.58,
-     "roi": 0.0512,
+     "staked": 402.5,
+     "profit": 19.22,
+     "roi": 0.0478,
      "beat": null,
-     "beatN": 0
+     "beatN": 0,
+     "clv": null
     }
    },
    "lines": {
@@ -982,18 +1065,20 @@
     "profit": 6.52,
     "roi": 0.221,
     "beat": null,
-    "beatN": 0
+    "beatN": 0,
+    "clv": null
    },
    "props": {
     "bets": 604,
     "won": 324,
     "lost": 280,
     "push": 0,
-    "staked": 392,
-    "profit": 15.06,
-    "roi": 0.0384,
+    "staked": 373,
+    "profit": 12.7,
+    "roi": 0.034,
     "beat": null,
-    "beatN": 0
+    "beatN": 0,
+    "clv": null
    }
   }
  },
@@ -1079,30 +1164,31 @@
    "staked",
    "profit",
    "beat",
-   "beatN"
+   "beatN",
+   "clv"
   ],
   "from": "2025-12-25",
   "bands": {
    "medium": {
-    "2025-12-25": "33,19,0,34.5,6.09",
-    "2025-12-27": "20,14,0,20,3.68",
-    "2025-12-28": "81,72,0,94,-3.42",
-    "2025-12-29": "9,8,0,11.5,-1.08",
-    "2026-01-03": "20,20,0,27,-0.11",
-    "2026-01-04": "52,46,0,70,1.19",
-    "2026-01-10": "14,20,0,23.5,-6.68",
-    "2026-01-11": "31,22,0,35,4.94",
-    "2026-01-12": "11,10,0,14,2.93",
-    "2026-01-17": "20,17,0,24,0.25",
-    "2026-01-18": "21,19,0,25.5,-2.04",
-    "2026-01-25": "26,14,0,25.5,6.75",
+    "2025-12-25": "33,19,0,32,4.53",
+    "2025-12-27": "20,14,0,19,2.77",
+    "2025-12-28": "81,72,0,91,-2.29",
+    "2025-12-29": "9,8,0,10.5,-0.08",
+    "2026-01-03": "20,20,0,25,0.09",
+    "2026-01-04": "52,46,0,63.5,-0.69",
+    "2026-01-10": "14,20,0,22.5,-5.68",
+    "2026-01-11": "31,22,0,32,4.07",
+    "2026-01-12": "11,10,0,13.5,2.48",
+    "2026-01-17": "20,17,0,22.5,-0.08",
+    "2026-01-18": "21,19,0,24.5,-1.04",
+    "2026-01-25": "26,14,0,24,5.53",
     "2026-02-08": "3,5,0,4.5,-1.57",
     "2026-09-09": "1,2,0,2,-1.12",
-    "2026-09-10": "2,3,0,4,-1.76",
+    "2026-09-10": "2,3,0,3,-0.76",
     "2026-09-13": "20,25,0,27,-3.22",
     "2026-09-14": "5,0,0,3,3.18",
     "2026-09-17": "3,3,0,3.5,-0.17",
-    "2026-09-20": "31,21,0,31.5,7.55",
+    "2026-09-20": "31,21,0,30.5,6.74",
     "2026-09-21": "4,2,0,4,1.64",
     "2026-09-24": "3,1,0,2.5,0.37",
     "2026-09-27": "29,26,0,31.5,1.79",
@@ -1165,6 +1251,7 @@
    "profit": -0.5,
    "timing": "close",
    "beat": null,
+   "clv": null,
    "survival": 1,
    "at": "2026-10-19T00:20:36.000Z",
    "factsAt": "2026-10-19T00:05:00.000Z",
@@ -1193,6 +1280,7 @@
    "profit": -0.5,
    "timing": "close",
    "beat": null,
+   "clv": null,
    "survival": 1,
    "at": "2026-10-18T20:25:36.000Z",
    "factsAt": "2026-10-18T17:30:00.000Z",
@@ -1221,6 +1309,7 @@
    "profit": -0.5,
    "timing": "close",
    "beat": null,
+   "clv": null,
    "survival": 1,
    "at": "2026-10-18T20:25:36.000Z",
    "factsAt": "2026-10-18T18:55:00.000Z",
@@ -1249,6 +1338,7 @@
    "profit": -0.5,
    "timing": "close",
    "beat": null,
+   "clv": null,
    "survival": 1,
    "at": "2026-10-18T20:25:36.000Z",
    "factsAt": "2026-10-18T20:00:00.000Z",
@@ -1277,6 +1367,7 @@
    "profit": 1.03,
    "timing": "close",
    "beat": null,
+   "clv": null,
    "survival": 1,
    "at": "2026-10-18T20:25:36.000Z",
    "factsAt": "2026-10-18T20:00:00.000Z",
@@ -1305,6 +1396,7 @@
    "profit": 0.46,
    "timing": "close",
    "beat": null,
+   "clv": null,
    "survival": 1,
    "at": "2026-10-18T20:25:36.000Z",
    "factsAt": "2026-10-18T20:00:00.000Z",
@@ -1333,6 +1425,7 @@
    "profit": 0.91,
    "timing": "close",
    "beat": null,
+   "clv": null,
    "survival": 1,
    "at": "2026-10-18T20:00:36.000Z",
    "factsAt": "2026-10-18T19:35:00.000Z",
@@ -1361,6 +1454,7 @@
    "profit": -1,
    "timing": "close",
    "beat": null,
+   "clv": null,
    "survival": 1,
    "at": "2026-10-18T20:00:36.000Z",
    "factsAt": "2026-10-18T19:35:00.000Z",
@@ -1389,6 +1483,7 @@
    "profit": 0.49,
    "timing": "close",
    "beat": null,
+   "clv": null,
    "survival": 1,
    "at": "2026-10-18T16:55:36.000Z",
    "factsAt": "2026-10-18T15:30:00.000Z",
@@ -1417,6 +1512,7 @@
    "profit": 0.48,
    "timing": "close",
    "beat": null,
+   "clv": null,
    "survival": 1,
    "at": "2026-10-18T17:00:36.000Z",
    "factsAt": "2026-10-18T16:35:00.000Z",
@@ -1445,6 +1541,7 @@
    "profit": -1,
    "timing": "close",
    "beat": null,
+   "clv": null,
    "survival": 1,
    "at": "2026-10-18T17:00:36.000Z",
    "factsAt": "2026-10-18T16:35:00.000Z",
@@ -1473,6 +1570,7 @@
    "profit": 0.43,
    "timing": "close",
    "beat": null,
+   "clv": null,
    "survival": 1,
    "at": "2026-10-18T17:00:36.000Z",
    "factsAt": "2026-10-18T16:35:00.000Z",
@@ -1501,6 +1599,7 @@
    "profit": -0.5,
    "timing": "close",
    "beat": null,
+   "clv": null,
    "survival": 1,
    "at": "2026-10-18T17:00:36.000Z",
    "factsAt": "2026-10-18T16:35:00.000Z",
@@ -1529,6 +1628,7 @@
    "profit": -0.5,
    "timing": "close",
    "beat": null,
+   "clv": null,
    "survival": 1,
    "at": "2026-10-18T17:00:36.000Z",
    "factsAt": "2026-10-18T16:35:00.000Z",
@@ -1557,6 +1657,7 @@
    "profit": -0.5,
    "timing": "close",
    "beat": null,
+   "clv": null,
    "survival": 1,
    "at": "2026-10-18T17:00:36.000Z",
    "factsAt": "2026-10-18T16:35:00.000Z",
@@ -1585,6 +1686,7 @@
    "profit": 0.57,
    "timing": "close",
    "beat": null,
+   "clv": null,
    "survival": 1,
    "at": "2026-10-18T17:00:36.000Z",
    "factsAt": "2026-10-18T16:35:00.000Z",
@@ -1613,6 +1715,7 @@
    "profit": -0.5,
    "timing": "close",
    "beat": null,
+   "clv": null,
    "survival": 1,
    "at": "2026-10-18T17:00:36.000Z",
    "factsAt": "2026-10-18T16:35:00.000Z",
@@ -1641,6 +1744,7 @@
    "profit": -0.5,
    "timing": "close",
    "beat": null,
+   "clv": null,
    "survival": 1,
    "at": "2026-10-18T17:00:36.000Z",
    "factsAt": "2026-10-18T16:35:00.000Z",
@@ -1669,6 +1773,7 @@
    "profit": -0.5,
    "timing": "close",
    "beat": null,
+   "clv": null,
    "survival": 1,
    "at": "2026-10-18T17:00:36.000Z",
    "factsAt": "2026-10-18T16:35:00.000Z",
@@ -1697,6 +1802,7 @@
    "profit": 0.43,
    "timing": "close",
    "beat": null,
+   "clv": null,
    "survival": 1,
    "at": "2026-10-18T17:00:36.000Z",
    "factsAt": "2026-10-18T16:35:00.000Z",
@@ -1707,16 +1813,16 @@
  "flags": {
   "timing": {
    "open": 0,
-   "close": 3241,
+   "close": 3240,
    "openSeen": 33301,
    "openClean": 29865,
-   "openInWindow": 3,
-   "barred": 741
+   "openInWindow": 27973,
+   "barred": 740
   },
   "bar": {
    "applies": true,
-   "barUnits": -27.21,
-   "fullUnits": -33.67,
+   "barUnits": -27.66,
+   "fullUnits": -34.12,
    "bySeason": {
     "2020": true,
     "2021": true,
@@ -1727,10 +1833,24 @@
     "2026": true
    }
   },
+  "tiers": {
+   "lock": 0,
+   "high": 0,
+   "medium": 3240,
+   "would": {
+    "lock": 0,
+    "high": 0,
+    "medium": 3240
+   },
+   "place": {
+    "love": false,
+    "lock": false
+   }
+  },
   "facts": {
-   "stamped": 5716,
+   "stamped": 5717,
    "late": 0,
-   "openHeld": 0,
+   "openHeld": 27970,
    "closeHeld": 0
   },
   "context": {
@@ -1751,24 +1871,24 @@
   "split": "games that start before the epoch replayed; the live ledger from the epoch on",
   "notSeen": "the live desk's CLV gates, CHECKs, research and news"
  },
- "commit": "c91c2286",
- "note": "D53. A bet placed under a band or stake rule changed since is the Bot's to price again before the start",
+ "commit": "b7d36b47",
+ "note": "D57. Reason-based confidence tiers: a LOVE needs a proven reason, a LOCK two; the Kelly size is one candidate among them",
  "inputs": {
   "v": 1,
   "sport": "nfl",
   "code": {
    "props": "87335d02c0eb",
-   "games": "426c66896f46",
-   "pricing": "5e0ad5d0035e",
-   "record": "06f0f2b0a8a9",
-   "harness": "4091a60d2d14",
+   "games": "1ec04d860019",
+   "pricing": "a2114ba00a4d",
+   "record": "f8b95aa17ec2",
+   "harness": "118965ebe403",
    "residual": "d3cd8edb82cf945d"
   },
   "fit": {
    "code": "4a1aee79b7ad0a80",
-   "expected": "4a1aee79b7ad0a80",
+   "expected": "ae0a4265112cf136",
    "day": "2026-10-19",
-   "at": "2026-10-20T02:08:22.445Z",
+   "at": "2026-10-20T02:00:33.114Z",
    "finals": 2853,
    "stats": [
     "passYds",
@@ -1783,7 +1903,7 @@
     "rushRecYds"
    ],
    "want": 10,
-   "hash": "00476c504b3b7f47"
+   "hash": "0b2152e9a79637cf"
   },
   "context": {
    "facts": true,
@@ -1851,7 +1971,7 @@
      "wx": 193
     },
     "2026": {
-     "nfl": 92,
+     "nfl": 93,
      "ol": 92,
      "rz": 92,
      "wx": 54
@@ -1895,9 +2015,9 @@
   "rows": {
    "replay": 77894,
    "keys": 44714,
-   "bets": 3241
+   "bets": 3240
   },
-  "units": -5.62,
+  "units": -12.04,
   "frozen": {
    "props": {
     "mode": "replay",
@@ -1912,6 +2032,6 @@
     "want": 55
    }
   },
-  "hash": "4882a8bf2df3ef96"
+  "hash": "b1ae8be46360bc23"
  }
 }

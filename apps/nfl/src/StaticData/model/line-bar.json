@@ -1,12 +1,12 @@
 {
  "sport": "nfl",
- "epoch": "2026-10-19T17:15:00Z",
- "commit": "b587d968",
- "at": "2026-10-20T01:50:28.539Z",
+ "epoch": "2026-10-20T05:45:00Z",
+ "commit": "b7d36b47",
+ "at": "2026-10-20T06:44:14.021Z",
  "current": 2026,
  "z": 1,
  "min": 40,
- "picks": 928,
+ "picks": 927,
  "from": "2020-09-10",
  "to": "2026-10-18",
  "segments": {
@@ -235,9 +235,9 @@
    "minEdge": null
   },
   "spread:fav:late": {
-   "n": 18.445,
-   "sum": -0.8708,
-   "sum2": 17.4167,
+   "n": 18.444,
+   "sum": -0.8722,
+   "sum2": 17.4154,
    "edges": {
     "0.01": {
      "n": 8.323,
@@ -260,7 +260,7 @@
      "sum2": 0.7831
     }
    },
-   "rows": 85,
+   "rows": 84,
    "mean": null,
    "se": null,
    "on": false,
@@ -398,8 +398,8 @@
  "applies": true,
  "place": {
   "applies": true,
-  "barUnits": -27.21,
-  "fullUnits": -30.01,
+  "barUnits": -27.66,
+  "fullUnits": -34.12,
   "bySeason": {
    "2020": true,
    "2021": true,

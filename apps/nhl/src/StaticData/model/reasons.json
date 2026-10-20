@@ -1,0 +1,763 @@
+{
+ "v": 1,
+ "sport": "nhl",
+ "at": "2026-10-20T06:37:51.905Z",
+ "epoch": "2026-10-20T05:45:00Z",
+ "markets": {
+  "spread": {
+   "seg:spread:fav:late": {
+    "on": false,
+    "strong": false,
+    "n": 65,
+    "roi": 0.0404,
+    "mean": 0.0986,
+    "rest": 0.0198,
+    "restN": 458,
+    "lead": 0.0788,
+    "z": 0.5876,
+    "beat": null,
+    "beatN": 0,
+    "beatRest": 0.5746,
+    "seasons": {
+     "lead": 2,
+     "of": 2,
+     "pos": 1
+    },
+    "why": "a lead of 7.9 points at 0.6 SEs, under 1.645",
+    "family": "segment",
+    "label": "late spread favorites"
+   },
+   "seg:spread:dog:late": {
+    "on": false,
+    "strong": false,
+    "n": 126,
+    "roi": 0.0034,
+    "mean": 0.064,
+    "rest": 0.0158,
+    "restN": 397,
+    "lead": 0.0482,
+    "z": 0.3216,
+    "beat": null,
+    "beatN": 0,
+    "beatRest": 0.5746,
+    "seasons": {
+     "lead": 3,
+     "of": 5,
+     "pos": 1
+    },
+    "why": "a lead of 4.8 points at 0.3 SEs, under 1.645",
+    "family": "segment",
+    "label": "late spread underdogs"
+   },
+   "seg:spread:dog:early": {
+    "on": false,
+    "strong": false,
+    "n": 277,
+    "roi": 0.0258,
+    "mean": 0.0213,
+    "rest": 0.0364,
+    "restN": 246,
+    "lead": -0.0151,
+    "z": -0.1246,
+    "beat": 0.5725,
+    "beatN": 262,
+    "beatRest": 0.5849,
+    "seasons": {
+     "lead": 3,
+     "of": 5,
+     "pos": 3
+    },
+    "why": "a lead of -1.5 points at -0.1 SEs, under 1.645",
+    "family": "segment",
+    "label": "early spread underdogs"
+   },
+   "openGap": {
+    "on": false,
+    "strong": false,
+    "n": 332,
+    "roi": -0.0018,
+    "mean": -0.0005,
+    "rest": 0.0743,
+    "restN": 191,
+    "lead": -0.0748,
+    "z": -0.5972,
+    "beat": 0.5746,
+    "beatN": 315,
+    "beatRest": null,
+    "seasons": {
+     "lead": 2,
+     "of": 5,
+     "pos": 3
+    },
+    "why": "its picks lose",
+    "family": "timing",
+    "label": "the Book's opening price past the sharp book's"
+   },
+   "cleanOpen": {
+    "on": false,
+    "strong": false,
+    "n": 332,
+    "roi": -0.0018,
+    "mean": -0.0005,
+    "rest": 0.0743,
+    "restN": 191,
+    "lead": -0.0748,
+    "z": -0.5972,
+    "beat": 0.5746,
+    "beatN": 315,
+    "beatRest": null,
+    "seasons": {
+     "lead": 2,
+     "of": 5,
+     "pos": 3
+    },
+    "why": "its picks lose",
+    "family": "timing",
+    "label": "bet early, at a clean open"
+   },
+   "restedVsB2b": {
+    "on": false,
+    "strong": false,
+    "n": 67,
+    "roi": -0.1143,
+    "mean": -0.076,
+    "rest": 0.0488,
+    "restN": 456,
+    "lead": -0.1248,
+    "z": -0.7671,
+    "beat": 0.7347,
+    "beatN": 49,
+    "beatRest": 0.5451,
+    "seasons": {
+     "lead": 2,
+     "of": 2,
+     "pos": 2
+    },
+    "why": "its picks lose",
+    "family": "rest",
+    "label": "rested against a back-to-back"
+   },
+   "kelly2": {
+    "on": false,
+    "strong": false,
+    "n": 51,
+    "roi": -0.0545,
+    "mean": -0.1827,
+    "rest": 0.0481,
+    "restN": 472,
+    "lead": null,
+    "z": null,
+    "beat": 0.6429,
+    "beatN": 28,
+    "beatRest": 0.5679,
+    "seasons": {
+     "lead": 1,
+     "of": 1,
+     "pos": 1
+    },
+    "why": "51 picks, under 60",
+    "family": "size",
+    "label": "a Kelly score of 2% or more"
+   },
+   "rest2": {
+    "on": false,
+    "strong": false,
+    "n": 44,
+    "roi": 0.1042,
+    "mean": 0.1818,
+    "rest": 0.014,
+    "restN": 479,
+    "lead": null,
+    "z": null,
+    "beat": 0.5556,
+    "beatN": 27,
+    "beatRest": 0.5764,
+    "seasons": {
+     "lead": 2,
+     "of": 3,
+     "pos": 2
+    },
+    "why": "44 picks, under 60",
+    "family": "rest",
+    "label": "two or more days more rest"
+   },
+   "seg:spread:fav:early": {
+    "on": false,
+    "strong": false,
+    "n": 55,
+    "roi": -0.1408,
+    "mean": -0.0836,
+    "rest": 0.0453,
+    "restN": 468,
+    "lead": null,
+    "z": null,
+    "beat": 0.5849,
+    "beatN": 53,
+    "beatRest": 0.5725,
+    "seasons": {
+     "lead": 0,
+     "of": 2,
+     "pos": 0
+    },
+    "why": "55 picks, under 60",
+    "family": "segment",
+    "label": "early spread favorites"
+   },
+   "kelly5": {
+    "on": false,
+    "strong": false,
+    "n": 1,
+    "roi": -1,
+    "mean": -1,
+    "rest": 0.0307,
+    "restN": 522,
+    "lead": null,
+    "z": null,
+    "beat": 0,
+    "beatN": 1,
+    "beatRest": 0.5764,
+    "seasons": {
+     "lead": 0,
+     "of": 0,
+     "pos": 0
+    },
+    "why": "1 picks, under 60",
+    "family": "size",
+    "label": "a Kelly score of 5% or more at a 55% chance"
+   }
+  },
+  "ml": {
+   "seg:ml:dog:early": {
+    "on": false,
+    "strong": false,
+    "n": 108,
+    "roi": 0.0196,
+    "mean": 0.1757,
+    "rest": -0.0494,
+    "restN": 333,
+    "lead": 0.2251,
+    "z": 1.422,
+    "beat": 0.5278,
+    "beatN": 108,
+    "beatRest": 0.5345,
+    "seasons": {
+     "lead": 2,
+     "of": 3,
+     "pos": 2
+    },
+    "why": "a lead of 22.5 points at 1.4 SEs, under 1.645",
+    "family": "segment",
+    "label": "early moneyline underdogs"
+   },
+   "openGap": {
+    "on": false,
+    "strong": false,
+    "n": 166,
+    "roi": -0.0232,
+    "mean": 0.0913,
+    "rest": -0.046,
+    "restN": 275,
+    "lead": 0.1373,
+    "z": 1.0362,
+    "beat": 0.5301,
+    "beatN": 166,
+    "beatRest": null,
+    "seasons": {
+     "lead": 2,
+     "of": 5,
+     "pos": 2
+    },
+    "why": "a lead of 13.7 points at 1 SEs, under 1.645",
+    "family": "timing",
+    "label": "the Book's opening price past the sharp book's"
+   },
+   "cleanOpen": {
+    "on": false,
+    "strong": false,
+    "n": 166,
+    "roi": -0.0232,
+    "mean": 0.0913,
+    "rest": -0.046,
+    "restN": 275,
+    "lead": 0.1373,
+    "z": 1.0362,
+    "beat": 0.5301,
+    "beatN": 166,
+    "beatRest": null,
+    "seasons": {
+     "lead": 2,
+     "of": 5,
+     "pos": 2
+    },
+    "why": "a lead of 13.7 points at 1 SEs, under 1.645",
+    "family": "timing",
+    "label": "bet early, at a clean open"
+   },
+   "seg:ml:dog:late": {
+    "on": false,
+    "strong": false,
+    "n": 223,
+    "roi": -0.1043,
+    "mean": -0.0795,
+    "rest": 0.0823,
+    "restN": 218,
+    "lead": -0.1618,
+    "z": -1.228,
+    "beat": null,
+    "beatN": 0,
+    "beatRest": 0.5301,
+    "seasons": {
+     "lead": 2,
+     "of": 4,
+     "pos": 2
+    },
+    "why": "its picks lose",
+    "family": "segment",
+    "label": "late moneyline underdogs"
+   },
+   "kelly2": {
+    "on": false,
+    "strong": false,
+    "n": 91,
+    "roi": -0.1904,
+    "mean": -0.1548,
+    "rest": 0.0427,
+    "restN": 350,
+    "lead": -0.1975,
+    "z": -1.2801,
+    "beat": 0.5455,
+    "beatN": 22,
+    "beatRest": 0.5278,
+    "seasons": {
+     "lead": 0,
+     "of": 1,
+     "pos": 0
+    },
+    "why": "its picks lose",
+    "family": "size",
+    "label": "a Kelly score of 2% or more"
+   },
+   "seg:ml:fav:late": {
+    "on": false,
+    "strong": false,
+    "n": 52,
+    "roi": -0.0116,
+    "mean": 0.0557,
+    "rest": 0.0045,
+    "restN": 389,
+    "lead": null,
+    "z": null,
+    "beat": null,
+    "beatN": 0,
+    "beatRest": 0.5301,
+    "seasons": {
+     "lead": 0,
+     "of": 2,
+     "pos": 0
+    },
+    "why": "52 picks, under 60",
+    "family": "segment",
+    "label": "late moneyline favorites"
+   },
+   "restedVsB2b": {
+    "on": false,
+    "strong": false,
+    "n": 46,
+    "roi": -0.0414,
+    "mean": 0.079,
+    "rest": 0.004,
+    "restN": 395,
+    "lead": null,
+    "z": null,
+    "beat": 0.8387,
+    "beatN": 31,
+    "beatRest": 0.4593,
+    "seasons": {
+     "lead": 1,
+     "of": 2,
+     "pos": 1
+    },
+    "why": "46 picks, under 60",
+    "family": "rest",
+    "label": "rested against a back-to-back"
+   },
+   "rest2": {
+    "on": false,
+    "strong": false,
+    "n": 33,
+    "roi": -0.4947,
+    "mean": -0.5151,
+    "rest": 0.0493,
+    "restN": 408,
+    "lead": null,
+    "z": null,
+    "beat": 0.7222,
+    "beatN": 18,
+    "beatRest": 0.5068,
+    "seasons": {
+     "lead": 0,
+     "of": 1,
+     "pos": 0
+    },
+    "why": "33 picks, under 60",
+    "family": "rest",
+    "label": "two or more days more rest"
+   },
+   "seg:ml:fav:early": {
+    "on": false,
+    "strong": false,
+    "n": 58,
+    "roi": -0.1029,
+    "mean": -0.0627,
+    "rest": 0.0249,
+    "restN": 383,
+    "lead": null,
+    "z": null,
+    "beat": 0.5345,
+    "beatN": 58,
+    "beatRest": 0.5278,
+    "seasons": {
+     "lead": 1,
+     "of": 2,
+     "pos": 1
+    },
+    "why": "58 picks, under 60",
+    "family": "segment",
+    "label": "early moneyline favorites"
+   },
+   "kelly5": {
+    "on": false,
+    "strong": false,
+    "n": 2,
+    "roi": 0.9848,
+    "mean": 0.9379,
+    "rest": 0.0051,
+    "restN": 439,
+    "lead": null,
+    "z": null,
+    "beat": null,
+    "beatN": 0,
+    "beatRest": 0.5301,
+    "seasons": {
+     "lead": 0,
+     "of": 0,
+     "pos": 0
+    },
+    "why": "2 picks, under 60",
+    "family": "size",
+    "label": "a Kelly score of 5% or more at a 55% chance"
+   }
+  },
+  "total": {
+   "openGap": {
+    "on": false,
+    "strong": false,
+    "n": 93,
+    "roi": 0.1025,
+    "mean": 0.1034,
+    "rest": -0.0675,
+    "restN": 720,
+    "lead": 0.171,
+    "z": 1.4637,
+    "beat": 0.3896,
+    "beatN": 77,
+    "beatRest": 0.1849,
+    "seasons": {
+     "lead": 4,
+     "of": 4,
+     "pos": 3
+    },
+    "why": "a lead of 17.1 points at 1.5 SEs, under 1.645",
+    "family": "timing",
+    "label": "the Book's opening price past the sharp book's"
+   },
+   "cleanOpen": {
+    "on": false,
+    "strong": false,
+    "n": 265,
+    "roi": 0.0327,
+    "mean": 0.0124,
+    "rest": -0.0813,
+    "restN": 548,
+    "lead": 0.0937,
+    "z": 1.203,
+    "beat": 0.2556,
+    "beatN": 223,
+    "beatRest": null,
+    "seasons": {
+     "lead": 5,
+     "of": 6,
+     "pos": 2
+    },
+    "why": "a lead of 9.4 points at 1.2 SEs, under 1.645",
+    "family": "timing",
+    "label": "bet early, at a clean open"
+   },
+   "seg:total:over:early": {
+    "on": false,
+    "strong": false,
+    "n": 160,
+    "roi": 0.0829,
+    "mean": 0.0204,
+    "rest": -0.0688,
+    "restN": 653,
+    "lead": 0.0892,
+    "z": 0.9898,
+    "beat": 0.2707,
+    "beatN": 133,
+    "beatRest": 0.2333,
+    "seasons": {
+     "lead": 3,
+     "of": 4,
+     "pos": 2
+    },
+    "why": "a lead of 8.9 points at 1 SEs, under 1.645",
+    "family": "segment",
+    "label": "early overs"
+   },
+   "seg:total:under:early": {
+    "on": false,
+    "strong": false,
+    "n": 105,
+    "roi": -0.0439,
+    "mean": 0.0012,
+    "rest": -0.0609,
+    "restN": 708,
+    "lead": 0.0621,
+    "z": 0.5569,
+    "beat": 0.2333,
+    "beatN": 90,
+    "beatRest": 0.2707,
+    "seasons": {
+     "lead": 3,
+     "of": 5,
+     "pos": 2
+    },
+    "why": "a lead of 6.2 points at 0.6 SEs, under 1.645",
+    "family": "segment",
+    "label": "early unders"
+   },
+   "seg:total:over:late": {
+    "on": false,
+    "strong": false,
+    "n": 285,
+    "roi": -0.0548,
+    "mean": -0.0651,
+    "rest": -0.047,
+    "restN": 528,
+    "lead": -0.018,
+    "z": -0.2371,
+    "beat": null,
+    "beatN": 0,
+    "beatRest": 0.2556,
+    "seasons": {
+     "lead": 3,
+     "of": 6,
+     "pos": 1
+    },
+    "why": "its picks lose",
+    "family": "segment",
+    "label": "late overs"
+   },
+   "seg:total:under:late": {
+    "on": false,
+    "strong": false,
+    "n": 263,
+    "roi": -0.1086,
+    "mean": -0.0964,
+    "rest": -0.0285,
+    "restN": 550,
+    "lead": -0.0679,
+    "z": -0.8605,
+    "beat": null,
+    "beatN": 0,
+    "beatRest": 0.2556,
+    "seasons": {
+     "lead": 0,
+     "of": 6,
+     "pos": 0
+    },
+    "why": "its picks lose",
+    "family": "segment",
+    "label": "late unders"
+   },
+   "kelly2": {
+    "on": false,
+    "strong": false,
+    "n": 161,
+    "roi": -0.154,
+    "mean": -0.1373,
+    "rest": -0.0316,
+    "restN": 652,
+    "lead": -0.1057,
+    "z": -1.1426,
+    "beat": 0.3514,
+    "beatN": 37,
+    "beatRest": 0.2366,
+    "seasons": {
+     "lead": 1,
+     "of": 5,
+     "pos": 1
+    },
+    "why": "its picks lose",
+    "family": "size",
+    "label": "a Kelly score of 2% or more"
+   },
+   "kelly5": {
+    "on": false,
+    "strong": false,
+    "n": 1,
+    "roi": 0,
+    "mean": 0,
+    "rest": -0.0532,
+    "restN": 812,
+    "lead": null,
+    "z": null,
+    "beat": null,
+    "beatN": 0,
+    "beatRest": 0.2556,
+    "seasons": {
+     "lead": 0,
+     "of": 0,
+     "pos": 0
+    },
+    "why": "1 picks, under 60",
+    "family": "size",
+    "label": "a Kelly score of 5% or more at a 55% chance"
+   }
+  },
+  "prop": {
+   "stat:sog:over": {
+    "on": false,
+    "strong": false,
+    "n": 11,
+    "roi": 0.0418,
+    "mean": 0.0418,
+    "rest": 0.1386,
+    "restN": 21,
+    "lead": null,
+    "z": null,
+    "beat": null,
+    "beatN": 0,
+    "beatRest": null,
+    "seasons": {
+     "lead": 0,
+     "of": 1,
+     "pos": 1
+    },
+    "why": "11 picks, under 60",
+    "family": "stat",
+    "label": "sog overs"
+   },
+   "stat:saves:over": {
+    "on": false,
+    "strong": false,
+    "n": 11,
+    "roi": -0.1367,
+    "mean": -0.1367,
+    "rest": 0.2321,
+    "restN": 21,
+    "lead": null,
+    "z": null,
+    "beat": null,
+    "beatN": 0,
+    "beatRest": null,
+    "seasons": {
+     "lead": 0,
+     "of": 1,
+     "pos": 0
+    },
+    "why": "11 picks, under 60",
+    "family": "stat",
+    "label": "saves overs"
+   },
+   "stat:saves:under": {
+    "on": false,
+    "strong": false,
+    "n": 6,
+    "roi": 0.3106,
+    "mean": 0.3106,
+    "rest": 0.0579,
+    "restN": 26,
+    "lead": null,
+    "z": null,
+    "beat": null,
+    "beatN": 0,
+    "beatRest": null,
+    "seasons": {
+     "lead": 0,
+     "of": 0,
+     "pos": 0
+    },
+    "why": "6 picks, under 60",
+    "family": "stat",
+    "label": "saves unders"
+   },
+   "stat:sog:under": {
+    "on": false,
+    "strong": false,
+    "n": 4,
+    "roi": 0.6375,
+    "mean": 0.6375,
+    "rest": 0.0293,
+    "restN": 28,
+    "lead": null,
+    "z": null,
+    "beat": null,
+    "beatN": 0,
+    "beatRest": null,
+    "seasons": {
+     "lead": 0,
+     "of": 0,
+     "pos": 0
+    },
+    "why": "4 picks, under 60",
+    "family": "stat",
+    "label": "sog unders"
+   }
+  }
+ },
+ "place": {
+  "love": false,
+  "lock": false,
+  "would": {
+   "lock": {
+    "n": 2,
+    "roi": 0.4,
+    "beat": 0,
+    "beatN": 1
+   },
+   "high": {
+    "n": 13,
+    "roi": -0.3971,
+    "beat": 0.3077,
+    "beatN": 13
+   },
+   "medium": {
+    "n": 1794,
+    "roi": -0.0296,
+    "beat": 0.4667,
+    "beatN": 690
+   }
+  }
+ },
+ "consts": {
+  "R_MIN": 60,
+  "Z_LOVE": 1.645,
+  "Z_LOCK": 3,
+  "STRONG_LEAD": 0.08,
+  "STRONG_BEAT": 0.05,
+  "SEASON_MIN": 10,
+  "SEASON_SHARE": 0.6,
+  "SEASONS_MIN": 2,
+  "BEAT_MIN": 30,
+  "LOVE_FLOOR": 0.02,
+  "PLACE_MIN": 40,
+  "TIER_UNITS": {
+   "medium": 1,
+   "high": 2,
+   "lock": 3
+  }
+ },
+ "commit": "b7d36b47"
+}
