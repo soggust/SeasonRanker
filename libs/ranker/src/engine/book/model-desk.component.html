@@ -88,9 +88,9 @@
 
 <!-- (a history row: its record compact (bet-format.ts compactRecord, the exact one on hover), units, return and the
      share that beat the fair close, from 30 bets with a close at their line (replay-history.ts beatText, D56)) -->
-<ng-template #histRow let-t let-total="total">
+<ng-template #histRow let-t let-total="total" let-label="label">
   <tr [class.desk-total]="total" [ngClass]="'desk-tier-' + t.label.split(' ')[0].toLowerCase()">
-    <th>@if (t.sport) {<span class="desk-history-league"><ng-container *ngTemplateOutlet="leagueMark; context: { $implicit: t.sport, titled: true }"></ng-container></span>} @else { {{ t.label }} }</th>
+    <th>@if (t.sport) {<span class="desk-history-league"><ng-container *ngTemplateOutlet="leagueMark; context: { $implicit: t.sport, titled: true }"></ng-container></span>} @else { {{ label ?? t.label }} }</th>
     <td [attr.title]="recordTip(t)">{{ recordText(t) }}</td>
     <td [class.up]="t.profit > 0" [class.down]="t.profit < 0">{{ units(t.profit) }}</td>
     <td [class.up]="(t.roi ?? 0) > 0" [class.down]="(t.roi ?? 0) < 0">{{ pct(t.roi) }}</td>
@@ -177,7 +177,7 @@
       </card-panel>
 
       <!-- (By Confidence: the Book's bands on the history, LOCK at the top to PASS at the bottom, the practice picks
-           (each slate's best few short of the vig, at 0.5u) faint between LIKE and PASS, PASS muted, the total under them) -->
+           (each slate's best few short of the vig, at 0.5u) faint between LIKE and PASS, PASS muted, the total under them, "Confident": the bets alone, no practice pick or PASS (the owner, 2026-10-20)) -->
       <card-panel class="tab-card group-results desk-history-panel" label="By Confidence" icon="local_fire_department" [open]="panelOpen('confidence')" (toggled)="togglePanel('confidence')" [hint]="h.caveat">
         <div class="group-body">
           <table class="desk-table desk-history-table">
@@ -188,7 +188,7 @@
               @for (t of bandRows; track t.label) {
                 <ng-container *ngTemplateOutlet="histRow; context: { $implicit: t }"></ng-container>
               }
-              <ng-container *ngTemplateOutlet="histRow; context: { $implicit: h.overall, total: true }"></ng-container>
+              <ng-container *ngTemplateOutlet="histRow; context: { $implicit: h.overall, total: true, label: 'Confident' }"></ng-container>
             </tbody>
           </table>
         </div>
