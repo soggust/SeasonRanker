@@ -3,7 +3,7 @@
  "cursor": {
   "johnston-bot.bsky.social": "2026-10-19T14:14:39.946Z",
   "notfriedgehnic.bsky.social": "2026-10-19T18:17:18.476Z",
-  "dailyfaceoff.bsky.social": "2026-10-20T00:07:53.000Z",
+  "dailyfaceoff.bsky.social": "2026-10-20T04:28:15.000Z",
   "dfotoronto.bsky.social": "2026-10-20T02:33:26.000Z",
   "marklazerus.bsky.social": "2026-10-20T03:09:17.882Z"
  },
@@ -176,6 +176,19 @@
    "kind": "status",
    "confidence": 0.95,
    "text": "Flyers place Owen Tippett on injured reserve #nhl #nhlhockey #dailyfaceoff"
+  },
+  {
+   "id": "at://did:plc:3uus7y6h3rlrk6sbctzxm4bg/app.bsky.feed.post/3mybsbmy5ts2f|bryanrust|none|status",
+   "at": "2026-10-20T04:28:15.000Z",
+   "seen": "2026-10-20T04:43:56.211Z",
+   "handle": "dailyfaceoff.bsky.social",
+   "post": "at://did:plc:3uus7y6h3rlrk6sbctzxm4bg/app.bsky.feed.post/3mybsbmy5ts2f",
+   "player": "Bryan Rust",
+   "team": "PIT",
+   "status": "none",
+   "kind": "status",
+   "confidence": 0.4,
+   "text": "Penguins’ Bryan Rust leaves game with lower-body injury"
   }
  ]
 }
