@@ -1,4 +1,5 @@
 import { Injectable, computed, signal } from '@angular/core';
+import { fetchJson } from '@ranker/core/http';
 import { ESPN_LEAGUES } from '../../book/desk-math';
 import { SummaryBox, liveStat } from '../../book/live-props';
 import { EspnEvent, GameBoard, boardOf, espnDay, modelGameBoard, modelGameOf } from './wallet-math';
@@ -287,9 +288,7 @@ export class LinesService {
   // the grader does); null when it isn't in it
   async propCounts(sport: string, event: string, props: { id: string; propType: string; athlete: string }[]): Promise<Map<string, number | null>> {
     const out = new Map<string, number | null>();
-    const body = (await fetch(`https://site.api.espn.com/apis/site/v2/sports/${ESPN_LEAGUES[sport]}/summary?event=${event}`)
-      .then((res) => (res.ok ? res.json() : null))
-      .catch(() => null)) as SummaryBox | null;
+    const body = await fetchJson<SummaryBox | null>(`https://site.api.espn.com/apis/site/v2/sports/${ESPN_LEAGUES[sport]}/summary?event=${event}`, null);
     for (const p of props) out.set(p.id, liveStat(sport, p.propType, p.athlete, body));
     return out;
   }

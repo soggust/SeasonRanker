@@ -1,4 +1,5 @@
 import { Component, DestroyRef, ElementRef, HostListener, Injector, NgZone, OnDestroy, OnInit, ViewChild, afterNextRender, effect, inject, untracked } from '@angular/core';
+import { fetchJson } from '@ranker/core/http';
 import { TicketGrow } from './ticket-grow';
 import { quietListener } from '@ranker/core/quiet-listener';
 import { favorableGrade, tierLabel, tierOf, unranked } from './tiers';
@@ -327,10 +328,7 @@ export class BookPageComponent implements OnInit, OnDestroy {
     }
     for (const s of fresh) this.loaded.add(s.id);
     this.reading++;
-    const get = (url: string) =>
-      fetch(url, { cache: 'no-cache' })
-        .then((res) => (res.ok ? res.json() : null))
-        .catch(() => null);
+    const get = (url: string) => fetchJson<unknown>(url, null, { cache: 'no-cache' });
     const files = await Promise.all(fresh.map(async (s) => ({ sport: s.id, picks: (await get(`/${s.id}/data/model/picks.json`)) as Picks | null })));
     this.reading--;
     if (this.closed) return;

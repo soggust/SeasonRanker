@@ -1,4 +1,5 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { fetchJson } from '@ranker/core/http';
 import { AboutSection } from '../about/about-frame.component';
 import { BANDS } from './bet-why';
 import { AnytimeFit, CHECK_CAUSE_LABELS, CheckTally, ContextTerm, ModelState, PropType, Trust, calibText, playChanceText, propTerms, sameGameText, softTerms } from './desk-model';
@@ -208,11 +209,7 @@ export class BookAboutComponent implements OnInit {
   private async load(): Promise<void> {
     this.loading = true;
     const states = await Promise.all(
-      SPORTS.map((sport) =>
-        fetch(`/${sport}/data/model/state.json`, { cache: 'no-cache' })
-          .then((res) => (res.ok ? (res.json() as Promise<ModelState & { epoch?: string }>) : null))
-          .catch(() => null),
-      ),
+      SPORTS.map((sport) => fetchJson<(ModelState & { epoch?: string }) | null>(`/${sport}/data/model/state.json`, null, { cache: 'no-cache' })),
     );
     this.sports = states.flatMap((s, i) => (s ? [this.viewOf(SPORTS[i], s)] : []));
     this.loading = false;

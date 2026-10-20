@@ -1,4 +1,5 @@
 import { Component, ElementRef, HostListener, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { fetchJson } from '@ranker/core/http';
 import { americanOdds, compactCount, deskLeagueLogo, recordTip, fightPick, fightSides, headshot, hideImage, pct, teamLogo, units } from './bet-format';
 import { darkLogoOf } from '../team-look';
 import { matchupName } from './game-menu';
@@ -55,10 +56,7 @@ const readFlipped = (): Set<string> => {
   }
 };
 
-const getJson = <T>(url: string, init?: RequestInit): Promise<T | null> =>
-  fetch(url, init)
-    .then((res) => (res.ok ? (res.json() as Promise<T>) : null))
-    .catch(() => null);
+const getJson = <T>(url: string, init?: RequestInit): Promise<T | null> => fetchJson<T | null>(url, null, init);
 
 // A section of a game's bets on the Algorithm's lists: its game bets, or one team's player props
 interface DeskSection {
@@ -325,15 +323,22 @@ export class ModelDeskComponent implements OnInit, OnDestroy {
     // and would sit In Play until graded)
     const dayOf = (iso: string) => new Date(iso).toLocaleDateString('en-CA', { timeZone: 'America/New_York' }).replace(/-/g, '');
     const slates = new Set(live.map((b) => `${b.sport}|${dayOf(b.start)}`));
-    for (const slate of slates) {
-      const [sport, day] = slate.split('|');
-      const board = await getJson<{ events?: ScoreboardEvent[] }>(`https://site.api.espn.com/apis/site/v2/sports/${ESPN_LEAGUES[sport]}/scoreboard?dates=${day}`);
-      for (const event of board?.events ?? []) this.readEvent(event);
-    }
+    // (every slate asked at once, then read in order)
+    const boards = await Promise.all(
+      [...slates].map((slate) => {
+        const [sport, day] = slate.split('|');
+        return fetchJson<{ events?: ScoreboardEvent[] } | null>(`https://site.api.espn.com/apis/site/v2/sports/${ESPN_LEAGUES[sport]}/scoreboard?dates=${day}`, null);
+      }),
+    );
+    for (const board of boards) for (const event of board?.events ?? []) this.readEvent(event);
     const props = live.filter((b) => b.market === 'prop' && b.event && b.athlete !== undefined && b.propType);
-    for (const event of new Set(props.map((b) => b.event!))) {
-      const mine = props.filter((b) => b.event === event);
-      const body = await getJson<SummaryBox>(`https://site.api.espn.com/apis/site/v2/sports/${ESPN_LEAGUES[mine[0].sport]}/summary?event=${event}`);
+    // (each game's summary asked at once, then read in order)
+    const games = [...new Set(props.map((b) => b.event!))].map((event) => props.filter((b) => b.event === event));
+    const bodies = await Promise.all(
+      games.map((mine) => fetchJson<SummaryBox | null>(`https://site.api.espn.com/apis/site/v2/sports/${ESPN_LEAGUES[mine[0].sport]}/summary?event=${mine[0].event}`, null)),
+    );
+    for (const [i, mine] of games.entries()) {
+      const body = bodies[i];
       for (const b of mine) {
         this.propNow.set(b.id, liveStat(b.sport, b.propType!, String(b.athlete), body));
         const team = athleteTeam(String(b.athlete), body);
