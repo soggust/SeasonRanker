@@ -217,8 +217,10 @@ $page-gutter: 16px;
 }
 
 // The bankroll: a player's card at the row's right (after the About button, which takes the row's spare room), the
-// whole card the way to the wallet: a lock-chocolate chip,
-// BANKROLL and what's in play over the balance (big, lit) and the record with its return
+// whole card the way to the wallet: BANKROLL and what's in play over the balance (big, lit), all of it right-aligned,
+// the lock-chocolate chip to the right of the words (the owner, 2026-10-19). Its right padding is the ticket's
+// (wallet-slip.scss .ticket: 22px docked, 18px as the sheet under the docking width), so the chip's right edge and
+// the ticket's words line up down the right column
 .bankroll {
   @include chip.player-card(v.$radius-xl);
   align-items: center;
@@ -228,8 +230,9 @@ $page-gutter: 16px;
   display: grid;
   flex: none;
   gap: v.$space-2 v.$space-12;
-  grid-template-columns: auto 1fr;
-  padding: 10px 14px;
+  grid-template-columns: 1fr auto;
+  padding: 10px 22px 10px 14px;
+  text-align: right;
   text-decoration: none;
   transition:
     filter v.$t-hover ease,
@@ -248,7 +251,8 @@ $page-gutter: 16px;
   .bankroll-chip {
     --clay: #{chip.$lock};
     border-width: 4px;
-    grid-row: span 2;
+    grid-column: 2;
+    grid-row: 1 / span 2;
     height: 34px;
     width: 34px;
 
@@ -262,7 +266,8 @@ $page-gutter: 16px;
     align-items: baseline;
     display: flex;
     gap: v.$space-8;
-    justify-content: space-between;
+    grid-column: 1;
+    justify-content: flex-end;
     min-width: 0;
   }
 
@@ -2869,6 +2874,13 @@ mat-icon.gloves {
   }
 }
 
+// (under the docking width the ticket is the bottom sheet, 18px in from its right edge: the bankroll's words as far in)
+@media (max-width: #{v.bp(wide-menu) - 1px}) {
+  .bankroll {
+    padding-right: 18px;
+  }
+}
+
 // ---------------------------------------------------------------------------
 // Phones and small tablets (700px and under), the phone design: the header THE BOOK and the bankroll as a small
 // pill, the views' bar under them full width at 40px, the game dropdown full width, the chips 44px in one row
@@ -2911,6 +2923,7 @@ mat-icon.gloves {
     border-radius: v.$radius-lg;
     display: flex;
     gap: v.$space-8;
+    justify-content: flex-end;
     padding: 7px 12px;
     width: auto;
 
