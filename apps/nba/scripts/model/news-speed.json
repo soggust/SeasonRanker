@@ -2660,6 +2660,42 @@
     "own": "2026-10-20T22:30:47.905Z",
     "why": "@insidenbanews.bsky.social: Dean Wade (ankle) listed out Tuesday."
    }
+  },
+  "401909841|brandencarlson|out": {
+   "game": "401909841",
+   "start": "2026-10-22T02:00Z",
+   "team": "22",
+   "name": "Branden Carlson",
+   "status": "out",
+   "athlete": "4592435",
+   "espn": {
+    "seen": "2026-10-20T23:50:40.147Z",
+    "own": "2026-10-20T23:41:00.000Z"
+   }
+  },
+  "401909841|chrisyoungblood|out": {
+   "game": "401909841",
+   "start": "2026-10-22T02:00Z",
+   "team": "22",
+   "name": "Chris Youngblood",
+   "status": "out",
+   "athlete": "4706557",
+   "espn": {
+    "seen": "2026-10-20T23:50:40.147Z",
+    "own": "2026-10-20T23:41:00.000Z"
+   }
+  },
+  "401909841|deniavdija|q": {
+   "game": "401909841",
+   "start": "2026-10-22T02:00Z",
+   "team": "22",
+   "name": "Deni Avdija",
+   "status": "q",
+   "athlete": "4683021",
+   "espn": {
+    "seen": "2026-10-20T23:50:40.147Z",
+    "own": "2026-10-20T23:35:00.000Z"
+   }
   }
  }
 }
