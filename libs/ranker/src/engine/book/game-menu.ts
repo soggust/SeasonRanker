@@ -27,6 +27,9 @@ export interface MenuGameIn {
   // (the two teams as the matchup names them, away then home, each with its logo's address when the page has
   // one (a fighter's his headshot); none known, the row shows the name alone)
   teams?: MenuTeam[];
+  // (a fight's card, its event's name on ESPN as the betting board carries it: "UFC 333: Volkanovski vs. Evloev";
+  // none for a team sport's game, or a bout the board hasn't named)
+  card?: string | null;
 }
 
 export interface MenuTeam {
@@ -48,12 +51,23 @@ export interface MenuGame {
   count: number | null;
   // (the two faces before the name, in the name's order: a fight's first-listed fighter first)
   faces: MenuTeam[];
+  card: string | null;
 }
 
 export interface MenuSport {
   sport: string;
   name: string;
   icon: string;
+  games: MenuGame[];
+  // (its "All ..." rows, first under its heading: one for a team sport's day, MMA's one for each card that day
+  // (a UFC card and a PFL one the same night are two rows, each its own fights): allRows)
+  alls: MenuAll[];
+}
+
+// An "All ..." row: its value (allKey), its words (allLabel), and the games it lays out, in start order
+export interface MenuAll {
+  key: string;
+  label: string;
   games: MenuGame[];
 }
 
@@ -109,6 +123,7 @@ export function gameMenu(games: MenuGameIn[], sports: MenuSports, timeZone?: str
       at: when.getTime(),
       count: g.count,
       faces: g.sport === 'mma' ? [...teams].reverse() : teams,
+      card: g.card ?? null,
       day: when.toLocaleDateString('en-US', { weekday: 'long', month: 'short', day: 'numeric', timeZone }),
     });
   }
@@ -120,12 +135,23 @@ export function gameMenu(games: MenuGameIn[], sports: MenuSports, timeZone?: str
     if (d?.day !== day) days.push((d = { day, sports: [] }));
     let s = d.sports.find((x) => x.sport === game.sport);
     if (!s) {
-      s = { sport: game.sport, name: sports.find((x) => x.id === game.sport)?.label ?? game.sport.toUpperCase(), icon: SPORT_ICONS[game.sport] ?? 'sports', games: [] };
+      s = { sport: game.sport, name: sports.find((x) => x.id === game.sport)?.label ?? game.sport.toUpperCase(), icon: SPORT_ICONS[game.sport] ?? 'sports', games: [], alls: [] };
       d.sports.push(s);
     }
     s.games.push(game);
   }
+  for (const d of days) for (const s of d.sports) s.alls = allRows(d.day, s);
   return days;
+}
+
+// A sport's "All ..." rows under one day: a team sport's one, every game; MMA's one a card, by its first fight
+// (the owner, 2026-10-20: "UFC 333", "Fight Night: ...", a PFL card its own row with its fights alone). Fights
+// whose card isn't known share the night's one unnamed row
+function allRows(day: string, s: MenuSport): MenuAll[] {
+  if (s.sport !== 'mma') return [{ key: allKey(day, s.sport), label: allLabel(s.sport, s.name), games: s.games }];
+  const cards = new Map<string, MenuGame[]>();
+  for (const g of s.games) cards.set(g.card ?? '', [...(cards.get(g.card ?? '') ?? []), g]);
+  return [...cards].map(([card, games]) => ({ key: allKey(day, s.sport, card), label: allLabel(s.sport, s.name, card), games }));
 }
 
 // The games the dropdown lists by their lines alone: on a board, not begun, with a line posted, and no row on the
@@ -165,24 +191,42 @@ export function chosenSport(value: string): string | null {
 export function groupKey(day: string, sport: string): string {
   return `${sportChoice(sport)}|${day}`;
 }
-// A sport's first row under its heading, "All NHL games" (MMA's "All UFC fights"): the row that chooses the
-// sport (its best bets, every day's), the heading itself only folding and unfolding its games (the owner,
-// 2026-10-19: a click on the sport's heading that also chose the sport felt weird). Its value, the heading's own
-// with "all:" for "sport:": "all:nhl|Saturday, Oct 17"
+// A sport's first row under its heading, "All NHL games" (MMA's a row for each card, "UFC 333"), the heading
+// itself only folding and unfolding its games (the owner, 2026-10-19: a click on the sport's heading that also
+// chose the sport felt weird). Chosen, the board is that day's every game's lines, one after another in start
+// order, not the sport's Bot Picks (the owner, 2026-10-20). Its value, the heading's own with "all:" for
+// "sport:": "all:nhl|Saturday, Oct 17"; a card's with its name after: "all:mma|Saturday, Oct 24|UFC 333: ..."
 const ALL_CHOICE = 'all:';
-export function allKey(day: string, sport: string): string {
-  return `${ALL_CHOICE}${sport}|${day}`;
+export function allKey(day: string, sport: string, card = ''): string {
+  return `${ALL_CHOICE}${sport}|${day}${card ? `|${card}` : ''}`;
 }
 // (the sport an "All ..." row's value chooses, or null for any other value)
 export function allOf(value: string): string | null {
   return value.startsWith(ALL_CHOICE) ? value.slice(ALL_CHOICE.length).split('|')[0] : null;
 }
-export function allLabel(sport: string, name: string): string {
-  return sport === 'mma' ? 'All UFC fights' : `All ${name} games`;
+export function allLabel(sport: string, name: string, card?: string | null): string {
+  return sport === 'mma' ? cardLabel(card) : `All ${name} games`;
+}
+// (a card's row by its event, ESPN's name for it (the owner, 2026-10-20): a numbered one by its number, "UFC 333:
+// Volkanovski vs. Evloev" as "UFC 333" (any promotion's: "PFL 24: ..." as "PFL 24"); a UFC Fight Night by its
+// headliners, "UFC Fight Night: Buckley vs. Malott" as "Fight Night: Buckley vs. Malott" (the board carries no
+// city); any other by its name as ESPN has it; none, "Fight Night")
+export function cardLabel(card: string | null | undefined): string {
+  const name = (card ?? '').trim();
+  if (!name) return 'Fight Night';
+  const night = /^UFC Fight Night\b[:\s-]*(.*)$/i.exec(name);
+  if (night) return night[1] ? `Fight Night: ${night[1]}` : 'Fight Night';
+  const numbered = /^([A-Za-z][\w&.' -]*? \d+)(?::|$)/.exec(name);
+  return numbered ? numbered[1] : name;
+}
+// (the "All ..." row a value names, with its games, or null: gone from the list)
+export function allRow(days: MenuDay[], key: string): MenuAll | null {
+  for (const d of days) for (const s of d.sports) for (const a of s.alls) if (a.key === key) return a;
+  return null;
 }
 // (the heading a game's key, or an "All ..." row's, sits under, or null)
 export function groupOf(days: MenuDay[], key: string): string | null {
-  for (const d of days) for (const s of d.sports) if (key === allKey(d.day, s.sport) || s.games.some((g) => g.key === key)) return groupKey(d.day, s.sport);
+  for (const d of days) for (const s of d.sports) if (s.alls.some((a) => a.key === key) || s.games.some((g) => g.key === key)) return groupKey(d.day, s.sport);
   return null;
 }
 // (the closed dropdown's words with a sport chosen: "NFL · Best Bets", both capitals as everywhere)
@@ -214,7 +258,7 @@ export function menuValues(days: MenuDay[], closed: ReadonlySet<string> = new Se
     ...days.flatMap((d) =>
       d.sports.flatMap((s) => {
         const head = groupKey(d.day, s.sport);
-        return closed.has(head) ? [head] : [head, allKey(d.day, s.sport), ...s.games.map((g) => g.key)];
+        return closed.has(head) ? [head] : [head, ...s.alls.map((a) => a.key), ...s.games.map((g) => g.key)];
       }),
     ),
   ];

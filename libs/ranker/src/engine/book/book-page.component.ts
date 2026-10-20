@@ -24,7 +24,7 @@ import { BET_KINDS, BandTally, BetKind, BetRow, ByLevel, GameInfo, Picks, bookRo
 export { BET_KINDS, BetKind, BetRow, CheckResearch } from './book-rows';
 import { PopoverAt, phoneSheet, popoverAt } from '@ranker/core/breakdown';
 import { pickTeamColor, splitPick } from './pick-style';
-import { BEST_BETS_LABEL, MenuDay, allKey, allLabel, allOf, MenuGame, MenuGameIn, MenuTeam, chosenSport, dayBand, defaultClosed, gameLine, gameMenu, gamePicksHead, groupKey, groupOf, linesOnlyGames, menuKey, menuOptionId, menuValues, shownEvents, sportChoice, sportFace, viewsShown } from './game-menu';
+import { BEST_BETS_LABEL, MenuAll, MenuDay, allOf, allRow, MenuGame, MenuGameIn, MenuTeam, chosenSport, dayBand, defaultClosed, gameLine, gameMenu, gamePicksHead, groupKey, groupOf, linesOnlyGames, menuKey, menuOptionId, menuValues, shownEvents, sportChoice, sportFace, viewsShown } from './game-menu';
 import { darkLogoOf, teamLook } from '../team-look';
 import { LiveService } from './live.service';
 import { QuoteSources, joinSuggestions, quoteOf, suggestionsOf, withLive } from './suggestions';
@@ -261,6 +261,10 @@ export class BookPageComponent implements OnInit, OnDestroy {
   // chosen inside it opens that game, the sport still under it (the game's back is that sport's board); a game
   // of another sport, or Best bets · every game, clears it)
   sport = storedSport();
+  // (or a sport's "All ..." row, one day's (MMA's one card's): its value (game-menu.ts allKey), the board every
+  // game's lines one after another (the owner, 2026-10-20: not the sport's Bot Picks). Not kept for the visit, as a
+  // game isn't; a game, a sport or Bot Picks chosen clears it)
+  allGames = '';
   readonly limit = 40;
   readonly gameLimit = 15;
   // (the CHECKs an admin's All Games shows, the biggest gaps first, over the 40 bets)
@@ -470,7 +474,7 @@ export class BookPageComponent implements OnInit, OnDestroy {
     // Only a row on show: a game whose picks the list hides (a practice pick with no edge) is here by its lines,
     // never gone from the dropdown (game-menu.ts linesOnlyGames))
     for (const g of linesOnlyGames(this.lines.boards().values(), shownEvents(this.listed))) {
-      out.push({ key: linesKey(g), sport: g.sport, matchup: g.matchup, start: g.start, count: null, teams: [g.away, g.home].map((t) => this.menuTeam(g.sport, t.abbr, t.logo)) });
+      out.push({ key: linesKey(g), sport: g.sport, matchup: g.matchup, start: g.start, count: null, teams: [g.away, g.home].map((t) => this.menuTeam(g.sport, t.abbr, t.logo)), card: this.cardOf(g.sport, g.event) });
     }
     return out;
   }
@@ -518,6 +522,8 @@ export class BookPageComponent implements OnInit, OnDestroy {
   // own board, refreshed while it's chosen, is what finds it under way), before the page is drawn again)
   private dropGone(): void {
     if (this.game && !this.menu().games.has(this.game)) this.game = '';
+    // (an "All ..." row gone (its day's games all begun): Bot Picks again)
+    if (this.allGames && !allRow(this.menu().days, this.allGames)) this.allGames = '';
   }
   // (the ticket growing over the recent form as its first bet lands, and back as it empties (ticket-grow.ts): its
   // box measured here, before the page's has-ticket class lands (a component's effect runs ahead of its view's
@@ -709,7 +715,7 @@ export class BookPageComponent implements OnInit, OnDestroy {
     for (const r of rows) {
       if (!r.game) continue;
       const key = this.gameKey(r);
-      const game = byGame.get(key) ?? { key, sport: r.sport, matchup: r.game.matchup, start: r.game.kickoff ?? null, date: r.game.date, count: 0, bets: 0, teams: r.game.teams?.map((t) => this.menuTeam(r.sport, t.abbr, t.logo)) };
+      const game = byGame.get(key) ?? { key, sport: r.sport, matchup: r.game.matchup, start: r.game.kickoff ?? null, date: r.game.date, count: 0, bets: 0, teams: r.game.teams?.map((t) => this.menuTeam(r.sport, t.abbr, t.logo)), card: r.pickId ? this.cardOf(r.sport, r.pickId.split(':')[0]) : null };
       if (r.check) game.count++;
       else if (game.bets < this.gameLimit) {
         game.bets++;
@@ -718,6 +724,25 @@ export class BookPageComponent implements OnInit, OnDestroy {
       byGame.set(key, game);
     }
     return [...byGame.values()];
+  }
+  // (a bout's card, the name its sport's betting board gives it (ESPN's event name); a team sport's game none)
+  private cardOf(sport: string, event: string): string | null {
+    return sport === 'mma' ? (this.lines.modelGame(sport, event)?.card ?? null) : null;
+  }
+
+  // (the chosen "All ..." row and its games' boards, in start order (game-menu.ts allRow): the board's view when
+  // one is chosen; a game with no board found left out)
+  get chosenAll(): MenuAll | null {
+    return this.allGames ? allRow(this.menu().days, this.allGames) : null;
+  }
+  get allSport(): string {
+    return allOf(this.allGames) ?? '';
+  }
+  get allBoards(): { game: MenuGame; board: GameBoardPicks }[] {
+    return (this.chosenAll?.games ?? []).flatMap((game) => {
+      const board = this.boardFor(game.key);
+      return board ? [{ game, board }] : [];
+    });
   }
 
   // (how many bets Best bets shows, for the dropdown's face: the list's bets, the top 40 at most; a sport's
@@ -734,8 +759,6 @@ export class BookPageComponent implements OnInit, OnDestroy {
   readonly sportChoice = sportChoice;
   readonly dayBand = dayBand;
   readonly groupKey = groupKey;
-  readonly allKey = allKey;
-  readonly allLabel = allLabel;
   // (a sport row's mark in the list: the league's own logo (bet-format.ts leagueLogo, ESPN's, as the wallet's and
   // the desk's tables show it) for the four leagues; MMA keeps its gloves icon)
   leagueMark(sport: string): string | null {
@@ -743,7 +766,7 @@ export class BookPageComponent implements OnInit, OnDestroy {
   }
   readonly optId = menuOptionId;
   get choice(): string {
-    return this.game || (this.sport ? sportChoice(this.sport) : '');
+    return this.allGames || this.game || (this.sport ? sportChoice(this.sport) : '');
   }
 
   // The dropdown's open list, the page's own (a listbox under the pill, not Material's overlay): Best bets ·
@@ -772,10 +795,11 @@ export class BookPageComponent implements OnInit, OnDestroy {
   }
   openMenu(): void {
     this.menuOpen = true;
-    this.folded = defaultClosed(this.gameMenu, this.game, this.sport);
-    // (the lit row: the chosen game, or the chosen sport's first "All ..." row (its heading when folded), or Best Bets)
+    this.folded = defaultClosed(this.gameMenu, this.game, this.sport || (allOf(this.allGames) ?? ''));
+    // (the lit row: the chosen "All ..." row or game, or the chosen sport's first "All ..." row (its heading when
+    // folded), or Best Bets)
     const values = menuValues(this.gameMenu, this.folded);
-    this.active = this.game || (this.sport ? (values.find((v) => allOf(v) === this.sport) ?? values.find((v) => chosenSport(v) === this.sport) ?? '') : '');
+    this.active = this.allGames || this.game || (this.sport ? (values.find((v) => allOf(v) === this.sport) ?? values.find((v) => chosenSport(v) === this.sport) ?? '') : '');
     // (the list is in the DOM on the next check: then the focus and the lit row into view)
     setTimeout(() => {
       this.gameList?.nativeElement.focus({ preventScroll: true });
@@ -805,10 +829,9 @@ export class BookPageComponent implements OnInit, OnDestroy {
       this.active = action.value;
       this.showActive();
     } else if (action.kind === 'choose') {
-      // (a heading's Enter folds or unfolds it, the list staying open; an "All ..." row's chooses its sport)
-      const all = allOf(this.active);
+      // (a heading's Enter folds or unfolds it, the list staying open; an "All ..." row's chooses its games' lines)
       if (chosenSport(this.active) !== null) this.toggleGroup(this.active);
-      else this.pick(all !== null ? sportChoice(all) : this.active, true);
+      else this.pick(this.active, true);
     }
     else if (action.kind === 'expand' || action.kind === 'collapse') {
       // (on a heading: unfold or fold its games; Left on a game: up to its heading)
@@ -841,6 +864,7 @@ export class BookPageComponent implements OnInit, OnDestroy {
   choose(value: string): void {
     const sport = chosenSport(value);
     if (sport !== null) this.chooseSport(sport);
+    else if (allOf(value) !== null) this.chooseAll(value);
     else if (value) this.chooseGame(value);
     else {
       this.chooseSport('');
@@ -859,7 +883,14 @@ export class BookPageComponent implements OnInit, OnDestroy {
       storeSport(sport);
     }
     this.game = '';
+    this.allGames = '';
     this.closeWhy();
+  }
+
+  // (an "All ..." row chosen: its games' lines, no game and no sport's picks under them)
+  chooseAll(key: string): void {
+    this.chooseSport('');
+    this.allGames = key;
   }
 
   // (a game picked from the dropdown, or no game (''): the list's filter, as before; a game of another sport than
@@ -870,6 +901,7 @@ export class BookPageComponent implements OnInit, OnDestroy {
       storeSport('');
     }
     this.game = key;
+    this.allGames = '';
     this.gamePicksOpen = false;
     this.closeWhy();
   }

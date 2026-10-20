@@ -164,7 +164,9 @@ test('a sport row in the game list starts with its fold chevron, turned down whe
   const html = fs.readFileSync(path.join(root, 'libs/ranker/src/engine/book/book-page.component.html'), 'utf8');
   const scss = fs.readFileSync(path.join(root, 'libs/ranker/src/styles/components/book-page.scss'), 'utf8');
   const row = html.slice(html.indexOf('class="game-opt game-sport"'), html.indexOf('class="game-opt game-row"'));
-  assert.ok(row.includes('(click)="pick(sportChoice(s.sport))"'), 'the row still chooses the sport');
+  // (the heading only folds; its "All ..." rows choose their games' lines, never the sport's picks: the owner, 2026-10-20)
+  assert.ok(row.includes('(click)="pick(a.key)"'), 'the "All ..." rows choose their games');
+  assert.ok(!row.includes('pick(sportChoice('), "nothing in the list chooses a sport's Bot Picks");
   const fold = row.indexOf('class="game-fold"');
   assert.ok(fold > 0 && fold < row.indexOf('game-icon'), 'the chevron before the league mark');
   assert.ok(fold < row.indexOf('game-sport-name'));
@@ -175,4 +177,27 @@ test('a sport row in the game list starts with its fold chevron, turned down whe
   assert.match(css, /&\[aria-expanded="true"\] \.game-fold svg \{\s*rotate: 90deg;/);
   const hover = css.match(/&:hover \{\s*color: ([^;]+);/);
   assert.ok(hover && !/gold|yellow/.test(hover[1]), 'lighter on hover, not gold');
+});
+
+// An "All ..." row chosen (the owner, 2026-10-20): the board is every game's lines, each game's compact board one
+// after another in start order (allBoards walks the row's games), never the sport's Bot Picks; the row itself
+// never takes the chosen wash and dots; the Bot Picks row's words start where the sports' names do
+test('an "All ..." row chosen lays out every game\'s compact lines; the row reads plain; Bot Picks lines up with the sports', () => {
+  const root = path.join(import.meta.dirname, '..');
+  const html = fs.readFileSync(path.join(root, 'libs/ranker/src/engine/book/book-page.component.html'), 'utf8');
+  const ts = fs.readFileSync(path.join(root, 'libs/ranker/src/engine/book/book-page.component.ts'), 'utf8');
+  const scss = fs.readFileSync(path.join(root, 'libs/ranker/src/styles/components/book-page.scss'), 'utf8');
+  const view = html.slice(html.indexOf('} @else if (chosenAll) {'));
+  assert.ok(view.length > 0 && view.indexOf('@for (x of allBoards; track x.game.key)') > 0, 'the view walks the row\'s games');
+  const board = view.slice(0, view.indexOf('} @else {'));
+  assert.match(board, /<game-lines [^>]*\[compact\]="true"/);
+  assert.ok(board.includes('{{ x.game.label }}'), 'each board under its matchup and start');
+  assert.ok(!board.includes('bandList'), 'no Bot Picks in it');
+  const all = html.slice(html.indexOf('class="game-opt game-row game-sport-all"'), html.indexOf('class="game-opt game-row"'));
+  assert.ok(!all.includes('[class.chosen]'), 'the "All ..." row never takes the chosen styling');
+  assert.ok(all.includes('{{ a.label }}'));
+  assert.match(ts, /else if \(allOf\(value\) !== null\) this\.chooseAll\(value\)/);
+  assert.match(ts, /get allBoards\(\)[\s\S]*?this\.chosenAll\?\.games/);
+  const bot = scss.slice(scss.indexOf('.game-all {'));
+  assert.ok(bot.slice(0, 200).includes('grid-template-columns: 52px minmax(0, 1fr) auto;'));
 });

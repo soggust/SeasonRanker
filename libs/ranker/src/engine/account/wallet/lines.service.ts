@@ -95,6 +95,9 @@ export interface BoardGame {
   p?: BoardProp[];
   // (when its game lines were last priced)
   at?: string;
+  // (a bout's card, ESPN's event name: "UFC 333: Volkanovski vs. Evloev" (mma-desk.mjs); the Book's dropdown
+  // names its card's row by it)
+  card?: string;
 }
 export interface ModelBoard {
   sport: string;

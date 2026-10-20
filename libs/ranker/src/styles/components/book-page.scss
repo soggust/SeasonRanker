@@ -517,7 +517,10 @@ mat-icon.gloves {
 
 // (Best Bets: 44px, the trophy in gold, its words white in the larger type; no wash and no dots even when it's the
 // choice (the owner's note): the home row reads plain, its count pill alone)
+// The robot in a 52px slot of its own, so the words start where the sports' names below do (the fold chevron's
+// 34px, the league mark's 20px and their gaps: 74px in) with more room after the robot (the owner, 2026-10-20)
 .game-all {
+  grid-template-columns: 52px minmax(0, 1fr) auto;
   height: 44px;
 
   .game-label {
@@ -588,7 +591,7 @@ mat-icon.gloves {
 }
 
 // (a sport's "All NHL games" row: a game's indent and height, a quiet list mark in the faces' slot, the words
-// in the games' type; chosen, gold as a picked game)
+// in the games' type; chosen, plain as the Bot Picks row (the owner, 2026-10-20): it never takes the chosen wash)
 .game-row.game-sport-all {
   grid-template-columns: auto minmax(0, 1fr) auto;
 
@@ -1169,6 +1172,15 @@ mat-icon.gloves {
   list-style: none;
   margin: 0;
   padding: 0;
+}
+
+// (an "All ..." row's view: each game's compact board under its matchup and start, in the ticket's mono, quiet)
+.all-board-head {
+  color: v.$grey-light;
+  font-family: $font-mono;
+  font-size: v.$fs-11;
+  letter-spacing: 0.3px;
+  margin: 0 0 6px;
 }
 
 // (a chosen game's full menu under its picks: the lines board in the panel's padding, full width, open; restyled with the game

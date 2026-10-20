@@ -134,7 +134,53 @@ test("allKey: a sport's \"All ...\" row chooses the sport (allOf), never reads a
   assert.equal(bets.allLabel('nfl', 'NFL'), 'All NFL games');
   assert.equal(bets.allLabel('nba', 'NBA'), 'All NBA games');
   assert.equal(bets.allLabel('mlb', 'MLB'), 'All MLB games');
-  assert.equal(bets.allLabel('mma', 'MMA'), 'All UFC fights');
+  // (MMA's rows by their card, ESPN's event name (the owner, 2026-10-20); none known, "Fight Night")
+  assert.equal(bets.allLabel('mma', 'MMA'), 'Fight Night');
+  assert.equal(bets.allLabel('mma', 'MMA', 'UFC 333: Volkanovski vs. Evloev'), 'UFC 333');
+  assert.equal(bets.allLabel('nba', 'NBA', 'UFC 333: Volkanovski vs. Evloev'), 'All NBA games');
+});
+
+test('cardLabel: a numbered card by its number, a UFC Fight Night by its headliners, any other card by its name', () => {
+  assert.equal(bets.cardLabel('UFC 333: Volkanovski vs. Evloev'), 'UFC 333');
+  assert.equal(bets.cardLabel('UFC 334: Gane vs. Hokit'), 'UFC 334');
+  assert.equal(bets.cardLabel('UFC 334'), 'UFC 334');
+  assert.equal(bets.cardLabel('UFC Fight Night: Buckley vs. Malott'), 'Fight Night: Buckley vs. Malott');
+  assert.equal(bets.cardLabel('UFC Fight Night'), 'Fight Night');
+  assert.equal(bets.cardLabel('PFL 24: Smith vs. Jones'), 'PFL 24');
+  assert.equal(bets.cardLabel('PFL World Tournament 2026: Semifinals'), 'PFL World Tournament 2026');
+  assert.equal(bets.cardLabel('Bellator Champions Series: Paris'), 'Bellator Champions Series: Paris');
+  assert.equal(bets.cardLabel(''), 'Fight Night');
+  assert.equal(bets.cardLabel(null), 'Fight Night');
+});
+
+test("an \"All ...\" row: a team sport's one a day with every game in start order; MMA's one a card, each with its fights alone", () => {
+  const fight = (matchup, start, card) => ({ ...menuGame('mma', matchup, start), card });
+  const menu = bets.gameMenu(
+    [
+      menuGame('nba', 'LAL @ BOS', '2026-10-24T23:30:00Z', 2),
+      menuGame('nba', 'NYK @ MIA', '2026-10-24T23:00:00Z'),
+      fight('B @ A', '2026-10-24T20:30:00Z', 'UFC 333: Volkanovski vs. Evloev'),
+      fight('D @ C', '2026-10-24T14:00:00Z', 'UFC 333: Volkanovski vs. Evloev'),
+      fight('F @ E', '2026-10-24T22:00:00Z', 'PFL 24: Smith vs. Jones'),
+    ],
+    [...SPORTS, { id: 'mma', label: 'MMA' }],
+    TZ,
+  );
+  const day = 'Saturday, Oct 24';
+  const [mma, nba] = menu[0].sports;
+  assert.deepEqual(nba.alls.map((a) => [a.key, a.label, a.games.map((g) => g.key)]), [[bets.allKey(day, 'nba'), 'All NBA games', ['nba|NYK @ MIA', 'nba|LAL @ BOS']]]);
+  const ufc = bets.allKey(day, 'mma', 'UFC 333: Volkanovski vs. Evloev');
+  const pfl = bets.allKey(day, 'mma', 'PFL 24: Smith vs. Jones');
+  assert.deepEqual(mma.alls.map((a) => [a.key, a.label, a.games.map((g) => g.key)]), [
+    [ufc, 'UFC 333', ['mma|D @ C', 'mma|B @ A']],
+    [pfl, 'PFL 24', ['mma|F @ E']],
+  ]);
+  // (each its own choice: in the list's order before the fights, under its heading, found again by its value)
+  assert.equal(bets.allOf(pfl), 'mma');
+  assert.deepEqual(bets.menuValues(menu).slice(0, 4), ['', bets.groupKey(day, 'mma'), ufc, pfl]);
+  assert.equal(bets.groupOf(menu, pfl), bets.groupKey(day, 'mma'));
+  assert.equal(bets.allRow(menu, pfl)?.label, 'PFL 24');
+  assert.equal(bets.allRow(menu, bets.allKey('Sunday, Oct 25', 'nba')), null);
 });
 
 test('defaultClosed: a quiet list opens every sport; a busy one (more than 12 games) folds every sport but the chosen game\'s and the chosen sport\'s', () => {

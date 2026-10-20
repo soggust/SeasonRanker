@@ -100,6 +100,11 @@
             @if (chosenGame; as g) {
               <span class="book-game-label">@for (f of g.faces; track $index) {@if (f.logo) {<img class="pill-mark" [class.face]="g.sport === 'mma'" [class.logo-lift]="darkLogo(f.logo)" [src]="f.logo" alt="" />}}{{ g.label }}</span>
               <span class="book-game-count">{{ g.count === null ? 'lines' : g.count + (g.count === 1 ? ' pick' : ' picks') }}</span>
+            } @else if (chosenAll; as a) {
+              <!-- (an "All ..." row chosen: its words ("All NBA games", MMA's card "UFC 333") after the league's mark, and
+                   how many games it lays out) -->
+              <span class="book-game-label">@if (leagueMark(allSport); as mark) {<img class="pill-mark" [src]="mark" alt="" />} @else {<mat-icon class="pill-mark gloves" aria-hidden="true" fontIcon="sports_mma"></mat-icon>}{{ a.label }}</span>
+              <span class="book-game-count">{{ a.games.length }} {{ allSport === 'mma' ? (a.games.length === 1 ? 'fight' : 'fights') : a.games.length === 1 ? 'game' : 'games' }}</span>
             } @else if (chosenSport; as s) {
               <span class="book-game-label">@if (leagueMark(sport); as mark) {<img class="pill-mark" [src]="mark" alt="" />} @else {<mat-icon class="pill-mark" [class.gloves]="sport === 'mma'" aria-hidden="true" [fontIcon]="s.icon"></mat-icon>}{{ s.label }}</span>
               <span class="book-game-count">{{ sportCount(sport) }} {{ sportCount(sport) === 1 ? 'pick' : 'picks' }}</span>
@@ -172,28 +177,23 @@
                     <span class="game-lines" title="Lines only: the Bot has no pick in it">lines</span>
                   }
                 </div>
-                @if (isOpen(d.day, s.sport)) {
-                  <!-- (the sport's first row: "All NHL games" (MMA's "All UFC fights"), the sport's best bets, every
-                       day's; gold when the sport is the choice) -->
-                  @let ak = allKey(d.day, s.sport);
+                <!-- (the sport's first rows: "All NHL games" (MMA's one a card: "UFC 333", "Fight Night: A vs. B"), every
+                     game's lines that day one after another (the owner, 2026-10-20: not the sport's Bot Picks). Chosen, it
+                     reads plain, no gold wash and no lit dots, as the Bot Picks row does (the owner, 2026-10-20)) -->
+                @for (a of isOpen(d.day, s.sport) ? s.alls : []; track a.key) {
                   <div
                     class="game-opt game-row game-sport-all"
                     role="option"
-                    [id]="optId(ak)"
-                    [attr.aria-selected]="choice === sportChoice(s.sport)"
-                    [class.active]="active === ak"
-                    [class.chosen]="choice === sportChoice(s.sport)"
-                    [title]="'Every ' + s.name + ' pick, every day'"
-                    (mousemove)="active = ak"
-                    (click)="pick(sportChoice(s.sport))"
+                    [id]="optId(a.key)"
+                    [attr.aria-selected]="choice === a.key"
+                    [class.active]="active === a.key"
+                    [title]="'Every ' + (s.sport === 'mma' ? 'fight' : 'game') + '’s lines, one after another'"
+                    (mousemove)="active = a.key"
+                    (click)="pick(a.key)"
                   >
                     <mat-icon class="game-all-icon" aria-hidden="true" fontIcon="format_list_bulleted"></mat-icon>
-                    <span class="game-label">{{ allLabel(s.sport, s.name) }}</span>
-                    @if (sportCount(s.sport)) {
-                      <span class="game-pill small">{{ sportCount(s.sport) }} {{ sportCount(s.sport) === 1 ? 'pick' : 'picks' }}</span>
-                    } @else {
-                      <span class="game-lines" title="Lines only: the Bot has no pick in it">lines</span>
-                    }
+                    <span class="game-label">{{ a.label }}</span>
+                    <span class="game-lines">{{ a.games.length }} {{ s.sport === 'mma' ? (a.games.length === 1 ? 'fight' : 'fights') : a.games.length === 1 ? 'game' : 'games' }}</span>
                   </div>
                 }
                 @for (g of isOpen(d.day, s.sport) ? s.games : []; track g.key) {
@@ -235,7 +235,7 @@
     }
     <!-- The filter chips: a type of bet each, in its own chip color; on, only those (none: all); what the label
          means on its hover -->
-    @if (kindChips.length > 1) {
+    @if (kindChips.length > 1 && !allGames) {
       <div class="book-kinds" role="group" aria-label="Bet types">
         @for (k of kindChips; track k.kind) {
           <button
@@ -491,6 +491,15 @@
               <game-lines [desk]="desk()" [sport]="one.sport" [event]="one.event" [start]="one.start" [matchup]="one.matchup" [picks]="boardPicks(one)" [venue]="venueOf(one)" [kinds]="kinds" (back)="chooseGame('')" (why)="priceWhy($event.at, $event.event)"></game-lines>
             }
           </li>
+        } @else if (chosenAll) {
+          <!-- (an "All ..." row chosen: each game's lines board, compact as an open row's, one after another in start
+               order, its matchup and start over it (the owner, 2026-10-20)) -->
+          @for (x of allBoards; track x.game.key) {
+            <li class="bet-board all-board">
+              <p class="all-board-head">{{ x.game.label }}</p>
+              <game-lines [desk]="desk()" [sport]="x.board.sport" [event]="x.board.event" [start]="x.board.start" [matchup]="x.board.matchup" [picks]="boardPicks(x.board)" [compact]="true"></game-lines>
+            </li>
+          }
         } @else {
           @if (!favorable) {
             <li class="board-empty" role="status">
