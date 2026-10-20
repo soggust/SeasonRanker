@@ -6,7 +6,7 @@
   "nflnewsreposterbot.bsky.social": "2026-10-19T20:52:46.431Z",
   "insidenflnews.bsky.social": "2026-10-20T03:48:59.767Z",
   "nflnewsposter.bsky.social": "2026-10-20T04:30:35.669Z",
-  "rotoworld-fb.bsky.social": "2026-10-20T04:25:17.000Z",
+  "rotoworld-fb.bsky.social": "2026-10-20T12:45:56.000Z",
   "rotowirenfl.bsky.social": "2026-10-20T04:13:27.000Z"
  },
  "claims": [
@@ -1595,6 +1595,19 @@
    "kind": "status",
    "confidence": 0.5,
    "text": "Report: Mike Evans' Achilles intact, to miss time"
+  },
+  {
+   "id": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3myco3jwtsk2r|terrymclaurin|none|status",
+   "at": "2026-10-20T12:45:56.000Z",
+   "seen": "2026-10-20T12:48:06.591Z",
+   "handle": "rotoworld-fb.bsky.social",
+   "post": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3myco3jwtsk2r",
+   "player": "Terry McLaurin",
+   "team": "WAS",
+   "status": "none",
+   "kind": "status",
+   "confidence": 0.3,
+   "text": "McLaurin's knee injury is 'significant'"
   }
  ]
 }
