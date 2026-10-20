@@ -71,10 +71,10 @@ test("sportChoice: the dropdown's value for a sport, read back; a game's key and
   assert.equal(bets.chosenSport('mlb|CLE @ TB|401700123'), null);
   // (Best bets · every game: '' is no sport, the page's clearing of both filters)
   assert.equal(bets.chosenSport(''), null);
-  assert.equal(bets.sportFace('nfl', SPORTS), 'NFL · Best Bets');
-  assert.equal(bets.sportFace('nhl', SPORTS), 'NHL · Best Bets');
+  assert.equal(bets.sportFace('nfl', SPORTS), 'NFL · Bot Picks');
+  assert.equal(bets.sportFace('nhl', SPORTS), 'NHL · Bot Picks');
   // (a sport the site has no name for: its id in caps)
-  assert.equal(bets.sportFace('mma', SPORTS), 'MMA · Best Bets');
+  assert.equal(bets.sportFace('mma', SPORTS), 'MMA · Bot Picks');
 });
 
 test("gameLine: a closed row's line is the game and its start alone, no sport, no reason; a fight reads A vs B; no kickoff, the game alone", () => {
@@ -207,7 +207,7 @@ test("playerCardHref: a prop's player's card is his sport's page with his name o
 });
 
 test("the Book's words and bars: Best Bets, the views bar only with more than the board, a game's picks header", () => {
-  assert.equal(bets.BEST_BETS_LABEL, 'Best Bets');
+  assert.equal(bets.BEST_BETS_LABEL, 'Bot Picks');
   const none = { desk: false, open: false, closed: false, live: false };
   assert.equal(bets.viewsShown(none), false);
   for (const k of Object.keys(none)) assert.equal(bets.viewsShown({ ...none, [k]: true }), true, k);

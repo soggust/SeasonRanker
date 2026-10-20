@@ -450,6 +450,12 @@ mat-icon.gloves {
     width: 20px;
   }
 
+  // (the Bot Picks row's robot, a touch bigger than a league's mark: the owner, 2026-10-20)
+  .game-mark.bot-mark {
+    height: 24px;
+    width: 24px;
+  }
+
   .game-label {
     @include v.ellipsis;
     font-size: v.$fs-13;
@@ -711,6 +717,13 @@ mat-icon.gloves {
       border-radius: 50%;
       object-fit: cover;
       object-position: top;
+    }
+
+    // (Bot Picks' robot in the closed pill)
+    &.bot-mark {
+      height: 1.4em;
+      vertical-align: -0.35em;
+      width: 1.4em;
     }
 
     // (the open list's Best Bets trophy exactly: the same glyph, gold, at the list's proportion (a 20px icon by 14px

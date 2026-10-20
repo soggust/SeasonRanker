@@ -20,6 +20,10 @@ export const SETTLED_PAGE = 50;
 // then keep their balances and their start (the wallet's start: what its current run began at) till they reload,
 // and a past run whose first bet came before the change began at 1,000)
 export const START = 500;
+// (how far ahead a game may start and still be bet: firestore.rules validPlayPick and validParlay hold the same 60
+// days, well past anything the site lists (MMA's cards 28 days out), so any line shown can be bet: the owner, 2026-10-20)
+export const BET_AHEAD_DAYS = 60;
+export const tooFarOut = (start: string, now: number): boolean => Date.parse(start) >= now + BET_AHEAD_DAYS * 864e5;
 export const OLD_START = 1000;
 export const START_CHANGED = '2026-10-17T23:00:00Z';
 export const runBeganAt = (firstPlaced: string | null | undefined): number =>

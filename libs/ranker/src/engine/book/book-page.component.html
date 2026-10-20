@@ -15,7 +15,7 @@
     <!-- (the views, when there's more than one: the bar) -->
     @if (viewsShown) {
       <nav class="book-views" aria-label="View">
-        <button type="button" [class.active]="view === 'bets'" [attr.aria-current]="view === 'bets' ? 'page' : null" (click)="view = 'bets'">The board</button>
+        <button type="button" [class.active]="view === 'bets'" [attr.aria-current]="view === 'bets' ? 'page' : null" (click)="view = 'bets'">The Book</button>
         <!-- (Live: the day's games as they're played, with how many are on now and a blinking dot while any are; just
              Live with none on; there whenever the day has games on or to come) -->
         @if (hasLive()) {
@@ -95,7 +95,7 @@
         >
           <span class="book-game-face">
             <!-- (the mark inline in the words, one unit, no icon slot of its own (the owner's note, 2026-10-17): a game's
-                 two faces before "CAR @ WPG", a sport's league mark before "NFL · Best Bets", a small gold trophy before
+                 two faces before "CAR @ WPG", a sport's league mark before "NFL · Best Bets", the Bot's mark (the robot) before
                  Best Bets) -->
             @if (chosenGame; as g) {
               <span class="book-game-label">@for (f of g.faces; track $index) {@if (f.logo) {<img class="pill-mark" [class.face]="g.sport === 'mma'" [class.logo-lift]="darkLogo(f.logo)" [src]="f.logo" alt="" />}}{{ g.label }}</span>
@@ -104,7 +104,7 @@
               <span class="book-game-label">@if (leagueMark(sport); as mark) {<img class="pill-mark" [src]="mark" alt="" />} @else {<mat-icon class="pill-mark" [class.gloves]="sport === 'mma'" aria-hidden="true" [fontIcon]="s.icon"></mat-icon>}{{ s.label }}</span>
               <span class="book-game-count">{{ sportCount(sport) }} {{ sportCount(sport) === 1 ? 'pick' : 'picks' }}</span>
             } @else {
-              <span class="book-game-label"><mat-icon class="pill-mark best-trophy" aria-hidden="true" fontIcon="emoji_events"></mat-icon>{{ bestBetsLabel }}</span>
+              <span class="book-game-label"><img class="pill-mark bot-mark" src="assets/bot-mark.png" alt="" aria-hidden="true" />{{ bestBetsLabel }}</span>
               <span class="book-game-count">{{ bestCount }} {{ bestCount === 1 ? 'pick' : 'picks' }}</span>
             }
             <svg class="book-game-caret" aria-hidden="true" width="14" height="14" viewBox="0 0 24 24"><path d="M6 9l6 6 6-6" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" /></svg>
@@ -129,7 +129,7 @@
               (mousemove)="active = ''"
               (click)="pick('')"
             >
-              <mat-icon class="game-icon" aria-hidden="true" fontIcon="emoji_events"></mat-icon>
+              <img class="game-mark bot-mark" src="assets/bot-mark.png" alt="" aria-hidden="true" />
               <span class="game-label">{{ bestBetsLabel }}</span>
               <span class="game-pill">{{ bestCount }} {{ bestCount === 1 ? 'pick' : 'picks' }}</span>
             </div>
@@ -261,7 +261,7 @@
        scroller while its rows pass; nothing favorable (no LOCK, LOVE or LIKE), one line saying so (an admin's CHECKs
        under it). The passes and fades aren't on it: a game's own lines tag them (game-lines' PASS / FADE). A game
        chosen: its every line on top, its picks under them -->
-  <section class="board" aria-label="The board">
+  <section class="board" aria-label="The Book">
     <div class="board-scroll">
     @if (rows === null) {
       <p class="book-note">Loading…</p>

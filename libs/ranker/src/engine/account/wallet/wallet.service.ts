@@ -3,7 +3,7 @@ import { signedOut } from '../account-helpers';
 import type { DocumentData, Firestore, Query, QueryDocumentSnapshot, Timestamp } from 'firebase/firestore';
 import { firestoreSdk } from '@ranker/core/firebase';
 import { AccountService } from '../account.service';
-import { Leaderboard, ParlayLeg, PlayBet, SETTLED_PAGE, START, Selection, TallyDoc, parlayOdds, parlayProblem, selectionKey, stakeProblem, tallyFrom } from './wallet-math';
+import { Leaderboard, ParlayLeg, PlayBet, SETTLED_PAGE, START, Selection, TallyDoc, parlayOdds, parlayProblem, selectionKey, stakeProblem, tallyFrom, tooFarOut } from './wallet-math';
 export type { LifetimeTally, TallyDoc } from './wallet-math';
 
 // (the open bets listened to: far more than anyone holds at once; the settled history a page at a time,
@@ -251,6 +251,9 @@ export class WalletService {
           this.wallet.set(snap.exists() ? (snap.data() as Wallet) : null);
           // (a wallet the cache doesn't have isn't one the server hasn't: none yet only once it's said so)
           if (snap.exists() || !snap.metadata.fromCache) this.loaded.set(true);
+          // (a new player's wallet made as soon as the server says there's none, so the bankroll shows 500 from
+          // the start, not only once a first bet's placed: the owner, 2026-10-20)
+          if (!snap.exists() && !snap.metadata.fromCache && this.uid === uid) void this.ensureWallet().catch((error) => console.error('Wallet', error));
         },
         (error) => console.error('Wallet', error),
       ),
@@ -423,6 +426,10 @@ export class WalletService {
           result.failed.push({ key: s.key, why: 'The game has started' });
           continue;
         }
+        if (tooFarOut(s.start, now)) {
+          result.failed.push({ key: s.key, why: 'Too far out to bet yet' });
+          continue;
+        }
         const ref = f.doc(f.collection(firestore, 'users', uid, 'bets'));
         const bet: Record<string, unknown> = { ...pickFields(f, s), stake: s.stake, run, placedAt: f.serverTimestamp(), status: 'open' };
         const batch = f.writeBatch(firestore);
@@ -457,8 +464,9 @@ export class WalletService {
     const result: PlaceResult = { placed: 0, failed: [] };
     const problem = this.parlayIssue() ?? (this.parlayStake() > 0 ? null : 'Set a stake');
     const started = list.find((s) => Date.parse(s.start) <= now);
-    if (problem || started) {
-      result.failed.push({ key, why: problem ?? `${started!.pick}: the game has started` });
+    const far = list.find((s) => tooFarOut(s.start, now));
+    if (problem || started || far) {
+      result.failed.push({ key, why: problem ?? (started ? `${started.pick}: the game has started` : `${far!.pick}: too far out to bet yet`) });
       this.placed.set(result);
       return result;
     }

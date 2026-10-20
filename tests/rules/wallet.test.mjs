@@ -104,6 +104,13 @@ describe('wallet rules', { skip }, () => {
     await assertFails(setDoc(doc(db, 'users', 'ann', 'wallet', 'main'), newWallet()));
   });
 
+  test('a bet on a game weeks out goes on (a UFC card four weeks ahead: the owner, 2026-10-20), past 60 days not', async () => {
+    const db = as('ann');
+    await assertSucceeds(setDoc(doc(db, 'users', 'ann', 'wallet', 'main'), newWallet()));
+    await assertSucceeds(place(db, 'ann', 'far', playBet({ start: later(24 * 28) })));
+    await assertFails(place(db, 'ann', 'too-far', playBet({ start: later(24 * 61) })));
+  });
+
   test('a bet goes on only with its stake out of the wallet, in the same write', async () => {
     const db = as('ann');
     await assertSucceeds(setDoc(doc(db, 'users', 'ann', 'wallet', 'main'), newWallet()));
@@ -139,7 +146,7 @@ describe('wallet rules', { skip }, () => {
       playBet({ stake: 0 }),
       playBet({ stake: 2.25 }),
       playBet({ start: later(-1) }),
-      playBet({ start: later(24 * 20) }),
+      playBet({ start: later(24 * 65) }),
       playBet({ status: 'won' }),
       playBet({ profit: 50 }),
       playBet({ placedAt: Timestamp.fromMillis(Date.now() - 36e5) }),
@@ -243,8 +250,8 @@ describe('wallet rules', { skip }, () => {
       queryEvent: parlayOf([leg({ event: '401872986&x=/a' }), legs[1]]),
       paddedEvent: parlayOf([leg(), leg({ event: '0401872986', market: 'total', side: 'over', line: 45.5, pick: 'Over 45.5' })]),
       numberEvent: parlayOf([leg({ event: 401872986 }), legs[1]]),
-      // (a leg starting past the 15 days a straight bet's can: never due, its stake held)
-      farLeg: parlayOf([legs[0], leg({ event: '401872987', start: later(24 * 20) })]),
+      // (a leg starting past the 60 days a straight bet's can: never due, its stake held)
+      farLeg: parlayOf([legs[0], leg({ event: '401872987', start: later(24 * 65) })]),
       // (its start after its first leg's: the settler would look too late)
       lateStart: parlayOf(legs, { start: later(40) }),
       // (a straight bet can't claim to be part of one)

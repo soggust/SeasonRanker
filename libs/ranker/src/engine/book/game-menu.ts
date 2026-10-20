@@ -270,7 +270,7 @@ export function menuOptionId(value: string): string {
 
 // The dropdown's first row and its pill's words with nothing chosen: "Best Bets", capital B, nothing after it
 // (the owner's note, 2026-10-17: no "· every game")
-export const BEST_BETS_LABEL = 'Best Bets';
+export const BEST_BETS_LABEL = 'Bot Picks';
 
 // The views bar is drawn only when there's more than the board to show: an admin's Algorithm, the user's Open or
 // Cashed bets, or the day's Live games; the board alone, no bar

@@ -400,7 +400,7 @@ service cloud.firestore {
         && d.matchup is string
         && ((d.sport != 'mma' && d.matchup.matches('^[A-Z0-9]{2,5} @ [A-Z0-9]{2,5}$'))
           || (d.sport == 'mma' && d.matchup.matches('^[^<>@]{1,48} @ [^<>@]{1,48}$') && d.market in ['ml', 'total']))
-        && d.start is timestamp && d.start > request.time && d.start < request.time + duration.value(15, 'd')
+        && d.start is timestamp && d.start > request.time && d.start < request.time + duration.value(60, 'd')
         && d.odds is int && ((d.odds >= 100 && d.odds <= 50000) || (d.odds <= -100 && d.odds >= -50000))
         && d.pick is string && d.pick.size() > 0 && d.pick.size() <= 80
         && (!('botPick' in d) || d.botPick is bool)
@@ -448,7 +448,7 @@ service cloud.firestore {
     // a CHECK's (a parlay's leg tagged one is just a tag).
     // Its event checked here all the same: the settler reads ESPN and its own docs by it, so a game's id only, with
     // no leading zero (ESPN takes a padded id as the game's own, which would put two legs on one game past the
-    // games check); and its start within the 15 days a straight bet's is (a leg never due would hold the stake).
+    // games check); and its start within the 60 days a straight bet's is (a leg never due would hold the stake).
     // A leg's fields and that latest start worked out once (validParlay) and passed down: written out in each leg's
     // check they'd count ten times toward the limit, and ten prop legs wouldn't fit
     function parlayLeg(x, game, start, fields, end) {
@@ -509,7 +509,7 @@ service cloud.firestore {
         && d.odds is int && (d.odds >= 100 || d.odds <= -100)
         && d.pick is string && d.pick.size() <= 80
         && validPlayStake(d)
-        && parlayLegs0(d, ['sport', 'event', 'matchup', 'start', 'market', 'side', 'line', 'odds', 'pick', 'botPick', 'tier', 'kelly', 'ref', 'propType', 'athlete', 'player', 'statLabel', 'preview'], request.time + duration.value(15, 'd'));
+        && parlayLegs0(d, ['sport', 'event', 'matchup', 'start', 'market', 'side', 'line', 'odds', 'pick', 'botPick', 'tier', 'kelly', 'ref', 'propType', 'athlete', 'player', 'statLabel', 'preview'], request.time + duration.value(60, 'd'));
     }
 
     match /users/{uid}/bets/{bet} {
