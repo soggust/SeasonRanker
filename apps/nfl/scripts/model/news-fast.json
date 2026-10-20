@@ -5,9 +5,9 @@
   "rapsheet.bsky.social": "2026-10-20T15:28:24.072Z",
   "nflnewsreposterbot.bsky.social": "2026-10-20T20:30:06.105Z",
   "insidenflnews.bsky.social": "2026-10-20T19:39:44.095Z",
-  "nflnewsposter.bsky.social": "2026-10-20T20:42:30.004Z",
-  "rotoworld-fb.bsky.social": "2026-10-20T20:53:31.000Z",
-  "rotowirenfl.bsky.social": "2026-10-20T19:42:41.000Z"
+  "nflnewsposter.bsky.social": "2026-10-20T21:17:44.497Z",
+  "rotoworld-fb.bsky.social": "2026-10-20T21:15:59.000Z",
+  "rotowirenfl.bsky.social": "2026-10-20T21:20:28.000Z"
  },
  "claims": [
   {
@@ -1673,6 +1673,32 @@
    "kind": "status",
    "confidence": 0.8,
    "text": "Eagles’ roster moves: 🏈Signed RB Elijah Mitchell to their practice squad. 🏈Released C James Brockermeyer and RB Ian Wheeler from their practice squad. 🏈Waived RB Jaydon Blue. 🏈Waived/injured RB Ca"
+  },
+  {
+   "id": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3mydkllrkkd2z|kylemonangai|questionable|status",
+   "at": "2026-10-20T21:15:59.000Z",
+   "seen": "2026-10-20T21:21:51.995Z",
+   "handle": "rotoworld-fb.bsky.social",
+   "post": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3mydkllrkkd2z",
+   "player": "Kyle Monangai",
+   "team": null,
+   "status": "questionable",
+   "kind": "status",
+   "confidence": 0.5,
+   "text": "Monangai remains a DNP on Tuesday report"
+  },
+  {
+   "id": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3mydktmgrri2n|kylemonangai|questionable|status",
+   "at": "2026-10-20T21:20:28.000Z",
+   "seen": "2026-10-20T21:21:51.995Z",
+   "handle": "rotowirenfl.bsky.social",
+   "post": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3mydktmgrri2n",
+   "player": "Kyle Monangai",
+   "team": null,
+   "status": "questionable",
+   "kind": "status",
+   "confidence": 0.5,
+   "text": "Kyle Monangai: Sits out Tuesday's walk-through \n\n https://www.rotowire.com/football/player/kyle-monangai-18520"
   }
  ]
 }
