@@ -679,6 +679,18 @@ html .mat-mdc-slide-toggle {
   html .mat-mdc-slide-toggle .mdc-switch__handle::after {
     rotate: none !important;
   }
+
+  // The site-wide net for anyone who asked for less motion: every CSS animation and transition finishes at
+  // once (they still end, so animationend/transitionend handlers fire), loops stop after one pass, and
+  // scrolling jumps instead of gliding. The components' own reduced-motion rules stay as they are
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
 }
 
 // ---------------------------------------------------------------------------
