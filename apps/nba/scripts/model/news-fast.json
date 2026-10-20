@@ -1,7 +1,7 @@
 {
  "sport": "nba",
  "cursor": {
-  "rotowirenba.bsky.social": "2026-10-20T19:51:01.000Z",
+  "rotowirenba.bsky.social": "2026-10-20T20:33:22.000Z",
   "insidenbanews.bsky.social": "2026-10-20T14:31:09.380Z",
   "shamsbot.bsky.social": "2026-10-20T15:50:34.000Z"
  },
@@ -447,6 +447,32 @@
    "kind": "status",
    "confidence": 0.8,
    "text": "Bam Adebayo: Off injury report \n\n https://www.rotowire.com/basketball/player/bam-adebayo-4153"
+  },
+  {
+   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mydhwbrb6d27|cobywhite|out|status",
+   "at": "2026-10-20T20:28:17.000Z",
+   "seen": "2026-10-20T20:34:12.073Z",
+   "handle": "rotowirenba.bsky.social",
+   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mydhwbrb6d27",
+   "player": "Coby White",
+   "team": "CHI",
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.95,
+   "text": "Coby White: Ruled out for season opener \n\n https://www.rotowire.com/basketball/player/coby-white-4801"
+  },
+  {
+   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mydi7f2u6s2z|konknueppel|out|status",
+   "at": "2026-10-20T20:33:22.000Z",
+   "seen": "2026-10-20T20:34:12.073Z",
+   "handle": "rotowirenba.bsky.social",
+   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mydi7f2u6s2z",
+   "player": "Kon Knueppel",
+   "team": "CHA",
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.95,
+   "text": "Kon Knueppel: Ruled out for Wednesday \n\n https://www.rotowire.com/basketball/player/kon-knueppel-6540"
   }
  ]
 }
