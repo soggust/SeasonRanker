@@ -1054,3 +1054,97 @@ test('D55 the $30 plan never exceeded, paced to about 95%; the lines bought on a
   const decisions = fs.readFileSync(path.resolve('libs/ranker/scripts/model/DECISIONS.md'), 'utf8');
   assert.ok(decisions.includes('### D55.'));
 });
+
+test('D56 a price is its competitor\'s: a snapshot that listed the sides the other way round is put back on the names, the archive\'s mirrored snapshots repaired where the prices decide it and dropped where they don\'t', async () => {
+  const OH = await import('../libs/ranker/scripts/model/odds-history.mjs');
+  // (by the names, the build's and the reader's: the snapshot's home is the event's away)
+  const canon = { h: 'Valentina Shevchenko', a: 'Jennifer Maia' };
+  const flipped = { h: 'Jennifer Maia', a: 'Valentina Shevchenko' };
+  assert.deepEqual(OH.framed(flipped, canon, 'h2h', [null, 800, -1429]), [null, -1429, 800]);
+  assert.deepEqual(OH.framed(flipped, canon, 'spreads', [2.5, -110, -110]), [-2.5, -110, -110]);
+  assert.deepEqual(OH.framed(flipped, canon, 'totals', [2.5, -150, 120]), [2.5, -150, 120]);
+  assert.deepEqual(OH.framed(canon, canon, 'h2h', [null, -1429, 800]), [null, -1429, 800]);
+  assert.equal(OH.framed({ h: 'Someone Else', a: 'Jennifer Maia' }, canon, 'h2h', [null, 100, -120]), null, 'never guessed onto a side');
+  // (the API's same event either way round is one event, its frame the last sighting's)
+  const ev = OH.eventsSeen('mma', [
+    { ts: '2020-08-22T13:55:00Z', events: [{ id: 'x', c: '2020-11-22T05:00:00Z', ...flipped }] },
+    { ts: '2020-11-11T13:55:00Z', events: [{ id: 'x', c: '2020-11-22T05:00:00Z', ...canon }] },
+  ]);
+  assert.equal(ev.size, 1);
+  assert.deepEqual([ev.get('x').h, ev.get('x').a], [canon.h, canon.a]);
+  // (the archive, without its names: each snapshot read against the next later one, the share flipped and the moves'
+  // scale the sport's own)
+  const prior = { scale: 0.15, flip: 0.15 };
+  const L = (oid, kind, ts, a, b, book = 'dk', market = 'h2h') => ({ oid, kind, ts, book, market, line: market === 'totals' ? 2.5 : null, a, b });
+  const lines = [
+    // (Shevchenko: +700 at the open where she closed -2000: the mirror, put back)
+    L('s', 'o', '2020-08-22T13:55:00Z', 700, -1250), L('s', 'c', '2020-11-22T04:59:00Z', -2000, 1100), L('s', 'c', '2020-11-22T04:59:00Z', -1800, 1000, 'pin'),
+    // (a lopsided bout that stayed lopsided: kept)
+    L('k', 'o', '2021-01-01T13:55:00Z', -300, 240), L('k', 'c', '2021-01-09T04:59:00Z', -350, 280),
+    // (near even, the other side favored at the close: either reading is a plausible move; dropped, never guessed)
+    L('e', 'o', '2021-02-01T13:55:00Z', 105, -125), L('e', 'c', '2021-02-09T04:59:00Z', -120, 100),
+    L('e', 'o', '2021-02-01T13:55:00Z', -150, 120, 'dk', 'totals'),
+  ];
+  const { lines: out, report } = OH.repairFrames(lines, prior);
+  const at = (oid, kind, market = 'h2h', book = 'dk') => out.find((l) => l.oid === oid && l.kind === kind && l.book === book && l.market === market);
+  assert.deepEqual([at('s', 'o').a, at('s', 'o').b], [-1250, 700]);
+  assert.deepEqual([at('s', 'c').a, at('k', 'o').a, at('k', 'c').a], [-2000, -300, -350]);
+  assert.equal(at('e', 'o'), undefined, 'the unresolved open is dropped');
+  assert.ok(at('e', 'c') && at('e', 'o', 'totals'), 'its close kept (the frame), its total kept (no side)');
+  assert.deepEqual([report.mirrored, report.dropped], [1, 1]);
+  assert.equal(OH.FRAME_ODDS, 99);
+  // (a team sport's frame is its venue's: only its neutral sites are read)
+  assert.equal(OH.neutralOids('mma', new Map(), []), null);
+  const tEv = new Map([
+    ['n', { oid: 'n', id: '7', t: '2023-10-08T13:30:00Z' }],
+    ['h', { oid: 'h', id: '8', t: '2023-10-08T17:00:00Z' }],
+    ['b', { oid: 'b', id: null, t: '2020-08-04T01:00:00Z' }],
+  ]);
+  assert.deepEqual([...OH.neutralOids('nfl', tEv, [{ id: '7', neutral: true }, { id: '8', neutral: false }])], ['n']);
+  assert.deepEqual([...OH.neutralOids('nba', tEv, [])], ['b']);
+  // (the repair ran once, its record committed)
+  const frames = JSON.parse(fs.readFileSync(path.resolve('apps/mma/scripts/model/odds-history/frames.json'), 'utf8'));
+  assert.equal(frames.rule, 'DECISIONS.md D56');
+  // (the gate's MMA close: the last price within 12 hours of the bout)
+  const GM = await import('../libs/ranker/scripts/model/gate-mma.mjs');
+  assert.equal(GM.MMA_CLOSE_MAX, 12 * 36e5);
+  assert.ok(fs.readFileSync(path.resolve('libs/ranker/scripts/model/DECISIONS.md'), 'utf8').includes('### D56.'));
+});
+
+test('D56 the replay bets MMA only inside the live desk\'s window: an open first seen more than four weeks out waits for its close', async () => {
+  const R = await import('../libs/ranker/scripts/model/replay-record.mjs');
+  const V = { desk: await import('../libs/ranker/scripts/model/desk.mjs'), picks: await import('../libs/ranker/scripts/model/picks.mjs'), leagues: await import('../libs/ranker/scripts/model/leagues.mjs') };
+  assert.equal(V.leagues.TIMING.mma.lines, 672);
+  const H = 36e5;
+  const t = Date.parse('2025-03-01T03:00:00Z');
+  const row = (i, kind, lead) => ({ id: `h:${i}:ml:${kind}`, key: `h:${i}:ml`, event: String(i), sport: 'mma', market: 'ml', stat: 'ml', kind, line: null, t: t + i * 7 * 24 * H, at: t + i * 7 * 24 * H - lead * H, season: 2025, f: 0.5, p: 0.58, y: 1, overOdds: 100, underOdds: -120, band: kind === 'c' ? 'late' : lead >= 336 ? 'early' : 'mid' });
+  const rows = { open: [row(1, 'o', 800), row(2, 'o', 400)], close: [row(1, 'c', 1), row(2, 'c', 1)] };
+  const r = R.replayRecord(V, 'mma', rows, { names: () => ({ home: 'A', away: 'B', matchup: 'A vs B' }), epoch: '2026-10-19T00:00:00Z' });
+  const timing = Object.fromEntries(r.last.map((b) => [b.id, b.timing]));
+  assert.equal(timing['h:1:ml'], 'close', 'five weeks out: never asked live, so not bet at that price');
+  assert.equal(timing['h:2:ml'], 'open', 'inside four weeks: bet at the open, as live');
+});
+
+test('D56 beat the fair close: the bet\'s own price has a positive expected return at the close\'s no-vig fair, a close at its own line only; the panel\'s share from 30 such bets, a dash under', async () => {
+  const R = await import('../libs/ranker/scripts/model/replay-record.mjs');
+  // (the dog at +120 at the open, the close's fair 47% for it: 0.47 x 2.2 - 1 = +3.4%, a beat, though the Book's raw
+  // closing price on it (+130) is the better price, the old definition's loss; the favorite at -150, 53% fair: -11.7%)
+  const close = { f: 0.53, line: null, overOdds: -150, underOdds: 130 };
+  assert.deepEqual(R.fairBeatOf({ market: 'ml', line: null }, false, 120, close), { beat: 1, clv: Math.round((0.47 * 2.2 - 1) * 1e4) / 1e4 });
+  assert.deepEqual(R.fairBeatOf({ market: 'ml', line: null }, true, -150, close), { beat: 0, clv: Math.round((0.53 * (1 + 100 / 150) - 1) * 1e4) / 1e4 });
+  // (the vig in the bet's price: a -110 total at a 50% fair close returns -4.5%: no beat; nothing dropped as a tie)
+  assert.deepEqual(R.fairBeatOf({ market: 'total', line: 2.5 }, true, -110, { f: 0.5, line: 2.5 }), { beat: 0, clv: -0.0455 });
+  // (a moved line has no close at its line: none, never a guess at the carry)
+  assert.equal(R.fairBeatOf({ market: 'spread', line: -3.5 }, true, -110, { f: 0.5, line: -4.5 }), null);
+  assert.equal(R.fairBeatOf({ market: 'ml', line: null }, true, 120, null), null);
+  const { loadEngine } = await import('./support/engine.mjs');
+  const book = await loadEngine('nfl', { entry: path.join(import.meta.dirname, 'support', 'book-entry.ts'), data: {} });
+  assert.equal(book.BEAT_MIN, 30);
+  assert.equal(book.beatText({ clvN: 2, clvBeat: 0 }), '—', "the NFL's panel showed 0% on 2 live bets");
+  assert.equal(book.beatText({ clvN: 29, clvBeat: 0.6 }), '—');
+  assert.equal(book.beatText({ clvN: 30, clvBeat: 0.6 }), '60%');
+  assert.match(book.beatTip({ clvN: 1204, clvEv: 0.012 }), /1,204 with a close at their line; average return at the fair close \+1\.2%/);
+  // (a live bet's: clv.mjs ev at the close's fair, its line unmoved; a moved one none)
+  assert.equal(book.fairCloseOf({ clv: { pts: null, prob: 0.01, ev: 0.03, beat: true } }), 0.03);
+  assert.equal(book.fairCloseOf({ clv: { pts: 1, prob: 0.02, ev: 0.05, beat: true } }), null);
+});

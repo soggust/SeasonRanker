@@ -10,7 +10,7 @@ import { ROOT, loadEngine } from './support/engine.mjs';
 
 const book = await loadEngine('nfl', { entry: path.join(import.meta.dirname, 'support', 'book-entry.ts'), data: {} });
 
-const tally = (won, lost, push = 0, profit = 0, beat = null, beatN = 0) => ({ bets: won + lost + push, won, lost, push, staked: won + lost + push, profit, roi: won + lost + push ? profit / (won + lost + push) : null, beat, beatN });
+const tally = (won, lost, push = 0, profit = 0, beat = null, beatN = 0, clv = beatN ? 0.01 : null) => ({ bets: won + lost + push, won, lost, push, staked: won + lost + push, profit, roi: won + lost + push ? profit / (won + lost + push) : null, beat, beatN, clv });
 const file = (sport, epoch) => ({
   v: 1,
   sport,
@@ -43,7 +43,7 @@ test('botHistoryOf: the replay before the epoch plus the live bets on games sinc
   const files = [file('nfl', EPOCH), file('nhl', EPOCH), null];
   const bets = [
     live('a', 'nfl', '2026-10-20T00:00:00Z', 'won', 'high'),
-    live('b', 'nfl', '2026-10-20T00:00:00Z', 'lost', 'medium', 1, { clv: { pts: 0, prob: 0.01, ev: 0, beat: true } }),
+    live('b', 'nfl', '2026-10-20T00:00:00Z', 'lost', 'medium', 1, { clv: { pts: 0, prob: 0.01, ev: 0.03, beat: true } }),
     live('c', 'nfl', '2026-10-21T00:00:00Z', 'open', 'medium'),
     // (before the epoch by its start: the replay's part covers that game)
     live('old', 'nfl', '2026-10-18T00:00:00Z', 'won', 'lock'),
@@ -60,9 +60,11 @@ test('botHistoryOf: the replay before the epoch plus the live bets on games sinc
   assert.equal(h.overall.replayed, 60);
   assert.equal(h.overall.live, 3);
   assert.equal(h.overall.profit, Math.round((2.5 * 2 + 0.91 - 1 + 0.91) * 100) / 100);
-  // (beat the close: the files' 6 of 10 each, and the live b that beat it)
+  // (beat the fair close (D56): the files' 6 of 10 each, and the live b whose price returns +3% at the close's fair;
+  // the mean expected return weighted by the count)
   assert.equal(h.overall.clvN, 21);
   assert.equal(Math.round(h.overall.clvBeat * 1000) / 1000, Math.round(((6 + 6 + 1) / 21) * 1000) / 1000);
+  assert.equal(Math.round(h.overall.clvEv * 1e4) / 1e4, Math.round(((0.01 * 20 + 0.03) / 21) * 1e4) / 1e4);
   assert.deepEqual([h.live.won, h.live.lost, h.live.push], [2, 1, 0]);
   assert.deepEqual([h.practice.won, h.practice.lost], [11, 10]);
   const band = Object.fromEntries(h.byBand.map((r) => [r.label, r]));

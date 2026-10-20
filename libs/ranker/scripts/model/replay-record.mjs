@@ -53,7 +53,6 @@ const fin = Number.isFinite;
 const r2 = (v) => Math.round(v * 100) / 100;
 const r4 = (v) => Math.round(v * 10000) / 10000;
 const dec = (o) => (o > 0 ? 1 + o / 100 : 1 + 100 / -o);
-const impl = (o) => (o > 0 ? 100 / (o + 100) : -o / (-o + 100));
 const ET = new Intl.DateTimeFormat('en-CA', { timeZone: 'America/New_York', year: 'numeric', month: '2-digit', day: '2-digit' });
 const etDay = (t) => ET.format(new Date(t));
 const yearOf = (t) => etDay(t).slice(0, 4);
@@ -62,9 +61,10 @@ const isLine = (x) => LINES.has(x.market);
 const WALLET_MARKET = { ml: 'moneyline', prop: 'prop', spread: 'spread', total: 'total' };
 const BANDS = ['lock', 'high', 'medium'];
 
-// A tally: the bets graded, won, lost, pushed, the units staked and won, the return, and how many beat the close
-// (the bets placed at an open with a close to read)
-export const emptyTally = () => ({ bets: 0, won: 0, lost: 0, push: 0, staked: 0, profit: 0, roi: null, beat: 0, beatN: 0 });
+// A tally: the bets graded, won, lost, pushed, the units staked and won, the return, and how many beat the fair close
+// (D56, fairBeatOf: the bets placed at an open with a close at their own line; beat the share, beatN the count, clv
+// their mean expected return at the fair close)
+export const emptyTally = () => ({ bets: 0, won: 0, lost: 0, push: 0, staked: 0, profit: 0, roi: null, beat: 0, beatN: 0, clv: 0 });
 export function addBet(t, b) {
   t.bets++;
   t[b.res === 'W' ? 'won' : b.res === 'L' ? 'lost' : 'push']++;
@@ -74,10 +74,11 @@ export function addBet(t, b) {
   if (b.beat === 1 || b.beat === 0) {
     t.beatN++;
     t.beat += b.beat;
+    t.clv += fin(b.clv) ? b.clv : 0;
   }
   return t;
 }
-const finishTally = (t) => ({ ...t, beat: t.beatN ? r4(t.beat / t.beatN) : null });
+const finishTally = (t) => ({ ...t, beat: t.beatN ? r4(t.beat / t.beatN) : null, clv: t.beatN ? r4(t.clv / t.beatN) : null });
 
 // (DECISIONS.md D48: a row's price read only facts from before its snapshot: no factsAt stamp (nothing day-of read,
 // a version from before the stamps), or one at or before its time)
@@ -157,17 +158,20 @@ function wordsOf(x, over, names) {
   return { pick: `${over ? n.home : n.away} ML`, matchup: n.matchup, player: null };
 }
 
-// (a bet's result on its side, the close's price beaten or not where it was placed at the open: the price on the
-// same side at the same line, a line market by the line itself)
-function beatOf(x, over, odds, close) {
-  if (!close || !close.overOdds || !close.underOdds) return null;
-  const cp = over ? close.overOdds : close.underOdds;
-  if (x.market === 'ml' || close.line === x.line || x.line == null) {
-    const d = impl(cp) - impl(odds);
-    return d > 0 ? 1 : d < 0 ? 0 : null;
-  }
-  const d = x.market === 'spread' ? (over ? x.line - close.line : close.line - x.line) : over ? close.line - x.line : x.line - close.line;
-  return d > 0 ? 1 : d < 0 ? 0 : null;
+// Beat the fair close (DECISIONS.md D56, one definition for the replay and the live bets, replay-history.ts
+// fairCloseOf): a bet placed before the close beat it when its own price has a positive expected return at the close's
+// no-vig fair chance of its side (the close row's f: Pinnacle's where DraftKings' snapshot saw it, else DraftKings'
+// own, D48), the vig in its price and out of the fair. Only a close at the bet's own line counts (a moneyline's
+// always; a moved spread, total or prop has no close to read: null, never a guess at the carry). { beat 1 | 0, clv
+// the expected return } or null. Was (to 2026-10-19): DraftKings' raw closing price against the bet's, the vig in,
+// any improvement a beat, a moved line read by its points with the price ignored, ties dropped
+export function fairBeatOf(x, over, odds, close) {
+  if (!close || !fin(close.f) || close.f <= 0 || close.f >= 1 || !fin(odds) || !odds) return null;
+  const same = x.market === 'ml' || (x.line == null && close.line == null) || close.line === x.line;
+  if (!same) return null;
+  const q = over ? close.f : 1 - close.f;
+  const clv = r4(q * dec(odds) - 1);
+  return { beat: clv > 0 ? 1 : 0, clv };
 }
 
 // The bar's own place (D51): lines bets { season, profit, full? } (full: a barred bet's units, band and profit at its
@@ -250,7 +254,9 @@ export function replayRecord(V, sport, rows, { events = null, names = () => ({ h
     if (o) {
       flags.openSeen++;
       const hours = fin(o.at) ? (o.t - o.at) / 36e5 : null;
-      const inWindow = sport === 'mma' || (fin(hours) && hours <= (isLine(o) ? timing.lines : timing.props));
+      // (inside the live desk's window, MMA's too (D56: TIMING.mma 672 hours, mma-desk.mjs AHEAD_DAYS 28): an open
+      // first seen further out is a price the live desk never asks for, so the bout waits for its close, as live)
+      const inWindow = fin(hours) && hours <= (isLine(o) ? timing.lines : timing.props);
       const isClean = clean(o);
       if (isClean) flags.openClean++;
       if (inWindow) flags.openInWindow++;
@@ -307,7 +313,7 @@ export function replayRecord(V, sport, rows, { events = null, names = () => ({ h
           if (!barred) units = fullUnits;
         }
       }
-      const bet = betOf(x, sd, { units, band, practice: false, timing: placed.timing, beat: placed.timing === 'open' ? beatOf(x, sd.over, sd.odds, placed.close) : null, names, survival: placed.s });
+      const bet = betOf(x, sd, { units, band, practice: false, timing: placed.timing, fb: placed.timing === 'open' ? fairBeatOf(x, sd.over, sd.odds, placed.close) : null, names, survival: placed.s });
       // (a barred line keeps what it would have staked at full: the bar's own place below)
       if (barred) bet.full = { units: fullUnits, band: fullBand, profit: units > 0 ? r4((bet.profit * fullUnits) / units) : 0 };
       bets.push(bet);
@@ -342,7 +348,7 @@ export function replayRecord(V, sport, rows, { events = null, names = () => ({ h
     const picked = rs.filter((r) => r.sd.edge > 0).sort((a, b) => b.sd.edge - a.sd.edge).slice(0, need);
     for (const r of picked) {
       r.practice = true;
-      bets.push(betOf(r.x, r.sd, { units: practiceUnits, band: 'medium', practice: true, timing: r.x.kind === 'o' ? 'open' : 'close', beat: r.x.kind === 'o' ? beatOf(r.x, r.sd.over, r.sd.odds, closes.get(r.x.key ?? r.x.id.replace(/:o$/, '')) ?? null) : null, names, survival: 1 }));
+      bets.push(betOf(r.x, r.sd, { units: practiceUnits, band: 'medium', practice: true, timing: r.x.kind === 'o' ? 'open' : 'close', fb: r.x.kind === 'o' ? fairBeatOf(r.x, r.sd.over, r.sd.odds, closes.get(r.x.key ?? r.x.id.replace(/:o$/, '')) ?? null) : null, names, survival: 1 }));
     }
   }
   bets.sort((a, b) => a.t - b.t || a.id.localeCompare(b.id));
@@ -350,11 +356,11 @@ export function replayRecord(V, sport, rows, { events = null, names = () => ({ h
   return summarize(sport, bets, passed, { epoch, now, flags, rows: { open: opens.size, close: closes.size }, seasonsWithProps: new Set([...opens.values(), ...closes.values()].filter((x) => x.market === 'prop').map((x) => x.season)), seasonsAll: new Set([...opens.values(), ...closes.values()].map((x) => x.season)) });
 }
 
-function betOf(x, sd, { units, band, practice, timing, beat, names, survival }) {
+function betOf(x, sd, { units, band, practice, timing, fb = null, names, survival }) {
   const res = x.y === null || x.y === undefined ? 'P' : (x.y === 1) === sd.over ? 'W' : 'L';
   const profit = res === 'W' ? r2(units * (dec(sd.odds) - 1)) : res === 'L' ? -units : 0;
   const w = wordsOf(x, sd.over, names);
-  return { factsAt: fin(x.factsAt) ? x.factsAt : null, id: x.key ?? x.id, event: String(x.event), sport: x.sport, season: x.season, market: x.market, stat: x.stat, line: x.line ?? null, side: sd.over ? (x.market === 'prop' || x.market === 'total' ? 'over' : 'home') : x.market === 'prop' || x.market === 'total' ? 'under' : 'away', pick: w.pick, matchup: w.matchup, player: w.player, odds: sd.odds, p: r4(sd.pS), fair: r4(sd.fS), kelly: r4(sd.kelly), band, practice, units, res, profit, timing, beat, survival: r4(survival), t: x.t, at: fin(x.at) ? x.at : timing === 'open' ? x.t - 24 * 36e5 : x.t - 36e5 };
+  return { factsAt: fin(x.factsAt) ? x.factsAt : null, id: x.key ?? x.id, event: String(x.event), sport: x.sport, season: x.season, market: x.market, stat: x.stat, line: x.line ?? null, side: sd.over ? (x.market === 'prop' || x.market === 'total' ? 'over' : 'home') : x.market === 'prop' || x.market === 'total' ? 'under' : 'away', pick: w.pick, matchup: w.matchup, player: w.player, odds: sd.odds, p: r4(sd.pS), fair: r4(sd.fS), kelly: r4(sd.kelly), band, practice, units, res, profit, timing, beat: fb ? fb.beat : null, clv: fb ? fb.clv : null, survival: r4(survival), t: x.t, at: fin(x.at) ? x.at : timing === 'open' ? x.t - 24 * 36e5 : x.t - 36e5 };
 }
 
 // The file's content from the replayed bets (practice picks among them, flagged) and the rows that passed
@@ -392,7 +398,7 @@ export function summarize(sport, bets, passed, { epoch, now, flags, rows, season
   const decided = graded.filter((b) => b.res !== 'P');
   let n = 0;
   while (n < decided.length && decided[n].res === decided[0].res) n++;
-  const entry = (b) => ({ id: b.id, sport: b.sport, season: b.season, pick: b.pick, matchup: b.matchup, market: WALLET_MARKET[b.market] ?? b.market, player: b.player, stat: b.stat, line: b.line, side: b.side, odds: b.odds, p: b.p, fair: b.fair, kelly: b.kelly, band: b.band, practice: b.practice, units: b.units, res: b.res, profit: b.profit, timing: b.timing, beat: b.beat, survival: b.survival, at: new Date(b.at).toISOString(), factsAt: fin(b.factsAt) ? new Date(b.factsAt).toISOString() : null, start: new Date(b.t).toISOString(), settled: new Date(settledAt(b)).toISOString() });
+  const entry = (b) => ({ id: b.id, sport: b.sport, season: b.season, pick: b.pick, matchup: b.matchup, market: WALLET_MARKET[b.market] ?? b.market, player: b.player, stat: b.stat, line: b.line, side: b.side, odds: b.odds, p: b.p, fair: b.fair, kelly: b.kelly, band: b.band, practice: b.practice, units: b.units, res: b.res, profit: b.profit, timing: b.timing, beat: b.beat, clv: b.clv ?? null, survival: b.survival, at: new Date(b.at).toISOString(), factsAt: fin(b.factsAt) ? new Date(b.factsAt).toISOString() : null, start: new Date(b.t).toISOString(), settled: new Date(settledAt(b)).toISOString() });
   const all = tallyOf(real);
   return {
     v: REPLAY_V,
@@ -405,7 +411,7 @@ export function summarize(sport, bets, passed, { epoch, now, flags, rows, season
     overall: all,
     practice: tallyOf(practice),
     // (the rows it wouldn't bet, at a flat unit on the Bot's side: context, never the record)
-    pass: finishTally(passed.reduce((t, r) => addBet(t, { res: r.x.y === null || r.x.y === undefined ? 'P' : (r.x.y === 1) === r.sd.over ? 'W' : 'L', units: 1, profit: r.x.y === null || r.x.y === undefined ? 0 : (r.x.y === 1) === r.sd.over ? r2(dec(r.sd.odds) - 1) : -1, beat: null }), emptyTally())),
+    pass: finishTally(passed.reduce((t, r) => addBet(t, { res: r.x.y === null || r.x.y === undefined ? 'P' : (r.x.y === 1) === r.sd.over ? 'W' : 'L', units: 1, profit: r.x.y === null || r.x.y === undefined ? 0 : (r.x.y === 1) === r.sd.over ? r2(dec(r.sd.odds) - 1) : -1, beat: null, clv: null }), emptyTally())),
     byBand: Object.fromEntries(BANDS.map((bd) => [bd, tallyOf(real.filter((b) => b.band === bd))])),
     byMarket: { lines: tallyOf(real.filter(isLine)), props: tallyOf(real.filter((b) => !isLine(b))) },
     bySeason: seasons,
@@ -436,11 +442,11 @@ export function summarize(sport, bets, passed, { epoch, now, flags, rows, season
 }
 
 // The replayed bets of the newest year in buckets by the Eastern day each settled and its band (lock, high, medium; a
-// practice pick practice): "won,lost,push,staked,profit,beat the close,with a close", trailing zeros dropped. The
+// practice pick practice): "won,lost,push,staked,profit,beat the fair close,with a close at the line,their summed expected return at the fair close" (D56), trailing zeros dropped. The
 // Algorithm tab's time range (the owner, 2026-10-19: Today to This year over the merged history, D47) sums the days in
 // a range without the bets; All time reads the whole file's tallies, so the buckets start at the newest bet's year (a
 // week before it, for a week across the turn of the year) and the file stays small
-export const DAILY_COLS = ['won', 'lost', 'push', 'staked', 'profit', 'beat', 'beatN'];
+export const DAILY_COLS = ['won', 'lost', 'push', 'staked', 'profit', 'beat', 'beatN', 'clv'];
 export function dailyOf(bets, settledAt = (b) => b.t + GAME_HOURS * 36e5) {
   if (!bets.length) return { cols: DAILY_COLS, from: null, bands: {} };
   const year = Number(etDay(Math.max(...bets.map(settledAt))).slice(0, 4));
@@ -450,13 +456,14 @@ export function dailyOf(bets, settledAt = (b) => b.t + GAME_HOURS * 36e5) {
     const day = etDay(settledAt(b));
     if (day < from) continue;
     const band = b.practice ? 'practice' : b.band;
-    const d = ((bands[band] ??= {})[day] ??= [0, 0, 0, 0, 0, 0, 0]);
+    const d = ((bands[band] ??= {})[day] ??= [0, 0, 0, 0, 0, 0, 0, 0]);
     d[b.res === 'W' ? 0 : b.res === 'L' ? 1 : 2]++;
     d[3] = r2(d[3] + b.units);
     d[4] = r2(d[4] + b.profit);
     if (b.beat === 1 || b.beat === 0) {
       d[5] += b.beat;
       d[6]++;
+      d[7] = r4(d[7] + (fin(b.clv) ? b.clv : 0));
     }
   }
   const text = (d) => {

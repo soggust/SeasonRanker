@@ -34,6 +34,7 @@
 //   node --env-file=.env libs/ranker/scripts/model/odds-history.mjs plan [sports]        (ESPN only: the estimate)
 //   node --env-file=.env libs/ranker/scripts/model/odds-history.mjs pull [sports] [--phase daily|close|props|propsOpen] [--floor N]
 //   node libs/ranker/scripts/model/odds-history.mjs build [sports]                      (the committed files)
+//   node libs/ranker/scripts/model/odds-history.mjs repair [sports] [--dry]             (D56: the archive's frames, once)
 
 import { existsSync, mkdirSync, readFileSync, writeFileSync, appendFileSync, readdirSync } from 'node:fs';
 import path from 'node:path';
@@ -82,18 +83,230 @@ export function readHistory(sport, { seasons = null, props = true } = {}) {
   for (const [file, season] of files) {
     if (seasons && season !== null && !seasons.includes(season)) continue;
     const text = gunzipSync(readFileSync(file)).toString('utf8');
+    // (D56: each file's lines are in its own event rows' frame, a morning file's its snapshot's: a line whose file
+    // listed the event's sides the other way round from the event kept is put on the kept frame by the names)
+    const names = new Map();
     for (const s of text.split('\n')) {
       if (!s) continue;
       const r = JSON.parse(s);
       if (r[0] === 'E') {
+        names.set(r[1], { h: r[10], a: r[11] });
         if (seasons && !seasons.includes(r[4])) continue;
         if (!events.has(r[1])) events.set(r[1], { oid: r[1], id: r[2], t: r[3], season: r[4], type: r[5], home: r[6], away: r[7], hs: r[8], as: r[9], homeName: r[10], awayName: r[11], ...(r[12] ? { short: r[12] } : {}) });
       }
-      else if (r[0] === 'L') lines.push({ oid: r[1], kind: r[2], ts: r[3], book: r[4], market: r[5], line: r[6], a: r[7], b: r[8] });
+      else if (r[0] === 'L') {
+        const e = events.get(r[1]);
+        const own = names.get(r[1]);
+        const v = e && own ? framed(own, { h: e.homeName, a: e.awayName }, r[5], [r[6], r[7], r[8]]) : [r[6], r[7], r[8]];
+        if (v) lines.push({ oid: r[1], kind: r[2], ts: r[3], book: r[4], market: r[5], line: v[0], a: v[1], b: v[2] });
+      }
       else if (r[0] === 'P' && props) propRows.push({ oid: r[1], kind: r[2], ts: r[3], book: r[4], market: r[5], player: r[6], line: r[7], over: r[8], under: r[9] });
     }
   }
   return { events, lines, props: propRows };
+}
+
+// ---- the archive's frames, repaired (DECISIONS.md D56, 2026-10-20) ----
+//
+// The bought archive was built before build() put each snapshot's prices on its own names: every snapshot's
+// moneyline and spread went in by that snapshot's home and away, and the event kept one home and away. The API lists
+// an MMA bout's fighters either way round from one snapshot to the next (about one bout in seven, measured), and
+// now and then a neutral site's teams, so an open seen in the other frame sat on the wrong side (Shevchenko +700
+// where she closed -2000). The raw snapshots aren't on disk, so the names are gone from those rows; what's left to
+// read is the prices. Each event's snapshots (its rows at one time share a frame: two books in one snapshot agree
+// 5,634 to 6) are read from the latest back, each against the nearest later one already framed: the two readings,
+// the same fighter favored or the other, need a move of ||x|-|y|| or |x|+|y| in the no-vig's log odds. The moves
+// are double-exponential at the sport's own scale (FRAME_SCALE: the mean move or the 99th percentile's /ln 100,
+// the larger), and the share of snapshots flipped is the sport's own (where both readings are clear), so the
+// posterior odds of each reading come from the data. A snapshot is put in the frame whose odds pass FRAME_ODDS (99
+// to 1), never the nearer guess: one that passes neither is dropped (its totals, which have no side, kept).
+export const FRAME_ODDS = 99;
+// (the clear pairs the flip share is read from: each side at least this far from even in log odds, about 65/35)
+export const FRAME_CLEAR = 0.6;
+const impOf = (o) => (o > 0 ? 100 / (o + 100) : -o / (-o + 100));
+// (a moneyline's no-vig log odds of its first side)
+export const logOddsOf = (a, b) => (Number.isFinite(a) && Number.isFinite(b) ? Math.log(impOf(a) / impOf(b)) : null);
+const SIDED = new Set(['h2h', 'spreads']);
+
+// An event's snapshots, latest first: [{ ts, x (the moneylines' mean log odds, null with none), rows }]
+function snapshotsOf(rows) {
+  const by = new Map();
+  for (const r of rows) if (SIDED.has(r.market)) (by.get(r.ts) ?? by.set(r.ts, []).get(r.ts)).push(r);
+  return [...by]
+    .sort((p, q) => q[0].localeCompare(p[0]))
+    .map(([ts, rs]) => {
+      const xs = rs.filter((r) => r.market === 'h2h').map((r) => logOddsOf(r.a, r.b)).filter(Number.isFinite);
+      return { ts, x: xs.length ? xs.reduce((s, v) => s + v, 0) / xs.length : null, rows: rs };
+    });
+}
+const byEvent = (lines) => {
+  const by = new Map();
+  for (const l of lines) (by.get(l.oid) ?? by.set(l.oid, []).get(l.oid)).push(l);
+  return by;
+};
+
+// The sport's move scale and flip share from its archive's lines: { scale, flip, pairs, clear, flipped }
+export function framePrior(lines, only = null) {
+  const moves = [];
+  let clear = 0;
+  let flipped = 0;
+  for (const [oid, rows] of byEvent(lines)) {
+    if (only && !only.has(oid)) continue;
+    const snaps = snapshotsOf(rows).filter((s) => s.x !== null);
+    for (let i = 1; i < snaps.length; i++) {
+      const x = snaps[i].x;
+      const y = snaps[0].x;
+      moves.push(Math.abs(Math.abs(x) - Math.abs(y)));
+      if (Math.min(Math.abs(x), Math.abs(y)) > FRAME_CLEAR) {
+        clear++;
+        if (x * y < 0) flipped++;
+      }
+    }
+  }
+  const sorted = [...moves].sort((a, b) => a - b);
+  const mean = moves.length ? moves.reduce((s, v) => s + v, 0) / moves.length : 0.1;
+  const q99 = sorted.length ? sorted[Math.floor(0.99 * (sorted.length - 1))] : 0.5;
+  return { scale: Math.max(mean, q99 / Math.log(100), 0.02), flip: (flipped + 0.5) / (clear + 1), pairs: moves.length, clear, flipped };
+}
+
+// A snapshot's verdict against a framed later one (x, y their log odds, y in the event's frame): 'same', 'mirror' or
+// null (neither reading at FRAME_ODDS)
+export function frameVerdict(x, y, { scale, flip }) {
+  const prior = (1 - flip) / flip;
+  // (no moneyline on one side: the prior alone)
+  if (x === null || y === null) return prior >= FRAME_ODDS ? 'same' : 1 / prior >= FRAME_ODDS ? 'mirror' : null;
+  const near = x * y >= 0 ? 'same' : 'mirror';
+  const lr = Math.exp((2 * Math.min(Math.abs(x), Math.abs(y))) / scale);
+  const odds = lr * (near === 'same' ? prior : 1 / prior);
+  if (odds >= FRAME_ODDS) return near;
+  if (1 / odds >= FRAME_ODDS) return near === 'same' ? 'mirror' : 'same';
+  return null;
+}
+
+// The lines with every snapshot in its event's frame: { lines, report: { snapshots, mirrored, dropped, rows } }.
+// The latest snapshot with a moneyline is the event's frame (its kept names are the last sighting's); a later one
+// with none (a spread alone) is read by the prior. only: the events that can be listed either way round (a Set of
+// oids, null every event): a team's game is framed by its venue's home, so only a neutral site's is read.
+export function repairFrames(lines, prior = null, only = null) {
+  prior ??= framePrior(lines, only);
+  const out = [];
+  const report = { events: 0, snapshots: 0, mirrored: 0, dropped: 0, rowsMirrored: 0, rowsDropped: 0, opens: { mirrored: 0, dropped: 0 }, closes: { mirrored: 0, dropped: 0 } };
+  const fix = new Map();
+  for (const [oid, rows] of byEvent(lines)) {
+    if (only && !only.has(oid)) continue;
+    report.events++;
+    const snaps = snapshotsOf(rows);
+    const anchor = snaps.findIndex((s) => s.x !== null);
+    let ref = anchor >= 0 ? snaps[anchor].x : null;
+    for (let i = 0; i < snaps.length; i++) {
+      const s = snaps[i];
+      report.snapshots++;
+      const v = i === anchor ? 'same' : frameVerdict(s.x, ref, prior);
+      if (i > anchor && v && s.x !== null) ref = v === 'same' ? s.x : -s.x;
+      for (const r of s.rows) fix.set(r, v);
+      if (v === 'mirror') report.mirrored++;
+      if (v === null) report.dropped++;
+      for (const r of s.rows) {
+        const k = r.kind === 'o' ? report.opens : r.kind === 'c' ? report.closes : null;
+        if (v === 'mirror') {
+          report.rowsMirrored++;
+          if (k) k.mirrored++;
+        } else if (v === null) {
+          report.rowsDropped++;
+          if (k) k.dropped++;
+        }
+      }
+    }
+  }
+  for (const l of lines) {
+    const v = fix.get(l);
+    if (v === undefined || v === 'same') out.push(l);
+    else if (v === 'mirror') out.push({ ...l, line: l.market === 'spreads' && Number.isFinite(l.line) ? -l.line : l.line, a: l.b, b: l.a });
+  }
+  return { lines: out, report: { ...report, prior } };
+}
+
+// (a team sport's neutral sites, the games either team could be listed first at: games.json's neutral by ESPN id,
+// and the 2020 bubbles and MLB's 2020 neutral postseason, which games.json doesn't reach back to)
+export const NEUTRAL_WINDOWS = { nba: [['2020-07-30', '2020-10-12']], nhl: [['2020-08-01', '2020-09-29']], mlb: [['2020-10-05', '2020-10-29']], nfl: [] };
+export function neutralOids(sport, events, games = []) {
+  if (sport === 'mma') return null;
+  const neutral = new Set(games.filter((g) => g.neutral).map((g) => String(g.id)));
+  const wins = NEUTRAL_WINDOWS[sport] ?? [];
+  const out = new Set();
+  for (const e of events.values()) {
+    const day = String(e.t).slice(0, 10);
+    if ((e.id && neutral.has(String(e.id))) || wins.some(([lo, hi]) => day >= lo && day <= hi)) out.add(e.oid);
+  }
+  return out;
+}
+const readGames = (sport) => {
+  const f = path.join(ROOT, 'apps', sport, 'scripts/model/games.json');
+  if (sport === 'mma' || !existsSync(f)) return [];
+  const g = JSON.parse(readFileSync(f, 'utf8'));
+  return Array.isArray(g) ? g : (g.games ?? []);
+};
+// (the repair's record, written once a sport is repaired so it never runs twice: on a repaired archive the flip share
+// it reads is the genuine moves', and a second pass would only drop more)
+export const framesFile = (sport) => path.join(historyDir(sport), 'frames.json');
+
+// The committed season files repaired in place (node odds-history.mjs repair [sports] [--dry]): each file's lines put
+// in their event's frame, the prior from the sport's archive (MMA's every bout, a team sport's neutral sites), a file
+// rewritten only where a row changed, the report in frames.json. Once a sport (frames.json there: skipped); build()
+// frames by name from then on.
+export function repairArchive(sports, { write = true, log = console.log, games = readGames } = {}) {
+  const out = {};
+  for (const sport of sports) {
+    const dir = historyDir(sport);
+    if (!existsSync(dir)) continue;
+    if (existsSync(framesFile(sport))) {
+      log(`${sport}: repaired already (${path.relative(ROOT, framesFile(sport))})`);
+      continue;
+    }
+    const files = readdirSync(dir).filter((x) => x.endsWith('.jsonl.gz')).sort();
+    const rowsOf = new Map(files.map((f) => [f, gunzipSync(readFileSync(path.join(dir, f))).toString('utf8').split('\n').filter(Boolean).map((s) => JSON.parse(s))]));
+    const lineOf = new Map();
+    const lines = [];
+    for (const rows of rowsOf.values())
+      for (const r of rows)
+        if (r[0] === 'L' && (r[2] === 'o' || r[2] === 'c')) {
+          const l = { oid: r[1], kind: r[2], ts: r[3], book: r[4], market: r[5], line: r[6], a: r[7], b: r[8] };
+          lineOf.set(r, l);
+          lines.push(l);
+        }
+    const events = new Map();
+    for (const rows of rowsOf.values()) for (const r of rows) if (r[0] === 'E' && !events.has(r[1])) events.set(r[1], { oid: r[1], id: r[2], t: r[3] });
+    const only = neutralOids(sport, events, games(sport));
+    const { lines: fixed, report } = repairFrames(lines, null, only);
+    const kept = new Map();
+    for (const l of fixed) kept.set(`${l.oid}|${l.kind}|${l.ts}|${l.book}|${l.market}`, l);
+    let changed = 0;
+    for (const [f, rows] of rowsOf) {
+      let touched = false;
+      const next = [];
+      for (const r of rows) {
+        const l = lineOf.get(r);
+        if (!l) {
+          next.push(r);
+          continue;
+        }
+        const k = kept.get(`${l.oid}|${l.kind}|${l.ts}|${l.book}|${l.market}`);
+        if (!k) {
+          touched = true;
+          continue;
+        }
+        if (k.a !== l.a || k.b !== l.b || k.line !== l.line) touched = true;
+        next.push(['L', r[1], r[2], r[3], r[4], r[5], k.line, k.a, k.b]);
+      }
+      if (!touched) continue;
+      changed++;
+      if (write) writeFileSync(path.join(dir, f), gzipSync(Buffer.from(next.map((r) => JSON.stringify(r)).join('\n') + '\n'), { level: 9 }));
+    }
+    out[sport] = { ...report, scope: only ? 'neutral sites' : 'every event', files: changed };
+    if (write) writeFileSync(framesFile(sport), JSON.stringify({ at: new Date().toISOString(), rule: 'DECISIONS.md D56', odds: FRAME_ODDS, ...out[sport] }, null, 1) + '\n');
+    log(`${sport}: ${JSON.stringify(out[sport])}`);
+  }
+  return out;
 }
 
 // ---- the API ----
@@ -304,18 +517,33 @@ async function pullDaily(sport) {
 // (every event the snapshots saw: its latest-seen start and teams. The API gave some games a new id in the
 // days before them (2020-21: a game's week-ahead id replaced by another), so the ids of the same teams at the same
 // start are one event, the id seen last its own: alias maps every id to it)
-function eventsSeen(sport, snaps = readLines(workOf(sport, 'snaps.jsonl'))) {
+// (DECISIONS.md D56: the two sides are a pair, not an order: the API lists an MMA bout's fighters, and a neutral
+// site's teams, either way round from one snapshot to the next, so the key is the pair unordered, the id's event is
+// its last sighting's (re-inserted, so a later key wins), and its home and away that sighting's: the frame build
+// puts every price in, by the names)
+export function eventsSeen(sport, snaps = readLines(workOf(sport, 'snaps.jsonl'))) {
   const last = new Map();
   const keyOf = new Map();
   for (const s of [...snaps].sort((a, b) => a.ts.localeCompare(b.ts)))
     for (const e of s.events) {
-      const key = `${e.h}|${e.a}|${e.c}`;
+      const key = `${[e.h, e.a].sort().join('|')}|${e.c}`;
       keyOf.set(e.id, key);
+      last.delete(key);
       last.set(key, { id: e.id, c: e.c, h: e.h, a: e.a });
     }
   const ev = new Map([...last.values()].map((e) => [e.id, e]));
   ev.alias = new Map([...keyOf].map(([id, key]) => [id, last.get(key).id]));
   return ev;
+}
+
+// (D56: a snapshot's prices in the event's frame, by the names: a snapshot that listed the event's away side first
+// has its moneyline's prices swapped and its spread's point negated; totals have no side. null where the snapshot's
+// names aren't the event's pair: never guessed onto a side)
+export function framed(e, canon, market, v) {
+  if (market === 'totals') return v;
+  if (e.h === canon.h && e.a === canon.a) return v;
+  if (e.h === canon.a && e.a === canon.h) return market === 'spreads' ? [Number.isFinite(v[0]) ? -v[0] : v[0], v[2], v[1]] : [v[0], v[2], v[1]];
+  return null;
 }
 
 async function pullClose(sport) {
@@ -413,7 +641,10 @@ export async function build(sports) {
         const id = ev.alias.get(e.id);
         if (!ev.has(id) || Date.parse(s.ts) >= Date.parse(ev.get(id).c)) continue;
         for (const [book, m] of Object.entries(e.x ?? {}))
-          for (const [market, v] of Object.entries(m)) {
+          for (const [market, raw] of Object.entries(m)) {
+            // (each price on its own side's name, D56: this snapshot's home may be the event's away)
+            const v = framed(e, ev.get(id), market, raw);
+            if (!v) continue;
             const k = `${book}|${market}`;
             const o = open.get(id) ?? open.set(id, new Map()).get(id);
             if (!o.has(k)) o.set(k, { ts: s.ts, v });
@@ -563,6 +794,7 @@ async function main() {
   if (val('--floor')) state.floor = Number(val('--floor'));
   if (cmd === 'plan') return void (await plan(list));
   if (cmd === 'build') return void (await build(list));
+  if (cmd === 'repair') return void repairArchive(list, { write: !args.includes('--dry') });
   if (cmd === 'morning') return void (await morning(list));
   if (cmd !== 'pull') throw new Error('usage: plan | pull | build');
   const phases = val('--phase') ? [val('--phase')] : ['daily', 'close', 'props', 'propsOpen'];

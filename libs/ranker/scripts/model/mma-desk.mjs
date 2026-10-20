@@ -91,7 +91,9 @@ export const SPORT = 'mma';
 // the other sports', isn't touched)
 // (bumped 2026-10-19, the history round (D36): the trust is fit on the priced history pooled with the live bets, so
 // the price moved (the untested start of 0.5 to the history's fit) and the league's bets restart on it)
-export const MMA_START = '2026-10-19T17:00:00Z';
+// (bumped 2026-10-20, the frames round (D56): the archive's mirrored opens repaired, the trust refit on the cleaned
+// history (the early moneyline's 0.85 to 0.1), so the price moved and the league's bets restart on it)
+export const MMA_START = '2026-10-20T06:30:00Z';
 // (the history's rows weigh this many rows' worth at most in the trust fit, a lead band at a time (D37), the live bets
 // whole: about a year of a band's rows, so a season of live bets can move the trust the history set)
 export const PRIOR_ROWS = 400;

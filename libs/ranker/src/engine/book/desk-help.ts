@@ -7,7 +7,7 @@ export const DESK_HELP: Record<string, string> = {
   roi: 'Return on the units staked: profit ÷ staked',
   historyRecord: "The Bot's history: today's algorithm replayed on every priced game before its latest version (at the price offered the moment it would have bet, its own bands and stakes), plus its real bets on the games since. Practice picks apart",
   historyProfit: 'Units won or lost over the history, stakes included, at the stakes the Bot would have placed',
-  historyBeat: 'Of the replayed bets placed at an open (and the live ones with a close), the share whose line or price beat the close; a bet placed at the close has no close to beat',
+  historyBeat: "Of the bets placed before the close with a close at their own line (replayed and live), the share whose price still had a positive expected return at the close's fair, no-vig chance; shown from 30 such bets. A bet placed at the close has no close to beat",
   historyPractice: "The slate's practice picks (the best few short of the vig, 0.5u each, a LIKE at most) over the history: their own line, out of the record",
   historyLive: "The live desk's own part of the history: the real bets on games since the Bot's latest version. The tiles above are the live desk alone (what the Bot actually did, in the range on show)",
   historyCaveat: 'How the history was made: where each bet was placed (a clean open where its edge survived the lineup risk, else the close), which seasons had the props and context, and the price convention',

@@ -4,7 +4,7 @@ import { darkLogoOf } from '../team-look';
 import { matchupName } from './game-menu';
 import { BetGroup, SportGroup, TableSorts, betValue, byGame, gamesBySport } from './desk-columns';
 import { DESK_HELP } from './desk-help';
-import { BotHistory, HISTORY_RANGES, HistoryRange, HistoryRow, ReplayRecordFile, botHistoryOf, buildLabel, buildOf, emptyRow, isHistoryRange, recordText } from './replay-history';
+import { BotHistory, HISTORY_RANGES, HistoryRange, HistoryRow, ReplayRecordFile, beatText, beatTip, botHistoryOf, buildLabel, buildOf, emptyRow, isHistoryRange, recordText } from './replay-history';
 import { DeskPanel, ESPN_LEAGUES, SPORTS, deskPanelOpen, UNIT_WORDS, DeskEpoch, epochFor, epochShared, countNowOf, deskEpochOf, edgeColorOf, epochLabel, isTracked, meterOf, propState, provisional, sideTextOf, sideTitleOf, toWin } from './desk-math';
 import { Board, Meter, ModelBet, ModelState, Settled } from './desk-model';
 import { SummaryBox, athleteTeam, liveStat } from './live-props';
@@ -102,6 +102,9 @@ export class ModelDeskComponent implements OnInit, OnDestroy {
   private allReplays: (ReplayRecordFile | null)[] = [];
   private allLedgerBets: ModelBet[] = [];
   readonly recordText = recordText;
+  // (Beat close: the share that beat the fair close from BEAT_MIN bets, the count and mean return on hover, D56)
+  readonly beatText = beatText;
+  readonly beatTip = beatTip;
   readonly recordTip = recordTip;
   readonly compactCount = compactCount;
   readonly buildLabel = buildLabel;
@@ -305,11 +308,6 @@ export class ModelDeskComponent implements OnInit, OnDestroy {
     const waiting = (b: ModelBet) => Date.parse(b.start) > now || this.notUnderWay(b);
     this.open = this.bets.filter(waiting).sort((a, b) => a.start.localeCompare(b.start));
     this.live = this.bets.filter((b) => !waiting(b) && !this.isOver(b)).sort((a, b) => a.start.localeCompare(b.start));
-  }
-
-  // (a history row's beat-the-close count, exact: "1,204 with a close")
-  countWith(n: number): string {
-    return `${n.toLocaleString('en-US')} with a close`;
   }
 
   // (a closed bet's band, for its colour: the Book's tier names; a practice pick its own)

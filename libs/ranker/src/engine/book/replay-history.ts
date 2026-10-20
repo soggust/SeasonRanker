@@ -11,7 +11,8 @@ import { compactRecord } from './bet-format';
 const fin = Number.isFinite;
 
 // (a tally in the file: the bets graded, won, lost, pushed, the units staked and won, the return, the share that
-// beat the close of the bets with one)
+// beat the fair close of the bets with a close at their line, their count, and their mean expected return at the fair
+// close (clv: none in a file from before DECISIONS.md D56))
 export interface ReplayTally {
   bets: number;
   won: number;
@@ -22,6 +23,7 @@ export interface ReplayTally {
   roi: number | null;
   beat: number | null;
   beatN: number;
+  clv?: number | null;
 }
 export interface ReplayBet {
   id: string;
@@ -39,6 +41,7 @@ export interface ReplayBet {
   profit: number;
   timing: 'open' | 'close';
   beat: 1 | 0 | null;
+  clv?: number | null;
   at: string;
   start: string;
   settled: string;
@@ -168,12 +171,13 @@ const inDays = (day: string, r: { from: string; to: string } | null): boolean =>
 // (the bands' replayed days in the range, summed into a tally: null without the file's buckets)
 export function dailyTally(f: ReplayRecordFile, bands: string[], r: { from: string; to: string }): ReplayTally | null {
   if (!f.daily?.bands) return null;
-  const t: ReplayTally = { bets: 0, won: 0, lost: 0, push: 0, staked: 0, profit: 0, roi: null, beat: null, beatN: 0 };
+  const t: ReplayTally = { bets: 0, won: 0, lost: 0, push: 0, staked: 0, profit: 0, roi: null, beat: null, beatN: 0, clv: null };
   let beatWon = 0;
+  let clvSum = 0;
   for (const band of bands) {
     for (const [day, d] of Object.entries(f.daily.bands[band] ?? {})) {
       if (!inDays(day, r)) continue;
-      const [won = 0, lost = 0, push = 0, staked = 0, profit = 0, beat = 0, beatN = 0] = d.split(',').map(Number);
+      const [won = 0, lost = 0, push = 0, staked = 0, profit = 0, beat = 0, beatN = 0, clv = 0] = d.split(',').map(Number);
       t.won += won;
       t.lost += lost;
       t.push += push;
@@ -182,10 +186,12 @@ export function dailyTally(f: ReplayRecordFile, bands: string[], r: { from: stri
       t.profit += profit;
       beatWon += beat;
       t.beatN += beatN;
+      clvSum += clv;
     }
   }
   t.roi = t.staked ? t.profit / t.staked : null;
   t.beat = t.beatN ? beatWon / t.beatN : null;
+  t.clv = t.beatN ? clvSum / t.beatN : null;
   return t;
 }
 
@@ -194,7 +200,30 @@ const MARKET_LABELS: Record<string, string> = { lines: 'Game lines', props: 'Pro
 
 export const emptyRow = (label: string): HistoryRow => ({ label, bets: 0, won: 0, lost: 0, push: 0, staked: 0, profit: 0, roi: null, open: 0, clvN: 0, clvBeat: null, clvEv: null, replayed: 0, live: 0 });
 
-// (a replay tally onto a row; a live bet onto a row: a graded one, never a void or tracked one)
+// Beat the fair close (DECISIONS.md D56), one definition for the replayed and the live bets: a bet placed before the
+// close beat it when its own price has a positive expected return at the close's no-vig fair chance, a close at the
+// bet's own line only (replay-record.mjs fairBeatOf; a live bet's clv.mjs ev, its pts 0 or none: a moved line has no
+// close at its line). The panel shows the share only from BEAT_MIN such bets (fewer: "—"), the count and the mean
+// expected return on its hover
+export const BEAT_MIN = 30;
+export function fairCloseOf(b: Pick<ModelBet, 'clv'>): number | null {
+  const c = b.clv;
+  if (!c || c.ev === null || c.ev === undefined || !fin(c.ev)) return null;
+  if (c.pts !== null && c.pts !== undefined && c.pts !== 0) return null;
+  return c.ev;
+}
+// (a row's share as the panel prints it, and its hover)
+export function beatText(t: Pick<HistoryRow, 'clvN' | 'clvBeat'>): string {
+  return t.clvN >= BEAT_MIN && t.clvBeat !== null ? `${Math.round(t.clvBeat * 100)}%` : '—';
+}
+export function beatTip(t: Pick<HistoryRow, 'clvN' | 'clvEv'>): string {
+  if (!t.clvN) return 'No bets with a close at their line yet';
+  const ev = t.clvEv === null || !fin(t.clvEv) ? '' : `; average return at the fair close ${t.clvEv >= 0 ? '+' : '−'}${Math.abs(t.clvEv * 100).toFixed(1)}%`;
+  return `${t.clvN.toLocaleString('en-US')} with a close at their line${t.clvN < BEAT_MIN ? ` (the share from ${BEAT_MIN})` : ''}${ev}`;
+}
+
+// (a replay tally onto a row; a live bet onto a row: a graded one, never a void or tracked one. A file from before
+// D56 (no clv on its tallies) beat the raw close, another measure: its share isn't joined)
 function addReplay(row: HistoryRow, t: ReplayTally | null | undefined): HistoryRow {
   if (!t) return row;
   row.bets += t.bets;
@@ -204,8 +233,9 @@ function addReplay(row: HistoryRow, t: ReplayTally | null | undefined): HistoryR
   row.staked += t.staked;
   row.profit += t.profit;
   row.replayed += t.bets;
-  if (t.beatN && t.beat !== null) {
+  if (t.beatN && t.beat !== null && t.clv !== undefined && t.clv !== null && fin(t.clv)) {
     row.clvBeat = ((row.clvBeat ?? 0) * row.clvN + t.beat * t.beatN) / (row.clvN + t.beatN);
+    row.clvEv = ((row.clvEv ?? 0) * row.clvN + t.clv * t.beatN) / (row.clvN + t.beatN);
     row.clvN += t.beatN;
   }
   return row;
@@ -221,13 +251,15 @@ function addLive(row: HistoryRow, b: ModelBet): HistoryRow {
   row.staked += b.units;
   row.profit += b.profit;
   row.live++;
-  if (b.clv && b.clv.beat !== null && b.clv.beat !== undefined) {
-    row.clvBeat = ((row.clvBeat ?? 0) * row.clvN + (b.clv.beat ? 1 : 0)) / (row.clvN + 1);
+  const ev = fairCloseOf(b);
+  if (ev !== null) {
+    row.clvBeat = ((row.clvBeat ?? 0) * row.clvN + (ev > 0 ? 1 : 0)) / (row.clvN + 1);
+    row.clvEv = ((row.clvEv ?? 0) * row.clvN + ev) / (row.clvN + 1);
     row.clvN++;
   }
   return row;
 }
-const done = (row: HistoryRow): HistoryRow => ({ ...row, staked: Math.round(row.staked * 100) / 100, profit: Math.round(row.profit * 100) / 100, roi: row.staked ? row.profit / row.staked : null, clvBeat: row.clvN ? row.clvBeat : null });
+const done = (row: HistoryRow): HistoryRow => ({ ...row, staked: Math.round(row.staked * 100) / 100, profit: Math.round(row.profit * 100) / 100, roi: row.staked ? row.profit / row.staked : null, clvBeat: row.clvN ? row.clvBeat : null, clvEv: row.clvN ? row.clvEv : null });
 
 // (a live bet on the live side of the split: its game starts at or after its sport's epoch; with no replay file for
 // the sport every bet of its ledger)

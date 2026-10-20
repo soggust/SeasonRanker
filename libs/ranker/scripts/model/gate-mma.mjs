@@ -12,7 +12,7 @@
 //             LAYER_A_FROM, each on the rows before it, as the live desk refits on everything before each run.
 //             Weighted by season (gate-score.mjs seasonWeight: the year; the current year and the two before decide)
 //   layer b   the priced history: each matched bout's moneyline and round total at DraftKings, the open (the daily
-//             snapshot's first sighting) and the close (the last before the bell, CLOSE_MAX at most), framed on
+//             snapshot's first sighting) and the close (the last before the bell, MMA_CLOSE_MAX at most), framed on
 //             ESPN's first fighter (the model's side) and Over; fair Pinnacle's pair de-vigged where it posts the same
 //             line, else DraftKings' own (as the live desk prices, mma-desk.mjs linesOf, fights-totals.mjs
 //             totalLinesOf); the trust per market walk-forward by month (gate-history.mjs finish, walkTrust: desk.mjs
@@ -36,7 +36,7 @@ import { existsSync, readFileSync } from 'node:fs';
 import { pathToFileURL } from 'node:url';
 import { keptFights } from '../../../../apps/mma/scripts/fights.mjs';
 import { binLoss, gradeSide, r4, seasonWeight, topPicks } from './gate-score.mjs';
-import { CLOSE_MAX, devig, finish, loadHistory, slim, vsBook, vsBookBySeason, walkTrust } from './gate-history.mjs';
+import { devig, finish, loadHistory, slim, vsBook, vsBookBySeason, walkTrust } from './gate-history.mjs';
 import { closedEvents, matchHistory, matchReport } from './fights-history.mjs';
 
 const ROOT = path.resolve(import.meta.dirname, '../../../..');
@@ -56,6 +56,13 @@ export const BANDS = ['early', 'mid', 'late'];
 export const priceKey = (market, band) => (band === 'early' ? `${market}Open` : market);
 export const leadBand = (hours) => (!fin(hours) ? 'late' : hours >= LEAD_BANDS.early ? 'early' : hours >= LEAD_BANDS.mid ? 'mid' : 'late');
 export const PERIOD_MONTHS = 6;
+// (MMA's close: the last snapshot within this of the bout's start (D56, 2026-10-20). The archive's close snapshot is
+// asked a minute before the first start of a cluster, and a card's bouts start hours apart, so a bout's last
+// DraftKings price is often 6 to 12 hours before its own start: at the team sports' 6 hours (gate-history.mjs
+// CLOSE_MAX) 35% of the replay's MMA bets had no close to check. Measured on the repaired archive (the Book's no-vig
+// log loss at its last price by how long before the start): inside 1 hour 0.5929 on 1,918 bouts, 1 to 6 hours 0.5646
+// on 101, 6 to 12 hours 0.5956 on 653 (as sharp as the bell), 12 to 24 hours 0.6540 on 305 (not a close))
+export const MMA_CLOSE_MAX = 12 * 36e5;
 // (a fit's bouts over by its period's first day plus this; a fighter's own bout over by its day plus this: the cards
 // end past midnight UTC, Saturday nights in the Americas)
 export const FIT_KNOWN_H = 8;
@@ -128,7 +135,7 @@ const pastLineOf = (r, line) => (r.secs === null || r.secs === undefined || r.me
 // The priced history's rows for a version: the matched bouts' moneylines and round totals at the open and the close,
 // framed on ESPN's first fighter and Over (see the header). { open, close, matched (the report) }
 export function historyRows(V, rows, hist, chances, current, { fights = null } = {}) {
-  const closed = closedEvents(hist, CLOSE_MAX);
+  const closed = closedEvents(hist, MMA_CLOSE_MAX);
   const { matched, unmatched } = matchHistory(hist.events, fights ?? [], { closed });
   const byFight = new Map(rows.map((r) => [r.id, r]));
   const by = new Map();
@@ -172,7 +179,7 @@ export function historyRows(V, rows, hist, chances, current, { fights = null } =
     const c = fin(ts) && c0.prev && ts < fitAt(c0) ? c0.prev : c0;
     const fighters = Math.max(dayEnd(before(r.a, r.date), BOUT_KNOWN_H) ?? -Infinity, dayEnd(before(r.b, r.date), BOUT_KNOWN_H) ?? -Infinity);
     const factsAt = Math.max(fitAt(c), fighters);
-    if (kind === 'c' && start - ts > CLOSE_MAX) continue;
+    if (kind === 'c' && start - ts > MMA_CLOSE_MAX) continue;
     const season = e.season;
     const w = seasonWeight(SPORT, season, current).w;
     const lead = fin(ts) ? (start - ts) / 36e5 : kind === 'c' ? 1 : null;

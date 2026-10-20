@@ -1,0 +1,28 @@
+{
+ "at": "2026-10-20T05:12:20.586Z",
+ "rule": "DECISIONS.md D56",
+ "odds": 99,
+ "events": 3901,
+ "snapshots": 9125,
+ "mirrored": 429,
+ "dropped": 1399,
+ "rowsMirrored": 571,
+ "rowsDropped": 1943,
+ "opens": {
+  "mirrored": 560,
+  "dropped": 1912
+ },
+ "closes": {
+  "mirrored": 11,
+  "dropped": 31
+ },
+ "prior": {
+  "scale": 0.1522635057967104,
+  "flip": 0.1537937301226715,
+  "pairs": 5224,
+  "clear": 2200,
+  "flipped": 338
+ },
+ "scope": "every event",
+ "files": 7
+}

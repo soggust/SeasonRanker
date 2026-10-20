@@ -130,7 +130,7 @@ test('replay: the file\'s shape, its honesty flags and the one-line caveat', () 
   for (let i = 0; i < 8; i++) rows.push(lineRows(i, { season: 2023, p: 0.58 }));
   const r = replayRecord(V, 'nba', split(rows), { names, epoch: EPOCH });
   for (const k of ['v', 'sport', 'epoch', 'at', 'from', 'through', 'n', 'overall', 'practice', 'pass', 'byBand', 'byMarket', 'bySeason', 'byYear', 'days', 'practiceDays', 'daily', 'streak', 'streakAt', 'brokeAt', 'last', 'flags']) assert.ok(k in r, `the file carries ${k}`);
-  for (const k of ['bets', 'won', 'lost', 'push', 'staked', 'profit', 'roi', 'beat', 'beatN']) assert.ok(k in r.overall, `a tally carries ${k}`);
+  for (const k of ['bets', 'won', 'lost', 'push', 'staked', 'profit', 'roi', 'beat', 'beatN', 'clv']) assert.ok(k in r.overall, `a tally carries ${k}`);
   assert.deepEqual(Object.keys(r.byBand), ['lock', 'high', 'medium']);
   assert.ok(r.last.length <= REPLAY_LAST);
   for (const b of r.last) for (const k of ['id', 'sport', 'season', 'pick', 'matchup', 'market', 'player', 'band', 'practice', 'units', 'res', 'profit', 'timing', 'beat', 'at', 'start', 'settled', 'odds']) assert.ok(k in b, `a last bet carries ${k}`);
@@ -140,7 +140,7 @@ test('replay: the file\'s shape, its honesty flags and the one-line caveat', () 
   assert.match(caveatOf(r), /replayed on every priced game before its latest version/);
   // (the day buckets by band (dailyOf): the newest year's, summing to its bets at most the record)
   const daySum = (bands, i) => bands.reduce((t, bd) => t + Object.values(r.daily.bands[bd] ?? {}).reduce((v, d) => v + (Number(d.split(',')[i]) || 0), 0), 0);
-  assert.deepEqual(r.daily.cols, ['won', 'lost', 'push', 'staked', 'profit', 'beat', 'beatN']);
+  assert.deepEqual(r.daily.cols, ['won', 'lost', 'push', 'staked', 'profit', 'beat', 'beatN', 'clv']);
   assert.ok(Object.values(r.daily.bands).every((days) => Object.keys(days).every((d) => d >= r.daily.from)));
   assert.ok(daySum(['lock', 'high', 'medium'], 0) + daySum(['lock', 'high', 'medium'], 1) + daySum(['lock', 'high', 'medium'], 2) <= r.overall.bets);
   assert.match(caveatOf(r), /full context \(props and lines\) 2025, lines by the ratings alone 2023/);

@@ -101,7 +101,7 @@ test('fitMmaTrust: the live bets since the epoch weigh whole against the capped 
   const base = trustFor(fitMmaTrust({ bets: [] }, hist), 'ml', 400);
   assert.ok(base <= 0.1);
   // (live bets placed 17 days before the start: the early band's evidence)
-  const liveRows = rowsOf({ informative: true, n: 400, seed: 9 }).map((b, i) => ({ ...b, id: `live${i}`, placedAt: '2026-10-20T00:00:00Z', start: '2026-11-06T00:00:00Z', fairFrom: 'pinnacle', clv: { q: b.clv.q, prob: 0.01 }, tw: undefined, lead: undefined, band: undefined }));
+  const liveRows = rowsOf({ informative: true, n: 400, seed: 9 }).map((b, i) => ({ ...b, id: `live${i}`, placedAt: '2026-10-21T00:00:00Z', start: '2026-11-07T00:00:00Z', fairFrom: 'pinnacle', clv: { q: b.clv.q, prob: 0.01 }, tw: undefined, lead: undefined, band: undefined }));
   const moved = fitMmaTrust({ bets: liveRows }, hist);
   assert.ok(trustFor(moved, 'ml', 400) > base, `the live rows lift it: ${trustFor(moved, 'ml', 400)}`);
   assert.equal(trustFor(moved, 'ml', 10), 0.5, 'the late band untouched by early bets');

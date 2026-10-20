@@ -87,14 +87,14 @@
 </ng-template>
 
 <!-- (a history row: its record compact (bet-format.ts compactRecord, the exact one on hover), units, return and the
-     share that beat the close) -->
+     share that beat the fair close, from 30 bets with a close at their line (replay-history.ts beatText, D56)) -->
 <ng-template #histRow let-t let-total="total">
   <tr [class.desk-total]="total" [ngClass]="'desk-tier-' + t.label.split(' ')[0].toLowerCase()">
     <th>@if (t.sport) {<span class="desk-history-league"><ng-container *ngTemplateOutlet="leagueMark; context: { $implicit: t.sport, titled: true }"></ng-container></span>} @else { {{ t.label }} }</th>
     <td [attr.title]="recordTip(t)">{{ recordText(t) }}</td>
     <td [class.up]="t.profit > 0" [class.down]="t.profit < 0">{{ units(t.profit) }}</td>
     <td [class.up]="(t.roi ?? 0) > 0" [class.down]="(t.roi ?? 0) < 0">{{ pct(t.roi) }}</td>
-    <td [attr.title]="t.clvN ? countWith(t.clvN) : null">{{ t.clvN ? pct(t.clvBeat, 0) : '-' }}</td>
+    <td [attr.title]="beatTip(t)">{{ beatText(t) }}</td>
   </tr>
 </ng-template>
 
