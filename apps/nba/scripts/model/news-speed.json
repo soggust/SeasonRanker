@@ -2102,6 +2102,11 @@
    "espn": {
     "seen": "2026-10-20T22:39:07.463Z",
     "own": "2026-10-20T22:32:00.000Z"
+   },
+   "bluesky": {
+    "seen": "2026-10-20T22:40:53.052Z",
+    "own": "2026-10-20T22:30:47.905Z",
+    "why": "@insidenbanews.bsky.social: Dean Wade (ankle) listed out Tuesday."
    }
   },
   "401909090|aaronnesmith|out": {
@@ -2510,6 +2515,150 @@
    "espn": {
     "seen": "2026-10-20T22:39:07.463Z",
     "own": "2026-10-20T22:32:00.000Z"
+   }
+  },
+  "401909090|deanwade|out": {
+   "game": "401909090",
+   "start": "2026-10-21T01:30Z",
+   "team": "24",
+   "name": "Dean Wade",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-10-20T22:40:53.052Z",
+    "own": "2026-10-20T22:30:47.905Z",
+    "why": "@insidenbanews.bsky.social: Dean Wade (ankle) listed out Tuesday."
+   }
+  },
+  "401909834|deanwade|out": {
+   "game": "401909834",
+   "start": "2026-10-21T23:00Z",
+   "team": "19",
+   "name": "Dean Wade",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-10-20T22:40:53.052Z",
+    "own": "2026-10-20T22:30:47.905Z",
+    "why": "@insidenbanews.bsky.social: Dean Wade (ankle) listed out Tuesday."
+   }
+  },
+  "401909835|deanwade|out": {
+   "game": "401909835",
+   "start": "2026-10-21T23:00Z",
+   "team": "27",
+   "name": "Dean Wade",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-10-20T22:40:53.052Z",
+    "own": "2026-10-20T22:30:47.905Z",
+    "why": "@insidenbanews.bsky.social: Dean Wade (ankle) listed out Tuesday."
+   }
+  },
+  "401909091|deanwade|out": {
+   "game": "401909091",
+   "start": "2026-10-21T23:30Z",
+   "team": "14",
+   "name": "Dean Wade",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-10-20T22:40:53.052Z",
+    "own": "2026-10-20T22:30:47.905Z",
+    "why": "@insidenbanews.bsky.social: Dean Wade (ankle) listed out Tuesday."
+   }
+  },
+  "401909836|deanwade|out": {
+   "game": "401909836",
+   "start": "2026-10-21T23:30Z",
+   "team": "17",
+   "name": "Dean Wade",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-10-20T22:40:53.052Z",
+    "own": "2026-10-20T22:30:47.905Z",
+    "why": "@insidenbanews.bsky.social: Dean Wade (ankle) listed out Tuesday."
+   }
+  },
+  "401909837|deanwade|out": {
+   "game": "401909837",
+   "start": "2026-10-21T23:30Z",
+   "team": "28",
+   "name": "Dean Wade",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-10-20T22:40:53.052Z",
+    "own": "2026-10-20T22:30:47.905Z",
+    "why": "@insidenbanews.bsky.social: Dean Wade (ankle) listed out Tuesday."
+   }
+  },
+  "401909838|deanwade|out": {
+   "game": "401909838",
+   "start": "2026-10-22T00:00Z",
+   "team": "29",
+   "name": "Dean Wade",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-10-20T22:40:53.052Z",
+    "own": "2026-10-20T22:30:47.905Z",
+    "why": "@insidenbanews.bsky.social: Dean Wade (ankle) listed out Tuesday."
+   }
+  },
+  "401909839|deanwade|out": {
+   "game": "401909839",
+   "start": "2026-10-22T00:00Z",
+   "team": "3",
+   "name": "Dean Wade",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-10-20T22:40:53.052Z",
+    "own": "2026-10-20T22:30:47.905Z",
+    "why": "@insidenbanews.bsky.social: Dean Wade (ankle) listed out Tuesday."
+   }
+  },
+  "401909840|deanwade|out": {
+   "game": "401909840",
+   "start": "2026-10-22T00:30Z",
+   "team": "10",
+   "name": "Dean Wade",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-10-20T22:40:53.052Z",
+    "own": "2026-10-20T22:30:47.905Z",
+    "why": "@insidenbanews.bsky.social: Dean Wade (ankle) listed out Tuesday."
+   }
+  },
+  "401909092|deanwade|out": {
+   "game": "401909092",
+   "start": "2026-10-22T02:00Z",
+   "team": "13",
+   "name": "Dean Wade",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-10-20T22:40:53.052Z",
+    "own": "2026-10-20T22:30:47.905Z",
+    "why": "@insidenbanews.bsky.social: Dean Wade (ankle) listed out Tuesday."
+   }
+  },
+  "401909841|deanwade|out": {
+   "game": "401909841",
+   "start": "2026-10-22T02:00Z",
+   "team": "22",
+   "name": "Dean Wade",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-10-20T22:40:53.052Z",
+    "own": "2026-10-20T22:30:47.905Z",
+    "why": "@insidenbanews.bsky.social: Dean Wade (ankle) listed out Tuesday."
+   }
+  },
+  "401909842|deanwade|out": {
+   "game": "401909842",
+   "start": "2026-10-22T02:30Z",
+   "team": "12",
+   "name": "Dean Wade",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-10-20T22:40:53.052Z",
+    "own": "2026-10-20T22:30:47.905Z",
+    "why": "@insidenbanews.bsky.social: Dean Wade (ankle) listed out Tuesday."
    }
   }
  }
