@@ -142,5 +142,7 @@ const analyzed = run('analyze.mjs', ['--batch', '--teams', '--qbs']);
 if (analyzed !== 0) process.exit(analyzed ?? 1);
 
 writeFileSync(MARK, JSON.stringify({ date: today, at: new Date().toISOString() }));
-push();
+// (a push that never landed fails the run, so the scheduled task shows it)
+const pushedOk = push();
 console.log(`${stamp()}: done`);
+if (!pushedOk) process.exit(1);

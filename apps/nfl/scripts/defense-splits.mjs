@@ -20,6 +20,7 @@ import path from 'node:path';
 import { currentSeason } from '../../../libs/ranker/scripts/wiki-staff.mjs';
 import { fetchRetry } from '../../../libs/ranker/scripts/fetch.mjs';
 import { parseCsv } from '../../../libs/ranker/scripts/csv.mjs';
+import { seasonsArg } from '../../../libs/ranker/scripts/cli.mjs';
 
 export const SPLIT_KEYS = ['passYdsAllowedPerGame', 'rushYdsAllowedPerGame', 'passTdsAllowedPerGame', 'rushTdsAllowedPerGame', 'yardsAllowedPerGame'];
 
@@ -118,7 +119,9 @@ async function backfill(seasons) {
 }
 
 if (import.meta.url === pathToFileURL(process.argv[1] ?? '').href) {
-  const args = process.argv.slice(2).map(Number).filter(Boolean);
+  // (each argument a season, a range "2018-2021" or a list "2019,2021": a range used to read as nothing,
+  // and the run backfilled every season)
+  const args = process.argv.slice(2).flatMap((a) => seasonsArg(a, 0)).filter(Boolean);
   const seasons = args.length ? args : Array.from({ length: CURRENT_SEASON + 1 - 2000 }, (_, i) => 2000 + i);
   backfill(seasons).catch((err) => {
     console.error(err.stack);

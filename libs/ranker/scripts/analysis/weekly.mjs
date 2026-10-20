@@ -219,6 +219,7 @@ for (const sport of sports) {
     log(`${sport}: failed: ${e.stack ?? e}`);
   }
 }
-if (ran.length && !DRY && !flag('no-push')) push(ran.map((s) => `apps/${s}/src/StaticData/analysis`), ran.map((s) => SPORTS[s].name));
+// (a push that never landed fails the run, as a sport's failure does)
+if (ran.length && !DRY && !flag('no-push') && !push(ran.map((s) => `apps/${s}/src/StaticData/analysis`), ran.map((s) => SPORTS[s].name))) failed = true;
 log('done');
 process.exit(failed ? 1 : 0);

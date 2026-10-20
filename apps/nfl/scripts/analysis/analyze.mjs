@@ -21,6 +21,8 @@
 //
 // Needs ANTHROPIC_API_KEY (not for --publish or --dry).
 
+// (the key from the repo's .env on this machine, as the other sports' runner reads it; a key already set wins)
+import '../../../../libs/ranker/scripts/env.mjs';
 import Anthropic from '@anthropic-ai/sdk';
 import { existsSync, mkdirSync, readFileSync, readdirSync, rmSync, writeFileSync } from 'node:fs';
 import path from 'node:path';
