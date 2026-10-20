@@ -97,6 +97,27 @@ export const suspectOf = (ev, why = '', p = null) => {
   return { ev: r(ev, 10000), edge: r(s.edge, 10000), z: r(s.z, 1000), why: `edge ${s.edge > 0 ? '+' : ''}${r(s.edge * 100, 10)} points over the break-even (${r(s.z, 100)} SDs of the outcome) past the ${EDGE_SUSPECT * 100}-point or ${Z_SUSPECT}-SD bar (ev ${ev > 0 ? '+' : ''}${r(ev, 1000)})${why ? `: ${why}` : ''}: its ev held to ${EV_SUSPECT} at most and the practice stake` };
 };
 
+// The rules a bet was placed under (the owner, 2026-10-19: "you can change your bet to fix it", Josh Hokit +205 held
+// to the practice stake by the old ev bar). A bet keeps `rules` at placement: the cap rules' version (CAP_RULES,
+// bumped by hand whenever the code of the D23 suspect bar, D46's caps or D52's layer changes how a band or a stake is
+// held), the suspect bar's numbers and the bands (picks.mjs BANDS, passed in: picks.mjs imports this file). An open
+// bet on a game not yet locked whose rules differ from today's is taken back and priced again at a fresh quote
+// (run.mjs repriceOpen, mma-desk.mjs runMma), at most MAX_REPRICES times like a re-price on news. A bet from before
+// the rules were kept reads as placed under today's, except one held by the old ev bar (its suspect with no edge in
+// points: CAP_RULES 1). DECISIONS.md D53
+// (1: D23 by the return, ev past 0.15; 2: D23 by the edge in points and SDs, 27a9d205)
+export const CAP_RULES = 2;
+// (an open bet's re-prices on news or a rule change: at most this many, counted across runs)
+export const MAX_REPRICES = 6;
+export const rulesOf = (bands) => `cap${CAP_RULES} suspect ${EDGE_SUSPECT}/${Z_SUSPECT}/${EV_SUSPECT} bands ${bands.lock}/${bands.lockChance}/${bands.high}/${bands.medium}`;
+// (the rules a bet was placed under: its own, the old ev bar's for a pre-rules bet it held, else null: read as today's)
+export const rulesAt = (bet) => bet?.rules ?? (bet?.suspect && !Number.isFinite(bet.suspect.edge) ? 'cap1' : null);
+// (the rules it was placed under when they differ from today's, else null)
+export function rulesChanged(bet, now) {
+  const was = rulesAt(bet);
+  return was !== null && was !== now ? was : null;
+}
+
 export function stakeFor(ev, evScale, odds = -110) {
   const d = decimal(Number.isFinite(odds) && odds ? odds : -110);
   const e = Math.max(0, ev);

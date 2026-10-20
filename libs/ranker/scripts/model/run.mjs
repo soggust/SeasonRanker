@@ -142,7 +142,7 @@ import { RECHECK, finalSummary, postmortems, propPostmortem, recheckSummary, usu
 import { CLV_V, closeOf, closingLines, clvOf, clvSummary, propCarry, propCloseOf, revalueClv } from './clv.mjs';
 import { ANYTIME_TD, OUTLIER, SPORT_KEYS, anytimeOn, call, canSpend, consensusFields, gameLines, hasKey, linesFromEvent, matchNearest, usageSummary } from './oddsapi.mjs';
 import { backtestBets, evaluate, repriced, snapshots, trustBets } from './backtest.mjs';
-import { buildPicks, kellyOf, levelOf, unlock } from './picks.mjs';
+import { BANDS, buildPicks, kellyOf, levelOf, unlock } from './picks.mjs';
 import { boardMarkets, boardProp, buildBoard, seenUpdate, termParts } from './board.mjs';
 import { boxMarket, boxTotals, playerRows } from './playerlogs.mjs';
 import { nflPlayChance, nflPractice, playAt, playChanceSummary } from './playchance.mjs';
@@ -154,7 +154,7 @@ import { CACHE, DAY, etDay, get, isoSecond, nflverseGames, readJson, writeAtomic
 import { fitCode, fitDay, fitDiffs, fitPlan, readFit, refitWhy, saveFit } from './fitcache.mjs';
 import { corrRows, correctionText, tuneCorrection } from './correct.mjs';
 import { PRACTICE_N, PRACTICE_SPLIT, lineBucket, practiceRecord, practiceTop, slateQuota } from './desk.mjs';
-import { TRUST_START } from './desk.mjs';
+import { MAX_REPRICES, TRUST_START, rulesChanged, rulesOf } from './desk.mjs';
 import { BANKROLL, MARKETS, PRACTICE_UNITS, gatedPlacement, stakeFor, practiceGates, choose, decimal, isTracked, trackedRecord, lineGate, lineBar, barGate, bothGates, readLineBar, barAside, reasonsOf, scheduleRest, propGate, fairPair, placeGame, sameGameOf, sameGameRhoText, fitTrust, fitBuckets, bucketTrustOf, BUCKETS, gapGuard, guardOf, oneSide, pickText, placement, price, record, settle, voidOf } from './desk.mjs';
 import { CHECK_KELLY, CHECK_KINDS, atUnit, causeOf, checkLocked, checkOf, rejudgeChecks, shadowOf, checkResultOf, checkSummary, closeChecks, markPlaced, modelSide, noteOpen, openCheck, priceAtOf, resolveChecks, STORED_FRESH, storedBet, storedFresh, upsertCheck, withStoredPrices } from './checks.mjs';
 import { ledgerWrites, readChecks, readKept } from './checks-file.mjs';
@@ -200,8 +200,11 @@ const REST_FOR = 3 * 36e5;
 const LAST_CALL = 2 * 36e5;
 const lastCall = (r) => Math.max(LAST_CALL, Math.min(MAX_LAST, Number.isFinite(r.gap) ? 1.5 * r.gap : 0) * 36e5);
 // (an open bet whose inputs changed is priced again only REPRICE_BY ahead of its start (timing.mjs), and at
-// most MAX_REPRICES times: an injury report that keeps flipping doesn't keep it moving)
-const MAX_REPRICES = 6;
+// most MAX_REPRICES times (desk.mjs, shared with a re-price on a rule change): an injury report that keeps flipping
+// doesn't keep it moving)
+// (the band and stake rules a bet is placed under, kept on it (stampOf); an open bet placed under others is taken back
+// to price again (repriceOpen, desk.mjs rulesChanged, DECISIONS.md D53))
+const RULES_V = rulesOf(BANDS);
 // (the recent runs' start times, for the gap between them (timing.mjs cadenceOf): .cache/model/runs.json, the
 // last 24; a dry run reads it and adds nothing)
 const RUNS = path.join(CACHE, 'runs.json');
@@ -1699,12 +1702,17 @@ function repriceOpen(r) {
   let capped = 0;
   let published = 0;
   for (const b of r.ledger.bets) {
-    if (b.status !== 'open' || b.void || !b.inputs) continue;
+    // (the rules it was placed under changed since (D53): priced again like a change in its inputs)
+    const ruled = b.status === 'open' && !b.void ? rulesChanged(b, RULES_V) : null;
+    if (b.status !== 'open' || b.void || (!b.inputs && !ruled)) continue;
     if (Date.parse(b.start) - Date.now() < REPRICE_BY) continue;
     const now = r.inputs.get(b.event);
     if (!now) continue;
     const prev = before[b.event];
-    const changes = inputChanges(b.inputs, now, { game: games.get(b.event), before: prev?.parts, names: { ...(prev?.names ?? {}), ...now.names }, market: b.market });
+    const changes = [
+      ...(ruled ? [{ words: `rule changed (placed under ${ruled}, now ${RULES_V})` }] : []),
+      ...(b.inputs ? inputChanges(b.inputs, now, { game: games.get(b.event), before: prev?.parts, names: { ...(prev?.names ?? {}), ...now.names }, market: b.market }) : []),
+    ];
     if (!changes.length) continue;
     if (b.published) {
       published++;
@@ -1761,6 +1769,7 @@ function stampOf(r, id, gameId) {
   const back = r.backKept?.get(id);
   return {
     ...(inputs ? { inputs } : {}),
+    rules: RULES_V,
     ...(back && !DRY ? { repriced: { n: back.n + 1, why: back.why, from: back.from } } : {}),
   };
 }

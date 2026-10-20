@@ -927,3 +927,40 @@ test('D52 the confidence layer: LIKE from any edge, LOVE and LOCK earned on the 
   assert.ok(decisions.includes('### D52.'));
   assert.ok(decisions.includes('| The confidence layer ('));
 });
+
+test('D53 an open bet placed under a band or stake rule changed since is taken back and priced again at a fresh quote (Josh Hokit +205, held by the old ev bar)', async () => {
+  const D = await import('../libs/ranker/scripts/model/desk.mjs');
+  const M = await import('../libs/ranker/scripts/model/mma-desk.mjs');
+  const { BANDS } = await import('../libs/ranker/scripts/model/picks.mjs');
+  const now = new Date('2026-10-19T20:00:00Z');
+  const V = D.rulesOf(BANDS);
+  assert.equal(M.RULES_V, V);
+  assert.match(V, new RegExp(`^cap${D.CAP_RULES} suspect ${D.EDGE_SUSPECT}/${D.Z_SUSPECT}/${D.EV_SUSPECT} bands `));
+  // (Hokit as placed: a suspect by the return alone, no edge in points: the old rule; a bet with no suspect from
+  // before the rules were kept reads as today's; a stamped bet compares its own)
+  const hokit = { id: 'h', boutKey: 'k1', market: 'ml', status: 'open', intent: 'edge', start: '2026-11-15T05:30:00Z', side: 'away', odds: 205, units: 0.5, p: 0.3786, ev: 0.1547, placedAt: '2026-10-19T19:29:11Z', pick: 'Josh Hokit', suspect: { ev: 0.1547, why: 'ev +0.155 past the 0.15 bar' }, practice: 'suspect: ...' };
+  assert.equal(D.rulesAt(hokit), 'cap1');
+  assert.equal(D.rulesChanged(hokit, V), 'cap1');
+  assert.equal(D.rulesChanged({ ...hokit, suspect: undefined }, V), null);
+  assert.equal(D.rulesChanged({ ...hokit, suspect: { ev: 0.4, edge: 0.2, z: 0.4 } }, V), null);
+  assert.equal(D.rulesChanged({ ...hokit, rules: V }, V), null);
+  assert.equal(D.rulesChanged({ ...hokit, rules: 'cap1' }, V), 'cap1');
+  // (taken back only on a bout not locked, open, not priced again MAX_REPRICES times; by market and bout)
+  const back = M.rulesBack([hokit, { ...hokit, boutKey: 'k2', start: '2026-10-19T20:10:00Z' }, { ...hokit, boutKey: 'k3', repriced: { n: D.MAX_REPRICES } }, { ...hokit, boutKey: 'k4', status: 'won' }, { ...hokit, boutKey: 'k5', rules: V }], now);
+  assert.deepEqual([...back.ml.keys()], ['k1']);
+  assert.equal(back.total.size, 0);
+  // (the new bet keeps the withdrawn one honestly: its price, band, stake, the rules it was placed under, the reason)
+  const re = M.withdrawnOf(hokit, now.toISOString());
+  assert.equal(re.n, 1);
+  assert.match(re.why[0], /^rule changed \(placed under cap1, now cap2/);
+  assert.deepEqual([re.from.odds, re.from.units, re.from.band, re.from.rules], [205, 0.5, 'medium', 'cap1']);
+  // (every new bet is stamped; the withdrawal only at a fresh Odds API price (D30); run.mjs takes one back like news)
+  const mma = fs.readFileSync(path.resolve('libs/ranker/scripts/model/mma-desk.mjs'), 'utf8');
+  assert.match(mma, /back\.ml\.get\(bout\.key\) === open && apiPrice/);
+  assert.equal((mma.match(/rules: RULES_V,/g) ?? []).length, 2);
+  const run = fs.readFileSync(path.resolve('libs/ranker/scripts/model/run.mjs'), 'utf8');
+  assert.match(run, /rules: RULES_V,/);
+  assert.match(run, /rulesChanged\(b, RULES_V\)/);
+  const decisions = fs.readFileSync(path.resolve('libs/ranker/scripts/model/DECISIONS.md'), 'utf8');
+  assert.ok(decisions.includes('### D53.'));
+});

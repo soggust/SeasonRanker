@@ -662,6 +662,19 @@ Started 2026-10-18, after about 20 bettor changes in one day. The owner: "keep i
 - **Loops:** fit only by the gate's record on the history, never on the ledger (the live bets' stakes teach nothing back); it reads the priced chance and never moves it (the trust, the calibration, the residual and the anchor are upstream and read nothing from it); the practice picks, CHECKs and research read p as before; the blend's weight and the tiers move only by held-out evidence, a step a record; a cap or a stake here never turns a kind of bet off (D1, D2).
 - **Never:** a LOVE or a LOCK under the Kelly floors; a tier opened on one look at the grid or on the ledger's few rows; the desk fitting or writing the file; a stake from the calibrated chance over what the rules allow or under the practice stake.
 
+### D53. A bet placed under a band or stake rule changed since is the Bot's to price again before the start
+- **Date:** 2026-10-19.
+- **Owner:** "you can change your bet to fix it." The Bot placed Josh Hokit +205 (UFC 334) at 0.5u, a LIKE, while D23's old bar by the return (ev past 0.15) held it; D23 by the edge in points (27a9d205) no longer does, and the board reads that side higher. It's play money and the Bot's own bet.
+- **Rule:**
+  - **Every bet keeps the rules it was placed under** (`rules`, `desk.mjs rulesOf(BANDS)`): `CAP_RULES` (the cap rules' version, bumped by hand whenever the code of D23's suspect bar, D46's caps or D52's layer changes how a band or a stake is held: 1 the ev bar, 2 the edge in points), D23's numbers and the bands (D21). A bet from before the rules were kept reads as placed under today's, except one the old ev bar held (its `suspect` with no edge in points: `cap1`, `rulesAt`).
+  - **Each run compares them** (`rulesChanged`): an open bet whose rules differ from today's, its game more than `REPRICE_BY` from the start and not published, is taken back and priced again like a bet whose inputs changed (`run.mjs repriceOpen`, the reason `rule changed (placed under ..., now ...)`; `mma-desk.mjs rulesBack`), at most `MAX_REPRICES` (6) times across runs, the same count as a re-price on news.
+  - **At a fresh quote only (D30):** the bet is withdrawn only in a run holding a fresh price for it (MMA: this run's Odds API board; the other sports: the existing re-price path, which bets only at a live price); without one it stands as placed. Its new side, band and stake come from today's rules at that price; at a moved price it is placed at the new one; with no edge now it is tracked, and with a skip (the gap guard) it is not placed again.
+  - **Both kept honestly (D47):** the new bet carries `repriced` (the count, the reason, when, and what it was: side, line, price, stake, intent, band, chance, placement time, rules); the run logs both prices and writes a changelog entry (`Open bet priced again: rule changed`). The wallet's You-vs-Bot duel reads the Bot's side as of the user's placement, unchanged.
+- **Applied:** Josh Hokit +205 0.5u (`cap1`) is the one open bet in any sport placed under the old suspect rule (2026-10-19: NFL, NBA, NHL and MLB none); it is priced again on the first desk run with an Odds API price for the bout.
+- **Gate (D22):** live-only placement code the replay can't see (the replay places every row once at today's rules): a tie by construction.
+- **Code:** `desk.mjs` (`CAP_RULES`, `MAX_REPRICES`, `rulesOf`, `rulesAt`, `rulesChanged`), `run.mjs` (`RULES_V`, `repriceOpen`, `stampOf`), `mma-desk.mjs` (`RULES_V`, `rulesBack`, `withdrawnOf`, `runMma`). Tests: `tests/model-decisions.test.mjs` D53.
+- **Never:** a re-placement at a stored or snapshot price; a bet withdrawn without a fresh quote in hand; a locked or published bet moved; the withdrawal dropped from the new bet's record.
+
 ## Loops
 
 Each loop below runs by itself. For each one: what it changes, how often, what it reads, and what it must never touch.

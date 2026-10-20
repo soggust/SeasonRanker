@@ -72,7 +72,7 @@ import { weightOf } from '../../../../apps/mma/scripts/rating.mjs';
 import { venueOf } from '../../../../apps/mma/scripts/fights.mjs';
 import { placeOf } from './fights-venue.mjs';
 import { BANDS as LEAD_BAND_KEYS, leadBand, priceKey, unpackRows } from './gate-mma.mjs';
-import { BANKROLL, BUCKETS, PRACTICE_N, PRACTICE_SPLIT, PRACTICE_UNITS, bucketTrustOf, chanceAt, decimal, fairPair, fitBuckets, fitTrust, gapGuard, isTracked, placement, practiceRecord, practiceTop, record, stakeFor, suspectOf, trackedRecord } from './desk.mjs';
+import { BANKROLL, BUCKETS, MAX_REPRICES, PRACTICE_N, PRACTICE_SPLIT, PRACTICE_UNITS, bucketTrustOf, chanceAt, decimal, fairPair, fitBuckets, fitTrust, gapGuard, isTracked, placement, practiceRecord, practiceTop, record, rulesAt, rulesChanged, rulesOf, stakeFor, suspectOf, trackedRecord } from './desk.mjs';
 import { readLinePool } from './line-pool.mjs';
 import { BANDS, TOP, capOf, edgeLevel, kellyOf, levelOf, recordBlocks, scoreParts } from './picks.mjs';
 import { bandOf, buildBoard, seenUpdate, skipReason } from './board.mjs';
@@ -118,6 +118,33 @@ const AHEAD_DAYS = 28;
 // (a bout ESPN lists that The Odds API doesn't carry yet, this far out: asked about again after a day, not 3 hours)
 const FAR_H = 14 * 24;
 const REST_FAR = 24 * 36e5;
+// (the band and stake rules a bet is placed under, kept on it; an open bet placed under others is taken back and
+// priced again at this run's Odds API quote: rulesBack, DECISIONS.md D53)
+export const RULES_V = rulesOf(BANDS);
+// The open bets to price again because the rules that set their band or stake changed since they were placed (D53):
+// on a bout not yet locked (REPRICE_BY before its start), not priced again MAX_REPRICES times already. By the
+// market and the bout's key. Each is withdrawn only once a fresh Odds API price for it is in hand (D30), then
+// priced like a new bet at today's rules and that price; till then it stands as placed
+export function rulesBack(bets, now, rules = RULES_V) {
+  const back = { ml: new Map(), total: new Map() };
+  for (const b of bets ?? []) {
+    if (b.status !== 'open' || b.void || b.published) continue;
+    if (Date.parse(b.start) - now.getTime() <= REPRICE_BY) continue;
+    if (!rulesChanged(b, rules) || (b.repriced?.n ?? 0) >= MAX_REPRICES) continue;
+    back[b.market ?? 'ml']?.set(b.boutKey, b);
+  }
+  return back;
+}
+// (a bet withdrawn for a rule change, as its new bet keeps it: the count, why, what it was (its price, band, stake))
+export function withdrawnOf(bet, at, rules = RULES_V) {
+  const was = rulesAt(bet);
+  return {
+    n: (bet.repriced?.n ?? 0) + 1,
+    why: [`rule changed (placed under ${was}, now ${rules})`],
+    at,
+    from: { side: bet.side, line: bet.line ?? null, odds: bet.odds, units: bet.units, intent: bet.intent, band: levelOf(bet, kellyOf(bet.odds, bet.p), bet.p), p: bet.p, placedAt: bet.placedAt, rules: was },
+  };
+}
 export const headshot = (id) => `https://a.espncdn.com/i/headshots/mma/players/full/${id}.png`;
 
 export const FILES = {
@@ -871,6 +898,16 @@ export async function runMma({ dry = false, gap = null, now = new Date(), log = 
   const openOn = new Map(rowsOf('ml', (b) => b.status === 'open').map((b) => [b.boutKey, b]));
   const tPlacedOn = new Set(rowsOf('total', (b) => b.status === 'open' || b.gradedAt).map((b) => b.boutKey));
   const tOpenOn = new Map(rowsOf('total', (b) => b.status === 'open').map((b) => [b.boutKey, b]));
+  // (the open bets placed under rules changed since (D53): due again, withdrawn below at a fresh quote)
+  const back = rulesBack(ledger.bets, now);
+  const withdrawn = [];
+  const withdraw = (old, bout) => {
+    const re = withdrawnOf(old, at);
+    withdrawn.push({ old, re, bout });
+    ledger.bets = ledger.bets.filter((b) => b !== old);
+    return re;
+  };
+  if (back.ml.size || back.total.size) log.log(`${SPORT}: ${back.ml.size + back.total.size} open bets placed under changed rules (now ${RULES_V}), to price again at a fresh quote: ${[...back.ml.values(), ...back.total.values()].map((b) => `${b.pick} ${b.odds > 0 ? '+' : ''}${b.odds} ${b.units}u (${rulesAt(b)})`).join(', ')}`);
   // (a row placed: its price read again inside 3 hours of the start, for the close; none yet: due unless resting)
   // (by the bout's own start, not its card's: a card's later bouts start hours after its date, so a price read near
   // the card's start was never within 3 hours of theirs, and their rows had no close (the loss review's B1: the
@@ -884,10 +921,10 @@ export async function runMma({ dry = false, gap = null, now = new Date(), log = 
     const until = Date.parse(b.date) - now.getTime();
     const started = !coming.includes(b);
     if (!started && phaseOf(SPORT, 'lines', until, gap) === 'early') return false;
-    const ml = placedOn.has(b.key) ? closeDue(openOn.get(b.key), b) : !started && !resting(b.key, REST_FOR);
+    const ml = back.ml.has(b.key) && !started ? true : placedOn.has(b.key) ? closeDue(openOn.get(b.key), b) : !started && !resting(b.key, REST_FOR);
     // (a round total the book hadn't posted waits TOTAL_REST before it's asked about again: the totals post later
     // than the moneylines, and the ask's for the whole board)
-    const total = tPlacedOn.has(b.key) ? closeDue(tOpenOn.get(b.key), b) : !started && !resting(`${b.key}|total`, TOTAL_REST);
+    const total = back.total.has(b.key) && !started ? true : tPlacedOn.has(b.key) ? closeDue(tOpenOn.get(b.key), b) : !started && !resting(`${b.key}|total`, TOTAL_REST);
     dueFor.set(b.key, { ml, total });
     return ml || total;
   });
@@ -933,11 +970,17 @@ export async function runMma({ dry = false, gap = null, now = new Date(), log = 
     // priced and tracked (fights-totals.mjs: tracked only till TOTAL_LIVE graded with a close))
     const tl = m ? totalLinesOf(m.ev) : null;
     if (tl) addLines(bout.key, { total: tl });
-    const tOpen = tOpenOn.get(bout.key);
+    let tOpen = tOpenOn.get(bout.key);
+    // (an open total placed under changed rules, with a fresh Odds API price in hand: withdrawn, priced again below)
+    let tRe = null;
+    if (tOpen && back.total.get(bout.key) === tOpen && tl) {
+      tRe = withdraw(tOpen, bout);
+      tOpen = null;
+    }
     if (tOpen) {
       // (at whatever line the book has now: a moved line's close is carried or left out by clv.mjs, never dropped)
       if (tl) tOpen.seen = { at, line: tl.line, odds: tl.odds[tOpen.side], fair: round(tOpen.side === 'over' ? tl.fair : 1 - tl.fair, 4) };
-    } else if (want.total && !tPlacedOn.has(bout.key)) {
+    } else if (want.total && (tRe || !tPlacedOn.has(bout.key))) {
       const tp = tl ? overChance(bout, Date.parse(start), tl.line) : null;
       const tLead = (Date.parse(start) - now.getTime()) / 36e5;
       const choice = tp ? totalPickFor(tp.p, tl, trustFor(trust, 'total', tLead, tl.line), { live: totalsLive, untested: !fittedFor(trust, 'total', tLead), edge: cfg.edge, key: priceKey('total', leadBand(tLead)) }) : null;
@@ -971,6 +1014,8 @@ export async function runMma({ dry = false, gap = null, now = new Date(), log = 
           pick: `${pick.side === 'over' ? 'Over' : 'Under'} ${tl.line} rounds`,
           context: { division: bout.division, rounds: bout.rounds, cardName: bout.cardName, parts: tp.parts, base: tp.base, trust: trustFor(trust, 'total', tLead, tl.line), band: leadBand(tLead), untested: !fittedFor(trust, 'total', tLead), live: totalsLive, flags: [], ...(why ? { why } : {}) },
           seen: { at, line: tl.line, odds: pick.odds, fair: round(pick.fair, 4) },
+          rules: RULES_V,
+          ...(tRe ? { repriced: tRe } : {}),
           status: 'open',
           profit: 0,
         });
@@ -978,8 +1023,12 @@ export async function runMma({ dry = false, gap = null, now = new Date(), log = 
     }
     // (the moneyline: only where it's due itself)
     if (!want.ml) continue;
+    // (an open bet placed under changed rules, with this run's Odds API price for it: withdrawn and priced again
+    // below at today's rules and that price (D53); without a fresh price it stands as placed)
+    let re = null;
+    if (open && back.ml.get(bout.key) === open && apiPrice) re = withdraw(open, bout);
     // (an open bet: its latest price kept for the close, nothing else)
-    if (open) {
+    if (open && !re) {
       if (lines) open.seen = { at, odds: lines.odds[open.side], fair: open.side === 'home' ? lines.fair : 1 - lines.fair };
       continue;
     }
@@ -1054,6 +1103,8 @@ export async function runMma({ dry = false, gap = null, now = new Date(), log = 
       pick: pick.side === 'home' ? bout.home.name : bout.away.name,
       context: { division: bout.division, rounds: bout.rounds, cardName: bout.cardName, parts: pred.parts, ratingP: pred.ratingP, trust: tMl, band: leadBand(lead), lead: round(lead, 1), untested, flags, move, ...(guard ? { guard } : {}), ...(why ? { why } : {}), records: { home: pred.a.record, away: pred.b.record } },
       seen: { at, odds: pick.odds, fair: round(pick.fair, 4), open: state.opens[bout.key] },
+      rules: RULES_V,
+      ...(re ? { repriced: re } : {}),
       status: 'open',
       profit: 0,
     };
@@ -1074,6 +1125,14 @@ export async function runMma({ dry = false, gap = null, now = new Date(), log = 
   for (const b of pending) {
     log.log(`${SPORT}${dry ? ' (dry)' : ''}: ${isTracked(b) ? 'tracked ' : ''}${b.matchup}: ${b.pick} ${b.odds > 0 ? '+' : ''}${b.odds} ${isTracked(b) ? `0u (${b.trackUnits}u as an action bet; ${b.context.why})` : `${b.units}u ${levelOf(b, kellyOf(b.odds, b.p), b.p)}`} model ${b.model} fair ${b.fair} (${b.fairFrom}) p ${b.p} ev ${b.ev}${b.context.flags.length ? ` [${b.context.flags.join('; ')}]` : ''}`);
     ledger.bets.push(b);
+  }
+  // (the bets withdrawn for a rule change and what took their place, both prices (D53): logged, in the changelog)
+  for (const { old, re, bout } of withdrawn) {
+    const now2 = pending.find((b) => b.boutKey === bout.key && (b.market ?? 'ml') === (old.market ?? 'ml'));
+    const was = `${old.pick} ${old.odds > 0 ? '+' : ''}${old.odds} ${old.units}u ${re.from.band}`;
+    const is = now2 ? `${now2.pick} ${now2.odds > 0 ? '+' : ''}${now2.odds} ${now2.units}u ${isTracked(now2) ? 'tracked' : levelOf(now2, kellyOf(now2.odds, now2.p), now2.p)}` : 'not placed again (no row this run)';
+    log.log(`${SPORT}${dry ? ' (dry)' : ''}: rule changed: ${old.matchup}: withdrawn ${was}, now ${is}`);
+    changelog(state, at, `Open bet priced again: rule changed (${old.matchup})`, was, is, re.why[0]);
   }
   const newBets = pending.filter((b) => !isTracked(b)).length;
   log.log(`${SPORT}: ${newBets} bets placed, ${pending.length - newBets} tracked`);
