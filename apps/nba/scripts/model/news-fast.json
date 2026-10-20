@@ -1,7 +1,7 @@
 {
  "sport": "nba",
  "cursor": {
-  "rotowirenba.bsky.social": "2026-10-20T20:33:22.000Z",
+  "rotowirenba.bsky.social": "2026-10-20T20:55:56.000Z",
   "insidenbanews.bsky.social": "2026-10-20T14:31:09.380Z",
   "shamsbot.bsky.social": "2026-10-20T15:50:34.000Z"
  },
@@ -473,6 +473,32 @@
    "kind": "status",
    "confidence": 0.95,
    "text": "Kon Knueppel: Ruled out for Wednesday \n\n https://www.rotowire.com/basketball/player/kon-knueppel-6540"
+  },
+  {
+   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mydj3duucx2l|franzwagner|active|status",
+   "at": "2026-10-20T20:49:00.000Z",
+   "seen": "2026-10-20T21:00:42.602Z",
+   "handle": "rotowirenba.bsky.social",
+   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mydj3duucx2l",
+   "player": "Franz Wagner",
+   "team": "ORL",
+   "status": "active",
+   "kind": "status",
+   "confidence": 0.85,
+   "text": "Franz Wagner: Absent from injury report \n\n https://www.rotowire.com/basketball/player/franz-wagner-5370"
+  },
+  {
+   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mydjhqfdjq27|anthonyblack|out|status",
+   "at": "2026-10-20T20:55:56.000Z",
+   "seen": "2026-10-20T21:00:42.602Z",
+   "handle": "rotowirenba.bsky.social",
+   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mydjhqfdjq27",
+   "player": "Anthony Black",
+   "team": "ORL",
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.9,
+   "text": "Anthony Black: Won't play Wednesday \n\n https://www.rotowire.com/basketball/player/anthony-black-5910"
   }
  ]
 }

@@ -1,12 +1,12 @@
 {
  "sport": "nfl",
  "cursor": {
-  "adamscheftermirror.bsky.social": "2026-10-20T20:32:26.186Z",
+  "adamscheftermirror.bsky.social": "2026-10-20T20:57:23.731Z",
   "rapsheet.bsky.social": "2026-10-20T15:28:24.072Z",
   "nflnewsreposterbot.bsky.social": "2026-10-20T20:30:06.105Z",
   "insidenflnews.bsky.social": "2026-10-20T19:39:44.095Z",
-  "nflnewsposter.bsky.social": "2026-10-20T20:30:09.471Z",
-  "rotoworld-fb.bsky.social": "2026-10-20T19:14:54.000Z",
+  "nflnewsposter.bsky.social": "2026-10-20T20:42:30.004Z",
+  "rotoworld-fb.bsky.social": "2026-10-20T20:53:31.000Z",
   "rotowirenfl.bsky.social": "2026-10-20T19:42:41.000Z"
  },
  "claims": [
@@ -1647,6 +1647,32 @@
    "kind": "status",
    "confidence": 0.9,
    "text": "Terry McLaurin tore patellar tendon, out for season"
+  },
+  {
+   "id": "at://did:plc:fuqjc7x4gxvnwzksnlxwbe4x/app.bsky.feed.post/3mydipp34d2g5|carsonsteele|out|status",
+   "at": "2026-10-20T20:42:30.004Z",
+   "seen": "2026-10-20T21:00:42.602Z",
+   "handle": "nflnewsposter.bsky.social",
+   "post": "at://did:plc:fuqjc7x4gxvnwzksnlxwbe4x/app.bsky.feed.post/3mydipp34d2g5",
+   "player": "Carson Steele",
+   "team": "PHI",
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.8,
+   "text": "[Eagles] We have signed RB Elijah Mitchell to the Practice Squad and released C James Brockermeyer and RB Ian Wheeler from the unit. We have also waived RB Jaydon Blue. RB Carson Steele has been Waive"
+  },
+  {
+   "id": "at://did:plc:qre6zxbmr3ixhdmgsgdretb5/app.bsky.feed.post/3mydjkdggva2z|carsonsteele|out|status",
+   "at": "2026-10-20T20:57:23.731Z",
+   "seen": "2026-10-20T21:00:42.602Z",
+   "handle": "adamscheftermirror.bsky.social",
+   "post": "at://did:plc:qre6zxbmr3ixhdmgsgdretb5/app.bsky.feed.post/3mydjkdggva2z",
+   "player": "Carson Steele",
+   "team": "PHI",
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.8,
+   "text": "Eagles’ roster moves: 🏈Signed RB Elijah Mitchell to their practice squad. 🏈Released C James Brockermeyer and RB Ian Wheeler from their practice squad. 🏈Waived RB Jaydon Blue. 🏈Waived/injured RB Ca"
   }
  ]
 }
