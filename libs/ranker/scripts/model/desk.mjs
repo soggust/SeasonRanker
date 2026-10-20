@@ -870,6 +870,10 @@ export function record(bets, { practice = false } = {}) {
 // the bot's record, its recent form and the CLV gates, which stay the bets that cleared the vig; off, one record.
 // The one flag: state.json carries it (practiceSplit) for the page
 export const PRACTICE_SPLIT = true;
+// (and staked at all: off since 2026-10-20 (the owner: "make them tracked only"; on the replayed history they lost
+// about the vig, NFL -71u, NBA -58u, NHL -85u, MLB -192u): no slate pick is forced into a bet, so the best of the rest
+// stay tracked rows like every other one short of the vig, graded and learned from at no stake. DECISIONS.md D57
+export const PRACTICE_STAKED = false;
 export const PRACTICE_N = { nfl: 15, nhl: 6, mlb: 3, nba: 8, mma: 3 };
 // (a slate's practice pick: placed for the slate, not for clearing the vig)
 export const isPracticeTop = (b) => !!b?.topN;

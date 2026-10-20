@@ -109,7 +109,10 @@ test('replay: the band totals, the markets, the seasons and the years each sum t
   assert.deepEqual(sum(r.bySeason), { bets: r.overall.bets, profit: r.overall.profit });
   assert.deepEqual(sum(Object.values(r.byYear).map((y) => y.all)), { bets: r.overall.bets, profit: r.overall.profit });
   assert.equal(r.overall.won + r.overall.lost + r.overall.push, r.overall.bets);
-  assert.ok(r.n.practice > 0, 'a slate with rows short of the vig has practice picks');
+  // (practice picks only while the desk stakes them (D57: off since 2026-10-20, so none, every row short of the vig a pass); on, a slate
+  // with rows short of the vig has some)
+  if (desk.PRACTICE_STAKED === false) assert.equal(r.n.practice, 0, 'no practice pick staked');
+  else assert.ok(r.n.practice > 0, 'a slate with rows short of the vig has practice picks');
   assert.equal(r.practice.bets, r.n.practice);
   assert.ok(r.last.filter((b) => b.practice).every((b) => b.units === desk.PRACTICE_UNITS && b.band === 'medium'));
   assert.equal(r.n.bets + r.n.practice + r.n.pass, r.n.keys);

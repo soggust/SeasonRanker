@@ -1149,3 +1149,11 @@ test('D56 beat the fair close: the bet\'s own price has a positive expected retu
   assert.equal(book.fairCloseOf({ clv: { pts: null, prob: 0.01, ev: 0.03, beat: true } }), 0.03);
   assert.equal(book.fairCloseOf({ clv: { pts: 1, prob: 0.02, ev: 0.05, beat: true } }), null);
 });
+
+test('D57 the slate practice picks are tracked, not staked: no pick forced into a bet in the props, MMA or the replay', async () => {
+  const D = await import('../libs/ranker/scripts/model/desk.mjs');
+  assert.equal(D.PRACTICE_STAKED, false);
+  assert.match(src('run.mjs'), /const forced = PRACTICE_STAKED \? practicePicks\(r, candidates\) : new Map\(\);/);
+  assert.match(src('mma-desk.mjs'), /const forced = !PRACTICE_STAKED \? new Map\(\) : mmaPracticePicks\(/);
+  assert.match(src('replay-record.mjs'), /if \(V\.desk\.PRACTICE_STAKED !== false\) for \(const \[event, rs\] of passBy\)/);
+});

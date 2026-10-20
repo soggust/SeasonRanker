@@ -342,7 +342,8 @@ export function replayRecord(V, sport, rows, { events = null, names = () => ({ h
   for (const b of bets) betOn.set(b.event, (betOn.get(b.event) ?? 0) + 1);
   const passBy = new Map();
   for (const r of passes) (passBy.get(String(r.x.event)) ?? passBy.set(String(r.x.event), []).get(String(r.x.event))).push(r);
-  for (const [event, rs] of passBy) {
+  // (none while the desk stakes no practice pick (PRACTICE_STAKED off, D57): they stay among the passes, tracked)
+  if (V.desk.PRACTICE_STAKED !== false) for (const [event, rs] of passBy) {
     const quota = V.desk.slateQuota(practiceN, gamesOn.get(etDay(rs[0].x.t))?.size ?? 1);
     const need = Math.max(0, quota - (betOn.get(event) ?? 0));
     const picked = rs.filter((r) => r.sd.edge > 0).sort((a, b) => b.sd.edge - a.sd.edge).slice(0, need);

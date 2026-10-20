@@ -72,7 +72,7 @@ import { weightOf } from '../../../../apps/mma/scripts/rating.mjs';
 import { venueOf } from '../../../../apps/mma/scripts/fights.mjs';
 import { placeOf } from './fights-venue.mjs';
 import { BANDS as LEAD_BAND_KEYS, leadBand, priceKey, unpackRows } from './gate-mma.mjs';
-import { BANKROLL, BUCKETS, MAX_REPRICES, PRACTICE_N, PRACTICE_SPLIT, PRACTICE_UNITS, bucketTrustOf, chanceAt, decimal, fairPair, fitBuckets, fitTrust, gapGuard, isTracked, placement, practiceRecord, practiceTop, record, rulesAt, rulesChanged, rulesOf, stakeFor, suspectOf, trackedRecord } from './desk.mjs';
+import { BANKROLL, BUCKETS, MAX_REPRICES, PRACTICE_N, PRACTICE_SPLIT, PRACTICE_STAKED, PRACTICE_UNITS, bucketTrustOf, chanceAt, decimal, fairPair, fitBuckets, fitTrust, gapGuard, isTracked, placement, practiceRecord, practiceTop, record, rulesAt, rulesChanged, rulesOf, stakeFor, suspectOf, trackedRecord } from './desk.mjs';
 import { readLinePool } from './line-pool.mjs';
 import { BANDS, TOP, capOf, edgeLevel, kellyOf, levelOf, recordBlocks, scoreParts } from './picks.mjs';
 import { bandOf, buildBoard, seenUpdate, skipReason } from './board.mjs';
@@ -1146,7 +1146,7 @@ export async function runMma({ dry = false, gap = null, now = new Date(), log = 
   // (the card's practice picks (mmaPracticePicks, D2): the main card's bouts and the best prelims short of the vig
   // with an edge before it, at the practice stake, marked topN)
   const mlNew = pending.filter((b) => b.market === 'ml');
-  const forced = mmaPracticePicks(mlNew, bouts, ledger.bets.filter((b) => (b.market ?? 'ml') === 'ml' && !b.void && !isTracked(b) && b.card));
+  const forced = !PRACTICE_STAKED ? new Map() : mmaPracticePicks(mlNew, bouts, ledger.bets.filter((b) => (b.market ?? 'ml') === 'ml' && !b.void && !isTracked(b) && b.card));
   for (const b of mlNew) {
     const t = forced.get(b.id);
     if (!t) continue;

@@ -153,7 +153,7 @@ import { API_MARKETS, PER_GAME, PROP_WAIT, ROLE, STATS, apiProps, board, fitProp
 import { CACHE, DAY, etDay, get, isoSecond, nflverseGames, readJson, writeAtomic, writeJson } from './sources.mjs';
 import { fitCode, fitDay, fitDiffs, fitPlan, readFit, refitWhy, saveFit } from './fitcache.mjs';
 import { corrRows, correctionText, tuneCorrection } from './correct.mjs';
-import { PRACTICE_N, PRACTICE_SPLIT, lineBucket, practiceRecord, practiceTop, slateQuota } from './desk.mjs';
+import { PRACTICE_N, PRACTICE_SPLIT, PRACTICE_STAKED, lineBucket, practiceRecord, practiceTop, slateQuota } from './desk.mjs';
 import { MAX_REPRICES, TRUST_START, rulesChanged, rulesOf } from './desk.mjs';
 import { BANKROLL, MARKETS, PRACTICE_UNITS, gatedPlacement, stakeFor, practiceGates, choose, decimal, isTracked, trackedRecord, lineGate, lineBar, barGate, bothGates, readLineBar, barAside, reasonsOf, scheduleRest, propGate, fairPair, placeGame, sameGameOf, sameGameRhoText, fitTrust, fitBuckets, bucketTrustOf, BUCKETS, gapGuard, guardOf, oneSide, pickText, placement, price, record, settle, voidOf } from './desk.mjs';
 import { CHECK_KELLY, CHECK_KINDS, atUnit, causeOf, checkLocked, checkOf, rejudgeChecks, shadowOf, checkResultOf, checkSummary, closeChecks, markPlaced, modelSide, noteOpen, openCheck, priceAtOf, resolveChecks, STORED_FRESH, storedBet, storedFresh, upsertCheck, withStoredPrices } from './checks.mjs';
@@ -2755,7 +2755,7 @@ async function betProps(r) {
   // that day), the bets clearing the vig first, then the best of the rest with an edge before the vig, each at the
   // practice stake, a LIKE at most, marked topN; graded and learned from like any bet, tallied apart while
   // PRACTICE_SPLIT. One a player (his best by edge), the caps below and the gates as ever)
-  const forced = practicePicks(r, candidates);
+  const forced = PRACTICE_STAKED ? practicePicks(r, candidates) : new Map();
   for (const { game, x, exp } of candidates.sort((a, b) => b.x.ev - a.x.ev || (b.x.edge ?? -1) - (a.x.edge ?? -1))) {
     const id = `${game.id}:prop:${x.prop.stat.key}:${x.prop.athlete.id}`;
     // (the game's props: placed before (a dry run prices those again, so only the published ones, which a live
