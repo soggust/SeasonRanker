@@ -600,6 +600,9 @@ export function buildMmaBoard({ bouts, lines, chance, trust, over = null, totalT
     g.a = [bout.away.name, bout.away.id, headshot(bout.away.id)];
     g.h = [bout.home.name, bout.home.id, headshot(bout.home.id)];
     g.card = bout.cardName;
+    // (its card's city, ESPN's venue's: the Book's dropdown names a Fight Night by it, "Fight Night: Las Vegas")
+    if (bout.venue?.city) g.city = bout.venue.city;
+    else delete g.city;
   }
   return board;
 }

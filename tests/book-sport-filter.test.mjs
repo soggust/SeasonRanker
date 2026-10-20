@@ -151,6 +151,15 @@ test('cardLabel: a numbered card by its number, a UFC Fight Night by its headlin
   assert.equal(bets.cardLabel('Bellator Champions Series: Paris'), 'Bellator Champions Series: Paris');
   assert.equal(bets.cardLabel(''), 'Fight Night');
   assert.equal(bets.cardLabel(null), 'Fight Night');
+  // (a Fight Night by its city when the board has one (ESPN's venue's), its headliners without; a numbered card or
+  // any other never by its city)
+  assert.equal(bets.cardLabel('UFC Fight Night: Moicano vs. Nolan', 'Las Vegas'), 'Fight Night: Las Vegas');
+  assert.equal(bets.cardLabel('UFC Fight Night', 'Edmonton'), 'Fight Night: Edmonton');
+  assert.equal(bets.cardLabel('UFC Fight Night: Buckley vs. Malott', ' '), 'Fight Night: Buckley vs. Malott');
+  assert.equal(bets.cardLabel('UFC Fight Night: Buckley vs. Malott', null), 'Fight Night: Buckley vs. Malott');
+  assert.equal(bets.cardLabel('UFC 333: Volkanovski vs. Evloev', 'Abu Dhabi'), 'UFC 333');
+  assert.equal(bets.cardLabel('PFL 24: Smith vs. Jones', 'Chicago'), 'PFL 24');
+  assert.equal(bets.allLabel('mma', 'MMA', 'UFC Fight Night: Moicano vs. Nolan', 'Las Vegas'), 'Fight Night: Las Vegas');
 });
 
 test("an \"All ...\" row: a team sport's one a day with every game in start order; MMA's one a card, each with its fights alone", () => {
@@ -181,6 +190,18 @@ test("an \"All ...\" row: a team sport's one a day with every game in start orde
   assert.equal(bets.groupOf(menu, pfl), bets.groupKey(day, 'mma'));
   assert.equal(bets.allRow(menu, pfl)?.label, 'PFL 24');
   assert.equal(bets.allRow(menu, bets.allKey('Sunday, Oct 25', 'nba')), null);
+  // (a Fight Night's row by its city, the first of its fights' the board names; none, its headliners)
+  const night = 'UFC Fight Night: Moicano vs. Nolan';
+  const vegas = bets.gameMenu(
+    [
+      { ...fight('H @ G', '2026-10-31T20:00:00Z', night), city: null },
+      { ...fight('J @ I', '2026-10-31T23:00:00Z', night), city: 'Las Vegas' },
+      fight('L @ K', '2026-10-31T22:00:00Z', 'UFC Fight Night: Buckley vs. Malott'),
+    ],
+    [{ id: 'mma', label: 'MMA' }],
+    TZ,
+  );
+  assert.deepEqual(vegas[0].sports[0].alls.map((a) => a.label), ['Fight Night: Las Vegas', 'Fight Night: Buckley vs. Malott']);
 });
 
 test('defaultClosed: a quiet list opens every sport; a busy one (more than 12 games) folds every sport but the chosen game\'s and the chosen sport\'s', () => {

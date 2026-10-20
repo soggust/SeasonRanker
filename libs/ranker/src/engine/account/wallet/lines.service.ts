@@ -98,6 +98,8 @@ export interface BoardGame {
   // (a bout's card, ESPN's event name: "UFC 333: Volkanovski vs. Evloev" (mma-desk.mjs); the Book's dropdown
   // names its card's row by it)
   card?: string;
+  // (its card's city, ESPN's venue's: "Las Vegas" (mma-desk.mjs); the dropdown names a Fight Night's row by it)
+  city?: string;
 }
 export interface ModelBoard {
   sport: string;

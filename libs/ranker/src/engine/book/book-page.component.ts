@@ -474,7 +474,7 @@ export class BookPageComponent implements OnInit, OnDestroy {
     // Only a row on show: a game whose picks the list hides (a practice pick with no edge) is here by its lines,
     // never gone from the dropdown (game-menu.ts linesOnlyGames))
     for (const g of linesOnlyGames(this.lines.boards().values(), shownEvents(this.listed))) {
-      out.push({ key: linesKey(g), sport: g.sport, matchup: g.matchup, start: g.start, count: null, teams: [g.away, g.home].map((t) => this.menuTeam(g.sport, t.abbr, t.logo)), card: this.cardOf(g.sport, g.event) });
+      out.push({ key: linesKey(g), sport: g.sport, matchup: g.matchup, start: g.start, count: null, teams: [g.away, g.home].map((t) => this.menuTeam(g.sport, t.abbr, t.logo)), ...this.cardOf(g.sport, g.event) });
     }
     return out;
   }
@@ -715,7 +715,7 @@ export class BookPageComponent implements OnInit, OnDestroy {
     for (const r of rows) {
       if (!r.game) continue;
       const key = this.gameKey(r);
-      const game = byGame.get(key) ?? { key, sport: r.sport, matchup: r.game.matchup, start: r.game.kickoff ?? null, date: r.game.date, count: 0, bets: 0, teams: r.game.teams?.map((t) => this.menuTeam(r.sport, t.abbr, t.logo)), card: r.pickId ? this.cardOf(r.sport, r.pickId.split(':')[0]) : null };
+      const game = byGame.get(key) ?? { key, sport: r.sport, matchup: r.game.matchup, start: r.game.kickoff ?? null, date: r.game.date, count: 0, bets: 0, teams: r.game.teams?.map((t) => this.menuTeam(r.sport, t.abbr, t.logo)), ...this.cardOf(r.sport, r.pickId?.split(':')[0] ?? '') };
       if (r.check) game.count++;
       else if (game.bets < this.gameLimit) {
         game.bets++;
@@ -725,9 +725,11 @@ export class BookPageComponent implements OnInit, OnDestroy {
     }
     return [...byGame.values()];
   }
-  // (a bout's card, the name its sport's betting board gives it (ESPN's event name); a team sport's game none)
-  private cardOf(sport: string, event: string): string | null {
-    return sport === 'mma' ? (this.lines.modelGame(sport, event)?.card ?? null) : null;
+  // (a bout's card, the name its sport's betting board gives it (ESPN's event name), and its city (ESPN's venue's);
+  // a team sport's game, or a row with no event, none)
+  private cardOf(sport: string, event: string): { card: string | null; city: string | null } {
+    const g = sport === 'mma' && event ? this.lines.modelGame(sport, event) : undefined;
+    return { card: g?.card ?? null, city: g?.city ?? null };
   }
 
   // (the chosen "All ..." row and its games' boards, in start order (game-menu.ts allRow): the board's view when

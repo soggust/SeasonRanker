@@ -419,6 +419,11 @@ test("buildMmaBoard: a bout's round total as k.total, Over then Under at the Boo
   // (no model chance at the line: no total tile)
   const none = buildMmaBoard({ bouts: [b], lines, chance: () => 0.6, trust: 0.5, over: () => null, now });
   assert.equal(none.games[0].k.total, undefined);
+  // (its card's name and city on the game, the Book's dropdown's row for the card: "Fight Night: Las Vegas")
+  assert.equal(g.card, 'UFC Fight Night');
+  assert.equal(g.city, undefined);
+  const vegas = { ...b, venue: { name: 'Meta APEX', city: 'Las Vegas', state: 'NV', country: 'USA' } };
+  assert.equal(buildMmaBoard({ bouts: [vegas], lines, chance: () => 0.6, trust: 0.5, now }).games[0].city, 'Las Vegas');
   assert.equal(boardTotalOf({ line: 2.5, odds: { over: -110, under: -110 }, fair: 0.5 }, 0.95, 0.5).every((s) => s.b === 'low'), true);
 });
 

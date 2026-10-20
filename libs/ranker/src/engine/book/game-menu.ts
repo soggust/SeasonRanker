@@ -30,6 +30,8 @@ export interface MenuGameIn {
   // (a fight's card, its event's name on ESPN as the betting board carries it: "UFC 333: Volkanovski vs. Evloev";
   // none for a team sport's game, or a bout the board hasn't named)
   card?: string | null;
+  // (its card's city, ESPN's venue's as the board carries it: "Las Vegas"; none known, none)
+  city?: string | null;
 }
 
 export interface MenuTeam {
@@ -52,6 +54,7 @@ export interface MenuGame {
   // (the two faces before the name, in the name's order: a fight's first-listed fighter first)
   faces: MenuTeam[];
   card: string | null;
+  city: string | null;
 }
 
 export interface MenuSport {
@@ -124,6 +127,7 @@ export function gameMenu(games: MenuGameIn[], sports: MenuSports, timeZone?: str
       count: g.count,
       faces: g.sport === 'mma' ? [...teams].reverse() : teams,
       card: g.card ?? null,
+      city: g.city ?? null,
       day: when.toLocaleDateString('en-US', { weekday: 'long', month: 'short', day: 'numeric', timeZone }),
     });
   }
@@ -151,7 +155,8 @@ function allRows(day: string, s: MenuSport): MenuAll[] {
   if (s.sport !== 'mma') return [{ key: allKey(day, s.sport), label: allLabel(s.sport, s.name), games: s.games }];
   const cards = new Map<string, MenuGame[]>();
   for (const g of s.games) cards.set(g.card ?? '', [...(cards.get(g.card ?? '') ?? []), g]);
-  return [...cards].map(([card, games]) => ({ key: allKey(day, s.sport, card), label: allLabel(s.sport, s.name, card), games }));
+  // (a card's city, the first of its fights' that has one)
+  return [...cards].map(([card, games]) => ({ key: allKey(day, s.sport, card), label: allLabel(s.sport, s.name, card, games.find((g) => g.city)?.city), games }));
 }
 
 // The games the dropdown lists by their lines alone: on a board, not begun, with a line posted, and no row on the
@@ -204,18 +209,20 @@ export function allKey(day: string, sport: string, card = ''): string {
 export function allOf(value: string): string | null {
   return value.startsWith(ALL_CHOICE) ? value.slice(ALL_CHOICE.length).split('|')[0] : null;
 }
-export function allLabel(sport: string, name: string, card?: string | null): string {
-  return sport === 'mma' ? cardLabel(card) : `All ${name} games`;
+export function allLabel(sport: string, name: string, card?: string | null, city?: string | null): string {
+  return sport === 'mma' ? cardLabel(card, city) : `All ${name} games`;
 }
 // (a card's row by its event, ESPN's name for it (the owner, 2026-10-20): a numbered one by its number, "UFC 333:
-// Volkanovski vs. Evloev" as "UFC 333" (any promotion's: "PFL 24: ..." as "PFL 24"); a UFC Fight Night by its
-// headliners, "UFC Fight Night: Buckley vs. Malott" as "Fight Night: Buckley vs. Malott" (the board carries no
-// city); any other by its name as ESPN has it; none, "Fight Night")
-export function cardLabel(card: string | null | undefined): string {
+// Volkanovski vs. Evloev" as "UFC 333" (any promotion's: "PFL 24: ..." as "PFL 24"); a UFC Fight Night by its city,
+// ESPN's venue's as the board carries it, "Fight Night: Las Vegas", and with none known by its headliners, "UFC
+// Fight Night: Buckley vs. Malott" as "Fight Night: Buckley vs. Malott"; any other by its name as ESPN has it;
+// none, "Fight Night")
+export function cardLabel(card: string | null | undefined, city?: string | null): string {
   const name = (card ?? '').trim();
   if (!name) return 'Fight Night';
   const night = /^UFC Fight Night\b[:\s-]*(.*)$/i.exec(name);
-  if (night) return night[1] ? `Fight Night: ${night[1]}` : 'Fight Night';
+  const where = (city ?? '').trim();
+  if (night) return where ? `Fight Night: ${where}` : night[1] ? `Fight Night: ${night[1]}` : 'Fight Night';
   const numbered = /^([A-Za-z][\w&.' -]*? \d+)(?::|$)/.exec(name);
   return numbered ? numbered[1] : name;
 }
