@@ -69,6 +69,9 @@ export interface ReplayRecordFile {
   bySeason: ReplaySeason[];
   byYear: Record<string, { all: ReplayTally; practice: ReplayTally; byBand: Record<string, ReplayTally>; lines: ReplayTally; props: ReplayTally }>;
   last: ReplayBet[];
+  // (the newest year's days in buckets by band (replay-record.mjs dailyOf: "won,lost,push,staked,profit,beat,beatN"),
+  // from its first day: the time range's sums; none in a file from before them)
+  daily?: { cols: string[]; from: string | null; bands: Record<string, Record<string, string>> };
   flags: { timing: { open: number; close: number; openSeen: number; openClean: number; openInWindow: number }; context: { full: number[]; ratingsOnly: number[] }; price: string; placement: string; split: string; notSeen: string };
 }
 
@@ -122,6 +125,68 @@ export interface BotHistory {
   from: string | null;
   // (how many sports have a replay file: none, the panel says so)
   replayed: number;
+  // (the time range on show and what each side gave it: the replayed bets (games before the epochs), the live ones,
+  // and a file's bets it couldn't date (one from before the daily buckets))
+  range: HistoryRange;
+  rangeParts: { replayed: number; live: number; undated: number };
+}
+
+// ---- the time range (the owner, 2026-10-19): Today to All time, by the Eastern day each bet settled ----
+
+export type HistoryRange = 'today' | 'yesterday' | 'week' | 'month' | 'year' | 'all';
+export const HISTORY_RANGES: { value: HistoryRange; label: string }[] = [
+  { value: 'today', label: 'Today' },
+  { value: 'yesterday', label: 'Yesterday' },
+  { value: 'week', label: 'This week' },
+  { value: 'month', label: 'This month' },
+  { value: 'year', label: 'This year' },
+  { value: 'all', label: 'All time' },
+];
+export const isHistoryRange = (v: unknown): v is HistoryRange => HISTORY_RANGES.some((r) => r.value === v);
+
+const ET = new Intl.DateTimeFormat('en-CA', { timeZone: 'America/New_York', year: 'numeric', month: '2-digit', day: '2-digit' });
+// (a moment's Eastern day, "2026-10-19": the replay's buckets' key)
+export const etDay = (t: string | number | Date): string => ET.format(new Date(t));
+const GAME_HOURS = 3;
+// (a live bet's settling: its grading, else its game's end)
+const settledOf = (b: ModelBet): string => b.gradedAt ?? new Date(Date.parse(b.start) + GAME_HOURS * 36e5).toISOString();
+
+// The range's Eastern days, first and last (null: All time): a week from its Monday, a month and a year from their first
+export function rangeDays(range: HistoryRange, now: number | Date = Date.now()): { from: string; to: string } | null {
+  if (range === 'all') return null;
+  const today = etDay(now);
+  const [y, m, d] = today.split('-').map(Number);
+  const day = (offset: number) => new Date(Date.UTC(y, m - 1, d + offset)).toISOString().slice(0, 10);
+  if (range === 'today') return { from: today, to: today };
+  if (range === 'yesterday') return { from: day(-1), to: day(-1) };
+  if (range === 'week') return { from: day(-((new Date(Date.UTC(y, m - 1, d)).getUTCDay() + 6) % 7)), to: today };
+  if (range === 'month') return { from: today.slice(0, 8) + '01', to: today };
+  return { from: today.slice(0, 5) + '01-01', to: today };
+}
+const inDays = (day: string, r: { from: string; to: string } | null): boolean => !r || (day >= r.from && day <= r.to);
+
+// (the bands' replayed days in the range, summed into a tally: null without the file's buckets)
+export function dailyTally(f: ReplayRecordFile, bands: string[], r: { from: string; to: string }): ReplayTally | null {
+  if (!f.daily?.bands) return null;
+  const t: ReplayTally = { bets: 0, won: 0, lost: 0, push: 0, staked: 0, profit: 0, roi: null, beat: null, beatN: 0 };
+  let beatWon = 0;
+  for (const band of bands) {
+    for (const [day, d] of Object.entries(f.daily.bands[band] ?? {})) {
+      if (!inDays(day, r)) continue;
+      const [won = 0, lost = 0, push = 0, staked = 0, profit = 0, beat = 0, beatN = 0] = d.split(',').map(Number);
+      t.won += won;
+      t.lost += lost;
+      t.push += push;
+      t.bets += won + lost + push;
+      t.staked += staked;
+      t.profit += profit;
+      beatWon += beat;
+      t.beatN += beatN;
+    }
+  }
+  t.roi = t.staked ? t.profit / t.staked : null;
+  t.beat = t.beatN ? beatWon / t.beatN : null;
+  return t;
 }
 
 const BAND_LABELS: Record<string, string> = { lock: 'LOCK', high: 'LOVE', medium: 'LIKE', low: 'PASS' };
@@ -194,12 +259,29 @@ export function caveatOf(files: ReplayRecordFile[]): string {
 // The Bot's history on show: the sports' replay files (a sport without one contributes its live ledger alone), the
 // ledgers' bets (every sport's; the ones on the live side of each sport's split are counted), the sport chosen
 // ('' every sport), the labels by sport
-export function botHistoryOf(files: (ReplayRecordFile | null | undefined)[], bets: ModelBet[], sport: string | null, labels: Record<string, string> = {}, { last = 20 } = {}): BotHistory {
+export function botHistoryOf(
+  files: (ReplayRecordFile | null | undefined)[],
+  bets: ModelBet[],
+  sport: string | null,
+  labels: Record<string, string> = {},
+  { last = 20, range = 'all', now = Date.now() }: { last?: number; range?: HistoryRange; now?: number | Date } = {},
+): BotHistory {
+  const days = rangeDays(range, now);
+  // (a replay tally in the range: the whole file's for All time, else its days' buckets summed (a file without them
+  // gives nothing, its bets counted as undated))
+  let undated = 0;
+  const inRange = (f: ReplayRecordFile | null, whole: ReplayTally | null | undefined, bands: string[]): ReplayTally | null | undefined => {
+    if (!f || !days) return whole;
+    const t = dailyTally(f, bands, days);
+    if (!t) undated += whole?.bets ?? 0;
+    return t;
+  };
   const replays = new Map<string, ReplayRecordFile>();
   for (const f of files) if (f && f.v === 1 && f.sport && (!sport || f.sport === sport)) replays.set(f.sport, f);
   const sports = [...new Set([...replays.keys(), ...bets.map((b) => b.sport)])].filter((s) => !sport || s === sport).sort();
   const epochOf = (s: string) => replays.get(s)?.epoch ?? null;
-  const live = bets.filter((b) => (!sport || b.sport === sport) && !isTracked(b) && liveSince(b, epochOf(b.sport)));
+  // (in a range, the live bets settled in it: an open one has no settling yet)
+  const live = bets.filter((b) => (!sport || b.sport === sport) && !isTracked(b) && liveSince(b, epochOf(b.sport)) && (!days || (b.status !== 'open' && inDays(etDay(settledOf(b)), days))));
   const liveReal = live.filter((b) => !practiceOf(b));
   const livePractice = live.filter(practiceOf);
   const overall = emptyRow('All');
@@ -213,14 +295,19 @@ export function botHistoryOf(files: (ReplayRecordFile | null | undefined)[], bet
     const f = replays.get(s) ?? null;
     const row = emptyRow(labels[s] ?? s.toUpperCase());
     const pr = emptyRow('Practice');
-    addReplay(row, f?.overall);
-    addReplay(pr, f?.practice);
-    addReplay(overall, f?.overall);
-    addReplay(practice, f?.practice);
+    const all = inRange(f, f?.overall, ['lock', 'high', 'medium']);
+    const prT = inRange(f, f?.practice, ['practice']);
+    addReplay(row, all);
+    addReplay(pr, prT);
+    addReplay(overall, all);
+    addReplay(practice, prT);
     if (f) {
-      for (const k of ['lock', 'high', 'medium'] as const) addReplay(bands[k], f.byBand?.[k]);
-      addReplay(markets.lines, f.byMarket?.lines);
-      addReplay(markets.props, f.byMarket?.props);
+      for (const k of ['lock', 'high', 'medium'] as const) addReplay(bands[k], days ? dailyTally(f, [k], days) : f.byBand?.[k]);
+      // (the markets aren't in the day buckets: All time's alone)
+      if (!days) {
+        addReplay(markets.lines, f.byMarket?.lines);
+        addReplay(markets.props, f.byMarket?.props);
+      }
     }
     for (const b of liveReal.filter((b) => b.sport === s)) {
       addLive(row, b);
@@ -251,8 +338,8 @@ export function botHistoryOf(files: (ReplayRecordFile | null | undefined)[], bet
   const strip: HistoryStripBet[] = [
     ...live
       .filter((b) => !b.void && ['won', 'lost', 'push'].includes(b.status))
-      .map((b) => ({ res: (b.status === 'won' ? 'W' : b.status === 'lost' ? 'L' : 'P') as 'W' | 'L' | 'P', pick: b.pick, game: `${b.sport.toUpperCase()} · ${b.matchup}`, matchup: b.matchup, stake: b.units, sport: b.sport, band: BAND_LABELS[bandOf(b)] ?? 'LIKE', practice: practiceOf(b), units: unitsText(b.profit), price: priceText(b.odds), replayed: false, timing: 'live' as const, at: b.gradedAt ?? b.start })),
-    ...[...replays.values()].flatMap((f) => (f.last ?? []).map((b) => ({ res: b.res, pick: b.pick, game: `${b.sport.toUpperCase()} · ${b.matchup}`, matchup: b.matchup, stake: b.units, sport: b.sport, band: BAND_LABELS[b.band] ?? 'LIKE', practice: b.practice, units: unitsText(b.profit), price: priceText(b.odds), replayed: true, timing: b.timing, at: b.settled }))),
+      .map((b) => ({ res: (b.status === 'won' ? 'W' : b.status === 'lost' ? 'L' : 'P') as 'W' | 'L' | 'P', pick: b.pick, game: `${b.sport.toUpperCase()} · ${b.matchup}`, matchup: b.matchup, stake: b.units, sport: b.sport, band: BAND_LABELS[bandOf(b)] ?? 'LIKE', practice: practiceOf(b), units: unitsText(b.profit), price: priceText(b.odds), replayed: false, timing: 'live' as const, at: settledOf(b) })),
+    ...[...replays.values()].flatMap((f) => (f.last ?? []).filter((b) => !days || inDays(etDay(b.settled), days)).map((b) => ({ res: b.res, pick: b.pick, game: `${b.sport.toUpperCase()} · ${b.matchup}`, matchup: b.matchup, stake: b.units, sport: b.sport, band: BAND_LABELS[b.band] ?? 'LIKE', practice: b.practice, units: unitsText(b.profit), price: priceText(b.odds), replayed: true, timing: b.timing, at: b.settled }))),
   ]
     .sort((a, b) => b.at.localeCompare(a.at) || a.pick.localeCompare(b.pick))
     .slice(0, last);
@@ -269,6 +356,8 @@ export function botHistoryOf(files: (ReplayRecordFile | null | undefined)[], bet
     caveat: caveatOf(files2),
     from: files2.length ? files2.map((f) => f.from).filter((x): x is string => !!x).sort()[0] ?? null : null,
     replayed: files2.length,
+    range,
+    rangeParts: { replayed: overall.replayed + practice.replayed, live: overall.live + practice.live, undated },
   };
 }
 

@@ -542,7 +542,7 @@ test("every hover the desk's template asks for is written (desk-help.ts)", () =>
   assert.deepEqual(missing, []);
 });
 
-test("the Algorithm tab (the owner, 2026-10-19): the build's time and the chips on one line, one scrolling board, By Sport and By Confidence open, Open Bets, In Play and Recently closed shut, no Under the hood", () => {
+test("the Algorithm tab (the owner, 2026-10-19): the time range and the chips on one line, one scrolling board, By Sport and By Confidence open, In Play above Open Bets, those and Recently closed shut, the build at the foot, no Under the hood", () => {
   const html = fs.readFileSync(path.join(ROOT, 'libs/ranker/src/engine/book/model-desk.component.html'), 'utf8');
   const ts = fs.readFileSync(path.join(ROOT, 'libs/ranker/src/engine/book/model-desk.component.ts'), 'utf8');
   const panels = [...html.matchAll(/<card-panel\b([^>]*)>/g)].map((m) => ({
@@ -556,18 +556,21 @@ test("the Algorithm tab (the owner, 2026-10-19): the build's time and the chips 
     [
       ['By Sport', 'sport', true],
       ['By Confidence', 'confidence', true],
-      ['Open Bets', 'open', true],
       ["'In Play · ' + liveRisk.toFixed(1) + 'u'", 'live', true],
+      ['Open Bets', 'open', true],
       ['Recently closed', 'closed', true],
     ],
   );
   // (open from the start: the two breakdowns alone; a tap the other way, kept)
   assert.deepEqual(['sport', 'confidence', 'open', 'live', 'closed'].map((k) => desk.deskPanelOpen(k)), [true, true, false, false, false]);
   assert.deepEqual(['sport', 'open'].map((k) => desk.deskPanelOpen(k, new Set(['sport', 'open']))), [false, true]);
-  // (the build's time and the chips in one bar, before the board; no commit, no note; every panel inside the board)
+  // (the time range and the chips in one bar, before the board; the build after every panel, at the board's foot; no
+  // commit, no note; no "Live since this version" line; every panel inside the board)
   const bar = html.indexOf('<div class="desk-bar">');
   const board = html.indexOf('<div class="desk-board">');
-  assert.ok(bar > 0 && bar < html.indexOf('desk-build-line') && html.indexOf('desk-sports') < board);
+  assert.ok(bar > 0 && bar < html.indexOf('class="desk-range"') && html.indexOf('class="desk-range"') < html.indexOf('desk-sports') && html.indexOf('desk-sports') < board);
+  assert.ok(html.indexOf('<p class="desk-build-line"') > Math.max(...panels.map((p) => p.at)));
+  assert.doesNotMatch(html, /Live since this version|desk-live-line/);
   assert.ok(panels.every((p) => p.at > board));
   assert.doesNotMatch(html, /buildInfo\.(commit|note)|desk-hood|hoodOpen|Under the hood/);
   assert.doesNotMatch(ts, /hoodOpen|selfcheck\.json|scorecard\.json|news-signals\.json|miss-review\.json/);

@@ -118,6 +118,15 @@ test('the shipped replay-record.json files (gate.mjs --record): the file\'s shap
     assert.equal(r.flags.timing.open + r.flags.timing.close, r.n.bets, `${sport}: every bet at the open or the close`);
     assert.ok(Date.parse(r.through) < Date.parse(r.epoch), `${sport}: nothing from the epoch on`);
     assert.ok(r.last.length <= 20 && r.last.length > 0);
+    // (the day buckets (the Algorithm tab's range): the newest year's days, none past the epoch's)
+    if (r.daily) {
+      const days = (bands, i) => bands.reduce((t, bd) => t + Object.values(r.daily.bands[bd] ?? {}).reduce((u, d) => u + (Number(d.split(',')[i]) || 0), 0), 0);
+      const n = days(['lock', 'high', 'medium'], 0) + days(['lock', 'high', 'medium'], 1) + days(['lock', 'high', 'medium'], 2);
+      const newest = Object.keys(r.byYear).sort().pop();
+      assert.ok(n <= r.overall.bets && n >= r.byYear[newest].all.bets, `${sport}: the days hold the newest year's bets`);
+      assert.ok(Object.values(r.daily.bands).every((b) => Object.keys(b).every((d) => d >= r.daily.from)), `${sport}: no day before the buckets' first`);
+      assert.ok(Object.values(r.daily.bands).every((b) => Object.keys(b).every((d) => d <= new Date(Date.parse(r.epoch) + 3 * 36e5).toLocaleDateString('en-CA', { timeZone: 'America/New_York' }))), `${sport}: no day after the epoch's`);
+    }
     for (const b of r.last) {
       assert.ok(Date.parse(b.at) < Date.parse(b.start), `${sport} ${b.id}: placed before the start`);
       assert.ok(Date.parse(b.start) < Date.parse(r.epoch), `${sport} ${b.id}: before the epoch`);
@@ -128,4 +137,56 @@ test('the shipped replay-record.json files (gate.mjs --record): the file\'s shap
     assert.ok(practice.every((b) => b.units === 0.5 && b.band === 'medium'), `${sport}: a practice pick at 0.5u, a LIKE`);
     assert.ok(fs.statSync(f).size < 60000, `${sport}: the file stays small (${fs.statSync(f).size} bytes)`);
   }
+});
+
+test('the time range (the owner, 2026-10-19): Today to All time by the Eastern day each bet settled, the replay\'s day buckets and the live bets graded in it', () => {
+  const NOW = Date.parse('2026-10-21T16:00:00Z'); // a Wednesday, Eastern
+  assert.deepEqual(book.rangeDays('today', NOW), { from: '2026-10-21', to: '2026-10-21' });
+  assert.deepEqual(book.rangeDays('yesterday', NOW), { from: '2026-10-20', to: '2026-10-20' });
+  assert.deepEqual(book.rangeDays('week', NOW), { from: '2026-10-19', to: '2026-10-21' }, 'a week from its Monday');
+  assert.deepEqual(book.rangeDays('month', NOW), { from: '2026-10-01', to: '2026-10-21' });
+  assert.deepEqual(book.rangeDays('year', NOW), { from: '2026-01-01', to: '2026-10-21' });
+  assert.equal(book.rangeDays('all', NOW), null);
+  // (just past midnight UTC is still the evening before in the East)
+  assert.deepEqual(book.rangeDays('today', Date.parse('2026-10-22T02:00:00Z')), { from: '2026-10-21', to: '2026-10-21' });
+  assert.deepEqual(book.rangeDays('week', Date.parse('2026-10-19T12:00:00Z')), { from: '2026-10-19', to: '2026-10-19' }, 'a Monday is its own week');
+  assert.ok(book.HISTORY_RANGES.map((r) => r.value).join() === 'today,yesterday,week,month,year,all');
+  const EPOCH = '2026-10-19T17:15:00Z';
+  const f = {
+    ...file('nfl', EPOCH),
+    daily: {
+      cols: ['won', 'lost', 'push', 'staked', 'profit', 'beat', 'beatN'],
+      from: '2024-12-25',
+      bands: {
+        lock: { '2025-12-01': '1,0,0,3,2.73' },
+        high: { '2026-10-19': '0,1,0,1.5,-1.5,1,1' },
+        medium: { '2026-10-18': '1,0,0,1,0.91', '2026-10-19': '2,1,1,4,0.82,1,2' },
+        practice: { '2026-10-19': '1' },
+      },
+    },
+  };
+  const bets = [
+    live('a', 'nfl', '2026-10-20T00:00:00Z', 'won', 'high'),
+    { ...live('b', 'nfl', '2026-10-21T00:00:00Z', 'lost', 'medium'), gradedAt: '2026-10-21T04:00:00Z' },
+    live('c', 'nfl', '2026-10-22T00:00:00Z', 'open', 'medium'),
+  ];
+  const week = book.botHistoryOf([f], bets, null, { nfl: 'NFL' }, { range: 'week', now: NOW });
+  assert.equal(week.range, 'week');
+  // (the replay's Monday: 2-2-1 (high's loss and medium's 2-1-1), the live a (graded the 20th) and b (graded at midnight Eastern, the 21st))
+  assert.deepEqual([week.overall.won, week.overall.lost, week.overall.push, week.overall.open], [3, 3, 1, 0]);
+  assert.deepEqual(week.rangeParts, { replayed: 6, live: 2, undated: 0 });
+  assert.equal(week.overall.clvN, 3);
+  const band = Object.fromEntries(week.byBand.map((r) => [r.label, r]));
+  assert.deepEqual([band.LOCK.bets, band.LOVE.won, band.LOVE.lost, band.LIKE.won], [0, 1, 1, 2]);
+  assert.deepEqual([week.practice.won, week.practice.bets], [1, 1]);
+  assert.ok(week.last.every((b) => b.at >= '2026-10-19'), 'the strip in the range: the replay\'s last that settled in it');
+  const today = book.botHistoryOf([f], bets, null, {}, { range: 'today', now: NOW });
+  assert.deepEqual([today.overall.lost, today.overall.bets, today.rangeParts.replayed], [1, 1, 0], 'b graded at midnight Eastern: today');
+  const year = book.botHistoryOf([f], bets, null, {}, { range: 'year', now: NOW });
+  assert.equal(year.overall.replayed, 6, 'the 2025 lock is last year');
+  // (a file without the buckets: nothing replayed in a range, its bets counted as undated)
+  const old = book.botHistoryOf([file('nfl', EPOCH)], bets, null, {}, { range: 'week', now: NOW });
+  assert.deepEqual([old.overall.replayed, old.rangeParts.undated], [0, 30 + 10]);
+  // (All time: the whole file, as before)
+  assert.equal(book.botHistoryOf([f], bets, null).overall.replayed, 30);
 });

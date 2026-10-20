@@ -412,6 +412,8 @@ export function summarize(sport, bets, passed, { epoch, now, flags, rows, season
     byYear: years,
     days: daysOf(real),
     practiceDays: daysOf(practice),
+    // (every day's buckets by band, the Algorithm tab's range (the owner, 2026-10-19): dailyOf)
+    daily: dailyOf(bets, settledAt),
     streak: decided.length ? `${decided[0].res}${n}` : null,
     streakAt: decided.slice(0, Math.min(n, STREAK_CAP)).map((b) => new Date(settledAt(b)).toISOString()),
     brokeAt: decided[n] ? new Date(settledAt(decided[n])).toISOString() : null,
@@ -431,6 +433,39 @@ export function summarize(sport, bets, passed, { epoch, now, flags, rows, season
       notSeen: "the live desk's CLV gates, CHECKs, research and news",
     },
   };
+}
+
+// The replayed bets of the newest year in buckets by the Eastern day each settled and its band (lock, high, medium; a
+// practice pick practice): "won,lost,push,staked,profit,beat the close,with a close", trailing zeros dropped. The
+// Algorithm tab's time range (the owner, 2026-10-19: Today to This year over the merged history, D47) sums the days in
+// a range without the bets; All time reads the whole file's tallies, so the buckets start at the newest bet's year (a
+// week before it, for a week across the turn of the year) and the file stays small
+export const DAILY_COLS = ['won', 'lost', 'push', 'staked', 'profit', 'beat', 'beatN'];
+export function dailyOf(bets, settledAt = (b) => b.t + GAME_HOURS * 36e5) {
+  if (!bets.length) return { cols: DAILY_COLS, from: null, bands: {} };
+  const year = Number(etDay(Math.max(...bets.map(settledAt))).slice(0, 4));
+  const from = etDay(Date.UTC(year, 0, 1, 12) - 7 * 864e5);
+  const bands = {};
+  for (const b of bets) {
+    const day = etDay(settledAt(b));
+    if (day < from) continue;
+    const band = b.practice ? 'practice' : b.band;
+    const d = ((bands[band] ??= {})[day] ??= [0, 0, 0, 0, 0, 0, 0]);
+    d[b.res === 'W' ? 0 : b.res === 'L' ? 1 : 2]++;
+    d[3] = r2(d[3] + b.units);
+    d[4] = r2(d[4] + b.profit);
+    if (b.beat === 1 || b.beat === 0) {
+      d[5] += b.beat;
+      d[6]++;
+    }
+  }
+  const text = (d) => {
+    let n = d.length;
+    while (n > 0 && d[n - 1] === 0) n--;
+    return d.slice(0, n).join(',');
+  };
+  const sortKeys = (o, f) => Object.fromEntries(Object.keys(o).sort().map((k) => [k, f(o[k])]));
+  return { cols: DAILY_COLS, from, bands: sortKeys(bands, (days) => sortKeys(days, text)) };
 }
 
 // The caveat in one line, for the pages

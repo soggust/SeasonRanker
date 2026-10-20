@@ -11,7 +11,7 @@ import * as desk from '../libs/ranker/scripts/model/desk.mjs';
 import * as picks from '../libs/ranker/scripts/model/picks.mjs';
 import * as leagues from '../libs/ranker/scripts/model/leagues.mjs';
 import * as lineupRisk from '../libs/ranker/scripts/model/lineup-risk.mjs';
-import { REPLAY_LAST, REPLAY_V, caveatOf, cleanOpenOf, liveSince, mergeRecent, mergeRecord, replayRecord, walkRisk } from '../libs/ranker/scripts/model/replay-record.mjs';
+import { REPLAY_LAST, REPLAY_V, caveatOf, dailyOf, cleanOpenOf, liveSince, mergeRecent, mergeRecord, replayRecord, walkRisk } from '../libs/ranker/scripts/model/replay-record.mjs';
 
 const V = { desk, picks, leagues, lineupRisk };
 const H = 36e5;
@@ -129,7 +129,7 @@ test('replay: the file\'s shape, its honesty flags and the one-line caveat', () 
   for (let i = 0; i < 8; i++) rows.push(propRows(i, { season: 2025, p: 0.6 }));
   for (let i = 0; i < 8; i++) rows.push(lineRows(i, { season: 2023, p: 0.58 }));
   const r = replayRecord(V, 'nba', split(rows), { names, epoch: EPOCH });
-  for (const k of ['v', 'sport', 'epoch', 'at', 'from', 'through', 'n', 'overall', 'practice', 'pass', 'byBand', 'byMarket', 'bySeason', 'byYear', 'days', 'practiceDays', 'streak', 'streakAt', 'brokeAt', 'last', 'flags']) assert.ok(k in r, `the file carries ${k}`);
+  for (const k of ['v', 'sport', 'epoch', 'at', 'from', 'through', 'n', 'overall', 'practice', 'pass', 'byBand', 'byMarket', 'bySeason', 'byYear', 'days', 'practiceDays', 'daily', 'streak', 'streakAt', 'brokeAt', 'last', 'flags']) assert.ok(k in r, `the file carries ${k}`);
   for (const k of ['bets', 'won', 'lost', 'push', 'staked', 'profit', 'roi', 'beat', 'beatN']) assert.ok(k in r.overall, `a tally carries ${k}`);
   assert.deepEqual(Object.keys(r.byBand), ['lock', 'high', 'medium']);
   assert.ok(r.last.length <= REPLAY_LAST);
@@ -138,6 +138,11 @@ test('replay: the file\'s shape, its honesty flags and the one-line caveat', () 
   assert.equal(r.flags.timing.open + r.flags.timing.close, r.n.bets);
   assert.match(r.flags.price, /the Book's price nearest the placement/);
   assert.match(caveatOf(r), /replayed on every priced game before its latest version/);
+  // (the day buckets by band (dailyOf): the newest year's, summing to its bets at most the record)
+  const daySum = (bands, i) => bands.reduce((t, bd) => t + Object.values(r.daily.bands[bd] ?? {}).reduce((v, d) => v + (Number(d.split(',')[i]) || 0), 0), 0);
+  assert.deepEqual(r.daily.cols, ['won', 'lost', 'push', 'staked', 'profit', 'beat', 'beatN']);
+  assert.ok(Object.values(r.daily.bands).every((days) => Object.keys(days).every((d) => d >= r.daily.from)));
+  assert.ok(daySum(['lock', 'high', 'medium'], 0) + daySum(['lock', 'high', 'medium'], 1) + daySum(['lock', 'high', 'medium'], 2) <= r.overall.bets);
   assert.match(caveatOf(r), /full context \(props and lines\) 2025, lines by the ratings alone 2023/);
   assert.equal(r.last[0].pick, 'Player 7 Over 20.5 Points');
   assert.equal(r.last[0].market, 'prop');
@@ -207,4 +212,27 @@ test('merge: the recent form joins the replay\'s days, its last bets and its str
   assert.equal(lost.brokeAt, replay.streakAt[0]);
   // (no replay: the live block as it is)
   assert.equal(mergeRecent(null, liveBlock), liveBlock);
+});
+
+test("dailyOf: the newest year's bets (from a week before it) by the Eastern day each settled and its band, the counts, units and closes in a compact line", () => {
+  const at = (iso) => Date.parse(iso) - 3 * 36e5; // (its start: settled three hours on)
+  const bets = [
+    { t: at('2026-10-19T02:00:00Z'), band: 'medium', practice: false, res: 'W', units: 1, profit: 0.91, beat: 1 },
+    { t: at('2026-10-19T03:00:00Z'), band: 'medium', practice: false, res: 'L', units: 1.5, profit: -1.5, beat: 0 },
+    { t: at('2026-10-19T18:00:00Z'), band: 'high', practice: false, res: 'P', units: 2, profit: 0, beat: null },
+    { t: at('2026-10-19T18:00:00Z'), band: 'medium', practice: true, res: 'W', units: 0.5, profit: 0.45, beat: null },
+    // (the week before the year: kept; earlier: All time's alone)
+    { t: at('2025-12-28T18:00:00Z'), band: 'lock', practice: false, res: 'W', units: 3, profit: 2.73, beat: null },
+    { t: at('2025-06-01T18:00:00Z'), band: 'lock', practice: false, res: 'W', units: 3, profit: 2.73, beat: null },
+  ];
+  const d = dailyOf(bets);
+  assert.equal(d.from, '2025-12-25');
+  assert.deepEqual(d.bands, {
+    high: { '2026-10-19': '0,0,1,2' },
+    lock: { '2025-12-28': '1,0,0,3,2.73' },
+    // (02:00 and 03:00 UTC are the evening before in the East)
+    medium: { '2026-10-18': '1,1,0,2.5,-0.59,1,2' },
+    practice: { '2026-10-19': '1,0,0,0.5,0.45' },
+  });
+  assert.deepEqual(dailyOf([]).bands, {});
 });

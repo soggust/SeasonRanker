@@ -1,10 +1,10 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, ElementRef, HostListener, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { americanOdds, compactCount, deskLeagueLogo, recordTip, fightPick, fightSides, headshot, hideImage, pct, teamLogo, units } from './bet-format';
 import { darkLogoOf } from '../team-look';
 import { matchupName } from './game-menu';
 import { BetGroup, SportGroup, TableSorts, betValue, byGame, gamesBySport } from './desk-columns';
 import { DESK_HELP } from './desk-help';
-import { BotHistory, HistoryRow, ReplayRecordFile, botHistoryOf, buildLabel, buildOf, emptyRow, recordText } from './replay-history';
+import { BotHistory, HISTORY_RANGES, HistoryRange, HistoryRow, ReplayRecordFile, botHistoryOf, buildLabel, buildOf, emptyRow, isHistoryRange, recordText } from './replay-history';
 import { DeskPanel, ESPN_LEAGUES, SPORTS, deskPanelOpen, UNIT_WORDS, DeskEpoch, epochFor, epochShared, countNowOf, deskEpochOf, edgeColorOf, epochLabel, isTracked, meterOf, propState, provisional, sideTextOf, sideTitleOf, toWin } from './desk-math';
 import { Board, Meter, ModelBet, ModelState, Settled } from './desk-model';
 import { SummaryBox, athleteTeam, liveStat } from './live-props';
@@ -18,7 +18,9 @@ import type { PlayerRef } from '../player-link';
 // sport chips on one line up top; under them one board that scrolls: By Sport, By Confidence (LOCK first), the
 // bets open now with those In Play, and the last 20 closed. The loops' own files (the self-check, the scorecard,
 // the news signals, the miss review, the CHECKs) are still written by the desk and the gate; this tab no longer
-// shows them (the owner, 2026-10-19). The sorting is desk-columns.ts's, the hovers desk-help.ts's.
+// shows them (the owner, 2026-10-19). The time range beside the sport chips (Today to All time, the owner's
+// 2026-10-19 notes) filters the history's panels by each bet's settling (replay-history.ts rangeDays); the build at
+// the board's foot. The sorting is desk-columns.ts's, the hovers desk-help.ts's.
 
 const SPORT_KEY = 'deskSport';
 const readSport = (): string | null => {
@@ -27,6 +29,17 @@ const readSport = (): string | null => {
     return saved && SPORTS.includes(saved) ? saved : null;
   } catch {
     return null;
+  }
+};
+
+// (the time range on show, remembered on this browser: All time to begin with)
+const RANGE_KEY = 'deskRange';
+const readRange = (): HistoryRange => {
+  try {
+    const saved = localStorage.getItem(RANGE_KEY);
+    return isHistoryRange(saved) ? saved : 'all';
+  } catch {
+    return 'all';
   }
 };
 
@@ -98,6 +111,96 @@ export class ModelDeskComponent implements OnInit, OnDestroy {
   buildAt: string | null = null;
 
   private flipped = readFlipped();
+
+  // ---------------------------------------------------------------------------
+  // The time range: the Book's dropdown (its pill and its listbox), the history's panels by each bet's settling
+  // ---------------------------------------------------------------------------
+  readonly ranges = HISTORY_RANGES;
+  range: HistoryRange = readRange();
+  rangeOpen = false;
+  rangeActive: HistoryRange = this.range;
+  @ViewChild('rangePill') private rangePill?: ElementRef<HTMLButtonElement>;
+  @ViewChild('rangeList') private rangeList?: ElementRef<HTMLElement>;
+
+  get rangeLabel(): string {
+    return HISTORY_RANGES.find((r) => r.value === this.range)?.label ?? 'All time';
+  }
+
+  // (the range in a sentence: "No bets settled this week")
+  get rangeWords(): string {
+    return this.range === 'all' ? 'yet' : this.rangeLabel.toLowerCase();
+  }
+
+  // (what the range holds: "This week: 42 replayed (games before this version) · 6 live")
+  rangeNote(h: BotHistory): string {
+    const p = h.rangeParts;
+    const parts = [`${p.replayed.toLocaleString('en-US')} replayed (games before this version)`, `${p.live.toLocaleString('en-US')} live (since it)`];
+    if (p.undated) parts.push(`${p.undated.toLocaleString('en-US')} replayed without dates left out`);
+    return `${this.rangeLabel}: ${parts.join(' · ')}`;
+  }
+
+  toggleRange(): void {
+    this.rangeOpen ? this.closeRange() : this.openRange();
+  }
+
+  private openRange(): void {
+    this.rangeOpen = true;
+    this.rangeActive = this.range;
+    setTimeout(() => this.rangeList?.nativeElement.focus());
+  }
+
+  private closeRange(focus = false): void {
+    this.rangeOpen = false;
+    if (focus) this.rangePill?.nativeElement.focus();
+  }
+
+  pickRange(range: HistoryRange): void {
+    this.closeRange(true);
+    if (range === this.range) return;
+    this.range = range;
+    try {
+      if (range === 'all') localStorage.removeItem(RANGE_KEY);
+      else localStorage.setItem(RANGE_KEY, range);
+    } catch {
+      // (storage off: the choice lasts the visit)
+    }
+    this.show();
+  }
+
+  // (the pill: Down, Enter or Space open the list)
+  rangePillKey(e: KeyboardEvent): void {
+    if (e.key === 'ArrowDown' || ((e.key === 'Enter' || e.key === ' ') && !this.rangeOpen)) {
+      e.preventDefault();
+      this.openRange();
+    } else if (e.key === 'Escape' && this.rangeOpen) {
+      e.preventDefault();
+      this.closeRange(true);
+    }
+  }
+
+  // (the list: the arrows, Home and End light a row, Enter or Space choose it, Escape and Tab close it)
+  rangeListKey(e: KeyboardEvent): void {
+    const i = HISTORY_RANGES.findIndex((r) => r.value === this.rangeActive);
+    const to = (n: number) => (this.rangeActive = HISTORY_RANGES[Math.max(0, Math.min(HISTORY_RANGES.length - 1, n))].value);
+    if (e.key === 'ArrowDown') to(i + 1);
+    else if (e.key === 'ArrowUp') to(i - 1);
+    else if (e.key === 'Home') to(0);
+    else if (e.key === 'End') to(HISTORY_RANGES.length - 1);
+    else if (e.key === 'Enter' || e.key === ' ') this.pickRange(this.rangeActive);
+    else if (e.key === 'Escape') this.closeRange(true);
+    else if (e.key === 'Tab') return this.closeRange();
+    else return;
+    e.preventDefault();
+  }
+
+  // (a click off the pill and its list closes it)
+  @HostListener('document:click', ['$event'])
+  onDocClick(e: MouseEvent): void {
+    if (!this.rangeOpen) return;
+    const t = e.target as Node | null;
+    if (t && (this.rangePill?.nativeElement.contains(t) || this.rangeList?.nativeElement.contains(t))) return;
+    this.closeRange();
+  }
 
   panelOpen(panel: DeskPanel): boolean {
     return deskPanelOpen(panel, this.flipped);
@@ -186,7 +289,7 @@ export class ModelDeskComponent implements OnInit, OnDestroy {
   private show(): void {
     this.bets = this.allBets.filter((b) => b.status === 'open' && (!this.sport || b.sport === this.sport));
     this.states = this.sport ? this.allStates.filter((s) => s.sport === this.sport) : this.allStates;
-    const h = botHistoryOf(this.allReplays, this.allLedgerBets, this.sport, Object.fromEntries(this.allStates.map((s) => [s.sport, s.label])));
+    const h = botHistoryOf(this.allReplays, this.allLedgerBets, this.sport, Object.fromEntries(this.allStates.map((s) => [s.sport, s.label])), { range: this.range });
     this.history = h;
     const histBand = (label: string) => h.byBand.find((r) => r.label === label) ?? emptyRow(label);
     this.bandRows = [histBand('LOCK'), histBand('LOVE'), histBand('LIKE'), h.practice, histBand('PASS')];

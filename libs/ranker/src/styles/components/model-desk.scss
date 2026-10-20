@@ -1512,8 +1512,8 @@ mat-icon.desk-gloves {
 }
 
 // ---------------------------------------------------------------------------
-// The build's time and the sport chips on one line (the owner, 2026-10-19): the build on the left, the chips on
-// the right; on a phone the chips wrap under it. The live desk's line under By Sport
+// The time range and the sport chips on one line (the owner, 2026-10-19): the range's dropdown on the left, the
+// chips on the right; on a phone the chips wrap under it. The build small and muted at the board's foot
 // ---------------------------------------------------------------------------
 .desk-bar {
   align-items: center;
@@ -1523,35 +1523,162 @@ mat-icon.desk-gloves {
   justify-content: space-between;
 }
 
+// (the build at the board's foot: small and muted, centred under the last panel)
 .desk-build-line {
   align-items: baseline;
-  color: v.$grey-light;
+  color: v.$text-faint;
   display: flex;
-  flex-wrap: wrap;
-  font-size: v.$fs-12;
-  gap: v.$space-6 v.$space-10;
-  margin: 0;
-  min-height: 1em;
-
-  b {
-    color: #fff;
-    font-family: v.$font-heading;
-    font-size: v.$fs-14;
-  }
+  font-size: v.$fs-11;
+  gap: v.$space-6;
+  justify-content: center;
+  margin: v.$space-16 0 0;
 }
 
 .desk-build-tag {
-  color: v.$text-faint;
   font-size: v.$fs-10;
   font-weight: 800;
   letter-spacing: 0.08em;
   text-transform: uppercase;
 }
 
-.desk-live-line {
+// (what a range holds, replayed and live, a quiet line over the panels)
+.desk-range-note {
   font-size: v.$fs-11;
-  margin: v.$space-6 0 0;
+  margin: v.$space-10 2px 0;
 }
+
+// (the Pick column a little apart from the Game's: In Play's and Open Bets')
+.desk-bets .desk-pick-col {
+  padding-left: 26px;
+}
+
+// The time range: the Book's game dropdown (book-page.scss .book-game, .book-game-list): a player's card pill (the
+// black fade in the gold rail) with a gold calendar and caret, the caret turning while it's open; its list the same
+// black fade in a gold edge, each range a 40px row, the lit one a faint light, the chosen one washed gold, its words
+// gold, the lit dots along its foot
+.desk-range-wrap {
+  display: inline-flex;
+  position: relative;
+
+  &.open {
+    z-index: 40;
+  }
+}
+
+.desk-range {
+  border: none;
+  @include chip.player-card(v.$radius-pill);
+  align-items: center;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.45);
+  box-sizing: border-box;
+  color: #fff;
+  cursor: pointer;
+  display: inline-flex;
+  font-family: v.$font-heading;
+  font-size: v.$fs-14;
+  gap: v.$space-10;
+  height: 44px;
+  letter-spacing: 0.5px;
+  line-height: 1;
+  min-width: 190px;
+  padding: 0 16px 0 16px;
+  transition: filter v.$t-hover ease;
+
+  &:hover {
+    filter: brightness(1.18);
+  }
+
+  &:focus-visible {
+    @include v.focus-ring(2px);
+  }
+
+  .desk-range-icon {
+    @include v.icon-size(18px);
+    color: chip.$gold-led;
+    flex: none;
+  }
+
+  .desk-range-label {
+    flex: 1;
+    text-align: left;
+    white-space: nowrap;
+  }
+
+  .desk-range-caret {
+    color: chip.$gold-led;
+    flex: none;
+    @include v.turn;
+  }
+
+  &[aria-expanded="true"] .desk-range-caret {
+    rotate: 180deg;
+  }
+}
+
+.desk-range-list {
+  background:
+    radial-gradient(ellipse at 85% 0%, rgba(255, 226, 122, 0.14), transparent 45%),
+    linear-gradient(160deg, #1d1d1d, #121212 60%, #1a1a1a);
+  border: 1px solid #b38a3c;
+  border-radius: v.$radius-xl;
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.6);
+  box-sizing: border-box;
+  left: 0;
+  min-width: 100%;
+  outline: none;
+  padding: 6px 0;
+  position: absolute;
+  top: calc(100% + 8px);
+
+  &:focus-visible {
+    box-shadow:
+      0 0 0 2px rgba(chip.$gold-led, 0.5),
+      0 12px 30px rgba(0, 0, 0, 0.6);
+  }
+}
+
+.range-opt {
+  align-items: center;
+  color: #fff;
+  cursor: pointer;
+  display: flex;
+  font-family: v.$font-heading;
+  font-size: v.$fs-13;
+  height: 40px;
+  padding: 0 16px;
+  position: relative;
+  transition: background v.$t-hover ease;
+  user-select: none;
+  white-space: nowrap;
+
+  &.active {
+    background: rgba(255, 255, 255, 0.07);
+  }
+
+  &.chosen {
+    @include v.lit-rule;
+    background: rgba(chip.$gold-led, 0.12);
+
+    .range-label {
+      color: chip.$gold-led;
+      text-shadow: 0 0 6px rgba(chip.$gold-led, 0.55);
+    }
+  }
+}
+
+// (on a phone the range a size smaller beside the chips' row under it)
+@include v.down(small) {
+  .desk-range {
+    height: 40px;
+    min-width: 0;
+    width: 100%;
+  }
+
+  .desk-range-wrap {
+    width: 100%;
+  }
+}
+
 
 .desk-history-panel .desk-total th,
 .desk-history-panel .desk-total td {

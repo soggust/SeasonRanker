@@ -1,10 +1,10 @@
-<!-- The algorithm's admin panel (admins only): the build and the sport chips on one line, then one board of the Bot's
-     history by sport and by confidence, the bets open and in play, and the last 20 closed. Open Bets' and In Play's
+<!-- The algorithm's admin panel (admins only): the time range and the sport chips on one line, then one board of the
+     Bot's history by sport and by confidence, the bets in play and open, the last 20 closed, and the build under them. Open Bets' and In Play's
      columns sort (a click on its header; again, the other way); every column explains itself on hover. -->
 
 <!-- (a column's header: its name, sorting its table, its explanation on hover) -->
 <ng-template #th let-table let-key="key" let-label="label" let-help="help">
-  <th [class.desk-left]="key === 'pick'" [attr.aria-sort]="ariaSort(table, key)" [title]="help ?? this.help[key] ?? ''">
+  <th [class.desk-left]="key === 'pick'" [class.desk-pick-col]="key === 'pick'" [attr.aria-sort]="ariaSort(table, key)" [title]="help ?? this.help[key] ?? ''">
     <button type="button" class="desk-sort" [class.sorted]="ariaSort(table, key)" (click)="sortBy(table, key)">
       {{ label }}
       @if (ariaSort(table, key); as dir) {
@@ -100,15 +100,31 @@
 
 <section class="model-desk" aria-label="Algorithm">
   <!-- (the owner, 2026-10-19: every record on the Bot's history (replay-history.ts botHistoryOf: today's algorithm
-       replayed over the priced history before its epoch, plus its real bets since). The build's time and the sport
-       chips on one line; under them one board, its own scroll: By Sport and By Confidence open, the bets open now,
-       those in play and the last 20 closed shut till opened) -->
+       replayed over the priced history before its epoch, plus its real bets since). The time range and the sport
+       chips on one line; under them one board, its own scroll: By Sport and By Confidence open, the bets in play,
+       those open and the last 20 closed shut till opened, the build small at its foot) -->
   <div class="desk-top">
     <div class="desk-bar">
-      <!-- (the version on show: its epoch, MODEL_EPOCH as the replay recorded it; each sport's on hover) -->
-      <p class="desk-build-line" [title]="epochTitle">
-        @if (!loading) {<span class="desk-build-tag">Build</span><b>{{ buildLabel(buildAt) }}</b>}
-      </p>
+      <!-- (the time range (the owner, 2026-10-19): Today to All time, by the day each bet settled, over the merged
+           history (the replay before the epoch, the live bets since: replay-history.ts rangeDays); By Sport, By
+           Confidence and Recently closed follow it. The Book's game dropdown's pill and list, a listbox of its own
+           (the keyboard and the click-off in model-desk.component.ts); remembered on this browser) -->
+      <div class="desk-range-wrap" [class.open]="rangeOpen">
+        <button #rangePill type="button" class="desk-range" aria-haspopup="listbox" aria-label="Time range" [attr.aria-expanded]="rangeOpen" [attr.aria-controls]="rangeOpen ? 'desk-range-list' : null" (click)="toggleRange()" (keydown)="rangePillKey($event)">
+          <mat-icon class="desk-range-icon" aria-hidden="true" fontIcon="calendar_today"></mat-icon>
+          <span class="desk-range-label">{{ rangeLabel }}</span>
+          <svg class="desk-range-caret" aria-hidden="true" width="14" height="14" viewBox="0 0 24 24"><path d="M6 9l6 6 6-6" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" /></svg>
+        </button>
+        @if (rangeOpen) {
+          <div #rangeList id="desk-range-list" class="desk-range-list" role="listbox" tabindex="-1" aria-label="Time range" [attr.aria-activedescendant]="'desk-range-' + rangeActive" (keydown)="rangeListKey($event)">
+            @for (r of ranges; track r.value) {
+              <div class="range-opt" role="option" [id]="'desk-range-' + r.value" [attr.aria-selected]="range === r.value" [class.active]="rangeActive === r.value" [class.chosen]="range === r.value" (mousemove)="rangeActive = r.value" (click)="pickRange(r.value)">
+                <span class="range-label">{{ r.label }}</span>
+              </div>
+            }
+          </div>
+        }
+      </div>
       <!-- (the sport on show: every panel follows it, the history's included) -->
       <div class="desk-sports" role="group" aria-label="Sport">
         <button type="button" class="desk-sport all" [class.active]="!sport" [attr.aria-pressed]="!sport" title="Every sport" (click)="setSport(null)">
@@ -136,9 +152,12 @@
     <p class="desk-note">Nothing yet: the bettor (GitHub's Model Desk workflow) hasn't run.</p>
   } @else {
     @if (history; as h) {
+    @if (h.range !== 'all') {
+      <!-- (what the range holds: the replayed bets (games before the version's epoch) and the live ones since) -->
+      <p class="desk-note desk-range-note" role="status">{{ rangeNote(h) }}</p>
+    }
     <div class="desk-grid">
-      <!-- (By Sport: each sport's record on the history, its league's mark for its name, all of them under; the live
-           desk's part since this version a line under it) -->
+      <!-- (By Sport: each sport's record on the history in the range, its league's mark for its name, all of them under) -->
       <card-panel class="tab-card group-results desk-history-panel" label="By Sport" icon="sports" [open]="panelOpen('sport')" (toggled)="togglePanel('sport')" [hint]="h.caveat">
         <div class="group-body">
           <table class="desk-table desk-history-table">
@@ -154,7 +173,6 @@
               }
             </tbody>
           </table>
-          <p class="desk-note desk-live-line" [title]="help['historyLive']">Live since this version: <b [attr.title]="recordTip(h.live)">{{ recordText(h.live) }}</b> · <b [class.up]="h.live.profit > 0" [class.down]="h.live.profit < 0">{{ units(h.live.profit) }}</b>@if (h.live.open) { · {{ compactCount(h.live.open) }} open}</p>
         </div>
       </card-panel>
 
@@ -176,107 +194,6 @@
         </div>
       </card-panel>
     </div>
-    }
-
-    @if (open.length) {
-      <card-panel class="tab-card group-results" label="Open Bets" icon="schedule" [open]="panelOpen('open')" (toggled)="togglePanel('open')">
-        <div class="group-body">
-          <table class="desk-table desk-bets desk-cols desk-cols-open">
-            <colgroup>
-              @if (!sport) {<col class="desk-c-sport" />}
-              <col class="desk-c-game" />
-              <col class="desk-c-pick" />
-              <col class="desk-c-odds" />
-              <col class="desk-c-units" />
-              <col class="desk-c-chance" />
-              <col class="desk-c-book" />
-              <col class="desk-c-ev" />
-            </colgroup>
-            <thead>
-              <tr>
-                @if (!sport) {<ng-container *ngTemplateOutlet="th; context: { $implicit: 'open', key: 'sport', label: 'Sport' }"></ng-container>}
-                <ng-container *ngTemplateOutlet="th; context: { $implicit: 'open', key: 'start', label: 'Game', help: 'The game and when it starts' }"></ng-container>
-                <ng-container *ngTemplateOutlet="th; context: { $implicit: 'open', key: 'pick', label: 'Pick' }"></ng-container>
-                <ng-container *ngTemplateOutlet="th; context: { $implicit: 'open', key: 'odds', label: 'Odds' }"></ng-container>
-                <ng-container *ngTemplateOutlet="th; context: { $implicit: 'open', key: 'units', label: 'Units' }"></ng-container>
-                <ng-container *ngTemplateOutlet="th; context: { $implicit: 'open', key: 'p', label: 'Its chance' }"></ng-container>
-                <ng-container *ngTemplateOutlet="th; context: { $implicit: 'open', key: 'fair', label: 'Book\'s' }"></ng-container>
-                <ng-container *ngTemplateOutlet="th; context: { $implicit: 'open', key: 'ev', label: 'EV' }"></ng-container>
-              </tr>
-            </thead>
-            <tbody>
-              @for (sg of gamesOf('open', open); track sg.sport) {
-              @if (sg.header) {
-                <!-- (every sport listed: each sport once, its games under it, folded or not) -->
-                @let sportShut = !sportOpen('open', sg);
-                <tr class="desk-sport-group" [class.shut]="sportShut" (click)="toggleSport('open', sg)">
-                  <td class="desk-left" colspan="8">
-                    <span class="desk-group-game">
-                      <button type="button" class="desk-group-toggle" [attr.aria-expanded]="!sportShut" [attr.aria-label]="(sportShut ? 'Show ' : 'Hide ') + sg.sport.toUpperCase() + ' bets'"><mat-icon aria-hidden="true" fontIcon="chevron_right"></mat-icon></button>
-                      <ng-container *ngTemplateOutlet="leagueMark; context: { $implicit: sg.sport }"></ng-container>
-                      <b class="desk-sport-name">{{ sg.sport.toUpperCase() }}</b>
-                      <span class="desk-group-count">{{ sg.groups.length }} {{ sg.groups.length === 1 ? 'game' : 'games' }} · {{ sg.picks }} {{ sg.picks === 1 ? 'pick' : 'picks' }} · {{ sg.units }}u</span>
-                    </span>
-                  </td>
-                </tr>
-              }
-              @if (sportOpen('open', sg)) {
-              @for (g of sg.groups; track g.key) {
-                @let many = g.bets.length > 1;
-                @let shut = !groupOpen('open', g);
-                @if (many) {
-                  <!-- (a game with more than one bet: once, its picks under it, folded or not) -->
-                  <tr class="desk-group" [class.shut]="shut" (click)="toggleGroup('open', g)">
-                    @if (!sport) {<th>@if (!sg.header) {<ng-container *ngTemplateOutlet="leagueMark; context: { $implicit: g.bets[0].sport, titled: true }"></ng-container>}</th>}
-                    <td class="desk-left"><span class="desk-group-game">
-                      <button type="button" class="desk-group-toggle" [attr.aria-expanded]="!shut" [attr.aria-label]="(shut ? 'Show ' : 'Hide ') + g.bets.length + ' picks on ' + matchupName(g.bets[0].sport, g.bets[0].matchup)"><mat-icon aria-hidden="true" fontIcon="chevron_right"></mat-icon></button>
-                      <span class="desk-game-stack"><ng-container *ngTemplateOutlet="gameCell; context: { $implicit: g.bets[0], when: 'EEE h:mm a' }"></ng-container></span>
-                    </span></td>
-                    <td class="desk-left desk-group-count">{{ g.bets.length }} picks</td>
-                    <td></td>
-                    <td>{{ groupUnits(g) }}</td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                  </tr>
-                }
-                @if (!shut) {
-                @for (sec of sectionsOf(g); track sec.key) {
-                @if (sec.props && many) {
-                  <!-- (a team's player props: a row of their own, folded till it's opened) -->
-                  <tr class="desk-subgroup" [class.shut]="!propsShown('open', sec)" (click)="toggleProps('open', sec)">
-                    @if (!sport) {<th></th>}
-                    <td></td>
-                    <td class="desk-left" colspan="6"><span class="desk-group-game">
-                      <button type="button" class="desk-group-toggle" [attr.aria-expanded]="propsShown('open', sec)" [attr.aria-label]="(propsShown('open', sec) ? 'Hide ' : 'Show ') + sec.team + ' player props'"><mat-icon aria-hidden="true" fontIcon="chevron_right"></mat-icon></button>
-                      <b>{{ sec.team }} Player Props</b>
-                      <span class="desk-group-count">{{ sec.bets.length }} {{ sec.bets.length === 1 ? 'pick' : 'picks' }} · {{ sectionUnits(sec) }}u</span>
-                    </span></td>
-                  </tr>
-                }
-                @if (!sec.props || !many || propsShown('open', sec)) {
-                @for (b of sec.bets; track b.id) {
-                <tr [class.desk-grouped]="many">
-                  @if (!sport) {<th>@if (!many && !sg.header) {<ng-container *ngTemplateOutlet="leagueMark; context: { $implicit: b.sport, titled: true }"></ng-container>}</th>}
-                  <td class="desk-left">@if (!many) {<ng-container *ngTemplateOutlet="gameCell; context: { $implicit: b, when: 'EEE h:mm a' }"></ng-container>}</td>
-                  <td class="desk-left" [title]="help['intent']"><ng-container *ngTemplateOutlet="pickCell; context: { $implicit: b }"></ng-container></td>
-                  <td [title]="help['betBook']">{{ odds(b.odds) }}</td>
-                  <td>{{ b.units }}</td>
-                  <td>{{ pct(b.p) }}</td>
-                  <td>{{ pct(b.fair) }}</td>
-                  <td [class.up]="b.ev > 0" [class.down]="b.ev < 0">{{ pct(b.ev) }}</td>
-                </tr>
-              }
-                }
-                }
-                }
-              }
-              }
-              }
-            </tbody>
-          </table>
-        </div>
-      </card-panel>
     }
 
     <!-- (the bets on games under way: the score and clock from ESPN, every minute) -->
@@ -333,7 +250,7 @@
                       <button type="button" class="desk-group-toggle" [attr.aria-expanded]="!shut" [attr.aria-label]="(shut ? 'Show ' : 'Hide ') + g.bets.length + ' picks on ' + matchupName(g.bets[0].sport, g.bets[0].matchup)"><mat-icon aria-hidden="true" fontIcon="chevron_right"></mat-icon></button>
                       <span class="desk-game-stack"><ng-container *ngTemplateOutlet="gameCell; context: { $implicit: g.bets[0], when: 'live' }"></ng-container></span>
                     </span></td>
-                    <td class="desk-left desk-group-count">{{ g.bets.length }} picks</td>
+                    <td class="desk-left desk-pick-col desk-group-count">{{ g.bets.length }} picks</td>
                     <td></td>
                     <td>{{ groupUnits(g) }}</td>
                     <td></td>
@@ -347,7 +264,7 @@
                   <tr class="desk-subgroup" [class.shut]="!propsShown('live', sec)" (click)="toggleProps('live', sec)">
                     @if (!sport) {<th></th>}
                     <td></td>
-                    <td class="desk-left" colspan="5"><span class="desk-group-game">
+                    <td class="desk-left desk-pick-col" colspan="5"><span class="desk-group-game">
                       <button type="button" class="desk-group-toggle" [attr.aria-expanded]="propsShown('live', sec)" [attr.aria-label]="(propsShown('live', sec) ? 'Hide ' : 'Show ') + sec.team + ' player props'"><mat-icon aria-hidden="true" fontIcon="chevron_right"></mat-icon></button>
                       <b>{{ sec.team }} Player Props</b>
                       <span class="desk-group-count">{{ sec.bets.length }} {{ sec.bets.length === 1 ? 'pick' : 'picks' }} · {{ sectionUnits(sec) }}u</span>
@@ -359,7 +276,7 @@
                 <tr [class.desk-grouped]="many">
                   @if (!sport) {<th>@if (!many && !sg.header) {<ng-container *ngTemplateOutlet="leagueMark; context: { $implicit: b.sport, titled: true }"></ng-container>}</th>}
                   <td class="desk-left">@if (!many) {<ng-container *ngTemplateOutlet="gameCell; context: { $implicit: b, when: 'live' }"></ng-container>}</td>
-                  <td class="desk-left"><ng-container *ngTemplateOutlet="pickCell; context: { $implicit: b }"></ng-container></td>
+                  <td class="desk-left desk-pick-col"><ng-container *ngTemplateOutlet="pickCell; context: { $implicit: b }"></ng-container></td>
                   <td>{{ odds(b.odds) }}</td>
                   <td [class.up]="provisional(b)?.status === 'won'" [class.down]="provisional(b)?.status === 'lost'">{{ b.units }}</td>
                   <!-- (decided already: its result, pending the next run's grading; else what it pays) -->
@@ -411,12 +328,116 @@
       </card-panel>
     }
 
+    @if (open.length) {
+      <card-panel class="tab-card group-results" label="Open Bets" icon="schedule" [open]="panelOpen('open')" (toggled)="togglePanel('open')">
+        <div class="group-body">
+          <table class="desk-table desk-bets desk-cols desk-cols-open">
+            <colgroup>
+              @if (!sport) {<col class="desk-c-sport" />}
+              <col class="desk-c-game" />
+              <col class="desk-c-pick" />
+              <col class="desk-c-odds" />
+              <col class="desk-c-units" />
+              <col class="desk-c-chance" />
+              <col class="desk-c-book" />
+              <col class="desk-c-ev" />
+            </colgroup>
+            <thead>
+              <tr>
+                @if (!sport) {<ng-container *ngTemplateOutlet="th; context: { $implicit: 'open', key: 'sport', label: 'Sport' }"></ng-container>}
+                <ng-container *ngTemplateOutlet="th; context: { $implicit: 'open', key: 'start', label: 'Game', help: 'The game and when it starts' }"></ng-container>
+                <ng-container *ngTemplateOutlet="th; context: { $implicit: 'open', key: 'pick', label: 'Pick' }"></ng-container>
+                <ng-container *ngTemplateOutlet="th; context: { $implicit: 'open', key: 'odds', label: 'Odds' }"></ng-container>
+                <ng-container *ngTemplateOutlet="th; context: { $implicit: 'open', key: 'units', label: 'Units' }"></ng-container>
+                <ng-container *ngTemplateOutlet="th; context: { $implicit: 'open', key: 'p', label: 'Its chance' }"></ng-container>
+                <ng-container *ngTemplateOutlet="th; context: { $implicit: 'open', key: 'fair', label: 'Book\'s' }"></ng-container>
+                <ng-container *ngTemplateOutlet="th; context: { $implicit: 'open', key: 'ev', label: 'EV' }"></ng-container>
+              </tr>
+            </thead>
+            <tbody>
+              @for (sg of gamesOf('open', open); track sg.sport) {
+              @if (sg.header) {
+                <!-- (every sport listed: each sport once, its games under it, folded or not) -->
+                @let sportShut = !sportOpen('open', sg);
+                <tr class="desk-sport-group" [class.shut]="sportShut" (click)="toggleSport('open', sg)">
+                  <td class="desk-left" colspan="8">
+                    <span class="desk-group-game">
+                      <button type="button" class="desk-group-toggle" [attr.aria-expanded]="!sportShut" [attr.aria-label]="(sportShut ? 'Show ' : 'Hide ') + sg.sport.toUpperCase() + ' bets'"><mat-icon aria-hidden="true" fontIcon="chevron_right"></mat-icon></button>
+                      <ng-container *ngTemplateOutlet="leagueMark; context: { $implicit: sg.sport }"></ng-container>
+                      <b class="desk-sport-name">{{ sg.sport.toUpperCase() }}</b>
+                      <span class="desk-group-count">{{ sg.groups.length }} {{ sg.groups.length === 1 ? 'game' : 'games' }} · {{ sg.picks }} {{ sg.picks === 1 ? 'pick' : 'picks' }} · {{ sg.units }}u</span>
+                    </span>
+                  </td>
+                </tr>
+              }
+              @if (sportOpen('open', sg)) {
+              @for (g of sg.groups; track g.key) {
+                @let many = g.bets.length > 1;
+                @let shut = !groupOpen('open', g);
+                @if (many) {
+                  <!-- (a game with more than one bet: once, its picks under it, folded or not) -->
+                  <tr class="desk-group" [class.shut]="shut" (click)="toggleGroup('open', g)">
+                    @if (!sport) {<th>@if (!sg.header) {<ng-container *ngTemplateOutlet="leagueMark; context: { $implicit: g.bets[0].sport, titled: true }"></ng-container>}</th>}
+                    <td class="desk-left"><span class="desk-group-game">
+                      <button type="button" class="desk-group-toggle" [attr.aria-expanded]="!shut" [attr.aria-label]="(shut ? 'Show ' : 'Hide ') + g.bets.length + ' picks on ' + matchupName(g.bets[0].sport, g.bets[0].matchup)"><mat-icon aria-hidden="true" fontIcon="chevron_right"></mat-icon></button>
+                      <span class="desk-game-stack"><ng-container *ngTemplateOutlet="gameCell; context: { $implicit: g.bets[0], when: 'EEE h:mm a' }"></ng-container></span>
+                    </span></td>
+                    <td class="desk-left desk-pick-col desk-group-count">{{ g.bets.length }} picks</td>
+                    <td></td>
+                    <td>{{ groupUnits(g) }}</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                  </tr>
+                }
+                @if (!shut) {
+                @for (sec of sectionsOf(g); track sec.key) {
+                @if (sec.props && many) {
+                  <!-- (a team's player props: a row of their own, folded till it's opened) -->
+                  <tr class="desk-subgroup" [class.shut]="!propsShown('open', sec)" (click)="toggleProps('open', sec)">
+                    @if (!sport) {<th></th>}
+                    <td></td>
+                    <td class="desk-left desk-pick-col" colspan="6"><span class="desk-group-game">
+                      <button type="button" class="desk-group-toggle" [attr.aria-expanded]="propsShown('open', sec)" [attr.aria-label]="(propsShown('open', sec) ? 'Hide ' : 'Show ') + sec.team + ' player props'"><mat-icon aria-hidden="true" fontIcon="chevron_right"></mat-icon></button>
+                      <b>{{ sec.team }} Player Props</b>
+                      <span class="desk-group-count">{{ sec.bets.length }} {{ sec.bets.length === 1 ? 'pick' : 'picks' }} · {{ sectionUnits(sec) }}u</span>
+                    </span></td>
+                  </tr>
+                }
+                @if (!sec.props || !many || propsShown('open', sec)) {
+                @for (b of sec.bets; track b.id) {
+                <tr [class.desk-grouped]="many">
+                  @if (!sport) {<th>@if (!many && !sg.header) {<ng-container *ngTemplateOutlet="leagueMark; context: { $implicit: b.sport, titled: true }"></ng-container>}</th>}
+                  <td class="desk-left">@if (!many) {<ng-container *ngTemplateOutlet="gameCell; context: { $implicit: b, when: 'EEE h:mm a' }"></ng-container>}</td>
+                  <td class="desk-left desk-pick-col" [title]="help['intent']"><ng-container *ngTemplateOutlet="pickCell; context: { $implicit: b }"></ng-container></td>
+                  <td [title]="help['betBook']">{{ odds(b.odds) }}</td>
+                  <td>{{ b.units }}</td>
+                  <td>{{ pct(b.p) }}</td>
+                  <td>{{ pct(b.fair) }}</td>
+                  <td [class.up]="b.ev > 0" [class.down]="b.ev < 0">{{ pct(b.ev) }}</td>
+                </tr>
+              }
+                }
+                }
+                }
+              }
+              }
+              }
+            </tbody>
+          </table>
+        </div>
+      </card-panel>
+    }
+
     <!-- (Recently closed: the last 20 settled on the history, newest first: the result, the league's mark, the pick
          with its game muted under it, then the bet: its band in the Book's colour, the price, the stake and what it
          came to; a replayed bet a small muted "replay", a practice pick dimmed) -->
-    @if (history?.last?.length) {
+    @if (history?.last?.length || history?.range !== 'all') {
       <card-panel class="tab-card group-results desk-wide desk-history-panel" label="Recently closed" icon="history" [open]="panelOpen('closed')" (toggled)="togglePanel('closed')" [hint]="history!.caveat">
         <div class="group-body">
+          @if (!history!.last.length) {
+            <p class="desk-note">No bets settled {{ rangeWords }}.</p>
+          }
           <ol class="desk-history-strip" aria-label="The last 20 bets">
             @for (b of history!.last; track $index) {
               <li class="desk-history-bet" [ngClass]="b.res" [class.is-practice]="b.practice">
@@ -438,6 +459,11 @@
         </div>
       </card-panel>
     }
+  }
+  <!-- (the version on show, small and muted at the board's foot: its epoch, MODEL_EPOCH as the replay recorded it;
+       each sport's on hover) -->
+  @if (!loading) {
+    <p class="desk-build-line" [title]="epochTitle"><span class="desk-build-tag">Build</span>{{ buildLabel(buildAt) }}</p>
   }
   </div>
   </div>
