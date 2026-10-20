@@ -1,7 +1,7 @@
 {
  "v": 1,
  "sport": "nhl",
- "at": "2026-10-20T06:37:51.905Z",
+ "at": "2026-10-20T08:42:01.770Z",
  "epoch": "2026-10-20T05:45:00Z",
  "markets": {
   "spread": {
@@ -224,6 +224,28 @@
     "why": "1 picks, under 60",
     "family": "size",
     "label": "a Kelly score of 5% or more at a 55% chance"
+   },
+   "fatigue": {
+    "on": false,
+    "strong": false,
+    "n": 1,
+    "roi": 1.64,
+    "mean": 1.64,
+    "rest": 0.0217,
+    "restN": 522,
+    "lead": null,
+    "z": null,
+    "beat": null,
+    "beatN": 0,
+    "beatRest": 0.5746,
+    "seasons": {
+     "lead": 0,
+     "of": 0,
+     "pos": 0
+    },
+    "why": "1 picks, under 60",
+    "family": "rest",
+    "label": "the other side's stacked fatigue (a back-to-back, travel, time zones east, altitude) in the tail, the Book's price still at the sharp fair"
    }
   },
   "ml": {
@@ -446,6 +468,28 @@
     "why": "2 picks, under 60",
     "family": "size",
     "label": "a Kelly score of 5% or more at a 55% chance"
+   },
+   "fatigue": {
+    "on": false,
+    "strong": false,
+    "n": 4,
+    "roi": 0.36,
+    "mean": 0.36,
+    "rest": 0.0046,
+    "restN": 437,
+    "lead": null,
+    "z": null,
+    "beat": 0.6667,
+    "beatN": 3,
+    "beatRest": 0.5276,
+    "seasons": {
+     "lead": 0,
+     "of": 0,
+     "pos": 0
+    },
+    "why": "4 picks, under 60",
+    "family": "rest",
+    "label": "the other side's stacked fatigue (a back-to-back, travel, time zones east, altitude) in the tail, the Book's price still at the sharp fair"
    }
   },
   "total": {
@@ -759,5 +803,5 @@
    "lock": 3
   }
  },
- "commit": "b7d36b47"
+ "commit": "e4fa67cd"
 }

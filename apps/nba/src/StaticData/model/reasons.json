@@ -1,7 +1,7 @@
 {
  "v": 1,
  "sport": "nba",
- "at": "2026-10-20T06:32:13.636Z",
+ "at": "2026-10-20T08:41:45.108Z",
  "epoch": "2026-10-20T05:45:00Z",
  "markets": {
   "ml": {
@@ -224,6 +224,28 @@
     "why": "9 picks, under 60",
     "family": "size",
     "label": "a Kelly score of 5% or more at a 55% chance"
+   },
+   "fatigue": {
+    "on": false,
+    "strong": false,
+    "n": 7,
+    "roi": -0.2286,
+    "mean": -0.2286,
+    "rest": 0.0353,
+    "restN": 1059,
+    "lead": null,
+    "z": null,
+    "beat": 0.8333,
+    "beatN": 6,
+    "beatRest": 0.4925,
+    "seasons": {
+     "lead": 0,
+     "of": 0,
+     "pos": 0
+    },
+    "why": "7 picks, under 60",
+    "family": "rest",
+    "label": "the other side's stacked fatigue (a back-to-back, travel, time zones east, altitude) in the tail, the Book's price still at the sharp fair"
    }
   },
   "spread": {
@@ -891,5 +913,5 @@
    "lock": 3
   }
  },
- "commit": "b7d36b47"
+ "commit": "e4fa67cd"
 }
