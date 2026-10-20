@@ -1879,6 +1879,47 @@
     "seen": "2026-10-20T20:41:41.441Z",
     "own": "2026-10-20T20:30:00.000Z"
    }
+  },
+  "401909834|jonathanisaac|out": {
+   "game": "401909834",
+   "start": "2026-10-21T23:00Z",
+   "team": "19",
+   "name": "Jonathan Isaac",
+   "status": "out",
+   "athlete": "4065654",
+   "espn": {
+    "seen": "2026-10-20T21:12:52.453Z",
+    "own": "2026-10-20T20:57:00.000Z"
+   }
+  },
+  "401909834|anthonyblack|out": {
+   "game": "401909834",
+   "start": "2026-10-21T23:00Z",
+   "team": "19",
+   "name": "Anthony Black",
+   "status": "out",
+   "athlete": "4712849",
+   "espn": {
+    "seen": "2026-10-20T21:12:52.453Z",
+    "own": "2026-10-20T20:55:00.000Z"
+   },
+   "bluesky": {
+    "seen": "2026-10-20T21:00:42.602Z",
+    "own": "2026-10-20T20:55:56.000Z",
+    "why": "@rotowirenba.bsky.social: Anthony Black: Won't play Wednesday \n\n https://www.rot"
+   }
+  },
+  "401909836|kylanboswell|out": {
+   "game": "401909836",
+   "start": "2026-10-21T23:30Z",
+   "team": "30",
+   "name": "Kylan Boswell",
+   "status": "out",
+   "athlete": "4684269",
+   "espn": {
+    "seen": "2026-10-20T21:12:52.453Z",
+    "own": "2026-10-20T20:55:00.000Z"
+   }
   }
  }
 }
