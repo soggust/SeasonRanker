@@ -1,7 +1,7 @@
 {
  "sport": "nba",
  "cursor": {
-  "rotowirenba.bsky.social": "2026-10-20T16:41:07.000Z",
+  "rotowirenba.bsky.social": "2026-10-20T17:53:43.000Z",
   "insidenbanews.bsky.social": "2026-10-20T14:31:09.380Z",
   "shamsbot.bsky.social": "2026-10-20T15:50:34.000Z"
  },
@@ -369,6 +369,32 @@
    "kind": "status",
    "confidence": 0.9,
    "text": "Dailyn Swain: Out with illness \n\n https://www.rotowire.com/basketball/player/dailyn-swain-6986"
+  },
+  {
+   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3myd6wypfgu2d|santialdama|doubtful|status",
+   "at": "2026-10-20T17:47:37.000Z",
+   "seen": "2026-10-20T18:16:26.920Z",
+   "handle": "rotowirenba.bsky.social",
+   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3myd6wypfgu2d",
+   "player": "Santi Aldama",
+   "team": "MEM",
+   "status": "doubtful",
+   "kind": "status",
+   "confidence": 0.9,
+   "text": "Santi Aldama: Doubtful for Wednesday \n\n https://www.rotowire.com/basketball/player/santi-aldama-5428"
+  },
+  {
+   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3myd7bvjbpz2g|fredvanvleet|out|status",
+   "at": "2026-10-20T17:53:43.000Z",
+   "seen": "2026-10-20T18:16:26.920Z",
+   "handle": "rotowirenba.bsky.social",
+   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3myd7bvjbpz2g",
+   "player": "Fred VanVleet",
+   "team": "HOU",
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.85,
+   "text": "Fred VanVleet: To miss back-to-backs \n\n https://www.rotowire.com/basketball/player/fred-vanvleet-3935"
   }
  ]
 }
