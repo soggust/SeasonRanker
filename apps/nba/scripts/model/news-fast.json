@@ -2,7 +2,7 @@
  "sport": "nba",
  "cursor": {
   "rotowirenba.bsky.social": "2026-10-20T01:59:46.000Z",
-  "insidenbanews.bsky.social": "2026-10-20T01:43:42.346Z",
+  "insidenbanews.bsky.social": "2026-10-20T14:31:09.380Z",
   "shamsbot.bsky.social": "2026-10-20T02:08:34.000Z"
  },
  "claims": [
@@ -200,6 +200,149 @@
    "kind": "status",
    "confidence": 0.85,
    "text": "Cason Wallace: Not listed on injury report \n\n https://www.rotowire.com/basketball/player/cason-wallace-5898"
+  },
+  {
+   "id": "at://did:plc:ykcnnf6kqnn3lasmobrczoem/app.bsky.feed.post/3myctxomgh22l|taureanprince|out|status",
+   "at": "2026-10-20T14:31:09.380Z",
+   "seen": "2026-10-20T14:33:14.565Z",
+   "handle": "insidenbanews.bsky.social",
+   "post": "at://did:plc:ykcnnf6kqnn3lasmobrczoem/app.bsky.feed.post/3myctxomgh22l",
+   "player": "Taurean Prince",
+   "team": "DET",
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.9,
+   "text": "Injuries 10/20\n\nBOS:\nNone\n\nDET:\nTaurean Prince - Out\n\nPHI:\nAnfernee Simons - Questionable\nDean Wade - Questionable\nAdem Bona - Questionable\nAriel Hukporti - Out\nDominick Barlow - Out\nTacko Fall - Out\n"
+  },
+  {
+   "id": "at://did:plc:ykcnnf6kqnn3lasmobrczoem/app.bsky.feed.post/3myctxomgh22l|anferneesimons|questionable|status",
+   "at": "2026-10-20T14:31:09.380Z",
+   "seen": "2026-10-20T14:33:14.565Z",
+   "handle": "insidenbanews.bsky.social",
+   "post": "at://did:plc:ykcnnf6kqnn3lasmobrczoem/app.bsky.feed.post/3myctxomgh22l",
+   "player": "Anfernee Simons",
+   "team": "PHI",
+   "status": "questionable",
+   "kind": "status",
+   "confidence": 0.9,
+   "text": "Injuries 10/20\n\nBOS:\nNone\n\nDET:\nTaurean Prince - Out\n\nPHI:\nAnfernee Simons - Questionable\nDean Wade - Questionable\nAdem Bona - Questionable\nAriel Hukporti - Out\nDominick Barlow - Out\nTacko Fall - Out\n"
+  },
+  {
+   "id": "at://did:plc:ykcnnf6kqnn3lasmobrczoem/app.bsky.feed.post/3myctxomgh22l|deanwade|questionable|status",
+   "at": "2026-10-20T14:31:09.380Z",
+   "seen": "2026-10-20T14:33:14.565Z",
+   "handle": "insidenbanews.bsky.social",
+   "post": "at://did:plc:ykcnnf6kqnn3lasmobrczoem/app.bsky.feed.post/3myctxomgh22l",
+   "player": "Dean Wade",
+   "team": "PHI",
+   "status": "questionable",
+   "kind": "status",
+   "confidence": 0.9,
+   "text": "Injuries 10/20\n\nBOS:\nNone\n\nDET:\nTaurean Prince - Out\n\nPHI:\nAnfernee Simons - Questionable\nDean Wade - Questionable\nAdem Bona - Questionable\nAriel Hukporti - Out\nDominick Barlow - Out\nTacko Fall - Out\n"
+  },
+  {
+   "id": "at://did:plc:ykcnnf6kqnn3lasmobrczoem/app.bsky.feed.post/3myctxomgh22l|adembona|questionable|status",
+   "at": "2026-10-20T14:31:09.380Z",
+   "seen": "2026-10-20T14:33:14.565Z",
+   "handle": "insidenbanews.bsky.social",
+   "post": "at://did:plc:ykcnnf6kqnn3lasmobrczoem/app.bsky.feed.post/3myctxomgh22l",
+   "player": "Adem Bona",
+   "team": "PHI",
+   "status": "questionable",
+   "kind": "status",
+   "confidence": 0.9,
+   "text": "Injuries 10/20\n\nBOS:\nNone\n\nDET:\nTaurean Prince - Out\n\nPHI:\nAnfernee Simons - Questionable\nDean Wade - Questionable\nAdem Bona - Questionable\nAriel Hukporti - Out\nDominick Barlow - Out\nTacko Fall - Out\n"
+  },
+  {
+   "id": "at://did:plc:ykcnnf6kqnn3lasmobrczoem/app.bsky.feed.post/3myctxomgh22l|arielhukporti|out|status",
+   "at": "2026-10-20T14:31:09.380Z",
+   "seen": "2026-10-20T14:33:14.565Z",
+   "handle": "insidenbanews.bsky.social",
+   "post": "at://did:plc:ykcnnf6kqnn3lasmobrczoem/app.bsky.feed.post/3myctxomgh22l",
+   "player": "Ariel Hukporti",
+   "team": "PHI",
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.9,
+   "text": "Injuries 10/20\n\nBOS:\nNone\n\nDET:\nTaurean Prince - Out\n\nPHI:\nAnfernee Simons - Questionable\nDean Wade - Questionable\nAdem Bona - Questionable\nAriel Hukporti - Out\nDominick Barlow - Out\nTacko Fall - Out\n"
+  },
+  {
+   "id": "at://did:plc:ykcnnf6kqnn3lasmobrczoem/app.bsky.feed.post/3myctxomgh22l|dominickbarlow|out|status",
+   "at": "2026-10-20T14:31:09.380Z",
+   "seen": "2026-10-20T14:33:14.565Z",
+   "handle": "insidenbanews.bsky.social",
+   "post": "at://did:plc:ykcnnf6kqnn3lasmobrczoem/app.bsky.feed.post/3myctxomgh22l",
+   "player": "Dominick Barlow",
+   "team": "PHI",
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.9,
+   "text": "Injuries 10/20\n\nBOS:\nNone\n\nDET:\nTaurean Prince - Out\n\nPHI:\nAnfernee Simons - Questionable\nDean Wade - Questionable\nAdem Bona - Questionable\nAriel Hukporti - Out\nDominick Barlow - Out\nTacko Fall - Out\n"
+  },
+  {
+   "id": "at://did:plc:ykcnnf6kqnn3lasmobrczoem/app.bsky.feed.post/3myctxomgh22l|tackofall|out|status",
+   "at": "2026-10-20T14:31:09.380Z",
+   "seen": "2026-10-20T14:33:14.565Z",
+   "handle": "insidenbanews.bsky.social",
+   "post": "at://did:plc:ykcnnf6kqnn3lasmobrczoem/app.bsky.feed.post/3myctxomgh22l",
+   "player": "Tacko Fall",
+   "team": "PHI",
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.9,
+   "text": "Injuries 10/20\n\nBOS:\nNone\n\nDET:\nTaurean Prince - Out\n\nPHI:\nAnfernee Simons - Questionable\nDean Wade - Questionable\nAdem Bona - Questionable\nAriel Hukporti - Out\nDominick Barlow - Out\nTacko Fall - Out\n"
+  },
+  {
+   "id": "at://did:plc:ykcnnf6kqnn3lasmobrczoem/app.bsky.feed.post/3myctxomgh22l|nikolatopic|out|status",
+   "at": "2026-10-20T14:31:09.380Z",
+   "seen": "2026-10-20T14:33:14.565Z",
+   "handle": "insidenbanews.bsky.social",
+   "post": "at://did:plc:ykcnnf6kqnn3lasmobrczoem/app.bsky.feed.post/3myctxomgh22l",
+   "player": "Nikola Topic",
+   "team": "OKC",
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.9,
+   "text": "Injuries 10/20\n\nBOS:\nNone\n\nDET:\nTaurean Prince - Out\n\nPHI:\nAnfernee Simons - Questionable\nDean Wade - Questionable\nAdem Bona - Questionable\nAriel Hukporti - Out\nDominick Barlow - Out\nTacko Fall - Out\n"
+  },
+  {
+   "id": "at://did:plc:ykcnnf6kqnn3lasmobrczoem/app.bsky.feed.post/3myctxomgh22l|thomassorber|out|status",
+   "at": "2026-10-20T14:31:09.380Z",
+   "seen": "2026-10-20T14:33:14.565Z",
+   "handle": "insidenbanews.bsky.social",
+   "post": "at://did:plc:ykcnnf6kqnn3lasmobrczoem/app.bsky.feed.post/3myctxomgh22l",
+   "player": "Thomas Sorber",
+   "team": "OKC",
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.9,
+   "text": "Injuries 10/20\n\nBOS:\nNone\n\nDET:\nTaurean Prince - Out\n\nPHI:\nAnfernee Simons - Questionable\nDean Wade - Questionable\nAdem Bona - Questionable\nAriel Hukporti - Out\nDominick Barlow - Out\nTacko Fall - Out\n"
+  },
+  {
+   "id": "at://did:plc:ykcnnf6kqnn3lasmobrczoem/app.bsky.feed.post/3myctxomgh22l|tobiasharris|out|status",
+   "at": "2026-10-20T14:31:09.380Z",
+   "seen": "2026-10-20T14:33:14.565Z",
+   "handle": "insidenbanews.bsky.social",
+   "post": "at://did:plc:ykcnnf6kqnn3lasmobrczoem/app.bsky.feed.post/3myctxomgh22l",
+   "player": "Tobias Harris",
+   "team": "SAS",
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.9,
+   "text": "Injuries 10/20\n\nBOS:\nNone\n\nDET:\nTaurean Prince - Out\n\nPHI:\nAnfernee Simons - Questionable\nDean Wade - Questionable\nAdem Bona - Questionable\nAriel Hukporti - Out\nDominick Barlow - Out\nTacko Fall - Out\n"
+  },
+  {
+   "id": "at://did:plc:ykcnnf6kqnn3lasmobrczoem/app.bsky.feed.post/3myctxomgh22l|jaydenquaintance|out|status",
+   "at": "2026-10-20T14:31:09.380Z",
+   "seen": "2026-10-20T14:33:14.565Z",
+   "handle": "insidenbanews.bsky.social",
+   "post": "at://did:plc:ykcnnf6kqnn3lasmobrczoem/app.bsky.feed.post/3myctxomgh22l",
+   "player": "Jayden Quaintance",
+   "team": "SAS",
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.9,
+   "text": "Injuries 10/20\n\nBOS:\nNone\n\nDET:\nTaurean Prince - Out\n\nPHI:\nAnfernee Simons - Questionable\nDean Wade - Questionable\nAdem Bona - Questionable\nAriel Hukporti - Out\nDominick Barlow - Out\nTacko Fall - Out\n"
   }
  ]
 }

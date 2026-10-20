@@ -4,10 +4,10 @@
   "adamscheftermirror.bsky.social": "2026-10-20T13:02:17.864Z",
   "rapsheet.bsky.social": "2026-10-20T02:03:12.852Z",
   "nflnewsreposterbot.bsky.social": "2026-10-19T20:52:46.431Z",
-  "insidenflnews.bsky.social": "2026-10-20T03:48:59.767Z",
-  "nflnewsposter.bsky.social": "2026-10-20T04:30:35.669Z",
-  "rotoworld-fb.bsky.social": "2026-10-20T13:21:23.000Z",
-  "rotowirenfl.bsky.social": "2026-10-20T04:13:27.000Z"
+  "insidenflnews.bsky.social": "2026-10-20T14:31:53.199Z",
+  "nflnewsposter.bsky.social": "2026-10-20T14:09:30.142Z",
+  "rotoworld-fb.bsky.social": "2026-10-20T14:06:22.000Z",
+  "rotowirenfl.bsky.social": "2026-10-20T14:32:07.000Z"
  },
  "claims": [
   {
@@ -1608,6 +1608,19 @@
    "kind": "status",
    "confidence": 0.3,
    "text": "McLaurin's knee injury is 'significant'"
+  },
+  {
+   "id": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3mycslf4bfp26|alecpierce|out|status",
+   "at": "2026-10-20T14:06:22.000Z",
+   "seen": "2026-10-20T14:33:14.565Z",
+   "handle": "rotoworld-fb.bsky.social",
+   "post": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3mycslf4bfp26",
+   "player": "Alec Pierce",
+   "team": "IND",
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.5,
+   "text": "Alec Pierce won't return to practice this week"
   }
  ]
 }
