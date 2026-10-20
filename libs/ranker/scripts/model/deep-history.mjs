@@ -17,7 +17,8 @@
 //              <season>.jsonl.gz D61's I and S rows (the archive's L shape, framed on the archive's home by the names,
 //              D56), props-<season>.jsonl.gz D61's Q and T rows, markets-<season>.jsonl.gz rows
 //              ["M", oid, snapshot, book, market, name, description, point, price] (each price keyed to its outcome's
-//              own name, D56) and ["T", oid, snapshot, n]. Book codes: BOOK_CODES.
+//              own name, D56) and ["T", oid, snapshot, n]; unmatched-<year>.jsonl.gz the sightings no archived event
+//              matches (unmatchedRows: on the API's own names). Book codes: BOOK_CODES.
 //   resumable  each job's raw answers (compact) go to WORK/<job>.jsonl as they come; a key there is never bought again
 //
 // The key (ODDS_API_KEY) is never printed: errors go through oddsapi.mjs redact.
@@ -260,6 +261,36 @@ export function buildMarketRows(snaps, events) {
   return out;
 }
 
+// (the sightings no archived event matches (buildRows' match: the id, else the two names within 12 hours): a bout
+// called off or renamed, kept on the API's own names: ["U", id, snapshot, start, home, away, book, market, line, a, b],
+// a row a price change, by the start's year)
+export function unmatchedRows(snaps, events) {
+  const ids = new Set(events.map((e) => e.oid));
+  const byNames = new Map();
+  for (const e of events) {
+    const k = [e.homeName, e.awayName].sort().join('|');
+    (byNames.get(k) ?? byNames.set(k, []).get(k)).push(Date.parse(e.t));
+  }
+  const last = new Map();
+  const out = new Map();
+  for (const s of [...snaps].sort((a, b) => Date.parse(a.ts) - Date.parse(b.ts))) {
+    for (const x of s.events ?? []) {
+      if (ids.has(x.id) || (byNames.get([x.h, x.a].sort().join('|')) ?? []).some((t) => Math.abs(t - Date.parse(x.c)) <= 12 * HOUR)) continue;
+      const year = x.c.slice(0, 4);
+      for (const [book, ms] of Object.entries(x.x ?? {})) {
+        for (const [market, v] of Object.entries(ms)) {
+          const k = `${x.id}|${book}|${market}`;
+          const sig = `${x.c},${x.h},${v.join(',')}`;
+          if (last.get(k) === sig) continue;
+          last.set(k, sig);
+          (out.get(year) ?? out.set(year, []).get(year)).push(['U', x.id, s.ts, x.c, x.h, x.a, book, market, ...v]);
+        }
+      }
+    }
+  }
+  return out;
+}
+
 export function build(sports) {
   for (const sport of sports) {
     const events = eventsOf(sport);
@@ -268,6 +299,7 @@ export function build(sports) {
       const { out, unmatched } = buildRows(sport, lines, events);
       for (const [season, rows] of out) writeGz(path.join(denseDir(sport), `${season}.jsonl.gz`), rows);
       console.log(`${sport}: ${lines.length} snapshots, ${unmatched} sightings not in the archive`);
+      for (const [year, rows] of unmatchedRows(lines, events)) writeGz(path.join(denseDir(sport), `unmatched-${year}.jsonl.gz`), rows);
     }
     const props = jobsOf(sport, 'props').flatMap((j) => readWork(workFile(j.id)));
     if (props.length) for (const [season, rows] of buildPropRows(props, events)) writeGz(path.join(denseDir(sport), `props-${season}.jsonl.gz`), rows);
@@ -276,13 +308,14 @@ export function build(sports) {
   }
 }
 
-// A sport's deep files read: { lines: Map oid -> [{ ts, book, market, line, a, b }], props: [Q rows], markets: [M rows], snaps: [ts] }
+// A sport's deep files read: { lines: Map oid -> [{ ts, book, market, line, a, b }], props: [Q rows], markets: [M rows], snaps: [ts], unmatched: [U rows] }
 export function readDeep(sport, dir = denseDir(sport)) {
   const lines = new Map();
   const props = [];
   const markets = [];
   const snaps = [];
-  if (!existsSync(dir)) return { lines, props, markets, snaps };
+  const unmatched = [];
+  if (!existsSync(dir)) return { lines, props, markets, snaps, unmatched };
   for (const f of readdirSync(dir).filter((x) => x.endsWith('.jsonl.gz')).sort()) {
     for (const s of gunzipSync(readFileSync(path.join(dir, f))).toString('utf8').split('\n')) {
       if (!s) continue;
@@ -291,10 +324,11 @@ export function readDeep(sport, dir = denseDir(sport)) {
       else if (r[0] === 'I') (lines.get(r[1]) ?? lines.set(r[1], []).get(r[1])).push({ ts: Date.parse(r[2]), book: r[3], market: r[4], line: r[5], a: r[6], b: r[7] });
       else if (r[0] === 'Q') props.push(r);
       else if (r[0] === 'M') markets.push(r);
+      else if (r[0] === 'U') unmatched.push(r);
     }
   }
   for (const list of lines.values()) list.sort((x, y) => x.ts - y.ts);
-  return { lines, props, markets, snaps };
+  return { lines, props, markets, snaps, unmatched };
 }
 
 // (one call, its cost read from the headers: the pricing checked before buying)

@@ -37,7 +37,7 @@ test('D67 the committed deep files parse, outside readIntraday\'s folder', () =>
     assert.notEqual(dir, intradayDir(sport));
     if (!existsSync(dir)) continue;
     files += readdirSync(dir).filter((f) => f.endsWith('.jsonl.gz')).length;
-    const { lines, props, markets, snaps } = readDeep(sport);
+    const { lines, props, markets, snaps, unmatched } = readDeep(sport);
     for (const list of lines.values()) for (const r of list) {
       assert.ok(codes.has(r.book), r.book);
       assert.ok(['h2h', 'spreads', 'totals'].includes(r.market));
@@ -45,6 +45,7 @@ test('D67 the committed deep files parse, outside readIntraday\'s folder', () =>
     }
     for (const r of props) assert.ok(r.length === 9 && codes.has(r[3]));
     for (const r of markets) assert.ok(r.length === 9 && codes.has(r[3]) && Number.isFinite(r[8]));
+    for (const r of unmatched) assert.ok(r.length === 11 && codes.has(r[6]) && typeof r[4] === 'string');
     assert.ok(snaps.every((t) => Number.isFinite(Date.parse(t))));
   }
   assert.ok(files > 0, 'no deep files committed');

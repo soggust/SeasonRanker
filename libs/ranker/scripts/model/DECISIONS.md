@@ -899,9 +899,22 @@ Started 2026-10-18, after about 20 bettor changes in one day. The owner: "keep i
 - **Date:** 2026-10-20 (the owner: "get every bit of historical data possible as we have credits in odds api this month and won't in future, so save/store it just in case"; 551,390 left, 61,000 kept back for the live desk and the other agent's backfill).
 - **The pricing (probed):** a historical call costs 10 x the markets it returns, one region whether it names 2 books or 10 (30 credits either way for the lines), so every call names the ten books one region covers (`oddsapi.mjs WIDE_BOOKS`: DraftKings, Pinnacle, FanDuel, BetMGM, Caesars, theScore/ESPN Bet, Fanatics, BetRivers, Hard Rock, Bally): the other US books' prices come free (a book the API didn't carry then is absent; in the NFL: DraftKings, Pinnacle, FanDuel, Caesars, BetRivers from 2020, BetMGM from October 2020, ESPN Bet and Hard Rock from November 2023, Fanatics and Bally later).
 - **The pull (`deep-history.mjs`, local only, `JOBS` in the order bought):** D61's way (one call a sport at each whole hour an offset lands on; one call an event and hour for props and markets), skipping every hour D61 bought; each job's raw compact answers in `DEEP_WORK/<job>.jsonl` as they come (resumable: a key there is never bought twice).
-- **Stored:** `apps/<sport>/scripts/model/odds-history/intraday/dense/`: `<season>.jsonl.gz` (D61's I and S rows, framed on the archive's home by the names, D56), `props-<season>.jsonl.gz` (D61's Q and T rows), `markets-<season>.jsonl.gz` (`["M", oid, snapshot, book, market, name, description, point, price]`, each price on its outcome's own name, D56). Book codes `BOOK_CODES` (dk, pin, fd, mgm, czr, espn, fan, br, hr, bly). `readDeep(sport)` reads them.
+- **Stored:** `apps/<sport>/scripts/model/odds-history/intraday/dense/`: `<season>.jsonl.gz` (D61's I and S rows, framed on the archive's home by the names, D56), `props-<season>.jsonl.gz` (D61's Q and T rows), `markets-<season>.jsonl.gz` (`["M", oid, snapshot, book, market, name, description, point, price]`, each price on its outcome's own name, D56), `unmatched-<year>.jsonl.gz` (the sightings no archived event matches, mostly MMA bouts called off or renamed, on the API's own names: `["U", id, snapshot, start, home, away, book, market, line, a, b]`). Book codes `BOOK_CODES` (dk, pin, fd, mgm, czr, espn, fan, br, hr, bly). `readDeep(sport)` reads them.
 - **Gate (D22):** nothing priced reads them: `readIntraday` reads `intraday/` only, never the `dense/` folder, so D63's windows, the replay and the desk are untouched (a tie by construction). Tests: `tests/model-deep-history.test.mjs`.
-- **Bought (so far; the full table on the last chunk):** NFL lines 2020-2023 at 48, 24, 12, 6, 3, 2 and 1 hours out (2,847 snapshots, 85,410 credits) and 2024-2026 at 48 and 2 (418, 12,540): 1.0 MB.
+- **Bought (2026-10-20; 490,680 credits, 60,702 left on the API; every call ten books):**
+
+| Job | Sport, market | Hours before the start | Seasons | Calls | Credits | Committed |
+|---|---|---|---|---|---|---|
+| nfl-lines-a | NFL h2h, spreads, totals | 48, 24, 12, 6, 3, 2, 1 | 2020-2023 | 2,847 | 85,410 | 0.7 MB |
+| nfl-lines-b | NFL h2h, spreads, totals | 48, 2 (D61 has 24/12/6/3/1) | 2024-2026 | 418 | 12,540 | 0.3 MB |
+| nba-lines-a | NBA h2h, spreads, totals | 6 | 2020-2024 | 2,762 | 82,860 | 1.2 MB |
+| nhl-lines-a | NHL h2h, spreads, totals | 6 | 2020-2024 | 2,788 | 83,640 | 1.0 MB |
+| nfl-props-a | NFL props (props.mjs API_MARKETS, 10) | 3 | 2023 (333 games) | 333 | 27,390 | 0.8 MB |
+| nfl-markets-a | NFL team totals, alternate spreads and totals, first-half h2h/spreads/totals | 1 | 2023-2026 (1,019 games) | 1,019 | 56,880 | 7.0 MB |
+| mma-lines-a | MMA h2h, totals | 336, 168, 72, 24, 12, 6, 3, 1 | 2020-2024 | 6,359 | 126,760 | 0.9 MB |
+| nba-props-a | NBA props (5) | 3 | 2024 (313 of 1,351 games, stopped at the floor) | 313 | 15,200 | 1.1 MB |
+
+  About 13 MB committed in all; the raw compact answers (155 MB) stay in `.cache/model/deep`. Left out for cost: an every-sport 12-hour grid on every season (about 2.6M credits), MLB's older seasons (D61: its gaps never had value), more props hours (about 50,000 credits a season and hour a sport).
 
 ### D68. The fast lane: the watcher polls every minute, and news on one game dispatches that game's props alone, minutes from the news to the bet
 - **Date:** 2026-10-20 (the coordinator's "FAST LANE": the watcher every minute, free sources only; a fast desk run on GitHub for news on one game, props only, no refits, about 3 to 5 minutes from the news to the bet; inside D55's credit pacing).
