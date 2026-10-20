@@ -1494,6 +1494,78 @@
     "seen": "2026-10-20T15:27:30.304Z",
     "own": "2026-10-20T15:11:00.000Z"
    }
+  },
+  "401909088|dailynswain|out": {
+   "game": "401909088",
+   "start": "2026-10-20T19:00Z",
+   "team": "8",
+   "name": "Dailyn Swain",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-10-20T16:23:22.520Z",
+    "own": "2026-10-20T16:17:13.000Z",
+    "why": "@rotowirenba.bsky.social: Dailyn Swain: Out with illness \n\n https://www.rotowire"
+   }
+  },
+  "401909089|dailynswain|out": {
+   "game": "401909089",
+   "start": "2026-10-20T23:00Z",
+   "team": "18",
+   "name": "Dailyn Swain",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-10-20T16:23:22.520Z",
+    "own": "2026-10-20T16:17:13.000Z",
+    "why": "@rotowirenba.bsky.social: Dailyn Swain: Out with illness \n\n https://www.rotowire"
+   }
+  },
+  "401909090|dailynswain|out": {
+   "game": "401909090",
+   "start": "2026-10-21T01:30Z",
+   "team": "24",
+   "name": "Dailyn Swain",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-10-20T16:23:22.520Z",
+    "own": "2026-10-20T16:17:13.000Z",
+    "why": "@rotowirenba.bsky.social: Dailyn Swain: Out with illness \n\n https://www.rotowire"
+   }
+  },
+  "401909835|ajdybantsa|out": {
+   "game": "401909835",
+   "start": "2026-10-21T23:00Z",
+   "team": "27",
+   "name": "AJ Dybantsa",
+   "status": "out",
+   "athlete": "5142718",
+   "espn": {
+    "seen": "2026-10-20T16:49:01.532Z",
+    "own": "2026-10-20T16:21:00.000Z"
+   }
+  },
+  "401909837|jordanhawkins|out": {
+   "game": "401909837",
+   "start": "2026-10-21T23:30Z",
+   "team": "4",
+   "name": "Jordan Hawkins",
+   "status": "out",
+   "athlete": "4683750",
+   "espn": {
+    "seen": "2026-10-20T16:49:01.532Z",
+    "own": "2026-10-20T16:19:00.000Z"
+   }
+  },
+  "401909837|dailynswain|out": {
+   "game": "401909837",
+   "start": "2026-10-21T23:30Z",
+   "team": "4",
+   "name": "Dailyn Swain",
+   "status": "out",
+   "athlete": "4848625",
+   "espn": {
+    "seen": "2026-10-20T16:49:01.532Z",
+    "own": "2026-10-20T16:17:00.000Z"
+   }
   }
  }
 }
