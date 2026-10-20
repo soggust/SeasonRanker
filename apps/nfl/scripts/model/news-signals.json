@@ -253,7 +253,9 @@
   "50228692": "2026-10-20",
   "50228752": "2026-10-20",
   "50229491": "2026-10-20",
-  "50230371": "2026-10-20"
+  "50230371": "2026-10-20",
+  "50230791": "2026-10-20",
+  "50230816": "2026-10-20"
  },
  "signals": [
   {
@@ -1034,6 +1036,21 @@
    "confidence": 0.7,
    "story": "50229491",
    "headline": "Sources: Dolphins release Riley Patterson amid problems defending kickoffs",
+   "model": "claude-haiku-5-5"
+  },
+  {
+   "id": "50230816|21|4040715|return",
+   "day": "2026-10-20",
+   "at": "2026-10-20T19:55:12.000Z",
+   "team": "21",
+   "abbr": "PHI",
+   "athlete": "4040715",
+   "player": "Jalen Hurts",
+   "kind": "return",
+   "direction": "none",
+   "confidence": 0.3,
+   "story": "50230816",
+   "headline": "Reports: NFL won't punish Eagles for letting Jalen Hurts play with blood clot",
    "model": "claude-haiku-5-5"
   }
  ]
