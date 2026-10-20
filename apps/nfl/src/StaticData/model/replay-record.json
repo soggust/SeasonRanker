@@ -2,7 +2,7 @@
  "v": 1,
  "sport": "nfl",
  "epoch": "2026-10-20T05:45:00Z",
- "at": "2026-10-20T18:31:36.919Z",
+ "at": "2026-10-20T20:55:10.939Z",
  "from": "2020-09-11T00:20:00.000Z",
  "through": "2026-10-19T00:23:00.000Z",
  "n": {
@@ -1791,47 +1791,47 @@
    }
   },
   "windows": {
-   "keys": 1989,
+   "keys": 5286,
    "final": {
     "ml:fav": {
      "policy": "legacy",
-     "n": 47,
+     "n": 165,
      "gain": 0,
      "se": null
     },
     "ml:dog": {
      "policy": "legacy",
-     "n": 181,
-     "gain": 0,
-     "se": null
-    },
-    "spread:dog": {
-     "policy": "legacy",
-     "n": 2,
+     "n": 550,
      "gain": 0,
      "se": null
     },
     "spread:fav": {
      "policy": "legacy",
-     "n": 90,
+     "n": 216,
+     "gain": 0,
+     "se": null
+    },
+    "spread:dog": {
+     "policy": "legacy",
+     "n": 7,
      "gain": 0,
      "se": null
     },
     "total:under": {
      "policy": "legacy",
-     "n": 52,
+     "n": 112,
      "gain": 0,
      "se": null
     },
     "total:over": {
      "policy": "legacy",
-     "n": 169,
+     "n": 379,
      "gain": 0,
      "se": null
     }
    },
    "placed": {
-    "legacy:c": 326
+    "legacy:c": 740
    }
   },
   "propBar": {
@@ -1885,8 +1885,8 @@
   "split": "games that start before the epoch replayed; the live ledger from the epoch on",
   "notSeen": "the live desk's CLV gates, CHECKs, research and news"
  },
- "commit": "f7943b13",
- "note": "D70. The closing-line bands (Gemini's design): a reason earns LOVE or LOCK by its shrunk return at the fair close, its beat share and results that don't lose; the band lab stages every rule before one ships",
+ "commit": "2d40b7ff",
+ "note": "D71. The NFL's lines bet earlier: D63's windows read the deep history's dense NFL lines (2020 on), and the walk keeps the close (no hour earned)",
  "inputs": {
   "v": 1,
   "sport": "nfl",
@@ -1894,8 +1894,8 @@
    "props": "87335d02c0eb",
    "games": "9c08190c0c31",
    "pricing": "3ecedb70ec72",
-   "record": "c27335718370",
-   "harness": "1134888049f8",
+   "record": "ea4785ab8041",
+   "harness": "a1ecdddd4d8e",
    "residual": "d3cd8edb82cf945d"
   },
   "fit": {
@@ -2046,6 +2046,6 @@
     "want": 55
    }
   },
-  "hash": "1911419eeee65025"
+  "hash": "b795730cd8b4d8f0"
  }
 }
