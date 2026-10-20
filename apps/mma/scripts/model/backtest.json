@@ -1,5 +1,5 @@
 {
- "at": "2026-10-19T00:24:28.758Z",
+ "at": "2026-10-20T01:15:11.481Z",
  "halves": [
   {
    "from": "2023-11-01",
@@ -18,7 +18,7 @@
    "coin": {
     "n": 320,
     "logLoss": 0.6931,
-    "acc": 0.7844
+    "acc": 0.5
    },
    "kept": 9
   },
@@ -39,7 +39,7 @@
    "coin": {
     "n": 363,
     "logLoss": 0.6931,
-    "acc": 0.7769
+    "acc": 0.5
    },
    "kept": 10
   },
@@ -60,7 +60,7 @@
    "coin": {
     "n": 268,
     "logLoss": 0.6931,
-    "acc": 0.7929
+    "acc": 0.5
    },
    "kept": 10
   },
@@ -81,7 +81,7 @@
    "coin": {
     "n": 333,
     "logLoss": 0.6931,
-    "acc": 0.7613
+    "acc": 0.5
    },
    "kept": 11
   },
@@ -102,7 +102,7 @@
    "coin": {
     "n": 265,
     "logLoss": 0.6931,
-    "acc": 0.7925
+    "acc": 0.5
    },
    "kept": 11
   },
@@ -123,7 +123,7 @@
    "coin": {
     "n": 331,
     "logLoss": 0.6931,
-    "acc": 0.7704
+    "acc": 0.5
    },
    "kept": 10
   }
@@ -142,7 +142,7 @@
   "coin": {
    "n": 1880,
    "logLoss": 0.6931,
-   "acc": 0.7787
+   "acc": 0.5
   }
  },
  "calibration": [
@@ -219,7 +219,7 @@
  ],
  "note": "held out: each half fit on the bouts before it alone; no odds (none kept on this plan), so it says how the model predicts, not what it would have won",
  "totals": {
-  "at": "2026-10-19T00:24:28.758Z",
+  "at": "2026-10-20T01:15:11.481Z",
   "halves": [
    {
     "from": "2023-11-01",

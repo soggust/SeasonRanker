@@ -448,6 +448,138 @@
     "seen": "2026-10-19T23:12:39.624Z",
     "own": "2026-10-19T22:52:00.000Z"
    }
+  },
+  "401873010|anthonyjohnson|out": {
+   "game": "401873010",
+   "start": "2026-10-23T00:15Z",
+   "team": "3",
+   "name": "Anthony Johnson Jr.",
+   "status": "out",
+   "athlete": "4361748",
+   "espn": {
+    "seen": "2026-10-20T01:12:35.975Z",
+    "own": "2026-10-20T01:00:00.000Z"
+   }
+  },
+  "401873010|tjedwards|out": {
+   "game": "401873010",
+   "start": "2026-10-23T00:15Z",
+   "team": "3",
+   "name": "T.J. Edwards",
+   "status": "out",
+   "athlete": "3121544",
+   "espn": {
+    "seen": "2026-10-20T01:12:35.975Z",
+    "own": "2026-10-20T00:21:00.000Z"
+   }
+  },
+  "401873010|jacksanborn|q": {
+   "game": "401873010",
+   "start": "2026-10-23T00:15Z",
+   "team": "3",
+   "name": "Jack Sanborn",
+   "status": "q",
+   "athlete": "4372576",
+   "espn": {
+    "seen": "2026-10-20T01:12:35.975Z",
+    "own": "2026-10-20T00:14:00.000Z"
+   }
+  },
+  "401873010|kylemonangai|out": {
+   "game": "401873010",
+   "start": "2026-10-23T00:15Z",
+   "team": "3",
+   "name": "Kyle Monangai",
+   "status": "out",
+   "athlete": "4608686",
+   "espn": {
+    "seen": "2026-10-20T01:12:35.975Z",
+    "own": "2026-10-20T00:05:00.000Z"
+   }
+  },
+  "401873010|dayoodeyingbo|out": {
+   "game": "401873010",
+   "start": "2026-10-23T00:15Z",
+   "team": "3",
+   "name": "Dayo Odeyingbo",
+   "status": "out",
+   "athlete": "4242659",
+   "espn": {
+    "seen": "2026-10-20T01:12:35.975Z",
+    "own": "2026-10-17T23:30:00.000Z"
+   }
+  },
+  "401873010|montezsweat|out": {
+   "game": "401873010",
+   "start": "2026-10-23T00:15Z",
+   "team": "3",
+   "name": "Montez Sweat",
+   "status": "out",
+   "athlete": "3134690",
+   "espn": {
+    "seen": "2026-10-20T01:12:35.975Z",
+    "own": "2026-10-13T20:16:00.000Z"
+   }
+  },
+  "401873010|carltondavis|out": {
+   "game": "401873010",
+   "start": "2026-10-23T00:15Z",
+   "team": "17",
+   "name": "Carlton Davis III",
+   "status": "out",
+   "athlete": "3916923",
+   "espn": {
+    "seen": "2026-10-20T01:12:35.975Z",
+    "own": "2026-10-20T00:32:00.000Z"
+   }
+  },
+  "401873010|ajbrown|q": {
+   "game": "401873010",
+   "start": "2026-10-23T00:15Z",
+   "team": "17",
+   "name": "A.J. Brown",
+   "status": "q",
+   "athlete": "4047646",
+   "espn": {
+    "seen": "2026-10-20T01:12:35.975Z",
+    "own": "2026-10-20T00:12:00.000Z"
+   }
+  },
+  "401873010|romeodoubs|out": {
+   "game": "401873010",
+   "start": "2026-10-23T00:15Z",
+   "team": "17",
+   "name": "Romeo Doubs",
+   "status": "out",
+   "athlete": "4361432",
+   "espn": {
+    "seen": "2026-10-20T01:12:35.975Z",
+    "own": "2026-10-19T23:53:00.000Z"
+   }
+  },
+  "401873010|karonprunty|out": {
+   "game": "401873010",
+   "start": "2026-10-23T00:15Z",
+   "team": "17",
+   "name": "Karon Prunty",
+   "status": "out",
+   "athlete": "4606666",
+   "espn": {
+    "seen": "2026-10-20T01:12:35.975Z",
+    "own": "2026-10-19T17:09:00.000Z"
+   }
+  },
+  "401873010|channingcanada|out": {
+   "game": "401873010",
+   "start": "2026-10-23T00:15Z",
+   "team": "17",
+   "name": "Channing Canada",
+   "status": "out",
+   "athlete": "4688779",
+   "espn": {
+    "seen": "2026-10-20T01:12:35.975Z",
+    "own": "2026-10-19T17:09:00.000Z"
+   }
   }
  }
 }

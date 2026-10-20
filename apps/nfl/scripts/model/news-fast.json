@@ -1,13 +1,13 @@
 {
  "sport": "nfl",
  "cursor": {
-  "adamscheftermirror.bsky.social": "2026-10-19T23:07:10.156Z",
+  "adamscheftermirror.bsky.social": "2026-10-20T01:12:12.126Z",
   "rapsheet.bsky.social": "2026-10-19T23:18:11.078Z",
   "nflnewsreposterbot.bsky.social": "2026-10-19T20:52:46.431Z",
-  "insidenflnews.bsky.social": "2026-10-19T23:40:03.922Z",
-  "nflnewsposter.bsky.social": "2026-10-19T22:51:33.670Z",
-  "rotoworld-fb.bsky.social": "2026-10-19T23:49:26.000Z",
-  "rotowirenfl.bsky.social": "2026-10-19T23:53:01.000Z"
+  "insidenflnews.bsky.social": "2026-10-20T00:51:49.764Z",
+  "nflnewsposter.bsky.social": "2026-10-20T01:13:00.874Z",
+  "rotoworld-fb.bsky.social": "2026-10-20T00:55:21.000Z",
+  "rotowirenfl.bsky.social": "2026-10-20T00:58:07.000Z"
  },
  "claims": [
   {
@@ -1322,6 +1322,123 @@
    "kind": "status",
    "confidence": 0.9,
    "text": "Stefon Diggs (hamstring) active for Week 6."
+  },
+  {
+   "id": "at://did:plc:fuqjc7x4gxvnwzksnlxwbe4x/app.bsky.feed.post/3mybd7mmfk2yz|kylemonangai|out|status",
+   "at": "2026-10-19T23:58:42.367Z",
+   "seen": "2026-10-20T01:15:20.146Z",
+   "handle": "nflnewsposter.bsky.social",
+   "post": "at://did:plc:fuqjc7x4gxvnwzksnlxwbe4x/app.bsky.feed.post/3mybd7mmfk2yz",
+   "player": "Kyle Monangai",
+   "team": "CHI",
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.3,
+   "text": "[Bears] The Chicago Bears conducted a walk-thru on Monday, participation is an estimation.\n\nRB Kyle Monangai (thumb/toe) is listed as DNP. twitter.com/BearsPR/stat..."
+  },
+  {
+   "id": "at://did:plc:fuqjc7x4gxvnwzksnlxwbe4x/app.bsky.feed.post/3mybdjjbvysyz|drakemaye|active|status",
+   "at": "2026-10-20T00:04:14.423Z",
+   "seen": "2026-10-20T01:15:20.146Z",
+   "handle": "nflnewsposter.bsky.social",
+   "post": "at://did:plc:fuqjc7x4gxvnwzksnlxwbe4x/app.bsky.feed.post/3mybdjjbvysyz",
+   "player": "Drake Maye",
+   "team": "NE",
+   "status": "active",
+   "kind": "status",
+   "confidence": 0.6,
+   "text": "[Patriots] Monday injury report\n\nQB Drake Maye (right shoulder) practice in full.\n\nWR AJ Brown (ankle) was limited.\n\nRB TreVeyon Henderson (ankle) practiced in full.\nK Andy Borregales (personal) did n"
+  },
+  {
+   "id": "at://did:plc:fuqjc7x4gxvnwzksnlxwbe4x/app.bsky.feed.post/3mybdjjbvysyz|ajbrown|limited|status",
+   "at": "2026-10-20T00:04:14.423Z",
+   "seen": "2026-10-20T01:15:20.146Z",
+   "handle": "nflnewsposter.bsky.social",
+   "post": "at://did:plc:fuqjc7x4gxvnwzksnlxwbe4x/app.bsky.feed.post/3mybdjjbvysyz",
+   "player": "AJ Brown",
+   "team": "NE",
+   "status": "limited",
+   "kind": "status",
+   "confidence": 0.8,
+   "text": "[Patriots] Monday injury report\n\nQB Drake Maye (right shoulder) practice in full.\n\nWR AJ Brown (ankle) was limited.\n\nRB TreVeyon Henderson (ankle) practiced in full.\nK Andy Borregales (personal) did n"
+  },
+  {
+   "id": "at://did:plc:fuqjc7x4gxvnwzksnlxwbe4x/app.bsky.feed.post/3mybdjjbvysyz|treveyonhenderson|active|status",
+   "at": "2026-10-20T00:04:14.423Z",
+   "seen": "2026-10-20T01:15:20.146Z",
+   "handle": "nflnewsposter.bsky.social",
+   "post": "at://did:plc:fuqjc7x4gxvnwzksnlxwbe4x/app.bsky.feed.post/3mybdjjbvysyz",
+   "player": "TreVeyon Henderson",
+   "team": "NE",
+   "status": "active",
+   "kind": "status",
+   "confidence": 0.6,
+   "text": "[Patriots] Monday injury report\n\nQB Drake Maye (right shoulder) practice in full.\n\nWR AJ Brown (ankle) was limited.\n\nRB TreVeyon Henderson (ankle) practiced in full.\nK Andy Borregales (personal) did n"
+  },
+  {
+   "id": "at://did:plc:fuqjc7x4gxvnwzksnlxwbe4x/app.bsky.feed.post/3mybdjjbvysyz|andyborregales|none|status",
+   "at": "2026-10-20T00:04:14.423Z",
+   "seen": "2026-10-20T01:15:20.146Z",
+   "handle": "nflnewsposter.bsky.social",
+   "post": "at://did:plc:fuqjc7x4gxvnwzksnlxwbe4x/app.bsky.feed.post/3mybdjjbvysyz",
+   "player": "Andy Borregales",
+   "team": "NE",
+   "status": "none",
+   "kind": "status",
+   "confidence": 0.3,
+   "text": "[Patriots] Monday injury report\n\nQB Drake Maye (right shoulder) practice in full.\n\nWR AJ Brown (ankle) was limited.\n\nRB TreVeyon Henderson (ankle) practiced in full.\nK Andy Borregales (personal) did n"
+  },
+  {
+   "id": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3mybdliqpkw2r|kylemonangai|limited|status",
+   "at": "2026-10-20T00:05:20.000Z",
+   "seen": "2026-10-20T01:15:20.146Z",
+   "handle": "rotowirenfl.bsky.social",
+   "post": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3mybdliqpkw2r",
+   "player": "Kyle Monangai",
+   "team": "CHI",
+   "status": "limited",
+   "kind": "status",
+   "confidence": 0.3,
+   "text": "Kyle Monangai: Listed as DNP on practice estimate \n\n https://www.rotowire.com/football/player/kyle-monangai-18520"
+  },
+  {
+   "id": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3mybdxngo332a|ajbrown|limited|status",
+   "at": "2026-10-20T00:12:08.000Z",
+   "seen": "2026-10-20T01:15:20.146Z",
+   "handle": "rotowirenfl.bsky.social",
+   "post": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3mybdxngo332a",
+   "player": "AJ Brown",
+   "team": "NE",
+   "status": "limited",
+   "kind": "status",
+   "confidence": 0.9,
+   "text": "A.J. Brown: Limited on Monday's practice estimate \n\n https://www.rotowire.com/football/player/aj-brown-13432"
+  },
+  {
+   "id": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3mybgjusqmg2p|terrymclaurin|out|status",
+   "at": "2026-10-20T00:58:07.000Z",
+   "seen": "2026-10-20T01:15:20.146Z",
+   "handle": "rotowirenfl.bsky.social",
+   "post": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3mybgjusqmg2p",
+   "player": "Terry McLaurin",
+   "team": "WAS",
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.6,
+   "text": "Terry McLaurin: Carted off with knee injury \n\n https://www.rotowire.com/football/player/terry-mclaurin-13536"
+  },
+  {
+   "id": "at://did:plc:qre6zxbmr3ixhdmgsgdretb5/app.bsky.feed.post/3mybhd26zyc2v|terrymclaurin|out|status",
+   "at": "2026-10-20T01:12:12.126Z",
+   "seen": "2026-10-20T01:15:20.146Z",
+   "handle": "adamscheftermirror.bsky.social",
+   "post": "at://did:plc:qre6zxbmr3ixhdmgsgdretb5/app.bsky.feed.post/3mybhd26zyc2v",
+   "player": "Terry McLaurin",
+   "team": "WAS",
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.97,
+   "text": "Commanders officially ruled out WR Terry McLaurin due to a knee injury.\n\nOriginal post"
   }
  ]
 }
