@@ -71,7 +71,7 @@ import { TOTAL_BOOKS, TOTAL_LIVE, backtestTotals, fitTotals, liveCount, predictT
 import { weightOf } from '../../../../apps/mma/scripts/rating.mjs';
 import { venueOf } from '../../../../apps/mma/scripts/fights.mjs';
 import { placeOf } from './fights-venue.mjs';
-import { BANDS as LEAD_BAND_KEYS, leadBand, priceKey, unpackRows } from './gate-mma.mjs';
+import { BANDS as LEAD_BAND_KEYS, calFair, leadBand, priceKey, unpackRows } from './gate-mma.mjs';
 import { BANKROLL, BUCKETS, MAX_REPRICES, PRACTICE_N, PRACTICE_SPLIT, PRACTICE_STAKED, PRACTICE_UNITS, bucketTrustOf, chanceAt, decimal, fairPair, fitBuckets, fitTrust, gapGuard, isTracked, placement, practiceRecord, practiceTop, record, rulesAt, rulesChanged, rulesOf, stakeFor, suspectOf, trackedRecord } from './desk.mjs';
 import { readLinePool } from './line-pool.mjs';
 import { BANDS, TOP, capOf, edgeLevel, kellyOf, levelOf, recordBlocks, scoreParts } from './picks.mjs';
@@ -168,6 +168,27 @@ export const FILES = {
 };
 
 const readKept = (file, fallback) => (existsSync(file) ? JSON.parse(readFileSync(file, 'utf8')) : fallback);
+
+// The fair the Bot prices a moneyline from (DECISIONS.md D59): the Book's no-vig calibrated for the favorite-longshot
+// bias by the gate's record (trust-prior.json ml.fairCal, fit on the priced history's closes; gate-mma.mjs calFair),
+// from the fair and the line's own two prices' no-vig. The raw fair stays on the bet (its CLV and beat-the-close
+// read it). setFairCal: a test's or a caller's (null: the raw fair)
+let FAIR_CAL;
+export const setFairCal = (cal) => {
+  FAIR_CAL = cal;
+};
+export const fairCalOf = () => {
+  if (FAIR_CAL === undefined) {
+    try {
+      FAIR_CAL = readKept(FILES.trustPrior, null)?.ml?.fairCal ?? null;
+    } catch {
+      FAIR_CAL = null;
+    }
+  }
+  return FAIR_CAL;
+};
+// (the first side's priced fair from a lines entry)
+export const pricedFair = (lines, cal = fairCalOf()) => calFair(lines.fair, lines.odds?.home && lines.odds?.away ? fairPair(lines.odds.home, lines.odds.away) : null, cal);
 const ymd = (t) => new Date(t).toISOString().slice(0, 10).replace(/-/g, '');
 
 // ---------------------------------------------------------------------------------------------------------
@@ -386,11 +407,12 @@ export const knowsNothing = (pred) => !!pred?.parts && Object.values(pred.parts)
 // isn't. model: the home side's chance; lines: { odds: { home, away }, fair (home) }
 // key: the pricing key (gate-mma.mjs priceKey: 'ml', or 'mlOpen' at the early band, untapered and never gapped)
 export function pickFor(model, lines, trust, { edge, untested, guard = null, apiPrice = true, key = 'ml' }) {
+  const pf = pricedFair(lines);
   const sides = ['home', 'away'].map((side) => {
     const fair = side === 'home' ? lines.fair : 1 - lines.fair;
     const m = side === 'home' ? model : 1 - model;
     const odds = lines.odds[side];
-    const p = chanceAt(key, fair, m, trust);
+    const p = chanceAt(key, side === 'home' ? pf : 1 - pf, m, trust);
     const ev = p * decimal(odds) - 1;
     return { side, odds, fair, model: m, p, ev, units: stakeFor(ev, EV_SCALE, odds) };
   });
@@ -488,11 +510,12 @@ export function reasonOf(bet) {
 export function boardSidesOf(lines, chance, trust, src = null, { edge = null, key = 'ml' } = {}) {
   const gap = gapGuard(key, chance, lines.fair);
   const off = src === 'espn bet' ? skipReason({ why: "ESPN BET's line, not the Book's own price: the Bot bets only at the Book's (it's tracked till then)" }) : null;
+  const pf = pricedFair(lines);
   return ['home', 'away'].map((side) => {
     const fair = side === 'home' ? lines.fair : 1 - lines.fair;
     const m = side === 'home' ? chance : 1 - chance;
     const odds = lines.odds[side];
-    const p = chanceAt(key, fair, m, trust);
+    const p = chanceAt(key, side === 'home' ? pf : 1 - pf, m, trust);
     const ev = p * decimal(odds) - 1;
     const ks = kellyOf(odds, p);
     const short = Number.isFinite(edge) && m - fair < edge ? { cap: 'medium', cr: `the Bot's lean (${round((m - fair) * 100, 1)} points) under the league's edge (${round(edge * 100, 1)}): a card's practice pick at most, a LIKE at ${PRACTICE_UNITS}u` } : {};
@@ -610,7 +633,11 @@ export function readHistoryRows(file = FILES.historyRows, { priorRows = PRIOR_RO
 export function fitMmaTrust(ledger, hist, { pool = [], epoch = MMA_START, start = START_TRUST } = {}) {
   const since = (b) => Date.parse(b.placedAt ?? b.start) >= Date.parse(epoch);
   const live = (market) => ledger.bets.filter((b) => (b.market ?? 'ml') === market && !b.void && (b.status !== 'open' || b.clv) && since(b));
-  const mlLive = live('ml').filter((b) => b.fairFrom === 'pinnacle');
+  // (each at the calibrated fair it was priced from (D59), its close's the same way)
+  const cal = fairCalOf();
+  const mlLive = live('ml')
+    .filter((b) => b.fairFrom === 'pinnacle')
+    .map((b) => ({ ...b, fair: calFair(b.fair, Number.isFinite(b.odds) && Number.isFinite(b.otherOdds) ? fairPair(b.odds, b.otherOdds) : null, cal), ...(Number.isFinite(b.clv?.q) ? { clv: { ...b.clv, q: calFair(b.clv.q, null, cal) } } : {}) }));
   const tLive = live('total');
   const hb = (market) => (hist?.bets ?? []).filter((b) => b.market === market);
   const withHistory = (f, rows) => ({ ...f, history: { rows: rows.length, weight: round(rows.reduce((t, b) => t + (b.tw ?? 1), 0), 1), at: hist?.at ?? null, commit: hist?.commit ?? null } });

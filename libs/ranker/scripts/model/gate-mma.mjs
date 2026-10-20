@@ -72,6 +72,66 @@ export const LAYER_A_FROM = '2018-01-01';
 const MIN_TRAIN = 500;
 const ROUND_SECS = 300;
 const fin = Number.isFinite;
+
+// The Book's fair chance calibrated (DECISIONS.md D59, 2026-10-20): MMA's no-vig moneyline carries the
+// favorite-longshot bias (on the cleaned closes Pinnacle's no-vig 0.1-0.2 lands 0.097, 0.2-0.3 lands 0.213, 0.7-0.8
+// lands 0.787), so the Bot, at a trust near 0, bet the dogs wherever DraftKings' price sat past Pinnacle's no-vig and
+// lost. The fair the Bot prices from is logit(fc) = b0 logit(fair) + b1 logit(DraftKings' own no-vig), a soft fit
+// (ridge toward the raw fair, b = [1, 0], FAIR_CAL_LAM rows' worth), walk-forward on the closes over before the
+// month (the gate) or all of them (the record, trust-prior.json ml.fairCal, the desk). The raw no-vig stays the
+// Book's benchmark (the beat-the-fair-close, the Book's log loss). FAIR_CAL_ON the default (off till the owner's
+// call: the gate HELD it on the live ledger's close leg, D59); MMA_FAIR_CAL=1 or 0 overrides it (the gate's candidate)
+export const FAIR_CAL_ON = false;
+export const FAIR_CAL_LAM = 100;
+export const NO_CAL = Object.freeze({ b: [1, 0], n: 0 });
+const lgt = (p) => Math.log(p / (1 - p));
+const sgm = (z) => 1 / (1 + Math.exp(-z));
+const clampP = (p) => Math.min(0.999, Math.max(0.001, p));
+export const fairCalOn = () => (process.env.MMA_FAIR_CAL ? process.env.MMA_FAIR_CAL !== '0' : FAIR_CAL_ON);
+// rows: { f (the fair), fd (DraftKings' own no-vig; the fair where missing), y 0 | 1 } -> { b: [b0, b1], n }
+export function fitFairCal(rows, { lam = FAIR_CAL_LAM } = {}) {
+  const mine = rows.filter((x) => fin(x.f) && (x.y === 0 || x.y === 1));
+  let b = [1, 0];
+  for (let it = 0; it < 40; it++) {
+    const g = [-lam * (b[0] - 1), -lam * b[1]];
+    const H = [[lam, 0], [0, lam]];
+    for (const x of mine) {
+      const z = [lgt(clampP(x.f)), lgt(clampP(fin(x.fd) ? x.fd : x.f))];
+      const p = sgm(b[0] * z[0] + b[1] * z[1]);
+      const w = p * (1 - p);
+      for (let i = 0; i < 2; i++) {
+        g[i] += (x.y - p) * z[i];
+        for (let j = 0; j < 2; j++) H[i][j] += w * z[i] * z[j];
+      }
+    }
+    const det = H[0][0] * H[1][1] - H[0][1] * H[1][0];
+    const step = [(H[1][1] * g[0] - H[0][1] * g[1]) / det, (-H[1][0] * g[0] + H[0][0] * g[1]) / det];
+    b = [b[0] + step[0], b[1] + step[1]];
+    if (Math.abs(step[0]) + Math.abs(step[1]) < 1e-9) break;
+  }
+  return { b: [r4(b[0]), r4(b[1])], n: mine.length };
+}
+// The first side's calibrated fair from its fair and DraftKings' own no-vig (the fair where missing); no cal: the fair
+export function calFair(f, fd, cal) {
+  if (!fin(f) || !cal?.b || !fairCalOn()) return f;
+  return sgm(cal.b[0] * lgt(clampP(f)) + cal.b[1] * lgt(clampP(fin(fd) ? fd : f)));
+}
+// Each moneyline row's fc, walk-forward: the cal fit on the closes over (their start plus FIT_KNOWN_H) before the
+// month of the row's own snapshot. Returns the fit on every close (the record's, the desk's)
+export function calibrateRows(rows) {
+  const closes = rows.filter((x) => x.market === 'ml' && x.kind === 'c' && (x.y === 0 || x.y === 1)).sort((a, b) => a.t - b.t);
+  const memo = new Map();
+  const calAt = (t) => {
+    const m = new Date(t).toISOString().slice(0, 7);
+    if (!memo.has(m)) {
+      const cut = Date.parse(`${m}-01T00:00:00Z`);
+      memo.set(m, fitFairCal(closes.filter((x) => x.t + FIT_KNOWN_H * 36e5 < cut)));
+    }
+    return memo.get(m);
+  };
+  for (const x of rows) if (x.market === 'ml') x.fc = calFair(x.f, x.fd, calAt(fin(x.at) ? x.at : x.t));
+  return fitFairCal(closes);
+}
 const ET = new Intl.DateTimeFormat('en-CA', { timeZone: 'America/New_York', year: 'numeric', month: '2-digit', day: '2-digit' });
 const etDay = (t) => ET.format(new Date(t));
 const readJson = (file, fallback) => {
@@ -199,7 +259,7 @@ export function historyRows(V, rows, hist, chances, current, { fights = null } =
       // (Pinnacle's only where seen by DraftKings' own snapshot (D48: each book's open is its own first sighting))
       const pin = seenBy(books.pin?.h2h?.[0], h2h.ts) ? books.pin.h2h[0] : null;
       const fair = pin && fin(pin.a) && fin(pin.b) ? devig(m.crossed ? pin.b : pin.a, m.crossed ? pin.a : pin.b) : devig(mine, theirs);
-      if (fin(c.p)) out.push({ ...base, ...timeOf(h2h), id: `h:${m.fight.id}:ml:${kind}`, key: `h:${m.fight.id}:ml`, market: 'ml', stat: 'ml', line: null, f: fair, raw: Math.min(0.999, Math.max(0.001, c.p)), y: r.y, overOdds: mine, underOdds: theirs, fairFrom: pin ? 'pinnacle' : 'dk' });
+      if (fin(c.p)) out.push({ ...base, ...timeOf(h2h), id: `h:${m.fight.id}:ml:${kind}`, key: `h:${m.fight.id}:ml`, market: 'ml', stat: 'ml', line: null, f: fair, fd: devig(mine, theirs), raw: Math.min(0.999, Math.max(0.001, c.p)), y: r.y, overOdds: mine, underOdds: theirs, fairFrom: pin ? 'pinnacle' : 'dk' });
     }
     // (the round total: the book's main line, the one nearest even where it posts several)
     const tots = (dk.totals ?? []).filter((x) => fin(x.line) && fin(x.a) && fin(x.b));
@@ -211,8 +271,10 @@ export function historyRows(V, rows, hist, chances, current, { fights = null } =
       if (fin(raw)) out.push({ ...base, ...timeOf(t), id: `h:${m.fight.id}:total:${kind}`, key: `h:${m.fight.id}:total`, market: 'total', stat: 'total', line: t.line, f: fair, raw: Math.min(0.999, Math.max(0.001, raw)), y: pastLineOf(r, t.line), overOdds: t.a, underOdds: t.b, fairFrom: pin ? 'pinnacle' : 'dk' });
     }
   }
+  // (the fair the Bot prices from, calibrated walk-forward (D59); the raw fair stays the Book's benchmark)
+  const fairCal = calibrateRows(out);
   const priced = finishByLead(V, out);
-  return { ...priced, report: matchReport(hist.events, matched, unmatched, fights ?? [], closed), matched };
+  return { ...priced, fairCal, report: matchReport(hist.events, matched, unmatched, fights ?? [], closed), matched };
 }
 
 // The rows priced, each at the trust of its own lead band fit walk-forward by month on the band's rows before (the
@@ -227,17 +289,20 @@ export function finishByLead(V, rows, { start = 0.5 } = {}) {
   for (const x of rows) {
     const other = x.kind === 'o' ? close.get(x.key) : open.get(x.key);
     if (!other || !(other.line === x.line || (other.line === null && x.line === null))) continue;
-    if (x.kind === 'o') x.q = other.f;
-    else x.fo = other.f;
+    if (x.kind === 'o') {
+      x.q = other.f;
+      x.qc = other.fc ?? other.f;
+    } else x.fo = other.f;
   }
-  // (each row fit and priced by its band's key: the early band untapered, priceKey)
-  const keyed = rows.map((x) => ({ ...x, market: priceKey(x.market, x.band) }));
+  // (each row fit and priced by its band's key: the early band untapered, priceKey; at the calibrated fair, D59)
+  const keyed = rows.map((x) => ({ ...x, market: priceKey(x.market, x.band), f: x.fc ?? x.f, q: x.qc ?? x.q }));
   const trust = walkTrust(keyed, (x) => `${x.market}@${x.band}`, V.desk.fitTrust, () => start);
   // (an open at the trust as of its own snapshot: the months before the snapshot's, no result after it (D48))
   for (const [i, x] of rows.entries()) {
     const t = x.kind === 'o' && fin(x.at) ? trust.at(`${priceKey(x.market, x.band)}@${x.band}`, x.at) : (trust.get(keyed[i]) ?? start);
-    const ctx = { sport: x.sport, market: priceKey(x.market, x.band), stat: x.stat, line: x.line, side: 'over', f: x.f, raw: x.raw, overOdds: x.overOdds, underOdds: x.underOdds, t: x.t, at: fin(x.at) ? x.at : x.t - (x.kind === 'o' ? 24 * 36e5 : 36e5), kind: x.kind, fo: x.fo ?? null, home: null, season: x.season };
-    x.p = Math.min(0.999, Math.max(0.001, V.desk.chanceAt(priceKey(x.market, x.band), x.f, x.raw, t, ctx)));
+    const fp = x.fc ?? x.f;
+    const ctx = { sport: x.sport, market: priceKey(x.market, x.band), stat: x.stat, line: x.line, side: 'over', f: fp, raw: x.raw, overOdds: x.overOdds, underOdds: x.underOdds, t: x.t, at: fin(x.at) ? x.at : x.t - (x.kind === 'o' ? 24 * 36e5 : 36e5), kind: x.kind, fo: x.fo ?? null, home: null, season: x.season };
+    x.p = Math.min(0.999, Math.max(0.001, V.desk.chanceAt(priceKey(x.market, x.band), fp, x.raw, t, ctx)));
     x.trust = t;
   }
   return { open: rows.filter((x) => x.kind === 'o'), close: rows.filter((x) => x.kind === 'c') };
@@ -246,7 +311,7 @@ export function finishByLead(V, rows, { start = 0.5 } = {}) {
 // The ledger's graded moneylines and round totals as the gate's rows, each priced by the version's chance at the trust
 // (the history's as of the bet's month, or its newest): { id, event, sport, stat, line, day, t, f, p, y, q, overOdds,
 // underOdds, units, intent, src 'ledger' }. chanceOf(bet): the version's chance of the bet's side, or null (the saved)
-export function ledgerRows(V, ledger, trustOf, { from = '2026-10-08T00:00:00Z', chanceOf = () => null } = {}) {
+export function ledgerRows(V, ledger, trustOf, { from = '2026-10-08T00:00:00Z', chanceOf = () => null, fairOf = (b) => b.fair } = {}) {
   const out = [];
   for (const b of ledger?.bets ?? []) {
     if (!b || b.void || !MARKETS.includes(b.market ?? 'ml') || !fin(b.fair) || !fin(b.model)) continue;
@@ -256,7 +321,7 @@ export function ledgerRows(V, ledger, trustOf, { from = '2026-10-08T00:00:00Z', 
     const market = b.market ?? 'ml';
     const m = chanceOf(b) ?? b.model;
     const t = trustOf(market, Date.parse(b.start), b.line, (Date.parse(b.start) - Date.parse(b.placedAt ?? b.start)) / 36e5);
-    const p = Math.min(0.999, Math.max(0.001, V.desk.chanceAt(priceKey(market, leadBand((Date.parse(b.start) - Date.parse(b.placedAt ?? b.start)) / 36e5)), b.fair, m, t)));
+    const p = Math.min(0.999, Math.max(0.001, V.desk.chanceAt(priceKey(market, leadBand((Date.parse(b.start) - Date.parse(b.placedAt ?? b.start)) / 36e5)), market === 'ml' ? fairOf(b) : b.fair, m, t)));
     out.push({ id: String(b.id), event: String(b.event ?? b.id), sport: SPORT, stat: market, line: b.line ?? null, day: etDay(Date.parse(b.start)), t: Date.parse(b.start), f: b.fair, p, raw: m, y: b.status === 'won' ? 1 : b.status === 'lost' ? 0 : null, q: fin(b.clv?.q) ? b.clv.q : null, overOdds: b.odds, underOdds: fin(b.otherOdds) ? b.otherOdds : null, units: fin(b.units) ? b.units : 0, intent: b.intent ?? null, src: 'ledger', trust: t });
   }
   return out;
@@ -272,7 +337,7 @@ export function trustBets(open, close, current) {
   const rows = [...open, ...close];
   return rows
     .filter((x) => x.y === 0 || x.y === 1 || fin(x.q))
-    .map((x) => ({ id: x.id, event: x.event, market: x.market, line: x.line, model: x.raw, fair: x.f, status: x.y === 1 ? 'won' : x.y === 0 ? 'lost' : 'push', ...(fin(x.q) ? { clv: { q: x.q } } : {}), start: new Date(x.t).toISOString(), season: x.season, kind: x.kind, lead: x.lead ?? null, band: x.band ?? leadBand(x.lead), tw: seasonWeight(SPORT, x.season, current).w }));
+    .map((x) => ({ id: x.id, event: x.event, market: x.market, line: x.line, model: x.raw, fair: x.fc ?? x.f, status: x.y === 1 ? 'won' : x.y === 0 ? 'lost' : 'push', ...(fin(x.qc ?? x.q) ? { clv: { q: x.qc ?? x.q } } : {}), start: new Date(x.t).toISOString(), season: x.season, kind: x.kind, lead: x.lead ?? null, band: x.band ?? leadBand(x.lead), tw: seasonWeight(SPORT, x.season, current).w }));
 }
 
 // The history prior for the live desk (mma-desk.mjs readTrustPrior): each market's trust fit on the history's rows,
@@ -358,6 +423,9 @@ export async function scoreMma(dir, { log = console.log, now = new Date() } = {}
   // (the trust: walk-forward on the rows (finish), and the prior on all of them)
   const tb = trustBets(histRows.open, histRows.close, current);
   const prior = trustPrior(V, tb);
+  // (the fair's calibration on every close (D59): what the desk prices from, trust-prior.json ml.fairCal)
+  if (prior.ml) prior.ml.fairCal = fairCalOn() ? (histRows.fairCal ?? null) : null;
+  if (histRows.fairCal) say(`the fair's calibration (D59): b ${histRows.fairCal.b.join(', ')} on ${histRows.fairCal.n} closes${fairCalOn() ? '' : ' (off: MMA_FAIR_CAL=0)'}`);
   say(`the history's trust by lead band: ${MARKETS.map((m) => `${m} ${BANDS.map((band) => `${band} ${prior[m].bands[band].trust} (${prior[m].bands[band].rows} rows)`).join(', ')}`).join('; ')}`);
   // (the ledger: the desk's own rows at the history's trust as of their month (the newest month's where after it))
   const trustAt = (market, t, line, lead) => {
@@ -383,7 +451,9 @@ export async function scoreMma(dir, { log = console.log, now = new Date() } = {}
     const second = String(r.b) === String(fid);
     return first ? c.p : second ? 1 - c.p : null;
   };
-  const lines = ledgerRows(V, ledger, trustAt, { chanceOf });
+  // (a moneyline bet at the calibrated fair (D59): its fair and DraftKings' own no-vig of its side)
+  const fairOf = (b) => calFair(b.fair, fin(b.odds) && fin(b.otherOdds) ? devig(b.odds, b.otherOdds) : null, histRows.fairCal);
+  const lines = ledgerRows(V, ledger, trustAt, { chanceOf, fairOf });
   say(`ledger: ${lines.length} graded rows priced at the history's trust`);
   const practiceN = V.desk.PRACTICE_N?.[SPORT] ?? 3;
   const vs = {

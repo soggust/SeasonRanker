@@ -47,6 +47,13 @@ const USAGE = path.join(CACHE, 'odds-usage.json');
 // (the $30 plan's credits a month: never exceeded, whatever the API's balance says (DECISIONS.md D55; the 5M plan of
 // 2026-10-19's month reads millions): the desk's own tally of the cycle binds with the API's balance, the lower)
 export const MONTHLY = 20000;
+// (the 5M plan's leftover month, the owner's go of 2026-10-20 (DECISIONS.md D61): until BIG_UNTIL the desk's cycle may
+// spend up to BIG_MONTHLY, the API's real balance still binding (the lower of the two); what it spent before
+// BIG_UNTIL in the same cycle (u.big, recordOn) never counts against MONTHLY after it, so the $30 plan's reset finds
+// its month whole. A usage file without u.big (a lost cache) counts the window's spending: it under-spends, never over)
+export const BIG_UNTIL = '2026-11-09T00:00:00Z';
+export const BIG_MONTHLY = 150000;
+export const monthlyAt = (now = Date.now()) => (now < Date.parse(BIG_UNTIL) ? BIG_MONTHLY : MONTHLY);
 // (held back so the cycle never runs dry: 5%, so about 95% of the month is used, TARGET)
 export const RESERVE = 1000;
 export const TARGET = 0.95;
@@ -169,14 +176,17 @@ export function budgetOf(u0, now = Date.now(), { mirror = null } = {}) {
   const today = { ...zero };
   if (u.day?.date === day) Object.assign(today, u.day.spent);
   else if (!u.day) for (const c of u.calls ?? []) if (c.at.slice(0, 10) === day) today[c.feature] = (today[c.feature] ?? 0) + c.cost;
-  const used = Object.values(spent).reduce((s, v) => s + v, 0);
-  const remaining = Math.max(0, Math.min(Number.isFinite(u.remaining) ? u.remaining : MONTHLY, MONTHLY - used));
+  const cap = monthlyAt(now);
+  // (after the window, the window's own spending in this cycle left out: D61)
+  const big = now >= Date.parse(BIG_UNTIL) && cycle && u.big?.cycle === cycle.start.toISOString() && Number.isFinite(u.big.spent) ? u.big.spent : 0;
+  const used = Math.max(0, Object.values(spent).reduce((s, v) => s + v, 0) - big);
+  const remaining = Math.max(0, Math.min(Number.isFinite(u.remaining) ? u.remaining : cap, cap - used));
   const daysLeft = cycle ? Math.max(1, Math.ceil((cycle.end.getTime() - now) / 864e5)) : 30;
   const free = Math.max(0, remaining - RESERVE);
   // (the straight line: what the cycle may have spent by now)
   const span = cycle ? (cycle.end.getTime() - cycle.start.getTime()) / 864e5 : 30;
   const gone = cycle ? (now - cycle.start.getTime()) / 864e5 : 0;
-  const schedule = Math.floor((MONTHLY - RESERVE) * Math.min(1, (gone + AHEAD_DAYS) / span));
+  const schedule = Math.floor((cap - RESERVE) * Math.min(1, (gone + AHEAD_DAYS) / span));
   const allowance = Object.fromEntries(Object.entries(SHARES).map(([f, s]) => [f, Math.min(Math.floor(free * s), Math.floor(((free * s) / daysLeft) * (BURST[f] ?? 1)))]));
   return {
     cycleStart: cycle?.start.toISOString() ?? null,
@@ -237,7 +247,7 @@ export function projectedMonth(b = budget(), now = Date.now()) {
 // LINES_FRESH.base, a game's props asked again mid-window, TIERS.refresh): only while the month's projection is under
 // TARGET of MONTHLY. The month's hard cap is spendable's either way
 export function refreshOn(b = budget(), now = Date.now()) {
-  return projectedMonth(b, now) < TARGET * MONTHLY;
+  return projectedMonth(b, now) < TARGET * monthlyAt(now);
 }
 
 // A game's DraftKings lines as compared free (espn.mjs linesOf's shape: ml, spread.home/away, total): the spread's
@@ -343,6 +353,11 @@ export function recordOn(u, feature, cost, remaining, used, at = new Date().toIS
     u.calls.push({ at, feature, route: String(route).replace(/\/events\/[^/]+\//, '/events/{id}/'), cost });
     u.cycle.spent[feature] = (u.cycle.spent[feature] ?? 0) + cost;
     u.day.spent[feature] = (u.day.spent[feature] ?? 0) + cost;
+    // (the big window's spending, by its cycle: D61)
+    if (t < Date.parse(BIG_UNTIL)) {
+      if (u.big?.cycle !== u.cycle.start) u.big = { cycle: u.cycle.start, spent: 0 };
+      u.big.spent += cost;
+    }
   }
   return u;
 }

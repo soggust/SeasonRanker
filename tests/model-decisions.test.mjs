@@ -1024,6 +1024,8 @@ test('D55 the $30 plan never exceeded, paced to about 95%; the lines bought on a
   const u = { cycleStart: new Date(start).toISOString(), remaining: 2_670_000, used: 2_330_000, calls: [], features: {} };
   odds.recordOn(u, 'props', 11, 2_670_000, 2_330_000, new Date(start + 864e5).toISOString());
   u.cycle.spent.props = odds.MONTHLY - odds.RESERVE - 5;
+  // (D61's window record cleared: the whole tally binds, as it does on spending after BIG_UNTIL)
+  delete u.big;
   const b = odds.budgetOf(u, start + 29 * 864e5);
   assert.ok(b.remaining <= odds.MONTHLY - (odds.MONTHLY - odds.RESERVE - 5));
   for (const f of ['lines', 'props', 'snapshot']) assert.equal(odds.spendable(f, 11, b, 'first'), false, f);
@@ -1156,4 +1158,123 @@ test('D57 the slate practice picks are tracked, not staked: no pick forced into 
   assert.match(src('run.mjs'), /const forced = PRACTICE_STAKED \? practicePicks\(r, candidates\) : new Map\(\);/);
   assert.match(src('mma-desk.mjs'), /const forced = !PRACTICE_STAKED \? new Map\(\) : mmaPracticePicks\(/);
   assert.match(src('replay-record.mjs'), /if \(V\.desk\.PRACTICE_STAKED !== false\) for \(const \[event, rs\] of passBy\)/);
+});
+
+test('D59 the MMA fair calibrated for the favorite-longshot bias: a soft fit toward the raw fair, walk-forward, off by default till the owner\'s call, the raw fair kept as the benchmark', async () => {
+  const G = await import('../libs/ranker/scripts/model/gate-mma.mjs');
+  const M = await import('../libs/ranker/scripts/model/mma-desk.mjs');
+  // (no evidence: the raw fair; a longshot-biased market: the dog shaded down, the favorite up)
+  assert.deepEqual(G.fitFairCal([]).b, [1, 0]);
+  const rows = [];
+  let seed = 7;
+  const rnd = () => ((seed = (seed * 16807) % 2147483647) / 2147483647);
+  for (let i = 0; i < 4000; i++) {
+    const f = 0.1 + 0.8 * rnd();
+    const z = Math.log(f / (1 - f));
+    const truth = 1 / (1 + Math.exp(-1.25 * z));
+    rows.push({ f, fd: f, y: rnd() < truth ? 1 : 0 });
+  }
+  const cal = G.fitFairCal(rows);
+  assert.ok(cal.b[0] + cal.b[1] > 1.1, `a slope past 1: ${cal.b}`);
+  const prev = process.env.MMA_FAIR_CAL;
+  process.env.MMA_FAIR_CAL = '1';
+  try {
+    assert.ok(G.calFair(0.2, 0.2, cal) < 0.2 && G.calFair(0.8, 0.8, cal) > 0.8);
+    assert.equal(G.calFair(0.5, 0.5, cal), 0.5);
+    // (walk-forward: a month's rows read only the closes over before it)
+    const t0 = Date.parse('2025-01-10T00:00:00Z');
+    const hist = rows.slice(0, 600).map((r, i) => ({ ...r, market: 'ml', kind: 'c', t: t0 + i * 6e4 }));
+    const later = { market: 'ml', kind: 'o', f: 0.2, fd: 0.2, t: Date.parse('2025-03-05T00:00:00Z'), at: Date.parse('2025-03-01T00:00:00Z') };
+    const same = { market: 'ml', kind: 'o', f: 0.2, fd: 0.2, t: Date.parse('2025-01-20T00:00:00Z'), at: Date.parse('2025-01-15T00:00:00Z') };
+    G.calibrateRows([...hist, later, same]);
+    assert.equal(same.fc, 0.2, 'the month the closes are in reads none of them');
+    assert.ok(later.fc < 0.2);
+    // (the desk prices from the calibrated fair and keeps the raw fair on the side)
+    M.setFairCal(cal);
+    const pick = M.pickFor(0.2, { odds: { home: 300, away: -400 }, fair: 0.2 }, 0, { edge: 0.03, key: 'ml' });
+    const home = pick.sides?.find?.((s) => s.side === 'home') ?? null;
+    if (home) assert.equal(home.fair, 0.2);
+  } finally {
+    M.setFairCal(undefined);
+    if (prev === undefined) delete process.env.MMA_FAIR_CAL;
+    else process.env.MMA_FAIR_CAL = prev;
+  }
+  // (off by default: the gate held it, D59)
+  assert.equal(G.FAIR_CAL_ON, false);
+  if (prev === undefined) assert.equal(G.calFair(0.2, 0.2, cal), 0.2);
+});
+
+test('D60 the replay\'s guard: more units at a lower beat-the-fair-close share or return than the champion\'s is rejected; a market under 52.5% beating the fair close stakes the practice stake, never off', async () => {
+  const S = await import('../libs/ranker/scripts/model/gate-score.mjs');
+  const R = await import('../libs/ranker/scripts/model/replay-record.mjs');
+  const D = await import('../libs/ranker/scripts/model/desk.mjs');
+  const a = { profit: -10, beat: 0.5, beatN: 300, clv: -0.01 };
+  assert.equal(S.replayGuard(a, { profit: 5, beat: 0.45, beatN: 300, clv: -0.01 }).pass, false);
+  assert.equal(S.replayGuard(a, { profit: 5, beat: 0.5, beatN: 300, clv: -0.03 }).pass, false);
+  assert.equal(S.replayGuard(a, { profit: 5, beat: 0.52, beatN: 300, clv: 0 }).pass, true);
+  assert.equal(S.replayGuard(a, { profit: -20, beat: 0.3, beatN: 300, clv: -0.05 }).pass, true, 'fewer units: not this guard');
+  assert.equal(S.replayGuard(a, { profit: 5, beat: 0.3, beatN: 10, clv: 0 }), null, 'too few to read');
+  const v = S.sportVerdict({ proj: {}, bet: {}, replay: { a, b: { profit: 5, beat: 0.4, beatN: 300, clv: -0.01 } } });
+  assert.equal(v.pass, false);
+  assert.match(v.why[0], /beat the fair close less often/);
+  // (the bar: walk-forward, from 40 checked bets settled before; the stake shrinks to the practice stake, a LIKE)
+  assert.equal(D.BEAT_BAR, 0.525);
+  const bets = [];
+  for (let i = 0; i < 60; i++) bets.push({ market: 'ml', t: i * 864e5, at: i * 864e5 - 36e5, beat: i % 3 === 0 ? 1 : 0, units: 2, profit: 2, band: 'high', practice: false });
+  R.beatBar(bets, { bar: 0.525, min: 40, window: 200, practiceUnits: 0.5 });
+  assert.equal(bets[39].units, 2, 'under 40 settled: unchanged');
+  assert.equal(bets[45].units, 0.5);
+  assert.equal(bets[45].band, 'medium');
+  assert.equal(bets[45].profit, 0.5);
+  assert.ok(bets.every((b) => b.units > 0), 'never off');
+  // (the live gates: a CLV of 0 or more but a beat share under the bar holds the practice stake)
+  const live = [];
+  for (let i = 0; i < 50; i++) live.push({ sport: 'nba', market: 'spread', status: 'won', placedAt: '2030-01-01T00:00:00Z', start: '2030-01-02T00:00:00Z', clv: { v: (await import('../libs/ranker/scripts/model/clv.mjs')).CLV_V, prob: 0.01, ev: 0, beat: i < 20 } });
+  const g = D.lineGate(live, 'nba', '2029-01-01T00:00:00Z');
+  assert.equal(g.on, false);
+  assert.match(g.why, /beat the close 40% over 50, under 52.5%/);
+});
+
+test('D62 the stacked fatigue reason: the other side\'s back-to-back, travel, time zones east and altitude past its own, in the sport\'s tail, only where the Book\'s price still sits at the sharp fair; family rest (never a second rest reason)', async () => {
+  const R = await import('../libs/ranker/scripts/model/reasons.mjs');
+  const D = await import('../libs/ranker/scripts/model/desk.mjs');
+  const sched = new Map([['g', { rest: [3, 1], b2b: [false, true] }]]);
+  D.withTravel(sched, new Map([['g', { info: { miles: [0, 1800], schedule: { tzMove: [0, 2], climb: [0, 1.6] } } }]]));
+  const s = sched.get('g');
+  assert.deepEqual(s.trav.miles, [0, 1800]);
+  const home = R.contextOf({ sport: 'nba', market: 'ml', side: 'home', fS: 0.55, odds: -118, pin: true, sched: s });
+  assert.equal(home.fatigue, 1 + 1.8 + 1 + 1.6);
+  const ids = R.reasonsFor(home).map((r) => r.id);
+  assert.ok(ids.includes('fatigue'));
+  assert.equal(R.REASONS.find((r) => r.id === 'fatigue').family, 'rest');
+  // (the Book's price moved off the sharp fair for it: not the reason)
+  const moved = R.contextOf({ sport: 'nba', market: 'ml', side: 'home', fS: 0.55, odds: 120, pin: true, sched: s });
+  assert.ok(!R.reasonsFor(moved).map((r) => r.id).includes('fatigue'));
+  // (the tired side's own pick: none; no travel facts: none)
+  assert.ok(!R.reasonsFor(R.contextOf({ sport: 'nba', market: 'ml', side: 'away', fS: 0.45, odds: 122, pin: true, sched: s })).map((r) => r.id).includes('fatigue'));
+  assert.equal(R.contextOf({ sport: 'nba', market: 'ml', side: 'home', sched: { rest: [3, 1], b2b: [false, true] } }).fatigue, null);
+});
+
+test('D61 the big plan\'s leftover month: the desk may spend past MONTHLY till BIG_UNTIL (the real balance binding), and the window\'s spending never counts against MONTHLY after it; the intraday snapshots at the set hours', async () => {
+  const O = await import('../libs/ranker/scripts/model/oddsapi.mjs');
+  const I = await import('../libs/ranker/scripts/model/intraday.mjs');
+  const before = Date.parse(O.BIG_UNTIL) - 5 * 864e5;
+  const after = Date.parse(O.BIG_UNTIL) + 2 * 864e5;
+  let u = { calls: [], remaining: 2_000_000 };
+  u = O.recordOn(u, 'props', 50_000, 2_000_000, null, new Date(before).toISOString());
+  const b1 = O.budgetOf(u, before + 36e5);
+  assert.equal(b1.remaining, O.BIG_MONTHLY - 50_000);
+  // (after the window, the real balance the $30 plan's: the window's spending left out, the plan's month whole)
+  u.remaining = 20_000;
+  const b2 = O.budgetOf(u, after);
+  assert.equal(b2.used, 0);
+  assert.equal(b2.remaining, Math.min(20_000, O.MONTHLY));
+  // (a usage without the window's record (a lost cache) counts it: under-spends, never over)
+  const { big, ...lost } = u;
+  assert.equal(O.budgetOf(lost, after).remaining, 0);
+  assert.ok(big.spent === 50_000);
+  // (the snapshot hours: each start's offsets floored to the hour, past ones only)
+  const s = Date.parse('2025-01-10T00:30:00Z');
+  const times = I.snapshotTimes([s], [24, 1], { now: s + 864e5 });
+  assert.deepEqual(times.map((t) => new Date(t).toISOString()), ['2025-01-09T00:00:00.000Z', '2025-01-09T23:00:00.000Z']);
 });

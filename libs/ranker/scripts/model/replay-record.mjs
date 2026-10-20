@@ -393,6 +393,11 @@ export function replayRecord(V, sport, rows, { events = null, names = () => ({ h
   }
   // (the slate's practice picks: each game's quota (PRACTICE_N over the ET day's games, at least one) less its bets
   // that clear the vig, from its PASS rows with an edge before the vig, best first, at the practice stake)
+  // (the beat-the-close bar (DECISIONS.md D60, Gemini's guard): a market (a line's market, a prop's stat) stakes more
+  // than the practice stake only while the bets placed before it, settled by its moment, beat the fair close at
+  // least V.desk.BEAT_BAR of the time over their last LINE_GATE_N with a close, from LINE_GATE_MIN of them; under it
+  // the practice stake and a LIKE at most: shrunk, never off (D1). A version without the bar: none)
+  if (fin(V.desk.BEAT_BAR)) beatBar(bets, { bar: V.desk.BEAT_BAR, min: V.desk.LINE_GATE_MIN ?? 40, window: V.desk.LINE_GATE_N ?? 200, practiceUnits, flags });
   const gamesOn = new Map();
   const everyRow = [...bets.map((b) => ({ day: etDay(b.t), event: b.event })), ...passes.map((r) => ({ day: etDay(r.x.t), event: String(r.x.event) }))];
   for (const r of everyRow) (gamesOn.get(r.day) ?? gamesOn.set(r.day, new Set()).get(r.day)).add(r.event);
@@ -415,6 +420,54 @@ export function replayRecord(V, sport, rows, { events = null, names = () => ({ h
   const out = summarize(sport, bets, passed, { epoch, now, flags, rows: { open: opens.size, close: closes.size }, seasonsWithProps: new Set([...opens.values(), ...closes.values()].filter((x) => x.market === 'prop').map((x) => x.season)), seasonsAll: new Set([...opens.values(), ...closes.values()].map((x) => x.season)) });
   // (the reason tiers' file (D58): what gate.mjs --record writes as reasons.json, kept off the replay's own file)
   if (reasonsFile) out.reasonsFile = reasonsFile;
+  return out;
+}
+
+// The beat-the-close bar's walk (D60): each bet (practice picks aside) in placement order, its market's earlier bets
+// settled by its moment (start plus GAME_HOURS) with a fair-close check; held to the practice stake (units, profit
+// scaled, band a LIKE) where they number min or more and beat the close under bar of the time over the last window.
+// flags.beatBar: { bar, held, markets: { key: { n, beat } } } (every bet with a check, the end's)
+export const beatKey = (b) => (b.market === 'prop' ? `prop:${b.stat}` : b.market);
+export function beatBar(bets, { bar, min = 40, window = 200, practiceUnits = 0.5, flags = {} }) {
+  const settle = (b) => b.t + GAME_HOURS * 36e5;
+  const by = new Map();
+  for (const b of bets) if (!b.practice && (b.beat === 0 || b.beat === 1)) (by.get(beatKey(b)) ?? by.set(beatKey(b), []).get(beatKey(b))).push(b);
+  const lists = new Map();
+  for (const [k, list] of by) {
+    const sorted = [...list].sort((a, b) => settle(a) - settle(b));
+    const pre = [0];
+    for (const b of sorted) pre.push(pre[pre.length - 1] + b.beat);
+    lists.set(k, { s: sorted.map(settle), pre });
+  }
+  const out = { bar, held: 0, markets: {} };
+  for (const b of bets) {
+    if (b.practice) continue;
+    const l = lists.get(beatKey(b));
+    if (!l) continue;
+    let lo = 0;
+    let hi = l.s.length;
+    while (lo < hi) {
+      const mid = (lo + hi) >> 1;
+      if (l.s[mid] < b.at) lo = mid + 1;
+      else hi = mid;
+    }
+    const n = Math.min(window, lo);
+    if (n < min) continue;
+    const share = (l.pre[lo] - l.pre[lo - n]) / n;
+    if (share >= bar) continue;
+    if (b.units > practiceUnits) {
+      b.profit = b.units > 0 ? r2((b.profit * practiceUnits) / b.units) : 0;
+      b.units = practiceUnits;
+    }
+    b.band = 'medium';
+    b.beatHeld = r4(share);
+    out.held++;
+  }
+  for (const [k, l] of lists) {
+    const n = Math.min(window, l.s.length);
+    out.markets[k] = { n, beat: n ? r4((l.pre[l.s.length] - l.pre[l.s.length - n]) / n) : null };
+  }
+  flags.beatBar = out;
   return out;
 }
 

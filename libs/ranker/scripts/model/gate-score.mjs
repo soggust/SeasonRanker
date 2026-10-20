@@ -330,11 +330,30 @@ export function betCompare(rowsA, rowsB, { n = 6, practice = 0.5, stakeOf = () =
 // (projCompare's), bet: { props?, lines? } (betCompare's). A layer with no rows says nothing; a sanity set worse
 // beyond noise a flag only. measures: every deciding measure read ({ layer, m ('proj' or BET_DECIDE's), verdict,
 // diff, lo, hi }), for the owner's exception (ownerException)
-export function sportVerdict({ proj = {}, bet = {} }) {
+// The replay's guard (DECISIONS.md D60, Gemini's, 2026-10-20): a version whose replayed record makes more units than
+// the champion's while its bets beat the fair close less often, or at a lower average expected return at the fair
+// close, is rejected: units got by worse prices are luck the close says won't last. Read where both replays carry
+// GUARD_MIN or more bets with a fair close; a share GUARD_TOL under (or a return GUARD_EV_TOL under) is "less".
+// a, b: the champion's and the candidate's replay overall ({ profit, beat, beatN, clv }). null, or { pass, why }
+export const GUARD_MIN = 30;
+export const GUARD_TOL = 0.005;
+export const GUARD_EV_TOL = 0.001;
+export function replayGuard(a, b) {
+  if (!a || !b || !fin(a.profit) || !fin(b.profit) || !(a.beatN >= GUARD_MIN) || !(b.beatN >= GUARD_MIN)) return null;
+  if (!(b.profit > a.profit)) return { pass: true, why: null };
+  const shareDown = fin(a.beat) && fin(b.beat) && b.beat < a.beat - GUARD_TOL;
+  const evDown = fin(a.clv) && fin(b.clv) && b.clv < a.clv - GUARD_EV_TOL;
+  if (!shareDown && !evDown) return { pass: true, why: null };
+  return { pass: false, why: `the replay's units up (${a.profit} to ${b.profit}u) while its bets beat the fair close ${shareDown ? `less often (${r4(a.beat * 100)}% to ${r4(b.beat * 100)}%)` : ''}${shareDown && evDown ? ' and ' : ''}${evDown ? `at a lower average return (${a.clv} to ${b.clv})` : ''}` };
+}
+
+export function sportVerdict({ proj = {}, bet = {}, replay = null }) {
   const why = [];
   const flags = [];
   const measures = [];
   let pass = true;
+  const guard = replay ? replayGuard(replay.a, replay.b) : null;
+  if (guard && !guard.pass) (pass = false), why.push(guard.why), measures.push({ layer: 'replay', m: 'guard', verdict: 'worse', diff: null, lo: null, hi: null });
   let beats = false;
   let any = false;
   for (const [layer, c] of Object.entries(proj)) {

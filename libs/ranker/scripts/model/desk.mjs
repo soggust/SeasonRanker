@@ -925,6 +925,12 @@ export const trackedRecord = (bets) => record(bets.filter(isTracked).map((b) => 
 // Tracked panel
 export const LINE_GATE_N = 200;
 export const LINE_GATE_MIN = 40;
+// (the beat-the-close bar, DECISIONS.md D60 (Gemini's guard, 2026-10-20): a market earns more than the practice stake
+// only while its bets beat the fair close at least this often (with a CLV of 0 or more), from LINE_GATE_MIN graded
+// with a close; under it the stake shrinks to PRACTICE_UNITS, never off (D1))
+export const BEAT_BAR = 0.525;
+const beatOk = (beat) => beat == null || beat >= BEAT_BAR;
+const beatWord = (beat) => (beat == null ? '' : `, beat the close ${Math.round(beat * 1000) / 10}%`);
 export const PRACTICE_UNITS = 0.5;
 // (a bet placed since the epoch; epoch null: every bet)
 const sinceEpoch = (epoch) => (epoch == null ? () => true : (b) => Date.parse(b.placedAt ?? b.start ?? '') >= Date.parse(epoch));
@@ -953,8 +959,8 @@ export function propGate(bets, sport, epoch = MODEL_EPOCH) {
     const ev = round(last.reduce((t, b) => t + (b.clv.ev ?? 0), 0) / n, 4);
     const prob = round(last.reduce((t, b) => t + b.clv.prob, 0) / n, 4);
     const beat = beatOf(last);
-    const on = n < LINE_GATE_MIN || prob >= 0;
-    out[stat] = { on, practice: !on, n, prob, ev, beat, min: LINE_GATE_MIN, window: LINE_GATE_N, epoch, why: on ? (n < LINE_GATE_MIN ? `${n} graded ${stat} props with a close since the epoch: under ${LINE_GATE_MIN}, full stakes` : `CLV ${signed(prob)} over the last ${n} graded ${stat} props: full stakes`) : `practice stake: CLV ${prob} over ${n}` };
+    const on = n < LINE_GATE_MIN || (prob >= 0 && beatOk(beat));
+    out[stat] = { on, practice: !on, n, prob, ev, beat, bar: BEAT_BAR, min: LINE_GATE_MIN, window: LINE_GATE_N, epoch, why: on ? (n < LINE_GATE_MIN ? `${n} graded ${stat} props with a close since the epoch: under ${LINE_GATE_MIN}, full stakes` : `CLV ${signed(prob)}${beatWord(beat)} over the last ${n} graded ${stat} props: full stakes`) : prob < 0 ? `practice stake: CLV ${prob} over ${n}` : `practice stake: beat the close ${Math.round(beat * 1000) / 10}% over ${n}, under ${BEAT_BAR * 100}%` };
   }
   return out;
 }
@@ -966,8 +972,8 @@ export function lineGate(bets, sport, epoch = MODEL_EPOCH) {
   const ev = mean('ev');
   const prob = mean('prob');
   const beat = n ? beatOf(last) : null;
-  const on = n < LINE_GATE_MIN || prob >= 0;
-  return { on, practice: !on, n, ev, prob, beat, min: LINE_GATE_MIN, window: LINE_GATE_N, epoch, why: on ? (n < LINE_GATE_MIN ? `${n} graded line bets with a close since the epoch: under ${LINE_GATE_MIN}, full stakes` : `CLV ${signed(prob)} over the last ${n} graded line bets: full stakes`) : `practice stake: CLV ${prob} over ${n}` };
+  const on = n < LINE_GATE_MIN || (prob >= 0 && beatOk(beat));
+  return { on, practice: !on, n, ev, prob, beat, bar: BEAT_BAR, min: LINE_GATE_MIN, window: LINE_GATE_N, epoch, why: on ? (n < LINE_GATE_MIN ? `${n} graded line bets with a close since the epoch: under ${LINE_GATE_MIN}, full stakes` : `CLV ${signed(prob)}${beatWord(beat)} over the last ${n} graded line bets: full stakes`) : prob < 0 ? `practice stake: CLV ${prob} over ${n}` : `practice stake: beat the close ${Math.round(beat * 1000) / 10}% over ${n}, under ${BEAT_BAR * 100}%` };
 }
 
 // A new row's placement under a CLV gate (lineGate's, or a stat's propGate): the gate passing (or none), placement's;
@@ -1115,6 +1121,19 @@ export function scheduleRest(games) {
     last.set(String(g.away), g.date);
   }
   return out;
+}
+// The schedule's travel beside its rest (DECISIONS.md D62, the stacked fatigue reason): each game's miles since its
+// last game, time zones moved east and meters climbed (context.mjs featurize's info, [home, away]), on the entry
+// scheduleRest made for it (trav). feats: the context's Map of game id to its features; none, the entries as they are
+export function withTravel(sched, feats) {
+  if (!sched || !feats?.size) return sched;
+  for (const [id, f] of feats) {
+    const s = sched.get(String(id));
+    const i = f?.info;
+    if (!s || !i) continue;
+    s.trav = { miles: i.miles ?? null, tz: i.schedule?.tzMove ?? null, climb: i.schedule?.climb ?? null };
+  }
+  return sched;
 }
 // (the named reasons a pick carries: its sport's LINE_REASONS whose test the pick's side meets, as bar keys; side
 // 'home' or 'away'; sched a game's scheduleRest entry, or its context's info ({ rest, b2b } [home, away]))

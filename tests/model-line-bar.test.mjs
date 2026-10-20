@@ -273,7 +273,7 @@ test('the named reasons: from the schedule alone (the rest by the Eastern calend
   const live = lineBar(null, [bet(1, { won: true, extra: { reasons: ['reason:restedVsB2b:ml'] } })], 'nhl');
   assert.equal(live['reason:restedVsB2b:ml'].live.n, 1);
   // (the desk stores the reasons on the bet and reads the schedule for them, never a line or a box score)
-  assert.match(src('run.mjs'), /const sched = scheduleRest\(r\.history\)/);
+  assert.match(src('run.mjs'), /const sched = withTravel\(scheduleRest\(r\.history\), r\.feats\?\.feats\)/);
   assert.match(src('run.mjs'), /\.\.\.\(reasons\.length \? \{ reasons \} : \{\}\)/);
 });
 

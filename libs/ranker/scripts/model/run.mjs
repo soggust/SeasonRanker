@@ -156,7 +156,7 @@ import { fitCode, fitDay, fitDiffs, fitPlan, readFit, refitWhy, saveFit } from '
 import { corrRows, correctionText, tuneCorrection } from './correct.mjs';
 import { PRACTICE_N, PRACTICE_SPLIT, PRACTICE_STAKED, lineBucket, practiceRecord, practiceTop, slateQuota } from './desk.mjs';
 import { MAX_REPRICES, TRUST_START, rulesChanged, rulesOf } from './desk.mjs';
-import { BANKROLL, MARKETS, PRACTICE_UNITS, EARLY_HOURS, stakeKelly, gatedPlacement, stakeFor, practiceGates, choose, decimal, isTracked, trackedRecord, lineGate, lineBar, barGate, bothGates, readLineBar, barAside, reasonsOf, scheduleRest, propGate, fairPair, placeGame, sameGameOf, sameGameRhoText, fitTrust, fitBuckets, bucketTrustOf, BUCKETS, gapGuard, guardOf, oneSide, pickText, placement, price, record, settle, voidOf } from './desk.mjs';
+import { BANKROLL, MARKETS, PRACTICE_UNITS, EARLY_HOURS, stakeKelly, gatedPlacement, stakeFor, practiceGates, choose, decimal, isTracked, trackedRecord, lineGate, lineBar, barGate, bothGates, readLineBar, barAside, reasonsOf, scheduleRest, withTravel, propGate, fairPair, placeGame, sameGameOf, sameGameRhoText, fitTrust, fitBuckets, bucketTrustOf, BUCKETS, gapGuard, guardOf, oneSide, pickText, placement, price, record, settle, voidOf } from './desk.mjs';
 import { CHECK_KELLY, CHECK_KINDS, atUnit, causeOf, checkLocked, checkOf, rejudgeChecks, shadowOf, checkResultOf, checkSummary, closeChecks, markPlaced, modelSide, noteOpen, openCheck, priceAtOf, resolveChecks, STORED_FRESH, storedBet, storedFresh, upsertCheck, withStoredPrices } from './checks.mjs';
 import { ledgerWrites, readChecks, readKept } from './checks-file.mjs';
 import { readLinePool } from './line-pool.mjs';
@@ -1868,7 +1868,8 @@ function betGames(r) {
   if (r.lineBarAside) console.log(`${sport}: ${r.lineBarAside}`);
   console.log(`${sport}: the lines' history bar: ${Object.entries(r.lineBar).map(([k, g]) => `${k} ${g.on ? 'full stakes' : 'practice'} (${g.mean === null ? '-' : `${g.mean >= 0 ? '+' : ''}${round(g.mean * 100, 1)}%`} on ${g.n}, live ${g.live.n})`).join(', ') || 'no segment priced yet: every line at the practice stake'}`);
   // (each game's rest by side from the schedule, for the named reasons a line pick carries: desk.mjs reasonsOf)
-  const sched = scheduleRest(r.history);
+  // (the travel beside the rest, D62: the fatigue reason reads it)
+  const sched = withTravel(scheduleRest(r.history), r.feats?.feats);
   const held = new Map();
   r.pending = [];
   // (this run's CHECKs, game markets' and props': recordChecks; and the markets it priced that the gap guard

@@ -587,7 +587,7 @@ export async function scoreVersion(dir, sport, { refit = false, propsLayer = tru
     };
     const labelOf = Object.fromEntries((H.props.STATS?.[sport] ?? []).map((s) => [s.key, s.label]));
     for (const x of [...histProps.open, ...histProps.close]) x.label = labelOf[x.stat] ?? x.stat;
-    replay = V.replay.replayRecord(V, sport, { open: [...histLines.open, ...histProps.open], close: [...histLines.close, ...histProps.close] }, { confidence, events: hist.events, names, epoch: V.leagues.MODEL_EPOCH ?? null, evScale, sched: V.desk.scheduleRest ? V.desk.scheduleRest(histGames) : null });
+    replay = V.replay.replayRecord(V, sport, { open: [...histLines.open, ...histProps.open], close: [...histLines.close, ...histProps.close] }, { confidence, events: hist.events, names, epoch: V.leagues.MODEL_EPOCH ?? null, evScale, sched: V.desk.scheduleRest ? (V.desk.withTravel ? V.desk.withTravel(V.desk.scheduleRest(histGames), feats?.feats) : V.desk.scheduleRest(histGames)) : null });
     say(`replayed record: ${replay.overall.won}-${replay.overall.lost}-${replay.overall.push} ${replay.overall.profit >= 0 ? '+' : ''}${replay.overall.profit}u (ROI ${replay.overall.roi === null ? '-' : `${(replay.overall.roi * 100).toFixed(1)}%`}) on ${replay.n.bets} bets (${replay.flags.timing.open} at a clean open, ${replay.flags.timing.close} at the close), ${replay.n.practice} practice picks; by band ${Object.entries(replay.byBand).map(([k, v]) => `${k} ${v.won}-${v.lost}-${v.push} ${v.profit >= 0 ? '+' : ''}${v.profit}u`).join(', ')}`);
   }
   return {
@@ -673,7 +673,8 @@ export function compareScores(sport, a, b, opts = {}) {
     bet[layer] = { mode: r.mode, ...betCompare(r.a, r.b, { n: layer === 'props' ? n : Math.max(1, Math.round(n / 2)), practice, stakeOf: stakeOfRow, ...opts }) };
     summary[layer] = { mode: r.mode, champion: betSummary(r.a, { n, practice, stakeOf: stakeOfRow }), candidate: betSummary(r.b, { n, practice, stakeOf: stakeOfRow }) };
   }
-  const verdict = sportVerdict({ proj, bet: Object.fromEntries(Object.entries(bet).filter(([, v]) => v)) });
+  // (the replay's guard (D60): more units at worse prices than the champion's is rejected)
+  const verdict = sportVerdict({ proj, bet: Object.fromEntries(Object.entries(bet).filter(([, v]) => v)), replay: { a: a.replay?.overall ?? null, b: b.replay?.overall ?? null } });
   const ga = crpsRows(a);
   const gb = crpsRows(b);
   const info = { crps: ga.length && gb.length ? projCompare(sport, ga, gb, current, opts) : null };

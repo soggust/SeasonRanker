@@ -77,6 +77,9 @@ const MARKET_NAME = { ml: 'moneyline', spread: 'spread', total: 'total', prop: '
 export const REASONS = [
   { id: 'restedVsB2b', family: 'rest', label: 'rested against a back-to-back', markets: ['ml', 'spread'], sports: ['nhl', 'nba'], test: (c) => !!c.op?.b2b && !c.me?.b2b },
   { id: 'rest2', family: 'rest', label: 'two or more days more rest', markets: ['ml', 'spread'], sports: ['nhl', 'nba'], test: (c) => fin(c.me?.rest) && fin(c.op?.rest) && c.me.rest - c.op.rest >= 2 },
+  // (D62: the other side's stacked fatigue past its own, in the sport's tail, where the Book's price still sits at the
+  // sharp fair (it hasn't moved for it). Family rest: never a second reason beside the rest ones (no double count))
+  { id: 'fatigue', family: 'rest', label: "the other side's stacked fatigue (a back-to-back, travel, time zones east, altitude) in the tail, the Book's price still at the sharp fair", markets: ['ml', 'spread'], sports: ['nhl', 'nba', 'nfl'], test: (c) => fin(c.fatigue) && fin(FATIGUE_TAIL[c.sport]) && c.fatigue >= FATIGUE_TAIL[c.sport] && (!c.pin || !fin(c.gap) || Math.abs(c.gap) <= FATIGUE_GAP) },
   { id: 'openGap', family: 'timing', label: "the Book's opening price past the sharp book's", markets: 'lines', test: (c) => c.early && c.pin && fin(c.gap) && c.gap > 0 },
   { id: 'cleanOpen', family: 'timing', label: 'bet early, at a clean open', markets: 'all', test: (c) => c.early },
   { id: 'sd1', family: 'proj', label: 'the projection a full SD past the line', markets: ['prop'], test: (c) => fin(c.sdEdge) && c.sdEdge >= 1 },
@@ -93,10 +96,21 @@ const SIDE_WORD = { fav: 'favorites', dog: 'underdogs', over: 'overs', under: 'u
 // prop's projection past the line on its side, in SDs) }
 export function contextOf({ sport, market, side, stat = null, fS = null, pS = null, kelly = null, odds = null, early = false, pin = false, sched = null, sdEdge = null }) {
   const i = side === 'home' ? 0 : side === 'away' ? 1 : -1;
-  const at = (j) => (sched && Array.isArray(sched.rest) && j >= 0 ? { rest: sched.rest[j], b2b: !!sched.b2b?.[j] } : null);
+  const tr = (k, j) => (sched?.trav && Array.isArray(sched.trav[k]) && fin(sched.trav[k][j]) ? sched.trav[k][j] : null);
+  const at = (j) => (sched && Array.isArray(sched.rest) && j >= 0 ? { rest: sched.rest[j], b2b: !!sched.b2b?.[j], miles: tr('miles', j), tz: tr('tz', j), climb: tr('climb', j) } : null);
   const gap = fin(fS) && fin(odds) && odds ? fS - impl(odds) : null;
-  return { sport, market, side, stat, fS, pS, kelly, odds, early: !!early, pin: !!pin, me: at(i), op: i >= 0 ? at(1 - i) : null, gap, sdEdge };
+  const me = at(i);
+  const op = i >= 0 ? at(1 - i) : null;
+  const fatigue = me && op && sched?.trav ? fatigueOf(op) - fatigueOf(me) : null;
+  return { sport, market, side, stat, fS, pS, kelly, odds, early: !!early, pin: !!pin, me, op, gap, sdEdge, fatigue };
 }
+// The stacked fatigue index of a side (D62): a back-to-back 1, a thousand miles since its last game 1, a time zone
+// moved east a half, a thousand meters climbed 1 (the context's own travel facts; unknown parts 0)
+export const fatigueOf = (s) => (s ? (s.b2b ? 1 : 0) + (fin(s.miles) ? s.miles / 1000 : 0) + (fin(s.tz) ? Math.max(0, s.tz) * 0.5 : 0) + (fin(s.climb) ? s.climb : 0) : 0);
+// (the tail: the index gap at the sport's 85th percentile of the games' gaps where one side is the more tired,
+// measured on the schedule (D62); the Book's price within this of the sharp fair is "not moved")
+export const FATIGUE_TAIL = { nba: 1.6, nhl: 1.6, nfl: 2.1 };
+export const FATIGUE_GAP = 0.02;
 
 // (a line's side class, as desk.mjs segmentOf reads it: a total's side, else the favored side or the dog by its fair)
 const classOf = (c) => (c.market === 'total' ? (c.side === 'under' ? 'under' : 'over') : fin(c.fS) && c.fS < 0.5 ? 'dog' : 'fav');
