@@ -93,7 +93,8 @@ export const SPORT = 'mma';
 // the price moved (the untested start of 0.5 to the history's fit) and the league's bets restart on it)
 // (bumped 2026-10-20, the frames round (D56): the archive's mirrored opens repaired, the trust refit on the cleaned
 // history (the early moneyline's 0.85 to 0.1), so the price moved and the league's bets restart on it)
-export const MMA_START = '2026-10-20T06:30:00Z';
+// (bumped 2026-10-20, D59 on (the owner's call): the fair's calibration moves the price, so the league's bets restart on it)
+export const MMA_START = '2026-10-20T13:40:00Z';
 // (the history's rows weigh this many rows' worth at most in the trust fit, a lead band at a time (D37), the live bets
 // whole: about a year of a band's rows, so a season of live bets can move the trust the history set)
 export const PRIOR_ROWS = 400;
@@ -124,8 +125,8 @@ const REST_FAR = 24 * 36e5;
 // (the band and stake rules a bet is placed under, kept on it; an open bet placed under others is taken back and
 // priced again at this run's Odds API quote: rulesBack, DECISIONS.md D53)
 // (MMA's own part: its trust's version, bumped when a refit changes how a bout is priced, so its open bets are priced
-// again at the new trust (D53's path): 2, D56's refit on the cleaned history (early moneyline 0.85 to 0.1; the owner, 2026-10-20)
-export const MMA_TRUST_RULES = 2;
+// again at the new trust (D53's path): 2, D56's refit on the cleaned history (early moneyline 0.85 to 0.1; the owner, 2026-10-20); 3, D59's calibrated fair on
+export const MMA_TRUST_RULES = 3;
 export const RULES_V = `${rulesOf(BANDS)} trust${MMA_TRUST_RULES}`;
 // The open bets to price again because the rules that set their band or stake changed since they were placed (D53):
 // on a bout not yet locked (REPRICE_BY before its start), not priced again MAX_REPRICES times already. By the

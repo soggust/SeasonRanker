@@ -79,9 +79,9 @@ const fin = Number.isFinite;
 // lost. The fair the Bot prices from is logit(fc) = b0 logit(fair) + b1 logit(DraftKings' own no-vig), a soft fit
 // (ridge toward the raw fair, b = [1, 0], FAIR_CAL_LAM rows' worth), walk-forward on the closes over before the
 // month (the gate) or all of them (the record, trust-prior.json ml.fairCal, the desk). The raw no-vig stays the
-// Book's benchmark (the beat-the-fair-close, the Book's log loss). FAIR_CAL_ON the default (off till the owner's
+// Book's benchmark (the beat-the-fair-close, the Book's log loss). FAIR_CAL_ON the default (on since the owner's call, 2026-10-20; was off till the owner's
 // call: the gate HELD it on the live ledger's close leg, D59); MMA_FAIR_CAL=1 or 0 overrides it (the gate's candidate)
-export const FAIR_CAL_ON = false;
+export const FAIR_CAL_ON = true;
 export const FAIR_CAL_LAM = 100;
 export const NO_CAL = Object.freeze({ b: [1, 0], n: 0 });
 const lgt = (p) => Math.log(p / (1 - p));

@@ -1199,9 +1199,9 @@ test('D59 the MMA fair calibrated for the favorite-longshot bias: a soft fit tow
     if (prev === undefined) delete process.env.MMA_FAIR_CAL;
     else process.env.MMA_FAIR_CAL = prev;
   }
-  // (off by default: the gate held it, D59)
-  assert.equal(G.FAIR_CAL_ON, false);
-  if (prev === undefined) assert.equal(G.calFair(0.2, 0.2, cal), 0.2);
+  // (on by default since the owner's call, 2026-10-20: the calibrated fair moves a longshot's chance down)
+  assert.equal(G.FAIR_CAL_ON, true);
+  if (prev === undefined) assert.ok(G.calFair(0.2, 0.2, cal) < 0.2);
 });
 
 test('D60 the replay\'s guard: more units at a lower beat-the-fair-close share or return than the champion\'s is rejected; a market under 52.5% beating the fair close stakes the practice stake, never off', async () => {
