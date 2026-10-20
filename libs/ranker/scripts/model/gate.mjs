@@ -33,7 +33,9 @@
 //
 // Usage:
 //   node libs/ranker/scripts/model/gate.mjs [--candidate <ref|worktree|env:K=V>] [--champion <ref>] [nfl nhl ...]
-//        [--refit] [--record] [--json <file>]
+//        [--refit] [--record] [--json <file>] [--accept-inputs "<why>"] [--units-tol <u>]
+//   node libs/ranker/scripts/model/gate.mjs --rebuild-cache [nfl nhl ...] [--refit]   (the full cache a record needs:
+//        the context facts, the players' games, the NFL's injury listings, the props' fit; with --record, then the gate)
 //   node libs/ranker/scripts/model/gate.mjs --score-only <ref|worktree> --record   (one version's scorecard)
 //   node libs/ranker/scripts/model/gate.mjs --freeze   (writes gate-frozen.json: done once, 2026-10-18)
 // Free: no API calls, no AI; the data the desk's cache has (no cache: the players' games are fetched, slowly, and
@@ -290,7 +292,10 @@ function stakesOf(V, x, evScale) {
 // lines: { saved, replay } }, meta }
 export async function scoreVersion(dir, sport, { refit = false, propsLayer = true, log = console.log } = {}) {
   // (the fights league: its own scoring, gate-mma.mjs, on the archive's bouts and the MMA priced history)
-  if (sport === 'mma') return { ...(await scoreMma(dir, { log })), code: codeOf(dir) };
+  if (sport === 'mma') {
+    const m = await scoreMma(dir, { log });
+    return { ...m, code: codeOf(dir), inputs: { v: INPUTS_V, sport, code: modelCode(dir, { sport }), rows: m.replay ? { replay: m.replay.n.rows, keys: m.replay.n.keys, bets: m.replay.n.bets } : null, units: m.replay?.overall?.profit ?? null } };
+  }
   const notes = [];
   const say = (s) => (notes.push(s), log(`${sport}: ${s}`));
   const V = {};
@@ -311,11 +316,15 @@ export async function scoreVersion(dir, sport, { refit = false, propsLayer = tru
   const best = V.ratings.fit(history, { ...cfg.priors, sigma: before.sigma ?? cfg.priors.sigma, sigmaT: before.sigmaT ?? cfg.priors.sigmaT }, cfg.grid);
   const params = { ...(best?.params ?? before) };
   let facts = readJson(path.join(ROOT, '.cache/model', `context-${sport}.json`), null);
+  // (what the record's inputs guard reads (inputsOf): whether the cache had the facts, and which of their sources failed)
+  const hadFacts = !!facts && Object.keys(facts).length > 0;
+  const gatherTimes = {};
+  let rowSeasons = null;
   let feats = null;
   let ctxFit = null;
   if (facts) {
     try {
-      await H.context.gather(sport, cfg, history, [], facts, wantOf(state, H.context.OPTIONAL, sport), {});
+      await H.context.gather(sport, cfg, history, [], facts, wantOf(state, H.context.OPTIONAL, sport), gatherTimes);
       feats = V.context.featurize(sport, cfg, history, facts, new Map());
       ctxFit = V.ratings.fitContext(history, params, feats.feats, feats.terms);
       if (ctxFit) Object.assign(params, { sigma: Math.round(ctxFit.after.sigma * 1000) / 1000, sigmaT: Math.round(ctxFit.after.sigmaT * 1000) / 1000 });
@@ -454,7 +463,8 @@ export async function scoreVersion(dir, sport, { refit = false, propsLayer = tru
         const rows = await H.logs.playerRows(sport, cfg, history, facts);
         const info = new Map([...(feats?.feats ?? new Map())].map(([id, f]) => [id, f.info]));
         const market = sport === 'nfl' ? await H.props.nflMarket(history) : sport === 'nba' ? H.logs.boxMarket('nba') : null;
-        const listed = sport === 'nfl' ? await H.props.nflListed(history, facts, [...new Set(rows.map((x) => x.season))].sort()) : null;
+        rowSeasons = [...new Set(rows.map((x) => x.season))].sort();
+        const listed = sport === 'nfl' ? await H.props.nflListed(history, facts, rowSeasons) : null;
         const totals = sport === 'nhl' ? H.logs.boxTotals('nhl') : null;
         const soft = { prev: Object.fromEntries((state.props?.types ?? []).map((t) => [t.key, t.params?.soft ?? null])), now: Date.now() };
         const expPts = new Map([...expAll].map(([id, e]) => [id, [e.homePts, e.awayPts]]));
@@ -582,6 +592,8 @@ export async function scoreVersion(dir, sport, { refit = false, propsLayer = tru
     // (the lines' history bar (D51): what --record writes for the live desk)
     lineBar,
     meta: { practiceN, practiceUnits: V.desk.PRACTICE_UNITS ?? 0.5, trust, sigma: params.sigma, sigmaT: params.sigmaT, matched: replayM.size, priced: mineProps.length },
+    // (the record's input fingerprint (inputsOf): what --record checks before it writes, and writes beside the record)
+    inputs: inputsOf({ dir, sport, V, H, history, facts: hadFacts ? facts : null, ctxFit, gatherTimes, rowSeasons, backtest: bt.filter((b) => b.anchor === 'pinnacle').length, state, replay, propsLayer }),
   };
 }
 
@@ -798,7 +810,7 @@ function scoreIn(version, sport, { refit, props }) {
   return JSON.parse(readFileSync(out, 'utf8'));
 }
 
-function recordScore(version, sport, score, frozen) {
+function recordScore(version, sport, score, frozen, inputs = null) {
   const file = path.join(ROOT, 'apps', sport, 'src/StaticData/model/scorecard.json');
   const sc = scorecardOf(score, frozen);
   let commitAt = null;
@@ -807,7 +819,7 @@ function recordScore(version, sport, score, frozen) {
   } catch {
     // (no git)
   }
-  const entry = { sport, epoch: score.epoch, commit: version.sha ? version.sha.slice(0, 8) : null, commitAt, label: version.spec, at: new Date().toISOString(), frozenTo: frozen?.to ?? null, ...sc };
+  const entry = { sport, epoch: score.epoch, commit: version.sha ? version.sha.slice(0, 8) : null, commitAt, label: version.spec, at: new Date().toISOString(), frozenTo: frozen?.to ?? null, ...sc, ...(inputs ? { inputs: compactInputs(inputs) } : {}) };
   const next = addEntry(readJson(file, null), entry);
   writeFileSync(file, `${JSON.stringify(next, null, 1)}\n`);
   console.log(`${sport}: scorecard entry for ${version.label} (epoch ${score.epoch}) written: ${path.relative(ROOT, file)}`);
@@ -849,7 +861,7 @@ function recordScore(version, sport, score, frozen) {
   // history before its epoch; picks.mjs merges it with the live ledger since. A version without it leaves the file)
   if (score.replay) {
     const out = path.join(ROOT, 'apps', sport, 'src/StaticData/model/replay-record.json');
-    writeFileSync(out, `${JSON.stringify({ ...score.replay, commit: entry.commit, note: decisionNote() }, null, 1)}\n`);
+    writeFileSync(out, `${JSON.stringify({ ...score.replay, commit: entry.commit, note: decisionNote(), ...(inputs ? { inputs } : {}) }, null, 1)}\n`);
     const r = score.replay;
     console.log(`${sport}: the replayed record written (${path.relative(ROOT, out)}): ${r.overall.won}-${r.overall.lost}-${r.overall.push} ${r.overall.profit >= 0 ? '+' : ''}${r.overall.profit}u on ${r.n.bets} bets through ${r.through?.slice(0, 10) ?? '-'} (${r.flags.timing.open} at a clean open, ${r.flags.timing.close} at the close; full context ${r.flags.context.full.join(', ') || 'none'}; ratings only ${r.flags.context.ratingsOnly.join(', ') || 'none'})`);
   }
@@ -862,6 +874,53 @@ function recordScore(version, sport, score, frozen) {
   }
 }
 
+// (a scorecard entry's inputs: the fingerprint's hash and its counts, the record's file keeping the whole)
+export function compactInputs(x) {
+  const games = Object.fromEntries(Object.entries(x.context?.bySeason ?? {}).map(([s, by]) => [s, Math.max(0, ...Object.values(by))]));
+  return { hash: x.hash ?? inputsHash(x), fit: x.fit && !x.fit.missing ? { at: x.fit.at, code: x.fit.code, hash: x.fit.hash } : null, context: x.context ? { on: x.context.on, games } : null, injuries: x.injuries ? `${x.injuries.read.length}/${x.injuries.seasons.length}` : null, rows: x.rows, frozen: x.frozen ?? null, ...(x.accepted ? { accepted: x.accepted } : {}) };
+}
+
+// (the last record's inputs for a sport: its replay-record.json's fingerprint, or one read from its counts, the
+// scorecard's entry for its commit (else the last) and its commit's code)
+export function lastInputs(sport) {
+  const rec = readJson(path.join(ROOT, 'apps', sport, 'src/StaticData/model/replay-record.json'), null);
+  if (!rec || rec.inputs?.v) return rec?.inputs ?? null;
+  const entries = (readJson(path.join(ROOT, 'apps', sport, 'src/StaticData/model/scorecard.json'), null)?.entries ?? []).filter((e) => e.sport === sport);
+  const entry = entries.filter((e) => e.commit && e.commit === rec.commit).at(-1) ?? entries.at(-1) ?? null;
+  let code = null;
+  try {
+    if (rec.commit) {
+      const v = resolveVersion(rec.commit);
+      code = modelCode(v.dir, { sport, harness: v.dir });
+      delete code.residual;
+    }
+  } catch {
+    code = null;
+  }
+  return prevInputsOf(rec, entry, code);
+}
+
+// Every pending record's inputs checked before any is written (recordGuard): { ok, inputs by sport }. pending:
+// [{ sport, score, champion (its score, or null) }]
+export function guardRecords(pending, frozen, { refit = false, accept = null, tol = UNITS_TOL, log = console.log, prevOf = lastInputs } = {}) {
+  const inputs = {};
+  let ok = true;
+  for (const { sport, score, champion } of pending) {
+    if (!score.inputs) continue;
+    const next = { ...score.inputs, frozen: frozenCover(score, frozen) };
+    next.hash = inputsHash(next);
+    const champ = champion?.inputs ? { ...champion.inputs, frozen: frozenCover(champion, frozen) } : null;
+    const g = recordGuard(next, prevOf(sport), { champion: champ, refit, accept, tol });
+    if (g.accepted) next.accepted = g.accepted;
+    inputs[sport] = next;
+    if (!g.ok) ok = false;
+    const lines = [...g.hard.map((x) => `  REFUSED: ${x}`), ...g.held.map((x) => `  ${accept ? 'ACCEPTED' : 'HELD'}: ${x}`)];
+    log(`${sport}: the record's inputs ${g.ok ? (lines.length ? 'accepted' : 'complete') : 'NOT complete'} (fingerprint ${next.hash}; the model ${g.same ? 'unchanged' : 'changed or unknown'} since the last record)${lines.length ? `\n${lines.join('\n')}` : ''}`);
+  }
+  if (!ok) log(`--record refused: nothing written. Build the cache (gate.mjs --rebuild-cache <sport>) and record again; or, where every reason is HELD and the change is known, --accept-inputs "<why>"`);
+  return { ok, inputs };
+}
+
 // (what changed in the version, in a line, for the Algorithm tab's build: DECISIONS.md's latest entry's heading,
 // "D47. The Bot's history is the replayed record: ..."; none without the file)
 export function decisionNote(file = path.join(MODEL, 'DECISIONS.md')) {
@@ -870,13 +929,280 @@ export function decisionNote(file = path.join(MODEL, 'DECISIONS.md')) {
   return heads.length ? heads[heads.length - 1] : null;
 }
 
+// ---- the record's inputs (DECISIONS.md D47's guard, 2026-10-19) ----
+//
+// 57f80332's --record wrote the NFL's replayed record at -63.5u from a worktree whose .cache/model (the context
+// facts, the props' saved fit: not in git) wasn't the desk's, where the same model on a full cache gives -32.95u
+// (ddefa4e1). The Bot's public record must never depend on which checkout's cache happened to be on disk. So every
+// score carries its inputs' fingerprint (inputsOf), and --record checks every sport's before it writes any
+// (recordGuard), exiting 3 with the reasons when one fails:
+//   refused   no saved props fit, or one neither the champion's nor the candidate's code expects (its code hash,
+//             fitcache.mjs fitCode; --refit searches its own); no context facts, or the context fit left out; no
+//             ratings state; no Pinnacle-anchored backtest bets (the lines' trust); the champion and the candidate
+//             with the same code but different replays
+//   held      written only with --accept-inputs "<why>" (the reason kept on the record): against the last record's
+//             fingerprint anything that shrank (the replay's rows or keys, the frozen benchmark's rows or its
+//             replayed mode, the context facts' games before the epoch by season and source, the NFL's injury
+//             listings' seasons, the fit's stats), a context source that failed, a season without its injury
+//             listings; and with the model unchanged since the last record (modelCode: its pricing parts, the
+//             replay's own code, the harness, the residual model's file) any input count that differs, or the
+//             replay's units moved more than UNITS_TOL: "inputs changed, not the model"
+// A record from before the fingerprint is read as the counts it has (its rows and keys, its units, the scorecard's
+// last frozen counts) and its commit's code. gate.mjs --rebuild-cache [sports] builds the full cache first.
+
+export const INPUTS_V = 1;
+// (the replay's units a record may move with the model unchanged: the day's new finals and graded ledger rows refit
+// the ratings, the trust and the props' fit a little; 57f80332 moved the NFL's 30.5u. --units-tol sets another)
+export const UNITS_TOL = 3;
+const hashOf = (x) => createHash('sha256').update(typeof x === 'string' || Buffer.isBuffer(x) ? x : JSON.stringify(x)).digest('hex').slice(0, 16);
+const fileHash = (file) => (existsSync(file) ? hashOf(readFileSync(file)) : null);
+function filesHash(dir, files) {
+  const h = createHash('sha256');
+  for (const f of files) if (existsSync(path.join(dir, f))) h.update(`|${f}|`).update(readFileSync(path.join(dir, f)));
+  return h.digest('hex').slice(0, 12);
+}
+// (the code a record comes from: the version's pricing parts (codeOf), the replay's own (replay-record.mjs and the
+// bands, picks.mjs), the harness that scored it (this checkout's gate files, or a commit's), the residual model's
+// file (residual-train.mjs's weekly fit: the model's own change, not an input))
+export const RECORD_FILES = ['replay-record.mjs', 'picks.mjs'];
+export const HARNESS_FILES = ['gate.mjs', 'gate-history.mjs', 'gate-score.mjs', 'gate-mma.mjs'];
+export function modelCode(dir, { sport = null, harness = MODEL, root = ROOT } = {}) {
+  const c = codeOf(dir);
+  const parts = sport === 'mma' ? { mma: c.mma, games: c.games, pricing: c.pricing } : { props: c.props, games: c.games, pricing: c.pricing };
+  return { ...parts, record: filesHash(dir, RECORD_FILES), harness: filesHash(harness, HARNESS_FILES), ...(sport && sport !== 'mma' ? { residual: fileHash(path.join(root, 'apps', sport, 'src/StaticData/model/residual.json')) } : {}) };
+}
+// (whether two records' code is the same: every part both know, at least one)
+export function sameModel(a, b) {
+  if (!a || !b) return false;
+  const keys = Object.keys(a).filter((k) => a[k] != null && b[k] != null);
+  return keys.length > 0 && keys.every((k) => a[k] === b[k]);
+}
+
+// The context facts' games before the epoch by season and source: { <season>: { <source>: games } } (a source is
+// a facts key holding games by id, or a Map of rows by their ESPN id: the NFL's nflverse rows)
+export function contextCoverage(facts, history, epoch = null) {
+  const cut = epoch ? Date.parse(epoch) : Infinity;
+  const season = new Map(history.filter((g) => !(Date.parse(g.date) >= cut)).map((g) => [String(g.id), g.season]));
+  const out = {};
+  for (const [k, v] of Object.entries(facts ?? {})) {
+    if (!v || typeof v !== 'object' || Array.isArray(v)) continue;
+    const ids = v instanceof Map ? [...v].map(([key, x]) => String(x?.espn ?? key)) : Object.keys(v);
+    for (const id of ids) {
+      const s = season.get(id);
+      if (s === undefined) continue;
+      const row = (out[s] ??= {});
+      row[k] = (row[k] ?? 0) + 1;
+    }
+  }
+  return Object.fromEntries(
+    Object.keys(out)
+      .sort()
+      .map((s) => [s, Object.fromEntries(Object.keys(out[s]).sort().map((k) => [k, out[s][k]]))]),
+  );
+}
+
+// One score's input fingerprint (scoreVersion, in the child): the props' fit, the context's coverage, the NFL's
+// injury listings, the files the pricing reads, the replay's rows and units. The parent adds the frozen
+// benchmark's counts (frozenCover) and the hash (inputsHash: all of it but the units)
+export function inputsOf({ dir, sport, V, H, history, facts, ctxFit, gatherTimes = {}, rowSeasons = null, backtest = 0, state = {}, replay = null, propsLayer = true }) {
+  const epoch = V.leagues?.MODEL_EPOCH ?? null;
+  let expected = null;
+  try {
+    expected = H.fitcache.fitCode(dir, H.fitcache.FIT_FILES, epoch);
+  } catch {
+    expected = null;
+  }
+  const want = (V.props?.STATS?.[sport] ?? []).map((s) => s.key);
+  let fit = { missing: propsLayer ? 'no saved fit' : 'the props layer off (--no-props)', expected, want: want.length };
+  if (propsLayer) {
+    const saved = H.fitcache.readFit(sport);
+    if (saved.fit) fit = { code: saved.fit.code, expected, day: saved.fit.day, at: saved.fit.at, finals: saved.fit.finals, stats: want.filter((k) => saved.fit.fits[k]), want: want.length, hash: fileHash(H.fitcache.fitFile(sport)) };
+    else fit.missing = saved.why;
+  }
+  const cache = path.join(ROOT, '.cache/model');
+  const injuries = sport === 'nfl' && rowSeasons?.length ? { seasons: rowSeasons, read: rowSeasons.filter((s) => existsSync(path.join(cache, `injuries_${s}.csv.gz`)) || existsSync(path.join(cache, `injuries_${s}.csv`))) } : null;
+  return {
+    v: INPUTS_V,
+    sport,
+    code: modelCode(dir, { sport }),
+    fit,
+    context: {
+      facts: !!facts,
+      on: !!ctxFit,
+      failed: Object.entries(gatherTimes)
+        .filter(([, t]) => t && t.ok === false)
+        .map(([k]) => k)
+        .sort(),
+      bySeason: contextCoverage(facts, history, epoch),
+    },
+    injuries,
+    files: { state: !!state?.params, backtest, residual: existsSync(path.join(ROOT, 'apps', sport, 'src/StaticData/model/residual.json')), evScale: fin(state?.evScale) ? state.evScale : null },
+    rows: replay ? { replay: replay.n.rows, keys: replay.n.keys, bets: replay.n.bets } : null,
+    units: replay?.overall?.profit ?? null,
+  };
+}
+
+// (the frozen benchmark's rows in a score by layer, as scorecardOf counts them (n: its rows and the backtest's), and
+// the frozen ids it priced (ids, of want))
+export function frozenCover(score, frozen) {
+  const ids = frozen?.sports?.[score.sport] ?? { props: [], lines: [] };
+  const out = {};
+  for (const layer of ['props', 'lines']) {
+    const rep = score.bet?.[layer]?.replay;
+    const mode = rep?.length ? 'replay' : 'saved';
+    const rows = mode === 'replay' ? rep : (score.bet?.[layer]?.saved ?? []);
+    const fz = new Set(ids[layer] ?? []);
+    out[layer] = { mode, n: rows.filter((x) => x.src === 'backtest' || fz.has(x.id)).length, ids: new Set(rows.filter((x) => fz.has(x.id)).map((x) => x.id)).size, want: fz.size };
+  }
+  return out;
+}
+
+// (the fingerprint's hash: everything but the units, an override's reason and the hash itself)
+export function inputsHash(inputs) {
+  const { units: _u, accepted: _a, hash: _h, ...rest } = inputs ?? {};
+  return hashOf(rest);
+}
+
+// The last record's inputs: its fingerprint, or for a record from before it the counts it has (its rows, keys and
+// units), the scorecard's last entry's frozen counts and its commit's code (code: modelCode of that commit)
+export function prevInputsOf(record, lastEntry = null, code = null) {
+  if (!record) return null;
+  if (record.inputs?.v) return record.inputs;
+  const fz = lastEntry?.frozen ?? null;
+  return {
+    v: 0,
+    sport: record.sport ?? null,
+    code,
+    rows: record.n ? { replay: record.n.rows, keys: record.n.keys, bets: record.n.bets } : null,
+    frozen: fz ? Object.fromEntries(['props', 'lines'].filter((l) => fz[l]).map((l) => [l, { mode: fz[l].mode, n: fz[l].n }])) : null,
+    units: record.overall?.profit ?? null,
+  };
+}
+
+// Whether a record may be written: { ok, hard (refused whatever), held (refused unless accepted), same (the model
+// unchanged since the last record), accepted }. next: the candidate's inputs (frozen added); prev: the last record's
+// (prevInputsOf); champion: the champion's inputs in the same run (frozen added), when there is one
+export function recordGuard(next, prev, { champion = null, refit = false, accept = null, tol = UNITS_TOL } = {}) {
+  const hard = [];
+  const held = [];
+  const sport = next?.sport ?? '?';
+  const sgn = (x) => `${x >= 0 ? '+' : ''}${r4(x)}u`;
+  if (sport !== 'mma') {
+    const f = next.fit;
+    if (!f || f.missing) hard.push(`no props fit in the cache (${f?.missing ?? 'none'}): gate.mjs --rebuild-cache ${sport} first`);
+    else {
+      const expected = [...new Set([f.expected, champion?.fit?.expected].filter(Boolean))];
+      if (!refit && expected.length && !expected.includes(f.code)) hard.push(`the saved props fit (code ${f.code}, searched ${f.at}) is not the one the champion or the candidate expects (${expected.join(' or ')}): gate.mjs --rebuild-cache ${sport}, or --refit`);
+      if (!f.stats?.length) hard.push('the saved props fit holds none of the stats');
+    }
+    if (!next.context?.facts) hard.push(`no context facts in the cache (.cache/model/context-${sport}.json): gate.mjs --rebuild-cache ${sport} first`);
+    else if (!next.context.on) hard.push('the context fit was left out (the ratings alone)');
+    if (next.context?.failed?.length) held.push(`context sources failed this run: ${next.context.failed.join(', ')}`);
+    if (!next.files?.state) hard.push('no ratings state (state.json params)');
+    if (!next.files?.backtest) hard.push("no Pinnacle-anchored backtest bets (backtest.json): the lines' trust has nothing to fit on");
+    if (next.injuries && next.injuries.read.length < next.injuries.seasons.length) held.push(`the injury listings read for ${next.injuries.read.length} of ${next.injuries.seasons.length} seasons (none for ${next.injuries.seasons.filter((s) => !next.injuries.read.includes(s)).join(', ')})`);
+  }
+  if (champion && sameModel(champion.code, next.code) && fin(champion.units) && fin(next.units) && Math.abs(champion.units - next.units) > 0.01) hard.push(`the champion and the candidate have the same code but replay ${sgn(champion.units)} and ${sgn(next.units)}: the replay isn't reproducible`);
+  const same = !!prev && sameModel(prev.code, next.code);
+  if (prev) {
+    const shrank = [];
+    const differs = [];
+    const cmp = (what, a, b) => {
+      if (!fin(a) || !fin(b) || a === b) return;
+      (b < a ? shrank : differs).push(`${what} ${a} to ${b}`);
+    };
+    cmp('replay rows', prev.rows?.replay, next.rows?.replay);
+    cmp('replay keys', prev.rows?.keys, next.rows?.keys);
+    for (const layer of ['props', 'lines']) {
+      const a = prev.frozen?.[layer];
+      const b = next.frozen?.[layer];
+      if (!a || !b) continue;
+      if (a.mode === 'replay' && b.mode !== 'replay') shrank.push(`the frozen ${layer} at their saved chances, not replayed (the players' games missing from the cache)`);
+      cmp(`frozen ${layer} rows`, a.n, b.n);
+      if (fin(a.ids) && a.ids === a.want) cmp(`frozen ${layer} ids`, a.ids, b.ids);
+    }
+    const ca = prev.context?.bySeason;
+    const cb = next.context?.bySeason;
+    if (ca && cb)
+      for (const s of new Set([...Object.keys(ca), ...Object.keys(cb)]))
+        for (const k of new Set([...Object.keys(ca[s] ?? {}), ...Object.keys(cb[s] ?? {})])) cmp(`context ${k} ${s} games`, ca[s]?.[k] ?? 0, cb[s]?.[k] ?? 0);
+    if (prev.injuries && next.injuries) cmp('injury listing seasons', prev.injuries.read.length, next.injuries.read.length);
+    if (prev.fit?.stats && next.fit?.stats) {
+      const lost = prev.fit.stats.filter((k) => !next.fit.stats.includes(k));
+      if (lost.length) shrank.push(`the props fit without ${lost.join(', ')}`);
+    }
+    if (shrank.length) held.push(`inputs shrank since the last record (${prev.v ? 'its fingerprint' : 'its counts'}): ${shrank.join('; ')}`);
+    if (same) {
+      if (differs.length) held.push(`inputs changed, not the model: ${differs.join('; ')}`);
+      if (fin(prev.units) && fin(next.units) && Math.abs(next.units - prev.units) > tol) {
+        const fitMoved = prev.fit?.hash && next.fit?.hash && prev.fit.hash !== next.fit.hash ? `; the props fit ${prev.fit.at} to ${next.fit.at}` : '';
+        held.push(`inputs changed, not the model: the replay moved ${sgn(prev.units)} to ${sgn(next.units)} (${sgn(next.units - prev.units)}, past ${tol}u) with the model's code unchanged since the last record${fitMoved}`);
+      }
+    }
+  }
+  const ok = !hard.length && (!held.length || !!accept);
+  return { ok, sport, hard, held, same, accepted: ok && held.length ? accept : null };
+}
+
+// The full cache a record needs, built for a sport with this checkout's code (no bets, no odds bought: the free
+// sources only): the context facts gathered and saved, the players' games fetched, the NFL's history lines and
+// injury listings read, and the props' fit searched and saved when the cache has none this code can use (refit:
+// whatever it has). gate.mjs --rebuild-cache [sports] [--refit] (with --record, the gate runs and records after)
+export async function rebuildCache(sport, { refit = false, log = console.log } = {}) {
+  if (sport === 'mma') return log('mma: nothing to build (its archive and priced history are committed)');
+  const [L, R, C, PL, P, F] = await Promise.all(['leagues', 'ratings', 'context', 'playerlogs', 'props', 'fitcache'].map((n) => import(`./${n}.mjs`)));
+  const cfg = L.LEAGUES[sport];
+  const state = readJson(path.join(ROOT, 'apps', sport, 'src/StaticData/model/state.json'), {});
+  const history = readJson(path.join(ROOT, 'apps', sport, 'scripts/model/games.json'), [])
+    .filter((g) => g.type === 2 || g.type === 3)
+    .sort((a, b) => a.date.localeCompare(b.date));
+  const before = state.params ?? cfg.priors;
+  const best = R.fit(history, { ...cfg.priors, sigma: before.sigma ?? cfg.priors.sigma, sigmaT: before.sigmaT ?? cfg.priors.sigmaT }, cfg.grid);
+  const params = { ...(best?.params ?? before) };
+  const file = path.join(ROOT, '.cache/model', `context-${sport}.json`);
+  const facts = readJson(file, {});
+  const times = {};
+  const t0 = Date.now();
+  await C.gather(sport, cfg, history, [], facts, wantOf(state, C.OPTIONAL, sport), times);
+  // (as run.mjs fitTheContext keeps them: the NFL's nflverse rows read again every run)
+  const { nfl: _rows, ...kept } = facts;
+  mkdirSync(path.dirname(file), { recursive: true });
+  writeFileSync(file, JSON.stringify(kept));
+  const failed = Object.entries(times)
+    .filter(([, t]) => !t.ok)
+    .map(([k]) => k);
+  log(`${sport}: context facts gathered in ${Math.round((Date.now() - t0) / 1000)}s and saved${failed.length ? ` (failed: ${failed.join(', ')}: run it again)` : ''}`);
+  const feats = C.featurize(sport, cfg, history, facts, new Map());
+  const ctxFit = R.fitContext(history, params, feats.feats, feats.terms);
+  if (ctxFit) Object.assign(params, { sigma: Math.round(ctxFit.after.sigma * 1000) / 1000, sigmaT: Math.round(ctxFit.after.sigmaT * 1000) / 1000 });
+  const expPts = new Map();
+  R.replay(history, params, 0, ctxFit?.ctx ?? null, (g, e) => expPts.set(g.id, [e.homePts, e.awayPts]));
+  const rows = await PL.playerRows(sport, cfg, history, facts);
+  const info = new Map([...(feats?.feats ?? new Map())].map(([id, f]) => [id, f.info]));
+  const market = sport === 'nfl' ? await P.nflMarket(history) : sport === 'nba' ? PL.boxMarket('nba') : null;
+  const listed = sport === 'nfl' ? await P.nflListed(history, facts, [...new Set(rows.map((x) => x.season))].sort()) : null;
+  const totals = sport === 'nhl' ? PL.boxTotals('nhl') : null;
+  log(`${sport}: ${rows.length} player games; the context ${ctxFit ? 'fit' : 'NOT fit'}`);
+  const finals = history.filter((g) => g.final).length;
+  const now = new Date();
+  const saved = F.readFit(sport);
+  const due = F.refitWhy(saved, { sport, now, finals, force: refit });
+  if (!due.must) return log(`${sport}: the saved props fit of ${saved.fit.at} kept (its code is this checkout's${due.refit ? `; stale, ${due.why}: --refit searches again` : ''})`);
+  log(`${sport}: the props' fit searched (${due.why}; the NFL's about 27 minutes)`);
+  const soft = { prev: Object.fromEntries((state.props?.types ?? []).map((t) => [t.key, t.params?.soft ?? null])), now: now.getTime() };
+  const t1 = Date.now();
+  const fitted = P.fitProps(sport, rows, expPts, info, facts, market, totals, listed, soft, null);
+  const out = F.saveFit(sport, { fits: fitted.fits, at: now, finals, rows: rows.length, seconds: Math.round((Date.now() - t1) / 1000) });
+  log(`${sport}: the props' fit saved (code ${out.code}, ${out.seconds}s)`);
+}
+
 async function main() {
   const args = process.argv.slice(2);
   const val = (flag) => {
     const i = args.indexOf(flag);
     return i >= 0 ? args[i + 1] : undefined;
   };
-  const flags = new Set(['--candidate', '--champion', '--score', '--sport', '--out', '--json', '--score-only']);
+  const flags = new Set(['--candidate', '--champion', '--score', '--sport', '--out', '--json', '--score-only', '--accept-inputs', '--units-tol', '--to']);
   const named = args.filter((a, i) => !a.startsWith('--') && !flags.has(args[i - 1]));
   const sports = named.filter((s) => SPORTS.includes(s));
   const list = sports.length ? sports : SPORTS;
@@ -895,13 +1221,26 @@ async function main() {
     console.log(`frozen benchmark written (${path.relative(ROOT, FROZEN_FILE)}): ${SPORTS.map((s) => `${s} ${fz.sports[s].props.length} props, ${fz.sports[s].lines.length} lines`).join('; ')}`);
     return;
   }
+  // (the full cache first (rebuildCache): alone, or before a gate run that records)
+  if (args.includes('--rebuild-cache')) {
+    for (const sport of list) await rebuildCache(sport, { refit });
+    if (!args.includes('--record')) return;
+  }
+  const record = args.includes('--record');
+  const guardOpts = { refit, accept: val('--accept-inputs') ?? null, tol: fin(Number(val('--units-tol'))) ? Number(val('--units-tol')) : UNITS_TOL };
   const frozen = readJson(FROZEN_FILE, null);
   if (args.includes('--score-only')) {
     const v = resolveVersion(val('--score-only'));
+    const pending = [];
     for (const sport of list) {
       const score = scoreIn(v, sport, { refit, props });
-      if (args.includes('--record')) recordScore(v, sport, score, frozen);
+      if (record) pending.push({ sport, score, champion: null });
       else console.log(JSON.stringify(scorecardOf(score, frozen), null, 1));
+    }
+    if (record) {
+      const g = guardRecords(pending, frozen, guardOpts);
+      if (!g.ok) return void (process.exitCode = 3);
+      for (const p of pending) recordScore(v, p.sport, p.score, frozen, g.inputs[p.sport] ?? null);
     }
     return;
   }
@@ -916,13 +1255,14 @@ async function main() {
   if (changed.includes('props') && !refit) console.log("the props' code changed: both versions replayed under the one saved fit's settings; a change to the fit's search itself needs --refit (each version searches its own: the NFL's about 27 minutes each)");
   const results = {};
   const report = [];
+  const pending = [];
   for (const sport of list) {
     const a = scoreIn(champion, sport, { refit, props });
     const b = scoreIn(candidate, sport, { refit, props });
     const c = compareScores(sport, a, b);
     results[sport] = c;
     report.push(tableOf(c));
-    if (args.includes('--record')) recordScore(candidate, sport, b, frozen);
+    if (record) pending.push({ sport, score: b, champion: a });
   }
   const verdict = gateVerdict(Object.fromEntries(Object.entries(results).map(([s, c]) => [s, c.verdict])));
   console.log(`\n${report.join('\n\n')}\n`);
@@ -931,6 +1271,12 @@ async function main() {
   console.log(`(deciding: layer a's current and last ${2} seasons inside each sport's rule era; layer b's ${BET_DECIDE.join(', ')}; worse beyond noise = the 95% bootstrap interval wholly worse)`);
   if (val('--json')) writeFileSync(val('--json'), JSON.stringify({ champion: champion.label, candidate: candidate.label, changed, verdict, results }, null, 1));
   if (verdict.verdict === 'HOLD') process.exitCode = 2;
+  // (--record: every sport's inputs checked before any file is written (guardRecords, D47's guard))
+  if (record) {
+    const g = guardRecords(pending, frozen, guardOpts);
+    if (!g.ok) return void (process.exitCode = 3);
+    for (const p of pending) recordScore(candidate, p.sport, p.score, frozen, g.inputs[p.sport] ?? null);
+  }
 }
 
 if (process.argv[1] && path.resolve(process.argv[1]) === fileURLToPath(import.meta.url)) {
