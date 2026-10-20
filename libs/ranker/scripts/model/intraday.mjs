@@ -272,6 +272,7 @@ async function main() {
   if (cmd === 'build') return void build(sports);
   if (cmd === 'balance') return void console.log(`credits left: ${await balance()}`);
   if (cmd === 'curve') return void (await import('./intraday-curve.mjs')).main(sports);
+  if (cmd === 'pcurve') return void (await import('./intraday-curve.mjs')).propsMain(sports);
   if (cmd !== 'pull' && cmd !== 'props') throw new Error('usage: plan | pull | props | build | curve | balance');
   for (const sport of sports) {
     const before = state.spent;

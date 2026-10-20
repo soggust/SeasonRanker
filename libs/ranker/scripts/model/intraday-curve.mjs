@@ -4,7 +4,9 @@
 // side ("all": the Book's price itself) and for the sides the Bot's trust-0 lines bet ("gap": DraftKings' price
 // past Pinnacle's no-vig at that same snapshot, D48), with the gap sides' results. Read only; it prices nothing.
 import { readHistory } from './odds-history.mjs';
-import { OFFSETS, readIntraday } from './intraday.mjs';
+import { existsSync, readdirSync, readFileSync } from 'node:fs';
+import { gunzipSync as gunzip } from 'node:zlib';
+import { OFFSETS, intradayDir as intradayDirOf, readIntraday } from './intraday.mjs';
 
 const HOUR = 36e5;
 const TOL = 0.75 * HOUR;
@@ -114,7 +116,7 @@ export function curveOf(sport, { hist = readHistory(sport, { props: false }), in
 }
 
 const pct = (v) => `${v >= 0 ? '+' : ''}${(v * 100).toFixed(1)}%`;
-const show = (t) => (t?.n || t?.m ? `${String(Math.max(t.n, t.m)).padStart(5)}${t.n ? ` ev ${pct(t.ev / t.n).padStart(6)} beat ${((t.beat / t.n) * 100).toFixed(0).padStart(3)}%` : ''}${t.m ? ` pts ${(t.pts / t.m >= 0 ? '+' : '') + (t.pts / t.m).toFixed(2)}` : ''}${t.res ? ` roi ${pct(t.profit / t.res).padStart(6)} (${t.res})` : ''}` : '    -');
+const show = (t) => (t?.n || t?.m ? `${String(Math.max(t.n, t.m ?? 0)).padStart(5)}${t.n ? ` ev ${pct(t.ev / t.n).padStart(6)} beat ${((t.beat / t.n) * 100).toFixed(0).padStart(3)}%` : ''}${t.m ? ` pts ${(t.pts / t.m >= 0 ? '+' : '') + (t.pts / t.m).toFixed(2)}` : ''}${t.res ? ` roi ${pct(t.profit / t.res).padStart(6)} (${t.res})` : ''}` : '    -');
 
 export async function main(sports) {
   for (const sport of sports) {
@@ -126,5 +128,74 @@ export async function main(sports) {
         console.log(`  ${m.padEnd(6)} ${String(h).padStart(3)}h  all ${show(c.all)} | gap ${show(c.gap)} | ${Object.entries(c.gapBy).map(([k, t]) => `${k} ${show(t)}`).join(' | ')}`);
       }
     }
+  }
+}
+
+// The props' curve (D61): each player line DraftKings showed N hours out (the intraday props' snapshots), against the
+// archive's close at the same line (Pinnacle's no-vig there where it posted it, else DraftKings' own): every side,
+// and the gap sides (DraftKings past Pinnacle's no-vig at the same line and snapshot), by stat. No results (a
+// prop's result isn't in the archive). { [market]: { [h]: { all, gap } } }
+export function propsCurveOf(sport, { hist = readHistory(sport), offsets = null } = {}) {
+  const dir = intradayDirOf(sport);
+  const cells = {};
+  if (!existsSync(dir)) return cells;
+  const close = new Map();
+  for (const p of hist.props) if (p.kind === 'c') close.set(`${p.oid}|${p.book}|${p.market}|${p.player}|${p.line}`, p);
+  const tally = () => ({ n: 0, ev: 0, beat: 0 });
+  const add = (t, ev) => {
+    t.n++;
+    t.ev += ev;
+    if (ev > 0) t.beat++;
+  };
+  for (const f of readdirSync(dir).filter((x) => x.startsWith('props-') && x.endsWith('.jsonl.gz'))) {
+    const rows = new Map();
+    const snaps = [];
+    for (const s of gunzip(readFileSync(`${dir}/${f}`)).toString('utf8').split('\n')) {
+      if (!s) continue;
+      const r = JSON.parse(s);
+      if (r[0] === 'T') snaps.push({ oid: r[1], ts: Date.parse(r[2]) });
+      else if (r[0] === 'Q') (rows.get(r[1]) ?? rows.set(r[1], []).get(r[1])).push({ ts: Date.parse(r[2]), book: r[3], market: r[4], player: r[5], line: r[6], over: r[7], under: r[8] });
+    }
+    for (const s of snaps) {
+      const e = hist.events.get(s.oid);
+      const list = rows.get(s.oid);
+      if (!e || !list) continue;
+      const h = Math.round((Date.parse(e.t) - s.ts) / HOUR);
+      // (each line's price at the snapshot: its last row at or before it)
+      const now = new Map();
+      for (const x of list) if (x.ts <= s.ts) now.set(`${x.book}|${x.market}|${x.player}|${x.line}`, x);
+      for (const [k, x] of now) {
+        if (x.book !== 'dk' || !fin(x.over) || !fin(x.under)) continue;
+        const rest = k.slice(3);
+        const pc = close.get(`${s.oid}|pin|${rest}`);
+        const dc = close.get(`${s.oid}|dk|${rest}`);
+        const c = pc && fin(pc.over) && fin(pc.under) ? pc : dc;
+        if (!c || !fin(c.over) || !fin(c.under)) continue;
+        const q = nv(c.over, c.under);
+        const pin = now.get(`pin|${rest}`);
+        const fairThen = pin && fin(pin.over) && fin(pin.under) ? nv(pin.over, pin.under) : null;
+        const cell = ((cells[x.market] ??= {})[h] ??= { all: tally(), gap: tally() });
+        for (const over of [true, false]) {
+          const odds = over ? x.over : x.under;
+          const ev = (over ? q : 1 - q) * dec(odds) - 1;
+          add(cell.all, ev);
+          if (fin(fairThen) && (over ? fairThen : 1 - fairThen) * dec(odds) - 1 > 0) add(cell.gap, ev);
+        }
+      }
+    }
+  }
+  return cells;
+}
+
+export async function propsMain(sports) {
+  for (const sport of sports) {
+    const cells = propsCurveOf(sport);
+    console.log(`\n${sport.toUpperCase()} props: the expected return at the fair close of the Book's price N hours out (all sides | the gap sides past the sharp no-vig then)`);
+    for (const [m, byH] of Object.entries(cells))
+      for (const h of Object.keys(byH).map(Number).sort((a, b) => b - a)) {
+        const c = byH[h];
+        if (c.all.n < 50) continue;
+        console.log(`  ${m.padEnd(30)} ${String(h).padStart(3)}h  all ${show(c.all)} | gap ${show(c.gap)}`);
+      }
   }
 }
