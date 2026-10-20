@@ -32,7 +32,7 @@ import { existsSync, mkdirSync, readFileSync, rmSync, writeFileSync } from 'node
 import path from 'node:path';
 import { buildDossiers, dataSeason, dayOf, ROOT, SPORTS, siteFile } from './dossier.mjs';
 import { analyze, cacheDir, DEFAULT_CAP, publish, published, worstCost } from './analyze.mjs';
-import { leagueSeason, PRESEASON, postseasonGames, standings, teamStatus } from './season-state.mjs';
+import { leagueSeason, OFFSEASON, PRESEASON, postseasonGames, standings, teamStatus } from './season-state.mjs';
 
 const TREE = path.join(ROOT, '.cache/analysis/push-tree-teams');
 const today = new Date().toLocaleDateString('en-CA');
@@ -118,9 +118,15 @@ async function runSport(sport) {
   }
   git(['fetch', 'origin', 'master']);
   const season = dataSeason(sport);
-  const league = await leagueSeason(cfg.espn);
-  // (the data's season isn't the one ESPN is on: the NBA's before its rollover, a finished season's data)
-  if (league.year !== season) {
+  let league = await leagueSeason(cfg.espn);
+  // (the data still on a finished season, ESPN on the next: the NBA's before its rollover. That season's
+  // recaps, the teams without one (every team's season over), then nothing until the data rolls over: the
+  // owner, 2026-10-19, the NBA's 2025-26 ended before these reports existed and had none)
+  const finished = league.year > season;
+  if (finished) {
+    log(`${cfg.name}: the site's data is on ${cfg.label(season)}, ESPN on ${cfg.label(league.year)}; ${cfg.label(season)}'s recaps only`);
+    league = { year: season, type: OFFSEASON };
+  } else if (league.year !== season) {
     log(`${cfg.name}: the site's data is on ${cfg.label(season)}, ESPN on ${cfg.label(league.year)}; nothing until the data rolls over`);
     return true;
   }
@@ -148,6 +154,7 @@ async function runSport(sport) {
     }
     jobs.push({ key, ...s });
   }
+  if (finished) jobs = jobs.filter((j) => j.mode === 'recap');
   if (MODE) jobs = jobs.filter((j) => j.mode === MODE);
   if (TEAMS) jobs = jobs.filter((j) => TEAMS.includes(j.key.toUpperCase()) || TEAMS.includes(j.dossier.team.abbr));
   if (LIMIT) jobs = jobs.slice(0, LIMIT);

@@ -95,7 +95,8 @@ export async function postseasonGames(league, year, today = new Date()) {
   const parts = (await Promise.all([PLAY_IN, POSTSEASON].map((t) => partDates(league, year, t)))).filter(Boolean);
   if (!parts.length) return [];
   const start = parts.map((p) => p.start).sort()[0];
-  const last = new Date(Math.min(today.getTime(), ...parts.map((p) => (p.end ? Date.parse(p.end) : Infinity))));
+  // (through the last part's end: the latest, not the play-in's, which stopped the NBA's at its play-in, 2026-10-19)
+  const last = new Date(Math.min(today.getTime(), Math.max(...parts.map((p) => (p.end ? Date.parse(p.end) : Infinity)))));
   const days = [];
   for (let d = new Date(`${start}T12:00:00Z`); d <= last; d.setUTCDate(d.getUTCDate() + 1)) days.push(d.toISOString().slice(0, 10).replace(/-/g, ''));
   const games = new Map();
@@ -110,10 +111,12 @@ export async function postseasonGames(league, year, today = new Date()) {
   return [...games.values()].sort((a, b) => a.date.localeCompare(b.date));
 }
 
-// A team's games in a season part (ESPN's team schedule: done and to come)
+// A team's games in a season part (ESPN's team schedule: done and to come). Not the NBA Cup's final: ESPN
+// lists it in the regular season (competition type "CC"), but it isn't in the standings or the NBA's stats,
+// so the site never has it (its two teams read a game behind for good, 83 played to 82 shown: 2026-10-19)
 export async function teamSchedule(league, teamId, year, type = REGULAR) {
   const s = await json(`${SITE}/site/v2/sports/${league}/teams/${teamId}/schedule?season=${year}&seasontype=${type}`);
-  return (s.events ?? []).map(gameOf).map((g) => ({ ...g, type: g.type || type }));
+  return (s.events ?? []).filter((e) => e.competitions?.[0]?.type?.abbreviation !== 'CC').map(gameOf).map((g) => ({ ...g, type: g.type || type }));
 }
 
 // Each team's status: { over, why, champion } by ESPN id.
