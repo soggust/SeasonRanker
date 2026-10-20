@@ -91,9 +91,7 @@ jobs:
       - name: Install dependencies
         # (npm install, not npm ci: GitHub's npm wants lock entries ours resolves without; the lock is put back
         # as it was, so the commit step's pull --rebase sees a clean tree)
-        run: |
-          npm install
-          git checkout -- package-lock.json
+        uses: ./.github/actions/npm-install
 
       - name: Check the data
         # Whether the data is whole (data.test.mjs: it parses, every file and row has its fields) blocks the commit.

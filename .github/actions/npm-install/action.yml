@@ -1,0 +1,25 @@
+# The dependencies every workflow installs, in one place. node_modules is restored from a cache keyed on the
+# runner, the Node version and the committed lock, so on a hit `npm install` only checks the tree (seconds,
+# not the full install). npm install, not npm ci: GitHub's npm wants lock entries ours resolves without; the
+# lock is put back as it was, so a commit step's pull --rebase sees a clean tree.
+name: Install dependencies
+description: npm install with a cached node_modules; the lock put back as committed
+runs:
+  using: composite
+  steps:
+    - name: Node version for the cache key
+      id: node
+      shell: bash
+      run: echo "version=$(node --version)" >> "$GITHUB_OUTPUT"
+
+    - name: Restore node_modules
+      uses: actions/cache@v6
+      with:
+        path: node_modules
+        key: node-modules-${{ runner.os }}-${{ steps.node.outputs.version }}-${{ hashFiles('package-lock.json') }}
+
+    - name: npm install
+      shell: bash
+      run: |
+        npm install --no-audit --no-fund
+        git checkout -- package-lock.json

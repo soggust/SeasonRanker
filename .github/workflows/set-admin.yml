@@ -33,7 +33,7 @@ jobs:
 
       - name: Install
         # (npm install, not npm ci, as the other workflows: GitHub's npm wants lock entries ours resolves without)
-        run: npm install
+        uses: ./.github/actions/npm-install
 
       - name: Set the claim
         env:

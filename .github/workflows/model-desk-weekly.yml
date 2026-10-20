@@ -66,9 +66,7 @@ jobs:
       # (npm install, not npm ci, as the desk's run does: the lock put back. The data test needs it (esbuild),
       # and so does the build)
       - name: Install dependencies
-        run: |
-          npm install
-          git checkout -- package-lock.json
+        uses: ./.github/actions/npm-install
 
       # (the hourly desk's npm test asserts selfcheck.json's shape before it commits: a file that failed it would
       # stop every hourly run's commit. So it's checked here first; failing, the job stops and nothing is committed)
