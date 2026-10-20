@@ -1944,6 +1944,42 @@
     "seen": "2026-10-20T21:48:42.617Z",
     "own": "2026-10-20T21:36:00.000Z"
    }
+  },
+  "401909838|blakehinson|out": {
+   "game": "401909838",
+   "start": "2026-10-22T00:00Z",
+   "team": "26",
+   "name": "Blake Hinson",
+   "status": "out",
+   "athlete": "4396963",
+   "espn": {
+    "seen": "2026-10-20T22:14:44.029Z",
+    "own": "2026-10-20T22:12:00.000Z"
+   }
+  },
+  "401909838|tonybradley|out": {
+   "game": "401909838",
+   "start": "2026-10-22T00:00Z",
+   "team": "26",
+   "name": "Tony Bradley",
+   "status": "out",
+   "athlete": "4065673",
+   "espn": {
+    "seen": "2026-10-20T22:14:44.029Z",
+    "own": "2026-10-20T22:08:00.000Z"
+   }
+  },
+  "401909838|treyalexander|out": {
+   "game": "401909838",
+   "start": "2026-10-22T00:00Z",
+   "team": "26",
+   "name": "Trey Alexander",
+   "status": "out",
+   "athlete": "4433268",
+   "espn": {
+    "seen": "2026-10-20T22:14:44.029Z",
+    "own": "2026-10-20T22:06:00.000Z"
+   }
   }
  }
 }
