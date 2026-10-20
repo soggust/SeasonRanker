@@ -280,9 +280,3 @@ export function lockedText(r: Pick<BetRow, 'price' | 'placedAt'>, now = Date.now
   const sameDay = new Date(now).toDateString() === at.toDateString();
   return `Bet at ${sign(r.price)} · ${sameDay ? time : `${at.toLocaleDateString('en-US', { weekday: 'short' })} ${time}`}`;
 }
-
-// (a moved bet's note's hover: the live price against the locked one)
-export function movedTitle(r: Pick<BetRow, 'price' | 'livePrice'>): string | null {
-  if (!priced(r.price) || !priced(r.livePrice)) return null;
-  return `The price has moved since the Bot bet it: ${sign(r.livePrice)} now, the Bot locked ${sign(r.price)}. Its band and Kelly score are the locked price's`;
-}

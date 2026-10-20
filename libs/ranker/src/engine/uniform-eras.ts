@@ -87,8 +87,6 @@ export type Face =
   | 'flames'
   | 'sabres'
   | 'wild';
-export const FACES_LIST: Face[] = ['block', 'varsity', 'college', 'tuscan', 'rounded', 'wide', 'sharp', 'slim', 'broncos', 'chargers', 'jaguars', 'packers', 'astros', 'bruins', 'ducks', 'flames', 'sabres', 'wild'];
-
 // A team's lettering by era: the face its jerseys carried from a season on (and to one, where it was dropped);
 // a bare face for the whole table
 export type FaceSpan = [from: number, face: Face, to?: number];

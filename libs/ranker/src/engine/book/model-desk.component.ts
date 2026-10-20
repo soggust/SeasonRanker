@@ -446,9 +446,11 @@ export class ModelDeskComponent implements OnInit, OnDestroy {
 
   // (each team's abbreviation by its ESPN id, from the sport's teams.json: a prop's player's side)
   private async loadTeams(): Promise<void> {
-    for (const sport of new Set(this.allBets.map((b) => b.sport))) {
-      const file = await getJson<{ teams?: Record<string, { id: string }> }>(`/${sport}/data/model/teams.json`);
-      for (const [abbr, t] of Object.entries(file?.teams ?? {})) this.teamAbbr.set(`${sport}#${t.id}`, abbr);
+    // (every sport's file asked at once, then read in order)
+    const sports = [...new Set(this.allBets.map((b) => b.sport))];
+    const files = await Promise.all(sports.map((sport) => getJson<{ teams?: Record<string, { id: string }> }>(`/${sport}/data/model/teams.json`)));
+    for (const [i, sport] of sports.entries()) {
+      for (const [abbr, t] of Object.entries(files[i]?.teams ?? {})) this.teamAbbr.set(`${sport}#${t.id}`, abbr);
     }
     // (the props' sections are by team: built again with the teams known)
     this.sectionMemo = new WeakMap();
