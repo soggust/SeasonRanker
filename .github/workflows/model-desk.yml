@@ -18,6 +18,10 @@ on:
     # the task "SeasonRanker desk kick", hourly at :12 around the clock while he's logged on, dispatches it when no
     # run started in the last 50 minutes (scripts/desk-kick.ps1, log .cache/desk-kick.log). An always-on kicker,
     # if wanted: README.md's "Kicking the desk")
+    # (and since 2026-10-20 the task "SeasonRanker desk watch" (scripts/desk-watch.mjs, DECISIONS.md D55) polls ESPN's
+    # free lines and injury lists and the reporters' posts every 5 minutes and dispatches a run, its reason given,
+    # when a line moves, a window opens or high-impact news lands: never while a run is queued or running, nor within
+    # 20 minutes of the last one's start, at most 40 a day. The repo is public: the minutes are free)
     - cron: "7 * * * *"
     - cron: "37 * * * *"
     # (MMA, since 2026-10-16 (leagues.mjs mma, mma-desk.mjs): UFC cards fight on Saturdays, mostly 4 to 11 PM

@@ -116,11 +116,20 @@ export function lostAsk({ times, dk = [], markets = null, published = 0, boardPr
 // 2.5 hours of the start, once, with prop bets open or owed: their last line before the close). times: the
 // asks so far; max: PROP_ASKS; until: ms to the start. A board with its own prices (NBA, NHL, MLB) prices its
 // owed props on them, so its re-asks don't spend the allowance the NFL's first asks need
-export function propAsk({ times, max, owed = false, boardPriced = false, nearAsked = false, until, open = 0 }) {
+// And, for a board with no prices of its own (the NFL's: every price is The Odds API's), by value (D55): 'news' (an
+// out on either side's report since the last ask: the teammates' lines move with it, outsChanged), 'late' (once, inside
+// the last chance, where the last ask held rows for the lineup risk: their stat's line moves by the close, D42, so the
+// late price is the one worth betting; held), and 'refresh' (mid-window, the last ask REFRESH_H old or more, only while
+// the month projects under its target: refresh). Each spends its tier's share of the day's allowance (oddsapi.mjs TIERS)
+export const REFRESH_H = 6;
+export function propAsk({ times, max, owed = false, boardPriced = false, nearAsked = false, until, open = 0, outsChanged = false, held = 0, lateAsked = false, last = false, sinceAsk = 0, refresh = false }) {
   if (times >= max) return null;
   if (times === 0) return 'first';
   if (owed && !boardPriced) return 'owed';
+  if (!boardPriced && outsChanged) return 'news';
+  if (!boardPriced && last && !lateAsked && held > 0) return 'late';
   if (!nearAsked && until < 2.5 * HOUR && (open > 0 || owed)) return 'near';
+  if (!boardPriced && refresh && !last && sinceAsk >= REFRESH_H * HOUR) return 'refresh';
   return null;
 }
 

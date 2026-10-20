@@ -207,7 +207,9 @@ export const GAME_CAP = 5;
 // gates restart. Set to the push time.
 // 2026-10-19, the residual model props only (DECISIONS.md D32, the owner's O4): the game lines (ml, spreads, totals)
 // price as before the model, the trust's chance alone; the props keep the blend. Set to the push time.
-export const MODEL_EPOCH = '2026-10-19T17:15:00Z';
+// 2026-10-20, the props' windows open when the Book posts them and the props' asks paced by value (DECISIONS.md D55):
+// the Bot's props are bet at other times than before. Set to the push time.
+export const MODEL_EPOCH = '2026-10-20T05:45:00Z';
 
 // TIMING (run.mjs, timing.mjs): when a coming game is bet, in hours before its start, so its bets wait for the
 // news rather than being locked in days ahead on a guess at who plays.
@@ -236,11 +238,17 @@ export const MODEL_EPOCH = '2026-10-19T17:15:00Z';
 // and is bet only if that still clears the price; else it waits for the lineups, inactives, goalies or probables,
 // and at the last chance bets with what's known. A fresh quote of The Odds API is bought only when the Bot is about
 // to bet (run.mjs betProps); the early hours price off the free board and the morning snapshot (suggest.mjs))
+// (2026-10-20, the owner (DECISIONS.md D55): "lots of game lines but no props for a lot of them, and I never get props
+// till last minute": the props' window opens when the Book posts them, probed that night (an empty answer is free):
+// the NFL's Thursday game posted 67 hours out and the London game 128 (the Sunday slate not yet at 132), the NBA's
+// at 42 to 46 hours (none at 66), the World Series' starters at 91, the NHL's not yet at 18 to 21 (the board had
+// them about 8.5 hours out). So the NFL 96, the NBA and MLB 48, the NHL 30; an ask that finds none posted is free
+// and tried again two hours on (run.mjs EMPTY_RETRY); the lineup risk still holds an early lean (D42))
 export const TIMING = {
-  nfl: { lines: 26, props: 26, lastChance: 3 },
-  nba: { lines: 26, props: 26, lastChance: 3 },
-  nhl: { lines: 26, props: 26, lastChance: 3 },
-  mlb: { lines: 26, props: 26, lastChance: 2.5 },
+  nfl: { lines: 26, props: 96, lastChance: 3 },
+  nba: { lines: 26, props: 48, lastChance: 3 },
+  nhl: { lines: 26, props: 30, lastChance: 3 },
+  mlb: { lines: 26, props: 48, lastChance: 2.5 },
   // (MMA: a bout's lines open four weeks before it (the open round, 2026-10-19, DECISIONS.md D37: the Bot's edge on
   // the moneyline lives two weeks or more out, where the Book's opening line is soft, and is gone inside 48 hours; a
   // fighter pulled or replaced voids the bet rather than moving it, mma-desk.mjs; was 72 hours), the last chance 4;

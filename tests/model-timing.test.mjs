@@ -24,7 +24,12 @@ test('phaseOf: early before the window, open in it, last inside the last chance'
   assert.equal(phaseOf('nfl', 'lines', 20 * H), 'open');
   assert.equal(phaseOf('nfl', 'props', 2 * H), 'last');
   // (D42: the windows open the day before for every sport but MMA)
-  assert.equal(phaseOf('nba', 'props', 27 * H), 'early');
+  // (D55, the owner 2026-10-20: the props' window opens when the Book posts them: the NBA 48, the NHL 30, the NFL 96)
+  assert.equal(phaseOf('nba', 'props', 49 * H), 'early');
+  assert.equal(phaseOf('nba', 'props', 47 * H), 'open');
+  assert.equal(phaseOf('nhl', 'props', 31 * H), 'early');
+  assert.equal(phaseOf('nfl', 'props', 90 * H), 'open');
+  assert.equal(phaseOf('nba', 'lines', 27 * H), 'early');
   assert.equal(phaseOf('nba', 'props', 25 * H), 'open');
   assert.equal(phaseOf('nhl', 'props', 25 * H), 'open');
   assert.equal(phaseOf('mlb', 'lines', 25 * H), 'open');

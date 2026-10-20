@@ -1009,3 +1009,48 @@ test('D54 the news log and the price log are logging only: the run\'s last step,
   const decisions = fs.readFileSync(path.resolve('libs/ranker/scripts/model/DECISIONS.md'), 'utf8');
   assert.ok(decisions.includes('### D54.'));
 });
+
+test('D55 the $30 plan never exceeded, paced to about 95%; the lines bought on a change; the props asked when posted, by value; the watcher rate-limited', async () => {
+  const odds = await import('../libs/ranker/scripts/model/oddsapi.mjs');
+  const { TIMING } = await import('../libs/ranker/scripts/model/leagues.mjs');
+  const { propAsk, REFRESH_H } = await import('../libs/ranker/scripts/model/timing.mjs');
+  const watch = await import('../scripts/desk-watch.mjs');
+  assert.equal(odds.MONTHLY, 20000);
+  assert.equal(odds.RESERVE, 1000);
+  assert.equal(odds.TARGET, 0.95);
+  // (the 5M plan's balance never lifts the month past MONTHLY: the tally binds)
+  const start = Date.parse('2026-10-19T04:06:35Z');
+  const u = { cycleStart: new Date(start).toISOString(), remaining: 2_670_000, used: 2_330_000, calls: [], features: {} };
+  odds.recordOn(u, 'props', 11, 2_670_000, 2_330_000, new Date(start + 864e5).toISOString());
+  u.cycle.spent.props = odds.MONTHLY - odds.RESERVE - 5;
+  const b = odds.budgetOf(u, start + 29 * 864e5);
+  assert.ok(b.remaining <= odds.MONTHLY - (odds.MONTHLY - odds.RESERVE - 5));
+  for (const f of ['lines', 'props', 'snapshot']) assert.equal(odds.spendable(f, 11, b, 'first'), false, f);
+  assert.ok(odds.projectedMonth(b, start + 29 * 864e5) < 25000, 'the projection reads the tally, not the plan');
+  // (the lines: a line bet only at a paid quote (D30, D51); the quote bought where ESPN's line moved or it's stale)
+  assert.equal(odds.linesWant({ at: new Date(start).toISOString(), espn: { spread: -3, total: 44, ml: 0.6, sp: 0.5, ou: 0.5 }, phase: 'window' }, { spread: -3, total: 44, ml: 0.6, sp: 0.5, ou: 0.5 }, 'window', start + 30 * 6e4), null);
+  // (the props' window opens when the Book posts them, a day or more; the lines' stays 26)
+  assert.deepEqual([TIMING.nfl.props, TIMING.nba.props, TIMING.nhl.props, TIMING.mlb.props], [96, 48, 30, 48]);
+  for (const s of ['nfl', 'nba', 'nhl', 'mlb']) assert.equal(TIMING[s].lines, 26);
+  // (by value: first, owed, news, late, near, refresh; a priced board (NBA, NHL, MLB) asks none of news, late or refresh)
+  const H = 36e5;
+  assert.equal(propAsk({ times: 0, max: 6, until: 90 * H }), 'first');
+  assert.equal(propAsk({ times: 1, max: 6, until: 50 * H, outsChanged: true }), 'news');
+  assert.equal(propAsk({ times: 1, max: 6, until: 50 * H, outsChanged: true, boardPriced: true }), null);
+  assert.equal(propAsk({ times: 1, max: 6, until: 2.8 * H, last: true, held: 3 }), 'late');
+  assert.equal(propAsk({ times: 2, max: 6, until: 2.8 * H, last: true, held: 3, lateAsked: true }), null);
+  assert.equal(propAsk({ times: 1, max: 6, until: 40 * H, sinceAsk: REFRESH_H * H, refresh: true }), 'refresh');
+  assert.equal(propAsk({ times: 1, max: 6, until: 40 * H, sinceAsk: REFRESH_H * H, refresh: false }), null);
+  assert.equal(propAsk({ times: 6, max: 6, until: 40 * H, outsChanged: true }), null);
+  assert.ok(odds.TIERS.first > odds.TIERS.news && odds.TIERS.late > odds.TIERS.refresh);
+  // (the watcher: never while a run is queued or running, the cooldown, the day's cap)
+  const now = Date.now();
+  const pending = [{ key: 'k', why: 'w' }];
+  assert.equal(watch.dispatchDecision({ pending, runs: [{ status: 'in_progress', createdAt: new Date(now - 3 * H).toISOString() }], now }).go, false);
+  assert.equal(watch.dispatchDecision({ pending, runs: [{ status: 'completed', createdAt: new Date(now - 5 * 6e4).toISOString() }], now }).go, false);
+  assert.equal(watch.dispatchDecision({ pending, runs: [{ status: 'completed', createdAt: new Date(now - H).toISOString() }], now }).go, true);
+  const src = fs.readFileSync(path.resolve('scripts/desk-watch.mjs'), 'utf8');
+  assert.ok(!/ODDS_API_KEY|the-odds-api|run\.mjs/.test(src.replace(/^\/\/.*$/gm, '')), 'the watcher spends no credit and never runs the bettor');
+  const decisions = fs.readFileSync(path.resolve('libs/ranker/scripts/model/DECISIONS.md'), 'utf8');
+  assert.ok(decisions.includes('### D55.'));
+});

@@ -17,7 +17,8 @@ const src = (f) => fs.readFileSync(path.resolve('libs/ranker/scripts/model', f),
 test('D42 the windows open the day before for every sport but MMA', () => {
   for (const s of ['nfl', 'nba', 'nhl', 'mlb']) {
     assert.equal(TIMING[s].lines, 26, `${s} lines`);
-    assert.equal(TIMING[s].props, 26, `${s} props`);
+    // (the props' window since D55 (the owner, 2026-10-20): open when the Book posts them, a day or more before)
+    assert.ok(TIMING[s].props >= 26, `${s} props`);
   }
   // (MMA's window is four weeks since the open round (D37): its edge lives two weeks or more out, not the day before)
   assert.equal(TIMING.mma.lines, 672);

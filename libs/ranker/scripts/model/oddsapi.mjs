@@ -23,14 +23,16 @@
 //   usage  each call's cost and the balance after it (the API's x-requests-last and x-requests-remaining) land
 //          in .cache/model/odds-usage.json, by feature (lines, props, history); each sport's state gets a summary
 //   budget the cycle is a month from its first call here (an assumption: the API resets on the plan's billing
-//          day, which it doesn't say; a balance that jumps back up starts a new cycle early); 2,000 credits are
-//          held back, history has its own 6,000 this cycle, and the rest is split a day at a time between lines
-//          and props by what's left and the days left (lines the larger share: they're the last to be cut)
+//          day, which it doesn't say; a balance that jumps back up starts a new cycle early); the $30 plan's
+//          MONTHLY never exceeded: the desk's own tally of the cycle (mirrored in the repo, SPEND_FILE) and the
+//          API's balance, the lower, bind (D55); RESERVE held back, and the rest paced a day at a time between lines
+//          and props by what's left over the days left (lines the larger share of the cuts: they're the last cut),
+//          the props' asks by value (TIERS), the optional refreshes only while the month projects under TARGET
 //   when   (run.mjs) the lines bought only while a game inside its window (leagues.mjs TIMING), its news in
 //          or at its last chance, has a market still to bet (a bet taken back to price again on news among
 //          them); a game's props asked once they're due, near the start, and when they're priced again on news
 //          (PROP_ASKS at most): a game days out buys nothing
-//   cuts   when credits run low: history first, then props, then lines; with none, or no key, or the API down,
+//   cuts   when credits run low: the snapshot first, then history, then props, then lines; with none, or no key, or the API down,
 //          the desk prices from ESPN's free board as before
 //
 // The key (ODDS_API_KEY: the repo's .env, or the workflow's secret) is never printed, logged or written: a URL
@@ -42,20 +44,38 @@ import { BOOK } from './leagues.mjs';
 
 const API = 'https://api.the-odds-api.com/v4';
 const USAGE = path.join(CACHE, 'odds-usage.json');
+// (the $30 plan's credits a month: never exceeded, whatever the API's balance says (DECISIONS.md D55; the 5M plan of
+// 2026-10-19's month reads millions): the desk's own tally of the cycle binds with the API's balance, the lower)
 export const MONTHLY = 20000;
-export const RESERVE = 2000;
+// (held back so the cycle never runs dry: 5%, so about 95% of the month is used, TARGET)
+export const RESERVE = 1000;
+export const TARGET = 0.95;
+// (history's own cap: bought only by a local backtest (backtest.mjs --buy, odds-history.mjs pull), whose usage file is
+// that machine's; the desk no longer holds it back from the live features (D55), its spending counts in the tally)
 export const HISTORY_BUDGET = 6000;
 // The morning snapshot (odds-history.mjs morning, once a day from 10 AM Eastern: every coming game's lines and the
 // day's props at the desk's book and Pinnacle, kept in the priced history; the owner's ask of 2026-10-18,
 // DECISIONS.md D29): its own feature, at most dayCap a UTC day, and the first cut when credits run low: it stops
-// while hold more than the reserve and history's unspent share is left, before history, props or lines feel it
+// while hold more than the reserve is left, before props or lines feel it
 export const SNAPSHOT = { dayCap: 300, hold: 2000 };
-// (the daily split of what's left for the live features, after the reserve and history's share)
+// (the daily split of what's left for the live features, past the reserve)
 const SHARES = { lines: 0.3, props: 0.7 };
 // (a busy day may spend up to this many days' worth: the NFL's props come nearly all on a Sunday, and a day's
 // even share can't re-ask a full slate priced again on news; the month's total and the reserve still hold, as
 // the share is of what's left)
 const BURST = { lines: 2, props: 4 };
+// (and the month on a straight line: by any moment the cycle may have spent at most its share of MONTHLY less the reserve
+// for the time gone plus AHEAD_DAYS, so a greedy week can't spend the month's end and the slow days bank credits
+// for the NFL's Sundays)
+export const AHEAD_DAYS = 3;
+// (the props' asks by value, D55: each may spend this share of the day's props allowance, so with credits short the
+// first asks (props soon after their window opens) come before the asks on news or owed (bets taken back), those
+// before the late ones (the last chance, where the stat's line moves by the close: D42's lineup risk) and the near
+// ones (the close's line for the open bets), and the optional refreshes last)
+export const TIERS = { first: 1, news: 0.9, owed: 0.9, late: 0.8, near: 0.8, refresh: 0.6 };
+// (the tally mirrored where the desk commits (GitHub only: a local run's calls are that machine's), so a lost cache
+// can't reset the month: read back when the cache has no cycle, or a smaller tally of the same cycle)
+export const SPEND_FILE = path.resolve(import.meta.dirname, '../../../../apps/nfl/scripts/model/odds-spend.json');
 
 // The sports' keys, and the books: the desk's own (its prices are the ones it bets) and Pinnacle (its line, the
 // vig taken out, is the fair chance); for props, the desk's book alone (Pinnacle's props are thin)
@@ -83,15 +103,19 @@ export const redact = (s) => String(s).replace(/apiKey=[^&\s"']+/gi, 'apiKey=***
 const DRY_FREE = process.argv.includes('--dry') && !process.argv.includes('--paid');
 export const hasKey = () => !!process.env.ODDS_API_KEY && !DRY_FREE;
 
-// The usage file: the cycle, the calls, the balance
+// The usage file: the cycle, the calls, the balance, the cycle's tally by feature (cycle) and the UTC day's (day)
 function usage() {
-  const u = readJson(USAGE, null) ?? { cycleStart: null, remaining: null, used: null, calls: [], features: {} };
-  return u;
+  return readJson(USAGE, null) ?? { cycleStart: null, remaining: null, used: null, calls: [], features: {} };
 }
 function saveUsage(u) {
   u.calls = u.calls.slice(-3000);
   writeJson(USAGE, u);
+  // (the mirror: GitHub's runs only)
+  if (process.env.GITHUB_ACTIONS === 'true') writeJson(SPEND_FILE, mirrorOf(u));
 }
+// (what the mirror keeps: the cycle, its tally, the day's, the API's last balance)
+export const mirrorOf = (u) => ({ about: 'The Odds API credits the desk spent this cycle (oddsapi.mjs, DECISIONS.md D55): the cache\'s tally mirrored, so a lost cache cannot reset the month', cycleStart: u.cycleStart, cycle: u.cycle ?? null, day: u.day ?? null, remaining: u.remaining ?? null });
+const readMirror = () => readJson(SPEND_FILE, null);
 
 // (the cycle's start: the first call here, a month at a time after it)
 function cycleOf(u, now = Date.now()) {
@@ -105,51 +129,85 @@ function cycleOf(u, now = Date.now()) {
   }
 }
 
-// What this cycle has spent, by feature, and what's left
+// (the usage with the mirror's word where it knows more: a cache with no cycle takes the mirror's while that cycle
+// runs; the same cycle, each feature's larger tally)
+export function withMirror(u, mirror, now = Date.now()) {
+  if (!mirror?.cycleStart) return u;
+  const mc = cycleOf(mirror, now);
+  if (!mc) return u;
+  if (!u.cycleStart) return { ...u, cycleStart: mirror.cycleStart, cycle: structuredClone(mirror.cycle ?? null), day: structuredClone(mirror.day ?? null), remaining: u.remaining ?? mirror.remaining ?? null };
+  const uc = cycleOf(u, now);
+  if (!uc || uc.start.getTime() !== mc.start.getTime() || !mirror.cycle || mirror.cycle.start !== u.cycle?.start) return u;
+  const max = (a = {}, b = {}) => Object.fromEntries([...new Set([...Object.keys(a), ...Object.keys(b)])].map((k) => [k, Math.max(a[k] ?? 0, b[k] ?? 0)]));
+  const day = u.day && mirror.day && u.day.date === mirror.day.date ? { date: u.day.date, spent: max(u.day.spent, mirror.day.spent) } : u.day;
+  return { ...u, cycle: { start: u.cycle.start, spent: max(u.cycle.spent, mirror.cycle.spent) }, day };
+}
+
+// (the cycle's tally: the running count (cycle), or, from a usage file before it, the calls kept since the start)
+function tallyOf(u, cycle) {
+  if (!cycle) return {};
+  if (u.cycle?.start === cycle.start.toISOString()) return { ...u.cycle.spent };
+  if (u.cycle) return {};
+  const out = {};
+  for (const c of u.calls ?? []) if (Date.parse(c.at) >= cycle.start.getTime()) out[c.feature] = (out[c.feature] ?? 0) + c.cost;
+  return out;
+}
+
+// What this cycle has spent, by feature, and what's left: budgetOf on the usage file and its mirror
 export function budget(now = Date.now()) {
-  const u = usage();
+  return budgetOf(usage(), now, { mirror: readMirror() });
+}
+// (the same on a usage (a test's), with a mirror: remaining is the lower of the API's balance and MONTHLY less the
+// cycle's tally; the live features' allowance today is what's left past the reserve over the days left, each its
+// share, a busy day up to its burst)
+export function budgetOf(u0, now = Date.now(), { mirror = null } = {}) {
+  const u = withMirror(u0, mirror, now);
   const cycle = cycleOf(u, now);
-  const spent = { lines: 0, props: 0, history: 0, snapshot: 0, other: 0 };
-  const today = { lines: 0, props: 0, history: 0, snapshot: 0, other: 0 };
+  const zero = { lines: 0, props: 0, history: 0, snapshot: 0, other: 0 };
+  const spent = { ...zero, ...tallyOf(u, cycle) };
   const day = new Date(now).toISOString().slice(0, 10);
-  for (const c of u.calls) {
-    if (cycle && Date.parse(c.at) < cycle.start.getTime()) continue;
-    spent[c.feature] = (spent[c.feature] ?? 0) + c.cost;
-    if (c.at.slice(0, 10) === day) today[c.feature] = (today[c.feature] ?? 0) + c.cost;
-  }
-  const remaining = u.remaining ?? MONTHLY;
+  const today = { ...zero };
+  if (u.day?.date === day) Object.assign(today, u.day.spent);
+  else if (!u.day) for (const c of u.calls ?? []) if (c.at.slice(0, 10) === day) today[c.feature] = (today[c.feature] ?? 0) + c.cost;
+  const used = Object.values(spent).reduce((s, v) => s + v, 0);
+  const remaining = Math.max(0, Math.min(Number.isFinite(u.remaining) ? u.remaining : MONTHLY, MONTHLY - used));
   const daysLeft = cycle ? Math.max(1, Math.ceil((cycle.end.getTime() - now) / 864e5)) : 30;
-  // (what the live features may spend today: what's left past the reserve and history's unspent share, over
-  // the days left, split by share)
-  const historyLeft = Math.max(0, HISTORY_BUDGET - spent.history);
-  const free = Math.max(0, remaining - RESERVE - historyLeft);
+  const free = Math.max(0, remaining - RESERVE);
+  // (the straight line: what the cycle may have spent by now)
+  const span = cycle ? (cycle.end.getTime() - cycle.start.getTime()) / 864e5 : 30;
+  const gone = cycle ? (now - cycle.start.getTime()) / 864e5 : 0;
+  const schedule = Math.floor((MONTHLY - RESERVE) * Math.min(1, (gone + AHEAD_DAYS) / span));
   const allowance = Object.fromEntries(Object.entries(SHARES).map(([f, s]) => [f, Math.min(Math.floor(free * s), Math.floor(((free * s) / daysLeft) * (BURST[f] ?? 1)))]));
   return {
     cycleStart: cycle?.start.toISOString() ?? null,
     cycleEnd: cycle?.end.toISOString() ?? null,
     daysLeft,
     remaining,
-    used: u.used,
+    apiRemaining: Number.isFinite(u.remaining) ? u.remaining : null,
+    used,
     spent,
     today,
     allowance,
-    historyLeft: Math.min(historyLeft, Math.max(0, remaining - RESERVE)),
+    schedule,
+    historyLeft: Math.min(Math.max(0, HISTORY_BUDGET - spent.history), free),
   };
 }
 
 // Whether a feature may spend cost credits now: history from its own budget, while the reserve holds; lines and
-// props from today's allowance; the morning snapshot to its day's cap while SNAPSHOT.hold is left over the reserve
-// and history's share (cut in that order as credits run low: snapshot, history, props, lines)
-export function canSpend(feature, cost) {
+// props from today's allowance (a props ask its tier's share of it, TIERS); the morning snapshot to its day's cap
+// while SNAPSHOT.hold is left over the reserve (cut in that order as credits run low: snapshot, history, props, lines)
+export function canSpend(feature, cost, tier = undefined) {
   if (!hasKey()) return false;
-  return spendable(feature, cost, budget());
+  return spendable(feature, cost, budget(), tier);
 }
 // (canSpend's rule on a budget (budget()'s, or a test's), the key aside)
-export function spendable(feature, cost, b) {
+export function spendable(feature, cost, b, tier = undefined) {
   if (b.remaining - cost < RESERVE) return false;
-  if (feature === 'snapshot') return b.remaining - cost >= RESERVE + (b.historyLeft ?? 0) + SNAPSHOT.hold && (b.today?.snapshot ?? 0) + cost <= SNAPSHOT.dayCap;
+  if (Number.isFinite(b.schedule) && (b.used ?? 0) + cost > b.schedule) return false;
+  if (feature === 'snapshot') return b.remaining - cost >= RESERVE + SNAPSHOT.hold && (b.today?.snapshot ?? 0) + cost <= SNAPSHOT.dayCap;
   if (feature === 'history') return b.historyLeft >= cost;
-  return (b.today[feature] ?? 0) + cost <= (b.allowance[feature] ?? 0);
+  const share = feature === 'props' ? (TIERS[tier] ?? 1) : 1;
+  return (b.today[feature] ?? 0) + cost <= Math.floor((b.allowance[feature] ?? 0) * share);
 }
 
 // The anytime touchdown's market (player_anytime_td; props.mjs apiProps asks it with the NFL's props, run.mjs
@@ -164,15 +222,57 @@ export function spendable(feature, cost, b) {
 // (projectedMonth, with it in) stays under cap of MONTHLY; else the asks leave it out and the anytime rows wait
 export const ANYTIME_TD = { market: 'player_anytime_td', on: true, cap: 0.85, monthlyCost: 280 };
 
-// (the cycle's projected total: what the API says is used, plus the live features' (lines, props, other) pace
-// this cycle a day over the days left; history (bought only by run.mjs --backtest, from its own budget, once a
-// snapshot) not carried forward. No cycle yet: what's used)
+// (the cycle's projected total: the desk's own tally this cycle (never the API's used count, which on a bigger plan
+// is the plan's), plus the live features' (lines, props, snapshot, other) pace this cycle a day over the days left;
+// history (bought only by a local backtest) not carried forward. No cycle yet: what's used)
 export function projectedMonth(b = budget(), now = Date.now()) {
   const used = Number.isFinite(b.used) ? b.used : MONTHLY - (b.remaining ?? MONTHLY);
   if (!b.cycleStart) return used;
   const elapsed = Math.max(1, (now - Date.parse(b.cycleStart)) / 864e5);
   const live = (b.spent?.lines ?? 0) + (b.spent?.props ?? 0) + (b.spent?.snapshot ?? 0) + (b.spent?.other ?? 0);
   return Math.round(used + (live / elapsed) * (b.daysLeft ?? 0));
+}
+
+// Whether the optional refreshes are on (D55: a game's lines asked again when the quote is an hour old rather than
+// LINES_FRESH.base, a game's props asked again mid-window, TIERS.refresh): only while the month's projection is under
+// TARGET of MONTHLY. The month's hard cap is spendable's either way
+export function refreshOn(b = budget(), now = Date.now()) {
+  return projectedMonth(b, now) < TARGET * MONTHLY;
+}
+
+// A game's DraftKings lines as compared free (espn.mjs linesOf's shape: ml, spread.home/away, total): the spread's
+// home line, the total's line, and the home, home-spread and over sides' no-vig chances. null without them
+export function linesSig(l) {
+  if (!l) return null;
+  const imp = (o) => (o > 0 ? 100 / (o + 100) : -o / (-o + 100));
+  const nv = (a, b) => (Number.isFinite(a) && Number.isFinite(b) && a && b ? Math.round((imp(a) / (imp(a) + imp(b))) * 1e4) / 1e4 : null);
+  const s = { spread: l.spread?.home?.line ?? null, total: l.total?.line ?? null, ml: nv(l.ml?.home, l.ml?.away), sp: nv(l.spread?.home?.odds, l.spread?.away?.odds), ou: nv(l.total?.over, l.total?.under) };
+  return Object.values(s).some((v) => v !== null) ? s : null;
+}
+
+// (how long a game's paid lines stand before they're asked again with nothing moved on ESPN's free board: Pinnacle,
+// the fair chance, moves without DraftKings; an hour while the refreshes are on, three otherwise)
+export const LINES_FRESH = { base: 3, refresh: 1 };
+// (a move on ESPN's board since the quote that counts: half a point of line, half a point of no-vig chance (the API's
+// decimal prices round a cent or two off ESPN's American ones, 0.1 to 0.3 points: not a move))
+export const LINES_MOVED = { line: 0.5, chance: 0.005 };
+
+// Why a due game's lines are bought this run, or null (D55): never quoted; ESPN's DraftKings line moved since the quote
+// (q.espn: the free board's sig when it was bought); into its last chance since; the quote stale. q: the game's last
+// quote { at, espn, phase }; sig: ESPN's now (linesSig); phase: the game's now
+export function linesWant(q, sig, phase, now = Date.now(), { refresh = false } = {}) {
+  if (!q?.at) return 'never quoted';
+  const a = q.espn;
+  if (a && sig) {
+    for (const k of ['spread', 'total']) if (Number.isFinite(a[k]) && Number.isFinite(sig[k]) && Math.abs(sig[k] - a[k]) >= LINES_MOVED.line - 1e-9) return `the Book's line on ESPN's board: ${k} moved ${a[k]} to ${sig[k]} since the quote`;
+    for (const k of ['ml', 'sp', 'ou']) if (Number.isFinite(a[k]) && Number.isFinite(sig[k]) && Math.abs(sig[k] - a[k]) >= LINES_MOVED.chance - 1e-9) return `the Book's line on ESPN's board: price moved since the quote (${k} ${a[k]} to ${sig[k]})`;
+    // (a market posted since)
+    for (const k of ['spread', 'total', 'ml']) if (!Number.isFinite(a[k]) && Number.isFinite(sig[k])) return `ESPN's board shows a ${k} posted since the quote`;
+  }
+  if (phase === 'last' && q.phase !== 'last') return 'into its last chance since the quote';
+  const age = (now - Date.parse(q.at)) / 36e5;
+  const fresh = refresh ? LINES_FRESH.refresh : LINES_FRESH.base;
+  return age >= fresh ? `the quote stale (${Math.round(age * 10) / 10}h, ${fresh}h)` : null;
 }
 
 // Whether the anytime touchdown's market is asked now: the setting on, and the cycle's projected total with the
@@ -218,20 +318,40 @@ export async function call(feature, route, params = {}) {
 
 // (a call's cost and the balance after it; a balance that's grown back starts a new cycle)
 function record(feature, route, cost, remaining, used) {
-  const u = usage();
-  const at = new Date().toISOString();
-  if (!u.cycleStart || (u.remaining !== null && remaining !== null && remaining > u.remaining + 1000)) u.cycleStart = at;
+  const u = withMirror(usage(), readMirror(), Date.now());
+  recordOn(u, feature, cost, remaining, used, new Date().toISOString(), route);
+  saveUsage(u);
+}
+// (record's rule on a usage (a test's): the cycle, the balance, the call, the cycle's and the day's tallies)
+export function recordOn(u, feature, cost, remaining, used, at = new Date().toISOString(), route = '') {
+  const t = Date.parse(at);
+  if (!u.cycleStart || (u.remaining !== null && u.remaining !== undefined && remaining !== null && remaining > u.remaining + 1000)) {
+    u.cycleStart = at;
+    u.cycle = null;
+  }
   if (remaining !== null) u.remaining = remaining;
   if (used !== null) u.used = used;
+  const cycle = cycleOf(u, t);
+  // (the tally carried from a file before it: its calls since the start, once)
+  if (!u.cycle) u.cycle = { start: cycle.start.toISOString(), spent: tallyOf({ calls: u.calls }, cycle) };
+  if (u.cycle.start !== cycle.start.toISOString()) u.cycle = { start: cycle.start.toISOString(), spent: {} };
+  const day = at.slice(0, 10);
+  if (u.day?.date !== day) u.day = { date: day, spent: {} };
   // (a free call (the event list) leaves no line: the log keeps the cycle's spending, and is cut to its last 3,000)
-  if (cost) u.calls.push({ at, feature, route: route.replace(/\/events\/[^/]+\//, '/events/{id}/'), cost });
-  saveUsage(u);
+  if (cost) {
+    u.calls = u.calls ?? [];
+    u.calls.push({ at, feature, route: String(route).replace(/\/events\/[^/]+\//, '/events/{id}/'), cost });
+    u.cycle.spent[feature] = (u.cycle.spent[feature] ?? 0) + cost;
+    u.day.spent[feature] = (u.day.spent[feature] ?? 0) + cost;
+  }
+  return u;
 }
 
 // The summary a sport's state shows: the cycle, what's spent by feature and today, the allowance
 export function usageSummary() {
   const b = budget();
-  return { monthly: MONTHLY, reserve: RESERVE, historyBudget: HISTORY_BUDGET, ...b, assumed: 'the cycle runs a month from the first call (the API resets monthly; its day is assumed)' };
+  // (D55: the month's projected total, its target, and whether the optional refreshes are on)
+  return { monthly: MONTHLY, reserve: RESERVE, target: Math.round(TARGET * MONTHLY), projected: projectedMonth(b), refresh: refreshOn(b), historyBudget: HISTORY_BUDGET, ...b, assumed: 'the cycle runs a month from the first call (the API resets monthly; its day is assumed)' };
 }
 
 // ---------------------------------------------------------------------------

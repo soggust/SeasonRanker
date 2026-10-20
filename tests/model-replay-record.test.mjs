@@ -86,10 +86,10 @@ test('replay: the risk walk reads only the seasons before a row\'s; a dirty open
   assert.equal(clean({ event: 'g1', t: T0, at: T0 - 1 * H }), true);
   assert.equal(clean({ event: 'g1', t: T0, at: T0 - 5 * H }), false, 'the Celtics\' previous game had not ended');
   assert.equal(clean({ event: 'g1', t: T0, at: null }), false);
-  // (outside the window (TIMING.nba.props 26 hours) the open is not the Bot's to bet: the close)
+  // (outside the window (TIMING.nba.props 48 hours since D55) the open is not the Bot's to bet: the close)
   const many = [];
   for (let i = 0; i < 320; i++) many.push(propRows(i, { season: 2024, p: 0.62 }));
-  for (let i = 0; i < 4; i++) many.push(propRows(i, { season: 2025, p: 0.62, lead: 48 }));
+  for (let i = 0; i < 4; i++) many.push(propRows(i, { season: 2025, p: 0.62, lead: 72 }));
   const r = replayRecord(V, 'nba', split(many), { names, epoch: EPOCH });
   assert.ok(r.last.filter((b) => b.season === 2025).every((b) => b.timing === 'close'));
 });

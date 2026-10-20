@@ -140,7 +140,7 @@ import { adjust, dynamicTerms, expect, fit, fitContext, gateOf, namedIdx, replay
 import { OPTIONAL, enrich, featurize, gather } from './context.mjs';
 import { RECHECK, finalSummary, postmortems, propPostmortem, recheckSummary, usualRoles } from './postmortem.mjs';
 import { CLV_V, closeOf, closingLines, clvOf, clvSummary, propCarry, propCloseOf, revalueClv } from './clv.mjs';
-import { ANYTIME_TD, OUTLIER, SPORT_KEYS, anytimeOn, call, canSpend, consensusFields, gameLines, hasKey, linesFromEvent, matchNearest, usageSummary } from './oddsapi.mjs';
+import { ANYTIME_TD, OUTLIER, SPORT_KEYS, anytimeOn, call, canSpend, consensusFields, gameLines, hasKey, linesFromEvent, linesSig, linesWant, matchNearest, MONTHLY, projectedMonth, refreshOn, usageSummary } from './oddsapi.mjs';
 import { backtestBets, evaluate, repriced, snapshots, trustBets } from './backtest.mjs';
 import { BANDS, buildPicks, kellyOf, levelOf, unlock } from './picks.mjs';
 import { boardMarkets, boardProp, buildBoard, seenUpdate, termParts } from './board.mjs';
@@ -191,10 +191,16 @@ const PM_RULE = 4;
 // on the same seasons, its settings chosen on those games, so the model's edge there is flattered)
 const BACKTEST_WEIGHT = 0.5;
 const PROPS_ASKED = path.join(CACHE, 'odds-props.json');
+// (an ask that found none of the Book's props posted: tried again this much later, D55)
+const EMPTY_RETRY = 2 * 36e5;
+// (a game's outs on both sides' reports, as inputsOf hashes them: the 'news' ask's key, D55)
+const outsKey = (inp) => (inp?.hash ? `${inp.hash['out:h'] ?? ''}|${inp.hash['out:a'] ?? ''}` : null);
 // (a game market the guard skipped or the book didn't price: not asked about again for REST_FOR, so the hourly
 // runs don't buy The Odds API's lines for it each hour; kept by sport in .cache/model/lines-rest.json)
 const LINES_REST = path.join(CACHE, 'lines-rest.json');
 const REST_FOR = 3 * 36e5;
+// (each game's last paid lines quote: when, ESPN's line then, its phase then (D55, liveLines))
+const LINES_QUOTED = path.join(CACHE, 'lines-quoted.json');
 // (with The Odds API to hand, a game it didn't price waits for it; this close to the start, it goes on ESPN's
 // board after all, tracked, not bet, for the data: LAST_CALL, or 1.5 times the runs' recent gap when that's
 // longer (lastCall), MAX_LAST hours at most)
@@ -519,7 +525,20 @@ async function liveLines(r) {
   if (!r.upcoming.length || !hasKey()) return;
   const range = { commenceTimeFrom: isoSecond(r.now), commenceTimeTo: isoSecond(r.now.getTime() + (reach(r.sport) + 6) * 36e5) };
   const placed = r.placed;
-  const unbet = r.upcoming.some((u) => linesDue(r, u.game) && (DRY || MARKETS.some((m) => !placed.has(`${u.game.id}:${m}`) && !resting(r, `${u.game.id}:${m}`))));
+  const dueUnbet = r.upcoming.filter((u) => linesDue(r, u.game) && (DRY || MARKETS.some((m) => !placed.has(`${u.game.id}:${m}`) && !resting(r, `${u.game.id}:${m}`))));
+  // (D55: ESPN's free board carries the Book's own game lines (2026-10-20: every spread and total the same as The
+  // Odds API's on 40 of 41 games, the prices within its decimal rounding), so the paid call, the only one with
+  // Pinnacle's fair, is bought only where a due game wants it: never quoted, the Book's line on ESPN's board moved
+  // since the quote, into its last chance since, or the quote stale (oddsapi.mjs linesWant: an hour old while the
+  // month projects under its target, refreshOn, three otherwise). Between the paid calls the board shows ESPN's
+  // line, bet on none (D30, D51))
+  const espnSig = new Map(r.upcoming.map((u) => [u, linesSig(u.lines)]));
+  const quoted = DRY ? {} : (read(LINES_QUOTED, {})[r.sport] ?? {});
+  const refresh = refreshOn();
+  const phaseNow = (u) => phaseOf(r.sport, 'lines', Date.parse(u.game.date) - r.now.getTime(), r.gap);
+  const wants = dueUnbet.map((u) => [u, DRY ? 'dry' : linesWant(quoted[u.game.id], espnSig.get(u), phaseNow(u), r.now.getTime(), { refresh })]).filter(([, why]) => why);
+  if (dueUnbet.length && !wants.length) console.log(`${r.sport}: The Odds API's lines not bought: ${dueUnbet.length} due games, none moved on ESPN's board or gone stale since its quote`);
+  const unbet = wants.length > 0;
   if (!unbet || !canSpend('lines', 3)) {
     const list = await call('events', `/sports/${SPORT_KEYS[r.sport]}/events`, range);
     if (Array.isArray(list)) for (const [u, ev] of matchGames(list, r.upcoming)) u.lines.oddsEvent = ev.id;
@@ -559,6 +578,16 @@ async function liveLines(r) {
     (r.lineRows ??= []).push(...gameRows(u.game.id, u.lines, 'o'));
     matched++;
   }
+  // (each quoted game's ESPN line and phase at the quote, for linesWant next run; a game no longer coming, dropped)
+  if (!DRY) {
+    const all = read(LINES_QUOTED, {});
+    const ids = new Set(r.upcoming.map((u) => String(u.game.id)));
+    const mine = Object.fromEntries(Object.entries(all[r.sport] ?? {}).filter(([id]) => ids.has(id)));
+    for (const [u] of pairs) mine[u.game.id] = { at: r.now.toISOString(), espn: espnSig.get(u) ?? null, phase: phaseNow(u) };
+    all[r.sport] = mine;
+    write(LINES_QUOTED, all);
+  }
+  console.log(`${r.sport}: lines bought for ${wants.length} due games (${[...new Set(wants.map(([, why]) => why.replace(/ \(.*$/, '').replace(/^.*: /, '')))].join('; ')})`);
   r.linesSource = `the odds api (${matched} of ${r.upcoming.length} games)`;
   console.log(`${r.sport}: lines from The Odds API for ${matched} of ${r.upcoming.length} coming games`);
   consensusLog(r, 'lines');
@@ -1678,7 +1707,7 @@ function propsAffordable(r, bets) {
   const games = [...new Map(bets.map((b) => [b.event, b.start]))].sort((a, b) => a[1].localeCompare(b[1]));
   let n = 0;
   for (const [id] of games) {
-    if ((asked[id] ?? 0) >= PROP_ASKS || !canSpend('props', (n + 1) * cost)) keep.add(id);
+    if ((asked[id] ?? 0) >= PROP_ASKS || !canSpend('props', (n + 1) * cost, 'owed')) keep.add(id);
     else n++;
   }
   return keep;
@@ -2375,9 +2404,21 @@ async function betProps(r) {
       if (lost) console.log(`${sport}: props of game ${game.id} asked before, but no board of them ever published (that run's commit lost): asked again`);
       const owed = !!asked[`${game.id}:owed`] || lost;
       const boardPriced = board_.some((p) => p.prices);
-      const why = propAsk({ times, max: PROP_ASKS, owed, boardPriced, nearAsked: !!asked[`${game.id}:near`], until, open: open.length });
+      // (D55: by value where the board has no prices of its own: an out on either report since the last ask (news),
+      // the last chance with rows the last ask held for the lineup risk (late), mid-window while the month projects under
+      // its target (refresh); each at its tier's share of the day's props allowance, oddsapi.mjs TIERS)
+      const outsNow = outsKey(r.inputs?.get(game.id));
+      const outsChanged = times > 0 && outsNow !== null && asked[`${game.id}:outs`] !== undefined && asked[`${game.id}:outs`] !== outsNow;
+      const sinceAsk = asked[`${game.id}:at`] ? r.now.getTime() - Date.parse(asked[`${game.id}:at`]) : 0;
+      const why = propAsk({ times, max: PROP_ASKS, owed, boardPriced, nearAsked: !!asked[`${game.id}:near`], until, open: open.length, outsChanged, held: asked[`${game.id}:held`] ?? 0, lateAsked: !!asked[`${game.id}:late`], last: phase === 'last', sinceAsk, refresh: (r.propsRefresh ??= refreshOn()) });
+      // (an ask that found none of the Book's props posted yet (free: an empty answer costs nothing) isn't counted; it's
+      // tried again EMPTY_RETRY later, so the first ask lands soon after the Book posts them)
+      const emptyWait = why === 'first' && asked[`${game.id}:empty`] && r.now.getTime() - Date.parse(asked[`${game.id}:empty`]) < EMPTY_RETRY;
+      if (why && why !== 'first') (run.asks ??= {})[why] = (run.asks[why] ?? 0) + 1;
       if (owed && times >= PROP_ASKS && !boardPriced) run.owedOut = (run.owedOut ?? 0) + 1;
       let fresh = false;
+      // (rows this run's ask held for the lineup risk: the late ask's, D55)
+      let heldHere = 0;
       // (the anytime touchdown's prices this ask (NFL, props.mjs apiProps' anytime): tracked rows, anytimeTracked)
       let anyApi = null;
       // (the morning snapshot's prices where the board has none of its own (the NFL's): the day's suggestions, never a
@@ -2391,12 +2432,24 @@ async function betProps(r) {
       const askNow = async () => {
         // (the other books asked only for the markets the book returned on this game's last ask (:dk), so they
         // add none: props.mjs apiProps, oddsapi.mjs propAsks; their consensus the data's, never priced off)
-        const api = await apiProps(sport, u.lines.oddsEvent, { known: asked[`${game.id}:dk`] ?? null, anytime: sport === 'nfl' && !!r.anytimeMarket?.on });
+        const api = await apiProps(sport, u.lines.oddsEvent, { known: asked[`${game.id}:dk`] ?? null, anytime: sport === 'nfl' && !!r.anytimeMarket?.on, afford: (n) => hasKey() && canSpend('props', n, why ?? 'first') });
+        // (none posted yet: not counted, tried again later)
+        if (api && !(api.dkMarkets ?? []).length && !api.size) {
+          asked[`${game.id}:empty`] = r.now.toISOString();
+          write(PROPS_ASKED, asked);
+          run.emptyAsks = (run.emptyAsks ?? 0) + 1;
+          return false;
+        }
         if (api) {
           fresh = true;
           asked[game.id] = times + 1;
           asked[`${game.id}:dk`] = api.dkMarkets ?? [];
           if (why === 'near') asked[`${game.id}:near`] = 1;
+          if (why === 'late') asked[`${game.id}:late`] = 1;
+          (run.asks ??= {})[why ?? 'first'] = (run.asks[why ?? 'first'] ?? 0) + 1;
+          asked[`${game.id}:at`] = r.now.toISOString();
+          if (outsNow !== null) asked[`${game.id}:outs`] = outsNow;
+          delete asked[`${game.id}:empty`];
           delete asked[`${game.id}:owed`];
           write(PROPS_ASKED, asked);
           consensusSeen(r, 'props', [...api.values()].map((x) => x.consensus).filter(Boolean), api.size);
@@ -2418,7 +2471,7 @@ async function betProps(r) {
         }
         return !!api;
       };
-      if (why && u.lines.oddsEvent && !DRY && !defer && !r.propsSuggestOnly) await askNow();
+      if (why && !emptyWait && u.lines.oddsEvent && !DRY && !defer && !r.propsSuggestOnly) await askNow();
       // (no fresh price from The Odds API this run: its open CHECKs priced from their stored prices, where the
       // line is still the board's (checks.mjs withStoredPrices), so each is evaluated again: still a CHECK,
       // closed, or bet. The Odds API asked, the props it didn't price stay unpriced: the book took them down)
@@ -2545,6 +2598,8 @@ async function betProps(r) {
           // hours, the survival and the full lean), none is held for a later run: not tracked (a tracked row would
           // block the bet), a suggestion on the board where the full lean has one)
           const rk = riskOf(game, x, phase);
+          // (held on The Odds API's price this run: the game owes a late ask, D55 propAsk)
+          if (rk.s < 1 && !(rk.ev > 0) && fresh && x.prop.source === 'the odds api') heldHere++;
           if (rk.s < 1) {
             if (!(rk.ev > 0)) {
               run.heldRisk = (run.heldRisk ?? 0) + 1;
@@ -2654,6 +2709,11 @@ async function betProps(r) {
           // (a research bet (verdict bet: nothing explains the gap) is decided above with the rest the research
           // cleared, priced at the market's trust; one left here is a CHECK the research didn't decide this run)
         }
+      }
+      // (the rows this run's ask held for the lineup risk, kept for the late ask (D55))
+      if (fresh && !DRY) {
+        asked[`${game.id}:held`] = heldHere;
+        write(PROPS_ASKED, asked);
       }
       // (a noted open CHECK this game's run didn't re-price: why, kept on it (resolveChecks' held))
       for (const c of openChecks) if (!heldWhy.has(c.id)) heldWhy.set(c.id, Date.parse(game.date) - Date.now() < 5 * 60e3 ? 'its game about to start' : "not on the board, and no price of the Book's kept");
@@ -2765,6 +2825,8 @@ async function betProps(r) {
   if (run.waiting) console.log(`${sport}: props waiting for the news (a lineup, a starter, a goalie): ${run.waiting}`);
   if (run.heldRisk || run.early || run.fastEarly || run.deferred || run.askedToBet || run.snapshot) console.log(`${sport}: the Bot's own time to bet (D42): ${run.early ?? 0} bet early at the surviving lean, ${run.fastEarly ?? 0} on fast news (D49), ${run.heldRisk ?? 0} held for a later run (no surviving edge yet); first asks deferred in ${run.deferred ?? 0} games, bought to bet in ${run.askedToBet ?? 0}${run.snapshot ? `; ${run.snapshot} rows priced from the morning snapshot (suggestions only, ${run.snapshotHeld ?? 0} with an edge not bet)` : ''}`);
   if (run.stored || run.storedMoved) console.log(`${sport}: open CHECKs priced from their stored prices: ${run.stored ?? 0}${run.storedMoved ? `; ${run.storedMoved} not (the line moved on the board)` : ''}${run.storedStale ? `; ${run.storedStale} not bet (the price over ${STORED_HOURS} hours old: closed only)` : ''}${run.storedPulled ? `; ${run.storedPulled} not bet (off a board still showing his market: pulled)` : ''}`);
+  // (D55: the props' asks this run by why, the empty ones (none posted yet, free), and the month's projected credits)
+  if (run.asks || run.emptyAsks) console.log(`${sport}: The Odds API's props asks: ${Object.entries(run.asks ?? {}).map(([k, n]) => `${n} ${k}`).join(', ') || 'none'}${run.emptyAsks ? `; ${run.emptyAsks} found none posted yet (free, tried again in ${EMPTY_RETRY / 36e5}h)` : ''}; the month projected at ${projectedMonth()} of ${MONTHLY} credits`);
   if (run.held) console.log(`${sport}: props held for a later run: ${Object.entries(run.held).map(([why, n]) => `${n} games (${why})`).join(', ')}`);
   if (run.skipped) console.log(`${sport}: props skipped: ${Object.entries(run.skipped).map(([k, n]) => `${n} ${{ gap: 'past the market gap (PASSes, kept as shadows)', role: `role changes (CHECKs at a model Kelly of +${Math.round(CHECK_KELLY * 100)} or more, else shadows)`, news: 'the news on his unit (CHECKs)', unpriced: 'unpriced (no price, a line -110 can\'t be)', skew: 'the side against its own projection (the skew alone)', moved: 'the line moved twice the limit, his projection not with it' }[k] ?? 'by the other guards'}`).join(', ')}`);
   if (run.checkSides) console.log(`${sport}: props' CHECKs by cause and side: ${Object.entries(run.checkSides).sort().map(([k, n]) => `${k} ${n}`).join(', ')}`);
