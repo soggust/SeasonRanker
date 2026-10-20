@@ -67,12 +67,35 @@ export const GAP = { spread: 0.12, total: 0.12, ml: 0.15, prop: 0.15 };
 // noise would buy the most (the shorter price stakes no less than -110 for the same return, and no more for the
 // same edge in chance)
 const REF = 100 / 110;
-// The sanity guard (the 2026-10-18 audit: a --dry run priced Christian McCaffrey Under 14.5 carries at ev +0.39). No
-// sane price has an expected return past EV_SUSPECT either way: such a row is a bug or a fit gone wrong until shown
-// otherwise. It's logged loudly as suspect, its ev held to the bar and its stake to the practice stake, a LIKE at most
-// (picks.mjs levelOf reads suspect): never bet at size, never turned off (D1). DECISIONS.md D23
+// The sanity guard (the 2026-10-18 audit: a --dry run priced Christian McCaffrey Under 14.5 carries about 20 points
+// over its break-even, ev +0.39). No sane price has an edge past EDGE_SUSPECT points over its break-even, or past
+// Z_SUSPECT standard deviations of the outcome at it (sqrt(be(1 - be)): the bar tightens at long prices, where a
+// point is a bigger share of the outcome's spread), either way: such a row is a bug or a fit gone wrong until shown
+// otherwise. It's logged loudly as suspect, its ev held to EV_SUSPECT at most and its stake to the practice stake, a
+// LIKE at most (picks.mjs levelOf reads suspect): never bet at size, never turned off (D1). Scale-aware (D24), not by
+// the return: a long price's return is big at a modest edge (Josh Hokit +205 at 37.9% against 32.8% to break even:
+// 5.1 points, 0.11 SDs, ev +15.5%, a real edge, not a broken row). DECISIONS.md D23
 export const EV_SUSPECT = 0.15;
-export const suspectOf = (ev, why = '') => (Number.isFinite(ev) && Math.abs(ev) > EV_SUSPECT ? { ev: Math.round(ev * 10000) / 10000, why: `ev ${ev > 0 ? '+' : ''}${Math.round(ev * 1000) / 1000} past the ${EV_SUSPECT} bar${why ? `: ${why}` : ''}: held to the bar and the practice stake` } : null);
+export const EDGE_SUSPECT = 0.12;
+export const Z_SUSPECT = 0.3;
+// (the edge over the break-even from the chance and the return alone: ev = p d - 1, so the break-even 1/d is
+// p / (1 + ev); its points and its SDs of the outcome; null when it's sane)
+export function suspectEdge(p, ev) {
+  if (!Number.isFinite(p) || !Number.isFinite(ev) || !(p > 0 && p < 1) || !(ev > -1)) return null;
+  const be = Math.min(1 - 1e-9, Math.max(1e-9, p / (1 + ev)));
+  const edge = p - be;
+  const z = edge / Math.sqrt(be * (1 - be));
+  return Math.abs(edge) > EDGE_SUSPECT || Math.abs(z) > Z_SUSPECT ? { edge, z } : null;
+}
+export const isSuspect = (p, ev) => !!suspectEdge(p, ev);
+// (the bar a suspect row's return is held to, so it can't outrank the rest)
+export const heldEv = (ev) => Math.sign(ev) * Math.min(Math.abs(ev), EV_SUSPECT);
+export const suspectOf = (ev, why = '', p = null) => {
+  const s = suspectEdge(p, ev);
+  if (!s) return null;
+  const r = (x, n) => Math.round(x * n) / n;
+  return { ev: r(ev, 10000), edge: r(s.edge, 10000), z: r(s.z, 1000), why: `edge ${s.edge > 0 ? '+' : ''}${r(s.edge * 100, 10)} points over the break-even (${r(s.z, 100)} SDs of the outcome) past the ${EDGE_SUSPECT * 100}-point or ${Z_SUSPECT}-SD bar (ev ${ev > 0 ? '+' : ''}${r(ev, 1000)})${why ? `: ${why}` : ''}: its ev held to ${EV_SUSPECT} at most and the practice stake` };
+};
 
 export function stakeFor(ev, evScale, odds = -110) {
   const d = decimal(Number.isFinite(odds) && odds ? odds : -110);
@@ -217,9 +240,9 @@ export function choose(market, trust, evScale, ctx = null) {
     const p = s.anchored === false ? s.fair : chanceAt(market.market, s.fair, s.model, trust, sideCtx(market, s, ctx));
     // (a push gives the stake back: only the rest of the chance is won or lost)
     const ev0 = (1 - (s.push ?? 0)) * (p * decimal(s.odds) - 1);
-    // (the sanity guard: an ev past EV_SUSPECT held to the bar, the practice stake, and the row marked)
-    const suspect = suspectOf(ev0, `${market.market} ${s.side}${s.line !== null && s.line !== undefined ? ` ${s.line}` : ''} at ${s.odds}: p ${Math.round(p * 10000) / 10000}, the Book's no-vig ${Math.round(s.fair * 10000) / 10000}`);
-    if (suspect) return { ...s, p, ev: Math.sign(ev0) * EV_SUSPECT, units: PRACTICE_UNITS, suspect };
+    // (the sanity guard: an edge past the bar (suspectOf), its ev held to EV_SUSPECT at most, the practice stake, and the row marked)
+    const suspect = suspectOf(ev0, `${market.market} ${s.side}${s.line !== null && s.line !== undefined ? ` ${s.line}` : ''} at ${s.odds}: p ${Math.round(p * 10000) / 10000}, the Book's no-vig ${Math.round(s.fair * 10000) / 10000}`, p);
+    if (suspect) return { ...s, p, ev: heldEv(ev0), units: PRACTICE_UNITS, suspect };
     return { ...s, p, ev: ev0, units: stakeFor(ev0, evScale, s.odds) };
   });
   const [a, b] = scored;

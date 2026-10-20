@@ -154,7 +154,7 @@ test('the bar walk-forward (the replayed record): a segment is on only from the 
   // (the replayed record stakes a barred line at the practice units, a LIKE, and counts it)
   const src_ = src('replay-record.mjs');
   assert.match(src_, /V\.desk\.walkBar\(/);
-  assert.match(src_, /const units = barred \? practiceUnits : fullUnits/);
+  assert.match(src_, /(?:const|let) units = barred \? practiceUnits : fullUnits/);
   assert.match(src_, /barred: flags\.barred/);
 });
 

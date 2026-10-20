@@ -21,7 +21,9 @@
 //             side to a LIKE at most whatever its price (cr: why, the desk's words: sideCap below, picks.mjs
 //             capOf; the lines' CLV gate at the practice stake), so the Book's suggestions and the what-if never
 //             show a band the Bot couldn't give it (DECISIONS.md D46). A suspect price's LIKE (desk.mjs
-//             EV_SUSPECT, D23) is the price's: in b here, worked again by the page at any other price }
+//             isSuspect, D23) is the price's: in b here, worked again by the page at any other price; q: the
+//             confidence layer's quality of the side (confidence.mjs qualityOf, D52: the stake's Kelly at its
+//             calibrated chance), and cap 'high' (a LOVE at most) or 'medium' where its tiers hold the side }
 //     p      its props, each { n: player, id: ESPN athlete id, t: his team's ESPN id, k: the stat's key, lb: its
 //             label, l: line, o: [over price, under price] (null a side unknown), c: the bot's trusted chance
 //             over, ks: [over's Kelly, under's] and b: [over's band, under's] (null where unpriced), sk: 1 where a
@@ -73,10 +75,11 @@
 // with the first and last time a board showed it (ms), so a bet takes it only while it was on show.
 
 import { round } from './ratings.mjs';
-import { EV_SUSPECT, chanceAt, decimal, gapGuard, isTracked, kellyScale, pickText, sideCtx } from './desk.mjs';
+import { chanceAt, decimal, gapGuard, isSuspect, isTracked, kellyScale, pickText, sideCtx } from './desk.mjs';
 import { CHECK_KINDS, causeOf, shadowOf } from './checks.mjs';
 import { capBand, capOf, edgeLevel, kellyOf } from './picks.mjs';
 import { factsOf, plainOf, priceSentence } from './writeup.mjs';
+import { qualityOf } from './confidence.mjs';
 
 // ---------------------------------------------------------------------------------------------------------
 // A side's why (w, the header's)
@@ -159,9 +162,9 @@ export const SEEN_KEEP = 8 * 864e5;
 const consensusOf = (c, side, first) => (Number.isFinite(c?.fair) ? { fc: round(side === first ? c.fair : 1 - c.fair, 4), cn: c.n, ...(c.outlier === side ? { dv: 1 } : {}) } : {});
 
 // (a side's band: check where it's a CHECK; PASS with no edge or a guard's pass; else its Kelly score's, LIKE at the
-// least, held to the desk's cap (picks.mjs capBand) and a suspect price's LIKE (desk.mjs EV_SUSPECT, D23))
+// least, held to the desk's cap (picks.mjs capBand) and a suspect price's LIKE (desk.mjs isSuspect, D23))
 export const bandOf = (kelly, p, ev, { check = false, pass = false, cap = null } = {}) =>
-  check ? 'check' : pass || !(ev > 0) ? 'low' : capBand(edgeLevel(kelly, p), Math.abs(ev) > EV_SUSPECT ? 'medium' : cap);
+  check ? 'check' : pass || !(ev > 0) ? 'low' : capBand(edgeLevel(kelly, p), isSuspect(p, ev) ? 'medium' : cap);
 
 // The desk's cap on a side from the marks a bet on it would carry (picks.mjs capOf: a gate's practice stake, a role
 // bet, a research pick not earned): the board's { cap, cr } where there is one (DECISIONS.md D46), else {}
@@ -173,6 +176,22 @@ export function sideCap(marks) {
   return { cap, ...(why ? { cr: skipReason({ why }) } : {}) };
 }
 
+// (the confidence layer's read of a side (confidence.mjs qualityOf, DECISIONS.md D52): its quality q and the band it
+// may reach by the tiers (its cap: 'medium' a LIKE at most, 'high' a LOVE at most), with the cap's why in the desk's
+// words; none without the model or a priced side. row: the side in the over frame as the desk's bets carry it)
+const CONF_WHY = { medium: "the confidence layer (D52): LOVE isn't earned on the record yet, a LIKE at most", high: "the confidence layer (D52): LOCK isn't earned on the record yet, a LOVE at most" };
+export function sideQuality(model, row) {
+  if (!model || !row || !Number.isFinite(row.f) || !Number.isFinite(row.p) || !row.overOdds || !row.underOdds) return null;
+  try {
+    const qy = qualityOf(model, row);
+    return qy ? { q: qy.q, cap: qy.cap, cr: qy.cap ? CONF_WHY[qy.cap] : null } : null;
+  } catch {
+    return null;
+  }
+}
+const RANK = { low: 0, medium: 1, high: 2, lock: 3 };
+const lowerCap = (x, y) => (!x ? (y ?? null) : !y ? x : RANK[x] <= RANK[y] ? x : y);
+
 // A game's markets as the board's (desk.mjs price's: each market's two sides, the model's chance and the book's
 // fair one), each side at its trusted chance (desk.mjs chanceAt, choose's), trust: a market's key to its trust;
 // consensus: the other books' by market (the lines', oddsapi.mjs consensusOf's), the data's, beside each side;
@@ -182,7 +201,9 @@ export function sideCap(marks) {
 // explain: the facts for each side's why (w, the header's): { sport, game (run.mjs's upcoming game), exp (its
 // expected margin and total), seen (the context it saw, a bet's context), fairFrom (by market), state ({ trust,
 // context }: the write-ups'), terms (termParts'), fitted (market -> whether its trust is fitted) }; none, no w
-export function boardMarkets(markets, trustOf, consensus = null, ctx = null, { gate = null, off = null, explain = null } = {}) {
+// confidence: the confidence layer's model (D52): each side's quality q and the cap its tiers put on it (the lower of
+// the two caps where the gate's is there too)
+export function boardMarkets(markets, trustOf, consensus = null, ctx = null, { gate = null, off = null, explain = null, confidence = null } = {}) {
   const capped = gate && gate.on === false ? sideCap({ practice: String(gate.why || 'the game lines at the practice stake') }) : {};
   const out = {};
   for (const m of markets ?? []) {
@@ -194,11 +215,17 @@ export function boardMarkets(markets, trustOf, consensus = null, ctx = null, { g
     const checkSide = gapped && !shadowOf({ cause: 'gap', odds: mine.odds, model: mine.model, fair: mine.fair }) ? mine.side : null;
     const pass = (!!gapped && !checkSide) || !!off;
     const sr = off ? skipReason({ why: off }) : pass ? skipReason(gapped) : null;
-    const rows = m.sides.map((s) => {
+    const rows = m.sides.map((s, i) => {
       const p = s.anchored === false ? s.fair : chanceAt(m.market, s.fair, s.model, trustOf(m.market), sideCtx(m, s, ctx));
       const ev = (1 - (s.push ?? 0)) * (p * decimal(s.odds) - 1);
       const ks = kellyOf(s.odds, p);
-      return { s: s.side, l: m.market === 'ml' ? null : s.line, o: s.odds, c: round(p, 3), ks, b: bandOf(ks, p, ev, { check: s.side === checkSide && !off, pass, cap: capped.cap }), ...(sr ? { sr } : {}), ...(pass ? {} : capped), ...consensusOf(consensus?.[m.market], s.side, s0.side), _p: p, _ev: ev };
+      // (the confidence layer's read of the side, in the over (home) frame: the first side's chances, both prices)
+      const first = i === 0;
+      const fl = (v) => (first ? v : 1 - v);
+      const cq = pass || !confidence || s.anchored === false ? null : sideQuality(confidence, { sport: ctx?.sport, market: m.market, stat: m.market, line: s.line ?? null, side: first ? 'home' : 'away', f: fl(s.fair), raw: fl(s.model), pCur: fl(p), p: fl(p), overOdds: m.sides[0].odds, underOdds: m.sides[1].odds, t: ctx?.t, at: ctx?.at, hours: ctx?.hours, trust: trustOf(m.market), named: s.named });
+      const cap = lowerCap(capped.cap ?? null, cq?.cap ?? null);
+      const cr = capped.cr ?? cq?.cr ?? null;
+      return { s: s.side, l: m.market === 'ml' ? null : s.line, o: s.odds, c: round(p, 3), ks, b: bandOf(ks, p, ev, { check: s.side === checkSide && !off, pass, cap }), ...(sr ? { sr } : {}), ...(pass || !cap ? {} : { cap, ...(cr ? { cr } : {}) }), ...(cq && Number.isFinite(cq.q) ? { q: cq.q } : {}), ...consensusOf(consensus?.[m.market], s.side, s0.side), _p: p, _ev: ev };
     });
     // (each side's why: the edge sides' and the Bot's side's, the header's w)
     const bot = botIndex(rows.map((x) => x.ks));
@@ -253,7 +280,8 @@ export const skipReason = (guard) => {
 // (desk.mjs propGate's; off, both sides at the practice stake: cap LIKE), and a role bet's cap on its own side
 // explain: the facts for each side's why (w, the header's): { sport, game, exp, sib (its game's context, a bet's
 // sibling: writeup.mjs sibOf), state, fitted (whether the stat's trust is fitted) }; none, no w
-export function boardProp(x, at, { gate = null, explain = null } = {}) {
+// confidence: the confidence layer's model (D52) and start the game's start: each side's quality q and its tier cap
+export function boardProp(x, at, { gate = null, explain = null, confidence = null, start = null } = {}) {
   const by = Object.fromEntries((x.sides ?? []).map((s) => [s.side, s]));
   // (a CHECK the page shows: a CHECK's guard and not a shadow, judged on the model's side's price and chances as
   // the run's CHECK is (checks.mjs checkOf); a shadow a PASS)
@@ -263,13 +291,24 @@ export function boardProp(x, at, { gate = null, explain = null } = {}) {
   const prices = x.prop.prices ?? {};
   const gated = gate && gate.on === false ? `${x.prop.stat.key} ${gate.why || 'at the practice stake'}` : null;
   const capOn = (k) => (pass ? {} : sideCap({ practice: gated, context: x.roleBet && x.side === k ? { roleBet: x.roleBet } : null }));
+  const pOver = by.over ? by.over.p : by.under ? 1 - by.under.p : null;
+  const fOver = Number.isFinite(x.fair) ? (x.side === 'over' ? x.fair : 1 - x.fair) : null;
+  const mOver = Number.isFinite(x.model) ? (x.side === 'over' ? x.model : 1 - x.model) : null;
+  const cOver = Number.isFinite(x.pTrust) ? (x.side === 'over' ? x.pTrust : 1 - x.pTrust) : pOver;
+  const proj = x.projection ?? null;
+  const mu = proj && Number.isFinite(proj.mean) ? proj.mean : null;
+  const sd = mu !== null && Number.isFinite(proj.r) && proj.r > 0 ? Math.sqrt(mu + (mu * mu) / proj.r) : mu !== null ? Math.sqrt(Math.max(0, mu)) : null;
+  const t = start ? Date.parse(start) : NaN;
   const side = (k) => {
     const s = by[k];
     const o = Number.isFinite(prices[k]) ? prices[k] : null;
     const c = capOn(k);
     if (!s || o === null) return { o, ks: null, b: null, c };
     const ks = kellyOf(o, s.p);
-    return { o, ks, b: bandOf(ks, s.p, s.ev, { check: check && x.side === k, pass, cap: c.cap }), c };
+    // (the confidence layer's read of the side (D52): the over frame's chances, both prices)
+    const cq = pass || !confidence || !x.priced ? null : sideQuality(confidence, { sport: x.sport ?? confidence.sport, market: 'prop', stat: x.prop.stat.key, line: x.prop.line, side: k, f: fOver, raw: mOver, pCur: cOver, p: pOver, overOdds: prices.over, underOdds: prices.under, t: Number.isFinite(t) ? t : Date.now() + 864e5, at: Date.now(), hours: Number.isFinite(t) ? (t - Date.now()) / 36e5 : 24, home: typeof x.home === 'boolean' ? x.home : null, trust: Number.isFinite(x.trust) ? x.trust : null, mu, sd, im: Number.isFinite(proj?.anchored?.implied) ? proj.anchored.implied : null });
+    const cap = lowerCap(c.cap ?? null, cq?.cap ?? null);
+    return { o, ks, b: bandOf(ks, s.p, s.ev, { check: check && x.side === k, pass, cap }), c: { ...c, cap, ...(c.cr ? {} : cq?.cr ? { cr: cq.cr } : {}) }, ...(cq && Number.isFinite(cq.q) ? { q: cq.q } : {}) };
   };
   const over = side('over');
   const under = side('under');
@@ -326,6 +365,8 @@ export function boardProp(x, at, { gate = null, explain = null } = {}) {
     ...(pass && shadow ? { sw: shadow.passAs } : {}),
     ...(pass ? { sr: skipReason(x.guard) } : {}),
     ...(over.c.cap || under.c.cap ? { cap: [over.c.cap ?? null, under.c.cap ?? null], ...(cr ? { cr } : {}) } : {}),
+    // (the confidence layer's quality of each side (D52), where the model read it)
+    ...(Number.isFinite(over.q) || Number.isFinite(under.q) ? { q: [over.q ?? null, under.q ?? null] } : {}),
     ...(Number.isFinite(x.prop.consensus?.fair) ? { fc: x.prop.consensus.fair, cn: x.prop.consensus.n, ...(x.prop.consensus.outlier ? { dv: x.prop.consensus.outlier } : {}) } : {}),
     // (the suggestion (D42): the side the Bot sees an edge on at the latest known price, run.mjs betProps)
     ...(x.sug ? { sug: x.sug } : {}),

@@ -1012,7 +1012,7 @@ export class BookPageComponent implements OnInit, OnDestroy {
     }
     const tile = event.currentTarget as HTMLElement;
     const confidence: Confidence | null = at.tier === 'lock' ? 'lock' : at.tier === 'check' ? 'check' : at.tier === 'love' ? 'high' : at.tier === 'like' ? 'medium' : at.tier === 'pass' ? 'low' : null;
-    const row: BetWhyRow = { id, pick: at.words, market: at.market, confidence, sureness: at.kelly, price: at.odds, ...(at.chance === null ? {} : { chance: Math.round(at.chance * 100), p: at.chance }), edge: at.kelly > 0, ...(at.cap === 'medium' ? { cap: at.cap } : {}) };
+    const row: BetWhyRow = { id, pick: at.words, market: at.market, confidence, sureness: at.kelly, price: at.odds, ...(at.chance === null ? {} : { chance: Math.round(at.chance * 100), p: at.chance }), edge: at.kelly > 0, ...(at.cap === 'medium' || at.cap === 'high' ? { cap: at.cap } : {}) };
     this.checkWhy = null;
     const w = betWhy([row], 0);
     const wi = whatIfOf(row, !!at.bot);
@@ -1138,7 +1138,7 @@ export class BookPageComponent implements OnInit, OnDestroy {
       stake: at.units === null ? 'no bet' : `${at.units}u`,
       flips,
       caption: whatIfCaption(base),
-      held: at.units === null ? null : base.unitsCap !== null ? `Held to ${base.unitsCap}u, the Bot's own stake` : base.cap === 'medium' ? "Held to LIKE, as the Bot's pick is" : base.most === 'medium' && at.units === PRACTICE_UNITS && !at.suspect ? 'A LIKE at most at the practice stake: the desk caps this side (a gate at practice, a role or research pick)' : at.suspect ? 'Past the 15% sanity bar: a LIKE at the practice stake' : null,
+      held: at.units === null ? null : base.unitsCap !== null ? `Held to ${base.unitsCap}u, the Bot's own stake` : base.cap === 'medium' ? "Held to LIKE, as the Bot's pick is" : base.most === 'medium' && at.units === PRACTICE_UNITS && !at.suspect ? 'A LIKE at most at the practice stake: the desk caps this side (a gate at practice, a role or research pick)' : base.most === 'medium' && !at.suspect ? "A LIKE at most: the confidence layer's record hasn't earned LOVE yet" : base.most === 'high' && at.level === 'high' && at.kelly >= 0.05 ? "A LOVE at most: the confidence layer's record hasn't earned LOCK yet" : at.suspect ? 'Past the 15% sanity bar: a LIKE at the practice stake' : null,
     };
   }
 

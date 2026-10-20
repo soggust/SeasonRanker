@@ -376,8 +376,8 @@ export function pickFor(model, lines, trust, { edge, untested, guard = null, api
     flags.push(guard);
     units = 0.5;
   }
-  // (the sanity guard, desk.mjs suspectOf (D23): an ev past EV_SUSPECT at the practice stake, flagged loudly)
-  const suspect = suspectOf(pick.ev, `p ${Math.round(pick.p * 10000) / 10000}, the Book's no-vig ${Math.round(pick.fair * 10000) / 10000}`);
+  // (the sanity guard, desk.mjs suspectOf (D23): an edge past the bar at the practice stake, flagged loudly)
+  const suspect = suspectOf(pick.ev, `p ${Math.round(pick.p * 10000) / 10000}, the Book's no-vig ${Math.round(pick.fair * 10000) / 10000}`, pick.p);
   if (suspect) {
     flags.push(`suspect: ${suspect.why}`);
     units = 0.5;

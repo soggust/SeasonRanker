@@ -14,6 +14,7 @@ import { americanOdds, teamLogo } from './bet-format';
 import { priceAt, whatIfOf } from './bet-why';
 import { BetKind, BetRow, pickKey } from './book-rows';
 import { byBand } from './desk-notes';
+import type { BandCap } from './tiers';
 
 // (a row's market as the bettor keys it, from its id: "<event>:<market>", a prop "<event>:prop:<type>:<athlete>")
 export interface MarketRef {
@@ -203,7 +204,7 @@ export function suggestionsOf(sport: string, board: ModelBoard | null | undefine
 // (what every suggestion row has: its game, the Bot's chance, the board's price till it's priced again)
 // (cap, why: the desk's cap on the side, board.json's cap and cr; w its why, board.json's: the K-score popover's
 // makings as a bet's (whyOf))
-function base(sport: string, _g: BoardGame, game: BetRow['game'], p: number, odds: number, practice: boolean, cap: 'medium' | null = null, why?: string, w?: BoardWhy | null) {
+function base(sport: string, _g: BoardGame, game: BetRow['game'], p: number, odds: number, practice: boolean, cap: BandCap | null = null, why?: string, w?: BoardWhy | null) {
   return {
     ...whyOf(w),
     id: -1,
@@ -213,7 +214,7 @@ function base(sport: string, _g: BoardGame, game: BetRow['game'], p: number, odd
     reason: '',
     confidence: null,
     ...(practice ? { practice: true } : {}),
-    ...(cap === 'medium' ? { cap, ...(why ? { capWhy: why } : {}) } : {}),
+    ...(cap === 'medium' || cap === 'high' ? { cap, ...(why ? { capWhy: why } : {}) } : {}),
     sureness: 0,
     chance: Math.round(p * 100),
     p,

@@ -44,6 +44,9 @@ export interface ModelBet {
   // (a slate's practice pick (desk.mjs isPracticeTop): bet at the practice stake for the slate, short of the vig;
   // its rank and its game's quota, and its edge before the vig)
   topN?: { rank: number; quota: number; slate: number; edge: number };
+  // (the confidence layer's read of it when placed (confidence.mjs, D52): the calibrated chance, the quality, the band
+  // it could reach (the cap picks.mjs levelOf held it to), the blend's weight on its stake)
+  conf?: { pc: number; q: number; pb?: number; cap: 'medium' | 'high' | null; w?: number; cutoff?: string };
   status: Status;
   // (a prop whose player didn't play: no action, graded a push, out of the record)
   void?: boolean;

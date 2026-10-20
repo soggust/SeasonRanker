@@ -9,7 +9,7 @@ import fs from 'node:fs';
 import path from 'node:path';
 import { loadEngine } from './support/engine.mjs';
 import { edgeLevel, kellyOf, level } from '../libs/ranker/scripts/model/picks.mjs';
-import { EV_SUSPECT, PRACTICE_UNITS, decimal, stakeFor } from '../libs/ranker/scripts/model/desk.mjs';
+import { PRACTICE_UNITS, decimal, isSuspect, stakeFor } from '../libs/ranker/scripts/model/desk.mjs';
 
 const desk = await loadEngine('nfl', { entry: path.join(import.meta.dirname, 'support', 'book-entry.ts'), data: {} });
 const close = (a, b, what, eps = 1e-9) => assert.ok(Math.abs(a - b) <= eps, `${what}: ${a} vs ${b}`);
@@ -54,9 +54,9 @@ test('priceAt: the bettor’s Kelly, band, stake and return at any price, the ch
         close(at.ev, ev, `${p} ${odds} ev`, 1e-12);
         close(at.breakEven, 1 / decimal(odds), 'break-even', 1e-12);
         close(at.edge, p - 1 / decimal(odds), 'edge', 1e-12);
-        const want = Math.abs(ev) > EV_SUSPECT && ['lock', 'high'].includes(bet ? edgeLevel(k, p) : level(k, p)) ? 'medium' : bet ? edgeLevel(k, p) : level(k, p);
+        const want = isSuspect(p, ev) && ['lock', 'high'].includes(bet ? edgeLevel(k, p) : level(k, p)) ? 'medium' : bet ? edgeLevel(k, p) : level(k, p);
         assert.equal(at.level, want, `${p} ${odds} ${bet} band`);
-        assert.equal(at.units, want === 'low' ? null : Math.abs(ev) > EV_SUSPECT ? PRACTICE_UNITS : stakeFor(ev, 0.08, odds), `${p} ${odds} stake`);
+        assert.equal(at.units, want === 'low' ? null : isSuspect(p, ev) ? PRACTICE_UNITS : stakeFor(ev, 0.08, odds), `${p} ${odds} stake`);
       }
     }
   }
@@ -102,26 +102,50 @@ test('the picks files: every pick reads back its own Kelly, band, stake and retu
 });
 
 // (desk run 39294305911: the MMA early band (D37) priced Josh Hokit +205 at a trusted 37.86%, its Kelly a LOVE, its
-// return +15.5% past the sanity bar: the desk held it to a LIKE at the practice stake (picks.mjs levelOf, suspect), the
-// page's row banded its Kelly alone and read LOVE where the what-if read LIKE. The file carries the cap (picks.json
-// cap, capOf) and the row bands as the desk does; a file before the cap, the suspect return the same)
-test('an MMA early-band pick the desk caps reads back the desk’s band, with or without the file’s cap', () => {
+// return +15.5%: under D23's old bar (an ev past 0.15) the desk held it to a LIKE at the practice stake. The owner,
+// 2026-10-19: a 5.1-point edge on a long dog is a real edge, not a broken row (D23 reads points and SDs over the
+// break-even now, D24's scale). A file the old desk capped (picks.json cap) still reads back its LIKE at the stake it
+// was given, on the row and the what-if; the same row with no cap reads its Kelly's band on both)
+test('an MMA early-band pick reads back the desk’s band: a file’s cap held, a +205 dog at a 5-point edge not suspect', () => {
   const k = kellyOf(205, 0.3786);
   assert.ok(['high', 'lock'].includes(edgeLevel(k, 0.3786)), 'its Kelly alone a LOVE');
+  assert.equal(isSuspect(0.3786, 0.1547), false, 'a 5.1-point edge at +205 is not suspect');
   const pick = (over = {}) => ({ id: 'mma-x', sport: 'mma', score: k, chance: 38, level: 'medium', cap: 'medium', edge: true, kind: 'moneyline', market: 'Moneyline', pick: 'Josh Hokit', side: 'away', line: null, odds: 205, book: 'DraftKings', start: '2026-11-15T03:00:00Z', matchup: 'Josh Hokit @ Ciryl Gane', teams: [], where: null, reason: '', model: 0.3957, fair: 0.3271, p: 0.3786, ev: 0.1547, units: PRACTICE_UNITS, why: { fair: 0.3271, trust: 0.75, lean: 0, fitted: true, from: 'book' }, ...over });
-  for (const file of [pick(), pick({ cap: undefined })]) {
-    const row = desk.rowOf('mma', file, false);
-    assert.equal(row.confidence, 'medium', 'the row: the desk’s LIKE');
-    const at = desk.priceAt(desk.whatIfOf(row), row.price);
-    assert.equal(at.level, row.confidence, 'the what-if reads back its band');
-    assert.equal(at.units, row.units, 'and its practice stake');
-  }
+  const capped = desk.rowOf('mma', pick(), false);
+  assert.equal(capped.confidence, 'medium', 'the row: the file’s LIKE');
+  const at = desk.priceAt(desk.whatIfOf(capped), capped.price);
+  assert.equal(at.level, 'medium', 'the what-if reads back its band');
+  assert.equal(at.units, capped.units, 'and the stake it was given');
+  const free = desk.rowOf('mma', pick({ cap: undefined, level: edgeLevel(k, 0.3786), units: stakeFor(0.1547, 0.08, 205) }), false);
+  assert.equal(free.confidence, edgeLevel(k, 0.3786), 'uncapped: its Kelly’s band');
+  assert.equal(desk.priceAt(desk.whatIfOf(free), 205).level, free.confidence);
+  // (a broken row, McCaffrey's: about 20 points over the break-even at -110, a LIKE at the practice stake)
+  const mc = desk.priceAt({ odds: -110, p: 0.724, bet: true, cap: null, unitsCap: null, win: 1, blend: null }, -110);
+  assert.ok(mc.suspect && mc.level === 'medium' && mc.units === PRACTICE_UNITS);
   // (an early-band LOVE the desk doesn't cap (Amanda Nunes +164 at 40.21%, untapered) stays a LOVE on the row and the what-if)
   const kn = kellyOf(164, 0.4021);
   const ev = 0.4021 * decimal(164) - 1;
   const love = desk.rowOf('mma', pick({ pick: 'Amanda Nunes', odds: 164, p: 0.4021, score: kn, level: edgeLevel(kn, 0.4021), cap: undefined, ev, units: stakeFor(ev, 0.08, 164) }), false);
   assert.equal(love.confidence, 'high');
   assert.equal(desk.priceAt(desk.whatIfOf(love), 164).level, 'high');
+});
+
+// (the confidence layer, D52: every placed bet carries the layer's cap, 'medium' while no tier is earned. A placed
+// LIKE so capped reads back its own Kelly stake at its own price, not the practice stake a side's ceiling sets, and
+// stays a LIKE at a better price where its Kelly alone would read LOVE)
+test('a placed bet the confidence layer caps (D52) reads back its own stake, held to a LIKE at every price', () => {
+  const p = 0.535;
+  const ev = p * decimal(-110) - 1;
+  const file = { id: 'nfl-x', sport: 'nfl', score: kellyOf(-110, p), chance: 53.5, level: 'medium', cap: 'medium', conf: { pc: p, q: kellyOf(-110, p), cap: 'medium' }, edge: true, kind: 'spread', market: 'Spread', pick: 'DAL -3', side: 'away', line: -3, odds: -110, book: 'DraftKings', start: '2026-11-15T18:00:00Z', matchup: 'DAL @ NYG', teams: [], where: null, reason: '', model: 0.56, fair: 0.5, p, ev, units: stakeFor(ev, 0.08, -110), why: { fair: 0.5, trust: 0.5, lean: 0, fitted: true, from: 'book' } };
+  const row = desk.rowOf('nfl', file, false);
+  assert.equal(row.confidence, 'medium');
+  const wi = desk.whatIfOf(row);
+  const at = desk.priceAt(wi, -110);
+  assert.equal(at.level, 'medium');
+  assert.equal(at.units, row.units, 'its own stake, not the practice stake');
+  assert.ok(row.units > PRACTICE_UNITS);
+  assert.ok(['high', 'lock'].includes(edgeLevel(kellyOf(105, p), p)), 'its Kelly alone a LOVE at +105');
+  assert.equal(desk.priceAt(wi, 105).level, 'medium', 'held to a LIKE at a better price');
 });
 
 test('flipsAt: the exact whole-cent prices where the band changes, either way', () => {
@@ -134,7 +158,7 @@ test('flipsAt: the exact whole-cent prices where the band changes, either way', 
       assert.equal(desk.priceAt(b, better.odds).level, better.level, 'the flip price is in the new band');
       assert.equal(desk.priceAt(b, desk.nextCent(better.odds, -1)).level, here, 'a cent worse is still this band');
       const word = { lock: 'LOCK', high: 'LOVE', medium: 'LIKE', low: 'PASS' }[better.level];
-      assert.match(better.text, new RegExp(`^${word} from [+−]\\d+( or better| \\(the sanity bar: a return over 15%\\))$`));
+      assert.match(better.text, new RegExp(`^${word} from [+−]\\d+( or better| \\(the sanity bar: an edge past 12 points or 0\\.3 SDs\\))$`));
     }
     if (worse) {
       assert.notEqual(worse.level, here);
@@ -147,9 +171,9 @@ test('flipsAt: the exact whole-cent prices where the band changes, either way', 
   const b = base(0.535, -110);
   assert.equal(desk.priceAt(b, -110).level, 'high');
   const { better, worse } = desk.flipsAt(b, -110);
-  // (never a LOCK under a 55% chance: up the prices it stays a LOVE till the sanity bar, a return over 15%
-  // (0.535 × 2.15 − 1 = 0.1503 at +115), holds it to a LIKE)
-  assert.equal(better.text, 'LIKE from +115 (the sanity bar: a return over 15%)');
+  // (never a LOCK under a 55% chance: up the prices it stays a LOVE till the sanity bar, an edge past 12 points over
+  // the break-even (0.535 − 0.12 = 0.415: d past 2.4096, +140.96; +141 the first whole cent), holds it to a LIKE)
+  assert.equal(better.text, 'LIKE from +141 (the sanity bar: an edge past 12 points or 0.3 SDs)');
   // (LOVE needs (0.535 − 1/d) × 2.1 ≥ 0.02: 1/d ≤ 0.52548, d ≥ 1.90304, -110.7: the last LOVE −110, LIKE past it)
   assert.equal(worse.odds, -110);
   assert.equal(worse.text, 'LIKE past −110');
@@ -157,8 +181,8 @@ test('flipsAt: the exact whole-cent prices where the band changes, either way', 
   assert.equal(desk.flipsAt(b, -113).worse.text, 'PASS past −115');
   assert.equal(desk.flipsAt(b, -113).better.text, 'LOVE from −110 or better');
   // (the one line: this band's run first, then either side; the sanity bar's LIKE again, capped)
-  assert.equal(desk.flipLine(b, -110).text, 'LOVE from −110 to +114 · LIKE past −110 · LIKE again from +115 (capped)');
-  assert.match(desk.flipLine(b, -110).title, /Capped: past a 15% expected return/);
+  assert.equal(desk.flipLine(b, -110).text, 'LOVE from −110 to +140 · LIKE past −110 · LIKE again from +141 (capped)');
+  assert.match(desk.flipLine(b, -110).title, /Capped: past a 12-point edge over the break-even/);
   assert.equal(desk.flipLine(b, -113).text, 'LIKE from −115 to −111 · PASS past −115 · LOVE from −110');
   assert.equal(desk.flipLine(base(0.535, -110, { cap: 'medium' }), -110).text, 'LIKE at every price', 'a held LIKE never flips');
 

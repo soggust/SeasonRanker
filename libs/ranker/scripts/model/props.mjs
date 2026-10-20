@@ -77,7 +77,7 @@ import { existsSync, mkdirSync, readFileSync, readdirSync, writeFileSync } from 
 import path from 'node:path';
 import { calSides } from './calib.mjs';
 import { anchorEntry, anchoredChances } from './anchor.mjs';
-import { EV_SUSPECT, bucketTrustOf, chanceAt, decimal, fairPair, gapGuard, outcomeOf, stakeFor, suspectOf, trustedUnits } from './desk.mjs';
+import { bucketTrustOf, heldEv, chanceAt, decimal, fairPair, gapGuard, outcomeOf, stakeFor, suspectOf, trustedUnits } from './desk.mjs';
 import { residOn } from './residual.mjs';
 import { correctSides } from './correct.mjs';
 import { FEEDS, SKEW_MIN_LINE, TRY_VL, ctxFactor, ctxKeys, exitMix, factorProduct, fitStat, fullMin, impliedMean, lineChances, makeModel, middleF, rAt, squadF, squadIn, squadMkt, squadRead, squadSum, trOpenFit, trOpenOf } from './project.mjs';
@@ -2210,11 +2210,11 @@ export function priceProps(sport, game, props, fitted, idx, exp, info, live, tru
     const { side, model, ev: ev0, odds, fair, raw: modelRaw, pure: modelPure, cal: calShift } = pick;
     // (the other side's price, the book's (none at an assumed -110): the page shows both sides)
     const otherOdds = prop.prices ? (side === 'over' ? prop.prices.under : prop.prices.over) : null;
-    // (the sanity guard, DECISIONS.md D23: no sane prop has an ev past EV_SUSPECT. One that does is logged loudly,
+    // (the sanity guard, DECISIONS.md D23: no sane prop has an edge past the bar (desk.mjs suspectOf: points and SDs over its break-even). One that does is logged loudly,
     // its ev held to the bar (its rank with it) and its stake to the practice stake, a LIKE at most: never bet at size)
-    const suspect = suspectOf(ev0, `${a.name} ${side} ${prop.line} ${prop.stat.key} (${game.id}): p ${round(pick.p, 4)}, the Book's no-vig ${round(fair, 4)}, the model ${round(model, 4)}${corr ? ', corrected' : ''}`);
+    const suspect = suspectOf(ev0, `${a.name} ${side} ${prop.line} ${prop.stat.key} (${game.id}): p ${round(pick.p, 4)}, the Book's no-vig ${round(fair, 4)}, the model ${round(model, 4)}${corr ? ', corrected' : ''}`, pick.p);
     if (suspect) console.warn(`${sport}: SUSPECT PRICE ${suspect.why}`);
-    const ev = suspect ? Math.sign(ev0) * EV_SUSPECT : ev0;
+    const ev = suspect ? heldEv(ev0) : ev0;
     const pTrusted = pick.p;
     // (the guard: his status (above), his line's move)
     const moved = prop.open !== null ? prop.line - prop.open : 0;

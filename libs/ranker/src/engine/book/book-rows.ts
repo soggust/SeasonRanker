@@ -4,7 +4,9 @@
 // is an admin's alone, so the owner's page learns it should show the UFC picks after it has drawn the rest. No
 // Angular here (tested under Node: tests/book-sports.test.mjs)
 import { byBand, CheckResolved } from './desk-notes';
-import { Confidence, EV_SUSPECT, PickWhy, confidenceOf, kellyOf } from './bet-why';
+import { Confidence, PickWhy, confidenceOf, isSuspect, kellyOf } from './bet-why';
+import { heldTo } from './tiers';
+import type { BandCap } from './tiers';
 import { americanOdds } from './bet-format';
 import { PlayerRef, playerCardPath } from '../player-link';
 import type { BotRecent } from './recent-form';
@@ -46,8 +48,9 @@ export interface BetRow {
   confidence: Confidence | null;
   // (a slate's practice pick (picks.json's practice): a LIKE whatever its score, its practice tag on the row)
   practice?: boolean;
-  // (a suggestion the desk caps (board.json cap, DECISIONS.md D46): a LIKE at most at every price, capWhy its why)
-  cap?: 'medium' | null;
+  // (a suggestion or a pick the desk caps (board.json and picks.json cap, DECISIONS.md D46 and D52): 'medium' a LIKE
+  // at most at every price, 'high' a LOVE at most; capWhy its why)
+  cap?: BandCap | null;
   capWhy?: string;
   // (its side, and a prop's player, his ESPN id and his team's: its circle and its color)
   side?: string | null;
@@ -178,9 +181,10 @@ export interface Pick {
   level: Confidence;
   // (a slate's practice pick: bet for the slate at the practice stake, short of the vig; a LIKE, tagged)
   practice?: boolean;
-  // (the desk's cap on its band, picks.mjs capOf: 'medium' a LIKE at most whatever its Kelly (a practice stake, a
-  // suspect price, a role or unearned research bet); files before it carry none)
-  cap?: 'medium' | null;
+  // (the band the desk holds it to (picks.mjs capOf, D36 and D52) and the confidence layer's read of it (D52): the
+  // calibrated chance, the quality (the stake's Kelly at it) and the tier cap)
+  cap?: BandCap | null;
+  conf?: { pc: number; q: number; cap: BandCap | null };
   // (when the Bot placed it: files that don't carry it, none)
   placedAt?: string | null;
   kind: BetKind;
@@ -258,10 +262,11 @@ export function pickKey(sport: string, matchup: string, kind: BetKind, pick: str
   return `${game}|${kind}|${pick.toLowerCase()}`;
 }
 
-// (a band held to the desk's cap: a LIKE at most where the file caps it, or where its return is suspect)
+// (a band held to the desk's cap: a LIKE at most where the file caps it 'medium', a LOVE at most where the confidence
+// layer caps it 'high' (D52), and a LIKE at most where its price is suspect: D23's edge bar)
 function cappedBand(band: Confidence, p: Pick): Confidence {
-  const cap = p.cap === 'medium' || (Number.isFinite(p.ev) && Math.abs(p.ev!) > EV_SUSPECT);
-  return cap && (band === 'lock' || band === 'high') ? 'medium' : band;
+  const held = heldTo(band, p.cap === 'medium' || p.cap === 'high' ? p.cap : null);
+  return isSuspect(p.p ?? (p.chance != null ? p.chance / 100 : null), p.ev) ? heldTo(held, 'medium') : held;
 }
 
 // (a pick as a row, its id given when it joins the list (mergeSportRows); a bet's band from its score, a CHECK's
@@ -280,10 +285,12 @@ export function rowOf(sport: string, p: Pick, check: boolean): BetRow {
     ...(p.headline ? { headline: p.headline } : {}),
     ...(p.by ? { by: p.by } : {}),
     ...(p.read ? { read: p.read } : {}),
-    // (its Kelly's band held to the desk's cap (picks.json cap, picks.mjs levelOf), so the row reads the band the desk
-    // gave it; a file before the cap: a suspect return (an ev past EV_SUSPECT, D23) a LIKE at most the same)
+    // (its band: the Kelly's, held to the cap the desk put on it (picks.json cap: a rule's LIKE, the confidence layer's
+    // tier cap, D52), as picks.mjs levelOf gave it; a file before the cap: a suspect price (an edge past the bar, bet-why.ts isSuspect, D23)
+    // a LIKE at most the same)
     confidence: p.practice ? 'medium' : cappedBand(confidenceOf(sureness, p.p ?? (p.chance != null ? p.chance / 100 : null), p.edge), p),
     ...(p.practice ? { practice: true } : {}),
+    ...(p.cap === 'medium' || p.cap === 'high' ? { cap: p.cap } : {}),
     id: -1,
     key: pickKey(sport, p.matchup, p.kind, p.pick),
     pick: p.pick,

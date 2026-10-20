@@ -33,6 +33,15 @@ export function bandOrder(band: Confidence | Tier | null | undefined): number {
   return at < 0 ? TIERS.length : at;
 }
 
+// (a cap the desk puts on a band: 'medium' a LIKE at most (a rule's: a practice pick, a gate, a role or research pick,
+// a suspect price, D46), 'high' a LOVE at most (the confidence layer's tiers, D52). A band held to it: the cap where
+// the band sits above it, else the band; a CHECK and a PASS as they are)
+export type BandCap = 'medium' | 'high';
+export function heldTo(band: Confidence, cap: BandCap | null | undefined): Confidence {
+  if (!cap || band === 'check' || band === 'low') return band;
+  return bandOrder(cap) > bandOrder(band) ? cap : band;
+}
+
 // (the bands above the ranks, unnumbered: a LOCK, and a CHECK, which isn't ranked as a bet)
 export const unranked = (band: Confidence | null | undefined): boolean => band === 'lock' || band === 'check';
 

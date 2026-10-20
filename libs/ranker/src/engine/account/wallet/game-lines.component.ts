@@ -40,8 +40,8 @@ export interface PriceCall {
   chance: number | null;
   // (a guard's pass: its reason, the board's (sr))
   reason?: string | null;
-  // (the desk's cap on the side, the board's (cap, DECISIONS.md D36): a LIKE at most at every price)
-  cap?: 'medium' | null;
+  // (the desk's cap on the side, the board's (cap, DECISIONS.md D46): a LIKE at most at every price)
+  cap?: 'medium' | 'high' | null;
 }
 
 // (a price's K score button clicked: what the page needs to open the why popover for it: the bot's pick where it's
@@ -58,8 +58,8 @@ export interface PriceWhy {
   game: { sport: string; matchup: string; start: string | null } | null;
   // (a guard's pass: why the bot passes it (board.mjs sr, D31), the popover's reason)
   reason?: string | null;
-  // (the desk's cap on the side (board.json cap, D36): the popover's what-if held to it)
-  cap?: 'medium' | null;
+  // (the desk's cap on the side (board.json cap, D46): the popover's what-if held to it)
+  cap?: 'medium' | 'high' | null;
 }
 
 // (one side of a prop on the board: its price, the bot's Kelly score and band on it, the bot's side or not)
@@ -69,8 +69,8 @@ export interface PropSide {
   kelly: number | null;
   tier: Tier | null;
   bot: boolean;
-  // (the desk's cap on the side, the board's (cap, D36))
-  cap?: 'medium' | null;
+  // (the desk's cap on the side, the board's (cap, D46))
+  cap?: 'medium' | 'high' | null;
 }
 
 // (a prop on the board: a player's stat at its line, over and under; pick the bot's on it, where it made one)
@@ -527,8 +527,8 @@ export class GameLinesComponent implements OnInit, OnDestroy {
     if (side.o === price.odds || side.b === 'check') return { bot: null, tier: tierOfBand(side.b), kelly: side.b === 'check' ? null : side.ks, chance: side.c, reason, cap };
     const kelly = kellyOf(side.c, price.odds) ?? side.ks;
     const raw = side.b === 'low' && (side.ks > 0 || reason) ? 'low' : confidenceOf(kelly, side.c, true);
-    // (the desk's cap held at the live price too: a LIKE at most, D36)
-    const band = cap === 'medium' && (raw === 'lock' || raw === 'high') ? 'medium' : raw;
+    // (the desk's cap held at the live price too: a LIKE at most, D46)
+    const band = cap === 'medium' && (raw === 'lock' || raw === 'high') ? 'medium' : cap === 'high' && raw === 'lock' ? 'high' : raw;
     return { bot: null, tier: tierOf(band), kelly, chance: side.c, reason, cap };
   }
 

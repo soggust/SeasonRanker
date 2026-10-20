@@ -193,7 +193,10 @@ export function barPlace(bets) {
 // together; each row's at its snapshot's time, t its start, p its priced chance, f the Book's no-vig, y the result);
 // events the history's (the clean-open test); names(x) -> { home, away, matchup } the words; epoch the version's
 // (only rows whose game starts before it); evScale the state's. Returns the file's content
-export function replayRecord(V, sport, rows, { events = null, names = () => ({ home: 'Home', away: 'Away', matchup: '' }), epoch = null, evScale = 0.08, now = Date.now(), sched = null } = {}) {
+// confidence: the confidence layer's model (confidence.mjs, D52), fit on these rows walk-forward: each bet's band held to
+// the tier cap its quality allows and its stake to the calibrated chance's, as the live desk does (run.mjs
+// withConfidence), so the replayed record is the record the Bot would have shown
+export function replayRecord(V, sport, rows, { events = null, names = () => ({ home: 'Home', away: 'Away', matchup: '' }), epoch = null, evScale = 0.08, now = Date.now(), sched = null, confidence = null } = {}) {
   const epochT = epoch ? Date.parse(epoch) : Infinity;
   const timing = V.leagues?.TIMING?.[sport] ?? { lines: 26, props: 26, lastChance: 3 };
   const practiceN = V.desk.PRACTICE_N?.[sport] ?? 3;
@@ -273,18 +276,37 @@ export function replayRecord(V, sport, rows, { events = null, names = () => ({ h
     }
     if (placed) {
       const { x, sd } = placed;
-      const suspect = Math.abs(sd.ev) > evSuspect;
-      const ev = suspect ? Math.sign(sd.ev) * evSuspect : sd.ev;
+      const suspect = V.desk.isSuspect ? V.desk.isSuspect(sd.pS, sd.ev) : Math.abs(sd.ev) > evSuspect;
+      const ev = suspect ? Math.sign(sd.ev) * Math.min(Math.abs(sd.ev), evSuspect) : sd.ev;
       // (a line whose segment hasn't earned its stake by that day: the practice stake, a LIKE, in the record as the
       // live desk's gated bets are)
       const barred = !!barAt && isLine(x) && !barAt(x.t, keysOf(x, sd), sd.ev);
       if (barred) flags.barred++;
-      const fullUnits = suspect ? practiceUnits : V.desk.stakeFor(ev, evScale, sd.odds);
-      const units = barred ? practiceUnits : fullUnits;
+      let fullUnits = suspect ? practiceUnits : V.desk.stakeFor(ev, evScale, sd.odds);
+      let units = barred ? practiceUnits : fullUnits;
       let band = level(sd.kelly, sd.pS);
       if (band === 'low') band = 'medium';
-      const fullBand = suspect && band !== 'medium' ? 'medium' : band;
+      let fullBand = suspect && band !== 'medium' ? 'medium' : band;
       if ((suspect || barred) && band !== 'medium') band = 'medium';
+      // (the confidence layer (D52): the band held to the tier cap, the stake to the calibrated chance's, never over the
+      // rules' stake or under the practice stake; a row the model can't score (before its first snapshot) as it is)
+      if (confidence && V.confidence?.qualityOf) {
+        let qy = null;
+        try {
+          qy = V.confidence.qualityOf(confidence, { ...x, side: sd.over ? 'over' : 'under' });
+        } catch {
+          qy = null;
+        }
+        if (qy?.cap && V.picks?.capBand) {
+          band = V.picks.capBand(band, qy.cap);
+          fullBand = V.picks.capBand(fullBand, qy.cap);
+        }
+        if (qy && !suspect && V.confidence.unitsOf) {
+          const u = V.confidence.unitsOf(qy, sd.odds, evScale);
+          if (fin(u)) fullUnits = Math.max(practiceUnits, Math.min(fullUnits, u));
+          if (!barred) units = fullUnits;
+        }
+      }
       const bet = betOf(x, sd, { units, band, practice: false, timing: placed.timing, beat: placed.timing === 'open' ? beatOf(x, sd.over, sd.odds, placed.close) : null, names, survival: placed.s });
       // (a barred line keeps what it would have staked at full: the bar's own place below)
       if (barred) bet.full = { units: fullUnits, band: fullBand, profit: units > 0 ? r4((bet.profit * fullUnits) / units) : 0 };

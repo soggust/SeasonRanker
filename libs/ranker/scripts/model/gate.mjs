@@ -303,7 +303,7 @@ export async function scoreVersion(dir, sport, { refit = false, propsLayer = tru
   // (lineupRisk: the lineup risk's fit on the history's opens against their closes (lineup-risk.mjs, D42); none before it)
   // (picks, replay: the bands (picks.mjs edgeLevel) and the replayed record (replay-record.mjs, the Bot's history);
   // a version from before them has no replayed record)
-  for (const n of ['leagues', 'ratings', 'context', 'margins', 'backtest', 'desk', 'props', 'project', 'correct', 'anchor', 'lineup-risk', 'picks', 'replay-record']) V[n === 'lineup-risk' ? 'lineupRisk' : n === 'replay-record' ? 'replay' : n] = await load(dir, n);
+  for (const n of ['leagues', 'ratings', 'context', 'margins', 'backtest', 'desk', 'props', 'project', 'correct', 'anchor', 'lineup-risk', 'picks', 'replay-record', 'confidence']) V[n === 'lineup-risk' ? 'lineupRisk' : n === 'replay-record' ? 'replay' : n] = await load(dir, n);
   // (the loaders: this checkout's, so both versions read the same history)
   const H = { context: await import('./context.mjs'), logs: await import('./playerlogs.mjs'), props: await import('./props.mjs'), fitcache: await import('./fitcache.mjs'), espn: await import('./espn.mjs') };
   const cfg = V.leagues.LEAGUES[sport];
@@ -530,6 +530,22 @@ export async function scoreVersion(dir, sport, { refit = false, propsLayer = tru
   // the ledger's replayed rows at the newest season's pull, the one the live desk reads)
   const histProps = histMatches.length ? propHistoryRows(V, sport, histIndex, histMatches, current, { factsLead: H.context.dayOfMinLead?.(sport) ?? null }) : { open: [], close: [], anchor: null };
   if (hist.props.length) say(`history props: ${histIndex.size} player games in the history, ${histProps.close.length} closes and ${histProps.open.length} opens matched to the replay${histProps.anchor ? `; the anchor's pull by stat: ${V.anchor.anchorText(histProps.anchor.all)}` : ''}${histProps.risk && V.lineupRisk?.riskText ? `; the lineup risk by stat: ${V.lineupRisk.riskText(histProps.risk)}` : ''}`);
+  // (the confidence layer (confidence.mjs, D52): the quality model fit walk-forward on the closes and the props' opens
+  // (the lines' opens left out: the replay's ratings read the game's own facts there), its blend weight stepped
+  // from the committed file's, its tiers from the record; what --record writes for the live desk. A version
+  // without the module has none)
+  let confidence = null;
+  if (V.confidence?.fitConfidence) {
+    try {
+      const previous = readJson(path.join(ROOT, 'apps', sport, 'src/StaticData/model/confidence.json'), null);
+      const t0 = Date.now();
+      const model = V.confidence.fitConfidence([...histLines.close, ...histProps.open, ...histProps.close], { sport, previous });
+      confidence = V.confidence.slim(model);
+      say(`confidence (D52): the blend's weight ${model.blend.weight} (its target ${model.blend.target} on ${model.blend.n} held-out bets), tiers LOVE ${model.tiers.love ?? 'not earned'} LOCK ${model.tiers.lock ?? 'not earned'}; held out on ${model.held.bets} bets the calibrated chance ${model.held.betLl.pc} against the priced ${model.held.betLl.p} and the Book ${model.held.betLl.book}; ${Math.round((Date.now() - t0) / 1000)}s`);
+    } catch (err) {
+      say(`confidence left out (${String(err?.message ?? err).slice(0, 200)})`);
+    }
+  }
   for (const [id, { b, mu, params: fp, mix }] of ledgerMatches) {
     const fairOver = b.side === 'over' ? b.fair : 1 - b.fair;
     const a = V.anchor && histProps.anchor?.on ? V.anchor.anchoredChances(b.line, mu, fp, mix, fairOver, V.anchor.anchorEntry(histProps.anchor.current, b.propType)) : null;
@@ -571,7 +587,7 @@ export async function scoreVersion(dir, sport, { refit = false, propsLayer = tru
     };
     const labelOf = Object.fromEntries((H.props.STATS?.[sport] ?? []).map((s) => [s.key, s.label]));
     for (const x of [...histProps.open, ...histProps.close]) x.label = labelOf[x.stat] ?? x.stat;
-    replay = V.replay.replayRecord(V, sport, { open: [...histLines.open, ...histProps.open], close: [...histLines.close, ...histProps.close] }, { events: hist.events, names, epoch: V.leagues.MODEL_EPOCH ?? null, evScale, sched: V.desk.scheduleRest ? V.desk.scheduleRest(histGames) : null });
+    replay = V.replay.replayRecord(V, sport, { open: [...histLines.open, ...histProps.open], close: [...histLines.close, ...histProps.close] }, { confidence, events: hist.events, names, epoch: V.leagues.MODEL_EPOCH ?? null, evScale, sched: V.desk.scheduleRest ? V.desk.scheduleRest(histGames) : null });
     say(`replayed record: ${replay.overall.won}-${replay.overall.lost}-${replay.overall.push} ${replay.overall.profit >= 0 ? '+' : ''}${replay.overall.profit}u (ROI ${replay.overall.roi === null ? '-' : `${(replay.overall.roi * 100).toFixed(1)}%`}) on ${replay.n.bets} bets (${replay.flags.timing.open} at a clean open, ${replay.flags.timing.close} at the close), ${replay.n.practice} practice picks; by band ${Object.entries(replay.byBand).map(([k, v]) => `${k} ${v.won}-${v.lost}-${v.push} ${v.profit >= 0 ? '+' : ''}${v.profit}u`).join(', ')}`);
   }
   return {
@@ -591,6 +607,8 @@ export async function scoreVersion(dir, sport, { refit = false, propsLayer = tru
     risk: histProps.risk ?? null,
     // (the lines' history bar (D51): what --record writes for the live desk)
     lineBar,
+    // (the confidence layer (D52): the quality model, its blend weight and its tiers, what --record writes)
+    confidence,
     meta: { practiceN, practiceUnits: V.desk.PRACTICE_UNITS ?? 0.5, trust, sigma: params.sigma, sigmaT: params.sigmaT, matched: replayM.size, priced: mineProps.length },
     // (the record's input fingerprint (inputsOf): what --record checks before it writes, and writes beside the record)
     inputs: inputsOf({ dir, sport, V, H, history, facts: hadFacts ? facts : null, ctxFit, gatherTimes, rowSeasons, backtest: bt.filter((b) => b.anchor === 'pinnacle').length, state, replay, propsLayer }),
@@ -864,6 +882,13 @@ function recordScore(version, sport, score, frozen, inputs = null) {
     writeFileSync(out, `${JSON.stringify({ ...score.replay, commit: entry.commit, note: decisionNote(), ...(inputs ? { inputs } : {}) }, null, 1)}\n`);
     const r = score.replay;
     console.log(`${sport}: the replayed record written (${path.relative(ROOT, out)}): ${r.overall.won}-${r.overall.lost}-${r.overall.push} ${r.overall.profit >= 0 ? '+' : ''}${r.overall.profit}u on ${r.n.bets} bets through ${r.through?.slice(0, 10) ?? '-'} (${r.flags.timing.open} at a clean open, ${r.flags.timing.close} at the close; full context ${r.flags.context.full.join(', ') || 'none'}; ratings only ${r.flags.context.ratingsOnly.join(', ') || 'none'})`);
+  }
+  // (the confidence layer (D52): the quality model fit on the priced history, its blend weight and its tiers, what the
+  // live desk reads (confidence.mjs loadModel), apps/<sport>/src/StaticData/model/confidence.json)
+  if (score.confidence?.snapshots) {
+    const out = path.join(ROOT, 'apps', sport, 'src/StaticData/model/confidence.json');
+    writeFileSync(out, `${JSON.stringify({ ...score.confidence, epoch: score.epoch, commit: entry.commit })}\n`);
+    console.log(`${sport}: the confidence layer written (${path.relative(ROOT, out)}): the blend's weight ${score.confidence.blend?.weight}, tiers LOVE ${score.confidence.tiers?.love ?? 'not earned'} LOCK ${score.confidence.tiers?.lock ?? 'not earned'}, ${score.confidence.snapshots.length} snapshots`);
   }
   const hrows = score.bet?.history?.replay ?? [];
   if (hrows.length) {

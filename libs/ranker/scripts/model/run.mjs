@@ -130,6 +130,7 @@ import { fileURLToPath } from 'node:url';
 import { BOOK, GAME_CAP, LEAGUES, MODEL_EPOCH, PROP_CAPS, TIMING } from './leagues.mjs';
 import { CAL_CAP, CAL_STEP, calibText, fitCalib } from './calib.mjs';
 import { anchorText, readAnchor } from './anchor.mjs';
+import { loadModel as readConfidence, qualityOf, unitsOf } from './confidence.mjs';
 import { ledgerRisk, readLineupRisk, riskAt, riskChance, riskText } from './lineup-risk.mjs';
 import { morningPrices, withSnapshot } from './suggest.mjs';
 import { MAX_LAST, OUT_STATUS, REPRICE_BY, cadenceOf, inputChanges, inputsOf, lastChanceOf, lineupNow, lostAsk, newsMissing, phaseOf, propAsk, putInactives, reach } from './timing.mjs';
@@ -1314,6 +1315,10 @@ function refitCalib(r) {
   // history's tens of thousands, and a weight re-fit hourly on them would drift)
   r.anchor = readAnchor(ROOT, sport);
   console.log(`${sport}: the anchor's pull by stat: ${anchorText(r.anchor)}`);
+  // (the confidence layer (confidence.mjs, DECISIONS.md D52): the quality model, its blend weight and its tiers, read
+  // from the committed file the gate records on the priced history (confidence.json), never fit here)
+  r.confidence = readConfidence(sport, ROOT);
+  console.log(`${sport}: the confidence layer: ${r.confidence ? `${r.confidence.snapshots?.length ?? 0} snapshots to ${r.confidence.snapshots?.at(-1)?.cutoff ?? '?'}, the blend's weight ${r.confidence.blend?.weight ?? 0}, tiers LOVE ${r.confidence.tiers?.love ?? 'not earned'} LOCK ${r.confidence.tiers?.lock ?? 'not earned'}` : 'no file: the Kelly bands and stakes as they are'}`);
   r.calib = null;
   try {
     // (no time on it: a run that learned nothing new writes the same state)
@@ -1823,7 +1828,7 @@ function betGames(r) {
     const off = hasKey() && !apiLines ? "ESPN's line, not the Book's own price: the Bot bets only at the Book's (it's tracked till then)" : null;
     // (each side's why for the Book's popover (board.mjs w): the facts a bet on it would carry, its write-up's)
     const explain = { sport, game, exp, seen, fairFrom, state: { trust, context: r.context ?? r.state?.context ?? null }, terms: termParts(r.feats?.terms, f, r.weights), fitted: (m) => !!trust[m]?.fitted };
-    (r.boardGames ??= new Map()).set(game.id, { game, markets: boardMarkets(priced, (m) => trust[m]?.trust ?? START_TRUST, lines.consensus, rctx, { gate: r.lineGate, off, explain }), at });
+    (r.boardGames ??= new Map()).set(game.id, { game, markets: boardMarkets(priced, (m) => trust[m]?.trust ?? START_TRUST, lines.consensus, rctx, { gate: r.lineGate, off, explain, confidence: r.confidence }), at });
     // (a market the book didn't price, by The Odds API's word: rests)
     if (apiLines && !notYet) for (const m of MARKETS) if (!priced.some((x) => x.market === m) && !r.placed.has(`${game.id}:${m}`)) rest(r, `${game.id}:${m}`, 'not priced by the Book');
     let picks = [];
@@ -2001,6 +2006,7 @@ function betGames(r) {
         Object.assign(bet, { suspect: pick.suspect, ...(bet.intent === 'edge' ? { units: Math.min(bet.units, PRACTICE_UNITS), practice: bet.practice ?? `suspect: ${pick.suspect.why}` } : {}) });
       }
       bet.pick = pickText(bet, game);
+      withConfidence(r, bet, { otherOdds: pick.other?.odds ?? null, trust: trust[market.market]?.trust ?? START_TRUST });
       r.pending.push({ bet, game });
       r.placed.add(id);
     }
@@ -2456,7 +2462,7 @@ async function betProps(r) {
       // (the betting board's props: the ones at the book's own price (a CHECK's stored one while it'd still be
       // bet: storedBet), the game's whole board when it was asked fresh, else over the last board's: writeBoard)
       const onBoard = priced.filter((x) => x.priced && !storedBet(x.prop.stored, hasKey(), r.now));
-      (r.boardProps ??= new Map()).set(game.id, { rows: onBoard.map((x) => boardProp(x, x.prop.stored?.at ?? at, { gate: x.fastCap && r.propGate?.[x.prop.stat.key]?.on !== false ? { on: false, why: 'at the practice stake: bet early on fast news (D49) till those bets beat the close' } : (r.propGate?.[x.prop.stat.key] ?? null), explain: { sport, game, exp, sib: { market: 'spread', expMargin: round(exp.margin, 2), expTotal: round(exp.total, 2), context: f?.info ?? null }, state: { trust }, fitted: !!trust[`prop:${x.prop.stat.key}`]?.fitted, tested: !!trust[`prop:${x.prop.stat.key}`]?.fitted } })), whole: fresh || board_.some((p) => p.prices && !p.stored), lines: new Map(board_.filter((p) => !p.stored?.offBoard).map((p) => [`${p.stat.key}:${p.athlete.id}`, p.line])) });
+      (r.boardProps ??= new Map()).set(game.id, { rows: onBoard.map((x) => boardProp(x, x.prop.stored?.at ?? at, { gate: x.fastCap && r.propGate?.[x.prop.stat.key]?.on !== false ? { on: false, why: 'at the practice stake: bet early on fast news (D49) till those bets beat the close' } : (r.propGate?.[x.prop.stat.key] ?? null), confidence: r.confidence, start: game.date, explain: { sport, game, exp, sib: { market: 'spread', expMargin: round(exp.margin, 2), expTotal: round(exp.total, 2), context: f?.info ?? null }, state: { trust }, fitted: !!trust[`prop:${x.prop.stat.key}`]?.fitted, tested: !!trust[`prop:${x.prop.stat.key}`]?.fitted } })), whole: fresh || board_.some((p) => p.prices && !p.stored), lines: new Map(board_.filter((p) => !p.stored?.offBoard).map((p) => [`${p.stat.key}:${p.athlete.id}`, p.line])) });
       // (the skips by kind: the market-gap guard's counted on its own)
       for (const x of priced) if (x.guard?.skip) run.skipped = { ...(run.skipped ?? {}), [x.guard.kind ?? 'other']: (run.skipped?.[x.guard.kind ?? 'other'] ?? 0) + 1 };
       run.under += priced.filter((x) => x.side === 'under').length;
@@ -2716,6 +2722,8 @@ async function betProps(r) {
     if (x.researchBet) Object.assign(bet, { researchBet: x.researchBet, context: { ...bet.context, research: x.researchBet.why } });
     // (a research-adjusted CHECK decided by its price (above): its own market, tagged and held, researchTag)
     if (x.researchAdjusted) Object.assign(bet, { researchAdjusted: x.researchAdjusted, context: { ...bet.context, research: `priced with the research's ${x.researchAdjusted.input}` } });
+    // (the confidence layer on it (D52): its calibrated chance, its quality, the band it may reach, its stake)
+    withConfidence(r, bet, { trust: x.trust });
     // (placed with the game markets, under the game's cap: placeBets)
     r.pending.push({ bet, game });
     r.placed.add(id);
@@ -2769,6 +2777,44 @@ function practicePicks(r, candidates) {
 // A priced prop (props.mjs priceProps) as the ledger's bet (or, intent 'check', the CHECK's: checks.mjs): its
 // player and his team, its side, line and price and the other side's, its chances, its projection, the context
 // it saw (an owner's note on the game among it), and the inputs it was priced on
+// The confidence layer on a bet (confidence.mjs qualityOf, DECISIONS.md D52), from what the Bot knows the moment it
+// places it: the calibrated chance it wins (pc), its quality q (the stake's Kelly at pc), the chance it beats the
+// close (pb) and the band it may reach by the tiers (cap: the cap picks.mjs levelOf and capOf read). Its stake Kelly
+// on the calibrated chance (confidence.mjs unitsOf) where the file's blend weight says the calibration has earned it
+// on the record (0: the stake as the rules set it), never over the stake the rules set (the caps, the trust) and
+// never under the practice stake; a bet a rule already holds (a guard, a gate, a suspect price, a practice pick, a
+// role or research bet) keeps its stake. A sport without the file, or a row without both prices, is left as it is.
+// x: { otherOdds (a game side's other side's price), trust (the market's) }
+function withConfidence(r, bet, x = {}) {
+  const m = r.confidence;
+  if (!m || bet.oddsAssumed || !Number.isFinite(bet.p) || !Number.isFinite(bet.fair) || !Number.isFinite(bet.odds)) return bet;
+  const a = bet.side === 'over' || bet.side === 'home';
+  const flip = (v) => (Number.isFinite(v) ? (a ? v : 1 - v) : null);
+  const other = Number.isFinite(bet.otherOdds) ? bet.otherOdds : Number.isFinite(x.otherOdds) ? x.otherOdds : null;
+  if (!other) return bet;
+  const proj = bet.projection ?? null;
+  const mu = proj && Number.isFinite(proj.mean) ? proj.mean : null;
+  const sd = mu !== null && Number.isFinite(proj.r) && proj.r > 0 ? Math.sqrt(mu + (mu * mu) / proj.r) : mu !== null ? Math.sqrt(Math.max(0, mu)) : null;
+  const t = Date.parse(bet.start);
+  const at = Date.parse(bet.placedAt ?? '') || Date.now();
+  const ctx = { sport: bet.sport, event: bet.event, market: bet.market, stat: bet.propType ?? bet.market, line: bet.line ?? null, side: bet.side, f: flip(bet.fair), raw: flip(bet.model), pCur: flip(Number.isFinite(bet.pTrust) ? bet.pTrust : bet.p), p: flip(bet.p), overOdds: a ? bet.odds : other, underOdds: a ? other : bet.odds, t, at, hours: (t - at) / 36e5, home: typeof bet.home === 'boolean' ? bet.home : null, trust: Number.isFinite(bet.trust) ? bet.trust : Number.isFinite(x.trust) ? x.trust : null, mu, sd, im: Number.isFinite(proj?.anchored?.implied) ? proj.anchored.implied : null };
+  let qy = null;
+  try {
+    qy = qualityOf(m, ctx);
+  } catch (err) {
+    console.warn(`${r.sport}: the confidence layer failed on ${bet.id} (${err.message}): the bet as it is`);
+    return bet;
+  }
+  if (!qy) return bet;
+  bet.conf = { pc: qy.pc, q: qy.q, ...(qy.pb !== null ? { pb: qy.pb } : {}), cap: qy.cap, w: qy.weight, cutoff: qy.cutoff };
+  const plain = bet.intent === 'edge' && !bet.practice && !bet.suspect && !bet.topN && !bet.researchBet && !bet.researchAdjusted && !bet.context?.guard && !bet.context?.roleBet;
+  if (plain && qy.weight > 0) {
+    const u = unitsOf(qy, bet.odds, EV_SCALE, { push: bet.push ?? 0 });
+    if (Number.isFinite(u)) bet.units = Math.max(PRACTICE_UNITS, Math.min(bet.units, u));
+  }
+  return bet;
+}
+
 function propBet(r, game, x, exp, { id, intent, units, trackUnits, tested }) {
   const { sport } = r;
   const noted = noteWords(r.live?.get(game.id));

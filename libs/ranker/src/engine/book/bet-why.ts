@@ -48,10 +48,10 @@ export interface BetWhyRow {
   implied?: number | null;
   usage?: [number, string] | null;
   terms?: [string, number][] | null;
-  // (a practice pick's tag, and the desk's cap on a board side (board.json cap, DECISIONS.md D46): a LIKE at most at
-  // every price, its stake the practice one)
+  // (a practice pick's tag, and the desk's cap on a board side or a pick (board.json and picks.json cap, DECISIONS.md
+  // D46 and D52): 'medium' a LIKE at most at every price, its stake the practice one; 'high' a LOVE at most)
   practice?: boolean;
-  cap?: 'medium' | null;
+  cap?: BandCap | null;
 }
 
 // One ingredient: what it added to the score, its bar against the largest, its hover
@@ -136,6 +136,8 @@ export function clearedKellyOf(model: number | null | undefined, fair: number | 
 // them all at 5% or more with a 55% chance to win (a big edge on a likely result: LOCK), then 2% (LOVE), any edge
 // under that (LIKE: every bet the bot places is a LIKE or better), without an edge low (PASS: never bet)
 export type { Confidence } from './tiers';
+import { heldTo } from './tiers';
+import type { BandCap } from './tiers';
 // (2026-10-11, the owner's: edges shrink as the model and its trust settle, so the bands sit lower: LIKE from 1%, LOVE
 // from 2%, LOCK from 5% with a 55% chance; the Kelly already counts the trust, an untested type's edge at half)
 // (2026-10-13, the owner's: LIKE opens to any edge (medium 0: a Kelly over 0); a market with no edge is tracked,
@@ -381,9 +383,19 @@ export function betWhy(list: BetWhyRow[], index: number): BetWhy {
 // edgeLevel, levelOf's caps), nothing new; nothing saved, no bet changed
 // ---------------------------------------------------------------------------
 const REF = 100 / 110;
-// (desk.mjs: the edge scale every sport's desk stakes on, the sanity bar on an expected return, the practice stake)
+// (desk.mjs: the edge scale every sport's desk stakes on, the sanity bar (an edge past EDGE_SUSPECT points over the
+// break-even or Z_SUSPECT SDs of the outcome, D23; a suspect row's ev held to EV_SUSPECT at most), the practice stake)
 export const EV_SCALE = 0.08;
 export const EV_SUSPECT = 0.15;
+export const EDGE_SUSPECT = 0.12;
+export const Z_SUSPECT = 0.3;
+// (desk.mjs isSuspect: the edge over the break-even from the chance and the return, p / (1 + ev) the break-even)
+export function isSuspect(p: number | null | undefined, ev: number | null | undefined): boolean {
+  if (!Number.isFinite(p) || !Number.isFinite(ev) || !(p! > 0 && p! < 1) || !(ev! > -1)) return false;
+  const be = Math.min(1 - 1e-9, Math.max(1e-9, p! / (1 + ev!)));
+  const edge = p! - be;
+  return Math.abs(edge) > EDGE_SUSPECT || Math.abs(edge / Math.sqrt(be * (1 - be))) > Z_SUSPECT;
+}
 export const PRACTICE_UNITS = 0.5;
 const decimalOf = (american: number) => 1 + payout(american);
 
@@ -438,7 +450,8 @@ export interface WhatIfBase {
   // (a LIKE a rule holds it to at every price: picks.mjs levelOf's practice, role and research picks)
   cap: Confidence | null;
   // (a ceiling: the desk's cap on a side it hasn't bet (board.json cap, D46; a practice side): a LIKE at most, a PASS
-  // still where the price has no edge)
+  // still where the price has no edge; the confidence layer's (picks.json and board.json cap, D52): a LIKE or a LOVE
+  // at most at every price, the stake the Kelly's)
   most?: Confidence | null;
   unitsCap: number | null;
   win: number;
@@ -464,10 +477,11 @@ export function priceAt(base: WhatIfBase, american: number): PriceAt {
   const d = decimalOf(odds);
   const ev = base.win * (base.p * d - 1);
   const kelly = kellyOf(base.p, odds) ?? 0;
-  const suspect = Math.abs(ev) > EV_SUSPECT;
+  const suspect = isSuspect(base.p, ev);
   let level = confidenceOf(kelly, base.p, base.bet ? true : undefined);
-  // (a rule's LIKE, held; the desk's cap and the sanity guard's: a LIKE at most)
+  // (a rule's LIKE, held; the desk's cap and the sanity guard's: a LIKE at most; the confidence layer's LOVE at most)
   if (base.cap === 'medium' || ((suspect || base.most === 'medium') && (level === 'lock' || level === 'high'))) level = 'medium';
+  else if (base.most === 'high' && level === 'lock') level = 'high';
   let units: number | null = null;
   if (level !== 'low') {
     units = suspect || base.most === 'medium' ? PRACTICE_UNITS : stakeFor(ev, odds);
@@ -495,7 +509,7 @@ export function flipsAt(base: WhatIfBase, american: number): { better: PriceFlip
       const level = priceAt(base, a).level;
       if (level !== here) {
         return dir > 0
-          ? { dir: 'better', level, odds: a, text: `${tierLabel(level).toUpperCase()} from ${odds(a)}${priceAt(base, a).suspect && !priceAt(base, last).suspect ? ' (the sanity bar: a return over 15%)' : ' or better'}` }
+          ? { dir: 'better', level, odds: a, text: `${tierLabel(level).toUpperCase()} from ${odds(a)}${priceAt(base, a).suspect && !priceAt(base, last).suspect ? ' (the sanity bar: an edge past 12 points or 0.3 SDs)' : ' or better'}` }
           : { dir: 'worse', level, odds: last, text: `${tierLabel(level).toUpperCase()} past ${odds(last)}` };
       }
       last = a;
@@ -519,7 +533,7 @@ export function flipLine(base: WhatIfBase, american: number): { text: string; ti
   if (better) parts.push(`${name(better.level)}${worse && worse.level === better.level ? ' again' : ''} from ${odds(better.odds)}${capped ? ' (capped)' : ''}`);
   const title = [
     "Where the band changes, the Bot's chance held: the whole-cent prices either side",
-    capped ? 'Capped: past a 15% expected return the bettor treats a price as suspect, a LIKE at the practice stake at most' : null,
+    capped ? 'Capped: past a 12-point edge over the break-even (or 0.3 SDs of the outcome) the bettor treats a price as suspect, a LIKE at the practice stake at most' : null,
   ]
     .filter(Boolean)
     .join('\n');
@@ -539,10 +553,14 @@ export function whatIfOf(r: BetWhyRow, placed = true): WhatIfBase | null {
   const base: WhatIfBase = { odds, p, bet, cap: null, unitsCap: null, win, blend: null };
   const at = priceAt(base, odds);
   // (a LIKE the score doesn't make: a practice, role or research pick's, held there at every price)
-  if (bet && r.confidence === 'medium' && at.level !== 'medium') base.cap = 'medium';
+  // (and a placed bet the desk capped (picks.json cap 'medium': a rule's or the confidence layer's, D52): its band held
+  // at every price, its stake the desk's own, never the practice stake a side's ceiling below would set)
+  if (bet && ((r.confidence === 'medium' && at.level !== 'medium') || r.cap === 'medium')) base.cap = 'medium';
   if (bet && Number.isFinite(r.units) && at.units !== null && r.units! < at.units) base.unitsCap = r.units!;
-  // (the desk's cap on a side, or a practice side, it hasn't bet at this price: a LIKE at most at every price, D46)
+  // (the desk's cap on a side, or a practice side, it hasn't bet at this price: a LIKE at most at every price, D46;
+  // the confidence layer's cap on a pick or a side: a LIKE or a LOVE at most at every price, D52)
   if (!base.cap && (r.cap === 'medium' || r.practice)) base.most = 'medium';
+  else if (!base.cap && r.cap === 'high') base.most = 'high';
   const fair = r.why?.fair ?? r.fair;
   const trust = r.why?.trust;
   if (Number.isFinite(r.model) && Number.isFinite(fair) && Number.isFinite(trust)) base.blend = { model: r.model!, fair: fair!, trust: trust! };

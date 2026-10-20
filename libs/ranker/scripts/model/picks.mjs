@@ -20,7 +20,7 @@
 //   level    its band, the row's color and chip, by its Kelly score (BANDS): lock (5% or more, and a 55%
 //            chance), high (2%: LOVE), medium (any edge under that: LIKE), low (PASS: no edge, never a bet)
 //   cap      'medium' where a rule holds the band to a LIKE whatever its Kelly (capOf: a practice pick, a practice
-//            stake (a gate's, a suspect price's: an ev past desk.mjs EV_SUSPECT, D23), a role bet, a research bet
+//            stake (a gate's, a suspect price's: an edge past desk.mjs suspectOf's bar, D23), a role bet, a research bet
 //            not yet earned); none where the band is its Kelly's. The page bands the row as the desk does
 //            (book-rows.ts rowOf: its Kelly's band held to the cap), so its what-if reads back its own band (D46)
 //   check    besides the bets, the CHECKs (checks.mjs: markets too far from the book to bet, kept to look into
@@ -128,8 +128,14 @@ export const edgeLevel = (kelly, p = 0) => (kelly > -EDGE_ROUND && level(kelly, 
 // possible, a research bet a LIKE at the least)
 const earnedBet = (b) => !!b.researchBet?.earned;
 // (a slate's practice pick (desk.mjs isPracticeTop: bet for the slate, short of the vig) a LIKE, whatever its score)
-// (and a suspect price (desk.mjs suspectOf: an ev past EV_SUSPECT) a LIKE at most, its stake the practice one)
-export const levelOf = (b, kelly, p = b.p) =>
+// (and a suspect price (desk.mjs suspectOf: an edge past EDGE_SUSPECT points or Z_SUSPECT SDs over its break-even) a LIKE at most, its stake the practice one)
+// (and the confidence layer's cap (confidence.mjs capOf, DECISIONS.md D52: a tier not earned on the record): the band
+// the bet may reach by its quality q, on the bet as conf.cap ('medium' a LIKE at most, 'high' a LOVE at most); the
+// owner's Kelly bands stay as the floors under it (never a LOVE under 2%), and a bet without one (no model file, a
+// sport without a fit, MMA) keeps its Kelly's band)
+const confCap = (b) => (b?.conf?.cap === 'medium' || b?.conf?.cap === 'high' ? b.conf.cap : null);
+export const levelOf = (b, kelly, p = b.p) => capBand(ruleLevel(b, kelly, p), confCap(b));
+const ruleLevel = (b, kelly, p = b.p) =>
   intentOf(b) !== 'edge' ? 'low'
   : isPracticeTop(b) ? 'medium'
   : earnedBet(b) && !b.practice && !b.suspect ? (edgeLevel(kelly, p) === 'low' ? 'medium' : edgeLevel(kelly, p))
@@ -141,7 +147,8 @@ export const levelOf = (b, kelly, p = b.p) =>
 // research-adjusted one not yet earned; null where its band is its Kelly's. The board carries it per side
 // (board.mjs cap), so the Book's suggestions and the what-if never show a band the Bot couldn't give the row:
 // DECISIONS.md D46. levelOf(b, k, p) is capBand(edgeLevel(k, p), capOf(b)) for every edge bet with an edge)
-export const capOf = (b) =>
+export const capOf = (b) => lower(ruleCap(b), confCap(b));
+const ruleCap = (b) =>
   isPracticeTop(b) ? 'medium'
   : earnedBet(b) && !b.practice && !b.suspect ? null
   : b.researchBet || b.context?.roleBet || (b.researchAdjusted && !b.researchAdjusted.earned) || b.practice || b.suspect ? 'medium'
@@ -149,6 +156,8 @@ export const capOf = (b) =>
 const RANK = { low: 0, medium: 1, high: 2, lock: 3 };
 // (a band held to a cap: the lower of the two; a CHECK, or no cap, as it is)
 export const capBand = (band, cap) => (cap && band in RANK && cap in RANK && RANK[cap] < RANK[band] ? cap : band);
+// (the lower of two caps; one alone as it is)
+const lower = (x, y) => (!x ? (y ?? null) : !y ? x : RANK[x] <= RANK[y] ? x : y);
 
 // The bot's recent form, for the Book's Recent form card (recent-form.ts botForm, The Bot side): over its graded
 // placed bets (a tracked row never, an open or void one never), each US Eastern day's [won, lost, push, staked,
@@ -429,6 +438,11 @@ export function buildPicks(sport, ledger, trust, games, now, extra = {}) {
       edge: intentOf(b) === 'edge',
       // (a slate's practice pick: bet for the slate at the practice stake, short of the vig; the Book's practice tag)
       ...(isPracticeTop(b) ? { practice: true } : {}),
+      // (the band the desk holds it to (capOf: a rule's LIKE, the confidence layer's tier cap, D36 and D52) and the
+      // confidence layer's read (confidence.mjs qualityOf: the calibrated chance pc, the quality q, the cap), so the
+      // page and its what-if show the band the Bot could give it, at any price)
+      ...(!check && capOf(b) ? { cap: capOf(b) } : {}),
+      ...(!check && b.conf ? { conf: { pc: b.conf.pc, q: b.conf.q, cap: b.conf.cap ?? null } } : {}),
       kind: KIND[b.market] ?? 'player',
       market: b.market === 'prop' ? b.statLabel : LABEL[b.market],
       pick: b.pick,

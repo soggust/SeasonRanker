@@ -32,8 +32,8 @@ export interface BoardSide {
   // suggestions, 'practice' (or { practice: true }) tags it practice: suggestions.ts sugOf)
   sug?: unknown;
   // (the desk's cap on it: 'medium' where any bet on it would be a LIKE at most whatever its price (a gate's practice
-  // stake, a role or research pick: picks.mjs capOf), cr its why; the band at any price held to it (DECISIONS.md D36))
-  cap?: 'medium';
+  // stake, a role or research pick: picks.mjs capOf), cr its why; the band at any price held to it (DECISIONS.md D46))
+  cap?: 'medium' | 'high';
   cr?: string;
   // (its why, on an edge side and the Bot's side (board.mjs w): the K-score popover's makings for a suggestion)
   w?: BoardWhy;
@@ -78,8 +78,8 @@ export interface BoardProp {
   bk?: 'bet' | 'check';
   // (the desk's word on it as a suggestion, as a game side's: suggestions.ts sugOf)
   sug?: unknown;
-  // (the desk's cap on each side, [over's, under's], as a game side's cap; cr its why (D36))
-  cap?: ['medium' | null, 'medium' | null];
+  // (the desk's cap on each side, [over's, under's], as a game side's cap; cr its why (D46))
+  cap?: ['medium' | 'high' | null, 'medium' | 'high' | null];
   cr?: string;
   // (each side's why, [over's, under's], as a game side's w)
   w?: [BoardWhy | null, BoardWhy | null];

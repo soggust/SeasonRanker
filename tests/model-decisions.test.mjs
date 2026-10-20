@@ -31,7 +31,7 @@ import { CHECKS as SELF_CHECKS } from '../libs/ranker/scripts/model/selfcheck.mj
 import { CAL_STEP, fitCalib, fitSpot, calRows } from '../libs/ranker/scripts/model/calib.mjs';
 import { CORR_PRICING, LAMBDAS, MOVE_MAX, SEG_MIN, capMove, corrRows, moveCap, oneSe } from '../libs/ranker/scripts/model/correct.mjs';
 import { mainCardOf, mmaPracticePicks } from '../libs/ranker/scripts/model/mma-desk.mjs';
-import { EV_SUSPECT, choose, suspectOf } from '../libs/ranker/scripts/model/desk.mjs';
+import { EDGE_SUSPECT, EV_SUSPECT, Z_SUSPECT, choose, isSuspect, suspectOf } from '../libs/ranker/scripts/model/desk.mjs';
 import { BAR_MIN, BAR_Z, barGate, barOf, bothGates, lineBar as lineBarOf, segmentOf } from '../libs/ranker/scripts/model/desk.mjs';
 import { MOVE_FOLLOWED, ROLE, farOf, lineZ, moveFollowed } from '../libs/ranker/scripts/model/props.mjs';
 import { boardMarkets, boardProp, skipReason } from '../libs/ranker/scripts/model/board.mjs';
@@ -329,13 +329,30 @@ test('D20 role bets: never under 40 graded CHECKs of a cause', () => {
   assert.equal(roleGateOf({ byRole: { 'snap-jump': { ...t, decided: 40 } } })['snap-jump'].on, true);
 });
 
-test('D23 the sanity guard: an ev past EV_SUSPECT is logged as suspect, held to the bar and the practice stake, a LIKE at most', () => {
+test('D23 the sanity guard: an edge past 12 points or 0.3 SDs of the outcome over the break-even is suspect, its ev held to the bar, the practice stake, a LIKE at most', async () => {
+  assert.equal(EDGE_SUSPECT, 0.12);
+  assert.equal(Z_SUSPECT, 0.3);
   assert.equal(EV_SUSPECT, 0.15);
-  assert.equal(suspectOf(0.14), null);
-  assert.ok(suspectOf(0.39));
-  assert.ok(suspectOf(-0.2));
+  // (scale-aware, D24: Josh Hokit +205 at 37.86%, 5.1 points and 0.11 SDs over 32.8% to break even, ev +15.5%: not
+  // suspect; Amanda Nunes +164 at 40.21%: not; McCaffrey's broken row, about 20 points at -110: suspect)
+  const evAt = (p, odds) => p * (odds > 0 ? 1 + odds / 100 : 1 + 100 / -odds) - 1;
+  assert.equal(suspectOf(evAt(0.3786, 205), '', 0.3786), null);
+  assert.equal(isSuspect(0.4021, evAt(0.4021, 164)), false);
+  assert.ok(suspectOf(evAt(0.724, -110), '', 0.724), 'a 20-point edge is suspect');
+  assert.ok(isSuspect(0.66, evAt(0.66, -110)), '13.6 points at -110');
+  assert.equal(isSuspect(0.62, evAt(0.62, -110)), false, '9.6 points at -110');
+  assert.ok(isSuspect(0.18, evAt(0.18, 1000)), '8.9 points at +1000: past 0.3 SDs of the outcome there');
+  assert.equal(isSuspect(0.12, evAt(0.12, 1000)), false, '2.9 points at +1000');
+  assert.ok(isSuspect(0.3, evAt(0.3, -110)), 'either way: 22 points under');
+  assert.equal(suspectOf(0.39), null, 'no chance, no read');
+  // (the desk's own lines: the old bar's case, 42% at +200 (ev +0.26, 8.7 points, 0.18 SDs), is a bet at its own stake now)
   const c = choose({ market: 'total', sides: [{ side: 'over', line: 44.5, odds: 200, model: 0.42, fair: 0.36 }, { side: 'under', line: 44.5, odds: -250, model: 0.58, fair: 0.64 }] }, 1, 0.08);
-  assert.ok(c.suspect && c.ev === EV_SUSPECT && c.units === PRACTICE_UNITS);
+  assert.ok(!c.suspect && c.side === 'over' && c.units > PRACTICE_UNITS && c.ev > EV_SUSPECT, JSON.stringify({ p: c.p, ev: c.ev, units: c.units }));
+  // (the held return: a suspect row's ev at the bar at most, either way)
+  const { heldEv } = await import('../libs/ranker/scripts/model/desk.mjs');
+  assert.equal(heldEv(0.39), EV_SUSPECT);
+  assert.equal(heldEv(-0.2), -EV_SUSPECT);
+  assert.equal(heldEv(0.1), 0.1);
   assert.equal(levelOf({ intent: 'edge', suspect: { ev: 0.39 } }, 0.2, 0.7), 'medium');
   assert.match(src('props.mjs'), /SUSPECT PRICE/);
   assert.match(src('run.mjs'), /if \(x\.suspect\) Object\.assign\(bet/);
@@ -755,7 +772,8 @@ test('D46 a suggestion never shows a band the Bot could not give the row: the de
   assert.equal(capBand('check', 'medium'), 'check');
   assert.deepEqual(sideCap({}), {});
   // (a suspect price a LIKE at most on the board, D23)
-  assert.equal(bandOf(0.2, 0.7, 0.2), 'medium');
+  assert.equal(bandOf(0.2, 0.75, 0.36), 'medium');
+  assert.equal(bandOf(0.0755, 0.3786, 0.1547), edgeLevel(0.0755, 0.3786), 'a 5-point edge at +205 keeps its Kelly band');
   // (the lines' CLV gate at practice: every side capped LIKE, its why on it; the gate passing, none)
   const ml = [{ market: 'ml', sides: [{ side: 'home', odds: -110, model: 0.545, fair: 0.5 }, { side: 'away', odds: -110, model: 0.455, fair: 0.5 }] }];
   const free = boardMarkets(ml, () => 1, null, null, { gate: { on: true } }).ml[0];
@@ -869,4 +887,43 @@ test("D51 the game lines' history bar: a segment (market and side class) earns f
   assert.match(src('run.mjs'), /bothGates\(r\.lineGate, segment\)/);
   const decisions = fs.readFileSync(path.resolve('libs/ranker/scripts/model/DECISIONS.md'), 'utf8');
   assert.ok(decisions.includes('### D51.'));
+});
+
+test('D52 the confidence layer: LIKE from any edge, LOVE and LOCK earned on the record (none on 2026-10-19), the Kelly bands as floors, the cap on the bet and the board, the stake blended by a held-out weight, the file the gate\'s', async () => {
+  const { BANDS, capBand, capOf, edgeLevel, levelOf } = await import('../libs/ranker/scripts/model/picks.mjs');
+  const C = await import('../libs/ranker/scripts/model/confidence.mjs');
+  const { PRACTICE_UNITS, stakeFor, decimal } = await import('../libs/ranker/scripts/model/desk.mjs');
+  // (the owner's Kelly bands stay as the floors)
+  assert.deepEqual(BANDS, { lock: 0.05, lockChance: 0.55, high: 0.02, medium: 0 });
+  // (no tier earned: a LIKE at most, whatever the Kelly; a tier earned opens only at its bar; never a LOVE under 2%)
+  assert.equal(C.capOf(0.3, { love: null, lock: null }), 'medium');
+  assert.equal(levelOf({ intent: 'edge', ev: 0.05, p: 0.6, conf: { cap: 'medium', q: 0.3 } }, 0.08, 0.6), 'medium');
+  assert.equal(levelOf({ intent: 'edge', ev: 0.05, p: 0.6, conf: { cap: 'high', q: 0.3 } }, 0.08, 0.6), 'high');
+  assert.equal(levelOf({ intent: 'edge', ev: 0.05, p: 0.6, conf: { cap: null, q: 0.3 } }, 0.01, 0.6), 'medium', 'the floor');
+  // (capOf is levelOf's cap, the lower of a rule's and the layer's)
+  for (const conf of [null, { cap: 'medium' }, { cap: 'high' }, { cap: null }]) for (const m of [{}, { practice: 'gate' }, { topN: { rank: 1 } }]) for (const [k, p] of [[0.01, 0.5], [0.03, 0.52], [0.08, 0.6]]) {
+    const b = { intent: 'edge', ev: 0.05, p, ...(conf ? { conf } : {}), ...m };
+    assert.equal(levelOf(b, k, p), capBand(edgeLevel(k, p), capOf(b)));
+  }
+  // (a tier is earned only on held-out evidence beyond noise: a flat record earns none; the stake on the calibrated
+  // chance, the practice stake where it clears no edge; the blend's weight 0 to start, a step a record)
+  assert.equal(C.BLEND_START, 0);
+  assert.equal(C.BLEND_STEP, 0.25);
+  assert.ok(C.TIER_MIN >= 200);
+  assert.equal(C.unitsOf({ pc: 0.5 }, -110, 0.08), PRACTICE_UNITS);
+  assert.equal(C.unitsOf({ pc: 0.6 }, -110, 0.08), stakeFor(0.6 * decimal(-110) - 1, 0.08, -110));
+  // (the committed files: no tier earned on 2026-10-19 in any sport, the blend's weight never over a step from 0 at
+  // the first record, every snapshot's newest moment at or before its cutoff)
+  for (const sport of ['nfl', 'nba', 'nhl', 'mlb']) {
+    const f = path.resolve(`apps/${sport}/src/StaticData/model/confidence.json`);
+    if (!fs.existsSync(f)) continue;
+    const m = JSON.parse(fs.readFileSync(f, 'utf8'));
+    assert.equal(m.v, C.CONF_V);
+    assert.ok(m.blend.weight >= 0 && m.blend.weight <= 1);
+    if (m.tiers.love !== null) assert.ok(m.tiers.evidence.some((e) => e.tier === 'love' && e.earned && e.bar === m.tiers.love), `${sport}: a tier earned only by its evidence`);
+    for (const s of m.snapshots) assert.ok(s.to <= Date.parse(`${s.cutoff}-01T00:00:00Z`) + 1, `${sport}: a snapshot learned from nothing after its cutoff`);
+  }
+  const decisions = fs.readFileSync(path.resolve('libs/ranker/scripts/model/DECISIONS.md'), 'utf8');
+  assert.ok(decisions.includes('### D52.'));
+  assert.ok(decisions.includes('| The confidence layer ('));
 });

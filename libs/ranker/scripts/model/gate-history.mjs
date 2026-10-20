@@ -260,6 +260,9 @@ export function finish(V, rows, keyOf, start, kind) {
     const t = x.kind === 'o' && fin(x.at) ? trust.at(keyOf(x), x.at) : (trustOf.get(x.kind === 'c' ? x.id : close.get(x.key)?.id) ?? start(keyOf(x)));
     const ctx = { sport: x.sport, market: kind === 'lines' ? x.market : 'prop', stat: x.stat, line: x.line, side: 'over', f: x.f, raw: modelOf(x), overOdds: x.overOdds, underOdds: x.underOdds, t: x.t, at: fin(x.at) ? x.at : x.t - (x.kind === 'o' ? 24 * 36e5 : 36e5), kind: x.kind, fo: x.fo ?? null, home: x.home ?? null, season: x.season, ...(fin(x.named) ? { named: x.named } : {}) };
     x.p = Math.min(0.999, Math.max(0.001, V.desk.chanceAt(kind === 'lines' ? x.market : 'prop', x.f, modelOf(x), t, ctx)));
+    // (the current price before the residual blend (the trust's chance), what the confidence layer reads as the
+    // blend's start: confidence.mjs features, D52)
+    x.pCur = Math.min(0.999, Math.max(0.001, V.desk.chanceAt(kind === 'lines' ? x.market : 'prop', x.f, modelOf(x), t)));
     x.trust = t;
   }
   return { open: rows.filter((x) => x.kind === 'o'), close: closeRows };
@@ -314,7 +317,21 @@ export function propHistoryRows(V, sport, index, matches, current, { factsLead =
     }
     anchor = { all: { ...V.anchor.fitAnchor(fitRows(rows)), on: priceIt }, bySeason, current: bySeason[seasons[seasons.length - 1]] ?? null, on: priceIt };
   }
-  for (const x of rows) delete x.m;
+  // (the projection's mean and spread, and the Book's implied mean, kept on the row for the confidence layer's
+  // features (confidence.mjs sdEdge, imGap; D52): the edge in standard deviations of the Bot's own number)
+  for (const x of rows) {
+    const mu = x.m?.mu;
+    if (fin(mu) && x.m.params) {
+      x.mu = mu;
+      const r = V.project?.rAt ? V.project.rAt(x.m.params, mu) : null;
+      x.sd = fin(r) && r > 0 ? Math.sqrt(mu + (mu * mu) / r) : Math.sqrt(Math.max(0, mu));
+      if (!fin(x.im) && V.project?.impliedMean) {
+        const im = V.project.impliedMean(x.line, x.f, x.m.params, x.m.mix);
+        x.im = fin(im) ? im : null;
+      }
+    }
+    delete x.m;
+  }
   const B = V.desk.BUCKET_START ?? { low: 0.25, mid: 0.375, high: 0.5 };
   const bucket = V.desk.lineBucket ?? ((l) => (l <= 1.5 ? 'low' : l <= 3.5 ? 'mid' : 'high'));
   const done = finish(V, rows, (x) => `${x.stat}@${bucket(x.line)}`, (k) => B[k.split('@')[1]] ?? 0.5, 'props');
