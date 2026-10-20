@@ -2,6 +2,7 @@ import type { CardFlag, FlagContext, HistoryRow, SportConfig } from '@ranker/eng
 import { WOMENS_DIVISIONS, allTime, womens, type Position } from './positions';
 import { seasonName } from './awards';
 import { mmaHeatMaps } from './heat-maps';
+import { stubFighter } from './stub-fighter';
 
 // (head to head counts for meetings since this date)
 const THREE_YEARS_AGO = new Date(Date.now() - 1096 * 864e5).toISOString().slice(0, 10);
@@ -166,6 +167,13 @@ export const SPORT: SportConfig = {
   noSwitches: ['showInjured', 'rookiesOnly'],
   // (the women's tabs or the men's, one set at a time)
   tabVisible: (position, settings) => WOMENS_DIVISIONS.includes(position as Position) === womens(settings),
+  // (a link to a fighter on the other set, a women's fighter from the Book: that set, Current or All-Time kept)
+  tabShownBy: (position, settings) => {
+    const era = String(settings['era'] ?? 'current').replace(/W$/, '');
+    return { era: WOMENS_DIVISIONS.includes(position as Position) ? `${era}W` : era };
+  },
+  // (a fighter the site has no row for, a debut on the Book's card: a minimal card, his record from ESPN)
+  stubPlayer: stubFighter,
   // Current fighters: today's roster, each in his division now; all-time: the retired fighters too, each
   // in the division he fought in most
   rowVisible: (player, settings) => (allTime(settings) ? player.only !== 'current' : !player.retired && player.only !== 'allTime'),

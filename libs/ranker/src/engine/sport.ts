@@ -406,6 +406,12 @@ export interface SportConfig {
   rowShown?: (player: SkillPlayer, settings: SportSettings) => boolean;
   // A tab the sport's settings can hide (MMA's women's divisions, until switched on)
   tabVisible?: (position: string, settings: SportSettings) => boolean;
+  // The settings that show a tab tabVisible hides (MMA's women's divisions: the era's women's half), for a
+  // card's link to a player on it (a women's fighter from the Book) to open her tab and her card
+  tabShownBy?: (position: string, settings: SportSettings) => SportSettings;
+  // A player's link naming someone the site has no row for (a debut fighter on the Book's card): a minimal
+  // card's row (his record, from ESPN) and the tab he'd be on; null: nothing to show
+  stubPlayer?: (ref: { id: string; name: string | null }) => Promise<{ position: string; player: SkillPlayer } | null>;
   // Tabs grouped under one of the bar's (the NFL's Offense: Team O, QB, RB, WR, TE and OL under OFF; its
   // Defense and Special Teams the same): the bar keeps the parent alone, lit while any of the family is
   // open, and the family's members open from it (tab-families.ts: an accordion in the row on desktops and

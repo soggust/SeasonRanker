@@ -16,15 +16,20 @@ export type BetGame = { week: number; date: string; kickoff?: string | null; mat
 
 // A prop's player's card: his sport's page with his name on the link (card-link.ts CARD_NAME_PARAM: the sport's app
 // finds him by name across its player tabs, findLinkedCard; the picks carry no position), "/nfl/?name=Drake+Maye".
-// A fight's pick is its fighter's: his card the same way ("/mma/?name=Joaquin+Buckley"). Not a prop or a fight,
-// or no player on it: none (player-link.ts playerCardPath)
-export function playerCardHref(r: { sport: string; betType: BetKind; player?: string | null }): string | null {
-  return r.betType === 'player' || r.sport === 'mma' ? playerCardPath({ sport: r.sport, name: r.player }) : null;
+// A fight's pick is its fighter's: his card the same way ("/mma/?name=Joaquin+Buckley"). His ESPN id rides along
+// (&card=): the app finds him by it first, and one the site has no row for (a debut, a fighter out of its
+// lists) gets a minimal card by it (SPORT.stubPlayer). Not a prop or a fight, or no player on it: none
+// (player-link.ts playerCardPath)
+type CardRow = { sport: string; betType: BetKind; player?: string | null; athleteId?: string | number | null };
+export function playerCardHref(r: CardRow): string | null {
+  const ref = playerRefOf(r);
+  return ref ? playerCardPath(ref) : null;
 }
 
 // The same as a player link's ref (the <a playerLink> directive), or none
-export function playerRefOf(r: { sport: string; betType: BetKind; player?: string | null }): PlayerRef | null {
-  return playerCardHref(r) ? { sport: r.sport, name: r.player } : null;
+export function playerRefOf(r: CardRow): PlayerRef | null {
+  if (!(r.betType === 'player' || r.sport === 'mma') || !r.player) return null;
+  return { sport: r.sport, name: r.player, ...(r.athleteId != null && r.athleteId !== '' && { id: r.athleteId }) };
 }
 
 // One of the algorithm's picks as the page shows it

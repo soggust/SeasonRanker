@@ -88,6 +88,22 @@ for (const sport of SPORTS) {
     setAddress(`${page}?card=nobody-here&name=No%20Such%20Player`);
     assert.equal(new PositionService().takeCardMissing(), true);
     assert.equal(new URL(location.href).searchParams.has('card'), false);
+    // (an ESPN id the site has no row for, where the sport makes minimal cards, MMA's debut fighters: his
+    // minimal card, not the note)
+    setAddress(`${page}?card=99999999&name=No%20Such%20Fighter`);
+    const debut = new PositionService();
+    assert.equal(debut.takeCardMissing(), !SPORT.stubPlayer);
+    assert.deepEqual(debut.takePendingStub(), SPORT.stubPlayer ? { id: '99999999', name: 'No Such Fighter' } : null);
+    // (a row on a tab the default settings hide, MMA's women's divisions: the settings that show it, its tab open)
+    const hidden = tabs.find((t) => SPORT.tabVisible && !SPORT.tabVisible(t, new PositionService().settings.sport) && !isPooled(t));
+    if (hidden) {
+      const row = SKILL_UNITS[hidden][0];
+      setAddress(`${page}?name=${encodeURIComponent(row.name)}&card=${row.id}`);
+      const shown = new PositionService();
+      assert.equal(SPORT.tabVisible(hidden, shown.settings.sport), true, `${hidden} shown for ${row.name}`);
+      assert.equal(shown.position, hidden);
+      assert.equal(shown.takePendingCard(hidden)?.gsisId, row.gsisId);
+    }
     // (an id on its tab not in the ranked rows: his tab and id, for the card to look in the unranked rows)
     setAddress(`${page}?pos=${tab}&card=nobody-here`);
     assert.deepEqual(new PositionService().takePendingCard(tab), { grid: tab, position: tab, gsisId: 'nobody-here', tab: null });

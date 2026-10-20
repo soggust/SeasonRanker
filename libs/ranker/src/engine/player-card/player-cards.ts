@@ -591,6 +591,30 @@ export class PlayerCards {
     }
   }
 
+  // A link's player the site has no row for (a debut fighter on the Book's card): a minimal card, UR, from
+  // the row the sport makes (SPORT.stubPlayer: his record), on the tab he'd be on. False: none to show
+  async openStub(ref: { id: string; name: string | null }): Promise<boolean> {
+    if (!SPORT.stubPlayer) return false;
+    const back = this.cardPosition;
+    this.loading = true;
+    try {
+      const stub = await SPORT.stubPlayer(ref);
+      if (!stub) return false;
+      this.cardPosition = stub.position === this.host.position ? null : (stub.position as SkillPosition);
+      this.tab = 'overview';
+      this.pool = null;
+      const context = this.host.seasonContext(this.host.season, SKILL_UNITS, this.position);
+      this.show(this.render(stub.player, this.host.season, context.list, context, true));
+      return true;
+    } catch (err) {
+      console.error(err);
+      this.cardPosition = back;
+      return false;
+    } finally {
+      this.loading = false;
+    }
+  }
+
   // A season they played outside the tab's ranked list (SPORT.unrankedSeasons): its card, the stats read
   // against that season's list as the table reads them but never ranked in it (UR)
   private async openUnranked(season: number, gsisId: string, rows: Record<SkillPosition, SkillPlayer[]>): Promise<boolean> {

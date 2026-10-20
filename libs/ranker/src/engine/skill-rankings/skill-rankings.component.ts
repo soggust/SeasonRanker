@@ -203,6 +203,12 @@ export class SkillRankingsComponent implements OnChanges, AfterViewInit, CardHos
     this.destroyRef.onDestroy(
       setCardOpener(({ name, pos, id }) => {
         const found = findCard({ pos, id, name, tab: null, season: null });
+        // (nobody the site has, by his ESPN id: his minimal card where the sport makes one, SPORT.stubPlayer)
+        if (!found && id && /^\d+$/.test(id) && SPORT.stubPlayer) {
+          games.leaveForCard();
+          void this.cards.openStub({ id, name });
+          return true;
+        }
         if (!found) return false;
         games.leaveForCard();
         void this.cards.openLinked({ position: found.position, gsisId: found.gsisId }, dataSeason);
@@ -321,6 +327,9 @@ export class SkillRankingsComponent implements OnChanges, AfterViewInit, CardHos
     const card = this.positionService.takePendingCard(this.position);
     if (card) void this.openSharedCard(card);
     if (this.positionService.takeCardMissing()) this.note(CARD_MISSING);
+    // (one naming someone the site has no row for: his minimal card, SPORT.stubPlayer; none to show: the note)
+    const stub = this.positionService.takePendingStub();
+    if (stub) void this.cards.openStub(stub).then((opened) => opened || this.note(CARD_MISSING));
     // (a game a link asked for: open on its tab, once)
     const game = this.positionService.takePendingGame();
     if (game) void this.games.open({ event: game.event }, game.tab);

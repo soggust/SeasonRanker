@@ -85,8 +85,8 @@ function linkedPosition(): Position {
 
 // A card from a link (card-link.ts: ?card=<the row's id>&cardTab=, or the Algorithm's ?card=<his ESPN id>&name=):
 // the tab and row in this season's rows, the link taken out of the address. missing: the link named someone
-// this season doesn't have (the grid says so).
-function linkedCard(): LinkedCard | { missing: true } | null {
+// this season doesn't have (the grid says so; ask: the link's, for a minimal card where the sport makes one).
+function linkedCard(): LinkedCard | { missing: true; ask?: CardAsk } | null {
   const url = new URL(location.href);
   const ask = readCardAsk(url);
   if (!ask) return null;
@@ -94,7 +94,7 @@ function linkedCard(): LinkedCard | { missing: true } | null {
   history.replaceState(null, '', url);
   // (a season the site doesn't have: data.ts loaded the current one instead, so not him)
   if (ask.season && Number(ask.season) !== dataSeason) return { missing: true };
-  return findCard(ask) ?? { missing: true };
+  return findCard(ask) ?? { missing: true, ask };
 }
 
 // The row a card's ask names in this season's rows (findLinkedCard): a link's, or a player link's
@@ -155,8 +155,17 @@ export class PositionService {
     applySharedLink(this, DEFAULT_SETTINGS);
     // (a card's link: its tab open from the start, the card when the grid draws it)
     const card = linkedCard();
-    if (card && 'missing' in card) this.cardMissing = true;
-    else if (card) {
+    // (one naming someone the site has no row for, by his ESPN id: a minimal card where the sport makes one,
+    // SPORT.stubPlayer; else the grid's note)
+    if (card && 'missing' in card) {
+      const id = card.ask?.id;
+      if (SPORT.stubPlayer && id && /^\d+$/.test(id)) this.pendingStub = { id, name: card.ask?.name ?? null };
+      else this.cardMissing = true;
+    } else if (card) {
+      // (a card on a tab the settings hide, a women's fighter with the men's tabs showing: the settings that
+      // show it, SPORT.tabShownBy)
+      const sport = this.settings.sport;
+      if (SPORT.tabShownBy && !(SPORT.tabVisible?.(card.grid, sport) ?? true)) this.updateSettings({ sport: { ...sport, ...SPORT.tabShownBy(card.grid, sport) } });
       this.pendingCard = card;
       this.positionSubject.next(card.grid as Position);
     }
@@ -245,6 +254,14 @@ export class PositionService {
   // that named nobody this season has (the grid's note says so, once)
   private pendingCard: LinkedCard | null = null;
   private cardMissing = false;
+  // (a link's player the site has no row for: his minimal card, SPORT.stubPlayer, opened by the first tab drawn)
+  private pendingStub: { id: string; name: string | null } | null = null;
+
+  takePendingStub(): { id: string; name: string | null } | null {
+    const stub = this.pendingStub;
+    this.pendingStub = null;
+    return stub;
+  }
 
   takePendingCard(position: SkillPosition): LinkedCard | null {
     const card = this.pendingCard;
