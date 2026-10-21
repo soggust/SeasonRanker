@@ -1,12 +1,12 @@
 {
  "sport": "nfl",
  "cursor": {
-  "adamscheftermirror.bsky.social": "2026-10-21T12:28:09.735Z",
+  "adamscheftermirror.bsky.social": "2026-10-21T13:27:33.230Z",
   "rapsheet.bsky.social": "2026-10-20T15:28:24.072Z",
   "nflnewsreposterbot.bsky.social": "2026-10-20T20:30:06.105Z",
   "insidenflnews.bsky.social": "2026-10-21T12:39:53.742Z",
   "nflnewsposter.bsky.social": "2026-10-21T06:34:45.920Z",
-  "rotoworld-fb.bsky.social": "2026-10-20T22:18:34.000Z",
+  "rotoworld-fb.bsky.social": "2026-10-21T13:23:20.000Z",
   "rotowirenfl.bsky.social": "2026-10-20T22:01:50.000Z"
  },
  "claims": [
@@ -1777,6 +1777,32 @@
    "kind": "status",
    "confidence": 0.9,
    "text": "Schefter: Terrance Ferguson (ankle) 'will take some time' to come off IR"
+  },
+  {
+   "id": "at://did:plc:qre6zxbmr3ixhdmgsgdretb5/app.bsky.feed.post/3myf7zvgyu22q|samfranklin|out|status",
+   "at": "2026-10-21T13:12:27.942Z",
+   "seen": "2026-10-21T13:27:33.757Z",
+   "handle": "adamscheftermirror.bsky.social",
+   "post": "at://did:plc:qre6zxbmr3ixhdmgsgdretb5/app.bsky.feed.post/3myf7zvgyu22q",
+   "player": "Sam Franklin Jr.",
+   "team": "BUF",
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.95,
+   "text": "Bills DB Sam Franklin Jr. was suspended one game today for unsportsmanlike conduct versus the Las Vegas Raiders.\n\nOriginal post"
+  },
+  {
+   "id": "at://did:plc:qre6zxbmr3ixhdmgsgdretb5/app.bsky.feed.post/3myfauuq7q72h|samfranklin|out|status",
+   "at": "2026-10-21T13:27:33.230Z",
+   "seen": "2026-10-21T13:27:33.757Z",
+   "handle": "adamscheftermirror.bsky.social",
+   "post": "at://did:plc:qre6zxbmr3ixhdmgsgdretb5/app.bsky.feed.post/3myfauuq7q72h",
+   "player": "Sam Franklin Jr.",
+   "team": "BUF",
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.97,
+   "text": "Bills DB Sam Franklin Jr. was suspended one game today for unsportsmanlike conduct that the league said was a spitting incident vs. the Las Vegas Raiders.\n\nOriginal post"
   }
  ]
 }
