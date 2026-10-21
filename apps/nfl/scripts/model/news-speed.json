@@ -4097,6 +4097,66 @@
     "seen": "2026-10-21T23:16:12.078Z",
     "own": "2026-10-21T23:03:00.000Z"
    }
+  },
+  "401873017|kendaldaniels|q": {
+   "game": "401873017",
+   "start": "2026-10-25T17:00Z",
+   "team": "1",
+   "name": "Kendal Daniels",
+   "status": "q",
+   "athlete": "4595343",
+   "espn": {
+    "seen": "2026-10-21T23:28:37.906Z",
+    "own": "2026-10-21T23:13:00.000Z"
+   }
+  },
+  "401873017|ajterrell|out": {
+   "game": "401873017",
+   "start": "2026-10-25T17:00Z",
+   "team": "1",
+   "name": "A.J. Terrell Jr.",
+   "status": "out",
+   "athlete": "4239995",
+   "espn": {
+    "seen": "2026-10-21T23:28:37.906Z",
+    "own": "2026-10-21T23:12:00.000Z"
+   }
+  },
+  "401873019|jaylenwaddle|q": {
+   "game": "401873019",
+   "start": "2026-10-25T20:05Z",
+   "team": "7",
+   "name": "Jaylen Waddle",
+   "status": "q",
+   "athlete": "4372016",
+   "espn": {
+    "seen": "2026-10-21T23:28:37.906Z",
+    "own": "2026-10-21T23:13:00.000Z"
+   }
+  },
+  "401873021|brockbowers|q": {
+   "game": "401873021",
+   "start": "2026-10-25T20:25Z",
+   "team": "13",
+   "name": "Brock Bowers",
+   "status": "q",
+   "athlete": "4432665",
+   "espn": {
+    "seen": "2026-10-21T23:28:37.906Z",
+    "own": "2026-10-21T23:23:00.000Z"
+   }
+  },
+  "401873022|beaustephens|q": {
+   "game": "401873022",
+   "start": "2026-10-26T00:20Z",
+   "team": "26",
+   "name": "Beau Stephens",
+   "status": "q",
+   "athlete": "4592823",
+   "espn": {
+    "seen": "2026-10-21T23:28:37.906Z",
+    "own": "2026-10-21T23:08:00.000Z"
+   }
   }
  }
 }
