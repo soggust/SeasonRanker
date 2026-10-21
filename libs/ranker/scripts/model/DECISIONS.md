@@ -1054,11 +1054,19 @@ Started 2026-10-18, after about 20 bettor changes in one day. The owner: "keep i
   - **The site:** the Book's price buttons and the ticket's price say "Best price: <book>" on hover where the board shopped it (book-names.ts), nothing else on the page changes; the Bot Picks' browser re-pricing (suggestions.ts, wallet-math.ts `withBestPrices`) takes the board's shopped price at the same line unless ESPN's DraftKings price is strictly better (then that, its book DraftKings), and never presents ESPN's price as a best one. A user's bet stores `book` (a code, at most 8 characters, firestore.rules, tests/rules/wallet.test.mjs).
   - **The replay** (`shopRows`, gate.mjs and gate-mma.mjs before the replay; `replay-record.mjs sideOf`): a row is placed at the best US price only where D67's dense archive has another US book at the row's own snapshot (within `SHOP_TOL` 10 minutes, each book as it stood then); everywhere else at DraftKings' own, and the file says so (`flags.shop`: shopped, better, DraftKings' alone; `PRICE_NOTE`; the Algorithm tab's caveat). `GATE_NO_SHOP=1` leaves it out.
   - `MODEL_EPOCH` and MMA's `MMA_START` bumped (a pricing change: every bet's price, Kelly and CLV move).
-- **Measured (the replayed records, `gate.mjs --candidate worktree --champion origin/master <sport> --refit --record`; before → after):**
+- **Measured (the replayed records, `gate.mjs --candidate worktree --champion 30a7af85 <sport> --refit --record`, 2026-10-21):**
 
-  (in the record commit that follows: each sport re-recorded on this code)
+| Sport | Bets at the best price (better than the Book's own) | Committed before (D73, the Book's prices) | Same run, the Book's prices (pre-D74 code, props refit) | After (D74) |
+|---|---|---|---|---|
+| NFL | 532 of 3,538 (397) | 3,244 bets, -27.6u (-1.7%) | 3,229, -17.9u (-1.1%) | 3,538, -25.6u (-1.4%) |
+| NBA | 119 of 4,785 (98) | 4,533, +51.2u (+1.9%) | 4,711, +47.5u (+1.7%) | 4,785, +47.7u (+1.6%) |
+| NHL | 252 of 6,414 (201) | 2,342, -19.9u (-1.6%) | 6,252, +61.4u (+1.2%) | 6,414, +63.4u (+1.3%) |
+| MLB | 0 of 1,294 (no dense archive) | 1,304, -11.9u (-1.7%) | 1,294, -2.8u (-0.4%) | 1,294, -2.8u (-0.4%) |
+| MMA | 368 of 1,304 (313) | 1,038, -16.0u (-2.8%) | 1,038, -16.0u (-2.8%) | 1,304, -5.8u (-0.8%) |
 
-- **Gate (D22):** in the record commit that follows.
+  The middle column is the fair comparison: the champion in the same `--refit` run (the saved props fit was stale for both versions' code, so every team sport's record was refit; the props' settings searched again move the NHL from 2,342 to 6,252 bets on their own, not the price). The best price adds bets (a side that clears the vig at a better price): NHL +2.0u, NBA +0.2u, MMA +10.2u, MLB none (no dense archive), and the NFL -7.7u (309 more marginal close bets, mostly lines, that lose: its ROI -1.1% to -1.4%). The props are never shopped in the replay (the dense props snapshots are 3 hours out, never at a placement), so the history's best-price share is 3-28% of bets and the live gain (68% of sides better) is mostly unmeasured there.
+
+- **Gate (D22):** SHIP in every sport, ties everywhere (no chance, projection or fit moves; only the placement's price): `gate.mjs --candidate worktree --champion 30a7af85 <sport> --refit --record` (MMA without --refit).
 - **Code:** `best-price.mjs`, `oddsapi.mjs`, `run.mjs`, `desk.mjs`, `props.mjs`, `board.mjs`, `mma-desk.mjs`, `fights-totals.mjs`, `gate.mjs`, `gate-mma.mjs`, `replay-record.mjs`, `leagues.mjs` (`MODEL_EPOCH`); the site's `book-names.ts`, `suggestions.ts`, `book-rows.ts`, `book-page.component.*`, `replay-history.ts`, `account/wallet/*`; `firestore.rules`. Tests: `tests/model-decisions.test.mjs` D74 (and D26's names map), `tests/book-best-price.test.mjs`, `tests/wallet.test.mjs`, `tests/rules/wallet.test.mjs`.
 - **Never:** Pinnacle or an offshore book as the price; a best price at another line than the Book's; a best pair's prices as the fair; a price worse than DraftKings' called the best; ESPN's DraftKings price shown as a best one; a replayed bet at another book's price from a snapshot more than `SHOP_TOL` from its own; a book named anywhere on the page but the price's hover.
 

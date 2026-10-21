@@ -1,8 +1,8 @@
 {
  "v": 1,
  "sport": "nhl",
- "at": "2026-10-21T00:15:51.553Z",
- "epoch": "2026-10-20T05:45:00Z",
+ "at": "2026-10-21T02:06:48.833Z",
+ "epoch": "2026-10-21T01:15:00Z",
  "markets": {
   "spread": {
    "seg:spread:dog:late": {
@@ -12,16 +12,16 @@
     "ev": null,
     "evS": null,
     "beat": null,
-    "roi": 0.0034,
-    "rn": 126,
+    "roi": 0.0294,
+    "rn": 136,
     "stats": {
      "n": 0,
      "s": 0,
      "s2": 0,
      "beat": 0,
-     "rn": 126,
-     "rs": 0.43,
-     "rs2": 220.0357
+     "rn": 136,
+     "rs": 4,
+     "rs2": 240.3676
     },
     "why": "0 with a close, - shrunk",
     "seasons": {
@@ -35,22 +35,22 @@
    "kelly2": {
     "on": false,
     "strong": false,
-    "n": 28,
-    "ev": 0.0091,
-    "evS": 0.002,
-    "beat": 0.6429,
-    "roi": -0.0545,
-    "rn": 51,
+    "n": 39,
+    "ev": 0.0129,
+    "evS": 0.0036,
+    "beat": 0.6923,
+    "roi": 0.1626,
+    "rn": 63,
     "stats": {
-     "n": 28,
-     "s": 0.2559,
-     "s2": 0.0401,
-     "beat": 18,
-     "rn": 51,
-     "rs": -2.778,
-     "rs2": 72.7583
+     "n": 39,
+     "s": 0.5013,
+     "s2": 0.0528,
+     "beat": 27,
+     "rn": 63,
+     "rs": 10.2427,
+     "rs2": 104.4299
     },
-    "why": "28 with a close, 0.2% shrunk",
+    "why": "39 with a close, 0.4% shrunk",
     "seasons": {
      "lead": 0,
      "of": 0,
@@ -66,16 +66,16 @@
     "ev": null,
     "evS": null,
     "beat": null,
-    "roi": 0.0404,
-    "rn": 65,
+    "roi": 0.0495,
+    "rn": 68,
     "stats": {
      "n": 0,
      "s": 0,
      "s2": 0,
      "beat": 0,
-     "rn": 65,
-     "rs": 2.6242,
-     "rs2": 45.0006
+     "rn": 68,
+     "rs": 3.3646,
+     "rs2": 47.5293
     },
     "why": "0 with a close, - shrunk",
     "seasons": {
@@ -89,22 +89,22 @@
    "openGap": {
     "on": false,
     "strong": false,
-    "n": 314,
-    "ev": 0.0052,
-    "evS": 0.004,
-    "beat": 0.5764,
-    "roi": 0.0012,
-    "rn": 331,
+    "n": 359,
+    "ev": 0.0066,
+    "evS": 0.0051,
+    "beat": 0.5877,
+    "roi": 0.0008,
+    "rn": 377,
     "stats": {
-     "n": 314,
-     "s": 1.6417,
-     "s2": 0.3878,
-     "beat": 181,
-     "rn": 331,
-     "rs": 0.4066,
-     "rs2": 533.8687
+     "n": 359,
+     "s": 2.3531,
+     "s2": 0.45,
+     "beat": 211,
+     "rn": 377,
+     "rs": 0.2912,
+     "rs2": 609.7065
     },
-    "why": "314 with a close, 0.4% shrunk",
+    "why": "359 with a close, 0.5% shrunk",
     "seasons": {
      "lead": 0,
      "of": 0,
@@ -116,22 +116,22 @@
    "cleanOpen": {
     "on": false,
     "strong": false,
-    "n": 314,
-    "ev": 0.0052,
-    "evS": 0.004,
-    "beat": 0.5764,
-    "roi": 0.0012,
-    "rn": 331,
+    "n": 359,
+    "ev": 0.0066,
+    "evS": 0.0051,
+    "beat": 0.5877,
+    "roi": 0.0008,
+    "rn": 377,
     "stats": {
-     "n": 314,
-     "s": 1.6417,
-     "s2": 0.3878,
-     "beat": 181,
-     "rn": 331,
-     "rs": 0.4066,
-     "rs2": 533.8687
+     "n": 359,
+     "s": 2.3531,
+     "s2": 0.45,
+     "beat": 211,
+     "rn": 377,
+     "rs": 0.2912,
+     "rs2": 609.7065
     },
-    "why": "314 with a close, 0.4% shrunk",
+    "why": "359 with a close, 0.5% shrunk",
     "seasons": {
      "lead": 0,
      "of": 0,
@@ -143,22 +143,22 @@
    "seg:spread:dog:early": {
     "on": false,
     "strong": false,
-    "n": 261,
-    "ev": 0.0061,
-    "evS": 0.0044,
-    "beat": 0.5747,
-    "roi": 0.0295,
-    "rn": 276,
+    "n": 298,
+    "ev": 0.0076,
+    "evS": 0.0057,
+    "beat": 0.594,
+    "roi": 0.035,
+    "rn": 314,
     "stats": {
-     "n": 261,
-     "s": 1.5955,
-     "s2": 0.3534,
-     "beat": 150,
-     "rn": 276,
-     "rs": 8.15,
-     "rs2": 495.7279
+     "n": 298,
+     "s": 2.2705,
+     "s2": 0.4071,
+     "beat": 177,
+     "rn": 314,
+     "rs": 11,
+     "rs2": 565.178
     },
-    "why": "261 with a close, 0.4% shrunk",
+    "why": "298 with a close, 0.6% shrunk",
     "seasons": {
      "lead": 0,
      "of": 0,
@@ -197,22 +197,22 @@
    "restedVsB2b": {
     "on": false,
     "strong": false,
-    "n": 49,
-    "ev": 0.0204,
-    "evS": 0.0067,
-    "beat": 0.7347,
-    "roi": -0.1143,
-    "rn": 67,
+    "n": 55,
+    "ev": 0.0218,
+    "evS": 0.0077,
+    "beat": 0.7455,
+    "roi": -0.0954,
+    "rn": 74,
     "stats": {
-     "n": 49,
-     "s": 0.9993,
-     "s2": 0.0788,
-     "beat": 36,
-     "rn": 67,
-     "rs": -7.6614,
-     "rs2": 80.7214
+     "n": 55,
+     "s": 1.2011,
+     "s2": 0.0906,
+     "beat": 41,
+     "rn": 74,
+     "rs": -7.062,
+     "rs2": 92.7693
     },
-    "why": "49 with a close, 0.7% shrunk",
+    "why": "55 with a close, 0.8% shrunk",
     "seasons": {
      "lead": 0,
      "of": 0,
@@ -224,22 +224,22 @@
    "seg:spread:fav:early": {
     "on": false,
     "strong": false,
-    "n": 53,
-    "ev": 0.0009,
-    "evS": 0.0003,
-    "beat": 0.5849,
-    "roi": -0.1408,
-    "rn": 55,
+    "n": 61,
+    "ev": 0.0014,
+    "evS": 0.0005,
+    "beat": 0.5574,
+    "roi": -0.17,
+    "rn": 63,
     "stats": {
-     "n": 53,
-     "s": 0.0462,
-     "s2": 0.0344,
-     "beat": 31,
-     "rn": 55,
-     "rs": -7.7434,
-     "rs2": 38.1408
+     "n": 61,
+     "s": 0.0826,
+     "s2": 0.0429,
+     "beat": 34,
+     "rn": 63,
+     "rs": -10.7088,
+     "rs2": 44.5285
     },
-    "why": "53 with a close, 0% shrunk",
+    "why": "61 with a close, 0.1% shrunk",
     "seasons": {
      "lead": 0,
      "of": 0,
@@ -311,16 +311,16 @@
     "ev": null,
     "evS": null,
     "beat": null,
-    "roi": -0.1043,
-    "rn": 223,
+    "roi": -0.1186,
+    "rn": 248,
     "stats": {
      "n": 0,
      "s": 0,
      "s2": 0,
      "beat": 0,
-     "rn": 223,
-     "rs": -23.2509,
-     "rs2": 360.1406
+     "rn": 248,
+     "rs": -29.4209,
+     "rs2": 399.8667
     },
     "why": "0 with a close, - shrunk",
     "seasons": {
@@ -334,22 +334,22 @@
    "kelly2": {
     "on": false,
     "strong": false,
-    "n": 21,
-    "ev": 0.0138,
-    "evS": 0.0024,
-    "beat": 0.5714,
-    "roi": -0.1814,
-    "rn": 90,
+    "n": 23,
+    "ev": 0.0083,
+    "evS": 0.0015,
+    "beat": 0.5217,
+    "roi": -0.1693,
+    "rn": 100,
     "stats": {
-     "n": 21,
-     "s": 0.2896,
-     "s2": 0.0778,
+     "n": 23,
+     "s": 0.1906,
+     "s2": 0.0829,
      "beat": 12,
-     "rn": 90,
-     "rs": -16.3243,
-     "rs2": 118.0399
+     "rn": 100,
+     "rs": -16.9343,
+     "rs2": 131.5624
     },
-    "why": "21 with a close, 0.2% shrunk",
+    "why": "23 with a close, 0.2% shrunk",
     "seasons": {
      "lead": 0,
      "of": 0,
@@ -365,16 +365,16 @@
     "ev": null,
     "evS": null,
     "beat": null,
-    "roi": -0.0116,
-    "rn": 52,
+    "roi": -0.0083,
+    "rn": 57,
     "stats": {
      "n": 0,
      "s": 0,
      "s2": 0,
      "beat": 0,
-     "rn": 52,
-     "rs": -0.6054,
-     "rs2": 44.1443
+     "rn": 57,
+     "rs": -0.4758,
+     "rs2": 47.6961
     },
     "why": "0 with a close, - shrunk",
     "seasons": {
@@ -388,22 +388,22 @@
    "restedVsB2b": {
     "on": false,
     "strong": false,
-    "n": 31,
-    "ev": 0.0438,
-    "evS": 0.0104,
-    "beat": 0.8387,
-    "roi": -0.0414,
-    "rn": 46,
+    "n": 34,
+    "ev": 0.0385,
+    "evS": 0.0098,
+    "beat": 0.7941,
+    "roi": 0.0617,
+    "rn": 52,
     "stats": {
-     "n": 31,
-     "s": 1.3583,
-     "s2": 0.1712,
-     "beat": 26,
-     "rn": 46,
-     "rs": -1.9041,
-     "rs2": 68.761
+     "n": 34,
+     "s": 1.3087,
+     "s2": 0.1754,
+     "beat": 27,
+     "rn": 52,
+     "rs": 3.21,
+     "rs2": 79.7677
     },
-    "why": "31 with a close, 1% shrunk",
+    "why": "34 with a close, 1% shrunk",
     "seasons": {
      "lead": 0,
      "of": 0,
@@ -415,22 +415,22 @@
    "rest2": {
     "on": false,
     "strong": false,
-    "n": 18,
-    "ev": 0.0266,
-    "evS": 0.0041,
-    "beat": 0.7222,
-    "roi": -0.4947,
-    "rn": 33,
+    "n": 19,
+    "ev": 0.0262,
+    "evS": 0.0042,
+    "beat": 0.7368,
+    "roi": -0.4154,
+    "rn": 34,
     "stats": {
-     "n": 18,
-     "s": 0.4792,
-     "s2": 0.0443,
-     "beat": 13,
-     "rn": 33,
-     "rs": -16.3252,
-     "rs2": 35.2751
+     "n": 19,
+     "s": 0.498,
+     "s2": 0.0447,
+     "beat": 14,
+     "rn": 34,
+     "rs": -14.1252,
+     "rs2": 40.1151
     },
-    "why": "18 with a close, 0.4% shrunk",
+    "why": "19 with a close, 0.4% shrunk",
     "seasons": {
      "lead": 0,
      "of": 0,
@@ -442,22 +442,22 @@
    "openGap": {
     "on": false,
     "strong": false,
-    "n": 165,
-    "ev": 0.0066,
-    "evS": 0.0041,
-    "beat": 0.5333,
-    "roi": -0.0173,
-    "rn": 165,
+    "n": 182,
+    "ev": 0.0057,
+    "evS": 0.0037,
+    "beat": 0.5385,
+    "roi": 0.0286,
+    "rn": 182,
     "stats": {
-     "n": 165,
-     "s": 1.0928,
-     "s2": 0.6523,
-     "beat": 88,
-     "rn": 165,
-     "rs": -2.8506,
-     "rs2": 237.9011
+     "n": 182,
+     "s": 1.0407,
+     "s2": 0.6692,
+     "beat": 98,
+     "rn": 182,
+     "rs": 5.1969,
+     "rs2": 270.3532
     },
-    "why": "165 with a close, 0.4% shrunk",
+    "why": "182 with a close, 0.4% shrunk",
     "seasons": {
      "lead": 0,
      "of": 0,
@@ -469,22 +469,22 @@
    "cleanOpen": {
     "on": false,
     "strong": false,
-    "n": 165,
-    "ev": 0.0066,
-    "evS": 0.0041,
-    "beat": 0.5333,
-    "roi": -0.0173,
-    "rn": 165,
+    "n": 182,
+    "ev": 0.0057,
+    "evS": 0.0037,
+    "beat": 0.5385,
+    "roi": 0.0286,
+    "rn": 182,
     "stats": {
-     "n": 165,
-     "s": 1.0928,
-     "s2": 0.6523,
-     "beat": 88,
-     "rn": 165,
-     "rs": -2.8506,
-     "rs2": 237.9011
+     "n": 182,
+     "s": 1.0407,
+     "s2": 0.6692,
+     "beat": 98,
+     "rn": 182,
+     "rs": 5.1969,
+     "rs2": 270.3532
     },
-    "why": "165 with a close, 0.4% shrunk",
+    "why": "182 with a close, 0.4% shrunk",
     "seasons": {
      "lead": 0,
      "of": 0,
@@ -496,22 +496,22 @@
    "seg:ml:fav:early": {
     "on": false,
     "strong": false,
-    "n": 57,
-    "ev": 0.0059,
-    "evS": 0.0021,
-    "beat": 0.5439,
-    "roi": -0.0872,
-    "rn": 57,
+    "n": 67,
+    "ev": 0.0054,
+    "evS": 0.0022,
+    "beat": 0.5522,
+    "roi": -0.0466,
+    "rn": 67,
     "stats": {
-     "n": 57,
-     "s": 0.3347,
-     "s2": 0.1072,
-     "beat": 31,
-     "rn": 57,
-     "rs": -4.9706,
-     "rs2": 43.8347
+     "n": 67,
+     "s": 0.3628,
+     "s2": 0.1166,
+     "beat": 37,
+     "rn": 67,
+     "rs": -3.1231,
+     "rs2": 50.3818
     },
-    "why": "57 with a close, 0.2% shrunk",
+    "why": "67 with a close, 0.2% shrunk",
     "seasons": {
      "lead": 0,
      "of": 0,
@@ -523,22 +523,22 @@
    "seg:ml:dog:early": {
     "on": false,
     "strong": false,
-    "n": 108,
-    "ev": 0.007,
-    "evS": 0.0036,
-    "beat": 0.5278,
-    "roi": 0.0196,
-    "rn": 108,
+    "n": 115,
+    "ev": 0.0059,
+    "evS": 0.0032,
+    "beat": 0.5304,
+    "roi": 0.0723,
+    "rn": 115,
     "stats": {
-     "n": 108,
-     "s": 0.7581,
-     "s2": 0.5452,
-     "beat": 57,
-     "rn": 108,
-     "rs": 2.12,
-     "rs2": 194.0664
+     "n": 115,
+     "s": 0.6779,
+     "s2": 0.5526,
+     "beat": 61,
+     "rn": 115,
+     "rs": 8.32,
+     "rs2": 219.9714
     },
-    "why": "108 with a close, 0.4% shrunk",
+    "why": "115 with a close, 0.3% shrunk",
     "seasons": {
      "lead": 0,
      "of": 0,
@@ -610,16 +610,16 @@
     "ev": null,
     "evS": null,
     "beat": null,
-    "roi": -0.1086,
-    "rn": 263,
+    "roi": -0.1227,
+    "rn": 270,
     "stats": {
      "n": 0,
      "s": 0,
      "s2": 0,
      "beat": 0,
-     "rn": 263,
-     "rs": -28.5503,
-     "rs2": 256.1489
+     "rn": 270,
+     "rs": -33.1276,
+     "rs2": 262.011
     },
     "why": "0 with a close, - shrunk",
     "seasons": {
@@ -633,22 +633,22 @@
    "openGap": {
     "on": false,
     "strong": false,
-    "n": 77,
-    "ev": -0.0039,
-    "evS": -0.0017,
-    "beat": 0.3896,
-    "roi": 0.1025,
-    "rn": 93,
+    "n": 88,
+    "ev": -0.0025,
+    "evS": -0.0012,
+    "beat": 0.4205,
+    "roi": 0.1195,
+    "rn": 105,
     "stats": {
-     "n": 77,
-     "s": -0.2996,
-     "s2": 0.1209,
-     "beat": 30,
-     "rn": 93,
-     "rs": 9.5354,
-     "rs2": 89.4605
+     "n": 88,
+     "s": -0.2236,
+     "s2": 0.1375,
+     "beat": 37,
+     "rn": 105,
+     "rs": 12.5472,
+     "rs2": 100.5221
     },
-    "why": "77 with a close, -0.2% shrunk",
+    "why": "88 with a close, -0.1% shrunk",
     "seasons": {
      "lead": 0,
      "of": 0,
@@ -660,22 +660,22 @@
    "cleanOpen": {
     "on": false,
     "strong": false,
-    "n": 223,
-    "ev": -0.0184,
-    "evS": -0.0127,
-    "beat": 0.2556,
-    "roi": 0.0327,
-    "rn": 265,
+    "n": 254,
+    "ev": -0.0165,
+    "evS": -0.0118,
+    "beat": 0.2756,
+    "roi": 0.0088,
+    "rn": 299,
     "stats": {
-     "n": 223,
-     "s": -4.0966,
-     "s2": 0.4049,
-     "beat": 57,
-     "rn": 265,
-     "rs": 8.6558,
-     "rs2": 251.5897
+     "n": 254,
+     "s": -4.1871,
+     "s2": 0.4322,
+     "beat": 70,
+     "rn": 299,
+     "rs": 2.6184,
+     "rs2": 283.5462
     },
-    "why": "223 with a close, -1.3% shrunk",
+    "why": "254 with a close, -1.2% shrunk",
     "seasons": {
      "lead": 0,
      "of": 0,
@@ -687,22 +687,22 @@
    "seg:total:under:early": {
     "on": false,
     "strong": false,
-    "n": 90,
-    "ev": -0.0195,
-    "evS": -0.0092,
-    "beat": 0.2333,
-    "roi": -0.0439,
-    "rn": 105,
+    "n": 104,
+    "ev": -0.0185,
+    "evS": -0.0094,
+    "beat": 0.25,
+    "roi": -0.0558,
+    "rn": 120,
     "stats": {
-     "n": 90,
-     "s": -1.7538,
-     "s2": 0.1563,
-     "beat": 21,
-     "rn": 105,
-     "rs": -4.6112,
-     "rs2": 103.3921
+     "n": 104,
+     "s": -1.9206,
+     "s2": 0.1842,
+     "beat": 26,
+     "rn": 120,
+     "rs": -6.695,
+     "rs2": 117.2617
     },
-    "why": "90 with a close, -0.9% shrunk",
+    "why": "104 with a close, -0.9% shrunk",
     "seasons": {
      "lead": 0,
      "of": 0,
@@ -714,22 +714,22 @@
    "kelly2": {
     "on": false,
     "strong": false,
-    "n": 37,
-    "ev": 0.0005,
-    "evS": 0.0001,
-    "beat": 0.3514,
-    "roi": -0.154,
-    "rn": 161,
+    "n": 49,
+    "ev": -0.0043,
+    "evS": -0.0014,
+    "beat": 0.3469,
+    "roi": -0.1163,
+    "rn": 182,
     "stats": {
-     "n": 37,
-     "s": 0.0196,
-     "s2": 0.0626,
-     "beat": 13,
-     "rn": 161,
-     "rs": -24.8015,
-     "rs2": 155.9252
+     "n": 49,
+     "s": -0.2099,
+     "s2": 0.0824,
+     "beat": 17,
+     "rn": 182,
+     "rs": -21.1691,
+     "rs2": 175.2583
     },
-    "why": "37 with a close, 0% shrunk",
+    "why": "49 with a close, -0.1% shrunk",
     "seasons": {
      "lead": 0,
      "of": 0,
@@ -745,16 +745,16 @@
     "ev": null,
     "evS": null,
     "beat": null,
-    "roi": -0.0548,
-    "rn": 285,
+    "roi": -0.0367,
+    "rn": 302,
     "stats": {
      "n": 0,
      "s": 0,
      "s2": 0,
      "beat": 0,
-     "rn": 285,
-     "rs": -15.6139,
-     "rs2": 262.3159
+     "rn": 302,
+     "rs": -11.0819,
+     "rs2": 278.4745
     },
     "why": "0 with a close, - shrunk",
     "seasons": {
@@ -768,22 +768,22 @@
    "seg:total:over:early": {
     "on": false,
     "strong": false,
-    "n": 133,
-    "ev": -0.0176,
-    "evS": -0.0101,
-    "beat": 0.2707,
-    "roi": 0.0829,
-    "rn": 160,
+    "n": 150,
+    "ev": -0.0151,
+    "evS": -0.0091,
+    "beat": 0.2933,
+    "roi": 0.052,
+    "rn": 179,
     "stats": {
-     "n": 133,
-     "s": -2.3428,
-     "s2": 0.2486,
-     "beat": 36,
-     "rn": 160,
-     "rs": 13.267,
-     "rs2": 148.1976
+     "n": 150,
+     "s": -2.2665,
+     "s2": 0.248,
+     "beat": 44,
+     "rn": 179,
+     "rs": 9.3134,
+     "rs2": 166.2845
     },
-    "why": "133 with a close, -1% shrunk",
+    "why": "150 with a close, -0.9% shrunk",
     "seasons": {
      "lead": 0,
      "of": 0,
@@ -821,33 +821,6 @@
    }
   },
   "prop": {
-   "stat:pts:under": {
-    "on": false,
-    "strong": false,
-    "n": 0,
-    "ev": null,
-    "evS": null,
-    "beat": null,
-    "roi": 0.0107,
-    "rn": 107,
-    "stats": {
-     "n": 0,
-     "s": 0,
-     "s2": 0,
-     "beat": 0,
-     "rn": 107,
-     "rs": 1.14,
-     "rs2": 159.1716
-    },
-    "why": "0 with a close, - shrunk",
-    "seasons": {
-     "lead": 0,
-     "of": 0,
-     "pos": 0
-    },
-    "family": "stat",
-    "label": "pts unders"
-   },
    "stat:sog:under": {
     "on": false,
     "strong": false,
@@ -855,16 +828,16 @@
     "ev": null,
     "evS": null,
     "beat": null,
-    "roi": 0.0837,
-    "rn": 362,
+    "roi": 0.0394,
+    "rn": 3344,
     "stats": {
      "n": 0,
      "s": 0,
      "s2": 0,
      "beat": 0,
-     "rn": 362,
-     "rs": 30.2895,
-     "rs2": 423.7722
+     "rn": 3344,
+     "rs": 131.8794,
+     "rs2": 3655.1852
     },
     "why": "0 with a close, - shrunk",
     "seasons": {
@@ -882,16 +855,16 @@
     "ev": null,
     "evS": null,
     "beat": null,
-    "roi": -0.4014,
-    "rn": 7,
+    "roi": -0.0014,
+    "rn": 455,
     "stats": {
      "n": 0,
      "s": 0,
      "s2": 0,
      "beat": 0,
-     "rn": 7,
-     "rs": -2.81,
-     "rs2": 7.4021
+     "rn": 455,
+     "rs": -0.6461,
+     "rs2": 505.48
     },
     "why": "0 with a close, - shrunk",
     "seasons": {
@@ -909,16 +882,16 @@
     "ev": null,
     "evS": null,
     "beat": null,
-    "roi": -0.4208,
-    "rn": 48,
+    "roi": -0.5958,
+    "rn": 69,
     "stats": {
      "n": 0,
      "s": 0,
      "s2": 0,
      "beat": 0,
-     "rn": 48,
-     "rs": -20.2,
-     "rs2": 63.25
+     "rn": 69,
+     "rs": -41.11,
+     "rs2": 84.6241
     },
     "why": "0 with a close, - shrunk",
     "seasons": {
@@ -929,23 +902,50 @@
     "family": "stat",
     "label": "pts overs"
    },
-   "stat:saves:under": {
+   "kelly2": {
     "on": false,
     "strong": false,
     "n": 0,
     "ev": null,
     "evS": null,
     "beat": null,
-    "roi": 0.1286,
-    "rn": 26,
+    "roi": 0.0137,
+    "rn": 660,
     "stats": {
      "n": 0,
      "s": 0,
      "s2": 0,
      "beat": 0,
-     "rn": 26,
-     "rs": 3.343,
-     "rs2": 24.955
+     "rn": 660,
+     "rs": 9.0336,
+     "rs2": 753.5945
+    },
+    "why": "0 with a close, - shrunk",
+    "seasons": {
+     "lead": 0,
+     "of": 0,
+     "pos": 0
+    },
+    "family": "size",
+    "label": "a Kelly score of 2% or more"
+   },
+   "stat:pts:under": {
+    "on": false,
+    "strong": false,
+    "n": 0,
+    "ev": null,
+    "evS": null,
+    "beat": null,
+    "roi": 0.0313,
+    "rn": 211,
+    "stats": {
+     "n": 0,
+     "s": 0,
+     "s2": 0,
+     "beat": 0,
+     "rn": 211,
+     "rs": 6.61,
+     "rs2": 312.8619
     },
     "why": "0 with a close, - shrunk",
     "seasons": {
@@ -954,7 +954,7 @@
      "pos": 0
     },
     "family": "stat",
-    "label": "saves unders"
+    "label": "pts unders"
    },
    "stat:saves:over": {
     "on": false,
@@ -963,16 +963,16 @@
     "ev": null,
     "evS": null,
     "beat": null,
-    "roi": -0.2383,
-    "rn": 15,
+    "roi": -0.1687,
+    "rn": 99,
     "stats": {
      "n": 0,
      "s": 0,
      "s2": 0,
      "beat": 0,
-     "rn": 15,
-     "rs": -3.5742,
-     "rs2": 13.9175
+     "rn": 99,
+     "rs": -16.7061,
+     "rs2": 88.5229
     },
     "why": "0 with a close, - shrunk",
     "seasons": {
@@ -983,23 +983,23 @@
     "family": "stat",
     "label": "saves overs"
    },
-   "kelly2": {
+   "stat:saves:under": {
     "on": false,
     "strong": false,
     "n": 0,
     "ev": null,
     "evS": null,
     "beat": null,
-    "roi": 0.46,
-    "rn": 6,
+    "roi": 0.0814,
+    "rn": 296,
     "stats": {
      "n": 0,
      "s": 0,
      "s2": 0,
      "beat": 0,
-     "rn": 6,
-     "rs": 2.76,
-     "rs2": 7.7326
+     "rn": 296,
+     "rs": 24.0913,
+     "rs2": 266.9691
     },
     "why": "0 with a close, - shrunk",
     "seasons": {
@@ -1007,8 +1007,8 @@
      "of": 0,
      "pos": 0
     },
-    "family": "size",
-    "label": "a Kelly score of 2% or more"
+    "family": "stat",
+    "label": "saves unders"
    }
   }
  },
@@ -1046,5 +1046,5 @@
   }
  },
  "k": 100,
- "commit": "0ce1042a"
+ "commit": "d7717ab8"
 }

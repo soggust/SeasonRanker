@@ -2,36 +2,36 @@
  "v": 1,
  "sport": "nhl",
  "trial": true,
- "at": "2026-10-21T00:15:51.553Z",
- "epoch": "2026-10-20T05:45:00Z",
+ "at": "2026-10-21T02:06:48.833Z",
+ "epoch": "2026-10-21T01:15:00Z",
  "on": {
   "love": true,
   "mid": false
  },
  "rule": {
   "love": {
-   "share": 0.4,
-   "kellyMax": null,
-   "z": 1.63,
-   "n": 54,
-   "roi": 0.2083,
-   "rest": -0.0279
+   "share": 0.3,
+   "kellyMax": 0.02,
+   "z": 1.37,
+   "n": 1214,
+   "roi": 0.0444,
+   "rest": -0.0014
   },
   "mid": 0
  },
  "loveUnits": 2,
  "kelly": 0.01,
  "weights": {
-  "script": 1,
-  "context": 1,
-  "fit": 1,
-  "base": 1,
   "form": 1,
-  "opponent": 1
+  "vacated": 1,
+  "opponent": 1,
+  "fit": 0.8666,
+  "base": 1,
+  "script": 1
  },
  "record": {
-  "love": 22,
-  "like": 2320
+  "love": 760,
+  "like": 5654
  },
- "commit": "0ce1042a"
+ "commit": "d7717ab8"
 }
