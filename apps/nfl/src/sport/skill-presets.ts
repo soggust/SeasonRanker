@@ -83,8 +83,8 @@ export const SKILL_PRESETS: Record<SkillPosition, SkillPresetDef[]> = {
     {
       key: 'analytics',
       label: 'Analytics',
-      description: 'Efficiency only: EPA / Play, CPOE, Success, Pressure → Sack and Bad Throw %, then Per Attempt',
-      weights: { epaPerPlay: 100, cpoe: 100, successRate: 100, pressureToSack: 100, badThrowPct: 100, ypa: 50 },
+      description: 'Efficiency only: EPA / Play and / Dropback, CPOE, Success, Pressure → Sack and Bad Throw %, then Per Attempt',
+      weights: { epaPerPlay: 100, epaPerDropback: 75, cpoe: 100, successRate: 100, pressureToSack: 100, badThrowPct: 100, ypa: 50 },
     },
     // The downfield passer: passing volume and how far and how tight he throws (no rushing, record or
     // accuracy)
@@ -181,8 +181,8 @@ export const SKILL_PRESETS: Record<SkillPosition, SkillPresetDef[]> = {
     {
       key: 'deepThreat',
       label: 'Deep Threat',
-      description: 'Stretches the field: aDOT, Air Yds Share, yards, TDs and EPA / Target',
-      weights: { adot: 100, airYardsShare: 90, recYards: 75, recTds: 75, epaPerTarget: 60 },
+      description: 'Stretches the field: aDOT, Air Yds Share, Air Yards, yards, TDs and EPA / Target',
+      weights: { adot: 100, airYardsShare: 90, airYards: 75, recYards: 75, recTds: 75, epaPerTarget: 60 },
     },
     {
       key: 'playmaker',

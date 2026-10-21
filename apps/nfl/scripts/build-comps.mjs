@@ -13,6 +13,7 @@ await buildComps({
     teamGrades: 'team-grades.json',
     dataGrades: 'data-grades.json',
   },
-  // Compared on every ranked stat but support grades, recent form, unit ranks and fantasy points
-  scored: (stat) => !stat.infoOnly && !stat.support && stat.format !== 'recent' && stat.format !== 'rank' && stat.key !== 'fantasy',
+  // Compared on every ranked stat but support grades, recent form, unit ranks and fantasy points (and the
+  // stats whose sliders start at 0, startsOff: what DEFAULT ranks on, so new stats don't move the comps)
+  scored: (stat) => !stat.infoOnly && !stat.startsOff && !stat.support && stat.format !== 'recent' && stat.format !== 'rank' && stat.key !== 'fantasy',
 });

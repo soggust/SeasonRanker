@@ -36,12 +36,13 @@ export const UR_FILE = 'skill-players.ur.json';
 // app: the sport's app folder (apps/<sport>). minGames(position, season): the fewest games a season
 // needs to get similar seasons (subject) and to be one (pool), in that tab's games. dataFiles: the
 // sport's other season files (its SPORT.dataFiles). scored(stat): the stats seasons are compared on
-// (default: every ranked stat but support grades and records).
+// (default: every ranked stat but support grades, records and the stats whose sliders start at 0, startsOff:
+// what DEFAULT ranks on, so a stat added later doesn't move the comps).
 export async function buildComps({
   app,
   minGames,
   dataFiles = {},
-  scored: isScored = (stat) => !stat.infoOnly && !stat.support && stat.format !== 'record',
+  scored: isScored = (stat) => !stat.infoOnly && !stat.startsOff && !stat.support && stat.format !== 'record',
 }) {
   const FILES = { skillPlayers: 'skill-players.json', ...dataFiles };
   const ROOT = path.resolve(app);

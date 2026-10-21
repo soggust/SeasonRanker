@@ -50,6 +50,9 @@ export interface StatDef<Key extends string = string> {
   supportHelps?: boolean;
   // Shown for context only: no slider and no weight in the ranking
   infoOnly?: boolean;
+  // Scored, but its slider starts at 0 in DEFAULT: a stat added after the default rankings were set, so
+  // they don't move; it counts once the user turns it up (or a preset names it)
+  startsOff?: boolean;
   // A missing value means too small a sample, so it scores as the league average, not the worst
   missingIsAverage?: boolean;
   // A missing value means the stat wasn't recorded for him (MMA's strike stats outside the UFC and

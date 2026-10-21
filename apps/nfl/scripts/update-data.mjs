@@ -31,6 +31,11 @@
 //                                          written into the season's skill-players files as they are: the
 //                                          backfill of those tabs from the play-by-play and the schedule
 //                                          alone, no ESPN; see offenseSpecialOnly)
+//        PBP_EXTRAS_ONLY=1                (only the play-by-play extras added 2026-10-21, the WR and TE rows'
+//                                          air yards, WOPR, deep and middle target rates and end-zone
+//                                          targets and the QBs' EPA per dropback, written into the season's
+//                                          files as they are, ranked and unranked: their backfill; see
+//                                          pbpExtrasOnly)
 //
 // Each run writes three parts of the season (the app's Stats From setting): the regular season
 // (skill-players.json, games.json, data-grades.json), the playoffs (skill-players.post.json,
@@ -83,6 +88,7 @@ const SCHEDULE_URL = 'https://raw.githubusercontent.com/nflverse/nfldata/master/
 const UR_ONLY = process.env.UR_ONLY === '1';
 const DEF_ONLY = process.env.DEF_ONLY === '1';
 const OFFST_ONLY = process.env.OFFST_ONLY === '1';
+const PBP_EXTRAS_ONLY = process.env.PBP_EXTRAS_ONLY === '1';
 const PARTS = (process.env.PART ?? 'regular,post,all').split(',').map((part) => part.trim());
 const PART_NAMES = { regular: 'regular season', post: 'playoffs', all: 'regular season and playoffs' };
 for (const part of PARTS) if (!PART_NAMES[part]) throw new Error(`Unknown PART "${part}" (regular, post or all)`);
@@ -445,6 +451,8 @@ function advancedFor({ pbp, playerStats, pfrByGsis, ngs, pfr }) {
       adot: tracking ? round(num(tracking.avg_intended_air_yards), 1) : null,
       aggressiveness: tracking ? round(num(tracking.aggressiveness), 1) : null,
       epaPerPlay: mean(own.map((play) => num(play.qb_epa))),
+      // (his passing alone: dropbacks, sacks and scrambles in, designed runs out)
+      epaPerDropback: mean(own.filter((play) => play.qb_dropback === '1').map((play) => num(play.qb_epa))),
       cpoe: mean(cpoe.filter((v) => v !== null)),
       successRate: mean(own.map((play) => num(play.success)).filter((v) => v !== null)),
       plays: own.length,
@@ -1709,6 +1717,7 @@ function unrankedQbs(nflverse, ranked, known) {
           ypa: attempts ? round(passYards / attempts, 2) : null,
           rating: passerRating(completions, attempts, passYards, passTds, ints),
           epaPerPlay: own.epaPerPlay,
+          epaPerDropback: own.epaPerDropback,
           successRate: own.successRate,
           cpoe: own.cpoe,
           pressureToSack: own.pressureToSack,
@@ -1748,12 +1757,56 @@ async function knownQbIds() {
 }
 
 // Every player at each of SKILL_POSITIONS who has a season line, with his stats (skillPlayers lists them)
+// The WR and TE tabs' play-by-play extras (added 2026-10-21; RBs don't show them, so their rows go without):
+// each receiver's targets by depth and direction, from every pass that names him (sacks, spikes and
+// throwaways aside): deep, 20+ air yards, over the targets with air yards; the middle (nflverse's
+// pass_location), over the targets with a direction; and the end zone, the air yards reaching the goal line
+const RECEIVER_TABS = new Set(['WR', 'TE']);
+const DEEP_AIR_YARDS = 20;
+function targetDepth(pbp) {
+  const out = new Map();
+  for (const play of pbp) {
+    const id = play.receiver_player_id;
+    if (play.pass_attempt !== '1' || play.sack === '1' || play.qb_spike === '1' || !id || id === 'NA') continue;
+    const t = out.get(id) ?? out.set(id, { air: 0, deep: 0, side: 0, middle: 0, endZone: 0 }).get(id);
+    const air = num(play.air_yards);
+    if (air !== null) {
+      t.air++;
+      if (air >= DEEP_AIR_YARDS) t.deep++;
+      const toGo = num(play.yardline_100);
+      if (toGo !== null && air >= toGo) t.endZone++;
+    }
+    const where = play.pass_location;
+    if (where === 'left' || where === 'right' || where === 'middle') {
+      t.side++;
+      if (where === 'middle') t.middle++;
+    }
+  }
+  return out;
+}
+
+// Air yards (nflverse's season total, caught or not) and WOPR (its weighting of the two shares the row
+// already has) beside the depth counts; null where the season's data has no air yards (before 2006)
+function withReceiverExtras(position, stats, n, ctx, depth) {
+  if (!RECEIVER_TABS.has(position)) return stats;
+  const hasAir = ctx.receiving.hasAirYards;
+  return {
+    ...stats,
+    airYards: hasAir ? n('receiving_air_yards') : null,
+    wopr: hasAir && stats.targetShare !== null && stats.airYardsShare !== null ? round(1.5 * stats.targetShare + 0.7 * stats.airYardsShare, 3) : null,
+    deepTargetPct: hasAir && depth?.air ? ratio(depth.deep, depth.air) : null,
+    middleTargetPct: depth?.side ? ratio(depth.middle, depth.side) : null,
+    endZoneTargets: hasAir ? (depth?.endZone ?? 0) : null,
+  };
+}
+
 function positionPlayers(nflverse) {
   const { playerStats, pbp, seasonPbp, espnByGsis, pfrByGsis, ngs, pfr, snapShare } = nflverse;
   const receiving = receivingFromPbp(playerStats, pbp, seasonPbp);
   const stEpa = specialTeamsEpa(pbp);
   const fgOverExp = fieldGoalsOverExpected(pbp);
   const competitiveEpa = competitivePlayerEpa(pbp);
+  const depth = targetDepth(pbp);
   const out = {};
   for (const [position, config] of Object.entries(SKILL_POSITIONS)) {
     out[position] = playerStats
@@ -1779,7 +1832,7 @@ function positionPlayers(nflverse) {
           name: row.player_display_name,
           teamLogo: `assets/NFL_Icons/${icon}.png`,
           games: n('games'),
-          stats: config.stats(n, ctx),
+          stats: withReceiverExtras(position, config.stats(n, ctx), n, ctx, depth.get(row.player_id)),
           ...(config.stats === offenseStats ? { competitive: competitiveEpa(row.player_id) } : {}),
         };
       });
@@ -2105,6 +2158,7 @@ async function main() {
   await mkdir(DATA_DIR, { recursive: true });
   if (UR_ONLY) return unrankedOnly();
   if (DEF_ONLY) return defenseOnly();
+  if (PBP_EXTRAS_ONLY) return pbpExtrasOnly();
   if (OFFST_ONLY) return offenseSpecialOnly();
   const shared = {};
   for (const part of PARTS) {
@@ -2165,6 +2219,48 @@ async function defenseOnly() {
     await writeFile(partFile(SKILL_FILE, part), JSON.stringify(ranked));
     await writeFile(partFile(UR_FILE, part), JSON.stringify(unranked));
     console.log(`Season ${SEASON}${label}: wrote the defensive tabs: ${counts.join(', ')}`);
+  }
+}
+
+// PBP_EXTRAS_ONLY: the play-by-play extras alone (withReceiverExtras, advancedFor's epaPerDropback), each part's,
+// set on the season's rows as they are, ranked and unranked (nothing else touched, no row added or dropped): the
+// backfill of the stats over the seasons the site has. A row nflverse no longer lists gets nulls.
+const RECEIVER_EXTRAS = ['airYards', 'wopr', 'deepTargetPct', 'middleTargetPct', 'endZoneTargets'];
+async function pbpExtrasOnly() {
+  const shared = {};
+  const season = await once(shared, 'nflverse', () => loadNflverse(shared));
+  for (const part of PARTS) {
+    const label = part === 'regular' ? '' : ` (${PART_NAMES[part]})`;
+    const ranked = JSON.parse(await readFile(partFile(SKILL_FILE, part), 'utf8').catch(() => 'null'));
+    const unranked = JSON.parse(await readFile(partFile(UR_FILE, part), 'utf8').catch(() => 'null'));
+    const qbs = JSON.parse(await readFile(partFile(GAMES_FILE, part), 'utf8').catch(() => 'null'));
+    if (!ranked || !season.playerStatsByPart[part].length) {
+      console.log(`Season ${SEASON}${label}: no ranked rows, left as it is`);
+      continue;
+    }
+    const nflverse = nflversePart(season, part);
+    const built = positionPlayers(nflverse);
+    let receivers = 0;
+    for (const tab of RECEIVER_TABS) {
+      const byId = new Map(built[tab].map((player) => [player.gsisId, player.stats]));
+      for (const row of [...(ranked[tab] ?? []), ...(unranked?.[tab] ?? [])]) {
+        const stats = byId.get(row.gsisId);
+        for (const key of RECEIVER_EXTRAS) row.stats[key] = stats?.[key] ?? null;
+        if (stats) receivers++;
+      }
+    }
+    const of = advancedFor(nflverse);
+    const dropback = (espnId) => {
+      const gsisId = nflverse.gsisByEspn.get(Number(espnId));
+      return gsisId ? of(gsisId).epaPerDropback : null;
+    };
+    let passers = 0;
+    for (const qb of qbs ?? []) if (qb.advanced) passers += (qb.advanced.epaPerDropback = dropback(qb.id)) !== null;
+    for (const row of unranked?.QB ?? []) passers += (row.stats.epaPerDropback = row.id ? dropback(row.id) : null) !== null;
+    await writeFile(partFile(SKILL_FILE, part), JSON.stringify(ranked));
+    if (unranked) await writeFile(partFile(UR_FILE, part), JSON.stringify(unranked));
+    if (qbs) await writeFile(partFile(GAMES_FILE, part), JSON.stringify(qbs));
+    console.log(`Season ${SEASON}${label}: play-by-play extras on ${receivers} WR/TE rows and ${passers} QBs`);
   }
 }
 

@@ -85,6 +85,14 @@ export type SkillStatKey =
   | 'yacOverExp'
   | 'adot'
   | 'airYardsShare'
+  // Added 2026-10-21 from the play-by-play (update-data.mjs targetDepth): a receiver's total air yards, WOPR,
+  // deep and middle target rates and end-zone targets, and a QB's EPA per dropback
+  | 'airYards'
+  | 'wopr'
+  | 'deepTargetPct'
+  | 'middleTargetPct'
+  | 'endZoneTargets'
+  | 'epaPerDropback'
   | 'dropPct'
   | 'drops'
   | 'runBlockEpa'
@@ -338,6 +346,12 @@ export const STAT_NAMES: Partial<Record<SkillColumnKey, string>> = {
   yacOverExp: 'Yards After Catch Over Expected',
   adot: 'Average Depth of Target',
   airYardsShare: 'Air Yards Share',
+  airYards: 'Air Yards',
+  wopr: 'Weighted Opportunity Rating',
+  deepTargetPct: 'Deep Target Percentage',
+  middleTargetPct: 'Middle Target Percentage',
+  endZoneTargets: 'End-Zone Targets',
+  epaPerDropback: 'Expected Points Added per Dropback',
   dropPct: 'Drop Percentage',
   drops: 'Dropped Passes',
   runBlockEpa: 'Run Game EPA per Carry With Him On vs Off the Field',
@@ -758,6 +772,47 @@ const RECEIVING_STATS: SkillStat[] = [
     kind: 'efficiency',
     format: 'pct',
   },
+  // (added after the default rankings were set: scored, starting at 0, so DEFAULT doesn't move)
+  {
+    key: 'airYards',
+    label: 'Air Yards',
+    description: 'How far the passes thrown his way traveled in the air, caught or not, added up (starts at 0: turn it up to count it)',
+    kind: 'volume',
+    format: 'int',
+    startsOff: true,
+  },
+  {
+    key: 'endZoneTargets',
+    label: 'End-Zone Tgts',
+    description: 'Passes thrown his way into the end zone, from anywhere on the field (starts at 0: turn it up to count it)',
+    kind: 'volume',
+    format: 'int',
+    startsOff: true,
+  },
+  {
+    key: 'wopr',
+    label: 'WOPR',
+    description: "Weighted opportunity: 1.5 x target share + 0.7 x air yards share, fantasy's usage number (for context; its two parts are ranked already)",
+    kind: 'efficiency',
+    format: 'dec2',
+    infoOnly: true,
+  },
+  {
+    key: 'deepTargetPct',
+    label: 'Deep Tgt %',
+    description: 'Share of his targets thrown 20+ yards downfield: his role (for context; aDOT is the ranked depth stat)',
+    kind: 'efficiency',
+    format: 'pct',
+    infoOnly: true,
+  },
+  {
+    key: 'middleTargetPct',
+    label: 'Middle Tgt %',
+    description: 'Share of his targets thrown over the middle rather than outside: a rough hint of a slot role (for context; not part of the ranking)',
+    kind: 'efficiency',
+    format: 'pct',
+    infoOnly: true,
+  },
   {
     key: 'snapShare',
     label: 'Snap %',
@@ -1053,6 +1108,14 @@ export const SKILL_STATS: Record<SkillPosition, SkillStat[]> = {
       description: 'Expected Points Added per play (dropbacks and runs)',
       kind: 'efficiency',
       format: 'dec2',
+    },
+    {
+      key: 'epaPerDropback',
+      label: 'EPA / Dropback',
+      description: 'Expected Points Added per dropback: his passing alone, sacks and scrambles in, designed runs out (starts at 0: turn it up to count it)',
+      kind: 'efficiency',
+      format: 'dec2',
+      startsOff: true,
     },
     {
       key: 'successRate',
@@ -1667,7 +1730,7 @@ export function presetWeights(position: SkillPosition, preset: SkillPreset): Ski
   const weights: SkillWeights = {};
   for (const stat of SKILL_STATS[position]) {
     if (stat.infoOnly) continue;
-    weights[stat.key] = def ? 0 : small(stat) ? 10 : 50;
+    weights[stat.key] = def || stat.startsOff ? 0 : small(stat) ? 10 : 50;
   }
   for (const { stat } of combinedFor(position)) weights[stat.key] = fantasyOnly ? 0 : 50;
   return { ...weights, ...(def?.weights ?? {}) };
@@ -1698,7 +1761,7 @@ const defense = (keys: SkillColumnKey[]) => group('defense', 'Defense', 'shield'
 const RECEIVER_GROUPS: Group[] = [
   results(['games']),
   basic(['receptions', 'targets', 'targetShare', 'recYards', 'rushYards', 'yac', 'recTds', 'rushTds', 'fumbles', 'drops']),
-  advanced(['epaPerTarget', 'catchPct', 'separation', 'yacOverExp', 'dropPct', 'adot', 'airYardsShare', 'snapShare', 'runBlockEpa', 'fantasy']),
+  advanced(['epaPerTarget', 'catchPct', 'separation', 'yacOverExp', 'dropPct', 'adot', 'airYardsShare', 'airYards', 'endZoneTargets', 'wopr', 'deepTargetPct', 'middleTargetPct', 'snapShare', 'runBlockEpa', 'fantasy']),
   support(['qbPlay']),
 ];
 const RUSHER_GROUPS: Group[] = [
@@ -1725,7 +1788,7 @@ export const GROUPS: Record<SkillPosition, Group[]> = {
   QB: [
     results(['winPct', 'recent']),
     basic(['passYards', 'ypa', 'compPct', 'rushYards', 'passTds', 'rushTds', 'ints', 'fumbles', 'rating']),
-    advanced(['epaPerPlay', 'successRate', 'cpoe', 'pressureToSack', 'badThrowPct', 'timeToThrow', 'adot', 'aggressiveness', 'fantasy']),
+    advanced(['epaPerPlay', 'epaPerDropback', 'successRate', 'cpoe', 'pressureToSack', 'badThrowPct', 'timeToThrow', 'adot', 'aggressiveness', 'fantasy']),
     support(['weapons', 'oline', 'defense', 'coaching', 'responsibility']),
   ],
   RB: [

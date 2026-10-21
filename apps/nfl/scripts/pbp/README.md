@@ -1,7 +1,9 @@
 # NFL play-by-play aggregates
 
 Small per-player-season and per-team-season stats from nflverse's play-by-play, built for the bettor's research
-(DECISIONS.md D78) and usable by the stats site. Nothing on the site reads them yet: that is the owner's call.
+(DECISIONS.md D78). The site doesn't read these files: since 2026-10-21 its update-data.mjs works out its own copies of
+some from the same play-by-play every run (WR/TE air yards, WOPR, deep and middle target rates, end-zone targets; QB EPA
+per dropback, on nflverse's `qb_epa` like the site's EPA / Play, so it differs from `epaPerDropback` here).
 
 - **Source:** nflverse `play_by_play_<season>.csv.gz`, the desk's cache (`.cache/model`, gitignored; `playerlogs.mjs`
   and `context.mjs` fetch them). The raw files are never committed.

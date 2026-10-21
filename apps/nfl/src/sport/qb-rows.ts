@@ -39,6 +39,8 @@ export interface StaticPlayerData {
   injuryStatus?: string;
   responsibility: number;
   epaPerPlay: number | null;
+  // (passing alone: dropbacks, sacks and scrambles in; null in a file from before it was kept)
+  epaPerDropback: number | null;
   cpoe: number | null;
   successRate: number | null;
   fantasyStd: number | null;
@@ -81,6 +83,7 @@ interface GameData {
   box?: QbBoxStats | null;
   advanced: {
     epaPerPlay: number | null;
+    epaPerDropback?: number | null;
     cpoe: number | null;
     successRate: number | null;
     fantasyStd: number;
@@ -188,6 +191,7 @@ function qbData(): StaticPlayerData[] {
       lastFiveVs: game.lastFiveVs,
       statsBehind: game.statsBehind,
       epaPerPlay: game.advanced?.epaPerPlay ?? null,
+      epaPerDropback: game.advanced?.epaPerDropback ?? null,
       cpoe: game.advanced?.cpoe ?? null,
       successRate: game.advanced?.successRate ?? null,
       fantasyStd: game.advanced?.fantasyStd ?? null,
@@ -293,6 +297,7 @@ export function buildQbUnits(): SkillPlayer[] {
           ypa: box.ypa,
           rating: box.rating,
           epaPerPlay: qb.epaPerPlay,
+          epaPerDropback: qb.epaPerDropback,
           successRate: qb.successRate,
           cpoe: qb.cpoe,
           pressureToSack: qb.pressureToSack,

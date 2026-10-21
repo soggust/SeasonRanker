@@ -1,5 +1,5 @@
 // The presets (each sport's skill-presets.ts, weighed by its positions.ts presetWeights): DEFAULT is every
-// stat at 50 (no designer bias); a preset is only its theme: it sets the stats it names and puts every other
+// stat at 50 (no designer bias; a stat added later, startsOff, at 0 so the rankings don't move); a preset is only its theme: it sets the stats it names and puts every other
 // one at 0, the support grades, the NFL's rough on/off reads and the Position Adjustment too (the NFL's
 // parent sliders stay at 50, which only scales their parts). Every stat a preset names is on its tab, and the presets the audit cut stay cut.
 import { test } from 'node:test';
@@ -24,7 +24,7 @@ for (const sport of SPORTS) {
       const weights = presetWeights(tab, 'default');
       for (const stat of stats) {
         if (stat.infoOnly) assert.equal(weights[stat.key], undefined, `${tab} ${stat.key}: no slider`);
-        else assert.equal(weights[stat.key], stat.positionAdjust ? 0 : sport === 'nfl' && SMALL.has(stat.key) ? 10 : 50, `${tab} ${stat.key}`);
+        else assert.equal(weights[stat.key], stat.positionAdjust || stat.startsOff ? 0 : sport === 'nfl' && SMALL.has(stat.key) ? 10 : 50, `${tab} ${stat.key}`);
       }
     }
   });

@@ -27,6 +27,7 @@ export class AboutComponent {
   // Glossary entries: stat, what it means
   readonly glossary: [string, string][] = [
     ['EPA / Play', "Expected Points Added: how much each play changed the offense's expected points, based on down, distance and field position. The best single measure of efficiency."],
+    ['EPA / Dropback', "EPA per dropback: a QB's passing alone (sacks and scrambles in, designed runs out). Starts at 0: turn its slider up to count it."],
     ['Success %', 'Share of plays that gained positive EPA, i.e. kept the offense on schedule.'],
     ['CPOE', 'Completion % over expected: completions above what an average QB would hit on the same throws (depth, coverage, pressure).'],
     ['Rating', 'The classic NFL passer rating (0 to 158.3).'],
@@ -41,6 +42,10 @@ export class AboutComponent {
     ['Broken Tkl', 'Tackles broken as a runner or receiver.'],
     ['Target Share', "Share of the team's targets that went to the player."],
     ['Air Yds Share', "Share of the team's air yards (how far passes travel in the air) aimed at the player."],
+    ['Air Yards', 'How far the passes thrown to a receiver traveled in the air, caught or not, added up. Starts at 0: turn its slider up to count it.'],
+    ['End-Zone Tgts', 'Passes thrown to a receiver into the end zone, from anywhere on the field. Starts at 0: turn its slider up to count it.'],
+    ['WOPR', 'Weighted opportunity rating: 1.5 x target share + 0.7 x air yards share, a usage number from fantasy football. For context only, since its two parts are ranked already.'],
+    ['Deep Tgt % / Middle Tgt %', "Share of a receiver's targets thrown 20+ yards downfield, and thrown over the middle rather than outside (a rough hint of a slot role: the free data has no alignment). For context only: they describe his role, not how well he plays it."],
     ['Separation', 'Average yards between the receiver and the nearest defender when the ball arrives.'],
     ['YAC Over Exp', 'Yards after catch above what was expected for the catch.'],
     ['Drops / Drop %', 'Catchable passes dropped, as charted by Pro Football Reference: the count, and drops per target.'],
