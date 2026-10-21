@@ -3276,6 +3276,30 @@
     "own": "2026-10-21T21:07:09.000Z",
     "why": "@rotowirenba.bsky.social: Jarrett Allen: Questionable versus Philadelphia \n\n htt"
    }
+  },
+  "401909093|isaiahstewart|out": {
+   "game": "401909093",
+   "start": "2026-10-22T23:00Z",
+   "team": "20",
+   "name": "Isaiah Stewart",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-10-21T23:05:24.815Z",
+    "own": "2026-10-21T23:05:17.000Z",
+    "why": "@rotowirenba.bsky.social: Isaiah Stewart: Ruled out Wednesday \n\n https://www.rot"
+   }
+  },
+  "401909094|isaiahstewart|out": {
+   "game": "401909094",
+   "start": "2026-10-23T01:30Z",
+   "team": "25",
+   "name": "Isaiah Stewart",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-10-21T23:05:24.815Z",
+    "own": "2026-10-21T23:05:17.000Z",
+    "why": "@rotowirenba.bsky.social: Isaiah Stewart: Ruled out Wednesday \n\n https://www.rot"
+   }
   }
  }
 }
