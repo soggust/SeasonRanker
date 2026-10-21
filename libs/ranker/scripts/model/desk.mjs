@@ -106,8 +106,9 @@ export const suspectOf = (ev, why = '', p = null) => {
 // the rules were kept reads as placed under today's, except one held by the old ev bar (its suspect with no edge in
 // points: CAP_RULES 1). DECISIONS.md D53
 // (1: D23 by the return, ev past 0.15; 2: D23 by the edge in points and SDs, 27a9d205; 3: the reason tiers, D58: the
-// band from the proven reasons, the stake held to the tier's cap; 4: the props' stat bar, D64, and MMA's bands' place, D65)
-export const CAP_RULES = 4;
+// band from the proven reasons, the stake held to the tier's cap; 4: the props' stat bar, D64, and MMA's bands' place, D65; 5: the two-band trial, D73: LIKE and LOVE, a
+// trial sport's props banded and staked by their trusted share)
+export const CAP_RULES = 5;
 // (an open bet's re-prices on news or a rule change: at most this many, counted across runs)
 export const MAX_REPRICES = 6;
 export const rulesOf = (bands) => `cap${CAP_RULES} suspect ${EDGE_SUSPECT}/${Z_SUSPECT}/${EV_SUSPECT} bands ${bands.lock}/${bands.lockChance}/${bands.high}/${bands.medium}`;

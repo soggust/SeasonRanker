@@ -2,7 +2,7 @@
  "v": 1,
  "sport": "mlb",
  "epoch": "2026-10-20T05:45:00Z",
- "at": "2026-10-20T18:29:08.442Z",
+ "at": "2026-10-21T00:22:53.619Z",
  "from": "2021-07-18T17:07:00.000Z",
  "through": "2026-10-16T00:00:00.000Z",
  "n": {
@@ -1790,17 +1790,17 @@
   "split": "games that start before the epoch replayed; the live ledger from the epoch on",
   "notSeen": "the live desk's CLV gates, CHECKs, research and news"
  },
- "commit": "f7943b13",
- "note": "D70. The closing-line bands (Gemini's design): a reason earns LOVE or LOCK by its shrunk return at the fair close, its beat share and results that don't lose; the band lab stages every rule before one ships",
+ "commit": "0ce1042a",
+ "note": "D72. The trusted-edge bands (the owner's idea): a bet's edge split into the model's pieces, each piece trusted only on its walk-forward record; measured, staged, none shipped",
  "inputs": {
   "v": 1,
   "sport": "mlb",
   "code": {
    "props": "87335d02c0eb",
-   "games": "9c08190c0c31",
-   "pricing": "3ecedb70ec72",
-   "record": "c27335718370",
-   "harness": "1134888049f8",
+   "games": "f7ceeab65d73",
+   "pricing": "3a257b170812",
+   "record": "186c85dbb8d3",
+   "harness": "719b57606541",
    "residual": "c0bf15b36bbc79e6"
   },
   "fit": {
@@ -1858,6 +1858,6 @@
     "want": 29
    }
   },
-  "hash": "424c3ff387157c10"
+  "hash": "2c3c9f12faac6c93"
  }
 }

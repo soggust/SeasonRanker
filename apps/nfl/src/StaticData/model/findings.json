@@ -15,6 +15,11 @@
     { "date": "2026-10-20", "group": "dropped", "sport": null, "ref": "Measured and held", "text": "Props lagging line moves: they don't lag; taking the lagging side lost 8%" },
     { "date": "2026-10-19", "group": "dropped", "sport": null, "ref": "Measured and held", "text": "Last-result overreaction: the Book doesn't overreact once the Bot's own lean is in" },
     { "date": "2026-10-20", "group": "dropped", "sport": "nfl", "ref": "D71", "text": "NFL lines bet earlier (24h to 1h, 2020-26): no hour beats the close; early dogs beat the fair close 60-65% but lose 13-17% flat" },
-    { "date": "2026-10-20", "group": "watching", "sport": null, "ref": "D67", "text": "Best price across 9 US books vs DraftKings: 1-8 cents better, +0.5-1.6 pts flat ROI; no lines sport clearly green (noise)" }
+    { "date": "2026-10-20", "group": "watching", "sport": null, "ref": "D67", "text": "Best price across 9 US books vs DraftKings: 1-8 cents better, +0.5-1.6 pts flat ROI; no lines sport clearly green (noise)" },
+    { "date": "2026-10-20", "group": "shipped", "sport": "nba", "ref": "D73", "text": "Two-band trial: prop LIKEs staked by their trusted share (1u high, 0.5u low), step picked monthly: +44.1u to +51.2u out of sample" },
+    { "date": "2026-10-20", "group": "shipped", "sport": "nhl", "ref": "D73", "text": "Two-band trial: 22 LOVEs (shots-on-goal unders) +3.1% vs LIKE -2.3% out of sample (±22 pts: a trial), -20.6u to -19.9u" },
+    { "date": "2026-10-20", "group": "dropped", "sport": null, "ref": "D73", "text": "LOVE at the owner's 2% Kelly floor: out of sample it loses (NBA 67 LOVEs -14.1% vs LIKE +1.3%); the trial's LOVE sits at 1-2%" },
+    { "date": "2026-10-20", "group": "dropped", "sport": null, "ref": "D73", "text": "Small winners: the NBA is one (+51.2u); no honest stake tweak turns the NFL (-27.0u), NHL (-19.9u) or MLB (-11.9u) positive" },
+    { "date": "2026-10-20", "group": "watching", "sport": "nba", "ref": "D73", "text": "NBA LOVE by trusted share (rebound unders): +1.6% vs +1.0% on the first replay, -0.4% vs +2.2% re-recorded: held off" }
   ]
 }

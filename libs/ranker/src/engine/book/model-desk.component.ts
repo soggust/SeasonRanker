@@ -332,7 +332,10 @@ export class ModelDeskComponent implements OnInit, OnDestroy {
     this.history = h;
     this.findings = findingsOf(this.findingsFile, this.sport);
     const histBand = (label: string) => h.byBand.find((r) => r.label === label) ?? emptyRow(label);
-    this.bandRows = [histBand('LOCK'), histBand('LOVE'), histBand('LIKE'), h.practice, histBand('PASS')];
+    // (two bands, LOVE and LIKE (the two-band trial, DECISIONS.md D73: LOCK off); a LOCK row only where the shown
+    // record has LOCK bets (MMA's Kelly bands, D65, or an old live bet))
+    const lock = histBand('LOCK');
+    this.bandRows = [...(lock.bets ? [lock] : []), histBand('LOVE'), histBand('LIKE'), h.practice, histBand('PASS')];
     this.bandShares = bandSharesOf(this.bandRows);
     this.buildAt = buildOf(this.allReplays, this.sport, this.epoch ? ((this.sport ? epochFor(this.epoch, this.sport) : null) ?? epochShared(this.epoch)) : null).at;
     this.splitOpen(Date.now());

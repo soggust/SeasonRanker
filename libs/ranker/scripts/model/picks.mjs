@@ -139,10 +139,17 @@ const confCap = (b) => (b?.conf?.cap === 'medium' || b?.conf?.cap === 'high' ? b
 // rules' caps (a practice pick, a gate, a suspect price, a role or research pick: a LIKE at most))
 const TIERED = new Set(['lock', 'high', 'medium']);
 const tierOn = (b) => TIERED.has(b?.conf?.tier);
+// (the two-band trial (DECISIONS.md D73, trusted.mjs): its LOVE's Kelly range in place of the 2% floor, [from, to),
+// to null for none; the owner's "just lowering thresholds" of 2026-10-20)
+export const tierKellyOf = (b) => (Array.isArray(b?.conf?.trial?.kelly) && Number.isFinite(b.conf.trial.kelly[0]) ? b.conf.trial.kelly : null);
+const tierClears = (b, kelly) => {
+  const k = tierKellyOf(b);
+  return k ? kelly >= k[0] && (k[1] === null || kelly < k[1]) : kelly >= BANDS.high;
+};
 export const levelOf = (b, kelly, p = b.p) => {
   const base = ruleLevel(b, kelly, p);
   if (!tierOn(b) || base === 'low') return capBand(base, confCap(b));
-  return capBand(kelly >= BANDS.high ? b.conf.tier : 'medium', ruleCap(b));
+  return capBand(tierClears(b, kelly) ? b.conf.tier : 'medium', ruleCap(b));
 };
 const ruleLevel = (b, kelly, p = b.p) =>
   intentOf(b) !== 'edge' ? 'low'
@@ -463,7 +470,7 @@ export function buildPicks(sport, ledger, trust, games, now, extra = {}) {
       // and those reasons with their records, the popover's list)
       // (the news lag's tag (D66): the star out and when the desk first saw it; the popover's "Star out" line)
       ...(!check && b.newsLag?.player ? { lag: { player: b.newsLag.player, first: b.newsLag.first ?? null, min: b.newsLag.min ?? null } } : {}),
-      ...(!check && tierOn(b) ? { tier: b.conf.tier, ...(Array.isArray(b.conf.reasons) && b.conf.reasons.length ? { reasons: b.conf.reasons.slice(0, 4) } : {}) } : {}),
+      ...(!check && tierOn(b) ? { tier: b.conf.tier, ...(tierKellyOf(b) ? { tierKelly: tierKellyOf(b), trial: true } : {}), ...(Array.isArray(b.conf.reasons) && b.conf.reasons.length ? { reasons: b.conf.reasons.slice(0, 4) } : {}) } : {}),
       kind: KIND[b.market] ?? 'player',
       market: b.market === 'prop' ? b.statLabel : LABEL[b.market],
       pick: b.pick,

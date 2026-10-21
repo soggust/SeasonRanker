@@ -953,7 +953,7 @@ test('D53 an open bet placed under a band or stake rule changed since is taken b
   // (the new bet keeps the withdrawn one honestly: its price, band, stake, the rules it was placed under, the reason)
   const re = M.withdrawnOf(hokit, now.toISOString());
   assert.equal(re.n, 1);
-  assert.match(re.why[0], /^rule changed \(placed under cap1, now cap4/);
+  assert.ok(re.why[0].startsWith(`rule changed (placed under cap1, now cap${D.CAP_RULES}`), re.why[0]);
   assert.deepEqual([re.from.odds, re.from.units, re.from.band, re.from.rules], [205, 0.5, 'medium', 'cap1']);
   // (every new bet is stamped; the withdrawal only at a fresh Odds API price (D30); run.mjs takes one back like news)
   const mma = fs.readFileSync(path.resolve('libs/ranker/scripts/model/mma-desk.mjs'), 'utf8');
@@ -1567,4 +1567,15 @@ test("D72 the trusted-edge bands: measured and staged, none shipped; By Confiden
     assert.ok(f.order.some((n) => n.startsWith('trust-')), sport);
     for (const n of f.order) assert.ok(f.labels?.[n], `${sport} ${n}`);
   }
+});
+
+test('D73 the two-band trial: LIKE and LOVE, LOCK off, labelled a trial; LOVE on in the NHL, the LIKE stakes in the NBA; the 2% floor lowered for its LOVEs alone', async () => {
+  const decisions = fs.readFileSync(path.resolve('libs/ranker/scripts/model/DECISIONS.md'), 'utf8');
+  assert.ok(decisions.includes('### D73.') && decisions.includes('**A trial**'));
+  const T = await import('../libs/ranker/scripts/model/trusted.mjs');
+  assert.deepEqual(Object.keys(T.TRIAL).sort(), ['nba', 'nhl']);
+  assert.equal(T.TRIAL_OPTS.loveUnits, 2);
+  assert.ok(T.trialWhy([['form', 0.01]]).startsWith('LOVE (trial): driven by proven pieces: '));
+  const P = await import('../libs/ranker/scripts/model/picks.mjs');
+  assert.equal(P.BANDS.high, 0.02, "the owner's 2% floor stands outside the trial");
 });

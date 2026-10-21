@@ -1,20 +1,251 @@
 {
-  "about": "Band rules band-lab.mjs tries on the replayed history (DECISIONS.md D70). mode d58: the rule as it was (D58 results walk and place; MMA D65). Every other variant is clv-bands.mjs's rule: k the shrink (n/(n+k); 'eb' fit walk-forward by month), prior 'zero' or 'market' (the market's own mean EV at the fair close), love/lock bars (n with a closing check, shrunk EV at the fair close, beat share), twoLove (two LOVE reasons of different families make a LOCK), results (a reason's flat results must also clear roi - z*se over n), fallback 'results' (a reason with under fallbackBelow closing checks earns on D58's results bar instead), place (D58's place check on top), units (each band's stake cap). newsLag is live-only: the replay never carries it, so no variant here moves it. mode trusted (D72, trusted.mjs): a bet's edge split into the model's pieces (REPLAY_ATTR=1 on the replay: <sport>-attr.json), each piece's reliability walk-forward by month from the close rows before it (its slope on the results past the fair, proven when its lower bound clears 0 and its held-out log loss beats the Book's), the trusted edge the sum of the pieces times their reliability; bars 'abs' (love, lock: trusted edge) or 'pct' (lock, love: the top shares of the bets settled before), score 'te', 'teKelly' (times the Kelly score) or 'share' (the trusted share of the whole edge), kelly the floor under LOVE and LOCK, lockKelly LOCK's own, caps false (a test only) lets a suspect or barred bet's band rise (its stake stays). label: the Live / Staged switch's name.",
+  "about": "Band rules band-lab.mjs tries on the replayed history (DECISIONS.md D70). mode d58: the rule as it was (D58 results walk and place; MMA D65). Every other variant is clv-bands.mjs's rule: k the shrink (n/(n+k); 'eb' fit walk-forward by month), prior 'zero' or 'market' (the market's own mean EV at the fair close), love/lock bars (n with a closing check, shrunk EV at the fair close, beat share), twoLove (two LOVE reasons of different families make a LOCK), results (a reason's flat results must also clear roi - z*se over n), fallback 'results' (a reason with under fallbackBelow closing checks earns on D58's results bar instead), place (D58's place check on top), units (each band's stake cap). newsLag is live-only: the replay never carries it, so no variant here moves it. mode trusted (D72, trusted.mjs): a bet's edge split into the model's pieces (REPLAY_ATTR=1 on the replay: <sport>-attr.json), each piece's reliability walk-forward by month from the close rows before it (its slope on the results past the fair, proven when its lower bound clears 0 and its held-out log loss beats the Book's), the trusted edge the sum of the pieces times their reliability; bars 'abs' (love, lock: trusted edge) or 'pct' (lock, love: the top shares of the bets settled before), score 'te', 'teKelly' (times the Kelly score) or 'share' (the trusted share of the whole edge), kelly the floor under LOVE and LOCK, lockKelly LOCK's own, caps false (a test only) lets a suspect or barred bet's band rise (its stake stays). label: the Live / Staged switch's name. mode trial (D73, trusted.mjs trialWalk): the two-band trial, LIKE and LOVE (no LOCK): a prop is a LOVE where its trusted share and Kelly score clear the rule picked each month from the bets settled before it, at loveUnits; with mid the LIKE props' stake by trusted share; the sport's TRIAL switches, or the variant's own on (a test in every sport).",
   "variants": {
-    "d58": { "label": "Old reason tiers (D58)", "mode": "d58" },
-    "clv": { "label": "Closing-line bands (Gemini)", "k": 100, "prior": "zero", "love": { "n": 50, "ev": 0.02, "beat": 0.515 }, "lock": { "n": 150, "ev": 0.04, "beat": 0.535 }, "twoLove": true },
-    "clv-eb": { "label": "Closing-line bands, fitted shrink", "k": "eb", "prior": "market", "love": { "n": 50, "ev": 0.02, "beat": 0.515 }, "lock": { "n": 150, "ev": 0.04, "beat": 0.535 }, "twoLove": true },
-    "clv-loose": { "label": "Closing-line bands, loose", "k": 50, "prior": "zero", "love": { "n": 30, "ev": 0.01, "beat": 0.51 }, "lock": { "n": 100, "ev": 0.03, "beat": 0.525 }, "twoLove": true },
-    "clv-strict": { "label": "Closing-line bands, strict", "k": 200, "prior": "market", "love": { "n": 80, "ev": 0.025, "beat": 0.525 }, "lock": { "n": 200, "ev": 0.05, "beat": 0.55 }, "twoLove": false },
-    "clv-results": { "label": "Live: closing-line bands + results (D70)", "k": 100, "prior": "zero", "love": { "n": 50, "ev": 0.02, "beat": 0.515 }, "lock": { "n": 150, "ev": 0.04, "beat": 0.535 }, "twoLove": true, "results": { "n": 50, "roi": 0, "z": 0 } },
-    "clv-hybrid": { "label": "Closing-line bands, results fallback", "k": 100, "prior": "zero", "love": { "n": 50, "ev": 0.02, "beat": 0.515 }, "lock": { "n": 150, "ev": 0.04, "beat": 0.535 }, "twoLove": true, "fallback": "results", "fallbackBelow": 30 },
-    "clv-place": { "label": "Closing-line bands + place check", "k": 100, "prior": "zero", "love": { "n": 50, "ev": 0.02, "beat": 0.515 }, "lock": { "n": 150, "ev": 0.04, "beat": 0.535 }, "twoLove": true, "place": true },
-    "trust-abs": { "label": "Trusted pieces: fixed bars 2% / 4%", "mode": "trusted", "bars": "abs", "love": 0.02, "lock": 0.04, "kelly": 0.02 },
-    "trust-pct": { "label": "Trusted pieces: LOCK top 5%, LOVE next 15%", "mode": "trusted", "bars": "pct", "love": 0.2, "lock": 0.05, "kelly": 0.005, "score": "te" },
-    "trust-pct-kelly": { "label": "Trusted pieces x Kelly: top 5% / next 15%", "mode": "trusted", "bars": "pct", "love": 0.2, "lock": 0.05, "kelly": 0.005, "score": "teKelly" },
-    "trust-share": { "label": "Trusted share of edge: 60% / 85%", "mode": "trusted", "bars": "abs", "score": "share", "love": 0.6, "lock": 0.85, "kelly": 0.01, "lockKelly": 0.02 },
-    "trust-love-only": { "label": "Trusted pieces: LOVE top 7%, no LOCK", "mode": "trusted", "bars": "pct", "love": 0.07, "lock": 0, "kelly": 0.005, "score": "te" },
-    "trust-pct-nocap": { "label": "Trusted top 5% / 15%, stat bar ignored (test)", "mode": "trusted", "bars": "pct", "love": 0.2, "lock": 0.05, "kelly": 0.005, "score": "te", "caps": false },
-    "trust-love25-nocap": { "label": "Trusted LOVE top 25%, stat bar ignored (test)", "mode": "trusted", "bars": "pct", "love": 0.25, "lock": 0, "kelly": 0.005, "score": "te", "caps": false }
+    "d58": {
+      "label": "Old reason tiers (D58)",
+      "mode": "d58"
+    },
+    "clv": {
+      "label": "Closing-line bands (Gemini)",
+      "k": 100,
+      "prior": "zero",
+      "love": {
+        "n": 50,
+        "ev": 0.02,
+        "beat": 0.515
+      },
+      "lock": {
+        "n": 150,
+        "ev": 0.04,
+        "beat": 0.535
+      },
+      "twoLove": true
+    },
+    "clv-eb": {
+      "label": "Closing-line bands, fitted shrink",
+      "k": "eb",
+      "prior": "market",
+      "love": {
+        "n": 50,
+        "ev": 0.02,
+        "beat": 0.515
+      },
+      "lock": {
+        "n": 150,
+        "ev": 0.04,
+        "beat": 0.535
+      },
+      "twoLove": true
+    },
+    "clv-loose": {
+      "label": "Closing-line bands, loose",
+      "k": 50,
+      "prior": "zero",
+      "love": {
+        "n": 30,
+        "ev": 0.01,
+        "beat": 0.51
+      },
+      "lock": {
+        "n": 100,
+        "ev": 0.03,
+        "beat": 0.525
+      },
+      "twoLove": true
+    },
+    "clv-strict": {
+      "label": "Closing-line bands, strict",
+      "k": 200,
+      "prior": "market",
+      "love": {
+        "n": 80,
+        "ev": 0.025,
+        "beat": 0.525
+      },
+      "lock": {
+        "n": 200,
+        "ev": 0.05,
+        "beat": 0.55
+      },
+      "twoLove": false
+    },
+    "clv-results": {
+      "label": "Live: closing-line bands + results (D70)",
+      "k": 100,
+      "prior": "zero",
+      "love": {
+        "n": 50,
+        "ev": 0.02,
+        "beat": 0.515
+      },
+      "lock": {
+        "n": 150,
+        "ev": 0.04,
+        "beat": 0.535
+      },
+      "twoLove": true,
+      "results": {
+        "n": 50,
+        "roi": 0,
+        "z": 0
+      }
+    },
+    "clv-hybrid": {
+      "label": "Closing-line bands, results fallback",
+      "k": 100,
+      "prior": "zero",
+      "love": {
+        "n": 50,
+        "ev": 0.02,
+        "beat": 0.515
+      },
+      "lock": {
+        "n": 150,
+        "ev": 0.04,
+        "beat": 0.535
+      },
+      "twoLove": true,
+      "fallback": "results",
+      "fallbackBelow": 30
+    },
+    "clv-place": {
+      "label": "Closing-line bands + place check",
+      "k": 100,
+      "prior": "zero",
+      "love": {
+        "n": 50,
+        "ev": 0.02,
+        "beat": 0.515
+      },
+      "lock": {
+        "n": 150,
+        "ev": 0.04,
+        "beat": 0.535
+      },
+      "twoLove": true,
+      "place": true
+    },
+    "trust-abs": {
+      "label": "Trusted pieces: fixed bars 2% / 4%",
+      "mode": "trusted",
+      "bars": "abs",
+      "love": 0.02,
+      "lock": 0.04,
+      "kelly": 0.02
+    },
+    "trust-pct": {
+      "label": "Trusted pieces: LOCK top 5%, LOVE next 15%",
+      "mode": "trusted",
+      "bars": "pct",
+      "love": 0.2,
+      "lock": 0.05,
+      "kelly": 0.005,
+      "score": "te"
+    },
+    "trust-pct-kelly": {
+      "label": "Trusted pieces x Kelly: top 5% / next 15%",
+      "mode": "trusted",
+      "bars": "pct",
+      "love": 0.2,
+      "lock": 0.05,
+      "kelly": 0.005,
+      "score": "teKelly"
+    },
+    "trust-share": {
+      "label": "Trusted share of edge: 60% / 85%",
+      "mode": "trusted",
+      "bars": "abs",
+      "score": "share",
+      "love": 0.6,
+      "lock": 0.85,
+      "kelly": 0.01,
+      "lockKelly": 0.02
+    },
+    "trust-love-only": {
+      "label": "Trusted pieces: LOVE top 7%, no LOCK",
+      "mode": "trusted",
+      "bars": "pct",
+      "love": 0.07,
+      "lock": 0,
+      "kelly": 0.005,
+      "score": "te"
+    },
+    "trust-pct-nocap": {
+      "label": "Trusted top 5% / 15%, stat bar ignored (test)",
+      "mode": "trusted",
+      "bars": "pct",
+      "love": 0.2,
+      "lock": 0.05,
+      "kelly": 0.005,
+      "score": "te",
+      "caps": false
+    },
+    "trust-love25-nocap": {
+      "label": "Trusted LOVE top 25%, stat bar ignored (test)",
+      "mode": "trusted",
+      "bars": "pct",
+      "love": 0.25,
+      "lock": 0,
+      "kelly": 0.005,
+      "score": "te",
+      "caps": false
+    },
+    "trial": {
+      "label": "Live: two-band trial (D73)",
+      "mode": "trial"
+    },
+    "trial-all": {
+      "label": "Two-band trial in every sport (test)",
+      "mode": "trial",
+      "on": {
+        "love": true,
+        "mid": true
+      }
+    },
+    "trial-love": {
+      "label": "Two-band trial, LOVE only (test)",
+      "mode": "trial",
+      "on": {
+        "love": true,
+        "mid": false
+      }
+    },
+    "trial-k2": {
+      "label": "Two-band trial at the 2% Kelly floor (test)",
+      "mode": "trial",
+      "on": {
+        "love": true,
+        "mid": true
+      },
+      "opts": {
+        "kelly": 0.02,
+        "kellyMax": [
+          0.05,
+          null
+        ]
+      }
+    },
+    "trial-k2any": {
+      "label": "Two-band trial at the 2% floor, no ceiling (test)",
+      "mode": "trial",
+      "on": {
+        "love": true,
+        "mid": true
+      },
+      "opts": {
+        "kelly": 0.02,
+        "kellyMax": [
+          null
+        ]
+      }
+    },
+    "trial-mid": {
+      "label": "Two-band trial, LIKE stakes by trusted share only (test)",
+      "mode": "trial",
+      "on": {
+        "love": false,
+        "mid": true
+      }
+    }
   }
 }

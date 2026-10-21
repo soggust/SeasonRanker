@@ -513,6 +513,39 @@ export function replayRecord(V, sport, rows, { events = null, names = () => ({ h
       }
     }
   }
+  // (the two-band trial (DECISIONS.md D73, trusted.mjs): in a TRIAL sport, LIKE and LOVE only (LOCK off): a prop is a
+  // LOVE where its proven pieces carry the month's share of its edge at a Kelly score in the month's range, both picked
+  // from the bets settled before the month; with mid, the LIKE props' stake by their trusted share. The pieces'
+  // reliability is walked by month on the props' close rows settled before (D72). A suspect or barred bet stays a LIKE
+  // at its stake; D60's bar below holds the rest as before. The record guard: a trial sport's replay without the
+  // props' pieces stops here rather than write a record without its bands)
+  let trustedFile = null;
+  const TR = sport !== 'mma' && V.trusted?.trialOn?.(sport) && process.env.REPLAY_TRIAL !== '0' ? V.trusted : null;
+  if (TR && hold.size) {
+    const rows = [...closes.values()].filter((x) => x.market === 'prop' && x.attr && (x.y === 0 || x.y === 1)).map((x) => [x.t, x.market, x.stat, x.f, x.y, x.attr]);
+    const mine = bets.filter((b) => hold.has(b));
+    if (!rows.length || !mine.some((b) => b.market === 'prop' && b.attr)) throw new Error(`${sport}: the two-band trial (D73) needs the props' pieces on the replay (gate.mjs propParts): none here`);
+    const trust = TR.walkTrust(rows);
+    const list = mine.map((b) => {
+      const h = hold.get(b);
+      const sh = b.market === 'prop' && b.attr ? TR.shareOf(b.attr, trust.at(b.at, 'prop')) : { share: 0, te: 0, pieces: [] };
+      return { t: b.t, at: b.at, market: b.market, kelly: b.kelly, share: sh.share, te: sh.te, pieces: sh.pieces, units: b.units, held: !!(h.suspect || h.barred), res: b.res, odds: b.odds };
+    });
+    const tw = TR.trialWalk(list, sport);
+    const counts = { lock: 0, high: 0, medium: 0 };
+    mine.forEach((b, i) => {
+      const { band, units } = TR.trialBand(list[i], tw.at(b.at), tw.opts);
+      b.profit = b.units > 0 ? r2((b.profit * units) / b.units) : 0;
+      b.units = units;
+      b.band = band;
+      if (band === 'high') b.trusted = list[i].pieces.slice(0, 3).map(([k]) => k);
+      counts[band]++;
+    });
+    const fin1 = (r) => (r ? { ...r, kellyMax: fin(r.kellyMax) ? r.kellyMax : null } : null);
+    flags.tiers = { ...(flags.tiers ?? {}), ...counts, rule: 'trial', trial: { love: fin1(tw.final.love), mid: tw.final.mid, months: tw.months.filter(([, c]) => c.love).length, of: tw.months.length } };
+    trustedFile = TR.trialFileOf(sport, trust, tw, { at: new Date(now).toISOString(), epoch, record: { love: counts.high, like: counts.medium } });
+  }
+  if (process.env.REPLAY_ATTR !== '1') for (const b of bets) if (b.attr) (delete b.attr, delete b.lam);
   // (MMA's Kelly bands earn their place (DECISIONS.md D65): D58's place check on the bands MMA bets by (D37's Kelly
   // bands): LOVE shows only where the LOVEs and LOCKs before that month beat the LIKEs by flat return and beat-the-close
   // on PLACE_MIN of them, LOCK only where its own beat the LOVEs; a band not earned falls to the one below, its stake
@@ -585,6 +618,8 @@ export function replayRecord(V, sport, rows, { events = null, names = () => ({ h
   const out = summarize(sport, bets, passed, sumArgs);
   // (the reason tiers' file (D58): what gate.mjs --record writes as reasons.json, kept off the replay's own file)
   if (reasonsFile) out.reasonsFile = reasonsFile;
+  // (the two-band trial's file (D73): what gate.mjs --record writes as trusted.json)
+  if (trustedFile) out.trustedFile = trustedFile;
   return out;
 }
 
@@ -640,7 +675,8 @@ function betOf(x, sd, { units, band, practice, timing, fb = null, names, surviva
   if (noAttr) x = { ...x, attr: null };
   const res = x.y === null || x.y === undefined ? 'P' : (x.y === 1) === sd.over ? 'W' : 'L';
   // (research only (REPLAY_ATTR, D72): the row's pieces of the edge on the bet's own side)
-  if (x.attr && process.env.REPLAY_ATTR === '1') {
+  // (and the two-band trial's props (D73): their pieces, which gate.mjs computes in a trial sport)
+  if (x.attr) {
     const s = sd.over ? 1 : -1;
     const attr = Object.fromEntries(Object.entries(x.attr).map(([k, v]) => [k, Math.round(s * v * 1e5) / 1e5]));
     return { ...betOf(x, sd, { units, band, practice, timing, fb, names, survival, noAttr: true }), attr, lam: r4(x.lam) };

@@ -18,12 +18,38 @@
 //   bands        LOVE / LOCK when the trusted edge clears a bar AND the Kelly score clears a floor: absolute bars, or
 //                percentiles of the trusted edge (or trusted edge times Kelly) among the bets settled before
 
+import { existsSync, readFileSync } from 'node:fs';
+import path from 'node:path';
+
 const fin = Number.isFinite;
 export const GAME_HOURS = 3;
 const MONTH = (t) => {
   const d = new Date(t);
   return Date.UTC(d.getUTCFullYear(), d.getUTCMonth(), 1);
 };
+// (D72's research, D73's trial (gate.mjs on the replay, props.mjs live): a prop projection's pieces as log factors on its mean (project.mjs
+// projection's own parts, as writeup.mjs driversOf reads them): form (his recent games' weight against his season
+// rate), role (the trend, ramp and share steps), vacated (teammates' work left or taken back), opponent, funnel,
+// targets, pace, script, context, and the fit's scale and middle; the rest (his own rate against the Book) is the base)
+const lnOf = (v) => (Number.isFinite(v) && v > 0 ? Math.log(v) : 0);
+export function propParts(p, P) {
+  if (!p || !P) return {};
+  const blend = Number.isFinite(p.rate) && Number.isFinite(p.recent) && Number.isFinite(P.w) ? (1 - P.w) * p.rate + P.w * p.recent : null;
+  const role = (Number.isFinite(p.trendF) ? p.trendF : 1) * (Number.isFinite(p.ramp) ? p.ramp : 1) * (Number.isFinite(p.sp?.f) ? p.sp.f : 1);
+  const base0 = blend !== null ? role * blend : null;
+  return {
+    form: blend !== null && p.rate > 0 ? lnOf(blend / p.rate) : 0,
+    role: lnOf(role),
+    vacated: lnOf(p.vacF) + (base0 > 0 && p.base > 0 ? Math.log(p.base / base0) : 0),
+    opponent: Number.isFinite(p.opp) ? (p.oppA ?? P.a ?? 0) * lnOf(p.opp) : 0,
+    funnel: lnOf(p.funnelF),
+    targets: lnOf(p.tgtF),
+    pace: lnOf(p.paceF),
+    script: Number.isFinite(p.script) ? (P.b ?? 0) * lnOf(p.script) : 0,
+    context: lnOf(p.ctxF),
+    fit: lnOf(P.scale ?? 1) + lnOf(p.slF),
+  };
+}
 export const classOf = (market) => (market === 'prop' ? 'prop' : 'line');
 
 // (the pieces' words, as the popover names them)
@@ -261,3 +287,212 @@ export function trustBands(bets, walk, rule) {
 
 // The popover's words: "Driven by: rest edge (proven), matchup vs position (proven)"
 export const drivenBy = (pieces, cls) => (pieces?.length ? `Driven by: ${pieces.slice(0, 3).map(([k]) => `${pieceName(k, cls)} (proven)`).join(', ')}` : null);
+
+// ---- The two-band trial (DECISIONS.md D73; the owner, 2026-10-20: "I'm fine going two-band until we find a more
+// proven model") ----
+// LIKE and LOVE only, LOCK off (the biggest edges were the worst band in every sport, D52 and D72). A prop bet is a
+// LOVE where its proven pieces carry at least `share` of its edge (the trusted share) and its Kelly score sits in
+// [kelly, kellyMax): the threshold and the ceiling picked each month from the bets settled before it alone (the
+// pair whose LOVEs led the LIKEs by the most standard errors in flat return, nMin LOVEs at least, their own return
+// positive and their lead zMin or more); none earned that month: no LOVE. A LOVE stakes loveUnits. With `mid` on
+// (the NBA), a prop LIKE outside the stat bar stakes 1u where its trusted share is past the month's `mid`, else the
+// practice stake, `mid` picked the same way (the prior props' units at each step of mids; 0 the stake as it was,
+// 9 every one at the practice stake). Each piece on only where it beat the rule as it was out of sample (TRIAL: the NHL's
+// LOVE, 22 bets; the NBA's LIKE stakes, its LOVE lost on the current replay, -0.4% against +2.2%); every
+// gate and cap stays on top (a suspect price, a barred stat, D60's bar, a practice pick: a LIKE at the stake they
+// set). Lines stay LIKE: their pieces are almost never proven (D72) and the live desk can't split them.
+export const TRIAL = { nba: { love: false, mid: true }, nhl: { love: true, mid: false } };
+export const TRIAL_OPTS = { shares: [0.3, 0.4, 0.5, 0.6, 0.7, 0.8], kellyMax: [0.02, Infinity], kelly: 0.01, nMin: 30, zMin: 0, loveUnits: 2, mids: [0, 0.2, 0.4, 0.6, 9], minPrior: 200, practice: 0.5 };
+export const trialOn = (sport) => TRIAL[sport] ?? null;
+export const TRIAL_V = 1;
+
+// A bet's trusted share: { te, pieces, edge (the parts' sum: the bet's edge), share (te / edge; 0 where either isn't
+// positive) }
+export function shareOf(attr, rel) {
+  const { te, pieces } = trustedEdge(attr, rel);
+  const edge = Object.values(attr ?? {}).reduce((a, v) => a + (fin(v) ? v : 0), 0);
+  return { te, pieces, edge, share: edge > 0 && te > 0 ? te / edge : 0 };
+}
+const decOf = (o) => (o > 0 ? 1 + o / 100 : 1 + 100 / -o);
+export const flatOf = (b) => (b.res === 'W' ? decOf(b.odds) - 1 : b.res === 'L' ? -1 : 0);
+// (a trial bet: { at, t, market, kelly, share, te, units (its stake as the rules left it), held (a suspect price or a
+// barred stat: never a LOVE, its stake as it is), res, odds })
+export const isLoveBy = (b, r, o = TRIAL_OPTS) => !!r && b.market === 'prop' && !b.held && b.te > 0 && b.share >= r.share && fin(b.kelly) && b.kelly >= o.kelly && b.kelly < (r.kellyMax ?? Infinity);
+export const midUnits = (b, mid, o = TRIAL_OPTS) => (b.market !== 'prop' || b.held || !mid ? b.units : mid >= 9 ? o.practice : b.share >= mid ? 1 : o.practice);
+// (the LOVE rule from bets settled before: the share and ceiling whose LOVEs lead by the most SEs, or null)
+export function chooseLove(prior, o = TRIAL_OPTS) {
+  let best = null;
+  for (const share of o.shares)
+    for (const kellyMax of o.kellyMax) {
+      const r = { share, kellyMax };
+      let n1 = 0;
+      let s1 = 0;
+      let q1 = 0;
+      let n0 = 0;
+      let s0 = 0;
+      let q0 = 0;
+      for (const b of prior) {
+        const f = b.flat ?? flatOf(b);
+        if (isLoveBy(b, r, o)) {
+          n1++;
+          s1 += f;
+          q1 += f * f;
+        } else {
+          n0++;
+          s0 += f;
+          q0 += f * f;
+        }
+      }
+      if (n1 < o.nMin || n0 < o.nMin) continue;
+      const m1 = s1 / n1;
+      const m0 = s0 / n0;
+      const se = Math.sqrt(Math.max(1e-12, (q1 / n1 - m1 * m1) / n1 + (q0 / n0 - m0 * m0) / n0));
+      const z = (m1 - m0) / se;
+      if (m1 > 0 && z >= o.zMin && (!best || z > best.z)) best = { ...r, z: Math.round(z * 100) / 100, n: n1, roi: Math.round(m1 * 1e4) / 1e4, rest: Math.round(m0 * 1e4) / 1e4 };
+    }
+  return best;
+}
+// (the LIKE props' stake step from bets settled before: the mid whose stakes made the most units on them)
+export function chooseMid(prior, r, o = TRIAL_OPTS) {
+  let best = null;
+  for (const mid of o.mids) {
+    let u = 0;
+    for (const b of prior) if (b.market === 'prop' && !b.held && !isLoveBy(b, r, o)) u += midUnits(b, mid, o) * (b.flat ?? flatOf(b));
+    if (!best || u > best.u + 1e-9) best = { mid, u };
+  }
+  return best?.mid ?? 0;
+}
+const settleOf = (b) => b.t + GAME_HOURS * 36e5;
+// The walk: each month's rule from the bets settled before its start (minPrior of them, else none). { at(t), months:
+// [[monthStart, { love, mid }]], final (on every bet: what the live desk reads), opts }
+export function trialWalk(bets, sport, opts = {}) {
+  const o = { ...TRIAL_OPTS, ...opts };
+  const on = o.on ?? trialOn(sport) ?? {};
+  const list = bets.map((b) => ({ ...b, flat: b.flat ?? flatOf(b), done: settleOf(b) })).sort((a, b) => a.done - b.done);
+  const choose = (prior) => {
+    if (prior.length < o.minPrior) return { love: null, mid: 0 };
+    const love = on.love ? chooseLove(prior, o) : null;
+    return { love, mid: on.mid ? chooseMid(prior, love, o) : 0 };
+  };
+  const ats = bets.map((b) => b.at).filter(fin).sort((a, b) => a - b);
+  const months = [];
+  if (ats.length) {
+    let i = 0;
+    for (let m = MONTH(ats[0]); m <= MONTH(ats[ats.length - 1]); m = MONTH(m + 32 * 864e5)) {
+      while (i < list.length && list[i].done < m) i++;
+      months.push([m, choose(list.slice(0, i))]);
+    }
+  }
+  const at = (t) => {
+    let best = { love: null, mid: 0 };
+    for (const [m, c] of months) if (m <= t) best = c;
+    return best;
+  };
+  return { at, months, final: choose(list), opts: o };
+}
+// A bet's band and stake under a month's rule: { band ('high' | 'medium'), units }
+export function trialBand(b, choice, o = TRIAL_OPTS) {
+  if (isLoveBy(b, choice?.love, o)) return { band: 'high', units: o.loveUnits };
+  return { band: 'medium', units: midUnits(b, choice?.mid ?? 0, o) };
+}
+// (the popover's words on a LOVE, drivenBy's pieces: "LOVE (trial): driven by proven pieces: his own rate vs the
+// Book, recent form")
+export const trialWhy = (pieces, cls = 'prop') => `LOVE (trial): driven by proven pieces: ${(pieces ?? []).slice(0, 3).map(([k]) => pieceName(k, cls)).join(', ') || 'none named'}`;
+
+// The file the record writes (apps/<sport>/src/StaticData/model/trusted.json) and the desk reads: the prop pieces'
+// weights at the end of the history and the rule the walk would use next
+export function trialFileOf(sport, trust, walk, { at = new Date().toISOString(), epoch = null, record = null } = {}) {
+  const weights = Object.fromEntries(Object.entries(trust.final.prop ?? {}).filter(([, v]) => v.w > 0).map(([k, v]) => [k, Math.round(v.w * 1e4) / 1e4]));
+  const love = walk.final.love ? { ...walk.final.love, kellyMax: fin(walk.final.love.kellyMax) ? walk.final.love.kellyMax : null } : null;
+  return { v: TRIAL_V, sport, trial: true, at, epoch, on: trialOn(sport), rule: { love, mid: walk.final.mid }, loveUnits: walk.opts.loveUnits, kelly: walk.opts.kelly, weights, record };
+}
+// A live prop's band and stake from the file: bet { market, kelly, parts (its pieces on its side), units, held }.
+// { band, units, share, pieces, why } or null (no file, no parts)
+export function liveTrial(file, bet) {
+  if (!file?.trial || file.v !== TRIAL_V || bet.market !== 'prop' || !bet.parts) return null;
+  const rel = Object.fromEntries(Object.entries(file.weights ?? {}).map(([k, w]) => [k, { w }]));
+  const s = shareOf(bet.parts, rel);
+  const o = { ...TRIAL_OPTS, loveUnits: file.loveUnits ?? TRIAL_OPTS.loveUnits, kelly: file.kelly ?? TRIAL_OPTS.kelly };
+  const love = file.rule?.love ? { ...file.rule.love, kellyMax: file.rule.love.kellyMax ?? Infinity } : null;
+  const { band, units } = trialBand({ ...bet, share: s.share, te: s.te }, { love, mid: file.rule?.mid ?? 0 }, o);
+  return { band, units, share: Math.round(s.share * 1e3) / 1e3, pieces: s.pieces, why: band === 'high' ? trialWhy(s.pieces) : null };
+}
+
+// A live prop's pieces on its side (D73), as the replay splits a close row (gate-history.mjs propAttr and finish):
+// each piece the over's chance less the one with that piece's factor out of his mean, scaled by what the anchor and
+// the trust kept (pCur - f over raw - f), the rest of the gap the base, the residual blend's move the cal; the
+// under's the over's turned. x: { p (the projection), params, mix, line, mu, overAt(line, mu) (project.mjs
+// lineChances' over), raw (the over's own chance), f (the over's fair), pCur (the over's trusted chance before the
+// blend), pFinal (the over's priced chance), side }
+export function liveParts(x) {
+  const clamp = (v) => Math.min(0.999, Math.max(0.001, v));
+  if ((!x?.logParts && (!x?.p || !x.params)) || !fin(x.mu) || !fin(x.raw) || !fin(x.f) || !fin(x.pCur) || !fin(x.pFinal)) return null;
+  const raw = clamp(x.raw);
+  const out = {};
+  let sum = 0;
+  const gap = raw - x.f;
+  const lam = Math.abs(gap) > 1e-4 ? (x.pCur - x.f) / gap : 0;
+  for (const [k, lf] of Object.entries(x.logParts ?? propParts(x.p, x.params))) {
+    if (!fin(lf) || !lf) continue;
+    const q0 = x.overAt(x.line, Math.max(0.05, x.mu / Math.exp(lf)));
+    if (!fin(q0)) continue;
+    out[k] = (raw - q0) * lam;
+    sum += out[k];
+  }
+  out.base = x.pCur - x.f - sum;
+  out.cal = x.pFinal - x.pCur;
+  const s = x.side === 'under' ? -1 : 1;
+  return Object.fromEntries(Object.entries(out).map(([k, v]) => [k, Math.round(s * v * 1e5) / 1e5]));
+}
+
+// (the committed file, apps/<sport>/src/StaticData/model/trusted.json; null where it's missing or another version's)
+export const trustedFile = (sport, root) => path.join(root, 'apps', sport, 'src/StaticData/model/trusted.json');
+export function readTrusted(sport, root) {
+  try {
+    const f = trustedFile(sport, root);
+    if (!existsSync(f)) return null;
+    const m = JSON.parse(readFileSync(f, 'utf8'));
+    return m?.trial && m.v === TRIAL_V ? m : null;
+  } catch {
+    return null;
+  }
+}
+
+// (the live desk's log factors from the bet's own projection (props.mjs projection, the fields writeup.mjs driversOf
+// reads), so props.mjs, a fit file (fitcache.mjs FIT_FILES), is untouched: form, the opponent, the funnel, targets,
+// pace, the script, context and the fit's scale and middle as propParts; role his ramp back from an absence; vacated
+// the rest of his mean against his blended rate (his teammates' work and the same-games step, as propParts' vacated
+// with the role's trend and share steps and the squad's step beside it))
+export function projectionParts(pr) {
+  const A = pr?.applied ?? {};
+  if (!pr || !fin(pr.mean) || !fin(pr.rate) || !(pr.rate > 0) || !fin(A.w)) return null;
+  const recent = fin(pr.recent) ? pr.recent : pr.rate;
+  const blend = (1 - A.w) * pr.rate + A.w * recent;
+  if (!(blend > 0) || !(pr.mean > 0)) return null;
+  const out = {
+    form: lnOf(blend / pr.rate),
+    role: lnOf(pr.back?.ramp ?? 1),
+    opponent: fin(pr.opp) ? (A.a ?? 0) * lnOf(pr.opp) : 0,
+    funnel: lnOf(pr.funnelF),
+    targets: lnOf(pr.tgtF),
+    pace: lnOf(pr.paceF),
+    script: fin(pr.script) ? (A.b ?? 0) * lnOf(pr.script) : 0,
+    context: lnOf(pr.ctxF),
+    fit: lnOf(A.scale ?? 1) + lnOf(pr.slF ?? 1),
+  };
+  const known = Object.entries(out).reduce((a, [k, v]) => (k === 'form' ? a : a + v), 0);
+  out.vacated = Math.log(pr.mean / blend) - known;
+  return out;
+}
+// A live bet's pieces (run.mjs withTrial): bet { side, line, p, pTrust?, fair, projection }, overAt(line, mu) the stat's
+// over chance (project.mjs lineChances at its fit and the projection's early exit)
+export function betParts(bet, overAt) {
+  const pr = bet?.projection;
+  const lf = projectionParts(pr);
+  if (!lf || !fin(pr.pOver) || !fin(bet.fair) || !fin(bet.p) || !fin(bet.line)) return null;
+  const over = bet.side !== 'under';
+  const toOver = (v) => (over ? v : 1 - v);
+  const pFinal = toOver(bet.p);
+  const pCur = fin(bet.pTrust) ? toOver(bet.pTrust) : pFinal;
+  return liveParts({ logParts: lf, mu: pr.mean, line: bet.line, overAt, raw: pr.pOver, f: toOver(bet.fair), pCur, pFinal, side: bet.side });
+}

@@ -16,7 +16,7 @@ import path from 'node:path';
 import { beatBar, summarize } from './replay-record.mjs';
 import { placeTiers, placed, tierOf, tierUnits, walkReasons } from './reasons.mjs';
 import { CLV_RULE, GAME_HOURS, bandBets } from './clv-bands.mjs';
-import { trustBands, walkTrust } from './trusted.mjs';
+import { classOf, shareOf, trialBand, trialWalk, trustBands, walkTrust } from './trusted.mjs';
 
 const ROOT = path.resolve(import.meta.dirname, '../../../..');
 const SPORTS = ['nfl', 'nba', 'nhl', 'mlb', 'mma'];
@@ -64,7 +64,23 @@ export function applyVariant(dump, variant) {
   }
   const mine = bets.filter((b) => b.lab?.before && !b.practice);
   let counts = null;
-  if (variant.mode === 'trusted' && dump.sport !== 'mma' && dump.attrRows) {
+  if (variant.mode === 'trial' && dump.sport !== 'mma' && dump.attrRows) {
+    // (D73's two-band trial: the trusted share of each bet's edge, the LOVE rule and the LIKE props' stake step
+    // picked each month from the bets settled before it (trusted.mjs trialWalk); the sport's TRIAL switches, or the
+    // variant's own on (a test))
+    const walk = trustWalk(dump, variant.trust);
+    const list = mine.map((b) => {
+      const s = shareOf(b.attr, walk.at(b.at, classOf(b.market)));
+      return { t: b.t, at: b.at, market: b.market, kelly: b.kelly, share: s.share, te: s.te, pieces: s.pieces, units: tierUnits(b.units, 'medium'), held: !!(b.lab.suspect || b.lab.barred), res: b.res, odds: b.odds };
+    });
+    const tw = trialWalk(list, dump.sport, { ...(variant.on ? { on: variant.on } : {}), ...(variant.opts ?? {}) });
+    mine.forEach((b, i) => {
+      const { band, units } = trialBand(list[i], tw.at(b.at), tw.opts);
+      b.profit = b.units > 0 ? r2((b.profit * units) / b.units) : 0;
+      Object.assign(b, { units, band, share: Math.round(list[i].share * 1e3) / 1e3, ...(band === 'high' ? { trusted: list[i].pieces.slice(0, 3).map(([k, v]) => [k, Math.round(v * 1e4) / 1e4]) } : {}) });
+    });
+    counts = { lock: 0, high: mine.filter((b) => b.band === 'high').length, medium: mine.filter((b) => b.band === 'medium').length };
+  } else if (variant.mode === 'trusted' && dump.sport !== 'mma' && dump.attrRows) {
     // (D72's trusted edge: each bet's pieces times their reliability walk-forward, the bars on it and the Kelly score;
     // the caps (a suspect price, a barred line or stat: a LIKE at most) as every rule's, unless the variant's caps is
     // false (a diagnostic: does the trusted edge order the results at all))
@@ -208,7 +224,7 @@ async function main() {
     for (const name of names) {
       if (!variants[name]) throw new Error(`no variant ${name} in ${VARIANTS_FILE}`);
       // (a trusted variant (D72) needs the replay's pieces (<sport>-attr.json); MMA's replay has none: not staged there)
-      if (variants[name].mode === 'trusted' && !dump.attrRows) continue;
+      if ((variants[name].mode === 'trusted' || variants[name].mode === 'trial') && !dump.attrRows) continue;
       const lab = labOf(dump, name, variants[name]);
       lab.seasons = args.includes('--seasons');
       console.log(`${tableOf(sport, lab)}\n`);

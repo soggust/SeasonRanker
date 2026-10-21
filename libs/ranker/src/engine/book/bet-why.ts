@@ -55,6 +55,8 @@ export interface BetWhyRow {
   // (the reason tier (picks.json tier, D58): the band its proven reasons give it where the Kelly clears the 2% floor;
   // the reasons in words, with their records)
   tier?: Confidence | null;
+  // (the two-band trial's LOVE Kelly range in place of the 2% floor (picks.json tierKelly, D73))
+  tierKelly?: [number, number | null] | null;
   reasons?: string[];
   // (the news lag's tag (picks.json lag, D66): the popover's "Star out" line)
   lag?: { player: string; first?: string | null; min?: number | null } | null;
@@ -460,8 +462,10 @@ export interface WhatIfBase {
   // at most at every price, the stake the Kelly's)
   most?: Confidence | null;
   unitsCap: number | null;
-  // (the reason tier (D58): at every price the band is the tier where the Kelly clears the 2% floor, else a LIKE)
+  // (the reason tier (D58): at every price the band is the tier where the Kelly clears the 2% floor, else a LIKE;
+  // the two-band trial's range in place of the floor (D73))
   tier?: Confidence | null;
+  tierKelly?: [number, number | null] | null;
   win: number;
   // (the trusted chance's makings, for the caption: the bot's own chance, the book's no-vig, the trust)
   blend: { model: number; fair: number; trust: number } | null;
@@ -487,7 +491,7 @@ export function priceAt(base: WhatIfBase, american: number): PriceAt {
   const kelly = kellyOf(base.p, odds) ?? 0;
   const suspect = isSuspect(base.p, ev);
   let level = confidenceOf(kelly, base.p, base.bet ? true : undefined);
-  if (base.tier === 'lock' || base.tier === 'high' || base.tier === 'medium') level = level === 'low' ? 'low' : kelly >= BANDS.high ? base.tier : 'medium';
+  if (base.tier === 'lock' || base.tier === 'high' || base.tier === 'medium') level = level === 'low' ? 'low' : (base.tierKelly && Number.isFinite(base.tierKelly[0]) ? kelly >= base.tierKelly[0] && (base.tierKelly[1] === null || kelly < base.tierKelly[1]) : kelly >= BANDS.high) ? base.tier : 'medium';
   // (a rule's LIKE, held; the desk's cap and the sanity guard's: a LIKE at most; the confidence layer's LOVE at most)
   if (base.cap === 'medium' || ((suspect || base.most === 'medium') && (level === 'lock' || level === 'high'))) level = 'medium';
   else if (base.most === 'high' && level === 'lock') level = 'high';
@@ -559,7 +563,7 @@ export function whatIfOf(r: BetWhyRow, placed = true): WhatIfBase | null {
   const plain = p * decimalOf(odds) - 1;
   const ratio = Number.isFinite(r.ev) && Math.abs(plain) > 1e-3 ? r.ev! / plain : 1;
   const win = ratio > 0.5 && ratio <= 1 + 1e-6 ? Math.min(1, ratio) : 1;
-  const base: WhatIfBase = { odds, p, bet, cap: null, unitsCap: null, win, blend: null, ...(bet && (r.tier === 'lock' || r.tier === 'high' || r.tier === 'medium') ? { tier: r.tier } : {}) };
+  const base: WhatIfBase = { odds, p, bet, cap: null, unitsCap: null, win, blend: null, ...(bet && (r.tier === 'lock' || r.tier === 'high' || r.tier === 'medium') ? { tier: r.tier, ...(r.tierKelly ? { tierKelly: r.tierKelly } : {}) } : {}) };
   const at = priceAt(base, odds);
   // (a LIKE the score doesn't make: a practice, role or research pick's, held there at every price)
   // (and a placed bet the desk capped (picks.json cap 'medium': a rule's or the confidence layer's, D52): its band held

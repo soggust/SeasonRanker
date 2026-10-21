@@ -70,6 +70,8 @@ export interface BetRow {
   // (the reason tier (picks.json tier, DECISIONS.md D58): the band its proven reasons give it where the Kelly clears
   // the 2% floor, and those reasons with their records (the popover lists them))
   tier?: Confidence | null;
+  // (the two-band trial's LOVE Kelly range in place of the 2% floor (picks.json tierKelly, D73): [from, to), to null for none)
+  tierKelly?: [number, number | null] | null;
   reasons?: string[];
   // (the news lag's tag (picks.json lag, DECISIONS.md D66): the star out and when the desk first saw the news)
   lag?: NewsLag | null;
@@ -208,6 +210,8 @@ export interface Pick {
   conf?: { pc: number; q: number; cap: BandCap | null };
   // (the reason tier (D58): the band its proven reasons give it before the Kelly floor and the caps; the reasons in words)
   tier?: Confidence | null;
+  // (the two-band trial's LOVE Kelly range in place of the 2% floor (picks.json tierKelly, D73): [from, to), to null for none)
+  tierKelly?: [number, number | null] | null;
   reasons?: string[];
   lag?: NewsLag | null;
   // (when the Bot placed it: files that don't carry it, none)
@@ -292,10 +296,12 @@ export function pickKey(sport: string, matchup: string, kind: BetKind, pick: str
 export const isTier = (t: unknown): t is Confidence => t === 'lock' || t === 'high' || t === 'medium';
 // (a Kelly band read by the reason tier (D58, picks.mjs levelOf): a PASS as it is; the tier where the Kelly clears the
 // owner's 2% LOVE floor, else a LIKE; no tier, the Kelly's own)
-export function tierBand(band: Confidence, kelly: number, tier: Confidence | null | undefined): Confidence {
+export function tierBand(band: Confidence, kelly: number, tier: Confidence | null | undefined, range?: [number, number | null] | null): Confidence {
   if (!isTier(tier) || band === 'low' || band === 'check') return band;
-  return kelly >= BANDS.high ? tier : 'medium';
+  return tierClears(kelly, range) ? tier : 'medium';
 }
+// (the Kelly the tier needs: the owner's 2% LOVE floor, or the two-band trial's range (D73))
+export const tierClears = (kelly: number, range?: [number, number | null] | null): boolean => (range && Number.isFinite(range[0]) ? kelly >= range[0] && (range[1] === null || kelly < range[1]) : kelly >= BANDS.high);
 function cappedBand(band: Confidence, p: Pick): Confidence {
   const held = heldTo(band, p.cap === 'medium' || p.cap === 'high' ? p.cap : null);
   return isSuspect(p.p ?? (p.chance != null ? p.chance / 100 : null), p.ev) ? heldTo(held, 'medium') : held;
@@ -321,9 +327,9 @@ export function rowOf(sport: string, p: Pick, check: boolean): BetRow {
     // tier cap, D52), as picks.mjs levelOf gave it; a file before the cap: a suspect price (an edge past the bar, bet-why.ts isSuspect, D23)
     // a LIKE at most the same)
     // (a reason tier (D58): the tier where the Kelly clears the 2% floor, else a LIKE; a PASS where there's no edge)
-    confidence: p.practice ? 'medium' : cappedBand(tierBand(confidenceOf(sureness, p.p ?? (p.chance != null ? p.chance / 100 : null), p.edge), sureness, p.tier), p),
+    confidence: p.practice ? 'medium' : cappedBand(tierBand(confidenceOf(sureness, p.p ?? (p.chance != null ? p.chance / 100 : null), p.edge), sureness, p.tier, p.tierKelly), p),
     ...(p.practice ? { practice: true } : {}),
-    ...(isTier(p.tier) ? { tier: p.tier } : {}),
+    ...(isTier(p.tier) ? { tier: p.tier, ...(p.tierKelly ? { tierKelly: p.tierKelly } : {}) } : {}),
     ...(Array.isArray(p.reasons) && p.reasons.length ? { reasons: p.reasons.slice(0, 4) } : {}),
     ...(p.lag?.player ? { lag: p.lag } : {}),
     ...(p.cap === 'medium' || p.cap === 'high' ? { cap: p.cap } : {}),

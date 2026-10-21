@@ -52,33 +52,14 @@ import { extendedGames, historyPropIndex, intradayLines, lineHistoryRows, loadHi
 import { OFFSETS as INTRA_OFFSETS, readIntraday } from './intraday.mjs';
 import { readDeep } from './deep-history.mjs';
 import { MARKETS as MMA_MARKETS, scoreMma } from './gate-mma.mjs';
+import { propParts } from './trusted.mjs';
 
 const ROOT = path.resolve(import.meta.dirname, '../../../..');
 const MODEL = path.join(ROOT, 'libs/ranker/scripts/model');
 const GATE = path.join(ROOT, '.cache/gate');
-// (research only (REPLAY_ATTR, DECISIONS.md D72): a prop projection's pieces as log factors on its mean (project.mjs
-// projection's own parts, as writeup.mjs driversOf reads them): form (his recent games' weight against his season
-// rate), role (the trend, ramp and share steps), vacated (teammates' work left or taken back), opponent, funnel,
-// targets, pace, script, context, and the fit's scale and middle; the rest (his own rate against the Book) is the base)
-const lnOf = (v) => (Number.isFinite(v) && v > 0 ? Math.log(v) : 0);
-export function propParts(p, P) {
-  if (!p || !P) return {};
-  const blend = Number.isFinite(p.rate) && Number.isFinite(p.recent) && Number.isFinite(P.w) ? (1 - P.w) * p.rate + P.w * p.recent : null;
-  const role = (Number.isFinite(p.trendF) ? p.trendF : 1) * (Number.isFinite(p.ramp) ? p.ramp : 1) * (Number.isFinite(p.sp?.f) ? p.sp.f : 1);
-  const base0 = blend !== null ? role * blend : null;
-  return {
-    form: blend !== null && p.rate > 0 ? lnOf(blend / p.rate) : 0,
-    role: lnOf(role),
-    vacated: lnOf(p.vacF) + (base0 > 0 && p.base > 0 ? Math.log(p.base / base0) : 0),
-    opponent: Number.isFinite(p.opp) ? (p.oppA ?? P.a ?? 0) * lnOf(p.opp) : 0,
-    funnel: lnOf(p.funnelF),
-    targets: lnOf(p.tgtF),
-    pace: lnOf(p.paceF),
-    script: Number.isFinite(p.script) ? (P.b ?? 0) * lnOf(p.script) : 0,
-    context: lnOf(p.ctxF),
-    fit: lnOf(P.scale ?? 1) + lnOf(p.slF),
-  };
-}
+// (a prop projection's pieces as log factors on its mean (D72's research; D73's trial on the record and the desk):
+// trusted.mjs propParts, here as before)
+export { propParts };
 // (MMA since 2026-10-19: the fights league scored by gate-mma.mjs on the archive and its priced history)
 export const SPORTS = ['nfl', 'nhl', 'nba', 'mlb', 'mma'];
 export const ROLLING_DAYS = 28;
@@ -349,7 +330,7 @@ export async function scoreVersion(dir, sport, { refit = false, propsLayer = tru
   // (lineupRisk: the lineup risk's fit on the history's opens against their closes (lineup-risk.mjs, D42); none before it)
   // (picks, replay: the bands (picks.mjs edgeLevel) and the replayed record (replay-record.mjs, the Bot's history);
   // a version from before them has no replayed record)
-  for (const n of ['leagues', 'ratings', 'context', 'margins', 'backtest', 'desk', 'props', 'project', 'correct', 'anchor', 'lineup-risk', 'picks', 'replay-record', 'confidence', 'reasons', 'clv-bands', 'windows']) V[n === 'lineup-risk' ? 'lineupRisk' : n === 'replay-record' ? 'replay' : n === 'clv-bands' ? 'clvBands' : n] = await load(dir, n);
+  for (const n of ['leagues', 'ratings', 'context', 'margins', 'backtest', 'desk', 'props', 'project', 'correct', 'anchor', 'lineup-risk', 'picks', 'replay-record', 'confidence', 'reasons', 'clv-bands', 'windows', 'trusted']) V[n === 'lineup-risk' ? 'lineupRisk' : n === 'replay-record' ? 'replay' : n === 'clv-bands' ? 'clvBands' : n] = await load(dir, n);
   // (the loaders: this checkout's, so both versions read the same history)
   const H = { context: await import('./context.mjs'), logs: await import('./playerlogs.mjs'), props: await import('./props.mjs'), fitcache: await import('./fitcache.mjs'), espn: await import('./espn.mjs') };
   const cfg = V.leagues.LEAGUES[sport];
@@ -570,7 +551,7 @@ export async function scoreVersion(dir, sport, { refit = false, propsLayer = tru
             const mix = V.project.exitMix(f.params, x.p);
             if (histIndex.size && x.row.name && x.row.game && histIndex.has(`${st.key}|${H.espn.nameKey(x.row.name)}|${x.row.game}`)) {
               const mu = x.p.mu;
-              histMatches.push({ stat: st.key, name: x.row.name, game: String(x.row.game), pid: String(x.row.pid), v: x.v, home: x.row.home ?? null, mu, params: f.params, mix, over: (line) => V.project.lineChances(line, mu, f.params, mix).over, ...(process.env.REPLAY_ATTR === '1' ? { parts: propParts(x.p, f.params), overMu: (line, m2) => V.project.lineChances(line, Math.max(0.05, m2), f.params, mix).over } : {}) });
+              histMatches.push({ stat: st.key, name: x.row.name, game: String(x.row.game), pid: String(x.row.pid), v: x.v, home: x.row.home ?? null, mu, params: f.params, mix, over: (line) => V.project.lineChances(line, mu, f.params, mix).over, ...(process.env.REPLAY_ATTR === '1' || V.trusted?.trialOn?.(sport) ? { parts: propParts(x.p, f.params), overMu: (line, m2) => V.project.lineChances(line, Math.max(0.05, m2), f.params, mix).over } : {}) });
             }
             const ll = -V.project.chanceLog(x.v, x.p.mu, f.params, mix);
             if (fin(ll) && (!elig || x.row.eligible !== false)) {
@@ -695,6 +676,8 @@ export async function scoreVersion(dir, sport, { refit = false, propsLayer = tru
     confidence,
     // (the reason tiers (D58, reasons.mjs): the file --record writes, from the replay's walk)
     reasons: replay?.reasonsFile ?? null,
+    // (the two-band trial (D73, trusted.mjs): the file --record writes, from the replay's walk)
+    trusted: replay?.trustedFile ?? null,
     meta: { practiceN, practiceUnits: V.desk.PRACTICE_UNITS ?? 0.5, trust, sigma: params.sigma, sigmaT: params.sigmaT, matched: replayM.size, priced: mineProps.length },
     // (the record's input fingerprint (inputsOf): what --record checks before it writes, and writes beside the record)
     inputs: inputsOf({ dir, sport, V, H, history, facts: hadFacts ? facts : null, ctxFit, gatherTimes, rowSeasons, backtest: bt.filter((b) => b.anchor === 'pinnacle').length, state, replay, propsLayer }),
@@ -974,7 +957,7 @@ function recordScore(version, sport, score, frozen, inputs = null) {
   // history before its epoch; picks.mjs merges it with the live ledger since. A version without it leaves the file)
   if (score.replay) {
     const out = path.join(ROOT, 'apps', sport, 'src/StaticData/model/replay-record.json');
-    writeFileSync(out, `${JSON.stringify({ ...score.replay, reasonsFile: undefined, commit: entry.commit, note: decisionNote(), ...(inputs ? { inputs } : {}) }, null, 1)}\n`);
+    writeFileSync(out, `${JSON.stringify({ ...score.replay, reasonsFile: undefined, trustedFile: undefined, commit: entry.commit, note: decisionNote(), ...(inputs ? { inputs } : {}) }, null, 1)}\n`);
     const r = score.replay;
     console.log(`${sport}: the replayed record written (${path.relative(ROOT, out)}): ${r.overall.won}-${r.overall.lost}-${r.overall.push} ${r.overall.profit >= 0 ? '+' : ''}${r.overall.profit}u on ${r.n.bets} bets through ${r.through?.slice(0, 10) ?? '-'} (${r.flags.timing.open} at a clean open, ${r.flags.timing.close} at the close; full context ${r.flags.context.full.join(', ') || 'none'}; ratings only ${r.flags.context.ratingsOnly.join(', ') || 'none'})`);
   }
@@ -994,6 +977,14 @@ function recordScore(version, sport, score, frozen, inputs = null) {
     writeFileSync(out, `${JSON.stringify({ ...score.reasons, epoch: score.epoch, commit: entry.commit }, null, 1)}\n`);
     const on = Object.entries(score.reasons.markets).flatMap(([m, rs]) => Object.entries(rs).filter(([, v]) => v.on).map(([id, v]) => `${m} ${id}${v.strong ? ' (strong)' : ''} ${v.roi >= 0 ? '+' : ''}${r4(v.roi * 100)}% on ${v.n}`));
     console.log(`${sport}: the reason tiers written (${path.relative(ROOT, out)}): LOVE ${score.reasons.place?.love ? 'shown' : 'held'}, LOCK ${score.reasons.place?.lock ? 'shown' : 'held'}; proven: ${on.length ? on.join(', ') : 'none'}`);
+  }
+  // (the two-band trial (D73): the prop pieces' weights and the walk's next rule, what the live desk reads (run.mjs
+  // readTrusted), apps/<sport>/src/StaticData/model/trusted.json; a sport outside the trial leaves it as it is)
+  if (score.trusted?.trial) {
+    const out = path.join(ROOT, 'apps', sport, 'src/StaticData/model/trusted.json');
+    writeFileSync(out, `${JSON.stringify({ ...score.trusted, commit: entry.commit }, null, 1)}\n`);
+    const L = score.trusted.rule?.love;
+    console.log(`${sport}: the two-band trial written (${path.relative(ROOT, out)}): LOVE ${L ? `share ${L.share}+, Kelly ${score.trusted.kelly} to ${L.kellyMax ?? 'any'} (${L.n} prior LOVEs, z ${L.z})` : 'not earned now'}, LIKE props' step ${score.trusted.rule?.mid}; pieces ${Object.keys(score.trusted.weights).join(', ')}`);
   }
   // (the confidence layer (D52): the quality model fit on the priced history, its blend weight and its tiers, what the
   // live desk reads (confidence.mjs loadModel), apps/<sport>/src/StaticData/model/confidence.json)

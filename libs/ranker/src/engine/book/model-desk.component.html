@@ -201,7 +201,7 @@
         <div class="group-body">
           <table class="desk-table desk-history-table">
             <thead>
-              <tr><th></th><th title="The band's share of the LOCK, LOVE and LIKE bets: most should be LIKE, fewer LOVE, fewest LOCK">Share</th><th [title]="help['historyRecord']">Record</th><th [title]="help['historyProfit']">Units</th><th [title]="help['roi']">ROI</th><th [title]="help['historyBeat']">Beat close</th></tr>
+              <tr><th></th><th title="The band's share of the bets: most should be LIKE, fewer LOVE (LOCK is off while the two-band trial runs)">Share</th><th [title]="help['historyRecord']">Record</th><th [title]="help['historyProfit']">Units</th><th [title]="help['roi']">ROI</th><th [title]="help['historyBeat']">Beat close</th></tr>
             </thead>
             <tbody>
               @for (t of bandRows; track t.label) {

@@ -86,6 +86,8 @@ test('D72 held: the live rule stays clv-results; every staged variant has a read
     const src = fs.readFileSync(path.resolve('libs/ranker/scripts/model', f), 'utf8');
     assert.ok(src.includes("process.env.REPLAY_ATTR === '1'"), f);
   }
-  // (the desk never reads the trusted bands)
-  for (const f of ['run.mjs', 'desk.mjs', 'reasons.mjs', 'clv-bands.mjs']) assert.ok(!fs.readFileSync(path.resolve('libs/ranker/scripts/model', f), 'utf8').includes('trusted.mjs'), f);
+  // (D72's research bands stay off the desk; D73's trial is the one way the desk reads the module: liveTrial, readTrusted)
+  for (const f of ['desk.mjs', 'reasons.mjs', 'clv-bands.mjs']) assert.ok(!fs.readFileSync(path.resolve('libs/ranker/scripts/model', f), 'utf8').includes('trusted.mjs'), f);
+  const run = fs.readFileSync(path.resolve('libs/ranker/scripts/model/run.mjs'), 'utf8');
+  assert.ok(run.includes("import { betParts, liveTrial, readTrusted, trialOn } from './trusted.mjs';") && !run.includes('trustBands'));
 });

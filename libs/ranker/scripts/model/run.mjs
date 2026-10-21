@@ -132,6 +132,7 @@ import { CAL_CAP, CAL_STEP, calibText, fitCalib } from './calib.mjs';
 import { anchorText, readAnchor } from './anchor.mjs';
 import { loadModel as readConfidence, qualityOf, unitsOf } from './confidence.mjs';
 import { contextOf as reasonContext, liveTier, liveVerdicts, readReasons, reasonsFor, tierUnits } from './reasons.mjs';
+import { betParts, liveTrial, readTrusted, trialOn } from './trusted.mjs';
 import { isClvFile, liveMerged } from './clv-bands.mjs';
 import { LAG_SPORTS, lagFile, lagPending, lagPrune, lagTag, lagUpdate, readLag } from './news-lag.mjs';
 import { ledgerRisk, readLineupRisk, riskAt, riskChance, riskText } from './lineup-risk.mjs';
@@ -150,7 +151,7 @@ import { boardMarkets, boardProp, buildBoard, seenUpdate, termParts } from './bo
 import { boxMarket, boxTotals, playerRows } from './playerlogs.mjs';
 import { nflPlayChance, nflPractice, playAt, playChanceSummary } from './playchance.mjs';
 import { boardMissText, nflBoardMiss } from './board-miss.mjs';
-import { ROUND_C } from './project.mjs';
+import { ROUND_C, lineChances } from './project.mjs';
 import { ANY_KEY, ANY_LABEL, ANY_LINE, anytimePlacement, priceAnytime, trackOnly } from './anytime.mjs';
 import { API_MARKETS, PER_GAME, PROP_WAIT, ROLE, STATS, apiProps, board, fitProps, marketPts, nameKey, nflListed, nflMarket, nflTookSnap, priceProps, readDepth, depthQbChangeOf, roleGateOf, rowsIndex, settleProp, statInFinal, statRows, withApiPrices } from './props.mjs';
 import { CACHE, DAY, etDay, get, isoSecond, nflverseGames, readJson, writeAtomic, writeJson } from './sources.mjs';
@@ -1386,6 +1387,10 @@ function refitCalib(r) {
   // (the reason tiers (reasons.mjs, DECISIONS.md D58): each market's proven reasons and the tiers' place, read from
   // the committed file the gate records on the replayed record (reasons.json), never fit here)
   r.reasons = readReasons(sport, ROOT);
+  // (the two-band trial (trusted.mjs, DECISIONS.md D73): the prop pieces' weights and the LOVE rule, read from the
+  // committed file the gate records on the replayed record (trusted.json), never fit here; a sport outside the trial: none)
+  r.trusted = trialOn(sport) ? readTrusted(sport, ROOT) : null;
+  if (trialOn(sport)) console.log(`${sport}: the two-band trial (D73): ${r.trusted ? `LOVE ${r.trusted.rule?.love ? `on a trusted share of ${r.trusted.rule.love.share}+ at a Kelly score of ${r.trusted.kelly} to ${r.trusted.rule.love.kellyMax ?? 'any'}` : 'not earned now'}, LIKE props' step ${r.trusted.rule?.mid ?? 0}` : 'no trusted.json: every bet a LIKE'}`);
   // (the live-only reasons' verdicts (D66: the news lag) from the live ledger's own graded bets, the same bar)
   r.liveReasons = isClvFile(r.reasons) ? liveMerged(r.reasons, livePicksOf(r.ledger?.bets ?? [], sport)) : liveVerdicts(r.ledger?.bets ?? [], sport);
   if (r.reasons) {
@@ -2938,7 +2943,36 @@ function practicePicks(r, candidates) {
 // x: { otherOdds (a game side's other side's price), trust (the market's) }
 function withConfidence(r, bet, x = {}) {
   withQuality(r, bet, x);
-  return withTier(r, bet, x);
+  return withTrial(r, withTier(r, bet, x));
+}
+// The two-band trial on a bet (trusted.mjs liveTrial, DECISIONS.md D73), in a trial sport only: LIKE or LOVE, no LOCK.
+// A priced edge prop with its pieces (props.mjs liveParts) is a LOVE where the file's rule says (its proven pieces'
+// share of its edge, its Kelly score in the rule's range), staked the file's LOVE stake; else a LIKE, a plain one
+// staked by its trusted share where the file's step says (the NBA); its tier and the pieces that drove it on
+// bet.conf (the popover: "LOVE (trial): driven by proven pieces: ..."). A line, or a prop without pieces, a LIKE at
+// its stake (held to 1u). A bet a rule holds (a gate, a suspect price, a practice, role or research pick) a LIKE at
+// the stake the rule set: the gates shrink, never stop (D1)
+// (the bet's pieces from its own projection, at its stat's fit and early exit (trusted.mjs betParts))
+function trialPartsOf(r, bet) {
+  const params = r.props?.[bet.propType]?.params;
+  if (!params || !bet.projection || bet.corrected) return null;
+  const mix = bet.projection.exit && Number.isFinite(bet.projection.exit.q) ? { q: bet.projection.exit.q, f: bet.projection.exit.f } : null;
+  try {
+    return betParts(bet, (line, mu) => lineChances(line, mu, params, mix).over);
+  } catch {
+    return null;
+  }
+}
+function withTrial(r, bet) {
+  if (!trialOn(r.sport) || bet.intent !== 'edge' || bet.oddsAssumed || !Number.isFinite(bet.p) || !Number.isFinite(bet.odds)) return bet;
+  const plain = !bet.practice && !bet.suspect && !bet.topN && !bet.researchBet && !bet.researchAdjusted && !bet.context?.guard && !bet.context?.roleBet;
+  const lt = r.trusted && bet.market === 'prop' ? liveTrial(r.trusted, { market: 'prop', kelly: stakeKelly(bet.odds, bet.p), parts: trialPartsOf(r, bet), units: Number.isFinite(bet.units) ? tierUnits(bet.units, 'medium') : bet.units, held: !plain }) : null;
+  const band = lt?.band ?? 'medium';
+  bet.conf = { ...(bet.conf ?? {}), tier: band, trial: { v: r.trusted?.v ?? null, ...(lt ? { share: lt.share, kelly: [r.trusted.kelly, r.trusted.rule?.love?.kellyMax ?? null], pieces: lt.pieces.slice(0, 3).map(([k]) => k) } : {}) } };
+  if (lt?.why) bet.conf.reasons = [lt.why];
+  else delete bet.conf.reasons;
+  if (plain && Number.isFinite(bet.units)) bet.units = Math.max(PRACTICE_UNITS, lt ? lt.units : tierUnits(bet.units, 'medium'));
+  return bet;
 }
 function withQuality(r, bet, x = {}) {
   const m = r.confidence;

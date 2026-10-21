@@ -2,7 +2,7 @@
  "v": 1,
  "sport": "nfl",
  "epoch": "2026-10-20T05:45:00Z",
- "at": "2026-10-20T20:55:10.939Z",
+ "at": "2026-10-21T00:25:14.180Z",
  "from": "2020-09-11T00:20:00.000Z",
  "through": "2026-10-19T00:23:00.000Z",
  "n": {
@@ -1885,17 +1885,17 @@
   "split": "games that start before the epoch replayed; the live ledger from the epoch on",
   "notSeen": "the live desk's CLV gates, CHECKs, research and news"
  },
- "commit": "2d40b7ff",
- "note": "D71. The NFL's lines bet earlier: D63's windows read the deep history's dense NFL lines (2020 on), and the walk keeps the close (no hour earned)",
+ "commit": "0ce1042a",
+ "note": "D72. The trusted-edge bands (the owner's idea): a bet's edge split into the model's pieces, each piece trusted only on its walk-forward record; measured, staged, none shipped",
  "inputs": {
   "v": 1,
   "sport": "nfl",
   "code": {
    "props": "87335d02c0eb",
-   "games": "9c08190c0c31",
-   "pricing": "3ecedb70ec72",
-   "record": "ea4785ab8041",
-   "harness": "a1ecdddd4d8e",
+   "games": "f7ceeab65d73",
+   "pricing": "3a257b170812",
+   "record": "186c85dbb8d3",
+   "harness": "719b57606541",
    "residual": "d3cd8edb82cf945d"
   },
   "fit": {
@@ -2046,6 +2046,6 @@
     "want": 55
    }
   },
-  "hash": "b795730cd8b4d8f0"
+  "hash": "8558e17ee987213c"
  }
 }
