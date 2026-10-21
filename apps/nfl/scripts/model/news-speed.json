@@ -2928,6 +2928,30 @@
     "seen": "2026-10-21T17:24:42.280Z",
     "own": "2026-10-21T17:22:00.000Z"
    }
+  },
+  "401873010|adonaimitchell|q": {
+   "game": "401873010",
+   "start": "2026-10-23T00:15Z",
+   "team": "3",
+   "name": "Adonai Mitchell",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-10-21T17:42:17.133Z",
+    "own": "2026-10-21T17:15:55.000Z",
+    "why": "@rotoworld-fb.bsky.social: Adonai Mitchell (finger) returns to practice"
+   }
+  },
+  "401873010|mayfield|q": {
+   "game": "401873010",
+   "start": "2026-10-23T00:15Z",
+   "team": "3",
+   "name": "Mayfield",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-10-21T17:42:17.133Z",
+    "own": "2026-10-21T17:25:07.000Z",
+    "why": "@rotoworld-fb.bsky.social: Mayfield (thumb) returns to practice on Wednesday"
+   }
   }
  }
 }
