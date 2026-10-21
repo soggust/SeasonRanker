@@ -3653,6 +3653,66 @@
     "seen": "2026-10-21T21:07:43.187Z",
     "own": "2026-10-21T02:51:00.000Z"
    }
+  },
+  "401873010|golden|q": {
+   "game": "401873010",
+   "start": "2026-10-23T00:15Z",
+   "team": "3",
+   "name": "Golden",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-10-21T21:10:26.919Z",
+    "own": "2026-10-21T20:28:39.000Z",
+    "why": "@rotoworld-fb.bsky.social: Golden (shoulder) and Watson (ankle) listed as LPs"
+   }
+  },
+  "401873010|watson|q": {
+   "game": "401873010",
+   "start": "2026-10-23T00:15Z",
+   "team": "3",
+   "name": "Watson",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-10-21T21:10:26.919Z",
+    "own": "2026-10-21T20:28:39.000Z",
+    "why": "@rotoworld-fb.bsky.social: Golden (shoulder) and Watson (ankle) listed as LPs"
+   }
+  },
+  "401873010|calebdouglas|q": {
+   "game": "401873010",
+   "start": "2026-10-23T00:15Z",
+   "team": "3",
+   "name": "Caleb Douglas",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-10-21T21:10:26.919Z",
+    "own": "2026-10-21T20:46:15.000Z",
+    "why": "@rotoworld-fb.bsky.social: Caleb Douglas (ankle) limited, day-to-day in W7"
+   }
+  },
+  "401873019|jonahelliss|out": {
+   "game": "401873019",
+   "start": "2026-10-25T20:05Z",
+   "team": "7",
+   "name": "Jonah Elliss",
+   "status": "out",
+   "athlete": "4687592",
+   "espn": {
+    "seen": "2026-10-21T21:23:46.733Z",
+    "own": "2026-10-21T21:20:00.000Z"
+   }
+  },
+  "401873019|patsurtain|q": {
+   "game": "401873019",
+   "start": "2026-10-25T20:05Z",
+   "team": "7",
+   "name": "Pat Surtain II",
+   "status": "q",
+   "athlete": "4372012",
+   "espn": {
+    "seen": "2026-10-21T21:23:46.733Z",
+    "own": "2026-10-21T21:11:00.000Z"
+   }
   }
  }
 }
