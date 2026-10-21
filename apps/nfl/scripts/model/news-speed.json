@@ -3305,6 +3305,198 @@
     "seen": "2026-10-21T20:10:38.879Z",
     "own": "2026-10-21T19:56:00.000Z"
    }
+  },
+  "401873010|quinshonjudkins|q": {
+   "game": "401873010",
+   "start": "2026-10-23T00:15Z",
+   "team": "3",
+   "name": "Quinshon Judkins",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-10-21T20:14:55.995Z",
+    "own": "2026-10-21T20:07:59.000Z",
+    "why": "@rotowirenfl.bsky.social: Quinshon Judkins: Limited in Wednesday's practice \n\n h"
+   }
+  },
+  "401873010|denzelboston|q": {
+   "game": "401873010",
+   "start": "2026-10-23T00:15Z",
+   "team": "3",
+   "name": "Denzel Boston",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-10-21T20:14:55.995Z",
+    "own": "2026-10-21T20:13:00.000Z",
+    "why": "@rotowirenfl.bsky.social: Denzel Boston: Limited by foot issue \n\n https://www.ro"
+   }
+  },
+  "401873013|elgtonjenkins|q": {
+   "game": "401873013",
+   "start": "2026-10-25T17:00Z",
+   "team": "5",
+   "name": "Elgton Jenkins",
+   "status": "q",
+   "athlete": "3115485",
+   "espn": {
+    "seen": "2026-10-21T20:25:50.608Z",
+    "own": "2026-10-21T20:05:00.000Z"
+   }
+  },
+  "401873015|tvondresweat|q": {
+   "game": "401873015",
+   "start": "2026-10-25T17:00Z",
+   "team": "20",
+   "name": "T'Vondre Sweat",
+   "status": "q",
+   "athlete": "4428617",
+   "espn": {
+    "seen": "2026-10-21T20:25:50.608Z",
+    "own": "2026-10-21T20:18:00.000Z"
+   }
+  },
+  "401873015|willmcdonald|q": {
+   "game": "401873015",
+   "start": "2026-10-25T17:00Z",
+   "team": "20",
+   "name": "Will McDonald IV",
+   "status": "q",
+   "athlete": "4361767",
+   "espn": {
+    "seen": "2026-10-21T20:25:50.608Z",
+    "own": "2026-10-21T20:18:00.000Z"
+   }
+  },
+  "401873015|kenenwangwu|q": {
+   "game": "401873015",
+   "start": "2026-10-25T17:00Z",
+   "team": "20",
+   "name": "Kene Nwangwu",
+   "status": "q",
+   "athlete": "4035537",
+   "espn": {
+    "seen": "2026-10-21T20:25:50.608Z",
+    "own": "2026-10-21T20:17:00.000Z"
+   }
+  },
+  "401873016|andrewthomas|q": {
+   "game": "401873016",
+   "start": "2026-10-25T17:00Z",
+   "team": "19",
+   "name": "Andrew Thomas",
+   "status": "q",
+   "athlete": "4259566",
+   "espn": {
+    "seen": "2026-10-21T20:25:50.608Z",
+    "own": "2026-10-21T20:15:00.000Z"
+   }
+  },
+  "401873016|marcusmbow|q": {
+   "game": "401873016",
+   "start": "2026-10-25T17:00Z",
+   "team": "19",
+   "name": "Marcus Mbow",
+   "status": "q",
+   "athlete": "4686362",
+   "espn": {
+    "seen": "2026-10-21T20:25:50.608Z",
+    "own": "2026-10-21T20:15:00.000Z"
+   }
+  },
+  "401873016|jevonholland|q": {
+   "game": "401873016",
+   "start": "2026-10-25T17:00Z",
+   "team": "19",
+   "name": "Jevon Holland",
+   "status": "q",
+   "athlete": "4373809",
+   "espn": {
+    "seen": "2026-10-21T20:25:50.608Z",
+    "own": "2026-10-21T20:14:00.000Z"
+   }
+  },
+  "401873020|jordanlove|q": {
+   "game": "401873020",
+   "start": "2026-10-25T20:25Z",
+   "team": "9",
+   "name": "Jordan Love",
+   "status": "q",
+   "athlete": "4036378",
+   "espn": {
+    "seen": "2026-10-21T20:25:50.608Z",
+    "own": "2026-10-21T20:13:00.000Z"
+   }
+  },
+  "401873020|bomelton|q": {
+   "game": "401873020",
+   "start": "2026-10-25T20:25Z",
+   "team": "9",
+   "name": "Bo Melton",
+   "status": "q",
+   "athlete": "4259305",
+   "espn": {
+    "seen": "2026-10-21T20:25:50.608Z",
+    "own": "2026-10-21T20:11:00.000Z"
+   }
+  },
+  "401873020|anthonycampbell|q": {
+   "game": "401873020",
+   "start": "2026-10-25T20:25Z",
+   "team": "9",
+   "name": "Anthony Campbell",
+   "status": "q",
+   "athlete": "4887255",
+   "espn": {
+    "seen": "2026-10-21T20:25:50.608Z",
+    "own": "2026-10-21T20:11:00.000Z"
+   }
+  },
+  "401873020|brandoncisse|q": {
+   "game": "401873020",
+   "start": "2026-10-25T20:25Z",
+   "team": "9",
+   "name": "Brandon Cisse",
+   "status": "q",
+   "athlete": "5076652",
+   "espn": {
+    "seen": "2026-10-21T20:25:50.608Z",
+    "own": "2026-10-21T20:11:00.000Z"
+   }
+  },
+  "401873020|savionwilliams|q": {
+   "game": "401873020",
+   "start": "2026-10-25T20:25Z",
+   "team": "9",
+   "name": "Savion Williams",
+   "status": "q",
+   "athlete": "4431487",
+   "espn": {
+    "seen": "2026-10-21T20:25:50.608Z",
+    "own": "2026-10-21T20:10:00.000Z"
+   }
+  },
+  "401873020|christianwatson|q": {
+   "game": "401873020",
+   "start": "2026-10-25T20:25Z",
+   "team": "9",
+   "name": "Christian Watson",
+   "status": "q",
+   "athlete": "4248528",
+   "espn": {
+    "seen": "2026-10-21T20:25:50.608Z",
+    "own": "2026-10-21T20:08:00.000Z"
+   }
+  },
+  "401873020|matthewgolden|q": {
+   "game": "401873020",
+   "start": "2026-10-25T20:25Z",
+   "team": "9",
+   "name": "Matthew Golden",
+   "status": "q",
+   "athlete": "4701936",
+   "espn": {
+    "seen": "2026-10-21T20:25:50.608Z",
+    "own": "2026-10-21T20:08:00.000Z"
+   }
   }
  }
 }

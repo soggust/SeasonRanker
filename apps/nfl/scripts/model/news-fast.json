@@ -6,8 +6,8 @@
   "nflnewsreposterbot.bsky.social": "2026-10-20T20:30:06.105Z",
   "insidenflnews.bsky.social": "2026-10-21T19:06:29.181Z",
   "nflnewsposter.bsky.social": "2026-10-21T19:28:43.854Z",
-  "rotoworld-fb.bsky.social": "2026-10-21T20:14:44.000Z",
-  "rotowirenfl.bsky.social": "2026-10-21T20:13:42.000Z"
+  "rotoworld-fb.bsky.social": "2026-10-21T20:19:36.000Z",
+  "rotowirenfl.bsky.social": "2026-10-21T20:21:44.000Z"
  },
  "claims": [
   {
@@ -2362,6 +2362,58 @@
    "kind": "status",
    "confidence": 0.8,
    "text": "KC Concepcion (calf/quad) limited to begin Week 7"
+  },
+  {
+   "id": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3myfxrdvvpc2a|christianwatson|questionable|status",
+   "at": "2026-10-21T20:17:10.000Z",
+   "seen": "2026-10-21T20:28:28.347Z",
+   "handle": "rotowirenfl.bsky.social",
+   "post": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3myfxrdvvpc2a",
+   "player": "Christian Watson",
+   "team": "GB",
+   "status": "questionable",
+   "kind": "status",
+   "confidence": 0.5,
+   "text": "Christian Watson: Tending to ankle issue \n\n https://www.rotowire.com/football/player/christian-watson-15946"
+  },
+  {
+   "id": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3myfxvoptea26|jordanlove|limited|status",
+   "at": "2026-10-21T20:19:36.000Z",
+   "seen": "2026-10-21T20:28:28.347Z",
+   "handle": "rotoworld-fb.bsky.social",
+   "post": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3myfxvoptea26",
+   "player": "Jordan Love",
+   "team": "GB",
+   "status": "limited",
+   "kind": "status",
+   "confidence": 0.9,
+   "text": "Jordan Love (shoulder) limited in practice"
+  },
+  {
+   "id": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3myfxxeh5w22u|matthewgolden|questionable|status",
+   "at": "2026-10-21T20:20:32.000Z",
+   "seen": "2026-10-21T20:28:28.347Z",
+   "handle": "rotowirenfl.bsky.social",
+   "post": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3myfxxeh5w22u",
+   "player": "Matthew Golden",
+   "team": "GB",
+   "status": "questionable",
+   "kind": "status",
+   "confidence": 0.5,
+   "text": "Matthew Golden: Dealing with shoulder issue \n\n https://www.rotowire.com/football/player/matthew-golden-18500"
+  },
+  {
+   "id": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3myfxzivufn2h|kcconcepcion|limited|status",
+   "at": "2026-10-21T20:21:44.000Z",
+   "seen": "2026-10-21T20:28:28.347Z",
+   "handle": "rotowirenfl.bsky.social",
+   "post": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3myfxzivufn2h",
+   "player": "KC Concepcion",
+   "team": null,
+   "status": "limited",
+   "kind": "status",
+   "confidence": 0.85,
+   "text": "KC Concepcion: Limited in practice Wednesday \n\n https://www.rotowire.com/football/player/kc-concepcion-19242"
   }
  ]
 }
