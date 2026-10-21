@@ -14,7 +14,7 @@
 //      (currentSeason, and currentSeasonEnds a year on)
 //   2. archive the finished season: SEASON=<finished> node apps/<sport>/scripts/update-data.mjs
 //   3. similar seasons and careers with it: node apps/<sport>/scripts/build-comps.mjs (needs the
-//      packages: npm ci first if they aren't installed)
+//      packages: npm install first if they aren't installed)
 // The new season's own data is the night's normal update (the workflow's next step, or
 // node apps/<sport>/scripts/update-data.mjs).
 //
@@ -164,12 +164,15 @@ async function main() {
 
   // 3. Similar seasons and careers (esbuild: the packages)
   if (!existsSync(path.join(ROOT, "node_modules", "esbuild"))) {
-    const install = spawnSync("npm", ["ci"], {
+    // (npm install, not npm ci, as .github/actions/npm-install does: GitHub's npm wants lock entries ours resolves
+    // without, and npm ci failed the NBA's rollover on 2026-10-21; the lock put back as committed after)
+    const install = spawnSync("npm", ["install", "--no-audit", "--no-fund"], {
       cwd: ROOT,
       stdio: "inherit",
       shell: true,
     });
-    if (install.status !== 0) throw new Error("npm ci failed");
+    spawnSync("git", ["checkout", "--", "package-lock.json"], { cwd: ROOT, stdio: "inherit" });
+    if (install.status !== 0) throw new Error("npm install failed");
   }
   run([path.join(ROOT, "apps", sport, "scripts", "build-comps.mjs")]);
 
