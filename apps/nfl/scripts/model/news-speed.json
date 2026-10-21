@@ -3929,6 +3929,30 @@
     "seen": "2026-10-21T21:55:42.864Z",
     "own": "2026-10-21T21:24:00.000Z"
    }
+  },
+  "401873010|ricodowdle|q": {
+   "game": "401873010",
+   "start": "2026-10-23T00:15Z",
+   "team": "3",
+   "name": "Rico Dowdle",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-10-21T21:57:29.482Z",
+    "own": "2026-10-21T21:39:18.000Z",
+    "why": "@rotowirenfl.bsky.social: Rico Dowdle: Limited by knee Wednesday \n\n https://www."
+   }
+  },
+  "401873010|patsurtain|q": {
+   "game": "401873010",
+   "start": "2026-10-23T00:15Z",
+   "team": "3",
+   "name": "Pat Surtain",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-10-21T21:57:29.482Z",
+    "own": "2026-10-21T21:44:08.000Z",
+    "why": "@rotoworld-fb.bsky.social: Pat Surtain (ankle) resumes practicing on Wed."
+   }
   }
  }
 }
