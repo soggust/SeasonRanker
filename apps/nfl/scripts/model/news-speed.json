@@ -3029,6 +3029,66 @@
     "seen": "2026-10-21T19:25:28.427Z",
     "own": "2026-10-21T19:17:00.000Z"
    }
+  },
+  "401873018|calijahkancey|q": {
+   "game": "401873018",
+   "start": "2026-10-25T17:00Z",
+   "team": "27",
+   "name": "Calijah Kancey",
+   "status": "q",
+   "athlete": "4427673",
+   "espn": {
+    "seen": "2026-10-21T19:28:39.044Z",
+    "own": "2026-10-21T19:23:00.000Z"
+   }
+  },
+  "401873018|christianrozeboom|q": {
+   "game": "401873018",
+   "start": "2026-10-25T17:00Z",
+   "team": "27",
+   "name": "Christian Rozeboom",
+   "status": "q",
+   "athlete": "3909013",
+   "espn": {
+    "seen": "2026-10-21T19:28:39.044Z",
+    "own": "2026-10-21T19:22:00.000Z"
+   }
+  },
+  "401873018|zyonmccollum|q": {
+   "game": "401873018",
+   "start": "2026-10-25T17:00Z",
+   "team": "27",
+   "name": "Zyon McCollum",
+   "status": "q",
+   "athlete": "4250392",
+   "espn": {
+    "seen": "2026-10-21T19:28:39.044Z",
+    "own": "2026-10-21T19:22:00.000Z"
+   }
+  },
+  "401873018|lukegoedeke|q": {
+   "game": "401873018",
+   "start": "2026-10-25T17:00Z",
+   "team": "27",
+   "name": "Luke Goedeke",
+   "status": "q",
+   "athlete": "4380507",
+   "espn": {
+    "seen": "2026-10-21T19:28:39.044Z",
+    "own": "2026-10-21T19:22:00.000Z"
+   }
+  },
+  "401873018|buckyirving|q": {
+   "game": "401873018",
+   "start": "2026-10-25T17:00Z",
+   "team": "27",
+   "name": "Bucky Irving",
+   "status": "q",
+   "athlete": "4596448",
+   "espn": {
+    "seen": "2026-10-21T19:28:39.044Z",
+    "own": "2026-10-21T19:22:00.000Z"
+   }
   }
  }
 }
