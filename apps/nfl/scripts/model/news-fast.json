@@ -6,8 +6,8 @@
   "nflnewsreposterbot.bsky.social": "2026-10-20T20:30:06.105Z",
   "insidenflnews.bsky.social": "2026-10-21T19:06:29.181Z",
   "nflnewsposter.bsky.social": "2026-10-21T23:03:20.418Z",
-  "rotoworld-fb.bsky.social": "2026-10-21T23:08:44.000Z",
-  "rotowirenfl.bsky.social": "2026-10-21T23:08:52.000Z"
+  "rotoworld-fb.bsky.social": "2026-10-21T23:35:56.000Z",
+  "rotowirenfl.bsky.social": "2026-10-21T23:30:37.000Z"
  },
  "claims": [
   {
@@ -2622,6 +2622,58 @@
    "kind": "status",
    "confidence": 0.9,
    "text": "Travis Kelce: Limited Wednesday \n\n https://www.rotowire.com/football/player/travis-kelce-8783"
+  },
+  {
+   "id": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3mygcepylkf2t|jaylenwaddle|limited|status",
+   "at": "2026-10-21T23:26:58.000Z",
+   "seen": "2026-10-21T23:40:11.554Z",
+   "handle": "rotoworld-fb.bsky.social",
+   "post": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3mygcepylkf2t",
+   "player": "Jaylen Waddle",
+   "team": "MIA",
+   "status": "limited",
+   "kind": "status",
+   "confidence": 0.9,
+   "text": "Jaylen Waddle (chest) limited Wednesday"
+  },
+  {
+   "id": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3mygcgl3rx32u|brockbowers|limited|status",
+   "at": "2026-10-21T23:28:00.000Z",
+   "seen": "2026-10-21T23:40:11.554Z",
+   "handle": "rotowirenfl.bsky.social",
+   "post": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3mygcgl3rx32u",
+   "player": "Brock Bowers",
+   "team": "LV",
+   "status": "limited",
+   "kind": "status",
+   "confidence": 0.9,
+   "text": "Brock Bowers: Logs limited practice Wednesday \n\n https://www.rotowire.com/football/player/brock-bowers-17693"
+  },
+  {
+   "id": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3mygclak42i2w|mikeevans|questionable|status",
+   "at": "2026-10-21T23:30:37.000Z",
+   "seen": "2026-10-21T23:40:11.554Z",
+   "handle": "rotowirenfl.bsky.social",
+   "post": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3mygclak42i2w",
+   "player": "Mike Evans",
+   "team": "TB",
+   "status": "questionable",
+   "kind": "status",
+   "confidence": 0.4,
+   "text": "Mike Evans: Officially DNP on Wednesday \n\n https://www.rotowire.com/football/player/mike-evans-9253"
+  },
+  {
+   "id": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3mygcurazlh2t|jeremiyahlove|questionable|status",
+   "at": "2026-10-21T23:35:56.000Z",
+   "seen": "2026-10-21T23:40:11.554Z",
+   "handle": "rotoworld-fb.bsky.social",
+   "post": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3mygcurazlh2t",
+   "player": "Jeremiyah Love",
+   "team": null,
+   "status": "questionable",
+   "kind": "status",
+   "confidence": 0.4,
+   "text": "Jeremiyah Love (ankle) DNP Wednesday"
   }
  ]
 }
