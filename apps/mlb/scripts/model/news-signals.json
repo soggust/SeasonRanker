@@ -94,7 +94,9 @@
   "50228459": "2026-10-21",
   "50232657": "2026-10-20",
   "50238406": "2026-10-21",
-  "50239056": "2026-10-21"
+  "50239056": "2026-10-21",
+  "50240270": "2026-10-21",
+  "50240296": "2026-10-21"
  },
  "signals": [
   {
@@ -275,6 +277,21 @@
    "confidence": 0.6,
    "story": "50222033",
    "headline": "Aaron Boone returning as Yankees manager in 2027, source says",
+   "model": "claude-haiku-5-5"
+  },
+  {
+   "id": "50240270|3|kurtsuzuki|coaching",
+   "day": "2026-10-21",
+   "at": "2026-10-21T19:14:46.000Z",
+   "team": "3",
+   "abbr": "LAA",
+   "athlete": null,
+   "player": "Kurt Suzuki",
+   "kind": "coaching",
+   "direction": "none",
+   "confidence": 0.9,
+   "story": "50240270",
+   "headline": "Kurt Suzuki out as Angels manager after team's first 100-loss season",
    "model": "claude-haiku-5-5"
   }
  ]

@@ -3,6 +3,17 @@
  "days": 2,
  "signals": [
   {
+   "team": "3",
+   "abbr": "LAA",
+   "athlete": null,
+   "player": "Kurt Suzuki",
+   "kind": "coaching",
+   "direction": "none",
+   "confidence": 0.9,
+   "headline": "Kurt Suzuki out as Angels manager after team's first 100-loss season",
+   "at": "2026-10-21T19:14:46.000Z"
+  },
+  {
    "team": "10",
    "abbr": "NYY",
    "athlete": null,
@@ -14,5 +25,5 @@
    "at": "2026-10-19T22:31:20.000Z"
   }
  ],
- "at": "2026-10-21T17:42:17.133Z"
+ "at": "2026-10-21T20:02:47.369Z"
 }
