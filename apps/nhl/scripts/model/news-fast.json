@@ -3,8 +3,8 @@
  "cursor": {
   "johnston-bot.bsky.social": "2026-10-19T14:14:39.946Z",
   "notfriedgehnic.bsky.social": "2026-10-20T18:14:44.045Z",
-  "dailyfaceoff.bsky.social": "2026-10-21T15:03:35.000Z",
-  "dfotoronto.bsky.social": "2026-10-21T14:40:44.000Z",
+  "dailyfaceoff.bsky.social": "2026-10-21T15:53:00.000Z",
+  "dfotoronto.bsky.social": "2026-10-21T15:52:59.000Z",
   "marklazerus.bsky.social": "2026-10-21T01:49:27.316Z"
  },
  "claims": [
@@ -280,6 +280,19 @@
    "kind": "status",
    "confidence": 0.95,
    "text": "Maple Leafs’ Jake McCabe ruled out vs. Blue Jackets due to injury"
+  },
+  {
+   "id": "at://did:plc:3uus7y6h3rlrk6sbctzxm4bg/app.bsky.feed.post/3myfiapqmnh2u|loganthompson|out|status",
+   "at": "2026-10-21T15:39:26.000Z",
+   "seen": "2026-10-21T15:54:22.560Z",
+   "handle": "dailyfaceoff.bsky.social",
+   "post": "at://did:plc:3uus7y6h3rlrk6sbctzxm4bg/app.bsky.feed.post/3myfiapqmnh2u",
+   "player": "Logan Thompson",
+   "team": "WSH",
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.9,
+   "text": "Capitals’ Logan Thompson out day-to-day with lower-body injury"
   }
  ]
 }
