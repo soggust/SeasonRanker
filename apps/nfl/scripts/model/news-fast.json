@@ -1,7 +1,7 @@
 {
  "sport": "nfl",
  "cursor": {
-  "adamscheftermirror.bsky.social": "2026-10-21T22:12:42.610Z",
+  "adamscheftermirror.bsky.social": "2026-10-21T22:42:31.877Z",
   "rapsheet.bsky.social": "2026-10-21T18:45:29.066Z",
   "nflnewsreposterbot.bsky.social": "2026-10-20T20:30:06.105Z",
   "insidenflnews.bsky.social": "2026-10-21T19:06:29.181Z",
@@ -2570,6 +2570,19 @@
    "kind": "status",
    "confidence": 0.8,
    "text": "Pat Surtain (ankle) resumes practicing on Wed."
+  },
+  {
+   "id": "at://did:plc:qre6zxbmr3ixhdmgsgdretb5/app.bsky.feed.post/3myg7vau3wd2d|jonahcoleman|active|return",
+   "at": "2026-10-21T22:42:31.877Z",
+   "seen": "2026-10-21T22:43:21.610Z",
+   "handle": "adamscheftermirror.bsky.social",
+   "post": "at://did:plc:qre6zxbmr3ixhdmgsgdretb5/app.bsky.feed.post/3myg7vau3wd2d",
+   "player": "Jonah Coleman",
+   "team": "DEN",
+   "status": "active",
+   "kind": "return",
+   "confidence": 0.9,
+   "text": "Broncos designated RB Jonah Coleman for return from injured reserve.\n\nOriginal post"
   }
  ]
 }

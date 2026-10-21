@@ -1,7 +1,7 @@
 {
  "sport": "nba",
  "cursor": {
-  "rotowirenba.bsky.social": "2026-10-21T21:54:27.000Z",
+  "rotowirenba.bsky.social": "2026-10-21T22:34:46.000Z",
   "insidenbanews.bsky.social": "2026-10-21T21:56:32.029Z",
   "shamsbot.bsky.social": "2026-10-21T21:00:12.000Z"
  },
@@ -642,6 +642,19 @@
    "kind": "status",
    "confidence": 0.9,
    "text": "Jarrett Allen: Questionable versus Philadelphia \n\n https://www.rotowire.com/basketball/player/jarrett-allen-4122"
+  },
+  {
+   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3myg7hetdt72k|bilalcoulibaly|none|starting",
+   "at": "2026-10-21T22:34:46.000Z",
+   "seen": "2026-10-21T22:43:21.610Z",
+   "handle": "rotowirenba.bsky.social",
+   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3myg7hetdt72k",
+   "player": "Bilal Coulibaly",
+   "team": null,
+   "status": "none",
+   "kind": "starting",
+   "confidence": 0.9,
+   "text": "Bilal Coulibaly: Starting sans Dybantsa \n\n https://www.rotowire.com/basketball/player/bilal-coulibaly-5945"
   }
  ]
 }

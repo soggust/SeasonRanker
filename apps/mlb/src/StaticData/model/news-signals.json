@@ -3,6 +3,17 @@
  "days": 2,
  "signals": [
   {
+   "team": "19",
+   "abbr": "LAD",
+   "athlete": "39832",
+   "player": "Shohei Ohtani",
+   "kind": "return",
+   "direction": "up",
+   "confidence": 0.6,
+   "headline": "Dodgers' Shohei Ohtani won't require surgery, expected to pitch in 2027",
+   "at": "2026-10-21T22:25:46.000Z"
+  },
+  {
    "team": "3",
    "abbr": "LAA",
    "athlete": null,
@@ -12,18 +23,7 @@
    "confidence": 0.9,
    "headline": "Kurt Suzuki out as Angels manager after team's first 100-loss season",
    "at": "2026-10-21T19:14:46.000Z"
-  },
-  {
-   "team": "10",
-   "abbr": "NYY",
-   "athlete": null,
-   "player": "Aaron Boone",
-   "kind": "coaching",
-   "direction": "none",
-   "confidence": 0.6,
-   "headline": "Aaron Boone returning as Yankees manager in 2027, source says",
-   "at": "2026-10-19T22:31:20.000Z"
   }
  ],
- "at": "2026-10-21T20:02:47.369Z"
+ "at": "2026-10-21T22:43:21.610Z"
 }

@@ -97,7 +97,8 @@
   "50239056": "2026-10-21",
   "50240270": "2026-10-21",
   "50240296": "2026-10-21",
-  "50241532": "2026-10-21"
+  "50241532": "2026-10-21",
+  "50242196": "2026-10-21"
  },
  "signals": [
   {
@@ -293,6 +294,21 @@
    "confidence": 0.9,
    "story": "50240270",
    "headline": "Kurt Suzuki out as Angels manager after team's first 100-loss season",
+   "model": "claude-haiku-5-5"
+  },
+  {
+   "id": "50242196|19|39832|return",
+   "day": "2026-10-21",
+   "at": "2026-10-21T22:25:46.000Z",
+   "team": "19",
+   "abbr": "LAD",
+   "athlete": "39832",
+   "player": "Shohei Ohtani",
+   "kind": "return",
+   "direction": "up",
+   "confidence": 0.6,
+   "story": "50242196",
+   "headline": "Dodgers' Shohei Ohtani won't require surgery, expected to pitch in 2027",
    "model": "claude-haiku-5-5"
   }
  ]
