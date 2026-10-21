@@ -962,6 +962,13 @@ const DEF_PRESSURE_RATE_STAT: SkillStat = {
 const FORCED_FUMBLES_STAT: SkillStat = { key: 'forcedFumbles', label: 'Forced Fum', description: 'Forced fumbles', kind: 'volume', format: 'int' };
 const INTERCEPTIONS_STAT: SkillStat = { key: 'interceptions', label: 'INTs', description: 'Interceptions', kind: 'volume', format: 'int' };
 const PASSES_DEFENDED_STAT: SkillStat = { key: 'passesDefended', label: 'Pass Def', description: 'Passes defended', kind: 'volume', format: 'int' };
+// (a lineman's or an edge's passes defended: mostly balls batted down at the line (the owner, 2026-10-21: "the JJ Watt
+// play"); scored, starting at 0, so DEFAULT doesn't move; Splash Plays already counts them)
+const FRONT_PASSES_DEFENDED_STAT: SkillStat = {
+  ...PASSES_DEFENDED_STAT,
+  description: 'Passes defended: for a lineman or an edge, mostly passes batted down at the line (starts at 0: turn it up to count it)',
+  startsOff: true,
+};
 const DEF_TDS_STAT: SkillStat = { key: 'defTds', label: 'Def TDs', description: 'Defensive touchdowns (interception and fumble returns)', kind: 'volume', format: 'int' };
 const DEF_TAKEAWAYS_STAT: SkillStat = { key: 'takeaways', label: 'Takeaways', description: 'Interceptions + opponent fumbles recovered', kind: 'volume', format: 'int' };
 const SPLASH_PLAYS_STAT: SkillStat = {
@@ -1052,6 +1059,7 @@ const FRONT_STATS: SkillStat[] = [
   TFL_STAT,
   TACKLES_STAT,
   QB_HITS_STAT,
+  FRONT_PASSES_DEFENDED_STAT,
   FORCED_FUMBLES_STAT,
   DEF_TAKEAWAYS_STAT,
   SPLASH_PLAYS_STAT,
@@ -1766,7 +1774,7 @@ const RECEIVER_GROUPS: Group[] = [
 ];
 const RUSHER_GROUPS: Group[] = [
   results(['games']),
-  basic(['snaps', 'sacks', 'tfl', 'tackles', 'qbHits', 'forcedFumbles', 'takeaways', 'splashPlays', 'defTds']),
+  basic(['snaps', 'sacks', 'tfl', 'tackles', 'qbHits', 'passesDefended', 'forcedFumbles', 'takeaways', 'splashPlays', 'defTds']),
   advanced(['pressures', 'hurries', 'pressureRate', 'missedTacklePct', 'snapPct']),
 ];
 const COVERAGE_ADVANCED: SkillColumnKey[] = ['compPctAllowed', 'yardsAllowed', 'yardsPerTargetAllowed', 'tdsAllowed', 'passerRatingAllowed', 'missedTacklePct', 'snapPct'];

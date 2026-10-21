@@ -85,12 +85,13 @@ test('nfl: a defensive tab lists only its own stats, Games first, snaps for cont
   assert.ok(!keys('CB').includes('sacks') && keys('S').includes('sacks'), 'sacks on the safeties, not the corners');
 });
 
-test('nfl: the defensive presets are pure, one job each, DEFAULT every stat at 50', async () => {
+test('nfl: the defensive presets are pure, one job each, DEFAULT every stat at 50 (a startsOff one at 0)', async () => {
   const { SKILL_STATS, SKILL_PRESETS, presetWeights } = await engineFor();
   for (const tab of DEF_TABS) {
     const stats = SKILL_STATS[tab].filter((s) => !s.infoOnly);
     const def = presetWeights(tab, 'default');
-    for (const stat of stats) assert.equal(def[stat.key], 50, `${tab} DEFAULT ${stat.key}`);
+    // (a stat added later, startsOff, at 0 so the rankings don't move: presets.test.mjs)
+    for (const stat of stats) assert.equal(def[stat.key], stat.startsOff ? 0 : 50, `${tab} DEFAULT ${stat.key}`);
     assert.ok(SKILL_PRESETS[tab].length >= 3, `${tab}: three jobs`);
     for (const preset of SKILL_PRESETS[tab]) {
       const weights = presetWeights(tab, preset.key);
