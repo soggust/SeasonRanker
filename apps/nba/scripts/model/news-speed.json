@@ -2695,6 +2695,28 @@
    "espn": {
     "seen": "2026-10-20T23:50:40.147Z",
     "own": "2026-10-20T23:35:00.000Z"
+   },
+   "bluesky": {
+    "seen": "2026-10-20T23:57:09.390Z",
+    "own": "2026-10-20T23:34:44.000Z",
+    "why": "@rotowirenba.bsky.social: Deni Avdija: Questionable for Wednesday \n\n https://www"
+   }
+  },
+  "401909092|brandinpodziemski|out": {
+   "game": "401909092",
+   "start": "2026-10-22T02:00Z",
+   "team": "9",
+   "name": "Brandin Podziemski",
+   "status": "out",
+   "athlete": "4709138",
+   "espn": {
+    "seen": "2026-10-21T00:01:42.992Z",
+    "own": "2026-10-20T23:49:00.000Z"
+   },
+   "bluesky": {
+    "seen": "2026-10-20T23:57:09.390Z",
+    "own": "2026-10-20T23:50:45.000Z",
+    "why": "@rotowirenba.bsky.social: Brandin Podziemski: Ruled out for regular-season opene"
    }
   }
  }
