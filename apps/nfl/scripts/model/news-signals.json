@@ -278,6 +278,7 @@
   "50240756": "2026-10-21",
   "50241195": "2026-10-21",
   "50241322": "2026-10-21",
+  "50241533": "2026-10-21",
   "50242240": "2026-10-21",
   "50242318": "2026-10-21"
  },
@@ -1150,6 +1151,21 @@
    "confidence": 0.8,
    "story": "50242240",
    "headline": "Texans' Tank Dell says he won't fear being hit in return Sunday against Giants",
+   "model": "claude-haiku-5-5"
+  },
+  {
+   "id": "50241533|12|4683062|role",
+   "day": "2026-10-21",
+   "at": "2026-10-21T23:11:53.000Z",
+   "team": "12",
+   "abbr": "KC",
+   "athlete": "4683062",
+   "player": "Xavier Worthy",
+   "kind": "role",
+   "direction": "up",
+   "confidence": 0.3,
+   "story": "50241533",
+   "headline": "Kansas City Chiefs WR Xavier Worthy thriving in expanded role as Seahawks loom",
    "model": "claude-haiku-5-5"
   }
  ]

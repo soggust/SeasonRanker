@@ -3300,6 +3300,18 @@
     "own": "2026-10-21T23:05:17.000Z",
     "why": "@rotowirenba.bsky.social: Isaiah Stewart: Ruled out Wednesday \n\n https://www.rot"
    }
+  },
+  "401909840|jetthoward|out": {
+   "game": "401909840",
+   "start": "2026-10-22T00:30Z",
+   "team": "6",
+   "name": "Jett Howard",
+   "status": "out",
+   "athlete": "5105806",
+   "espn": {
+    "seen": "2026-10-21T23:17:08.579Z",
+    "own": "2026-10-21T23:11:00.000Z"
+   }
   }
  }
 }

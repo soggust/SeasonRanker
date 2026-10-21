@@ -6,8 +6,8 @@
   "nflnewsreposterbot.bsky.social": "2026-10-20T20:30:06.105Z",
   "insidenflnews.bsky.social": "2026-10-21T19:06:29.181Z",
   "nflnewsposter.bsky.social": "2026-10-21T23:03:20.418Z",
-  "rotoworld-fb.bsky.social": "2026-10-21T21:48:39.000Z",
-  "rotowirenfl.bsky.social": "2026-10-21T23:01:54.000Z"
+  "rotoworld-fb.bsky.social": "2026-10-21T23:08:44.000Z",
+  "rotowirenfl.bsky.social": "2026-10-21T23:08:52.000Z"
  },
  "claims": [
   {
@@ -2596,6 +2596,32 @@
    "kind": "status",
    "confidence": 0.8,
    "text": "[Henderson] A notable step for Seahawks RB Zach Charbonnet in his return from a torn ACL: Seattle listed him as a full participant for the first time since he retuned to practice on Oct. 1. He'd been "
+  },
+  {
+   "id": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3mygbe4fooe2t|traviskelce|limited|status",
+   "at": "2026-10-21T23:08:44.000Z",
+   "seen": "2026-10-21T23:18:46.837Z",
+   "handle": "rotoworld-fb.bsky.social",
+   "post": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3mygbe4fooe2t",
+   "player": "Travis Kelce",
+   "team": "KC",
+   "status": "limited",
+   "kind": "status",
+   "confidence": 0.9,
+   "text": "Travis Kelce (ankle) limited Wednesday"
+  },
+  {
+   "id": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3mygbeedtgo2d|traviskelce|limited|status",
+   "at": "2026-10-21T23:08:52.000Z",
+   "seen": "2026-10-21T23:18:46.837Z",
+   "handle": "rotowirenfl.bsky.social",
+   "post": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3mygbeedtgo2d",
+   "player": "Travis Kelce",
+   "team": "KC",
+   "status": "limited",
+   "kind": "status",
+   "confidence": 0.9,
+   "text": "Travis Kelce: Limited Wednesday \n\n https://www.rotowire.com/football/player/travis-kelce-8783"
   }
  ]
 }
