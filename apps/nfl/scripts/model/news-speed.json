@@ -2964,6 +2964,30 @@
     "own": "2026-10-21T18:11:13.000Z",
     "why": "@rotowirenfl.bsky.social: David Montgomery: Still sidelined at practice \n\n https"
    }
+  },
+  "401873014|tjhockenson|q": {
+   "game": "401873014",
+   "start": "2026-10-25T17:00Z",
+   "team": "16",
+   "name": "T.J. Hockenson",
+   "status": "q",
+   "athlete": "4036133",
+   "espn": {
+    "seen": "2026-10-21T19:07:54.202Z",
+    "own": "2026-10-21T18:39:00.000Z"
+   }
+  },
+  "401873018|jaelanphillips|q": {
+   "game": "401873018",
+   "start": "2026-10-25T17:00Z",
+   "team": "29",
+   "name": "Jaelan Phillips",
+   "status": "q",
+   "athlete": "4242975",
+   "espn": {
+    "seen": "2026-10-21T19:07:54.202Z",
+    "own": "2026-10-21T18:55:00.000Z"
+   }
   }
  }
 }
