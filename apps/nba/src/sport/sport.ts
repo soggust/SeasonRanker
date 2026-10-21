@@ -127,10 +127,10 @@ const liveSeason = (season: number) => season === SPORT.currentSeason && Date.no
 export const SPORT: SportConfig = {
   id: 'nba',
   // (a season is named for the year it ends in: 2026 is 2025-26)
-  currentSeason: 2026,
+  currentSeason: 2027,
   firstSeason: 2001,
   // (after the Finals: 2025-26 is over; 2026-27 becomes current at the October rollover)
-  currentSeasonEnds: '2026-06-30',
+  currentSeasonEnds: '2027-06-30',
   // (Length: the playoffs, or the regular season and the playoffs together; skill-players.post.json
   // and .all.json, from scripts/update-data.mjs)
   seasonParts: true,

@@ -36,7 +36,7 @@ import { addRimDefense, readHeat } from './rim-defense.mjs';
 import { addVsPosition, positionsOf } from './vs-position.mjs';
 import { addBoxes, teamBox, teamShooting } from './team-shooting.mjs';
 
-const CURRENT_SEASON = 2026;
+const CURRENT_SEASON = 2027;
 const FIRST_SEASON = 2001;
 const ROOT = path.resolve(import.meta.dirname, '..');
 const STATIC = path.join(ROOT, 'src/StaticData');
