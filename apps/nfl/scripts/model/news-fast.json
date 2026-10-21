@@ -6,8 +6,8 @@
   "nflnewsreposterbot.bsky.social": "2026-10-20T20:30:06.105Z",
   "insidenflnews.bsky.social": "2026-10-21T19:06:29.181Z",
   "nflnewsposter.bsky.social": "2026-10-21T20:53:42.024Z",
-  "rotoworld-fb.bsky.social": "2026-10-21T20:51:19.000Z",
-  "rotowirenfl.bsky.social": "2026-10-21T20:52:44.000Z"
+  "rotoworld-fb.bsky.social": "2026-10-21T21:30:39.000Z",
+  "rotowirenfl.bsky.social": "2026-10-21T21:36:41.000Z"
  },
  "claims": [
   {
@@ -2492,6 +2492,58 @@
    "kind": "status",
    "confidence": 0.8,
    "text": "Caleb Douglas (ankle) limited, day-to-day in W7"
+  },
+  {
+   "id": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3myg3tcd5k22w|daltonschultz|questionable|status",
+   "at": "2026-10-21T21:29:51.000Z",
+   "seen": "2026-10-21T21:37:16.203Z",
+   "handle": "rotowirenfl.bsky.social",
+   "post": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3myg3tcd5k22w",
+   "player": "Dalton Schultz",
+   "team": null,
+   "status": "questionable",
+   "kind": "status",
+   "confidence": 0.5,
+   "text": "Dalton Schultz: Sidelined Wednesday with quad issue \n\n https://www.rotowire.com/football/player/dalton-schultz-12514"
+  },
+  {
+   "id": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3myg3uqkz4422|jordanaddison|active|status",
+   "at": "2026-10-21T21:30:39.000Z",
+   "seen": "2026-10-21T21:37:16.203Z",
+   "handle": "rotoworld-fb.bsky.social",
+   "post": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3myg3uqkz4422",
+   "player": "Jordan Addison",
+   "team": "MIN",
+   "status": "active",
+   "kind": "status",
+   "confidence": 0.6,
+   "text": "Jordan Addison (hamstring) practicing in full"
+  },
+  {
+   "id": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3myg3vyz26s2w|justinjefferson|limited|status",
+   "at": "2026-10-21T21:31:22.000Z",
+   "seen": "2026-10-21T21:37:16.203Z",
+   "handle": "rotowirenfl.bsky.social",
+   "post": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3myg3vyz26s2w",
+   "player": "Justin Jefferson",
+   "team": "MIN",
+   "status": "limited",
+   "kind": "status",
+   "confidence": 0.8,
+   "text": "Justin Jefferson: Remains limited by ankle issue \n\n https://www.rotowire.com/football/player/justin-jefferson-14509"
+  },
+  {
+   "id": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3myg47jtcwu2d|jordanmason|out|status",
+   "at": "2026-10-21T21:36:41.000Z",
+   "seen": "2026-10-21T21:37:16.203Z",
+   "handle": "rotowirenfl.bsky.social",
+   "post": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3myg47jtcwu2d",
+   "player": "Jordan Mason",
+   "team": null,
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.7,
+   "text": "Jordan Mason: Full practice Wednesday, still on IR \n\n https://www.rotowire.com/football/player/jordan-mason-16163"
   }
  ]
 }
