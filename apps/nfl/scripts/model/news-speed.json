@@ -3713,6 +3713,222 @@
     "seen": "2026-10-21T21:23:46.733Z",
     "own": "2026-10-21T21:11:00.000Z"
    }
+  },
+  "401873010|jordanmason|out": {
+   "game": "401873010",
+   "start": "2026-10-23T00:15Z",
+   "team": "3",
+   "name": "Jordan Mason",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-10-21T21:37:16.203Z",
+    "own": "2026-10-21T21:36:41.000Z",
+    "why": "@rotowirenfl.bsky.social: Jordan Mason: Full practice Wednesday, still on IR \n\n "
+   }
+  },
+  "401873011|cjdonaldson|q": {
+   "game": "401873011",
+   "start": "2026-10-25T13:30Z",
+   "team": "18",
+   "name": "CJ Donaldson",
+   "status": "q",
+   "athlete": "5081999",
+   "espn": {
+    "seen": "2026-10-21T21:55:42.864Z",
+    "own": "2026-10-21T21:40:00.000Z"
+   }
+  },
+  "401873011|alvinkamara|q": {
+   "game": "401873011",
+   "start": "2026-10-25T13:30Z",
+   "team": "18",
+   "name": "Alvin Kamara",
+   "status": "q",
+   "athlete": "3054850",
+   "espn": {
+    "seen": "2026-10-21T21:55:42.864Z",
+    "own": "2026-10-21T21:39:00.000Z"
+   }
+  },
+  "401873011|ricodowdle|q": {
+   "game": "401873011",
+   "start": "2026-10-25T13:30Z",
+   "team": "23",
+   "name": "Rico Dowdle",
+   "status": "q",
+   "athlete": "4038815",
+   "espn": {
+    "seen": "2026-10-21T21:55:42.864Z",
+    "own": "2026-10-21T21:39:00.000Z"
+   }
+  },
+  "401873011|sebastianjosephday|q": {
+   "game": "401873011",
+   "start": "2026-10-25T13:30Z",
+   "team": "23",
+   "name": "Sebastian Joseph-Day",
+   "status": "q",
+   "athlete": "3047495",
+   "espn": {
+    "seen": "2026-10-21T21:55:42.864Z",
+    "own": "2026-10-21T21:34:00.000Z"
+   }
+  },
+  "401873011|alexhighsmith|q": {
+   "game": "401873011",
+   "start": "2026-10-25T13:30Z",
+   "team": "23",
+   "name": "Alex Highsmith",
+   "status": "q",
+   "athlete": "4037333",
+   "espn": {
+    "seen": "2026-10-21T21:55:42.864Z",
+    "own": "2026-10-21T21:34:00.000Z"
+   }
+  },
+  "401873011|jalenramsey|q": {
+   "game": "401873011",
+   "start": "2026-10-25T13:30Z",
+   "team": "23",
+   "name": "Jalen Ramsey",
+   "status": "q",
+   "athlete": "3045373",
+   "espn": {
+    "seen": "2026-10-21T21:55:42.864Z",
+    "own": "2026-10-21T02:21:00.000Z"
+   }
+  },
+  "401873014|justinjefferson|q": {
+   "game": "401873014",
+   "start": "2026-10-25T17:00Z",
+   "team": "16",
+   "name": "Justin Jefferson",
+   "status": "q",
+   "athlete": "4262921",
+   "espn": {
+    "seen": "2026-10-21T21:55:42.864Z",
+    "own": "2026-10-21T21:31:00.000Z"
+   }
+  },
+  "401873014|jamespierre|q": {
+   "game": "401873014",
+   "start": "2026-10-25T17:00Z",
+   "team": "16",
+   "name": "James Pierre",
+   "status": "q",
+   "athlete": "4259252",
+   "espn": {
+    "seen": "2026-10-21T21:55:42.864Z",
+    "own": "2026-10-21T21:30:00.000Z"
+   }
+  },
+  "401873014|brianoneill|q": {
+   "game": "401873014",
+   "start": "2026-10-25T17:00Z",
+   "team": "16",
+   "name": "Brian O'Neill",
+   "status": "q",
+   "athlete": "3123954",
+   "espn": {
+    "seen": "2026-10-21T21:55:42.864Z",
+    "own": "2026-10-21T21:29:00.000Z"
+   }
+  },
+  "401873016|daltonschultz|q": {
+   "game": "401873016",
+   "start": "2026-10-25T17:00Z",
+   "team": "34",
+   "name": "Dalton Schultz",
+   "status": "q",
+   "athlete": "3117256",
+   "espn": {
+    "seen": "2026-10-21T21:55:42.864Z",
+    "own": "2026-10-21T21:29:00.000Z"
+   }
+  },
+  "401873016|jalenpitre|q": {
+   "game": "401873016",
+   "start": "2026-10-25T17:00Z",
+   "team": "34",
+   "name": "Jalen Pitre",
+   "status": "q",
+   "athlete": "4241223",
+   "espn": {
+    "seen": "2026-10-21T21:55:42.864Z",
+    "own": "2026-10-21T21:27:00.000Z"
+   }
+  },
+  "401873016|henrytootoo|q": {
+   "game": "401873016",
+   "start": "2026-10-25T17:00Z",
+   "team": "34",
+   "name": "Henry To'oTo'o",
+   "status": "q",
+   "athlete": "4426350",
+   "espn": {
+    "seen": "2026-10-21T21:55:42.864Z",
+    "own": "2026-10-21T21:26:00.000Z"
+   }
+  },
+  "401873016|blakefisher|q": {
+   "game": "401873016",
+   "start": "2026-10-25T17:00Z",
+   "team": "34",
+   "name": "Blake Fisher",
+   "status": "q",
+   "athlete": "4432699",
+   "espn": {
+    "seen": "2026-10-21T21:55:42.864Z",
+    "own": "2026-10-21T21:25:00.000Z"
+   }
+  },
+  "401873016|loganhall|q": {
+   "game": "401873016",
+   "start": "2026-10-25T17:00Z",
+   "team": "34",
+   "name": "Logan Hall",
+   "status": "q",
+   "athlete": "4360189",
+   "espn": {
+    "seen": "2026-10-21T21:55:42.864Z",
+    "own": "2026-10-21T21:25:00.000Z"
+   }
+  },
+  "401873016|jadeveonclowney|q": {
+   "game": "401873016",
+   "start": "2026-10-25T17:00Z",
+   "team": "34",
+   "name": "Jadeveon Clowney",
+   "status": "q",
+   "athlete": "16734",
+   "espn": {
+    "seen": "2026-10-21T21:55:42.864Z",
+    "own": "2026-10-21T21:25:00.000Z"
+   }
+  },
+  "401873016|azeezalshaair|q": {
+   "game": "401873016",
+   "start": "2026-10-25T17:00Z",
+   "team": "34",
+   "name": "Azeez Al-Shaair",
+   "status": "q",
+   "athlete": "3919117",
+   "espn": {
+    "seen": "2026-10-21T21:55:42.864Z",
+    "own": "2026-10-21T21:24:00.000Z"
+   }
+  },
+  "401873016|trentbrown|q": {
+   "game": "401873016",
+   "start": "2026-10-25T17:00Z",
+   "team": "34",
+   "name": "Trent Brown",
+   "status": "q",
+   "athlete": "3043109",
+   "espn": {
+    "seen": "2026-10-21T21:55:42.864Z",
+    "own": "2026-10-21T21:24:00.000Z"
+   }
   }
  }
 }
