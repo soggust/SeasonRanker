@@ -2868,6 +2868,66 @@
     "seen": "2026-10-21T01:12:48.096Z",
     "own": "2026-10-21T00:33:00.000Z"
    }
+  },
+  "401873013|tyjaespears|q": {
+   "game": "401873013",
+   "start": "2026-10-25T17:00Z",
+   "team": "10",
+   "name": "Tyjae Spears",
+   "status": "q",
+   "athlete": "4428557",
+   "espn": {
+    "seen": "2026-10-21T17:24:42.280Z",
+    "own": "2026-10-21T17:14:00.000Z"
+   }
+  },
+  "401873013|carsonschwesinger|q": {
+   "game": "401873013",
+   "start": "2026-10-25T17:00Z",
+   "team": "5",
+   "name": "Carson Schwesinger",
+   "status": "q",
+   "athlete": "4876017",
+   "espn": {
+    "seen": "2026-10-21T17:24:42.280Z",
+    "own": "2026-10-21T01:47:00.000Z"
+   }
+  },
+  "401873015|kikomauigoa|out": {
+   "game": "401873015",
+   "start": "2026-10-25T17:00Z",
+   "team": "20",
+   "name": "Kiko Mauigoa",
+   "status": "out",
+   "athlete": "4700136",
+   "espn": {
+    "seen": "2026-10-21T17:24:42.280Z",
+    "own": "2026-10-21T17:10:00.000Z"
+   }
+  },
+  "401873015|adonaimitchell|q": {
+   "game": "401873015",
+   "start": "2026-10-25T17:00Z",
+   "team": "20",
+   "name": "Adonai Mitchell",
+   "status": "q",
+   "athlete": "4597500",
+   "espn": {
+    "seen": "2026-10-21T17:24:42.280Z",
+    "own": "2026-10-21T16:50:00.000Z"
+   }
+  },
+  "401873016|jawharjordan|out": {
+   "game": "401873016",
+   "start": "2026-10-25T17:00Z",
+   "team": "34",
+   "name": "Jawhar Jordan",
+   "status": "out",
+   "athlete": "4429939",
+   "espn": {
+    "seen": "2026-10-21T17:24:42.280Z",
+    "own": "2026-10-21T17:22:00.000Z"
+   }
   }
  }
 }
