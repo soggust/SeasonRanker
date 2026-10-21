@@ -2879,6 +2879,54 @@
     "own": "2026-10-21T00:06:44.000Z",
     "why": "@rotowirenba.bsky.social: Collin Sexton: Questionable for Wednesday \n\n https://w"
    }
+  },
+  "401909093|tackofall|q": {
+   "game": "401909093",
+   "start": "2026-10-22T23:00Z",
+   "team": "20",
+   "name": "Tacko Fall",
+   "status": "q",
+   "athlete": "3904625",
+   "espn": {
+    "seen": "2026-10-21T14:49:45.501Z",
+    "own": "2026-10-21T14:04:00.000Z"
+   }
+  },
+  "401909094|thomassorber|q": {
+   "game": "401909094",
+   "start": "2026-10-23T01:30Z",
+   "team": "25",
+   "name": "Thomas Sorber",
+   "status": "q",
+   "athlete": "5061603",
+   "espn": {
+    "seen": "2026-10-21T14:49:45.501Z",
+    "own": "2026-10-21T14:05:00.000Z"
+   }
+  },
+  "401909094|nikolatopic|q": {
+   "game": "401909094",
+   "start": "2026-10-23T01:30Z",
+   "team": "25",
+   "name": "Nikola Topic",
+   "status": "q",
+   "athlete": "5159925",
+   "espn": {
+    "seen": "2026-10-21T14:49:45.501Z",
+    "own": "2026-10-21T14:04:00.000Z"
+   }
+  },
+  "401909096|tobiasharris|q": {
+   "game": "401909096",
+   "start": "2026-10-24T01:30Z",
+   "team": "24",
+   "name": "Tobias Harris",
+   "status": "q",
+   "athlete": "6440",
+   "espn": {
+    "seen": "2026-10-21T14:49:45.501Z",
+    "own": "2026-10-21T14:05:00.000Z"
+   }
   }
  }
 }

@@ -5,7 +5,7 @@
   "rapsheet.bsky.social": "2026-10-20T15:28:24.072Z",
   "nflnewsreposterbot.bsky.social": "2026-10-20T20:30:06.105Z",
   "insidenflnews.bsky.social": "2026-10-21T12:39:53.742Z",
-  "nflnewsposter.bsky.social": "2026-10-21T06:34:45.920Z",
+  "nflnewsposter.bsky.social": "2026-10-21T14:20:24.381Z",
   "rotoworld-fb.bsky.social": "2026-10-21T13:45:30.000Z",
   "rotowirenfl.bsky.social": "2026-10-21T13:31:57.000Z"
  },
@@ -1803,6 +1803,19 @@
    "kind": "status",
    "confidence": 0.97,
    "text": "Bills DB Sam Franklin Jr. was suspended one game today for unsportsmanlike conduct that the league said was a spitting incident vs. the Las Vegas Raiders.\n\nOriginal post"
+  },
+  {
+   "id": "at://did:plc:fuqjc7x4gxvnwzksnlxwbe4x/app.bsky.feed.post/3myfdtexflk23|samfranklin|out|status",
+   "at": "2026-10-21T14:20:24.381Z",
+   "seen": "2026-10-21T14:51:21.679Z",
+   "handle": "nflnewsposter.bsky.social",
+   "post": "at://did:plc:fuqjc7x4gxvnwzksnlxwbe4x/app.bsky.feed.post/3myfdtexflk23",
+   "player": "Sam Franklin Jr.",
+   "team": "BUF",
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.9,
+   "text": "[Schefter] Bills DB Sam Franklin Jr. was suspended one game today for unsportsmanlike conduct that the league said was a spitting incident vs. the Las Vegas Raiders. twitter.com/AdamSchefter..."
   }
  ]
 }
