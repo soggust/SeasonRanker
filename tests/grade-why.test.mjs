@@ -180,7 +180,7 @@ test('data grades: gradeIn as the scripts write it gives back the grade, early s
 // The team-wide grades of a season written before gradeIn, worked out from the Teams or Head Coaches tab:
 // the same grade the data shows (a finished season: no early-season blend), on every row
 const TEAM_ROWS = [
-  ['nba', null, ['coaching']],
+  ['nba', '2026', ['coaching']],
   ['nhl', '2026', ['coaching']],
   ['mlb', null, ['defense', 'park']],
 ];

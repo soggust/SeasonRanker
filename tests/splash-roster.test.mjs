@@ -11,6 +11,7 @@ import path from 'node:path';
 import { parseCsv } from '../libs/ranker/scripts/csv.mjs';
 import { ROOT, cachedRoster, currentSeason, seasonDir, siteRows, siteSeasons } from '../libs/ranker/scripts/splash/files.mjs';
 import { NFL_LOGO } from '../libs/ranker/scripts/splash/nfl-teams.mjs';
+import { earlyCurrent } from './support/early-season.mjs';
 
 const read = (file) => (existsSync(file) ? JSON.parse(readFileSync(file, 'utf8')) : null);
 // (the current season and the five before it that the site has)
@@ -160,6 +161,12 @@ test('NBA numbers.json: every ranked player has his number, every team', () => {
     const numbers = read(path.join(dir, 'numbers.json'));
     const ranked = Object.entries(siteRows(dir)).filter(([tab]) => !['HC', 'TM'].includes(tab)).flatMap(([, list]) => list);
     const missing = ranked.filter((r) => !numbers[r.cardId]);
+    // (the season being played its first days in: a few teams a game in, its rookies' numbers still to come
+    // on the night's runs; every number there a number)
+    if (season === currentSeason('nba') && earlyCurrent('nba')) {
+      assert.ok(Object.values(numbers).every((n) => /^\d{1,2}$/.test(n)), `nba ${season}: numbers`);
+      continue;
+    }
     assert.ok(missing.length <= Math.max(3, ranked.length * 0.02), `nba ${season}: ${missing.length} without a number: ${missing.slice(0, 5).map((r) => r.name).join(', ')}`);
     assert.ok(new Set(ranked.map((r) => r.team)).size >= 29, `nba ${season}: teams`);
   }

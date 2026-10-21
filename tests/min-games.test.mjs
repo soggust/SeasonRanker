@@ -8,6 +8,7 @@ import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import path from 'node:path';
 import { SPORTS, loadEngine, seasonData, seasonDir, staticDir } from './support/engine.mjs';
+import { earlyCurrent } from './support/early-season.mjs';
 
 // The current season and the latest finished one (the current one alone for a sport without seasons/)
 function seasonsOf(sport, current) {
@@ -102,8 +103,9 @@ for (const sport of SPORTS) {
             assert.ok(Math.abs(pooled.get(p) - full.get(p)) < 1e-9, `${sport} ${season} ${position}: ${p.name} scored ${pooled.get(p)} in a subset, ${full.get(p)} in the full list`);
           }
         }
-        // (the check means something only if Min left someone out)
-        assert.ok(filtered > 0, `${sport} ${season}: no tab's list got shorter as Min went up`);
+        // (the check means something only if Min left someone out; the season being played its first days in,
+        // everyone a game or two, no share of so few leaves anyone out yet: support/early-season.mjs)
+        if (!(season === CURRENT_SEASON && earlyCurrent(sport))) assert.ok(filtered > 0, `${sport} ${season}: no tab's list got shorter as Min went up`);
       });
       t.diagnostic(`${sport} ${season} checked`);
     }

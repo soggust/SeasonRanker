@@ -23,7 +23,7 @@
 // World Series result (WORLD_SERIES in awards.ts), and any new team logos (logo-eras.ts, then npm run
 // team-looks for their chips and colors: tests/team-looks.test.mjs fails until it's run).
 import { spawnSync } from "node:child_process";
-import { existsSync, readFileSync, writeFileSync } from "node:fs";
+import { copyFileSync, existsSync, mkdirSync, readFileSync, readdirSync, writeFileSync } from "node:fs";
 import path from "node:path";
 
 const ROOT = path.resolve(import.meta.dirname, "..");
@@ -136,6 +136,23 @@ async function main() {
   }
 
   // 2. The finished season, archived
+  // (its heat maps first, as the top of StaticData has them: a builder that reads kept shots rewrites them, but
+  // a lost cache leaves it nothing to read (the NBA's 2025-26 on 2026-10-21: no seasons/2026/heat-maps.json, and
+  // its coaches' rim defense, read off that file, all null), and the night's update overwrites the top's with
+  // the new season's)
+  const staticDir = path.join(ROOT, "apps", sport, "src", "StaticData");
+  const archive = path.join(staticDir, "seasons", String(current));
+  for (const name of readdirSync(staticDir).filter((f) => /^heat-maps(\.[a-z0-9]+)?\.json$/.test(f))) {
+    const to = path.join(archive, name);
+    let season = null;
+    try {
+      season = JSON.parse(readFileSync(path.join(staticDir, name), "utf8")).season;
+    } catch {}
+    if (Number(season) !== current || existsSync(to)) continue;
+    mkdirSync(archive, { recursive: true });
+    copyFileSync(path.join(staticDir, name), to);
+    console.log(`  ${name}: ${current}'s, kept in seasons/${current}`);
+  }
   run([scriptFile], { SEASON: String(current) });
 
   // (the finished season's other files, by the sport's builders that keep one per season: the NFL's depth

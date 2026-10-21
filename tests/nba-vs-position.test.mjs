@@ -132,8 +132,8 @@ test("NBA box scores: a side's lines from ESPN's summary, teams by the site's co
   assert.deepEqual(['GS', 'NY', 'UTAH', 'WSH', 'PHX', 'BOS'].map(siteCode), ['GSW', 'NYK', 'UTA', 'WAS', 'PHO', 'BOS']);
 });
 
-// 2025-26: the season's file
-const FILE = path.join(staticDir('nba'), 'skill-players.json');
+// 2025-26: the season's file (archived since the 2026-27 season began: seasons/2026)
+const FILE = path.join(staticDir('nba'), 'seasons', '2026', 'skill-players.json');
 const data = existsSync(FILE) ? readJson(FILE) : null;
 const has = data?.HC?.some((c) => c.vsPos);
 
@@ -169,7 +169,7 @@ test('NBA 2025-26: every team has its vs-position numbers, ranked 1-30, adding u
 
 // The playoffs: each player against his whole season's average, which nearly everyone scores under there;
 // centered, it's even across the playoff teams, not every one of them holding every position under its usual
-const POST = path.join(staticDir('nba'), 'skill-players.post.json');
+const POST = path.join(staticDir('nba'), 'seasons', '2026', 'skill-players.post.json');
 const post = existsSync(POST) ? readJson(POST) : null;
 
 test('NBA 2025-26 playoffs: vs Position centered on the playoff teams', { skip: !post?.HC?.some((c) => c.vsPos) && 'no vsPos in the file' }, () => {

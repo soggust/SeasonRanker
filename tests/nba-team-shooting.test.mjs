@@ -9,6 +9,8 @@ import fs from 'node:fs';
 import path from 'node:path';
 import { addBoxes, teamBox, teamShooting } from '../apps/nba/scripts/team-shooting.mjs';
 import { loadEngine, readJson, staticDir } from './support/engine.mjs';
+import { currentGames, EARLY_GAMES } from './support/early-season.mjs';
+import { currentSeason } from '../libs/ranker/scripts/splash/files.mjs';
 
 const KEYS = ['efgPct', 'tsPct', 'fg3Pct', 'fg3aRate', 'ftRate', 'oppEfgPct', 'oppFg3Pct', 'orbPct', 'drbPct', 'trbPct', 'rebPerGame', 'tovPct', 'oppTovPct'];
 // (lower is better)
@@ -67,10 +69,14 @@ const RANGE = {
   orbPct: [17, 38], drbPct: [62, 83], trbPct: [44, 56], rebPerGame: [36, 52], tovPct: [9, 18], oppTovPct: [9, 18],
 };
 const WIDEN = { regular: 0, post: 9, all: 2 };
+// (the season being played: a playoff run's sample while it's under a quarter of the season, 20 games (its
+// early-season grades' fullAt), and no range at all its first days in, a team a game or two: just a number)
+const GAMES = currentGames('nba');
+const CURRENT_WIDEN = GAMES < EARLY_GAMES ? Infinity : GAMES < 20 ? 9 : 0;
 
 test('nba team shooting: every team of every season and part has every stat, in range, the same on each coach row', () => {
   const dir = staticDir('nba');
-  const seasons = [[2026, dir], ...fs.readdirSync(path.join(dir, 'seasons')).filter((d) => /^\d{4}$/.test(d)).map((d) => [Number(d), path.join(dir, 'seasons', d)])];
+  const seasons = [[currentSeason('nba'), dir], ...fs.readdirSync(path.join(dir, 'seasons')).filter((d) => /^\d{4}$/.test(d)).map((d) => [Number(d), path.join(dir, 'seasons', d)])];
   assert.ok(seasons.some(([s]) => s === 2001), 'back to 2000-01');
   let rows = 0;
   for (const [season, folder] of seasons) {
@@ -83,7 +89,7 @@ test('nba team shooting: every team of every season and part has every stat, in 
         for (const key of KEYS) {
           const v = coach.stats[key];
           const [lo, hi] = RANGE[key];
-          const w = WIDEN[part];
+          const w = folder === dir ? Math.max(WIDEN[part], CURRENT_WIDEN) : WIDEN[part];
           assert.ok(typeof v === 'number' && v >= lo - w && v <= hi + w, `${season} ${part} ${coach.teamLogo} ${key}: ${v}`);
         }
         const same = JSON.stringify(KEYS.map((k) => coach.stats[k]));

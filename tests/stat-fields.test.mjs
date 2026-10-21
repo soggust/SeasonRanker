@@ -35,8 +35,9 @@ test('nba: every player row has Defensive Win Shares, and both parts add the two
       }
       const known = rows.filter((u) => u.stats.dws !== null).length;
       assert.ok(known >= rows.length * 0.95, `nba ${where(dir)} ${file}: dws for only ${known} of ${rows.length}`);
-      // (a full season's leader: a few wins at least)
-      if (file === 'skill-players.json') assert.ok(Math.max(...rows.map((u) => u.stats.dws ?? 0)) >= 2, `nba ${where(dir)}: no one with 2+ dws`);
+      // (a full season's leader: a few wins at least; a finished season's, as the NHL's faceoffs below: the
+      // season being played may be a game in)
+      if (file === 'skill-players.json' && path.basename(dir) !== 'StaticData') assert.ok(Math.max(...rows.map((u) => u.stats.dws ?? 0)) >= 2, `nba ${where(dir)}: no one with 2+ dws`);
       byPart[file] = new Map(rows.map((u) => [u.gsisId, u.stats.dws]));
     }
     const [reg, post, all] = PARTS.map((f) => byPart[f]);

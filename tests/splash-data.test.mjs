@@ -9,7 +9,8 @@ import path from 'node:path';
 import { buildOutcomes, roundsByChain, seriesOf } from '../libs/ranker/scripts/splash/outcomes.mjs';
 import { bestOf, mlbHittingGame, mlbPitchingGame, nbaGame, nflGame, nflTitle, nhlGoalieGame, nhlSkaterGame, superBowl } from '../libs/ranker/scripts/splash/best-game.mjs';
 import { milestonesOf } from '../libs/ranker/scripts/splash/milestones.mjs';
-import { seasonDir, siteSeasons, teamTable } from '../libs/ranker/scripts/splash/files.mjs';
+import { currentSeason, seasonDir, siteSeasons, teamTable } from '../libs/ranker/scripts/splash/files.mjs';
+import { earlyCurrent } from './support/early-season.mjs';
 import { build } from 'esbuild';
 import os from 'node:os';
 import { pathToFileURL } from 'node:url';
@@ -191,7 +192,8 @@ test('numbers.json: every season has one, a card id to a number as a string', ()
       const file = path.join(seasonDir(sport, season), 'numbers.json');
       assert.ok(existsSync(file), `${sport} ${season}: numbers.json`);
       const j = read(file);
-      assert.ok(Object.keys(j).length > 100, `${sport} ${season}: ${Object.keys(j).length} numbers`);
+      // (the season being played its first days in: the few teams that have played)
+      if (!(season === currentSeason(sport) && earlyCurrent(sport))) assert.ok(Object.keys(j).length > 100, `${sport} ${season}: ${Object.keys(j).length} numbers`);
       for (const [id, num] of Object.entries(j)) assert.match(num, /^\d{1,2}$/, `${sport} ${season} ${id}: ${num}`);
     }
   }

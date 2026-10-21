@@ -10,6 +10,7 @@ import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import path from 'node:path';
 import { ROOT, SPORTS, expandRows, loadEngine, readJson, seasonData, seasonDir, staticDir, unrankedService } from './support/engine.mjs';
+import { earlyCurrent } from './support/early-season.mjs';
 
 const ENTRY = path.join(import.meta.dirname, 'support', 'unranked-entry.ts');
 // (the sports with a pooled tab, by their sport.ts: the others' bundles aren't built here)
@@ -245,6 +246,7 @@ for (const sport of POOLING) {
   test(`${sport}: Min Games only leaves players out of the Top 50, adjusted or not, and the view shows its top 50`, async () => {
     const engine = await engineFor(sport);
     const { POOLED, SPORT, presetWeights, gridRankings, CURRENT_SEASON, SKILL_UNITS } = engine;
+    const early = earlyCurrent(sport);
     for (const pooled of Object.keys(POOLED)) {
       assert.equal(SPORT.listLimit?.(pooled), 50);
       for (const posAdj of [0, 50]) {
@@ -256,7 +258,8 @@ for (const sport of POOLING) {
         for (const list of lists.slice(1)) {
           const kept = new Set(list);
           assert.deepEqual(list, lists[0].filter((id) => kept.has(id)), `posAdj ${posAdj}: reordered`);
-          assert.ok(list.length < lists[0].length);
+          // (the season being played its first days in, everyone a game or two: no share leaves anyone out yet)
+          if (!early) assert.ok(list.length < lists[0].length);
         }
       }
       // (the list as the grid first opens it is longer than 50: the view's cap shows exactly 50)

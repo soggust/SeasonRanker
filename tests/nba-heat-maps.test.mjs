@@ -9,6 +9,7 @@ import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import path from 'node:path';
 import { loadEngine, readJson, staticDir } from './support/engine.mjs';
+import { earlyCurrent } from './support/early-season.mjs';
 import { ZONES, FIRST_SEASON, buildHeat, clockSeconds, gameOf, gameShots, isClutch, isThree, rimFit, shotZone } from '../apps/nba/scripts/shot-zones.mjs';
 
 const ENTRY = path.join(import.meta.dirname, 'support', 'nba-heat-entry.ts');
@@ -179,7 +180,10 @@ test('every heat-maps.json: its contract, its sums and under 300 KB', () => {
     assert.ok(d.season >= FIRST_SEASON, `${f}: from ${FIRST_SEASON} on`);
     if (!f.endsWith(path.join(STATIC, 'heat-maps.json'))) assert.equal(String(d.season), path.basename(path.dirname(f)));
     assert.deepEqual(d.fields.zone, ZONES);
-    assert.ok(d.games > 1050, `${d.season}: a season of games (${d.games})`);
+    // (a finished season's games; the season being played's so far)
+    const playing = f === path.join(STATIC, 'heat-maps.json');
+    if (playing) assert.ok(d.games >= 1, `${d.season}: its games so far (${d.games})`);
+    else assert.ok(d.games > 1050, `${d.season}: a season of games (${d.games})`);
     for (const part of [d.regular, d.post].filter(Boolean)) {
       const tried = (rows) => Object.values(rows).reduce((n, r) => n + (r.s ? r.s.reduce((x, v, i) => x + (i % 2 ? 0 : v), 0) : 0), 0);
       const league = tried({ league: part.league });
@@ -197,7 +201,8 @@ test('every heat-maps.json: its contract, its sums and under 300 KB', () => {
       assert.ok(rim > 0.2 && rim < 0.45, `${d.season}: ${Math.round(rim * 100)}% at the rim`);
       assert.ok(threes > 0.12 && threes < 0.5, `${d.season}: ${Math.round(threes * 100)}% threes`);
     }
-    assert.ok(Object.keys(d.l10.offenses).length >= (d.season < 2005 ? 29 : 30), `${d.season}: every team`);
+    // (every team: the season being played's once its first days are past, support/early-season.mjs)
+    if (!(playing && earlyCurrent('nba'))) assert.ok(Object.keys(d.l10.offenses).length >= (d.season < 2005 ? 29 : 30), `${d.season}: every team`);
   }
 });
 
@@ -233,13 +238,26 @@ function withFiles(run) {
 }
 
 const CURRENT = readJson(path.join(STATIC, 'heat-maps.json')).season;
+// (the latest finished season with its file: a whole season's maps, whatever the season being played has so far)
+const LAST = Math.max(...fs.readdirSync(path.join(STATIC, 'seasons')).filter((y) => /^\d{4}$/.test(y) && Number(y) < CURRENT && fs.existsSync(path.join(STATIC, 'seasons', y, 'heat-maps.json'))).map(Number));
 const curry = { id: 3975, gsisId: 'curryst01', name: 'Stephen Curry', teamLogo: 'assets/NBA_Icons/GSW.svg' };
 const gobert = { id: 3032976, gsisId: 'goberru01', name: 'Rudy Gobert', teamLogo: 'assets/NBA_Icons/MIN.svg' };
 const okc = { gsisId: 'TM-OKC', name: 'Oklahoma City Thunder', teamLogo: 'assets/NBA_Icons/OKC.svg' };
 const q = (player, position, extra = {}) => ({ player, position, season: CURRENT, split: 'regular', stat: null, side: null, ...extra });
+// (a big who has played this season and last: Gobert, else the season being played's first with shots both seasons)
+const bigNow = () => {
+  const now = readJson(path.join(STATIC, 'heat-maps.json')).regular?.players ?? {};
+  const last = readJson(path.join(STATIC, 'seasons', String(LAST), 'heat-maps.json')).regular?.players ?? {};
+  const has = (p) => now[String(p.id)]?.s && last[String(p.id)]?.s;
+  if (has(gobert)) return gobert;
+  const row = (readJson(path.join(STATIC, 'skill-players.json')).C ?? []).find(has);
+  return row ? { id: row.id, gsisId: row.gsisId, name: row.name, teamLogo: row.teamLogo } : gobert;
+};
 
 test("the NBA's maps from the season's file: a shooter, a big, a passer, a team both ways, the splits", withFiles(async () => {
+  // (the latest finished season's: a whole season, as the NHL's maps test reads its)
   const [shots, assists] = h.nbaHeatMaps({ current: (s) => s === CURRENT, live: () => false });
+  const q = (player, position, extra = {}) => ({ player, position, season: LAST, split: 'regular', stat: null, side: null, ...extra });
   const c = await shots.load(q(curry, 'PG'));
   assert.equal(c.surface, 'half-court');
   assert.deepEqual(c.cells.map((x) => x.id), h.ZONE_IDS);
@@ -285,20 +303,23 @@ test("the NBA's maps from the season's file: a shooter, a big, a passer, a team 
 
 test('last season behind a thin zone, while the season is under way; the matchup maps', withFiles(async () => {
   const [shots] = h.nbaHeatMaps({ current: (s) => s === CURRENT, live: (s) => s === CURRENT });
-  const c = await shots.load(q(gobert, 'C'));
+  const big = bigNow();
+  const c = await shots.load(q(big, 'C'));
   assert.ok(c.fallback?.length === 12, "last season's zones behind his");
   assert.equal(c.fallbackLabel, `${CURRENT - 2}-${String(CURRENT - 1).slice(2)}`);
   const [quiet] = h.nbaHeatMaps({ current: (s) => s === CURRENT, live: () => false });
-  assert.equal((await quiet.load(q(gobert, 'C'))).fallback, undefined, 'a finished season: none');
+  assert.equal((await quiet.load(q(big, 'C'))).fallback, undefined, 'a finished season: none');
   // (ESPN's abbreviations, the analysis's, to the site's codes)
   assert.equal(h.siteCode('GS'), 'GSW');
   assert.equal(h.siteCode('BOS'), 'BOS');
   assert.equal(h.teamCodeOf(okc), 'OKC');
-  const team = await h.nbaHeatMatchups(okc, 'TM', CURRENT, 'GS', true, false);
+  // (live, as sport.ts passes it while the season is under way: last season's zones behind a team or player
+  // a few games in, or none in yet)
+  const team = await h.nbaHeatMatchups(okc, 'TM', CURRENT, 'GS', true, true);
   assert.equal(team.length, 2, "its shots against Golden State's D, and theirs against its own");
   assert.equal(team[0].surface, 'half-court');
   assert.equal(team[0].overlayLabel, "GSW's D");
   assert.equal(team[1].defense, true);
-  const player = await h.nbaHeatMatchups(curry, 'PG', CURRENT, 'BOS', true, false);
+  const player = await h.nbaHeatMatchups(curry, 'PG', CURRENT, 'BOS', true, true);
   assert.equal(player.length, 1);
 }));
