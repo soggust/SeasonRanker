@@ -1,13 +1,13 @@
 {
  "sport": "nfl",
  "cursor": {
-  "adamscheftermirror.bsky.social": "2026-10-21T15:47:31.016Z",
+  "adamscheftermirror.bsky.social": "2026-10-21T17:02:26.985Z",
   "rapsheet.bsky.social": "2026-10-20T15:28:24.072Z",
   "nflnewsreposterbot.bsky.social": "2026-10-20T20:30:06.105Z",
   "insidenflnews.bsky.social": "2026-10-21T16:01:12.671Z",
-  "nflnewsposter.bsky.social": "2026-10-21T15:58:17.862Z",
-  "rotoworld-fb.bsky.social": "2026-10-21T15:19:39.000Z",
-  "rotowirenfl.bsky.social": "2026-10-21T16:12:11.000Z"
+  "nflnewsposter.bsky.social": "2026-10-21T16:59:56.643Z",
+  "rotoworld-fb.bsky.social": "2026-10-21T17:38:25.000Z",
+  "rotowirenfl.bsky.social": "2026-10-21T17:40:27.000Z"
  },
  "claims": [
   {
@@ -1829,6 +1829,123 @@
    "kind": "starting",
    "confidence": 0.85,
    "text": "J.J. McCarthy: Headed for Week 7 start \n\n https://www.rotowire.com/football/player/jj-mccarthy-17689"
+  },
+  {
+   "id": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3myflh5jkx32j|jameiswinston|none|benched",
+   "at": "2026-10-21T16:36:43.000Z",
+   "seen": "2026-10-21T17:42:17.133Z",
+   "handle": "rotowirenfl.bsky.social",
+   "post": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3myflh5jkx32j",
+   "player": "Jameis Winston",
+   "team": null,
+   "status": "none",
+   "kind": "benched",
+   "confidence": 0.8,
+   "text": "Jameis Winston: Ceding starting gig to McCarthy \n\n https://www.rotowire.com/football/player/jameis-winston-10037"
+  },
+  {
+   "id": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3myflnubqoy2e|jjmccarthy|none|starting",
+   "at": "2026-10-21T16:40:28.000Z",
+   "seen": "2026-10-21T17:42:17.133Z",
+   "handle": "rotoworld-fb.bsky.social",
+   "post": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3myflnubqoy2e",
+   "player": "J.J. McCarthy",
+   "team": null,
+   "status": "none",
+   "kind": "starting",
+   "confidence": 0.9,
+   "text": "Fowler: J.J. McCarthy will start Week 7 vs. Texans"
+  },
+  {
+   "id": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3myfm77zutu2g|adonaimitchell|limited|status",
+   "at": "2026-10-21T16:50:11.000Z",
+   "seen": "2026-10-21T17:42:17.133Z",
+   "handle": "rotowirenfl.bsky.social",
+   "post": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3myfm77zutu2g",
+   "player": "Adonai Mitchell",
+   "team": null,
+   "status": "limited",
+   "kind": "status",
+   "confidence": 0.85,
+   "text": "Adonai Mitchell: Returning to practice in limited fashion \n\n https://www.rotowire.com/football/player/adonai-mitchell-17668"
+  },
+  {
+   "id": "at://did:plc:fuqjc7x4gxvnwzksnlxwbe4x/app.bsky.feed.post/3myfmqnrrm22u|jjmccarthy|none|starting",
+   "at": "2026-10-21T16:59:56.643Z",
+   "seen": "2026-10-21T17:42:17.133Z",
+   "handle": "nflnewsposter.bsky.social",
+   "post": "at://did:plc:fuqjc7x4gxvnwzksnlxwbe4x/app.bsky.feed.post/3myfmqnrrm22u",
+   "player": "J.J. McCarthy",
+   "team": "NYG",
+   "status": "none",
+   "kind": "starting",
+   "confidence": 0.9,
+   "text": "[Fowler] The Giants plan to start J.J. McCarthy on Sunday vs. Houston. twitter.com/jfowlerespn/..."
+  },
+  {
+   "id": "at://did:plc:qre6zxbmr3ixhdmgsgdretb5/app.bsky.feed.post/3myfmv5akzb26|lamarjackson|questionable|status",
+   "at": "2026-10-21T17:02:26.985Z",
+   "seen": "2026-10-21T17:42:17.133Z",
+   "handle": "adamscheftermirror.bsky.social",
+   "post": "at://did:plc:qre6zxbmr3ixhdmgsgdretb5/app.bsky.feed.post/3myfmv5akzb26",
+   "player": "Lamar Jackson",
+   "team": "BAL",
+   "status": "questionable",
+   "kind": "status",
+   "confidence": 0.5,
+   "text": "No sign of Ravens QB Lamar Jackson at the start of Wednesday’s practice.\n\nOriginal post"
+  },
+  {
+   "id": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3myfnn6oabf2t|lamarjackson|questionable|status",
+   "at": "2026-10-21T17:15:53.000Z",
+   "seen": "2026-10-21T17:42:17.133Z",
+   "handle": "rotoworld-fb.bsky.social",
+   "post": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3myfnn6oabf2t",
+   "player": "Lamar Jackson",
+   "team": "BAL",
+   "status": "questionable",
+   "kind": "status",
+   "confidence": 0.5,
+   "text": "Lamar (ankle) not seen at the start of practice"
+  },
+  {
+   "id": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3myfnn7u55q2h|adonaimitchell|limited|return",
+   "at": "2026-10-21T17:15:55.000Z",
+   "seen": "2026-10-21T17:42:17.133Z",
+   "handle": "rotoworld-fb.bsky.social",
+   "post": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3myfnn7u55q2h",
+   "player": "Adonai Mitchell",
+   "team": null,
+   "status": "limited",
+   "kind": "return",
+   "confidence": 0.6,
+   "text": "Adonai Mitchell (finger) returns to practice"
+  },
+  {
+   "id": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3myfo5p57me2f|mayfield|limited|return",
+   "at": "2026-10-21T17:25:07.000Z",
+   "seen": "2026-10-21T17:42:17.133Z",
+   "handle": "rotoworld-fb.bsky.social",
+   "post": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3myfo5p57me2f",
+   "player": "Mayfield",
+   "team": null,
+   "status": "limited",
+   "kind": "return",
+   "confidence": 0.6,
+   "text": "Mayfield (thumb) returns to practice on Wednesday"
+  },
+  {
+   "id": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3myfovhvefu22|rasheerice|questionable|status",
+   "at": "2026-10-21T17:38:25.000Z",
+   "seen": "2026-10-21T17:42:17.133Z",
+   "handle": "rotoworld-fb.bsky.social",
+   "post": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3myfovhvefu22",
+   "player": "Rashee Rice",
+   "team": "KC",
+   "status": "questionable",
+   "kind": "status",
+   "confidence": 0.5,
+   "text": "Rashee Rice (hamstring) won't practice Wednesday"
   }
  ]
 }
