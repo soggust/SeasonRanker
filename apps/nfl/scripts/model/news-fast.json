@@ -2,12 +2,12 @@
  "sport": "nfl",
  "cursor": {
   "adamscheftermirror.bsky.social": "2026-10-21T18:22:34.940Z",
-  "rapsheet.bsky.social": "2026-10-20T15:28:24.072Z",
+  "rapsheet.bsky.social": "2026-10-21T18:45:29.066Z",
   "nflnewsreposterbot.bsky.social": "2026-10-20T20:30:06.105Z",
   "insidenflnews.bsky.social": "2026-10-21T16:01:12.671Z",
-  "nflnewsposter.bsky.social": "2026-10-21T16:59:56.643Z",
-  "rotoworld-fb.bsky.social": "2026-10-21T17:38:25.000Z",
-  "rotowirenfl.bsky.social": "2026-10-21T18:16:49.000Z"
+  "nflnewsposter.bsky.social": "2026-10-21T18:33:39.448Z",
+  "rotoworld-fb.bsky.social": "2026-10-21T18:36:07.000Z",
+  "rotowirenfl.bsky.social": "2026-10-21T18:39:49.000Z"
  },
  "claims": [
   {
@@ -1972,6 +1972,32 @@
    "kind": "status",
    "confidence": 0.6,
    "text": "David Montgomery: Still sidelined at practice \n\n https://www.rotowire.com/football/player/david-montgomery-13556"
+  },
+  {
+   "id": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3myfrulfbkm27|davidmontgomery|questionable|status",
+   "at": "2026-10-21T18:31:37.000Z",
+   "seen": "2026-10-21T18:47:14.430Z",
+   "handle": "rotoworld-fb.bsky.social",
+   "post": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3myfrulfbkm27",
+   "player": "David Montgomery",
+   "team": null,
+   "status": "questionable",
+   "kind": "status",
+   "confidence": 0.5,
+   "text": "David Montgomery (groin) begins Week 7 with DNP"
+  },
+  {
+   "id": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3myfs4nnqhx2r|warren|questionable|status",
+   "at": "2026-10-21T18:36:07.000Z",
+   "seen": "2026-10-21T18:47:14.430Z",
+   "handle": "rotoworld-fb.bsky.social",
+   "post": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3myfs4nnqhx2r",
+   "player": "Warren",
+   "team": null,
+   "status": "questionable",
+   "kind": "status",
+   "confidence": 0.5,
+   "text": "Warren (groin) not practicing to start Week 7"
   }
  ]
 }
