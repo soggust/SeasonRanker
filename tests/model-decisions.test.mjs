@@ -261,8 +261,9 @@ test('D26 users read "the Bot" and "the Book", never "the model" or "DraftKings"
   assert.doesNotMatch(page, /\b[Tt]he model\b|\bModel(['’]s)? /, 'book-page: the Bot');
   const lines = userText();
   assert.ok(lines.length > 10000, 'the files read');
-  // (DraftKings stays only as data: the ledger's book field and the ESPN provider it's read from)
-  const named = lines.filter(({ line }) => /DraftKings/.test(line) && !/book: (b\.book \?\? |o \? )?'DraftKings'|book \?\? 'DraftKings'|book: o \? 'DraftKings'/.test(line));
+  // (DraftKings stays only as data: the ledger's book field and the ESPN provider it's read from; and, D74, the books'
+  // names map the price's hover reads ("Best price: FanDuel", the one place a book is named) and a bet's book from it)
+  const named = lines.filter(({ line }) => /DraftKings/.test(line) && !/book: (b\.book \?\? |o \? )?'DraftKings'|book \?\? 'DraftKings'|book: o \? 'DraftKings'|^\s*dk: 'DraftKings',|BOOK_NAMES = \{ dk: 'DraftKings',|book: bookName\([^)]*\) \?\? 'DraftKings'/.test(line));
   assert.deepEqual(named.map((x) => x.at), [], 'the sportsbook is the Book');
   // (both are names: "the Bot", "the Book", capitalized mid-sentence too)
   const lower = lines.filter(({ line }) => /\b[Tt]he (bot|book)\b/.test(line));
@@ -1578,4 +1579,146 @@ test('D73 the two-band trial: LIKE and LOVE, LOCK off, labelled a trial; LOVE on
   assert.ok(T.trialWhy([['form', 0.01]]).startsWith('LOVE (trial): driven by proven pieces: '));
   const P = await import('../libs/ranker/scripts/model/picks.mjs');
   assert.equal(P.BANDS.high, 0.02, "the owner's 2% floor stands outside the trial");
+});
+
+// ---- D74: the best price across the US books ----
+import { BOOK_NAMES, FAIR_TOL, SHOP_TOL, US_BOOKS, bestPair, shopRows, sideBest } from '../libs/ranker/scripts/model/best-price.mjs';
+import { OTHER_BOOKS, WIDE_BOOKS, linesFromEvent } from '../libs/ranker/scripts/model/oddsapi.mjs';
+import { propsFromBodies } from '../libs/ranker/scripts/model/props.mjs';
+import { linesOf as mmaLinesOf, pricedFair as mmaPricedFair } from '../libs/ranker/scripts/model/mma-desk.mjs';
+import { TOTAL_ANCHORS, TOTAL_BOOKS, totalLinesOf } from '../libs/ranker/scripts/model/fights-totals.mjs';
+import { price as priceLines } from '../libs/ranker/scripts/model/desk.mjs';
+import { PRICE_NOTE } from '../libs/ranker/scripts/model/replay-record.mjs';
+
+// (an Odds API event: each book's h2h, spreads and totals as [home, away] / [over, under] decimal prices)
+const evOf = (books) => ({
+  id: 'e1',
+  home_team: 'Home Team',
+  away_team: 'Away Team',
+  commence_time: '2026-10-25T17:00:00Z',
+  bookmakers: Object.entries(books).map(([key, m]) => ({
+    key,
+    markets: [
+      ...(m.h2h ? [{ key: 'h2h', outcomes: [{ name: 'Home Team', price: m.h2h[0] }, { name: 'Away Team', price: m.h2h[1] }] }] : []),
+      ...(m.spreads ? [{ key: 'spreads', outcomes: [{ name: 'Home Team', point: m.spreads[0], price: m.spreads[1] }, { name: 'Away Team', point: -m.spreads[0], price: m.spreads[2] }] }] : []),
+      ...(m.totals ? [{ key: 'totals', outcomes: [{ name: 'Over', point: m.totals[0], price: m.totals[1] }, { name: 'Under', point: m.totals[0], price: m.totals[2] }] }] : []),
+    ],
+  })),
+});
+
+test('D74 the books: every US book one region names, Pinnacle never a book to bet at, one region still', () => {
+  assert.deepEqual([...US_BOOKS].sort(), [BOOK, ...OTHER_BOOKS].sort());
+  assert.ok(!US_BOOKS.includes('pinnacle') && WIDE_BOOKS.length <= 10 && WIDE_BOOKS.includes('pinnacle'));
+  assert.ok(TOTAL_BOOKS.length <= 10 && TOTAL_BOOKS.includes('fanduel') && !TOTAL_ANCHORS.includes('fanduel'), 'MMA: one region, the anchors unchanged');
+  assert.equal(BOOK, 'draftkings', "the home book: its line, ESPN's board, the fair's fallback");
+  assert.equal(BOOK_NAMES.fd, 'FanDuel');
+  assert.ok(MODEL_EPOCH >= '2026-10-21T00:00:00Z', 'MODEL_EPOCH bumped for the pricing change');
+});
+
+test('D74 the best pair: the highest price of the sane books at one line, the home book first at a tie; a stale or in-play line dropped; never worse than the home book', () => {
+  const b = bestPair([{ book: 'dk', a: 350, b: -417 }, { book: 'fd', a: 320, b: -400 }, { book: 'br', a: 350, b: -417 }, { book: 'mgm', a: 230, b: -286 }, { book: 'pin', a: 400, b: -300 }]);
+  assert.deepEqual(b.a, { odds: 350, book: 'dk' }, 'the tie names the home book');
+  assert.deepEqual(b.b, { odds: -400, book: 'fd' });
+  assert.equal(b.n, 3, "BetMGM's in-play 230/-286 out (past FAIR_TOL of the median), Pinnacle never a US book");
+  assert.ok(FAIR_TOL <= 0.05);
+  assert.equal(bestPair([{ book: 'fd', a: 120, b: 120 }]), null, 'a negative-vig pair is no price');
+  assert.deepEqual(sideBest({ odds: -115, book: 'fd' }, -110), { odds: -110, book: 'dk' });
+  assert.deepEqual(sideBest({ odds: -105, book: 'fd' }, -110), { odds: -105, book: 'fd' });
+});
+
+test("D74 live game lines: each side's best US price at the Book's own line, the fair Pinnacle's as before, the Book's own prices kept", () => {
+  const l = linesFromEvent(evOf({ draftkings: { h2h: [1.91, 1.91], spreads: [-3, 1.91, 1.91], totals: [45.5, 1.91, 1.91] }, fanduel: { h2h: [1.95, 1.87], spreads: [-3.5, 2.05, 1.8], totals: [45.5, 1.87, 1.95] }, pinnacle: { h2h: [2.1, 1.8], spreads: [-3, 1.95, 1.95], totals: [45.5, 1.95, 1.95] } }));
+  assert.deepEqual(l.h2h.prices, { home: -110, away: -110 }, "the Book's own");
+  assert.deepEqual(l.h2h.best, { home: { odds: -105, book: 'fd' }, away: { odds: -110, book: 'dk' } }, 'Pinnacle never the price');
+  assert.deepEqual(l.spreads.best.home, { odds: -110, book: 'dk' }, "FanDuel's other line (-3.5) left out");
+  assert.deepEqual(l.totals.best.under, { odds: -105, book: 'fd' });
+  assert.ok(Math.abs(l.h2h.fair - 1 / 2.1 / (1 / 2.1 + 1 / 1.8)) < 1e-9, "the fair Pinnacle's no-vig, not the best pair's");
+  // (the desk prices the side at the best, keeps the Book's own as dk for the fair and the residual's inputs; ESPN's board none)
+  const lines = { ml: { home: -110, away: -110 }, spread: { home: { line: null, odds: null }, away: { line: null, odds: null } }, total: { line: null, over: null, under: null }, fair: { ml: 0.46 }, best: { ml: l.h2h.best } };
+  const [ml] = priceLines({}, { margin: 1, total: 45 }, lines, { sigma: 13, sigmaT: 10 });
+  assert.equal(ml.sides[0].odds, -105);
+  assert.equal(ml.sides[0].book, 'fd');
+  assert.equal(ml.sides[0].dk, -110);
+  assert.equal(ml.sides[0].fair, 0.46);
+  const [espn] = priceLines({}, { margin: 1, total: 45 }, { ...lines, best: undefined }, { sigma: 13, sigmaT: 10 });
+  assert.equal(espn.sides[0].odds, -110);
+  assert.equal(espn.sides[0].book, undefined, "ESPN's board: the Book's price, no book claimed");
+});
+
+test("D74 live props: each side the best US price at the Book's line, over and under the Book's own for the fair", () => {
+  const body = {
+    bookmakers: [
+      { key: 'draftkings', markets: [{ key: 'player_points', outcomes: [{ name: 'Over', description: 'A B', point: 20.5, price: 1.87 }, { name: 'Under', description: 'A B', point: 20.5, price: 1.95 }] }] },
+      { key: 'fanduel', markets: [{ key: 'player_points', outcomes: [{ name: 'Over', description: 'A B', point: 20.5, price: 1.95 }, { name: 'Under', description: 'A B', point: 20.5, price: 1.87 }] }] },
+      { key: 'betmgm', markets: [{ key: 'player_points', outcomes: [{ name: 'Over', description: 'A B', point: 21.5, price: 2.2 }, { name: 'Under', description: 'A B', point: 21.5, price: 1.7 }] }] },
+    ],
+  };
+  const x = propsFromBodies('nba', [body]).get('A B|pts');
+  assert.equal(x.over, -115);
+  assert.deepEqual(x.best.over, { odds: -105, book: 'fd' });
+  assert.deepEqual(x.best.under, { odds: -105, book: 'dk' });
+});
+
+test("D74 MMA: the moneyline and the round totals at the best US price, the fair from the Book's own pair", () => {
+  const ev = {
+    id: 'm',
+    home_team: 'A',
+    away_team: 'B',
+    commence_time: '2026-10-25T02:00:00Z',
+    bookmakers: [
+      { key: 'draftkings', markets: [{ key: 'h2h', outcomes: [{ name: 'A', price: 1.5 }, { name: 'B', price: 2.6 }] }, { key: 'totals', outcomes: [{ name: 'Over', point: 2.5, price: 1.9 }, { name: 'Under', point: 2.5, price: 1.9 }] }] },
+      { key: 'fanduel', markets: [{ key: 'h2h', outcomes: [{ name: 'A', price: 1.5 }, { name: 'B', price: 2.75 }] }, { key: 'totals', outcomes: [{ name: 'Over', point: 2.5, price: 1.95 }, { name: 'Under', point: 2.5, price: 1.85 }] }] },
+      { key: 'betonlineag', markets: [{ key: 'h2h', outcomes: [{ name: 'A', price: 1.6 }, { name: 'B', price: 3.0 }] }] },
+    ],
+  };
+  const l = mmaLinesOf({}, { ev, crossed: false });
+  assert.deepEqual(l.dk, { home: -200, away: 160 });
+  assert.equal(l.odds.away, 175);
+  assert.deepEqual(l.books, { home: 'dk', away: 'fd' }, 'an offshore book never the price');
+  assert.equal(mmaPricedFair({ ...l, fair: NaN }, null), mmaPricedFair({ odds: l.dk, fair: NaN }, null), "the fair read off the Book's own pair");
+  const t = totalLinesOf(ev);
+  assert.equal(t.odds.over, -105);
+  assert.equal(t.books.over, 'fd');
+  assert.deepEqual(t.dk, { over: -111, under: -111 });
+});
+
+test("D74 the replay: the best US price only where the deep history has the other books at the row's own snapshot; else the Book's, and said so", () => {
+  const T = Date.parse('2022-10-16T16:00:00Z');
+  const deep = {
+    snaps: [new Date(T).toISOString()],
+    lines: new Map([
+      [
+        'o1',
+        [
+          { ts: T - 864e5, book: 'fd', market: 'h2h', line: null, a: 130, b: -150 },
+          { ts: T, book: 'dk', market: 'h2h', line: null, a: 120, b: -140 },
+          { ts: T, book: 'czr', market: 'spreads', line: -3, a: -105, b: -115 },
+        ],
+      ],
+    ]),
+  };
+  const rows = [
+    { event: 'g1', market: 'ml', line: null, at: T + 5 * 6e4, overOdds: 120, underOdds: -140 },
+    { event: 'g1', market: 'ml', line: null, at: T + SHOP_TOL + 6e4, overOdds: 120, underOdds: -140 },
+    { event: 'g1', market: 'spread', line: -3.5, at: T, overOdds: -110, underOdds: -110 },
+  ];
+  const s = shopRows(rows, deep, () => 'o1');
+  assert.deepEqual(rows[0].shop, { over: 130, overBook: 'fd', under: -140, underBook: 'dk', n: 2 }, "FanDuel's price as it stood at the snapshot (change-only rows)");
+  assert.equal(rows[1].shop, undefined, "a snapshot further than SHOP_TOL: the Book's");
+  assert.equal(rows[2].shop, undefined, 'another line: none');
+  assert.deepEqual(s, { shopped: 1, better: 1 });
+  const crossed = [{ event: 'g1', market: 'ml', line: null, at: T, overOdds: -140, underOdds: 120, crossed: true }];
+  shopRows(crossed, deep, () => 'o1');
+  assert.deepEqual([crossed[0].shop.over, crossed[0].shop.under], [-140, 130], 'an MMA row on the other frame read swapped');
+  assert.match(PRICE_NOTE, /best US book's price.*else the Book's own/);
+});
+
+test("D74 the board: a side shows its best price and its book (pb); ESPN's board none", () => {
+  const markets = [{ market: 'ml', sides: [{ side: 'home', line: null, odds: -105, dk: -110, book: 'fd', model: 0.55, fair: 0.5 }, { side: 'away', line: null, odds: -110, dk: -110, book: 'dk', model: 0.45, fair: 0.5 }] }];
+  const k = boardMarkets(markets, () => 0.5);
+  assert.equal(k.ml[0].o, -105);
+  assert.equal(k.ml[0].pb, 'fd');
+  assert.equal(k.ml[1].pb, 'dk');
+  const espn = boardMarkets([{ market: 'ml', sides: markets[0].sides.map(({ dk, book, ...s }) => ({ ...s, odds: dk })) }], () => 0.5);
+  assert.equal(espn.ml[0].pb, undefined);
 });

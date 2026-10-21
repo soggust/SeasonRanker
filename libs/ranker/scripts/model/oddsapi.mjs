@@ -20,6 +20,10 @@
 //          fair on the lines, the props, the bets, the CHECKs and the board, for the data only. Nothing is
 //          priced off it yet (the desk's book's fair, Pinnacle's for game lines, as before) until the graded rows
 //          show it the better chance; the other books missing, none, and nothing changes
+//   best   D74 (the owner, 2026-10-20): each side is bet and shown at the best price among the US books at the desk's
+//          book's own line (best-price.mjs bestPair: sane pairs only, Pinnacle never), never worse than the desk's
+//          book's; the fair stays Pinnacle's (else the desk's book's own pair). The first props ask names the other
+//          books for the markets ESPN's free board already lists (run.mjs), so they still add no market of their own
 //   usage  each call's cost and the balance after it (the API's x-requests-last and x-requests-remaining) land
 //          in .cache/model/odds-usage.json, by feature (lines, props, history); each sport's state gets a summary
 //   budget the cycle is a month from its first call here (an assumption: the API resets on the plan's billing
@@ -41,6 +45,7 @@
 import path from 'node:path';
 import { CACHE, readJson, writeJson } from './sources.mjs';
 import { BOOK } from './leagues.mjs';
+import { bestPair, codeOf, sideBest } from './best-price.mjs';
 
 const API = 'https://api.the-odds-api.com/v4';
 const USAGE = path.join(CACHE, 'odds-usage.json');
@@ -480,7 +485,16 @@ export function linesFromEvent(ev) {
       .filter(at)
       .map((x) => sides.map((s) => x[s].odds));
     const consensus = consensusOf(pairs, sides.map((s) => mine[s].odds), sides);
-    out[key] = { line: mine[sides[0]].line, prices: Object.fromEntries(sides.map((s) => [s, mine[s].odds])), fair: pin ?? own, own, sharp: pin, consensus };
+    // (D74: each side's best price across the US books at the desk's book's line (best-price.mjs bestPair: a sane
+    // pair at the same line, Pinnacle never), never worse than the desk's book's own; prices and the fair stay its own)
+    const cands = (ev.bookmakers ?? [])
+      .filter((b) => codeOf(b.key))
+      .map((b) => [codeOf(b.key), read(b, key)])
+      .filter(([, x]) => at(x))
+      .map(([code, x]) => ({ book: code, a: x[sides[0]].odds, b: x[sides[1]].odds }));
+    const bp = bestPair(cands);
+    const best = { [sides[0]]: sideBest(bp?.a, mine[sides[0]].odds), [sides[1]]: sideBest(bp?.b, mine[sides[1]].odds) };
+    out[key] = { line: mine[sides[0]].line, prices: Object.fromEntries(sides.map((s) => [s, mine[s].odds])), best, fair: pin ?? own, own, sharp: pin, consensus };
   }
   return out;
 }

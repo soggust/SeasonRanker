@@ -4,6 +4,7 @@ import type { DocumentData, Firestore, Query, QueryDocumentSnapshot, Timestamp }
 import { firestoreSdk } from '@ranker/core/firebase';
 import { AccountService } from '../account.service';
 import { Leaderboard, ParlayLeg, PlayBet, SETTLED_PAGE, START, Selection, TallyDoc, parlayOdds, parlayProblem, selectionKey, stakeProblem, tallyFrom, tooFarOut } from './wallet-math';
+import { BOOK_NAMES, HOME_BOOK } from '../../book/book-names';
 export type { LifetimeTally, TallyDoc } from './wallet-math';
 
 // (the open bets listened to: far more than anyone holds at once; the settled history a page at a time,
@@ -146,6 +147,9 @@ function pickFields(f: typeof import('firebase/firestore'), s: Selection): Recor
   // (a preview prop: no price was posted, so its -110 is assumed, its line locked as the board showed it; the
   // rules hold it to a prop at -110 that isn't the bot's, the settler checks its line against ESPN's)
   if (s.preview && s.market === 'prop') out['preview'] = true;
+  // (the book whose price it was taken at, its short code (book-names.ts; the best of the US books, the owner's
+  // 2026-10-20), the home book's where it isn't known: firestore.rules holds it to a string of 8 at most)
+  out['book'] = s.book && BOOK_NAMES[s.book] ? s.book : HOME_BOOK;
   return out;
 }
 

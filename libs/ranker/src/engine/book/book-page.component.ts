@@ -28,6 +28,7 @@ import { BEST_BETS_LABEL, MenuAll, MenuDay, allOf, allRow, MenuGame, MenuGameIn,
 import { darkLogoOf, teamLook } from '../team-look';
 import { LiveService } from './live.service';
 import { QuoteSources, joinSuggestions, quoteOf, suggestionsOf, withLive } from './suggestions';
+import { HOME_BOOK, bookCode, withBookTitle } from './book-names';
 import type { LivePicks } from './live-tab.component';
 import type { ModelBoard } from '../account/wallet/lines.service';
 import type { GameBoard } from '../account/wallet/wallet-math';
@@ -1301,7 +1302,20 @@ export class BookPageComponent implements OnInit, OnDestroy {
     if (!r.game || !event) return null;
     // (at the live price where the page has one: the Bot's locked price may be gone)
     const at = Number.isFinite(r.livePrice) && r.livePrice ? { ...r, price: r.livePrice } : r;
-    return botSelection({ sport: r.sport, event, matchup: r.game.matchup, start: r.game.kickoff ?? r.game.date }, at, this.desk());
+    const sel = botSelection({ sport: r.sport, event, matchup: r.game.matchup, start: r.game.kickoff ?? r.game.date }, at, this.desk());
+    const book = this.rowBook(r);
+    return sel && book ? { ...sel, book } : sel;
+  }
+  // (the book whose price the button shows where it's the best of the US books: the live one's (suggestions.ts
+  // quoteOf), else the Bot's own bet's book where it isn't the home book's; none, the free board's, no best claimed)
+  private rowBook(r: BetRow): string | null {
+    if (Number.isFinite(r.livePrice) && r.livePrice) return r.liveBook ?? null;
+    const code = bookCode(r.book);
+    return code && code !== HOME_BOOK ? code : null;
+  }
+  // (the row's price button's hover: where its live price came from, and the book's ("Best price: FanDuel"))
+  priceTitle(r: BetRow): string {
+    return withBookTitle(r.liveFrom ? (r.liveFrom === 'espn' ? 'The latest price at the Book' : 'The latest price on the Bot’s board') : null, this.rowBook(r));
   }
   // (the price the row's button shows: the live one where the page has it, else the row's own)
   priceText(r: BetRow): string | undefined {

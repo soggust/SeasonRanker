@@ -45,7 +45,7 @@ const STREAK_CAP = 60;
 export const GAME_HOURS = 3;
 // (a clean open: seen after both sides' previous game ended, that game's start plus this)
 const PREV_GAME_HOURS = 4;
-export const PRICE_NOTE = "the Book's price nearest the placement (the archive's open or close), never a shopped price";
+export const PRICE_NOTE = "the best US book's price at the placement where the deep history has the other books at that snapshot (D74), else the Book's own (the archive's open or close)";
 export const PLACEMENT_NOTE = 'a clean open inside the window where the edge held to the lineup risk clears the price, else the close';
 // (MMA, D37: the Bot bets a bout at the archive's first sighting where its lead band's price clears, two weeks or more
 // out on a soft opening line; the paper edge there is largest where real money is hardest to get down)
@@ -139,15 +139,20 @@ export function walkRisk(V, pairs) {
 }
 
 // The Bot's side of a row and its numbers at the chance p it is bet at: the larger return's side, its price, its
-// Kelly (desk.mjs stakeKelly), its return, its edge before the vig
+// Kelly (desk.mjs stakeKelly), its return, its edge before the vig. D74: the price is the best US book's where the
+// deep history has the other books at the row's own snapshot (best-price.mjs shopRows: x.shop, never worse than
+// DraftKings'), its book on the side (book, a code); elsewhere DraftKings' as before
 function sideOf(V, x, p) {
-  const evA = p * dec(x.overOdds) - 1;
-  const evB = (1 - p) * dec(x.underOdds) - 1;
+  const oA = fin(x.shop?.over) ? x.shop.over : x.overOdds;
+  const oB = fin(x.shop?.under) ? x.shop.under : x.underOdds;
+  const evA = p * dec(oA) - 1;
+  const evB = (1 - p) * dec(oB) - 1;
   const over = evA >= evB;
   const pS = over ? p : 1 - p;
   const fS = over ? x.f : 1 - x.f;
-  const odds = over ? x.overOdds : x.underOdds;
-  return { over, pS, fS, odds, ev: over ? evA : evB, edge: pS - fS, kelly: V.desk.stakeKelly(odds, pS) };
+  const odds = over ? oA : oB;
+  const book = x.shop ? (over ? x.shop.overBook : x.shop.underBook) : null;
+  return { over, pS, fS, odds, ...(book ? { book } : {}), ev: over ? evA : evB, edge: pS - fS, kelly: V.desk.stakeKelly(odds, pS) };
 }
 
 // (the bet's words and its game's, as the Book's rows read them)
@@ -683,7 +688,7 @@ function betOf(x, sd, { units, band, practice, timing, fb = null, names, surviva
   }
   const profit = res === 'W' ? r2(units * (dec(sd.odds) - 1)) : res === 'L' ? -units : 0;
   const w = wordsOf(x, sd.over, names);
-  return { factsAt: fin(x.factsAt) ? x.factsAt : null, id: x.key ?? x.id, event: String(x.event), sport: x.sport, season: x.season, market: x.market, stat: x.stat, line: x.line ?? null, side: sd.over ? (x.market === 'prop' || x.market === 'total' ? 'over' : 'home') : x.market === 'prop' || x.market === 'total' ? 'under' : 'away', pick: w.pick, matchup: w.matchup, player: w.player, odds: sd.odds, p: r4(sd.pS), fair: r4(sd.fS), kelly: r4(sd.kelly), band, practice, units, res, profit, timing, beat: fb ? fb.beat : null, clv: fb ? fb.clv : null, survival: r4(survival), t: x.t, at: fin(x.at) ? x.at : timing === 'open' ? x.t - 24 * 36e5 : x.t - 36e5 };
+  return { factsAt: fin(x.factsAt) ? x.factsAt : null, id: x.key ?? x.id, event: String(x.event), sport: x.sport, season: x.season, market: x.market, stat: x.stat, line: x.line ?? null, side: sd.over ? (x.market === 'prop' || x.market === 'total' ? 'over' : 'home') : x.market === 'prop' || x.market === 'total' ? 'under' : 'away', pick: w.pick, matchup: w.matchup, player: w.player, odds: sd.odds, ...(sd.book ? { book: sd.book } : {}), p: r4(sd.pS), fair: r4(sd.fS), kelly: r4(sd.kelly), band, practice, units, res, profit, timing, beat: fb ? fb.beat : null, clv: fb ? fb.clv : null, survival: r4(survival), t: x.t, at: fin(x.at) ? x.at : timing === 'open' ? x.t - 24 * 36e5 : x.t - 36e5 };
 }
 
 // The file's content from the replayed bets (practice picks among them, flagged) and the rows that passed
@@ -721,7 +726,7 @@ export function summarize(sport, bets, passed, { epoch, now, flags, rows, season
   const decided = graded.filter((b) => b.res !== 'P');
   let n = 0;
   while (n < decided.length && decided[n].res === decided[0].res) n++;
-  const entry = (b) => ({ id: b.id, sport: b.sport, season: b.season, pick: b.pick, matchup: b.matchup, market: WALLET_MARKET[b.market] ?? b.market, player: b.player, stat: b.stat, line: b.line, side: b.side, odds: b.odds, p: b.p, fair: b.fair, kelly: b.kelly, band: b.band, practice: b.practice, units: b.units, res: b.res, profit: b.profit, timing: b.timing, beat: b.beat, clv: b.clv ?? null, survival: b.survival, at: new Date(b.at).toISOString(), factsAt: fin(b.factsAt) ? new Date(b.factsAt).toISOString() : null, start: new Date(b.t).toISOString(), settled: new Date(settledAt(b)).toISOString() });
+  const entry = (b) => ({ id: b.id, sport: b.sport, season: b.season, pick: b.pick, matchup: b.matchup, market: WALLET_MARKET[b.market] ?? b.market, player: b.player, stat: b.stat, line: b.line, side: b.side, odds: b.odds, ...(b.book ? { book: b.book } : {}), p: b.p, fair: b.fair, kelly: b.kelly, band: b.band, practice: b.practice, units: b.units, res: b.res, profit: b.profit, timing: b.timing, beat: b.beat, clv: b.clv ?? null, survival: b.survival, at: new Date(b.at).toISOString(), factsAt: fin(b.factsAt) ? new Date(b.factsAt).toISOString() : null, start: new Date(b.t).toISOString(), settled: new Date(settledAt(b)).toISOString() });
   const all = tallyOf(real);
   return {
     v: REPLAY_V,
@@ -765,6 +770,9 @@ export function summarize(sport, bets, passed, { epoch, now, flags, rows, season
       // (MMA's bouts are priced by the fights model whole: every season full)
       context: sport === 'mma' ? { full: [...seasonsAll].sort(), ratingsOnly: [] } : { full: [...seasonsAll].filter((s) => seasonsWithProps.has(s)).sort(), ratingsOnly: [...seasonsAll].filter((s) => !seasonsWithProps.has(s)).sort() },
       price: PRICE_NOTE,
+      // (D74: the bets placed where the deep history had the other US books at the snapshot (shopped), those at a better
+      // price than DraftKings' (better), and the rest at DraftKings' alone)
+      shop: { shopped: bets.filter((b) => b.book).length, better: bets.filter((b) => b.book && b.book !== 'dk').length, dk: bets.filter((b) => !b.book).length },
       placement: sport === 'mma' ? MMA_PLACEMENT_NOTE : PLACEMENT_NOTE,
       split: 'games that start before the epoch replayed; the live ledger from the epoch on',
       notSeen: "the live desk's CLV gates, CHECKs, research and news",
@@ -815,7 +823,9 @@ export function caveatOf(r) {
   const parts = [`Today's Bot replayed on every priced game before its latest version: ${t.open ?? 0} bets at a clean open where its edge survived the lineup risk, ${t.close ?? 0} at the close`];
   if (r.sport === 'mma' && ctx.full?.length) parts.push(`the fights model ${seasons(ctx.full)}`);
   else if (ctx.full?.length) parts.push(`full context (props and lines) ${seasons(ctx.full)}${ctx.ratingsOnly?.length ? `, lines by the ratings alone ${seasons(ctx.ratingsOnly)}` : ''}`);
-  parts.push("the Book's price nearest the placement, never shopped; the live desk's gates, CHECKs and research can't be replayed");
+  // (D74: the bets at the best US price where the history has every book at the bet's snapshot)
+  const shop = r.flags?.shop;
+  parts.push(`${shop?.shopped ? `the best US price where the history has every book at that moment (${shop.shopped} of ${(t.open ?? 0) + (t.close ?? 0)} bets), else the Book's own` : "the Book's price nearest the placement"}; the live desk's gates, CHECKs and research can't be replayed`);
   return `${parts.join('; ')}.`;
 }
 

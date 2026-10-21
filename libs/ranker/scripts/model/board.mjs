@@ -10,7 +10,9 @@
 //     a, h    the away and home teams: [abbreviation, ESPN team id]
 //     at      when its game lines were last priced
 //     k       its game markets, each a list of its two sides: spread [home, away], total [over, under],
-//             ml [home, away]; a side { s: side, l: line (null on a moneyline), o: price, c: the bot's trusted
+//             ml [home, away]; a side { s: side, l: line (null on a moneyline), o: price (D74: the best US book's at the
+//             Book's line where a paid quote brought one, pb its book's code, best-price.mjs; no pb: ESPN's board, the
+//             Book's own), c: the bot's trusted
 //             chance it wins, ks: its Kelly score (picks.mjs kellyOf, the picks' order), b: its band (picks.mjs
 //             level: lock, high (LOVE), medium (LIKE), low (PASS); check where the market is a CHECK the page
 //             shows, on the model's side: never a game market's now, the gap's a shadow (checks.mjs shadowOf),
@@ -25,7 +27,8 @@
 //             confidence layer's quality of the side (confidence.mjs qualityOf, D52: the stake's Kelly at its
 //             calibrated chance), and cap 'high' (a LOVE at most) or 'medium' where its tiers hold the side }
 //     p      its props, each { n: player, id: ESPN athlete id, t: his team's ESPN id, k: the stat's key, lb: its
-//             label, l: line, o: [over price, under price] (null a side unknown), c: the bot's trusted chance
+//             label, l: line, o: [over price, under price] (null a side unknown; D74 the best US book's, pb [over's book,
+//             under's] where a paid quote brought them), c: the bot's trusted chance
 //             over, ks: [over's Kelly, under's] and b: [over's band, under's] (null where unpriced), sk: 1 where a
 //             guard has the bot pass on it (his status, the line's move, a layoff, a gap or a small role CHECK's
 //             shadow (checks.mjs shadowOf, as the run judges it): its bands PASS), sw: a shadow's passAs
@@ -222,10 +225,10 @@ export function boardMarkets(markets, trustOf, consensus = null, ctx = null, { g
       // (the confidence layer's read of the side, in the over (home) frame: the first side's chances, both prices)
       const first = i === 0;
       const fl = (v) => (first ? v : 1 - v);
-      const cq = pass || !confidence || s.anchored === false ? null : sideQuality(confidence, { sport: ctx?.sport, market: m.market, stat: m.market, line: s.line ?? null, side: first ? 'home' : 'away', f: fl(s.fair), raw: fl(s.model), pCur: fl(p), p: fl(p), overOdds: m.sides[0].odds, underOdds: m.sides[1].odds, t: ctx?.t, at: ctx?.at, hours: ctx?.hours, trust: trustOf(m.market), named: s.named });
+      const cq = pass || !confidence || s.anchored === false ? null : sideQuality(confidence, { sport: ctx?.sport, market: m.market, stat: m.market, line: s.line ?? null, side: first ? 'home' : 'away', f: fl(s.fair), raw: fl(s.model), pCur: fl(p), p: fl(p), overOdds: m.sides[0].dk ?? m.sides[0].odds, underOdds: m.sides[1].dk ?? m.sides[1].odds, t: ctx?.t, at: ctx?.at, hours: ctx?.hours, trust: trustOf(m.market), named: s.named });
       const cap = lowerCap(capped.cap ?? null, cq?.cap ?? null);
       const cr = capped.cr ?? cq?.cr ?? null;
-      return { s: s.side, l: m.market === 'ml' ? null : s.line, o: s.odds, c: round(p, 3), ks, b: bandOf(ks, p, ev, { check: s.side === checkSide && !off, pass, cap }), ...(sr ? { sr } : {}), ...(pass || !cap ? {} : { cap, ...(cr ? { cr } : {}) }), ...(cq && Number.isFinite(cq.q) ? { q: cq.q } : {}), ...consensusOf(consensus?.[m.market], s.side, s0.side), _p: p, _ev: ev };
+      return { s: s.side, l: m.market === 'ml' ? null : s.line, o: s.odds, ...(s.book ? { pb: s.book } : {}), c: round(p, 3), ks, b: bandOf(ks, p, ev, { check: s.side === checkSide && !off, pass, cap }), ...(sr ? { sr } : {}), ...(pass || !cap ? {} : { cap, ...(cr ? { cr } : {}) }), ...(cq && Number.isFinite(cq.q) ? { q: cq.q } : {}), ...consensusOf(consensus?.[m.market], s.side, s0.side), _p: p, _ev: ev };
     });
     // (each side's why: the edge sides' and the Bot's side's, the header's w)
     const bot = botIndex(rows.map((x) => x.ks));
@@ -301,7 +304,8 @@ export function boardProp(x, at, { gate = null, explain = null, confidence = nul
   const t = start ? Date.parse(start) : NaN;
   const side = (k) => {
     const s = by[k];
-    const o = Number.isFinite(prices[k]) ? prices[k] : null;
+    // (D74: the side's best US price where this run's quote brought one (its book on pb), else the Book's own)
+    const o = Number.isFinite(prices[k]) ? (Number.isFinite(by[k]?.odds) && by[k]?.book ? by[k].odds : prices[k]) : null;
     const c = capOn(k);
     if (!s || o === null) return { o, ks: null, b: null, c };
     const ks = kellyOf(o, s.p);
@@ -358,6 +362,7 @@ export function boardProp(x, at, { gate = null, explain = null, confidence = nul
     lb: x.prop.stat.label,
     l: x.prop.line,
     o: [over.o, under.o],
+    ...(by.over?.book || by.under?.book ? { pb: [by.over?.book ?? null, by.under?.book ?? null] } : {}),
     c: by.over ? round(by.over.p, 3) : by.under ? round(1 - by.under.p, 3) : null,
     ks: [over.ks, under.ks],
     b: [over.b, under.b],

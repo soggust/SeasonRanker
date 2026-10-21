@@ -8,6 +8,7 @@ import { PREVIEW_ODDS, PROPS_WINDOW_HOURS, movementText } from './preview-props'
 import { WalletService } from './wallet.service';
 import { BoardTeam, GameBoard, PlayMarket, Price, Selection, Tier, bettable, lineText, oddsText, pickWords, selectionKey } from './wallet-math';
 import { matchupName } from '../../book/game-menu';
+import { HOME_BOOK, bookCode, withBookTitle } from '../../book/book-names';
 
 // (when a game's props window opens, in the reader's time: "Tue 1:00 PM")
 const openText = (t: number): string =>
@@ -29,6 +30,8 @@ export interface BotPick {
   market: string;
   pick: string;
   chance?: number;
+  // (the book whose price the Bot took, its name as picks.json writes it: 'FanDuel')
+  book?: string;
 }
 
 // (a game price's word from the bot: its pick there, else its betting board's band and Kelly score at that line)
@@ -71,6 +74,8 @@ export interface PropSide {
   bot: boolean;
   // (the desk's cap on the side, the board's (cap, D46))
   cap?: 'medium' | 'high' | null;
+  // (the book whose price it is where the board shopped it (board.json pb): its hover's "Best price: <book>")
+  pb?: string;
 }
 
 // (a prop on the board: a player's stat at its line, over and under; pick the bot's on it, where it made one)
@@ -545,7 +550,7 @@ export class GameLinesComponent implements OnInit, OnDestroy {
         : c.kelly !== null
         ? ` · The Bot: ${c.tier?.toUpperCase()}, Kelly ${this.kellyText(c.kelly)}${c.chance != null ? `, ${Math.round(c.chance * 100)}% to win` : ''}${c.reason ? ` (it passes: ${c.reason})` : ''}`
         : '';
-    return `${at}${botWords}${this.open ? '' : ' · Betting closed: the game has started'}`;
+    return withBookTitle(`${at}${botWords}${this.open ? '' : ' · Betting closed: the game has started'}`, price.pb);
   }
 
   // A price's key on the slip (lit while it's on it)
@@ -571,10 +576,11 @@ export class GameLinesComponent implements OnInit, OnDestroy {
     const botSide = pick?.side ?? (x.bk === 'check' && hidden ? null : x.bot) ?? null;
     const sides = (['over', 'under'] as const).map((side, i): PropSide => {
       const bot = botSide === side;
-      if (!(bot && pick) && x.b[i] === 'check' && hidden) return { side, odds: x.o[i], kelly: null, tier: 'pass', bot: false };
+      const pb = x.pb?.[i] ? { pb: x.pb[i] as string } : {};
+      if (!(bot && pick) && x.b[i] === 'check' && hidden) return { side, odds: x.o[i], kelly: null, tier: 'pass', bot: false, ...pb };
       const tier = bot && pick ? this.tier(pick) : tierOfBand(x.b[i]);
       const kelly = tier === 'check' ? null : bot && pick && !check ? pick.sureness : x.ks[i];
-      return { side, odds: x.o[i], kelly, tier, bot, ...(x.cap?.[i] ? { cap: x.cap[i] } : {}) };
+      return { side, odds: x.o[i], kelly, tier, bot, ...pb, ...(x.cap?.[i] ? { cap: x.cap[i] } : {}) };
     });
     return {
       key: this.rowKey(x.id, x.k),
@@ -599,10 +605,13 @@ export class GameLinesComponent implements OnInit, OnDestroy {
   private rowOfPick(p: BotPick): PropRow {
     const mine = (p.side === 'under' ? 'under' : 'over') as 'over' | 'under';
     const check = this.isCheck(p);
+    // (the Bot's own book where it isn't the home book's: its price the best it found)
+    const code = bookCode(p.book);
+    const shopped = code && code !== HOME_BOOK ? code : null;
     const sides = (['over', 'under'] as const)
       .map((side): PropSide =>
         side === mine
-          ? { side, odds: p.price as number, kelly: check ? null : p.sureness, tier: this.tier(p), bot: true }
+          ? { side, odds: p.price as number, kelly: check ? null : p.sureness, tier: this.tier(p), bot: true, ...(shopped ? { pb: shopped } : {}) }
           : { side, odds: Number.isFinite(p.otherPrice) ? (p.otherPrice as number) : null, kelly: null, tier: null, bot: false },
       )
       .filter((s) => s.bot || s.odds !== null);
@@ -646,7 +655,7 @@ export class GameLinesComponent implements OnInit, OnDestroy {
         : s.tier
         ? ` · ${s.bot ? 'The Bot’s pick' : 'The Bot'}: ${s.tier.toUpperCase()}${s.kelly !== null ? ', Kelly ' + this.kellyText(s.kelly) : ''}${chance !== null ? `, ${chance}% to win` : ''}${r.pass ? (r.passReason ? ` (it passes: ${r.passReason})` : r.passWhy === 'gap' ? ' (it passes: the Bot is too far off the Book here to trust)' : r.passWhy === 'small' ? ' (it passes: his role is changing, and the edge isn’t big enough to look into)' : ' (it passes on this player for now)') : ''}`
         : '';
-    return `${at}${word}${this.open ? '' : ' · Betting closed: the game has started'}`;
+    return withBookTitle(`${at}${word}${this.open ? '' : ' · Betting closed: the game has started'}`, s.pb);
   }
 
   private propType(p: BotPick): string {
@@ -676,6 +685,7 @@ export class GameLinesComponent implements OnInit, OnDestroy {
       athlete: null,
       player: null,
       statLabel: null,
+      book: price.pb ?? null,
     });
   }
 
@@ -704,6 +714,7 @@ export class GameLinesComponent implements OnInit, OnDestroy {
       athlete: r.athlete,
       player: r.player || null,
       statLabel: r.label,
+      book: s.pb ?? null,
     });
   }
 }

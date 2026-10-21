@@ -128,6 +128,7 @@ import { mkdirSync, readFileSync, rmSync, writeFileSync } from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { BOOK, GAME_CAP, LEAGUES, MODEL_EPOCH, PROP_CAPS, TIMING } from './leagues.mjs';
+import { nameOf as bookName } from './best-price.mjs';
 import { CAL_CAP, CAL_STEP, calibText, fitCalib } from './calib.mjs';
 import { anchorText, readAnchor } from './anchor.mjs';
 import { loadModel as readConfidence, qualityOf, unitsOf } from './confidence.mjs';
@@ -579,6 +580,9 @@ async function liveLines(r) {
       ml: { home: l.h2h?.prices.home ?? null, away: l.h2h?.prices.away ?? null },
       spread: { home: { line: l.spreads?.line ?? null, odds: l.spreads?.prices.home ?? null }, away: { line: l.spreads ? -l.spreads.line : null, odds: l.spreads?.prices.away ?? null } },
       total: { line: l.totals?.line ?? null, over: l.totals?.prices.over ?? null, under: l.totals?.prices.under ?? null },
+      // (D74: each side's best US price at the Book's line and its book (oddsapi.mjs linesFromEvent): the price the
+      // desk bets and the board shows (desk.mjs price); the prices above stay DraftKings', the fair's)
+      best: Object.fromEntries(Object.entries(odds).filter(([, v]) => v?.best).map(([k, v]) => [k, v.best])),
       fair: Object.fromEntries(Object.entries(odds).filter(([, v]) => v).map(([k, v]) => [k, v.fair])),
       fairSource: Object.fromEntries(Object.entries(odds).filter(([, v]) => v).map(([k, v]) => [k, v.sharp !== null ? 'pinnacle' : BOOK])),
       // (the other books' consensus at the book's line, by market (oddsapi.mjs consensusOf): the data's, not priced off)
@@ -2000,7 +2004,7 @@ function betGames(r) {
           ...(s.push ? { push: round(s.push, 4) } : {}),
           expMargin: round(exp.margin, 2),
           expTotal: round(exp.total, 2),
-          book: lines.book,
+          book: bookName(s.book) ?? lines.book,
           fairFrom: fairFrom[key] ?? 'its own prices',
           ...consensusOn(lines, key, s.side),
           context: { ...seen, ...(noted.length ? { ownerNotes: noted } : {}) },
@@ -2094,7 +2098,7 @@ function betGames(r) {
         ...(key === 'ml' ? (pick.spreadHome ? { spreadHome: pick.spreadHome } : { anchored: false }) : {}),
         expMargin: round(exp.margin, 2),
         expTotal: round(exp.total, 2),
-        book: lines.book,
+        book: bookName(pick.book) ?? lines.book,
         fairFrom: fairFrom[market.market] ?? 'its own prices',
         // (the other books' consensus fair beside the book's, the data's: never priced off, oddsapi.mjs)
         ...consensusOn(lines, key, pick.side),
@@ -2480,7 +2484,10 @@ async function betProps(r) {
       const askNow = async () => {
         // (the other books asked only for the markets the book returned on this game's last ask (:dk), so they
         // add none: props.mjs apiProps, oddsapi.mjs propAsks; their consensus the data's, never priced off)
-        const api = await apiProps(sport, u.lines.oddsEvent, { known: asked[`${game.id}:dk`] ?? null, anytime: sport === 'nfl' && !!r.anytimeMarket?.on, afford: (n) => hasKey() && canSpend('props', n, why ?? 'first') });
+        // (D74: on a game's first ask, the markets ESPN's free board (the Book's own props) already lists are known, so
+        // the other US books are asked for them too and the first bet takes the best price; still none they add)
+        const espnKnown = Object.entries(API_MARKETS[sport] ?? {}).filter(([, stat]) => board_.some((p) => p.stat?.key === stat)).map(([m]) => m);
+        const api = await apiProps(sport, u.lines.oddsEvent, { known: asked[`${game.id}:dk`] ?? (espnKnown.length ? espnKnown : null), anytime: sport === 'nfl' && !!r.anytimeMarket?.on, afford: (n) => hasKey() && canSpend('props', n, why ?? 'first') });
         // (none posted yet: not counted, tried again later)
         if (api && !(api.dkMarkets ?? []).length && !api.size) {
           asked[`${game.id}:empty`] = r.now.toISOString();
@@ -3100,7 +3107,7 @@ function propBet(r, game, x, exp, { id, intent, units, trackUnits, tested }) {
     ...(Number.isFinite(trackUnits) ? { trackUnits } : {}),
     expMargin: round(exp.margin, 2),
     expTotal: round(exp.total, 2),
-    book: 'DraftKings',
+    book: bookName(x.book) ?? 'DraftKings',
     pricesFrom: x.prop.source ?? (x.priced ? 'espn' : 'assumed -110'),
     // (the other books' consensus at its line, its side's, the data's: never priced off, oddsapi.mjs)
     ...consensusFields(x.prop.consensus, x.side, 'over'),

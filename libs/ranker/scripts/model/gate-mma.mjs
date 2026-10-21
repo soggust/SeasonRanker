@@ -38,6 +38,8 @@ import { keptFights } from '../../../../apps/mma/scripts/fights.mjs';
 import { binLoss, gradeSide, r4, seasonWeight, topPicks } from './gate-score.mjs';
 import { devig, finish, loadHistory, slim, vsBook, vsBookBySeason, walkTrust } from './gate-history.mjs';
 import { closedEvents, matchHistory, matchReport } from './fights-history.mjs';
+import { readDeep } from './deep-history.mjs';
+import { shopRows } from './best-price.mjs';
 
 const ROOT = path.resolve(import.meta.dirname, '../../../..');
 export const SPORT = 'mma';
@@ -243,7 +245,7 @@ export function historyRows(V, rows, hist, chances, current, { fights = null } =
     const season = e.season;
     const w = seasonWeight(SPORT, season, current).w;
     const lead = fin(ts) ? (start - ts) / 36e5 : kind === 'c' ? 1 : null;
-    const base = { factsAt: fin(factsAt) ? factsAt : null, event: String(m.fight.id), sport: SPORT, kind, names: Array.isArray(m.fight.fighters) ? m.fight.fighters.map((f) => f?.name ?? null) : null, day: etDay(start), t: start, at: fin(ts) ? ts : null, lead: fin(lead) ? Math.round(lead * 10) / 10 : null, band: kind === 'c' ? 'late' : leadBand(lead), season, w, q: null };
+    const base = { factsAt: fin(factsAt) ? factsAt : null, event: String(m.fight.id), oid, ...(m.crossed ? { crossed: true } : {}), sport: SPORT, kind, names: Array.isArray(m.fight.fighters) ? m.fight.fighters.map((f) => f?.name ?? null) : null, day: etDay(start), t: start, at: fin(ts) ? ts : null, lead: fin(lead) ? Math.round(lead * 10) / 10 : null, band: kind === 'c' ? 'late' : leadBand(lead), season, w, q: null };
     // (each market's own snapshot: a book's first sighting is by market, so a row's time, lead and band are its own)
     const timeOf = (x) => {
       const at = Date.parse(x.ts);
@@ -471,6 +473,13 @@ export async function scoreMma(dir, { log = console.log, now = new Date() } = {}
   let replay = null;
   if (V.replay?.replayRecord && histRows.close.length) {
     const names = (x) => ({ home: x.names?.[0] ?? 'Fighter A', away: x.names?.[1] ?? 'Fighter B', matchup: `${x.names?.[0] ?? 'Fighter A'} vs ${x.names?.[1] ?? 'Fighter B'}` });
+    // (D74: the best US price where the deep history (D67's dense MMA lines) has the other books at the row's snapshot)
+    if (process.env.GATE_NO_SHOP !== '1') {
+      const rows = [...histRows.open, ...histRows.close];
+      for (const x of rows) delete x.shop;
+      const s = shopRows(rows, readDeep(SPORT), (x) => x.oid);
+      say(`best price (D74): ${s.shopped} of ${rows.length} rows with the other US books at their snapshot, ${s.better} better than the Book's own on a side`);
+    }
     replay = V.replay.replayRecord(V, SPORT, { open: histRows.open, close: histRows.close }, { events: null, names, epoch: V.mmaDesk?.MMA_START ?? V.leagues?.MODEL_EPOCH ?? null });
     say(`replayed record: ${replay.overall.won}-${replay.overall.lost}-${replay.overall.push} ${replay.overall.profit >= 0 ? '+' : ''}${replay.overall.profit}u on ${replay.n.bets} bets (${replay.flags.timing.open} at the open, ${replay.flags.timing.close} at the close), ${replay.n.practice} practice picks`);
   }

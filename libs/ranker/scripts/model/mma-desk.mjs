@@ -80,6 +80,7 @@ import { placed as placedBand, tierUnits } from './reasons.mjs';
 import { bandOf, buildBoard, seenUpdate, skipReason } from './board.mjs';
 import { clvOf, clvSummary } from './clv.mjs';
 import { SHARP, american, call, canSpend, hasKey, usageSummary } from './oddsapi.mjs';
+import { bestPair, codeOf, nameOf as bookName, sideBest } from './best-price.mjs';
 import { REPRICE_BY, lastChanceOf, phaseOf } from './timing.mjs';
 import { CACHE, DAY, get, readJson, writeAtomic, writeJson } from './sources.mjs';
 import { round } from './ratings.mjs';
@@ -96,7 +97,8 @@ export const SPORT = 'mma';
 // (bumped 2026-10-20, the frames round (D56): the archive's mirrored opens repaired, the trust refit on the cleaned
 // history (the early moneyline's 0.85 to 0.1), so the price moved and the league's bets restart on it)
 // (bumped 2026-10-20, D59 on (the owner's call): the fair's calibration moves the price, so the league's bets restart on it)
-export const MMA_START = '2026-10-20T13:40:00Z';
+// (bumped 2026-10-21, the best price (D74): the bouts are bet at the best US price, so the price moved and the league's bets restart on it)
+export const MMA_START = '2026-10-21T01:15:00Z';
 // (the history's rows weigh this many rows' worth at most in the trust fit, a lead band at a time (D37), the live bets
 // whole: about a year of a band's rows, so a season of live bets can move the trust the history set)
 export const PRIOR_ROWS = 400;
@@ -191,7 +193,11 @@ export const fairCalOf = () => {
   return FAIR_CAL;
 };
 // (the first side's priced fair from a lines entry)
-export const pricedFair = (lines, cal = fairCalOf()) => calFair(lines.fair, lines.odds?.home && lines.odds?.away ? fairPair(lines.odds.home, lines.odds.away) : null, cal);
+// (D74: the Book's own pair (dk) where the odds are the best US prices: a pair of two books' best has less vig)
+export const pricedFair = (lines, cal = fairCalOf()) => {
+  const own = lines.dk ?? lines.odds;
+  return calFair(lines.fair, own?.home && own?.away ? fairPair(own.home, own.away) : null, cal);
+};
 const ymd = (t) => new Date(t).toISOString().slice(0, 10).replace(/-/g, '');
 
 // ---------------------------------------------------------------------------------------------------------
@@ -257,7 +263,11 @@ export function linesOf(bout, m) {
   if (!dk.home || !dk.away) return null;
   const pin = { home: priceOf(SHARP, 'home'), away: priceOf(SHARP, 'away') };
   const sharp = pin.home && pin.away ? fairPair(pin.home, pin.away) : null;
-  return { odds: dk, fair: sharp ?? fairPair(dk.home, dk.away), fairFrom: sharp ? 'pinnacle' : 'its own prices', start: ev.commence_time, oddsEvent: ev.id };
+  // (D74: each side's best US price (best-price.mjs; the offshore anchors and Pinnacle never), DraftKings' kept as dk)
+  const bp = bestPair((ev.bookmakers ?? []).filter((b) => codeOf(b.key)).map((b) => ({ book: codeOf(b.key), a: priceOf(b.key, 'home'), b: priceOf(b.key, 'away') })));
+  const home = sideBest(bp?.a, dk.home);
+  const away = sideBest(bp?.b, dk.away);
+  return { odds: { home: home.odds, away: away.odds }, dk, books: { home: home.book, away: away.book }, fair: sharp ?? fairPair(dk.home, dk.away), fairFrom: sharp ? 'pinnacle' : 'its own prices', start: ev.commence_time, oddsEvent: ev.id };
 }
 
 // ---------------------------------------------------------------------------------------------------------
@@ -417,7 +427,7 @@ export function pickFor(model, lines, trust, { edge, untested, guard = null, api
     const odds = lines.odds[side];
     const p = chanceAt(key, side === 'home' ? pf : 1 - pf, m, trust);
     const ev = p * decimal(odds) - 1;
-    return { side, odds, fair, model: m, p, ev, units: stakeFor(ev, EV_SCALE, odds) };
+    return { side, odds, ...(lines.books?.[side] ? { book: lines.books[side] } : {}), fair, model: m, p, ev, units: stakeFor(ev, EV_SCALE, odds) };
   });
   // (the better side by its return at the trusted chance; neither with a return (a trust at 0 prices both at the
   // Book's), the side the model leans to, so a tracked row and a practice pick are the model's side, never the
@@ -523,7 +533,7 @@ export function boardSidesOf(lines, chance, trust, src = null, { edge = null, ke
     const ks = kellyOf(odds, p);
     const short = Number.isFinite(edge) && m - fair < edge ? { cap: 'medium', cr: `the Bot's lean (${round((m - fair) * 100, 1)} points) under the league's edge (${round(edge * 100, 1)}): a card's practice pick at most, a LIKE at ${PRACTICE_UNITS}u` } : {};
     const pass = !!gap || !!off;
-    return { s: side, l: null, o: odds, c: round(p, 3), ks, b: bandOf(ks, p, ev, { pass, cap: short.cap }), ...(off ? { sr: off } : {}), ...(pass ? {} : short), ...(src ? { src } : {}) };
+    return { s: side, l: null, o: odds, ...(lines.books?.[side] ? { pb: lines.books[side], ...(lines.books[side] !== 'dk' && lines.dk?.[side] ? { dko: lines.dk[side] } : {}) } : {}), c: round(p, 3), ks, b: bandOf(ks, p, ev, { pass, cap: short.cap }), ...(off ? { sr: off } : {}), ...(pass ? {} : short), ...(src ? { src } : {}) };
   });
 }
 // A bout's round total as the board's two sides [over, under] (as boardSidesOf: the book's price, the trusted chance,
@@ -543,7 +553,7 @@ export function boardTotalOf(total, over, trust, { live = true, edge = null, key
     const short = Number.isFinite(edge) && ev > 0 && m - fair < edge ? skipReason({ why: `the Bot's lean (${round((m - fair) * 100, 1)} points) under the league's edge (${round(edge * 100, 1)}): tracked, not bet` }) : null;
     const capped = live ? {} : { cap: 'medium', cr: `practice stake: round totals till ${TOTAL_LIVE} are graded with a close` };
     const pass = !!gap || !!short;
-    return { s: side, l: total.line, o: odds, c: round(p, 3), ks, b: bandOf(ks, p, ev, { pass, cap: capped.cap }), ...(short && !gap ? { sr: short } : {}), ...(pass ? {} : capped) };
+    return { s: side, l: total.line, o: odds, ...(total.books?.[side] ? { pb: total.books[side], ...(total.books[side] !== 'dk' && total.dk?.[side] ? { dko: total.dk[side] } : {}) } : {}), c: round(p, 3), ks, b: bandOf(ks, p, ev, { pass, cap: capped.cap }), ...(short && !gap ? { sr: short } : {}), ...(pass ? {} : capped) };
   });
 }
 // (the last board's round total for a bout: { line, odds, fair }, else null)
@@ -552,7 +562,9 @@ export function boardTotalLinesOf(prev, boutId) {
   const over = g?.k?.total?.find((s) => s.s === 'over');
   const under = g?.k?.total?.find((s) => s.s === 'under');
   if (!over?.o || !under?.o || !Number.isFinite(over.l)) return null;
-  return { line: over.l, odds: { over: over.o, under: under.o }, fair: fairPair(over.o, under.o), fairFrom: 'its own prices' };
+  // (D74: a shopped side's DraftKings price (dko) for the fair)
+  const dk = { over: over.dko ?? over.o, under: under.dko ?? under.o };
+  return { line: over.l, odds: { over: over.o, under: under.o }, ...(over.pb || under.pb ? { dk, books: { over: over.pb ?? 'dk', under: under.pb ?? 'dk' } } : {}), fair: fairPair(dk.over, dk.under), fairFrom: 'its own prices' };
 }
 // (the last board's DraftKings prices for a bout (its ml sides, neither ESPN BET's): { odds, fair }, else null)
 export function boardLinesOf(prev, boutId) {
@@ -560,7 +572,8 @@ export function boardLinesOf(prev, boutId) {
   const home = g?.k?.ml?.find((s) => s.s === 'home');
   const away = g?.k?.ml?.find((s) => s.s === 'away');
   if (!home?.o || !away?.o || home.src || away.src) return null;
-  return { odds: { home: home.o, away: away.o }, fair: fairPair(home.o, away.o), fairFrom: 'its own prices' };
+  const dk = { home: home.dko ?? home.o, away: away.dko ?? away.o };
+  return { odds: { home: home.o, away: away.o }, ...(home.pb || away.pb ? { dk, books: { home: home.pb ?? 'dk', away: away.pb ?? 'dk' } } : {}), fair: fairPair(dk.home, dk.away), fairFrom: 'its own prices' };
 }
 // The board from the bouts coming (not final, not off, not started), each priced from what the run has: lines
 // (by the bout's key: { lines, src }) this run's, else the last board's DraftKings price (boardLinesOf), else
@@ -838,11 +851,11 @@ export function mmaPriceRows(linesNow, bouts) {
     games.set(game, { start: bout.start ?? bout.date, m: `${bout.away?.name ?? '?'} vs ${bout.home?.name ?? '?'}` });
     const src = x.src === 'espn bet' ? 'e' : 'o';
     if (x.lines?.odds) {
-      rows.push({ game, key: 'ml', line: null, a: n(x.lines.odds.home), b: n(x.lines.odds.away), src });
+      rows.push({ game, key: 'ml', line: null, a: n((x.lines.dk ?? x.lines.odds).home), b: n((x.lines.dk ?? x.lines.odds).away), src });
       if (x.lines.fairFrom === 'pinnacle' && Number.isFinite(x.lines.fair)) rows.push({ game, key: 'pin:ml', line: null, a: Math.round(x.lines.fair * 1e4) / 1e4, b: null, src });
     }
     if (x.total?.odds) {
-      rows.push({ game, key: 'total', line: n(x.total.line), a: n(x.total.odds.over), b: n(x.total.odds.under), src: 'o' });
+      rows.push({ game, key: 'total', line: n(x.total.line), a: n((x.total.dk ?? x.total.odds).over), b: n((x.total.dk ?? x.total.odds).under), src: 'o' });
       if (/pinnacle/i.test(x.total.fairFrom ?? '') && Number.isFinite(x.total.fair)) rows.push({ game, key: 'pin:total', line: n(x.total.line), a: Math.round(x.total.fair * 1e4) / 1e4, b: null, src: 'o' });
     }
   }
@@ -996,7 +1009,7 @@ export async function runMma({ dry = false, gap = null, now = new Date(), log = 
   let events = null;
   let linesSource = 'none due';
   if (due.length) {
-    // (one ask for the whole board, both markets: 2 credits (markets x regions; TOTAL_BOOKS' 7 books are one region))
+    // (one ask for the whole board, both markets: 2 credits (markets x regions; TOTAL_BOOKS' 10 books are one region))
     if (hasKey() && canSpend('lines', 2)) {
       events = await call('lines', ODDS_ROUTE, { markets: 'h2h,totals', bookmakers: TOTAL_BOOKS.join(',') });
       linesSource = Array.isArray(events) ? `The Odds API (${events.length} bouts on the board)` : 'The Odds API: no answer';
@@ -1074,7 +1087,7 @@ export async function runMma({ dry = false, gap = null, now = new Date(), log = 
           p: round(pick.p, 4),
           ev: round(pick.ev, 4),
           ...placed,
-          book: 'DraftKings',
+          book: bookName(pick.book) ?? 'DraftKings',
           fairFrom: tl.fairFrom,
           pick: `${pick.side === 'over' ? 'Over' : 'Under'} ${tl.line} rounds`,
           context: { division: bout.division, rounds: bout.rounds, cardName: bout.cardName, parts: tp.parts, base: tp.base, trust: trustFor(trust, 'total', tLead, tl.line), band: leadBand(tLead), untested: !fittedFor(trust, 'total', tLead), live: totalsLive, flags: [], ...(why ? { why } : {}) },
@@ -1163,7 +1176,7 @@ export async function runMma({ dry = false, gap = null, now = new Date(), log = 
       ...placed,
       ...(final.suspect ? { suspect: final.suspect, ...(placed.intent === 'edge' ? { practice: `suspect: ${final.suspect.why}` } : {}) } : {}),
       ...(apiPrice ? {} : { priced: false }),
-      book: 'DraftKings',
+      book: bookName(pick.book) ?? 'DraftKings',
       fairFrom: lines.fairFrom,
       pick: pick.side === 'home' ? bout.home.name : bout.away.name,
       context: { division: bout.division, rounds: bout.rounds, cardName: bout.cardName, parts: pred.parts, ratingP: pred.ratingP, trust: tMl, band: leadBand(lead), lead: round(lead, 1), untested, flags, move, ...(guard ? { guard } : {}), ...(why ? { why } : {}), records: { home: pred.a.record, away: pred.b.record } },

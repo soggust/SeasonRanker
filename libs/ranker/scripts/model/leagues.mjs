@@ -209,7 +209,10 @@ export const GAME_CAP = 5;
 // price as before the model, the trust's chance alone; the props keep the blend. Set to the push time.
 // 2026-10-20, the props' windows open when the Book posts them and the props' asks paced by value (DECISIONS.md D55):
 // the Bot's props are bet at other times than before. Set to the push time.
-export const MODEL_EPOCH = '2026-10-20T05:45:00Z';
+// 2026-10-21, the best price (DECISIONS.md D74, the owner's decision of 2026-10-20): the Bot bets at the best US book's
+// price instead of DraftKings' alone, so every bet's price, Kelly, stake and CLV move: a pricing change, the trust and the
+// gates restart. Set to about the push time.
+export const MODEL_EPOCH = '2026-10-21T01:15:00Z';
 
 // TIMING (run.mjs, timing.mjs): when a coming game is bet, in hours before its start, so its bets wait for the
 // news rather than being locked in days ahead on a guess at who plays.

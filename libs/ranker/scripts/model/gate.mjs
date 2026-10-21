@@ -51,6 +51,7 @@ import { historyLeakBets, huntLeaks } from './leaks.mjs';
 import { extendedGames, historyPropIndex, intradayLines, lineHistoryRows, loadHistory, propHistoryRows, slim, vsBook, vsBookBySeason } from './gate-history.mjs';
 import { OFFSETS as INTRA_OFFSETS, readIntraday } from './intraday.mjs';
 import { readDeep } from './deep-history.mjs';
+import { shopRows } from './best-price.mjs';
 import { MARKETS as MMA_MARKETS, scoreMma } from './gate-mma.mjs';
 import { propParts } from './trusted.mjs';
 
@@ -649,6 +650,16 @@ export async function scoreVersion(dir, sport, { refit = false, propsLayer = tru
       return { home, away, matchup: `${away} @ ${home}` };
     };
     const labelOf = Object.fromEntries((H.props.STATS?.[sport] ?? []).map((s) => [s.key, s.label]));
+    // (D74: the replay's line rows at the best US price where the deep history (D67's dense lines) has the other books at
+    // the row's own snapshot; the rest DraftKings'. GATE_NO_SHOP=1 leaves it out)
+    if (process.env.GATE_NO_SHOP !== '1') {
+      const oidBy = new Map();
+      for (const [oid, e] of hist.events) if (e.id && !oidBy.has(String(e.id))) oidBy.set(String(e.id), oid);
+      const lineRows = [...histLines.open, ...histLines.close, ...(histLines.intra ?? [])];
+      for (const x of lineRows) delete x.shop;
+      const s = shopRows(lineRows, readDeep(sport), (x) => oidBy.get(String(x.event)));
+      say(`best price (D74): ${s.shopped} of ${lineRows.length} line rows with the other US books at their snapshot, ${s.better} better than the Book's own on a side`);
+    }
     for (const x of [...histProps.open, ...histProps.close]) x.label = labelOf[x.stat] ?? x.stat;
     replay = V.replay.replayRecord(V, sport, { open: [...histLines.open, ...histProps.open], close: [...histLines.close, ...histProps.close], intra: histLines.intra ?? [] }, { confidence, events: hist.events, names, epoch: V.leagues.MODEL_EPOCH ?? null, evScale, sched: V.desk.scheduleRest ? (V.desk.withTravel ? V.desk.withTravel(V.desk.scheduleRest(histGames), feats?.feats) : V.desk.scheduleRest(histGames)) : null });
     say(`replayed record: ${replay.overall.won}-${replay.overall.lost}-${replay.overall.push} ${replay.overall.profit >= 0 ? '+' : ''}${replay.overall.profit}u (ROI ${replay.overall.roi === null ? '-' : `${(replay.overall.roi * 100).toFixed(1)}%`}) on ${replay.n.bets} bets (${replay.flags.timing.open} at a clean open, ${replay.flags.timing.close} at the close), ${replay.n.practice} practice picks; by band ${Object.entries(replay.byBand).map(([k, v]) => `${k} ${v.won}-${v.lost}-${v.push} ${v.profit >= 0 ? '+' : ''}${v.profit}u`).join(', ')}`);

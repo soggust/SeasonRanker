@@ -2,7 +2,7 @@ import { Injectable, computed, signal } from '@angular/core';
 import { fetchJson } from '@ranker/core/http';
 import { ESPN_LEAGUES } from '../../book/desk-math';
 import { SummaryBox, liveStat } from '../../book/live-props';
-import { EspnEvent, GameBoard, boardOf, espnDay, modelGameBoard, modelGameOf } from './wallet-math';
+import { EspnEvent, GameBoard, boardOf, espnDay, modelGameBoard, modelGameOf, withBestPrices } from './wallet-math';
 import { PreviewProp, PropBetItem, RosterBody, athleteIdOf, previewPropsOf, rosterNames } from './preview-props';
 
 const CORE = 'https://sports.core.api.espn.com/v2/sports';
@@ -23,6 +23,9 @@ export interface BoardSide {
   s: string;
   l: number | null;
   o: number;
+  // (the book whose price o is, where the bettor shopped the US books for it: book-names.ts codes; none, the free
+  // board's home-book price)
+  pb?: string;
   c: number;
   ks: number;
   b: BoardBand;
@@ -65,6 +68,8 @@ export interface BoardProp {
   lb: string;
   l: number;
   o: [number | null, number | null];
+  // (the book whose price each side's is, [over's, under's], where the bettor shopped it (null a side not); not bk)
+  pb?: [string | null, string | null];
   c: number | null;
   ks: [number | null, number | null];
   b: [BoardBand | null, BoardBand | null];
@@ -124,7 +129,9 @@ export class LinesService {
   // The boards, by "sport|event": ESPN's scoreboard's, and under them the games on the bettor's own betting boards
   // that ESPN has no board for (a UFC bout: ESPN's scoreboard is the card, not the bout; the bettor's board.json
   // carries each bout's moneyline), each as a GameBoard of its lines (wallet-math modelGameBoard), so the game
-  // view, the dropdown and the ticker take them as any game's. Made again when either changes
+  // view, the dropdown and the ticker take them as any game's. An ESPN board's prices the best US price where the
+  // betting board shopped it at the same line (wallet-math withBestPrices: the owner, 2026-10-20). Made again when
+  // either changes
   readonly boards = computed<Map<string, GameBoard>>(() => {
     const espn = this.all();
     const out = new Map(espn);
@@ -132,7 +139,11 @@ export class LinesService {
     for (const [sport, board] of this.modelAll()) {
       for (const g of board.games) {
         const key = `${sport}|${g.id}`;
-        if (out.has(key)) continue;
+        const free = out.get(key);
+        if (free) {
+          out.set(key, withBestPrices(free, g));
+          continue;
+        }
         const b = modelGameBoard(sport, g, now);
         if (b) out.set(key, b);
       }

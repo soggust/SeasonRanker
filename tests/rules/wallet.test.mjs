@@ -172,6 +172,24 @@ describe('wallet rules', { skip }, () => {
     await assertFails(place(db, 'ann', 'more', playBet({ stake: 1 })));
   });
 
+  test('a bet keeps the book whose price it took (the best US price: the owner, 2026-10-20): a short code, optional', async () => {
+    const db = as('ann');
+    await assertSucceeds(setDoc(doc(db, 'users', 'ann', 'wallet', 'main'), newWallet()));
+    await assertSucceeds(place(db, 'ann', 'fd', playBet({ book: 'fd', stake: 1 })));
+    await assertSucceeds(place(db, 'ann', 'dk', playBet({ book: 'dk', stake: 1 })));
+    await assertSucceeds(place(db, 'ann', 'none', playBet({ stake: 1 })));
+    await assertFails(place(db, 'ann', 'num', playBet({ book: 7, stake: 1 })));
+    await assertFails(place(db, 'ann', 'long', playBet({ book: 'fanduelsportsbook', stake: 1 })));
+    await assertFails(place(db, 'ann', 'nine', playBet({ book: '123456789', stake: 1 })));
+    await assertSucceeds(place(db, 'ann', 'eight', playBet({ book: '12345678', stake: 1 })));
+    // (a parlay's legs may carry one too, ten prop legs each with its book still inside the rules' 1,000 expressions:
+    // a leg's book unchecked here as its market, line and price are (the limit), the settler's to read)
+    const props = Array.from({ length: 10 }, (_, i) =>
+      leg({ sport: 'nhl', event: String(404000000 + i), matchup: 'SEA @ DET', market: 'prop', side: 'under', line: 24.5, odds: -110, pick: 'John Gibson Under 24.5 Saves', propType: 'saves', athlete: '2590824', player: 'John Gibson', statLabel: 'Saves', ref: `${404000000 + i}:prop:saves:2590824`, book: i % 2 ? 'fd' : 'mgm' }),
+    );
+    await assertSucceeds(place(db, 'ann', 'p10', parlayOf(props, { stake: 1 })));
+  });
+
   test('a UFC bout: its own start, not the card’s; the fighters’ names its matchup; a moneyline or a total', async () => {
     const db = as('ann');
     await assertSucceeds(setDoc(doc(db, 'users', 'ann', 'wallet', 'main'), newWallet()));

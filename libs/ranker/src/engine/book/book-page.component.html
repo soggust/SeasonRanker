@@ -392,7 +392,7 @@
             }
             <!-- (the price: on felt, the odds alone; on the ticket, solid gold with "ON TICKET": a click writes it on, or takes it off) -->
             @if (r.odds && canBet(r)) {
-              <button type="button" class="bet-price" [class.on]="onSlip(r)" [attr.aria-pressed]="onSlip(r)" [attr.aria-label]="(onSlip(r) ? 'Take off the ticket: ' : 'Add to the ticket: ') + r.pick + ' at ' + priceText(r)" [attr.title]="r.liveFrom ? (r.liveFrom === 'espn' ? 'The latest price at the Book' : 'The latest price on the Bot’s board') : null" (click)="takeRow(r, $event)">
+              <button type="button" class="bet-price" [class.on]="onSlip(r)" [attr.aria-pressed]="onSlip(r)" [attr.aria-label]="(onSlip(r) ? 'Take off the ticket: ' : 'Add to the ticket: ') + r.pick + ' at ' + priceText(r)" [attr.title]="priceTitle(r)" (click)="takeRow(r, $event)">
                 <b>{{ priceText(r) }}</b>
                 @if (onSlip(r)) {
                   <small>On ticket</small>

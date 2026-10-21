@@ -139,7 +139,7 @@ test('replay: the file\'s shape, its honesty flags and the one-line caveat', () 
   for (const b of r.last) for (const k of ['id', 'sport', 'season', 'pick', 'matchup', 'market', 'player', 'band', 'practice', 'units', 'res', 'profit', 'timing', 'beat', 'at', 'start', 'settled', 'odds']) assert.ok(k in b, `a last bet carries ${k}`);
   assert.deepEqual(r.flags.context, { full: [2025], ratingsOnly: [2023] });
   assert.equal(r.flags.timing.open + r.flags.timing.close, r.n.bets);
-  assert.match(r.flags.price, /the Book's price nearest the placement/);
+  assert.match(r.flags.price, /the best US book's price at the placement/);
   assert.match(caveatOf(r), /replayed on every priced game before its latest version/);
   // (the day buckets by band (dailyOf): the newest year's, summing to its bets at most the record)
   const daySum = (bands, i) => bands.reduce((t, bd) => t + Object.values(r.daily.bands[bd] ?? {}).reduce((v, d) => v + (Number(d.split(',')[i]) || 0), 0), 0);

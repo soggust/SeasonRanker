@@ -88,6 +88,10 @@ import { round } from './ratings.mjs';
 import { ESPN_PROVIDER, ROSTER_MIN, goaliesInOrder } from './espn.mjs';
 import { officialLine } from './nhl-official.mjs';
 import { BOOK } from './leagues.mjs';
+import { bestPair, codeOf, sideBest } from './best-price.mjs';
+// (D74: a prop side's best US price and its book where this run's quote brought one (props from The Odds API: best), else the given)
+const bestOdds = (prop, side, own) => (prop.prices && Number.isFinite(prop.best?.[side]?.odds) ? prop.best[side].odds : own);
+const bestBook = (prop, side) => (prop.prices && Number.isFinite(prop.best?.[side]?.odds) && prop.best[side].book ? { book: prop.best[side].book } : {});
 import { OUT_STATUS, Q_STATUS, usualStarters } from './timing.mjs';
 import { usageOf } from './usage.mjs';
 import { kindOf, newsOn } from './news.mjs';
@@ -1737,7 +1741,10 @@ export function propsFromBodies(sport, bodies) {
   }
   for (const [key, x] of best.values()) {
     const pairs = [...books].filter(([k]) => k !== BOOK).map(([, lines]) => lines.get(key)).filter((y) => y?.over && y?.under).map((y) => [y.over, y.under]);
-    main.set(`${x.name}|${x.stat}`, { ...x, consensus: consensusOf(pairs, [x.over, x.under], ['over', 'under']) });
+    // (D74: each side's best US price at the desk's book's line, best-price.mjs; over and under stay its own, the fair's)
+    const bp = bestPair([...books].filter(([k]) => codeOf(k)).map(([k, lines]) => [codeOf(k), lines.get(key)]).filter(([, y]) => y?.over && y?.under).map(([book, y]) => ({ book, a: y.over, b: y.under })));
+    const best = { over: sideBest(bp?.a, x.over), under: sideBest(bp?.b, x.under) };
+    main.set(`${x.name}|${x.stat}`, { ...x, best, consensus: consensusOf(pairs, [x.over, x.under], ['over', 'under']) });
   }
   main.dkMarkets = [...dkMarkets];
   main.anytime = new Map();
@@ -1756,7 +1763,7 @@ export function withApiPrices(board_, api) {
   if (!api) return board_;
   return board_.map((p) => {
     const x = api.get(`${p.athlete.name}|${p.stat.key}`);
-    return x ? { ...p, line: x.line, prices: { over: x.over, under: x.under }, source: 'the odds api', ...(x.consensus ? { consensus: x.consensus } : {}) } : p;
+    return x ? { ...p, line: x.line, prices: { over: x.over, under: x.under }, ...(x.best ? { best: x.best } : {}), source: 'the odds api', ...(x.consensus ? { consensus: x.consensus } : {}) } : p;
   });
 }
 
@@ -2062,8 +2069,9 @@ export function priceProps(sport, game, props, fitted, idx, exp, info, live, tru
     // props since the epoch, 0 till a spot's rows and its held-out gain bear it out); raw, the projection's)
     const cal = calSides(calib, prop.stat.key, prop.line, pA, pushA);
     const sides = [
-      { side: 'over', model: cal.over, raw: pA, pure: pOver, cal: cal.so, fair: book.fairOver, odds: book.over },
-      { side: 'under', model: cal.under, raw: 1 - pA, pure: 1 - pOver, cal: cal.su, fair: 1 - book.fairOver, odds: book.under },
+      // (D74: the side's best US price where this run's quote brought one (prop.best), its book with it)
+      { side: 'over', model: cal.over, raw: pA, pure: pOver, cal: cal.so, fair: book.fairOver, odds: bestOdds(prop, 'over', book.over), ...bestBook(prop, 'over') },
+      { side: 'under', model: cal.under, raw: 1 - pA, pure: 1 - pOver, cal: cal.su, fair: 1 - book.fairOver, odds: bestOdds(prop, 'under', book.under), ...bestBook(prop, 'under') },
     ];
     // (the learned correction where it's fit (correct.mjs, 2026-10-18): each side's chance the fit's, from the raw
     // model and the book's no-vig, the calibration inside it (its rows are the raw chances), the lean kept, cut,
@@ -2209,7 +2217,7 @@ export function priceProps(sport, game, props, fitted, idx, exp, info, live, tru
     const turned = !!corr && !gapSide && pick.model - pick.fair < 0;
     const { side, model, ev: ev0, odds, fair, raw: modelRaw, pure: modelPure, cal: calShift } = pick;
     // (the other side's price, the book's (none at an assumed -110): the page shows both sides)
-    const otherOdds = prop.prices ? (side === 'over' ? prop.prices.under : prop.prices.over) : null;
+    const otherOdds = prop.prices ? bestOdds(prop, side === 'over' ? 'under' : 'over', side === 'over' ? prop.prices.under : prop.prices.over) : null;
     // (the sanity guard, DECISIONS.md D23: no sane prop has an edge past the bar (desk.mjs suspectOf: points and SDs over its break-even). One that does is logged loudly,
     // its ev held to the bar (its rank with it) and its stake to the practice stake, a LIKE at most: never bet at size)
     const suspect = suspectOf(ev0, `${a.name} ${side} ${prop.line} ${prop.stat.key} (${game.id}): p ${round(pick.p, 4)}, the Book's no-vig ${round(fair, 4)}, the model ${round(model, 4)}${corr ? ', corrected' : ''}`, pick.p);
@@ -2390,6 +2398,8 @@ export function priceProps(sport, game, props, fitted, idx, exp, info, live, tru
       ...(anch ? { modelPure: round(modelPure, 4), anchor: { pull: anch.pull, mean: anch.mean, implied: anch.im } } : {}),
       fair,
       odds,
+      // (D74: the code of its best price's book; none, DraftKings' own or ESPN's board)
+      ...(pick.book ? { book: pick.book } : {}),
       otherOdds,
       priced: !!prop.prices,
       // (the trust it was priced at: a CHECK's cleared Kelly reads it, checks.mjs checkKelly)
@@ -2408,7 +2418,7 @@ export function priceProps(sport, game, props, fitted, idx, exp, info, live, tru
       guard,
       ...(roleBet ? { roleBet } : {}),
       // (both sides at their trusted chance, each its return: the board's (board.mjs), every side bettable)
-      sides: sides.map((x) => ({ side: x.side, odds: x.odds, p: x.p, ev: x.ev })),
+      sides: sides.map((x) => ({ side: x.side, odds: x.odds, ...(x.book ? { book: x.book } : {}), p: x.p, ev: x.ev })),
       projection: { mean: round(mu, 2), r: round(rAt(f.params, mu), 3), rate: round(p.rate, 2), recent: round(p.recent, 2), opp: round(p.opp, 3), posOpp: round(p.posOpp, 3), role: p.role, roleOpp: p.roleOpp === null ? null : round(p.roleOpp, 3), ...(p.role && row.role && p.role !== row.role ? { roleWas: row.role } : {}), ...(p.back ? { back: { game: p.back.k, missed: p.back.len, ramp: round(p.ramp, 3) } } : {}), roleFactor: roleFactor === null ? null : round(roleFactor, 3), roleRank, roleUsed: Number.isFinite(f.params.roleK), funnel: p.funnel === null ? null : round(p.funnel, 3), funnelUsed: !!f.params.fun, funnelF: round(p.funnelF, 3), paceF: round(p.paceF, 3), tgtF: round(p.tgtF, 3), vac: round(vacNow, 3), vacHist: round(vacThen, 3), vacF: round(p.vacF ?? 1, 3), ...(slF !== 1 ? { slF: round(slF, 3), sl: f.params.sl } : {}), ...(row.snap ? { snap: { last: row.snap.latest, avg: row.snap.avg } } : {}), ...(p.volume ? { volume: { targets: round(p.volume.targets, 2), share: round(p.volume.share, 3), teamTargets: round(p.volume.team, 1), perTarget: round(p.volume.perTarget, 3), weight: f.params.vol } } : {}), ...(p.mode ? { baseBy: p.mode, ...(p.share !== null ? { share: round(p.share, 3), ...(p.mode === 'minutes' ? { minutes: round(p.share * fullMin(f.stat), 1) } : {}) } : { starts: p.starts }) } : {}), ...(sqF !== 1 ? { squad: sq ? { sum: round(sq.S * (f.params.scale ?? 1), 2), team: round(f.params.tf === 4 ? sq.T0 : sq.T, 2), factor: round(sqF, 3), tr: f.params.tr, tf: f.params.tf } : { open: true, factor: round(sqF, 3), tr: f.params.tr, tf: f.params.tf } } : {}), out: out.names.length ? out.names : undefined, questionable: out.qNames.length ? out.qNames : undefined, qPlay: play && sport === 'nfl' && out.qNames.length ? Object.fromEntries((live?.injuries?.get(String(row.team)) ?? []).filter((x) => x.id && out.questionable.has(String(x.id)) && out.qNames.includes(x.name)).map((x) => [x.name, round(1 - qMiss(x.id), 2)])) : undefined, script: round(scriptV, 3), ...(f.params.mk && row.mkt ? { mk: f.params.mk, market: (home ? row.mkt : [...row.mkt].reverse()).map((x) => round(x, 1)) } : {}), ctx: Object.fromEntries(ctxKeysOf.map((k, i) => [k, round(ctxV[i], 2)])), ctxF: round(ctxF, 3), applied: { scale: f.params.scale ?? 1, w: f.params.w, a: p.oppA ?? f.params.a, b: f.params.b, ...Object.fromEntries(ctxKeysOf.map((k, i) => [`c_${k}`, f.params[`c_${k}`] ?? (i === 0 ? f.params.c : 0) ?? 0])) }, games: p.games, lastSeason: p.prevGames, ...(p.draft ? { draft: { pick: p.draft.pick, factor: round(p.draft.factor, 3), ...(p.draft.perTarget ? { perTarget: round(p.draft.perTarget, 3) } : {}) } } : {}), ...(Number.isFinite(p.priorW) ? { priorW: round(p.priorW, 3) } : Number.isFinite(p.K) && Number.isFinite(p.games) && p.K + p.games > 0 ? { priorW: round(p.K / (p.K + p.games), 3) } : {}), ...(sport === 'mlb' ? (prop.stat.pitcher ? { restDays: row.restDays ?? null, pitches: row.pitches?.length ? row.pitches : undefined } : { slot: row.slot ?? null }) : {}), ...(sport === 'nhl' && Number.isFinite(row.ppTime) ? { ppTime: round(row.ppTime, 2) } : {}), ...(row.qb1Miss > 0 ? { qb1Miss: round(row.qb1Miss, 2) } : {}), ...(mix ? { exit: { q: round(mix.q, 3), f: round(mix.f, 2) } } : {}), ...(usage ? { usage } : {}), pOver: round(pOver, 4), push: chances.push ? round(chances.push, 4) : undefined, ...(anch ? { anchored: { pOver: round(anch.over, 4), mean: anch.mean, pull: anch.pull, implied: anch.im } } : {}), ...(Number.isFinite(impliedNow) && mu > 0 ? { lineRatio: round(impliedNow / mu, 3), lineZ: round(lineZ(impliedNow, mu, rAt(f.params, mu)), 3) } : {}), ...(alarm && side !== alarm.safe ? { lineAlarm: { key: alarm.key, ratio: alarm.ratio, why: alarm.why } } : {}), fairOver: round(fairOver, 4), record: round(n, 1), ...(Number.isFinite(implied) ? { implied: round(implied, 2) } : {}) },
       // (the line's open and now; where the line hasn't moved and the open price was read (board), the over's
       // fair chance at the open and at the price bet (selfcheck.mjs C19: a price-only move, the NHL's at 0.5 and

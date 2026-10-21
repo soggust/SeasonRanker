@@ -13,6 +13,7 @@ import type { GameBoard, Price } from '../account/wallet/wallet-math';
 import { americanOdds, teamLogo } from './bet-format';
 import { priceAt, whatIfOf } from './bet-why';
 import { BetKind, BetRow, pickKey } from './book-rows';
+import { HOME_BOOK, pricier } from './book-names';
 import { byBand } from './desk-notes';
 import type { BandCap } from './tiers';
 
@@ -40,6 +41,9 @@ export function marketKeyOf(r: Pick<BetRow, 'sport' | 'pickId'>): string | null 
 export interface LiveQuote {
   odds: number;
   from: 'espn' | 'board';
+  // (the book whose price it is where it's the best of the US books (board.json pb, book-names.ts codes; 'dk' where
+  // the free board's beat the shopped one): the hover's "Best price: <book>"; none, the free board's, no best claimed)
+  book?: string;
 }
 // (what the page has on a game: ESPN's board and when the page last read it, the betting board's game and when the
 // board was written)
@@ -53,19 +57,29 @@ const priced = (v: unknown): v is number => typeof v === 'number' && Number.isFi
 
 // A side's latest price: a prop's the board's (ESPN's scoreboard has none), at the row's line; a game line's
 // ESPN's where it's at the same line and read since the board was priced, else the board's at that line, else
-// ESPN's at that line. A line that has moved off the row's: none (the Bot's chance is the old line's)
+// ESPN's at that line. A line that has moved off the row's: none (the Bot's chance is the old line's). But a side
+// the board shopped (its pb, the best of the US books: the owner, 2026-10-20) is the board's price at its book
+// whatever ESPN's freshness, unless ESPN's (the home book's) at the same line is strictly better: then ESPN's, the
+// home book named the best. ESPN's free price is never shown as the best where it isn't
 export function quoteOf(r: Pick<BetRow, 'pickId' | 'side' | 'line'>, src: QuoteSources): LiveQuote | null {
   const m = marketOf(r);
   if (!m || !r.side) return null;
   if (m.market === 'prop') {
     const x = src.model?.p?.find((p) => p.k === m.propType && String(p.id) === m.athlete && p.l === r.line);
-    const o = x?.o[r.side === 'under' ? 1 : 0];
-    return priced(o) ? { odds: o, from: 'board' } : null;
+    const i = r.side === 'under' ? 1 : 0;
+    const o = x?.o[i];
+    const book = x?.pb?.[i];
+    return priced(o) ? { odds: o, from: 'board', ...(book ? { book } : {}) } : null;
   }
   const sameLine = (l: number | null | undefined) => m.market === 'ml' || l === r.line;
   const side = src.model?.k?.[m.market]?.find((s) => s.s === r.side && sameLine(s.l));
   const espn = (src.espn?.[m.market] as Record<string, Price> | null | undefined)?.[r.side];
   const espnOk = !!espn && priced(espn.odds) && sameLine(espn.line);
+  if (side?.pb && priced(side.o)) {
+    // (ESPN's board as the page has it may carry the shopped price already (wallet-math withBestPrices): the same)
+    if (espnOk && pricier(espn!.odds!, side.o)) return { odds: espn!.odds!, from: 'espn', book: HOME_BOOK };
+    return { odds: side.o, from: 'board', book: side.pb };
+  }
   const boardAt = Date.parse(src.model?.at ?? src.modelAt ?? '');
   const espnFresher = !Number.isFinite(boardAt) || (src.espnAt ?? 0) >= boardAt;
   if (espnOk && (!side || espnFresher)) return { odds: espn!.odds!, from: 'espn' };
@@ -102,7 +116,7 @@ const sign = (odds: number) => americanOdds(odds).replace('-', '−');
 // (whatIfOf over the row, a price the Bot didn't take; priceAt at the new price), a practice side held a LIKE, and
 // one the desk caps (board.json cap: a gate's practice stake, a role pick; DECISIONS.md D46) a LIKE at most at the
 // practice stake, never a band the Bot couldn't give it; no edge there (PASS), none
-export function repriced(row: BetRow, odds: number, from: LiveQuote['from'] = 'board'): BetRow | null {
+export function repriced(row: BetRow, odds: number, from: LiveQuote['from'] = 'board', book: string | null = null): BetRow | null {
   const base = whatIfOf({ ...row, confidence: null, ev: undefined, units: undefined }, false);
   if (!base) return null;
   const at = priceAt(base, odds);
@@ -117,6 +131,7 @@ export function repriced(row: BetRow, odds: number, from: LiveQuote['from'] = 'b
     ...(at.units === null ? {} : { units: at.units }),
     livePrice: at.odds,
     liveFrom: from,
+    liveBook: book,
     reason: reasonAt(row, base.p, at.odds),
   };
 }
@@ -154,7 +169,7 @@ export function suggestionsOf(sport: string, board: ModelBoard | null | undefine
     const [away, home] = g.m.split(' @ ');
     const push = (row: BetRow) => {
       const q = quoteOf(row, sources);
-      const r = q ? repriced(row, q.odds, q.from) : null;
+      const r = q ? repriced(row, q.odds, q.from, q.book ?? null) : null;
       if (r) out.push(r);
     };
     for (const market of ['spread', 'total', 'ml'] as const) {
@@ -248,7 +263,7 @@ export function whyOf(w: BoardWhy | null | undefined): Partial<BetRow> {
 // Kelly score and its price stay the bet's
 export function withLive(row: BetRow, q: LiveQuote | null): BetRow {
   const live = q?.odds ?? null;
-  return { ...row, livePrice: live, liveFrom: q?.from ?? null, moved: live !== null && Number.isFinite(row.price) && live !== row.price };
+  return { ...row, livePrice: live, liveFrom: q?.from ?? null, liveBook: q?.book ?? null, moved: live !== null && Number.isFinite(row.price) && live !== row.price };
 }
 
 // The list: the Bot's rows (its bets and an admin's CHECKs) with the suggestions on markets it holds nothing on,

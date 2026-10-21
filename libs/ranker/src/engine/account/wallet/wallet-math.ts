@@ -5,6 +5,7 @@
 import { Board, CurveLine, CurveSpot, Meter, ModelBet, Settled } from '../../book/desk-model';
 import { CURVE_W, UNIT_WORDS, countNowOf, edgeColorOf, meterOf, profitCurves, propState, provisional, sideTextOf, sideTitleOf } from '../../book/desk-math';
 import { units } from '../../book/bet-format';
+import { pricier } from '../../book/book-names';
 
 export type PlayMarket = 'spread' | 'total' | 'ml' | 'prop';
 export type PlayStatus = 'open' | 'won' | 'lost' | 'push' | 'void';
@@ -59,6 +60,8 @@ export interface PlayBet {
   statLabel?: string | null;
   // (a preview prop's: a line from ESPN's book the bot hadn't priced, bet at an assumed -110: preview-props.ts)
   preview?: boolean;
+  // (the book whose price it was taken at, a book-names.ts code: the best of the US books, 'dk' where unknown)
+  book?: string;
   // (the wallet's run it was placed in: its reloads at the time)
   run: number;
   placedAt: string;
@@ -113,6 +116,7 @@ export interface ParlayLeg {
   player?: string | null;
   statLabel?: string | null;
   preview?: boolean;
+  book?: string;
   status?: PlayStatus;
   final?: string;
   note?: string;
@@ -124,6 +128,9 @@ export interface Price {
   side: string;
   line: number | null;
   odds: number | null;
+  // (the book whose price it is, where the board shopped the US books for it (board.json pb, book-names.ts codes):
+  // its hover says "Best price: <book>"; none, the free board's home-book price, no best claimed)
+  pb?: string;
 }
 
 export interface BoardTeam {
@@ -176,6 +183,9 @@ export interface Selection {
   statLabel: string | null;
   // (a preview prop: its line from ESPN's book, its price an assumed -110, none posted)
   preview?: boolean;
+  // (the book whose price it is where the price was shopped (Price pb, board.json pb): the ticket's hover, and the
+  // bet keeps it (book, the home book's 'dk' where none))
+  book?: string | null;
   stake: number;
 }
 
@@ -447,6 +457,8 @@ export interface ModelBoardSideIn {
   s: string;
   l: number | null;
   o: number;
+  // (the book whose price o is, where the bettor shopped it: board.mjs pb)
+  pb?: string;
 }
 export interface ModelBoardGameIn {
   id: string;
@@ -469,7 +481,8 @@ export function modelGameBoard(sport: string, g: ModelBoardGameIn, now: number):
   const team = ([abbr, id]: [string, string]): BoardTeam => ({ abbr, name: abbr, logo: fight && id ? `https://a.espncdn.com/i/headshots/mma/players/full/${id}.png` : null, score: null });
   const price = (market: PlayMarket, side: string, sides: ModelBoardSideIn[] | undefined): Price => {
     const s = sides?.find((x) => x.s === side);
-    return { market, side, line: market === 'ml' ? null : (s?.l ?? null), odds: s && Number.isFinite(s.o) ? s.o : null };
+    const odds = s && Number.isFinite(s.o) ? s.o : null;
+    return { market, side, line: market === 'ml' ? null : (s?.l ?? null), odds, ...(odds !== null && s?.pb ? { pb: s.pb } : {}) };
   };
   const pair = (market: PlayMarket, a: string, b: string, sides: ModelBoardSideIn[] | undefined): [Price, Price] | null => {
     const x = price(market, a, sides);
@@ -495,6 +508,30 @@ export function modelGameBoard(sport: string, g: ModelBoardGameIn, now: number):
     spread: spread ? { away: spread[0], home: spread[1] } : null,
     total: total ? { over: total[0], under: total[1] } : null,
     ml: ml ? { away: ml[0], home: ml[1] } : null,
+  };
+}
+
+// The best price for a side (the owner, 2026-10-20: the Book shows and takes the best US price): where the board
+// shopped the side (its pb) at the same line, its price unless the free board's (ESPN's, the home book's) is
+// strictly better, then that one with the home book named the best; at another line, or a side the board didn't
+// shop, the free board's as it is (no best claimed). price: the free board's; board: the betting board's side
+export function bestPriceOf(price: Price, board: ModelBoardSideIn | null | undefined): Price {
+  if (!board?.pb || !Number.isFinite(board.o) || Math.abs(board.o) < 100) return price;
+  if (price.market !== 'ml' && (price.line === null || board.l !== price.line)) return price;
+  if (price.odds !== null && pricier(price.odds, board.o)) return { ...price, pb: 'dk' };
+  return { ...price, odds: board.o, pb: board.pb };
+}
+
+// A game's free board with the betting board's shopped prices over it (bestPriceOf, each side); a game not on the
+// betting board as it is
+export function withBestPrices(espn: GameBoard, model: Pick<ModelBoardGameIn, 'k'> | null | undefined): GameBoard {
+  if (!model?.k) return espn;
+  const one = (market: 'spread' | 'total' | 'ml', p: Price) => bestPriceOf(p, model.k[market]?.find((x) => x.s === p.side));
+  return {
+    ...espn,
+    spread: espn.spread ? { away: one('spread', espn.spread.away), home: one('spread', espn.spread.home) } : null,
+    total: espn.total ? { over: one('total', espn.total.over), under: one('total', espn.total.under) } : null,
+    ml: espn.ml ? { away: one('ml', espn.ml.away), home: one('ml', espn.ml.home) } : null,
   };
 }
 

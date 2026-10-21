@@ -137,6 +137,9 @@ export interface BetRow {
   // where it came from; a bet's moved where it differs from the price the Bot locked (price))
   livePrice?: number | null;
   liveFrom?: 'espn' | 'board' | null;
+  // (the book whose price the live one is where it's the best of the US books (suggestions.ts LiveQuote book, a
+  // book-names.ts code); none, the free board's, no best claimed)
+  liveBook?: string | null;
   moved?: boolean;
   // (when the Bot placed it, where the picks file says: its "Bet at −109 · 2:05 PM")
   placedAt?: string | null;

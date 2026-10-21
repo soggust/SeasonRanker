@@ -408,6 +408,9 @@ service cloud.firestore {
           || (d.tier == 'check' && isAdmin() && d.get('botPick', false) == false && !('kelly' in d)))
         && (!('kelly' in d) || d.kelly is number)
         && (!('ref' in d) || (d.ref is string && d.ref.size() <= 80))
+        // (the book whose price it took: a short code, the best US price's (the owner, 2026-10-20); a parlay leg's
+        // unchecked, the expression limit's)
+        && (!('book' in d) || (d.book is string && d.book.size() <= 8))
         && validPlayMarket(d)
         && validPreview(d);
     }
@@ -431,7 +434,7 @@ service cloud.firestore {
 
     function validPlayBet(d) {
       return d.keys().hasAll(['sport', 'event', 'matchup', 'start', 'market', 'side', 'odds', 'stake', 'pick', 'run', 'placedAt', 'status'])
-        && d.keys().hasOnly(['sport', 'event', 'matchup', 'start', 'market', 'side', 'line', 'odds', 'stake', 'pick', 'botPick', 'tier', 'kelly', 'ref', 'propType', 'athlete', 'player', 'statLabel', 'preview', 'run', 'placedAt', 'status'])
+        && d.keys().hasOnly(['sport', 'event', 'matchup', 'start', 'market', 'side', 'line', 'odds', 'stake', 'pick', 'botPick', 'tier', 'kelly', 'ref', 'propType', 'athlete', 'player', 'statLabel', 'preview', 'book', 'run', 'placedAt', 'status'])
         && validPlayPick(d)
         && validPlayStake(d);
     }
@@ -509,7 +512,7 @@ service cloud.firestore {
         && d.odds is int && (d.odds >= 100 || d.odds <= -100)
         && d.pick is string && d.pick.size() <= 80
         && validPlayStake(d)
-        && parlayLegs0(d, ['sport', 'event', 'matchup', 'start', 'market', 'side', 'line', 'odds', 'pick', 'botPick', 'tier', 'kelly', 'ref', 'propType', 'athlete', 'player', 'statLabel', 'preview'], request.time + duration.value(60, 'd'));
+        && parlayLegs0(d, ['sport', 'event', 'matchup', 'start', 'market', 'side', 'line', 'odds', 'pick', 'botPick', 'tier', 'kelly', 'ref', 'propType', 'athlete', 'player', 'statLabel', 'preview', 'book'], request.time + duration.value(60, 'd'));
     }
 
     match /users/{uid}/bets/{bet} {

@@ -205,7 +205,14 @@ export function price(game, exp, lines, params, shape = null) {
     const given = lines.fair?.[market];
     return Number.isFinite(given) ? given : fair(a, b)[0];
   };
-  const both = (market, a, b, fa) => out.push({ market, sides: [{ ...a, fair: fa }, { ...b, fair: 1 - fa }] });
+  // (D74: a side's price is its best US book's at the Book's line where the quote brought one (lines.best, run.mjs
+  // liveLines: { odds, book code }), DraftKings' own kept as dk for the fair, the residual's and the confidence's
+  // inputs, which read the Book's own pair; ESPN's board and the history have none: DraftKings' as before)
+  const shop = (market, s) => {
+    const b = lines.best?.[market]?.[s.side];
+    return b && Number.isFinite(b.odds) && b.book ? { ...s, odds: b.odds, dk: s.odds, book: b.book } : s;
+  };
+  const both = (market, a, b, fa) => out.push({ market, sides: [{ ...shop(market, a), fair: fa }, { ...shop(market, b), fair: 1 - fa }] });
   const { spread, total, ml } = lines;
   let spreadHome = null;
   if (spread.home.line !== null && spread.away.line !== null && spread.home.odds && spread.away.odds) {
@@ -248,7 +255,7 @@ export function price(game, exp, lines, params, shape = null) {
 // None without a game ctx (the backtest, the self-check: the trust's chance alone). With a total's named terms'
 // shift (D44, s.named) that rides along either way: chanceAt reads it before the hook
 export const sideCtx = (market, s, ctx) => {
-  const base = ctx ? { ...ctx, market: market.market, stat: market.market, line: s.line ?? null, side: s.side, f: s.fair, raw: s.model, overOdds: market.sides[0].odds, underOdds: market.sides[1].odds, home: null } : null;
+  const base = ctx ? { ...ctx, market: market.market, stat: market.market, line: s.line ?? null, side: s.side, f: s.fair, raw: s.model, overOdds: market.sides[0].dk ?? market.sides[0].odds, underOdds: market.sides[1].dk ?? market.sides[1].odds, home: null } : null;
   if (!Number.isFinite(s.named)) return base;
   return { ...(base ?? {}), named: s.named };
 };

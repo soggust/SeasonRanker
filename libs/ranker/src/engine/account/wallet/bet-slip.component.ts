@@ -5,6 +5,7 @@ import { CHIPS, PARLAY_MAX, START, Selection, addChip, oddsText, parlayToWin, pa
 import { Tapped, tapMinimizes } from './slip-sheet';
 import { betPlayer } from '../../player-link';
 import { legWords } from '../../book/bet-format';
+import { bestPriceTitle } from '../../book/book-names';
 
 // The bet slip: the prices clicked on the Book, each with its stake (a casino's chips, a half, 1, 5, 10
 // and 25 units, stacked on with each click, or a number typed), what it'd win and pay back, then Place. A
@@ -29,6 +30,8 @@ export class BetSlipComponent {
   readonly start = START;
   readonly chips = CHIPS;
   readonly oddsText = oddsText;
+  // (a leg's price's hover: the book whose price it is, "Best price: FanDuel" where shopped (book-names.ts))
+  readonly bookTitle = bestPriceTitle;
   readonly toWin = toWin;
   readonly payout = payout;
   readonly parlayMax = PARLAY_MAX;

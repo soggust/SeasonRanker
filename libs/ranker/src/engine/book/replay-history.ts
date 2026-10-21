@@ -75,7 +75,7 @@ export interface ReplayRecordFile {
   // (the newest year's days in buckets by band (replay-record.mjs dailyOf: "won,lost,push,staked,profit,beat,beatN"),
   // from its first day: the time range's sums; none in a file from before them)
   daily?: { cols: string[]; from: string | null; bands: Record<string, Record<string, string>> };
-  flags: { timing: { open: number; close: number; openSeen: number; openClean: number; openInWindow: number }; context: { full: number[]; ratingsOnly: number[] }; price: string; placement: string; split: string; notSeen: string };
+  flags: { timing: { open: number; close: number; openSeen: number; openClean: number; openInWindow: number }; context: { full: number[]; ratingsOnly: number[] }; price: string; shop?: { shopped: number; better: number; dk: number }; placement: string; split: string; notSeen: string };
 }
 
 // The band lab's staged records (band-lab.mjs --write, DECISIONS.md D70): a sport's replay under each band rule tried,
@@ -305,7 +305,10 @@ export function caveatOf(files: ReplayRecordFile[]): string {
       return `${f.sport.toUpperCase()} ${full ? `full context ${full}` : 'no props'}${ratings ? `, lines by the ratings alone ${ratings}` : ''}`;
     })
     .join('; ');
-  return `Today's Bot replayed on every priced game before its latest version, plus its real bets since: ${open} bets at a clean open where its edge survived the lineup risk, ${close} at the close; ${ctx}. the Book's price nearest the placement, never shopped; the live desk's gates, CHECKs and research can't be replayed. Practice picks apart.`;
+  // (D74: the bets at the best US price, where the history has every book at the bet's snapshot; the rest the Book's own)
+  const shopped = files.reduce((s, f) => s + (f.flags?.shop?.shopped ?? 0), 0);
+  const price = shopped ? `the best US price where the history has every book at that moment (${shopped} of ${open + close} bets), else the Book's own` : "the Book's price nearest the placement";
+  return `Today's Bot replayed on every priced game before its latest version, plus its real bets since: ${open} bets at a clean open where its edge survived the lineup risk, ${close} at the close; ${ctx}. ${price}; the live desk's gates, CHECKs and research can't be replayed. Practice picks apart.`;
 }
 
 // The Bot's history on show: the sports' replay files (a sport without one contributes its live ledger alone), the

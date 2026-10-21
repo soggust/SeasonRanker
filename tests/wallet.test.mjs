@@ -317,6 +317,15 @@ test('settling: won, lost, pushed from the final by the bettor’s rules; void w
   assert.deepEqual(lib.settlePlayBet(prop, game(), { observations: bot, propValue: null, now }), { status: 'void', profit: 0, note: 'did not play' });
   assert.equal(lib.settlePlayBet(prop, game(), { observations: bot, propValue: undefined, now }), null);
   assert.equal(lib.settlePlayBet(prop, game(), { observations: bot, propValue: undefined, now: now + 4 * lib.DAY }).note, 'couldn’t read the stat');
+  // (the best US price (the owner, 2026-10-20): the board's o is the shopped price, so the board seen carries it; a
+  // bet at it with its book's code (book) checks and settles as any, the field no bar; a price no board showed doesn't)
+  const seen = [Date.parse('2026-10-10T10:00Z'), Date.parse('2026-10-10T16:00Z')];
+  const best = lib.boardObservations({ 'spread|home|-3.5|-102||': seen, 'prop|over|24.5|105|saves|9': seen });
+  assert.deepEqual(lib.checkPrice(bet({ odds: -102, book: 'fd' }), best), { ok: true, by: 'board' });
+  assert.deepEqual(lib.settlePlayBet(bet({ odds: -102, book: 'fd' }), game(), { observations: [...board, ...best], now }), { status: 'won', profit: 9.8, final: 'LV 20 @ NE 24' });
+  assert.equal(lib.settlePlayBet(bet({ odds: 130, book: 'fd' }), game(), { observations: [...board, ...best], now }).note, 'price didn’t match the board');
+  assert.equal(lib.settlePlayBet({ ...prop, odds: 105, book: 'mgm' }, game(), { observations: best, propValue: 27, now }).status, 'won');
+  assert.equal(lib.legProblem({ ...prop, odds: 105, book: 'mgm' }), null);
   // (what goes back in the wallet)
   assert.equal(lib.creditOf(10, { status: 'won', profit: 9.09 }), 19.09);
   assert.equal(lib.creditOf(10, { status: 'lost', profit: -10 }), 0);

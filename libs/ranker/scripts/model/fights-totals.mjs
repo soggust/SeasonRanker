@@ -31,6 +31,7 @@ import { FIT_LEAGUES, TOTAL_KEYS, TOTAL_TERMS, fitLogistic, recencyWeights, scor
 import { PRACTICE_UNITS, chanceAt, decimal, fairPair, gapGuard, placement, stakeFor } from './desk.mjs';
 import { BOOK, LEAGUES } from './leagues.mjs';
 import { SHARP, american } from './oddsapi.mjs';
+import { bestPair, codeOf, sideBest } from './best-price.mjs';
 import { round } from './ratings.mjs';
 
 const ROUND_SECS = 300;
@@ -40,7 +41,10 @@ export const baseKey = (line, rounds) => `l${rounds}_${Math.round(line * 10)}`;
 const BASE_KEYS = Object.entries(TOTAL_LINES).flatMap(([r, lines]) => lines.map((l) => baseKey(l, Number(r))));
 // (the books the ask names (one region's 10 at most, so one region's cost): the book and Pinnacle, and the others
 // that post MMA totals (probed 2026-10-17), any one of them the fair anchor where Pinnacle doesn't post the point)
-export const TOTAL_BOOKS = [BOOK, SHARP, 'williamhill_us', 'betonlineag', 'betus', 'coolbet', 'betanysports'];
+// (D74: and the three US books that most often carry the best price, FanDuel, BetRivers and BetMGM, filling the region's 10:
+// the moneyline and the totals are bet at the best US price among them; the offshore books are anchors only, never bet)
+export const TOTAL_ANCHORS = ['williamhill_us', 'betonlineag', 'betus', 'coolbet', 'betanysports'];
+export const TOTAL_BOOKS = [BOOK, SHARP, ...TOTAL_ANCHORS, 'fanduel', 'betrivers', 'betmgm'];
 // (the practice stake until this many total bets are graded with a close; the edge, the moneyline's)
 export const TOTAL_LIVE = 40;
 // THE WEIGHT CLASS'S BASE (the loss review's H10, the history round 2026-10-19): each weight class's own offset on the
@@ -269,13 +273,17 @@ export function totalLinesOf(ev) {
   const sharp = totalPairs(ev, SHARP)[line];
   if (sharp) anchor = { fair: fairPair(sharp.over, sharp.under), from: SHARP };
   else {
-    const others = TOTAL_BOOKS.filter((k) => k !== BOOK && k !== SHARP)
+    const others = TOTAL_ANCHORS
       .map((k) => [k, totalPairs(ev, k)[line]])
       .filter(([, p]) => p)
       .sort((a, b) => vig(a[1]) - vig(b[1]));
     if (others.length) anchor = { fair: fairPair(others[0][1].over, others[0][1].under), from: others[0][0] };
   }
-  return { line, odds: { over: odds.over, under: odds.under }, fair: anchor?.fair ?? fairPair(odds.over, odds.under), fairFrom: anchor?.from ?? 'its own prices' };
+  // (D74: each side's best US price at the line, DraftKings' own kept as dk for the fair)
+  const bp = bestPair((ev?.bookmakers ?? []).filter((b) => codeOf(b.key)).map((b) => [codeOf(b.key), totalPairs(ev, b.key)[line]]).filter(([, p]) => p).map(([book, p]) => ({ book, a: p.over, b: p.under })));
+  const over = sideBest(bp?.a, odds.over);
+  const under = sideBest(bp?.b, odds.under);
+  return { line, odds: { over: over.odds, under: under.odds }, dk: { over: odds.over, under: odds.under }, books: { over: over.book, under: under.book }, fair: anchor?.fair ?? fairPair(odds.over, odds.under), fairFrom: anchor?.from ?? 'its own prices' };
 }
 
 // The pick for a bout's total: the better side at the trusted chance. over: the model's chance of Over; lines:
@@ -288,7 +296,7 @@ export function totalPickFor(over, lines, trust, { live = false, untested = true
     const odds = lines.odds[side];
     const p = chanceAt(key, fair, m, trust);
     const ev = p * decimal(odds) - 1;
-    return { side, odds, fair, model: m, p, ev, units: stakeFor(ev, EV_SCALE, odds) };
+    return { side, odds, ...(lines.books?.[side] ? { book: lines.books[side] } : {}), fair, model: m, p, ev, units: stakeFor(ev, EV_SCALE, odds) };
   });
   const pick = sides[0].ev >= sides[1].ev ? sides[0] : sides[1];
   const other = pick === sides[0] ? sides[1] : sides[0];
