@@ -5,9 +5,9 @@
   "rapsheet.bsky.social": "2026-10-21T18:45:29.066Z",
   "nflnewsreposterbot.bsky.social": "2026-10-20T20:30:06.105Z",
   "insidenflnews.bsky.social": "2026-10-21T19:06:29.181Z",
-  "nflnewsposter.bsky.social": "2026-10-21T19:28:43.854Z",
-  "rotoworld-fb.bsky.social": "2026-10-21T20:19:36.000Z",
-  "rotowirenfl.bsky.social": "2026-10-21T20:21:44.000Z"
+  "nflnewsposter.bsky.social": "2026-10-21T20:53:42.024Z",
+  "rotoworld-fb.bsky.social": "2026-10-21T20:51:19.000Z",
+  "rotowirenfl.bsky.social": "2026-10-21T20:52:44.000Z"
  },
  "claims": [
   {
@@ -2414,6 +2414,84 @@
    "kind": "status",
    "confidence": 0.85,
    "text": "KC Concepcion: Limited in practice Wednesday \n\n https://www.rotowire.com/football/player/kc-concepcion-19242"
+  },
+  {
+   "id": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3myfyfumucf27|golden|limited|status",
+   "at": "2026-10-21T20:28:39.000Z",
+   "seen": "2026-10-21T21:10:26.919Z",
+   "handle": "rotoworld-fb.bsky.social",
+   "post": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3myfyfumucf27",
+   "player": "Golden",
+   "team": null,
+   "status": "limited",
+   "kind": "status",
+   "confidence": 0.7,
+   "text": "Golden (shoulder) and Watson (ankle) listed as LPs"
+  },
+  {
+   "id": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3myfyfumucf27|watson|limited|status",
+   "at": "2026-10-21T20:28:39.000Z",
+   "seen": "2026-10-21T21:10:26.919Z",
+   "handle": "rotoworld-fb.bsky.social",
+   "post": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3myfyfumucf27",
+   "player": "Watson",
+   "team": null,
+   "status": "limited",
+   "kind": "status",
+   "confidence": 0.7,
+   "text": "Golden (shoulder) and Watson (ankle) listed as LPs"
+  },
+  {
+   "id": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3myfyvnvzcn2t|lamarjackson|limited|return",
+   "at": "2026-10-21T20:37:28.000Z",
+   "seen": "2026-10-21T21:10:26.919Z",
+   "handle": "rotowirenfl.bsky.social",
+   "post": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3myfyvnvzcn2t",
+   "player": "Lamar Jackson",
+   "team": "BAL",
+   "status": "limited",
+   "kind": "return",
+   "confidence": 0.85,
+   "text": "Lamar Jackson: Returns in limited fashion Wednesday \n\n https://www.rotowire.com/football/player/lamar-jackson-12561"
+  },
+  {
+   "id": "at://did:plc:fuqjc7x4gxvnwzksnlxwbe4x/app.bsky.feed.post/3myfz7b5cuc2r|lamarjackson|limited|status",
+   "at": "2026-10-21T20:42:51.613Z",
+   "seen": "2026-10-21T21:10:26.919Z",
+   "handle": "nflnewsposter.bsky.social",
+   "post": "at://did:plc:fuqjc7x4gxvnwzksnlxwbe4x/app.bsky.feed.post/3myfz7b5cuc2r",
+   "player": "Lamar Jackson",
+   "team": "BAL",
+   "status": "limited",
+   "kind": "status",
+   "confidence": 0.9,
+   "text": "[Hensley] Ravens QB Lamar Jackson is listed as a limited participant in Wednesday's practice.\n\nOLB Trey Hendrickson (finger) was a full participant heading into Sunday's reunion with the Bengals. twit"
+  },
+  {
+   "id": "at://did:plc:fuqjc7x4gxvnwzksnlxwbe4x/app.bsky.feed.post/3myfz7b5cuc2r|treyhendrickson|active|status",
+   "at": "2026-10-21T20:42:51.613Z",
+   "seen": "2026-10-21T21:10:26.919Z",
+   "handle": "nflnewsposter.bsky.social",
+   "post": "at://did:plc:fuqjc7x4gxvnwzksnlxwbe4x/app.bsky.feed.post/3myfz7b5cuc2r",
+   "player": "Trey Hendrickson",
+   "team": "CIN",
+   "status": "active",
+   "kind": "status",
+   "confidence": 0.6,
+   "text": "[Hensley] Ravens QB Lamar Jackson is listed as a limited participant in Wednesday's practice.\n\nOLB Trey Hendrickson (finger) was a full participant heading into Sunday's reunion with the Bengals. twit"
+  },
+  {
+   "id": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3myfzfe3uqd2r|calebdouglas|questionable|status",
+   "at": "2026-10-21T20:46:15.000Z",
+   "seen": "2026-10-21T21:10:26.919Z",
+   "handle": "rotoworld-fb.bsky.social",
+   "post": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3myfzfe3uqd2r",
+   "player": "Caleb Douglas",
+   "team": null,
+   "status": "questionable",
+   "kind": "status",
+   "confidence": 0.8,
+   "text": "Caleb Douglas (ankle) limited, day-to-day in W7"
   }
  ]
 }

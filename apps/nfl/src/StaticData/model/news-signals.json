@@ -78,51 +78,7 @@
    "confidence": 0.6,
    "headline": "LaFleur enthused Packers RB Jacobs, 'an elite-level back,' might play Sunday",
    "at": "2026-10-19T22:21:38.000Z"
-  },
-  {
-   "team": "19",
-   "abbr": "NYG",
-   "athlete": "2969939",
-   "player": "Jameis Winston",
-   "kind": "starting",
-   "direction": "none",
-   "confidence": 0.3,
-   "headline": "John Harbaugh: Giants 'honing in on' QB decision for Sunday vs. Texans",
-   "at": "2026-10-19T21:07:40.000Z"
-  },
-  {
-   "team": "19",
-   "abbr": "NYG",
-   "athlete": "4433970",
-   "player": "JJ McCarthy",
-   "kind": "starting",
-   "direction": "none",
-   "confidence": 0.3,
-   "headline": "John Harbaugh: Giants 'honing in on' QB decision for Sunday vs. Texans",
-   "at": "2026-10-19T21:07:40.000Z"
-  },
-  {
-   "team": "28",
-   "abbr": "WSH",
-   "athlete": "4575131",
-   "player": "Jacory Croskey-Merritt",
-   "kind": "benched",
-   "direction": "down",
-   "confidence": 0.9,
-   "headline": "Commanders place starting RB Jacory Croskey-Merritt (groin) on IR",
-   "at": "2026-10-19T20:50:47.000Z"
-  },
-  {
-   "team": "34",
-   "abbr": "HOU",
-   "athlete": "4366031",
-   "player": "Tank Dell",
-   "kind": "return",
-   "direction": "up",
-   "confidence": 0.9,
-   "headline": "Texans WR Tank Dell to play Sunday in 1st game since major 2024 knee injury",
-   "at": "2026-10-19T20:29:26.000Z"
   }
  ],
- "at": "2026-10-21T20:14:55.995Z"
+ "at": "2026-10-21T21:10:26.919Z"
 }

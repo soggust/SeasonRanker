@@ -3497,6 +3497,162 @@
     "seen": "2026-10-21T20:25:50.608Z",
     "own": "2026-10-21T20:08:00.000Z"
    }
+  },
+  "401873010|kcconcepcion|q": {
+   "game": "401873010",
+   "start": "2026-10-23T00:15Z",
+   "team": "3",
+   "name": "KC Concepcion",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-10-21T20:28:28.347Z",
+    "own": "2026-10-21T20:21:44.000Z",
+    "why": "@rotowirenfl.bsky.social: KC Concepcion: Limited in practice Wednesday \n\n https:"
+   }
+  },
+  "401873015|jaylenwright|q": {
+   "game": "401873015",
+   "start": "2026-10-25T17:00Z",
+   "team": "15",
+   "name": "Jaylen Wright",
+   "status": "q",
+   "athlete": "4682745",
+   "espn": {
+    "seen": "2026-10-21T21:07:43.187Z",
+    "own": "2026-10-21T20:45:00.000Z"
+   }
+  },
+  "401873015|willkacmarek|q": {
+   "game": "401873015",
+   "start": "2026-10-25T17:00Z",
+   "team": "15",
+   "name": "Will Kacmarek",
+   "status": "q",
+   "athlete": "4880236",
+   "espn": {
+    "seen": "2026-10-21T21:07:43.187Z",
+    "own": "2026-10-21T20:36:00.000Z"
+   }
+  },
+  "401873015|tuckeraddington|q": {
+   "game": "401873015",
+   "start": "2026-10-25T17:00Z",
+   "team": "15",
+   "name": "Tucker Addington",
+   "status": "q",
+   "athlete": "4034729",
+   "espn": {
+    "seen": "2026-10-21T21:07:43.187Z",
+    "own": "2026-10-21T20:36:00.000Z"
+   }
+  },
+  "401873012|taviusrobinson|q": {
+   "game": "401873012",
+   "start": "2026-10-25T17:00Z",
+   "team": "33",
+   "name": "Tavius Robinson",
+   "status": "q",
+   "athlete": "4690179",
+   "espn": {
+    "seen": "2026-10-21T21:07:43.187Z",
+    "own": "2026-10-21T20:38:00.000Z"
+   }
+  },
+  "401873012|johnsimpson|q": {
+   "game": "401873012",
+   "start": "2026-10-25T17:00Z",
+   "team": "33",
+   "name": "John Simpson",
+   "status": "q",
+   "athlete": "4035479",
+   "espn": {
+    "seen": "2026-10-21T21:07:43.187Z",
+    "own": "2026-10-21T20:36:00.000Z"
+   }
+  },
+  "401873012|jaylinnhawkins|q": {
+   "game": "401873012",
+   "start": "2026-10-25T17:00Z",
+   "team": "33",
+   "name": "Jaylinn Hawkins",
+   "status": "q",
+   "athlete": "3858276",
+   "espn": {
+    "seen": "2026-10-21T21:07:43.187Z",
+    "own": "2026-10-21T20:34:00.000Z"
+   }
+  },
+  "401873012|olaivavegaioane|q": {
+   "game": "401873012",
+   "start": "2026-10-25T17:00Z",
+   "team": "33",
+   "name": "Olaivavega Ioane",
+   "status": "q",
+   "athlete": "4832793",
+   "espn": {
+    "seen": "2026-10-21T21:07:43.187Z",
+    "own": "2026-10-21T20:33:00.000Z"
+   }
+  },
+  "401873016|kayvonthibodeaux|q": {
+   "game": "401873016",
+   "start": "2026-10-25T17:00Z",
+   "team": "19",
+   "name": "Kayvon Thibodeaux",
+   "status": "q",
+   "athlete": "4426326",
+   "espn": {
+    "seen": "2026-10-21T21:07:43.187Z",
+    "own": "2026-10-21T20:28:00.000Z"
+   }
+  },
+  "401873016|jordanstout|q": {
+   "game": "401873016",
+   "start": "2026-10-25T17:00Z",
+   "team": "19",
+   "name": "Jordan Stout",
+   "status": "q",
+   "athlete": "4260224",
+   "espn": {
+    "seen": "2026-10-21T21:07:43.187Z",
+    "own": "2026-10-21T20:27:00.000Z"
+   }
+  },
+  "401873016|charliejones|q": {
+   "game": "401873016",
+   "start": "2026-10-25T17:00Z",
+   "team": "19",
+   "name": "Charlie Jones",
+   "status": "q",
+   "athlete": "4257188",
+   "espn": {
+    "seen": "2026-10-21T21:07:43.187Z",
+    "own": "2026-10-21T20:26:00.000Z"
+   }
+  },
+  "401873019|jonahcoleman|out": {
+   "game": "401873019",
+   "start": "2026-10-25T20:05Z",
+   "team": "7",
+   "name": "Jonah Coleman",
+   "status": "out",
+   "athlete": "4702555",
+   "espn": {
+    "seen": "2026-10-21T21:07:43.187Z",
+    "own": "2026-10-21T20:59:00.000Z"
+   }
+  },
+  "401873021|natelandman|q": {
+   "game": "401873021",
+   "start": "2026-10-25T20:25Z",
+   "team": "14",
+   "name": "Nate Landman",
+   "status": "q",
+   "athlete": "4243181",
+   "espn": {
+    "seen": "2026-10-21T21:07:43.187Z",
+    "own": "2026-10-21T02:51:00.000Z"
+   }
   }
  }
 }

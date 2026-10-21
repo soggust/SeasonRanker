@@ -1,9 +1,9 @@
 {
  "sport": "nba",
  "cursor": {
-  "rotowirenba.bsky.social": "2026-10-21T18:27:09.000Z",
+  "rotowirenba.bsky.social": "2026-10-21T21:07:09.000Z",
   "insidenbanews.bsky.social": "2026-10-21T03:38:50.586Z",
-  "shamsbot.bsky.social": "2026-10-21T18:18:22.000Z"
+  "shamsbot.bsky.social": "2026-10-21T21:00:12.000Z"
  },
  "claims": [
   {
@@ -629,6 +629,19 @@
    "kind": "status",
    "confidence": 0.75,
    "text": "Oso Ighodaro: Not listed on injury report \n\n https://www.rotowire.com/basketball/player/oso-ighodaro-6293"
+  },
+  {
+   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3myg2kp454z2o|jarrettallen|questionable|status",
+   "at": "2026-10-21T21:07:09.000Z",
+   "seen": "2026-10-21T21:10:26.919Z",
+   "handle": "rotowirenba.bsky.social",
+   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3myg2kp454z2o",
+   "player": "Jarrett Allen",
+   "team": null,
+   "status": "questionable",
+   "kind": "status",
+   "confidence": 0.9,
+   "text": "Jarrett Allen: Questionable versus Philadelphia \n\n https://www.rotowire.com/basketball/player/jarrett-allen-4122"
   }
  ]
 }
