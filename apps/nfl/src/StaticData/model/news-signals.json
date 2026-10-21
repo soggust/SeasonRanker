@@ -3,6 +3,28 @@
  "days": 2,
  "signals": [
   {
+   "team": "8",
+   "abbr": "DET",
+   "athlete": "4692025",
+   "player": "Brian Branch",
+   "kind": "return",
+   "direction": "up",
+   "confidence": 0.9,
+   "headline": "Lions to get DB Brian Branch, C Cade Mays back vs. Packers",
+   "at": "2026-10-21T20:09:24.000Z"
+  },
+  {
+   "team": "8",
+   "abbr": "DET",
+   "athlete": "4361788",
+   "player": "Cade Mays",
+   "kind": "return",
+   "direction": "up",
+   "confidence": 0.9,
+   "headline": "Lions to get DB Brian Branch, C Cade Mays back vs. Packers",
+   "at": "2026-10-21T20:09:24.000Z"
+  },
+  {
    "team": "25",
    "abbr": "SF",
    "athlete": null,
@@ -100,18 +122,7 @@
    "confidence": 0.9,
    "headline": "Texans WR Tank Dell to play Sunday in 1st game since major 2024 knee injury",
    "at": "2026-10-19T20:29:26.000Z"
-  },
-  {
-   "team": "11",
-   "abbr": "IND",
-   "athlete": "3917792",
-   "player": "Daniel Jones",
-   "kind": "starting",
-   "direction": "up",
-   "confidence": 0.9,
-   "headline": "Colts to stick with Daniel Jones at quarterback vs. Vikings",
-   "at": "2026-10-19T20:12:07.000Z"
   }
  ],
- "at": "2026-10-21T19:16:26.699Z"
+ "at": "2026-10-21T20:14:55.995Z"
 }

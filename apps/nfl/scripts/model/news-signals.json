@@ -262,6 +262,7 @@
   "50231705": "2026-10-20",
   "50231812": "2026-10-20",
   "50232379": "2026-10-20",
+  "50232574": "2026-10-21",
   "50232968": "2026-10-20",
   "50237503": "2026-10-21",
   "50237982": "2026-10-21",
@@ -273,7 +274,8 @@
   "50239882": "2026-10-21",
   "50240100": "2026-10-21",
   "50240235": "2026-10-21",
-  "50240343": "2026-10-21"
+  "50240343": "2026-10-21",
+  "50240756": "2026-10-21"
  },
  "signals": [
   {
@@ -1099,6 +1101,36 @@
    "confidence": 0.5,
    "story": "50238009",
    "headline": "Raheem Morris is back in Atlanta -- and he's bringing his surging 49ers defense",
+   "model": "claude-haiku-5-5"
+  },
+  {
+   "id": "50232574|8|4692025|return",
+   "day": "2026-10-21",
+   "at": "2026-10-21T20:09:24.000Z",
+   "team": "8",
+   "abbr": "DET",
+   "athlete": "4692025",
+   "player": "Brian Branch",
+   "kind": "return",
+   "direction": "up",
+   "confidence": 0.9,
+   "story": "50232574",
+   "headline": "Lions to get DB Brian Branch, C Cade Mays back vs. Packers",
+   "model": "claude-haiku-5-5"
+  },
+  {
+   "id": "50232574|8|4361788|return",
+   "day": "2026-10-21",
+   "at": "2026-10-21T20:09:24.000Z",
+   "team": "8",
+   "abbr": "DET",
+   "athlete": "4361788",
+   "player": "Cade Mays",
+   "kind": "return",
+   "direction": "up",
+   "confidence": 0.9,
+   "story": "50232574",
+   "headline": "Lions to get DB Brian Branch, C Cade Mays back vs. Packers",
    "model": "claude-haiku-5-5"
   }
  ]

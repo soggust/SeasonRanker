@@ -6,8 +6,8 @@
   "nflnewsreposterbot.bsky.social": "2026-10-20T20:30:06.105Z",
   "insidenflnews.bsky.social": "2026-10-21T19:06:29.181Z",
   "nflnewsposter.bsky.social": "2026-10-21T19:28:43.854Z",
-  "rotoworld-fb.bsky.social": "2026-10-21T19:47:30.000Z",
-  "rotowirenfl.bsky.social": "2026-10-21T19:58:04.000Z"
+  "rotoworld-fb.bsky.social": "2026-10-21T20:14:44.000Z",
+  "rotowirenfl.bsky.social": "2026-10-21T20:13:42.000Z"
  },
  "claims": [
   {
@@ -2284,6 +2284,84 @@
    "kind": "status",
    "confidence": 0.8,
    "text": "A.J. Brown (ankle) upgrades to full, will play"
+  },
+  {
+   "id": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3myfxavwq2b2h|quinshonjudkins|limited|status",
+   "at": "2026-10-21T20:07:59.000Z",
+   "seen": "2026-10-21T20:14:55.995Z",
+   "handle": "rotowirenfl.bsky.social",
+   "post": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3myfxavwq2b2h",
+   "player": "Quinshon Judkins",
+   "team": null,
+   "status": "limited",
+   "kind": "status",
+   "confidence": 0.8,
+   "text": "Quinshon Judkins: Limited in Wednesday's practice \n\n https://www.rotowire.com/football/player/quinshon-judkins-18516"
+  },
+  {
+   "id": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3myfxewfhzr2t|mikeevans|none|status",
+   "at": "2026-10-21T20:10:14.000Z",
+   "seen": "2026-10-21T20:14:55.995Z",
+   "handle": "rotoworld-fb.bsky.social",
+   "post": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3myfxewfhzr2t",
+   "player": "Mike Evans",
+   "team": "TB",
+   "status": "none",
+   "kind": "status",
+   "confidence": 0.3,
+   "text": "Mike Evans and Deebo Samuel DNP on Wednesday"
+  },
+  {
+   "id": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3myfxewfhzr2t|deebosamuel|none|status",
+   "at": "2026-10-21T20:10:14.000Z",
+   "seen": "2026-10-21T20:14:55.995Z",
+   "handle": "rotoworld-fb.bsky.social",
+   "post": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3myfxewfhzr2t",
+   "player": "Deebo Samuel",
+   "team": null,
+   "status": "none",
+   "kind": "status",
+   "confidence": 0.3,
+   "text": "Mike Evans and Deebo Samuel DNP on Wednesday"
+  },
+  {
+   "id": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3myfxjuplbr2u|denzelboston|limited|status",
+   "at": "2026-10-21T20:13:00.000Z",
+   "seen": "2026-10-21T20:14:55.995Z",
+   "handle": "rotowirenfl.bsky.social",
+   "post": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3myfxjuplbr2u",
+   "player": "Denzel Boston",
+   "team": null,
+   "status": "limited",
+   "kind": "status",
+   "confidence": 0.8,
+   "text": "Denzel Boston: Limited by foot issue \n\n https://www.rotowire.com/football/player/denzel-boston-19298"
+  },
+  {
+   "id": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3myfxl4ovpb2i|jordanlove|questionable|status",
+   "at": "2026-10-21T20:13:42.000Z",
+   "seen": "2026-10-21T20:14:55.995Z",
+   "handle": "rotowirenfl.bsky.social",
+   "post": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3myfxl4ovpb2i",
+   "player": "Jordan Love",
+   "team": "GB",
+   "status": "questionable",
+   "kind": "status",
+   "confidence": 0.5,
+   "text": "Jordan Love: Dealing with back injury \n\n https://www.rotowire.com/football/player/jordan-love-14371"
+  },
+  {
+   "id": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3myfxmyjegn2n|kcconcepcion|limited|status",
+   "at": "2026-10-21T20:14:44.000Z",
+   "seen": "2026-10-21T20:14:55.995Z",
+   "handle": "rotoworld-fb.bsky.social",
+   "post": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3myfxmyjegn2n",
+   "player": "KC Concepcion",
+   "team": "CLE",
+   "status": "limited",
+   "kind": "status",
+   "confidence": 0.8,
+   "text": "KC Concepcion (calf/quad) limited to begin Week 7"
   }
  ]
 }
