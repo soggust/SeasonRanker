@@ -277,7 +277,8 @@
   "50240343": "2026-10-21",
   "50240756": "2026-10-21",
   "50241195": "2026-10-21",
-  "50241322": "2026-10-21"
+  "50241322": "2026-10-21",
+  "50242240": "2026-10-21"
  },
  "signals": [
   {
@@ -1133,6 +1134,21 @@
    "confidence": 0.9,
    "story": "50232574",
    "headline": "Lions to get DB Brian Branch, C Cade Mays back vs. Packers",
+   "model": "claude-haiku-5-5"
+  },
+  {
+   "id": "50242240|34|4366031|return",
+   "day": "2026-10-21",
+   "at": "2026-10-21T22:41:12.000Z",
+   "team": "34",
+   "abbr": "HOU",
+   "athlete": "4366031",
+   "player": "Tank Dell",
+   "kind": "return",
+   "direction": "up",
+   "confidence": 0.8,
+   "story": "50242240",
+   "headline": "Texans' Tank Dell says he won't fear being hit in return Sunday against Giants",
    "model": "claude-haiku-5-5"
   }
  ]
