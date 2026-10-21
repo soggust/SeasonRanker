@@ -1110,6 +1110,56 @@ Started 2026-10-18, after about 20 bettor changes in one day. The owner: "keep i
 - **Code:** `best-price.mjs`, `replay-record.mjs`, `run.mjs`, `gate.mjs` and `gate-mma.mjs` (`GATE_SHOP_COMPARE=<dir>`, measuring only: the replay with the guard off and on). Tests: `tests/model-decisions.test.mjs` D76.
 - **Never:** a shop-only bet turned off or tracked for the guard's sake; a month's T read off bets settled after it began; the guard on in a sport where its walk's guarded bets won, without the owner's say.
 
+### D77. The news lag read from prices alone (Gemini's procedure): measured on every season, no edge, so D66 stays live-only and the desk takes no price trigger
+- **Date:** 2026-10-21 (the round's first item; the owner: infer when the market learned a star was out from the price archive alone, never from box scores).
+- **How (scratchpad `r7/lagprice.mjs`):** each event's DraftKings boards at every snapshot the archive has (the open, D61's intraday 24/12/6/3/1 hours from the puller's raw snapshots, D67's dense 3-hour props for 2024, the close). A star is his team's top two points lines or any 17.5+ (NBA), top two shots lines (NHL), QB1, RB1 and the top two receivers by line (NFL), read at the first snapshot with his team's lines; his team from his games before this one. **The signal:** his own prop posted at one snapshot and gone at the next while the board is up (at least 4 lines on the stat, 60% of the snapshot before, two teammates still posted). **The bet:** at that first snapshot, every teammate's over on a stat D66 tags whose line hasn't moved since the snapshot before (the line no higher, the over's no-vig up under 3 points), at DraftKings' price then. The box score only grades (a teammate who didn't play: void). The fair close is Pinnacle's no-vig at the bet's line, else DraftKings', else the close's line converted (flagged; the same-line subset reads the same). Also split: the team's spread moved against it by 1 point or more at the same snapshot (the line signal).
+- **Measured (the unmoved teammates' overs, flat 1u at DraftKings' price; the fair close's expected return and beat share):**
+
+| Sport | Season | Signals | Bets | Hit (Book's fair) | Flat ROI | At the fair close | Beat it |
+|---|---|---|---|---|---|---|---|
+| NBA | 2024 (dense 3h only) | | 836 | 53.1% (49.9%) | -0.1% ± 3.3 | -6.2% | 6% |
+| NBA | 2025 | | 2,278 | 50.5% (49.7%) | -4.8% ± 2.0 | -5.0% | 18% |
+| NBA | 2026 | | 2,402 | 49.0% (49.9%) | -8.1% ± 1.9 | -5.2% | 17% |
+| NBA | all | 957 | 5,516 | 50.2% | -5.5% ± 1.3 | -5.2% | 16% |
+| NHL | 2025 / 2026 / 2027 | 253 | 1,023 / 754 / 30 | 48.0 / 51.7 / 50.0% | -9.8 / -0.7 / -2.6% | -5.8 / -5.4 / -6.6% | 3% |
+| NFL | 2023 / 2024 / 2025 / 2026 | 104 | 85 / 527 / 72 / 51 | 40.0 / 51.4 / 34.7 / 51.0% | -27.5 / -4.1 / -35.8 / -4.7% | -6.2 / -6.5 / -5.3 / -5.3% | 5% |
+
+  The NBA's points overs (the stat D66's history measured): 867, -3.4% ± 3.2, -4.7% at the fair close. Before the close only (the 24, 6, 3 and 1-hour snapshots): 2025 1,841 -4.1%, 2026 2,020 -7.3%. With the spread moved against the team: 2,054, -7.3%. **Why:** when the Book pulls the star's prop it re-prices his teammates in the same snapshot: 8,263 of the NBA's 13,779 teammate lines had already moved at the first snapshot without him (-9.4% flat on them), and the ones left unmoved lose about the vig at the close. D66's own finding agrees (once the star's prop is pulled the gap is gone); its +9.4% was the box score's hindsight (late scratches the market hadn't seen), which a price-only bettor can't select.
+- **Held:** no historical evidence for `newsLag` (nothing to earn: every cell runs at or under the vig at the fair close) and no price trigger on the live desk (the rule was "if it holds"). D66 stands as it is: live-only, no prior, the NBA's tag only while the star's own prop is still posted.
+- **Paid calls:** none (the archive, the puller's raw snapshots in `.cache/model/intraday`, ESPN's and nflverse's free box scores).
+- **Gate (D22):** nothing priced moved. Not an epoch change. Tests: `tests/model-decisions.test.mjs` D77.
+- **Never:** a news-lag case selected by who didn't play; a price trigger on the desk without a walk-forward edge at the fair close.
+
+### D78. The props' four pieces (early exit, blowout minutes, fatigue, play type with on/off): measured walk-forward on D75's replay, none lowers log loss beyond noise, none ships; the play-by-play aggregates built for the owner
+- **Date:** 2026-10-21 (the round's items 2-5).
+- **How (scratchpad `r7/`: `feat-nba.mjs`, `feat-nhl.mjs`, `feat-nfl.mjs`, `feat-mlb.mjs`, `layer.mjs`, `run-layer.mjs`, `mix-nba.mjs`):** D75's walk-forward replay's prop closes (`REPLAY_DUMP`: every close the record prices, with the Bot's chance and the Book's fair; NBA 225,438, NHL 132,540, NFL 38,798, MLB 30,360 starters' rows) joined to features read only from games before the row's day (the close's inactives and the NFL's injury report known by then, D48). For each stat and season S, a logistic layer fit on the seasons before S alone: the base (a + b logit(Bot) + c logit(Book): a refit of the blend) and the base plus one piece's features (ridge 50; 10 to 1000 checked), scored on S. A piece's delta is its log loss less the base's on the same rows, its SE clustered by game. **The bar, set before the NFL and NHL were read:** lower log loss at z 2.5 or more (about 30 stat-and-piece cells a sport) and in every held-out season.
+- **The pieces:** **early exit** (a hurdle's drivers: his share of games under half his usual minutes, time on ice, snaps or (MLB) 12 outs, shrunk; his minutes' spread; back from an absence; a back-to-back; the spread's size; the NFL's Questionable and Doubtful), **blowout minutes** (P(|margin| >= 15) from the close's spread, NBA sd 12.5; 17 and 13.5 in the NFL; by starter or bench, favorite or dog; and, NBA, the explicit two-state mixture: the starters' and the bench's minutes scaled in the blowout state, the mean held, the shape's change added to the Bot's chance, the two scales picked on the seasons before), **fatigue** (minutes or time on ice over the last 7 and 14 days against his usual, two bins; 3-in-4, 4-in-5; time zones moved and which way; the NFL's short and long rest; MLB's pitch counts and rest), **play type** (NBA: his rim, mid and three shares from ESPN's play-by-play against the defense's concessions by zone to date, its free-throw and assisted rates allowed; NFL: his deep, middle and red-zone shares and depth from nflverse's play-by-play against the defense's deep, middle and depth allowed, EPA a target and a carry allowed, the backs' targets allowed) and **on/off** (each regular out tonight: his stat in his team's games that regular missed this season against all of his, shrunk, the logs summed).
+- **Measured (the delta against the base, log loss x 10^4, minus is better; held out NBA 2025-26, NHL 2025-27, NFL 2024-26 (passing 2025-26), MLB 2024-26):**
+
+| Sport | Stat | Early exit | Blowout | Fatigue | Play type | On/off | All |
+|---|---|---|---|---|---|---|---|
+| NBA | pts | -0.1 ± 0.5 | -0.0 ± 0.3 | +0.7 ± 0.6 | +0.3 ± 0.2 | -0.1 ± 0.0 | +0.8 ± 0.9 |
+| NBA | reb | +0.6 ± 1.0 | +0.3 ± 0.3 | +1.9 ± 1.5 | +0.4 ± 0.4 | -0.1 ± 0.4 | +3.0 ± 1.9 |
+| NBA | ast | +0.8 ± 1.1 | -0.1 ± 0.4 | +1.0 ± 2.1 | -1.3 ± 0.9 | +0.4 ± 0.4 | +0.7 ± 2.6 |
+| NBA | fg3 | -0.4 ± 0.7 | -0.3 ± 0.3 | -0.1 ± 0.6 | -1.5 ± 1.1 | -0.1 ± 0.2 | -3.1 ± 1.5 |
+| NBA | pra | -0.0 ± 0.5 | +0.1 ± 0.2 | +1.2 ± 0.9 | -0.1 ± 0.3 | +0.0 ± 0.1 | +0.9 ± 1.1 |
+| NHL | sog | -0.1 ± 0.6 | -0.0 ± 0.1 | +0.7 ± 0.9 | | +0.1 ± 0.3 | +1.0 ± 1.0 |
+| NHL | pts | -0.5 ± 1.4 | +0.0 ± 0.1 | +2.3 ± 1.1 | | +0.1 ± 0.2 | +1.8 ± 1.7 |
+| NHL | saves | +1.8 ± 2.6 | -0.1 ± 0.1 | +8.7 ± 5.2 | | +0.1 ± 0.0 | +9.6 ± 5.4 |
+| NFL | recYds | | | +8.3 ± 3.6 | +7.3 ± 2.0 | | +14.7 ± 5.0 |
+| NFL | rec | | | | +2.6 ± 2.3 | | +7.0 ± 6.8 |
+| NFL | rushRecYds | | -0.1 ± 0.1 | +8.7 ± 9.0 | -5.2 ± 3.6 | | |
+| NFL | passYds | +5.8 ± 5.8 | +0.2 ± 0.2 | +2.8 ± 13.5 | +12.2 ± 7.5 | -1.1 ± 0.8 | +20.5 ± 17.0 |
+| NFL | passInt | +0.8 ± 6.3 | -0.0 ± 0.1 | -0.2 ± 7.4 | -25.1 ± 9.8 | +5.6 ± 4.6 | -18.0 ± 14.3 |
+| MLB | k | +0.2 ± 0.6 | | +2.5 ± 2.1 | | | +2.8 ± 2.2 |
+| MLB | outs | +0.1 ± 0.7 | | -0.4 ± 1.1 | | | -0.4 ± 1.3 |
+
+  (Blank NFL cells and the NFL's other stats: |z| under 1.5.) The NBA's two-state mixture by the spread's size (held out, the mixture's log loss less the Bot's, 0-4 / 4-8 / 8-12 / 12+ points): pts -0.3 / +1.4 / +0.4 / +0.1; reb -0.7 / -2.2 / +1.0 / +1.3; ast -1.8 / -0.7 / -2.7 / +0.9; fg3 -2.2 / -4.4 / +1.6 / +0.5; pra +0.1 / 0.0 / +3.9 / +1.2: what it gains sits in the close games, not the blowouts (a wider shape, not the bench state), and points and PRA get worse. The features read right; the residuals by each one's quintile are flat (the Bot and the Book price them already: the model has its blowout, back-to-back, usage, vacated, opponent and depth terms).
+- **The one cell past the bar, held:** the NFL's interceptions with the defense's EPA allowed (-25.1 ± 9.8, z 2.6, both 2025's 536 rows and 2026's 180 better; at ridge 200 -9.9 ± 3.5). The third season it can be checked on, 2024 (fit on 2023's 479 rows), shows nothing (-1 against the base, and the base's own refit on one season loses 0.009 to the Bot). One cell of about 120, on 716 rows, not repeated: not shipped. The interceptions stay at the practice stake by D64's bar meanwhile; a candidate for the next round once 2026 adds rows.
+- **The play-by-play aggregates (the owner's note: clean datasets the stats site might use; not on the site: the owner's decision):** `apps/nfl/scripts/pbp/` (`build.mjs`, a README listing every field, `data/<season>.json` 2016-2026, 3.5 MB: per player-season target and air-yards shares, aDOT, deep and middle target rates, red-zone and end-zone targets, YAC over expected, EPA and success by role, CPOE, run-gap shares; per team-season offense and defense EPA, pass rate over expected, red-zone TD rate, depth allowed) and `apps/nba/scripts/pbp/` (`fetch.mjs`, `build.mjs`, a README, `data/<season>.json` 2021-2026, 1.4 MB: per player-season shot zones and FG% by zone, assisted %, free-throw rate, clutch shooting, on/off per 48 from the lineups read; per team-season offense and defense by zone). The raw play-by-play stays in `.cache` (the NBA's about 90 MB, gitignored). Slot alignment isn't in the free data (the README says so; the middle-target rate is a proxy). The bettor reads none of the committed files.
+- **Gate (D22):** nothing priced moved (no piece shipped). Not an epoch change. No re-record: the pricing code is unchanged, so `--record` would replay the same algorithm (the record guard holds input-only moves). Tests: `tests/model-decisions.test.mjs` D78.
+- **Never:** a props piece shipped on the seasons it was picked on alone; a feature read from the game itself (its minutes, its box) for a row priced before it; the raw play-by-play committed.
+
 ## Loops
 
 Each loop below runs by itself. For each one: what it changes, how often, what it reads, and what it must never touch.

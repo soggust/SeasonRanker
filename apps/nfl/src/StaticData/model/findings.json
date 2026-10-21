@@ -23,6 +23,9 @@
     { "date": "2026-10-20", "group": "watching", "sport": "nba", "ref": "D73", "text": "NBA LOVE by trusted share (rebound unders): +1.6% vs +1.0% on the first replay, -0.4% vs +2.2% re-recorded: held off" },
     { "date": "2026-10-21", "group": "shipped", "sport": null, "ref": "D74", "text": "Bets now at the best US price: live, 68% of NBA sides beat DraftKings (~4c); the replay shops only where history has every book" },
     { "date": "2026-10-21", "group": "shipped", "sport": null, "ref": "D75", "text": "Props replay walk-forward by season (D74 fit on the seasons it priced): props NBA +7u, NHL +6u, NFL -14u, MLB -6u" },
-    { "date": "2026-10-21", "group": "shipped", "sport": null, "ref": "D76", "text": "Shop-only lines need the month's minimum edge, else 0.5u: NHL +0.5u, NFL no change, off in NBA and MMA" }
+    { "date": "2026-10-21", "group": "shipped", "sport": null, "ref": "D76", "text": "Shop-only lines need the month's minimum edge, else 0.5u: NHL +0.5u, NFL no change, off in NBA and MMA" },
+    { "date": "2026-10-21", "group": "dropped", "sport": null, "ref": "D77", "text": "News lag from prices alone (star prop pulled, teammates unmoved): no edge in any sport; NBA -5.5% on 5,516, beat fair close 16%" },
+    { "date": "2026-10-21", "group": "dropped", "sport": null, "ref": "D78", "text": "Props pieces (early exit, blowout minutes, fatigue, play type, on/off): no log-loss gain past noise walk-forward in any sport; held" },
+    { "date": "2026-10-21", "group": "watching", "sport": "nfl", "ref": "D78", "text": "Interceptions vs the defense's EPA allowed: -0.0025 log loss in 2025-26 (z 2.6), nothing in 2024; recheck with more rows" }
   ]
 }

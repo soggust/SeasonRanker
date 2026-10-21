@@ -1789,3 +1789,57 @@ test('D76 the shopped-price guard: a side that clears only at another book needs
   const run = fs.readFileSync(new URL('../libs/ranker/scripts/model/run.mjs', import.meta.url), 'utf8');
   assert.match(run, /const practice = !gate\?\.on \|\| shopG\.guarded;/);
 });
+
+// ---- D77: the news lag read from prices alone, measured and held ----
+test('D77 the price-only news lag held: newsLag stays live-only with no prior, no price trigger on the desk, the NBA tag only while the star\'s prop is posted', async () => {
+  const L = await import('../libs/ranker/scripts/model/news-lag.mjs');
+  const R = await import('../libs/ranker/scripts/model/reasons.mjs');
+  assert.ok(R.isLive('newsLag'), 'newsLag earns on its live record only');
+  assert.ok(R.isLive('newsLag:pts'));
+  // (the detection is the injury report's: no star counted out because his prop left the board)
+  const game = { id: 'g7', home: '1', away: '2', date: '2026-10-21T23:30:00Z' };
+  const row = (id, name, line, team = '1') => ({ athlete: { id, name, team }, stat: { key: 'pts' }, line, prices: { over: -110, under: -110 } });
+  const state = { games: {} };
+  const t0 = Date.parse('2026-10-21T12:00:00Z');
+  L.lagUpdate(state, { sport: 'nba', game, board: [row('s', 'Star', 27.5), row('m', 'Mate', 14.5), row('b', 'Bench', 6.5)], injuries: new Map(), now: t0 });
+  const outs = L.lagUpdate(state, { sport: 'nba', game, board: [row('m', 'Mate', 14.5), row('b', 'Bench', 6.5)], injuries: new Map(), now: t0 + 36e5 });
+  assert.deepEqual(outs, [], 'a pulled prop alone is no news');
+  const src = fs.readFileSync(new URL('../libs/ranker/scripts/model/news-lag.mjs', import.meta.url), 'utf8');
+  assert.match(src, /if \(sport === 'nba' && !\(board \?\? \[\]\)\.some\(\(p\) => String\(p\.athlete\?\.id\) === String\(o\.id\) && p\.prices\)\) continue;/);
+  const decisions = fs.readFileSync(new URL('../libs/ranker/scripts/model/DECISIONS.md', import.meta.url), 'utf8');
+  assert.ok(decisions.includes('### D77.'));
+});
+
+// ---- D78: the props' four pieces measured and held; the play-by-play aggregates ----
+test('D78 the props pieces held (no new context term), the play-by-play aggregates committed small and documented, the bettor reading none of them', async () => {
+  const P = await import('../libs/ranker/scripts/model/props.mjs');
+  for (const k of ['oppEpa', 'oppEpaPass', 'dudRate', 'blowMix', 'fatigue7', 'onOff', 'zoneMatch']) assert.equal(P.CTX[k], undefined, `${k} not a props term (D78 held)`);
+  const root = new URL('../', import.meta.url);
+  let bytes = 0;
+  for (const sport of ['nfl', 'nba']) {
+    const dir = new URL(`apps/${sport}/scripts/pbp/`, root);
+    const readme = fs.readFileSync(new URL('README.md', dir), 'utf8');
+    const files = fs.readdirSync(new URL('data/', dir)).filter((f) => /^\d{4}\.json$/.test(f));
+    assert.ok(files.length >= 4, `${sport}: seasons built`);
+    for (const f of files) {
+      const buf = fs.readFileSync(new URL(`data/${f}`, dir));
+      bytes += buf.length;
+      const d = JSON.parse(buf);
+      assert.equal(d.sport, sport);
+      assert.ok(Array.isArray(d.players) && Array.isArray(d.teams));
+      // (every field a player carries is listed in the README)
+      for (const p of d.players.slice(0, 50)) for (const [k, v] of Object.entries(p)) {
+        assert.ok(readme.includes(`\`${k}\``), `${sport} README lists ${k}`);
+        if (v && typeof v === 'object' && !Array.isArray(v)) for (const kk of Object.keys(v)) assert.ok(readme.includes(`\`${kk}\``) || readme.includes(kk), `${sport} README lists ${k}.${kk}`);
+      }
+    }
+  }
+  assert.ok(bytes < 20 * 1024 * 1024, `the committed aggregates stay under 20 MB (${bytes})`);
+  // (the bettor reads none of them: no model script imports or names the pbp folders)
+  const mdir = new URL('libs/ranker/scripts/model/', root);
+  for (const f of fs.readdirSync(mdir).filter((x) => x.endsWith('.mjs'))) assert.ok(!/scripts\/pbp/.test(fs.readFileSync(new URL(f, mdir), 'utf8')), `${f} doesn't read the pbp aggregates`);
+  const ignore = fs.readFileSync(new URL('.gitignore', root), 'utf8');
+  assert.match(ignore, /^\.cache\/$/m, 'the raw play-by-play stays in the ignored cache');
+  const decisions = fs.readFileSync(new URL('libs/ranker/scripts/model/DECISIONS.md', root), 'utf8');
+  assert.ok(decisions.includes('### D78.'));
+});
