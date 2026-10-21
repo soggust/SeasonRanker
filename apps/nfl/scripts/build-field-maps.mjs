@@ -690,6 +690,10 @@ async function buildSeason(season, current, { espnToGsis, byName }) {
   for (const suffix of ['', '.post', '.all']) {
     const skill = readJson(path.join(dir, `skill-players${suffix}.json`));
     for (const pos of ['RB', 'WR', 'TE', 'K', 'P']) for (const row of skill?.[pos] ?? []) if (row.gsisId) keys.add(row.gsisId);
+    // (and the unranked rows (skill-players.ur*.json): a player under a tab's bar has a card, so his maps too (the
+    // owner, 2026-10-21: Jahdae Walker's 7 catches had none))
+    const ur = readJson(path.join(dir, `skill-players.ur${suffix}.json`));
+    for (const pos of ['RB', 'WR', 'TE', 'K', 'P']) for (const row of ur?.[pos] ?? []) if (row.gsisId) keys.add(row.gsisId);
     for (const row of skill?.DEF ?? []) {
       const team = row.gsisId.replace(/^DEF-/, '');
       teams.add(team);

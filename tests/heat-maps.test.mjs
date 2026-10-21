@@ -146,7 +146,8 @@ for (const dir of seasonDirs) {
   test(`NFL heat maps ${name}: the contract, the sizes, the league's sums`, () => {
     const file = path.join(dir, 'heat-maps.json');
     assert.ok(fs.existsSync(file), `${name}: no heat-maps.json`);
-    assert.ok(fs.statSync(file).size < 450_000, `${name}: heat-maps.json over 450 KB`);
+    // (600 KB: the unranked rows have maps too since 2026-10-21, about a quarter more)
+    assert.ok(fs.statSync(file).size < 600_000, `${name}: heat-maps.json over 600 KB`);
     const heat = readJson(file);
     assert.deepEqual(heat.fields, HEAT_FIELDS);
     assert.ok(Object.keys(heat.teams).length >= 31, `${name}: every team's name`);
@@ -195,9 +196,9 @@ for (const dir of seasonDirs) {
   });
 }
 
-test('NFL heat maps: the files together under 11 MB', () => {
+test('NFL heat maps: the files together under 14 MB', () => {
   const total = seasonDirs.reduce((n, dir) => n + fs.statSync(path.join(dir, 'heat-maps.json')).size, 0);
-  assert.ok(total < 11_000_000, `${(total / 1e6).toFixed(1)} MB`);
+  assert.ok(total < 14_000_000, `${(total / 1e6).toFixed(1)} MB`);
 });
 
 // ---- the colors
