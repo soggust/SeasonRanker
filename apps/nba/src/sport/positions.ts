@@ -71,6 +71,9 @@ export type SkillStatKey =
   | 'drbPct'
   | 'rebPerGame'
   | 'oppTovPct'
+  // Teams: what its defense allowed at the rim (added 2026-10-21: the Heat Maps' shots, scripts/rim-defense.mjs)
+  | 'oppRimPct'
+  | 'oppRimRate'
   // Teams: roster grades from the position tabs' rankings (engine/roster-grades)
   | 'backcourt'
   | 'wings'
@@ -169,6 +172,8 @@ export const STAT_NAMES: Partial<Record<SkillColumnKey, string>> = {
   drbPct: 'Defensive Rebound Percentage',
   rebPerGame: 'Rebounds per Game',
   oppTovPct: "Opponents' Turnover Percentage",
+  oppRimPct: "Opponents' Field Goal Percentage at the Rim",
+  oppRimRate: "Opponents' Share of Shots at the Rim",
   backcourt: 'Backcourt (point and shooting guards, by your rankings)',
   wings: 'Wings (small forwards, by your rankings)',
   frontcourt: 'Frontcourt (power forwards and centers, by your rankings)',
@@ -228,6 +233,8 @@ const NBA_STATS: SkillStat[] = [
   { key: 'fg3Pct', label: '3P %', description: '3-pointers made per attempt (25+ attempts)', kind: 'efficiency', format: 'pctPoints', missingIsAverage: true },
   { key: 'ftPct', label: 'FT %', description: 'Free throws made per attempt (20+ attempts)', kind: 'efficiency', format: 'pctPoints', missingIsAverage: true },
   { key: 'tsPct', label: 'TS %', description: 'Scoring efficiency counting 3s and free throws: points per shooting possession', kind: 'efficiency', format: 'pctPoints' },
+  // (added 2026-10-21, after the default rankings were set: scored, starting at 0, so DEFAULT doesn't move)
+  { key: 'ftRate', label: 'FT Rate', name: 'Free Throw Rate', description: 'Free throws tried per shot from the floor: getting to the line (50+ shots; starts at 0: turn it up to count it)', kind: 'efficiency', format: 'pctPoints', missingIsAverage: true, startsOff: true },
   { key: 'per', label: 'PER', description: 'Per-minute production in one number (15 = league average)', kind: 'efficiency', format: 'dec1' },
   { key: 'usgPct', label: 'USG %', description: 'Share of his team\'s possessions he used while on the floor (shots, free throws, turnovers)', kind: 'efficiency', format: 'pctPoints' },
   { key: 'bpm', label: 'BPM', description: 'Points per 100 possessions he added over an average player, from the box score', kind: 'efficiency', format: 'dec1' },
@@ -268,6 +275,9 @@ const TEAM_STATS: SkillStat[] = [
   { key: 'ftRate', label: 'FT Rate', description: 'Free throw attempts per field goal attempt: getting to the line', kind: 'efficiency', format: 'pctPoints' },
   { key: 'oppEfgPct', label: 'Opp eFG %', description: "Its opponents' effective field goal percentage: the defense (lower is better)", kind: 'efficiency', format: 'pctPoints', negative: true },
   { key: 'oppFg3Pct', label: 'Opp 3P %', description: "Its opponents' 3-point percentage (lower is better)", kind: 'efficiency', format: 'pctPoints', negative: true },
+  // (added 2026-10-21: scored, starting at 0, so DEFAULT doesn't move; from 2003-04 on, the shots' spots)
+  { key: 'oppRimPct', label: 'Opp Rim FG %', description: "Its opponents' shooting within 4 feet of the rim: rim protection (lower is better; starts at 0: turn it up to count it)", kind: 'efficiency', format: 'pctPoints', negative: true, startsOff: true },
+  { key: 'oppRimRate', label: 'Opp Rim Rate', description: "Share of its opponents' shots taken within 4 feet of the rim: keeping them out of the paint (lower is better; starts at 0: turn it up to count it)", kind: 'efficiency', format: 'pctPoints', negative: true, startsOff: true },
   { key: 'orbPct', label: 'ORB %', description: 'Its own misses it rebounded: offensive rebounds over the offensive rebounds there were', kind: 'efficiency', format: 'pctPoints' },
   { key: 'drbPct', label: 'DRB %', description: "Its opponents' misses it rebounded: defensive rebounds over the defensive rebounds there were", kind: 'efficiency', format: 'pctPoints' },
   { key: 'trbPct', label: 'REB %', description: 'Every rebound in its games it grabbed: its rebounds over both teams\'', kind: 'efficiency', format: 'pctPoints' },
@@ -315,7 +325,7 @@ export function presetWeights(position: SkillPosition, preset: SkillPreset): Ski
   const weights: SkillWeights = {};
   for (const stat of SKILL_STATS[position]) {
     if (stat.infoOnly) continue;
-    weights[stat.key] = stat.positionAdjust || def ? 0 : 50;
+    weights[stat.key] = stat.positionAdjust || stat.startsOff || def ? 0 : 50;
   }
   return { ...weights, ...(def?.weights ?? {}) };
 }
@@ -348,7 +358,7 @@ const rebounding = (keys: SkillColumnKey[]) => group('rebounding', 'Rebounding',
 
 const PLAYER_GROUPS: Group[] = [
   results(['games', 'minutes', 'winPct', 'ws', 'vorp', 'ws48', 'bpm', 'per', 'onOff']),
-  offense(['points', 'threes', 'usgPct', 'fgPct', 'fg3Pct', 'ftPct', 'tsPct', 'assists', 'astPct', 'turnovers', 'tovPct']),
+  offense(['points', 'threes', 'usgPct', 'fgPct', 'fg3Pct', 'ftPct', 'tsPct', 'ftRate', 'assists', 'astPct', 'turnovers', 'tovPct']),
   defense(['steals', 'blocks', 'stlPct', 'blkPct', 'dbpm', 'dws']),
   rebounding(['rebounds', 'trbPct']),
   support(['teammates', 'coaching']),
@@ -358,7 +368,7 @@ export const GROUPS: Record<SkillPosition, Group[]> = {
   TM: [
     results(['games', 'winPct', 'recent', 'playoffWins', 'netRtg', 'pythDiff', 'pace']),
     offense(['offRank', 'efgPct', 'tsPct', 'fg3Pct', 'fg3aRate', 'ftRate', 'tovPct']),
-    defense(['defRank', 'oppEfgPct', 'oppFg3Pct', 'oppTovPct']),
+    defense(['defRank', 'oppEfgPct', 'oppFg3Pct', 'oppRimPct', 'oppRimRate', 'oppTovPct']),
     rebounding(['orbPct', 'drbPct', 'trbPct', 'rebPerGame']),
     support(['backcourt', 'wings', 'frontcourt']),
   ],

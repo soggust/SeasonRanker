@@ -32,6 +32,7 @@ import { carryForward, previousRows, sameSeason } from '../../../libs/ranker/scr
 import { fetchRetry, pacer } from '../../../libs/ranker/scripts/fetch.mjs';
 import { BOX_DIR, boxFile, updateBoxes } from './box-scores.mjs';
 import { FIRST_SEASON as FIRST_SHOTS, shotFile, updateShots, writeHeat } from './shot-zones.mjs';
+import { addRimDefense, readHeat } from './rim-defense.mjs';
 import { addVsPosition, positionsOf } from './vs-position.mjs';
 import { addBoxes, teamBox, teamShooting } from './team-shooting.mjs';
 
@@ -53,7 +54,7 @@ const MIN_COACH_GAMES = 1;
 const MIN_MINUTES = 1;
 // 3P % and FT % need this many attempts (fewer: no percentage, the app counts him average). The
 // playoffs are a quarter of a season at most, so their bar is lower.
-const MIN_ATTEMPTS = { regular: { fg3a: 25, fta: 20 }, post: { fg3a: 10, fta: 8 }, all: { fg3a: 25, fta: 20 } };
+const MIN_ATTEMPTS = { regular: { fg3a: 25, fta: 20, fga: 50 }, post: { fg3a: 10, fta: 8, fga: 20 }, all: { fg3a: 25, fta: 20, fga: 50 } };
 
 // Basketball-Reference's team codes -> the franchise's code today (its icon: assets/NBA_Icons/<code>.svg)
 const FRANCHISE = { NJN: 'BRK', SEA: 'OKC', VAN: 'MEM', CHH: 'CHO', CHA: 'CHO', NOH: 'NOP', NOK: 'NOP' };
@@ -527,6 +528,8 @@ async function buildSeason(season, write) {
   let regularPositions = new Map();
 
   await mkdir(dir, { recursive: true });
+  // (the Teams tab's rim defense, from the season's shots: just written above, or kept from before; rim-defense.mjs)
+  const heat = readHeat(path.join(dir, 'heat-maps.json'));
   const tables = { regular, post, all: post && combine(regular, post) };
   for (const part of PARTS.filter((p) => write.includes(p))) {
     const file = path.join(dir, FILE[part]);
@@ -551,6 +554,7 @@ async function buildSeason(season, write) {
     // for the playoffs' too)
     if (part === 'regular') regularPositions = positionsOf(out);
     const vsTeams = addVsPosition(out, boxes, part, regularPositions);
+    addRimDefense(out, heat, part);
     // (compact: the files are served to the browser as is)
     await writeFile(file, JSON.stringify(out));
     const everyone = TABS.flatMap((tab) => out[tab]);
@@ -726,6 +730,9 @@ async function buildPart(season, part, src, { champion, runnerUp, coachRows, coy
         fgPct: pct(row.fg_pct),
         fg3Pct: num(row.fg3a) >= attempts.fg3a ? pct(row.fg3_pct) : null,
         ftPct: num(row.fta) >= attempts.fta ? pct(row.ft_pct) : null,
+        // (free throws tried per shot from the floor, Basketball-Reference's FTr, in points like the teams'; added
+        // 2026-10-21, a slider starting at 0)
+        ftRate: num(row.fga) >= attempts.fga ? round(100 * num(row.fta) / num(row.fga), 1) : null,
         // (the attempts behind them: the card's Shooting counts a percentage only with enough a game,
         // apps/nba/src/sport/skills.ts SKILL_MINIMUMS; not columns of their own)
         fg3a: num(row.fg3a),

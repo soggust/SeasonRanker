@@ -28,6 +28,7 @@ export class AboutComponent {
     ["PTS / REB / AST / STL / BLK","Points, rebounds, assists, steals and blocks: per game to start, or season totals or an 82-game pace (Stat Base in the settings)."],
     ["3PM","3-pointers made."],
     ["FG % / 3P % / FT %","Shots made per attempt: all field goals, 3-pointers (25+ attempts to show) and free throws (20+)."],
+    ["FT Rate","Free throws tried per shot from the floor (Basketball-Reference's FTr), in points: 30 is 3 free throws tried for every 10 shots. Getting to the line. A player's needs 50+ shots, and his starts at 0: turn its slider up to count it."],
     ["TS %","True shooting: points per shooting possession, counting 3s as worth more and free throws too. About 57% is league average now."],
     ["PER","Player Efficiency Rating: per-minute production rolled into one number, with 15 as league average."],
     ["USG %","Usage rate: the share of his team's possessions he used (a shot, free throws or a turnover) while on the floor."],
@@ -40,6 +41,7 @@ export class AboutComponent {
     ["Record","His team's win-loss record (a traded player: his last team's)."],
     ["Teammates / Coaching","Support grades, F to A+: how good the rest of his team was (their minutes-weighted BPM, without him) and his team's coaching lift. Better support counts slightly against a player. Early in a season a few games barely measure a team, so each grade starts from the team's grade last season and gives way to this season's: about half this season by 5 games, all of it from game 20 of 82 on (a past season is all its own results)."],
     ["Net Rtg / Off Rank / Def Rank","A team's points scored minus allowed per 100 possessions, and where its offense (points scored per 100) and defense (points allowed per 100) ranked in the league (Head Coaches tab)."],
+    ["Opp Rim FG % / Opp Rim Rate","What a team's opponents did within 4 feet of the rim: how often they made those shots, and what share of their shots came from there (Teams tab; lower is better for both). From the shots' spots, 2003-04 on. They start at 0: turn their sliders up to count them."],
     ["Coaching Lift","Net rating over what the roster's talent predicted (last season's BPM of the players he used, by their minutes): how much more a coach got from his roster."],
     ["W vs Pt Diff","Wins beyond (or short of) what the point differential implies: mostly close games."],
   ];

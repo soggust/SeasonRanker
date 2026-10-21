@@ -1,7 +1,8 @@
 # NBA play-by-play aggregates
 
 Small per-player-season and per-team-season stats from ESPN's free play-by-play, built for the bettor's research
-(DECISIONS.md D78) and usable by the stats site. Nothing on the site reads them yet: that is the owner's call.
+(DECISIONS.md D78). The site doesn't read these files: its player FT Rate comes from Basketball-Reference's totals and its
+teams' rim defense from the Heat Maps' shots (`rim-defense.mjs`), both every run; clutch and on/off stay research only.
 
 - **Source:** ESPN's public summary (`site.api.espn.com/.../basketball/nba/summary?event=<id>`), one call a final.
 - **Fetch:** `node apps/nba/scripts/pbp/fetch.mjs [--seasons 2021,...,2026]`: slim copies of each final's plays in
