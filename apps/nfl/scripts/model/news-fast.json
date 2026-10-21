@@ -4,10 +4,10 @@
   "adamscheftermirror.bsky.social": "2026-10-21T15:47:31.016Z",
   "rapsheet.bsky.social": "2026-10-20T15:28:24.072Z",
   "nflnewsreposterbot.bsky.social": "2026-10-20T20:30:06.105Z",
-  "insidenflnews.bsky.social": "2026-10-21T12:39:53.742Z",
-  "nflnewsposter.bsky.social": "2026-10-21T15:33:28.839Z",
+  "insidenflnews.bsky.social": "2026-10-21T16:01:12.671Z",
+  "nflnewsposter.bsky.social": "2026-10-21T15:58:17.862Z",
   "rotoworld-fb.bsky.social": "2026-10-21T15:19:39.000Z",
-  "rotowirenfl.bsky.social": "2026-10-21T13:31:57.000Z"
+  "rotowirenfl.bsky.social": "2026-10-21T16:12:11.000Z"
  },
  "claims": [
   {
@@ -1816,6 +1816,19 @@
    "kind": "status",
    "confidence": 0.9,
    "text": "[Schefter] Bills DB Sam Franklin Jr. was suspended one game today for unsportsmanlike conduct that the league said was a spitting incident vs. the Las Vegas Raiders. twitter.com/AdamSchefter..."
+  },
+  {
+   "id": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3myfk3bkez32b|jjmccarthy|none|starting",
+   "at": "2026-10-21T16:12:11.000Z",
+   "seen": "2026-10-21T16:15:34.006Z",
+   "handle": "rotowirenfl.bsky.social",
+   "post": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3myfk3bkez32b",
+   "player": "J.J. McCarthy",
+   "team": "MIN",
+   "status": "none",
+   "kind": "starting",
+   "confidence": 0.85,
+   "text": "J.J. McCarthy: Headed for Week 7 start \n\n https://www.rotowire.com/football/player/jj-mccarthy-17689"
   }
  ]
 }

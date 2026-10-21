@@ -264,7 +264,8 @@
   "50232968": "2026-10-20",
   "50237503": "2026-10-21",
   "50237982": "2026-10-21",
-  "50238315": "2026-10-21"
+  "50238315": "2026-10-21",
+  "50238746": "2026-10-21"
  },
  "signals": [
   {
@@ -1060,6 +1061,21 @@
    "confidence": 0.3,
    "story": "50230816",
    "headline": "Reports: NFL won't punish Eagles for letting Jalen Hurts play with blood clot",
+   "model": "claude-haiku-5-5"
+  },
+  {
+   "id": "50238746|19|4433970|starting",
+   "day": "2026-10-21",
+   "at": "2026-10-21T16:03:44.000Z",
+   "team": "19",
+   "abbr": "NYG",
+   "athlete": "4433970",
+   "player": "JJ McCarthy",
+   "kind": "starting",
+   "direction": "up",
+   "confidence": 0.6,
+   "story": "50238746",
+   "headline": "Source: Giants turning to J.J. McCarthy as QB1 this week against Texans",
    "model": "claude-haiku-5-5"
   }
  ]
