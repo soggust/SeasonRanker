@@ -32,7 +32,7 @@
 //             (mma-desk.mjs trustFor). Written by gate.mjs --record to apps/mma/src/StaticData/model/trust-prior.json
 //             with the rows to apps/mma/scripts/model/history-rows.json
 import path from 'node:path';
-import { existsSync, readFileSync } from 'node:fs';
+import { existsSync, readFileSync, writeFileSync } from 'node:fs';
 import { pathToFileURL } from 'node:url';
 import { keptFights } from '../../../../apps/mma/scripts/fights.mjs';
 import { binLoss, gradeSide, r4, seasonWeight, topPicks } from './gate-score.mjs';
@@ -480,7 +480,23 @@ export async function scoreMma(dir, { log = console.log, now = new Date() } = {}
       const s = shopRows(rows, readDeep(SPORT), (x) => x.oid);
       say(`best price (D74): ${s.shopped} of ${rows.length} rows with the other US books at their snapshot, ${s.better} better than the Book's own on a side`);
     }
-    replay = V.replay.replayRecord(V, SPORT, { open: histRows.open, close: histRows.close }, { events: null, names, epoch: V.mmaDesk?.MMA_START ?? V.leagues?.MODEL_EPOCH ?? null });
+    const replayArgs = [V, SPORT, { open: histRows.open, close: histRows.close }, { events: null, names, epoch: V.mmaDesk?.MMA_START ?? V.leagues?.MODEL_EPOCH ?? null }];
+    // (measuring only, D76: gate.mjs's GATE_SHOP_COMPARE, the shopped-price guard off and on)
+    if (process.env.GATE_SHOP_COMPARE) {
+      const was = process.env.REPLAY_SHOP_GUARD;
+      const sum = (r) => ({ overall: r.overall, byBand: r.byBand, byMarket: r.byMarket, bySeason: r.bySeason, shopGuard: r.flags?.shopGuard ?? null });
+      const both = {};
+      for (const m of ['0', '1']) {
+        process.env.REPLAY_SHOP_GUARD = m;
+        both[m === '1' ? 'on' : 'off'] = sum(V.replay.replayRecord(...replayArgs));
+      }
+      if (was === undefined) delete process.env.REPLAY_SHOP_GUARD;
+      else process.env.REPLAY_SHOP_GUARD = was;
+      try {
+        writeFileSync(path.join(process.env.GATE_SHOP_COMPARE, `${SPORT}-shop.json`), JSON.stringify(both));
+      } catch {}
+    }
+    replay = V.replay.replayRecord(...replayArgs);
     say(`replayed record: ${replay.overall.won}-${replay.overall.lost}-${replay.overall.push} ${replay.overall.profit >= 0 ? '+' : ''}${replay.overall.profit}u on ${replay.n.bets} bets (${replay.flags.timing.open} at the open, ${replay.flags.timing.close} at the close), ${replay.n.practice} practice picks`);
   }
   return {

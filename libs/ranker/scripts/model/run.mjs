@@ -128,7 +128,7 @@ import { mkdirSync, readFileSync, rmSync, writeFileSync } from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { BOOK, GAME_CAP, LEAGUES, MODEL_EPOCH, PROP_CAPS, TIMING } from './leagues.mjs';
-import { nameOf as bookName } from './best-price.mjs';
+import { nameOf as bookName, shopGuardOf, shopGuardOn, shopTOf } from './best-price.mjs';
 import { CAL_CAP, CAL_STEP, calibText, fitCalib } from './calib.mjs';
 import { anchorText, readAnchor } from './anchor.mjs';
 import { loadModel as readConfidence, qualityOf, unitsOf } from './confidence.mjs';
@@ -1887,6 +1887,18 @@ function betGames(r) {
   r.windows = readWindows(ROOT, sport);
   // (the bar's own place (D51): where full stakes out-earned it on the history, it stands aside)
   r.lineBarAside = barAside(barFile);
+  // (the shopped-price guard (D76, best-price.mjs): the minimum return a line that clears only at a shopped price
+  // needs, the replayed record's walk's next (replay-record.json flags.shopGuard), in SHOP_GUARD's sports; none: none)
+  if (shopGuardOn(sport)) {
+    let rec = null;
+    try {
+      rec = JSON.parse(readFileSync(path.join(ROOT, 'apps', sport, 'src/StaticData/model/replay-record.json'), 'utf8'));
+    } catch {
+      rec = null;
+    }
+    r.shopT = shopTOf(rec);
+    if (r.shopT !== null) console.log(`${sport}: the shopped-price guard: a line that clears only at another book's price needs ${r.shopT === Infinity ? 'to clear at the Book too' : `${round(r.shopT * 100, 1)}% there`} (D76), else the practice stake`);
+  }
   if (r.lineBarAside) console.log(`${sport}: ${r.lineBarAside}`);
   console.log(`${sport}: the lines' history bar: ${Object.entries(r.lineBar).map(([k, g]) => `${k} ${g.on ? 'full stakes' : 'practice'} (${g.mean === null ? '-' : `${g.mean >= 0 ? '+' : ''}${round(g.mean * 100, 1)}%`} on ${g.n}, live ${g.live.n})`).join(', ') || 'no segment priced yet: every line at the practice stake'}`);
   // (each game's rest by side from the schedule, for the named reasons a line pick carries: desk.mjs reasonsOf)
@@ -2061,8 +2073,10 @@ function betGames(r) {
       const reasons = reasonsOf(sport, key, pick.side, sched.get(String(game.id)));
       const segment = barGate(r.lineBar, key, pick.side, pick.fair, { hours: ahead / 36e5, ev: pick.ev, reasons, aside: r.lineBarAside });
       const gate = bothGates(r.lineGate, segment);
-      const practice = !gate?.on;
-      if (practice) guard = { ...(guard ?? {}), why: [guard?.why, gate.why].filter(Boolean).join('; ') };
+      // (the shopped-price guard (D76): a side that clears only at another book's price, under the minimum there)
+      const shopG = r.shopT === null || r.shopT === undefined ? { guarded: false } : shopGuardOf(pick, r.shopT, pick.push ?? 0);
+      const practice = !gate?.on || shopG.guarded;
+      if (practice) guard = { ...(guard ?? {}), why: [guard?.why, gate?.on ? null : gate.why, shopG.why].filter(Boolean).join('; ') };
       const units = guard ? PRACTICE_UNITS : pick.units;
       // (an edge bet at its stake, a flagged one (a guard's cut: questionable, weather, a moved line) at the
       // minimum, still a LIKE or better (the owner's: an edge is bet); with no edge, or off ESPN's board alone,

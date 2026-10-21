@@ -1,12 +1,12 @@
 {
  "sport": "mlb",
  "epoch": "2026-10-21T01:15:00Z",
- "commit": "d7717ab8",
- "at": "2026-10-21T01:38:43.759Z",
+ "commit": "883c9e72",
+ "at": "2026-10-21T07:04:48.683Z",
  "current": 2026,
  "z": 1,
  "min": 40,
- "picks": 1512,
+ "picks": 1514,
  "from": "2021-07-18",
  "to": "2026-10-15",
  "segments": {
@@ -43,9 +43,9 @@
    "minEdge": null
   },
   "ml:dog:late": {
-   "n": 266.475,
-   "sum": -36.0385,
-   "sum2": 368.0727,
+   "n": 266.975,
+   "sum": -36.5385,
+   "sum2": 368.5727,
    "edges": {
     "0.01": {
      "n": 146.437,
@@ -68,9 +68,9 @@
      "sum2": 7.3015
     }
    },
-   "rows": 506,
-   "mean": -0.1352,
-   "se": 0.0715,
+   "rows": 507,
+   "mean": -0.1369,
+   "se": 0.0714,
    "on": false,
    "minEdge": null
   },
@@ -107,9 +107,9 @@
    "minEdge": null
   },
   "ml:fav:late": {
-   "n": 62.15,
-   "sum": -1.0395,
-   "sum2": 54.0927,
+   "n": 63.15,
+   "sum": -2.0395,
+   "sum2": 55.0927,
    "edges": {
     "0.01": {
      "n": 23.772,
@@ -132,9 +132,9 @@
      "sum2": 0.509
     }
    },
-   "rows": 91,
-   "mean": -0.0167,
-   "se": 0.1183,
+   "rows": 92,
+   "mean": -0.0323,
+   "se": 0.1175,
    "on": false,
    "minEdge": null
   },
@@ -398,8 +398,8 @@
  "applies": false,
  "place": {
   "applies": false,
-  "barUnits": -13.52,
-  "fullUnits": 3.75,
+  "barUnits": -14.52,
+  "fullUnits": 0.86,
   "bySeason": {
    "2021": true,
    "2022": false,

@@ -1,7 +1,7 @@
 {
  "v": 1,
  "sport": "nfl",
- "at": "2026-10-21T02:59:42.421Z",
+ "at": "2026-10-21T06:59:12.993Z",
  "epoch": "2026-10-21T01:15:00Z",
  "markets": {
   "ml": {
@@ -443,60 +443,6 @@
    }
   },
   "prop": {
-   "stat:rushYds:under": {
-    "on": false,
-    "strong": false,
-    "n": 0,
-    "ev": null,
-    "evS": null,
-    "beat": null,
-    "roi": -0.0007,
-    "rn": 323,
-    "stats": {
-     "n": 0,
-     "s": 0,
-     "s2": 0,
-     "beat": 0,
-     "rn": 323,
-     "rs": -0.2242,
-     "rs2": 290.4731
-    },
-    "why": "0 with a close, - shrunk",
-    "seasons": {
-     "lead": 0,
-     "of": 0,
-     "pos": 0
-    },
-    "family": "stat",
-    "label": "rushYds unders"
-   },
-   "stat:recYds:under": {
-    "on": false,
-    "strong": false,
-    "n": 0,
-    "ev": null,
-    "evS": null,
-    "beat": null,
-    "roi": 0.0678,
-    "rn": 532,
-    "stats": {
-     "n": 0,
-     "s": 0,
-     "s2": 0,
-     "beat": 0,
-     "rn": 532,
-     "rs": 36.077,
-     "rs2": 471.8352
-    },
-    "why": "0 with a close, - shrunk",
-    "seasons": {
-     "lead": 0,
-     "of": 0,
-     "pos": 0
-    },
-    "family": "stat",
-    "label": "recYds unders"
-   },
    "stat:rec:under": {
     "on": false,
     "strong": false,
@@ -504,16 +450,16 @@
     "ev": null,
     "evS": null,
     "beat": null,
-    "roi": 0.0517,
-    "rn": 426,
+    "roi": 0.0593,
+    "rn": 444,
     "stats": {
      "n": 0,
      "s": 0,
      "s2": 0,
      "beat": 0,
-     "rn": 426,
-     "rs": 22.0428,
-     "rs2": 424.0956
+     "rn": 444,
+     "rs": 26.3451,
+     "rs2": 443.5159
     },
     "why": "0 with a close, - shrunk",
     "seasons": {
@@ -524,23 +470,23 @@
     "family": "stat",
     "label": "rec unders"
    },
-   "stat:recYds:over": {
+   "stat:recYds:under": {
     "on": false,
     "strong": false,
     "n": 0,
     "ev": null,
     "evS": null,
     "beat": null,
-    "roi": -0.6881,
-    "rn": 12,
+    "roi": 0.0422,
+    "rn": 536,
     "stats": {
      "n": 0,
      "s": 0,
      "s2": 0,
      "beat": 0,
-     "rn": 12,
-     "rs": -8.2576,
-     "rs2": 11.5209
+     "rn": 536,
+     "rs": 22.6399,
+     "rs2": 476.9177
     },
     "why": "0 with a close, - shrunk",
     "seasons": {
@@ -549,277 +495,7 @@
      "pos": 0
     },
     "family": "stat",
-    "label": "recYds overs"
-   },
-   "stat:rec:over": {
-    "on": false,
-    "strong": false,
-    "n": 0,
-    "ev": null,
-    "evS": null,
-    "beat": null,
-    "roi": -0.2008,
-    "rn": 39,
-    "stats": {
-     "n": 0,
-     "s": 0,
-     "s2": 0,
-     "beat": 0,
-     "rn": 39,
-     "rs": -7.8314,
-     "rs2": 47.1598
-    },
-    "why": "0 with a close, - shrunk",
-    "seasons": {
-     "lead": 0,
-     "of": 0,
-     "pos": 0
-    },
-    "family": "stat",
-    "label": "rec overs"
-   },
-   "stat:rushAtt:over": {
-    "on": false,
-    "strong": false,
-    "n": 0,
-    "ev": null,
-    "evS": null,
-    "beat": null,
-    "roi": 0.3265,
-    "rn": 13,
-    "stats": {
-     "n": 0,
-     "s": 0,
-     "s2": 0,
-     "beat": 0,
-     "rn": 13,
-     "rs": 4.244,
-     "rs2": 12.047
-    },
-    "why": "0 with a close, - shrunk",
-    "seasons": {
-     "lead": 0,
-     "of": 0,
-     "pos": 0
-    },
-    "family": "stat",
-    "label": "rushAtt overs"
-   },
-   "stat:rushAtt:under": {
-    "on": false,
-    "strong": false,
-    "n": 0,
-    "ev": null,
-    "evS": null,
-    "beat": null,
-    "roi": -0.0024,
-    "rn": 257,
-    "stats": {
-     "n": 0,
-     "s": 0,
-     "s2": 0,
-     "beat": 0,
-     "rn": 257,
-     "rs": -0.6187,
-     "rs2": 230.2983
-    },
-    "why": "0 with a close, - shrunk",
-    "seasons": {
-     "lead": 0,
-     "of": 0,
-     "pos": 0
-    },
-    "family": "stat",
-    "label": "rushAtt unders"
-   },
-   "stat:passYds:under": {
-    "on": false,
-    "strong": false,
-    "n": 0,
-    "ev": null,
-    "evS": null,
-    "beat": null,
-    "roi": -0.1593,
-    "rn": 18,
-    "stats": {
-     "n": 0,
-     "s": 0,
-     "s2": 0,
-     "beat": 0,
-     "rn": 18,
-     "rs": -2.8672,
-     "rs2": 16.365
-    },
-    "why": "0 with a close, - shrunk",
-    "seasons": {
-     "lead": 0,
-     "of": 0,
-     "pos": 0
-    },
-    "family": "stat",
-    "label": "passYds unders"
-   },
-   "stat:passAtt:over": {
-    "on": false,
-    "strong": false,
-    "n": 0,
-    "ev": null,
-    "evS": null,
-    "beat": null,
-    "roi": 0.019,
-    "rn": 20,
-    "stats": {
-     "n": 0,
-     "s": 0,
-     "s2": 0,
-     "beat": 0,
-     "rn": 20,
-     "rs": 0.3809,
-     "rs2": 17.2157
-    },
-    "why": "0 with a close, - shrunk",
-    "seasons": {
-     "lead": 0,
-     "of": 0,
-     "pos": 0
-    },
-    "family": "stat",
-    "label": "passAtt overs"
-   },
-   "stat:passAtt:under": {
-    "on": false,
-    "strong": false,
-    "n": 0,
-    "ev": null,
-    "evS": null,
-    "beat": null,
-    "roi": 0.042,
-    "rn": 252,
-    "stats": {
-     "n": 0,
-     "s": 0,
-     "s2": 0,
-     "beat": 0,
-     "rn": 252,
-     "rs": 10.5827,
-     "rs2": 223.5446
-    },
-    "why": "0 with a close, - shrunk",
-    "seasons": {
-     "lead": 0,
-     "of": 0,
-     "pos": 0
-    },
-    "family": "stat",
-    "label": "passAtt unders"
-   },
-   "stat:passCmp:under": {
-    "on": false,
-    "strong": false,
-    "n": 0,
-    "ev": null,
-    "evS": null,
-    "beat": null,
-    "roi": 0.0085,
-    "rn": 101,
-    "stats": {
-     "n": 0,
-     "s": 0,
-     "s2": 0,
-     "beat": 0,
-     "rn": 101,
-     "rs": 0.8614,
-     "rs2": 89.7951
-    },
-    "why": "0 with a close, - shrunk",
-    "seasons": {
-     "lead": 0,
-     "of": 0,
-     "pos": 0
-    },
-    "family": "stat",
-    "label": "passCmp unders"
-   },
-   "stat:passCmp:over": {
-    "on": false,
-    "strong": false,
-    "n": 0,
-    "ev": null,
-    "evS": null,
-    "beat": null,
-    "roi": 0.2971,
-    "rn": 18,
-    "stats": {
-     "n": 0,
-     "s": 0,
-     "s2": 0,
-     "beat": 0,
-     "rn": 18,
-     "rs": 5.3486,
-     "rs2": 13.36
-    },
-    "why": "0 with a close, - shrunk",
-    "seasons": {
-     "lead": 0,
-     "of": 0,
-     "pos": 0
-    },
-    "family": "stat",
-    "label": "passCmp overs"
-   },
-   "stat:rushYds:over": {
-    "on": false,
-    "strong": false,
-    "n": 0,
-    "ev": null,
-    "evS": null,
-    "beat": null,
-    "roi": -0.1148,
-    "rn": 11,
-    "stats": {
-     "n": 0,
-     "s": 0,
-     "s2": 0,
-     "beat": 0,
-     "rn": 11,
-     "rs": -1.2623,
-     "rs2": 10.6115
-    },
-    "why": "0 with a close, - shrunk",
-    "seasons": {
-     "lead": 0,
-     "of": 0,
-     "pos": 0
-    },
-    "family": "stat",
-    "label": "rushYds overs"
-   },
-   "kelly2": {
-    "on": false,
-    "strong": false,
-    "n": 0,
-    "ev": null,
-    "evS": null,
-    "beat": null,
-    "roi": -0.0387,
-    "rn": 581,
-    "stats": {
-     "n": 0,
-     "s": 0,
-     "s2": 0,
-     "beat": 0,
-     "rn": 581,
-     "rs": -22.4859,
-     "rs2": 558.1743
-    },
-    "why": "0 with a close, - shrunk",
-    "seasons": {
-     "lead": 0,
-     "of": 0,
-     "pos": 0
-    },
-    "family": "size",
-    "label": "a Kelly score of 2% or more"
+    "label": "recYds unders"
    },
    "stat:passYds:over": {
     "on": false,
@@ -828,16 +504,16 @@
     "ev": null,
     "evS": null,
     "beat": null,
-    "roi": 0.1335,
-    "rn": 10,
+    "roi": -0.1432,
+    "rn": 31,
     "stats": {
      "n": 0,
      "s": 0,
      "s2": 0,
      "beat": 0,
-     "rn": 10,
-     "rs": 1.335,
-     "rs2": 8.7451
+     "rn": 31,
+     "rs": -4.4378,
+     "rs2": 28.3148
     },
     "why": "0 with a close, - shrunk",
     "seasons": {
@@ -848,23 +524,23 @@
     "family": "stat",
     "label": "passYds overs"
    },
-   "stat:passTd:over": {
+   "stat:passCmp:over": {
     "on": false,
     "strong": false,
     "n": 0,
     "ev": null,
     "evS": null,
     "beat": null,
-    "roi": -0.0074,
-    "rn": 192,
+    "roi": 0.1637,
+    "rn": 30,
     "stats": {
      "n": 0,
      "s": 0,
      "s2": 0,
      "beat": 0,
-     "rn": 192,
-     "rs": -1.4282,
-     "rs2": 240.4855
+     "rn": 30,
+     "rs": 4.911,
+     "rs2": 24.5149
     },
     "why": "0 with a close, - shrunk",
     "seasons": {
@@ -873,7 +549,277 @@
      "pos": 0
     },
     "family": "stat",
-    "label": "passTd overs"
+    "label": "passCmp overs"
+   },
+   "stat:passCmp:under": {
+    "on": false,
+    "strong": false,
+    "n": 0,
+    "ev": null,
+    "evS": null,
+    "beat": null,
+    "roi": 0.0069,
+    "rn": 94,
+    "stats": {
+     "n": 0,
+     "s": 0,
+     "s2": 0,
+     "beat": 0,
+     "rn": 94,
+     "rs": 0.6529,
+     "rs2": 84.2477
+    },
+    "why": "0 with a close, - shrunk",
+    "seasons": {
+     "lead": 0,
+     "of": 0,
+     "pos": 0
+    },
+    "family": "stat",
+    "label": "passCmp unders"
+   },
+   "stat:rushYds:under": {
+    "on": false,
+    "strong": false,
+    "n": 0,
+    "ev": null,
+    "evS": null,
+    "beat": null,
+    "roi": -0.0371,
+    "rn": 309,
+    "stats": {
+     "n": 0,
+     "s": 0,
+     "s2": 0,
+     "beat": 0,
+     "rn": 309,
+     "rs": -11.4489,
+     "rs2": 277.9587
+    },
+    "why": "0 with a close, - shrunk",
+    "seasons": {
+     "lead": 0,
+     "of": 0,
+     "pos": 0
+    },
+    "family": "stat",
+    "label": "rushYds unders"
+   },
+   "stat:rec:over": {
+    "on": false,
+    "strong": false,
+    "n": 0,
+    "ev": null,
+    "evS": null,
+    "beat": null,
+    "roi": -0.2225,
+    "rn": 40,
+    "stats": {
+     "n": 0,
+     "s": 0,
+     "s2": 0,
+     "beat": 0,
+     "rn": 40,
+     "rs": -8.8986,
+     "rs2": 47.9732
+    },
+    "why": "0 with a close, - shrunk",
+    "seasons": {
+     "lead": 0,
+     "of": 0,
+     "pos": 0
+    },
+    "family": "stat",
+    "label": "rec overs"
+   },
+   "stat:rushAtt:under": {
+    "on": false,
+    "strong": false,
+    "n": 0,
+    "ev": null,
+    "evS": null,
+    "beat": null,
+    "roi": 0.006,
+    "rn": 249,
+    "stats": {
+     "n": 0,
+     "s": 0,
+     "s2": 0,
+     "beat": 0,
+     "rn": 249,
+     "rs": 1.4935,
+     "rs2": 221.9695
+    },
+    "why": "0 with a close, - shrunk",
+    "seasons": {
+     "lead": 0,
+     "of": 0,
+     "pos": 0
+    },
+    "family": "stat",
+    "label": "rushAtt unders"
+   },
+   "stat:recYds:over": {
+    "on": false,
+    "strong": false,
+    "n": 0,
+    "ev": null,
+    "evS": null,
+    "beat": null,
+    "roi": -0.6598,
+    "rn": 11,
+    "stats": {
+     "n": 0,
+     "s": 0,
+     "s2": 0,
+     "beat": 0,
+     "rn": 11,
+     "rs": -7.2576,
+     "rs2": 10.5209
+    },
+    "why": "0 with a close, - shrunk",
+    "seasons": {
+     "lead": 0,
+     "of": 0,
+     "pos": 0
+    },
+    "family": "stat",
+    "label": "recYds overs"
+   },
+   "stat:passAtt:over": {
+    "on": false,
+    "strong": false,
+    "n": 0,
+    "ev": null,
+    "evS": null,
+    "beat": null,
+    "roi": 0.0875,
+    "rn": 17,
+    "stats": {
+     "n": 0,
+     "s": 0,
+     "s2": 0,
+     "beat": 0,
+     "rn": 17,
+     "rs": 1.4878,
+     "rs2": 14.3728
+    },
+    "why": "0 with a close, - shrunk",
+    "seasons": {
+     "lead": 0,
+     "of": 0,
+     "pos": 0
+    },
+    "family": "stat",
+    "label": "passAtt overs"
+   },
+   "stat:passYds:under": {
+    "on": false,
+    "strong": false,
+    "n": 0,
+    "ev": null,
+    "evS": null,
+    "beat": null,
+    "roi": 0.2101,
+    "rn": 14,
+    "stats": {
+     "n": 0,
+     "s": 0,
+     "s2": 0,
+     "beat": 0,
+     "rn": 14,
+     "rs": 2.941,
+     "rs2": 12.0281
+    },
+    "why": "0 with a close, - shrunk",
+    "seasons": {
+     "lead": 0,
+     "of": 0,
+     "pos": 0
+    },
+    "family": "stat",
+    "label": "passYds unders"
+   },
+   "stat:passAtt:under": {
+    "on": false,
+    "strong": false,
+    "n": 0,
+    "ev": null,
+    "evS": null,
+    "beat": null,
+    "roi": 0.0392,
+    "rn": 245,
+    "stats": {
+     "n": 0,
+     "s": 0,
+     "s2": 0,
+     "beat": 0,
+     "rn": 245,
+     "rs": 9.6077,
+     "rs2": 216.6758
+    },
+    "why": "0 with a close, - shrunk",
+    "seasons": {
+     "lead": 0,
+     "of": 0,
+     "pos": 0
+    },
+    "family": "stat",
+    "label": "passAtt unders"
+   },
+   "stat:rushAtt:over": {
+    "on": false,
+    "strong": false,
+    "n": 0,
+    "ev": null,
+    "evS": null,
+    "beat": null,
+    "roi": -0.1255,
+    "rn": 7,
+    "stats": {
+     "n": 0,
+     "s": 0,
+     "s2": 0,
+     "beat": 0,
+     "rn": 7,
+     "rs": -0.8786,
+     "rs2": 7.589
+    },
+    "why": "0 with a close, - shrunk",
+    "seasons": {
+     "lead": 0,
+     "of": 0,
+     "pos": 0
+    },
+    "family": "stat",
+    "label": "rushAtt overs"
+   },
+   "stat:rushYds:over": {
+    "on": false,
+    "strong": false,
+    "n": 0,
+    "ev": null,
+    "evS": null,
+    "beat": null,
+    "roi": 0.017,
+    "rn": 9,
+    "stats": {
+     "n": 0,
+     "s": 0,
+     "s2": 0,
+     "beat": 0,
+     "rn": 9,
+     "rs": 0.1527,
+     "rs2": 7.4657
+    },
+    "why": "0 with a close, - shrunk",
+    "seasons": {
+     "lead": 0,
+     "of": 0,
+     "pos": 0
+    },
+    "family": "stat",
+    "label": "rushYds overs"
    },
    "stat:passInt:over": {
     "on": false,
@@ -882,16 +828,16 @@
     "ev": null,
     "evS": null,
     "beat": null,
-    "roi": -0.1923,
-    "rn": 63,
+    "roi": -0.2367,
+    "rn": 76,
     "stats": {
      "n": 0,
      "s": 0,
      "s2": 0,
      "beat": 0,
-     "rn": 63,
-     "rs": -12.1141,
-     "rs2": 61.9485
+     "rn": 76,
+     "rs": -17.9913,
+     "rs2": 76.9443
     },
     "why": "0 with a close, - shrunk",
     "seasons": {
@@ -902,6 +848,33 @@
     "family": "stat",
     "label": "passInt overs"
    },
+   "kelly2": {
+    "on": false,
+    "strong": false,
+    "n": 0,
+    "ev": null,
+    "evS": null,
+    "beat": null,
+    "roi": -0.0178,
+    "rn": 635,
+    "stats": {
+     "n": 0,
+     "s": 0,
+     "s2": 0,
+     "beat": 0,
+     "rn": 635,
+     "rs": -11.3222,
+     "rs2": 615.7439
+    },
+    "why": "0 with a close, - shrunk",
+    "seasons": {
+     "lead": 0,
+     "of": 0,
+     "pos": 0
+    },
+    "family": "size",
+    "label": "a Kelly score of 2% or more"
+   },
    "stat:rushRecYds:over": {
     "on": false,
     "strong": false,
@@ -909,16 +882,16 @@
     "ev": null,
     "evS": null,
     "beat": null,
-    "roi": -0.463,
-    "rn": 14,
+    "roi": -0.3746,
+    "rn": 18,
     "stats": {
      "n": 0,
      "s": 0,
      "s2": 0,
      "beat": 0,
-     "rn": 14,
-     "rs": -6.4822,
-     "rs2": 13.0949
+     "rn": 18,
+     "rs": -6.7431,
+     "rs2": 16.6072
     },
     "why": "0 with a close, - shrunk",
     "seasons": {
@@ -936,16 +909,16 @@
     "ev": null,
     "evS": null,
     "beat": null,
-    "roi": -0.1162,
-    "rn": 159,
+    "roi": -0.1058,
+    "rn": 160,
     "stats": {
      "n": 0,
      "s": 0,
      "s2": 0,
      "beat": 0,
-     "rn": 159,
-     "rs": -18.4721,
-     "rs2": 151.8213
+     "rn": 160,
+     "rs": -16.9211,
+     "rs2": 154.4501
     },
     "why": "0 with a close, - shrunk",
     "seasons": {
@@ -963,16 +936,16 @@
     "ev": null,
     "evS": null,
     "beat": null,
-    "roi": 0.2838,
-    "rn": 36,
+    "roi": 0.4454,
+    "rn": 38,
     "stats": {
      "n": 0,
      "s": 0,
      "s2": 0,
      "beat": 0,
-     "rn": 36,
-     "rs": 10.2159,
-     "rs2": 26.0732
+     "rn": 38,
+     "rs": 16.9265,
+     "rs2": 26.5309
     },
     "why": "0 with a close, - shrunk",
     "seasons": {
@@ -990,16 +963,16 @@
     "ev": null,
     "evS": null,
     "beat": null,
-    "roi": 0.0818,
-    "rn": 39,
+    "roi": 0.1883,
+    "rn": 31,
     "stats": {
      "n": 0,
      "s": 0,
      "s2": 0,
      "beat": 0,
-     "rn": 39,
-     "rs": 3.1919,
-     "rs2": 32.2023
+     "rn": 31,
+     "rs": 5.8365,
+     "rs2": 22.4502
     },
     "why": "0 with a close, - shrunk",
     "seasons": {
@@ -1017,16 +990,16 @@
     "ev": null,
     "evS": null,
     "beat": null,
-    "roi": 0.0945,
-    "rn": 23,
+    "roi": -0.1138,
+    "rn": 50,
     "stats": {
      "n": 0,
      "s": 0,
      "s2": 0,
      "beat": 0,
-     "rn": 23,
-     "rs": 2.1735,
-     "rs2": 24.0812
+     "rn": 50,
+     "rs": -5.6881,
+     "rs2": 51.9449
     },
     "why": "0 with a close, - shrunk",
     "seasons": {
@@ -1036,6 +1009,33 @@
     },
     "family": "stat",
     "label": "passTd unders"
+   },
+   "stat:passTd:over": {
+    "on": false,
+    "strong": false,
+    "n": 0,
+    "ev": null,
+    "evS": null,
+    "beat": null,
+    "roi": -0.0484,
+    "rn": 181,
+    "stats": {
+     "n": 0,
+     "s": 0,
+     "s2": 0,
+     "beat": 0,
+     "rn": 181,
+     "rs": -8.7641,
+     "rs2": 216.0137
+    },
+    "why": "0 with a close, - shrunk",
+    "seasons": {
+     "lead": 0,
+     "of": 0,
+     "pos": 0
+    },
+    "family": "stat",
+    "label": "passTd overs"
    },
    "stat:rushRecYds:under": {
     "on": false,
@@ -1100,5 +1100,5 @@
   }
  },
  "k": 100,
- "commit": "d7717ab8"
+ "commit": "883c9e72"
 }

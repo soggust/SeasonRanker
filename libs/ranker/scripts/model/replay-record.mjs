@@ -36,6 +36,7 @@ import { existsSync, readFileSync, writeFileSync } from 'node:fs';
 import path from 'node:path';
 import * as WINDOWS from './windows.mjs';
 import * as REASONS from './reasons.mjs';
+import * as SHOP from './best-price.mjs';
 
 export const REPLAY_V = 1;
 export const REPLAY_LAST = 20;
@@ -271,6 +272,8 @@ export function replayRecord(V, sport, rows, { events = null, names = () => ({ h
   const bets = [];
   const passes = [];
   const hold = new Map();
+  // (D76: the bets whose side clears only at a shopped price, each with its return there)
+  const shopOnlyBets = new Map();
   const flags = { open: 0, close: 0, openSeen: 0, openClean: 0, openInWindow: 0, openHeld: 0, closeHeld: 0, barred: 0 };
   const keys = new Set([...opens.keys(), ...closes.keys()]);
   // (the betting windows (DECISIONS.md D63, windows.mjs): a game line's intraday snapshots (rows.intra, D61) beside its
@@ -428,6 +431,7 @@ export function replayRecord(V, sport, rows, { events = null, names = () => ({ h
         hold.set(bet, { suspect, barred, ctx: V.reasons.contextOf({ sport, market: x.market, side: sideWord, stat: x.stat ?? null, fS: sd.fS, pS: sd.pS, kelly: sd.kelly, odds: sd.odds, early: placed.timing === 'open', pin: !!x.pin, sched: sched && x.market !== 'prop' ? (sched.get(String(x.event)) ?? null) : null, sdEdge }) });
       }
       bets.push(bet);
+      if (sd.book && SHOP.shopOnly?.(sd.pS, sd.odds, sd.over ? x.overOdds : x.underOdds, sd.book)) shopOnlyBets.set(bet, sd.ev);
       flags[placed.timing]++;
     }
   }
@@ -455,6 +459,32 @@ export function replayRecord(V, sport, rows, { events = null, names = () => ({ h
     }
     flags.barred -= bets.filter((b) => b.market === 'prop' && b.full).length;
     flags.propBar = { applies: pbar.applies, barUnits: pbar.barUnits, fullUnits: pbar.fullUnits, bySeason: pbar.bySeason };
+  }
+  // (the shopped-price guard (DECISIONS.md D76, best-price.mjs): a bet that clears only at another book's price needs
+  // the month's minimum return there (walkShopGuard: picked on the shop-only bets settled before the month), or it is
+  // a LIKE at the practice stake, held there through the tiers below as a barred one. Applied in SHOP_GUARD's sports
+  // (REPLAY_SHOP_GUARD=1 every sport, =0 none: measuring only); measured everywhere: flags.shopGuard)
+  if (shopOnlyBets.size && SHOP.walkShopGuard) {
+    const flatB = (b) => (b.res === 'W' ? dec(b.odds) - 1 : b.res === 'L' ? -1 : 0);
+    const list = [...shopOnlyBets].map(([b, ev]) => ({ b, t: b.t + GAME_HOURS * 36e5, at: fin(b.at) ? b.at : b.t, ev, flat: flatB(b) }));
+    const walk = SHOP.walkShopGuard(list);
+    const env = process.env.REPLAY_SHOP_GUARD;
+    const on = env === '1' ? true : env === '0' ? false : SHOP.shopGuardOn(sport);
+    const g = { on, shopOnly: list.length, guarded: 0, flat: 0, before: 0, after: 0, next: walk.final === Infinity ? 'dk' : walk.final };
+    for (const it of list) {
+      const T = walk.at(it.at);
+      if (!(it.ev < T)) continue;
+      const b = it.b;
+      g.guarded++;
+      g.flat = r2(g.flat + it.flat);
+      if (!on || b.units <= practiceUnits || hold.get(b)?.barred) continue;
+      const profit = b.units > 0 ? r2((b.profit * practiceUnits) / b.units) : 0;
+      g.before = r2(g.before + b.profit);
+      g.after = r2(g.after + profit);
+      Object.assign(b, { units: practiceUnits, band: 'medium', profit, shopGuard: true });
+      if (hold.has(b)) hold.get(b).barred = true;
+    }
+    flags.shopGuard = g;
   }
   // (the reason tiers (DECISIONS.md D58, reasons.mjs): each bet's reasons, judged walk-forward on the bets settled
   // before its moment (each market's picks flat, recency-weighted), its would-be tier from the proven ones (a LOVE one,
@@ -762,6 +792,9 @@ export function summarize(sport, bets, passed, { epoch, now, flags, rows, season
       // (the props' stat bar (D64) and MMA's bands' place (D65))
       ...(flags.propBar ? { propBar: { ...flags.propBar, barred: flags.propsBarred ?? 0 } } : {}),
       ...(flags.mmaPlace ? { mmaPlace: flags.mmaPlace } : {}),
+      // (D76, the shopped-price guard: the shop-only bets, those under the month's minimum, their flat units, the
+      // units before and after the shrink where it applies, and next, the T the live desk reads ('dk': clear there too))
+      ...(flags.shopGuard ? { shopGuard: flags.shopGuard } : {}),
       // (the reason tiers (D58): the bets by band and by would-be band, and whether LOVE and LOCK have earned their place)
       ...(flags.tiers ? { tiers: flags.tiers } : {}),
       // (D48, no look-ahead by timestamp: the bets with a factsAt stamp, those past their placement (0), the opens held

@@ -113,3 +113,70 @@ export function shopRows(rows, deep, oidOf, { tol = SHOP_TOL } = {}) {
   }
   return { shopped, better };
 }
+
+// ---------------------------------------------------------------------------
+// The shopped-price guard (DECISIONS.md D76, the owner's: best price added about 300 borderline NFL lines at the close
+// that lose). A bet whose side clears only at another book's price (shopOnly: its expected return at DraftKings' own
+// price 0 or less, above 0 at the shopped one) needs a minimum return at the shopped price (the walk's T), or it is
+// bet at the practice stake, a LIKE: a shrink, never an off switch (gates shrink, never stop). T is picked walk-forward
+// by month from SHOP_GRID on the shop-only bets settled before the month began (flat units: the T whose shrunk bets
+// lost the most; none lost, T 0, no guard), SHOP_MIN_N of them before any guard. Infinity is "clear at DraftKings
+// too". SHOP_GUARD: the sports it applies in, those where the walk's own months gained out of sample (D76's table)
+// ---------------------------------------------------------------------------
+export const SHOP_GRID = [0, 0.01, 0.02, 0.03, 0.04, 0.06, Infinity];
+export const SHOP_MIN_N = 30;
+export const SHOP_GUARD = new Set(['nfl', 'nhl']);
+export const shopGuardOn = (sport) => SHOP_GUARD.has(sport);
+// (a side that clears only at a shopped price: pS its chance, odds the price bet, dkOdds DraftKings' own on that side,
+// book the price's book code)
+export function shopOnly(pS, odds, dkOdds, book) {
+  if (!book || book === 'dk' || !Number.isFinite(pS) || !Number.isFinite(odds) || !Number.isFinite(dkOdds) || !odds || !dkOdds) return false;
+  return pS * decimal(dkOdds) - 1 <= 0 && pS * decimal(odds) - 1 > 0;
+}
+const monthKey = (t) => new Date(t).toISOString().slice(0, 7);
+const monthStart = (t) => {
+  const d = new Date(t);
+  return Date.UTC(d.getUTCFullYear(), d.getUTCMonth(), 1);
+};
+// (the T for a list of settled shop-only bets { ev, flat }: the grid's T whose bets under it lost the most, flat;
+// 0 under minN or where none lost)
+export function shopT(list, { grid = SHOP_GRID, minN = SHOP_MIN_N } = {}) {
+  if (list.length < minN) return 0;
+  let best = 0;
+  let gain = 0;
+  for (const T of grid) {
+    let g = 0;
+    for (const x of list) if (x.ev < T) g -= x.flat;
+    if (g > gain + 1e-9) (best = T), (gain = g);
+  }
+  return best;
+}
+// The walk: list of shop-only bets { t: settled ms, at: placed ms, ev, flat }; { at(placed) -> T, final, months }
+export function walkShopGuard(list, opts = {}) {
+  const sorted = [...list].sort((a, b) => a.t - b.t);
+  const memo = new Map();
+  const at = (t) => {
+    const k = monthKey(t);
+    if (!memo.has(k)) {
+      const m0 = monthStart(t);
+      memo.set(k, shopT(sorted.filter((x) => x.t < m0), opts));
+    }
+    return memo.get(k);
+  };
+  return { at, final: shopT(sorted, opts), months: () => [...memo].sort() };
+}
+// (the live side's verdict: { guarded, why } for a pick { p (its side's chance), odds, dk, book, ev } at the rule's T)
+export function shopGuardOf(pick, T, push = 0) {
+  if (!Number.isFinite(T) && T !== Infinity) return { guarded: false };
+  const pS = pick?.p;
+  const dkEv = Number.isFinite(pick?.dk) ? (1 - push) * (pS * decimal(pick.dk) - 1) : null;
+  if (!pick?.book || pick.book === 'dk' || !Number.isFinite(pick?.dk) || !(dkEv <= 0) || !(pick.ev > 0)) return { guarded: false };
+  if (pick.ev >= T) return { guarded: false };
+  return { guarded: true, why: `clears only at ${nameOf(pick.book) ?? 'a shopped'} price (${Math.round(pick.ev * 1000) / 10}% there, none at the Book's): under the shopped-price guard's ${T === Infinity ? 'clear-at-the-Book rule' : `${Math.round(T * 1000) / 10}% minimum`} (D76), the practice stake` };
+}
+// (the T the live desk reads: the replayed record's (replay-record.json) flags.shopGuard.next; 'dk' clear there too;
+// none (no record, no shop-only bets): null, no guard)
+export function shopTOf(record) {
+  const n = record?.flags?.shopGuard?.next;
+  return n === 'dk' ? Infinity : Number.isFinite(n) ? n : null;
+}

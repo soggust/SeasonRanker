@@ -2,7 +2,7 @@
  "v": 1,
  "sport": "nba",
  "trial": true,
- "at": "2026-10-21T03:18:51.359Z",
+ "at": "2026-10-21T08:01:59.844Z",
  "epoch": "2026-10-21T01:15:00Z",
  "on": {
   "love": false,
@@ -17,14 +17,16 @@
  "weights": {
   "form": 1,
   "vacated": 1,
-  "opponent": 1,
   "fit": 1,
   "base": 1,
+  "opponent": 1,
+  "script": 1,
+  "context": 1,
   "cal": 1
  },
  "record": {
   "love": 0,
-  "like": 4785
+  "like": 6968
  },
- "commit": "d7717ab8"
+ "commit": "883c9e72"
 }

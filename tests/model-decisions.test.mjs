@@ -1474,7 +1474,8 @@ test("D69 every season with prop odds is priced: the props' replay reads the old
   const props = [{ oid: 'o1' }];
   const histGames = [...older, ...history];
   const nba = propsHistory('nba', history, histGames, props, events);
-  assert.deepEqual(nba.map((g) => g.id), ['7', '10']);
+  // (D75 amends: one season before the first with props too (PROPS_WF_BACK), the walk-forward fit's first base)
+  assert.deepEqual(nba.map((g) => g.id), ['5', '7', '10']);
   const mlb = propsHistory('mlb', history, histGames, props, events);
   assert.equal(mlb[0].homeAbbr, 'NYY');
   assert.equal(propsHistory('nfl', history, histGames, props, events), history);
@@ -1721,4 +1722,70 @@ test("D74 the board: a side shows its best price and its book (pb); ESPN's board
   assert.equal(k.ml[1].pb, 'dk');
   const espn = boardMarkets([{ market: 'ml', sides: markets[0].sides.map(({ dk, book, ...s }) => ({ ...s, odds: dk })) }], () => 0.5);
   assert.equal(espn.ml[0].pb, undefined);
+});
+
+// ---- D75: the props' fit walk-forward by season ----
+test("D75 the props' replay is walk-forward: each season priced under settings searched on the seasons before it alone; the first row season only a base; GATE_PROPS_WF=0 the old in-sample way", async () => {
+  const G = await import('../libs/ranker/scripts/model/gate.mjs');
+  assert.equal(G.PROPS_WF, true, 'walk-forward is the default');
+  assert.equal(G.PROPS_WF_BACK, 1);
+  const rows = (seasons) => seasons.map((season) => ({ season }));
+  assert.deepEqual(G.wfSeasons(rows([2022, 2023, 2024]), [2023, 2024]), [2023, 2024], 'the warm-up season never priced');
+  assert.deepEqual(G.wfSeasons(rows([2023, 2024]), [2023]), [2024], 'the first row season has nothing before it: not priced');
+  assert.deepEqual(G.wfSeasons(rows([2016, 2020, 2023, 2026]), [2023, 2025]), [2023, 2026]);
+  assert.deepEqual(G.wfSeasons(rows([2025, 2026]), [], 2026), [2026], "the ledger's current season alone");
+  assert.deepEqual(G.wfSeasons(rows([2026]), [2026]), []);
+  const src = fs.readFileSync(new URL('../libs/ranker/scripts/model/gate.mjs', import.meta.url), 'utf8');
+  // (the fit's rows are the seasons before S only; the pricing pass reuses those settings, never searches)
+  assert.match(src, /const before = rows\.filter\(\(r\) => r\.season < S\);/);
+  assert.match(src, /fitProps\(sport, before, expPts, info, facts, market, totals, listed, null, null\)/);
+  assert.match(src, /emit\(V\.props\.fitProps\(sport, upTo, expPts, info, facts, market, totals, listed, soft, reuse\), upTo, S\)/);
+  // (a walk-forward record's fingerprint passes the guard's fit checks on its own fits, not the desk's saved one)
+  const next = { sport: 'nhl', fit: { wf: true, code: 'abc', expected: 'abc', seasons: ['2024:1000'], stats: ['sog'], want: 3 }, context: { facts: true, on: true, failed: [] }, files: { state: true, backtest: 5 } };
+  const g = G.recordGuard(next, null);
+  assert.deepEqual(g.hard, []);
+  const decisions = fs.readFileSync(new URL('../libs/ranker/scripts/model/DECISIONS.md', import.meta.url), 'utf8');
+  assert.ok(decisions.includes('### D75.'));
+});
+
+// ---- D76: the shopped-price guard ----
+test('D76 the shopped-price guard: a side that clears only at another book needs the month\'s minimum return there, picked walk-forward, else the practice stake; NFL on', async () => {
+  const B = await import('../libs/ranker/scripts/model/best-price.mjs');
+  assert.ok(B.SHOP_GUARD.has('nfl'));
+  assert.deepEqual(B.SHOP_GRID, [0, 0.01, 0.02, 0.03, 0.04, 0.06, Infinity]);
+  assert.equal(B.SHOP_MIN_N, 30);
+  // (shop-only: no return at DraftKings' price, some at the shopped one; DraftKings' own book never)
+  assert.equal(B.shopOnly(0.52, -105, -115, 'fd'), true);
+  assert.equal(B.shopOnly(0.56, -105, -110, 'fd'), false, 'clears at DraftKings too');
+  assert.equal(B.shopOnly(0.52, -105, -115, 'dk'), false);
+  assert.equal(B.shopOnly(0.5, -105, -115, 'fd'), false, 'no return at the shopped price either');
+  // (the T: under SHOP_MIN_N none; the grid's T whose bets under it lost the most; none lost, 0)
+  const lose = (ev, n) => Array.from({ length: n }, () => ({ ev, flat: -1 }));
+  const win = (ev, n) => Array.from({ length: n }, () => ({ ev, flat: 0.95 }));
+  assert.equal(B.shopT(lose(0.005, 10)), 0);
+  assert.equal(B.shopT([...lose(0.005, 30), ...win(0.05, 30)]), 0.01);
+  assert.equal(B.shopT(win(0.005, 40)), 0);
+  assert.equal(B.shopT([...lose(0.005, 30), ...lose(0.08, 30)]), Infinity, "every shop-only bet lost: clear at DraftKings too");
+  // (walk-forward: a month's T from the bets settled before it began, never its own)
+  const T0 = Date.UTC(2025, 8, 15);
+  const sept = lose(0.005, 40).map((x, i) => ({ ...x, t: T0 + i * 6e4, at: T0 + i * 6e4 - 36e5 }));
+  const w = B.walkShopGuard(sept);
+  assert.equal(w.at(T0), 0, "September's own losses don't move September's rule");
+  assert.equal(w.at(Date.UTC(2025, 9, 2)), 0.01);
+  // (live: the pick's side at its chance; guarded under T, the why naming the shopped book and D76)
+  const pick = { p: 0.52, odds: -105, dk: -115, book: 'fd', ev: 0.52 * (1 + 100 / 105) - 1 };
+  const v = B.shopGuardOf(pick, 0.02);
+  assert.equal(v.guarded, true);
+  assert.match(v.why, /FanDuel.*D76.*practice stake/);
+  assert.equal(B.shopGuardOf(pick, 0).guarded, false);
+  assert.equal(B.shopGuardOf({ ...pick, dk: -105, book: 'dk' }, Infinity).guarded, false, "DraftKings' own price: never guarded");
+  assert.equal(B.shopTOf({ flags: { shopGuard: { next: 'dk' } } }), Infinity);
+  assert.equal(B.shopTOf({ flags: { shopGuard: { next: 0.02 } } }), 0.02);
+  assert.equal(B.shopTOf(null), null);
+  // (the replay shrinks such a bet to the practice stake, a LIKE held through the tiers, never off)
+  const rr = fs.readFileSync(new URL('../libs/ranker/scripts/model/replay-record.mjs', import.meta.url), 'utf8');
+  assert.match(rr, /Object\.assign\(b, \{ units: practiceUnits, band: 'medium', profit, shopGuard: true \}\)/);
+  assert.match(rr, /hold\.get\(b\)\.barred = true/);
+  const run = fs.readFileSync(new URL('../libs/ranker/scripts/model/run.mjs', import.meta.url), 'utf8');
+  assert.match(run, /const practice = !gate\?\.on \|\| shopG\.guarded;/);
 });
