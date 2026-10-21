@@ -3,6 +3,17 @@
  "days": 2,
  "signals": [
   {
+   "team": "25",
+   "abbr": "SF",
+   "athlete": null,
+   "player": "Raheem Morris",
+   "kind": "coaching",
+   "direction": "none",
+   "confidence": 0.5,
+   "headline": "Raheem Morris is back in Atlanta -- and he's bringing his surging 49ers defense",
+   "at": "2026-10-21T19:03:26.000Z"
+  },
+  {
    "team": "19",
    "abbr": "NYG",
    "athlete": "4433970",
@@ -100,18 +111,7 @@
    "confidence": 0.9,
    "headline": "Colts to stick with Daniel Jones at quarterback vs. Vikings",
    "at": "2026-10-19T20:12:07.000Z"
-  },
-  {
-   "team": "2",
-   "abbr": "BUF",
-   "athlete": "4034953",
-   "player": "CJ Gardner-Johnson",
-   "kind": "benched",
-   "direction": "down",
-   "confidence": 0.9,
-   "headline": "NFL suspends Bills' C.J. Gardner-Johnson for one game for spitting",
-   "at": "2026-10-19T19:13:56.000Z"
   }
  ],
- "at": "2026-10-21T18:25:28.797Z"
+ "at": "2026-10-21T19:16:26.699Z"
 }

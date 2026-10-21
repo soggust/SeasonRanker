@@ -265,12 +265,15 @@
   "50232968": "2026-10-20",
   "50237503": "2026-10-21",
   "50237982": "2026-10-21",
+  "50238009": "2026-10-21",
   "50238315": "2026-10-21",
   "50238746": "2026-10-21",
   "50239029": "2026-10-21",
   "50239811": "2026-10-21",
   "50239882": "2026-10-21",
-  "50240100": "2026-10-21"
+  "50240100": "2026-10-21",
+  "50240235": "2026-10-21",
+  "50240343": "2026-10-21"
  },
  "signals": [
   {
@@ -1081,6 +1084,21 @@
    "confidence": 0.6,
    "story": "50238746",
    "headline": "Source: Giants turning to J.J. McCarthy as QB1 this week against Texans",
+   "model": "claude-haiku-5-5"
+  },
+  {
+   "id": "50238009|25|raheemmorris|coaching",
+   "day": "2026-10-21",
+   "at": "2026-10-21T19:03:26.000Z",
+   "team": "25",
+   "abbr": "SF",
+   "athlete": null,
+   "player": "Raheem Morris",
+   "kind": "coaching",
+   "direction": "none",
+   "confidence": 0.5,
+   "story": "50238009",
+   "headline": "Raheem Morris is back in Atlanta -- and he's bringing his surging 49ers defense",
    "model": "claude-haiku-5-5"
   }
  ]

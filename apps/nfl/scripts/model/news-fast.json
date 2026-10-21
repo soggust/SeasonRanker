@@ -4,10 +4,10 @@
   "adamscheftermirror.bsky.social": "2026-10-21T18:22:34.940Z",
   "rapsheet.bsky.social": "2026-10-21T18:45:29.066Z",
   "nflnewsreposterbot.bsky.social": "2026-10-20T20:30:06.105Z",
-  "insidenflnews.bsky.social": "2026-10-21T16:01:12.671Z",
-  "nflnewsposter.bsky.social": "2026-10-21T18:33:39.448Z",
-  "rotoworld-fb.bsky.social": "2026-10-21T18:36:07.000Z",
-  "rotowirenfl.bsky.social": "2026-10-21T18:39:49.000Z"
+  "insidenflnews.bsky.social": "2026-10-21T19:06:29.181Z",
+  "nflnewsposter.bsky.social": "2026-10-21T19:07:17.496Z",
+  "rotoworld-fb.bsky.social": "2026-10-21T19:07:11.000Z",
+  "rotowirenfl.bsky.social": "2026-10-21T19:03:49.000Z"
  },
  "claims": [
   {
@@ -1998,6 +1998,84 @@
    "kind": "status",
    "confidence": 0.5,
    "text": "Warren (groin) not practicing to start Week 7"
+  },
+  {
+   "id": "at://did:plc:mbr4badgf6yu56mquzackzew/app.bsky.feed.post/3myftswllk22j|kylemonangai|out|status",
+   "at": "2026-10-21T19:06:29.181Z",
+   "seen": "2026-10-21T19:16:26.699Z",
+   "handle": "insidenflnews.bsky.social",
+   "post": "at://did:plc:mbr4badgf6yu56mquzackzew/app.bsky.feed.post/3myftswllk22j",
+   "player": "Kyle Monangai",
+   "team": null,
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.95,
+   "text": "Kyle Monangai (thumb, toe) listed out for Week 7."
+  },
+  {
+   "id": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3myftu77vwx2x|bryceyoung|active|status",
+   "at": "2026-10-21T19:07:11.000Z",
+   "seen": "2026-10-21T19:16:26.699Z",
+   "handle": "rotoworld-fb.bsky.social",
+   "post": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3myftu77vwx2x",
+   "player": "Bryce Young",
+   "team": null,
+   "status": "active",
+   "kind": "status",
+   "confidence": 0.7,
+   "text": "Bryce Young (knee) practicing in full for Week 7"
+  },
+  {
+   "id": "at://did:plc:fuqjc7x4gxvnwzksnlxwbe4x/app.bsky.feed.post/3myftuenxa226|jordanaddison|questionable|status",
+   "at": "2026-10-21T19:07:17.496Z",
+   "seen": "2026-10-21T19:16:26.699Z",
+   "handle": "nflnewsposter.bsky.social",
+   "post": "at://did:plc:fuqjc7x4gxvnwzksnlxwbe4x/app.bsky.feed.post/3myftuenxa226",
+   "player": "Jordan Addison",
+   "team": "MIN",
+   "status": "questionable",
+   "kind": "status",
+   "confidence": 0.4,
+   "text": "[Seifert] Jordan Addison, Jordan Mason, Christian Darrisaw and T.J. Hockenson will all practice today, per Kevin O’Connell. Optimism for all of them playing Sunday. Darrisaw and Hockenson at final sta"
+  },
+  {
+   "id": "at://did:plc:fuqjc7x4gxvnwzksnlxwbe4x/app.bsky.feed.post/3myftuenxa226|jordanmason|questionable|status",
+   "at": "2026-10-21T19:07:17.496Z",
+   "seen": "2026-10-21T19:16:26.699Z",
+   "handle": "nflnewsposter.bsky.social",
+   "post": "at://did:plc:fuqjc7x4gxvnwzksnlxwbe4x/app.bsky.feed.post/3myftuenxa226",
+   "player": "Jordan Mason",
+   "team": "MIN",
+   "status": "questionable",
+   "kind": "status",
+   "confidence": 0.4,
+   "text": "[Seifert] Jordan Addison, Jordan Mason, Christian Darrisaw and T.J. Hockenson will all practice today, per Kevin O’Connell. Optimism for all of them playing Sunday. Darrisaw and Hockenson at final sta"
+  },
+  {
+   "id": "at://did:plc:fuqjc7x4gxvnwzksnlxwbe4x/app.bsky.feed.post/3myftuenxa226|christiandarrisaw|questionable|status",
+   "at": "2026-10-21T19:07:17.496Z",
+   "seen": "2026-10-21T19:16:26.699Z",
+   "handle": "nflnewsposter.bsky.social",
+   "post": "at://did:plc:fuqjc7x4gxvnwzksnlxwbe4x/app.bsky.feed.post/3myftuenxa226",
+   "player": "Christian Darrisaw",
+   "team": "MIN",
+   "status": "questionable",
+   "kind": "status",
+   "confidence": 0.6,
+   "text": "[Seifert] Jordan Addison, Jordan Mason, Christian Darrisaw and T.J. Hockenson will all practice today, per Kevin O’Connell. Optimism for all of them playing Sunday. Darrisaw and Hockenson at final sta"
+  },
+  {
+   "id": "at://did:plc:fuqjc7x4gxvnwzksnlxwbe4x/app.bsky.feed.post/3myftuenxa226|tjhockenson|questionable|status",
+   "at": "2026-10-21T19:07:17.496Z",
+   "seen": "2026-10-21T19:16:26.699Z",
+   "handle": "nflnewsposter.bsky.social",
+   "post": "at://did:plc:fuqjc7x4gxvnwzksnlxwbe4x/app.bsky.feed.post/3myftuenxa226",
+   "player": "T.J. Hockenson",
+   "team": "MIN",
+   "status": "questionable",
+   "kind": "status",
+   "confidence": 0.6,
+   "text": "[Seifert] Jordan Addison, Jordan Mason, Christian Darrisaw and T.J. Hockenson will all practice today, per Kevin O’Connell. Optimism for all of them playing Sunday. Darrisaw and Hockenson at final sta"
   }
  ]
 }
