@@ -1,8 +1,8 @@
 {
  "sport": "nba",
  "cursor": {
-  "rotowirenba.bsky.social": "2026-10-20T23:50:45.000Z",
-  "insidenbanews.bsky.social": "2026-10-20T23:42:41.121Z",
+  "rotowirenba.bsky.social": "2026-10-21T00:06:44.000Z",
+  "insidenbanews.bsky.social": "2026-10-21T00:07:53.162Z",
   "shamsbot.bsky.social": "2026-10-20T15:50:34.000Z"
  },
  "claims": [
@@ -603,6 +603,19 @@
    "kind": "status",
    "confidence": 0.95,
    "text": "Brandin Podziemski: Ruled out for regular-season opener \n\n https://www.rotowire.com/basketball/player/brandin-podziemski-5889"
+  },
+  {
+   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mydu4vguay2l|collinsexton|questionable|status",
+   "at": "2026-10-21T00:06:44.000Z",
+   "seen": "2026-10-21T00:17:43.117Z",
+   "handle": "rotowirenba.bsky.social",
+   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mydu4vguay2l",
+   "player": "Collin Sexton",
+   "team": null,
+   "status": "questionable",
+   "kind": "status",
+   "confidence": 0.95,
+   "text": "Collin Sexton: Questionable for Wednesday \n\n https://www.rotowire.com/basketball/player/collin-sexton-4412"
   }
  ]
 }

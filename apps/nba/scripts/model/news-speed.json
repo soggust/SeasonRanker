@@ -2718,6 +2718,30 @@
     "own": "2026-10-20T23:50:45.000Z",
     "why": "@rotowirenba.bsky.social: Brandin Podziemski: Ruled out for regular-season opene"
    }
+  },
+  "401909092|cameroncarr|out": {
+   "game": "401909092",
+   "start": "2026-10-22T02:00Z",
+   "team": "13",
+   "name": "Cameron Carr",
+   "status": "out",
+   "athlete": "5113969",
+   "espn": {
+    "seen": "2026-10-21T00:16:25.282Z",
+    "own": "2026-10-21T00:09:00.000Z"
+   }
+  },
+  "401909092|adouthiero|out": {
+   "game": "401909092",
+   "start": "2026-10-22T02:00Z",
+   "team": "13",
+   "name": "Adou Thiero",
+   "status": "out",
+   "athlete": "5060631",
+   "espn": {
+    "seen": "2026-10-21T00:16:25.282Z",
+    "own": "2026-10-21T00:05:00.000Z"
+   }
   }
  }
 }

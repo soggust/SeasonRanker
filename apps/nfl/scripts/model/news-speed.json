@@ -2628,6 +2628,198 @@
     "seen": "2026-10-20T22:58:50.386Z",
     "own": "2026-10-20T22:30:00.000Z"
    }
+  },
+  "401873017|uptonstout|q": {
+   "game": "401873017",
+   "start": "2026-10-25T17:00Z",
+   "team": "25",
+   "name": "Upton Stout",
+   "status": "q",
+   "athlete": "4565200",
+   "espn": {
+    "seen": "2026-10-21T00:15:41.079Z",
+    "own": "2026-10-20T23:51:00.000Z"
+   }
+  },
+  "401873009|ajepenesa|q": {
+   "game": "401873009",
+   "start": "2026-10-27T00:15Z",
+   "team": "21",
+   "name": "AJ Epenesa",
+   "status": "q",
+   "athlete": "4240585",
+   "espn": {
+    "seen": "2026-10-21T00:15:41.079Z",
+    "own": "2026-10-20T16:10:00.000Z"
+   }
+  },
+  "401873009|jalyxhunt|q": {
+   "game": "401873009",
+   "start": "2026-10-27T00:15Z",
+   "team": "21",
+   "name": "Jalyx Hunt",
+   "status": "q",
+   "athlete": "4571162",
+   "espn": {
+    "seen": "2026-10-21T00:15:41.079Z",
+    "own": "2026-10-20T16:10:00.000Z"
+   }
+  },
+  "401873009|saquonbarkley|q": {
+   "game": "401873009",
+   "start": "2026-10-27T00:15Z",
+   "team": "21",
+   "name": "Saquon Barkley",
+   "status": "q",
+   "athlete": "3929630",
+   "espn": {
+    "seen": "2026-10-21T00:15:41.079Z",
+    "own": "2026-10-20T16:10:00.000Z"
+   }
+  },
+  "401873009|michaelcarter|q": {
+   "game": "401873009",
+   "start": "2026-10-27T00:15Z",
+   "team": "21",
+   "name": "Michael Carter II",
+   "status": "q",
+   "athlete": "4240456",
+   "espn": {
+    "seen": "2026-10-21T00:15:41.079Z",
+    "own": "2026-10-20T16:10:00.000Z"
+   }
+  },
+  "401873009|jalenhurts|out": {
+   "game": "401873009",
+   "start": "2026-10-27T00:15Z",
+   "team": "21",
+   "name": "Jalen Hurts",
+   "status": "out",
+   "athlete": "4040715",
+   "espn": {
+    "seen": "2026-10-21T00:15:41.079Z",
+    "own": "2026-10-19T14:18:00.000Z"
+   }
+  },
+  "401873009|lanejohnson|out": {
+   "game": "401873009",
+   "start": "2026-10-27T00:15Z",
+   "team": "21",
+   "name": "Lane Johnson",
+   "status": "out",
+   "athlete": "15797",
+   "espn": {
+    "seen": "2026-10-21T00:15:41.079Z",
+    "own": "2026-10-18T15:34:00.000Z"
+   }
+  },
+  "401873009|jakorianbennett|out": {
+   "game": "401873009",
+   "start": "2026-10-27T00:15Z",
+   "team": "21",
+   "name": "Jakorian Bennett",
+   "status": "out",
+   "athlete": "4686911",
+   "espn": {
+    "seen": "2026-10-21T00:15:41.079Z",
+    "own": "2026-10-18T03:01:00.000Z"
+   }
+  },
+  "401873009|landondickerson|out": {
+   "game": "401873009",
+   "start": "2026-10-27T00:15Z",
+   "team": "21",
+   "name": "Landon Dickerson",
+   "status": "out",
+   "athlete": "4035624",
+   "espn": {
+    "seen": "2026-10-21T00:15:41.079Z",
+    "own": "2026-10-18T02:58:00.000Z"
+   }
+  },
+  "401873009|elistowers|out": {
+   "game": "401873009",
+   "start": "2026-10-27T00:15Z",
+   "team": "21",
+   "name": "Eli Stowers",
+   "status": "out",
+   "athlete": "4431574",
+   "espn": {
+    "seen": "2026-10-21T00:15:41.079Z",
+    "own": "2026-10-18T02:36:00.000Z"
+   }
+  },
+  "401873009|grantcalcaterra|out": {
+   "game": "401873009",
+   "start": "2026-10-27T00:15Z",
+   "team": "21",
+   "name": "Grant Calcaterra",
+   "status": "out",
+   "athlete": "4241374",
+   "espn": {
+    "seen": "2026-10-21T00:15:41.079Z",
+    "own": "2026-10-18T02:34:00.000Z"
+   }
+  },
+  "401873009|demarvionovershown|q": {
+   "game": "401873009",
+   "start": "2026-10-27T00:15Z",
+   "team": "6",
+   "name": "DeMarvion Overshown",
+   "status": "q",
+   "athlete": "4362088",
+   "espn": {
+    "seen": "2026-10-21T00:15:41.079Z",
+    "own": "2026-10-20T16:10:00.000Z"
+   }
+  },
+  "401873009|drewshelton|q": {
+   "game": "401873009",
+   "start": "2026-10-27T00:15Z",
+   "team": "6",
+   "name": "Drew Shelton",
+   "status": "q",
+   "athlete": "4685554",
+   "espn": {
+    "seen": "2026-10-21T00:15:41.079Z",
+    "own": "2026-10-20T16:10:00.000Z"
+   }
+  },
+  "401873009|cobiedurant|q": {
+   "game": "401873009",
+   "start": "2026-10-27T00:15Z",
+   "team": "6",
+   "name": "Cobie Durant",
+   "status": "q",
+   "athlete": "4384549",
+   "espn": {
+    "seen": "2026-10-21T00:15:41.079Z",
+    "own": "2026-10-20T16:10:00.000Z"
+   }
+  },
+  "401873009|kavontaeturpin|q": {
+   "game": "401873009",
+   "start": "2026-10-27T00:15Z",
+   "team": "6",
+   "name": "KaVontae Turpin",
+   "status": "q",
+   "athlete": "3676833",
+   "espn": {
+    "seen": "2026-10-21T00:15:41.079Z",
+    "own": "2026-10-20T00:07:00.000Z"
+   }
+  },
+  "401873009|deewinters|out": {
+   "game": "401873009",
+   "start": "2026-10-27T00:15Z",
+   "team": "6",
+   "name": "Dee Winters",
+   "status": "out",
+   "athlete": "4428914",
+   "espn": {
+    "seen": "2026-10-21T00:15:41.079Z",
+    "own": "2026-10-19T23:31:00.000Z"
+   }
   }
  }
 }
