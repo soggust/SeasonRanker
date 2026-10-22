@@ -4517,6 +4517,30 @@
     "own": "2026-10-22T16:30:23.000Z",
     "why": "@rotoworld-fb.bsky.social: Jeremiyah Love (ankle) not expected to play vs DEN"
    }
+  },
+  "401873010|montgomery|out": {
+   "game": "401873010",
+   "start": "2026-10-23T00:15Z",
+   "team": "3",
+   "name": "Montgomery",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-10-22T18:03:17.440Z",
+    "own": "2026-10-22T17:36:56.000Z",
+    "why": "@rotoworld-fb.bsky.social: Wilson: Montgomery (groin) expected to miss Week 7"
+   }
+  },
+  "401873022|zachcharbonnet|q": {
+   "game": "401873022",
+   "start": "2026-10-26T00:20Z",
+   "team": "26",
+   "name": "Zach Charbonnet",
+   "status": "q",
+   "athlete": "4426385",
+   "espn": {
+    "seen": "2026-10-22T18:12:22.997Z",
+    "own": "2026-10-21T23:01:00.000Z"
+   }
   }
  }
 }
