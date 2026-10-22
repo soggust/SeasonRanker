@@ -1,13 +1,13 @@
 {
  "sport": "nfl",
  "cursor": {
-  "adamscheftermirror.bsky.social": "2026-10-22T17:53:01.972Z",
+  "adamscheftermirror.bsky.social": "2026-10-22T18:07:40.398Z",
   "rapsheet.bsky.social": "2026-10-22T00:25:08.284Z",
   "nflnewsreposterbot.bsky.social": "2026-10-22T13:33:43.592Z",
   "insidenflnews.bsky.social": "2026-10-22T14:47:06.364Z",
-  "nflnewsposter.bsky.social": "2026-10-22T17:22:46.607Z",
-  "rotoworld-fb.bsky.social": "2026-10-22T17:46:16.000Z",
-  "rotowirenfl.bsky.social": "2026-10-22T17:45:38.000Z"
+  "nflnewsposter.bsky.social": "2026-10-22T18:25:10.785Z",
+  "rotoworld-fb.bsky.social": "2026-10-22T18:13:38.000Z",
+  "rotowirenfl.bsky.social": "2026-10-22T18:09:09.000Z"
  },
  "claims": [
   {
@@ -2947,6 +2947,71 @@
    "kind": "status",
    "confidence": 0.45,
    "text": "Repost by @AdamSchefter\n\nLamar Jackson moved around well during Thursday’s media viewing and didn’t favor his sprained left ankle at all. During warmups (with no defenders), Jackson made a couple nice"
+  },
+  {
+   "id": "at://did:plc:qre6zxbmr3ixhdmgsgdretb5/app.bsky.feed.post/3myiayk23rd2a|zachcharbonnet|active|return",
+   "at": "2026-10-22T18:07:35.452Z",
+   "seen": "2026-10-22T18:25:58.936Z",
+   "handle": "adamscheftermirror.bsky.social",
+   "post": "at://did:plc:qre6zxbmr3ixhdmgsgdretb5/app.bsky.feed.post/3myiayk23rd2a",
+   "player": "Zach Charbonnet",
+   "team": "SEA",
+   "status": "active",
+   "kind": "return",
+   "confidence": 0.95,
+   "text": "Seahawks also activated running back Zach Charbonnet from the physically unable to perform list.\n\nOriginal post"
+  },
+  {
+   "id": "at://did:plc:qre6zxbmr3ixhdmgsgdretb5/app.bsky.feed.post/3myiayoqzyl25|elijaharroyo|out|status",
+   "at": "2026-10-22T18:07:40.398Z",
+   "seen": "2026-10-22T18:25:58.936Z",
+   "handle": "adamscheftermirror.bsky.social",
+   "post": "at://did:plc:qre6zxbmr3ixhdmgsgdretb5/app.bsky.feed.post/3myiayoqzyl25",
+   "player": "Elijah Arroyo",
+   "team": "SEA",
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.9,
+   "text": "Source: Seahawks TE Elijah Arroyo is undergoing shoulder surgery today and will miss the rest of the season.\n\nOriginal post"
+  },
+  {
+   "id": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3myib3e5fjl22|zachcharbonnet|active|return",
+   "at": "2026-10-22T18:09:09.000Z",
+   "seen": "2026-10-22T18:25:58.936Z",
+   "handle": "rotowirenfl.bsky.social",
+   "post": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3myib3e5fjl22",
+   "player": "Zach Charbonnet",
+   "team": "SEA",
+   "status": "active",
+   "kind": "return",
+   "confidence": 0.93,
+   "text": "Zach Charbonnet: Activated from PUP list \n\n https://www.rotowire.com/football/player/zach-charbonnet-16897"
+  },
+  {
+   "id": "at://did:plc:fuqjc7x4gxvnwzksnlxwbe4x/app.bsky.feed.post/3myib5xcduc2r|elijaharroyo|out|status",
+   "at": "2026-10-22T18:10:37.144Z",
+   "seen": "2026-10-22T18:25:58.936Z",
+   "handle": "nflnewsposter.bsky.social",
+   "post": "at://did:plc:fuqjc7x4gxvnwzksnlxwbe4x/app.bsky.feed.post/3myib5xcduc2r",
+   "player": "Elijah Arroyo",
+   "team": "SEA",
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.88,
+   "text": "[Schefter] Seahawks TE Elijah Arroyo is undergoing shoulder surgery today and will miss the rest of the season. twitter.com/adamschefter..."
+  },
+  {
+   "id": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3myibdekkih2l|zachcharbonnet|active|return",
+   "at": "2026-10-22T18:13:38.000Z",
+   "seen": "2026-10-22T18:25:58.936Z",
+   "handle": "rotoworld-fb.bsky.social",
+   "post": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3myibdekkih2l",
+   "player": "Zach Charbonnet",
+   "team": "SEA",
+   "status": "active",
+   "kind": "return",
+   "confidence": 0.94,
+   "text": "Seahawks activate Zach Charbonnet (knee) from PUP"
   }
  ]
 }

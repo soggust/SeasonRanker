@@ -3,6 +3,17 @@
  "days": 2,
  "signals": [
   {
+   "team": "26",
+   "abbr": "SEA",
+   "athlete": "4426385",
+   "player": "Zach Charbonnet",
+   "kind": "return",
+   "direction": "up",
+   "confidence": 0.9,
+   "headline": "Seahawks RB Zach Charbonnet activated off PUP list",
+   "at": "2026-10-22T18:22:16.000Z"
+  },
+  {
    "team": "21",
    "abbr": "PHI",
    "athlete": "3929630",
@@ -102,5 +113,5 @@
    "at": "2026-10-20T19:55:12.000Z"
   }
  ],
- "at": "2026-10-22T17:20:04.372Z"
+ "at": "2026-10-22T18:25:58.936Z"
 }

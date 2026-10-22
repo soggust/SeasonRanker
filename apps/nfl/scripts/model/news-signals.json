@@ -294,7 +294,8 @@
   "50248869": "2026-10-22",
   "50249466": "2026-10-22",
   "50250407": "2026-10-22",
-  "50250751": "2026-10-22"
+  "50250751": "2026-10-22",
+  "50250887": "2026-10-22"
  },
  "signals": [
   {
@@ -1210,6 +1211,21 @@
    "confidence": 0.6,
    "story": "50248869",
    "headline": "Sources: Eagles RB Barkley (hamstring) expected to practice, play vs. Cowboys",
+   "model": "claude-haiku-5-5"
+  },
+  {
+   "id": "50250887|26|4426385|return",
+   "day": "2026-10-22",
+   "at": "2026-10-22T18:22:16.000Z",
+   "team": "26",
+   "abbr": "SEA",
+   "athlete": "4426385",
+   "player": "Zach Charbonnet",
+   "kind": "return",
+   "direction": "up",
+   "confidence": 0.9,
+   "story": "50250887",
+   "headline": "Seahawks RB Zach Charbonnet activated off PUP list",
    "model": "claude-haiku-5-5"
   }
  ]
