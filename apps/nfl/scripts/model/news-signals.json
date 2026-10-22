@@ -297,7 +297,9 @@
   "50250747": "2026-10-22",
   "50250751": "2026-10-22",
   "50250887": "2026-10-22",
-  "50251078": "2026-10-22"
+  "50251078": "2026-10-22",
+  "50252035": "2026-10-22",
+  "50252129": "2026-10-22"
  },
  "signals": [
   {
@@ -1228,6 +1230,21 @@
    "confidence": 0.9,
    "story": "50250887",
    "headline": "Seahawks RB Zach Charbonnet activated off PUP list",
+   "model": "claude-haiku-5-5"
+  },
+  {
+   "id": "50252035|27|3052587|return",
+   "day": "2026-10-22",
+   "at": "2026-10-22T20:48:25.000Z",
+   "team": "27",
+   "abbr": "TB",
+   "athlete": "3052587",
+   "player": "Baker Mayfield",
+   "kind": "return",
+   "direction": "up",
+   "confidence": 0.6,
+   "story": "50252035",
+   "headline": "Barring setbacks, Bucs QB Baker Mayfield expected to start vs. Panthers",
    "model": "claude-haiku-5-5"
   }
  ]

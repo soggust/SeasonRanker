@@ -3,6 +3,17 @@
  "days": 2,
  "signals": [
   {
+   "team": "27",
+   "abbr": "TB",
+   "athlete": "3052587",
+   "player": "Baker Mayfield",
+   "kind": "return",
+   "direction": "up",
+   "confidence": 0.6,
+   "headline": "Barring setbacks, Bucs QB Baker Mayfield expected to start vs. Panthers",
+   "at": "2026-10-22T20:48:25.000Z"
+  },
+  {
    "team": "26",
    "abbr": "SEA",
    "athlete": "4426385",
@@ -102,5 +113,5 @@
    "at": "2026-10-21T16:03:44.000Z"
   }
  ],
- "at": "2026-10-22T20:02:56.040Z"
+ "at": "2026-10-22T21:10:54.488Z"
 }

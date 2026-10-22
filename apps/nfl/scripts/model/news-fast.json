@@ -1,13 +1,13 @@
 {
  "sport": "nfl",
  "cursor": {
-  "adamscheftermirror.bsky.social": "2026-10-22T20:07:40.576Z",
+  "adamscheftermirror.bsky.social": "2026-10-22T20:52:42.595Z",
   "rapsheet.bsky.social": "2026-10-22T18:33:24.445Z",
   "nflnewsreposterbot.bsky.social": "2026-10-22T13:33:43.592Z",
   "insidenflnews.bsky.social": "2026-10-22T19:28:44.831Z",
-  "nflnewsposter.bsky.social": "2026-10-22T20:17:03.846Z",
-  "rotoworld-fb.bsky.social": "2026-10-22T20:23:05.000Z",
-  "rotowirenfl.bsky.social": "2026-10-22T20:29:32.000Z"
+  "nflnewsposter.bsky.social": "2026-10-22T20:33:37.896Z",
+  "rotoworld-fb.bsky.social": "2026-10-22T20:49:37.000Z",
+  "rotowirenfl.bsky.social": "2026-10-22T20:56:03.000Z"
  },
  "claims": [
   {
@@ -3285,6 +3285,123 @@
    "kind": "status",
    "confidence": 0.9,
    "text": "Christian Watson: Stays limited Thursday \n\n https://www.rotowire.com/football/player/christian-watson-15946"
+  },
+  {
+   "id": "at://did:plc:fuqjc7x4gxvnwzksnlxwbe4x/app.bsky.feed.post/3myij5ojxm2g3|lamarjackson|limited|status",
+   "at": "2026-10-22T20:33:37.896Z",
+   "seen": "2026-10-22T21:10:54.488Z",
+   "handle": "nflnewsposter.bsky.social",
+   "post": "at://did:plc:fuqjc7x4gxvnwzksnlxwbe4x/app.bsky.feed.post/3myij5ojxm2g3",
+   "player": "Lamar Jackson",
+   "team": "BAL",
+   "status": "limited",
+   "kind": "status",
+   "confidence": 0.9,
+   "text": "[Jones] For a second straight day Lamar Jackson (ankle) was a limited participant at practice twitter.com/jjones9/stat..."
+  },
+  {
+   "id": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3myijde3jqy27|quinshonjudkins|limited|status",
+   "at": "2026-10-22T20:36:48.000Z",
+   "seen": "2026-10-22T21:10:54.488Z",
+   "handle": "rotoworld-fb.bsky.social",
+   "post": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3myijde3jqy27",
+   "player": "Quinshon Judkins",
+   "team": "CLE",
+   "status": "limited",
+   "kind": "status",
+   "confidence": 0.85,
+   "text": "Quinshon Judkins, Dylan Sampson remain limited"
+  },
+  {
+   "id": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3myijde3jqy27|dylansampson|limited|status",
+   "at": "2026-10-22T20:36:48.000Z",
+   "seen": "2026-10-22T21:10:54.488Z",
+   "handle": "rotoworld-fb.bsky.social",
+   "post": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3myijde3jqy27",
+   "player": "Dylan Sampson",
+   "team": "CLE",
+   "status": "limited",
+   "kind": "status",
+   "confidence": 0.85,
+   "text": "Quinshon Judkins, Dylan Sampson remain limited"
+  },
+  {
+   "id": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3myijemdvlx2b|matthewgolden|limited|status",
+   "at": "2026-10-22T20:37:30.000Z",
+   "seen": "2026-10-22T21:10:54.488Z",
+   "handle": "rotowirenfl.bsky.social",
+   "post": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3myijemdvlx2b",
+   "player": "Matthew Golden",
+   "team": "GB",
+   "status": "limited",
+   "kind": "status",
+   "confidence": 0.9,
+   "text": "Matthew Golden: Limited again Thursday \n\n https://www.rotowire.com/football/player/matthew-golden-18500"
+  },
+  {
+   "id": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3myijqktqdd2s|lamarjackson|limited|status",
+   "at": "2026-10-22T20:44:11.000Z",
+   "seen": "2026-10-22T21:10:54.488Z",
+   "handle": "rotowirenfl.bsky.social",
+   "post": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3myijqktqdd2s",
+   "player": "Lamar Jackson",
+   "team": "BAL",
+   "status": "limited",
+   "kind": "status",
+   "confidence": 0.9,
+   "text": "Lamar Jackson: Limited again Thursday \n\n https://www.rotowire.com/football/player/lamar-jackson-12561"
+  },
+  {
+   "id": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3myijvbnvsx2h|georgepickens|none|status",
+   "at": "2026-10-22T20:46:49.000Z",
+   "seen": "2026-10-22T21:10:54.488Z",
+   "handle": "rotowirenfl.bsky.social",
+   "post": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3myijvbnvsx2h",
+   "player": "George Pickens",
+   "team": "PIT",
+   "status": "none",
+   "kind": "status",
+   "confidence": 0.4,
+   "text": "George Pickens: Dealing with shoulder injury \n\n https://www.rotowire.com/football/player/george-pickens-15853"
+  },
+  {
+   "id": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3myik2bwrqn26|georgepickens|none|status",
+   "at": "2026-10-22T20:49:37.000Z",
+   "seen": "2026-10-22T21:10:54.488Z",
+   "handle": "rotoworld-fb.bsky.social",
+   "post": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3myik2bwrqn26",
+   "player": "George Pickens",
+   "team": "PIT",
+   "status": "none",
+   "kind": "status",
+   "confidence": 0.35,
+   "text": "Pickens (shoulder) now on report, beat not worried"
+  },
+  {
+   "id": "at://did:plc:qre6zxbmr3ixhdmgsgdretb5/app.bsky.feed.post/3myik7sc2ru2z|rasheerice|questionable|status",
+   "at": "2026-10-22T20:52:42.595Z",
+   "seen": "2026-10-22T21:10:54.488Z",
+   "handle": "adamscheftermirror.bsky.social",
+   "post": "at://did:plc:qre6zxbmr3ixhdmgsgdretb5/app.bsky.feed.post/3myik7sc2ru2z",
+   "player": "Rashee Rice",
+   "team": "KC",
+   "status": "questionable",
+   "kind": "status",
+   "confidence": 0.6,
+   "text": "Chiefs WR Rashee Rice officially didn’t practice for a second straight day due to his hamstring injury.\n\nOriginal post"
+  },
+  {
+   "id": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3myikfs4en726|traviskelce|limited|status",
+   "at": "2026-10-22T20:56:03.000Z",
+   "seen": "2026-10-22T21:10:54.488Z",
+   "handle": "rotowirenfl.bsky.social",
+   "post": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3myikfs4en726",
+   "player": "Travis Kelce",
+   "team": "KC",
+   "status": "limited",
+   "kind": "status",
+   "confidence": 0.9,
+   "text": "Travis Kelce: Stays limited in practice. \n\n https://www.rotowire.com/football/player/travis-kelce-8783"
   }
  ]
 }

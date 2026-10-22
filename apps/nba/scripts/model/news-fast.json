@@ -1,7 +1,7 @@
 {
  "sport": "nba",
  "cursor": {
-  "rotowirenba.bsky.social": "2026-10-22T20:21:34.000Z",
+  "rotowirenba.bsky.social": "2026-10-22T21:07:34.000Z",
   "insidenbanews.bsky.social": "2026-10-22T14:47:23.657Z",
   "shamsbot.bsky.social": "2026-10-22T13:00:45.000Z"
  },
@@ -876,6 +876,32 @@
    "kind": "status",
    "confidence": 0.95,
    "text": "AJ Dybantsa: Ruled out for Friday \n\n https://www.rotowire.com/basketball/player/aj-dybantsa-6925"
+  },
+  {
+   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3myikw3f6qf27|konknueppel|out|status",
+   "at": "2026-10-22T21:05:10.000Z",
+   "seen": "2026-10-22T21:10:54.488Z",
+   "handle": "rotowirenba.bsky.social",
+   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3myikw3f6qf27",
+   "player": "Kon Knueppel",
+   "team": null,
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.9,
+   "text": "Kon Knueppel: Still out with hamstring strain \n\n https://www.rotowire.com/basketball/player/kon-knueppel-6540"
+  },
+  {
+   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3myil2emdeq2e|cobywhite|out|status",
+   "at": "2026-10-22T21:07:34.000Z",
+   "seen": "2026-10-22T21:10:54.488Z",
+   "handle": "rotowirenba.bsky.social",
+   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3myil2emdeq2e",
+   "player": "Coby White",
+   "team": null,
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.85,
+   "text": "Coby White: Still sidelined with calf strain \n\n https://www.rotowire.com/basketball/player/coby-white-4801"
   }
  ]
 }
