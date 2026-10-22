@@ -1,13 +1,13 @@
 {
  "sport": "nfl",
  "cursor": {
-  "adamscheftermirror.bsky.social": "2026-10-22T18:37:40.587Z",
+  "adamscheftermirror.bsky.social": "2026-10-22T20:07:40.576Z",
   "rapsheet.bsky.social": "2026-10-22T18:33:24.445Z",
   "nflnewsreposterbot.bsky.social": "2026-10-22T13:33:43.592Z",
   "insidenflnews.bsky.social": "2026-10-22T19:28:44.831Z",
   "nflnewsposter.bsky.social": "2026-10-22T18:33:01.823Z",
-  "rotoworld-fb.bsky.social": "2026-10-22T20:00:52.000Z",
-  "rotowirenfl.bsky.social": "2026-10-22T20:02:35.000Z"
+  "rotoworld-fb.bsky.social": "2026-10-22T20:05:24.000Z",
+  "rotowirenfl.bsky.social": "2026-10-22T20:13:12.000Z"
  },
  "claims": [
   {
@@ -3129,6 +3129,58 @@
    "kind": "status",
    "confidence": 0.7,
    "text": "Emeka Egbuka (concussion/foot) sits out again"
+  },
+  {
+   "id": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3myihl6road2t|tylerwarren|out|status",
+   "at": "2026-10-22T20:05:23.000Z",
+   "seen": "2026-10-22T20:14:09.237Z",
+   "handle": "rotoworld-fb.bsky.social",
+   "post": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3myihl6road2t",
+   "player": "Tyler Warren",
+   "team": null,
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.85,
+   "text": "Tyler Warren (groin) remains sidelined Thursday"
+  },
+  {
+   "id": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3myihl7uoi727|irving|limited|status",
+   "at": "2026-10-22T20:05:24.000Z",
+   "seen": "2026-10-22T20:14:09.237Z",
+   "handle": "rotoworld-fb.bsky.social",
+   "post": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3myihl7uoi727",
+   "player": "Irving",
+   "team": null,
+   "status": "limited",
+   "kind": "status",
+   "confidence": 0.8,
+   "text": "Irving (illness) limited in return to practice"
+  },
+  {
+   "id": "at://did:plc:qre6zxbmr3ixhdmgsgdretb5/app.bsky.feed.post/3myihpakqxu2o|alijahveratucker|out|status",
+   "at": "2026-10-22T20:07:39.649Z",
+   "seen": "2026-10-22T20:14:09.237Z",
+   "handle": "adamscheftermirror.bsky.social",
+   "post": "at://did:plc:qre6zxbmr3ixhdmgsgdretb5/app.bsky.feed.post/3myihpakqxu2o",
+   "player": "Alijah Vera-Tucker",
+   "team": "NE",
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.95,
+   "text": "Patriots placed G Alijah Vera-Tucker on injured reserve.\n\nOriginal post"
+  },
+  {
+   "id": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3myihs67boa22|breecehall|limited|status",
+   "at": "2026-10-22T20:09:17.000Z",
+   "seen": "2026-10-22T20:14:09.237Z",
+   "handle": "rotowirenfl.bsky.social",
+   "post": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3myihs67boa22",
+   "player": "Breece Hall",
+   "team": null,
+   "status": "limited",
+   "kind": "status",
+   "confidence": 0.9,
+   "text": "Breece Hall: Officially limited Thursday \n\n https://www.rotowire.com/football/player/breece-hall-15810"
   }
  ]
 }
