@@ -1,7 +1,7 @@
 {
  "sport": "nba",
  "cursor": {
-  "rotowirenba.bsky.social": "2026-10-22T15:13:15.000Z",
+  "rotowirenba.bsky.social": "2026-10-22T16:22:15.000Z",
   "insidenbanews.bsky.social": "2026-10-22T14:47:23.657Z",
   "shamsbot.bsky.social": "2026-10-22T13:00:45.000Z"
  },
@@ -863,6 +863,19 @@
    "kind": "status",
    "confidence": 0.9,
    "text": "Injuries 10/22\n\nCLE:\nJarrett Allen - Questionable\nNae'Qwan Tomlin - Out\n\nPHI:\nDean Wade - Questionable\nAriel Hukporti - Out\nDominick Barlow - Out\n\nDEN:\nSpencer Jones - Questionable\nJulian Strawther - "
+  },
+  {
+   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3myi346q26624|ajdybantsa|out|status",
+   "at": "2026-10-22T16:22:15.000Z",
+   "seen": "2026-10-22T16:38:01.289Z",
+   "handle": "rotowirenba.bsky.social",
+   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3myi346q26624",
+   "player": "AJ Dybantsa",
+   "team": null,
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.95,
+   "text": "AJ Dybantsa: Ruled out for Friday \n\n https://www.rotowire.com/basketball/player/aj-dybantsa-6925"
   }
  ]
 }
