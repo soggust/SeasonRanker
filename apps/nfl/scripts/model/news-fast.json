@@ -5,9 +5,9 @@
   "rapsheet.bsky.social": "2026-10-22T18:33:24.445Z",
   "nflnewsreposterbot.bsky.social": "2026-10-22T13:33:43.592Z",
   "insidenflnews.bsky.social": "2026-10-22T19:28:44.831Z",
-  "nflnewsposter.bsky.social": "2026-10-22T18:33:01.823Z",
-  "rotoworld-fb.bsky.social": "2026-10-22T20:05:24.000Z",
-  "rotowirenfl.bsky.social": "2026-10-22T20:13:12.000Z"
+  "nflnewsposter.bsky.social": "2026-10-22T20:17:03.846Z",
+  "rotoworld-fb.bsky.social": "2026-10-22T20:23:05.000Z",
+  "rotowirenfl.bsky.social": "2026-10-22T20:29:32.000Z"
  },
  "claims": [
   {
@@ -3181,6 +3181,110 @@
    "kind": "status",
    "confidence": 0.9,
    "text": "Breece Hall: Officially limited Thursday \n\n https://www.rotowire.com/football/player/breece-hall-15810"
+  },
+  {
+   "id": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3myii2yaqnz25|veratucker|out|status",
+   "at": "2026-10-22T20:14:13.000Z",
+   "seen": "2026-10-22T20:33:16.590Z",
+   "handle": "rotoworld-fb.bsky.social",
+   "post": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3myii2yaqnz25",
+   "player": "Vera-Tucker",
+   "team": "NE",
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.95,
+   "text": "Patriots place Vera-Tucker (hamstring) on IR"
+  },
+  {
+   "id": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3myii4bltzr2s|quinshonjudkins|limited|status",
+   "at": "2026-10-22T20:14:56.000Z",
+   "seen": "2026-10-22T20:33:16.590Z",
+   "handle": "rotowirenfl.bsky.social",
+   "post": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3myii4bltzr2s",
+   "player": "Quinshon Judkins",
+   "team": null,
+   "status": "limited",
+   "kind": "status",
+   "confidence": 0.9,
+   "text": "Quinshon Judkins: Limited again Thursday \n\n https://www.rotowire.com/football/player/quinshon-judkins-18516"
+  },
+  {
+   "id": "at://did:plc:fuqjc7x4gxvnwzksnlxwbe4x/app.bsky.feed.post/3myiia2jymsg3|jordanlove|active|status",
+   "at": "2026-10-22T20:17:03.846Z",
+   "seen": "2026-10-22T20:33:16.590Z",
+   "handle": "nflnewsposter.bsky.social",
+   "post": "at://did:plc:fuqjc7x4gxvnwzksnlxwbe4x/app.bsky.feed.post/3myiia2jymsg3",
+   "player": "Jordan Love",
+   "team": "GB",
+   "status": "active",
+   "kind": "status",
+   "confidence": 0.55,
+   "text": "[Demovsky] Jordan Love upgraded to a full participant plus a couple of additions to the injury report and only one DNP. twitter.com/RobDemovsky/..."
+  },
+  {
+   "id": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3myiiksarga2l|kcconcepcion|limited|status",
+   "at": "2026-10-22T20:23:04.000Z",
+   "seen": "2026-10-22T20:33:16.590Z",
+   "handle": "rotoworld-fb.bsky.social",
+   "post": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3myiiksarga2l",
+   "player": "KC Concepcion",
+   "team": null,
+   "status": "limited",
+   "kind": "status",
+   "confidence": 0.9,
+   "text": "KC Concepcion, Denzel Boston limited again on Thu."
+  },
+  {
+   "id": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3myiiksarga2l|denzelboston|limited|status",
+   "at": "2026-10-22T20:23:04.000Z",
+   "seen": "2026-10-22T20:33:16.590Z",
+   "handle": "rotoworld-fb.bsky.social",
+   "post": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3myiiksarga2l",
+   "player": "Denzel Boston",
+   "team": null,
+   "status": "limited",
+   "kind": "status",
+   "confidence": 0.9,
+   "text": "KC Concepcion, Denzel Boston limited again on Thu."
+  },
+  {
+   "id": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3myiiktd2uo2b|watson|limited|status",
+   "at": "2026-10-22T20:23:05.000Z",
+   "seen": "2026-10-22T20:33:16.590Z",
+   "handle": "rotoworld-fb.bsky.social",
+   "post": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3myiiktd2uo2b",
+   "player": "Watson",
+   "team": "GB",
+   "status": "limited",
+   "kind": "status",
+   "confidence": 0.85,
+   "text": "Watson, Golden remain limited on Thursday"
+  },
+  {
+   "id": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3myiiktd2uo2b|golden|limited|status",
+   "at": "2026-10-22T20:23:05.000Z",
+   "seen": "2026-10-22T20:33:16.590Z",
+   "handle": "rotoworld-fb.bsky.social",
+   "post": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3myiiktd2uo2b",
+   "player": "Golden",
+   "team": "GB",
+   "status": "limited",
+   "kind": "status",
+   "confidence": 0.8,
+   "text": "Watson, Golden remain limited on Thursday"
+  },
+  {
+   "id": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3myiiwe64kt2p|christianwatson|limited|status",
+   "at": "2026-10-22T20:29:32.000Z",
+   "seen": "2026-10-22T20:33:16.590Z",
+   "handle": "rotowirenfl.bsky.social",
+   "post": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3myiiwe64kt2p",
+   "player": "Christian Watson",
+   "team": "GB",
+   "status": "limited",
+   "kind": "status",
+   "confidence": 0.9,
+   "text": "Christian Watson: Stays limited Thursday \n\n https://www.rotowire.com/football/player/christian-watson-15946"
   }
  ]
 }
