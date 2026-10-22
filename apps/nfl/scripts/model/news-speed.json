@@ -4265,6 +4265,102 @@
     "seen": "2026-10-22T00:00:43.304Z",
     "own": "2026-10-21T23:47:00.000Z"
    }
+  },
+  "401873010|mikewashington|q": {
+   "game": "401873010",
+   "start": "2026-10-23T00:15Z",
+   "team": "3",
+   "name": "Mike Washington",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-10-22T00:03:46.483Z",
+    "own": "2026-10-21T23:57:50.000Z",
+    "why": "@rotoworld-fb.bsky.social: Mike Washington (foot/back) limited Wednesday"
+   }
+  },
+  "401873010|brockbowers|q": {
+   "game": "401873010",
+   "start": "2026-10-23T00:15Z",
+   "team": "3",
+   "name": "Brock Bowers",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-10-22T00:03:46.483Z",
+    "own": "2026-10-21T23:57:52.000Z",
+    "why": "@rotoworld-fb.bsky.social: Brock Bowers (hamstring/calf) limited Wednesday"
+   }
+  },
+  "401873017|mykelwilliams|q": {
+   "game": "401873017",
+   "start": "2026-10-25T17:00Z",
+   "team": "25",
+   "name": "Mykel Williams",
+   "status": "q",
+   "athlete": "4685623",
+   "espn": {
+    "seen": "2026-10-22T00:21:40.662Z",
+    "own": "2026-10-21T23:53:00.000Z"
+   }
+  },
+  "401873017|ashtyndavis|q": {
+   "game": "401873017",
+   "start": "2026-10-25T17:00Z",
+   "team": "25",
+   "name": "Ashtyn Davis",
+   "status": "q",
+   "athlete": "3858271",
+   "espn": {
+    "seen": "2026-10-22T00:21:40.662Z",
+    "own": "2026-10-21T23:53:00.000Z"
+   }
+  },
+  "401873017|siranneal|q": {
+   "game": "401873017",
+   "start": "2026-10-25T17:00Z",
+   "team": "25",
+   "name": "Siran Neal",
+   "status": "q",
+   "athlete": "3057524",
+   "espn": {
+    "seen": "2026-10-22T00:21:40.662Z",
+    "own": "2026-10-21T23:52:00.000Z"
+   }
+  },
+  "401873021|koltonmiller|q": {
+   "game": "401873021",
+   "start": "2026-10-25T20:25Z",
+   "team": "13",
+   "name": "Kolton Miller",
+   "status": "q",
+   "athlete": "3134312",
+   "espn": {
+    "seen": "2026-10-22T00:21:40.662Z",
+    "own": "2026-10-21T23:58:00.000Z"
+   }
+  },
+  "401873021|folorunsofatukasi|q": {
+   "game": "401873021",
+   "start": "2026-10-25T20:25Z",
+   "team": "13",
+   "name": "Folorunso Fatukasi",
+   "status": "q",
+   "athlete": "3045172",
+   "espn": {
+    "seen": "2026-10-22T00:21:40.662Z",
+    "own": "2026-10-21T23:57:00.000Z"
+   }
+  },
+  "401873021|quaywalker|q": {
+   "game": "401873021",
+   "start": "2026-10-25T20:25Z",
+   "team": "13",
+   "name": "Quay Walker",
+   "status": "q",
+   "athlete": "4379416",
+   "espn": {
+    "seen": "2026-10-22T00:21:40.662Z",
+    "own": "2026-10-21T02:04:00.000Z"
+   }
   }
  }
 }
