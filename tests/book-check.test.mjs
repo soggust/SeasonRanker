@@ -22,10 +22,12 @@ test('tiers: CHECK between LOCK and LOVE, its own chip, unranked with the locks'
   assert.ok(!desk.unranked('high') && !desk.unranked(null));
 });
 
-test("byBand: the locks, then the CHECKs by their gap, then the rest by the Kelly score, then the start", () => {
+test("byBand: the locks, the CHECKs by their gap, then each band (a LOVE never under a LIKE) by the Kelly score, then the start", () => {
   const row = (id, confidence, sureness, extra = {}) => ({ id, confidence, sureness, game: { kickoff: '2026-10-11T17:00Z' }, ...extra });
   const rows = [
     row('like', 'medium', 0.03),
+    // (a LIKE with a bigger Kelly than any LOVE still under them: the owner, 2026-10-22, Lucindo over Nunes)
+    row('like-big', 'medium', 0.2),
     row('check-small', 'check', 0.2, { gap: 0.12 }),
     row('love', 'high', 0.07),
     row('lock', 'lock', 0.12),
@@ -33,7 +35,7 @@ test("byBand: the locks, then the CHECKs by their gap, then the rest by the Kell
     row('pass', 'low', -0.02),
     row('love-later', 'high', 0.07, { game: { kickoff: '2026-10-11T20:00Z' } }),
   ];
-  assert.deepEqual(rows.sort(desk.byBand).map((r) => r.id), ['lock', 'check-big', 'check-small', 'love', 'love-later', 'like', 'pass']);
+  assert.deepEqual(rows.sort(desk.byBand).map((r) => r.id), ['lock', 'check-big', 'check-small', 'love', 'love-later', 'like-big', 'like', 'pass']);
 });
 
 test("betWhy: a CHECK above the ranks as a lock is, the first bet under them #1", () => {

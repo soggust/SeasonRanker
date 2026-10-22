@@ -8,6 +8,7 @@ import { test, before } from 'node:test';
 import assert from 'node:assert/strict';
 import path from 'node:path';
 import { loadEngine } from './support/engine.mjs';
+import { earlyCurrent } from './support/early-season.mjs';
 
 const ENTRY = path.join(import.meta.dirname, 'support', 'skills-entry.ts');
 let nba;
@@ -133,6 +134,8 @@ test("nba: Shooting on the real rows, FT % at half weight and the percentages on
   const maxey = now.get('Tyrese Maxey');
   const luka = [...now.keys()].find((n) => /^Luka Don/.test(n));
   if (!maxey || !luka) return t.skip("Maxey or Doncic isn't among this season's point guards");
+  // (a season a game or two in: too few free throws for the half weight to show; support/early-season.mjs)
+  if (earlyCurrent('nba')) return t.skip('the NBA season being played is too young');
   const gap = maxey.pct - now.get(luka).pct;
   const oldGap = was.get('Tyrese Maxey').pct - was.get(luka).pct;
   assert.ok(gap < oldGap, `Maxey over Doncic by ${gap}, was ${oldGap}`);

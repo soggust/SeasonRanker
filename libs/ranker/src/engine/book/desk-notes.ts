@@ -83,10 +83,11 @@ export interface NoteRow {
   playerTeam?: string | null;
 }
 
-// The Book's order: by band (LOCK, CHECK, the rest), then the Kelly score (the CHECKs by their gap), then
+// The Book's order: by band (LOCK, CHECK, LOVE, LIKE, PASS: a LOVE never under a LIKE, the owner's rule of
+// 2026-10-22, whatever their Kelly scores), then the Kelly score within the band (the CHECKs by their gap), then
 // the start
 export function byBand(a: NoteRow, b: NoteRow): number {
-  const band = (r: NoteRow) => Math.min(bandOrder(r.confidence as never), 2);
+  const band = (r: NoteRow) => bandOrder(r.confidence as never);
   const gap = (r: NoteRow) => (r.confidence === 'check' ? Math.abs(r.gap ?? 0) : 0);
   return band(a) - band(b) || gap(b) - gap(a) || b.sureness - a.sureness || (a.game?.kickoff ?? '').localeCompare(b.game?.kickoff ?? '');
 }
