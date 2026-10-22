@@ -3,8 +3,8 @@
  "cursor": {
   "johnston-bot.bsky.social": "2026-10-22T15:34:10.875Z",
   "notfriedgehnic.bsky.social": "2026-10-22T13:29:33.127Z",
-  "dailyfaceoff.bsky.social": "2026-10-22T15:30:17.000Z",
-  "dfotoronto.bsky.social": "2026-10-22T15:54:33.000Z",
+  "dailyfaceoff.bsky.social": "2026-10-22T16:01:58.000Z",
+  "dfotoronto.bsky.social": "2026-10-22T16:08:29.000Z",
   "marklazerus.bsky.social": "2026-10-21T21:06:16.755Z"
  },
  "claims": [
@@ -345,6 +345,19 @@
    "kind": "starting",
    "confidence": 0.9,
    "text": "Maple Leafs’ lineup news: Sergei Bobrovsky to start vs. Rangers, Marshall Rifai’s status TBD"
+  },
+  {
+   "id": "at://did:plc:3uus7y6h3rlrk6sbctzxm4bg/app.bsky.feed.post/3myhzxwgho22g|nicksuzuki|out|status",
+   "at": "2026-10-22T16:01:58.000Z",
+   "seen": "2026-10-22T16:17:14.068Z",
+   "handle": "dailyfaceoff.bsky.social",
+   "post": "at://did:plc:3uus7y6h3rlrk6sbctzxm4bg/app.bsky.feed.post/3myhzxwgho22g",
+   "player": "Nick Suzuki",
+   "team": "MTL",
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.95,
+   "text": "Canadiens’ Nick Suzuki out 2-4 weeks with upper-body injury"
   }
  ]
 }
