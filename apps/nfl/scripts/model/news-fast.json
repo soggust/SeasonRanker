@@ -5,9 +5,9 @@
   "rapsheet.bsky.social": "2026-10-22T00:25:08.284Z",
   "nflnewsreposterbot.bsky.social": "2026-10-22T13:33:43.592Z",
   "insidenflnews.bsky.social": "2026-10-22T14:47:06.364Z",
-  "nflnewsposter.bsky.social": "2026-10-22T15:52:12.669Z",
+  "nflnewsposter.bsky.social": "2026-10-22T16:53:33.320Z",
   "rotoworld-fb.bsky.social": "2026-10-22T16:30:23.000Z",
-  "rotowirenfl.bsky.social": "2026-10-22T16:33:19.000Z"
+  "rotowirenfl.bsky.social": "2026-10-22T16:38:15.000Z"
  },
  "claims": [
   {
@@ -2856,6 +2856,19 @@
    "kind": "status",
    "confidence": 0.3,
    "text": "Matthew Golden: Coach not worried about shoulder \n\n https://www.rotowire.com/football/player/matthew-golden-18500"
+  },
+  {
+   "id": "at://did:plc:fuqjc7x4gxvnwzksnlxwbe4x/app.bsky.feed.post/3myi4sygdbk2n|joshsimmons|out|status",
+   "at": "2026-10-22T16:52:54.259Z",
+   "seen": "2026-10-22T16:59:19.072Z",
+   "handle": "nflnewsposter.bsky.social",
+   "post": "at://did:plc:fuqjc7x4gxvnwzksnlxwbe4x/app.bsky.feed.post/3myi4sygdbk2n",
+   "player": "Josh Simmons",
+   "team": "KC",
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.9,
+   "text": "[Derrick] Rick Burkholder, Chiefs VP of sports medicine, says LT Josh Simmons will go on injured reserve “to return to full function.” He says he has plateaued with his current rehab and needs more ti"
   }
  ]
 }
