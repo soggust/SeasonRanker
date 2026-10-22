@@ -3259,6 +3259,11 @@
    "sleeper": {
     "seen": "2026-10-22T20:01:51.261Z",
     "own": "2026-10-22T15:55:10.292Z"
+   },
+   "bluesky": {
+    "seen": "2026-10-22T21:32:15.227Z",
+    "own": "2026-10-22T21:17:12.000Z",
+    "why": "@dailyfaceoff.bsky.social: Penguins’ Bryan Rust out at least six weeks with lowe"
    }
   },
   "401892564|bowenbyram|q": {
@@ -3580,6 +3585,18 @@
     "seen": "2026-10-22T19:31:22.997Z",
     "own": "2026-10-22T19:20:24.000Z",
     "why": "@dailyfaceoff.bsky.social: Sharks’ Alex Wennberg out week-to-week with upper-bod"
+   }
+  },
+  "401892555|juddcaulfield|out": {
+   "game": "401892555",
+   "start": "2026-10-22T23:00Z",
+   "team": "25",
+   "name": "Judd Caulfield",
+   "status": "out",
+   "athlete": "4755684",
+   "espn": {
+    "seen": "2026-10-22T22:53:15.625Z",
+    "own": "2026-10-22T22:46:00.000Z"
    }
   }
  }
