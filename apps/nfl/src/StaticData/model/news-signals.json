@@ -3,6 +3,17 @@
  "days": 2,
  "signals": [
   {
+   "team": "16",
+   "abbr": "MIN",
+   "athlete": "3042519",
+   "player": "Aaron Jones Sr",
+   "kind": "role",
+   "direction": "up",
+   "confidence": 0.5,
+   "headline": "Vikings praise Aaron Jones Sr.'s heart with Jordan Mason out",
+   "at": "2026-10-22T10:00:01.000Z"
+  },
+  {
    "team": "12",
    "abbr": "KC",
    "athlete": "4683062",
@@ -91,5 +102,5 @@
    "at": "2026-10-20T17:18:55.000Z"
   }
  ],
- "at": "2026-10-21T23:18:46.837Z"
+ "at": "2026-10-22T11:35:18.187Z"
 }
