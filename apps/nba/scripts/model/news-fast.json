@@ -1,7 +1,7 @@
 {
  "sport": "nba",
  "cursor": {
-  "rotowirenba.bsky.social": "2026-10-22T01:16:28.000Z",
+  "rotowirenba.bsky.social": "2026-10-22T01:42:49.000Z",
   "insidenbanews.bsky.social": "2026-10-22T01:06:00.565Z",
   "shamsbot.bsky.social": "2026-10-21T21:00:12.000Z"
  },
@@ -720,6 +720,32 @@
    "kind": "status",
    "confidence": 0.9,
    "text": "Stephen Curry: Cleared to play Wednesday \n\n https://www.rotowire.com/basketball/player/stephen-curry-3014"
+  },
+  {
+   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mygjn45r772s|khamanmaluach|none|starting",
+   "at": "2026-10-22T01:36:55.000Z",
+   "seen": "2026-10-22T01:52:02.530Z",
+   "handle": "rotowirenba.bsky.social",
+   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mygjn45r772s",
+   "player": "Khaman Maluach",
+   "team": null,
+   "status": "none",
+   "kind": "starting",
+   "confidence": 0.8,
+   "text": "Khaman Maluach: Starting Wednesday \n\n https://www.rotowire.com/basketball/player/khaman-maluach-6542"
+  },
+  {
+   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mygjxmvpbw2m|deanthonymelton|none|starting",
+   "at": "2026-10-22T01:42:49.000Z",
+   "seen": "2026-10-22T01:52:02.530Z",
+   "handle": "rotowirenba.bsky.social",
+   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mygjxmvpbw2m",
+   "player": "De'Anthony Melton",
+   "team": null,
+   "status": "none",
+   "kind": "starting",
+   "confidence": 0.8,
+   "text": "De'Anthony Melton: Starting Wednesday \n\n https://www.rotowire.com/basketball/player/deanthony-melton-4368"
   }
  ]
 }

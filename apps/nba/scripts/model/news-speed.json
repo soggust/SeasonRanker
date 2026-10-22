@@ -3401,6 +3401,18 @@
     "own": "2026-10-22T00:34:44.218Z",
     "why": "@insidenbanews.bsky.social: Ott: Luke Kennard (knee) ruled out Wednesday."
    }
+  },
+  "401909842|malikmonk|out": {
+   "game": "401909842",
+   "start": "2026-10-22T02:30Z",
+   "team": "23",
+   "name": "Malik Monk",
+   "status": "out",
+   "athlete": "4066262",
+   "espn": {
+    "seen": "2026-10-22T01:50:18.514Z",
+    "own": "2026-10-22T01:31:00.000Z"
+   }
   }
  }
 }
