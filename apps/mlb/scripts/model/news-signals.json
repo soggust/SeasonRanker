@@ -105,7 +105,8 @@
   "50242196": "2026-10-21",
   "50243662": "2026-10-22",
   "50251942": "2026-10-22",
-  "50252938": "2026-10-22"
+  "50252938": "2026-10-22",
+  "50252981": "2026-10-22"
  },
  "signals": [
   {
@@ -331,6 +332,36 @@
    "confidence": 0.3,
    "story": "50243662",
    "headline": "Athletics bet on youth with 31-year-old Taylor Smith to lead baseball operations",
+   "model": "claude-haiku-5-5"
+  },
+  {
+   "id": "50252981|30|33372|starting",
+   "day": "2026-10-22",
+   "at": "2026-10-22T23:02:47.000Z",
+   "team": "30",
+   "abbr": "TB",
+   "athlete": "33372",
+   "player": "Nick Martinez",
+   "kind": "starting",
+   "direction": "up",
+   "confidence": 0.9,
+   "story": "50252981",
+   "headline": "Rays opt for Nick Martinez to open World Series vs. Brewers",
+   "model": "claude-haiku-5-5"
+  },
+  {
+   "id": "50252981|30|42584|benched",
+   "day": "2026-10-22",
+   "at": "2026-10-22T23:02:47.000Z",
+   "team": "30",
+   "abbr": "TB",
+   "athlete": "42584",
+   "player": "Drew Rasmussen",
+   "kind": "benched",
+   "direction": "down",
+   "confidence": 0.9,
+   "story": "50252981",
+   "headline": "Rays opt for Nick Martinez to open World Series vs. Brewers",
    "model": "claude-haiku-5-5"
   }
  ]

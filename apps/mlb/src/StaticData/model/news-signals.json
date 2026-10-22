@@ -3,6 +3,28 @@
  "days": 2,
  "signals": [
   {
+   "team": "30",
+   "abbr": "TB",
+   "athlete": "33372",
+   "player": "Nick Martinez",
+   "kind": "starting",
+   "direction": "up",
+   "confidence": 0.9,
+   "headline": "Rays opt for Nick Martinez to open World Series vs. Brewers",
+   "at": "2026-10-22T23:02:47.000Z"
+  },
+  {
+   "team": "30",
+   "abbr": "TB",
+   "athlete": "42584",
+   "player": "Drew Rasmussen",
+   "kind": "benched",
+   "direction": "down",
+   "confidence": 0.9,
+   "headline": "Rays opt for Nick Martinez to open World Series vs. Brewers",
+   "at": "2026-10-22T23:02:47.000Z"
+  },
+  {
    "team": "11",
    "abbr": "ATH",
    "athlete": null,
@@ -36,5 +58,5 @@
    "at": "2026-10-21T19:14:46.000Z"
   }
  ],
- "at": "2026-10-22T02:11:29.789Z"
+ "at": "2026-10-22T23:24:09.344Z"
 }
