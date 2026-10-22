@@ -1,7 +1,7 @@
 {
  "sport": "nfl",
  "cursor": {
-  "adamscheftermirror.bsky.social": "2026-10-22T00:42:36.975Z",
+  "adamscheftermirror.bsky.social": "2026-10-22T02:17:36.696Z",
   "rapsheet.bsky.social": "2026-10-22T00:25:08.284Z",
   "nflnewsreposterbot.bsky.social": "2026-10-20T20:30:06.105Z",
   "insidenflnews.bsky.social": "2026-10-21T19:06:29.181Z",
@@ -2739,6 +2739,19 @@
    "kind": "status",
    "confidence": 0.6,
    "text": "Zach Charbonnet (knee) practices in full Wednesday"
+  },
+  {
+   "id": "at://did:plc:qre6zxbmr3ixhdmgsgdretb5/app.bsky.feed.post/3myglvtu2os2h|jjmccarthy|active|starting",
+   "at": "2026-10-22T02:17:36.696Z",
+   "seen": "2026-10-22T02:43:18.686Z",
+   "handle": "adamscheftermirror.bsky.social",
+   "post": "at://did:plc:qre6zxbmr3ixhdmgsgdretb5/app.bsky.feed.post/3myglvtu2os2h",
+   "player": "J.J. McCarthy",
+   "team": "NYG",
+   "status": "active",
+   "kind": "starting",
+   "confidence": 0.85,
+   "text": "More about the New York Giants turning to J.J. McCarthy as their starting quarterback for Sunday’s game against the Houston Texans, via @JordanRaanan:\n\nOriginal post"
   }
  ]
 }
