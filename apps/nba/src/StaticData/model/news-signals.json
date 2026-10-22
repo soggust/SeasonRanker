@@ -1,6 +1,18 @@
 {
  "sport": "nba",
  "days": 2,
- "signals": [],
- "at": "2026-10-21T20:02:47.369Z"
+ "signals": [
+  {
+   "team": "11",
+   "abbr": "IND",
+   "athlete": "4396993",
+   "player": "Tyrese Haliburton",
+   "kind": "return",
+   "direction": "up",
+   "confidence": 0.9,
+   "headline": "Tyrese Haliburton leads Pacers' opening-night win in emotional return from injury",
+   "at": "2026-10-22T04:56:40.000Z"
+  }
+ ],
+ "at": "2026-10-22T05:08:26.367Z"
 }

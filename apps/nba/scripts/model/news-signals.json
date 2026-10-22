@@ -93,7 +93,9 @@
   "50241679": "2026-10-21",
   "50244547": "2026-10-22",
   "50244737": "2026-10-22",
-  "50244806": "2026-10-22"
+  "50244806": "2026-10-22",
+  "50245072": "2026-10-22",
+  "50245316": "2026-10-22"
  },
  "signals": [
   {
@@ -274,6 +276,21 @@
    "confidence": 0.6,
    "story": "50220689",
    "headline": "Warriors expect Steph Curry (ankle) to play in opener vs. Lakers",
+   "model": "claude-haiku-5-5"
+  },
+  {
+   "id": "50245316|11|4396993|return",
+   "day": "2026-10-22",
+   "at": "2026-10-22T04:56:40.000Z",
+   "team": "11",
+   "abbr": "IND",
+   "athlete": "4396993",
+   "player": "Tyrese Haliburton",
+   "kind": "return",
+   "direction": "up",
+   "confidence": 0.9,
+   "story": "50245316",
+   "headline": "Tyrese Haliburton leads Pacers' opening-night win in emotional return from injury",
    "model": "claude-haiku-5-5"
   }
  ]
