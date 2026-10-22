@@ -3,6 +3,17 @@
  "days": 2,
  "signals": [
   {
+   "team": "11",
+   "abbr": "ATH",
+   "athlete": null,
+   "player": null,
+   "kind": "coaching",
+   "direction": "none",
+   "confidence": 0.3,
+   "headline": "Athletics bet on youth with 31-year-old Taylor Smith to lead baseball operations",
+   "at": "2026-10-22T01:43:42.000Z"
+  },
+  {
    "team": "19",
    "abbr": "LAD",
    "athlete": "39832",
@@ -25,5 +36,5 @@
    "at": "2026-10-21T19:14:46.000Z"
   }
  ],
- "at": "2026-10-21T22:43:21.610Z"
+ "at": "2026-10-22T02:11:29.789Z"
 }

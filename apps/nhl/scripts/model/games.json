@@ -1545,7 +1545,7 @@
 {"id":"401892547","date":"2026-10-21T01:40Z","season":2027,"type":2,"home":"124292","away":"5","homeAbbr":"SEA","awayAbbr":"DET","neutral":false,"final":true,"hs":4,"as":3,"venue":"Seattle|WA|USA","indoor":true},
 {"id":"401892548","date":"2026-10-21T02:00Z","season":2027,"type":2,"home":"22","away":"7","homeAbbr":"VAN","awayAbbr":"CAR","neutral":false,"final":true,"hs":3,"as":6,"venue":"Vancouver|BC|Canada","indoor":true},
 {"id":"401892549","date":"2026-10-21T02:45Z","season":2027,"type":2,"home":"37","away":"20","homeAbbr":"VGK","awayAbbr":"TB","neutral":false,"final":true,"hs":2,"as":6,"venue":"Las Vegas|NV|USA","indoor":true},
-{"id":"401892550","date":"2026-10-21T23:30Z","season":2027,"type":2,"home":"2","away":"15","homeAbbr":"BUF","awayAbbr":"PHI","neutral":false,"final":false,"hs":null,"as":null,"venue":"Buffalo|NY|USA","indoor":true},
+{"id":"401892550","date":"2026-10-21T23:30Z","season":2027,"type":2,"home":"2","away":"15","homeAbbr":"BUF","awayAbbr":"PHI","neutral":false,"final":true,"hs":1,"as":3,"venue":"Buffalo|NY|USA","indoor":true},
 {"id":"401892551","date":"2026-10-21T23:30Z","season":2027,"type":2,"home":"14","away":"26","homeAbbr":"OTT","awayAbbr":"FLA","neutral":false,"final":false,"hs":null,"as":null,"venue":"Ottawa|ON|Canada","indoor":true},
 {"id":"401892555","date":"2026-10-22T23:00Z","season":2027,"type":2,"home":"11","away":"25","homeAbbr":"NJ","awayAbbr":"ANA","neutral":false,"final":false,"hs":null,"as":null,"venue":"Newark|NJ|USA","indoor":true},
 {"id":"401892552","date":"2026-10-22T23:00Z","season":2027,"type":2,"home":"1","away":"27","homeAbbr":"BOS","awayAbbr":"NSH","neutral":false,"final":false,"hs":null,"as":null,"venue":"Boston|MA|USA","indoor":true},

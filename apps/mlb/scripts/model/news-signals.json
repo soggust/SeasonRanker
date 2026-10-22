@@ -98,7 +98,8 @@
   "50240270": "2026-10-21",
   "50240296": "2026-10-21",
   "50241532": "2026-10-21",
-  "50242196": "2026-10-21"
+  "50242196": "2026-10-21",
+  "50243662": "2026-10-22"
  },
  "signals": [
   {
@@ -309,6 +310,21 @@
    "confidence": 0.6,
    "story": "50242196",
    "headline": "Dodgers' Shohei Ohtani won't require surgery, expected to pitch in 2027",
+   "model": "claude-haiku-5-5"
+  },
+  {
+   "id": "50243662|11||coaching",
+   "day": "2026-10-22",
+   "at": "2026-10-22T01:43:42.000Z",
+   "team": "11",
+   "abbr": "ATH",
+   "athlete": null,
+   "player": null,
+   "kind": "coaching",
+   "direction": "none",
+   "confidence": 0.3,
+   "story": "50243662",
+   "headline": "Athletics bet on youth with 31-year-old Taylor Smith to lead baseball operations",
    "model": "claude-haiku-5-5"
   }
  ]
