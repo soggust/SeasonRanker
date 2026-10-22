@@ -1,13 +1,13 @@
 {
  "sport": "nfl",
  "cursor": {
-  "adamscheftermirror.bsky.social": "2026-10-22T17:08:12.638Z",
+  "adamscheftermirror.bsky.social": "2026-10-22T17:53:01.972Z",
   "rapsheet.bsky.social": "2026-10-22T00:25:08.284Z",
   "nflnewsreposterbot.bsky.social": "2026-10-22T13:33:43.592Z",
   "insidenflnews.bsky.social": "2026-10-22T14:47:06.364Z",
-  "nflnewsposter.bsky.social": "2026-10-22T16:53:33.320Z",
-  "rotoworld-fb.bsky.social": "2026-10-22T17:16:58.000Z",
-  "rotowirenfl.bsky.social": "2026-10-22T17:15:49.000Z"
+  "nflnewsposter.bsky.social": "2026-10-22T17:22:46.607Z",
+  "rotoworld-fb.bsky.social": "2026-10-22T17:46:16.000Z",
+  "rotowirenfl.bsky.social": "2026-10-22T17:45:38.000Z"
  },
  "claims": [
   {
@@ -2895,6 +2895,58 @@
    "kind": "status",
    "confidence": 0.9,
    "text": "Chiefs place Simmons (back) on injured reserve"
+  },
+  {
+   "id": "at://did:plc:fuqjc7x4gxvnwzksnlxwbe4x/app.bsky.feed.post/3myi6ifqf6223|tylerwarren|questionable|status",
+   "at": "2026-10-22T17:22:46.607Z",
+   "seen": "2026-10-22T18:03:17.440Z",
+   "handle": "nflnewsposter.bsky.social",
+   "post": "at://did:plc:fuqjc7x4gxvnwzksnlxwbe4x/app.bsky.feed.post/3myi6ifqf6223",
+   "player": "Tyler Warren",
+   "team": "IND",
+   "status": "questionable",
+   "kind": "status",
+   "confidence": 0.5,
+   "text": "[Boyd] Colts TE Tyler Warren (groin) and CB Sauce Gardner (calf) are NOT practicing today. twitter.com/romeovilleki..."
+  },
+  {
+   "id": "at://did:plc:fuqjc7x4gxvnwzksnlxwbe4x/app.bsky.feed.post/3myi6ifqf6223|saucegardner|questionable|status",
+   "at": "2026-10-22T17:22:46.607Z",
+   "seen": "2026-10-22T18:03:17.440Z",
+   "handle": "nflnewsposter.bsky.social",
+   "post": "at://did:plc:fuqjc7x4gxvnwzksnlxwbe4x/app.bsky.feed.post/3myi6ifqf6223",
+   "player": "Sauce Gardner",
+   "team": "IND",
+   "status": "questionable",
+   "kind": "status",
+   "confidence": 0.5,
+   "text": "[Boyd] Colts TE Tyler Warren (groin) and CB Sauce Gardner (calf) are NOT practicing today. twitter.com/romeovilleki..."
+  },
+  {
+   "id": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3myi7bqhtec2r|montgomery|out|status",
+   "at": "2026-10-22T17:36:56.000Z",
+   "seen": "2026-10-22T18:03:17.440Z",
+   "handle": "rotoworld-fb.bsky.social",
+   "post": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3myi7bqhtec2r",
+   "player": "Montgomery",
+   "team": null,
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.8,
+   "text": "Wilson: Montgomery (groin) expected to miss Week 7"
+  },
+  {
+   "id": "at://did:plc:qre6zxbmr3ixhdmgsgdretb5/app.bsky.feed.post/3myia6izmtv2u|lamarjackson|active|status",
+   "at": "2026-10-22T17:53:01.972Z",
+   "seen": "2026-10-22T18:03:17.440Z",
+   "handle": "adamscheftermirror.bsky.social",
+   "post": "at://did:plc:qre6zxbmr3ixhdmgsgdretb5/app.bsky.feed.post/3myia6izmtv2u",
+   "player": "Lamar Jackson",
+   "team": "BAL",
+   "status": "active",
+   "kind": "status",
+   "confidence": 0.45,
+   "text": "Repost by @AdamSchefter\n\nLamar Jackson moved around well during Thursday’s media viewing and didn’t favor his sprained left ankle at all. During warmups (with no defenders), Jackson made a couple nice"
   }
  ]
 }
