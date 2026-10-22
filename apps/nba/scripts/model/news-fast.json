@@ -1,7 +1,7 @@
 {
  "sport": "nba",
  "cursor": {
-  "rotowirenba.bsky.social": "2026-10-22T21:07:34.000Z",
+  "rotowirenba.bsky.social": "2026-10-22T22:03:54.000Z",
   "insidenbanews.bsky.social": "2026-10-22T14:47:23.657Z",
   "shamsbot.bsky.social": "2026-10-22T13:00:45.000Z"
  },
@@ -902,6 +902,19 @@
    "kind": "status",
    "confidence": 0.85,
    "text": "Coby White: Still sidelined with calf strain \n\n https://www.rotowire.com/basketball/player/coby-white-4801"
+  },
+  {
+   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3myio74g45n2v|tobiasharris|out|status",
+   "at": "2026-10-22T22:03:54.000Z",
+   "seen": "2026-10-22T22:24:25.424Z",
+   "handle": "rotowirenba.bsky.social",
+   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3myio74g45n2v",
+   "player": "Tobias Harris",
+   "team": null,
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.95,
+   "text": "Tobias Harris: Ruled out for Friday \n\n https://www.rotowire.com/basketball/player/tobias-harris-3211"
   }
  ]
 }
