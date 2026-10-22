@@ -4782,6 +4782,30 @@
     "seen": "2026-10-22T20:56:41.323Z",
     "own": "2026-10-22T20:48:00.000Z"
    }
+  },
+  "401873018|christianrozeboom|out": {
+   "game": "401873018",
+   "start": "2026-10-25T17:00Z",
+   "team": "27",
+   "name": "Christian Rozeboom",
+   "status": "out",
+   "athlete": "3909013",
+   "espn": {
+    "seen": "2026-10-22T21:05:58.334Z",
+    "own": "2026-10-22T20:55:00.000Z"
+   }
+  },
+  "401873016|brevinjordan|q": {
+   "game": "401873016",
+   "start": "2026-10-25T17:00Z",
+   "team": "34",
+   "name": "Brevin Jordan",
+   "status": "q",
+   "athlete": "4362504",
+   "espn": {
+    "seen": "2026-10-22T21:05:58.334Z",
+    "own": "2026-10-22T20:47:00.000Z"
+   }
   }
  }
 }
