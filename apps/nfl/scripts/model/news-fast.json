@@ -6,7 +6,7 @@
   "nflnewsreposterbot.bsky.social": "2026-10-22T13:33:43.592Z",
   "insidenflnews.bsky.social": "2026-10-22T19:28:44.831Z",
   "nflnewsposter.bsky.social": "2026-10-22T20:33:37.896Z",
-  "rotoworld-fb.bsky.social": "2026-10-22T20:49:37.000Z",
+  "rotoworld-fb.bsky.social": "2026-10-22T21:21:11.000Z",
   "rotowirenfl.bsky.social": "2026-10-22T20:56:03.000Z"
  },
  "claims": [
@@ -3402,6 +3402,19 @@
    "kind": "status",
    "confidence": 0.9,
    "text": "Travis Kelce: Stays limited in practice. \n\n https://www.rotowire.com/football/player/travis-kelce-8783"
+  },
+  {
+   "id": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3myilsqbf3i26|rasheerice|out|status",
+   "at": "2026-10-22T21:21:11.000Z",
+   "seen": "2026-10-22T21:32:15.227Z",
+   "handle": "rotoworld-fb.bsky.social",
+   "post": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3myilsqbf3i26",
+   "player": "Rashee Rice",
+   "team": "KC",
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.8,
+   "text": "Rashee Rice (hamstring) still sidelined on Thurs."
   }
  ]
 }

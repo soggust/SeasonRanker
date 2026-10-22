@@ -3628,6 +3628,11 @@
    "espn": {
     "seen": "2026-10-22T06:13:34.081Z",
     "own": "2026-10-20T20:28:00.000Z"
+   },
+   "bluesky": {
+    "seen": "2026-10-22T21:10:54.488Z",
+    "own": "2026-10-22T21:07:34.000Z",
+    "why": "@rotowirenba.bsky.social: Coby White: Still sidelined with calf strain \n\n https:"
    }
   },
   "401909843|mouhamedgueye|out": {
@@ -4328,6 +4333,347 @@
    "espn": {
     "seen": "2026-10-22T21:09:32.248Z",
     "own": "2026-10-22T20:48:00.000Z"
+   }
+  },
+  "401909093|konknueppel|out": {
+   "game": "401909093",
+   "start": "2026-10-22T23:00Z",
+   "team": "20",
+   "name": "Kon Knueppel",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-10-22T21:10:54.488Z",
+    "own": "2026-10-22T21:05:10.000Z",
+    "why": "@rotowirenba.bsky.social: Kon Knueppel: Still out with hamstring strain \n\n https"
+   }
+  },
+  "401909093|cobywhite|out": {
+   "game": "401909093",
+   "start": "2026-10-22T23:00Z",
+   "team": "20",
+   "name": "Coby White",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-10-22T21:10:54.488Z",
+    "own": "2026-10-22T21:07:34.000Z",
+    "why": "@rotowirenba.bsky.social: Coby White: Still sidelined with calf strain \n\n https:"
+   }
+  },
+  "401909094|konknueppel|out": {
+   "game": "401909094",
+   "start": "2026-10-23T01:30Z",
+   "team": "25",
+   "name": "Kon Knueppel",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-10-22T21:10:54.488Z",
+    "own": "2026-10-22T21:05:10.000Z",
+    "why": "@rotowirenba.bsky.social: Kon Knueppel: Still out with hamstring strain \n\n https"
+   }
+  },
+  "401909094|cobywhite|out": {
+   "game": "401909094",
+   "start": "2026-10-23T01:30Z",
+   "team": "25",
+   "name": "Coby White",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-10-22T21:10:54.488Z",
+    "own": "2026-10-22T21:07:34.000Z",
+    "why": "@rotowirenba.bsky.social: Coby White: Still sidelined with calf strain \n\n https:"
+   }
+  },
+  "401909848|konknueppel|out": {
+   "game": "401909848",
+   "start": "2026-10-23T20:00Z",
+   "team": "15",
+   "name": "Kon Knueppel",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-10-22T21:10:54.488Z",
+    "own": "2026-10-22T21:05:10.000Z",
+    "why": "@rotowirenba.bsky.social: Kon Knueppel: Still out with hamstring strain \n\n https"
+   }
+  },
+  "401909848|cobywhite|out": {
+   "game": "401909848",
+   "start": "2026-10-23T20:00Z",
+   "team": "15",
+   "name": "Coby White",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-10-22T21:10:54.488Z",
+    "own": "2026-10-22T21:07:34.000Z",
+    "why": "@rotowirenba.bsky.social: Coby White: Still sidelined with calf strain \n\n https:"
+   }
+  },
+  "401909095|konknueppel|out": {
+   "game": "401909095",
+   "start": "2026-10-23T23:00Z",
+   "team": "2",
+   "name": "Kon Knueppel",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-10-22T21:10:54.488Z",
+    "own": "2026-10-22T21:05:10.000Z",
+    "why": "@rotowirenba.bsky.social: Kon Knueppel: Still out with hamstring strain \n\n https"
+   }
+  },
+  "401909095|cobywhite|out": {
+   "game": "401909095",
+   "start": "2026-10-23T23:00Z",
+   "team": "2",
+   "name": "Coby White",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-10-22T21:10:54.488Z",
+    "own": "2026-10-22T21:07:34.000Z",
+    "why": "@rotowirenba.bsky.social: Coby White: Still sidelined with calf strain \n\n https:"
+   }
+  },
+  "401909843|konknueppel|out": {
+   "game": "401909843",
+   "start": "2026-10-23T23:00Z",
+   "team": "30",
+   "name": "Kon Knueppel",
+   "status": "out",
+   "athlete": "5061575",
+   "espn": {
+    "seen": "2026-10-22T21:30:39.726Z",
+    "own": "2026-10-22T21:05:00.000Z"
+   },
+   "bluesky": {
+    "seen": "2026-10-22T21:10:54.488Z",
+    "own": "2026-10-22T21:05:10.000Z",
+    "why": "@rotowirenba.bsky.social: Kon Knueppel: Still out with hamstring strain \n\n https"
+   }
+  },
+  "401909844|konknueppel|out": {
+   "game": "401909844",
+   "start": "2026-10-23T23:00Z",
+   "team": "11",
+   "name": "Kon Knueppel",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-10-22T21:10:54.488Z",
+    "own": "2026-10-22T21:05:10.000Z",
+    "why": "@rotowirenba.bsky.social: Kon Knueppel: Still out with hamstring strain \n\n https"
+   }
+  },
+  "401909844|cobywhite|out": {
+   "game": "401909844",
+   "start": "2026-10-23T23:00Z",
+   "team": "11",
+   "name": "Coby White",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-10-22T21:10:54.488Z",
+    "own": "2026-10-22T21:07:34.000Z",
+    "why": "@rotowirenba.bsky.social: Coby White: Still sidelined with calf strain \n\n https:"
+   }
+  },
+  "401909845|konknueppel|out": {
+   "game": "401909845",
+   "start": "2026-10-23T23:00Z",
+   "team": "19",
+   "name": "Kon Knueppel",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-10-22T21:10:54.488Z",
+    "own": "2026-10-22T21:05:10.000Z",
+    "why": "@rotowirenba.bsky.social: Kon Knueppel: Still out with hamstring strain \n\n https"
+   }
+  },
+  "401909845|cobywhite|out": {
+   "game": "401909845",
+   "start": "2026-10-23T23:00Z",
+   "team": "19",
+   "name": "Coby White",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-10-22T21:10:54.488Z",
+    "own": "2026-10-22T21:07:34.000Z",
+    "why": "@rotowirenba.bsky.social: Coby White: Still sidelined with calf strain \n\n https:"
+   }
+  },
+  "401909846|konknueppel|out": {
+   "game": "401909846",
+   "start": "2026-10-23T23:00Z",
+   "team": "27",
+   "name": "Kon Knueppel",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-10-22T21:10:54.488Z",
+    "own": "2026-10-22T21:05:10.000Z",
+    "why": "@rotowirenba.bsky.social: Kon Knueppel: Still out with hamstring strain \n\n https"
+   }
+  },
+  "401909846|cobywhite|out": {
+   "game": "401909846",
+   "start": "2026-10-23T23:00Z",
+   "team": "27",
+   "name": "Coby White",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-10-22T21:10:54.488Z",
+    "own": "2026-10-22T21:07:34.000Z",
+    "why": "@rotowirenba.bsky.social: Coby White: Still sidelined with calf strain \n\n https:"
+   }
+  },
+  "401909847|konknueppel|out": {
+   "game": "401909847",
+   "start": "2026-10-24T00:00Z",
+   "team": "14",
+   "name": "Kon Knueppel",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-10-22T21:10:54.488Z",
+    "own": "2026-10-22T21:05:10.000Z",
+    "why": "@rotowirenba.bsky.social: Kon Knueppel: Still out with hamstring strain \n\n https"
+   }
+  },
+  "401909847|cobywhite|out": {
+   "game": "401909847",
+   "start": "2026-10-24T00:00Z",
+   "team": "14",
+   "name": "Coby White",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-10-22T21:10:54.488Z",
+    "own": "2026-10-22T21:07:34.000Z",
+    "why": "@rotowirenba.bsky.social: Coby White: Still sidelined with calf strain \n\n https:"
+   }
+  },
+  "401909096|konknueppel|out": {
+   "game": "401909096",
+   "start": "2026-10-24T01:30Z",
+   "team": "24",
+   "name": "Kon Knueppel",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-10-22T21:10:54.488Z",
+    "own": "2026-10-22T21:05:10.000Z",
+    "why": "@rotowirenba.bsky.social: Kon Knueppel: Still out with hamstring strain \n\n https"
+   }
+  },
+  "401909096|cobywhite|out": {
+   "game": "401909096",
+   "start": "2026-10-24T01:30Z",
+   "team": "24",
+   "name": "Coby White",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-10-22T21:10:54.488Z",
+    "own": "2026-10-22T21:07:34.000Z",
+    "why": "@rotowirenba.bsky.social: Coby White: Still sidelined with calf strain \n\n https:"
+   }
+  },
+  "401909096|reedsheppard|q": {
+   "game": "401909096",
+   "start": "2026-10-24T01:30Z",
+   "team": "10",
+   "name": "Reed Sheppard",
+   "status": "q",
+   "athlete": "4711272",
+   "espn": {
+    "seen": "2026-10-22T21:30:39.726Z",
+    "own": "2026-10-22T21:09:00.000Z"
+   }
+  },
+  "401909849|konknueppel|out": {
+   "game": "401909849",
+   "start": "2026-10-24T01:30Z",
+   "team": "26",
+   "name": "Kon Knueppel",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-10-22T21:10:54.488Z",
+    "own": "2026-10-22T21:05:10.000Z",
+    "why": "@rotowirenba.bsky.social: Kon Knueppel: Still out with hamstring strain \n\n https"
+   }
+  },
+  "401909849|cobywhite|out": {
+   "game": "401909849",
+   "start": "2026-10-24T01:30Z",
+   "team": "26",
+   "name": "Coby White",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-10-22T21:10:54.488Z",
+    "own": "2026-10-22T21:07:34.000Z",
+    "why": "@rotowirenba.bsky.social: Coby White: Still sidelined with calf strain \n\n https:"
+   }
+  },
+  "401909850|konknueppel|out": {
+   "game": "401909850",
+   "start": "2026-10-24T02:00Z",
+   "team": "9",
+   "name": "Kon Knueppel",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-10-22T21:10:54.488Z",
+    "own": "2026-10-22T21:05:10.000Z",
+    "why": "@rotowirenba.bsky.social: Kon Knueppel: Still out with hamstring strain \n\n https"
+   }
+  },
+  "401909850|cobywhite|out": {
+   "game": "401909850",
+   "start": "2026-10-24T02:00Z",
+   "team": "9",
+   "name": "Coby White",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-10-22T21:10:54.488Z",
+    "own": "2026-10-22T21:07:34.000Z",
+    "why": "@rotowirenba.bsky.social: Coby White: Still sidelined with calf strain \n\n https:"
+   }
+  },
+  "401909851|konknueppel|out": {
+   "game": "401909851",
+   "start": "2026-10-24T02:00Z",
+   "team": "13",
+   "name": "Kon Knueppel",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-10-22T21:10:54.488Z",
+    "own": "2026-10-22T21:05:10.000Z",
+    "why": "@rotowirenba.bsky.social: Kon Knueppel: Still out with hamstring strain \n\n https"
+   }
+  },
+  "401909851|cobywhite|out": {
+   "game": "401909851",
+   "start": "2026-10-24T02:00Z",
+   "team": "13",
+   "name": "Coby White",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-10-22T21:10:54.488Z",
+    "own": "2026-10-22T21:07:34.000Z",
+    "why": "@rotowirenba.bsky.social: Coby White: Still sidelined with calf strain \n\n https:"
+   }
+  },
+  "401909852|konknueppel|out": {
+   "game": "401909852",
+   "start": "2026-10-24T02:00Z",
+   "team": "23",
+   "name": "Kon Knueppel",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-10-22T21:10:54.488Z",
+    "own": "2026-10-22T21:05:10.000Z",
+    "why": "@rotowirenba.bsky.social: Kon Knueppel: Still out with hamstring strain \n\n https"
+   }
+  },
+  "401909852|cobywhite|out": {
+   "game": "401909852",
+   "start": "2026-10-24T02:00Z",
+   "team": "23",
+   "name": "Coby White",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-10-22T21:10:54.488Z",
+    "own": "2026-10-22T21:07:34.000Z",
+    "why": "@rotowirenba.bsky.social: Coby White: Still sidelined with calf strain \n\n https:"
    }
   }
  }
