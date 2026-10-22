@@ -6,8 +6,8 @@
   "nflnewsreposterbot.bsky.social": "2026-10-22T13:33:43.592Z",
   "insidenflnews.bsky.social": "2026-10-22T19:28:44.831Z",
   "nflnewsposter.bsky.social": "2026-10-22T18:33:01.823Z",
-  "rotoworld-fb.bsky.social": "2026-10-22T19:25:33.000Z",
-  "rotowirenfl.bsky.social": "2026-10-22T19:23:54.000Z"
+  "rotoworld-fb.bsky.social": "2026-10-22T20:00:52.000Z",
+  "rotowirenfl.bsky.social": "2026-10-22T20:02:35.000Z"
  },
  "claims": [
   {
@@ -3090,6 +3090,45 @@
    "kind": "return",
    "confidence": 0.9,
    "text": "Zach Charbonnet (knee) activated from PUP list."
+  },
+  {
+   "id": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3myig3kmjgu2s|alvinkamara|limited|status",
+   "at": "2026-10-22T19:38:45.000Z",
+   "seen": "2026-10-22T20:02:56.040Z",
+   "handle": "rotowirenfl.bsky.social",
+   "post": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3myig3kmjgu2s",
+   "player": "Alvin Kamara",
+   "team": "NO",
+   "status": "limited",
+   "kind": "status",
+   "confidence": 0.9,
+   "text": "Alvin Kamara: Limited again Thursday \n\n https://www.rotowire.com/football/player/alvin-kamara-11732"
+  },
+  {
+   "id": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3myigwjotia22|buckyirving|limited|status",
+   "at": "2026-10-22T19:53:50.000Z",
+   "seen": "2026-10-22T20:02:56.040Z",
+   "handle": "rotowirenfl.bsky.social",
+   "post": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3myigwjotia22",
+   "player": "Bucky Irving",
+   "team": "TB",
+   "status": "limited",
+   "kind": "status",
+   "confidence": 0.9,
+   "text": "Bucky Irving: Logs limited practice Thursday \n\n https://www.rotowire.com/football/player/bucky-irving-17784"
+  },
+  {
+   "id": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3myihd3ydlg2r|emekaegbuka|out|status",
+   "at": "2026-10-22T20:00:52.000Z",
+   "seen": "2026-10-22T20:02:56.040Z",
+   "handle": "rotoworld-fb.bsky.social",
+   "post": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3myihd3ydlg2r",
+   "player": "Emeka Egbuka",
+   "team": "TB",
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.7,
+   "text": "Emeka Egbuka (concussion/foot) sits out again"
   }
  ]
 }
