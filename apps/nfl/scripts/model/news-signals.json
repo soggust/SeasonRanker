@@ -290,7 +290,9 @@
   "50242602": "2026-10-21",
   "50242627": "2026-10-21",
   "50242644": "2026-10-22",
-  "50246419": "2026-10-22"
+  "50246419": "2026-10-22",
+  "50248869": "2026-10-22",
+  "50249466": "2026-10-22"
  },
  "signals": [
   {
@@ -1191,6 +1193,21 @@
    "confidence": 0.5,
    "story": "50242272",
    "headline": "Vikings praise Aaron Jones Sr.'s heart with Jordan Mason out",
+   "model": "claude-haiku-5-5"
+  },
+  {
+   "id": "50248869|21|3929630|return",
+   "day": "2026-10-22",
+   "at": "2026-10-22T14:56:04.000Z",
+   "team": "21",
+   "abbr": "PHI",
+   "athlete": "3929630",
+   "player": "Saquon Barkley",
+   "kind": "return",
+   "direction": "up",
+   "confidence": 0.6,
+   "story": "50248869",
+   "headline": "Sources: Eagles RB Barkley (hamstring) expected to practice, play vs. Cowboys",
    "model": "claude-haiku-5-5"
   }
  ]

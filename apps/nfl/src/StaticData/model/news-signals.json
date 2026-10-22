@@ -3,6 +3,17 @@
  "days": 2,
  "signals": [
   {
+   "team": "21",
+   "abbr": "PHI",
+   "athlete": "3929630",
+   "player": "Saquon Barkley",
+   "kind": "return",
+   "direction": "up",
+   "confidence": 0.6,
+   "headline": "Sources: Eagles RB Barkley (hamstring) expected to practice, play vs. Cowboys",
+   "at": "2026-10-22T14:56:04.000Z"
+  },
+  {
    "team": "16",
    "abbr": "MIN",
    "athlete": "3042519",
@@ -102,5 +113,5 @@
    "at": "2026-10-20T17:18:55.000Z"
   }
  ],
- "at": "2026-10-22T11:35:18.187Z"
+ "at": "2026-10-22T15:32:09.445Z"
 }

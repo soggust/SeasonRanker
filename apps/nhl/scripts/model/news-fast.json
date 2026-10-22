@@ -1,10 +1,10 @@
 {
  "sport": "nhl",
  "cursor": {
-  "johnston-bot.bsky.social": "2026-10-22T02:27:59.435Z",
-  "notfriedgehnic.bsky.social": "2026-10-20T18:14:44.045Z",
-  "dailyfaceoff.bsky.social": "2026-10-22T04:27:10.000Z",
-  "dfotoronto.bsky.social": "2026-10-22T10:10:54.000Z",
+  "johnston-bot.bsky.social": "2026-10-22T14:18:40.644Z",
+  "notfriedgehnic.bsky.social": "2026-10-22T13:29:33.127Z",
+  "dailyfaceoff.bsky.social": "2026-10-22T15:30:17.000Z",
+  "dfotoronto.bsky.social": "2026-10-22T15:12:50.000Z",
   "marklazerus.bsky.social": "2026-10-21T21:06:16.755Z"
  },
  "claims": [
@@ -319,6 +319,19 @@
    "kind": "return",
    "confidence": 0.93,
    "text": "Hurricanes activate Seth Jarvis off injured reserve"
+  },
+  {
+   "id": "at://did:plc:3uus7y6h3rlrk6sbctzxm4bg/app.bsky.feed.post/3myhwju3dxy2i|sethjarvis|active|status",
+   "at": "2026-10-22T15:00:25.000Z",
+   "seen": "2026-10-22T15:32:09.445Z",
+   "handle": "dailyfaceoff.bsky.social",
+   "post": "at://did:plc:3uus7y6h3rlrk6sbctzxm4bg/app.bsky.feed.post/3myhwju3dxy2i",
+   "player": "Seth Jarvis",
+   "team": "CAR",
+   "status": "active",
+   "kind": "status",
+   "confidence": 0.95,
+   "text": "Hurricanes activate Seth Jarvis off injured reserve #nhl #nhlhockey #dailyfaceoff"
   }
  ]
 }

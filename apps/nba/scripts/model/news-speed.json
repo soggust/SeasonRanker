@@ -4025,6 +4025,54 @@
     "seen": "2026-10-22T06:13:34.081Z",
     "own": "2026-08-24T20:23:00.000Z"
    }
+  },
+  "401909843|grantwilliams|q": {
+   "game": "401909843",
+   "start": "2026-10-23T23:00Z",
+   "team": "30",
+   "name": "Grant Williams",
+   "status": "q",
+   "athlete": "4066218",
+   "espn": {
+    "seen": "2026-10-22T15:30:32.736Z",
+    "own": "2026-10-22T14:05:00.000Z"
+   }
+  },
+  "401909843|cobywhite|q": {
+   "game": "401909843",
+   "start": "2026-10-23T23:00Z",
+   "team": "30",
+   "name": "Coby White",
+   "status": "q",
+   "athlete": "4395651",
+   "espn": {
+    "seen": "2026-10-22T15:30:32.736Z",
+    "own": "2026-10-22T14:05:00.000Z"
+   }
+  },
+  "401909844|derecklively|q": {
+   "game": "401909844",
+   "start": "2026-10-23T23:00Z",
+   "team": "6",
+   "name": "Dereck Lively II",
+   "status": "q",
+   "athlete": "4683688",
+   "espn": {
+    "seen": "2026-10-22T15:30:32.736Z",
+    "own": "2026-10-22T14:06:00.000Z"
+   }
+  },
+  "401909852|brandencarlson|q": {
+   "game": "401909852",
+   "start": "2026-10-24T02:00Z",
+   "team": "22",
+   "name": "Branden Carlson",
+   "status": "q",
+   "athlete": "4592435",
+   "espn": {
+    "seen": "2026-10-22T15:30:32.736Z",
+    "own": "2026-10-22T14:08:00.000Z"
+   }
   }
  }
 }

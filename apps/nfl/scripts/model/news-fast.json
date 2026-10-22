@@ -1,13 +1,13 @@
 {
  "sport": "nfl",
  "cursor": {
-  "adamscheftermirror.bsky.social": "2026-10-22T11:42:34.603Z",
+  "adamscheftermirror.bsky.social": "2026-10-22T15:17:35.550Z",
   "rapsheet.bsky.social": "2026-10-22T00:25:08.284Z",
-  "nflnewsreposterbot.bsky.social": "2026-10-20T20:30:06.105Z",
-  "insidenflnews.bsky.social": "2026-10-21T19:06:29.181Z",
-  "nflnewsposter.bsky.social": "2026-10-22T05:01:38.401Z",
-  "rotoworld-fb.bsky.social": "2026-10-22T01:17:31.000Z",
-  "rotowirenfl.bsky.social": "2026-10-21T23:30:37.000Z"
+  "nflnewsreposterbot.bsky.social": "2026-10-22T13:33:43.592Z",
+  "insidenflnews.bsky.social": "2026-10-22T14:47:06.364Z",
+  "nflnewsposter.bsky.social": "2026-10-22T15:10:49.768Z",
+  "rotoworld-fb.bsky.social": "2026-10-22T13:52:59.000Z",
+  "rotowirenfl.bsky.social": "2026-10-22T13:45:22.000Z"
  },
  "claims": [
   {
@@ -2752,6 +2752,84 @@
    "kind": "starting",
    "confidence": 0.85,
    "text": "More about the New York Giants turning to J.J. McCarthy as their starting quarterback for Sunday’s game against the Houston Texans, via @JordanRaanan:\n\nOriginal post"
+  },
+  {
+   "id": "at://did:plc:rx22hq465sfe5g2qyyf5gzu2/app.bsky.feed.post/3myhrofn5rc2v|saquonbarkley|active|status",
+   "at": "2026-10-22T13:33:29.177Z",
+   "seen": "2026-10-22T15:32:09.445Z",
+   "handle": "nflnewsreposterbot.bsky.social",
+   "post": "at://did:plc:rx22hq465sfe5g2qyyf5gzu2/app.bsky.feed.post/3myhrofn5rc2v",
+   "player": "Saquon Barkley",
+   "team": "PHI",
+   "status": "active",
+   "kind": "status",
+   "confidence": 0.8,
+   "text": "Mike Garafolo: #Eagles RB Saquon Barkley is expected to return to practice today and is in line to play Monday against the #Cowboys, sources say. A lift for the team’s offense with a banged-up backfie"
+  },
+  {
+   "id": "at://did:plc:rx22hq465sfe5g2qyyf5gzu2/app.bsky.feed.post/3myhrotet422v|saquonbarkley|active|status",
+   "at": "2026-10-22T13:33:43.592Z",
+   "seen": "2026-10-22T15:32:09.445Z",
+   "handle": "nflnewsreposterbot.bsky.social",
+   "post": "at://did:plc:rx22hq465sfe5g2qyyf5gzu2/app.bsky.feed.post/3myhrotet422v",
+   "player": "Saquon Barkley",
+   "team": "PHI",
+   "status": "active",
+   "kind": "status",
+   "confidence": 0.8,
+   "text": "Mike Garafolo: #Eagles RB Saquon Barkley is expected to return to practice today and is in line to play Monday against the #Cowboys, sources say. A lift for the team’s offense with a banged-up backfie"
+  },
+  {
+   "id": "at://did:plc:fuqjc7x4gxvnwzksnlxwbe4x/app.bsky.feed.post/3myhsafhbj22f|saquonbarkley|active|status",
+   "at": "2026-10-22T13:43:32.969Z",
+   "seen": "2026-10-22T15:32:09.445Z",
+   "handle": "nflnewsposter.bsky.social",
+   "post": "at://did:plc:fuqjc7x4gxvnwzksnlxwbe4x/app.bsky.feed.post/3myhsafhbj22f",
+   "player": "Saquon Barkley",
+   "team": "PHI",
+   "status": "active",
+   "kind": "status",
+   "confidence": 0.8,
+   "text": "[Garafolo] Eagles RB Saquon Barkley is expected to return to practice today and is in line to play Monday against the Cowboys, sources say. A lift for the team’s offense with a banged-up backfield and"
+  },
+  {
+   "id": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3myhsrc3o7y25|saquonbarkley|limited|status",
+   "at": "2026-10-22T13:52:59.000Z",
+   "seen": "2026-10-22T15:32:09.445Z",
+   "handle": "rotoworld-fb.bsky.social",
+   "post": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3myhsrc3o7y25",
+   "player": "Saquon Barkley",
+   "team": "PHI",
+   "status": "limited",
+   "kind": "status",
+   "confidence": 0.5,
+   "text": "Barkley (hamstring) expected to return to practice"
+  },
+  {
+   "id": "at://did:plc:qre6zxbmr3ixhdmgsgdretb5/app.bsky.feed.post/3myhtciqxao2j|saquonbarkley|active|status",
+   "at": "2026-10-22T14:02:37.205Z",
+   "seen": "2026-10-22T15:32:09.445Z",
+   "handle": "adamscheftermirror.bsky.social",
+   "post": "at://did:plc:qre6zxbmr3ixhdmgsgdretb5/app.bsky.feed.post/3myhtciqxao2j",
+   "player": "Saquon Barkley",
+   "team": "PHI",
+   "status": "active",
+   "kind": "status",
+   "confidence": 0.8,
+   "text": "Repost by @AdamSchefter\n\n#Eagles RB Saquon Barkley is expected to return to practice today and is in line to play Monday against the #Cowboys, sources say. A lift for the team’s offense with a banged-"
+  },
+  {
+   "id": "at://did:plc:mbr4badgf6yu56mquzackzew/app.bsky.feed.post/3myhvs26q5s26|saquonbarkley|active|status",
+   "at": "2026-10-22T14:47:06.364Z",
+   "seen": "2026-10-22T15:32:09.445Z",
+   "handle": "insidenflnews.bsky.social",
+   "post": "at://did:plc:mbr4badgf6yu56mquzackzew/app.bsky.feed.post/3myhvs26q5s26",
+   "player": "Saquon Barkley",
+   "team": "PHI",
+   "status": "active",
+   "kind": "status",
+   "confidence": 0.7,
+   "text": "Garafolo: Saquon Barkley (hamstring) expected to return to practice Thursday and is in line to play Week 7."
   }
  ]
 }

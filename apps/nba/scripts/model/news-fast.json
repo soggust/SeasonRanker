@@ -1,9 +1,9 @@
 {
  "sport": "nba",
  "cursor": {
-  "rotowirenba.bsky.social": "2026-10-22T07:52:36.000Z",
-  "insidenbanews.bsky.social": "2026-10-22T01:06:00.565Z",
-  "shamsbot.bsky.social": "2026-10-21T21:00:12.000Z"
+  "rotowirenba.bsky.social": "2026-10-22T15:13:15.000Z",
+  "insidenbanews.bsky.social": "2026-10-22T14:47:23.657Z",
+  "shamsbot.bsky.social": "2026-10-22T13:00:45.000Z"
  },
  "claims": [
   {
@@ -746,6 +746,123 @@
    "kind": "starting",
    "confidence": 0.8,
    "text": "De'Anthony Melton: Starting Wednesday \n\n https://www.rotowire.com/basketball/player/deanthony-melton-4368"
+  },
+  {
+   "id": "at://did:plc:ykcnnf6kqnn3lasmobrczoem/app.bsky.feed.post/3myhvskohu226|jarrettallen|questionable|status",
+   "at": "2026-10-22T14:47:23.657Z",
+   "seen": "2026-10-22T15:32:09.445Z",
+   "handle": "insidenbanews.bsky.social",
+   "post": "at://did:plc:ykcnnf6kqnn3lasmobrczoem/app.bsky.feed.post/3myhvskohu226",
+   "player": "Jarrett Allen",
+   "team": "CLE",
+   "status": "questionable",
+   "kind": "status",
+   "confidence": 0.9,
+   "text": "Injuries 10/22\n\nCLE:\nJarrett Allen - Questionable\nNae'Qwan Tomlin - Out\n\nPHI:\nDean Wade - Questionable\nAriel Hukporti - Out\nDominick Barlow - Out\n\nDEN:\nSpencer Jones - Questionable\nJulian Strawther - "
+  },
+  {
+   "id": "at://did:plc:ykcnnf6kqnn3lasmobrczoem/app.bsky.feed.post/3myhvskohu226|naeqwantomlin|out|status",
+   "at": "2026-10-22T14:47:23.657Z",
+   "seen": "2026-10-22T15:32:09.445Z",
+   "handle": "insidenbanews.bsky.social",
+   "post": "at://did:plc:ykcnnf6kqnn3lasmobrczoem/app.bsky.feed.post/3myhvskohu226",
+   "player": "Nae'Qwan Tomlin",
+   "team": "CLE",
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.9,
+   "text": "Injuries 10/22\n\nCLE:\nJarrett Allen - Questionable\nNae'Qwan Tomlin - Out\n\nPHI:\nDean Wade - Questionable\nAriel Hukporti - Out\nDominick Barlow - Out\n\nDEN:\nSpencer Jones - Questionable\nJulian Strawther - "
+  },
+  {
+   "id": "at://did:plc:ykcnnf6kqnn3lasmobrczoem/app.bsky.feed.post/3myhvskohu226|deanwade|questionable|status",
+   "at": "2026-10-22T14:47:23.657Z",
+   "seen": "2026-10-22T15:32:09.445Z",
+   "handle": "insidenbanews.bsky.social",
+   "post": "at://did:plc:ykcnnf6kqnn3lasmobrczoem/app.bsky.feed.post/3myhvskohu226",
+   "player": "Dean Wade",
+   "team": "PHI",
+   "status": "questionable",
+   "kind": "status",
+   "confidence": 0.9,
+   "text": "Injuries 10/22\n\nCLE:\nJarrett Allen - Questionable\nNae'Qwan Tomlin - Out\n\nPHI:\nDean Wade - Questionable\nAriel Hukporti - Out\nDominick Barlow - Out\n\nDEN:\nSpencer Jones - Questionable\nJulian Strawther - "
+  },
+  {
+   "id": "at://did:plc:ykcnnf6kqnn3lasmobrczoem/app.bsky.feed.post/3myhvskohu226|arielhukporti|out|status",
+   "at": "2026-10-22T14:47:23.657Z",
+   "seen": "2026-10-22T15:32:09.445Z",
+   "handle": "insidenbanews.bsky.social",
+   "post": "at://did:plc:ykcnnf6kqnn3lasmobrczoem/app.bsky.feed.post/3myhvskohu226",
+   "player": "Ariel Hukporti",
+   "team": "PHI",
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.9,
+   "text": "Injuries 10/22\n\nCLE:\nJarrett Allen - Questionable\nNae'Qwan Tomlin - Out\n\nPHI:\nDean Wade - Questionable\nAriel Hukporti - Out\nDominick Barlow - Out\n\nDEN:\nSpencer Jones - Questionable\nJulian Strawther - "
+  },
+  {
+   "id": "at://did:plc:ykcnnf6kqnn3lasmobrczoem/app.bsky.feed.post/3myhvskohu226|dominickbarlow|out|status",
+   "at": "2026-10-22T14:47:23.657Z",
+   "seen": "2026-10-22T15:32:09.445Z",
+   "handle": "insidenbanews.bsky.social",
+   "post": "at://did:plc:ykcnnf6kqnn3lasmobrczoem/app.bsky.feed.post/3myhvskohu226",
+   "player": "Dominick Barlow",
+   "team": "PHI",
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.9,
+   "text": "Injuries 10/22\n\nCLE:\nJarrett Allen - Questionable\nNae'Qwan Tomlin - Out\n\nPHI:\nDean Wade - Questionable\nAriel Hukporti - Out\nDominick Barlow - Out\n\nDEN:\nSpencer Jones - Questionable\nJulian Strawther - "
+  },
+  {
+   "id": "at://did:plc:ykcnnf6kqnn3lasmobrczoem/app.bsky.feed.post/3myhvskohu226|spencerjones|questionable|status",
+   "at": "2026-10-22T14:47:23.657Z",
+   "seen": "2026-10-22T15:32:09.445Z",
+   "handle": "insidenbanews.bsky.social",
+   "post": "at://did:plc:ykcnnf6kqnn3lasmobrczoem/app.bsky.feed.post/3myhvskohu226",
+   "player": "Spencer Jones",
+   "team": "DEN",
+   "status": "questionable",
+   "kind": "status",
+   "confidence": 0.9,
+   "text": "Injuries 10/22\n\nCLE:\nJarrett Allen - Questionable\nNae'Qwan Tomlin - Out\n\nPHI:\nDean Wade - Questionable\nAriel Hukporti - Out\nDominick Barlow - Out\n\nDEN:\nSpencer Jones - Questionable\nJulian Strawther - "
+  },
+  {
+   "id": "at://did:plc:ykcnnf6kqnn3lasmobrczoem/app.bsky.feed.post/3myhvskohu226|julianstrawther|out|status",
+   "at": "2026-10-22T14:47:23.657Z",
+   "seen": "2026-10-22T15:32:09.445Z",
+   "handle": "insidenbanews.bsky.social",
+   "post": "at://did:plc:ykcnnf6kqnn3lasmobrczoem/app.bsky.feed.post/3myhvskohu226",
+   "player": "Julian Strawther",
+   "team": "DEN",
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.9,
+   "text": "Injuries 10/22\n\nCLE:\nJarrett Allen - Questionable\nNae'Qwan Tomlin - Out\n\nPHI:\nDean Wade - Questionable\nAriel Hukporti - Out\nDominick Barlow - Out\n\nDEN:\nSpencer Jones - Questionable\nJulian Strawther - "
+  },
+  {
+   "id": "at://did:plc:ykcnnf6kqnn3lasmobrczoem/app.bsky.feed.post/3myhvskohu226|nikolatopic|out|status",
+   "at": "2026-10-22T14:47:23.657Z",
+   "seen": "2026-10-22T15:32:09.445Z",
+   "handle": "insidenbanews.bsky.social",
+   "post": "at://did:plc:ykcnnf6kqnn3lasmobrczoem/app.bsky.feed.post/3myhvskohu226",
+   "player": "Nikola Topic",
+   "team": "OKC",
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.9,
+   "text": "Injuries 10/22\n\nCLE:\nJarrett Allen - Questionable\nNae'Qwan Tomlin - Out\n\nPHI:\nDean Wade - Questionable\nAriel Hukporti - Out\nDominick Barlow - Out\n\nDEN:\nSpencer Jones - Questionable\nJulian Strawther - "
+  },
+  {
+   "id": "at://did:plc:ykcnnf6kqnn3lasmobrczoem/app.bsky.feed.post/3myhvskohu226|thomassorber|out|status",
+   "at": "2026-10-22T14:47:23.657Z",
+   "seen": "2026-10-22T15:32:09.445Z",
+   "handle": "insidenbanews.bsky.social",
+   "post": "at://did:plc:ykcnnf6kqnn3lasmobrczoem/app.bsky.feed.post/3myhvskohu226",
+   "player": "Thomas Sorber",
+   "team": "OKC",
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.9,
+   "text": "Injuries 10/22\n\nCLE:\nJarrett Allen - Questionable\nNae'Qwan Tomlin - Out\n\nPHI:\nDean Wade - Questionable\nAriel Hukporti - Out\nDominick Barlow - Out\n\nDEN:\nSpencer Jones - Questionable\nJulian Strawther - "
   }
  ]
 }
