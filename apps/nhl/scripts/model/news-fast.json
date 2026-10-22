@@ -3,8 +3,8 @@
  "cursor": {
   "johnston-bot.bsky.social": "2026-10-22T15:34:10.875Z",
   "notfriedgehnic.bsky.social": "2026-10-22T18:09:57.172Z",
-  "dailyfaceoff.bsky.social": "2026-10-22T18:39:39.000Z",
-  "dfotoronto.bsky.social": "2026-10-22T18:21:51.000Z",
+  "dailyfaceoff.bsky.social": "2026-10-22T19:03:11.000Z",
+  "dfotoronto.bsky.social": "2026-10-22T18:51:31.000Z",
   "marklazerus.bsky.social": "2026-10-22T17:50:38.275Z"
  },
  "claims": [
@@ -371,6 +371,19 @@
    "kind": "status",
    "confidence": 0.9,
    "text": "Senators place Linus Ullmark on injured reserve"
+  },
+  {
+   "id": "at://did:plc:3uus7y6h3rlrk6sbctzxm4bg/app.bsky.feed.post/3myie26hr262f|jaredspurgeon|active|return",
+   "at": "2026-10-22T19:02:11.000Z",
+   "seen": "2026-10-22T19:10:27.369Z",
+   "handle": "dailyfaceoff.bsky.social",
+   "post": "at://did:plc:3uus7y6h3rlrk6sbctzxm4bg/app.bsky.feed.post/3myie26hr262f",
+   "player": "Jared Spurgeon",
+   "team": "MIN",
+   "status": "active",
+   "kind": "return",
+   "confidence": 0.95,
+   "text": "Wild’s Jared Spurgeon returns after four-game absence"
   }
  ]
 }
