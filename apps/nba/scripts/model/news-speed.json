@@ -3347,6 +3347,59 @@
    "espn": {
     "seen": "2026-10-22T01:02:42.318Z",
     "own": "2026-10-22T00:49:00.000Z"
+   },
+   "bluesky": {
+    "seen": "2026-10-22T01:04:07.991Z",
+    "own": "2026-10-22T00:34:44.218Z",
+    "why": "@insidenbanews.bsky.social: Ott: Luke Kennard (knee) ruled out Wednesday."
+   }
+  },
+  "401909092|lukekennard|out": {
+   "game": "401909092",
+   "start": "2026-10-22T02:00Z",
+   "team": "13",
+   "name": "Luke Kennard",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-10-22T01:04:07.991Z",
+    "own": "2026-10-22T00:34:44.218Z",
+    "why": "@insidenbanews.bsky.social: Ott: Luke Kennard (knee) ruled out Wednesday."
+   }
+  },
+  "401909842|lukekennard|out": {
+   "game": "401909842",
+   "start": "2026-10-22T02:30Z",
+   "team": "12",
+   "name": "Luke Kennard",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-10-22T01:04:07.991Z",
+    "own": "2026-10-22T00:34:44.218Z",
+    "why": "@insidenbanews.bsky.social: Ott: Luke Kennard (knee) ruled out Wednesday."
+   }
+  },
+  "401909093|lukekennard|out": {
+   "game": "401909093",
+   "start": "2026-10-22T23:00Z",
+   "team": "20",
+   "name": "Luke Kennard",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-10-22T01:04:07.991Z",
+    "own": "2026-10-22T00:34:44.218Z",
+    "why": "@insidenbanews.bsky.social: Ott: Luke Kennard (knee) ruled out Wednesday."
+   }
+  },
+  "401909094|lukekennard|out": {
+   "game": "401909094",
+   "start": "2026-10-23T01:30Z",
+   "team": "25",
+   "name": "Luke Kennard",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-10-22T01:04:07.991Z",
+    "own": "2026-10-22T00:34:44.218Z",
+    "why": "@insidenbanews.bsky.social: Ott: Luke Kennard (knee) ruled out Wednesday."
    }
   }
  }

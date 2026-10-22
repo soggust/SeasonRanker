@@ -1,8 +1,8 @@
 {
  "sport": "nba",
  "cursor": {
-  "rotowirenba.bsky.social": "2026-10-21T23:40:33.000Z",
-  "insidenbanews.bsky.social": "2026-10-22T00:34:44.218Z",
+  "rotowirenba.bsky.social": "2026-10-22T01:16:28.000Z",
+  "insidenbanews.bsky.social": "2026-10-22T01:06:00.565Z",
   "shamsbot.bsky.social": "2026-10-21T21:00:12.000Z"
  },
  "claims": [
@@ -707,6 +707,19 @@
    "kind": "status",
    "confidence": 0.9,
    "text": "Ott: Luke Kennard (knee) ruled out Wednesday."
+  },
+  {
+   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3myghw4qojm2l|stephencurry|active|status",
+   "at": "2026-10-22T01:06:11.000Z",
+   "seen": "2026-10-22T01:24:17.306Z",
+   "handle": "rotowirenba.bsky.social",
+   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3myghw4qojm2l",
+   "player": "Stephen Curry",
+   "team": "GS",
+   "status": "active",
+   "kind": "status",
+   "confidence": 0.9,
+   "text": "Stephen Curry: Cleared to play Wednesday \n\n https://www.rotowire.com/basketball/player/stephen-curry-3014"
   }
  ]
 }

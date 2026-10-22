@@ -6,7 +6,7 @@
   "nflnewsreposterbot.bsky.social": "2026-10-20T20:30:06.105Z",
   "insidenflnews.bsky.social": "2026-10-21T19:06:29.181Z",
   "nflnewsposter.bsky.social": "2026-10-22T00:28:57.103Z",
-  "rotoworld-fb.bsky.social": "2026-10-21T23:57:52.000Z",
+  "rotoworld-fb.bsky.social": "2026-10-22T01:17:31.000Z",
   "rotowirenfl.bsky.social": "2026-10-21T23:30:37.000Z"
  },
  "claims": [
@@ -2726,6 +2726,19 @@
    "kind": "starting",
    "confidence": 0.8,
    "text": "JJ McCarthy is the new Giants starter."
+  },
+  {
+   "id": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3mygikfpqmr2t|zachcharbonnet|active|status",
+   "at": "2026-10-22T01:17:31.000Z",
+   "seen": "2026-10-22T01:24:17.306Z",
+   "handle": "rotoworld-fb.bsky.social",
+   "post": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3mygikfpqmr2t",
+   "player": "Zach Charbonnet",
+   "team": null,
+   "status": "active",
+   "kind": "status",
+   "confidence": 0.6,
+   "text": "Zach Charbonnet (knee) practices in full Wednesday"
   }
  ]
 }
