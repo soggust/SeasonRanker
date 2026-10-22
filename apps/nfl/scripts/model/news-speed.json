@@ -5027,6 +5027,78 @@
     "seen": "2026-10-22T23:08:50.646Z",
     "own": "2026-10-22T19:37:00.000Z"
    }
+  },
+  "401873010|dallasgoedert|q": {
+   "game": "401873010",
+   "start": "2026-10-23T00:15Z",
+   "team": "3",
+   "name": "Dallas Goedert",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-10-22T23:24:09.344Z",
+    "own": "2026-10-22T23:20:56.000Z",
+    "why": "@rotowirenfl.bsky.social: Dallas Goedert: Misses practice Thursday \n\n https://ww"
+   }
+  },
+  "401873014|anthonygould|q": {
+   "game": "401873014",
+   "start": "2026-10-25T17:00Z",
+   "team": "11",
+   "name": "Anthony Gould",
+   "status": "q",
+   "athlete": "4429684",
+   "espn": {
+    "seen": "2026-10-22T23:37:42.514Z",
+    "own": "2026-10-22T23:26:00.000Z"
+   }
+  },
+  "401873019|dariusrobinson|q": {
+   "game": "401873019",
+   "start": "2026-10-25T20:05Z",
+   "team": "22",
+   "name": "Darius Robinson",
+   "status": "q",
+   "athlete": "4569480",
+   "espn": {
+    "seen": "2026-10-22T23:37:42.514Z",
+    "own": "2026-10-22T23:26:00.000Z"
+   }
+  },
+  "401873019|jongaines|q": {
+   "game": "401873019",
+   "start": "2026-10-25T20:05Z",
+   "team": "22",
+   "name": "Jon Gaines II",
+   "status": "q",
+   "athlete": "4367199",
+   "espn": {
+    "seen": "2026-10-22T23:37:42.514Z",
+    "own": "2026-10-22T23:26:00.000Z"
+   }
+  },
+  "401873022|uchennanwosu|q": {
+   "game": "401873022",
+   "start": "2026-10-26T00:20Z",
+   "team": "26",
+   "name": "Uchenna Nwosu",
+   "status": "q",
+   "athlete": "3120358",
+   "espn": {
+    "seen": "2026-10-22T23:37:42.514Z",
+    "own": "2026-10-22T23:22:00.000Z"
+   }
+  },
+  "401873022|demarcuslawrence|q": {
+   "game": "401873022",
+   "start": "2026-10-26T00:20Z",
+   "team": "26",
+   "name": "DeMarcus Lawrence",
+   "status": "q",
+   "athlete": "16802",
+   "espn": {
+    "seen": "2026-10-22T23:37:42.514Z",
+    "own": "2026-10-22T23:22:00.000Z"
+   }
   }
  }
 }
