@@ -4675,6 +4675,30 @@
     "own": "2026-10-22T21:07:34.000Z",
     "why": "@rotowirenba.bsky.social: Coby White: Still sidelined with calf strain \n\n https:"
    }
+  },
+  "401909096|keldonjohnson|q": {
+   "game": "401909096",
+   "start": "2026-10-24T01:30Z",
+   "team": "24",
+   "name": "Keldon Johnson",
+   "status": "q",
+   "athlete": "4395723",
+   "espn": {
+    "seen": "2026-10-22T22:13:44.871Z",
+    "own": "2026-10-22T22:05:00.000Z"
+   }
+  },
+  "401909096|deaaronfox|q": {
+   "game": "401909096",
+   "start": "2026-10-24T01:30Z",
+   "team": "24",
+   "name": "De'Aaron Fox",
+   "status": "q",
+   "athlete": "4066259",
+   "espn": {
+    "seen": "2026-10-22T22:13:44.871Z",
+    "own": "2026-10-22T22:01:00.000Z"
+   }
   }
  }
 }
