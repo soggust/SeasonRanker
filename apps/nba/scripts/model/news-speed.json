@@ -3413,6 +3413,78 @@
     "seen": "2026-10-22T01:50:18.514Z",
     "own": "2026-10-22T01:31:00.000Z"
    }
+  },
+  "401909845|jonathanisaac|q": {
+   "game": "401909845",
+   "start": "2026-10-23T23:00Z",
+   "team": "19",
+   "name": "Jonathan Isaac",
+   "status": "q",
+   "athlete": "4065654",
+   "espn": {
+    "seen": "2026-10-22T04:13:21.846Z",
+    "own": "2026-10-22T03:38:00.000Z"
+   }
+  },
+  "401909845|anthonyblack|q": {
+   "game": "401909845",
+   "start": "2026-10-23T23:00Z",
+   "team": "19",
+   "name": "Anthony Black",
+   "status": "q",
+   "athlete": "4712849",
+   "espn": {
+    "seen": "2026-10-22T04:13:21.846Z",
+    "own": "2026-10-22T03:37:00.000Z"
+   }
+  },
+  "401909845|noahpenda|out": {
+   "game": "401909845",
+   "start": "2026-10-23T23:00Z",
+   "team": "19",
+   "name": "Noah Penda",
+   "status": "out",
+   "athlete": "5214637",
+   "espn": {
+    "seen": "2026-10-22T04:13:21.846Z",
+    "own": "2026-10-17T22:19:00.000Z"
+   }
+  },
+  "401909845|izaiyahnelson|out": {
+   "game": "401909845",
+   "start": "2026-10-23T23:00Z",
+   "team": "19",
+   "name": "Izaiyah Nelson",
+   "status": "out",
+   "athlete": "5107251",
+   "espn": {
+    "seen": "2026-10-22T04:13:21.846Z",
+    "own": "2026-09-28T21:33:00.000Z"
+   }
+  },
+  "401909845|dontedivincenzo|out": {
+   "game": "401909845",
+   "start": "2026-10-23T23:00Z",
+   "team": "16",
+   "name": "Donte DiVincenzo",
+   "status": "out",
+   "athlete": "3934673",
+   "espn": {
+    "seen": "2026-10-22T04:13:21.846Z",
+    "own": "2026-10-05T20:53:00.000Z"
+   }
+  },
+  "401909847|taureanprince|q": {
+   "game": "401909847",
+   "start": "2026-10-24T00:00Z",
+   "team": "8",
+   "name": "Taurean Prince",
+   "status": "q",
+   "athlete": "2990962",
+   "espn": {
+    "seen": "2026-10-22T04:13:21.846Z",
+    "own": "2026-10-21T14:05:00.000Z"
+   }
   }
  }
 }
