@@ -1,11 +1,11 @@
 {
  "sport": "nfl",
  "cursor": {
-  "adamscheftermirror.bsky.social": "2026-10-21T22:42:31.877Z",
-  "rapsheet.bsky.social": "2026-10-21T18:45:29.066Z",
+  "adamscheftermirror.bsky.social": "2026-10-22T00:42:36.975Z",
+  "rapsheet.bsky.social": "2026-10-22T00:25:08.284Z",
   "nflnewsreposterbot.bsky.social": "2026-10-20T20:30:06.105Z",
   "insidenflnews.bsky.social": "2026-10-21T19:06:29.181Z",
-  "nflnewsposter.bsky.social": "2026-10-21T23:03:20.418Z",
+  "nflnewsposter.bsky.social": "2026-10-22T00:28:57.103Z",
   "rotoworld-fb.bsky.social": "2026-10-21T23:57:52.000Z",
   "rotowirenfl.bsky.social": "2026-10-21T23:30:37.000Z"
  },
@@ -2713,6 +2713,19 @@
    "kind": "status",
    "confidence": 0.85,
    "text": "Brock Bowers (hamstring/calf) limited Wednesday"
+  },
+  {
+   "id": "at://did:plc:hlvr2omhnmvdmfnvmcuhyevz/app.bsky.feed.post/3mygfmpycks2a|jjmccarthy|none|starting",
+   "at": "2026-10-22T00:25:08.284Z",
+   "seen": "2026-10-22T01:04:07.991Z",
+   "handle": "rapsheet.bsky.social",
+   "post": "at://did:plc:hlvr2omhnmvdmfnvmcuhyevz/app.bsky.feed.post/3mygfmpycks2a",
+   "player": "JJ McCarthy",
+   "team": "NYG",
+   "status": "none",
+   "kind": "starting",
+   "confidence": 0.8,
+   "text": "JJ McCarthy is the new Giants starter."
   }
  ]
 }

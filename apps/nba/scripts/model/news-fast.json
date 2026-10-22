@@ -2,7 +2,7 @@
  "sport": "nba",
  "cursor": {
   "rotowirenba.bsky.social": "2026-10-21T23:40:33.000Z",
-  "insidenbanews.bsky.social": "2026-10-22T00:03:01.603Z",
+  "insidenbanews.bsky.social": "2026-10-22T00:34:44.218Z",
   "shamsbot.bsky.social": "2026-10-21T21:00:12.000Z"
  },
  "claims": [
@@ -694,6 +694,19 @@
    "kind": "starting",
    "confidence": 0.85,
    "text": "Jeremiah Fears: Starting regular-season opener \n\n https://www.rotowire.com/basketball/player/jeremiah-fears-6546"
+  },
+  {
+   "id": "at://did:plc:ykcnnf6kqnn3lasmobrczoem/app.bsky.feed.post/3mygg5vaf522z|lukekennard|out|status",
+   "at": "2026-10-22T00:34:44.218Z",
+   "seen": "2026-10-22T01:04:07.991Z",
+   "handle": "insidenbanews.bsky.social",
+   "post": "at://did:plc:ykcnnf6kqnn3lasmobrczoem/app.bsky.feed.post/3mygg5vaf522z",
+   "player": "Luke Kennard",
+   "team": null,
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.9,
+   "text": "Ott: Luke Kennard (knee) ruled out Wednesday."
   }
  ]
 }
