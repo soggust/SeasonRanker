@@ -4193,6 +4193,78 @@
     "seen": "2026-10-21T23:37:42.966Z",
     "own": "2026-10-21T23:34:00.000Z"
    }
+  },
+  "401873017|jadendugger|q": {
+   "game": "401873017",
+   "start": "2026-10-25T17:00Z",
+   "team": "25",
+   "name": "Jaden Dugger",
+   "status": "q",
+   "athlete": "5086161",
+   "espn": {
+    "seen": "2026-10-22T00:00:43.304Z",
+    "own": "2026-10-21T01:37:00.000Z"
+   }
+  },
+  "401873019|garrettwilliams|q": {
+   "game": "401873019",
+   "start": "2026-10-25T20:05Z",
+   "team": "22",
+   "name": "Garrett Williams",
+   "status": "q",
+   "athlete": "4568506",
+   "espn": {
+    "seen": "2026-10-22T00:00:43.304Z",
+    "own": "2026-10-21T23:48:00.000Z"
+   }
+  },
+  "401873019|jedrickwills|q": {
+   "game": "401873019",
+   "start": "2026-10-25T20:05Z",
+   "team": "22",
+   "name": "Jedrick Wills Jr.",
+   "status": "q",
+   "athlete": "4241482",
+   "espn": {
+    "seen": "2026-10-22T00:00:43.304Z",
+    "own": "2026-10-21T23:48:00.000Z"
+   }
+  },
+  "401873019|maxmelton|q": {
+   "game": "401873019",
+   "start": "2026-10-25T20:05Z",
+   "team": "22",
+   "name": "Max Melton",
+   "status": "q",
+   "athlete": "4698113",
+   "espn": {
+    "seen": "2026-10-22T00:00:43.304Z",
+    "own": "2026-10-21T23:48:00.000Z"
+   }
+  },
+  "401873019|walternolen|q": {
+   "game": "401873019",
+   "start": "2026-10-25T20:05Z",
+   "team": "22",
+   "name": "Walter Nolen III",
+   "status": "q",
+   "athlete": "4685503",
+   "espn": {
+    "seen": "2026-10-22T00:00:43.304Z",
+    "own": "2026-10-21T23:47:00.000Z"
+   }
+  },
+  "401873019|buddabaker|q": {
+   "game": "401873019",
+   "start": "2026-10-25T20:05Z",
+   "team": "22",
+   "name": "Budda Baker",
+   "status": "q",
+   "athlete": "3127287",
+   "espn": {
+    "seen": "2026-10-22T00:00:43.304Z",
+    "own": "2026-10-21T23:47:00.000Z"
+   }
   }
  }
 }

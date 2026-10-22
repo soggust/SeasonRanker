@@ -6,7 +6,7 @@
   "nflnewsreposterbot.bsky.social": "2026-10-20T20:30:06.105Z",
   "insidenflnews.bsky.social": "2026-10-21T19:06:29.181Z",
   "nflnewsposter.bsky.social": "2026-10-21T23:03:20.418Z",
-  "rotoworld-fb.bsky.social": "2026-10-21T23:35:56.000Z",
+  "rotoworld-fb.bsky.social": "2026-10-21T23:57:52.000Z",
   "rotowirenfl.bsky.social": "2026-10-21T23:30:37.000Z"
  },
  "claims": [
@@ -2674,6 +2674,45 @@
    "kind": "status",
    "confidence": 0.4,
    "text": "Jeremiyah Love (ankle) DNP Wednesday"
+  },
+  {
+   "id": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3mygdel5sja2x|christiankirk|active|status",
+   "at": "2026-10-21T23:44:47.000Z",
+   "seen": "2026-10-22T00:03:46.483Z",
+   "handle": "rotoworld-fb.bsky.social",
+   "post": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3mygdel5sja2x",
+   "player": "Christian Kirk",
+   "team": null,
+   "status": "active",
+   "kind": "status",
+   "confidence": 0.85,
+   "text": "Christian Kirk (calf) listed as full on Wednesday"
+  },
+  {
+   "id": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3myge3wm6cp2x|mikewashington|limited|status",
+   "at": "2026-10-21T23:57:50.000Z",
+   "seen": "2026-10-22T00:03:46.483Z",
+   "handle": "rotoworld-fb.bsky.social",
+   "post": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3myge3wm6cp2x",
+   "player": "Mike Washington",
+   "team": null,
+   "status": "limited",
+   "kind": "status",
+   "confidence": 0.85,
+   "text": "Mike Washington (foot/back) limited Wednesday"
+  },
+  {
+   "id": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3myge3y52r72x|brockbowers|limited|status",
+   "at": "2026-10-21T23:57:52.000Z",
+   "seen": "2026-10-22T00:03:46.483Z",
+   "handle": "rotoworld-fb.bsky.social",
+   "post": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3myge3y52r72x",
+   "player": "Brock Bowers",
+   "team": null,
+   "status": "limited",
+   "kind": "status",
+   "confidence": 0.85,
+   "text": "Brock Bowers (hamstring/calf) limited Wednesday"
   }
  ]
 }
