@@ -3,6 +3,17 @@
  "days": 2,
  "signals": [
   {
+   "team": "20",
+   "abbr": "NYJ",
+   "athlete": "4597500",
+   "player": "Adonai Mitchell",
+   "kind": "return",
+   "direction": "up",
+   "confidence": 0.9,
+   "headline": "Jets WR Adonai Mitchell to play, RB Breece Hall questionable vs. Dolphins",
+   "at": "2026-10-23T15:56:55.000Z"
+  },
+  {
    "team": "27",
    "abbr": "TB",
    "athlete": "3052587",
@@ -100,18 +111,7 @@
    "confidence": 0.5,
    "headline": "Raheem Morris is back in Atlanta -- and he's bringing his surging 49ers defense",
    "at": "2026-10-21T19:03:26.000Z"
-  },
-  {
-   "team": "19",
-   "abbr": "NYG",
-   "athlete": "4433970",
-   "player": "JJ McCarthy",
-   "kind": "starting",
-   "direction": "up",
-   "confidence": 0.6,
-   "headline": "Source: Giants turning to J.J. McCarthy as QB1 this week against Texans",
-   "at": "2026-10-21T16:03:44.000Z"
   }
  ],
- "at": "2026-10-22T21:10:54.488Z"
+ "at": "2026-10-23T16:11:28.722Z"
 }

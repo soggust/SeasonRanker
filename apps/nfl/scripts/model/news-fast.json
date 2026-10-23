@@ -1,13 +1,13 @@
 {
  "sport": "nfl",
  "cursor": {
-  "adamscheftermirror.bsky.social": "2026-10-23T13:04:08.847Z",
+  "adamscheftermirror.bsky.social": "2026-10-23T15:52:53.686Z",
   "rapsheet.bsky.social": "2026-10-22T22:13:51.186Z",
   "nflnewsreposterbot.bsky.social": "2026-10-22T13:33:43.592Z",
   "insidenflnews.bsky.social": "2026-10-23T15:47:42.173Z",
-  "nflnewsposter.bsky.social": "2026-10-23T15:31:50.142Z",
-  "rotoworld-fb.bsky.social": "2026-10-23T15:39:38.000Z",
-  "rotowirenfl.bsky.social": "2026-10-23T15:19:30.000Z"
+  "nflnewsposter.bsky.social": "2026-10-23T15:49:24.652Z",
+  "rotoworld-fb.bsky.social": "2026-10-23T16:01:41.000Z",
+  "rotowirenfl.bsky.social": "2026-10-23T16:09:10.000Z"
  },
  "claims": [
   {
@@ -3922,6 +3922,58 @@
    "kind": "status",
    "confidence": 0.95,
    "text": "Texans RB David Montgomery (groin) won't play in Week 7, per Aaron Wilson."
+  },
+  {
+   "id": "at://did:plc:fuqjc7x4gxvnwzksnlxwbe4x/app.bsky.feed.post/3mykjqeqxzs2b|zairefranklin|out|status",
+   "at": "2026-10-23T15:49:24.652Z",
+   "seen": "2026-10-23T16:11:28.722Z",
+   "handle": "nflnewsposter.bsky.social",
+   "post": "at://did:plc:fuqjc7x4gxvnwzksnlxwbe4x/app.bsky.feed.post/3mykjqeqxzs2b",
+   "player": "Zaire Franklin",
+   "team": "GB",
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.95,
+   "text": "[Schneidman] Zaire Franklin is OUT for Sunday after getting a knee to the shin in practice yesterday, per Matt LaFleur. twitter.com/mattschneidm..."
+  },
+  {
+   "id": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3mykjueq4ao2f|davidmontgomery|out|status",
+   "at": "2026-10-23T15:51:38.000Z",
+   "seen": "2026-10-23T16:11:28.722Z",
+   "handle": "rotowirenfl.bsky.social",
+   "post": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3mykjueq4ao2f",
+   "player": "David Montgomery",
+   "team": null,
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.9,
+   "text": "David Montgomery: Will miss Week 7 \n\n https://www.rotowire.com/football/player/david-montgomery-13556"
+  },
+  {
+   "id": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3mykjwt5vi326|davidmontgomery|out|status",
+   "at": "2026-10-23T15:53:01.000Z",
+   "seen": "2026-10-23T16:11:28.722Z",
+   "handle": "rotoworld-fb.bsky.social",
+   "post": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3mykjwt5vi326",
+   "player": "David Montgomery",
+   "team": null,
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.9,
+   "text": "Montgomery (groin) won't play vs. Giants"
+  },
+  {
+   "id": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3mykktpe5pa22|tylerwarren|questionable|status",
+   "at": "2026-10-23T16:09:10.000Z",
+   "seen": "2026-10-23T16:11:28.722Z",
+   "handle": "rotowirenfl.bsky.social",
+   "post": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3mykktpe5pa22",
+   "player": "Tyler Warren",
+   "team": "IND",
+   "status": "questionable",
+   "kind": "status",
+   "confidence": 0.3,
+   "text": "Tyler Warren: Remains out of practice Friday \n\n https://www.rotowire.com/football/player/tyler-warren-18534"
   }
  ]
 }

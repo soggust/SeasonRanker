@@ -4786,6 +4786,138 @@
     "seen": "2026-10-23T15:47:13.766Z",
     "own": "2026-09-29T16:21:00.000Z"
    }
+  },
+  "401892566|jeffmalott|q": {
+   "game": "401892566",
+   "start": "2026-10-24T17:00Z",
+   "team": "25",
+   "name": "Jeff Malott",
+   "status": "q",
+   "athlete": "4895214",
+   "espn": {
+    "seen": "2026-10-23T16:10:09.333Z",
+    "own": "2026-10-23T15:50:00.000Z"
+   }
+  },
+  "401892566|pavelmintyukov|q": {
+   "game": "401892566",
+   "start": "2026-10-24T17:00Z",
+   "team": "25",
+   "name": "Pavel Mintyukov",
+   "status": "q",
+   "athlete": "5080154",
+   "espn": {
+    "seen": "2026-10-23T16:10:09.333Z",
+    "own": "2026-10-23T15:50:00.000Z"
+   }
+  },
+  "401892570|evgenimalkin|q": {
+   "game": "401892570",
+   "start": "2026-10-24T23:00Z",
+   "team": "16",
+   "name": "Evgeni Malkin",
+   "status": "q",
+   "athlete": "3124",
+   "espn": {
+    "seen": "2026-10-23T16:10:09.333Z",
+    "own": "2026-10-23T15:55:00.000Z"
+   }
+  },
+  "401892570|samuelgirard|q": {
+   "game": "401892570",
+   "start": "2026-10-24T23:00Z",
+   "team": "16",
+   "name": "Samuel Girard",
+   "status": "q",
+   "athlete": "4063401",
+   "espn": {
+    "seen": "2026-10-23T16:10:09.333Z",
+    "own": "2026-10-23T15:50:00.000Z"
+   }
+  },
+  "401892570|egorchinakhov|q": {
+   "game": "401892570",
+   "start": "2026-10-24T23:00Z",
+   "team": "16",
+   "name": "Egor Chinakhov",
+   "status": "q",
+   "athlete": "4697404",
+   "espn": {
+    "seen": "2026-10-23T16:10:09.333Z",
+    "own": "2026-10-23T15:50:00.000Z"
+   }
+  },
+  "401892572|mitchmarner|q": {
+   "game": "401892572",
+   "start": "2026-10-24T23:00Z",
+   "team": "37",
+   "name": "Mitch Marner",
+   "status": "q",
+   "athlete": "3899937",
+   "espn": {
+    "seen": "2026-10-23T16:10:09.333Z",
+    "own": "2026-10-23T15:50:00.000Z"
+   }
+  },
+  "401892573|markjankowski|q": {
+   "game": "401892573",
+   "start": "2026-10-24T23:00Z",
+   "team": "7",
+   "name": "Mark Jankowski",
+   "status": "q",
+   "athlete": "2976849",
+   "espn": {
+    "seen": "2026-10-23T16:10:09.333Z",
+    "own": "2026-10-23T15:50:00.000Z"
+   }
+  },
+  "401892575|johnmarino|q": {
+   "game": "401892575",
+   "start": "2026-10-25T01:00Z",
+   "team": "129764",
+   "name": "John Marino",
+   "status": "q",
+   "athlete": "3941974",
+   "espn": {
+    "seen": "2026-10-23T16:10:09.333Z",
+    "own": "2026-10-23T15:50:00.000Z"
+   }
+  },
+  "401892576|mikaelbacklund|q": {
+   "game": "401892576",
+   "start": "2026-10-25T02:00Z",
+   "team": "3",
+   "name": "Mikael Backlund",
+   "status": "q",
+   "athlete": "3797",
+   "espn": {
+    "seen": "2026-10-23T16:10:09.333Z",
+    "own": "2026-10-23T15:50:00.000Z"
+   }
+  },
+  "401892576|daniiltarasov|q": {
+   "game": "401892576",
+   "start": "2026-10-25T02:00Z",
+   "team": "5",
+   "name": "Daniil Tarasov",
+   "status": "q",
+   "athlete": "4587994",
+   "espn": {
+    "seen": "2026-10-23T16:10:09.333Z",
+    "own": "2026-10-23T15:50:00.000Z"
+   }
+  },
+  "401892577|maximshabanov|q": {
+   "game": "401892577",
+   "start": "2026-10-25T02:00Z",
+   "team": "30",
+   "name": "Maxim Shabanov",
+   "status": "q",
+   "athlete": "5302535",
+   "espn": {
+    "seen": "2026-10-23T16:10:09.333Z",
+    "own": "2026-10-23T15:50:00.000Z"
+   }
   }
  }
 }

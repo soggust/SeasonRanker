@@ -313,7 +313,8 @@
   "50255748": "2026-10-23",
   "50256507": "2026-10-23",
   "50256842": "2026-10-23",
-  "50257962": "2026-10-23"
+  "50257962": "2026-10-23",
+  "50258482": "2026-10-23"
  },
  "signals": [
   {
@@ -1259,6 +1260,21 @@
    "confidence": 0.6,
    "story": "50252035",
    "headline": "Barring setbacks, Bucs QB Baker Mayfield expected to start vs. Panthers",
+   "model": "claude-haiku-5-5"
+  },
+  {
+   "id": "50258482|20|4597500|return",
+   "day": "2026-10-23",
+   "at": "2026-10-23T15:56:55.000Z",
+   "team": "20",
+   "abbr": "NYJ",
+   "athlete": "4597500",
+   "player": "Adonai Mitchell",
+   "kind": "return",
+   "direction": "up",
+   "confidence": 0.9,
+   "story": "50258482",
+   "headline": "Jets WR Adonai Mitchell to play, RB Breece Hall questionable vs. Dolphins",
    "model": "claude-haiku-5-5"
   }
  ]
