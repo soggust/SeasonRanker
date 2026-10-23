@@ -121,7 +121,7 @@ jobs:
           git commit -m "Update MLB data"
           # (the model desk pushes hourly: a push that loses the race rebases onto it and tries again, three times)
           for attempt in 1 2 3; do
-            if git pull --rebase && git push; then
+            if git pull --rebase --autostash && git push; then
               echo "changed=true" >> "$GITHUB_OUTPUT"
               exit 0
             fi
