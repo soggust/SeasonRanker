@@ -24,7 +24,7 @@ import { BET_KINDS, BandTally, BetKind, BetRow, ByLevel, GameInfo, Picks, bookRo
 export { BET_KINDS, BetKind, BetRow, CheckResearch } from './book-rows';
 import { PopoverAt, phoneSheet, popoverAt } from '@ranker/core/breakdown';
 import { pickTeamColor, splitPick } from './pick-style';
-import { BEST_BETS_LABEL, MenuAll, MenuDay, allOf, allRow, MenuGame, MenuGameIn, MenuTeam, chosenSport, dayBand, defaultClosed, gameLine, gameMenu, gamePicksHead, groupKey, groupOf, linesOnlyGames, menuKey, menuOptionId, menuValues, shownEvents, sportChoice, sportFace, viewsShown } from './game-menu';
+import { BEST_BETS_LABEL, MenuAll, MenuDay, allOf, allRow, MenuGame, MenuGameIn, MenuTeam, chosenSport, dayBand, defaultClosed, gameLine, gameMenu, matchupName, gamePicksHead, groupKey, groupOf, linesOnlyGames, menuKey, menuOptionId, menuValues, shownEvents, sportChoice, sportFace, viewsShown } from './game-menu';
 import { darkLogoOf, teamLook } from '../team-look';
 import { LiveService } from './live.service';
 import { QuoteSources, joinSuggestions, quoteOf, rejudged, suggestionsOf } from './suggestions';
@@ -155,6 +155,8 @@ function storeSport(sport: string): void {
   standalone: false,
 })
 export class BookPageComponent implements OnInit, OnDestroy {
+  // (a fight reads "A vs. B", a game its "away @ home": game-menu.ts matchupName)
+  readonly fight = matchupName;
   // (a pick's own color, pick-style.ts: a prop its player's team's, a side the team it took's; a total, none:
   // the board's)
   pickColor(r: BetRow): string | null {

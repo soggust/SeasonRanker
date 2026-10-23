@@ -34,6 +34,7 @@ import {
   toWin,
 } from './wallet-math';
 import { HeadsPeriod, HeadsUp, Trophy, WalletPanel, botSplit, botTag, chipStacks, headsUp, panelOpen, runCards, tells, trophies, wallPicks } from './wallet-view';
+import { matchupName } from '../../book/game-menu';
 
 type Period = Leaderboard['period'];
 
@@ -95,6 +96,8 @@ function pinHash(id: string): number {
   standalone: false,
 })
 export class WalletPageComponent implements OnInit, OnDestroy {
+  // (a fight reads "A vs. B", a game its "away @ home": game-menu.ts matchupName)
+  readonly fight = matchupName;
   // (a bet's player: his name and face link his card, player-link.ts)
   readonly betPlayer = betPlayer;
 

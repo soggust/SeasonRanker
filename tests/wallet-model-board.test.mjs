@@ -118,6 +118,6 @@ test("the dropdown: the card's bouts under the card's day as A vs B, early to la
   assert.deepEqual(days[0].sports.map((s) => s.name), ['MMA']);
   assert.deepEqual(
     days[0].sports[0].games.map((g) => `${g.label}${g.count === null ? ' lines' : ` (${g.count})`}`),
-    ['Fighter D vs Fighter C · 8:45 PM lines', 'Fighter B vs Fighter A · 9:15 PM lines', 'Joaquin Buckley vs Mike Malott · 9:45 PM (1)'],
+    ['Fighter D vs. Fighter C · 8:45 PM lines', 'Fighter B vs. Fighter A · 9:15 PM lines', 'Joaquin Buckley vs. Mike Malott · 9:45 PM (1)'],
   );
 });

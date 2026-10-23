@@ -8,6 +8,7 @@ import { PlayBet, TallyDoc, etDay } from '../account/wallet/wallet-math';
 import { PlayerRef, betPlayer } from '../player-link';
 import { compactRecord, recordTip } from './bet-format';
 import { DateRange, inRange } from './date-range';
+import { matchupName } from './game-menu';
 
 export interface FormBet {
   // (W, L or P: a win, a loss, a push; a void bet is left out)
@@ -110,7 +111,7 @@ export function recentForm(tally: TallyDoc | null, settled: readonly PlayBet[], 
     .map((b) => ({
       res: b.status === 'won' ? 'W' : b.status === 'lost' ? 'L' : 'P',
       pick: b.kind === 'parlay' ? `${b.legs?.length ?? 0}-leg parlay` : b.pick,
-      game: b.kind === 'parlay' ? 'Parlay' : `${b.sport.toUpperCase()} · ${b.matchup}`,
+      game: b.kind === 'parlay' ? 'Parlay' : `${b.sport.toUpperCase()} · ${matchupName(b.sport, b.matchup)}`,
       who: b.kind === 'parlay' ? null : betPlayer(b),
       units: unitsText(b.status === 'won' ? (b.profit ?? 0) : b.status === 'lost' ? -b.stake : 0),
     }));
@@ -198,7 +199,7 @@ export function botForm(blocks: readonly (BotRecent | null | undefined)[], now: 
     .map((b) => ({
       res: b.res,
       pick: b.pick,
-      game: `${b.sport.toUpperCase()} · ${b.matchup}`,
+      game: `${b.sport.toUpperCase()} · ${matchupName(b.sport, b.matchup)}`,
       who: betPlayer({ sport: b.sport, market: b.market, player: b.player, pick: b.pick }),
       units: unitsText(b.units),
     }));

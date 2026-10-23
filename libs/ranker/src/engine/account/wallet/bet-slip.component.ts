@@ -6,6 +6,7 @@ import { Tapped, tapMinimizes } from './slip-sheet';
 import { betPlayer } from '../../player-link';
 import { legWords } from '../../book/bet-format';
 import { bestPriceTitle } from '../../book/book-names';
+import { matchupName } from '../../book/game-menu';
 
 // The bet slip: the prices clicked on the Book, each with its stake (a casino's chips, a half, 1, 5, 10
 // and 25 units, stacked on with each click, or a number typed), what it'd win and pay back, then Place. A
@@ -22,6 +23,8 @@ import { bestPriceTitle } from '../../book/book-names';
   standalone: false,
 })
 export class BetSlipComponent {
+  // (a fight reads "A vs. B", a game its "away @ home": game-menu.ts matchupName)
+  readonly fight = matchupName;
   // (a bet's player: his name and face link his card, player-link.ts)
   readonly betPlayer = betPlayer;
   // (a bet's words: a fight's round total says its rounds)

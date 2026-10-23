@@ -259,7 +259,7 @@
             @if (bet.odds !== null) { <span class="bet-odds">{{ oddsText(bet.odds) }}</span> }
             @if (bet.botPick) { <span class="bot-tag" title="The Algorithm’s pick">Bot pick</span> }
           </span>
-          <span class="bet-matchup"><span class="sport-tag">{{ sportLabel(bet.sport) }}</span>{{ bet.matchup }}</span>
+          <span class="bet-matchup"><span class="sport-tag">{{ sportLabel(bet.sport) }}</span>{{ fight(bet.sport, bet.matchup) }}</span>
         </span>
         <span class="bet-side">
           @if (bet.status === 'open') {

@@ -560,7 +560,7 @@
           <div class="why-head">
             <span class="why-kicker">{{ c.passed ? 'Passed' : 'Check' }} · cleared Kelly</span>
             <span class="why-name">{{ c.name }}</span>
-            @if (c.game; as g) {<span class="why-game">{{ g.sport }} · {{ g.matchup }}@if (g.start) { · {{ g.start | date: 'EEE h:mm a' }}}</span>}
+            @if (c.game; as g) {<span class="why-game">{{ g.sport }} · {{ fight(g.sport, g.matchup) }}@if (g.start) { · {{ g.start | date: 'EEE h:mm a' }}}</span>}
           </div>
           <button type="button" class="why-close" aria-label="Close" (click)="closeWhy(true)"><mat-icon aria-hidden="true" fontIcon="close"></mat-icon></button>
         </div>
@@ -638,7 +638,7 @@
           <div class="why-head">
             <span class="why-kicker">Kelly score@if (w.noEdge) { · no edge}</span>
             <span class="why-name">{{ w.name }}@if (w.look.odds) {{{ ' ' }}<span class="why-odds">{{ w.look.odds }}</span>}</span>
-            @if (w.look.game; as g) {<span class="why-game">{{ g.sport }} · {{ g.matchup }}@if (g.start) { · {{ g.start | date: 'EEE h:mm a' }}}</span>}
+            @if (w.look.game; as g) {<span class="why-game">{{ g.sport }} · {{ fight(g.sport, g.matchup) }}@if (g.start) { · {{ g.start | date: 'EEE h:mm a' }}}</span>}
           </div>
           <button type="button" class="why-close" aria-label="Close" (click)="closeWhy(true)"><mat-icon aria-hidden="true" fontIcon="close"></mat-icon></button>
         </div>

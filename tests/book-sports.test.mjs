@@ -38,7 +38,7 @@ test('betSports: a sport the bettor doesn\'t cover is out whatever the gate; a d
 });
 
 test('matchupName: a fight reads "A vs B", the first-listed fighter first; a game keeps its "away @ home"', () => {
-  assert.equal(bets.matchupName('mma', 'Pereira @ Jones'), 'Jones vs Pereira');
+  assert.equal(bets.matchupName('mma', 'Pereira @ Jones'), 'Jones vs. Pereira');
   assert.equal(bets.matchupName('nfl', 'CLE @ TB'), 'CLE @ TB');
   assert.equal(bets.matchupName('mma', 'Jones'), 'Jones');
 });
@@ -55,8 +55,8 @@ test('gameMenu: a UFC card\'s bouts group under the card\'s day like a game day,
   assert.equal(days.length, 1);
   assert.equal(days[0].day, 'Saturday, Oct 17');
   assert.deepEqual(days[0].sports.map((s) => s.name), ['MMA']);
-  assert.deepEqual(days[0].sports[0].games.map((g) => g.label), ['Strickland vs Adesanya · 8:30 PM', 'Jones vs Pereira · 9:00 PM']);
-  assert.deepEqual(days[0].sports[0].games.map((g) => g.name), ['Strickland vs Adesanya', 'Jones vs Pereira']);
+  assert.deepEqual(days[0].sports[0].games.map((g) => g.label), ['Strickland vs. Adesanya · 8:30 PM', 'Jones vs. Pereira · 9:00 PM']);
+  assert.deepEqual(days[0].sports[0].games.map((g) => g.name), ['Strickland vs. Adesanya', 'Jones vs. Pereira']);
   // (the key keeps the bettor's matchup: the page filters by it)
   assert.equal(days[0].sports[0].games[1].matchup, 'Pereira @ Jones');
 });
@@ -106,5 +106,5 @@ test('gameMenu: a late sport\'s bouts reach the dropdown once its rows are on th
   const games = rows.filter((r) => !r.check).map((r) => ({ key: `${r.sport}|${r.game.matchup}`, sport: r.sport, matchup: r.game.matchup, start: r.game.kickoff, count: 1 }));
   const days = bets.gameMenu(games, SITE, 'America/Chicago');
   assert.deepEqual(days.flatMap((d) => d.sports.map((s) => s.name)), ['NFL', 'MMA']);
-  assert.deepEqual(days[0].sports[1].games.map((g) => g.name), ['Jones vs Pereira']);
+  assert.deepEqual(days[0].sports[1].games.map((g) => g.name), ['Jones vs. Pereira']);
 });

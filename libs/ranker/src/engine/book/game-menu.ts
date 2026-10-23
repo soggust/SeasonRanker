@@ -82,11 +82,11 @@ export interface MenuDay {
 // (the sports' names and order: the site's, sports.json)
 export type MenuSports = { id: string; label: string }[];
 
-// (a fight's matchup is "away @ home" as the bettor keys it, the first-listed fighter the home: it reads "A vs B")
+// (a fight's matchup is "away @ home" as the bettor keys it, the first-listed fighter the home: it reads "A vs. B")
 export function matchupName(sport: string, matchup: string): string {
-  if (sport !== 'mma') return matchup;
+  if (String(sport).toLowerCase() !== 'mma') return matchup;
   const [away, home] = matchup.split(' @ ');
-  return home ? `${home} vs ${away}` : matchup;
+  return home ? `${home} vs. ${away}` : matchup;
 }
 
 export function gameMenu(games: MenuGameIn[], sports: MenuSports, timeZone?: string): MenuDay[] {

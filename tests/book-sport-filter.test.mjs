@@ -81,7 +81,7 @@ test("gameLine: a closed row's line is the game and its start alone, no sport, n
   const line = bets.gameLine('nfl', 'NYJ @ NE', '2026-10-18T17:00:00Z', TZ);
   assert.deepEqual(line, { name: 'NYJ @ NE', when: 'Sun 12:00 PM', text: 'NYJ @ NE · Sun 12:00 PM' });
   assert.ok(!line.text.includes('NFL'));
-  assert.deepEqual(bets.gameLine('mma', 'B @ A', '2026-10-18T01:00:00Z', TZ), { name: 'A vs B', when: 'Sat 8:00 PM', text: 'A vs B · Sat 8:00 PM' });
+  assert.deepEqual(bets.gameLine('mma', 'B @ A', '2026-10-18T01:00:00Z', TZ), { name: 'A vs. B', when: 'Sat 8:00 PM', text: 'A vs. B · Sat 8:00 PM' });
   assert.deepEqual(bets.gameLine('nfl', 'KC @ BUF', null, TZ), { name: 'KC @ BUF', when: null, text: 'KC @ BUF' });
   assert.deepEqual(bets.gameLine('nfl', 'KC @ BUF', 'not a date', TZ).when, null);
 });
@@ -262,7 +262,7 @@ test("faces: a game's two teams before its name in the name's order, a fight's f
   assert.deepEqual(nhl[0].faces, [{ abbr: 'CAR', logo: '/nhl/assets/NHL_Icons/CAR.svg' }, { abbr: 'WPG', logo: null }]);
   assert.deepEqual(nhl[1].faces, []);
   const fight = MENU[0].sports.find((s) => s.sport === 'mma').games[0];
-  assert.equal(fight.name, 'A vs B');
+  assert.equal(fight.name, 'A vs. B');
   assert.deepEqual(fight.faces.map((f) => f.abbr), ['A', 'B']);
 });
 
