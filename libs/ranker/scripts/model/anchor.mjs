@@ -88,7 +88,15 @@ export function pullOf(entry, mu, im) {
 
 // A fit's entry for a stat: its own, else none (0: the bot's own number). fit: anchor.json's { stats: { <stat>: {
 // pull, d } } } or null
-export const anchorEntry = (fit, stat) => fit?.stats?.[stat] ?? null;
+// (and a young player's (D82): the stat's pull and asymmetry times the fit's multiplier for his experience, young[
+// '<stat>|<r|y2|y3>'] (yrs his seasons played, experience.mjs), picked walk-forward on the closes; none, his stat's)
+export function anchorEntry(fit, stat, yrs = null) {
+  const e = fit?.stats?.[stat] ?? null;
+  const b = !Number.isFinite(yrs) || yrs >= 3 ? null : yrs <= 0 ? 'r' : yrs === 1 ? 'y2' : 'y3';
+  const m = b ? fit?.young?.[stat + "|" + b] : null;
+  if (!Number.isFinite(m) || m === 1 || e === null) return e;
+  return typeof e === 'number' ? e * m : { ...e, pull: (e.pull ?? 0) * m, d: (e.d ?? 0) * m };
+}
 
 // The chances at a line from the anchored mean (the stat's own shape at it, no recalibration): { over, under, push,
 // im, mean, pull }; null where the book's implied mean can't be had (then the caller keeps the bot's own chances)

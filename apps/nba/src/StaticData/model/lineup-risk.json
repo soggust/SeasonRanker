@@ -1,46 +1,46 @@
 {
  "v": 1,
- "at": "2026-10-23T03:46:36.889Z",
+ "at": "2026-10-23T04:57:21.860Z",
  "rows": 145955,
  "pooled": {
-  "n": 37154,
+  "n": 37434,
   "rows": 145955,
-  "keptRaw": 0.9198,
-  "kept": 0.9198,
+  "keptRaw": 0.9177,
+  "kept": 0.9177,
   "moved": 0.38,
   "lead": 12.068,
   "edgeOpen": 0.0185,
-  "edgeClose": 0.017,
+  "edgeClose": 0.0169,
   "ok": true
  },
  "stats": {
   "ast": {
-   "n": 1827,
+   "n": 2235,
    "rows": 23588,
-   "keptRaw": 0.8123,
-   "kept": 0.8123,
+   "keptRaw": 0.8288,
+   "kept": 0.8288,
    "moved": 0.333,
    "lead": 12.068,
-   "edgeOpen": 0.0143,
-   "edgeClose": 0.0116,
+   "edgeOpen": 0.0142,
+   "edgeClose": 0.0118,
    "from": "own"
   },
   "fg3": {
-   "n": 9692,
+   "n": 9447,
    "rows": 28553,
-   "keptRaw": 0.9509,
-   "kept": 0.9509,
+   "keptRaw": 0.9475,
+   "kept": 0.9475,
    "moved": 0.177,
    "lead": 12.068,
-   "edgeOpen": 0.0166,
-   "edgeClose": 0.0158,
+   "edgeOpen": 0.0164,
+   "edgeClose": 0.0156,
    "from": "own"
   },
   "pra": {
-   "n": 2532,
+   "n": 2511,
    "rows": 25519,
-   "keptRaw": 0.873,
-   "kept": 0.873,
+   "keptRaw": 0.8704,
+   "kept": 0.8704,
    "moved": 0.571,
    "lead": 12.069,
    "edgeOpen": 0.0179,
@@ -48,21 +48,21 @@
    "from": "own"
   },
   "pts": {
-   "n": 5536,
+   "n": 5737,
    "rows": 34881,
-   "keptRaw": 0.9555,
-   "kept": 0.9555,
+   "keptRaw": 0.9528,
+   "kept": 0.9528,
    "moved": 0.493,
    "lead": 12.068,
-   "edgeOpen": 0.0139,
-   "edgeClose": 0.0132,
+   "edgeOpen": 0.0141,
+   "edgeClose": 0.0135,
    "from": "own"
   },
   "reb": {
-   "n": 17567,
+   "n": 17504,
    "rows": 33414,
-   "keptRaw": 0.9123,
-   "kept": 0.9123,
+   "keptRaw": 0.9111,
+   "kept": 0.9111,
    "moved": 0.325,
    "lead": 12.068,
    "edgeOpen": 0.0216,
@@ -71,6 +71,6 @@
   }
  },
  "sport": "nba",
- "epoch": "2026-10-21T01:15:00Z",
- "commit": "d3d7e081"
+ "epoch": "2026-10-23T05:30:00Z",
+ "commit": "c96a1b9c"
 }

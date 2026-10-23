@@ -368,7 +368,7 @@ export function propHistoryRows(V, sport, index, matches, current, { factsLead =
       if (!fin(raw)) continue;
       const y = m.v > x.line ? 1 : m.v < x.line ? 0 : null;
       const id = `p:${m.stat}:${m.pid}:${m.game}`;
-      rows.push({ id: `${id}:${kind}`, key: id, event: String(m.game), sport, market: 'prop', stat: m.stat, name: m.name ?? null, kind, line: x.line, day: etDay(Date.parse(h.start)), t: Date.parse(h.start), at: fin(Date.parse(x.ts)) ? Date.parse(x.ts) : null, factsAt: fin(factsLead) ? Date.parse(h.start) - factsLead * 36e5 : null, home: m.home ?? null, season: h.season, f: x.fair, raw: Math.min(0.999, Math.max(0.001, raw)), y, q: null, overOdds: x.over, underOdds: x.under, w: seasonWeight(sport, h.season, current).w, m, ...(m.parts && m.overMu ? { attr: propAttr(m, x.line, raw) } : {}) });
+      rows.push({ id: `${id}:${kind}`, key: id, event: String(m.game), sport, market: 'prop', stat: m.stat, name: m.name ?? null, kind, yrs: m.yrs ?? null, line: x.line, day: etDay(Date.parse(h.start)), t: Date.parse(h.start), at: fin(Date.parse(x.ts)) ? Date.parse(x.ts) : null, factsAt: fin(factsLead) ? Date.parse(h.start) - factsLead * 36e5 : null, home: m.home ?? null, season: h.season, f: x.fair, raw: Math.min(0.999, Math.max(0.001, raw)), y, q: null, overOdds: x.over, underOdds: x.under, w: seasonWeight(sport, h.season, current).w, m, ...(m.parts && m.overMu ? { attr: propAttr(m, x.line, raw) } : {}) });
     }
   }
   let anchor = null;
@@ -392,7 +392,49 @@ export function propHistoryRows(V, sport, index, matches, current, { factsLead =
         x.pull = c ? c.pull : 0;
       }
     }
-    anchor = { all: { ...V.anchor.fitAnchor(fitRows(rows)), on: priceIt }, bySeason, current: bySeason[seasons[seasons.length - 1]] ?? null, on: priceIt };
+    // (the experience pull (D82, measuring: YOUNG_PULL, the multipliers tried on a young player's pull): each
+    // season's multiplier by stat and experience picked on the closes of the seasons before it, 1 under YP_MIN rows)
+    const YP = process.env.YOUNG_PULL ? process.env.YOUNG_PULL.split(',').map(Number).filter(fin) : null;
+    const young = {};
+    if (YP?.length && priceIt) {
+      const bk = (x) => (!fin(x.yrs) || x.yrs >= 3 ? null : x.yrs <= 0 ? 'r' : x.yrs === 1 ? 'y2' : 'y3');
+      for (const x of rows) {
+        const b = bk(x);
+        if (!b || !fin(x.im) || !(x.im > 0)) continue;
+        const e = V.anchor.anchorEntry(bySeason[x.season], x.stat);
+        x._am = YP.map((m) => {
+          const ent = e && typeof e === 'object' ? { ...e, pull: (e.pull ?? 0) * m, d: (e.d ?? 0) * m } : fin(e) ? e * m : null;
+          const c = V.anchor.anchoredChances(x.line, x.m.mu, x.m.params, x.m.mix, x.f, ent);
+          return c ? Math.min(0.999, Math.max(0.001, c.over)) : x.anch;
+        });
+        x._ak = `${x.stat}|${b}`;
+      }
+      const ll = (p, y) => -(y ? Math.log(p) : Math.log(1 - p));
+      for (const s of seasons) {
+        const tally = new Map();
+        for (const x of rows) if (x._am && x.season < s && x.kind === 'c' && (x.y === 0 || x.y === 1)) {
+          const t = tally.get(x._ak) ?? { n: 0, l: YP.map(() => 0) };
+          t.n++;
+          x._am.forEach((p, i) => (t.l[i] += ll(p, x.y)));
+          tally.set(x._ak, t);
+        }
+        const pick = {};
+        for (const [k, t] of tally) {
+          const one = YP.indexOf(1);
+          let best = one >= 0 ? one : 0;
+          if (t.n >= 300) t.l.forEach((v, i) => { if (v < t.l[best] - 1e-9) best = i; });
+          pick[k] = { m: YP[best], n: t.n };
+        }
+        young[s] = pick;
+        for (const x of rows) if (x._am && x.season === s) {
+          const m = pick[x._ak]?.m ?? 1;
+          const i = YP.indexOf(m);
+          if (i >= 0) x.anch = x._am[i];
+        }
+      }
+      for (const x of rows) delete x._am, delete x._ak;
+    }
+    anchor = { all: { ...V.anchor.fitAnchor(fitRows(rows)), on: priceIt }, bySeason, current: bySeason[seasons[seasons.length - 1]] ?? null, on: priceIt, ...(YP?.length ? { young } : {}) };
   }
   // (the projection's mean and spread, and the Book's implied mean, kept on the row for the confidence layer's
   // features (confidence.mjs sdEdge, imGap; D52): the edge in standard deviations of the Bot's own number)

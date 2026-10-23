@@ -232,6 +232,41 @@
    "sport": "nba",
    "ref": "D79",
    "text": "NBA PRA unders after a team change: +7.5% on 427 held out (z 1.7, tune n 108); recheck with more trades"
+  },
+  {
+   "date": "2026-10-23",
+   "group": "shipped",
+   "sport": "nba",
+   "ref": "D82",
+   "text": "NBA young players lean on their own season (prior weight cut, walk-forward): projections -7.8e-4 log loss (z 8), +21u replayed"
+  },
+  {
+   "date": "2026-10-23",
+   "group": "shipped",
+   "sport": "nfl",
+   "ref": "D82",
+   "text": "NFL props against the Bot's own lean (own chance <50%) take 0.5u: +8.6u on the replay, same record"
+  },
+  {
+   "date": "2026-10-23",
+   "group": "dropped",
+   "sport": null,
+   "ref": "D82",
+   "text": "Young-player weighting held in NHL (0.0e-4), NFL (+10e-4 worse), MLB (+0.7e-4 worse): veteran-style priors fit them"
+  },
+  {
+   "date": "2026-10-23",
+   "group": "dropped",
+   "sport": null,
+   "ref": "D82",
+   "text": "Young players' anchor pull by experience: picks more pull, not less; NBA +0.2e-4 worse, NHL noise. Held"
+  },
+  {
+   "date": "2026-10-23",
+   "group": "watching",
+   "sport": "nhl",
+   "ref": "D82",
+   "text": "NHL props against own lean lose (-6.3% flat on 336) but the guard costs trial LOVE winners (-7.9u). Off"
   }
  ]
 }

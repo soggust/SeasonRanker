@@ -1,8 +1,8 @@
 {
  "v": 1,
  "sport": "mlb",
- "epoch": "2026-10-21T01:15:00Z",
- "at": "2026-10-23T03:52:26.972Z",
+ "epoch": "2026-10-23T05:30:00Z",
+ "at": "2026-10-23T05:04:52.901Z",
  "from": "2021-07-18T17:07:00.000Z",
  "through": "2026-10-16T00:00:00.000Z",
  "n": {
@@ -1814,6 +1814,16 @@
     }
    }
   },
+  "leanGuard": {
+   "on": false,
+   "props": 492,
+   "against": 153,
+   "guarded": 43,
+   "flat": 0.87,
+   "before": 0,
+   "after": 0,
+   "next": 0
+  },
   "tiers": {
    "lock": 0,
    "high": 0,
@@ -1857,23 +1867,23 @@
   "split": "games that start before the epoch replayed; the live ledger from the epoch on",
   "notSeen": "the live desk's CLV gates, CHECKs, research and news"
  },
- "commit": "d3d7e081",
- "note": "D79. The consistency round: no team, player or player type beats the close out of sample; the Bot's own consistent losers (a stat and side, a line market and side) stake the practice stake",
+ "commit": "c96a1b9c",
+ "note": "D82. Young players and the Bot's own lean: the NBA's young players lean on their own season (the prior's weight cut by stat and experience, walk-forward); the NFL's props against the Bot's own lean take the practice stake",
  "inputs": {
   "v": 1,
   "sport": "mlb",
   "code": {
-   "props": "d39e53c3ab43",
-   "games": "21e4816ffc35",
-   "pricing": "0b1fae7e8fab",
-   "record": "221847f1699c",
-   "harness": "ee08662cc1ac",
+   "props": "c6a3a1984119",
+   "games": "31d8991c8861",
+   "pricing": "9c1ee52776ab",
+   "record": "e4b8b581947d",
+   "harness": "1ce204a30f90",
    "residual": "c0bf15b36bbc79e6"
   },
   "fit": {
    "wf": true,
-   "code": "a6ff2dae197cf1d0",
-   "expected": "a6ff2dae197cf1d0",
+   "code": "df4a0e878820bb3b",
+   "expected": "df4a0e878820bb3b",
    "seasons": [
     "2023:52217",
     "2024:105079",
@@ -1928,6 +1938,6 @@
     "want": 29
    }
   },
-  "hash": "273e0260d4339e1c"
+  "hash": "59e2f95966b3d8b3"
  }
 }

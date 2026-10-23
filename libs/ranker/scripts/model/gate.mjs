@@ -54,6 +54,7 @@ import { readDeep } from './deep-history.mjs';
 import { shopRows } from './best-price.mjs';
 import { MARKETS as MMA_MARKETS, scoreMma } from './gate-mma.mjs';
 import { propParts } from './trusted.mjs';
+import { readYoung, tagExperience } from './experience.mjs';
 
 const ROOT = path.resolve(import.meta.dirname, '../../../..');
 const MODEL = path.join(ROOT, 'libs/ranker/scripts/model');
@@ -518,6 +519,13 @@ export async function scoreVersion(dir, sport, { refit = false, propsLayer = tru
         const propGames = propsHistory(sport, history, histGames, hist.props, hist.events);
         if (propGames.length > history.length) say(`props: the players' games read for ${propGames.length - history.length} finals past games.json's (the seasons with the history's props: ${[...new Set(propGames.map((g) => g.season))].sort().join(', ')})`);
         const rows = await H.logs.playerRows(sport, cfg, propGames, facts);
+        // (each row's seasons played (experience.mjs, D82): read by the experience terms and the readouts by experience)
+        tagExperience(sport, rows);
+        // (the experience weighting's table (D82, young.json), set on the version's projection for the replay only, never
+        // the fit's search; a version without it reads none)
+        const youngT = readYoung(sport)?.table ?? null;
+        const setYoung = (on) => V.project.setYoung?.(on ? youngT : null);
+        const dumpA = process.env.REPLAY_DUMP ? [] : null;
         const info = new Map([...(feats?.feats ?? new Map())].map(([id, f]) => [id, f.info]));
         const market = sport === 'nfl' ? await H.props.nflMarket(history) : sport === 'nba' ? H.logs.boxMarket('nba') : null;
         rowSeasons = [...new Set(rows.map((x) => x.season))].sort();
@@ -554,7 +562,7 @@ export async function scoreVersion(dir, sport, { refit = false, propsLayer = tru
             const mix = V.project.exitMix(f.params, x.p);
             if (histIndex.size && x.row.name && x.row.game && histIndex.has(`${st.key}|${H.espn.nameKey(x.row.name)}|${x.row.game}`)) {
               const mu = x.p.mu;
-              histMatches.push({ stat: st.key, name: x.row.name, game: String(x.row.game), pid: String(x.row.pid), v: x.v, home: x.row.home ?? null, mu, params: f.params, mix, over: (line) => V.project.lineChances(line, mu, f.params, mix).over, ...(process.env.REPLAY_ATTR === '1' || V.trusted?.trialOn?.(sport) ? { parts: propParts(x.p, f.params), overMu: (line, m2) => V.project.lineChances(line, Math.max(0.05, m2), f.params, mix).over } : {}) });
+              histMatches.push({ stat: st.key, name: x.row.name, game: String(x.row.game), pid: String(x.row.pid), yrs: x.row.yrs ?? null, v: x.v, home: x.row.home ?? null, mu, params: f.params, mix, over: (line) => V.project.lineChances(line, mu, f.params, mix).over, ...(process.env.REPLAY_ATTR === '1' || V.trusted?.trialOn?.(sport) ? { parts: propParts(x.p, f.params), overMu: (line, m2) => V.project.lineChances(line, Math.max(0.05, m2), f.params, mix).over } : {}) });
             }
             const ll = -V.project.chanceLog(x.v, x.p.mu, f.params, mix);
             if (fin(ll) && (!elig || x.row.eligible !== false)) {
@@ -564,6 +572,7 @@ export async function scoreVersion(dir, sport, { refit = false, propsLayer = tru
               out.day.push(x.row.date.slice(0, 10));
               out.season.push(x.row.season);
               out.loss.push(Math.round(ll * 1e5) / 1e5);
+              if (dumpA) dumpA.push([st.key, String(x.row.pid), Number(x.row.game) || 0, x.row.season, Math.round(ll * 1e5) / 1e5, x.row.yrs ?? null, Math.round(x.p.mu * 1e3) / 1e3, x.v]);
               if (x.row.eligible !== false) eligible++;
             }
             const b = want.get(`${st.key}|${x.row.pid}|${x.row.game}`) ?? want.get(`${st.key}|${x.row.pid}|${etDay(Date.parse(x.row.date))}`) ?? want.get(`${st.key}|${x.row.pid}|${x.row.date.slice(0, 10)}`);
@@ -576,7 +585,9 @@ export async function scoreVersion(dir, sport, { refit = false, propsLayer = tru
           // (the old way, GATE_PROPS_WF=0 only: one set of settings, the saved fit's (searched on games.json's newest
           // seasons) or --refit's (searched on every row here), priced over every season: in-sample, D75)
           const reuse = refit ? null : Object.fromEntries(stats.map((st) => [st.key, saved.fit.fits[st.key] ?? null]));
+          setYoung(true);
           emit(V.props.fitProps(sport, rows, expPts, info, facts, market, totals, listed, soft, reuse), rows, null);
+          setYoung(false);
           how = refit ? 'a fresh search on every season (in-sample)' : `the saved fit of ${saved.fit.at} (in-sample)`;
         } else {
           // (D75, walk-forward: each season's props priced under settings searched on the seasons before it alone,
@@ -596,6 +607,7 @@ export async function scoreVersion(dir, sport, { refit = false, propsLayer = tru
             if (c.fit && c.fit.code === code && c.fit.rows === before.length) fits = c.fit.fits;
             else {
               const t1 = Date.now();
+              setYoung(false);
               fits = V.props.fitProps(sport, before, expPts, info, facts, market, totals, listed, null, null).fits;
               from = `searched in ${Math.round((Date.now() - t1) / 1000)}s`;
               if (cacheable) H.fitcache.saveFit(sport, { fits, at: Date.now(), finals: before.length, rows: before.length, seconds: Math.round((Date.now() - t1) / 1000) }, wfDir);
@@ -605,13 +617,16 @@ export async function scoreVersion(dir, sport, { refit = false, propsLayer = tru
             if (prefit) continue;
             const upTo = rows.filter((r) => r.season <= S);
             const reuse = Object.fromEntries(stats.map((st) => [st.key, fits[st.key] ?? null]));
+            setYoung(true);
             emit(V.props.fitProps(sport, upTo, expPts, info, facts, market, totals, listed, soft, reuse), upTo, S);
+            setYoung(false);
           }
           say(`props, walk-forward by season (D75): ${done.join('; ')}`);
           if (prefit) process.exit(0);
           how = 'settings searched on the seasons before each (walk-forward)';
         }
         propsProj = { stats: stats.map((s) => s.key), ...out };
+        if (dumpA) try { writeFileSync(path.join(process.env.REPLAY_DUMP, `${sport}-layera.json`), JSON.stringify(dumpA)); } catch {}
         say(`props: ${out.loss.length} player games projected (${eligible} eligible) in ${Math.round((Date.now() - t0) / 1000)}s under ${how}; ${ledgerMatches.size} of ${mineProps.length} priced props matched to their replayed game`);
       }
     } catch (err) {
@@ -627,7 +642,7 @@ export async function scoreVersion(dir, sport, { refit = false, propsLayer = tru
   // (the history's props first: its anchor fit walk-forward by season (gate-history.mjs propHistoryRows, D33) prices
   // the ledger's replayed rows at the newest season's pull, the one the live desk reads)
   const histProps = histMatches.length ? propHistoryRows(V, sport, histIndex, histMatches, current, { factsLead: H.context.dayOfMinLead?.(sport) ?? null }) : { open: [], close: [], anchor: null };
-  if (process.env.REPLAY_DUMP && histProps.close.length) { try { writeFileSync(path.join(process.env.REPLAY_DUMP, `${sport}-propclose.json`), JSON.stringify(histProps.close.map((x) => [x.event, x.stat, x.name, x.line, x.f, x.p, x.y, x.mu ?? null, x.t, x.season]))); } catch {} }
+  if (process.env.REPLAY_DUMP && histProps.close.length) { try { writeFileSync(path.join(process.env.REPLAY_DUMP, `${sport}-propclose.json`), JSON.stringify(histProps.close.map((x) => [x.event, x.stat, x.name, x.line, x.f, x.p, x.y, x.mu ?? null, x.t, x.season, x.key, x.raw, x.anch ?? null, x.yrs ?? null]))); writeFileSync(path.join(process.env.REPLAY_DUMP, `${sport}-propopen.json`), JSON.stringify(histProps.open.map((x) => [x.id, x.p, x.f, x.raw, x.anch ?? null, x.yrs ?? null]))); if (histProps.anchor?.young) writeFileSync(path.join(process.env.REPLAY_DUMP, `${sport}-pullyoung.json`), JSON.stringify(histProps.anchor.young)); } catch {} }
   if (hist.props.length) {
     // (by season: the history's player games with a DraftKings close, and the closes priced (D69's coverage check))
     const by = {};

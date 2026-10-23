@@ -1270,6 +1270,28 @@ const wavg = (xs, ws) => {
 };
 const addAcc = (a, b) => Object.fromEntries(ACC.map((k) => [k, (a[k] ?? 0) + (b[k] ?? 0)]));
 
+// (the experience weighting (D82): a young player's prior weight K times km and his form weight w plus wa, by his
+// seasons played (experience.mjs tagExperience: row.yrs; r a rookie, y2 his second season, y3 his third; a veteran
+// or unknown as before), from the table { stat|'*': { season|'*': { r|y2|y3: [km, wa] } } } the caller sets
+// (setYoung: the sport's young.json, picked walk-forward by season) after the fit's search, so the search is the
+// same as without it; YOUNG_KW, the same JSON, overrides it (measuring only))
+let YKW = null;
+try {
+  YKW = typeof process !== 'undefined' && process.env?.YOUNG_KW ? JSON.parse(process.env.YOUNG_KW) : null;
+} catch {
+  YKW = null;
+}
+const YKW_ENV = YKW !== null;
+export const setYoung = (table) => {
+  if (!YKW_ENV) YKW = table && typeof table === 'object' ? table : null;
+};
+export const youngTable = () => YKW;
+const youngKnob = (key, row) => {
+  if (!YKW || !Number.isFinite(row?.yrs) || row.yrs >= 3) return null;
+  const b = row.yrs <= 0 ? 'r' : row.yrs === 1 ? 'y2' : 'y3';
+  const of = (x) => x?.[row.season]?.[b] ?? x?.['*']?.[b];
+  return of(YKW[key]) ?? of(YKW['*']) ?? null;
+};
 // A stat's model under one set of settings: project a row from what's been learned, learn a day's rows
 export function makeModel(stat, params, env) {
   const players = new Map();
@@ -1537,7 +1559,12 @@ export function makeModel(stat, params, env) {
     if (cur.n + prev.n < 2) return null;
     // (the prior's weight K, shrinking as this season's games come in where the fit found it should (kd): K /
     // (1 + kd x his games this season), so by midseason his own season counts for more than the plain K gives)
-    const K = params.kd ? params.K / (1 + params.kd * cur.n) : params.K;
+    // (the experience knobs (D82, measuring): a young player's prior weight times km and his form weight plus wa,
+    // by his seasons played (experience.mjs); none set, as before)
+    const yk = youngKnob(stat.key, row);
+    const K0 = params.kd ? params.K / (1 + params.kd * cur.n) : params.K;
+    const K = yk ? K0 * yk[0] : K0;
+    const W = yk ? Math.min(1, Math.max(0, params.w + yk[1])) : params.w;
     const longN = prev.n + 0.5 * older.n;
     const dr = draftOf(row);
     const draftG = draftF(row, dr, 'g');
@@ -1736,7 +1763,7 @@ export function makeModel(stat, params, env) {
           }
           recent = (1 - params.vol) * recent + params.vol * shareR * T * perT;
           if (longTg < yk && poolY !== null) draftY = draftT;
-          volume = { targets: ((1 - params.w) * shareS + params.w * shareR) * T, share: shareS, team: T, perTarget: perT };
+          volume = { targets: ((1 - W) * shareS + W * shareR) * T, share: shareS, team: T, perTarget: perT };
         }
       }
     }
@@ -1756,7 +1783,7 @@ export function makeModel(stat, params, env) {
     const spKeys = SP_ON && longN >= 10 && Number.isFinite(priorW) && priorW > 0 ? spLevels(row, pl) : null;
     const spG = spKeys ? spRead(spKeys) : 0;
     const spF = spKeys && params.sp ? Math.pow(1 + spG, params.sp * priorW) : 1;
-    const base = spF * trendF * rampF * ((1 - params.w) * rate + params.w * recent);
+    const base = spF * trendF * rampF * ((1 - W) * rate + W * recent);
     // (what the opponent's allowed his position against what those players usually do: a ratio of sums, this
     // season's and half of last, pulled toward even by 8 games' worth)
     // (a table's sums for this season, last season's at half weight)
@@ -1828,7 +1855,7 @@ export function makeModel(stat, params, env) {
       seasonVac !== null ? (past.rn >= 3 ? (past.rsum[vs] ?? 0) / past.rn : rateVac)
       : cur.recentVac?.length >= 3 ? cur.recentVac.reduce((t, x) => t + (x[vs] ?? 0), 0) / cur.recentVac.length
       : rateVac;
-    let vacHist = (1 - params.w) * rateVac + params.w * recentVac;
+    let vacHist = (1 - W) * rateVac + W * recentVac;
     // (the NBA's minutes base (mode minutes): its part of the base made with the work missing in the games its
     // minutes read, the season's (rateVac) and the last three's at the lean's weight (minLean), blended in by sn
     // as the base is)

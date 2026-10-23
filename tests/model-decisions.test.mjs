@@ -1886,3 +1886,54 @@ test('D79 the Bot\'s own consistent losers: a stat and side (or a line market an
   const decisions = fs.readFileSync(path.join(import.meta.dirname, '../libs/ranker/scripts/model/DECISIONS.md'), 'utf8');
   assert.ok(decisions.includes('### D79.'));
 });
+
+// ---- D82: the experience weighting (the NBA's) and the against-own-lean guard (NFL, NHL) ----
+test('D82 young players: seasons played tagged, the prior weight cut by the walk-forward table (NBA), never during the search; the against-own-lean guard at the practice stake', async () => {
+  const E = await import('../libs/ranker/scripts/model/experience.mjs');
+  const P = await import('../libs/ranker/scripts/model/project.mjs');
+  const L = await import('../libs/ranker/scripts/model/lean.mjs');
+  const A = await import('../libs/ranker/scripts/model/anchor.mjs');
+  const Y = await import('../libs/ranker/scripts/model/young-fit.mjs');
+  // (seasons played: the rows' first season (after the rows' own first), the NFL's rookie season; unknown a veteran)
+  const rows = [{ pid: 'a', season: 2024 }, { pid: 'a', season: 2026 }, { pid: 'b', season: 2025 }, { pid: 'b', season: 2026 }, { pid: 'c', season: 2026 }];
+  E.tagExperience('zz', rows);
+  assert.deepEqual(rows.map((r) => r.yrs), [null, null, 0, 1, 0]);
+  assert.equal(E.yrsOf('zz', 'b', 2027), 2);
+  const nfl = [{ pid: 'q', season: 2025, draft: { year: 2024 } }];
+  E.tagExperience('nfl', nfl);
+  assert.equal(nfl[0].yrs, 1);
+  assert.deepEqual([0, 1, 2, 3, null].map(E.expBucket), ['r', 'y2', 'y3', 'v', 'v']);
+  // (the table: a season's own cell, '*' only for a season the walk hasn't reached; the knobs never set from the env here)
+  const dumps = { id: [], k0x5w0: [] };
+  assert.equal(Y.knobOf('k0.5w0')[0], 0.5);
+  assert.equal(Y.knobOf('id')[1], 0);
+  const mk = (c, l) => Array.from({ length: 400 }, (_, i) => ['pts', `p${i}`, i, 2024, l, 0]);
+  const pick = Y.pickYoung({ id: mk('id', 1), 'k0.5w0': mk('k', 0.9) });
+  assert.deepEqual(pick.table.pts[2024].r, [1, 0], 'nothing before 2024: the model as it is');
+  assert.deepEqual(pick.table.pts['*'].r, [0.5, 0]);
+  void dumps;
+  assert.equal(typeof P.setYoung, 'function');
+  const young = JSON.parse(fs.readFileSync(path.join(import.meta.dirname, '../apps/nba/src/StaticData/model/young.json'), 'utf8'));
+  for (const st of Object.keys(young.table)) for (const S of young.seasons) for (const b of ['r', 'y2', 'y3']) assert.ok(Array.isArray(young.table[st][S]?.[b]), `${st} ${S} ${b} written`);
+  for (const sp of ['nhl', 'nfl', 'mlb']) assert.equal(fs.existsSync(path.join(import.meta.dirname, `../apps/${sp}/src/StaticData/model/young.json`)), false, `${sp} held (D82)`);
+  const gate = fs.readFileSync(path.join(import.meta.dirname, '../libs/ranker/scripts/model/gate.mjs'), 'utf8');
+  assert.ok(/setYoung\(false\);\n\s+fits = V\.props\.fitProps\(sport, before/.test(gate.replace(/\r\n/g, '\n')), 'the search runs without the table');
+  // (the anchor's pull for a young player: as the stat's unless the fit carries a multiplier (none shipped))
+  assert.deepEqual(A.anchorEntry({ stats: { sog: { pull: 0.7, d: 0 } } }, 'sog', 1), { pull: 0.7, d: 0 });
+  // (the lean guard: under one half by more than d, the practice stake; the walk's d from bets settled before the month)
+  assert.deepEqual([...L.LEAN_SPORTS].sort(), ['nfl']);
+  assert.equal(L.leanGuardOf(0.4503, 0.02).guarded, true, "Schaefer's under: his own 45% on the side");
+  assert.equal(L.leanGuardOf(0.49, 0.02).guarded, false);
+  assert.equal(L.leanGuardOf(0.3, null).guarded, false);
+  assert.equal(L.leanD(Array.from({ length: 29 }, () => ({ g: -0.1, flat: -1 }))), null, 'under 30: no guard');
+  assert.equal(L.leanD(Array.from({ length: 40 }, () => ({ g: -0.03, flat: -1 }))), 0, 'the shallowest d that loses as much');
+  assert.equal(L.leanD(Array.from({ length: 40 }, () => ({ g: -0.03, flat: 1 }))), null, 'they won: no guard');
+  const t0 = Date.parse('2026-01-15T00:00:00Z');
+  const w = L.walkLean(Array.from({ length: 40 }, (_, i) => ({ g: -0.03, flat: -1, t: t0 + i * 36e5, at: t0 })));
+  assert.equal(w.at(t0), null, "January's d reads nothing settled in January");
+  assert.equal(w.at(Date.parse('2026-02-02T00:00:00Z')), 0);
+  const rr = fs.readFileSync(path.join(import.meta.dirname, '../libs/ranker/scripts/model/replay-record.mjs'), 'utf8');
+  assert.ok(rr.includes('leanGuard: true') && rr.includes('LEAN.leanOn?.(sport)'));
+  const decisions = fs.readFileSync(path.join(import.meta.dirname, '../libs/ranker/scripts/model/DECISIONS.md'), 'utf8');
+  assert.ok(decisions.includes('### D82.'));
+});

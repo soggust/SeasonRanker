@@ -212,7 +212,10 @@ export const GAME_CAP = 5;
 // 2026-10-21, the best price (DECISIONS.md D74, the owner's decision of 2026-10-20): the Bot bets at the best US book's
 // price instead of DraftKings' alone, so every bet's price, Kelly, stake and CLV move: a pricing change, the trust and the
 // gates restart. Set to about the push time.
-export const MODEL_EPOCH = '2026-10-21T01:15:00Z';
+// 2026-10-23, the experience weighting (DECISIONS.md D82): the NBA's young players' projections lean more on their
+// own season (the prior's weight cut by stat and experience, picked walk-forward), so its props' chances move: a
+// pricing change, the trust and the gates restart. Set to about the push time.
+export const MODEL_EPOCH = '2026-10-23T05:30:00Z';
 
 // TIMING (run.mjs, timing.mjs): when a coming game is bet, in hours before its start, so its bets wait for the
 // news rather than being locked in days ahead on a guess at who plays.

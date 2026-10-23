@@ -74,6 +74,7 @@
 // desk bets only one in the lineup), not a pinch hitter's one trip
 
 import { existsSync, mkdirSync, readFileSync, readdirSync, writeFileSync } from 'node:fs';
+import { yrsOf } from './experience.mjs';
 import path from 'node:path';
 import { calSides } from './calib.mjs';
 import { anchorEntry, anchoredChances } from './anchor.mjs';
@@ -1895,7 +1896,7 @@ export function priceProps(sport, game, props, fitted, idx, exp, info, live, tru
     const pos = sport === 'mlb' ? (prop.stat.pitcher ? 'SP' : 'B') : (idx.pos(pid) ?? a.pos);
     // (a quarterback with a prop on the board taken as his team's starter (qbStart: the history's passer), his
     // projection from his starts where the fit kept it; one who isn't is the role guard's backup-qb CHECK)
-    const row = { pid, name: a.name, pos, date: game.date, season: game.season, team: home ? game.home : game.away, opp: home ? game.away : game.home, game: game.id, home, s: {}, mkt: exp.market ?? null, mTotal: Number.isFinite(exp.marketTotal) ? exp.marketTotal : null, mktSpread: Number.isFinite(exp.marketSpread) ? exp.marketSpread : null, ...(sport === 'nfl' && pos === 'QB' ? { qbStart: true } : {}) };
+    const row = { pid, name: a.name, pos, date: game.date, season: game.season, yrs: yrsOf(sport, pid, game.season), team: home ? game.home : game.away, opp: home ? game.away : game.home, game: game.id, home, s: {}, mkt: exp.market ?? null, mTotal: Number.isFinite(exp.marketTotal) ? exp.marketTotal : null, mktSpread: Number.isFinite(exp.marketSpread) ? exp.marketSpread : null, ...(sport === 'nfl' && pos === 'QB' ? { qbStart: true } : {}) };
     // (his role and the defense's funnel, pace and target split, as of now; and the work his position group's
     // regulars missing this game leave: out, doubtful or on IR on the injury report, or no longer on the team's
     // roster (traded, released: the history counts them missing from its games, so the price does too), a
@@ -2059,7 +2060,7 @@ export function priceProps(sport, game, props, fitted, idx, exp, info, live, tru
     // stat's own shape at that mean. Everything below (the calibration, the trust, the guards, the pick) reads it
     // as the model's chance; the bot's own stays beside it (modelPure, projection.anchored). None where the
     // book's implied mean can't be had: the bot's own chance as before)
-    const anch = anchoredChances(prop.line, mu, f.params, mix, book.fairOver, anchorEntry(anchor, prop.stat.key));
+    const anch = anchoredChances(prop.line, mu, f.params, mix, book.fairOver, anchorEntry(anchor, prop.stat.key, row.yrs));
     const pA = anch ? anch.over : pOver;
     const pushA = anch ? anch.push : chances.push;
     // (each side at the trusted chance, the lean tapered past half of the prop's GAP as a game market's is

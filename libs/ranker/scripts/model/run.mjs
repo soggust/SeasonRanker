@@ -152,7 +152,9 @@ import { boardMarkets, boardProp, buildBoard, seenUpdate, termParts } from './bo
 import { boxMarket, boxTotals, playerRows } from './playerlogs.mjs';
 import { nflPlayChance, nflPractice, playAt, playChanceSummary } from './playchance.mjs';
 import { boardMissText, nflBoardMiss } from './board-miss.mjs';
-import { ROUND_C, lineChances } from './project.mjs';
+import { ROUND_C, lineChances, setYoung } from './project.mjs';
+import { readYoung, tagExperience } from './experience.mjs';
+import { leanDOf, leanGuardOf, leanOn } from './lean.mjs';
 import { ANY_KEY, ANY_LABEL, ANY_LINE, anytimePlacement, priceAnytime, trackOnly } from './anytime.mjs';
 import { API_MARKETS, PER_GAME, PROP_WAIT, ROLE, STATS, apiProps, board, fitProps, marketPts, nameKey, nflListed, nflMarket, nflTookSnap, priceProps, readDepth, depthQbChangeOf, roleGateOf, rowsIndex, settleProp, statInFinal, statRows, withApiPrices } from './props.mjs';
 import { CACHE, DAY, etDay, get, isoSecond, nflverseGames, readJson, writeAtomic, writeJson } from './sources.mjs';
@@ -1063,6 +1065,10 @@ async function fitTheProps(r) {
   try {
     const t0 = Date.now();
     r.rows = await playerRows(sport, cfg, history, r.facts);
+    // (each row's seasons played (experience.mjs, D82): the experience weighting's, set on the projections after the
+    // fit's search (setYoung), never during it, from the sport's young.json; none, none)
+    tagExperience(sport, r.rows);
+    setYoung(null);
     const info = new Map([...(r.feats?.feats ?? new Map())].map(([id, f]) => [id, f.info]));
     // (the history's betting lines: the NFL's nflverse closes, the NBA's its finals' summaries' (playerlogs.mjs
     // boxMarket: read by the blowout by role, a measure on demand); none elsewhere. The NHL's totals alone, its
@@ -1103,6 +1109,9 @@ async function fitTheProps(r) {
       return;
     }
     const fitMs = Date.now() - t1;
+    const young = readYoung(sport);
+    setYoung(young?.table ?? null);
+    if (young?.table) console.log(`${sport}: the experience weighting (D82): ${young.text ?? 'on'}`);
     if (r.propsSuggestOnly) console.warn(`::warning::${sport}: props priced for the suggestions alone this run: the saved fit (${due.why}) rebuilt under the new code, its refit waits for the next run (${Math.round(FIT_SPENT / 1000)}s already spent refitting this one); no prop bet placed or taken back`);
     if (reuse) r.propFit = { at: saved.fit.at, day: saved.fit.day, code: saved.fit.code, ...(r.propsSuggestOnly ? { suggestOnly: true } : {}) };
     else {
@@ -1127,6 +1136,7 @@ async function fitTheProps(r) {
       const back = readFit(sport);
       const t2 = Date.now();
       const rows2 = await playerRows(sport, cfg, history, r.facts);
+      tagExperience(sport, rows2);
       const again = back.fit ? fitProps(sport, rows2, r.expPts, info, r.facts, market, totals, listed, soft, back.fit.fits) : null;
       const rebuildMs = Date.now() - t2;
       const diffs = again ? fitDiffs(r.props, again, STATS[sport], (st) => statRows(sport, st, rows2, market, totals)) : [back.why];
@@ -2328,6 +2338,16 @@ async function betProps(r) {
   r.propBar = propBar(r.propBarFile, ledger.bets ?? [], sport, MODEL_EPOCH);
   r.ownBar ??= ownBarOf(readOwnBar(ROOT, sport), ledger.bets ?? [], sport, MODEL_EPOCH);
   for (const [k, g] of Object.entries(r.ownBar)) if (g.held) console.log(`${sport}: ${k} at the practice stake this run: the Bot's own bets there ${g.sum}u flat on ${g.n} (D79)`);
+  // (the against-own-lean guard (D82, lean.mjs): the month's d from the replayed record's walk, in LEAN_SPORTS; none: none)
+  r.leanD = null;
+  if (leanOn(sport)) {
+    try {
+      r.leanD = leanDOf(JSON.parse(readFileSync(path.join(ROOT, 'apps', sport, 'src/StaticData/model/replay-record.json'), 'utf8')));
+    } catch {
+      r.leanD = null;
+    }
+    if (r.leanD !== null) console.log(`${sport}: the against-own-lean guard (D82): a prop whose own chance on its side sits more than ${round(r.leanD * 100, 1)} points under 50% takes the practice stake`);
+  }
   for (const [k, g] of Object.entries(r.propGate)) if (!g.on) console.log(`${sport}: ${k} props at the practice stake this run: ${g.why}`);
   // (the NFL's anytime touchdown market this run: asked with the props while the month can pay for it)
   if (sport === 'nfl') {
@@ -2867,6 +2887,9 @@ async function betProps(r) {
     const gate = bothGates(bothGates(r.propGate?.[x.prop.stat.key] ?? null, propBarGate(r.propBar, r.propBarFile, sport, x.prop.stat.key, x.side, x.ev)), ownBarGate(r.ownBar, sport, ownKey('prop', x.prop.stat.key, x.side)));
     const practice = !!gate && !gate.on;
     if (practice) x.guard = { ...(x.guard ?? {}), why: [x.guard?.why, `${x.prop.stat.key} ${gate.why}`].filter(Boolean).join('; ') };
+    // (the against-own-lean guard (D82): the Bot's own chance on the side under one half by more than the month's d)
+    const leanG = r.leanD === null || r.leanD === undefined ? { guarded: false } : leanGuardOf(Number.isFinite(x.modelRaw) ? x.modelRaw : x.model, r.leanD);
+    if (leanG.guarded) x.guard = { ...(x.guard ?? {}), why: [x.guard?.why, leanG.why].filter(Boolean).join('; ') };
     // (a research bet whose level is earned (research.mjs researchLevelOf) keeps its Kelly stake under its own
     // guard's word; the stat's CLV gate still holds it to practice, gatedPlacement)
     if (x.guard && !(x.researchBet?.earned || x.researchAdjusted?.earned)) x.units = PRACTICE_UNITS;

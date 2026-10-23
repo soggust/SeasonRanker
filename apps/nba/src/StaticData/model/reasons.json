@@ -1,8 +1,8 @@
 {
  "v": 1,
  "sport": "nba",
- "at": "2026-10-23T03:46:51.169Z",
- "epoch": "2026-10-21T01:15:00Z",
+ "at": "2026-10-23T04:57:32.259Z",
+ "epoch": "2026-10-23T05:30:00Z",
  "markets": {
   "ml": {
    "seg:ml:dog:late": {
@@ -12,16 +12,16 @@
     "ev": null,
     "evS": null,
     "beat": null,
-    "roi": 0.0608,
-    "rn": 582,
+    "roi": 0.0558,
+    "rn": 581,
     "stats": {
      "n": 0,
      "s": 0,
      "s2": 0,
      "beat": 0,
-     "rn": 582,
-     "rs": 35.3715,
-     "rs2": 1926.9669
+     "rn": 581,
+     "rs": 32.4215,
+     "rs2": 1918.2644
     },
     "why": "0 with a close, - shrunk",
     "seasons": {
@@ -720,16 +720,16 @@
     "ev": null,
     "evS": null,
     "beat": null,
-    "roi": -0.0056,
-    "rn": 45,
+    "roi": -0.0082,
+    "rn": 43,
     "stats": {
      "n": 0,
      "s": 0,
      "s2": 0,
      "beat": 0,
-     "rn": 45,
-     "rs": -0.2525,
-     "rs2": 43.3986
+     "rn": 43,
+     "rs": -0.3525,
+     "rs2": 41.1886
     },
     "why": "0 with a close, - shrunk",
     "seasons": {
@@ -747,16 +747,16 @@
     "ev": null,
     "evS": null,
     "beat": null,
-    "roi": -0.0142,
-    "rn": 18,
+    "roi": 0.0335,
+    "rn": 19,
     "stats": {
      "n": 0,
      "s": 0,
      "s2": 0,
      "beat": 0,
-     "rn": 18,
-     "rs": -0.2558,
-     "rs2": 17.9151
+     "rn": 19,
+     "rs": 0.637,
+     "rs2": 18.7123
     },
     "why": "0 with a close, - shrunk",
     "seasons": {
@@ -774,16 +774,16 @@
     "ev": null,
     "evS": null,
     "beat": null,
-    "roi": 0.0344,
-    "rn": 3657,
+    "roi": 0.0353,
+    "rn": 3612,
     "stats": {
      "n": 0,
      "s": 0,
      "s2": 0,
      "beat": 0,
-     "rn": 3657,
-     "rs": 125.7649,
-     "rs2": 3363.8985
+     "rn": 3612,
+     "rs": 127.4533,
+     "rs2": 3320.3397
     },
     "why": "0 with a close, - shrunk",
     "seasons": {
@@ -801,16 +801,16 @@
     "ev": null,
     "evS": null,
     "beat": null,
-    "roi": 0.1743,
-    "rn": 85,
+    "roi": 0.1657,
+    "rn": 84,
     "stats": {
      "n": 0,
      "s": 0,
      "s2": 0,
      "beat": 0,
-     "rn": 85,
-     "rs": 14.8158,
-     "rs2": 81.2442
+     "rn": 84,
+     "rs": 13.9229,
+     "rs2": 80.447
     },
     "why": "0 with a close, - shrunk",
     "seasons": {
@@ -855,16 +855,16 @@
     "ev": null,
     "evS": null,
     "beat": null,
-    "roi": 0.0314,
-    "rn": 57,
+    "roi": 0.0685,
+    "rn": 59,
     "stats": {
      "n": 0,
      "s": 0,
      "s2": 0,
      "beat": 0,
-     "rn": 57,
-     "rs": 1.7916,
-     "rs2": 64.0497
+     "rn": 59,
+     "rs": 4.039,
+     "rs2": 66.7279
     },
     "why": "0 with a close, - shrunk",
     "seasons": {
@@ -875,33 +875,6 @@
     "family": "stat",
     "label": "ast unders"
    },
-   "kelly2": {
-    "on": false,
-    "strong": false,
-    "n": 0,
-    "ev": null,
-    "evS": null,
-    "beat": null,
-    "roi": 0.0159,
-    "rn": 1548,
-    "stats": {
-     "n": 0,
-     "s": 0,
-     "s2": 0,
-     "beat": 0,
-     "rn": 1548,
-     "rs": 24.5642,
-     "rs2": 1457.5354
-    },
-    "why": "0 with a close, - shrunk",
-    "seasons": {
-     "lead": 0,
-     "of": 0,
-     "pos": 0
-    },
-    "family": "size",
-    "label": "a Kelly score of 2% or more"
-   },
    "stat:fg3:under": {
     "on": false,
     "strong": false,
@@ -909,16 +882,16 @@
     "ev": null,
     "evS": null,
     "beat": null,
-    "roi": 0.0505,
-    "rn": 694,
+    "roi": 0.078,
+    "rn": 597,
     "stats": {
      "n": 0,
      "s": 0,
      "s2": 0,
      "beat": 0,
-     "rn": 694,
-     "rs": 35.0719,
-     "rs2": 800.3372
+     "rn": 597,
+     "rs": 46.5497,
+     "rs2": 682.7082
     },
     "why": "0 with a close, - shrunk",
     "seasons": {
@@ -936,16 +909,16 @@
     "ev": null,
     "evS": null,
     "beat": null,
-    "roi": -0.31,
-    "rn": 13,
+    "roi": -0.1779,
+    "rn": 14,
     "stats": {
      "n": 0,
      "s": 0,
      "s2": 0,
      "beat": 0,
-     "rn": 13,
-     "rs": -4.03,
-     "rs2": 15.3929
+     "rn": 14,
+     "rs": -2.49,
+     "rs2": 17.7645
     },
     "why": "0 with a close, - shrunk",
     "seasons": {
@@ -963,16 +936,16 @@
     "ev": null,
     "evS": null,
     "beat": null,
-    "roi": -0.1282,
-    "rn": 545,
+    "roi": -0.1326,
+    "rn": 552,
     "stats": {
      "n": 0,
      "s": 0,
      "s2": 0,
      "beat": 0,
-     "rn": 545,
-     "rs": -69.8818,
-     "rs2": 536.4188
+     "rn": 552,
+     "rs": -73.1949,
+     "rs2": 542.9324
     },
     "why": "0 with a close, - shrunk",
     "seasons": {
@@ -990,16 +963,16 @@
     "ev": null,
     "evS": null,
     "beat": null,
-    "roi": -0.1835,
-    "rn": 136,
+    "roi": -0.1614,
+    "rn": 120,
     "stats": {
      "n": 0,
      "s": 0,
      "s2": 0,
      "beat": 0,
-     "rn": 136,
-     "rs": -24.9508,
-     "rs2": 204.5194
+     "rn": 120,
+     "rs": -19.3682,
+     "rs2": 186.9236
     },
     "why": "0 with a close, - shrunk",
     "seasons": {
@@ -1009,6 +982,33 @@
     },
     "family": "stat",
     "label": "fg3 overs"
+   },
+   "kelly2": {
+    "on": false,
+    "strong": false,
+    "n": 0,
+    "ev": null,
+    "evS": null,
+    "beat": null,
+    "roi": 0.0092,
+    "rn": 1531,
+    "stats": {
+     "n": 0,
+     "s": 0,
+     "s2": 0,
+     "beat": 0,
+     "rn": 1531,
+     "rs": 14.0214,
+     "rs2": 1444.8401
+    },
+    "why": "0 with a close, - shrunk",
+    "seasons": {
+     "lead": 0,
+     "of": 0,
+     "pos": 0
+    },
+    "family": "size",
+    "label": "a Kelly score of 2% or more"
    },
    "kelly5": {
     "on": false,
@@ -1044,16 +1044,16 @@
     "ev": null,
     "evS": null,
     "beat": null,
-    "roi": -0.0202,
-    "rn": 45,
+    "roi": 0.031,
+    "rn": 41,
     "stats": {
      "n": 0,
      "s": 0,
      "s2": 0,
      "beat": 0,
-     "rn": 45,
-     "rs": -0.9082,
-     "rs2": 35.3206
+     "rn": 41,
+     "rs": 1.2728,
+     "rs2": 31.64
     },
     "why": "0 with a close, - shrunk",
     "seasons": {
@@ -1100,5 +1100,5 @@
   }
  },
  "k": 100,
- "commit": "d3d7e081"
+ "commit": "c96a1b9c"
 }

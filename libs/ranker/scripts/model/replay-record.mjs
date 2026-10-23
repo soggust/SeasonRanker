@@ -37,6 +37,7 @@ import path from 'node:path';
 import * as WINDOWS from './windows.mjs';
 import * as REASONS from './reasons.mjs';
 import * as SHOP from './best-price.mjs';
+import * as LEAN from './lean.mjs';
 
 export const REPLAY_V = 1;
 export const REPLAY_LAST = 20;
@@ -274,6 +275,8 @@ export function replayRecord(V, sport, rows, { events = null, names = () => ({ h
   const hold = new Map();
   // (D76: the bets whose side clears only at a shopped price, each with its return there)
   const shopOnlyBets = new Map();
+  // (the prop bets' own lean (D82, lean.mjs): how far the Bot's own chance on the side sits under one half)
+  const leanBets = new Map();
   const flags = { open: 0, close: 0, openSeen: 0, openClean: 0, openInWindow: 0, openHeld: 0, closeHeld: 0, barred: 0 };
   const keys = new Set([...opens.keys(), ...closes.keys()]);
   // (the betting windows (DECISIONS.md D63, windows.mjs): a game line's intraday snapshots (rows.intra, D61) beside its
@@ -432,6 +435,10 @@ export function replayRecord(V, sport, rows, { events = null, names = () => ({ h
       }
       bets.push(bet);
       if (sd.book && SHOP.shopOnly?.(sd.pS, sd.odds, sd.over ? x.overOdds : x.underOdds, sd.book)) shopOnlyBets.set(bet, sd.ev);
+      if (x.market === 'prop' && LEAN.leanGap) {
+        const g = LEAN.leanGap(x, sd.over);
+        if (g !== null) leanBets.set(bet, g);
+      }
       flags[placed.timing]++;
     }
   }
@@ -485,6 +492,31 @@ export function replayRecord(V, sport, rows, { events = null, names = () => ({ h
       if (hold.has(b)) hold.get(b).barred = true;
     }
     flags.shopGuard = g;
+  }
+  // (the against-own-lean guard (D82, lean.mjs): a prop bet whose side the Bot's own chance puts under one half by more
+  // than the month's d (walkLean: picked on the against-lean bets settled before the month) is a LIKE at the practice
+  // stake, held there as a barred one. On in LEAN_SPORTS (REPLAY_LEAN=1 every sport, =0 none: measuring only))
+  if (leanBets.size && LEAN.walkLean) {
+    const flatB = (b) => (b.res === 'W' ? dec(b.odds) - 1 : b.res === 'L' ? -1 : 0);
+    const list = [...leanBets].map(([b, g]) => ({ b, t: b.t + GAME_HOURS * 36e5, at: fin(b.at) ? b.at : b.t, g, flat: flatB(b) }));
+    const walk = LEAN.walkLean(list);
+    const env = process.env.REPLAY_LEAN;
+    const on = env === '1' ? true : env === '0' ? false : !!LEAN.leanOn?.(sport);
+    const g = { on, props: list.length, against: list.filter((x) => x.g < 0).length, guarded: 0, flat: 0, before: 0, after: 0, next: walk.final };
+    for (const it of list) {
+      const d = walk.at(it.at);
+      if (d === null || !(it.g < -d)) continue;
+      const b = it.b;
+      g.guarded++;
+      g.flat = r2(g.flat + it.flat);
+      if (!on || b.units <= practiceUnits || hold.get(b)?.barred) continue;
+      const profit = b.units > 0 ? r2((b.profit * practiceUnits) / b.units) : 0;
+      g.before = r2(g.before + b.profit);
+      g.after = r2(g.after + profit);
+      Object.assign(b, { units: practiceUnits, band: 'medium', profit, leanGuard: true });
+      if (hold.has(b)) hold.get(b).barred = true;
+    }
+    flags.leanGuard = g;
   }
   // (the reason tiers (DECISIONS.md D58, reasons.mjs): each bet's reasons, judged walk-forward on the bets settled
   // before its moment (each market's picks flat, recency-weighted), its would-be tier from the proven ones (a LOVE one,
@@ -845,6 +877,7 @@ export function summarize(sport, bets, passed, { epoch, now, flags, rows, season
       ...(flags.shopGuard ? { shopGuard: flags.shopGuard } : {}),
       // (D79, the Bot's own consistent losers: the bets held, their units before and after, each key's record (own-bar.json))
       ...(flags.ownBar ? { ownBar: flags.ownBar } : {}),
+      ...(flags.leanGuard ? { leanGuard: flags.leanGuard } : {}),
       // (the reason tiers (D58): the bets by band and by would-be band, and whether LOVE and LOCK have earned their place)
       ...(flags.tiers ? { tiers: flags.tiers } : {}),
       // (D48, no look-ahead by timestamp: the bets with a factsAt stamp, those past their placement (0), the opens held
