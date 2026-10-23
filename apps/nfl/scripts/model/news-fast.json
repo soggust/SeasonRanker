@@ -4,9 +4,9 @@
   "adamscheftermirror.bsky.social": "2026-10-23T13:04:08.847Z",
   "rapsheet.bsky.social": "2026-10-22T22:13:51.186Z",
   "nflnewsreposterbot.bsky.social": "2026-10-22T13:33:43.592Z",
-  "insidenflnews.bsky.social": "2026-10-23T14:44:28.501Z",
-  "nflnewsposter.bsky.social": "2026-10-23T14:31:56.719Z",
-  "rotoworld-fb.bsky.social": "2026-10-23T15:12:46.000Z",
+  "insidenflnews.bsky.social": "2026-10-23T15:47:42.173Z",
+  "nflnewsposter.bsky.social": "2026-10-23T15:31:50.142Z",
+  "rotoworld-fb.bsky.social": "2026-10-23T15:39:38.000Z",
   "rotowirenfl.bsky.social": "2026-10-23T15:19:30.000Z"
  },
  "claims": [
@@ -3870,6 +3870,58 @@
    "kind": "status",
    "confidence": 0.92,
    "text": "Breece Hall (quad) questionable vs. Dolphins"
+  },
+  {
+   "id": "at://did:plc:fuqjc7x4gxvnwzksnlxwbe4x/app.bsky.feed.post/3mykiqx42xs2m|colekmet|out|status",
+   "at": "2026-10-23T15:31:50.142Z",
+   "seen": "2026-10-23T15:48:39.934Z",
+   "handle": "nflnewsposter.bsky.social",
+   "post": "at://did:plc:fuqjc7x4gxvnwzksnlxwbe4x/app.bsky.feed.post/3mykiqx42xs2m",
+   "player": "Cole Kmet",
+   "team": "CHI",
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.5,
+   "text": "[Rapoport] #Bears TE Cole Kmet, who was carted off in last night's win over the #Patriots, is believed to have suffered a serious, likely season-ending knee injury, sources say.\n\nKmet is undergoing te"
+  },
+  {
+   "id": "at://did:plc:mbr4badgf6yu56mquzackzew/app.bsky.feed.post/3mykirfg74s22|colekmet|out|status",
+   "at": "2026-10-23T15:32:05.159Z",
+   "seen": "2026-10-23T15:48:39.934Z",
+   "handle": "insidenflnews.bsky.social",
+   "post": "at://did:plc:mbr4badgf6yu56mquzackzew/app.bsky.feed.post/3mykirfg74s22",
+   "player": "Cole Kmet",
+   "team": "CHI",
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.4,
+   "text": "Rap: Bears TE Cole Kmet is believed to have suffered a likely season-ending knee injury."
+  },
+  {
+   "id": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3mykj6wc2vy26|egbuka|limited|status",
+   "at": "2026-10-23T15:39:38.000Z",
+   "seen": "2026-10-23T15:48:39.934Z",
+   "handle": "rotoworld-fb.bsky.social",
+   "post": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3mykj6wc2vy26",
+   "player": "Egbuka",
+   "team": "TB",
+   "status": "limited",
+   "kind": "status",
+   "confidence": 0.35,
+   "text": "Egbuka (concussion/foot) practicing Friday"
+  },
+  {
+   "id": "at://did:plc:mbr4badgf6yu56mquzackzew/app.bsky.feed.post/3mykjnczluc22|davidmontgomery|out|status",
+   "at": "2026-10-23T15:47:42.173Z",
+   "seen": "2026-10-23T15:48:39.934Z",
+   "handle": "insidenflnews.bsky.social",
+   "post": "at://did:plc:mbr4badgf6yu56mquzackzew/app.bsky.feed.post/3mykjnczluc22",
+   "player": "David Montgomery",
+   "team": "HOU",
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.95,
+   "text": "Texans RB David Montgomery (groin) won't play in Week 7, per Aaron Wilson."
   }
  ]
 }

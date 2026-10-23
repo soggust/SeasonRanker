@@ -3,8 +3,8 @@
  "cursor": {
   "johnston-bot.bsky.social": "2026-10-22T22:07:46.359Z",
   "notfriedgehnic.bsky.social": "2026-10-23T15:20:14.003Z",
-  "dailyfaceoff.bsky.social": "2026-10-23T15:11:42.000Z",
-  "dfotoronto.bsky.social": "2026-10-23T13:58:04.000Z",
+  "dailyfaceoff.bsky.social": "2026-10-23T15:48:12.000Z",
+  "dfotoronto.bsky.social": "2026-10-23T15:32:36.000Z",
   "marklazerus.bsky.social": "2026-10-23T14:30:44.378Z"
  },
  "claims": [
@@ -501,6 +501,19 @@
    "kind": "status",
    "confidence": 0.95,
    "text": "Oilers’ Mattias Ekholm out at least one week with upper-body injury"
+  },
+  {
+   "id": "at://did:plc:3uus7y6h3rlrk6sbctzxm4bg/app.bsky.feed.post/3mykjo7z3qv2g|vincentdesharnais|out|status",
+   "at": "2026-10-23T15:48:12.000Z",
+   "seen": "2026-10-23T15:48:39.934Z",
+   "handle": "dailyfaceoff.bsky.social",
+   "post": "at://did:plc:3uus7y6h3rlrk6sbctzxm4bg/app.bsky.feed.post/3mykjo7z3qv2g",
+   "player": "Vincent Desharnais",
+   "team": "WSH",
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.9,
+   "text": "Capitals’ Vincent Desharnais out 4-6 weeks after emergency appendectomy"
   }
  ]
 }
