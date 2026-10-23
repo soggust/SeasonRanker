@@ -4,9 +4,9 @@
   "adamscheftermirror.bsky.social": "2026-10-23T01:17:44.540Z",
   "rapsheet.bsky.social": "2026-10-22T22:13:51.186Z",
   "nflnewsreposterbot.bsky.social": "2026-10-22T13:33:43.592Z",
-  "insidenflnews.bsky.social": "2026-10-23T02:37:37.578Z",
-  "nflnewsposter.bsky.social": "2026-10-23T02:51:38.325Z",
-  "rotoworld-fb.bsky.social": "2026-10-22T23:16:50.000Z",
+  "insidenflnews.bsky.social": "2026-10-23T03:16:52.301Z",
+  "nflnewsposter.bsky.social": "2026-10-23T03:15:51.935Z",
+  "rotoworld-fb.bsky.social": "2026-10-23T03:09:26.000Z",
   "rotowirenfl.bsky.social": "2026-10-22T23:33:05.000Z"
  },
  "claims": [
@@ -3701,6 +3701,19 @@
    "kind": "status",
    "confidence": 0.9,
    "text": "Jaylen Waddle: Logs limited practice Thursday \n\n https://www.rotowire.com/football/player/jaylen-waddle-15404"
+  },
+  {
+   "id": "at://did:plc:fuqjc7x4gxvnwzksnlxwbe4x/app.bsky.feed.post/3myj76zouwkg3|colekmet|out|status",
+   "at": "2026-10-23T03:08:05.466Z",
+   "seen": "2026-10-23T03:22:45.339Z",
+   "handle": "nflnewsposter.bsky.social",
+   "post": "at://did:plc:fuqjc7x4gxvnwzksnlxwbe4x/app.bsky.feed.post/3myj76zouwkg3",
+   "player": "Cole Kmet",
+   "team": "CHI",
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.95,
+   "text": "[Bears] Bears TE Cole Kmet (Knee) has been ruled Out. twitter.com/BearsPR/stat..."
   }
  ]
 }

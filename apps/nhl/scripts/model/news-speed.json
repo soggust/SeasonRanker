@@ -3634,6 +3634,30 @@
     "seen": "2026-10-23T01:50:43.247Z",
     "own": "2026-10-23T01:42:00.000Z"
    }
+  },
+  "401892564|marshallrifai|out": {
+   "game": "401892564",
+   "start": "2026-10-24T00:00Z",
+   "team": "4",
+   "name": "Marshall Rifai",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-10-23T03:01:36.326Z",
+    "own": "2026-10-23T02:57:43.000Z",
+    "why": "@dfotoronto.bsky.social: Marshall Rifai is out week-to-week with a lower-body in"
+   }
+  },
+  "401892565|marshallrifai|out": {
+   "game": "401892565",
+   "start": "2026-10-24T01:00Z",
+   "team": "17",
+   "name": "Marshall Rifai",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-10-23T03:01:36.326Z",
+    "own": "2026-10-23T02:57:43.000Z",
+    "why": "@dfotoronto.bsky.social: Marshall Rifai is out week-to-week with a lower-body in"
+   }
   }
  }
 }

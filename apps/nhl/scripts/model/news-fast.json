@@ -3,9 +3,9 @@
  "cursor": {
   "johnston-bot.bsky.social": "2026-10-22T22:07:46.359Z",
   "notfriedgehnic.bsky.social": "2026-10-22T18:09:57.172Z",
-  "dailyfaceoff.bsky.social": "2026-10-23T01:01:45.000Z",
-  "dfotoronto.bsky.social": "2026-10-23T02:57:43.000Z",
-  "marklazerus.bsky.social": "2026-10-23T01:30:25.014Z"
+  "dailyfaceoff.bsky.social": "2026-10-23T03:19:44.000Z",
+  "dfotoronto.bsky.social": "2026-10-23T03:07:27.000Z",
+  "marklazerus.bsky.social": "2026-10-23T03:20:05.046Z"
  },
  "claims": [
   {
@@ -462,6 +462,32 @@
    "kind": "status",
    "confidence": 0.9,
    "text": "Marshall Rifai is out week-to-week with a lower-body injury and will be placed on IR"
+  },
+  {
+   "id": "at://did:plc:knaj2vcp4x6t7hr7ewd6e3uz/app.bsky.feed.post/3myj75vgglb2e|marshallrifai|out|status",
+   "at": "2026-10-23T03:07:27.000Z",
+   "seen": "2026-10-23T03:22:45.339Z",
+   "handle": "dfotoronto.bsky.social",
+   "post": "at://did:plc:knaj2vcp4x6t7hr7ewd6e3uz/app.bsky.feed.post/3myj75vgglb2e",
+   "player": "Marshall Rifai",
+   "team": "TOR",
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.95,
+   "text": "Maple Leafs to place Marshall Rifai on IR, week-to-week with lower-body injury"
+  },
+  {
+   "id": "at://did:plc:3uus7y6h3rlrk6sbctzxm4bg/app.bsky.feed.post/3myj7tu5bhp2j|marshallrifai|out|status",
+   "at": "2026-10-23T03:19:44.000Z",
+   "seen": "2026-10-23T03:22:45.339Z",
+   "handle": "dailyfaceoff.bsky.social",
+   "post": "at://did:plc:3uus7y6h3rlrk6sbctzxm4bg/app.bsky.feed.post/3myj7tu5bhp2j",
+   "player": "Marshall Rifai",
+   "team": "TOR",
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.97,
+   "text": "Leafs’ Marshall Rifai placed on IR, week-to-week with lower-body injury"
   }
  ]
 }
