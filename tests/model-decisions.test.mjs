@@ -1442,7 +1442,7 @@ test('D68 the fast lane: the watcher every minute; news on one game dispatches t
   assert.match(wf, /restore-keys: model-desk-/);
   assert.match(wf, /run-name: "Model desk fast: \$\{\{ inputs\.sport \}\} \$\{\{ inputs\.game \}\}"/);
   assert.ok(!/ANTHROPIC_API_KEY|CHECK_RESEARCH|--replace|--refit|odds-history\.mjs/.test(wf), 'no AI step, no re-price of everything, no refit, no snapshot');
-  assert.match(wf, /git pull --rebase && git push/);
+  assert.match(wf, /git pull --rebase( --autostash)? && git push/);
   assert.match(wf, /LIVE_DATA_SOFT: "1"/);
   assert.match(fs.readFileSync(path.resolve('.github/workflows/model-desk.yml'), 'utf8'), /concurrency:\s*\n\s*group: model-desk\s*\n/);
   // (run.mjs: the fast run never refits the props, buys no lines, prices no line, takes back only its game's props, isn't in the cadence)
