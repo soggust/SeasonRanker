@@ -4,7 +4,7 @@
   "johnston-bot.bsky.social": "2026-10-22T22:07:46.359Z",
   "notfriedgehnic.bsky.social": "2026-10-22T18:09:57.172Z",
   "dailyfaceoff.bsky.social": "2026-10-23T01:01:45.000Z",
-  "dfotoronto.bsky.social": "2026-10-23T02:18:14.000Z",
+  "dfotoronto.bsky.social": "2026-10-23T02:57:43.000Z",
   "marklazerus.bsky.social": "2026-10-23T01:30:25.014Z"
  },
  "claims": [
@@ -449,6 +449,19 @@
    "kind": "status",
    "confidence": 0.4,
    "text": "Sharks’ Igor Chernyshov leaves game with injury"
+  },
+  {
+   "id": "at://did:plc:knaj2vcp4x6t7hr7ewd6e3uz/app.bsky.feed.post/3myj6mijtxu2x|marshallrifai|out|status",
+   "at": "2026-10-23T02:57:43.000Z",
+   "seen": "2026-10-23T03:01:36.326Z",
+   "handle": "dfotoronto.bsky.social",
+   "post": "at://did:plc:knaj2vcp4x6t7hr7ewd6e3uz/app.bsky.feed.post/3myj6mijtxu2x",
+   "player": "Marshall Rifai",
+   "team": null,
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.9,
+   "text": "Marshall Rifai is out week-to-week with a lower-body injury and will be placed on IR"
   }
  ]
 }
