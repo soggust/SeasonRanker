@@ -3,7 +3,7 @@
  "cursor": {
   "johnston-bot.bsky.social": "2026-10-22T22:07:46.359Z",
   "notfriedgehnic.bsky.social": "2026-10-23T04:19:43.716Z",
-  "dailyfaceoff.bsky.social": "2026-10-23T05:52:43.000Z",
+  "dailyfaceoff.bsky.social": "2026-10-23T06:28:30.000Z",
   "dfotoronto.bsky.social": "2026-10-23T03:07:27.000Z",
   "marklazerus.bsky.social": "2026-10-23T03:20:05.046Z"
  },
@@ -488,6 +488,19 @@
    "kind": "status",
    "confidence": 0.97,
    "text": "Leafs’ Marshall Rifai placed on IR, week-to-week with lower-body injury"
+  },
+  {
+   "id": "at://did:plc:3uus7y6h3rlrk6sbctzxm4bg/app.bsky.feed.post/3myjkfg44h62i|mattiasekholm|out|status",
+   "at": "2026-10-23T06:28:30.000Z",
+   "seen": "2026-10-23T06:41:45.424Z",
+   "handle": "dailyfaceoff.bsky.social",
+   "post": "at://did:plc:3uus7y6h3rlrk6sbctzxm4bg/app.bsky.feed.post/3myjkfg44h62i",
+   "player": "Mattias Ekholm",
+   "team": "EDM",
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.95,
+   "text": "Oilers’ Mattias Ekholm out at least one week with upper-body injury"
   }
  ]
 }
