@@ -2124,6 +2124,11 @@
    "espn": {
     "seen": "2026-10-20T16:20:51.413Z",
     "own": "2026-10-20T16:10:00.000Z"
+   },
+   "bluesky": {
+    "seen": "2026-10-23T14:52:12.388Z",
+    "own": "2026-10-23T14:44:28.501Z",
+    "why": "@insidenflnews.bsky.social: Jets RB Breece Hall (quad) will be questionable for "
    }
   },
   "401873018|seantucker|q": {
@@ -5235,6 +5240,18 @@
     "seen": "2026-10-23T12:59:32.424Z",
     "own": "2026-10-23T12:40:09.000Z",
     "why": "@rotoworld-fb.bsky.social: Rico Dowdle (knee) questionable for Week 7"
+   }
+  },
+  "401873015|maxmitchell|out": {
+   "game": "401873015",
+   "start": "2026-10-25T17:00Z",
+   "team": "20",
+   "name": "Max Mitchell",
+   "status": "out",
+   "athlete": "4373656",
+   "espn": {
+    "seen": "2026-10-23T15:25:00.742Z",
+    "own": "2026-10-23T01:32:00.000Z"
    }
   }
  }

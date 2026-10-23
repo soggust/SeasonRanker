@@ -3658,6 +3658,234 @@
     "own": "2026-10-23T02:57:43.000Z",
     "why": "@dfotoronto.bsky.social: Marshall Rifai is out week-to-week with a lower-body in"
    }
+  },
+  "401892572|mitchmarner|out": {
+   "game": "401892572",
+   "start": "2026-10-24T23:00Z",
+   "team": "37",
+   "name": "Mitch Marner",
+   "status": "out",
+   "athlete": "3899937",
+   "espn": {
+    "seen": "2026-10-23T15:26:03.163Z",
+    "own": "2026-10-22T23:33:00.000Z"
+   }
+  },
+  "401892572|parkerwotherspoon|out": {
+   "game": "401892572",
+   "start": "2026-10-24T23:00Z",
+   "team": "37",
+   "name": "Parker Wotherspoon",
+   "status": "out",
+   "athlete": "3942638",
+   "espn": {
+    "seen": "2026-10-23T15:26:03.163Z",
+    "own": "2026-10-21T19:24:00.000Z"
+   }
+  },
+  "401892574|mattiasekholm|out": {
+   "game": "401892574",
+   "start": "2026-10-24T23:00Z",
+   "team": "6",
+   "name": "Mattias Ekholm",
+   "status": "out",
+   "athlete": "2558631",
+   "espn": {
+    "seen": "2026-10-23T15:26:03.163Z",
+    "own": "2026-10-23T04:29:00.000Z"
+   }
+  },
+  "401892574|jasondickinson|out": {
+   "game": "401892574",
+   "start": "2026-10-24T23:00Z",
+   "team": "6",
+   "name": "Jason Dickinson",
+   "status": "out",
+   "athlete": "3042062",
+   "espn": {
+    "seen": "2026-10-23T15:26:03.163Z",
+    "own": "2026-10-22T21:06:00.000Z"
+   }
+  },
+  "401892574|alecregula|out": {
+   "game": "401892574",
+   "start": "2026-10-24T23:00Z",
+   "team": "6",
+   "name": "Alec Regula",
+   "status": "out",
+   "athlete": "4331611",
+   "espn": {
+    "seen": "2026-10-23T15:26:03.163Z",
+    "own": "2026-10-01T14:11:00.000Z"
+   }
+  },
+  "401892574|mattsavoie|out": {
+   "game": "401892574",
+   "start": "2026-10-24T23:00Z",
+   "team": "6",
+   "name": "Matt Savoie",
+   "status": "out",
+   "athlete": "5080153",
+   "espn": {
+    "seen": "2026-10-23T15:26:03.163Z",
+    "own": "2026-10-01T14:05:00.000Z"
+   }
+  },
+  "401892574|frederikandersen|out": {
+   "game": "401892574",
+   "start": "2026-10-24T23:00Z",
+   "team": "6",
+   "name": "Frederik Andersen",
+   "status": "out",
+   "athlete": "2517899",
+   "espn": {
+    "seen": "2026-10-23T15:26:03.163Z",
+    "own": "2026-09-29T17:53:00.000Z"
+   }
+  },
+  "401892574|mattiasjanmark|out": {
+   "game": "401892574",
+   "start": "2026-10-24T23:00Z",
+   "team": "6",
+   "name": "Mattias Janmark",
+   "status": "out",
+   "athlete": "3042085",
+   "espn": {
+    "seen": "2026-10-23T15:26:03.163Z",
+    "own": "2026-09-29T17:52:00.000Z"
+   }
+  },
+  "401892574|atroleppanen|out": {
+   "game": "401892574",
+   "start": "2026-10-24T23:00Z",
+   "team": "6",
+   "name": "Atro Leppanen",
+   "status": "out",
+   "athlete": "5278661",
+   "espn": {
+    "seen": "2026-10-23T15:26:03.163Z",
+    "own": "2026-09-29T16:22:00.000Z"
+   }
+  },
+  "401892574|nickblankenburg|q": {
+   "game": "401892574",
+   "start": "2026-10-24T23:00Z",
+   "team": "21",
+   "name": "Nick Blankenburg",
+   "status": "q",
+   "athlete": "4781550",
+   "espn": {
+    "seen": "2026-10-23T15:26:03.163Z",
+    "own": "2026-10-23T02:52:00.000Z"
+   }
+  },
+  "401892574|marshallrifai|out": {
+   "game": "401892574",
+   "start": "2026-10-24T23:00Z",
+   "team": "21",
+   "name": "Marshall Rifai",
+   "status": "out",
+   "athlete": "4419778",
+   "espn": {
+    "seen": "2026-10-23T15:26:03.163Z",
+    "own": "2026-10-23T02:22:00.000Z"
+   }
+  },
+  "401892574|johntavares|out": {
+   "game": "401892574",
+   "start": "2026-10-24T23:00Z",
+   "team": "21",
+   "name": "John Tavares",
+   "status": "out",
+   "athlete": "5160",
+   "espn": {
+    "seen": "2026-10-23T15:26:03.163Z",
+    "own": "2026-10-17T20:19:00.000Z"
+   }
+  },
+  "401892574|dakotajoshua|out": {
+   "game": "401892574",
+   "start": "2026-10-24T23:00Z",
+   "team": "21",
+   "name": "Dakota Joshua",
+   "status": "out",
+   "athlete": "4588638",
+   "espn": {
+    "seen": "2026-10-23T15:26:03.163Z",
+    "own": "2026-10-17T14:02:00.000Z"
+   }
+  },
+  "401892574|mileswood|out": {
+   "game": "401892574",
+   "start": "2026-10-24T23:00Z",
+   "team": "21",
+   "name": "Miles Wood",
+   "status": "out",
+   "athlete": "3042110",
+   "espn": {
+    "seen": "2026-10-23T15:26:03.163Z",
+    "own": "2026-10-15T22:35:00.000Z"
+   }
+  },
+  "401892574|christanev|out": {
+   "game": "401892574",
+   "start": "2026-10-24T23:00Z",
+   "team": "21",
+   "name": "Chris Tanev",
+   "status": "out",
+   "athlete": "5592",
+   "espn": {
+    "seen": "2026-10-23T15:26:03.163Z",
+    "own": "2026-10-15T14:30:00.000Z"
+   }
+  },
+  "401892574|maxdomi|out": {
+   "game": "401892574",
+   "start": "2026-10-24T23:00Z",
+   "team": "21",
+   "name": "Max Domi",
+   "status": "out",
+   "athlete": "3042014",
+   "espn": {
+    "seen": "2026-10-23T15:26:03.163Z",
+    "own": "2026-09-30T18:51:00.000Z"
+   }
+  },
+  "401892574|cadewebber|out": {
+   "game": "401892574",
+   "start": "2026-10-24T23:00Z",
+   "team": "21",
+   "name": "Cade Webber",
+   "status": "out",
+   "athlete": "4781709",
+   "espn": {
+    "seen": "2026-10-23T15:26:03.163Z",
+    "own": "2026-09-29T14:55:00.000Z"
+   }
+  },
+  "401892574|elvismerzlikins|out": {
+   "game": "401892574",
+   "start": "2026-10-24T23:00Z",
+   "team": "21",
+   "name": "Elvis Merzlikins",
+   "status": "out",
+   "athlete": "3151038",
+   "espn": {
+    "seen": "2026-10-23T15:26:03.163Z",
+    "own": "2026-09-29T14:24:00.000Z"
+   }
+  },
+  "401892574|williamvilleneuve|out": {
+   "game": "401892574",
+   "start": "2026-10-24T23:00Z",
+   "team": "21",
+   "name": "William Villeneuve",
+   "status": "out",
+   "athlete": "4697767",
+   "espn": {
+    "seen": "2026-10-23T15:26:03.163Z",
+    "own": "2026-09-29T04:30:00.000Z"
+   }
   }
  }
 }
