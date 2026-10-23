@@ -4,9 +4,9 @@
   "adamscheftermirror.bsky.social": "2026-10-23T13:04:08.847Z",
   "rapsheet.bsky.social": "2026-10-22T22:13:51.186Z",
   "nflnewsreposterbot.bsky.social": "2026-10-22T13:33:43.592Z",
-  "insidenflnews.bsky.social": "2026-10-23T14:11:43.763Z",
-  "nflnewsposter.bsky.social": "2026-10-23T14:20:35.494Z",
-  "rotoworld-fb.bsky.social": "2026-10-23T13:51:58.000Z",
+  "insidenflnews.bsky.social": "2026-10-23T14:44:28.501Z",
+  "nflnewsposter.bsky.social": "2026-10-23T14:31:56.719Z",
+  "rotoworld-fb.bsky.social": "2026-10-23T14:32:29.000Z",
   "rotowirenfl.bsky.social": "2026-10-23T13:31:02.000Z"
  },
  "claims": [
@@ -3779,6 +3779,58 @@
    "kind": "status",
    "confidence": 0.5,
    "text": "Baker Mayfield will wear a custom glove for his injured right hand in Week 7.\n\nThe glove was invented by Tampa Bay Rays home clubhouse attendant Nick Bond, who took a receiver’s glove and ripped off t"
+  },
+  {
+   "id": "at://did:plc:fuqjc7x4gxvnwzksnlxwbe4x/app.bsky.feed.post/3mykffu5guk2g|antonharrison|out|status",
+   "at": "2026-10-23T14:31:56.719Z",
+   "seen": "2026-10-23T14:52:12.388Z",
+   "handle": "nflnewsposter.bsky.social",
+   "post": "at://did:plc:fuqjc7x4gxvnwzksnlxwbe4x/app.bsky.feed.post/3mykffu5guk2g",
+   "player": "Anton Harrison",
+   "team": "JAX",
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.97,
+   "text": "[Rapoport] Jaguars starting LT Anton Harrison was revealed to have suffered a torn ACL during his surgery yesterday. \n\nThe hope was just an arthroscopic procedure, but instead there was more damage. H"
+  },
+  {
+   "id": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3mykfgtvpy72t|alvinkamara|active|status",
+   "at": "2026-10-23T14:32:29.000Z",
+   "seen": "2026-10-23T14:52:12.388Z",
+   "handle": "rotoworld-fb.bsky.social",
+   "post": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3mykfgtvpy72t",
+   "player": "Alvin Kamara",
+   "team": null,
+   "status": "active",
+   "kind": "status",
+   "confidence": 0.8,
+   "text": "Kamara (back) off injury report for Week 7"
+  },
+  {
+   "id": "at://did:plc:mbr4badgf6yu56mquzackzew/app.bsky.feed.post/3mykg35d67k22|adonaimitchell|active|status",
+   "at": "2026-10-23T14:43:50.989Z",
+   "seen": "2026-10-23T14:52:12.388Z",
+   "handle": "insidenflnews.bsky.social",
+   "post": "at://did:plc:mbr4badgf6yu56mquzackzew/app.bsky.feed.post/3mykg35d67k22",
+   "player": "Adonai Mitchell",
+   "team": "NYJ",
+   "status": "active",
+   "kind": "status",
+   "confidence": 0.93,
+   "text": "Jets WR Adonai Mitchell (finger) will play in Week 7."
+  },
+  {
+   "id": "at://did:plc:mbr4badgf6yu56mquzackzew/app.bsky.feed.post/3mykg4b3v3222|breecehall|questionable|status",
+   "at": "2026-10-23T14:44:28.501Z",
+   "seen": "2026-10-23T14:52:12.388Z",
+   "handle": "insidenflnews.bsky.social",
+   "post": "at://did:plc:mbr4badgf6yu56mquzackzew/app.bsky.feed.post/3mykg4b3v3222",
+   "player": "Breece Hall",
+   "team": "NYJ",
+   "status": "questionable",
+   "kind": "status",
+   "confidence": 0.93,
+   "text": "Jets RB Breece Hall (quad) will be questionable for Week 7."
   }
  ]
 }
