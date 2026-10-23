@@ -3854,6 +3854,11 @@
    "espn": {
     "seen": "2026-10-22T06:13:34.081Z",
     "own": "2026-10-22T04:55:00.000Z"
+   },
+   "bluesky": {
+    "seen": "2026-10-23T00:29:18.410Z",
+    "own": "2026-10-23T00:04:47.000Z",
+    "why": "@rotowirenba.bsky.social: Brandin Podziemski: Questionable to play Friday \n\n htt"
    }
   },
   "401909850|charlesbassey|q": {
@@ -3914,6 +3919,11 @@
    "espn": {
     "seen": "2026-10-22T06:13:34.081Z",
     "own": "2026-10-22T03:44:00.000Z"
+   },
+   "bluesky": {
+    "seen": "2026-10-23T00:29:18.410Z",
+    "own": "2026-10-23T00:16:08.000Z",
+    "why": "@rotowirenba.bsky.social: Isaiah Stewart: Tagged questionable for Friday \n\n http"
    }
   },
   "401909851|adouthiero|q": {
@@ -4931,6 +4941,450 @@
    "espn": {
     "seen": "2026-10-23T00:27:36.035Z",
     "own": "2026-10-23T00:08:00.000Z"
+   }
+  },
+  "401909094|isaiahstewart|q": {
+   "game": "401909094",
+   "start": "2026-10-23T01:30Z",
+   "team": "25",
+   "name": "Isaiah Stewart",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-10-23T00:29:18.410Z",
+    "own": "2026-10-23T00:16:08.000Z",
+    "why": "@rotowirenba.bsky.social: Isaiah Stewart: Tagged questionable for Friday \n\n http"
+   }
+  },
+  "401909094|brandinpodziemski|q": {
+   "game": "401909094",
+   "start": "2026-10-23T01:30Z",
+   "team": "25",
+   "name": "Brandin Podziemski",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-10-23T00:29:18.410Z",
+    "own": "2026-10-23T00:04:47.000Z",
+    "why": "@rotowirenba.bsky.social: Brandin Podziemski: Questionable to play Friday \n\n htt"
+   }
+  },
+  "401909094|cedriccoward|out": {
+   "game": "401909094",
+   "start": "2026-10-23T01:30Z",
+   "team": "25",
+   "name": "Cedric Coward",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-10-23T00:29:18.410Z",
+    "own": "2026-10-23T00:21:39.000Z",
+    "why": "@rotowirenba.bsky.social: Cedric Coward: Doubtful for Friday \n\n https://www.roto"
+   }
+  },
+  "401909848|brandinpodziemski|q": {
+   "game": "401909848",
+   "start": "2026-10-23T20:00Z",
+   "team": "15",
+   "name": "Brandin Podziemski",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-10-23T00:29:18.410Z",
+    "own": "2026-10-23T00:04:47.000Z",
+    "why": "@rotowirenba.bsky.social: Brandin Podziemski: Questionable to play Friday \n\n htt"
+   }
+  },
+  "401909848|isaiahstewart|q": {
+   "game": "401909848",
+   "start": "2026-10-23T20:00Z",
+   "team": "15",
+   "name": "Isaiah Stewart",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-10-23T00:29:18.410Z",
+    "own": "2026-10-23T00:16:08.000Z",
+    "why": "@rotowirenba.bsky.social: Isaiah Stewart: Tagged questionable for Friday \n\n http"
+   }
+  },
+  "401909848|cedriccoward|out": {
+   "game": "401909848",
+   "start": "2026-10-23T20:00Z",
+   "team": "15",
+   "name": "Cedric Coward",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-10-23T00:29:18.410Z",
+    "own": "2026-10-23T00:21:39.000Z",
+    "why": "@rotowirenba.bsky.social: Cedric Coward: Doubtful for Friday \n\n https://www.roto"
+   }
+  },
+  "401909095|brandinpodziemski|q": {
+   "game": "401909095",
+   "start": "2026-10-23T23:00Z",
+   "team": "2",
+   "name": "Brandin Podziemski",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-10-23T00:29:18.410Z",
+    "own": "2026-10-23T00:04:47.000Z",
+    "why": "@rotowirenba.bsky.social: Brandin Podziemski: Questionable to play Friday \n\n htt"
+   }
+  },
+  "401909095|isaiahstewart|q": {
+   "game": "401909095",
+   "start": "2026-10-23T23:00Z",
+   "team": "2",
+   "name": "Isaiah Stewart",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-10-23T00:29:18.410Z",
+    "own": "2026-10-23T00:16:08.000Z",
+    "why": "@rotowirenba.bsky.social: Isaiah Stewart: Tagged questionable for Friday \n\n http"
+   }
+  },
+  "401909095|cedriccoward|out": {
+   "game": "401909095",
+   "start": "2026-10-23T23:00Z",
+   "team": "2",
+   "name": "Cedric Coward",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-10-23T00:29:18.410Z",
+    "own": "2026-10-23T00:21:39.000Z",
+    "why": "@rotowirenba.bsky.social: Cedric Coward: Doubtful for Friday \n\n https://www.roto"
+   }
+  },
+  "401909843|brandinpodziemski|q": {
+   "game": "401909843",
+   "start": "2026-10-23T23:00Z",
+   "team": "30",
+   "name": "Brandin Podziemski",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-10-23T00:29:18.410Z",
+    "own": "2026-10-23T00:04:47.000Z",
+    "why": "@rotowirenba.bsky.social: Brandin Podziemski: Questionable to play Friday \n\n htt"
+   }
+  },
+  "401909843|isaiahstewart|q": {
+   "game": "401909843",
+   "start": "2026-10-23T23:00Z",
+   "team": "30",
+   "name": "Isaiah Stewart",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-10-23T00:29:18.410Z",
+    "own": "2026-10-23T00:16:08.000Z",
+    "why": "@rotowirenba.bsky.social: Isaiah Stewart: Tagged questionable for Friday \n\n http"
+   }
+  },
+  "401909843|cedriccoward|out": {
+   "game": "401909843",
+   "start": "2026-10-23T23:00Z",
+   "team": "30",
+   "name": "Cedric Coward",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-10-23T00:29:18.410Z",
+    "own": "2026-10-23T00:21:39.000Z",
+    "why": "@rotowirenba.bsky.social: Cedric Coward: Doubtful for Friday \n\n https://www.roto"
+   }
+  },
+  "401909844|brandinpodziemski|q": {
+   "game": "401909844",
+   "start": "2026-10-23T23:00Z",
+   "team": "11",
+   "name": "Brandin Podziemski",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-10-23T00:29:18.410Z",
+    "own": "2026-10-23T00:04:47.000Z",
+    "why": "@rotowirenba.bsky.social: Brandin Podziemski: Questionable to play Friday \n\n htt"
+   }
+  },
+  "401909844|isaiahstewart|q": {
+   "game": "401909844",
+   "start": "2026-10-23T23:00Z",
+   "team": "11",
+   "name": "Isaiah Stewart",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-10-23T00:29:18.410Z",
+    "own": "2026-10-23T00:16:08.000Z",
+    "why": "@rotowirenba.bsky.social: Isaiah Stewart: Tagged questionable for Friday \n\n http"
+   }
+  },
+  "401909844|cedriccoward|out": {
+   "game": "401909844",
+   "start": "2026-10-23T23:00Z",
+   "team": "11",
+   "name": "Cedric Coward",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-10-23T00:29:18.410Z",
+    "own": "2026-10-23T00:21:39.000Z",
+    "why": "@rotowirenba.bsky.social: Cedric Coward: Doubtful for Friday \n\n https://www.roto"
+   }
+  },
+  "401909845|brandinpodziemski|q": {
+   "game": "401909845",
+   "start": "2026-10-23T23:00Z",
+   "team": "19",
+   "name": "Brandin Podziemski",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-10-23T00:29:18.410Z",
+    "own": "2026-10-23T00:04:47.000Z",
+    "why": "@rotowirenba.bsky.social: Brandin Podziemski: Questionable to play Friday \n\n htt"
+   }
+  },
+  "401909845|isaiahstewart|q": {
+   "game": "401909845",
+   "start": "2026-10-23T23:00Z",
+   "team": "19",
+   "name": "Isaiah Stewart",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-10-23T00:29:18.410Z",
+    "own": "2026-10-23T00:16:08.000Z",
+    "why": "@rotowirenba.bsky.social: Isaiah Stewart: Tagged questionable for Friday \n\n http"
+   }
+  },
+  "401909845|cedriccoward|out": {
+   "game": "401909845",
+   "start": "2026-10-23T23:00Z",
+   "team": "19",
+   "name": "Cedric Coward",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-10-23T00:29:18.410Z",
+    "own": "2026-10-23T00:21:39.000Z",
+    "why": "@rotowirenba.bsky.social: Cedric Coward: Doubtful for Friday \n\n https://www.roto"
+   }
+  },
+  "401909846|brandinpodziemski|q": {
+   "game": "401909846",
+   "start": "2026-10-23T23:00Z",
+   "team": "27",
+   "name": "Brandin Podziemski",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-10-23T00:29:18.410Z",
+    "own": "2026-10-23T00:04:47.000Z",
+    "why": "@rotowirenba.bsky.social: Brandin Podziemski: Questionable to play Friday \n\n htt"
+   }
+  },
+  "401909846|isaiahstewart|q": {
+   "game": "401909846",
+   "start": "2026-10-23T23:00Z",
+   "team": "27",
+   "name": "Isaiah Stewart",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-10-23T00:29:18.410Z",
+    "own": "2026-10-23T00:16:08.000Z",
+    "why": "@rotowirenba.bsky.social: Isaiah Stewart: Tagged questionable for Friday \n\n http"
+   }
+  },
+  "401909846|cedriccoward|out": {
+   "game": "401909846",
+   "start": "2026-10-23T23:00Z",
+   "team": "27",
+   "name": "Cedric Coward",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-10-23T00:29:18.410Z",
+    "own": "2026-10-23T00:21:39.000Z",
+    "why": "@rotowirenba.bsky.social: Cedric Coward: Doubtful for Friday \n\n https://www.roto"
+   }
+  },
+  "401909847|brandinpodziemski|q": {
+   "game": "401909847",
+   "start": "2026-10-24T00:00Z",
+   "team": "14",
+   "name": "Brandin Podziemski",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-10-23T00:29:18.410Z",
+    "own": "2026-10-23T00:04:47.000Z",
+    "why": "@rotowirenba.bsky.social: Brandin Podziemski: Questionable to play Friday \n\n htt"
+   }
+  },
+  "401909847|isaiahstewart|q": {
+   "game": "401909847",
+   "start": "2026-10-24T00:00Z",
+   "team": "14",
+   "name": "Isaiah Stewart",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-10-23T00:29:18.410Z",
+    "own": "2026-10-23T00:16:08.000Z",
+    "why": "@rotowirenba.bsky.social: Isaiah Stewart: Tagged questionable for Friday \n\n http"
+   }
+  },
+  "401909847|cedriccoward|out": {
+   "game": "401909847",
+   "start": "2026-10-24T00:00Z",
+   "team": "14",
+   "name": "Cedric Coward",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-10-23T00:29:18.410Z",
+    "own": "2026-10-23T00:21:39.000Z",
+    "why": "@rotowirenba.bsky.social: Cedric Coward: Doubtful for Friday \n\n https://www.roto"
+   }
+  },
+  "401909096|brandinpodziemski|q": {
+   "game": "401909096",
+   "start": "2026-10-24T01:30Z",
+   "team": "24",
+   "name": "Brandin Podziemski",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-10-23T00:29:18.410Z",
+    "own": "2026-10-23T00:04:47.000Z",
+    "why": "@rotowirenba.bsky.social: Brandin Podziemski: Questionable to play Friday \n\n htt"
+   }
+  },
+  "401909096|isaiahstewart|q": {
+   "game": "401909096",
+   "start": "2026-10-24T01:30Z",
+   "team": "24",
+   "name": "Isaiah Stewart",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-10-23T00:29:18.410Z",
+    "own": "2026-10-23T00:16:08.000Z",
+    "why": "@rotowirenba.bsky.social: Isaiah Stewart: Tagged questionable for Friday \n\n http"
+   }
+  },
+  "401909096|cedriccoward|out": {
+   "game": "401909096",
+   "start": "2026-10-24T01:30Z",
+   "team": "24",
+   "name": "Cedric Coward",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-10-23T00:29:18.410Z",
+    "own": "2026-10-23T00:21:39.000Z",
+    "why": "@rotowirenba.bsky.social: Cedric Coward: Doubtful for Friday \n\n https://www.roto"
+   }
+  },
+  "401909849|brandinpodziemski|q": {
+   "game": "401909849",
+   "start": "2026-10-24T01:30Z",
+   "team": "26",
+   "name": "Brandin Podziemski",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-10-23T00:29:18.410Z",
+    "own": "2026-10-23T00:04:47.000Z",
+    "why": "@rotowirenba.bsky.social: Brandin Podziemski: Questionable to play Friday \n\n htt"
+   }
+  },
+  "401909849|isaiahstewart|q": {
+   "game": "401909849",
+   "start": "2026-10-24T01:30Z",
+   "team": "26",
+   "name": "Isaiah Stewart",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-10-23T00:29:18.410Z",
+    "own": "2026-10-23T00:16:08.000Z",
+    "why": "@rotowirenba.bsky.social: Isaiah Stewart: Tagged questionable for Friday \n\n http"
+   }
+  },
+  "401909849|cedriccoward|out": {
+   "game": "401909849",
+   "start": "2026-10-24T01:30Z",
+   "team": "26",
+   "name": "Cedric Coward",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-10-23T00:29:18.410Z",
+    "own": "2026-10-23T00:21:39.000Z",
+    "why": "@rotowirenba.bsky.social: Cedric Coward: Doubtful for Friday \n\n https://www.roto"
+   }
+  },
+  "401909850|cedriccoward|out": {
+   "game": "401909850",
+   "start": "2026-10-24T02:00Z",
+   "team": "9",
+   "name": "Cedric Coward",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-10-23T00:29:18.410Z",
+    "own": "2026-10-23T00:21:39.000Z",
+    "why": "@rotowirenba.bsky.social: Cedric Coward: Doubtful for Friday \n\n https://www.roto"
+   }
+  },
+  "401909851|brandinpodziemski|q": {
+   "game": "401909851",
+   "start": "2026-10-24T02:00Z",
+   "team": "13",
+   "name": "Brandin Podziemski",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-10-23T00:29:18.410Z",
+    "own": "2026-10-23T00:04:47.000Z",
+    "why": "@rotowirenba.bsky.social: Brandin Podziemski: Questionable to play Friday \n\n htt"
+   }
+  },
+  "401909851|isaiahstewart|q": {
+   "game": "401909851",
+   "start": "2026-10-24T02:00Z",
+   "team": "13",
+   "name": "Isaiah Stewart",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-10-23T00:29:18.410Z",
+    "own": "2026-10-23T00:16:08.000Z",
+    "why": "@rotowirenba.bsky.social: Isaiah Stewart: Tagged questionable for Friday \n\n http"
+   }
+  },
+  "401909851|cedriccoward|out": {
+   "game": "401909851",
+   "start": "2026-10-24T02:00Z",
+   "team": "13",
+   "name": "Cedric Coward",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-10-23T00:29:18.410Z",
+    "own": "2026-10-23T00:21:39.000Z",
+    "why": "@rotowirenba.bsky.social: Cedric Coward: Doubtful for Friday \n\n https://www.roto"
+   }
+  },
+  "401909852|brandinpodziemski|q": {
+   "game": "401909852",
+   "start": "2026-10-24T02:00Z",
+   "team": "23",
+   "name": "Brandin Podziemski",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-10-23T00:29:18.410Z",
+    "own": "2026-10-23T00:04:47.000Z",
+    "why": "@rotowirenba.bsky.social: Brandin Podziemski: Questionable to play Friday \n\n htt"
+   }
+  },
+  "401909852|isaiahstewart|q": {
+   "game": "401909852",
+   "start": "2026-10-24T02:00Z",
+   "team": "23",
+   "name": "Isaiah Stewart",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-10-23T00:29:18.410Z",
+    "own": "2026-10-23T00:16:08.000Z",
+    "why": "@rotowirenba.bsky.social: Isaiah Stewart: Tagged questionable for Friday \n\n http"
+   }
+  },
+  "401909852|cedriccoward|out": {
+   "game": "401909852",
+   "start": "2026-10-24T02:00Z",
+   "team": "23",
+   "name": "Cedric Coward",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-10-23T00:29:18.410Z",
+    "own": "2026-10-23T00:21:39.000Z",
+    "why": "@rotowirenba.bsky.social: Cedric Coward: Doubtful for Friday \n\n https://www.roto"
    }
   }
  }
