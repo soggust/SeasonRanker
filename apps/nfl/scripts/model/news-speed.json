@@ -5389,6 +5389,131 @@
    "espn": {
     "seen": "2026-10-23T16:03:47.657Z",
     "own": "2026-10-23T15:50:00.000Z"
+   },
+   "bluesky": {
+    "seen": "2026-10-23T16:11:28.722Z",
+    "own": "2026-10-23T15:49:24.652Z",
+    "why": "@nflnewsposter.bsky.social: [Schneidman] Zaire Franklin is OUT for Sunday after "
+   }
+  },
+  "401873011|davidmontgomery|out": {
+   "game": "401873011",
+   "start": "2026-10-25T13:30Z",
+   "team": "18",
+   "name": "David Montgomery",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-10-23T16:11:28.722Z",
+    "own": "2026-10-23T15:53:01.000Z",
+    "why": "@rotoworld-fb.bsky.social: Montgomery (groin) won't play vs. Giants"
+   }
+  },
+  "401873017|davidmontgomery|out": {
+   "game": "401873017",
+   "start": "2026-10-25T17:00Z",
+   "team": "1",
+   "name": "David Montgomery",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-10-23T16:11:28.722Z",
+    "own": "2026-10-23T15:53:01.000Z",
+    "why": "@rotoworld-fb.bsky.social: Montgomery (groin) won't play vs. Giants"
+   }
+  },
+  "401873013|davidmontgomery|out": {
+   "game": "401873013",
+   "start": "2026-10-25T17:00Z",
+   "team": "10",
+   "name": "David Montgomery",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-10-23T16:11:28.722Z",
+    "own": "2026-10-23T15:53:01.000Z",
+    "why": "@rotoworld-fb.bsky.social: Montgomery (groin) won't play vs. Giants"
+   }
+  },
+  "401873014|davidmontgomery|out": {
+   "game": "401873014",
+   "start": "2026-10-25T17:00Z",
+   "team": "16",
+   "name": "David Montgomery",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-10-23T16:11:28.722Z",
+    "own": "2026-10-23T15:53:01.000Z",
+    "why": "@rotoworld-fb.bsky.social: Montgomery (groin) won't play vs. Giants"
+   }
+  },
+  "401873015|davidmontgomery|out": {
+   "game": "401873015",
+   "start": "2026-10-25T17:00Z",
+   "team": "20",
+   "name": "David Montgomery",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-10-23T16:11:28.722Z",
+    "own": "2026-10-23T15:53:01.000Z",
+    "why": "@rotoworld-fb.bsky.social: Montgomery (groin) won't play vs. Giants"
+   }
+  },
+  "401873018|davidmontgomery|out": {
+   "game": "401873018",
+   "start": "2026-10-25T17:00Z",
+   "team": "29",
+   "name": "David Montgomery",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-10-23T16:11:28.722Z",
+    "own": "2026-10-23T15:53:01.000Z",
+    "why": "@rotoworld-fb.bsky.social: Montgomery (groin) won't play vs. Giants"
+   }
+  },
+  "401873012|davidmontgomery|out": {
+   "game": "401873012",
+   "start": "2026-10-25T17:00Z",
+   "team": "33",
+   "name": "David Montgomery",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-10-23T16:11:28.722Z",
+    "own": "2026-10-23T15:53:01.000Z",
+    "why": "@rotoworld-fb.bsky.social: Montgomery (groin) won't play vs. Giants"
+   }
+  },
+  "401873019|davidmontgomery|out": {
+   "game": "401873019",
+   "start": "2026-10-25T20:05Z",
+   "team": "22",
+   "name": "David Montgomery",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-10-23T16:11:28.722Z",
+    "own": "2026-10-23T15:53:01.000Z",
+    "why": "@rotoworld-fb.bsky.social: Montgomery (groin) won't play vs. Giants"
+   }
+  },
+  "401873020|davidmontgomery|out": {
+   "game": "401873020",
+   "start": "2026-10-25T20:25Z",
+   "team": "8",
+   "name": "David Montgomery",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-10-23T16:11:28.722Z",
+    "own": "2026-10-23T15:53:01.000Z",
+    "why": "@rotoworld-fb.bsky.social: Montgomery (groin) won't play vs. Giants"
+   }
+  },
+  "401873021|davidmontgomery|out": {
+   "game": "401873021",
+   "start": "2026-10-25T20:25Z",
+   "team": "13",
+   "name": "David Montgomery",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-10-23T16:11:28.722Z",
+    "own": "2026-10-23T15:53:01.000Z",
+    "why": "@rotoworld-fb.bsky.social: Montgomery (groin) won't play vs. Giants"
    }
   }
  }

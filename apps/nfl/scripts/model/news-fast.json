@@ -1,13 +1,13 @@
 {
  "sport": "nfl",
  "cursor": {
-  "adamscheftermirror.bsky.social": "2026-10-23T15:52:53.686Z",
+  "adamscheftermirror.bsky.social": "2026-10-23T16:23:04.793Z",
   "rapsheet.bsky.social": "2026-10-22T22:13:51.186Z",
   "nflnewsreposterbot.bsky.social": "2026-10-22T13:33:43.592Z",
-  "insidenflnews.bsky.social": "2026-10-23T15:47:42.173Z",
-  "nflnewsposter.bsky.social": "2026-10-23T15:49:24.652Z",
-  "rotoworld-fb.bsky.social": "2026-10-23T16:01:41.000Z",
-  "rotowirenfl.bsky.social": "2026-10-23T16:09:10.000Z"
+  "insidenflnews.bsky.social": "2026-10-23T16:29:21.034Z",
+  "nflnewsposter.bsky.social": "2026-10-23T16:21:22.009Z",
+  "rotoworld-fb.bsky.social": "2026-10-23T16:15:03.000Z",
+  "rotowirenfl.bsky.social": "2026-10-23T16:15:12.000Z"
  },
  "claims": [
   {
@@ -3974,6 +3974,45 @@
    "kind": "status",
    "confidence": 0.3,
    "text": "Tyler Warren: Remains out of practice Friday \n\n https://www.rotowire.com/football/player/tyler-warren-18534"
+  },
+  {
+   "id": "at://did:plc:fuqjc7x4gxvnwzksnlxwbe4x/app.bsky.feed.post/3mykkyp3ivs2d|lamarjackson|limited|status",
+   "at": "2026-10-23T16:11:57.656Z",
+   "seen": "2026-10-23T16:32:56.353Z",
+   "handle": "nflnewsposter.bsky.social",
+   "post": "at://did:plc:fuqjc7x4gxvnwzksnlxwbe4x/app.bsky.feed.post/3mykkyp3ivs2d",
+   "player": "Lamar Jackson",
+   "team": "BAL",
+   "status": "limited",
+   "kind": "status",
+   "confidence": 0.9,
+   "text": "[Hensley] Lamar Jackson has just come out onto the field for Friday's practice, which continues to be an encouraging sign.\n\nJackson has been limited for the past two practices. He's dealing with a lef"
+  },
+  {
+   "id": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3mykl6at7rf26|lamarjackson|limited|status",
+   "at": "2026-10-23T16:15:03.000Z",
+   "seen": "2026-10-23T16:32:56.353Z",
+   "handle": "rotoworld-fb.bsky.social",
+   "post": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3mykl6at7rf26",
+   "player": "Lamar Jackson",
+   "team": "BAL",
+   "status": "limited",
+   "kind": "status",
+   "confidence": 0.8,
+   "text": "Lamar Jackson (ankle) practicing again on Friday"
+  },
+  {
+   "id": "at://did:plc:mbr4badgf6yu56mquzackzew/app.bsky.feed.post/3myklxs4qtc24|emekaegbuka|doubtful|status",
+   "at": "2026-10-23T16:29:21.034Z",
+   "seen": "2026-10-23T16:32:56.353Z",
+   "handle": "insidenflnews.bsky.social",
+   "post": "at://did:plc:mbr4badgf6yu56mquzackzew/app.bsky.feed.post/3myklxs4qtc24",
+   "player": "Emeka Egbuka",
+   "team": "TB",
+   "status": "doubtful",
+   "kind": "status",
+   "confidence": 0.95,
+   "text": "Buccaneers WR Emeka Egbuka (concussion, foot) is doubtful for Week 7."
   }
  ]
 }
