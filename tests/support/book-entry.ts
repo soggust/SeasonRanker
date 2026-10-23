@@ -22,3 +22,4 @@ export * from '../../libs/ranker/src/engine/book/ticket-grow';
 export * from '../../libs/ranker/src/engine/book/suggestions';
 export * from '../../libs/ranker/src/engine/book/replay-history';
 export * from '../../libs/ranker/src/engine/book/book-names';
+export * from '../../libs/ranker/src/engine/book/paid-price';

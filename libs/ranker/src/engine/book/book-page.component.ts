@@ -27,7 +27,7 @@ import { pickTeamColor, splitPick } from './pick-style';
 import { BEST_BETS_LABEL, MenuAll, MenuDay, allOf, allRow, MenuGame, MenuGameIn, MenuTeam, chosenSport, dayBand, defaultClosed, gameLine, gameMenu, gamePicksHead, groupKey, groupOf, linesOnlyGames, menuKey, menuOptionId, menuValues, shownEvents, sportChoice, sportFace, viewsShown } from './game-menu';
 import { darkLogoOf, teamLook } from '../team-look';
 import { LiveService } from './live.service';
-import { QuoteSources, joinSuggestions, quoteOf, suggestionsOf, withLive } from './suggestions';
+import { QuoteSources, joinSuggestions, quoteOf, rejudged, suggestionsOf } from './suggestions';
 import { HOME_BOOK, bookCode, withBookTitle } from './book-names';
 import type { LivePicks } from './live-tab.component';
 import type { ModelBoard } from '../account/wallet/lines.service';
@@ -482,8 +482,19 @@ export class BookPageComponent implements OnInit, OnDestroy {
 
   // (the chosen game's board: one with picks, or one from the boards alone)
   // (a board's picks as this viewer has them: an admin's with the CHECKs)
+  // (as Bot Picks lists them (D79): each judged again at the latest price, one with no edge there gone, so the game
+  // board's Bot side shows the band and Kelly score the row does; kept per board while the list is the same)
+  private picksFor = new WeakMap<GameBoardPicks, { list: BetRow[]; desk: boolean; out: BetRow[] }>();
   boardPicks(b: GameBoardPicks | null | undefined): BetRow[] {
-    return !b ? [] : this.desk() ? b.picks : b.betPicks;
+    if (!b) return [];
+    const list = this.listed;
+    const desk = this.desk();
+    const kept = this.picksFor.get(b);
+    if (kept && kept.list === list && kept.desk === desk) return kept.out;
+    const now = new Map(list.map((r) => [r.id, r]));
+    const out = (desk ? b.picks : b.betPicks).flatMap((r) => now.get(r.id) ?? []);
+    this.picksFor.set(b, { list, desk, out });
+    return out;
   }
 
   boardFor(key: string): GameBoardPicks | null {
@@ -638,7 +649,9 @@ export class BookPageComponent implements OnInit, OnDestroy {
       const board = models.get(sport);
       return { espn: boards.get(`${sport}|${event}`) ?? null, espnAt: at, model: modelGameOf(board?.games, event) ?? null, modelAt: board?.at ?? null };
     };
-    const bets = rows.map((r) => (r.check || !r.pickId ? r : withLive(r, quoteOf(r, sources(r.sport, r.pickId.split(':')[0])))));
+    // (the Bot's bets judged again at the latest price, one with no edge there off the list (D79: suggestions.ts
+    // rejudged; still in Open Bets and the Algorithm tab))
+    const bets = rows.flatMap((r) => (r.check || !r.pickId ? [r] : (rejudged(r, quoteOf(r, sources(r.sport, r.pickId.split(':')[0]))) ?? [])));
     const suggested = [...models].flatMap(([sport, board]) => (this.loaded.has(sport) ? suggestionsOf(sport, board, now, (g) => sources(sport, g.id)) : []));
     return joinSuggestions(bets, suggested, (key) => this.suggestionId(key));
   }
@@ -1133,13 +1146,16 @@ export class BookPageComponent implements OnInit, OnDestroy {
       };
     } else {
       this.checkWhy = null;
-      const w = betWhy(rows, index);
+      // (a bet judged again at the latest price (D79, suggestions.ts rejudged): its why as it was bet, its what-if
+      // opened at the latest price, the one its row's button and the game board show)
+      const own = row.locked ? { ...row, ...row.locked } : row;
+      const w = betWhy(row.locked ? rows.map((r, i) => (i === index ? own : r)) : rows, index);
       // (a suggestion's what-if a price the Bot didn't take: its band the price's alone)
-      const wi = whatIfOf(row, !row.suggested);
+      const wi = whatIfOf(own, !row.suggested);
       this.whyLatest = !!row.suggested;
       const look = this.whyLook(w, row, this.whyGame(row));
       this.why = { ...w, at, sheet, look: row.suggested ? { ...look, reason: "Suggested at the latest price, not one of the Bot's bets: its band moves as the price does." } : look, wi };
-      this.priceTo(wi?.odds ?? null);
+      this.priceTo(wi ? (row.locked && Number.isFinite(row.livePrice) && row.livePrice ? row.livePrice : wi.odds) : null);
     }
     this.whyTile = tile;
     setTimeout(() => this.whyPop?.nativeElement.focus({ preventScroll: true }));

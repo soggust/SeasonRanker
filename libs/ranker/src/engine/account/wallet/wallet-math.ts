@@ -6,6 +6,7 @@ import { Board, CurveLine, CurveSpot, Meter, ModelBet, Settled } from '../../boo
 import { CURVE_W, UNIT_WORDS, countNowOf, edgeColorOf, meterOf, profitCurves, propState, provisional, sideTextOf, sideTitleOf } from '../../book/desk-math';
 import { units } from '../../book/bet-format';
 import { pricier } from '../../book/book-names';
+import { dkMoved, dkOf } from '../../book/paid-price';
 
 export type PlayMarket = 'spread' | 'total' | 'ml' | 'prop';
 export type PlayStatus = 'open' | 'won' | 'lost' | 'push' | 'void';
@@ -459,6 +460,8 @@ export interface ModelBoardSideIn {
   o: number;
   // (the book whose price o is, where the bettor shopped it: board.mjs pb)
   pb?: string;
+  // (D79: DraftKings' own price in the paid quote, where another book's is shown)
+  dko?: number;
 }
 export interface ModelBoardGameIn {
   id: string;
@@ -518,6 +521,8 @@ export function modelGameBoard(sport: string, g: ModelBoardGameIn, now: number):
 export function bestPriceOf(price: Price, board: ModelBoardSideIn | null | undefined): Price {
   if (!board?.pb || !Number.isFinite(board.o) || Math.abs(board.o) < 100) return price;
   if (price.market !== 'ml' && (price.line === null || board.l !== price.line)) return price;
+  // (D79: DraftKings' price on ESPN's board moved since the paid quote: the quote's stale, ESPN's as it is)
+  if (price.odds !== null && dkMoved(price.odds, dkOf(board.o, board.pb, board.dko))) return price;
   if (price.odds !== null && pricier(price.odds, board.o)) return { ...price, pb: 'dk' };
   return { ...price, odds: board.o, pb: board.pb };
 }

@@ -2,6 +2,7 @@ import { Injectable, computed, signal } from '@angular/core';
 import { fetchJson } from '@ranker/core/http';
 import { ESPN_LEAGUES } from '../../book/desk-math';
 import { SummaryBox, liveStat } from '../../book/live-props';
+import { freshBoard } from '../../book/paid-price';
 import { EspnEvent, GameBoard, boardOf, espnDay, modelGameBoard, modelGameOf, withBestPrices } from './wallet-math';
 import { PreviewProp, PropBetItem, RosterBody, athleteIdOf, previewPropsOf, rosterNames } from './preview-props';
 
@@ -26,6 +27,10 @@ export interface BoardSide {
   // (the book whose price o is, where the bettor shopped the US books for it: book-names.ts codes; none, the free
   // board's home-book price)
   pb?: string;
+  // (D79: the paid quote's time, and DraftKings' own price in it where another book's is shown (paid-price.ts: past
+  // PAID_FRESH_MS the side falls back to it))
+  pt?: string;
+  dko?: number;
   c: number;
   ks: number;
   b: BoardBand;
@@ -70,6 +75,9 @@ export interface BoardProp {
   o: [number | null, number | null];
   // (the book whose price each side's is, [over's, under's], where the bettor shopped it (null a side not); not bk)
   pb?: [string | null, string | null];
+  // (D79: the paid quote's time, and DraftKings' own price of each side in it where another book's is shown)
+  pt?: string;
+  dko?: [number | null, number | null];
   c: number | null;
   ks: [number | null, number | null];
   b: [BoardBand | null, BoardBand | null];
@@ -162,7 +170,9 @@ export class LinesService {
     if (kept && Date.now() - kept.at < maxAge) return kept.load;
     const load = fetch(`/${sport}/data/model/board.json`, { cache: 'no-cache' })
       .then((res) => (res.ok ? res.json() : null))
-      .then((body: ModelBoard | null) => {
+      .then((raw: ModelBoard | null) => {
+        // (D79: a side past its paid quote at DraftKings' own price, so every reader of the board sees one price)
+        const body = raw?.games ? freshBoard(raw, Date.now()) : raw;
         if (body?.games) this.modelAll.set(new Map(this.modelAll()).set(sport, body));
         return body;
       })

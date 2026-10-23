@@ -426,6 +426,15 @@ function writePicks(r, alone = false) {
 // score and band, the bot's open sides marked, over the last board where a game or its props weren't priced
 // again; and every price it's shown kept (board-seen.json) for the play-money settler's price check. --dry:
 // only with --board-out=<dir>, written there (a scratch check of its shape and size), never the committed ones
+// (the last board's game and prop (DECISIONS.md D79: a fresh paid price held over a later ESPN read, board.mjs
+// heldPaid), the committed board read once a run)
+function prevBoardGame(r, id) {
+  r.lastBoard ??= readJson(r.files.board, null);
+  return (r.lastBoard?.games ?? []).find((g) => String(g.id) === String(id)) ?? null;
+}
+function prevBoardProp(r, id, prop) {
+  return (prevBoardGame(r, id)?.p ?? []).find((p) => p.k === prop.stat.key && String(p.id) === String(prop.athlete.id)) ?? null;
+}
 function writeBoard(r) {
   const out = BOARD_OUT ? path.resolve(BOARD_OUT) : null;
   if (DRY && !out) return;
@@ -1936,7 +1945,7 @@ function betGames(r) {
     const off = hasKey() && !apiLines ? "ESPN's line, not the Book's own price: the Bot bets only at the Book's (it's tracked till then)" : null;
     // (each side's why for the Book's popover (board.mjs w): the facts a bet on it would carry, its write-up's)
     const explain = { sport, game, exp, seen, fairFrom, state: { trust, context: r.context ?? r.state?.context ?? null }, terms: termParts(r.feats?.terms, f, r.weights), fitted: (m) => !!trust[m]?.fitted };
-    (r.boardGames ??= new Map()).set(game.id, { game, markets: boardMarkets(priced, (m) => trust[m]?.trust ?? START_TRUST, lines.consensus, rctx, { gate: r.lineGate, off, explain, confidence: r.confidence }), at });
+    (r.boardGames ??= new Map()).set(game.id, { game, markets: boardMarkets(priced, (m) => trust[m]?.trust ?? START_TRUST, lines.consensus, rctx, { gate: r.lineGate, off, explain, confidence: r.confidence, paid: prevBoardGame(r, game.id)?.k ?? null, at: apiLines ? at : null, now: r.now.getTime() }), at });
     // (a market the book didn't price, by The Odds API's word: rests)
     if (apiLines && !notYet) for (const m of MARKETS) if (!priced.some((x) => x.market === m) && !r.placed.has(`${game.id}:${m}`)) rest(r, `${game.id}:${m}`, 'not priced by the Book');
     let picks = [];
@@ -2629,7 +2638,7 @@ async function betProps(r) {
       // (the betting board's props: the ones at the book's own price (a CHECK's stored one while it'd still be
       // bet: storedBet), the game's whole board when it was asked fresh, else over the last board's: writeBoard)
       const onBoard = priced.filter((x) => x.priced && !storedBet(x.prop.stored, hasKey(), r.now));
-      (r.boardProps ??= new Map()).set(game.id, { rows: onBoard.map((x) => boardProp(x, x.prop.stored?.at ?? at, { gate: x.fastCap && r.propGate?.[x.prop.stat.key]?.on !== false ? { on: false, why: 'at the practice stake: bet early on fast news (D49) till those bets beat the close' } : (r.propGate?.[x.prop.stat.key] ?? null), confidence: r.confidence, start: game.date, explain: { sport, game, exp, sib: { market: 'spread', expMargin: round(exp.margin, 2), expTotal: round(exp.total, 2), context: f?.info ?? null }, state: { trust }, fitted: !!trust[`prop:${x.prop.stat.key}`]?.fitted, tested: !!trust[`prop:${x.prop.stat.key}`]?.fitted } })), whole: fresh || board_.some((p) => p.prices && !p.stored), lines: new Map(board_.filter((p) => !p.stored?.offBoard).map((p) => [`${p.stat.key}:${p.athlete.id}`, p.line])) });
+      (r.boardProps ??= new Map()).set(game.id, { rows: onBoard.map((x) => boardProp(x, x.prop.stored?.at ?? at, { paid: prevBoardProp(r, game.id, x.prop), now: r.now.getTime(), gate: x.fastCap && r.propGate?.[x.prop.stat.key]?.on !== false ? { on: false, why: 'at the practice stake: bet early on fast news (D49) till those bets beat the close' } : (r.propGate?.[x.prop.stat.key] ?? null), confidence: r.confidence, start: game.date, explain: { sport, game, exp, sib: { market: 'spread', expMargin: round(exp.margin, 2), expTotal: round(exp.total, 2), context: f?.info ?? null }, state: { trust }, fitted: !!trust[`prop:${x.prop.stat.key}`]?.fitted, tested: !!trust[`prop:${x.prop.stat.key}`]?.fitted } })), whole: fresh || board_.some((p) => p.prices && !p.stored), lines: new Map(board_.filter((p) => !p.stored?.offBoard).map((p) => [`${p.stat.key}:${p.athlete.id}`, p.line])) });
       // (the skips by kind: the market-gap guard's counted on its own)
       for (const x of priced) if (x.guard?.skip) run.skipped = { ...(run.skipped ?? {}), [x.guard.kind ?? 'other']: (run.skipped?.[x.guard.kind ?? 'other'] ?? 0) + 1 };
       run.under += priced.filter((x) => x.side === 'under').length;

@@ -83,11 +83,11 @@ test('live re-pricing: a suggestion\'s band moves with ESPN\'s price, and it dro
   assert.equal(at(-105).confidence, 'high');
 });
 
-test('quoteOf: ESPN where it is fresher and at the same line; else the board\'s; a moved line none from ESPN', () => {
+test("quoteOf: ESPN's at the same line, the price the game board shows (D79: one price a side, whenever ESPN was read); else the board's; a moved line none from ESPN", () => {
   const row = { pickId: '401:spread', side: 'away', line: 7.5 };
   const g = game();
   assert.deepEqual(quoteOf(row, { espn: espn(-115), espnAt: Date.parse(BOARD_AT) + 1, model: g, modelAt: BOARD_AT }), { odds: -115, from: 'espn' });
-  assert.deepEqual(quoteOf(row, { espn: espn(-115), espnAt: Date.parse(BOARD_AT) - 1, model: g, modelAt: BOARD_AT }), { odds: -110, from: 'board' });
+  assert.deepEqual(quoteOf(row, { espn: espn(-115), espnAt: Date.parse(BOARD_AT) - 1, model: g, modelAt: BOARD_AT }), { odds: -115, from: 'espn' });
   assert.deepEqual(quoteOf(row, { espn: espn(-115, -105, 7), espnAt: Date.parse(BOARD_AT) + 1, model: g, modelAt: BOARD_AT }), { odds: -110, from: 'board' });
   // (a prop: the board's, at its line)
   assert.deepEqual(quoteOf({ pickId: '401:prop:rushYds:4426348', side: 'under', line: 39.5 }, { model: g }), { odds: -110, from: 'board' });

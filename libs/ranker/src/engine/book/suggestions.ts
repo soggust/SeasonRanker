@@ -13,7 +13,8 @@ import type { GameBoard, Price } from '../account/wallet/wallet-math';
 import { americanOdds, teamLogo } from './bet-format';
 import { priceAt, whatIfOf } from './bet-why';
 import { BetKind, BetRow, pickKey } from './book-rows';
-import { HOME_BOOK, pricier } from './book-names';
+import { HOME_BOOK } from './book-names';
+import { bestPriceOf } from '../account/wallet/wallet-math';
 import { byBand } from './desk-notes';
 import type { BandCap } from './tiers';
 
@@ -55,12 +56,13 @@ export interface QuoteSources {
 }
 const priced = (v: unknown): v is number => typeof v === 'number' && Number.isFinite(v) && v !== 0;
 
-// A side's latest price: a prop's the board's (ESPN's scoreboard has none), at the row's line; a game line's
-// ESPN's where it's at the same line and read since the board was priced, else the board's at that line, else
-// ESPN's at that line. A line that has moved off the row's: none (the Bot's chance is the old line's). But a side
-// the board shopped (its pb, the best of the US books: the owner, 2026-10-20) is the board's price at its book
-// whatever ESPN's freshness, unless ESPN's (the home book's) at the same line is strictly better: then ESPN's, the
-// home book named the best. ESPN's free price is never shown as the best where it isn't
+// A side's latest price, the one the game board shows (D79, the owner's: Bot Picks, the game board, the slip and the
+// popover one price a side): a prop's the board's as loaded (ESPN's scoreboard has none; lines.service runs it
+// through paid-price.ts freshBoard, a stale paid price at DraftKings' own), at the row's line; a game line's ESPN's
+// at the same line with the board's shopped price over it (wallet-math bestPriceOf, as lines.service boards: the
+// board's best price at its book while its quote is fresh and DraftKings unmoved, unless ESPN's is strictly better,
+// then ESPN's with the home book named the best), else the board's at that line. A line that has moved off the
+// row's: none (the Bot's chance is the old line's). ESPN's free price is never shown as the best where it isn't
 export function quoteOf(r: Pick<BetRow, 'pickId' | 'side' | 'line'>, src: QuoteSources): LiveQuote | null {
   const m = marketOf(r);
   if (!m || !r.side) return null;
@@ -75,15 +77,14 @@ export function quoteOf(r: Pick<BetRow, 'pickId' | 'side' | 'line'>, src: QuoteS
   const side = src.model?.k?.[m.market]?.find((s) => s.s === r.side && sameLine(s.l));
   const espn = (src.espn?.[m.market] as Record<string, Price> | null | undefined)?.[r.side];
   const espnOk = !!espn && priced(espn.odds) && sameLine(espn.line);
-  if (side?.pb && priced(side.o)) {
-    // (ESPN's board as the page has it may carry the shopped price already (wallet-math withBestPrices): the same)
-    if (espnOk && pricier(espn!.odds!, side.o)) return { odds: espn!.odds!, from: 'espn', book: HOME_BOOK };
-    return { odds: side.o, from: 'board', book: side.pb };
+  if (espnOk) {
+    // (ESPN's board as the page has it carries the shopped price already (wallet-math withBestPrices): the same)
+    const best = bestPriceOf(espn!, side);
+    if (best.pb === HOME_BOOK) return { odds: best.odds!, from: 'espn', book: HOME_BOOK };
+    if (best.pb) return { odds: best.odds!, from: 'board', book: best.pb };
+    return { odds: best.odds!, from: 'espn' };
   }
-  const boardAt = Date.parse(src.model?.at ?? src.modelAt ?? '');
-  const espnFresher = !Number.isFinite(boardAt) || (src.espnAt ?? 0) >= boardAt;
-  if (espnOk && (!side || espnFresher)) return { odds: espn!.odds!, from: 'espn' };
-  if (side && priced(side.o)) return { odds: side.o, from: 'board' };
+  if (side && priced(side.o)) return { odds: side.o, from: 'board', ...(side.pb ? { book: side.pb } : {}) };
   return null;
 }
 
@@ -264,6 +265,22 @@ export function whyOf(w: BoardWhy | null | undefined): Partial<BetRow> {
 export function withLive(row: BetRow, q: LiveQuote | null): BetRow {
   const live = q?.odds ?? null;
   return { ...row, livePrice: live, liveFrom: q?.from ?? null, liveBook: q?.book ?? null, moved: live !== null && Number.isFinite(row.price) && live !== row.price };
+}
+
+// A bet of the Bot's as Bot Picks lists it (D79, the owner's: one price a side; a pick with no edge at the current
+// price comes off Bot Picks, the bet itself staying in Open Bets and the Algorithm tab): at its side's latest price
+// (quoteOf) judged again there as a suggestion is (bet-why whatIfOf over the bet, priceAt at the price: its band and
+// Kelly score at the current price, the desk's caps and the bet's own tier held); no edge there (PASS), null. The
+// bet's own band, Kelly, return and stake kept on locked (the K popover's what-if starts from them). No price known
+// (its game off the board, its line moved), or the price it locked: the bet as it stands (withLive)
+export function rejudged(row: BetRow, q: LiveQuote | null): BetRow | null {
+  const live = withLive(row, q);
+  if (!q || !live.moved) return live;
+  const base = whatIfOf(row, true);
+  if (!base) return live;
+  const at = priceAt(base, q.odds);
+  if (at.level === 'low' || at.level === 'check') return null;
+  return { ...live, locked: { confidence: row.confidence, sureness: row.sureness, ev: row.ev, units: row.units }, confidence: at.level, sureness: at.kelly, ev: at.ev };
 }
 
 // The list: the Bot's rows (its bets and an admin's CHECKs) with the suggestions on markets it holds nothing on,
