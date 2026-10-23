@@ -281,6 +281,20 @@
    "sport": "mma",
    "ref": "D83",
    "text": "Camp distance: ESPN names a gym (today's, no place) for 2,165 fighters; no free dated camp locations, not built"
+  },
+  {
+   "date": "2026-10-23",
+   "group": "watching",
+   "sport": "nba",
+   "ref": "D84",
+   "text": "NBA win patterns: props on a day's rest and rising minutes win more; walk-forward LOVE +5.1% vs LIKE +1.2%, 2025-26 flips"
+  },
+  {
+   "date": "2026-10-23",
+   "group": "dropped",
+   "sport": "nba",
+   "ref": "D84",
+   "text": "Pattern bands (LOVE/LOCK by an earned segment) not beyond noise by season (z 1.2): staged on the Live/Staged switch"
   }
  ]
 }

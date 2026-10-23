@@ -1,5 +1,5 @@
 {
-  "about": "Band rules band-lab.mjs tries on the replayed history (DECISIONS.md D70). mode d58: the rule as it was (D58 results walk and place; MMA D65). Every other variant is clv-bands.mjs's rule: k the shrink (n/(n+k); 'eb' fit walk-forward by month), prior 'zero' or 'market' (the market's own mean EV at the fair close), love/lock bars (n with a closing check, shrunk EV at the fair close, beat share), twoLove (two LOVE reasons of different families make a LOCK), results (a reason's flat results must also clear roi - z*se over n), fallback 'results' (a reason with under fallbackBelow closing checks earns on D58's results bar instead), place (D58's place check on top), units (each band's stake cap). newsLag is live-only: the replay never carries it, so no variant here moves it. mode trusted (D72, trusted.mjs): a bet's edge split into the model's pieces (REPLAY_ATTR=1 on the replay: <sport>-attr.json), each piece's reliability walk-forward by month from the close rows before it (its slope on the results past the fair, proven when its lower bound clears 0 and its held-out log loss beats the Book's), the trusted edge the sum of the pieces times their reliability; bars 'abs' (love, lock: trusted edge) or 'pct' (lock, love: the top shares of the bets settled before), score 'te', 'teKelly' (times the Kelly score) or 'share' (the trusted share of the whole edge), kelly the floor under LOVE and LOCK, lockKelly LOCK's own, caps false (a test only) lets a suspect or barred bet's band rise (its stake stays). label: the Live / Staged switch's name. mode trial (D73, trusted.mjs trialWalk): the two-band trial, LIKE and LOVE (no LOCK): a prop is a LOVE where its trusted share and Kelly score clear the rule picked each month from the bets settled before it, at loveUnits; with mid the LIKE props' stake by trusted share; the sport's TRIAL switches, or the variant's own on (a test in every sport).",
+  "about": "Band rules band-lab.mjs tries on the replayed history (DECISIONS.md D70). mode d58: the rule as it was (D58 results walk and place; MMA D65). Every other variant is clv-bands.mjs's rule: k the shrink (n/(n+k); 'eb' fit walk-forward by month), prior 'zero' or 'market' (the market's own mean EV at the fair close), love/lock bars (n with a closing check, shrunk EV at the fair close, beat share), twoLove (two LOVE reasons of different families make a LOCK), results (a reason's flat results must also clear roi - z*se over n), fallback 'results' (a reason with under fallbackBelow closing checks earns on D58's results bar instead), place (D58's place check on top), units (each band's stake cap). newsLag is live-only: the replay never carries it, so no variant here moves it. mode trusted (D72, trusted.mjs): a bet's edge split into the model's pieces (REPLAY_ATTR=1 on the replay: <sport>-attr.json), each piece's reliability walk-forward by month from the close rows before it (its slope on the results past the fair, proven when its lower bound clears 0 and its held-out log loss beats the Book's), the trusted edge the sum of the pieces times their reliability; bars 'abs' (love, lock: trusted edge) or 'pct' (lock, love: the top shares of the bets settled before), score 'te', 'teKelly' (times the Kelly score) or 'share' (the trusted share of the whole edge), kelly the floor under LOVE and LOCK, lockKelly LOCK's own, caps false (a test only) lets a suspect or barred bet's band rise (its stake stays). label: the Live / Staged switch's name. mode trial (D73, trusted.mjs trialWalk): the two-band trial, LIKE and LOVE (no LOCK): a prop is a LOVE where its trusted share and Kelly score clear the rule picked each month from the bets settled before it, at loveUnits; with mid the LIKE props' stake by trusted share; the sport's TRIAL switches, or the variant's own on (a test in every sport). mode pattern (D84, patterns.mjs): a segment of what the Bot knew at placement (its chance, edge, price, stat and side, the projection piece that drove it, his minutes and their trend, rest, home or away, seasons played, the month) earns LOVE where its bets settled before the month made money and led the rest of their class (props or lines) by opts.zLove SEs on opts.nMin bets in most seasons; two of different families or one past opts.zLock a LOCK (lock false: LOVE only); kelly the Kelly floor under both (default 2%, the owner's floor, D21, D58; lower only as a test, D73), place D58's place check on top; families and classes narrow it; units the LOVE and LOCK stakes.",
   "variants": {
     "d58": {
       "label": "Old reason tiers (D58)",
@@ -246,6 +246,49 @@
         "love": false,
         "mid": true
       }
+    },
+    "pattern": {
+      "label": "Win patterns: LOVE/LOCK by an earned segment (D84)",
+      "mode": "pattern"
+    },
+    "pattern-love": {
+      "label": "Win patterns, LOVE only (D84)",
+      "mode": "pattern",
+      "lock": false
+    },
+    "pattern-strict": {
+      "label": "Win patterns, strict (z 2.33, 100 bets; D84)",
+      "mode": "pattern",
+      "opts": {
+        "zLove": 2.326,
+        "nMin": 100
+      }
+    },
+    "pattern-props": {
+      "label": "Win patterns, props only, LOVE only (D84)",
+      "mode": "pattern",
+      "classes": [
+        "prop"
+      ],
+      "lock": false
+    },
+    "pattern-place": {
+      "label": "Win patterns, LOVE only, place-checked (D84)",
+      "mode": "pattern",
+      "lock": false,
+      "place": true
+    },
+    "pattern-k1": {
+      "label": "Win patterns, LOVE only, 1% Kelly floor (test; D84)",
+      "mode": "pattern",
+      "lock": false,
+      "kelly": 0.01
+    },
+    "pattern-k0": {
+      "label": "Win patterns, LOVE only, any edge (test; D84)",
+      "mode": "pattern",
+      "lock": false,
+      "kelly": 0
     }
   }
 }

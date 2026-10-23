@@ -17,6 +17,7 @@ import { beatBar, summarize } from './replay-record.mjs';
 import { placeTiers, placed, tierOf, tierUnits, walkReasons } from './reasons.mjs';
 import { CLV_RULE, GAME_HOURS, bandBets } from './clv-bands.mjs';
 import { classOf, shareOf, trialBand, trialWalk, trustBands, walkTrust } from './trusted.mjs';
+import { contextOf, familyOf, patternBand, patternIds, patternWalk } from './patterns.mjs';
 
 const ROOT = path.resolve(import.meta.dirname, '../../../..');
 const SPORTS = ['nfl', 'nba', 'nhl', 'mlb', 'mma'];
@@ -64,7 +65,34 @@ export function applyVariant(dump, variant) {
   }
   const mine = bets.filter((b) => b.lab?.before && !b.practice);
   let counts = null;
-  if (variant.mode === 'trial' && dump.sport !== 'mma' && dump.attrRows) {
+  if (variant.mode === 'pattern' && dump.sport !== 'mma') {
+    // (D84's win patterns: a segment of what the Bot knew at placement earns LOVE on the bets settled before the
+    // month (patterns.mjs patternWalk); two of different families, or one strong, a LOCK unless the variant has
+    // lock false; a Kelly floor (kelly, default 1%) under both; the caps as every rule's (a suspect or barred bet a
+    // LIKE at its stake); a LOVE stakes units.high (2u), a LOCK units.lock (3u))
+    const ctx = dump.ctx ?? new Map();
+    const list = mine.map((b) => ({ t: b.t, at: b.at ?? b.t, season: b.season, cls: b.market === 'prop' ? 'prop' : 'line', ids: patternIds(b, ctx.get(b.id) ?? {}).filter((id) => !variant.families || variant.families.includes(familyOf(id))), flat: flat(b) }));
+    const walk = patternWalk(variant.classes ? list.filter((x) => variant.classes.includes(x.cls)) : list, variant.opts ?? {});
+    const stake = { high: 2, lock: 3, ...(variant.units ?? {}) };
+    const would = mine.map((b, i) => {
+      let { band, ids } = patternBand(list[i].ids, walk.at(list[i].at, list[i].cls));
+      if (variant.lock === false && band === 'lock') band = 'high';
+      if (!(fin(b.kelly) && b.kelly >= (variant.kelly ?? 0.02))) band = 'medium';
+      if (b.lab.suspect || b.lab.barred) band = 'medium';
+      return { band, ids };
+    });
+    // (place true: D58's place check on top, a band shown only where its would-be bets before the month beat the band
+    // below by flat return)
+    const place = variant.place ? placeTiers(mine.map((b, i) => ({ t: b.t + GAME_HOURS * 36e5, tier: would[i].band, profit: flat(b), beat: b.beat }))) : null;
+    mine.forEach((b, i) => {
+      const band = place ? placed(would[i].band, place.at(b.at)) : would[i].band;
+      const { ids } = would[i];
+      const units = band === 'medium' ? b.units : stake[band];
+      b.profit = b.units > 0 ? r2((b.profit * units) / b.units) : 0;
+      Object.assign(b, { units, band, ...(band !== 'medium' ? { patterns: ids } : {}) });
+    });
+    counts = { lock: mine.filter((b) => b.band === 'lock').length, high: mine.filter((b) => b.band === 'high').length, medium: mine.filter((b) => b.band === 'medium').length };
+  } else if (variant.mode === 'trial' && dump.sport !== 'mma' && dump.attrRows) {
     // (D73's two-band trial: the trusted share of each bet's edge, the LOVE rule and the LIKE props' stake step
     // picked each month from the bets settled before it (trusted.mjs trialWalk); the sport's TRIAL switches, or the
     // variant's own on (a test))
@@ -220,6 +248,8 @@ async function main() {
     // (D72: the close rows' pieces (REPLAY_ATTR=1 on the replay), what the trusted variants' reliability walks on)
     const attrFile = path.join(dir, `${sport}-attr.json`);
     if (existsSync(attrFile)) dump.attrRows = JSON.parse(readFileSync(attrFile, 'utf8'));
+    // (D84: the props' context from the players' games before each bet, for the pattern variants)
+    if (names.some((n) => variants[n]?.mode === 'pattern')) dump.ctx = contextOf(dir, sport, dump.bets);
     const staged = { v: 1, sport, at: new Date().toISOString(), order: [], labels: {}, variants: {} };
     for (const name of names) {
       if (!variants[name]) throw new Error(`no variant ${name} in ${VARIANTS_FILE}`);

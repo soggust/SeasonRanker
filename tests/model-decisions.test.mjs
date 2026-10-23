@@ -1971,3 +1971,15 @@ test('D83 weight misses: the table from the weigh-in notes, missW a soft term, a
   const decisions = fs.readFileSync(path.join(import.meta.dirname, '../libs/ranker/scripts/model/DECISIONS.md'), 'utf8');
   assert.ok(decisions.includes('### D83.'));
 });
+
+test("D84 win patterns: staged in the band lab only, the owner's 2% Kelly floor by default, never read by the desk", async () => {
+  const BL = await import('../libs/ranker/scripts/model/band-lab.mjs');
+  const v = BL.readVariants();
+  for (const k of ['pattern', 'pattern-love', 'pattern-strict', 'pattern-place']) assert.equal(v[k]?.mode, 'pattern', k);
+  for (const k of ['pattern', 'pattern-love', 'pattern-strict', 'pattern-place']) assert.equal(v[k].kelly, undefined, `${k} at the default floor`);
+  const lab = fs.readFileSync(path.join(import.meta.dirname, '../libs/ranker/scripts/model/band-lab.mjs'), 'utf8');
+  assert.ok(lab.includes('b.kelly >= (variant.kelly ?? 0.02)'), 'the default Kelly floor is the owner\'s 2%');
+  for (const f of ['run.mjs', 'desk.mjs', 'replay-record.mjs', 'picks.mjs']) assert.ok(!fs.readFileSync(path.join(import.meta.dirname, '../libs/ranker/scripts/model', f), 'utf8').includes("from './patterns.mjs'"), `${f} doesn't read the patterns (none shipped)`);
+  const decisions = fs.readFileSync(path.join(import.meta.dirname, '../libs/ranker/scripts/model/DECISIONS.md'), 'utf8');
+  assert.ok(decisions.includes('### D84.'));
+});
