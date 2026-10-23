@@ -3,8 +3,8 @@
  "cursor": {
   "johnston-bot.bsky.social": "2026-10-22T22:07:46.359Z",
   "notfriedgehnic.bsky.social": "2026-10-22T18:09:57.172Z",
-  "dailyfaceoff.bsky.social": "2026-10-23T00:24:33.000Z",
-  "dfotoronto.bsky.social": "2026-10-23T00:30:01.000Z",
+  "dailyfaceoff.bsky.social": "2026-10-23T01:01:45.000Z",
+  "dfotoronto.bsky.social": "2026-10-23T00:51:44.000Z",
   "marklazerus.bsky.social": "2026-10-23T00:48:07.038Z"
  },
  "claims": [
@@ -436,6 +436,19 @@
    "kind": "status",
    "confidence": 0.9,
    "text": "Golden Knights’ Mitch Marner to miss game vs. Blues for birth of child"
+  },
+  {
+   "id": "at://did:plc:3uus7y6h3rlrk6sbctzxm4bg/app.bsky.feed.post/3myixsg7e2e2s|igorchernyshov|none|status",
+   "at": "2026-10-23T00:55:46.000Z",
+   "seen": "2026-10-23T01:05:34.694Z",
+   "handle": "dailyfaceoff.bsky.social",
+   "post": "at://did:plc:3uus7y6h3rlrk6sbctzxm4bg/app.bsky.feed.post/3myixsg7e2e2s",
+   "player": "Igor Chernyshov",
+   "team": "SJ",
+   "status": "none",
+   "kind": "status",
+   "confidence": 0.4,
+   "text": "Sharks’ Igor Chernyshov leaves game with injury"
   }
  ]
 }
