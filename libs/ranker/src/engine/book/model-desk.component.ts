@@ -5,8 +5,8 @@ import { darkLogoOf } from '../team-look';
 import { matchupName } from './game-menu';
 import { BetGroup, SportGroup, TableSorts, betValue, byGame, gamesBySport } from './desk-columns';
 import { DESK_HELP } from './desk-help';
-import { BotHistory, HISTORY_RANGES, HistoryRange, HistoryRow, ReplayRecordFile, StagedReplayFile, bandSharesOf, beatText, beatTip, botHistoryOf, buildLabel, buildOf, emptyRow, isHistoryRange, recordText } from './replay-history';
-import { DeskPanel, FindingsFile, findingsOf, ESPN_LEAGUES, SPORTS, deskPanelOpen, UNIT_WORDS, DeskEpoch, epochFor, epochShared, countNowOf, deskEpochOf, edgeColorOf, epochLabel, isTracked, meterOf, propState, provisional, sideTextOf, sideTitleOf, toWin } from './desk-math';
+import { BotHistory, HISTORY_RANGES, HistoryRange, HistoryRow, ReplayRecordFile, StagedReplayFile, bandSharesOf, beatText, beatTip, botHistoryOf, buildLabel, buildOf, emptyRow, finalAtOf, isHistoryRange, recordText, withPending } from './replay-history';
+import { DeskPanel, FindingsFile, findingsOf, ESPN_LEAGUES, SPORTS, deskPanelOpen, UNIT_WORDS, DeskEpoch, epochFor, epochShared, countNowOf, deskEpochOf, edgeColorOf, epochLabel, isTracked, meterOf, propState, provisional, sideTextOf, sideTitleOf, splitOpenOf, toWin } from './desk-math';
 import { Board, Meter, ModelBet, ModelState, Settled } from './desk-model';
 import { SummaryBox, athleteTeam, liveStat } from './live-props';
 import { pickTeamColor, splitPick } from './pick-style';
@@ -237,6 +237,9 @@ export class ModelDeskComponent implements OnInit, OnDestroy {
   private livePropTeams = new Map<string, string>();
   // (each in-play game's score as numbers and whether it's over)
   private boards = new Map<string, Board>();
+  // (each final game's end, by its ESPN id (replay-history.ts finalAtOf), and the sports with a bet pending on one)
+  private finals = new Map<string, string>();
+  private pendingSports = new Set<string>();
   private scoreTimer?: ReturnType<typeof setInterval>;
   private closed = false;
 
@@ -263,11 +266,7 @@ export class ModelDeskComponent implements OnInit, OnDestroy {
     this.stagedLabels = Object.assign({}, ...this.allStaged.map((f) => f?.labels ?? {}));
     this.variant = this.stagedNames[0] ?? null;
     this.allStates = files.map((f) => f.state).filter((s): s is ModelState => !!s);
-    const rows = files.flatMap((f) => f.ledger?.bets ?? []);
-    this.allLedgerBets = rows;
-    // (the bets placed: not the markets tracked, nor the slate's practice picks with the split on)
-    const split = this.allStates.some((s) => s.practiceSplit);
-    this.allBets = rows.filter((b) => !isTracked(b) && !(split && !!b.topN));
+    this.takeLedger(files.flatMap((f) => f.ledger?.bets ?? []));
     this.epoch = deskEpochOf(this.allStates);
     // (a remembered sport with no bets (NBA before its season): every sport instead)
     if (this.sport && !this.allBets.some((b) => b.sport === this.sport)) this.sport = null;
@@ -275,7 +274,7 @@ export class ModelDeskComponent implements OnInit, OnDestroy {
     this.loading = false;
     this.loadTeams();
     // (not if the desk closed while its files loaded; not while the page is out of view)
-    if (!this.closed) this.scoreTimer = setInterval(() => !document.hidden && this.loadScores(), 60_000);
+    if (!this.closed) this.scoreTimer = setInterval(() => !document.hidden && this.tick(), 60_000);
   }
 
   ngOnDestroy(): void {
@@ -326,11 +325,27 @@ export class ModelDeskComponent implements OnInit, OnDestroy {
 
   // (what's on show changed: its bets and states picked, the history built, the scores asked)
   private show(): void {
+    this.pick();
+    this.loadScores();
+  }
+
+  // (the bets and states on show, the history built (the pending bets in it), and In Play split from Open Bets)
+  private pick(): void {
     this.bets = this.allBets.filter((b) => b.status === 'open' && (!this.sport || b.sport === this.sport));
     this.states = this.sport ? this.allStates.filter((s) => s.sport === this.sport) : this.allStates;
-    const h = botHistoryOf(this.replays(), this.allLedgerBets, this.sport, Object.fromEntries(this.allStates.map((s) => [s.sport, s.label])), { range: this.range });
-    this.history = h;
     this.findings = findingsOf(this.findingsFile, this.sport);
+    this.buildHistory();
+    this.splitOpen(Date.now());
+  }
+
+  // The history on show, with the pending bets in it (replay-history.ts withPending, the owner 2026-10-22): a bet whose
+  // game ESPN shows final counts at once with its provisional result (desk-math.ts provisional, the wallet's
+  // "pending settlement"), at the top of Recently closed, until the desk's grade lands in the ledger and replaces it
+  private buildHistory(): void {
+    const ledger = withPending(this.allLedgerBets, (b) => (b.event ? this.finals.get(b.event) : null), (b) => this.provisional(b));
+    this.pendingSports = new Set(ledger.filter((b) => b.pending && (!this.sport || b.sport === this.sport)).map((b) => b.sport));
+    const h = botHistoryOf(this.replays(), ledger, this.sport, Object.fromEntries(this.allStates.map((s) => [s.sport, s.label])), { range: this.range });
+    this.history = h;
     const histBand = (label: string) => h.byBand.find((r) => r.label === label) ?? emptyRow(label);
     // (two bands, LOVE and LIKE (the two-band trial, DECISIONS.md D73: LOCK off); a LOCK row only where the shown
     // record has LOCK bets (MMA's Kelly bands, D65, or an old live bet))
@@ -338,17 +353,34 @@ export class ModelDeskComponent implements OnInit, OnDestroy {
     this.bandRows = [...(lock.bets ? [lock] : []), histBand('LOVE'), histBand('LIKE'), h.practice, histBand('PASS')];
     this.bandShares = bandSharesOf(this.bandRows);
     this.buildAt = buildOf(this.allReplays, this.sport, this.epoch ? ((this.sport ? epochFor(this.epoch, this.sport) : null) ?? epochShared(this.epoch)) : null).at;
-    this.splitOpen(Date.now());
-    this.loadScores();
+  }
+
+  // (the ledger and its bets as read: the placed ones apart from the tracked markets and, with the split on, the
+  // slate's practice picks)
+  private takeLedger(rows: ModelBet[]): void {
+    this.allLedgerBets = rows;
+    const split = this.allStates.some((s) => s.practiceSplit);
+    this.allBets = rows.filter((b) => !isTracked(b) && !(split && !!b.topN));
+  }
+
+  // (each minute: the scores, then, while a bet is pending, its sport's ledger again (no-cache: unchanged, a 304), so
+  // the desk's grade replaces the pending row as soon as it's deployed)
+  private async tick(): Promise<void> {
+    await this.loadScores();
+    const sports = [...this.pendingSports];
+    if (!sports.length || this.closed) return;
+    const fresh = await Promise.all(sports.map((sport) => getJson<{ bets?: ModelBet[] }>(`/${sport}/data/model/ledger.json`, { cache: 'no-cache' })));
+    const got = sports.filter((_, i) => fresh[i]?.bets);
+    if (!got.length) return;
+    this.takeLedger([...this.allLedgerBets.filter((b) => !got.includes(b.sport)), ...got.flatMap((s) => fresh[sports.indexOf(s)]!.bets!)]);
+    this.pick();
   }
 
   // The open bets as of now: the ones not started yet (soonest first; with them a game past its start that
   // ESPN hasn't begun or has put off), and the ones under way: In Play while their game runs (one that's over
-  // waits for the run to grade it, out of both)
+  // goes to Recently closed, pending, till the run grades it: desk-math.ts splitOpenOf)
   private splitOpen(now: number): void {
-    const waiting = (b: ModelBet) => Date.parse(b.start) > now || this.notUnderWay(b);
-    this.open = this.bets.filter(waiting).sort((a, b) => a.start.localeCompare(b.start));
-    this.live = this.bets.filter((b) => !waiting(b) && !this.isOver(b)).sort((a, b) => a.start.localeCompare(b.start));
+    ({ open: this.open, live: this.live } = splitOpenOf(this.bets, now, (b) => this.boardOf(b)));
   }
 
   // (a closed bet's band, for its colour: the Book's tier names; a practice pick its own)
@@ -389,7 +421,9 @@ export class ModelDeskComponent implements OnInit, OnDestroy {
         if (!b.team) this.pickColors.delete(b.id);
       }
     }
-    // (from the bets on show now: the sport or game may have changed while the scores loaded)
+    // (from the bets on show now: the sport or game may have changed while the scores loaded; the pending bets
+    // counted from the finals and box scores just read)
+    this.buildHistory();
     this.splitOpen(Date.now());
   }
 
@@ -400,7 +434,10 @@ export class ModelDeskComponent implements OnInit, OnDestroy {
     if (!away || !home) return;
     // (a game called off is never final: its 0-0 isn't a result, as the bettor's espn.mjs gameOf)
     const final = !!event.status?.type?.completed && !/postponed|cancel|suspended|forfeit/i.test(event.status?.type?.name ?? '');
-    this.boards.set(String(event.id), { hs: Number(home.score) || 0, as: Number(away.score) || 0, final, state: event.status?.type?.state });
+    // (when it ended, for the pending bets' day: the minute it was seen to go final, else its start plus the game's length)
+    const was = this.boards.get(String(event.id));
+    if (final && !this.finals.has(String(event.id))) this.finals.set(String(event.id), finalAtOf(event.date ?? '', Date.now(), !!was && !was.final));
+    this.boards.set(String(event.id),{ hs: Number(home.score) || 0, as: Number(away.score) || 0, final, state: event.status?.type?.state });
     const score = `${away.team?.abbreviation} ${away.score ?? 0} - ${home.team?.abbreviation} ${home.score ?? 0}`;
     const detail = event.status?.type?.shortDetail ?? '';
     this.scores.set(String(event.id), { text: final ? `Final · ${score}` : `${score} · ${detail}`, score, detail, final });
@@ -435,16 +472,6 @@ export class ModelDeskComponent implements OnInit, OnDestroy {
     return this.live.reduce((sum, b) => sum + b.units, 0);
   }
 
-  // (an in-play bet whose game is over, waiting for the run to grade it)
-  isOver(b: ModelBet): boolean {
-    return !!this.boardOf(b)?.final;
-  }
-
-  // (a game past its start that isn't running: not begun at ESPN, or over without a final, put off)
-  private notUnderWay(b: ModelBet): boolean {
-    const board = this.boardOf(b);
-    return board?.state === 'pre' || (board?.state === 'post' && !board.final);
-  }
 
   // (what an in-play bet's meter counts, and a side's words and color at the score: desk-math.ts, shared with
   // the Book's Open Bets)
@@ -663,6 +690,7 @@ export class ModelDeskComponent implements OnInit, OnDestroy {
 // (an event on ESPN's scoreboard, as much as the desk reads)
 interface ScoreboardEvent {
   id: string | number;
+  date?: string;
   status?: { type?: { completed?: boolean; name?: string; state?: 'pre' | 'in' | 'post'; shortDetail?: string } };
   competitions?: { competitors?: { homeAway: string; score?: string; team?: { abbreviation?: string } }[] }[];
 }

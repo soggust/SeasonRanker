@@ -1340,6 +1340,14 @@ mat-icon.desk-gloves {
     th:first-child {
       text-align: left;
     }
+
+    // (a record with pending bets in it: how many, muted under it)
+    .desk-pending-note {
+      color: v.$text-faint;
+      display: block;
+      font-size: v.$fs-11;
+      font-weight: 400;
+    }
   }
 
   .desk-history-strip {
@@ -1420,6 +1428,21 @@ mat-icon.desk-gloves {
     .desk-history-units {
       color: v.$grey-light;
       font-weight: 700;
+    }
+
+    // (pending: a result off the final, the desk's grade still to come (the owner, 2026-10-22): a dashed, muted tile)
+    &.is-pending .desk-history-res {
+      opacity: 0.75;
+      outline: 1px dashed v.$grey-light;
+      outline-offset: -1px;
+    }
+
+    .desk-history-pending {
+      color: v.$text-faint;
+      display: block;
+      font-size: v.$fs-11;
+      font-weight: 400;
+      line-height: 1.1;
     }
 
     &.W .desk-history-res,

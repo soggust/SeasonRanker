@@ -192,3 +192,80 @@ test('the time range (the owner, 2026-10-19): Today to All time by the Eastern d
   // (All time: the whole file, as before)
   assert.equal(book.botHistoryOf([f], bets, null).overall.replayed, 30);
 });
+
+// The pending bets (the owner, 2026-10-22): a bet whose game ESPN shows final counts at once with its provisional
+// result (desk-math.ts provisional, the wallet's "pending settlement"), at the top of Recently closed, until the desk's
+// grade lands and replaces it; counted once, the official result winning
+test('withPending: a final game\'s open bets counted at once, at the top of the strip, then replaced by the graded row', () => {
+  const EPOCH = '2026-10-19T17:15:00Z';
+  const START = '2026-10-22T23:00:00Z';
+  const END = '2026-10-23T02:05:00Z';
+  const board = { hs: 24, as: 20, final: true, state: 'post' };
+  const open = [
+    // (home -2.5 at 24-20: won)
+    live('s', 'nfl', START, 'open', 'high', 1, { event: '9', side: 'home', line: -2.5, pick: 'BUF -2.5' }),
+    // (the total 44: a push to be, pending with no result)
+    live('t', 'nfl', START, 'open', 'medium', 1, { event: '9', market: 'total', side: 'over', line: 44, pick: 'Over 44' }),
+    // (a prop whose count isn't in the box score yet: pending, no result)
+    live('p', 'nfl', START, 'open', 'medium', 1, { event: '9', market: 'prop', side: 'over', line: 60.5, propType: 'recYds', athlete: 1, pick: 'X Over 60.5 Rec Yds' }),
+    // (another game, not final: open, not pending)
+    live('o', 'nfl', START, 'open', 'medium', 1, { event: '10', side: 'home', line: -3 }),
+  ];
+  const graded = [live('g', 'nfl', '2026-10-21T00:00:00Z', 'lost', 'medium')];
+  const finals = new Map([['9', END]]);
+  const settle = (b) => book.provisional(b, b.event === '9' ? board : undefined, undefined);
+  const ledger = book.withPending([...graded, ...open], (b) => finals.get(b.event), settle);
+  const now = Date.parse('2026-10-23T02:30:00Z');
+  const h = book.botHistoryOf([], ledger, null, {}, { now });
+  // (the record: the graded loss and the pending win, one each; the push and the prop still out, the other game open)
+  assert.deepEqual([h.overall.won, h.overall.lost, h.overall.push, h.overall.open, h.overall.pending], [1, 1, 0, 3, 1]);
+  assert.equal(h.overall.profit, Math.round((0.91 - 1) * 100) / 100);
+  assert.equal(h.byBand.find((r) => r.label === 'LOVE').pending, 1);
+  // (the strip: the three pending first, the win with its result, the push and the prop with none; then the graded)
+  assert.deepEqual(h.last.map((b) => [b.pending, b.res]), [[true, 'W'], [true, null], [true, null], [false, 'L']]);
+  assert.equal(h.last.find((b) => b.res === null && b.pick === 'Over 44').units, '');
+  // (Today by the game's end: the pending ones in; the graded loss from two days back out)
+  const today = book.botHistoryOf([], ledger, null, {}, { now, range: 'today' });
+  assert.deepEqual([today.overall.won, today.overall.lost, today.overall.pending, today.last.length], [1, 0, 1, 3]);
+  // (the desk grades it: the official row replaces the pending one, counted once; here a stat correction made the
+  // spread a loss and the total a void: the official results win)
+  const after = [...graded, { ...open[0], status: 'lost', profit: -1, gradedAt: '2026-10-23T02:40:00Z' }, { ...open[1], status: 'push', profit: 0, void: true, gradedAt: '2026-10-23T02:40:00Z' }, open[2], open[3]];
+  const h2 = book.botHistoryOf([], book.withPending(after, (b) => finals.get(b.event), settle), null, {}, { now });
+  assert.deepEqual([h2.overall.won, h2.overall.lost, h2.overall.push, h2.overall.open, h2.overall.pending], [0, 2, 0, 2, 0]);
+  assert.deepEqual(h2.last.map((b) => [b.pending, b.res]), [[true, null], [false, 'L'], [false, 'L']]);
+  // (a tracked row is never made pending; a bet without a final untouched)
+  const tracked = live('tr', 'nfl', START, 'open', 'medium', 0, { event: '9', intent: 'track', side: 'home', line: -2.5 });
+  assert.equal(book.withPending([tracked], () => END, settle)[0].pending, undefined);
+  assert.equal(book.withPending([open[3]], () => null, settle)[0], open[3]);
+});
+
+test('finalAtOf: the minute it was seen to go final, else the start plus the game\'s length, never later than now', () => {
+  const now = Date.parse('2026-10-23T12:00:00Z');
+  assert.equal(book.finalAtOf('2026-10-22T23:00:00Z', now, true), '2026-10-23T12:00:00.000Z');
+  assert.equal(book.finalAtOf('2026-10-22T23:00:00Z', now, false), '2026-10-23T02:00:00.000Z');
+  assert.equal(book.finalAtOf('2026-10-23T11:00:00Z', now, false), '2026-10-23T12:00:00.000Z');
+});
+
+test('the panel transition: a bet leaves In Play the minute ESPN shows its game final and is at the top of Recently closed, pending; never in neither', () => {
+  const START = '2026-10-22T23:00:00Z';
+  const now = Date.parse('2026-10-23T01:00:00Z');
+  const bet = live('s', 'nfl', START, 'open', 'high', 1, { event: '9', side: 'home', line: -2.5, pick: 'BUF -2.5' });
+  const later = live('l', 'nfl', '2026-10-24T00:00:00Z', 'open', 'medium', 1, { event: '11', side: 'home', line: -1 });
+  const where = (board, finals) => {
+    const split = book.splitOpenOf([bet, later], now, (b) => (b.event === '9' ? board : undefined));
+    const ledger = book.withPending([bet, later], (b) => finals.get(b.event), (b) => book.provisional(b, b.event === '9' ? board : undefined, undefined));
+    const strip = book.botHistoryOf([], ledger, null, {}, { now }).last;
+    const ids = (list) => list.map((b) => b.id);
+    return { open: ids(split.open), live: ids(split.live), over: ids(split.over), strip: strip.map((b) => [b.pick, b.res, b.pending]) };
+  };
+  // (under way: In Play, not in the strip)
+  assert.deepEqual(where({ hs: 21, as: 20, final: false, state: 'in' }, new Map()), { open: ['l'], live: ['s'], over: [], strip: [] });
+  // (final: out of In Play, pending at the top of Recently closed with its result off the final)
+  const final = { hs: 24, as: 20, final: true, state: 'post' };
+  assert.deepEqual(where(final, new Map([['9', '2026-10-23T01:00:00Z']])), { open: ['l'], live: [], over: ['s'], strip: [['BUF -2.5', 'W', true]] });
+  // (over without a final (put off): back with the open bets, never pending)
+  assert.deepEqual(where({ hs: 0, as: 0, final: false, state: 'post' }, new Map()), { open: ['s', 'l'], live: [], over: [], strip: [] });
+  // (graded: the desk's row, pending no more)
+  const graded = { ...bet, status: 'won', profit: 0.91, gradedAt: '2026-10-23T01:20:00Z' };
+  assert.deepEqual(book.botHistoryOf([], book.withPending([graded], () => '2026-10-23T01:00:00Z', () => null), null, {}, { now }).last.map((b) => [b.res, b.pending]), [['W', false]]);
+});

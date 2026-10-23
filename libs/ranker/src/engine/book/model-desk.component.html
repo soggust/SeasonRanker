@@ -97,7 +97,7 @@
         @if (!total && shares[t.label] !== null && shares[t.label] !== undefined) {<span class="desk-share-bar" aria-hidden="true"><span [style.width.%]="shares[t.label] * 100"></span></span>{{ (shares[t.label] * 100).toFixed(shares[t.label] < 0.1 ? 1 : 0) }}%}
       </td>
     }
-    <td [attr.title]="recordTip(t)">{{ recordText(t) }}</td>
+    <td [attr.title]="recordTip(t) + (t.pending ? ' · ' + t.pending + ' of them pending: worked out from the final, not graded by the desk yet' : '')">{{ recordText(t) }}@if (t.pending) {<small class="desk-pending-note">incl. {{ t.pending }} pending</small>}</td>
     <td [class.up]="t.profit > 0" [class.down]="t.profit < 0">{{ units(t.profit) }}</td>
     <td [class.up]="(t.roi ?? 0) > 0" [class.down]="(t.roi ?? 0) < 0">{{ pct(t.roi) }}</td>
     <td [attr.title]="beatTip(t)">{{ beatText(t) }}</td>
@@ -459,8 +459,8 @@
           }
           <ol class="desk-history-strip" aria-label="The last 20 bets">
             @for (b of history!.last; track $index) {
-              <li class="desk-history-bet" [ngClass]="b.res" [class.is-pass]="!b.practice && b.band === 'PASS'">
-                <span class="desk-history-res" [attr.aria-label]="b.res === 'W' ? 'Won' : b.res === 'L' ? 'Lost' : 'Push'">{{ b.res }}</span>
+              <li class="desk-history-bet" [ngClass]="b.res ?? ''" [class.is-pending]="b.pending" [class.is-pass]="!b.practice && b.band === 'PASS'" [attr.title]="b.pending ? (b.res ? 'Pending: worked out from the final, not graded by the desk yet' : 'Pending: the desk grades it (a push or void, or a stat not in the box score yet)') : null">
+                <span class="desk-history-res" [attr.aria-label]="(b.res === 'W' ? 'Won' : b.res === 'L' ? 'Lost' : b.res === 'P' ? 'Push' : 'No result yet') + (b.pending ? ', pending' : '')">{{ b.res ?? '·' }}</span>
                 <span class="desk-history-league"><ng-container *ngTemplateOutlet="leagueMark; context: { $implicit: b.sport, titled: true }"></ng-container></span>
                 <span class="desk-history-words">
                   <b>{{ b.pick }}</b>
@@ -470,7 +470,7 @@
                   <span class="desk-history-tag" [ngClass]="bandClass(b)">{{ b.practice ? 'Practice' : b.band }}</span>
                   <span class="desk-history-price" title="Price">{{ b.price }}</span>
                   <span class="desk-history-stake" title="Stake">{{ b.stake }}u</span>
-                  <span class="desk-history-units" title="Result">{{ b.units }}</span>
+                  <span class="desk-history-units" [attr.title]="b.pending ? 'Result off the final: pending, not graded yet' : 'Result'">{{ b.units }}@if (b.pending) {<small class="desk-history-pending">pending</small>}</span>
                 </span>
               </li>
             }

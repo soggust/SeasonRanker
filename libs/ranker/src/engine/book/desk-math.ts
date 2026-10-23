@@ -96,6 +96,24 @@ export function provisional(b: ModelBet, game: Board | undefined, propNow: numbe
   return outcome(b, gameEdge(b, game));
 }
 
+// The Algorithm's open bets as of now, by their game's board on ESPN: open (not started yet, soonest first; with them
+// a game past its start that ESPN hasn't begun or has put off: over without a final), live (under way: In Play), and
+// over (final: out of In Play the minute ESPN says so, pending at the top of Recently closed till the run grades it,
+// replay-history.ts withPending). Each open bet in exactly one
+export function splitOpenOf(bets: ModelBet[], now: number, boardOf: (b: ModelBet) => Board | undefined): { open: ModelBet[]; live: ModelBet[]; over: ModelBet[] } {
+  const byStart = (a: ModelBet, b: ModelBet) => a.start.localeCompare(b.start);
+  const out = { open: [] as ModelBet[], live: [] as ModelBet[], over: [] as ModelBet[] };
+  for (const b of bets) {
+    const board = boardOf(b);
+    if (Date.parse(b.start) > now || board?.state === 'pre' || (board?.state === 'post' && !board.final)) out.open.push(b);
+    else if (board?.final) out.over.push(b);
+    else out.live.push(b);
+  }
+  out.open.sort(byStart);
+  out.live.sort(byStart);
+  return out;
+}
+
 // (a side in play, at the score: by how much it's covering (a spread) or leading (a moneyline); null for a
 // total or a prop, or before there's a score)
 export function sideEdge(b: ModelBet, game: Board | undefined): number | null {

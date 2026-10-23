@@ -6,7 +6,7 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
-import { COOLDOWN_MIN, FAR_EVERY_MIN, FAST_COOLDOWN_MIN, FAST_MAX_PER_DAY, FAST_WORKFLOW, HIGH, INACTIVES, MAX_PER_DAY, MOVE, POLL_MIN, advance, dispatchDecision, fastDecision, fastGameOf, gamesOf, injuriesOf, material, phaseAt, postGame, settle, severe, sigOf } from '../scripts/desk-watch.mjs';
+import { COOLDOWN_MIN, FAR_EVERY_MIN, FAST_COOLDOWN_MIN, FAST_MAX_PER_DAY, FAST_WORKFLOW, FINAL_KEEP_H, FINAL_LOOK_H, HIGH, INACTIVES, MAX_PER_DAY, MOVE, POLL_MIN, advance, dispatchDecision, fastDecision, fastGameOf, finalsOf, gamesOf, injuriesOf, material, openOn, phaseAt, postGame, settle, severe, sigOf } from '../scripts/desk-watch.mjs';
 import { linesOf } from '../libs/ranker/scripts/model/espn.mjs';
 
 const H = 36e5;
@@ -247,4 +247,40 @@ test('D68 the full lane with two lanes: none while a fast run is queued or runni
   const s = settle(state, [{ status: 'completed', createdAt: ago(60) }], [{ status: 'in_progress', createdAt: ago(1), displayTitle: 'Model desk fast: nba 1' }]);
   assert.deepEqual(s.done.map((p) => p.key), ['a']);
   assert.deepEqual(settle(state, [{ status: 'in_progress', createdAt: ago(1) }], []).done.map((p) => p.key), ['a', 'b', 'c']);
+});
+
+test('D80 a game gone final with open Bot bets: the fast lane on it, within its rate; any run of its sport grades it', async () => {
+  // (the scoreboard: last night's late game on yesterday's Eastern day, a game called off, one still on, one too old)
+  const at = Date.parse('2026-10-23T05:30:00Z');
+  const ev = (id, start, completed, name = 'STATUS_FINAL') => ({ id, shortName: `G${id}`, date: start, status: { type: { completed, name } } });
+  const asked = [];
+  const fetchJson = async (url) => {
+    asked.push(url.match(/dates=(\d+)/)[1]);
+    return url.includes('dates=20261022') ? { events: [ev('1', '2026-10-23T02:00Z', true), ev('2', '2026-10-23T02:00Z', true, 'STATUS_POSTPONED'), ev('3', '2026-10-23T03:00Z', false), ev('4', '2026-10-22T16:00Z', true)] } : { events: [] };
+  };
+  const finals = await finalsOf('nhl', { now: at, fetchJson });
+  assert.deepEqual(finals.map((f) => f.id), ['1'], 'final, not called off, started inside the look back');
+  assert.deepEqual([...new Set(asked)].sort(), ['20261022', '20261023']);
+  assert.ok(FINAL_LOOK_H >= 6 && FINAL_KEEP_H >= 1);
+  // (the open bets on it: a tracked row is no bet, a graded one none)
+  const open = openOn([{ event: '1', status: 'open' }, { event: '1', status: 'open', intent: 'track' }, { event: '1', status: 'won' }, { event: '9', status: 'open' }], ['1']);
+  assert.deepEqual([...open], [['1', 1]]);
+  // (pending, the fast lane's, after the first poll; the rates as any news on one game)
+  const first = advance(null, { games: {} }, at - 6e4);
+  const { state, added } = advance(first.state, { games: {}, finals: [{ sport: 'nhl', game: '1', name: 'G1', n: 1 }] }, at);
+  assert.deepEqual(added.map((a) => [a.key, a.fast, a.final]), [['nhl:final:1', true, true]]);
+  assert.equal(advance(state, { games: {}, finals: [{ sport: 'nhl', game: '1', name: 'G1', n: 1 }] }, at + 6e4).added.length, 0, 'once');
+  const ago = (min) => new Date(at - min * 6e4).toISOString();
+  const go = fastDecision({ pending: state.pending, runs: [], others: [], dispatched: [], now: at + 6e4 });
+  assert.deepEqual([go.go, go.sport, go.game], [true, 'nhl', '1']);
+  // (a run busy or queued, or the day's cap: it waits; capped, the full lane's, under its own cooldown)
+  assert.equal(fastDecision({ pending: state.pending, runs: [{ status: 'queued', createdAt: ago(1) }], now: at }).go, false);
+  const capped = fastDecision({ pending: state.pending, dispatched: Array.from({ length: FAST_MAX_PER_DAY }, () => ({ at: ago(30), sport: 'nba', game: '5' })), now: at });
+  assert.equal(capped.capped, true);
+  assert.equal(dispatchDecision({ pending: state.pending, runs: [{ status: 'completed', createdAt: ago(5) }], now: at }).go, false, 'the full lane\'s cooldown holds it');
+  // (settled by a fast run of its sport on any game (every open bet of the sport is graded), or a full run; not another sport's)
+  const later = new Date(at + 2 * 6e4).toISOString();
+  assert.equal(settle(state, [], [{ status: 'queued', createdAt: later, displayTitle: 'Model desk fast: nhl 77' }]).done.length, 1);
+  assert.equal(settle(state, [], [{ status: 'queued', createdAt: later, displayTitle: 'Model desk fast: nba 1' }]).done.length, 0);
+  assert.equal(settle(state, [{ status: 'queued', createdAt: later }], []).done.length, 1);
 });

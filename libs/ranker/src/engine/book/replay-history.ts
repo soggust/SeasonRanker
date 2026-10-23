@@ -4,7 +4,7 @@
 // algorithm over the whole priced history before its epoch, at the Bot's own placement, bands and stakes) joined to
 // the live ledger's real bets on the games from the epoch on (the same algorithm, so they are the replay going
 // forward). No Angular here (tested under Node: tests/book-replay-history.test.mjs)
-import { ModelBet, Tally } from './desk-model';
+import { ModelBet, Settled, Tally } from './desk-model';
 import { isTracked } from './desk-math';
 import { compactRecord } from './bet-format';
 
@@ -105,9 +105,14 @@ export interface HistoryRow extends Tally {
   live: number;
   // (By Sport's rows: the sport, for its league mark)
   sport?: string;
+  // (of its graded bets, how many are the page's own provisional results, not the desk's yet: withPending)
+  pending: number;
 }
 export interface HistoryStripBet {
-  res: 'W' | 'L' | 'P';
+  // (null: a pending bet with no result yet: a push or void to be, or a prop whose count isn't in the box score)
+  res: 'W' | 'L' | 'P' | null;
+  // (the page's provisional result off ESPN's final, not yet the desk's grade: withPending)
+  pending: boolean;
   pick: string;
   game: string;
   // (the matchup alone, "BUF @ KC", and the stake in units)
@@ -174,6 +179,32 @@ const GAME_HOURS = 3;
 // (a live bet's settling: its grading, else its game's end)
 const settledOf = (b: ModelBet): string => b.gradedAt ?? new Date(Date.parse(b.start) + GAME_HOURS * 36e5).toISOString();
 
+// ---- the pending bets (the owner, 2026-10-22): a bet whose game ESPN shows final, before the desk's run grades it ----
+
+// (when a game ended, as the page knows it: the moment it saw the game go final, if it saw it under way first; else
+// (the page opened after the final) its start plus GAME_HOURS, never later than now. The time range dates a pending
+// bet by it, as a graded one by its gradedAt)
+export function finalAtOf(start: string, now: number, sawLive: boolean): string {
+  const est = Date.parse(start) + GAME_HOURS * 36e5;
+  return new Date(sawLive || !Number.isFinite(est) ? now : Math.min(est, now)).toISOString();
+}
+
+// The ledger's bets with the pending ones' provisional results in (the wallet's tickets' "pending settlement" rule:
+// desk-math.ts provisional, passed as settleOf): every bet still open in the ledger whose game finalAt says is over
+// is pending, dated by its game's end; a won or lost one gets its status and profit, so the history counts it at once;
+// a push to be (maybe a void) or a prop with no count yet stays open, pending with no result. The ledger's own grade
+// always wins: a bet the desk has graded is never touched, so a pending bet is counted once, then replaced by its
+// graded row (a stat correction, a void: whatever the desk said). Tracked rows are left as they are
+export function withPending(bets: ModelBet[], finalAt: (b: ModelBet) => string | null | undefined, settleOf: (b: ModelBet) => Settled | null): ModelBet[] {
+  return bets.map((b) => {
+    if (b.status !== 'open' || isTracked(b)) return b;
+    const at = finalAt(b);
+    if (!at) return b;
+    const r = settleOf(b);
+    return r && r.status !== 'push' ? { ...b, status: r.status, profit: r.profit, gradedAt: at, pending: true } : { ...b, gradedAt: at, pending: true };
+  });
+}
+
 // The range's Eastern days, first and last (null: All time): a week from its Monday, a month and a year from their first
 export function rangeDays(range: HistoryRange, now: number | Date = Date.now()): { from: string; to: string } | null {
   if (range === 'all') return null;
@@ -218,7 +249,7 @@ export function dailyTally(f: ReplayRecordFile, bands: string[], r: { from: stri
 const BAND_LABELS: Record<string, string> = { lock: 'LOCK', high: 'LOVE', medium: 'LIKE', low: 'PASS' };
 const MARKET_LABELS: Record<string, string> = { lines: 'Game lines', props: 'Props' };
 
-export const emptyRow = (label: string): HistoryRow => ({ label, bets: 0, won: 0, lost: 0, push: 0, staked: 0, profit: 0, roi: null, open: 0, clvN: 0, clvBeat: null, clvEv: null, replayed: 0, live: 0 });
+export const emptyRow = (label: string): HistoryRow => ({ label, bets: 0, won: 0, lost: 0, push: 0, staked: 0, profit: 0, roi: null, open: 0, clvN: 0, clvBeat: null, clvEv: null, replayed: 0, live: 0, pending: 0 });
 
 // Beat the fair close (DECISIONS.md D56), one definition for the replayed and the live bets: a bet placed before the
 // close beat it when its own price has a positive expected return at the close's no-vig fair chance, a close at the
@@ -271,6 +302,7 @@ function addLive(row: HistoryRow, b: ModelBet): HistoryRow {
   row.staked += b.units;
   row.profit += b.profit;
   row.live++;
+  if (b.pending) row.pending++;
   const ev = fairCloseOf(b);
   if (ev !== null) {
     row.clvBeat = ((row.clvBeat ?? 0) * row.clvN + (ev > 0 ? 1 : 0)) / (row.clvN + 1);
@@ -336,7 +368,7 @@ export function botHistoryOf(
   const sports = [...new Set([...replays.keys(), ...bets.map((b) => b.sport)])].filter((s) => !sport || s === sport).sort();
   const epochOf = (s: string) => replays.get(s)?.epoch ?? null;
   // (in a range, the live bets settled in it: an open one has no settling yet)
-  const live = bets.filter((b) => (!sport || b.sport === sport) && !isTracked(b) && liveSince(b, epochOf(b.sport)) && (!days || (b.status !== 'open' && inDays(etDay(settledOf(b)), days))));
+  const live = bets.filter((b) => (!sport || b.sport === sport) && !isTracked(b) && liveSince(b, epochOf(b.sport)) && (!days || ((b.status !== 'open' || !!b.pending) && inDays(etDay(settledOf(b)), days))));
   const liveReal = live.filter((b) => !practiceOf(b));
   const livePractice = live.filter(practiceOf);
   const overall = emptyRow('All');
@@ -390,13 +422,14 @@ export function botHistoryOf(
   }
   // (the strip: the live bets graded since the epochs and the replays' last bets, newest settled first, practice
   // picks among them with their tag)
+  const resOf = (b: ModelBet): HistoryStripBet['res'] => (b.status === 'won' ? 'W' : b.status === 'lost' ? 'L' : b.status === 'push' ? 'P' : null);
   const strip: HistoryStripBet[] = [
     ...live
-      .filter((b) => !b.void && ['won', 'lost', 'push'].includes(b.status))
-      .map((b) => ({ res: (b.status === 'won' ? 'W' : b.status === 'lost' ? 'L' : 'P') as 'W' | 'L' | 'P', pick: b.pick, game: `${b.sport.toUpperCase()} · ${b.matchup}`, matchup: b.matchup, stake: b.units, sport: b.sport, band: BAND_LABELS[bandOf(b)] ?? 'LIKE', practice: practiceOf(b), units: unitsText(b.profit), price: priceText(b.odds), replayed: false, timing: 'live' as const, at: settledOf(b) })),
-    ...[...replays.values()].flatMap((f) => (f.last ?? []).filter((b) => !days || inDays(etDay(b.settled), days)).map((b) => ({ res: b.res, pick: b.pick, game: `${b.sport.toUpperCase()} · ${b.matchup}`, matchup: b.matchup, stake: b.units, sport: b.sport, band: BAND_LABELS[b.band] ?? 'LIKE', practice: b.practice, units: unitsText(b.profit), price: priceText(b.odds), replayed: true, timing: b.timing, at: b.settled }))),
+      .filter((b) => !b.void && (['won', 'lost', 'push'].includes(b.status) || (!!b.pending && b.status === 'open')))
+      .map((b) => ({ res: resOf(b), pending: !!b.pending, pick: b.pick, game: `${b.sport.toUpperCase()} · ${b.matchup}`, matchup: b.matchup, stake: b.units, sport: b.sport, band: BAND_LABELS[bandOf(b)] ?? 'LIKE', practice: practiceOf(b), units: b.status === 'open' ? '' : unitsText(b.profit), price: priceText(b.odds), replayed: false, timing: 'live' as const, at: settledOf(b) })),
+    ...[...replays.values()].flatMap((f) => (f.last ?? []).filter((b) => !days || inDays(etDay(b.settled), days)).map((b) => ({ res: b.res, pending: false, pick: b.pick, game: `${b.sport.toUpperCase()} · ${b.matchup}`, matchup: b.matchup, stake: b.units, sport: b.sport, band: BAND_LABELS[b.band] ?? 'LIKE', practice: b.practice, units: unitsText(b.profit), price: priceText(b.odds), replayed: true, timing: b.timing, at: b.settled }))),
   ]
-    .sort((a, b) => b.at.localeCompare(a.at) || a.pick.localeCompare(b.pick))
+    .sort((a, b) => Number(b.pending) - Number(a.pending) || b.at.localeCompare(a.at) || a.pick.localeCompare(b.pick))
     .slice(0, last);
   const files2 = [...replays.values()];
   return {

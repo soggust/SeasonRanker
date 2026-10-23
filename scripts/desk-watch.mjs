@@ -17,7 +17,9 @@
 // playing inside the window; a reporter's post naming an out, a scratch or a goalie's start (HIGH) while the sport
 // has a game inside its window. The news (the new Out or Doubtful, the post) carries its game where it names one
 // (the player's team's next game inside the window; a post's one game by a team's name or a listed player's): that
-// item is the fast lane's. The rest are the full desk's. Each is pending until a run that reads it starts after it
+// item is the fast lane's. And D80: a game gone final with open Bot bets on it, the fast lane's on that game (a fast run
+// on a game that's over prices nothing: the grading alone), so its bets are graded minutes after the final. The rest are
+// the full desk's. Each is pending until a run that reads it starts after it
 // was seen (a full run reads everything; a fast run its own game's news).
 //
 // Rate: the full lane (dispatchDecision): none while a desk run of either lane is queued or running, none within
@@ -70,6 +72,12 @@ export const INACTIVES = { from: 85, to: 40 };
 export const HIGH = /\b(ruled out|will not play|won't play|not playing|is out|out (?:tonight|today|sunday|monday|thursday|saturday|for (?:the )?(?:game|season|tonight|week))|scratch(?:ed)?|inactive|placed on (?:the )?(?:IR|injured reserve)|to (?:the )?IR\b|season[- ]ending|torn (?:ACL|achilles)|will start (?:in goal|tonight)|starting in goal|confirmed starter|gets the start|will miss)\b/i;
 // (how long a pending item waits at most: a game started, or news a day old, is dropped)
 const NEWS_KEEP_H = 12;
+// (D80, the finals: the scoreboard looked back this many hours for a game gone final; a final's grading waits this
+// long at most (a run of either lane grades it anyway); the ledger read from master as committed (raw GitHub, a few
+// minutes' cache: the site's is an hour), only when a game newly final is seen)
+export const FINAL_LOOK_H = 8;
+export const FINAL_KEEP_H = 6;
+const LEDGER_URL = (sport) => `https://raw.githubusercontent.com/soggust/SeasonRanker/master/apps/${sport}/src/StaticData/model/ledger.json`;
 // (the log trimmed to its newest half past this many bytes)
 const LOG_MAX = 2e6;
 
@@ -301,17 +309,24 @@ export function advance(state, seen, now = Date.now()) {
     const g = postGame(p.text, live.get(p.sport) ?? [], seen.injuries?.[p.sport]);
     add({ key: `${p.sport}:post:${p.uri}`, sport: p.sport, why: `${p.sport.toUpperCase()} ${p.handle}: "${p.text.replace(/\s+/g, ' ').slice(0, 90)}"`, ...onGame(g) });
   }
+  // (a game gone final with open Bot bets on it (D80, seen.finals: finalsOf, openOn): the fast lane's, so they're
+  // graded within minutes of the final, not at the next full run; a fast run on a game that's over prices nothing
+  // (its props are asked only before the start, no game line ever: D68), so it's the grading alone, with the run's
+  // cheap refits, and no paid quote)
+  for (const f of seen.finals ?? []) add({ key: `${f.sport}:final:${f.game}`, sport: f.sport, game: String(f.game), fast: true, final: true, why: `${f.sport.toUpperCase()} ${f.name}: final, ${f.n} open bet${f.n === 1 ? '' : 's'} to grade`, until: now + FINAL_KEEP_H * HOUR });
   // (pending past its time: dropped)
   s.pending = s.pending.filter((p) => !(p.until <= now));
   return { state: s, added };
 }
 
 // A run started after an item was seen reads it: a full run every item, a fast run (fastRuns, its game in its title)
-// its own game's news; the item done, a moved line's baseline its sig then. Pure
+// its own game's news, and every final of its sport (any run grades all of a sport's open bets: D80); the item done,
+// a moved line's baseline its sig then. Pure
 export function settle(state, runs, fastRuns = []) {
   const started = Math.max(0, ...runs.map((r) => Date.parse(r.createdAt)).filter(Number.isFinite));
   const s = structuredClone(state);
-  const fastStart = (p) => (p.fast ? Math.max(0, ...fastRuns.filter((r) => fastGameOf(r)?.sport === p.sport && fastGameOf(r)?.game === String(p.game)).map((r) => Date.parse(r.createdAt)).filter(Number.isFinite)) : 0);
+  const mine = (p, r) => fastGameOf(r)?.sport === p.sport && (p.final || fastGameOf(r)?.game === String(p.game));
+  const fastStart = (p) => (p.fast ? Math.max(0, ...fastRuns.filter((r) => mine(p, r)).map((r) => Date.parse(r.createdAt)).filter(Number.isFinite)) : 0);
   // (the run's own setup takes a few minutes before it reads ESPN: an item seen before its start is in it)
   const done = s.pending.filter((p) => Date.parse(p.seen) < Math.max(started, fastStart(p)));
   for (const p of done) if (p.line && p.sig) s.baseline[p.line] = p.sig;
@@ -319,6 +334,32 @@ export function settle(state, runs, fastRuns = []) {
   // (the keys settled, the last 500: the same post or out never pending twice)
   s.done = [...(s.done ?? []), ...done.map((p) => p.key)].slice(-500);
   return { state: s, done };
+}
+
+// The games of a sport gone final lately (D80): ESPN's scoreboard on the Eastern days of now and FINAL_LOOK_H ago
+// (last night's late game is on yesterday's), each completed one (never one called off: espn.mjs gameOf's rule) that
+// started inside FINAL_LOOK_H: [{ id, name, start }]. fetchJson: a test's
+export async function finalsOf(sport, { now = Date.now(), fetchJson = getJson } = {}) {
+  const et = (t) => new Date(t).toLocaleDateString('en-CA', { timeZone: 'America/New_York' }).replace(/-/g, '');
+  const out = new Map();
+  for (const d of new Set([et(now - FINAL_LOOK_H * HOUR), et(now)])) {
+    const body = await fetchJson(`${ESPN}/${LEAGUES[sport].league}/scoreboard?dates=${d}&limit=200`).catch(() => null);
+    for (const e of body?.events ?? []) {
+      const type = e.status?.type ?? {};
+      const start = Date.parse(e.date);
+      if (!type.completed || /postponed|cancel|suspended|forfeit/i.test(type.name ?? '') || !(start > now - FINAL_LOOK_H * HOUR)) continue;
+      out.set(String(e.id), { id: String(e.id), name: e.shortName ?? e.name ?? String(e.id), start });
+    }
+  }
+  return [...out.values()];
+}
+
+// (the open Bot bets on each of these games, from a ledger's bets: a tracked row is no bet)
+export function openOn(bets, ids) {
+  const want = new Set(ids.map(String));
+  const out = new Map();
+  for (const b of bets ?? []) if (b.status === 'open' && b.intent !== 'track' && want.has(String(b.event))) out.set(String(b.event), (out.get(String(b.event)) ?? 0) + 1);
+  return out;
 }
 
 async function getJson(url) {
@@ -352,6 +393,8 @@ function writeState(s) {
   // (the dispatch times of the last 3 days, the injuries and phases of what's still listed)
   s.dispatched = (s.dispatched ?? []).filter((d) => Date.now() - atOf(d) < 3 * 24 * HOUR);
   s.fastDispatched = (s.fastDispatched ?? []).filter((d) => Date.now() - atOf(d) < 3 * 24 * HOUR);
+  // (the finals checked (D80): a day's worth past the scoreboard's look back)
+  s.finalsChecked = Object.fromEntries(Object.entries(s.finalsChecked ?? {}).filter(([, at]) => Date.now() - Date.parse(at) < (FINAL_LOOK_H + 24) * HOUR));
   writeFileSync(`${STATE}.tmp`, JSON.stringify(s));
   renameSync(`${STATE}.tmp`, STATE);
 }
@@ -396,6 +439,21 @@ async function main() {
       if (since) for (const p of posts) if (p.at > since) seen.posts.push({ ...p, sport });
       const newest = posts.map((p) => p.at).sort().pop();
       if (newest && (!since || newest > since)) cursors[h.handle] = newest;
+    }
+  }
+  // (D80: the games gone final not yet checked; a sport's ledger (as committed) read only when one is, for its open
+  // bets on them; one that won't load checked next poll)
+  seen.finals = [];
+  const checked = (state.finalsChecked ??= {});
+  for (const sport of SPORTS) {
+    const fresh = (await finalsOf(sport, { now })).filter((f) => !checked[`${sport}:${f.id}`]);
+    if (!fresh.length) continue;
+    const ledger = await getJson(LEDGER_URL(sport)).catch(() => null);
+    if (!Array.isArray(ledger?.bets)) continue;
+    const open = openOn(ledger.bets, fresh.map((f) => f.id));
+    for (const f of fresh) {
+      checked[`${sport}:${f.id}`] = new Date(now).toISOString();
+      if (open.get(f.id)) seen.finals.push({ sport, game: f.id, name: f.name, n: open.get(f.id) });
     }
   }
   let { state: next, added } = advance(state, seen, now);
