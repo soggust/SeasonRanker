@@ -1,13 +1,13 @@
 {
  "sport": "nfl",
  "cursor": {
-  "adamscheftermirror.bsky.social": "2026-10-23T11:28:04.830Z",
+  "adamscheftermirror.bsky.social": "2026-10-23T13:04:08.847Z",
   "rapsheet.bsky.social": "2026-10-22T22:13:51.186Z",
   "nflnewsreposterbot.bsky.social": "2026-10-22T13:33:43.592Z",
   "insidenflnews.bsky.social": "2026-10-23T03:27:01.638Z",
   "nflnewsposter.bsky.social": "2026-10-23T06:50:24.012Z",
   "rotoworld-fb.bsky.social": "2026-10-23T12:57:43.000Z",
-  "rotowirenfl.bsky.social": "2026-10-23T12:48:09.000Z"
+  "rotowirenfl.bsky.social": "2026-10-23T13:04:11.000Z"
  },
  "claims": [
   {
@@ -3727,6 +3727,19 @@
    "kind": "status",
    "confidence": 0.9,
    "text": "Rico Dowdle (knee) questionable for Week 7"
+  },
+  {
+   "id": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3mykaiwwlja2o|ricodowdle|questionable|status",
+   "at": "2026-10-23T13:04:11.000Z",
+   "seen": "2026-10-23T13:17:28.372Z",
+   "handle": "rotowirenfl.bsky.social",
+   "post": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3mykaiwwlja2o",
+   "player": "Rico Dowdle",
+   "team": null,
+   "status": "questionable",
+   "kind": "status",
+   "confidence": 0.95,
+   "text": "Rico Dowdle: Questionable for Sunday's game \n\n https://www.rotowire.com/football/player/rico-dowdle-14657"
   }
  ]
 }

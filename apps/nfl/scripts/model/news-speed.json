@@ -3785,6 +3785,11 @@
    "espn": {
     "seen": "2026-10-21T21:55:42.864Z",
     "own": "2026-10-21T21:39:00.000Z"
+   },
+   "bluesky": {
+    "seen": "2026-10-23T12:59:32.424Z",
+    "own": "2026-10-23T12:40:09.000Z",
+    "why": "@rotoworld-fb.bsky.social: Rico Dowdle (knee) questionable for Week 7"
    }
   },
   "401873011|sebastianjosephday|q": {
@@ -5146,6 +5151,90 @@
    "espn": {
     "seen": "2026-10-23T02:08:12.922Z",
     "own": "2026-10-23T01:50:00.000Z"
+   }
+  },
+  "401873017|ricodowdle|q": {
+   "game": "401873017",
+   "start": "2026-10-25T17:00Z",
+   "team": "1",
+   "name": "Rico Dowdle",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-10-23T12:59:32.424Z",
+    "own": "2026-10-23T12:40:09.000Z",
+    "why": "@rotoworld-fb.bsky.social: Rico Dowdle (knee) questionable for Week 7"
+   }
+  },
+  "401873013|ricodowdle|q": {
+   "game": "401873013",
+   "start": "2026-10-25T17:00Z",
+   "team": "10",
+   "name": "Rico Dowdle",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-10-23T12:59:32.424Z",
+    "own": "2026-10-23T12:40:09.000Z",
+    "why": "@rotoworld-fb.bsky.social: Rico Dowdle (knee) questionable for Week 7"
+   }
+  },
+  "401873014|ricodowdle|q": {
+   "game": "401873014",
+   "start": "2026-10-25T17:00Z",
+   "team": "16",
+   "name": "Rico Dowdle",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-10-23T12:59:32.424Z",
+    "own": "2026-10-23T12:40:09.000Z",
+    "why": "@rotoworld-fb.bsky.social: Rico Dowdle (knee) questionable for Week 7"
+   }
+  },
+  "401873015|ricodowdle|q": {
+   "game": "401873015",
+   "start": "2026-10-25T17:00Z",
+   "team": "20",
+   "name": "Rico Dowdle",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-10-23T12:59:32.424Z",
+    "own": "2026-10-23T12:40:09.000Z",
+    "why": "@rotoworld-fb.bsky.social: Rico Dowdle (knee) questionable for Week 7"
+   }
+  },
+  "401873018|ricodowdle|q": {
+   "game": "401873018",
+   "start": "2026-10-25T17:00Z",
+   "team": "29",
+   "name": "Rico Dowdle",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-10-23T12:59:32.424Z",
+    "own": "2026-10-23T12:40:09.000Z",
+    "why": "@rotoworld-fb.bsky.social: Rico Dowdle (knee) questionable for Week 7"
+   }
+  },
+  "401873012|ricodowdle|q": {
+   "game": "401873012",
+   "start": "2026-10-25T17:00Z",
+   "team": "33",
+   "name": "Rico Dowdle",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-10-23T12:59:32.424Z",
+    "own": "2026-10-23T12:40:09.000Z",
+    "why": "@rotoworld-fb.bsky.social: Rico Dowdle (knee) questionable for Week 7"
+   }
+  },
+  "401873016|ricodowdle|q": {
+   "game": "401873016",
+   "start": "2026-10-25T17:00Z",
+   "team": "34",
+   "name": "Rico Dowdle",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-10-23T12:59:32.424Z",
+    "own": "2026-10-23T12:40:09.000Z",
+    "why": "@rotoworld-fb.bsky.social: Rico Dowdle (knee) questionable for Week 7"
    }
   }
  }
