@@ -4,8 +4,8 @@
   "adamscheftermirror.bsky.social": "2026-10-23T13:04:08.847Z",
   "rapsheet.bsky.social": "2026-10-22T22:13:51.186Z",
   "nflnewsreposterbot.bsky.social": "2026-10-22T13:33:43.592Z",
-  "insidenflnews.bsky.social": "2026-10-23T13:25:49.858Z",
-  "nflnewsposter.bsky.social": "2026-10-23T06:50:24.012Z",
+  "insidenflnews.bsky.social": "2026-10-23T14:11:43.763Z",
+  "nflnewsposter.bsky.social": "2026-10-23T14:20:35.494Z",
   "rotoworld-fb.bsky.social": "2026-10-23T13:51:58.000Z",
   "rotowirenfl.bsky.social": "2026-10-23T13:31:02.000Z"
  },
@@ -3766,6 +3766,19 @@
    "kind": "status",
    "confidence": 0.3,
    "text": "Rap: Nacua calf injury not considered serious"
+  },
+  {
+   "id": "at://did:plc:mbr4badgf6yu56mquzackzew/app.bsky.feed.post/3mykebpevl222|bakermayfield|active|status",
+   "at": "2026-10-23T14:11:43.763Z",
+   "seen": "2026-10-23T14:30:42.755Z",
+   "handle": "insidenflnews.bsky.social",
+   "post": "at://did:plc:mbr4badgf6yu56mquzackzew/app.bsky.feed.post/3mykebpevl222",
+   "player": "Baker Mayfield",
+   "team": "TB",
+   "status": "active",
+   "kind": "status",
+   "confidence": 0.5,
+   "text": "Baker Mayfield will wear a custom glove for his injured right hand in Week 7.\n\nThe glove was invented by Tampa Bay Rays home clubhouse attendant Nick Bond, who took a receiver’s glove and ripped off t"
   }
  ]
 }
