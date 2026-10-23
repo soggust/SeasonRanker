@@ -6,8 +6,8 @@
   "nflnewsreposterbot.bsky.social": "2026-10-22T13:33:43.592Z",
   "insidenflnews.bsky.social": "2026-10-23T03:27:01.638Z",
   "nflnewsposter.bsky.social": "2026-10-23T06:50:24.012Z",
-  "rotoworld-fb.bsky.social": "2026-10-23T04:35:10.000Z",
-  "rotowirenfl.bsky.social": "2026-10-23T04:59:35.000Z"
+  "rotoworld-fb.bsky.social": "2026-10-23T12:57:43.000Z",
+  "rotowirenfl.bsky.social": "2026-10-23T12:48:09.000Z"
  },
  "claims": [
   {
@@ -3714,6 +3714,19 @@
    "kind": "status",
    "confidence": 0.95,
    "text": "[Bears] Bears TE Cole Kmet (Knee) has been ruled Out. twitter.com/BearsPR/stat..."
+  },
+  {
+   "id": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3myk75xxqjd2l|ricodowdle|questionable|status",
+   "at": "2026-10-23T12:40:09.000Z",
+   "seen": "2026-10-23T12:59:32.424Z",
+   "handle": "rotoworld-fb.bsky.social",
+   "post": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3myk75xxqjd2l",
+   "player": "Rico Dowdle",
+   "team": null,
+   "status": "questionable",
+   "kind": "status",
+   "confidence": 0.9,
+   "text": "Rico Dowdle (knee) questionable for Week 7"
   }
  ]
 }
