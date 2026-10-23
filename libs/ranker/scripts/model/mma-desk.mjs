@@ -531,7 +531,7 @@ export function boardSidesOf(lines, chance, trust, src = null, { edge = null, ke
     const p = chanceAt(key, side === 'home' ? pf : 1 - pf, m, trust);
     const ev = p * decimal(odds) - 1;
     const ks = kellyOf(odds, p);
-    const short = Number.isFinite(edge) && m - fair < edge ? { cap: 'medium', cr: `the Bot's lean (${round((m - fair) * 100, 1)} points) under the league's edge (${round(edge * 100, 1)}): a card's practice pick at most, a LIKE at ${PRACTICE_UNITS}u` } : {};
+    const short = Number.isFinite(edge) && m - fair < edge ? { cap: 'medium', cr: `the Bot's lean (${round((m - fair) * 100, 1)} points) under the league's edge (${round(edge * 100, 1)}): a card's practice pick at most, a LIKE at ${PRACTICE_UNITS}u`, tr: 1 } : {};
     const pass = !!gap || !!off;
     return { s: side, l: null, o: odds, ...(lines.books?.[side] ? { pb: lines.books[side], ...(lines.books[side] !== 'dk' && lines.dk?.[side] ? { dko: lines.dk[side] } : {}) } : {}), c: round(p, 3), ks, b: bandOf(ks, p, ev, { pass, cap: short.cap }), ...(off ? { sr: off } : {}), ...(pass ? {} : short), ...(src ? { src } : {}) };
   });

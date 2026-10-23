@@ -175,6 +175,8 @@ export function suggestionsOf(sport: string, board: ModelBoard | null | undefine
     };
     for (const market of ['spread', 'total', 'ml'] as const) {
       for (const s of (g.k?.[market] ?? []) as BoardSide[]) {
+        // (a side the Bot wouldn't stake, whatever its price: one it tracks (tr), a practice pick (tracked since D57))
+        if (s.tr || sugOf(s.sug) === 'practice') continue;
         if (!open(s.b, s.ks, s.sr, s.bot, s.sug) || !(s.c > 0 && s.c < 1) || !priced(s.o)) continue;
         const team = s.s === 'home' ? home : away;
         const pick = market === 'total' ? `${s.s === 'over' ? 'Over' : 'Under'} ${s.l}` : market === 'spread' ? `${team} ${lineText(s.l)}` : `${team} ML`;
@@ -196,6 +198,7 @@ export function suggestionsOf(sport: string, board: ModelBoard | null | undefine
       if (x.sk || x.c === null || !(x.c > 0 && x.c < 1)) continue;
       (['over', 'under'] as const).forEach((side, i) => {
         const o = x.o[i];
+        if (sugOf(x.sug) === 'practice') return;
         if (!priced(o) || !open(x.b[i], x.ks[i], x.sr, x.bk, x.sug)) return;
         const pick = `${x.n} ${side === 'over' ? 'Over' : 'Under'} ${x.l} ${x.lb}`;
         push({

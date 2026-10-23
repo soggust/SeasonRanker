@@ -176,7 +176,12 @@ test('tags: "Bet at −109 · 2:05 PM" with the time, the price alone without; t
   g.k.spread[1].sug = 'practice';
   g.p[0].sug = false;
   const rows = suggestionsOf('nfl', board(g), NOW, () => ({}));
-  assert.deepEqual(rows.map((r) => [r.pick, r.practice ?? false, r.confidence]), [['WSH +7.5', true, 'medium']]);
+  // (a practice suggestion: off Bot Picks since practice picks are tracked, D57; the owner, 2026-10-23: no Bot Pick the
+  // Bot wouldn't stake. A side the desk tracks (tr) the same)
+  assert.deepEqual(rows, []);
+  const h = game();
+  h.k.spread[1].tr = 1;
+  assert.ok(!suggestionsOf('nfl', board(h), NOW, () => ({})).some((r) => r.pick === 'WSH +7.5'));
 });
 
 test('splitRead: the Live tab reads the Bot\'s bet with its locked price, else its suggestion', () => {
