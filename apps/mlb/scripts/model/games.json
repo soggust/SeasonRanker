@@ -5004,5 +5004,6 @@
 {"id":"401908028","date":"2026-10-20T00:00Z","season":2026,"type":3,"home":"30","away":"5","homeAbbr":"TB","awayAbbr":"CLE","neutral":false,"final":true,"hs":7,"as":3,"venue":"St. Petersburg|Florida|","indoor":true},
 {"id":"401908029","date":"2026-10-21T00:00Z","season":2026,"type":3,"home":"30","away":"5","homeAbbr":"TB","awayAbbr":"CLE","neutral":false,"final":false,"hs":null,"as":null,"venue":"St. Petersburg|Florida|","indoor":true},
 {"id":"401908042","date":"2026-10-24T00:00Z","season":2026,"type":3,"home":"8","away":"30","homeAbbr":"MIL","awayAbbr":"TB","neutral":false,"venue":"Milwaukee|Wisconsin|","indoor":true,"final":false,"hs":null,"as":null},
-{"id":"401908043","date":"2026-10-25T00:00Z","season":2026,"type":3,"home":"8","away":"30","homeAbbr":"MIL","awayAbbr":"TB","neutral":false,"venue":"Milwaukee|Wisconsin|","indoor":true,"final":false,"hs":null,"as":null}
+{"id":"401908043","date":"2026-10-25T00:00Z","season":2026,"type":3,"home":"8","away":"30","homeAbbr":"MIL","awayAbbr":"TB","neutral":false,"venue":"Milwaukee|Wisconsin|","indoor":true,"final":false,"hs":null,"as":null},
+{"id":"401908044","date":"2026-10-27T00:00Z","season":2026,"type":3,"home":"30","away":"8","homeAbbr":"TB","awayAbbr":"MIL","neutral":false,"venue":"St. Petersburg|Florida|","indoor":true,"final":false,"hs":null,"as":null}
 ]

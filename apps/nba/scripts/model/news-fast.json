@@ -1,7 +1,7 @@
 {
  "sport": "nba",
  "cursor": {
-  "rotowirenba.bsky.social": "2026-10-22T22:03:54.000Z",
+  "rotowirenba.bsky.social": "2026-10-23T00:21:39.000Z",
   "insidenbanews.bsky.social": "2026-10-22T14:47:23.657Z",
   "shamsbot.bsky.social": "2026-10-22T13:00:45.000Z"
  },
@@ -915,6 +915,58 @@
    "kind": "status",
    "confidence": 0.95,
    "text": "Tobias Harris: Ruled out for Friday \n\n https://www.rotowire.com/basketball/player/tobias-harris-3211"
+  },
+  {
+   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3myiuurcxje2t|collinsexton|active|status",
+   "at": "2026-10-23T00:03:23.000Z",
+   "seen": "2026-10-23T00:29:18.410Z",
+   "handle": "rotowirenba.bsky.social",
+   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3myiuurcxje2t",
+   "player": "Collin Sexton",
+   "team": null,
+   "status": "active",
+   "kind": "status",
+   "confidence": 0.8,
+   "text": "Collin Sexton: Left off injury report \n\n https://www.rotowire.com/basketball/player/collin-sexton-4412"
+  },
+  {
+   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3myiuxaz4ye2t|brandinpodziemski|questionable|status",
+   "at": "2026-10-23T00:04:47.000Z",
+   "seen": "2026-10-23T00:29:18.410Z",
+   "handle": "rotowirenba.bsky.social",
+   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3myiuxaz4ye2t",
+   "player": "Brandin Podziemski",
+   "team": null,
+   "status": "questionable",
+   "kind": "status",
+   "confidence": 0.95,
+   "text": "Brandin Podziemski: Questionable to play Friday \n\n https://www.rotowire.com/basketball/player/brandin-podziemski-5889"
+  },
+  {
+   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3myivlkilik2j|isaiahstewart|questionable|status",
+   "at": "2026-10-23T00:16:08.000Z",
+   "seen": "2026-10-23T00:29:18.410Z",
+   "handle": "rotowirenba.bsky.social",
+   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3myivlkilik2j",
+   "player": "Isaiah Stewart",
+   "team": null,
+   "status": "questionable",
+   "kind": "status",
+   "confidence": 0.95,
+   "text": "Isaiah Stewart: Tagged questionable for Friday \n\n https://www.rotowire.com/basketball/player/isaiah-stewart-5137"
+  },
+  {
+   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3myivvgjvcx2h|cedriccoward|doubtful|status",
+   "at": "2026-10-23T00:21:39.000Z",
+   "seen": "2026-10-23T00:29:18.410Z",
+   "handle": "rotowirenba.bsky.social",
+   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3myivvgjvcx2h",
+   "player": "Cedric Coward",
+   "team": null,
+   "status": "doubtful",
+   "kind": "status",
+   "confidence": 0.95,
+   "text": "Cedric Coward: Doubtful for Friday \n\n https://www.rotowire.com/basketball/player/cedric-coward-6592"
   }
  ]
 }
