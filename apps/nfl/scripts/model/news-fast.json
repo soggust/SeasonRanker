@@ -6,7 +6,7 @@
   "nflnewsreposterbot.bsky.social": "2026-10-22T13:33:43.592Z",
   "insidenflnews.bsky.social": "2026-10-23T13:25:49.858Z",
   "nflnewsposter.bsky.social": "2026-10-23T06:50:24.012Z",
-  "rotoworld-fb.bsky.social": "2026-10-23T13:38:07.000Z",
+  "rotoworld-fb.bsky.social": "2026-10-23T13:51:58.000Z",
   "rotowirenfl.bsky.social": "2026-10-23T13:31:02.000Z"
  },
  "claims": [
@@ -3753,6 +3753,19 @@
    "kind": "status",
    "confidence": 0.9,
    "text": "Alvin Kamara: Cleared from injury report \n\n https://www.rotowire.com/football/player/alvin-kamara-11732"
+  },
+  {
+   "id": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3mykd6f5aun2v|pukanacua|active|status",
+   "at": "2026-10-23T13:51:58.000Z",
+   "seen": "2026-10-23T14:11:02.672Z",
+   "handle": "rotoworld-fb.bsky.social",
+   "post": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3mykd6f5aun2v",
+   "player": "Puka Nacua",
+   "team": "LAR",
+   "status": "active",
+   "kind": "status",
+   "confidence": 0.3,
+   "text": "Rap: Nacua calf injury not considered serious"
   }
  ]
 }
