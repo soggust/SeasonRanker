@@ -4918,6 +4918,102 @@
     "seen": "2026-10-23T16:10:09.333Z",
     "own": "2026-10-23T15:50:00.000Z"
    }
+  },
+  "401892567|connorhellebuyck|q": {
+   "game": "401892567",
+   "start": "2026-10-24T19:30Z",
+   "team": "11",
+   "name": "Connor Hellebuyck",
+   "status": "q",
+   "athlete": "3020225",
+   "espn": {
+    "seen": "2026-10-23T16:52:57.883Z",
+    "own": "2026-10-23T16:07:00.000Z"
+   }
+  },
+  "401892567|nickbjugstad|out": {
+   "game": "401892567",
+   "start": "2026-10-24T19:30Z",
+   "team": "11",
+   "name": "Nick Bjugstad",
+   "status": "out",
+   "athlete": "5828",
+   "espn": {
+    "seen": "2026-10-23T16:52:57.883Z",
+    "own": "2026-10-09T22:49:00.000Z"
+   }
+  },
+  "401892567|seamuscasey|out": {
+   "game": "401892567",
+   "start": "2026-10-24T19:30Z",
+   "team": "11",
+   "name": "Seamus Casey",
+   "status": "out",
+   "athlete": "5080212",
+   "espn": {
+    "seen": "2026-10-23T16:52:57.883Z",
+    "own": "2026-10-02T17:31:00.000Z"
+   }
+  },
+  "401892567|quintonbyfield|q": {
+   "game": "401892567",
+   "start": "2026-10-24T19:30Z",
+   "team": "8",
+   "name": "Quinton Byfield",
+   "status": "q",
+   "athlete": "4697383",
+   "espn": {
+    "seen": "2026-10-23T16:52:57.883Z",
+    "own": "2026-10-23T15:50:00.000Z"
+   }
+  },
+  "401892567|alexturcotte|out": {
+   "game": "401892567",
+   "start": "2026-10-24T19:30Z",
+   "team": "8",
+   "name": "Alex Turcotte",
+   "status": "out",
+   "athlete": "4565226",
+   "espn": {
+    "seen": "2026-10-23T16:52:57.883Z",
+    "own": "2026-10-10T18:09:00.000Z"
+   }
+  },
+  "401892567|jakubdvorak|out": {
+   "game": "401892567",
+   "start": "2026-10-24T19:30Z",
+   "team": "8",
+   "name": "Jakub Dvorak",
+   "status": "out",
+   "athlete": "5149241",
+   "espn": {
+    "seen": "2026-10-23T16:52:57.883Z",
+    "own": "2026-09-24T19:49:00.000Z"
+   }
+  },
+  "401892567|janjenik|out": {
+   "game": "401892567",
+   "start": "2026-10-24T19:30Z",
+   "team": "8",
+   "name": "Jan Jenik",
+   "status": "out",
+   "athlete": "4587568",
+   "espn": {
+    "seen": "2026-10-23T16:52:57.883Z",
+    "own": "2026-09-24T19:45:00.000Z"
+   }
+  },
+  "401892567|kevinfiala|out": {
+   "game": "401892567",
+   "start": "2026-10-24T19:30Z",
+   "team": "8",
+   "name": "Kevin Fiala",
+   "status": "out",
+   "athlete": "3114743",
+   "espn": {
+    "seen": "2026-10-23T16:52:57.883Z",
+    "own": "2026-09-17T19:39:00.000Z"
+   }
   }
  }
 }
