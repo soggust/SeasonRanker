@@ -482,7 +482,7 @@ export class BookPageComponent implements OnInit, OnDestroy {
 
   // (the chosen game's board: one with picks, or one from the boards alone)
   // (a board's picks as this viewer has them: an admin's with the CHECKs)
-  // (as Bot Picks lists them (D79): each judged again at the latest price, one with no edge there gone, so the game
+  // (as Bot Picks lists them (D81): each judged again at the latest price, one with no edge there gone, so the game
   // board's Bot side shows the band and Kelly score the row does; kept per board while the list is the same)
   private picksFor = new WeakMap<GameBoardPicks, { list: BetRow[]; desk: boolean; out: BetRow[] }>();
   boardPicks(b: GameBoardPicks | null | undefined): BetRow[] {
@@ -649,7 +649,7 @@ export class BookPageComponent implements OnInit, OnDestroy {
       const board = models.get(sport);
       return { espn: boards.get(`${sport}|${event}`) ?? null, espnAt: at, model: modelGameOf(board?.games, event) ?? null, modelAt: board?.at ?? null };
     };
-    // (the Bot's bets judged again at the latest price, one with no edge there off the list (D79: suggestions.ts
+    // (the Bot's bets judged again at the latest price, one with no edge there off the list (D81: suggestions.ts
     // rejudged; still in Open Bets and the Algorithm tab))
     const bets = rows.flatMap((r) => (r.check || !r.pickId ? [r] : (rejudged(r, quoteOf(r, sources(r.sport, r.pickId.split(':')[0]))) ?? [])));
     const suggested = [...models].flatMap(([sport, board]) => (this.loaded.has(sport) ? suggestionsOf(sport, board, now, (g) => sources(sport, g.id)) : []));
@@ -1146,7 +1146,7 @@ export class BookPageComponent implements OnInit, OnDestroy {
       };
     } else {
       this.checkWhy = null;
-      // (a bet judged again at the latest price (D79, suggestions.ts rejudged): its why as it was bet, its what-if
+      // (a bet judged again at the latest price (D81, suggestions.ts rejudged): its why as it was bet, its what-if
       // opened at the latest price, the one its row's button and the game board show)
       const own = row.locked ? { ...row, ...row.locked } : row;
       const w = betWhy(row.locked ? rows.map((r, i) => (i === index ? own : r)) : rows, index);

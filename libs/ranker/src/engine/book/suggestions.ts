@@ -56,7 +56,7 @@ export interface QuoteSources {
 }
 const priced = (v: unknown): v is number => typeof v === 'number' && Number.isFinite(v) && v !== 0;
 
-// A side's latest price, the one the game board shows (D79, the owner's: Bot Picks, the game board, the slip and the
+// A side's latest price, the one the game board shows (D81, the owner's: Bot Picks, the game board, the slip and the
 // popover one price a side): a prop's the board's as loaded (ESPN's scoreboard has none; lines.service runs it
 // through paid-price.ts freshBoard, a stale paid price at DraftKings' own), at the row's line; a game line's ESPN's
 // at the same line with the board's shopped price over it (wallet-math bestPriceOf, as lines.service boards: the
@@ -267,7 +267,7 @@ export function withLive(row: BetRow, q: LiveQuote | null): BetRow {
   return { ...row, livePrice: live, liveFrom: q?.from ?? null, liveBook: q?.book ?? null, moved: live !== null && Number.isFinite(row.price) && live !== row.price };
 }
 
-// A bet of the Bot's as Bot Picks lists it (D79, the owner's: one price a side; a pick with no edge at the current
+// A bet of the Bot's as Bot Picks lists it (D81, the owner's: one price a side; a pick with no edge at the current
 // price comes off Bot Picks, the bet itself staying in Open Bets and the Algorithm tab): at its side's latest price
 // (quoteOf) judged again there as a suggestion is (bet-why whatIfOf over the bet, priceAt at the price: its band and
 // Kelly score at the current price, the desk's caps and the bet's own tier held); no edge there (PASS), null. The

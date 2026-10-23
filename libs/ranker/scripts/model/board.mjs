@@ -12,7 +12,7 @@
 //     k       its game markets, each a list of its two sides: spread [home, away], total [over, under],
 //             ml [home, away]; a side { s: side, l: line (null on a moneyline), o: price (D74: the best US book's at the
 //             Book's line where a paid quote brought one, pb its book's code, best-price.mjs; no pb: ESPN's board, the
-//             Book's own; D79: pt the paid quote's time and dko DraftKings' own price in it (none where pb is 'dk'),
+//             Book's own; D81: pt the paid quote's time and dko DraftKings' own price in it (none where pb is 'dk'),
 //             a fresh paid price held over a later ESPN read: heldPaid), c: the bot's trusted
 //             chance it wins, ks: its Kelly score (picks.mjs kellyOf, the picks' order), b: its band (picks.mjs
 //             level: lock, high (LOVE), medium (LIKE), low (PASS); check where the market is a CHECK the page
@@ -29,7 +29,7 @@
 //             calibrated chance), and cap 'high' (a LOVE at most) or 'medium' where its tiers hold the side }
 //     p      its props, each { n: player, id: ESPN athlete id, t: his team's ESPN id, k: the stat's key, lb: its
 //             label, l: line, o: [over price, under price] (null a side unknown; D74 the best US book's, pb [over's book,
-//             under's] where a paid quote brought them; D79 pt the quote's time, dko [over's, under's] DraftKings' own in
+//             under's] where a paid quote brought them; D81 pt the quote's time, dko [over's, under's] DraftKings' own in
 //             it, a fresh paid price held over a later ESPN read: heldPaid), c: the bot's trusted chance
 //             over, ks: [over's Kelly, under's] and b: [over's band, under's] (null where unpriced), sk: 1 where a
 //             guard has the bot pass on it (his status, the line's move, a layoff, a gap or a small role CHECK's
@@ -158,7 +158,7 @@ function whyOf(bet, { ex, fitted = false, terms = null, reason = false }) {
 }
 
 // ---------------------------------------------------------------------------------------------------------
-// One price a side (DECISIONS.md D79: the owner, 2026-10-22: Bot Picks, the game board, the slip and the popover
+// One price a side (DECISIONS.md D81: the owner, 2026-10-22: Bot Picks, the game board, the slip and the popover
 // always show the same price for the same side and line). A side's price on the board is the best the Bot knows
 // now: a paid quote's best US price (D74) while it's fresh, else ESPN's free DraftKings one. A paid quote is fresh
 // PAID_FRESH_MS (an hour, D55's shortest stale quote, LINES_FRESH.refresh: the other books move without DraftKings)
@@ -240,7 +240,7 @@ const lowerCap = (x, y) => (!x ? (y ?? null) : !y ? x : RANK[x] <= RANK[y] ? x :
 // context }: the write-ups'), terms (termParts'), fitted (market -> whether its trust is fitted) }; none, no w
 // confidence: the confidence layer's model (D52): each side's quality q and the cap its tiers put on it (the lower of
 // the two caps where the gate's is there too)
-// paid, at, now (D79): the last board's sides of this game (its k) and this run's time: a side this run priced at
+// paid, at, now (D81): the last board's sides of this game (its k) and this run's time: a side this run priced at
 // ESPN's free price alone takes the last board's fresh paid price (heldPaid); a side a paid quote priced this run
 // carries pt (at) and dko
 export function boardMarkets(markets, trustOf, consensus = null, ctx = null, { gate = null, off = null, explain = null, confidence = null, paid = null, at = null, now = Date.now() } = {}) {
@@ -256,7 +256,7 @@ export function boardMarkets(markets, trustOf, consensus = null, ctx = null, { g
     const pass = (!!gapped && !checkSide) || !!off;
     const sr = off ? skipReason({ why: off }) : pass ? skipReason(gapped) : null;
     const rows = m.sides.map((own, i) => {
-      // (D79: the side's price the best the Bot knows now: this run's paid one, else the last board's fresh paid one
+      // (D81: the side's price the best the Bot knows now: this run's paid one, else the last board's fresh paid one
       // held over ESPN's, else ESPN's)
       const was = own.book ? null : (paid?.[m.market] ?? []).find((x) => x.s === own.side && (m.market === 'ml' || x.l === own.line));
       const held = was ? heldPaid(own.odds, was, now) : null;
@@ -327,7 +327,7 @@ export const skipReason = (guard) => {
 // explain: the facts for each side's why (w, the header's): { sport, game, exp, sib (its game's context, a bet's
 // sibling: writeup.mjs sibOf), state, fitted (whether the stat's trust is fitted) }; none, no w
 // confidence: the confidence layer's model (D52) and start the game's start: each side's quality q and its tier cap
-// paid, now (D79): the last board's row of this prop (its o, pb, pt, dko): a side priced at ESPN's free price alone
+// paid, now (D81): the last board's row of this prop (its o, pb, pt, dko): a side priced at ESPN's free price alone
 // takes its fresh paid price (heldPaid) at the same line; a side a paid quote priced this run carries pt (at) and dko
 export function boardProp(x, at, { gate = null, explain = null, confidence = null, start = null, paid = null, now = Date.now() } = {}) {
   const by = Object.fromEntries((x.sides ?? []).map((s) => [s.side, s]));
@@ -352,7 +352,7 @@ export function boardProp(x, at, { gate = null, explain = null, confidence = nul
     // (D74: the side's best US price where this run's quote brought one (its book on pb), else the Book's own)
     const i = k === 'over' ? 0 : 1;
     const paidNow = Number.isFinite(prices[k]) && Number.isFinite(by[k]?.odds) && !!by[k]?.book;
-    // (D79: a side at ESPN's free price this run takes the last board's fresh paid one at the same line, heldPaid)
+    // (D81: a side at ESPN's free price this run takes the last board's fresh paid one at the same line, heldPaid)
     const was = !paidNow && paid && paid.l === x.prop.line && paid.pb?.[i] ? { o: paid.o?.[i], pb: paid.pb[i], pt: paid.pt, dko: paid.dko?.[i] ?? null } : null;
     const held = was && Number.isFinite(prices[k]) ? heldPaid(prices[k], was, now) : null;
     const o = Number.isFinite(prices[k]) ? (paidNow ? by[k].odds : held ? held.o : prices[k]) : null;
@@ -433,7 +433,7 @@ export function boardProp(x, at, { gate = null, explain = null, confidence = nul
   };
 }
 
-// (a prop's paid fields (D79): pb [over's, under's], the quote's time pt (one ask prices both sides; a held side's
+// (a prop's paid fields (D81): pb [over's, under's], the quote's time pt (one ask prices both sides; a held side's
 // own where only it is), dko [over's, under's] where another book's is shown)
 function paidPair(a, b) {
   const pt = a?.pt ?? b?.pt ?? null;

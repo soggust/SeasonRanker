@@ -1,4 +1,4 @@
-// One price a side (DECISIONS.md D79; the owner, 2026-10-22: "Bot Picks, the game board, the slip and the popover
+// One price a side (DECISIONS.md D81; the owner, 2026-10-22: "Bot Picks, the game board, the slip and the popover
 // must ALWAYS show the same price for the same side/line"; a pick with no edge at the current price comes off Bot
 // Picks). The case reported: the Bot bet Ryan Nugent-Hopkins Under 1.5 Shots at +115 (Bally Bet, the paid quote's
 // best US price, D74); a later run read ESPN's free DraftKings -120 alone and the board showed -120 (a PASS) while
@@ -32,17 +32,17 @@ const espnRow = () => ({
 // (the last board's row: the paid quote at the bet, the under's best +115 at Bally Bet, DraftKings' own -120 in it)
 const paidRow = { n: 'Ryan Nugent-Hopkins', id: '2562624', k: 'sog', l: 1.5, o: [-110, 115], pb: ['dk', 'bly'], pt: PLACED, dko: [null, -120] };
 
-test('D79 the bettor and the page hold one rule: the same freshness and the same move', () => {
+test('D81 the bettor and the page hold one rule: the same freshness and the same move', () => {
   assert.equal(B.PAID_FRESH_MS, book.PAID_FRESH_MS);
   assert.equal(B.PAID_MOVED, book.PAID_MOVED);
   assert.equal(B.PAID_FRESH_MS, 60 * 60e3, 'an hour: D55 LINES_FRESH.refresh');
   for (const [a, b] of [[-120, -120], [-120, -121], [-120, -125], [-180, -179], [115, 105]]) assert.equal(B.dkMoved(a, b), book.dkMoved(a, b), `${a} ${b}`);
   assert.ok(!B.dkMoved(-180, -179), "the API's rounding is no move");
   assert.ok(B.dkMoved(-120, -110), 'ten cents is');
-  assert.ok(fs.readFileSync(new URL('../libs/ranker/scripts/model/DECISIONS.md', import.meta.url), 'utf8').includes('### D79. One price a side'));
+  assert.ok(fs.readFileSync(new URL('../libs/ranker/scripts/model/DECISIONS.md', import.meta.url), 'utf8').includes('### D81. One price a side'));
 });
 
-test('D79 the bettor: a fresh paid best price held over a later DraftKings-only ESPN read; stale or DraftKings moved, ESPN\'s', () => {
+test('D81 the bettor: a fresh paid best price held over a later DraftKings-only ESPN read; stale or DraftKings moved, ESPN\'s', () => {
   // (fresh: 20 minutes on, DraftKings unmoved at -120: the under at +115 Bally Bet, an edge)
   const fresh = B.boardProp(espnRow(), 'T', { paid: paidRow, now: at(20) });
   assert.deepEqual(fresh.o, [-110, 115]);
@@ -95,7 +95,7 @@ const bet = () =>
     false,
   );
 
-test('D79 the page: a fresh paid price, every reader +115; stale, every reader -120 and the bet off Bot Picks', () => {
+test('D81 the page: a fresh paid price, every reader +115; stale, every reader -120 and the bet off Bot Picks', () => {
   // (fresh, 20 minutes on: the board as loaded unchanged, Bot Picks' quote the game board's +115 at Bally Bet)
   const fresh = book.freshBoard(boardOf(heldProp()), at(20));
   const x = fresh.games[0].p[0];
@@ -118,7 +118,7 @@ test('D79 the page: a fresh paid price, every reader +115; stale, every reader -
   assert.equal(book.suggestionsOf('nhl', stale, at(61), () => ({})).length, 0);
 });
 
-test('D79 the page: a bet judged again where its edge holds shows its band and Kelly at the current price, its own kept', () => {
+test('D81 the page: a bet judged again where its edge holds shows its band and Kelly at the current price, its own kept', () => {
   const row = bet();
   const r = book.rejudged(row, { odds: 110, from: 'board', book: 'fd' });
   assert.ok(r && r.moved);
@@ -131,7 +131,7 @@ test('D79 the page: a bet judged again where its edge holds shows its band and K
   assert.equal(book.rejudged(row, null).sureness, row.sureness);
 });
 
-test("D79 the game lines in the browser: DraftKings moved on ESPN's board since the paid quote, ESPN's price and no best claimed", () => {
+test("D81 the game lines in the browser: DraftKings moved on ESPN's board since the paid quote, ESPN's price and no best claimed", () => {
   const price = { market: 'total', side: 'over', line: 6.5, odds: -110 };
   assert.equal(w.bestPriceOf(price, { s: 'over', l: 6.5, o: -102, pb: 'fd', dko: -110 }).odds, -102, 'unmoved: the shopped price');
   const moved = w.bestPriceOf({ ...price, odds: -125 }, { s: 'over', l: 6.5, o: -102, pb: 'fd', dko: -110 });

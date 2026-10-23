@@ -1240,7 +1240,7 @@ Resolved 2026-10-18:
 - **O1** (research "we like it" against the small-count trust): the owner chose a practice pick, then the corrected chance. See D25.
 - **O2** (MMA had no practice top N): built. See D2.
 
-### D79. One price a side: the board holds a fresh paid best price over a later ESPN read, the page holds the same rule, and Bot Picks judges every row at that price
+### D81. One price a side: the board holds a fresh paid best price over a later ESPN read, the page holds the same rule, and Bot Picks judges every row at that price
 - **Date:** 2026-10-22.
 - **Owner:** "Bot Picks, the game board, the slip and the popover must ALWAYS show the same price for the same side/line. If the price moves so the pick no longer has an edge, the recommendation is removed from Bot Picks. The Bot's own bet stays in Open Bets and the Algorithm tab." The report: Bot Picks' #2, Ryan Nugent-Hopkins Under 1.5 Shots, the Bot's bet at +115 (Bally Bet, the paid quote's best US price, D74, 22:43 UTC); the game's board at -120 (DraftKings on ESPN's free board, `sug.src` 'espn'), a PASS there.
 - **Cause:** a paid props ask comes only when the Bot is about to bet (D42's deferred ask, D55); every run between, the NHL's and NBA's props are priced off ESPN's free board, DraftKings alone, and the board's row was rebuilt from that read with nothing of the paid quote kept. So the next run's board showed DraftKings' -120 while picks.json kept the bet's +115, and the page showed both: the row at the bet's band and Kelly, the board at its PASS. The game lines had the same hole between paid lines calls.

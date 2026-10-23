@@ -1,4 +1,4 @@
-// One price a side (DECISIONS.md D79; the owner, 2026-10-22: Bot Picks, the game board, the slip and the popover
+// One price a side (DECISIONS.md D81; the owner, 2026-10-22: Bot Picks, the game board, the slip and the popover
 // always show the same price for the same side and line). The bettor's board carries each side's best price the
 // Bot knows (board.mjs heldPaid: a paid quote's best US price while it's fresh, else ESPN's free DraftKings one),
 // with the quote's time (pt) and DraftKings' own price in it (dko). The page holds the same rule: a paid price

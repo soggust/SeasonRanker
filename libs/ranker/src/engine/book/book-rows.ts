@@ -141,7 +141,7 @@ export interface BetRow {
   // book-names.ts code); none, the free board's, no best claimed)
   liveBook?: string | null;
   moved?: boolean;
-  // (D79: a Bot's bet judged again at the latest price (suggestions.ts rejudged): its own band, Kelly score, return
+  // (D81: a Bot's bet judged again at the latest price (suggestions.ts rejudged): its own band, Kelly score, return
   // and stake as it was bet, the row's the latest price's)
   locked?: { confidence: BetRow['confidence']; sureness: number; ev?: number; units?: number };
   // (when the Bot placed it, where the picks file says: its "Bet at −109 · 2:05 PM")

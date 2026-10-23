@@ -460,7 +460,7 @@ export interface ModelBoardSideIn {
   o: number;
   // (the book whose price o is, where the bettor shopped it: board.mjs pb)
   pb?: string;
-  // (D79: DraftKings' own price in the paid quote, where another book's is shown)
+  // (D81: DraftKings' own price in the paid quote, where another book's is shown)
   dko?: number;
 }
 export interface ModelBoardGameIn {
@@ -521,7 +521,7 @@ export function modelGameBoard(sport: string, g: ModelBoardGameIn, now: number):
 export function bestPriceOf(price: Price, board: ModelBoardSideIn | null | undefined): Price {
   if (!board?.pb || !Number.isFinite(board.o) || Math.abs(board.o) < 100) return price;
   if (price.market !== 'ml' && (price.line === null || board.l !== price.line)) return price;
-  // (D79: DraftKings' price on ESPN's board moved since the paid quote: the quote's stale, ESPN's as it is)
+  // (D81: DraftKings' price on ESPN's board moved since the paid quote: the quote's stale, ESPN's as it is)
   if (price.odds !== null && dkMoved(price.odds, dkOf(board.o, board.pb, board.dko))) return price;
   if (price.odds !== null && pricier(price.odds, board.o)) return { ...price, pb: 'dk' };
   return { ...price, odds: board.o, pb: board.pb };

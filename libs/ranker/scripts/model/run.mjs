@@ -426,7 +426,7 @@ function writePicks(r, alone = false) {
 // score and band, the bot's open sides marked, over the last board where a game or its props weren't priced
 // again; and every price it's shown kept (board-seen.json) for the play-money settler's price check. --dry:
 // only with --board-out=<dir>, written there (a scratch check of its shape and size), never the committed ones
-// (the last board's game and prop (DECISIONS.md D79: a fresh paid price held over a later ESPN read, board.mjs
+// (the last board's game and prop (DECISIONS.md D81: a fresh paid price held over a later ESPN read, board.mjs
 // heldPaid), the committed board read once a run)
 function prevBoardGame(r, id) {
   r.lastBoard ??= readJson(r.files.board, null);
