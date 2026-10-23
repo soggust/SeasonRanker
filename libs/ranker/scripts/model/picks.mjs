@@ -542,7 +542,10 @@ const ROOT = path.resolve(import.meta.dirname, '../../../..');
 export function recordBlocks(sport, ledger, now, extra = {}) {
   const replay = extra.replay !== undefined ? extra.replay : readReplay(extra.root ?? ROOT, sport);
   const published = ledger.bets.filter((b) => b.published && !isTracked(b));
-  const epoch = replay?.epoch ?? extra.epoch ?? null;
+  // (the live part starts just after the replay's last game, not at its epoch: a re-record moves the epoch to now,
+  // and the real bets between the price archive's end and it (last night's) were in neither part, so Recent Form
+  // showed Sunday's games on a Friday (the owner, 2026-10-23); the page's replay-history.ts the same)
+  const epoch = replay?.through ? new Date(Date.parse(replay.through) + 1).toISOString() : (replay?.epoch ?? extra.epoch ?? null);
   const live = replay ? ledger.bets.filter((b) => liveSince(b, epoch)) : ledger.bets;
   return {
     record: mergeRecord(replay, published, { epoch, now: now.getTime(), record, levelOf: (b) => b.publishedLevel, practiceOf: practiceRecord }),

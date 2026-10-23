@@ -239,3 +239,11 @@ test("dailyOf: the newest year's bets (from a week before it) by the Eastern day
   });
   assert.deepEqual(dailyOf([]).bands, {});
 });
+
+test("recordBlocks: the live part starts after the replay's last game, so a re-record (its epoch now) never hides last night's bets from Recent Form (the owner, 2026-10-23)", () => {
+  const now = new Date('2026-10-23T15:00:00Z');
+  const replay = { v: 1, sport: 'nba', epoch: '2026-10-23T05:30:00Z', through: '2026-10-19T00:00:00Z', days: {}, last: [], overall: { bets: 0, won: 0, lost: 0, push: 0, staked: 0, profit: 0 } };
+  const bet = { id: 'x', sport: 'nba', start: '2026-10-22T23:30:00Z', gradedAt: '2026-10-23T02:30:00Z', status: 'won', profit: 0.91, units: 1, published: true, pick: 'Last night', matchup: 'A @ B', market: 'spread' };
+  const { recent } = picks.recordBlocks('nba', { bets: [bet] }, now, { replay });
+  assert.equal(recent.last[0].pick, 'Last night');
+});
