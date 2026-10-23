@@ -1006,6 +1006,15 @@ function recordScore(version, sport, score, frozen, inputs = null) {
     writeFileSync(out, `${JSON.stringify({ sport, epoch: score.epoch, commit: entry.commit, at: entry.at, current: score.current, ...score.propBar, applies: place.applies, place }, null, 1)}\n`);
     console.log(`${sport}: the props' stat bar written (${path.relative(ROOT, out)}): ${place.applies ? 'stakes the props' : 'stands aside'}; ${Object.entries(score.propBar.segments).filter(([, s]) => s.on).map(([k]) => k).join(', ') || 'no key on'}`);
   }
+  // (the Bot's own record by key (D79, replay-record.mjs ownBar): each prop stat and side's and each line market and
+  // side's replayed bets before the epoch, flat; what the live desk pools with its graded bets since (desk.mjs ownBarOf))
+  if (score.replay?.flags?.ownBar?.keys) {
+    const out = path.join(ROOT, 'apps', sport, 'src/StaticData/model/own-bar.json');
+    const ob = score.replay.flags.ownBar;
+    writeFileSync(out, `${JSON.stringify({ sport, epoch: score.epoch, commit: entry.commit, at: entry.at, current: score.current, held: ob.held, before: ob.before, after: ob.after, keys: ob.keys }, null, 1)}
+`);
+    console.log(`${sport}: the Bot's own record by key written (${path.relative(ROOT, out)}): ${ob.held} replayed bets held, ${ob.before}u -> ${ob.after}u`);
+  }
   // (the MMA's history prior (gate-mma.mjs trustPrior, DECISIONS.md D36): each market's trust fit on the priced history,
   // what the live desk reads (mma-desk.mjs readTrustPrior), and the rows it pools with its own bets)
   if (score.trustPrior) {

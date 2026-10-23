@@ -1,7 +1,7 @@
 {
  "v": 1,
  "sport": "nhl",
- "at": "2026-10-21T06:32:23.383Z",
+ "at": "2026-10-23T03:49:24.089Z",
  "epoch": "2026-10-21T01:15:00Z",
  "markets": {
   "ml": {
@@ -12,16 +12,16 @@
     "ev": null,
     "evS": null,
     "beat": null,
-    "roi": -0.1076,
-    "rn": 250,
+    "roi": -0.1203,
+    "rn": 254,
     "stats": {
      "n": 0,
      "s": 0,
      "s2": 0,
      "beat": 0,
-     "rn": 250,
-     "rs": -26.9109,
-     "rs2": 403.028
+     "rn": 254,
+     "rs": -30.5509,
+     "rs2": 401.0048
     },
     "why": "0 with a close, - shrunk",
     "seasons": {
@@ -39,16 +39,16 @@
     "ev": 0.0104,
     "evS": 0.0019,
     "beat": 0.5455,
-    "roi": -0.1598,
-    "rn": 102,
+    "roi": -0.1072,
+    "rn": 101,
     "stats": {
      "n": 22,
      "s": 0.229,
      "s2": 0.0814,
      "beat": 12,
-     "rn": 102,
-     "rs": -16.3043,
-     "rs2": 135.2193
+     "rn": 101,
+     "rs": -10.8252,
+     "rs2": 127.2606
     },
     "why": "22 with a close, 0.2% shrunk",
     "seasons": {
@@ -66,16 +66,16 @@
     "ev": 0.0385,
     "evS": 0.0098,
     "beat": 0.7941,
-    "roi": 0.0857,
-    "rn": 53,
+    "roi": 0.0517,
+    "rn": 52,
     "stats": {
      "n": 34,
      "s": 1.3087,
      "s2": 0.1754,
      "beat": 27,
-     "rn": 53,
-     "rs": 4.54,
-     "rs2": 81.5366
+     "rn": 52,
+     "rs": 2.69,
+     "rs2": 78.1141
     },
     "why": "34 with a close, 1% shrunk",
     "seasons": {
@@ -93,7 +93,7 @@
     "ev": 0.0262,
     "evS": 0.0042,
     "beat": 0.7368,
-    "roi": -0.4154,
+    "roi": -0.4993,
     "rn": 34,
     "stats": {
      "n": 19,
@@ -101,8 +101,8 @@
      "s2": 0.0447,
      "beat": 14,
      "rn": 34,
-     "rs": -14.1252,
-     "rs2": 40.1151
+     "rs": -16.9752,
+     "rs2": 37.6926
     },
     "why": "19 with a close, 0.4% shrunk",
     "seasons": {
@@ -112,33 +112,6 @@
     },
     "family": "rest",
     "label": "two or more days more rest"
-   },
-   "seg:ml:fav:late": {
-    "on": false,
-    "strong": false,
-    "n": 0,
-    "ev": null,
-    "evS": null,
-    "beat": null,
-    "roi": 0.0094,
-    "rn": 56,
-    "stats": {
-     "n": 0,
-     "s": 0,
-     "s2": 0,
-     "beat": 0,
-     "rn": 56,
-     "rs": 0.5242,
-     "rs2": 46.6961
-    },
-    "why": "0 with a close, - shrunk",
-    "seasons": {
-     "lead": 0,
-     "of": 0,
-     "pos": 0
-    },
-    "family": "segment",
-    "label": "late moneyline favorites"
    },
    "openGap": {
     "on": false,
@@ -220,6 +193,33 @@
     },
     "family": "segment",
     "label": "early moneyline favorites"
+   },
+   "seg:ml:fav:late": {
+    "on": false,
+    "strong": false,
+    "n": 0,
+    "ev": null,
+    "evS": null,
+    "beat": null,
+    "roi": 0.0352,
+    "rn": 53,
+    "stats": {
+     "n": 0,
+     "s": 0,
+     "s2": 0,
+     "beat": 0,
+     "rn": 53,
+     "rs": 1.8663,
+     "rs2": 44.2632
+    },
+    "why": "0 with a close, - shrunk",
+    "seasons": {
+     "lead": 0,
+     "of": 0,
+     "pos": 0
+    },
+    "family": "segment",
+    "label": "late moneyline favorites"
    },
    "seg:ml:dog:early": {
     "on": false,
@@ -311,16 +311,16 @@
     "ev": 0.0129,
     "evS": 0.0036,
     "beat": 0.6923,
-    "roi": 0.1444,
-    "rn": 64,
+    "roi": 0.2327,
+    "rn": 58,
     "stats": {
      "n": 39,
      "s": 0.5013,
      "s2": 0.0528,
      "beat": 27,
-     "rn": 64,
-     "rs": 9.2427,
-     "rs2": 105.4299
+     "rn": 58,
+     "rs": 13.494,
+     "rs2": 105.4031
     },
     "why": "39 with a close, 0.4% shrunk",
     "seasons": {
@@ -338,16 +338,16 @@
     "ev": null,
     "evS": null,
     "beat": null,
-    "roi": 0.0343,
-    "rn": 69,
+    "roi": 0.0311,
+    "rn": 66,
     "stats": {
      "n": 0,
      "s": 0,
      "s2": 0,
      "beat": 0,
-     "rn": 69,
-     "rs": 2.3646,
-     "rs2": 48.5293
+     "rn": 66,
+     "rs": 2.0523,
+     "rs2": 46.5912
     },
     "why": "0 with a close, - shrunk",
     "seasons": {
@@ -446,16 +446,16 @@
     "ev": null,
     "evS": null,
     "beat": null,
-    "roi": 0.037,
-    "rn": 135,
+    "roi": 0.058,
+    "rn": 126,
     "stats": {
      "n": 0,
      "s": 0,
      "s2": 0,
      "beat": 0,
-     "rn": 135,
-     "rs": 5,
-     "rs2": 239.3676
+     "rn": 126,
+     "rs": 7.31,
+     "rs2": 228.6751
     },
     "why": "0 with a close, - shrunk",
     "seasons": {
@@ -500,16 +500,16 @@
     "ev": 0.0218,
     "evS": 0.0077,
     "beat": 0.7455,
-    "roi": -0.0954,
-    "rn": 74,
+    "roi": -0.1041,
+    "rn": 73,
     "stats": {
      "n": 55,
      "s": 1.2011,
      "s2": 0.0906,
      "beat": 41,
-     "rn": 74,
-     "rs": -7.062,
-     "rs2": 92.7693
+     "rn": 73,
+     "rs": -7.6025,
+     "rs2": 92.4771
     },
     "why": "55 with a close, 0.8% shrunk",
     "seasons": {
@@ -610,16 +610,16 @@
     "ev": null,
     "evS": null,
     "beat": null,
-    "roi": -0.0937,
-    "rn": 243,
+    "roi": -0.1265,
+    "rn": 230,
     "stats": {
      "n": 0,
      "s": 0,
      "s2": 0,
      "beat": 0,
-     "rn": 243,
-     "rs": -22.7574,
-     "rs2": 233.5871
+     "rn": 230,
+     "rs": -29.0844,
+     "rs2": 221.8226
     },
     "why": "0 with a close, - shrunk",
     "seasons": {
@@ -633,22 +633,22 @@
    "openGap": {
     "on": false,
     "strong": false,
-    "n": 99,
-    "ev": -0.0035,
-    "evS": -0.0018,
-    "beat": 0.404,
-    "roi": 0.0988,
-    "rn": 116,
+    "n": 98,
+    "ev": -0.0032,
+    "evS": -0.0016,
+    "beat": 0.4184,
+    "roi": 0.0911,
+    "rn": 115,
     "stats": {
-     "n": 99,
-     "s": -0.3494,
-     "s2": 0.1475,
-     "beat": 40,
-     "rn": 116,
-     "rs": 11.4633,
-     "rs2": 111.3794
+     "n": 98,
+     "s": -0.3117,
+     "s2": 0.1481,
+     "beat": 41,
+     "rn": 115,
+     "rs": 10.4709,
+     "rs2": 110.3828
     },
-    "why": "99 with a close, -0.2% shrunk",
+    "why": "98 with a close, -0.2% shrunk",
     "seasons": {
      "lead": 0,
      "of": 0,
@@ -660,22 +660,22 @@
    "cleanOpen": {
     "on": false,
     "strong": false,
-    "n": 329,
-    "ev": -0.018,
-    "evS": -0.0138,
-    "beat": 0.2705,
-    "roi": -0.0448,
-    "rn": 384,
+    "n": 304,
+    "ev": -0.0163,
+    "evS": -0.0123,
+    "beat": 0.2961,
+    "roi": -0.0411,
+    "rn": 354,
     "stats": {
-     "n": 329,
-     "s": -5.9306,
-     "s2": 0.587,
-     "beat": 89,
-     "rn": 384,
-     "rs": -17.1929,
-     "rs2": 358.1123
+     "n": 304,
+     "s": -4.9625,
+     "s2": 0.5159,
+     "beat": 90,
+     "rn": 354,
+     "rs": -14.5404,
+     "rs2": 333.2938
     },
-    "why": "329 with a close, -1.4% shrunk",
+    "why": "304 with a close, -1.2% shrunk",
     "seasons": {
      "lead": 0,
      "of": 0,
@@ -687,22 +687,22 @@
    "seg:total:under:early": {
     "on": false,
     "strong": false,
-    "n": 121,
-    "ev": -0.0149,
-    "evS": -0.0082,
-    "beat": 0.281,
-    "roi": -0.1244,
-    "rn": 140,
+    "n": 108,
+    "ev": -0.0142,
+    "evS": -0.0074,
+    "beat": 0.3056,
+    "roi": -0.1389,
+    "rn": 125,
     "stats": {
-     "n": 121,
-     "s": -1.808,
-     "s2": 0.1914,
-     "beat": 34,
-     "rn": 140,
-     "rs": -17.4096,
-     "rs2": 133.7257
+     "n": 108,
+     "s": -1.5317,
+     "s2": 0.177,
+     "beat": 33,
+     "rn": 125,
+     "rs": -17.3595,
+     "rs2": 119.7378
     },
-    "why": "121 with a close, -0.8% shrunk",
+    "why": "108 with a close, -0.7% shrunk",
     "seasons": {
      "lead": 0,
      "of": 0,
@@ -714,22 +714,22 @@
    "kelly2": {
     "on": false,
     "strong": false,
-    "n": 63,
-    "ev": -0.0048,
-    "evS": -0.0019,
-    "beat": 0.3492,
-    "roi": -0.0034,
-    "rn": 209,
+    "n": 55,
+    "ev": -0.0023,
+    "evS": -0.0008,
+    "beat": 0.3818,
+    "roi": -0.0337,
+    "rn": 189,
     "stats": {
-     "n": 63,
-     "s": -0.3016,
-     "s2": 0.0939,
-     "beat": 22,
-     "rn": 209,
-     "rs": -0.7035,
-     "rs2": 195.6383
+     "n": 55,
+     "s": -0.1241,
+     "s2": 0.0801,
+     "beat": 21,
+     "rn": 189,
+     "rs": -6.363,
+     "rs2": 176.1844
     },
-    "why": "63 with a close, -0.2% shrunk",
+    "why": "55 with a close, -0.1% shrunk",
     "seasons": {
      "lead": 0,
      "of": 0,
@@ -745,16 +745,16 @@
     "ev": null,
     "evS": null,
     "beat": null,
-    "roi": 0.033,
-    "rn": 385,
+    "roi": 0.0105,
+    "rn": 351,
     "stats": {
      "n": 0,
      "s": 0,
      "s2": 0,
      "beat": 0,
-     "rn": 385,
-     "rs": 12.7012,
-     "rs2": 341.9328
+     "rn": 351,
+     "rs": 3.6708,
+     "rs2": 315.5748
     },
     "why": "0 with a close, - shrunk",
     "seasons": {
@@ -768,22 +768,22 @@
    "seg:total:over:early": {
     "on": false,
     "strong": false,
-    "n": 208,
-    "ev": -0.0198,
-    "evS": -0.0134,
-    "beat": 0.2644,
-    "roi": 0.0009,
-    "rn": 244,
+    "n": 196,
+    "ev": -0.0175,
+    "evS": -0.0116,
+    "beat": 0.2908,
+    "roi": 0.0123,
+    "rn": 229,
     "stats": {
-     "n": 208,
-     "s": -4.1226,
-     "s2": 0.3956,
-     "beat": 55,
-     "rn": 244,
-     "rs": 0.2167,
-     "rs2": 224.3866
+     "n": 196,
+     "s": -3.4308,
+     "s2": 0.3389,
+     "beat": 57,
+     "rn": 229,
+     "rs": 2.8191,
+     "rs2": 213.5561
     },
-    "why": "208 with a close, -1.3% shrunk",
+    "why": "196 with a close, -1.2% shrunk",
     "seasons": {
      "lead": 0,
      "of": 0,
@@ -882,16 +882,16 @@
     "ev": null,
     "evS": null,
     "beat": null,
-    "roi": -0.0885,
-    "rn": 138,
+    "roi": -0.1186,
+    "rn": 140,
     "stats": {
      "n": 0,
      "s": 0,
      "s2": 0,
      "beat": 0,
-     "rn": 138,
-     "rs": -12.2067,
-     "rs2": 189.1593
+     "rn": 140,
+     "rs": -16.6067,
+     "rs2": 190.1993
     },
     "why": "0 with a close, - shrunk",
     "seasons": {
@@ -1046,5 +1046,5 @@
   }
  },
  "k": 100,
- "commit": "883c9e72"
+ "commit": "d3d7e081"
 }

@@ -1,0 +1,116 @@
+{
+ "sport": "nfl",
+ "epoch": "2026-10-21T01:15:00Z",
+ "commit": "d3d7e081",
+ "at": "2026-10-23T03:56:10.139Z",
+ "current": 2026,
+ "held": 714,
+ "before": -3.76,
+ "after": -1.88,
+ "keys": {
+  "ml:away": {
+   "n": 304,
+   "sum": -53.16
+  },
+  "ml:home": {
+   "n": 275,
+   "sum": -2.01
+  },
+  "prop:passAtt:over": {
+   "n": 17,
+   "sum": 1.49
+  },
+  "prop:passAtt:under": {
+   "n": 246,
+   "sum": 8.61
+  },
+  "prop:passCmp:over": {
+   "n": 30,
+   "sum": 4.91
+  },
+  "prop:passCmp:under": {
+   "n": 94,
+   "sum": 0.65
+  },
+  "prop:passInt:over": {
+   "n": 76,
+   "sum": -17.99
+  },
+  "prop:passInt:under": {
+   "n": 160,
+   "sum": -16.92
+  },
+  "prop:passTd:over": {
+   "n": 181,
+   "sum": -8.76
+  },
+  "prop:passTd:under": {
+   "n": 50,
+   "sum": -5.69
+  },
+  "prop:passYds:over": {
+   "n": 31,
+   "sum": -4.44
+  },
+  "prop:passYds:under": {
+   "n": 14,
+   "sum": 2.94
+  },
+  "prop:rec:over": {
+   "n": 40,
+   "sum": -8.9
+  },
+  "prop:rec:under": {
+   "n": 445,
+   "sum": 25.35
+  },
+  "prop:recYds:over": {
+   "n": 11,
+   "sum": -7.26
+  },
+  "prop:recYds:under": {
+   "n": 536,
+   "sum": 22.64
+  },
+  "prop:rushAtt:over": {
+   "n": 7,
+   "sum": -0.88
+  },
+  "prop:rushAtt:under": {
+   "n": 249,
+   "sum": 1.49
+  },
+  "prop:rushRecYds:over": {
+   "n": 18,
+   "sum": -6.74
+  },
+  "prop:rushRecYds:under": {
+   "n": 5,
+   "sum": 0.65
+  },
+  "prop:rushYds:over": {
+   "n": 9,
+   "sum": 0.15
+  },
+  "prop:rushYds:under": {
+   "n": 309,
+   "sum": -11.45
+  },
+  "spread:away": {
+   "n": 64,
+   "sum": 4.96
+  },
+  "spread:home": {
+   "n": 81,
+   "sum": -8.85
+  },
+  "total:over": {
+   "n": 263,
+   "sum": -3.26
+  },
+  "total:under": {
+   "n": 62,
+   "sum": -7.83
+  }
+ }
+}

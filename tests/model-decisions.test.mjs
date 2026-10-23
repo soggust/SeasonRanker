@@ -1843,3 +1843,46 @@ test('D78 the props pieces held (no new context term), the play-by-play aggregat
   const decisions = fs.readFileSync(new URL('libs/ranker/scripts/model/DECISIONS.md', root), 'utf8');
   assert.ok(decisions.includes('### D78.'));
 });
+
+test('D79 the Bot\'s own consistent losers: a stat and side (or a line market and side) whose own earlier bets lost past the shrunk bar stakes the practice stake, still bets, still counts; walk-forward in the replay; no team, player or type term', async () => {
+  const D = await import('../libs/ranker/scripts/model/desk.mjs');
+  const RR = await import('../libs/ranker/scripts/model/replay-record.mjs');
+  assert.equal(D.OWN_K, 20);
+  assert.equal(D.OWN_THR, -0.1);
+  assert.equal(D.OWN_MIN, 10);
+  assert.deepEqual(D.OWN_BAR_SPORTS, ['nba', 'nhl', 'nfl', 'mlb']);
+  assert.equal(D.ownKey('prop', 'reb', 'over'), 'prop:reb:over');
+  assert.equal(D.ownKey('ml', 'ml', 'home'), 'ml:home');
+  // (the shrunk bar: 10 straight losses (-10 / 30) held; 9 not yet; a winning key never)
+  assert.equal(D.ownVerdict(10, -10).held, true);
+  assert.equal(D.ownVerdict(9, -9).held, false);
+  assert.equal(D.ownVerdict(100, -11).held, false);
+  assert.equal(D.ownVerdict(100, -12).held, true);
+  assert.equal(D.ownVerdict(50, 5).held, false);
+  // (live: the file pooled with the ledger since the epoch; a held key gates to the practice stake, never off)
+  const file = { keys: { 'prop:reb:over': { n: 40, sum: -8 } } };
+  const ep = '2026-10-01T00:00:00Z';
+  const lost = (i) => ({ sport: 'nba', market: 'prop', propType: 'reb', side: 'over', odds: -110, status: 'lost', units: 1, intent: 'edge', placedAt: `2026-10-0${2 + (i % 7)}T12:00:00Z` });
+  const bar = D.ownBarOf(file, Array.from({ length: 6 }, (_, i) => lost(i)), 'nba', ep);
+  assert.equal(bar['prop:reb:over'].n, 46);
+  assert.equal(bar['prop:reb:over'].held, true);
+  const g = D.ownBarGate(bar, 'nba', 'prop:reb:over');
+  assert.equal(g.on, false);
+  assert.equal(D.gatedPlacement(0.05, 1, g).units, D.PRACTICE_UNITS);
+  assert.equal(D.ownBarGate(bar, 'nba', 'prop:reb:under'), null);
+  assert.equal(D.ownBarGate(bar, 'mma', 'prop:reb:over'), null);
+  // (the replay's walk: only bets settled before the bet's placement count; a held bet keeps betting at the practice stake)
+  const t0 = Date.parse('2025-01-01T00:00:00Z');
+  const bets = Array.from({ length: 14 }, (_, i) => ({ id: `b${i}`, market: 'prop', stat: 'reb', side: 'over', t: t0 + i * 864e5, at: t0 + i * 864e5 - 36e5, odds: -110, res: 'L', units: 1, profit: -1, band: 'medium' }));
+  const flags = {};
+  RR.ownBar(bets, { verdict: D.ownVerdict, key: D.ownKey, practiceUnits: 0.5, flags });
+  assert.equal(bets[9].units, 1, 'the 10th bet sees 9 settled: not held');
+  assert.equal(bets[10].units, 0.5, 'the 11th sees 10 losses: held');
+  assert.equal(bets[10].profit, -0.5);
+  assert.equal(flags.ownBar.held, 4);
+  assert.deepEqual(flags.ownBar.keys['prop:reb:over'], { n: 14, sum: -14 });
+  const src = fs.readFileSync(path.join(import.meta.dirname, '../libs/ranker/scripts/model/replay-record.mjs'), 'utf8');
+  assert.ok(src.includes('V.desk.ownBarOn?.(sport)'));
+  const decisions = fs.readFileSync(path.join(import.meta.dirname, '../libs/ranker/scripts/model/DECISIONS.md'), 'utf8');
+  assert.ok(decisions.includes('### D79.'));
+});

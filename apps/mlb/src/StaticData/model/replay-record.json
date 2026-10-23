@@ -2,7 +2,7 @@
  "v": 1,
  "sport": "mlb",
  "epoch": "2026-10-21T01:15:00Z",
- "at": "2026-10-21T07:04:21.524Z",
+ "at": "2026-10-23T03:52:26.972Z",
  "from": "2021-07-18T17:07:00.000Z",
  "through": "2026-10-16T00:00:00.000Z",
  "n": {
@@ -17,9 +17,9 @@
   "won": 775,
   "lost": 907,
   "push": 9,
-  "staked": 1013.5,
-  "profit": -15.81,
-  "roi": -0.0156,
+  "staked": 976,
+  "profit": -9.9,
+  "roi": -0.0101,
   "beat": 0.3495,
   "beatN": 432,
   "clv": -0.0137
@@ -78,9 +78,9 @@
    "won": 775,
    "lost": 907,
    "push": 9,
-   "staked": 1013.5,
-   "profit": -15.81,
-   "roi": -0.0156,
+   "staked": 976,
+   "profit": -9.9,
+   "roi": -0.0101,
    "beat": 0.3495,
    "beatN": 432,
    "clv": -0.0137
@@ -92,8 +92,8 @@
    "won": 534,
    "lost": 656,
    "push": 9,
-   "staked": 648.5,
-   "profit": -9.89,
+   "staked": 643.5,
+   "profit": -9.87,
    "roi": -0.0153,
    "beat": 0.3495,
    "beatN": 432,
@@ -104,9 +104,9 @@
    "won": 241,
    "lost": 251,
    "push": 0,
-   "staked": 365,
-   "profit": -5.92,
-   "roi": -0.0162,
+   "staked": 332.5,
+   "profit": -0.03,
+   "roi": -0.0001,
    "beat": null,
    "beatN": 0,
    "clv": null
@@ -170,9 +170,9 @@
    "won": 102,
    "lost": 111,
    "push": 2,
-   "staked": 136.5,
-   "profit": 4.89,
-   "roi": 0.0358,
+   "staked": 131.5,
+   "profit": 4.91,
+   "roi": 0.0373,
    "beat": 0.3333,
    "beatN": 87,
    "clv": -0.0107,
@@ -193,9 +193,9 @@
     "won": 102,
     "lost": 111,
     "push": 2,
-    "staked": 136.5,
-    "profit": 4.89,
-    "roi": 0.0358,
+    "staked": 131.5,
+    "profit": 4.91,
+    "roi": 0.0373,
     "beat": 0.3333,
     "beatN": 87,
     "clv": -0.0107
@@ -220,9 +220,9 @@
    "won": 122,
    "lost": 137,
    "push": 0,
-   "staked": 163,
-   "profit": -5.86,
-   "roi": -0.036,
+   "staked": 160.5,
+   "profit": -4.31,
+   "roi": -0.0269,
    "beat": 0.2647,
    "beatN": 34,
    "clv": -0.0205,
@@ -255,9 +255,9 @@
     "won": 49,
     "lost": 51,
     "push": 0,
-    "staked": 70.5,
-    "profit": -5.23,
-    "roi": -0.0742,
+    "staked": 68,
+    "profit": -3.68,
+    "roi": -0.0541,
     "beat": null,
     "beatN": 0,
     "clv": null
@@ -270,9 +270,9 @@
    "won": 130,
    "lost": 125,
    "push": 0,
-   "staked": 196,
-   "profit": 12.77,
-   "roi": 0.0652,
+   "staked": 177.5,
+   "profit": 16.55,
+   "roi": 0.0932,
    "beat": 0.2813,
    "beatN": 32,
    "clv": -0.0246,
@@ -305,9 +305,9 @@
     "won": 99,
     "lost": 89,
     "push": 0,
-    "staked": 158.5,
-    "profit": 11.75,
-    "roi": 0.0741,
+    "staked": 140,
+    "profit": 15.53,
+    "roi": 0.1109,
     "beat": null,
     "beatN": 0,
     "clv": null
@@ -320,9 +320,9 @@
    "won": 142,
    "lost": 160,
    "push": 4,
-   "staked": 186,
-   "profit": -7.85,
-   "roi": -0.0422,
+   "staked": 174.5,
+   "profit": -7.29,
+   "roi": -0.0418,
    "beat": 0.3043,
    "beatN": 23,
    "clv": -0.0319,
@@ -355,9 +355,9 @@
     "won": 76,
     "lost": 91,
     "push": 0,
-    "staked": 113.5,
-    "profit": -10.99,
-    "roi": -0.0968,
+    "staked": 102,
+    "profit": -10.43,
+    "roi": -0.1023,
     "beat": null,
     "beatN": 0,
     "clv": null
@@ -509,9 +509,9 @@
     "won": 102,
     "lost": 111,
     "push": 2,
-    "staked": 136.5,
-    "profit": 4.89,
-    "roi": 0.0358,
+    "staked": 131.5,
+    "profit": 4.91,
+    "roi": 0.0373,
     "beat": 0.3333,
     "beatN": 87,
     "clv": -0.0107
@@ -558,9 +558,9 @@
      "won": 102,
      "lost": 111,
      "push": 2,
-     "staked": 136.5,
-     "profit": 4.89,
-     "roi": 0.0358,
+     "staked": 131.5,
+     "profit": 4.91,
+     "roi": 0.0373,
      "beat": 0.3333,
      "beatN": 87,
      "clv": -0.0107
@@ -571,9 +571,9 @@
     "won": 102,
     "lost": 111,
     "push": 2,
-    "staked": 136.5,
-    "profit": 4.89,
-    "roi": 0.0358,
+    "staked": 131.5,
+    "profit": 4.91,
+    "roi": 0.0373,
     "beat": 0.3333,
     "beatN": 87,
     "clv": -0.0107
@@ -597,9 +597,9 @@
     "won": 122,
     "lost": 137,
     "push": 0,
-    "staked": 163,
-    "profit": -5.86,
-    "roi": -0.036,
+    "staked": 160.5,
+    "profit": -4.31,
+    "roi": -0.0269,
     "beat": 0.2647,
     "beatN": 34,
     "clv": -0.0205
@@ -646,9 +646,9 @@
      "won": 122,
      "lost": 137,
      "push": 0,
-     "staked": 163,
-     "profit": -5.86,
-     "roi": -0.036,
+     "staked": 160.5,
+     "profit": -4.31,
+     "roi": -0.0269,
      "beat": 0.2647,
      "beatN": 34,
      "clv": -0.0205
@@ -671,9 +671,9 @@
     "won": 49,
     "lost": 51,
     "push": 0,
-    "staked": 70.5,
-    "profit": -5.23,
-    "roi": -0.0742,
+    "staked": 68,
+    "profit": -3.68,
+    "roi": -0.0541,
     "beat": null,
     "beatN": 0,
     "clv": null
@@ -685,9 +685,9 @@
     "won": 130,
     "lost": 125,
     "push": 0,
-    "staked": 196,
-    "profit": 12.77,
-    "roi": 0.0652,
+    "staked": 177.5,
+    "profit": 16.55,
+    "roi": 0.0932,
     "beat": 0.2813,
     "beatN": 32,
     "clv": -0.0246
@@ -734,9 +734,9 @@
      "won": 130,
      "lost": 125,
      "push": 0,
-     "staked": 196,
-     "profit": 12.77,
-     "roi": 0.0652,
+     "staked": 177.5,
+     "profit": 16.55,
+     "roi": 0.0932,
      "beat": 0.2813,
      "beatN": 32,
      "clv": -0.0246
@@ -759,9 +759,9 @@
     "won": 99,
     "lost": 89,
     "push": 0,
-    "staked": 158.5,
-    "profit": 11.75,
-    "roi": 0.0741,
+    "staked": 140,
+    "profit": 15.53,
+    "roi": 0.1109,
     "beat": null,
     "beatN": 0,
     "clv": null
@@ -773,9 +773,9 @@
     "won": 142,
     "lost": 160,
     "push": 4,
-    "staked": 186,
-    "profit": -7.85,
-    "roi": -0.0422,
+    "staked": 174.5,
+    "profit": -7.29,
+    "roi": -0.0418,
     "beat": 0.3043,
     "beatN": 23,
     "clv": -0.0319
@@ -822,9 +822,9 @@
      "won": 142,
      "lost": 160,
      "push": 4,
-     "staked": 186,
-     "profit": -7.85,
-     "roi": -0.0422,
+     "staked": 174.5,
+     "profit": -7.29,
+     "roi": -0.0418,
      "beat": 0.3043,
      "beatN": 23,
      "clv": -0.0319
@@ -847,9 +847,9 @@
     "won": 76,
     "lost": 91,
     "push": 0,
-    "staked": 113.5,
-    "profit": -10.99,
-    "roi": -0.0968,
+    "staked": 102,
+    "profit": -10.43,
+    "roi": -0.1023,
     "beat": null,
     "beatN": 0,
     "clv": null
@@ -1767,6 +1767,53 @@
     "legacy:o": 241
    }
   },
+  "ownBar": {
+   "held": 261,
+   "before": -11.73,
+   "after": -5.82,
+   "keys": {
+    "ml:away": {
+     "n": 345,
+     "sum": -51.72
+    },
+    "ml:home": {
+     "n": 309,
+     "sum": -3.77
+    },
+    "prop:k:over": {
+     "n": 142,
+     "sum": -24.37
+    },
+    "prop:k:under": {
+     "n": 290,
+     "sum": 10.81
+    },
+    "prop:outs:over": {
+     "n": 27,
+     "sum": -0.66
+    },
+    "prop:outs:under": {
+     "n": 33,
+     "sum": 7.69
+    },
+    "spread:away": {
+     "n": 170,
+     "sum": 12.22
+    },
+    "spread:home": {
+     "n": 148,
+     "sum": 6.03
+    },
+    "total:over": {
+     "n": 100,
+     "sum": 3.69
+    },
+    "total:under": {
+     "n": 127,
+     "sum": 1.33
+    }
+   }
+  },
   "tiers": {
    "lock": 0,
    "high": 0,
@@ -1810,17 +1857,17 @@
   "split": "games that start before the epoch replayed; the live ledger from the epoch on",
   "notSeen": "the live desk's CLV gates, CHECKs, research and news"
  },
- "commit": "883c9e72",
- "note": "D74. The best price: the Book and the Bot take and show the best US sportsbook's price, Pinnacle still the fair",
+ "commit": "d3d7e081",
+ "note": "D79. The consistency round: no team, player or player type beats the close out of sample; the Bot's own consistent losers (a stat and side, a line market and side) stake the practice stake",
  "inputs": {
   "v": 1,
   "sport": "mlb",
   "code": {
    "props": "d39e53c3ab43",
    "games": "21e4816ffc35",
-   "pricing": "6cf25c0ba501",
-   "record": "10b7b5e49284",
-   "harness": "a353a99d7036",
+   "pricing": "0b1fae7e8fab",
+   "record": "221847f1699c",
+   "harness": "ee08662cc1ac",
    "residual": "c0bf15b36bbc79e6"
   },
   "fit": {
@@ -1866,7 +1913,7 @@
    "keys": 339364,
    "bets": 1691
   },
-  "units": -15.81,
+  "units": -9.9,
   "frozen": {
    "props": {
     "mode": "saved",
@@ -1881,6 +1928,6 @@
     "want": 29
    }
   },
-  "hash": "235b4011fdb2e245"
+  "hash": "273e0260d4339e1c"
  }
 }

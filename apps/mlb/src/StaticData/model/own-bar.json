@@ -1,0 +1,52 @@
+{
+ "sport": "mlb",
+ "epoch": "2026-10-21T01:15:00Z",
+ "commit": "d3d7e081",
+ "at": "2026-10-23T03:56:07.270Z",
+ "current": 2026,
+ "held": 261,
+ "before": -11.73,
+ "after": -5.82,
+ "keys": {
+  "ml:away": {
+   "n": 345,
+   "sum": -51.72
+  },
+  "ml:home": {
+   "n": 309,
+   "sum": -3.77
+  },
+  "prop:k:over": {
+   "n": 142,
+   "sum": -24.37
+  },
+  "prop:k:under": {
+   "n": 290,
+   "sum": 10.81
+  },
+  "prop:outs:over": {
+   "n": 27,
+   "sum": -0.66
+  },
+  "prop:outs:under": {
+   "n": 33,
+   "sum": 7.69
+  },
+  "spread:away": {
+   "n": 170,
+   "sum": 12.22
+  },
+  "spread:home": {
+   "n": 148,
+   "sum": 6.03
+  },
+  "total:over": {
+   "n": 100,
+   "sum": 3.69
+  },
+  "total:under": {
+   "n": 127,
+   "sum": 1.33
+  }
+ }
+}

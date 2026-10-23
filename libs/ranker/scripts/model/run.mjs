@@ -160,7 +160,7 @@ import { fitCode, fitDay, fitDiffs, fitPlan, readFit, refitWhy, saveFit } from '
 import { corrRows, correctionText, tuneCorrection } from './correct.mjs';
 import { PRACTICE_N, PRACTICE_SPLIT, PRACTICE_STAKED, lineBucket, practiceRecord, practiceTop, slateQuota } from './desk.mjs';
 import { MAX_REPRICES, TRUST_START, rulesChanged, rulesOf } from './desk.mjs';
-import { propBar, propBarGate, readPropBar } from './desk.mjs';
+import { propBar, propBarGate, readPropBar, ownBarOf, ownBarGate, ownKey, readOwnBar } from './desk.mjs';
 import { BANKROLL, MARKETS, PRACTICE_UNITS, EARLY_HOURS, stakeKelly, gatedPlacement, stakeFor, practiceGates, choose, decimal, isTracked, trackedRecord, lineGate, lineBar, barGate, bothGates, readLineBar, barAside, reasonsOf, scheduleRest, withTravel, propGate, fairPair, placeGame, sameGameOf, sameGameRhoText, fitTrust, fitBuckets, bucketTrustOf, BUCKETS, gapGuard, guardOf, oneSide, pickText, placement, price, record, settle, voidOf } from './desk.mjs';
 import { CHECK_KELLY, CHECK_KINDS, atUnit, causeOf, checkLocked, checkOf, rejudgeChecks, shadowOf, checkResultOf, checkSummary, closeChecks, markPlaced, modelSide, noteOpen, openCheck, priceAtOf, resolveChecks, STORED_FRESH, storedBet, storedFresh, upsertCheck, withStoredPrices } from './checks.mjs';
 import { ledgerWrites, readChecks, readKept } from './checks-file.mjs';
@@ -1885,6 +1885,8 @@ function betGames(r) {
   // bet by its normal rules at the practice stake, never turned off; read once a run from the ledger as graded
   // above, kept for the state and the Algorithm tab)
   r.lineGate = lineGate(r.ledger?.bets ?? [], sport, MODEL_EPOCH);
+  // (the Bot's own record by key (D79): the replay's before the epoch, own-bar.json, pooled with the ledger's since)
+  r.ownBar ??= ownBarOf(readOwnBar(ROOT, sport), r.ledger?.bets ?? [], sport, MODEL_EPOCH);
   if (!r.lineGate.on) console.log(`${sport}: the game lines at the practice stake this run: ${r.lineGate.why}`);
   // (the lines' history bar by segment (desk.mjs lineBar, DECISIONS.md D51): the priced history's flat record of the
   // Bot's line picks (line-bar.json, written by gate.mjs --record, never here) pooled with the live line bets since
@@ -2081,7 +2083,8 @@ function betGames(r) {
       // edge, or a named reason it carries (D51))
       const reasons = reasonsOf(sport, key, pick.side, sched.get(String(game.id)));
       const segment = barGate(r.lineBar, key, pick.side, pick.fair, { hours: ahead / 36e5, ev: pick.ev, reasons, aside: r.lineBarAside });
-      const gate = bothGates(r.lineGate, segment);
+      // (and the Bot's own record on the market and side (D79): a key whose own bets keep losing, the practice stake)
+      const gate = bothGates(bothGates(r.lineGate, segment), ownBarGate(r.ownBar, sport, ownKey(key, key, pick.side)));
       // (the shopped-price guard (D76): a side that clears only at another book's price, under the minimum there)
       const shopG = r.shopT === null || r.shopT === undefined ? { guarded: false } : shopGuardOf(pick, r.shopT, pick.push ?? 0);
       const practice = !gate?.on || shopG.guarded;
@@ -2323,6 +2326,8 @@ async function betProps(r) {
   r.propGate = propGate(ledger.bets ?? [], sport, MODEL_EPOCH);
   r.propBarFile = readPropBar(ROOT, sport);
   r.propBar = propBar(r.propBarFile, ledger.bets ?? [], sport, MODEL_EPOCH);
+  r.ownBar ??= ownBarOf(readOwnBar(ROOT, sport), ledger.bets ?? [], sport, MODEL_EPOCH);
+  for (const [k, g] of Object.entries(r.ownBar)) if (g.held) console.log(`${sport}: ${k} at the practice stake this run: the Bot's own bets there ${g.sum}u flat on ${g.n} (D79)`);
   for (const [k, g] of Object.entries(r.propGate)) if (!g.on) console.log(`${sport}: ${k} props at the practice stake this run: ${g.why}`);
   // (the NFL's anytime touchdown market this run: asked with the props while the month can pay for it)
   if (sport === 'nfl') {
@@ -2858,7 +2863,8 @@ async function betProps(r) {
     if (topN) x.units = PRACTICE_UNITS;
     // (the stat's CLV gate (r.propGate): failing, bet as ever at the practice stake, the gate's word on the row)
     // (and the props' stat bar (D64): a stat and side the record hasn't earned at this return, the practice stake)
-    const gate = bothGates(r.propGate?.[x.prop.stat.key] ?? null, propBarGate(r.propBar, r.propBarFile, sport, x.prop.stat.key, x.side, x.ev));
+    // (and the Bot's own record on the stat and side (D79): a key whose own bets keep losing, the practice stake)
+    const gate = bothGates(bothGates(r.propGate?.[x.prop.stat.key] ?? null, propBarGate(r.propBar, r.propBarFile, sport, x.prop.stat.key, x.side, x.ev)), ownBarGate(r.ownBar, sport, ownKey('prop', x.prop.stat.key, x.side)));
     const practice = !!gate && !gate.on;
     if (practice) x.guard = { ...(x.guard ?? {}), why: [x.guard?.why, `${x.prop.stat.key} ${gate.why}`].filter(Boolean).join('; ') };
     // (a research bet whose level is earned (research.mjs researchLevelOf) keeps its Kelly stake under its own

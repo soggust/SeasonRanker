@@ -1298,3 +1298,57 @@ export function readLineBar(root, sport) {
     return null;
   }
 }
+
+// ---- The Bot's own consistent losers (DECISIONS.md D79, 2026-10-22) ----
+// The consistency round: no team, player or player type beat the closing line consistently out of sample, and a
+// player's own record with the Bot (his past bets' results) didn't carry to his next bets either. What carried was
+// the Bot's own record by market and side: a stat and side ("prop:reb:over") or a line's market and side ("ml:home")
+// whose own earlier bets lost kept losing (the NBA's rebound overs: -21% flat on 175 in 2023-24, then -9% on 311).
+// So a key's stake is earned on the Bot's own bets too: its bets settled before the moment, flat at their own price,
+// summed and shrunk toward 0 by OWN_K (sum / (n + OWN_K)); at OWN_MIN bets or more and a shrunk return at OWN_THR or
+// worse, the practice stake and a LIKE at most (D1: never off; an edge is still needed, and it keeps betting there,
+// so its record can earn the stake back). The replay walks it (replay-record.mjs ownBar); gate.mjs --record writes
+// each key's replayed record before the epoch to own-bar.json; the live desk pools it with its graded bets since the
+// epoch (ownBarOf) and reads it (ownBarGate). OWN_BAR=0 off (measuring only).
+export const OWN_BAR = process.env.OWN_BAR !== '0';
+export const OWN_BAR_SPORTS = ['nba', 'nhl', 'nfl', 'mlb'];
+export const OWN_K = 20;
+export const OWN_THR = -0.1;
+export const OWN_MIN = 10;
+export const ownBarOn = (sport) => OWN_BAR && OWN_BAR_SPORTS.includes(sport);
+export const ownKey = (market, stat, side) => (market === 'prop' ? `prop:${stat}:${side}` : `${market}:${side}`);
+export function ownVerdict(n, sum) {
+  const shrunk = n > 0 ? sum / (n + OWN_K) : 0;
+  return { n, sum: round(sum, 3), shrunk: round(shrunk, 4), held: n >= OWN_MIN && shrunk <= OWN_THR };
+}
+// (the file's keys pooled with the live ledger's graded bets since the epoch: tracked rows, voids and the slate's
+// practice picks aside, as the replay's walk leaves them)
+export function ownBarOf(prior, bets, sport, epoch = MODEL_EPOCH) {
+  const live = (bets ?? []).filter((b) => b.sport === sport && !b.void && !isTracked(b) && !isPracticeTop(b) && ['won', 'lost', 'push'].includes(b.status) && Number.isFinite(b.odds) && (!epoch || Date.parse(b.placedAt ?? b.start) >= Date.parse(epoch)));
+  const acc = new Map(Object.entries(prior?.keys ?? {}).map(([k, v]) => [k, { n: v.n ?? 0, sum: v.sum ?? 0 }]));
+  for (const b of live) {
+    const k = ownKey(b.market, b.propType ?? b.stat, b.side);
+    const a = acc.get(k) ?? { n: 0, sum: 0 };
+    a.n++;
+    a.sum += flatProfit(b.odds, b.status);
+    acc.set(k, a);
+  }
+  return Object.fromEntries([...acc].map(([k, a]) => [k, ownVerdict(a.n, a.sum)]));
+}
+// (a row's gate from the Bot's own record: null where the bar is off in the sport or the key isn't held)
+export function ownBarGate(bar, sport, key) {
+  if (!ownBarOn(sport)) return null;
+  const g = bar?.[key];
+  if (!g?.held) return null;
+  return { ...g, on: false, practice: true, key, why: `${key}: the Bot's own bets there ${g.sum >= 0 ? '+' : ''}${round(g.sum, 1)}u flat on ${g.n} (shrunk ${round(g.shrunk * 100, 1)}%): the practice stake till its record earns it back (D79)` };
+}
+export function readOwnBar(root, sport) {
+  const file = path.join(root, 'apps', sport, 'src/StaticData/model/own-bar.json');
+  try {
+    if (!existsSync(file)) return null;
+    const bar = JSON.parse(readFileSync(file, 'utf8'));
+    return bar && bar.keys && typeof bar.keys === 'object' ? bar : null;
+  } catch {
+    return null;
+  }
+}

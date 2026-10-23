@@ -1,31 +1,237 @@
 {
-  "v": 1,
-  "about": "The Algorithm tab's Findings panel (admins only): what the research has learned, one line each. Each round appends entries; never edit the template. group: shipped | dropped | watching. sport: nfl | nba | nhl | mlb | mma, or null for every sport. ref: the DECISIONS.md entry.",
-  "entries": [
-    { "date": "2026-10-20", "group": "dropped", "sport": null, "ref": "D72", "text": "Trusted-piece bands: props' pieces proven, lines' not; no LOCK > LOVE > LIKE beyond noise (top edges lose again); staged only" },
-    { "date": "2026-10-20", "group": "shipped", "sport": "mma", "ref": "D56, D59", "text": "MMA price swap fixed (mirrored opens repaired) and the favorite-longshot calibration on" },
-    { "date": "2026-10-20", "group": "shipped", "sport": "nba", "ref": "D69", "text": "Props priced on every season with prop odds: NBA record -10.1u to +29.3u" },
-    { "date": "2026-10-20", "group": "shipped", "sport": null, "ref": "D57", "text": "Practice picks are tracked only, never staked" },
-    { "date": "2026-10-20", "group": "shipped", "sport": null, "ref": "D70", "text": "Closing-line bands: LOVE/LOCK earned by beating the fair close with results that don't lose; the band lab stages rules first" },
-    { "date": "2026-10-20", "group": "watching", "sport": "nba", "ref": "D66", "text": "News lag: teammates' points overs +9.4% on 1,700 at 6h, but hindsight-picked; earning live only" },
-    { "date": "2026-10-20", "group": "watching", "sport": null, "ref": "D61", "text": "Timing: NBA/NHL line gaps worth +1-2% at 6h or more out, gone by 3h; no betting window earned yet" },
-    { "date": "2026-10-20", "group": "watching", "sport": null, "ref": "D70", "text": "CLV bands: none earned yet; closest NBA early moneyline dogs (+1.6% shrunk, beat 51%)" },
-    { "date": "2026-10-20", "group": "dropped", "sport": null, "ref": "Measured and held", "text": "Blowout props: the unders hit, but only win the vig back" },
-    { "date": "2026-10-20", "group": "dropped", "sport": "mlb", "ref": "Measured and held", "text": "MLB pitch caps: the Book already shades early-season starters" },
-    { "date": "2026-10-20", "group": "dropped", "sport": null, "ref": "Measured and held", "text": "Props lagging line moves: they don't lag; taking the lagging side lost 8%" },
-    { "date": "2026-10-19", "group": "dropped", "sport": null, "ref": "Measured and held", "text": "Last-result overreaction: the Book doesn't overreact once the Bot's own lean is in" },
-    { "date": "2026-10-20", "group": "dropped", "sport": "nfl", "ref": "D71", "text": "NFL lines bet earlier (24h to 1h, 2020-26): no hour beats the close; early dogs beat the fair close 60-65% but lose 13-17% flat" },
-    { "date": "2026-10-20", "group": "watching", "sport": null, "ref": "D67", "text": "Best price across 9 US books vs DraftKings: 1-8 cents better, +0.5-1.6 pts flat ROI; no lines sport clearly green (noise)" },
-    { "date": "2026-10-20", "group": "shipped", "sport": "nba", "ref": "D73", "text": "Two-band trial: prop LIKEs staked by their trusted share (1u high, 0.5u low), step picked monthly: +44.1u to +51.2u out of sample" },
-    { "date": "2026-10-20", "group": "shipped", "sport": "nhl", "ref": "D73", "text": "Two-band trial: 22 LOVEs (shots-on-goal unders) +3.1% vs LIKE -2.3% out of sample (±22 pts: a trial), -20.6u to -19.9u" },
-    { "date": "2026-10-20", "group": "dropped", "sport": null, "ref": "D73", "text": "LOVE at the owner's 2% Kelly floor: out of sample it loses (NBA 67 LOVEs -14.1% vs LIKE +1.3%); the trial's LOVE sits at 1-2%" },
-    { "date": "2026-10-20", "group": "dropped", "sport": null, "ref": "D73", "text": "Small winners: the NBA is one (+51.2u); no honest stake tweak turns the NFL (-27.0u), NHL (-19.9u) or MLB (-11.9u) positive" },
-    { "date": "2026-10-20", "group": "watching", "sport": "nba", "ref": "D73", "text": "NBA LOVE by trusted share (rebound unders): +1.6% vs +1.0% on the first replay, -0.4% vs +2.2% re-recorded: held off" },
-    { "date": "2026-10-21", "group": "shipped", "sport": null, "ref": "D74", "text": "Bets now at the best US price: live, 68% of NBA sides beat DraftKings (~4c); the replay shops only where history has every book" },
-    { "date": "2026-10-21", "group": "shipped", "sport": null, "ref": "D75", "text": "Props replay walk-forward by season (D74 fit on the seasons it priced): props NBA +7u, NHL +6u, NFL -14u, MLB -6u" },
-    { "date": "2026-10-21", "group": "shipped", "sport": null, "ref": "D76", "text": "Shop-only lines need the month's minimum edge, else 0.5u: NHL +0.5u, NFL no change, off in NBA and MMA" },
-    { "date": "2026-10-21", "group": "dropped", "sport": null, "ref": "D77", "text": "News lag from prices alone (star prop pulled, teammates unmoved): no edge in any sport; NBA -5.5% on 5,516, beat fair close 16%" },
-    { "date": "2026-10-21", "group": "dropped", "sport": null, "ref": "D78", "text": "Props pieces (early exit, blowout minutes, fatigue, play type, on/off): no log-loss gain past noise walk-forward in any sport; held" },
-    { "date": "2026-10-21", "group": "watching", "sport": "nfl", "ref": "D78", "text": "Interceptions vs the defense's EPA allowed: -0.0025 log loss in 2025-26 (z 2.6), nothing in 2024; recheck with more rows" }
-  ]
+ "v": 1,
+ "about": "The Algorithm tab's Findings panel (admins only): what the research has learned, one line each. Each round appends entries; never edit the template. group: shipped | dropped | watching. sport: nfl | nba | nhl | mlb | mma, or null for every sport. ref: the DECISIONS.md entry.",
+ "entries": [
+  {
+   "date": "2026-10-20",
+   "group": "dropped",
+   "sport": null,
+   "ref": "D72",
+   "text": "Trusted-piece bands: props' pieces proven, lines' not; no LOCK > LOVE > LIKE beyond noise (top edges lose again); staged only"
+  },
+  {
+   "date": "2026-10-20",
+   "group": "shipped",
+   "sport": "mma",
+   "ref": "D56, D59",
+   "text": "MMA price swap fixed (mirrored opens repaired) and the favorite-longshot calibration on"
+  },
+  {
+   "date": "2026-10-20",
+   "group": "shipped",
+   "sport": "nba",
+   "ref": "D69",
+   "text": "Props priced on every season with prop odds: NBA record -10.1u to +29.3u"
+  },
+  {
+   "date": "2026-10-20",
+   "group": "shipped",
+   "sport": null,
+   "ref": "D57",
+   "text": "Practice picks are tracked only, never staked"
+  },
+  {
+   "date": "2026-10-20",
+   "group": "shipped",
+   "sport": null,
+   "ref": "D70",
+   "text": "Closing-line bands: LOVE/LOCK earned by beating the fair close with results that don't lose; the band lab stages rules first"
+  },
+  {
+   "date": "2026-10-20",
+   "group": "watching",
+   "sport": "nba",
+   "ref": "D66",
+   "text": "News lag: teammates' points overs +9.4% on 1,700 at 6h, but hindsight-picked; earning live only"
+  },
+  {
+   "date": "2026-10-20",
+   "group": "watching",
+   "sport": null,
+   "ref": "D61",
+   "text": "Timing: NBA/NHL line gaps worth +1-2% at 6h or more out, gone by 3h; no betting window earned yet"
+  },
+  {
+   "date": "2026-10-20",
+   "group": "watching",
+   "sport": null,
+   "ref": "D70",
+   "text": "CLV bands: none earned yet; closest NBA early moneyline dogs (+1.6% shrunk, beat 51%)"
+  },
+  {
+   "date": "2026-10-20",
+   "group": "dropped",
+   "sport": null,
+   "ref": "Measured and held",
+   "text": "Blowout props: the unders hit, but only win the vig back"
+  },
+  {
+   "date": "2026-10-20",
+   "group": "dropped",
+   "sport": "mlb",
+   "ref": "Measured and held",
+   "text": "MLB pitch caps: the Book already shades early-season starters"
+  },
+  {
+   "date": "2026-10-20",
+   "group": "dropped",
+   "sport": null,
+   "ref": "Measured and held",
+   "text": "Props lagging line moves: they don't lag; taking the lagging side lost 8%"
+  },
+  {
+   "date": "2026-10-19",
+   "group": "dropped",
+   "sport": null,
+   "ref": "Measured and held",
+   "text": "Last-result overreaction: the Book doesn't overreact once the Bot's own lean is in"
+  },
+  {
+   "date": "2026-10-20",
+   "group": "dropped",
+   "sport": "nfl",
+   "ref": "D71",
+   "text": "NFL lines bet earlier (24h to 1h, 2020-26): no hour beats the close; early dogs beat the fair close 60-65% but lose 13-17% flat"
+  },
+  {
+   "date": "2026-10-20",
+   "group": "watching",
+   "sport": null,
+   "ref": "D67",
+   "text": "Best price across 9 US books vs DraftKings: 1-8 cents better, +0.5-1.6 pts flat ROI; no lines sport clearly green (noise)"
+  },
+  {
+   "date": "2026-10-20",
+   "group": "shipped",
+   "sport": "nba",
+   "ref": "D73",
+   "text": "Two-band trial: prop LIKEs staked by their trusted share (1u high, 0.5u low), step picked monthly: +44.1u to +51.2u out of sample"
+  },
+  {
+   "date": "2026-10-20",
+   "group": "shipped",
+   "sport": "nhl",
+   "ref": "D73",
+   "text": "Two-band trial: 22 LOVEs (shots-on-goal unders) +3.1% vs LIKE -2.3% out of sample (±22 pts: a trial), -20.6u to -19.9u"
+  },
+  {
+   "date": "2026-10-20",
+   "group": "dropped",
+   "sport": null,
+   "ref": "D73",
+   "text": "LOVE at the owner's 2% Kelly floor: out of sample it loses (NBA 67 LOVEs -14.1% vs LIKE +1.3%); the trial's LOVE sits at 1-2%"
+  },
+  {
+   "date": "2026-10-20",
+   "group": "dropped",
+   "sport": null,
+   "ref": "D73",
+   "text": "Small winners: the NBA is one (+51.2u); no honest stake tweak turns the NFL (-27.0u), NHL (-19.9u) or MLB (-11.9u) positive"
+  },
+  {
+   "date": "2026-10-20",
+   "group": "watching",
+   "sport": "nba",
+   "ref": "D73",
+   "text": "NBA LOVE by trusted share (rebound unders): +1.6% vs +1.0% on the first replay, -0.4% vs +2.2% re-recorded: held off"
+  },
+  {
+   "date": "2026-10-21",
+   "group": "shipped",
+   "sport": null,
+   "ref": "D74",
+   "text": "Bets now at the best US price: live, 68% of NBA sides beat DraftKings (~4c); the replay shops only where history has every book"
+  },
+  {
+   "date": "2026-10-21",
+   "group": "shipped",
+   "sport": null,
+   "ref": "D75",
+   "text": "Props replay walk-forward by season (D74 fit on the seasons it priced): props NBA +7u, NHL +6u, NFL -14u, MLB -6u"
+  },
+  {
+   "date": "2026-10-21",
+   "group": "shipped",
+   "sport": null,
+   "ref": "D76",
+   "text": "Shop-only lines need the month's minimum edge, else 0.5u: NHL +0.5u, NFL no change, off in NBA and MMA"
+  },
+  {
+   "date": "2026-10-21",
+   "group": "dropped",
+   "sport": null,
+   "ref": "D77",
+   "text": "News lag from prices alone (star prop pulled, teammates unmoved): no edge in any sport; NBA -5.5% on 5,516, beat fair close 16%"
+  },
+  {
+   "date": "2026-10-21",
+   "group": "dropped",
+   "sport": null,
+   "ref": "D78",
+   "text": "Props pieces (early exit, blowout minutes, fatigue, play type, on/off): no log-loss gain past noise walk-forward in any sport; held"
+  },
+  {
+   "date": "2026-10-21",
+   "group": "watching",
+   "sport": "nfl",
+   "ref": "D78",
+   "text": "Interceptions vs the defense's EPA allowed: -0.0025 log loss in 2025-26 (z 2.6), nothing in 2024; recheck with more rows"
+  },
+  {
+   "date": "2026-10-22",
+   "group": "shipped",
+   "sport": null,
+   "ref": "D79",
+   "text": "Bot's own losing stat+side (or line market+side) now 0.5u: NBA +25.1u, NHL +5.0u, MLB +5.9u, NFL +1.9u on the replay"
+  },
+  {
+   "date": "2026-10-22",
+   "group": "dropped",
+   "sport": null,
+   "ref": "D79",
+   "text": "Teams vs the close: no ATS/ML/total winner persists; season-to-season r near 0 in every sport, top fifth next year -7% to +2.5%"
+  },
+  {
+   "date": "2026-10-22",
+   "group": "dropped",
+   "sport": null,
+   "ref": "D79",
+   "text": "Team form windows (last 20/40/82, home/away, fav/dog, NFL coach+QB era): no test survives BH out of sample (best q 0.46)"
+  },
+  {
+   "date": "2026-10-22",
+   "group": "dropped",
+   "sport": null,
+   "ref": "D79",
+   "text": "Players beating their prop lines: season-to-season r near 0 in every stat but NBA rebounds; following the hot ones loses -2% to -10%"
+  },
+  {
+   "date": "2026-10-22",
+   "group": "dropped",
+   "sport": null,
+   "ref": "D79",
+   "text": "Player types (role change, newcomer, new team, late season, heavy minutes, home/away, streaks, line size): none beats break-even held out"
+  },
+  {
+   "date": "2026-10-22",
+   "group": "dropped",
+   "sport": null,
+   "ref": "D79",
+   "text": "The Bot's own record by player or team doesn't carry: NBA players it lost on went +4.7% on 281 next; no player shrink"
+  },
+  {
+   "date": "2026-10-22",
+   "group": "watching",
+   "sport": "nba",
+   "ref": "D79",
+   "text": "NBA rebounds: a player's over/under lean carries a season (r 0.15, n 428); shift lowers log loss 0.6e-4 (2 SE); too small to ship"
+  },
+  {
+   "date": "2026-10-22",
+   "group": "watching",
+   "sport": "nba",
+   "ref": "D79",
+   "text": "NBA PRA unders after a team change: +7.5% on 427 held out (z 1.7, tune n 108); recheck with more trades"
+  }
+ ]
 }

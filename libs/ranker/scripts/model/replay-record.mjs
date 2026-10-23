@@ -610,6 +610,11 @@ export function replayRecord(V, sport, rows, { events = null, names = () => ({ h
   // least V.desk.BEAT_BAR of the time over their last LINE_GATE_N with a close, from LINE_GATE_MIN of them; under it
   // the practice stake and a LIKE at most: shrunk, never off (D1). A version without the bar: none)
   if (fin(V.desk.BEAT_BAR)) beatBar(bets, { bar: V.desk.BEAT_BAR, min: V.desk.LINE_GATE_MIN ?? 40, window: V.desk.LINE_GATE_N ?? 200, practiceUnits, flags });
+  // (the Bot's own consistent losers (DECISIONS.md D79, desk.mjs ownVerdict): a key (a prop's stat and side, a line's
+  // market and side) whose own bets settled before the moment lost past the shrunk bar stakes the practice stake and
+  // a LIKE at most, after every other rule; still bet and still counted, so it can earn its stake back. A version
+  // without it, or a sport it isn't on in: none)
+  if (V.desk.ownVerdict && V.desk.ownBarOn?.(sport)) ownBar(bets, { verdict: V.desk.ownVerdict, key: V.desk.ownKey, practiceUnits, flags });
   const gamesOn = new Map();
   const everyRow = [...bets.map((b) => ({ day: etDay(b.t), event: b.event })), ...passes.map((r) => ({ day: etDay(r.x.t), event: String(r.x.event) }))];
   for (const r of everyRow) (gamesOn.get(r.day) ?? gamesOn.set(r.day, new Set()).get(r.day)).add(r.event);
@@ -706,6 +711,49 @@ export function beatBar(bets, { bar, min = 40, window = 200, practiceUnits = 0.5
   return out;
 }
 
+// The Bot's own record's walk (D79): each bet (practice picks aside) in placement order, its key's earlier bets settled
+// by its moment (start plus GAME_HOURS), flat at their own price; held to the practice stake (units, profit scaled, a
+// LIKE) where verdict(n, sum).held. flags.ownBar: { held, before, after, keys: { key: { n, sum } } } (the end's: what
+// gate.mjs --record writes to own-bar.json)
+export function ownBar(bets, { verdict, key, practiceUnits = 0.5, flags = {} }) {
+  const settle = (b) => b.t + GAME_HOURS * 36e5;
+  const flat = (b) => (b.res === 'W' ? dec(b.odds) - 1 : b.res === 'L' ? -1 : 0);
+  const mine = bets.filter((b) => !b.practice && (b.res === 'W' || b.res === 'L' || b.res === 'P') && fin(b.odds));
+  const bySettle = [...mine].sort((a, b) => settle(a) - settle(b));
+  const atOf = (b) => (fin(b.at) ? b.at : b.t);
+  const byAt = [...mine].sort((a, b) => atOf(a) - atOf(b));
+  const acc = new Map();
+  const add = (m, x) => {
+    const k = key(x.market, x.stat, x.side);
+    const a = m.get(k) ?? { n: 0, sum: 0 };
+    a.n++;
+    a.sum += flat(x);
+    m.set(k, a);
+  };
+  const out = { held: 0, before: 0, after: 0, keys: {} };
+  let j = 0;
+  for (const b of byAt) {
+    while (j < bySettle.length && settle(bySettle[j]) < atOf(b)) add(acc, bySettle[j++]);
+    const a = acc.get(key(b.market, b.stat, b.side));
+    if (!a || !verdict(a.n, a.sum).held) continue;
+    b.ownHeld = r4(a.sum / a.n);
+    b.band = 'medium';
+    out.held++;
+    if (b.units > practiceUnits) {
+      const profit = b.units > 0 ? r2((b.profit * practiceUnits) / b.units) : 0;
+      out.before = r2(out.before + b.profit);
+      out.after = r2(out.after + profit);
+      b.profit = profit;
+      b.units = practiceUnits;
+    }
+  }
+  const end = new Map();
+  for (const x of mine) add(end, x);
+  for (const [k, a] of [...end].sort((p, q) => (p[0] < q[0] ? -1 : 1))) out.keys[k] = { n: a.n, sum: r2(a.sum) };
+  flags.ownBar = out;
+  return out;
+}
+
 function betOf(x, sd, { units, band, practice, timing, fb = null, names, survival, noAttr = false }) {
   if (noAttr) x = { ...x, attr: null };
   const res = x.y === null || x.y === undefined ? 'P' : (x.y === 1) === sd.over ? 'W' : 'L';
@@ -795,6 +843,8 @@ export function summarize(sport, bets, passed, { epoch, now, flags, rows, season
       // (D76, the shopped-price guard: the shop-only bets, those under the month's minimum, their flat units, the
       // units before and after the shrink where it applies, and next, the T the live desk reads ('dk': clear there too))
       ...(flags.shopGuard ? { shopGuard: flags.shopGuard } : {}),
+      // (D79, the Bot's own consistent losers: the bets held, their units before and after, each key's record (own-bar.json))
+      ...(flags.ownBar ? { ownBar: flags.ownBar } : {}),
       // (the reason tiers (D58): the bets by band and by would-be band, and whether LOVE and LOCK have earned their place)
       ...(flags.tiers ? { tiers: flags.tiers } : {}),
       // (D48, no look-ahead by timestamp: the bets with a factsAt stamp, those past their placement (0), the opens held
