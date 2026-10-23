@@ -269,3 +269,16 @@ test('the panel transition: a bet leaves In Play the minute ESPN shows its game 
   const graded = { ...bet, status: 'won', profit: 0.91, gradedAt: '2026-10-23T01:20:00Z' };
   assert.deepEqual(book.botHistoryOf([], book.withPending([graded], () => '2026-10-23T01:00:00Z', () => null), null, {}, { now }).last.map((b) => [b.res, b.pending]), [['W', false]]);
 });
+
+test("a re-record never hides the real bets after the replay's last game: the live side starts at its through, not its new epoch (the owner, 2026-10-23)", () => {
+  // (the history re-recorded today, its epoch now, while the price archive (and so the replay) ends days before)
+  const f = { ...file('nfl', '2026-10-23T05:30:00Z'), through: '2026-10-19T00:23:00Z' };
+  const bets = [
+    live('lastNight', 'nfl', '2026-10-22T23:00:00Z', 'won', 'medium', 1, { pick: 'Last night' }),
+    live('covered', 'nfl', '2026-10-18T20:00:00Z', 'lost', 'medium'),
+  ];
+  const h = book.botHistoryOf([f], bets, null, { nfl: 'NFL' });
+  // (last night's bet counted and first in the strip; the one on a replayed game still left to the replay)
+  assert.equal(h.overall.live, 1);
+  assert.equal(h.last[0].pick, 'Last night');
+});

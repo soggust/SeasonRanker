@@ -366,7 +366,13 @@ export function botHistoryOf(
   const replays = new Map<string, ReplayRecordFile>();
   for (const f of files) if (f && f.v === 1 && f.sport && (!sport || f.sport === sport)) replays.set(f.sport, f);
   const sports = [...new Set([...replays.keys(), ...bets.map((b) => b.sport)])].filter((s) => !sport || s === sport).sort();
-  const epochOf = (s: string) => replays.get(s)?.epoch ?? null;
+  // (where the live side starts: just after the replay's last game, so a re-record (its epoch moved to now) never
+  // drops the real bets between the price archive's end and the record, last night's among them (the owner,
+  // 2026-10-23); no replay's games, its epoch)
+  const epochOf = (s: string) => {
+    const f = replays.get(s);
+    return f?.through ? new Date(Date.parse(f.through) + 1).toISOString() : (f?.epoch ?? null);
+  };
   // (in a range, the live bets settled in it: an open one has no settling yet)
   const live = bets.filter((b) => (!sport || b.sport === sport) && !isTracked(b) && liveSince(b, epochOf(b.sport)) && (!days || ((b.status !== 'open' || !!b.pending) && inDays(etDay(settledOf(b)), days))));
   const liveReal = live.filter((b) => !practiceOf(b));
