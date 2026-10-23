@@ -5595,6 +5595,54 @@
     "seen": "2026-10-23T17:19:55.071Z",
     "own": "2026-10-23T17:15:00.000Z"
    }
+  },
+  "401873017|michaeljerrell|out": {
+   "game": "401873017",
+   "start": "2026-10-25T17:00Z",
+   "team": "1",
+   "name": "Michael Jerrell",
+   "status": "out",
+   "athlete": "5209093",
+   "espn": {
+    "seen": "2026-10-23T17:35:50.014Z",
+    "own": "2026-10-23T17:22:00.000Z"
+   }
+  },
+  "401873017|billybowman|out": {
+   "game": "401873017",
+   "start": "2026-10-25T17:00Z",
+   "team": "1",
+   "name": "Billy Bowman Jr.",
+   "status": "out",
+   "athlete": "4431194",
+   "espn": {
+    "seen": "2026-10-23T17:35:50.014Z",
+    "own": "2026-10-23T17:21:00.000Z"
+   }
+  },
+  "401873017|divinedeablo|out": {
+   "game": "401873017",
+   "start": "2026-10-25T17:00Z",
+   "team": "1",
+   "name": "Divine Deablo",
+   "status": "out",
+   "athlete": "4037626",
+   "espn": {
+    "seen": "2026-10-23T17:35:50.014Z",
+    "own": "2026-10-23T17:21:00.000Z"
+   }
+  },
+  "401873012|taviusrobinson|out": {
+   "game": "401873012",
+   "start": "2026-10-25T17:00Z",
+   "team": "33",
+   "name": "Tavius Robinson",
+   "status": "out",
+   "athlete": "4690179",
+   "espn": {
+    "seen": "2026-10-23T17:35:50.014Z",
+    "own": "2026-10-22T23:58:00.000Z"
+   }
   }
  }
 }
