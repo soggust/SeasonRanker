@@ -43,7 +43,9 @@ export interface BoardSide {
   // (the desk's cap on it: 'medium' where any bet on it would be a LIKE at most whatever its price (a gate's practice
   // stake, a role or research pick: picks.mjs capOf), cr its why; the band at any price held to it (DECISIONS.md D46))
   cap?: 'medium' | 'high';
-// (the desk tracks this side and stakes nothing even at an edge (MMA's lean short of the league's edge: mma-desk.mjs);  // never a Bot Pick: the owner, 2026-10-23, "why are we suggesting bets the Bot doesn't really like")  tr?: 1;
+  // (the desk tracks this side and stakes nothing even at an edge (MMA's lean short of the league's edge: mma-desk.mjs);
+  // never a Bot Pick: the owner, 2026-10-23, "why are we suggesting bets the Bot doesn't really like")
+  tr?: 1;
   cr?: string;
   // (its why, on an edge side and the Bot's side (board.mjs w): the K-score popover's makings for a suggestion)
   w?: BoardWhy;
