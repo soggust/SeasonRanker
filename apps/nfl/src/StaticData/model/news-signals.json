@@ -3,6 +3,72 @@
  "days": 2,
  "signals": [
   {
+   "team": "25",
+   "abbr": "SF",
+   "athlete": "3895856",
+   "player": "Christian Kirk",
+   "kind": "return",
+   "direction": "up",
+   "confidence": 0.3,
+   "headline": "49ers WR Evans, DE Bosa, WR Samuel out vs. Atlanta; WR Kirk may return",
+   "at": "2026-10-23T21:49:20.000Z"
+  },
+  {
+   "team": "19",
+   "abbr": "NYG",
+   "athlete": "4696981",
+   "player": "Cam Skattebo",
+   "kind": "return",
+   "direction": "up",
+   "confidence": 0.6,
+   "headline": "Cam Skattebo set to return to Giants RB mix after being 'taught a lesson'",
+   "at": "2026-10-23T21:13:54.000Z"
+  },
+  {
+   "team": "5",
+   "abbr": "CLE",
+   "athlete": "4685702",
+   "player": "Quinshon Judkins",
+   "kind": "return",
+   "direction": "up",
+   "confidence": 0.6,
+   "headline": "Browns RBs Quinshon Judkins, Dylan Sampson expected to play",
+   "at": "2026-10-23T20:19:54.000Z"
+  },
+  {
+   "team": "5",
+   "abbr": "CLE",
+   "athlete": "5081397",
+   "player": "Dylan Sampson",
+   "kind": "return",
+   "direction": "up",
+   "confidence": 0.6,
+   "headline": "Browns RBs Quinshon Judkins, Dylan Sampson expected to play",
+   "at": "2026-10-23T20:19:54.000Z"
+  },
+  {
+   "team": "27",
+   "abbr": "TB",
+   "athlete": "3052587",
+   "player": "Baker Mayfield",
+   "kind": "return",
+   "direction": "up",
+   "confidence": 0.9,
+   "headline": "Baker Mayfield returns for Bucs, but WR Emeka Egbuka, RT Luke Goedeke out",
+   "at": "2026-10-23T18:56:07.000Z"
+  },
+  {
+   "team": "15",
+   "abbr": "MIA",
+   "athlete": "4869645",
+   "player": "Caleb Douglas",
+   "kind": "return",
+   "direction": "up",
+   "confidence": 0.9,
+   "headline": "Dolphins rookie WR Caleb Douglas set to return vs. Jets",
+   "at": "2026-10-23T17:58:17.000Z"
+  },
+  {
    "team": "2",
    "abbr": "BUF",
    "athlete": "4044133",
@@ -78,51 +144,7 @@
    "confidence": 0.3,
    "headline": "Kansas City Chiefs WR Xavier Worthy thriving in expanded role as Seahawks loom",
    "at": "2026-10-21T23:11:53.000Z"
-  },
-  {
-   "team": "34",
-   "abbr": "HOU",
-   "athlete": "4366031",
-   "player": "Tank Dell",
-   "kind": "return",
-   "direction": "up",
-   "confidence": 0.8,
-   "headline": "Texans' Tank Dell says he won't fear being hit in return Sunday against Giants",
-   "at": "2026-10-21T22:41:12.000Z"
-  },
-  {
-   "team": "8",
-   "abbr": "DET",
-   "athlete": "4692025",
-   "player": "Brian Branch",
-   "kind": "return",
-   "direction": "up",
-   "confidence": 0.9,
-   "headline": "Lions to get DB Brian Branch, C Cade Mays back vs. Packers",
-   "at": "2026-10-21T20:09:24.000Z"
-  },
-  {
-   "team": "8",
-   "abbr": "DET",
-   "athlete": "4361788",
-   "player": "Cade Mays",
-   "kind": "return",
-   "direction": "up",
-   "confidence": 0.9,
-   "headline": "Lions to get DB Brian Branch, C Cade Mays back vs. Packers",
-   "at": "2026-10-21T20:09:24.000Z"
-  },
-  {
-   "team": "25",
-   "abbr": "SF",
-   "athlete": null,
-   "player": "Raheem Morris",
-   "kind": "coaching",
-   "direction": "none",
-   "confidence": 0.5,
-   "headline": "Raheem Morris is back in Atlanta -- and he's bringing his surging 49ers defense",
-   "at": "2026-10-21T19:03:26.000Z"
   }
  ],
- "at": "2026-10-23T16:54:22.393Z"
+ "at": "2026-10-23T22:50:14.417Z"
 }

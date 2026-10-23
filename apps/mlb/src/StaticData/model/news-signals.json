@@ -3,6 +3,17 @@
  "days": 2,
  "signals": [
   {
+   "team": "8",
+   "abbr": "MIL",
+   "athlete": "37515",
+   "player": "Brandon Woodruff",
+   "kind": "return",
+   "direction": "up",
+   "confidence": 0.9,
+   "headline": "Brewers add pitcher Brandon Woodruff to World Series roster",
+   "at": "2026-10-23T17:18:57.000Z"
+  },
+  {
    "team": "30",
    "abbr": "TB",
    "athlete": "33372",
@@ -34,29 +45,7 @@
    "confidence": 0.3,
    "headline": "Athletics bet on youth with 31-year-old Taylor Smith to lead baseball operations",
    "at": "2026-10-22T01:43:42.000Z"
-  },
-  {
-   "team": "19",
-   "abbr": "LAD",
-   "athlete": "39832",
-   "player": "Shohei Ohtani",
-   "kind": "return",
-   "direction": "up",
-   "confidence": 0.6,
-   "headline": "Dodgers' Shohei Ohtani won't require surgery, expected to pitch in 2027",
-   "at": "2026-10-21T22:25:46.000Z"
-  },
-  {
-   "team": "3",
-   "abbr": "LAA",
-   "athlete": null,
-   "player": "Kurt Suzuki",
-   "kind": "coaching",
-   "direction": "none",
-   "confidence": 0.9,
-   "headline": "Kurt Suzuki out as Angels manager after team's first 100-loss season",
-   "at": "2026-10-21T19:14:46.000Z"
   }
  ],
- "at": "2026-10-22T23:24:09.344Z"
+ "at": "2026-10-23T22:50:14.417Z"
 }

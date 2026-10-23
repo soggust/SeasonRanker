@@ -1,9 +1,9 @@
 {
  "sport": "nba",
  "cursor": {
-  "rotowirenba.bsky.social": "2026-10-23T06:53:35.000Z",
-  "insidenbanews.bsky.social": "2026-10-23T15:18:15.506Z",
-  "shamsbot.bsky.social": "2026-10-23T15:17:21.000Z"
+  "rotowirenba.bsky.social": "2026-10-23T22:44:10.000Z",
+  "insidenbanews.bsky.social": "2026-10-23T18:36:35.740Z",
+  "shamsbot.bsky.social": "2026-10-23T21:16:06.000Z"
  },
  "claims": [
   {
@@ -980,6 +980,97 @@
    "kind": "status",
    "confidence": 0.85,
    "text": "Cameron Johnson: Fails to return Thursday \n\n https://www.rotowire.com/basketball/player/cameron-johnson-4916"
+  },
+  {
+   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mykopyk6qa2z|joshgiddey|active|status",
+   "at": "2026-10-23T17:18:40.000Z",
+   "seen": "2026-10-23T22:50:14.417Z",
+   "handle": "rotowirenba.bsky.social",
+   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mykopyk6qa2z",
+   "player": "Josh Giddey",
+   "team": null,
+   "status": "active",
+   "kind": "status",
+   "confidence": 0.9,
+   "text": "Josh Giddey: Cleared to play Friday \n\n https://www.rotowire.com/basketball/player/josh-giddey-5366"
+  },
+  {
+   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mykxh533vm24|brandinpodziemski|active|status",
+   "at": "2026-10-23T19:54:46.000Z",
+   "seen": "2026-10-23T22:50:14.417Z",
+   "handle": "rotowirenba.bsky.social",
+   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mykxh533vm24",
+   "player": "Brandin Podziemski",
+   "team": null,
+   "status": "active",
+   "kind": "status",
+   "confidence": 0.7,
+   "text": "Brandin Podziemski: Upgraded to probable \n\n https://www.rotowire.com/basketball/player/brandin-podziemski-5889"
+  },
+  {
+   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3myl3cjejhf2i|lebronjames|questionable|status",
+   "at": "2026-10-23T21:03:47.000Z",
+   "seen": "2026-10-23T22:50:14.417Z",
+   "handle": "rotowirenba.bsky.social",
+   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3myl3cjejhf2i",
+   "player": "LeBron James",
+   "team": "LAL",
+   "status": "questionable",
+   "kind": "status",
+   "confidence": 0.9,
+   "text": "LeBron James: Questionable for Saturday \n\n https://www.rotowire.com/basketball/player/lebron-james-2344"
+  },
+  {
+   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3myl3jlenit2x|joelembiid|active|status",
+   "at": "2026-10-23T21:07:44.000Z",
+   "seen": "2026-10-23T22:50:14.417Z",
+   "handle": "rotowirenba.bsky.social",
+   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3myl3jlenit2x",
+   "player": "Joel Embiid",
+   "team": "PHI",
+   "status": "active",
+   "kind": "status",
+   "confidence": 0.85,
+   "text": "Joel Embiid: Will play Saturday, expected to sit Sunday \n\n https://www.rotowire.com/basketball/player/joel-embiid-3572"
+  },
+  {
+   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3myl5lrut2g2c|kyrieirving|limited|restriction",
+   "at": "2026-10-23T21:44:45.000Z",
+   "seen": "2026-10-23T22:50:14.417Z",
+   "handle": "rotowirenba.bsky.social",
+   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3myl5lrut2g2c",
+   "player": "Kyrie Irving",
+   "team": "DAL",
+   "status": "limited",
+   "kind": "restriction",
+   "confidence": 0.85,
+   "text": "Kyrie Irving: Will be on minutes restriction Friday \n\n https://www.rotowire.com/basketball/player/kyrie-irving-3186"
+  },
+  {
+   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mylarmwn7r2i|kellyoubre|none|benched",
+   "at": "2026-10-23T22:41:42.000Z",
+   "seen": "2026-10-23T22:50:14.417Z",
+   "handle": "rotowirenba.bsky.social",
+   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mylarmwn7r2i",
+   "player": "Kelly Oubre",
+   "team": null,
+   "status": "none",
+   "kind": "benched",
+   "confidence": 0.9,
+   "text": "Kelly Oubre: Not starting Friday \n\n https://www.rotowire.com/basketball/player/kelly-oubre-3721"
+  },
+  {
+   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mylavzpqcj2i|aaronnesmith|none|benched",
+   "at": "2026-10-23T22:44:10.000Z",
+   "seen": "2026-10-23T22:50:14.417Z",
+   "handle": "rotowirenba.bsky.social",
+   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mylavzpqcj2i",
+   "player": "Aaron Nesmith",
+   "team": null,
+   "status": "none",
+   "kind": "benched",
+   "confidence": 0.9,
+   "text": "Aaron Nesmith: Not starting Friday \n\n https://www.rotowire.com/basketball/player/aaron-nesmith-5120"
   }
  ]
 }
