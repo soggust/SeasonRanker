@@ -1392,6 +1392,11 @@
    "espn": {
     "seen": "2026-10-20T05:51:35.802Z",
     "own": "2026-10-19T16:40:00.000Z"
+   },
+   "bluesky": {
+    "seen": "2026-10-23T15:48:39.934Z",
+    "own": "2026-10-23T15:47:42.173Z",
+    "why": "@insidenflnews.bsky.social: Texans RB David Montgomery (groin) won't play in Wee"
    }
   },
   "401873016|jermaineeluemunor|out": {
@@ -5372,6 +5377,18 @@
     "seen": "2026-10-23T15:27:25.006Z",
     "own": "2026-10-23T15:12:43.000Z",
     "why": "@rotoworld-fb.bsky.social: Breece Hall (quad) questionable vs. Dolphins"
+   }
+  },
+  "401873020|zairefranklin|out": {
+   "game": "401873020",
+   "start": "2026-10-25T20:25Z",
+   "team": "9",
+   "name": "Zaire Franklin",
+   "status": "out",
+   "athlete": "3124005",
+   "espn": {
+    "seen": "2026-10-23T16:03:47.657Z",
+    "own": "2026-10-23T15:50:00.000Z"
    }
   }
  }
