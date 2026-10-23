@@ -95,6 +95,22 @@ export const RECENCY_HL = envNum('FIGHT_HL', null);
 // on the history's 1,968 closes 0.450 against 0.455), the term fit at nothing and the gate read a tie (+0.0003): the
 // review's +3.9 points was a full fit's read, not the walk-forward's)
 export const CORNER = process.env.FIGHT_CORNER === '1';
+// WEIGHT MISSES (DECISIONS.md D83, 2026-10-23, the owner: "MMA weight misses"). WEIGHT_MISS_FILE holds every UFC bout
+// where a fighter missed weight, from Wikipedia's event pages' weigh-in notes (weight-misses.mjs: the bout's ESPN id,
+// the fighter's, the pounds over), and the live desk adds the weigh-in results it reads (weigh-ins.mjs). The term is
+// soft like the rest (missW: his miss less the other's). Measured: the missers won 42.6% where the walk-forward model
+// said 50.5% (183 bouts) and the close's no-vig 47.2% (41.8% won, 122 with a close)
+export const MISS_TERM = process.env.FIGHT_MISS !== '0';
+export const WEIGHT_MISS_FILE = path.join(ROOT, 'apps/mma/scripts/weight-misses.json');
+// (the table as a Set of `${bout}|${fighter}`; none: empty)
+export function readMisses(file = WEIGHT_MISS_FILE) {
+  try {
+    const t = JSON.parse(readFileSync(file, 'utf8'));
+    return new Set((t.rows ?? []).map((r) => `${r[0]}|${r[1]}`));
+  } catch {
+    return new Set();
+  }
+}
 // (the rating's deviation (the loss review's H21): the gap in how sure the rating is of each (rdGap), and the rating
 // term scaled by how unsure it is of both (ratingRd); a candidate behind FIGHT_RD=1. MEASURED AND HELD 2026-10-19:
 // the deciding years +0.0030 a row (a tie), the older ones +0.0053 worse beyond noise, the history's closes 0.6231
@@ -140,6 +156,9 @@ export const TERMS = [
   ['form', 'his last three bouts against his career'],
   ['beatQ', 'the ratings of the last three men he beat'],
   ['firstFive', 'his first five-round bout'],
+  // (the weight-miss round, 2026-10-23, DECISIONS.md D83: missed weight at the weigh-ins, the day before the bout;
+  // FIGHT_MISS=0 leaves it out, the gate's champion)
+  ...(MISS_TERM ? [['missW', 'missed weight at the weigh-ins']] : []),
   ...(CORNER ? [['corner', 'listed first by ESPN (the first-listed bias)']] : []),
   ...(RATING_RD ? [['rdGap', "the rating's deviation, his less the other's (per 100)"], ['ratingRd', "the rating where it's unsure of both (its log odds by the deviations' mean over 150)"]] : []),
 ];
@@ -190,7 +209,7 @@ export function ageOn(bio, bioAt, day) {
 }
 
 // One side's numbers for a bout on a day: its running state, rating (r, rd) and bio
-export function sideNumbers(s, rating, bio, bioAt, day, lbs, { country = null, place = null } = {}) {
+export function sideNumbers(s, rating, bio, bioAt, day, lbs, { country = null, place = null, missed = false } = {}) {
   const rates = ratesOf(s);
   const layoffDays = s.last === null ? 365 : Math.max(0, (day - s.last) / 864e5);
   const age = ageOn(bio, bioAt, day);
@@ -200,6 +219,8 @@ export function sideNumbers(s, rating, bio, bioAt, day, lbs, { country = null, p
     // (the venue: his own country, the distance and the time zones from it (fights-venue.mjs))
     ...venueSide(country ?? bio?.country ?? null, place),
     stance: bio?.stance ?? null,
+    // (missed weight at this bout's weigh-ins (D83))
+    missed: missed ? 1 : 0,
     // (form: his last three bouts' win share less his career's; finishing momentum: finishes won of his last three)
     form: s.n >= 4 ? won3 / s.recent.length - s.wins / s.n : 0,
     finMom: (s.recentFin ?? []).reduce((a, b) => a + b, 0),
@@ -354,6 +375,7 @@ export function featuresOf(a, b, { rounds = 3, place = null, date = null, lbs = 
     moveUp: diff('moveUp'),
     moveDown: diff('moveDown'),
     five: rounds >= 5 ? ratingLogit : 0,
+    ...(MISS_TERM ? { missW: diff('missed') } : {}),
     ...(CORNER ? { corner: 1 } : {}),
     ...(RATING_RD ? { rdGap: diff('rd') / 100, ratingRd: (ratingLogit * ((a.rd + b.rd) / 2 - 150)) / 150 } : {}),
     ...candidatesOf(a, b, { rounds, place, date, lbs, diff }),
@@ -476,7 +498,7 @@ export function advance(s, o, f, mine, theirs, won, lbs, oppR = null) {
 // Every bout's row (its terms and result, both sides' numbers going in), oldest first, and each fighter's state
 // after his last bout (for the coming bouts). cache: apps/mma/scripts/cache.json's fighters ({ stats: { <bout
 // id>: [...] }, bio, bioAt })
-export function buildRows(fights, cache) {
+export function buildRows(fights, cache, misses = readMisses()) {
   const states = new Map();
   const ratingNow = new Map();
   const rows = [];
@@ -489,8 +511,8 @@ export function buildRows(fights, cache) {
       const day = Date.parse(f.date);
       const { lbs } = weightOf(f);
       const place = placeOf(f.venue);
-      const A = sideNumbers(stateOf(a.id), sa, cache[a.id]?.bio, cache[a.id]?.bioAt, day, lbs, { country: a.country, place });
-      const B = sideNumbers(stateOf(b.id), sb, cache[b.id]?.bio, cache[b.id]?.bioAt, day, lbs, { country: b.country, place });
+      const A = sideNumbers(stateOf(a.id), sa, cache[a.id]?.bio, cache[a.id]?.bioAt, day, lbs, { country: a.country, place, missed: misses.has(`${f.id}|${a.id}`) });
+      const B = sideNumbers(stateOf(b.id), sb, cache[b.id]?.bio, cache[b.id]?.bioAt, day, lbs, { country: b.country, place, missed: misses.has(`${f.id}|${b.id}`) });
       pre.set(f.id, [sa.r, sb.r]);
       // (the round totals' terms beside it, how long it lasted and how it ended: fights-totals.mjs)
       const timed = Number.isFinite(f.period) && f.period > 0 && Number.isFinite(f.clock);
@@ -684,16 +706,17 @@ export async function buildModel({ now = new Date() } = {}) {
   const fit = fitSoft(fitRows(rows));
   // (a coming bout's chance: both sides' numbers as of its day)
   // (venue: ESPN's for the bout (fights.mjs venueOf); countries: each side's flag on the card, else his bio's)
-  const chance = (aId, bId, day, { rounds = 3, lbs = null, venue = null, countries = [null, null] } = {}) => {
+  // (missed: each side's weigh-in miss, [a, b] (D83: the weigh-in results the desk read, weigh-ins.mjs))
+  const chance = (aId, bId, day, { rounds = 3, lbs = null, venue = null, countries = [null, null], missed = [false, false] } = {}) => {
     const place = placeOf(venue);
-    const side = (id, country) => {
+    const side = (id, country, miss) => {
       const s = states.get(id) ?? freshFighter();
       const r0 = ratingNow.get(id) ?? { r: PARAMS.start + (PARAMS.leagueLift.ufc ?? 0), rd: PARAMS.rd0, last: null };
       const rd = r0.last === null ? r0.rd : Math.min(PARAMS.rd0, Math.sqrt(r0.rd ** 2 + (PARAMS.rdPerYear ** 2 * Math.max(0, day - r0.last)) / 31557600000));
-      return sideNumbers(s, { r: r0.r, rd }, cache[id]?.bio, cache[id]?.bioAt, day, lbs, { country, place });
+      return sideNumbers(s, { r: r0.r, rd }, cache[id]?.bio, cache[id]?.bioAt, day, lbs, { country, place, missed: !!miss });
     };
-    const A = side(aId, countries[0]);
-    const B = side(bId, countries[1]);
+    const A = side(aId, countries[0], missed?.[0]);
+    const B = side(bId, countries[1], missed?.[1]);
     const x = featuresOf(A, B, { rounds, place, date: new Date(day).toISOString().slice(0, 10), lbs });
     return { ...predict(fit, x), x, a: A, b: B, ratingP: round(clamp(ratingChance(A, B)), 4) };
   };

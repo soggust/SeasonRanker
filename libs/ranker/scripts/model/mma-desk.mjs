@@ -85,6 +85,7 @@ import { REPRICE_BY, lastChanceOf, phaseOf } from './timing.mjs';
 import { CACHE, DAY, get, readJson, writeAtomic, writeJson } from './sources.mjs';
 import { round } from './ratings.mjs';
 import { logNewsItems, logPrices, mmaNewsItems } from './newslog.mjs';
+import { markMisses } from './weigh-ins.mjs';
 
 const ROOT = path.resolve(import.meta.dirname, '../../../..');
 export const SPORT = 'mma';
@@ -387,8 +388,9 @@ export function boutVoid(bet, bout, now) {
 }
 
 // (a final bout's length in seconds, null where ESPN gave no round: fights-model.mjs boutSeconds)
-// The model's chance for a bout (fights-model.mjs buildModel chance): its rounds, weight, venue and both countries
-export const boutChance = (model, bout, day) => model.chance(bout.home.id, bout.away.id, day, { rounds: bout.rounds, lbs: weightOf({ division: bout.division }).lbs, venue: bout.venue ?? null, countries: [bout.home.country ?? null, bout.away.country ?? null] });
+// The model's chance for a bout (fights-model.mjs buildModel chance): its rounds, weight, venue and both countries,
+// and a weight miss at the weigh-ins (D83: weigh-ins.mjs markMisses sets bout.missed, [home, away])
+export const boutChance = (model, bout, day) => model.chance(bout.home.id, bout.away.id, day, { rounds: bout.rounds, lbs: weightOf({ division: bout.division }).lbs, venue: bout.venue ?? null, countries: [bout.home.country ?? null, bout.away.country ?? null], missed: bout.missed ?? [false, false] });
 
 export const boutSecs = (bout) => (bout?.final && Number.isFinite(bout.period) && bout.period > 0 ? boutSeconds({ rounds: bout.rounds, period: bout.period, clock: bout.clock }) : null);
 
@@ -909,6 +911,9 @@ export async function runMma({ dry = false, gap = null, now = new Date(), log = 
   const byId = new Map(bouts.map((b) => [b.id, b]));
   const coming = bouts.filter((b) => !b.final && !b.off && Date.parse(b.date) > now.getTime());
   log.log(`${SPORT}: ${bouts.length} bouts kept, ${coming.length} coming on ${new Set(coming.map((b) => b.cardName)).size} cards`);
+  // (the weigh-ins (D83): a coming card's weight misses, read inside 48 hours of its bouts, into their chances)
+  const wi = await markMisses(coming, { now, dry, log }).catch((err) => (log.warn(`${SPORT}: the weigh-ins not read (${err.message})`), null));
+  if (wi?.posts) log.log(`${SPORT}: weigh-ins: ${wi.read} of ${wi.posts} results read, ${wi.found.length} misses`);
 
   // 3. the close, then the grading
   let closes = 0;

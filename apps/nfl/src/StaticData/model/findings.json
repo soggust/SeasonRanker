@@ -267,6 +267,20 @@
    "sport": "nhl",
    "ref": "D82",
    "text": "NHL props against own lean lose (-6.3% flat on 336) but the guard costs trial LOVE winners (-7.9u). Off"
+  },
+  {
+   "date": "2026-10-23",
+   "group": "shipped",
+   "sport": "mma",
+   "ref": "D83",
+   "text": "Weight misses (216 bouts, Wikipedia) a soft term: missers won 42.6% vs the model 50.5%; fits at 0 today, misses read live"
+  },
+  {
+   "date": "2026-10-23",
+   "group": "dropped",
+   "sport": "mma",
+   "ref": "D83",
+   "text": "Camp distance: ESPN names a gym (today's, no place) for 2,165 fighters; no free dated camp locations, not built"
   }
  ]
 }

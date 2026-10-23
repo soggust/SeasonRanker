@@ -1937,3 +1937,37 @@ test('D82 young players: seasons played tagged, the prior weight cut by the walk
   const decisions = fs.readFileSync(path.join(import.meta.dirname, '../libs/ranker/scripts/model/DECISIONS.md'), 'utf8');
   assert.ok(decisions.includes('### D82.'));
 });
+
+test('D83 weight misses: the table from the weigh-in notes, missW a soft term, a price seen before the weigh-ins reads the chance without it, the live weigh-ins read off the results article', async () => {
+  const W = await import('../libs/ranker/scripts/model/weight-misses.mjs');
+  const WI = await import('../libs/ranker/scripts/model/weigh-ins.mjs');
+  const FM = await import('../libs/ranker/scripts/model/fights-model.mjs');
+  const GM = await import('../libs/ranker/scripts/model/gate-mma.mjs');
+  assert.equal(W.poundsOver('weighed in at 147.5 pounds, one and a half pounds over the featherweight limit'), 1.5);
+  assert.equal(W.poundsOver('weighed in at 138.5 pounds, 2.5 pounds over the limit'), 2.5);
+  assert.equal(W.poundsOver('half a pound over the limit'), 0.5);
+  const card = [{ id: '1', name: 'Luana Santos' }, { id: '2', name: 'Jesus Santos Aguilar' }, { id: '3', name: 'Chris Padilla' }, { id: '4', name: 'Darren Stewart' }];
+  assert.deepEqual(W.missersIn('At the weigh-ins, Jesús Santos Aguilar weighed in at 127.5 pounds, one and a half pounds over', card).map((f) => f.id), ['2'], 'a surname inside another name is not her');
+  assert.deepEqual(W.missersIn('At the weigh-ins, Padilla weighed in at 158 pounds, two pounds over the limit', card).map((f) => f.id), ['3']);
+  assert.deepEqual(W.missersIn('Winn was fined 20% of his purse, which went to his opponent Darren Stewart', card).map((f) => f.id), [], "the fine's recipient is not a misser");
+  // (live: the results article's starred weight and its note)
+  const bouts = [{ id: '9', home: { id: 'a', name: 'Iasmin Lucindo' }, away: { id: 'b', name: 'Nicolle Caliari' } }];
+  assert.deepEqual(WI.missesIn('Iasmin Lucindo (115) vs. Nicolle Caliari (120.5)* *Caliari missed weight', bouts).map((m) => [m.fighter, m.lbs]), [['b', 120.5]]);
+  assert.deepEqual(WI.missesIn('Iasmin Lucindo (115) vs. Nicolle Caliari (116)', bouts), []);
+  assert.equal(WI.MISS_WINDOW_H, 48);
+  // (the term: soft like every other, A's miss less B's, in TERMS unless FIGHT_MISS=0)
+  assert.ok(FM.TERM_KEYS.includes('missW'));
+  const side = (missed) => FM.sideNumbers(FM.freshFighter(), { r: 1500, rd: 100 }, null, null, Date.parse('2026-01-01'), 155, { missed });
+  assert.equal(FM.featuresOf(side(true), side(false)).missW, 1);
+  assert.equal(FM.featuresOf(side(false), side(true)).missW, -1);
+  assert.equal(FM.featuresOf(side(false), side(false)).missW, 0);
+  // (no look-ahead: a price more than 24 hours out reads the chance without the miss)
+  assert.equal(GM.MISS_KNOWN_H, 24);
+  const gm = fs.readFileSync(path.join(import.meta.dirname, '../libs/ranker/scripts/model/gate-mma.mjs'), 'utf8');
+  assert.ok(gm.includes('start - seenAt > MISS_KNOWN_H * 36e5) ? c.pre : c.p'), 'the history rows');
+  assert.ok(gm.includes('lead > MISS_KNOWN_H) ? c.pre : c.p'), 'the ledger rows');
+  const t = JSON.parse(fs.readFileSync(FM.WEIGHT_MISS_FILE, 'utf8'));
+  assert.ok(t.rows.length >= 200, 'the table kept');
+  const decisions = fs.readFileSync(path.join(import.meta.dirname, '../libs/ranker/scripts/model/DECISIONS.md'), 'utf8');
+  assert.ok(decisions.includes('### D83.'));
+});

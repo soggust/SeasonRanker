@@ -69,6 +69,9 @@ export const MMA_CLOSE_MAX = 12 * 36e5;
 // end past midnight UTC, Saturday nights in the Americas)
 export const FIT_KNOWN_H = 8;
 export const BOUT_KNOWN_H = 32;
+// (D83: a weight miss is known at the weigh-ins, the morning before a card (about 30 hours out); a price seen more
+// than this many hours before the start reads the bout's chance without the miss (no look-ahead, D48))
+export const MISS_KNOWN_H = 24;
 export const LAYER_A_FROM = '2018-01-01';
 // (the fit's rows at the least before a period is scored)
 const MIN_TRAIN = 500;
@@ -176,7 +179,8 @@ export function walkForward(V, rows, { from = LAYER_A_FROM, now = new Date(), lo
   // (each bout's chance by the period's fit and by the one before it: an open seen before its period began (a bout
   // early in a half-year, its line out a month before) reads the fit that was standing then (DECISIONS.md D48))
   let prev = null;
-  const chanceBy = (fit, tfit, r, f) => ({ p: FM.predict(fit, r.x).p, over: (line, rounds) => (r.tx ? FT.predictTotal(tfit, r.tx, line, rounds ?? r.rounds, r.division)?.p ?? null : null), period: f });
+  // (pre: the chance without a weight miss (D83), for a price seen before the weigh-ins)
+  const chanceBy = (fit, tfit, r, f) => ({ p: FM.predict(fit, r.x).p, pre: r.x.missW ? FM.predict(fit, { ...r.x, missW: 0 }).p : null, over: (line, rounds) => (r.tx ? FT.predictTotal(tfit, r.tx, line, rounds ?? r.rounds, r.division)?.p ?? null : null), period: f });
   for (const { from: f, to } of periodsOf(from, now)) {
     const train = all.filter((r) => r.date < f);
     const inP = rows.filter((r) => r.date >= f && r.date < to);
@@ -261,7 +265,10 @@ export function historyRows(V, rows, hist, chances, current, { fights = null } =
       // (Pinnacle's only where seen by DraftKings' own snapshot (D48: each book's open is its own first sighting))
       const pin = seenBy(books.pin?.h2h?.[0], h2h.ts) ? books.pin.h2h[0] : null;
       const fair = pin && fin(pin.a) && fin(pin.b) ? devig(m.crossed ? pin.b : pin.a, m.crossed ? pin.a : pin.b) : devig(mine, theirs);
-      if (fin(c.p)) out.push({ ...base, ...timeOf(h2h), id: `h:${m.fight.id}:ml:${kind}`, key: `h:${m.fight.id}:ml`, market: 'ml', stat: 'ml', line: null, f: fair, fd: devig(mine, theirs), raw: Math.min(0.999, Math.max(0.001, c.p)), y: r.y, overOdds: mine, underOdds: theirs, fairFrom: pin ? 'pinnacle' : 'dk' });
+      // (a price seen before the weigh-ins reads the chance without the miss, D83)
+      const seenAt = Date.parse(h2h.ts);
+      const pm = fin(c.pre) && (!fin(seenAt) || start - seenAt > MISS_KNOWN_H * 36e5) ? c.pre : c.p;
+      if (fin(pm)) out.push({ ...base, ...timeOf(h2h), id: `h:${m.fight.id}:ml:${kind}`, key: `h:${m.fight.id}:ml`, market: 'ml', stat: 'ml', line: null, f: fair, fd: devig(mine, theirs), raw: Math.min(0.999, Math.max(0.001, pm)), y: r.y, overOdds: mine, underOdds: theirs, fairFrom: pin ? 'pinnacle' : 'dk' });
     }
     // (the round total: the book's main line, the one nearest even where it posts several)
     const tots = (dk.totals ?? []).filter((x) => fin(x.line) && fin(x.a) && fin(x.b));
@@ -451,7 +458,10 @@ export async function scoreMma(dir, { log = console.log, now = new Date() } = {}
     if (!fid) return null;
     const first = String(r.a) === String(fid);
     const second = String(r.b) === String(fid);
-    return first ? c.p : second ? 1 - c.p : null;
+    // (a bet placed before the weigh-ins reads the chance without the miss, D83)
+    const lead = (Date.parse(b.start) - Date.parse(b.placedAt)) / 36e5;
+    const p = fin(c.pre) && (!fin(lead) || lead > MISS_KNOWN_H) ? c.pre : c.p;
+    return first ? p : second ? 1 - p : null;
   };
   // (a moneyline bet at the calibrated fair (D59): its fair and DraftKings' own no-vig of its side)
   const fairOf = (b) => calFair(b.fair, fin(b.odds) && fin(b.otherOdds) ? devig(b.odds, b.otherOdds) : null, histRows.fairCal);
