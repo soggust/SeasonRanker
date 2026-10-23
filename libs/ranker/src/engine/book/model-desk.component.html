@@ -499,6 +499,20 @@
   }
   <!-- (the version on show, small and muted at the board's foot: its epoch, MODEL_EPOCH as the replay recorded it;
        each sport's on hover) -->
+  <!-- (the record's trend (record-trend.ts, D86): each sport's replayed units at every re-record, a small line, the
+       newest units and the change since the one before; the chip's sport or every sport) -->
+  @if (!loading && trends.length) {
+    <div class="desk-trend-line">
+      <span class="desk-build-tag">Trend</span>
+      @for (t of trends; track t.sport) {
+        <span class="desk-trend" [title]="t.title">
+          <span class="desk-trend-sport">{{ t.sport.toUpperCase() }}</span>
+          <svg class="desk-trend-spark" [attr.viewBox]="'0 0 ' + t.width + ' ' + t.height" [attr.width]="t.width" [attr.height]="t.height" aria-hidden="true"><polyline [attr.points]="t.points" /></svg>
+          {{ trendUnits(t.last) }}@if (t.delta !== null) {<span class="desk-trend-delta" [class.up]="t.delta > 0" [class.down]="t.delta < 0">{{ trendUnits(t.delta) }}</span>}
+        </span>
+      }
+    </div>
+  }
   @if (!loading) {
     <p class="desk-build-line" [title]="epochTitle"><span class="desk-build-tag">Build</span>{{ buildLabel(buildAt) }}</p>
   }

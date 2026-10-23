@@ -118,6 +118,19 @@ time, and the owner's PC backs it up: the Windows task **SeasonRanker desk kick*
 sign-in when no run started in the last 50 minutes (`-DryRun` says what it would do; `-Register`
 recreates the task; log `.cache/desk-kick.log`).
 
+## The history audit
+
+The Bot's replayed history is re-recorded with origin/master's code on the owner's PC (DECISIONS.md D86),
+in its own full clone `C:\dev\qbr-audit` (its own `npm ci`, its own `.cache/model` seeded from the main
+checkout's; the main checkout is never touched): `scripts/history-audit.ps1 -Register` makes three tasks,
+**SeasonRanker weekly audit** (Mondays 3:30 AM: the cache rebuilt, then every sport re-recorded),
+**SeasonRanker nightly audit** (4:00 AM) and **SeasonRanker audit check** (every 15 minutes: a model
+commit 30 minutes old re-records). Each sport goes through `gate.mjs --score-only worktree --record`;
+a sport the record guard refuses keeps its files and gets a Findings line. The records, the self-check
+and each sport's `record-history.json` (the Algorithm tab's trend line) are committed and pushed.
+Run one by hand with `-Mode weekly|nightly|code`, `-DryRun` (everything but the push), `-Refit` (every
+walk-forward fit searched again: hours). Log: `C:\dev\QBRanker2026\.cache\history-audit.log`.
+
 **Optional, not set up: an always-on kicker.** The PC is off some nights. A Cloudflare Worker with a cron
 trigger (say `12 * * * *`, free plan) can do the same from the cloud: list the last runs
 (`GET /repos/{owner}/{repo}/actions/workflows/model-desk.yml/runs?per_page=5`) and, when none started in

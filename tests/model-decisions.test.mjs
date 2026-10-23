@@ -1983,3 +1983,17 @@ test("D84 win patterns: staged in the band lab only, the owner's 2% Kelly floor 
   const decisions = fs.readFileSync(path.join(import.meta.dirname, '../libs/ranker/scripts/model/DECISIONS.md'), 'utf8');
   assert.ok(decisions.includes('### D84.'));
 });
+
+test('D86 the history audit re-records, never changes a rule; the gate vetoes a candidate worse on the newest seasons', async () => {
+  const GS = await import('../libs/ranker/scripts/model/gate-score.mjs');
+  assert.deepEqual(GS.RECENT_MIN, { props: 200, lines: 40 });
+  const veto = [{ layer: 'props', season: 2025, which: 'complete', rows: 900, diff: 0.002, lo: 0.001, hi: 0.003, verdict: 'worse' }];
+  assert.equal(GS.sportVerdict({ proj: {}, bet: {}, recent: veto }).pass, false);
+  assert.equal(GS.sportVerdict({ proj: {}, bet: {}, recent: [{ ...veto[0], verdict: 'tie' }] }).pass, true);
+  const audit = fs.readFileSync(path.join(import.meta.dirname, '../scripts/history-audit.mjs'), 'utf8');
+  assert.ok(!audit.includes('--accept-inputs'), 'the audit never overrides the record guard');
+  assert.ok(!audit.includes('run.mjs'), 'the audit never runs the live bettor');
+  assert.ok(audit.includes("'--score-only', 'worktree', '--record', sport"), 'one sport a record');
+  const decisions = fs.readFileSync(path.join(import.meta.dirname, '../libs/ranker/scripts/model/DECISIONS.md'), 'utf8');
+  assert.ok(decisions.includes('### D86.'));
+});

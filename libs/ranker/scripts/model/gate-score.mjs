@@ -190,6 +190,29 @@ export function projCompare(sport, rowsA, rowsB, current, opts = {}) {
   return { current, decide: part(true), sanity: part(false) };
 }
 
+// The recency veto (DECISIONS.md D86, the owner, 2026-10-23: "ensure we're improving"): a candidate that wins on the
+// recency-weighted seasons but loses on the newest ones is old-data fit, not progress. A projection layer's rows of
+// the most recent complete season (current - 1), and of the current season once it holds RECENT_MIN rows (props
+// 200, a game layer's 40), each compared alone (paired, unweighted, by day): worse beyond noise in either vetoes the
+// sport. [{ layer, season, which ('complete' | 'current'), rows, diff, lo, hi, verdict }]
+export const RECENT_MIN = { props: 200, lines: 40 };
+export function recencyVeto(layer, rowsA, rowsB, current, { min = RECENT_MIN, ...opts } = {}) {
+  if (!fin(current) || !rowsA?.length || !rowsB?.length) return [];
+  const need = layer === 'props' ? min.props : min.lines;
+  const out = [];
+  for (const [season, which] of [
+    [current - 1, 'complete'],
+    [current, 'current'],
+  ]) {
+    const pick = (rows) => rows.filter((r) => r.season === season);
+    const p = pairRows(pick(rowsA), pick(rowsB));
+    if (!p.n || (which === 'current' && p.n < need)) continue;
+    const cmp = bootDiff(p.clusters, opts);
+    if (cmp) out.push({ layer, season, which, rows: p.n, diff: cmp.diff, lo: cmp.lo, hi: cmp.hi, verdict: verdictOf(cmp) });
+  }
+  return out;
+}
+
 // ---- the betting layer: every row with a saved price ----
 //
 // A priced row in the over's frame (gate.mjs makes them): { id, event, sport, day (US Eastern, the slate), t, f
@@ -347,13 +370,21 @@ export function replayGuard(a, b) {
   return { pass: false, why: `the replay's units up (${a.profit} to ${b.profit}u) while its bets beat the fair close ${shareDown ? `less often (${r4(a.beat * 100)}% to ${r4(b.beat * 100)}%)` : ''}${shareDown && evDown ? ' and ' : ''}${evDown ? `at a lower average return (${a.clv} to ${b.clv})` : ''}` };
 }
 
-export function sportVerdict({ proj = {}, bet = {}, replay = null }) {
+export function sportVerdict({ proj = {}, bet = {}, replay = null, recent = [] }) {
   const why = [];
   const flags = [];
   const measures = [];
   let pass = true;
   const guard = replay ? replayGuard(replay.a, replay.b) : null;
   if (guard && !guard.pass) (pass = false), why.push(guard.why), measures.push({ layer: 'replay', m: 'guard', verdict: 'worse', diff: null, lo: null, hi: null });
+  // (D86's recency veto: worse beyond noise on the newest complete season, or the current one with its rows, fails
+  // the sport whatever the weighted seasons say; never the owner's exception's close leg)
+  for (const r of recent ?? []) {
+    if (r.verdict !== 'worse') continue;
+    pass = false;
+    why.push(`${r.layer} projections worse beyond noise in the ${r.which === 'current' ? 'current' : 'last complete'} season ${r.season} (${r.diff > 0 ? '+' : ''}${r.diff} a row, 95% ${r.lo} to ${r.hi}, ${r.rows} rows): the recency veto`);
+    measures.push({ layer: r.layer, m: 'recent', verdict: 'worse', diff: r.diff, lo: r.lo, hi: r.hi });
+  }
   let beats = false;
   let any = false;
   for (const [layer, c] of Object.entries(proj)) {

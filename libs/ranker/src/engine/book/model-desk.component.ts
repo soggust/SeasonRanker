@@ -11,6 +11,7 @@ import { Board, Meter, ModelBet, ModelState, Settled } from './desk-model';
 import { SummaryBox, athleteTeam, liveStat } from './live-props';
 import { pickTeamColor, splitPick } from './pick-style';
 import type { PlayerRef } from '../player-link';
+import { RecordHistoryFile, RecordTrend, recordTrendOf, trendUnits } from './record-trend';
 
 // The algorithm's admin panel (the Book, admins only): the code-only desk's play-money betting
 // (libs/ranker/scripts/model/run.mjs: every market of every game, 0.5 to 3 units), on the Bot's history
@@ -121,6 +122,12 @@ export class ModelDeskComponent implements OnInit, OnDestroy {
   bandRows: HistoryRow[] = [];
   // (the pyramid (the owner, 2026-10-20): LOCK's, LOVE's and LIKE's share of the bets the three hold, a bar each)
   bandShares: Record<string, number | null> = {};
+  // (each sport's record at every re-record (record-trend.ts, D86): the trend line at the foot, the chip's sport or all)
+  private allTrends: RecordTrend[] = [];
+  readonly trendUnits = trendUnits;
+  get trends(): RecordTrend[] {
+    return this.allTrends.filter((t) => !this.sport || t.sport === this.sport);
+  }
   // (the build's time at the top: the version's epoch, replay-history.ts buildOf)
   buildAt: string | null = null;
 
@@ -246,6 +253,7 @@ export class ModelDeskComponent implements OnInit, OnDestroy {
   async ngOnInit(): Promise<void> {
     // (every sport's files asked at once, not each sport's one after another)
     const findings = getJson<FindingsFile>('/nfl/data/model/findings.json', { cache: 'no-cache' });
+    const trends = Promise.all(SPORTS.map((sport) => getJson<RecordHistoryFile>(`/${sport}/data/model/record-history.json`, { cache: 'no-cache' }).then((f) => recordTrendOf(sport, f))));
     const files = await Promise.all(
       SPORTS.map(async (sport) => {
         const [ledger, state, replay, staged] = await Promise.all([
@@ -260,6 +268,7 @@ export class ModelDeskComponent implements OnInit, OnDestroy {
     );
     this.allReplays = files.map((f) => f.replay);
     this.findingsFile = await findings;
+    this.allTrends = (await trends).filter((t): t is RecordTrend => !!t);
     this.allStaged = files.map((f) => f.staged);
     this.stagedNames = [...new Set(this.allStaged.flatMap((f) => f?.order ?? []))];
     // (each rule's readable name, band-variants.json's label (D72), else its id)

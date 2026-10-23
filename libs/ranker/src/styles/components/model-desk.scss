@@ -1598,6 +1598,52 @@ mat-icon.desk-gloves {
   text-transform: uppercase;
 }
 
+// (the record's trend (D86), a quiet line over the build's: each sport's units at every re-record)
+.desk-trend-line {
+  align-items: center;
+  color: v.$text-faint;
+  display: flex;
+  flex-wrap: wrap;
+  font-size: v.$fs-11;
+  gap: v.$space-4 v.$space-14;
+  justify-content: center;
+  margin: v.$space-16 0 0;
+}
+
+.desk-trend {
+  align-items: center;
+  display: inline-flex;
+  font-variant-numeric: tabular-nums;
+  gap: v.$space-6;
+}
+
+.desk-trend-sport {
+  font-weight: 700;
+}
+
+.desk-trend-spark {
+  height: 16px;
+  width: 80px;
+
+  polyline {
+    fill: none;
+    stroke: currentColor;
+    stroke-linejoin: round;
+    stroke-width: 1.5;
+    vector-effect: non-scaling-stroke;
+  }
+}
+
+.desk-trend-delta {
+  &.up {
+    color: v.$good;
+  }
+
+  &.down {
+    color: v.$bad-soft;
+  }
+}
+
 // (what a range holds, replayed and live, a quiet line over the panels)
 .desk-range-note {
   font-size: v.$fs-11;

@@ -46,7 +46,7 @@ import { existsSync, mkdirSync, readFileSync, writeFileSync } from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath, pathToFileURL } from 'node:url';
 import { createHash } from 'node:crypto';
-import { BET_DECIDE, betCompare, betSummary, binLoss, dec, edgePicks, gateVerdict, gradeSide, normalCrps, normalLoss, projCompare, r4, seasonWeight, sportVerdict } from './gate-score.mjs';
+import { BET_DECIDE, betCompare, betSummary, binLoss, dec, edgePicks, gateVerdict, gradeSide, normalCrps, normalLoss, projCompare, r4, recencyVeto, seasonWeight, sportVerdict } from './gate-score.mjs';
 import { historyLeakBets, huntLeaks } from './leaks.mjs';
 import { extendedGames, historyPropIndex, intradayLines, lineHistoryRows, loadHistory, propHistoryRows, slim, vsBook, vsBookBySeason } from './gate-history.mjs';
 import { OFFSETS as INTRA_OFFSETS, readIntraday } from './intraday.mjs';
@@ -826,11 +826,13 @@ export function compareScores(sport, a, b, opts = {}) {
     summary[layer] = { mode: r.mode, champion: betSummary(r.a, { n, practice, stakeOf: stakeOfRow }), candidate: betSummary(r.b, { n, practice, stakeOf: stakeOfRow }) };
   }
   // (the replay's guard (D60): more units at worse prices than the champion's is rejected)
-  const verdict = sportVerdict({ proj, bet: Object.fromEntries(Object.entries(bet).filter(([, v]) => v)), replay: { a: a.replay?.overall ?? null, b: b.replay?.overall ?? null } });
+  // (D86's recency veto: each projection layer on the newest complete season and the current one alone)
+  const recent = Object.keys(proj).flatMap((layer) => recencyVeto(layer, pa[layer], pb[layer], current, opts));
+  const verdict = sportVerdict({ proj, bet: Object.fromEntries(Object.entries(bet).filter(([, v]) => v)), replay: { a: a.replay?.overall ?? null, b: b.replay?.overall ?? null }, recent });
   const ga = crpsRows(a);
   const gb = crpsRows(b);
   const info = { crps: ga.length && gb.length ? projCompare(sport, ga, gb, current, opts) : null };
-  return { sport, proj, bet, summary, info, verdict, vsBook: { champion: a.vsBook ?? null, candidate: b.vsBook ?? null } };
+  return { sport, proj, bet, summary, info, recent, verdict, vsBook: { champion: a.vsBook ?? null, candidate: b.vsBook ?? null } };
 }
 
 // ---- the scorecard ----
@@ -907,6 +909,35 @@ export function scorecardOf(score, frozen, { now = Date.now() } = {}) {
   if (score.sport === 'mma' && score.vsBook?.linesByMarket) out.markets = { close: score.vsBook.linesByMarket, open: score.vsBook.openByMarket ?? null, byBand: score.vsBook.openByBand ?? null, beat: score.vsBook.beat ?? null };
   if (score.trustPrior) out.trust = Object.fromEntries(Object.entries(score.trustPrior).filter(([k]) => k !== 'rows' && k !== 'periods').map(([k, v]) => [k, k === 'match' ? v : { trust: v.trust, n: v.n, clvN: v.clvN, eff: v.eff, fitted: v.fitted, ...(v.bands ? { bands: Object.fromEntries(Object.entries(v.bands).map(([b, f]) => [b, { trust: f.trust, rows: f.rows, fitted: f.fitted }])) } : {}) }]));
   return out;
+}
+
+// The record's history (D86): one row a re-record, oldest first, at most HISTORY_MAX (the oldest dropped). A row: when,
+// why (trigger), the commit and epoch, the replay's record, units, ROI, beat-the-fair-close share and mean return, each
+// band's bets and units, and the history's log loss against the Book at the close (model less book, lines and props)
+export const HISTORY_MAX = 400;
+export function historyRowOf(score, sc, entry, trigger = 'manual') {
+  const o = score.replay?.overall ?? {};
+  const bands = Object.fromEntries(Object.entries(score.replay?.byBand ?? {}).filter(([, b]) => b?.bets).map(([k, b]) => [k, { bets: b.bets, units: b.profit, roi: b.roi }]));
+  return {
+    at: entry.at,
+    trigger,
+    commit: entry.commit,
+    epoch: score.epoch ?? null,
+    through: score.replay?.through ?? null,
+    bets: o.bets ?? 0,
+    record: `${o.won ?? 0}-${o.lost ?? 0}-${o.push ?? 0}`,
+    units: o.profit ?? null,
+    roi: o.roi ?? null,
+    beat: o.beat ?? null,
+    beatN: o.beatN ?? 0,
+    clv: o.clv ?? null,
+    bands,
+    vsBook: { lines: sc?.history?.lines?.gap ?? null, props: sc?.history?.props?.gap ?? null },
+  };
+}
+export function addHistoryRow(file, row, max = HISTORY_MAX) {
+  const rows = [...(Array.isArray(file?.rows) ? file.rows : []), row].sort((a, b) => String(a.at).localeCompare(String(b.at)));
+  return { v: 1, sport: file?.sport ?? null, rows: rows.slice(-max) };
 }
 
 export const SCORECARD_V = 1;
@@ -996,6 +1027,12 @@ function recordScore(version, sport, score, frozen, inputs = null) {
   const next = addEntry(readJson(file, null), entry);
   writeFileSync(file, `${JSON.stringify(next, null, 1)}\n`);
   console.log(`${sport}: scorecard entry for ${version.label} (epoch ${score.epoch}) written: ${path.relative(ROOT, file)}`);
+  // (D86: every re-record's dated row, the "are we improving" trend the Algorithm tab draws; RECORD_TRIGGER says
+  // who re-recorded: weekly, nightly, code (scripts/history-audit.mjs) or manual)
+  if (score.replay?.overall) {
+    const hf = path.join(ROOT, 'apps', sport, 'src/StaticData/model/record-history.json');
+    writeFileSync(hf, `${JSON.stringify(addHistoryRow(readJson(hf, { sport }), historyRowOf(score, sc, entry, process.env.RECORD_TRIGGER || 'manual')))}\n`);
+  }
   // (the leak hunt on the priced history, every season: the weekly self-check's C23 reports it beside the ledger's)
   // (the anchor's fit on every season to date (D33): what the live desk reads, apps/<sport>/src/StaticData/model/
   // anchor.json; a version without the anchor leaves the file as it is)
