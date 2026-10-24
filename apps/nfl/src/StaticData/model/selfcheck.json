@@ -1,8 +1,8 @@
 {
- "at": "2026-10-23T22:29:18.820Z",
+ "at": "2026-10-24T01:16:21.432Z",
  "baseline": {
-  "from": "2026-09-18",
-  "to": "2026-10-16"
+  "from": "2026-09-19",
+  "to": "2026-10-17"
  },
  "checks": [
   {
@@ -762,7 +762,7 @@
      "what": "term dropped"
     },
     {
-     "days": 8,
+     "days": 9,
      "from": null,
      "keptDays": 0,
      "key": "term:bounce",
@@ -772,7 +772,7 @@
      "what": "kept now"
     },
     {
-     "days": 8,
+     "days": 9,
      "from": null,
      "keptDays": 0,
      "key": "term:letdown",
@@ -782,7 +782,7 @@
      "what": "kept now"
     },
     {
-     "days": 8,
+     "days": 9,
      "from": null,
      "keptDays": 0,
      "key": "term:letdownT",
@@ -792,7 +792,7 @@
      "what": "kept now"
     },
     {
-     "days": 8,
+     "days": 9,
      "from": null,
      "keptDays": 0,
      "key": "term:lopsidedT",
@@ -802,7 +802,7 @@
      "what": "kept now"
     },
     {
-     "days": 8,
+     "days": 9,
      "from": null,
      "keptDays": 0,
      "key": "term:tzHome",
@@ -812,7 +812,7 @@
      "what": "kept now"
     },
     {
-     "days": 8,
+     "days": 9,
      "from": null,
      "keptDays": 0,
      "key": "term:tzMove",
@@ -1349,7 +1349,7 @@
   },
   {
    "examples": [],
-   "headline": "timing: 8h+ losing 0.30 nats per 100 rows to the Book, shrunk (n 444, z -2.36), 68u at risk; side: over losing 0.55 nats per 100 rows to the Book, shrunk (n 414, z -2.10), 43.5u at risk; stat: Receptions losing 0.31 nats per 100 rows to the Book, shrunk (n 46, z -2.89), 24.5u at risk The priced history (every season, the gate's run of 2026-10-23): none of 61 segments losing on 33245 rows.",
+   "headline": "timing: 8h+ losing 0.30 nats per 100 rows to the Book, shrunk (n 444, z -2.36), 68u at risk; side: over losing 0.55 nats per 100 rows to the Book, shrunk (n 414, z -2.10), 43.5u at risk; stat: Receptions losing 0.31 nats per 100 rows to the Book, shrunk (n 46, z -2.89), 24.5u at risk The priced history (every season, the gate's run of 2026-10-24): none of 61 segments losing on 33245 rows.",
    "how": "each graded row's log loss gain over the Book (its priced chance against the Book's no-vig: on the result and against the close, half each), a game's rows sharing their weight; a segment's mean, its standard error by game, z; the leaks ranked by the units staked into them in the last 28 days. Each leak's fix a candidate only: it ships when the replay gate passes it (node libs/ranker/scripts/model/gate.mjs --candidate <the fix>)",
    "id": "C23",
    "metric": "leaks",
@@ -2233,7 +2233,7 @@
   },
   {
    "examples": [],
-   "headline": "28 plain write-ups (mean 483 characters), 0 Claude analyses tried this week (0 ok); AI calls 1, $0.06 this week, $0.77 of $25 this month",
+   "headline": "28 plain write-ups (mean 483 characters), 0 Claude analyses tried this week (0 ok); AI calls 0, $0.00 this week, $0.00 of $25 this month",
    "how": "writeups.json's plain and Claude write-ups, and the AI usage log's calls this week (ai-budget.mjs: every sport's spend counts against the caps)",
    "id": "C15",
    "metric": "rejectRate",
@@ -2256,19 +2256,19 @@
     },
     {
      "capHits": 0,
-     "cost": 0.0595,
+     "cost": 0,
      "failed": 0,
      "key": "ai calls",
-     "meanWriteup": 0.0595,
-     "n": 1,
+     "meanWriteup": null,
+     "n": 0,
      "plan": 0.071
     },
     {
      "dayCap": 1.5,
      "key": "ai spend",
-     "month": 0.7744,
+     "month": 0,
      "monthCap": 25,
-     "share": 0.031
+     "share": 0
     }
    ],
    "status": "ok",
@@ -2279,7 +2279,7 @@
   },
   {
    "examples": [],
-   "headline": "Model files 8h old, 0 open bets overdue to grade; Odds API credits 294% left; 801 bets placed in a week of 14 games",
+   "headline": "Model files 11h old, 0 open bets overdue to grade; Odds API credits 293% left; 801 bets placed in a week of 14 games",
    "how": "the newest commit of the sport's model files, the open bets started 12 hours ago or more, The Odds API's credits (state.odds), the state's sources",
    "id": "C16",
    "metric": "ageH",
@@ -2287,7 +2287,7 @@
    "needs": null,
    "rows": [
     {
-     "ageH": 8,
+     "ageH": 11,
      "at": "2026-10-23T13:52:21Z",
      "key": "files",
      "overdue": 0
@@ -2296,8 +2296,8 @@
      "cycleEnd": "2026-11-19T04:06:35.755Z",
      "key": "credits",
      "monthly": 20000,
-     "remaining": 58797,
-     "share": 2.9399
+     "remaining": 58688,
+     "share": 2.9344
     },
     {
      "down": [],
@@ -2313,7 +2313,7 @@
    "tested": null,
    "threshold": "watch files 3h old with bets overdue, credits under 20%, a source down, or no bets in a week with games; flag 6h old with bets overdue, or credits under 10%",
    "title": "Ops",
-   "value": 8
+   "value": 11
   },
   {
    "examples": [],
@@ -3358,13 +3358,13 @@
  },
  "v": 1,
  "window": {
-  "from": "2026-10-16",
-  "to": "2026-10-23"
+  "from": "2026-10-17",
+  "to": "2026-10-24"
  },
  "writeups": {
-  "calls": 1,
+  "calls": 0,
   "capHits": 0,
-  "cost": 0.0595,
+  "cost": 0,
   "plain": 28,
   "rejected": 0,
   "sample": [],

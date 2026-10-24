@@ -1,16 +1,16 @@
 {
  "v": 1,
- "at": "2026-10-23T05:02:20.381Z",
+ "at": "2026-10-24T01:12:40.937Z",
  "rows": 110367,
  "pooled": {
-  "n": 21058,
+  "n": 20987,
   "rows": 110367,
-  "keptRaw": 0.9755,
-  "kept": 0.9755,
+  "keptRaw": 0.9772,
+  "kept": 0.9772,
   "moved": 0.022,
   "lead": 12.072,
-  "edgeOpen": 0.0163,
-  "edgeClose": 0.0159,
+  "edgeOpen": 0.0162,
+  "edgeClose": 0.0158,
   "ok": true
  },
  "stats": {
@@ -26,29 +26,29 @@
    "from": "own"
   },
   "saves": {
-   "n": 23,
+   "n": 36,
    "rows": 307,
-   "keptRaw": 0.9755,
-   "kept": 0.9755,
+   "keptRaw": 0.9772,
+   "kept": 0.9772,
    "moved": 0.173,
    "lead": 12.07,
-   "edgeOpen": 0.0148,
-   "edgeClose": 0.0134,
+   "edgeOpen": 0.0135,
+   "edgeClose": 0.0126,
    "from": "pooled"
   },
   "sog": {
-   "n": 14143,
+   "n": 14059,
    "rows": 52292,
-   "keptRaw": 0.9679,
-   "kept": 0.9679,
+   "keptRaw": 0.9703,
+   "kept": 0.9703,
    "moved": 0.035,
    "lead": 12.072,
-   "edgeOpen": 0.0164,
-   "edgeClose": 0.0159,
+   "edgeOpen": 0.0163,
+   "edgeClose": 0.0158,
    "from": "own"
   }
  },
  "sport": "nhl",
  "epoch": "2026-10-23T05:30:00Z",
- "commit": "c96a1b9c"
+ "commit": "3521be3b"
 }

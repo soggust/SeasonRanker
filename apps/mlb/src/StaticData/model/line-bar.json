@@ -1,8 +1,8 @@
 {
  "sport": "mlb",
  "epoch": "2026-10-23T05:30:00Z",
- "commit": "c96a1b9c",
- "at": "2026-10-23T05:05:06.032Z",
+ "commit": "3521be3b",
+ "at": "2026-10-24T01:16:01.616Z",
  "current": 2026,
  "z": 1,
  "min": 40,
@@ -399,7 +399,7 @@
  "place": {
   "applies": false,
   "barUnits": -14.52,
-  "fullUnits": 0.86,
+  "fullUnits": -0.63,
   "bySeason": {
    "2021": true,
    "2022": false,

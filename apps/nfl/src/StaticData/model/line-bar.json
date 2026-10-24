@@ -1,8 +1,8 @@
 {
  "sport": "nfl",
  "epoch": "2026-10-23T05:30:00Z",
- "commit": "c96a1b9c",
- "at": "2026-10-23T05:05:03.600Z",
+ "commit": "3521be3b",
+ "at": "2026-10-24T01:06:13.108Z",
  "current": 2026,
  "z": 1,
  "min": 40,
@@ -399,7 +399,7 @@
  "place": {
   "applies": true,
   "barUnits": -35.31,
-  "fullUnits": -43.69,
+  "fullUnits": -44.54,
   "bySeason": {
    "2020": true,
    "2021": true,
