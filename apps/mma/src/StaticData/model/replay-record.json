@@ -2,7 +2,7 @@
  "v": 1,
  "sport": "mma",
  "epoch": "2026-10-21T01:15:00Z",
- "at": "2026-10-24T04:30:11.061Z",
+ "at": "2026-10-24T06:08:17.888Z",
  "from": "2020-06-06T23:10:00.000Z",
  "through": "2026-10-18T01:45:00.000Z",
  "n": {
@@ -1992,8 +1992,8 @@
   "split": "games that start before the epoch replayed; the live ledger from the epoch on",
   "notSeen": "the live desk's CLV gates, CHECKs, research and news"
  },
- "commit": "2c1945c3",
- "note": "D88. The weekly self-tune: a fixed menu of knobs tried through the replay, at most one change a sport a week shipped as data (tuned.json), and the walk-forward props fit kept stable",
+ "commit": "44b4f3aa",
+ "note": "D89. Injury news re-prices and kicks the watcher only on a player who matters: minutes, time on ice or snaps this season (last season's while his team hasn't played yet)",
  "inputs": {
   "v": 1,
   "sport": "mma",

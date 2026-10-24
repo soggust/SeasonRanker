@@ -2,7 +2,7 @@
  "v": 1,
  "sport": "mlb",
  "epoch": "2026-10-23T05:30:00Z",
- "at": "2026-10-24T04:29:38.414Z",
+ "at": "2026-10-24T06:06:57.262Z",
  "from": "2021-07-18T17:07:00.000Z",
  "through": "2026-10-16T00:00:00.000Z",
  "n": {
@@ -2347,8 +2347,8 @@
   "split": "games that start before the epoch replayed; the live ledger from the epoch on",
   "notSeen": "the live desk's CLV gates, CHECKs, research and news"
  },
- "commit": "2c1945c3",
- "note": "D88. The weekly self-tune: a fixed menu of knobs tried through the replay, at most one change a sport a week shipped as data (tuned.json), and the walk-forward props fit kept stable",
+ "commit": "44b4f3aa",
+ "note": "D89. Injury news re-prices and kicks the watcher only on a player who matters: minutes, time on ice or snaps this season (last season's while his team hasn't played yet)",
  "inputs": {
   "v": 1,
   "sport": "mlb",

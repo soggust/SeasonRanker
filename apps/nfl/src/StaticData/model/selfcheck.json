@@ -1,5 +1,5 @@
 {
- "at": "2026-10-24T05:00:47.659Z",
+ "at": "2026-10-24T06:08:19.278Z",
  "baseline": {
   "from": "2026-09-19",
   "to": "2026-10-17"
@@ -2279,7 +2279,7 @@
   },
   {
    "examples": [],
-   "headline": "Model files 15h old, 0 open bets overdue to grade; Odds API credits 293% left; 801 bets placed in a week of 14 games",
+   "headline": "Model files 16h old, 0 open bets overdue to grade; Odds API credits 293% left; 801 bets placed in a week of 14 games",
    "how": "the newest commit of the sport's model files, the open bets started 12 hours ago or more, The Odds API's credits (state.odds), the state's sources",
    "id": "C16",
    "metric": "ageH",
@@ -2287,7 +2287,7 @@
    "needs": null,
    "rows": [
     {
-     "ageH": 15,
+     "ageH": 16,
      "at": "2026-10-23T13:52:21Z",
      "key": "files",
      "overdue": 0
@@ -2296,8 +2296,8 @@
      "cycleEnd": "2026-11-19T04:06:35.755Z",
      "key": "credits",
      "monthly": 20000,
-     "remaining": 58617,
-     "share": 2.9309
+     "remaining": 58611,
+     "share": 2.9306
     },
     {
      "down": [],
@@ -2313,7 +2313,7 @@
    "tested": null,
    "threshold": "watch files 3h old with bets overdue, credits under 20%, a source down, or no bets in a week with games; flag 6h old with bets overdue, or credits under 10%",
    "title": "Ops",
-   "value": 15
+   "value": 16
   },
   {
    "examples": [],
@@ -2765,7 +2765,7 @@
   },
   {
    "examples": [],
-   "headline": "25 of 29 spots shifted: anyTd|over|0.5 -0.132 (n 340, pooled only (its own rung: no held-out gain)), passAtt|over|>2.5 -0.046 (n 1, pooled only (its own rung: too few rows (200 needed))), passAtt|under|>2.5 -0.046 (n 9, pooled only (its own rung: too few rows (200 needed))), passCmp|over|>2.5 -0.046 (n 3, pooled only (its own rung: too few rows (200 needed))), passCmp|under|>2.5 -0.046 (n 3, pooled only (its own rung: too few rows (200 needed))), passInt|over|0.5 -0.132 (n 3, pooled only (its own rung: too few rows (200 needed))), passInt|under|0.5 -0.132 (n 3, pooled only (its own rung: too few rows (200 needed))), passTd|under|0.5 -0.132 (n 2, pooled only (its own rung: too few rows (200 needed))), passTd|under|2.5 -0.028 (n 1, pooled only (its own rung: too few rows (200 needed))), passYds|over|>2.5 -0.046 (n 3, pooled only (its own rung: too few rows (200 needed))), passYds|under|>2.5 -0.046 (n 5, pooled only (its own rung: too few rows (200 needed))), rec|over|>2.5 -0.046 (n 3, pooled only (its own rung: too few rows (200 needed))), rec|over|0.5 -0.132 (n 1, pooled only (its own rung: too few rows (200 needed))), rec|over|2.5 -0.028 (n 5, pooled only (its own rung: too few rows (200 needed))), rec|under|>2.5 -0.046 (n 12, pooled only (its own rung: too few rows (200 needed))), rec|under|0.5 -0.132 (n 1, pooled only (its own rung: too few rows (200 needed))), rec|under|2.5 -0.028 (n 10, pooled only (its own rung: too few rows (200 needed))), recYds|over|>2.5 -0.046 (n 21, pooled only (its own rung: too few rows (200 needed))), recYds|under|>2.5 -0.046 (n 26, pooled only (its own rung: too few rows (200 needed))), rushAtt|over|>2.5 -0.046 (n 1, pooled only (its own rung: too few rows (200 needed))), rushAtt|under|>2.5 -0.046 (n 4, pooled only (its own rung: too few rows (200 needed))), rushRecYds|under|>2.5 -0.046 (n 7, pooled only (its own rung: too few rows (200 needed))), rushYds|over|>2.5 -0.046 (n 4, pooled only (its own rung: too few rows (200 needed))), rushYds|over|0.5 -0.132 (n 2, pooled only (its own rung: too few rows (200 needed))), rushYds|under|>2.5 -0.046 (n 12, pooled only (its own rung: too few rows (200 needed)))",
+   "headline": "25 of 29 spots shifted: anyTd|over|0.5 -0.136 (n 340, pooled only (its own rung: no held-out gain)), passAtt|over|>2.5 -0.046 (n 1, pooled only (its own rung: too few rows (200 needed))), passAtt|under|>2.5 -0.046 (n 9, pooled only (its own rung: too few rows (200 needed))), passCmp|over|>2.5 -0.046 (n 3, pooled only (its own rung: too few rows (200 needed))), passCmp|under|>2.5 -0.046 (n 3, pooled only (its own rung: too few rows (200 needed))), passInt|over|0.5 -0.136 (n 3, pooled only (its own rung: too few rows (200 needed))), passInt|under|0.5 -0.136 (n 3, pooled only (its own rung: too few rows (200 needed))), passTd|under|0.5 -0.136 (n 2, pooled only (its own rung: too few rows (200 needed))), passTd|under|2.5 -0.028 (n 1, pooled only (its own rung: too few rows (200 needed))), passYds|over|>2.5 -0.046 (n 3, pooled only (its own rung: too few rows (200 needed))), passYds|under|>2.5 -0.046 (n 5, pooled only (its own rung: too few rows (200 needed))), rec|over|>2.5 -0.046 (n 3, pooled only (its own rung: too few rows (200 needed))), rec|over|0.5 -0.136 (n 1, pooled only (its own rung: too few rows (200 needed))), rec|over|2.5 -0.028 (n 5, pooled only (its own rung: too few rows (200 needed))), rec|under|>2.5 -0.046 (n 12, pooled only (its own rung: too few rows (200 needed))), rec|under|0.5 -0.136 (n 1, pooled only (its own rung: too few rows (200 needed))), rec|under|2.5 -0.028 (n 10, pooled only (its own rung: too few rows (200 needed))), recYds|over|>2.5 -0.046 (n 21, pooled only (its own rung: too few rows (200 needed))), recYds|under|>2.5 -0.046 (n 26, pooled only (its own rung: too few rows (200 needed))), rushAtt|over|>2.5 -0.046 (n 1, pooled only (its own rung: too few rows (200 needed))), rushAtt|under|>2.5 -0.046 (n 4, pooled only (its own rung: too few rows (200 needed))), rushRecYds|under|>2.5 -0.046 (n 7, pooled only (its own rung: too few rows (200 needed))), rushYds|over|>2.5 -0.046 (n 4, pooled only (its own rung: too few rows (200 needed))), rushYds|over|0.5 -0.136 (n 2, pooled only (its own rung: too few rows (200 needed))), rushYds|under|>2.5 -0.046 (n 12, pooled only (its own rung: too few rows (200 needed)))",
    "how": "state.calib as the last run left it (calib.mjs fitCalib: every graded prop since MODEL_EPOCH, the tracked rows among them, by its raw model chance), each spot's shift, target and held-out gain; the week's graded props of each spot, the sum of their raw chances (said), of the chances as shifted (shifted) and their wins. Never more than the desk applies: it says where the model's been running hot or cold",
    "id": "C21",
    "metric": "spots shifted",
@@ -2778,9 +2778,9 @@
      "key": "anyTd|over|0.5",
      "n": 340,
      "said": 53.7311,
-     "shift": -0.1322,
-     "shifted": 48.7088,
-     "target": 0.001,
+     "shift": -0.1355,
+     "shifted": 48.588,
+     "target": 0.0016,
      "week": 316,
      "why": "pooled only (its own rung: no held-out gain)",
      "won": 49
@@ -2999,7 +2999,7 @@
      "key": "passInt|over|0.5",
      "n": 3,
      "said": null,
-     "shift": -0.1322,
+     "shift": -0.1355,
      "shifted": null,
      "target": 0,
      "week": 0,
@@ -3012,8 +3012,8 @@
      "key": "passInt|under|0.5",
      "n": 3,
      "said": 0.9657,
-     "shift": -0.1322,
-     "shifted": 0.9,
+     "shift": -0.1355,
+     "shifted": 0.8984,
      "target": 0,
      "week": 2,
      "why": "pooled only (its own rung: too few rows (200 needed))",
@@ -3051,8 +3051,8 @@
      "key": "passTd|under|0.5",
      "n": 2,
      "said": 0.4128,
-     "shift": -0.1322,
-     "shifted": 0.3812,
+     "shift": -0.1355,
+     "shifted": 0.3804,
      "target": 0,
      "week": 1,
      "why": "pooled only (its own rung: too few rows (200 needed))",
@@ -3077,8 +3077,8 @@
      "key": "rushYds|over|0.5",
      "n": 2,
      "said": 0.5841,
-     "shift": -0.1322,
-     "shifted": 0.5517,
+     "shift": -0.1355,
+     "shifted": 0.5509,
      "target": 0,
      "week": 1,
      "why": "pooled only (its own rung: too few rows (200 needed))",
@@ -3116,7 +3116,7 @@
      "key": "rec|over|0.5",
      "n": 1,
      "said": null,
-     "shift": -0.1322,
+     "shift": -0.1355,
      "shifted": null,
      "target": 0,
      "week": 0,
@@ -3129,8 +3129,8 @@
      "key": "rec|under|0.5",
      "n": 1,
      "said": 0.438,
-     "shift": -0.1322,
-     "shifted": 0.4058,
+     "shift": -0.1355,
+     "shifted": 0.405,
      "target": 0,
      "week": 1,
      "why": "pooled only (its own rung: too few rows (200 needed))",

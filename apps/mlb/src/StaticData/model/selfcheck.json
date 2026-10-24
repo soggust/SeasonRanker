@@ -1,5 +1,5 @@
 {
- "at": "2026-10-24T05:00:47.659Z",
+ "at": "2026-10-24T06:08:19.278Z",
  "baseline": {
   "from": "2026-09-19",
   "to": "2026-10-17"
@@ -1076,7 +1076,7 @@
   },
   {
    "examples": [],
-   "headline": "Model files 1h old, 0 open bets overdue to grade; Odds API credits 293% left; 82 bets placed in a week of 7 games",
+   "headline": "Model files 2h old, 0 open bets overdue to grade; Odds API credits 293% left; 82 bets placed in a week of 7 games",
    "how": "the newest commit of the sport's model files, the open bets started 12 hours ago or more, The Odds API's credits (state.odds), the state's sources",
    "id": "C16",
    "metric": "ageH",
@@ -1084,7 +1084,7 @@
    "needs": null,
    "rows": [
     {
-     "ageH": 1,
+     "ageH": 2,
      "at": "2026-10-24T03:39:31Z",
      "key": "files",
      "overdue": 0
@@ -1093,8 +1093,8 @@
      "cycleEnd": "2026-11-19T04:06:35.755Z",
      "key": "credits",
      "monthly": 20000,
-     "remaining": 58617,
-     "share": 2.9309
+     "remaining": 58611,
+     "share": 2.9306
     },
     {
      "down": [],
@@ -1110,7 +1110,7 @@
    "tested": null,
    "threshold": "watch files 3h old with bets overdue, credits under 20%, a source down, or no bets in a week with games; flag 6h old with bets overdue, or credits under 10%",
    "title": "Ops",
-   "value": 1
+   "value": 2
   },
   {
    "examples": [
@@ -1552,7 +1552,7 @@
   },
   {
    "examples": [],
-   "headline": "4 of 7 spots shifted: hits|over|0.5 -0.132 (n 117, pooled only (its own rung: too few rows (200 needed))), hits|under|0.5 -0.132 (n 46, pooled only (its own rung: too few rows (200 needed))), k|over|>2.5 -0.047 (n 2, pooled only (its own rung: too few rows (200 needed))), outs|over|>2.5 -0.047 (n 2, pooled only (its own rung: too few rows (200 needed)))",
+   "headline": "4 of 7 spots shifted: hits|over|0.5 -0.136 (n 117, pooled only (its own rung: too few rows (200 needed))), hits|under|0.5 -0.136 (n 46, pooled only (its own rung: too few rows (200 needed))), k|over|>2.5 -0.047 (n 2, pooled only (its own rung: too few rows (200 needed))), outs|over|>2.5 -0.047 (n 2, pooled only (its own rung: too few rows (200 needed)))",
    "how": "state.calib as the last run left it (calib.mjs fitCalib: every graded prop since MODEL_EPOCH, the tracked rows among them, by its raw model chance), each spot's shift, target and held-out gain; the week's graded props of each spot, the sum of their raw chances (said), of the chances as shifted (shifted) and their wins. Never more than the desk applies: it says where the model's been running hot or cold",
    "id": "C21",
    "metric": "spots shifted",
@@ -1565,8 +1565,8 @@
      "key": "hits|over|0.5",
      "n": 117,
      "said": 27.8843,
-     "shift": -0.1322,
-     "shifted": 26.3358,
+     "shift": -0.1355,
+     "shifted": 26.2968,
      "target": 0,
      "week": 48,
      "why": "pooled only (its own rung: too few rows (200 needed))",
@@ -1578,8 +1578,8 @@
      "key": "hits|under|0.5",
      "n": 46,
      "said": 5.0445,
-     "shift": -0.1322,
-     "shifted": 4.664,
+     "shift": -0.1355,
+     "shifted": 4.6546,
      "target": 0,
      "week": 12,
      "why": "pooled only (its own rung: too few rows (200 needed))",

@@ -1,5 +1,5 @@
 {
- "at": "2026-10-24T05:00:47.659Z",
+ "at": "2026-10-24T06:08:19.278Z",
  "baseline": {
   "from": "2026-09-19",
   "to": "2026-10-17"
@@ -7,7 +7,7 @@
  "checks": [
   {
    "examples": [],
-   "headline": "Saves Under: 25.3 won vs 28.3 expected (z -0.81), 81% of its stat's props, ROI -14.0%",
+   "headline": "Saves Under: 26.3 won vs 29.3 expected (z -0.8), 81% of its stat's props, ROI -13.8%",
    "how": "props placed this week, by type and side: the share, the record against the expected wins, the ROI, the projection's miss (mean - actual) beside the fit's bias and the all-player bias",
    "id": "C4",
    "metric": "z",
@@ -16,51 +16,51 @@
    "rows": [
     {
      "allBias": 0.4629,
-     "bias": -2.7866,
-     "e": 28.3205,
+     "bias": -2.695,
+     "e": 29.319,
      "fitBias": 0.4629,
      "key": "saves:under",
      "label": "Saves Under",
-     "n": 56,
+     "n": 58,
      "placed": 58,
-     "profit": -3.93,
-     "roi": -0.1404,
+     "profit": -3.995,
+     "roi": -0.1378,
      "share": 0.8056,
      "status": "flag",
-     "w": 25.3,
-     "z": -0.8133
+     "w": 26.3,
+     "z": -0.7986
     },
     {
      "allBias": 0.0199,
-     "bias": 0.0048,
-     "e": 241.2869,
+     "bias": 0.0016,
+     "e": 243.7165,
      "fitBias": 0.0244,
      "key": "pts:under",
      "label": "Points Under",
-     "n": 382,
+     "n": 386,
      "placed": 395,
-     "profit": -12.566,
-     "roi": -0.0643,
+     "profit": -13.796,
+     "roi": -0.0699,
      "share": 0.7655,
      "status": "watch",
-     "w": 239.3,
-     "z": -0.2148
+     "w": 240.3,
+     "z": -0.3673
     },
     {
      "allBias": 0.0243,
-     "bias": 0.2012,
-     "e": 101.1049,
+     "bias": 0.2201,
+     "e": 104.1654,
      "fitBias": 0.0477,
      "key": "sog:over",
      "label": "Shots Over",
-     "n": 198,
+     "n": 204,
      "placed": 205,
-     "profit": -8.525,
-     "roi": -0.0836,
+     "profit": -9.74,
+     "roi": -0.0928,
      "share": 0.4192,
      "status": "ok",
-     "w": 98,
-     "z": -0.4445
+     "w": 100,
+     "z": -0.5875
     },
     {
      "allBias": 0.4629,
@@ -79,51 +79,51 @@
      "z": 0.4692
     },
     {
-     "allBias": 0.0243,
-     "bias": -0.0701,
-     "e": 141.518,
-     "fitBias": 0.0477,
-     "key": "sog:under",
-     "label": "Shots Under",
-     "n": 274,
-     "placed": 284,
-     "profit": -1.475,
-     "roi": -0.0106,
-     "share": 0.5808,
-     "status": "ok",
-     "w": 148.2,
-     "z": 0.8185
-    },
-    {
      "allBias": 0.0199,
-     "bias": -0.0297,
-     "e": 57.6023,
+     "bias": -0.0204,
+     "e": 58.2211,
      "fitBias": 0.0244,
      "key": "pts:over",
      "label": "Points Over",
-     "n": 118,
+     "n": 119,
      "placed": 121,
-     "profit": -0.415,
-     "roi": -0.0066,
+     "profit": -0.915,
+     "roi": -0.0144,
      "share": 0.2345,
      "status": "ok",
      "w": 62,
-     "z": 0.8251
+     "z": 0.7061
+    },
+    {
+     "allBias": 0.0243,
+     "bias": -0.0775,
+     "e": 144.9906,
+     "fitBias": 0.0477,
+     "key": "sog:under",
+     "label": "Shots Under",
+     "n": 281,
+     "placed": 284,
+     "profit": -1.107,
+     "roi": -0.0077,
+     "share": 0.5808,
+     "status": "ok",
+     "w": 152.2,
+     "z": 0.872
     }
    ],
    "status": "flag",
    "tested": 6,
    "threshold": "watch one side 75% of a stat (20+) or a side z -2 (10+ graded); flag z -2.5 (30+) or one-sided at ROI -10% (10+ graded)",
    "title": "Over/under drift by stat",
-   "value": -0.8133
+   "value": -0.7986
   },
   {
    "examples": [],
-   "headline": "pts tracked only: clv over the last graded pts props: tracked, not bet, till it's positive: 43 of 1232 bets placed this week (3%) against 0% before",
+   "headline": "pts tracked only: clv over the last graded pts props: tracked, not bet, till it's positive: 43 of 1233 bets placed this week (3%) against 0% before",
    "how": "placed this week against the 28 days before: the bets a guard cut to a half unit, by kind",
    "id": "C8",
    "metric": "ratio",
-   "n": 1232,
+   "n": 1233,
    "needs": [
     "state.tallies (the guards' skips by day: the Bot keeps only the bets it placed)"
    ],
@@ -156,7 +156,7 @@
      "key": "sog tracked only: clv over the last graded sog props: tracked, not bet, till it's positive",
      "n": 30,
      "ratio": null,
-     "share": 0.0244,
+     "share": 0.0243,
      "shareBase": 0,
      "status": "flag"
     },
@@ -169,6 +169,14 @@
      "status": "watch"
     },
     {
+     "key": "ml:fav:early: picks' worth of history and live bets: under , the practice stake till the segment earns it",
+     "n": 12,
+     "ratio": null,
+     "share": 0.0097,
+     "shareBase": 0,
+     "status": "watch"
+    },
+    {
      "key": "total:over:early: picks' worth of history and live bets: under , the practice stake till the segment earns it",
      "n": 12,
      "ratio": null,
@@ -177,18 +185,10 @@
      "status": "watch"
     },
     {
-     "key": "ml:fav:early: picks' worth of history and live bets: under , the practice stake till the segment earns it",
-     "n": 11,
-     "ratio": null,
-     "share": 0.0089,
-     "shareBase": 0,
-     "status": "watch"
-    },
-    {
      "key": "line moved",
      "n": 39,
-     "ratio": 1.0802,
-     "share": 0.0317,
+     "ratio": 1.0793,
+     "share": 0.0316,
      "shareBase": 0.0293,
      "status": "ok"
     },
@@ -203,7 +203,7 @@
     {
      "key": "no odds api price",
      "n": 8,
-     "ratio": 2.7143,
+     "ratio": 2.7121,
      "share": 0.0065,
      "shareBase": 0.0024,
      "status": "ok"
@@ -275,7 +275,7 @@
     {
      "key": "starter not confirmed",
      "n": 4,
-     "ratio": 0.5429,
+     "ratio": 0.5424,
      "share": 0.0032,
      "shareBase": 0.006,
      "status": "ok"
@@ -331,7 +331,7 @@
     {
      "key": "questionable",
      "n": 1,
-     "ratio": 0.3393,
+     "ratio": 0.339,
      "share": 0.0008,
      "shareBase": 0.0024,
      "status": "ok"
@@ -452,16 +452,16 @@
     {
      "key": "changelog:Open bets priced again on news",
      "label": "Open bets priced again on news",
-     "n": 55,
+     "n": 53,
      "status": "watch",
-     "what": "55 changes this week"
+     "what": "53 changes this week"
     },
     {
      "key": "changelog:ratings revert",
      "label": "ratings revert",
-     "n": 8,
+     "n": 7,
      "status": "watch",
-     "what": "8 changes this week"
+     "what": "7 changes this week"
     },
     {
      "days": 9,
@@ -470,7 +470,7 @@
      "key": "term:altitudeT",
      "label": "Altitude (total)",
      "status": "watch",
-     "to": 0.0039,
+     "to": 0.0046,
      "what": "kept now"
     },
     {
@@ -520,7 +520,7 @@
      "key": "term:firstHome",
      "label": "Home stand opener",
      "status": "watch",
-     "to": -0.0029,
+     "to": -0.0023,
      "what": "kept now"
     },
     {
@@ -550,7 +550,7 @@
      "key": "term:letdownT",
      "label": "Off a blowout win (total)",
      "status": "watch",
-     "to": -0.0067,
+     "to": -0.0062,
      "what": "kept now"
     },
     {
@@ -560,43 +560,13 @@
      "key": "term:tripLong",
      "label": "Long road trip",
      "status": "watch",
-     "to": 0.0052,
+     "to": 0.0051,
      "what": "kept now"
-    },
-    {
-     "at": "2026-10-23T16:31:02.949Z",
-     "from": 21,
-     "key": "log:0",
-     "label": "Open bets priced again on news",
-     "status": "info",
-     "to": 13,
-     "what": "changelog",
-     "why": "What they were priced on changed before the start: TB @ COL: COL goalie (Mackenzie Blackwood confirmed)"
-    },
-    {
-     "at": "2026-10-23T22:49:18.806Z",
-     "from": 24,
-     "key": "log:1",
-     "label": "Open bets priced again on news",
-     "status": "info",
-     "to": 11,
-     "what": "changelog",
-     "why": "What they were priced on changed before the start: TB @ COL: TB questionable list; TB goalie (Andrei Vasilevskiy confirmed) | ANA @ PHI: ANA out list; ANA questionable list"
-    },
-    {
-     "at": "2026-10-24T00:20:53.382Z",
-     "from": -0.1601,
-     "key": "log:2",
-     "label": "live calibration: pts|over|0.5",
-     "status": "info",
-     "to": -0.1315,
-     "what": "changelog",
-     "why": "540 graded rows of its own (own shift 0), the rest pooled from its line class, at most 0.03 a rung a run"
     },
     {
      "at": "2026-10-24T00:20:53.382Z",
      "from": -0.0187,
-     "key": "log:3",
+     "key": "log:0",
      "label": "live calibration: pts|over|1.5",
      "status": "info",
      "to": 0,
@@ -606,7 +576,7 @@
     {
      "at": "2026-10-24T00:20:53.382Z",
      "from": -0.0187,
-     "key": "log:4",
+     "key": "log:1",
      "label": "live calibration: pts|under|1.5",
      "status": "info",
      "to": 0,
@@ -616,7 +586,7 @@
     {
      "at": "2026-10-24T00:20:53.382Z",
      "from": -0.0187,
-     "key": "log:5",
+     "key": "log:2",
      "label": "live calibration: sog|over|1.5",
      "status": "info",
      "to": 0,
@@ -626,7 +596,7 @@
     {
      "at": "2026-10-24T00:20:53.382Z",
      "from": -0.0187,
-     "key": "log:6",
+     "key": "log:3",
      "label": "live calibration: sog|under|1.5",
      "status": "info",
      "to": 0,
@@ -636,7 +606,7 @@
     {
      "at": "2026-10-24T01:33:47.185Z",
      "from": -0.0773,
-     "key": "log:7",
+     "key": "log:4",
      "label": "live calibration: saves|over|>2.5",
      "status": "info",
      "to": -0.0473,
@@ -646,7 +616,7 @@
     {
      "at": "2026-10-24T01:33:47.185Z",
      "from": -0.0773,
-     "key": "log:8",
+     "key": "log:5",
      "label": "live calibration: saves|under|>2.5",
      "status": "info",
      "to": -0.0473,
@@ -656,7 +626,7 @@
     {
      "at": "2026-10-24T01:33:47.185Z",
      "from": -0.0773,
-     "key": "log:9",
+     "key": "log:6",
      "label": "live calibration: sog|over|>2.5",
      "status": "info",
      "to": -0.0473,
@@ -666,7 +636,7 @@
     {
      "at": "2026-10-24T01:33:47.185Z",
      "from": -0.0773,
-     "key": "log:10",
+     "key": "log:7",
      "label": "live calibration: sog|under|>2.5",
      "status": "info",
      "to": -0.0473,
@@ -676,12 +646,42 @@
     {
      "at": "2026-10-24T03:13:52.480Z",
      "from": 0.0015,
-     "key": "log:11",
+     "key": "log:8",
      "label": "context: Games in 7 days",
      "status": "info",
      "to": 0.0011,
      "what": "changelog",
      "why": "on 1092 games it hadn't seen: margins off by 2.15 (2.16 without the context), totals by 1.8 (1.8), winners 56.9% right (54.8%)"
+    },
+    {
+     "at": "2026-10-24T05:13:48.445Z",
+     "from": -0.0063,
+     "key": "log:9",
+     "label": "context: Time zones crossed",
+     "status": "info",
+     "to": -0.0056,
+     "what": "changelog",
+     "why": "on 1093 games it hadn't seen: margins off by 2.15 (2.16 without the context), totals by 1.8 (1.8), winners 56.9% right (54.8%)"
+    },
+    {
+     "at": "2026-10-24T05:13:48.445Z",
+     "from": -0.0029,
+     "key": "log:10",
+     "label": "context: Home stand opener",
+     "status": "info",
+     "to": -0.0023,
+     "what": "changelog",
+     "why": "on 1093 games it hadn't seen: margins off by 2.15 (2.16 without the context), totals by 1.8 (1.8), winners 56.9% right (54.8%)"
+    },
+    {
+     "at": "2026-10-24T05:13:48.445Z",
+     "from": 0.0039,
+     "key": "log:11",
+     "label": "context: Altitude (total)",
+     "status": "info",
+     "to": 0.0046,
+     "what": "changelog",
+     "why": "on 1093 games it hadn't seen: margins off by 2.15 (2.16 without the context), totals by 1.8 (1.8), winners 56.9% right (54.8%)"
     }
    ],
    "status": "flag",
@@ -696,7 +696,7 @@
    "how": "each prop fit's all-player bias (projected - actual over every player) against its mean error; the 28 days' graded props' own miss by side and role",
    "id": "C10",
    "metric": "r",
-   "n": 2512,
+   "n": 2532,
    "needs": null,
    "rows": [
     {
@@ -714,9 +714,9 @@
      "selection": "over",
      "status": "flag",
      "under": {
-      "bias": -1.5123,
-      "n": 97,
-      "ofMae": -0.2764
+      "bias": -1.4843,
+      "n": 99,
+      "ofMae": -0.2713
      }
     },
     {
@@ -726,17 +726,17 @@
      "label": "Points",
      "mae": 0.6684,
      "over": {
-      "bias": 0.1254,
-      "n": 575,
-      "ofMae": 0.1876
+      "bias": 0.127,
+      "n": 576,
+      "ofMae": 0.1901
      },
      "r": 0.0298,
      "selection": "over",
      "status": "flag",
      "under": {
-      "bias": -0.0095,
-      "n": 765,
-      "ofMae": -0.0142
+      "bias": -0.011,
+      "n": 769,
+      "ofMae": -0.0165
      }
     },
     {
@@ -746,17 +746,17 @@
      "label": "Shots",
      "mae": 1.177,
      "over": {
-      "bias": 0.3483,
-      "n": 439,
-      "ofMae": 0.2959
+      "bias": 0.355,
+      "n": 445,
+      "ofMae": 0.3016
      },
      "r": 0.0206,
      "selection": "over",
      "status": "flag",
      "under": {
-      "bias": -0.164,
-      "n": 594,
-      "ofMae": -0.1393
+      "bias": -0.1663,
+      "n": 601,
+      "ofMae": -0.1413
      }
     }
    ],
@@ -768,11 +768,11 @@
   },
   {
    "examples": [],
-   "headline": "pts: beat the close 55% of 516, mean CLV +0.2 points; all bets 59% of 1217",
+   "headline": "pts: beat the close 55% of 521, mean CLV +0.2 points; all bets 60% of 1239",
    "how": "graded this week by market and prop type, against the 28 days before and the last self-check; the return at the close counts the vig, so -4.5% is a flat close at -110",
    "id": "C6",
    "metric": "beat",
-   "n": 1217,
+   "n": 1239,
    "needs": null,
    "rows": [
     {
@@ -782,8 +782,8 @@
       "n": 824,
       "prob": 0.0008
      },
-     "beat": 0.5491,
-     "ev": -0.0612,
+     "beat": 0.5501,
+     "ev": -0.0613,
      "key": "prop:pts",
      "lastWeek": {
       "beat": 0.5049,
@@ -791,7 +791,7 @@
       "n": 367,
       "prob": 0
      },
-     "n": 516,
+     "n": 521,
      "prob": 0.0016,
      "status": "watch"
     },
@@ -802,8 +802,8 @@
       "n": 68,
       "prob": 0.0045
      },
-     "beat": 0.56,
-     "ev": -0.0593,
+     "beat": 0.5577,
+     "ev": -0.0596,
      "key": "prop:saves",
      "lastWeek": {
       "beat": 0.7308,
@@ -811,8 +811,8 @@
       "n": 29,
       "prob": 0.0084
      },
-     "n": 71,
-     "prob": 0.0061,
+     "n": 73,
+     "prob": 0.0059,
      "status": "ok"
     },
     {
@@ -822,8 +822,8 @@
       "n": 536,
       "prob": 0.0041
      },
-     "beat": 0.6109,
-     "ev": -0.0579,
+     "beat": 0.6096,
+     "ev": -0.0582,
      "key": "prop:sog",
      "lastWeek": {
       "beat": 0.5874,
@@ -831,8 +831,8 @@
       "n": 306,
       "prob": 0.0047
      },
-     "n": 497,
-     "prob": 0.0056,
+     "n": 510,
+     "prob": 0.0055,
      "status": "ok"
     },
     {
@@ -842,8 +842,8 @@
       "n": 60,
       "prob": 0.0041
      },
-     "beat": 0.6774,
-     "ev": -0.0316,
+     "beat": 0.6875,
+     "ev": -0.0312,
      "key": "ml",
      "lastWeek": {
       "beat": 0.6296,
@@ -851,8 +851,8 @@
       "n": 32,
       "prob": 0.0043
      },
-     "n": 45,
-     "prob": 0.0053,
+     "n": 46,
+     "prob": 0.0055,
      "status": "ok"
     },
     {
@@ -882,8 +882,8 @@
       "n": 64,
       "prob": 0.0042
      },
-     "beat": 0.8,
-     "ev": -0.0311,
+     "beat": 0.8077,
+     "ev": -0.0312,
      "key": "total",
      "lastWeek": {
       "beat": 0.5714,
@@ -891,7 +891,7 @@
       "n": 32,
       "prob": 0.0017
      },
-     "n": 47,
+     "n": 48,
      "prob": 0.0061,
      "status": "ok"
     }
@@ -900,7 +900,7 @@
    "tested": null,
    "threshold": "watch beat under 47% or mean return at the close -6% (20+); flag beat under 44% (25+) or mean CLV under -1 point two weeks running",
    "title": "CLV by bet type",
-   "value": 0.5491
+   "value": 0.5501
   },
   {
    "examples": [],
@@ -979,11 +979,11 @@
     "401892547:prop:sog:3114777",
     "401892534:prop:saves:4996097"
    ],
-   "headline": "14 of 1201 graded bets (1%) saw the Book move against them after placement; they went 6 won vs 6.3 expected (z -0.18)",
+   "headline": "14 of 1221 graded bets (1%) saw the Book move against them after placement; they went 6 won vs 6.3 expected (z -0.18)",
    "how": "graded this week: a game bet whose later fair chance fell 3 points or more, or its line moved 0.5 against it; a prop whose close moved half a point against it",
    "id": "C1",
    "metric": "share",
-   "n": 1201,
+   "n": 1221,
    "needs": [
     "inputsAtStart (the injury and starter hashes as the game started)"
    ],
@@ -997,8 +997,8 @@
     {
      "changed": 13,
      "key": "props",
-     "n": 1084,
-     "share": 0.012
+     "n": 1104,
+     "share": 0.0118
     },
     {
      "clvEv": -0.1217,
@@ -1011,20 +1011,20 @@
      "z": -0.1759
     },
     {
-     "e": 652.5093,
+     "e": 663.0893,
      "key": "unchanged",
-     "n": 1187,
-     "profit": -32.982,
-     "roi": -0.0542,
-     "w": 650.7,
-     "z": -0.1081
+     "n": 1207,
+     "profit": -35.624,
+     "roi": -0.0576,
+     "w": 658.7,
+     "z": -0.2599
     }
    ],
    "status": "partial",
    "tested": null,
    "threshold": "watch 30% (15+ bets), flag 40% or the changed group z -2 (20+)",
    "title": "Inputs changed after placement",
-   "value": 0.0117
+   "value": 0.0115
   },
   {
    "examples": [
@@ -1034,32 +1034,32 @@
     "401892520:prop:sog:3899952",
     "401892520:prop:saves:5104602"
    ],
-   "headline": "37 of 1232 bets placed this week had the line already moving against them: ROI 6.2% against -6.4% for the rest",
+   "headline": "37 of 1233 bets placed this week had the line already moving against them: ROI 7.5% against -6.8% for the rest",
    "how": "placed this week: a prop's line a point or more against its side since it opened; a game's spread 1.5 (NFL) or 0.5, its total a point, a moneyline without a spread move 3 points of the home chance. A prop moved twice the guard's limit should have been skipped",
    "id": "C2",
    "metric": "roiGap",
-   "n": 1232,
+   "n": 1233,
    "needs": null,
    "rows": [
     {
-     "e": 19.4264,
+     "e": 20.0261,
      "key": "moving against",
-     "n": 35,
+     "n": 36,
      "placed": 37,
-     "profit": 1.086,
-     "roi": 0.0621,
-     "w": 22,
-     "z": 0.883
+     "profit": 1.356,
+     "roi": 0.0753,
+     "w": 23,
+     "z": 1.0062
     },
     {
-     "e": 623.5394,
+     "e": 634.4782,
      "key": "the rest",
-     "n": 1137,
-     "placed": 1195,
-     "profit": -37.117,
-     "roi": -0.0637,
-     "w": 618.7,
-     "z": -0.2955
+     "n": 1158,
+     "placed": 1196,
+     "profit": -40.029,
+     "roi": -0.0675,
+     "w": 626.7,
+     "z": -0.4704
     },
     {
      "key": "guard bugs",
@@ -1070,7 +1070,7 @@
    "tested": null,
    "threshold": "watch an ROI gap of 10 points (15+ graded), flag also their ROI -15% or any guard bug",
    "title": "Line already moving against at placement",
-   "value": -0.1258
+   "value": -0.1428
   },
   {
    "examples": [
@@ -1080,55 +1080,55 @@
     "401892535:prop:saves:4697705",
     "401892539:prop:sog:5206628"
    ],
-   "headline": "96 of 1084 graded props (9%) saw the market move away after the bet; beat the close 58%",
+   "headline": "96 of 1104 graded props (9%) saw the market move away after the bet; beat the close 58%",
    "how": "graded props this week: the close a point or more against the side, or the CLV lost (2 points of chance or more); per prop type",
    "id": "C3",
    "metric": "share",
-   "n": 1084,
+   "n": 1104,
    "needs": null,
    "rows": [
     {
-     "beat": 0.5779,
-     "ev": -0.0596,
+     "beat": 0.5777,
+     "ev": -0.0597,
      "key": "all",
      "label": "All props",
      "moved": 96,
-     "n": 1084,
-     "share": 0.0886
+     "n": 1104,
+     "share": 0.087
     },
     {
-     "beat": 0.56,
-     "ev": -0.0593,
+     "beat": 0.5577,
+     "ev": -0.0596,
      "key": "prop:saves",
      "label": "Saves",
      "moved": 9,
-     "n": 71,
-     "share": 0.1268
+     "n": 73,
+     "share": 0.1233
     },
     {
-     "beat": 0.6109,
-     "ev": -0.0579,
+     "beat": 0.6096,
+     "ev": -0.0582,
      "key": "prop:sog",
      "label": "Shots",
      "moved": 49,
-     "n": 497,
-     "share": 0.0986
+     "n": 510,
+     "share": 0.0961
     },
     {
-     "beat": 0.5491,
-     "ev": -0.0612,
+     "beat": 0.5501,
+     "ev": -0.0613,
      "key": "prop:pts",
      "label": "Points",
      "moved": 38,
-     "n": 516,
-     "share": 0.0736
+     "n": 521,
+     "share": 0.0729
     }
    ],
    "status": "ok",
    "tested": null,
    "threshold": "watch 45% (25+ props), flag 55% or a beat rate under 42%",
    "title": "Market moved after the bet, the Bot didn't",
-   "value": 0.0886
+   "value": 0.087
   },
   {
    "examples": [],
@@ -1136,27 +1136,27 @@
    "how": "placed this week against the 28 days before: a dog is a plus price or a spread side getting points",
    "id": "C5",
    "metric": "moved",
-   "n": 1177,
+   "n": 1178,
    "needs": null,
    "rows": [
     {
      "dogShare": 0.2256,
      "dogShareBase": 0.4023,
      "dogs": {
-      "e": 103.4366,
-      "n": 237,
-      "profit": -6.51,
-      "roi": -0.0501,
-      "w": 104,
-      "z": 0.074
+      "e": 105.0911,
+      "n": 241,
+      "profit": -6.235,
+      "roi": -0.0472,
+      "w": 106,
+      "z": 0.1185
      },
      "favorites": {
-      "e": 473.5194,
-      "n": 805,
-      "profit": -19.914,
-      "roi": -0.0492,
-      "w": 476.8,
-      "z": 0.2388
+      "e": 482.4449,
+      "n": 821,
+      "profit": -22.831,
+      "roi": -0.0553,
+      "w": 482.8,
+      "z": 0.0256
      },
      "key": "prop",
      "moved": -0.1767,
@@ -1165,15 +1165,15 @@
      "status": "ok"
     },
     {
-     "dogShare": 0.3846,
+     "dogShare": 0.3774,
      "dogShareBase": 0.2787,
      "dogs": {
-      "e": 7.1148,
-      "n": 17,
-      "profit": -4.115,
-      "roi": -0.4841,
+      "e": 7.5876,
+      "n": 18,
+      "profit": -4.615,
+      "roi": -0.5128,
       "w": 4,
-      "z": -1.5397
+      "z": -1.7218
      },
      "favorites": {
       "e": 15.3486,
@@ -1184,8 +1184,8 @@
       "z": -0.7127
      },
      "key": "ml",
-     "moved": 0.1059,
-     "n": 52,
+     "moved": 0.0987,
+     "n": 53,
      "nBase": 61,
      "status": "ok"
     },
@@ -1233,7 +1233,7 @@
    "how": "graded in the 28 days, by team, opponent, player, home or away, role depth, the vacated term, teammates out or questionable, back-to-backs, a backup QB, the weather, the lead time, the start hour, the prices, the band, the guard and the disruption",
    "id": "C7",
    "metric": "z",
-   "n": 2830,
+   "n": 2852,
    "needs": null,
    "rows": [
     {
@@ -1247,6 +1247,18 @@
      "value": "the odds api",
      "w": 376.3,
      "z": -2.4222
+    },
+    {
+     "dim": "player",
+     "e": 4.0892,
+     "key": "player: Devon Toews",
+     "n": 8,
+     "profit": -2.95,
+     "roi": -0.7375,
+     "status": "ok",
+     "value": "Devon Toews",
+     "w": 1,
+     "z": -2.1963
     },
     {
      "dim": "opponent",
@@ -1283,22 +1295,10 @@
      "value": "DET",
      "w": 44.3,
      "z": -1.9868
-    },
-    {
-     "dim": "home/away",
-     "e": 709.1284,
-     "key": "home/away: home",
-     "n": 1333,
-     "profit": -77.644,
-     "roi": -0.1086,
-     "status": "ok",
-     "value": "home",
-     "w": 674.8,
-     "z": -1.9339
     }
    ],
    "status": "ok",
-   "tested": 190,
+   "tested": 200,
    "threshold": "many cells tested: watch z -2.5, flag z -3 (cells of 8+)",
    "title": "Loss clusters",
    "value": -2.4222
@@ -1311,11 +1311,11 @@
     "401892543:prop:pts:3020803",
     "401892551:spread"
    ],
-   "headline": "12 of 1217 graded bets (1%) had their premise break in the game",
+   "headline": "12 of 1239 graded bets (1%) had their premise break in the game",
    "how": "graded this week: a bet whose premise broke (postmortem.mjs: its weight under 1) by the disruption's kind",
    "id": "C12",
    "metric": "share",
-   "n": 1217,
+   "n": 1239,
    "needs": null,
    "rows": [
     {
@@ -1339,15 +1339,15 @@
    "tested": null,
    "threshold": "watch 10%, flag 15% (15+ graded)",
    "title": "Disruption",
-   "value": 0.0099
+   "value": 0.0097
   },
   {
    "examples": [],
-   "headline": "0 open bets stale, 0 past their start by 48h ungraded, 0 of 1217 graded this week without a close",
+   "headline": "0 open bets stale, 0 past their start by 48h ungraded, 0 of 1239 graded this week without a close",
    "how": "open bets on games not started: past the gap now, or published at a band today's trust wouldn't give them; open bets past their start plus VOID_AFTER; this week's graded bets with no close read",
    "id": "C13",
    "metric": "stale",
-   "n": 23,
+   "n": 24,
    "needs": null,
    "rows": [
     {
@@ -1362,7 +1362,7 @@
     {
      "key": "graded without a close",
      "n": 0,
-     "of": 1217
+     "of": 1239
     }
    ],
    "status": "ok",
@@ -1373,18 +1373,18 @@
   },
   {
    "examples": [],
-   "headline": "fairFrom unknown: missing on 23 of 155 bets this week (15%) against 30% before; fair chances from draftkings",
+   "headline": "fairFrom unknown: missing on 23 of 156 bets this week (15%) against 30% before; fair chances from draftkings",
    "how": "placed this week against the 28 days before: the share of the bets each field applies to that are missing it",
    "id": "C14",
    "metric": "share",
-   "n": 1232,
+   "n": 1233,
    "needs": null,
    "rows": [
     {
      "key": "fairFrom unknown",
      "n": 23,
-     "of": 155,
-     "share": 0.1484,
+     "of": 156,
+     "share": 0.1474,
      "shareBase": 0.2979,
      "status": "ok"
     },
@@ -1407,7 +1407,7 @@
     {
      "key": "intent",
      "n": 0,
-     "of": 1232,
+     "of": 1233,
      "share": 0,
      "shareBase": 0.0335,
      "status": "ok"
@@ -1449,31 +1449,82 @@
    "tested": null,
    "threshold": "watch a share up 5 points on the baseline (3+ bets, 20+ both); flag doubled (5+)",
    "title": "Data holes",
-   "value": 0.1484
+   "value": 0.1474
   },
   {
-   "examples": [
-    "401892565:prop:sog:3096249"
+   "examples": [],
+   "headline": "Model files 0h old, 0 open bets overdue to grade; Odds API credits 293% left; 1233 bets placed in a week of 47 games",
+   "how": "the newest commit of the sport's model files, the open bets started 12 hours ago or more, The Odds API's credits (state.odds), the state's sources",
+   "id": "C16",
+   "metric": "ageH",
+   "n": 1233,
+   "needs": null,
+   "rows": [
+    {
+     "ageH": 0,
+     "at": "2026-10-24T05:30:20Z",
+     "key": "files",
+     "overdue": 0
+    },
+    {
+     "cycleEnd": "2026-11-19T04:06:35.755Z",
+     "key": "credits",
+     "monthly": 20000,
+     "remaining": 58611,
+     "share": 2.9306
+    },
+    {
+     "down": [],
+     "key": "sources"
+    },
+    {
+     "games": 47,
+     "key": "week",
+     "placed": 1233
+    }
    ],
-   "headline": "6 plain write-ups (mean 601 characters), 1 Claude analyses tried this week (1 ok); AI calls 0, $0.00 this week, $0.00 of $25 this month",
+   "status": "ok",
+   "tested": null,
+   "threshold": "watch files 3h old with bets overdue, credits under 20%, a source down, or no bets in a week with games; flag 6h old with bets overdue, or credits under 10%",
+   "title": "Ops",
+   "value": 0
+  },
+  {
+   "examples": [],
+   "headline": "34 segments tested on 2852 priced rows: none losing to the Book beyond the false discovery rate, none trending worse The priced history (every season, the gate's run of 2026-10-24): none of 30 segments losing on 132718 rows.",
+   "how": "each graded row's log loss gain over the Book (its priced chance against the Book's no-vig: on the result and against the close, half each), a game's rows sharing their weight; a segment's mean, its standard error by game, z; the leaks ranked by the units staked into them in the last 28 days. Each leak's fix a candidate only: it ships when the replay gate passes it (node libs/ranker/scripts/model/gate.mjs --candidate <the fix>)",
+   "id": "C23",
+   "metric": "leaks",
+   "n": 2852,
+   "needs": null,
+   "rows": [],
+   "status": "ok",
+   "tested": 34,
+   "threshold": "a leak: 40 rows in 8 games or more, losing to the Book's no-vig beyond a 10% false discovery rate (Benjamini-Hochberg over every segment tested), its shrunk loss (n / (n + 100)) under 0; a trend: this week worse than the weeks before by 2 standard errors; a flag with a leak staked into in the last 28 days",
+   "title": "Leaks against the Book (priced history)",
+   "value": 0
+  },
+  {
+   "examples": [],
+   "headline": "0 plain write-ups, 0 Claude analyses tried this week (0 ok); AI calls 0, $0.00 this week, $0.00 of $25 this month",
    "how": "writeups.json's plain and Claude write-ups, and the AI usage log's calls this week (ai-budget.mjs: every sport's spend counts against the caps)",
    "id": "C15",
    "metric": "rejectRate",
-   "n": 1,
+   "n": 0,
    "needs": null,
    "rows": [
     {
      "key": "plain",
      "legacy": 0,
-     "meanLength": 601.3333,
-     "n": 6
+     "meanLength": null,
+     "n": 0
     },
     {
      "key": "claude",
-     "n": 1,
-     "ok": 1,
+     "n": 0,
+     "ok": 0,
      "refused": 0,
-     "rejectRate": 0,
+     "rejectRate": null,
      "rejected": 0
     },
     {
@@ -1493,64 +1544,11 @@
      "share": 0
     }
    ],
-   "status": "ok",
+   "status": "thin",
    "tested": null,
    "threshold": "watch rejections over 15% (10+) or a write-up's mean cost over 1.3x $0.071; flag 25%, 1.5x, or the month's spend 80% of $25",
    "title": "Write-ups health",
-   "value": 0
-  },
-  {
-   "examples": [],
-   "headline": "Model files 0h old, 0 open bets overdue to grade; Odds API credits 293% left; 1232 bets placed in a week of 47 games",
-   "how": "the newest commit of the sport's model files, the open bets started 12 hours ago or more, The Odds API's credits (state.odds), the state's sources",
-   "id": "C16",
-   "metric": "ageH",
-   "n": 1232,
-   "needs": null,
-   "rows": [
-    {
-     "ageH": 0,
-     "at": "2026-10-24T04:00:50Z",
-     "key": "files",
-     "overdue": 0
-    },
-    {
-     "cycleEnd": "2026-11-19T04:06:35.755Z",
-     "key": "credits",
-     "monthly": 20000,
-     "remaining": 58617,
-     "share": 2.9309
-    },
-    {
-     "down": [],
-     "key": "sources"
-    },
-    {
-     "games": 47,
-     "key": "week",
-     "placed": 1232
-    }
-   ],
-   "status": "ok",
-   "tested": null,
-   "threshold": "watch files 3h old with bets overdue, credits under 20%, a source down, or no bets in a week with games; flag 6h old with bets overdue, or credits under 10%",
-   "title": "Ops",
-   "value": 0
-  },
-  {
-   "examples": [],
-   "headline": "33 segments tested on 2830 priced rows: none losing to the Book beyond the false discovery rate, none trending worse The priced history (every season, the gate's run of 2026-10-24): none of 30 segments losing on 132718 rows.",
-   "how": "each graded row's log loss gain over the Book (its priced chance against the Book's no-vig: on the result and against the close, half each), a game's rows sharing their weight; a segment's mean, its standard error by game, z; the leaks ranked by the units staked into them in the last 28 days. Each leak's fix a candidate only: it ships when the replay gate passes it (node libs/ranker/scripts/model/gate.mjs --candidate <the fix>)",
-   "id": "C23",
-   "metric": "leaks",
-   "n": 2830,
-   "needs": null,
-   "rows": [],
-   "status": "ok",
-   "tested": 33,
-   "threshold": "a leak: 40 rows in 8 games or more, losing to the Book's no-vig beyond a 10% false discovery rate (Benjamini-Hochberg over every segment tested), its shrunk loss (n / (n + 100)) under 0; a trend: this week worse than the weeks before by 2 standard errors; a flag with a leak staked into in the last 28 days",
-   "title": "Leaks against the Book (priced history)",
-   "value": 0
+   "value": null
   },
   {
    "examples": [],
@@ -1658,82 +1656,82 @@
   },
   {
    "examples": [],
-   "headline": "2942 graded (2830 bets, 112 CHECKs), 600 with a line moved since it opened: no difference past z 2.5 by the move's way or the lead time",
+   "headline": "2964 graded (2852 bets, 112 CHECKs), 610 with a line moved since it opened: no difference past z 2.5 by the move's way or the lead time",
    "how": "every graded bet and CHECK: the line's move from its open to when it was bet, its side's way (a prop's line, a game's spread, total or moneyline chance, as C2; a prop's unmoved line by its fair chance's move, 2.5 points or more, where its open price was kept, since 2026-10-13: before that a prop's move is its line's alone, so 'unmoved' holds the ones the market moved by the price only, most of the NHL's at 0.5 and 1.5), the record against the Book's fair chance (overBook: won less the chance, a bet, weighted as zOf); by the hours before the start it was placed, the CLV chance (clvProb, its standard error clvSe) and the share that beat the close. Never applied: it says where to look",
    "id": "C19",
    "metric": "graded",
-   "n": 2942,
+   "n": 2964,
    "needs": null,
    "rows": [
     {
      "beat": 0.6889,
-     "clvN": 214,
+     "clvN": 216,
      "clvProb": 0.0057,
      "clvSe": 0.0012,
-     "e": 116.7854,
+     "e": 117.9041,
      "key": "bets props: moved against",
-     "n": 225,
-     "overBook": 0.0335,
-     "profit": 0.048,
-     "roi": 0.0004,
-     "w": 124.3,
-     "z": 1.0203
+     "n": 227,
+     "overBook": 0.0371,
+     "profit": 0.718,
+     "roi": 0.0062,
+     "w": 126.3,
+     "z": 1.1349
     },
     {
      "beat": 0.5594,
-     "clvN": 1989,
+     "clvN": 2001,
      "clvProb": 0.0026,
      "clvSe": 0.0005,
-     "e": 1063.4647,
+     "e": 1069.9795,
      "key": "bets props: unmoved",
-     "n": 2035,
-     "overBook": -0.0045,
-     "profit": -76.484,
-     "roi": -0.07,
-     "w": 1054.4,
-     "z": -0.414
+     "n": 2047,
+     "overBook": -0.0067,
+     "profit": -80.779,
+     "roi": -0.0735,
+     "w": 1056.4,
+     "z": -0.6183
     },
     {
-     "beat": 0.5548,
-     "clvN": 1323,
+     "beat": 0.5549,
+     "clvN": 1335,
      "clvProb": 0.0025,
      "clvSe": 0.0005,
-     "e": 720.9429,
+     "e": 727.4577,
      "key": "bets props: unmoved, its price too",
-     "n": 1343,
-     "overBook": 0.0141,
-     "profit": -32.1,
-     "roi": -0.0463,
-     "w": 739.8,
-     "z": 1.0646
+     "n": 1355,
+     "overBook": 0.0106,
+     "profit": -36.395,
+     "roi": -0.0521,
+     "w": 741.8,
+     "z": 0.806
     },
     {
-     "beat": 0.5399,
-     "clvN": 240,
+     "beat": 0.5394,
+     "clvN": 246,
      "clvProb": 0.0025,
      "clvSe": 0.0014,
-     "e": 128.7935,
+     "e": 131.7599,
      "key": "bets props: moved with",
-     "n": 252,
-     "overBook": -0.0309,
-     "profit": -15.39,
-     "roi": -0.1179,
-     "w": 121,
-     "z": -0.9948
+     "n": 258,
+     "overBook": -0.0262,
+     "profit": -14.407,
+     "roi": -0.1079,
+     "w": 125,
+     "z": -0.8526
     },
     {
      "beat": 0.4762,
-     "clvN": 31,
-     "clvProb": 0.0035,
-     "clvSe": 0.0035,
-     "e": 13.4932,
+     "clvN": 32,
+     "clvProb": 0.0034,
+     "clvSe": 0.0034,
+     "e": 13.8819,
      "key": "bets props: moved with, past the limit",
-     "n": 33,
-     "overBook": -0.0452,
-     "profit": -2.492,
-     "roi": -0.151,
-     "w": 12,
-     "z": -0.5313
+     "n": 34,
+     "overBook": -0.0259,
+     "profit": -1.792,
+     "roi": -0.1054,
+     "w": 13,
+     "z": -0.3092
     },
     {
      "beat": 0.5,
@@ -1764,60 +1762,46 @@
      "z": 0.5329
     },
     {
-     "beat": 0.7544,
-     "clvN": 76,
-     "clvProb": 0.0049,
-     "clvSe": 0.0018,
-     "e": 39.0079,
+     "beat": 0.7627,
+     "clvN": 78,
+     "clvProb": 0.005,
+     "clvSe": 0.0017,
+     "e": 39.9669,
      "key": "bets games: moved with",
-     "n": 76,
-     "overBook": -0.0094,
+     "n": 78,
+     "overBook": -0.0086,
      "profit": -3.73,
-     "roi": -0.0932,
-     "w": 38.3,
-     "z": -0.1678
+     "roi": -0.091,
+     "w": 39.3,
+     "z": -0.1559
     },
     {
-     "beat": 0.88,
-     "clvN": 34,
-     "clvProb": 0.0059,
-     "clvSe": 0.0031,
-     "e": 15.5075,
+     "beat": 0.8846,
+     "clvN": 35,
+     "clvProb": 0.0058,
+     "clvSe": 0.003,
+     "e": 15.9937,
      "key": "bets games: moved with, past the limit",
-     "n": 34,
-     "overBook": -0.0363,
-     "profit": -2.821,
-     "roi": -0.1525,
-     "w": 14.3,
-     "z": -0.428
+     "n": 35,
+     "overBook": -0.0202,
+     "profit": -2.321,
+     "roi": -0.1222,
+     "w": 15.3,
+     "z": -0.2421
     },
     {
-     "beat": null,
-     "clvN": 0,
-     "clvProb": null,
-     "clvSe": null,
-     "e": 0.5,
-     "key": "CHECKs games: unmoved",
-     "n": 1,
-     "overBook": 0.5,
-     "profit": 0.87,
-     "roi": 0.87,
-     "w": 1,
-     "z": 1
-    },
-    {
-     "beat": 0.5435,
-     "clvN": 674,
-     "clvProb": 0.002,
+     "beat": 0.5438,
+     "clvN": 694,
+     "clvProb": 0.0019,
      "clvSe": 0.0007,
-     "e": 362.1064,
+     "e": 372.7063,
      "key": "bets props: placed 0-3h before",
-     "n": 688,
-     "overBook": 0.0119,
-     "profit": -16.315,
-     "roi": -0.0446,
-     "w": 370.3,
-     "z": 0.6457
+     "n": 708,
+     "overBook": 0.0079,
+     "profit": -18.957,
+     "roi": -0.0504,
+     "w": 378.3,
+     "z": 0.4343
     },
     {
      "beat": 0.5554,
@@ -1862,24 +1846,24 @@
      "z": -0.6579
     },
     {
-     "clvZ": 2.968,
+     "clvZ": 3.1305,
      "key": "bets props: 6h or more before, against later",
-     "n": 2512,
-     "recordZ": -0.7709
+     "n": 2532,
+     "recordZ": -0.6913
     },
     {
-     "beat": 0.6579,
-     "clvN": 80,
-     "clvProb": 0.0045,
+     "beat": 0.675,
+     "clvN": 82,
+     "clvProb": 0.0047,
      "clvSe": 0.0017,
-     "e": 40.157,
+     "e": 41.116,
      "key": "bets games: placed 0-3h before",
-     "n": 80,
-     "overBook": 0.0654,
+     "n": 82,
+     "overBook": 0.0643,
      "profit": 2.234,
-     "roi": 0.0545,
-     "w": 45.3,
-     "z": 1.1881
+     "roi": 0.0532,
+     "w": 46.3,
+     "z": 1.182
     },
     {
      "beat": 0.7761,
@@ -1938,25 +1922,25 @@
      "z": -0.3966
     },
     {
-     "clvZ": -0.652,
+     "clvZ": -0.6986,
      "key": "bets games: 6h or more before, against later",
-     "n": 318,
-     "recordZ": -1.8191
+     "n": 320,
+     "recordZ": -1.8192
     }
    ],
    "status": "info",
    "tested": null,
    "threshold": "a watch when the bets moved against do better or worse against the Book's chance than the rest, the props moved past the guard's limit their way better than the unmoved, the game lines moved past it their way worse, or the bets 6h or more early beat the close more or less than the later ones (CLV z 2.5) with their record against the Book the same way at z 1 or more: z 2.5, 60+ a side; else a report",
    "title": "Line move and bet timing (all graded)",
-   "value": 2942
+   "value": 2964
   },
   {
    "examples": [],
-   "headline": "2603 graded props at the Book's price (716 with the ratio estimated): no difference past z 2.5 between the far lines the Bot bet against, or the line alarm's, and the near ones",
+   "headline": "2623 graded props at the Book's price (716 with the ratio estimated): no difference past z 2.5 between the far lines the Bot bet against, or the line alarm's, and the near ones",
    "how": "every graded prop bet and CHECK at the Book's own price: the mean its price implies at its line over the Bot's projection (projection.lineRatio since 2026-10-13, else estimated from the line, the fair chance and the projection's dispersion), far over, far under or near (in SDs of the count: props.mjs lineZ), the Bot's side against the market's reading or with it; each row's record against the Book's fair chance (overBook, weighted as zOf). The line alarm's labeled rows (props.mjs lineAlarmOf: a far line with a cause known before the game that the fit doesn't size, on the side against the market's reading; a label, bet or not by the other guards) apart, the bets' set against the near ones. Never applied: it says where to look",
    "id": "C20",
    "metric": "graded props",
-   "n": 2603,
+   "n": 2623,
    "needs": null,
    "rows": [
     {
@@ -1990,14 +1974,14 @@
      "z": 0.7583
     },
     {
-     "e": 1306.3757,
+     "e": 1316.9756,
      "key": "bets: line near the projection",
-     "n": 2506,
-     "overBook": -0.0043,
-     "profit": -99.696,
-     "roi": -0.075,
-     "w": 1295.7,
-     "z": -0.4382
+     "n": 2526,
+     "overBook": -0.0053,
+     "profit": -102.338,
+     "roi": -0.0764,
+     "w": 1303.7,
+     "z": -0.5426
     },
     {
      "e": 2.7791,
@@ -2034,92 +2018,92 @@
    "tested": null,
    "threshold": "a watch when the props bet against a line far from the projection (its implied mean 1.15 or more SDs of the count over the Bot's, or -0.75 under) do better or worse against the Book's chance than the near ones, or the line alarm's labeled bets worse: z 2.5, 60+ a side; else a report",
    "title": "Line far from the projection (all graded)",
-   "value": 2603
+   "value": 2623
   },
   {
    "examples": [],
-   "headline": "9 of 13 spots shifted: pts|over|0.5 -0.132 (n 540, pooled only (its own rung: no held-out gain)), pts|under|0.5 -0.132 (n 745, pooled only (its own rung: no held-out gain)), saves|over|>2.5 -0.047 (n 42, pooled only (its own rung: too few rows (200 needed))), saves|under|>2.5 -0.047 (n 97, pooled only (its own rung: too few rows (200 needed))), sog|over|>2.5 -0.047 (n 36, pooled only (its own rung: too few rows (200 needed))), sog|over|2.5 -0.057 (n 155, pooled only (its own rung: too few rows (200 needed))), sog|under|>2.5 -0.047 (n 41, pooled only (its own rung: too few rows (200 needed))), sog|under|0.5 -0.132 (n 1, pooled only (its own rung: too few rows (200 needed))), sog|under|2.5 -0.057 (n 213, pooled only (its own rung: too few to hold out (200 to fit, 60 held out)))",
+   "headline": "9 of 13 spots shifted: pts|over|0.5 -0.136 (n 541, pooled only (its own rung: no held-out gain)), pts|under|0.5 -0.136 (n 748, pooled only (its own rung: no held-out gain)), saves|over|>2.5 -0.047 (n 42, pooled only (its own rung: too few rows (200 needed))), saves|under|>2.5 -0.047 (n 99, pooled only (its own rung: too few rows (200 needed))), sog|over|>2.5 -0.047 (n 38, pooled only (its own rung: too few rows (200 needed))), sog|over|2.5 -0.058 (n 156, pooled only (its own rung: too few rows (200 needed))), sog|under|>2.5 -0.047 (n 41, pooled only (its own rung: too few rows (200 needed))), sog|under|0.5 -0.136 (n 1, pooled only (its own rung: too few rows (200 needed))), sog|under|2.5 -0.058 (n 215, pooled only (its own rung: too few to hold out (200 to fit, 60 held out)))",
    "how": "state.calib as the last run left it (calib.mjs fitCalib: every graded prop since MODEL_EPOCH, the tracked rows among them, by its raw model chance), each spot's shift, target and held-out gain; the week's graded props of each spot, the sum of their raw chances (said), of the chances as shifted (shifted) and their wins. Never more than the desk applies: it says where the model's been running hot or cold",
    "id": "C21",
    "metric": "spots shifted",
-   "n": 2512,
+   "n": 2532,
    "needs": null,
    "rows": [
     {
-     "gain": -0.0001,
+     "gain": 0,
      "kept": true,
      "key": "pts|under|0.5",
-     "n": 745,
-     "said": 243.6112,
-     "shift": -0.1322,
-     "shifted": 232.427,
-     "target": 0.0109,
-     "week": 377,
+     "n": 748,
+     "said": 245.4569,
+     "shift": -0.1355,
+     "shifted": 233.8915,
+     "target": 0.0075,
+     "week": 380,
      "why": "pooled only (its own rung: no held-out gain)",
      "won": 234
     },
     {
-     "gain": -0.0017,
+     "gain": -0.0016,
      "kept": true,
      "key": "pts|over|0.5",
-     "n": 540,
-     "said": 60.1878,
-     "shift": -0.1322,
-     "shifted": 56.3873,
-     "target": -0.0419,
-     "week": 119,
+     "n": 541,
+     "said": 60.813,
+     "shift": -0.1355,
+     "shifted": 56.8856,
+     "target": -0.0425,
+     "week": 120,
      "why": "pooled only (its own rung: no held-out gain)",
      "won": 59
     },
     {
-     "gain": -0.0021,
+     "gain": -0.0025,
      "kept": false,
      "key": "sog|under|1.5",
-     "n": 339,
-     "said": 79.6397,
+     "n": 344,
+     "said": 82.0268,
      "shift": 0,
-     "shifted": 79.6397,
-     "target": -0.0277,
-     "week": 153,
+     "shifted": 82.0268,
+     "target": -0.0267,
+     "week": 158,
      "why": "no held-out gain",
-     "won": 84
+     "won": 87
     },
     {
      "gain": null,
      "kept": false,
      "key": "sog|over|1.5",
-     "n": 248,
-     "said": 64.7672,
+     "n": 251,
+     "said": 66.4377,
      "shift": 0,
-     "shifted": 64.7672,
+     "shifted": 66.4377,
      "target": 0,
-     "week": 118,
+     "week": 121,
      "why": "too few to hold out (200 to fit, 60 held out)",
-     "won": 68
+     "won": 69
     },
     {
      "gain": null,
      "kept": true,
      "key": "sog|under|2.5",
-     "n": 213,
-     "said": 66.1745,
-     "shift": -0.0565,
-     "shifted": 64.55,
+     "n": 215,
+     "said": 67.3105,
+     "shift": -0.0584,
+     "shifted": 65.6025,
      "target": 0,
-     "week": 118,
+     "week": 120,
      "why": "pooled only (its own rung: too few to hold out (200 to fit, 60 held out))",
-     "won": 65
+     "won": 66
     },
     {
      "gain": null,
      "kept": true,
      "key": "sog|over|2.5",
-     "n": 155,
-     "said": 33.6673,
-     "shift": -0.0565,
-     "shifted": 32.7068,
+     "n": 156,
+     "said": 34.1707,
+     "shift": -0.0584,
+     "shifted": 33.1633,
      "target": 0,
-     "week": 69,
+     "week": 70,
      "why": "pooled only (its own rung: too few rows (200 needed))",
      "won": 26
     },
@@ -2127,14 +2111,14 @@
      "gain": null,
      "kept": true,
      "key": "saves|under|>2.5",
-     "n": 97,
-     "said": 30.4997,
+     "n": 99,
+     "said": 31.5312,
      "shift": -0.0473,
-     "shifted": 29.8464,
+     "shifted": 30.8542,
      "target": 0,
-     "week": 56,
+     "week": 58,
      "why": "pooled only (its own rung: too few rows (200 needed))",
-     "won": 26
+     "won": 27
     },
     {
      "gain": null,
@@ -2166,14 +2150,14 @@
      "gain": null,
      "kept": true,
      "key": "sog|over|>2.5",
-     "n": 36,
-     "said": 7.8658,
+     "n": 38,
+     "said": 8.8529,
      "shift": -0.0473,
-     "shifted": 7.6783,
+     "shifted": 8.6421,
      "target": 0,
-     "week": 16,
+     "week": 18,
      "why": "pooled only (its own rung: too few rows (200 needed))",
-     "won": 7
+     "won": 8
     },
     {
      "gain": null,
@@ -2192,14 +2176,14 @@
      "gain": null,
      "kept": false,
      "key": "pts|under|1.5",
-     "n": 20,
-     "said": 7.8759,
+     "n": 21,
+     "said": 8.4827,
      "shift": 0,
-     "shifted": 7.8759,
+     "shifted": 8.4827,
      "target": 0,
-     "week": 12,
+     "week": 13,
      "why": "too few rows (200 needed)",
-     "won": 9
+     "won": 10
     },
     {
      "gain": null,
@@ -2207,7 +2191,7 @@
      "key": "sog|under|0.5",
      "n": 1,
      "said": null,
-     "shift": -0.1322,
+     "shift": -0.1355,
      "shifted": null,
      "target": 0,
      "week": 0,
@@ -2324,11 +2308,11 @@
  "sport": "nhl",
  "summary": {
   "flag": 4,
-  "headline": "Over/under drift by stat: Saves Under: 25.3 won vs 28.3 expected (z -0.81), 81% of its stat's props, ROI -14.0%; Guards cutting unusually often: pts tracked only: clv over the last graded pts props: tracked, not bet, till it's positive: 43 of 1232 bets placed this week (3%) against 0% before",
+  "headline": "Over/under drift by stat: Saves Under: 26.3 won vs 29.3 expected (z -0.8), 81% of its stat's props, ROI -13.8%; Guards cutting unusually often: pts tracked only: clv over the last graded pts props: tracked, not bet, till it's positive: 43 of 1233 bets placed this week (3%) against 0% before",
   "info": 3,
-  "ok": 10,
+  "ok": 9,
   "partial": 1,
-  "thin": 3,
+  "thin": 4,
   "watch": 2
  },
  "v": 1,
@@ -2340,16 +2324,9 @@
   "calls": 0,
   "capHits": 0,
   "cost": 0,
-  "plain": 6,
+  "plain": 0,
   "rejected": 0,
-  "sample": [
-   {
-    "headline": "Under 1.5 shots rides the Book's price, not a real projection gap",
-    "id": "401892565:prop:sog:3096249",
-    "reason": "This one is about the Book's price more than the Bot's number: the Bot projects Devon Toews for 1.46 shots, a hair under 1.5, and only 50.48% of his weighted games landed on the under at this line. The push down comes from less power-play time lately, worth -1.8, and the fit's league-wide scaling at -1.6, while the game script with COL expected to score 3.3 adds 2.4 back. What the projection leaves out is his recent form of 1.77 over his last 5 games, which the fit does not weigh at all. The Book's no-vig chance on the under is 53.06%, and the desk bets 53.3% against a 51.22% break-even, so the 2.08-point edge comes mostly from the Book's own pricing, on a prop type the desk leans only halfway on. Also, the desk is 94-106 on this type and side across 200 graded bets.",
-    "risk": "He has averaged 1.77 shots over his last 5 games, form the Bot gives no weight, and with the projection only 0.04 under the line, two shots on one active night cashes the over."
-   }
-  ],
-  "written": 1
+  "sample": [],
+  "written": 0
  }
 }
