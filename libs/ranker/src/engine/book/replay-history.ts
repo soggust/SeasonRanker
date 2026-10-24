@@ -107,6 +107,11 @@ export interface HistoryRow extends Tally {
   sport?: string;
   // (of its graded bets, how many are the page's own provisional results, not the desk's yet: withPending)
   pending: number;
+  // (of its bets, the live tracked rows counted as if bet (D87: the Practice row's at the practice stake, PASS's at a
+  // flat unit): never staked, never in the record or a total)
+  tracked?: number;
+  // (a row of tracked rows as if bet (the Practice and PASS rows, D87): the panel labels it "tracked", muted)
+  asIf?: boolean;
 }
 export interface HistoryStripBet {
   // (null: a pending bet with no result yet: a push or void to be, or a prop whose count isn't in the box score)
@@ -135,6 +140,7 @@ export interface SportHistory {
   through: string | null;
   overall: HistoryRow;
   practice: HistoryRow;
+  pass: HistoryRow;
   seasons: (HistoryRow & { season: number; context: 'full' | 'ratings' })[];
   caveat: string;
 }
@@ -142,6 +148,9 @@ export interface BotHistory {
   // (every sport on show, summed)
   overall: HistoryRow;
   practice: HistoryRow;
+  // (the tracked rows that weren't practice picks, as if bet at a flat unit (D87): the replay's passes and the live
+  // ledger's tracked rows; never the record or a total)
+  pass: HistoryRow;
   byBand: HistoryRow[];
   bySport: HistoryRow[];
   byMarket: HistoryRow[];
@@ -316,7 +325,16 @@ const done = (row: HistoryRow): HistoryRow => ({ ...row, staked: Math.round(row.
 // (a live bet on the live side of the split: its game starts at or after its sport's epoch; with no replay file for
 // the sport every bet of its ledger)
 export const liveSince = (b: { start: string }, epoch: string | null | undefined): boolean => !epoch || !(Date.parse(b.start) < Date.parse(epoch));
-const practiceOf = (b: ModelBet): boolean => !!b.topN;
+// (a staked practice pick; a tracked row tagged as one (practiceTracked, D87) is tracked, never this)
+const practiceOf = (b: ModelBet): boolean => !!b.topN && !b.practiceTracked && !isTracked(b);
+// (the tracked rows on show as if bet (D87): the slate's practice candidates at PRACTICE_UNITS, the rest at a flat unit)
+export const PRACTICE_UNITS = 0.5;
+export const practiceTrackedOf = (b: ModelBet): boolean => isTracked(b) && !!b.practiceTracked;
+export function asIfBet(b: ModelBet, units: number): ModelBet {
+  const won = b.status === 'won';
+  const profit = won ? (b.odds > 0 ? (units * b.odds) / 100 : (units * 100) / -b.odds) : b.status === 'lost' ? -units : 0;
+  return { ...b, units, profit };
+}
 const bandOf = (b: ModelBet & { publishedLevel?: string }): string => b.publishedLevel ?? 'medium';
 const isLineBet = (b: { market: string }): boolean => b.market !== 'prop';
 
@@ -377,6 +395,14 @@ export function botHistoryOf(
   const live = bets.filter((b) => (!sport || b.sport === sport) && !isTracked(b) && liveSince(b, epochOf(b.sport)) && (!days || ((b.status !== 'open' || !!b.pending) && inDays(etDay(settledOf(b)), days))));
   const liveReal = live.filter((b) => !practiceOf(b));
   const livePractice = live.filter(practiceOf);
+  // (the tracked rows graded on the live side, in the range (D87): never the record, only the Practice and PASS rows)
+  const liveTracked = bets.filter((b) => (!sport || b.sport === sport) && isTracked(b) && !b.void && ['won', 'lost', 'push'].includes(b.status) && fin(b.odds) && b.odds !== 0 && liveSince(b, epochOf(b.sport)) && (!days || inDays(etDay(settledOf(b)), days)));
+  const pass = emptyRow('PASS');
+  let trackedLive = 0;
+  const addTracked = (row: HistoryRow, b: ModelBet, units: number) => {
+    addLive(row, asIfBet(b, units));
+    row.tracked = (row.tracked ?? 0) + 1;
+  };
   const overall = emptyRow('All');
   const practice = emptyRow('Practice');
   const liveRow = emptyRow('Live since this version');
@@ -390,6 +416,11 @@ export function botHistoryOf(
     const pr = emptyRow('Practice');
     const all = inRange(f, f?.overall, ['lock', 'high', 'medium']);
     const prT = inRange(f, f?.practice, ['practice']);
+    // (the replay's passes at a flat unit: the whole file's, else its pass buckets in the range (none in a file before them))
+    const paT = !f ? null : days ? dailyTally(f, ['pass'], days) : f.pass;
+    const pa = emptyRow('PASS');
+    addReplay(pa, paT);
+    addReplay(pass, paT);
     addReplay(row, all);
     addReplay(pr, prT);
     addReplay(overall, all);
@@ -413,6 +444,11 @@ export function botHistoryOf(
       addLive(pr, b);
       addLive(practice, b);
     }
+    for (const b of liveTracked.filter((b) => b.sport === s)) {
+      const units = practiceTrackedOf(b) ? PRACTICE_UNITS : 1;
+      for (const r of practiceTrackedOf(b) ? [pr, practice] : [pa, pass]) addTracked(r, b, units);
+      if (practiceTrackedOf(b)) trackedLive++;
+    }
     bySport.push({ ...done(row), sport: s });
     // (the sport's seasons: the replay's, the live bets on the newest season's row by its year)
     const seasons = (f?.bySeason ?? []).map((se) => {
@@ -424,7 +460,7 @@ export function botHistoryOf(
       const newest = seasons[seasons.length - 1];
       for (const b of liveReal.filter((b) => b.sport === s)) addLive(newest, b);
     }
-    out.push({ sport: s, label: labels[s] ?? s.toUpperCase(), epoch: f?.epoch ?? null, through: f?.through ?? null, overall: done(row), practice: done(pr), seasons: seasons.map((r) => ({ ...done(r), season: r.season, context: r.context })), caveat: f ? caveatOf([f]) : 'No replayed record for this sport yet: its live ledger alone.' });
+    out.push({ sport: s, label: labels[s] ?? s.toUpperCase(), epoch: f?.epoch ?? null, through: f?.through ?? null, overall: done(row), practice: { ...done(pr), asIf: true }, pass: { ...done(pa), asIf: true }, seasons: seasons.map((r) => ({ ...done(r), season: r.season, context: r.context })), caveat: f ? caveatOf([f]) : 'No replayed record for this sport yet: its live ledger alone.' });
   }
   // (the strip: the live bets graded since the epochs and the replays' last bets, newest settled first, practice
   // picks among them with their tag)
@@ -440,7 +476,8 @@ export function botHistoryOf(
   const files2 = [...replays.values()];
   return {
     overall: done(overall),
-    practice: done(practice),
+    practice: { ...done(practice), asIf: true },
+    pass: { ...done(pass), asIf: true },
     byBand: ['lock', 'high', 'medium', 'low'].map((k) => done(bands[k])).filter((r) => r.label !== 'PASS' || r.bets || r.open),
     bySport,
     byMarket: [done(markets.lines), done(markets.props)],
@@ -451,7 +488,7 @@ export function botHistoryOf(
     from: files2.length ? files2.map((f) => f.from).filter((x): x is string => !!x).sort()[0] ?? null : null,
     replayed: files2.length,
     range,
-    rangeParts: { replayed: overall.replayed + practice.replayed, live: overall.live + practice.live, undated },
+    rangeParts: { replayed: overall.replayed + practice.replayed, live: overall.live + practice.live - trackedLive, undated },
   };
 }
 

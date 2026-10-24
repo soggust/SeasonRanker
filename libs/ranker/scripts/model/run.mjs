@@ -160,7 +160,7 @@ import { API_MARKETS, PER_GAME, PROP_WAIT, ROLE, STATS, apiProps, board, fitProp
 import { CACHE, DAY, etDay, get, isoSecond, nflverseGames, readJson, writeAtomic, writeJson } from './sources.mjs';
 import { fitCode, fitDay, fitDiffs, fitPlan, readFit, refitWhy, saveFit } from './fitcache.mjs';
 import { corrRows, correctionText, tuneCorrection } from './correct.mjs';
-import { PRACTICE_N, PRACTICE_SPLIT, PRACTICE_STAKED, lineBucket, practiceRecord, practiceTop, slateQuota } from './desk.mjs';
+import { PRACTICE_N, PRACTICE_SPLIT, PRACTICE_STAKED, lineBucket, practiceRecord, practiceTag, practiceTop, slateQuota } from './desk.mjs';
 import { MAX_REPRICES, TRUST_START, rulesChanged, rulesOf } from './desk.mjs';
 import { propBar, propBarGate, readPropBar, ownBarOf, ownBarGate, ownKey, readOwnBar } from './desk.mjs';
 import { BANKROLL, MARKETS, PRACTICE_UNITS, EARLY_HOURS, stakeKelly, gatedPlacement, stakeFor, practiceGates, choose, decimal, isTracked, trackedRecord, lineGate, lineBar, barGate, bothGates, readLineBar, barAside, reasonsOf, scheduleRest, withTravel, propGate, fairPair, placeGame, sameGameOf, sameGameRhoText, fitTrust, fitBuckets, bucketTrustOf, BUCKETS, gapGuard, guardOf, oneSide, pickText, placement, price, record, settle, voidOf } from './desk.mjs';
@@ -2868,7 +2868,9 @@ async function betProps(r) {
   // that day), the bets clearing the vig first, then the best of the rest with an edge before the vig, each at the
   // practice stake, a LIKE at most, marked topN; graded and learned from like any bet, tallied apart while
   // PRACTICE_SPLIT. One a player (his best by edge), the caps below and the gates as ever)
-  const forced = PRACTICE_STAKED ? practicePicks(r, candidates) : new Map();
+  // (D87: picked every run whatever PRACTICE_STAKED; while it's off (D57) each candidate stays the tracked row it is,
+  // tagged (topN, practiceTracked) once its stake is settled: never staked, the record, caps, gates and fits unmoved)
+  const forced = practicePicks(r, candidates);
   for (const { game, x, exp } of candidates.sort((a, b) => b.x.ev - a.x.ev || (b.x.edge ?? -1) - (a.x.edge ?? -1))) {
     const id = `${game.id}:prop:${x.prop.stat.key}:${x.prop.athlete.id}`;
     // (the game's props: placed before (a dry run prices those again, so only the published ones, which a live
@@ -2878,7 +2880,9 @@ async function betProps(r) {
     // (a research bet: the model's side on the research's word, its edge the model's own; a role bet (props.mjs roleBet:
     // its cause's graded CHECKs pay on the model's side) an edge on that record: past the gap its trusted chance is the
     // book's and its ev only the vig, which would track it, never bet)
-    const topN = x.researchPractice ?? (!(x.ev > 0) && !x.researchBet && !x.roleBet ? (forced.get(id) ?? null) : null);
+    const slatePick = !(x.ev > 0) && !x.researchBet && !x.roleBet ? (forced.get(id) ?? null) : null;
+    const topN = x.researchPractice ?? (PRACTICE_STAKED ? slatePick : null);
+    const tagOnly = x.researchPractice || PRACTICE_STAKED ? null : slatePick;
     const edge = x.ev > 0 || !!x.researchBet || !!x.roleBet || !!topN;
     if (topN) x.units = PRACTICE_UNITS;
     // (the stat's CLV gate (r.propGate): failing, bet as ever at the practice stake, the gate's word on the row)
@@ -2937,6 +2941,8 @@ async function betProps(r) {
     if (x.researchAdjusted) Object.assign(bet, { researchAdjusted: x.researchAdjusted, context: { ...bet.context, research: `priced with the research's ${x.researchAdjusted.input}` } });
     // (the confidence layer on it (D52): its calibrated chance, its quality, the band it may reach, its stake)
     withConfidence(r, bet, { trust: x.trust });
+    // (the slate's practice candidate while unstaked (D87): the tracked row tagged, its stake, trackUnits and caps as before)
+    if (tagOnly && isTracked(bet)) Object.assign(bet, practiceTag(tagOnly));
     // (placed with the game markets, under the game's cap: placeBets)
     r.pending.push({ bet, game });
     r.placed.add(id);
@@ -2985,7 +2991,7 @@ function practicePicks(r, candidates) {
     let rank = 0;
     for (const x of [...best.values()].sort((a, b) => (b.edge ?? -1) - (a.edge ?? -1))) if (ids.has(idOf(x))) forced.set(idOf(x), { rank: ++rank, quota, slate: PRACTICE_N[sport], edge: round(x.edge, 4), words: `${x.prop.athlete.name} ${x.side === 'over' ? 'Over' : 'Under'} ${x.prop.line} ${x.prop.stat.label} ${x.odds > 0 ? '+' : ''}${x.odds}${x.turned ? ' (turned from the model)' : ''}` });
   }
-  if (forced.size) console.log(`${sport}${DRY ? ' (dry)' : ''}: the slate's practice picks: ${forced.size} (${PRACTICE_N[sport]} a slate, at least one a game, at ${PRACTICE_UNITS}u): ${[...forced.values()].map((t) => `${t.words} +${t.edge}`).join(', ')}`);
+  if (forced.size) console.log(`${sport}${DRY ? ' (dry)' : ''}: the slate's practice picks: ${forced.size} (${PRACTICE_N[sport]} a slate, at least one a game, ${PRACTICE_STAKED ? `at ${PRACTICE_UNITS}u` : 'tracked at no stake (D87)'}): ${[...forced.values()].map((t) => `${t.words} +${t.edge}`).join(', ')}`);
   return forced;
 }
 

@@ -43,7 +43,9 @@ export interface ModelBet {
   trackUnits?: number;
   // (a slate's practice pick (desk.mjs isPracticeTop): bet at the practice stake for the slate, short of the vig;
   // its rank and its game's quota, and its edge before the vig)
-  topN?: { rank: number; quota: number; slate: number; edge: number };
+  topN?: { rank: number; quota: number; slate: number; edge: number; main?: boolean };
+  // (a tracked row tagged as the slate's practice candidate (D87): never staked; the Algorithm tab's Practice row as if 0.5u)
+  practiceTracked?: boolean;
   // (the page's own, never in a ledger: a result off ESPN's final before the desk grades it, replay-history.ts withPending)
   pending?: boolean;
   // (the confidence layer's read of it when placed (confidence.mjs, D52): the calibrated chance, the quality, the band

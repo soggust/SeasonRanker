@@ -282,3 +282,50 @@ test("a re-record never hides the real bets after the replay's last game: the li
   assert.equal(h.overall.live, 1);
   assert.equal(h.last[0].pick, 'Last night');
 });
+
+// The tracked rows as if bet (DECISIONS.md D87, the owner 2026-10-23: "I have 0-0 practice and pass bets"): the slate's
+// practice candidates (tracked, tagged practiceTracked) on the Practice row at 0.5u, the other tracked rows on PASS at
+// 1u flat, live after the replay's through plus the replay's own practice and pass tallies; never in LIKE/LOVE/LOCK,
+// the record or a total; the time range and the sport followed
+test('botHistoryOf: a tracked practice row on Practice as if 0.5u, a tracked pass on PASS as if 1u; never the record; the range and the sport followed', () => {
+  const EPOCH = '2026-10-19T17:15:00Z';
+  const f = { ...file('nfl', EPOCH), daily: { cols: ['won', 'lost', 'push', 'staked', 'profit'], from: '2025-12-25', bands: { practice: { '2026-10-19': '1,0,0,0.5,0.45' }, pass: { '2026-10-19': '0,2,0,2,-2', '2026-10-10': '1,0,0,1,0.91' } } } };
+  const tracked = (id, start, status, extra = {}) => live(id, 'nfl', start, status, 'medium', 0, { intent: 'track', trackUnits: 0.5, profit: 0, odds: 150, ...extra });
+  const bets = [
+    live('a', 'nfl', '2026-10-20T00:00:00Z', 'won', 'medium'),
+    tracked('tp', '2026-10-20T01:00:00Z', 'won', { topN: { rank: 1, quota: 2, slate: 15, edge: 0.01 }, practiceTracked: true }),
+    tracked('tx', '2026-10-20T02:00:00Z', 'lost'),
+    tracked('ty', '2026-10-21T02:00:00Z', 'won', { odds: -120 }),
+    tracked('to', '2026-10-21T05:00:00Z', 'open'),
+    // (before the replay's through: the replay's part)
+    tracked('told', '2026-10-18T01:00:00Z', 'won'),
+    tracked('nhl', '2026-10-20T01:00:00Z', 'won', { sport: 'nhl' }),
+  ];
+  const all = book.botHistoryOf([f], bets, 'nfl', { nfl: 'NFL' });
+  // (Practice: the file's 5-5 (-0.5u) and the tracked candidate won at +150 as if 0.5u)
+  assert.deepEqual([all.practice.won, all.practice.lost, all.practice.staked, all.practice.profit], [6, 5, 10.5, 0.25]);
+  assert.equal(all.practice.tracked, 1);
+  assert.equal(all.practice.asIf, true);
+  // (PASS: the file's 10-10 at a flat unit, the tracked tx lost and ty won at -120, each as if 1u)
+  assert.deepEqual([all.pass.won, all.pass.lost, all.pass.staked], [11, 11, 22]);
+  assert.equal(all.pass.profit, Math.round((-1 + 100 / 120) * 100) / 100);
+  assert.equal(all.pass.tracked, 2);
+  assert.equal(all.pass.asIf, true);
+  // (never the record: the file's 16-13-1 and the live a alone; no band holds a tracked row)
+  assert.deepEqual([all.overall.won, all.overall.lost, all.overall.push], [17, 13, 1]);
+  const band = Object.fromEntries(all.byBand.map((r) => [r.label, r]));
+  assert.equal(band.LIKE.live, 1);
+  assert.equal(band.PASS, undefined);
+  assert.equal(all.sports[0].pass.tracked, 2);
+  // (the time range: this week (Monday the 19th to the 21st): the file's buckets and the live rows graded in it)
+  const week = book.botHistoryOf([f], bets, 'nfl', { nfl: 'NFL' }, { range: 'week', now: Date.parse('2026-10-21T20:00:00Z') });
+  assert.deepEqual([week.practice.won, week.practice.bets], [2, 2]);
+  assert.deepEqual([week.pass.won, week.pass.lost], [1, 3], 'the 10th\'s pass is last week');
+  assert.deepEqual([week.overall.won, week.overall.bets], [1, 1]);
+  const yesterday = book.botHistoryOf([f], bets, 'nfl', {}, { range: 'today', now: Date.parse('2026-10-21T12:00:00Z') });
+  assert.deepEqual([yesterday.pass.won, yesterday.pass.lost, yesterday.practice.bets], [1, 0, 0], 'today the 21st: ty alone');
+  // (By Sport: the NHL's tracked row on its own sport only)
+  const nhl = book.botHistoryOf([f], bets, 'nhl', {});
+  assert.deepEqual([nhl.pass.won, nhl.practice.bets], [1, 0]);
+  assert.equal(book.botHistoryOf([f], bets, null, {}).pass.won, 12);
+});

@@ -90,7 +90,7 @@
      share that beat the fair close, from 30 bets with a close at their line (replay-history.ts beatText, D56)) -->
 <ng-template #histRow let-t let-total="total" let-label="label" let-shares="shares">
   <tr [class.desk-total]="total" [ngClass]="'desk-tier-' + t.label.split(' ')[0].toLowerCase()">
-    <th>@if (t.sport) {<span class="desk-history-league"><ng-container *ngTemplateOutlet="leagueMark; context: { $implicit: t.sport, titled: true }"></ng-container></span>} @else { {{ label ?? t.label }} }</th>
+    <th>@if (t.sport) {<span class="desk-history-league"><ng-container *ngTemplateOutlet="leagueMark; context: { $implicit: t.sport, titled: true }"></ng-container></span>} @else { {{ label ?? t.label }}@if (t.asIf) {<small class="desk-tracked-note" [attr.title]="t.label === 'PASS' ? 'Tracked, never bet: the rows the Bot passed on, as if bet at 1u flat. Not in the record or the totals' : 'Tracked, never bet: each slate practice picks, as if bet at 0.5u. Not in the record or the totals'">(tracked)</small>} }</th>
     <!-- (By Confidence's pyramid: the band's share of the LOCK, LOVE and LIKE bets, a small bar in its colour) -->
     @if (shares) {
       <td class="desk-share" [attr.title]="shares[t.label] === null || shares[t.label] === undefined ? null : t.bets + ' bets'">
@@ -204,7 +204,7 @@
               <tr><th></th><th title="The band's share of the bets: most should be LIKE, fewer LOVE (LOCK is off while the two-band trial runs)">Share</th><th [title]="help['historyRecord']">Record</th><th [title]="help['historyProfit']">Units</th><th [title]="help['roi']">ROI</th><th [title]="help['historyBeat']">Beat close</th></tr>
             </thead>
             <tbody>
-              @for (t of bandRows; track t.label) {
+              @for (t of bandRows; track $index) {
                 <ng-container *ngTemplateOutlet="histRow; context: { $implicit: t, shares: bandShares }"></ng-container>
               }
               <ng-container *ngTemplateOutlet="histRow; context: { $implicit: h.overall, total: true, label: 'Confident', shares: bandShares }"></ng-container>

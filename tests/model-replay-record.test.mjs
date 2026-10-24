@@ -109,11 +109,14 @@ test('replay: the band totals, the markets, the seasons and the years each sum t
   assert.deepEqual(sum(r.bySeason), { bets: r.overall.bets, profit: r.overall.profit });
   assert.deepEqual(sum(Object.values(r.byYear).map((y) => y.all)), { bets: r.overall.bets, profit: r.overall.profit });
   assert.equal(r.overall.won + r.overall.lost + r.overall.push, r.overall.bets);
-  // (practice picks only while the desk stakes them (D57: off since 2026-10-20, so none, every row short of the vig a pass); on, a slate
-  // with rows short of the vig has some)
-  if (desk.PRACTICE_STAKED === false) assert.equal(r.n.practice, 0, 'no practice pick staked');
-  else assert.ok(r.n.practice > 0, 'a slate with rows short of the vig has practice picks');
+  // (the slate's practice picks, staked or not (D87: picked whatever PRACTICE_STAKED; off (D57) they're tracked, tallied
+  // as if bet at the practice stake, never among the bets: the record, the bands, the strip))
+  assert.ok(r.n.practice > 0, 'a slate with rows short of the vig has practice picks');
   assert.equal(r.practice.bets, r.n.practice);
+  assert.equal(r.practice.staked, Math.round(r.n.practice * desk.PRACTICE_UNITS * 100) / 100, 'each as if at the practice stake');
+  if (desk.PRACTICE_STAKED === false) assert.ok(r.last.every((b) => !b.practice), 'no tracked practice pick among the bets');
+  // (the passes in day buckets of their own (band pass, a flat unit), never the bands')
+  assert.ok(Object.values(r.daily.bands.pass ?? {}).reduce((v, d) => v + Number(d.split(',')[3]), 0) <= r.pass.staked);
   assert.ok(r.last.filter((b) => b.practice).every((b) => b.units === desk.PRACTICE_UNITS && b.band === 'medium'));
   assert.equal(r.n.bets + r.n.practice + r.n.pass, r.n.keys);
   assert.ok(Date.parse(r.through) < Date.parse(EPOCH), 'nothing from the epoch on');

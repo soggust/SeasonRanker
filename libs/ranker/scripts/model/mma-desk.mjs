@@ -72,7 +72,7 @@ import { weightOf } from '../../../../apps/mma/scripts/rating.mjs';
 import { venueOf } from '../../../../apps/mma/scripts/fights.mjs';
 import { placeOf } from './fights-venue.mjs';
 import { BANDS as LEAD_BAND_KEYS, calFair, leadBand, priceKey, unpackRows } from './gate-mma.mjs';
-import { BANKROLL, BUCKETS, MAX_REPRICES, PRACTICE_N, PRACTICE_SPLIT, PRACTICE_STAKED, PRACTICE_UNITS, bucketTrustOf, chanceAt, decimal, fairPair, fitBuckets, fitTrust, gapGuard, isTracked, placement, practiceRecord, practiceTop, record, rulesAt, rulesChanged, rulesOf, stakeFor, suspectOf, trackedRecord } from './desk.mjs';
+import { BANKROLL, BUCKETS, MAX_REPRICES, PRACTICE_N, PRACTICE_SPLIT, PRACTICE_STAKED, PRACTICE_UNITS, bucketTrustOf, chanceAt, decimal, fairPair, fitBuckets, fitTrust, gapGuard, isTracked, placement, practiceRecord, practiceTag, practiceTop, record, rulesAt, rulesChanged, rulesOf, stakeFor, suspectOf, trackedRecord } from './desk.mjs';
 import { readLinePool } from './line-pool.mjs';
 import { BANDS, TOP, capOf, edgeLevel, kellyOf, levelOf, recordBlocks, scoreParts } from './picks.mjs';
 import { readReplay } from './replay-record.mjs';
@@ -1208,14 +1208,20 @@ export async function runMma({ dry = false, gap = null, now = new Date(), log = 
   // (the card's practice picks (mmaPracticePicks, D2): the main card's bouts and the best prelims short of the vig
   // with an edge before it, at the practice stake, marked topN)
   const mlNew = pending.filter((b) => b.market === 'ml');
-  const forced = !PRACTICE_STAKED ? new Map() : mmaPracticePicks(mlNew, bouts, ledger.bets.filter((b) => (b.market ?? 'ml') === 'ml' && !b.void && !isTracked(b) && b.card));
+  // (D87: picked every card whatever PRACTICE_STAKED; while it's off (D57) each stays the tracked row it is, tagged
+  // (topN, practiceTracked): never staked, the record, gates and fits unmoved, the Algorithm tab's Practice row as if 0.5u)
+  const forced = mmaPracticePicks(mlNew, bouts, ledger.bets.filter((b) => (b.market ?? 'ml') === 'ml' && !b.void && !isTracked(b) && b.card));
   for (const b of mlNew) {
     const t = forced.get(b.id);
     if (!t) continue;
+    if (!PRACTICE_STAKED) {
+      if (isTracked(b)) Object.assign(b, practiceTag(t));
+      continue;
+    }
     delete b.trackUnits;
     Object.assign(b, { intent: 'edge', units: PRACTICE_UNITS, topN: t, practice: `practice: its card's #${t.rank} of ${t.quota}${t.main ? ' (main card)' : ''} by edge before the vig (+${Math.round(t.edge * 1000) / 10} points over the Book's no-vig), short of the vig` });
   }
-  if (forced.size) log.log(`${SPORT}${dry ? ' (dry)' : ''}: the card's practice picks: ${forced.size} (${PRACTICE_N.mma} a card, every main-card bout with an edge before the vig, at ${PRACTICE_UNITS}u): ${mlNew.filter((b) => forced.has(b.id)).map((b) => `${b.pick} ${b.odds > 0 ? '+' : ''}${b.odds} +${forced.get(b.id).edge}`).join(', ')}`);
+  if (forced.size) log.log(`${SPORT}${dry ? ' (dry)' : ''}: the card's practice picks: ${forced.size} (${PRACTICE_N.mma} a card, every main-card bout with an edge before the vig, ${PRACTICE_STAKED ? `at ${PRACTICE_UNITS}u` : 'tracked at no stake (D87)'}): ${mlNew.filter((b) => forced.has(b.id)).map((b) => `${b.pick} ${b.odds > 0 ? '+' : ''}${b.odds} +${forced.get(b.id).edge}`).join(', ')}`);
   for (const b of pending) {
     log.log(`${SPORT}${dry ? ' (dry)' : ''}: ${isTracked(b) ? 'tracked ' : ''}${b.matchup}: ${b.pick} ${b.odds > 0 ? '+' : ''}${b.odds} ${isTracked(b) ? `0u (${b.trackUnits}u as an action bet; ${b.context.why})` : `${b.units}u ${levelOf(b, kellyOf(b.odds, b.p), b.p)}`} model ${b.model} fair ${b.fair} (${b.fairFrom}) p ${b.p} ev ${b.ev}${b.context.flags.length ? ` [${b.context.flags.join('; ')}]` : ''}`);
     ledger.bets.push(b);

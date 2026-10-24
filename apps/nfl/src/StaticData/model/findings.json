@@ -295,6 +295,13 @@
    "sport": "nba",
    "ref": "D84",
    "text": "Pattern bands (LOVE/LOCK by an earned segment) not beyond noise by season (z 1.2): staged on the Live/Staged switch"
+  },
+  {
+   "date": "2026-10-23",
+   "group": "shipped",
+   "sport": null,
+   "ref": "D87",
+   "text": "Practice picks tracked again: tagged at no stake, Algorithm tab shows Practice (as if 0.5u) and PASS (1u flat), never the record"
   }
  ]
 }

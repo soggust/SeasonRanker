@@ -884,8 +884,15 @@ export const PRACTICE_SPLIT = true;
 // stay tracked rows like every other one short of the vig, graded and learned from at no stake. DECISIONS.md D57
 export const PRACTICE_STAKED = false;
 export const PRACTICE_N = { nfl: 15, nhl: 6, mlb: 3, nba: 8, mma: 3 };
-// (a slate's practice pick: placed for the slate, not for clearing the vig)
-export const isPracticeTop = (b) => !!b?.topN;
+// (a slate's practice pick: placed for the slate, not for clearing the vig. A tracked row tagged as the slate's
+// practice candidate (practiceTracked, D87: picked every run whatever PRACTICE_STAKED, at no stake) is never one: to
+// the record, the gates, the caps and the learning it stays the tracked row it was before its tag)
+export const isPracticeTop = (b) => !!b?.topN && !b?.practiceTracked && !isTracked(b);
+// (the slate's practice candidate kept as a tracked row (D87): the Algorithm tab's Practice row as if bet at
+// PRACTICE_UNITS; never staked, never in the record)
+export const isPracticeTracked = (b) => isTracked(b) && !!b?.practiceTracked;
+// (its tag on a tracked row: the candidate's rank and quota, and the flag)
+export const practiceTag = (t) => ({ topN: { rank: t.rank, quota: t.quota, slate: t.slate, edge: t.edge, ...(t.main ? { main: true } : {}) }, practiceTracked: true });
 // (one kept off the main record: a practice pick while the split's on)
 export const inPractice = (b) => PRACTICE_SPLIT && isPracticeTop(b);
 // (a game's share of its slate's N: N over the slate's games, at least one; each game's its own, so a game whose

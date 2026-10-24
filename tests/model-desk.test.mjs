@@ -578,7 +578,7 @@ test("the Algorithm tab (the owner, 2026-10-19): the time range and the chips on
   assert.doesNotMatch(ts, /hoodOpen|selfcheck\.json|scorecard\.json|news-signals\.json|miss-review\.json/);
   // (By Confidence: LOCK at the top, PASS at the bottom, the practice picks between LIKE and PASS)
   // (two bands under the trial, D73: a LOCK row only where the shown record has LOCK bets)
-  assert.ok(ts.includes("this.bandRows = [...(lock.bets ? [lock] : []), histBand('LOVE'), histBand('LIKE'), h.practice, histBand('PASS')];"));
+  assert.ok(ts.includes("this.bandRows = [...(lock.bets ? [lock] : []), histBand('LOVE'), histBand('LIKE'), h.practice, h.pass, ...(stakedPass.bets || stakedPass.open ? [stakedPass] : [])];"), 'D87: Practice and PASS the tracked rows as if bet');
   // (By Sport's rows and the closed bets by their league's mark; a closed bet's band in its colour, no "replayed at the")
   assert.match(html, /@if \(t\.sport\) \{<span class="desk-history-league">/);
   assert.match(html, /class="desk-history-tag" \[ngClass\]="bandClass\(b\)"/);

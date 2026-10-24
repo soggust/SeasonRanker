@@ -1557,6 +1557,15 @@ mat-icon.desk-gloves {
   --band-color: #{v.$caution};
 }
 
+// (By Confidence's Practice and PASS: tracked rows as if bet (D87), never the record: a small "(tracked)" by the name)
+.desk-history-table .desk-tracked-note {
+  color: v.$text-faint;
+  font-size: v.$fs-11;
+  font-style: normal;
+  font-weight: 400;
+  margin-left: 4px;
+}
+
 // (By Confidence's PASS: the row muted, as a PASS bet in Recently closed, apart from the practice picks' faint name
 // (the owner, 2026-10-19: Practice and PASS swapped looks))
 .desk-history-table .desk-tier-pass {

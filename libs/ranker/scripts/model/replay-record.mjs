@@ -654,19 +654,22 @@ export function replayRecord(V, sport, rows, { events = null, names = () => ({ h
   for (const b of bets) betOn.set(b.event, (betOn.get(b.event) ?? 0) + 1);
   const passBy = new Map();
   for (const r of passes) (passBy.get(String(r.x.event)) ?? passBy.set(String(r.x.event), []).get(String(r.x.event))).push(r);
-  // (none while the desk stakes no practice pick (PRACTICE_STAKED off, D57): they stay among the passes, tracked)
-  if (V.desk.PRACTICE_STAKED !== false) for (const [event, rs] of passBy) {
+  // (picked whatever PRACTICE_STAKED (D87); while it's off (D57) they're tracked: kept apart (tracked), never among the
+  // bets (the record, the bands, the bars, the strip), tallied as if bet at the practice stake (summarize's practice))
+  const staked = V.desk.PRACTICE_STAKED !== false;
+  const tracked = [];
+  for (const [event, rs] of passBy) {
     const quota = V.desk.slateQuota(practiceN, gamesOn.get(etDay(rs[0].x.t))?.size ?? 1);
     const need = Math.max(0, quota - (betOn.get(event) ?? 0));
     const picked = rs.filter((r) => r.sd.edge > 0).sort((a, b) => b.sd.edge - a.sd.edge).slice(0, need);
     for (const r of picked) {
       r.practice = true;
-      bets.push(betOf(r.x, r.sd, { units: practiceUnits, band: 'medium', practice: true, timing: r.x.kind === 'o' ? 'open' : 'close', fb: r.x.kind === 'o' ? fairBeatOf(r.x, r.sd.over, r.sd.odds, closes.get(r.x.key ?? r.x.id.replace(/:o$/, '')) ?? null) : null, names, survival: 1 }));
+      (staked ? bets : tracked).push(betOf(r.x, r.sd, { units: practiceUnits, band: 'medium', practice: true, timing: r.x.kind === 'o' ? 'open' : 'close', fb: r.x.kind === 'o' ? fairBeatOf(r.x, r.sd.over, r.sd.odds, closes.get(r.x.key ?? r.x.id.replace(/:o$/, '')) ?? null) : null, names, survival: 1 }));
     }
   }
   bets.sort((a, b) => a.t - b.t || a.id.localeCompare(b.id));
   const passed = passes.filter((r) => !r.practice);
-  const sumArgs = { epoch, now, flags, rows: { open: opens.size, close: closes.size }, seasonsWithProps: new Set([...opens.values(), ...closes.values()].filter((x) => x.market === 'prop').map((x) => x.season)), seasonsAll: new Set([...opens.values(), ...closes.values()].map((x) => x.season)) };
+  const sumArgs = { epoch, now, flags, tracked, rows: { open: opens.size, close: closes.size }, seasonsWithProps: new Set([...opens.values(), ...closes.values()].filter((x) => x.market === 'prop').map((x) => x.season)), seasonsAll: new Set([...opens.values(), ...closes.values()].map((x) => x.season)) };
   // (the band lab's dump (band-lab.mjs): every bet as placed before the bands, its reasons and holds, the passes in
   // brief and the summary's arguments, so a band rule can be tried on the whole replay without a refit)
   if (process.env.REPLAY_DUMP) {
@@ -802,9 +805,12 @@ function betOf(x, sd, { units, band, practice, timing, fb = null, names, surviva
 }
 
 // The file's content from the replayed bets (practice picks among them, flagged) and the rows that passed
-export function summarize(sport, bets, passed, { epoch, now, flags, rows, seasonsWithProps, seasonsAll }) {
+export function summarize(sport, bets, passed, { epoch, now, flags, rows, seasonsWithProps, seasonsAll, tracked = [] }) {
   const real = bets.filter((b) => !b.practice);
-  const practice = bets.filter((b) => b.practice);
+  // (the practice picks: staked ones (PRACTICE_STAKED on), else the tracked candidates as if bet at the practice stake (D87))
+  const practice = [...bets.filter((b) => b.practice), ...tracked];
+  // (the passes as day rows at a flat unit on the Bot's side (the pass tally's), for the time range's PASS row)
+  const passRows = passed.map((r) => ({ t: r.x.t, band: 'pass', res: r.x.y === null || r.x.y === undefined ? 'P' : (r.x.y === 1) === r.sd.over ? 'W' : 'L', units: 1, profit: r.x.y === null || r.x.y === undefined ? 0 : (r.x.y === 1) === r.sd.over ? r2(dec(r.sd.odds) - 1) : -1, beat: null }));
   const years = {};
   for (const y of new Set(bets.map((b) => yearOf(b.t)))) {
     const mine = real.filter((b) => yearOf(b.t) === y);
@@ -857,7 +863,7 @@ export function summarize(sport, bets, passed, { epoch, now, flags, rows, season
     days: daysOf(real),
     practiceDays: daysOf(practice),
     // (every day's buckets by band, the Algorithm tab's range (the owner, 2026-10-19): dailyOf)
-    daily: dailyOf(bets, settledAt),
+    daily: dailyOf(bets, settledAt, [...tracked, ...passRows]),
     streak: decided.length ? `${decided[0].res}${n}` : null,
     streakAt: decided.slice(0, Math.min(n, STREAK_CAP)).map((b) => new Date(settledAt(b)).toISOString()),
     brokeAt: decided[n] ? new Date(settledAt(decided[n])).toISOString() : null,
@@ -902,15 +908,17 @@ export function summarize(sport, bets, passed, { epoch, now, flags, rows, season
 // a range without the bets; All time reads the whole file's tallies, so the buckets start at the newest bet's year (a
 // week before it, for a week across the turn of the year) and the file stays small
 export const DAILY_COLS = ['won', 'lost', 'push', 'staked', 'profit', 'beat', 'beatN', 'clv'];
-export function dailyOf(bets, settledAt = (b) => b.t + GAME_HOURS * 36e5) {
+export function dailyOf(bets, settledAt = (b) => b.t + GAME_HOURS * 36e5, extra = []) {
   if (!bets.length) return { cols: DAILY_COLS, from: null, bands: {} };
   const year = Number(etDay(Math.max(...bets.map(settledAt))).slice(0, 4));
   const from = etDay(Date.UTC(year, 0, 1, 12) - 7 * 864e5);
   const bands = {};
-  for (const b of bets) {
+  // (extra: the tracked practice candidates (band 'practice') and the passes (band 'pass'), D87: buckets of their
+  // own, never the bets' year or bands)
+  for (const b of [...bets, ...extra]) {
     const day = etDay(settledAt(b));
     if (day < from) continue;
-    const band = b.practice ? 'practice' : b.band;
+    const band = b.band === 'pass' ? 'pass' : b.practice ? 'practice' : b.band;
     const d = ((bands[band] ??= {})[day] ??= [0, 0, 0, 0, 0, 0, 0, 0]);
     d[b.res === 'W' ? 0 : b.res === 'L' ? 1 : 2]++;
     d[3] = r2(d[3] + b.units);

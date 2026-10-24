@@ -1156,9 +1156,28 @@ test('D56 beat the fair close: the bet\'s own price has a positive expected retu
 test('D57 the slate practice picks are tracked, not staked: no pick forced into a bet in the props, MMA or the replay', async () => {
   const D = await import('../libs/ranker/scripts/model/desk.mjs');
   assert.equal(D.PRACTICE_STAKED, false);
-  assert.match(src('run.mjs'), /const forced = PRACTICE_STAKED \? practicePicks\(r, candidates\) : new Map\(\);/);
-  assert.match(src('mma-desk.mjs'), /const forced = !PRACTICE_STAKED \? new Map\(\) : mmaPracticePicks\(/);
-  assert.match(src('replay-record.mjs'), /if \(V\.desk\.PRACTICE_STAKED !== false\) for \(const \[event, rs\] of passBy\)/);
+  // (D87: still picked, never staked: the props' topN only while staked, MMA's tag on a tracked row only, the replay's
+  // practice rows apart from its bets)
+  assert.match(src('run.mjs'), /const topN = x\.researchPractice \?\? \(PRACTICE_STAKED \? slatePick : null\);/);
+  assert.match(src('mma-desk.mjs'), /if \(!PRACTICE_STAKED\) \{\s*if \(isTracked\(b\)\) Object\.assign\(b, practiceTag\(t\)\);\s*continue;/);
+  assert.match(src('replay-record.mjs'), /const staked = V\.desk\.PRACTICE_STAKED !== false;/);
+  assert.match(src('replay-record.mjs'), /\(staked \? bets : tracked\)\.push\(betOf\(/);
+});
+
+test('D87 the slate practice picks keep being picked and are tagged on their tracked rows at no stake; the Algorithm tab shows them as if bet', async () => {
+  const D = await import('../libs/ranker/scripts/model/desk.mjs');
+  const t = { intent: 'track', units: 0, trackUnits: 0.5, status: 'won', profit: 0, odds: -110, ...D.practiceTag({ rank: 1, quota: 1, slate: 8, edge: 0.01 }) };
+  assert.equal(D.isPracticeTracked(t), true);
+  assert.equal(D.isPracticeTop(t), false);
+  assert.equal(D.isPracticeTop(D.learnView(t)), false, 'as the learning reads it, still not a practice pick');
+  assert.equal(D.record([t]).bets + D.practiceRecord([t]).bets, 0);
+  assert.match(src('run.mjs'), /const forced = practicePicks\(r, candidates\);/);
+  assert.match(src('mma-desk.mjs'), /const forced = mmaPracticePicks\(mlNew,/);
+  const page = fs.readFileSync(path.resolve('libs/ranker/src/engine/book/replay-history.ts'), 'utf8');
+  assert.match(page, /const units = practiceTrackedOf\(b\) \? PRACTICE_UNITS : 1;/);
+  assert.match(page, /export const PRACTICE_UNITS = 0\.5;/);
+  const decisions = fs.readFileSync(path.resolve('libs/ranker/scripts/model/DECISIONS.md'), 'utf8');
+  assert.ok(decisions.includes('### D87.'));
 });
 
 test('D59 the MMA fair calibrated for the favorite-longshot bias: a soft fit toward the raw fair, walk-forward, off by default till the owner\'s call, the raw fair kept as the benchmark', async () => {
@@ -1981,7 +2000,7 @@ test("D84 win patterns: staged in the band lab only, the owner's 2% Kelly floor 
   assert.ok(lab.includes('b.kelly >= (variant.kelly ?? 0.02)'), 'the default Kelly floor is the owner\'s 2%');
   for (const f of ['run.mjs', 'desk.mjs', 'replay-record.mjs', 'picks.mjs']) assert.ok(!fs.readFileSync(path.join(import.meta.dirname, '../libs/ranker/scripts/model', f), 'utf8').includes("from './patterns.mjs'"), `${f} doesn't read the patterns (none shipped)`);
   const decisions = fs.readFileSync(path.join(import.meta.dirname, '../libs/ranker/scripts/model/DECISIONS.md'), 'utf8');
-  assert.ok(decisions.includes('### D84.'));
+  assert.ok(decisions.includes('### D87.'));
 });
 
 test('D86 the history audit re-records, never changes a rule; the gate vetoes a candidate worse on the newest seasons', async () => {
