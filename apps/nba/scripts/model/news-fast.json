@@ -1,7 +1,7 @@
 {
  "sport": "nba",
  "cursor": {
-  "rotowirenba.bsky.social": "2026-10-24T01:22:39.000Z",
+  "rotowirenba.bsky.social": "2026-10-24T03:06:26.000Z",
   "insidenbanews.bsky.social": "2026-10-23T18:36:35.740Z",
   "shamsbot.bsky.social": "2026-10-23T21:16:06.000Z"
  },
@@ -1188,6 +1188,45 @@
    "kind": "status",
    "confidence": 0.9,
    "text": "Paolo Banchero: Doubtful to return Friday \n\n https://www.rotowire.com/basketball/player/paolo-banchero-5700"
+  },
+  {
+   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mylkkaynhm27|cedriccoward|out|status",
+   "at": "2026-10-24T01:36:32.000Z",
+   "seen": "2026-10-24T03:15:48.192Z",
+   "handle": "rotowirenba.bsky.social",
+   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mylkkaynhm27",
+   "player": "Cedric Coward",
+   "team": null,
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.9,
+   "text": "Cedric Coward: Won't play Friday \n\n https://www.rotowire.com/basketball/player/cedric-coward-6592"
+  },
+  {
+   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mylkpvmcsd24|ggjackson|none|starting",
+   "at": "2026-10-24T01:39:42.000Z",
+   "seen": "2026-10-24T03:15:48.192Z",
+   "handle": "rotowirenba.bsky.social",
+   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mylkpvmcsd24",
+   "player": "GG Jackson",
+   "team": null,
+   "status": "none",
+   "kind": "starting",
+   "confidence": 0.9,
+   "text": "GG Jackson: Starting Friday \n\n https://www.rotowire.com/basketball/player/gg-jackson-5946"
+  },
+  {
+   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mylkv5m7w72t|grahamike|none|starting",
+   "at": "2026-10-24T01:42:38.000Z",
+   "seen": "2026-10-24T03:15:48.192Z",
+   "handle": "rotowirenba.bsky.social",
+   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mylkv5m7w72t",
+   "player": "Graham Ike",
+   "team": null,
+   "status": "none",
+   "kind": "starting",
+   "confidence": 0.9,
+   "text": "Graham Ike: Starting Friday \n\n https://www.rotowire.com/basketball/player/graham-ike-6968"
   }
  ]
 }

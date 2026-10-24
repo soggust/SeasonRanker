@@ -6003,6 +6003,813 @@
     "own": "2026-10-24T01:22:39.000Z",
     "why": "@rotowirenba.bsky.social: Paolo Banchero: Doubtful to return Friday \n\n https://w"
    }
+  },
+  "401909854|cameronjohnson|out": {
+   "game": "401909854",
+   "start": "2026-10-24T23:30Z",
+   "team": "5",
+   "name": "Cameron Johnson",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-10-24T00:23:14.453Z",
+    "own": "2026-10-23T23:08:34.000Z",
+    "why": "@rotowirenba.bsky.social: Cameron Johnson: Won't play Saturday \n\n https://www.ro"
+   }
+  },
+  "401909854|reedsheppard|out": {
+   "game": "401909854",
+   "start": "2026-10-24T23:30Z",
+   "team": "5",
+   "name": "Reed Sheppard",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-10-24T00:23:14.453Z",
+    "own": "2026-10-24T00:21:44.000Z",
+    "why": "@rotowirenba.bsky.social: Reed Sheppard: Won't play Friday \n\n https://www.rotowi"
+   }
+  },
+  "401909854|cooperflagg|out": {
+   "game": "401909854",
+   "start": "2026-10-24T23:30Z",
+   "team": "5",
+   "name": "Cooper Flagg",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-10-24T01:08:03.622Z",
+    "own": "2026-10-24T01:04:06.000Z",
+    "why": "@rotowirenba.bsky.social: Cooper Flagg: Won't return Friday \n\n https://www.rotow"
+   }
+  },
+  "401909854|jalenduren|q": {
+   "game": "401909854",
+   "start": "2026-10-24T23:30Z",
+   "team": "5",
+   "name": "Jalen Duren",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-10-24T01:35:11.977Z",
+    "own": "2026-10-24T01:16:01.000Z",
+    "why": "@rotowirenba.bsky.social: Jalen Duren: Questionable to return Friday \n\n https://"
+   }
+  },
+  "401909854|paolobanchero|out": {
+   "game": "401909854",
+   "start": "2026-10-24T23:30Z",
+   "team": "5",
+   "name": "Paolo Banchero",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-10-24T01:35:11.977Z",
+    "own": "2026-10-24T01:22:39.000Z",
+    "why": "@rotowirenba.bsky.social: Paolo Banchero: Doubtful to return Friday \n\n https://w"
+   }
+  },
+  "401909854|tylerbilodeau|out": {
+   "game": "401909854",
+   "start": "2026-10-24T23:30Z",
+   "team": "17",
+   "name": "Tyler Bilodeau",
+   "status": "out",
+   "athlete": "5105626",
+   "espn": {
+    "seen": "2026-10-24T03:13:43.241Z",
+    "own": "2026-10-23T21:08:00.000Z"
+   }
+  },
+  "401909855|tackofall|out": {
+   "game": "401909855",
+   "start": "2026-10-24T23:30Z",
+   "team": "20",
+   "name": "Tacko Fall",
+   "status": "out",
+   "athlete": "3904625",
+   "espn": {
+    "seen": "2026-10-24T03:13:43.241Z",
+    "own": "2026-10-23T21:10:00.000Z"
+   }
+  },
+  "401909855|deanwade|q": {
+   "game": "401909855",
+   "start": "2026-10-24T23:30Z",
+   "team": "20",
+   "name": "Dean Wade",
+   "status": "q",
+   "athlete": "3912848",
+   "espn": {
+    "seen": "2026-10-24T03:13:43.241Z",
+    "own": "2026-10-23T21:07:00.000Z"
+   }
+  },
+  "401909855|lebronjames|q": {
+   "game": "401909855",
+   "start": "2026-10-24T23:30Z",
+   "team": "20",
+   "name": "LeBron James",
+   "status": "q",
+   "athlete": "1966",
+   "espn": {
+    "seen": "2026-10-24T03:13:43.241Z",
+    "own": "2026-10-23T21:03:00.000Z"
+   }
+  },
+  "401909855|dominickbarlow|out": {
+   "game": "401909855",
+   "start": "2026-10-24T23:30Z",
+   "team": "20",
+   "name": "Dominick Barlow",
+   "status": "out",
+   "athlete": "4870562",
+   "espn": {
+    "seen": "2026-10-24T03:13:43.241Z",
+    "own": "2026-10-19T21:07:00.000Z"
+   }
+  },
+  "401909855|arielhukporti|out": {
+   "game": "401909855",
+   "start": "2026-10-24T23:30Z",
+   "team": "20",
+   "name": "Ariel Hukporti",
+   "status": "out",
+   "athlete": "4871141",
+   "espn": {
+    "seen": "2026-10-24T03:13:43.241Z",
+    "own": "2026-10-06T19:17:00.000Z"
+   }
+  },
+  "401909855|cameronjohnson|out": {
+   "game": "401909855",
+   "start": "2026-10-24T23:30Z",
+   "team": "20",
+   "name": "Cameron Johnson",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-10-24T00:23:14.453Z",
+    "own": "2026-10-23T23:08:34.000Z",
+    "why": "@rotowirenba.bsky.social: Cameron Johnson: Won't play Saturday \n\n https://www.ro"
+   }
+  },
+  "401909855|reedsheppard|out": {
+   "game": "401909855",
+   "start": "2026-10-24T23:30Z",
+   "team": "20",
+   "name": "Reed Sheppard",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-10-24T00:23:14.453Z",
+    "own": "2026-10-24T00:21:44.000Z",
+    "why": "@rotowirenba.bsky.social: Reed Sheppard: Won't play Friday \n\n https://www.rotowi"
+   }
+  },
+  "401909855|cooperflagg|out": {
+   "game": "401909855",
+   "start": "2026-10-24T23:30Z",
+   "team": "20",
+   "name": "Cooper Flagg",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-10-24T01:08:03.622Z",
+    "own": "2026-10-24T01:04:06.000Z",
+    "why": "@rotowirenba.bsky.social: Cooper Flagg: Won't return Friday \n\n https://www.rotow"
+   }
+  },
+  "401909855|jalenduren|q": {
+   "game": "401909855",
+   "start": "2026-10-24T23:30Z",
+   "team": "20",
+   "name": "Jalen Duren",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-10-24T01:35:11.977Z",
+    "own": "2026-10-24T01:16:01.000Z",
+    "why": "@rotowirenba.bsky.social: Jalen Duren: Questionable to return Friday \n\n https://"
+   }
+  },
+  "401909855|paolobanchero|out": {
+   "game": "401909855",
+   "start": "2026-10-24T23:30Z",
+   "team": "20",
+   "name": "Paolo Banchero",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-10-24T01:35:11.977Z",
+    "own": "2026-10-24T01:22:39.000Z",
+    "why": "@rotowirenba.bsky.social: Paolo Banchero: Doubtful to return Friday \n\n https://w"
+   }
+  },
+  "401909857|nicclaxton|out": {
+   "game": "401909857",
+   "start": "2026-10-25T00:00Z",
+   "team": "4",
+   "name": "Nic Claxton",
+   "status": "out",
+   "athlete": "4278067",
+   "espn": {
+    "seen": "2026-10-24T03:13:43.241Z",
+    "own": "2026-10-19T17:38:00.000Z"
+   }
+  },
+  "401909857|cameronjohnson|out": {
+   "game": "401909857",
+   "start": "2026-10-25T00:00Z",
+   "team": "4",
+   "name": "Cameron Johnson",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-10-24T00:23:14.453Z",
+    "own": "2026-10-23T23:08:34.000Z",
+    "why": "@rotowirenba.bsky.social: Cameron Johnson: Won't play Saturday \n\n https://www.ro"
+   }
+  },
+  "401909857|reedsheppard|out": {
+   "game": "401909857",
+   "start": "2026-10-25T00:00Z",
+   "team": "4",
+   "name": "Reed Sheppard",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-10-24T00:23:14.453Z",
+    "own": "2026-10-24T00:21:44.000Z",
+    "why": "@rotowirenba.bsky.social: Reed Sheppard: Won't play Friday \n\n https://www.rotowi"
+   }
+  },
+  "401909857|cooperflagg|out": {
+   "game": "401909857",
+   "start": "2026-10-25T00:00Z",
+   "team": "4",
+   "name": "Cooper Flagg",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-10-24T01:08:03.622Z",
+    "own": "2026-10-24T01:04:06.000Z",
+    "why": "@rotowirenba.bsky.social: Cooper Flagg: Won't return Friday \n\n https://www.rotow"
+   }
+  },
+  "401909857|jalenduren|q": {
+   "game": "401909857",
+   "start": "2026-10-25T00:00Z",
+   "team": "4",
+   "name": "Jalen Duren",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-10-24T01:35:11.977Z",
+    "own": "2026-10-24T01:16:01.000Z",
+    "why": "@rotowirenba.bsky.social: Jalen Duren: Questionable to return Friday \n\n https://"
+   }
+  },
+  "401909857|paolobanchero|out": {
+   "game": "401909857",
+   "start": "2026-10-25T00:00Z",
+   "team": "4",
+   "name": "Paolo Banchero",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-10-24T01:35:11.977Z",
+    "own": "2026-10-24T01:22:39.000Z",
+    "why": "@rotowirenba.bsky.social: Paolo Banchero: Doubtful to return Friday \n\n https://w"
+   }
+  },
+  "401909857|ajdybantsa|out": {
+   "game": "401909857",
+   "start": "2026-10-25T00:00Z",
+   "team": "27",
+   "name": "AJ Dybantsa",
+   "status": "out",
+   "athlete": "5142718",
+   "espn": {
+    "seen": "2026-10-24T03:13:43.241Z",
+    "own": "2026-10-22T16:22:00.000Z"
+   }
+  },
+  "401909857|tristanvukcevic|out": {
+   "game": "401909857",
+   "start": "2026-10-25T00:00Z",
+   "team": "27",
+   "name": "Tristan Vukcevic",
+   "status": "out",
+   "athlete": "4997537",
+   "espn": {
+    "seen": "2026-10-24T03:13:43.241Z",
+    "own": "2026-10-01T19:11:00.000Z"
+   }
+  },
+  "401909857|jamirwatkins|out": {
+   "game": "401909857",
+   "start": "2026-10-25T00:00Z",
+   "team": "27",
+   "name": "Jamir Watkins",
+   "status": "out",
+   "athlete": "4606840",
+   "espn": {
+    "seen": "2026-10-24T03:13:43.241Z",
+    "own": "2026-07-30T20:11:00.000Z"
+   }
+  },
+  "401909858|cooperflagg|out": {
+   "game": "401909858",
+   "start": "2026-10-25T00:00Z",
+   "team": "6",
+   "name": "Cooper Flagg",
+   "status": "out",
+   "athlete": "5041939",
+   "espn": {
+    "seen": "2026-10-24T03:13:43.241Z",
+    "own": "2026-10-24T02:18:00.000Z"
+   },
+   "bluesky": {
+    "seen": "2026-10-24T01:08:03.622Z",
+    "own": "2026-10-24T01:04:06.000Z",
+    "why": "@rotowirenba.bsky.social: Cooper Flagg: Won't return Friday \n\n https://www.rotow"
+   }
+  },
+  "401909858|jetthoward|out": {
+   "game": "401909858",
+   "start": "2026-10-25T00:00Z",
+   "team": "6",
+   "name": "Jett Howard",
+   "status": "out",
+   "athlete": "5105806",
+   "espn": {
+    "seen": "2026-10-24T03:13:43.241Z",
+    "own": "2026-10-23T22:02:00.000Z"
+   }
+  },
+  "401909858|calebmartin|out": {
+   "game": "401909858",
+   "start": "2026-10-25T00:00Z",
+   "team": "6",
+   "name": "Caleb Martin",
+   "status": "out",
+   "athlete": "3138160",
+   "espn": {
+    "seen": "2026-10-24T03:13:43.241Z",
+    "own": "2026-10-22T20:15:00.000Z"
+   }
+  },
+  "401909858|santialdama|out": {
+   "game": "401909858",
+   "start": "2026-10-25T00:00Z",
+   "team": "6",
+   "name": "Santi Aldama",
+   "status": "out",
+   "athlete": "4593125",
+   "espn": {
+    "seen": "2026-10-24T03:13:43.241Z",
+    "own": "2026-10-22T20:13:00.000Z"
+   }
+  },
+  "401909858|tarikbiberovic|out": {
+   "game": "401909858",
+   "start": "2026-10-25T00:00Z",
+   "team": "6",
+   "name": "Tarik Biberovic",
+   "status": "out",
+   "athlete": "5148538",
+   "espn": {
+    "seen": "2026-10-24T03:13:43.241Z",
+    "own": "2026-10-22T20:12:00.000Z"
+   }
+  },
+  "401909858|derecklively|out": {
+   "game": "401909858",
+   "start": "2026-10-25T00:00Z",
+   "team": "6",
+   "name": "Dereck Lively II",
+   "status": "out",
+   "athlete": "4683688",
+   "espn": {
+    "seen": "2026-10-24T03:13:43.241Z",
+    "own": "2026-10-22T20:10:00.000Z"
+   }
+  },
+  "401909858|kyrieirving|q": {
+   "game": "401909858",
+   "start": "2026-10-25T00:00Z",
+   "team": "6",
+   "name": "Kyrie Irving",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-10-23T22:50:14.417Z",
+    "own": "2026-10-23T21:44:45.000Z",
+    "why": "@rotowirenba.bsky.social: Kyrie Irving: Will be on minutes restriction Friday \n\n"
+   }
+  },
+  "401909858|cameronjohnson|out": {
+   "game": "401909858",
+   "start": "2026-10-25T00:00Z",
+   "team": "6",
+   "name": "Cameron Johnson",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-10-24T00:23:14.453Z",
+    "own": "2026-10-23T23:08:34.000Z",
+    "why": "@rotowirenba.bsky.social: Cameron Johnson: Won't play Saturday \n\n https://www.ro"
+   }
+  },
+  "401909858|reedsheppard|out": {
+   "game": "401909858",
+   "start": "2026-10-25T00:00Z",
+   "team": "6",
+   "name": "Reed Sheppard",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-10-24T00:23:14.453Z",
+    "own": "2026-10-24T00:21:44.000Z",
+    "why": "@rotowirenba.bsky.social: Reed Sheppard: Won't play Friday \n\n https://www.rotowi"
+   }
+  },
+  "401909858|jalenduren|q": {
+   "game": "401909858",
+   "start": "2026-10-25T00:00Z",
+   "team": "6",
+   "name": "Jalen Duren",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-10-24T01:35:11.977Z",
+    "own": "2026-10-24T01:16:01.000Z",
+    "why": "@rotowirenba.bsky.social: Jalen Duren: Questionable to return Friday \n\n https://"
+   }
+  },
+  "401909858|paolobanchero|out": {
+   "game": "401909858",
+   "start": "2026-10-25T00:00Z",
+   "team": "6",
+   "name": "Paolo Banchero",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-10-24T01:35:11.977Z",
+    "own": "2026-10-24T01:22:39.000Z",
+    "why": "@rotowirenba.bsky.social: Paolo Banchero: Doubtful to return Friday \n\n https://w"
+   }
+  },
+  "401909858|tobiasharris|out": {
+   "game": "401909858",
+   "start": "2026-10-25T00:00Z",
+   "team": "24",
+   "name": "Tobias Harris",
+   "status": "out",
+   "athlete": "6440",
+   "espn": {
+    "seen": "2026-10-24T03:13:43.241Z",
+    "own": "2026-10-22T22:03:00.000Z"
+   }
+  },
+  "401909858|jaydenquaintance|out": {
+   "game": "401909858",
+   "start": "2026-10-25T00:00Z",
+   "team": "24",
+   "name": "Jayden Quaintance",
+   "status": "out",
+   "athlete": "5101845",
+   "espn": {
+    "seen": "2026-10-24T03:13:43.241Z",
+    "own": "2026-10-05T21:43:00.000Z"
+   }
+  },
+  "401909856|mouhamedgueye|out": {
+   "game": "401909856",
+   "start": "2026-10-25T00:30Z",
+   "team": "1",
+   "name": "Mouhamed Gueye",
+   "status": "out",
+   "athlete": "4712863",
+   "espn": {
+    "seen": "2026-10-24T03:13:43.241Z",
+    "own": "2026-10-19T19:38:00.000Z"
+   }
+  },
+  "401909856|henriveesaar|out": {
+   "game": "401909856",
+   "start": "2026-10-25T00:30Z",
+   "team": "1",
+   "name": "Henri Veesaar",
+   "status": "out",
+   "athlete": "5105571",
+   "espn": {
+    "seen": "2026-10-24T03:13:43.241Z",
+    "own": "2026-09-21T19:50:00.000Z"
+   }
+  },
+  "401909856|cameronjohnson|out": {
+   "game": "401909856",
+   "start": "2026-10-25T00:30Z",
+   "team": "1",
+   "name": "Cameron Johnson",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-10-24T00:23:14.453Z",
+    "own": "2026-10-23T23:08:34.000Z",
+    "why": "@rotowirenba.bsky.social: Cameron Johnson: Won't play Saturday \n\n https://www.ro"
+   }
+  },
+  "401909856|reedsheppard|out": {
+   "game": "401909856",
+   "start": "2026-10-25T00:30Z",
+   "team": "1",
+   "name": "Reed Sheppard",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-10-24T00:23:14.453Z",
+    "own": "2026-10-24T00:21:44.000Z",
+    "why": "@rotowirenba.bsky.social: Reed Sheppard: Won't play Friday \n\n https://www.rotowi"
+   },
+   "athlete": "4711272",
+   "espn": {
+    "seen": "2026-10-24T03:13:43.241Z",
+    "own": "2026-10-24T00:21:00.000Z"
+   }
+  },
+  "401909856|cooperflagg|out": {
+   "game": "401909856",
+   "start": "2026-10-25T00:30Z",
+   "team": "1",
+   "name": "Cooper Flagg",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-10-24T01:08:03.622Z",
+    "own": "2026-10-24T01:04:06.000Z",
+    "why": "@rotowirenba.bsky.social: Cooper Flagg: Won't return Friday \n\n https://www.rotow"
+   }
+  },
+  "401909856|jalenduren|q": {
+   "game": "401909856",
+   "start": "2026-10-25T00:30Z",
+   "team": "1",
+   "name": "Jalen Duren",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-10-24T01:35:11.977Z",
+    "own": "2026-10-24T01:16:01.000Z",
+    "why": "@rotowirenba.bsky.social: Jalen Duren: Questionable to return Friday \n\n https://"
+   }
+  },
+  "401909856|paolobanchero|out": {
+   "game": "401909856",
+   "start": "2026-10-25T00:30Z",
+   "team": "1",
+   "name": "Paolo Banchero",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-10-24T01:35:11.977Z",
+    "own": "2026-10-24T01:22:39.000Z",
+    "why": "@rotowirenba.bsky.social: Paolo Banchero: Doubtful to return Friday \n\n https://w"
+   }
+  },
+  "401909859|spencerjones|out": {
+   "game": "401909859",
+   "start": "2026-10-25T01:00Z",
+   "team": "7",
+   "name": "Spencer Jones",
+   "status": "out",
+   "athlete": "4592427",
+   "espn": {
+    "seen": "2026-10-24T03:13:43.241Z",
+    "own": "2026-10-23T23:09:00.000Z"
+   }
+  },
+  "401909859|cameronjohnson|out": {
+   "game": "401909859",
+   "start": "2026-10-25T01:00Z",
+   "team": "7",
+   "name": "Cameron Johnson",
+   "status": "out",
+   "athlete": "3138196",
+   "espn": {
+    "seen": "2026-10-24T03:13:43.241Z",
+    "own": "2026-10-23T23:08:00.000Z"
+   },
+   "bluesky": {
+    "seen": "2026-10-24T00:23:14.453Z",
+    "own": "2026-10-23T23:08:34.000Z",
+    "why": "@rotowirenba.bsky.social: Cameron Johnson: Won't play Saturday \n\n https://www.ro"
+   }
+  },
+  "401909859|alphadiallo|q": {
+   "game": "401909859",
+   "start": "2026-10-25T01:00Z",
+   "team": "7",
+   "name": "Alpha Diallo",
+   "status": "q",
+   "athlete": "4065813",
+   "espn": {
+    "seen": "2026-10-24T03:13:43.241Z",
+    "own": "2026-10-23T23:06:00.000Z"
+   }
+  },
+  "401909859|julianstrawther|out": {
+   "game": "401909859",
+   "start": "2026-10-25T01:00Z",
+   "team": "7",
+   "name": "Julian Strawther",
+   "status": "out",
+   "athlete": "4432181",
+   "espn": {
+    "seen": "2026-10-24T03:13:43.241Z",
+    "own": "2026-10-17T00:52:00.000Z"
+   }
+  },
+  "401909859|reedsheppard|out": {
+   "game": "401909859",
+   "start": "2026-10-25T01:00Z",
+   "team": "7",
+   "name": "Reed Sheppard",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-10-24T00:23:14.453Z",
+    "own": "2026-10-24T00:21:44.000Z",
+    "why": "@rotowirenba.bsky.social: Reed Sheppard: Won't play Friday \n\n https://www.rotowi"
+   }
+  },
+  "401909859|cooperflagg|out": {
+   "game": "401909859",
+   "start": "2026-10-25T01:00Z",
+   "team": "7",
+   "name": "Cooper Flagg",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-10-24T01:08:03.622Z",
+    "own": "2026-10-24T01:04:06.000Z",
+    "why": "@rotowirenba.bsky.social: Cooper Flagg: Won't return Friday \n\n https://www.rotow"
+   }
+  },
+  "401909859|jalenduren|q": {
+   "game": "401909859",
+   "start": "2026-10-25T01:00Z",
+   "team": "7",
+   "name": "Jalen Duren",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-10-24T01:35:11.977Z",
+    "own": "2026-10-24T01:16:01.000Z",
+    "why": "@rotowirenba.bsky.social: Jalen Duren: Questionable to return Friday \n\n https://"
+   }
+  },
+  "401909859|paolobanchero|out": {
+   "game": "401909859",
+   "start": "2026-10-25T01:00Z",
+   "team": "7",
+   "name": "Paolo Banchero",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-10-24T01:35:11.977Z",
+    "own": "2026-10-24T01:22:39.000Z",
+    "why": "@rotowirenba.bsky.social: Paolo Banchero: Doubtful to return Friday \n\n https://w"
+   }
+  },
+  "401909859|yvesmissi|q": {
+   "game": "401909859",
+   "start": "2026-10-25T01:00Z",
+   "team": "3",
+   "name": "Yves Missi",
+   "status": "q",
+   "athlete": "5061589",
+   "espn": {
+    "seen": "2026-10-24T03:13:43.241Z",
+    "own": "2026-10-24T02:46:00.000Z"
+   }
+  },
+  "401909860|lukekennard|q": {
+   "game": "401909860",
+   "start": "2026-10-25T02:00Z",
+   "team": "21",
+   "name": "Luke Kennard",
+   "status": "q",
+   "athlete": "3913174",
+   "espn": {
+    "seen": "2026-10-24T03:13:43.241Z",
+    "own": "2026-10-24T03:02:00.000Z"
+   }
+  },
+  "401909860|osoighodaro|q": {
+   "game": "401909860",
+   "start": "2026-10-25T02:00Z",
+   "team": "21",
+   "name": "Oso Ighodaro",
+   "status": "q",
+   "athlete": "4601023",
+   "espn": {
+    "seen": "2026-10-24T03:13:43.241Z",
+    "own": "2026-10-24T00:24:00.000Z"
+   }
+  },
+  "401909860|markwilliams|out": {
+   "game": "401909860",
+   "start": "2026-10-25T02:00Z",
+   "team": "21",
+   "name": "Mark Williams",
+   "status": "out",
+   "athlete": "4701232",
+   "espn": {
+    "seen": "2026-10-24T03:13:43.241Z",
+    "own": "2026-09-11T16:03:00.000Z"
+   }
+  },
+  "401909860|cameronjohnson|out": {
+   "game": "401909860",
+   "start": "2026-10-25T02:00Z",
+   "team": "21",
+   "name": "Cameron Johnson",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-10-24T00:23:14.453Z",
+    "own": "2026-10-23T23:08:34.000Z",
+    "why": "@rotowirenba.bsky.social: Cameron Johnson: Won't play Saturday \n\n https://www.ro"
+   }
+  },
+  "401909860|reedsheppard|out": {
+   "game": "401909860",
+   "start": "2026-10-25T02:00Z",
+   "team": "21",
+   "name": "Reed Sheppard",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-10-24T00:23:14.453Z",
+    "own": "2026-10-24T00:21:44.000Z",
+    "why": "@rotowirenba.bsky.social: Reed Sheppard: Won't play Friday \n\n https://www.rotowi"
+   }
+  },
+  "401909860|cooperflagg|out": {
+   "game": "401909860",
+   "start": "2026-10-25T02:00Z",
+   "team": "21",
+   "name": "Cooper Flagg",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-10-24T01:08:03.622Z",
+    "own": "2026-10-24T01:04:06.000Z",
+    "why": "@rotowirenba.bsky.social: Cooper Flagg: Won't return Friday \n\n https://www.rotow"
+   }
+  },
+  "401909860|jalenduren|q": {
+   "game": "401909860",
+   "start": "2026-10-25T02:00Z",
+   "team": "21",
+   "name": "Jalen Duren",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-10-24T01:35:11.977Z",
+    "own": "2026-10-24T01:16:01.000Z",
+    "why": "@rotowirenba.bsky.social: Jalen Duren: Questionable to return Friday \n\n https://"
+   }
+  },
+  "401909860|paolobanchero|out": {
+   "game": "401909860",
+   "start": "2026-10-25T02:00Z",
+   "team": "21",
+   "name": "Paolo Banchero",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-10-24T01:35:11.977Z",
+    "own": "2026-10-24T01:22:39.000Z",
+    "why": "@rotowirenba.bsky.social: Paolo Banchero: Doubtful to return Friday \n\n https://w"
+   }
+  },
+  "401909860|charlesbassey|out": {
+   "game": "401909860",
+   "start": "2026-10-25T02:00Z",
+   "team": "9",
+   "name": "Charles Bassey",
+   "status": "out",
+   "athlete": "4397886",
+   "espn": {
+    "seen": "2026-10-24T03:13:43.241Z",
+    "own": "2026-10-23T20:04:00.000Z"
+   }
+  },
+  "401909860|kristapsporzingis|out": {
+   "game": "401909860",
+   "start": "2026-10-25T02:00Z",
+   "team": "9",
+   "name": "Kristaps Porzingis",
+   "status": "out",
+   "athlete": "3102531",
+   "espn": {
+    "seen": "2026-10-24T03:13:43.241Z",
+    "own": "2026-10-21T18:27:00.000Z"
+   }
+  },
+  "401909860|mosesmoody|out": {
+   "game": "401909860",
+   "start": "2026-10-25T02:00Z",
+   "team": "9",
+   "name": "Moses Moody",
+   "status": "out",
+   "athlete": "4432171",
+   "espn": {
+    "seen": "2026-10-24T03:13:43.241Z",
+    "own": "2026-10-16T16:14:00.000Z"
+   }
+  },
+  "401909860|jimmybutler|out": {
+   "game": "401909860",
+   "start": "2026-10-25T02:00Z",
+   "team": "9",
+   "name": "Jimmy Butler III",
+   "status": "out",
+   "athlete": "6430",
+   "espn": {
+    "seen": "2026-10-24T03:13:43.241Z",
+    "own": "2026-10-16T16:11:00.000Z"
+   }
   }
  }
 }

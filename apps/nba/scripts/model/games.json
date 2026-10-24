@@ -1341,7 +1341,7 @@
 {"id":"401909844","date":"2026-10-23T23:00Z","season":2027,"type":2,"home":"11","away":"6","homeAbbr":"IND","awayAbbr":"DAL","neutral":false,"final":true,"hs":105,"as":121,"venue":"Indianapolis|IN|","indoor":true},
 {"id":"401909845","date":"2026-10-23T23:00Z","season":2027,"type":2,"home":"19","away":"16","homeAbbr":"ORL","awayAbbr":"MIN","neutral":false,"final":true,"hs":93,"as":115,"venue":"Orlando|FL|","indoor":true},
 {"id":"401909846","date":"2026-10-23T23:00Z","season":2027,"type":2,"home":"27","away":"28","homeAbbr":"WSH","awayAbbr":"TOR","neutral":false,"final":true,"hs":102,"as":112,"venue":"Washington|DC|","indoor":true},
-{"id":"401909847","date":"2026-10-24T00:00Z","season":2027,"type":2,"home":"14","away":"8","homeAbbr":"MIA","awayAbbr":"DET","neutral":false,"final":false,"hs":null,"as":null,"venue":"Miami|FL|","indoor":true},
+{"id":"401909847","date":"2026-10-24T00:00Z","season":2027,"type":2,"home":"14","away":"8","homeAbbr":"MIA","awayAbbr":"DET","neutral":false,"final":true,"hs":111,"as":128,"venue":"Miami|FL|","indoor":true},
 {"id":"401909096","date":"2026-10-24T01:30Z","season":2027,"type":2,"home":"24","away":"10","homeAbbr":"SA","awayAbbr":"HOU","neutral":false,"final":false,"hs":null,"as":null,"venue":"Austin|TX|","indoor":true},
 {"id":"401909849","date":"2026-10-24T01:30Z","season":2027,"type":2,"home":"26","away":"3","homeAbbr":"UTAH","awayAbbr":"NO","neutral":false,"final":false,"hs":null,"as":null,"venue":"Salt Lake City|UT|","indoor":true},
 {"id":"401909850","date":"2026-10-24T02:00Z","season":2027,"type":2,"home":"9","away":"29","homeAbbr":"GS","awayAbbr":"MEM","neutral":false,"final":false,"hs":null,"as":null,"venue":"San Francisco|CA|","indoor":true},
