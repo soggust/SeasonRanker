@@ -203,7 +203,7 @@ export function readFit(sport, dir = FITS_DIR) {
 // (a sport's fit saved: written to a temporary file and moved, so a run cut off mid-write leaves the old one)
 export function saveFit(
   sport,
-  { fits, at, finals, rows = null, seconds = null },
+  { fits, at, finals, rows = null, seconds = null, stable = null },
   dir = FITS_DIR,
 ) {
   const file = fitFile(sport, dir);
@@ -216,6 +216,8 @@ export function saveFit(
     rows,
     seconds,
     fits: encodeFit(fits),
+    // (D88: the walk-forward fit's stability check, where it ran: the previous fit's rows, the stats kept and taken)
+    ...(stable ? { stable } : {}),
   };
   mkdirSync(path.dirname(file), { recursive: true });
   writeFileSync(`${file}.tmp`, JSON.stringify(out));

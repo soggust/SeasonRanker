@@ -55,6 +55,8 @@ import { shopRows } from './best-price.mjs';
 import { MARKETS as MMA_MARKETS, scoreMma } from './gate-mma.mjs';
 import { propParts } from './trusted.mjs';
 import { readYoung, tagExperience } from './experience.mjs';
+import { tuneReplays } from './self-tune.mjs';
+import { knobsOf } from './tuned.mjs';
 
 const ROOT = path.resolve(import.meta.dirname, '../../../..');
 const MODEL = path.join(ROOT, 'libs/ranker/scripts/model');
@@ -332,7 +334,7 @@ export async function scoreVersion(dir, sport, { refit = false, propsLayer = tru
   // (lineupRisk: the lineup risk's fit on the history's opens against their closes (lineup-risk.mjs, D42); none before it)
   // (picks, replay: the bands (picks.mjs edgeLevel) and the replayed record (replay-record.mjs, the Bot's history);
   // a version from before them has no replayed record)
-  for (const n of ['leagues', 'ratings', 'context', 'margins', 'backtest', 'desk', 'props', 'project', 'correct', 'anchor', 'lineup-risk', 'picks', 'replay-record', 'confidence', 'reasons', 'clv-bands', 'windows', 'trusted']) V[n === 'lineup-risk' ? 'lineupRisk' : n === 'replay-record' ? 'replay' : n === 'clv-bands' ? 'clvBands' : n] = await load(dir, n);
+  for (const n of ['leagues', 'ratings', 'context', 'margins', 'backtest', 'desk', 'props', 'project', 'correct', 'anchor', 'lineup-risk', 'picks', 'replay-record', 'confidence', 'reasons', 'clv-bands', 'windows', 'trusted', 'tuned']) V[n === 'lineup-risk' ? 'lineupRisk' : n === 'replay-record' ? 'replay' : n === 'clv-bands' ? 'clvBands' : n] = await load(dir, n);
   // (the loaders: this checkout's, so both versions read the same history)
   const H = { context: await import('./context.mjs'), logs: await import('./playerlogs.mjs'), props: await import('./props.mjs'), fitcache: await import('./fitcache.mjs'), espn: await import('./espn.mjs') };
   const cfg = V.leagues.LEAGUES[sport];
@@ -600,17 +602,42 @@ export async function scoreVersion(dir, sport, { refit = false, propsLayer = tru
           for (const S of seasons) {
             if (prefit && !prefit.has(S)) continue;
             const before = rows.filter((r) => r.season < S);
+            // (measuring only, D88: GATE_WF_DROP_DAYS=<n> fits on the rows before S less their last n days: an earlier snapshot)
+            const drop = Number(process.env.GATE_WF_DROP_DAYS) || 0;
+            if (drop > 0 && before.length) {
+              const last = before.reduce((m, r) => (r.date > m ? r.date : m), '');
+              const cutDay = new Date(Date.parse(last.slice(0, 10)) - drop * 864e5).toISOString().slice(0, 10);
+              const kept = before.filter((r) => r.date.slice(0, 10) < cutDay);
+              before.length = 0;
+              for (const r of kept) before.push(r);
+            }
             const wfDir = path.join(H.fitcache.FITS_DIR, 'wf', String(S));
             const c = cacheable && !refit ? H.fitcache.readFit(sport, wfDir) : { fit: null };
+            // (D88's stability rule: the season's previous fit of this code, whatever its rows, read even under --refit)
+            const prev = cacheable ? (c.fit ?? H.fitcache.readFit(sport, wfDir).fit) : null;
             let fits;
             let from = 'cached';
-            if (c.fit && c.fit.code === code && c.fit.rows === before.length) fits = c.fit.fits;
+            if (c.fit && c.fit.code === code && (c.fit.rows === before.length || process.env.GATE_WF_ANYROWS === '1')) fits = c.fit.fits;
             else {
               const t1 = Date.now();
-              setYoung(false);
-              fits = V.props.fitProps(sport, before, expPts, info, facts, market, totals, listed, null, null).fits;
-              from = `searched in ${Math.round((Date.now() - t1) / 1000)}s`;
-              if (cacheable) H.fitcache.saveFit(sport, { fits, at: Date.now(), finals: before.length, rows: before.length, seconds: Math.round((Date.now() - t1) / 1000) }, wfDir);
+              // (measuring only, D88: GATE_WF_NEWFROM=<fits dir> takes a search already made on these rows from there)
+              const made = process.env.GATE_WF_NEWFROM ? H.fitcache.readFit(sport, path.join(process.env.GATE_WF_NEWFROM, 'wf', String(S))).fit : null;
+              if (made && made.code === code && made.rows === before.length) (fits = made.fits), (from = 'a search made before');
+              else {
+                setYoung(false);
+                fits = V.props.fitProps(sport, before, expPts, info, facts, market, totals, listed, null, null).fits;
+                from = `searched in ${Math.round((Date.now() - t1) / 1000)}s`;
+              }
+              // (D88: a re-search on more (or fewer) rows of the same code keeps the previous fit's settings stat by stat
+              // unless the new search's beat them on these rows' held-out window by FIT_STABLE_K standard errors)
+              let stable = null;
+              if (FIT_STABLE && !prefit && prev?.code === code && prev.fits && prev.rows !== before.length) {
+                const st = stableFits(V, sport, before, prev.fits, fits, { expPts, info, facts, market, totals, listed });
+                fits = st.fits;
+                stable = { prevRows: prev.rows, prevAt: prev.at, k: stableK(), kept: st.kept, took: st.took, tests: st.tests };
+                from += `; stability (D88): kept ${st.kept.length ? st.kept.join(', ') : 'none'}, took ${st.took.length ? st.took.join(', ') : 'none'} of the new search`;
+              }
+              if (cacheable) H.fitcache.saveFit(sport, { fits, at: Date.now(), finals: before.length, rows: before.length, seconds: Math.round((Date.now() - t1) / 1000), stable }, wfDir);
             }
             done.push(`${S} on ${before.length} rows (${from}; ${stats.filter((st) => fits[st.key]).map((st) => st.key).join(', ') || 'no stat'})`);
             wfInfo.push({ season: S, rows: before.length, stats: stats.filter((st) => fits[st.key]).map((st) => st.key) });
@@ -736,6 +763,8 @@ export async function scoreVersion(dir, sport, { refit = false, propsLayer = tru
       } catch {}
     }
     replay = V.replay.replayRecord(...replayArgs);
+    // (D88's self-tune: TUNE_GRID=<file> re-stakes the same replay under each candidate knob, TUNE_OUT the series)
+    if (process.env.TUNE_GRID) tuneReplays(V, sport, replay, () => V.replay.replayRecord(...replayArgs), { current });
     say(`replayed record: ${replay.overall.won}-${replay.overall.lost}-${replay.overall.push} ${replay.overall.profit >= 0 ? '+' : ''}${replay.overall.profit}u (ROI ${replay.overall.roi === null ? '-' : `${(replay.overall.roi * 100).toFixed(1)}%`}) on ${replay.n.bets} bets (${replay.flags.timing.open} at a clean open, ${replay.flags.timing.close} at the close), ${replay.n.practice} practice picks; by band ${Object.entries(replay.byBand).map(([k, v]) => `${k} ${v.won}-${v.lost}-${v.push} ${v.profit >= 0 ? '+' : ''}${v.profit}u`).join(', ')}`);
     if (replay.flags?.windows) say(`betting windows (D63): ${replay.flags.windows.keys} keys with intraday snapshots; placed ${JSON.stringify(replay.flags.windows.placed)}; final ${Object.entries(replay.flags.windows.final).map(([k, v]) => `${k} ${v.policy}${v.policy === "legacy" ? "" : ` +${v.gain} (se ${v.se}, n ${v.n})`}`).join(", ")}`);
   }
@@ -1228,7 +1257,8 @@ export const HARNESS_FILES = ['gate.mjs', 'gate-history.mjs', 'gate-score.mjs', 
 export function modelCode(dir, { sport = null, harness = MODEL, root = ROOT } = {}) {
   const c = codeOf(dir);
   const parts = sport === 'mma' ? { mma: c.mma, games: c.games, pricing: c.pricing } : { props: c.props, games: c.games, pricing: c.pricing };
-  return { ...parts, record: filesHash(dir, RECORD_FILES), harness: filesHash(harness, HARNESS_FILES), ...(sport && sport !== 'mma' ? { residual: fileHash(path.join(root, 'apps', sport, 'src/StaticData/model/residual.json')) } : {}) };
+  // (tuned: the self-tune's knobs at their values (D88, tuned.json): a shipped knob is the model's own change)
+  return { ...parts, record: filesHash(dir, RECORD_FILES), harness: filesHash(harness, HARNESS_FILES), ...(sport && sport !== 'mma' ? { residual: fileHash(path.join(root, 'apps', sport, 'src/StaticData/model/residual.json')) } : {}), ...(sport ? { tuned: hashOf(knobsOf(sport, root)) } : {}) };
 }
 // (whether two records' code is the same: every part both know, at least one)
 export function sameModel(a, b) {
@@ -1416,6 +1446,84 @@ export const PROPS_WF = process.env.GATE_PROPS_WF !== '0';
 export const PROPS_WF_BACK = 1;
 // (the seasons the walk prices: each row season after the first, from the first that has the history's props (or the
 // ledger's: the current season), so each has a season before it to fit on)
+// (D88: the walk-forward fit's stability. A season's fit searched again on a different row count (a rebuilt cache, a few
+// more games) swung the NFL's record -9.7u with the code unchanged; so the new search's settings replace the previous
+// fit's for a stat only where they lower the held-out log loss (the stat's last 30% of these rows, eligible player
+// games, paired, clustered by game) by more than FIT_STABLE_K standard error (1: 2 held back a better MLB fit, D88). GATE_FIT_STABLE=0 off (measuring only))
+export const FIT_STABLE = process.env.GATE_FIT_STABLE !== '0';
+export const FIT_STABLE_K = 1;
+// (measuring only: GATE_FIT_STABLE_K=<k> another margin)
+const stableK = () => (Number.isFinite(Number(process.env.GATE_FIT_STABLE_K)) && process.env.GATE_FIT_STABLE_K !== '' && process.env.GATE_FIT_STABLE_K != null ? Number(process.env.GATE_FIT_STABLE_K) : FIT_STABLE_K);
+export function stableFits(V, sport, rows, oldFits, newFits, { expPts, info, facts, market, totals, listed, k = stableK() } = {}) {
+  const stats = V.props.STATS[sport] ?? [];
+  const same = (a, b) => JSON.stringify(a?.params ?? null) === JSON.stringify(b?.params ?? null);
+  const keys = stats.map((s) => s.key).filter((key) => oldFits?.[key] && newFits?.[key] && !same(oldFits[key], newFits[key]));
+  const fits = { ...newFits };
+  const kept = [];
+  const took = [];
+  const tests = {};
+  if (!keys.length) return { fits, kept, took, tests };
+  const reuseOf = (f) => Object.fromEntries(stats.map((st) => [st.key, f[st.key] ?? null]));
+  const A = V.props.fitProps(sport, rows, expPts, info, facts, market, totals, listed, null, reuseOf(oldFits));
+  const B = V.props.fitProps(sport, rows, expPts, info, facts, market, totals, listed, null, reuseOf(newFits));
+  for (const key of keys) {
+    const st = stats.find((s) => s.key === key);
+    const fa = A[key];
+    const fb = B[key];
+    const mine = [...V.props.statRows(sport, st, rows, market, totals)].sort((a, b) => a.date.localeCompare(b.date));
+    if (!fa || !fb || mine.length < 300) {
+      took.push(key);
+      continue;
+    }
+    const verdict = stableVerdict(pairedLoss(V, st, mine, fa, fb), k);
+    tests[key] = verdict;
+    if (verdict.took) took.push(key);
+    else (fits[key] = oldFits[key]), kept.push(key);
+  }
+  return { fits, kept, took, tests };
+}
+// (a stat's held-out losses under the old (fa) and the new (fb) settings: the last 30% of its rows by date, eligible,
+// [game, old, new] each)
+function pairedLoss(V, st, mine, fa, fb) {
+  const cut = mine[Math.floor(mine.length * 0.7)].date.slice(0, 10);
+  const d0 = mine[0].date.slice(0, 10);
+  const lossOf = (f) => {
+    const m = new Map();
+    for (const x of V.project.replayStat(st, mine, f.params, f.env, [d0, d0]).out) {
+      if (x.row.date.slice(0, 10) < cut || x.row.eligible === false) continue;
+      const l = -V.project.chanceLog(x.v, x.p.mu, f.params, V.project.exitMix(f.params, x.p));
+      if (fin(l)) m.set(x.row, l);
+    }
+    return m;
+  };
+  const la = lossOf(fa);
+  const lb = lossOf(fb);
+  const out = [];
+  for (const [row, a] of la) {
+    const b = lb.get(row);
+    if (fin(b)) out.push([String(row.game ?? row.date.slice(0, 10)), a, b]);
+  }
+  return out;
+}
+// (the new settings taken where their mean held-out loss is lower by more than k standard errors (clustered by game))
+export function stableVerdict(pairs, k = FIT_STABLE_K) {
+  const games = new Map();
+  let sum = 0;
+  for (const [g, a, b] of pairs) {
+    const e = games.get(g) ?? { n: 0, s: 0 };
+    e.n++;
+    e.s += b - a;
+    games.set(g, e);
+    sum += b - a;
+  }
+  const n = pairs.length;
+  const mean = n ? sum / n : 0;
+  const G = games.size;
+  let v = 0;
+  for (const e of games.values()) v += (e.s - mean * e.n) ** 2;
+  const se = n && G > 1 ? Math.sqrt((v * G) / (G - 1)) / n : Infinity;
+  return { n, diff: Math.round(mean * 1e6) / 1e6, se: fin(se) ? Math.round(se * 1e6) / 1e6 : null, took: n > 0 && fin(se) && mean < -k * se };
+}
 export function wfSeasons(rows, propSeasons, current = null) {
   const have = [...new Set(rows.map((r) => r.season))].filter(Number.isFinite).sort((a, b) => a - b);
   const ps = [...new Set(propSeasons)].filter(Number.isFinite);

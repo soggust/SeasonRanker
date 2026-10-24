@@ -216,6 +216,9 @@ export function replayRecord(V, sport, rows, { events = null, names = () => ({ h
   const practiceN = V.desk.PRACTICE_N?.[sport] ?? 3;
   const practiceUnits = V.desk.PRACTICE_UNITS ?? 0.5;
   const evSuspect = V.desk.EV_SUSPECT ?? 0.15;
+  // (D88: a knob's value for the sport, the self-tune's tuned.json or its override where set; a version without tuned.mjs, the constant)
+  const T = (name, def) => (V.tuned?.knob ? V.tuned.knob(sport, name) : def);
+  const barOpts = V.desk.barOpts?.(sport) ?? {};
   const level = V.picks?.edgeLevel ?? V.picks?.level ?? ((k) => (k >= 0.05 ? 'lock' : k >= 0.02 ? 'high' : k > 0 ? 'medium' : 'low'));
   const ok = (x) => fin(x.p) && fin(x.f) && !!x.overOdds && !!x.underOdds && fin(x.t) && x.t < epochT;
   const opens = new Map();
@@ -251,6 +254,7 @@ export function replayRecord(V, sport, rows, { events = null, names = () => ({ h
               return sd.ev > 0 ? { t: x.t, season: x.season, keys: keysOf(x, sd), ev: sd.ev, profit: (x.y === 1) === sd.over ? dec(sd.odds) - 1 : -1 } : null;
             })
             .filter(Boolean),
+          barOpts,
         )
       : null;
   // (the props' stat bar (DECISIONS.md D64): D51's bar on the props, a prop pick judged on the prop picks (every
@@ -268,6 +272,7 @@ export function replayRecord(V, sport, rows, { events = null, names = () => ({ h
               return sd.ev > 0 ? { t: x.t, season: x.season, keys: propKeyOf(x, sd), ev: sd.ev, profit: (x.y === 1) === sd.over ? dec(sd.odds) - 1 : -1 } : null;
             })
             .filter(Boolean),
+          barOpts,
         )
       : null;
   const bets = [];
@@ -324,7 +329,7 @@ export function replayRecord(V, sport, rows, { events = null, names = () => ({ h
         outcomes.push({ t: x0.t + GAME_HOURS * 36e5, seg, by, clv, any });
       }
     }
-    win = W.walkWindows(outcomes);
+    win = W.walkWindows(outcomes, { z: T('windowZ', W.WIN_Z), min: T('windowMin', W.WIN_MIN) });
     // (research only (D71): REPLAY_WINDOW_FORCE=h24 places every line segment by that policy, the walk's verdict aside,
     // so the band lab can read the reasons' closing checks had the Bot bet that early; never set by a record)
     const forced = process.env.REPLAY_WINDOW_FORCE;
@@ -598,7 +603,7 @@ export function replayRecord(V, sport, rows, { events = null, names = () => ({ h
       const sh = b.market === 'prop' && b.attr ? TR.shareOf(b.attr, trust.at(b.at, 'prop')) : { share: 0, te: 0, pieces: [] };
       return { t: b.t, at: b.at, market: b.market, kelly: b.kelly, share: sh.share, te: sh.te, pieces: sh.pieces, units: b.units, held: !!(h.suspect || h.barred), res: b.res, odds: b.odds };
     });
-    const tw = TR.trialWalk(list, sport);
+    const tw = TR.trialWalk(list, sport, V.tuned?.knob ? { kelly: T('trialKelly', TR.TRIAL_OPTS?.kelly), loveUnits: T('loveUnits', TR.TRIAL_OPTS?.loveUnits) } : {});
     const counts = { lock: 0, high: 0, medium: 0 };
     mine.forEach((b, i) => {
       const { band, units } = TR.trialBand(list[i], tw.at(b.at), tw.opts);
@@ -641,12 +646,15 @@ export function replayRecord(V, sport, rows, { events = null, names = () => ({ h
   // than the practice stake only while the bets placed before it, settled by its moment, beat the fair close at
   // least V.desk.BEAT_BAR of the time over their last LINE_GATE_N with a close, from LINE_GATE_MIN of them; under it
   // the practice stake and a LIKE at most: shrunk, never off (D1). A version without the bar: none)
-  if (fin(V.desk.BEAT_BAR)) beatBar(bets, { bar: V.desk.BEAT_BAR, min: V.desk.LINE_GATE_MIN ?? 40, window: V.desk.LINE_GATE_N ?? 200, practiceUnits, flags });
+  const BAR = fin(V.desk.BEAT_BAR) ? T('beatBar', V.desk.BEAT_BAR) : null;
+  const BAR_MIN_N = T('beatMin', V.desk.LINE_GATE_MIN ?? 40);
+  if (fin(BAR)) beatBar(bets, { bar: BAR, min: BAR_MIN_N, window: V.desk.LINE_GATE_N ?? 200, practiceUnits, flags });
   // (the Bot's own consistent losers (DECISIONS.md D79, desk.mjs ownVerdict): a key (a prop's stat and side, a line's
   // market and side) whose own bets settled before the moment lost past the shrunk bar stakes the practice stake and
   // a LIKE at most, after every other rule; still bet and still counted, so it can earn its stake back. A version
   // without it, or a sport it isn't on in: none)
-  if (V.desk.ownVerdict && V.desk.ownBarOn?.(sport)) ownBar(bets, { verdict: V.desk.ownVerdict, key: V.desk.ownKey, practiceUnits, flags });
+  const ownO = V.desk.ownOpts?.(sport);
+  if (V.desk.ownVerdict && V.desk.ownBarOn?.(sport)) ownBar(bets, { verdict: ownO ? (n, sum) => V.desk.ownVerdict(n, sum, ownO) : V.desk.ownVerdict, key: V.desk.ownKey, practiceUnits, flags });
   const gamesOn = new Map();
   const everyRow = [...bets.map((b) => ({ day: etDay(b.t), event: b.event })), ...passes.map((r) => ({ day: etDay(r.x.t), event: String(r.x.event) }))];
   for (const r of everyRow) (gamesOn.get(r.day) ?? gamesOn.set(r.day, new Set()).get(r.day)).add(r.event);
@@ -685,12 +693,14 @@ export function replayRecord(V, sport, rows, { events = null, names = () => ({ h
         const att = [...closes.values()].filter((x) => x.attr && (x.y === 0 || x.y === 1)).map((x) => [x.t, x.market, x.stat, r4(x.f), x.y, Object.fromEntries(Object.entries(x.attr).filter(([, v]) => Math.abs(v) >= 1e-5).map(([k, v]) => [k, Math.round(v * 1e5) / 1e5])), x.overOdds, x.underOdds, x.key ?? x.id.replace(/:c$/, ''), x.season, knownAt(x) ? 1 : 0]);
         writeFileSync(path.join(process.env.REPLAY_DUMP, `${sport}-attr.json`), JSON.stringify(att));
       }
-      writeFileSync(path.join(process.env.REPLAY_DUMP, `${sport}-lab.json`), JSON.stringify({ v: 1, sport, at: new Date(now).toISOString(), practiceUnits, beatBar: fin(V.desk.BEAT_BAR) ? { bar: V.desk.BEAT_BAR, min: V.desk.LINE_GATE_MIN ?? 40, window: V.desk.LINE_GATE_N ?? 200 } : null, bets: lab, passed: passed.map((r) => [r.x.y ?? null, r.sd.over ? 1 : 0, r.sd.odds]), args: { ...sumArgs, seasonsWithProps: [...sumArgs.seasonsWithProps], seasonsAll: [...sumArgs.seasonsAll] } }));
+      writeFileSync(path.join(process.env.REPLAY_DUMP, `${sport}-lab.json`), JSON.stringify({ v: 1, sport, at: new Date(now).toISOString(), practiceUnits, beatBar: fin(BAR) ? { bar: BAR, min: BAR_MIN_N, window: V.desk.LINE_GATE_N ?? 200 } : null, bets: lab, passed: passed.map((r) => [r.x.y ?? null, r.sd.over ? 1 : 0, r.sd.odds]), args: { ...sumArgs, seasonsWithProps: [...sumArgs.seasonsWithProps], seasonsAll: [...sumArgs.seasonsAll] } }));
     } catch (err) {
       console.warn(`replay lab dump failed: ${err.message}`);
     }
   }
   const out = summarize(sport, bets, passed, sumArgs);
+  // (the self-tune's day series (D88, self-tune.mjs seriesOf): the bets themselves, off the JSON)
+  Object.defineProperty(out, 'bets', { value: bets, enumerable: false });
   // (the reason tiers' file (D58): what gate.mjs --record writes as reasons.json, kept off the replay's own file)
   if (reasonsFile) out.reasonsFile = reasonsFile;
   // (the two-band trial's file (D73): what gate.mjs --record writes as trusted.json)

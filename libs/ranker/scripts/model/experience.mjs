@@ -11,6 +11,7 @@
 //   bucket  'r' rookie, 'y2' second year, 'y3' third, 'v' veteran or unknown
 import { existsSync, readFileSync } from 'node:fs';
 import path from 'node:path';
+import { knob } from './tuned.mjs';
 
 const ROOT = path.resolve(import.meta.dirname, '../../../..');
 const fin = Number.isFinite;
@@ -96,8 +97,16 @@ export const yrsOf = (sport, pid, season) => {
 export function readYoung(sport) {
   try {
     const f = path.join(ROOT, 'apps', sport, 'src/StaticData/model/young.json');
-    return existsSync(f) ? JSON.parse(readFileSync(f, 'utf8')) : null;
+    const y = existsSync(f) ? JSON.parse(readFileSync(f, 'utf8')) : null;
+    const s = knob(sport, 'youngShrink');
+    return y?.table && s !== 1 ? { ...y, shrink: s, table: shrinkYoung(y.table, s) } : y;
   } catch {
     return null;
   }
+}
+// (D88's youngShrink: each pick [km, wa] taken s of the way from the model as it was (k1w0) to the walk's pick)
+export function shrinkYoung(table, s) {
+  const one = (v) => (Array.isArray(v) && v.length === 2 && v.every(Number.isFinite) ? [Math.round((1 + s * (v[0] - 1)) * 1e4) / 1e4, Math.round(s * v[1] * 1e4) / 1e4] : v);
+  const walk = (o) => (Array.isArray(o) ? one(o) : o && typeof o === 'object' ? Object.fromEntries(Object.entries(o).map(([k, v]) => [k, walk(v)])) : o);
+  return walk(table);
 }

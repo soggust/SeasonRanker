@@ -40,6 +40,7 @@ import { devig, finish, loadHistory, slim, vsBook, vsBookBySeason, walkTrust } f
 import { closedEvents, matchHistory, matchReport } from './fights-history.mjs';
 import { readDeep } from './deep-history.mjs';
 import { shopRows } from './best-price.mjs';
+import { tuneReplays } from './self-tune.mjs';
 
 const ROOT = path.resolve(import.meta.dirname, '../../../..');
 export const SPORT = 'mma';
@@ -396,7 +397,7 @@ export async function scoreMma(dir, { log = console.log, now = new Date() } = {}
   const say = (s) => (notes.push(s), log(`${SPORT}: ${s}`));
   const V = {};
   // (picks, replay: the bands and the replayed record (replay-record.mjs); a version from before them has none)
-  for (const [k, n] of [['leagues', 'leagues'], ['desk', 'desk'], ['fightsModel', 'fights-model'], ['fightsTotals', 'fights-totals'], ['mmaDesk', 'mma-desk'], ['picks', 'picks'], ['replay', 'replay-record']]) V[k] = await load(dir, n);
+  for (const [k, n] of [['leagues', 'leagues'], ['desk', 'desk'], ['fightsModel', 'fights-model'], ['fightsTotals', 'fights-totals'], ['mmaDesk', 'mma-desk'], ['picks', 'picks'], ['replay', 'replay-record'], ['tuned', 'tuned']]) V[k] = await load(dir, n);
   if (!V.fightsModel || !V.fightsTotals) throw new Error(`${dir}: no fights model (fights-model.mjs, fights-totals.mjs)`);
   const fights = (await keptFights()).filter((f) => f.date <= now.toISOString().slice(0, 10));
   const { cache } = V.fightsModel.loadKept();
@@ -507,6 +508,8 @@ export async function scoreMma(dir, { log = console.log, now = new Date() } = {}
       } catch {}
     }
     replay = V.replay.replayRecord(...replayArgs);
+    // (D88's self-tune: TUNE_GRID re-stakes the same replay under each candidate knob)
+    if (process.env.TUNE_GRID) tuneReplays(V, SPORT, replay, () => V.replay.replayRecord(...replayArgs));
     say(`replayed record: ${replay.overall.won}-${replay.overall.lost}-${replay.overall.push} ${replay.overall.profit >= 0 ? '+' : ''}${replay.overall.profit}u on ${replay.n.bets} bets (${replay.flags.timing.open} at the open, ${replay.flags.timing.close} at the close), ${replay.n.practice} practice picks`);
   }
   return {

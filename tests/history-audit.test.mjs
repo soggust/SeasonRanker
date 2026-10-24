@@ -51,7 +51,7 @@ test("a held sport's Findings line: one a sport, replaced, cleared when it recor
 });
 
 test('the arguments', () => {
-  assert.deepEqual(HA.parseArgs(['--mode', 'weekly', '--dry', '--sports', 'nfl,xyz,mma']), { mode: 'weekly', dry: true, refit: false, sports: ['nfl', 'mma'], main: 'C:\\dev\\QBRanker2026', reexec: false });
+  assert.deepEqual(HA.parseArgs(['--mode', 'weekly', '--dry', '--sports', 'nfl,xyz,mma']), { mode: 'weekly', dry: true, refit: false, sports: ['nfl', 'mma'], main: 'C:\\dev\\QBRanker2026', reexec: false, tune: true });
   assert.throws(() => HA.parseArgs(['--mode', 'hourly']));
   assert.deepEqual(HA.parseArgs([]).sports, HA.SPORTS);
   const ps = fs.readFileSync(path.resolve('scripts/history-audit.ps1'), 'utf8');

@@ -33,6 +33,7 @@ import { etDay } from './sources.mjs';
 import { MODEL_EPOCH } from './leagues.mjs';
 import { CLV_V } from './clv.mjs';
 import { hookChance } from './residual.mjs';
+import { knob } from './tuned.mjs';
 
 // (1,000 to start, so a full slate of bets leaves most of it on hand; the desk rebuys 1,000 whenever its
 // balance would go under 0: the money's play money and every bet is data)
@@ -944,7 +945,9 @@ export const LINE_GATE_MIN = 40;
 // only while its bets beat the fair close at least this often (with a CLV of 0 or more), from LINE_GATE_MIN graded
 // with a close; under it the stake shrinks to PRACTICE_UNITS, never off (D1))
 export const BEAT_BAR = 0.525;
-const beatOk = (beat) => beat == null || beat >= BEAT_BAR;
+const beatOk = (beat, bar = BEAT_BAR) => beat == null || beat >= bar;
+// (D88: the bar and its minimum by sport, the self-tune's tuned.json where it set them, else BEAT_BAR and LINE_GATE_MIN)
+export const beatOpts = (sport) => ({ bar: knob(sport, 'beatBar'), min: knob(sport, 'beatMin') });
 const beatWord = (beat) => (beat == null ? '' : `, beat the close ${Math.round(beat * 1000) / 10}%`);
 export const PRACTICE_UNITS = 0.5;
 // (a bet placed since the epoch; epoch null: every bet)
@@ -968,14 +971,15 @@ export function propGate(bets, sport, epoch = MODEL_EPOCH) {
   const graded = (bets ?? []).filter((b) => b.sport === sport && b.market === 'prop' && !b.void && !inPractice(b) && ['won', 'lost', 'push'].includes(b.status) && clvIn(b) && b.propType).filter(sinceEpoch(epoch));
   const by = new Map();
   for (const b of graded) by.set(b.propType, [...(by.get(b.propType) ?? []), b]);
+  const { bar: BAR, min: MIN } = beatOpts(sport);
   for (const [stat, list] of by) {
     const last = list.sort((a, b) => Date.parse(a.gradedAt ?? a.start ?? 0) - Date.parse(b.gradedAt ?? b.start ?? 0)).slice(-LINE_GATE_N);
     const n = last.length;
     const ev = round(last.reduce((t, b) => t + (b.clv.ev ?? 0), 0) / n, 4);
     const prob = round(last.reduce((t, b) => t + b.clv.prob, 0) / n, 4);
     const beat = beatOf(last);
-    const on = n < LINE_GATE_MIN || (prob >= 0 && beatOk(beat));
-    out[stat] = { on, practice: !on, n, prob, ev, beat, bar: BEAT_BAR, min: LINE_GATE_MIN, window: LINE_GATE_N, epoch, why: on ? (n < LINE_GATE_MIN ? `${n} graded ${stat} props with a close since the epoch: under ${LINE_GATE_MIN}, full stakes` : `CLV ${signed(prob)}${beatWord(beat)} over the last ${n} graded ${stat} props: full stakes`) : prob < 0 ? `practice stake: CLV ${prob} over ${n}` : `practice stake: beat the close ${Math.round(beat * 1000) / 10}% over ${n}, under ${BEAT_BAR * 100}%` };
+    const on = n < MIN || (prob >= 0 && beatOk(beat, BAR));
+    out[stat] = { on, practice: !on, n, prob, ev, beat, bar: BAR, min: MIN, window: LINE_GATE_N, epoch, why: on ? (n < MIN ? `${n} graded ${stat} props with a close since the epoch: under ${MIN}, full stakes` : `CLV ${signed(prob)}${beatWord(beat)} over the last ${n} graded ${stat} props: full stakes`) : prob < 0 ? `practice stake: CLV ${prob} over ${n}` : `practice stake: beat the close ${Math.round(beat * 1000) / 10}% over ${n}, under ${round(BAR * 100, 2)}%` };
   }
   return out;
 }
@@ -987,8 +991,9 @@ export function lineGate(bets, sport, epoch = MODEL_EPOCH) {
   const ev = mean('ev');
   const prob = mean('prob');
   const beat = n ? beatOf(last) : null;
-  const on = n < LINE_GATE_MIN || (prob >= 0 && beatOk(beat));
-  return { on, practice: !on, n, ev, prob, beat, bar: BEAT_BAR, min: LINE_GATE_MIN, window: LINE_GATE_N, epoch, why: on ? (n < LINE_GATE_MIN ? `${n} graded line bets with a close since the epoch: under ${LINE_GATE_MIN}, full stakes` : `CLV ${signed(prob)}${beatWord(beat)} over the last ${n} graded line bets: full stakes`) : prob < 0 ? `practice stake: CLV ${prob} over ${n}` : `practice stake: beat the close ${Math.round(beat * 1000) / 10}% over ${n}, under ${BEAT_BAR * 100}%` };
+  const { bar: BAR, min: MIN } = beatOpts(sport);
+  const on = n < MIN || (prob >= 0 && beatOk(beat, BAR));
+  return { on, practice: !on, n, ev, prob, beat, bar: BAR, min: MIN, window: LINE_GATE_N, epoch, why: on ? (n < MIN ? `${n} graded line bets with a close since the epoch: under ${MIN}, full stakes` : `CLV ${signed(prob)}${beatWord(beat)} over the last ${n} graded line bets: full stakes`) : prob < 0 ? `practice stake: CLV ${prob} over ${n}` : `practice stake: beat the close ${Math.round(beat * 1000) / 10}% over ${n}, under ${round(BAR * 100, 2)}%` };
 }
 
 // A new row's placement under a CLV gate (lineGate's, or a stat's propGate): the gate passing (or none), placement's;
@@ -1077,6 +1082,8 @@ export function addEdgeStats(a, b) {
 }
 // (a segment's verdict from its stats: on at full stakes where its mean profit a pick is over z standard errors
 // above 0 with min picks' worth; else the practice stake. { on, n, mean, se, why })
+// (D88: the bar's z and minimum by sport, the self-tune's tuned.json where it set them, else BAR_Z and BAR_MIN)
+export const barOpts = (sport) => ({ z: knob(sport, 'barZ'), min: knob(sport, 'barMin') });
 export function barOf(stats, { min = BAR_MIN, z = BAR_Z } = {}) {
   const n = stats?.n ?? 0;
   const pctOf = (v) => `${v >= 0 ? '+' : ''}${round(v * 100, 1)}%`;
@@ -1177,8 +1184,9 @@ export function lineBar(prior, bets, sport, epoch = MODEL_EPOCH) {
   for (const k of keys) {
     const l = edgeStats(live.filter((b) => keysOf(b).includes(k)).map((b) => ({ profit: flatProfit(b.odds, b.status), w: 1, ev: b.ev })));
     const p = prior?.segments?.[k] ?? { n: 0, sum: 0, sum2: 0 };
-    const v = keyVerdict(addEdgeStats(p, l));
-    out[k] = { ...v, practice: !v.on, prior: { n: round(p.n ?? 0, 1), mean: p.n ? round(p.sum / p.n, 4) : null }, live: { n: round(l.n, 1), mean: l.n ? round(l.sum / l.n, 4) : null }, z: BAR_Z, min: BAR_MIN, epoch };
+    const o = barOpts(sport);
+    const v = keyVerdict(addEdgeStats(p, l), o);
+    out[k] = { ...v, practice: !v.on, prior: { n: round(p.n ?? 0, 1), mean: p.n ? round(p.sum / p.n, 4) : null }, live: { n: round(l.n, 1), mean: l.n ? round(l.sum / l.n, 4) : null }, z: o.z, min: o.min, epoch };
   }
   return out;
 }
@@ -1211,7 +1219,7 @@ export function bothGates(a, b) {
 // at(t, keys, ev) is whether any of the keys is on at that return, judged on the picks of the months before t's
 // month alone, recency-weighted by season from that month's, so a replayed line bet is staked as the live desk
 // would have staked it with the history to that day. No month priced yet: the practice stake
-export function walkBar(picks) {
+export function walkBar(picks, opts = {}) {
   const monthOf = (t) => new Date(t).toISOString().slice(0, 7);
   const byMonth = new Map();
   for (const p of picks ?? []) {
@@ -1225,7 +1233,7 @@ export function walkBar(picks) {
   for (const m of months) {
     const season = byMonth.get(m).find((p) => Number.isFinite(p.season))?.season;
     const v = new Map();
-    for (const [k, list] of prior) v.set(k, keyVerdict(edgeStats(list.map((p) => ({ profit: p.profit, ev: p.ev, w: Number.isFinite(season) && Number.isFinite(p.season) ? 0.5 ** Math.max(0, season - p.season) : 1 })))));
+    for (const [k, list] of prior) v.set(k, keyVerdict(edgeStats(list.map((p) => ({ profit: p.profit, ev: p.ev, w: Number.isFinite(season) && Number.isFinite(p.season) ? 0.5 ** Math.max(0, season - p.season) : 1 }))), opts));
     verdicts.set(m, v);
     for (const p of byMonth.get(m)) for (const k of p.keys) (prior.get(k) ?? prior.set(k, []).get(k)).push(p);
   }
@@ -1271,8 +1279,9 @@ export function propBar(prior, bets, sport, epoch = MODEL_EPOCH) {
   for (const k of keys) {
     const l = edgeStats(live.filter((b) => keyOf(b) === k).map((b) => ({ profit: flatProfit(b.odds, b.status), w: 1, ev: b.ev })));
     const p = prior?.segments?.[k] ?? { n: 0, sum: 0, sum2: 0 };
-    const v = keyVerdict(addEdgeStats(p, l));
-    out[k] = { ...v, practice: !v.on, prior: { n: round(p.n ?? 0, 1), mean: p.n ? round(p.sum / p.n, 4) : null }, live: { n: round(l.n, 1), mean: l.n ? round(l.sum / l.n, 4) : null }, z: BAR_Z, min: BAR_MIN, epoch };
+    const o = barOpts(sport);
+    const v = keyVerdict(addEdgeStats(p, l), o);
+    out[k] = { ...v, practice: !v.on, prior: { n: round(p.n ?? 0, 1), mean: p.n ? round(p.sum / p.n, 4) : null }, live: { n: round(l.n, 1), mean: l.n ? round(l.sum / l.n, 4) : null }, z: o.z, min: o.min, epoch };
   }
   return out;
 }
@@ -1324,9 +1333,11 @@ export const OWN_THR = -0.1;
 export const OWN_MIN = 10;
 export const ownBarOn = (sport) => OWN_BAR && OWN_BAR_SPORTS.includes(sport);
 export const ownKey = (market, stat, side) => (market === 'prop' ? `prop:${stat}:${side}` : `${market}:${side}`);
-export function ownVerdict(n, sum) {
+// (D88: the threshold and minimum by sport, the self-tune's tuned.json where it set them, else OWN_THR and OWN_MIN)
+export const ownOpts = (sport) => ({ thr: knob(sport, 'ownThr'), min: knob(sport, 'ownMin') });
+export function ownVerdict(n, sum, { thr = OWN_THR, min = OWN_MIN } = {}) {
   const shrunk = n > 0 ? sum / (n + OWN_K) : 0;
-  return { n, sum: round(sum, 3), shrunk: round(shrunk, 4), held: n >= OWN_MIN && shrunk <= OWN_THR };
+  return { n, sum: round(sum, 3), shrunk: round(shrunk, 4), held: n >= min && shrunk <= thr };
 }
 // (the file's keys pooled with the live ledger's graded bets since the epoch: tracked rows, voids and the slate's
 // practice picks aside, as the replay's walk leaves them)
@@ -1340,7 +1351,8 @@ export function ownBarOf(prior, bets, sport, epoch = MODEL_EPOCH) {
     a.sum += flatProfit(b.odds, b.status);
     acc.set(k, a);
   }
-  return Object.fromEntries([...acc].map(([k, a]) => [k, ownVerdict(a.n, a.sum)]));
+  const o = ownOpts(sport);
+  return Object.fromEntries([...acc].map(([k, a]) => [k, ownVerdict(a.n, a.sum, o)]));
 }
 // (a row's gate from the Bot's own record: null where the bar is off in the sport or the key isn't held)
 export function ownBarGate(bar, sport, key) {

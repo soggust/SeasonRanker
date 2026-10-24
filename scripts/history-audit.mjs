@@ -19,6 +19,9 @@
 //                                                   not its .md files) since the last audited one, not the audit's
 //                                                   own or a "Model desk:" commit, the newest 30 minutes old or more:
 //                                                   runs --mode code; else says why not
+//   the weekly also self-tunes (D88, libs/ranker/scripts/model/self-tune.mjs) after the re-record: each sport's menu of
+//   knobs tried through the replay, at most one change a sport shipped as data (tuned.json), that sport re-recorded
+//   (every sport where a pricing knob bumped MODEL_EPOCH); --no-tune skips it, --tune runs it in another mode
 //   [--dry] (everything but the push)  [--refit] (gate.mjs --refit: every walk-forward fit searched again, hours)
 //   [--sports nfl,nba]  [--main <dir>] (the main checkout whose cache is read; C:\dev\QBRanker2026)
 //
@@ -41,6 +44,8 @@ export const MODEL_PATHS = ['libs/ranker/scripts/model', ':(exclude,glob)libs/ra
 // (the files a re-record writes, the only ones the audit commits)
 export const RECORD_PATHS = [':(glob)apps/*/src/StaticData/model/**', ':(glob)apps/*/scripts/model/**'];
 export const FINDINGS = 'apps/nfl/src/StaticData/model/findings.json';
+// (D88: the self-tune's own files beyond the records: MODEL_EPOCH's, bumped only for a pricing knob)
+export const TUNE_PATHS = ['libs/ranker/scripts/model/leagues.mjs'];
 export const REF = 'D86';
 // (a lock older than this is a crashed run's)
 export const LOCK_HOURS = 20;
@@ -89,6 +94,15 @@ export function recordBrief(r) {
   return `${o.won}-${o.lost}-${o.push} ${o.profit >= 0 ? '+' : ''}${o.profit}u on ${o.bets} bets (ROI ${o.roi === null ? '-' : `${(o.roi * 100).toFixed(1)}%`})`;
 }
 
+// (D88: the self-tune's sports to re-record: the ones it changed, every one where a pricing knob bumped the epoch)
+export function tuneAgain(brief, sports) {
+  const shipped = (brief ?? []).filter((b) => b?.shipped);
+  if (shipped.some((b) => b.shipped.kind === 'pricing')) return [...sports];
+  return sports.filter((s) => shipped.some((b) => b.sport === s));
+}
+// (the self-tune's lines for the commit's body)
+export const tuneLines = (brief) => (brief ?? []).map((b) => (b.error ? `${b.sport}: the self-tune failed (${String(b.error).slice(0, 160)})` : b.text)).filter(Boolean);
+
 export const commitMessage = (mode, date, sha = null) => `${mode[0].toUpperCase()}${mode.slice(1)} audit: history re-recorded with today's Bot (${date}${mode === 'code' && sha ? `, code ${sha.slice(0, 8)}` : ''})`;
 
 export function parseArgs(argv) {
@@ -99,7 +113,8 @@ export function parseArgs(argv) {
   const mode = val('--mode') ?? 'nightly';
   if (!MODES.includes(mode)) throw new Error(`--mode is one of ${MODES.join(', ')}`);
   const sports = (val('--sports') ?? SPORTS.join(',')).split(',').filter((s) => SPORTS.includes(s));
-  return { mode, dry: argv.includes('--dry'), refit: argv.includes('--refit'), sports, main: val('--main') ?? 'C:\\dev\\QBRanker2026', reexec: argv.includes('--reexec') };
+  const tune = argv.includes('--no-tune') ? false : argv.includes('--tune') || mode === 'weekly';
+  return { mode, dry: argv.includes('--dry'), refit: argv.includes('--refit'), sports, main: val('--main') ?? 'C:\\dev\\QBRanker2026', reexec: argv.includes('--reexec'), tune };
 }
 
 // ---- the run ----
@@ -108,6 +123,7 @@ const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const GATE = path.join(ROOT, 'libs/ranker/scripts/model/gate.mjs');
 const STATE = path.join(ROOT, '.cache/history-audit.json');
 const LOCK = path.join(ROOT, '.cache/history-audit.lock');
+const tunedPath = (sport) => path.join(ROOT, 'apps', sport, 'src/StaticData/model/tuned.json');
 const readJson = (f, d) => {
   try {
     return JSON.parse(readFileSync(f, 'utf8'));
@@ -277,6 +293,31 @@ async function main() {
       findings = setFinding(findings, sport, why ? `${day} ${mode} re-record held. ${why}` : null, day);
     }
     if (JSON.stringify(findings) !== JSON.stringify(findings0)) writeFileSync(path.join(ROOT, FINDINGS), `${JSON.stringify(findings, null, 1)}\n`);
+    // (D88: the weekly self-tune, on the sports that re-recorded: one knob change a sport at most, as data, then that
+    // sport re-recorded; a re-record the guard refuses puts the sport's knobs back as they were)
+    let tuneBrief = [];
+    const tuneSports = results.filter((x) => x.ok).map((x) => x.sport);
+    if (opts.tune && tuneSports.length) {
+      const before = Object.fromEntries(tuneSports.map((s) => [s, existsSync(tunedPath(s)) ? readFileSync(tunedPath(s), 'utf8') : null]));
+      const leagues = path.join(ROOT, 'libs/ranker/scripts/model/leagues.mjs');
+      const leagues0 = readFileSync(leagues, 'utf8');
+      const briefFile = path.join(logDir, 'self-tune.json');
+      const t = await run([path.join(ROOT, 'libs/ranker/scripts/model/self-tune.mjs'), ...tuneSports, '--date', day, '--json', briefFile], { logFile: path.join(logDir, 'self-tune.log'), timeoutH: 4 });
+      tuneBrief = readJson(briefFile, []);
+      say(`self-tune ${t.code ? `failed (exit ${t.code})` : 'run'} (${Math.round(t.secs / 60)} min): ${tuneLines(tuneBrief).join('; ') || 'nothing'}`);
+      for (const sport of tuneAgain(tuneBrief, tuneSports)) {
+        const r = await run([GATE, '--score-only', 'worktree', '--record', sport], { env: { RECORD_TRIGGER: 'tune' }, logFile: path.join(logDir, `${sport}-tune-record.log`) });
+        const now = readJson(recFile(sport), null);
+        if (r.code) {
+          // (refused or failed: nothing recorded (the guard writes nothing it refuses); the sport's knobs and the epoch as they were)
+          if (before[sport] === null) rmSync(tunedPath(sport), { force: true });
+          else if (before[sport] !== undefined) writeFileSync(tunedPath(sport), before[sport]);
+          writeFileSync(leagues, leagues0);
+          say(`${sport}: the self-tune's change NOT kept: the re-record ${r.code === 3 ? `was refused (${guardReasons(r.out).join('; ')})` : `failed (exit ${r.code})`}`);
+          tuneBrief = tuneBrief.map((b) => (b.sport === sport && b.shipped ? { ...b, text: `${b.text} (not kept: the re-record ${r.code === 3 ? 'was refused' : 'failed'})` } : b));
+        } else say(`${sport}: re-recorded after the self-tune: ${recordBrief(now)} (${Math.round(r.secs / 60)} min)`);
+      }
+    }
     const sc = await run([path.join(ROOT, 'libs/ranker/scripts/model/selfcheck.mjs')], { logFile: path.join(logDir, 'selfcheck.log'), timeoutH: 1 });
     say(`self-check ${sc.code ? `failed (exit ${sc.code})` : 'run'} (${sc.secs}s)`);
     // (the hourly desk's test asserts these files' shapes: a file that fails it would stop every desk commit)
@@ -286,12 +327,12 @@ async function main() {
       process.exitCode = 1;
       return;
     }
-    git(['add', '--', ...RECORD_PATHS]);
+    git(['add', '--', ...RECORD_PATHS, ...TUNE_PATHS]);
     const staged = git(['diff', '--cached', '--name-only']).trim();
     const mins = Math.round((Date.now() - t0) / 60000);
     if (!staged) say(`nothing changed (${mins} min)`);
     else {
-      const body = results.map((x) => `${x.sport}: ${x.ok ? `${x.before} -> ${x.after}` : `not re-recorded (${x.why.slice(0, 200)})`}`).join('\n');
+      const body = [...results.map((x) => `${x.sport}: ${x.ok ? `${x.before} -> ${x.after}` : `not re-recorded (${x.why.slice(0, 200)})`}`), ...tuneLines(tuneBrief)].join('\n');
       git(['commit', '-q', '-F', '-'], { input: `${commitMessage(mode, day, codeSha ?? origin)}\n\n${body}\n\n${mins} minutes on ${origin.slice(0, 8)}.\n\nCo-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>\n` });
       const sha = git(['rev-parse', 'HEAD']).trim();
       if (opts.dry) say(`committed ${sha.slice(0, 8)} locally, not pushed (dry; the next run resets it)`);

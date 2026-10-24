@@ -2016,3 +2016,19 @@ test('D86 the history audit re-records, never changes a rule; the gate vetoes a 
   const decisions = fs.readFileSync(path.join(import.meta.dirname, '../libs/ranker/scripts/model/DECISIONS.md'), 'utf8');
   assert.ok(decisions.includes('### D86.'));
 });
+
+test('D88 the weekly self-tune: a fixed menu, one change a sport a week as data (tuned.json), the epoch only for a pricing knob; the props fit kept stable', async () => {
+  const TU = await import('../libs/ranker/scripts/model/tuned.mjs');
+  const ST = await import('../libs/ranker/scripts/model/self-tune.mjs');
+  const G = await import('../libs/ranker/scripts/model/gate.mjs');
+  assert.equal(TU.KNOBS.beatBar.def, 0.525);
+  assert.equal(TU.KNOBS.ownThr.def, -0.1);
+  for (const [n, k] of Object.entries(TU.KNOBS)) for (const v of k.grid) assert.ok(TU.inBounds(n, v), `${n} ${v}`);
+  assert.deepEqual([ST.HOLDOUT_DAYS, ST.CHOOSE_Z, ST.COOLDOWN_DAYS, ST.WEEK_DAYS, ST.RECENT_BETS], [56, 1, 28, 6, 100]);
+  assert.equal(G.FIT_STABLE_K, 1);
+  const audit = fs.readFileSync(path.join(import.meta.dirname, '../scripts/history-audit.mjs'), 'utf8');
+  assert.ok(audit.includes("RECORD_TRIGGER: 'tune'"), 'a changed sport re-recorded');
+  assert.ok(!audit.includes('--accept-inputs'));
+  const decisions = fs.readFileSync(path.join(import.meta.dirname, '../libs/ranker/scripts/model/DECISIONS.md'), 'utf8');
+  assert.ok(decisions.includes('### D88.'));
+});

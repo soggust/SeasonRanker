@@ -132,7 +132,7 @@ test('D73 the record writes trusted.json for a trial sport; the desk reads it; t
   const gate = fs.readFileSync(path.resolve('libs/ranker/scripts/model/gate.mjs'), 'utf8');
   assert.ok(gate.includes("src/StaticData/model/trusted.json") && gate.includes("V.trusted?.trialOn?.(sport)"));
   const rec = fs.readFileSync(path.resolve('libs/ranker/scripts/model/replay-record.mjs'), 'utf8');
-  assert.ok(rec.includes('TR.trialWalk(list, sport)') && rec.includes("needs the props' pieces"));
+  assert.ok(rec.includes('TR.trialWalk(list, sport') && rec.includes("needs the props' pieces"));
   const run = fs.readFileSync(path.resolve('libs/ranker/scripts/model/run.mjs'), 'utf8');
   assert.ok(run.includes('return withTrial(r, withTier(r, bet, x));'));
   for (const sport of Object.keys(TRIAL)) {

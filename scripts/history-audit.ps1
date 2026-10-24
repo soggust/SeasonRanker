@@ -8,7 +8,8 @@
 #
 # The tasks (the current user, while logged on, as desk-kick's: the push uses the owner's own git sign-in; each wakes
 # the PC but the check):
-#   SeasonRanker weekly audit    Mondays 3:30 AM: the cache rebuilt, then every sport re-recorded (before the 8 AM
+#   SeasonRanker weekly audit    Mondays 3:30 AM: the cache rebuilt, every sport re-recorded, then the self-tune (D88:
+#                                one knob change a sport at most, as data, that sport re-recorded) (before the 8 AM
 #                                self-check workflow)
 #   SeasonRanker nightly audit   daily 4:00 AM: every sport re-recorded on the cache as it is (skipped while the
 #                                weekly runs, or when a run finished cleanly in the last 6 hours)
