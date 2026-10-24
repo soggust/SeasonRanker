@@ -1,0 +1,18 @@
+{
+ "v": 1,
+ "sport": "nfl",
+ "knobs": {},
+ "changes": [],
+ "last": {
+  "date": "2026-10-23",
+  "tried": 23,
+  "blocked": [],
+  "shipped": null,
+  "top": [],
+  "secs": {
+   "champion": 205,
+   "restake": 22.7,
+   "total": 205
+  }
+ }
+}

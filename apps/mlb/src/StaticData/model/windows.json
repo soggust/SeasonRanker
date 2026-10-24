@@ -1,19 +1,19 @@
 {
  "v": 1,
  "sport": "mlb",
- "at": "2026-10-24T01:16:01.630Z",
+ "at": "2026-10-24T04:29:51.057Z",
  "epoch": "2026-10-23T05:30:00Z",
- "commit": "3521be3b",
+ "commit": "2c1945c3",
  "segments": {
   "ml:dog": {
    "policy": "legacy",
-   "n": 544,
+   "n": 545,
    "gain": 0,
    "se": null
   },
   "ml:fav": {
    "policy": "legacy",
-   "n": 129,
+   "n": 127,
    "gain": 0,
    "se": null
   },

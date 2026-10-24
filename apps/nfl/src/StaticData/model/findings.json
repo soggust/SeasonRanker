@@ -302,6 +302,34 @@
    "sport": null,
    "ref": "D87",
    "text": "Practice picks tracked again: tagged at no stake, Algorithm tab shows Practice (as if 0.5u) and PASS (1u flat), never the record"
+  },
+  {
+   "date": "2026-10-23",
+   "group": "watching",
+   "sport": "nfl",
+   "ref": "D88",
+   "text": "Self-tune: NFL held: none of 23 settings beat the current before the last 8 weeks past 1 SE"
+  },
+  {
+   "date": "2026-10-23",
+   "group": "watching",
+   "sport": "nba",
+   "ref": "D88",
+   "text": "Self-tune: NBA held: best D79 ownThr -10% → -5% +4.01u before the last 8 weeks, but no win in the held-out last 8 weeks (+0u)"
+  },
+  {
+   "date": "2026-10-23",
+   "group": "watching",
+   "sport": "nhl",
+   "ref": "D88",
+   "text": "Self-tune: NHL held: best D79 ownThr -10% → -5% +2.98u before the last 8 weeks, but no win in the held-out last 8 weeks (+0u)"
+  },
+  {
+   "date": "2026-10-23",
+   "group": "watching",
+   "sport": "mlb",
+   "ref": "D88",
+   "text": "Self-tune: MLB held: none of 23 settings beat the current before the last 8 weeks past 1 SE"
   }
  ]
 }

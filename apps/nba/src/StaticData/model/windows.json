@@ -1,19 +1,19 @@
 {
  "v": 1,
  "sport": "nba",
- "at": "2026-10-24T01:10:28.265Z",
+ "at": "2026-10-24T04:23:57.386Z",
  "epoch": "2026-10-23T05:30:00Z",
- "commit": "3521be3b",
+ "commit": "2c1945c3",
  "segments": {
   "ml:dog": {
    "policy": "legacy",
-   "n": 592,
+   "n": 597,
    "gain": 0,
    "se": null
   },
   "ml:fav": {
    "policy": "legacy",
-   "n": 109,
+   "n": 108,
    "gain": 0,
    "se": null
   },
@@ -25,7 +25,7 @@
   },
   "spread:dog": {
    "policy": "legacy",
-   "n": 2,
+   "n": 3,
    "gain": 0,
    "se": null
   },

@@ -1,0 +1,18 @@
+{
+ "v": 1,
+ "sport": "mlb",
+ "knobs": {},
+ "changes": [],
+ "last": {
+  "date": "2026-10-23",
+  "tried": 23,
+  "blocked": [],
+  "shipped": null,
+  "top": [],
+  "secs": {
+   "champion": 395,
+   "restake": 183.8,
+   "total": 395
+  }
+ }
+}
