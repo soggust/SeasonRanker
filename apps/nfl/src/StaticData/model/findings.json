@@ -344,6 +344,48 @@
    "sport": "mma",
    "ref": "D83",
    "text": "Big/elite camps (ESPN+Wikipedia, camp at the bout): won as the close said (elite 51.0% vs 51.9%), nothing beyond it. Not added"
+  },
+  {
+   "date": "2026-10-24",
+   "group": "dropped",
+   "sport": "mma",
+   "ref": "D83",
+   "text": "H1 wrestler vs elite BJJ: his takedown tries fall to 0.6-0.8x his norm, yet he wins as the model says (51% vs 53%). Not added"
+  },
+  {
+   "date": "2026-10-24",
+   "group": "dropped",
+   "sport": "mma",
+   "ref": "D83",
+   "text": "H2 two elite grapplers: takedown tries 0.71x norms, fewer go the distance (47% vs 51%), totals at the line (56.5% vs 58.0%, n 46). Not added"
+  },
+  {
+   "date": "2026-10-24",
+   "group": "dropped",
+   "sport": "mma",
+   "ref": "D83",
+   "text": "H3 small-sample kickboxers' TDD 70% vs 64% for others (model 60%), but 56% vs real wrestlers; the term held out flat. Not added"
+  },
+  {
+   "date": "2026-10-24",
+   "group": "dropped",
+   "sport": "mma",
+   "ref": "D83",
+   "text": "Pedigree (Wikipedia as of debut): page-havers won +9.9 pts vs model, the rest -14; a third had pages deleted. Survivor-biased. Not used"
+  },
+  {
+   "date": "2026-10-24",
+   "group": "dropped",
+   "sport": "mma",
+   "ref": "D83",
+   "text": "Pedigree terms (NCAA, BJJ, kickboxing, streak) made clean: worse 2014-19, -0.0009 log loss 2020-26, nothing past the close. Not added"
+  },
+  {
+   "date": "2026-10-24",
+   "group": "dropped",
+   "sport": "mma",
+   "ref": "D59",
+   "text": "Feeder leagues (ESPN-known, first 1-5 UFC bouts): DWCS +1.6 vs model, 53.9% vs 54.1% close (n 1081); no league past noise. Not added"
   }
  ]
 }
