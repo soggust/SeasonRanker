@@ -18,7 +18,7 @@ const MODEL = path.resolve(import.meta.dirname, '../libs/ranker/scripts/model');
 
 test('D88 the menu: every default the shipped constant, every grid value and default inside its bounds', () => {
   const K = TU.KNOBS;
-  assert.deepEqual(Object.keys(K).sort(), ['barMin', 'barZ', 'beatBar', 'beatMin', 'loveUnits', 'ownMin', 'ownThr', 'trialKelly', 'windowMin', 'windowZ', 'youngShrink'].sort());
+  assert.deepEqual(Object.keys(K).sort(), ['barMin', 'barZ', 'beatBar', 'beatMin', 'leanLambdaLines', 'leanLambdaProps', 'leanMLines', 'leanMProps', 'loveUnits', 'mmaOpenFav', 'ownMin', 'ownThr', 'trialKelly', 'windowMin', 'windowZ', 'youngShrink'].sort());
   assert.equal(K.beatBar.def, DESK.BEAT_BAR);
   assert.equal(K.beatMin.def, DESK.LINE_GATE_MIN);
   assert.equal(K.barZ.def, DESK.BAR_Z);
@@ -226,4 +226,36 @@ test('D88 every committed tuned.json: its knobs on the menu and in bounds, its c
       if (i) assert.ok(ST.daysBetween(ch[i - 1].date, ch[i].date) >= ST.WEEK_DAYS, `${sport}: one change a week`);
     }
   }
+});
+
+test("D88 the margin rule: a side the Bot's own model puts under the fair price needs lambda x d + m of price edge; 0 and 0 the rule as it was", async () => {
+  const L = await import('../libs/ranker/scripts/model/lean.mjs');
+  for (const k of ['leanLambdaLines', 'leanMLines', 'leanLambdaProps', 'leanMProps']) {
+    assert.equal(TU.KNOBS[k].def, 0, `${k}: today's behavior by default`);
+    assert.ok(!TU.onMenu('mma', k));
+  }
+  // (the owner's case, NBA MEM @ GS: GS ML -154, the Bot's own model 59.6% against the fair 60.9%, a shopped edge of ~0.3 points)
+  const gs = L.marginOf({ p: 0.6093, odds: -154, fair: 0.609, own: 0.596 });
+  assert.ok(Math.abs(gs.d - 0.013) < 1e-9);
+  assert.ok(gs.e > 0 && gs.e < 0.004);
+  assert.equal(L.marginHeld(gs, { lambda: 0, m: 0 }), false, 'today: bet');
+  assert.equal(L.marginHeld(gs, { lambda: 0.5, m: 0 }), true, 'at lambda 0.5: the practice stake');
+  assert.equal(L.marginHeld(gs, { lambda: 0, m: 0.005 }), true);
+  // (a side the model agrees with is never held, whatever the knobs)
+  assert.equal(L.marginHeld(L.marginOf({ p: 0.56, odds: -110, fair: 0.52, own: 0.55 }), { lambda: 3, m: 0.03 }), false);
+  assert.equal(L.marginGuardOf('nba', 'lines', { p: 0.6093, odds: -154, fair: 0.609, own: 0.596 }).held, false, 'no tuned.json: today');
+  const rr = fs.readFileSync(path.join(MODEL, 'replay-record.mjs'), 'utf8');
+  assert.ok(rr.includes("T(group === 'props' ? 'leanLambdaProps' : 'leanLambdaLines', 0)"));
+  const run = fs.readFileSync(path.join(MODEL, 'run.mjs'), 'utf8');
+  assert.ok(run.includes("marginGuardOf(sport, 'lines'") && run.includes("marginGuardOf(sport, 'props'"), 'the live desk reads it, lines and props');
+});
+
+test("D88 MMA's open favorites: 0 the rules as they are, 1 the full Kelly stake, 2 the minimum; read by the replay and the live MMA desk", () => {
+  assert.deepEqual(TU.KNOBS.mmaOpenFav.grid, [0, 1, 2]);
+  assert.equal(TU.KNOBS.mmaOpenFav.def, 0);
+  assert.deepEqual(TU.KNOBS.mmaOpenFav.sports, ['mma']);
+  const rr = fs.readFileSync(path.join(MODEL, 'replay-record.mjs'), 'utf8');
+  assert.ok(rr.includes("T('mmaOpenFav', 0)") && rr.includes("b.timing !== 'open' || !(b.fair >= 0.5)"));
+  const md = fs.readFileSync(path.join(MODEL, 'mma-desk.mjs'), 'utf8');
+  assert.ok(md.includes("knob(SPORT, 'mmaOpenFav')") && md.includes("!== 'early'"));
 });

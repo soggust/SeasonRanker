@@ -282,6 +282,8 @@ export function replayRecord(V, sport, rows, { events = null, names = () => ({ h
   const shopOnlyBets = new Map();
   // (the prop bets' own lean (D82, lean.mjs): how far the Bot's own chance on the side sits under one half)
   const leanBets = new Map();
+  // (D88's margin rule: each bet's { e, d })
+  const marginBets = new Map();
   const flags = { open: 0, close: 0, openSeen: 0, openClean: 0, openInWindow: 0, openHeld: 0, closeHeld: 0, barred: 0 };
   const keys = new Set([...opens.keys(), ...closes.keys()]);
   // (the betting windows (DECISIONS.md D63, windows.mjs): a game line's intraday snapshots (rows.intra, D61) beside its
@@ -440,6 +442,12 @@ export function replayRecord(V, sport, rows, { events = null, names = () => ({ h
       }
       bets.push(bet);
       if (sd.book && SHOP.shopOnly?.(sd.pS, sd.odds, sd.over ? x.overOdds : x.underOdds, sd.book)) shopOnlyBets.set(bet, sd.ev);
+      // (D88's margin rule: the side's price edge e and the Bot's own model under the fair price d)
+      if (LEAN.marginOf) {
+        const o = x.market === 'prop' ? LEAN.ownOver(x) : fin(x.raw) ? x.raw : null;
+        const mg = o === null ? null : LEAN.marginOf({ p: sd.pS, odds: sd.odds, fair: sd.fS, own: sd.over ? o : 1 - o });
+        if (mg) marginBets.set(bet, mg);
+      }
       if (x.market === 'prop' && LEAN.leanGap) {
         const g = LEAN.leanGap(x, sd.over);
         if (g !== null) leanBets.set(bet, g);
@@ -522,6 +530,32 @@ export function replayRecord(V, sport, rows, { events = null, names = () => ({ h
       if (hold.has(b)) hold.get(b).barred = true;
     }
     flags.leanGuard = g;
+  }
+  // (D88's margin rule (lean.mjs marginHeld): a side the Bot's own model puts under the fair price by d, bet on a price
+  // edge e under lambda x d + m (the sport's knobs, lines and props apart), the practice stake and a LIKE, held there
+  // as a barred one. lambda = m = 0: none. flags.margin: by group, the bets held, their units before and after, and
+  // the units had they been tracked (D1 keeps them staked: the owner's call)
+  if (marginBets.size && LEAN.marginHeld) {
+    const fm = {};
+    for (const [b, mg] of marginBets) {
+      const group = b.market === 'prop' ? 'props' : 'lines';
+      const o = { lambda: T(group === 'props' ? 'leanLambdaProps' : 'leanLambdaLines', 0), m: T(group === 'props' ? 'leanMProps' : 'leanMLines', 0) };
+      const f = (fm[group] ??= { ...o, disagree: 0, held: 0, before: 0, after: 0, tracked: 0 });
+      if (mg.d > 0) f.disagree++;
+      if (!LEAN.marginHeld(mg, o)) continue;
+      f.held++;
+      f.before = r2(f.before + b.profit);
+      f.tracked = r2(f.tracked + b.profit);
+      if (b.units <= practiceUnits || hold.get(b)?.barred) {
+        f.after = r2(f.after + b.profit);
+        continue;
+      }
+      const profit = b.units > 0 ? r2((b.profit * practiceUnits) / b.units) : 0;
+      f.after = r2(f.after + profit);
+      Object.assign(b, { units: practiceUnits, band: 'medium', profit, marginHeld: true });
+      if (hold.has(b)) hold.get(b).barred = true;
+    }
+    flags.margin = fm;
   }
   // (the reason tiers (DECISIONS.md D58, reasons.mjs): each bet's reasons, judged walk-forward on the bets settled
   // before its moment (each market's picks flat, recency-weighted), its would-be tier from the proven ones (a LOVE one,
@@ -655,6 +689,28 @@ export function replayRecord(V, sport, rows, { events = null, names = () => ({ h
   // without it, or a sport it isn't on in: none)
   const ownO = V.desk.ownOpts?.(sport);
   if (V.desk.ownVerdict && V.desk.ownBarOn?.(sport)) ownBar(bets, { verdict: ownO ? (n, sum) => V.desk.ownVerdict(n, sum, ownO) : V.desk.ownVerdict, key: V.desk.ownKey, practiceUnits, flags });
+  // (D88's mmaOpenFav: MMA's favorites placed at the open staked by the knob: 0 as the rules left them, 1 the desk's full
+  // Kelly stake (desk.mjs stakeFor, the bands' place cap aside; a suspect or practice bet as it is), 2 the practice stake)
+  if (sport === 'mma') {
+    const mode = T('mmaOpenFav', 0);
+    const f = { mode, bets: 0, before: 0, after: 0 };
+    for (const b of bets) {
+      if (b.market !== 'ml' || b.timing !== 'open' || !(b.fair >= 0.5) || b.practice || hold.get(b)?.suspect) continue;
+      f.bets++;
+      f.before = r2(f.before + b.profit);
+      if (mode === 1 || mode === 2) {
+        const ev = b.p * dec(b.odds) - 1;
+        const units = mode === 2 ? practiceUnits : Math.max(practiceUnits, V.desk.stakeFor(ev, evScale, b.odds));
+        if (fin(units) && units !== b.units) {
+          b.profit = b.units > 0 ? r2((b.profit * units) / b.units) : 0;
+          b.units = units;
+          if (mode === 2) b.band = 'medium';
+        }
+      }
+      f.after = r2(f.after + b.profit);
+    }
+    flags.mmaOpenFav = f;
+  }
   const gamesOn = new Map();
   const everyRow = [...bets.map((b) => ({ day: etDay(b.t), event: b.event })), ...passes.map((r) => ({ day: etDay(r.x.t), event: String(r.x.event) }))];
   for (const r of everyRow) (gamesOn.get(r.day) ?? gamesOn.set(r.day, new Set()).get(r.day)).add(r.event);
@@ -893,6 +949,8 @@ export function summarize(sport, bets, passed, { epoch, now, flags, rows, season
       ...(flags.shopGuard ? { shopGuard: flags.shopGuard } : {}),
       // (D79, the Bot's own consistent losers: the bets held, their units before and after, each key's record (own-bar.json))
       ...(flags.ownBar ? { ownBar: flags.ownBar } : {}),
+      ...(flags.margin ? { margin: flags.margin } : {}),
+      ...(flags.mmaOpenFav ? { mmaOpenFav: flags.mmaOpenFav } : {}),
       ...(flags.leanGuard ? { leanGuard: flags.leanGuard } : {}),
       // (the reason tiers (D58): the bets by band and by would-be band, and whether LOVE and LOCK have earned their place)
       ...(flags.tiers ? { tiers: flags.tiers } : {}),

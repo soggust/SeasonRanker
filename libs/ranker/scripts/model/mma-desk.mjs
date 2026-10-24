@@ -77,6 +77,7 @@ import { readLinePool } from './line-pool.mjs';
 import { BANDS, TOP, capOf, edgeLevel, kellyOf, levelOf, recordBlocks, scoreParts } from './picks.mjs';
 import { readReplay } from './replay-record.mjs';
 import { placed as placedBand, tierUnits } from './reasons.mjs';
+import { knob } from './tuned.mjs';
 import { bandOf, buildBoard, seenUpdate, skipReason } from './board.mjs';
 import { clvOf, clvSummary } from './clv.mjs';
 import { SHARP, american, call, canSpend, hasKey, usageSummary } from './oddsapi.mjs';
@@ -1204,6 +1205,15 @@ export async function runMma({ dry = false, gap = null, now = new Date(), log = 
     if (to === band) continue;
     b.conf = { ...(b.conf ?? {}), cap: to, placeHeld: `the ${band === 'lock' ? 'LOCK' : 'LOVE'} band hasn't earned its place on the record (D65)` };
     if (Number.isFinite(b.units)) b.units = Math.max(PRACTICE_UNITS, tierUnits(b.units, to));
+  }
+  // (D88's mmaOpenFav, the self-tune's knob (tuned.json): a favorite bet at the open (the early lead band) staked at the
+  // desk's full Kelly stake (1, the bands' place cap aside) or the practice stake (2); 0, as above)
+  const openFav = knob(SPORT, 'mmaOpenFav');
+  if (openFav) for (const b of pending) {
+    if (b.intent !== 'edge' || b.practice || b.suspect || b.market !== 'ml' || !(b.fair >= 0.5) || !Number.isFinite(b.p) || !Number.isFinite(b.odds)) continue;
+    if (leadBand((Date.parse(b.start) - Date.parse(b.placedAt ?? new Date().toISOString())) / 36e5) !== 'early') continue;
+    b.units = openFav === 2 ? PRACTICE_UNITS : Math.max(PRACTICE_UNITS, stakeFor(b.p * decimal(b.odds) - 1, EV_SCALE, b.odds));
+    b.openFav = openFav === 2 ? 'the practice stake (D88)' : 'the full Kelly stake (D88)';
   }
   // (the card's practice picks (mmaPracticePicks, D2): the main card's bouts and the best prelims short of the vig
   // with an edge before it, at the practice stake, marked topN)

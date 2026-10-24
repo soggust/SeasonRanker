@@ -64,3 +64,31 @@ export function leanGuardOf(own, d) {
 }
 // (the d the live desk reads: the replayed record's flags.leanGuard.next; none: null, no guard)
 export const leanDOf = (record) => (fin(record?.flags?.leanGuard?.next) ? record.flags.leanGuard.next : null);
+
+// ---- The margin rule (DECISIONS.md D88, the owner, 2026-10-23: "take the pick the Bot likes unless the price is too
+// good to pass") ----
+// A side S at its price: e = p - breakeven (p the Bot's priced chance on S, breakeven the price's own chance) and
+// d = max(0, fair - own) (own: the Bot's own model chance on S before the trust, the Book's fair no-vig chance): how
+// far the Bot's own model sits under the fair price on S. Where d > 0 (the model leans the other way) S is bet at
+// full stakes only if e >= lambda * d + m; else the practice stake (D1: a shrink, never off). lambda = m = 0 is the
+// rule as it was (every bet clears e >= 0). The knobs by sport and market group (lines, props): tuned.mjs
+// leanLambdaLines, leanMLines, leanLambdaProps, leanMProps, tried weekly by the self-tune
+import { knob } from './tuned.mjs';
+const decOf = (o) => (o > 0 ? 1 + o / 100 : 1 + 100 / -o);
+export function marginOf({ p, odds, fair, own }) {
+  if (!fin(p) || !fin(odds) || odds === 0 || !fin(fair) || !fin(own)) return null;
+  return { e: p - 1 / decOf(odds), d: Math.max(0, fair - own) };
+}
+export const marginOpts = (sport, group) => (group === 'props' ? { lambda: knob(sport, 'leanLambdaProps'), m: knob(sport, 'leanMProps') } : { lambda: knob(sport, 'leanLambdaLines'), m: knob(sport, 'leanMLines') });
+export function marginHeld(mg, { lambda = 0, m = 0 } = {}) {
+  if (!mg || !(mg.d > 0)) return false;
+  return mg.e < lambda * mg.d + m - 1e-12;
+}
+// (the live side's verdict: { held, why })
+export function marginGuardOf(sport, group, side) {
+  const mg = marginOf(side);
+  const o = marginOpts(sport, group);
+  if (!marginHeld(mg, o)) return { held: false };
+  const pt = (x) => Math.round(x * 1000) / 10;
+  return { held: true, why: `the Bot's own model ${pt(mg.d)} points under the fair price on this side and the price's edge ${pt(mg.e)} points, under ${o.lambda} x ${pt(mg.d)} + ${pt(o.m)}: the practice stake (D88's margin rule)` };
+}

@@ -15,7 +15,7 @@
 // A shipped change is data: apps/<sport>/src/StaticData/model/tuned.json (its knobs, a dated change log, the week's
 // summary), MODEL_EPOCH bumped only for a pricing knob (D4), a Findings line a change and one a held sport.
 //
-//   node libs/ranker/scripts/model/self-tune.mjs [sports] [--dry] [--date YYYY-MM-DD] [--json <file>]
+//   node libs/ranker/scripts/model/self-tune.mjs [sports] [--dry] [--date YYYY-MM-DD] [--json <file>] [--knobs a,b (those alone)]
 // Free: no API calls, no AI, never the live bettor. history-audit.mjs --mode weekly runs it after the re-record and
 // re-records a sport it changed.
 import { spawnSync } from 'node:child_process';
@@ -78,7 +78,7 @@ export function seriesOf(replay) {
   }
   const days = [...by.values()].sort((a, b) => a[0].localeCompare(b[0])).map((e) => [e[0], e[1], r2(e[2]), r2(e[3]), e[4], e[5], e[6], r4(e[7]), r2(e[8]), r2(e[9]), r4(e[10])]);
   const o = replay?.overall ?? {};
-  return { overall: { bets: o.bets ?? 0, profit: o.profit ?? 0, staked: o.staked ?? 0, beat: o.beat ?? null, beatN: o.beatN ?? 0, clv: o.clv ?? null }, days };
+  return { overall: { bets: o.bets ?? 0, profit: o.profit ?? 0, staked: o.staked ?? 0, beat: o.beat ?? null, beatN: o.beatN ?? 0, clv: o.clv ?? null }, days, ...(replay?.flags?.margin ? { margin: replay.flags.margin } : {}) };
 }
 
 // The gate's hook (gate.mjs, gate-mma.mjs scoreVersion, TUNE_GRID=<file of [{ id, knob, value }]>, TUNE_OUT=<file>):
@@ -117,14 +117,14 @@ export const valueOf = (file, name) => (inBounds(name, file?.knobs?.[name]) ? fi
 
 // This week's candidates for a sport: each knob on its menu at each grid value but its own, in bounds, unless a change
 // shipped within WEEK_DAYS (none at all: one a week) or the knob changed within COOLDOWN_DAYS. { cands, blocked }
-export function candidatesOf(sport, file, date) {
+export function candidatesOf(sport, file, date, only = null) {
   const changes = file?.changes ?? [];
   const blocked = [];
   const recent = changes.filter((c) => fin(daysBetween(c.date, date)) && daysBetween(c.date, date) < WEEK_DAYS);
   if (recent.length) return { cands: [], blocked: [`a change shipped ${recent.at(-1).date} (${recent.at(-1).knob}): one a week`] };
   const cands = [];
   for (const [name, k] of Object.entries(KNOBS)) {
-    if (!onMenu(sport, name)) continue;
+    if (!onMenu(sport, name) || (only && !only.includes(name))) continue;
     const last = changes.filter((c) => c.knob === name).at(-1);
     if (last && daysBetween(last.date, date) < COOLDOWN_DAYS) {
       blocked.push(`${name} changed ${last.date}: cooling down till ${addDays(last.date, COOLDOWN_DAYS)}`);
@@ -275,10 +275,10 @@ function score(sport, { env = {}, out, log }) {
   return Math.round((Date.now() - t0) / 1000);
 }
 
-export async function tuneSport(sport, { date, dir, dry = false, log = console.log } = {}) {
+export async function tuneSport(sport, { date, dir, dry = false, only = null, log = console.log } = {}) {
   const t0 = Date.now();
   const file = readTunedFile(sport);
-  const { cands, blocked } = candidatesOf(sport, file, date);
+  const { cands, blocked } = candidatesOf(sport, file, date, only);
   const secs = {};
   const judged = [];
   if (cands.length) {
@@ -331,7 +331,7 @@ async function main() {
     // (a sport with no knob on its menu (MMA: its live desk reads no bar) has nothing to tune)
     if (!Object.keys(KNOBS).some((n) => onMenu(sport, n))) continue;
     try {
-      results.push(await tuneSport(sport, { date, dir, dry }));
+      results.push(await tuneSport(sport, { date, dir, dry, only: val('--knobs')?.split(',') ?? null }));
     } catch (err) {
       console.log(`${sport}: the self-tune failed: ${String(err?.message ?? err).slice(0, 300)}`);
       results.push({ sport, error: String(err?.message ?? err).slice(0, 300) });

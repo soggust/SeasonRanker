@@ -154,7 +154,7 @@ import { nflPlayChance, nflPractice, playAt, playChanceSummary } from './playcha
 import { boardMissText, nflBoardMiss } from './board-miss.mjs';
 import { ROUND_C, lineChances, setYoung } from './project.mjs';
 import { readYoung, tagExperience } from './experience.mjs';
-import { leanDOf, leanGuardOf, leanOn } from './lean.mjs';
+import { leanDOf, leanGuardOf, leanOn, marginGuardOf } from './lean.mjs';
 import { ANY_KEY, ANY_LABEL, ANY_LINE, anytimePlacement, priceAnytime, trackOnly } from './anytime.mjs';
 import { API_MARKETS, PER_GAME, PROP_WAIT, ROLE, STATS, apiProps, board, fitProps, marketPts, nameKey, nflListed, nflMarket, nflTookSnap, priceProps, readDepth, depthQbChangeOf, roleGateOf, rowsIndex, settleProp, statInFinal, statRows, withApiPrices } from './props.mjs';
 import { CACHE, DAY, etDay, get, isoSecond, nflverseGames, readJson, writeAtomic, writeJson } from './sources.mjs';
@@ -2106,8 +2106,11 @@ function betGames(r) {
       const gate = bothGates(bothGates(r.lineGate, segment), ownBarGate(r.ownBar, sport, ownKey(key, key, pick.side)));
       // (the shopped-price guard (D76): a side that clears only at another book's price, under the minimum there)
       const shopG = r.shopT === null || r.shopT === undefined ? { guarded: false } : shopGuardOf(pick, r.shopT, pick.push ?? 0);
+      // (D88's margin rule: a side the Bot's own model puts under the fair price, bet on a small price edge, the practice stake)
+      const marginG = pick.ev > 0 ? marginGuardOf(sport, 'lines', { p: pick.p, odds: pick.odds, fair: pick.fair, own: pick.model }) : { held: false };
       const practice = !gate?.on || shopG.guarded;
       if (practice) guard = { ...(guard ?? {}), why: [guard?.why, gate?.on ? null : gate.why, shopG.why].filter(Boolean).join('; ') };
+      if (marginG.held) guard = { ...(guard ?? {}), why: [guard?.why, marginG.why].filter(Boolean).join('; ') };
       const units = guard ? PRACTICE_UNITS : pick.units;
       // (an edge bet at its stake, a flagged one (a guard's cut: questionable, weather, a moved line) at the
       // minimum, still a LIKE or better (the owner's: an edge is bet); with no edge, or off ESPN's board alone,
@@ -2903,6 +2906,9 @@ async function betProps(r) {
     // (the against-own-lean guard (D82): the Bot's own chance on the side under one half by more than the month's d)
     const leanG = r.leanD === null || r.leanD === undefined ? { guarded: false } : leanGuardOf(Number.isFinite(x.modelRaw) ? x.modelRaw : x.model, r.leanD);
     if (leanG.guarded) x.guard = { ...(x.guard ?? {}), why: [x.guard?.why, leanG.why].filter(Boolean).join('; ') };
+    // (D88's margin rule: a side the Bot's own model puts under the fair price, bet on a small price edge, the practice stake)
+    const marginG = x.ev > 0 ? marginGuardOf(sport, 'props', { p: x.p, odds: x.odds, fair: x.fair, own: Number.isFinite(x.modelRaw) ? x.modelRaw : x.model }) : { held: false };
+    if (marginG.held) x.guard = { ...(x.guard ?? {}), why: [x.guard?.why, marginG.why].filter(Boolean).join('; ') };
     // (a research bet whose level is earned (research.mjs researchLevelOf) keeps its Kelly stake under its own
     // guard's word; the stat's CLV gate still holds it to practice, gatedPlacement)
     if (x.guard && !(x.researchBet?.earned || x.researchAdjusted?.earned)) x.units = PRACTICE_UNITS;
