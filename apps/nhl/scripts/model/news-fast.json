@@ -3,7 +3,7 @@
  "cursor": {
   "johnston-bot.bsky.social": "2026-10-23T16:37:52.124Z",
   "notfriedgehnic.bsky.social": "2026-10-23T18:50:37.742Z",
-  "dailyfaceoff.bsky.social": "2026-10-24T00:08:48.000Z",
+  "dailyfaceoff.bsky.social": "2026-10-24T00:37:06.000Z",
   "dfotoronto.bsky.social": "2026-10-23T21:32:44.000Z",
   "marklazerus.bsky.social": "2026-10-23T20:57:53.788Z"
  },
@@ -553,6 +553,19 @@
    "kind": "status",
    "confidence": 0.5,
    "text": "Cleared \n\nHunt (MIN) & St. Ivany (WIN) on waivers"
+  },
+  {
+   "id": "at://did:plc:3uus7y6h3rlrk6sbctzxm4bg/app.bsky.feed.post/3mylh7xvufl2f|devonlevi|out|status",
+   "at": "2026-10-24T00:37:06.000Z",
+   "seen": "2026-10-24T01:08:03.622Z",
+   "handle": "dailyfaceoff.bsky.social",
+   "post": "at://did:plc:3uus7y6h3rlrk6sbctzxm4bg/app.bsky.feed.post/3mylh7xvufl2f",
+   "player": "Devon Levi",
+   "team": "EDM",
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.9,
+   "text": "Oilers place Devon Levi on injured reserve"
   }
  ]
 }
