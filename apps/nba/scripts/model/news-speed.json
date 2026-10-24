@@ -6810,6 +6810,198 @@
     "seen": "2026-10-24T03:13:43.241Z",
     "own": "2026-10-16T16:11:00.000Z"
    }
+  },
+  "401909853|grantwilliams|q": {
+   "game": "401909853",
+   "start": "2026-10-24T22:00Z",
+   "team": "30",
+   "name": "Grant Williams",
+   "status": "q",
+   "athlete": "4066218",
+   "espn": {
+    "seen": "2026-10-24T03:34:49.361Z",
+    "own": "2026-10-24T03:10:00.000Z"
+   }
+  },
+  "401909853|cobywhite|q": {
+   "game": "401909853",
+   "start": "2026-10-24T22:00Z",
+   "team": "30",
+   "name": "Coby White",
+   "status": "q",
+   "athlete": "4395651",
+   "espn": {
+    "seen": "2026-10-24T03:34:49.361Z",
+    "own": "2026-10-24T03:10:00.000Z"
+   }
+  },
+  "401909853|konknueppel|q": {
+   "game": "401909853",
+   "start": "2026-10-24T22:00Z",
+   "team": "30",
+   "name": "Kon Knueppel",
+   "status": "q",
+   "athlete": "5061575",
+   "espn": {
+    "seen": "2026-10-24T03:34:49.361Z",
+    "own": "2026-10-24T03:10:00.000Z"
+   }
+  },
+  "401909853|cedriccoward|out": {
+   "game": "401909853",
+   "start": "2026-10-24T22:00Z",
+   "team": "30",
+   "name": "Cedric Coward",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-10-24T03:15:48.192Z",
+    "own": "2026-10-24T01:36:32.000Z",
+    "why": "@rotowirenba.bsky.social: Cedric Coward: Won't play Friday \n\n https://www.rotowi"
+   }
+  },
+  "401909854|cedriccoward|out": {
+   "game": "401909854",
+   "start": "2026-10-24T23:30Z",
+   "team": "5",
+   "name": "Cedric Coward",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-10-24T03:15:48.192Z",
+    "own": "2026-10-24T01:36:32.000Z",
+    "why": "@rotowirenba.bsky.social: Cedric Coward: Won't play Friday \n\n https://www.rotowi"
+   }
+  },
+  "401909855|cedriccoward|out": {
+   "game": "401909855",
+   "start": "2026-10-24T23:30Z",
+   "team": "20",
+   "name": "Cedric Coward",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-10-24T03:15:48.192Z",
+    "own": "2026-10-24T01:36:32.000Z",
+    "why": "@rotowirenba.bsky.social: Cedric Coward: Won't play Friday \n\n https://www.rotowi"
+   }
+  },
+  "401909857|cedriccoward|out": {
+   "game": "401909857",
+   "start": "2026-10-25T00:00Z",
+   "team": "4",
+   "name": "Cedric Coward",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-10-24T03:15:48.192Z",
+    "own": "2026-10-24T01:36:32.000Z",
+    "why": "@rotowirenba.bsky.social: Cedric Coward: Won't play Friday \n\n https://www.rotowi"
+   }
+  },
+  "401909857|ajdybantsa|q": {
+   "game": "401909857",
+   "start": "2026-10-25T00:00Z",
+   "team": "27",
+   "name": "AJ Dybantsa",
+   "status": "q",
+   "athlete": "5142718",
+   "espn": {
+    "seen": "2026-10-24T03:34:49.361Z",
+    "own": "2026-10-24T03:11:00.000Z"
+   }
+  },
+  "401909858|calebmartin|q": {
+   "game": "401909858",
+   "start": "2026-10-25T00:00Z",
+   "team": "6",
+   "name": "Caleb Martin",
+   "status": "q",
+   "athlete": "3138160",
+   "espn": {
+    "seen": "2026-10-24T03:34:49.361Z",
+    "own": "2026-10-24T03:06:00.000Z"
+   }
+  },
+  "401909858|jetthoward|q": {
+   "game": "401909858",
+   "start": "2026-10-25T00:00Z",
+   "team": "6",
+   "name": "Jett Howard",
+   "status": "q",
+   "athlete": "5105806",
+   "espn": {
+    "seen": "2026-10-24T03:34:49.361Z",
+    "own": "2026-10-24T03:06:00.000Z"
+   }
+  },
+  "401909858|tarikbiberovic|q": {
+   "game": "401909858",
+   "start": "2026-10-25T00:00Z",
+   "team": "6",
+   "name": "Tarik Biberovic",
+   "status": "q",
+   "athlete": "5148538",
+   "espn": {
+    "seen": "2026-10-24T03:34:49.361Z",
+    "own": "2026-10-24T03:06:00.000Z"
+   }
+  },
+  "401909858|santialdama|q": {
+   "game": "401909858",
+   "start": "2026-10-25T00:00Z",
+   "team": "6",
+   "name": "Santi Aldama",
+   "status": "q",
+   "athlete": "4593125",
+   "espn": {
+    "seen": "2026-10-24T03:34:49.361Z",
+    "own": "2026-10-24T03:06:00.000Z"
+   }
+  },
+  "401909858|cedriccoward|out": {
+   "game": "401909858",
+   "start": "2026-10-25T00:00Z",
+   "team": "6",
+   "name": "Cedric Coward",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-10-24T03:15:48.192Z",
+    "own": "2026-10-24T01:36:32.000Z",
+    "why": "@rotowirenba.bsky.social: Cedric Coward: Won't play Friday \n\n https://www.rotowi"
+   }
+  },
+  "401909856|cedriccoward|out": {
+   "game": "401909856",
+   "start": "2026-10-25T00:30Z",
+   "team": "1",
+   "name": "Cedric Coward",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-10-24T03:15:48.192Z",
+    "own": "2026-10-24T01:36:32.000Z",
+    "why": "@rotowirenba.bsky.social: Cedric Coward: Won't play Friday \n\n https://www.rotowi"
+   }
+  },
+  "401909859|cedriccoward|out": {
+   "game": "401909859",
+   "start": "2026-10-25T01:00Z",
+   "team": "7",
+   "name": "Cedric Coward",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-10-24T03:15:48.192Z",
+    "own": "2026-10-24T01:36:32.000Z",
+    "why": "@rotowirenba.bsky.social: Cedric Coward: Won't play Friday \n\n https://www.rotowi"
+   }
+  },
+  "401909860|cedriccoward|out": {
+   "game": "401909860",
+   "start": "2026-10-25T02:00Z",
+   "team": "21",
+   "name": "Cedric Coward",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-10-24T03:15:48.192Z",
+    "own": "2026-10-24T01:36:32.000Z",
+    "why": "@rotowirenba.bsky.social: Cedric Coward: Won't play Friday \n\n https://www.rotowi"
+   }
   }
  }
 }
