@@ -5429,6 +5429,11 @@
     "seen": "2026-10-23T00:29:18.410Z",
     "own": "2026-10-23T00:21:39.000Z",
     "why": "@rotowirenba.bsky.social: Cedric Coward: Doubtful for Friday \n\n https://www.roto"
+   },
+   "athlete": "4903027",
+   "espn": {
+    "seen": "2026-10-24T01:46:18.454Z",
+    "own": "2026-10-24T01:33:00.000Z"
    }
   },
   "401909851|brandinpodziemski|q": {
@@ -5817,6 +5822,78 @@
    "espn": {
     "seen": "2026-10-24T01:33:38.388Z",
     "own": "2026-10-23T00:16:00.000Z"
+   }
+  },
+  "401909850|jalenduren|q": {
+   "game": "401909850",
+   "start": "2026-10-24T02:00Z",
+   "team": "9",
+   "name": "Jalen Duren",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-10-24T01:35:11.977Z",
+    "own": "2026-10-24T01:16:01.000Z",
+    "why": "@rotowirenba.bsky.social: Jalen Duren: Questionable to return Friday \n\n https://"
+   }
+  },
+  "401909850|paolobanchero|out": {
+   "game": "401909850",
+   "start": "2026-10-24T02:00Z",
+   "team": "9",
+   "name": "Paolo Banchero",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-10-24T01:35:11.977Z",
+    "own": "2026-10-24T01:22:39.000Z",
+    "why": "@rotowirenba.bsky.social: Paolo Banchero: Doubtful to return Friday \n\n https://w"
+   }
+  },
+  "401909851|jalenduren|q": {
+   "game": "401909851",
+   "start": "2026-10-24T02:00Z",
+   "team": "13",
+   "name": "Jalen Duren",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-10-24T01:35:11.977Z",
+    "own": "2026-10-24T01:16:01.000Z",
+    "why": "@rotowirenba.bsky.social: Jalen Duren: Questionable to return Friday \n\n https://"
+   }
+  },
+  "401909851|paolobanchero|out": {
+   "game": "401909851",
+   "start": "2026-10-24T02:00Z",
+   "team": "13",
+   "name": "Paolo Banchero",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-10-24T01:35:11.977Z",
+    "own": "2026-10-24T01:22:39.000Z",
+    "why": "@rotowirenba.bsky.social: Paolo Banchero: Doubtful to return Friday \n\n https://w"
+   }
+  },
+  "401909852|jalenduren|q": {
+   "game": "401909852",
+   "start": "2026-10-24T02:00Z",
+   "team": "23",
+   "name": "Jalen Duren",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-10-24T01:35:11.977Z",
+    "own": "2026-10-24T01:16:01.000Z",
+    "why": "@rotowirenba.bsky.social: Jalen Duren: Questionable to return Friday \n\n https://"
+   }
+  },
+  "401909852|paolobanchero|out": {
+   "game": "401909852",
+   "start": "2026-10-24T02:00Z",
+   "team": "23",
+   "name": "Paolo Banchero",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-10-24T01:35:11.977Z",
+    "own": "2026-10-24T01:22:39.000Z",
+    "why": "@rotowirenba.bsky.social: Paolo Banchero: Doubtful to return Friday \n\n https://w"
    }
   }
  }
