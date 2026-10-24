@@ -2,7 +2,7 @@
  "v": 1,
  "sport": "nfl",
  "epoch": "2026-10-23T05:30:00Z",
- "at": "2026-10-24T05:51:12.426Z",
+ "at": "2026-10-24T06:35:55.048Z",
  "from": "2020-09-11T00:20:00.000Z",
  "through": "2026-10-19T00:23:00.000Z",
  "n": {
@@ -2046,6 +2046,26 @@
     }
    }
   },
+  "margin": {
+   "lines": {
+    "lambda": 0,
+    "m": 0,
+    "disagree": 275,
+    "held": 0,
+    "before": 0,
+    "after": 0,
+    "tracked": 0
+   },
+   "props": {
+    "lambda": 0,
+    "m": 0,
+    "disagree": 526,
+    "held": 0,
+    "before": 0,
+    "after": 0,
+    "tracked": 0
+   }
+  },
   "leanGuard": {
    "on": true,
    "props": 2716,
@@ -2100,7 +2120,7 @@
   "split": "games that start before the epoch replayed; the live ledger from the epoch on",
   "notSeen": "the live desk's CLV gates, CHECKs, research and news"
  },
- "commit": "44b4f3aa",
+ "commit": "8e263b20",
  "note": "D89. Injury news re-prices and kicks the watcher only on a player who matters: minutes, time on ice or snaps this season (last season's while his team hasn't played yet)",
  "inputs": {
   "v": 1,
@@ -2109,10 +2129,10 @@
    "props": "c6a3a1984119",
    "games": "31d8991c8861",
    "pricing": "b2704a6d783a",
-   "record": "971b75966146",
+   "record": "c9393fd0d544",
    "harness": "c1cfe173e7f3",
    "residual": "68fc3e576029597d",
-   "tuned": "06c3e7b22605b5a0"
+   "tuned": "75ba5ef16d4ef1db"
   },
   "fit": {
    "wf": true,
@@ -2265,6 +2285,6 @@
     "want": 55
    }
   },
-  "hash": "7bedf036e80df8f9"
+  "hash": "07d9842809c9607c"
  }
 }

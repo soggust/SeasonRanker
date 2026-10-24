@@ -2,7 +2,7 @@
  "v": 1,
  "sport": "mma",
  "epoch": "2026-10-21T01:15:00Z",
- "at": "2026-10-24T06:08:17.888Z",
+ "at": "2026-10-24T07:03:34.305Z",
  "from": "2020-06-06T23:10:00.000Z",
  "through": "2026-10-18T01:45:00.000Z",
  "n": {
@@ -1964,6 +1964,23 @@
    "after": 0,
    "next": 0
   },
+  "margin": {
+   "lines": {
+    "lambda": 0,
+    "m": 0,
+    "disagree": 749,
+    "held": 0,
+    "before": 0,
+    "after": 0,
+    "tracked": 0
+   }
+  },
+  "mmaOpenFav": {
+   "mode": 0,
+   "bets": 453,
+   "before": 18.65,
+   "after": 18.65
+  },
   "facts": {
    "stamped": 1300,
    "late": 0,
@@ -1992,18 +2009,18 @@
   "split": "games that start before the epoch replayed; the live ledger from the epoch on",
   "notSeen": "the live desk's CLV gates, CHECKs, research and news"
  },
- "commit": "44b4f3aa",
+ "commit": "8e263b20",
  "note": "D89. Injury news re-prices and kicks the watcher only on a player who matters: minutes, time on ice or snaps this season (last season's while his team hasn't played yet)",
  "inputs": {
   "v": 1,
   "sport": "mma",
   "code": {
-   "mma": "0e3a9ba4d192",
+   "mma": "f1226a7a01cc",
    "games": "31d8991c8861",
    "pricing": "b2704a6d783a",
-   "record": "971b75966146",
+   "record": "c9393fd0d544",
    "harness": "c1cfe173e7f3",
-   "tuned": "44136fa355b3678a"
+   "tuned": "bf1af220e978a952"
   },
   "rows": {
    "replay": 7773,
@@ -2025,6 +2042,6 @@
     "want": 14
    }
   },
-  "hash": "395baefbf58b11f9"
+  "hash": "333d03b085a4d023"
  }
 }

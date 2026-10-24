@@ -1,5 +1,5 @@
 {
- "at": "2026-10-24T06:08:19.278Z",
+ "at": "2026-10-24T07:03:36.271Z",
  "baseline": {
   "from": "2026-09-19",
   "to": "2026-10-17"
@@ -87,7 +87,7 @@
   },
   {
    "examples": [],
-   "headline": "total trust: no longer fitted (0.2 to 0); 56 changelog entries this week",
+   "headline": "total trust: no longer fitted (0.2 to 0); 54 changelog entries this week",
    "how": "the day's last state.json for 35 days (git), the week's start against now; the changelog's entries this week verbatim",
    "id": "C9",
    "metric": "changes",
@@ -1076,7 +1076,7 @@
   },
   {
    "examples": [],
-   "headline": "Model files 2h old, 0 open bets overdue to grade; Odds API credits 293% left; 82 bets placed in a week of 7 games",
+   "headline": "Model files 3h old, 0 open bets overdue to grade; Odds API credits 293% left; 82 bets placed in a week of 7 games",
    "how": "the newest commit of the sport's model files, the open bets started 12 hours ago or more, The Odds API's credits (state.odds), the state's sources",
    "id": "C16",
    "metric": "ageH",
@@ -1084,7 +1084,7 @@
    "needs": null,
    "rows": [
     {
-     "ageH": 2,
+     "ageH": 3,
      "at": "2026-10-24T03:39:31Z",
      "key": "files",
      "overdue": 0
@@ -1110,7 +1110,7 @@
    "tested": null,
    "threshold": "watch files 3h old with bets overdue, credits under 20%, a source down, or no bets in a week with games; flag 6h old with bets overdue, or credits under 10%",
    "title": "Ops",
-   "value": 2
+   "value": 3
   },
   {
    "examples": [
@@ -1775,7 +1775,7 @@
  "sport": "mlb",
  "summary": {
   "flag": 4,
-  "headline": "Over/under drift by stat: Hits Over: 25 won vs 26.6 expected (z -0.47), 79% of its stat's props, ROI -11.9%; Fitted terms, params and trust: total trust: no longer fitted (0.2 to 0); 56 changelog entries this week",
+  "headline": "Over/under drift by stat: Hits Over: 25 won vs 26.6 expected (z -0.47), 79% of its stat's props, ROI -11.9%; Fitted terms, params and trust: total trust: no longer fitted (0.2 to 0); 54 changelog entries this week",
   "info": 3,
   "ok": 8,
   "partial": 1,
