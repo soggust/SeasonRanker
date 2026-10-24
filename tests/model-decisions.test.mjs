@@ -2032,3 +2032,55 @@ test('D88 the weekly self-tune: a fixed menu, one change a sport a week as data 
   const decisions = fs.readFileSync(path.join(import.meta.dirname, '../libs/ranker/scripts/model/DECISIONS.md'), 'utf8');
   assert.ok(decisions.includes('### D88.'));
 });
+
+test('D89 injury news on a player who matters alone re-prices and kicks the watcher: Stewart-like (no games this season) ignored, a starter not', async () => {
+  const T = await import('../libs/ranker/scripts/model/timing.mjs');
+  const W = await import('../scripts/desk-watch.mjs');
+  assert.deepEqual([T.MATTERS.nba, T.MATTERS.nhl, T.MATTERS.nfl, T.MATTER_GAMES, T.MATTER_QB_ATT], [10, 10, 0.25, 4, 10]);
+  const row = (pid, season, team, game, date, s) => ({ pid, name: pid, season, team, game, date, s });
+  // (MEM (29) has played this season; the starter 30 minutes, the bench 5, Stewart only last season's 30; UTAH (26) not yet)
+  const rows = [
+    row('star', 2027, '29', 'g1', '2026-10-22', { min: 30 }),
+    row('bench', 2027, '29', 'g1', '2026-10-22', { min: 5 }),
+    row('stewart', 2026, '8', 'p1', '2026-04-10', { min: 30 }),
+    row('vet', 2026, '26', 'p2', '2026-04-10', { min: 25 }),
+  ];
+  const m = T.whoMatters(rows, 'nba');
+  assert.equal(m.season, 2027);
+  assert.ok(T.matters(m, 'star', '29'));
+  assert.ok(!T.matters(m, 'bench', '29'), 'under the bar');
+  assert.ok(!T.matters(m, 'stewart', '29'), 'no games this season, his team has played');
+  assert.ok(!T.matters(m, 'nobody', '29'), 'no games either season');
+  assert.ok(T.matters(m, 'vet', '26'), 'his team yet to play: last season read');
+  assert.ok(T.matters(null, 'anyone', '29'), 'unknown: everyone matters');
+  // (the NFL: a starting QB, a defender by his side's snaps, the unknown (an offensive lineman) matters; NHL by time on ice)
+  const nfl = [row('qb', 2026, '1', 'n1', '2026-10-18', { passAtt: 30, snaps: 60 }), row('wr', 2026, '1', 'n1', '2026-10-18', { snaps: 50 }), row('wr4', 2026, '1', 'n1', '2026-10-18', { snaps: 6 })];
+  nfl.defense = new Map([['n1|2', [['lb', 'LB', 60], ['dl9', 'DL', 8]]]]);
+  const mf = T.whoMatters(nfl, 'nfl');
+  assert.deepEqual(['qb', 'wr', 'wr4', 'lb', 'dl9', 'ol'].map((id) => T.matters(mf, id, id === 'lb' || id === 'dl9' ? '2' : '1')), [true, true, false, true, false, true]);
+  const mh = T.whoMatters([row('c1', 2027, '5', 'h1', '2026-10-20', { toi: 18 }), row('f4', 2027, '5', 'h1', '2026-10-20', { toi: 7 })], 'nhl');
+  assert.deepEqual([T.matters(mh, 'c1', '5'), T.matters(mh, 'f4', '5')], [true, false]);
+  // (the re-price: a bet stamped with the lists who matter isn't priced again on Stewart's flips; on the starter's it is)
+  const game = { id: 'e1', home: '29', away: '9', homeAbbr: 'MEM', awayAbbr: 'GS', season: 2027 };
+  const live = (list) => ({ injuries: new Map([['29', list], ['9', []]]) });
+  const stew = (status) => ({ id: 'stewart', name: 'Isaiah Stewart', status });
+  const bet = T.inputsOf('nba', game, live([stew('Out')]), null, {}, null, m);
+  const flip = T.inputsOf('nba', game, live([stew('Questionable')]), null, {}, null, m);
+  assert.deepEqual(T.inputChanges(bet.hash, flip, { game, before: bet.parts, names: flip.names, market: 'ml' }), []);
+  assert.ok(T.inputChanges(bet.hash, flip, { game, before: bet.parts, market: 'prop' }).length === 0);
+  const starOut = T.inputsOf('nba', game, live([stew('Questionable'), { id: 'star', name: 'A Star', status: 'Out' }]), null, {}, null, m);
+  assert.deepEqual(T.inputChanges(flip.hash, starOut, { game, before: flip.parts, names: starOut.names, market: 'ml' }).map((c) => c.words), ['MEM out list (+A Star)']);
+  // (a bet from before (no om stamped): the whole lists, as it was priced)
+  const legacy = Object.fromEntries(Object.entries(bet.hash).filter(([k]) => !/^(om|qm):/.test(k)));
+  assert.ok(T.inputChanges(legacy, flip, { game }).length > 0);
+  // (the watcher: Stewart's new Out kicks nothing, the starter's does; no matters read, everyone does)
+  const NOW = Date.parse('2026-10-23T22:00:00Z');
+  const g = { id: 'e1', sport: 'nba', name: 'MEM @ GS', start: NOW + 3 * 3600e3, hours: 3, phase: 'window', lines: true, teams: ['29', '9'], sig: null };
+  const first = W.advance(null, { games: { nba: new Map([['e1', g]]) }, injuries: { nba: new Map() } }, NOW);
+  const inj = new Map([['29:stewart', { status: 'Out', name: 'Isaiah Stewart', team: '29' }], ['29:star', { status: 'Out', name: 'A Star', team: '29' }]]);
+  const keys = (mm) => W.advance(first.state, { games: { nba: new Map([['e1', g]]) }, injuries: { nba: inj }, ...(mm ? { matters: { nba: mm } } : {}) }, NOW + 60e3).added.map((a) => a.key);
+  assert.deepEqual(keys(m), ['nba:injury:29:star:Out']);
+  assert.deepEqual(keys(null).sort(), ['nba:injury:29:star:Out', 'nba:injury:29:stewart:Out']);
+  const decisions = fs.readFileSync(path.join(import.meta.dirname, '../libs/ranker/scripts/model/DECISIONS.md'), 'utf8');
+  assert.ok(decisions.includes('### D89.'));
+});

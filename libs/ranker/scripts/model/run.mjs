@@ -138,7 +138,7 @@ import { isClvFile, liveMerged } from './clv-bands.mjs';
 import { LAG_SPORTS, lagFile, lagPending, lagPrune, lagTag, lagUpdate, readLag } from './news-lag.mjs';
 import { ledgerRisk, readLineupRisk, riskAt, riskChance, riskText } from './lineup-risk.mjs';
 import { morningPrices, withSnapshot } from './suggest.mjs';
-import { MAX_LAST, OUT_STATUS, REPRICE_BY, cadenceOf, inputChanges, inputsOf, lastChanceOf, lineupNow, lostAsk, newsMissing, phaseOf, propAsk, putInactives, reach } from './timing.mjs';
+import { MAX_LAST, OUT_STATUS, REPRICE_BY, cadenceOf, inputChanges, inputsOf, lastChanceOf, lineupNow, lostAsk, newsMissing, phaseOf, propAsk, putInactives, reach, whoMatters } from './timing.mjs';
 import { fitMargins } from './margins.mjs';
 import { ROSTER_MIN, eventOf, gameOf, json, linesOf, roster, scoreboard, teamIds, teamSchedule, ymd } from './espn.mjs';
 import { adjust, dynamicTerms, expect, fit, fitContext, gateOf, namedIdx, replay, round, setDynamic } from './ratings.mjs';
@@ -1264,6 +1264,15 @@ async function fitTheProps(r) {
 // (timing.mjs PROPS_ONLY). Any failure: the report as it was
 function inactivesNow(r) {
   r.players = null;
+  // (who matters to the injury news, D89 (timing.mjs whoMatters): the re-price reads it (inputsOf's om and qm), the
+  // watcher its committed copy (scripts/desk-watch.mjs, apps/<sport>/scripts/model/matters.json); none, everyone does)
+  r.matters = null;
+  try {
+    r.matters = whoMatters(r.rows, r.sport);
+    if (r.matters) writeIfChanged(path.join(ROOT, 'apps', r.sport, 'scripts/model/matters.json'), r.matters);
+  } catch (err) {
+    console.warn(`${r.sport}: who matters not read (${err.message}): every listed player does`);
+  }
   try {
     r.players = lineupNow(r.rows, r.sport);
     if (!r.players) return;
@@ -1782,7 +1791,7 @@ function repriceOpen(r) {
   for (const { game } of r.upcoming ?? []) {
     games.set(game.id, game);
     if (blindOf(r, game)) continue;
-    r.inputs.set(game.id, inputsOf(sport, game, r.live.get(game.id), r.feats?.feats.get(game.id)?.info ?? null, ok, r.players));
+    r.inputs.set(game.id, inputsOf(sport, game, r.live.get(game.id), r.feats?.feats.get(game.id)?.info ?? null, ok, r.players, r.matters));
   }
   // (--dry: what the inputs read, a part unread (its source failed, or none for the game) by name)
   if (DRY && r.inputs.size) {

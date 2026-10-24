@@ -41,6 +41,7 @@ import { linesOf } from '../libs/ranker/scripts/model/espn.mjs';
 import { LEAGUES, TIMING } from '../libs/ranker/scripts/model/leagues.mjs';
 import { authorPosts, handlesOf } from '../libs/ranker/scripts/model/fastnews.mjs';
 import { linesSig } from '../libs/ranker/scripts/model/oddsapi.mjs';
+import { matters } from '../libs/ranker/scripts/model/timing.mjs';
 
 const ROOT = path.resolve(import.meta.dirname, '..');
 const STATE = path.join(ROOT, '.cache', 'desk-watch.json');
@@ -77,6 +78,8 @@ const NEWS_KEEP_H = 12;
 // minutes' cache: the site's is an hour), only when a game newly final is seen)
 export const FINAL_LOOK_H = 8;
 export const FINAL_KEEP_H = 6;
+// (who matters to the injury news, as the desk last committed it (D89, timing.mjs whoMatters))
+const MATTERS_URL = (sport) => `https://raw.githubusercontent.com/soggust/SeasonRanker/master/apps/${sport}/scripts/model/matters.json`;
 const LEDGER_URL = (sport) => `https://raw.githubusercontent.com/soggust/SeasonRanker/master/apps/${sport}/src/StaticData/model/ledger.json`;
 // (the log trimmed to its newest half past this many bytes)
 const LOG_MAX = 2e6;
@@ -251,7 +254,8 @@ export function postGame(text, games, list = new Map()) {
 
 // The poll's pending items from the last state and what's seen now: lines moved, windows crossed, the NFL's
 // inactives, new outs, reporters' posts. Pure: state in, { state, added } out (the state's baselines and pending
-// updated). seen: { games: Map by sport, injuries: Map by sport, posts: [{ sport, uri, at, text, handle }] }. A new
+// updated). seen: { games: Map by sport, injuries: Map by sport, posts: [{ sport, uri, at, text, handle }], matters:
+// { sport: whoMatters' } (a listed player who doesn't matter, D89, kicks nothing; none read, everyone does) }. A new
 // out and a post on one game carry it (game, until its start, fast): the fast lane's (D68)
 export function advance(state, seen, now = Date.now()) {
   const s = { baseline: {}, phases: {}, injuries: {}, pending: [], cursors: {}, dispatched: [], ...structuredClone(state ?? {}) };
@@ -298,6 +302,8 @@ export function advance(state, seen, now = Date.now()) {
       known[k] = v.status;
       if (first || !severe(v.status) || severe(was)) continue;
       if (!inWindow.get(sport)?.has(v.team)) continue;
+      // (a player who doesn't matter (D89: no games this season, or under the bar): no run on him)
+      if (!matters(seen.matters?.[sport] ?? null, k.slice(k.indexOf(':') + 1), v.team)) continue;
       const g = (live.get(sport) ?? []).find((x) => x.phase !== 'early' && x.teams.includes(v.team));
       add({ key: `${sport}:injury:${k}:${v.status}`, sport, why: `${sport.toUpperCase()} ${v.name}: ${was ? `${was} to ` : ''}${v.status} on ESPN's list`, ...onGame(g) });
     }
@@ -427,7 +433,12 @@ async function main() {
     const games = await gamesOf(sport, { now, boards: (boards[sport] ??= {}) });
     if (!games.size) continue;
     seen.games[sport] = games;
-    if ([...games.values()].some((g) => g.phase !== 'early')) seen.injuries[sport] = await injuriesOf(sport);
+    if ([...games.values()].some((g) => g.phase !== 'early')) {
+      seen.injuries[sport] = await injuriesOf(sport);
+      // (who matters, D89: one that won't load, everyone does)
+      const m = await getJson(MATTERS_URL(sport)).catch(() => null);
+      if (m?.sport === sport) (seen.matters ??= {})[sport] = m;
+    }
   }
   // (the reporters' posts since each account's last one seen: the first poll only sets the cursor)
   const cursors = { ...(state.cursors ?? {}) };

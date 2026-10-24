@@ -314,11 +314,94 @@ export function lineupSurprise(l, team, players, season) {
   return [...five.filter((id) => !usual.has(id)), ...[...usual].filter((id) => !s.has(id) && !out.has(id))].sort().join(',');
 }
 
+// Who matters to the injury news (DECISIONS.md D89): a list change on a player who doesn't is no news, so it prices
+// nothing again (inputsOf's om and qm parts, repriceOpen) and the watcher kicks no run on it (scripts/desk-watch.mjs);
+// the news log still keeps it (D54). A player matters by his own last MATTER_GAMES games of the season (the rows'
+// latest): NBA MATTERS.nba (10) minutes a game or more on average; NHL MATTERS.nhl (10) minutes on ice (a goalie
+// too: his starts are 60); NFL MATTERS.nfl (25%) of his side's snaps (offense: the most any of his team's players took
+// in the game, the line's; defense: rows.defense's the same way), or a quarterback's MATTER_QB_ATT (10) passes a game
+// (the starter), or, where the snap counts lag (a game's 0 snaps), WORKED's touches. His team's season young (no game
+// of it in the rows yet: the opener, the preseason), his last season's games read the same way instead. A player
+// with no games this season on a team that has played, or under the bar, doesn't matter (MEM's Isaiah Stewart,
+// 2026-10-23: out since the preseason, his out-or-questionable flips priced MEM @ GS's bets three times). The
+// NFL's unknown (no row either season: the offensive line, the kickers, a rookie) matters (the rows only hold the
+// skill players and the defenders); the NBA's and NHL's box scores hold everyone who played, so theirs doesn't.
+// Returns { sport, season, played: [team], now: [id], last: [id], known: [id] (the NFL's) }, kept small for the
+// watcher (apps/<sport>/scripts/model/matters.json), or null (no rows: everyone matters)
+export const MATTERS = { nba: 10, nhl: 10, nfl: 0.25 };
+export const MATTER_GAMES = 4;
+export const MATTER_QB_ATT = 10;
+export function whoMatters(rows, sport) {
+  if (!(sport in MATTERS) || !rows?.length) return null;
+  const season = Math.max(...rows.map((r) => r.season).filter(Number.isFinite));
+  if (!Number.isFinite(season)) return null;
+  const bar = MATTERS[sport];
+  const seasonOf = new Map();
+  // (each player's games by season: [{ date, v }], v his minutes or his share of his side's snaps; the NFL's most snaps a side's player took, a game)
+  const top = new Map();
+  if (sport === 'nfl') for (const r of rows) top.set(`${r.game}|${r.team}`, Math.max(top.get(`${r.game}|${r.team}`) ?? 0, r.s?.snaps ?? 0));
+  const games = new Map();
+  const put = (pid, s, date, v) => {
+    const k = `${pid}|${s}`;
+    if (!games.has(k)) games.set(k, []);
+    games.get(k).push({ date: String(date ?? ''), v });
+  };
+  const played = new Set();
+  for (const r of rows) {
+    if (!r.pid) continue;
+    seasonOf.set(String(r.game), { season: r.season, date: r.date });
+    if (r.season === season && r.team) played.add(String(r.team));
+    const s = r.s ?? {};
+    let v;
+    if (sport === 'nba') v = s.min ?? 0;
+    else if (sport === 'nhl') v = s.toi ?? 0;
+    else {
+      const t = top.get(`${r.game}|${r.team}`) ?? 0;
+      v = (s.passAtt ?? 0) >= MATTER_QB_ATT ? 1 : t > 0 && s.snaps > 0 ? s.snaps / t : !t && WORKED.nfl(s) ? 1 : 0;
+    }
+    put(String(r.pid), r.season, r.date, v);
+  }
+  if (sport === 'nfl' && rows.defense instanceof Map) {
+    for (const [key, list] of rows.defense) {
+      const g = seasonOf.get(key.split('|')[0]);
+      if (!g) continue;
+      const most = Math.max(0, ...list.map((x) => x[2] ?? 0));
+      for (const [id, , n] of list) put(String(id), g.season, g.date, most > 0 ? n / most : 0);
+    }
+  }
+  const now = new Set();
+  const last = new Set();
+  const known = new Set();
+  for (const [k, list] of games) {
+    const [pid, s] = k.split('|');
+    if (sport === 'nfl') known.add(pid);
+    const mine = list.sort((a, b) => b.date.localeCompare(a.date)).slice(0, MATTER_GAMES);
+    const avg = mine.reduce((t, x) => t + x.v, 0) / mine.length;
+    if (avg < bar) continue;
+    if (Number(s) === season) now.add(pid);
+    else if (Number(s) === season - 1) last.add(pid);
+  }
+  return { sport, season, played: [...played].sort(), now: [...now].sort(), last: [...last].sort(), ...(sport === 'nfl' ? { known: [...known].sort() } : {}) };
+}
+
+const SETS = new WeakMap();
+// (whether a listed player matters (whoMatters' m; none: everyone does), id his ESPN id, team his team's)
+export function matters(m, id, team) {
+  if (!m) return true;
+  if (!SETS.has(m)) SETS.set(m, { played: new Set(m.played ?? []), now: new Set(m.now ?? []), last: new Set(m.last ?? []), known: m.known ? new Set(m.known) : null });
+  const sets = SETS.get(m);
+  const pid = String(id);
+  if (sets.now.has(pid)) return true;
+  if (!sets.played.has(String(team)) && sets.last.has(pid)) return true;
+  return !!sets.known && !sets.known.has(pid);
+}
+
 // A game's inputs: { parts: { key: text or null }, hash: { key: short hash or null }, names: { id: name } }.
 // live: its live facts (context.mjs gather); info: its context's info (starters); ok: which sources worked
 // this run ({ nflverse, injuries, statsapi }: false, unread); players: lineupNow's (the NBA's starting five
-// read against the usual one; none, that part unread)
-export function inputsOf(sport, game, live, info, ok = {}, players = null) {
+// read against the usual one; none, that part unread); who: whoMatters' (the om and qm parts: the out and
+// questionable lists of the players who matter, D89; none, those parts not kept)
+export function inputsOf(sport, game, live, info, ok = {}, players = null, who = null) {
   const parts = {};
   const names = {};
   const l = live ?? {};
@@ -338,6 +421,13 @@ export function inputsOf(sport, game, live, info, ok = {}, players = null) {
       const list = all ? all.filter((p) => !p.inactive || p.was !== undefined) : null;
       parts[`out:${s}`] = list ? list.filter((p) => OUT.test(p.status)).map(key).sort().join(',') : null;
       parts[`q:${s}`] = list ? list.filter((p) => !OUT.test(p.status) && QUESTIONABLE.test(p.status)).map(key).sort().join(',') : null;
+      // (the same two lists of the players who matter alone (D89): a bet stamped with them is priced again on
+      // these, not on the whole lists (inputChanges); the whole lists still kept, for the bets from before)
+      if (who) {
+        const mine = list ? list.filter((p) => matters(who, key(p), team)) : null;
+        parts[`om:${s}`] = mine ? mine.filter((p) => OUT.test(p.status)).map(key).sort().join(',') : null;
+        parts[`qm:${s}`] = mine ? mine.filter((p) => !OUT.test(p.status) && QUESTIONABLE.test(p.status)).map(key).sort().join(',') : null;
+      }
       // (the NFL's and NBA's regulars the report doesn't list, posted inactive (run.mjs inactivesNow; the NHL's
       // healthy scratches), once the side's posted (l.gameRosters); null before. The props' alone: PROPS_ONLY)
       if (sport === 'nfl' || sport === 'nba' || sport === 'nhl') {
@@ -395,12 +485,14 @@ export function inputsOf(sport, game, live, info, ok = {}, players = null) {
 }
 
 // (each part's words, for the changelog)
-const WORDS = { out: 'out list', q: 'questionable list', qb: 'quarterback', g: 'goalie', sp: 'starting pitcher', lu: 'lineup', news: 'news flags', ina: 'inactives off the report', st: 'starting five' };
+const WORDS = { out: 'out list', q: 'questionable list', om: 'out list', qm: 'questionable list', qb: 'quarterback', g: 'goalie', sp: 'starting pitcher', lu: 'lineup', news: 'news flags', ina: 'inactives off the report', st: 'starting five' };
 
 // (the parts only a prop reads: the regulars put in unlisted come after the game lines' context is fit (run.mjs
 // inactivesNow), and nothing on the lines' side reads the NBA's five; a game line's bet priced again on them
 // would be the same numbers at the line now, its closing value given up for no news)
 export const PROPS_ONLY = new Set(['ina', 'st']);
+// (the injury lists' parts: the whole lists and the ones who matter's, D89)
+const LISTS = new Set(['out', 'q', 'om', 'qm']);
 
 // What changed between a bet's inputs (hashes) and the game's now: [{ key, words }]; before: the game's
 // parts as a run before saw them (the cache: the names who joined or left a list), when it has them; market:
@@ -415,20 +507,22 @@ export function inputChanges(was, now, { game = null, before = null, names = {},
     const then = was[key];
     const [kind, s] = key.split(':');
     if (market && market !== 'prop' && PROPS_ONLY.has(kind)) continue;
+    // (a bet stamped with the lists of the players who matter (D89), read now too: those, not the whole lists)
+    if ((kind === 'out' || kind === 'q') && was[`om:${s}`] !== undefined && now.hash[`om:${s}`] !== undefined) continue;
     // (an MLB starter gone to none named with StatsAPI read (unread, the part is null, not '-'): the scratch
     // itself, news)
     const scratched = kind === 'sp' && h === '-' && typeof then === 'string' && then !== '-';
     // (unread now, blank now, or not kept then (a bet from before the part was): not a change; unread then
     // and read now is: the news the bet was priced without)
     if (h === null || h === undefined || then === undefined || (h === '-' && !scratched) || h === then) continue;
-    if ((kind === 'out' || kind === 'q') && vanished(s)) continue;
+    if (LISTS.has(kind) && vanished(s)) continue;
     // (the news unread then and nothing flagged now: nothing the bet missed)
     // (the inactives or the starting five posted with nothing in them that matters: the bet missed nothing)
     if ((kind === 'news' || kind === 'ina' || kind === 'st') && then === null && h === '') continue;
     const team = game ? (s === 'h' ? game.homeAbbr : game.awayAbbr) : s === 'h' ? 'home' : 'away';
     let detail = '';
     const prev = before?.[key];
-    if ((kind === 'out' || kind === 'q') && typeof prev === 'string' && hash(prev) === then) {
+    if (LISTS.has(kind) && typeof prev === 'string' && hash(prev) === then) {
       const a = new Set(prev ? prev.split(',') : []);
       const b = new Set(now.parts[key] ? now.parts[key].split(',') : []);
       const joined = [...b].filter((x) => !a.has(x)).map((x) => names[x] ?? x);
