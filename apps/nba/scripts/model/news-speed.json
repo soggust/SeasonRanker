@@ -5770,6 +5770,42 @@
     "own": "2026-10-24T00:21:44.000Z",
     "why": "@rotowirenba.bsky.social: Reed Sheppard: Won't play Friday \n\n https://www.rotowi"
    }
+  },
+  "401909850|cooperflagg|out": {
+   "game": "401909850",
+   "start": "2026-10-24T02:00Z",
+   "team": "9",
+   "name": "Cooper Flagg",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-10-24T01:08:03.622Z",
+    "own": "2026-10-24T01:04:06.000Z",
+    "why": "@rotowirenba.bsky.social: Cooper Flagg: Won't return Friday \n\n https://www.rotow"
+   }
+  },
+  "401909851|cooperflagg|out": {
+   "game": "401909851",
+   "start": "2026-10-24T02:00Z",
+   "team": "13",
+   "name": "Cooper Flagg",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-10-24T01:08:03.622Z",
+    "own": "2026-10-24T01:04:06.000Z",
+    "why": "@rotowirenba.bsky.social: Cooper Flagg: Won't return Friday \n\n https://www.rotow"
+   }
+  },
+  "401909852|cooperflagg|out": {
+   "game": "401909852",
+   "start": "2026-10-24T02:00Z",
+   "team": "23",
+   "name": "Cooper Flagg",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-10-24T01:08:03.622Z",
+    "own": "2026-10-24T01:04:06.000Z",
+    "why": "@rotowirenba.bsky.social: Cooper Flagg: Won't return Friday \n\n https://www.rotow"
+   }
   }
  }
 }
