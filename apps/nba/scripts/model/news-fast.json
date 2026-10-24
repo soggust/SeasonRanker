@@ -1,7 +1,7 @@
 {
  "sport": "nba",
  "cursor": {
-  "rotowirenba.bsky.social": "2026-10-23T22:44:10.000Z",
+  "rotowirenba.bsky.social": "2026-10-24T00:21:44.000Z",
   "insidenbanews.bsky.social": "2026-10-23T18:36:35.740Z",
   "shamsbot.bsky.social": "2026-10-23T21:16:06.000Z"
  },
@@ -1071,6 +1071,45 @@
    "kind": "benched",
    "confidence": 0.9,
    "text": "Aaron Nesmith: Not starting Friday \n\n https://www.rotowire.com/basketball/player/aaron-nesmith-5120"
+  },
+  {
+   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mylcbnsxtj27|cameronjohnson|out|status",
+   "at": "2026-10-23T23:08:34.000Z",
+   "seen": "2026-10-24T00:23:14.453Z",
+   "handle": "rotowirenba.bsky.social",
+   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mylcbnsxtj27",
+   "player": "Cameron Johnson",
+   "team": null,
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.9,
+   "text": "Cameron Johnson: Won't play Saturday \n\n https://www.rotowire.com/basketball/player/cameron-johnson-4916"
+  },
+  {
+   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3myleg3mdcf2t|keldonjohnson|active|status",
+   "at": "2026-10-23T23:46:50.000Z",
+   "seen": "2026-10-24T00:23:14.453Z",
+   "handle": "rotowirenba.bsky.social",
+   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3myleg3mdcf2t",
+   "player": "Keldon Johnson",
+   "team": null,
+   "status": "active",
+   "kind": "status",
+   "confidence": 0.9,
+   "text": "Keldon Johnson: Will play vs. Houston \n\n https://www.rotowire.com/basketball/player/keldon-johnson-4782"
+  },
+  {
+   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mylgeikilg2i|reedsheppard|out|status",
+   "at": "2026-10-24T00:21:44.000Z",
+   "seen": "2026-10-24T00:23:14.453Z",
+   "handle": "rotowirenba.bsky.social",
+   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mylgeikilg2i",
+   "player": "Reed Sheppard",
+   "team": null,
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.9,
+   "text": "Reed Sheppard: Won't play Friday \n\n https://www.rotowire.com/basketball/player/reed-sheppard-6257"
   }
  ]
 }
