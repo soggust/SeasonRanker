@@ -5710,6 +5710,66 @@
     "own": "2026-10-23T21:03:47.000Z",
     "why": "@rotowirenba.bsky.social: LeBron James: Questionable for Saturday \n\n https://www"
    }
+  },
+  "401909096|reedsheppard|out": {
+   "game": "401909096",
+   "start": "2026-10-24T01:30Z",
+   "team": "24",
+   "name": "Reed Sheppard",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-10-24T00:23:14.453Z",
+    "own": "2026-10-24T00:21:44.000Z",
+    "why": "@rotowirenba.bsky.social: Reed Sheppard: Won't play Friday \n\n https://www.rotowi"
+   }
+  },
+  "401909849|reedsheppard|out": {
+   "game": "401909849",
+   "start": "2026-10-24T01:30Z",
+   "team": "26",
+   "name": "Reed Sheppard",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-10-24T00:23:14.453Z",
+    "own": "2026-10-24T00:21:44.000Z",
+    "why": "@rotowirenba.bsky.social: Reed Sheppard: Won't play Friday \n\n https://www.rotowi"
+   }
+  },
+  "401909850|reedsheppard|out": {
+   "game": "401909850",
+   "start": "2026-10-24T02:00Z",
+   "team": "9",
+   "name": "Reed Sheppard",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-10-24T00:23:14.453Z",
+    "own": "2026-10-24T00:21:44.000Z",
+    "why": "@rotowirenba.bsky.social: Reed Sheppard: Won't play Friday \n\n https://www.rotowi"
+   }
+  },
+  "401909851|reedsheppard|out": {
+   "game": "401909851",
+   "start": "2026-10-24T02:00Z",
+   "team": "13",
+   "name": "Reed Sheppard",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-10-24T00:23:14.453Z",
+    "own": "2026-10-24T00:21:44.000Z",
+    "why": "@rotowirenba.bsky.social: Reed Sheppard: Won't play Friday \n\n https://www.rotowi"
+   }
+  },
+  "401909852|reedsheppard|out": {
+   "game": "401909852",
+   "start": "2026-10-24T02:00Z",
+   "team": "23",
+   "name": "Reed Sheppard",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-10-24T00:23:14.453Z",
+    "own": "2026-10-24T00:21:44.000Z",
+    "why": "@rotowirenba.bsky.social: Reed Sheppard: Won't play Friday \n\n https://www.rotowi"
+   }
   }
  }
 }
