@@ -106,11 +106,14 @@ export function resolveVersion(spec) {
     return { spec: s, label: s === 'worktree' ? `worktree${dirty ? ' (changed)' : ''}` : s, dir: MODEL, sha, dirty, env };
   }
   const sha = git(['rev-parse', `${s}^{commit}`]).trim();
-  const dir = path.join(GATE, sha.slice(0, 12), 'model');
+  // (-f: written through git's checkout filters, so a commit's files carry this machine's line endings (CRLF on the
+  // owner's PC) like the working tree: their code fingerprints match, and a git ref's walk-forward props fits come
+  // from the cache instead of hours of search (2026-10-24; a plain `git show` wrote LF))
+  const dir = path.join(GATE, `${sha.slice(0, 12)}-f`, 'model');
   if (!existsSync(path.join(dir, '.done'))) {
     mkdirSync(dir, { recursive: true });
     const files = git(['ls-tree', '--name-only', sha, 'libs/ranker/scripts/model/']).trim().split('\n').filter((f) => f.endsWith('.mjs') || f.endsWith('.json'));
-    for (const f of files) writeFileSync(path.join(dir, path.basename(f)), execFileSync('git', ['show', `${sha}:${f}`], { cwd: ROOT, maxBuffer: 64 * 1024 * 1024 }));
+    for (const f of files) writeFileSync(path.join(dir, path.basename(f)), execFileSync('git', ['cat-file', '--filters', `${sha}:${f}`], { cwd: ROOT, maxBuffer: 64 * 1024 * 1024 }));
     writeFileSync(path.join(dir, '.done'), sha);
   }
   return { spec: s, label: `${s} (${sha.slice(0, 8)})`, dir, sha, dirty: false, env: {} };
