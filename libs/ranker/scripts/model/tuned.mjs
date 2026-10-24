@@ -28,7 +28,7 @@ export const KNOBS = {
   windowMin: { ref: 'D63', kind: 'staking', def: 60, grid: [40, 60, 90], bounds: [30, 150], sports: LINES, what: "the betting windows: the minimum paired games before an hour can be learned" },
   trialKelly: { ref: 'D73', kind: 'staking', def: 0.01, grid: [0.005, 0.01, 0.015, 0.02], bounds: [0.005, 0.03], sports: ['nba', 'nhl'], what: "the two-band trial's Kelly floor: a prop's Kelly score needed for a LOVE" },
   loveUnits: { ref: 'D73', kind: 'staking', def: 2, grid: [1.5, 2, 2.5], bounds: [1, 3], sports: ['nhl'], what: "the two-band trial's LOVE stake cap (units)" },
-  leanLambdaLines: { ref: 'D88', kind: 'staking', def: 0, grid: [0, 0.5, 1, 2], bounds: [0, 3], sports: LINES, what: "the margin rule on the game lines: a side the Bot's own model puts d under the fair price is bet at full stakes only with a price edge of lambda x d + m or more" },
+  leanLambdaLines: { ref: 'D88', kind: 'staking', def: 0, grid: [0, 0.5, 1, 2], bounds: [0, 3], sports: LINES, what: "the margin rule on the game lines: a side the Bot's own model puts d under the fair price is bet only with a price edge of lambda x d + m or more, else tracked (D90)" },
   leanMLines: { ref: 'D88', kind: 'staking', def: 0, grid: [0, 0.005, 0.01, 0.02], bounds: [0, 0.03], sports: LINES, what: "the margin rule on the game lines: the edge m (chance points) a disagreeing side needs beyond lambda x d" },
   leanLambdaProps: { ref: 'D88', kind: 'staking', def: 0, grid: [0, 0.5, 1, 2], bounds: [0, 3], sports: LINES, what: "the margin rule on the props: lambda" },
   leanMProps: { ref: 'D88', kind: 'staking', def: 0, grid: [0, 0.005, 0.01, 0.02], bounds: [0, 0.03], sports: LINES, what: "the margin rule on the props: m" },

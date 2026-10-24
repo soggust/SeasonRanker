@@ -282,7 +282,7 @@ export function replayRecord(V, sport, rows, { events = null, names = () => ({ h
   const shopOnlyBets = new Map();
   // (the prop bets' own lean (D82, lean.mjs): how far the Bot's own chance on the side sits under one half)
   const leanBets = new Map();
-  // (D88's margin rule: each bet's { e, d })
+  // (D88's margin rule: each bet's { mg: { e, d }, x, sd })
   const marginBets = new Map();
   const flags = { open: 0, close: 0, openSeen: 0, openClean: 0, openInWindow: 0, openHeld: 0, closeHeld: 0, barred: 0 };
   const keys = new Set([...opens.keys(), ...closes.keys()]);
@@ -446,7 +446,7 @@ export function replayRecord(V, sport, rows, { events = null, names = () => ({ h
       if (LEAN.marginOf) {
         const o = x.market === 'prop' ? LEAN.ownOver(x) : fin(x.raw) ? x.raw : null;
         const mg = o === null ? null : LEAN.marginOf({ p: sd.pS, odds: sd.odds, fair: sd.fS, own: sd.over ? o : 1 - o });
-        if (mg) marginBets.set(bet, mg);
+        if (mg) marginBets.set(bet, { mg, x, sd });
       }
       if (x.market === 'prop' && LEAN.leanGap) {
         const g = LEAN.leanGap(x, sd.over);
@@ -454,6 +454,31 @@ export function replayRecord(V, sport, rows, { events = null, names = () => ({ h
       }
       flags[placed.timing]++;
     }
+  }
+  // (D88's margin rule (lean.mjs marginHeld, marginSplit): a side the Bot's own model puts under the fair price by d, bet
+  // on a price edge e under lambda x d + m (the sport's knobs, lines and props apart) is TRACKED (D90, the owner's
+  // exception to D1): it leaves the bets (the record, the bars, the guards, the tiers, the strip) before anything reads
+  // them, and joins the passes, so the PASS's as-if tally counts it (D87) and the practice picks never re-stake it.
+  // lambda = m = 0: none, the replay as before. flags.margin: by group, the bets held, their units at their stakes,
+  // what's left of them in the record (0) and their flat return)
+  if (marginBets.size && LEAN.marginSplit) {
+    const flatB = (b) => (b.res === 'W' ? dec(b.odds) - 1 : b.res === 'L' ? -1 : 0);
+    const optsOf = (group) => ({ lambda: T(group === 'props' ? 'leanLambdaProps' : 'leanLambdaLines', 0), m: T(group === 'props' ? 'leanMProps' : 'leanMLines', 0) });
+    const { held, flags: fm } = LEAN.marginSplit([...marginBets].map(([bet, it]) => ({ bet, mg: it.mg, x: it.x, sd: it.sd, group: bet.market === 'prop' ? 'props' : 'lines', flat: flatB(bet) })), optsOf);
+    if (held.length) {
+      const out = new Set(held.map((it) => it.bet));
+      for (const it of held) {
+        if (it.bet.full) flags.barred--;
+        hold.delete(it.bet);
+        shopOnlyBets.delete(it.bet);
+        leanBets.delete(it.bet);
+        passes.push({ x: it.x, sd: it.sd, marginHeld: true });
+      }
+      const kept = bets.filter((b) => !out.has(b));
+      bets.length = 0;
+      bets.push(...kept);
+    }
+    flags.margin = fm;
   }
   // (the bar's own place (DECISIONS.md D51), walk-forward by season: the bar stakes a season's lines only where, on
   // every season before, the lines as it staked them earned at least what they would have at full stakes (the first
@@ -530,32 +555,6 @@ export function replayRecord(V, sport, rows, { events = null, names = () => ({ h
       if (hold.has(b)) hold.get(b).barred = true;
     }
     flags.leanGuard = g;
-  }
-  // (D88's margin rule (lean.mjs marginHeld): a side the Bot's own model puts under the fair price by d, bet on a price
-  // edge e under lambda x d + m (the sport's knobs, lines and props apart), the practice stake and a LIKE, held there
-  // as a barred one. lambda = m = 0: none. flags.margin: by group, the bets held, their units before and after, and
-  // the units had they been tracked (D1 keeps them staked: the owner's call)
-  if (marginBets.size && LEAN.marginHeld) {
-    const fm = {};
-    for (const [b, mg] of marginBets) {
-      const group = b.market === 'prop' ? 'props' : 'lines';
-      const o = { lambda: T(group === 'props' ? 'leanLambdaProps' : 'leanLambdaLines', 0), m: T(group === 'props' ? 'leanMProps' : 'leanMLines', 0) };
-      const f = (fm[group] ??= { ...o, disagree: 0, held: 0, before: 0, after: 0, tracked: 0 });
-      if (mg.d > 0) f.disagree++;
-      if (!LEAN.marginHeld(mg, o)) continue;
-      f.held++;
-      f.before = r2(f.before + b.profit);
-      f.tracked = r2(f.tracked + b.profit);
-      if (b.units <= practiceUnits || hold.get(b)?.barred) {
-        f.after = r2(f.after + b.profit);
-        continue;
-      }
-      const profit = b.units > 0 ? r2((b.profit * practiceUnits) / b.units) : 0;
-      f.after = r2(f.after + profit);
-      Object.assign(b, { units: practiceUnits, band: 'medium', profit, marginHeld: true });
-      if (hold.has(b)) hold.get(b).barred = true;
-    }
-    flags.margin = fm;
   }
   // (the reason tiers (DECISIONS.md D58, reasons.mjs): each bet's reasons, judged walk-forward on the bets settled
   // before its moment (each market's picks flat, recency-weighted), its would-be tier from the proven ones (a LOVE one,
@@ -725,7 +724,7 @@ export function replayRecord(V, sport, rows, { events = null, names = () => ({ h
   for (const [event, rs] of passBy) {
     const quota = V.desk.slateQuota(practiceN, gamesOn.get(etDay(rs[0].x.t))?.size ?? 1);
     const need = Math.max(0, quota - (betOn.get(event) ?? 0));
-    const picked = rs.filter((r) => r.sd.edge > 0).sort((a, b) => b.sd.edge - a.sd.edge).slice(0, need);
+    const picked = rs.filter((r) => r.sd.edge > 0 && !r.marginHeld).sort((a, b) => b.sd.edge - a.sd.edge).slice(0, need);
     for (const r of picked) {
       r.practice = true;
       (staked ? bets : tracked).push(betOf(r.x, r.sd, { units: practiceUnits, band: 'medium', practice: true, timing: r.x.kind === 'o' ? 'open' : 'close', fb: r.x.kind === 'o' ? fairBeatOf(r.x, r.sd.over, r.sd.odds, closes.get(r.x.key ?? r.x.id.replace(/:o$/, '')) ?? null) : null, names, survival: 1 }));

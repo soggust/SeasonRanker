@@ -239,7 +239,7 @@ test("D88 the margin rule: a side the Bot's own model puts under the fair price 
   assert.ok(Math.abs(gs.d - 0.013) < 1e-9);
   assert.ok(gs.e > 0 && gs.e < 0.004);
   assert.equal(L.marginHeld(gs, { lambda: 0, m: 0 }), false, 'today: bet');
-  assert.equal(L.marginHeld(gs, { lambda: 0.5, m: 0 }), true, 'at lambda 0.5: the practice stake');
+  assert.equal(L.marginHeld(gs, { lambda: 0.5, m: 0 }), true, 'at lambda 0.5: held (tracked, D90)');
   assert.equal(L.marginHeld(gs, { lambda: 0, m: 0.005 }), true);
   // (a side the model agrees with is never held, whatever the knobs)
   assert.equal(L.marginHeld(L.marginOf({ p: 0.56, odds: -110, fair: 0.52, own: 0.55 }), { lambda: 3, m: 0.03 }), false);
@@ -258,4 +258,91 @@ test("D88 MMA's open favorites: 0 the rules as they are, 1 the full Kelly stake,
   assert.ok(rr.includes("T('mmaOpenFav', 0)") && rr.includes("b.timing !== 'open' || !(b.fair >= 0.5)"));
   const md = fs.readFileSync(path.join(MODEL, 'mma-desk.mjs'), 'utf8');
   assert.ok(md.includes("knob(SPORT, 'mmaOpenFav')") && md.includes("!== 'early'"));
+});
+
+// ---- D90: the margin rule's held side is tracked (the owner, 2026-10-24) ----
+test("D90 a margin-held side is tracked live: intent track, 0u, its stake kept as trackUnits; one the rule doesn't hold is bet as before", async () => {
+  const L = await import('../libs/ranker/scripts/model/lean.mjs');
+  assert.equal(L.MARGIN_TRACKS, true);
+  const held = DESK.gatedPlacement(L.marginEdge(true, { held: true }), 1.5, null);
+  assert.equal(held.intent, DESK.TRACK);
+  assert.equal(held.units, 0);
+  assert.equal(held.trackUnits, 1.5);
+  assert.ok(DESK.isTracked(held));
+  assert.deepEqual(DESK.gatedPlacement(L.marginEdge(true, { held: false }), 1.5, null), { intent: 'edge', units: 1.5 });
+  assert.equal(L.marginEdge(false, { held: false }), false, 'no edge: tracked as ever');
+  // (a failing gate doesn't bring a held side back to the practice stake)
+  assert.equal(DESK.gatedPlacement(L.marginEdge(true, { held: true }), 1.5, { on: false, why: 'gate' }).intent, DESK.TRACK);
+  const run = fs.readFileSync(path.join(MODEL, 'run.mjs'), 'utf8');
+  assert.ok(run.includes('gatedPlacement(marginEdge(pick.ev > 0 && !noPrice, marginG), units, gate)'), 'the lines: a held side tracked');
+  assert.ok(run.includes('const edge = marginEdge(x.ev > 0 || !!x.researchBet || !!x.roleBet || !!topN, marginG);'), 'the props: a held side tracked');
+  const lean = fs.readFileSync(path.join(MODEL, 'lean.mjs'), 'utf8');
+  assert.ok(lean.includes(': tracked, not bet (D88'));
+});
+
+// (the replay's rows: game lines at the close whose trusted chance p clears the price while the Bot's own model, raw,
+// sits under the fair price f: d = f - raw, e = p - breakeven)
+async function marginReplay(lambda) {
+  const RR = await import('../libs/ranker/scripts/model/replay-record.mjs');
+  const picks = await import('../libs/ranker/scripts/model/picks.mjs');
+  const leagues = await import('../libs/ranker/scripts/model/leagues.mjs');
+  const V = { desk: DESK, picks, leagues, tuned: TU };
+  const T0 = Date.parse('2025-01-05T23:00:00Z');
+  const open = [];
+  const close = [];
+  for (let i = 0; i < 40; i++) {
+    const t = T0 + i * 864e5;
+    const key = `h:g${i}:spread`;
+    // (half the games the model agrees (raw over f), half it disagrees by 5 points; the disagreeing ones lose more)
+    const agree = i % 2 === 0;
+    const y = agree ? (i % 4 === 0 ? 1 : 0) : i % 8 === 1 ? 1 : 0;
+    const row = { id: `${key}:c`, key, event: `g${i}`, sport: 'nba', market: 'spread', stat: 'spread', kind: 'c', line: -3.5, t, at: t - 36e5, season: 2025, f: 0.5, p: 0.56, raw: agree ? 0.58 : 0.45, y, overOdds: -110, underOdds: -110 };
+    close.push(row);
+  }
+  TU.setOverride('nba', lambda === null ? null : { leanLambdaLines: lambda });
+  try {
+    return RR.replayRecord(V, 'nba', { open, close }, { names: () => ({ home: 'H', away: 'A', matchup: 'A @ H' }), epoch: '2026-10-19T17:15:00Z', now: Date.parse('2026-10-24T00:00:00Z'), evScale: 0.08 });
+  } finally {
+    TU.setOverride('nba', null);
+  }
+}
+
+test('D90 the replay: a margin-held bet leaves the record as a tracked row in the PASS tally; at lambda = m = 0 the replay is identical to before', async () => {
+  const before = await marginReplay(null);
+  const zero = await marginReplay(0);
+  assert.deepEqual(JSON.parse(JSON.stringify(zero)), JSON.parse(JSON.stringify(before)), 'lambda 0: the same record');
+  assert.equal(before.flags.margin.lines.held, 0);
+  assert.equal(before.flags.margin.lines.disagree, 20);
+  assert.equal(before.bets.length, 40);
+  const one = await marginReplay(1);
+  const f = one.flags.margin.lines;
+  assert.equal(f.held, 20, 'every disagreeing side held at lambda 1 (e 3.6 points under 1 x 5)');
+  assert.equal(f.after, 0, 'none of them left in the record');
+  assert.equal(one.bets.length, 20, 'the held bets are out of the bets');
+  assert.ok(one.bets.every((b) => !b.marginHeld && b.units > 0));
+  assert.equal(one.n.pass, before.n.pass + 20, "they're in the PASS's as-if tally (D87)");
+  assert.equal(one.n.bets, before.n.bets - 20);
+  // (the record's units: the held bets' own units gone, nothing re-staked)
+  const heldUnits = before.bets.filter((b) => !one.bets.some((k) => k.id === b.id)).reduce((t, b) => t + b.profit, 0);
+  assert.ok(Math.abs(f.before - heldUnits) < 0.02);
+  // (tracked: their return as tracked rows, a unit flat)
+  const flat = before.bets.filter((b) => !one.bets.some((k) => k.id === b.id)).reduce((t, b) => t + (b.res === 'W' ? 100 / 110 : b.res === 'L' ? -1 : 0), 0);
+  assert.ok(Math.abs(f.tracked - flat) < 0.02);
+});
+
+test("D90 the self-tune judges a margin candidate under the tracked semantics: its series is the record without the held bets", async () => {
+  const before = await marginReplay(null);
+  const one = await marginReplay(1);
+  const base = ST.seriesOf(before);
+  const cand = ST.seriesOf(one);
+  assert.equal(cand.overall.bets, base.overall.bets - 20);
+  const j = ST.judge(base, cand);
+  const heldUnits = before.bets.filter((b) => !one.bets.some((k) => k.id === b.id)).reduce((t, b) => t + b.profit, 0);
+  assert.ok(Math.abs(j.all.gain + heldUnits) < 0.05, `the gain is the held bets' units taken out (${j.all.gain} vs ${-heldUnits})`);
+  assert.ok(j.all.gain > 0, 'the losing disagreeing sides out: more units');
+  // (the in-process hook: tuneReplays re-runs the replay under the candidate, the tracked semantics with it)
+  const RR = await import('../libs/ranker/scripts/model/replay-record.mjs');
+  assert.ok(typeof RR.replayRecord === 'function');
+  const st = fs.readFileSync(path.join(MODEL, 'self-tune.mjs'), 'utf8');
+  assert.ok(st.includes('under its tracked semantics (D90)'));
 });

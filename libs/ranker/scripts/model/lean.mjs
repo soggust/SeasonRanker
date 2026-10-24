@@ -69,10 +69,13 @@ export const leanDOf = (record) => (fin(record?.flags?.leanGuard?.next) ? record
 // good to pass") ----
 // A side S at its price: e = p - breakeven (p the Bot's priced chance on S, breakeven the price's own chance) and
 // d = max(0, fair - own) (own: the Bot's own model chance on S before the trust, the Book's fair no-vig chance): how
-// far the Bot's own model sits under the fair price on S. Where d > 0 (the model leans the other way) S is bet at
-// full stakes only if e >= lambda * d + m; else the practice stake (D1: a shrink, never off). lambda = m = 0 is the
-// rule as it was (every bet clears e >= 0). The knobs by sport and market group (lines, props): tuned.mjs
-// leanLambdaLines, leanMLines, leanLambdaProps, leanMProps, tried weekly by the self-tune
+// far the Bot's own model sits under the fair price on S. Where d > 0 (the model leans the other way) S is bet only
+// if e >= lambda * d + m; else it is TRACKED (D90, the owner, 2026-10-24, "the Bot doesn't really like it": intent
+// track, 0u, graded and learned from, never in the record; the owner's exception to D1's "never off for a rule", for
+// this rule alone). lambda = m = 0 is the rule as it was (every bet clears e >= 0). The knobs by sport and market
+// group (lines, props): tuned.mjs leanLambdaLines, leanMLines, leanLambdaProps, leanMProps, tried weekly by the
+// self-tune under these semantics (a held bet leaves the replayed record). Not D82's guard above (leanGuardOf: its own
+// d walked monthly on the Bot's own chance against one half, the practice stake): a separate mechanism, unchanged
 import { knob } from './tuned.mjs';
 const decOf = (o) => (o > 0 ? 1 + o / 100 : 1 + 100 / -o);
 export function marginOf({ p, odds, fair, own }) {
@@ -90,5 +93,28 @@ export function marginGuardOf(sport, group, side) {
   const o = marginOpts(sport, group);
   if (!marginHeld(mg, o)) return { held: false };
   const pt = (x) => Math.round(x * 1000) / 10;
-  return { held: true, why: `the Bot's own model ${pt(mg.d)} points under the fair price on this side and the price's edge ${pt(mg.e)} points, under ${o.lambda} x ${pt(mg.d)} + ${pt(o.m)}: the practice stake (D88's margin rule)` };
+  return { held: true, why: `the Bot's own model ${pt(mg.d)} points under the fair price on this side and the price's edge ${pt(mg.e)} points, under ${o.lambda} x ${pt(mg.d)} + ${pt(o.m)}: tracked, not bet (D88's margin rule, D90)` };
+}
+// (D90: a held side is tracked, never staked: the live desk's edge flag with the rule's verdict)
+export const MARGIN_TRACKS = true;
+export const marginEdge = (edge, mg) => !!edge && !(MARGIN_TRACKS && mg?.held);
+// (the replay's split (replay-record.mjs): entries [{ bet, mg, group, flat }] and optsOf(group) -> { lambda, m }; the
+// held ones leave the record (D90: tracked rows, in the PASS's as-if tally, D87), the rest stay as they were. flags by
+// group: the bets the model disagreed with, the held ones, their units at their stakes (before), what stays in the
+// record from them (after: 0) and tracked, their return as tracked rows, a unit flat as the PASS's tally counts them)
+export function marginSplit(entries, optsOf) {
+  const r2 = (x) => Math.round(x * 100) / 100;
+  const flags = {};
+  const held = [];
+  for (const it of entries) {
+    const o = optsOf(it.group);
+    const f = (flags[it.group] ??= { ...o, disagree: 0, held: 0, before: 0, after: 0, tracked: 0 });
+    if (it.mg?.d > 0) f.disagree++;
+    if (!marginHeld(it.mg, o)) continue;
+    f.held++;
+    f.before = r2(f.before + (it.bet.profit ?? 0));
+    if (fin(it.flat)) f.tracked = r2(f.tracked + it.flat);
+    held.push(it);
+  }
+  return { held, flags };
 }

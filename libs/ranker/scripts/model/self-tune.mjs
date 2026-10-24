@@ -3,7 +3,10 @@
 // around each, documented bounds) is tried one knob at a time through the replay:
 //   staking knobs   re-staked on the one replay (gate.mjs TUNE_GRID: the same priced rows, each candidate's replay run
 //                   again in-process with its knob overridden); the chances don't move, so D22's layers tie by
-//                   construction and the record decides
+//                   construction and the record decides. The margin rule's knobs (leanLambda*, leanM*) are tried
+//                   under its tracked semantics (D90): replayRecord drops a held bet from the record (a tracked row,
+//                   in the PASS's as-if tally), so a candidate's series is the record without its held bets, not
+//                   the held bets at the practice stake; the ship rules below are the same
 //   pricing knobs   a full scoring each (TUNE_OVERRIDE in its own process) and D22's verdict against the champion
 //                   (gate.mjs compareScores: the projections, the priced rows, D60's guard, D86's recency veto)
 // A candidate ships only when it beats the current settings on units over the whole replay; was the best on the
@@ -160,7 +163,7 @@ function sumOf(rows) {
   return { gain: r2(g), se: r2(Math.sqrt(n * v)), days: n };
 }
 // (D60's guard on the stake: the bets' beat-the-close share and return weighted by their units, not down while the
-// units are up)
+// units are up; a margin candidate (D90) changes the bets themselves, which the plain guard, replayGuard, sees too)
 export function stakeGuard(base, cand) {
   const tot = (s) => s.days.reduce((t, d) => ({ u: t.u + d[8], b: t.b + d[9], c: t.c + d[10], n: t.n + d[5] }), { u: 0, b: 0, c: 0, n: 0 });
   const a = tot(base);

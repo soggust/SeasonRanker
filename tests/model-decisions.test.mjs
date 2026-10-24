@@ -2097,3 +2097,20 @@ test('D89 injury news on a player who matters alone re-prices and kicks the watc
   const decisions = fs.readFileSync(path.join(import.meta.dirname, '../libs/ranker/scripts/model/DECISIONS.md'), 'utf8');
   assert.ok(decisions.includes('### D89.'));
 });
+
+test("D90 the margin rule's held side is tracked, not staked: the owner's exception to D1 for this rule alone; D82's guard unchanged", async () => {
+  const L = await import('../libs/ranker/scripts/model/lean.mjs');
+  const D = await import('../libs/ranker/scripts/model/desk.mjs');
+  assert.equal(L.MARGIN_TRACKS, true);
+  assert.equal(D.gatedPlacement(L.marginEdge(true, { held: true }), 1, null).intent, D.TRACK);
+  // (D82's against-own-lean guard: still the practice stake)
+  assert.match(L.leanGuardOf(0.4, 0.05).why, /the practice stake \(D82\)/);
+  const decisions = fs.readFileSync(path.join(import.meta.dirname, '../libs/ranker/scripts/model/DECISIONS.md'), 'utf8');
+  assert.ok(decisions.includes('### D90.'));
+  assert.ok(decisions.includes("the Bot doesn't really like it"));
+  assert.ok(decisions.includes('**Amended (D90, the owner, 2026-10-24):**'), 'D1 names its one exception');
+  const rr = fs.readFileSync(path.join(import.meta.dirname, '../libs/ranker/scripts/model/replay-record.mjs'), 'utf8');
+  assert.ok(rr.includes('passes.push({ x: it.x, sd: it.sd, marginHeld: true })'), 'the replay: a held bet a tracked row in the passes');
+  assert.ok(rr.includes('r.sd.edge > 0 && !r.marginHeld'), 'never re-staked as a practice pick');
+  assert.ok(!rr.includes('marginHeld: true });\n'), 'never re-staked at the practice stake');
+});

@@ -134,7 +134,7 @@ test('a pick\'s gate: its segment\'s; one the bar never priced is the practice s
   assert.equal(levelOf({ ...placed, market: 'ml', odds: 150, p: 0.5, fair: 0.4, ev: 0.25, status: 'open' }), 'low');
   // (the bar's segment on the bet is the pick's side's)
   assert.match(src('run.mjs'), /barGate\(r\.lineBar, key, pick\.side, pick\.fair, \{ hours: ahead \/ 36e5, ev: pick\.ev, reasons, aside: r\.lineBarAside \}\)/);
-  assert.match(src('run.mjs'), /gatedPlacement\(pick\.ev > 0 && !noPrice, units, gate\)/);
+  assert.match(src('run.mjs'), /gatedPlacement\(marginEdge\(pick\.ev > 0 && !noPrice, marginG\), units, gate\)/);
 });
 
 test('the bar walk-forward (the replayed record): a segment is on only from the month after the picks that earned it, never on its own month; no history, the practice stake; the replay stakes a barred line at the practice units', async () => {
