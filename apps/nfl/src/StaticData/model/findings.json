@@ -337,6 +337,13 @@
    "sport": "mma",
    "ref": "D59",
    "text": "MMA parlays add no edge: close favorites ~even (-0.7% DK), opens +1-5% inside noise; a parlay multiplies that edge and the swings. Not added"
+  },
+  {
+   "date": "2026-10-24",
+   "group": "dropped",
+   "sport": "mma",
+   "ref": "D83",
+   "text": "Big/elite camps (ESPN+Wikipedia, camp at the bout): won as the close said (elite 51.0% vs 51.9%), nothing beyond it. Not added"
   }
  ]
 }
