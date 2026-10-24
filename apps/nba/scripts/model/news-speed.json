@@ -5806,6 +5806,18 @@
     "own": "2026-10-24T01:04:06.000Z",
     "why": "@rotowirenba.bsky.social: Cooper Flagg: Won't return Friday \n\n https://www.rotow"
    }
+  },
+  "401909850|isaiahstewart|out": {
+   "game": "401909850",
+   "start": "2026-10-24T02:00Z",
+   "team": "29",
+   "name": "Isaiah Stewart",
+   "status": "out",
+   "athlete": "4432810",
+   "espn": {
+    "seen": "2026-10-24T01:33:38.388Z",
+    "own": "2026-10-23T00:16:00.000Z"
+   }
   }
  }
 }

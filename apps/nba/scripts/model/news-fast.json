@@ -1,7 +1,7 @@
 {
  "sport": "nba",
  "cursor": {
-  "rotowirenba.bsky.social": "2026-10-24T01:04:06.000Z",
+  "rotowirenba.bsky.social": "2026-10-24T01:22:39.000Z",
   "insidenbanews.bsky.social": "2026-10-23T18:36:35.740Z",
   "shamsbot.bsky.social": "2026-10-23T21:16:06.000Z"
  },
@@ -1149,6 +1149,45 @@
    "kind": "status",
    "confidence": 0.8,
    "text": "Cooper Flagg: Won't return Friday \n\n https://www.rotowire.com/basketball/player/cooper-flagg-6548"
+  },
+  {
+   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3myljfkxkhp2t|jalenduren|questionable|status",
+   "at": "2026-10-24T01:16:01.000Z",
+   "seen": "2026-10-24T01:35:11.977Z",
+   "handle": "rotowirenba.bsky.social",
+   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3myljfkxkhp2t",
+   "player": "Jalen Duren",
+   "team": null,
+   "status": "questionable",
+   "kind": "status",
+   "confidence": 0.9,
+   "text": "Jalen Duren: Questionable to return Friday \n\n https://www.rotowire.com/basketball/player/jalen-duren-5703"
+  },
+  {
+   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3myljib33bu27|acebailey|none|starting",
+   "at": "2026-10-24T01:17:32.000Z",
+   "seen": "2026-10-24T01:35:11.977Z",
+   "handle": "rotowirenba.bsky.social",
+   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3myljib33bu27",
+   "player": "Ace Bailey",
+   "team": null,
+   "status": "none",
+   "kind": "starting",
+   "confidence": 0.85,
+   "text": "Ace Bailey: Moving to starting role \n\n https://www.rotowire.com/basketball/player/ace-bailey-6551"
+  },
+  {
+   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3myljrgocml2v|paolobanchero|doubtful|status",
+   "at": "2026-10-24T01:22:39.000Z",
+   "seen": "2026-10-24T01:35:11.977Z",
+   "handle": "rotowirenba.bsky.social",
+   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3myljrgocml2v",
+   "player": "Paolo Banchero",
+   "team": null,
+   "status": "doubtful",
+   "kind": "status",
+   "confidence": 0.9,
+   "text": "Paolo Banchero: Doubtful to return Friday \n\n https://www.rotowire.com/basketball/player/paolo-banchero-5700"
   }
  ]
 }
