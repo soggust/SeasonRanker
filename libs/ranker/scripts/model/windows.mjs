@@ -38,6 +38,28 @@ export const WIN_BEAT = 0.525;
 export const WIN_BEAT_N = 30;
 const fin = Number.isFinite;
 
+// The sharp lag (DECISIONS.md D92, the owner's "predict the price's direction", 2026-10-24): a game line pick whose
+// Book's own no-vig on its side sits LAG_PTS or more over the sharp book's (Pinnacle's, at the same line, seen by
+// then) is a price the Book has yet to bring in line, and it usually does before the start: measured on every season
+// of the priced history (the open, D61's and D67's snapshots inside the 26-hour window, against the fair close), such
+// a side's price at the last chance beat its price when first seen by 1 to 2.7 points of return in every team sport
+// and nearly every season, the results agreeing. So such a pick waits while the gap lasts and its game is further
+// than the last chance (lagHeld), then bets at the price then (the gap closed, or the last chance: never lost to the
+// wait). LAG_SPORTS: the NBA, the NHL and MLB; the NFL's replay failed D60's guard (more units, fewer bets beating
+// the fair close) and MMA's desk (mma-desk.mjs) is apart, its gain the smallest.
+export const LAG_PTS = 0.01;
+export const LAG_SPORTS = ['nba', 'nhl', 'mlb'];
+const impOf = (o) => (o > 0 ? 100 / (o + 100) : -o / (-o + 100));
+// (a side's lag: the Book's own no-vig on it less the sharp book's; null without both)
+export function lagOf(dkSide, dkOther, sharpSide) {
+  if (!fin(dkSide) || !fin(dkOther) || !fin(sharpSide)) return null;
+  const a = impOf(dkSide);
+  const b = impOf(dkOther);
+  return a / (a + b) - sharpSide;
+}
+// (whether a pick waits on the lag: LAG_PTS or more, its game further than the last chance and a snapshot's slack)
+export const lagHeld = (sport, lag, hours, lastChance = 3) => LAG_SPORTS.includes(sport) && fin(lag) && lag >= LAG_PTS - 1e-9 && fin(hours) && hours > lastChance + HOUR_TOL;
+
 export const classOf = (market, over, fS) => (market === 'total' ? (over ? 'over' : 'under') : fS >= 0.5 ? 'fav' : 'dog');
 export const segOf = (market, cls) => `${market}:${cls}`;
 export const hoursOf = (policy) => (policy === 'legacy' || !policy ? null : Number(String(policy).slice(1)));
@@ -57,6 +79,8 @@ export function placeBy(cands, policyOf, seg = null) {
   for (const c of cands) {
     if (seg && c.seg !== seg) continue;
     if (!(c.ev > 0)) continue;
+    // (D92: a candidate the sharp lag holds is never the placement; a later one is, the close the last)
+    if (c.lag) continue;
     if (allows(policyOf(c), c.kind, c.hours)) return c;
   }
   return null;

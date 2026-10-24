@@ -463,6 +463,90 @@
    "sport": "nfl",
    "ref": "D91",
    "text": "Crosswind term reads 0 locally: facts.fields/wdir empty in main and audit caches. Measured: direction adds nothing"
+  },
+  {
+   "date": "2026-10-24",
+   "group": "shipped",
+   "sport": "nba",
+   "ref": "D92",
+   "text": "Sharp lag: a line pick waits while the Book's no-vig sits 1+ pt over Pinnacle's; prices improve +1.1-2.0 pts by 3h out"
+  },
+  {
+   "date": "2026-10-24",
+   "group": "shipped",
+   "sport": "nhl",
+   "ref": "D92",
+   "text": "Sharp lag on: replay 1,993 -> 1,992 line bets, -30.18u -> -29.68u; NBA 1,238 -> 1,234, -1.63u -> +0.37u; MLB unchanged"
+  },
+  {
+   "date": "2026-10-24",
+   "group": "dropped",
+   "sport": "nfl",
+   "ref": "D92",
+   "text": "Sharp lag in the NFL: +1.7u in the replay but fewer bets beat the fair close (69.9% -> 68.9%): D60's guard holds it"
+  },
+  {
+   "date": "2026-10-24",
+   "group": "dropped",
+   "sport": null,
+   "ref": "D92",
+   "text": "Overreaction: 193k line moves bet against at the post-move price run at the vig (-3% to -6% at the fair close); no reversal"
+  },
+  {
+   "date": "2026-10-24",
+   "group": "dropped",
+   "sport": null,
+   "ref": "D92",
+   "text": "Book-only moves retrace 10-48% by the close, still -1.9% to -3.5% vs the fair close; Pinnacle-backed moves never reverse"
+  },
+  {
+   "date": "2026-10-24",
+   "group": "dropped",
+   "sport": "mma",
+   "ref": "D92",
+   "text": "MMA's biggest moves: +4.3% vs the fair close against them (n 337) but -9.5% on results (D59's longshot shade)"
+  },
+  {
+   "date": "2026-10-24",
+   "group": "dropped",
+   "sport": null,
+   "ref": "D92",
+   "text": "Price direction for the Bot's gap picks: they worsen 55-69% of the time; waiting costs 1.4-3.6 pts, so they bet now"
+  },
+  {
+   "date": "2026-10-24",
+   "group": "dropped",
+   "sport": "nfl",
+   "ref": "D92",
+   "text": "Team totals vs spread+total: within 0.5 pt 80%; the 44 off by 1+ pt are mixed, nothing past the vig"
+  },
+  {
+   "date": "2026-10-24",
+   "group": "dropped",
+   "sport": "nba",
+   "ref": "D92",
+   "text": "Team's points props summed vs implied team total: over hit 47.9-49.7% across every decile of the gap. No edge"
+  },
+  {
+   "date": "2026-10-24",
+   "group": "dropped",
+   "sport": "nfl",
+   "ref": "D92",
+   "text": "QB pass yards/attempts vs game script: lines carry it (-0.2% a point of dog); residual bets -1.9% (71), -6.1% (193)"
+  },
+  {
+   "date": "2026-10-24",
+   "group": "dropped",
+   "sport": null,
+   "ref": "D92",
+   "text": "Preseason title odds vs play so far: fading the over-reputed loses (NFL -14% to -20%, NBA, NHL too). Not added"
+  },
+  {
+   "date": "2026-10-24",
+   "group": "watching",
+   "sport": "nfl",
+   "ref": "D92",
+   "text": "NFL with the reputation weeks 2-8: +5-12% ROI on 385 (5 of 7 seasons) but -4% at the fair close, 2026 -11.6%"
   }
  ]
 }

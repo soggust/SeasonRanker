@@ -2131,3 +2131,29 @@ test('D91 no gust, wind-direction, compounding-absence or fatigue-interaction te
   const decisions = fs.readFileSync(new URL('../libs/ranker/scripts/model/DECISIONS.md', import.meta.url), 'utf8');
   assert.ok(decisions.includes('### D91.'));
 });
+
+test('D92 the sharp lag: a line pick whose Book no-vig sits a point or more over the sharp book waits while the game is further than the last chance; the NBA, NHL and MLB (the NFL held by the D60 guard, MMA apart), the replay and the desk read the one rule', async () => {
+  const W = await import('../libs/ranker/scripts/model/windows.mjs');
+  assert.equal(W.LAG_PTS, 0.01);
+  assert.deepEqual(W.LAG_SPORTS, ['nba', 'nhl', 'mlb']);
+  // (the lag: the Book's own no-vig on the side less the sharp no-vig; -110/-110 is 50%)
+  assert.ok(Math.abs(W.lagOf(-110, -110, 0.48) - 0.02) < 1e-9);
+  assert.equal(W.lagOf(-110, null, 0.5), null);
+  // (held: a point or more, further than the last chance and a snapshot's slack; not inside it; not under a point; not MMA)
+  assert.equal(W.lagHeld('nba', 0.01, 10, 3), true);
+  assert.equal(W.lagHeld('nba', 0.0099, 10, 3), false);
+  assert.equal(W.lagHeld('nba', 0.03, 3.5, 3), false);
+  assert.equal(W.lagHeld('mma', 0.05, 48, 4), false);
+  assert.equal(W.lagHeld('nba', -0.03, 20, 3), false);
+  assert.equal(W.lagHeld('nfl', 0.05, 20, 3), false);
+  // (the placement skips a held candidate; the close is never held, so a pick is never lost to the wait)
+  const cands = [{ kind: 'o', hours: 12, ev: 0.02, seg: 'ml:dog', lag: true }, { kind: 'c', hours: 0, ev: 0.01, seg: 'ml:dog', lag: false }];
+  assert.equal(W.placeBy(cands, () => 'legacy').kind, 'c');
+  assert.equal(W.placeBy(cands.map((c) => ({ ...c, lag: false })), () => 'legacy').kind, 'o');
+  const rr = fs.readFileSync(path.join(import.meta.dirname, '../libs/ranker/scripts/model/replay-record.mjs'), 'utf8');
+  assert.ok(rr.includes('lag: lagHeldOf(x, sd, hours)'), 'the replay marks its candidates');
+  assert.ok(rr.includes('if (sd.ev > 0 && lagHeldOf(o, sd, hours)) flags.lagHeld++;'), 'the replay holds a lone open to the close');
+  const run = fs.readFileSync(path.join(import.meta.dirname, '../libs/ranker/scripts/model/run.mjs'), 'utf8');
+  assert.ok(run.includes("fairFrom[market.market] === 'pinnacle'") && run.includes('lagHeld(sport, lag, ahead / 36e5, lastChanceOf(sport, r.gap))'), 'the desk holds on the sharp fair alone, till the last chance');
+  assert.ok(fs.readFileSync(path.join(import.meta.dirname, '../libs/ranker/scripts/model/DECISIONS.md'), 'utf8').includes('### D92.'));
+});

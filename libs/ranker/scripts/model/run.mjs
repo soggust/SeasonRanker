@@ -178,7 +178,7 @@ import { RESEARCH_UNITS, causeKey, callChecks, feedCheck, hollow, unplacedCall, 
 import { researchBudget } from './ai-budget.mjs';
 import { gameRows, logLines, lostSince, propRows } from './linelog.mjs';
 import { runMma } from './mma-desk.mjs';
-import { heldNow, holdFor, readWindows } from './windows.mjs';
+import { heldNow, holdFor, lagHeld, lagOf, readWindows } from './windows.mjs';
 import { CORRECT_WINDOW, officialLookup } from './nhl-official.mjs';
 
 const ROOT = path.resolve(import.meta.dirname, '../../../..');
@@ -1991,6 +1991,16 @@ function betGames(r) {
         const cls = market.market === 'total' ? pick.side : pick.fair >= 0.5 ? 'fav' : 'dog';
         if (heldNow(r.windows, market.market, cls, ahead / 36e5, lastChanceOf(sport, r.gap))) {
           const why = `waiting for its betting window (${holdFor(r.windows, market.market, cls)}h before the start)`;
+          held.set(why, (held.get(why) ?? 0) + 1);
+          continue;
+        }
+      }
+      // (the sharp lag (D92, windows.mjs lagHeld): a pick whose Book's own no-vig on its side sits a point or more over
+      // the sharp book's waits while the gap lasts, its price usually coming in before the start; the last chance bets)
+      if (pick && pick.ev > 0 && fairFrom[market.market] === 'pinnacle') {
+        const lag = lagOf(pick.dk ?? pick.odds, pick.other?.dk ?? pick.other?.odds, pick.fair);
+        if (lagHeld(sport, lag, ahead / 36e5, lastChanceOf(sport, r.gap))) {
+          const why = 'waiting: the Book has the side shorter than the sharp line, which usually comes back before the start';
           held.set(why, (held.get(why) ?? 0) + 1);
           continue;
         }

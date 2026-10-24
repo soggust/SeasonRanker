@@ -294,6 +294,16 @@ export function replayRecord(V, sport, rows, { events = null, names = () => ({ h
   const intraBy = new Map();
   if (W && sport !== 'mma') for (const x of rows.intra ?? []) if (ok(x)) (intraBy.get(x.key) ?? intraBy.set(x.key, []).get(x.key)).push(x);
   for (const list of intraBy.values()) list.sort((a, b) => a.at - b.at);
+  // (the sharp lag (DECISIONS.md D92, windows.mjs lagHeld): a line placement before the last chance whose Book's own
+  // no-vig on the Bot's side sits LAG_PTS over the sharp book's at the same snapshot waits for a later one, the close
+  // the last; a version without it, or REPLAY_LAG=0 (measuring only): none held)
+  const lagOn = !!WINDOWS.lagHeld && process.env.REPLAY_LAG !== '0';
+  flags.lagHeld = 0;
+  const lagHeldOf = (x, sd, hours) => {
+    if (!lagOn || !isLine(x) || !x.pin) return false;
+    const lag = WINDOWS.lagOf(sd.over ? x.overOdds : x.underOdds, sd.over ? x.underOdds : x.overOdds, sd.over ? x.f : 1 - x.f);
+    return WINDOWS.lagHeld(sport, lag, hours, timing.lastChance ?? 3);
+  };
   const candOf = (x, kind) => {
     if (!x) return null;
     const hours = kind === 'c' ? 0 : fin(x.at) ? (x.t - x.at) / 36e5 : null;
@@ -302,7 +312,7 @@ export function replayRecord(V, sport, rows, { events = null, names = () => ({ h
       const s = survival(risk.entryFor(x.season, x.stat, true), hours, { last: timing.lastChance ?? 3 });
       const p = s < 1 ? x.f + Math.min(1, Math.max(0, s)) * (x.p - x.f) : x.p;
       const sd = sideOf(V, x, p);
-      return { x, sd, kind, hours, ev: sd.ev, s, seg: W.segOf(x.market, W.classOf(x.market, sd.over, sd.fS)) };
+      return { x, sd, kind, hours, ev: sd.ev, s, seg: W.segOf(x.market, W.classOf(x.market, sd.over, sd.fS)), lag: lagHeldOf(x, sd, hours) };
     }
     if (!knownAt(x)) return null;
     const sd = sideOf(V, x, x.p);
@@ -358,6 +368,7 @@ export function replayRecord(V, sport, rows, { events = null, names = () => ({ h
       }
       const cands = candsOf(k);
       const pick = W.placeBy(cands, (cd) => win.at(cd.x.at ?? cd.x.t, cd.seg));
+      if (cands.some((cd) => cd.lag && cd.ev > 0)) flags.lagHeld++;
       if (pick) {
         const pol = win.at(pick.x.at ?? pick.x.t, pick.seg);
         flags.windows.placed[`${pol}:${pick.kind}`] = (flags.windows.placed[`${pol}:${pick.kind}`] ?? 0) + 1;
@@ -382,7 +393,8 @@ export function replayRecord(V, sport, rows, { events = null, names = () => ({ h
         const s = sport === 'mma' ? 1 : survival(risk.entryFor(o.season, o.stat, isLine(o)), hours, { last: timing.lastChance ?? 3 });
         const p = s < 1 ? o.f + Math.min(1, Math.max(0, s)) * (o.p - o.f) : o.p;
         const sd = sideOf(V, o, p);
-        if (sd.ev > 0) placed = { x: o, sd, timing: 'open', s, close: c ?? null };
+        if (sd.ev > 0 && lagHeldOf(o, sd, hours)) flags.lagHeld++;
+        else if (sd.ev > 0) placed = { x: o, sd, timing: 'open', s, close: c ?? null };
       }
     }
     // (a close, or a lone open, whose price read a fact posted after it: neither bet nor picked (D48))
@@ -934,7 +946,7 @@ export function summarize(sport, bets, passed, { epoch, now, flags, rows, season
     brokeAt: decided[n] ? new Date(settledAt(decided[n])).toISOString() : null,
     last: [...bets].sort(order).slice(0, REPLAY_LAST).map(entry),
     flags: {
-      timing: { open: flags.open, close: flags.close, openSeen: flags.openSeen, openClean: flags.openClean, openInWindow: flags.openInWindow, barred: flags.barred ?? 0 },
+      timing: { open: flags.open, close: flags.close, openSeen: flags.openSeen, openClean: flags.openClean, openInWindow: flags.openInWindow, barred: flags.barred ?? 0, ...(flags.lagHeld ? { lagHeld: flags.lagHeld } : {}) },
       // (the bar's own place (D51): whether it stakes the lines, by season and for what comes next)
       ...(flags.bar ? { bar: flags.bar } : {}),
       // (the betting windows (D63): each line segment's policy on the whole history (what --record writes as
