@@ -2053,6 +2053,19 @@ test('D89 injury news on a player who matters alone re-prices and kicks the watc
   assert.ok(!T.matters(m, 'nobody', '29'), 'no games either season');
   assert.ok(T.matters(m, 'vet', '26'), 'his team yet to play: last season read');
   assert.ok(T.matters(null, 'anyone', '29'), 'unknown: everyone matters');
+  // (a star back from an injury that cost him every game so far: his whole last season against STAR; Stewart-type under it)
+  assert.deepEqual([T.STAR, T.STAR_GAMES, T.STAR_GOALIE_STARTS], [{ nba: 25, nhl: 17, nfl: 0.6 }, { nba: 20, nhl: 20, nfl: 6 }, 40]);
+  const season = (pid, n, s, pos) => Array.from({ length: n }, (_, i) => ({ ...row(pid, 2026, '29', `G${i}`, `2026-0${1 + (i % 4)}-${10 + (i % 18)}`, s), pos }));
+  const ms = T.whoMatters([...rows, ...season('returning', 60, { min: 32 }), ...season('stewart2', 70, { min: 20.8 }), ...season('brief', 5, { min: 34 })], 'nba');
+  assert.ok(T.matters(ms, 'returning', '29'), 'a returning star counts');
+  assert.ok(!T.matters(ms, 'stewart2', '29'), 'a Stewart-type (20.8 min/g) does not');
+  assert.ok(!T.matters(ms, 'brief', '29'), 'too few games last season');
+  const hs = [row('x', 2027, '29', 'h0', '2026-10-20', { toi: 15 }), ...season('g1', 45, { toi: 59 }, 'G'), ...season('g2', 30, { toi: 59 }, 'G'), ...season('d1', 70, { toi: 21 }, 'D'), ...season('f3', 70, { toi: 13 }, 'F')];
+  const mhs = T.whoMatters(hs, 'nhl');
+  assert.deepEqual(['g1', 'g2', 'd1', 'f3'].map((id) => T.matters(mhs, id, '29')), [true, false, true, false]);
+  const fs2 = [row('x', 2027, '29', 'f0', '2026-10-20', { snaps: 60 }), ...season('te', 15, { snaps: 50 }), ...season('lead', 15, { snaps: 60 }), ...season('qb1', 15, { passAtt: 30, snaps: 60 }), ...season('wr3', 15, { snaps: 30 })];
+  const mfs = T.whoMatters(fs2, 'nfl');
+  assert.deepEqual(['qb1', 'te', 'wr3'].map((id) => T.matters(mfs, id, '29')), [true, true, false]);
   // (the NFL: a starting QB, a defender by his side's snaps, the unknown (an offensive lineman) matters; NHL by time on ice)
   const nfl = [row('qb', 2026, '1', 'n1', '2026-10-18', { passAtt: 30, snaps: 60 }), row('wr', 2026, '1', 'n1', '2026-10-18', { snaps: 50 }), row('wr4', 2026, '1', 'n1', '2026-10-18', { snaps: 6 })];
   nfl.defense = new Map([['n1|2', [['lb', 'LB', 60], ['dl9', 'DL', 8]]]]);

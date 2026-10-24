@@ -326,11 +326,19 @@ export function lineupSurprise(l, team, players, season) {
 // 2026-10-23: out since the preseason, his out-or-questionable flips priced MEM @ GS's bets three times). The
 // NFL's unknown (no row either season: the offensive line, the kickers, a rookie) matters (the rows only hold the
 // skill players and the defenders); the NBA's and NHL's box scores hold everyone who played, so theirs doesn't.
-// Returns { sport, season, played: [team], now: [id], last: [id], known: [id] (the NFL's) }, kept small for the
+// One more (the coordinator's, 2026-10-24): a star back from an injury that has cost him every game of this season
+// (his team having played) still matters, by his whole last season against a higher bar (STAR): NBA 25 minutes a
+// game, NHL 17 minutes on ice (a goalie: STAR_GOALIE_STARTS (40) starts, a game of 40 minutes or more), NFL 60%
+// of his side's snaps (the starting quarterback's games count whole), over STAR_GAMES of last season's games at
+// least (NBA and NHL 20, NFL 6). Stewart (20.8 minutes a game in 2025-26) stays under it.
+// Returns { sport, season, played: [team], now: [id], last: [id], star: [id], known: [id] (the NFL's) }, kept small for the
 // watcher (apps/<sport>/scripts/model/matters.json), or null (no rows: everyone matters)
 export const MATTERS = { nba: 10, nhl: 10, nfl: 0.25 };
 export const MATTER_GAMES = 4;
 export const MATTER_QB_ATT = 10;
+export const STAR = { nba: 25, nhl: 17, nfl: 0.6 };
+export const STAR_GAMES = { nba: 20, nhl: 20, nfl: 6 };
+export const STAR_GOALIE_STARTS = 40;
 export function whoMatters(rows, sport) {
   if (!(sport in MATTERS) || !rows?.length) return null;
   const season = Math.max(...rows.map((r) => r.season).filter(Number.isFinite));
@@ -347,8 +355,10 @@ export function whoMatters(rows, sport) {
     games.get(k).push({ date: String(date ?? ''), v });
   };
   const played = new Set();
+  const goalie = new Set();
   for (const r of rows) {
     if (!r.pid) continue;
+    if (sport === 'nhl' && r.pos === 'G') goalie.add(String(r.pid));
     seasonOf.set(String(r.game), { season: r.season, date: r.date });
     if (r.season === season && r.team) played.add(String(r.team));
     const s = r.s ?? {};
@@ -372,27 +382,34 @@ export function whoMatters(rows, sport) {
   const now = new Set();
   const last = new Set();
   const known = new Set();
+  const star = new Set();
   for (const [k, list] of games) {
     const [pid, s] = k.split('|');
     if (sport === 'nfl') known.add(pid);
+    // (a star of last season with no game this season: his whole season against STAR)
+    if (Number(s) === season - 1 && !games.has(`${pid}|${season}`) && list.length >= STAR_GAMES[sport]) {
+      const whole = list.reduce((t, x) => t + x.v, 0) / list.length;
+      if (goalie.has(pid) ? list.filter((x) => x.v >= 40).length >= STAR_GOALIE_STARTS : whole >= STAR[sport]) star.add(pid);
+    }
     const mine = list.sort((a, b) => b.date.localeCompare(a.date)).slice(0, MATTER_GAMES);
     const avg = mine.reduce((t, x) => t + x.v, 0) / mine.length;
     if (avg < bar) continue;
     if (Number(s) === season) now.add(pid);
     else if (Number(s) === season - 1) last.add(pid);
   }
-  return { sport, season, played: [...played].sort(), now: [...now].sort(), last: [...last].sort(), ...(sport === 'nfl' ? { known: [...known].sort() } : {}) };
+  return { sport, season, played: [...played].sort(), now: [...now].sort(), last: [...last].sort(), star: [...star].sort(), ...(sport === 'nfl' ? { known: [...known].sort() } : {}) };
 }
 
 const SETS = new WeakMap();
 // (whether a listed player matters (whoMatters' m; none: everyone does), id his ESPN id, team his team's)
 export function matters(m, id, team) {
   if (!m) return true;
-  if (!SETS.has(m)) SETS.set(m, { played: new Set(m.played ?? []), now: new Set(m.now ?? []), last: new Set(m.last ?? []), known: m.known ? new Set(m.known) : null });
+  if (!SETS.has(m)) SETS.set(m, { played: new Set(m.played ?? []), now: new Set(m.now ?? []), last: new Set(m.last ?? []), star: new Set(m.star ?? []), known: m.known ? new Set(m.known) : null });
   const sets = SETS.get(m);
   const pid = String(id);
   if (sets.now.has(pid)) return true;
   if (!sets.played.has(String(team)) && sets.last.has(pid)) return true;
+  if (sets.star.has(pid)) return true;
   return !!sets.known && !sets.known.has(pid);
 }
 
