@@ -7002,6 +7002,42 @@
     "own": "2026-10-24T01:36:32.000Z",
     "why": "@rotowirenba.bsky.social: Cedric Coward: Won't play Friday \n\n https://www.rotowi"
    }
+  },
+  "401909858|tobiasharris|q": {
+   "game": "401909858",
+   "start": "2026-10-25T00:00Z",
+   "team": "24",
+   "name": "Tobias Harris",
+   "status": "q",
+   "athlete": "6440",
+   "espn": {
+    "seen": "2026-10-24T13:54:42.315Z",
+    "own": "2026-10-24T13:45:00.000Z"
+   }
+  },
+  "401909856|reedsheppard|q": {
+   "game": "401909856",
+   "start": "2026-10-25T00:30Z",
+   "team": "10",
+   "name": "Reed Sheppard",
+   "status": "q",
+   "athlete": "4711272",
+   "espn": {
+    "seen": "2026-10-24T13:54:42.315Z",
+    "own": "2026-10-24T13:45:00.000Z"
+   }
+  },
+  "401909860|charlesbassey|q": {
+   "game": "401909860",
+   "start": "2026-10-25T02:00Z",
+   "team": "9",
+   "name": "Charles Bassey",
+   "status": "q",
+   "athlete": "4397886",
+   "espn": {
+    "seen": "2026-10-24T13:54:42.315Z",
+    "own": "2026-10-24T13:46:00.000Z"
+   }
   }
  }
 }
