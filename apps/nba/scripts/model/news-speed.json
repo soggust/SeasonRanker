@@ -6391,6 +6391,11 @@
     "seen": "2026-10-23T22:50:14.417Z",
     "own": "2026-10-23T21:44:45.000Z",
     "why": "@rotowirenba.bsky.social: Kyrie Irving: Will be on minutes restriction Friday \n\n"
+   },
+   "athlete": "6442",
+   "espn": {
+    "seen": "2026-10-24T16:46:40.158Z",
+    "own": "2026-10-24T14:25:00.000Z"
    }
   },
   "401909858|cameronjohnson|out": {
@@ -7061,6 +7066,30 @@
    "espn": {
     "seen": "2026-10-24T14:11:41.221Z",
     "own": "2026-10-24T13:52:00.000Z"
+   }
+  },
+  "401909856|stevenadams|q": {
+   "game": "401909856",
+   "start": "2026-10-25T00:30Z",
+   "team": "10",
+   "name": "Steven Adams",
+   "status": "q",
+   "athlete": "2991235",
+   "espn": {
+    "seen": "2026-10-24T16:46:40.158Z",
+    "own": "2026-10-24T15:16:00.000Z"
+   }
+  },
+  "401909856|fredvanvleet|q": {
+   "game": "401909856",
+   "start": "2026-10-25T00:30Z",
+   "team": "10",
+   "name": "Fred VanVleet",
+   "status": "q",
+   "athlete": "2991230",
+   "espn": {
+    "seen": "2026-10-24T16:46:40.158Z",
+    "own": "2026-10-24T15:13:00.000Z"
    }
   }
  }
