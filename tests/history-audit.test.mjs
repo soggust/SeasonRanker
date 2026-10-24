@@ -109,3 +109,10 @@ test('D86 the recency veto: worse on the last complete season, or the current wi
   assert.ok(gate.includes('recencyVeto(layer, pa[layer], pb[layer], current, opts)'), 'compareScores applies it to every projection layer');
   assert.ok(fs.readFileSync(path.resolve('libs/ranker/scripts/model/DECISIONS.md'), 'utf8').includes('### D86.'));
 });
+
+test("the record paths are git pathspecs that match the record files (a bare apps/*/... matches nothing)", async () => {
+  const { execFileSync } = await import('node:child_process');
+  const files = execFileSync('git', ['ls-files', '--', ...HA.RECORD_PATHS], { encoding: 'utf8' }).trim().split('\n');
+  for (const f of ['apps/nfl/src/StaticData/model/replay-record.json', 'apps/mma/scripts/model/history-rows.json', 'apps/nfl/src/StaticData/model/findings.json']) assert.ok(files.includes(f), f);
+  assert.ok(!files.some((f) => !/^apps\/[a-z]+\/(src\/StaticData|scripts)\/model\//.test(f)), 'only the record files');
+});

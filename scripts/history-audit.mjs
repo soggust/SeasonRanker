@@ -39,7 +39,7 @@ export const DEBOUNCE_MIN = 30;
 // (the paths whose change re-records: the bettor's code and config; its docs don't)
 export const MODEL_PATHS = ['libs/ranker/scripts/model', ':(exclude,glob)libs/ranker/scripts/model/**/*.md'];
 // (the files a re-record writes, the only ones the audit commits)
-export const RECORD_PATHS = ['apps/*/src/StaticData/model', 'apps/*/scripts/model'];
+export const RECORD_PATHS = [':(glob)apps/*/src/StaticData/model/**', ':(glob)apps/*/scripts/model/**'];
 export const FINDINGS = 'apps/nfl/src/StaticData/model/findings.json';
 export const REF = 'D86';
 // (a lock older than this is a crashed run's)
