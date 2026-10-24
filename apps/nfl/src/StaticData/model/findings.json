@@ -386,6 +386,83 @@
    "sport": "mma",
    "ref": "D59",
    "text": "Feeder leagues (ESPN-known, first 1-5 UFC bouts): DWCS +1.6 vs model, 53.9% vs 54.1% close (n 1081); no league past noise. Not added"
+  },
+  {
+   "date": "2026-10-24",
+   "group": "dropped",
+   "sport": "nfl",
+   "ref": "D91",
+   "text": "Gusts beyond the reported wind on totals: walk-forward -0.22 ± 0.33 sq pts (2,237 games), vs Pinnacle -9 ± 9. Not added"
+  },
+  {
+   "date": "2026-10-24",
+   "group": "dropped",
+   "sport": "nfl",
+   "ref": "D91",
+   "text": "Wind direction vs field (OSM bearings, 29 stadiums): crosswind -2.7 vs along -1.7 pts/10 mph, same within noise. Not added"
+  },
+  {
+   "date": "2026-10-24",
+   "group": "dropped",
+   "sport": "nfl",
+   "ref": "D91",
+   "text": "Weather on props (pass/rec/rush yds, rush att): gusts, along/cross all |z|<2 held out. Longest catch, kicking not archived"
+  },
+  {
+   "date": "2026-10-24",
+   "group": "dropped",
+   "sport": "mlb",
+   "ref": "D91",
+   "text": "Park-oriented wind out/in on totals -1.1 ± 0.8; on hits, total bases, Ks, outs nothing past the close. windOut stays as is"
+  },
+  {
+   "date": "2026-10-24",
+   "group": "dropped",
+   "sport": "nfl",
+   "ref": "D91",
+   "text": "2+ OL out: -0.7 ± 0.8 pts beyond the count; 2+ WR, 2+ DBs out: noise or wrong way vs the close. No compounding term"
+  },
+  {
+   "date": "2026-10-24",
+   "group": "dropped",
+   "sport": "nba",
+   "ref": "D91",
+   "text": "Both centers out: spread +1.3 ± 1.6 (worse), total -5.6 ± 3.5 not every season; 3+ regulars out noise. Not added"
+  },
+  {
+   "date": "2026-10-24",
+   "group": "dropped",
+   "sport": "nhl",
+   "ref": "D91",
+   "text": "2+ D out, backup goalie, b2b x backup x thin D: sides and totals all within noise of the close. Not added"
+  },
+  {
+   "date": "2026-10-24",
+   "group": "dropped",
+   "sport": null,
+   "ref": "D91",
+   "text": "Fatigue x personnel (NBA b2b x short rotation, NHL b2b x backup, MLB tired pen x short leash): none beats the close"
+  },
+  {
+   "date": "2026-10-24",
+   "group": "watching",
+   "sport": "nba",
+   "ref": "D91",
+   "text": "Opp centers out -> points overs: -1.0 ± 0.4 log loss, z 2.3, every season, linear only. Under the 2.5 bar; recheck"
+  },
+  {
+   "date": "2026-10-24",
+   "group": "watching",
+   "sport": "nhl",
+   "ref": "D91",
+   "text": "Each opp D out -> shots/points overs: z 2.9 / 2.7, but 2026 worse, linear only (2+ adds 0). Recheck with 2026-27"
+  },
+  {
+   "date": "2026-10-24",
+   "group": "watching",
+   "sport": "nfl",
+   "ref": "D91",
+   "text": "Crosswind term reads 0 locally: facts.fields/wdir empty in main and audit caches. Measured: direction adds nothing"
   }
  ]
 }

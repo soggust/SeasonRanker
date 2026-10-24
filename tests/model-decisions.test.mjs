@@ -2114,3 +2114,20 @@ test("D90 the margin rule's held side is tracked, not staked: the owner's except
   assert.ok(rr.includes('r.sd.edge > 0 && !r.marginHeld'), 'never re-staked as a practice pick');
   assert.ok(!rr.includes('marginHeld: true });\n'), 'never re-staked at the practice stake');
 });
+
+// ---- D91: weather by market, compounding absences and fatigue x personnel measured and held ----
+test('D91 no gust, wind-direction, compounding-absence or fatigue-interaction term in the game model, the props or the reasons (measured, held)', async () => {
+  const C = await import('../libs/ranker/scripts/model/context.mjs');
+  const F = await import('../libs/ranker/scripts/model/football.mjs');
+  const P = await import('../libs/ranker/scripts/model/props.mjs');
+  const R = await import('../libs/ranker/scripts/model/reasons.mjs');
+  const held = /gust|alongWind|unitOut|ol2plus|dbOut|wrOut|bigsOut|centersOut|defOut2|twoOut|b2bBackup|b2bShort|penLoad|penLeash|tiredPen/i;
+  const keys = [...Object.values(C.TERMS).flat(), ...F.FOOTBALL_TERMS, ...Object.values(C.SCHEDULE_TERMS).flat()].map((t) => t.key);
+  for (const k of keys) assert.ok(!held.test(k), `${k}: a D91-held piece isn't a game-model term`);
+  for (const k of Object.keys(P.CTX)) assert.ok(!held.test(k), `${k}: a D91-held piece isn't a props term`);
+  for (const r of R.REASONS) assert.ok(!held.test(r.id), `${r.id}: a D91-held piece isn't a reason`);
+  // (the existing weather terms stay: the NFL's wind and crosswind, MLB's park-oriented wind)
+  assert.ok(keys.includes('wind') && keys.includes('crosswind') && keys.includes('windOut') && keys.includes('olChanges') && 'olOut' in P.CTX, 'the linear terms it built on stay');
+  const decisions = fs.readFileSync(new URL('../libs/ranker/scripts/model/DECISIONS.md', import.meta.url), 'utf8');
+  assert.ok(decisions.includes('### D91.'));
+});
