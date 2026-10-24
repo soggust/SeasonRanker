@@ -7038,6 +7038,30 @@
     "seen": "2026-10-24T13:54:42.315Z",
     "own": "2026-10-24T13:46:00.000Z"
    }
+  },
+  "401909860|brandinpodziemski|out": {
+   "game": "401909860",
+   "start": "2026-10-25T02:00Z",
+   "team": "9",
+   "name": "Brandin Podziemski",
+   "status": "out",
+   "athlete": "4709138",
+   "espn": {
+    "seen": "2026-10-24T14:11:41.221Z",
+    "own": "2026-10-24T13:52:00.000Z"
+   }
+  },
+  "401909860|stephencurry|q": {
+   "game": "401909860",
+   "start": "2026-10-25T02:00Z",
+   "team": "9",
+   "name": "Stephen Curry",
+   "status": "q",
+   "athlete": "3975",
+   "espn": {
+    "seen": "2026-10-24T14:11:41.221Z",
+    "own": "2026-10-24T13:52:00.000Z"
+   }
   }
  }
 }
