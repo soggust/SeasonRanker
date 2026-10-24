@@ -2,7 +2,7 @@
  "v": 1,
  "sport": "nba",
  "epoch": "2026-10-23T05:30:00Z",
- "at": "2026-10-24T08:47:03.974Z",
+ "at": "2026-10-24T09:40:43.290Z",
  "from": "2020-07-31T20:10:00.000Z",
  "through": "2026-06-11T00:40:00.000Z",
  "n": {
@@ -2384,7 +2384,7 @@
   "split": "games that start before the epoch replayed; the live ledger from the epoch on",
   "notSeen": "the live desk's CLV gates, CHECKs, research and news"
  },
- "commit": "d0e76076",
+ "commit": "a53ae89e",
  "note": "D92. The market round (the owner's ChatGPT list, items 4, 6, 7, 10): overreaction, cross-market consistency and preseason reputation measured with no edge; the sharp lag holds a line pick in the NBA, NHL and MLB",
  "inputs": {
   "v": 1,
@@ -2394,7 +2394,7 @@
    "games": "31d8991c8861",
    "pricing": "b2704a6d783a",
    "record": "a151be080346",
-   "harness": "c1cfe173e7f3",
+   "harness": "60ad6a76a7a4",
    "residual": "66866487722581f3",
    "tuned": "e79e45590a673d4d"
   },
@@ -2458,6 +2458,6 @@
     "want": 0
    }
   },
-  "hash": "f326b98fbdde2e66"
+  "hash": "56410b08ca2238ac"
  }
 }

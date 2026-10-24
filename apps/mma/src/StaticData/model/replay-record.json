@@ -2,7 +2,7 @@
  "v": 1,
  "sport": "mma",
  "epoch": "2026-10-21T01:15:00Z",
- "at": "2026-10-24T07:03:34.305Z",
+ "at": "2026-10-24T09:57:57.817Z",
  "from": "2020-06-06T23:10:00.000Z",
  "through": "2026-10-18T01:45:00.000Z",
  "n": {
@@ -2009,8 +2009,8 @@
   "split": "games that start before the epoch replayed; the live ledger from the epoch on",
   "notSeen": "the live desk's CLV gates, CHECKs, research and news"
  },
- "commit": "8e263b20",
- "note": "D89. Injury news re-prices and kicks the watcher only on a player who matters: minutes, time on ice or snaps this season (last season's while his team hasn't played yet)",
+ "commit": "a53ae89e",
+ "note": "D92. The market round (the owner's ChatGPT list, items 4, 6, 7, 10): overreaction, cross-market consistency and preseason reputation measured with no edge; the sharp lag holds a line pick in the NBA, NHL and MLB",
  "inputs": {
   "v": 1,
   "sport": "mma",
@@ -2018,8 +2018,8 @@
    "mma": "f1226a7a01cc",
    "games": "31d8991c8861",
    "pricing": "b2704a6d783a",
-   "record": "c9393fd0d544",
-   "harness": "c1cfe173e7f3",
+   "record": "a151be080346",
+   "harness": "60ad6a76a7a4",
    "tuned": "bf1af220e978a952"
   },
   "rows": {
@@ -2042,6 +2042,6 @@
     "want": 14
    }
   },
-  "hash": "333d03b085a4d023"
+  "hash": "fa661dd4b144210b"
  }
 }

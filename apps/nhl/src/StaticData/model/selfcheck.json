@@ -1,5 +1,5 @@
 {
- "at": "2026-10-24T07:03:36.271Z",
+ "at": "2026-10-24T09:57:58.563Z",
  "baseline": {
   "from": "2026-09-19",
   "to": "2026-10-17"
@@ -11,7 +11,7 @@
    "how": "props placed this week, by type and side: the share, the record against the expected wins, the ROI, the projection's miss (mean - actual) beside the fit's bias and the all-player bias",
    "id": "C4",
    "metric": "z",
-   "n": 1092,
+   "n": 1109,
    "needs": null,
    "rows": [
     {
@@ -38,10 +38,10 @@
      "key": "pts:under",
      "label": "Points Under",
      "n": 386,
-     "placed": 397,
+     "placed": 403,
      "profit": -13.796,
      "roi": -0.0699,
-     "share": 0.7664,
+     "share": 0.7618,
      "status": "watch",
      "w": 240.3,
      "z": -0.3673
@@ -54,10 +54,10 @@
      "key": "sog:over",
      "label": "Shots Over",
      "n": 204,
-     "placed": 206,
+     "placed": 210,
      "profit": -9.74,
      "roi": -0.0928,
-     "share": 0.4104,
+     "share": 0.4134,
      "status": "ok",
      "w": 100,
      "z": -0.5875
@@ -86,10 +86,10 @@
      "key": "pts:over",
      "label": "Points Over",
      "n": 119,
-     "placed": 121,
+     "placed": 126,
      "profit": -0.915,
      "roi": -0.0144,
-     "share": 0.2336,
+     "share": 0.2382,
      "status": "ok",
      "w": 62,
      "z": 0.7061
@@ -102,10 +102,10 @@
      "key": "sog:under",
      "label": "Shots Under",
      "n": 281,
-     "placed": 296,
+     "placed": 298,
      "profit": -1.107,
      "roi": -0.0077,
-     "share": 0.5896,
+     "share": 0.5866,
      "status": "ok",
      "w": 152.2,
      "z": 0.872
@@ -119,11 +119,11 @@
   },
   {
    "examples": [],
-   "headline": "pts tracked only: clv over the last graded pts props: tracked, not bet, till it's positive: 43 of 1248 bets placed this week (3%) against 0% before",
+   "headline": "pts tracked only: clv over the last graded pts props: tracked, not bet, till it's positive: 43 of 1265 bets placed this week (3%) against 0% before",
    "how": "placed this week against the 28 days before: the bets a guard cut to a half unit, by kind",
    "id": "C8",
    "metric": "ratio",
-   "n": 1248,
+   "n": 1265,
    "needs": [
     "state.tallies (the guards' skips by day: the Bot keeps only the bets it placed)"
    ],
@@ -132,7 +132,7 @@
      "key": "pts tracked only: clv over the last graded pts props: tracked, not bet, till it's positive",
      "n": 43,
      "ratio": null,
-     "share": 0.0345,
+     "share": 0.034,
      "shareBase": 0,
      "status": "flag"
     },
@@ -140,7 +140,7 @@
      "key": "lines tracked only: clv over the last graded line bets: the lines tracked, not bet, till it's positive",
      "n": 35,
      "ratio": null,
-     "share": 0.028,
+     "share": 0.0277,
      "shareBase": 0,
      "status": "flag"
     },
@@ -148,7 +148,7 @@
      "key": "news pending",
      "n": 33,
      "ratio": null,
-     "share": 0.0264,
+     "share": 0.0261,
      "shareBase": 0,
      "status": "flag"
     },
@@ -156,15 +156,31 @@
      "key": "sog tracked only: clv over the last graded sog props: tracked, not bet, till it's positive",
      "n": 30,
      "ratio": null,
-     "share": 0.024,
+     "share": 0.0237,
      "shareBase": 0,
      "status": "flag"
+    },
+    {
+     "key": "pts prop:pts:under: the bot's own bets there u flat on",
+     "n": 16,
+     "ratio": null,
+     "share": 0.0126,
+     "shareBase": 0,
+     "status": "watch"
+    },
+    {
+     "key": "sog prop:sog:over: the bot's own bets there u flat on",
+     "n": 14,
+     "ratio": null,
+     "share": 0.0111,
+     "shareBase": 0,
+     "status": "watch"
     },
     {
      "key": "spread:fav:early: picks' worth of history and live bets: under , the practice stake till the segment earns it",
      "n": 14,
      "ratio": null,
-     "share": 0.0112,
+     "share": 0.0111,
      "shareBase": 0,
      "status": "watch"
     },
@@ -172,7 +188,7 @@
      "key": "ml:fav:early: picks' worth of history and live bets: under , the practice stake till the segment earns it",
      "n": 12,
      "ratio": null,
-     "share": 0.0096,
+     "share": 0.0095,
      "shareBase": 0,
      "status": "watch"
     },
@@ -180,39 +196,23 @@
      "key": "total:over:early: picks' worth of history and live bets: under , the practice stake till the segment earns it",
      "n": 12,
      "ratio": null,
-     "share": 0.0096,
-     "shareBase": 0,
-     "status": "watch"
-    },
-    {
-     "key": "pts prop:pts:under: the bot's own bets there u flat on",
-     "n": 10,
-     "ratio": null,
-     "share": 0.008,
-     "shareBase": 0,
-     "status": "watch"
-    },
-    {
-     "key": "sog prop:sog:over: the bot's own bets there u flat on",
-     "n": 10,
-     "ratio": null,
-     "share": 0.008,
+     "share": 0.0095,
      "shareBase": 0,
      "status": "watch"
     },
     {
      "key": "line moved",
-     "n": 40,
-     "ratio": 1.0937,
-     "share": 0.0321,
+     "n": 41,
+     "ratio": 1.1059,
+     "share": 0.0324,
      "shareBase": 0.0293,
      "status": "ok"
     },
     {
      "key": "no odds api price",
      "n": 8,
-     "ratio": 2.6795,
-     "share": 0.0064,
+     "ratio": 2.6435,
+     "share": 0.0063,
      "shareBase": 0.0024,
      "status": "ok"
     },
@@ -220,7 +220,7 @@
      "key": "saves tracked only: clv over the last graded saves props: tracked, not bet, till it's positive",
      "n": 8,
      "ratio": null,
-     "share": 0.0064,
+     "share": 0.0063,
      "shareBase": 0,
      "status": "ok"
     },
@@ -228,7 +228,7 @@
      "key": "spread:fav:late: picks' worth of history and live bets: under , the practice stake till the segment earns it",
      "n": 8,
      "ratio": null,
-     "share": 0.0064,
+     "share": 0.0063,
      "shareBase": 0,
      "status": "ok"
     },
@@ -236,7 +236,7 @@
      "key": "ml:dog:late: picks' worth of history and live bets: under , the practice stake till the segment earns it",
      "n": 7,
      "ratio": null,
-     "share": 0.0056,
+     "share": 0.0055,
      "shareBase": 0,
      "status": "ok"
     },
@@ -244,7 +244,7 @@
      "key": "ml:fav:late: picks' worth of history and live bets: under , the practice stake till the segment earns it",
      "n": 7,
      "ratio": null,
-     "share": 0.0056,
+     "share": 0.0055,
      "shareBase": 0,
      "status": "ok"
     },
@@ -252,7 +252,7 @@
      "key": "total:under:late: picks' worth of history and live bets: under , the practice stake till the segment earns it",
      "n": 6,
      "ratio": null,
-     "share": 0.0048,
+     "share": 0.0047,
      "shareBase": 0,
      "status": "ok"
     },
@@ -275,7 +275,7 @@
     {
      "key": "starter not confirmed",
      "n": 4,
-     "ratio": 0.5359,
+     "ratio": 0.5287,
      "share": 0.0032,
      "shareBase": 0.006,
      "status": "ok"
@@ -331,7 +331,7 @@
     {
      "key": "questionable",
      "n": 1,
-     "ratio": 0.3349,
+     "ratio": 0.3304,
      "share": 0.0008,
      "shareBase": 0.0024,
      "status": "ok"
@@ -1034,18 +1034,18 @@
     "401892520:prop:sog:3899952",
     "401892520:prop:saves:5104602"
    ],
-   "headline": "37 of 1248 bets placed this week had the line already moving against them: ROI 7.5% against -6.8% for the rest",
+   "headline": "38 of 1265 bets placed this week had the line already moving against them: ROI 7.5% against -6.8% for the rest",
    "how": "placed this week: a prop's line a point or more against its side since it opened; a game's spread 1.5 (NFL) or 0.5, its total a point, a moneyline without a spread move 3 points of the home chance. A prop moved twice the guard's limit should have been skipped",
    "id": "C2",
    "metric": "roiGap",
-   "n": 1248,
+   "n": 1265,
    "needs": null,
    "rows": [
     {
      "e": 20.0261,
      "key": "moving against",
      "n": 36,
-     "placed": 37,
+     "placed": 38,
      "profit": 1.356,
      "roi": 0.0753,
      "w": 23,
@@ -1055,7 +1055,7 @@
      "e": 634.4782,
      "key": "the rest",
      "n": 1158,
-     "placed": 1211,
+     "placed": 1227,
      "profit": -40.029,
      "roi": -0.0675,
      "w": 626.7,
@@ -1132,15 +1132,15 @@
   },
   {
    "examples": [],
-   "headline": "Props: dogs 23% of this week's bets against 40% before",
+   "headline": "Props: dogs 22% of this week's bets against 40% before",
    "how": "placed this week against the 28 days before: a dog is a plus price or a spread side getting points",
    "id": "C5",
    "metric": "moved",
-   "n": 1193,
+   "n": 1210,
    "needs": null,
    "rows": [
     {
-     "dogShare": 0.2253,
+     "dogShare": 0.2236,
      "dogShareBase": 0.4023,
      "dogs": {
       "e": 105.0911,
@@ -1159,8 +1159,8 @@
       "z": 0.0256
      },
      "key": "prop",
-     "moved": -0.177,
-     "n": 1092,
+     "moved": -0.1787,
+     "n": 1109,
      "nBase": 1484,
      "status": "ok"
     },
@@ -1219,7 +1219,7 @@
    "tested": null,
    "threshold": "watch the dog share moved 20 points (20+ bets both); flag also the grown group z -2 (30+ graded)",
    "title": "Favorite/dog drift",
-   "value": -0.177
+   "value": -0.1787
   },
   {
    "examples": [
@@ -1347,7 +1347,7 @@
    "how": "open bets on games not started: past the gap now, or published at a band today's trust wouldn't give them; open bets past their start plus VOID_AFTER; this week's graded bets with no close read",
    "id": "C13",
    "metric": "stale",
-   "n": 39,
+   "n": 56,
    "needs": null,
    "rows": [
     {
@@ -1377,7 +1377,7 @@
    "how": "placed this week against the 28 days before: the share of the bets each field applies to that are missing it",
    "id": "C14",
    "metric": "share",
-   "n": 1248,
+   "n": 1265,
    "needs": null,
    "rows": [
     {
@@ -1399,7 +1399,7 @@
     {
      "key": "team",
      "n": 0,
-     "of": 1092,
+     "of": 1109,
      "share": 0,
      "shareBase": 0.0357,
      "status": "ok"
@@ -1407,7 +1407,7 @@
     {
      "key": "intent",
      "n": 0,
-     "of": 1248,
+     "of": 1265,
      "share": 0,
      "shareBase": 0.0335,
      "status": "ok"
@@ -1415,7 +1415,7 @@
     {
      "key": "pricesFrom",
      "n": 0,
-     "of": 1092,
+     "of": 1109,
      "share": 0,
      "shareBase": 0.0061,
      "status": "ok"
@@ -1431,7 +1431,7 @@
     {
      "key": "projection.applied",
      "n": 0,
-     "of": 1092,
+     "of": 1109,
      "share": 0,
      "shareBase": 0.4582,
      "status": "ok"
@@ -1439,7 +1439,7 @@
     {
      "key": "oddsAssumed",
      "n": 0,
-     "of": 1092,
+     "of": 1109,
      "share": 0,
      "shareBase": 0,
      "status": "ok"
@@ -1453,16 +1453,16 @@
   },
   {
    "examples": [],
-   "headline": "Model files 0h old, 0 open bets overdue to grade; Odds API credits 293% left; 1248 bets placed in a week of 47 games",
+   "headline": "Model files 3h old, 0 open bets overdue to grade; Odds API credits 293% left; 1265 bets placed in a week of 47 games",
    "how": "the newest commit of the sport's model files, the open bets started 12 hours ago or more, The Odds API's credits (state.odds), the state's sources",
    "id": "C16",
    "metric": "ageH",
-   "n": 1248,
+   "n": 1265,
    "needs": null,
    "rows": [
     {
-     "ageH": 0,
-     "at": "2026-10-24T06:13:08Z",
+     "ageH": 3,
+     "at": "2026-10-24T06:30:24Z",
      "key": "files",
      "overdue": 0
     },
@@ -1480,14 +1480,14 @@
     {
      "games": 47,
      "key": "week",
-     "placed": 1248
+     "placed": 1265
     }
    ],
    "status": "ok",
    "tested": null,
    "threshold": "watch files 3h old with bets overdue, credits under 20%, a source down, or no bets in a week with games; flag 6h old with bets overdue, or credits under 10%",
    "title": "Ops",
-   "value": 0
+   "value": 3
   },
   {
    "examples": [],
@@ -2308,7 +2308,7 @@
  "sport": "nhl",
  "summary": {
   "flag": 4,
-  "headline": "Over/under drift by stat: Saves Under: 26.3 won vs 29.3 expected (z -0.8), 81% of its stat's props, ROI -13.8%; Guards cutting unusually often: pts tracked only: clv over the last graded pts props: tracked, not bet, till it's positive: 43 of 1248 bets placed this week (3%) against 0% before",
+  "headline": "Over/under drift by stat: Saves Under: 26.3 won vs 29.3 expected (z -0.8), 81% of its stat's props, ROI -13.8%; Guards cutting unusually often: pts tracked only: clv over the last graded pts props: tracked, not bet, till it's positive: 43 of 1265 bets placed this week (3%) against 0% before",
   "info": 3,
   "ok": 9,
   "partial": 1,
