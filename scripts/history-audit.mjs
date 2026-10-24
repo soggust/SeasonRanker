@@ -196,7 +196,8 @@ async function main() {
   };
   const state = readJson(STATE, {});
   const held = takeLock(opts.mode);
-  if (held) return say(`a ${held.mode} run (pid ${held.pid}, since ${held.at}) is in progress: skipped`);
+  // (the 15-minute check says so on the console only: a long run would fill the log with it)
+  if (held) return (opts.mode === "check" ? console.log : say)(`a ${held.mode} run (pid ${held.pid}, since ${held.at}) is in progress: skipped`);
   try {
     // (the nightly after a clean run of any kind in the last 6 hours (Monday's weekly) adds nothing)
     if (opts.mode === 'nightly' && state.last?.ok && !state.last.dry && Date.now() - Date.parse(state.last.at) < 6 * 3600e3) return say(`a clean ${state.last.mode} run finished ${state.last.at}: skipped`);
