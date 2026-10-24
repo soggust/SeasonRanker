@@ -330,6 +330,13 @@
    "sport": "mlb",
    "ref": "D88",
    "text": "Self-tune: MLB held: none of 23 settings beat the current before the last 8 weeks past 1 SE"
+  },
+  {
+   "date": "2026-10-24",
+   "group": "dropped",
+   "sport": "mma",
+   "ref": "D59",
+   "text": "MMA parlays add no edge: close favorites ~even (-0.7% DK), opens +1-5% inside noise; a parlay multiplies that edge and the swings. Not added"
   }
  ]
 }
