@@ -5084,6 +5084,23 @@
    "sleeper": {
     "seen": "2026-10-23T20:13:38.241Z",
     "own": "2026-10-23T19:10:22.154Z"
+   },
+   "bluesky": {
+    "seen": "2026-10-24T01:08:03.622Z",
+    "own": "2026-10-24T00:37:06.000Z",
+    "why": "@dailyfaceoff.bsky.social: Oilers place Devon Levi on injured reserve"
+   }
+  },
+  "401892575|victorhedman|q": {
+   "game": "401892575",
+   "start": "2026-10-25T01:00Z",
+   "team": "20",
+   "name": "Victor Hedman",
+   "status": "q",
+   "athlete": "5157",
+   "espn": {
+    "seen": "2026-10-24T05:13:48.445Z",
+    "own": "2026-10-24T04:55:00.000Z"
    }
   }
  }
