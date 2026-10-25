@@ -8156,6 +8156,90 @@
     "seen": "2026-10-25T18:46:45.079Z",
     "own": "2026-10-24T00:55:00.000Z"
    }
+  },
+  "401873019|carsonbeck|out": {
+   "game": "401873019",
+   "start": "2026-10-25T20:05Z",
+   "team": "22",
+   "name": "Carson Beck",
+   "status": "out",
+   "athlete": "4430841",
+   "espn": {
+    "seen": "2026-10-25T18:55:41.720Z",
+    "own": "2026-10-25T18:44:00.000Z"
+   }
+  },
+  "401873019|albertreese|out": {
+   "game": "401873019",
+   "start": "2026-10-25T20:05Z",
+   "team": "22",
+   "name": "Albert Reese IV",
+   "status": "out",
+   "athlete": "4683506",
+   "espn": {
+    "seen": "2026-10-25T18:55:41.720Z",
+    "own": "2026-10-25T18:42:00.000Z"
+   }
+  },
+  "401873019|tyleronyedim|out": {
+   "game": "401873019",
+   "start": "2026-10-25T20:05Z",
+   "team": "7",
+   "name": "Tyler Onyedim",
+   "status": "out",
+   "athlete": "4683535",
+   "espn": {
+    "seen": "2026-10-25T18:55:41.720Z",
+    "own": "2026-10-25T18:44:00.000Z"
+   }
+  },
+  "401873019|jordanjackson|out": {
+   "game": "401873019",
+   "start": "2026-10-25T20:05Z",
+   "team": "7",
+   "name": "Jordan Jackson",
+   "status": "out",
+   "athlete": "4261090",
+   "espn": {
+    "seen": "2026-10-25T18:55:41.720Z",
+    "own": "2026-10-25T18:44:00.000Z"
+   }
+  },
+  "401873019|dallenbentley|out": {
+   "game": "401873019",
+   "start": "2026-10-25T20:05Z",
+   "team": "7",
+   "name": "Dallen Bentley",
+   "status": "out",
+   "athlete": "5159802",
+   "espn": {
+    "seen": "2026-10-25T18:55:41.720Z",
+    "own": "2026-10-25T18:44:00.000Z"
+   }
+  },
+  "401873019|kagecasey|out": {
+   "game": "401873019",
+   "start": "2026-10-25T20:05Z",
+   "team": "7",
+   "name": "Kage Casey",
+   "status": "out",
+   "athlete": "4868598",
+   "espn": {
+    "seen": "2026-10-25T18:55:41.720Z",
+    "own": "2026-10-25T18:44:00.000Z"
+   }
+  },
+  "401873019|samehlinger|out": {
+   "game": "401873019",
+   "start": "2026-10-25T20:05Z",
+   "team": "7",
+   "name": "Sam Ehlinger",
+   "status": "out",
+   "athlete": "4241820",
+   "espn": {
+    "seen": "2026-10-25T18:55:41.720Z",
+    "own": "2026-10-25T18:44:00.000Z"
+   }
   }
  }
 }
