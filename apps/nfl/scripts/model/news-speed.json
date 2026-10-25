@@ -7352,6 +7352,54 @@
     "seen": "2026-10-25T12:14:09.241Z",
     "own": "2026-10-24T20:10:00.000Z"
    }
+  },
+  "401873011|terellsmith|out": {
+   "game": "401873011",
+   "start": "2026-10-25T13:30Z",
+   "team": "23",
+   "name": "Terell Smith",
+   "status": "out",
+   "athlete": "4360935",
+   "espn": {
+    "seen": "2026-10-25T12:27:40.505Z",
+    "own": "2026-10-25T12:15:00.000Z"
+   }
+  },
+  "401873011|eliheidenreich|out": {
+   "game": "401873011",
+   "start": "2026-10-25T13:30Z",
+   "team": "23",
+   "name": "Eli Heidenreich",
+   "status": "out",
+   "athlete": "5081508",
+   "espn": {
+    "seen": "2026-10-25T12:27:40.505Z",
+    "own": "2026-10-25T12:15:00.000Z"
+   }
+  },
+  "401873011|willhoward|out": {
+   "game": "401873011",
+   "start": "2026-10-25T13:30Z",
+   "team": "23",
+   "name": "Will Howard",
+   "status": "out",
+   "athlete": "4429955",
+   "espn": {
+    "seen": "2026-10-25T12:27:40.505Z",
+    "own": "2026-10-25T12:15:00.000Z"
+   }
+  },
+  "401873011|drewallar|out": {
+   "game": "401873011",
+   "start": "2026-10-25T13:30Z",
+   "team": "23",
+   "name": "Drew Allar",
+   "status": "out",
+   "athlete": "4714771",
+   "espn": {
+    "seen": "2026-10-25T12:27:40.505Z",
+    "own": "2026-10-25T12:15:00.000Z"
+   }
   }
  }
 }
