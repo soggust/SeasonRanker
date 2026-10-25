@@ -7710,6 +7710,102 @@
     "seen": "2026-10-25T02:30:40.138Z",
     "own": "2026-10-25T02:28:00.000Z"
    }
+  },
+  "401909866|joelembiid|q": {
+   "game": "401909866",
+   "start": "2026-10-25T23:30Z",
+   "team": "20",
+   "name": "Joel Embiid",
+   "status": "q",
+   "athlete": "3059318",
+   "espn": {
+    "seen": "2026-10-25T03:57:41.700Z",
+    "own": "2026-10-25T02:15:00.000Z"
+   }
+  },
+  "401909866|jabariwalker|q": {
+   "game": "401909866",
+   "start": "2026-10-25T23:30Z",
+   "team": "20",
+   "name": "Jabari Walker",
+   "status": "q",
+   "athlete": "4432446",
+   "espn": {
+    "seen": "2026-10-25T03:57:41.700Z",
+    "own": "2026-10-25T02:11:00.000Z"
+   }
+  },
+  "401909866|lebronjames|out": {
+   "game": "401909866",
+   "start": "2026-10-25T23:30Z",
+   "team": "20",
+   "name": "LeBron James",
+   "status": "out",
+   "athlete": "1966",
+   "espn": {
+    "seen": "2026-10-25T03:57:41.700Z",
+    "own": "2026-10-24T17:06:00.000Z"
+   }
+  },
+  "401909866|tackofall|out": {
+   "game": "401909866",
+   "start": "2026-10-25T23:30Z",
+   "team": "20",
+   "name": "Tacko Fall",
+   "status": "out",
+   "athlete": "3904625",
+   "espn": {
+    "seen": "2026-10-25T03:57:41.700Z",
+    "own": "2026-10-23T21:10:00.000Z"
+   }
+  },
+  "401909866|dominickbarlow|out": {
+   "game": "401909866",
+   "start": "2026-10-25T23:30Z",
+   "team": "20",
+   "name": "Dominick Barlow",
+   "status": "out",
+   "athlete": "4870562",
+   "espn": {
+    "seen": "2026-10-25T03:57:41.700Z",
+    "own": "2026-10-19T21:07:00.000Z"
+   }
+  },
+  "401909866|arielhukporti|out": {
+   "game": "401909866",
+   "start": "2026-10-25T23:30Z",
+   "team": "20",
+   "name": "Ariel Hukporti",
+   "status": "out",
+   "athlete": "4871141",
+   "espn": {
+    "seen": "2026-10-25T03:57:41.700Z",
+    "own": "2026-10-06T19:17:00.000Z"
+   }
+  },
+  "401909866|ausarthompson|q": {
+   "game": "401909866",
+   "start": "2026-10-25T23:30Z",
+   "team": "8",
+   "name": "Ausar Thompson",
+   "status": "q",
+   "athlete": "4684742",
+   "espn": {
+    "seen": "2026-10-25T03:57:41.700Z",
+    "own": "2026-10-24T20:14:00.000Z"
+   }
+  },
+  "401909866|jalenduren|out": {
+   "game": "401909866",
+   "start": "2026-10-25T23:30Z",
+   "team": "8",
+   "name": "Jalen Duren",
+   "status": "out",
+   "athlete": "4433621",
+   "espn": {
+    "seen": "2026-10-25T03:57:41.700Z",
+    "own": "2026-10-24T20:08:00.000Z"
+   }
   }
  }
 }
