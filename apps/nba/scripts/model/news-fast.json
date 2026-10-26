@@ -1,9 +1,9 @@
 {
  "sport": "nba",
  "cursor": {
-  "rotowirenba.bsky.social": "2026-10-26T18:24:49.000Z",
-  "insidenbanews.bsky.social": "2026-10-26T00:48:22.766Z",
-  "shamsbot.bsky.social": "2026-10-24T16:42:03.000Z"
+  "rotowirenba.bsky.social": "2026-10-26T18:44:19.000Z",
+  "insidenbanews.bsky.social": "2026-10-26T18:44:54.695Z",
+  "shamsbot.bsky.social": "2026-10-26T18:40:05.000Z"
  },
  "claims": [
   {
@@ -2215,6 +2215,45 @@
    "kind": "status",
    "confidence": 0.95,
    "text": "Cason Wallace: Out with sore shoulder \n\n https://www.rotowire.com/basketball/player/cason-wallace-5898"
+  },
+  {
+   "id": "at://did:plc:sa73fbx3vxzh2fw5pu5wmief/app.bsky.feed.post/3mysevpqt6r2u|jalensuggs|out|status",
+   "at": "2026-10-26T18:40:05.000Z",
+   "seen": "2026-10-26T19:01:27.991Z",
+   "handle": "shamsbot.bsky.social",
+   "post": "at://did:plc:sa73fbx3vxzh2fw5pu5wmief/app.bsky.feed.post/3mysevpqt6r2u",
+   "player": "Jalen Suggs",
+   "team": "ORL",
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.8,
+   "text": "Orlando Magic guard Jalen Suggs has been diagnosed with a mild bone bruise in his right knee and will be re-evaluated in two weeks, sources tell ESPN. Suggs avoided any other major structural damage."
+  },
+  {
+   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mysevvo5cf27|jalensuggs|out|status",
+   "at": "2026-10-26T18:44:19.000Z",
+   "seen": "2026-10-26T19:01:27.991Z",
+   "handle": "rotowirenba.bsky.social",
+   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mysevvo5cf27",
+   "player": "Jalen Suggs",
+   "team": "ORL",
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.9,
+   "text": "Jalen Suggs: Out at least two weeks \n\n https://www.rotowire.com/basketball/player/jalen-suggs-5379"
+  },
+  {
+   "id": "at://did:plc:ykcnnf6kqnn3lasmobrczoem/app.bsky.feed.post/3mysewxen5k2b|jalensuggs|out|status",
+   "at": "2026-10-26T18:44:54.695Z",
+   "seen": "2026-10-26T19:01:27.991Z",
+   "handle": "insidenbanews.bsky.social",
+   "post": "at://did:plc:ykcnnf6kqnn3lasmobrczoem/app.bsky.feed.post/3mysewxen5k2b",
+   "player": "Jalen Suggs",
+   "team": "ORL",
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.7,
+   "text": "BREAKING NEWS\n\nShams: Jalen Suggs diagnosed with a mild bone bruise in his right knee. \n\nHe will be re-evaluated in two weeks."
   }
  ]
 }
