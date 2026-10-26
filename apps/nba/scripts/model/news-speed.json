@@ -8937,6 +8937,11 @@
    "sleeper": {
     "seen": "2026-10-26T20:16:35.808Z",
     "own": "2026-10-26T01:30:09.519Z"
+   },
+   "bluesky": {
+    "seen": "2026-10-26T22:37:11.118Z",
+    "own": "2026-10-26T21:59:07.000Z",
+    "why": "@shamsbot.bsky.social: BREAKING: Oklahoma City's Jalen Williams has a dislocated"
    }
   },
   "401909875|zachedey|q": {
@@ -9413,6 +9418,138 @@
    "sleeper": {
     "seen": "2026-10-26T20:16:35.808Z",
     "own": "2026-10-26T19:20:59.233Z"
+   }
+  },
+  "401909868|tobiasharris|out": {
+   "game": "401909868",
+   "start": "2026-10-26T23:00Z",
+   "team": "30",
+   "name": "Tobias Harris",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-10-26T22:37:11.118Z",
+    "own": "2026-10-26T21:48:45.000Z",
+    "why": "@rotowirenba.bsky.social: Tobias Harris: Won't play Tuesday \n\n https://www.rotow"
+   }
+  },
+  "401909869|tobiasharris|out": {
+   "game": "401909869",
+   "start": "2026-10-26T23:00Z",
+   "team": "5",
+   "name": "Tobias Harris",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-10-26T22:37:11.118Z",
+    "own": "2026-10-26T21:48:45.000Z",
+    "why": "@rotowirenba.bsky.social: Tobias Harris: Won't play Tuesday \n\n https://www.rotow"
+   }
+  },
+  "401909870|tobiasharris|out": {
+   "game": "401909870",
+   "start": "2026-10-26T23:30Z",
+   "team": "2",
+   "name": "Tobias Harris",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-10-26T22:37:11.118Z",
+    "own": "2026-10-26T21:48:45.000Z",
+    "why": "@rotowirenba.bsky.social: Tobias Harris: Won't play Tuesday \n\n https://www.rotow"
+   }
+  },
+  "401909871|tobiasharris|out": {
+   "game": "401909871",
+   "start": "2026-10-26T23:30Z",
+   "team": "14",
+   "name": "Tobias Harris",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-10-26T22:37:11.118Z",
+    "own": "2026-10-26T21:48:45.000Z",
+    "why": "@rotowirenba.bsky.social: Tobias Harris: Won't play Tuesday \n\n https://www.rotow"
+   }
+  },
+  "401909872|tobiasharris|out": {
+   "game": "401909872",
+   "start": "2026-10-27T00:00Z",
+   "team": "15",
+   "name": "Tobias Harris",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-10-26T22:37:11.118Z",
+    "own": "2026-10-26T21:48:45.000Z",
+    "why": "@rotowirenba.bsky.social: Tobias Harris: Won't play Tuesday \n\n https://www.rotow"
+   }
+  },
+  "401909872|andrewnembhard|out": {
+   "game": "401909872",
+   "start": "2026-10-27T00:00Z",
+   "team": "11",
+   "name": "Andrew Nembhard",
+   "status": "out",
+   "athlete": "4395712",
+   "espn": {
+    "seen": "2026-10-26T22:54:42.488Z",
+    "own": "2026-10-26T22:42:00.000Z"
+   }
+  },
+  "401909873|tobiasharris|out": {
+   "game": "401909873",
+   "start": "2026-10-27T00:00Z",
+   "team": "25",
+   "name": "Tobias Harris",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-10-26T22:37:11.118Z",
+    "own": "2026-10-26T21:48:45.000Z",
+    "why": "@rotowirenba.bsky.social: Tobias Harris: Won't play Tuesday \n\n https://www.rotow"
+   }
+  },
+  "401909874|tobiasharris|out": {
+   "game": "401909874",
+   "start": "2026-10-27T00:30Z",
+   "team": "10",
+   "name": "Tobias Harris",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-10-26T22:37:11.118Z",
+    "own": "2026-10-26T21:48:45.000Z",
+    "why": "@rotowirenba.bsky.social: Tobias Harris: Won't play Tuesday \n\n https://www.rotow"
+   }
+  },
+  "401909875|tobiasharris|out": {
+   "game": "401909875",
+   "start": "2026-10-27T01:00Z",
+   "team": "26",
+   "name": "Tobias Harris",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-10-26T22:37:11.118Z",
+    "own": "2026-10-26T21:48:45.000Z",
+    "why": "@rotowirenba.bsky.social: Tobias Harris: Won't play Tuesday \n\n https://www.rotow"
+   }
+  },
+  "401909876|tobiasharris|out": {
+   "game": "401909876",
+   "start": "2026-10-27T02:00Z",
+   "team": "7",
+   "name": "Tobias Harris",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-10-26T22:37:11.118Z",
+    "own": "2026-10-26T21:48:45.000Z",
+    "why": "@rotowirenba.bsky.social: Tobias Harris: Won't play Tuesday \n\n https://www.rotow"
+   }
+  },
+  "401909884|andrewnembhard|out": {
+   "game": "401909884",
+   "start": "2026-10-28T23:00Z",
+   "team": "11",
+   "name": "Andrew Nembhard",
+   "status": "out",
+   "athlete": "4395712",
+   "espn": {
+    "seen": "2026-10-26T22:54:42.488Z",
+    "own": "2026-10-26T22:42:00.000Z"
    }
   }
  }
