@@ -8582,6 +8582,30 @@
     "own": "2026-10-26T22:06:26.000Z",
     "why": "@rotoworld-fb.bsky.social: Jeremiyah Love (ankle) to practice Wednesday"
    }
+  },
+  "401873009|emaridemercado|out": {
+   "game": "401873009",
+   "start": "2026-10-27T00:15Z",
+   "team": "6",
+   "name": "Emari Demercado",
+   "status": "out",
+   "athlete": "4362478",
+   "espn": {
+    "seen": "2026-10-26T23:15:30.591Z",
+    "own": "2026-10-26T22:55:00.000Z"
+   }
+  },
+  "401873009|tyruswheat|out": {
+   "game": "401873009",
+   "start": "2026-10-27T00:15Z",
+   "team": "6",
+   "name": "Tyrus Wheat",
+   "status": "out",
+   "athlete": "4689333",
+   "espn": {
+    "seen": "2026-10-26T23:15:30.591Z",
+    "own": "2026-10-26T22:53:00.000Z"
+   }
   }
  }
 }
