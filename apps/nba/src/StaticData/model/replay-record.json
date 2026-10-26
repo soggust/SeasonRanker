@@ -2,7 +2,7 @@
  "v": 1,
  "sport": "nba",
  "epoch": "2026-10-23T05:30:00Z",
- "at": "2026-10-26T05:08:13.308Z",
+ "at": "2026-10-26T06:13:02.029Z",
  "from": "2020-08-01T01:10:00.000Z",
  "through": "2026-06-11T00:40:00.000Z",
  "n": {
@@ -2419,7 +2419,7 @@
     "beat": 199,
     "clv": 5.5261,
     "pN": 6471,
-    "p": 3148.7583,
+    "p": 3148.7578,
     "wins": 3160
    },
    "spread:home": {
@@ -2499,7 +2499,7 @@
     "beat": 0,
     "clv": 0,
     "pN": 86,
-    "p": 44.2334,
+    "p": 44.2332,
     "wins": 50
    },
    "prop:pra": {
@@ -2509,7 +2509,7 @@
     "beat": 0,
     "clv": 0,
     "pN": 107,
-    "p": 54.8157,
+    "p": 54.8155,
     "wins": 62
    },
    "props": {
@@ -2519,7 +2519,7 @@
     "beat": 0,
     "clv": 0,
     "pN": 5246,
-    "p": 2728.6845,
+    "p": 2728.684,
     "wins": 2750
    },
    "prop:pts:over": {
@@ -2559,7 +2559,7 @@
     "beat": 0,
     "clv": 0,
     "pN": 3756,
-    "p": 1998.5255,
+    "p": 1998.5253,
     "wins": 2048
    },
    "prop:reb": {
@@ -2569,7 +2569,7 @@
     "beat": 0,
     "clv": 0,
     "pN": 4335,
-    "p": 2295.8424,
+    "p": 2295.8421,
     "wins": 2302
    },
    "prop:pra:over": {
@@ -2649,12 +2649,12 @@
     "beat": 0,
     "clv": 0,
     "pN": 579,
-    "p": 297.3169,
+    "p": 297.3168,
     "wins": 254
    }
   }
  },
- "commit": "5b30745b",
+ "commit": "6618a220",
  "note": "D93. The testing audit (the owner, 2026-10-24: \"make sure we aren't relying on bad data\"): leakage canaries on every record, the ratings' settings walk-forward, the archive's stale and corrupt prices, the props' names, and live against the replay",
  "inputs": {
   "v": 1,

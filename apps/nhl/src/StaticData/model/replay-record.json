@@ -2,7 +2,7 @@
  "v": 1,
  "sport": "nhl",
  "epoch": "2026-10-23T05:30:00Z",
- "at": "2026-10-26T05:11:59.181Z",
+ "at": "2026-10-26T06:19:25.204Z",
  "from": "2021-01-27T00:00:00.000Z",
  "through": "2026-10-14T01:55:00.000Z",
  "n": {
@@ -38,11 +38,11 @@
  },
  "pass": {
   "bets": 147699,
-  "won": 76628,
-  "lost": 70815,
+  "won": 76629,
+  "lost": 70814,
   "push": 256,
   "staked": 147699,
-  "profit": -6780.28,
+  "profit": -6778.81,
   "roi": -0.0459,
   "beat": null,
   "beatN": 0,
@@ -2394,7 +2394,7 @@
     "beat": 360,
     "clv": 2.6384,
     "pN": 2069,
-    "p": 944.5863,
+    "p": 944.5864,
     "wins": 926
    },
    "ml:home": {
@@ -2494,7 +2494,7 @@
     "beat": 0,
     "clv": 0,
     "pN": 610,
-    "p": 278.5076,
+    "p": 278.5077,
     "wins": 282
    },
    "prop:pts:over": {
@@ -2514,7 +2514,7 @@
     "beat": 0,
     "clv": 0,
     "pN": 185,
-    "p": 77.5686,
+    "p": 77.5687,
     "wins": 65
    },
    "prop:sog:under": {
@@ -2534,7 +2534,7 @@
     "beat": 0,
     "clv": 0,
     "pN": 180,
-    "p": 76.4506,
+    "p": 76.4507,
     "wins": 64
    },
    "prop:saves:under": {
@@ -2569,7 +2569,7 @@
    }
   }
  },
- "commit": "5b30745b",
+ "commit": "6618a220",
  "note": "D93. The testing audit (the owner, 2026-10-24: \"make sure we aren't relying on bad data\"): leakage canaries on every record, the ratings' settings walk-forward, the archive's stale and corrupt prices, the props' names, and live against the replay",
  "inputs": {
   "v": 1,

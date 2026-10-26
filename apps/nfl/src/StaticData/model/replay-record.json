@@ -2,7 +2,7 @@
  "v": 1,
  "sport": "nfl",
  "epoch": "2026-10-23T05:30:00Z",
- "at": "2026-10-26T05:20:25.800Z",
+ "at": "2026-10-26T06:06:16.581Z",
  "from": "2020-09-11T00:20:00.000Z",
  "through": "2026-10-19T00:23:00.000Z",
  "n": {
@@ -2547,7 +2547,7 @@
    }
   }
  },
- "commit": "5b30745b",
+ "commit": "6618a220",
  "note": "D93. The testing audit (the owner, 2026-10-24: \"make sure we aren't relying on bad data\"): leakage canaries on every record, the ratings' settings walk-forward, the archive's stale and corrupt prices, the props' names, and live against the replay",
  "inputs": {
   "v": 1,

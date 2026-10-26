@@ -2,7 +2,7 @@
  "v": 1,
  "sport": "mlb",
  "epoch": "2026-10-23T05:30:00Z",
- "at": "2026-10-26T05:15:34.263Z",
+ "at": "2026-10-26T06:26:52.776Z",
  "from": "2021-07-18T17:11:00.000Z",
  "through": "2026-10-16T00:00:00.000Z",
  "n": {
@@ -2532,7 +2532,7 @@
    }
   }
  },
- "commit": "5b30745b",
+ "commit": "6618a220",
  "note": "D93. The testing audit (the owner, 2026-10-24: \"make sure we aren't relying on bad data\"): leakage canaries on every record, the ratings' settings walk-forward, the archive's stale and corrupt prices, the props' names, and live against the replay",
  "inputs": {
   "v": 1,
