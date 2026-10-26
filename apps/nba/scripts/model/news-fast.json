@@ -1,7 +1,7 @@
 {
  "sport": "nba",
  "cursor": {
-  "rotowirenba.bsky.social": "2026-10-26T18:44:19.000Z",
+  "rotowirenba.bsky.social": "2026-10-26T19:14:29.000Z",
   "insidenbanews.bsky.social": "2026-10-26T18:44:54.695Z",
   "shamsbot.bsky.social": "2026-10-26T18:40:05.000Z"
  },
@@ -2254,6 +2254,19 @@
    "kind": "status",
    "confidence": 0.7,
    "text": "BREAKING NEWS\n\nShams: Jalen Suggs diagnosed with a mild bone bruise in his right knee. \n\nHe will be re-evaluated in two weeks."
+  },
+  {
+   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mysgltqdnx2e|zachedey|active|status",
+   "at": "2026-10-26T19:14:29.000Z",
+   "seen": "2026-10-26T19:15:36.014Z",
+   "handle": "rotowirenba.bsky.social",
+   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mysgltqdnx2e",
+   "player": "Zach Edey",
+   "team": null,
+   "status": "active",
+   "kind": "status",
+   "confidence": 0.8,
+   "text": "Zach Edey: Removed from injury report \n\n https://www.rotowire.com/basketball/player/zach-edey-6263"
   }
  ]
 }

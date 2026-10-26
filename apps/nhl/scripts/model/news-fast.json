@@ -3,7 +3,7 @@
  "cursor": {
   "johnston-bot.bsky.social": "2026-10-25T21:08:24.897Z",
   "notfriedgehnic.bsky.social": "2026-10-26T18:12:20.765Z",
-  "dailyfaceoff.bsky.social": "2026-10-26T18:53:09.000Z",
+  "dailyfaceoff.bsky.social": "2026-10-26T19:10:40.000Z",
   "dfotoronto.bsky.social": "2026-10-26T18:56:07.000Z",
   "marklazerus.bsky.social": "2026-10-26T18:31:36.386Z"
  },
@@ -735,6 +735,45 @@
    "kind": "status",
    "confidence": 0.9,
    "text": "Flyers’ Rasmus Ristolainen to miss two weeks with upper-body injury"
+  },
+  {
+   "id": "at://did:plc:3uus7y6h3rlrk6sbctzxm4bg/app.bsky.feed.post/3mysfupzshw25|quinnhughes|active|return",
+   "at": "2026-10-26T19:01:33.000Z",
+   "seen": "2026-10-26T19:15:36.014Z",
+   "handle": "dailyfaceoff.bsky.social",
+   "post": "at://did:plc:3uus7y6h3rlrk6sbctzxm4bg/app.bsky.feed.post/3mysfupzshw25",
+   "player": "Quinn Hughes",
+   "team": "VAN",
+   "status": "active",
+   "kind": "return",
+   "confidence": 0.35,
+   "text": "Canucks fans’ response to Hughes’ return was (rightfully) tamer than Tkachuk’s:"
+  },
+  {
+   "id": "at://did:plc:3uus7y6h3rlrk6sbctzxm4bg/app.bsky.feed.post/3mysfupzshw25|matthewtkachuk|active|return",
+   "at": "2026-10-26T19:01:33.000Z",
+   "seen": "2026-10-26T19:15:36.014Z",
+   "handle": "dailyfaceoff.bsky.social",
+   "post": "at://did:plc:3uus7y6h3rlrk6sbctzxm4bg/app.bsky.feed.post/3mysfupzshw25",
+   "player": "Matthew Tkachuk",
+   "team": "FLA",
+   "status": "active",
+   "kind": "return",
+   "confidence": 0.3,
+   "text": "Canucks fans’ response to Hughes’ return was (rightfully) tamer than Tkachuk’s:"
+  },
+  {
+   "id": "at://did:plc:3uus7y6h3rlrk6sbctzxm4bg/app.bsky.feed.post/3mysgezfkgn24|rasmusristolainen|out|status",
+   "at": "2026-10-26T19:10:40.000Z",
+   "seen": "2026-10-26T19:15:36.014Z",
+   "handle": "dailyfaceoff.bsky.social",
+   "post": "at://did:plc:3uus7y6h3rlrk6sbctzxm4bg/app.bsky.feed.post/3mysgezfkgn24",
+   "player": "Rasmus Ristolainen",
+   "team": "PHI",
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.95,
+   "text": "Flyers’ Rasmus Ristolainen to miss two weeks with upper-body injury #nhl #nhlhockey #dailyfaceoff"
   }
  ]
 }
