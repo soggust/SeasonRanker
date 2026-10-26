@@ -1,5 +1,5 @@
 {
- "at": "2026-10-26T18:06:26.924Z",
+ "at": "2026-10-26T19:13:31.810Z",
  "baseline": {
   "from": "2026-09-21",
   "to": "2026-10-19"
@@ -1070,7 +1070,7 @@
   },
   {
    "examples": [],
-   "headline": "Model files 13h old, 0 open bets overdue to grade; Odds API credits 282% left; 40 bets placed in a week of 4 games",
+   "headline": "Model files 14h old, 0 open bets overdue to grade; Odds API credits 282% left; 40 bets placed in a week of 4 games",
    "how": "the newest commit of the sport's model files, the open bets started 12 hours ago or more, The Odds API's credits (state.odds), the state's sources",
    "id": "C16",
    "metric": "ageH",
@@ -1078,7 +1078,7 @@
    "needs": null,
    "rows": [
     {
-     "ageH": 13,
+     "ageH": 14,
      "at": "2026-10-26T05:06:09Z",
      "key": "files",
      "overdue": 0
@@ -1087,8 +1087,8 @@
      "cycleEnd": "2026-11-19T04:06:35.755Z",
      "key": "credits",
      "monthly": 20000,
-     "remaining": 56447,
-     "share": 2.8224
+     "remaining": 56428,
+     "share": 2.8214
     },
     {
      "down": [],
@@ -1104,7 +1104,7 @@
    "tested": null,
    "threshold": "watch files 3h old with bets overdue, credits under 20%, a source down, or no bets in a week with games; flag 6h old with bets overdue, or credits under 10%",
    "title": "Ops",
-   "value": 13
+   "value": 14
   },
   {
    "examples": [
@@ -1152,7 +1152,7 @@
   },
   {
    "examples": [],
-   "headline": "0 plain write-ups, 0 Claude analyses tried this week (0 ok); AI calls 0, $0.00 this week, $0.00 of $25 this month",
+   "headline": "0 plain write-ups, 0 Claude analyses tried this week (0 ok); AI calls 0, $0.00 this week, $1.00 of $25 this month",
    "how": "writeups.json's plain and Claude write-ups, and the AI usage log's calls this week (ai-budget.mjs: every sport's spend counts against the caps)",
    "id": "C15",
    "metric": "rejectRate",
@@ -1185,9 +1185,9 @@
     {
      "dayCap": 1.5,
      "key": "ai spend",
-     "month": 0,
+     "month": 0.9953,
      "monthCap": 25,
-     "share": 0
+     "share": 0.0398
     }
    ],
    "status": "thin",
