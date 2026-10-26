@@ -8934,6 +8934,11 @@
    "espn": {
     "seen": "2026-10-26T18:26:36.915Z",
     "own": "2026-10-26T18:24:00.000Z"
+   },
+   "bluesky": {
+    "seen": "2026-10-26T18:40:14.272Z",
+    "own": "2026-10-26T18:24:49.000Z",
+    "why": "@rotowirenba.bsky.social: Cason Wallace: Out with sore shoulder \n\n https://www.r"
    }
   },
   "401909873|chetholmgren|out": {
@@ -8946,6 +8951,11 @@
    "espn": {
     "seen": "2026-10-26T18:26:36.915Z",
     "own": "2026-10-26T18:22:00.000Z"
+   },
+   "bluesky": {
+    "seen": "2026-10-26T18:40:14.272Z",
+    "own": "2026-10-26T18:22:49.000Z",
+    "why": "@rotowirenba.bsky.social: Chet Holmgren: Sitting out Monday \n\n https://www.rotow"
    }
   },
   "401909872|aaronnesmith|q": {
@@ -8970,6 +8980,11 @@
    "espn": {
     "seen": "2026-10-26T18:28:45.501Z",
     "own": "2026-10-26T18:20:00.000Z"
+   },
+   "bluesky": {
+    "seen": "2026-10-26T18:40:14.272Z",
+    "own": "2026-10-26T18:20:15.000Z",
+    "why": "@rotowirenba.bsky.social: Ivica Zubac: Listed out for Monday \n\n https://www.roto"
    }
   },
   "401909872|andrewnembhard|q": {
@@ -8982,6 +8997,246 @@
    "espn": {
     "seen": "2026-10-26T18:38:36.211Z",
     "own": "2026-10-26T18:34:00.000Z"
+   }
+  },
+  "401909868|ivicazubac|out": {
+   "game": "401909868",
+   "start": "2026-10-26T23:00Z",
+   "team": "30",
+   "name": "Ivica Zubac",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-10-26T18:40:14.272Z",
+    "own": "2026-10-26T18:20:15.000Z",
+    "why": "@rotowirenba.bsky.social: Ivica Zubac: Listed out for Monday \n\n https://www.roto"
+   }
+  },
+  "401909869|ivicazubac|out": {
+   "game": "401909869",
+   "start": "2026-10-26T23:00Z",
+   "team": "5",
+   "name": "Ivica Zubac",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-10-26T18:40:14.272Z",
+    "own": "2026-10-26T18:20:15.000Z",
+    "why": "@rotowirenba.bsky.social: Ivica Zubac: Listed out for Monday \n\n https://www.roto"
+   }
+  },
+  "401909870|ivicazubac|out": {
+   "game": "401909870",
+   "start": "2026-10-26T23:30Z",
+   "team": "2",
+   "name": "Ivica Zubac",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-10-26T18:40:14.272Z",
+    "own": "2026-10-26T18:20:15.000Z",
+    "why": "@rotowirenba.bsky.social: Ivica Zubac: Listed out for Monday \n\n https://www.roto"
+   }
+  },
+  "401909871|ivicazubac|out": {
+   "game": "401909871",
+   "start": "2026-10-26T23:30Z",
+   "team": "14",
+   "name": "Ivica Zubac",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-10-26T18:40:14.272Z",
+    "own": "2026-10-26T18:20:15.000Z",
+    "why": "@rotowirenba.bsky.social: Ivica Zubac: Listed out for Monday \n\n https://www.roto"
+   }
+  },
+  "401909873|ivicazubac|out": {
+   "game": "401909873",
+   "start": "2026-10-27T00:00Z",
+   "team": "25",
+   "name": "Ivica Zubac",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-10-26T18:40:14.272Z",
+    "own": "2026-10-26T18:20:15.000Z",
+    "why": "@rotowirenba.bsky.social: Ivica Zubac: Listed out for Monday \n\n https://www.roto"
+   }
+  },
+  "401909874|ivicazubac|out": {
+   "game": "401909874",
+   "start": "2026-10-27T00:30Z",
+   "team": "10",
+   "name": "Ivica Zubac",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-10-26T18:40:14.272Z",
+    "own": "2026-10-26T18:20:15.000Z",
+    "why": "@rotowirenba.bsky.social: Ivica Zubac: Listed out for Monday \n\n https://www.roto"
+   }
+  },
+  "401909875|ivicazubac|out": {
+   "game": "401909875",
+   "start": "2026-10-27T01:00Z",
+   "team": "26",
+   "name": "Ivica Zubac",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-10-26T18:40:14.272Z",
+    "own": "2026-10-26T18:20:15.000Z",
+    "why": "@rotowirenba.bsky.social: Ivica Zubac: Listed out for Monday \n\n https://www.roto"
+   }
+  },
+  "401909876|ivicazubac|out": {
+   "game": "401909876",
+   "start": "2026-10-27T02:00Z",
+   "team": "7",
+   "name": "Ivica Zubac",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-10-26T18:40:14.272Z",
+    "own": "2026-10-26T18:20:15.000Z",
+    "why": "@rotowirenba.bsky.social: Ivica Zubac: Listed out for Monday \n\n https://www.roto"
+   }
+  },
+  "401909884|andrewnembhard|q": {
+   "game": "401909884",
+   "start": "2026-10-28T23:00Z",
+   "team": "11",
+   "name": "Andrew Nembhard",
+   "status": "q",
+   "athlete": "4395712",
+   "espn": {
+    "seen": "2026-10-26T18:49:45.328Z",
+    "own": "2026-10-26T18:34:00.000Z"
+   }
+  },
+  "401909884|tjmcconnell|out": {
+   "game": "401909884",
+   "start": "2026-10-28T23:00Z",
+   "team": "11",
+   "name": "T.J. McConnell",
+   "status": "out",
+   "athlete": "2530530",
+   "espn": {
+    "seen": "2026-10-26T18:49:45.328Z",
+    "own": "2026-10-26T18:26:00.000Z"
+   }
+  },
+  "401909884|aaronnesmith|q": {
+   "game": "401909884",
+   "start": "2026-10-28T23:00Z",
+   "team": "11",
+   "name": "Aaron Nesmith",
+   "status": "q",
+   "athlete": "4396909",
+   "espn": {
+    "seen": "2026-10-26T18:49:45.328Z",
+    "own": "2026-10-26T18:22:00.000Z"
+   }
+  },
+  "401909884|ivicazubac|out": {
+   "game": "401909884",
+   "start": "2026-10-28T23:00Z",
+   "team": "11",
+   "name": "Ivica Zubac",
+   "status": "out",
+   "athlete": "4017837",
+   "espn": {
+    "seen": "2026-10-26T18:49:45.328Z",
+    "own": "2026-10-26T18:20:00.000Z"
+   }
+  },
+  "401909884|bensheppard|out": {
+   "game": "401909884",
+   "start": "2026-10-28T23:00Z",
+   "team": "11",
+   "name": "Ben Sheppard",
+   "status": "out",
+   "athlete": "4433076",
+   "espn": {
+    "seen": "2026-10-26T18:49:45.328Z",
+    "own": "2026-10-23T22:53:00.000Z"
+   }
+  },
+  "401909884|johnnyfurphy|out": {
+   "game": "401909884",
+   "start": "2026-10-28T23:00Z",
+   "team": "11",
+   "name": "Johnny Furphy",
+   "status": "out",
+   "athlete": "5157066",
+   "espn": {
+    "seen": "2026-10-26T18:49:45.328Z",
+    "own": "2026-02-09T21:43:00.000Z"
+   }
+  },
+  "401909884|jabariwalker|q": {
+   "game": "401909884",
+   "start": "2026-10-28T23:00Z",
+   "team": "20",
+   "name": "Jabari Walker",
+   "status": "q",
+   "athlete": "4432446",
+   "espn": {
+    "seen": "2026-10-26T18:49:45.328Z",
+    "own": "2026-10-26T14:05:00.000Z"
+   }
+  },
+  "401909884|vjedgecombe|q": {
+   "game": "401909884",
+   "start": "2026-10-28T23:00Z",
+   "team": "20",
+   "name": "VJ Edgecombe",
+   "status": "q",
+   "athlete": "5124612",
+   "espn": {
+    "seen": "2026-10-26T18:49:45.328Z",
+    "own": "2026-10-26T14:05:00.000Z"
+   }
+  },
+  "401909884|joelembiid|q": {
+   "game": "401909884",
+   "start": "2026-10-28T23:00Z",
+   "team": "20",
+   "name": "Joel Embiid",
+   "status": "q",
+   "athlete": "3059318",
+   "espn": {
+    "seen": "2026-10-26T18:49:45.328Z",
+    "own": "2026-10-26T14:04:00.000Z"
+   }
+  },
+  "401909884|tackofall|out": {
+   "game": "401909884",
+   "start": "2026-10-28T23:00Z",
+   "team": "20",
+   "name": "Tacko Fall",
+   "status": "out",
+   "athlete": "3904625",
+   "espn": {
+    "seen": "2026-10-26T18:49:45.328Z",
+    "own": "2026-10-25T17:13:00.000Z"
+   }
+  },
+  "401909884|dominickbarlow|out": {
+   "game": "401909884",
+   "start": "2026-10-28T23:00Z",
+   "team": "20",
+   "name": "Dominick Barlow",
+   "status": "out",
+   "athlete": "4870562",
+   "espn": {
+    "seen": "2026-10-26T18:49:45.328Z",
+    "own": "2026-10-19T21:07:00.000Z"
+   }
+  },
+  "401909884|arielhukporti|out": {
+   "game": "401909884",
+   "start": "2026-10-28T23:00Z",
+   "team": "20",
+   "name": "Ariel Hukporti",
+   "status": "out",
+   "athlete": "4871141",
+   "espn": {
+    "seen": "2026-10-26T18:49:45.328Z",
+    "own": "2026-10-06T19:17:00.000Z"
    }
   }
  }
