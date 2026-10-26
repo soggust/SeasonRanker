@@ -8643,6 +8643,11 @@
     "seen": "2026-10-26T05:03:40.538Z",
     "own": "2026-10-25T20:26:59.000Z",
     "why": "@rotowirenba.bsky.social: Cooper Flagg: Questionable to play Monday \n\n https://w"
+   },
+   "athlete": "5041939",
+   "espn": {
+    "seen": "2026-10-26T16:59:27.198Z",
+    "own": "2026-10-26T15:55:00.000Z"
    }
   },
   "401909872|najimarshall|out": {
@@ -8859,6 +8864,42 @@
    "espn": {
     "seen": "2026-10-26T14:17:47.090Z",
     "own": "2026-10-26T14:05:00.000Z"
+   }
+  },
+  "401909868|nazreid|q": {
+   "game": "401909868",
+   "start": "2026-10-26T23:00Z",
+   "team": "30",
+   "name": "Naz Reid",
+   "status": "q",
+   "athlete": "4396971",
+   "espn": {
+    "seen": "2026-10-26T16:59:27.198Z",
+    "own": "2026-10-26T15:18:00.000Z"
+   }
+  },
+  "401909874|marcussmart|out": {
+   "game": "401909874",
+   "start": "2026-10-27T00:30Z",
+   "team": "10",
+   "name": "Marcus Smart",
+   "status": "out",
+   "athlete": "2990992",
+   "espn": {
+    "seen": "2026-10-26T16:59:27.198Z",
+    "own": "2026-10-26T16:20:00.000Z"
+   }
+  },
+  "401909875|karimlopez|q": {
+   "game": "401909875",
+   "start": "2026-10-27T01:00Z",
+   "team": "29",
+   "name": "Karim Lopez",
+   "status": "q",
+   "athlete": "5231919",
+   "espn": {
+    "seen": "2026-10-26T16:59:27.198Z",
+    "own": "2026-10-26T14:06:00.000Z"
    }
   }
  }

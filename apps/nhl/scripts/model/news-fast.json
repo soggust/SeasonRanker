@@ -2,10 +2,10 @@
  "sport": "nhl",
  "cursor": {
   "johnston-bot.bsky.social": "2026-10-25T21:08:24.897Z",
-  "notfriedgehnic.bsky.social": "2026-10-25T22:30:41.189Z",
-  "dailyfaceoff.bsky.social": "2026-10-26T03:07:15.000Z",
-  "dfotoronto.bsky.social": "2026-10-25T16:07:30.000Z",
-  "marklazerus.bsky.social": "2026-10-26T02:21:52.101Z"
+  "notfriedgehnic.bsky.social": "2026-10-26T13:29:23.129Z",
+  "dailyfaceoff.bsky.social": "2026-10-26T16:56:52.000Z",
+  "dfotoronto.bsky.social": "2026-10-26T14:45:37.000Z",
+  "marklazerus.bsky.social": "2026-10-26T12:42:14.107Z"
  },
  "claims": [
   {
@@ -683,6 +683,32 @@
    "kind": "status",
    "confidence": 0.95,
    "text": "Kraken’s Jared McCann placed on IR, out 10 weeks with lower-body injury #nhl #nhlhockey #dailyfaceoff"
+  },
+  {
+   "id": "at://did:plc:3uus7y6h3rlrk6sbctzxm4bg/app.bsky.feed.post/3mys44qw43u2u|zuccarello|out|status",
+   "at": "2026-10-26T16:07:05.000Z",
+   "seen": "2026-10-26T17:01:21.826Z",
+   "handle": "dailyfaceoff.bsky.social",
+   "post": "at://did:plc:3uus7y6h3rlrk6sbctzxm4bg/app.bsky.feed.post/3mys44qw43u2u",
+   "player": "Zuccarello",
+   "team": "LA",
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.9,
+   "text": "Kings’ Zuccarello out against Rangers with upper-body injury"
+  },
+  {
+   "id": "at://did:plc:3uus7y6h3rlrk6sbctzxm4bg/app.bsky.feed.post/3mys6vrlta42c|taylorhall|active|return",
+   "at": "2026-10-26T16:56:52.000Z",
+   "seen": "2026-10-26T17:01:21.826Z",
+   "handle": "dailyfaceoff.bsky.social",
+   "post": "at://did:plc:3uus7y6h3rlrk6sbctzxm4bg/app.bsky.feed.post/3mys6vrlta42c",
+   "player": "Taylor Hall",
+   "team": "CAR",
+   "status": "active",
+   "kind": "return",
+   "confidence": 0.8,
+   "text": "Hurricanes’ Taylor Hall expected to return following five-game absence"
   }
  ]
 }

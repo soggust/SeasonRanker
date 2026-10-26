@@ -1,7 +1,7 @@
 {
  "sport": "nba",
  "cursor": {
-  "rotowirenba.bsky.social": "2026-10-26T04:00:32.000Z",
+  "rotowirenba.bsky.social": "2026-10-26T15:21:57.000Z",
   "insidenbanews.bsky.social": "2026-10-26T00:48:22.766Z",
   "shamsbot.bsky.social": "2026-10-24T16:42:03.000Z"
  },
@@ -2137,6 +2137,19 @@
    "kind": "status",
    "confidence": 0.95,
    "text": "Ivica Zubac: Doubtful for Monday \n\n https://www.rotowire.com/basketball/player/ivica-zubac-3888"
+  },
+  {
+   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3myrzfi243624|nazreid|active|status",
+   "at": "2026-10-26T15:18:16.000Z",
+   "seen": "2026-10-26T17:01:21.826Z",
+   "handle": "rotowirenba.bsky.social",
+   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3myrzfi243624",
+   "player": "Naz Reid",
+   "team": "MIN",
+   "status": "active",
+   "kind": "status",
+   "confidence": 0.85,
+   "text": "Naz Reid: Probable for Monday \n\n https://www.rotowire.com/basketball/player/naz-reid-4806"
   }
  ]
 }
