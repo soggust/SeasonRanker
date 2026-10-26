@@ -1,7 +1,7 @@
 {
  "sport": "nba",
  "cursor": {
-  "rotowirenba.bsky.social": "2026-10-26T17:06:12.000Z",
+  "rotowirenba.bsky.social": "2026-10-26T18:24:49.000Z",
   "insidenbanews.bsky.social": "2026-10-26T00:48:22.766Z",
   "shamsbot.bsky.social": "2026-10-24T16:42:03.000Z"
  },
@@ -2176,6 +2176,45 @@
    "kind": "status",
    "confidence": 0.95,
    "text": "Anthony Edwards: Listed as questionable \n\n https://www.rotowire.com/basketball/player/anthony-edwards-5110"
+  },
+  {
+   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mysdkv2ws226|ivicazubac|out|status",
+   "at": "2026-10-26T18:20:15.000Z",
+   "seen": "2026-10-26T18:40:14.272Z",
+   "handle": "rotowirenba.bsky.social",
+   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mysdkv2ws226",
+   "player": "Ivica Zubac",
+   "team": null,
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.95,
+   "text": "Ivica Zubac: Listed out for Monday \n\n https://www.rotowire.com/basketball/player/ivica-zubac-3888"
+  },
+  {
+   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mysdpi3ufp23|chetholmgren|out|status",
+   "at": "2026-10-26T18:22:49.000Z",
+   "seen": "2026-10-26T18:40:14.272Z",
+   "handle": "rotowirenba.bsky.social",
+   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mysdpi3ufp23",
+   "player": "Chet Holmgren",
+   "team": "OKC",
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.93,
+   "text": "Chet Holmgren: Sitting out Monday \n\n https://www.rotowire.com/basketball/player/chet-holmgren-5697"
+  },
+  {
+   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mysdt2j3jh2q|casonwallace|out|status",
+   "at": "2026-10-26T18:24:49.000Z",
+   "seen": "2026-10-26T18:40:14.272Z",
+   "handle": "rotowirenba.bsky.social",
+   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mysdt2j3jh2q",
+   "player": "Cason Wallace",
+   "team": "OKC",
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.95,
+   "text": "Cason Wallace: Out with sore shoulder \n\n https://www.rotowire.com/basketball/player/cason-wallace-5898"
   }
  ]
 }

@@ -8720,6 +8720,11 @@
     "seen": "2026-10-26T05:03:40.538Z",
     "own": "2026-10-25T22:25:24.000Z",
     "why": "@rotowirenba.bsky.social: Oso Ighodaro: Doubtful for Monday \n\n https://www.rotow"
+   },
+   "athlete": "4601023",
+   "espn": {
+    "seen": "2026-10-26T18:38:36.211Z",
+    "own": "2026-10-26T18:30:00.000Z"
    }
   },
   "401909874|najimarshall|out": {
@@ -8965,6 +8970,18 @@
    "espn": {
     "seen": "2026-10-26T18:28:45.501Z",
     "own": "2026-10-26T18:20:00.000Z"
+   }
+  },
+  "401909872|andrewnembhard|q": {
+   "game": "401909872",
+   "start": "2026-10-27T00:00Z",
+   "team": "11",
+   "name": "Andrew Nembhard",
+   "status": "q",
+   "athlete": "4395712",
+   "espn": {
+    "seen": "2026-10-26T18:38:36.211Z",
+    "own": "2026-10-26T18:34:00.000Z"
    }
   }
  }

@@ -4,10 +4,10 @@
   "adamscheftermirror.bsky.social": "2026-10-26T17:23:23.578Z",
   "rapsheet.bsky.social": "2026-10-26T17:37:39.743Z",
   "nflnewsreposterbot.bsky.social": "2026-10-22T13:33:43.592Z",
-  "insidenflnews.bsky.social": "2026-10-26T18:14:41.266Z",
-  "nflnewsposter.bsky.social": "2026-10-26T17:09:24.789Z",
+  "insidenflnews.bsky.social": "2026-10-26T18:33:39.943Z",
+  "nflnewsposter.bsky.social": "2026-10-26T18:27:44.397Z",
   "rotoworld-fb.bsky.social": "2026-10-26T18:05:00.000Z",
-  "rotowirenfl.bsky.social": "2026-10-26T16:59:58.000Z"
+  "rotowirenfl.bsky.social": "2026-10-26T18:37:28.000Z"
  },
  "claims": [
   {
@@ -6405,6 +6405,45 @@
    "kind": "status",
    "confidence": 0.8,
    "text": "Seahawks OT Charles Cross, who suffered an ankle injury on Sunday, has a high-ankle sprain and will miss time, the MRI revealed.\n\nThe hope is he’s back in 1-2 weeks, but it depends on how rehab goes."
+  },
+  {
+   "id": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3mysdsfnput27|danieljones|none|starting",
+   "at": "2026-10-26T18:24:28.000Z",
+   "seen": "2026-10-26T18:40:14.272Z",
+   "handle": "rotowirenfl.bsky.social",
+   "post": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3mysdsfnput27",
+   "player": "Daniel Jones",
+   "team": "IND",
+   "status": "none",
+   "kind": "starting",
+   "confidence": 0.9,
+   "text": "Daniel Jones: Remaining starting quarterback \n\n https://www.rotowire.com/football/player/daniel-jones-13491"
+  },
+  {
+   "id": "at://did:plc:fuqjc7x4gxvnwzksnlxwbe4x/app.bsky.feed.post/3mysdyashqckm|danieljones|none|starting",
+   "at": "2026-10-26T18:27:44.397Z",
+   "seen": "2026-10-26T18:40:14.272Z",
+   "handle": "nflnewsposter.bsky.social",
+   "post": "at://did:plc:fuqjc7x4gxvnwzksnlxwbe4x/app.bsky.feed.post/3mysdyashqckm",
+   "player": "Daniel Jones",
+   "team": "IND",
+   "status": "none",
+   "kind": "starting",
+   "confidence": 0.95,
+   "text": "[Chappell] Colts HC Shane Steichen: Daniel Jones is our starting quarterback. twitter.com/mchappell51/..."
+  },
+  {
+   "id": "at://did:plc:mbr4badgf6yu56mquzackzew/app.bsky.feed.post/3mysectuvm22b|danieljones|none|starting",
+   "at": "2026-10-26T18:33:39.943Z",
+   "seen": "2026-10-26T18:40:14.272Z",
+   "handle": "insidenflnews.bsky.social",
+   "post": "at://did:plc:mbr4badgf6yu56mquzackzew/app.bsky.feed.post/3mysectuvm22b",
+   "player": "Daniel Jones",
+   "team": "IND",
+   "status": "none",
+   "kind": "starting",
+   "confidence": 0.95,
+   "text": "Steichen: Daniel Jones will remain starting QB."
   }
  ]
 }
