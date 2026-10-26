@@ -8912,6 +8912,35 @@
    "espn": {
     "seen": "2026-10-26T17:10:29.271Z",
     "own": "2026-10-26T17:04:00.000Z"
+   },
+   "bluesky": {
+    "seen": "2026-10-26T17:24:39.280Z",
+    "own": "2026-10-26T17:06:12.000Z",
+    "why": "@rotowirenba.bsky.social: Anthony Edwards: Listed as questionable \n\n https://www"
+   }
+  },
+  "401909873|casonwallace|out": {
+   "game": "401909873",
+   "start": "2026-10-27T00:00Z",
+   "team": "25",
+   "name": "Cason Wallace",
+   "status": "out",
+   "athlete": "4683692",
+   "espn": {
+    "seen": "2026-10-26T18:26:36.915Z",
+    "own": "2026-10-26T18:24:00.000Z"
+   }
+  },
+  "401909873|chetholmgren|out": {
+   "game": "401909873",
+   "start": "2026-10-27T00:00Z",
+   "team": "25",
+   "name": "Chet Holmgren",
+   "status": "out",
+   "athlete": "4433255",
+   "espn": {
+    "seen": "2026-10-26T18:26:36.915Z",
+    "own": "2026-10-26T18:22:00.000Z"
    }
   }
  }
