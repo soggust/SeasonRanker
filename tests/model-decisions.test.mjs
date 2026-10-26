@@ -2112,7 +2112,9 @@ test("D90 the margin rule's held side is tracked, not staked: the owner's except
   const rr = fs.readFileSync(path.join(import.meta.dirname, '../libs/ranker/scripts/model/replay-record.mjs'), 'utf8');
   assert.ok(rr.includes('passes.push({ x: it.x, sd: it.sd, marginHeld: true })'), 'the replay: a held bet a tracked row in the passes');
   assert.ok(rr.includes('r.sd.edge > 0 && !r.marginHeld'), 'never re-staked as a practice pick');
-  assert.ok(!rr.includes('marginHeld: true });\n'), 'never re-staked at the practice stake');
+  // (the old re-stake, by its own words: line-ending free, so Linux and Windows read it the same; it failed every desk run
+  // on Linux 2026-10-24..26 when it matched a newline)
+  assert.ok(!rr.includes("band: 'medium', profit, marginHeld: true"), 'never re-staked at the practice stake');
 });
 
 // ---- D91: weather by market, compounding absences and fatigue x personnel measured and held ----
