@@ -2,11 +2,11 @@
  "sport": "nfl",
  "cursor": {
   "adamscheftermirror.bsky.social": "2026-10-26T17:23:23.578Z",
-  "rapsheet.bsky.social": "2026-10-26T14:57:47.380Z",
+  "rapsheet.bsky.social": "2026-10-26T17:37:39.743Z",
   "nflnewsreposterbot.bsky.social": "2026-10-22T13:33:43.592Z",
-  "insidenflnews.bsky.social": "2026-10-26T17:16:17.029Z",
+  "insidenflnews.bsky.social": "2026-10-26T18:14:41.266Z",
   "nflnewsposter.bsky.social": "2026-10-26T17:09:24.789Z",
-  "rotoworld-fb.bsky.social": "2026-10-26T17:25:00.000Z",
+  "rotoworld-fb.bsky.social": "2026-10-26T18:05:00.000Z",
   "rotowirenfl.bsky.social": "2026-10-26T16:59:58.000Z"
  },
  "claims": [
@@ -6392,6 +6392,19 @@
    "kind": "status",
    "confidence": 0.6,
    "text": "Dan Quinn said Stefon Diggs' workload won't change much with Terry McLaurin out.\n\nCommanders would look to others like Antonio Williams to step up."
+  },
+  {
+   "id": "at://did:plc:hlvr2omhnmvdmfnvmcuhyevz/app.bsky.feed.post/3mysb6bvfrs27|charlescross|out|status",
+   "at": "2026-10-26T17:37:25.642Z",
+   "seen": "2026-10-26T18:17:12.033Z",
+   "handle": "rapsheet.bsky.social",
+   "post": "at://did:plc:hlvr2omhnmvdmfnvmcuhyevz/app.bsky.feed.post/3mysb6bvfrs27",
+   "player": "Charles Cross",
+   "team": "SEA",
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.8,
+   "text": "Seahawks OT Charles Cross, who suffered an ankle injury on Sunday, has a high-ankle sprain and will miss time, the MRI revealed.\n\nThe hope is he’s back in 1-2 weeks, but it depends on how rehab goes."
   }
  ]
 }
