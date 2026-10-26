@@ -810,7 +810,7 @@ const DRAFT_GAIN = 0.0003;
 // a late term on the same floor and the whole stat's gate, signed (each side's bias no larger: SIGNED), soft where
 // its gain is real but small (softable: a c_ term). FEEDS: their keys, each on its stats' ctx in props.mjs only
 // where it's measured and kept or left for the gate to judge again)
-export const FEEDS = ['c_cpoe', 'c_ttt', 'c_aggr', 'c_sep', 'c_cush', 'c_yacoe', 'c_ryoe', 'c_box8', 'c_oppBox', 'c_shOn', 'c_shSlot', 'c_shDist', 'c_oppBlk', 'c_zoneEdge', 'c_opp3', 'c_zone3', 'c_ryoeP', 'c_xHit', 'c_xTb', 'c_hardHit', 'c_pullAir'];
+export const FEEDS = ['c_cpoe', 'c_ttt', 'c_aggr', 'c_sep', 'c_cush', 'c_yacoe', 'c_ryoe', 'c_box8', 'c_oppBox', 'c_shOn', 'c_shSlot', 'c_shDist', 'c_oppBlk', 'c_zoneEdge', 'c_opp3', 'c_zone3', 'c_ryoeP', 'c_xHit', 'c_xTb', 'c_hardHit', 'c_pullAir', 'c_iay', 'c_xcomp', 'c_xyac', 'c_ttlos', 'c_reff'];
 const FEED_GRID = [-0.06, -0.03, -0.015, 0.015, 0.03, 0.06];
 // (a feed that's 0 on one side by its form (ryoeP: over 0 or 0), judged on the whole stat's gate, not each side's:
 // its other side has no rows to judge)

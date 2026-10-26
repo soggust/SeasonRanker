@@ -547,6 +547,48 @@
    "sport": "nfl",
    "ref": "D92",
    "text": "NFL with the reputation weeks 2-8: +5-12% ROI on 385 (5 of 7 seasons) but -4% at the fair close, 2026 -11.6%"
+  },
+  {
+   "date": "2026-10-26",
+   "group": "dropped",
+   "sport": "mma",
+   "ref": "D94",
+   "text": "Counter-strikers vs pressure fighters (ESPN strikes): counter won 49.4% of 496; at the close 53.2% vs 49.5% fair (n 203), noise. Not added"
+  },
+  {
+   "date": "2026-10-26",
+   "group": "dropped",
+   "sport": "mma",
+   "ref": "D94",
+   "text": "Style terms (output, output gap, position, targets, control, takedown tries): walk-forward -0.0004 to +0.0005, nothing past the close"
+  },
+  {
+   "date": "2026-10-26",
+   "group": "dropped",
+   "sport": "mma",
+   "ref": "D94",
+   "text": "Pressure vs pressure: overs 57.1% vs close 55.9% (n 77), distance 53% vs 51%; no style term helps round totals. Not added"
+  },
+  {
+   "date": "2026-10-26",
+   "group": "dropped",
+   "sport": "mma",
+   "ref": "D94",
+   "text": "MMA props: The Odds API has only moneyline, round total, double chance, 3-way; ESPN only moneyline + one total. Nothing to price (5 credits)"
+  },
+  {
+   "date": "2026-10-26",
+   "group": "dropped",
+   "sport": "nfl",
+   "ref": "D94",
+   "text": "Unused NGS (intended air yards, expected completion %, expected YAC, time to line, rush efficiency): none taken walk-forward; gate tie"
+  },
+  {
+   "date": "2026-10-26",
+   "group": "dropped",
+   "sport": "nfl",
+   "ref": "D94",
+   "text": "X API: pay-per-use ~$0.005 a post read, ~$180/mo for 60 reporters; adds speed on news Bluesky carries, no news-speed edge found. Not bought"
   }
  ]
 }

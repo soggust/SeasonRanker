@@ -2183,3 +2183,27 @@ test('D93 the testing audit: the ratings walk forward by default, a record the t
   const c = L.liveCheck([{ units: 1, intent: 'edge', status: 'won', odds: 100, p: 0.55, fair: 0.5, placedAt: '2026-10-24T00:00:00Z', market: 'ml', side: 'home', clv: { v: 2, prob: 0.02, ev: -0.01, beat: true } }], L.expectOf([]), {});
   assert.equal(c.beat.share, 0, "clv.beat is the no-vig's move; the beat is the expected return at the fair close (D56)");
 });
+
+test('D94 the 2026-10-26 round: no MMA style term (counter, pressure, output, position, targets, control) in the fights model or the round totals, MMA markets the moneyline and the round total alone, and the five new NGS columns read but on no stat', async () => {
+  const FM = await import('../libs/ranker/scripts/model/fights-model.mjs');
+  const style = ['sPace', 'sOut', 'sDist', 'sClinch', 'sHead', 'sLeg', 'sBody', 'sCtrl', 'sTda', 'sCtrlDiff', 'cvp', 'cvpS', 'pvp', 'tPace', 'tPP', 'tCC', 'tCP', 'tPS', 'tCS', 'tCtrl', 'tClinch', 'tHead'];
+  for (const k of style) assert.ok(!FM.TERM_KEYS.includes(k) && !FM.TOTAL_KEYS.includes(k), k);
+  const GM = await import('../libs/ranker/scripts/model/gate-mma.mjs');
+  assert.deepEqual(GM.MARKETS, ['ml', 'total']);
+  const N = await import('../libs/ranker/scripts/model/ngs.mjs');
+  const { FEEDS, ctxKeys } = await import('../libs/ranker/scripts/model/project.mjs');
+  const { STATS } = await import('../libs/ranker/scripts/model/props.mjs');
+  const added = { iay: 'avg_intended_air_yards', xcomp: 'expected_completion_percentage', xyac: 'avg_expected_yac', ttlos: 'avg_time_to_los', reff: 'efficiency' };
+  for (const [k, col] of Object.entries(added)) {
+    assert.equal(N.NGS_METRICS[k]?.col, col, k);
+    assert.ok(FEEDS.includes(`c_${k}`), k);
+    assert.ok(!Object.values(STATS).flat().some((st) => ctxKeys(st).includes(k)), `${k} on no stat`);
+  }
+  // (a week's row for a new column read as the others: his value over the league's, 0 unread)
+  const pubOf = () => 0;
+  const pass = (pid, iay) => ({ kind: 'passing', season: '2025', week: '3', pid, pos: 'QB', opp: null, attempts: '100', avg_intended_air_yards: String(iay) });
+  const t = N.ngsTable([pass('deep', 10), pass('short', 6)], pubOf);
+  assert.ok(t.of('deep', null, 2025, 1).iay > 0 && t.of('short', null, 2025, 1).iay < 0);
+  assert.equal(t.of('nobody', null, 2025, 1).iay, 0);
+  assert.ok(fs.readFileSync(path.join(import.meta.dirname, '../libs/ranker/scripts/model/DECISIONS.md'), 'utf8').includes('### D94.'));
+});

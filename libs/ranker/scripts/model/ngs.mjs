@@ -26,6 +26,13 @@
 //   box8    the share of his carries against 8 or more in the box over the league's, per 10 points (K 60)
 //   oppBox  the other side's defense's: the share of the carries against it with 8 or more in the box (every
 //           rusher NGS lists against it), over the league's, per 10 points (K 100 carries)
+// and the NGS round of 2026-10-26 (DECISIONS.md D94: the columns the feeds round hadn't read; on no stat's ctx, none
+// taken by any walk-forward season's search, kept for a measure on demand as the others left out):
+//   iay     a passer's intended air yards a throw over the league's, per yard (K 100 attempts)
+//   xcomp   his expected completion % (the throws' difficulty) over the league's, per 5 points (K 200)
+//   xyac    a pass-catcher's expected yards after the catch, a catch, over the league's, per yard (K 20 receptions)
+//   ttlos   a rusher's time to the line of scrimmage over the league's, per 0.1 s (K 60 carries)
+//   reff    his efficiency (yards run a yard gained; lower is straighter) over the league's, per 0.5 (K 60)
 
 import { nflverseGames, nflverseRows } from './sources.mjs';
 
@@ -44,6 +51,12 @@ export const NGS_METRICS = {
   yacoe: { kind: 'receiving', col: 'avg_yac_above_expectation', vol: 'receptions', K: 20, unit: 1 },
   ryoe: { kind: 'rushing', col: 'rush_yards_over_expected_per_att', vol: 'rush_attempts', K: 60, unit: 0.5 },
   box8: { kind: 'rushing', col: 'percent_attempts_gte_eight_defenders', vol: 'rush_attempts', K: 60, unit: 10 },
+  // (the NGS round of 2026-10-26, DECISIONS.md D94: the columns the feeds round hadn't read)
+  iay: { kind: 'passing', col: 'avg_intended_air_yards', vol: 'attempts', K: 100, unit: 1 },
+  xcomp: { kind: 'passing', col: 'expected_completion_percentage', vol: 'attempts', K: 200, unit: 5 },
+  xyac: { kind: 'receiving', col: 'avg_expected_yac', vol: 'receptions', K: 20, unit: 1 },
+  ttlos: { kind: 'rushing', col: 'avg_time_to_los', vol: 'rush_attempts', K: 60, unit: 0.1 },
+  reff: { kind: 'rushing', col: 'efficiency', vol: 'rush_attempts', K: 60, unit: 0.5 },
 };
 export const OPP_BOX = { K: 100, unit: 10 };
 export const NGS_KEYS = [...Object.keys(NGS_METRICS), 'ryoeP', 'oppBox'];
@@ -185,7 +198,7 @@ export async function nflNgs(history) {
       oppCode.set(`${g.season}|${g.week}|${g.home_team}`, g.away_team);
       oppCode.set(`${g.season}|${g.week}|${g.away_team}`, g.home_team);
     }
-    const cols = { passing: ['attempts', 'completion_percentage_above_expectation', 'avg_time_to_throw', 'aggressiveness'], receiving: ['targets', 'receptions', 'avg_separation', 'avg_cushion', 'avg_yac_above_expectation'], rushing: ['rush_attempts', 'rush_yards_over_expected_per_att', 'percent_attempts_gte_eight_defenders'] };
+    const cols = { passing: ['attempts', 'completion_percentage_above_expectation', 'avg_time_to_throw', 'aggressiveness', 'avg_intended_air_yards', 'expected_completion_percentage'], receiving: ['targets', 'receptions', 'avg_separation', 'avg_cushion', 'avg_yac_above_expectation', 'avg_expected_yac'], rushing: ['rush_attempts', 'rush_yards_over_expected_per_att', 'percent_attempts_gte_eight_defenders', 'avg_time_to_los', 'efficiency'] };
     const rows = [];
     for (const [kind, extra] of Object.entries(cols)) {
       const got = await nflverseRows('nextgen_stats', `ngs_${kind}.csv.gz`, ['season', 'season_type', 'week', 'player_gsis_id', 'player_position', 'team_abbr', ...extra], 12);
