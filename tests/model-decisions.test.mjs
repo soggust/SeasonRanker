@@ -553,7 +553,11 @@ test('D32 the residual model, on since the owner\'s O3: every live path passes t
   assert.ok(h && Number.isFinite(h.p), 'the shipped NHL file prices the row');
   assert.ok(Math.abs(p - h.p) < 1e-12, 'the live chance is the hook\'s blend of the current price');
   assert.ok(Math.abs(p - R.blendChance(pCur, h.pRes, h.weight)) < 1e-12, 'blended once, on the logit scale, at the file\'s weight');
-  assert.notEqual(desk.chanceAt('prop', 0.5, 0.62, 0.4, { ...ctx, raw: 0.7 }), p, 'a different anchored raw moves the chance');
+  // (the weekly self-check's guard may hold the shipped file's props at the current price (blend 0, 2026-10-26's
+  // NHL): the corrected chance still reads the raw, the live one moves with it only while the blend is on)
+  assert.notEqual(R.hookChance({ ...ctx, raw: 0.7 }, pCur).pRes, h.pRes, 'a different anchored raw moves the corrected chance');
+  if (h.weight > 0) assert.notEqual(desk.chanceAt('prop', 0.5, 0.62, 0.4, { ...ctx, raw: 0.7 }), p, 'a different anchored raw moves the chance');
+  else assert.ok(Math.abs(p - pCur) < 1e-12, 'a held blend prices at the current price');
   // (a different calibrated chance with the same raw moves it only through the current price)
   const pCur2 = desk.chanceAt('prop', 0.5, 0.58, 0.4);
   assert.ok(Math.abs(desk.chanceAt('prop', 0.5, 0.58, 0.4, ctx) - R.hookChance(ctx, pCur2).p) < 1e-12);
