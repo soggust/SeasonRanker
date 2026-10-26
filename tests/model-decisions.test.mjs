@@ -51,7 +51,7 @@ const after = (h) => new Date(Date.parse(MODEL_EPOCH) + h * 36e5).toISOString();
 const before = (h) => new Date(Date.parse(MODEL_EPOCH) - h * 36e5).toISOString();
 // (n graded line bets since the epoch, every one losing to the close)
 const losingLines = (n, at = after) =>
-  Array.from({ length: n }, (_, i) => ({ id: `l${i}`, sport: 'nhl', market: 'spread', status: i % 2 ? 'won' : 'lost', placedAt: at(1 + i / 100), start: at(2 + i / 100), clv: { v: CLV_V, prob: -0.02, ev: -0.06, beat: false } }));
+  Array.from({ length: n }, (_, i) => ({ id: `l${i}`, sport: 'nhl', market: 'spread', status: i % 2 ? 'won' : 'lost', placedAt: at(1 + i / 100), start: at(2 + i / 100), clv: { v: CLV_V, prob: -0.02, ev: -0.06, pts: 0, beat: false } }));
 
 test('D1 gates shrink, never stop: a failing CLV gate bets an edge at the practice stake, never 0 units or tracked', () => {
   const gate = lineGate(losingLines(60), 'nhl');
@@ -101,8 +101,8 @@ test('D2 every slate is played: a sport whose record loses still places its top 
 test('D3 PRACTICE_SPLIT: a practice pick is out of the record and the CLV gates, on its own Practice line', () => {
   assert.equal(PRACTICE_SPLIT, true);
   const bets = [
-    { id: 'a', sport: 'nhl', market: 'prop', propType: 'sog', status: 'won', units: 1, profit: 0.9, placedAt: after(1), clv: { v: CLV_V, prob: 0.01, ev: 0 } },
-    { id: 'b', sport: 'nhl', market: 'prop', propType: 'sog', status: 'lost', units: 0.5, profit: -0.5, topN: { rank: 1 }, intent: 'edge', placedAt: after(1), clv: { v: CLV_V, prob: -0.5, ev: -0.5 } },
+    { id: 'a', sport: 'nhl', market: 'prop', propType: 'sog', status: 'won', units: 1, profit: 0.9, placedAt: after(1), clv: { v: CLV_V, prob: 0.01, ev: 0, pts: 0 } },
+    { id: 'b', sport: 'nhl', market: 'prop', propType: 'sog', status: 'lost', units: 0.5, profit: -0.5, topN: { rank: 1 }, intent: 'edge', placedAt: after(1), clv: { v: CLV_V, prob: -0.5, ev: -0.5, pts: 0 } },
   ];
   assert.equal(record(bets).bets, 1);
   assert.equal(practiceRecord(bets).bets, 1);
@@ -315,8 +315,8 @@ test('D18 the correction fits the raw chance and prices from the raw chance: no 
   assert.equal(trustedUnits(3, 0.5), 3);
 });
 
-test('D19 research earns its level at 40 graded over break-even with CLV 0 or better, practice before, never off', () => {
-  const won = (n, i0 = 0) => Array.from({ length: n }, (_, i) => ({ id: `w${i0 + i}`, researchBet: {}, status: i % 3 ? 'won' : 'lost', odds: -110, clv: { prob: 0.01 } }));
+test('D19 research earns its level at 40 graded over break-even beating the fair close at the bar (D95; was CLV 0 or better), practice before, never off', () => {
+  const won = (n, i0 = 0) => Array.from({ length: n }, (_, i) => ({ id: `w${i0 + i}`, researchBet: {}, status: i % 3 ? 'won' : 'lost', odds: -110, market: 'prop', clv: { prob: 0.01, ev: 0.01, pts: 0 } }));
   assert.equal(researchLevelOf(won(RESEARCH_LEVEL_N - 1)).earned, false);
   assert.equal(researchLevelOf(won(RESEARCH_LEVEL_N)).earned, true);
   assert.equal(levelOf({ intent: 'edge', researchBet: { earned: true }, p: 0.6 }, 0.06, 0.6), 'lock', 'earned: LOVE and LOCK possible');
@@ -885,7 +885,7 @@ test("D51 the game lines' history bar: a segment (market and side class) earns f
   // (the desk reads the file the record writes, never writes it; every line pick goes through the segment's gate)
   assert.match(src('gate.mjs'), /line-bar\.json/);
   assert.doesNotMatch(src('run.mjs'), /write[A-Za-z]*\([^\n]*line-bar/);
-  assert.match(src('run.mjs'), /bothGates\(r\.lineGate, segment\)/);
+  assert.match(src('run.mjs'), /bothGates\(lineGateFor\(r\.lineGate, key\), segment\)/, "D95: the line market's own gate");
   const decisions = fs.readFileSync(path.resolve('libs/ranker/scripts/model/DECISIONS.md'), 'utf8');
   assert.ok(decisions.includes('### D51.'));
 });
@@ -1247,12 +1247,13 @@ test('D60 the replay\'s guard: more units at a lower beat-the-fair-close share o
   assert.equal(bets[45].band, 'medium');
   assert.equal(bets[45].profit, 0.5);
   assert.ok(bets.every((b) => b.units > 0), 'never off');
-  // (the live gates: a CLV of 0 or more but a beat share under the bar holds the practice stake)
+  // (the live gates: a beat share of the fair close (D95: D56's, the replay's) under the bar holds the practice stake,
+  // whatever the CLV (the no-vig chance moved the bet's way on all 50 here))
   const live = [];
-  for (let i = 0; i < 50; i++) live.push({ sport: 'nba', market: 'spread', status: 'won', placedAt: '2030-01-01T00:00:00Z', start: '2030-01-02T00:00:00Z', clv: { v: (await import('../libs/ranker/scripts/model/clv.mjs')).CLV_V, prob: 0.01, ev: 0, beat: i < 20 } });
+  for (let i = 0; i < 50; i++) live.push({ sport: 'nba', market: 'spread', status: 'won', placedAt: '2030-01-01T00:00:00Z', start: '2030-01-02T00:00:00Z', clv: { v: (await import('../libs/ranker/scripts/model/clv.mjs')).CLV_V, prob: 0.01, ev: i < 20 ? 0.01 : -0.01, pts: 0, beat: true } });
   const g = D.lineGate(live, 'nba', '2029-01-01T00:00:00Z');
   assert.equal(g.on, false);
-  assert.match(g.why, /beat the close 40% over 50, under 52.5%/);
+  assert.match(g.why, /beat the fair close 40% over 50 graded spread bets, under 52.5%/);
 });
 
 test('D62 the stacked fatigue reason: the other side\'s back-to-back, travel, time zones east and altitude past its own, in the sport\'s tail, only where the Book\'s price still sits at the sharp fair; family rest (never a second rest reason)', async () => {
@@ -2206,4 +2207,99 @@ test('D94 the 2026-10-26 round: no MMA style term (counter, pressure, output, po
   assert.ok(t.of('deep', null, 2025, 1).iay > 0 && t.of('short', null, 2025, 1).iay < 0);
   assert.equal(t.of('nobody', null, 2025, 1).iay, 0);
   assert.ok(fs.readFileSync(path.join(import.meta.dirname, '../libs/ranker/scripts/model/DECISIONS.md'), 'utf8').includes('### D94.'));
+});
+
+test('D95 the testing audit\'s six recommendations: one beat-the-close, the props late, the NBA stake step off, the pulled starters and the live names, MMA in play and MLB\'s postseason, the hygiene', async () => {
+  const C = await import('../libs/ranker/scripts/model/clv.mjs');
+  const D = await import('../libs/ranker/scripts/model/desk.mjs');
+  const T = await import('../libs/ranker/scripts/model/timing.mjs');
+  const LG = await import('../libs/ranker/scripts/model/leagues.mjs');
+  // (1) one definition: the live gates' beat is D56's (a positive expected return at the close's no-vig at the bet's own
+  // line), the same as the replay's fairBeatOf; by market as the replay's bar keys them
+  const R = await import('../libs/ranker/scripts/model/replay-record.mjs');
+  const close = { f: 0.5, line: -3.5 };
+  for (const odds of [-120, 105]) {
+    const live = C.fairBeat({ market: 'spread', clv: { ev: 0.5 * (odds > 0 ? 1 + odds / 100 : 1 + 100 / -odds) - 1, pts: 0 } });
+    assert.equal(live, R.fairBeatOf({ market: 'spread', line: -3.5 }, true, odds, close).beat, `the live and the replay's beat agree at ${odds}`);
+  }
+  assert.equal(C.fairBeat({ market: 'total', clv: { ev: 0.3, pts: -1 } }), null, 'a moved line: none, as the replay');
+  const g = D.lineGate(Array.from({ length: 45 }, (_, i) => ({ sport: 'nhl', market: 'total', status: 'won', placedAt: '2030-01-01T00:00:00Z', gradedAt: new Date(Date.UTC(2030, 0, 2, i)).toISOString(), clv: { v: C.CLV_V, prob: 0.02, ev: -0.01, pts: 0, beat: true } })), 'nhl', '2029-01-01T00:00:00Z');
+  assert.equal(D.lineGateFor(g, 'total').practice, true, 'the chance moved its way on all 45, its price lost to the fair close: the practice stake');
+  assert.equal(D.lineGateFor(g, 'spread'), null, 'another market, its own gate');
+  assert.ok(g.markets.total.n === 45 && g.markets.total.beat === 0);
+  for (const f of ['fastnews.mjs', 'research.mjs', 'live-check.mjs']) assert.match(src(f), /fairBeat|clv\?\.pts === 0|clv\.pts === 0/, `${f} reads the fair close at the bet's line`);
+  // (2) the props late: a routine prop waits for its betting window, propsBet hours (or the last chance); news exempt
+  for (const s of ['nfl', 'nba', 'nhl', 'mlb']) {
+    assert.equal(LG.TIMING[s].propsBet, 3);
+    assert.equal(T.propsLate(s, 2.9), true);
+    assert.equal(T.propsLate(s, 20), false);
+    assert.equal(T.propsLate(s, 8, 6), true, 'runs 6 hours apart stretch the last chance to 9');
+  }
+  assert.equal(T.propsLate('mma', 300), true, 'no propsBet: no hold');
+  assert.match(src('run.mjs'), /if \(!propsLate\(sport, rk\.hours, r\.gap\) && !FAST && !rk\.fast && !x\.newsLag\) \{/);
+  assert.match(src('run.mjs'), /\(late \|\| why === 'newsLag' \|\| !!riskOf\(game, x, phase\)\.fast\) && riskOf\(game, x, phase\)\.ev > 0/, 'no quote bought to bet early but on news');
+  // (3) the D73 trial: the NBA's stake step off (a trial sport, every switch off), the NHL's LOVE on; a file written
+  // with the step stays off live
+  const TR = await import('../libs/ranker/scripts/model/trusted.mjs');
+  assert.deepEqual(TR.TRIAL.nba, { love: false, mid: false });
+  assert.deepEqual(TR.TRIAL.nhl, { love: true, mid: false });
+  const file = { v: TR.TRIAL_V, sport: 'nba', trial: true, rule: { love: null, mid: 0.4 }, weights: { form: 1 } };
+  const bet = { market: 'prop', kelly: 0.015, units: 1.3, held: false, parts: { form: 0.001 } };
+  assert.equal(TR.liveTrial(file, bet).units, 1.3, 'the step off: the stake as it was, not 0.5u under the share');
+  // (4) the pulled starters: the goalie the book posted a saves prop for at the close is the starter where a side used two;
+  // the live props' names matched as the history's (names.mjs)
+  const P = await import('../libs/ranker/scripts/model/props.mjs');
+  const rows = [{ game: 'g', team: 't', pos: 'G', pid: '1', home: true }, { game: 'g', team: 't', pos: 'G', pid: '2', home: true }];
+  P.markStarters(rows, { games: { g: { gs: true, h: [['2'], ['1']] } }, postedGoalies: new Set(['g|1']) });
+  assert.deepEqual(rows.map((r) => r.started), [true, false], 'the posted one, the order notwithstanding');
+  const board = [{ athlete: { name: 'Nic Claxton' }, stat: { key: 'reb' }, line: 7.5 }];
+  const api = new Map([['Nicolas Claxton|reb', { line: 8.5, over: -115, under: -105 }]]);
+  assert.equal(P.withApiPrices(board, api)[0].line, 8.5);
+  assert.match(src('gate.mjs'), /postedGoalies/);
+  // (5) MMA: a close taken in play is no close; MLB's postseason game logs asked (gameType P)
+  const M = await import('../libs/ranker/scripts/model/gate-mma.mjs');
+  const t0 = Date.parse('2026-10-24T22:00:00Z');
+  const ev = (oid, h) => [oid, { oid, t: new Date(t0 + h * 36e5).toISOString() }];
+  const hist = {
+    events: new Map([ev('a', 0), ev('b', 3), ev('c', 3)]),
+    lines: [
+      { oid: 'b', kind: 'o', book: 'dk', market: 'h2h', ts: new Date(t0 - 72 * 36e5).toISOString(), a: -150, b: 130 },
+      { oid: 'b', kind: 'c', book: 'dk', market: 'h2h', ts: new Date(t0 + 2.9 * 36e5).toISOString(), a: -1200, b: 700 },
+      { oid: 'c', kind: 'o', book: 'dk', market: 'h2h', ts: new Date(t0 - 72 * 36e5).toISOString(), a: -150, b: 130 },
+      { oid: 'c', kind: 'c', book: 'dk', market: 'h2h', ts: new Date(t0 + 2.9 * 36e5).toISOString(), a: -170, b: 145 },
+      { oid: 'a', kind: 'c', book: 'dk', market: 'h2h', ts: new Date(t0 + 0.1 * 36e5).toISOString(), a: -170, b: 145 },
+    ],
+  };
+  const ip = M.inPlayCloses(hist, new Map());
+  assert.deepEqual([...ip].sort(), ['a', 'b'], 'after its own start, or a jump after the card began; a small move stands');
+  assert.match(src('playerlogs.mjs'), /mlbHitting\(Object\.keys\(facts\.hands \?\? \{\}\), season, 'P'\)/);
+  assert.match(src('playerlogs.mjs'), /mlbPitching\(starters, season, 'gameLog', 'P'\)/);
+  // (6a) pre-registration: a result only for a registered idea's registered variant
+  const PR = await import('../libs/ranker/scripts/model/prereg.mjs');
+  const reg = PR.addEntry({ entries: [] }, { id: 'x', idea: 'i', bar: 'b', variants: ['v1'] }, new Date('2026-10-26T00:00:00Z'));
+  assert.throws(() => PR.addResult(reg, 'x', 'v2', 'r'), /a new variant is a new id/);
+  assert.throws(() => PR.addResult(reg, 'y', 'v1', 'r'), /never registered/);
+  assert.throws(() => PR.addResult({ entries: [{ ...reg.entries[0], bar: 'moved' }] }, 'x', 'v1', 'r'), /changed after it was registered/);
+  assert.equal(PR.addResult(reg, 'x', 'v1', 'r', new Date('2026-10-27T00:00:00Z')).entries[0].results.length, 1);
+  // (6b) the bars' error clustered by game: one game's picks moving together widen it; picks apart, about the plain one
+  const apart = D.barStats(Array.from({ length: 100 }, (_, i) => ({ profit: i % 2 ? 1 : -0.9, g: `g${i}` })));
+  const together = D.barStats(Array.from({ length: 100 }, (_, i) => ({ profit: Math.floor(i / 10) % 2 ? 1 : -0.9, g: `g${Math.floor(i / 10)}` })));
+  assert.ok(Math.abs(D.clusterDeff(apart, apart.sum / apart.n) - 1) < 0.02);
+  assert.ok(D.clusterDeff(together, together.sum / together.n) > 8, 'ten picks a game, all alike');
+  assert.ok(D.barOf(together, { min: 40, z: 1 }).se > 2.5 * D.barOf(apart, { min: 40, z: 1 }).se);
+  assert.equal(D.clusterDeff({ n: 10, sum: 1, sum2: 10 }, 0.1), 1, 'a file from before: no cluster sums, no effect');
+  // (6c) the self-tune's holdout: only days no earlier decision read
+  const ST = await import('../libs/ranker/scripts/model/self-tune.mjs');
+  const days = Array.from({ length: 60 }, (_, i) => new Date(Date.UTC(2026, 7, 1 + i)).toISOString().slice(0, 10));
+  assert.equal(ST.freshHoldout({ consumed: { through: days[50] } }, days).cut, null, 'nine fresh days: no decision');
+  assert.equal(ST.freshHoldout({ consumed: { through: days[20] } }, days).cut, days[21]);
+  assert.equal(ST.consume({}, '2026-10-26', days[21], days).consumed.through, days[59]);
+  // (6d) the replay guard's error bar: a drop inside the noise (by game) is no drop
+  const GS = await import('../libs/ranker/scripts/model/gate-score.mjs');
+  const gRows = (k, s = 0) => Array.from({ length: 200 }, (_, i) => [`g${i}`, (i * 37 + s) % 100 < k ? 1 : 0, 0]);
+  const a = { profit: 1, beat: 0.5, beatN: 200, clv: 0 };
+  const b = { profit: 2, beat: 0.48, beatN: 200, clv: 0 };
+  assert.equal(GS.replayGuard(a, b).pass, false, 'no rows: the point reading');
+  assert.equal(GS.replayGuard(a, b, gRows(50), gRows(48, 11)).pass, true, 'two points down on 200 bets: inside the noise');
+  assert.equal(GS.replayGuard(a, { ...b, beat: 0.3 }, gRows(50), gRows(30, 11)).pass, false, 'twenty down: beyond it');
 });

@@ -34,7 +34,7 @@ export interface LiveCheckBet {
   fair?: number | null;
   p?: number | null;
   profit?: number | null;
-  clv?: { beat?: boolean | null; ev?: number | null } | null;
+  clv?: { beat?: boolean | null; ev?: number | null; pts?: number | null } | null;
 }
 export interface LiveCheck {
   v: number;
@@ -126,7 +126,9 @@ export function liveCheck(ledgerBets: LiveCheckBet[], expect: ExpectFile | null 
     if (fin(b.fair)) book += (b.fair as number) * dec(odds) - 1;
     // (beat the fair close as the replay reads it (D56: a positive expected return at the close's no-vig, clv.ev), not
     // clv.beat (the no-vig chance moved the bet's way))
-    const bt = fin(b.clv?.ev) ? (b.clv?.ev as number) > 0 : null;
+    // (at the bet's own line only, D95: a moneyline, or a close at the bet's line (clv.pts 0); a moved line has none)
+    const sameLine = b.market === 'ml' || b.clv?.pts === 0;
+    const bt = fin(b.clv?.ev) && sameLine ? (b.clv?.ev as number) > 0 : null;
     if (bt === true || bt === false) {
       const ev = b.clv?.ev;
       beat.n++;

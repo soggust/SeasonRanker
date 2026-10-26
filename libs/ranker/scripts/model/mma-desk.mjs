@@ -911,6 +911,11 @@ export async function runMma({ dry = false, gap = null, now = new Date(), log = 
   const byKey = new Map(bouts.map((b) => [b.key, b]));
   const byId = new Map(bouts.map((b) => [b.id, b]));
   const coming = bouts.filter((b) => !b.final && !b.off && Date.parse(b.date) > now.getTime());
+  // (a card under way (D95): one of its bouts started. An open bet's last price (seen, its close) isn't taken from
+  // then on: a later bout's price during the card can be an in-play one, the result leaking into the close)
+  const cardKey = (b) => `${b.cardName ?? ''}|${String(b.date ?? '').slice(0, 10)}`;
+  const begun = new Set(bouts.filter((b) => !b.off && b.cardName && Date.parse(b.date) <= now.getTime()).map(cardKey));
+  const cardBegun = (b) => !!b?.cardName && begun.has(cardKey(b));
   log.log(`${SPORT}: ${bouts.length} bouts kept, ${coming.length} coming on ${new Set(coming.map((b) => b.cardName)).size} cards`);
   // (the weigh-ins (D83): a coming card's weight misses, read inside 48 hours of its bouts, into their chances)
   const wi = await markMisses(coming, { now, dry, log }).catch((err) => (log.warn(`${SPORT}: the weigh-ins not read (${err.message})`), null));
@@ -1063,7 +1068,7 @@ export async function runMma({ dry = false, gap = null, now = new Date(), log = 
     }
     if (tOpen) {
       // (at whatever line the book has now: a moved line's close is carried or left out by clv.mjs, never dropped)
-      if (tl) tOpen.seen = { at, line: tl.line, odds: tl.odds[tOpen.side], fair: round(tOpen.side === 'over' ? tl.fair : 1 - tl.fair, 4) };
+      if (tl && !cardBegun(bout)) tOpen.seen = { at, line: tl.line, odds: tl.odds[tOpen.side], fair: round(tOpen.side === 'over' ? tl.fair : 1 - tl.fair, 4) };
     } else if (want.total && (tRe || !tPlacedOn.has(bout.key))) {
       const tp = tl ? overChance(bout, Date.parse(start), tl.line) : null;
       const tLead = (Date.parse(start) - now.getTime()) / 36e5;
@@ -1113,7 +1118,7 @@ export async function runMma({ dry = false, gap = null, now = new Date(), log = 
     if (open && back.ml.get(bout.key) === open && apiPrice) re = withdraw(open, bout);
     // (an open bet: its latest price kept for the close, nothing else)
     if (open && !re) {
-      if (lines) open.seen = { at, odds: lines.odds[open.side], fair: open.side === 'home' ? lines.fair : 1 - lines.fair };
+      if (lines && !cardBegun(bout)) open.seen = { at, odds: lines.odds[open.side], fair: open.side === 'home' ? lines.fair : 1 - lines.fair };
       continue;
     }
     if (!lines && until <= LAST_CALL) {

@@ -95,6 +95,13 @@ export function phaseOf(sport, kind, until, gap = null) {
   return 'early';
 }
 
+// (D95: whether a game's routine props are in their betting window (TIMING propsBet) hours before its start, or its
+// last chance (the runs' gap stretching it, lastChanceOf); a sport with no propsBet, always)
+export const propsLate = (sport, hours, gap = null) => {
+  const w = TIMING[sport]?.propsBet;
+  return !Number.isFinite(w) || hours <= Math.max(w, lastChanceOf(sport, gap));
+};
+
 // (the widest window, hours: how far ahead The Odds API is asked about)
 export const reach = (sport) => Math.max(TIMING[sport]?.lines ?? 96, TIMING[sport]?.props ?? 96);
 

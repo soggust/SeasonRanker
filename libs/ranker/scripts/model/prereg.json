@@ -1,0 +1,52 @@
+{
+ "v": 1,
+ "entries": [
+  {
+   "id": "d95-cluster-recheck",
+   "date": "2026-10-26T06:47:13.758Z",
+   "by": "coordinator",
+   "idea": "The shipped bars (D51 line bar, D64 prop bar, D58 reasons) re-read with their error bars clustered by game (same-game bets move together)",
+   "bar": "A segment or reason on at full stakes under the plain error that is off under the clustered one is flagged; a rule is reverted only where the clustered replay's record (the bar's own place, replay-record.mjs barPlace) shows the rule losing units against no rule, else flagged in DECISIONS",
+   "variants": [
+    "clustered"
+   ],
+   "sports": [
+    "nfl",
+    "nba",
+    "nhl",
+    "mlb"
+   ],
+   "results": [],
+   "hash": "e54089b4d30b3b11"
+  },
+  {
+   "id": "d95-props-late",
+   "date": "2026-10-26T06:47:13.850Z",
+   "by": "coordinator",
+   "idea": "Live routine props bet only in a late window before the start (D61's curve: value rises toward the start); confirmed by a research replay of the props placed at the intraday snapshot hours",
+   "bar": "Per sport, on the same prop keys: a placement hour H is no better than the close-only replay unless its flat ROI leads by 1.645 game-clustered SEs; the late window stands if no earlier hour leads the close beyond that, and is reported reversed if an earlier hour does",
+   "variants": [
+    "24h",
+    "12h",
+    "6h",
+    "3h",
+    "1h",
+    "latest"
+   ],
+   "sports": [
+    "nfl",
+    "nba",
+    "nhl",
+    "mlb"
+   ],
+   "results": [
+    {
+     "date": "2026-10-26T06:52:59.955Z",
+     "variant": "latest",
+     "text": "Research replay (optimistic: close-time facts): no hour beats close-only on the same keys in any sport; NBA early -20 to -38u, NFL noise (3h +2.2u vs -0.5u, SE 2.4pts), NHL close +38u vs +11-13u, MLB tie. The late window stands (bet as near the close as the runs reach)."
+    }
+   ],
+   "hash": "f0efbfb24f7c51f5"
+  }
+ ]
+}

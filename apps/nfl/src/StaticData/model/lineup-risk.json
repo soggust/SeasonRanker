@@ -1,16 +1,16 @@
 {
  "v": 1,
- "at": "2026-10-26T08:36:25.547Z",
+ "at": "2026-10-26T14:44:26.289Z",
  "rows": 27978,
  "pooled": {
-  "n": 11937,
+  "n": 11889,
   "rows": 27978,
-  "keptRaw": 0.9907,
-  "kept": 0.9907,
+  "keptRaw": 0.9912,
+  "kept": 0.9912,
   "moved": 0.503,
   "lead": 48.04,
-  "edgeOpen": 0.0201,
-  "edgeClose": 0.0199,
+  "edgeOpen": 0.0199,
+  "edgeClose": 0.0198,
   "ok": true
  },
  "stats": {
@@ -28,45 +28,45 @@
   "passCmp": {
    "n": 558,
    "rows": 1378,
-   "keptRaw": 1.0187,
+   "keptRaw": 1.0148,
    "kept": 1,
    "moved": 0.353,
    "lead": 48.04,
    "edgeOpen": 0.0201,
-   "edgeClose": 0.0205,
+   "edgeClose": 0.0203,
    "from": "own"
   },
   "passInt": {
-   "n": 827,
+   "n": 835,
    "rows": 1592,
-   "keptRaw": 1.0138,
+   "keptRaw": 1.0127,
    "kept": 1,
    "moved": 0.03,
    "lead": 48.039,
-   "edgeOpen": 0.0232,
-   "edgeClose": 0.0235,
+   "edgeOpen": 0.0231,
+   "edgeClose": 0.0234,
    "from": "own"
   },
   "passTd": {
-   "n": 1012,
+   "n": 982,
    "rows": 1623,
-   "keptRaw": 0.8713,
-   "kept": 0.8713,
+   "keptRaw": 0.8707,
+   "kept": 0.8707,
    "moved": 0.071,
    "lead": 48.04,
-   "edgeOpen": 0.0248,
-   "edgeClose": 0.0216,
+   "edgeOpen": 0.0236,
+   "edgeClose": 0.0205,
    "from": "own"
   },
   "passYds": {
-   "n": 709,
+   "n": 688,
    "rows": 1631,
-   "keptRaw": 0.873,
-   "kept": 0.873,
+   "keptRaw": 0.8774,
+   "kept": 0.8774,
    "moved": 0.897,
    "lead": 48.039,
    "edgeOpen": 0.0186,
-   "edgeClose": 0.0162,
+   "edgeClose": 0.0163,
    "from": "own"
   },
   "rec": {
@@ -83,8 +83,8 @@
   "recYds": {
    "n": 2496,
    "rows": 6978,
-   "keptRaw": 0.9927,
-   "kept": 0.9927,
+   "keptRaw": 0.9928,
+   "kept": 0.9928,
    "moved": 0.753,
    "lead": 48.04,
    "edgeOpen": 0.0187,
@@ -92,14 +92,14 @@
    "from": "own"
   },
   "rushAtt": {
-   "n": 775,
+   "n": 781,
    "rows": 1951,
-   "keptRaw": 1.0714,
+   "keptRaw": 1.0687,
    "kept": 1,
    "moved": 0.362,
    "lead": 48.039,
-   "edgeOpen": 0.0206,
-   "edgeClose": 0.022,
+   "edgeOpen": 0.0204,
+   "edgeClose": 0.0218,
    "from": "own"
   },
   "rushRecYds": {
@@ -114,18 +114,18 @@
    "from": "own"
   },
   "rushYds": {
-   "n": 1342,
+   "n": 1331,
    "rows": 3386,
-   "keptRaw": 1.0486,
+   "keptRaw": 1.0453,
    "kept": 1,
    "moved": 0.743,
    "lead": 48.041,
    "edgeOpen": 0.0194,
-   "edgeClose": 0.0204,
+   "edgeClose": 0.0203,
    "from": "own"
   }
  },
  "sport": "nfl",
- "epoch": "2026-10-23T05:30:00Z",
- "commit": "8bdcce4f"
+ "epoch": "2026-10-26T15:00:00Z",
+ "commit": "1f128ae3"
 }

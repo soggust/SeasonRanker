@@ -14597,18 +14597,18 @@
   {
    "sport": "mma",
    "epoch": "2026-10-21T01:15:00Z",
-   "commit": "8bdcce4f",
-   "commitAt": "2026-10-26T03:11:32-05:00",
+   "commit": "1f128ae3",
+   "commitAt": "2026-10-26T04:35:00-05:00",
    "label": "worktree",
-   "at": "2026-10-26T09:34:32.275Z",
+   "at": "2026-10-26T10:58:57.675Z",
    "frozenTo": "2026-10-19T00:00:00Z",
    "frozen": {
     "props": null,
     "lines": {
      "mode": "replay",
      "n": 14,
-     "gap": 0.028,
-     "closeGap": 0.0011,
+     "gap": 0.0266,
+     "closeGap": 0.001,
      "clv": -0.0379,
      "hit": 0.5,
      "picks": 2,
@@ -14622,8 +14622,8 @@
     "lines": {
      "mode": "replay",
      "n": 35,
-     "gap": 0.0079,
-     "closeGap": 0.001,
+     "gap": 0.0075,
+     "closeGap": 0.0009,
      "clv": -0.0241,
      "hit": 0.75,
      "picks": 4,
@@ -14635,16 +14635,16 @@
    },
    "history": {
     "lines": {
-     "n": 3950,
-     "games": 2675,
-     "model": 0.6158,
-     "raw": 0.651,
+     "n": 3927,
+     "games": 2663,
+     "model": 0.6175,
+     "raw": 0.6516,
      "anch": null,
-     "book": 0.6172,
-     "gap": -0.0014,
-     "lo": -0.0036,
-     "hi": 0.0008,
-     "rawGap": 0.0338,
+     "book": 0.6184,
+     "gap": -0.0009,
+     "lo": -0.0031,
+     "hi": 0.0013,
+     "rawGap": 0.0332,
      "anchGap": null,
      "verdict": "tie"
     },
@@ -14693,16 +14693,16 @@
       "verdict": "tie"
      },
      "2023": {
-      "n": 474,
-      "games": 443,
-      "model": 0.6128,
-      "raw": 0.645,
+      "n": 473,
+      "games": 442,
+      "model": 0.6136,
+      "raw": 0.646,
       "anch": null,
-      "book": 0.6131,
-      "gap": -0.0003,
-      "lo": -0.0034,
-      "hi": 0.0033,
-      "rawGap": 0.0319,
+      "book": 0.6137,
+      "gap": -0.0002,
+      "lo": -0.0036,
+      "hi": 0.0032,
+      "rawGap": 0.0323,
       "anchGap": null,
       "verdict": "tie"
      },
@@ -14714,67 +14714,67 @@
       "anch": null,
       "book": 0.6052,
       "gap": -0.0029,
-      "lo": -0.0051,
+      "lo": -0.005,
       "hi": -0.0006,
       "rawGap": 0.0238,
       "anchGap": null,
       "verdict": "better"
      },
      "2025": {
-      "n": 929,
-      "games": 467,
-      "model": 0.6162,
-      "raw": 0.6405,
+      "n": 923,
+      "games": 464,
+      "model": 0.6156,
+      "raw": 0.6396,
       "anch": null,
-      "book": 0.6177,
+      "book": 0.6171,
       "gap": -0.0015,
-      "lo": -0.0042,
-      "hi": 0.0016,
-      "rawGap": 0.0228,
+      "lo": -0.0039,
+      "hi": 0.0011,
+      "rawGap": 0.0225,
       "anchGap": null,
       "verdict": "tie"
      },
      "2026": {
-      "n": 748,
-      "games": 378,
-      "model": 0.6195,
-      "raw": 0.6637,
+      "n": 732,
+      "games": 370,
+      "model": 0.6231,
+      "raw": 0.6658,
       "anch": null,
-      "book": 0.6203,
-      "gap": -0.0009,
-      "lo": -0.0044,
-      "hi": 0.0031,
-      "rawGap": 0.0434,
+      "book": 0.6231,
+      "gap": 0,
+      "lo": -0.0037,
+      "hi": 0.0035,
+      "rawGap": 0.0427,
       "anchGap": null,
       "verdict": "tie"
      }
     },
     "linesByMarket": {
      "ml": {
-      "n": 2668,
-      "games": 2668,
-      "model": 0.5735,
-      "raw": 0.6175,
+      "n": 2656,
+      "games": 2656,
+      "model": 0.5756,
+      "raw": 0.6178,
       "anch": null,
-      "book": 0.5762,
-      "gap": -0.0027,
-      "lo": -0.0071,
-      "hi": 0.0016,
-      "rawGap": 0.0413,
+      "book": 0.5774,
+      "gap": -0.0018,
+      "lo": -0.0062,
+      "hi": 0.0024,
+      "rawGap": 0.0404,
       "anchGap": null,
       "verdict": "tie"
      },
      "total": {
-      "n": 1282,
-      "games": 1282,
-      "model": 0.6589,
-      "raw": 0.685,
+      "n": 1271,
+      "games": 1271,
+      "model": 0.6601,
+      "raw": 0.686,
       "anch": null,
-      "book": 0.6589,
+      "book": 0.6601,
       "gap": -0.0001,
       "lo": -0.0002,
       "hi": 0.0001,
-      "rawGap": 0.0261,
+      "rawGap": 0.0259,
       "anchGap": null,
       "verdict": "tie"
      }
@@ -14788,8 +14788,8 @@
       "anch": null,
       "book": 0.5624,
       "gap": -0.0041,
-      "lo": -0.0078,
-      "hi": 0.0004,
+      "lo": -0.0077,
+      "hi": 0.0002,
       "rawGap": 0.0395,
       "anchGap": null,
       "verdict": "tie"
@@ -14820,7 +14820,7 @@
        "book": 0.6042,
        "gap": 0.0013,
        "lo": -0.0051,
-       "hi": 0.0085,
+       "hi": 0.0082,
        "rawGap": 0.0254,
        "anchGap": null,
        "verdict": "tie"
@@ -14832,24 +14832,24 @@
        "raw": 0.5903,
        "anch": null,
        "book": 0.5501,
-       "gap": -0.0057,
+       "gap": -0.0058,
        "lo": -0.0106,
-       "hi": 0.0001,
+       "hi": 0,
        "rawGap": 0.0402,
        "anchGap": null,
        "verdict": "tie"
       },
       "late": {
-       "n": 2787,
-       "games": 2678,
-       "model": 0.5703,
-       "raw": 0.6174,
+       "n": 2775,
+       "games": 2668,
+       "model": 0.5723,
+       "raw": 0.6177,
        "anch": null,
-       "book": 0.5733,
-       "gap": -0.003,
-       "lo": -0.0076,
-       "hi": 0.001,
-       "rawGap": 0.0441,
+       "book": 0.5745,
+       "gap": -0.0022,
+       "lo": -0.0065,
+       "hi": 0.0017,
+       "rawGap": 0.0433,
        "anchGap": null,
        "verdict": "tie"
       }
@@ -14884,16 +14884,16 @@
        "verdict": "tie"
       },
       "late": {
-       "n": 1413,
-       "games": 1295,
-       "model": 0.6604,
-       "raw": 0.6857,
+       "n": 1402,
+       "games": 1287,
+       "model": 0.6615,
+       "raw": 0.6867,
        "anch": null,
-       "book": 0.6605,
+       "book": 0.6616,
        "gap": 0,
        "lo": -0.0002,
        "hi": 0.0001,
-       "rawGap": 0.0252,
+       "rawGap": 0.0251,
        "anchGap": null,
        "verdict": "tie"
       }
@@ -14903,40 +14903,40 @@
      "ml": {
       "all": {
        "picks": 908,
-       "beat": 0.3401,
-       "clv": -0.0279,
-       "hit": 0.6804,
-       "units": 3.6235
+       "beat": 0.3397,
+       "clv": -0.028,
+       "hit": 0.6793,
+       "units": 2.9849
       },
       "early": {
        "picks": 518,
-       "beat": 0.4439,
-       "clv": -0.0142,
-       "hit": 0.6331,
-       "units": 3.6848
+       "beat": 0.4426,
+       "clv": -0.0143,
+       "hit": 0.6252,
+       "units": 0.3479
       },
       "mid": {
        "picks": 621,
-       "beat": 0.2829,
-       "clv": -0.0369,
+       "beat": 0.2791,
+       "clv": -0.0373,
        "hit": 0.6944,
-       "units": -6.397
+       "units": -6.4409
       },
       "late": {
        "picks": 103,
-       "beat": 0.125,
-       "clv": -0.0365,
+       "beat": 0.1277,
+       "clv": -0.0364,
        "hit": 0.7087,
        "units": 2.3267
       }
      },
      "total": {
       "all": {
-       "picks": 262,
-       "beat": 0.1857,
-       "clv": -0.046,
-       "hit": 0.3977,
-       "units": -22.5557
+       "picks": 250,
+       "beat": 0.1744,
+       "clv": -0.0482,
+       "hit": 0.3968,
+       "units": -21.7454
       },
       "early": {
        "picks": 14,
@@ -14946,11 +14946,11 @@
        "units": 0.6588
       },
       "mid": {
-       "picks": 248,
-       "beat": 0.1827,
-       "clv": -0.0456,
-       "hit": 0.4041,
-       "units": -18.4918
+       "picks": 233,
+       "beat": 0.1737,
+       "clv": -0.0479,
+       "hit": 0.3957,
+       "units": -19.8515
       },
       "late": {
        "picks": 10,
@@ -14966,17 +14966,17 @@
     "all": {
      "n": 3767,
      "clv": -0.03,
-     "hit": 0.6678,
+     "hit": 0.6667,
      "picks": 930,
-     "units": 0.6833
+     "units": 0.0294
     },
     "props": null,
     "lines": {
      "n": 3767,
      "clv": -0.03,
-     "hit": 0.6678,
+     "hit": 0.6667,
      "picks": 930,
-     "units": 0.6833
+     "units": 0.0294
     }
    },
    "proj": {
@@ -14988,30 +14988,30 @@
    "markets": {
     "close": {
      "ml": {
-      "n": 2668,
-      "games": 2668,
-      "model": 0.5735,
-      "raw": 0.6175,
+      "n": 2656,
+      "games": 2656,
+      "model": 0.5756,
+      "raw": 0.6178,
       "anch": null,
-      "book": 0.5762,
-      "gap": -0.0027,
-      "lo": -0.0071,
-      "hi": 0.0016,
-      "rawGap": 0.0413,
+      "book": 0.5774,
+      "gap": -0.0018,
+      "lo": -0.0062,
+      "hi": 0.0024,
+      "rawGap": 0.0404,
       "anchGap": null,
       "verdict": "tie"
      },
      "total": {
-      "n": 1282,
-      "games": 1282,
-      "model": 0.6589,
-      "raw": 0.685,
+      "n": 1271,
+      "games": 1271,
+      "model": 0.6601,
+      "raw": 0.686,
       "anch": null,
-      "book": 0.6589,
+      "book": 0.6601,
       "gap": -0.0001,
       "lo": -0.0002,
       "hi": 0.0001,
-      "rawGap": 0.0261,
+      "rawGap": 0.0259,
       "anchGap": null,
       "verdict": "tie"
      }
@@ -15025,8 +15025,8 @@
       "anch": null,
       "book": 0.5624,
       "gap": -0.0041,
-      "lo": -0.0078,
-      "hi": 0.0004,
+      "lo": -0.0077,
+      "hi": 0.0002,
       "rawGap": 0.0395,
       "anchGap": null,
       "verdict": "tie"
@@ -15057,7 +15057,7 @@
        "book": 0.6042,
        "gap": 0.0013,
        "lo": -0.0051,
-       "hi": 0.0085,
+       "hi": 0.0082,
        "rawGap": 0.0254,
        "anchGap": null,
        "verdict": "tie"
@@ -15069,24 +15069,24 @@
        "raw": 0.5903,
        "anch": null,
        "book": 0.5501,
-       "gap": -0.0057,
+       "gap": -0.0058,
        "lo": -0.0106,
-       "hi": 0.0001,
+       "hi": 0,
        "rawGap": 0.0402,
        "anchGap": null,
        "verdict": "tie"
       },
       "late": {
-       "n": 2787,
-       "games": 2678,
-       "model": 0.5703,
-       "raw": 0.6174,
+       "n": 2775,
+       "games": 2668,
+       "model": 0.5723,
+       "raw": 0.6177,
        "anch": null,
-       "book": 0.5733,
-       "gap": -0.003,
-       "lo": -0.0076,
-       "hi": 0.001,
-       "rawGap": 0.0441,
+       "book": 0.5745,
+       "gap": -0.0022,
+       "lo": -0.0065,
+       "hi": 0.0017,
+       "rawGap": 0.0433,
        "anchGap": null,
        "verdict": "tie"
       }
@@ -15121,16 +15121,16 @@
        "verdict": "tie"
       },
       "late": {
-       "n": 1413,
-       "games": 1295,
-       "model": 0.6604,
-       "raw": 0.6857,
+       "n": 1402,
+       "games": 1287,
+       "model": 0.6615,
+       "raw": 0.6867,
        "anch": null,
-       "book": 0.6605,
+       "book": 0.6616,
        "gap": 0,
        "lo": -0.0002,
        "hi": 0.0001,
-       "rawGap": 0.0252,
+       "rawGap": 0.0251,
        "anchGap": null,
        "verdict": "tie"
       }
@@ -15140,40 +15140,40 @@
      "ml": {
       "all": {
        "picks": 908,
-       "beat": 0.3401,
-       "clv": -0.0279,
-       "hit": 0.6804,
-       "units": 3.6235
+       "beat": 0.3397,
+       "clv": -0.028,
+       "hit": 0.6793,
+       "units": 2.9849
       },
       "early": {
        "picks": 518,
-       "beat": 0.4439,
-       "clv": -0.0142,
-       "hit": 0.6331,
-       "units": 3.6848
+       "beat": 0.4426,
+       "clv": -0.0143,
+       "hit": 0.6252,
+       "units": 0.3479
       },
       "mid": {
        "picks": 621,
-       "beat": 0.2829,
-       "clv": -0.0369,
+       "beat": 0.2791,
+       "clv": -0.0373,
        "hit": 0.6944,
-       "units": -6.397
+       "units": -6.4409
       },
       "late": {
        "picks": 103,
-       "beat": 0.125,
-       "clv": -0.0365,
+       "beat": 0.1277,
+       "clv": -0.0364,
        "hit": 0.7087,
        "units": 2.3267
       }
      },
      "total": {
       "all": {
-       "picks": 262,
-       "beat": 0.1857,
-       "clv": -0.046,
-       "hit": 0.3977,
-       "units": -22.5557
+       "picks": 250,
+       "beat": 0.1744,
+       "clv": -0.0482,
+       "hit": 0.3968,
+       "units": -21.7454
       },
       "early": {
        "picks": 14,
@@ -15183,11 +15183,11 @@
        "units": 0.6588
       },
       "mid": {
-       "picks": 248,
-       "beat": 0.1827,
-       "clv": -0.0456,
-       "hit": 0.4041,
-       "units": -18.4918
+       "picks": 233,
+       "beat": 0.1737,
+       "clv": -0.0479,
+       "hit": 0.3957,
+       "units": -19.8515
       },
       "late": {
        "picks": 10,
@@ -15202,9 +15202,9 @@
    "trust": {
     "ml": {
      "trust": 0,
-     "n": 1928,
-     "clvN": 65,
-     "eff": 1898.9,
+     "n": 1924,
+     "clvN": 64,
+     "eff": 1895.4,
      "fitted": true,
      "bands": {
       "early": {
@@ -15219,16 +15219,16 @@
       },
       "late": {
        "trust": 0,
-       "rows": 2787,
+       "rows": 2775,
        "fitted": true
       }
      }
     },
     "total": {
      "trust": 0,
-     "n": 1139,
-     "clvN": 89,
-     "eff": 1099.8,
+     "n": 1129,
+     "clvN": 87,
+     "eff": 1090.8,
      "fitted": true,
      "bands": {
       "early": {
@@ -15243,7 +15243,7 @@
       },
       "late": {
        "trust": 0,
-       "rows": 1414,
+       "rows": 1403,
        "fitted": true
       }
      }
@@ -15258,14 +15258,14 @@
     }
    },
    "inputs": {
-    "hash": "c94713da67d79921",
+    "hash": "157145a0960f1eae",
     "fit": null,
     "context": null,
     "injuries": null,
     "rows": {
-     "replay": 7773,
-     "keys": 4497,
-     "bets": 1292
+     "replay": 7750,
+     "keys": 4493,
+     "bets": 1272
     },
     "frozen": {
      "props": {
@@ -15280,7 +15280,8 @@
       "ids": 14,
       "want": 14
      }
-    }
+    },
+    "accepted": "D95: the testing audit's recommendations (fixB's pulled starters and props names, MLB's postseason logs, MMA's in-play closes, the epoch): the props' fits searched again"
    }
   }
  ]

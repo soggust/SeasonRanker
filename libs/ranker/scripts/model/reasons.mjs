@@ -35,6 +35,7 @@
 //             turns a bet off (D1)
 import { existsSync, readFileSync } from 'node:fs';
 import path from 'node:path';
+import { clusterAdd, clusterLess, deffOf, emptyCluster } from './cluster.mjs';
 
 export const REASONS_V = 1;
 // (a reason's proof: its picks in the market before the month, unweighted, and the share of them it must lead the
@@ -159,8 +160,10 @@ export function reasonMeta(id) {
 // ---- the records ----
 
 // (a running tally of flat picks: unweighted n and profit, recency-weighted sums, beat-the-close, by season)
-const emptyStats = () => ({ n: 0, sum: 0, w: 0, ws: 0, ws2: 0, w2: 0, beat: 0, beatN: 0, seasons: new Map() });
+const emptyStats = () => ({ n: 0, sum: 0, w: 0, ws: 0, ws2: 0, w2: 0, beat: 0, beatN: 0, seasons: new Map(), cl: emptyCluster() });
 function addPick(s, p, w) {
+  // (by game, D95: cluster.mjs, the error bar's design effect)
+  clusterAdd(s.cl, p.g ?? null, w, p.profit);
   s.n++;
   s.sum += p.profit;
   s.w += w;
@@ -181,12 +184,15 @@ function readStats(s) {
   const mean = s.ws / s.w;
   const v = Math.max(0, s.ws2 / s.w - mean * mean);
   const neff = (s.w * s.w) / Math.max(1e-12, s.w2);
-  return { n: s.n, mean, se: Math.sqrt(v / Math.max(1, neff)), roi: s.sum / s.n, beat: s.beatN ? s.beat / s.beatN : null, beatN: s.beatN };
+  // (clustered by game, D95)
+  const deff = process.env.BAR_CLUSTER === '0' ? 1 : deffOf(s.cl, mean);
+  return { n: s.n, mean, se: Math.sqrt((v / Math.max(1, neff)) * deff), roi: s.sum / s.n, beat: s.beatN ? s.beat / s.beatN : null, beatN: s.beatN };
 }
 // (the difference of two tallies: the reason's against the rest of its market's)
 function less(a, b) {
   const out = emptyStats();
   for (const k of ['n', 'sum', 'w', 'ws', 'ws2', 'w2', 'beat', 'beatN']) out[k] = a[k] - b[k];
+  out.cl = clusterLess(a.cl, b.cl);
   for (const [season, x] of a.seasons) {
     const y = b.seasons.get(season) ?? { n: 0, sum: 0 };
     out.seasons.set(season, { n: x.n - y.n, sum: x.sum - y.sum });
@@ -421,8 +427,9 @@ export function liveVerdicts(bets, sport, now = Date.now()) {
     const t = Date.parse(b.gradedAt ?? b.start);
     if (!fin(t) || t > now || !fin(b.odds)) continue;
     const profit = b.status === 'won' ? dec(b.odds) - 1 : b.status === 'lost' ? -1 : 0;
-    const beat = b.clv && fin(b.clv.prob) ? (b.clv.prob > 0 ? 1 : 0) : null;
-    picks.push({ t, season: seasonOfStart(sport, b.start), market: b.market, reasons: b.newsLag ? ['newsLag', ...(b.propType ? [`newsLag:${b.propType}`] : [])] : [], profit, beat, clv: b.clv && fin(b.clv.ev) ? b.clv.ev : null });
+    // (D95: beat the fair close, D56's: a positive expected return at the close's no-vig, at the bet's own line)
+    const beat = b.clv && fin(b.clv.ev) && (b.market === 'ml' || b.clv.pts === 0) ? (b.clv.ev > 0 ? 1 : 0) : null;
+    picks.push({ t, g: String(b.event), season: seasonOfStart(sport, b.start), market: b.market, reasons: b.newsLag ? ['newsLag', ...(b.propType ? [`newsLag:${b.propType}`] : [])] : [], profit, beat, clv: b.clv && fin(b.clv.ev) ? b.clv.ev : null });
   }
   const out = new Map();
   for (const [market, m] of walkReasons(picks).final) {

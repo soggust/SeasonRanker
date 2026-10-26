@@ -87,6 +87,7 @@ import { CACHE, get, nflverseGames, nflverseRows, pool } from './sources.mjs';
 import { ANYTIME_TD, PROP_BOOKS, SPORT_KEYS, american, anytimeOn, call, canSpend, consensusOf, hasKey, propAsks } from './oddsapi.mjs';
 import { round } from './ratings.mjs';
 import { ESPN_PROVIDER, ROSTER_MIN, goaliesInOrder } from './espn.mjs';
+import { matchNames } from './names.mjs';
 import { officialLine } from './nhl-official.mjs';
 import { BOOK } from './leagues.mjs';
 import { bestPair, codeOf, sideBest } from './best-price.mjs';
@@ -1530,12 +1531,22 @@ export function markEligible(sport, st, rows) {
 
 // (an NHL goalie's row: whether he started (row.started), DraftKings' rule for a saves prop (a starter pulled
 // has action, a reliever none): the context's goalies in the order they went in (context.mjs, gs: the starter
-// first), else, a side with one goalie in its box score, him; a side with two and no order, neither)
+// first), else, a side with one goalie in its box score, him; a side with two and no order, neither. First of all,
+// where the book posted a saves prop at the close for one of a side's two goalies (facts.postedGoalies: a Set of
+// "game|pid", the gate's history, gate.mjs), him: the book posts the confirmed starter, and his prop has action
+// pulled or not (the grading audit, 2026-10-24: 207 of 5,688 closes' goalies, pulled starters 196 of them under, were
+// left out with no order, or an order putting the reliever first, so the history's saves overs read 49.2% for 47.6%)
 export function markStarters(rows, facts) {
   const goalies = new Map();
+  const posted = facts?.postedGoalies ?? null;
   for (const r of rows) if (r.pos === 'G') goalies.set(`${r.game}|${r.team}`, [...(goalies.get(`${r.game}|${r.team}`) ?? []), r]);
   for (const list of goalies.values()) {
+    const mine = posted && list.length > 1 ? list.filter((r) => posted.has(`${r.game}|${r.pid}`)) : [];
     for (const r of list) {
+      if (mine.length === 1) {
+        r.started = r === mine[0];
+        continue;
+      }
       const f = facts?.games?.[r.game];
       const order = f?.gs ? f[r.home ? 'h' : 'a'] : null;
       r.started = Array.isArray(order) && order.length ? String(order[0]?.[0]) === String(r.pid) : list.length === 1;
@@ -1759,11 +1770,18 @@ export function propsFromBodies(sport, bodies) {
 
 // ESPN's board with The Odds API's lines and prices on it, where the API has the player: its line and both
 // prices replace the board's (the same book's, fresher, and the NFL's with prices at all); the other books'
-// consensus at its line kept beside them, the data's (none without enough books)
+// consensus at its line kept beside them, the data's (none without enough books). The API's player by his name as
+// ESPN writes it, else by names.mjs matchNames (the grading audit, 2026-10-24: the API's "Nicolas Claxton", "Mitchell
+// Marner" and "Lamar Jackson (BAL)" for ESPN's "Nic Claxton", "Mitch Marner", "Lamar Jackson"; never two candidates)
 export function withApiPrices(board_, api) {
   if (!api) return board_;
+  const apiNames = [...new Set([...api.keys()].map((k) => k.slice(0, k.lastIndexOf('|'))))];
+  const players = [...new Map(board_.map((p) => [p.athlete.name, { name: p.athlete.name }])).values()];
+  // (a board player the API names exactly keeps that name; the rest matched over all the board's players)
+  const exact = new Set(apiNames);
+  const byBoard = new Map([...matchNames(apiNames, players)].filter(([n, p]) => n !== p.name && !exact.has(p.name)).map(([n, p]) => [p.name, n]));
   return board_.map((p) => {
-    const x = api.get(`${p.athlete.name}|${p.stat.key}`);
+    const x = api.get(`${p.athlete.name}|${p.stat.key}`) ?? (byBoard.has(p.athlete.name) ? api.get(`${byBoard.get(p.athlete.name)}|${p.stat.key}`) : undefined);
     return x ? { ...p, line: x.line, prices: { over: x.over, under: x.under }, ...(x.best ? { best: x.best } : {}), source: 'the odds api', ...(x.consensus ? { consensus: x.consensus } : {}) } : p;
   });
 }

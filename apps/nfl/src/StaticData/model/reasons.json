@@ -1,8 +1,8 @@
 {
  "v": 1,
  "sport": "nfl",
- "at": "2026-10-26T08:36:32.659Z",
- "epoch": "2026-10-23T05:30:00Z",
+ "at": "2026-10-26T14:44:34.591Z",
+ "epoch": "2026-10-26T15:00:00Z",
  "markets": {
   "ml": {
    "seg:ml:dog:late": {
@@ -450,16 +450,16 @@
     "ev": null,
     "evS": null,
     "beat": null,
-    "roi": 0.034,
-    "rn": 575,
+    "roi": 0.0322,
+    "rn": 576,
     "stats": {
      "n": 0,
      "s": 0,
      "s2": 0,
      "beat": 0,
-     "rn": 575,
-     "rs": 19.5358,
-     "rs2": 511.9743
+     "rn": 576,
+     "rs": 18.5276,
+     "rs2": 512.9595
     },
     "why": "0 with a close, - shrunk",
     "seasons": {
@@ -477,16 +477,16 @@
     "ev": null,
     "evS": null,
     "beat": null,
-    "roi": -0.1432,
-    "rn": 31,
+    "roi": -0.111,
+    "rn": 32,
     "stats": {
      "n": 0,
      "s": 0,
      "s2": 0,
      "beat": 0,
-     "rn": 31,
-     "rs": -4.4378,
-     "rs2": 28.3148
+     "rn": 32,
+     "rs": -3.5529,
+     "rs2": 29.098
     },
     "why": "0 with a close, - shrunk",
     "seasons": {
@@ -531,16 +531,16 @@
     "ev": null,
     "evS": null,
     "beat": null,
-    "roi": -0.014,
-    "rn": 96,
+    "roi": -0.0037,
+    "rn": 95,
     "stats": {
      "n": 0,
      "s": 0,
      "s2": 0,
      "beat": 0,
-     "rn": 96,
-     "rs": -1.3471,
-     "rs2": 86.2477
+     "rn": 95,
+     "rs": -0.3471,
+     "rs2": 85.2477
     },
     "why": "0 with a close, - shrunk",
     "seasons": {
@@ -558,16 +558,16 @@
     "ev": null,
     "evS": null,
     "beat": null,
-    "roi": -0.0482,
-    "rn": 392,
+    "roi": -0.0428,
+    "rn": 374,
     "stats": {
      "n": 0,
      "s": 0,
      "s2": 0,
      "beat": 0,
-     "rn": 392,
-     "rs": -18.9008,
-     "rs2": 352.592
+     "rn": 374,
+     "rs": -15.9991,
+     "rs2": 336.291
     },
     "why": "0 with a close, - shrunk",
     "seasons": {
@@ -612,16 +612,16 @@
     "ev": null,
     "evS": null,
     "beat": null,
-    "roi": 0.0113,
-    "rn": 253,
+    "roi": 0.0085,
+    "rn": 252,
     "stats": {
      "n": 0,
      "s": 0,
      "s2": 0,
      "beat": 0,
-     "rn": 253,
-     "rs": 2.8663,
-     "rs2": 224.8542
+     "rn": 252,
+     "rs": 2.1469,
+     "rs2": 224.3366
     },
     "why": "0 with a close, - shrunk",
     "seasons": {
@@ -693,16 +693,16 @@
     "ev": null,
     "evS": null,
     "beat": null,
-    "roi": 0.2101,
-    "rn": 14,
+    "roi": 0.3163,
+    "rn": 10,
     "stats": {
      "n": 0,
      "s": 0,
      "s2": 0,
      "beat": 0,
-     "rn": 14,
-     "rs": 2.941,
-     "rs2": 12.0281
+     "rn": 10,
+     "rs": 3.1632,
+     "rs2": 8.4477
     },
     "why": "0 with a close, - shrunk",
     "seasons": {
@@ -801,16 +801,16 @@
     "ev": null,
     "evS": null,
     "beat": null,
-    "roi": -0.0186,
-    "rn": 674,
+    "roi": -0.0161,
+    "rn": 634,
     "stats": {
      "n": 0,
      "s": 0,
      "s2": 0,
      "beat": 0,
-     "rn": 674,
-     "rs": -12.5345,
-     "rs2": 650.7242
+     "rn": 634,
+     "rs": -10.1809,
+     "rs2": 605.6434
     },
     "why": "0 with a close, - shrunk",
     "seasons": {
@@ -855,16 +855,16 @@
     "ev": null,
     "evS": null,
     "beat": null,
-    "roi": -0.0578,
-    "rn": 194,
+    "roi": -0.032,
+    "rn": 166,
     "stats": {
      "n": 0,
      "s": 0,
      "s2": 0,
      "beat": 0,
-     "rn": 194,
-     "rs": -11.214,
-     "rs2": 226.6708
+     "rn": 166,
+     "rs": -5.3162,
+     "rs2": 200.7537
     },
     "why": "0 with a close, - shrunk",
     "seasons": {
@@ -936,16 +936,16 @@
     "ev": null,
     "evS": null,
     "beat": null,
-    "roi": 0.4168,
-    "rn": 39,
+    "roi": 0.4387,
+    "rn": 36,
     "stats": {
      "n": 0,
      "s": 0,
      "s2": 0,
      "beat": 0,
-     "rn": 39,
-     "rs": 16.2545,
-     "rs2": 27.9329
+     "rn": 36,
+     "rs": 15.7943,
+     "rs2": 25.8667
     },
     "why": "0 with a close, - shrunk",
     "seasons": {
@@ -963,16 +963,16 @@
     "ev": null,
     "evS": null,
     "beat": null,
-    "roi": 0.1594,
-    "rn": 38,
+    "roi": 0.1296,
+    "rn": 39,
     "stats": {
      "n": 0,
      "s": 0,
      "s2": 0,
      "beat": 0,
-     "rn": 38,
-     "rs": 6.0556,
-     "rs2": 28.0571
+     "rn": 39,
+     "rs": 5.0556,
+     "rs2": 29.0571
     },
     "why": "0 with a close, - shrunk",
     "seasons": {
@@ -990,16 +990,16 @@
     "ev": null,
     "evS": null,
     "beat": null,
-    "roi": -0.0732,
-    "rn": 52,
+    "roi": -0.0378,
+    "rn": 53,
     "stats": {
      "n": 0,
      "s": 0,
      "s2": 0,
      "beat": 0,
-     "rn": 52,
-     "rs": -3.8047,
-     "rs2": 53.7419
+     "rn": 53,
+     "rs": -2.0047,
+     "rs2": 56.9819
     },
     "why": "0 with a close, - shrunk",
     "seasons": {
@@ -1073,5 +1073,5 @@
   }
  },
  "k": 100,
- "commit": "8bdcce4f"
+ "commit": "1f128ae3"
 }

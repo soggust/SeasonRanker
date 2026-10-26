@@ -141,6 +141,8 @@ export interface LineGate {
   min: number;
   window: number;
   why: string;
+  // (D95: each line market's own gate, the replay's bar by market)
+  markets?: Record<string, Omit<LineGate, 'markets'>>;
 }
 
 // (one spot's live calibration (a stat, a side, a line class): its graded rows since the epoch, its shift on the

@@ -282,7 +282,7 @@ const ledger = [
     p: 0.55,
     fair: 0.5,
     placedAt: "2026-10-24T00:00:00Z",
-    clv: { v: 2, ev: i % 4 ? -0.05 : 0.01, prob: 0.01, beat: true },
+    clv: { v: 2, ev: i % 4 ? -0.05 : 0.01, prob: 0.01, pts: 0, beat: true },
   })),
   ...Array.from({ length: 10 }, (_, i) => ({
     sport: "nba",

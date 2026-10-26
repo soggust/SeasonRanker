@@ -132,6 +132,17 @@ export function clvOf(bet, close, sigma, dist = null, carry = null) {
   return { pts, prob, ev, q: round(q, 4), beat: result === 'beat' ? true : result === 'lose' ? false : null, result, v: CLV_V, ...(prob === null ? { why: 'no price to compare' } : {}) };
 }
 
+// Beat the fair close, D56's one definition, for a live bet (DECISIONS.md D95: the live gates read it as the replay
+// does, replay-record.mjs fairBeatOf): its own price has a positive expected return at the close's no-vig fair chance of
+// its side (clv.ev, the vig in its price and out of the fair), at the bet's own line only (a moneyline always; a moved
+// spread, total or prop has no close to read: null, never the carried guess clv.prob reads). 1, 0 or null
+export function fairBeat(bet) {
+  const c = bet?.clv;
+  if (!c || !fin(c.ev)) return null;
+  if (!(bet.market === 'ml' || c.pts === 0)) return null;
+  return c.ev > 0 ? 1 : 0;
+}
+
 // A prop's close carried to another line through its stat's spread (project.mjs: the mean the close's fair chance
 // implies at its line, then that mean's chance at the bet's line, no recalibration either way): (side, fromLine,
 // fairSide, toLine) -> the side's chance at toLine, or null (no mean found). null without params

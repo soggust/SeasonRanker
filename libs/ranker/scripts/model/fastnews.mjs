@@ -262,11 +262,17 @@ export function fastFor(live, team, now = Date.now()) {
 
 // Whether the early fast-news bets have earned their stake: FAST_EARN_N graded ones since the epoch with a close,
 // their mean CLV (the close's chance at the bet's price less the bet's no-vig) above 0
+// (D95, one beat-the-close definition: the fast bets with a fair close at their own line (D56: their own price had a
+// positive expected return at the close's no-vig) beat it at D60's bar, FAST_EARN_N of them at least; the old reading,
+// the close's no-vig past the fair the bet saw (clv, a move of the market's chance), shown beside it)
+export const FAST_BAR = 0.525;
 export function fastEarned(bets, { epoch = null } = {}) {
-  const graded = (bets ?? []).filter((b) => b?.early?.fast && !b.void && fin(b.clv?.q) && fin(b.fair) && (!epoch || Date.parse(b.placedAt) >= Date.parse(epoch)));
+  const graded = (bets ?? []).filter((b) => b?.early?.fast && !b.void && fin(b.clv?.ev) && (b.market === 'ml' || b.clv?.pts === 0) && (!epoch || Date.parse(b.placedAt) >= Date.parse(epoch)));
   if (graded.length < FAST_EARN_N) return { earned: false, n: graded.length };
-  const clv = graded.reduce((t, b) => t + (b.clv.q - b.fair), 0) / graded.length;
-  return { earned: clv > 0, n: graded.length, clv: Math.round(clv * 1e4) / 1e4 };
+  const beat = graded.filter((b) => b.clv.ev > 0).length / graded.length;
+  const moved = graded.filter((b) => fin(b.clv.q) && fin(b.fair));
+  const clv = moved.length ? moved.reduce((t, b) => t + (b.clv.q - b.fair), 0) / moved.length : null;
+  return { earned: beat >= FAST_BAR, n: graded.length, beat: Math.round(beat * 1e4) / 1e4, clv: clv === null ? null : Math.round(clv * 1e4) / 1e4 };
 }
 
 // The NFL's practice by ESPN id with Sleeper's filling the players nflverse's file has none for (its news inside

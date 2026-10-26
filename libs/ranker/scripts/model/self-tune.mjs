@@ -81,7 +81,7 @@ export function seriesOf(replay) {
   }
   const days = [...by.values()].sort((a, b) => a[0].localeCompare(b[0])).map((e) => [e[0], e[1], r2(e[2]), r2(e[3]), e[4], e[5], e[6], r4(e[7]), r2(e[8]), r2(e[9]), r4(e[10])]);
   const o = replay?.overall ?? {};
-  return { overall: { bets: o.bets ?? 0, profit: o.profit ?? 0, staked: o.staked ?? 0, beat: o.beat ?? null, beatN: o.beatN ?? 0, clv: o.clv ?? null }, days, ...(replay?.flags?.margin ? { margin: replay.flags.margin } : {}) };
+  return { overall: { bets: o.bets ?? 0, profit: o.profit ?? 0, staked: o.staked ?? 0, beat: o.beat ?? null, beatN: o.beatN ?? 0, clv: o.clv ?? null }, days, ...(replay?.guardRows ? { guardRows: replay.guardRows } : {}), ...(replay?.flags?.margin ? { margin: replay.flags.margin } : {}) };
 }
 
 // The gate's hook (gate.mjs, gate-mma.mjs scoreVersion, TUNE_GRID=<file of [{ id, knob, value }]>, TUNE_OUT=<file>):
@@ -139,6 +139,35 @@ export function candidatesOf(sport, file, date, only = null) {
   return { cands, blocked };
 }
 
+// ---- the fresh holdout (DECISIONS.md D95, the testing audit's sixth recommendation (c), 2026-10-26) ----
+// The last 8 weeks were held out every week, so the same weeks judged one week's candidates and the next's: a holdout
+// looked at again and again is fitted to. Now each decision's held-out days are ones no earlier decision saw: the file
+// keeps consumed ({ through: the newest bet day any earlier week's judging read, log: [{ date, from, to }] }); a week
+// judges only when at least FRESH_DAYS of play (gaps capped as holdoutCut's) lie after it, its holdout those days alone
+// (the choice made on everything before them, the consumed weeks among them: reading them to choose is no reuse of a
+// holdout), and the days it read are consumed whether or not it ships. A file from before the rule with a week judged
+// (last) counts every day through that week's date consumed; one with none starts with the last HOLDOUT_DAYS fresh
+export const FRESH_DAYS = 28;
+// (the fresh window's first day for bet days `days` (sorted) under the file, or { cut: null, why } while too short)
+export function freshHoldout(file, days, { freshDays = FRESH_DAYS, holdoutDays = HOLDOUT_DAYS } = {}) {
+  if (!days.length) return { cut: null, why: 'no bet days' };
+  const through = file?.consumed?.through ?? file?.last?.date ?? null;
+  if (!through) return { cut: holdoutCut(days, holdoutDays), why: null };
+  const fresh = days.filter((d) => d > through);
+  if (!fresh.length) return { cut: null, why: `no fresh held-out days since ${through} (the earlier weeks' holdouts consumed)` };
+  let acc = 1;
+  for (let i = 1; i < fresh.length; i++) acc += Math.min(GAP_CAP, daysBetween(fresh[i - 1], fresh[i]));
+  if (acc < freshDays) return { cut: null, why: `${acc} fresh days of play since ${through}: under ${freshDays}, waiting for a holdout no earlier decision saw` };
+  return { cut: fresh[0], why: null };
+}
+// (the file with the days a week's judging read consumed)
+export function consume(file, date, cut, days) {
+  const to = days.at(-1) ?? null;
+  if (!cut || !to) return file;
+  const log = [...(file?.consumed?.log ?? []), { date, from: cut, to }].slice(-CHANGES_MAX);
+  return { ...file, consumed: { through: to, log } };
+}
+
 // ---- the verdict ----
 
 // The held-out window's first day: the last holdoutDays of play, walked back from the newest bet day with each gap
@@ -176,12 +205,13 @@ export function stakeGuard(base, cand) {
 }
 
 // A candidate's series against the current settings'. { pass, checks, why[], all, choose, hold, last, current, units }
-export function judge(base, cand, { holdoutDays = HOLDOUT_DAYS, chooseZ = CHOOSE_Z, recentBets = RECENT_BETS, current: now = null } = {}) {
+export function judge(base, cand, { holdoutDays = HOLDOUT_DAYS, chooseZ = CHOOSE_Z, recentBets = RECENT_BETS, current: now = null, cut: cutAt = null } = {}) {
   const A = new Map(base.days.map((d) => [d[0], d]));
   const B = new Map(cand.days.map((d) => [d[0], d]));
   const days = [...new Set([...A.keys(), ...B.keys()])].sort();
   const rows = days.map((day) => ({ day, season: (A.get(day) ?? B.get(day))[1], d: (B.get(day)?.[2] ?? 0) - (A.get(day)?.[2] ?? 0), n: A.get(day)?.[4] ?? 0 }));
-  const cut = holdoutCut(days, holdoutDays);
+  // (the held-out window's first day: the fresh one (freshHoldout, D95) where the caller gives it, else the last holdoutDays)
+  const cut = cutAt ?? holdoutCut(days, holdoutDays);
   const all = sumOf(rows);
   const choose = sumOf(rows.filter((r) => r.day < cut));
   const hold = sumOf(rows.filter((r) => r.day >= cut));
@@ -191,7 +221,7 @@ export function judge(base, cand, { holdoutDays = HOLDOUT_DAYS, chooseZ = CHOOSE
   const lastS = seasons.includes(current - 1) ? current - 1 : null;
   const cur = { season: current, bets: rows.filter((r) => r.season === current).reduce((t, r) => t + r.n, 0), ...sumOf(rows.filter((r) => r.season === current)) };
   const last = { season: lastS, ...sumOf(rows.filter((r) => r.season === lastS)) };
-  const g1 = replayGuard(base.overall, cand.overall);
+  const g1 = replayGuard(base.overall, cand.overall, base.guardRows ?? null, cand.guardRows ?? null);
   const g2 = stakeGuard(base, cand);
   const checks = {
     units: all.gain > 0,
@@ -284,6 +314,8 @@ export async function tuneSport(sport, { date, dir, dry = false, only = null, lo
   const { cands, blocked } = candidatesOf(sport, file, date, only);
   const secs = {};
   const judged = [];
+  let fresh = null;
+  let consumedNext = null;
   if (cands.length) {
     mkdirSync(dir, { recursive: true });
     const staking = cands.filter((c) => c.kind === 'staking');
@@ -296,8 +328,17 @@ export async function tuneSport(sport, { date, dir, dry = false, only = null, lo
     secs.champion = score(sport, { env: { TUNE_GRID: gridFile, TUNE_OUT: outFile }, out: champFile, log: path.join(dir, `${sport}-champion.log`) });
     const res = JSON.parse(readFileSync(outFile, 'utf8'));
     secs.restake = r2(Object.values(res.secs ?? {}).reduce((t, x) => t + x, 0));
-    for (const c of staking) if (res.cands[c.id]) judged.push({ ...c, j: judge(res.base, res.cands[c.id], { current: res.current }) });
-    if (pricing.length) {
+    // (D95: the held-out days no earlier week's decision read; too few yet, nothing judged this week)
+    const betDays = (res.base?.days ?? []).map((d) => d[0]);
+    fresh = freshHoldout(file, betDays);
+    if (!fresh.cut) {
+      blocked.unshift(fresh.why);
+      log(`${sport}: ${fresh.why}`);
+    }
+    const cut = fresh.cut;
+    if (cut) for (const c of staking) if (res.cands[c.id]) judged.push({ ...c, j: judge(res.base, res.cands[c.id], { current: res.current, cut }) });
+    if (cut) consumedNext = consume(file, date, cut, betDays);
+    if (cut && pricing.length) {
       const G = await import('./gate.mjs');
       const champ = JSON.parse(readFileSync(champFile, 'utf8'));
       const empty = path.join(dir, `${sport}-empty.json`);
@@ -307,7 +348,7 @@ export async function tuneSport(sport, { date, dir, dry = false, only = null, lo
         const of = path.join(dir, `${sport}-${c.id}-tune.json`);
         secs[c.id] = score(sport, { env: { TUNE_GRID: empty, TUNE_OUT: of, TUNE_OVERRIDE: JSON.stringify({ [sport]: { [c.knob]: c.value } }) }, out: cf, log: path.join(dir, `${sport}-${c.id}.log`) });
         const cmp = G.compareScores(sport, champ, JSON.parse(readFileSync(cf, 'utf8')));
-        judged.push({ ...c, j: judge(res.base, JSON.parse(readFileSync(of, 'utf8')).base, { current: res.current }), gate: { pass: !!cmp.verdict?.pass, why: cmp.verdict?.why ?? [] } });
+        judged.push({ ...c, j: judge(res.base, JSON.parse(readFileSync(of, 'utf8')).base, { current: res.current, cut }), gate: { pass: !!cmp.verdict?.pass, why: cmp.verdict?.why ?? [] } });
       }
     }
   } else log(`${sport}: nothing to try (${blocked.join('; ') || 'no knob on the menu'})`);
@@ -315,7 +356,7 @@ export async function tuneSport(sport, { date, dir, dry = false, only = null, lo
   const out = { sport, judged, blocked, decision, secs };
   out.secs.total = Math.round((Date.now() - t0) / 1000);
   let next = decision.ship ? applyShip(file, sport, decision.ship, date) : { v: TUNED_V, sport, knobs: {}, changes: [], ...file };
-  next = { ...next, last: summaryOf(sport, date, out) };
+  next = { ...next, ...(consumedNext ? { consumed: consumedNext.consumed } : {}), last: summaryOf(sport, date, out) };
   if (!dry && (cands.length || existsSync(tunedFile(sport)))) writeFileSync(tunedFile(sport), `${JSON.stringify(next, null, 1)}\n`);
   out.file = next;
   log(`${sport}: ${findingText(sport, out)} (${out.secs.total}s)`);

@@ -215,7 +215,11 @@ export const GAME_CAP = 5;
 // 2026-10-23, the experience weighting (DECISIONS.md D82): the NBA's young players' projections lean more on their
 // own season (the prior's weight cut by stat and experience, picked walk-forward), so its props' chances move: a
 // pricing change, the trust and the gates restart. Set to about the push time.
-export const MODEL_EPOCH = '2026-10-23T05:30:00Z';
+// 2026-10-26, the testing audit's recommendations (DECISIONS.md D95): the props bet in their late window (a placement
+// change), the live gates on the fair close, the NHL's pulled-starter saves and the live props' name matcher (the props'
+// prices and fits move), MLB's postseason in the players' games: the trust and the gates restart. Set to about the push
+// time.
+export const MODEL_EPOCH = '2026-10-26T15:00:00Z';
 
 // TIMING (run.mjs, timing.mjs): when a coming game is bet, in hours before its start, so its bets wait for the
 // news rather than being locked in days ahead on a guess at who plays.
@@ -250,11 +254,20 @@ export const MODEL_EPOCH = '2026-10-23T05:30:00Z';
 // at 42 to 46 hours (none at 66), the World Series' starters at 91, the NHL's not yet at 18 to 21 (the board had
 // them about 8.5 hours out). So the NFL 96, the NBA and MLB 48, the NHL 30; an ask that finds none posted is free
 // and tried again two hours on (run.mjs EMPTY_RETRY); the lineup risk still holds an early lean (D42))
+// (2026-10-26, the testing audit's second recommendation (DECISIONS.md D95): propsBet, the props' betting window. The
+// props' window (props) still opens when the Book posts them, for the suggestions and the asks; a routine prop bet waits
+// till propsBet hours before the start (or the last chance, where the runs come further apart: timing.mjs propsLate).
+// D61's curve (intraday.mjs pcurve, by stat): in every sport a prop priced past the sharp no-vig is worth more the nearer
+// the start (NFL gaps -3.0% to +0.1% at 24 hours, -0.9% to +1.3% at 3; NBA -3.2% to -0.3% at 24 hours, -1.0% to +0.3% at
+// 1; NHL -0.6% to +0.9% at 3 hours, +0.4% to +1.2% at 1; MLB -0.8% to +0.1% at 6 hours, +0.9% to +1.1% at 1),
+// and the replay prices the props at the
+// close: the live bets now come where the evidence is. 3 hours, the last chance's reach on the hourly runs. News
+// bets are exempt (the fast lane, D68; fast news, D49; the news lag, D66): their value is in being early)
 export const TIMING = {
-  nfl: { lines: 26, props: 96, lastChance: 3 },
-  nba: { lines: 26, props: 48, lastChance: 3 },
-  nhl: { lines: 26, props: 30, lastChance: 3 },
-  mlb: { lines: 26, props: 48, lastChance: 2.5 },
+  nfl: { lines: 26, props: 96, lastChance: 3, propsBet: 3 },
+  nba: { lines: 26, props: 48, lastChance: 3, propsBet: 3 },
+  nhl: { lines: 26, props: 30, lastChance: 3, propsBet: 3 },
+  mlb: { lines: 26, props: 48, lastChance: 2.5, propsBet: 3 },
   // (MMA: a bout's lines open four weeks before it (the open round, 2026-10-19, DECISIONS.md D37: the Bot's edge on
   // the moneyline lives two weeks or more out, where the Book's opening line is soft, and is gone inside 48 hours; a
   // fighter pulled or replaced voids the bet rather than moving it, mma-desk.mjs; was 72 hours), the last chance 4;

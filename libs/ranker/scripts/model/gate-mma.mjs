@@ -41,6 +41,7 @@ import { closedEvents, matchHistory, matchReport } from './fights-history.mjs';
 import { readDeep } from './deep-history.mjs';
 import { shopRows } from './best-price.mjs';
 import { tuneReplays } from './self-tune.mjs';
+import { readIntraday } from './intraday.mjs';
 
 const ROOT = path.resolve(import.meta.dirname, '../../../..');
 export const SPORT = 'mma';
@@ -66,6 +67,62 @@ export const PERIOD_MONTHS = 6;
 // log loss at its last price by how long before the start): inside 1 hour 0.5929 on 1,918 bouts, 1 to 6 hours 0.5646
 // on 101, 6 to 12 hours 0.5956 on 653 (as sharp as the bell), 12 to 24 hours 0.6540 on 305 (not a close))
 export const MMA_CLOSE_MAX = 12 * 36e5;
+// In-play closes (DECISIONS.md D95, the testing audit's fifth recommendation, 2026-10-26): a card's bouts carry the API's
+// estimated starts, hours apart, and the archive's close for a later bout is taken while the card is on, so a bout
+// already under way can close at an in-play price. Measured on the archive's closes against each bout's last DraftKings
+// price before the card began (the intraday snapshots within 12 hours, else the open): after the card began, a move of
+// 1.2 log-odds or more went toward the winner in 11 of 12 bouts and 0.7 to 1.2 from a recent price 3 of 4; before it
+// began, 1 of 319 recent prices moved 0.7. The rule below flags 15 closes, the move toward the winner in 13 (87%), log
+// loss at the close 0.252 against 0.505 at the earlier price: the result leaking into the close. So a
+// close is in play (no close: never a row, a fair or a check) where it was taken at or after its own bout's start, or
+// after its card's first start (CARD_GAP_H clusters the events) with its no-vig moved IP_JUMP_RECENT log-odds from the
+// last price before the card inside IP_RECENT_H, or IP_JUMP_OLD from an older one (the open)
+export const CARD_GAP_H = 8;
+export const IP_RECENT_H = 12;
+export const IP_JUMP_RECENT = 0.7;
+export const IP_JUMP_OLD = 1.2;
+const logit = (p) => Math.log(p / (1 - p));
+// (hist: the archive's { events, lines }; intra: readIntraday's rows by oid, or none. A Set of the oids whose close is
+// in play, its .why by oid)
+export function inPlayCloses(hist, intra = null) {
+  const out = new Set();
+  out.why = new Map();
+  const ts = [...hist.events.values()].map((e) => [e.oid, Date.parse(e.t)]).filter(([, t]) => fin(t)).sort((a, b) => a[1] - b[1]);
+  const card = new Map();
+  let first = null;
+  let prev = -Infinity;
+  for (const [oid, t] of ts) {
+    if (t - prev > CARD_GAP_H * 36e5) first = t;
+    card.set(oid, first);
+    prev = t;
+  }
+  const dk = new Map();
+  for (const l of hist.lines) if (l.book === 'dk' && l.market === 'h2h' && (l.kind === 'o' || l.kind === 'c')) (dk.get(l.oid) ?? dk.set(l.oid, {}).get(l.oid))[l.kind] = l;
+  for (const [oid, L] of dk) {
+    const e = hist.events.get(oid);
+    const c = L.c;
+    if (!e || !c || !fin(c.a) || !fin(c.b)) continue;
+    const at = Date.parse(c.ts);
+    const start = Date.parse(e.t);
+    if (fin(at) && fin(start) && at >= start) {
+      out.add(oid);
+      out.why.set(oid, 'taken at or after its start');
+      continue;
+    }
+    const cs = card.get(oid);
+    if (!fin(at) || !fin(cs) || at <= cs) continue;
+    const before = (intra?.get?.(oid) ?? []).filter((x) => x.book === 'dk' && x.market === 'h2h' && fin(x.a) && fin(x.b) && x.ts < Math.min(cs, at) - 60e3);
+    const recent = before.length && at - before[before.length - 1].ts <= IP_RECENT_H * 36e5 ? before[before.length - 1] : null;
+    const ref = recent ?? (L.o && fin(L.o.a) && fin(L.o.b) && Date.parse(L.o.ts) < at ? L.o : null);
+    if (!ref) continue;
+    const jump = Math.abs(logit(devig(c.a, c.b)) - logit(devig(ref.a, ref.b)));
+    if (jump >= (recent ? IP_JUMP_RECENT : IP_JUMP_OLD)) {
+      out.add(oid);
+      out.why.set(oid, `moved ${Math.round(jump * 100) / 100} log-odds after its card began`);
+    }
+  }
+  return out;
+}
 // (a fit's bouts over by its period's first day plus this; a fighter's own bout over by its day plus this: the cards
 // end past midnight UTC, Saturday nights in the Americas)
 export const FIT_KNOWN_H = 8;
@@ -201,9 +258,11 @@ const pastLineOf = (r, line) => (r.secs === null || r.secs === undefined || r.me
 
 // The priced history's rows for a version: the matched bouts' moneylines and round totals at the open and the close,
 // framed on ESPN's first fighter and Over (see the header). { open, close, matched (the report) }
-export function historyRows(V, rows, hist, chances, current, { fights = null } = {}) {
+export function historyRows(V, rows, hist, chances, current, { fights = null, intra = null } = {}) {
   const closed = closedEvents(hist, MMA_CLOSE_MAX);
   const { matched, unmatched } = matchHistory(hist.events, fights ?? [], { closed });
+  // (D95: a close taken in play is no close, MMA_IN_PLAY=0 the old way for comparing)
+  const inPlay = process.env.MMA_IN_PLAY === '0' ? new Set() : inPlayCloses(hist, intra ?? readIntraday(SPORT).rows);
   const byFight = new Map(rows.map((r) => [r.id, r]));
   const by = new Map();
   for (const l of hist.lines) {
@@ -246,7 +305,7 @@ export function historyRows(V, rows, hist, chances, current, { fights = null } =
     const c = fin(ts) && c0.prev && ts < fitAt(c0) ? c0.prev : c0;
     const fighters = Math.max(dayEnd(before(r.a, r.date), BOUT_KNOWN_H) ?? -Infinity, dayEnd(before(r.b, r.date), BOUT_KNOWN_H) ?? -Infinity);
     const factsAt = Math.max(fitAt(c), fighters);
-    if (kind === 'c' && start - ts > MMA_CLOSE_MAX) continue;
+    if (kind === 'c' && (start - ts > MMA_CLOSE_MAX || inPlay.has(oid))) continue;
     const season = e.season;
     const w = seasonWeight(SPORT, season, current).w;
     const lead = fin(ts) ? (start - ts) / 36e5 : kind === 'c' ? 1 : null;
@@ -284,7 +343,7 @@ export function historyRows(V, rows, hist, chances, current, { fights = null } =
   // (the fair the Bot prices from, calibrated walk-forward (D59); the raw fair stays the Book's benchmark)
   const fairCal = calibrateRows(out);
   const priced = finishByLead(V, out);
-  return { ...priced, fairCal, report: matchReport(hist.events, matched, unmatched, fights ?? [], closed), matched };
+  return { ...priced, fairCal, report: { ...matchReport(hist.events, matched, unmatched, fights ?? [], closed), inPlay: inPlay.size }, matched };
 }
 
 // The rows priced, each at the trust of its own lead band fit walk-forward by month on the band's rows before (the

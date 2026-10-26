@@ -301,7 +301,10 @@ export const drivenBy = (pieces, cls) => (pieces?.length ? `Driven by: ${pieces.
 // LOVE, 22 bets; the NBA's LIKE stakes, its LOVE lost on the current replay, -0.4% against +2.2%); every
 // gate and cap stays on top (a suspect price, a barred stat, D60's bar, a practice pick: a LIKE at the stake they
 // set). Lines stay LIKE: their pieces are almost never proven (D72) and the live desk can't split them.
-export const TRIAL = { nba: { love: false, mid: true }, nhl: { love: true, mid: false } };
+// (D95, the testing audit's third recommendation, 2026-10-26: the NBA's LIKE stake step off (on the re-recorded replay it
+// cost 8.2u against the stake as it was); the NBA stays a trial sport (LIKE only, LOCK off) with nothing on. The NHL's
+// LOVE stays on, fragile: 35 walk-forward LOVEs at the audit)
+export const TRIAL = { nba: { love: false, mid: false }, nhl: { love: true, mid: false } };
 export const TRIAL_OPTS = { shares: [0.3, 0.4, 0.5, 0.6, 0.7, 0.8], kellyMax: [0.02, Infinity], kelly: 0.01, nMin: 30, zMin: 0, loveUnits: 2, mids: [0, 0.2, 0.4, 0.6, 9], minPrior: 200, practice: 0.5 };
 export const trialOn = (sport) => TRIAL[sport] ?? null;
 export const TRIAL_V = 1;
@@ -414,7 +417,9 @@ export function liveTrial(file, bet) {
   const s = shareOf(bet.parts, rel);
   const o = { ...TRIAL_OPTS, loveUnits: file.loveUnits ?? TRIAL_OPTS.loveUnits, kelly: file.kelly ?? TRIAL_OPTS.kelly };
   const love = file.rule?.love ? { ...file.rule.love, kellyMax: file.rule.love.kellyMax ?? Infinity } : null;
-  const { band, units } = trialBand({ ...bet, share: s.share, te: s.te }, { love, mid: file.rule?.mid ?? 0 }, o);
+  // (a piece switched off in TRIAL since the file was written stays off live, D95: the file's rule is the walk's, the switch the code's)
+  const on = trialOn(file.sport) ?? {};
+  const { band, units } = trialBand({ ...bet, share: s.share, te: s.te }, { love: on.love === false ? null : love, mid: on.mid === false ? 0 : (file.rule?.mid ?? 0) }, o);
   return { band, units, share: Math.round(s.share * 1e3) / 1e3, pieces: s.pieces, why: band === 'high' ? trialWhy(s.pieces) : null };
 }
 

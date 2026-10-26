@@ -259,7 +259,7 @@ export function replayRecord(V, sport, rows, { events = null, names = () => ({ h
             .filter((x) => isLine(x) && (x.y === 0 || x.y === 1))
             .map((x) => {
               const sd = sideOf(V, x, x.p);
-              return sd.ev > 0 ? { t: x.t, season: x.season, keys: keysOf(x, sd), ev: sd.ev, profit: (x.y === 1) === sd.over ? dec(sd.odds) - 1 : -1 } : null;
+              return sd.ev > 0 ? { t: x.t, season: x.season, g: String(x.event), keys: keysOf(x, sd), ev: sd.ev, profit: (x.y === 1) === sd.over ? dec(sd.odds) - 1 : -1 } : null;
             })
             .filter(Boolean),
           barOpts,
@@ -277,7 +277,7 @@ export function replayRecord(V, sport, rows, { events = null, names = () => ({ h
             .filter((x) => x.market === 'prop' && (x.y === 0 || x.y === 1))
             .map((x) => {
               const sd = sideOf(V, x, x.p);
-              return sd.ev > 0 ? { t: x.t, season: x.season, keys: propKeyOf(x, sd), ev: sd.ev, profit: (x.y === 1) === sd.over ? dec(sd.odds) - 1 : -1 } : null;
+              return sd.ev > 0 ? { t: x.t, season: x.season, g: String(x.event), keys: propKeyOf(x, sd), ev: sd.ev, profit: (x.y === 1) === sd.over ? dec(sd.odds) - 1 : -1 } : null;
             })
             .filter(Boolean),
           barOpts,
@@ -302,6 +302,27 @@ export function replayRecord(V, sport, rows, { events = null, names = () => ({ h
   const intraBy = new Map();
   if (W && sport !== 'mma') for (const x of rows.intra ?? []) if (ok(x)) (intraBy.get(x.key) ?? intraBy.set(x.key, []).get(x.key)).push(x);
   for (const list of intraBy.values()) list.sort((a, b) => a.at - b.at);
+  // (research only: the props at an intraday snapshot (gate.mjs GATE_PROPS_INTRA=1, rows.propIntra: kind 'i' rows at
+  // PROP_OFFSETS' hours, priced at the close's facts: an OPTIMISTIC bound). REPLAY_PROPS_AT=<h | latest>: a prop key with
+  // a snapshot at that hour (latest: its latest snapshot), a close known by its time and the snapshot clean and in the
+  // props' window, is placed there if its chance held to the lineup risk's surviving share at its hours (as an open's)
+  // clears the price, else at the close as before. Without rows.propIntra, or with it and no REPLAY_PROPS_AT: as before)
+  const propIntraBy = new Map();
+  for (const x of rows.propIntra ?? []) if (ok(x) && fin(x.at)) (propIntraBy.get(x.key) ?? propIntraBy.set(x.key, []).get(x.key)).push(x);
+  const PROPS_AT = propIntraBy.size ? (process.env.REPLAY_PROPS_AT ?? null) : null;
+  const propAtOf = (k) => {
+    const list = propIntraBy.get(k);
+    if (!list?.length || !PROPS_AT) return null;
+    if (PROPS_AT === 'latest') return list.reduce((b, x) => (x.at > b.at ? x : b), list[0]);
+    return list.find((x) => String(x.h) === PROPS_AT) ?? null;
+  };
+  const propCandOf = (x) => {
+    const hours = (x.t - x.at) / 36e5;
+    if (!(fin(hours) && hours > 0 && hours <= timing.props && clean(x))) return null;
+    const s = survival(risk.entryFor(x.season, x.stat, false), hours, { last: timing.lastChance ?? 3 });
+    const p = s < 1 ? x.f + Math.min(1, Math.max(0, s)) * (x.p - x.f) : x.p;
+    return { x, sd: sideOf(V, x, p), s, hours };
+  };
   // (the sharp lag (DECISIONS.md D92, windows.mjs lagHeld): a line placement before the last chance whose Book's own
   // no-vig on the Bot's side sits LAG_PTS over the sharp book's at the same snapshot waits for a later one, the close
   // the last; a version without it, or REPLAY_LAG=0 (measuring only): none held)
@@ -404,6 +425,12 @@ export function replayRecord(V, sport, rows, { events = null, names = () => ({ h
         if (sd.ev > 0 && lagHeldOf(o, sd, hours)) flags.lagHeld++;
         else if (sd.ev > 0) placed = { x: o, sd, timing: 'open', s, close: c ?? null };
       }
+    }
+    // (research only, REPLAY_PROPS_AT with rows.propIntra: the prop placed at its snapshot where its held edge clears)
+    if (!placed && PROPS_AT && c && knownAt(c) && propIntraBy.has(k)) {
+      const xi = propAtOf(k);
+      const cd = xi ? propCandOf(xi) : null;
+      if (cd && cd.sd.ev > 0) placed = { x: xi, sd: cd.sd, timing: 'open', s: cd.s, close: c, hours: cd.hours, window: `props:${PROPS_AT}` };
     }
     // (a close, or a lone open, whose price read a fact posted after it: neither bet nor picked (D48))
     if (win && intraBy.has(k)) {
@@ -782,6 +809,19 @@ export function replayRecord(V, sport, rows, { events = null, names = () => ({ h
   if (reasonsFile) out.reasonsFile = reasonsFile;
   // (the two-band trial's file (D73): what gate.mjs --record writes as trusted.json)
   if (trustedFile) out.trustedFile = trustedFile;
+  // (research only, rows.propIntra (GATE_PROPS_INTRA): each prop key with snapshots and a known close, its close's side
+  // and each snapshot's held side, and the record's prop bets, for gate.mjs's REPLAY_PROPS_AT readout; off the file)
+  if (propIntraBy.size) {
+    const sideRow = (cd) => (cd ? [cd.sd.over ? 1 : 0, r4(cd.sd.ev), cd.sd.odds, r4(cd.s), r2(cd.hours), cd.x.line] : null);
+    const keysOut = [];
+    for (const [k, list] of propIntraBy) {
+      const c = closes.get(k);
+      if (!c || !knownAt(c)) continue;
+      const sc = sideOf(V, c, c.p);
+      keysOut.push({ k, ev: String(c.event), y: c.y ?? null, cl: c.line, c: [sc.over ? 1 : 0, r4(sc.ev), sc.odds], i: Object.fromEntries(list.map((x) => [String(x.h), sideRow(propCandOf(x))])), latest: String(list.reduce((b, x) => (x.at > b.at ? x : b), list[0]).h) });
+    }
+    out.propsResearch = { at: PROPS_AT, keys: keysOut, bets: bets.filter((b) => b.market === 'prop' && !b.practice).map((b) => ({ id: b.id, ev: b.event, timing: b.timing, hours: b.hours ?? null, side: b.side, odds: b.odds, units: b.units, profit: b.profit, res: b.res, beat: b.beat, clv: b.clv, band: b.band })) };
+  }
   return out;
 }
 
@@ -940,6 +980,9 @@ export function summarize(sport, bets, passed, { epoch, now, flags, rows, season
     through: bets.length ? new Date(maxOf(bets.map((b) => b.t))).toISOString() : null,
     n: { rows: rows.open + rows.close, keys: real.length + practice.length + passed.length, bets: real.length, practice: practice.length, pass: passed.length },
     overall: all,
+    // (the guard's rows (D95: gate-score.mjs replayGuard's error bar, clustered by game): each staked bet with a fair-close
+    // check, [game, beat, its expected return at the fair close]; the score's, never the record file's)
+    guardRows: real.filter((b) => b.beat === 0 || b.beat === 1).map((b) => [b.event, b.beat, fin(b.clv) ? b.clv : 0]),
     practice: tallyOf(practice),
     // (the rows it wouldn't bet, at a flat unit on the Bot's side: context, never the record)
     pass: finishTally(passed.reduce((t, r) => addBet(t, { res: r.x.y === null || r.x.y === undefined ? 'P' : (r.x.y === 1) === r.sd.over ? 'W' : 'L', units: 1, profit: r.x.y === null || r.x.y === undefined ? 0 : (r.x.y === 1) === r.sd.over ? r2(dec(r.sd.odds) - 1) : -1, fair: r.sd.fS, beat: null, clv: null }), emptyTally())),

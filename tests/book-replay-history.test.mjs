@@ -137,7 +137,8 @@ test('the shipped replay-record.json files (gate.mjs --record): the file\'s shap
     }
     const practice = r.last.filter((b) => b.practice);
     assert.ok(practice.every((b) => b.units === 0.5 && b.band === 'medium'), `${sport}: a practice pick at 0.5u, a LIKE`);
-    assert.ok(fs.statSync(f).size < 60000, `${sport}: the file stays small (${fs.statSync(f).size} bytes)`);
+    // (80,000 since D95: the NHL's 3,749 replayed bets and the Vig column's ninth daily field)
+    assert.ok(fs.statSync(f).size < 80000, `${sport}: the file stays small (${fs.statSync(f).size} bytes)`);
   }
 });
 

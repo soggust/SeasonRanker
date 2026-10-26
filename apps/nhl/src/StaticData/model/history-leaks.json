@@ -1,12 +1,12 @@
 {
- "at": "2026-10-26T10:23:35.248Z",
- "epoch": "2026-10-23T05:30:00Z",
- "commit": "8bdcce4f",
- "n": 133969,
+ "at": "2026-10-26T12:12:20.963Z",
+ "epoch": "2026-10-26T15:00:00Z",
+ "commit": "1f128ae3",
+ "n": 133981,
  "tested": 30,
  "leaks": 0,
  "trends": 0,
  "status": "ok",
- "headline": "30 segments tested on 133969 priced rows: none losing to the Book beyond the false discovery rate, none trending worse",
+ "headline": "30 segments tested on 133981 priced rows: none losing to the Book beyond the false discovery rate, none trending worse",
  "rows": []
 }

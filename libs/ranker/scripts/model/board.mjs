@@ -244,9 +244,14 @@ const lowerCap = (x, y) => (!x ? (y ?? null) : !y ? x : RANK[x] <= RANK[y] ? x :
 // ESPN's free price alone takes the last board's fresh paid price (heldPaid); a side a paid quote priced this run
 // carries pt (at) and dko
 export function boardMarkets(markets, trustOf, consensus = null, ctx = null, { gate = null, off = null, explain = null, confidence = null, paid = null, at = null, now = Date.now() } = {}) {
-  const capped = gate && gate.on === false ? sideCap({ practice: String(gate.why || 'the game lines at the practice stake') }) : {};
+  // (the market's own CLV gate where the gate is by market (desk.mjs lineGate, D95), else the gate whole)
+  const cappedOf = (market) => {
+    const g = gate?.markets ? (gate.markets[market] ?? null) : gate;
+    return g && g.on === false ? sideCap({ practice: String(g.why || 'the game lines at the practice stake') }) : {};
+  };
   const out = {};
   for (const m of markets ?? []) {
+    const capped = cappedOf(m.market);
     const [s0] = m.sides;
     // (past the market's gap, run.mjs betGames' guard skips it: a CHECK on the model's side only where the run
     // shows it one (checks.mjs shadowOf: the gap's never), else a PASS both sides)

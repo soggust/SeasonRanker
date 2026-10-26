@@ -42,7 +42,7 @@ test('the segment: the market and the side class by the pick\'s own fair chance 
 
 test('the stats add, and a segment is on only past the minimum worth and BAR_Z standard errors over 0', () => {
   const a = barStats([{ profit: 1, w: 1 }, { profit: -1, w: 0.5 }]);
-  assert.deepEqual(a, { n: 1.5, sum: 0.5, sum2: 1.5 });
+  assert.deepEqual({ n: a.n, sum: a.sum, sum2: a.sum2 }, { n: 1.5, sum: 0.5, sum2: 1.5 });
   const b = addStats(a, barStats([{ profit: 0.5, w: 2 }]));
   assert.equal(b.n, 3.5);
   assert.equal(b.sum, 1.5);

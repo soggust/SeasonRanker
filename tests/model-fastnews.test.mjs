@@ -142,16 +142,18 @@ test("D49 fastNotes: escalate only, newer than ESPN's own entry, ESPN unlisted s
   assert.deepEqual(await fastNotes('nfl', liveWith(report), upcoming, { sleeper, now: START + H, rosterOf }), []);
 });
 
-test('D49 the timing: fast news on a side is fresh FRESH_H hours, the NFL and NBA read it as the news in; the early fast bets earn their stake on CLV', () => {
+test('D49 the timing: fast news on a side is fresh FRESH_H hours, the NFL and NBA read it as the news in; the early fast bets earn their stake on the fair close (D95)', () => {
   const l = { fastNews: [{ team: '28', at: new Date(NOW - 2 * H).toISOString(), name: 'A' }, { team: '28', at: new Date(NOW - (FRESH_H + 1) * H).toISOString(), name: 'B' }] };
   assert.deepEqual(fastFor(l, '28', NOW).map((x) => x.name), ['A']);
   assert.deepEqual(fastFor(l, '25', NOW), []);
   assert.ok(FAST_TIMING.has('nfl') && FAST_TIMING.has('nba') && !FAST_TIMING.has('nhl') && !FAST_TIMING.has('mlb'));
-  const bet = (q, fair = 0.5) => ({ early: { fast: { name: 'A' } }, clv: { q }, fair, placedAt: '2026-10-20T00:00:00Z' });
-  assert.equal(fastEarned(Array.from({ length: FAST_EARN_N - 1 }, () => bet(0.6))).earned, false, 'too few');
-  assert.equal(fastEarned(Array.from({ length: FAST_EARN_N }, () => bet(0.55))).earned, true);
-  assert.equal(fastEarned(Array.from({ length: FAST_EARN_N }, () => bet(0.45))).earned, false, 'the close against them');
-  assert.equal(fastEarned(Array.from({ length: FAST_EARN_N }, () => bet(0.55)), { epoch: '2026-11-01T00:00:00Z' }).n, 0, 'since the epoch alone');
+  // (D95: beat the fair close, D56's: a positive expected return at the close's no-vig, at the bet's own line)
+  const bet = (ev, q = 0.55, fair = 0.5, pts = 0) => ({ market: 'prop', early: { fast: { name: 'A' } }, clv: { q, ev, pts }, fair, placedAt: '2026-10-20T00:00:00Z' });
+  assert.equal(fastEarned(Array.from({ length: FAST_EARN_N - 1 }, () => bet(0.05))).earned, false, 'too few');
+  assert.equal(fastEarned(Array.from({ length: FAST_EARN_N }, () => bet(0.05))).earned, true);
+  assert.equal(fastEarned(Array.from({ length: FAST_EARN_N }, () => bet(-0.03, 0.6))).earned, false, 'the chance moved its way, its price still lost to the fair close: no beat (D95)');
+  assert.equal(fastEarned(Array.from({ length: FAST_EARN_N }, () => bet(0.05, 0.55, 0.5, 1))).n, 0, 'a moved line has no fair close to read');
+  assert.equal(fastEarned(Array.from({ length: FAST_EARN_N }, () => bet(0.05)), { epoch: '2026-11-01T00:00:00Z' }).n, 0, 'since the epoch alone');
 });
 
 test("D49 Sleeper's practice fills the players nflverse's file has none for, inside the week, never after now", () => {

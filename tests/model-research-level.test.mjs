@@ -19,7 +19,7 @@ const check = (over = {}) => ({ id: '401872777:prop:receptions:4429096', event: 
 const corum = { player: 'Blake Corum', status: 'unknown', reason: 'none', summary: 'No injury, role or lineup news found for this game. Corum is still Kyren Williams\' backup and caught 3 of 4 targets in Week 5.', sources: src, explains: false, category: 'market', confidence: 'low' };
 const x = { side: 'under', fair: 0.5, model: 0.72, odds: +100, push: 0, guarded: true, shadow: false };
 // (a graded research bet: won or lost at a price, its close)
-const graded = (status, { odds = -110, clv = 0.01, kind = 'researchBet' } = {}) => ({ [kind]: kind === 'researchBet' ? { check: 'x' } : { checks: ['x'], own: true }, status, odds, profit: status === 'won' ? 0.909 : -1, clv: Number.isFinite(clv) ? { ev: clv - 0.045, prob: clv, beat: clv > 0 } : null });
+const graded = (status, { odds = -110, clv = 0.01, kind = 'researchBet' } = {}) => ({ [kind]: kind === 'researchBet' ? { check: 'x' } : { checks: ['x'], own: true }, status, odds, market: 'prop', profit: status === 'won' ? 0.909 : -1, clv: Number.isFinite(clv) ? { ev: clv, prob: clv, pts: 0, beat: clv > 0 } : null });
 const record = (won, lost, opts) => [...Array.from({ length: won }, () => graded('won', opts)), ...Array.from({ length: lost }, () => graded('lost', opts))];
 
 test("Corum: a real answer that found nothing at low confidence is a bet verdict, priced at the trust with the lean held at half the GAP", () => {
@@ -56,7 +56,7 @@ test('only a low answer naming a real reason stays a CHECK; a failed or hollow c
   assert.equal(verdictOf(old), 'check');
 });
 
-test('researchLevelOf: under 40 graded the practice stake; at 40+ over break-even with CLV 0 or better earned; below, practice', () => {
+test('researchLevelOf: under 40 graded the practice stake; at 40+ over break-even beating the fair close at the bar (D95) earned; below, practice', () => {
   const few = researchLevelOf(record(30, 9));
   assert.equal(few.earned, false);
   assert.equal(few.n, 39);
@@ -66,10 +66,10 @@ test('researchLevelOf: under 40 graded the practice stake; at 40+ over break-eve
   assert.equal(good.earned, true);
   assert.deepEqual([good.n, good.won, good.lost], [43, 28, 15]);
   assert.equal(good.breakEven, Math.round((110 / 210) * 1e4) / 1e4);
-  assert.match(good.why, /^research bets at their Kelly stake and level: 43 graded 28-15 \(65%, break-even 52%\), CLV \+0\.01/);
-  // (the record under break-even, or the CLV negative, or none closed: practice still, never off)
+  assert.match(good.why, /^research bets at their Kelly stake and level: 43 graded 28-15 \(65%, break-even 52%\), beat the fair close 100% of 43/);
+  // (the record under break-even, or under the fair close's bar, or none closed: practice still, never off)
   assert.equal(researchLevelOf(record(20, 23)).earned, false);
-  assert.match(researchLevelOf(record(20, 23)).why, /not over break-even with the CLV 0 or better/);
+  assert.match(researchLevelOf(record(20, 23)).why, /not over break-even with the fair close beaten 52\.5% of the time or more/);
   assert.equal(researchLevelOf(record(28, 15, { clv: -0.01 })).earned, false);
   assert.equal(researchLevelOf(record(28, 15, { clv: null })).earned, false);
   // (research-adjusted bets on their own market count; the game's other markets priced with them, voids and open ones don't)

@@ -19,6 +19,8 @@
 
 export const LIVE_CHECK_V = 1;
 export const K = 50;
+import { fairBeat } from './clv.mjs';
+
 const fin = Number.isFinite;
 const dec = (o) => (o > 0 ? 1 + o / 100 : 1 + 100 / -o);
 const r4 = (x) => (fin(x) ? Math.round(x * 1e4) / 1e4 : null);
@@ -122,7 +124,9 @@ export function liveCheck(ledgerBets, expect, { since = null } = {}) {
     if (fin(b.fair)) book += b.fair * dec(b.odds) - 1;
     // (beat the fair close as the replay reads it (D56: a positive expected return at the close's no-vig, clv.ev), not
     // clv.beat (the no-vig chance moved the bet's way), which a bet can "beat" while its price still loses to the close)
-    const bt = fin(b.clv?.ev) ? b.clv.ev > 0 : null;
+    // (at the bet's own line only, D95: clv.mjs fairBeat, as the replay's fairBeatOf; a moved line has no close to read)
+    const fb = fairBeat(b);
+    const bt = fb === null ? null : fb === 1;
     if (bt === true || bt === false) {
       beat.n++;
       beat.beat += bt ? 1 : 0;

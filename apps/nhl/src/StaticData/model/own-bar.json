@@ -1,12 +1,12 @@
 {
  "sport": "nhl",
- "epoch": "2026-10-23T05:30:00Z",
- "commit": "8bdcce4f",
- "at": "2026-10-26T10:23:35.248Z",
+ "epoch": "2026-10-26T15:00:00Z",
+ "commit": "1f128ae3",
+ "at": "2026-10-26T12:12:20.963Z",
  "current": 2027,
- "held": 518,
- "before": -4.06,
- "after": -2.02,
+ "held": 548,
+ "before": 1.76,
+ "after": 0.41,
  "keys": {
   "ml:away": {
    "n": 292,
@@ -21,24 +21,24 @@
    "sum": -2.25
   },
   "prop:pts:under": {
-   "n": 180,
-   "sum": -28.01
+   "n": 143,
+   "sum": -18.83
   },
   "prop:saves:over": {
-   "n": 9,
-   "sum": 2.3
+   "n": 11,
+   "sum": 3.94
   },
   "prop:saves:under": {
-   "n": 4,
-   "sum": 1.69
+   "n": 11,
+   "sum": 0.44
   },
   "prop:sog:over": {
-   "n": 28,
-   "sum": -4.65
+   "n": 112,
+   "sum": -2.88
   },
   "prop:sog:under": {
-   "n": 384,
-   "sum": 35.33
+   "n": 1997,
+   "sum": -20.93
   },
   "spread:away": {
    "n": 232,

@@ -113,9 +113,10 @@ export async function mlbSchedule(from, to) {
 }
 
 // Pitchers' lines for a season, 40 to a call: a game log (each appearance) or the season's totals
-export async function mlbPitching(ids, season, type) {
+// (gameType: StatsAPI's, P the postseason; none, the regular season)
+export async function mlbPitching(ids, season, type, gameType = null) {
   const out = new Map();
-  for (const p of (await mlbPeople(ids, 40, `stats(group=[pitching],type=[${type}],season=${season})`)).people) out.set(String(p.id), { name: p.fullName, splits: p.stats?.[0]?.splits ?? [] });
+  for (const p of (await mlbPeople(ids, 40, `stats(group=[pitching],type=[${type}],season=${season}${gameType ? `,gameType=[${gameType}]` : ''})`)).people) out.set(String(p.id), { name: p.fullName, splits: p.stats?.[0]?.splits ?? [] });
   return out;
 }
 

@@ -138,7 +138,7 @@ import { isClvFile, liveMerged } from './clv-bands.mjs';
 import { LAG_SPORTS, lagFile, lagPending, lagPrune, lagTag, lagUpdate, readLag } from './news-lag.mjs';
 import { ledgerRisk, readLineupRisk, riskAt, riskChance, riskText } from './lineup-risk.mjs';
 import { morningPrices, withSnapshot } from './suggest.mjs';
-import { MAX_LAST, OUT_STATUS, REPRICE_BY, cadenceOf, inputChanges, inputsOf, lastChanceOf, lineupNow, lostAsk, newsMissing, phaseOf, propAsk, putInactives, reach, whoMatters } from './timing.mjs';
+import { MAX_LAST, OUT_STATUS, REPRICE_BY, cadenceOf, inputChanges, inputsOf, lastChanceOf, lineupNow, lostAsk, newsMissing, phaseOf, propAsk, propsLate, putInactives, reach, whoMatters } from './timing.mjs';
 import { fitMargins } from './margins.mjs';
 import { ROSTER_MIN, eventOf, gameOf, json, linesOf, roster, scoreboard, teamIds, teamSchedule, ymd } from './espn.mjs';
 import { adjust, dynamicTerms, expect, fit, fitContext, gateOf, namedIdx, replay, round, setDynamic } from './ratings.mjs';
@@ -163,7 +163,7 @@ import { corrRows, correctionText, tuneCorrection } from './correct.mjs';
 import { PRACTICE_N, PRACTICE_SPLIT, PRACTICE_STAKED, lineBucket, practiceRecord, practiceTag, practiceTop, slateQuota } from './desk.mjs';
 import { MAX_REPRICES, TRUST_START, rulesChanged, rulesOf } from './desk.mjs';
 import { propBar, propBarGate, readPropBar, ownBarOf, ownBarGate, ownKey, readOwnBar } from './desk.mjs';
-import { BANKROLL, MARKETS, PRACTICE_UNITS, EARLY_HOURS, stakeKelly, gatedPlacement, stakeFor, practiceGates, choose, decimal, isTracked, trackedRecord, lineGate, lineBar, barGate, bothGates, readLineBar, barAside, reasonsOf, scheduleRest, withTravel, propGate, fairPair, placeGame, sameGameOf, sameGameRhoText, fitTrust, fitBuckets, bucketTrustOf, BUCKETS, gapGuard, guardOf, oneSide, pickText, placement, price, record, settle, voidOf } from './desk.mjs';
+import { BANKROLL, MARKETS, PRACTICE_UNITS, EARLY_HOURS, stakeKelly, gatedPlacement, stakeFor, practiceGates, choose, decimal, isTracked, trackedRecord, lineGate, lineGateFor, lineBar, barGate, bothGates, readLineBar, barAside, reasonsOf, scheduleRest, withTravel, propGate, fairPair, placeGame, sameGameOf, sameGameRhoText, fitTrust, fitBuckets, bucketTrustOf, BUCKETS, gapGuard, guardOf, oneSide, pickText, placement, price, record, settle, voidOf } from './desk.mjs';
 import { CHECK_KELLY, CHECK_KINDS, atUnit, causeOf, checkLocked, checkOf, rejudgeChecks, shadowOf, checkResultOf, checkSummary, closeChecks, markPlaced, modelSide, noteOpen, openCheck, priceAtOf, resolveChecks, STORED_FRESH, storedBet, storedFresh, upsertCheck, withStoredPrices } from './checks.mjs';
 import { ledgerWrites, readChecks, readKept } from './checks-file.mjs';
 import { readLinePool } from './line-pool.mjs';
@@ -2143,7 +2143,7 @@ function betGames(r) {
       const reasons = reasonsOf(sport, key, pick.side, sched.get(String(game.id)));
       const segment = barGate(r.lineBar, key, pick.side, pick.fair, { hours: ahead / 36e5, ev: pick.ev, reasons, aside: r.lineBarAside });
       // (and the Bot's own record on the market and side (D79): a key whose own bets keep losing, the practice stake)
-      const gate = bothGates(bothGates(r.lineGate, segment), ownBarGate(r.ownBar, sport, ownKey(key, key, pick.side)));
+      const gate = bothGates(bothGates(lineGateFor(r.lineGate, key), segment), ownBarGate(r.ownBar, sport, ownKey(key, key, pick.side)));
       // (the shopped-price guard (D76): a side that clears only at another book's price, under the minimum there)
       const shopG = r.shopT === null || r.shopT === undefined ? { guarded: false } : shopGuardOf(pick, r.shopT, pick.push ?? 0);
       // (D88's margin rule: a side the Bot's own model puts under the fair price, bet on a small price edge: tracked, not
@@ -2669,7 +2669,10 @@ async function betProps(r) {
       // bet: the fresh quote bought now and the game priced again on it; none clears, the suggestions stand and the
       // credits are kept)
       if (defer) {
-        const want = bets.some((x) => x.priced && !x.guard?.skip && riskOf(game, x, phase).ev > 0);
+        // (D95: a fresh quote to bet only inside the props' betting window (timing.mjs propsLate), or on news (the news
+        // lag's ask, fast news on his side): a routine row with an edge further out waits, its suggestion on the board)
+        const late = propsLate(sport, until / 36e5, r.gap);
+        const want = bets.some((x) => x.priced && !x.guard?.skip && (late || why === 'newsLag' || !!riskOf(game, x, phase).fast) && riskOf(game, x, phase).ev > 0);
         if (want && (await askNow())) {
           ({ priced, bets } = priceNow());
           run.askedToBet = (run.askedToBet ?? 0) + 1;
@@ -2767,6 +2770,15 @@ async function betProps(r) {
           // hours, the survival and the full lean), none is held for a later run: not tracked (a tracked row would
           // block the bet), a suggestion on the board where the full lean has one)
           const rk = riskOf(game, x, phase);
+          // (the props' betting window (DECISIONS.md D95, timing.mjs propsLate): a routine prop waits till propsBet hours
+          // before the start, or the last chance, where D61's curve and the replay say a prop's price is worth most;
+          // news bets go now (the fast lane's game, D68; fast news on his side, D49; the news lag's tag, D66). Held on
+          // The Odds API's price this run: the game owes the late ask, as a lineup-risk hold does (D55 propAsk))
+          if (!propsLate(sport, rk.hours, r.gap) && !FAST && !rk.fast && !x.newsLag) {
+            if (fresh && x.prop.source === 'the odds api') heldHere++;
+            run.lateHeld = (run.lateHeld ?? 0) + 1;
+            continue;
+          }
           // (held on The Odds API's price this run: the game owes a late ask, D55 propAsk)
           if (rk.s < 1 && !(rk.ev > 0) && fresh && x.prop.source === 'the odds api') heldHere++;
           if (rk.s < 1) {
@@ -3007,6 +3019,7 @@ async function betProps(r) {
   if (run.anytime) console.log(`${sport}: anytime TD priced ${run.anytime.priced} in ${run.anytime.games} games, ${run.anytime.placed} new tracked rows (never staked)${run.anytime.unmatched ? `; ${run.anytime.unmatched} names not matched` : ''}${run.anytime.out ? `; ${run.anytime.out} listed out` : ''}`);
   if (run.owedOut) console.log(`${sport}: props taken back in ${run.owedOut} games not bet again (The Odds API asked ${PROP_ASKS} times for them already, and their board has no prices)`);
   if (run.waiting) console.log(`${sport}: props waiting for the news (a lineup, a starter, a goalie): ${run.waiting}`);
+  if (run.lateHeld) console.log(`${sport}: the props' betting window (D95): ${run.lateHeld} routine props with an edge wait till ${TIMING[sport]?.propsBet ?? 0} hours before their start (the suggestions on the board meanwhile)`);
   if (run.heldRisk || run.early || run.fastEarly || run.deferred || run.askedToBet || run.snapshot) console.log(`${sport}: the Bot's own time to bet (D42): ${run.early ?? 0} bet early at the surviving lean, ${run.fastEarly ?? 0} on fast news (D49), ${run.heldRisk ?? 0} held for a later run (no surviving edge yet); first asks deferred in ${run.deferred ?? 0} games, bought to bet in ${run.askedToBet ?? 0}${run.snapshot ? `; ${run.snapshot} rows priced from the morning snapshot (suggestions only, ${run.snapshotHeld ?? 0} with an edge not bet)` : ''}`);
   if (run.stored || run.storedMoved) console.log(`${sport}: open CHECKs priced from their stored prices: ${run.stored ?? 0}${run.storedMoved ? `; ${run.storedMoved} not (the line moved on the board)` : ''}${run.storedStale ? `; ${run.storedStale} not bet (the price over ${STORED_HOURS} hours old: closed only)` : ''}${run.storedPulled ? `; ${run.storedPulled} not bet (off a board still showing his market: pulled)` : ''}`);
   // (D55: the props' asks this run by why, the empty ones (none posted yet, free), and the month's projected credits)
@@ -3139,7 +3152,8 @@ export function livePicksOf(bets, sport, { epoch = MODEL_EPOCH, now = Date.now()
     if (!Number.isFinite(t) || t < from || t > now || !Number.isFinite(b.odds) || !Number.isFinite(b.p) || !Number.isFinite(b.fair)) continue;
     const ids = reasonsFor(reasonContext({ sport, market: b.market, side: b.side, stat: b.propType ?? null, fS: b.fair, pS: b.p, kelly: stakeKelly(b.odds, b.p), odds: b.odds, early: (t - at) / 36e5 >= EARLY_HOURS, pin: b.fairFrom === 'pinnacle', newsLag: !!b.newsLag })).map((x) => x.id);
     const profit = b.status === 'won' ? decimal(b.odds) - 1 : b.status === 'lost' ? -1 : 0;
-    out.push({ market: b.market, ids, clv: b.clv && Number.isFinite(b.clv.ev) ? b.clv.ev : null, profit });
+    // (D95: the close at the bet's own line only, as the replay's fairBeatOf reads it; a moved line has none)
+    out.push({ market: b.market, ids, clv: b.clv && Number.isFinite(b.clv.ev) && (b.market === 'ml' || b.clv.pts === 0) ? b.clv.ev : null, profit });
   }
   return out;
 }

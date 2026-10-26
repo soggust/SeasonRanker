@@ -1,21 +1,34 @@
 // The game lines gated by CLV (round D, 2026-10-17, the owner's #5; libs/ranker/scripts/model/desk.mjs lineGate),
 // made a practice stake the same day (the owner: "why would it stop betting? it should reset everything on an
-// algorithm change, and it needs practice and data"): while a sport's CLV (each bet's ev at the close) over its last
-// 200 graded line bets since the epoch is negative, its lines are still bet by their normal rules at 0.5u, never
-// tracked for the gate's sake; under 40 graded with a close since the epoch, too few to judge, full stakes. The
+// algorithm change, and it needs practice and data"). Since D95 (2026-10-26) the gate reads D56's one definition, the
+// replay's: a bet beat the fair close when its own price had a positive expected return at the close's no-vig at its
+// own line (clv.ev > 0; a moved line has none), and each line market (spread, total, ml) is its own gate, as the
+// replay's bar keys them; under D60's bar (52.5%) over its last 200 graded since the epoch, the practice stake (0.5u,
+// never tracked for the gate's sake); under 40 with a fair close since the epoch, too few to judge, full stakes. The
 // props' gate by stat the same, and the research bets' auto-off a 0.5u cap.
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { LINE_GATE_MIN, LINE_GATE_N, PRACTICE_UNITS, gatedPlacement, lineGate, practiceGates, propGate } from '../libs/ranker/scripts/model/desk.mjs';
+import { LINE_GATE_MIN, LINE_GATE_N, PRACTICE_UNITS, gatedPlacement, lineGate, lineGateFor, practiceGates, propGate } from '../libs/ranker/scripts/model/desk.mjs';
 import { MODEL_EPOCH } from '../libs/ranker/scripts/model/leagues.mjs';
-import { CLV_V } from '../libs/ranker/scripts/model/clv.mjs';
+import { CLV_V, fairBeat } from '../libs/ranker/scripts/model/clv.mjs';
 import { levelOf } from '../libs/ranker/scripts/model/picks.mjs';
 import { researchCall, researchGateOf } from '../libs/ranker/scripts/model/research.mjs';
 import { TOTAL_LIVE, liveCount, totalPickFor } from '../libs/ranker/scripts/model/fights-totals.mjs';
 
-const bet = (i, ev, extra = {}) => ({ id: `b${i}`, sport: 'nhl', market: ['spread', 'ml', 'total'][i % 3], status: i % 2 ? 'won' : 'lost', gradedAt: new Date(Date.UTC(2026, 9, 1, i)).toISOString(), clv: { ev: ev - 0.045, prob: ev, beat: ev > 0 ? true : ev < 0 ? false : null, v: CLV_V }, ...extra });
+// (a graded line bet: ev its expected return at the fair close, at its own line (pts 0) unless moved)
+const bet = (i, ev, extra = {}) => ({ id: `b${i}`, sport: 'nhl', market: 'spread', status: i % 2 ? 'won' : 'lost', gradedAt: new Date(Date.UTC(2026, 9, 1, i)).toISOString(), clv: { ev, prob: ev + 0.03, pts: 0, beat: ev + 0.03 > 0, v: CLV_V }, ...extra });
 
-test('under the minimum graded: full stakes, said so; props, voids, open rows and other sports never count', () => {
+test("D95 fairBeat: a positive expected return at the fair close at the bet's own line; a moneyline always its line; a moved line none", () => {
+  assert.equal(fairBeat({ market: 'spread', clv: { ev: 0.01, pts: 0 } }), 1);
+  assert.equal(fairBeat({ market: 'spread', clv: { ev: -0.01, pts: 0 } }), 0);
+  assert.equal(fairBeat({ market: 'spread', clv: { ev: 0.2, pts: 1.5 } }), null, 'a moved line: no close to read, never the carried guess');
+  assert.equal(fairBeat({ market: 'ml', clv: { ev: 0.02, pts: null } }), 1);
+  assert.equal(fairBeat({ market: 'prop', clv: { ev: null, pts: 0 } }), null);
+  // (the old reading's beat (the no-vig chance moved its way) with the price still losing at the close: no beat)
+  assert.equal(fairBeat({ market: 'total', clv: { ev: -0.02, prob: 0.01, beat: true, pts: 0 } }), 0);
+});
+
+test('under the minimum graded: full stakes, said so; props, voids, open rows, moved lines and other sports never count', () => {
   const bets = [
     ...Array.from({ length: LINE_GATE_MIN - 1 }, (_, i) => bet(i, -0.05)),
     bet(100, -0.9, { market: 'prop' }),
@@ -23,6 +36,7 @@ test('under the minimum graded: full stakes, said so; props, voids, open rows an
     bet(102, -0.9, { status: 'open' }),
     bet(103, -0.9, { sport: 'nba' }),
     bet(104, -0.9, { clv: null }),
+    bet(105, -0.9, { clv: { ev: -0.9, prob: -0.9, pts: 2, v: CLV_V } }),
   ];
   const g = lineGate(bets, 'nhl', null);
   assert.equal(g.on, true);
@@ -32,33 +46,37 @@ test('under the minimum graded: full stakes, said so; props, voids, open rows an
   assert.equal(lineGate([], 'nfl').on, true);
 });
 
-test('negative CLV over the window: the practice stake; positive: full stakes; the window is the last 200 graded', () => {
-  const off = lineGate(Array.from({ length: 60 }, (_, i) => bet(i, i % 2 ? -0.06 : -0.02)), 'nhl', null);
+test('D95 under the bar over the window: the practice stake; past it, full stakes; the window is the last 200 graded; each market its own', () => {
+  const off = lineGate(Array.from({ length: 60 }, (_, i) => bet(i, i % 4 ? -0.03 : 0.02)), 'nhl', null);
   assert.equal(off.on, false);
   assert.equal(off.practice, true);
   assert.equal(off.n, 60);
-  assert.ok(off.prob < 0, `ev ${off.prob}`);
-  assert.equal(off.why, `practice stake: CLV ${off.prob} over 60`);
+  assert.equal(off.beat, 0.25);
+  assert.match(off.markets.spread.why, /^practice stake: beat the fair close 25% over 60 graded spread bets, under 52.5%/);
   const on = lineGate(Array.from({ length: 60 }, (_, i) => bet(i, 0.01)), 'nhl', null);
   assert.equal(on.on, true);
-  assert.equal(on.prob, 0.01);
   assert.equal(on.beat, 1);
-  // (300 graded: the oldest 100 at -0.5 fall out of the window, the last 200 at +0.01 carry it)
+  // (300 graded: the oldest 100 losing fall out of the window, the last 200 beating carry it)
   const window = lineGate([...Array.from({ length: 100 }, (_, i) => bet(i, -0.5)), ...Array.from({ length: 200 }, (_, i) => bet(100 + i, 0.01))], 'nhl', null);
-  assert.equal(window.n, LINE_GATE_N);
+  assert.equal(window.markets.spread.n, LINE_GATE_N);
   assert.equal(window.on, true);
-  assert.equal(window.prob, 0.01);
-  const back = lineGate([...Array.from({ length: 250 }, (_, i) => bet(i, -0.1)), ...Array.from({ length: 200 }, (_, i) => bet(250 + i, 0.02))], 'nhl', null);
-  assert.equal(back.on, true);
+  // (by market, as the replay's bar keys them: the totals held, the spreads and moneylines at full stakes)
+  const mixed = lineGate([...Array.from({ length: 50 }, (_, i) => bet(i, 0.02)), ...Array.from({ length: 50 }, (_, i) => bet(100 + i, -0.02, { market: 'total' })), ...Array.from({ length: 10 }, (_, i) => bet(200 + i, -0.02, { market: 'ml', clv: { ev: -0.02, prob: 0, pts: null, v: CLV_V } }))], 'nhl', null);
+  assert.equal(mixed.on, false);
+  assert.equal(lineGateFor(mixed, 'spread').on, true);
+  assert.equal(lineGateFor(mixed, 'total').practice, true);
+  assert.equal(lineGateFor(mixed, 'ml').on, true, 'under 40 moneylines: too few to judge');
+  assert.equal(lineGateFor(mixed, 'ml').n, 10);
+  assert.match(mixed.why, /^total: practice stake/);
 });
 
-test('a failing CLV gate yields 0.5u bets, never tracked rows; an edge still needed; a LIKE at most', () => {
+test('a failing gate yields 0.5u bets, never tracked rows; an edge still needed; a LIKE at most', () => {
   const off = lineGate(Array.from({ length: 60 }, (_, i) => bet(i, -0.04)), 'nhl', null);
-  const placed = gatedPlacement(true, 2, off);
+  const placed = gatedPlacement(true, 2, lineGateFor(off, 'spread'));
   assert.equal(placed.intent, 'edge');
   assert.equal(placed.units, PRACTICE_UNITS);
   assert.equal(PRACTICE_UNITS, 0.5);
-  assert.equal(placed.practice, 'practice stake: CLV -0.04 over 60');
+  assert.equal(placed.practice, 'practice stake: beat the fair close 0% over 60 graded spread bets, under 52.5%');
   // (no edge: tracked as ever, the gate not the reason)
   const none = gatedPlacement(false, 2, off);
   assert.equal(none.intent, 'track');
@@ -66,6 +84,7 @@ test('a failing CLV gate yields 0.5u bets, never tracked rows; an edge still nee
   // (a passing gate, or none: full stakes)
   assert.deepEqual(gatedPlacement(true, 2, { on: true }), { intent: 'edge', units: 2 });
   assert.deepEqual(gatedPlacement(true, 2, null), { intent: 'edge', units: 2 });
+  assert.deepEqual(gatedPlacement(true, 2, lineGateFor(off, 'ml')), { intent: 'edge', units: 2 }, 'a market with no graded bets: no gate');
   // (a practice bet a LIKE ('medium') at most, whatever its Kelly)
   assert.equal(levelOf({ intent: 'edge', p: 0.7, practice: placed.practice }, 0.3), 'medium');
   // (the props' gate the same: a failing stat bet at 0.5u)
@@ -84,7 +103,7 @@ test('the epoch reset: only bets placed since MODEL_EPOCH count, so a model chan
   assert.equal(g.n, 0);
   assert.equal(g.on, true);
   assert.deepEqual(propGate(old.map((b) => ({ ...b, market: 'prop', propType: 'pts' })), 'nhl'), {});
-  // (since the epoch, 40 negative: the practice stake again)
+  // (since the epoch, 40 under the bar: the practice stake again)
   const fresh = [...old, ...Array.from({ length: LINE_GATE_MIN }, (_, i) => bet(500 + i, -0.02, { placedAt: after }))];
   const h = lineGate(fresh, 'nhl');
   assert.equal(h.n, LINE_GATE_MIN);
@@ -123,22 +142,23 @@ test('MMA round totals: under TOTAL_LIVE graded with a close, an edge is bet at 
   assert.equal(totalPickFor(0.5, lines, 0.5, { live: false }).placed.intent, 'track');
 });
 
-test("round F (the loss review's B6): the gates read the price CLV (prob), never ev at the close, which is about minus the vig; rows of an older CLV definition, or with no CLV (a moved line not carried), aren't read", () => {
-  // (every row at the close's own price: prob 0, ev about the vig: full stakes, not the practice stake)
-  const atClose = Array.from({ length: 60 }, (_, i) => ({ ...bet(i, 0), clv: { ev: -0.0347, prob: 0, beat: null, result: 'tie', v: CLV_V } }));
+test("D95 (was round F's B6): the gates read the fair close as the replay does; a row at the close's own price returns about minus the vig there, no beat; rows of an older CLV definition, or a moved line, aren't read", () => {
+  // (every row at the close's own price: prob 0, ev about minus the vig: no beat, the practice stake (the replay's own
+  // bets at the close have no check at all; a live bet near the close is judged as the replay's open would be))
+  const atClose = Array.from({ length: 60 }, (_, i) => ({ ...bet(i, 0), clv: { ev: -0.0347, prob: 0, pts: 0, beat: null, result: 'tie', v: CLV_V } }));
   const g = lineGate(atClose, 'nhl', null);
-  assert.equal(g.on, true);
+  assert.equal(g.practice, true);
   assert.equal(g.prob, 0);
   assert.equal(g.ev, -0.0347);
-  assert.equal(g.beat, null);
-  // (old-definition rows and rows left out don't count)
-  const old = Array.from({ length: 60 }, (_, i) => ({ ...bet(i, -0.05), clv: { ev: -0.09, prob: -0.05, beat: false } }));
-  const out = Array.from({ length: 60 }, (_, i) => ({ ...bet(100 + i, -0.05), clv: { ev: null, prob: null, beat: null, why: 'line moved', v: CLV_V } }));
-  assert.equal(lineGate([...old, ...out], 'nhl', null).n, 0);
+  assert.equal(g.beat, 0);
+  // (old-definition rows and moved lines don't count)
+  const old = Array.from({ length: 60 }, (_, i) => ({ ...bet(i, -0.05), clv: { ev: -0.09, prob: -0.05, pts: 0, beat: false } }));
+  const out = Array.from({ length: 60 }, (_, i) => ({ ...bet(100 + i, -0.05), clv: { ev: null, prob: null, pts: 0, beat: null, why: 'line moved', v: CLV_V } }));
+  const moved = Array.from({ length: 60 }, (_, i) => ({ ...bet(200 + i, -0.05), clv: { ev: -0.05, prob: 0.01, pts: 1, v: CLV_V } }));
+  assert.equal(lineGate([...old, ...out, ...moved], 'nhl', null).n, 0);
   const props = propGate(atClose.map((b) => ({ ...b, market: 'prop', propType: 'pts' })), 'nhl', null);
-  assert.equal(props.pts.on, true);
-  assert.equal(props.pts.prob, 0);
+  assert.equal(props.pts.practice, true);
+  assert.equal(props.pts.beat, 0);
   // (a failing gate still only shrinks: an edge bet at 0.5u)
-  const losing = lineGate(Array.from({ length: 60 }, (_, i) => bet(i, -0.01)), 'nhl', null);
-  assert.equal(gatedPlacement(true, 2, losing).units, PRACTICE_UNITS);
+  assert.equal(gatedPlacement(true, 2, lineGateFor(g, 'spread')).units, PRACTICE_UNITS);
 });

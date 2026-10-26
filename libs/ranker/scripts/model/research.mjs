@@ -83,7 +83,8 @@
 import { checkLocked, modelKelly, shadowOf } from './checks.mjs';
 import { addUsage, costOf, loadSdk } from './ai-budget.mjs';
 import { OUT_STATUS, Q_STATUS } from './timing.mjs';
-import { clearedChanceAt, decimal } from './desk.mjs';
+import { BEAT_BAR, clearedChanceAt, decimal } from './desk.mjs';
+import { fairBeat } from './clv.mjs';
 
 export const RESEARCH_MODEL = 'claude-opus-5-5';
 export const TOP = 100;
@@ -818,13 +819,17 @@ export function researchLevelOf(bets = []) {
   const breakEven = decided.length ? r4(decided.reduce((t, b) => t + 1 / decimal(Number.isFinite(b.odds) && b.odds ? b.odds : -110), 0) / decided.length) : null;
   const closed = graded.filter((b) => Number.isFinite(b.clv?.prob));
   const clv = closed.length ? r4(closed.reduce((t, b) => t + b.clv.prob, 0) / closed.length) : null;
+  // (D95: one beat-the-close definition, D56's (clv.mjs fairBeat): the share of the ones with a fair close at their own
+  // line whose price had a positive expected return there, at D60's bar; the CLV shown, not judged)
+  const fair = graded.map(fairBeat).filter((x) => x === 0 || x === 1);
+  const beat = fair.length ? r4(fair.filter((x) => x === 1).length / fair.length) : null;
   const n = graded.length;
   const push = n - won - lost;
-  const earned = n >= RESEARCH_LEVEL_N && hitRate !== null && breakEven !== null && hitRate > breakEven && clv !== null && clv >= 0;
-  const rec = `${n} graded ${won}-${lost}${push ? `-${push}` : ''}${hitRate === null ? '' : ` (${Math.round(hitRate * 100)}%, break-even ${Math.round(breakEven * 100)}%)`}, CLV ${clv === null ? 'none closed' : `${clv >= 0 ? '+' : ''}${clv}`}`;
+  const earned = n >= RESEARCH_LEVEL_N && hitRate !== null && breakEven !== null && hitRate > breakEven && beat !== null && beat >= BEAT_BAR;
+  const rec = `${n} graded ${won}-${lost}${push ? `-${push}` : ''}${hitRate === null ? '' : ` (${Math.round(hitRate * 100)}%, break-even ${Math.round(breakEven * 100)}%)`}, beat the fair close ${beat === null ? 'none checked' : `${Math.round(beat * 1000) / 10}% of ${fair.length}`}`;
   const practice = `research bets at the practice stake (${RESEARCH_UNITS}u, a LIKE at most)`;
-  const why = earned ? `research bets at their Kelly stake and level: ${rec}` : n < RESEARCH_LEVEL_N ? `${practice}: ${rec}, under ${RESEARCH_LEVEL_N}` : `${practice}: ${rec}, not over break-even with the CLV 0 or better`;
-  return { earned, n, won, lost, push, hitRate, breakEven, withClose: closed.length, clv, min: RESEARCH_LEVEL_N, why };
+  const why = earned ? `research bets at their Kelly stake and level: ${rec}` : n < RESEARCH_LEVEL_N ? `${practice}: ${rec}, under ${RESEARCH_LEVEL_N}` : `${practice}: ${rec}, not over break-even with the fair close beaten ${Math.round(BEAT_BAR * 1000) / 10}% of the time or more`;
+  return { earned, n, won, lost, push, hitRate, breakEven, withClose: closed.length, clv, beat, beatN: fair.length, min: RESEARCH_LEVEL_N, why };
 }
 // (a kind of research bet staked at its Kelly and its level: the level earned, and its own gate not at practice)
 export const researchEarned = (level, gate, kind) => !!level?.earned && !gate?.[kind]?.practice && gate?.[kind]?.on !== false;

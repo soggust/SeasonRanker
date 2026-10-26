@@ -37,7 +37,7 @@ import { summary } from './espn.mjs';
 import { nflNgs } from './ngs.mjs';
 import { CONTACT_ON, mlbContact } from './savant.mjs';
 import { nbaShots, nhlShots } from './plays.mjs';
-import { CACHE, etDay, mlbPeople, nflverseRows, pool, readJson, writeJson } from './sources.mjs';
+import { CACHE, etDay, mlbPeople, mlbPitching, nflverseRows, pitchLine, pool, readJson, writeJson } from './sources.mjs';
 
 // (a row's receiving air yards: unread (undefined) where nflverse left them NA or blank, or the column's missing,
 // so matchups.mjs learnAir skips the row, not a 0-yard target pulling his depth and the league's down)
@@ -362,6 +362,37 @@ async function mlbRows(history, facts) {
     espnOfTeam.set(g.awayAbbr, g.away);
   }
   const byPk = new Map();
+  const mine = load('mlb');
+  mine.at ??= {};
+  mine.logs ??= {};
+  const today = new Date().toISOString().slice(0, 10);
+  // (the postseason (DECISIONS.md D95, the testing audit's fifth recommendation): StatsAPI's game logs are the regular
+  // season's unless asked for its postseason (gameType P), so a playoff game had no players' rows and its props no
+  // history. Each season's playoff starters' pitching logs and its batters' hitting logs asked once (the current
+  // season's again once a day while its playoffs go on), kept beside the regular season's: mine.post, mine.postP)
+  mine.post ??= {};
+  mine.postP ??= {};
+  mine.postAt ??= {};
+  const postSeasons = [...new Set(history.filter((g) => g.type === 3 && g.final).map((g) => g.season))];
+  const postCurrent = Math.max(...history.map((g) => g.season));
+  for (const season of postSeasons) {
+    if (mine.postP[season] && mine.post[season] && (season < postCurrent || mine.postAt[season] >= today)) continue;
+    const starters = [...new Set(history.filter((g) => g.type === 3 && g.season === season).flatMap((g) => [facts.games?.[g.id]?.hp, facts.games?.[g.id]?.ap]).filter(Boolean).map(String))];
+    const pitching = starters.length ? await mlbPitching(starters, season, 'gameLog', 'P').catch(() => null) : new Map();
+    const hitting = await mlbHitting(Object.keys(facts.hands ?? {}), season, 'P');
+    if (!pitching || !hitting) continue;
+    mine.postP[season] = Object.fromEntries([...pitching].map(([id, { name, splits }]) => [id, { n: name, rows: splits.filter((s) => s.date).map((s) => [Number(s.date.replace(/-/g, '')), ...pitchLine(s.stat)]) }]));
+    mine.post[season] = hitting;
+    mine.postAt[season] = today;
+    save('mlb');
+    console.log(`mlb: the postseason's game logs for ${season} (${Object.keys(mine.postP[season]).length} starters, ${Object.keys(hitting).length} batters)`);
+  }
+  const postStarts = new Map();
+  const postNames = new Map();
+  for (const logs of Object.values(mine.postP)) for (const [id, { n, rows }] of Object.entries(logs)) {
+    postNames.set(String(id), n);
+    for (const r of rows) postStarts.set(`${id}|${r[0]}`, r);
+  }
   // (the probable starters: each one's line on the day, from his game log)
   for (const g of history) {
     const f = facts.games?.[g.id];
@@ -375,16 +406,13 @@ async function mlbRows(history, facts) {
       [f.ap, g.away, g.home, false],
     ]) {
       const p = id && facts.pitchers?.[id];
-      const line = p?.logs?.[g.season]?.find((r) => r[0] === day);
+      // (the regular season's line from the context's logs; a playoff start's from the postseason logs below, D95)
+      const line = p?.logs?.[g.season]?.find((r) => r[0] === day) ?? (g.type === 3 ? postStarts.get(`${id}|${day}`) : null);
       if (!line) continue;
-      out.push({ pid: `mlb:${id}`, name: p.n, pos: 'SP', date: g.date, season: g.season, team, opp, game: g.id, home, s: { k: line[4], outs: line[1] } });
+      out.push({ pid: `mlb:${id}`, name: p?.n ?? postNames.get(String(id)) ?? null, pos: 'SP', date: g.date, season: g.season, team, opp, game: g.id, home, s: { k: line[4], outs: line[1] } });
     }
   }
   // (the batters: every lineup's, their game logs by season; this season's asked again once a day)
-  const mine = load('mlb');
-  mine.at ??= {};
-  mine.logs ??= {};
-  const today = new Date().toISOString().slice(0, 10);
   const seasons = [...new Set(history.map((g) => g.season))];
   const current = Math.max(...seasons);
   const batters = Object.keys(facts.hands ?? {});
@@ -406,7 +434,7 @@ async function mlbRows(history, facts) {
   const days = history.map((g) => g.date.slice(0, 10)).sort();
   const contact = CONTACT_ON && days.length ? await mlbContact(days[0], days[days.length - 1]).catch(() => new Map()) : new Map();
   const seenPk = new Set([...contact.keys()].map((k) => k.split('|')[0]));
-  for (const [season, logs] of Object.entries(mine.logs)) {
+  for (const [season, logs] of [...Object.entries(mine.logs), ...Object.entries(mine.post)]) {
     for (const [id, { n, rows }] of Object.entries(logs)) {
       for (const [ymd, pk, teamId, oppId, home, pa, h, tb, hr, so, bb] of rows) {
         const g = byPk.get(pk);
@@ -422,8 +450,8 @@ async function mlbRows(history, facts) {
 // (batters' hitting game logs for a season, 40 to a call: { id: { n: name, rows: [[yyyymmdd, gamePk, team,
 // opponent, home, PA, hits, total bases, home runs, strikeouts, walks]] } }; null when StatsAPI fails)
 const BAT_COLS = 11;
-async function mlbHitting(ids, season) {
-  const { people, failed, calls } = await mlbPeople(ids, 40, `stats(group=[hitting],type=[gameLog],season=${season})`);
+async function mlbHitting(ids, season, gameType = null) {
+  const { people, failed, calls } = await mlbPeople(ids, 40, `stats(group=[hitting],type=[gameLog],season=${season}${gameType ? `,gameType=[${gameType}]` : ''})`);
   if (failed > calls / 2) return null;
   const out = {};
   for (const p of people) {

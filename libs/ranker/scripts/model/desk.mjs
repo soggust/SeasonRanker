@@ -31,7 +31,7 @@ import { round } from './ratings.mjs';
 import { cond, mlModel, spreadChances, totalChances, totalSplit } from './margins.mjs';
 import { etDay } from './sources.mjs';
 import { MODEL_EPOCH } from './leagues.mjs';
-import { CLV_V } from './clv.mjs';
+import { CLV_V, fairBeat } from './clv.mjs';
 import { hookChance } from './residual.mjs';
 import { knob } from './tuned.mjs';
 
@@ -938,63 +938,76 @@ export const trackedRecord = (bets) => record(bets.filter(isTracked).map((b) => 
 // leagues.mjs): an algorithm change resets the gate. Props never gated here (propGate). Fewer than LINE_GATE_MIN
 // graded with a close since the epoch: too few to judge, full stakes. { on, practice, n, ev, prob, beat, min,
 // window, epoch, why }: on is full stakes, practice its opposite; state.json's lineGate, the Algorithm tab's
-// Tracked panel
+// Tracked panel. Since D95 (2026-10-26) the gate reads D56's beat the fair close, by market, as the replay's bar does (marketGate)
 export const LINE_GATE_N = 200;
 export const LINE_GATE_MIN = 40;
 // (the beat-the-close bar, DECISIONS.md D60 (Gemini's guard, 2026-10-20): a market earns more than the practice stake
-// only while its bets beat the fair close at least this often (with a CLV of 0 or more), from LINE_GATE_MIN graded
+// only while its bets beat the fair close (D56, D95: the replay's definition) at least this often, from LINE_GATE_MIN graded
 // with a close; under it the stake shrinks to PRACTICE_UNITS, never off (D1))
 export const BEAT_BAR = 0.525;
 const beatOk = (beat, bar = BEAT_BAR) => beat == null || beat >= bar;
 // (D88: the bar and its minimum by sport, the self-tune's tuned.json where it set them, else BEAT_BAR and LINE_GATE_MIN)
 export const beatOpts = (sport) => ({ bar: knob(sport, 'beatBar'), min: knob(sport, 'beatMin') });
-const beatWord = (beat) => (beat == null ? '' : `, beat the close ${Math.round(beat * 1000) / 10}%`);
 export const PRACTICE_UNITS = 0.5;
 // (a bet placed since the epoch; epoch null: every bet)
 const sinceEpoch = (epoch) => (epoch == null ? () => true : (b) => Date.parse(b.placedAt ?? b.start ?? '') >= Date.parse(epoch));
 const signed = (ev) => `${ev >= 0 ? '+' : ''}${ev}`;
-// (a row whose CLV the gates read: of the current definition, with a price to compare)
-const clvIn = (b) => b.clv?.v === CLV_V && Number.isFinite(b.clv?.prob);
-// (the share that beat the close of those that didn't tie it)
-const beatOf = (list) => {
-  const d = list.filter((b) => b.clv.beat === true || b.clv.beat === false);
-  return d.length ? round(d.filter((b) => b.clv.beat).length / d.length, 4) : null;
-};
-// The props gated by CLV, by stat (round E, 2026-10-17, the brief's #7: the line gate's twin): a stat's props (its
-// propType, e.g. recYds) bet at the practice stake (PRACTICE_UNITS, by their normal rules, an edge still needed)
-// while the closing-line value of its last LINE_GATE_N graded prop bets with a close since the epoch is negative;
-// positive, or under LINE_GATE_MIN since the epoch, full stakes. { [stat]: { on, practice, n, ev, beat, why } } for
-// the stats with any graded prop since the epoch; a stat not in it isn't gated. state.json's propGate, the
-// Algorithm tab's Tracked panel
-export function propGate(bets, sport, epoch = MODEL_EPOCH) {
-  const out = {};
-  const graded = (bets ?? []).filter((b) => b.sport === sport && b.market === 'prop' && !b.void && !inPractice(b) && ['won', 'lost', 'push'].includes(b.status) && clvIn(b) && b.propType).filter(sinceEpoch(epoch));
-  const by = new Map();
-  for (const b of graded) by.set(b.propType, [...(by.get(b.propType) ?? []), b]);
-  const { bar: BAR, min: MIN } = beatOpts(sport);
-  for (const [stat, list] of by) {
-    const last = list.sort((a, b) => Date.parse(a.gradedAt ?? a.start ?? 0) - Date.parse(b.gradedAt ?? b.start ?? 0)).slice(-LINE_GATE_N);
-    const n = last.length;
-    const ev = round(last.reduce((t, b) => t + (b.clv.ev ?? 0), 0) / n, 4);
-    const prob = round(last.reduce((t, b) => t + b.clv.prob, 0) / n, 4);
-    const beat = beatOf(last);
-    const on = n < MIN || (prob >= 0 && beatOk(beat, BAR));
-    out[stat] = { on, practice: !on, n, prob, ev, beat, bar: BAR, min: MIN, window: LINE_GATE_N, epoch, why: on ? (n < MIN ? `${n} graded ${stat} props with a close since the epoch: under ${MIN}, full stakes` : `CLV ${signed(prob)}${beatWord(beat)} over the last ${n} graded ${stat} props: full stakes`) : prob < 0 ? `practice stake: CLV ${prob} over ${n}` : `practice stake: beat the close ${Math.round(beat * 1000) / 10}% over ${n}, under ${round(BAR * 100, 2)}%` };
-  }
-  return out;
-}
-export function lineGate(bets, sport, epoch = MODEL_EPOCH) {
-  const graded = (bets ?? []).filter((b) => b.sport === sport && b.market !== 'prop' && !b.void && !inPractice(b) && ['won', 'lost', 'push'].includes(b.status) && clvIn(b)).filter(sinceEpoch(epoch));
-  const last = graded.sort((a, b) => Date.parse(a.gradedAt ?? a.start ?? 0) - Date.parse(b.gradedAt ?? b.start ?? 0)).slice(-LINE_GATE_N);
+/// (a row the gates read (DECISIONS.md D95, one beat-the-close definition): of the current CLV definition, with a fair
+// close at its own line (clv.mjs fairBeat: D56's, the replay's), so a moved line, never carried, isn't judged)
+const clvIn = (b) => b.clv?.v === CLV_V && fairBeat(b) !== null;
+// (the share that beat the fair close: D56's, a positive expected return at the close's no-vig at the bet's line)
+const beatOf = (list) => (list.length ? round(list.filter((b) => fairBeat(b) === 1).length / list.length, 4) : null);
+const byGraded = (a, b) => Date.parse(a.gradedAt ?? a.start ?? 0) - Date.parse(b.gradedAt ?? b.start ?? 0);
+// One market's gate (a line market's, a prop stat's) as the replay's bar reads it (replay-record.mjs beatBar, D60): its
+// last LINE_GATE_N graded bets with a fair close at their own line, from MIN of them, beat the fair close at least BAR
+// of the time, else the practice stake (D1: never off). The CLV (prob: the no-vig chance moved the bet's way) is shown,
+// never judged: a bet can move the chance its way while its own price still loses to the close (D93's audit)
+function marketGate(list, what, { bar: BAR, min: MIN }, epoch) {
+  const last = [...list].sort(byGraded).slice(-LINE_GATE_N);
   const n = last.length;
   const mean = (k) => (n ? round(last.reduce((t, b) => t + (b.clv[k] ?? 0), 0) / n, 4) : null);
   const ev = mean('ev');
   const prob = mean('prob');
   const beat = n ? beatOf(last) : null;
-  const { bar: BAR, min: MIN } = beatOpts(sport);
-  const on = n < MIN || (prob >= 0 && beatOk(beat, BAR));
-  return { on, practice: !on, n, ev, prob, beat, bar: BAR, min: MIN, window: LINE_GATE_N, epoch, why: on ? (n < MIN ? `${n} graded line bets with a close since the epoch: under ${MIN}, full stakes` : `CLV ${signed(prob)}${beatWord(beat)} over the last ${n} graded line bets: full stakes`) : prob < 0 ? `practice stake: CLV ${prob} over ${n}` : `practice stake: beat the close ${Math.round(beat * 1000) / 10}% over ${n}, under ${round(BAR * 100, 2)}%` };
+  const on = n < MIN || beatOk(beat, BAR);
+  return { on, practice: !on, n, ev, prob, beat, bar: BAR, min: MIN, window: LINE_GATE_N, epoch, why: on ? (n < MIN ? `${n} graded ${what} with a fair close since the epoch: under ${MIN}, full stakes` : `beat the fair close ${Math.round(beat * 1000) / 10}% over the last ${n} graded ${what} (CLV ${signed(prob ?? 0)}): full stakes`) : `practice stake: beat the fair close ${Math.round(beat * 1000) / 10}% over ${n} graded ${what}, under ${round(BAR * 100, 2)}%` };
 }
+// The props gated by the fair close, by stat (round E, 2026-10-17, the brief's #7: the line gate's twin; D60's bar, D95's
+// definition): a stat's props (its propType, e.g. recYds) bet at the practice stake (PRACTICE_UNITS, by their normal
+// rules, an edge still needed) while its last LINE_GATE_N graded prop bets with a fair close since the epoch beat it
+// under the bar; past it, or under the minimum since the epoch, full stakes. { [stat]: { on, practice, n, ev, prob,
+// beat, why } } for the stats with any; a stat not in it isn't gated. state.json's propGate, the Algorithm tab's
+// Tracked panel. Since D95 (2026-10-26) the gate reads D56's beat the fair close, by market, as the replay's bar does (marketGate)
+export function propGate(bets, sport, epoch = MODEL_EPOCH) {
+  const out = {};
+  const graded = (bets ?? []).filter((b) => b.sport === sport && b.market === 'prop' && !b.void && !inPractice(b) && ['won', 'lost', 'push'].includes(b.status) && clvIn(b) && b.propType).filter(sinceEpoch(epoch));
+  const by = new Map();
+  for (const b of graded) by.set(b.propType, [...(by.get(b.propType) ?? []), b]);
+  const opts = beatOpts(sport);
+  for (const [stat, list] of by) out[stat] = marketGate(list, `${stat} props`, opts, epoch);
+  return out;
+}
+// The game lines' gate, by market as the replay's bar keys them (D95: spread, total, ml each its own, beatKey): each
+// market's marketGate; the whole { on, practice, n, ev, prob, beat, bar, min, window, epoch, why, markets }: on where
+// every market is, n and beat over them all (the panel's), why the held markets' own words. lineGateFor(gate, market)
+// is the market's
+export const LINE_MARKETS = ['spread', 'total', 'ml'];
+export function lineGate(bets, sport, epoch = MODEL_EPOCH) {
+  const graded = (bets ?? []).filter((b) => b.sport === sport && b.market !== 'prop' && !b.void && !inPractice(b) && ['won', 'lost', 'push'].includes(b.status) && clvIn(b)).filter(sinceEpoch(epoch));
+  const opts = beatOpts(sport);
+  const markets = {};
+  for (const m of new Set([...LINE_MARKETS, ...graded.map((b) => b.market)])) {
+    const list = graded.filter((b) => b.market === m);
+    if (list.length) markets[m] = marketGate(list, `${m === 'ml' ? 'moneyline' : m} bets`, opts, epoch);
+  }
+  const all = marketGate(graded, 'line bets', opts, epoch);
+  const held = Object.entries(markets).filter(([, g]) => !g.on);
+  const on = !held.length;
+  return { ...all, on, practice: !on, markets, why: on ? all.why : held.map(([m, g]) => `${m}: ${g.why}`).join('; ') };
+}
+// (a line market's own gate from lineGate's: its market's where it has one, else none (full stakes); an older gate
+// without markets, itself)
+export const lineGateFor = (gate, market) => (!gate ? null : gate.markets ? (gate.markets[market] ?? null) : gate);
 
 // A new row's placement under a CLV gate (lineGate's, or a stat's propGate): the gate passing (or none), placement's;
 // failing, the same rule (an edge still bet, none tracked) at PRACTICE_UNITS, the bet marked practice (the gate's why:
@@ -1053,20 +1066,61 @@ export const EDGE_GRID = [0, 0.01, 0.02, 0.03, 0.05];
 export const flatProfit = (odds, status) => (status === 'won' ? decimal(Number.isFinite(odds) && odds ? odds : -110) - 1 : status === 'lost' ? -1 : 0);
 // (the sufficient statistics of a set of flat picks { profit, w }: the picks' worth, the weighted sum and sum of
 // squares of their profit; two sets add)
+// (D95, the testing audit's sixth recommendation (b): the picks of one game move together (a game's props, a reason's
+// open and close), so the bar's error is clustered by game: each pick's g (its game; none, its own cluster). Beside the
+// sums, q0 q1 q2 (each pick's w², w² x, w² x²) and c0 c1 c2 (each game's W², W S, S²: its weight and weighted profit
+// summed), k the games; barOf's standard error is the plain one times the design effect's root (clusterDeff). Two sets
+// add field by field (the history's and the live bets' games never the same))
 export function barStats(picks) {
   let n = 0;
   let sum = 0;
   let sum2 = 0;
+  let q0 = 0;
+  let q1 = 0;
+  let q2 = 0;
+  const games = new Map();
+  let own = 0;
   for (const p of picks ?? []) {
     const w = Number.isFinite(p.w) ? p.w : 1;
     if (!(w > 0) || !Number.isFinite(p.profit)) continue;
     n += w;
     sum += w * p.profit;
     sum2 += w * p.profit * p.profit;
+    q0 += w * w;
+    q1 += w * w * p.profit;
+    q2 += w * w * p.profit * p.profit;
+    const g = p.g ?? `#${own++}`;
+    const c = games.get(g) ?? games.set(g, [0, 0]).get(g);
+    c[0] += w;
+    c[1] += w * p.profit;
   }
-  return { n: round(n, 3), sum: round(sum, 4), sum2: round(sum2, 4) };
+  let c0 = 0;
+  let c1 = 0;
+  let c2 = 0;
+  for (const [W, S] of games.values()) {
+    c0 += W * W;
+    c1 += W * S;
+    c2 += S * S;
+  }
+  return { n: round(n, 3), sum: round(sum, 4), sum2: round(sum2, 4), q0: round(q0, 4), q1: round(q1, 4), q2: round(q2, 4), c0: round(c0, 4), c1: round(c1, 4), c2: round(c2, 4), k: games.size };
 }
-export const addStats = (a, b) => ({ n: (a?.n ?? 0) + (b?.n ?? 0), sum: (a?.sum ?? 0) + (b?.sum ?? 0), sum2: (a?.sum2 ?? 0) + (b?.sum2 ?? 0) });
+const CLUSTER_KEYS = ['q0', 'q1', 'q2', 'c0', 'c1', 'c2', 'k'];
+export const addStats = (a, b) => {
+  const out = { n: (a?.n ?? 0) + (b?.n ?? 0), sum: (a?.sum ?? 0) + (b?.sum ?? 0), sum2: (a?.sum2 ?? 0) + (b?.sum2 ?? 0) };
+  // (a side kept before D95 (no cluster sums) with picks: the sum's design effect unknown, so none (1))
+  const has = (s) => !s?.n || Number.isFinite(s?.k);
+  if (has(a) && has(b)) for (const key of CLUSTER_KEYS) out[key] = (a?.[key] ?? 0) + (b?.[key] ?? 0);
+  return out;
+};
+// (the design effect of the games' clustering on a weighted mean m: the cluster-robust variance (Σ_games (S - m W)²,
+// k/(k-1) its small-sample factor) over the one that takes every pick apart (Σ w² (x - m)²); 1 with no cluster sums)
+export function clusterDeff(stats, m) {
+  if (!Number.isFinite(stats?.k) || !(stats.k > 1) || !Number.isFinite(stats.c2)) return 1;
+  const cl = stats.c2 - 2 * m * stats.c1 + m * m * stats.c0;
+  const ind = stats.q2 - 2 * m * stats.q1 + m * m * stats.q0;
+  if (!(ind > 1e-12) || !(cl >= 0)) return 1;
+  return (cl / ind) * (stats.k / (stats.k - 1));
+}
 // (a key's statistics by minimum edge: the picks { profit, w, ev } whole (an edge of 0), and edges: the ones at a
 // return of each EDGE_GRID step or more; two add step by step)
 export function edgeStats(picks) {
@@ -1089,7 +1143,8 @@ export function barOf(stats, { min = BAR_MIN, z = BAR_Z } = {}) {
   const pctOf = (v) => `${v >= 0 ? '+' : ''}${round(v * 100, 1)}%`;
   if (!(n >= min)) return { on: false, n: round(n, 1), mean: null, se: null, why: `${round(n, 1)} picks' worth of history and live bets: under ${min}, the practice stake till the segment earns it` };
   const mean = stats.sum / n;
-  const se = Math.sqrt(Math.max(0, stats.sum2 / n - mean * mean) / n);
+  // (clustered by game, D95: the plain error times the design effect's root)
+  const se = Math.sqrt((Math.max(0, stats.sum2 / n - mean * mean) / n) * (process.env.BAR_CLUSTER === '0' ? 1 : clusterDeff(stats, mean)));
   const on = mean - z * se > 0;
   return { on, n: round(n, 1), mean: round(mean, 4), se: round(se, 4), why: on ? `net ${pctOf(mean)} a pick over ${round(n, 1)} picks' worth, past ${z} SE (${pctOf(se)}): full stakes` : `practice stake: net ${pctOf(mean)} a pick over ${round(n, 1)} picks' worth, not past ${z} SE (${pctOf(se)})` };
 }
@@ -1182,7 +1237,7 @@ export function lineBar(prior, bets, sport, epoch = MODEL_EPOCH) {
   const keys = new Set([...Object.keys(prior?.segments ?? {}), ...live.flatMap(keysOf)]);
   const out = {};
   for (const k of keys) {
-    const l = edgeStats(live.filter((b) => keysOf(b).includes(k)).map((b) => ({ profit: flatProfit(b.odds, b.status), w: 1, ev: b.ev })));
+    const l = edgeStats(live.filter((b) => keysOf(b).includes(k)).map((b) => ({ profit: flatProfit(b.odds, b.status), w: 1, ev: b.ev, g: `live:${b.event}` })));
     const p = prior?.segments?.[k] ?? { n: 0, sum: 0, sum2: 0 };
     const o = barOpts(sport);
     const v = keyVerdict(addEdgeStats(p, l), o);
@@ -1233,7 +1288,7 @@ export function walkBar(picks, opts = {}) {
   for (const m of months) {
     const season = byMonth.get(m).find((p) => Number.isFinite(p.season))?.season;
     const v = new Map();
-    for (const [k, list] of prior) v.set(k, keyVerdict(edgeStats(list.map((p) => ({ profit: p.profit, ev: p.ev, w: Number.isFinite(season) && Number.isFinite(p.season) ? 0.5 ** Math.max(0, season - p.season) : 1 }))), opts));
+    for (const [k, list] of prior) v.set(k, keyVerdict(edgeStats(list.map((p) => ({ profit: p.profit, ev: p.ev, g: p.g, w: Number.isFinite(season) && Number.isFinite(p.season) ? 0.5 ** Math.max(0, season - p.season) : 1 }))), opts));
     verdicts.set(m, v);
     for (const p of byMonth.get(m)) for (const k of p.keys) (prior.get(k) ?? prior.set(k, []).get(k)).push(p);
   }
@@ -1277,7 +1332,7 @@ export function propBar(prior, bets, sport, epoch = MODEL_EPOCH) {
   const keys = new Set([...Object.keys(prior?.segments ?? {}), ...live.map(keyOf)]);
   const out = {};
   for (const k of keys) {
-    const l = edgeStats(live.filter((b) => keyOf(b) === k).map((b) => ({ profit: flatProfit(b.odds, b.status), w: 1, ev: b.ev })));
+    const l = edgeStats(live.filter((b) => keyOf(b) === k).map((b) => ({ profit: flatProfit(b.odds, b.status), w: 1, ev: b.ev, g: `live:${b.event}` })));
     const p = prior?.segments?.[k] ?? { n: 0, sum: 0, sum2: 0 };
     const o = barOpts(sport);
     const v = keyVerdict(addEdgeStats(p, l), o);

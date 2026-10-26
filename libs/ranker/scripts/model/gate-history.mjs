@@ -26,6 +26,9 @@
 // A selection the replay can't avoid: the props' rows are the player games that happened (a player ruled out late
 // has none), as layer a's.
 
+import { existsSync, readdirSync, readFileSync } from 'node:fs';
+import path from 'node:path';
+import { gunzipSync } from 'node:zlib';
 import { readHistory } from './odds-history.mjs';
 import { bootDiff, binLoss, pairRows, r4, seasonWeight } from './gate-score.mjs';
 import { nameKey } from './espn.mjs';
@@ -138,6 +141,66 @@ export function historyPropIndex(events, props, marketStat) {
   return best;
 }
 
+// (research only, GATE_PROPS_INTRA=1: D61's intraday props, intraday/props-<season>.jsonl.gz: { rows: Map oid -> [{ ts,
+// book, market, player, line, over, under }] (time order, DraftKings'), snaps: Map oid -> [ts] } (Q rows the change-only
+// prices, T rows each event's snapshot times). Never read by a record)
+export function readIntradayProps(dir) {
+  const rows = new Map();
+  const snaps = new Map();
+  if (!existsSync(dir)) return { rows, snaps };
+  for (const f of readdirSync(dir).filter((x) => x.startsWith('props-') && x.endsWith('.jsonl.gz')).sort()) {
+    for (const s of gunzipSync(readFileSync(path.join(dir, f))).toString('utf8').split('\n')) {
+      if (!s) continue;
+      const r = JSON.parse(s);
+      if (r[0] === 'T') (snaps.get(r[1]) ?? snaps.set(r[1], []).get(r[1])).push(Date.parse(r[2]));
+      else if (r[0] === 'Q' && r[3] === 'dk') (rows.get(r[1]) ?? rows.set(r[1], []).get(r[1])).push({ ts: Date.parse(r[2]), book: r[3], market: r[4], player: r[5], line: r[6], over: r[7], under: r[8] });
+    }
+  }
+  for (const list of rows.values()) list.sort((a, b) => a.ts - b.ts);
+  for (const list of snaps.values()) list.sort((a, b) => a - b);
+  return { rows, snaps };
+}
+
+// (research only, GATE_PROPS_INTRA=1: the intraday props onto the history's index as kind 'i', x.i = { [h]: { line,
+// over, under, fair, ts } }: each DraftKings player market as it stood at the event's snapshot nearest each offset hour h
+// before the start (within SNAP_TOL): the latest row of that player's market at or before the snapshot (the files keep
+// one line a player a snapshot, change-only; a moved line is a new row), nearest even on a tie, as the archive's main
+// line; ts the snapshot's time. Attached only to an entry the archive has (the same key); returns the count attached)
+export function addIntradayProps(index, events, intra, marketStat, offsets) {
+  let n = 0;
+  for (const [oid, list] of intra.rows) {
+    const e = events.get(oid);
+    const start = Date.parse(e?.t);
+    const snaps = intra.snaps.get(oid) ?? [];
+    if (!e?.id || !fin(start) || !snaps.length) continue;
+    const seen = new Set();
+    for (const h of offsets ?? []) {
+      const want = start - h * 36e5;
+      const T = snaps.reduce((b, s) => (Math.abs(s - want) < Math.abs(b - want) ? s : b), snaps[0]);
+      if (!(Math.abs(T - want) <= SNAP_TOL) || T >= start || seen.has(T)) continue;
+      seen.add(T);
+      const last = new Map();
+      for (const x of list) {
+        if (x.ts > T) break;
+        if (!fin(x.line) || !fin(x.over) || !fin(x.under)) continue;
+        const k = `${x.market}|${x.player}`;
+        const fair = devig(x.over, x.under);
+        const have = last.get(k);
+        if (!have || x.ts > have.ts || (x.ts === have.ts && Math.abs(fair - 0.5) < Math.abs(have.fair - 0.5))) last.set(k, { ...x, fair });
+      }
+      for (const x of last.values()) {
+        const stat = marketStat[x.market];
+        if (!stat) continue;
+        const entry = index.get(`${stat}|${bookKey(x.player)}|${e.id}`);
+        if (!entry) continue;
+        (entry.i ??= {})[h] = { line: x.line, over: x.over, under: x.under, fair: x.fair, ts: new Date(T).toISOString() };
+        n++;
+      }
+    }
+  }
+  return n;
+}
+
 // (a book name's index key: its nameKey with a trailing note kept apart)
 const bookKey = (name) => {
   const { key, note } = nameParts(name);
@@ -192,8 +255,12 @@ export function propIndexByPlayer(index, rows, games = []) {
     if (!pid) continue;
     const k = `${x.stat}|${pid}|${x.game}`;
     const have = out.get(k);
-    if (!have) out.set(k, { ...x, pid });
-    else for (const kind of ['o', 'c']) if (x[kind] && (!have[kind] || even(x[kind]) < even(have[kind]))) have[kind] = x[kind];
+    if (!have) out.set(k, { ...x, pid, ...(x.i ? { i: { ...x.i } } : {}) });
+    else {
+      for (const kind of ['o', 'c']) if (x[kind] && (!have[kind] || even(x[kind]) < even(have[kind]))) have[kind] = x[kind];
+      // (research only, GATE_PROPS_INTRA=1: the intraday snapshots merged the same way, each hour at its line nearest even)
+      if (x.i) for (const [h, y] of Object.entries(x.i)) if (!(have.i ??= {})[h] || even(y) < even(have.i[h])) have.i[h] = y;
+    }
   }
   out.report = report;
   return out;
@@ -335,7 +402,8 @@ export function finish(V, rows, keyOf, start, kind) {
   // (a close row at its own month's trust; an open row at the trust as of its own snapshot (the months before the
   // snapshot's: no result after it), its game's close row's where it has no snapshot time)
   for (const x of rows) {
-    const t = x.kind !== 'c' && fin(x.at) ? trust.at(keyOf(x), x.at) : (trustOf.get(x.kind === 'c' ? x.id : close.get(x.key)?.id) ?? start(keyOf(x)));
+    // (research only: an optimistic intraday prop row (GATE_PROPS_INTRA) reads its close's own trust, as the close)
+    const t = x.optimistic && close.get(x.key) ? (trustOf.get(close.get(x.key).id) ?? start(keyOf(x))) : x.kind !== 'c' && fin(x.at) ? trust.at(keyOf(x), x.at) : (trustOf.get(x.kind === 'c' ? x.id : close.get(x.key)?.id) ?? start(keyOf(x)));
     const ctx = { sport: x.sport, market: kind === 'lines' ? x.market : 'prop', stat: x.stat, line: x.line, side: 'over', f: x.f, raw: modelOf(x), overOdds: x.overOdds, underOdds: x.underOdds, t: x.t, at: fin(x.at) ? x.at : x.t - (x.kind === 'o' ? 24 * 36e5 : 36e5), kind: x.kind, ...(x.kind === 'i' && fin(x.at) ? { hours: (x.t - x.at) / 36e5 } : {}), fo: x.fo ?? null, home: x.home ?? null, season: x.season, ...(fin(x.named) ? { named: x.named } : {}) };
     x.p = Math.min(0.999, Math.max(0.001, V.desk.chanceAt(kind === 'lines' ? x.market : 'prop', x.f, modelOf(x), t, ctx)));
     // (the current price before the residual blend (the trust's chance), what the confidence layer reads as the
@@ -442,6 +510,17 @@ export function propHistoryRows(V, sport, index, matches, current, { factsLead =
       const y = m.v > x.line ? 1 : m.v < x.line ? 0 : null;
       const id = `p:${m.stat}:${m.pid}:${m.game}`;
       rows.push({ id: `${id}:${kind}`, key: id, event: String(m.game), sport, market: 'prop', stat: m.stat, name: m.name ?? null, kind, yrs: m.yrs ?? null, line: x.line, day: etDay(Date.parse(h.start)), t: Date.parse(h.start), at: fin(Date.parse(x.ts)) ? Date.parse(x.ts) : null, factsAt: fin(factsLead) ? Date.parse(h.start) - factsLead * 36e5 : null, home: m.home ?? null, season: h.season, f: x.fair, raw: Math.min(0.999, Math.max(0.001, raw)), y, q: null, overOdds: x.over, underOdds: x.under, w: seasonWeight(sport, h.season, current).w, m, ...(m.parts && m.overMu ? { attr: propAttr(m, x.line, raw) } : {}) });
+    }
+    // (research only, GATE_PROPS_INTRA=1: the intraday snapshots (addIntradayProps' x.i) as rows of kind 'i' at their own
+    // line and price, the projection at the close's facts (an OPTIMISTIC bound: the day-of facts a fair early row can't
+    // have), so no factsAt stamp: the replay holds them to the lineup risk's surviving share at their hours instead)
+    if (h.i && process.env.GATE_PROPS_INTRA === '1') {
+      for (const [hh, x] of Object.entries(h.i)) {
+        const raw = m.over(x.line);
+        if (!fin(raw)) continue;
+        const id = `p:${m.stat}:${m.pid}:${m.game}`;
+        rows.push({ id: `${id}:i${hh}`, key: id, event: String(m.game), sport, market: 'prop', stat: m.stat, name: m.name ?? null, kind: 'i', h: Number(hh), optimistic: true, yrs: m.yrs ?? null, line: x.line, day: etDay(Date.parse(h.start)), t: Date.parse(h.start), at: Date.parse(x.ts), factsAt: null, home: m.home ?? null, season: h.season, f: x.fair, raw: Math.min(0.999, Math.max(0.001, raw)), y: m.v > x.line ? 1 : m.v < x.line ? 0 : null, q: null, overOdds: x.over, underOdds: x.under, w: seasonWeight(sport, h.season, current).w, m });
+      }
     }
   }
   let anchor = null;

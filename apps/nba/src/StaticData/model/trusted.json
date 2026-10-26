@@ -2,15 +2,15 @@
  "v": 1,
  "sport": "nba",
  "trial": true,
- "at": "2026-10-26T08:43:45.494Z",
- "epoch": "2026-10-23T05:30:00Z",
+ "at": "2026-10-26T16:11:22.274Z",
+ "epoch": "2026-10-26T15:00:00Z",
  "on": {
   "love": false,
-  "mid": true
+  "mid": false
  },
  "rule": {
   "love": null,
-  "mid": 0.4
+  "mid": 0
  },
  "loveUnits": 2,
  "kelly": 0.01,
@@ -26,7 +26,7 @@
  },
  "record": {
   "love": 0,
-  "like": 6472
+  "like": 6456
  },
- "commit": "8bdcce4f"
+ "commit": "1f128ae3"
 }

@@ -49,7 +49,7 @@ import { createHash } from 'node:crypto';
 import { BET_DECIDE, betCompare, betSummary, binLoss, dec, edgePicks, gateVerdict, gradeSide, normalCrps, normalLoss, projCompare, r4, recencyVeto, seasonWeight, sportVerdict } from './gate-score.mjs';
 import { historyLeakBets, huntLeaks } from './leaks.mjs';
 import { extendedGames, historyPropIndex, intradayLines, lineHistoryRows, loadHistory, propHistoryRows, slim, vsBook, vsBookBySeason } from './gate-history.mjs';
-import { OFFSETS as INTRA_OFFSETS, readIntraday } from './intraday.mjs';
+import { OFFSETS as INTRA_OFFSETS, PROP_OFFSETS, intradayDir, readIntraday } from './intraday.mjs';
 import { readDeep } from './deep-history.mjs';
 import { shopRows } from './best-price.mjs';
 import { MARKETS as MMA_MARKETS, scoreMma } from './gate-mma.mjs';
@@ -204,7 +204,7 @@ export function propBarOf(V, closeRows, current) {
     const g = gradeSide(x, s.side);
     if (g.won === null) continue;
     const k = V.desk.propKey(x.stat, s.side);
-    (by.get(k) ?? by.set(k, []).get(k)).push({ profit: g.profit, w: fin(x.w) ? x.w : 1, ev: s.ev });
+    (by.get(k) ?? by.set(k, []).get(k)).push({ profit: g.profit, w: fin(x.w) ? x.w : 1, ev: s.ev, g: String(x.event) });
     picks++;
   }
   const segments = {};
@@ -229,7 +229,7 @@ export function lineBarOf(V, closeRows, current, { openRows = [], clean = () => 
     const side = x.market === 'total' ? s.side : s.side === 'over' ? 'home' : 'away';
     const hours = fin(x.at) && fin(x.t) ? (x.t - x.at) / 36e5 : x.kind === 'o' ? 24 : 1;
     const keys = [V.desk.segmentOf(x.market, side, fairSide, hours), ...(V.desk.reasonsOf && sched ? V.desk.reasonsOf(sport, x.market, side, sched.get(String(x.event))) : [])];
-    for (const k of keys) (by.get(k) ?? by.set(k, []).get(k)).push({ profit: g.profit, w: fin(x.w) ? x.w : 1, ev: s.ev });
+    for (const k of keys) (by.get(k) ?? by.set(k, []).get(k)).push({ profit: g.profit, w: fin(x.w) ? x.w : 1, ev: s.ev, g: String(x.event) });
     picks++;
     from = from === null || x.t < from ? x.t : from;
     to = to === null || x.t > to ? x.t : to;
@@ -538,6 +538,13 @@ export async function scoreVersion(dir, sport, { refit = false, propsLayer = tru
   const ledgerMatches = new Map();
   // (the history's props by player game, and the replay's games matched to them)
   let histIndex = hist.props.length ? historyPropIndex(hist.events, hist.props, Object.fromEntries(Object.entries(H.props.API_MARKETS?.[sport] ?? {}))) : new Map();
+  // (research only, GATE_PROPS_INTRA=1: D61's intraday props onto the index as kind 'i' at PROP_OFFSETS' hours, for the
+  // replay's REPLAY_PROPS_AT runs below; never a record's input)
+  const PROPS_INTRA = process.env.GATE_PROPS_INTRA === '1';
+  if (PROPS_INTRA && histIndex.size) {
+    const n = H.history.addIntradayProps(histIndex, hist.events, H.history.readIntradayProps(intradayDir(sport)), Object.fromEntries(Object.entries(H.props.API_MARKETS?.[sport] ?? {})), PROP_OFFSETS[sport] ?? []);
+    say(`intraday props (research, GATE_PROPS_INTRA): ${n} player-market snapshots attached to the history's index`);
+  }
   const histMatches = [];
   if (propsLayer && mineProps.length + finals.length > 0) {
     try {
@@ -556,6 +563,9 @@ export async function scoreVersion(dir, sport, { refit = false, propsLayer = tru
           histIndex = H.history.propIndexByPlayer(histIndex, rows, propGames);
           const rp = histIndex.report;
           say(`history props' names: ${rp.matched} of ${rp.names} book names matched to their game's players (${rp.byKey} by the name's key, ${rp.fuzzy} by the nickname or the surname), ${rp.unmatched} not`);
+          // (the NHL's goalies the book posted a saves prop for at the close, "game|pid": the starter where a side used
+          // two (props.mjs markStarters); not kept with the facts' cache)
+          if (sport === 'nhl') Object.defineProperty(facts, 'postedGoalies', { value: new Set([...histIndex.values()].filter((x) => x.stat === 'saves' && x.c).map((x) => `${x.game}|${x.pid}`)), enumerable: false, configurable: true, writable: true });
         }
         // (each row's seasons played (experience.mjs, D82): read by the experience terms and the readouts by experience)
         tagExperience(sport, rows);
@@ -782,7 +792,7 @@ export async function scoreVersion(dir, sport, { refit = false, propsLayer = tru
       say(`best price (D74): ${s.shopped} of ${lineRows.length} line rows with the other US books at their snapshot, ${s.better} better than the Book's own on a side`);
     }
     for (const x of [...histProps.open, ...histProps.close]) x.label = labelOf[x.stat] ?? x.stat;
-    const replayArgs = [V, sport, { open: [...histLines.open, ...histProps.open], close: [...histLines.close, ...histProps.close], intra: histLines.intra ?? [] }, { confidence, events: hist.events, names, epoch: V.leagues.MODEL_EPOCH ?? null, evScale, sched: V.desk.scheduleRest ? (V.desk.withTravel ? V.desk.withTravel(V.desk.scheduleRest(histGames), feats?.feats) : V.desk.scheduleRest(histGames)) : null }];
+    const replayArgs = [V, sport, { open: [...histLines.open, ...histProps.open], close: [...histLines.close, ...histProps.close], intra: histLines.intra ?? [], ...(PROPS_INTRA ? { propIntra: histProps.intra ?? [] } : {}) }, { confidence, events: hist.events, names, epoch: V.leagues.MODEL_EPOCH ?? null, evScale, sched: V.desk.scheduleRest ? (V.desk.withTravel ? V.desk.withTravel(V.desk.scheduleRest(histGames), feats?.feats) : V.desk.scheduleRest(histGames)) : null }];
     // (measuring only, D76: GATE_SHOP_COMPARE=<dir> writes the replay with the shopped-price guard off and on, every
     // sport, to <dir>/<sport>-shop.json; the record below is the shipped setting's)
     if (process.env.GATE_SHOP_COMPARE) {
@@ -799,7 +809,29 @@ export async function scoreVersion(dir, sport, { refit = false, propsLayer = tru
         writeFileSync(path.join(process.env.GATE_SHOP_COMPARE, `${sport}-shop.json`), JSON.stringify(both));
       } catch {}
     }
+    // (research only, GATE_PROPS_INTRA=1 with GATE_PROPS_INTRA_OUT=<dir>: the replay again at each REPLAY_PROPS_AT hour of
+    // GATE_PROPS_INTRA_HOURS (comma-separated, 'latest' the latest snapshot; default the sport's PROP_OFFSETS and latest),
+    // each run's props research (replay-record.mjs propsResearch: the keys' candidates and the prop bets) written to
+    // <dir>/<sport>-props-<H>.json, the close-only run's to <sport>-props-close.json; the record below is the shipped one)
+    const propsLoop = PROPS_INTRA && !!process.env.GATE_PROPS_INTRA_OUT;
+    const propsAtWas = process.env.REPLAY_PROPS_AT;
+    if (propsLoop) delete process.env.REPLAY_PROPS_AT;
     replay = V.replay.replayRecord(...replayArgs);
+    if (propsLoop) {
+      const outDir = process.env.GATE_PROPS_INTRA_OUT;
+      mkdirSync(outDir, { recursive: true });
+      writeFileSync(path.join(outDir, `${sport}-props-close.json`), JSON.stringify(replay.propsResearch ?? null));
+      const hours = process.env.GATE_PROPS_INTRA_HOURS ? process.env.GATE_PROPS_INTRA_HOURS.split(',') : [...(PROP_OFFSETS[sport] ?? []).map(String), 'latest'];
+      for (const H0 of hours) {
+        process.env.REPLAY_PROPS_AT = H0;
+        const r = V.replay.replayRecord(...replayArgs);
+        writeFileSync(path.join(outDir, `${sport}-props-${H0}.json`), JSON.stringify(r.propsResearch ?? null));
+        say(`props at ${H0} (research): ${r.overall.won}-${r.overall.lost}-${r.overall.push} ${r.overall.profit}u on ${r.n.bets} bets`);
+      }
+      if (propsAtWas === undefined) delete process.env.REPLAY_PROPS_AT;
+      else process.env.REPLAY_PROPS_AT = propsAtWas;
+    }
+    if (replay.propsResearch) delete replay.propsResearch;
     // (D88's self-tune: TUNE_GRID=<file> re-stakes the same replay under each candidate knob, TUNE_OUT the series)
     if (process.env.TUNE_GRID) tuneReplays(V, sport, replay, () => V.replay.replayRecord(...replayArgs), { current });
     // (research only, D93: GATE_CANARY=<dir> runs the leakage canaries and the null tests on these rows (canary.mjs))
@@ -897,7 +929,7 @@ export function compareScores(sport, a, b, opts = {}) {
   // (the replay's guard (D60): more units at worse prices than the champion's is rejected)
   // (D86's recency veto: each projection layer on the newest complete season and the current one alone)
   const recent = Object.keys(proj).flatMap((layer) => recencyVeto(layer, pa[layer], pb[layer], current, opts));
-  const verdict = sportVerdict({ proj, bet: Object.fromEntries(Object.entries(bet).filter(([, v]) => v)), replay: { a: a.replay?.overall ?? null, b: b.replay?.overall ?? null }, recent });
+  const verdict = sportVerdict({ proj, bet: Object.fromEntries(Object.entries(bet).filter(([, v]) => v)), replay: { a: a.replay?.overall ?? null, b: b.replay?.overall ?? null, rowsA: a.replay?.guardRows ?? null, rowsB: b.replay?.guardRows ?? null }, recent });
   const ga = crpsRows(a);
   const gb = crpsRows(b);
   const info = { crps: ga.length && gb.length ? projCompare(sport, ga, gb, current, opts) : null };
@@ -1167,7 +1199,7 @@ function recordScore(version, sport, score, frozen, inputs = null) {
   // history before its epoch; picks.mjs merges it with the live ledger since. A version without it leaves the file)
   if (score.replay) {
     const out = path.join(ROOT, 'apps', sport, 'src/StaticData/model/replay-record.json');
-    writeFileSync(out, `${JSON.stringify({ ...score.replay, reasonsFile: undefined, trustedFile: undefined, commit: entry.commit, note: decisionNote(), ...(inputs ? { inputs } : {}) }, null, 1)}\n`);
+    writeFileSync(out, `${JSON.stringify({ ...score.replay, reasonsFile: undefined, trustedFile: undefined, guardRows: undefined, commit: entry.commit, note: decisionNote(), ...(inputs ? { inputs } : {}) }, null, 1)}\n`);
     const r = score.replay;
     console.log(`${sport}: the replayed record written (${path.relative(ROOT, out)}): ${r.overall.won}-${r.overall.lost}-${r.overall.push} ${r.overall.profit >= 0 ? '+' : ''}${r.overall.profit}u on ${r.n.bets} bets through ${r.through?.slice(0, 10) ?? '-'} (${r.flags.timing.open} at a clean open, ${r.flags.timing.close} at the close; full context ${r.flags.context.full.join(', ') || 'none'}; ratings only ${r.flags.context.ratingsOnly.join(', ') || 'none'})`);
   }

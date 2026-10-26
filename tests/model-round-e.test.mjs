@@ -184,8 +184,8 @@ test("priceProps: the QB-out headline is no news CHECK once the report has the q
   assert.equal(priceProps('nfl', gameRow, [{ athlete: { id: 'a', name: 'A', team: '1' }, stat: st, line: 45.5, open: null, prices: { over: -110, under: -110 } }], fitted, idx, { homePts: 24, awayPts: 21 }, null, { injuries: new Map([['1', out]]), rosters: new Map([['1', rosterSet]]), news: [coach] }, {}, 0.1).priced[0].guard?.kind, 'news');
 });
 
-test('propGate: a stat whose CLV over its last 200 graded props is negative is bet at the practice stake; positive, or under 40 graded, bet; game markets, voids and other sports never count', () => {
-  const bet = (i, type, ev, extra = {}) => ({ id: `p${i}`, sport: 'nfl', market: 'prop', propType: type, status: i % 2 ? 'won' : 'lost', gradedAt: new Date(Date.UTC(2026, 9, 1, i % 24, Math.floor(i / 24))).toISOString(), clv: { ev: ev - 0.06, prob: ev, beat: ev > 0, v: 2 }, ...extra });
+test('propGate: a stat whose last 200 graded props beat the fair close under the bar (D95: D56\'s definition) is bet at the practice stake; past it, or under 40 graded, bet; game markets, voids and other sports never count', () => {
+  const bet = (i, type, ev, extra = {}) => ({ id: `p${i}`, sport: 'nfl', market: 'prop', propType: type, status: i % 2 ? 'won' : 'lost', gradedAt: new Date(Date.UTC(2026, 9, 1, i % 24, Math.floor(i / 24))).toISOString(), clv: { ev, prob: ev, pts: 0, beat: ev > 0, v: 2 }, ...extra });
   const bets = [
     ...Array.from({ length: LINE_GATE_MIN }, (_, i) => bet(i, 'recYds', -0.03)),
     ...Array.from({ length: LINE_GATE_MIN }, (_, i) => bet(100 + i, 'rec', 0.02)),
@@ -198,7 +198,7 @@ test('propGate: a stat whose CLV over its last 200 graded props is negative is b
   const g = propGate(bets, 'nfl', null);
   assert.equal(g.recYds.on, false);
   assert.equal(g.recYds.n, LINE_GATE_MIN);
-  assert.match(g.recYds.why, /^practice stake: CLV -0.03 over 40$/);
+  assert.match(g.recYds.why, /^practice stake: beat the fair close 0% over 40 graded recYds props, under 52\.5%$/);
   assert.equal(g.rec.on, true);
   assert.equal(g.passYds.on, true);
   assert.match(g.passYds.why, /under 40/);

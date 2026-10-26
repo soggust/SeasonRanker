@@ -361,13 +361,36 @@ export function betCompare(rowsA, rowsB, { n = 6, practice = 0.5, stakeOf = () =
 export const GUARD_MIN = 30;
 export const GUARD_TOL = 0.005;
 export const GUARD_EV_TOL = 0.001;
-export function replayGuard(a, b) {
+// The guard's error bar (D95, the testing audit's sixth recommendation (d)): with each replay's bets' rows ([game, beat,
+// return at the fair close], replay-record.mjs guardRows), the share's and the return's differences are read with
+// their 95% interval, a bootstrap over the games (bootDiff: a game's bets move together), and "less" needs the interval
+// wholly below 0 as well as the tolerance: a drop inside the noise is no drop. Without the rows (a file from before),
+// the point reading as before
+export function guardDiffs(rowsA, rowsB) {
+  if (!Array.isArray(rowsA) || !Array.isArray(rowsB) || !rowsA.length || !rowsB.length) return null;
+  const share = new Map();
+  const ev = new Map();
+  const put = (m, g, side, w, s) => {
+    const c = m.get(g) ?? m.set(g, { wA: 0, sA: 0, wB: 0, sB: 0 }).get(g);
+    c[`w${side}`] += w;
+    c[`s${side}`] += s;
+  };
+  for (const [side, rows] of [['A', rowsA], ['B', rowsB]])
+    for (const [g, beat, clv] of rows) {
+      put(share, String(g), side, 1, beat);
+      put(ev, String(g), side, 1, fin(clv) ? clv : 0);
+    }
+  return { share: bootDiff([...share.values()]), ev: bootDiff([...ev.values()]) };
+}
+export function replayGuard(a, b, rowsA = null, rowsB = null) {
   if (!a || !b || !fin(a.profit) || !fin(b.profit) || !(a.beatN >= GUARD_MIN) || !(b.beatN >= GUARD_MIN)) return null;
   if (!(b.profit > a.profit)) return { pass: true, why: null };
-  const shareDown = fin(a.beat) && fin(b.beat) && b.beat < a.beat - GUARD_TOL;
-  const evDown = fin(a.clv) && fin(b.clv) && b.clv < a.clv - GUARD_EV_TOL;
-  if (!shareDown && !evDown) return { pass: true, why: null };
-  return { pass: false, why: `the replay's units up (${a.profit} to ${b.profit}u) while its bets beat the fair close ${shareDown ? `less often (${r4(a.beat * 100)}% to ${r4(b.beat * 100)}%)` : ''}${shareDown && evDown ? ' and ' : ''}${evDown ? `at a lower average return (${a.clv} to ${b.clv})` : ''}` };
+  const d = guardDiffs(rowsA, rowsB);
+  const shareDown = fin(a.beat) && fin(b.beat) && b.beat < a.beat - GUARD_TOL && (!d?.share || d.share.hi < 0);
+  const evDown = fin(a.clv) && fin(b.clv) && b.clv < a.clv - GUARD_EV_TOL && (!d?.ev || d.ev.hi < 0);
+  const bar = (x) => (x ? `, 95% ${r4(x.lo * 100)} to ${r4(x.hi * 100)} points` : '');
+  if (!shareDown && !evDown) return { pass: true, why: null, ...(d ? { diffs: d } : {}) };
+  return { pass: false, why: `the replay's units up (${a.profit} to ${b.profit}u) while its bets beat the fair close ${shareDown ? `less often (${r4(a.beat * 100)}% to ${r4(b.beat * 100)}%${bar(d?.share)})` : ''}${shareDown && evDown ? ' and ' : ''}${evDown ? `at a lower average return (${a.clv} to ${b.clv}${bar(d?.ev)})` : ''}`, ...(d ? { diffs: d } : {}) };
 }
 
 export function sportVerdict({ proj = {}, bet = {}, replay = null, recent = [] }) {
@@ -375,7 +398,7 @@ export function sportVerdict({ proj = {}, bet = {}, replay = null, recent = [] }
   const flags = [];
   const measures = [];
   let pass = true;
-  const guard = replay ? replayGuard(replay.a, replay.b) : null;
+  const guard = replay ? replayGuard(replay.a, replay.b, replay.rowsA ?? null, replay.rowsB ?? null) : null;
   if (guard && !guard.pass) (pass = false), why.push(guard.why), measures.push({ layer: 'replay', m: 'guard', verdict: 'worse', diff: null, lo: null, hi: null });
   // (D86's recency veto: worse beyond noise on the newest complete season, or the current one with its rows, fails
   // the sport whatever the weighted seasons say; never the owner's exception's close leg)

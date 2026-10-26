@@ -1,8 +1,8 @@
 {
  "v": 1,
  "sport": "nhl",
- "at": "2026-10-26T10:22:38.163Z",
- "epoch": "2026-10-23T05:30:00Z",
+ "at": "2026-10-26T12:11:29.677Z",
+ "epoch": "2026-10-26T15:00:00Z",
  "markets": {
   "ml": {
    "seg:ml:dog:late": {
@@ -828,16 +828,16 @@
     "ev": null,
     "evS": null,
     "beat": null,
-    "roi": -0.1661,
-    "rn": 28,
+    "roi": -0.0257,
+    "rn": 112,
     "stats": {
      "n": 0,
      "s": 0,
      "s2": 0,
      "beat": 0,
-     "rn": 28,
-     "rs": -4.65,
-     "rs2": 35.9725
+     "rn": 112,
+     "rs": -2.8758,
+     "rs2": 138.43
     },
     "why": "0 with a close, - shrunk",
     "seasons": {
@@ -882,16 +882,16 @@
     "ev": null,
     "evS": null,
     "beat": null,
-    "roi": 0.092,
-    "rn": 384,
+    "roi": -0.0105,
+    "rn": 1997,
     "stats": {
      "n": 0,
      "s": 0,
      "s2": 0,
      "beat": 0,
-     "rn": 384,
-     "rs": 35.3303,
-     "rs2": 444.5326
+     "rn": 1997,
+     "rs": -20.9303,
+     "rs2": 2226.9446
     },
     "why": "0 with a close, - shrunk",
     "seasons": {
@@ -909,16 +909,16 @@
     "ev": null,
     "evS": null,
     "beat": null,
-    "roi": -0.1556,
-    "rn": 180,
+    "roi": -0.1317,
+    "rn": 143,
     "stats": {
      "n": 0,
      "s": 0,
      "s2": 0,
      "beat": 0,
-     "rn": 180,
-     "rs": -28.0124,
-     "rs2": 241.7507
+     "rn": 143,
+     "rs": -18.83,
+     "rs2": 185.7178
     },
     "why": "0 with a close, - shrunk",
     "seasons": {
@@ -936,16 +936,16 @@
     "ev": null,
     "evS": null,
     "beat": null,
-    "roi": 0.9367,
-    "rn": 6,
+    "roi": 0.0359,
+    "rn": 264,
     "stats": {
      "n": 0,
      "s": 0,
      "s2": 0,
      "beat": 0,
-     "rn": 6,
-     "rs": 5.62,
-     "rs2": 9.9102
+     "rn": 264,
+     "rs": 9.4685,
+     "rs2": 316.6371
     },
     "why": "0 with a close, - shrunk",
     "seasons": {
@@ -963,16 +963,16 @@
     "ev": null,
     "evS": null,
     "beat": null,
-    "roi": 0.4229,
-    "rn": 4,
+    "roi": 0.0398,
+    "rn": 11,
     "stats": {
      "n": 0,
      "s": 0,
      "s2": 0,
      "beat": 0,
-     "rn": 4,
-     "rs": 1.6915,
-     "rs2": 3.4193
+     "rn": 11,
+     "rs": 0.4383,
+     "rs2": 9.9901
     },
     "why": "0 with a close, - shrunk",
     "seasons": {
@@ -990,16 +990,16 @@
     "ev": null,
     "evS": null,
     "beat": null,
-    "roi": 0.2555,
-    "rn": 9,
+    "roi": 0.3585,
+    "rn": 11,
     "stats": {
      "n": 0,
      "s": 0,
      "s2": 0,
      "beat": 0,
-     "rn": 9,
-     "rs": 2.2997,
-     "rs2": 7.6861
+     "rn": 11,
+     "rs": 3.943,
+     "rs2": 9.0467
     },
     "why": "0 with a close, - shrunk",
     "seasons": {
@@ -1046,5 +1046,5 @@
   }
  },
  "k": 100,
- "commit": "8bdcce4f"
+ "commit": "1f128ae3"
 }
