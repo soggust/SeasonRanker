@@ -1,12 +1,12 @@
 {
  "sport": "nfl",
  "cursor": {
-  "adamscheftermirror.bsky.social": "2026-10-26T15:08:09.433Z",
+  "adamscheftermirror.bsky.social": "2026-10-26T17:23:23.578Z",
   "rapsheet.bsky.social": "2026-10-26T14:57:47.380Z",
   "nflnewsreposterbot.bsky.social": "2026-10-22T13:33:43.592Z",
-  "insidenflnews.bsky.social": "2026-10-26T15:29:00.496Z",
-  "nflnewsposter.bsky.social": "2026-10-26T16:53:55.777Z",
-  "rotoworld-fb.bsky.social": "2026-10-26T15:54:59.000Z",
+  "insidenflnews.bsky.social": "2026-10-26T17:16:17.029Z",
+  "nflnewsposter.bsky.social": "2026-10-26T17:09:24.789Z",
+  "rotoworld-fb.bsky.social": "2026-10-26T17:16:14.000Z",
   "rotowirenfl.bsky.social": "2026-10-26T16:59:58.000Z"
  },
  "claims": [
@@ -6327,6 +6327,71 @@
    "kind": "return",
    "confidence": 0.5,
    "text": "Jadarian Price: Return to practice on tap in Week 8 \n\n https://www.rotowire.com/football/player/jadarian-price-19299"
+  },
+  {
+   "id": "at://did:plc:fuqjc7x4gxvnwzksnlxwbe4x/app.bsky.feed.post/3mys7m6vuqs2u|charlescross|out|status",
+   "at": "2026-10-26T17:09:24.789Z",
+   "seen": "2026-10-26T17:24:39.280Z",
+   "handle": "nflnewsposter.bsky.social",
+   "post": "at://did:plc:fuqjc7x4gxvnwzksnlxwbe4x/app.bsky.feed.post/3mys7m6vuqs2u",
+   "player": "Charles Cross",
+   "team": "SEA",
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.7,
+   "text": "[Schultz] Seahawks  LT Charles Cross suffered a high-ankle sprain Sunday night vs the Chiefs and will be week-to-week moving forward as he recovers.\n\nSeattle hosts the Bears on Monday Night Football n"
+  },
+  {
+   "id": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3mys7phbirp25|price|limited|return",
+   "at": "2026-10-26T17:11:14.000Z",
+   "seen": "2026-10-26T17:24:39.280Z",
+   "handle": "rotoworld-fb.bsky.social",
+   "post": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3mys7phbirp25",
+   "player": "Price",
+   "team": "SEA",
+   "status": "limited",
+   "kind": "return",
+   "confidence": 0.4,
+   "text": "Seahawks will open Price's 21-day return window"
+  },
+  {
+   "id": "at://did:plc:mbr4badgf6yu56mquzackzew/app.bsky.feed.post/3mys7x7tee22j|charlescross|out|status",
+   "at": "2026-10-26T17:15:34.856Z",
+   "seen": "2026-10-26T17:24:39.280Z",
+   "handle": "insidenflnews.bsky.social",
+   "post": "at://did:plc:mbr4badgf6yu56mquzackzew/app.bsky.feed.post/3mys7x7tee22j",
+   "player": "Charles Cross",
+   "team": "SEA",
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.6,
+   "text": "Schultz: Seahawks LT Charles Cross suffered high-ankle sprain."
+  },
+  {
+   "id": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3mys7yfok3j2k|charlescross|out|status",
+   "at": "2026-10-26T17:16:14.000Z",
+   "seen": "2026-10-26T17:24:39.280Z",
+   "handle": "rotoworld-fb.bsky.social",
+   "post": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3mys7yfok3j2k",
+   "player": "Charles Cross",
+   "team": "SEA",
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.6,
+   "text": "Schultz: Charles Cross has high-ankle sprain"
+  },
+  {
+   "id": "at://did:plc:mbr4badgf6yu56mquzackzew/app.bsky.feed.post/3mys7yi2dx22j|terrymclaurin|out|status",
+   "at": "2026-10-26T17:16:17.029Z",
+   "seen": "2026-10-26T17:24:39.280Z",
+   "handle": "insidenflnews.bsky.social",
+   "post": "at://did:plc:mbr4badgf6yu56mquzackzew/app.bsky.feed.post/3mys7yi2dx22j",
+   "player": "Terry McLaurin",
+   "team": "WAS",
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.6,
+   "text": "Dan Quinn said Stefon Diggs' workload won't change much with Terry McLaurin out.\n\nCommanders would look to others like Antonio Williams to step up."
   }
  ]
 }

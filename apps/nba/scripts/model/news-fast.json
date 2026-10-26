@@ -1,7 +1,7 @@
 {
  "sport": "nba",
  "cursor": {
-  "rotowirenba.bsky.social": "2026-10-26T15:21:57.000Z",
+  "rotowirenba.bsky.social": "2026-10-26T17:06:12.000Z",
   "insidenbanews.bsky.social": "2026-10-26T00:48:22.766Z",
   "shamsbot.bsky.social": "2026-10-24T16:42:03.000Z"
  },
@@ -2150,6 +2150,32 @@
    "kind": "status",
    "confidence": 0.85,
    "text": "Naz Reid: Probable for Monday \n\n https://www.rotowire.com/basketball/player/naz-reid-4806"
+  },
+  {
+   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mys7ffytib23|cooperflagg|active|status",
+   "at": "2026-10-26T17:05:37.000Z",
+   "seen": "2026-10-26T17:24:39.280Z",
+   "handle": "rotowirenba.bsky.social",
+   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mys7ffytib23",
+   "player": "Cooper Flagg",
+   "team": "DAL",
+   "status": "active",
+   "kind": "status",
+   "confidence": 0.6,
+   "text": "Cooper Flagg: Upgraded to probable \n\n https://www.rotowire.com/basketball/player/cooper-flagg-6548"
+  },
+  {
+   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mys7ghzfi226|anthonyedwards|questionable|status",
+   "at": "2026-10-26T17:06:12.000Z",
+   "seen": "2026-10-26T17:24:39.280Z",
+   "handle": "rotowirenba.bsky.social",
+   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mys7ghzfi226",
+   "player": "Anthony Edwards",
+   "team": "MIN",
+   "status": "questionable",
+   "kind": "status",
+   "confidence": 0.95,
+   "text": "Anthony Edwards: Listed as questionable \n\n https://www.rotowire.com/basketball/player/anthony-edwards-5110"
   }
  ]
 }

@@ -7070,6 +7070,30 @@
     "seen": "2026-10-26T16:59:36.917Z",
     "own": "2026-09-28T20:52:00.000Z"
    }
+  },
+  "401892582|zuccarello|out": {
+   "game": "401892582",
+   "start": "2026-10-26T23:00Z",
+   "team": "8",
+   "name": "Zuccarello",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-10-26T17:01:21.826Z",
+    "own": "2026-10-26T16:07:05.000Z",
+    "why": "@dailyfaceoff.bsky.social: Kings’ Zuccarello out against Rangers with upper-body"
+   }
+  },
+  "401892585|rasmusristolainen|out": {
+   "game": "401892585",
+   "start": "2026-10-27T23:00Z",
+   "team": "15",
+   "name": "Rasmus Ristolainen",
+   "status": "out",
+   "athlete": "3041999",
+   "espn": {
+    "seen": "2026-10-26T17:17:29.303Z",
+    "own": "2026-10-26T16:48:00.000Z"
+   }
   }
  }
 }
