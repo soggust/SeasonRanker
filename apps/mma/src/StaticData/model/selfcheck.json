@@ -1,5 +1,5 @@
 {
- "at": "2026-10-26T17:43:51.307Z",
+ "at": "2026-10-26T18:06:26.924Z",
  "baseline": {
   "from": "2026-09-21",
   "to": "2026-10-19"
@@ -323,7 +323,7 @@
   },
   {
    "examples": [],
-   "headline": "Model files 8h old, 0 open bets overdue to grade; Odds API credits 283% left; 38 bets placed in a week of 14 games",
+   "headline": "Model files 8h old, 0 open bets overdue to grade; Odds API credits 282% left; 38 bets placed in a week of 14 games",
    "how": "the newest commit of the sport's model files, the open bets started 12 hours ago or more, The Odds API's credits (state.odds), the state's sources",
    "id": "C16",
    "metric": "ageH",
@@ -340,8 +340,8 @@
      "cycleEnd": "2026-11-19T04:06:35.755Z",
      "key": "credits",
      "monthly": 20000,
-     "remaining": 56506,
-     "share": 2.8253
+     "remaining": 56447,
+     "share": 2.8224
     },
     {
      "down": [],
@@ -693,7 +693,7 @@
   },
   {
    "examples": [],
-   "headline": "0 segments tested on 35 priced rows: none losing to the Book beyond the false discovery rate, none trending worse The priced history (every season, the gate's run of 2026-10-26): 1 leaks: side: under losing 0.07 nats per 100 rows to the Book, shrunk (n 350, z -2.41).",
+   "headline": "0 segments tested on 35 priced rows: none losing to the Book beyond the false discovery rate, none trending worse The priced history (every season, the gate's run of 2026-10-26): 2 leaks: side: under losing 0.08 nats per 100 rows to the Book, shrunk (n 331, z -2.58); price: dog losing 0.04 nats per 100 rows to the Book, shrunk (n 879, z -2.11).",
    "how": "each graded row's log loss gain over the Book (its priced chance against the Book's no-vig: on the result and against the close, half each), a game's rows sharing their weight; a segment's mean, its standard error by game, z; the leaks ranked by the units staked into them in the last 28 days. Each leak's fix a candidate only: it ships when the replay gate passes it (node libs/ranker/scripts/model/gate.mjs --candidate <the fix>)",
    "id": "C23",
    "metric": "leaks",

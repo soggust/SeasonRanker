@@ -1,5 +1,5 @@
 {
- "at": "2026-10-26T17:43:51.307Z",
+ "at": "2026-10-26T18:06:26.924Z",
  "baseline": {
   "from": "2026-09-21",
   "to": "2026-10-19"
@@ -58,10 +58,10 @@
    "needs": null,
    "rows": [
     {
-     "allBias": -0.0076,
+     "allBias": -0.0061,
      "bias": 0.0633,
      "e": 16.8817,
-     "fitBias": -0.0104,
+     "fitBias": -0.009,
      "key": "hits:over",
      "label": "Hits Over",
      "n": 30,
@@ -74,10 +74,10 @@
      "z": -0.3264
     },
     {
-     "allBias": -0.0076,
+     "allBias": -0.0061,
      "bias": -0.95,
      "e": 0.6849,
-     "fitBias": -0.0104,
+     "fitBias": -0.009,
      "key": "hits:under",
      "label": "Hits Under",
      "n": 1,
@@ -90,10 +90,10 @@
      "z": -1.4743
     },
     {
-     "allBias": -0.0025,
+     "allBias": -0.0102,
      "bias": 0.026,
      "e": 3.1299,
-     "fitBias": -0.0034,
+     "fitBias": -0.0113,
      "key": "tb:under",
      "label": "Total Bases Under",
      "n": 5,
@@ -218,6 +218,30 @@
      "status": "watch",
      "to": 0.001,
      "what": "kept now"
+    },
+    {
+     "from": 0.999,
+     "key": "prop:k:scale",
+     "label": "Strikeouts scale",
+     "status": "info",
+     "to": 0.998,
+     "what": "refit"
+    },
+    {
+     "from": 0.987,
+     "key": "prop:outs:scale",
+     "label": "Outs scale",
+     "status": "info",
+     "to": 0.984,
+     "what": "refit"
+    },
+    {
+     "from": 0.969,
+     "key": "prop:tb:scale",
+     "label": "Total Bases scale",
+     "status": "info",
+     "to": 0.973,
+     "what": "refit"
     },
     {
      "at": "2026-10-22T01:50:40.622Z",
@@ -356,37 +380,37 @@
    "needs": null,
    "rows": [
     {
-     "allBias": -0.0076,
+     "allBias": -0.0061,
      "byRole": [],
      "key": "prop:hits",
      "label": "Hits",
-     "mae": 0.6845,
+     "mae": 0.6834,
      "over": {
       "bias": 0.1174,
       "n": 117,
-      "ofMae": 0.1716
+      "ofMae": 0.1718
      },
-     "r": 0.0111,
+     "r": 0.0089,
      "selection": "over",
      "status": "flag",
      "under": {
       "bias": -0.1436,
       "n": 47,
-      "ofMae": -0.2098
+      "ofMae": -0.2102
      }
     },
     {
-     "allBias": 0.0355,
+     "allBias": 0.0349,
      "byRole": [],
      "key": "prop:outs",
      "label": "Outs",
-     "mae": 2.9287,
+     "mae": 2.952,
      "over": {
       "bias": -0.08,
       "n": 2,
-      "ofMae": -0.0273
+      "ofMae": -0.0271
      },
-     "r": 0.0121,
+     "r": 0.0118,
      "selection": null,
      "status": "ok",
      "under": {
@@ -396,43 +420,43 @@
      }
     },
     {
-     "allBias": 0.0101,
-     "byRole": [],
-     "key": "prop:k",
-     "label": "Strikeouts",
-     "mae": 1.776,
-     "over": {
-      "bias": -1.63,
-      "n": 2,
-      "ofMae": -0.9178
-     },
-     "r": 0.0057,
-     "selection": null,
-     "status": "ok",
-     "under": {
-      "bias": null,
-      "n": 0,
-      "ofMae": null
-     }
-    },
-    {
-     "allBias": -0.0025,
+     "allBias": -0.0102,
      "byRole": [],
      "key": "prop:tb",
      "label": "Total Bases",
-     "mae": 1.3454,
+     "mae": 1.338,
      "over": {
       "bias": -0.438,
       "n": 5,
-      "ofMae": -0.3256
+      "ofMae": -0.3274
      },
-     "r": 0.0019,
+     "r": 0.0076,
      "selection": null,
      "status": "ok",
      "under": {
       "bias": -0.4224,
       "n": 17,
-      "ofMae": -0.3139
+      "ofMae": -0.3157
+     }
+    },
+    {
+     "allBias": 0.0108,
+     "byRole": [],
+     "key": "prop:k",
+     "label": "Strikeouts",
+     "mae": 1.7804,
+     "over": {
+      "bias": -1.63,
+      "n": 2,
+      "ofMae": -0.9155
+     },
+     "r": 0.0061,
+     "selection": null,
+     "status": "ok",
+     "under": {
+      "bias": null,
+      "n": 0,
+      "ofMae": null
      }
     }
    ],
@@ -440,11 +464,11 @@
    "tested": 4,
    "threshold": "watch the all-player bias 10% of the error; flag 25%, or the bets' own miss 3x it the way that hurts their side (25+)",
    "title": "All-player and selection bias",
-   "value": 0.0111
+   "value": 0.0089
   },
   {
    "examples": [],
-   "headline": "stat+side: Hits under losing 0.24 nats per 100 rows to the Book, shrunk (n 47, z -2.63), 11u at risk The priced history (every season, the gate's run of 2026-10-26): none of 37 segments losing on 271445 rows.",
+   "headline": "stat+side: Hits under losing 0.24 nats per 100 rows to the Book, shrunk (n 47, z -2.63), 11u at risk The priced history (every season, the gate's run of 2026-10-26): none of 37 segments losing on 276507 rows.",
    "how": "each graded row's log loss gain over the Book (its priced chance against the Book's no-vig: on the result and against the close, half each), a game's rows sharing their weight; a segment's mean, its standard error by game, z; the leaks ranked by the units staked into them in the last 28 days. Each leak's fix a candidate only: it ships when the replay gate passes it (node libs/ranker/scripts/model/gate.mjs --candidate <the fix>)",
    "id": "C23",
    "metric": "leaks",
@@ -1046,7 +1070,7 @@
   },
   {
    "examples": [],
-   "headline": "Model files 12h old, 0 open bets overdue to grade; Odds API credits 283% left; 40 bets placed in a week of 4 games",
+   "headline": "Model files 13h old, 0 open bets overdue to grade; Odds API credits 282% left; 40 bets placed in a week of 4 games",
    "how": "the newest commit of the sport's model files, the open bets started 12 hours ago or more, The Odds API's credits (state.odds), the state's sources",
    "id": "C16",
    "metric": "ageH",
@@ -1054,7 +1078,7 @@
    "needs": null,
    "rows": [
     {
-     "ageH": 12,
+     "ageH": 13,
      "at": "2026-10-26T05:06:09Z",
      "key": "files",
      "overdue": 0
@@ -1063,8 +1087,8 @@
      "cycleEnd": "2026-11-19T04:06:35.755Z",
      "key": "credits",
      "monthly": 20000,
-     "remaining": 56506,
-     "share": 2.8253
+     "remaining": 56447,
+     "share": 2.8224
     },
     {
      "down": [],
@@ -1080,7 +1104,7 @@
    "tested": null,
    "threshold": "watch files 3h old with bets overdue, credits under 20%, a source down, or no bets in a week with games; flag 6h old with bets overdue, or credits under 10%",
    "title": "Ops",
-   "value": 12
+   "value": 13
   },
   {
    "examples": [

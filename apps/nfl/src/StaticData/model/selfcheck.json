@@ -1,5 +1,5 @@
 {
- "at": "2026-10-26T17:43:51.307Z",
+ "at": "2026-10-26T18:06:26.924Z",
  "baseline": {
   "from": "2026-09-21",
   "to": "2026-10-19"
@@ -7,7 +7,7 @@
  "checks": [
   {
    "examples": [],
-   "headline": "Anytime TD Over: 50 won vs 51 expected (z -0.17), 100% of its stat's props, ROI 5.5%",
+   "headline": "Anytime TD Over: 50 won vs 53.6 expected (z -0.6), 100% of its stat's props, ROI -9.9%",
    "how": "props placed this week, by type and side: the share, the record against the expected wins, the ROI, the projection's miss (mean - actual) beside the fit's bias and the all-player bias",
    "id": "C4",
    "metric": "z",
@@ -16,41 +16,41 @@
    "rows": [
     {
      "allBias": null,
-     "bias": -0.0139,
-     "e": 51.0059,
+     "bias": -0.0007,
+     "e": 53.6296,
      "fitBias": null,
      "key": "anyTd:over",
      "label": "Anytime TD Over",
-     "n": 234,
+     "n": 274,
      "placed": 323,
-     "profit": 6.435,
-     "roi": 0.055,
+     "profit": -13.565,
+     "roi": -0.099,
      "share": 1,
      "status": "flag",
      "w": 50,
-     "z": -0.1732
+     "z": -0.6039
     },
     {
-     "allBias": 0.0019,
-     "bias": -0.3482,
-     "e": 5.8517,
-     "fitBias": -0.0267,
+     "allBias": 0.0023,
+     "bias": -0.1733,
+     "e": 6.416,
+     "fitBias": -0.0252,
      "key": "rec:under",
      "label": "Receptions Under",
-     "n": 11,
+     "n": 12,
      "placed": 17,
-     "profit": -0.266,
-     "roi": -0.0409,
+     "profit": 0.063,
+     "roi": 0.009,
      "share": 0.7727,
      "status": "flag",
-     "w": 6,
-     "z": 0.0903
+     "w": 7,
+     "z": 0.3403
     },
     {
-     "allBias": -0.1812,
+     "allBias": -0.1833,
      "bias": -7.27,
      "e": 1.0273,
-     "fitBias": -0.1431,
+     "fitBias": -0.1459,
      "key": "rushAtt:under",
      "label": "Carries Under",
      "n": 2,
@@ -63,10 +63,10 @@
      "z": -1.4536
     },
     {
-     "allBias": -0.0113,
+     "allBias": -0.0117,
      "bias": 0.62,
      "e": 0.9144,
-     "fitBias": -0.0353,
+     "fitBias": -0.0339,
      "key": "passTd:over",
      "label": "Pass TDs Over",
      "n": 2,
@@ -79,10 +79,10 @@
      "z": -1.3035
     },
     {
-     "allBias": -0.0113,
+     "allBias": -0.0117,
      "bias": -0.54,
      "e": 0.4089,
-     "fitBias": -0.0353,
+     "fitBias": -0.0339,
      "key": "passTd:under",
      "label": "Pass TDs Under",
      "n": 1,
@@ -95,10 +95,10 @@
      "z": -0.8317
     },
     {
-     "allBias": 0.0117,
+     "allBias": 0.0085,
      "bias": -0.05,
      "e": 1.0985,
-     "fitBias": 0.0013,
+     "fitBias": -0.0007,
      "key": "passInt:under",
      "label": "INTs Under",
      "n": 2,
@@ -111,10 +111,10 @@
      "z": -0.1403
     },
     {
-     "allBias": -0.5406,
+     "allBias": -0.5327,
      "bias": 5.59,
      "e": 1.0144,
-     "fitBias": -0.693,
+     "fitBias": -0.6739,
      "key": "recYds:under",
      "label": "Rec Yds Under",
      "n": 2,
@@ -127,10 +127,10 @@
      "z": -0.0204
     },
     {
-     "allBias": 0.2569,
+     "allBias": 0.2361,
      "bias": 0.345,
      "e": 1.008,
-     "fitBias": 0.3988,
+     "fitBias": 0.4001,
      "key": "passCmp:under",
      "label": "Completions Under",
      "n": 2,
@@ -143,10 +143,10 @@
      "z": -0.0113
     },
     {
-     "allBias": 0.2569,
+     "allBias": 0.2361,
      "bias": 0.94,
      "e": 1.0037,
-     "fitBias": 0.3988,
+     "fitBias": 0.4001,
      "key": "passCmp:over",
      "label": "Completions Over",
      "n": 2,
@@ -159,10 +159,10 @@
      "z": -0.0052
     },
     {
-     "allBias": -1.363,
+     "allBias": -1.3749,
      "bias": -5.995,
      "e": 5.2676,
-     "fitBias": -0.8921,
+     "fitBias": -0.9032,
      "key": "rushYds:under",
      "label": "Rush Yds Under",
      "n": 10,
@@ -179,7 +179,7 @@
    "tested": 13,
    "threshold": "watch one side 75% of a stat (20+) or a side z -2 (10+ graded); flag z -2.5 (30+) or one-sided at ROI -10% (10+ graded); the NFL's watches flags",
    "title": "Over/under drift by stat",
-   "value": -0.1732
+   "value": -0.6039
   },
   {
    "examples": [
@@ -193,7 +193,7 @@
    "how": "graded in the 28 days, by team, opponent, player, home or away, role depth, the vacated term, teammates out or questionable, back-to-backs, a backup QB, the weather, the lead time, the start hour, the prices, the band, the guard and the disruption",
    "id": "C7",
    "metric": "z",
-   "n": 822,
+   "n": 864,
    "needs": null,
    "rows": [
     {
@@ -209,52 +209,52 @@
      "z": -3.054
     },
     {
+     "dim": "guard",
+     "e": 199.5415,
+     "key": "guard: none",
+     "n": 756,
+     "profit": -88.68,
+     "roi": -0.2223,
+     "status": "flag",
+     "value": "none",
+     "w": 167,
+     "z": -3.0107
+    },
+    {
      "dim": "team",
-     "e": 9.7192,
+     "e": 9.845,
      "key": "team: ARI",
-     "n": 31,
-     "profit": -12.415,
-     "roi": -0.801,
+     "n": 34,
+     "profit": -13.915,
+     "roi": -0.8185,
      "status": "watch",
      "value": "ARI",
      "w": 3,
-     "z": -2.8686
-    },
-    {
-     "dim": "guard",
-     "e": 196.9178,
-     "key": "guard: none",
-     "n": 716,
-     "profit": -68.68,
-     "roi": -0.1812,
-     "status": "watch",
-     "value": "none",
-     "w": 167,
-     "z": -2.7966
+     "z": -2.8909
     },
     {
      "dim": "start (ET)",
-     "e": 60.9739,
+     "e": 62.2706,
      "key": "start (ET): 4-7pm",
-     "n": 189,
-     "profit": -38.645,
-     "roi": -0.3864,
-     "status": "ok",
+     "n": 201,
+     "profit": -44.645,
+     "roi": -0.4212,
+     "status": "watch",
      "value": "4-7pm",
      "w": 47,
-     "z": -2.4289
+     "z": -2.6158
     },
     {
      "dim": "teammates questionable",
-     "e": 203.5045,
+     "e": 207.1579,
      "key": "teammates questionable: none",
-     "n": 732,
-     "profit": -63.904,
-     "roi": -0.1656,
-     "status": "ok",
+     "n": 774,
+     "profit": -84.075,
+     "roi": -0.2066,
+     "status": "watch",
      "value": "none",
-     "w": 178,
-     "z": -2.3395
+     "w": 179,
+     "z": -2.5523
     }
    ],
    "status": "flag",
@@ -265,7 +265,7 @@
   },
   {
    "examples": [],
-   "headline": "total trust: no longer fitted (0 to 0); 158 changelog entries this week",
+   "headline": "total trust: no longer fitted (0 to 0); 161 changelog entries this week",
    "how": "the day's last state.json for 35 days (git), the week's start against now; the changelog's entries this week verbatim",
    "id": "C9",
    "metric": "changes",
@@ -392,7 +392,7 @@
      "key": "prop:passInt:scale",
      "label": "INTs scale",
      "status": "info",
-     "to": 1.031,
+     "to": 1.024,
      "what": "refit"
     },
     {
@@ -440,43 +440,13 @@
      "key": "prop:rushRecYds:scale",
      "label": "Rush+Rec Yds scale",
      "status": "info",
-     "to": 0.998,
+     "to": 0.997,
      "what": "refit"
     },
     {
      "at": "2026-10-26T00:00:43.321Z",
-     "from": -0.1316,
+     "from": -0.0159,
      "key": "log:0",
-     "label": "live calibration: rec|over|0.5",
-     "status": "info",
-     "to": -0.1016,
-     "what": "changelog",
-     "why": "1 graded rows of its own (own shift 0), the rest pooled from its line class, at most 0.03 a rung a run"
-    },
-    {
-     "at": "2026-10-26T00:00:43.321Z",
-     "from": -0.0159,
-     "key": "log:1",
-     "label": "live calibration: rec|under|>2.5",
-     "status": "info",
-     "to": 0,
-     "what": "changelog",
-     "why": "17 graded rows: too few rows (200 needed)"
-    },
-    {
-     "at": "2026-10-26T00:00:43.321Z",
-     "from": -0.1316,
-     "key": "log:2",
-     "label": "live calibration: rec|under|0.5",
-     "status": "info",
-     "to": -0.1016,
-     "what": "changelog",
-     "why": "1 graded rows of its own (own shift 0), the rest pooled from its line class, at most 0.03 a rung a run"
-    },
-    {
-     "at": "2026-10-26T00:00:43.321Z",
-     "from": -0.0159,
-     "key": "log:3",
      "label": "live calibration: recYds|over|>2.5",
      "status": "info",
      "to": 0,
@@ -486,7 +456,7 @@
     {
      "at": "2026-10-26T00:00:43.321Z",
      "from": -0.0159,
-     "key": "log:4",
+     "key": "log:1",
      "label": "live calibration: recYds|under|>2.5",
      "status": "info",
      "to": 0,
@@ -496,7 +466,7 @@
     {
      "at": "2026-10-26T00:00:43.321Z",
      "from": -0.0159,
-     "key": "log:5",
+     "key": "log:2",
      "label": "live calibration: rushAtt|over|>2.5",
      "status": "info",
      "to": 0,
@@ -506,7 +476,7 @@
     {
      "at": "2026-10-26T00:00:43.321Z",
      "from": -0.0159,
-     "key": "log:6",
+     "key": "log:3",
      "label": "live calibration: rushAtt|under|>2.5",
      "status": "info",
      "to": 0,
@@ -516,7 +486,7 @@
     {
      "at": "2026-10-26T00:00:43.321Z",
      "from": -0.0159,
-     "key": "log:7",
+     "key": "log:4",
      "label": "live calibration: rushRecYds|under|>2.5",
      "status": "info",
      "to": 0,
@@ -526,7 +496,7 @@
     {
      "at": "2026-10-26T00:00:43.321Z",
      "from": -0.0159,
-     "key": "log:8",
+     "key": "log:5",
      "label": "live calibration: rushYds|over|>2.5",
      "status": "info",
      "to": 0,
@@ -536,7 +506,7 @@
     {
      "at": "2026-10-26T00:00:43.321Z",
      "from": -0.1316,
-     "key": "log:9",
+     "key": "log:6",
      "label": "live calibration: rushYds|over|0.5",
      "status": "info",
      "to": -0.1016,
@@ -546,7 +516,7 @@
     {
      "at": "2026-10-26T00:00:43.321Z",
      "from": -0.0159,
-     "key": "log:10",
+     "key": "log:7",
      "label": "live calibration: rushYds|under|>2.5",
      "status": "info",
      "to": 0,
@@ -556,12 +526,42 @@
     {
      "at": "2026-10-26T03:17:43.291Z",
      "from": -0.0716,
-     "key": "log:11",
+     "key": "log:8",
      "label": "live calibration: anyTd|over|0.5",
      "status": "info",
      "to": -0.1016,
      "what": "changelog",
      "why": "553 graded rows of its own (own shift 0), the rest pooled from its line class, at most 0.03 a rung a run"
+    },
+    {
+     "at": "2026-10-26T16:28:40.966Z",
+     "from": 0.101,
+     "key": "log:9",
+     "label": "anyTd props' trust at low lines",
+     "status": "info",
+     "to": 0.25,
+     "what": "changelog",
+     "why": "its own fit 0.25 on 0 graded and 0 closes (0 games' worth, 0% of it kept), the rest the sport's 0.25"
+    },
+    {
+     "at": "2026-10-26T16:28:40.966Z",
+     "from": 0.181,
+     "key": "log:10",
+     "label": "anyTd props' trust at mid lines",
+     "status": "info",
+     "to": 0.375,
+     "what": "changelog",
+     "why": "its own fit 0.375 on 0 graded and 0 closes (0 games' worth, 0% of it kept), the rest the sport's 0.375"
+    },
+    {
+     "at": "2026-10-26T16:28:40.966Z",
+     "from": 0.275,
+     "key": "log:11",
+     "label": "anyTd props' trust at high lines",
+     "status": "info",
+     "to": 0.5,
+     "what": "changelog",
+     "why": "its own fit 0.5 on 0 graded and 0 closes (0 games' worth, 0% of it kept), the rest the sport's 0.5"
     }
    ],
    "status": "flag",
@@ -572,15 +572,15 @@
   },
   {
    "examples": [],
-   "headline": "Rec Yds Unders: the bets projected -8.73 off (mean - actual, 26 bets) against an all-player bias of -0.54",
+   "headline": "Rec Yds Unders: the bets projected -8.73 off (mean - actual, 26 bets) against an all-player bias of -0.53",
    "how": "each prop fit's all-player bias (projected - actual over every player) against its mean error; the 28 days' graded props' own miss by side and role",
    "id": "C10",
    "metric": "r",
-   "n": 761,
+   "n": 803,
    "needs": null,
    "rows": [
     {
-     "allBias": -0.5406,
+     "allBias": -0.5327,
      "byRole": [
       {
        "bias": 15.1967,
@@ -600,13 +600,13 @@
      ],
      "key": "prop:recYds",
      "label": "Rec Yds",
-     "mae": 23.6483,
+     "mae": 23.648,
      "over": {
       "bias": 14.1081,
       "n": 21,
       "ofMae": 0.5966
      },
-     "r": 0.0229,
+     "r": 0.0225,
      "selection": "under",
      "status": "flag",
      "under": {
@@ -616,11 +616,11 @@
      }
     },
     {
-     "allBias": 0.0019,
+     "allBias": 0.0023,
      "byRole": [
       {
-       "bias": -1.5463,
-       "n": 8,
+       "bias": -1.18,
+       "n": 9,
        "role": "TE2+"
       },
       {
@@ -636,23 +636,23 @@
      ],
      "key": "prop:rec",
      "label": "Receptions",
-     "mae": 1.6933,
+     "mae": 1.6931,
      "over": {
-      "bias": 0.1481,
-      "n": 21,
-      "ofMae": 0.0875
+      "bias": 0.2255,
+      "n": 22,
+      "ofMae": 0.1332
      },
-     "r": 0.0011,
+     "r": 0.0014,
      "selection": "under",
      "status": "flag",
      "under": {
-      "bias": -0.9141,
-      "n": 39,
-      "ofMae": -0.5398
+      "bias": -0.8475,
+      "n": 40,
+      "ofMae": -0.5006
      }
     },
     {
-     "allBias": -1.363,
+     "allBias": -1.3749,
      "byRole": [
       {
        "bias": -13.2725,
@@ -667,93 +667,93 @@
      ],
      "key": "prop:rushYds",
      "label": "Rush Yds",
-     "mae": 19.1373,
+     "mae": 19.1263,
      "over": {
       "bias": 8.2167,
       "n": 6,
-      "ofMae": 0.4294
+      "ofMae": 0.4296
      },
-     "r": 0.0712,
+     "r": 0.0719,
      "selection": null,
      "status": "ok",
      "under": {
       "bias": -4.5752,
       "n": 21,
-      "ofMae": -0.2391
+      "ofMae": -0.2392
      }
     },
     {
-     "allBias": -0.1812,
+     "allBias": -0.1833,
      "byRole": [],
      "key": "prop:rushAtt",
      "label": "Carries",
-     "mae": 3.1707,
+     "mae": 3.1681,
      "over": {
       "bias": 8.21,
       "n": 1,
-      "ofMae": 2.5893
+      "ofMae": 2.5915
      },
-     "r": 0.0571,
+     "r": 0.0579,
      "selection": null,
      "status": "ok",
      "under": {
       "bias": -2.656,
       "n": 5,
-      "ofMae": -0.8377
+      "ofMae": -0.8384
      }
     },
     {
-     "allBias": 0.2569,
+     "allBias": 0.2361,
      "byRole": [],
      "key": "prop:passCmp",
      "label": "Completions",
-     "mae": 4.8035,
+     "mae": 4.801,
      "over": {
       "bias": 1.22,
       "n": 5,
-      "ofMae": 0.254
+      "ofMae": 0.2541
      },
-     "r": 0.0535,
+     "r": 0.0492,
      "selection": null,
      "status": "ok",
      "under": {
       "bias": -1.272,
       "n": 5,
-      "ofMae": -0.2648
+      "ofMae": -0.2649
      }
     },
     {
-     "allBias": 0.3233,
+     "allBias": 0.2898,
      "byRole": [],
      "key": "prop:passAtt",
      "label": "Pass Att",
-     "mae": 6.9877,
+     "mae": 6.9816,
      "over": {
       "bias": -9.78,
       "n": 1,
-      "ofMae": -1.3996
+      "ofMae": -1.4008
      },
-     "r": 0.0463,
+     "r": 0.0415,
      "selection": null,
      "status": "ok",
      "under": {
       "bias": -4.4193,
       "n": 14,
-      "ofMae": -0.6324
+      "ofMae": -0.633
      }
     },
     {
-     "allBias": 1.9084,
+     "allBias": 1.6953,
      "byRole": [],
      "key": "prop:passYds",
      "label": "Pass Yds",
-     "mae": 60.1141,
+     "mae": 60.1083,
      "over": {
       "bias": 21.5567,
       "n": 3,
       "ofMae": 0.3586
      },
-     "r": 0.0317,
+     "r": 0.0282,
      "selection": null,
      "status": "ok",
      "under": {
@@ -763,63 +763,63 @@
      }
     },
     {
-     "allBias": 0.0117,
-     "byRole": [],
-     "key": "prop:passInt",
-     "label": "INTs",
-     "mae": 0.6847,
-     "over": {
-      "bias": 0.0029,
-      "n": 7,
-      "ofMae": 0.0042
-     },
-     "r": 0.0171,
-     "selection": null,
-     "status": "ok",
-     "under": {
-      "bias": 0.2,
-      "n": 5,
-      "ofMae": 0.2921
-     }
-    },
-    {
-     "allBias": -0.0113,
+     "allBias": -0.0117,
      "byRole": [],
      "key": "prop:passTd",
      "label": "Pass TDs",
-     "mae": 0.8909,
+     "mae": 0.8911,
      "over": {
       "bias": 0.55,
       "n": 10,
-      "ofMae": 0.6174
+      "ofMae": 0.6172
      },
-     "r": 0.0127,
+     "r": 0.0131,
      "selection": null,
      "status": "ok",
      "under": {
       "bias": -0.4383,
       "n": 6,
-      "ofMae": -0.492
+      "ofMae": -0.4919
      }
     },
     {
-     "allBias": -0.1151,
+     "allBias": 0.0085,
+     "byRole": [],
+     "key": "prop:passInt",
+     "label": "INTs",
+     "mae": 0.6841,
+     "over": {
+      "bias": 0.0029,
+      "n": 7,
+      "ofMae": 0.0042
+     },
+     "r": 0.0124,
+     "selection": null,
+     "status": "ok",
+     "under": {
+      "bias": 0.2,
+      "n": 5,
+      "ofMae": 0.2924
+     }
+    },
+    {
+     "allBias": -0.1492,
      "byRole": [],
      "key": "prop:rushRecYds",
      "label": "Rush+Rec Yds",
-     "mae": 25.8366,
+     "mae": 25.8472,
      "over": {
       "bias": null,
       "n": 0,
       "ofMae": null
      },
-     "r": 0.0045,
+     "r": 0.0058,
      "selection": null,
      "status": "ok",
      "under": {
       "bias": 20.1886,
       "n": 7,
-      "ofMae": 0.7814
+      "ofMae": 0.7811
      }
     }
    ],
@@ -827,83 +827,55 @@
    "tested": 10,
    "threshold": "watch the all-player bias 10% of the error; flag 25%, or the bets' own miss 3x it the way that hurts their side (25+)",
    "title": "All-player and selection bias",
-   "value": 0.0229
-  },
-  {
-   "examples": [
-    "401873011:prop:anyTd:5081999",
-    "401873011:prop:anyTd:2975674",
-    "401873011:prop:anyTd:4693370",
-    "401873011:prop:anyTd:4369863",
-    "401873011:prop:anyTd:5081508"
-   ],
-   "headline": "Model files 7h old, 69 open bets overdue to grade; Odds API credits 283% left; 390 bets placed in a week of 14 games",
-   "how": "the newest commit of the sport's model files, the open bets started 12 hours ago or more, The Odds API's credits (state.odds), the state's sources",
-   "id": "C16",
-   "metric": "ageH",
-   "n": 390,
-   "needs": null,
-   "rows": [
-    {
-     "ageH": 7,
-     "at": "2026-10-26T09:46:35Z",
-     "key": "files",
-     "overdue": 69
-    },
-    {
-     "cycleEnd": "2026-11-19T04:06:35.755Z",
-     "key": "credits",
-     "monthly": 20000,
-     "remaining": 56506,
-     "share": 2.8253
-    },
-    {
-     "down": [],
-     "key": "sources"
-    },
-    {
-     "games": 14,
-     "key": "week",
-     "placed": 390
-    }
-   ],
-   "status": "flag",
-   "tested": null,
-   "threshold": "watch files 3h old with bets overdue, credits under 20%, a source down, or no bets in a week with games; flag 6h old with bets overdue, or credits under 10%",
-   "title": "Ops",
-   "value": 7
+   "value": 0.0225
   },
   {
    "examples": [],
-   "headline": "stat: Receptions losing 0.30 nats per 100 rows to the Book, shrunk (n 60, z -2.78), 32.5u at risk The priced history (every season, the gate's run of 2026-10-26): none of 60 segments losing on 33549 rows.",
+   "headline": "stat: Receptions losing 0.31 nats per 100 rows to the Book, shrunk (n 62, z -2.79), 33.5u at risk; stat+side: Receptions under losing 0.35 nats per 100 rows to the Book, shrunk (n 40, z -2.80), 21.5u at risk The priced history (every season, the gate's run of 2026-10-26): none of 60 segments losing on 33549 rows.",
    "how": "each graded row's log loss gain over the Book (its priced chance against the Book's no-vig: on the result and against the close, half each), a game's rows sharing their weight; a segment's mean, its standard error by game, z; the leaks ranked by the units staked into them in the last 28 days. Each leak's fix a candidate only: it ships when the replay gate passes it (node libs/ranker/scripts/model/gate.mjs --candidate <the fix>)",
    "id": "C23",
    "metric": "leaks",
-   "n": 823,
+   "n": 865,
    "needs": null,
    "rows": [
     {
-     "atRisk": 32.5,
+     "atRisk": 33.5,
      "causes": "term 2, script 2 (its reviewed misses)",
      "clv": "-6.9%",
      "fix": "the projection or the correction for Receptions: its own bias (project.mjs fitStat) or the correction's sport|stat term (correct.mjs) (the misses there read as term); ships only through the gate (node libs/ranker/scripts/model/gate.mjs --candidate <the fix>)",
      "games": 31,
      "kind": "leak",
-     "loss": 0.3042,
-     "n": 60,
-     "p": 0.0028,
+     "loss": 0.3121,
+     "n": 62,
+     "p": 0.0026,
      "rank": 1,
-     "raw": 0.8112,
+     "raw": 0.8156,
      "segment": "stat: Receptions",
      "week": "0.10 this week, 0.98 before",
-     "z": -2.7753
+     "z": -2.7937
+    },
+    {
+     "atRisk": 21.5,
+     "causes": "term 2, script 2 (its reviewed misses)",
+     "clv": "-7.5%",
+     "fix": "the correction's Receptions under lean (correct.mjs sport|stat|bucket|dir) (the misses there read as term); ships only through the gate (node libs/ranker/scripts/model/gate.mjs --candidate <the fix>)",
+     "games": 25,
+     "kind": "leak",
+     "loss": 0.3451,
+     "n": 40,
+     "p": 0.0026,
+     "rank": 2,
+     "raw": 1.2077,
+     "segment": "stat+side: Receptions under",
+     "week": "0.18 this week, 1.48 before",
+     "z": -2.7999
     }
    ],
    "status": "flag",
-   "tested": 15,
+   "tested": 16,
    "threshold": "a leak: 40 rows in 8 games or more, losing to the Book's no-vig beyond a 10% false discovery rate (Benjamini-Hochberg over every segment tested), its shrunk loss (n / (n + 100)) under 0; a trend: this week worse than the weeks before by 2 standard errors; a flag with a leak staked into in the last 28 days",
    "title": "Leaks against the Book (priced history)",
-   "value": 1
+   "value": 2
   },
   {
    "examples": [],
@@ -911,7 +883,7 @@
    "how": "the 28 days' published bets by the band they were published at, against the chance they were published with; the prop fits' calibration rows",
    "id": "C11",
    "metric": "z",
-   "n": 137,
+   "n": 139,
    "needs": null,
    "rows": [
     {
@@ -935,11 +907,11 @@
     {
      "key": "prop:passTd:0.3",
      "label": "Pass TDs said 34%",
-     "n": 256,
-     "off": 0.0776,
-     "said": 0.3443,
+     "n": 255,
+     "off": 0.0756,
+     "said": 0.344,
      "status": "watch",
-     "was": 0.4219
+     "was": 0.4196
     },
     {
      "key": "prop:passTd:0.5",
@@ -953,11 +925,11 @@
     {
      "key": "prop:passInt:0.5",
      "label": "INTs said 53%",
-     "n": 122,
-     "off": -0.1205,
-     "said": 0.5303,
+     "n": 118,
+     "off": -0.1315,
+     "said": 0.5298,
      "status": "watch",
-     "was": 0.4098
+     "was": 0.3983
     },
     {
      "key": "prop:rushAtt:0.7",
@@ -980,15 +952,15 @@
      "z": -1.5753
     },
     {
-     "e": 39.1652,
+     "e": 40.1949,
      "key": "medium",
      "label": "LIKE",
-     "n": 77,
-     "profit": -6.005,
-     "roi": -0.1213,
+     "n": 79,
+     "profit": -6.176,
+     "roi": -0.1223,
      "status": "ok",
-     "w": 34,
-     "z": -1.1861
+     "w": 35,
+     "z": -1.1777
     },
     {
      "e": 0.3897,
@@ -1320,11 +1292,11 @@
     "401873013:prop:rushAtt:3916148",
     "401873013:prop:rushYds:4688380"
    ],
-   "headline": "4 of 54 graded bets (7%) saw the Book move against them after placement; they went 2 won vs 2.1 expected (z -0.09)",
+   "headline": "4 of 56 graded bets (7%) saw the Book move against them after placement; they went 2 won vs 2.1 expected (z -0.09)",
    "how": "graded this week: a game bet whose later fair chance fell 3 points or more, or its line moved 1 against it; a prop whose close moved half a point against it",
    "id": "C1",
    "metric": "share",
-   "n": 54,
+   "n": 56,
    "needs": [
     "inputsAtStart (the injury and starter hashes as the game started)"
    ],
@@ -1338,8 +1310,8 @@
     {
      "changed": 4,
      "key": "props",
-     "n": 50,
-     "share": 0.08
+     "n": 52,
+     "share": 0.0769
     },
     {
      "clvEv": null,
@@ -1352,20 +1324,20 @@
      "z": -0.0867
     },
     {
-     "e": 25.1008,
+     "e": 26.1305,
      "key": "unchanged",
-     "n": 50,
-     "profit": -0.632,
-     "roi": -0.0238,
-     "w": 26,
-     "z": 0.2563
+     "n": 52,
+     "profit": -0.803,
+     "roi": -0.0292,
+     "w": 27,
+     "z": 0.243
     }
    ],
    "status": "partial",
    "tested": null,
    "threshold": "watch 30% (15+ bets), flag 40% or the changed group z -2 (20+)",
    "title": "Inputs changed after placement",
-   "value": 0.0741
+   "value": 0.0714
   },
   {
    "examples": [],
@@ -1576,11 +1548,11 @@
     "401873016:prop:passCmp:4433970",
     "401873018:prop:rushYds:4685720"
    ],
-   "headline": "4 of 93 graded props (4%) saw the market move away after the bet; beat the close -",
+   "headline": "4 of 95 graded props (4%) saw the market move away after the bet; beat the close -",
    "how": "graded props this week: the close a point or more against the side, or the CLV lost (2 points of chance or more); per prop type",
    "id": "C3",
    "metric": "share",
-   "n": 93,
+   "n": 95,
    "needs": null,
    "rows": [
     {
@@ -1589,8 +1561,8 @@
      "key": "all",
      "label": "All props",
      "moved": 4,
-     "n": 93,
-     "share": 0.043
+     "n": 95,
+     "share": 0.0421
     },
     {
      "beat": null,
@@ -1661,7 +1633,7 @@
      "key": "prop:rec",
      "label": "Receptions",
      "moved": 0,
-     "n": 15,
+     "n": 17,
      "share": 0
     },
     {
@@ -1678,7 +1650,7 @@
    "tested": null,
    "threshold": "watch 45% (25+ props), flag 55% or a beat rate under 42%",
    "title": "Market moved after the bet, the Bot didn't",
-   "value": 0.043
+   "value": 0.0421
   },
   {
    "examples": [],
@@ -1693,20 +1665,20 @@
      "dogShare": 0.8385,
      "dogShareBase": 0.716,
      "dogs": {
-      "e": 47.4936,
-      "n": 232,
-      "profit": 6.29,
-      "roi": 0.0538,
+      "e": 50.5827,
+      "n": 273,
+      "profit": -14.21,
+      "roi": -0.1033,
       "w": 48,
-      "z": 0.0875
+      "z": -0.4299
      },
      "favorites": {
-      "e": 29.0172,
-      "n": 52,
-      "profit": 0.461,
-      "roi": 0.0174,
-      "w": 29,
-      "z": -0.0048
+      "e": 29.5815,
+      "n": 53,
+      "profit": 0.79,
+      "roi": 0.0293,
+      "w": 30,
+      "z": 0.1165
      },
      "key": "prop",
      "moved": 0.1225,
@@ -1773,11 +1745,11 @@
   },
   {
    "examples": [],
-   "headline": "anyTd: beat the close - of 43; all bets 0% of 98",
+   "headline": "anyTd: beat the close - of 43; all bets 0% of 100",
    "how": "graded this week by market and prop type, against the 28 days before and the last self-check; the return at the close counts the vig, so -4.5% is a flat close at -110",
    "id": "C6",
    "metric": "beat",
-   "n": 98,
+   "n": 100,
    "needs": null,
    "rows": [
     {
@@ -1926,7 +1898,7 @@
       "n": 19,
       "prob": -0.0039
      },
-     "n": 15,
+     "n": 17,
      "prob": null,
      "status": "thin"
     },
@@ -2018,26 +1990,33 @@
    "value": null
   },
   {
-   "examples": [],
-   "headline": "0 of 311 graded bets (0%) had their premise break in the game",
+   "examples": [
+    "401873015:prop:anyTd:3134353"
+   ],
+   "headline": "1 of 353 graded bets (0%) had their premise break in the game",
    "how": "graded this week: a bet whose premise broke (postmortem.mjs: its weight under 1) by the disruption's kind",
    "id": "C12",
    "metric": "share",
-   "n": 311,
+   "n": 353,
    "needs": null,
-   "rows": [],
+   "rows": [
+    {
+     "key": "snaps",
+     "n": 1
+    }
+   ],
    "status": "ok",
    "tested": null,
    "threshold": "watch 10%, flag 15% (15+ graded)",
    "title": "Disruption",
-   "value": 0
+   "value": 0.0028
   },
   {
    "examples": [
     "401873009:prop:anyTd:4361579",
     "401873009:prop:anyTd:4870795"
    ],
-   "headline": "2 open bets stale, 0 past their start by 48h ungraded, 256 of 311 graded this week without a close",
+   "headline": "2 open bets stale, 0 past their start by 48h ungraded, 296 of 353 graded this week without a close",
    "how": "open bets on games not started: past the gap now, or published at a band today's trust wouldn't give them; open bets past their start plus VOID_AFTER; this week's graded bets with no close read",
    "id": "C13",
    "metric": "stale",
@@ -2057,8 +2036,8 @@
     },
     {
      "key": "graded without a close",
-     "n": 256,
-     "of": 311
+     "n": 296,
+     "of": 353
     }
    ],
    "status": "ok",
@@ -2069,7 +2048,7 @@
   },
   {
    "examples": [],
-   "headline": "4 plain write-ups (mean 488 characters), 0 Claude analyses tried this week (0 ok); AI calls 0, $0.00 this week, $0.00 of $25 this month",
+   "headline": "2 plain write-ups (mean 506 characters), 0 Claude analyses tried this week (0 ok); AI calls 0, $0.00 this week, $0.00 of $25 this month",
    "how": "writeups.json's plain and Claude write-ups, and the AI usage log's calls this week (ai-budget.mjs: every sport's spend counts against the caps)",
    "id": "C15",
    "metric": "rejectRate",
@@ -2079,8 +2058,8 @@
     {
      "key": "plain",
      "legacy": 0,
-     "meanLength": 488.25,
-     "n": 4
+     "meanLength": 506,
+     "n": 2
     },
     {
      "key": "claude",
@@ -2114,6 +2093,44 @@
    "value": null
   },
   {
+   "examples": [],
+   "headline": "Model files 0h old, 0 open bets overdue to grade; Odds API credits 282% left; 390 bets placed in a week of 14 games",
+   "how": "the newest commit of the sport's model files, the open bets started 12 hours ago or more, The Odds API's credits (state.odds), the state's sources",
+   "id": "C16",
+   "metric": "ageH",
+   "n": 390,
+   "needs": null,
+   "rows": [
+    {
+     "ageH": 0,
+     "at": "2026-10-26T17:35:59Z",
+     "key": "files",
+     "overdue": 0
+    },
+    {
+     "cycleEnd": "2026-11-19T04:06:35.755Z",
+     "key": "credits",
+     "monthly": 20000,
+     "remaining": 56447,
+     "share": 2.8224
+    },
+    {
+     "down": [],
+     "key": "sources"
+    },
+    {
+     "games": 14,
+     "key": "week",
+     "placed": 390
+    }
+   ],
+   "status": "ok",
+   "tested": null,
+   "threshold": "watch files 3h old with bets overdue, credits under 20%, a source down, or no bets in a week with games; flag 6h old with bets overdue, or credits under 10%",
+   "title": "Ops",
+   "value": 0
+  },
+  {
    "examples": [
     "401873008:prop:recYds:3040151",
     "401873008:prop:recYds:3121422",
@@ -2121,7 +2138,7 @@
     "401873010:prop:rushYds:4431452",
     "401873010:prop:passAtt:4431611"
    ],
-   "headline": "14 of 390 bets placed this week had the line already moving against them: ROI -22.7% against 4.7% for the rest",
+   "headline": "14 of 390 bets placed this week had the line already moving against them: ROI -22.7% against -8.4% for the rest",
    "how": "placed this week: a prop's line a point or more against its side since it opened; a game's spread 1.5 (NFL) or 0.5, its total a point, a moneyline without a spread move 3 points of the home chance. A prop moved twice the guard's limit should have been skipped",
    "id": "C2",
    "metric": "roiGap",
@@ -2139,14 +2156,14 @@
      "z": -0.5492
     },
     {
-     "e": 72.7378,
+     "e": 76.3912,
      "key": "the rest",
-     "n": 277,
+     "n": 319,
      "placed": 376,
-     "profit": 6.575,
-     "roi": 0.047,
-     "w": 73,
-     "z": 0.0394
+     "profit": -13.596,
+     "roi": -0.0844,
+     "w": 74,
+     "z": -0.3478
     },
     {
      "key": "guard bugs",
@@ -2157,7 +2174,7 @@
    "tested": null,
    "threshold": "watch an ROI gap of 10 points (15+ graded), flag also their ROI -15% or any guard bug",
    "title": "Line already moving against at placement",
-   "value": 0.2738
+   "value": 0.1424
   },
   {
    "examples": [],
@@ -2197,11 +2214,11 @@
   },
   {
    "examples": [],
-   "headline": "1437 graded (822 bets, 615 CHECKs), 165 with a line moved since it opened: no difference past z 2.5 by the move's way or the lead time",
+   "headline": "1479 graded (864 bets, 615 CHECKs), 165 with a line moved since it opened: no difference past z 2.5 by the move's way or the lead time",
    "how": "every graded bet and CHECK: the line's move from its open to when it was bet, its side's way (a prop's line, a game's spread, total or moneyline chance, as C2; a prop's unmoved line by its fair chance's move, 2.5 points or more, where its open price was kept, since 2026-10-13: before that a prop's move is its line's alone, so 'unmoved' holds the ones the market moved by the price only, most of the NHL's at 0.5 and 1.5), the record against the Book's fair chance (overBook: won less the chance, a bet, weighted as zOf); by the hours before the start it was placed, the CLV chance (clvProb, its standard error clvSe) and the share that beat the close. Never applied: it says where to look",
    "id": "C19",
    "metric": "graded",
-   "n": 1437,
+   "n": 1479,
    "needs": null,
    "rows": [
     {
@@ -2223,14 +2240,14 @@
      "clvN": 49,
      "clvProb": -0.0067,
      "clvSe": 0.0033,
-     "e": 58.729,
+     "e": 59.765,
      "key": "bets props: unmoved",
-     "n": 122,
-     "overBook": -0.0306,
-     "profit": -9.384,
-     "roi": -0.1294,
-     "w": 55,
-     "z": -0.6803
+     "n": 124,
+     "overBook": -0.0304,
+     "profit": -9.555,
+     "roi": -0.13,
+     "w": 56,
+     "z": -0.6813
     },
     {
      "beat": 0.4737,
@@ -2433,20 +2450,20 @@
      "clvN": 239,
      "clvProb": -0.0088,
      "clvSe": 0.0016,
-     "e": 133.5648,
+     "e": 137.3132,
      "key": "bets props: placed 24h or more before",
-     "n": 568,
-     "overBook": -0.0239,
-     "profit": -44.504,
-     "roi": -0.1562,
-     "w": 120,
-     "z": -1.4807
+     "n": 610,
+     "overBook": -0.0268,
+     "profit": -64.675,
+     "roi": -0.2114,
+     "w": 121,
+     "z": -1.7503
     },
     {
      "clvZ": null,
      "key": "bets props: 6h or more before, against later",
-     "n": 761,
-     "recordZ": 0.1176
+     "n": 803,
+     "recordZ": 0.0734
     },
     {
      "beat": 0.5,
@@ -2529,15 +2546,15 @@
    "tested": null,
    "threshold": "a watch when the bets moved against do better or worse against the Book's chance than the rest, the props moved past the guard's limit their way better than the unmoved, the game lines moved past it their way worse, or the bets 6h or more early beat the close more or less than the later ones (CLV z 2.5) with their record against the Book the same way at z 1 or more: z 2.5, 60+ a side; else a report",
    "title": "Line move and bet timing (all graded)",
-   "value": 1437
+   "value": 1479
   },
   {
    "examples": [],
-   "headline": "1054 graded props at the Book's price (80 with the ratio estimated): no difference past z 2.5 between the far lines the Bot bet against, or the line alarm's, and the near ones",
+   "headline": "1096 graded props at the Book's price (80 with the ratio estimated): no difference past z 2.5 between the far lines the Bot bet against, or the line alarm's, and the near ones",
    "how": "every graded prop bet and CHECK at the Book's own price: the mean its price implies at its line over the Bot's projection (projection.lineRatio since 2026-10-13, else estimated from the line, the fair chance and the projection's dispersion), far over, far under or near (in SDs of the count: props.mjs lineZ), the Bot's side against the market's reading or with it; each row's record against the Book's fair chance (overBook, weighted as zOf). The line alarm's labeled rows (props.mjs lineAlarmOf: a far line with a cause known before the game that the fit doesn't size, on the side against the market's reading; a label, bet or not by the other guards) apart, the bets' set against the near ones. Never applied: it says where to look",
    "id": "C20",
    "metric": "graded props",
-   "n": 1054,
+   "n": 1096,
    "needs": null,
    "rows": [
     {
@@ -2551,24 +2568,24 @@
      "z": -0.8721
     },
     {
-     "e": 113.1711,
+     "e": 115.8835,
      "key": "bets: line far over, the Bot with it",
-     "n": 553,
-     "overBook": -0.0292,
-     "profit": -52.778,
-     "roi": -0.1909,
+     "n": 593,
+     "overBook": -0.0319,
+     "profit": -72.778,
+     "roi": -0.2455,
      "w": 97,
-     "z": -1.8628
+     "z": -2.1407
     },
     {
-     "e": 99.6862,
+     "e": 100.7222,
      "key": "bets: line near the projection",
-     "n": 204,
-     "overBook": -0.0279,
-     "profit": -11.722,
-     "roi": -0.0965,
-     "w": 94,
-     "z": -0.8001
+     "n": 206,
+     "overBook": -0.0278,
+     "profit": -11.893,
+     "roi": -0.0971,
+     "w": 95,
+     "z": -0.8013
     },
     {
      "e": 35.9307,
@@ -2605,27 +2622,27 @@
    "tested": null,
    "threshold": "a watch when the props bet against a line far from the projection (its implied mean 1.15 or more SDs of the count over the Bot's, or -0.75 under) do better or worse against the Book's chance than the near ones, or the line alarm's labeled bets worse: z 2.5, 60+ a side; else a report",
    "title": "Line far from the projection (all graded)",
-   "value": 1054
+   "value": 1096
   },
   {
    "examples": [],
-   "headline": "7 of 30 spots shifted: anyTd|over|0.5 -0.102 (n 553, pooled only (its own rung: no held-out gain)), passInt|over|0.5 -0.102 (n 7, pooled only (its own rung: too few rows (200 needed))), passInt|under|0.5 -0.102 (n 5, pooled only (its own rung: too few rows (200 needed))), passTd|under|0.5 -0.102 (n 2, pooled only (its own rung: too few rows (200 needed))), rec|over|0.5 -0.102 (n 1, pooled only (its own rung: too few rows (200 needed))), rec|under|0.5 -0.102 (n 1, pooled only (its own rung: too few rows (200 needed))), rushYds|over|0.5 -0.102 (n 2, pooled only (its own rung: too few rows (200 needed)))",
+   "headline": "7 of 30 spots shifted: anyTd|over|0.5 -0.102 (n 593, pooled only (its own rung: no held-out gain)), passInt|over|0.5 -0.102 (n 7, pooled only (its own rung: too few rows (200 needed))), passInt|under|0.5 -0.102 (n 5, pooled only (its own rung: too few rows (200 needed))), passTd|under|0.5 -0.102 (n 2, pooled only (its own rung: too few rows (200 needed))), rec|over|0.5 -0.102 (n 1, pooled only (its own rung: too few rows (200 needed))), rec|under|0.5 -0.102 (n 1, pooled only (its own rung: too few rows (200 needed))), rushYds|over|0.5 -0.102 (n 2, pooled only (its own rung: too few rows (200 needed)))",
    "how": "state.calib as the last run left it (calib.mjs fitCalib: every graded prop since MODEL_EPOCH, the tracked rows among them, by its raw model chance), each spot's shift, target and held-out gain; the week's graded props of each spot, the sum of their raw chances (said), of the chances as shifted (shifted) and their wins. Never more than the desk applies: it says where the model's been running hot or cold",
    "id": "C21",
    "metric": "spots shifted",
-   "n": 761,
+   "n": 803,
    "needs": null,
    "rows": [
     {
-     "gain": 0,
+     "gain": -0.0004,
      "kept": true,
      "key": "anyTd|over|0.5",
-     "n": 553,
-     "said": 47.1369,
+     "n": 593,
+     "said": 49.982,
      "shift": -0.1016,
-     "shifted": 43.7836,
-     "target": 0.0437,
-     "week": 256,
+     "shifted": 46.3831,
+     "target": 0.0309,
+     "week": 296,
      "why": "pooled only (its own rung: no held-out gain)",
      "won": 54
     },
@@ -2711,12 +2728,12 @@
      "gain": null,
      "kept": false,
      "key": "rec|over|1.5",
-     "n": 11,
-     "said": 1.3405,
+     "n": 12,
+     "said": 1.8088,
      "shift": 0,
-     "shifted": 1.3405,
+     "shifted": 1.8088,
      "target": 0,
-     "week": 3,
+     "week": 4,
      "why": "too few rows (200 needed)",
      "won": 3
     },
@@ -2737,14 +2754,14 @@
      "gain": null,
      "kept": false,
      "key": "rec|under|1.5",
-     "n": 8,
-     "said": 1.0571,
+     "n": 9,
+     "said": 1.6247,
      "shift": 0,
-     "shifted": 1.0571,
+     "shifted": 1.6247,
      "target": 0,
-     "week": 2,
+     "week": 3,
      "why": "too few rows (200 needed)",
-     "won": 2
+     "won": 3
     },
     {
      "gain": null,
@@ -3205,10 +3222,10 @@
  },
  "sport": "nfl",
  "summary": {
-  "flag": 6,
-  "headline": "Over/under drift by stat: Anytime TD Over: 50 won vs 51 expected (z -0.17), 100% of its stat's props, ROI 5.5%; Loss clusters: Worst cell lead time: 12-30h: 66 won vs 88.1 expected (z -3.05) on 352 bets, ROI -33.4%",
+  "flag": 5,
+  "headline": "Over/under drift by stat: Anytime TD Over: 50 won vs 53.6 expected (z -0.6), 100% of its stat's props, ROI -9.9%; Loss clusters: Worst cell lead time: 12-30h: 66 won vs 88.1 expected (z -3.05) on 352 bets, ROI -33.4%",
   "info": 4,
-  "ok": 6,
+  "ok": 7,
   "partial": 2,
   "thin": 1,
   "watch": 4
@@ -3222,7 +3239,7 @@
   "calls": 0,
   "capHits": 0,
   "cost": 0,
-  "plain": 4,
+  "plain": 2,
   "rejected": 0,
   "sample": [],
   "written": 0

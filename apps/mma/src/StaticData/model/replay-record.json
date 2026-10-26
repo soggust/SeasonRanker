@@ -2,7 +2,7 @@
  "v": 1,
  "sport": "mma",
  "epoch": "2026-10-21T01:15:00Z",
- "at": "2026-10-26T17:43:49.889Z",
+ "at": "2026-10-26T18:06:25.451Z",
  "from": "2020-06-06T23:10:00.000Z",
  "through": "2026-10-18T01:45:00.000Z",
  "n": {
@@ -2180,8 +2180,8 @@
    }
   }
  },
- "commit": "d0fed0f9",
- "note": "D94. MMA counter-strikers against pressure fighters, MMA's prop markets, and the NFL's unused Next Gen Stats (the owner's 2026-10-26 list): measured, none holds, nothing priced moves",
+ "commit": "140d2521",
+ "note": "D95. The testing audit's six recommendations (the owner, 2026-10-26: \"do your recommendations as long as they are true and get us best results\"): one beat-the-close, the props bet late, the NBA's stake step off, the pulled starters and the live props' names, MMA's in-play closes and MLB's postseason, and the testing hygiene",
  "inputs": {
   "v": 1,
   "sport": "mma",
@@ -2207,7 +2207,7 @@
     "2025-02-23",
     "2026-03-18"
    ],
-   "planted": 1235.08
+   "planted": 1237.41
   },
   "frozen": {
    "props": {
@@ -2223,7 +2223,6 @@
     "want": 14
    }
   },
-  "hash": "157145a0960f1eae",
-  "accepted": "D95: the testing audit's recommendations (fixB's pulled starters and props names, MLB's postseason logs, MMA's in-play closes, the epoch): the props' fits searched again"
+  "hash": "157145a0960f1eae"
  }
 }
