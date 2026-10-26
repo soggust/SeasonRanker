@@ -8462,6 +8462,90 @@
     "seen": "2026-10-26T21:39:55.402Z",
     "own": "2026-10-26T21:34:00.000Z"
    }
+  },
+  "401873023|travisglover|q": {
+   "game": "401873023",
+   "start": "2026-10-30T00:15Z",
+   "team": "9",
+   "name": "Travis Glover",
+   "status": "q",
+   "athlete": "4361904",
+   "espn": {
+    "seen": "2026-10-26T22:34:30.334Z",
+    "own": "2026-10-26T21:53:00.000Z"
+   }
+  },
+  "401873023|anthonycampbell|q": {
+   "game": "401873023",
+   "start": "2026-10-30T00:15Z",
+   "team": "9",
+   "name": "Anthony Campbell",
+   "status": "q",
+   "athlete": "4887255",
+   "espn": {
+    "seen": "2026-10-26T22:34:30.334Z",
+    "own": "2026-10-26T21:52:00.000Z"
+   }
+  },
+  "401873023|matthewgolden|q": {
+   "game": "401873023",
+   "start": "2026-10-30T00:15Z",
+   "team": "9",
+   "name": "Matthew Golden",
+   "status": "q",
+   "athlete": "4701936",
+   "espn": {
+    "seen": "2026-10-26T22:34:30.334Z",
+    "own": "2026-10-26T21:46:00.000Z"
+   }
+  },
+  "401873023|akaylebevans|q": {
+   "game": "401873023",
+   "start": "2026-10-30T00:15Z",
+   "team": "29",
+   "name": "Akayleb Evans",
+   "status": "q",
+   "athlete": "4244607",
+   "espn": {
+    "seen": "2026-10-26T22:34:30.334Z",
+    "own": "2026-10-26T22:10:00.000Z"
+   }
+  },
+  "401873023|torricellisimpkins|q": {
+   "game": "401873023",
+   "start": "2026-10-30T00:15Z",
+   "team": "29",
+   "name": "Torricelli Simpkins III",
+   "status": "q",
+   "athlete": "4696902",
+   "espn": {
+    "seen": "2026-10-26T22:34:30.334Z",
+    "own": "2026-10-26T21:50:00.000Z"
+   }
+  },
+  "401873023|damienlewis|q": {
+   "game": "401873023",
+   "start": "2026-10-30T00:15Z",
+   "team": "29",
+   "name": "Damien Lewis",
+   "status": "q",
+   "athlete": "4362647",
+   "espn": {
+    "seen": "2026-10-26T22:34:30.334Z",
+    "own": "2026-10-26T21:50:00.000Z"
+   }
+  },
+  "401873023|bobbybrown|q": {
+   "game": "401873023",
+   "start": "2026-10-30T00:15Z",
+   "team": "29",
+   "name": "Bobby Brown III",
+   "status": "q",
+   "athlete": "4372518",
+   "espn": {
+    "seen": "2026-10-26T22:34:30.334Z",
+    "own": "2026-10-26T21:49:00.000Z"
+   }
   }
  }
 }

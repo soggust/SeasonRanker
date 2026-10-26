@@ -1,13 +1,13 @@
 {
  "sport": "nfl",
  "cursor": {
-  "adamscheftermirror.bsky.social": "2026-10-26T20:43:09.674Z",
+  "adamscheftermirror.bsky.social": "2026-10-26T22:18:21.091Z",
   "rapsheet.bsky.social": "2026-10-26T20:22:55.098Z",
   "nflnewsreposterbot.bsky.social": "2026-10-22T13:33:43.592Z",
-  "insidenflnews.bsky.social": "2026-10-26T19:32:32.550Z",
+  "insidenflnews.bsky.social": "2026-10-26T22:12:12.610Z",
   "nflnewsposter.bsky.social": "2026-10-26T20:26:57.008Z",
-  "rotoworld-fb.bsky.social": "2026-10-26T21:39:37.000Z",
-  "rotowirenfl.bsky.social": "2026-10-26T21:39:15.000Z"
+  "rotoworld-fb.bsky.social": "2026-10-26T22:19:54.000Z",
+  "rotowirenfl.bsky.social": "2026-10-26T22:35:45.000Z"
  },
  "claims": [
   {
@@ -6691,6 +6691,175 @@
    "kind": "status",
    "confidence": 0.6,
    "text": "Young (knee) listed as full participant Monday"
+  },
+  {
+   "id": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3mysp44ioq42o|matthewgolden|questionable|status",
+   "at": "2026-10-26T21:46:45.000Z",
+   "seen": "2026-10-26T22:37:11.118Z",
+   "handle": "rotowirenfl.bsky.social",
+   "post": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3mysp44ioq42o",
+   "player": "Matthew Golden",
+   "team": null,
+   "status": "questionable",
+   "kind": "status",
+   "confidence": 0.5,
+   "text": "Matthew Golden: Listed as DNP on Monday \n\n https://www.rotowire.com/football/player/matthew-golden-18500"
+  },
+  {
+   "id": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3mysp74orxt2k|matthewgolden|questionable|status",
+   "at": "2026-10-26T21:48:26.000Z",
+   "seen": "2026-10-26T22:37:11.118Z",
+   "handle": "rotoworld-fb.bsky.social",
+   "post": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3mysp74orxt2k",
+   "player": "Matthew Golden",
+   "team": null,
+   "status": "questionable",
+   "kind": "status",
+   "confidence": 0.5,
+   "text": "Golden (shoulder/foot) listed as DNP on Monday"
+  },
+  {
+   "id": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3mysq7dfy2d2y|jeremiyahlove|limited|status",
+   "at": "2026-10-26T22:06:26.000Z",
+   "seen": "2026-10-26T22:37:11.118Z",
+   "handle": "rotoworld-fb.bsky.social",
+   "post": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3mysq7dfy2d2y",
+   "player": "Jeremiyah Love",
+   "team": null,
+   "status": "limited",
+   "kind": "status",
+   "confidence": 0.6,
+   "text": "Jeremiyah Love (ankle) to practice Wednesday"
+  },
+  {
+   "id": "at://did:plc:mbr4badgf6yu56mquzackzew/app.bsky.feed.post/3mysqj75ec22m|christianmccaffrey|questionable|status",
+   "at": "2026-10-26T22:11:57.983Z",
+   "seen": "2026-10-26T22:37:11.118Z",
+   "handle": "insidenflnews.bsky.social",
+   "post": "at://did:plc:mbr4badgf6yu56mquzackzew/app.bsky.feed.post/3mysqj75ec22m",
+   "player": "Christian McCaffrey",
+   "team": "SF",
+   "status": "questionable",
+   "kind": "status",
+   "confidence": 0.6,
+   "text": "Christian McCaffrey suffered mild hamstring strain.\n\n49ers believe he'll be fine coming out of the bye week."
+  },
+  {
+   "id": "at://did:plc:mbr4badgf6yu56mquzackzew/app.bsky.feed.post/3mysqjn3pik2m|nickbosa|out|return",
+   "at": "2026-10-26T22:12:12.610Z",
+   "seen": "2026-10-26T22:37:11.118Z",
+   "handle": "insidenflnews.bsky.social",
+   "post": "at://did:plc:mbr4badgf6yu56mquzackzew/app.bsky.feed.post/3mysqjn3pik2m",
+   "player": "Nick Bosa",
+   "team": "SF",
+   "status": "out",
+   "kind": "return",
+   "confidence": 0.5,
+   "text": "49ers that have a chance to return in Week 9, per HC Shanahan:\n\nNick Bosa\nMike Evans\nDemarcus Robinson\nDeebo Samuel"
+  },
+  {
+   "id": "at://did:plc:mbr4badgf6yu56mquzackzew/app.bsky.feed.post/3mysqjn3pik2m|mikeevans|out|return",
+   "at": "2026-10-26T22:12:12.610Z",
+   "seen": "2026-10-26T22:37:11.118Z",
+   "handle": "insidenflnews.bsky.social",
+   "post": "at://did:plc:mbr4badgf6yu56mquzackzew/app.bsky.feed.post/3mysqjn3pik2m",
+   "player": "Mike Evans",
+   "team": null,
+   "status": "out",
+   "kind": "return",
+   "confidence": 0.4,
+   "text": "49ers that have a chance to return in Week 9, per HC Shanahan:\n\nNick Bosa\nMike Evans\nDemarcus Robinson\nDeebo Samuel"
+  },
+  {
+   "id": "at://did:plc:mbr4badgf6yu56mquzackzew/app.bsky.feed.post/3mysqjn3pik2m|demarcusrobinson|out|return",
+   "at": "2026-10-26T22:12:12.610Z",
+   "seen": "2026-10-26T22:37:11.118Z",
+   "handle": "insidenflnews.bsky.social",
+   "post": "at://did:plc:mbr4badgf6yu56mquzackzew/app.bsky.feed.post/3mysqjn3pik2m",
+   "player": "Demarcus Robinson",
+   "team": "SF",
+   "status": "out",
+   "kind": "return",
+   "confidence": 0.5,
+   "text": "49ers that have a chance to return in Week 9, per HC Shanahan:\n\nNick Bosa\nMike Evans\nDemarcus Robinson\nDeebo Samuel"
+  },
+  {
+   "id": "at://did:plc:mbr4badgf6yu56mquzackzew/app.bsky.feed.post/3mysqjn3pik2m|deebosamuel|out|return",
+   "at": "2026-10-26T22:12:12.610Z",
+   "seen": "2026-10-26T22:37:11.118Z",
+   "handle": "insidenflnews.bsky.social",
+   "post": "at://did:plc:mbr4badgf6yu56mquzackzew/app.bsky.feed.post/3mysqjn3pik2m",
+   "player": "Deebo Samuel",
+   "team": "SF",
+   "status": "out",
+   "kind": "return",
+   "confidence": 0.5,
+   "text": "49ers that have a chance to return in Week 9, per HC Shanahan:\n\nNick Bosa\nMike Evans\nDemarcus Robinson\nDeebo Samuel"
+  },
+  {
+   "id": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3mysqkwo4js2z|christianmccaffrey|questionable|status",
+   "at": "2026-10-26T22:12:56.000Z",
+   "seen": "2026-10-26T22:37:11.118Z",
+   "handle": "rotowirenfl.bsky.social",
+   "post": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3mysqkwo4js2z",
+   "player": "Christian McCaffrey",
+   "team": "SF",
+   "status": "questionable",
+   "kind": "status",
+   "confidence": 0.7,
+   "text": "Christian McCaffrey: Dealing with mild hamstring strain \n\n https://www.rotowire.com/football/player/christian-mccaffrey-11690"
+  },
+  {
+   "id": "at://did:plc:qre6zxbmr3ixhdmgsgdretb5/app.bsky.feed.post/3mysqumljr32l|jalenwilliams|out|status",
+   "at": "2026-10-26T22:18:21.091Z",
+   "seen": "2026-10-26T22:37:11.118Z",
+   "handle": "adamscheftermirror.bsky.social",
+   "post": "at://did:plc:qre6zxbmr3ixhdmgsgdretb5/app.bsky.feed.post/3mysqumljr32l",
+   "player": "Jalen Williams",
+   "team": "OKC",
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.95,
+   "text": "Repost by @AdamSchefter\n\nBREAKING: Oklahoma City's Jalen Williams has a dislocated left ankle and fractured fibula; Cason Wallace has a torn labrum in his left shoulder. Both will undergo surgery and "
+  },
+  {
+   "id": "at://did:plc:qre6zxbmr3ixhdmgsgdretb5/app.bsky.feed.post/3mysqumljr32l|casonwallace|out|status",
+   "at": "2026-10-26T22:18:21.091Z",
+   "seen": "2026-10-26T22:37:11.118Z",
+   "handle": "adamscheftermirror.bsky.social",
+   "post": "at://did:plc:qre6zxbmr3ixhdmgsgdretb5/app.bsky.feed.post/3mysqumljr32l",
+   "player": "Cason Wallace",
+   "team": "OKC",
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.95,
+   "text": "Repost by @AdamSchefter\n\nBREAKING: Oklahoma City's Jalen Williams has a dislocated left ankle and fractured fibula; Cason Wallace has a torn labrum in his left shoulder. Both will undergo surgery and "
+  },
+  {
+   "id": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3mysqxfqehd2k|christianmccaffrey|questionable|status",
+   "at": "2026-10-26T22:19:54.000Z",
+   "seen": "2026-10-26T22:37:11.118Z",
+   "handle": "rotoworld-fb.bsky.social",
+   "post": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3mysqxfqehd2k",
+   "player": "Christian McCaffrey",
+   "team": "SF",
+   "status": "questionable",
+   "kind": "status",
+   "confidence": 0.7,
+   "text": "Shanahan: 'mild' hamstring strain for McCaffrey"
+  },
+  {
+   "id": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3mysrtqn6ca2y|deebosamuel|out|return",
+   "at": "2026-10-26T22:35:45.000Z",
+   "seen": "2026-10-26T22:37:11.118Z",
+   "handle": "rotowirenfl.bsky.social",
+   "post": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3mysrtqn6ca2y",
+   "player": "Deebo Samuel",
+   "team": "SF",
+   "status": "out",
+   "kind": "return",
+   "confidence": 0.6,
+   "text": "Deebo Samuel: Eyes Week 9 return \n\n https://www.rotowire.com/football/player/deebo-samuel-13429"
   }
  ]
 }
