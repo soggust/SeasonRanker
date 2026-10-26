@@ -104,6 +104,19 @@ test('buildBoard: the games not started, the bot’s sides marked, a prop kept b
   assert.equal(buildBoard('nfl', { prev: next, now: new Date(game.date) }).games.length, 0);
 });
 
+test('buildBoard: a player out or doubtful on the report has no props on the board (2026-10-26: DeVonta Smith out, his Thursday price still buyable)', () => {
+  const row = boardProp(prop(-115, -105), 'T1');
+  const other = { ...row, id: '99', n: 'Isiah Pacheco', k: 'rushYds', l: 60.5 };
+  const props = new Map([['401', { rows: [row, other], whole: true, lines: new Map() }]]);
+  const games = new Map([['401', { game, markets: boardMarkets(markets, () => 1), at: 'T1' }]]);
+  const b = buildBoard('nfl', { games, props, now: NOW, outs: new Map([['401', new Set(['99'])]]) });
+  assert.deepEqual(b.games[0].p.map((p) => p.id), [String(row.id)]);
+  // (kept between runs, a prop of his dropped from the board the run before stays off while he's out)
+  const next = buildBoard('nfl', { prev: { games: [{ ...b.games[0], p: [row, other] }] }, games, now: NOW, outs: new Map([['401', new Set(['99'])]]) });
+  assert.deepEqual(next.games[0].p.map((p) => p.id), [String(row.id)]);
+  assert.equal(buildBoard('nfl', { games, props, now: NOW }).games[0].p.length, 2, 'no report: every prop as it was');
+});
+
 test('seenUpdate keeps every price shown, its first and last showing, a week past the start', () => {
   const b = buildBoard('nfl', { games: new Map([['401', { game, markets: boardMarkets(markets, () => 1), at: 'T' }]]), props: new Map([['401', { rows: [boardProp(prop(-115, -105), 'T')], whole: true }]]), now: NOW });
   const s1 = seenUpdate(null, b, NOW);

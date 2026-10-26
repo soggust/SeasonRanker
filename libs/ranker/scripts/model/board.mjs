@@ -457,7 +457,10 @@ const bare = (x) => JSON.parse(JSON.stringify(x, (k, v) => (k === 'at' || k === 
 // now }), over the last board (prev): a game or prop not priced this run kept as it was (the NFL's props are
 // asked a few times a game: between asks the last price stands), unless its line has moved on the book's
 // board since; the games started dropped. bets, checks: the ledger's, its open ones marked (bot)
-export function buildBoard(sport, { prev = null, games = new Map(), props = new Map(), bets = [], checks = [], now = new Date() } = {}) {
+// (outs: game id to the athlete ids its injury report has out or doubtful (OUT_STATUS): their props off the board, so a
+// price the props' asks can't refresh (2026-10-26: DeVonta Smith out a day, his Thursday price still buyable) is never
+// offered on a player who won't play)
+export function buildBoard(sport, { prev = null, games = new Map(), props = new Map(), bets = [], checks = [], now = new Date(), outs = null } = {}) {
   const t = now.getTime();
   const out = new Map();
   for (const g of prev?.games ?? []) if (Date.parse(g.start) > t) out.set(String(g.id), { ...g, k: g.k ?? {}, p: g.p ?? [] });
@@ -476,6 +479,7 @@ export function buildBoard(sport, { prev = null, games = new Map(), props = new 
     const fresh = new Map(rows.map((p) => [propKey(p), before.has(propKey(p)) && JSON.stringify(bare(before.get(propKey(p)))) === JSON.stringify(bare(p)) ? { ...p, at: before.get(propKey(p)).at } : p]));
     g.p = [...kept.filter((p) => !fresh.has(propKey(p))), ...fresh.values()].sort((x, y) => x.n.localeCompare(y.n) || x.k.localeCompare(y.k));
   }
+  if (outs) for (const g of out.values()) { const o = outs.get(String(g.id)); if (o?.size) g.p = (g.p ?? []).filter((p) => !o.has(String(p.id))); }
   // (the bot's open sides: its bets, and its CHECKs not closed, graded or bet after all, as the picks' list; a
   // shadow never, checks.mjs shadowOf; a tracked row never: not bet, desk.mjs TRACK)
   const marks = [...bets.filter((b) => b.status === 'open' && !b.void && !isTracked(b)).map((b) => [b, 'bet']), ...checks.filter((c) => !c.hidden && !c.checkResult && !c.bet && !c.closedAt).map((c) => [c, 'check'])];

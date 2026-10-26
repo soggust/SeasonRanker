@@ -437,10 +437,19 @@ function prevBoardGame(r, id) {
 function prevBoardProp(r, id, prop) {
   return (prevBoardGame(r, id)?.p ?? []).find((p) => p.k === prop.stat.key && String(p.id) === String(prop.athlete.id)) ?? null;
 }
+// (each upcoming game's players out or doubtful on its injury report (buildBoard's outs): their props off the board)
+function boardOuts(live) {
+  const outs = new Map();
+  for (const [id, g] of live ?? new Map()) {
+    const o = new Set([...(g?.injuries?.values?.() ?? [])].flat().filter((x) => x?.id && OUT_STATUS.test(x.status ?? '')).map((x) => String(x.id)));
+    if (o.size) outs.set(String(id), o);
+  }
+  return outs;
+}
 function writeBoard(r) {
   const out = BOARD_OUT ? path.resolve(BOARD_OUT) : null;
   if (DRY && !out) return;
-  const board = buildBoard(r.sport, { prev: readJson(r.files.board, null), games: r.boardGames ?? new Map(), props: r.boardProps ?? new Map(), bets: r.ledger.bets, checks: r.ledger.checks ?? [], now: r.now });
+  const board = buildBoard(r.sport, { prev: readJson(r.files.board, null), games: r.boardGames ?? new Map(), props: r.boardProps ?? new Map(), bets: r.ledger.bets, checks: r.ledger.checks ?? [], now: r.now, outs: boardOuts(r.live) });
   const seen = seenUpdate(readJson(r.files.boardSeen, null), board, r.now);
   const props = board.games.reduce((t, g) => t + g.p.length, 0);
   if (DRY) {
