@@ -1,5 +1,5 @@
 {
- "at": "2026-10-24T00:23:04.369Z",
+ "at": "2026-10-26T05:03:34.323Z",
  "halves": [
   {
    "from": "2023-11-01",
@@ -111,17 +111,17 @@
    "to": "2026-11-01",
    "train": 11177,
    "model": {
-    "n": 331,
-    "logLoss": 0.6387,
-    "acc": 0.6586
+    "n": 344,
+    "logLoss": 0.6397,
+    "acc": 0.6541
    },
    "rating": {
-    "n": 331,
-    "logLoss": 0.6802,
-    "acc": 0.5634
+    "n": 344,
+    "logLoss": 0.6772,
+    "acc": 0.5654
    },
    "coin": {
-    "n": 331,
+    "n": 344,
     "logLoss": 0.6931,
     "acc": 0.5
    },
@@ -130,17 +130,17 @@
  ],
  "all": {
   "model": {
-   "n": 1880,
-   "logLoss": 0.6222,
-   "acc": 0.6495
+   "n": 1893,
+   "logLoss": 0.6225,
+   "acc": 0.6487
   },
   "rating": {
-   "n": 1880,
-   "logLoss": 0.6554,
-   "acc": 0.6019
+   "n": 1893,
+   "logLoss": 0.655,
+   "acc": 0.602
   },
   "coin": {
-   "n": 1880,
+   "n": 1893,
    "logLoss": 0.6931,
    "acc": 0.5
   }
@@ -156,44 +156,44 @@
   {
    "from": 0.1,
    "to": 0.2,
-   "n": 86,
-   "mean": 0.1636,
-   "actual": 0.1395
+   "n": 87,
+   "mean": 0.1641,
+   "actual": 0.1379
   },
   {
    "from": 0.2,
    "to": 0.3,
-   "n": 246,
-   "mean": 0.2566,
-   "actual": 0.2236
+   "n": 247,
+   "mean": 0.2568,
+   "actual": 0.2227
   },
   {
    "from": 0.3,
    "to": 0.4,
-   "n": 342,
-   "mean": 0.3545,
-   "actual": 0.3187
+   "n": 346,
+   "mean": 0.3546,
+   "actual": 0.3237
   },
   {
    "from": 0.4,
    "to": 0.5,
    "n": 459,
-   "mean": 0.4517,
+   "mean": 0.4519,
    "actual": 0.4336
   },
   {
    "from": 0.5,
    "to": 0.6,
-   "n": 352,
-   "mean": 0.5471,
-   "actual": 0.5313
+   "n": 357,
+   "mean": 0.547,
+   "actual": 0.5294
   },
   {
    "from": 0.6,
    "to": 0.7,
-   "n": 224,
-   "mean": 0.6472,
-   "actual": 0.6295
+   "n": 226,
+   "mean": 0.6469,
+   "actual": 0.6327
   },
   {
    "from": 0.7,
@@ -219,7 +219,7 @@
  ],
  "note": "held out: each half fit on the bouts before it alone; no odds (none kept on this plan), so it says how the model predicts, not what it would have won",
  "totals": {
-  "at": "2026-10-24T00:23:04.369Z",
+  "at": "2026-10-26T05:03:34.323Z",
   "halves": [
    {
     "from": "2023-11-01",
@@ -345,59 +345,59 @@
     "from": "2026-05-01",
     "to": "2026-11-01",
     "train": 10920,
-    "bouts": 332,
+    "bouts": 345,
     "kept": 6,
     "line25": {
      "model": {
-      "n": 295,
-      "logLoss": 0.6705,
-      "acc": 0.5593
+      "n": 306,
+      "logLoss": 0.6658,
+      "acc": 0.5719
      },
      "byClass": {
-      "n": 295,
-      "logLoss": 0.7018,
-      "acc": 0.522
+      "n": 306,
+      "logLoss": 0.7013,
+      "acc": 0.5229
      },
      "base": {
-      "n": 295,
-      "logLoss": 0.7042,
-      "acc": 0.4305
+      "n": 306,
+      "logLoss": 0.7041,
+      "acc": 0.4314
      }
     }
    }
   ],
   "all": {
    "model": {
-    "n": 4208,
-    "logLoss": 0.6291,
-    "acc": 0.6445
+    "n": 4238,
+    "logLoss": 0.6288,
+    "acc": 0.6449
    },
    "byClass": {
-    "n": 4208,
-    "logLoss": 0.6492,
-    "acc": 0.621
+    "n": 4238,
+    "logLoss": 0.6494,
+    "acc": 0.6203
    },
    "base": {
-    "n": 4208,
-    "logLoss": 0.6597,
-    "acc": 0.6074
+    "n": 4238,
+    "logLoss": 0.66,
+    "acc": 0.6067
    }
   },
   "line25": {
    "model": {
-    "n": 1674,
-    "logLoss": 0.6608,
-    "acc": 0.601
+    "n": 1685,
+    "logLoss": 0.66,
+    "acc": 0.603
    },
    "byClass": {
-    "n": 1674,
-    "logLoss": 0.6797,
-    "acc": 0.5723
+    "n": 1685,
+    "logLoss": 0.6798,
+    "acc": 0.5721
    },
    "base": {
-    "n": 1674,
-    "logLoss": 0.6906,
-    "acc": 0.5394
+    "n": 1685,
+    "logLoss": 0.6907,
+    "acc": 0.5389
    }
   },
   "byDivision": {
@@ -437,104 +437,104 @@
    },
    "Featherweight": {
     "model": {
-     "n": 206,
-     "logLoss": 0.6902,
-     "acc": 0.5388
+     "n": 208,
+     "logLoss": 0.6888,
+     "acc": 0.5433
     },
     "byClass": {
-     "n": 206,
+     "n": 208,
      "logLoss": 0.7082,
-     "acc": 0.4903
+     "acc": 0.4904
     },
     "base": {
-     "n": 206,
+     "n": 208,
      "logLoss": 0.6962,
-     "acc": 0.4903
+     "acc": 0.4904
     }
    },
    "Flyweight": {
     "model": {
-     "n": 100,
-     "logLoss": 0.6809,
-     "acc": 0.52
+     "n": 101,
+     "logLoss": 0.6817,
+     "acc": 0.5149
     },
     "byClass": {
-     "n": 100,
-     "logLoss": 0.6741,
-     "acc": 0.6
+     "n": 101,
+     "logLoss": 0.6766,
+     "acc": 0.5941
     },
     "base": {
-     "n": 100,
-     "logLoss": 0.6828,
-     "acc": 0.6
+     "n": 101,
+     "logLoss": 0.6836,
+     "acc": 0.5941
     }
    },
    "Heavyweight": {
     "model": {
-     "n": 126,
-     "logLoss": 0.6399,
-     "acc": 0.6667
+     "n": 127,
+     "logLoss": 0.6387,
+     "acc": 0.6693
     },
     "byClass": {
-     "n": 126,
-     "logLoss": 0.7069,
-     "acc": 0.5317
+     "n": 127,
+     "logLoss": 0.7088,
+     "acc": 0.5276
     },
     "base": {
-     "n": 126,
-     "logLoss": 0.6993,
-     "acc": 0.4683
+     "n": 127,
+     "logLoss": 0.6988,
+     "acc": 0.4724
     }
    },
    "Light Heavyweight": {
     "model": {
-     "n": 126,
-     "logLoss": 0.6816,
-     "acc": 0.5397
+     "n": 128,
+     "logLoss": 0.6786,
+     "acc": 0.5469
     },
     "byClass": {
-     "n": 126,
-     "logLoss": 0.6755,
-     "acc": 0.6032
+     "n": 128,
+     "logLoss": 0.674,
+     "acc": 0.6094
     },
     "base": {
-     "n": 126,
-     "logLoss": 0.7081,
-     "acc": 0.3968
+     "n": 128,
+     "logLoss": 0.709,
+     "acc": 0.3906
     }
    },
    "Lightweight": {
     "model": {
-     "n": 239,
-     "logLoss": 0.6669,
-     "acc": 0.6192
+     "n": 241,
+     "logLoss": 0.6656,
+     "acc": 0.6224
     },
     "byClass": {
-     "n": 239,
+     "n": 241,
      "logLoss": 0.6923,
-     "acc": 0.5314
+     "acc": 0.5311
     },
     "base": {
-     "n": 239,
-     "logLoss": 0.692,
-     "acc": 0.5314
+     "n": 241,
+     "logLoss": 0.6921,
+     "acc": 0.5311
     }
    },
    "Middleweight": {
     "model": {
-     "n": 191,
-     "logLoss": 0.6655,
-     "acc": 0.5759
+     "n": 193,
+     "logLoss": 0.6648,
+     "acc": 0.5803
     },
     "byClass": {
-     "n": 191,
-     "logLoss": 0.6877,
-     "acc": 0.555
+     "n": 193,
+     "logLoss": 0.6878,
+     "acc": 0.5544
     },
     "base": {
-     "n": 191,
+     "n": 193,
      "logLoss": 0.7015,
-     "acc": 0.445
+     "acc": 0.4456
     }
    },
    "W Bantamweight": {
@@ -573,19 +573,19 @@
    },
    "W Strawweight": {
     "model": {
-     "n": 89,
-     "logLoss": 0.5782,
-     "acc": 0.7191
+     "n": 90,
+     "logLoss": 0.5765,
+     "acc": 0.7222
     },
     "byClass": {
-     "n": 89,
-     "logLoss": 0.607,
-     "acc": 0.7079
+     "n": 90,
+     "logLoss": 0.6042,
+     "acc": 0.7111
     },
     "base": {
-     "n": 89,
-     "logLoss": 0.6707,
-     "acc": 0.7079
+     "n": 90,
+     "logLoss": 0.6703,
+     "acc": 0.7111
     }
    },
    "Welterweight": {
@@ -617,30 +617,30 @@
    {
     "from": 0.3,
     "to": 0.4,
-    "n": 127,
-    "mean": 0.3651,
-    "actual": 0.315
+    "n": 128,
+    "mean": 0.3647,
+    "actual": 0.3125
    },
    {
     "from": 0.4,
     "to": 0.5,
-    "n": 426,
-    "mean": 0.4578,
-    "actual": 0.4413
+    "n": 430,
+    "mean": 0.4576,
+    "actual": 0.4372
    },
    {
     "from": 0.5,
     "to": 0.6,
-    "n": 602,
-    "mean": 0.5501,
-    "actual": 0.5581
+    "n": 605,
+    "mean": 0.5502,
+    "actual": 0.5587
    },
    {
     "from": 0.6,
     "to": 0.7,
-    "n": 441,
-    "mean": 0.6437,
-    "actual": 0.6349
+    "n": 444,
+    "mean": 0.6436,
+    "actual": 0.6374
    },
    {
     "from": 0.7,

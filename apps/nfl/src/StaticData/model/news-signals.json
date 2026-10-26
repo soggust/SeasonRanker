@@ -3,137 +3,93 @@
  "days": 2,
  "signals": [
   {
-   "team": "25",
-   "abbr": "SF",
-   "athlete": "3895856",
-   "player": "Christian Kirk",
-   "kind": "return",
+   "team": "13",
+   "abbr": "LV",
+   "athlete": "34081",
+   "player": "Francisco Mendoza",
+   "kind": "starting",
    "direction": "up",
    "confidence": 0.3,
-   "headline": "49ers WR Evans, DE Bosa, WR Samuel out vs. Atlanta; WR Kirk may return",
-   "at": "2026-10-23T21:49:20.000Z"
+   "headline": "Raiders' Kubiak on switching to QB Mendoza: 'We're thinking about everything'",
+   "at": "2026-10-26T04:22:57.000Z"
+  },
+  {
+   "team": "7",
+   "abbr": "DEN",
+   "athlete": "4426338",
+   "player": "Bo Nix",
+   "kind": "starting",
+   "direction": "none",
+   "confidence": 0.6,
+   "headline": "Bo Nix wows with 62-yard run as Broncos stand by 'our guy' at QB after win",
+   "at": "2026-10-26T03:12:59.000Z"
+  },
+  {
+   "team": "14",
+   "abbr": "LAR",
+   "athlete": "4426515",
+   "player": "Puka Nacua",
+   "kind": "return",
+   "direction": "up",
+   "confidence": 0.8,
+   "headline": "Rams star WR Puka Nacua will play against Raiders",
+   "at": "2026-10-25T19:02:25.000Z"
   },
   {
    "team": "19",
    "abbr": "NYG",
    "athlete": "4696981",
    "player": "Cam Skattebo",
-   "kind": "return",
+   "kind": "role",
    "direction": "up",
    "confidence": 0.6,
-   "headline": "Cam Skattebo set to return to Giants RB mix after being 'taught a lesson'",
-   "at": "2026-10-23T21:13:54.000Z"
-  },
-  {
-   "team": "5",
-   "abbr": "CLE",
-   "athlete": "4685702",
-   "player": "Quinshon Judkins",
-   "kind": "return",
-   "direction": "up",
-   "confidence": 0.6,
-   "headline": "Browns RBs Quinshon Judkins, Dylan Sampson expected to play",
-   "at": "2026-10-23T20:19:54.000Z"
-  },
-  {
-   "team": "5",
-   "abbr": "CLE",
-   "athlete": "5081397",
-   "player": "Dylan Sampson",
-   "kind": "return",
-   "direction": "up",
-   "confidence": 0.6,
-   "headline": "Browns RBs Quinshon Judkins, Dylan Sampson expected to play",
-   "at": "2026-10-23T20:19:54.000Z"
-  },
-  {
-   "team": "27",
-   "abbr": "TB",
-   "athlete": "3052587",
-   "player": "Baker Mayfield",
-   "kind": "return",
-   "direction": "up",
-   "confidence": 0.9,
-   "headline": "Baker Mayfield returns for Bucs, but WR Emeka Egbuka, RT Luke Goedeke out",
-   "at": "2026-10-23T18:56:07.000Z"
-  },
-  {
-   "team": "15",
-   "abbr": "MIA",
-   "athlete": "4869645",
-   "player": "Caleb Douglas",
-   "kind": "return",
-   "direction": "up",
-   "confidence": 0.9,
-   "headline": "Dolphins rookie WR Caleb Douglas set to return vs. Jets",
-   "at": "2026-10-23T17:58:17.000Z"
-  },
-  {
-   "team": "2",
-   "abbr": "BUF",
-   "athlete": "4044133",
-   "player": "Sam Franklin Jr",
-   "kind": "return",
-   "direction": "up",
-   "confidence": 0.8,
-   "headline": "Bills' Sam Franklin wins appeal, suspension for spitting reduced to fine",
-   "at": "2026-10-23T16:36:18.000Z"
-  },
-  {
-   "team": "20",
-   "abbr": "NYJ",
-   "athlete": "4597500",
-   "player": "Adonai Mitchell",
-   "kind": "return",
-   "direction": "up",
-   "confidence": 0.9,
-   "headline": "Jets WR Adonai Mitchell to play, RB Breece Hall questionable vs. Dolphins",
-   "at": "2026-10-23T15:56:55.000Z"
-  },
-  {
-   "team": "27",
-   "abbr": "TB",
-   "athlete": "3052587",
-   "player": "Baker Mayfield",
-   "kind": "return",
-   "direction": "up",
-   "confidence": 0.6,
-   "headline": "Barring setbacks, Bucs QB Baker Mayfield expected to start vs. Panthers",
-   "at": "2026-10-22T20:48:25.000Z"
-  },
-  {
-   "team": "26",
-   "abbr": "SEA",
-   "athlete": "4426385",
-   "player": "Zach Charbonnet",
-   "kind": "return",
-   "direction": "up",
-   "confidence": 0.9,
-   "headline": "Seahawks RB Zach Charbonnet activated off PUP list",
-   "at": "2026-10-22T18:22:16.000Z"
-  },
-  {
-   "team": "21",
-   "abbr": "PHI",
-   "athlete": "3929630",
-   "player": "Saquon Barkley",
-   "kind": "return",
-   "direction": "up",
-   "confidence": 0.6,
-   "headline": "Sources: Eagles RB Barkley (hamstring) expected to practice, play vs. Cowboys",
-   "at": "2026-10-22T14:56:04.000Z"
+   "headline": "Sources: Cam Skattebo expected to resume role as Giants' lead RB vs. Texans",
+   "at": "2026-10-25T15:18:38.000Z"
   },
   {
    "team": "16",
    "abbr": "MIN",
-   "athlete": "3042519",
-   "player": "Aaron Jones Sr",
-   "kind": "role",
+   "athlete": "4360569",
+   "player": "Jordan Mason",
+   "kind": "return",
    "direction": "up",
-   "confidence": 0.5,
-   "headline": "Vikings praise Aaron Jones Sr.'s heart with Jordan Mason out",
-   "at": "2026-10-22T10:00:01.000Z"
+   "confidence": 0.9,
+   "headline": "Vikings activate RB Jordan Mason off injured reserve",
+   "at": "2026-10-24T22:15:19.000Z"
+  },
+  {
+   "team": "9",
+   "abbr": "GB",
+   "athlete": "4047365",
+   "player": "Josh Jacobs",
+   "kind": "return",
+   "direction": "up",
+   "confidence": 0.9,
+   "headline": "Packers activate RB Josh Jacobs for 2026 debut",
+   "at": "2026-10-24T21:01:12.000Z"
+  },
+  {
+   "team": "33",
+   "abbr": "BAL",
+   "athlete": "4035671",
+   "player": "Tyler Huntley",
+   "kind": "starting",
+   "direction": "up",
+   "confidence": 0.9,
+   "headline": "Ravens rule out Lamar Jackson (ankle) vs. Bengals; Tyler 'Snoop' Huntley to start",
+   "at": "2026-10-24T20:41:27.000Z"
+  },
+  {
+   "team": "33",
+   "abbr": "BAL",
+   "athlete": "3916387",
+   "player": "Lamar Jackson",
+   "kind": "restriction",
+   "direction": "down",
+   "confidence": 0.8,
+   "headline": "Ravens rule out Lamar Jackson (ankle) vs. Bengals; Tyler 'Snoop' Huntley to start",
+   "at": "2026-10-24T20:41:27.000Z"
   }
  ],
- "at": "2026-10-24T00:23:14.453Z"
+ "at": "2026-10-26T05:03:40.538Z"
 }

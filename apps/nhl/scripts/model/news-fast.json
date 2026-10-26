@@ -1,11 +1,11 @@
 {
  "sport": "nhl",
  "cursor": {
-  "johnston-bot.bsky.social": "2026-10-23T16:37:52.124Z",
-  "notfriedgehnic.bsky.social": "2026-10-23T18:50:37.742Z",
-  "dailyfaceoff.bsky.social": "2026-10-24T00:37:06.000Z",
-  "dfotoronto.bsky.social": "2026-10-23T21:32:44.000Z",
-  "marklazerus.bsky.social": "2026-10-23T20:57:53.788Z"
+  "johnston-bot.bsky.social": "2026-10-25T21:08:24.897Z",
+  "notfriedgehnic.bsky.social": "2026-10-25T22:30:41.189Z",
+  "dailyfaceoff.bsky.social": "2026-10-26T03:07:15.000Z",
+  "dfotoronto.bsky.social": "2026-10-25T16:07:30.000Z",
+  "marklazerus.bsky.social": "2026-10-26T02:21:52.101Z"
  },
  "claims": [
   {
@@ -566,6 +566,123 @@
    "kind": "status",
    "confidence": 0.9,
    "text": "Oilers place Devon Levi on injured reserve"
+  },
+  {
+   "id": "at://did:plc:3uus7y6h3rlrk6sbctzxm4bg/app.bsky.feed.post/3myn37u7dc42f|samgirard|out|status",
+   "at": "2026-10-24T16:07:37.000Z",
+   "seen": "2026-10-26T05:03:40.538Z",
+   "handle": "dailyfaceoff.bsky.social",
+   "post": "at://did:plc:3uus7y6h3rlrk6sbctzxm4bg/app.bsky.feed.post/3myn37u7dc42f",
+   "player": "Sam Girard",
+   "team": "PIT",
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.95,
+   "text": "Penguins place Sam Girard on injured reserve"
+  },
+  {
+   "id": "at://did:plc:3uus7y6h3rlrk6sbctzxm4bg/app.bsky.feed.post/3myn3xzckj32h|dubois|active|return",
+   "at": "2026-10-24T16:21:07.000Z",
+   "seen": "2026-10-26T05:03:40.538Z",
+   "handle": "dailyfaceoff.bsky.social",
+   "post": "at://did:plc:3uus7y6h3rlrk6sbctzxm4bg/app.bsky.feed.post/3myn3xzckj32h",
+   "player": "Dubois",
+   "team": "WSH",
+   "status": "active",
+   "kind": "return",
+   "confidence": 0.9,
+   "text": "Capitals’ Dubois, Sourdif to return against Sabres"
+  },
+  {
+   "id": "at://did:plc:3uus7y6h3rlrk6sbctzxm4bg/app.bsky.feed.post/3myn3xzckj32h|sourdif|active|return",
+   "at": "2026-10-24T16:21:07.000Z",
+   "seen": "2026-10-26T05:03:40.538Z",
+   "handle": "dailyfaceoff.bsky.social",
+   "post": "at://did:plc:3uus7y6h3rlrk6sbctzxm4bg/app.bsky.feed.post/3myn3xzckj32h",
+   "player": "Sourdif",
+   "team": "WSH",
+   "status": "active",
+   "kind": "return",
+   "confidence": 0.9,
+   "text": "Capitals’ Dubois, Sourdif to return against Sabres"
+  },
+  {
+   "id": "at://did:plc:3uus7y6h3rlrk6sbctzxm4bg/app.bsky.feed.post/3myn6qgz3ow2h|rasmusristolainen|active|status",
+   "at": "2026-10-24T17:10:35.000Z",
+   "seen": "2026-10-26T05:03:40.538Z",
+   "handle": "dailyfaceoff.bsky.social",
+   "post": "at://did:plc:3uus7y6h3rlrk6sbctzxm4bg/app.bsky.feed.post/3myn6qgz3ow2h",
+   "player": "Rasmus Ristolainen",
+   "team": "PHI",
+   "status": "active",
+   "kind": "status",
+   "confidence": 0.95,
+   "text": "Flyers activate Rasmus Ristolainen off injured reserve"
+  },
+  {
+   "id": "at://did:plc:3uus7y6h3rlrk6sbctzxm4bg/app.bsky.feed.post/3mynfrssayl2f|jaredmccann|out|status",
+   "at": "2026-10-24T19:16:36.000Z",
+   "seen": "2026-10-26T05:03:40.538Z",
+   "handle": "dailyfaceoff.bsky.social",
+   "post": "at://did:plc:3uus7y6h3rlrk6sbctzxm4bg/app.bsky.feed.post/3mynfrssayl2f",
+   "player": "Jared McCann",
+   "team": "SEA",
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.9,
+   "text": "Kraken’s Jared McCann to miss game against Wild with injury"
+  },
+  {
+   "id": "at://did:plc:3uus7y6h3rlrk6sbctzxm4bg/app.bsky.feed.post/3mynyuc26qy2c|victorherman|questionable|status",
+   "at": "2026-10-25T00:58:01.000Z",
+   "seen": "2026-10-26T05:03:40.538Z",
+   "handle": "dailyfaceoff.bsky.social",
+   "post": "at://did:plc:3uus7y6h3rlrk6sbctzxm4bg/app.bsky.feed.post/3mynyuc26qy2c",
+   "player": "Victor Herman",
+   "team": "TBL",
+   "status": "questionable",
+   "kind": "status",
+   "confidence": 0.85,
+   "text": "Lightning’s Victor Herman out day-to-day with lower-body injury"
+  },
+  {
+   "id": "at://did:plc:3uus7y6h3rlrk6sbctzxm4bg/app.bsky.feed.post/3mypytkiptg2h|victorherman|questionable|status",
+   "at": "2026-10-25T20:02:55.000Z",
+   "seen": "2026-10-26T05:03:40.538Z",
+   "handle": "dailyfaceoff.bsky.social",
+   "post": "at://did:plc:3uus7y6h3rlrk6sbctzxm4bg/app.bsky.feed.post/3mypytkiptg2h",
+   "player": "Victor Herman",
+   "team": "TBL",
+   "status": "questionable",
+   "kind": "status",
+   "confidence": 0.85,
+   "text": "Lightning’s Victor Herman out day-to-day with lower-body injury #nhl #nhlhockey #dailyfaceoff"
+  },
+  {
+   "id": "at://did:plc:3uus7y6h3rlrk6sbctzxm4bg/app.bsky.feed.post/3mypzgw65vi2g|jaredmccann|out|status",
+   "at": "2026-10-25T20:13:45.000Z",
+   "seen": "2026-10-26T05:03:40.538Z",
+   "handle": "dailyfaceoff.bsky.social",
+   "post": "at://did:plc:3uus7y6h3rlrk6sbctzxm4bg/app.bsky.feed.post/3mypzgw65vi2g",
+   "player": "Jared McCann",
+   "team": "SEA",
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.95,
+   "text": "Kraken’s Jared McCann placed on IR, out 10 weeks with lower-body injury"
+  },
+  {
+   "id": "at://did:plc:3uus7y6h3rlrk6sbctzxm4bg/app.bsky.feed.post/3myqeg6hmjm2f|jaredmccann|out|status",
+   "at": "2026-10-25T23:30:12.000Z",
+   "seen": "2026-10-26T05:03:40.538Z",
+   "handle": "dailyfaceoff.bsky.social",
+   "post": "at://did:plc:3uus7y6h3rlrk6sbctzxm4bg/app.bsky.feed.post/3myqeg6hmjm2f",
+   "player": "Jared McCann",
+   "team": "SEA",
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.95,
+   "text": "Kraken’s Jared McCann placed on IR, out 10 weeks with lower-body injury #nhl #nhlhockey #dailyfaceoff"
   }
  ]
 }

@@ -1,40 +1,6 @@
 {
  "sport": "mlb",
  "days": 2,
- "signals": [
-  {
-   "team": "8",
-   "abbr": "MIL",
-   "athlete": "37515",
-   "player": "Brandon Woodruff",
-   "kind": "return",
-   "direction": "up",
-   "confidence": 0.9,
-   "headline": "Brewers add pitcher Brandon Woodruff to World Series roster",
-   "at": "2026-10-23T17:18:57.000Z"
-  },
-  {
-   "team": "30",
-   "abbr": "TB",
-   "athlete": "33372",
-   "player": "Nick Martinez",
-   "kind": "starting",
-   "direction": "up",
-   "confidence": 0.9,
-   "headline": "Rays opt for Nick Martinez to open World Series vs. Brewers",
-   "at": "2026-10-22T23:02:47.000Z"
-  },
-  {
-   "team": "30",
-   "abbr": "TB",
-   "athlete": "42584",
-   "player": "Drew Rasmussen",
-   "kind": "benched",
-   "direction": "down",
-   "confidence": 0.9,
-   "headline": "Rays opt for Nick Martinez to open World Series vs. Brewers",
-   "at": "2026-10-22T23:02:47.000Z"
-  }
- ],
- "at": "2026-10-24T03:15:48.192Z"
+ "signals": [],
+ "at": "2026-10-26T05:03:40.538Z"
 }
