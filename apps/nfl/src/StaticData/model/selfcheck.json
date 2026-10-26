@@ -1,5 +1,5 @@
 {
- "at": "2026-10-26T19:13:31.810Z",
+ "at": "2026-10-26T22:54:04.022Z",
  "baseline": {
   "from": "2026-09-21",
   "to": "2026-10-19"
@@ -265,7 +265,7 @@
   },
   {
    "examples": [],
-   "headline": "total trust: no longer fitted (0 to 0); 161 changelog entries this week",
+   "headline": "total trust: no longer fitted (0 to 0); 160 changelog entries this week",
    "how": "the day's last state.json for 35 days (git), the week's start against now; the changelog's entries this week verbatim",
    "id": "C9",
    "metric": "changes",
@@ -283,9 +283,9 @@
     {
      "key": "changelog:Open bets priced again on news",
      "label": "Open bets priced again on news",
-     "n": 37,
+     "n": 36,
      "status": "watch",
-     "what": "37 changes this week"
+     "what": "36 changes this week"
     },
     {
      "from": 0.5,
@@ -447,16 +447,6 @@
      "at": "2026-10-26T00:00:43.321Z",
      "from": -0.0159,
      "key": "log:0",
-     "label": "live calibration: recYds|over|>2.5",
-     "status": "info",
-     "to": 0,
-     "what": "changelog",
-     "why": "21 graded rows: too few rows (200 needed)"
-    },
-    {
-     "at": "2026-10-26T00:00:43.321Z",
-     "from": -0.0159,
-     "key": "log:1",
      "label": "live calibration: recYds|under|>2.5",
      "status": "info",
      "to": 0,
@@ -466,7 +456,7 @@
     {
      "at": "2026-10-26T00:00:43.321Z",
      "from": -0.0159,
-     "key": "log:2",
+     "key": "log:1",
      "label": "live calibration: rushAtt|over|>2.5",
      "status": "info",
      "to": 0,
@@ -476,7 +466,7 @@
     {
      "at": "2026-10-26T00:00:43.321Z",
      "from": -0.0159,
-     "key": "log:3",
+     "key": "log:2",
      "label": "live calibration: rushAtt|under|>2.5",
      "status": "info",
      "to": 0,
@@ -486,7 +476,7 @@
     {
      "at": "2026-10-26T00:00:43.321Z",
      "from": -0.0159,
-     "key": "log:4",
+     "key": "log:3",
      "label": "live calibration: rushRecYds|under|>2.5",
      "status": "info",
      "to": 0,
@@ -496,7 +486,7 @@
     {
      "at": "2026-10-26T00:00:43.321Z",
      "from": -0.0159,
-     "key": "log:5",
+     "key": "log:4",
      "label": "live calibration: rushYds|over|>2.5",
      "status": "info",
      "to": 0,
@@ -506,7 +496,7 @@
     {
      "at": "2026-10-26T00:00:43.321Z",
      "from": -0.1316,
-     "key": "log:6",
+     "key": "log:5",
      "label": "live calibration: rushYds|over|0.5",
      "status": "info",
      "to": -0.1016,
@@ -516,7 +506,7 @@
     {
      "at": "2026-10-26T00:00:43.321Z",
      "from": -0.0159,
-     "key": "log:7",
+     "key": "log:6",
      "label": "live calibration: rushYds|under|>2.5",
      "status": "info",
      "to": 0,
@@ -526,7 +516,7 @@
     {
      "at": "2026-10-26T03:17:43.291Z",
      "from": -0.0716,
-     "key": "log:8",
+     "key": "log:7",
      "label": "live calibration: anyTd|over|0.5",
      "status": "info",
      "to": -0.1016,
@@ -536,7 +526,7 @@
     {
      "at": "2026-10-26T16:28:40.966Z",
      "from": 0.101,
-     "key": "log:9",
+     "key": "log:8",
      "label": "anyTd props' trust at low lines",
      "status": "info",
      "to": 0.25,
@@ -546,7 +536,7 @@
     {
      "at": "2026-10-26T16:28:40.966Z",
      "from": 0.181,
-     "key": "log:10",
+     "key": "log:9",
      "label": "anyTd props' trust at mid lines",
      "status": "info",
      "to": 0.375,
@@ -556,12 +546,22 @@
     {
      "at": "2026-10-26T16:28:40.966Z",
      "from": 0.275,
-     "key": "log:11",
+     "key": "log:10",
      "label": "anyTd props' trust at high lines",
      "status": "info",
      "to": 0.5,
      "what": "changelog",
      "why": "its own fit 0.5 on 0 graded and 0 closes (0 games' worth, 0% of it kept), the rest the sport's 0.5"
+    },
+    {
+     "at": "2026-10-26T21:39:55.402Z",
+     "from": 1,
+     "key": "log:11",
+     "label": "Open bets priced again on news",
+     "status": "info",
+     "to": 1,
+     "what": "changelog",
+     "why": "What they were priced on changed before the start: DAL @ PHI: PHI out list"
     }
    ],
    "status": "flag",
@@ -1186,7 +1186,7 @@
      "key": "shadow:gap",
      "lost": 22,
      "n": 44,
-     "open": 1,
+     "open": 0,
      "profit": -1.6,
      "push": 0,
      "won": 22
@@ -1383,19 +1383,19 @@
      "status": "ok"
     },
     {
-     "key": "line moved",
-     "n": 4,
-     "ratio": 0.2197,
-     "share": 0.0103,
-     "shareBase": 0.0467,
-     "status": "ok"
-    },
-    {
      "key": "rec prop:rec:under: a return of %, under the stat's minimum edge of %",
      "n": 4,
      "ratio": null,
      "share": 0.0103,
      "shareBase": 0,
+     "status": "ok"
+    },
+    {
+     "key": "line moved",
+     "n": 3,
+     "ratio": 0.1648,
+     "share": 0.0077,
+     "shareBase": 0.0467,
      "status": "ok"
     },
     {
@@ -1456,6 +1456,14 @@
     },
     {
      "key": "passcmp prop:passcmp:under: practice stake: net % a pick over picks' worth, not past se",
+     "n": 1,
+     "ratio": null,
+     "share": 0.0026,
+     "shareBase": 0,
+     "status": "ok"
+    },
+    {
+     "key": "qb jalen hurts out, his starter not named",
      "n": 1,
      "ratio": null,
      "share": 0.0026,
@@ -2048,7 +2056,7 @@
   },
   {
    "examples": [],
-   "headline": "2 plain write-ups (mean 506 characters), 0 Claude analyses tried this week (0 ok); AI calls 0, $0.00 this week, $1.00 of $25 this month",
+   "headline": "2 plain write-ups (mean 660 characters), 0 Claude analyses tried this week (0 ok); AI calls 0, $0.00 this week, $0.00 of $25 this month",
    "how": "writeups.json's plain and Claude write-ups, and the AI usage log's calls this week (ai-budget.mjs: every sport's spend counts against the caps)",
    "id": "C15",
    "metric": "rejectRate",
@@ -2058,7 +2066,7 @@
     {
      "key": "plain",
      "legacy": 0,
-     "meanLength": 506,
+     "meanLength": 660,
      "n": 2
     },
     {
@@ -2081,9 +2089,9 @@
     {
      "dayCap": 1.5,
      "key": "ai spend",
-     "month": 0.9953,
+     "month": 0,
      "monthCap": 25,
-     "share": 0.0398
+     "share": 0
     }
    ],
    "status": "ok",
@@ -2103,7 +2111,7 @@
    "rows": [
     {
      "ageH": 0,
-     "at": "2026-10-26T19:03:52Z",
+     "at": "2026-10-26T22:39:41Z",
      "key": "files",
      "overdue": 0
     },
@@ -2111,8 +2119,8 @@
      "cycleEnd": "2026-11-19T04:06:35.755Z",
      "key": "credits",
      "monthly": 20000,
-     "remaining": 56431,
-     "share": 2.8215
+     "remaining": 56350,
+     "share": 2.8175
     },
     {
      "down": [],
@@ -2138,7 +2146,7 @@
     "401873010:prop:rushYds:4431452",
     "401873010:prop:passAtt:4431611"
    ],
-   "headline": "14 of 390 bets placed this week had the line already moving against them: ROI -22.7% against -8.4% for the rest",
+   "headline": "13 of 390 bets placed this week had the line already moving against them: ROI -22.7% against -8.4% for the rest",
    "how": "placed this week: a prop's line a point or more against its side since it opened; a game's spread 1.5 (NFL) or 0.5, its total a point, a moneyline without a spread move 3 points of the home chance. A prop moved twice the guard's limit should have been skipped",
    "id": "C2",
    "metric": "roiGap",
@@ -2149,7 +2157,7 @@
      "e": 5.9381,
      "key": "moving against",
      "n": 12,
-     "placed": 14,
+     "placed": 13,
      "profit": -1.361,
      "roi": -0.2268,
      "w": 5,
@@ -2159,7 +2167,7 @@
      "e": 76.3912,
      "key": "the rest",
      "n": 319,
-     "placed": 376,
+     "placed": 377,
      "profit": -13.596,
      "roi": -0.0844,
      "w": 74,

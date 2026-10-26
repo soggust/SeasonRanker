@@ -1,7 +1,7 @@
 {
  "v": 1,
  "sport": "mlb",
- "at": "2026-10-26T18:04:31.491Z",
+ "at": "2026-10-26T22:52:46.560Z",
  "epoch": "2026-10-26T15:00:00Z",
  "markets": {
   "spread": {
@@ -612,16 +612,16 @@
     "ev": null,
     "evS": null,
     "beat": null,
-    "roi": -0.0295,
-    "rn": 48,
+    "roi": -0.0089,
+    "rn": 47,
     "stats": {
      "n": 0,
      "s": 0,
      "s2": 0,
      "beat": 0,
-     "rn": 48,
-     "rs": -1.4164,
-     "rs2": 54.3413
+     "rn": 47,
+     "rs": -0.4164,
+     "rs2": 53.3413
     },
     "why": "0 with a close, - shrunk",
     "seasons": {
@@ -639,16 +639,16 @@
     "ev": null,
     "evS": null,
     "beat": null,
-    "roi": 0.166,
-    "rn": 5,
+    "roi": 1.5,
+    "rn": 1,
     "stats": {
      "n": 0,
      "s": 0,
      "s2": 0,
      "beat": 0,
-     "rn": 5,
-     "rs": 0.8301,
-     "rs2": 5.1354
+     "rn": 1,
+     "rs": 1.5,
+     "rs2": 2.25
     },
     "why": "0 with a close, - shrunk",
     "seasons": {
@@ -666,16 +666,16 @@
     "ev": null,
     "evS": null,
     "beat": null,
-    "roi": -0.0081,
-    "rn": 39,
+    "roi": 0.018,
+    "rn": 38,
     "stats": {
      "n": 0,
      "s": 0,
      "s2": 0,
      "beat": 0,
-     "rn": 39,
-     "rs": -0.3142,
-     "rs2": 45.3962
+     "rn": 38,
+     "rs": 0.6858,
+     "rs2": 44.3962
     },
     "why": "0 with a close, - shrunk",
     "seasons": {
@@ -693,16 +693,16 @@
     "ev": null,
     "evS": null,
     "beat": null,
-    "roi": -0.0632,
-    "rn": 33,
+    "roi": -0.0973,
+    "rn": 28,
     "stats": {
      "n": 0,
      "s": 0,
      "s2": 0,
      "beat": 0,
-     "rn": 33,
-     "rs": -2.0851,
-     "rs2": 35.6346
+     "rn": 28,
+     "rs": -2.7253,
+     "rs2": 31.1903
     },
     "why": "0 with a close, - shrunk",
     "seasons": {
@@ -720,16 +720,16 @@
     "ev": null,
     "evS": null,
     "beat": null,
-    "roi": 0.2798,
-    "rn": 35,
+    "roi": 0.2796,
+    "rn": 21,
     "stats": {
      "n": 0,
      "s": 0,
      "s2": 0,
      "beat": 0,
-     "rn": 35,
-     "rs": 9.7928,
-     "rs2": 33.7399
+     "rn": 21,
+     "rs": 5.8725,
+     "rs2": 23.1467
     },
     "why": "0 with a close, - shrunk",
     "seasons": {
@@ -776,5 +776,5 @@
   }
  },
  "k": 100,
- "commit": "140d2521"
+ "commit": "6953a936"
 }

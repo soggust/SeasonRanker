@@ -1,10 +1,58 @@
 {
- "at": "2026-10-26T19:13:31.810Z",
+ "at": "2026-10-26T22:54:04.022Z",
  "baseline": {
   "from": "2026-09-21",
   "to": "2026-10-19"
  },
  "checks": [
+  {
+   "examples": [],
+   "headline": "fairFrom unknown: missing on 7 of 21 bets this week (33%) against 26% before; fair chances from betonlineag",
+   "how": "placed this week against the 28 days before: the share of the bets each field applies to that are missing it",
+   "id": "C14",
+   "metric": "share",
+   "n": 21,
+   "needs": null,
+   "rows": [
+    {
+     "key": "fairFrom unknown",
+     "n": 7,
+     "of": 21,
+     "share": 0.3333,
+     "shareBase": 0.2581,
+     "status": "watch"
+    },
+    {
+     "key": "intent",
+     "n": 0,
+     "of": 21,
+     "share": 0,
+     "shareBase": 0,
+     "status": "ok"
+    },
+    {
+     "key": "publishedKelly",
+     "n": 0,
+     "of": 2,
+     "share": 0,
+     "shareBase": 0,
+     "status": "thin"
+    },
+    {
+     "key": "seen",
+     "n": 0,
+     "of": 5,
+     "share": 0,
+     "shareBase": 0,
+     "status": "thin"
+    }
+   ],
+   "status": "watch",
+   "tested": null,
+   "threshold": "watch a share up 5 points on the baseline (3+ bets, 20+ both); flag doubled (5+)",
+   "title": "Data holes",
+   "value": 0.3333
+  },
   {
    "examples": [],
    "headline": "0 of 21 graded bets (0%) saw the Book move against them after placement; they went 0 won vs 0 expected",
@@ -56,11 +104,11 @@
   },
   {
    "examples": [],
-   "headline": "No bet placed this week was cut by a guard (38 placed)",
+   "headline": "No bet placed this week was cut by a guard (21 placed)",
    "how": "placed this week against the 28 days before: the bets a guard cut to a half unit, by kind",
    "id": "C8",
    "metric": "ratio",
-   "n": 38,
+   "n": 21,
    "needs": [
     "state.tallies (the guards' skips by day: the Bot keeps only the bets it placed)"
    ],
@@ -73,7 +121,7 @@
   },
   {
    "examples": [],
-   "headline": "0 plain write-ups, 0 Claude analyses tried this week (0 ok); AI calls 0, $0.00 this week, $1.00 of $25 this month",
+   "headline": "0 plain write-ups, 0 Claude analyses tried this week (0 ok); AI calls 0, $0.00 this week, $0.00 of $25 this month",
    "how": "writeups.json's plain and Claude write-ups, and the AI usage log's calls this week (ai-budget.mjs: every sport's spend counts against the caps)",
    "id": "C15",
    "metric": "rejectRate",
@@ -108,9 +156,9 @@
     {
      "dayCap": 1.5,
      "key": "ai spend",
-     "month": 0.9953,
+     "month": 0,
      "monthCap": 25,
-     "share": 0.0398
+     "share": 0
     }
    ],
    "status": "partial",
@@ -323,16 +371,16 @@
   },
   {
    "examples": [],
-   "headline": "Model files 0h old, 0 open bets overdue to grade; Odds API credits 282% left; 38 bets placed in a week of 14 games",
+   "headline": "Model files 0h old, 0 open bets overdue to grade; Odds API credits 282% left; 21 bets placed in a week of 14 games",
    "how": "the newest commit of the sport's model files, the open bets started 12 hours ago or more, The Odds API's credits (state.odds), the state's sources",
    "id": "C16",
    "metric": "ageH",
-   "n": 38,
+   "n": 21,
    "needs": null,
    "rows": [
     {
      "ageH": 0,
-     "at": "2026-10-26T19:03:52Z",
+     "at": "2026-10-26T22:39:41Z",
      "key": "files",
      "overdue": 0
     },
@@ -340,8 +388,8 @@
      "cycleEnd": "2026-11-19T04:06:35.755Z",
      "key": "credits",
      "monthly": 20000,
-     "remaining": 56426,
-     "share": 2.8213
+     "remaining": 56303,
+     "share": 2.8152
     },
     {
      "down": [],
@@ -350,7 +398,7 @@
     {
      "games": 14,
      "key": "week",
-     "placed": 38
+     "placed": 21
     }
    ],
    "status": "ok",
@@ -361,11 +409,11 @@
   },
   {
    "examples": [],
-   "headline": "0 of 38 bets placed this week had the line already moving against them",
+   "headline": "0 of 21 bets placed this week had the line already moving against them",
    "how": "placed this week: a prop's line a point or more against its side since it opened; a game's spread 1.5 (NFL) or 0.5, its total a point, a moneyline without a spread move 3 points of the home chance. A prop moved twice the guard's limit should have been skipped",
    "id": "C2",
    "metric": "roiGap",
-   "n": 38,
+   "n": 21,
    "needs": null,
    "rows": [
     {
@@ -379,14 +427,14 @@
      "z": null
     },
     {
-     "e": 10.6547,
+     "e": 2.8066,
      "key": "the rest",
-     "n": 21,
-     "placed": 38,
-     "profit": -0.973,
-     "roi": -0.0778,
-     "w": 10,
-     "z": -0.2996
+     "n": 5,
+     "placed": 21,
+     "profit": -0.62,
+     "roi": -0.1378,
+     "w": 2,
+     "z": -0.7726
     },
     {
      "key": "guard bugs",
@@ -441,36 +489,36 @@
   },
   {
    "examples": [],
-   "headline": "Moneyline: dogs 48% of this week's bets against 80% before",
+   "headline": "Moneyline: dogs 42% of this week's bets against 68% before",
    "how": "placed this week against the 28 days before: a dog is a plus price or a spread side getting points",
    "id": "C5",
    "metric": "moved",
-   "n": 21,
+   "n": 12,
    "needs": null,
    "rows": [
     {
-     "dogShare": 0.4762,
-     "dogShareBase": 0.8,
+     "dogShare": 0.4167,
+     "dogShareBase": 0.6842,
      "dogs": {
-      "e": 2.2981,
-      "n": 6,
-      "profit": -1.65,
-      "roi": -0.55,
-      "w": 1,
-      "z": -1.1121
+      "e": 0.8753,
+      "n": 2,
+      "profit": -1,
+      "roi": -1,
+      "w": 0,
+      "z": -1.2515
      },
      "favorites": {
-      "e": 2.8826,
-      "n": 5,
-      "profit": 1.462,
-      "roi": 0.3249,
-      "w": 4,
-      "z": 1.0432
+      "e": 0.8184,
+      "n": 1,
+      "profit": 0.7,
+      "roi": 0.28,
+      "w": 1,
+      "z": 0.4711
      },
      "key": "ml",
-     "moved": -0.3238,
-     "n": 21,
-     "nBase": 10,
+     "moved": -0.2675,
+     "n": 12,
+     "nBase": 19,
      "status": "thin"
     }
    ],
@@ -478,7 +526,7 @@
    "tested": null,
    "threshold": "watch the dog share moved 20 points (20+ bets both); flag also the grown group z -2 (30+ graded)",
    "title": "Favorite/dog drift",
-   "value": -0.3238
+   "value": -0.2675
   },
   {
    "examples": [],
@@ -563,54 +611,6 @@
    "threshold": "watch a band's z -2 (10+) or a prop fit's calibration row off 7 points (30+); flag LOVE or LOCK at z -2 (20+)",
    "title": "Band calibration",
    "value": -0.9851
-  },
-  {
-   "examples": [],
-   "headline": "fairFrom unknown: missing on 15 of 38 bets this week (39%) against 0% before; fair chances from betonlineag",
-   "how": "placed this week against the 28 days before: the share of the bets each field applies to that are missing it",
-   "id": "C14",
-   "metric": "share",
-   "n": 38,
-   "needs": null,
-   "rows": [
-    {
-     "key": "fairFrom unknown",
-     "n": 15,
-     "of": 38,
-     "share": 0.3947,
-     "shareBase": 0,
-     "status": "thin"
-    },
-    {
-     "key": "intent",
-     "n": 0,
-     "of": 38,
-     "share": 0,
-     "shareBase": 0,
-     "status": "thin"
-    },
-    {
-     "key": "publishedKelly",
-     "n": 0,
-     "of": 7,
-     "share": 0,
-     "shareBase": 0,
-     "status": "thin"
-    },
-    {
-     "key": "seen",
-     "n": 0,
-     "of": 21,
-     "share": 0,
-     "shareBase": 0,
-     "status": "thin"
-    }
-   ],
-   "status": "thin",
-   "tested": null,
-   "threshold": "watch a share up 5 points on the baseline (3+ bets, 20+ both); flag doubled (5+)",
-   "title": "Data holes",
-   "value": 0.3947
   },
   {
    "examples": [],
@@ -708,7 +708,7 @@
   },
   {
    "examples": [],
-   "headline": "No term, param or trust dropped; 13 changelog entries this week",
+   "headline": "No term, param or trust dropped; 12 changelog entries this week",
    "how": "the day's last state.json for 35 days (git), the week's start against now; the changelog's entries this week verbatim",
    "id": "C9",
    "metric": "changes",
@@ -856,12 +856,12 @@
  "sport": "mma",
  "summary": {
   "flag": 0,
-  "headline": "Nothing flagged",
+  "headline": "Data holes: fairFrom unknown: missing on 7 of 21 bets this week (33%) against 26% before; fair chances from betonlineag",
   "info": 1,
   "ok": 4,
   "partial": 7,
-  "thin": 11,
-  "watch": 0
+  "thin": 10,
+  "watch": 1
  },
  "v": 1,
  "window": {

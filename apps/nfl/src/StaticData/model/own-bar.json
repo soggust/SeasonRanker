@@ -1,12 +1,12 @@
 {
  "sport": "nfl",
  "epoch": "2026-10-26T15:00:00Z",
- "commit": "140d2521",
- "at": "2026-10-26T17:49:25.079Z",
+ "commit": "6953a936",
+ "at": "2026-10-26T22:43:13.314Z",
  "current": 2026,
- "held": 497,
- "before": -6.32,
- "after": -3.16,
+ "held": 473,
+ "before": 0,
+ "after": 0,
  "keys": {
   "ml:away": {
    "n": 240,
@@ -17,84 +17,84 @@
    "sum": -3.5
   },
   "prop:passAtt:over": {
-   "n": 20,
-   "sum": 3.9
+   "n": 12,
+   "sum": -0.85
   },
   "prop:passAtt:under": {
-   "n": 248,
-   "sum": 8.53
+   "n": 220,
+   "sum": -1.66
   },
   "prop:passCmp:over": {
-   "n": 33,
-   "sum": 1.91
+   "n": 14,
+   "sum": 2.31
   },
   "prop:passCmp:under": {
-   "n": 95,
-   "sum": -0.35
+   "n": 47,
+   "sum": 2.71
   },
   "prop:passInt:over": {
-   "n": 81,
-   "sum": -15.68
+   "n": 75,
+   "sum": -14.56
   },
   "prop:passInt:under": {
-   "n": 163,
-   "sum": -21.63
+   "n": 108,
+   "sum": -10.85
   },
   "prop:passTd:over": {
-   "n": 166,
-   "sum": -5.32
+   "n": 155,
+   "sum": -5.99
   },
   "prop:passTd:under": {
-   "n": 53,
-   "sum": -2
+   "n": 33,
+   "sum": 0.59
   },
   "prop:passYds:over": {
-   "n": 32,
-   "sum": -3.55
+   "n": 31,
+   "sum": -10.16
   },
   "prop:passYds:under": {
-   "n": 10,
-   "sum": 3.16
+   "n": 13,
+   "sum": 3.92
   },
   "prop:rec:over": {
-   "n": 47,
-   "sum": -6.95
+   "n": 19,
+   "sum": -3.19
   },
   "prop:rec:under": {
-   "n": 461,
-   "sum": 23.95
+   "n": 457,
+   "sum": 28.61
   },
   "prop:recYds:over": {
-   "n": 19,
-   "sum": -9.65
+   "n": 10,
+   "sum": -6.26
   },
   "prop:recYds:under": {
-   "n": 576,
-   "sum": 18.53
+   "n": 521,
+   "sum": 22.51
   },
   "prop:rushAtt:over": {
-   "n": 9,
-   "sum": 0.98
+   "n": 6,
+   "sum": -1.45
   },
   "prop:rushAtt:under": {
-   "n": 252,
-   "sum": 2.15
+   "n": 254,
+   "sum": 3.64
   },
   "prop:rushRecYds:over": {
-   "n": 26,
-   "sum": -7.37
+   "n": 7,
+   "sum": -3.22
   },
   "prop:rushRecYds:under": {
    "n": 5,
    "sum": 0.65
   },
   "prop:rushYds:over": {
-   "n": 11,
-   "sum": -1.85
+   "n": 7,
+   "sum": -1.59
   },
   "prop:rushYds:under": {
-   "n": 374,
-   "sum": -16
+   "n": 292,
+   "sum": -3.97
   },
   "spread:away": {
    "n": 52,

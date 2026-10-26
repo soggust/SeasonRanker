@@ -2,7 +2,7 @@
  "v": 1,
  "sport": "mma",
  "epoch": "2026-10-21T01:15:00Z",
- "at": "2026-10-26T18:06:25.451Z",
+ "at": "2026-10-26T22:54:03.108Z",
  "from": "2020-06-06T23:10:00.000Z",
  "through": "2026-10-18T01:45:00.000Z",
  "n": {
@@ -2180,8 +2180,8 @@
    }
   }
  },
- "commit": "140d2521",
- "note": "D95. The testing audit's six recommendations (the owner, 2026-10-26: \"do your recommendations as long as they are true and get us best results\"): one beat-the-close, the props bet late, the NBA's stake step off, the pulled starters and the live props' names, MMA's in-play closes and MLB's postseason, and the testing hygiene",
+ "commit": "6953a936",
+ "note": "D96. The NHL's LIKE props on D73's stake step (the owner, 2026-10-26: \"bet NHL everyday props smaller\")",
  "inputs": {
   "v": 1,
   "sport": "mma",
@@ -2190,7 +2190,7 @@
    "games": "47aceba7d839",
    "pricing": "1089166cdb4d",
    "record": "f1439ac141ac",
-   "harness": "99be5d613444",
+   "harness": "6035db77ac0c",
    "tuned": "bf1af220e978a952"
   },
   "rows": {
@@ -2223,6 +2223,6 @@
     "want": 14
    }
   },
-  "hash": "157145a0960f1eae"
+  "hash": "2f5c1913de4de2d3"
  }
 }
