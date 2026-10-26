@@ -69,8 +69,12 @@ const BANDS = ['lock', 'high', 'medium'];
 // A tally: the bets graded, won, lost, pushed, the units staked and won, the return, and how many beat the fair close
 // (D56, fairBeatOf: the bets placed at an open with a close at their own line; beat the share, beatN the count, clv
 // their mean expected return at the fair close)
-export const emptyTally = () => ({ bets: 0, won: 0, lost: 0, push: 0, staked: 0, profit: 0, roi: null, beat: 0, beatN: 0, clv: 0 });
+// (fairProfit: the same bets paid at their fair no-vig chance (bet.fair, its side's), same results: the Algorithm
+// tab's Vig column alone (the owner, 2026-10-26), display only; a bet without a fair chance adds its own profit, no gap)
+export const emptyTally = () => ({ bets: 0, won: 0, lost: 0, push: 0, staked: 0, profit: 0, roi: null, beat: 0, beatN: 0, clv: 0, fairProfit: 0 });
+export const fairProfitOf = (b) => (fin(b.fair) && b.fair > 0 && b.fair < 1 ? (b.res === 'W' ? b.units * (1 / b.fair - 1) : b.res === 'L' ? -b.units : 0) : null);
 export function addBet(t, b) {
+  t.fairProfit = r4((t.fairProfit ?? 0) + (fairProfitOf(b) ?? b.profit));
   t.bets++;
   t[b.res === 'W' ? 'won' : b.res === 'L' ? 'lost' : 'push']++;
   t.staked = r2(t.staked + b.units);
@@ -893,7 +897,7 @@ export function summarize(sport, bets, passed, { epoch, now, flags, rows, season
   // (the practice picks: staked ones (PRACTICE_STAKED on), else the tracked candidates as if bet at the practice stake (D87))
   const practice = [...bets.filter((b) => b.practice), ...tracked];
   // (the passes as day rows at a flat unit on the Bot's side (the pass tally's), for the time range's PASS row)
-  const passRows = passed.map((r) => ({ t: r.x.t, band: 'pass', res: r.x.y === null || r.x.y === undefined ? 'P' : (r.x.y === 1) === r.sd.over ? 'W' : 'L', units: 1, profit: r.x.y === null || r.x.y === undefined ? 0 : (r.x.y === 1) === r.sd.over ? r2(dec(r.sd.odds) - 1) : -1, beat: null }));
+  const passRows = passed.map((r) => ({ t: r.x.t, band: 'pass', res: r.x.y === null || r.x.y === undefined ? 'P' : (r.x.y === 1) === r.sd.over ? 'W' : 'L', units: 1, profit: r.x.y === null || r.x.y === undefined ? 0 : (r.x.y === 1) === r.sd.over ? r2(dec(r.sd.odds) - 1) : -1, fair: r.sd.fS, beat: null }));
   const years = {};
   for (const y of new Set(bets.map((b) => yearOf(b.t)))) {
     const mine = real.filter((b) => yearOf(b.t) === y);
@@ -938,7 +942,7 @@ export function summarize(sport, bets, passed, { epoch, now, flags, rows, season
     overall: all,
     practice: tallyOf(practice),
     // (the rows it wouldn't bet, at a flat unit on the Bot's side: context, never the record)
-    pass: finishTally(passed.reduce((t, r) => addBet(t, { res: r.x.y === null || r.x.y === undefined ? 'P' : (r.x.y === 1) === r.sd.over ? 'W' : 'L', units: 1, profit: r.x.y === null || r.x.y === undefined ? 0 : (r.x.y === 1) === r.sd.over ? r2(dec(r.sd.odds) - 1) : -1, beat: null, clv: null }), emptyTally())),
+    pass: finishTally(passed.reduce((t, r) => addBet(t, { res: r.x.y === null || r.x.y === undefined ? 'P' : (r.x.y === 1) === r.sd.over ? 'W' : 'L', units: 1, profit: r.x.y === null || r.x.y === undefined ? 0 : (r.x.y === 1) === r.sd.over ? r2(dec(r.sd.odds) - 1) : -1, fair: r.sd.fS, beat: null, clv: null }), emptyTally())),
     byBand: Object.fromEntries(BANDS.map((bd) => [bd, tallyOf(real.filter((b) => b.band === bd))])),
     byMarket: { lines: tallyOf(real.filter(isLine)), props: tallyOf(real.filter((b) => !isLine(b))) },
     bySeason: seasons,
@@ -992,7 +996,8 @@ export function summarize(sport, bets, passed, { epoch, now, flags, rows, season
 // Algorithm tab's time range (the owner, 2026-10-19: Today to This year over the merged history, D47) sums the days in
 // a range without the bets; All time reads the whole file's tallies, so the buckets start at the newest bet's year (a
 // week before it, for a week across the turn of the year) and the file stays small
-export const DAILY_COLS = ['won', 'lost', 'push', 'staked', 'profit', 'beat', 'beatN', 'clv'];
+// (vig: the profit less the fair-price profit of the day's bets with a fair chance (fairProfitOf), the Vig column's)
+export const DAILY_COLS = ['won', 'lost', 'push', 'staked', 'profit', 'beat', 'beatN', 'clv', 'vig'];
 export function dailyOf(bets, settledAt = (b) => b.t + GAME_HOURS * 36e5, extra = []) {
   if (!bets.length) return { cols: DAILY_COLS, from: null, bands: {} };
   const year = Number(etDay(maxOf(bets.map(settledAt))).slice(0, 4));
@@ -1004,7 +1009,7 @@ export function dailyOf(bets, settledAt = (b) => b.t + GAME_HOURS * 36e5, extra 
     const day = etDay(settledAt(b));
     if (day < from) continue;
     const band = b.band === 'pass' ? 'pass' : b.practice ? 'practice' : b.band;
-    const d = ((bands[band] ??= {})[day] ??= [0, 0, 0, 0, 0, 0, 0, 0]);
+    const d = ((bands[band] ??= {})[day] ??= [0, 0, 0, 0, 0, 0, 0, 0, 0]);
     d[b.res === 'W' ? 0 : b.res === 'L' ? 1 : 2]++;
     d[3] = r2(d[3] + b.units);
     d[4] = r2(d[4] + b.profit);
@@ -1013,6 +1018,8 @@ export function dailyOf(bets, settledAt = (b) => b.t + GAME_HOURS * 36e5, extra 
       d[6]++;
       d[7] = r4(d[7] + (fin(b.clv) ? b.clv : 0));
     }
+    const fp = fairProfitOf(b);
+    if (fp !== null) d[8] = r4(d[8] + b.profit - fp);
   }
   const text = (d) => {
     let n = d.length;

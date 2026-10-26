@@ -146,7 +146,7 @@ test('replay: the file\'s shape, its honesty flags and the one-line caveat', () 
   assert.match(caveatOf(r), /replayed on every priced game before its latest version/);
   // (the day buckets by band (dailyOf): the newest year's, summing to its bets at most the record)
   const daySum = (bands, i) => bands.reduce((t, bd) => t + Object.values(r.daily.bands[bd] ?? {}).reduce((v, d) => v + (Number(d.split(',')[i]) || 0), 0), 0);
-  assert.deepEqual(r.daily.cols, ['won', 'lost', 'push', 'staked', 'profit', 'beat', 'beatN', 'clv']);
+  assert.deepEqual(r.daily.cols, ['won', 'lost', 'push', 'staked', 'profit', 'beat', 'beatN', 'clv', 'vig']);
   assert.ok(Object.values(r.daily.bands).every((days) => Object.keys(days).every((d) => d >= r.daily.from)));
   assert.ok(daySum(['lock', 'high', 'medium'], 0) + daySum(['lock', 'high', 'medium'], 1) + daySum(['lock', 'high', 'medium'], 2) <= r.overall.bets);
   assert.match(caveatOf(r), /full context \(props and lines\) 2025, lines by the ratings alone 2023/);

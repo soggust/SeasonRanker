@@ -1537,6 +1537,13 @@ mat-icon.desk-gloves {
   }
 }
 
+// (Vig: the Book margin's effect in ROI points, quieter than the ROI beside it)
+.desk-history-table .desk-vig {
+  color: #{v.$text-faint};
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
 // (By Confidence's pyramid (the owner, 2026-10-20): each band's share of the bets, a thin bar in the band's colour
 // beside its percent)
 .desk-history-table .desk-share {

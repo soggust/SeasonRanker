@@ -24,6 +24,9 @@ export interface ReplayTally {
   beat: number | null;
   beatN: number;
   clv?: number | null;
+  // (the same bets paid at their fair no-vig chance, same results (replay-record.mjs fairProfitOf): the Vig column's
+  // alone; none in a file from before it)
+  fairProfit?: number;
 }
 export interface ReplayBet {
   id: string;
@@ -112,6 +115,10 @@ export interface HistoryRow extends Tally {
   tracked?: number;
   // (a row of tracked rows as if bet (the Practice and PASS rows, D87): the panel labels it "tracked", muted)
   asIf?: boolean;
+  // (the Vig column's (the owner, 2026-10-26), display only, never the record: of the bets with a fair price, their
+  // profit less what they'd have made at it (vigGap) and their stakes (vigStaked); vigText)
+  vigGap?: number;
+  vigStaked?: number;
 }
 export interface HistoryStripBet {
   // (null: a pending bet with no result yet: a push or void to be, or a prop whose count isn't in the box score)
@@ -239,6 +246,9 @@ export function dailyTally(f: ReplayRecordFile, bands: string[], r: { from: stri
   const t: ReplayTally = { bets: 0, won: 0, lost: 0, push: 0, staked: 0, profit: 0, roi: null, beat: null, beatN: 0, clv: null };
   let beatWon = 0;
   let clvSum = 0;
+  // (the Vig column's gap: a file's buckets from before it have none)
+  const vigAt = f.daily.cols?.indexOf('vig') ?? -1;
+  let vigGap = 0;
   for (const band of bands) {
     for (const [day, d] of Object.entries(f.daily.bands[band] ?? {})) {
       if (!inDays(day, r)) continue;
@@ -252,8 +262,10 @@ export function dailyTally(f: ReplayRecordFile, bands: string[], r: { from: stri
       beatWon += beat;
       t.beatN += beatN;
       clvSum += clv;
+      if (vigAt >= 0) vigGap += Number(d.split(',')[vigAt]) || 0;
     }
   }
+  if (vigAt >= 0) t.fairProfit = t.profit - vigGap;
   t.roi = t.staked ? t.profit / t.staked : null;
   t.beat = t.beatN ? beatWon / t.beatN : null;
   t.clv = t.beatN ? clvSum / t.beatN : null;
@@ -287,6 +299,28 @@ export function beatTip(t: Pick<HistoryRow, 'clvN' | 'clvEv'>): string {
   return `${t.clvN.toLocaleString('en-US')} with a close at their line${t.clvN < BEAT_MIN ? ` (the share from ${BEAT_MIN})` : ''}${ev}`;
 }
 
+// The Vig column (the owner, 2026-10-26): what the Book's margin cost a row's bets (or best-price shopping gained), in
+// ROI points: their actual ROI less their ROI had each been paid at its fair no-vig chance (the record's fair:
+// Pinnacle's no-vig where seen, D56/D74; a shopped bet's too), the same results. A cost is negative. Display only:
+// never the record, the ROI or the units. A bet's fair profit: a win pays units × (1 / fair − 1), a loss −units, a
+// push nothing; none without a fair chance in (0, 1)
+export function fairProfitOf(b: Pick<ModelBet, 'status' | 'units' | 'fair'>): number | null {
+  const f = b.fair;
+  if (!fin(f) || !(f > 0 && f < 1)) return null;
+  return b.status === 'won' ? b.units * (1 / f - 1) : b.status === 'lost' ? -b.units : 0;
+}
+export function vigOf(t: Pick<HistoryRow, 'vigGap' | 'vigStaked'>): number | null {
+  return t.vigStaked && fin(t.vigGap ?? NaN) ? (t.vigGap as number) / t.vigStaked : null;
+}
+// (a row's as the panel prints it: "−4.6%", "+0.9%"; no fair data "—")
+export function vigText(t: Pick<HistoryRow, 'vigGap' | 'vigStaked'>): string {
+  const v = vigOf(t);
+  if (v === null) return '—';
+  const r = Math.round(v * 1000) / 10;
+  return r === 0 ? '0.0%' : `${r > 0 ? '+' : '−'}${Math.abs(r).toFixed(1)}%`;
+}
+export const VIG_TIP = "What the Book's margin cost (or best-price shopping gained): actual ROI minus ROI at fair prices.";
+
 // (a replay tally onto a row; a live bet onto a row: a graded one, never a void or tracked one. A file from before
 // D56 (no clv on its tallies) beat the raw close, another measure: its share isn't joined)
 function addReplay(row: HistoryRow, t: ReplayTally | null | undefined): HistoryRow {
@@ -298,6 +332,10 @@ function addReplay(row: HistoryRow, t: ReplayTally | null | undefined): HistoryR
   row.staked += t.staked;
   row.profit += t.profit;
   row.replayed += t.bets;
+  if (t.fairProfit !== undefined && t.fairProfit !== null && fin(t.fairProfit)) {
+    row.vigGap = (row.vigGap ?? 0) + t.profit - t.fairProfit;
+    row.vigStaked = (row.vigStaked ?? 0) + t.staked;
+  }
   if (t.beatN && t.beat !== null && t.clv !== undefined && t.clv !== null && fin(t.clv)) {
     row.clvBeat = ((row.clvBeat ?? 0) * row.clvN + t.beat * t.beatN) / (row.clvN + t.beatN);
     row.clvEv = ((row.clvEv ?? 0) * row.clvN + t.clv * t.beatN) / (row.clvN + t.beatN);
@@ -317,6 +355,11 @@ function addLive(row: HistoryRow, b: ModelBet): HistoryRow {
   row.profit += b.profit;
   row.live++;
   if (b.pending) row.pending++;
+  const fp = fairProfitOf(b);
+  if (fp !== null) {
+    row.vigGap = (row.vigGap ?? 0) + b.profit - fp;
+    row.vigStaked = (row.vigStaked ?? 0) + b.units;
+  }
   const ev = fairCloseOf(b);
   if (ev !== null) {
     row.clvBeat = ((row.clvBeat ?? 0) * row.clvN + (ev > 0 ? 1 : 0)) / (row.clvN + 1);

@@ -99,6 +99,8 @@
     }
     <td [attr.title]="recordTip(t) + (t.pending ? ' · ' + t.pending + ' of them pending: worked out from the final, not graded by the desk yet' : '')">{{ recordText(t) }}@if (t.pending) {<small class="desk-pending-note">incl. {{ t.pending }} pending</small>}</td>
     <td [class.up]="t.profit > 0" [class.down]="t.profit < 0">{{ units(t.profit) }}</td>
+    <!-- (Vig: the Book margin's cost on the row's bets, or what shopping gained, in ROI points: display only (replay-history.ts vigText)) -->
+    <td class="desk-vig" [attr.title]="vigTip">{{ vigText(t) }}</td>
     <td [class.up]="(t.roi ?? 0) > 0" [class.down]="(t.roi ?? 0) < 0">{{ pct(t.roi) }}</td>
     <td [attr.title]="beatTip(t)">{{ beatText(t) }}</td>
   </tr>
@@ -181,7 +183,7 @@
         <div class="group-body">
           <table class="desk-table desk-history-table">
             <thead>
-              <tr><th></th><th [title]="help['historyRecord']">Record</th><th [title]="help['historyProfit']">Units</th><th [title]="help['roi']">ROI</th><th [title]="help['historyBeat']">Beat close</th></tr>
+              <tr><th></th><th [title]="help['historyRecord']">Record</th><th [title]="help['historyProfit']">Units</th><th [title]="vigTip">Vig</th><th [title]="help['roi']">ROI</th><th [title]="help['historyBeat']">Beat close</th></tr>
             </thead>
             <tbody>
               @for (t of h.bySport; track t.label) {
@@ -201,7 +203,7 @@
         <div class="group-body">
           <table class="desk-table desk-history-table">
             <thead>
-              <tr><th></th><th title="The band's share of the bets: most should be LIKE, fewer LOVE (LOCK is off while the two-band trial runs)">Share</th><th [title]="help['historyRecord']">Record</th><th [title]="help['historyProfit']">Units</th><th [title]="help['roi']">ROI</th><th [title]="help['historyBeat']">Beat close</th></tr>
+              <tr><th></th><th title="The band's share of the bets: most should be LIKE, fewer LOVE (LOCK is off while the two-band trial runs)">Share</th><th [title]="help['historyRecord']">Record</th><th [title]="help['historyProfit']">Units</th><th [title]="vigTip">Vig</th><th [title]="help['roi']">ROI</th><th [title]="help['historyBeat']">Beat close</th></tr>
             </thead>
             <tbody>
               @for (t of bandRows; track $index) {

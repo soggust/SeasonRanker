@@ -6,7 +6,7 @@ import { darkLogoOf } from '../team-look';
 import { matchupName } from './game-menu';
 import { BetGroup, SportGroup, TableSorts, betValue, byGame, gamesBySport } from './desk-columns';
 import { DESK_HELP } from './desk-help';
-import { BotHistory, HISTORY_RANGES, HistoryRange, HistoryRow, ReplayRecordFile, StagedReplayFile, bandSharesOf, beatText, beatTip, botHistoryOf, buildLabel, buildOf, emptyRow, finalAtOf, isHistoryRange, recordText, withPending } from './replay-history';
+import { BotHistory, HISTORY_RANGES, HistoryRange, HistoryRow, ReplayRecordFile, StagedReplayFile, VIG_TIP, bandSharesOf, beatText, beatTip, botHistoryOf, buildLabel, buildOf, emptyRow, finalAtOf, isHistoryRange, recordText, vigText, withPending } from './replay-history';
 import { DeskPanel, FindingsFile, findingsOf, ESPN_LEAGUES, SPORTS, deskPanelOpen, UNIT_WORDS, DeskEpoch, epochFor, epochShared, countNowOf, deskEpochOf, edgeColorOf, epochLabel, isTracked, meterOf, propState, provisional, sideTextOf, sideTitleOf, splitOpenOf, toWin } from './desk-math';
 import { Board, Meter, ModelBet, ModelState, Settled } from './desk-model';
 import { SummaryBox, athleteTeam, liveStat } from './live-props';
@@ -117,6 +117,8 @@ export class ModelDeskComponent implements OnInit, OnDestroy {
   // (Beat close: the share that beat the fair close from BEAT_MIN bets, the count and mean return on hover, D56)
   readonly beatText = beatText;
   readonly beatTip = beatTip;
+  readonly vigText = vigText;
+  readonly vigTip = VIG_TIP;
   readonly recordTip = recordTip;
   readonly compactCount = compactCount;
   readonly buildLabel = buildLabel;
