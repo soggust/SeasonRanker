@@ -8546,6 +8546,42 @@
     "seen": "2026-10-26T22:34:30.334Z",
     "own": "2026-10-26T21:49:00.000Z"
    }
+  },
+  "401873009|jakemajors|out": {
+   "game": "401873009",
+   "start": "2026-10-27T00:15Z",
+   "team": "21",
+   "name": "Jake Majors",
+   "status": "out",
+   "athlete": "4430814",
+   "espn": {
+    "seen": "2026-10-26T23:06:39.803Z",
+    "own": "2026-10-26T22:50:00.000Z"
+   }
+  },
+  "401873009|colepayton|out": {
+   "game": "401873009",
+   "start": "2026-10-27T00:15Z",
+   "team": "21",
+   "name": "Cole Payton",
+   "status": "out",
+   "athlete": "4879250",
+   "espn": {
+    "seen": "2026-10-26T23:06:39.803Z",
+    "own": "2026-10-26T22:50:00.000Z"
+   }
+  },
+  "401873009|jeremiyahlove|q": {
+   "game": "401873009",
+   "start": "2026-10-27T00:15Z",
+   "team": "21",
+   "name": "Jeremiyah Love",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-10-26T22:37:11.118Z",
+    "own": "2026-10-26T22:06:26.000Z",
+    "why": "@rotoworld-fb.bsky.social: Jeremiyah Love (ankle) to practice Wednesday"
+   }
   }
  }
 }
