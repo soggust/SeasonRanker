@@ -663,7 +663,11 @@ export async function scoreVersion(dir, sport, { refit = false, propsLayer = tru
             const prev = cacheable ? (c.fit ?? H.fitcache.readFit(sport, wfDir).fit) : null;
             let fits;
             let from = 'cached';
-            if (c.fit && c.fit.code === code && (c.fit.rows === before.length || process.env.GATE_WF_ANYROWS === '1')) fits = c.fit.fits;
+            // (measuring only: GATE_WF_FORCEFROM=<fits dir> prices each season under the settings saved there, whatever
+            // their code: an older search's settings head to head with this one's, 2026-10-26's NHL. Nothing saved)
+            const forced = process.env.GATE_WF_FORCEFROM ? H.fitcache.readFit(sport, path.join(process.env.GATE_WF_FORCEFROM, 'wf', String(S))).fit : null;
+            if (forced?.fits) (fits = forced.fits), (from = `forced from ${process.env.GATE_WF_FORCEFROM} (${new Date(forced.at).toISOString().slice(0, 10)})`);
+            else if (c.fit && c.fit.code === code && (c.fit.rows === before.length || process.env.GATE_WF_ANYROWS === '1')) fits = c.fit.fits;
             else {
               const t1 = Date.now();
               // (measuring only, D88: GATE_WF_NEWFROM=<fits dir> takes a search already made on these rows from there)
