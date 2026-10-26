@@ -381,7 +381,10 @@
   "50289047": "2026-10-26",
   "50289866": "2026-10-26",
   "50290389": "2026-10-26",
-  "50290411": "2026-10-26"
+  "50290411": "2026-10-26",
+  "50291280": "2026-10-26",
+  "50291324": "2026-10-26",
+  "50291573": "2026-10-26"
  },
  "signals": [
   {
@@ -1612,6 +1615,21 @@
    "confidence": 0.9,
    "story": "50289866",
    "headline": "Kirk Cousins to remain Raiders' starting QB vs. Jets, Klint Kubiak says",
+   "model": "claude-haiku-5-5"
+  },
+  {
+   "id": "50291573|22|4692835|return",
+   "day": "2026-10-26",
+   "at": "2026-10-26T23:41:13.000Z",
+   "team": "22",
+   "abbr": "ARI",
+   "athlete": "4692835",
+   "player": "Jalen Brooks",
+   "kind": "return",
+   "direction": "down",
+   "confidence": 0.3,
+   "story": "50291573",
+   "headline": "Cardinals WR Jalen Brooks to miss rest of season with wrist injury",
    "model": "claude-haiku-5-5"
   }
  ]

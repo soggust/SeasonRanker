@@ -1,13 +1,13 @@
 {
  "sport": "nfl",
  "cursor": {
-  "adamscheftermirror.bsky.social": "2026-10-26T22:18:21.091Z",
+  "adamscheftermirror.bsky.social": "2026-10-26T23:48:19.948Z",
   "rapsheet.bsky.social": "2026-10-26T20:22:55.098Z",
   "nflnewsreposterbot.bsky.social": "2026-10-22T13:33:43.592Z",
-  "insidenflnews.bsky.social": "2026-10-26T22:12:12.610Z",
-  "nflnewsposter.bsky.social": "2026-10-26T20:26:57.008Z",
-  "rotoworld-fb.bsky.social": "2026-10-26T22:19:54.000Z",
-  "rotowirenfl.bsky.social": "2026-10-26T22:35:45.000Z"
+  "insidenflnews.bsky.social": "2026-10-26T23:45:29.304Z",
+  "nflnewsposter.bsky.social": "2026-10-26T23:21:46.670Z",
+  "rotoworld-fb.bsky.social": "2026-10-26T22:56:01.000Z",
+  "rotowirenfl.bsky.social": "2026-10-26T22:48:27.000Z"
  },
  "claims": [
   {
@@ -6860,6 +6860,19 @@
    "kind": "return",
    "confidence": 0.6,
    "text": "Deebo Samuel: Eyes Week 9 return \n\n https://www.rotowire.com/football/player/deebo-samuel-13429"
+  },
+  {
+   "id": "at://did:plc:mbr4badgf6yu56mquzackzew/app.bsky.feed.post/3mysshzdujs2i|saquonbarkley|active|status",
+   "at": "2026-10-26T22:47:05.836Z",
+   "seen": "2026-10-26T23:50:51.748Z",
+   "handle": "insidenflnews.bsky.social",
+   "post": "at://did:plc:mbr4badgf6yu56mquzackzew/app.bsky.feed.post/3mysshzdujs2i",
+   "player": "Saquon Barkley",
+   "team": "PHI",
+   "status": "active",
+   "kind": "status",
+   "confidence": 0.95,
+   "text": "Eagles RB Saquon Barkley (hamstring) is officially active for Week 7."
   }
  ]
 }

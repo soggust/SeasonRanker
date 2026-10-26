@@ -3,6 +3,17 @@
  "days": 2,
  "signals": [
   {
+   "team": "22",
+   "abbr": "ARI",
+   "athlete": "4692835",
+   "player": "Jalen Brooks",
+   "kind": "return",
+   "direction": "down",
+   "confidence": 0.3,
+   "headline": "Cardinals WR Jalen Brooks to miss rest of season with wrist injury",
+   "at": "2026-10-26T23:41:13.000Z"
+  },
+  {
    "team": "5",
    "abbr": "CLE",
    "athlete": "4427238",
@@ -80,5 +91,5 @@
    "at": "2026-10-25T15:18:38.000Z"
   }
  ],
- "at": "2026-10-26T22:37:11.118Z"
+ "at": "2026-10-26T23:50:51.748Z"
 }
