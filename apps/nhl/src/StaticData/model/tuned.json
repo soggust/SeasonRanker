@@ -1,52 +1,54 @@
 {
+ "changes": [
+  {
+   "date": "2026-10-26",
+   "knob": "loveUnits",
+   "ref": "D73",
+   "kind": "staking",
+   "from": 2,
+   "to": 2.5,
+   "units": {
+    "base": 15.92,
+    "cand": 22.08
+   },
+   "gain": 6.16,
+   "choose": 5.31,
+   "hold": 0.85,
+   "last": {
+    "season": 2026,
+    "gain": 6.16
+   },
+   "current": {
+    "season": 2027,
+    "gain": 0
+   }
+  }
+ ],
  "v": 1,
  "sport": "nhl",
- "knobs": {},
- "changes": [],
+ "knobs": {
+  "loveUnits": 2.5
+ },
  "last": {
-  "date": "2026-10-23",
-  "tried": 28,
+  "date": "2026-10-26",
+  "tried": 40,
   "blocked": [],
-  "shipped": null,
+  "shipped": "loveUnits=2.5",
   "top": [
    {
-    "id": "ownThr=-0.05",
-    "gain": 2.98,
-    "choose": 2.98,
-    "hold": 0,
-    "last": 0,
-    "pass": false,
-    "why": [
-     "no win in the held-out last 8 weeks (+0u)"
-    ]
-   },
-   {
-    "id": "barZ=1.5",
-    "gain": 1.42,
-    "choose": 1.42,
-    "hold": 0,
-    "last": 0,
-    "pass": false,
-    "why": [
-     "no win in the held-out last 8 weeks (+0u)"
-    ]
-   },
-   {
-    "id": "barZ=1.25",
-    "gain": 0.96,
-    "choose": 0.96,
-    "hold": 0,
-    "last": 0,
-    "pass": false,
-    "why": [
-     "no win in the held-out last 8 weeks (+0u)"
-    ]
+    "id": "loveUnits=2.5",
+    "gain": 6.16,
+    "choose": 5.31,
+    "hold": 0.85,
+    "last": 6.16,
+    "pass": true,
+    "why": []
    }
   ],
   "secs": {
-   "champion": 273,
-   "restake": 121.3,
-   "total": 274
+   "champion": 409,
+   "restake": 204,
+   "total": 409
   }
  }
 }

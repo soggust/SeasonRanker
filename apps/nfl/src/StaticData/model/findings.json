@@ -304,34 +304,6 @@
    "text": "Practice picks tracked again: tagged at no stake, Algorithm tab shows Practice (as if 0.5u) and PASS (1u flat), never the record"
   },
   {
-   "date": "2026-10-23",
-   "group": "watching",
-   "sport": "nfl",
-   "ref": "D88",
-   "text": "Self-tune: NFL held: none of 23 settings beat the current before the last 8 weeks past 1 SE"
-  },
-  {
-   "date": "2026-10-23",
-   "group": "watching",
-   "sport": "nba",
-   "ref": "D88",
-   "text": "Self-tune: NBA held: best D79 ownThr -10% → -5% +4.01u before the last 8 weeks, but no win in the held-out last 8 weeks (+0u)"
-  },
-  {
-   "date": "2026-10-23",
-   "group": "watching",
-   "sport": "nhl",
-   "ref": "D88",
-   "text": "Self-tune: NHL held: best D79 ownThr -10% → -5% +2.98u before the last 8 weeks, but no win in the held-out last 8 weeks (+0u)"
-  },
-  {
-   "date": "2026-10-23",
-   "group": "watching",
-   "sport": "mlb",
-   "ref": "D88",
-   "text": "Self-tune: MLB held: none of 23 settings beat the current before the last 8 weeks past 1 SE"
-  },
-  {
    "date": "2026-10-24",
    "group": "dropped",
    "sport": "mma",
@@ -550,45 +522,38 @@
   },
   {
    "date": "2026-10-26",
-   "group": "dropped",
-   "sport": "mma",
-   "ref": "D94",
-   "text": "Counter-strikers vs pressure fighters (ESPN strikes): counter won 49.4% of 496; at the close 53.2% vs 49.5% fair (n 203), noise. Not added"
-  },
-  {
-   "date": "2026-10-26",
-   "group": "dropped",
-   "sport": "mma",
-   "ref": "D94",
-   "text": "Style terms (output, output gap, position, targets, control, takedown tries): walk-forward -0.0004 to +0.0005, nothing past the close"
-  },
-  {
-   "date": "2026-10-26",
-   "group": "dropped",
-   "sport": "mma",
-   "ref": "D94",
-   "text": "Pressure vs pressure: overs 57.1% vs close 55.9% (n 77), distance 53% vs 51%; no style term helps round totals. Not added"
-  },
-  {
-   "date": "2026-10-26",
-   "group": "dropped",
-   "sport": "mma",
-   "ref": "D94",
-   "text": "MMA props: The Odds API has only moneyline, round total, double chance, 3-way; ESPN only moneyline + one total. Nothing to price (5 credits)"
-  },
-  {
-   "date": "2026-10-26",
-   "group": "dropped",
+   "group": "watching",
    "sport": "nfl",
-   "ref": "D94",
-   "text": "Unused NGS (intended air yards, expected completion %, expected YAC, time to line, rush efficiency): none taken walk-forward; gate tie"
+   "ref": "D88",
+   "text": "Self-tune: NFL held: best D88 leanLambdaLines 0 → 1 +11.23u before the last 8 weeks, but no win in the held-out last 8 weeks (-0.35u)"
   },
   {
    "date": "2026-10-26",
-   "group": "dropped",
-   "sport": "nfl",
-   "ref": "D94",
-   "text": "X API: pay-per-use ~$0.005 a post read, ~$180/mo for 60 reporters; adds speed on news Bluesky carries, no news-speed edge found. Not bought"
+   "group": "watching",
+   "sport": "nba",
+   "ref": "D88",
+   "text": "Self-tune: NBA held: best D79 ownThr -10% → -5% +4.76u before the last 8 weeks, but no win in the held-out last 8 weeks (+0u)"
+  },
+  {
+   "date": "2026-10-26",
+   "group": "shipped",
+   "sport": "nhl",
+   "ref": "D88",
+   "text": "Self-tune: NHL D73 loveUnits 2 → 2.5: +6.16u (+15.92u → +22.08u), last 8 weeks +0.85u, newest season +6.16u"
+  },
+  {
+   "date": "2026-10-26",
+   "group": "watching",
+   "sport": "mlb",
+   "ref": "D88",
+   "text": "Self-tune: MLB held: best D88 leanMLines 0 → 0.005 +12.33u before the last 8 weeks, but no win in the held-out last 8 weeks (-0.05u)"
+  },
+  {
+   "date": "2026-10-26",
+   "group": "watching",
+   "sport": "mma",
+   "ref": "D88",
+   "text": "Self-tune: MMA held: best D88 mmaOpenFav 0 → 1 +25.71u before the last 8 weeks, but no win in the held-out last 8 weeks (-2.82u)"
   }
  ]
 }

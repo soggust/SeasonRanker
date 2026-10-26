@@ -1,0 +1,30 @@
+{
+ "v": 1,
+ "sport": "mma",
+ "knobs": {},
+ "changes": [],
+ "last": {
+  "date": "2026-10-26",
+  "tried": 2,
+  "blocked": [],
+  "shipped": null,
+  "top": [
+   {
+    "id": "mmaOpenFav=1",
+    "gain": 22.89,
+    "choose": 25.71,
+    "hold": -2.82,
+    "last": 9.01,
+    "pass": false,
+    "why": [
+     "no win in the held-out last 8 weeks (-2.82u)"
+    ]
+   }
+  ],
+  "secs": {
+   "champion": 19,
+   "restake": 0.4,
+   "total": 19
+  }
+ }
+}

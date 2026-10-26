@@ -1,5 +1,5 @@
 {
- "at": "2026-10-26T06:29:24.513Z",
+ "at": "2026-10-26T10:23:37.139Z",
  "baseline": {
   "from": "2026-09-21",
   "to": "2026-10-19"
@@ -1216,7 +1216,7 @@
    "how": "placed this week against the 28 days before: the share of the bets each field applies to that are missing it",
    "id": "C14",
    "metric": "share",
-   "n": 389,
+   "n": 390,
    "needs": null,
    "rows": [
     {
@@ -1238,7 +1238,7 @@
     {
      "key": "intent",
      "n": 0,
-     "of": 389,
+     "of": 390,
      "share": 0,
      "shareBase": 0.009,
      "status": "ok"
@@ -1268,19 +1268,19 @@
      "status": "ok"
     },
     {
+     "key": "fairFrom unknown",
+     "n": 2,
+     "of": 6,
+     "share": 0.3333,
+     "shareBase": 0.3333,
+     "status": "thin"
+    },
+    {
      "key": "seen",
      "n": 1,
      "of": 5,
      "share": 0.2,
      "shareBase": 0.2281,
-     "status": "thin"
-    },
-    {
-     "key": "fairFrom unknown",
-     "n": 1,
-     "of": 5,
-     "share": 0.2,
-     "shareBase": 0.3333,
      "status": "thin"
     }
    ],
@@ -1416,7 +1416,7 @@
      "key": "shadow:gap",
      "lost": 22,
      "n": 44,
-     "open": 0,
+     "open": 1,
      "profit": -1.6,
      "push": 0,
      "won": 22
@@ -1571,11 +1571,11 @@
   },
   {
    "examples": [],
-   "headline": "questionable: 10 of 389 bets placed this week (3%) against 2% before",
+   "headline": "questionable: 10 of 390 bets placed this week (3%) against 2% before",
    "how": "placed this week against the 28 days before: the bets a guard cut to a half unit, by kind",
    "id": "C8",
    "metric": "ratio",
-   "n": 389,
+   "n": 390,
    "needs": [
     "state.tallies (the guards' skips by day: the Bot keeps only the bets it placed)"
    ],
@@ -1583,15 +1583,15 @@
     {
      "key": "questionable",
      "n": 10,
-     "ratio": 1.4319,
-     "share": 0.0257,
+     "ratio": 1.4282,
+     "share": 0.0256,
      "shareBase": 0.018,
      "status": "ok"
     },
     {
      "key": "forecast",
      "n": 9,
-     "ratio": 1.1715,
+     "ratio": 1.1685,
      "share": 0.0231,
      "shareBase": 0.0197,
      "status": "ok"
@@ -1613,6 +1613,14 @@
      "status": "ok"
     },
     {
+     "key": "line moved",
+     "n": 4,
+     "ratio": 0.2197,
+     "share": 0.0103,
+     "shareBase": 0.0467,
+     "status": "ok"
+    },
+    {
      "key": "rec prop:rec:under: a return of %, under the stat's minimum edge of %",
      "n": 4,
      "ratio": null,
@@ -1621,17 +1629,9 @@
      "status": "ok"
     },
     {
-     "key": "line moved",
-     "n": 3,
-     "ratio": 0.1652,
-     "share": 0.0077,
-     "shareBase": 0.0467,
-     "status": "ok"
-    },
-    {
      "key": "no odds api price",
      "n": 3,
-     "ratio": 4.2956,
+     "ratio": 4.2846,
      "share": 0.0077,
      "shareBase": 0.0018,
      "status": "ok"
@@ -1769,7 +1769,7 @@
    "tested": null,
    "threshold": "watch twice the baseline share (10+ bets); flag 3x and a quarter of placements, or a new kind on 20+",
    "title": "Guards cutting unusually often",
-   "value": 1.4319
+   "value": 1.4282
   },
   {
    "examples": [
@@ -1997,7 +1997,7 @@
    "how": "open bets on games not started: past the gap now, or published at a band today's trust wouldn't give them; open bets past their start plus VOID_AFTER; this week's graded bets with no close read",
    "id": "C13",
    "metric": "stale",
-   "n": 30,
+   "n": 31,
    "needs": null,
    "rows": [
     {
@@ -2077,25 +2077,25 @@
     "401873011:prop:anyTd:4369863",
     "401873011:prop:anyTd:5081508"
    ],
-   "headline": "Model files 3h old, 46 open bets overdue to grade; Odds API credits 283% left; 389 bets placed in a week of 14 games",
+   "headline": "Model files 2h old, 62 open bets overdue to grade; Odds API credits 283% left; 390 bets placed in a week of 14 games",
    "how": "the newest commit of the sport's model files, the open bets started 12 hours ago or more, The Odds API's credits (state.odds), the state's sources",
    "id": "C16",
    "metric": "ageH",
-   "n": 389,
+   "n": 390,
    "needs": null,
    "rows": [
     {
-     "ageH": 3,
-     "at": "2026-10-26T03:19:06Z",
+     "ageH": 2,
+     "at": "2026-10-26T08:10:04Z",
      "key": "files",
-     "overdue": 46
+     "overdue": 62
     },
     {
      "cycleEnd": "2026-11-19T04:06:35.755Z",
      "key": "credits",
      "monthly": 20000,
-     "remaining": 56537,
-     "share": 2.8269
+     "remaining": 56517,
+     "share": 2.8259
     },
     {
      "down": [],
@@ -2104,14 +2104,14 @@
     {
      "games": 14,
      "key": "week",
-     "placed": 389
+     "placed": 390
     }
    ],
    "status": "ok",
    "tested": null,
    "threshold": "watch files 3h old with bets overdue, credits under 20%, a source down, or no bets in a week with games; flag 6h old with bets overdue, or credits under 10%",
    "title": "Ops",
-   "value": 3
+   "value": 2
   },
   {
    "examples": [
@@ -2121,18 +2121,18 @@
     "401873010:prop:rushYds:4431452",
     "401873010:prop:passAtt:4431611"
    ],
-   "headline": "13 of 389 bets placed this week had the line already moving against them: ROI -22.7% against 4.7% for the rest",
+   "headline": "14 of 390 bets placed this week had the line already moving against them: ROI -22.7% against 4.7% for the rest",
    "how": "placed this week: a prop's line a point or more against its side since it opened; a game's spread 1.5 (NFL) or 0.5, its total a point, a moneyline without a spread move 3 points of the home chance. A prop moved twice the guard's limit should have been skipped",
    "id": "C2",
    "metric": "roiGap",
-   "n": 389,
+   "n": 390,
    "needs": null,
    "rows": [
     {
      "e": 5.9381,
      "key": "moving against",
      "n": 12,
-     "placed": 13,
+     "placed": 14,
      "profit": -1.361,
      "roi": -0.2268,
      "w": 5,

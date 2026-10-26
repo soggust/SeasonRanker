@@ -4,15 +4,15 @@
  "knobs": {},
  "changes": [],
  "last": {
-  "date": "2026-10-23",
-  "tried": 28,
+  "date": "2026-10-26",
+  "tried": 40,
   "blocked": [],
   "shipped": null,
   "top": [
    {
     "id": "ownThr=-0.05",
-    "gain": 4.01,
-    "choose": 4.01,
+    "gain": 4.76,
+    "choose": 4.76,
     "hold": 0,
     "last": 0,
     "pass": false,
@@ -21,21 +21,23 @@
     ]
    },
    {
-    "id": "barZ=0.5",
-    "gain": 2.19,
-    "choose": 1.66,
-    "hold": 0.53,
-    "last": 2.07,
-    "pass": true,
-    "why": []
+    "id": "ownThr=-0.075",
+    "gain": 4.1,
+    "choose": 4.1,
+    "hold": 0,
+    "last": 0,
+    "pass": false,
+    "why": [
+     "no win in the held-out last 8 weeks (+0u)"
+    ]
    }
   ],
   "secs": {
-   "champion": 420,
-   "restake": 168.2,
-   "youngShrink=0.5": 269,
-   "youngShrink=0.75": 265,
-   "total": 962
+   "champion": 624,
+   "restake": 303,
+   "youngShrink=0.5": 315,
+   "youngShrink=0.75": 317,
+   "total": 1268
   }
  }
 }

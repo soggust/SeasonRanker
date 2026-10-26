@@ -4,15 +4,76 @@
  "knobs": {},
  "changes": [],
  "last": {
-  "date": "2026-10-23",
-  "tried": 23,
+  "date": "2026-10-26",
+  "tried": 35,
   "blocked": [],
   "shipped": null,
-  "top": [],
+  "top": [
+   {
+    "id": "leanMLines=0.005",
+    "gain": 12.28,
+    "choose": 12.33,
+    "hold": -0.05,
+    "last": -4.93,
+    "pass": false,
+    "why": [
+     "no win in the held-out last 8 weeks (-0.05u)",
+     "worse in the last complete season 2025 (-4.93u)",
+     "the replay's units up (-13.4 to -1.12u) while its bets beat the fair close less often (40.7% to 39.05%)"
+    ]
+   },
+   {
+    "id": "ownThr=-0.075",
+    "gain": 1.52,
+    "choose": 1.52,
+    "hold": 0,
+    "last": 0,
+    "pass": false,
+    "why": [
+     "no win in the held-out last 8 weeks (+0u)"
+    ]
+   },
+   {
+    "id": "leanMProps=0.01",
+    "gain": -0.78,
+    "choose": 1.19,
+    "hold": -1.97,
+    "last": 0,
+    "pass": false,
+    "why": [
+     "no more units over the whole replay (-0.78u)",
+     "no win in the held-out last 8 weeks (-1.97u)"
+    ]
+   },
+   {
+    "id": "leanLambdaProps=0.5",
+    "gain": -0.55,
+    "choose": 1.11,
+    "hold": -1.66,
+    "last": 0,
+    "pass": false,
+    "why": [
+     "no more units over the whole replay (-0.55u)",
+     "no win in the held-out last 8 weeks (-1.66u)"
+    ]
+   },
+   {
+    "id": "leanLambdaProps=1",
+    "gain": -0.55,
+    "choose": 1.11,
+    "hold": -1.66,
+    "last": 0,
+    "pass": false,
+    "why": [
+     "no more units over the whole replay (-0.55u)",
+     "no win in the held-out last 8 weeks (-1.66u)"
+    ]
+   }
+  ],
   "secs": {
-   "champion": 395,
-   "restake": 183.8,
-   "total": 395
+   "champion": 667,
+   "restake": 371.4,
+   "total": 667
   }
  }
 }
