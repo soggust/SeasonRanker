@@ -7901,6 +7901,11 @@
    "espn": {
     "seen": "2026-10-26T00:41:15.679Z",
     "own": "2026-10-25T21:20:00.000Z"
+   },
+   "bluesky": {
+    "seen": "2026-10-26T05:03:40.538Z",
+    "own": "2026-10-25T21:20:29.000Z",
+    "why": "@rotowirenba.bsky.social: Kon Knueppel: Ruled out for Monday \n\n https://www.roto"
    }
   },
   "401909868|cobywhite|out": {
@@ -7949,6 +7954,11 @@
    "espn": {
     "seen": "2026-10-26T00:41:15.679Z",
     "own": "2026-10-25T20:52:00.000Z"
+   },
+   "bluesky": {
+    "seen": "2026-10-26T05:03:40.538Z",
+    "own": "2026-10-25T20:52:44.000Z",
+    "why": "@rotowirenba.bsky.social: AJ Dybantsa: Ruled out for Monday \n\n https://www.rotow"
    }
   },
   "401909868|tristanvukcevic|out": {
@@ -8065,6 +8075,11 @@
    "espn": {
     "seen": "2026-10-26T00:41:15.679Z",
     "own": "2026-10-25T20:25:00.000Z"
+   },
+   "bluesky": {
+    "seen": "2026-10-26T05:03:40.538Z",
+    "own": "2026-10-25T20:25:50.000Z",
+    "why": "@rotowirenba.bsky.social: Naji Marshall: Out for Monday \n\n https://www.rotowire."
    }
   },
   "401909871|tarikbiberovic|out": {
@@ -8484,6 +8499,342 @@
    "espn": {
     "seen": "2026-10-26T05:02:28.163Z",
     "own": "2026-10-25T00:12:00.000Z"
+   }
+  },
+  "401909868|najimarshall|out": {
+   "game": "401909868",
+   "start": "2026-10-26T23:00Z",
+   "team": "30",
+   "name": "Naji Marshall",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-10-26T05:03:40.538Z",
+    "own": "2026-10-25T20:25:50.000Z",
+    "why": "@rotowirenba.bsky.social: Naji Marshall: Out for Monday \n\n https://www.rotowire."
+   }
+  },
+  "401909868|osoighodaro|out": {
+   "game": "401909868",
+   "start": "2026-10-26T23:00Z",
+   "team": "30",
+   "name": "Oso Ighodaro",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-10-26T05:03:40.538Z",
+    "own": "2026-10-25T22:25:24.000Z",
+    "why": "@rotowirenba.bsky.social: Oso Ighodaro: Doubtful for Monday \n\n https://www.rotow"
+   }
+  },
+  "401909869|najimarshall|out": {
+   "game": "401909869",
+   "start": "2026-10-26T23:00Z",
+   "team": "5",
+   "name": "Naji Marshall",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-10-26T05:03:40.538Z",
+    "own": "2026-10-25T20:25:50.000Z",
+    "why": "@rotowirenba.bsky.social: Naji Marshall: Out for Monday \n\n https://www.rotowire."
+   }
+  },
+  "401909869|ajdybantsa|out": {
+   "game": "401909869",
+   "start": "2026-10-26T23:00Z",
+   "team": "5",
+   "name": "AJ Dybantsa",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-10-26T05:03:40.538Z",
+    "own": "2026-10-25T20:52:44.000Z",
+    "why": "@rotowirenba.bsky.social: AJ Dybantsa: Ruled out for Monday \n\n https://www.rotow"
+   }
+  },
+  "401909869|osoighodaro|out": {
+   "game": "401909869",
+   "start": "2026-10-26T23:00Z",
+   "team": "5",
+   "name": "Oso Ighodaro",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-10-26T05:03:40.538Z",
+    "own": "2026-10-25T22:25:24.000Z",
+    "why": "@rotowirenba.bsky.social: Oso Ighodaro: Doubtful for Monday \n\n https://www.rotow"
+   }
+  },
+  "401909870|najimarshall|out": {
+   "game": "401909870",
+   "start": "2026-10-26T23:30Z",
+   "team": "2",
+   "name": "Naji Marshall",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-10-26T05:03:40.538Z",
+    "own": "2026-10-25T20:25:50.000Z",
+    "why": "@rotowirenba.bsky.social: Naji Marshall: Out for Monday \n\n https://www.rotowire."
+   }
+  },
+  "401909870|ajdybantsa|out": {
+   "game": "401909870",
+   "start": "2026-10-26T23:30Z",
+   "team": "2",
+   "name": "AJ Dybantsa",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-10-26T05:03:40.538Z",
+    "own": "2026-10-25T20:52:44.000Z",
+    "why": "@rotowirenba.bsky.social: AJ Dybantsa: Ruled out for Monday \n\n https://www.rotow"
+   }
+  },
+  "401909870|osoighodaro|out": {
+   "game": "401909870",
+   "start": "2026-10-26T23:30Z",
+   "team": "2",
+   "name": "Oso Ighodaro",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-10-26T05:03:40.538Z",
+    "own": "2026-10-25T22:25:24.000Z",
+    "why": "@rotowirenba.bsky.social: Oso Ighodaro: Doubtful for Monday \n\n https://www.rotow"
+   }
+  },
+  "401909870|cobywhite|out": {
+   "game": "401909870",
+   "start": "2026-10-26T23:30Z",
+   "team": "4",
+   "name": "Coby White",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-10-26T05:03:40.538Z",
+    "own": "2026-10-25T20:59:44.000Z",
+    "why": "@rotowirenba.bsky.social: Coby White: Sidelined once again \n\n https://www.rotowi"
+   }
+  },
+  "401909871|ajdybantsa|out": {
+   "game": "401909871",
+   "start": "2026-10-26T23:30Z",
+   "team": "14",
+   "name": "AJ Dybantsa",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-10-26T05:03:40.538Z",
+    "own": "2026-10-25T20:52:44.000Z",
+    "why": "@rotowirenba.bsky.social: AJ Dybantsa: Ruled out for Monday \n\n https://www.rotow"
+   }
+  },
+  "401909871|osoighodaro|out": {
+   "game": "401909871",
+   "start": "2026-10-26T23:30Z",
+   "team": "14",
+   "name": "Oso Ighodaro",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-10-26T05:03:40.538Z",
+    "own": "2026-10-25T22:25:24.000Z",
+    "why": "@rotowirenba.bsky.social: Oso Ighodaro: Doubtful for Monday \n\n https://www.rotow"
+   }
+  },
+  "401909871|cooperflagg|q": {
+   "game": "401909871",
+   "start": "2026-10-26T23:30Z",
+   "team": "6",
+   "name": "Cooper Flagg",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-10-26T05:03:40.538Z",
+    "own": "2026-10-25T20:26:59.000Z",
+    "why": "@rotowirenba.bsky.social: Cooper Flagg: Questionable to play Monday \n\n https://w"
+   }
+  },
+  "401909872|najimarshall|out": {
+   "game": "401909872",
+   "start": "2026-10-27T00:00Z",
+   "team": "15",
+   "name": "Naji Marshall",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-10-26T05:03:40.538Z",
+    "own": "2026-10-25T20:25:50.000Z",
+    "why": "@rotowirenba.bsky.social: Naji Marshall: Out for Monday \n\n https://www.rotowire."
+   }
+  },
+  "401909872|ajdybantsa|out": {
+   "game": "401909872",
+   "start": "2026-10-27T00:00Z",
+   "team": "15",
+   "name": "AJ Dybantsa",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-10-26T05:03:40.538Z",
+    "own": "2026-10-25T20:52:44.000Z",
+    "why": "@rotowirenba.bsky.social: AJ Dybantsa: Ruled out for Monday \n\n https://www.rotow"
+   }
+  },
+  "401909872|osoighodaro|out": {
+   "game": "401909872",
+   "start": "2026-10-27T00:00Z",
+   "team": "15",
+   "name": "Oso Ighodaro",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-10-26T05:03:40.538Z",
+    "own": "2026-10-25T22:25:24.000Z",
+    "why": "@rotowirenba.bsky.social: Oso Ighodaro: Doubtful for Monday \n\n https://www.rotow"
+   }
+  },
+  "401909873|najimarshall|out": {
+   "game": "401909873",
+   "start": "2026-10-27T00:00Z",
+   "team": "25",
+   "name": "Naji Marshall",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-10-26T05:03:40.538Z",
+    "own": "2026-10-25T20:25:50.000Z",
+    "why": "@rotowirenba.bsky.social: Naji Marshall: Out for Monday \n\n https://www.rotowire."
+   }
+  },
+  "401909873|ajdybantsa|out": {
+   "game": "401909873",
+   "start": "2026-10-27T00:00Z",
+   "team": "25",
+   "name": "AJ Dybantsa",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-10-26T05:03:40.538Z",
+    "own": "2026-10-25T20:52:44.000Z",
+    "why": "@rotowirenba.bsky.social: AJ Dybantsa: Ruled out for Monday \n\n https://www.rotow"
+   }
+  },
+  "401909873|osoighodaro|out": {
+   "game": "401909873",
+   "start": "2026-10-27T00:00Z",
+   "team": "25",
+   "name": "Oso Ighodaro",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-10-26T05:03:40.538Z",
+    "own": "2026-10-25T22:25:24.000Z",
+    "why": "@rotowirenba.bsky.social: Oso Ighodaro: Doubtful for Monday \n\n https://www.rotow"
+   }
+  },
+  "401909874|najimarshall|out": {
+   "game": "401909874",
+   "start": "2026-10-27T00:30Z",
+   "team": "10",
+   "name": "Naji Marshall",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-10-26T05:03:40.538Z",
+    "own": "2026-10-25T20:25:50.000Z",
+    "why": "@rotowirenba.bsky.social: Naji Marshall: Out for Monday \n\n https://www.rotowire."
+   }
+  },
+  "401909874|ajdybantsa|out": {
+   "game": "401909874",
+   "start": "2026-10-27T00:30Z",
+   "team": "10",
+   "name": "AJ Dybantsa",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-10-26T05:03:40.538Z",
+    "own": "2026-10-25T20:52:44.000Z",
+    "why": "@rotowirenba.bsky.social: AJ Dybantsa: Ruled out for Monday \n\n https://www.rotow"
+   }
+  },
+  "401909874|osoighodaro|out": {
+   "game": "401909874",
+   "start": "2026-10-27T00:30Z",
+   "team": "10",
+   "name": "Oso Ighodaro",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-10-26T05:03:40.538Z",
+    "own": "2026-10-25T22:25:24.000Z",
+    "why": "@rotowirenba.bsky.social: Oso Ighodaro: Doubtful for Monday \n\n https://www.rotow"
+   }
+  },
+  "401909875|najimarshall|out": {
+   "game": "401909875",
+   "start": "2026-10-27T01:00Z",
+   "team": "26",
+   "name": "Naji Marshall",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-10-26T05:03:40.538Z",
+    "own": "2026-10-25T20:25:50.000Z",
+    "why": "@rotowirenba.bsky.social: Naji Marshall: Out for Monday \n\n https://www.rotowire."
+   }
+  },
+  "401909875|ajdybantsa|out": {
+   "game": "401909875",
+   "start": "2026-10-27T01:00Z",
+   "team": "26",
+   "name": "AJ Dybantsa",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-10-26T05:03:40.538Z",
+    "own": "2026-10-25T20:52:44.000Z",
+    "why": "@rotowirenba.bsky.social: AJ Dybantsa: Ruled out for Monday \n\n https://www.rotow"
+   }
+  },
+  "401909875|osoighodaro|out": {
+   "game": "401909875",
+   "start": "2026-10-27T01:00Z",
+   "team": "26",
+   "name": "Oso Ighodaro",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-10-26T05:03:40.538Z",
+    "own": "2026-10-25T22:25:24.000Z",
+    "why": "@rotowirenba.bsky.social: Oso Ighodaro: Doubtful for Monday \n\n https://www.rotow"
+   }
+  },
+  "401909876|najimarshall|out": {
+   "game": "401909876",
+   "start": "2026-10-27T02:00Z",
+   "team": "7",
+   "name": "Naji Marshall",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-10-26T05:03:40.538Z",
+    "own": "2026-10-25T20:25:50.000Z",
+    "why": "@rotowirenba.bsky.social: Naji Marshall: Out for Monday \n\n https://www.rotowire."
+   }
+  },
+  "401909876|ajdybantsa|out": {
+   "game": "401909876",
+   "start": "2026-10-27T02:00Z",
+   "team": "7",
+   "name": "AJ Dybantsa",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-10-26T05:03:40.538Z",
+    "own": "2026-10-25T20:52:44.000Z",
+    "why": "@rotowirenba.bsky.social: AJ Dybantsa: Ruled out for Monday \n\n https://www.rotow"
+   }
+  },
+  "401909876|osoighodaro|out": {
+   "game": "401909876",
+   "start": "2026-10-27T02:00Z",
+   "team": "7",
+   "name": "Oso Ighodaro",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-10-26T05:03:40.538Z",
+    "own": "2026-10-25T22:25:24.000Z",
+    "why": "@rotowirenba.bsky.social: Oso Ighodaro: Doubtful for Monday \n\n https://www.rotow"
+   }
+  },
+  "401909876|cameronjohnson|out": {
+   "game": "401909876",
+   "start": "2026-10-27T02:00Z",
+   "team": "7",
+   "name": "Cameron Johnson",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-10-26T05:03:40.538Z",
+    "own": "2026-10-25T22:41:19.000Z",
+    "why": "@rotowirenba.bsky.social: Cameron Johnson: Doubtful for Monday \n\n https://www.ro"
    }
   }
  }
