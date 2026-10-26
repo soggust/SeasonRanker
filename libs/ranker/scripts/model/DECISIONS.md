@@ -1532,3 +1532,10 @@ Resolved 2026-10-18:
 - **Measured:** prereg `d96-nhl-like-step`, registered after its one measurement (said there; nothing else tried). Replay -17.29u -> -11.11u on the same 3803 bets, LIKE -43.07u -> -36.89u; gate TIES, SHIP. Small and inside the noise: a soft shrink (the owner's soft terms), not a found edge.
 - **Code:** trusted.mjs TRIAL; gate.mjs GATE_WF_FORCEFROM (measuring only). Tests: `tests/model-decisions.test.mjs` D95 (3), `tests/model-trial.test.mjs`.
 - **Never:** an older search's settings put live because their record looked better; only a head to head walk-forward and the gate choose.
+
+### D97. How much of each record is luck (luck.mjs; the owner, 2026-10-26: "is there a way to simulate games to test our algo for future")
+
+- **What:** luck.mjs replays each sport's replayed bets 10,000 times at their own stakes and odds: won at the Book's fair chance (no skill: the luck band), at the Bot's own chance (its claim), and at the fair chance plus 1, 2, 3, 5 points (planted edges: the power, and the bets an edge needs for 80% power). Measuring only; nothing priced moves.
+- **Read (2026-10-26, the dump before the bands' stakes):** no-skill 90% bands NBA -322u to -107u (the record beats all 10,000), NHL -158u to -13u, NFL -110u to -5u, MLB -43u to +41u. Bets for 80% power: +1pt about 16,000, +2pt about 4,000, +3pt about 1,800, +5pt about 650 in every sport. The Bot's chances promise NBA +88u against +82u made (calibrated); NHL +34u against -33u, NFL +23u against -24u, MLB +10u against -6u (overconfident: their trust's shrink is the lever).
+- **Fix found on the way:** the canaries' replays (the planted leak) overwrote REPLAY_DUMP's bets; canary.mjs now runs them with it off.
+- **Code:** luck.mjs, canary.mjs. Tests: `tests/model-luck.test.mjs`.

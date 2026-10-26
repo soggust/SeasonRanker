@@ -226,7 +226,17 @@ export function nullTests(V, run, rows, base, { draws = 20, seed = 11, rules = N
 // The whole set for one sport: run(rowsCopy, V?) replays with the gate's own arguments
 export function canaries(V, sport, args, base, { dir, draws = Number(process.env.GATE_CANARY_DRAWS ?? 20), log = console.log } = {}) {
   const [, , rows, opts] = args;
-  const run = (r, v = V) => withEnv(v.__env, () => v.replay.replayRecord(v, sport, r, opts));
+  // (REPLAY_DUMP off inside: a canary's replay (the planted leak's results in the chance) never overwrites the real
+  // replay's scratch dump: 2026-10-26's luck.mjs read the leak's 83-98% winners as the record's bets)
+  const run = (r, v = V) => {
+    const dump = process.env.REPLAY_DUMP;
+    delete process.env.REPLAY_DUMP;
+    try {
+      return withEnv(v.__env, () => v.replay.replayRecord(v, sport, r, opts));
+    } finally {
+      if (dump !== undefined) process.env.REPLAY_DUMP = dump;
+    }
+  };
   const t0 = Date.now();
   const res = { sport, at: new Date().toISOString(), draws };
   res.timeTravel = timeTravel(run, rows, base);
