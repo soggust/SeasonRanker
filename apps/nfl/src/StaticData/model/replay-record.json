@@ -1,8 +1,8 @@
 {
  "v": 1,
  "sport": "nfl",
- "epoch": "2026-10-26T15:00:00Z",
- "at": "2026-10-26T14:44:34.591Z",
+ "epoch": "2026-10-23T05:30:00Z",
+ "at": "2026-10-26T12:41:52.410Z",
  "from": "2020-09-11T00:20:00.000Z",
  "through": "2026-10-19T00:23:00.000Z",
  "n": {
@@ -2633,24 +2633,24 @@
    }
   }
  },
- "commit": "1f128ae3",
+ "commit": "d0fed0f9",
  "note": "D94. MMA counter-strikers against pressure fighters, MMA's prop markets, and the NFL's unused Next Gen Stats (the owner's 2026-10-26 list): measured, none holds, nothing priced moves",
  "inputs": {
   "v": 1,
   "sport": "nfl",
   "code": {
-   "props": "8cbb07134ab6",
-   "games": "47aceba7d839",
-   "pricing": "1089166cdb4d",
-   "record": "f1439ac141ac",
-   "harness": "99be5d613444",
+   "props": "3bbb5d9de253",
+   "games": "31d8991c8861",
+   "pricing": "8b18def0cac2",
+   "record": "145e98a20fdf",
+   "harness": "f53c71c482f0",
    "residual": "68fc3e576029597d",
    "tuned": "75ba5ef16d4ef1db"
   },
   "fit": {
    "wf": true,
-   "code": "0f797cd5d6f3e95e",
-   "expected": "0f797cd5d6f3e95e",
+   "code": "9c01ab04432b0030",
+   "expected": "9c01ab04432b0030",
    "seasons": [
     "2023:130711",
     "2024:150305",
@@ -2808,6 +2808,6 @@
     "want": 55
    }
   },
-  "hash": "36d0385732da68bb"
+  "hash": "1282e64443f406bf"
  }
 }

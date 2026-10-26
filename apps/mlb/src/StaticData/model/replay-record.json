@@ -1,8 +1,8 @@
 {
  "v": 1,
  "sport": "mlb",
- "epoch": "2026-10-26T15:00:00Z",
- "at": "2026-10-26T11:03:05.129Z",
+ "epoch": "2026-10-23T05:30:00Z",
+ "at": "2026-10-26T17:41:58.378Z",
  "from": "2021-07-18T17:11:00.000Z",
  "through": "2026-10-16T00:00:00.000Z",
  "n": {
@@ -26,30 +26,30 @@
   "fairProfit": 0.533
  },
  "practice": {
-  "bets": 9132,
-  "won": 4956,
-  "lost": 4173,
+  "bets": 8590,
+  "won": 4629,
+  "lost": 3958,
   "push": 3,
-  "staked": 4566,
-  "profit": -178.95,
-  "roi": -0.0392,
+  "staked": 4295,
+  "profit": -178.98,
+  "roi": -0.0417,
   "beat": null,
   "beatN": 0,
   "clv": null,
-  "fairProfit": 131.7028
+  "fairProfit": 107.184
  },
  "pass": {
-  "bets": 335168,
-  "won": 172206,
-  "lost": 162373,
+  "bets": 329933,
+  "won": 169757,
+  "lost": 159587,
   "push": 589,
-  "staked": 335168,
-  "profit": -17853.91,
-  "roi": -0.0533,
+  "staked": 329933,
+  "profit": -17302.18,
+  "roi": -0.0524,
   "beat": null,
   "beatN": 0,
   "clv": null,
-  "fairProfit": 3452.0068
+  "fairProfit": 3676.8256
  },
  "byBand": {
   "lock": {
@@ -244,17 +244,17 @@
    "clv": -0.0203,
    "fairProfit": 5.2252,
    "practice": {
-    "bets": 1725,
-    "won": 894,
-    "lost": 831,
+    "bets": 1680,
+    "won": 868,
+    "lost": 812,
     "push": 0,
-    "staked": 862.5,
-    "profit": -36.71,
-    "roi": -0.0426,
+    "staked": 840,
+    "profit": -33.4,
+    "roi": -0.0398,
     "beat": null,
     "beatN": 0,
     "clv": null,
-    "fairProfit": 20.3055
+    "fairProfit": 22.0266
    },
    "lines": {
     "bets": 158,
@@ -298,17 +298,17 @@
    "clv": -0.0251,
    "fairProfit": 3.1264,
    "practice": {
-    "bets": 2383,
-    "won": 1249,
-    "lost": 1134,
+    "bets": 2161,
+    "won": 1142,
+    "lost": 1019,
     "push": 0,
-    "staked": 1191.5,
-    "profit": -47.02,
-    "roi": -0.0395,
+    "staked": 1080.5,
+    "profit": -40.44,
+    "roi": -0.0374,
     "beat": null,
     "beatN": 0,
     "clv": null,
-    "fairProfit": 37.2086
+    "fairProfit": 35.4691
    },
    "lines": {
     "bets": 54,
@@ -352,17 +352,17 @@
    "clv": -0.0268,
    "fairProfit": -1.1022,
    "practice": {
-    "bets": 2388,
-    "won": 1332,
-    "lost": 1056,
+    "bets": 2168,
+    "won": 1164,
+    "lost": 1004,
     "push": 0,
-    "staked": 1194,
-    "profit": -18.2,
-    "roi": -0.0152,
+    "staked": 1084,
+    "profit": -45.99,
+    "roi": -0.0424,
     "beat": null,
     "beatN": 0,
     "clv": null,
-    "fairProfit": 72.5149
+    "fairProfit": 31.9651
    },
    "lines": {
     "bets": 114,
@@ -652,17 +652,17 @@
     "fairProfit": 5.2252
    },
    "practice": {
-    "bets": 1725,
-    "won": 894,
-    "lost": 831,
+    "bets": 1680,
+    "won": 868,
+    "lost": 812,
     "push": 0,
-    "staked": 862.5,
-    "profit": -36.71,
-    "roi": -0.0426,
+    "staked": 840,
+    "profit": -33.4,
+    "roi": -0.0398,
     "beat": null,
     "beatN": 0,
     "clv": null,
-    "fairProfit": 20.3055
+    "fairProfit": 22.0266
    },
    "byBand": {
     "lock": {
@@ -747,17 +747,17 @@
     "fairProfit": 3.1264
    },
    "practice": {
-    "bets": 2383,
-    "won": 1249,
-    "lost": 1134,
+    "bets": 2161,
+    "won": 1142,
+    "lost": 1019,
     "push": 0,
-    "staked": 1191.5,
-    "profit": -47.02,
-    "roi": -0.0395,
+    "staked": 1080.5,
+    "profit": -40.44,
+    "roi": -0.0374,
     "beat": null,
     "beatN": 0,
     "clv": null,
-    "fairProfit": 37.2086
+    "fairProfit": 35.4691
    },
    "byBand": {
     "lock": {
@@ -842,17 +842,17 @@
     "fairProfit": -1.1022
    },
    "practice": {
-    "bets": 2388,
-    "won": 1332,
-    "lost": 1056,
+    "bets": 2168,
+    "won": 1164,
+    "lost": 1004,
     "push": 0,
-    "staked": 1194,
-    "profit": -18.2,
-    "roi": -0.0152,
+    "staked": 1084,
+    "profit": -45.99,
+    "roi": -0.0424,
     "beat": null,
     "beatN": 0,
     "clv": null,
-    "fairProfit": 72.5149
+    "fairProfit": 31.9651
    },
    "byBand": {
     "lock": {
@@ -2610,24 +2610,24 @@
    }
   }
  },
- "commit": "1f128ae3",
+ "commit": "d0fed0f9",
  "note": "D94. MMA counter-strikers against pressure fighters, MMA's prop markets, and the NFL's unused Next Gen Stats (the owner's 2026-10-26 list): measured, none holds, nothing priced moves",
  "inputs": {
   "v": 1,
   "sport": "mlb",
   "code": {
-   "props": "8cbb07134ab6",
-   "games": "47aceba7d839",
-   "pricing": "1089166cdb4d",
-   "record": "f1439ac141ac",
-   "harness": "99be5d613444",
+   "props": "3bbb5d9de253",
+   "games": "31d8991c8861",
+   "pricing": "8b18def0cac2",
+   "record": "145e98a20fdf",
+   "harness": "f53c71c482f0",
    "residual": "a74f3756dba2b0cf",
    "tuned": "75ba5ef16d4ef1db"
   },
   "fit": {
    "wf": true,
-   "code": "0f797cd5d6f3e95e",
-   "expected": "0f797cd5d6f3e95e",
+   "code": "9c01ab04432b0030",
+   "expected": "9c01ab04432b0030",
    "seasons": [
     "2023:53081",
     "2024:106845",
@@ -2676,7 +2676,7 @@
     "2024-05-25",
     "2026-08-09"
    ],
-   "planted": 9902.87
+   "planted": 9894.18
   },
   "frozen": {
    "props": {
@@ -2692,6 +2692,6 @@
     "want": 29
    }
   },
-  "hash": "0503e2bfa94039c5"
+  "hash": "c80ff314b76d20a3"
  }
 }
