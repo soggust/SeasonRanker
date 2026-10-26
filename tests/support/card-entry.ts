@@ -11,6 +11,7 @@ export { ownLogo } from '@ranker/engine/game-view/espn-summary';
 export { teamLook, sideColors } from '@ranker/engine/team-look';
 export { distance, TOO_CLOSE } from '@ranker/engine/colors';
 export { videoPlay, youtubeWatch, youtubeThumb } from '@ranker/engine/game-view/highlights';
+export { loadOfficials } from '@ranker/engine/game-view/officials';
 export * as vsPosition from '@sport/vs-position';
 export { expandFieldMaps, fieldMapView, fieldMapEntry, kickMisses, tone, spread, PASS_FIELD } from '@ranker/engine/player-card/field-map';
 export { sidelined, slotLineup, sideLineup, sideFormation } from '@ranker/engine/player-card/depth-lineup';

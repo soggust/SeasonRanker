@@ -121,13 +121,40 @@ export const tickerAria = (away: { label: string }, home: { label: string }): st
 // (a game view's market columns: only the markets with a price posted, in the board's order; a fight with round
 // totals but no spread shows Total and Moneyline, no empty Spread column: the owner's note, 2026-10-17)
 type Side = { odds: number | null } | null | undefined;
-export function boardColumns(b: { spread: { away: Side; home: Side } | null; total: { over: Side; under: Side } | null; ml: { away: Side; home: Side } | null }): ('spread' | 'total' | 'ml')[] {
+// (a fight's: the moneyline first, then the rounds, as other books list a bout (the owner, 2026-10-26: "swap the
+// Rounds and ML to match other books"); the sport left out, the board's order)
+export function boardColumns(b: { spread: { away: Side; home: Side } | null; total: { over: Side; under: Side } | null; ml: { away: Side; home: Side } | null }, sport?: string): ('spread' | 'total' | 'ml')[] {
   const priced = (...s: Side[]): boolean => s.some((x) => x?.odds != null);
   const cols: ('spread' | 'total' | 'ml')[] = [];
   if (b.spread && priced(b.spread.away, b.spread.home)) cols.push('spread');
   if (b.total && priced(b.total.over, b.total.under)) cols.push('total');
   if (b.ml && priced(b.ml.away, b.ml.home)) cols.push('ml');
-  return cols;
+  return sport === 'mma' ? cols.sort((x, y) => MMA_MARKETS.indexOf(x) - MMA_MARKETS.indexOf(y)) : cols;
+}
+const MMA_MARKETS = ['ml', 'total', 'spread'];
+
+// (a game bet's place in a list of a game's bets (the Algorithm tab's game section): the total, the moneyline, the
+// spread; a fight's moneyline before its rounds (the owner, 2026-10-26))
+export function marketRank(sport: string, market: string): number {
+  const order = sport === 'mma' ? MMA_MARKETS : ['total', 'ml', 'spread'];
+  const i = order.indexOf(market);
+  return i < 0 ? 9 : i;
+}
+
+// (a prop row's Kelly score: its best side's, the K on its tiles; none priced, null)
+export function propKelly(r: { sides: readonly { kelly: number | null }[] }): number | null {
+  const ks = r.sides.map((s) => s.kelly).filter((k): k is number => k !== null && Number.isFinite(k));
+  return ks.length ? Math.max(...ks) : null;
+}
+
+// (the props by Kelly score, the highest first (the owner, 2026-10-26: "sort player props by highest K score"), a
+// row with no K score after the rest; ties keep the order they came in. A new list)
+export function byPropKelly<T extends { sides: readonly { kelly: number | null }[] }>(rows: readonly T[]): T[] {
+  const k = rows.map((r) => propKelly(r));
+  return rows
+    .map((_, i) => i)
+    .sort((a, b) => (k[a] === null ? 1 : 0) - (k[b] === null ? 1 : 0) || (k[b] ?? 0) - (k[a] ?? 0) || a - b)
+    .map((i) => rows[i]);
 }
 
 // (a total's tile words: "O 47.5"; a fight's round total "Over 2.5", its rounds in the column's head (Rounds), the

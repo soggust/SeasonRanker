@@ -37,6 +37,7 @@ import { BookAboutComponent } from './book/book-about.component';
 import { ModelDeskComponent } from './book/model-desk.component';
 import { DeskNoteComponent } from './book/desk-note.component';
 import { LiveTabComponent } from './book/live-tab.component';
+import { FightViewComponent } from './book/fight-view.component';
 import { ACCOUNT_COMPONENTS } from './account/account-components';
 import { SplashGalleryHost } from './player-card/splash/splash-gallery-host.component';
 
@@ -68,6 +69,7 @@ import { SplashGalleryHost } from './player-card/splash/splash-gallery-host.comp
     ModelDeskComponent,
     DeskNoteComponent,
     LiveTabComponent,
+    FightViewComponent,
     ...ACCOUNT_COMPONENTS,
   ],
   bootstrap: [AppComponent],

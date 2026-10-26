@@ -18,6 +18,9 @@ import { SPORTS } from './desk-math';
 import { insteadText } from '../player-card/analysis';
 import { TickerSide, TickerTarget, americanOdds, compactRecord, recordTip, headshot, leagueLogo, tickerAria, tickerSide, tickerTarget } from './bet-format';
 import { GameViewService } from '../game-view/game-view.service';
+import { FightViewService } from './fight-view.service';
+import { tickerFight } from './fight-view';
+import type { LiveBout } from './live-mma';
 import { BetWhy, BetWhyRow, Confidence, PRACTICE_UNITS, PriceAt, WhatIfBase, betScoreText, betWhy, clearedKellyOf, edgeLine, flipLine, priceAt, signedPoints, stepPrice, whatIfCaption, whatIfOf } from './bet-why';
 import { BET_KINDS, BandTally, BetKind, BetRow, ByLevel, GameInfo, Picks, bookRows, dropSportRows, fileRows, mergeSportRows, playerCardHref, playerRefOf, rowClickToggles, sportRows, starOutText, sumRecords } from './book-rows';
 // (the rows' types, for the page's other parts: book-rows.ts)
@@ -107,6 +110,9 @@ interface TickerItem {
   // (what a click opens: tickerTarget; and its words, "Open Lions at Packers")
   target: TickerTarget;
   aria: string;
+  // (the word between the two sides: a game's "@", a fight's "vs.", a finished one's "def." with the winner first:
+  // fight-view.ts tickerFight, the owner 2026-10-26)
+  sep: string;
 }
 
 // (a lines-only game's key in the dropdown: its sport, matchup and ESPN event, "mlb|CLE @ TB|401700123")
@@ -448,19 +454,31 @@ export class BookPageComponent implements OnInit, OnDestroy {
     if (this.tickerFor?.boards !== boards || this.tickerFor.sport !== sport) {
       const order = { post: 0, in: 1, pre: 2 };
       const games = [...boards.values()].filter((g) => g.away.abbr && g.home.abbr && (!sport || g.sport === sport)).sort((a, b) => order[a.state] - order[b.state] || a.start.localeCompare(b.start));
-      const items = games.slice(0, 30).map((g): TickerItem => ({
-        key: `${g.sport}|${g.event}`,
-        away: tickerSide(g.sport, g.away),
-        home: tickerSide(g.sport, g.home),
-        awayScore: g.state === 'pre' ? null : g.away.score,
-        homeScore: g.state === 'pre' ? null : g.home.score,
-        state: g.state,
-        // (a final as ESPN says it, "FINAL" or "FINAL/OT"; a game under way its clock, "4:12 - 3RD")
-        text: g.state === 'pre' ? null : (g.detail || (g.state === 'post' ? 'Final' : 'Live')).toUpperCase(),
-        start: g.start,
-        target: tickerTarget(g),
-        aria: tickerAria(tickerSide(g.sport, g.away), tickerSide(g.sport, g.home)),
-      }));
+      const items = games.slice(0, 30).map((g): TickerItem => {
+        // (a fight: the first-listed fighter first and "vs.", a finished one its winner first, "def.", and how and
+        // when it ended, "KO R1 2:05" (fight-view.ts tickerFight; the owner, 2026-10-26: "started" and "@" before))
+        const fight = tickerFight(g as GameBoard & { fight?: LiveBout['fight'] });
+        if (fight) {
+          const [a, b] = fight.first === 'home' ? [g.home, g.away] : [g.away, g.home];
+          const first = tickerSide(g.sport, a);
+          const second = tickerSide(g.sport, b);
+          return { key: `${g.sport}|${g.event}`, away: first, home: second, awayScore: null, homeScore: null, state: g.state, text: fight.text, start: g.start, target: tickerTarget(g), aria: `Open ${first.label} ${fight.sep} ${second.label}${fight.text ? `, ${fight.text}` : ''}`, sep: fight.sep };
+        }
+        return {
+          key: `${g.sport}|${g.event}`,
+          away: tickerSide(g.sport, g.away),
+          home: tickerSide(g.sport, g.home),
+          awayScore: g.state === 'pre' ? null : g.away.score,
+          homeScore: g.state === 'pre' ? null : g.home.score,
+          state: g.state,
+          // (a final as ESPN says it, "FINAL" or "FINAL/OT"; a game under way its clock, "4:12 - 3RD")
+          text: g.state === 'pre' ? null : (g.detail || (g.state === 'post' ? 'Final' : 'Live')).toUpperCase(),
+          start: g.start,
+          target: tickerTarget(g),
+          aria: tickerAria(tickerSide(g.sport, g.away), tickerSide(g.sport, g.home)),
+          sep: '@',
+        };
+      });
       this.tickerFor = { boards, sport, items };
     }
     return this.tickerFor.items;
@@ -575,12 +593,18 @@ export class BookPageComponent implements OnInit, OnDestroy {
       void this.gameView.open({ event: to.event }, to.tab, to.league);
       return;
     }
-    this.view = 'bets';
+    // (a bout begun or over, or one the dropdown hasn't: its fight view, the result and the Bot's prices on it
+    // (fight-view.service.ts; the owner, 2026-10-26))
     const games = this.menu().games;
     const key = to.keys.find((k) => games.has(k));
-    if (key) this.chooseGame(key);
-    else this.chooseSport('mma');
+    if (t.state !== 'pre' || !key) {
+      this.fightView.open({ event: t.key.split('|')[1], start: t.start });
+      return;
+    }
+    this.view = 'bets';
+    this.chooseGame(key);
   }
+  readonly fightView = inject(FightViewService);
 
   // (a ticker logo ESPN hasn't: the dark one falls back to the plain one, then the side's words take its place)
   tickImgError(event: Event, side: TickerTeam): void {

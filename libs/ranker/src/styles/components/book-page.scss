@@ -2272,6 +2272,11 @@ mat-icon.gloves {
     color: v.$text-faint;
     font-size: v.$fs-10;
     margin: 0 -2px;
+
+    // (a fight's "vs." or "def.": a word, not a sign, so it keeps its own space; the owner, 2026-10-26)
+    &.tick-vs {
+      margin: 0;
+    }
   }
 
   .tick-team {

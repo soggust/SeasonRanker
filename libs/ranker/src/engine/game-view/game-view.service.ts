@@ -5,6 +5,7 @@ import { TeamResult, findGame, findGameOn, nthMeeting, teamResults } from './fin
 import { loadGame } from './game';
 import { GameVideo, GameView } from './game.model';
 import { loadHighlights } from './highlights';
+import { loadOfficials } from './officials';
 import { GameWeather, loadWeather, venuePhoto } from './venue';
 
 // Which game to open: ESPN's id (a game log's row), a date and a team in it (a row without one), or a
@@ -121,6 +122,13 @@ export class GameViewService {
         const venue = game.venue;
         venuePhoto(venue.name, venue.city)
           .then((photo) => ticket === this.opened && photo && (venue.image = photo))
+          .catch(() => null);
+      }
+      // (no officials in ESPN's summary, a game to come's: MLB's umpires from its own stats API, posted the day
+      // of; officials.ts. 2026-10-26)
+      if (!game.officials.length) {
+        loadOfficials(game)
+          .then((officials) => ticket === this.opened && officials.length && (game.officials = officials))
           .catch(() => null);
       }
       loadHighlights(game)
@@ -243,6 +251,8 @@ export class GameViewService {
       const old = this.game;
       // (the venue's photo found since: kept)
       if (old && old !== 'loading' && old !== 'error' && fresh.venue && old.venue?.image && !fresh.venue.image) fresh.venue.image = old.venue.image;
+      // (and the officials found since, until ESPN lists them: 2026-10-26)
+      if (old && old !== 'loading' && old !== 'error' && !fresh.officials.length && old.officials.length) fresh.officials = old.officials;
       this.game = fresh;
       if (fresh.state !== 'in') this.stopLive();
     } catch {

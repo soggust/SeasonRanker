@@ -270,7 +270,7 @@ test('a side watched: covering, down, level; the sweat summary and the panel’s
 
 // A UFC card: ESPN's MMA scoreboard is one event with the bouts as its competitions (live-mma.ts), each bout a
 // board of its own by the competition's id, in mixed states (support/espn-mma-scoreboard.json)
-const { mmaBouts, fightWords, fightWatch, fightRounds, fightMethod, tonightBouts, livePool } = live;
+const { mmaBouts, fightWords, fightWatch, fightRounds, fightMethod, tonightBouts, livePool, boutResult } = live;
 const CARD = JSON.parse(fs.readFileSync(path.join(import.meta.dirname, 'support', 'espn-mma-scoreboard.json'), 'utf8'));
 
 test('a UFC card read into its bouts: fighters, headshots, states, the board lending matchup and start', () => {
@@ -342,4 +342,22 @@ test('a bet on a bout watched: moneyline live and final, round totals decided as
   assert.equal(fightWatch(total('over'), ko, NOW).status, 'LOST');
   assert.equal(fightWatch(total('over'), sub, NOW).status, 'WON');
   assert.equal(fightWatch(total('over'), dec, NOW).status, 'WON');
+});
+
+// A bet's result off its bout before the desk grades it (live-mma.ts boutResult, the owner 2026-10-26: the card's
+// Practice and PASS rows empty until the run graded it): the winner for a moneyline, the rounds gone for a total, the
+// bout turned round to the bet's own fighters by their ids
+test('boutResult: a moneyline by the winner, a total by the rounds gone, oriented by the fighters', () => {
+  const [sub, ko, dec, on, next] = mmaBouts(CARD);
+  const [awayId, homeId] = sub.fight.ids;
+  assert.equal(boutResult({ market: 'ml', side: 'away' }, sub), 'won');
+  assert.equal(boutResult({ market: 'ml', side: 'home' }, sub), 'lost');
+  // (the bet's fighters the other way round: its home is ESPN's away)
+  assert.equal(boutResult({ market: 'ml', side: 'home', fighters: { home: { id: awayId }, away: { id: homeId } } }, sub), 'won');
+  assert.equal(boutResult({ market: 'ml', side: 'home' }, on), null);
+  assert.equal(boutResult({ market: 'ml', side: 'home' }, next), null);
+  assert.equal(boutResult({ market: 'total', side: 'under', line: 2.5 }, ko), 'won');
+  assert.equal(boutResult({ market: 'total', side: 'over', line: 2.5 }, dec), 'won');
+  assert.equal(boutResult({ market: 'total', side: 'over', line: 1.5 }, on), 'won');
+  assert.equal(boutResult({ market: 'total', side: 'over', line: 2.5 }, on), null);
 });

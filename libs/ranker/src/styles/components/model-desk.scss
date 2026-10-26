@@ -1406,6 +1406,25 @@ mat-icon.desk-gloves {
       }
     }
 
+    // (a bet's game, a button: its modal, a bout's fight view (the owner, 2026-10-26); lighter on hover, never gold)
+    .desk-history-open {
+      background: none;
+      border: 0;
+      color: inherit;
+      cursor: pointer;
+      font: inherit;
+      padding: 0;
+      text-decoration: underline dotted transparent;
+      text-underline-offset: 2px;
+      transition: color v.$t-hover ease, text-decoration-color v.$t-hover ease;
+
+      &:hover,
+      &:focus-visible {
+        color: #fff;
+        text-decoration-color: currentColor;
+      }
+    }
+
     .desk-history-replay {
       opacity: 0.8;
     }

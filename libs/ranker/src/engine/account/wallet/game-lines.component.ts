@@ -1,7 +1,7 @@
 import { Component, EventEmitter, Input, OnDestroy, OnInit, Output, computed, signal } from '@angular/core';
 import { Confidence, tierOf } from '../../book/tiers';
 import { betScoreText, confidenceOf, kellyOf } from '../../book/bet-why';
-import { boardColumns, headshot, hideImage, teamLogo, totalTop } from '../../book/bet-format';
+import { boardColumns, byPropKelly, headshot, hideImage, teamLogo, totalTop } from '../../book/bet-format';
 import { pickTeamColor } from '../../book/pick-style';
 import { BoardBand, BoardGame, BoardProp, BoardSide, LinesService, PreviewRow } from './lines.service';
 import { PREVIEW_ODDS, PROPS_WINDOW_HOURS, movementText } from './preview-props';
@@ -270,8 +270,9 @@ export class GameLinesComponent implements OnInit, OnDestroy {
   // (the game on the bot's betting board: gone once it starts)
   readonly model = computed<BoardGame | undefined>(() => this.lines.modelGame(this.sport, this.event));
 
-  // Every prop on the board, a team's together and a player's together: the board's, and the bot's picks it
-  // doesn't have (a game begun: its picks alone)
+  // Every prop on the board, the highest Kelly score first (bet-format.ts byPropKelly; the owner, 2026-10-26: "sort
+  // player props by highest K score"), a tie a team's together and a player's together: the board's, and the bot's
+  // picks it doesn't have (a game begun: its picks alone)
   readonly propRows = computed<PropRow[]>(() => {
     const g = this.model();
     const picks = this.botPicks().filter((p) => p.betType === 'player' && Number.isFinite(p.price) && p.line !== null && p.line !== undefined);
@@ -284,8 +285,9 @@ export class GameLinesComponent implements OnInit, OnDestroy {
     }
     const order = (t: string) => (g && t === String(g.a[1]) ? 0 : g && t === String(g.h[1]) ? 1 : 2);
     rows.sort((a, b) => order(a.team) - order(b.team) || a.player.localeCompare(b.player) || a.label.localeCompare(b.label));
-    rows.forEach((r, i) => (r.first = i === 0 || rows[i - 1].athlete !== r.athlete || rows[i - 1].team !== r.team));
-    return rows;
+    const sorted = byPropKelly(rows);
+    sorted.forEach((r, i) => (r.first = i === 0 || sorted[i - 1].athlete !== r.athlete || sorted[i - 1].team !== r.team));
+    return sorted;
   });
 
   // (the props by team: the away team's, then the home team's, then any whose team isn't known)

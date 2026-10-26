@@ -1,6 +1,7 @@
-import { Component, ElementRef, HostListener, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { Component, ElementRef, HostListener, OnDestroy, OnInit, ViewChild, inject } from '@angular/core';
 import { fetchJson } from '@ranker/core/http';
-import { americanOdds, compactCount, deskLeagueLogo, recordTip, fightPick, fightSides, headshot, hideImage, pct, teamLogo, units } from './bet-format';
+import { FightViewService } from './fight-view.service';
+import { americanOdds, compactCount, deskLeagueLogo, recordTip, fightPick, fightSides, headshot, hideImage, marketRank, pct, teamLogo, units } from './bet-format';
 import { darkLogoOf } from '../team-look';
 import { matchupName } from './game-menu';
 import { BetGroup, SportGroup, TableSorts, betValue, byGame, gamesBySport } from './desk-columns';
@@ -9,6 +10,7 @@ import { BotHistory, HISTORY_RANGES, HistoryRange, HistoryRow, ReplayRecordFile,
 import { DeskPanel, FindingsFile, findingsOf, ESPN_LEAGUES, SPORTS, deskPanelOpen, UNIT_WORDS, DeskEpoch, epochFor, epochShared, countNowOf, deskEpochOf, edgeColorOf, epochLabel, isTracked, meterOf, propState, provisional, sideTextOf, sideTitleOf, splitOpenOf, toWin } from './desk-math';
 import { Board, Meter, ModelBet, ModelState, Settled } from './desk-model';
 import { SummaryBox, athleteTeam, liveStat } from './live-props';
+import { EspnMmaScoreboard, LiveBout, boutResult, fightWords, mmaBouts } from './live-mma';
 import { pickTeamColor, splitPick } from './pick-style';
 import type { PlayerRef } from '../player-link';
 import { RecordHistoryFile, RecordTrend, recordTrendOf, trendUnits } from './record-trend';
@@ -67,8 +69,7 @@ interface DeskSection {
   team: string;
   bets: ModelBet[];
 }
-// (the game bets' order: the total, the moneyline, the spread)
-const MARKET_ORDER: Record<string, number> = { total: 0, ml: 1, spread: 2 };
+// (the game bets' order: bet-format.ts marketRank, the total, the moneyline, the spread; a fight's moneyline first)
 
 @Component({
   selector: 'model-desk',
@@ -253,6 +254,9 @@ export class ModelDeskComponent implements OnInit, OnDestroy {
   private boards = new Map<string, Board>();
   // (each final game's end, by its ESPN id (replay-history.ts finalAtOf), and the sports with a bet pending on one)
   private finals = new Map<string, string>();
+  // (each bout read off ESPN's MMA scoreboard, by its competition's id (the bets' event): a card's bets pending off it,
+  // the owner 2026-10-26)
+  private bouts = new Map<string, LiveBout>();
   private pendingSports = new Set<string>();
   private scoreTimer?: ReturnType<typeof setInterval>;
   private closed = false;
@@ -406,7 +410,7 @@ export class ModelDeskComponent implements OnInit, OnDestroy {
   // ESPN hasn't begun or has put off), and the ones under way: In Play while their game runs (one that's over
   // goes to Recently closed, pending, till the run grades it: desk-math.ts splitOpenOf)
   private splitOpen(now: number): void {
-    ({ open: this.open, live: this.live } = splitOpenOf(this.bets, now, (b) => this.boardOf(b)));
+    ({ open: this.open, live: this.live } = splitOpenOf(this.bets, now, (b) => (b.event ? this.boards.get(b.event) : undefined)));
   }
 
   // (a closed bet's band, for its colour: the Book's tier names; a practice pick its own)
@@ -420,10 +424,13 @@ export class ModelDeskComponent implements OnInit, OnDestroy {
   // its box score read for every prop on it
   private async loadScores(): Promise<void> {
     const live = this.bets.filter((b) => b.status === 'open' && Date.parse(b.start) <= Date.now());
+    // (with them the tracked rows begun in the last four days, so the Practice and PASS rows count a game the run
+    // hasn't graded yet (the owner, 2026-10-26: a UFC card's tracked rows showed nothing for days): their slates read too)
+    const tracked = this.allLedgerBets.filter((b) => isTracked(b) && b.status === 'open' && Date.parse(b.start) <= Date.now() && Date.now() - Date.parse(b.start) < 4 * 864e5);
     // (by each game's own day, ESPN's Eastern one: last night's late game is gone from today's default slate,
     // and would sit In Play until graded)
     const dayOf = (iso: string) => new Date(iso).toLocaleDateString('en-CA', { timeZone: 'America/New_York' }).replace(/-/g, '');
-    const slates = new Set(live.map((b) => `${b.sport}|${dayOf(b.start)}`));
+    const slates = new Set([...live, ...tracked].map((b) => `${b.sport}|${dayOf(b.start)}`));
     // (every slate asked at once, then read in order)
     const boards = await Promise.all(
       [...slates].map((slate) => {
@@ -431,7 +438,8 @@ export class ModelDeskComponent implements OnInit, OnDestroy {
         return fetchJson<{ events?: ScoreboardEvent[] } | null>(`https://site.api.espn.com/apis/site/v2/sports/${ESPN_LEAGUES[sport]}/scoreboard?dates=${day}`, null);
       }),
     );
-    for (const board of boards) for (const event of board?.events ?? []) this.readEvent(event);
+    // (a UFC card is one event with each bout a competition: read bout by bout (live-mma.ts mmaBouts), not as a game)
+    [...slates].forEach((slate, i) => (slate.startsWith('mma|') ? this.readBouts(boards[i] as unknown as EspnMmaScoreboard | null) : (boards[i]?.events ?? []).forEach((event) => this.readEvent(event))));
     const props = live.filter((b) => b.market === 'prop' && b.event && b.athlete !== undefined && b.propType);
     // (each game's summary asked at once, then read in order)
     const games = [...new Set(props.map((b) => b.event!))].map((event) => props.filter((b) => b.event === event));
@@ -451,6 +459,20 @@ export class ModelDeskComponent implements OnInit, OnDestroy {
     // counted from the finals and box scores just read)
     this.buildHistory();
     this.splitOpen(Date.now());
+  }
+
+  // (each bout on the card: its board for In Play and Recently closed (no score: a fight has none), its end for the
+  // pending bets' day, and its words ("KO R1 2:05") where a game shows its score)
+  private readBouts(body: EspnMmaScoreboard | null): void {
+    for (const bout of mmaBouts(body)) {
+      const id = bout.event;
+      const was = this.boards.get(id);
+      if (bout.final && !this.finals.has(id)) this.finals.set(id, finalAtOf(bout.start, Date.now(), !!was && !was.final));
+      this.bouts.set(id, bout);
+      this.boards.set(id, { hs: 0, as: 0, final: bout.final, state: bout.state });
+      const words = fightWords(bout);
+      this.scores.set(id, { text: bout.final ? `Final · ${words}` : words, score: words, detail: words, final: bout.final });
+    }
   }
 
   private readEvent(event: ScoreboardEvent): void {
@@ -474,11 +496,17 @@ export class ModelDeskComponent implements OnInit, OnDestroy {
   // A bet in play: its count, its standing and its result as the scores give them (desk-math.ts)
   // ---------------------------------------------------------------------------
 
+  // (a bout has no score to read a side by: its board is only for In Play and the pending day, its result boutResult's)
   private boardOf(b: ModelBet): Board | undefined {
-    return b.event ? this.boards.get(b.event) : undefined;
+    return b.event && b.sport !== 'mma' ? this.boards.get(b.event) : undefined;
   }
 
   provisional(b: ModelBet): Settled | null {
+    if (b.sport === 'mma') {
+      const bout = b.event ? this.bouts.get(b.event) : undefined;
+      const r = b.status === 'open' && bout ? boutResult(b, bout) : null;
+      return r ? { status: r, profit: r === 'won' ? toWin(b) : r === 'lost' ? -b.units : 0 } : null;
+    }
     return provisional(b, this.boardOf(b), this.propNow.get(b.id));
   }
 
@@ -592,6 +620,12 @@ export class ModelDeskComponent implements OnInit, OnDestroy {
   fightPick = fightPick;
   matchupName = matchupName;
   hide = hideImage;
+  // (a Recently closed bet's game clicked: its modal, a team sport's game view or a bout's fight view
+  // (fight-view.service.ts openBet; the owner, 2026-10-26))
+  private readonly fightView = inject(FightViewService);
+  openGame(b: { sport: string; event?: string | null; start?: string | null; matchup?: string | null }): void {
+    this.fightView.openBet(b);
+  }
 
   // (a prop's player: his ESPN headshot, and his card in his sport's app (player-link.ts: ?card= his ESPN id
   // finds him there, his name if it doesn't)
@@ -664,7 +698,7 @@ export class ModelDeskComponent implements OnInit, OnDestroy {
   }
 
   private sectionsFor(g: BetGroup): DeskSection[] {
-    const game = g.bets.filter((b) => b.market !== 'prop').sort((a, b) => (MARKET_ORDER[a.market] ?? 9) - (MARKET_ORDER[b.market] ?? 9));
+    const game = g.bets.filter((b) => b.market !== 'prop').sort((a, b) => marketRank(a.sport, a.market) - marketRank(b.sport, b.market));
     const props = g.bets.filter((b) => b.market === 'prop');
     const out: DeskSection[] = game.length ? [{ key: `${g.key}|game`, props: false, team: '', bets: game }] : [];
     if (!props.length) return out;

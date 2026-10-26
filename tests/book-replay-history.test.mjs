@@ -233,9 +233,9 @@ test('withPending: a final game\'s open bets counted at once, at the top of the 
   const h2 = book.botHistoryOf([], book.withPending(after, (b) => finals.get(b.event), settle), null, {}, { now });
   assert.deepEqual([h2.overall.won, h2.overall.lost, h2.overall.push, h2.overall.open, h2.overall.pending], [0, 2, 0, 2, 0]);
   assert.deepEqual(h2.last.map((b) => [b.pending, b.res]), [[true, null], [false, 'L'], [false, 'L']]);
-  // (a tracked row is never made pending; a bet without a final untouched)
+  // (a tracked row made pending too (the owner, 2026-10-26), only the Practice and PASS rows reading it; a bet without a final untouched)
   const tracked = live('tr', 'nfl', START, 'open', 'medium', 0, { event: '9', intent: 'track', side: 'home', line: -2.5 });
-  assert.equal(book.withPending([tracked], () => END, settle)[0].pending, undefined);
+  assert.equal(book.withPending([tracked], () => END, settle)[0].pending, true);
   assert.equal(book.withPending([open[3]], () => null, settle)[0], open[3]);
 });
 

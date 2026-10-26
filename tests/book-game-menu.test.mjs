@@ -134,7 +134,9 @@ test("a ticker game opens its game view on its state's tab, a bout its place in 
   assert.ok(strip.indexOf('@for (copy of [0, 1]') < strip.indexOf('<button'), 'both copies draw the buttons');
   const ts = fs.readFileSync(path.join(root, 'libs/ranker/src/engine/book/book-page.component.ts'), 'utf8');
   assert.ok(ts.includes('this.gameView.open({ event: to.event }, to.tab, to.league)'), 'a team game opens the game view');
-  assert.ok(ts.includes('if (key) this.chooseGame(key)'), 'a bout is chosen in the dropdown');
+  // (a bout to come is chosen in the dropdown; one begun or over, or not in it, opens its fight view: the owner, 2026-10-26)
+  assert.ok(ts.includes('this.chooseGame(key)'), 'a bout to come is chosen in the dropdown');
+  assert.ok(ts.includes("if (t.state !== 'pre' || !key)") && ts.includes('this.fightView.open({'), 'a bout begun or over opens its fight view');
   const scss = fs.readFileSync(path.join(root, 'libs/ranker/src/styles/components/book-page.scss'), 'utf8');
   assert.ok(scss.includes('.book-ticker:focus-within .ticker-track'), 'focus pauses the strip');
 });

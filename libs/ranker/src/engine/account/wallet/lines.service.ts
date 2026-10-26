@@ -5,6 +5,8 @@ import { SummaryBox, liveStat } from '../../book/live-props';
 import { freshBoard } from '../../book/paid-price';
 import { EspnEvent, GameBoard, boardOf, espnDay, modelGameBoard, modelGameOf, withBestPrices } from './wallet-math';
 import { PreviewProp, PropBetItem, RosterBody, athleteIdOf, previewPropsOf, rosterNames } from './preview-props';
+import { EspnMmaScoreboard, LiveBout, mmaBouts } from '../../book/live-mma';
+import { boutOnBoard } from '../../book/fight-view';
 
 const CORE = 'https://sports.core.api.espn.com/v2/sports';
 // (a game's propBets pages read at most, and players looked up one by one past the rosters)
@@ -151,6 +153,12 @@ export class LinesService {
       for (const g of board.games) {
         const key = `${sport}|${g.id}`;
         const free = out.get(key);
+        // (a bout on ESPN's card (its scoreboard read bout by bout: day): the betting board's lines with ESPN's state,
+        // clock and result, so a finished fight reads its result, never "started" (the owner, 2026-10-26))
+        if (free && sport === 'mma' && 'fight' in free) {
+          out.set(key, boutOnBoard(modelGameBoard(sport, g, now), free as LiveBout, g.h?.[1]));
+          continue;
+        }
         if (free) {
           out.set(key, withBestPrices(free, g));
           continue;
@@ -196,7 +204,9 @@ export class LinesService {
     const load = fetch(`https://site.api.espn.com/apis/site/v2/sports/${ESPN_LEAGUES[sport]}/scoreboard?dates=${day}&limit=200`)
       .then((res) => (res.ok ? res.json() : null))
       .then((body: { events?: EspnEvent[] } | null) => {
-        const games = (body?.events ?? []).map((e) => boardOf(sport, e)).filter((g): g is GameBoard => !!g);
+        // (a UFC card is one event with each bout a competition: each bout a board of its own, its fight's facts with
+        // it (live-mma.ts mmaBouts; the owner, 2026-10-26))
+        const games = sport === 'mma' ? mmaBouts(body as EspnMmaScoreboard | null) : (body?.events ?? []).map((e) => boardOf(sport, e)).filter((g): g is GameBoard => !!g);
         const next = new Map(this.all());
         for (const g of games) next.set(`${sport}|${g.event}`, g);
         this.all.set(next);

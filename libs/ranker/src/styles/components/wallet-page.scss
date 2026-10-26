@@ -1792,6 +1792,25 @@ $heads-cols: minmax(0, 1fr) 260px minmax(0, 1fr);
     .leg-tag {
       text-transform: uppercase;
     }
+
+    // (the game, a button: its modal, live or final (the owner, 2026-10-26); the ticket's ink, underlined on hover)
+    .leg-open {
+      background: none;
+      border: 0;
+      color: inherit;
+      cursor: pointer;
+      font: inherit;
+      padding: 0;
+      text-decoration: underline dotted transparent;
+      text-underline-offset: 2px;
+      transition: text-decoration-color v.$t-hover ease, color v.$t-hover ease;
+
+      &:hover,
+      &:focus-visible {
+        color: $ink;
+        text-decoration-color: currentColor;
+      }
+    }
   }
 
   // (a prop's thin green meter: how far its count has come toward the line)

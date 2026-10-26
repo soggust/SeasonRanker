@@ -1,5 +1,6 @@
-import { Component, HostListener, Input, OnDestroy, OnInit, computed, effect, signal, untracked } from '@angular/core';
+import { Component, HostListener, Input, OnDestroy, OnInit, computed, effect, inject, signal, untracked } from '@angular/core';
 import { ModelBet, Settled } from '../../book/desk-model';
+import { FightViewService } from '../../book/fight-view.service';
 import { CURVE_W } from '../../book/desk-math';
 import { DATE_RANGES, DateRange, inRange, isDateRange, pastRange, rangeWords } from '../../book/date-range';
 import { hideImage, leagueLogo, teamLogo, headshot } from '../../book/bet-format';
@@ -98,6 +99,12 @@ function pinHash(id: string): number {
 export class WalletPageComponent implements OnInit, OnDestroy {
   // (a fight reads "A vs. B", a game its "away @ home": game-menu.ts matchupName)
   readonly fight = matchupName;
+  // (a ticket's game clicked, open or cashed: its modal, live or final, a team sport's game view or a bout's fight
+  // view (fight-view.service.ts openBet; the owner, 2026-10-26))
+  private readonly fightView = inject(FightViewService);
+  openGame(l: { sport: string; event?: string | null; start?: string | null; matchup?: string | null }): void {
+    this.fightView.openBet(l);
+  }
   // (a bet's player: his name and face link his card, player-link.ts)
   readonly betPlayer = betPlayer;
 

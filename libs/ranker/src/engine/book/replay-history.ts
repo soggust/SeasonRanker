@@ -132,6 +132,10 @@ export interface HistoryStripBet {
   replayed: boolean;
   timing: 'open' | 'close' | 'live';
   at: string;
+  // (its game's ESPN id and start, a replayed bet's off its id ("h:401873007:total"): a click opens its game's modal,
+  // a bout's fight view (the owner, 2026-10-26); none known, the row isn't a button)
+  event?: string | null;
+  start?: string | null;
 }
 export interface SportHistory {
   sport: string;
@@ -203,10 +207,11 @@ export function finalAtOf(start: string, now: number, sawLive: boolean): string 
 // is pending, dated by its game's end; a won or lost one gets its status and profit, so the history counts it at once;
 // a push to be (maybe a void) or a prop with no count yet stays open, pending with no result. The ledger's own grade
 // always wins: a bet the desk has graded is never touched, so a pending bet is counted once, then replaced by its
-// graded row (a stat correction, a void: whatever the desk said). Tracked rows are left as they are
+// graded row (a stat correction, a void: whatever the desk said). Tracked rows too (the owner, 2026-10-26: a card's
+// Practice and PASS rows were empty until the run graded it): only the Practice and PASS rows read them (D87), as if bet
 export function withPending(bets: ModelBet[], finalAt: (b: ModelBet) => string | null | undefined, settleOf: (b: ModelBet) => Settled | null): ModelBet[] {
   return bets.map((b) => {
-    if (b.status !== 'open' || isTracked(b)) return b;
+    if (b.status !== 'open') return b;
     const at = finalAt(b);
     if (!at) return b;
     const r = settleOf(b);
@@ -468,8 +473,8 @@ export function botHistoryOf(
   const strip: HistoryStripBet[] = [
     ...live
       .filter((b) => !b.void && (['won', 'lost', 'push'].includes(b.status) || (!!b.pending && b.status === 'open')))
-      .map((b) => ({ res: resOf(b), pending: !!b.pending, pick: b.pick, game: `${b.sport.toUpperCase()} · ${b.matchup}`, matchup: b.matchup, stake: b.units, sport: b.sport, band: BAND_LABELS[bandOf(b)] ?? 'LIKE', practice: practiceOf(b), units: b.status === 'open' ? '' : unitsText(b.profit), price: priceText(b.odds), replayed: false, timing: 'live' as const, at: settledOf(b) })),
-    ...[...replays.values()].flatMap((f) => (f.last ?? []).filter((b) => !days || inDays(etDay(b.settled), days)).map((b) => ({ res: b.res, pending: false, pick: b.pick, game: `${b.sport.toUpperCase()} · ${b.matchup}`, matchup: b.matchup, stake: b.units, sport: b.sport, band: BAND_LABELS[b.band] ?? 'LIKE', practice: b.practice, units: unitsText(b.profit), price: priceText(b.odds), replayed: true, timing: b.timing, at: b.settled }))),
+      .map((b) => ({ res: resOf(b), pending: !!b.pending, pick: b.pick, game: `${b.sport.toUpperCase()} · ${b.matchup}`, matchup: b.matchup, stake: b.units, sport: b.sport, band: BAND_LABELS[bandOf(b)] ?? 'LIKE', practice: practiceOf(b), units: b.status === 'open' ? '' : unitsText(b.profit), price: priceText(b.odds), replayed: false, timing: 'live' as const, at: settledOf(b), event: b.event ?? null, start: b.start ?? null })),
+    ...[...replays.values()].flatMap((f) => (f.last ?? []).filter((b) => !days || inDays(etDay(b.settled), days)).map((b) => ({ res: b.res, pending: false, pick: b.pick, game: `${b.sport.toUpperCase()} · ${b.matchup}`, matchup: b.matchup, stake: b.units, sport: b.sport, band: BAND_LABELS[b.band] ?? 'LIKE', practice: b.practice, units: unitsText(b.profit), price: priceText(b.odds), replayed: true, timing: b.timing, at: b.settled, event: /^h:\d+:/.test(b.id) ? b.id.split(':')[1] : null, start: b.start ?? null }))),
   ]
     .sort((a, b) => Number(b.pending) - Number(a.pending) || b.at.localeCompare(a.at) || a.pick.localeCompare(b.pick))
     .slice(0, last);

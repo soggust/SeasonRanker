@@ -5,6 +5,7 @@ import { canUse } from '../account/features';
 import { GameBoard, PlayBet } from '../account/wallet/wallet-math';
 import { WalletService } from '../account/wallet/wallet.service';
 import { GameViewService } from '../game-view/game-view.service';
+import { FightViewService } from './fight-view.service';
 import type { GameView } from '../game-view/game.model';
 import { teamLook } from '../team-look';
 import { walkPlays } from './bet-impact';
@@ -246,9 +247,14 @@ export class LiveTabComponent implements OnInit, OnDestroy {
     };
   }
 
-  // A card clicked: the game's modal (the existing game view, by ESPN's league for its sport)
+  // A card clicked: the game's modal (the existing game view, by ESPN's league for its sport); a bout's its fight view
+  // (fight-view.service.ts; the owner, 2026-10-26)
+  private readonly fightView = inject(FightViewService);
   open(c: LiveCard): void {
-    if (c.fight) return;
+    if (c.fight) {
+      this.fightView.open({ event: c.event, start: this.live.bouts().find((b) => b.event === c.event)?.start ?? null });
+      return;
+    }
     void this.games.open({ event: c.event }, null, c.league);
   }
 

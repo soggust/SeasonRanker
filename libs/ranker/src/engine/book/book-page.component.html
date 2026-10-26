@@ -787,7 +787,7 @@
             <button type="button" class="tick" [ngClass]="t.state" [attr.aria-label]="t.aria" [attr.tabindex]="copy ? -1 : null" (click)="openTick(t)">
               <ng-container *ngTemplateOutlet="tickSide; context: { $implicit: t.away }"></ng-container>
               @if (t.awayScore !== null) {<b class="tick-score">{{ t.awayScore }}</b>}
-              <span class="tick-at" aria-hidden="true">@</span>
+              <span class="tick-at" [class.tick-vs]="t.sep !== '@'" aria-hidden="true">{{ t.sep }}</span>
               <ng-container *ngTemplateOutlet="tickSide; context: { $implicit: t.home }"></ng-container>
               @if (t.homeScore !== null) {<b class="tick-score">{{ t.homeScore }}</b>}
               <span class="tick-state">{{ t.text ?? (t.start | date: 'h:mm a') }}</span>
@@ -809,3 +809,7 @@
 <!-- The game modal (the existing game view, over the page): a game opened from the Live tab's cards, this sport's
      or another's (game-view.service.ts open's league); the rankings mount their own, with a share link -->
 <game-view></game-view>
+<!-- (a UFC bout's own modal, begun or over: the result, the fight's facts and the Bot's prices on it, opened from
+     the ticker, the Live tab, the tickets and the Algorithm's Recently closed: fight-view.service.ts, the owner
+     2026-10-26) -->
+<fight-view></fight-view>

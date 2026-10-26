@@ -1,0 +1,103 @@
+<!-- The fight view (fight-view.component.ts): a UFC bout over the page, begun or over or still to come. Its hero the
+     two fighters, the first-listed on the left, each his face, name, record and country, the winner's WIN tag and the
+     loser dimmed; between them the result ("Pico def. Smith · KO R1 2:05"), the clock under way with the live dot, or
+     the start. Under it the fight's facts as the player card's pills, then the Bot's rows on it and the user's
+     tickets. The owner, 2026-10-26 -->
+@if (fights.ref()) {
+  @let v = fights.view();
+  <div class="fight-backdrop" (click)="fights.close()"></div>
+  <div class="fight-card" role="dialog" aria-modal="true" dialogFocus [attr.aria-label]="v ? v.sides[0].name + ' vs. ' + v.sides[1].name : 'Fight'">
+    <button type="button" class="fight-close" aria-label="Close" title="Close (Esc)" (click)="fights.close()"><mat-icon fontIcon="close"></mat-icon></button>
+    @if (!v) {
+      <p class="fight-note">{{ fights.loading() ? 'Loading the fight…' : "The fight couldn't be found." }}</p>
+    } @else {
+      <header class="fight-hero">
+        @for (s of v.sides; track $index) {
+          <div class="fight-side" [class.won]="s.won" [class.lost]="s.lost" [class.right]="$index === 1">
+            <span class="fight-face">
+              @if (s.face) {<img [src]="s.face" alt="" width="84" height="84" (error)="hide($event)" />}
+            </span>
+            <span class="fight-name">{{ s.name }}</span>
+            <span class="fight-meta">
+              @if (s.record) {<span>{{ s.record }}</span>}
+              @if (s.country) {<span>{{ s.country }}</span>}
+            </span>
+            @if (s.won) {<span class="fight-win">WIN</span>}
+          </div>
+          @if ($index === 0) {
+            <div class="fight-center">
+              @if (v.state === 'post') {
+                <span class="fight-label">Final</span>
+                <span class="fight-result">{{ v.result ?? v.words }}</span>
+              } @else if (v.state === 'in') {
+                <span class="fight-label live"><i class="fight-dot" aria-hidden="true"></i>Live</span>
+                <span class="fight-result">{{ v.words }}</span>
+              } @else {
+                <span class="fight-label">Upcoming</span>
+                <span class="fight-result">{{ v.start | date: 'EEE MMM d, h:mm a' }}</span>
+              }
+              <span class="fight-vs" aria-hidden="true">vs.</span>
+            </div>
+          }
+        }
+      </header>
+      <div class="fight-body">
+        <!-- (the fight's facts, the player card's pills: its card, its division, its scheduled rounds, its date) -->
+        <div class="fight-pills">
+          @if (v.card) {<span class="fight-pill">{{ v.card }}</span>}
+          @if (v.division) {<span class="fight-pill">{{ v.division }}</span>}
+          @if (v.rounds) {<span class="fight-pill">{{ v.rounds }} rounds</span>}
+          @if (v.start) {<span class="fight-pill">{{ v.start | date: 'MMM d, y' }}</span>}
+        </div>
+
+        <!-- (the Bot's rows on it: a staked bet or a tracked row, the price it took and at which book, the opening
+             price where the ledger kept one, the close, the other side's price, its chance, how it came out and when) -->
+        <section class="fight-section" aria-label="The Bot on this fight">
+          <h3>The Bot</h3>
+          @if (!v.bets.length) {
+            <p class="fight-note">{{ fights.loading() ? 'Loading…' : 'The Bot had no bet or tracked row on this fight.' }}</p>
+          }
+          @for (b of v.bets; track b.id) {
+            <div class="fight-bet" [ngClass]="b.status">
+              <div class="fight-bet-head">
+                <span class="fight-bet-market">{{ b.market }}</span>
+                <b class="fight-bet-pick">{{ b.pick }}</b>
+                <span class="fight-tag" [class.tracked]="b.kind === 'Tracked'" [attr.title]="b.kind === 'Tracked' ? 'Tracked: nothing staked, its as-if units' : 'Staked'">{{ b.kind }} · {{ b.units }}u</span>
+                <span class="fight-bet-result" [ngClass]="b.status">{{ b.result }}</span>
+              </div>
+              <dl class="fight-prices">
+                <div><dt>The Bot's price</dt><dd>{{ b.price }}@if (b.book) {<small> {{ b.book }}</small>}</dd></div>
+                @if (b.open) {<div><dt>Open</dt><dd>{{ b.open }}</dd></div>}
+                @if (b.close) {<div><dt>Close</dt><dd>{{ b.close }}@if (b.beat !== null) {<small [class.good]="b.beat" [class.bad]="!b.beat"> {{ b.beat ? 'beat it' : 'missed it' }}</small>}</dd></div>}
+                @if (b.other) {<div><dt>Other side</dt><dd>{{ b.other }}</dd></div>}
+                @if (b.chance !== null) {<div><dt>Its chance</dt><dd>{{ b.chance }}%</dd></div>}
+              </dl>
+              <p class="fight-when">
+                @if (b.placedAt) {<span>Placed {{ b.placedAt | date: 'EEE MMM d, h:mm a' }}</span>}
+                @if (b.gradedAt) {<span>Graded {{ b.gradedAt | date: 'EEE MMM d, h:mm a' }}</span>}
+              </p>
+              @if (b.why) {<p class="fight-why">{{ b.why }}</p>}
+            </div>
+          }
+        </section>
+
+        <!-- (the user's own tickets on it, a parlay's leg among them) -->
+        @if (fights.mine().length) {
+          <section class="fight-section" aria-label="Your tickets on this fight">
+            <h3>Your tickets</h3>
+            @for (t of fights.mine(); track t.id) {
+              <div class="fight-bet fight-mine" [ngClass]="t.status">
+                <div class="fight-bet-head">
+                  <b class="fight-bet-pick">{{ t.pick }}</b>
+                  <span class="fight-tag">{{ oddsText(t.odds) }} · {{ t.stake }}u</span>
+                  <span class="fight-bet-result" [ngClass]="t.status">{{ t.status === 'open' ? 'Open' : t.status }}</span>
+                </div>
+                <p class="fight-when"><span>Placed {{ t.placedAt | date: 'EEE MMM d, h:mm a' }}</span></p>
+              </div>
+            }
+          </section>
+        }
+      </div>
+    }
+  </div>
+}

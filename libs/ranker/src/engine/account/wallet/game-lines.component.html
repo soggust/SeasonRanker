@@ -147,7 +147,7 @@
     @let b = board!;
     <!-- GAME LINES: a row a team (its logo, its name, Away or Home), the spread, the total and the moneyline across;
          a game with the moneyline alone (a fight: the two fighters), the moneyline column alone -->
-    @let cols = boardColumns(b);
+    @let cols = boardColumns(b, sport);
     @if (!compact) {
       <ng-container *ngTemplateOutlet="sectionHead; context: { $implicit: 'lines', title: 'Game lines', count: linesCount(b) + ' bets' }"></ng-container>
     }
@@ -155,14 +155,19 @@
       <div class="section-body lines-grid" [class.ml-only]="cols.length === 1" [class.two-col]="cols.length === 2" role="table" aria-label="Game lines">
         <div class="grid-heads" role="row">
           <span class="grid-head" role="columnheader"><span class="visually-hidden">{{ teams ? 'Team' : 'Fighter' }}</span></span>
-          @if (cols.includes('spread')) {
-            <span class="grid-head" role="columnheader">Spread</span>
-          }
-          @if (cols.includes('total')) {
-            <span class="grid-head" role="columnheader">{{ sport === 'mma' ? 'Rounds' : 'Total' }}</span>
-          }
-          @if (cols.includes('ml')) {
-            <span class="grid-head" role="columnheader">{{ compact ? 'Money' : 'Moneyline' }}</span>
+          <!-- (the columns in boardColumns' order: a fight's moneyline before its rounds, the owner, 2026-10-26) -->
+          @for (col of cols; track col) {
+            @switch (col) {
+              @case ('spread') {
+                <span class="grid-head" role="columnheader">Spread</span>
+              }
+              @case ('total') {
+                <span class="grid-head" role="columnheader">{{ sport === 'mma' ? 'Rounds' : 'Total' }}</span>
+              }
+              @case ('ml') {
+                <span class="grid-head" role="columnheader">{{ compact ? 'Money' : 'Moneyline' }}</span>
+              }
+            }
           }
         </div>
         @for (side of ['away', 'home']; track side) {
@@ -177,14 +182,18 @@
               }
               <span class="team-words"><b>@if (teams) {{{ compact ? team.abbr : team.name || team.abbr }}} @else {<a [playerLink]="{ sport, name: team.name || team.abbr }">{{ compact ? team.abbr : team.name || team.abbr }}</a>}</b>@if (!compact && teams) {<small>{{ side === 'away' ? 'Away' : 'Home' }}</small>}</span>
             </div>
-            @if (cols.includes('spread')) {
-              <div role="cell"><ng-container *ngTemplateOutlet="priceCell; context: { $implicit: side === 'away' ? b.spread?.away : b.spread?.home, label: team.abbr + ' ' + lineText((side === 'away' ? b.spread?.away?.line : b.spread?.home?.line) ?? null), top: lineText((side === 'away' ? b.spread?.away?.line : b.spread?.home?.line) ?? null) }"></ng-container></div>
-            }
-            @if (cols.includes('total')) {
-              <div role="cell"><ng-container *ngTemplateOutlet="priceCell; context: { $implicit: side === 'away' ? b.total?.over : b.total?.under, label: (side === 'away' ? 'Over ' : 'Under ') + ((side === 'away' ? b.total?.over?.line : b.total?.under?.line) ?? '') + totalUnit, top: totalTop(side === 'away' ? 'over' : 'under', side === 'away' ? b.total?.over?.line : b.total?.under?.line) }"></ng-container></div>
-            }
-            @if (cols.includes('ml')) {
-              <div role="cell"><ng-container *ngTemplateOutlet="priceCell; context: { $implicit: side === 'away' ? b.ml?.away : b.ml?.home, label: team.abbr + ' to win', top: 'ML' }"></ng-container></div>
+            @for (col of cols; track col) {
+              @switch (col) {
+                @case ('spread') {
+                  <div role="cell"><ng-container *ngTemplateOutlet="priceCell; context: { $implicit: side === 'away' ? b.spread?.away : b.spread?.home, label: team.abbr + ' ' + lineText((side === 'away' ? b.spread?.away?.line : b.spread?.home?.line) ?? null), top: lineText((side === 'away' ? b.spread?.away?.line : b.spread?.home?.line) ?? null) }"></ng-container></div>
+                }
+                @case ('total') {
+                  <div role="cell"><ng-container *ngTemplateOutlet="priceCell; context: { $implicit: side === 'away' ? b.total?.over : b.total?.under, label: (side === 'away' ? 'Over ' : 'Under ') + ((side === 'away' ? b.total?.over?.line : b.total?.under?.line) ?? '') + totalUnit, top: totalTop(side === 'away' ? 'over' : 'under', side === 'away' ? b.total?.over?.line : b.total?.under?.line) }"></ng-container></div>
+                }
+                @case ('ml') {
+                  <div role="cell"><ng-container *ngTemplateOutlet="priceCell; context: { $implicit: side === 'away' ? b.ml?.away : b.ml?.home, label: team.abbr + ' to win', top: 'ML' }"></ng-container></div>
+                }
+              }
             }
           </div>
         }

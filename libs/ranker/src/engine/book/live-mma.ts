@@ -47,6 +47,8 @@ export interface FightInfo {
   winner: 'home' | 'away' | null;
   records: [string | null, string | null];
   rounds: number;
+  // (the fighters' ESPN ids, away then home: a bet's own fighters orient its bout by them (boutResult))
+  ids?: [string, string];
 }
 export type LiveBout = GameBoard & { fight: FightInfo };
 
@@ -118,6 +120,7 @@ export function mmaBouts(body: EspnMmaScoreboard | null | undefined, boards: Rea
           winner,
           records: [rec(away), rec(home)],
           rounds: c.format?.regulation?.periods ?? 3,
+          ids: [String(away.id ?? ''), String(home.id ?? '')],
         },
       });
     }
@@ -193,6 +196,31 @@ export function fightWatch(bet: PlayBet, b: LiveBout, now = Date.now()): BetWatc
     return { ...meter, status: 'LIVE', tone: 'close', left: where, right: `${name(bet.side)} fighting`, value: null };
   }
   return { fill: 0, tick: 50, proj: null, status: b.state === 'post' ? 'FINAL' : 'LIVE', tone: 'wait', left: where, right: '', value: null };
+}
+
+// A bet's result off its bout as ESPN has it, before the desk grades it (the owner, 2026-10-26: the card's Practice and
+// PASS rows showed nothing until the run's grade landed): a moneyline by the winner once the bout's final (a draw or a
+// no contest a push, as the desk voids it), a round total by the rounds gone (an over won the moment the fight passes
+// its line; at the end the rest decided), the bout turned round to the bet's own fighters by their ids. The desk's
+// settleBout (mma-desk.mjs) stays the grade; null until it's decided or when it can't be read
+export function boutResult(bet: { market: string; side?: string; line?: number | null; fighters?: { home?: { id?: string }; away?: { id?: string } } }, b: Pick<LiveBout, 'state' | 'final' | 'fight'>): 'won' | 'lost' | 'push' | null {
+  const f = b.fight;
+  const home = bet.fighters?.home?.id;
+  const flipped = !!f.ids && !!home && home === f.ids[0] && home !== f.ids[1];
+  if (bet.market === 'total') {
+    const line = bet.line;
+    if (line === null || line === undefined || !Number.isFinite(line)) return null;
+    const gone = fightRounds(b);
+    if (gone === null) return null;
+    const over = bet.side === 'over';
+    if (gone > line) return over ? 'won' : 'lost';
+    if (!b.final) return null;
+    return over ? 'lost' : 'won';
+  }
+  if (bet.market !== 'ml' || !b.final) return null;
+  if (!f.winner) return /DRAW|NC/.test(f.method ?? '') ? 'push' : null;
+  const winner = flipped ? (f.winner === 'home' ? 'away' : 'home') : f.winner;
+  return winner === bet.side ? 'won' : 'lost';
 }
 
 // Tonight's bouts: every bout of a card with a bout on, or a bout on ESPN's day today, or a bout begun in the last

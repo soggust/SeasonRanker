@@ -464,7 +464,7 @@
                 <span class="desk-history-league"><ng-container *ngTemplateOutlet="leagueMark; context: { $implicit: b.sport, titled: true }"></ng-container></span>
                 <span class="desk-history-words">
                   <b>{{ b.pick }}</b>
-                  <small>{{ matchupName(b.sport, b.matchup) }}@if (b.replayed) {<span class="desk-history-replay" [title]="'Replayed: what today\'s Bot would have bet, from the replay of history priced at the ' + (b.timing === 'close' ? 'closing line' : 'opening line')"> · replay</span>}</small>
+                  <small>@if (b.event) {<button type="button" class="desk-history-open" [title]="'Open ' + matchupName(b.sport, b.matchup)" (click)="openGame(b)">{{ matchupName(b.sport, b.matchup) }}</button>} @else {<ng-container>{{ matchupName(b.sport, b.matchup) }}</ng-container>}@if (b.replayed) {<span class="desk-history-replay" [title]="'Replayed: what today\'s Bot would have bet, from the replay of history priced at the ' + (b.timing === 'close' ? 'closing line' : 'opening line')"> · replay</span>}</small>
                 </span>
                 <span class="desk-history-bet-info">
                   <span class="desk-history-tag" [ngClass]="bandClass(b)">{{ b.practice ? 'Practice' : b.band }}</span>

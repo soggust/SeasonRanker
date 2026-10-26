@@ -195,3 +195,35 @@ test("the line's head as it draws: straight across, a play's worth each step, be
   assert.deepEqual(lineHead([0.7], 0.5).i, 0);
   assert.equal(lineHead([], 0.5).y, 100);
 });
+
+// (2026-10-26: ESPN lists a game's officials only once it's started; MLB's umpires, posted the day of, come
+// from MLB's stats API for a game to come; a sport without a source the page can reach asks for nothing)
+test("officials: a game to come's MLB umpires from MLB's schedule, the nearest game of the two teams'; other sports none", async () => {
+  const { loadOfficials } = nfl;
+  const asked = [];
+  globalThis.fetch = async (url) => {
+    asked.push(String(url));
+    const ump = (fullName, officialType) => ({ official: { fullName }, officialType });
+    const game = (gameDate, home, away, officials) => ({ gameDate, teams: { home: { team: { name: home } }, away: { team: { name: away } } }, officials });
+    const games = [
+      game('2026-10-27T00:00:00Z', 'Tampa Bay Rays', 'Milwaukee Brewers', [ump('Jim Wolf', 'Home Plate'), ump('James Hoye', 'First Base'), { officialType: 'Second Base' }]),
+      game('2026-10-26T17:00:00Z', 'Tampa Bay Rays', 'Milwaukee Brewers', [ump('Somebody Else', 'Home Plate')]),
+      game('2026-10-27T00:00:00Z', 'New York Yankees', 'Boston Red Sox', [ump('Not Him', 'Home Plate')]),
+    ];
+    return { ok: true, status: 200, json: async () => ({ dates: [{ games }] }) };
+  };
+  const mlb = { league: 'baseball/mlb', date: '2026-10-27T00:00Z', officials: [], home: { name: 'Tampa Bay Rays' }, away: { name: 'Milwaukee Brewers' } };
+  assert.deepEqual(await loadOfficials(mlb), [
+    { name: 'Jim Wolf', role: 'Home Plate Umpire' },
+    { name: 'James Hoye', role: 'First Base Umpire' },
+  ]);
+  assert.match(asked[0], /statsapi\.mlb\.com\/api\/v1\/schedule\?sportId=1&date=2026-10-26&hydrate=officials/, "the day as MLB files it (New York's)");
+  // (no game of the two teams that day: none)
+  assert.deepEqual(await loadOfficials({ ...mlb, home: { name: 'Chicago Cubs' } }), []);
+  // (ESPN's crew already in, or another sport: nothing asked)
+  asked.length = 0;
+  const espn = [{ name: 'Shawn Hochuli', role: 'Referee' }];
+  assert.equal(await loadOfficials({ ...mlb, officials: espn }), espn);
+  assert.deepEqual(await loadOfficials({ ...mlb, league: 'basketball/nba' }), []);
+  assert.equal(asked.length, 0);
+});
