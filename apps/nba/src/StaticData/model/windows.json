@@ -1,43 +1,43 @@
 {
  "v": 1,
  "sport": "nba",
- "at": "2026-10-24T09:40:56.296Z",
+ "at": "2026-10-26T05:09:10.977Z",
  "epoch": "2026-10-23T05:30:00Z",
- "commit": "a53ae89e",
+ "commit": "5b30745b",
  "segments": {
   "ml:dog": {
    "policy": "legacy",
-   "n": 597,
+   "n": 574,
    "gain": 0,
    "se": null
   },
   "ml:fav": {
    "policy": "legacy",
-   "n": 108,
+   "n": 94,
    "gain": 0,
    "se": null
   },
   "spread:fav": {
    "policy": "legacy",
-   "n": 45,
+   "n": 35,
    "gain": 0,
    "se": null
   },
   "spread:dog": {
    "policy": "legacy",
-   "n": 3,
+   "n": 1,
    "gain": 0,
    "se": null
   },
   "total:under": {
    "policy": "legacy",
-   "n": 30,
+   "n": 15,
    "gain": 0,
    "se": null
   },
   "total:over": {
    "policy": "legacy",
-   "n": 18,
+   "n": 13,
    "gain": 0,
    "se": null
   }

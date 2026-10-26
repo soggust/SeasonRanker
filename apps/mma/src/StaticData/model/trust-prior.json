@@ -1,8 +1,8 @@
 {
  "sport": "mma",
  "epoch": "2026-10-21T01:15:00Z",
- "commit": "a53ae89e",
- "at": "2026-10-24T09:57:58.287Z",
+ "commit": "5b30745b",
+ "at": "2026-10-26T05:20:49.028Z",
  "ml": {
   "trust": 0,
   "n": 1928,
@@ -241,23 +241,23 @@
    "from": "2026-01-01",
    "to": "2026-07-01",
    "train": 10988,
-   "bouts": 384,
+   "bouts": 385,
    "kept": 11
   },
   {
    "from": "2026-07-01",
    "to": "2027-01-01",
    "train": 11292,
-   "bouts": 304,
+   "bouts": 318,
    "kept": 10
   }
  ],
  "match": {
   "total": 3965,
-  "matched": 3121,
+  "matched": 3135,
   "closed": 2827,
   "closedMatched": 2745,
-  "rate": 0.7871,
+  "rate": 0.7907,
   "closedRate": 0.971
  }
 }

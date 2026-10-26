@@ -21,7 +21,7 @@ export interface ExpectFile {
 export interface LiveCheckBet {
   units?: number | null;
   intent?: string | null;
-  practice?: boolean | null;
+  topN?: unknown;
   void?: boolean | null;
   status?: string | null;
   odds?: number | null;
@@ -89,7 +89,7 @@ const flatOf = (res: string | null, odds: number): number => (res === 'W' ? dec(
 
 export function liveBetsOf<T extends LiveCheckBet>(bets: T[], since: string | null = null): T[] {
   const t0 = since ? Date.parse(since) : -Infinity;
-  return bets.filter((b) => !!b && (b.units ?? 0) > 0 && b.intent !== 'track' && b.intent !== 'action' && !b.practice && !b.void && !!resOf(b.status) && fin(b.odds) && Date.parse(b.placedAt ?? b.start ?? '') >= t0);
+  return bets.filter((b) => !!b && (b.units ?? 0) > 0 && b.intent !== 'track' && b.intent !== 'action' && !b.topN && !b.void && !!resOf(b.status) && fin(b.odds) && Date.parse(b.placedAt ?? b.start ?? '') >= t0);
 }
 
 const zOf = (d: number, se: number | null): number | null => (se !== null && se > 0 && fin(d) ? r2(d / se) : null);

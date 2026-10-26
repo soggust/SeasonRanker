@@ -1,52 +1,52 @@
 {
  "sport": "nfl",
  "epoch": "2026-10-23T05:30:00Z",
- "commit": "a53ae89e",
- "at": "2026-10-24T09:33:53.239Z",
+ "commit": "5b30745b",
+ "at": "2026-10-26T05:20:34.709Z",
  "current": 2026,
- "held": 717,
- "before": -1.56,
- "after": -0.78,
+ "held": 510,
+ "before": -8.9,
+ "after": -4.45,
  "keys": {
   "ml:away": {
-   "n": 304,
-   "sum": -53.16
+   "n": 240,
+   "sum": -51.52
   },
   "ml:home": {
-   "n": 275,
-   "sum": -2.01
+   "n": 244,
+   "sum": -3.5
   },
   "prop:passAtt:over": {
    "n": 20,
    "sum": 3.9
   },
   "prop:passAtt:under": {
-   "n": 246,
-   "sum": 8.61
+   "n": 248,
+   "sum": 8.53
   },
   "prop:passCmp:over": {
    "n": 33,
    "sum": 1.91
   },
   "prop:passCmp:under": {
-   "n": 95,
-   "sum": -0.35
+   "n": 96,
+   "sum": -1.35
   },
   "prop:passInt:over": {
    "n": 81,
    "sum": -15.68
   },
   "prop:passInt:under": {
-   "n": 162,
-   "sum": -18.92
+   "n": 163,
+   "sum": -21.63
   },
   "prop:passTd:over": {
-   "n": 185,
-   "sum": -9.43
+   "n": 194,
+   "sum": -11.21
   },
   "prop:passTd:under": {
-   "n": 55,
-   "sum": -6.8
+   "n": 52,
+   "sum": -3.8
   },
   "prop:passYds:over": {
    "n": 31,
@@ -57,60 +57,60 @@
    "sum": 2.94
   },
   "prop:rec:over": {
-   "n": 45,
-   "sum": -9.35
+   "n": 47,
+   "sum": -6.95
   },
   "prop:rec:under": {
-   "n": 464,
-   "sum": 24.66
+   "n": 461,
+   "sum": 23.95
   },
   "prop:recYds:over": {
    "n": 19,
    "sum": -9.65
   },
   "prop:recYds:under": {
-   "n": 584,
-   "sum": 20.05
+   "n": 575,
+   "sum": 19.54
   },
   "prop:rushAtt:over": {
-   "n": 11,
-   "sum": 1.18
+   "n": 9,
+   "sum": 0.98
   },
   "prop:rushAtt:under": {
-   "n": 251,
-   "sum": 2.95
+   "n": 253,
+   "sum": 2.87
   },
   "prop:rushRecYds:over": {
-   "n": 25,
-   "sum": -8.23
+   "n": 26,
+   "sum": -7.37
   },
   "prop:rushRecYds:under": {
    "n": 5,
    "sum": 0.65
   },
   "prop:rushYds:over": {
-   "n": 9,
-   "sum": 0.15
+   "n": 11,
+   "sum": -1.85
   },
   "prop:rushYds:under": {
-   "n": 381,
-   "sum": -19.26
+   "n": 392,
+   "sum": -18.9
   },
   "spread:away": {
-   "n": 64,
-   "sum": 4.96
+   "n": 52,
+   "sum": 8.43
   },
   "spread:home": {
-   "n": 81,
-   "sum": -8.85
+   "n": 73,
+   "sum": -7.62
   },
   "total:over": {
-   "n": 263,
-   "sum": -3.26
+   "n": 57,
+   "sum": 8.81
   },
   "total:under": {
-   "n": 62,
-   "sum": -7.83
+   "n": 27,
+   "sum": -3.64
   }
  }
 }

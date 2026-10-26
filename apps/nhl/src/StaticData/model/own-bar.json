@@ -1,28 +1,28 @@
 {
  "sport": "nhl",
  "epoch": "2026-10-23T05:30:00Z",
- "commit": "a53ae89e",
- "at": "2026-10-24T09:45:03.445Z",
+ "commit": "5b30745b",
+ "at": "2026-10-26T05:12:36.372Z",
  "current": 2027,
- "held": 640,
- "before": -0.9,
- "after": -0.45,
+ "held": 518,
+ "before": -4.06,
+ "after": -2.02,
  "keys": {
   "ml:away": {
-   "n": 277,
-   "sum": -4.07
+   "n": 292,
+   "sum": -0.13
   },
   "ml:home": {
-   "n": 211,
-   "sum": -18.41
+   "n": 214,
+   "sum": -21.88
   },
   "prop:pts:over": {
-   "n": 3,
-   "sum": -3
+   "n": 5,
+   "sum": -2.25
   },
   "prop:pts:under": {
-   "n": 140,
-   "sum": -16.61
+   "n": 180,
+   "sum": -28.01
   },
   "prop:saves:over": {
    "n": 9,
@@ -33,28 +33,28 @@
    "sum": 1.69
   },
   "prop:sog:over": {
-   "n": 30,
-   "sum": -6.7
+   "n": 28,
+   "sum": -4.65
   },
   "prop:sog:under": {
-   "n": 351,
-   "sum": 25.18
+   "n": 384,
+   "sum": 35.33
   },
   "spread:away": {
-   "n": 242,
-   "sum": 25.5
+   "n": 232,
+   "sum": 30.13
   },
   "spread:home": {
-   "n": 326,
-   "sum": -14.85
+   "n": 332,
+   "sum": -10
   },
   "total:over": {
-   "n": 580,
-   "sum": 6.49
+   "n": 183,
+   "sum": 8.65
   },
   "total:under": {
-   "n": 356,
-   "sum": -45.3
+   "n": 217,
+   "sum": -20.22
   }
  }
 }

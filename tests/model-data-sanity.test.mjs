@@ -77,7 +77,7 @@ test('the committed intraday and dense files carry the gone rows and parse', () 
     for (const dir of [intradayDir(sport), denseDir(sport)]) {
       if (!existsSync(dir)) continue;
       for (const f of readdirSync(dir).filter((x) => /^\d{4}\.jsonl\.gz$/.test(x))) {
-        for (const s of gunzipSync(readFileSync(path.join(dir, f))).toString('utf8').split('\n')) {
+        for (const s of gunzipSync(readFileSync(path.join(dir, f))).toString('utf8').split(/\r?\n/)) {
           if (!s) continue;
           const r = JSON.parse(s);
           if (r[0] !== 'G') continue;

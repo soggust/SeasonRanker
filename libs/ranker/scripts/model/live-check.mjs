@@ -85,7 +85,7 @@ const resOf = (status) => (status === 'won' ? 'W' : status === 'lost' ? 'L' : st
 // (the ledger's bets the check reads: staked edge bets, graded, placed since `since`)
 export function liveBets(bets, since = null) {
   const t0 = since ? Date.parse(since) : -Infinity;
-  return (bets ?? []).filter((b) => b && b.units > 0 && b.intent !== 'track' && b.intent !== 'action' && !b.practice && !b.void && resOf(b.status) && fin(b.odds) && Date.parse(b.placedAt ?? b.start) >= t0);
+  return (bets ?? []).filter((b) => b && b.units > 0 && b.intent !== 'track' && b.intent !== 'action' && !b.topN && !b.void && resOf(b.status) && fin(b.odds) && Date.parse(b.placedAt ?? b.start) >= t0);
 }
 
 const zOf = (d, se) => (se > 0 && fin(d) ? r2(d / se) : null);

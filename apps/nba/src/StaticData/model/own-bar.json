@@ -1,20 +1,20 @@
 {
  "sport": "nba",
  "epoch": "2026-10-23T05:30:00Z",
- "commit": "a53ae89e",
- "at": "2026-10-24T09:40:56.239Z",
+ "commit": "5b30745b",
+ "at": "2026-10-26T05:09:10.958Z",
  "current": 2027,
- "held": 1039,
- "before": -52.66,
- "after": -26.33,
+ "held": 1110,
+ "before": -56.08,
+ "after": -28.04,
  "keys": {
   "ml:away": {
-   "n": 691,
-   "sum": 25.59
+   "n": 699,
+   "sum": 23.88
   },
   "ml:home": {
-   "n": 441,
-   "sum": 4.07
+   "n": 433,
+   "sum": 2.62
   },
   "prop:ast:over": {
    "n": 10,
@@ -25,52 +25,52 @@
    "sum": 7.31
   },
   "prop:fg3:over": {
-   "n": 118,
-   "sum": -21.72
+   "n": 116,
+   "sum": -19.72
   },
   "prop:fg3:under": {
-   "n": 596,
-   "sum": 46.98
+   "n": 571,
+   "sum": 37.25
   },
   "prop:pra:over": {
-   "n": 22,
-   "sum": 2.1
+   "n": 21,
+   "sum": 3.05
   },
   "prop:pra:under": {
-   "n": 109,
-   "sum": 13.76
+   "n": 86,
+   "sum": 11.92
   },
   "prop:pts:over": {
-   "n": 19,
+   "n": 21,
    "sum": 0.64
   },
   "prop:pts:under": {
-   "n": 47,
-   "sum": -2.41
+   "n": 52,
+   "sum": -3.44
   },
   "prop:reb:over": {
-   "n": 553,
-   "sum": -72.04
+   "n": 579,
+   "sum": -80.42
   },
   "prop:reb:under": {
-   "n": 3629,
-   "sum": 131.53
+   "n": 3756,
+   "sum": 147.38
   },
   "spread:away": {
-   "n": 35,
-   "sum": -14.43
+   "n": 29,
+   "sum": -12.34
   },
   "spread:home": {
    "n": 25,
-   "sum": 3.21
+   "sum": 4.08
   },
   "total:over": {
-   "n": 15,
-   "sum": -3.34
+   "n": 18,
+   "sum": -4.46
   },
   "total:under": {
-   "n": 27,
-   "sum": -5.67
+   "n": 22,
+   "sum": -2.63
   }
  }
 }

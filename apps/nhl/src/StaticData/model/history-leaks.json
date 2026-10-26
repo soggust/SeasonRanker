@@ -1,12 +1,12 @@
 {
- "at": "2026-10-24T09:45:03.445Z",
+ "at": "2026-10-26T05:12:36.372Z",
  "epoch": "2026-10-23T05:30:00Z",
- "commit": "a53ae89e",
- "n": 132718,
+ "commit": "5b30745b",
+ "n": 133969,
  "tested": 30,
  "leaks": 0,
- "trends": 1,
- "status": "watch",
- "headline": "side: over losing more this week (0.05 this week, 0.00 before (-2.2 se) nats per 100 rows)",
+ "trends": 0,
+ "status": "ok",
+ "headline": "30 segments tested on 133969 priced rows: none losing to the Book beyond the false discovery rate, none trending worse",
  "rows": []
 }

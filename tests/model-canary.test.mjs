@@ -291,6 +291,8 @@ const ledger = [
     odds: 120,
     units: 1,
     intent: "edge",
+    // (a gate's practice stake on a real bet: its why, still a bet)
+    practice: "a gate held it to the practice stake",
     status: i % 2 ? "lost" : "won",
     profit: i % 2 ? -1 : 1.2,
     p: 0.48,
@@ -298,6 +300,8 @@ const ledger = [
     placedAt: "2026-10-24T00:00:00Z",
     clv: { v: 2, ev: 0.01, prob: -0.01, beat: false },
   })),
+  // (the slate's practice pick: not a bet of the record)
+  { sport: "nba", market: "ml", side: "home", odds: 120, units: 0.5, intent: "edge", topN: true, status: "won", placedAt: "2026-10-24T00:00:00Z" },
   {
     sport: "nba",
     market: "ml",
