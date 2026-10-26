@@ -378,7 +378,10 @@
   "50287902": "2026-10-26",
   "50288083": "2026-10-26",
   "50288850": "2026-10-26",
-  "50289047": "2026-10-26"
+  "50289047": "2026-10-26",
+  "50289866": "2026-10-26",
+  "50290389": "2026-10-26",
+  "50290411": "2026-10-26"
  },
  "signals": [
   {
@@ -1564,6 +1567,51 @@
    "confidence": 0.9,
    "story": "50269266",
    "headline": "Packers activate RB Josh Jacobs for 2026 debut",
+   "model": "claude-haiku-5-5"
+  },
+  {
+   "id": "50290389|5|4427238|return",
+   "day": "2026-10-26",
+   "at": "2026-10-26T21:33:15.000Z",
+   "team": "5",
+   "abbr": "CLE",
+   "athlete": "4427238",
+   "player": "Dillon Gabriel",
+   "kind": "return",
+   "direction": "none",
+   "confidence": 0.9,
+   "story": "50290389",
+   "headline": "Browns activate Gabriel off IR, now have 4 QBs on roster",
+   "model": "claude-haiku-5-5"
+  },
+  {
+   "id": "50290411|33|3916387|return",
+   "day": "2026-10-26",
+   "at": "2026-10-26T21:19:46.000Z",
+   "team": "33",
+   "abbr": "BAL",
+   "athlete": "3916387",
+   "player": "Lamar Jackson",
+   "kind": "return",
+   "direction": "up",
+   "confidence": 0.6,
+   "story": "50290411",
+   "headline": "Ravens' Jesse Minter optimistic QB Lamar Jackson can return vs. Bills",
+   "model": "claude-haiku-5-5"
+  },
+  {
+   "id": "50289866|13|14880|starting",
+   "day": "2026-10-26",
+   "at": "2026-10-26T20:40:25.000Z",
+   "team": "13",
+   "abbr": "LV",
+   "athlete": "14880",
+   "player": "Kirk Cousins",
+   "kind": "starting",
+   "direction": "up",
+   "confidence": 0.9,
+   "story": "50289866",
+   "headline": "Kirk Cousins to remain Raiders' starting QB vs. Jets, Klint Kubiak says",
    "model": "claude-haiku-5-5"
   }
  ]

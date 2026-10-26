@@ -5845,6 +5845,10 @@
    "espn": {
     "seen": "2026-10-26T05:02:33.986Z",
     "own": "2026-10-25T13:09:00.000Z"
+   },
+   "sleeper": {
+    "seen": "2026-10-26T20:16:47.466Z",
+    "own": "2026-10-26T17:10:59.858Z"
    }
   },
   "401892583|jonathanhuberdeau|out": {
@@ -6145,6 +6149,10 @@
    "espn": {
     "seen": "2026-10-26T16:59:36.917Z",
     "own": "2026-10-26T15:19:00.000Z"
+   },
+   "sleeper": {
+    "seen": "2026-10-26T20:16:47.466Z",
+    "own": "2026-10-26T15:25:59.696Z"
    }
   },
   "401892585|camyork|out": {
@@ -7093,6 +7101,22 @@
    "espn": {
     "seen": "2026-10-26T17:17:29.303Z",
     "own": "2026-10-26T16:48:00.000Z"
+   },
+   "bluesky": {
+    "seen": "2026-10-26T19:15:36.014Z",
+    "own": "2026-10-26T19:10:40.000Z",
+    "why": "@dailyfaceoff.bsky.social: Flyers’ Rasmus Ristolainen to miss two weeks with upp"
+   }
+  },
+  "401892585|dantefabbro|out": {
+   "game": "401892585",
+   "start": "2026-10-27T23:00Z",
+   "team": "29",
+   "name": "Dante Fabbro",
+   "status": "out",
+   "sleeper": {
+    "seen": "2026-10-26T20:16:47.466Z",
+    "own": "2026-10-26T18:41:00.354Z"
    }
   }
  }

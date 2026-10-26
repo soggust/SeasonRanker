@@ -3,6 +3,39 @@
  "days": 2,
  "signals": [
   {
+   "team": "5",
+   "abbr": "CLE",
+   "athlete": "4427238",
+   "player": "Dillon Gabriel",
+   "kind": "return",
+   "direction": "none",
+   "confidence": 0.9,
+   "headline": "Browns activate Gabriel off IR, now have 4 QBs on roster",
+   "at": "2026-10-26T21:33:15.000Z"
+  },
+  {
+   "team": "33",
+   "abbr": "BAL",
+   "athlete": "3916387",
+   "player": "Lamar Jackson",
+   "kind": "return",
+   "direction": "up",
+   "confidence": 0.6,
+   "headline": "Ravens' Jesse Minter optimistic QB Lamar Jackson can return vs. Bills",
+   "at": "2026-10-26T21:19:46.000Z"
+  },
+  {
+   "team": "13",
+   "abbr": "LV",
+   "athlete": "14880",
+   "player": "Kirk Cousins",
+   "kind": "starting",
+   "direction": "up",
+   "confidence": 0.9,
+   "headline": "Kirk Cousins to remain Raiders' starting QB vs. Jets, Klint Kubiak says",
+   "at": "2026-10-26T20:40:25.000Z"
+  },
+  {
    "team": "13",
    "abbr": "LV",
    "athlete": "34081",
@@ -56,40 +89,7 @@
    "confidence": 0.9,
    "headline": "Vikings activate RB Jordan Mason off injured reserve",
    "at": "2026-10-24T22:15:19.000Z"
-  },
-  {
-   "team": "9",
-   "abbr": "GB",
-   "athlete": "4047365",
-   "player": "Josh Jacobs",
-   "kind": "return",
-   "direction": "up",
-   "confidence": 0.9,
-   "headline": "Packers activate RB Josh Jacobs for 2026 debut",
-   "at": "2026-10-24T21:01:12.000Z"
-  },
-  {
-   "team": "33",
-   "abbr": "BAL",
-   "athlete": "4035671",
-   "player": "Tyler Huntley",
-   "kind": "starting",
-   "direction": "up",
-   "confidence": 0.9,
-   "headline": "Ravens rule out Lamar Jackson (ankle) vs. Bengals; Tyler 'Snoop' Huntley to start",
-   "at": "2026-10-24T20:41:27.000Z"
-  },
-  {
-   "team": "33",
-   "abbr": "BAL",
-   "athlete": "3916387",
-   "player": "Lamar Jackson",
-   "kind": "restriction",
-   "direction": "down",
-   "confidence": 0.8,
-   "headline": "Ravens rule out Lamar Jackson (ankle) vs. Bengals; Tyler 'Snoop' Huntley to start",
-   "at": "2026-10-24T20:41:27.000Z"
   }
  ],
- "at": "2026-10-26T05:03:40.538Z"
+ "at": "2026-10-26T21:42:31.055Z"
 }
