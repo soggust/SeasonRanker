@@ -482,6 +482,7 @@ export async function scoreMma(dir, { log = console.log, now = new Date() } = {}
   // (the replayed record (replay-record.mjs): the bouts this version would have bet over the priced history before
   // MMA_START, each at its lead band's price as the archive has it)
   let replay = null;
+  let canary = null;
   if (V.replay?.replayRecord && histRows.close.length) {
     const names = (x) => ({ home: x.names?.[0] ?? 'Fighter A', away: x.names?.[1] ?? 'Fighter B', matchup: `${x.names?.[0] ?? 'Fighter A'} vs ${x.names?.[1] ?? 'Fighter B'}` });
     // (D74: the best US price where the deep history (D67's dense MMA lines) has the other books at the row's snapshot)
@@ -510,6 +511,8 @@ export async function scoreMma(dir, { log = console.log, now = new Date() } = {}
     replay = V.replay.replayRecord(...replayArgs);
     // (D88's self-tune: TUNE_GRID re-stakes the same replay under each candidate knob)
     if (process.env.TUNE_GRID) tuneReplays(V, SPORT, replay, () => V.replay.replayRecord(...replayArgs));
+    // (research only, D93: GATE_CANARY=<dir> runs the leakage canaries and the null tests on these rows (canary.mjs))
+    if (process.env.GATE_CANARY) canary = await import('./canary.mjs').then((C) => C.canarySlim(C.canaries(V, SPORT, replayArgs, replay, { dir: process.env.GATE_CANARY, log: say })));
     say(`replayed record: ${replay.overall.won}-${replay.overall.lost}-${replay.overall.push} ${replay.overall.profit >= 0 ? '+' : ''}${replay.overall.profit}u on ${replay.n.bets} bets (${replay.flags.timing.open} at the open, ${replay.flags.timing.close} at the close), ${replay.n.practice} practice picks`);
   }
   return {
@@ -525,5 +528,6 @@ export async function scoreMma(dir, { log = console.log, now = new Date() } = {}
     anchor: null,
     trustPrior: { ...prior, rows: packRows(tb), periods, match: histRows.report ? { total: histRows.report.total, matched: histRows.report.matched, closed: histRows.report.closed, closedMatched: histRows.report.closedMatched, rate: histRows.report.rate, closedRate: histRows.report.closedRate } : null },
     meta: { practiceN, practiceUnits: V.desk.PRACTICE_UNITS ?? 0.5, trust: Object.fromEntries(MARKETS.map((m) => [m, Object.fromEntries(BANDS.map((band) => [band, prior[m].bands[band].trust]))])), matched: chances.size, priced: lines.length },
+    canary,
   };
 }

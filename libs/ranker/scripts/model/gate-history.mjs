@@ -29,12 +29,19 @@
 import { readHistory } from './odds-history.mjs';
 import { bootDiff, binLoss, pairRows, r4, seasonWeight } from './gate-score.mjs';
 import { nameKey } from './espn.mjs';
+import { matchNames, nameParts } from './names.mjs';
 
 export const CLOSE_MAX = 6 * 36e5;
 const fin = Number.isFinite;
 const ET = new Intl.DateTimeFormat('en-CA', { timeZone: 'America/New_York', year: 'numeric', month: '2-digit', day: '2-digit' });
 const etDay = (t) => ET.format(new Date(t));
 const implied = (o) => (o > 0 ? 100 / (o + 100) : -o / (-o + 100));
+// (a sharp book's pair is a fair only where it is a two-way market: its implied chances sum to 1 or more. The data-quality
+// audit (2026-10-24): the NHL's 2020 bubble archive holds 106 Pinnacle "h2h" rows at a negative vig (101/231: the
+// regulation 3-way prices, the draw left out), 64 of them read as the fair; such a pair falls back to DraftKings' own
+// no-vig, as D48's unseen Pinnacle does)
+export const PIN_MIN_SUM = 1;
+export const sharpPair = (p) => !!p && fin(p.a) && fin(p.b) && implied(p.a) + implied(p.b) >= PIN_MIN_SUM;
 export const devig = (a, b) => {
   const x = implied(a);
   const y = implied(b);
@@ -90,14 +97,14 @@ export function historyLineBets(events, lines, games) {
     const fairOf = (market) => {
       const d = dk[market];
       const p = books.pin?.[market];
-      if (p && p.line === d.line && fin(p.a) && fin(p.b) && seenBy(p, d.ts)) return devig(p.a, p.b);
+      if (p && p.line === d.line && sharpPair(p) && seenBy(p, d.ts)) return devig(p.a, p.b);
       return devig(d.a, d.b);
     };
     // (whether a market's fair is the sharp book's, seen by DraftKings' snapshot: the reason tiers' books' gap, D58)
     const pinOf = (market) => {
       const d = dk[market];
       const p = books.pin?.[market];
-      return !!(p && p.line === d.line && fin(p.a) && fin(p.b) && seenBy(p, d.ts));
+      return !!(p && p.line === d.line && sharpPair(p) && seenBy(p, d.ts));
     };
     const spread = dk.spreads && fin(dk.spreads.a) && fin(dk.spreads.b) ? { line: dk.spreads.line, fair: fairOf('spreads') } : null;
     for (const [mk, d] of Object.entries(dk)) {
@@ -121,12 +128,75 @@ export function historyPropIndex(events, props, marketStat) {
     const e = events.get(p.oid);
     if (!stat || !e?.id || !fin(p.line) || !fin(p.over) || !fin(p.under)) continue;
     if (p.kind === 'c' && Date.parse(e.t) - Date.parse(p.ts) > CLOSE_MAX) continue;
-    const k = `${stat}|${nameKey(p.player)}|${e.id}`;
-    const x = best.get(k) ?? best.set(k, { start: e.t, season: e.season }).get(k);
+    // (by the book's own name, its note kept: "Elias Pettersson (2004)" never merged with "Elias Pettersson",
+    // which nameKey alone reads as one; propIndexByPlayer matches the names to the players)
+    const k = `${stat}|${bookKey(p.player)}|${e.id}`;
+    const x = best.get(k) ?? best.set(k, { start: e.t, season: e.season, name: String(p.player).trim(), stat, game: String(e.id) }).get(k);
     const fair = devig(p.over, p.under);
     if (!x[p.kind] || Math.abs(fair - 0.5) < Math.abs(x[p.kind].fair - 0.5)) x[p.kind] = { line: p.line, over: p.over, under: p.under, fair, ts: p.ts };
   }
   return best;
+}
+
+// (a book name's index key: its nameKey with a trailing note kept apart)
+const bookKey = (name) => {
+  const { key, note } = nameParts(name);
+  return note ? `${key}(${note.toLowerCase()})` : key;
+};
+
+// The props' history index by player (the grading audit's name round, 2026-10-24): Map "stat|pid|ESPN game id" ->
+// the index's entry, each book name matched to one of the game's players (names.mjs matchNames: the key, then the
+// nickname and the surname, never two candidates, never a name another player of the sport has exactly). rows: the
+// players' games (each { pid, name, game, team }); games: the games (each { id, home, away, homeAbbr, awayAbbr }),
+// the teams' codes a book's "(TEAM)" note is read against. Two names reaching one player's stat merge, each kind at
+// its line nearest even. .report: { names, matched, byKey, fuzzy, unmatched } (book names, a game's each once)
+export function propIndexByPlayer(index, rows, games = []) {
+  const abbr = new Map();
+  for (const g of games) {
+    if (g.homeAbbr) abbr.set(`${g.id}|${g.home}`, g.homeAbbr);
+    if (g.awayAbbr) abbr.set(`${g.id}|${g.away}`, g.awayAbbr);
+  }
+  const players = new Map();
+  const known = new Set();
+  for (const r of rows) {
+    if (!r.name) continue;
+    known.add(nameKey(r.name));
+    if (!r.game) continue;
+    const g = String(r.game);
+    const m = players.get(g) ?? players.set(g, new Map()).get(g);
+    if (!m.has(String(r.pid))) m.set(String(r.pid), { pid: String(r.pid), name: r.name, abbr: abbr.get(`${g}|${r.team}`) ?? null });
+  }
+  const names = new Map();
+  for (const x of index.values()) if (x.name && x.game) (names.get(x.game) ?? names.set(x.game, new Set()).get(x.game)).add(x.name);
+  const report = { names: 0, matched: 0, byKey: 0, fuzzy: 0, unmatched: 0 };
+  const to = new Map();
+  for (const [g, set] of names) {
+    report.names += set.size;
+    const m = matchNames([...set], [...(players.get(g)?.values() ?? [])], { known });
+    for (const n of set) {
+      const p = m.get(n);
+      if (!p) {
+        report.unmatched++;
+        continue;
+      }
+      report.matched++;
+      if (nameKey(n) === nameKey(p.name) && !nameParts(n).note) report.byKey++;
+      else report.fuzzy++;
+      to.set(`${g}|${n}`, p.pid);
+    }
+  }
+  const out = new Map();
+  const even = (y) => Math.abs(y.fair - 0.5);
+  for (const x of index.values()) {
+    const pid = to.get(`${x.game}|${x.name}`);
+    if (!pid) continue;
+    const k = `${x.stat}|${pid}|${x.game}`;
+    const have = out.get(k);
+    if (!have) out.set(k, { ...x, pid });
+    else for (const kind of ['o', 'c']) if (x[kind] && (!have[kind] || even(x[kind]) < even(have[kind]))) have[kind] = x[kind];
+  }
+  out.report = report;
+  return out;
 }
 
 // (a trust for each row, walk-forward by month: keyOf(row) its group, fit on the rows of the months before only
@@ -328,7 +398,9 @@ export function intradayLines(events, intra, offsets) {
         last.set(`${x.book}|${x.market}`, x);
       }
       const ts = new Date(T).toISOString();
-      for (const x of last.values()) out.push({ oid, kind: 'i', h, ts, book: x.book, market: x.market, line: x.line, a: x.a, b: x.b });
+      // (a price the files write gone by then (intraday.mjs buildRows' G row, the data-quality audit 2026-10-24) isn't
+      // on the board at T: that book's market has no row there, never its older price carried forward)
+      for (const x of last.values()) if (!x.gone) out.push({ oid, kind: 'i', h, ts, book: x.book, market: x.market, line: x.line, a: x.a, b: x.b });
     }
   }
   return out;
@@ -359,7 +431,8 @@ function propAttr(m, line, raw) {
 export function propHistoryRows(V, sport, index, matches, current, { factsLead = null } = {}) {
   const rows = [];
   for (const m of matches) {
-    const h = index.get(`${m.stat}|${nameKey(m.name)}|${m.game}`);
+    // (an index by player, propIndexByPlayer's, by his id; an older one by his name's key)
+    const h = index.get(`${m.stat}|${m.pid}|${m.game}`) ?? index.get(`${m.stat}|${nameKey(m.name)}|${m.game}`);
     if (!h) continue;
     for (const kind of ['o', 'c']) {
       const x = h[kind];
@@ -473,7 +546,33 @@ export function propHistoryRows(V, sport, index, matches, current, { factsLead =
 }
 
 // The history a sport has, loaded once: { events, lines, props } (odds-history.mjs readHistory)
-export const loadHistory = (sport) => readHistory(sport);
+// (lines quarantined from the gate's history, by sport: [from, to) on the event's start. MLB's 2020 opening week
+// (the shortened season's exhibitions and first games to the night of 07-31 Eastern): the data-quality audit
+// (2026-10-24) found DraftKings and Pinnacle at the same snapshot more than 5 points apart on 72 of the week's 188
+// pairs against 5 of the rest of 2020's 1,347 (20 of the week's mirror images, Pinnacle at placeholder prices like
+// -104/-112 on several, DraftKings' own no-vig the worse on the results: log loss 0.729 against 0.669 at the opens);
+// the side DraftKings priced past Pinnacle's no-vig went +30.8u on 91 flat bets (+34%) against -12.5u the rest of 2020.
+// No per-row test removes exactly the bad ones (the mirror test catches 20 of the 72; the placeholder prices aren't
+// mirrors), so the week's lines (702 rows, 112 events) are left out whole: its events and finals stay (the ratings read
+// them), its prices are never a row, a fair or a close)
+export const LINE_QUARANTINE = { mlb: [['2020-07-20T00:00:00Z', '2020-08-01T10:00:00Z']] };
+export function quarantined(sport, t, windows = LINE_QUARANTINE) {
+  const at = Date.parse(t);
+  return (windows[sport] ?? []).some(([a, b]) => at >= Date.parse(a) && at < Date.parse(b));
+}
+export function loadHistory(sport, { windows = LINE_QUARANTINE } = {}) {
+  const hist = readHistory(sport);
+  if (!windows[sport]?.length) return hist;
+  const out = [];
+  let dropped = 0;
+  for (const l of hist.lines) {
+    if (quarantined(sport, hist.events.get(l.oid)?.t, windows)) dropped++;
+    else out.push(l);
+  }
+  hist.lines = out;
+  hist.quarantined = dropped;
+  return hist;
+}
 
 // (rows slimmed for the score file: what betCompare and vsBook read)
 export const slim = (rows) => rows.map((x) => ({ id: x.id, event: x.event, sport: x.sport, stat: x.stat, line: x.line, day: x.day, t: x.t, season: x.season, f: r4(x.f), p: r4(x.p), raw: r4(x.raw), ...(fin(x.anch) ? { anch: r4(x.anch), pull: r4(x.pull) } : {}), y: x.y, q: x.q === null ? null : r4(x.q), overOdds: x.overOdds, underOdds: x.underOdds, w: r4(x.w) }));

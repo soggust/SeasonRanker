@@ -1,7 +1,7 @@
 // ESPN's public site API, for the model desk: a league's teams, a team's season schedule, a day's scoreboard
 // (its games, their scores and DraftKings' current lines). Free; asked politely, again after a refusal.
 
-import { get } from './sources.mjs';
+import { etDay, get } from './sources.mjs';
 import { BOOK } from './leagues.mjs';
 
 // (ESPN's id for each book it carries lines from, on its core API)
@@ -86,6 +86,25 @@ export function shortOf(home, away, period) {
     return h >= a ? a : a - 0.5;
   }
   return Number.isFinite(period) && period > 0 && period < 9 ? period : null;
+}
+
+// (MLB's 2020 and 2021 seasons scheduled each doubleheader's games at 7 innings: such a game that went its 7 (or
+// extra innings past them), or ended after 6 and a half with the home side ahead, was complete, and the books graded
+// its run line and total; shortOf, reading 9 innings as the game, marked it short and desk.mjs settle voided them
+// (the grading audit, 2026-10-24: 114 of the archive's 152 short MLB finals). A doubleheader: two or more regular
+// season finals of the same two teams on one Eastern day. Games returned, those short marks dropped; others as they are)
+export const SEVEN_INNING_SEASONS = new Set([2020, 2021]);
+export function sevenInningDoubleheaders(games) {
+  const day = (g) => etDay(Date.parse(g.date));
+  const pair = (g) => [String(g.home), String(g.away)].sort().join('|');
+  const n = new Map();
+  for (const g of games) if (g.final && g.type === 2 && SEVEN_INNING_SEASONS.has(g.season)) n.set(`${pair(g)}|${day(g)}`, (n.get(`${pair(g)}|${day(g)}`) ?? 0) + 1);
+  return games.map((g) => {
+    if (!g.short || !g.final || g.type !== 2 || !SEVEN_INNING_SEASONS.has(g.season) || (n.get(`${pair(g)}|${day(g)}`) ?? 0) < 2) return g;
+    if (!(g.short >= 7 || (g.short === 6.5 && g.hs > g.as))) return g;
+    const { short, ...rest } = g;
+    return { ...rest, scheduled: 7 };
+  });
 }
 
 // A scoreboard event's DraftKings lines as prices: each side's moneyline, spread (its line and price) and the

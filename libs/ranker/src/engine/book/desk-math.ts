@@ -305,7 +305,7 @@ export function epochLabel(at: string): string {
 
 // (the board's panels, open or shut: By Sport and By Confidence open from the start, Open Bets, In Play and
 // Recently closed shut (the owner, 2026-10-19); Findings shut at the foot (2026-10-20))
-export type DeskPanel = 'sport' | 'confidence' | 'open' | 'live' | 'closed' | 'findings';
+export type DeskPanel = 'sport' | 'confidence' | 'open' | 'live' | 'closed' | 'findings' | 'check';
 export const DESK_PANELS_OPEN: readonly DeskPanel[] = ['sport', 'confidence'];
 export const deskPanelOpen = (panel: DeskPanel, flipped: ReadonlySet<string> = new Set()): boolean => DESK_PANELS_OPEN.includes(panel) !== flipped.has(panel);
 

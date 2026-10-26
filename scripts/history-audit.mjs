@@ -121,6 +121,11 @@ export function parseArgs(argv) {
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const GATE = path.join(ROOT, 'libs/ranker/scripts/model/gate.mjs');
+// (D93: every re-record runs the leakage canaries on its own replay (gate.mjs GATE_CANARY: the time travel and the planted
+// leak, the record refused when the time travel moves a bet; the weekly adds CANARY_DRAWS null draws a test), their
+// reading kept on the record's dated row beside the live check)
+export const CANARY_DRAWS = 10;
+export const canaryEnv = (mode, dir) => ({ GATE_CANARY: dir, GATE_CANARY_DRAWS: String(mode === 'weekly' ? CANARY_DRAWS : 0) });
 const STATE = path.join(ROOT, '.cache/history-audit.json');
 const LOCK = path.join(ROOT, '.cache/history-audit.lock');
 const tunedPath = (sport) => path.join(ROOT, 'apps', sport, 'src/StaticData/model/tuned.json');
@@ -277,7 +282,7 @@ async function main() {
     let findings = findings0;
     for (const sport of opts.sports) {
       const was = readJson(recFile(sport), null);
-      const r = await run([GATE, '--score-only', 'worktree', '--record', sport, ...(opts.refit ? ['--refit'] : [])], { env: { RECORD_TRIGGER: mode }, logFile: path.join(logDir, `${sport}-record.log`) });
+      const r = await run([GATE, '--score-only', 'worktree', '--record', sport, ...(opts.refit ? ['--refit'] : [])], { env: { RECORD_TRIGGER: mode, ...canaryEnv(mode, logDir) }, logFile: path.join(logDir, `${sport}-record.log`) });
       const now = readJson(recFile(sport), null);
       const reasons = guardReasons(r.out);
       let why = null;
@@ -306,7 +311,7 @@ async function main() {
       tuneBrief = readJson(briefFile, []);
       say(`self-tune ${t.code ? `failed (exit ${t.code})` : 'run'} (${Math.round(t.secs / 60)} min): ${tuneLines(tuneBrief).join('; ') || 'nothing'}`);
       for (const sport of tuneAgain(tuneBrief, tuneSports)) {
-        const r = await run([GATE, '--score-only', 'worktree', '--record', sport], { env: { RECORD_TRIGGER: 'tune' }, logFile: path.join(logDir, `${sport}-tune-record.log`) });
+        const r = await run([GATE, '--score-only', 'worktree', '--record', sport], { env: { RECORD_TRIGGER: 'tune', ...canaryEnv('tune', logDir) }, logFile: path.join(logDir, `${sport}-tune-record.log`) });
         const now = readJson(recFile(sport), null);
         if (r.code) {
           // (refused or failed: nothing recorded (the guard writes nothing it refuses); the sport's knobs and the epoch as they were)

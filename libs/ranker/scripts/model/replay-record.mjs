@@ -33,6 +33,7 @@
 //              REPLAY_DAYS days, and the honesty flags (open against close, context coverage by season, the price
 //              convention). Small: no row list
 import { existsSync, readFileSync, writeFileSync } from 'node:fs';
+import { expectOf } from './live-check.mjs';
 import path from 'node:path';
 import * as WINDOWS from './windows.mjs';
 import * as REASONS from './reasons.mjs';
@@ -89,6 +90,9 @@ const finishTally = (t) => ({ ...t, beat: t.beatN ? r4(t.beat / t.beatN) : null,
 export const knownAt = (x) => !fin(x.factsAt) || (fin(x.at) && x.factsAt <= x.at);
 // (the bets whose price read a fact dated after their placement: none, ever (the timestamp test))
 export const lateFacts = (bets) => bets.filter((b) => fin(b.factsAt) && !(fin(b.at) && b.factsAt <= b.at));
+// (a list's largest and smallest by a loop: a spread into Math.max overflows the stack past about 120,000 bets)
+const maxOf = (xs) => xs.reduce((m, x) => (x > m ? x : m), -Infinity);
+const minOf = (xs) => xs.reduce((m, x) => (x < m ? x : m), Infinity);
 const tallyOf = (bets) => finishTally(bets.reduce(addBet, emptyTally()));
 
 // (the clean-open test from the history's events: a row's open is clean when its snapshot came after both teams'
@@ -766,6 +770,8 @@ export function replayRecord(V, sport, rows, { events = null, names = () => ({ h
     }
   }
   const out = summarize(sport, bets, passed, sumArgs);
+  // (D93: the replay's expectation by key, what the live check reads the live bets against (live-check.mjs))
+  out.expect = expectOf(bets);
   // (the self-tune's day series (D88, self-tune.mjs seriesOf): the bets themselves, off the JSON)
   Object.defineProperty(out, 'bets', { value: bets, enumerable: false });
   // (the reason tiers' file (D58): what gate.mjs --record writes as reasons.json, kept off the replay's own file)
@@ -900,7 +906,7 @@ export function summarize(sport, bets, passed, { epoch, now, flags, rows, season
   // (the last REPLAY_DAYS Eastern days' tallies in the Recent form card's shape, [won, lost, push, staked, profit];
   // the streak over the decided bets, newest first, with its settled times; the last REPLAY_LAST bets)
   const settledAt = (b) => b.t + GAME_HOURS * 36e5;
-  const newest = bets.length ? Math.max(...bets.map(settledAt)) : now;
+  const newest = bets.length ? maxOf(bets.map(settledAt)) : now;
   const window = new Set(Array.from({ length: REPLAY_DAYS }, (_, i) => etDay(newest - i * 864e5)));
   const daysOf = (list) => {
     const days = {};
@@ -926,8 +932,8 @@ export function summarize(sport, bets, passed, { epoch, now, flags, rows, season
     sport,
     epoch,
     at: new Date(now).toISOString(),
-    from: bets.length ? new Date(Math.min(...bets.map((b) => b.t))).toISOString() : null,
-    through: bets.length ? new Date(Math.max(...bets.map((b) => b.t))).toISOString() : null,
+    from: bets.length ? new Date(minOf(bets.map((b) => b.t))).toISOString() : null,
+    through: bets.length ? new Date(maxOf(bets.map((b) => b.t))).toISOString() : null,
     n: { rows: rows.open + rows.close, keys: real.length + practice.length + passed.length, bets: real.length, practice: practice.length, pass: passed.length },
     overall: all,
     practice: tallyOf(practice),
@@ -989,7 +995,7 @@ export function summarize(sport, bets, passed, { epoch, now, flags, rows, season
 export const DAILY_COLS = ['won', 'lost', 'push', 'staked', 'profit', 'beat', 'beatN', 'clv'];
 export function dailyOf(bets, settledAt = (b) => b.t + GAME_HOURS * 36e5, extra = []) {
   if (!bets.length) return { cols: DAILY_COLS, from: null, bands: {} };
-  const year = Number(etDay(Math.max(...bets.map(settledAt))).slice(0, 4));
+  const year = Number(etDay(maxOf(bets.map(settledAt))).slice(0, 4));
   const from = etDay(Date.UTC(year, 0, 1, 12) - 7 * 864e5);
   const bands = {};
   // (extra: the tracked practice candidates (band 'practice') and the passes (band 'pass'), D87: buckets of their

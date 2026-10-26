@@ -11,7 +11,8 @@
 //   stored     apps/<sport>/scripts/model/odds-history/intraday/<season>.jsonl.gz, a row a price change:
 //              ["I", oid, snapshot, book, market, line, a, b] (the archive's L row's shape, kind 'i'; h2h and
 //              spreads framed on the archive's event's home by the names, D56), plus ["S", snapshot, n] (a snapshot
-//              that saw n of the sport's coming games: a price not repeated is as last written)
+//              that saw n of the sport's coming games: a price not repeated is as last written), plus ["G", oid,
+//              snapshot, book, market] (that book's market gone from the board at that snapshot: no longer standing)
 //   reading    readIntraday(sport): { events (the archive's), rows by oid, snaps }
 //
 // The key (ODDS_API_KEY) is never printed: errors go through oddsapi.mjs redact.
@@ -175,7 +176,7 @@ export function buildPropRows(snaps, events) {
 
 // The committed files from the work file: each event matched to the archive's (its id, else its two names and a start
 // within 12 hours), framed on the archive's home by the names, a row a price change
-export function buildRows(sport, snaps, events) {
+export function buildRows(sport, snaps, events, { ahead = null } = {}) {
   const byId = new Map(events.map((e) => [e.oid, e]));
   const byNames = new Map();
   for (const e of events) {
@@ -188,11 +189,18 @@ export function buildRows(sport, snaps, events) {
     return list.find((e) => Math.abs(Date.parse(e.t) - Date.parse(x.c)) <= 12 * HOUR) ?? null;
   };
   const last = new Map();
+  // (each event's book and market prices standing: written and not since gone)
+  const standing = new Map();
   const out = new Map();
   const put = (season, row) => (out.get(season) ?? out.set(season, []).get(season)).push(row);
   let unmatched = 0;
+  let gone = 0;
   for (const s of [...snaps].sort((a, b) => Date.parse(a.ts) - Date.parse(b.ts))) {
     const seasons = new Set();
+    const lo = Date.parse(s.ts);
+    // (the window this snapshot kept every coming game from: the pull's MAX_AHEAD, or the deep job's own)
+    const span = Number.isFinite(s.ahead) ? s.ahead : Number.isFinite(ahead) ? ahead : null;
+    const posted = new Map();
     for (const x of s.events ?? []) {
       const e = matchOf(x);
       if (!e) {
@@ -200,11 +208,14 @@ export function buildRows(sport, snaps, events) {
         continue;
       }
       seasons.add(e.season);
+      const here = posted.get(e.oid) ?? posted.set(e.oid, new Set()).get(e.oid);
       for (const [book, ms] of Object.entries(x.x ?? {})) {
         for (const [market, v] of Object.entries(ms)) {
           const f = framed({ h: x.h, a: x.a }, { h: e.homeName, a: e.awayName }, market, v);
           if (!f) continue;
           const k = `${e.oid}|${book}|${market}`;
+          here.add(`${book}|${market}`);
+          (standing.get(e.oid) ?? standing.set(e.oid, new Set()).get(e.oid)).add(`${book}|${market}`);
           const sig = f.join(',');
           if (last.get(k) === sig) continue;
           last.set(k, sig);
@@ -212,9 +223,32 @@ export function buildRows(sport, snaps, events) {
         }
       }
     }
+    // (the data-quality audit, 2026-10-24: a change-only row stood until its next change, so a price the book had pulled,
+    // or an event the snapshot no longer listed, read as still posted hours or days later. A book's market standing on
+    // an event this snapshot listed without it, or on a coming event inside the snapshot's window the snapshot didn't
+    // list at all, is written gone: ["G", oid, snapshot, book, market]; its next sighting is written again)
+    for (const [oid, keys] of standing) {
+      const e = byId.get(oid);
+      const start = Date.parse(e?.t);
+      if (!(start > lo)) {
+        standing.delete(oid);
+        continue;
+      }
+      const here = posted.get(oid);
+      if (!here && !(span !== null && start <= lo + span)) continue;
+      for (const key of [...keys]) {
+        if (here?.has(key)) continue;
+        const [book, market] = key.split('|');
+        put(e.season, ['G', oid, s.ts, book, market]);
+        seasons.add(e.season);
+        keys.delete(key);
+        last.delete(`${oid}|${key}`);
+        gone++;
+      }
+    }
     for (const season of seasons) put(season, ['S', s.ts, (s.events ?? []).length]);
   }
-  return { out, unmatched };
+  return { out, unmatched, gone };
 }
 
 export function build(sports) {
@@ -225,14 +259,14 @@ export function build(sports) {
       continue;
     }
     const { events } = readHistory(sport, { props: false });
-    const { out, unmatched } = buildRows(sport, snaps, [...events.values()]);
+    const { out, unmatched, gone } = buildRows(sport, snaps, [...events.values()], { ahead: MAX_AHEAD(sport) });
     mkdirSync(intradayDir(sport), { recursive: true });
     for (const [season, rows] of out) {
       const file = path.join(intradayDir(sport), `${season}.jsonl.gz`);
       writeFileSync(file, gzipSync(Buffer.from(rows.map((r) => JSON.stringify(r)).join('\n') + '\n'), { level: 9 }));
       console.log(`${sport}: ${path.relative(ROOT, file)} ${rows.length} rows, ${Math.round(readFileSync(file).length / 1024)} KB`);
     }
-    console.log(`${sport}: ${snaps.length} snapshots, ${unmatched} event sightings not in the archive`);
+    console.log(`${sport}: ${snaps.length} snapshots, ${unmatched} event sightings not in the archive, ${gone} prices written gone`);
     const ps = readWork(sport, '-props');
     if (!ps.length) continue;
     for (const [season, rows] of buildPropRows(ps, [...events.values()])) {
@@ -255,11 +289,17 @@ export function readIntraday(sport) {
       const r = JSON.parse(s);
       if (r[0] === 'S') snaps.push(r[1]);
       else if (r[0] === 'I') (rows.get(r[1]) ?? rows.set(r[1], []).get(r[1])).push({ ts: Date.parse(r[2]), book: r[3], market: r[4], line: r[5], a: r[6], b: r[7] });
+      // (a price gone from the board at that snapshot (buildRows' G row): it no longer stands. No prices, so every
+      // reader that checks a price skips it; intradayLines and shopRows read the book as absent there)
+      else if (r[0] === 'G') (rows.get(r[1]) ?? rows.set(r[1], []).get(r[1])).push(goneRow(r));
     }
   }
   for (const list of rows.values()) list.sort((x, y) => x.ts - y.ts);
   return { rows, snaps };
 }
+
+// (a G row as a reader's row: the book's market gone from the board at that snapshot)
+export const goneRow = (r) => ({ ts: Date.parse(r[2]), book: r[3], market: r[4], line: null, a: null, b: null, gone: true });
 
 async function main() {
   const args = process.argv.slice(2);

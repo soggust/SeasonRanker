@@ -12,6 +12,7 @@ import { SummaryBox, athleteTeam, liveStat } from './live-props';
 import { pickTeamColor, splitPick } from './pick-style';
 import type { PlayerRef } from '../player-link';
 import { RecordHistoryFile, RecordTrend, recordTrendOf, trendUnits } from './record-trend';
+import { ExpectFile, LiveCheckRow, liveCheck, liveCheckRow } from './live-check';
 
 // The algorithm's admin panel (the Book, admins only): the code-only desk's play-money betting
 // (libs/ranker/scripts/model/run.mjs: every market of every game, 0.5 to 3 units), on the Bot's history
@@ -130,6 +131,12 @@ export class ModelDeskComponent implements OnInit, OnDestroy {
   }
   // (the build's time at the top: the version's epoch, replay-history.ts buildOf)
   buildAt: string | null = null;
+  // (live against the replay (live-check.ts, D93): each sport's staked edge bets since its epoch, and since the ledger
+  // began, against what the replay's same rules say bets like them return; the chip's sport or every sport)
+  private allChecks: { sport: string; epoch: LiveCheckRow; all: LiveCheckRow }[] = [];
+  get checks(): { sport: string; epoch: LiveCheckRow; all: LiveCheckRow }[] {
+    return this.allChecks.filter((c) => !this.sport || c.sport === this.sport);
+  }
 
   private flipped = readFlipped();
 
@@ -277,6 +284,13 @@ export class ModelDeskComponent implements OnInit, OnDestroy {
     this.allStates = files.map((f) => f.state).filter((s): s is ModelState => !!s);
     this.takeLedger(files.flatMap((f) => f.ledger?.bets ?? []));
     this.epoch = deskEpochOf(this.allStates);
+    this.allChecks = SPORTS.flatMap((sport, i) => {
+      const expect = (files[i].replay as (ReplayRecordFile & { expect?: ExpectFile }) | null)?.expect ?? null;
+      if (!expect) return [];
+      const bets = files[i].ledger?.bets ?? [];
+      const since = files[i].replay?.epoch ?? (this.epoch ? epochFor(this.epoch, sport) : null);
+      return [{ sport, epoch: liveCheckRow(sport, liveCheck(bets, expect, { since }), 'since its epoch'), all: liveCheckRow(sport, liveCheck(bets, expect, {}), 'every version since the ledger began') }];
+    });
     // (a remembered sport with no bets (NBA before its season): every sport instead)
     if (this.sport && !this.allBets.some((b) => b.sport === this.sport)) this.sport = null;
     this.show();

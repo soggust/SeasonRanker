@@ -99,7 +99,8 @@ export function shopRows(rows, deep, oidOf, { tol = SHOP_TOL } = {}) {
     const T = nearest(x.at);
     if (!fin(T)) continue;
     const same = (l) => (market === 'h2h' ? true : fin(l) && fin(x.line) && Math.abs(l - x.line) < 1e-9);
-    const others = [...at(oid, T).values()].filter((y) => y.market === market && y.book !== 'dk' && US_CODES.has(y.book) && same(y.line));
+    // (a book whose market the deep files write gone by T (intraday.mjs buildRows' G row) isn't on the board: never shopped)
+    const others = [...at(oid, T).values()].filter((y) => !y.gone && y.market === market && y.book !== 'dk' && US_CODES.has(y.book) && same(y.line));
     if (!others.length) continue;
     // (an MMA row framed on ESPN's first fighter where the archive's is the other (gate-mma.mjs crossed): its sides swapped)
     const flip = market === 'h2h' && x.crossed;

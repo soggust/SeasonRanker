@@ -57,6 +57,9 @@ import { propParts } from './trusted.mjs';
 import { readYoung, tagExperience } from './experience.mjs';
 import { tuneReplays } from './self-tune.mjs';
 import { knobsOf } from './tuned.mjs';
+import { liveCheck } from './live-check.mjs';
+import { canarySlim } from './canary.mjs';
+export { canarySlim };
 
 const ROOT = path.resolve(import.meta.dirname, '../../../..');
 const MODEL = path.join(ROOT, 'libs/ranker/scripts/model');
@@ -69,6 +72,9 @@ export const SPORTS = ['nfl', 'nhl', 'nba', 'mlb', 'mma'];
 export const ROLLING_DAYS = 28;
 export const FROZEN_FILE = path.join(MODEL, 'gate-frozen.json');
 const PROP_FROM = '2026-10-08T00:00:00Z';
+// (D93: the ratings' settings walk-forward by season for the priced history's rows (wfExpect); GATE_LINES_WF=0 the old
+// in-sample way, for comparing only)
+export const LINES_WF = process.env.GATE_LINES_WF !== '0';
 const MARKETS = ['spread', 'total', 'ml'];
 const ET = new Intl.DateTimeFormat('en-CA', { timeZone: 'America/New_York', year: 'numeric', month: '2-digit', day: '2-digit' });
 const etDay = (t) => ET.format(new Date(t));
@@ -328,7 +334,7 @@ export async function scoreVersion(dir, sport, { refit = false, propsLayer = tru
   // (the fights league: its own scoring, gate-mma.mjs, on the archive's bouts and the MMA priced history)
   if (sport === 'mma') {
     const m = await scoreMma(dir, { log });
-    return { ...m, code: codeOf(dir), inputs: { v: INPUTS_V, sport, code: modelCode(dir, { sport }), rows: m.replay ? { replay: m.replay.n.rows, keys: m.replay.n.keys, bets: m.replay.n.bets } : null, units: m.replay?.overall?.profit ?? null } };
+    return { ...m, code: codeOf(dir), inputs: { v: INPUTS_V, sport, code: modelCode(dir, { sport }), rows: m.replay ? { replay: m.replay.n.rows, keys: m.replay.n.keys, bets: m.replay.n.bets } : null, units: m.replay?.overall?.profit ?? null, ...(m.canary ? { canary: m.canary } : {}) } };
   }
   const notes = [];
   const say = (s) => (notes.push(s), log(`${sport}: ${s}`));
@@ -339,10 +345,14 @@ export async function scoreVersion(dir, sport, { refit = false, propsLayer = tru
   // a version from before them has no replayed record)
   for (const n of ['leagues', 'ratings', 'context', 'margins', 'backtest', 'desk', 'props', 'project', 'correct', 'anchor', 'lineup-risk', 'picks', 'replay-record', 'confidence', 'reasons', 'clv-bands', 'windows', 'trusted', 'tuned']) V[n === 'lineup-risk' ? 'lineupRisk' : n === 'replay-record' ? 'replay' : n === 'clv-bands' ? 'clvBands' : n] = await load(dir, n);
   // (the loaders: this checkout's, so both versions read the same history)
-  const H = { context: await import('./context.mjs'), logs: await import('./playerlogs.mjs'), props: await import('./props.mjs'), fitcache: await import('./fitcache.mjs'), espn: await import('./espn.mjs') };
+  const H = { context: await import('./context.mjs'), logs: await import('./playerlogs.mjs'), props: await import('./props.mjs'), fitcache: await import('./fitcache.mjs'), espn: await import('./espn.mjs'), history: await import('./gate-history.mjs') };
   const cfg = V.leagues.LEAGUES[sport];
   const state = readJson(path.join(ROOT, 'apps', sport, 'src/StaticData/model/state.json'), {});
   const history = readJson(path.join(ROOT, 'apps', sport, 'scripts/model/games.json'), []).filter((g) => g.type === 2 || g.type === 3).sort((a, b) => a.date.localeCompare(b.date));
+  // (research only, D93: GATE_CANARY_FUTURE=<ISO time> scrambles every outcome and price after it before anything is
+  // fit or priced (canary.mjs): a replayed bet placed before it that moves read the future)
+  const FUTURE = process.env.GATE_CANARY_FUTURE ? { cut: Date.parse(process.env.GATE_CANARY_FUTURE), C: await import('./canary.mjs'), parts: new Set((process.env.GATE_CANARY_PARTS || 'games,prices,players').split(',')) } : null;
+  if (FUTURE?.parts.has('games')) log(`${sport}: canary future: ${FUTURE.C.scrambleGames(history, FUTURE.cut, FUTURE.C.rngOf(91))} finals after ${process.env.GATE_CANARY_FUTURE} scrambled`);
   const finals = history.filter((g) => g.final && g.hs !== null && g.as !== null);
   const current = Math.max(...finals.map((g) => g.season).filter(fin));
   // (the ratings, the context, the margins' shape: as run.mjs fitRatings, fitTheContext and fitTheMargins)
@@ -375,6 +385,7 @@ export async function scoreVersion(dir, sport, { refit = false, propsLayer = tru
   // the finals over by then, the day-of terms at what was known then; ratings.mjs replay's asOf. A version from before
   // it has none: its rows read the game's own expectation, stamped with the game's facts)
   const hist = loadHistory(sport);
+  if (FUTURE?.parts.has('prices')) say(`canary future: ${FUTURE.C.scrambleArchive(hist, FUTURE.cut, FUTURE.C.rngOf(92))} archived prices after the cut jittered`);
   // (the intraday snapshots (D61, D63): the lines at the offset hours before each start, kind 'i', priced as of their
   // own time like the opens; only the replay's placement reads them (rows.intra), never the bar, the fits or the legs)
   if (process.env.GATE_NO_INTRA !== '1') {
@@ -466,8 +477,22 @@ export async function scoreVersion(dir, sport, { refit = false, propsLayer = tru
   const expExt = new Map();
   if (hist.events.size) {
     histGames = extendedGames(history, hist.events);
+    // (MLB's 2020-21 seven-inning doubleheader games complete, not short: their run lines and totals graded, espn.mjs)
+    if (sport === 'mlb' && H.espn.sevenInningDoubleheaders) histGames = H.espn.sevenInningDoubleheaders(histGames);
     const expAtExt = new Map();
     if (histGames.length > history.length) V.ratings.replay(histGames, params, 0, ctxFit?.ctx ?? null, (g, e) => expExt.set(String(g.id), e), asOfInto(expAtExt));
+    // (D93, the ratings' settings walk-forward: each season's games, their lines' rows and the
+    // props' expected points, under the ratings' settings (k, hfa, revert, kO, the scales) and the context's selection
+    // fit on the seasons before it alone (wfExpect); the version's own fit on every season stays for layers a and b)
+    if (LINES_WF) {
+      const t0 = Date.now();
+      const wf = wfExpect(V, cfg, history, histGames, feats, askAt, { log: say, sport });
+      for (const [m, w] of [[expAll, wf.expAll], [expAt, wf.expAt], [expExt, wf.expExt], [expAtExt, wf.expAtExt]]) {
+        m.clear();
+        for (const [k, v] of w) m.set(k, v);
+      }
+      say(`ratings walk-forward (D93): ${wf.seasons.map((x) => `${x.season} k ${x.k} hfa ${x.hfa} revert ${x.revert} sigma ${x.sigma}/${x.sigmaT}${x.ctx ? ' ctx' : ''}`).join('; ')} (${Math.round((Date.now() - t0) / 1000)}s)`);
+    }
     const expOf = (id) => expAll.get(id) ?? expAll.get(String(id)) ?? expExt.get(String(id)) ?? null;
     // (a game's expectation as of a snapshot: games.json's replay first, as expOf; null where the version can't say)
     const inAll = (id) => expAll.has(id) || expAll.has(String(id)) || expAll.has(Number(id));
@@ -512,7 +537,7 @@ export async function scoreVersion(dir, sport, { refit = false, propsLayer = tru
   const replayM = new Map();
   const ledgerMatches = new Map();
   // (the history's props by player game, and the replay's games matched to them)
-  const histIndex = hist.props.length ? historyPropIndex(hist.events, hist.props, Object.fromEntries(Object.entries(H.props.API_MARKETS?.[sport] ?? {}))) : new Map();
+  let histIndex = hist.props.length ? historyPropIndex(hist.events, hist.props, Object.fromEntries(Object.entries(H.props.API_MARKETS?.[sport] ?? {}))) : new Map();
   const histMatches = [];
   if (propsLayer && mineProps.length + finals.length > 0) {
     try {
@@ -524,6 +549,14 @@ export async function scoreVersion(dir, sport, { refit = false, propsLayer = tru
         const propGames = propsHistory(sport, history, histGames, hist.props, hist.events);
         if (propGames.length > history.length) say(`props: the players' games read for ${propGames.length - history.length} finals past games.json's (the seasons with the history's props: ${[...new Set(propGames.map((g) => g.season))].sort().join(', ')})`);
         const rows = await H.logs.playerRows(sport, cfg, propGames, facts);
+        if (FUTURE?.parts.has('players')) say(`canary future: ${FUTURE.C.scramblePlayerRows(rows, FUTURE.cut, FUTURE.C.rngOf(93))} player games after the cut scrambled`);
+        // (the history's props by player: each book name matched to one of its game's players, gate-history.mjs
+        // propIndexByPlayer; the grading audit's name round, 2026-10-24: "Nicolas Claxton", "Lamar Jackson (BAL)")
+        if (histIndex.size) {
+          histIndex = H.history.propIndexByPlayer(histIndex, rows, propGames);
+          const rp = histIndex.report;
+          say(`history props' names: ${rp.matched} of ${rp.names} book names matched to their game's players (${rp.byKey} by the name's key, ${rp.fuzzy} by the nickname or the surname), ${rp.unmatched} not`);
+        }
         // (each row's seasons played (experience.mjs, D82): read by the experience terms and the readouts by experience)
         tagExperience(sport, rows);
         // (the experience weighting's table (D82, young.json), set on the version's projection for the replay only, never
@@ -565,7 +598,7 @@ export async function scoreVersion(dir, sport, { refit = false, propsLayer = tru
           const elig = list.filter((x) => x.row.eligible !== false).length >= 200;
           for (const x of list) {
             const mix = V.project.exitMix(f.params, x.p);
-            if (histIndex.size && x.row.name && x.row.game && histIndex.has(`${st.key}|${H.espn.nameKey(x.row.name)}|${x.row.game}`)) {
+            if (histIndex.size && x.row.name && x.row.game && histIndex.has(`${st.key}|${x.row.pid}|${x.row.game}`)) {
               const mu = x.p.mu;
               histMatches.push({ stat: st.key, name: x.row.name, game: String(x.row.game), pid: String(x.row.pid), yrs: x.row.yrs ?? null, v: x.v, home: x.row.home ?? null, mu, params: f.params, mix, over: (line) => V.project.lineChances(line, mu, f.params, mix).over, ...(process.env.REPLAY_ATTR === '1' || V.trusted?.trialOn?.(sport) ? { parts: propParts(x.p, f.params), overMu: (line, m2) => V.project.lineChances(line, Math.max(0.05, m2), f.params, mix).over } : {}) });
             }
@@ -724,6 +757,7 @@ export async function scoreVersion(dir, sport, { refit = false, propsLayer = tru
   // (the replayed record (replay-record.mjs): what this version would have bet over the whole priced history before
   // its epoch, at the Bot's own placement, bands and stakes; what --record writes for the Bot's history)
   let replay = null;
+  let canary = null;
   if (V.replay?.replayRecord && histLines.close.length + histProps.close.length) {
     const gameBy = new Map(histGames.map((g) => [String(g.id), g]));
     const evBy = new Map();
@@ -768,6 +802,8 @@ export async function scoreVersion(dir, sport, { refit = false, propsLayer = tru
     replay = V.replay.replayRecord(...replayArgs);
     // (D88's self-tune: TUNE_GRID=<file> re-stakes the same replay under each candidate knob, TUNE_OUT the series)
     if (process.env.TUNE_GRID) tuneReplays(V, sport, replay, () => V.replay.replayRecord(...replayArgs), { current });
+    // (research only, D93: GATE_CANARY=<dir> runs the leakage canaries and the null tests on these rows (canary.mjs))
+    if (process.env.GATE_CANARY) canary = canarySlim((await import('./canary.mjs')).canaries(V, sport, replayArgs, replay, { dir: process.env.GATE_CANARY, log: say }));
     say(`replayed record: ${replay.overall.won}-${replay.overall.lost}-${replay.overall.push} ${replay.overall.profit >= 0 ? '+' : ''}${replay.overall.profit}u (ROI ${replay.overall.roi === null ? '-' : `${(replay.overall.roi * 100).toFixed(1)}%`}) on ${replay.n.bets} bets (${replay.flags.timing.open} at a clean open, ${replay.flags.timing.close} at the close), ${replay.n.practice} practice picks; by band ${Object.entries(replay.byBand).map(([k, v]) => `${k} ${v.won}-${v.lost}-${v.push} ${v.profit >= 0 ? '+' : ''}${v.profit}u`).join(', ')}`);
     if (replay.flags?.windows) say(`betting windows (D63): ${replay.flags.windows.keys} keys with intraday snapshots; placed ${JSON.stringify(replay.flags.windows.placed)}; final ${Object.entries(replay.flags.windows.final).map(([k, v]) => `${k} ${v.policy}${v.policy === "legacy" ? "" : ` +${v.gain} (se ${v.se}, n ${v.n})`}`).join(", ")}`);
   }
@@ -797,7 +833,8 @@ export async function scoreVersion(dir, sport, { refit = false, propsLayer = tru
     trusted: replay?.trustedFile ?? null,
     meta: { practiceN, practiceUnits: V.desk.PRACTICE_UNITS ?? 0.5, trust, sigma: params.sigma, sigmaT: params.sigmaT, matched: replayM.size, priced: mineProps.length },
     // (the record's input fingerprint (inputsOf): what --record checks before it writes, and writes beside the record)
-    inputs: inputsOf({ dir, sport, V, H, history, facts: hadFacts ? facts : null, ctxFit, gatherTimes, rowSeasons, backtest: bt.filter((b) => b.anchor === 'pinnacle').length, state, replay, propsLayer, wf: PROPS_WF ? wfInfo : null }),
+    inputs: { ...inputsOf({ dir, sport, V, H, history, facts: hadFacts ? facts : null, ctxFit, gatherTimes, rowSeasons, backtest: bt.filter((b) => b.anchor === 'pinnacle').length, state, replay, propsLayer, wf: PROPS_WF ? wfInfo : null }), ...(canary ? { canary } : {}) },
+    canary,
   };
 }
 
@@ -965,8 +1002,18 @@ export function historyRowOf(score, sc, entry, trigger = 'manual') {
     clv: o.clv ?? null,
     bands,
     vsBook: { lines: sc?.history?.lines?.gap ?? null, props: sc?.history?.props?.gap ?? null },
+    // (D93: the live bets against the replay's same rules, since the epoch and since the ledger began; the canaries'
+    // reading where the run had them)
+    ...(score.replay?.expect ? { live: liveRowOf(ledgerOf(score.sport).bets ?? [], score.replay.expect, score.epoch) } : {}),
+    ...(score.canary ? { canary: score.canary } : {}),
   };
 }
+// (the live check's compact row: since the epoch and every version)
+export function liveRowOf(bets, expect, epoch) {
+  const c = (x) => ({ n: x.n, flat: x.flat ?? null, exp: x.exp ?? null, book: x.book ?? null, z: x.z ?? null, beat: x.beat ? { n: x.beat.n, share: x.beat.share, keyed: x.beat.keyed, mine: x.beat.mine, exp: x.beat.exp, z: x.beat.z } : null, cal: x.cal ? { n: x.cal.n, wins: x.cal.wins, p: x.cal.p, zP: x.cal.zP } : null });
+  return { epoch: c(liveCheck(bets, expect, { since: epoch })), all: c(liveCheck(bets, expect, {})) };
+}
+
 export function addHistoryRow(file, row, max = HISTORY_MAX) {
   const rows = [...(Array.isArray(file?.rows) ? file.rows : []), row].sort((a, b) => String(a.at).localeCompare(String(b.at)));
   return { v: 1, sport: file?.sport ?? null, rows: rows.slice(-max) };
@@ -1353,7 +1400,8 @@ export function frozenCover(score, frozen) {
 
 // (the fingerprint's hash: everything but the units, an override's reason and the hash itself)
 export function inputsHash(inputs) {
-  const { units: _u, accepted: _a, hash: _h, ...rest } = inputs ?? {};
+  // (the canaries' reading (D93) aside: a check on the replay, not one of its inputs)
+  const { units: _u, accepted: _a, hash: _h, canary: _c, ...rest } = inputs ?? {};
   return hashOf(rest);
 }
 
@@ -1396,6 +1444,9 @@ export function recordGuard(next, prev, { champion = null, refit = false, accept
     if (!next.files?.backtest) hard.push("no Pinnacle-anchored backtest bets (backtest.json): the lines' trust has nothing to fit on");
     if (next.injuries && next.injuries.read.length < next.injuries.seasons.length) held.push(`the injury listings read for ${next.injuries.read.length} of ${next.injuries.seasons.length} seasons (none for ${next.injuries.seasons.filter((s) => !next.injuries.read.includes(s)).join(', ')})`);
   }
+  // (D93: the time-travel canary, where the run had it: a bet placed before a cut that moved when the results and prices
+  // after it were scrambled read the future, and no record is written on it)
+  if (next.canary?.moved > 0) hard.push(`the time-travel canary moved ${next.canary.moved} of ${next.canary.compared} bets placed before its cuts: the replay read results or prices from after a bet's placement`);
   if (champion && sameModel(champion.code, next.code) && fin(champion.units) && fin(next.units) && Math.abs(champion.units - next.units) > 0.01) hard.push(`the champion and the candidate have the same code but replay ${sgn(champion.units)} and ${sgn(next.units)}: the replay isn't reproducible`);
   const same = !!prev && sameModel(prev.code, next.code);
   if (prev) {
@@ -1717,3 +1768,51 @@ if (process.argv[1] && path.resolve(process.argv[1]) === fileURLToPath(import.me
 
 // (kept for the tests: the binary loss on a row)
 export { binLoss };
+
+// The ratings walk-forward (D93): each season S's games priced under the ratings' settings fit on the seasons before S
+// alone (ratings.mjs fit on the extended history before S; the cfg's priors for the first), the context's selection and
+// ridge fit on games.json's finals before S (none before: the ratings alone), each S game's expectation and its
+// as-of asks from a replay through S under them, its scales (sigma, sigmaT) on it (backtest.mjs repriced reads them).
+// { expAll, expAt, expExt, expAtExt, seasons }
+export function wfExpect(V, cfg, history, histGames, feats, askAt, { log = () => {}, sport: cfgSport = null } = {}) {
+  const fin2 = (g) => g.final && g.hs !== null && g.as !== null;
+  const out = { expAll: new Map(), expAt: new Map(), expExt: new Map(), expAtExt: new Map(), seasons: [] };
+  const seasonOf = new Map(histGames.map((g) => [String(g.id), g.season]));
+  const seasons = [...new Set(histGames.filter(fin2).map((g) => g.season))].sort((a, b) => a - b);
+  const ext = histGames.length > history.length;
+  for (const S of seasons) {
+    const priorG = histGames.filter((g) => g.season < S);
+    const priorH = history.filter((g) => g.season < S);
+    let pS = { ...cfg.priors };
+    if (priorG.some(fin2)) {
+      const best = V.ratings.fit(priorG, { ...cfg.priors }, cfg.grid);
+      if (best?.params) pS = { ...best.params };
+    }
+    let ctx = null;
+    if (feats && priorH.filter(fin2).length >= 100) {
+      try {
+        ctx = V.ratings.fitContext(priorH, pS, feats.feats, feats.terms);
+        if (ctx) Object.assign(pS, { sigma: Math.round(ctx.after.sigma * 1000) / 1000, sigmaT: Math.round(ctx.after.sigmaT * 1000) / 1000 });
+      } catch (err) {
+        log(`ratings walk-forward ${S}: the context left out (${String(err?.message ?? err).slice(0, 120)})`);
+        ctx = null;
+      }
+    }
+    // (the margins' shape (ties, overtime) fit on the seasons before S at their own walk-forward expectations; none: the plain)
+    let shape = null;
+    try {
+      const mg = V.margins?.fitMargins && cfgSport ? V.margins.fitMargins(cfgSport, priorH, out.expAll, pS.sigma) : null;
+      shape = mg ? { ties: mg.ties, ot: mg.ot, w: mg.kept ? mg.w : null } : null;
+    } catch {
+      shape = null;
+    }
+    const scale = { sigma: pS.sigma, sigmaT: pS.sigmaT, shape };
+    const asks = new Map([...askAt].filter(([id]) => seasonOf.get(String(id)) === S));
+    const asOf = (into) => (V.ratings.REPLAY_AS_OF ? { at: asks, gameHours: 4, on: (g, at, e) => into.set(`${g.id}|${at}`, { ...e, ...scale }) } : null);
+    const upToH = history.filter((g) => g.season <= S);
+    if (upToH.some((g) => g.season === S)) V.ratings.replay(upToH, pS, 0, ctx?.ctx ?? null, (g, e) => g.season === S && out.expAll.set(g.id, { ...e, ...scale }), asOf(out.expAt));
+    if (ext) V.ratings.replay(histGames.filter((g) => g.season <= S), pS, 0, ctx?.ctx ?? null, (g, e) => g.season === S && out.expExt.set(String(g.id), { ...e, ...scale }), asOf(out.expAtExt));
+    out.seasons.push({ season: S, k: pS.k, hfa: pS.hfa, revert: pS.revert, kO: pS.kO, sigma: pS.sigma, sigmaT: pS.sigmaT, ctx: !!ctx, shape: !!shape?.w, prior: priorG.filter(fin2).length });
+  }
+  return out;
+}

@@ -1857,3 +1857,60 @@ mat-icon.desk-gloves {
 .desk-findings-sport {
   font-weight: 700;
 }
+
+// (Live vs replay (D93): one compact table, a sport's since-the-epoch line over its every-version line (muted); a z
+// past 2 amber, past 3 red)
+.desk-check .group-body {
+  overflow-x: auto;
+  padding-bottom: v.$space-8;
+}
+
+.desk-check-table {
+  border-collapse: collapse;
+  font-family: v.$font-heading;
+  font-size: v.$fs-12;
+  font-variant-numeric: tabular-nums;
+  width: 100%;
+
+  th {
+    color: v.$text-faint;
+    font-size: v.$fs-11;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    padding: v.$space-4 v.$space-6;
+    text-align: right;
+    text-transform: uppercase;
+    white-space: nowrap;
+  }
+
+  td {
+    padding: 2px v.$space-6;
+    text-align: right;
+    white-space: nowrap;
+  }
+
+  th:first-child,
+  td:first-child {
+    text-align: left;
+  }
+
+  tr.desk-check-all td {
+    color: v.$text-faint;
+    font-size: v.$fs-11;
+    padding-bottom: v.$space-6;
+  }
+}
+
+.desk-check-sport {
+  font-weight: 700;
+}
+
+.desk-check-z {
+  &.warn {
+    color: v.$caution;
+  }
+
+  &.bad {
+    color: v.$bad-soft;
+  }
+}

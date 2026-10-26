@@ -21,9 +21,8 @@ import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { gunzipSync, gzipSync } from 'node:zlib';
 import { r4, seasonWeight } from './gate-score.mjs';
-import { extendedGames, historyPropIndex, lineHistoryRows, loadHistory, propHistoryRows } from './gate-history.mjs';
+import { extendedGames, historyPropIndex, lineHistoryRows, loadHistory, propHistoryRows, propIndexByPlayer } from './gate-history.mjs';
 import { readFit } from './fitcache.mjs';
-import { nameKey } from './espn.mjs';
 import { MODEL_EPOCH, LEAGUES } from './leagues.mjs';
 import * as ratings from './ratings.mjs';
 import * as context from './context.mjs';
@@ -127,10 +126,12 @@ export async function collect(sport, { log = console.log } = {}) {
   say(`lines: ${histLines.close.length} closes, ${histLines.open.length} opens`);
   // (the props: the replay's player games under the saved fit, matched to the history's index, as the gate's)
   const saved = readFit(sport);
-  const index = hist.props.length ? historyPropIndex(hist.events, hist.props, Object.fromEntries(Object.entries(props.API_MARKETS?.[sport] ?? {}))) : new Map();
+  let index = hist.props.length ? historyPropIndex(hist.events, hist.props, Object.fromEntries(Object.entries(props.API_MARKETS?.[sport] ?? {}))) : new Map();
   if (!saved.fit) say(`props not collected: ${saved.why} (run the desk once, --dry)`);
   else if (index.size) {
     const prows = await logs.playerRows(sport, cfg, history, facts);
+    // (by player, the book's names matched to the games' players as the gate's: gate-history.mjs propIndexByPlayer)
+    index = propIndexByPlayer(index, prows, history);
     const info = new Map([...(feats?.feats ?? new Map())].map(([id, f]) => [id, f.info]));
     const market = sport === 'nfl' ? await props.nflMarket(history) : sport === 'nba' ? logs.boxMarket('nba') : null;
     const listed = sport === 'nfl' ? await props.nflListed(history, facts, [...new Set(prows.map((x) => x.season))].sort()) : null;
@@ -150,7 +151,7 @@ export async function collect(sport, { log = console.log } = {}) {
       const d0 = mine[0].date.slice(0, 10);
       const { out: list } = project.replayStat(st, mine, f.params, f.env, [d0, d0]);
       for (const x of list) {
-        if (!x.row.name || !x.row.game || !index.has(`${st.key}|${nameKey(x.row.name)}|${x.row.game}`)) continue;
+        if (!x.row.name || !x.row.game || !index.has(`${st.key}|${x.row.pid}|${x.row.game}`)) continue;
         const mu = x.p.mu;
         const mix = project.exitMix(f.params, x.p);
         matches.push({ stat: st.key, name: x.row.name, game: String(x.row.game), pid: String(x.row.pid), v: x.v, home: x.row.home ?? null, over: (line) => project.lineChances(line, mu, f.params, mix).over });

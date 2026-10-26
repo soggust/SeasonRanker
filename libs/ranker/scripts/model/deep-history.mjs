@@ -14,7 +14,7 @@
 //   markets    'markets' jobs: a game's other markets (team totals, alternate lines, halves/periods) at an hour
 //              before its start, one call an event (event endpoint only; from 2023-05-03, the archive's start for them)
 //   stored     apps/<sport>/scripts/model/odds-history/intraday/dense/ (a sub-folder: readIntraday never reads it):
-//              <season>.jsonl.gz D61's I and S rows (the archive's L shape, framed on the archive's home by the names,
+//              <season>.jsonl.gz D61's I, S and G rows (G: a price gone from the board; the archive's L shape, framed on the archive's home by the names,
 //              D56), props-<season>.jsonl.gz D61's Q and T rows, markets-<season>.jsonl.gz rows
 //              ["M", oid, snapshot, book, market, name, description, point, price] (each price keyed to its outcome's
 //              own name, D56) and ["T", oid, snapshot, n]; unmatched-<year>.jsonl.gz the sightings no archived event
@@ -35,7 +35,7 @@ import { fileURLToPath } from 'node:url';
 import { CACHE, pool } from './sources.mjs';
 import { SPORT_KEYS, WIDE_BOOKS, redact } from './oddsapi.mjs';
 import { historyDir, readHistory } from './odds-history.mjs';
-import { buildPropRows, buildRows } from './intraday.mjs';
+import { buildPropRows, buildRows, goneRow } from './intraday.mjs';
 import { API_MARKETS } from './props.mjs';
 
 const ROOT = path.resolve(import.meta.dirname, '../../../..');
@@ -294,7 +294,9 @@ export function unmatchedRows(snaps, events) {
 export function build(sports) {
   for (const sport of sports) {
     const events = eventsOf(sport);
-    const lines = jobsOf(sport, 'lines').flatMap((j) => readWork(workFile(j.id)));
+    // (each snapshot carries its job's window, every game starting inside it kept: a coming game it didn't list, or
+    // listed without a book's market, has that price written gone (intraday.mjs buildRows))
+    const lines = jobsOf(sport, 'lines').flatMap((j) => readWork(workFile(j.id)).map((s) => ({ ...s, ahead: (Math.max(...j.offsets) + 2) * HOUR })));
     if (lines.length) {
       const { out, unmatched } = buildRows(sport, lines, events);
       for (const [season, rows] of out) writeGz(path.join(denseDir(sport), `${season}.jsonl.gz`), rows);
@@ -322,6 +324,8 @@ export function readDeep(sport, dir = denseDir(sport)) {
       const r = JSON.parse(s);
       if (r[0] === 'S') snaps.push(r[1]);
       else if (r[0] === 'I') (lines.get(r[1]) ?? lines.set(r[1], []).get(r[1])).push({ ts: Date.parse(r[2]), book: r[3], market: r[4], line: r[5], a: r[6], b: r[7] });
+      // (a book's market gone from the board at that snapshot: no longer standing, D67's rows as D61's)
+      else if (r[0] === 'G') (lines.get(r[1]) ?? lines.set(r[1], []).get(r[1])).push(goneRow(r));
       else if (r[0] === 'Q') props.push(r);
       else if (r[0] === 'M') markets.push(r);
       else if (r[0] === 'U') unmatched.push(r);

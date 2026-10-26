@@ -1585,6 +1585,9 @@ async function gradeBets(r) {
       console.warn(`${sport}: prop ${bet.id} not graded (${err.message})`);
     }
   }
+  const again = regradeLines(r.ledger.bets, games, r.now.getTime(), at);
+  if (again) console.log(`${sport}: ${again} game line${again === 1 ? '' : 's'} graded again on a final's changed score`);
+  r.graded += again;
   await officialRegrade(r);
   await gradeChecks(r);
   await statCorrections(r);
@@ -1604,6 +1607,33 @@ async function gradeBets(r) {
   } catch (err) {
     console.warn(`${sport}: post-mortems skipped (${err.message})`);
   }
+}
+
+// 4a0. a final's score read again: a game line graded in the last LINE_REGRADE_WINDOW whose game's final now reads
+// another score (ESPN's scoreboard flags a final before its last goal or run is in, or corrects it after: the grading
+// audit's MTL +1.5 @ WSH, 2026-10-14, graded on 3-5, its final 4-5) is graded again on it (regraded: what it was), its
+// post-mortem made again; the books settle a line on the official final. A void (called off, shortened) stays as it
+// is. Returns how many were graded again
+export const LINE_REGRADE_WINDOW = 36 * 36e5;
+export function regradeLines(bets, games, now, at) {
+  let n = 0;
+  for (const bet of bets) {
+    if (bet.market === 'prop' || bet.status === 'open' || bet.void || !bet.gradedAt || now - Date.parse(bet.gradedAt) > LINE_REGRADE_WINDOW) continue;
+    const g = games.get(bet.event);
+    if (!g?.final || g.hs === null || g.hs === undefined) continue;
+    const s = settle(bet, g);
+    if (s.void || s.final === bet.final) continue;
+    // (the same result on the new score: its final's words alone)
+    if (s.status === bet.status && s.profit === bet.profit) {
+      bet.final = s.final;
+      continue;
+    }
+    const from = { status: bet.status, profit: bet.profit, final: bet.final, gradedAt: bet.gradedAt };
+    Object.assign(bet, s, { gradedAt: at, regraded: { ...from, why: "the final's score changed" } });
+    delete bet.why;
+    n++;
+  }
+  return n;
 }
 
 // 4a. the league's count again: an NHL shots or points prop graded in the last CORRECT_WINDOW has the league's

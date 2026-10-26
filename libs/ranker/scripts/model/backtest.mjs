@@ -227,15 +227,19 @@ export function repriced(bets, expOf, params, shape = null) {
   for (const b of bets) {
     const exp = expFor(b);
     if (!exp || !Number.isFinite(b.fair)) continue;
+    // (a game's own scales where its expectation carries them: the walk-forward ratings fit by season (gate.mjs
+    // GATE_LINES_WF, DECISIONS.md D93); else the version's)
+    const P = Number.isFinite(exp.sigma) && Number.isFinite(exp.sigmaT) ? { ...params, sigma: exp.sigma, sigmaT: exp.sigmaT } : params;
+    const SH = exp.shape !== undefined ? exp.shape : shape;
     let c;
     let q;
     let named = null;
     if (b.market === 'spread') {
-      c = spreadChances(b.side === 'home' ? exp.margin : -exp.margin, b.line, params.sigma, shape);
+      c = spreadChances(b.side === 'home' ? exp.margin : -exp.margin, b.line, P.sigma, SH);
       q = cond(c);
     } else if (b.market === 'total') {
       // (D44: the base's chance and the named terms' shift, as desk.mjs price splits them)
-      const t = totalSplit(exp, b.line, params.sigmaT);
+      const t = totalSplit(exp, b.line, P.sigmaT);
       c = t.c;
       q = b.side === 'over' ? cond(c) : 1 - cond(c);
       if (t.named !== null) named = b.side === 'over' ? t.named : -t.named;
@@ -243,7 +247,7 @@ export function repriced(bets, expOf, params, shape = null) {
       const s = spreads.get(key(b));
       const spreadHome = b.spreadHome ?? (s && Number.isFinite(s.line) && Number.isFinite(s.fair) ? { line: s.side === 'home' ? s.line : -s.line, fair: s.side === 'home' ? s.fair : 1 - s.fair } : null);
       if (!spreadHome) continue;
-      c = mlModel(exp.margin, params.sigma, shape, b.side === 'home' ? b.fair : 1 - b.fair, spreadHome);
+      c = mlModel(exp.margin, P.sigma, SH, b.side === 'home' ? b.fair : 1 - b.fair, spreadHome);
       q = b.side === 'home' ? cond(c) : 1 - cond(c);
     }
     // (research only (REPLAY_ATTR, D72): each context group's part of the chance, the chance less the one without it)
@@ -256,12 +260,12 @@ export function repriced(bets, expOf, params, shape = null) {
       for (const [g, v] of Object.entries(groups ?? {})) {
         if (!v) continue;
         let q0;
-        if (b.market === 'spread') q0 = cond(spreadChances(b.side === 'home' ? exp.margin - v : -(exp.margin - v), b.line, params.sigma, shape));
+        if (b.market === 'spread') q0 = cond(spreadChances(b.side === 'home' ? exp.margin - v : -(exp.margin - v), b.line, P.sigma, SH));
         else if (b.market === 'total') {
-          const c0 = totalSplit({ ...exp, total: exp.total - v }, b.line, params.sigmaT).c;
+          const c0 = totalSplit({ ...exp, total: exp.total - v }, b.line, P.sigmaT).c;
           q0 = b.side === 'over' ? cond(c0) : 1 - cond(c0);
         } else {
-          const c0 = mlModel(exp.margin - v, params.sigma, shape, b.side === 'home' ? b.fair : 1 - b.fair, sh);
+          const c0 = mlModel(exp.margin - v, P.sigma, SH, b.side === 'home' ? b.fair : 1 - b.fair, sh);
           q0 = b.side === 'home' ? cond(c0) : 1 - cond(c0);
         }
         attr[g] = round(q - q0, 5);

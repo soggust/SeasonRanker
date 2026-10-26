@@ -2159,3 +2159,27 @@ test('D92 the sharp lag: a line pick whose Book no-vig sits a point or more over
   assert.ok(run.includes("fairFrom[market.market] === 'pinnacle'") && run.includes('lagHeld(sport, lag, ahead / 36e5, lastChanceOf(sport, r.gap))'), 'the desk holds on the sharp fair alone, till the last chance');
   assert.ok(fs.readFileSync(path.join(import.meta.dirname, '../libs/ranker/scripts/model/DECISIONS.md'), 'utf8').includes('### D92.'));
 });
+
+test('D93 the testing audit: the ratings walk forward by default, a record the time-travel canary moved is refused, every record runs the canaries, the archive guards, live against the replay by the replay\'s beat', async () => {
+  const G = await import('../libs/ranker/scripts/model/gate.mjs');
+  const src = fs.readFileSync(path.join(import.meta.dirname, '../libs/ranker/scripts/model/gate.mjs'), 'utf8');
+  assert.match(src, /export const LINES_WF = process\.env\.GATE_LINES_WF !== '0';/, 'the walk-forward ratings on unless measuring the old way');
+  assert.equal(typeof G.wfExpect, 'function');
+  // (the guard: a canary that moved a bet refuses the record, whatever else)
+  const next = { sport: 'mma', canary: { moved: 2, compared: 900 } };
+  const g = G.recordGuard(next, null, {});
+  assert.ok(JSON.stringify(g).includes('time-travel canary moved 2 of 900'), JSON.stringify(g));
+  const ok = G.recordGuard({ sport: 'mma', canary: { moved: 0, compared: 900 } }, null, {});
+  assert.ok(!JSON.stringify(ok).includes('time-travel canary'));
+  // (the canary's reading is not an input: the hash ignores it)
+  assert.equal(G.inputsHash({ sport: 'nba', rows: 1 }), G.inputsHash({ sport: 'nba', rows: 1, canary: { moved: 0 } }));
+  const audit = await import('../scripts/history-audit.mjs');
+  assert.deepEqual(audit.canaryEnv('nightly', 'x'), { GATE_CANARY: 'x', GATE_CANARY_DRAWS: '0' });
+  assert.equal(audit.canaryEnv('weekly', 'x').GATE_CANARY_DRAWS, String(audit.CANARY_DRAWS));
+  const H = await import('../libs/ranker/scripts/model/gate-history.mjs');
+  assert.ok(H.LINE_QUARANTINE.mlb.length >= 1, "MLB's 2020 opening week quarantined");
+  assert.equal(H.PIN_MIN_SUM, 1);
+  const L = await import('../libs/ranker/scripts/model/live-check.mjs');
+  const c = L.liveCheck([{ units: 1, intent: 'edge', status: 'won', odds: 100, p: 0.55, fair: 0.5, placedAt: '2026-10-24T00:00:00Z', market: 'ml', side: 'home', clv: { v: 2, prob: 0.02, ev: -0.01, beat: true } }], L.expectOf([]), {});
+  assert.equal(c.beat.share, 0, "clv.beat is the no-vig's move; the beat is the expected return at the fair close (D56)");
+});

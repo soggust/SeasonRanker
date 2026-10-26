@@ -479,6 +479,36 @@
       </card-panel>
     }
 
+    <!-- (Live vs replay (D93): each sport's staked edge bets since its epoch (the top line) and since the ledger began
+         (the muted line) against the replay's same rules for bets like them: the flat return, its z, beat the fair close
+         (live, the replay's on the keys it checks), the wins against the Bot's chance; shut till opened) -->
+    @if (checks.length) {
+      <card-panel class="tab-card group-support desk-wide desk-check" label="Live vs replay" icon="query_stats" [open]="panelOpen('check')" (toggled)="togglePanel('check')">
+        <div class="group-body">
+          <table class="desk-check-table">
+            <thead>
+              <tr><th>Sport</th><th title="Staked edge bets graded">Bets</th><th title="Flat return a bet, live">Live</th><th title="What the replay's same rules returned on bets like these (by market and side)">Replay</th><th title="Live less the replay, in standard errors of the live bets (|z| 2 or more: amber, 3: red; under 30 bets: too few)">z</th><th title="Beat the fair close: a positive expected return at the close's no-vig (the replay's on the keys it checks)">Beat close</th><th title="The wins against the Bot's chance summed">Won / said</th></tr>
+            </thead>
+            <tbody>
+              @for (c of checks; track c.sport) {
+                @for (r of [c.epoch, c.all]; track $index) {
+                  <tr [class.desk-check-all]="$index === 1" [title]="r.title">
+                    <td class="desk-check-sport">{{ $index === 0 ? c.sport.toUpperCase() : 'all' }}</td>
+                    <td>{{ r.n }}</td>
+                    <td>{{ r.live }}</td>
+                    <td>{{ r.exp }}</td>
+                    <td class="desk-check-z" [class.warn]="r.flag === 'warn'" [class.bad]="r.flag === 'bad'">{{ r.z }}</td>
+                    <td>{{ r.beat }}</td>
+                    <td>{{ r.cal }}</td>
+                  </tr>
+                }
+              }
+            </tbody>
+          </table>
+        </div>
+      </card-panel>
+    }
+
     <!-- (Findings (the owner, 2026-10-20): what the research has learned, one line each, dated, by Shipped / Tested
          and dropped / Watching; shut till opened, at the foot; from the shared findings.json (desk-math.ts findingsOf),
          the chip's sport and the shared ones) -->
