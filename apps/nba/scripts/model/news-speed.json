@@ -8836,6 +8836,30 @@
     "own": "2026-10-25T22:41:19.000Z",
     "why": "@rotowirenba.bsky.social: Cameron Johnson: Doubtful for Monday \n\n https://www.ro"
    }
+  },
+  "401909873|jalenwilliams|out": {
+   "game": "401909873",
+   "start": "2026-10-27T00:00Z",
+   "team": "25",
+   "name": "Jalen Williams",
+   "status": "out",
+   "athlete": "4593803",
+   "espn": {
+    "seen": "2026-10-26T14:17:47.090Z",
+    "own": "2026-10-26T14:03:00.000Z"
+   }
+  },
+  "401909875|zachedey|q": {
+   "game": "401909875",
+   "start": "2026-10-27T01:00Z",
+   "team": "29",
+   "name": "Zach Edey",
+   "status": "q",
+   "athlete": "4600663",
+   "espn": {
+    "seen": "2026-10-26T14:17:47.090Z",
+    "own": "2026-10-26T14:05:00.000Z"
+   }
   }
  }
 }
