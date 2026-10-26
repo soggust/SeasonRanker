@@ -27,7 +27,7 @@ test('D73 the trial: two bands, LOCK off, on in the NBA and the NHL only', () =>
   assert.deepEqual(Object.keys(TRIAL).sort(), ['nba', 'nhl']);
   // (D95: the NBA's LIKE stake step off, the trial's switches all off there; the NHL's LOVE on, fragile)
   assert.deepEqual(TRIAL.nba, { love: false, mid: false });
-  assert.deepEqual(TRIAL.nhl, { love: true, mid: false });
+  assert.deepEqual(TRIAL.nhl, { love: true, mid: true });
   const b = { market: 'prop', kelly: 0.015, share: 0.95, te: 0.03, units: 0.5, held: false };
   const out = trialBand(b, { love: { share: 0.8, kellyMax: 0.02 }, mid: 0 });
   assert.deepEqual(out, { band: 'high', units: TRIAL_OPTS.loveUnits });

@@ -47,6 +47,27 @@
     }
    ],
    "hash": "f0efbfb24f7c51f5"
+  },
+  {
+   "id": "d96-nhl-like-step",
+   "date": "2026-10-26T22:19:06.245Z",
+   "by": "coordinator",
+   "idea": "The NHL's LIKE props on D73's stake step (mid, picked monthly from the bets settled before): the owner's 2026-10-26 'bet NHL everyday props smaller' after the everyday props lost under both the old and new settings. REGISTERED AFTER ONE MEASUREMENT (the one variant below, run once before this entry; nothing else tried)",
+   "bar": "Ships if the replay's units on the same bets rise and the gate finds no layer worse; reported as inside the noise where the units' gain is under 1.645 SEs",
+   "variants": [
+    "mid-on"
+   ],
+   "sports": [
+    "nhl"
+   ],
+   "results": [
+    {
+     "date": "2026-10-26T22:19:06.313Z",
+     "variant": "mid-on",
+     "text": "NHL replay -17.29u -> -11.11u on the same 3803 bets (LIKE -43.07u -> -36.89u, LOVE unchanged +25.78u); gate TIES, SHIP; the gain inside the noise (about 0.2 SEs on the stepped bets)"
+    }
+   ],
+   "hash": "28bb0138d144be0b"
   }
  ]
 }

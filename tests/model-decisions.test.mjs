@@ -2246,7 +2246,7 @@ test('D95 the testing audit\'s six recommendations: one beat-the-close, the prop
   // with the step stays off live
   const TR = await import('../libs/ranker/scripts/model/trusted.mjs');
   assert.deepEqual(TR.TRIAL.nba, { love: false, mid: false });
-  assert.deepEqual(TR.TRIAL.nhl, { love: true, mid: false });
+  assert.deepEqual(TR.TRIAL.nhl, { love: true, mid: true }, 'D96: the NHL LIKE step on');
   const file = { v: TR.TRIAL_V, sport: 'nba', trial: true, rule: { love: null, mid: 0.4 }, weights: { form: 1 } };
   const bet = { market: 'prop', kelly: 0.015, units: 1.3, held: false, parts: { form: 0.001 } };
   assert.equal(TR.liveTrial(file, bet).units, 1.3, 'the step off: the stake as it was, not 0.5u under the share');

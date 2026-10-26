@@ -304,7 +304,9 @@ export const drivenBy = (pieces, cls) => (pieces?.length ? `Driven by: ${pieces.
 // (D95, the testing audit's third recommendation, 2026-10-26: the NBA's LIKE stake step off (on the re-recorded replay it
 // cost 8.2u against the stake as it was); the NBA stays a trial sport (LIKE only, LOCK off) with nothing on. The NHL's
 // LOVE stays on, fragile: 35 walk-forward LOVEs at the audit)
-export const TRIAL = { nba: { love: false, mid: false }, nhl: { love: true, mid: false } };
+// (D96, 2026-10-26: the NHL's LIKE stake step on: its everyday props lost under both the old and the new fits; on the
+// replay -17.29u -> -11.11u on the same bets, the LOVEs unchanged; small, inside the noise, kept as a soft shrink)
+export const TRIAL = { nba: { love: false, mid: false }, nhl: { love: true, mid: true } };
 export const TRIAL_OPTS = { shares: [0.3, 0.4, 0.5, 0.6, 0.7, 0.8], kellyMax: [0.02, Infinity], kelly: 0.01, nMin: 30, zMin: 0, loveUnits: 2, mids: [0, 0.2, 0.4, 0.6, 9], minPrior: 200, practice: 0.5 };
 export const trialOn = (sport) => TRIAL[sport] ?? null;
 export const TRIAL_V = 1;
