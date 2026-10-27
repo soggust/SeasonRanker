@@ -1,9 +1,9 @@
 {
  "sport": "nba",
  "cursor": {
-  "rotowirenba.bsky.social": "2026-10-27T19:47:50.000Z",
+  "rotowirenba.bsky.social": "2026-10-27T20:19:55.000Z",
   "insidenbanews.bsky.social": "2026-10-27T19:26:50.857Z",
-  "shamsbot.bsky.social": "2026-10-27T19:39:44.000Z"
+  "shamsbot.bsky.social": "2026-10-27T20:14:48.000Z"
  },
  "claims": [
   {
@@ -3502,6 +3502,45 @@
    "kind": "status",
    "confidence": 0.95,
    "text": "Rui Hachimura: Ruled out for Wednesday \n\n https://www.rotowire.com/basketball/player/rui-hachimura-4778"
+  },
+  {
+   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3myv26nufxg24|laurimarkkanen|questionable|status",
+   "at": "2026-10-27T20:10:21.000Z",
+   "seen": "2026-10-27T20:21:42.534Z",
+   "handle": "rotowirenba.bsky.social",
+   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3myv26nufxg24",
+   "player": "Lauri Markkanen",
+   "team": "UTA",
+   "status": "questionable",
+   "kind": "status",
+   "confidence": 0.9,
+   "text": "Lauri Markkanen: Day-to-day with wrist sprain \n\n https://www.rotowire.com/basketball/player/lauri-markkanen-4119"
+  },
+  {
+   "id": "at://did:plc:sa73fbx3vxzh2fw5pu5wmief/app.bsky.feed.post/3myv2np3ajs2t|kawhileonard|out|status",
+   "at": "2026-10-27T20:14:48.000Z",
+   "seen": "2026-10-27T20:21:42.534Z",
+   "handle": "shamsbot.bsky.social",
+   "post": "at://did:plc:sa73fbx3vxzh2fw5pu5wmief/app.bsky.feed.post/3myv2np3ajs2t",
+   "player": "Kawhi Leonard",
+   "team": "LAC",
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.75,
+   "text": "RT @ESPNNBA: @shamsbot.bsky.social reports Kawhi Leonard is expected to miss a period of weeks due to swelling in his left knee.\n\nMore details here ⬇️"
+  },
+  {
+   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3myv2prdn7t2q|alperensengun|out|status",
+   "at": "2026-10-27T20:19:55.000Z",
+   "seen": "2026-10-27T20:21:42.534Z",
+   "handle": "rotowirenba.bsky.social",
+   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3myv2prdn7t2q",
+   "player": "Alperen Sengun",
+   "team": "HOU",
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.95,
+   "text": "Alperen Sengun: Won't play vs. Milwaukee \n\n https://www.rotowire.com/basketball/player/alperen-sengun-5404"
   }
  ]
 }
