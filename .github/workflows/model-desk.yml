@@ -70,6 +70,8 @@ concurrency:
 
 permissions:
   contents: write
+  # (the old desk caches pruned: the step after the save)
+  actions: write
 
 jobs:
   desk:
@@ -129,6 +131,15 @@ jobs:
         with:
           path: .cache/model
           key: model-desk-${{ github.run_id }}
+
+      # (only the newest desk cache is ever restored, and each run saved a new 222 MB one: 43 of them filled the
+      # repo's 10 GB, 2026-10-27's email. The newest 3 kept; never fails the run)
+      - name: Prune old desk caches
+        if: always()
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh cache list --key model-desk- --sort created_at --order desc --limit 100 --json id --jq '.[3:][].id' | while read -r id; do gh cache delete "$id" || true; done || true
           restore-keys: model-desk-
 
       # (the CHECKs' news research, libs/ranker/scripts/model/research.mjs: only with the repository variable
