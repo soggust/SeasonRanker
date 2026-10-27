@@ -263,6 +263,10 @@ export async function snapshotLines(db, { fetchJson = get, now = Date.now(), dry
 // ---------------------------------------------------------------------------
 // Settling
 // ---------------------------------------------------------------------------
+// (D98: the notes a bet voided over its price was given, and how far back such a void is graded again)
+export const PRICE_VOIDS = ['price didn’t match the board', 'couldn’t check the price: no board for this market'];
+export const PRICE_VOID_DAYS = 14;
+
 export async function settleOpen(db, { fetchJson = get, now = Date.now(), ledgers = readLedgers(), seen = readBoards(), botSeen = readBotBoards(), mmaKept, dry = false, log = console.log } = {}) {
   const snap = await db.collectionGroup('bets').where('status', '==', 'open').get();
   const users = snap.docs.filter((d) => d.ref.parent.parent?.parent?.id === 'users');
@@ -359,7 +363,24 @@ export async function settleOpen(db, { fetchJson = get, now = Date.now(), ledger
     // (the bot's call on the same market when it was placed, graded beside it: You vs the Bot)
     const bot = botFor(bet, result, { botSeen, ledgers, game: inputs.game, propValue: inputs.propValue });
     // (filed under the game's own start, not the one the browser wrote)
-    await done(d, bet, result, inputs.game?.date, { bot });
+    await done(d, bet, result, inputs.game?.date, { bot, ...(Number.isFinite(result.paidOdds) ? { paidOdds: result.paidOdds } : {}) });
+  }
+  // (D98: a straight bet voided over its price in the last PRICE_VOID_DAYS, before the rule changed, graded again: paid
+  // at its price (priceFor), its void swapped for the result in its wallet and tally (correctOne), once)
+  try {
+    const old = await db.collectionGroup('bets').where('status', '==', 'void').get();
+    const revive = old.docs.filter((d) => d.ref.parent.parent?.parent?.id === 'users' && d.get('kind') !== 'parlay' && PRICE_VOIDS.includes(d.get('note')) && (d.get('settledAt')?.toMillis?.() ?? 0) >= now - PRICE_VOID_DAYS * DAY && SETTLED.includes(d.get('sport')));
+    for (const d of revive) {
+      const bet = { ...d.data(), id: d.id, start: iso(d.get('start')), placedAt: iso(d.get('placedAt')) };
+      const inputs = await inputsFor(bet);
+      const result = settlePlayBet(bet, inputs.game, { observations: inputs.observations, propValue: inputs.propValue, previewLines: inputs.previewLines, now });
+      if (!result || result.status === 'void') continue;
+      const bot = botFor(bet, result, { botSeen, ledgers, game: inputs.game, propValue: inputs.propValue });
+      log(`regraded (D98): ${bet.sport} ${bet.matchup} ${bet.pick} ${bet.odds} x${bet.stake}: void to ${result.status}${result.note ? ` (${result.note})` : ''}${dry ? ' (dry)' : ''}`);
+      if (!dry) await correctOne(db, d.ref, result, { was: { status: 'void', profit: d.get('profit') ?? 0, final: d.get('final') ?? null }, bot, why: 'D98: never void over its price', ...(Number.isFinite(result.paidOdds) ? { paidOdds: result.paidOdds } : {}) });
+    }
+  } catch (error) {
+    log(`price voids: not regraded (${error?.message ?? error})`);
   }
   // (the parlays: each leg graded as a straight bet is, once its game's begun; a leg graded on an earlier run
   // kept as it was, and a malformed one never looked up (legProblem: settleParlay voids it). One that fails is
@@ -548,7 +569,7 @@ export async function correctSettled(db, { fetchJson = get, now = Date.now(), le
 // One settled bet settled again: its old result (was: { status, profit, final } as it was read; one that's
 // changed since is left alone) for the new one, the wallet's credit moved by the difference, the tally's
 // result swapped (days: the old and the new tally day, a parlay's; else the bet's start)
-export async function correctOne(db, ref, result, { was, days = null, legs = null, paidOdds, bot } = {}) {
+export async function correctOne(db, ref, result, { was, days = null, legs = null, paidOdds, bot, why = "the league's official count" } = {}) {
   const uid = ref.parent.parent.id;
   const walletRef = db.doc(`users/${uid}/wallet/main`);
   const tallyRef = db.doc(`tallies/${uid}`);
@@ -563,7 +584,8 @@ export async function correctOne(db, ref, result, { was, days = null, legs = nul
       ...(legs ? { legs: withResults(bet.get('legs') ?? [], legs) } : {}),
       ...(paidOdds !== undefined ? { paidOdds } : {}),
       ...(bot !== undefined ? { bot } : {}),
-      corrected: { status: was.status, profit: was.profit, final: was.final, why: "the league's official count" },
+      corrected: { status: was.status, profit: was.profit, final: was.final, why },
+      ...(why !== "the league's official count" ? (result.note ? { note: result.note } : { note: FieldValue.delete() }) : {}),
       correctedAt: FieldValue.serverTimestamp(),
     });
     const stake = bet.get('stake');

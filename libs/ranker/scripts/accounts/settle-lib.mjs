@@ -18,10 +18,10 @@
 // a long price, past 250 either way, a little more room: 4% of it). The open, the close, the bot's and the board's are
 // good whenever the bet was placed (before the start: checked first); the board's only while it was on show
 // (BOARD_EARLY before its first showing to BOARD_LATE past its last); a snapshot only within WINDOW of its time.
-// Limits: between snapshots a line can move and move back unseen, so a bet on a short-lived price can be voided
-// ("price didn't match the board"); a bet whose game was never snapshotted is checked against the open, the
-// close and the bot's alone; and a tampered slip could still take the open or a price from up to WINDOW away.
-// Play money: the check keeps the record honest, it doesn't need to be airtight.
+// A bet is never void over its price (D98, the owner, 2026-10-26): between snapshots a line can move and move back
+// unseen, so a price the page showed may never be on a board here; it stands where it's within LOOSE cents of one
+// seen for its side and line, and further than that (a slip changed by hand) is paid at the seen price nearest its
+// time (priceFor). Play money: the check keeps the record honest, it doesn't need to be airtight.
 
 import { outcomeOf, settle as settleGame, voidOf } from '../model/desk.mjs';
 import { PROP_WAIT, settleProp } from '../model/props.mjs';
@@ -162,6 +162,25 @@ export function checkPrice(bet, observations) {
   const sameLine = (o) => bet.market === 'ml' || o.line === bet.line;
   const match = mine.find((o) => timely(o) && sameLine(o) && priceNear(bet.odds, o.odds));
   return match ? { ok: true, by: match.kind } : { ok: false, why: 'price didn’t match the board' };
+}
+
+// The price a user's bet is paid at (DECISIONS.md D98, the owner, 2026-10-26: "why would you void a USERS bet when the
+// line moves"): never void over its price. Its own where a board showed it (checkPrice), or within LOOSE cents of a
+// price seen for its side and line (the page's live ESPN prices move between the settler's looks: 2026-10-26's CLE
+// -142, seen at -145 and -155); further from every price seen (a slip changed by hand), the seen price nearest its
+// time; none seen for its side and line, its own. { odds, note? }
+export const LOOSE = 40;
+const fmtOdds = (o) => (o > 0 ? `+${o}` : String(o));
+export function priceFor(bet, observations) {
+  if (checkPrice(bet, observations).ok) return { odds: bet.odds };
+  const mine = (observations ?? []).filter(
+    (o) => Number.isFinite(o.odds) && o.market === bet.market && o.side === bet.side && (bet.market === 'ml' || o.line === bet.line) && (bet.market !== 'prop' || (o.propType === bet.propType && String(o.athlete) === String(bet.athlete))),
+  );
+  if (!mine.length || mine.some((o) => Math.abs(cents(bet.odds) - cents(o.odds)) <= LOOSE + 1e-9)) return { odds: bet.odds };
+  const placed = Date.parse(bet.placedAt);
+  const away = (o) => (o.kind === 'board' ? Math.max(0, o.from - placed, placed - o.to) : Number.isFinite(o.at) ? Math.abs(placed - o.at) : Infinity);
+  const near = [...mine].sort((a, b) => away(a) - away(b))[0];
+  return { odds: near.odds, note: `paid at ${fmtOdds(near.odds)}, the board's price nearest the bet (${fmtOdds(bet.odds)} was never shown)` };
 }
 
 // ---------------------------------------------------------------------------
@@ -329,22 +348,22 @@ export function settlePlayBet(bet, game, { observations = [], propValue, preview
     if (problem) return voided(problem);
     const line = previewLineCheck(bet, previewLines);
     if (!line.ok) return line.wait && now - start <= GIVE_UP ? null : voided(line.why);
-  } else {
-    const price = checkPrice(bet, observations);
-    if (!price.ok) return voided(price.why);
   }
-  const priced = { ...bet, units: bet.stake };
+  // (D98: never void over its price: paid at its own, or the board's nearest where it was never near one shown)
+  const { odds, note } = bet.preview !== undefined ? { odds: bet.odds } : priceFor(bet, observations);
+  const paid = odds !== bet.odds ? { paidOdds: odds, note } : {};
+  const priced = { ...bet, odds, units: bet.stake };
   if (bet.market === 'prop') {
     // (a count not read yet waits as long as the bettor's own pick does (props.mjs PROP_WAIT), so the two end alike)
     if (propValue === undefined) return now - start > Math.max(GIVE_UP, PROP_WAIT) ? voided('couldn’t read the stat') : null;
     const r = settleProp(priced, propValue);
     if (r.void) return voided(r.final ?? 'did not play');
-    return { status: r.status, profit: r.status === 'won' ? toWin(bet.stake, bet.odds) : r.status === 'lost' ? -bet.stake : 0, final: r.final };
+    return { status: r.status, profit: r.status === 'won' ? toWin(bet.stake, odds) : r.status === 'lost' ? -bet.stake : 0, final: r.final, ...paid };
   }
   const r = settleGame(priced, game);
   // (a run line or total on an MLB game cut short: void, the bettor's own rule)
   if (r.void) return voided(r.why.replace(/^Void: /, ''), r.final);
-  return { status: r.status, profit: r.status === 'won' ? toWin(bet.stake, bet.odds) : r.status === 'lost' ? -bet.stake : 0, final: r.final };
+  return { status: r.status, profit: r.status === 'won' ? toWin(bet.stake, odds) : r.status === 'lost' ? -bet.stake : 0, final: r.final, ...paid };
 }
 
 // ---------------------------------------------------------------------------
@@ -387,13 +406,14 @@ export function settleMmaBet(bet, bout, { observations = [], now = Date.now() } 
   if (off) return voided(off.why.replace(/^Void: /, ''), off.final);
   if (Date.parse(bet.placedAt) >= Date.parse(bout.date)) return voided('placed after the start');
   if (!bout.final) return now - start > GIVE_UP ? voided('bout not finished') : null;
-  const price = checkPrice(bet, observations);
-  if (!price.ok) return voided(price.why);
-  const r = settleBout({ ...bet, units: bet.stake, fighters }, bout, now);
+  // (D98: never void over its price, as any bet's: priceFor)
+  const { odds, note } = priceFor(bet, observations);
+  const paid = odds !== bet.odds ? { paidOdds: odds, note } : {};
+  const r = settleBout({ ...bet, odds, units: bet.stake, fighters }, bout, now);
   // (a total whose bout's length ESPN hasn't given: waits, then void)
   if (!r) return now - start > GIVE_UP ? voided('couldn’t read how long it went') : null;
   if (r.void) return voided(r.why.replace(/^Void: /, ''), r.final);
-  return { status: r.status, profit: r.status === 'won' ? toWin(bet.stake, bet.odds) : -bet.stake, final: r.final };
+  return { status: r.status, profit: r.status === 'won' ? toWin(bet.stake, odds) : -bet.stake, final: r.final, ...paid };
 }
 
 // ---------------------------------------------------------------------------
@@ -474,7 +494,7 @@ export function settleParlay(parlay, games, { now = Date.now() } = {}) {
     const r = settlePlayBet({ ...leg, stake: parlay.stake, placedAt: parlay.placedAt, start: leg.start }, g.game, { observations: g.observations, propValue: g.propValue, previewLines: g.previewLines, now });
     if (!r) return leg;
     // (with its game's own start: the parlay's tally day is its legs' games', not the starts the browser wrote)
-    return { ...leg, status: r.status, ...(r.final ? { final: r.final } : {}), ...(r.note ? { note: r.note } : {}), ...(g.game?.date ? { date: g.game.date } : {}) };
+    return { ...leg, status: r.status, ...(r.final ? { final: r.final } : {}), ...(r.note ? { note: r.note } : {}), ...(Number.isFinite(r.paidOdds) ? { odds: r.paidOdds, placedOdds: leg.odds } : {}), ...(g.game?.date ? { date: g.game.date } : {}) };
   });
   const r = parlayOutcome(parlay.stake, legs);
   return { result: r, legs };

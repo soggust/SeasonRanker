@@ -183,9 +183,9 @@ test('a bet marked preview that is not one: void (another price, the bot tag, a 
   assert.equal(as({ preview: 'yes' }).note, 'not a preview price');
   assert.equal(as({ market: 'total', side: 'over', line: 45.5 }).note, 'not a preview price');
   assert.equal(as({ sport: 'mlb', propType: 'tb' }).note, 'not a preview stat');
-  // (a prop without the tag is checked against the board as before: no board here, void)
+  // (a prop without the tag is priced as any bet (D98): no board here, graded at its own price, never void)
   const { preview: _, ...plain } = preview();
-  assert.match(lib.settlePlayBet(plain, game(), { previewLines: lines, propValue: 240, now }).note, /no board/);
+  assert.notEqual(lib.settlePlayBet(plain, game(), { previewLines: lines, propValue: 240, now }).status, 'void');
 });
 
 test('a parlay preview leg: -110, graded as a straight preview bet, one leg a game', () => {

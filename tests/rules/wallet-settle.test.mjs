@@ -186,7 +186,7 @@ describe('the settler', { skip }, () => {
 
     const first = await run({ db, fetchJson, now: NOW, ledgers, log: quiet });
     assert.equal(first.failed, false);
-    assert.deepEqual(first.counts, { settled: 4, void: 1, waiting: 1 });
+    assert.deepEqual(first.counts, { settled: 5, void: 0, waiting: 1 });
 
     const get = async (p) => (await db.doc(p).get()).data();
     const won = await get('users/ann/bets/won');
@@ -196,21 +196,23 @@ describe('the settler', { skip }, () => {
     assert.ok(won.settledAt);
     assert.equal((await get('users/ann/bets/lost')).status, 'lost');
     const v = await get('users/ann/bets/void');
-    assert.deepEqual([v.status, v.profit, v.note], ['void', 0, 'price didn’t match the board']);
+    // (D98: never void over its price: +140 never near the board's, paid at its nearest, and lost)
+    assert.deepEqual([v.status, v.profit], ['lost', -25]);
+    assert.match(v.note, /never shown/);
     assert.equal((await get('users/ann/bets/waiting')).status, 'open');
     assert.equal((await get('users/ann/bets/future')).status, 'open');
     const prop = await get('users/ann/bets/prop');
     assert.deepEqual([prop.status, prop.profit, prop.final], ['won', 10, 'John Gibson 24 Saves']);
-    // (699 + 192.59 + 25 + 21 = 937.59)
-    assert.equal((await get('users/ann/wallet/main')).balance, 937.59);
+    // (699 + 192.59 + 21 = 912.59)
+    assert.equal((await get('users/ann/wallet/main')).balance, 912.59);
     // (bob's bet from run 1 settled and counted; his run-2 wallet untouched)
     assert.equal((await get('users/bob/bets/old')).status, 'won');
     assert.equal((await get('users/bob/wallet/main')).balance, 1000);
     const tally = await get('tallies/ann');
-    assert.deepEqual(tally.all, { won: 2, lost: 1, push: 0, void: 1, staked: 161, profit: 52.59 });
-    assert.deepEqual(tally.days['2026-10-11'], [2, 1, 0, 161, 52.59]);
+    assert.deepEqual(tally.all, { won: 2, lost: 2, push: 0, void: 0, staked: 186, profit: 27.59 });
+    assert.deepEqual(tally.days['2026-10-11'], [2, 2, 0, 186, 27.59]);
     // (each day's profit by sport, for the wallet's chart; the void out; a new tally at the current version)
-    assert.deepEqual(tally.sports, { '2026-10-11': { nfl: 42.59, nhl: 10 } });
+    assert.deepEqual(tally.sports, { '2026-10-11': { nfl: 17.59, nhl: 10 } });
     assert.equal(tally.v, TALLY_VERSION);
 
     // (the boards: ann public, bob not; the ghost's tally gone)
@@ -219,7 +221,7 @@ describe('the settler', { skip }, () => {
     assert.equal(week.tallyVersion, TALLY_VERSION);
     assert.deepEqual(
       week.rows.map((r) => [r.username, r.won, r.lost, r.profit]),
-      [['ann', 2, 1, 52.59]],
+      [['ann', 2, 2, 27.59]],
     );
     // (her reloads beside her row, read from her wallet's resets)
     assert.equal(week.rows[0].reloads, 0);
@@ -234,7 +236,7 @@ describe('the settler', { skip }, () => {
     // (run again: nothing paid twice, the snapshot unchanged)
     const second = await run({ db, fetchJson, now: NOW + 36e5, ledgers, log: quiet });
     assert.deepEqual(second.counts, { settled: 0, void: 0, waiting: 1 });
-    assert.equal((await get('users/ann/wallet/main')).balance, 937.59);
+    assert.equal((await get('users/ann/wallet/main')).balance, 912.59);
     assert.equal((await get('lines/nfl_403')).snaps.length, 1);
     tomorrowSpread = '-7';
     await run({ db, fetchJson, now: NOW + 2 * 36e5, ledgers, log: quiet });
@@ -316,12 +318,27 @@ describe('the settler', { skip }, () => {
     await db.doc('lines/nfl_401').set({ sport: 'nfl', event: '401', snaps: [{ at: '2026-10-10T14:00:00Z', spread: { home: { line: -2.5, odds: -105 }, away: { line: 2.5, odds: -115 } }, total: { line: 46, over: -110, under: -110 }, ml: { home: -190, away: 160 } }] });
     await seed('cy', { bets: { snap: bet({ line: -2.5, odds: -105 }), late: bet({ line: -2.5, odds: -105, placedAt: at('2026-10-11T10:00Z') }) } });
     const dry = await run({ db, fetchJson, now: NOW, ledgers, dry: true, log: quiet });
-    assert.deepEqual(dry.counts, { settled: 1, void: 1, waiting: 0 });
+    assert.deepEqual(dry.counts, { settled: 2, void: 0, waiting: 0 });
     assert.equal((await db.doc('users/cy/bets/snap').get()).get('status'), 'open');
     assert.equal((await db.doc('leaderboards/week').get()).exists, false);
     await run({ db, fetchJson, now: NOW, ledgers, log: quiet });
     assert.equal((await db.doc('users/cy/bets/snap').get()).get('status'), 'won');
-    assert.equal((await db.doc('users/cy/bets/late').get()).get('note'), 'price didn’t match the board');
+    // (D98: past the snapshot's window but at its price: stands at its own, never void)
+    assert.equal((await db.doc('users/cy/bets/late').get()).get('status'), 'won');
+  });
+
+  test('D98: a straight bet voided over its price in the last two weeks graded again at its price, its wallet and tally swapped, once', async () => {
+    await seed('rv', { balance: 900, bets: { old: { ...bet({ odds: -142 }), status: 'void', profit: 0, note: 'price didn’t match the board', settledAt: at('2026-10-11T21:00Z') } } });
+    await db.doc('tallies/rv').set({ all: { won: 0, lost: 0, push: 0, void: 1, staked: 0, profit: 0 }, days: {}, sports: {}, v: TALLY_VERSION });
+    await run({ db, fetchJson, now: NOW, ledgers, log: quiet });
+    const b = (await db.doc('users/rv/bets/old').get()).data();
+    assert.deepEqual([b.status, b.profit, b.note, b.corrected?.why], ['won', 70.42, undefined, 'D98: never void over its price']);
+    // (the void's stake was back already: the win's profit on top)
+    assert.equal((await db.doc('users/rv/wallet/main').get()).get('balance'), 970.42);
+    const tally = (await db.doc('tallies/rv').get()).data();
+    assert.deepEqual([tally.all.won, tally.all.void, tally.all.profit], [1, 0, 70.42]);
+    await run({ db, fetchJson, now: NOW + 36e5, ledgers, log: quiet });
+    assert.equal((await db.doc('users/rv/wallet/main').get()).get('balance'), 970.42, 'once');
   });
 
   test('an older tally (no sports) filled in once from the bets on the next run, its record untouched; the boards due till it is', async () => {

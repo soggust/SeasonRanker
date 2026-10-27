@@ -301,8 +301,15 @@ test('settling: won, lost, pushed from the final by the bettor’s rules; void w
   assert.deepEqual(lib.settlePlayBet(bet({ market: 'ml', side: 'away', line: null, odds: 150 }), game(), opts), { status: 'lost', profit: -10, final: 'LV 20 @ NE 24' });
   // (not final yet: waits)
   assert.equal(lib.settlePlayBet(bet(), game({ final: false, hs: null, as: null }), opts), null);
-  // (the price not on the board, placed after the start, not this game, called off)
-  assert.deepEqual(lib.settlePlayBet(bet({ odds: 130 }), game(), opts), { status: 'void', profit: 0, note: 'price didn’t match the board' });
+  // (D98: never void over its price: within 40 cents of a price seen for its side and line, paid at its own (-105 on the
+  // board's -108); further (+160), at the board's price nearest it, said so; no price seen for its line, its own)
+  assert.deepEqual(lib.settlePlayBet(bet({ odds: -140 }), game(), opts), { status: 'won', profit: 7.14, final: 'LV 20 @ NE 24' });
+  const far = lib.settlePlayBet(bet({ odds: 160 }), game(), opts);
+  assert.equal(far.status, 'won');
+  assert.ok(Number.isFinite(far.paidOdds) && far.paidOdds !== 160 && far.profit === lib.toWin(10, far.paidOdds));
+  assert.match(far.note, /^paid at .*\(\+160 was never shown\)$/);
+  assert.equal(lib.settlePlayBet(bet({ line: -9.5, odds: 130 }), game({ hs: 34 }), opts).profit, 13, 'a line no board showed: at its own price');
+  // (placed after the start, not this game, called off)
   assert.equal(lib.settlePlayBet(bet({ odds: -108, placedAt: '2026-10-11T17:30:00Z' }), game(), opts).note, 'placed after the start');
   assert.equal(lib.settlePlayBet(bet({ matchup: 'KC @ DEN' }), game(), opts).note, 'not this game');
   assert.equal(lib.settlePlayBet(bet(), game({ final: false, off: 'canceled', hs: null, as: null }), opts).note, 'game canceled');
@@ -323,7 +330,7 @@ test('settling: won, lost, pushed from the final by the bettor’s rules; void w
   const best = lib.boardObservations({ 'spread|home|-3.5|-102||': seen, 'prop|over|24.5|105|saves|9': seen });
   assert.deepEqual(lib.checkPrice(bet({ odds: -102, book: 'fd' }), best), { ok: true, by: 'board' });
   assert.deepEqual(lib.settlePlayBet(bet({ odds: -102, book: 'fd' }), game(), { observations: [...board, ...best], now }), { status: 'won', profit: 9.8, final: 'LV 20 @ NE 24' });
-  assert.equal(lib.settlePlayBet(bet({ odds: 130, book: 'fd' }), game(), { observations: [...board, ...best], now }).note, 'price didn’t match the board');
+  assert.match(lib.settlePlayBet(bet({ odds: 160, book: 'fd' }), game(), { observations: [...board, ...best], now }).note, /never shown/);
   assert.equal(lib.settlePlayBet({ ...prop, odds: 105, book: 'mgm' }, game(), { observations: best, propValue: 27, now }).status, 'won');
   assert.equal(lib.legProblem({ ...prop, odds: 105, book: 'mgm' }), null);
   // (what goes back in the wallet)
@@ -469,16 +476,18 @@ test('settling a parlay: each leg graded as a straight bet (its price checked), 
   const later = { game: game({ id: '403', homeAbbr: 'DEN', awayAbbr: 'KC', hs: 10, as: 13, date: '2026-10-12T20:00Z' }), observations: lib.observationsOf({ ml: { home: -140, away: 120 } }, 'close') };
   r = lib.settleParlay(parlay(r.legs), [null, later], { now: now + 2 * lib.DAY });
   assert.deepEqual(r.result, { status: 'won', profit: 32.37, final: '2 of 2 hit', odds: 324 });
-  // (a leg whose price wasn't on the board: void, dropping out; the other paid as a straight bet)
-  r = lib.settleParlay(parlay([leg({ odds: 130 }), nyj]), [g1, g2], { now });
-  assert.deepEqual(r.legs.map((l) => [l.status, l.note]), [['void', 'price didn’t match the board'], ['won', undefined]]);
-  assert.deepEqual(r.result, { status: 'won', profit: 5.56, final: '1 of 2 hit, 1 void', odds: -180 });
+  // (D98: a leg whose price was never near the board's: paid at the board's nearest, never void)
+  r = lib.settleParlay(parlay([leg({ odds: 400 }), nyj]), [g1, g2], { now });
+  assert.equal(r.legs[0].status, 'won');
+  assert.equal(r.legs[0].placedOdds, 400);
+  assert.ok(r.legs[0].odds !== 400 && /never shown/.test(r.legs[0].note));
   // (a pushed leg: NE -4 on a 4-point win; the other's price)
   r = lib.settleParlay(parlay([leg({ line: -4, odds: -110 }), nyj]), [{ ...g1, observations: [...board, ...lib.observationsOf({ spread: { home: { line: -4, odds: -110 }, away: { line: 4, odds: -110 } } }, 'close')] }, g2], { now });
   assert.equal(r.legs[0].status, 'push');
   assert.deepEqual(r.result, { status: 'won', profit: 5.56, final: '1 of 2 hit, 1 pushed', odds: -180 });
   // (every leg void: the stake back)
-  r = lib.settleParlay(parlay([leg({ odds: 130 }), nyj]), [g1, { ...g2, observations: [] }], { now });
+  const off = (g) => ({ ...g, game: { ...g.game, final: false, off: 'canceled', hs: null, as: null } });
+  r = lib.settleParlay(parlay([leg(), nyj]), [off(g1), off(g2)], { now });
   assert.deepEqual(r.result, { status: 'void', profit: 0, final: '0 of 2 hit, 2 void', note: 'every leg void' });
   // (a leg that isn't a bet the page could place: void, without its game looked at)
   assert.equal(lib.legProblem(leg()), null);
@@ -572,7 +581,7 @@ test('settling a UFC bout: the moneyline by the winner, a round total by how lon
   assert.equal(lib.settlePlayBet(fight(), lib.boutFor(fight(), replaced), opts).note, 'a fighter was replaced');
   // (the bout cancelled; the price not on the board; placed after the bout's start, the card's earlier start no matter)
   assert.equal(settle(fight(), bout({ off: 'cancelled', final: false, winner: null })).note, 'bout cancelled');
-  assert.equal(settle(fight({ odds: 200 })).note, 'price didn’t match the board');
+  assert.equal(settle(fight({ odds: 200 })).status, 'won', 'D98: never void over its price');
   assert.equal(settle(fight({ placedAt: '2026-10-18T00:50:00Z' })).note, 'placed after the start');
   assert.equal(settle(fight({ placedAt: '2026-10-17T22:00:00Z' })).status, 'won');
   // (names as ESPN writes them, accents and spacing aside)

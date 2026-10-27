@@ -1539,3 +1539,10 @@ Resolved 2026-10-18:
 - **Read (2026-10-26, the dump before the bands' stakes):** no-skill 90% bands NBA -322u to -107u (the record beats all 10,000), NHL -158u to -13u, NFL -110u to -5u, MLB -43u to +41u. Bets for 80% power: +1pt about 16,000, +2pt about 4,000, +3pt about 1,800, +5pt about 650 in every sport. The Bot's chances promise NBA +88u against +82u made (calibrated); NHL +34u against -33u, NFL +23u against -24u, MLB +10u against -6u (overconfident: their trust's shrink is the lever).
 - **Fix found on the way:** the canaries' replays (the planted leak) overwrote REPLAY_DUMP's bets; canary.mjs now runs them with it off.
 - **Code:** luck.mjs, canary.mjs. Tests: `tests/model-luck.test.mjs`.
+
+### D98. A user's bet is never void over its price (the owner, 2026-10-26: "why would you void a USERS bet when the line moves... only void a BOT bet if player doesn't play")
+
+- **Why:** 2026-10-26's CLE ML -142 (MIN @ CLE) was voided "price didn't match the board": the page shows ESPN's live prices, refreshed each minute, and the settler only knows the board's and its own snapshots, so a price shown between them can't be found.
+- **Rule:** settle-lib.mjs priceFor: a bet's own price where a board showed it, or within LOOSE (40) cents of a price seen for its side and line; further from every price seen, paid at the seen price nearest its time (paidOdds, a note saying so); none seen for its side and line, its own. Voids stay for a player who didn't play, a game called off, a bet placed after the start, the wrong game. The bets voided over their price in the last 14 days are graded again once (settle.mjs: correctOne, their wallet and tally swapped).
+- **Code:** settle-lib.mjs, settle.mjs. Tests: `tests/wallet.test.mjs`, `tests/rules/wallet-settle.test.mjs`.
+- **Never:** a user's bet void because its price moved.
