@@ -370,7 +370,7 @@ export async function settleOpen(db, { fetchJson = get, now = Date.now(), ledger
   try {
     const old = await db.collectionGroup('bets').where('status', '==', 'void').get();
     const revive = old.docs.filter((d) => d.ref.parent.parent?.parent?.id === 'users' && d.get('kind') !== 'parlay' && PRICE_VOIDS.includes(d.get('note')) && (d.get('settledAt')?.toMillis?.() ?? 0) >= now - PRICE_VOID_DAYS * DAY && SETTLED.includes(d.get('sport')));
-    log(`price voids (D98): ${revive.length} of ${old.size} voids to grade again${old.size && !revive.length ? ` (notes: ${[...new Set(old.docs.map((d) => JSON.stringify(d.get('note') ?? null)))].slice(0, 6).join(', ')})` : ''}`);
+    log(`price voids (D98): ${revive.length} of ${old.size} voids to grade again${old.size && !revive.length ? ` (${old.docs.map((d) => `${d.get('sport')}/${d.get('kind') ?? 'straight'}/${PRICE_VOIDS.includes(d.get('note')) ? 'price' : 'other'}/settled ${d.get('settledAt')?.toDate?.()?.toISOString?.()?.slice(0, 16) ?? typeof d.get('settledAt')}`).slice(0, 10).join(', ')})` : ''}`);
     for (const d of revive) {
       const bet = { ...d.data(), id: d.id, start: iso(d.get('start')), placedAt: iso(d.get('placedAt')) };
       const inputs = await inputsFor(bet);
