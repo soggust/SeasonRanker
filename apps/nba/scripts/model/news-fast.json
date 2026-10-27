@@ -1,7 +1,7 @@
 {
  "sport": "nba",
  "cursor": {
-  "rotowirenba.bsky.social": "2026-10-27T20:33:37.000Z",
+  "rotowirenba.bsky.social": "2026-10-27T20:48:02.000Z",
   "insidenbanews.bsky.social": "2026-10-27T19:26:50.857Z",
   "shamsbot.bsky.social": "2026-10-27T20:14:48.000Z"
  },
@@ -3541,6 +3541,19 @@
    "kind": "status",
    "confidence": 0.95,
    "text": "Alperen Sengun: Won't play vs. Milwaukee \n\n https://www.rotowire.com/basketball/player/alperen-sengun-5404"
+  },
+  {
+   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3myv4c2cfef2n|ajdybantsa|questionable|status",
+   "at": "2026-10-27T20:48:02.000Z",
+   "seen": "2026-10-27T21:03:59.452Z",
+   "handle": "rotowirenba.bsky.social",
+   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3myv4c2cfef2n",
+   "player": "AJ Dybantsa",
+   "team": null,
+   "status": "questionable",
+   "kind": "status",
+   "confidence": 0.95,
+   "text": "AJ Dybantsa: Questionable for Wednesday \n\n https://www.rotowire.com/basketball/player/aj-dybantsa-6925"
   }
  ]
 }

@@ -104,6 +104,7 @@
   "50240296": "2026-10-21",
   "50240898": "2026-10-26",
   "50240960": "2026-10-26",
+  "50241025": "2026-10-27",
   "50241399": "2026-10-22",
   "50241532": "2026-10-21",
   "50242150": "2026-10-22",
@@ -129,7 +130,9 @@
   "50288815": "2026-10-27",
   "50293252": "2026-10-27",
   "50293953": "2026-10-27",
-  "50298454": "2026-10-27"
+  "50298454": "2026-10-27",
+  "50300403": "2026-10-27",
+  "50300459": "2026-10-27"
  },
  "signals": [
   {
@@ -415,6 +418,21 @@
    "confidence": 0.9,
    "story": "50298454",
    "headline": "Phillies name Rays' Peter Fatse as hitting coach, replacing Kevin Long",
+   "model": "claude-haiku-5-5"
+  },
+  {
+   "id": "50300459|8|40937|starting",
+   "day": "2026-10-27",
+   "at": "2026-10-27T20:10:08.000Z",
+   "team": "8",
+   "abbr": "MIL",
+   "athlete": "40937",
+   "player": "Dustin May",
+   "kind": "starting",
+   "direction": "up",
+   "confidence": 0.9,
+   "story": "50300459",
+   "headline": "Brewers to start Dustin May in possible World Series clincher",
    "model": "claude-haiku-5-5"
   }
  ]
