@@ -5,9 +5,9 @@
   "rapsheet.bsky.social": "2026-10-27T19:11:31.345Z",
   "nflnewsreposterbot.bsky.social": "2026-10-22T13:33:43.592Z",
   "insidenflnews.bsky.social": "2026-10-27T17:53:13.591Z",
-  "nflnewsposter.bsky.social": "2026-10-27T18:40:14.556Z",
-  "rotoworld-fb.bsky.social": "2026-10-27T18:09:17.000Z",
-  "rotowirenfl.bsky.social": "2026-10-27T18:06:41.000Z"
+  "nflnewsposter.bsky.social": "2026-10-27T19:34:06.189Z",
+  "rotoworld-fb.bsky.social": "2026-10-27T19:29:46.000Z",
+  "rotowirenfl.bsky.social": "2026-10-27T19:23:23.000Z"
  },
  "claims": [
   {
@@ -7094,6 +7094,19 @@
    "kind": "status",
    "confidence": 0.9,
    "text": "[Schefter] Giants GM Joe Schoen told reporters that RB Tyrone Tracy Jr. is being placed on injured reserve due to a hamstring injury. twitter.com/adamschefter..."
+  },
+  {
+   "id": "at://did:plc:fuqjc7x4gxvnwzksnlxwbe4x/app.bsky.feed.post/3myuxjt64okck|camtaylorbritt|out|status",
+   "at": "2026-10-27T19:22:54.650Z",
+   "seen": "2026-10-27T19:40:27.662Z",
+   "handle": "nflnewsposter.bsky.social",
+   "post": "at://did:plc:fuqjc7x4gxvnwzksnlxwbe4x/app.bsky.feed.post/3myuxjt64okck",
+   "player": "Cam Taylor-Britt",
+   "team": "IND",
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.95,
+   "text": "[Colts] We have signed CB Kenneth Harris to the 53-man roster from the practice squad and placed CB Cam Taylor-Britt on IR.\n\nWe have also signed CB Shemar Bartholomew and CB Natrone Brooks to the prac"
   }
  ]
 }

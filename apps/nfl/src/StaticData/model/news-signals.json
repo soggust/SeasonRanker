@@ -3,6 +3,17 @@
  "days": 2,
  "signals": [
   {
+   "team": "19",
+   "abbr": "NYG",
+   "athlete": "4040761",
+   "player": "Devin Singletary",
+   "kind": "role",
+   "direction": "up",
+   "confidence": 0.6,
+   "headline": "Giants place RB Tyrone Tracy Jr. on IR with hamstring injury",
+   "at": "2026-10-27T19:32:36.000Z"
+  },
+  {
    "team": "22",
    "abbr": "ARI",
    "athlete": "4692835",
@@ -69,5 +80,5 @@
    "at": "2026-10-26T03:12:59.000Z"
   }
  ],
- "at": "2026-10-27T19:19:22.882Z"
+ "at": "2026-10-27T19:40:27.662Z"
 }
