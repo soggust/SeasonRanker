@@ -1,9 +1,9 @@
 {
  "sport": "nba",
  "cursor": {
-  "rotowirenba.bsky.social": "2026-10-27T22:05:27.000Z",
-  "insidenbanews.bsky.social": "2026-10-27T19:26:50.857Z",
-  "shamsbot.bsky.social": "2026-10-27T20:14:48.000Z"
+  "rotowirenba.bsky.social": "2026-10-27T23:05:23.000Z",
+  "insidenbanews.bsky.social": "2026-10-27T22:48:08.881Z",
+  "shamsbot.bsky.social": "2026-10-27T22:46:31.000Z"
  },
  "claims": [
   {
@@ -3697,6 +3697,84 @@
    "kind": "status",
    "confidence": 0.93,
    "text": "Anthony Edwards: Questionable for Wednesday \n\n https://www.rotowire.com/basketball/player/anthony-edwards-5110"
+  },
+  {
+   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3myvcccgeru2n|cameronjohnson|doubtful|status",
+   "at": "2026-10-27T22:35:33.000Z",
+   "seen": "2026-10-27T23:09:43.168Z",
+   "handle": "rotowirenba.bsky.social",
+   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3myvcccgeru2n",
+   "player": "Cameron Johnson",
+   "team": null,
+   "status": "doubtful",
+   "kind": "status",
+   "confidence": 0.9,
+   "text": "Cameron Johnson: Doubtful for Wednesday \n\n https://www.rotowire.com/basketball/player/cameron-johnson-4916"
+  },
+  {
+   "id": "at://did:plc:sa73fbx3vxzh2fw5pu5wmief/app.bsky.feed.post/3myvd6okdmb2g|anthonyedwards|out|status",
+   "at": "2026-10-27T22:46:31.000Z",
+   "seen": "2026-10-27T23:09:43.168Z",
+   "handle": "shamsbot.bsky.social",
+   "post": "at://did:plc:sa73fbx3vxzh2fw5pu5wmief/app.bsky.feed.post/3myvd6okdmb2g",
+   "player": "Anthony Edwards",
+   "team": "MIN",
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.9,
+   "text": "Just in: Minnesota Timberwolves star Anthony Edwards will undergo an arthroscopic procedure on his ailing right knee and miss up to two months, sources tell ESPN."
+  },
+  {
+   "id": "at://did:plc:ykcnnf6kqnn3lasmobrczoem/app.bsky.feed.post/3myvcyswlw22g|anthonyedwards|out|status",
+   "at": "2026-10-27T22:48:08.881Z",
+   "seen": "2026-10-27T23:09:43.168Z",
+   "handle": "insidenbanews.bsky.social",
+   "post": "at://did:plc:ykcnnf6kqnn3lasmobrczoem/app.bsky.feed.post/3myvcyswlw22g",
+   "player": "Anthony Edwards",
+   "team": "MIN",
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.9,
+   "text": "Shams: Anthony Edwards to undergo arthroscopic procedure on right knee and will miss up to two months."
+  },
+  {
+   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3myvdanizic27|anthonyedwards|out|status",
+   "at": "2026-10-27T22:52:31.000Z",
+   "seen": "2026-10-27T23:09:43.168Z",
+   "handle": "rotowirenba.bsky.social",
+   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3myvdanizic27",
+   "player": "Anthony Edwards",
+   "team": "MIN",
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.6,
+   "text": "Anthony Edwards: Set to undergo knee surgery \n\n https://www.rotowire.com/basketball/player/anthony-edwards-5110"
+  },
+  {
+   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3myvddcp2nc2v|derrickwhite|active|status",
+   "at": "2026-10-27T22:54:00.000Z",
+   "seen": "2026-10-27T23:09:43.168Z",
+   "handle": "rotowirenba.bsky.social",
+   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3myvddcp2nc2v",
+   "player": "Derrick White",
+   "team": "BOS",
+   "status": "active",
+   "kind": "status",
+   "confidence": 0.85,
+   "text": "Derrick White: Will play Tuesday \n\n https://www.rotowire.com/basketball/player/derrick-white-4195"
+  },
+  {
+   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3myvdxo2tt42g|laurimarkkanen|questionable|status",
+   "at": "2026-10-27T23:05:23.000Z",
+   "seen": "2026-10-27T23:09:43.168Z",
+   "handle": "rotowirenba.bsky.social",
+   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3myvdxo2tt42g",
+   "player": "Lauri Markkanen",
+   "team": "UTA",
+   "status": "questionable",
+   "kind": "status",
+   "confidence": 0.85,
+   "text": "Lauri Markkanen: Questionable for Wednesday \n\n https://www.rotowire.com/basketball/player/lauri-markkanen-4119"
   }
  ]
 }
