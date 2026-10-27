@@ -68,6 +68,10 @@ const PAST_SEASON = SEASON < CURRENT_SEASON;
 // How long after the latest game an update waits for ESPN's season stats to catch up with its results
 // before going ahead anyway (the QBs still behind marked)
 const HOLD_HOURS = 36;
+// (a straggler or two (2026-10-26: Jordan Love's season totals a game behind for a day, every player's Sunday held):
+// held this long at most, then the update goes ahead with them marked statsBehind)
+const FEW_BEHIND = 2;
+const FEW_HOLD_HOURS = 6;
 const WEEKS = 18;
 const SITE = 'https://site.api.espn.com/apis/site/v2/sports/football/nfl';
 const DATA_DIR = process.env.OUT_DIR
@@ -2418,10 +2422,11 @@ async function updatePart(part, shared) {
   const behind = gameData.map((qb, i) => [qb, boxes[i] ? gamesBehind(qb.id, boxes[i].attempts) : 0]).filter(([, n]) => n > 0);
   const latest = games.at(-1)?.date;
   const hoursSince = latest ? (Date.now() - Date.parse(latest)) / 3600000 : Infinity;
-  if (behind.length && !PAST_SEASON && hoursSince < HOLD_HOURS) {
+  const holdFor = behind.length <= FEW_BEHIND ? FEW_HOLD_HOURS : HOLD_HOURS;
+  if (behind.length && !PAST_SEASON && hoursSince < holdFor) {
     console.log(
       `ESPN's season stats${label} are behind its results for ${behind.map(([qb, n]) => `${qb.name} (${n} game${n === 1 ? '' : 's'})`).join(', ')}: ` +
-        `keeping the current data (the latest game ended ${Math.round(hoursSince)} hours ago; going ahead anyway after ${HOLD_HOURS})`,
+        `keeping the current data (the latest game ended ${Math.round(hoursSince)} hours ago; going ahead anyway after ${holdFor})`,
     );
     return true;
   }
