@@ -10526,6 +10526,18 @@
     "own": "2026-10-27T15:44:02.521Z",
     "why": "@insidenbanews.bsky.social: ⚠️ Shams: Kawhi Leonard expected to miss a period of"
    }
+  },
+  "401909877|derrickwhite|q": {
+   "game": "401909877",
+   "start": "2026-10-27T23:30Z",
+   "team": "2",
+   "name": "Derrick White",
+   "status": "q",
+   "athlete": "3078576",
+   "espn": {
+    "seen": "2026-10-27T17:20:42.510Z",
+    "own": "2026-10-27T16:58:00.000Z"
+   }
   }
  }
 }

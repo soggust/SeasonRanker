@@ -2,9 +2,9 @@
  "sport": "nhl",
  "cursor": {
   "johnston-bot.bsky.social": "2026-10-25T21:08:24.897Z",
-  "notfriedgehnic.bsky.social": "2026-10-26T18:12:20.765Z",
-  "dailyfaceoff.bsky.social": "2026-10-27T16:34:05.000Z",
-  "dfotoronto.bsky.social": "2026-10-27T16:13:13.000Z",
+  "notfriedgehnic.bsky.social": "2026-10-27T17:03:49.716Z",
+  "dailyfaceoff.bsky.social": "2026-10-27T17:15:13.000Z",
+  "dfotoronto.bsky.social": "2026-10-27T17:13:40.000Z",
   "marklazerus.bsky.social": "2026-10-27T15:50:30.160Z"
  },
  "claims": [
@@ -891,6 +891,19 @@
    "kind": "benched",
    "confidence": 0.8,
    "text": "Easton Cowan got BENCHED and responded in a big way!\n\nJay Rosehill breaks down how the young Maple Leafs forward bounced back from a rough start against Calgary and why his response speaks volumes abo"
+  },
+  {
+   "id": "at://did:plc:sdobrsxnvwczrjydmnubhibh/app.bsky.feed.post/3myupr4wdkb2b|connorhellebuyck|active|starting",
+   "at": "2026-10-27T17:03:49.716Z",
+   "seen": "2026-10-27T17:22:29.451Z",
+   "handle": "notfriedgehnic.bsky.social",
+   "post": "at://did:plc:sdobrsxnvwczrjydmnubhibh/app.bsky.feed.post/3myupr4wdkb2b",
+   "player": "Connor Hellebuyck",
+   "team": "NJ",
+   "status": "active",
+   "kind": "starting",
+   "confidence": 0.9,
+   "text": "NJ coach Sheldon Keefe says Connor Hellebuyck starts tonight in Dallas"
   }
  ]
 }
