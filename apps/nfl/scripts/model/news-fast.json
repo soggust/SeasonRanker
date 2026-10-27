@@ -6,8 +6,8 @@
   "nflnewsreposterbot.bsky.social": "2026-10-22T13:33:43.592Z",
   "insidenflnews.bsky.social": "2026-10-27T17:53:13.591Z",
   "nflnewsposter.bsky.social": "2026-10-27T17:41:53.690Z",
-  "rotoworld-fb.bsky.social": "2026-10-27T17:51:08.000Z",
-  "rotowirenfl.bsky.social": "2026-10-27T15:38:05.000Z"
+  "rotoworld-fb.bsky.social": "2026-10-27T18:09:17.000Z",
+  "rotowirenfl.bsky.social": "2026-10-27T18:06:41.000Z"
  },
  "claims": [
   {
@@ -7055,6 +7055,32 @@
    "kind": "status",
    "confidence": 0.9,
    "text": "Giants GM Joe Schoen told reporters that RB Tyrone Tracy Jr. is being placed on injured reserve due to a hamstring injury.\n\nOriginal post"
+  },
+  {
+   "id": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3myutbkd2fw2b|tyronetracy|out|status",
+   "at": "2026-10-27T18:06:41.000Z",
+   "seen": "2026-10-27T18:25:15.821Z",
+   "handle": "rotowirenfl.bsky.social",
+   "post": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3myutbkd2fw2b",
+   "player": "Tyrone Tracy",
+   "team": null,
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.9,
+   "text": "Tyrone Tracy: Bound for IR \n\n https://www.rotowire.com/football/player/tyrone-tracy-17967"
+  },
+  {
+   "id": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3myutg6e6ys2y|tyronetracy|out|status",
+   "at": "2026-10-27T18:09:17.000Z",
+   "seen": "2026-10-27T18:25:15.821Z",
+   "handle": "rotoworld-fb.bsky.social",
+   "post": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3myutg6e6ys2y",
+   "player": "Tyrone Tracy",
+   "team": null,
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.9,
+   "text": "Tyrone Tracy (hamstring) to head to IR"
   }
  ]
 }
