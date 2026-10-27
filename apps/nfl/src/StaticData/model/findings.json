@@ -560,14 +560,14 @@
    "group": "watching",
    "sport": "nfl",
    "ref": "D86",
-   "text": "History audit: 2026-10-27 code re-record held. the record guard refused: held: inputs shrank since the last record (its fingerprint): context ol 2026 games 106 to 94"
+   "text": "History audit: 2026-10-27 code re-record held. the record guard refused: held: inputs shrank since the last record (its fingerprint): contex"
   },
   {
    "date": "2026-10-27",
    "group": "watching",
    "sport": "nhl",
    "ref": "D86",
-   "text": "History audit: 2026-10-27 code re-record held. the record guard refused: held: inputs changed, not the model: the replay moved -11.11u to -20.29u (-9.18u, past 3u) with the model's code unchanged since the last record"
+   "text": "History audit: 2026-10-27 code re-record held. the record guard refused: held: inputs changed, not the model: the replay moved -11.11u to -2"
   }
  ]
 }

@@ -287,7 +287,7 @@ export function setFindings(file, sport, res, date) {
   const f = file && Array.isArray(file.entries) ? file : { v: 1, entries: [] };
   const mine = (e) => e.ref === REF && e.group === 'watching' && e.sport === sport && /^Self-tune:/.test(e.text ?? '');
   const entries = f.entries.filter((e) => !mine(e));
-  entries.push({ date, group: res.decision.ship ? 'shipped' : 'watching', sport, ref: REF, text: findingText(sport, res).slice(0, 240) });
+  entries.push({ date, group: res.decision.ship ? 'shipped' : 'watching', sport, ref: REF, text: findingText(sport, res).slice(0, 140) });
   return { ...f, entries };
 }
 // (MODEL_EPOCH in leagues.mjs set to the time given: a pricing knob's change, D4)

@@ -83,7 +83,7 @@ export function setFinding(file, sport, text, date) {
   const f = file && Array.isArray(file.entries) ? file : { v: 1, entries: [] };
   const mine = (e) => e.ref === REF && e.group === 'watching' && e.sport === sport && /^History audit:/.test(e.text ?? '');
   const entries = f.entries.filter((e) => !mine(e));
-  if (text) entries.push({ date, group: 'watching', sport, ref: REF, text: `History audit: ${text}`.slice(0, 220) });
+  if (text) entries.push({ date, group: 'watching', sport, ref: REF, text: `History audit: ${text}`.slice(0, 140) });
   return { ...f, entries };
 }
 
