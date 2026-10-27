@@ -74,7 +74,7 @@ import { placeOf } from './fights-venue.mjs';
 import { BANDS as LEAD_BAND_KEYS, calFair, leadBand, priceKey, unpackRows } from './gate-mma.mjs';
 import { BANKROLL, BUCKETS, MAX_REPRICES, PRACTICE_N, PRACTICE_SPLIT, PRACTICE_STAKED, PRACTICE_UNITS, bucketTrustOf, chanceAt, decimal, fairPair, fitBuckets, fitTrust, gapGuard, isTracked, placement, practiceRecord, practiceTag, practiceTop, record, rulesAt, rulesChanged, rulesOf, stakeFor, suspectOf, trackedRecord } from './desk.mjs';
 import { readLinePool } from './line-pool.mjs';
-import { BANDS, TOP, capOf, edgeLevel, kellyOf, levelOf, recordBlocks, scoreParts } from './picks.mjs';
+import { BANDS, TOP, capOf, displayOrder, edgeLevel, kellyOf, levelOf, recordBlocks, scoreParts } from './picks.mjs';
 import { readReplay } from './replay-record.mjs';
 import { placed as placedBand, tierUnits } from './reasons.mjs';
 import { knob } from './tuned.mjs';
@@ -745,6 +745,9 @@ export function buildFightPicks(ledger, trust, bouts, now, extra = {}) {
     if (!Number.isFinite(b.publishedKelly)) b.publishedKelly = score;
     b.publishedLevel = levelOf(b, b.publishedKelly, b.publishedP);
   }
+  // (the Book's order, as picks.mjs buildPicks: the band first, then the Kelly score within it; 2026-10-27 a LIKE out-
+  // scored a LOVE and the LOVE was listed under it, failing the data check)
+  scored.sort((x, y) => displayOrder(x.b, x.score) - displayOrder(y.b, y.score) || y.score - x.score || x.b.start.localeCompare(y.b.start));
   const picks = top.map(({ b, score, why }, i) => ({
     id: b.id,
     rank: i + 1,
