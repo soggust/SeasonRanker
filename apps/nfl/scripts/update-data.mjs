@@ -67,10 +67,11 @@ const SEASON = Number(process.env.SEASON ?? CURRENT_SEASON);
 const PAST_SEASON = SEASON < CURRENT_SEASON;
 // How long after the latest game an update waits for ESPN's season stats to catch up with its results
 // before going ahead anyway (the QBs still behind marked)
-const HOLD_HOURS = 36;
-// (a straggler or two (2026-10-26: Jordan Love's season totals a game behind for a day, every player's Sunday held):
-// held this long at most, then the update goes ahead with them marked statsBehind)
-const FEW_BEHIND = 2;
+const HOLD_HOURS = 12;
+// (a few stragglers (2026-10-26: Jordan Love's season totals a game behind for a day, every player's Sunday held; a
+// Monday night's two QBs and a Sunday straggler are three): held this long at most, then the update goes ahead with
+// them marked statsBehind; more than that, HOLD_HOURS (12, was 36: the next morning's runs always land it))
+const FEW_BEHIND = 4;
 const FEW_HOLD_HOURS = 6;
 const WEEKS = 18;
 const SITE = 'https://site.api.espn.com/apis/site/v2/sports/football/nfl';
