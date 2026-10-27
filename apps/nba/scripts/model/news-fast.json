@@ -1,8 +1,8 @@
 {
  "sport": "nba",
  "cursor": {
-  "rotowirenba.bsky.social": "2026-10-27T01:09:18.000Z",
-  "insidenbanews.bsky.social": "2026-10-27T01:07:25.569Z",
+  "rotowirenba.bsky.social": "2026-10-27T01:36:31.000Z",
+  "insidenbanews.bsky.social": "2026-10-27T01:35:58.243Z",
   "shamsbot.bsky.social": "2026-10-26T22:37:13.000Z"
  },
  "claims": [
@@ -3190,6 +3190,162 @@
    "kind": "starting",
    "confidence": 0.85,
    "text": "Lineup alert: Grizzlies will start Jerome, Coward, Wells, Boozer, Edey."
+  },
+  {
+   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3myt2nmx64d2q|cameronjohnson|out|status",
+   "at": "2026-10-27T01:13:24.000Z",
+   "seen": "2026-10-27T01:37:33.311Z",
+   "handle": "rotowirenba.bsky.social",
+   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3myt2nmx64d2q",
+   "player": "Cameron Johnson",
+   "team": null,
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.85,
+   "text": "Cameron Johnson: Downgraded to out \n\n https://www.rotowire.com/basketball/player/cameron-johnson-4916"
+  },
+  {
+   "id": "at://did:plc:ykcnnf6kqnn3lasmobrczoem/app.bsky.feed.post/3myt3vkqrs22c|murray|none|starting",
+   "at": "2026-10-27T01:35:43.965Z",
+   "seen": "2026-10-27T01:37:33.311Z",
+   "handle": "insidenbanews.bsky.social",
+   "post": "at://did:plc:ykcnnf6kqnn3lasmobrczoem/app.bsky.feed.post/3myt3vkqrs22c",
+   "player": "Murray",
+   "team": "DEN",
+   "status": "none",
+   "kind": "starting",
+   "confidence": 0.9,
+   "text": "Lineup alert: Nuggets will start Murray, Braun, Hopkins, Gordon, Jokic"
+  },
+  {
+   "id": "at://did:plc:ykcnnf6kqnn3lasmobrczoem/app.bsky.feed.post/3myt3vkqrs22c|braun|none|starting",
+   "at": "2026-10-27T01:35:43.965Z",
+   "seen": "2026-10-27T01:37:33.311Z",
+   "handle": "insidenbanews.bsky.social",
+   "post": "at://did:plc:ykcnnf6kqnn3lasmobrczoem/app.bsky.feed.post/3myt3vkqrs22c",
+   "player": "Braun",
+   "team": "DEN",
+   "status": "none",
+   "kind": "starting",
+   "confidence": 0.9,
+   "text": "Lineup alert: Nuggets will start Murray, Braun, Hopkins, Gordon, Jokic"
+  },
+  {
+   "id": "at://did:plc:ykcnnf6kqnn3lasmobrczoem/app.bsky.feed.post/3myt3vkqrs22c|hopkins|none|starting",
+   "at": "2026-10-27T01:35:43.965Z",
+   "seen": "2026-10-27T01:37:33.311Z",
+   "handle": "insidenbanews.bsky.social",
+   "post": "at://did:plc:ykcnnf6kqnn3lasmobrczoem/app.bsky.feed.post/3myt3vkqrs22c",
+   "player": "Hopkins",
+   "team": "DEN",
+   "status": "none",
+   "kind": "starting",
+   "confidence": 0.9,
+   "text": "Lineup alert: Nuggets will start Murray, Braun, Hopkins, Gordon, Jokic"
+  },
+  {
+   "id": "at://did:plc:ykcnnf6kqnn3lasmobrczoem/app.bsky.feed.post/3myt3vkqrs22c|gordon|none|starting",
+   "at": "2026-10-27T01:35:43.965Z",
+   "seen": "2026-10-27T01:37:33.311Z",
+   "handle": "insidenbanews.bsky.social",
+   "post": "at://did:plc:ykcnnf6kqnn3lasmobrczoem/app.bsky.feed.post/3myt3vkqrs22c",
+   "player": "Gordon",
+   "team": "DEN",
+   "status": "none",
+   "kind": "starting",
+   "confidence": 0.9,
+   "text": "Lineup alert: Nuggets will start Murray, Braun, Hopkins, Gordon, Jokic"
+  },
+  {
+   "id": "at://did:plc:ykcnnf6kqnn3lasmobrczoem/app.bsky.feed.post/3myt3vkqrs22c|jokic|none|starting",
+   "at": "2026-10-27T01:35:43.965Z",
+   "seen": "2026-10-27T01:37:33.311Z",
+   "handle": "insidenbanews.bsky.social",
+   "post": "at://did:plc:ykcnnf6kqnn3lasmobrczoem/app.bsky.feed.post/3myt3vkqrs22c",
+   "player": "Jokic",
+   "team": "DEN",
+   "status": "none",
+   "kind": "starting",
+   "confidence": 0.9,
+   "text": "Lineup alert: Nuggets will start Murray, Braun, Hopkins, Gordon, Jokic"
+  },
+  {
+   "id": "at://did:plc:ykcnnf6kqnn3lasmobrczoem/app.bsky.feed.post/3myt3vyeg7s2c|curry|none|starting",
+   "at": "2026-10-27T01:35:58.243Z",
+   "seen": "2026-10-27T01:37:33.311Z",
+   "handle": "insidenbanews.bsky.social",
+   "post": "at://did:plc:ykcnnf6kqnn3lasmobrczoem/app.bsky.feed.post/3myt3vyeg7s2c",
+   "player": "Curry",
+   "team": "GSW",
+   "status": "none",
+   "kind": "starting",
+   "confidence": 0.9,
+   "text": "Lineup alert: Warriors will start Curry, Podziemski, Santos, Lendeborg, Green"
+  },
+  {
+   "id": "at://did:plc:ykcnnf6kqnn3lasmobrczoem/app.bsky.feed.post/3myt3vyeg7s2c|podziemski|none|starting",
+   "at": "2026-10-27T01:35:58.243Z",
+   "seen": "2026-10-27T01:37:33.311Z",
+   "handle": "insidenbanews.bsky.social",
+   "post": "at://did:plc:ykcnnf6kqnn3lasmobrczoem/app.bsky.feed.post/3myt3vyeg7s2c",
+   "player": "Podziemski",
+   "team": "GSW",
+   "status": "none",
+   "kind": "starting",
+   "confidence": 0.9,
+   "text": "Lineup alert: Warriors will start Curry, Podziemski, Santos, Lendeborg, Green"
+  },
+  {
+   "id": "at://did:plc:ykcnnf6kqnn3lasmobrczoem/app.bsky.feed.post/3myt3vyeg7s2c|santos|none|starting",
+   "at": "2026-10-27T01:35:58.243Z",
+   "seen": "2026-10-27T01:37:33.311Z",
+   "handle": "insidenbanews.bsky.social",
+   "post": "at://did:plc:ykcnnf6kqnn3lasmobrczoem/app.bsky.feed.post/3myt3vyeg7s2c",
+   "player": "Santos",
+   "team": "GSW",
+   "status": "none",
+   "kind": "starting",
+   "confidence": 0.9,
+   "text": "Lineup alert: Warriors will start Curry, Podziemski, Santos, Lendeborg, Green"
+  },
+  {
+   "id": "at://did:plc:ykcnnf6kqnn3lasmobrczoem/app.bsky.feed.post/3myt3vyeg7s2c|lendeborg|none|starting",
+   "at": "2026-10-27T01:35:58.243Z",
+   "seen": "2026-10-27T01:37:33.311Z",
+   "handle": "insidenbanews.bsky.social",
+   "post": "at://did:plc:ykcnnf6kqnn3lasmobrczoem/app.bsky.feed.post/3myt3vyeg7s2c",
+   "player": "Lendeborg",
+   "team": "GSW",
+   "status": "none",
+   "kind": "starting",
+   "confidence": 0.9,
+   "text": "Lineup alert: Warriors will start Curry, Podziemski, Santos, Lendeborg, Green"
+  },
+  {
+   "id": "at://did:plc:ykcnnf6kqnn3lasmobrczoem/app.bsky.feed.post/3myt3vyeg7s2c|green|none|starting",
+   "at": "2026-10-27T01:35:58.243Z",
+   "seen": "2026-10-27T01:37:33.311Z",
+   "handle": "insidenbanews.bsky.social",
+   "post": "at://did:plc:ykcnnf6kqnn3lasmobrczoem/app.bsky.feed.post/3myt3vyeg7s2c",
+   "player": "Green",
+   "team": "GSW",
+   "status": "none",
+   "kind": "starting",
+   "confidence": 0.9,
+   "text": "Lineup alert: Warriors will start Curry, Podziemski, Santos, Lendeborg, Green"
+  },
+  {
+   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3myt3wydtcu2n|alexcaruso|out|status",
+   "at": "2026-10-27T01:36:31.000Z",
+   "seen": "2026-10-27T01:37:33.311Z",
+   "handle": "rotowirenba.bsky.social",
+   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3myt3wydtcu2n",
+   "player": "Alex Caruso",
+   "team": null,
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.85,
+   "text": "Alex Caruso: Won't return vs. Phoenix \n\n https://www.rotowire.com/basketball/player/alex-caruso-3952"
   }
  ]
 }
