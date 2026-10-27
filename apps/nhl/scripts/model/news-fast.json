@@ -3,9 +3,9 @@
  "cursor": {
   "johnston-bot.bsky.social": "2026-10-25T21:08:24.897Z",
   "notfriedgehnic.bsky.social": "2026-10-26T18:12:20.765Z",
-  "dailyfaceoff.bsky.social": "2026-10-27T03:04:47.000Z",
-  "dfotoronto.bsky.social": "2026-10-27T12:06:29.000Z",
-  "marklazerus.bsky.social": "2026-10-27T00:23:01.820Z"
+  "dailyfaceoff.bsky.social": "2026-10-27T15:13:40.000Z",
+  "dfotoronto.bsky.social": "2026-10-27T15:10:38.000Z",
+  "marklazerus.bsky.social": "2026-10-27T15:19:03.293Z"
  },
  "claims": [
   {
@@ -826,6 +826,58 @@
    "kind": "status",
    "confidence": 0.3,
    "text": "Instant Reaction: Maple Leafs lose to Flames, and worse, lose Kirill Marchenko to injury"
+  },
+  {
+   "id": "at://did:plc:3uus7y6h3rlrk6sbctzxm4bg/app.bsky.feed.post/3myuhuj4gae2o|rasmusristolainen|out|status",
+   "at": "2026-10-27T14:42:33.000Z",
+   "seen": "2026-10-27T15:24:09.106Z",
+   "handle": "dailyfaceoff.bsky.social",
+   "post": "at://did:plc:3uus7y6h3rlrk6sbctzxm4bg/app.bsky.feed.post/3myuhuj4gae2o",
+   "player": "Rasmus Ristolainen",
+   "team": "PHI",
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.95,
+   "text": "Flyers place Rasmus Ristolainen on IR, activate Cam York"
+  },
+  {
+   "id": "at://did:plc:3uus7y6h3rlrk6sbctzxm4bg/app.bsky.feed.post/3myuhuj4gae2o|camyork|active|status",
+   "at": "2026-10-27T14:42:33.000Z",
+   "seen": "2026-10-27T15:24:09.106Z",
+   "handle": "dailyfaceoff.bsky.social",
+   "post": "at://did:plc:3uus7y6h3rlrk6sbctzxm4bg/app.bsky.feed.post/3myuhuj4gae2o",
+   "player": "Cam York",
+   "team": "PHI",
+   "status": "active",
+   "kind": "status",
+   "confidence": 0.95,
+   "text": "Flyers place Rasmus Ristolainen on IR, activate Cam York"
+  },
+  {
+   "id": "at://did:plc:3uus7y6h3rlrk6sbctzxm4bg/app.bsky.feed.post/3myuj4mesm526|marchenko|none|status",
+   "at": "2026-10-27T15:04:58.000Z",
+   "seen": "2026-10-27T15:24:09.106Z",
+   "handle": "dailyfaceoff.bsky.social",
+   "post": "at://did:plc:3uus7y6h3rlrk6sbctzxm4bg/app.bsky.feed.post/3myuj4mesm526",
+   "player": "Marchenko",
+   "team": "TOR",
+   "status": "none",
+   "kind": "status",
+   "confidence": 0.4,
+   "text": "Leafs’ Marchenko exited game last night vs. Flames with lower-body injury. #nhl #nhlhockey #dailyfaceoff"
+  },
+  {
+   "id": "at://did:plc:54vdi5eoabhod2vumsbcpi7g/app.bsky.feed.post/3myujvrmoyk2v|olivermoore|active|return",
+   "at": "2026-10-27T15:19:03.293Z",
+   "seen": "2026-10-27T15:24:09.106Z",
+   "handle": "marklazerus.bsky.social",
+   "post": "at://did:plc:54vdi5eoabhod2vumsbcpi7g/app.bsky.feed.post/3myujvrmoyk2v",
+   "player": "Oliver Moore",
+   "team": "CHI",
+   "status": "active",
+   "kind": "return",
+   "confidence": 0.6,
+   "text": "Oliver Moore, scratched last game, is the first skater on the ice for Blackhawks morning skate at the UC."
   }
  ]
 }
