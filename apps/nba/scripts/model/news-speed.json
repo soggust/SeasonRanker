@@ -9765,6 +9765,126 @@
     "own": "2026-10-27T01:36:31.000Z",
     "why": "@rotowirenba.bsky.social: Alex Caruso: Won't return vs. Phoenix \n\n https://www.r"
    }
+  },
+  "401909877|devincarter|out": {
+   "game": "401909877",
+   "start": "2026-10-27T23:30Z",
+   "team": "2",
+   "name": "Devin Carter",
+   "status": "out",
+   "athlete": "4433188",
+   "espn": {
+    "seen": "2026-10-27T02:02:41.522Z",
+    "own": "2026-10-18T14:49:00.000Z"
+   }
+  },
+  "401909877|ivicazubac|out": {
+   "game": "401909877",
+   "start": "2026-10-27T23:30Z",
+   "team": "2",
+   "name": "Ivica Zubac",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-10-26T18:40:14.272Z",
+    "own": "2026-10-26T18:20:15.000Z",
+    "why": "@rotowirenba.bsky.social: Ivica Zubac: Listed out for Monday \n\n https://www.roto"
+   }
+  },
+  "401909877|tobiasharris|out": {
+   "game": "401909877",
+   "start": "2026-10-27T23:30Z",
+   "team": "2",
+   "name": "Tobias Harris",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-10-26T22:37:11.118Z",
+    "own": "2026-10-26T21:48:45.000Z",
+    "why": "@rotowirenba.bsky.social: Tobias Harris: Won't play Tuesday \n\n https://www.rotow"
+   }
+  },
+  "401909877|cobywhite|out": {
+   "game": "401909877",
+   "start": "2026-10-27T23:30Z",
+   "team": "2",
+   "name": "Coby White",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-10-26T23:50:51.748Z",
+    "own": "2026-10-26T22:41:46.000Z",
+    "why": "@rotowirenba.bsky.social: Coby White: Won't return during road trip \n\n https://w"
+   }
+  },
+  "401909877|andrewnembhard|out": {
+   "game": "401909877",
+   "start": "2026-10-27T23:30Z",
+   "team": "2",
+   "name": "Andrew Nembhard",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-10-26T23:50:51.748Z",
+    "own": "2026-10-26T22:42:14.000Z",
+    "why": "@rotowirenba.bsky.social: Andrew Nembhard: Out vs. Bucks \n\n https://www.rotowire"
+   }
+  },
+  "401909877|stevenadams|out": {
+   "game": "401909877",
+   "start": "2026-10-27T23:30Z",
+   "team": "2",
+   "name": "Steven Adams",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-10-26T23:50:51.748Z",
+    "own": "2026-10-26T22:53:02.800Z",
+    "why": "@insidenbanews.bsky.social: Udoka: Steven Adams (calf) expected to miss at least"
+   }
+  },
+  "401909877|cameronjohnson|out": {
+   "game": "401909877",
+   "start": "2026-10-27T23:30Z",
+   "team": "2",
+   "name": "Cameron Johnson",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-10-27T01:37:33.311Z",
+    "own": "2026-10-27T01:13:24.000Z",
+    "why": "@rotowirenba.bsky.social: Cameron Johnson: Downgraded to out \n\n https://www.roto"
+   }
+  },
+  "401909877|alexcaruso|out": {
+   "game": "401909877",
+   "start": "2026-10-27T23:30Z",
+   "team": "2",
+   "name": "Alex Caruso",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-10-27T01:37:33.311Z",
+    "own": "2026-10-27T01:36:31.000Z",
+    "why": "@rotowirenba.bsky.social: Alex Caruso: Won't return vs. Phoenix \n\n https://www.r"
+   }
+  },
+  "401909877|mikelbrown|q": {
+   "game": "401909877",
+   "start": "2026-10-27T23:30Z",
+   "team": "17",
+   "name": "Mikel Brown Jr.",
+   "status": "q",
+   "athlete": "5101761",
+   "espn": {
+    "seen": "2026-10-27T02:02:41.522Z",
+    "own": "2026-10-26T14:00:00.000Z"
+   }
+  },
+  "401909877|tylerbilodeau|out": {
+   "game": "401909877",
+   "start": "2026-10-27T23:30Z",
+   "team": "17",
+   "name": "Tyler Bilodeau",
+   "status": "out",
+   "athlete": "5105626",
+   "espn": {
+    "seen": "2026-10-27T02:02:41.522Z",
+    "own": "2026-10-25T17:19:00.000Z"
+   }
   }
  }
 }
