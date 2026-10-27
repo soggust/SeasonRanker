@@ -1,6 +1,18 @@
 {
  "sport": "nhl",
  "days": 2,
- "signals": [],
- "at": "2026-10-20T03:30:07.903Z"
+ "signals": [
+  {
+   "team": "5",
+   "abbr": "DET",
+   "athlete": "5302578",
+   "player": "Michal Postava",
+   "kind": "starting",
+   "direction": "none",
+   "confidence": 0.3,
+   "headline": "Red Wings' Michal Postava a winner in first career NHL start",
+   "at": "2026-10-27T05:29:00.000Z"
+  }
+ ],
+ "at": "2026-10-27T06:50:05.780Z"
 }

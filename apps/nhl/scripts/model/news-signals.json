@@ -79,7 +79,8 @@
   "50281076": "2026-10-26",
   "50284398": "2026-10-26",
   "50290675": "2026-10-26",
-  "50292493": "2026-10-27"
+  "50292493": "2026-10-27",
+  "50294617": "2026-10-27"
  },
  "signals": [
   {
@@ -170,6 +171,21 @@
    "confidence": 0.6,
    "story": "50206858",
    "headline": "Still awaiting trade, Connor Hellebuyck could rejoin Jets when suspension ends",
+   "model": "claude-haiku-5-5"
+  },
+  {
+   "id": "50294617|5|5302578|starting",
+   "day": "2026-10-27",
+   "at": "2026-10-27T05:29:00.000Z",
+   "team": "5",
+   "abbr": "DET",
+   "athlete": "5302578",
+   "player": "Michal Postava",
+   "kind": "starting",
+   "direction": "none",
+   "confidence": 0.3,
+   "story": "50294617",
+   "headline": "Red Wings' Michal Postava a winner in first career NHL start",
    "model": "claude-haiku-5-5"
   }
  ]
