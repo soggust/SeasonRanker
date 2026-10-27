@@ -4,10 +4,10 @@
   "adamscheftermirror.bsky.social": "2026-10-27T20:13:26.842Z",
   "rapsheet.bsky.social": "2026-10-27T19:11:31.345Z",
   "nflnewsreposterbot.bsky.social": "2026-10-22T13:33:43.592Z",
-  "insidenflnews.bsky.social": "2026-10-27T20:02:10.149Z",
-  "nflnewsposter.bsky.social": "2026-10-27T19:34:06.189Z",
-  "rotoworld-fb.bsky.social": "2026-10-27T20:18:48.000Z",
-  "rotowirenfl.bsky.social": "2026-10-27T19:23:23.000Z"
+  "insidenflnews.bsky.social": "2026-10-27T20:27:27.518Z",
+  "nflnewsposter.bsky.social": "2026-10-27T20:36:13.843Z",
+  "rotoworld-fb.bsky.social": "2026-10-27T20:32:07.000Z",
+  "rotowirenfl.bsky.social": "2026-10-27T20:32:29.000Z"
  },
  "claims": [
   {
@@ -7120,6 +7120,58 @@
    "kind": "status",
    "confidence": 0.5,
    "text": "Matthew Golden (shoulder/foot) remains DNP Tuesday"
+  },
+  {
+   "id": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3myv2tgmyjn2q|matthewgolden|questionable|status",
+   "at": "2026-10-27T20:21:58.000Z",
+   "seen": "2026-10-27T20:43:19.947Z",
+   "handle": "rotowirenfl.bsky.social",
+   "post": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3myv2tgmyjn2q",
+   "player": "Matthew Golden",
+   "team": null,
+   "status": "questionable",
+   "kind": "status",
+   "confidence": 0.5,
+   "text": "Matthew Golden: Sits out walkthrough practice \n\n https://www.rotowire.com/football/player/matthew-golden-18500"
+  },
+  {
+   "id": "at://did:plc:mbr4badgf6yu56mquzackzew/app.bsky.feed.post/3myv35amnec2g|lamarjackson|active|status",
+   "at": "2026-10-27T20:27:27.518Z",
+   "seen": "2026-10-27T20:43:19.947Z",
+   "handle": "insidenflnews.bsky.social",
+   "post": "at://did:plc:mbr4badgf6yu56mquzackzew/app.bsky.feed.post/3myv35amnec2g",
+   "player": "Lamar Jackson",
+   "team": "BAL",
+   "status": "active",
+   "kind": "status",
+   "confidence": 0.8,
+   "text": "Rap: Ravens QB Lamar Jackson (ankle) is expected to play in Week 8."
+  },
+  {
+   "id": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3myv3fluflt2k|lamarjackson|active|status",
+   "at": "2026-10-27T20:32:07.000Z",
+   "seen": "2026-10-27T20:43:19.947Z",
+   "handle": "rotoworld-fb.bsky.social",
+   "post": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3myv3fluflt2k",
+   "player": "Lamar Jackson",
+   "team": "BAL",
+   "status": "active",
+   "kind": "status",
+   "confidence": 0.85,
+   "text": "Rapoport: Expect Lamar (ankle) to play Week 8"
+  },
+  {
+   "id": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3myv3gb4lnm2e|lamarjackson|active|return",
+   "at": "2026-10-27T20:32:29.000Z",
+   "seen": "2026-10-27T20:43:19.947Z",
+   "handle": "rotowirenfl.bsky.social",
+   "post": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3myv3gb4lnm2e",
+   "player": "Lamar Jackson",
+   "team": "BAL",
+   "status": "active",
+   "kind": "return",
+   "confidence": 0.5,
+   "text": "Lamar Jackson: Trending toward return in Week 8 \n\n https://www.rotowire.com/football/player/lamar-jackson-12561"
   }
  ]
 }
