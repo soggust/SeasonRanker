@@ -8176,6 +8176,11 @@
    "sleeper": {
     "seen": "2026-10-26T20:16:35.808Z",
     "own": "2026-10-26T14:35:14.144Z"
+   },
+   "bluesky": {
+    "seen": "2026-10-26T23:50:51.748Z",
+    "own": "2026-10-26T22:53:02.800Z",
+    "why": "@insidenbanews.bsky.social: Udoka: Steven Adams (calf) expected to miss at least"
    }
   },
   "401909874|mouhamedgueye|out": {
@@ -9550,6 +9555,174 @@
    "espn": {
     "seen": "2026-10-26T22:54:42.488Z",
     "own": "2026-10-26T22:42:00.000Z"
+   }
+  },
+  "401909874|cobywhite|out": {
+   "game": "401909874",
+   "start": "2026-10-27T00:30Z",
+   "team": "10",
+   "name": "Coby White",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-10-26T23:50:51.748Z",
+    "own": "2026-10-26T22:41:46.000Z",
+    "why": "@rotowirenba.bsky.social: Coby White: Won't return during road trip \n\n https://w"
+   }
+  },
+  "401909874|andrewnembhard|out": {
+   "game": "401909874",
+   "start": "2026-10-27T00:30Z",
+   "team": "10",
+   "name": "Andrew Nembhard",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-10-26T23:50:51.748Z",
+    "own": "2026-10-26T22:42:14.000Z",
+    "why": "@rotowirenba.bsky.social: Andrew Nembhard: Out vs. Bucks \n\n https://www.rotowire"
+   }
+  },
+  "401909875|cobywhite|out": {
+   "game": "401909875",
+   "start": "2026-10-27T01:00Z",
+   "team": "26",
+   "name": "Coby White",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-10-26T23:50:51.748Z",
+    "own": "2026-10-26T22:41:46.000Z",
+    "why": "@rotowirenba.bsky.social: Coby White: Won't return during road trip \n\n https://w"
+   }
+  },
+  "401909875|andrewnembhard|out": {
+   "game": "401909875",
+   "start": "2026-10-27T01:00Z",
+   "team": "26",
+   "name": "Andrew Nembhard",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-10-26T23:50:51.748Z",
+    "own": "2026-10-26T22:42:14.000Z",
+    "why": "@rotowirenba.bsky.social: Andrew Nembhard: Out vs. Bucks \n\n https://www.rotowire"
+   }
+  },
+  "401909875|stevenadams|out": {
+   "game": "401909875",
+   "start": "2026-10-27T01:00Z",
+   "team": "26",
+   "name": "Steven Adams",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-10-26T23:50:51.748Z",
+    "own": "2026-10-26T22:53:02.800Z",
+    "why": "@insidenbanews.bsky.social: Udoka: Steven Adams (calf) expected to miss at least"
+   }
+  },
+  "401909876|cobywhite|out": {
+   "game": "401909876",
+   "start": "2026-10-27T02:00Z",
+   "team": "7",
+   "name": "Coby White",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-10-26T23:50:51.748Z",
+    "own": "2026-10-26T22:41:46.000Z",
+    "why": "@rotowirenba.bsky.social: Coby White: Won't return during road trip \n\n https://w"
+   }
+  },
+  "401909876|andrewnembhard|out": {
+   "game": "401909876",
+   "start": "2026-10-27T02:00Z",
+   "team": "7",
+   "name": "Andrew Nembhard",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-10-26T23:50:51.748Z",
+    "own": "2026-10-26T22:42:14.000Z",
+    "why": "@rotowirenba.bsky.social: Andrew Nembhard: Out vs. Bucks \n\n https://www.rotowire"
+   }
+  },
+  "401909876|stevenadams|out": {
+   "game": "401909876",
+   "start": "2026-10-27T02:00Z",
+   "team": "7",
+   "name": "Steven Adams",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-10-26T23:50:51.748Z",
+    "own": "2026-10-26T22:53:02.800Z",
+    "why": "@insidenbanews.bsky.social: Udoka: Steven Adams (calf) expected to miss at least"
+   }
+  },
+  "401909286|osoighodaro|out": {
+   "game": "401909286",
+   "start": "2026-10-31T02:00Z",
+   "team": "21",
+   "name": "Oso Ighodaro",
+   "status": "out",
+   "athlete": "4601023",
+   "espn": {
+    "seen": "2026-10-27T00:09:37.394Z",
+    "own": "2026-10-26T18:30:00.000Z"
+   }
+  },
+  "401909286|markwilliams|out": {
+   "game": "401909286",
+   "start": "2026-10-31T02:00Z",
+   "team": "21",
+   "name": "Mark Williams",
+   "status": "out",
+   "athlete": "4701232",
+   "espn": {
+    "seen": "2026-10-27T00:09:37.394Z",
+    "own": "2026-09-11T16:03:00.000Z"
+   }
+  },
+  "401909286|alphadiallo|out": {
+   "game": "401909286",
+   "start": "2026-10-31T02:00Z",
+   "team": "7",
+   "name": "Alpha Diallo",
+   "status": "out",
+   "athlete": "4065813",
+   "espn": {
+    "seen": "2026-10-27T00:09:37.394Z",
+    "own": "2026-10-26T19:03:00.000Z"
+   }
+  },
+  "401909286|cameronjohnson|q": {
+   "game": "401909286",
+   "start": "2026-10-31T02:00Z",
+   "team": "7",
+   "name": "Cameron Johnson",
+   "status": "q",
+   "athlete": "3138196",
+   "espn": {
+    "seen": "2026-10-27T00:09:37.394Z",
+    "own": "2026-10-25T22:41:00.000Z"
+   }
+  },
+  "401909286|spencerjones|out": {
+   "game": "401909286",
+   "start": "2026-10-31T02:00Z",
+   "team": "7",
+   "name": "Spencer Jones",
+   "status": "out",
+   "athlete": "4592427",
+   "espn": {
+    "seen": "2026-10-27T00:09:37.394Z",
+    "own": "2026-10-25T22:37:00.000Z"
+   }
+  },
+  "401909286|julianstrawther|out": {
+   "game": "401909286",
+   "start": "2026-10-31T02:00Z",
+   "team": "7",
+   "name": "Julian Strawther",
+   "status": "out",
+   "athlete": "4432181",
+   "espn": {
+    "seen": "2026-10-27T00:09:37.394Z",
+    "own": "2026-10-17T00:52:00.000Z"
    }
   }
  }
