@@ -7,7 +7,7 @@
   "insidenflnews.bsky.social": "2026-10-27T02:43:48.284Z",
   "nflnewsposter.bsky.social": "2026-10-27T02:42:04.369Z",
   "rotoworld-fb.bsky.social": "2026-10-26T22:56:01.000Z",
-  "rotowirenfl.bsky.social": "2026-10-26T22:48:27.000Z"
+  "rotowirenfl.bsky.social": "2026-10-27T02:50:01.000Z"
  },
  "claims": [
   {
@@ -6925,6 +6925,19 @@
    "kind": "status",
    "confidence": 0.9,
    "text": "[Eagles] Injury Update: RB Saquon Barkley (back) is questionable to return. twitter.com/Eagles/statu..."
+  },
+  {
+   "id": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3myta2g5oep2o|saquonbarkley|questionable|status",
+   "at": "2026-10-27T02:50:01.000Z",
+   "seen": "2026-10-27T02:50:46.612Z",
+   "handle": "rotowirenfl.bsky.social",
+   "post": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3myta2g5oep2o",
+   "player": "Saquon Barkley",
+   "team": null,
+   "status": "questionable",
+   "kind": "status",
+   "confidence": 0.9,
+   "text": "Saquon Barkley: Questionable to return to Monday Night Football \n\n https://www.rotowire.com/football/player/saquon-barkley-12507"
   }
  ]
 }
