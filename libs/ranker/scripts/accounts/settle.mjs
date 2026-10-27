@@ -370,11 +370,15 @@ export async function settleOpen(db, { fetchJson = get, now = Date.now(), ledger
   try {
     const old = await db.collectionGroup('bets').where('status', '==', 'void').get();
     const revive = old.docs.filter((d) => d.ref.parent.parent?.parent?.id === 'users' && d.get('kind') !== 'parlay' && PRICE_VOIDS.includes(d.get('note')) && (d.get('settledAt')?.toMillis?.() ?? 0) >= now - PRICE_VOID_DAYS * DAY && SETTLED.includes(d.get('sport')));
+    log(`price voids (D98): ${revive.length} of ${old.size} voids to grade again${old.size && !revive.length ? ` (notes: ${[...new Set(old.docs.map((d) => JSON.stringify(d.get('note') ?? null)))].slice(0, 6).join(', ')})` : ''}`);
     for (const d of revive) {
       const bet = { ...d.data(), id: d.id, start: iso(d.get('start')), placedAt: iso(d.get('placedAt')) };
       const inputs = await inputsFor(bet);
       const result = settlePlayBet(bet, inputs.game, { observations: inputs.observations, propValue: inputs.propValue, previewLines: inputs.previewLines, now });
-      if (!result || result.status === 'void') continue;
+      if (!result || result.status === 'void') {
+        log(`price void ${d.ref.path}: not graded again (${result ? result.note : 'its game not final'})`);
+        continue;
+      }
       const bot = botFor(bet, result, { botSeen, ledgers, game: inputs.game, propValue: inputs.propValue });
       log(`regraded (D98): ${bet.sport} ${bet.matchup} ${bet.pick} ${bet.odds} x${bet.stake}: void to ${result.status}${result.note ? ` (${result.note})` : ''}${dry ? ' (dry)' : ''}`);
       if (!dry) await correctOne(db, d.ref, result, { was: { status: 'void', profit: d.get('profit') ?? 0, final: d.get('final') ?? null }, bot, why: 'D98: never void over its price', ...(Number.isFinite(result.paidOdds) ? { paidOdds: result.paidOdds } : {}) });
