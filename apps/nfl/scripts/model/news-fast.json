@@ -1,13 +1,13 @@
 {
  "sport": "nfl",
  "cursor": {
-  "adamscheftermirror.bsky.social": "2026-10-27T11:33:16.159Z",
+  "adamscheftermirror.bsky.social": "2026-10-27T16:08:30.413Z",
   "rapsheet.bsky.social": "2026-10-27T13:47:17.687Z",
   "nflnewsreposterbot.bsky.social": "2026-10-22T13:33:43.592Z",
   "insidenflnews.bsky.social": "2026-10-27T12:43:36.673Z",
-  "nflnewsposter.bsky.social": "2026-10-27T03:14:55.211Z",
+  "nflnewsposter.bsky.social": "2026-10-27T15:50:36.840Z",
   "rotoworld-fb.bsky.social": "2026-10-27T13:58:44.000Z",
-  "rotowirenfl.bsky.social": "2026-10-27T14:28:44.000Z"
+  "rotowirenfl.bsky.social": "2026-10-27T15:38:05.000Z"
  },
  "claims": [
   {
@@ -7016,6 +7016,19 @@
    "kind": "status",
    "confidence": 0.8,
    "text": "Ravens first-round guard Vega Ioane, one of the NFL’s best rookies this season, suffered an MCL sprain against the Bengals, sources tell me and Mike Garafolo.\n\nIt’s considered to be a short-term injur"
+  },
+  {
+   "id": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3myukxtdbee2s|saquonbarkley|active|status",
+   "at": "2026-10-27T15:38:05.000Z",
+   "seen": "2026-10-27T16:15:26.731Z",
+   "handle": "rotowirenfl.bsky.social",
+   "post": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3myukxtdbee2s",
+   "player": "Saquon Barkley",
+   "team": null,
+   "status": "active",
+   "kind": "status",
+   "confidence": 0.5,
+   "text": "Saquon Barkley: Plans to play through back, hamstring issues \n\n https://www.rotowire.com/football/player/saquon-barkley-12507"
   }
  ]
 }
