@@ -1,6 +1,18 @@
 {
  "sport": "mlb",
  "days": 2,
- "signals": [],
- "at": "2026-10-26T05:03:40.538Z"
+ "signals": [
+  {
+   "team": "22",
+   "abbr": "PHI",
+   "athlete": null,
+   "player": "Peter Fatse",
+   "kind": "coaching",
+   "direction": "none",
+   "confidence": 0.9,
+   "headline": "Phillies name Rays' Peter Fatse as hitting coach, replacing Kevin Long",
+   "at": "2026-10-27T16:07:21.000Z"
+  }
+ ],
+ "at": "2026-10-27T16:32:15.187Z"
 }

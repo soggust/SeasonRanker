@@ -128,7 +128,8 @@
   "50288401": "2026-10-26",
   "50288815": "2026-10-27",
   "50293252": "2026-10-27",
-  "50293953": "2026-10-27"
+  "50293953": "2026-10-27",
+  "50298454": "2026-10-27"
  },
  "signals": [
   {
@@ -399,6 +400,21 @@
    "confidence": 0.9,
    "story": "50258616",
    "headline": "Brewers add pitcher Brandon Woodruff to World Series roster",
+   "model": "claude-haiku-5-5"
+  },
+  {
+   "id": "50298454|22|peterfatse|coaching",
+   "day": "2026-10-27",
+   "at": "2026-10-27T16:07:21.000Z",
+   "team": "22",
+   "abbr": "PHI",
+   "athlete": null,
+   "player": "Peter Fatse",
+   "kind": "coaching",
+   "direction": "none",
+   "confidence": 0.9,
+   "story": "50298454",
+   "headline": "Phillies name Rays' Peter Fatse as hitting coach, replacing Kevin Long",
    "model": "claude-haiku-5-5"
   }
  ]

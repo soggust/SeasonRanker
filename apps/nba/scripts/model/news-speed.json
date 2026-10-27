@@ -9896,6 +9896,10 @@
    "espn": {
     "seen": "2026-10-27T02:09:36.362Z",
     "own": "2026-10-26T20:50:00.000Z"
+   },
+   "sleeper": {
+    "seen": "2026-10-27T14:56:41.618Z",
+    "own": "2026-10-27T07:50:28.797Z"
    }
   },
   "401909878|ivicazubac|out": {
@@ -9992,6 +9996,10 @@
    "espn": {
     "seen": "2026-10-27T02:09:36.362Z",
     "own": "2026-10-26T20:54:00.000Z"
+   },
+   "sleeper": {
+    "seen": "2026-10-27T14:56:41.618Z",
+    "own": "2026-10-27T07:50:28.808Z"
    }
   },
   "401909878|ausarthompson|q": {
@@ -10004,6 +10012,10 @@
    "espn": {
     "seen": "2026-10-27T02:09:36.362Z",
     "own": "2026-10-26T20:50:00.000Z"
+   },
+   "sleeper": {
+    "seen": "2026-10-27T14:56:41.618Z",
+    "own": "2026-10-27T07:40:28.748Z"
    }
   },
   "401909878|jalenduren|out": {
@@ -10016,6 +10028,10 @@
    "espn": {
     "seen": "2026-10-27T02:09:36.362Z",
     "own": "2026-10-25T14:56:00.000Z"
+   },
+   "sleeper": {
+    "seen": "2026-10-27T14:56:41.618Z",
+    "own": "2026-10-27T07:40:28.760Z"
    }
   },
   "401909879|tobiasharris|out": {
@@ -10033,6 +10049,10 @@
     "seen": "2026-10-26T22:37:11.118Z",
     "own": "2026-10-26T21:48:45.000Z",
     "why": "@rotowirenba.bsky.social: Tobias Harris: Won't play Tuesday \n\n https://www.rotow"
+   },
+   "sleeper": {
+    "seen": "2026-10-27T14:56:41.618Z",
+    "own": "2026-10-27T08:00:28.779Z"
    }
   },
   "401909879|jaydenquaintance|out": {
@@ -10129,6 +10149,10 @@
    "espn": {
     "seen": "2026-10-27T02:09:36.362Z",
     "own": "2026-10-26T22:09:00.000Z"
+   },
+   "sleeper": {
+    "seen": "2026-10-27T14:56:41.618Z",
+    "own": "2026-10-26T22:15:05.890Z"
    }
   },
   "401909879|maximeraynaud|out": {
@@ -10141,6 +10165,10 @@
    "espn": {
     "seen": "2026-10-27T02:09:36.362Z",
     "own": "2026-10-26T22:07:00.000Z"
+   },
+   "sleeper": {
+    "seen": "2026-10-27T14:56:41.618Z",
+    "own": "2026-10-26T22:15:05.891Z"
    }
   },
   "401909879|keeganmurray|out": {
@@ -10153,6 +10181,10 @@
    "espn": {
     "seen": "2026-10-27T02:09:36.362Z",
     "own": "2026-10-26T22:01:00.000Z"
+   },
+   "sleeper": {
+    "seen": "2026-10-27T14:56:41.618Z",
+    "own": "2026-10-27T07:50:28.995Z"
    }
   },
   "401909879|bensimmons|out": {
@@ -10249,6 +10281,10 @@
    "espn": {
     "seen": "2026-10-27T02:29:55.960Z",
     "own": "2026-10-27T00:08:00.000Z"
+   },
+   "sleeper": {
+    "seen": "2026-10-27T14:56:41.618Z",
+    "own": "2026-10-27T08:15:28.965Z"
    }
   },
   "401909880|tobiasharris|out": {
@@ -10357,6 +10393,10 @@
    "espn": {
     "seen": "2026-10-27T02:29:55.960Z",
     "own": "2026-10-27T00:04:00.000Z"
+   },
+   "sleeper": {
+    "seen": "2026-10-27T14:56:41.618Z",
+    "own": "2026-10-27T08:05:28.890Z"
    }
   },
   "401909880|scoothenderson|q": {
@@ -10369,6 +10409,10 @@
    "espn": {
     "seen": "2026-10-27T02:29:55.960Z",
     "own": "2026-10-27T00:04:00.000Z"
+   },
+   "sleeper": {
+    "seen": "2026-10-27T14:56:41.618Z",
+    "own": "2026-10-27T08:00:28.768Z"
    }
   },
   "401909880|chrisyoungblood|out": {
@@ -10381,6 +10425,10 @@
    "espn": {
     "seen": "2026-10-27T02:29:55.960Z",
     "own": "2026-10-27T00:01:00.000Z"
+   },
+   "sleeper": {
+    "seen": "2026-10-27T14:56:41.618Z",
+    "own": "2026-10-27T05:00:27.652Z"
    }
   },
   "401909880|shaedonsharpe|out": {
@@ -10429,6 +10477,54 @@
    "espn": {
     "seen": "2026-10-27T05:15:20.319Z",
     "own": "2026-10-27T04:52:00.000Z"
+   }
+  },
+  "401909877|kawhileonard|out": {
+   "game": "401909877",
+   "start": "2026-10-27T23:30Z",
+   "team": "2",
+   "name": "Kawhi Leonard",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-10-27T16:15:26.731Z",
+    "own": "2026-10-27T15:44:02.521Z",
+    "why": "@insidenbanews.bsky.social: ⚠️ Shams: Kawhi Leonard expected to miss a period of"
+   }
+  },
+  "401909878|kawhileonard|out": {
+   "game": "401909878",
+   "start": "2026-10-28T00:00Z",
+   "team": "18",
+   "name": "Kawhi Leonard",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-10-27T16:15:26.731Z",
+    "own": "2026-10-27T15:44:02.521Z",
+    "why": "@insidenbanews.bsky.social: ⚠️ Shams: Kawhi Leonard expected to miss a period of"
+   }
+  },
+  "401909879|kawhileonard|out": {
+   "game": "401909879",
+   "start": "2026-10-28T00:00Z",
+   "team": "24",
+   "name": "Kawhi Leonard",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-10-27T16:15:26.731Z",
+    "own": "2026-10-27T15:44:02.521Z",
+    "why": "@insidenbanews.bsky.social: ⚠️ Shams: Kawhi Leonard expected to miss a period of"
+   }
+  },
+  "401909880|kawhileonard|out": {
+   "game": "401909880",
+   "start": "2026-10-28T03:00Z",
+   "team": "13",
+   "name": "Kawhi Leonard",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-10-27T16:15:26.731Z",
+    "own": "2026-10-27T15:44:02.521Z",
+    "why": "@insidenbanews.bsky.social: ⚠️ Shams: Kawhi Leonard expected to miss a period of"
    }
   }
  }

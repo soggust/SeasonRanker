@@ -3,7 +3,7 @@
  "cursor": {
   "johnston-bot.bsky.social": "2026-10-25T21:08:24.897Z",
   "notfriedgehnic.bsky.social": "2026-10-26T18:12:20.765Z",
-  "dailyfaceoff.bsky.social": "2026-10-27T16:02:51.000Z",
+  "dailyfaceoff.bsky.social": "2026-10-27T16:27:05.000Z",
   "dfotoronto.bsky.social": "2026-10-27T16:13:13.000Z",
   "marklazerus.bsky.social": "2026-10-27T15:50:30.160Z"
  },
@@ -878,6 +878,19 @@
    "kind": "return",
    "confidence": 0.6,
    "text": "Oliver Moore, scratched last game, is the first skater on the ice for Blackhawks morning skate at the UC."
+  },
+  {
+   "id": "at://did:plc:3uus7y6h3rlrk6sbctzxm4bg/app.bsky.feed.post/3myunph7blt2h|eastoncowan|none|benched",
+   "at": "2026-10-27T16:27:05.000Z",
+   "seen": "2026-10-27T16:32:15.187Z",
+   "handle": "dailyfaceoff.bsky.social",
+   "post": "at://did:plc:3uus7y6h3rlrk6sbctzxm4bg/app.bsky.feed.post/3myunph7blt2h",
+   "player": "Easton Cowan",
+   "team": "TOR",
+   "status": "none",
+   "kind": "benched",
+   "confidence": 0.8,
+   "text": "Easton Cowan got BENCHED and responded in a big way!\n\nJay Rosehill breaks down how the young Maple Leafs forward bounced back from a rough start against Calgary and why his response speaks volumes abo"
   }
  ]
 }
