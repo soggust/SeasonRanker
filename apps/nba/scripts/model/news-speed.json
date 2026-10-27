@@ -9272,6 +9272,11 @@
    "espn": {
     "seen": "2026-10-26T18:49:45.328Z",
     "own": "2026-10-26T18:20:00.000Z"
+   },
+   "bluesky": {
+    "seen": "2026-10-27T21:18:29.038Z",
+    "own": "2026-10-27T21:13:46.000Z",
+    "why": "@rotowirenba.bsky.social: Ivica Zubac: Won't play Wednesday \n\n https://www.rotow"
    }
   },
   "401909884|bensheppard|out": {
@@ -10669,6 +10674,102 @@
    "espn": {
     "seen": "2026-10-27T21:14:36.853Z",
     "own": "2026-10-27T21:08:00.000Z"
+   }
+  },
+  "401909877|aaronwiggins|q": {
+   "game": "401909877",
+   "start": "2026-10-27T23:30Z",
+   "team": "2",
+   "name": "Aaron Wiggins",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-10-27T21:18:29.038Z",
+    "own": "2026-10-27T21:07:36.000Z",
+    "why": "@rotowirenba.bsky.social: Aaron Wiggins: Questionable for Wednesday \n\n https://w"
+   }
+  },
+  "401909878|aaronwiggins|q": {
+   "game": "401909878",
+   "start": "2026-10-28T00:00Z",
+   "team": "18",
+   "name": "Aaron Wiggins",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-10-27T21:18:29.038Z",
+    "own": "2026-10-27T21:07:36.000Z",
+    "why": "@rotowirenba.bsky.social: Aaron Wiggins: Questionable for Wednesday \n\n https://w"
+   }
+  },
+  "401909879|aaronwiggins|q": {
+   "game": "401909879",
+   "start": "2026-10-28T00:00Z",
+   "team": "24",
+   "name": "Aaron Wiggins",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-10-27T21:18:29.038Z",
+    "own": "2026-10-27T21:07:36.000Z",
+    "why": "@rotowirenba.bsky.social: Aaron Wiggins: Questionable for Wednesday \n\n https://w"
+   }
+  },
+  "401909880|aaronwiggins|q": {
+   "game": "401909880",
+   "start": "2026-10-28T03:00Z",
+   "team": "13",
+   "name": "Aaron Wiggins",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-10-27T21:18:29.038Z",
+    "own": "2026-10-27T21:07:36.000Z",
+    "why": "@rotowirenba.bsky.social: Aaron Wiggins: Questionable for Wednesday \n\n https://w"
+   }
+  },
+  "401909880|ivicazubac|out": {
+   "game": "401909880",
+   "start": "2026-10-28T03:00Z",
+   "team": "13",
+   "name": "Ivica Zubac",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-10-27T21:18:29.038Z",
+    "own": "2026-10-27T21:13:46.000Z",
+    "why": "@rotowirenba.bsky.social: Ivica Zubac: Won't play Wednesday \n\n https://www.rotow"
+   }
+  },
+  "401909884|tyresehaliburton|q": {
+   "game": "401909884",
+   "start": "2026-10-28T23:00Z",
+   "team": "11",
+   "name": "Tyrese Haliburton",
+   "status": "q",
+   "athlete": "4396993",
+   "espn": {
+    "seen": "2026-10-27T21:36:42.987Z",
+    "own": "2026-10-27T21:19:00.000Z"
+   }
+  },
+  "401909884|obitoppin|q": {
+   "game": "401909884",
+   "start": "2026-10-28T23:00Z",
+   "team": "11",
+   "name": "Obi Toppin",
+   "status": "q",
+   "athlete": "4278355",
+   "espn": {
+    "seen": "2026-10-27T21:36:42.987Z",
+    "own": "2026-10-27T21:17:00.000Z"
+   }
+  },
+  "401909884|aaronwiggins|q": {
+   "game": "401909884",
+   "start": "2026-10-28T23:00Z",
+   "team": "11",
+   "name": "Aaron Wiggins",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-10-27T21:18:29.038Z",
+    "own": "2026-10-27T21:07:36.000Z",
+    "why": "@rotowirenba.bsky.social: Aaron Wiggins: Questionable for Wednesday \n\n https://w"
    }
   }
  }
