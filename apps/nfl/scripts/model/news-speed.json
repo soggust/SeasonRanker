@@ -10850,6 +10850,30 @@
     "own": "2026-10-27T21:00:45.000Z",
     "why": "@rotowirenfl.bsky.social: Tyrone Tracy: Move to IR official"
    }
+  },
+  "401873024|djrogers|q": {
+   "game": "401873024",
+   "start": "2026-11-01T18:00Z",
+   "team": "6",
+   "name": "DJ Rogers",
+   "status": "q",
+   "athlete": "4710711",
+   "espn": {
+    "seen": "2026-10-27T21:38:44.098Z",
+    "own": "2026-10-27T21:24:00.000Z"
+   }
+  },
+  "401873024|jamesongeers|q": {
+   "game": "401873024",
+   "start": "2026-11-01T18:00Z",
+   "team": "22",
+   "name": "Jameson Geers",
+   "status": "q",
+   "athlete": "4588298",
+   "espn": {
+    "seen": "2026-10-27T21:38:44.098Z",
+    "own": "2026-10-27T21:23:00.000Z"
+   }
   }
  }
 }

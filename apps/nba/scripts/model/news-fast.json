@@ -1,7 +1,7 @@
 {
  "sport": "nba",
  "cursor": {
-  "rotowirenba.bsky.social": "2026-10-27T21:17:51.000Z",
+  "rotowirenba.bsky.social": "2026-10-27T21:35:40.000Z",
   "insidenbanews.bsky.social": "2026-10-27T19:26:50.857Z",
   "shamsbot.bsky.social": "2026-10-27T20:14:48.000Z"
  },
@@ -3632,6 +3632,45 @@
    "kind": "status",
    "confidence": 0.6,
    "text": "Obi Toppin: Probable for Wednesday \n\n https://www.rotowire.com/basketball/player/obi-toppin-5109"
+  },
+  {
+   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3myv66ojtyh2v|andrewnembhard|questionable|status",
+   "at": "2026-10-27T21:21:56.000Z",
+   "seen": "2026-10-27T21:41:24.109Z",
+   "handle": "rotowirenba.bsky.social",
+   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3myv66ojtyh2v",
+   "player": "Andrew Nembhard",
+   "team": null,
+   "status": "questionable",
+   "kind": "status",
+   "confidence": 0.9,
+   "text": "Andrew Nembhard: Questionable to face Philadelphia \n\n https://www.rotowire.com/basketball/player/andrew-nembhard-5679"
+  },
+  {
+   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3myv6wjz7sb2z|alexcaruso|out|status",
+   "at": "2026-10-27T21:35:17.000Z",
+   "seen": "2026-10-27T21:41:24.109Z",
+   "handle": "rotowirenba.bsky.social",
+   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3myv6wjz7sb2z",
+   "player": "Alex Caruso",
+   "team": null,
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.9,
+   "text": "Alex Caruso: Ruled out for Wednesday \n\n https://www.rotowire.com/basketball/player/alex-caruso-3952"
+  },
+  {
+   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3myv6xa4iq324|ajaymitchell|questionable|status",
+   "at": "2026-10-27T21:35:40.000Z",
+   "seen": "2026-10-27T21:41:24.109Z",
+   "handle": "rotowirenba.bsky.social",
+   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3myv6xa4iq324",
+   "player": "Ajay Mitchell",
+   "team": null,
+   "status": "questionable",
+   "kind": "status",
+   "confidence": 0.9,
+   "text": "Ajay Mitchell: Questionable with ankle sprain \n\n https://www.rotowire.com/basketball/player/ajay-mitchell-6289"
   }
  ]
 }
