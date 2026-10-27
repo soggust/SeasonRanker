@@ -1,8 +1,8 @@
 {
  "sport": "nba",
  "cursor": {
-  "rotowirenba.bsky.social": "2026-10-27T23:05:23.000Z",
-  "insidenbanews.bsky.social": "2026-10-27T22:48:08.881Z",
+  "rotowirenba.bsky.social": "2026-10-27T23:19:03.000Z",
+  "insidenbanews.bsky.social": "2026-10-27T23:14:54.211Z",
   "shamsbot.bsky.social": "2026-10-27T22:46:31.000Z"
  },
  "claims": [
@@ -3775,6 +3775,136 @@
    "kind": "status",
    "confidence": 0.85,
    "text": "Lauri Markkanen: Questionable for Wednesday \n\n https://www.rotowire.com/basketball/player/lauri-markkanen-4119"
+  },
+  {
+   "id": "at://did:plc:ykcnnf6kqnn3lasmobrczoem/app.bsky.feed.post/3myveielhs22m|white|none|starting",
+   "at": "2026-10-27T23:14:44.448Z",
+   "seen": "2026-10-27T23:31:12.648Z",
+   "handle": "insidenbanews.bsky.social",
+   "post": "at://did:plc:ykcnnf6kqnn3lasmobrczoem/app.bsky.feed.post/3myveielhs22m",
+   "player": "White",
+   "team": "BOS",
+   "status": "none",
+   "kind": "starting",
+   "confidence": 0.9,
+   "text": "Lineup alert: Celtics will start White, Walsh, George, Tatum, Robinson."
+  },
+  {
+   "id": "at://did:plc:ykcnnf6kqnn3lasmobrczoem/app.bsky.feed.post/3myveielhs22m|walsh|none|starting",
+   "at": "2026-10-27T23:14:44.448Z",
+   "seen": "2026-10-27T23:31:12.648Z",
+   "handle": "insidenbanews.bsky.social",
+   "post": "at://did:plc:ykcnnf6kqnn3lasmobrczoem/app.bsky.feed.post/3myveielhs22m",
+   "player": "Walsh",
+   "team": "BOS",
+   "status": "none",
+   "kind": "starting",
+   "confidence": 0.9,
+   "text": "Lineup alert: Celtics will start White, Walsh, George, Tatum, Robinson."
+  },
+  {
+   "id": "at://did:plc:ykcnnf6kqnn3lasmobrczoem/app.bsky.feed.post/3myveielhs22m|george|none|starting",
+   "at": "2026-10-27T23:14:44.448Z",
+   "seen": "2026-10-27T23:31:12.648Z",
+   "handle": "insidenbanews.bsky.social",
+   "post": "at://did:plc:ykcnnf6kqnn3lasmobrczoem/app.bsky.feed.post/3myveielhs22m",
+   "player": "George",
+   "team": "BOS",
+   "status": "none",
+   "kind": "starting",
+   "confidence": 0.9,
+   "text": "Lineup alert: Celtics will start White, Walsh, George, Tatum, Robinson."
+  },
+  {
+   "id": "at://did:plc:ykcnnf6kqnn3lasmobrczoem/app.bsky.feed.post/3myveielhs22m|tatum|none|starting",
+   "at": "2026-10-27T23:14:44.448Z",
+   "seen": "2026-10-27T23:31:12.648Z",
+   "handle": "insidenbanews.bsky.social",
+   "post": "at://did:plc:ykcnnf6kqnn3lasmobrczoem/app.bsky.feed.post/3myveielhs22m",
+   "player": "Tatum",
+   "team": "BOS",
+   "status": "none",
+   "kind": "starting",
+   "confidence": 0.9,
+   "text": "Lineup alert: Celtics will start White, Walsh, George, Tatum, Robinson."
+  },
+  {
+   "id": "at://did:plc:ykcnnf6kqnn3lasmobrczoem/app.bsky.feed.post/3myveielhs22m|robinson|none|starting",
+   "at": "2026-10-27T23:14:44.448Z",
+   "seen": "2026-10-27T23:31:12.648Z",
+   "handle": "insidenbanews.bsky.social",
+   "post": "at://did:plc:ykcnnf6kqnn3lasmobrczoem/app.bsky.feed.post/3myveielhs22m",
+   "player": "Robinson",
+   "team": "BOS",
+   "status": "none",
+   "kind": "starting",
+   "confidence": 0.9,
+   "text": "Lineup alert: Celtics will start White, Walsh, George, Tatum, Robinson."
+  },
+  {
+   "id": "at://did:plc:ykcnnf6kqnn3lasmobrczoem/app.bsky.feed.post/3myveinveyk2m|traore|none|starting",
+   "at": "2026-10-27T23:14:54.211Z",
+   "seen": "2026-10-27T23:31:12.648Z",
+   "handle": "insidenbanews.bsky.social",
+   "post": "at://did:plc:ykcnnf6kqnn3lasmobrczoem/app.bsky.feed.post/3myveinveyk2m",
+   "player": "Traore",
+   "team": "BKN",
+   "status": "none",
+   "kind": "starting",
+   "confidence": 0.9,
+   "text": "Lineup alert: Nets will start Traore, Demin, Porter Jr., Randle, Sharpe."
+  },
+  {
+   "id": "at://did:plc:ykcnnf6kqnn3lasmobrczoem/app.bsky.feed.post/3myveinveyk2m|demin|none|starting",
+   "at": "2026-10-27T23:14:54.211Z",
+   "seen": "2026-10-27T23:31:12.648Z",
+   "handle": "insidenbanews.bsky.social",
+   "post": "at://did:plc:ykcnnf6kqnn3lasmobrczoem/app.bsky.feed.post/3myveinveyk2m",
+   "player": "Demin",
+   "team": "BKN",
+   "status": "none",
+   "kind": "starting",
+   "confidence": 0.9,
+   "text": "Lineup alert: Nets will start Traore, Demin, Porter Jr., Randle, Sharpe."
+  },
+  {
+   "id": "at://did:plc:ykcnnf6kqnn3lasmobrczoem/app.bsky.feed.post/3myveinveyk2m|porter|none|starting",
+   "at": "2026-10-27T23:14:54.211Z",
+   "seen": "2026-10-27T23:31:12.648Z",
+   "handle": "insidenbanews.bsky.social",
+   "post": "at://did:plc:ykcnnf6kqnn3lasmobrczoem/app.bsky.feed.post/3myveinveyk2m",
+   "player": "Porter Jr.",
+   "team": "BKN",
+   "status": "none",
+   "kind": "starting",
+   "confidence": 0.9,
+   "text": "Lineup alert: Nets will start Traore, Demin, Porter Jr., Randle, Sharpe."
+  },
+  {
+   "id": "at://did:plc:ykcnnf6kqnn3lasmobrczoem/app.bsky.feed.post/3myveinveyk2m|randle|none|starting",
+   "at": "2026-10-27T23:14:54.211Z",
+   "seen": "2026-10-27T23:31:12.648Z",
+   "handle": "insidenbanews.bsky.social",
+   "post": "at://did:plc:ykcnnf6kqnn3lasmobrczoem/app.bsky.feed.post/3myveinveyk2m",
+   "player": "Randle",
+   "team": "BKN",
+   "status": "none",
+   "kind": "starting",
+   "confidence": 0.9,
+   "text": "Lineup alert: Nets will start Traore, Demin, Porter Jr., Randle, Sharpe."
+  },
+  {
+   "id": "at://did:plc:ykcnnf6kqnn3lasmobrczoem/app.bsky.feed.post/3myveinveyk2m|sharpe|none|starting",
+   "at": "2026-10-27T23:14:54.211Z",
+   "seen": "2026-10-27T23:31:12.648Z",
+   "handle": "insidenbanews.bsky.social",
+   "post": "at://did:plc:ykcnnf6kqnn3lasmobrczoem/app.bsky.feed.post/3myveinveyk2m",
+   "player": "Sharpe",
+   "team": "BKN",
+   "status": "none",
+   "kind": "starting",
+   "confidence": 0.9,
+   "text": "Lineup alert: Nets will start Traore, Demin, Porter Jr., Randle, Sharpe."
   }
  ]
 }

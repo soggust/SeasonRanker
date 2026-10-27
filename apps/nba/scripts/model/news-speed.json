@@ -11662,6 +11662,263 @@
     "seen": "2026-10-27T22:52:39.744Z",
     "own": "2026-10-16T16:11:00.000Z"
    }
+  },
+  "401909878|isaiahjoe|out": {
+   "game": "401909878",
+   "start": "2026-10-28T00:00Z",
+   "team": "8",
+   "name": "Isaiah Joe",
+   "status": "out",
+   "athlete": "4395702",
+   "espn": {
+    "seen": "2026-10-27T23:29:35.524Z",
+    "own": "2026-10-27T23:20:00.000Z"
+   }
+  },
+  "401909881|cameronjohnson|out": {
+   "game": "401909881",
+   "start": "2026-10-28T23:00Z",
+   "team": "1",
+   "name": "Cameron Johnson",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-10-27T23:09:43.168Z",
+    "own": "2026-10-27T22:35:33.000Z",
+    "why": "@rotowirenba.bsky.social: Cameron Johnson: Doubtful for Wednesday \n\n https://www"
+   }
+  },
+  "401909882|cameronjohnson|out": {
+   "game": "401909882",
+   "start": "2026-10-28T23:00Z",
+   "team": "5",
+   "name": "Cameron Johnson",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-10-27T23:09:43.168Z",
+    "own": "2026-10-27T22:35:33.000Z",
+    "why": "@rotowirenba.bsky.social: Cameron Johnson: Doubtful for Wednesday \n\n https://www"
+   }
+  },
+  "401909883|isaiahjoe|out": {
+   "game": "401909883",
+   "start": "2026-10-28T23:00Z",
+   "team": "8",
+   "name": "Isaiah Joe",
+   "status": "out",
+   "athlete": "4395702",
+   "espn": {
+    "seen": "2026-10-27T23:29:35.524Z",
+    "own": "2026-10-27T23:20:00.000Z"
+   }
+  },
+  "401909883|cameronjohnson|out": {
+   "game": "401909883",
+   "start": "2026-10-28T23:00Z",
+   "team": "8",
+   "name": "Cameron Johnson",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-10-27T23:09:43.168Z",
+    "own": "2026-10-27T22:35:33.000Z",
+    "why": "@rotowirenba.bsky.social: Cameron Johnson: Doubtful for Wednesday \n\n https://www"
+   }
+  },
+  "401909884|cameronjohnson|out": {
+   "game": "401909884",
+   "start": "2026-10-28T23:00Z",
+   "team": "11",
+   "name": "Cameron Johnson",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-10-27T23:09:43.168Z",
+    "own": "2026-10-27T22:35:33.000Z",
+    "why": "@rotowirenba.bsky.social: Cameron Johnson: Doubtful for Wednesday \n\n https://www"
+   }
+  },
+  "401909885|cameronjohnson|out": {
+   "game": "401909885",
+   "start": "2026-10-28T23:30Z",
+   "team": "28",
+   "name": "Cameron Johnson",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-10-27T23:09:43.168Z",
+    "own": "2026-10-27T22:35:33.000Z",
+    "why": "@rotowirenba.bsky.social: Cameron Johnson: Doubtful for Wednesday \n\n https://www"
+   }
+  },
+  "401909886|patrickwilliams|q": {
+   "game": "401909886",
+   "start": "2026-10-29T00:00Z",
+   "team": "4",
+   "name": "Patrick Williams",
+   "status": "q",
+   "athlete": "4431687",
+   "espn": {
+    "seen": "2026-10-27T23:29:35.524Z",
+    "own": "2026-10-27T21:23:00.000Z"
+   }
+  },
+  "401909886|tobeawaka|q": {
+   "game": "401909886",
+   "start": "2026-10-29T00:00Z",
+   "team": "4",
+   "name": "Tobe Awaka",
+   "status": "q",
+   "athlete": "5105555",
+   "espn": {
+    "seen": "2026-10-27T23:29:35.524Z",
+    "own": "2026-10-27T21:19:00.000Z"
+   }
+  },
+  "401909886|nicclaxton|out": {
+   "game": "401909886",
+   "start": "2026-10-29T00:00Z",
+   "team": "4",
+   "name": "Nic Claxton",
+   "status": "out",
+   "athlete": "4278067",
+   "espn": {
+    "seen": "2026-10-27T23:29:35.524Z",
+    "own": "2026-10-26T22:20:00.000Z"
+   }
+  },
+  "401909886|ruihachimura|out": {
+   "game": "401909886",
+   "start": "2026-10-29T00:00Z",
+   "team": "4",
+   "name": "Rui Hachimura",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-10-27T20:01:19.204Z",
+    "own": "2026-10-27T19:47:50.000Z",
+    "why": "@rotowirenba.bsky.social: Rui Hachimura: Ruled out for Wednesday \n\n https://www."
+   }
+  },
+  "401909886|ajdybantsa|q": {
+   "game": "401909886",
+   "start": "2026-10-29T00:00Z",
+   "team": "4",
+   "name": "AJ Dybantsa",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-10-27T21:03:59.452Z",
+    "own": "2026-10-27T20:48:02.000Z",
+    "why": "@rotowirenba.bsky.social: AJ Dybantsa: Questionable for Wednesday \n\n https://www"
+   }
+  },
+  "401909886|aaronwiggins|q": {
+   "game": "401909886",
+   "start": "2026-10-29T00:00Z",
+   "team": "4",
+   "name": "Aaron Wiggins",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-10-27T21:18:29.038Z",
+    "own": "2026-10-27T21:07:36.000Z",
+    "why": "@rotowirenba.bsky.social: Aaron Wiggins: Questionable for Wednesday \n\n https://w"
+   }
+  },
+  "401909886|ivicazubac|out": {
+   "game": "401909886",
+   "start": "2026-10-29T00:00Z",
+   "team": "4",
+   "name": "Ivica Zubac",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-10-27T21:18:29.038Z",
+    "own": "2026-10-27T21:13:46.000Z",
+    "why": "@rotowirenba.bsky.social: Ivica Zubac: Won't play Wednesday \n\n https://www.rotow"
+   }
+  },
+  "401909886|andrewnembhard|q": {
+   "game": "401909886",
+   "start": "2026-10-29T00:00Z",
+   "team": "4",
+   "name": "Andrew Nembhard",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-10-27T21:41:24.109Z",
+    "own": "2026-10-27T21:21:56.000Z",
+    "why": "@rotowirenba.bsky.social: Andrew Nembhard: Questionable to face Philadelphia \n\n "
+   }
+  },
+  "401909886|alexcaruso|out": {
+   "game": "401909886",
+   "start": "2026-10-29T00:00Z",
+   "team": "4",
+   "name": "Alex Caruso",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-10-27T21:41:24.109Z",
+    "own": "2026-10-27T21:35:17.000Z",
+    "why": "@rotowirenba.bsky.social: Alex Caruso: Ruled out for Wednesday \n\n https://www.ro"
+   }
+  },
+  "401909886|ajaymitchell|q": {
+   "game": "401909886",
+   "start": "2026-10-29T00:00Z",
+   "team": "4",
+   "name": "Ajay Mitchell",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-10-27T21:41:24.109Z",
+    "own": "2026-10-27T21:35:40.000Z",
+    "why": "@rotowirenba.bsky.social: Ajay Mitchell: Questionable with ankle sprain \n\n https"
+   }
+  },
+  "401909886|cameronjohnson|out": {
+   "game": "401909886",
+   "start": "2026-10-29T00:00Z",
+   "team": "4",
+   "name": "Cameron Johnson",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-10-27T23:09:43.168Z",
+    "own": "2026-10-27T22:35:33.000Z",
+    "why": "@rotowirenba.bsky.social: Cameron Johnson: Doubtful for Wednesday \n\n https://www"
+   }
+  },
+  "401909886|josealvarado|out": {
+   "game": "401909886",
+   "start": "2026-10-29T00:00Z",
+   "team": "18",
+   "name": "Jose Alvarado",
+   "status": "out",
+   "athlete": "4277869",
+   "espn": {
+    "seen": "2026-10-27T23:29:35.524Z",
+    "own": "2026-10-26T20:50:00.000Z"
+   }
+  },
+  "401909888|anthonyedwards|out": {
+   "game": "401909888",
+   "start": "2026-10-29T00:00Z",
+   "team": "16",
+   "name": "Anthony Edwards",
+   "status": "out",
+   "athlete": "4594268",
+   "espn": {
+    "seen": "2026-10-27T23:29:35.524Z",
+    "own": "2026-10-27T22:52:00.000Z"
+   },
+   "bluesky": {
+    "seen": "2026-10-27T23:09:43.168Z",
+    "own": "2026-10-27T22:52:31.000Z",
+    "why": "@rotowirenba.bsky.social: Anthony Edwards: Set to undergo knee surgery \n\n https:"
+   }
+  },
+  "401909888|cameronjohnson|out": {
+   "game": "401909888",
+   "start": "2026-10-29T00:00Z",
+   "team": "16",
+   "name": "Cameron Johnson",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-10-27T23:09:43.168Z",
+    "own": "2026-10-27T22:35:33.000Z",
+    "why": "@rotowirenba.bsky.social: Cameron Johnson: Doubtful for Wednesday \n\n https://www"
+   }
   }
  }
 }
