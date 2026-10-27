@@ -1,7 +1,7 @@
 {
  "sport": "nba",
  "cursor": {
-  "rotowirenba.bsky.social": "2026-10-27T21:35:40.000Z",
+  "rotowirenba.bsky.social": "2026-10-27T21:41:27.000Z",
   "insidenbanews.bsky.social": "2026-10-27T19:26:50.857Z",
   "shamsbot.bsky.social": "2026-10-27T20:14:48.000Z"
  },
@@ -3671,6 +3671,19 @@
    "kind": "status",
    "confidence": 0.9,
    "text": "Ajay Mitchell: Questionable with ankle sprain \n\n https://www.rotowire.com/basketball/player/ajay-mitchell-6289"
+  },
+  {
+   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3myv7bks5zd27|chetholmgren|out|status",
+   "at": "2026-10-27T21:41:27.000Z",
+   "seen": "2026-10-27T22:03:21.530Z",
+   "handle": "rotowirenba.bsky.social",
+   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3myv7bks5zd27",
+   "player": "Chet Holmgren",
+   "team": "OKC",
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.95,
+   "text": "Chet Holmgren: Won't play Wednesday \n\n https://www.rotowire.com/basketball/player/chet-holmgren-5697"
   }
  ]
 }

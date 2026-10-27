@@ -396,7 +396,8 @@
   "50299293": "2026-10-27",
   "50299803": "2026-10-27",
   "50300226": "2026-10-27",
-  "50301125": "2026-10-27"
+  "50301125": "2026-10-27",
+  "50301493": "2026-10-27"
  },
  "signals": [
   {
@@ -1657,6 +1658,21 @@
    "confidence": 0.6,
    "story": "50300226",
    "headline": "Giants place RB Tyrone Tracy Jr. on IR with hamstring injury",
+   "model": "claude-haiku-5-5"
+  },
+  {
+   "id": "50301493|3|3134690|return",
+   "day": "2026-10-27",
+   "at": "2026-10-27T21:48:02.000Z",
+   "team": "3",
+   "abbr": "CHI",
+   "athlete": "3134690",
+   "player": "Montez Sweat",
+   "kind": "return",
+   "direction": "up",
+   "confidence": 0.9,
+   "story": "50301493",
+   "headline": "Montez Sweat returns to Bears following 'devastating' 2-game suspension",
    "model": "claude-haiku-5-5"
   }
  ]
