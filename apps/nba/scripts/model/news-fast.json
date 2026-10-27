@@ -1,7 +1,7 @@
 {
  "sport": "nba",
  "cursor": {
-  "rotowirenba.bsky.social": "2026-10-27T21:41:27.000Z",
+  "rotowirenba.bsky.social": "2026-10-27T22:05:27.000Z",
   "insidenbanews.bsky.social": "2026-10-27T19:26:50.857Z",
   "shamsbot.bsky.social": "2026-10-27T20:14:48.000Z"
  },
@@ -3684,6 +3684,19 @@
    "kind": "status",
    "confidence": 0.95,
    "text": "Chet Holmgren: Won't play Wednesday \n\n https://www.rotowire.com/basketball/player/chet-holmgren-5697"
+  },
+  {
+   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3myvamic4y62q|anthonyedwards|questionable|status",
+   "at": "2026-10-27T22:05:27.000Z",
+   "seen": "2026-10-27T22:33:00.344Z",
+   "handle": "rotowirenba.bsky.social",
+   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3myvamic4y62q",
+   "player": "Anthony Edwards",
+   "team": "MIN",
+   "status": "questionable",
+   "kind": "status",
+   "confidence": 0.93,
+   "text": "Anthony Edwards: Questionable for Wednesday \n\n https://www.rotowire.com/basketball/player/anthony-edwards-5110"
   }
  ]
 }
