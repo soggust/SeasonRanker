@@ -2,7 +2,7 @@
  "v": 1,
  "sport": "mma",
  "epoch": "2026-10-21T01:15:00Z",
- "at": "2026-10-27T14:07:39.416Z",
+ "at": "2026-10-27T16:07:09.160Z",
  "from": "2020-06-06T23:10:00.000Z",
  "through": "2026-10-18T01:45:00.000Z",
  "n": {
@@ -2180,13 +2180,13 @@
    }
   }
  },
- "commit": "e1185194",
+ "commit": "e511f2e6",
  "note": "D98. A user's bet is never void over its price (the owner, 2026-10-26: \"why would you void a USERS bet when the line moves... only void a BOT bet if player doesn't play\")",
  "inputs": {
   "v": 1,
   "sport": "mma",
   "code": {
-   "mma": "925e716fa7f8",
+   "mma": "ecb5d1aa98af",
    "games": "47aceba7d839",
    "pricing": "1089166cdb4d",
    "record": "f1439ac141ac",
@@ -2223,6 +2223,6 @@
     "want": 14
    }
   },
-  "hash": "2f5c1913de4de2d3"
+  "hash": "b5d604efcaf1231a"
  }
 }

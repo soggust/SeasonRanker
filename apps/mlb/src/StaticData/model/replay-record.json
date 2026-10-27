@@ -2,7 +2,7 @@
  "v": 1,
  "sport": "mlb",
  "epoch": "2026-10-26T15:00:00Z",
- "at": "2026-10-27T14:05:39.319Z",
+ "at": "2026-10-27T16:05:06.592Z",
  "from": "2021-07-18T17:11:00.000Z",
  "through": "2026-10-16T00:00:00.000Z",
  "n": {
@@ -2599,7 +2599,7 @@
    }
   }
  },
- "commit": "e1185194",
+ "commit": "e511f2e6",
  "note": "D98. A user's bet is never void over its price (the owner, 2026-10-26: \"why would you void a USERS bet when the line moves... only void a BOT bet if player doesn't play\")",
  "inputs": {
   "v": 1,
