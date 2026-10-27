@@ -1,8 +1,8 @@
 {
  "sport": "nba",
  "cursor": {
-  "rotowirenba.bsky.social": "2026-10-27T01:36:31.000Z",
-  "insidenbanews.bsky.social": "2026-10-27T01:35:58.243Z",
+  "rotowirenba.bsky.social": "2026-10-27T02:13:56.000Z",
+  "insidenbanews.bsky.social": "2026-10-27T02:09:11.959Z",
   "shamsbot.bsky.social": "2026-10-26T22:37:13.000Z"
  },
  "claims": [
@@ -3346,6 +3346,58 @@
    "kind": "status",
    "confidence": 0.85,
    "text": "Alex Caruso: Won't return vs. Phoenix \n\n https://www.rotowire.com/basketball/player/alex-caruso-3952"
+  },
+  {
+   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3myt5mm5sev22|jarenjackson|out|status",
+   "at": "2026-10-27T02:06:30.000Z",
+   "seen": "2026-10-27T02:20:29.119Z",
+   "handle": "rotowirenba.bsky.social",
+   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3myt5mm5sev22",
+   "player": "Jaren Jackson",
+   "team": null,
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.85,
+   "text": "Jaren Jackson: Won't return Monday \n\n https://www.rotowire.com/basketball/player/jaren-jackson-4384"
+  },
+  {
+   "id": "at://did:plc:ykcnnf6kqnn3lasmobrczoem/app.bsky.feed.post/3myt5rfpuhc2i|laurimarkkanen|out|status",
+   "at": "2026-10-27T02:09:11.959Z",
+   "seen": "2026-10-27T02:20:29.119Z",
+   "handle": "insidenbanews.bsky.social",
+   "post": "at://did:plc:ykcnnf6kqnn3lasmobrczoem/app.bsky.feed.post/3myt5rfpuhc2i",
+   "player": "Lauri Markkanen",
+   "team": null,
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.85,
+   "text": "Status alert: Lauri Markkanen (wrist) won't return Monday."
+  },
+  {
+   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3myt5szfjha2v|laurimarkkanen|questionable|status",
+   "at": "2026-10-27T02:10:06.000Z",
+   "seen": "2026-10-27T02:20:29.119Z",
+   "handle": "rotowirenba.bsky.social",
+   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3myt5szfjha2v",
+   "player": "Lauri Markkanen",
+   "team": null,
+   "status": "questionable",
+   "kind": "status",
+   "confidence": 0.6,
+   "text": "Lauri Markkanen: Iffy to return vs. Memphis \n\n https://www.rotowire.com/basketball/player/lauri-markkanen-4119"
+  },
+  {
+   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3myt5zuykoq2v|laurimarkkanen|out|status",
+   "at": "2026-10-27T02:13:56.000Z",
+   "seen": "2026-10-27T02:20:29.119Z",
+   "handle": "rotowirenba.bsky.social",
+   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3myt5zuykoq2v",
+   "player": "Lauri Markkanen",
+   "team": null,
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.85,
+   "text": "Lauri Markkanen: Won't return vs. Memphis \n\n https://www.rotowire.com/basketball/player/lauri-markkanen-4119"
   }
  ]
 }
