@@ -2,7 +2,7 @@
  "v": 1,
  "sport": "nba",
  "epoch": "2026-10-26T15:00:00Z",
- "at": "2026-10-26T22:46:13.160Z",
+ "at": "2026-10-26T23:54:01.665Z",
  "from": "2020-08-01T01:10:00.000Z",
  "through": "2026-06-11T00:40:00.000Z",
  "n": {
@@ -2738,8 +2738,8 @@
    }
   }
  },
- "commit": "6953a936",
- "note": "D96. The NHL's LIKE props on D73's stake step (the owner, 2026-10-26: \"bet NHL everyday props smaller\")",
+ "commit": "5830b934",
+ "note": "D97. How much of each record is luck (luck.mjs; the owner, 2026-10-26: \"is there a way to simulate games to test our algo for future\")",
  "inputs": {
   "v": 1,
   "sport": "nba",

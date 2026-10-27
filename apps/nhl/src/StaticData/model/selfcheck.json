@@ -1,8 +1,8 @@
 {
- "at": "2026-10-26T22:54:04.022Z",
+ "at": "2026-10-27T00:06:19.358Z",
  "baseline": {
-  "from": "2026-09-21",
-  "to": "2026-10-19"
+  "from": "2026-09-22",
+  "to": "2026-10-20"
  },
  "checks": [
   {
@@ -401,324 +401,6 @@
   },
   {
    "examples": [],
-   "headline": "total trust: no longer fitted (0 to 0); 183 changelog entries this week",
-   "how": "the day's last state.json for 35 days (git), the week's start against now; the changelog's entries this week verbatim",
-   "id": "C9",
-   "metric": "changes",
-   "n": 19,
-   "needs": null,
-   "rows": [
-    {
-     "from": 0,
-     "key": "trust:total",
-     "label": "total trust",
-     "status": "flag",
-     "to": 0,
-     "what": "no longer fitted"
-    },
-    {
-     "key": "changelog:context: Games in 7 days",
-     "label": "context: Games in 7 days",
-     "n": 12,
-     "status": "watch",
-     "what": "12 changes this week"
-    },
-    {
-     "key": "changelog:live calibration: sog|over|2.5",
-     "label": "live calibration: sog|over|2.5",
-     "n": 7,
-     "status": "watch",
-     "what": "7 changes this week"
-    },
-    {
-     "key": "changelog:live calibration: sog|under|2.5",
-     "label": "live calibration: sog|under|2.5",
-     "n": 7,
-     "status": "watch",
-     "what": "7 changes this week"
-    },
-    {
-     "key": "changelog:Open bets priced again on news",
-     "label": "Open bets priced again on news",
-     "n": 54,
-     "status": "watch",
-     "what": "54 changes this week"
-    },
-    {
-     "from": 0.25,
-     "key": "prop:sog:vc",
-     "label": "Shots vc",
-     "status": "watch",
-     "to": 0,
-     "what": "term dropped"
-    },
-    {
-     "days": 11,
-     "from": null,
-     "keptDays": 0,
-     "key": "term:altitudeT",
-     "label": "Altitude (total)",
-     "status": "watch",
-     "to": 0.005,
-     "what": "kept now"
-    },
-    {
-     "days": 11,
-     "from": null,
-     "keptDays": 0,
-     "key": "term:bounce",
-     "label": "Off a blowout loss",
-     "status": "watch",
-     "to": -0.014,
-     "what": "kept now"
-    },
-    {
-     "days": 11,
-     "from": null,
-     "keptDays": 0,
-     "key": "term:clockEarly",
-     "label": "Early by its clock",
-     "status": "watch",
-     "to": 0.0001,
-     "what": "kept now"
-    },
-    {
-     "days": 11,
-     "from": null,
-     "keptDays": 0,
-     "key": "term:clockLate",
-     "label": "Late by its clock",
-     "status": "watch",
-     "to": -0.0041,
-     "what": "kept now"
-    },
-    {
-     "days": 11,
-     "from": null,
-     "keptDays": 0,
-     "key": "term:density7",
-     "label": "Games in 7 days",
-     "status": "watch",
-     "to": -0.0005,
-     "what": "kept now"
-    },
-    {
-     "days": 11,
-     "from": null,
-     "keptDays": 0,
-     "key": "term:firstHome",
-     "label": "Home stand opener",
-     "status": "watch",
-     "to": -0.0014,
-     "what": "kept now"
-    },
-    {
-     "days": 11,
-     "from": null,
-     "keptDays": 4,
-     "key": "term:goalie",
-     "label": "Goalie edge",
-     "status": "watch",
-     "to": 0.42,
-     "what": "kept now"
-    },
-    {
-     "days": 11,
-     "from": null,
-     "keptDays": 0,
-     "key": "term:letdown",
-     "label": "Off a blowout win",
-     "status": "watch",
-     "to": 0.015,
-     "what": "kept now"
-    },
-    {
-     "days": 11,
-     "from": null,
-     "keptDays": 0,
-     "key": "term:letdownT",
-     "label": "Off a blowout win (total)",
-     "status": "watch",
-     "to": -0.0065,
-     "what": "kept now"
-    },
-    {
-     "days": 11,
-     "from": null,
-     "keptDays": 0,
-     "key": "term:tripLong",
-     "label": "Long road trip",
-     "status": "watch",
-     "to": 0.0041,
-     "what": "kept now"
-    },
-    {
-     "days": 11,
-     "from": null,
-     "keptDays": 0,
-     "key": "term:tzHome",
-     "label": "Time zones from home",
-     "status": "watch",
-     "to": 0.019,
-     "what": "kept now"
-    },
-    {
-     "days": 11,
-     "from": null,
-     "keptDays": 0,
-     "key": "term:tzMove",
-     "label": "Time zones crossed",
-     "status": "watch",
-     "to": -0.004,
-     "what": "kept now"
-    },
-    {
-     "days": 11,
-     "from": null,
-     "keptDays": 0,
-     "key": "term:xgEdge",
-     "label": "Expected goals",
-     "status": "watch",
-     "to": 0.35,
-     "what": "kept now"
-    },
-    {
-     "from": 1.015,
-     "key": "prop:pts:scale",
-     "label": "Points scale",
-     "status": "info",
-     "to": 1.009,
-     "what": "refit"
-    },
-    {
-     "at": "2026-10-26T05:02:33.986Z",
-     "from": -0.0173,
-     "key": "log:0",
-     "label": "live calibration: saves|under|>2.5",
-     "status": "info",
-     "to": 0,
-     "what": "changelog",
-     "why": "101 graded rows: too few rows (200 needed)"
-    },
-    {
-     "at": "2026-10-26T05:02:33.986Z",
-     "from": -0.0173,
-     "key": "log:1",
-     "label": "live calibration: sog|over|>2.5",
-     "status": "info",
-     "to": 0,
-     "what": "changelog",
-     "why": "39 graded rows: too few rows (200 needed)"
-    },
-    {
-     "at": "2026-10-26T05:02:33.986Z",
-     "from": -0.0573,
-     "key": "log:2",
-     "label": "live calibration: sog|over|2.5",
-     "status": "info",
-     "to": -0.0273,
-     "what": "changelog",
-     "why": "161 graded rows of its own (own shift 0), the rest pooled from its line class, at most 0.03 a rung a run"
-    },
-    {
-     "at": "2026-10-26T05:02:33.986Z",
-     "from": -0.0173,
-     "key": "log:3",
-     "label": "live calibration: sog|under|>2.5",
-     "status": "info",
-     "to": 0,
-     "what": "changelog",
-     "why": "44 graded rows: too few rows (200 needed)"
-    },
-    {
-     "at": "2026-10-26T05:02:33.986Z",
-     "from": -0.129,
-     "key": "log:4",
-     "label": "live calibration: sog|under|0.5",
-     "status": "info",
-     "to": -0.099,
-     "what": "changelog",
-     "why": "1 graded rows of its own (own shift 0), the rest pooled from its line class, at most 0.03 a rung a run"
-    },
-    {
-     "at": "2026-10-26T05:02:33.986Z",
-     "from": -0.0573,
-     "key": "log:5",
-     "label": "live calibration: sog|under|2.5",
-     "status": "info",
-     "to": -0.0273,
-     "what": "changelog",
-     "why": "233 graded rows of its own (own shift 0), the rest pooled from its line class, at most 0.03 a rung a run"
-    },
-    {
-     "at": "2026-10-26T16:59:36.917Z",
-     "from": 0,
-     "key": "log:6",
-     "label": "Shots props' trust in the projection",
-     "status": "info",
-     "to": 0.5,
-     "what": "changelog",
-     "why": "best fit to 0 graded Shots props and 0 closing lines, 0 games' worth (log loss undefined)"
-    },
-    {
-     "at": "2026-10-26T16:59:36.917Z",
-     "from": 0,
-     "key": "log:7",
-     "label": "Points props' trust in the projection",
-     "status": "info",
-     "to": 0.5,
-     "what": "changelog",
-     "why": "best fit to 0 graded Points props and 0 closing lines, 0 games' worth (log loss undefined)"
-    },
-    {
-     "at": "2026-10-26T16:59:36.917Z",
-     "from": 2,
-     "key": "log:8",
-     "label": "Open bets priced again on news",
-     "status": "info",
-     "to": 2,
-     "what": "changelog",
-     "why": "What they were priced on changed before the start: LA @ NYR: LA out list; NYR goalie (James Reimer confirmed)"
-    },
-    {
-     "at": "2026-10-26T17:17:29.303Z",
-     "from": 14,
-     "key": "log:9",
-     "label": "Open bets priced again on news",
-     "status": "info",
-     "to": 0,
-     "what": "changelog",
-     "why": "What they were priced on changed before the start: LA @ NYR: LA out list; NYR goalie (James Reimer confirmed)"
-    },
-    {
-     "at": "2026-10-26T18:15:47.375Z",
-     "from": 19,
-     "key": "log:10",
-     "label": "Open bets priced again on news",
-     "status": "info",
-     "to": 0,
-     "what": "changelog",
-     "why": "What they were priced on changed before the start: DET @ EDM: EDM goalie (Tristan Jarry confirmed); DET goalie (Michal Postava confirmed)"
-    },
-    {
-     "at": "2026-10-26T22:35:42.225Z",
-     "from": 25,
-     "key": "log:11",
-     "label": "Open bets priced again on news",
-     "status": "info",
-     "to": 23,
-     "what": "changelog",
-     "why": "What they were priced on changed before the start: LA @ NYR: LA goalie (Darcy Kuemper confirmed)"
-    }
-   ],
-   "status": "flag",
-   "tested": null,
-   "threshold": "info; watch a term changed or more than 6 changelog entries of one kind; flag a term kept 3 weeks of 4 now dropped, or a trust gone to 0",
-   "title": "Fitted terms, params and trust",
-   "value": 19
-  },
-  {
-   "examples": [],
    "headline": "Saves Overs: the bets projected +1.40 off (mean - actual, 43 bets) against an all-player bias of +0.35",
    "how": "each prop fit's all-player bias (projected - actual over every player) against its mean error; the 28 days' graded props' own miss by side and role",
    "id": "C10",
@@ -883,6 +565,270 @@
    "threshold": "watch the dog share moved 20 points (20+ bets both); flag also the grown group z -2 (30+ graded)",
    "title": "Favorite/dog drift",
    "value": -0.2098
+  },
+  {
+   "examples": [],
+   "headline": "context: Games in 7 days: 12 changes this week; 183 changelog entries this week",
+   "how": "the day's last state.json for 35 days (git), the week's start against now; the changelog's entries this week verbatim",
+   "id": "C9",
+   "metric": "changes",
+   "n": 19,
+   "needs": null,
+   "rows": [
+    {
+     "key": "changelog:context: Games in 7 days",
+     "label": "context: Games in 7 days",
+     "n": 12,
+     "status": "watch",
+     "what": "12 changes this week"
+    },
+    {
+     "key": "changelog:live calibration: sog|over|2.5",
+     "label": "live calibration: sog|over|2.5",
+     "n": 7,
+     "status": "watch",
+     "what": "7 changes this week"
+    },
+    {
+     "key": "changelog:live calibration: sog|under|2.5",
+     "label": "live calibration: sog|under|2.5",
+     "n": 7,
+     "status": "watch",
+     "what": "7 changes this week"
+    },
+    {
+     "key": "changelog:Open bets priced again on news",
+     "label": "Open bets priced again on news",
+     "n": 54,
+     "status": "watch",
+     "what": "54 changes this week"
+    },
+    {
+     "from": 0.25,
+     "key": "prop:sog:vc",
+     "label": "Shots vc",
+     "status": "watch",
+     "to": 0,
+     "what": "term dropped"
+    },
+    {
+     "days": 12,
+     "from": 0.0004,
+     "keptDays": 1,
+     "key": "term:clockEarly",
+     "label": "Early by its clock",
+     "status": "watch",
+     "to": 0.0001,
+     "what": "size moved half"
+    },
+    {
+     "days": 12,
+     "from": -0.0025,
+     "keptDays": 1,
+     "key": "term:clockLate",
+     "label": "Late by its clock",
+     "status": "watch",
+     "to": -0.0041,
+     "what": "size moved half"
+    },
+    {
+     "days": 12,
+     "from": 0.0062,
+     "keptDays": 1,
+     "key": "term:density7",
+     "label": "Games in 7 days",
+     "status": "watch",
+     "to": -0.0005,
+     "what": "sign flipped"
+    },
+    {
+     "days": 12,
+     "from": -0.0061,
+     "keptDays": 1,
+     "key": "term:firstHome",
+     "label": "Home stand opener",
+     "status": "watch",
+     "to": -0.0014,
+     "what": "size moved half"
+    },
+    {
+     "days": 12,
+     "from": -0.0082,
+     "keptDays": 1,
+     "key": "term:tzMove",
+     "label": "Time zones crossed",
+     "status": "watch",
+     "to": -0.004,
+     "what": "size moved half"
+    },
+    {
+     "days": 12,
+     "from": null,
+     "keptDays": 0,
+     "key": "term:xgEdge",
+     "label": "Expected goals",
+     "status": "watch",
+     "to": 0.35,
+     "what": "kept now"
+    },
+    {
+     "from": 1.015,
+     "key": "prop:pts:scale",
+     "label": "Points scale",
+     "status": "info",
+     "to": 1.009,
+     "what": "refit"
+    },
+    {
+     "from": 0.5,
+     "key": "prop:saves:a",
+     "label": "Saves a",
+     "status": "info",
+     "to": 1,
+     "what": "refit"
+    },
+    {
+     "from": 0.996,
+     "key": "prop:saves:scale",
+     "label": "Saves scale",
+     "status": "info",
+     "to": 0.994,
+     "what": "refit"
+    },
+    {
+     "from": 0.982,
+     "key": "prop:sog:scale",
+     "label": "Shots scale",
+     "status": "info",
+     "to": 0.992,
+     "what": "refit"
+    },
+    {
+     "at": "2026-10-26T05:02:33.986Z",
+     "from": -0.0173,
+     "key": "log:0",
+     "label": "live calibration: saves|under|>2.5",
+     "status": "info",
+     "to": 0,
+     "what": "changelog",
+     "why": "101 graded rows: too few rows (200 needed)"
+    },
+    {
+     "at": "2026-10-26T05:02:33.986Z",
+     "from": -0.0173,
+     "key": "log:1",
+     "label": "live calibration: sog|over|>2.5",
+     "status": "info",
+     "to": 0,
+     "what": "changelog",
+     "why": "39 graded rows: too few rows (200 needed)"
+    },
+    {
+     "at": "2026-10-26T05:02:33.986Z",
+     "from": -0.0573,
+     "key": "log:2",
+     "label": "live calibration: sog|over|2.5",
+     "status": "info",
+     "to": -0.0273,
+     "what": "changelog",
+     "why": "161 graded rows of its own (own shift 0), the rest pooled from its line class, at most 0.03 a rung a run"
+    },
+    {
+     "at": "2026-10-26T05:02:33.986Z",
+     "from": -0.0173,
+     "key": "log:3",
+     "label": "live calibration: sog|under|>2.5",
+     "status": "info",
+     "to": 0,
+     "what": "changelog",
+     "why": "44 graded rows: too few rows (200 needed)"
+    },
+    {
+     "at": "2026-10-26T05:02:33.986Z",
+     "from": -0.129,
+     "key": "log:4",
+     "label": "live calibration: sog|under|0.5",
+     "status": "info",
+     "to": -0.099,
+     "what": "changelog",
+     "why": "1 graded rows of its own (own shift 0), the rest pooled from its line class, at most 0.03 a rung a run"
+    },
+    {
+     "at": "2026-10-26T05:02:33.986Z",
+     "from": -0.0573,
+     "key": "log:5",
+     "label": "live calibration: sog|under|2.5",
+     "status": "info",
+     "to": -0.0273,
+     "what": "changelog",
+     "why": "233 graded rows of its own (own shift 0), the rest pooled from its line class, at most 0.03 a rung a run"
+    },
+    {
+     "at": "2026-10-26T16:59:36.917Z",
+     "from": 0,
+     "key": "log:6",
+     "label": "Shots props' trust in the projection",
+     "status": "info",
+     "to": 0.5,
+     "what": "changelog",
+     "why": "best fit to 0 graded Shots props and 0 closing lines, 0 games' worth (log loss undefined)"
+    },
+    {
+     "at": "2026-10-26T16:59:36.917Z",
+     "from": 0,
+     "key": "log:7",
+     "label": "Points props' trust in the projection",
+     "status": "info",
+     "to": 0.5,
+     "what": "changelog",
+     "why": "best fit to 0 graded Points props and 0 closing lines, 0 games' worth (log loss undefined)"
+    },
+    {
+     "at": "2026-10-26T16:59:36.917Z",
+     "from": 2,
+     "key": "log:8",
+     "label": "Open bets priced again on news",
+     "status": "info",
+     "to": 2,
+     "what": "changelog",
+     "why": "What they were priced on changed before the start: LA @ NYR: LA out list; NYR goalie (James Reimer confirmed)"
+    },
+    {
+     "at": "2026-10-26T17:17:29.303Z",
+     "from": 14,
+     "key": "log:9",
+     "label": "Open bets priced again on news",
+     "status": "info",
+     "to": 0,
+     "what": "changelog",
+     "why": "What they were priced on changed before the start: LA @ NYR: LA out list; NYR goalie (James Reimer confirmed)"
+    },
+    {
+     "at": "2026-10-26T18:15:47.375Z",
+     "from": 19,
+     "key": "log:10",
+     "label": "Open bets priced again on news",
+     "status": "info",
+     "to": 0,
+     "what": "changelog",
+     "why": "What they were priced on changed before the start: DET @ EDM: EDM goalie (Tristan Jarry confirmed); DET goalie (Michal Postava confirmed)"
+    },
+    {
+     "at": "2026-10-26T22:35:42.225Z",
+     "from": 25,
+     "key": "log:11",
+     "label": "Open bets priced again on news",
+     "status": "info",
+     "to": 23,
+     "what": "changelog",
+     "why": "What they were priced on changed before the start: LA @ NYR: LA goalie (Darcy Kuemper confirmed)"
+    }
+   ],
+   "status": "watch",
+   "tested": null,
+   "threshold": "info; watch a term changed or more than 6 changelog entries of one kind; flag a term kept 3 weeks of 4 now dropped, or a trust gone to 0",
+   "title": "Fitted terms, params and trust",
+   "value": 11
   },
   {
    "examples": [],
@@ -1405,7 +1351,7 @@
    "how": "open bets on games not started: past the gap now, or published at a band today's trust wouldn't give them; open bets past their start plus VOID_AFTER; this week's graded bets with no close read",
    "id": "C13",
    "metric": "stale",
-   "n": 95,
+   "n": 71,
    "needs": null,
    "rows": [
     {
@@ -1448,9 +1394,9 @@
     },
     {
      "key": "seen",
-     "n": 10,
-     "of": 101,
-     "share": 0.099,
+     "n": 12,
+     "of": 103,
+     "share": 0.1165,
      "shareBase": 0.1317,
      "status": "ok"
     },
@@ -1557,7 +1503,7 @@
   },
   {
    "examples": [],
-   "headline": "Model files 0h old, 0 open bets overdue to grade; Odds API credits 282% left; 1006 bets placed in a week of 48 games",
+   "headline": "Model files 1h old, 0 open bets overdue to grade; Odds API credits 282% left; 1006 bets placed in a week of 46 games",
    "how": "the newest commit of the sport's model files, the open bets started 12 hours ago or more, The Odds API's credits (state.odds), the state's sources",
    "id": "C16",
    "metric": "ageH",
@@ -1565,7 +1511,7 @@
    "needs": null,
    "rows": [
     {
-     "ageH": 0,
+     "ageH": 1,
      "at": "2026-10-26T22:39:41Z",
      "key": "files",
      "overdue": 0
@@ -1582,7 +1528,7 @@
      "key": "sources"
     },
     {
-     "games": 48,
+     "games": 46,
      "key": "week",
      "placed": 1006
     }
@@ -1591,7 +1537,7 @@
    "tested": null,
    "threshold": "watch files 3h old with bets overdue, credits under 20%, a source down, or no bets in a week with games; flag 6h old with bets overdue, or credits under 10%",
    "title": "Ops",
-   "value": 0
+   "value": 1
   },
   {
    "examples": [],
@@ -2350,18 +2296,18 @@
  },
  "sport": "nhl",
  "summary": {
-  "flag": 4,
+  "flag": 3,
   "headline": "Over/under drift by stat: Saves Under: 17.3 won vs 19.4 expected (z -0.69), 81% of its stat's props, ROI -14.1%; Guards cutting unusually often: pts prop:pts:under: the bot's own bets there u flat on: 56 of 1006 bets placed this week (6%) against 0% before",
   "info": 3,
   "ok": 9,
   "partial": 1,
   "thin": 3,
-  "watch": 3
+  "watch": 4
  },
  "v": 1,
  "window": {
-  "from": "2026-10-19",
-  "to": "2026-10-26"
+  "from": "2026-10-20",
+  "to": "2026-10-27"
  },
  "writeups": {
   "calls": 0,

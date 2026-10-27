@@ -15451,6 +15451,432 @@
      }
     }
    }
+  },
+  {
+   "sport": "nfl",
+   "epoch": "2026-10-26T15:00:00Z",
+   "commit": "5830b934",
+   "commitAt": "2026-10-26T23:16:57Z",
+   "label": "worktree",
+   "at": "2026-10-26T23:49:22.654Z",
+   "frozenTo": "2026-10-19T00:00:00Z",
+   "frozen": {
+    "props": {
+     "mode": "replay",
+     "n": 389,
+     "gap": 0.0002,
+     "closeGap": -0.0001,
+     "clv": 0.1641,
+     "hit": 0.6,
+     "picks": 55,
+     "units": 4.3974,
+     "edgeUnits": -18.4318,
+     "edgeN": 65
+    },
+    "lines": {
+     "mode": "replay",
+     "n": 1755,
+     "gap": -0.0021,
+     "closeGap": -0.0002,
+     "clv": 0.0359,
+     "hit": 0.5323,
+     "picks": 325,
+     "units": 12.178,
+     "edgeUnits": 33.8559,
+     "edgeN": 153
+    }
+   },
+   "rolling": {
+    "props": {
+     "mode": "replay",
+     "n": 803,
+     "gap": -0.0008,
+     "closeGap": -0.0001,
+     "clv": 0.1413,
+     "hit": 0.59,
+     "picks": 100,
+     "units": 9.1192,
+     "edgeUnits": -31.1132,
+     "edgeN": 214,
+     "from": "2026-09-28"
+    },
+    "lines": {
+     "mode": "replay",
+     "n": 61,
+     "gap": -0.0037,
+     "closeGap": 0.0002,
+     "clv": -0.0416,
+     "hit": 0.4,
+     "picks": 20,
+     "units": -2.3724,
+     "edgeUnits": 1.8413,
+     "edgeN": 5,
+     "from": "2026-09-25"
+    }
+   },
+   "history": {
+    "lines": {
+     "n": 5149,
+     "games": 1737,
+     "model": 0.6673,
+     "raw": 0.6861,
+     "anch": null,
+     "book": 0.6678,
+     "gap": -0.0005,
+     "lo": -0.0014,
+     "hi": 0.0004,
+     "rawGap": 0.0183,
+     "anchGap": null,
+     "verdict": "tie"
+    },
+    "props": {
+     "n": 39814,
+     "games": 923,
+     "model": 0.6885,
+     "raw": 0.7091,
+     "anch": 0.6894,
+     "book": 0.6893,
+     "gap": -0.0007,
+     "lo": -0.0014,
+     "hi": -0.0002,
+     "rawGap": 0.0198,
+     "anchGap": 0.0001,
+     "verdict": "better"
+    },
+    "linesBySeason": {
+     "2020": {
+      "n": 796,
+      "games": 268,
+      "model": 0.6584,
+      "raw": 0.6846,
+      "anch": null,
+      "book": 0.6574,
+      "gap": 0.001,
+      "lo": -0.0002,
+      "hi": 0.0024,
+      "rawGap": 0.0272,
+      "anchGap": null,
+      "verdict": "tie"
+     },
+     "2021": {
+      "n": 842,
+      "games": 283,
+      "model": 0.6702,
+      "raw": 0.7014,
+      "anch": null,
+      "book": 0.6699,
+      "gap": 0.0003,
+      "lo": -0.0005,
+      "hi": 0.0011,
+      "rawGap": 0.0315,
+      "anchGap": null,
+      "verdict": "tie"
+     },
+     "2022": {
+      "n": 842,
+      "games": 284,
+      "model": 0.6646,
+      "raw": 0.6872,
+      "anch": null,
+      "book": 0.6642,
+      "gap": 0.0004,
+      "lo": 0,
+      "hi": 0.0008,
+      "rawGap": 0.0229,
+      "anchGap": null,
+      "verdict": "tie"
+     },
+     "2023": {
+      "n": 759,
+      "games": 259,
+      "model": 0.6725,
+      "raw": 0.6935,
+      "anch": null,
+      "book": 0.6725,
+      "gap": 0,
+      "lo": -0.0001,
+      "hi": 0.0001,
+      "rawGap": 0.021,
+      "anchGap": null,
+      "verdict": "tie"
+     },
+     "2024": {
+      "n": 827,
+      "games": 279,
+      "model": 0.6585,
+      "raw": 0.6799,
+      "anch": null,
+      "book": 0.6588,
+      "gap": -0.0004,
+      "lo": -0.0007,
+      "hi": 0,
+      "rawGap": 0.0211,
+      "anchGap": null,
+      "verdict": "tie"
+     },
+     "2025": {
+      "n": 814,
+      "games": 272,
+      "model": 0.6618,
+      "raw": 0.6789,
+      "anch": null,
+      "book": 0.6629,
+      "gap": -0.0012,
+      "lo": -0.0023,
+      "hi": -0.0003,
+      "rawGap": 0.016,
+      "anchGap": null,
+      "verdict": "better"
+     },
+     "2026": {
+      "n": 269,
+      "games": 92,
+      "model": 0.6824,
+      "raw": 0.7014,
+      "anch": null,
+      "book": 0.6822,
+      "gap": 0.0002,
+      "lo": -0.0023,
+      "hi": 0.0028,
+      "rawGap": 0.0192,
+      "anchGap": null,
+      "verdict": "tie"
+     }
+    },
+    "propsBySeason": {
+     "2023": {
+      "n": 11113,
+      "games": 261,
+      "model": 0.6887,
+      "raw": 0.7068,
+      "anch": 0.7068,
+      "book": 0.6886,
+      "gap": 0.0001,
+      "lo": -0.0004,
+      "hi": 0.0006,
+      "rawGap": 0.0182,
+      "anchGap": 0.0182,
+      "verdict": "tie"
+     },
+     "2024": {
+      "n": 12813,
+      "games": 285,
+      "model": 0.6893,
+      "raw": 0.7109,
+      "anch": 0.6898,
+      "book": 0.6888,
+      "gap": 0.0005,
+      "lo": 0.0001,
+      "hi": 0.0009,
+      "rawGap": 0.0221,
+      "anchGap": 0.001,
+      "verdict": "worse"
+     },
+     "2025": {
+      "n": 11718,
+      "games": 285,
+      "model": 0.6876,
+      "raw": 0.7047,
+      "anch": 0.6879,
+      "book": 0.6887,
+      "gap": -0.0011,
+      "lo": -0.002,
+      "hi": -0.0002,
+      "rawGap": 0.016,
+      "anchGap": -0.0009,
+      "verdict": "better"
+     },
+     "2026": {
+      "n": 4170,
+      "games": 92,
+      "model": 0.6893,
+      "raw": 0.714,
+      "anch": 0.6905,
+      "book": 0.6905,
+      "gap": -0.0012,
+      "lo": -0.0026,
+      "hi": 0.0003,
+      "rawGap": 0.0234,
+      "anchGap": 0,
+      "verdict": "tie"
+     }
+    },
+    "linesByMarket": {
+     "spread": {
+      "n": 1701,
+      "games": 1701,
+      "model": 0.6918,
+      "raw": 0.7089,
+      "anch": null,
+      "book": 0.6918,
+      "gap": 0,
+      "lo": 0,
+      "hi": 0,
+      "rawGap": 0.0171,
+      "anchGap": null,
+      "verdict": "tie"
+     },
+     "total": {
+      "n": 1717,
+      "games": 1717,
+      "model": 0.6923,
+      "raw": 0.7154,
+      "anch": null,
+      "book": 0.6939,
+      "gap": -0.0016,
+      "lo": -0.0039,
+      "hi": 0.0008,
+      "rawGap": 0.0216,
+      "anchGap": null,
+      "verdict": "tie"
+     },
+     "ml": {
+      "n": 1731,
+      "games": 1731,
+      "model": 0.6183,
+      "raw": 0.6345,
+      "anch": null,
+      "book": 0.6183,
+      "gap": 0,
+      "lo": 0,
+      "hi": 0,
+      "rawGap": 0.0162,
+      "anchGap": null,
+      "verdict": "tie"
+     }
+    }
+   },
+   "historyPicks": {
+    "all": {
+     "n": 33605,
+     "clv": -0.0486,
+     "hit": 0.4961,
+     "picks": 3869,
+     "units": -112.0724
+    },
+    "props": {
+     "n": 28274,
+     "clv": -0.051,
+     "hit": 0.5074,
+     "picks": 2982,
+     "units": -57.4057
+    },
+    "lines": {
+     "n": 5331,
+     "clv": -0.0286,
+     "hit": 0.4925,
+     "picks": 1706,
+     "units": -50.2218
+    }
+   },
+   "anchor": {
+    "passAtt": {
+     "pull": 0.7604,
+     "d": 0.0845,
+     "n": 1634,
+     "gain": 0.0138
+    },
+    "passCmp": {
+     "pull": 0.7604,
+     "d": 0,
+     "n": 1634,
+     "gain": 0.0135
+    },
+    "passInt": {
+     "pull": 0.6413,
+     "d": 0,
+     "n": 1769,
+     "gain": 0.0097
+    },
+    "passTd": {
+     "pull": 0.853,
+     "d": -0.2559,
+     "n": 1741,
+     "gain": 0.0164
+    },
+    "passYds": {
+     "pull": 0.8551,
+     "d": 0,
+     "n": 1770,
+     "gain": 0.0228
+    },
+    "rec": {
+     "pull": 0.8249,
+     "d": 0,
+     "n": 9861,
+     "gain": 0.0274
+    },
+    "recYds": {
+     "pull": 0.8745,
+     "d": 0,
+     "n": 10274,
+     "gain": 0.0251
+    },
+    "rushAtt": {
+     "pull": 0.7293,
+     "d": 0,
+     "n": 3093,
+     "gain": 0.0344
+    },
+    "rushRecYds": {
+     "pull": 0.7813,
+     "d": 0.0919,
+     "n": 3414,
+     "gain": 0.0274
+    },
+    "rushYds": {
+     "pull": 0.6574,
+     "d": 0,
+     "n": 4624,
+     "gain": 0.0234
+    }
+   },
+   "proj": {
+    "games": 7.9673,
+    "props": 3.6309
+   },
+   "inputs": {
+    "hash": "77c9ffccc2caba53",
+    "fit": {
+     "code": "0f797cd5d6f3e95e"
+    },
+    "context": {
+     "on": true,
+     "games": {
+      "2016": 267,
+      "2017": 267,
+      "2018": 267,
+      "2019": 267,
+      "2020": 269,
+      "2021": 285,
+      "2022": 284,
+      "2023": 285,
+      "2024": 285,
+      "2025": 285,
+      "2026": 106
+     }
+    },
+    "injuries": "11/11",
+    "rows": {
+     "replay": 78630,
+     "keys": 45146,
+     "bets": 2979
+    },
+    "frozen": {
+     "props": {
+      "mode": "replay",
+      "n": 389,
+      "ids": 389,
+      "want": 389
+     },
+     "lines": {
+      "mode": "replay",
+      "n": 1755,
+      "ids": 54,
+      "want": 55
+     }
+    }
+   }
   }
  ]
 }
