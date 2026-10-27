@@ -26,6 +26,7 @@
 // Pushing (as the NFL's): the analysis folders alone are committed on the current branch, then that commit
 // is put on origin/master from a separate checkout (.cache/analysis/push-tree-teams) and pushed.
 
+import { publishDirs } from './publish-tree.mjs';
 import '../env.mjs';
 import { spawnSync } from 'node:child_process';
 import { existsSync, mkdirSync, readFileSync, rmSync, writeFileSync } from 'node:fs';
@@ -54,42 +55,9 @@ const git = (gitArgs, cwd = ROOT) => {
   return { ok: r.status === 0, out: `${r.stdout ?? ''}${r.stderr ?? ''}`.trim() };
 };
 
+// (from a worktree of its own, the main checkout's index untouched: publish-tree.mjs)
 function push(dirs, names) {
-  git(['add', '-A', '--', ...dirs]);
-  if (git(['diff', '--cached', '--quiet', '--', ...dirs]).ok) {
-    log('no analysis changes to push');
-    return true;
-  }
-  const committed = git(['commit', '-m', `Update ${names.join(', ')} analysis (${today})`, '--', ...dirs]);
-  if (!committed.ok) {
-    log(`commit failed: ${committed.out}`);
-    return false;
-  }
-  const commit = git(['rev-parse', 'HEAD']).out;
-  // onto origin/master from a checkout of its own, tried again when someone pushed in between
-  for (let attempt = 1; attempt <= 4; attempt++) {
-    git(['fetch', 'origin', 'master']);
-    if (existsSync(TREE)) git(['worktree', 'remove', '--force', TREE]);
-    rmSync(TREE, { recursive: true, force: true });
-    git(['worktree', 'prune']);
-    if (!git(['worktree', 'add', '--detach', TREE, 'origin/master']).ok) break;
-    const picked = git(['cherry-pick', commit], TREE);
-    if (!picked.ok) {
-      log(`cherry-pick failed: ${picked.out}`);
-      git(['cherry-pick', '--abort'], TREE);
-      break;
-    }
-    const pushed = git(['push', 'origin', 'HEAD:master'], TREE);
-    if (pushed.ok) {
-      log('pushed to master');
-      git(['worktree', 'remove', '--force', TREE]);
-      return true;
-    }
-    log(`push rejected (try ${attempt}): ${pushed.out.split('\n').at(-1)}`);
-  }
-  git(['worktree', 'remove', '--force', TREE]);
-  log("couldn't push; the commit is on the local branch (push it by hand)");
-  return false;
+  return publishDirs({ root: ROOT, tree: TREE, dirs, message: `Update ${names.join(', ')} analysis (${today})`, log });
 }
 
 // The site's games for each team (its regular season row, and its postseason row), as published

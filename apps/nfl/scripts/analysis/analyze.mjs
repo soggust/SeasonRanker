@@ -602,10 +602,19 @@ async function main() {
       console.log(`batch ${batch.id}: ${ids.length} requests`);
       writeFileSync(path.join(BASE, 'batch.json'), JSON.stringify({ id: batch.id, ids, at: new Date().toISOString() }));
     }
+    // (a failed look (a timeout, the API briefly down) waited out and tried again, for a day at most: the batch runs on
+    // either way, 2026-10-26's NBA run lost its paid reports to one timeout)
+    const until = Date.now() + 26 * 36e5;
     for (;;) {
-      const b = await client.messages.batches.retrieve(batch.id);
-      if (b.processing_status === 'ended') break;
-      console.log(`  ${b.request_counts.processing} processing, ${b.request_counts.succeeded} done...`);
+      let b = null;
+      try {
+        b = await client.messages.batches.retrieve(batch.id);
+      } catch (err) {
+        if (Date.now() > until) throw err;
+        console.log(`  couldn't check the batch (${err.message}): trying again in a minute`);
+      }
+      if (b?.processing_status === 'ended') break;
+      if (b) console.log(`  ${b.request_counts.processing} processing, ${b.request_counts.succeeded} done...`);
       await new Promise((res) => setTimeout(res, 60_000));
     }
     let total = 0;

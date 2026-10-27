@@ -451,14 +451,27 @@ export async function analyze(sport, jobs, { cap = DEFAULT_CAP, batch = true, lo
     log(`  ${out.name} (${out.mode}): ${message.usage.input_tokens} in / ${message.usage.output_tokens} out, $${out.cost.toFixed(3)}${out.problems.length ? `\n    ${out.problems.join('\n    ')}` : ''}`);
   };
   if (batch) {
-    const b = await client.messages.batches.create({ requests: kept.map((j) => ({ custom_id: `team-${j.key}`, params: params(sport, j.dossier) })) });
-    log(`${name}: batch ${b.id}, ${kept.length} requests`);
+    // (a batch sent for these same reports and never collected (2026-10-26: NBA's wait timed out after its 30 reports
+    // were paid for): collected now, not sent and paid for again; Anthropic keeps a batch's results 29 days)
+    const file = path.join(cacheDir(sport), 'batch.json');
+    const sent = existsSync(file) ? JSON.parse(readFileSync(file, 'utf8')) : null;
+    const same = sent && !sent.collected && Date.now() - Date.parse(sent.at) < 28 * 864e5 && [...sent.keys].sort().join() === kept.map((j) => j.key).sort().join();
+    const b = same ? { id: sent.id } : await client.messages.batches.create({ requests: kept.map((j) => ({ custom_id: `team-${j.key}`, params: params(sport, j.dossier) })) });
+    log(same ? `${name}: batch ${b.id} sent ${sent.at.slice(0, 10)} and never collected: collecting it` : `${name}: batch ${b.id}, ${kept.length} requests`);
     mkdirSync(cacheDir(sport), { recursive: true });
-    writeFileSync(path.join(cacheDir(sport), 'batch.json'), JSON.stringify({ id: b.id, keys: kept.map((j) => j.key), at: new Date().toISOString() }));
+    if (!same) writeFileSync(file, JSON.stringify({ id: b.id, keys: kept.map((j) => j.key), at: new Date().toISOString() }));
+    // (a failed look (a timeout, the API briefly down) waited out and tried again, for a day at most: the batch runs on)
+    const until = Date.now() + 26 * 36e5;
     for (;;) {
-      const s = await client.messages.batches.retrieve(b.id);
-      if (s.processing_status === 'ended') break;
-      log(`  ${s.request_counts.processing} processing, ${s.request_counts.succeeded} done...`);
+      let s = null;
+      try {
+        s = await client.messages.batches.retrieve(b.id);
+      } catch (err) {
+        if (Date.now() > until) throw err;
+        log(`  couldn't check the batch (${err.message}): trying again in a minute`);
+      }
+      if (s?.processing_status === 'ended') break;
+      if (s) log(`  ${s.request_counts.processing} processing, ${s.request_counts.succeeded} done...`);
       await new Promise((res) => setTimeout(res, 60_000));
     }
     for await (const result of await client.messages.batches.results(b.id)) {
@@ -468,6 +481,7 @@ export async function analyze(sport, jobs, { cap = DEFAULT_CAP, batch = true, lo
       }
       keep(byKey.get(result.custom_id), result.result.message);
     }
+    writeFileSync(file, JSON.stringify({ ...JSON.parse(readFileSync(file, 'utf8')), collected: new Date().toISOString() }));
   } else {
     for (const j of kept) keep(j, await client.messages.stream(params(sport, j.dossier)).finalMessage());
   }
