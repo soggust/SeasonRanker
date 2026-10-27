@@ -1,7 +1,7 @@
 {
  "sport": "nfl",
  "cursor": {
-  "adamscheftermirror.bsky.social": "2026-10-27T02:38:33.317Z",
+  "adamscheftermirror.bsky.social": "2026-10-27T10:03:23.434Z",
   "rapsheet.bsky.social": "2026-10-27T02:07:27.652Z",
   "nflnewsreposterbot.bsky.social": "2026-10-22T13:33:43.592Z",
   "insidenflnews.bsky.social": "2026-10-27T03:12:26.587Z",
@@ -6964,6 +6964,19 @@
    "kind": "status",
    "confidence": 0.5,
    "text": "[Zangaro] Saquon Barkley is standing without a helmet next to RBs coach Jemal Singleton on the sideline. He tried to battle through injuries tonight but it looks like his game is over. twitter.com/DZa"
+  },
+  {
+   "id": "at://did:plc:qre6zxbmr3ixhdmgsgdretb5/app.bsky.feed.post/3mytybdanzn2p|saquonbarkley|questionable|status",
+   "at": "2026-10-27T10:03:23.434Z",
+   "seen": "2026-10-27T10:08:34.305Z",
+   "handle": "adamscheftermirror.bsky.social",
+   "post": "at://did:plc:qre6zxbmr3ixhdmgsgdretb5/app.bsky.feed.post/3mytybdanzn2p",
+   "player": "Saquon Barkley",
+   "team": "PHI",
+   "status": "questionable",
+   "kind": "status",
+   "confidence": 0.4,
+   "text": "Eagles running back Saquon Barkley said his “hamstring came out great” and he doesn't believe his back issue will keep him out. Story via @Tim_McManus:\n\nOriginal post"
   }
  ]
 }
