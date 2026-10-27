@@ -2,7 +2,7 @@
  "v": 1,
  "sport": "mma",
  "epoch": "2026-10-21T01:15:00Z",
- "at": "2026-10-27T00:06:17.827Z",
+ "at": "2026-10-27T14:07:39.416Z",
  "from": "2020-06-06T23:10:00.000Z",
  "through": "2026-10-18T01:45:00.000Z",
  "n": {
@@ -2180,8 +2180,8 @@
    }
   }
  },
- "commit": "5830b934",
- "note": "D97. How much of each record is luck (luck.mjs; the owner, 2026-10-26: \"is there a way to simulate games to test our algo for future\")",
+ "commit": "e1185194",
+ "note": "D98. A user's bet is never void over its price (the owner, 2026-10-26: \"why would you void a USERS bet when the line moves... only void a BOT bet if player doesn't play\")",
  "inputs": {
   "v": 1,
   "sport": "mma",

@@ -2,7 +2,7 @@
  "v": 1,
  "sport": "nba",
  "epoch": "2026-10-26T15:00:00Z",
- "at": "2026-10-26T23:54:01.665Z",
+ "at": "2026-10-27T13:54:29.400Z",
  "from": "2020-08-01T01:10:00.000Z",
  "through": "2026-06-11T00:40:00.000Z",
  "n": {
@@ -40,16 +40,16 @@
  },
  "pass": {
   "bets": 241775,
-  "won": 124108,
-  "lost": 117497,
+  "won": 124109,
+  "lost": 117496,
   "push": 170,
   "staked": 241775,
-  "profit": -9925.87,
-  "roi": -0.0411,
+  "profit": -9924.19,
+  "roi": -0.041,
   "beat": null,
   "beatN": 0,
   "clv": null,
-  "fairProfit": 4559.7473
+  "fairProfit": 4561.5432
  },
  "byBand": {
   "lock": {
@@ -2503,7 +2503,7 @@
     "beat": 199,
     "clv": 5.5261,
     "pN": 6469,
-    "p": 3150.8585,
+    "p": 3150.8591,
     "wins": 3171
    },
    "spread:home": {
@@ -2583,7 +2583,7 @@
     "beat": 0,
     "clv": 0,
     "pN": 86,
-    "p": 44.2332,
+    "p": 44.2334,
     "wins": 50
    },
    "prop:pra": {
@@ -2593,7 +2593,7 @@
     "beat": 0,
     "clv": 0,
     "pN": 107,
-    "p": 54.8155,
+    "p": 54.8157,
     "wins": 62
    },
    "props": {
@@ -2603,7 +2603,7 @@
     "beat": 0,
     "clv": 0,
     "pN": 5244,
-    "p": 2730.7847,
+    "p": 2730.7853,
     "wins": 2761
    },
    "prop:pts:over": {
@@ -2643,7 +2643,7 @@
     "beat": 0,
     "clv": 0,
     "pN": 3776,
-    "p": 2009.2035,
+    "p": 2009.204,
     "wins": 2058
    },
    "prop:reb": {
@@ -2653,7 +2653,7 @@
     "beat": 0,
     "clv": 0,
     "pN": 4367,
-    "p": 2312.5918,
+    "p": 2312.5922,
     "wins": 2322
    },
    "prop:pra:over": {
@@ -2733,13 +2733,13 @@
     "beat": 0,
     "clv": 0,
     "pN": 591,
-    "p": 303.3883,
+    "p": 303.3882,
     "wins": 264
    }
   }
  },
- "commit": "5830b934",
- "note": "D97. How much of each record is luck (luck.mjs; the owner, 2026-10-26: \"is there a way to simulate games to test our algo for future\")",
+ "commit": "e1185194",
+ "note": "D98. A user's bet is never void over its price (the owner, 2026-10-26: \"why would you void a USERS bet when the line moves... only void a BOT bet if player doesn't play\")",
  "inputs": {
   "v": 1,
   "sport": "nba",

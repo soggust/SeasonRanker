@@ -1,5 +1,5 @@
 {
- "at": "2026-10-27T00:06:19.358Z",
+ "at": "2026-10-27T14:07:40.921Z",
  "baseline": {
   "from": "2026-09-22",
   "to": "2026-10-20"
@@ -7,11 +7,11 @@
  "checks": [
   {
    "examples": [],
-   "headline": "ml trust: to 0 (0.05 to 0); 12 changelog entries this week",
+   "headline": "ml trust: to 0 (0.05 to 0); 7 changelog entries this week",
    "how": "the day's last state.json for 35 days (git), the week's start against now; the changelog's entries this week verbatim",
    "id": "C9",
    "metric": "changes",
-   "n": 9,
+   "n": 10,
    "needs": null,
    "rows": [
     {
@@ -23,59 +23,9 @@
      "what": "to 0"
     },
     {
-     "at": "2026-10-20T03:59:18.320Z",
-     "from": "Josh Hokit +205 0.5u medium",
-     "key": "log:0",
-     "label": "Open bet priced again: rule changed (Josh Hokit @ Ciryl Gane)",
-     "status": "info",
-     "to": "Josh Hokit +205 3u high",
-     "what": "changelog",
-     "why": "rule changed (placed under cap1, now cap2 suspect 0.12/0.3/0.15 bands 0.05/0.55/0.02/0)"
-    },
-    {
-     "at": "2026-10-20T06:56:39.044Z",
-     "from": 0.05,
-     "key": "log:1",
-     "label": "moneyline trust in the model",
-     "status": "info",
-     "to": 0,
-     "what": "changelog",
-     "why": "best fit to 2056 graded moneyline bets and 68 closing lines (log loss 0.5781; the priced history's 4941 rows at 977 rows' worth, the gate's record 2026-10-20)"
-    },
-    {
-     "at": "2026-10-20T06:56:39.044Z",
-     "from": "Josh Hokit +205 3u high",
-     "key": "log:2",
-     "label": "Open bet priced again: rule changed (Josh Hokit @ Ciryl Gane)",
-     "status": "info",
-     "to": "Josh Hokit +205 1u medium",
-     "what": "changelog",
-     "why": "rule changed (placed under cap2 suspect 0.12/0.3/0.15 bands 0.05/0.55/0.02/0, now cap2 suspect 0.12/0.3/0.15 bands 0.05/0.55/0.02/0 trust2)"
-    },
-    {
-     "at": "2026-10-20T08:03:21.422Z",
-     "from": "Josh Hokit +205 1u medium",
-     "key": "log:3",
-     "label": "Open bet priced again: rule changed (Josh Hokit @ Ciryl Gane)",
-     "status": "info",
-     "to": "Josh Hokit +205 1u medium",
-     "what": "changelog",
-     "why": "rule changed (placed under cap2 suspect 0.12/0.3/0.15 bands 0.05/0.55/0.02/0 trust2, now cap3 suspect 0.12/0.3/0.15 bands 0.05/0.55/0.02/0 trust2)"
-    },
-    {
-     "at": "2026-10-20T13:49:41.522Z",
-     "from": "Josh Hokit +205 1u medium",
-     "key": "log:4",
-     "label": "Open bet priced again: rule changed (Josh Hokit @ Ciryl Gane)",
-     "status": "info",
-     "to": "Josh Hokit +205 0u tracked",
-     "what": "changelog",
-     "why": "rule changed (placed under cap3 suspect 0.12/0.3/0.15 bands 0.05/0.55/0.02/0 trust2, now cap3 suspect 0.12/0.3/0.15 bands 0.05/0.55/0.02/0 trust3)"
-    },
-    {
      "at": "2026-10-20T15:57:22.077Z",
      "from": "Josh Hokit +205 0u low",
-     "key": "log:5",
+     "key": "log:0",
      "label": "Open bet priced again: rule changed (Josh Hokit @ Ciryl Gane)",
      "status": "info",
      "to": "Josh Hokit +205 0u tracked",
@@ -85,7 +35,7 @@
     {
      "at": "2026-10-21T01:37:54.514Z",
      "from": "Daniel Santos -125 0u low",
-     "key": "log:6",
+     "key": "log:1",
      "label": "Open bet priced again: rule changed (Daniel Santos @ Bolaji Oki)",
      "status": "info",
      "to": "Bolaji Oki +110 0u tracked",
@@ -95,7 +45,7 @@
     {
      "at": "2026-10-21T01:37:54.514Z",
      "from": "Over 2.5 rounds +130 0u low",
-     "key": "log:7",
+     "key": "log:2",
      "label": "Open bet priced again: rule changed (Noah Gugnon @ Kody Steele)",
      "status": "info",
      "to": "Over 2.5 rounds +130 0u tracked",
@@ -105,7 +55,7 @@
     {
      "at": "2026-10-21T01:37:54.514Z",
      "from": "Noah Gugnon +130 0u low",
-     "key": "log:8",
+     "key": "log:3",
      "label": "Open bet priced again: rule changed (Noah Gugnon @ Kody Steele)",
      "status": "info",
      "to": "Noah Gugnon +140 0u tracked",
@@ -115,7 +65,7 @@
     {
      "at": "2026-10-21T01:37:54.514Z",
      "from": "Over 2.5 rounds -278 0u low",
-     "key": "log:9",
+     "key": "log:4",
      "label": "Open bet priced again: rule changed (Nicolle Caliari @ Iasmin Lucindo)",
      "status": "info",
      "to": "Over 2.5 rounds -278 0u tracked",
@@ -125,7 +75,7 @@
     {
      "at": "2026-10-21T01:37:54.514Z",
      "from": "Iasmin Lucindo -370 0u low",
-     "key": "log:10",
+     "key": "log:5",
      "label": "Open bet priced again: rule changed (Nicolle Caliari @ Iasmin Lucindo)",
      "status": "info",
      "to": "Iasmin Lucindo -357 0u tracked",
@@ -135,7 +85,7 @@
     {
      "at": "2026-10-21T01:37:54.514Z",
      "from": "Josh Hokit +205 0u low",
-     "key": "log:11",
+     "key": "log:6",
      "label": "Open bet priced again: rule changed (Josh Hokit @ Ciryl Gane)",
      "status": "info",
      "to": "Josh Hokit +215 0u tracked",
@@ -151,25 +101,25 @@
   },
   {
    "examples": [],
-   "headline": "fairFrom unknown: missing on 7 of 21 bets this week (33%) against 26% before; fair chances from betonlineag",
+   "headline": "fairFrom unknown: missing on 7 of 22 bets this week (32%) against 26% before; fair chances from betonlineag",
    "how": "placed this week against the 28 days before: the share of the bets each field applies to that are missing it",
    "id": "C14",
    "metric": "share",
-   "n": 21,
+   "n": 22,
    "needs": null,
    "rows": [
     {
      "key": "fairFrom unknown",
      "n": 7,
-     "of": 21,
-     "share": 0.3333,
+     "of": 22,
+     "share": 0.3182,
      "shareBase": 0.2581,
      "status": "watch"
     },
     {
      "key": "intent",
      "n": 0,
-     "of": 21,
+     "of": 22,
      "share": 0,
      "shareBase": 0,
      "status": "ok"
@@ -195,7 +145,7 @@
    "tested": null,
    "threshold": "watch a share up 5 points on the baseline (3+ bets, 20+ both); flag doubled (5+)",
    "title": "Data holes",
-   "value": 0.3333
+   "value": 0.3182
   },
   {
    "examples": [],
@@ -248,11 +198,11 @@
   },
   {
    "examples": [],
-   "headline": "No bet placed this week was cut by a guard (21 placed)",
+   "headline": "No bet placed this week was cut by a guard (22 placed)",
    "how": "placed this week against the 28 days before: the bets a guard cut to a half unit, by kind",
    "id": "C8",
    "metric": "ratio",
-   "n": 21,
+   "n": 22,
    "needs": [
     "state.tallies (the guards' skips by day: the Bot keeps only the bets it placed)"
    ],
@@ -486,7 +436,7 @@
    "how": "open bets on games not started: past the gap now, or published at a band today's trust wouldn't give them; open bets past their start plus VOID_AFTER; this week's graded bets with no close read",
    "id": "C13",
    "metric": "stale",
-   "n": 17,
+   "n": 18,
    "needs": null,
    "rows": [
     {
@@ -515,16 +465,16 @@
   },
   {
    "examples": [],
-   "headline": "Model files 1h old, 0 open bets overdue to grade; Odds API credits 282% left; 21 bets placed in a week of 14 games",
+   "headline": "Model files 1h old, 0 open bets overdue to grade; Odds API credits 281% left; 22 bets placed in a week of 14 games",
    "how": "the newest commit of the sport's model files, the open bets started 12 hours ago or more, The Odds API's credits (state.odds), the state's sources",
    "id": "C16",
    "metric": "ageH",
-   "n": 21,
+   "n": 22,
    "needs": null,
    "rows": [
     {
      "ageH": 1,
-     "at": "2026-10-26T22:39:41Z",
+     "at": "2026-10-27T12:34:29Z",
      "key": "files",
      "overdue": 0
     },
@@ -532,8 +482,8 @@
      "cycleEnd": "2026-11-19T04:06:35.755Z",
      "key": "credits",
      "monthly": 20000,
-     "remaining": 56303,
-     "share": 2.8152
+     "remaining": 56195,
+     "share": 2.8098
     },
     {
      "down": [],
@@ -542,7 +492,7 @@
     {
      "games": 14,
      "key": "week",
-     "placed": 21
+     "placed": 22
     }
    ],
    "status": "ok",
@@ -553,11 +503,11 @@
   },
   {
    "examples": [],
-   "headline": "0 of 21 bets placed this week had the line already moving against them",
+   "headline": "0 of 22 bets placed this week had the line already moving against them",
    "how": "placed this week: a prop's line a point or more against its side since it opened; a game's spread 1.5 (NFL) or 0.5, its total a point, a moneyline without a spread move 3 points of the home chance. A prop moved twice the guard's limit should have been skipped",
    "id": "C2",
    "metric": "roiGap",
-   "n": 21,
+   "n": 22,
    "needs": null,
    "rows": [
     {
@@ -574,7 +524,7 @@
      "e": 2.8066,
      "key": "the rest",
      "n": 5,
-     "placed": 21,
+     "placed": 22,
      "profit": -0.62,
      "roi": -0.1378,
      "w": 2,
@@ -864,7 +814,7 @@
  "sport": "mma",
  "summary": {
   "flag": 1,
-  "headline": "Fitted terms, params and trust: ml trust: to 0 (0.05 to 0); 12 changelog entries this week; Data holes: fairFrom unknown: missing on 7 of 21 bets this week (33%) against 26% before; fair chances from betonlineag",
+  "headline": "Fitted terms, params and trust: ml trust: to 0 (0.05 to 0); 7 changelog entries this week; Data holes: fairFrom unknown: missing on 7 of 22 bets this week (32%) against 26% before; fair chances from betonlineag",
   "info": 0,
   "ok": 4,
   "partial": 7,
