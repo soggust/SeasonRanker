@@ -4,7 +4,7 @@
   "johnston-bot.bsky.social": "2026-10-25T21:08:24.897Z",
   "notfriedgehnic.bsky.social": "2026-10-26T18:12:20.765Z",
   "dailyfaceoff.bsky.social": "2026-10-27T01:01:37.000Z",
-  "dfotoronto.bsky.social": "2026-10-27T02:11:55.000Z",
+  "dfotoronto.bsky.social": "2026-10-27T02:52:05.000Z",
   "marklazerus.bsky.social": "2026-10-27T00:23:01.820Z"
  },
  "claims": [
@@ -774,6 +774,19 @@
    "kind": "status",
    "confidence": 0.95,
    "text": "Flyers’ Rasmus Ristolainen to miss two weeks with upper-body injury #nhl #nhlhockey #dailyfaceoff"
+  },
+  {
+   "id": "at://did:plc:knaj2vcp4x6t7hr7ewd6e3uz/app.bsky.feed.post/3myta56r2qp2g|kirillmarchenko|out|status",
+   "at": "2026-10-27T02:51:34.000Z",
+   "seen": "2026-10-27T02:57:35.339Z",
+   "handle": "dfotoronto.bsky.social",
+   "post": "at://did:plc:knaj2vcp4x6t7hr7ewd6e3uz/app.bsky.feed.post/3myta56r2qp2g",
+   "player": "Kirill Marchenko",
+   "team": "TOR",
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.95,
+   "text": "Maple Leafs’ Kirill Marchenko ruled out vs. Flames with lower-body injury"
   }
  ]
 }
