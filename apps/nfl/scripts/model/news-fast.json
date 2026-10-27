@@ -5,7 +5,7 @@
   "rapsheet.bsky.social": "2026-10-27T16:37:10.980Z",
   "nflnewsreposterbot.bsky.social": "2026-10-22T13:33:43.592Z",
   "insidenflnews.bsky.social": "2026-10-27T17:53:13.591Z",
-  "nflnewsposter.bsky.social": "2026-10-27T17:41:53.690Z",
+  "nflnewsposter.bsky.social": "2026-10-27T18:40:14.556Z",
   "rotoworld-fb.bsky.social": "2026-10-27T18:09:17.000Z",
   "rotowirenfl.bsky.social": "2026-10-27T18:06:41.000Z"
  },
@@ -7081,6 +7081,19 @@
    "kind": "status",
    "confidence": 0.9,
    "text": "Tyrone Tracy (hamstring) to head to IR"
+  },
+  {
+   "id": "at://did:plc:fuqjc7x4gxvnwzksnlxwbe4x/app.bsky.feed.post/3myuv5joes222|tyronetracy|out|status",
+   "at": "2026-10-27T18:40:14.556Z",
+   "seen": "2026-10-27T18:46:25.606Z",
+   "handle": "nflnewsposter.bsky.social",
+   "post": "at://did:plc:fuqjc7x4gxvnwzksnlxwbe4x/app.bsky.feed.post/3myuv5joes222",
+   "player": "Tyrone Tracy Jr.",
+   "team": "NYG",
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.9,
+   "text": "[Schefter] Giants GM Joe Schoen told reporters that RB Tyrone Tracy Jr. is being placed on injured reserve due to a hamstring injury. twitter.com/adamschefter..."
   }
  ]
 }
