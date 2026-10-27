@@ -9753,6 +9753,18 @@
     "seen": "2026-10-27T01:16:41.474Z",
     "own": "2026-10-27T01:13:00.000Z"
    }
+  },
+  "401909876|alexcaruso|out": {
+   "game": "401909876",
+   "start": "2026-10-27T02:00Z",
+   "team": "7",
+   "name": "Alex Caruso",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-10-27T01:37:33.311Z",
+    "own": "2026-10-27T01:36:31.000Z",
+    "why": "@rotowirenba.bsky.social: Alex Caruso: Won't return vs. Phoenix \n\n https://www.r"
+   }
   }
  }
 }
