@@ -11064,6 +11064,143 @@
     "seen": "2026-10-27T22:01:42.832Z",
     "own": "2026-09-28T21:33:00.000Z"
    }
+  },
+  "401909881|aaronwiggins|q": {
+   "game": "401909881",
+   "start": "2026-10-28T23:00Z",
+   "team": "1",
+   "name": "Aaron Wiggins",
+   "status": "q",
+   "athlete": "4397183",
+   "espn": {
+    "seen": "2026-10-27T22:15:43.067Z",
+    "own": "2026-10-27T21:07:00.000Z"
+   },
+   "bluesky": {
+    "seen": "2026-10-27T21:18:29.038Z",
+    "own": "2026-10-27T21:07:36.000Z",
+    "why": "@rotowirenba.bsky.social: Aaron Wiggins: Questionable for Wednesday \n\n https://w"
+   }
+  },
+  "401909881|mouhamedgueye|out": {
+   "game": "401909881",
+   "start": "2026-10-28T23:00Z",
+   "team": "1",
+   "name": "Mouhamed Gueye",
+   "status": "out",
+   "athlete": "4712863",
+   "espn": {
+    "seen": "2026-10-27T22:15:43.067Z",
+    "own": "2026-10-19T19:38:00.000Z"
+   }
+  },
+  "401909881|henriveesaar|out": {
+   "game": "401909881",
+   "start": "2026-10-28T23:00Z",
+   "team": "1",
+   "name": "Henri Veesaar",
+   "status": "out",
+   "athlete": "5105571",
+   "espn": {
+    "seen": "2026-10-27T22:15:43.067Z",
+    "own": "2026-09-21T19:50:00.000Z"
+   }
+  },
+  "401909881|ruihachimura|out": {
+   "game": "401909881",
+   "start": "2026-10-28T23:00Z",
+   "team": "1",
+   "name": "Rui Hachimura",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-10-27T20:01:19.204Z",
+    "own": "2026-10-27T19:47:50.000Z",
+    "why": "@rotowirenba.bsky.social: Rui Hachimura: Ruled out for Wednesday \n\n https://www."
+   }
+  },
+  "401909881|ajdybantsa|q": {
+   "game": "401909881",
+   "start": "2026-10-28T23:00Z",
+   "team": "1",
+   "name": "AJ Dybantsa",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-10-27T21:03:59.452Z",
+    "own": "2026-10-27T20:48:02.000Z",
+    "why": "@rotowirenba.bsky.social: AJ Dybantsa: Questionable for Wednesday \n\n https://www"
+   }
+  },
+  "401909881|ivicazubac|out": {
+   "game": "401909881",
+   "start": "2026-10-28T23:00Z",
+   "team": "1",
+   "name": "Ivica Zubac",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-10-27T21:18:29.038Z",
+    "own": "2026-10-27T21:13:46.000Z",
+    "why": "@rotowirenba.bsky.social: Ivica Zubac: Won't play Wednesday \n\n https://www.rotow"
+   }
+  },
+  "401909881|andrewnembhard|q": {
+   "game": "401909881",
+   "start": "2026-10-28T23:00Z",
+   "team": "1",
+   "name": "Andrew Nembhard",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-10-27T21:41:24.109Z",
+    "own": "2026-10-27T21:21:56.000Z",
+    "why": "@rotowirenba.bsky.social: Andrew Nembhard: Questionable to face Philadelphia \n\n "
+   }
+  },
+  "401909881|alexcaruso|out": {
+   "game": "401909881",
+   "start": "2026-10-28T23:00Z",
+   "team": "1",
+   "name": "Alex Caruso",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-10-27T21:41:24.109Z",
+    "own": "2026-10-27T21:35:17.000Z",
+    "why": "@rotowirenba.bsky.social: Alex Caruso: Ruled out for Wednesday \n\n https://www.ro"
+   }
+  },
+  "401909881|ajaymitchell|q": {
+   "game": "401909881",
+   "start": "2026-10-28T23:00Z",
+   "team": "1",
+   "name": "Ajay Mitchell",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-10-27T21:41:24.109Z",
+    "own": "2026-10-27T21:35:40.000Z",
+    "why": "@rotowirenba.bsky.social: Ajay Mitchell: Questionable with ankle sprain \n\n https"
+   }
+  },
+  "401909881|pellelarsson|q": {
+   "game": "401909881",
+   "start": "2026-10-28T23:00Z",
+   "team": "14",
+   "name": "Pelle Larsson",
+   "status": "q",
+   "athlete": "4601025",
+   "espn": {
+    "seen": "2026-10-27T22:15:43.067Z",
+    "own": "2026-10-27T20:04:00.000Z"
+   }
+  },
+  "401909881|simonefontecchio|q": {
+   "game": "401909881",
+   "start": "2026-10-28T23:00Z",
+   "team": "14",
+   "name": "Simone Fontecchio",
+   "status": "q",
+   "athlete": "3899664",
+   "espn": {
+    "seen": "2026-10-27T22:15:43.067Z",
+    "own": "2026-10-27T20:03:00.000Z"
+   }
   }
  }
 }
