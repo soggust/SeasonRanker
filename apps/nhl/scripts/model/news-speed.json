@@ -6273,6 +6273,10 @@
    "espn": {
     "seen": "2026-10-26T16:59:36.917Z",
     "own": "2026-10-26T15:19:00.000Z"
+   },
+   "sleeper": {
+    "seen": "2026-10-27T14:57:05.214Z",
+    "own": "2026-10-26T21:20:05.521Z"
    }
   },
   "401892587|quintonbyfield|q": {
@@ -6849,6 +6853,10 @@
    "espn": {
     "seen": "2026-10-26T16:59:36.917Z",
     "own": "2026-10-19T17:14:00.000Z"
+   },
+   "sleeper": {
+    "seen": "2026-10-27T14:57:05.214Z",
+    "own": "2026-10-27T03:35:26.556Z"
    }
   },
   "401892593|williameklund|out": {
@@ -7117,6 +7125,150 @@
    "sleeper": {
     "seen": "2026-10-26T20:16:47.466Z",
     "own": "2026-10-26T18:41:00.354Z"
+   }
+  },
+  "401892596|loganthompson|out": {
+   "game": "401892596",
+   "start": "2026-10-28T23:30Z",
+   "team": "23",
+   "name": "Logan Thompson",
+   "status": "out",
+   "athlete": "4272888",
+   "espn": {
+    "seen": "2026-10-27T15:32:56.107Z",
+    "own": "2026-10-26T16:22:00.000Z"
+   }
+  },
+  "401892596|vincentdesharnais|out": {
+   "game": "401892596",
+   "start": "2026-10-28T23:30Z",
+   "team": "23",
+   "name": "Vincent Desharnais",
+   "status": "out",
+   "athlete": "4392260",
+   "espn": {
+    "seen": "2026-10-27T15:32:56.107Z",
+    "own": "2026-10-23T20:39:00.000Z"
+   }
+  },
+  "401892596|rasmussandin|out": {
+   "game": "401892596",
+   "start": "2026-10-28T23:30Z",
+   "team": "23",
+   "name": "Rasmus Sandin",
+   "status": "out",
+   "athlete": "4352803",
+   "espn": {
+    "seen": "2026-10-27T15:32:56.107Z",
+    "own": "2026-10-12T14:27:00.000Z"
+   }
+  },
+  "401892596|patrickthomas|out": {
+   "game": "401892596",
+   "start": "2026-10-28T23:30Z",
+   "team": "23",
+   "name": "Patrick Thomas",
+   "status": "out",
+   "athlete": "5188548",
+   "espn": {
+    "seen": "2026-10-27T15:32:56.107Z",
+    "own": "2026-09-29T17:07:00.000Z"
+   }
+  },
+  "401892596|rasmusristolainen|out": {
+   "game": "401892596",
+   "start": "2026-10-28T23:30Z",
+   "team": "15",
+   "name": "Rasmus Ristolainen",
+   "status": "out",
+   "athlete": "3041999",
+   "espn": {
+    "seen": "2026-10-27T15:32:56.107Z",
+    "own": "2026-10-27T14:26:00.000Z"
+   }
+  },
+  "401892596|owentippett|out": {
+   "game": "401892596",
+   "start": "2026-10-28T23:30Z",
+   "team": "15",
+   "name": "Owen Tippett",
+   "status": "out",
+   "athlete": "4392072",
+   "espn": {
+    "seen": "2026-10-27T15:32:56.107Z",
+    "own": "2026-10-19T17:54:00.000Z"
+   }
+  },
+  "401892596|traviskonecny|out": {
+   "game": "401892596",
+   "start": "2026-10-28T23:30Z",
+   "team": "15",
+   "name": "Travis Konecny",
+   "status": "out",
+   "athlete": "3900169",
+   "espn": {
+    "seen": "2026-10-27T15:32:56.107Z",
+    "own": "2026-10-11T18:01:00.000Z"
+   }
+  },
+  "401892596|nikitagrebenkin|out": {
+   "game": "401892596",
+   "start": "2026-10-28T23:30Z",
+   "team": "15",
+   "name": "Nikita Grebenkin",
+   "status": "out",
+   "athlete": "5188490",
+   "espn": {
+    "seen": "2026-10-27T15:32:56.107Z",
+    "own": "2026-10-10T16:58:00.000Z"
+   }
+  },
+  "401892598|nicolasroy|q": {
+   "game": "401892598",
+   "start": "2026-10-29T01:00Z",
+   "team": "17",
+   "name": "Nicolas Roy",
+   "status": "q",
+   "athlete": "3943996",
+   "espn": {
+    "seen": "2026-10-27T15:32:56.107Z",
+    "own": "2026-10-26T13:11:00.000Z"
+   }
+  },
+  "401892598|zacharylheureux|out": {
+   "game": "401892598",
+   "start": "2026-10-29T01:00Z",
+   "team": "17",
+   "name": "Zachary L'Heureux",
+   "status": "out",
+   "athlete": "4874744",
+   "espn": {
+    "seen": "2026-10-27T15:32:56.107Z",
+    "own": "2026-10-23T21:39:00.000Z"
+   }
+  },
+  "401892598|connorhellebuyck|out": {
+   "game": "401892598",
+   "start": "2026-10-29T01:00Z",
+   "team": "11",
+   "name": "Connor Hellebuyck",
+   "status": "out",
+   "athlete": "3020225",
+   "espn": {
+    "seen": "2026-10-27T15:32:56.107Z",
+    "own": "2026-10-26T16:36:00.000Z"
+   }
+  },
+  "401892598|seamuscasey|out": {
+   "game": "401892598",
+   "start": "2026-10-29T01:00Z",
+   "team": "11",
+   "name": "Seamus Casey",
+   "status": "out",
+   "athlete": "5080212",
+   "espn": {
+    "seen": "2026-10-27T15:32:56.107Z",
+    "own": "2026-10-02T17:31:00.000Z"
    }
   }
  }

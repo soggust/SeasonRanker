@@ -1,9 +1,9 @@
 {
  "sport": "nba",
  "cursor": {
-  "rotowirenba.bsky.social": "2026-10-27T06:08:34.000Z",
+  "rotowirenba.bsky.social": "2026-10-27T15:31:07.000Z",
   "insidenbanews.bsky.social": "2026-10-27T02:42:04.420Z",
-  "shamsbot.bsky.social": "2026-10-26T22:37:13.000Z"
+  "shamsbot.bsky.social": "2026-10-27T15:27:14.000Z"
  },
  "claims": [
   {
@@ -3398,6 +3398,32 @@
    "kind": "status",
    "confidence": 0.85,
    "text": "Lauri Markkanen: Won't return vs. Memphis \n\n https://www.rotowire.com/basketball/player/lauri-markkanen-4119"
+  },
+  {
+   "id": "at://did:plc:sa73fbx3vxzh2fw5pu5wmief/app.bsky.feed.post/3myukg7rn4d23|kawhileonard|out|status",
+   "at": "2026-10-27T15:27:14.000Z",
+   "seen": "2026-10-27T15:34:14.063Z",
+   "handle": "shamsbot.bsky.social",
+   "post": "at://did:plc:sa73fbx3vxzh2fw5pu5wmief/app.bsky.feed.post/3myukg7rn4d23",
+   "player": "Kawhi Leonard",
+   "team": "TOR",
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.9,
+   "text": "Toronto's Kawhi Leonard is expected to miss a period of weeks due to swelling in his left knee, sources tell ESPN. MRI on Leonard's knee showed no structural damage, but sides will use the shorter ter"
+  },
+  {
+   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3myukleg3zs2z|kawhileonard|out|status",
+   "at": "2026-10-27T15:31:07.000Z",
+   "seen": "2026-10-27T15:34:14.063Z",
+   "handle": "rotowirenba.bsky.social",
+   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3myukleg3zs2z",
+   "player": "Kawhi Leonard",
+   "team": "TOR",
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.9,
+   "text": "Kawhi Leonard: Expected to miss multiple weeks \n\n https://www.rotowire.com/basketball/player/kawhi-leonard-3195"
   }
  ]
 }
