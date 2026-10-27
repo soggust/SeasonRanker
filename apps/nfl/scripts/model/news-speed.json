@@ -10838,6 +10838,18 @@
     "seen": "2026-10-27T20:40:46.557Z",
     "own": "2026-10-27T20:26:00.000Z"
    }
+  },
+  "401873023|tyronetracy|out": {
+   "game": "401873023",
+   "start": "2026-10-30T00:15Z",
+   "team": "9",
+   "name": "Tyrone Tracy",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-10-27T21:03:59.452Z",
+    "own": "2026-10-27T21:00:45.000Z",
+    "why": "@rotowirenfl.bsky.social: Tyrone Tracy: Move to IR official"
+   }
   }
  }
 }

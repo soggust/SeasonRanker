@@ -1,7 +1,7 @@
 {
  "sport": "nba",
  "cursor": {
-  "rotowirenba.bsky.social": "2026-10-27T20:48:02.000Z",
+  "rotowirenba.bsky.social": "2026-10-27T21:17:51.000Z",
   "insidenbanews.bsky.social": "2026-10-27T19:26:50.857Z",
   "shamsbot.bsky.social": "2026-10-27T20:14:48.000Z"
  },
@@ -3554,6 +3554,84 @@
    "kind": "status",
    "confidence": 0.95,
    "text": "AJ Dybantsa: Questionable for Wednesday \n\n https://www.rotowire.com/basketball/player/aj-dybantsa-6925"
+  },
+  {
+   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3myv5ezs5pj27|aaronwiggins|questionable|status",
+   "at": "2026-10-27T21:07:36.000Z",
+   "seen": "2026-10-27T21:18:29.038Z",
+   "handle": "rotowirenba.bsky.social",
+   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3myv5ezs5pj27",
+   "player": "Aaron Wiggins",
+   "team": null,
+   "status": "questionable",
+   "kind": "status",
+   "confidence": 0.9,
+   "text": "Aaron Wiggins: Questionable for Wednesday \n\n https://www.rotowire.com/basketball/player/aaron-wiggins-5412"
+  },
+  {
+   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3myv5gryaoe2r|vjedgecombe|active|status",
+   "at": "2026-10-27T21:08:35.000Z",
+   "seen": "2026-10-27T21:18:29.038Z",
+   "handle": "rotowirenba.bsky.social",
+   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3myv5gryaoe2r",
+   "player": "VJ Edgecombe",
+   "team": null,
+   "status": "active",
+   "kind": "status",
+   "confidence": 0.9,
+   "text": "VJ Edgecombe: Cleared from injury report \n\n https://www.rotowire.com/basketball/player/vj-edgecombe-6550"
+  },
+  {
+   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3myv5lbugis27|joelembiid|active|status",
+   "at": "2026-10-27T21:11:05.000Z",
+   "seen": "2026-10-27T21:18:29.038Z",
+   "handle": "rotowirenba.bsky.social",
+   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3myv5lbugis27",
+   "player": "Joel Embiid",
+   "team": null,
+   "status": "active",
+   "kind": "status",
+   "confidence": 0.7,
+   "text": "Joel Embiid: Absent from injury report \n\n https://www.rotowire.com/basketball/player/joel-embiid-3572"
+  },
+  {
+   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3myv5q2tpbr2q|ivicazubac|out|status",
+   "at": "2026-10-27T21:13:46.000Z",
+   "seen": "2026-10-27T21:18:29.038Z",
+   "handle": "rotowirenba.bsky.social",
+   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3myv5q2tpbr2q",
+   "player": "Ivica Zubac",
+   "team": null,
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.9,
+   "text": "Ivica Zubac: Won't play Wednesday \n\n https://www.rotowire.com/basketball/player/ivica-zubac-3888"
+  },
+  {
+   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3myv5spwhzb2n|aaronnesmith|active|status",
+   "at": "2026-10-27T21:15:15.000Z",
+   "seen": "2026-10-27T21:18:29.038Z",
+   "handle": "rotowirenba.bsky.social",
+   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3myv5spwhzb2n",
+   "player": "Aaron Nesmith",
+   "team": null,
+   "status": "active",
+   "kind": "status",
+   "confidence": 0.6,
+   "text": "Aaron Nesmith: Probable for Wednesday \n\n https://www.rotowire.com/basketball/player/aaron-nesmith-5120"
+  },
+  {
+   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3myv5xejhbc2g|obitoppin|active|status",
+   "at": "2026-10-27T21:17:51.000Z",
+   "seen": "2026-10-27T21:18:29.038Z",
+   "handle": "rotowirenba.bsky.social",
+   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3myv5xejhbc2g",
+   "player": "Obi Toppin",
+   "team": null,
+   "status": "active",
+   "kind": "status",
+   "confidence": 0.6,
+   "text": "Obi Toppin: Probable for Wednesday \n\n https://www.rotowire.com/basketball/player/obi-toppin-5109"
   }
  ]
 }
