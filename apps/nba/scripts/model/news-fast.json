@@ -1,7 +1,7 @@
 {
  "sport": "nba",
  "cursor": {
-  "rotowirenba.bsky.social": "2026-10-27T15:31:07.000Z",
+  "rotowirenba.bsky.social": "2026-10-27T16:58:45.000Z",
   "insidenbanews.bsky.social": "2026-10-27T15:44:20.259Z",
   "shamsbot.bsky.social": "2026-10-27T15:27:14.000Z"
  },
@@ -3437,6 +3437,19 @@
    "kind": "status",
    "confidence": 0.8,
    "text": "⚠️ Shams: Kawhi Leonard expected to miss a period of weeks with swelling in his left knee."
+  },
+  {
+   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3myupi32ndd2n|derrickwhite|active|status",
+   "at": "2026-10-27T16:58:45.000Z",
+   "seen": "2026-10-27T17:01:16.301Z",
+   "handle": "rotowirenba.bsky.social",
+   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3myupi32ndd2n",
+   "player": "Derrick White",
+   "team": "BOS",
+   "status": "active",
+   "kind": "status",
+   "confidence": 0.6,
+   "text": "Derrick White: Probable for Tuesday \n\n https://www.rotowire.com/basketball/player/derrick-white-4195"
   }
  ]
 }
