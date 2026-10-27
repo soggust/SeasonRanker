@@ -81,7 +81,8 @@
   "50290675": "2026-10-26",
   "50292493": "2026-10-27",
   "50294617": "2026-10-27",
-  "50299607": "2026-10-27"
+  "50299607": "2026-10-27",
+  "50299994": "2026-10-27"
  },
  "signals": [
   {
@@ -187,6 +188,21 @@
    "confidence": 0.3,
    "story": "50294617",
    "headline": "Red Wings' Michal Postava a winner in first career NHL start",
+   "model": "claude-haiku-5-5"
+  },
+  {
+   "id": "50299994|16|5291947|return",
+   "day": "2026-10-27",
+   "at": "2026-10-27T19:11:23.000Z",
+   "team": "16",
+   "abbr": "PIT",
+   "athlete": "5291947",
+   "player": "Ben Kindel",
+   "kind": "return",
+   "direction": "up",
+   "confidence": 0.6,
+   "story": "50299994",
+   "headline": "Kindel back at Penguins practice after medical emergency",
    "model": "claude-haiku-5-5"
   }
  ]
