@@ -347,7 +347,8 @@ export const params = (dossier) => ({
   model: MODEL,
   max_tokens: MAX_TOKENS,
   output_config: { effort: EFFORT, format: { type: 'json_schema', schema: schemaFor(dossier) } },
-  system: systemPrompt(dossier),
+  // (cached: every team's or QB's call of a run sends the same system, 2026-10-27; the dossier after it is each one's own)
+  system: [{ type: 'text', text: systemPrompt(dossier), cache_control: { type: 'ephemeral' } }],
   messages: [{ role: 'user', content: `Dossier:\n${JSON.stringify(dossier)}` }],
 });
 
@@ -404,7 +405,7 @@ export function check(report, dossier) {
 
 function costOf(usage, batch) {
   const k = batch ? 0.5 : 1;
-  return (k * ((usage.input_tokens + (usage.cache_creation_input_tokens ?? 0)) * PRICE.input + usage.output_tokens * PRICE.output)) / 1e6;
+  return (k * ((usage.input_tokens + 1.25 * (usage.cache_creation_input_tokens ?? 0) + 0.1 * (usage.cache_read_input_tokens ?? 0)) * PRICE.input + usage.output_tokens * PRICE.output)) / 1e6;
 }
 
 // A report as the site shows it: each evidence with its real value (bad paths dropped), no betting angles

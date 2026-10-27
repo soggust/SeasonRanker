@@ -91,7 +91,9 @@ test('researchChecks with a mock client: each finding with its verdict, kept on 
   assert.deepEqual([...found.keys()], ['a', 'b', 'c']);
   assert.deepEqual([...found.values()].map(verdictOf), ['adjust', 'bet', 'check']);
   assert.equal(found.get('a').athlete, '4241');
-  assert.match(client.asked[0].system, /"explains": true \| false/);
+  assert.match(client.asked[0].system[0].text, /"explains": true \| false/);
+  // (the prompt cached, 2026-10-27: the system's own breakpoint and the top-level marker)
+  assert.deepEqual([client.asked[0].system[0].cache_control, client.asked[0].cache_control], [{ type: 'ephemeral' }, { type: 'ephemeral' }]);
   assert.ok(lines.some((l) => /verdict adjust \(injury, high confidence\)/.test(l)));
   assert.ok(lines.some((l) => /verdict check \(role, low confidence\)/.test(l)));
 });
@@ -226,7 +228,7 @@ test('the research asks with room for the code-run searches: max_uses 5, the sys
   assert.equal(req.tools[0].type, 'web_search_20260209');
   assert.equal(req.tools[0].max_uses, MAX_SEARCHES);
   assert.equal(MAX_SEARCHES, 5);
-  assert.match(req.system, /You have 5 web searches in all, counting each one run from code/);
+  assert.match(req.system[0].text, /You have 5 web searches in all, counting each one run from code/);
   // (the prompt carries the player, the game and its start)
   assert.match(req.messages[0].content, /"player":"Mike Evans"/);
   assert.match(req.messages[0].content, /"game":"TB @ DAL"/);

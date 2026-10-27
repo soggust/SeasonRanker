@@ -237,7 +237,8 @@ export const params = (sport, dossier) => ({
   model: MODEL,
   max_tokens: MAX_TOKENS,
   output_config: { effort: EFFORT, format: { type: 'json_schema', schema: dossier.mode === 'recap' ? RECAP_SCHEMA : PREVIEW_SCHEMA } },
-  system: systemPrompt(sport, dossier.mode),
+  // (cached: every team's call of a sport's run sends the same system, 2026-10-27; the dossier after it is each team's own)
+  system: [{ type: 'text', text: systemPrompt(sport, dossier.mode), cache_control: { type: 'ephemeral' } }],
   messages: [{ role: 'user', content: `Team sheet:\n${JSON.stringify(dossier)}` }],
 });
 

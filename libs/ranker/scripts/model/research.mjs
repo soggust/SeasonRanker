@@ -483,8 +483,12 @@ export async function researchOne(client, c, sport, budget = null, { deadline = 
       betas: ['server-side-fallback-2026-07-01'],
       fallbacks: 'default',
       output_config: { effort: simple ? 'low' : 'medium' },
-      system: simple ? SYSTEM_SIMPLE : SYSTEM,
+      // (the prompt cached (2026-10-27, Anthropic's low cache-hit email): the system on its own breakpoint, shared by every
+      // CHECK of a run; the top-level marker caches the conversation so far, so a paused turn's continuation reads its
+      // searches back at a tenth of the price)
+      system: [{ type: 'text', text: simple ? SYSTEM_SIMPLE : SYSTEM, cache_control: { type: 'ephemeral' } }],
       tools: [{ type: 'web_search_20260209', name: 'web_search', max_uses: simple ? SIMPLE_SEARCHES : MAX_SEARCHES }],
+      cache_control: { type: 'ephemeral' },
       messages,
     }, { timeout, maxRetries: 0 });
   }
