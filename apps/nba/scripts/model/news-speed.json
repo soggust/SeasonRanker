@@ -10538,6 +10538,66 @@
     "seen": "2026-10-27T17:20:42.510Z",
     "own": "2026-10-27T16:58:00.000Z"
    }
+  },
+  "401909877|ruihachimura|out": {
+   "game": "401909877",
+   "start": "2026-10-27T23:30Z",
+   "team": "2",
+   "name": "Rui Hachimura",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-10-27T20:01:19.204Z",
+    "own": "2026-10-27T19:47:50.000Z",
+    "why": "@rotowirenba.bsky.social: Rui Hachimura: Ruled out for Wednesday \n\n https://www."
+   }
+  },
+  "401909878|ruihachimura|out": {
+   "game": "401909878",
+   "start": "2026-10-28T00:00Z",
+   "team": "18",
+   "name": "Rui Hachimura",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-10-27T20:01:19.204Z",
+    "own": "2026-10-27T19:47:50.000Z",
+    "why": "@rotowirenba.bsky.social: Rui Hachimura: Ruled out for Wednesday \n\n https://www."
+   }
+  },
+  "401909879|ruihachimura|out": {
+   "game": "401909879",
+   "start": "2026-10-28T00:00Z",
+   "team": "24",
+   "name": "Rui Hachimura",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-10-27T20:01:19.204Z",
+    "own": "2026-10-27T19:47:50.000Z",
+    "why": "@rotowirenba.bsky.social: Rui Hachimura: Ruled out for Wednesday \n\n https://www."
+   }
+  },
+  "401909880|ruihachimura|out": {
+   "game": "401909880",
+   "start": "2026-10-28T03:00Z",
+   "team": "13",
+   "name": "Rui Hachimura",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-10-27T20:01:19.204Z",
+    "own": "2026-10-27T19:47:50.000Z",
+    "why": "@rotowirenba.bsky.social: Rui Hachimura: Ruled out for Wednesday \n\n https://www."
+   }
+  },
+  "401909884|ruihachimura|out": {
+   "game": "401909884",
+   "start": "2026-10-28T23:00Z",
+   "team": "11",
+   "name": "Rui Hachimura",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-10-27T20:01:19.204Z",
+    "own": "2026-10-27T19:47:50.000Z",
+    "why": "@rotowirenba.bsky.social: Rui Hachimura: Ruled out for Wednesday \n\n https://www."
+   }
   }
  }
 }
