@@ -2,7 +2,7 @@
  "sport": "nba",
  "cursor": {
   "rotowirenba.bsky.social": "2026-10-26T23:40:40.000Z",
-  "insidenbanews.bsky.social": "2026-10-27T00:05:17.309Z",
+  "insidenbanews.bsky.social": "2026-10-27T00:46:59.988Z",
   "shamsbot.bsky.social": "2026-10-26T22:37:13.000Z"
  },
  "claims": [
@@ -3060,6 +3060,136 @@
    "kind": "starting",
    "confidence": 0.9,
    "text": "Lineup alert: Rockets will start VanVleet, Thompson, Durant, Smith Jr., Sengun."
+  },
+  {
+   "id": "at://did:plc:ykcnnf6kqnn3lasmobrczoem/app.bsky.feed.post/3mysyyvf3mc2b|george|none|starting",
+   "at": "2026-10-27T00:43:54.557Z",
+   "seen": "2026-10-27T00:48:07.665Z",
+   "handle": "insidenbanews.bsky.social",
+   "post": "at://did:plc:ykcnnf6kqnn3lasmobrczoem/app.bsky.feed.post/3mysyyvf3mc2b",
+   "player": "George",
+   "team": "UTA",
+   "status": "none",
+   "kind": "starting",
+   "confidence": 0.85,
+   "text": "Lineup alert: Jazz will start George, Peterson, Bailey, Markkanen, Jackson Jr."
+  },
+  {
+   "id": "at://did:plc:ykcnnf6kqnn3lasmobrczoem/app.bsky.feed.post/3mysyyvf3mc2b|peterson|none|starting",
+   "at": "2026-10-27T00:43:54.557Z",
+   "seen": "2026-10-27T00:48:07.665Z",
+   "handle": "insidenbanews.bsky.social",
+   "post": "at://did:plc:ykcnnf6kqnn3lasmobrczoem/app.bsky.feed.post/3mysyyvf3mc2b",
+   "player": "Peterson",
+   "team": "UTA",
+   "status": "none",
+   "kind": "starting",
+   "confidence": 0.85,
+   "text": "Lineup alert: Jazz will start George, Peterson, Bailey, Markkanen, Jackson Jr."
+  },
+  {
+   "id": "at://did:plc:ykcnnf6kqnn3lasmobrczoem/app.bsky.feed.post/3mysyyvf3mc2b|bailey|none|starting",
+   "at": "2026-10-27T00:43:54.557Z",
+   "seen": "2026-10-27T00:48:07.665Z",
+   "handle": "insidenbanews.bsky.social",
+   "post": "at://did:plc:ykcnnf6kqnn3lasmobrczoem/app.bsky.feed.post/3mysyyvf3mc2b",
+   "player": "Bailey",
+   "team": "UTA",
+   "status": "none",
+   "kind": "starting",
+   "confidence": 0.85,
+   "text": "Lineup alert: Jazz will start George, Peterson, Bailey, Markkanen, Jackson Jr."
+  },
+  {
+   "id": "at://did:plc:ykcnnf6kqnn3lasmobrczoem/app.bsky.feed.post/3mysyyvf3mc2b|markkanen|none|starting",
+   "at": "2026-10-27T00:43:54.557Z",
+   "seen": "2026-10-27T00:48:07.665Z",
+   "handle": "insidenbanews.bsky.social",
+   "post": "at://did:plc:ykcnnf6kqnn3lasmobrczoem/app.bsky.feed.post/3mysyyvf3mc2b",
+   "player": "Markkanen",
+   "team": "UTA",
+   "status": "none",
+   "kind": "starting",
+   "confidence": 0.85,
+   "text": "Lineup alert: Jazz will start George, Peterson, Bailey, Markkanen, Jackson Jr."
+  },
+  {
+   "id": "at://did:plc:ykcnnf6kqnn3lasmobrczoem/app.bsky.feed.post/3mysyyvf3mc2b|jackson|none|starting",
+   "at": "2026-10-27T00:43:54.557Z",
+   "seen": "2026-10-27T00:48:07.665Z",
+   "handle": "insidenbanews.bsky.social",
+   "post": "at://did:plc:ykcnnf6kqnn3lasmobrczoem/app.bsky.feed.post/3mysyyvf3mc2b",
+   "player": "Jackson Jr.",
+   "team": "UTA",
+   "status": "none",
+   "kind": "starting",
+   "confidence": 0.85,
+   "text": "Lineup alert: Jazz will start George, Peterson, Bailey, Markkanen, Jackson Jr."
+  },
+  {
+   "id": "at://did:plc:ykcnnf6kqnn3lasmobrczoem/app.bsky.feed.post/3mysyz5zu2k2b|jerome|none|starting",
+   "at": "2026-10-27T00:44:03.627Z",
+   "seen": "2026-10-27T00:48:07.665Z",
+   "handle": "insidenbanews.bsky.social",
+   "post": "at://did:plc:ykcnnf6kqnn3lasmobrczoem/app.bsky.feed.post/3mysyz5zu2k2b",
+   "player": "Jerome",
+   "team": "MEM",
+   "status": "none",
+   "kind": "starting",
+   "confidence": 0.85,
+   "text": "Lineup alert: Grizzlies will start Jerome, Coward, Wells, Boozer, Edey."
+  },
+  {
+   "id": "at://did:plc:ykcnnf6kqnn3lasmobrczoem/app.bsky.feed.post/3mysyz5zu2k2b|coward|none|starting",
+   "at": "2026-10-27T00:44:03.627Z",
+   "seen": "2026-10-27T00:48:07.665Z",
+   "handle": "insidenbanews.bsky.social",
+   "post": "at://did:plc:ykcnnf6kqnn3lasmobrczoem/app.bsky.feed.post/3mysyz5zu2k2b",
+   "player": "Coward",
+   "team": "MEM",
+   "status": "none",
+   "kind": "starting",
+   "confidence": 0.85,
+   "text": "Lineup alert: Grizzlies will start Jerome, Coward, Wells, Boozer, Edey."
+  },
+  {
+   "id": "at://did:plc:ykcnnf6kqnn3lasmobrczoem/app.bsky.feed.post/3mysyz5zu2k2b|wells|none|starting",
+   "at": "2026-10-27T00:44:03.627Z",
+   "seen": "2026-10-27T00:48:07.665Z",
+   "handle": "insidenbanews.bsky.social",
+   "post": "at://did:plc:ykcnnf6kqnn3lasmobrczoem/app.bsky.feed.post/3mysyz5zu2k2b",
+   "player": "Wells",
+   "team": "MEM",
+   "status": "none",
+   "kind": "starting",
+   "confidence": 0.85,
+   "text": "Lineup alert: Grizzlies will start Jerome, Coward, Wells, Boozer, Edey."
+  },
+  {
+   "id": "at://did:plc:ykcnnf6kqnn3lasmobrczoem/app.bsky.feed.post/3mysyz5zu2k2b|boozer|none|starting",
+   "at": "2026-10-27T00:44:03.627Z",
+   "seen": "2026-10-27T00:48:07.665Z",
+   "handle": "insidenbanews.bsky.social",
+   "post": "at://did:plc:ykcnnf6kqnn3lasmobrczoem/app.bsky.feed.post/3mysyz5zu2k2b",
+   "player": "Boozer",
+   "team": "MEM",
+   "status": "none",
+   "kind": "starting",
+   "confidence": 0.85,
+   "text": "Lineup alert: Grizzlies will start Jerome, Coward, Wells, Boozer, Edey."
+  },
+  {
+   "id": "at://did:plc:ykcnnf6kqnn3lasmobrczoem/app.bsky.feed.post/3mysyz5zu2k2b|edey|none|starting",
+   "at": "2026-10-27T00:44:03.627Z",
+   "seen": "2026-10-27T00:48:07.665Z",
+   "handle": "insidenbanews.bsky.social",
+   "post": "at://did:plc:ykcnnf6kqnn3lasmobrczoem/app.bsky.feed.post/3mysyz5zu2k2b",
+   "player": "Edey",
+   "team": "MEM",
+   "status": "none",
+   "kind": "starting",
+   "confidence": 0.85,
+   "text": "Lineup alert: Grizzlies will start Jerome, Coward, Wells, Boozer, Edey."
   }
  ]
 }
