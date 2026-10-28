@@ -2,10 +2,10 @@
  "sport": "nfl",
  "cursor": {
   "adamscheftermirror.bsky.social": "2026-10-28T13:23:35.540Z",
-  "rapsheet.bsky.social": "2026-10-27T20:50:01.935Z",
+  "rapsheet.bsky.social": "2026-10-28T14:02:17.022Z",
   "nflnewsreposterbot.bsky.social": "2026-10-22T13:33:43.592Z",
   "insidenflnews.bsky.social": "2026-10-27T23:58:42.521Z",
-  "nflnewsposter.bsky.social": "2026-10-27T20:45:18.120Z",
+  "nflnewsposter.bsky.social": "2026-10-28T14:02:55.124Z",
   "rotoworld-fb.bsky.social": "2026-10-28T13:01:05.000Z",
   "rotowirenfl.bsky.social": "2026-10-27T21:00:45.000Z"
  },
@@ -7224,6 +7224,19 @@
    "kind": "status",
    "confidence": 0.8,
    "text": "Rap: Seahawks RB Zach Charbonnet (knee) is expected to play in Week 8."
+  },
+  {
+   "id": "at://did:plc:fuqjc7x4gxvnwzksnlxwbe4x/app.bsky.feed.post/3myww4kjxi22w|jaylenwaddle|none|status",
+   "at": "2026-10-28T14:02:55.124Z",
+   "seen": "2026-10-28T14:05:31.064Z",
+   "handle": "nflnewsposter.bsky.social",
+   "post": "at://did:plc:fuqjc7x4gxvnwzksnlxwbe4x/app.bsky.feed.post/3myww4kjxi22w",
+   "player": "Jaylen Waddle",
+   "team": "DEN",
+   "status": "none",
+   "kind": "status",
+   "confidence": 0.5,
+   "text": "[Rapoport] Broncos WR Jaylen Waddle, suffered an aggravation of his previous chest injury on the reverse last week and his status for Sunday vs the Chiefs will be determined at a later time, sources s"
   }
  ]
 }
