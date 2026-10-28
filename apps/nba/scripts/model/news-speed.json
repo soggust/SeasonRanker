@@ -13742,6 +13742,18 @@
     "own": "2026-10-28T21:30:36.000Z",
     "why": "@rotowirenba.bsky.social: Tyrese Haliburton: Out at least two weeks \n\n https://w"
    }
+  },
+  "401909882|trejohnson|out": {
+   "game": "401909882",
+   "start": "2026-10-28T23:00Z",
+   "team": "27",
+   "name": "Tre Johnson",
+   "status": "out",
+   "athlete": "5238230",
+   "espn": {
+    "seen": "2026-10-28T22:42:36.491Z",
+    "own": "2026-10-28T22:28:00.000Z"
+   }
   }
  }
 }
