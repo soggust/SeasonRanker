@@ -11,7 +11,7 @@ import path from 'node:path';
 export function publishDirs({ root, tree, dirs, message, log = console.log, tries = 4 }) {
   const git = (args, cwd = root) => {
     const r = spawnSync('git', args, { cwd, encoding: 'utf8' });
-    return { ok: r.status === 0, out: `${r.stdout ?? ''}${r.stderr ?? ''}`.trim() };
+    return { ok: r.status === 0, out: `${r.stdout ?? ''}${r.stderr ?? ''}${r.error ? ` (${r.error.message})` : ''}${r.status !== 0 && !r.error ? ` (exit ${r.status})` : ''}`.trim() };
   };
   const clean = () => {
     if (existsSync(tree)) git(['worktree', 'remove', '--force', tree]);
