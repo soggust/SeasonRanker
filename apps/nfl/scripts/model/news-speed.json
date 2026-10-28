@@ -7055,6 +7055,11 @@
    "espn": {
     "seen": "2026-10-24T00:08:44.361Z",
     "own": "2026-10-23T22:14:00.000Z"
+   },
+   "bluesky": {
+    "seen": "2026-10-28T18:05:17.264Z",
+    "own": "2026-10-28T17:58:34.794Z",
+    "why": "@adamscheftermirror.bsky.social: Panthers ruled out outside linebacker Jaelan Ph"
    }
   },
   "401873023|monroefreeling|q": {
@@ -11178,6 +11183,30 @@
    "espn": {
     "seen": "2026-10-28T18:02:46.081Z",
     "own": "2026-10-28T18:00:00.000Z"
+   }
+  },
+  "401873023|torricellisimpkins|out": {
+   "game": "401873023",
+   "start": "2026-10-30T00:15Z",
+   "team": "29",
+   "name": "Torricelli Simpkins III",
+   "status": "out",
+   "athlete": "4696902",
+   "espn": {
+    "seen": "2026-10-28T18:15:39.607Z",
+    "own": "2026-10-28T18:01:00.000Z"
+   }
+  },
+  "401873023|damienlewis|out": {
+   "game": "401873023",
+   "start": "2026-10-30T00:15Z",
+   "team": "29",
+   "name": "Damien Lewis",
+   "status": "out",
+   "athlete": "4362647",
+   "espn": {
+    "seen": "2026-10-28T18:15:39.607Z",
+    "own": "2026-10-28T18:01:00.000Z"
    }
   }
  }
