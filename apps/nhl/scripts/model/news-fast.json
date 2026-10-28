@@ -3,7 +3,7 @@
  "cursor": {
   "johnston-bot.bsky.social": "2026-10-25T21:08:24.897Z",
   "notfriedgehnic.bsky.social": "2026-10-28T18:12:23.303Z",
-  "dailyfaceoff.bsky.social": "2026-10-28T19:27:15.000Z",
+  "dailyfaceoff.bsky.social": "2026-10-28T20:48:16.000Z",
   "dfotoronto.bsky.social": "2026-10-28T18:57:51.000Z",
   "marklazerus.bsky.social": "2026-10-28T17:08:09.474Z"
  },
@@ -943,6 +943,19 @@
    "kind": "status",
    "confidence": 0.95,
    "text": "Leafs’ Kirill Marchenko out week-to-week with lower-body injury"
+  },
+  {
+   "id": "at://did:plc:3uus7y6h3rlrk6sbctzxm4bg/app.bsky.feed.post/3myxmrf4d5v2r|kylecapobianco|out|status",
+   "at": "2026-10-28T20:48:16.000Z",
+   "seen": "2026-10-28T21:02:19.956Z",
+   "handle": "dailyfaceoff.bsky.social",
+   "post": "at://did:plc:3uus7y6h3rlrk6sbctzxm4bg/app.bsky.feed.post/3myxmrf4d5v2r",
+   "player": "Kyle Capobianco",
+   "team": "DAL",
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.9,
+   "text": "Stars’ Kyle Capobianco to miss at least a week with lower-body injury"
   }
  ]
 }

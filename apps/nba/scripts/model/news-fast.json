@@ -1,7 +1,7 @@
 {
  "sport": "nba",
  "cursor": {
-  "rotowirenba.bsky.social": "2026-10-28T18:22:27.000Z",
+  "rotowirenba.bsky.social": "2026-10-28T20:06:57.000Z",
   "insidenbanews.bsky.social": "2026-10-28T02:36:23.029Z",
   "shamsbot.bsky.social": "2026-10-28T17:36:13.000Z"
  },
@@ -4399,6 +4399,32 @@
    "kind": "status",
    "confidence": 0.9,
    "text": "Naji Marshall: Downgraded to doubtful \n\n https://www.rotowire.com/basketball/player/naji-marshall-5204"
+  },
+  {
+   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3myxkegsrtl24|lukadoncic|out|status",
+   "at": "2026-10-28T20:05:14.000Z",
+   "seen": "2026-10-28T21:02:19.956Z",
+   "handle": "rotowirenba.bsky.social",
+   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3myxkegsrtl24",
+   "player": "Luka Doncic",
+   "team": "LAL",
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.9,
+   "text": "Luka Doncic: Won't play Wednesday \n\n https://www.rotowire.com/basketball/player/luka-doncic-4396"
+  },
+  {
+   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3myxkhj6hcf2v|ziairewilliams|out|status",
+   "at": "2026-10-28T20:06:57.000Z",
+   "seen": "2026-10-28T21:02:19.956Z",
+   "handle": "rotowirenba.bsky.social",
+   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3myxkhj6hcf2v",
+   "player": "Ziaire Williams",
+   "team": null,
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.95,
+   "text": "Ziaire Williams: Ruled out Wednesday \n\n https://www.rotowire.com/basketball/player/ziaire-williams-5400"
   }
  ]
 }
