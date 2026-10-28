@@ -4,10 +4,10 @@
   "adamscheftermirror.bsky.social": "2026-10-28T18:18:44.903Z",
   "rapsheet.bsky.social": "2026-10-28T14:02:17.022Z",
   "nflnewsreposterbot.bsky.social": "2026-10-22T13:33:43.592Z",
-  "insidenflnews.bsky.social": "2026-10-28T17:16:14.162Z",
-  "nflnewsposter.bsky.social": "2026-10-28T18:25:09.985Z",
-  "rotoworld-fb.bsky.social": "2026-10-28T18:09:53.000Z",
-  "rotowirenfl.bsky.social": "2026-10-28T18:11:25.000Z"
+  "insidenflnews.bsky.social": "2026-10-28T19:01:27.801Z",
+  "nflnewsposter.bsky.social": "2026-10-28T19:07:25.373Z",
+  "rotoworld-fb.bsky.social": "2026-10-28T19:12:19.000Z",
+  "rotowirenfl.bsky.social": "2026-10-28T19:12:18.000Z"
  },
  "claims": [
   {
@@ -7458,6 +7458,123 @@
    "kind": "status",
    "confidence": 0.4,
    "text": "DJ Moore (shoulder) will practice on Wednesday"
+  },
+  {
+   "id": "at://did:plc:mbr4badgf6yu56mquzackzew/app.bsky.feed.post/3myxgsfff6k2u|matthewgolden|questionable|status",
+   "at": "2026-10-28T19:01:27.801Z",
+   "seen": "2026-10-28T19:16:47.402Z",
+   "handle": "insidenflnews.bsky.social",
+   "post": "at://did:plc:mbr4badgf6yu56mquzackzew/app.bsky.feed.post/3myxgsfff6k2u",
+   "player": "Matthew Golden",
+   "team": "GB",
+   "status": "questionable",
+   "kind": "status",
+   "confidence": 0.95,
+   "text": "Packers WR Matthew Golden (shoulder, foot) is listed as questionable for Week 8."
+  },
+  {
+   "id": "at://did:plc:fuqjc7x4gxvnwzksnlxwbe4x/app.bsky.feed.post/3myxgv7tlgs7i|matthewgolden|questionable|status",
+   "at": "2026-10-28T19:03:02.639Z",
+   "seen": "2026-10-28T19:16:47.402Z",
+   "handle": "nflnewsposter.bsky.social",
+   "post": "at://did:plc:fuqjc7x4gxvnwzksnlxwbe4x/app.bsky.feed.post/3myxgv7tlgs7i",
+   "player": "Matthew Golden",
+   "team": "GB",
+   "status": "questionable",
+   "kind": "status",
+   "confidence": 0.95,
+   "text": "[Schefter] Packers are listing WR Matthew Golden (shoulder/foot), DTs Devonte Wyatt (ankle) and Anthony Campbell (ankle), and edge rusher Brenton Cox Jr. (quadricep) as questionable for Thursday night"
+  },
+  {
+   "id": "at://did:plc:fuqjc7x4gxvnwzksnlxwbe4x/app.bsky.feed.post/3myxgv7tlgs7i|devontewyatt|questionable|status",
+   "at": "2026-10-28T19:03:02.639Z",
+   "seen": "2026-10-28T19:16:47.402Z",
+   "handle": "nflnewsposter.bsky.social",
+   "post": "at://did:plc:fuqjc7x4gxvnwzksnlxwbe4x/app.bsky.feed.post/3myxgv7tlgs7i",
+   "player": "Devonte Wyatt",
+   "team": "GB",
+   "status": "questionable",
+   "kind": "status",
+   "confidence": 0.95,
+   "text": "[Schefter] Packers are listing WR Matthew Golden (shoulder/foot), DTs Devonte Wyatt (ankle) and Anthony Campbell (ankle), and edge rusher Brenton Cox Jr. (quadricep) as questionable for Thursday night"
+  },
+  {
+   "id": "at://did:plc:fuqjc7x4gxvnwzksnlxwbe4x/app.bsky.feed.post/3myxgv7tlgs7i|anthonycampbell|questionable|status",
+   "at": "2026-10-28T19:03:02.639Z",
+   "seen": "2026-10-28T19:16:47.402Z",
+   "handle": "nflnewsposter.bsky.social",
+   "post": "at://did:plc:fuqjc7x4gxvnwzksnlxwbe4x/app.bsky.feed.post/3myxgv7tlgs7i",
+   "player": "Anthony Campbell",
+   "team": "GB",
+   "status": "questionable",
+   "kind": "status",
+   "confidence": 0.95,
+   "text": "[Schefter] Packers are listing WR Matthew Golden (shoulder/foot), DTs Devonte Wyatt (ankle) and Anthony Campbell (ankle), and edge rusher Brenton Cox Jr. (quadricep) as questionable for Thursday night"
+  },
+  {
+   "id": "at://did:plc:fuqjc7x4gxvnwzksnlxwbe4x/app.bsky.feed.post/3myxgv7tlgs7i|brentoncox|questionable|status",
+   "at": "2026-10-28T19:03:02.639Z",
+   "seen": "2026-10-28T19:16:47.402Z",
+   "handle": "nflnewsposter.bsky.social",
+   "post": "at://did:plc:fuqjc7x4gxvnwzksnlxwbe4x/app.bsky.feed.post/3myxgv7tlgs7i",
+   "player": "Brenton Cox Jr.",
+   "team": "GB",
+   "status": "questionable",
+   "kind": "status",
+   "confidence": 0.95,
+   "text": "[Schefter] Packers are listing WR Matthew Golden (shoulder/foot), DTs Devonte Wyatt (ankle) and Anthony Campbell (ankle), and edge rusher Brenton Cox Jr. (quadricep) as questionable for Thursday night"
+  },
+  {
+   "id": "at://did:plc:fuqjc7x4gxvnwzksnlxwbe4x/app.bsky.feed.post/3myxgyxpqbk7i|vegaioane|out|status",
+   "at": "2026-10-28T19:05:08.342Z",
+   "seen": "2026-10-28T19:16:47.402Z",
+   "handle": "nflnewsposter.bsky.social",
+   "post": "at://did:plc:fuqjc7x4gxvnwzksnlxwbe4x/app.bsky.feed.post/3myxgyxpqbk7i",
+   "player": "Vega Ioane",
+   "team": "MIN",
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.4,
+   "text": "[Zrebiec] Minter not quite ready to rule out Vega Ioane for any length of time, but he said it’s an open completion right now as to who would replace him at RG for Sunday. twitter.com/jeffzrebiec/..."
+  },
+  {
+   "id": "at://did:plc:fuqjc7x4gxvnwzksnlxwbe4x/app.bsky.feed.post/3myxh52flmc7i|matthewgolden|limited|status",
+   "at": "2026-10-28T19:07:25.373Z",
+   "seen": "2026-10-28T19:16:47.402Z",
+   "handle": "nflnewsposter.bsky.social",
+   "post": "at://did:plc:fuqjc7x4gxvnwzksnlxwbe4x/app.bsky.feed.post/3myxh52flmc7i",
+   "player": "Matthew Golden",
+   "team": "GB",
+   "status": "limited",
+   "kind": "status",
+   "confidence": 0.7,
+   "text": "[Demovsky] The full report shows Matthew Golden went from estimated DNP to limited, which is a good indicator that he’s trending towards playing. twitter.com/RobDemovsky/..."
+  },
+  {
+   "id": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3myxhfrnggg25|matthewgolden|questionable|status",
+   "at": "2026-10-28T19:12:18.000Z",
+   "seen": "2026-10-28T19:16:47.402Z",
+   "handle": "rotowirenfl.bsky.social",
+   "post": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3myxhfrnggg25",
+   "player": "Matthew Golden",
+   "team": "GB",
+   "status": "questionable",
+   "kind": "status",
+   "confidence": 0.95,
+   "text": "Matthew Golden: Questionable for Thursday \n\n https://www.rotowire.com/football/player/matthew-golden-18500"
+  },
+  {
+   "id": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3myxhfsyh6f2b|matthewgolden|questionable|status",
+   "at": "2026-10-28T19:12:19.000Z",
+   "seen": "2026-10-28T19:16:47.402Z",
+   "handle": "rotoworld-fb.bsky.social",
+   "post": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3myxhfsyh6f2b",
+   "player": "Matthew Golden",
+   "team": "GB",
+   "status": "questionable",
+   "kind": "status",
+   "confidence": 0.95,
+   "text": "GB lists Golden (shoulder/foot) as questionable"
   }
  ]
 }
