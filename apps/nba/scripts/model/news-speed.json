@@ -13754,6 +13754,66 @@
     "seen": "2026-10-28T22:42:36.491Z",
     "own": "2026-10-28T22:28:00.000Z"
    }
+  },
+  "401909888|guisantos|out": {
+   "game": "401909888",
+   "start": "2026-10-29T00:00Z",
+   "team": "9",
+   "name": "Gui Santos",
+   "status": "out",
+   "athlete": "4997536",
+   "espn": {
+    "seen": "2026-10-28T23:05:44.566Z",
+    "own": "2026-10-28T22:58:00.000Z"
+   }
+  },
+  "401909895|chrisyoungblood|out": {
+   "game": "401909895",
+   "start": "2026-10-30T02:00Z",
+   "team": "22",
+   "name": "Chris Youngblood",
+   "status": "out",
+   "athlete": "4706557",
+   "espn": {
+    "seen": "2026-10-28T23:05:44.566Z",
+    "own": "2026-10-27T04:58:00.000Z"
+   }
+  },
+  "401909895|shaedonsharpe|out": {
+   "game": "401909895",
+   "start": "2026-10-30T02:00Z",
+   "team": "22",
+   "name": "Shaedon Sharpe",
+   "status": "out",
+   "athlete": "4914336",
+   "espn": {
+    "seen": "2026-10-28T23:05:44.566Z",
+    "own": "2026-08-24T20:23:00.000Z"
+   }
+  },
+  "401909895|ziairewilliams|out": {
+   "game": "401909895",
+   "start": "2026-10-30T02:00Z",
+   "team": "22",
+   "name": "Ziaire Williams",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-10-28T21:02:19.956Z",
+    "own": "2026-10-28T20:06:57.000Z",
+    "why": "@rotowirenba.bsky.social: Ziaire Williams: Ruled out Wednesday \n\n https://www.ro"
+   }
+  },
+  "401909895|tyresehaliburton|out": {
+   "game": "401909895",
+   "start": "2026-10-30T02:00Z",
+   "team": "22",
+   "name": "Tyrese Haliburton",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-10-28T22:14:49.243Z",
+    "own": "2026-10-28T21:30:36.000Z",
+    "why": "@rotowirenba.bsky.social: Tyrese Haliburton: Out at least two weeks \n\n https://w"
+   }
   }
  }
 }
