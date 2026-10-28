@@ -3,6 +3,17 @@
  "days": 2,
  "signals": [
   {
+   "team": "14",
+   "abbr": "LAR",
+   "athlete": null,
+   "player": null,
+   "kind": "role",
+   "direction": "none",
+   "confidence": 0.3,
+   "headline": "With Davante Adams out, Rams leaning on the run game",
+   "at": "2026-10-28T16:00:01.000Z"
+  },
+  {
    "team": "9",
    "abbr": "GB",
    "athlete": "4361423",
@@ -80,5 +91,5 @@
    "at": "2026-10-26T20:40:25.000Z"
   }
  ],
- "at": "2026-10-28T04:53:26.619Z"
+ "at": "2026-10-28T16:18:27.479Z"
 }
