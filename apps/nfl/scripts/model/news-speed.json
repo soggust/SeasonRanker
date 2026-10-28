@@ -8490,6 +8490,11 @@
    "espn": {
     "seen": "2026-10-26T22:34:30.334Z",
     "own": "2026-10-26T21:52:00.000Z"
+   },
+   "bluesky": {
+    "seen": "2026-10-28T19:16:47.402Z",
+    "own": "2026-10-28T19:03:02.639Z",
+    "why": "@nflnewsposter.bsky.social: [Schefter] Packers are listing WR Matthew Golden (sh"
    }
   },
   "401873023|matthewgolden|q": {
@@ -8627,6 +8632,11 @@
    "espn": {
     "seen": "2026-10-26T23:48:13.449Z",
     "own": "2026-10-26T23:14:00.000Z"
+   },
+   "bluesky": {
+    "seen": "2026-10-28T19:16:47.402Z",
+    "own": "2026-10-28T19:03:02.639Z",
+    "why": "@nflnewsposter.bsky.social: [Schefter] Packers are listing WR Matthew Golden (sh"
    }
   },
   "401873026|cjgardnerjohnson|out": {
@@ -10847,6 +10857,11 @@
    "espn": {
     "seen": "2026-10-27T20:40:46.557Z",
     "own": "2026-10-27T20:26:00.000Z"
+   },
+   "bluesky": {
+    "seen": "2026-10-28T19:16:47.402Z",
+    "own": "2026-10-28T19:03:02.639Z",
+    "why": "@nflnewsposter.bsky.social: [Schefter] Packers are listing WR Matthew Golden (sh"
    }
   },
   "401873023|tyronetracy|out": {
@@ -11219,6 +11234,30 @@
    "espn": {
     "seen": "2026-10-28T19:15:04.357Z",
     "own": "2026-10-28T01:09:00.000Z"
+   }
+  },
+  "401873023|travisglover|out": {
+   "game": "401873023",
+   "start": "2026-10-30T00:15Z",
+   "team": "9",
+   "name": "Travis Glover",
+   "status": "out",
+   "athlete": "4361904",
+   "espn": {
+    "seen": "2026-10-28T19:26:31.303Z",
+    "own": "2026-10-28T19:04:00.000Z"
+   }
+  },
+  "401873032|derwinjames|out": {
+   "game": "401873032",
+   "start": "2026-11-01T21:05Z",
+   "team": "24",
+   "name": "Derwin James Jr.",
+   "status": "out",
+   "athlete": "3691739",
+   "espn": {
+    "seen": "2026-10-28T19:26:31.303Z",
+    "own": "2026-10-28T19:10:00.000Z"
    }
   }
  }
