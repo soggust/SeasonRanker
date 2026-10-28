@@ -3,7 +3,7 @@
  "cursor": {
   "johnston-bot.bsky.social": "2026-10-25T21:08:24.897Z",
   "notfriedgehnic.bsky.social": "2026-10-28T15:58:10.802Z",
-  "dailyfaceoff.bsky.social": "2026-10-28T16:19:26.000Z",
+  "dailyfaceoff.bsky.social": "2026-10-28T16:51:07.000Z",
   "dfotoronto.bsky.social": "2026-10-28T16:00:46.000Z",
   "marklazerus.bsky.social": "2026-10-28T15:33:31.388Z"
  },
@@ -904,6 +904,19 @@
    "kind": "starting",
    "confidence": 0.9,
    "text": "NJ coach Sheldon Keefe says Connor Hellebuyck starts tonight in Dallas"
+  },
+  {
+   "id": "at://did:plc:3uus7y6h3rlrk6sbctzxm4bg/app.bsky.feed.post/3myx7jdqne22k|zachhyman|out|status",
+   "at": "2026-10-28T16:51:07.000Z",
+   "seen": "2026-10-28T16:59:29.812Z",
+   "handle": "dailyfaceoff.bsky.social",
+   "post": "at://did:plc:3uus7y6h3rlrk6sbctzxm4bg/app.bsky.feed.post/3myx7jdqne22k",
+   "player": "Zach Hyman",
+   "team": "EDM",
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.95,
+   "text": "Oilers place Zach Hyman on injured reserve"
   }
  ]
 }

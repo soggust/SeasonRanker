@@ -1,13 +1,13 @@
 {
  "sport": "nfl",
  "cursor": {
-  "adamscheftermirror.bsky.social": "2026-10-28T16:28:42.211Z",
+  "adamscheftermirror.bsky.social": "2026-10-28T16:58:42.852Z",
   "rapsheet.bsky.social": "2026-10-28T14:02:17.022Z",
   "nflnewsreposterbot.bsky.social": "2026-10-22T13:33:43.592Z",
-  "insidenflnews.bsky.social": "2026-10-28T16:00:05.330Z",
-  "nflnewsposter.bsky.social": "2026-10-28T16:22:15.723Z",
-  "rotoworld-fb.bsky.social": "2026-10-28T16:35:34.000Z",
-  "rotowirenfl.bsky.social": "2026-10-28T16:35:22.000Z"
+  "insidenflnews.bsky.social": "2026-10-28T16:53:37.346Z",
+  "nflnewsposter.bsky.social": "2026-10-28T16:50:38.689Z",
+  "rotoworld-fb.bsky.social": "2026-10-28T16:53:35.000Z",
+  "rotowirenfl.bsky.social": "2026-10-28T16:53:46.000Z"
  },
  "claims": [
   {
@@ -7263,6 +7263,45 @@
    "kind": "status",
    "confidence": 0.6,
    "text": "Carnell Tate (shoulder) misses practice"
+  },
+  {
+   "id": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3myx6sqlrle2e|braelonallen|limited|status",
+   "at": "2026-10-28T16:38:29.000Z",
+   "seen": "2026-10-28T16:59:29.812Z",
+   "handle": "rotowirenfl.bsky.social",
+   "post": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3myx6sqlrle2e",
+   "player": "Braelon Allen",
+   "team": "NYJ",
+   "status": "limited",
+   "kind": "status",
+   "confidence": 0.75,
+   "text": "Braelon Allen: Managing ankle injury in Week 8 \n\n https://www.rotowire.com/football/player/braelon-allen-17702"
+  },
+  {
+   "id": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3myx7435uz32v|terrymclaurin|out|status",
+   "at": "2026-10-28T16:43:42.000Z",
+   "seen": "2026-10-28T16:59:29.812Z",
+   "handle": "rotowirenfl.bsky.social",
+   "post": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3myx7435uz32v",
+   "player": "Terry McLaurin",
+   "team": "WSH",
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.95,
+   "text": "Terry McLaurin: Heads to IR \n\n https://www.rotowire.com/football/player/terry-mclaurin-13536"
+  },
+  {
+   "id": "at://did:plc:mbr4badgf6yu56mquzackzew/app.bsky.feed.post/3myx7nsbmjc2w|stefondiggs|active|status",
+   "at": "2026-10-28T16:53:37.346Z",
+   "seen": "2026-10-28T16:59:29.812Z",
+   "handle": "insidenflnews.bsky.social",
+   "post": "at://did:plc:mbr4badgf6yu56mquzackzew/app.bsky.feed.post/3myx7nsbmjc2w",
+   "player": "Stefon Diggs",
+   "team": null,
+   "status": "active",
+   "kind": "status",
+   "confidence": 0.6,
+   "text": "Stefon Diggs won't practice Wednesday for an undisclosed reason but will be full participant in practice on Thursday."
   }
  ]
 }

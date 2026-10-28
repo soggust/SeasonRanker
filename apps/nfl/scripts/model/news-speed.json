@@ -11071,6 +11071,54 @@
     "seen": "2026-10-28T16:35:38.905Z",
     "own": "2026-10-28T16:16:00.000Z"
    }
+  },
+  "401873023|breecehall|q": {
+   "game": "401873023",
+   "start": "2026-10-30T00:15Z",
+   "team": "9",
+   "name": "Breece Hall",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-10-28T16:38:13.107Z",
+    "own": "2026-10-28T16:35:22.000Z",
+    "why": "@rotowirenfl.bsky.social: Breece Hall: Beginning week with limited practice \n\n h"
+   }
+  },
+  "401873023|carnelltate|out": {
+   "game": "401873023",
+   "start": "2026-10-30T00:15Z",
+   "team": "9",
+   "name": "Carnell Tate",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-10-28T16:38:13.107Z",
+    "own": "2026-10-28T16:35:34.000Z",
+    "why": "@rotoworld-fb.bsky.social: Carnell Tate (shoulder) misses practice"
+   }
+  },
+  "401873029|braelonallen|q": {
+   "game": "401873029",
+   "start": "2026-11-01T18:00Z",
+   "team": "20",
+   "name": "Braelon Allen",
+   "status": "q",
+   "athlete": "4685247",
+   "espn": {
+    "seen": "2026-10-28T16:56:40.691Z",
+    "own": "2026-10-28T16:38:00.000Z"
+   }
+  },
+  "401873029|tvondresweat|out": {
+   "game": "401873029",
+   "start": "2026-11-01T18:00Z",
+   "team": "20",
+   "name": "T'Vondre Sweat",
+   "status": "out",
+   "athlete": "4428617",
+   "espn": {
+    "seen": "2026-10-28T16:56:40.691Z",
+    "own": "2026-10-28T16:22:00.000Z"
+   }
   }
  }
 }

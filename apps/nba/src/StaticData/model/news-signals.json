@@ -1,6 +1,18 @@
 {
  "sport": "nba",
  "days": 2,
- "signals": [],
- "at": "2026-10-28T05:54:04.280Z"
+ "signals": [
+  {
+   "team": "27",
+   "abbr": "WSH",
+   "athlete": "5142718",
+   "player": "AJ Dybantsa",
+   "kind": "return",
+   "direction": "up",
+   "confidence": 0.9,
+   "headline": "Wizards upgrade No. 1 pick AJ Dybantsa to available vs. Cavaliers",
+   "at": "2026-10-28T16:49:20.000Z"
+  }
+ ],
+ "at": "2026-10-28T16:59:29.812Z"
 }

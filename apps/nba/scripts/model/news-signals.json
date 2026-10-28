@@ -151,7 +151,9 @@
   "50303702": "2026-10-28",
   "50305071": "2026-10-28",
   "50306196": "2026-10-28",
-  "50307850": "2026-10-28"
+  "50307850": "2026-10-28",
+  "50309151": "2026-10-28",
+  "50309216": "2026-10-28"
  },
  "signals": [
   {
@@ -407,6 +409,21 @@
    "confidence": 0.3,
    "story": "50272945",
    "headline": "Joel Embiid posts triple-double as LeBron-less Sixers stay unbeaten",
+   "model": "claude-haiku-5-5"
+  },
+  {
+   "id": "50309151|27|5142718|return",
+   "day": "2026-10-28",
+   "at": "2026-10-28T16:49:20.000Z",
+   "team": "27",
+   "abbr": "WSH",
+   "athlete": "5142718",
+   "player": "AJ Dybantsa",
+   "kind": "return",
+   "direction": "up",
+   "confidence": 0.9,
+   "story": "50309151",
+   "headline": "Wizards upgrade No. 1 pick AJ Dybantsa to available vs. Cavaliers",
    "model": "claude-haiku-5-5"
   }
  ]
