@@ -1,7 +1,7 @@
 {
  "sport": "nba",
  "cursor": {
-  "rotowirenba.bsky.social": "2026-10-28T17:40:16.000Z",
+  "rotowirenba.bsky.social": "2026-10-28T18:22:27.000Z",
   "insidenbanews.bsky.social": "2026-10-28T02:36:23.029Z",
   "shamsbot.bsky.social": "2026-10-28T17:36:13.000Z"
  },
@@ -4373,6 +4373,32 @@
    "kind": "status",
    "confidence": 0.55,
    "text": "Tyrese Haliburton: To miss time with hamstring issue \n\n https://www.rotowire.com/basketball/player/tyrese-haliburton-5114"
+  },
+  {
+   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3myxdpndi4d2n|alexcaruso|out|status",
+   "at": "2026-10-28T18:06:14.000Z",
+   "seen": "2026-10-28T18:28:34.313Z",
+   "handle": "rotowirenba.bsky.social",
+   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3myxdpndi4d2n",
+   "player": "Alex Caruso",
+   "team": null,
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.6,
+   "text": "Alex Caruso: Return timeline uncertain \n\n https://www.rotowire.com/basketball/player/alex-caruso-3952"
+  },
+  {
+   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3myxemnrrpq2z|najimarshall|doubtful|status",
+   "at": "2026-10-28T18:22:27.000Z",
+   "seen": "2026-10-28T18:28:34.313Z",
+   "handle": "rotowirenba.bsky.social",
+   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3myxemnrrpq2z",
+   "player": "Naji Marshall",
+   "team": null,
+   "status": "doubtful",
+   "kind": "status",
+   "confidence": 0.9,
+   "text": "Naji Marshall: Downgraded to doubtful \n\n https://www.rotowire.com/basketball/player/naji-marshall-5204"
   }
  ]
 }
