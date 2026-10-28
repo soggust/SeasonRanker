@@ -8709,6 +8709,11 @@
    "espn": {
     "seen": "2026-10-28T16:08:36.021Z",
     "own": "2026-10-28T16:04:00.000Z"
+   },
+   "bluesky": {
+    "seen": "2026-10-28T16:59:29.812Z",
+    "own": "2026-10-28T16:51:07.000Z",
+    "why": "@dailyfaceoff.bsky.social: Oilers place Zach Hyman on injured reserve"
    }
   },
   "401892600|albertjohansson|out": {
@@ -8733,6 +8738,30 @@
    "espn": {
     "seen": "2026-10-28T16:57:51.600Z",
     "own": "2026-10-28T16:40:00.000Z"
+   }
+  },
+  "401892601|brandonhagel|q": {
+   "game": "401892601",
+   "start": "2026-10-29T23:00Z",
+   "team": "20",
+   "name": "Brandon Hagel",
+   "status": "q",
+   "athlete": "4065019",
+   "espn": {
+    "seen": "2026-10-28T18:18:36.380Z",
+    "own": "2026-10-28T18:02:00.000Z"
+   }
+  },
+  "401892601|zemgusgirgensons|out": {
+   "game": "401892601",
+   "start": "2026-10-29T23:00Z",
+   "team": "20",
+   "name": "Zemgus Girgensons",
+   "status": "out",
+   "athlete": "2968829",
+   "espn": {
+    "seen": "2026-10-28T18:18:36.380Z",
+    "own": "2026-10-28T18:01:00.000Z"
    }
   }
  }
