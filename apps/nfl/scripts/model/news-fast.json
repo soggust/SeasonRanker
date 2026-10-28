@@ -1,13 +1,13 @@
 {
  "sport": "nfl",
  "cursor": {
-  "adamscheftermirror.bsky.social": "2026-10-28T17:13:35.879Z",
+  "adamscheftermirror.bsky.social": "2026-10-28T17:58:36.006Z",
   "rapsheet.bsky.social": "2026-10-28T14:02:17.022Z",
   "nflnewsreposterbot.bsky.social": "2026-10-22T13:33:43.592Z",
   "insidenflnews.bsky.social": "2026-10-28T17:16:14.162Z",
   "nflnewsposter.bsky.social": "2026-10-28T17:11:47.155Z",
   "rotoworld-fb.bsky.social": "2026-10-28T17:07:33.000Z",
-  "rotowirenfl.bsky.social": "2026-10-28T17:38:28.000Z"
+  "rotowirenfl.bsky.social": "2026-10-28T17:57:36.000Z"
  },
  "claims": [
   {
@@ -7432,6 +7432,19 @@
    "kind": "return",
    "confidence": 0.8,
    "text": "Rashee Rice: Returning to practice Wednesday \n\n https://www.rotowire.com/football/player/rashee-rice-16963"
+  },
+  {
+   "id": "at://did:plc:qre6zxbmr3ixhdmgsgdretb5/app.bsky.feed.post/3myxdbx72zu2l|jaelanphillips|out|status",
+   "at": "2026-10-28T17:58:34.794Z",
+   "seen": "2026-10-28T18:05:17.264Z",
+   "handle": "adamscheftermirror.bsky.social",
+   "post": "at://did:plc:qre6zxbmr3ixhdmgsgdretb5/app.bsky.feed.post/3myxdbx72zu2l",
+   "player": "Jaelan Phillips",
+   "team": "CAR",
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.95,
+   "text": "Panthers ruled out outside linebacker Jaelan Phillips (hamstring) for Thursday night’s game in Green Bay against the Packers.\n\nOriginal post"
   }
  ]
 }
