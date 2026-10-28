@@ -408,7 +408,8 @@
   "50308923": "2026-10-28",
   "50309159": "2026-10-28",
   "50309777": "2026-10-28",
-  "50309816": "2026-10-28"
+  "50309816": "2026-10-28",
+  "50310259": "2026-10-28"
  },
  "signals": [
   {
@@ -1714,6 +1715,21 @@
    "confidence": 0.3,
    "story": "50299981",
    "headline": "With Davante Adams out, Rams leaning on the run game",
+   "model": "claude-haiku-5-5"
+  },
+  {
+   "id": "50310259|24|mikemcdaniel|coaching",
+   "day": "2026-10-28",
+   "at": "2026-10-28T19:38:59.000Z",
+   "team": "24",
+   "abbr": "LAC",
+   "athlete": null,
+   "player": "Mike McDaniel",
+   "kind": "coaching",
+   "direction": "none",
+   "confidence": 0.9,
+   "story": "50310259",
+   "headline": "Winless Chargers sticking with Mike McDaniel as offensive playcaller",
    "model": "claude-haiku-5-5"
   }
  ]

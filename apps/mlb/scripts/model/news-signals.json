@@ -141,7 +141,8 @@
   "50304654": "2026-10-28",
   "50304811": "2026-10-28",
   "50305256": "2026-10-28",
-  "50309960": "2026-10-28"
+  "50309960": "2026-10-28",
+  "50310280": "2026-10-28"
  },
  "signals": [
   {
@@ -442,6 +443,21 @@
    "confidence": 0.9,
    "story": "50300459",
    "headline": "Brewers to start Dustin May in possible World Series clincher",
+   "model": "claude-haiku-5-5"
+  },
+  {
+   "id": "50310280|30|42584|starting",
+   "day": "2026-10-28",
+   "at": "2026-10-28T19:48:22.000Z",
+   "team": "30",
+   "abbr": "TB",
+   "athlete": "42584",
+   "player": "Drew Rasmussen",
+   "kind": "starting",
+   "direction": "up",
+   "confidence": 0.9,
+   "story": "50310280",
+   "headline": "Rays ace Drew Rasmussen to start World Series Game 5 on short rest",
    "model": "claude-haiku-5-5"
   }
  ]
