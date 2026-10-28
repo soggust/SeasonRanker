@@ -1,13 +1,13 @@
 {
  "sport": "nfl",
  "cursor": {
-  "adamscheftermirror.bsky.social": "2026-10-28T21:18:35.670Z",
+  "adamscheftermirror.bsky.social": "2026-10-28T22:03:35.702Z",
   "rapsheet.bsky.social": "2026-10-28T14:02:17.022Z",
   "nflnewsreposterbot.bsky.social": "2026-10-22T13:33:43.592Z",
   "insidenflnews.bsky.social": "2026-10-28T19:54:31.103Z",
-  "nflnewsposter.bsky.social": "2026-10-28T21:10:45.219Z",
-  "rotoworld-fb.bsky.social": "2026-10-28T21:17:06.000Z",
-  "rotowirenfl.bsky.social": "2026-10-28T21:17:26.000Z"
+  "nflnewsposter.bsky.social": "2026-10-28T21:53:47.440Z",
+  "rotoworld-fb.bsky.social": "2026-10-28T22:01:07.000Z",
+  "rotowirenfl.bsky.social": "2026-10-28T22:02:20.000Z"
  },
  "claims": [
   {
@@ -8017,6 +8017,162 @@
    "kind": "status",
    "confidence": 0.9,
    "text": "Eagles have placed RB Dameon Pierce on injured reserve and signed RB Jaydon Blue to their active roster.\n\nOriginal post"
+  },
+  {
+   "id": "at://did:plc:fuqjc7x4gxvnwzksnlxwbe4x/app.bsky.feed.post/3myxosmjmcsgv|lamarjackson|active|status",
+   "at": "2026-10-28T21:24:45.215Z",
+   "seen": "2026-10-28T22:14:49.243Z",
+   "handle": "nflnewsposter.bsky.social",
+   "post": "at://did:plc:fuqjc7x4gxvnwzksnlxwbe4x/app.bsky.feed.post/3myxosmjmcsgv",
+   "player": "Lamar Jackson",
+   "team": "BAL",
+   "status": "active",
+   "kind": "status",
+   "confidence": 0.8,
+   "text": "[Schefter] Ravens listed QB Lamar Jackson as a full participant in today’s practice. twitter.com/AdamSchefter..."
+  },
+  {
+   "id": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3myxoupi2hh2z|dameonpierce|out|status",
+   "at": "2026-10-28T21:25:55.000Z",
+   "seen": "2026-10-28T22:14:49.243Z",
+   "handle": "rotoworld-fb.bsky.social",
+   "post": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3myxoupi2hh2z",
+   "player": "Dameon Pierce",
+   "team": "PHI",
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.9,
+   "text": "Eagles place Dameon Pierce on injured reserve"
+  },
+  {
+   "id": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3myxouqo7r22d|lamarjackson|active|status",
+   "at": "2026-10-28T21:25:56.000Z",
+   "seen": "2026-10-28T22:14:49.243Z",
+   "handle": "rotoworld-fb.bsky.social",
+   "post": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3myxouqo7r22d",
+   "player": "Lamar Jackson",
+   "team": "BAL",
+   "status": "active",
+   "kind": "status",
+   "confidence": 0.8,
+   "text": "Lamar Jackson (ankle) logs full practice Wednesday"
+  },
+  {
+   "id": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3myxoz5zd6c2b|brockbowers|limited|status",
+   "at": "2026-10-28T21:28:24.000Z",
+   "seen": "2026-10-28T22:14:49.243Z",
+   "handle": "rotowirenfl.bsky.social",
+   "post": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3myxoz5zd6c2b",
+   "player": "Brock Bowers",
+   "team": "LV",
+   "status": "limited",
+   "kind": "status",
+   "confidence": 0.85,
+   "text": "Brock Bowers: Limited by calf issue \n\n https://www.rotowire.com/football/player/brock-bowers-17693"
+  },
+  {
+   "id": "at://did:plc:qre6zxbmr3ixhdmgsgdretb5/app.bsky.feed.post/3myxpcggdo32n|jaylinnoel|out|status",
+   "at": "2026-10-28T21:33:35.594Z",
+   "seen": "2026-10-28T22:14:49.243Z",
+   "handle": "adamscheftermirror.bsky.social",
+   "post": "at://did:plc:qre6zxbmr3ixhdmgsgdretb5/app.bsky.feed.post/3myxpcggdo32n",
+   "player": "Jaylin Noel",
+   "team": "HOU",
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.9,
+   "text": "In a corresponding move, the Texans placed WR Jaylin Noel on injured reserve due to a toe injury.\n\nOriginal post"
+  },
+  {
+   "id": "at://did:plc:qre6zxbmr3ixhdmgsgdretb5/app.bsky.feed.post/3myxpcvniem2m|lamarjackson|active|status",
+   "at": "2026-10-28T21:33:51.550Z",
+   "seen": "2026-10-28T22:14:49.243Z",
+   "handle": "adamscheftermirror.bsky.social",
+   "post": "at://did:plc:qre6zxbmr3ixhdmgsgdretb5/app.bsky.feed.post/3myxpcvniem2m",
+   "player": "Lamar Jackson",
+   "team": "BAL",
+   "status": "active",
+   "kind": "status",
+   "confidence": 0.8,
+   "text": "Ravens listed QB Lamar Jackson as a full participant in today’s practice.\n\nRepost of @Ravens:\n\nOriginal post"
+  },
+  {
+   "id": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3myxpi32fxy2y|djmoore|limited|status",
+   "at": "2026-10-28T21:36:44.000Z",
+   "seen": "2026-10-28T22:14:49.243Z",
+   "handle": "rotowirenfl.bsky.social",
+   "post": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3myxpi32fxy2y",
+   "player": "DJ Moore",
+   "team": "CHI",
+   "status": "limited",
+   "kind": "status",
+   "confidence": 0.85,
+   "text": "DJ Moore: Stays limited in practice \n\n https://www.rotowire.com/football/player/dj-moore-12477"
+  },
+  {
+   "id": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3myxpul23gt2b|daltonkincaid|limited|status",
+   "at": "2026-10-28T21:43:44.000Z",
+   "seen": "2026-10-28T22:14:49.243Z",
+   "handle": "rotowirenfl.bsky.social",
+   "post": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3myxpul23gt2b",
+   "player": "Dalton Kincaid",
+   "team": "BUF",
+   "status": "limited",
+   "kind": "status",
+   "confidence": 0.85,
+   "text": "Dalton Kincaid: Limited to begin Week 8 \n\n https://www.rotowire.com/football/player/dalton-kincaid-16697"
+  },
+  {
+   "id": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3myxq4rqolu24|jaylinnoel|out|status",
+   "at": "2026-10-28T21:48:19.000Z",
+   "seen": "2026-10-28T22:14:49.243Z",
+   "handle": "rotoworld-fb.bsky.social",
+   "post": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3myxq4rqolu24",
+   "player": "Jaylin Noel",
+   "team": "HOU",
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.9,
+   "text": "Texans place Jaylin Noel (toe) on injured reserve"
+  },
+  {
+   "id": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3myxqebnuxd2d|daltonkincaid|limited|status",
+   "at": "2026-10-28T21:52:31.000Z",
+   "seen": "2026-10-28T22:14:49.243Z",
+   "handle": "rotoworld-fb.bsky.social",
+   "post": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3myxqebnuxd2d",
+   "player": "Dalton Kincaid",
+   "team": "BUF",
+   "status": "limited",
+   "kind": "status",
+   "confidence": 0.85,
+   "text": "Kincaid (chest) limited in first Week 8 practice"
+  },
+  {
+   "id": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3myxqvtdk5k2j|jaylenwaddle|questionable|status",
+   "at": "2026-10-28T22:02:20.000Z",
+   "seen": "2026-10-28T22:14:49.243Z",
+   "handle": "rotowirenfl.bsky.social",
+   "post": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3myxqvtdk5k2j",
+   "player": "Jaylen Waddle",
+   "team": "MIA",
+   "status": "questionable",
+   "kind": "status",
+   "confidence": 0.5,
+   "text": "Jaylen Waddle: Misses Wednesday's practice \n\n https://www.rotowire.com/football/player/jaylen-waddle-15404"
+  },
+  {
+   "id": "at://did:plc:qre6zxbmr3ixhdmgsgdretb5/app.bsky.feed.post/3myxqy35dyw2d|jahmyrgibbs|questionable|status",
+   "at": "2026-10-28T22:03:35.702Z",
+   "seen": "2026-10-28T22:14:49.243Z",
+   "handle": "adamscheftermirror.bsky.social",
+   "post": "at://did:plc:qre6zxbmr3ixhdmgsgdretb5/app.bsky.feed.post/3myxqy35dyw2d",
+   "player": "Jahmyr Gibbs",
+   "team": "DET",
+   "status": "questionable",
+   "kind": "status",
+   "confidence": 0.45,
+   "text": "Repost by @AdamSchefter\n\nChargers safety Derwin James (hamstring), who has not played since Sept. 27, had a setback and could be placed on injured reserve, per Jim Harbaugh\n\nClick to see original repo"
   }
  ]
 }

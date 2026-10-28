@@ -1,9 +1,9 @@
 {
  "sport": "nba",
  "cursor": {
-  "rotowirenba.bsky.social": "2026-10-28T21:08:17.000Z",
+  "rotowirenba.bsky.social": "2026-10-28T22:05:43.000Z",
   "insidenbanews.bsky.social": "2026-10-28T02:36:23.029Z",
-  "shamsbot.bsky.social": "2026-10-28T17:36:13.000Z"
+  "shamsbot.bsky.social": "2026-10-28T21:26:25.000Z"
  },
  "claims": [
   {
@@ -4425,6 +4425,58 @@
    "kind": "status",
    "confidence": 0.95,
    "text": "Ziaire Williams: Ruled out Wednesday \n\n https://www.rotowire.com/basketball/player/ziaire-williams-5400"
+  },
+  {
+   "id": "at://did:plc:sa73fbx3vxzh2fw5pu5wmief/app.bsky.feed.post/3myxowy6hcg2s|tyresehaliburton|out|status",
+   "at": "2026-10-28T21:26:25.000Z",
+   "seen": "2026-10-28T22:14:49.243Z",
+   "handle": "shamsbot.bsky.social",
+   "post": "at://did:plc:sa73fbx3vxzh2fw5pu5wmief/app.bsky.feed.post/3myxowy6hcg2s",
+   "player": "Tyrese Haliburton",
+   "team": "IND",
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.95,
+   "text": "Indiana's Tyrese Haliburton will miss at least two weeks with the left hamstring strain."
+  },
+  {
+   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3myxp53zvjp2v|tyresehaliburton|out|status",
+   "at": "2026-10-28T21:30:36.000Z",
+   "seen": "2026-10-28T22:14:49.243Z",
+   "handle": "rotowirenba.bsky.social",
+   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3myxp53zvjp2v",
+   "player": "Tyrese Haliburton",
+   "team": null,
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.93,
+   "text": "Tyrese Haliburton: Out at least two weeks \n\n https://www.rotowire.com/basketball/player/tyrese-haliburton-5114"
+  },
+  {
+   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3myxphaznkb2e|andrewnembhard|active|return",
+   "at": "2026-10-28T21:36:17.000Z",
+   "seen": "2026-10-28T22:14:49.243Z",
+   "handle": "rotowirenba.bsky.social",
+   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3myxphaznkb2e",
+   "player": "Andrew Nembhard",
+   "team": null,
+   "status": "active",
+   "kind": "return",
+   "confidence": 0.9,
+   "text": "Andrew Nembhard: Returning Wednesday \n\n https://www.rotowire.com/basketball/player/andrew-nembhard-5679"
+  },
+  {
+   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3myxr3utjf42g|anthonyblack|active|status",
+   "at": "2026-10-28T22:05:43.000Z",
+   "seen": "2026-10-28T22:14:49.243Z",
+   "handle": "rotowirenba.bsky.social",
+   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3myxr3utjf42g",
+   "player": "Anthony Black",
+   "team": null,
+   "status": "active",
+   "kind": "status",
+   "confidence": 0.9,
+   "text": "Anthony Black: Will play Wednesday \n\n https://www.rotowire.com/basketball/player/anthony-black-5910"
   }
  ]
 }
