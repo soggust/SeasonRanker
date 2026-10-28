@@ -13053,6 +13053,30 @@
     "seen": "2026-10-28T15:06:54.772Z",
     "own": "2026-10-28T14:41:00.000Z"
    }
+  },
+  "401909884|tyresehaliburton|out": {
+   "game": "401909884",
+   "start": "2026-10-28T23:00Z",
+   "team": "11",
+   "name": "Tyrese Haliburton",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-10-28T17:41:40.800Z",
+    "own": "2026-10-28T17:36:13.000Z",
+    "why": "@shamsbot.bsky.social: Indiana Pacers star Tyrese Haliburton has sustained a lef"
+   }
+  },
+  "401909887|marcussmart|out": {
+   "game": "401909887",
+   "start": "2026-10-29T00:00Z",
+   "team": "10",
+   "name": "Marcus Smart",
+   "status": "out",
+   "athlete": "2990992",
+   "espn": {
+    "seen": "2026-10-28T17:52:43.541Z",
+    "own": "2026-10-28T17:34:00.000Z"
+   }
   }
  }
 }
