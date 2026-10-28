@@ -12594,6 +12594,273 @@
     "seen": "2026-10-28T00:18:48.868Z",
     "own": "2026-10-27T23:42:00.000Z"
    }
+  },
+  "401909891|tarikbiberovic|out": {
+   "game": "401909891",
+   "start": "2026-10-29T01:30Z",
+   "team": "6",
+   "name": "Tarik Biberovic",
+   "status": "out",
+   "athlete": "5148538",
+   "espn": {
+    "seen": "2026-10-28T00:42:42.200Z",
+    "own": "2026-10-27T22:12:00.000Z"
+   }
+  },
+  "401909891|santialdama|out": {
+   "game": "401909891",
+   "start": "2026-10-29T01:30Z",
+   "team": "6",
+   "name": "Santi Aldama",
+   "status": "out",
+   "athlete": "4593125",
+   "espn": {
+    "seen": "2026-10-28T00:42:42.200Z",
+    "own": "2026-10-27T22:09:00.000Z"
+   }
+  },
+  "401909891|sergiodelarrea|out": {
+   "game": "401909891",
+   "start": "2026-10-29T01:30Z",
+   "team": "6",
+   "name": "Sergio de Larrea",
+   "status": "out",
+   "athlete": "5279129",
+   "espn": {
+    "seen": "2026-10-28T00:42:42.200Z",
+    "own": "2026-10-27T22:09:00.000Z"
+   }
+  },
+  "401909891|calebmartin|out": {
+   "game": "401909891",
+   "start": "2026-10-29T01:30Z",
+   "team": "6",
+   "name": "Caleb Martin",
+   "status": "out",
+   "athlete": "3138160",
+   "espn": {
+    "seen": "2026-10-28T00:42:42.200Z",
+    "own": "2026-10-27T22:07:00.000Z"
+   }
+  },
+  "401909891|najimarshall|q": {
+   "game": "401909891",
+   "start": "2026-10-29T01:30Z",
+   "team": "6",
+   "name": "Naji Marshall",
+   "status": "q",
+   "athlete": "4278594",
+   "espn": {
+    "seen": "2026-10-28T00:42:42.200Z",
+    "own": "2026-10-27T22:05:00.000Z"
+   }
+  },
+  "401909891|kyrieirving|q": {
+   "game": "401909891",
+   "start": "2026-10-29T01:30Z",
+   "team": "6",
+   "name": "Kyrie Irving",
+   "status": "q",
+   "athlete": "6442",
+   "espn": {
+    "seen": "2026-10-28T00:42:42.200Z",
+    "own": "2026-10-27T22:04:00.000Z"
+   }
+  },
+  "401909891|derecklively|out": {
+   "game": "401909891",
+   "start": "2026-10-29T01:30Z",
+   "team": "6",
+   "name": "Dereck Lively II",
+   "status": "out",
+   "athlete": "4683688",
+   "espn": {
+    "seen": "2026-10-28T00:42:42.200Z",
+    "own": "2026-10-22T20:10:00.000Z"
+   }
+  },
+  "401909891|ruihachimura|out": {
+   "game": "401909891",
+   "start": "2026-10-29T01:30Z",
+   "team": "6",
+   "name": "Rui Hachimura",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-10-27T20:01:19.204Z",
+    "own": "2026-10-27T19:47:50.000Z",
+    "why": "@rotowirenba.bsky.social: Rui Hachimura: Ruled out for Wednesday \n\n https://www."
+   }
+  },
+  "401909891|ajdybantsa|q": {
+   "game": "401909891",
+   "start": "2026-10-29T01:30Z",
+   "team": "6",
+   "name": "AJ Dybantsa",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-10-27T21:03:59.452Z",
+    "own": "2026-10-27T20:48:02.000Z",
+    "why": "@rotowirenba.bsky.social: AJ Dybantsa: Questionable for Wednesday \n\n https://www"
+   }
+  },
+  "401909891|aaronwiggins|q": {
+   "game": "401909891",
+   "start": "2026-10-29T01:30Z",
+   "team": "6",
+   "name": "Aaron Wiggins",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-10-27T21:18:29.038Z",
+    "own": "2026-10-27T21:07:36.000Z",
+    "why": "@rotowirenba.bsky.social: Aaron Wiggins: Questionable for Wednesday \n\n https://w"
+   }
+  },
+  "401909891|ivicazubac|out": {
+   "game": "401909891",
+   "start": "2026-10-29T01:30Z",
+   "team": "6",
+   "name": "Ivica Zubac",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-10-27T21:18:29.038Z",
+    "own": "2026-10-27T21:13:46.000Z",
+    "why": "@rotowirenba.bsky.social: Ivica Zubac: Won't play Wednesday \n\n https://www.rotow"
+   }
+  },
+  "401909891|andrewnembhard|q": {
+   "game": "401909891",
+   "start": "2026-10-29T01:30Z",
+   "team": "6",
+   "name": "Andrew Nembhard",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-10-27T21:41:24.109Z",
+    "own": "2026-10-27T21:21:56.000Z",
+    "why": "@rotowirenba.bsky.social: Andrew Nembhard: Questionable to face Philadelphia \n\n "
+   }
+  },
+  "401909891|alexcaruso|out": {
+   "game": "401909891",
+   "start": "2026-10-29T01:30Z",
+   "team": "6",
+   "name": "Alex Caruso",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-10-27T21:41:24.109Z",
+    "own": "2026-10-27T21:35:17.000Z",
+    "why": "@rotowirenba.bsky.social: Alex Caruso: Ruled out for Wednesday \n\n https://www.ro"
+   },
+   "athlete": "2991350",
+   "espn": {
+    "seen": "2026-10-28T00:42:42.200Z",
+    "own": "2026-10-27T21:35:00.000Z"
+   }
+  },
+  "401909891|ajaymitchell|q": {
+   "game": "401909891",
+   "start": "2026-10-29T01:30Z",
+   "team": "6",
+   "name": "Ajay Mitchell",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-10-27T21:41:24.109Z",
+    "own": "2026-10-27T21:35:40.000Z",
+    "why": "@rotowirenba.bsky.social: Ajay Mitchell: Questionable with ankle sprain \n\n https"
+   },
+   "athlete": "4900671",
+   "espn": {
+    "seen": "2026-10-28T00:42:42.200Z",
+    "own": "2026-10-27T21:35:00.000Z"
+   }
+  },
+  "401909891|cameronjohnson|out": {
+   "game": "401909891",
+   "start": "2026-10-29T01:30Z",
+   "team": "6",
+   "name": "Cameron Johnson",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-10-27T23:09:43.168Z",
+    "own": "2026-10-27T22:35:33.000Z",
+    "why": "@rotowirenba.bsky.social: Cameron Johnson: Doubtful for Wednesday \n\n https://www"
+   }
+  },
+  "401909891|thomassorber|out": {
+   "game": "401909891",
+   "start": "2026-10-29T01:30Z",
+   "team": "25",
+   "name": "Thomas Sorber",
+   "status": "out",
+   "athlete": "5061603",
+   "espn": {
+    "seen": "2026-10-28T00:42:42.200Z",
+    "own": "2026-10-27T21:43:00.000Z"
+   }
+  },
+  "401909891|chetholmgren|out": {
+   "game": "401909891",
+   "start": "2026-10-29T01:30Z",
+   "team": "25",
+   "name": "Chet Holmgren",
+   "status": "out",
+   "athlete": "4433255",
+   "espn": {
+    "seen": "2026-10-28T00:42:42.200Z",
+    "own": "2026-10-27T21:41:00.000Z"
+   },
+   "bluesky": {
+    "seen": "2026-10-27T22:03:21.530Z",
+    "own": "2026-10-27T21:41:27.000Z",
+    "why": "@rotowirenba.bsky.social: Chet Holmgren: Won't play Wednesday \n\n https://www.rot"
+   }
+  },
+  "401909891|nikolatopic|out": {
+   "game": "401909891",
+   "start": "2026-10-29T01:30Z",
+   "team": "25",
+   "name": "Nikola Topic",
+   "status": "out",
+   "athlete": "5159925",
+   "espn": {
+    "seen": "2026-10-28T00:42:42.200Z",
+    "own": "2026-10-27T21:38:00.000Z"
+   }
+  },
+  "401909891|jalenwilliams|out": {
+   "game": "401909891",
+   "start": "2026-10-29T01:30Z",
+   "team": "25",
+   "name": "Jalen Williams",
+   "status": "out",
+   "athlete": "4593803",
+   "espn": {
+    "seen": "2026-10-28T00:42:42.200Z",
+    "own": "2026-10-26T22:07:00.000Z"
+   }
+  },
+  "401909891|casonwallace|out": {
+   "game": "401909891",
+   "start": "2026-10-29T01:30Z",
+   "team": "25",
+   "name": "Cason Wallace",
+   "status": "out",
+   "athlete": "4683692",
+   "espn": {
+    "seen": "2026-10-28T00:42:42.200Z",
+    "own": "2026-10-26T22:05:00.000Z"
+   }
+  },
+  "401909891|otegaoweh|out": {
+   "game": "401909891",
+   "start": "2026-10-29T01:30Z",
+   "team": "25",
+   "name": "Otega Oweh",
+   "status": "out",
+   "athlete": "5106270",
+   "espn": {
+    "seen": "2026-10-28T00:42:42.200Z",
+    "own": "2026-10-23T18:52:00.000Z"
+   }
   }
  }
 }
