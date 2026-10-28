@@ -1,8 +1,8 @@
 {
  "sport": "nba",
  "cursor": {
-  "rotowirenba.bsky.social": "2026-10-28T01:00:14.000Z",
-  "insidenbanews.bsky.social": "2026-10-27T23:38:17.213Z",
+  "rotowirenba.bsky.social": "2026-10-28T02:36:35.000Z",
+  "insidenbanews.bsky.social": "2026-10-28T02:36:23.029Z",
   "shamsbot.bsky.social": "2026-10-27T22:46:31.000Z"
  },
  "claims": [
@@ -4178,6 +4178,136 @@
    "kind": "status",
    "confidence": 0.6,
    "text": "Egor Demin: Won't return Tuesday \n\n https://www.rotowire.com/basketball/player/egor-demin-6559"
+  },
+  {
+   "id": "at://did:plc:ykcnnf6kqnn3lasmobrczoem/app.bsky.feed.post/3myvpqi5pjs2m|jamorant|none|starting",
+   "at": "2026-10-28T02:36:07.788Z",
+   "seen": "2026-10-28T02:37:00.230Z",
+   "handle": "insidenbanews.bsky.social",
+   "post": "at://did:plc:ykcnnf6kqnn3lasmobrczoem/app.bsky.feed.post/3myvpqi5pjs2m",
+   "player": "Ja Morant",
+   "team": "POR",
+   "status": "none",
+   "kind": "starting",
+   "confidence": 0.9,
+   "text": "Lineup alert: Blazers will start Morant, Lillard, Avdija, Camara, Clingan."
+  },
+  {
+   "id": "at://did:plc:ykcnnf6kqnn3lasmobrczoem/app.bsky.feed.post/3myvpqi5pjs2m|damianlillard|none|starting",
+   "at": "2026-10-28T02:36:07.788Z",
+   "seen": "2026-10-28T02:37:00.230Z",
+   "handle": "insidenbanews.bsky.social",
+   "post": "at://did:plc:ykcnnf6kqnn3lasmobrczoem/app.bsky.feed.post/3myvpqi5pjs2m",
+   "player": "Damian Lillard",
+   "team": "POR",
+   "status": "none",
+   "kind": "starting",
+   "confidence": 0.9,
+   "text": "Lineup alert: Blazers will start Morant, Lillard, Avdija, Camara, Clingan."
+  },
+  {
+   "id": "at://did:plc:ykcnnf6kqnn3lasmobrczoem/app.bsky.feed.post/3myvpqi5pjs2m|deniavdija|none|starting",
+   "at": "2026-10-28T02:36:07.788Z",
+   "seen": "2026-10-28T02:37:00.230Z",
+   "handle": "insidenbanews.bsky.social",
+   "post": "at://did:plc:ykcnnf6kqnn3lasmobrczoem/app.bsky.feed.post/3myvpqi5pjs2m",
+   "player": "Deni Avdija",
+   "team": "POR",
+   "status": "none",
+   "kind": "starting",
+   "confidence": 0.9,
+   "text": "Lineup alert: Blazers will start Morant, Lillard, Avdija, Camara, Clingan."
+  },
+  {
+   "id": "at://did:plc:ykcnnf6kqnn3lasmobrczoem/app.bsky.feed.post/3myvpqi5pjs2m|toumanicamara|none|starting",
+   "at": "2026-10-28T02:36:07.788Z",
+   "seen": "2026-10-28T02:37:00.230Z",
+   "handle": "insidenbanews.bsky.social",
+   "post": "at://did:plc:ykcnnf6kqnn3lasmobrczoem/app.bsky.feed.post/3myvpqi5pjs2m",
+   "player": "Toumani Camara",
+   "team": "POR",
+   "status": "none",
+   "kind": "starting",
+   "confidence": 0.9,
+   "text": "Lineup alert: Blazers will start Morant, Lillard, Avdija, Camara, Clingan."
+  },
+  {
+   "id": "at://did:plc:ykcnnf6kqnn3lasmobrczoem/app.bsky.feed.post/3myvpqi5pjs2m|donovanclingan|none|starting",
+   "at": "2026-10-28T02:36:07.788Z",
+   "seen": "2026-10-28T02:37:00.230Z",
+   "handle": "insidenbanews.bsky.social",
+   "post": "at://did:plc:ykcnnf6kqnn3lasmobrczoem/app.bsky.feed.post/3myvpqi5pjs2m",
+   "player": "Donovan Clingan",
+   "team": "POR",
+   "status": "none",
+   "kind": "starting",
+   "confidence": 0.9,
+   "text": "Lineup alert: Blazers will start Morant, Lillard, Avdija, Camara, Clingan."
+  },
+  {
+   "id": "at://did:plc:ykcnnf6kqnn3lasmobrczoem/app.bsky.feed.post/3myvpqwotd22m|lukadoncic|none|starting",
+   "at": "2026-10-28T02:36:23.029Z",
+   "seen": "2026-10-28T02:37:00.230Z",
+   "handle": "insidenbanews.bsky.social",
+   "post": "at://did:plc:ykcnnf6kqnn3lasmobrczoem/app.bsky.feed.post/3myvpqwotd22m",
+   "player": "Luka Doncic",
+   "team": "LAL",
+   "status": "none",
+   "kind": "starting",
+   "confidence": 0.9,
+   "text": "Lineup alert: Lakers will start Doncic, Reaves, Thybulle, Williams, Kessler."
+  },
+  {
+   "id": "at://did:plc:ykcnnf6kqnn3lasmobrczoem/app.bsky.feed.post/3myvpqwotd22m|austinreaves|none|starting",
+   "at": "2026-10-28T02:36:23.029Z",
+   "seen": "2026-10-28T02:37:00.230Z",
+   "handle": "insidenbanews.bsky.social",
+   "post": "at://did:plc:ykcnnf6kqnn3lasmobrczoem/app.bsky.feed.post/3myvpqwotd22m",
+   "player": "Austin Reaves",
+   "team": "LAL",
+   "status": "none",
+   "kind": "starting",
+   "confidence": 0.9,
+   "text": "Lineup alert: Lakers will start Doncic, Reaves, Thybulle, Williams, Kessler."
+  },
+  {
+   "id": "at://did:plc:ykcnnf6kqnn3lasmobrczoem/app.bsky.feed.post/3myvpqwotd22m|matissethybulle|none|starting",
+   "at": "2026-10-28T02:36:23.029Z",
+   "seen": "2026-10-28T02:37:00.230Z",
+   "handle": "insidenbanews.bsky.social",
+   "post": "at://did:plc:ykcnnf6kqnn3lasmobrczoem/app.bsky.feed.post/3myvpqwotd22m",
+   "player": "Matisse Thybulle",
+   "team": "LAL",
+   "status": "none",
+   "kind": "starting",
+   "confidence": 0.9,
+   "text": "Lineup alert: Lakers will start Doncic, Reaves, Thybulle, Williams, Kessler."
+  },
+  {
+   "id": "at://did:plc:ykcnnf6kqnn3lasmobrczoem/app.bsky.feed.post/3myvpqwotd22m|jalenwilliams|none|starting",
+   "at": "2026-10-28T02:36:23.029Z",
+   "seen": "2026-10-28T02:37:00.230Z",
+   "handle": "insidenbanews.bsky.social",
+   "post": "at://did:plc:ykcnnf6kqnn3lasmobrczoem/app.bsky.feed.post/3myvpqwotd22m",
+   "player": "Jalen Williams",
+   "team": "LAL",
+   "status": "none",
+   "kind": "starting",
+   "confidence": 0.9,
+   "text": "Lineup alert: Lakers will start Doncic, Reaves, Thybulle, Williams, Kessler."
+  },
+  {
+   "id": "at://did:plc:ykcnnf6kqnn3lasmobrczoem/app.bsky.feed.post/3myvpqwotd22m|walkerkessler|none|starting",
+   "at": "2026-10-28T02:36:23.029Z",
+   "seen": "2026-10-28T02:37:00.230Z",
+   "handle": "insidenbanews.bsky.social",
+   "post": "at://did:plc:ykcnnf6kqnn3lasmobrczoem/app.bsky.feed.post/3myvpqwotd22m",
+   "player": "Walker Kessler",
+   "team": "LAL",
+   "status": "none",
+   "kind": "starting",
+   "confidence": 0.9,
+   "text": "Lineup alert: Lakers will start Doncic, Reaves, Thybulle, Williams, Kessler."
   }
  ]
 }
