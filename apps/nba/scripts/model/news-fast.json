@@ -1,9 +1,9 @@
 {
  "sport": "nba",
  "cursor": {
-  "rotowirenba.bsky.social": "2026-10-28T02:56:01.000Z",
+  "rotowirenba.bsky.social": "2026-10-28T03:46:57.000Z",
   "insidenbanews.bsky.social": "2026-10-28T02:36:23.029Z",
-  "shamsbot.bsky.social": "2026-10-27T22:46:31.000Z"
+  "shamsbot.bsky.social": "2026-10-28T03:33:27.000Z"
  },
  "claims": [
   {
@@ -4308,6 +4308,32 @@
    "kind": "starting",
    "confidence": 0.9,
    "text": "Lineup alert: Lakers will start Doncic, Reaves, Thybulle, Williams, Kessler."
+  },
+  {
+   "id": "at://did:plc:sa73fbx3vxzh2fw5pu5wmief/app.bsky.feed.post/3myvt2qud6v2q|anthonyedwards|out|status",
+   "at": "2026-10-28T03:33:27.000Z",
+   "seen": "2026-10-28T04:15:29.544Z",
+   "handle": "shamsbot.bsky.social",
+   "post": "at://did:plc:sa73fbx3vxzh2fw5pu5wmief/app.bsky.feed.post/3myvt2qud6v2q",
+   "player": "Anthony Edwards",
+   "team": "MIN",
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.9,
+   "text": "Latest for @SportsCenter on Minnesota's Anthony Edwards now sidelined for the next two months:"
+  },
+  {
+   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3myvtp4tkph26|egordemin|questionable|status",
+   "at": "2026-10-28T03:46:57.000Z",
+   "seen": "2026-10-28T04:15:29.544Z",
+   "handle": "rotowirenba.bsky.social",
+   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3myvtp4tkph26",
+   "player": "Egor Demin",
+   "team": null,
+   "status": "questionable",
+   "kind": "status",
+   "confidence": 0.4,
+   "text": "Egor Demin: Injury 'nothing serious' \n\n https://www.rotowire.com/basketball/player/egor-demin-6559"
   }
  ]
 }
