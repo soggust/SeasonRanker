@@ -1,13 +1,13 @@
 {
  "sport": "nfl",
  "cursor": {
-  "adamscheftermirror.bsky.social": "2026-10-28T22:03:35.702Z",
+  "adamscheftermirror.bsky.social": "2026-10-28T23:08:35.458Z",
   "rapsheet.bsky.social": "2026-10-28T14:02:17.022Z",
   "nflnewsreposterbot.bsky.social": "2026-10-22T13:33:43.592Z",
-  "insidenflnews.bsky.social": "2026-10-28T19:54:31.103Z",
-  "nflnewsposter.bsky.social": "2026-10-28T21:53:47.440Z",
-  "rotoworld-fb.bsky.social": "2026-10-28T22:01:07.000Z",
-  "rotowirenfl.bsky.social": "2026-10-28T22:02:20.000Z"
+  "insidenflnews.bsky.social": "2026-10-28T22:21:45.952Z",
+  "nflnewsposter.bsky.social": "2026-10-28T22:40:52.041Z",
+  "rotoworld-fb.bsky.social": "2026-10-28T22:51:05.000Z",
+  "rotowirenfl.bsky.social": "2026-10-28T23:10:35.000Z"
  },
  "claims": [
   {
@@ -8173,6 +8173,97 @@
    "kind": "status",
    "confidence": 0.45,
    "text": "Repost by @AdamSchefter\n\nChargers safety Derwin James (hamstring), who has not played since Sept. 27, had a setback and could be placed on injured reserve, per Jim Harbaugh\n\nClick to see original repo"
+  },
+  {
+   "id": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3myxrwh7jdy25|georgepickens|limited|status",
+   "at": "2026-10-28T22:20:34.000Z",
+   "seen": "2026-10-28T23:16:00.900Z",
+   "handle": "rotowirenfl.bsky.social",
+   "post": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3myxrwh7jdy25",
+   "player": "George Pickens",
+   "team": null,
+   "status": "limited",
+   "kind": "status",
+   "confidence": 0.8,
+   "text": "George Pickens: Remains limited Wednesday \n\n https://www.rotowire.com/football/player/george-pickens-15853"
+  },
+  {
+   "id": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3myxsem6wrs25|jeremiyahlove|limited|status",
+   "at": "2026-10-28T22:28:29.000Z",
+   "seen": "2026-10-28T23:16:00.900Z",
+   "handle": "rotoworld-fb.bsky.social",
+   "post": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3myxsem6wrs25",
+   "player": "Jeremiyah Love",
+   "team": null,
+   "status": "limited",
+   "kind": "status",
+   "confidence": 0.85,
+   "text": "Jeremiyah Love (ankle) to be limited Wednesday"
+  },
+  {
+   "id": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3myxsikpilr2j|jaylinnoel|out|status",
+   "at": "2026-10-28T22:30:42.000Z",
+   "seen": "2026-10-28T23:16:00.900Z",
+   "handle": "rotowirenfl.bsky.social",
+   "post": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3myxsikpilr2j",
+   "player": "Jaylin Noel",
+   "team": "HOU",
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.9,
+   "text": "Jaylin Noel: Set to miss rest of season \n\n https://www.rotowire.com/football/player/jaylin-noel-18555"
+  },
+  {
+   "id": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3myxsn57x4r2g|georgepickens|limited|status",
+   "at": "2026-10-28T22:33:16.000Z",
+   "seen": "2026-10-28T23:16:00.900Z",
+   "handle": "rotoworld-fb.bsky.social",
+   "post": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3myxsn57x4r2g",
+   "player": "George Pickens",
+   "team": null,
+   "status": "limited",
+   "kind": "status",
+   "confidence": 0.8,
+   "text": "George Pickens (shoulder/hamstring) limited Wed."
+  },
+  {
+   "id": "at://did:plc:fuqjc7x4gxvnwzksnlxwbe4x/app.bsky.feed.post/3myxt2ps4ck2b|jaylinnoel|out|status",
+   "at": "2026-10-28T22:40:52.041Z",
+   "seen": "2026-10-28T23:16:00.900Z",
+   "handle": "nflnewsposter.bsky.social",
+   "post": "at://did:plc:fuqjc7x4gxvnwzksnlxwbe4x/app.bsky.feed.post/3myxt2ps4ck2b",
+   "player": "Jaylin Noel",
+   "team": "HOU",
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.85,
+   "text": "[Alexander] Texans WR Jaylin Noel is expected to miss the rest of the season. This is a significant blow for the Texans. www.houstonchronicle.com/sports/texan... [Texans WR Jaylin Noel expected to mis"
+  },
+  {
+   "id": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3myxtmyixwn25|stefondiggs|out|status",
+   "at": "2026-10-28T22:51:05.000Z",
+   "seen": "2026-10-28T23:16:00.900Z",
+   "handle": "rotoworld-fb.bsky.social",
+   "post": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3myxtmyixwn25",
+   "player": "Stefon Diggs",
+   "team": null,
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.7,
+   "text": "Stefon Diggs (hand/hamstring/rest) DNP Wednesday"
+  },
+  {
+   "id": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3myxtrhdwmi27|stefondiggs|out|status",
+   "at": "2026-10-28T22:53:34.000Z",
+   "seen": "2026-10-28T23:16:00.900Z",
+   "handle": "rotowirenfl.bsky.social",
+   "post": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3myxtrhdwmi27",
+   "player": "Stefon Diggs",
+   "team": null,
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.7,
+   "text": "Stefon Diggs: DNP due to 'hand/hamstring/rest' \n\n https://www.rotowire.com/football/player/stefon-diggs-10133"
   }
  ]
 }
