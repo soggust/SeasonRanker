@@ -1,9 +1,9 @@
 {
  "sport": "nba",
  "cursor": {
-  "rotowirenba.bsky.social": "2026-10-28T17:16:41.000Z",
+  "rotowirenba.bsky.social": "2026-10-28T17:40:16.000Z",
   "insidenbanews.bsky.social": "2026-10-28T02:36:23.029Z",
-  "shamsbot.bsky.social": "2026-10-28T16:15:05.000Z"
+  "shamsbot.bsky.social": "2026-10-28T17:36:13.000Z"
  },
  "claims": [
   {
@@ -4347,6 +4347,32 @@
    "kind": "status",
    "confidence": 0.6,
    "text": "Ausar Thompson: Probable for Wednesday \n\n https://www.rotowire.com/basketball/player/ausar-thompson-5932"
+  },
+  {
+   "id": "at://did:plc:sa73fbx3vxzh2fw5pu5wmief/app.bsky.feed.post/3myxcdqfiwe27|tyresehaliburton|out|status",
+   "at": "2026-10-28T17:36:13.000Z",
+   "seen": "2026-10-28T17:41:40.800Z",
+   "handle": "shamsbot.bsky.social",
+   "post": "at://did:plc:sa73fbx3vxzh2fw5pu5wmief/app.bsky.feed.post/3myxcdqfiwe27",
+   "player": "Tyrese Haliburton",
+   "team": "IND",
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.6,
+   "text": "Indiana Pacers star Tyrese Haliburton has sustained a left hamstring strain and will miss time, sources tell ESPN. Pacers doctors and Haliburton are now gathering a clear timeline."
+  },
+  {
+   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3myxcb7tczi2q|tyresehaliburton|out|status",
+   "at": "2026-10-28T17:40:16.000Z",
+   "seen": "2026-10-28T17:41:40.800Z",
+   "handle": "rotowirenba.bsky.social",
+   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3myxcb7tczi2q",
+   "player": "Tyrese Haliburton",
+   "team": "IND",
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.55,
+   "text": "Tyrese Haliburton: To miss time with hamstring issue \n\n https://www.rotowire.com/basketball/player/tyrese-haliburton-5114"
   }
  ]
 }

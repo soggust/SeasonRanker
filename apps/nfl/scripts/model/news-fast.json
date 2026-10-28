@@ -7,7 +7,7 @@
   "insidenflnews.bsky.social": "2026-10-28T17:16:14.162Z",
   "nflnewsposter.bsky.social": "2026-10-28T17:11:47.155Z",
   "rotoworld-fb.bsky.social": "2026-10-28T17:07:33.000Z",
-  "rotowirenfl.bsky.social": "2026-10-28T17:17:08.000Z"
+  "rotowirenfl.bsky.social": "2026-10-28T17:38:28.000Z"
  },
  "claims": [
   {
@@ -7419,6 +7419,19 @@
    "kind": "status",
    "confidence": 0.7,
    "text": "Stefon Diggs: Sitting out practice, will be full go Thursday \n\n https://www.rotowire.com/football/player/stefon-diggs-10133"
+  },
+  {
+   "id": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3myxbfynjt42e|rasheerice|limited|return",
+   "at": "2026-10-28T17:25:02.000Z",
+   "seen": "2026-10-28T17:41:40.800Z",
+   "handle": "rotowirenfl.bsky.social",
+   "post": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3myxbfynjt42e",
+   "player": "Rashee Rice",
+   "team": "KC",
+   "status": "limited",
+   "kind": "return",
+   "confidence": 0.8,
+   "text": "Rashee Rice: Returning to practice Wednesday \n\n https://www.rotowire.com/football/player/rashee-rice-16963"
   }
  ]
 }
