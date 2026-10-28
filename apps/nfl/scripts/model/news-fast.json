@@ -1,10 +1,10 @@
 {
  "sport": "nfl",
  "cursor": {
-  "adamscheftermirror.bsky.social": "2026-10-27T22:48:34.847Z",
+  "adamscheftermirror.bsky.social": "2026-10-28T00:03:26.164Z",
   "rapsheet.bsky.social": "2026-10-27T20:50:01.935Z",
   "nflnewsreposterbot.bsky.social": "2026-10-22T13:33:43.592Z",
-  "insidenflnews.bsky.social": "2026-10-27T23:23:04.664Z",
+  "insidenflnews.bsky.social": "2026-10-27T23:58:42.521Z",
   "nflnewsposter.bsky.social": "2026-10-27T20:45:18.120Z",
   "rotoworld-fb.bsky.social": "2026-10-27T22:45:23.000Z",
   "rotowirenfl.bsky.social": "2026-10-27T21:00:45.000Z"
@@ -7211,6 +7211,19 @@
    "kind": "status",
    "confidence": 0.3,
    "text": "LaFleur: Packers DE Micah Parsons (knee) “has a chance” to practice next week."
+  },
+  {
+   "id": "at://did:plc:mbr4badgf6yu56mquzackzew/app.bsky.feed.post/3myvgwygzy22m|zachcharbonnet|active|status",
+   "at": "2026-10-27T23:58:42.521Z",
+   "seen": "2026-10-28T00:20:38.295Z",
+   "handle": "insidenflnews.bsky.social",
+   "post": "at://did:plc:mbr4badgf6yu56mquzackzew/app.bsky.feed.post/3myvgwygzy22m",
+   "player": "Zach Charbonnet",
+   "team": "SEA",
+   "status": "active",
+   "kind": "status",
+   "confidence": 0.8,
+   "text": "Rap: Seahawks RB Zach Charbonnet (knee) is expected to play in Week 8."
   }
  ]
 }
