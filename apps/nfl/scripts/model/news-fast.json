@@ -1,13 +1,13 @@
 {
  "sport": "nfl",
  "cursor": {
-  "adamscheftermirror.bsky.social": "2026-10-28T16:58:42.852Z",
+  "adamscheftermirror.bsky.social": "2026-10-28T17:13:35.879Z",
   "rapsheet.bsky.social": "2026-10-28T14:02:17.022Z",
   "nflnewsreposterbot.bsky.social": "2026-10-22T13:33:43.592Z",
-  "insidenflnews.bsky.social": "2026-10-28T16:53:37.346Z",
-  "nflnewsposter.bsky.social": "2026-10-28T16:50:38.689Z",
-  "rotoworld-fb.bsky.social": "2026-10-28T16:53:35.000Z",
-  "rotowirenfl.bsky.social": "2026-10-28T16:53:46.000Z"
+  "insidenflnews.bsky.social": "2026-10-28T17:16:14.162Z",
+  "nflnewsposter.bsky.social": "2026-10-28T17:11:47.155Z",
+  "rotoworld-fb.bsky.social": "2026-10-28T17:07:33.000Z",
+  "rotowirenfl.bsky.social": "2026-10-28T17:17:08.000Z"
  },
  "claims": [
   {
@@ -7302,6 +7302,123 @@
    "kind": "status",
    "confidence": 0.6,
    "text": "Stefon Diggs won't practice Wednesday for an undisclosed reason but will be full participant in practice on Thursday."
+  },
+  {
+   "id": "at://did:plc:fuqjc7x4gxvnwzksnlxwbe4x/app.bsky.feed.post/3myx7zdu2sk2e|lamarjackson|active|status",
+   "at": "2026-10-28T17:00:04.875Z",
+   "seen": "2026-10-28T17:20:12.032Z",
+   "handle": "nflnewsposter.bsky.social",
+   "post": "at://did:plc:fuqjc7x4gxvnwzksnlxwbe4x/app.bsky.feed.post/3myx7zdu2sk2e",
+   "player": "Lamar Jackson",
+   "team": "BAL",
+   "status": "active",
+   "kind": "status",
+   "confidence": 0.5,
+   "text": "[Hensley] Lamar Jackson is warming up with starting center Cam Jurgens at Wednesday’s practice. twitter.com/jamisonhensl..."
+  },
+  {
+   "id": "at://did:plc:fuqjc7x4gxvnwzksnlxwbe4x/app.bsky.feed.post/3myx7zdu2sk2e|camjurgens|active|starting",
+   "at": "2026-10-28T17:00:04.875Z",
+   "seen": "2026-10-28T17:20:12.032Z",
+   "handle": "nflnewsposter.bsky.social",
+   "post": "at://did:plc:fuqjc7x4gxvnwzksnlxwbe4x/app.bsky.feed.post/3myx7zdu2sk2e",
+   "player": "Cam Jurgens",
+   "team": "PHI",
+   "status": "active",
+   "kind": "starting",
+   "confidence": 0.6,
+   "text": "[Hensley] Lamar Jackson is warming up with starting center Cam Jurgens at Wednesday’s practice. twitter.com/jamisonhensl..."
+  },
+  {
+   "id": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3myxaglpdfo2f|rasheerice|limited|status",
+   "at": "2026-10-28T17:07:29.000Z",
+   "seen": "2026-10-28T17:20:12.032Z",
+   "handle": "rotoworld-fb.bsky.social",
+   "post": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3myxaglpdfo2f",
+   "player": "Rashee Rice",
+   "team": "KC",
+   "status": "limited",
+   "kind": "status",
+   "confidence": 0.8,
+   "text": "Rashee Rice (hamstring) to practice Wednesday"
+  },
+  {
+   "id": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3myxagnonzw24|lamarjackson|limited|status",
+   "at": "2026-10-28T17:07:31.000Z",
+   "seen": "2026-10-28T17:20:12.032Z",
+   "handle": "rotoworld-fb.bsky.social",
+   "post": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3myxagnonzw24",
+   "player": "Lamar Jackson",
+   "team": "BAL",
+   "status": "limited",
+   "kind": "status",
+   "confidence": 0.8,
+   "text": "Lamar Jackson (ankle) practicing Wednesday"
+  },
+  {
+   "id": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3myxagpo56e2p|breecehall|limited|status",
+   "at": "2026-10-28T17:07:33.000Z",
+   "seen": "2026-10-28T17:20:12.032Z",
+   "handle": "rotoworld-fb.bsky.social",
+   "post": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3myxagpo56e2p",
+   "player": "Breece Hall",
+   "team": "NYJ",
+   "status": "limited",
+   "kind": "status",
+   "confidence": 0.8,
+   "text": "Breece Hall (quad) limited in Wednesday practice"
+  },
+  {
+   "id": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3myxango25b2s|carnelltate|out|status",
+   "at": "2026-10-28T17:11:18.000Z",
+   "seen": "2026-10-28T17:20:12.032Z",
+   "handle": "rotowirenfl.bsky.social",
+   "post": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3myxango25b2s",
+   "player": "Carnell Tate",
+   "team": "TEN",
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.7,
+   "text": "Carnell Tate: Sitting out practice due to shoulder issue \n\n https://www.rotowire.com/football/player/carnell-tate-19268"
+  },
+  {
+   "id": "at://did:plc:qre6zxbmr3ixhdmgsgdretb5/app.bsky.feed.post/3myxarjemru2n|kerbyjoseph|limited|return",
+   "at": "2026-10-28T17:13:35.879Z",
+   "seen": "2026-10-28T17:20:12.032Z",
+   "handle": "adamscheftermirror.bsky.social",
+   "post": "at://did:plc:qre6zxbmr3ixhdmgsgdretb5/app.bsky.feed.post/3myxarjemru2n",
+   "player": "Kerby Joseph",
+   "team": "DET",
+   "status": "limited",
+   "kind": "return",
+   "confidence": 0.7,
+   "text": "More help: Lions S Kerby Joseph will return to practice today.\n\nOriginal post"
+  },
+  {
+   "id": "at://did:plc:mbr4badgf6yu56mquzackzew/app.bsky.feed.post/3myxawaae5c2k|kerbyjoseph|limited|status",
+   "at": "2026-10-28T17:16:14.162Z",
+   "seen": "2026-10-28T17:20:12.032Z",
+   "handle": "insidenflnews.bsky.social",
+   "post": "at://did:plc:mbr4badgf6yu56mquzackzew/app.bsky.feed.post/3myxawaae5c2k",
+   "player": "Kerby Joseph",
+   "team": "DET",
+   "status": "limited",
+   "kind": "status",
+   "confidence": 0.6,
+   "text": "Lions S Kerby Joseph (knee) has had his 21-day practice window opened."
+  },
+  {
+   "id": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3myxaxubn7i2j|stefondiggs|out|status",
+   "at": "2026-10-28T17:17:08.000Z",
+   "seen": "2026-10-28T17:20:12.032Z",
+   "handle": "rotowirenfl.bsky.social",
+   "post": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3myxaxubn7i2j",
+   "player": "Stefon Diggs",
+   "team": "NE",
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.7,
+   "text": "Stefon Diggs: Sitting out practice, will be full go Thursday \n\n https://www.rotowire.com/football/player/stefon-diggs-10133"
   }
  ]
 }
