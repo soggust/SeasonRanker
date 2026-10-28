@@ -1,13 +1,13 @@
 {
  "sport": "nfl",
  "cursor": {
-  "adamscheftermirror.bsky.social": "2026-10-28T20:48:38.572Z",
+  "adamscheftermirror.bsky.social": "2026-10-28T21:18:35.670Z",
   "rapsheet.bsky.social": "2026-10-28T14:02:17.022Z",
   "nflnewsreposterbot.bsky.social": "2026-10-22T13:33:43.592Z",
   "insidenflnews.bsky.social": "2026-10-28T19:54:31.103Z",
-  "nflnewsposter.bsky.social": "2026-10-28T20:46:51.270Z",
-  "rotoworld-fb.bsky.social": "2026-10-28T20:59:07.000Z",
-  "rotowirenfl.bsky.social": "2026-10-28T21:01:50.000Z"
+  "nflnewsposter.bsky.social": "2026-10-28T21:10:45.219Z",
+  "rotoworld-fb.bsky.social": "2026-10-28T21:17:06.000Z",
+  "rotowirenfl.bsky.social": "2026-10-28T21:17:26.000Z"
  },
  "claims": [
   {
@@ -7900,6 +7900,123 @@
    "kind": "status",
    "confidence": 0.6,
    "text": "Davante Adams: Undergoes hamstring surgery \n\n https://www.rotowire.com/football/player/davante-adams-9455"
+  },
+  {
+   "id": "at://did:plc:qre6zxbmr3ixhdmgsgdretb5/app.bsky.feed.post/3myxnmso2im2d|jahmyrgibbs|questionable|status",
+   "at": "2026-10-28T21:03:36.549Z",
+   "seen": "2026-10-28T21:21:02.224Z",
+   "handle": "adamscheftermirror.bsky.social",
+   "post": "at://did:plc:qre6zxbmr3ixhdmgsgdretb5/app.bsky.feed.post/3myxnmso2im2d",
+   "player": "Jahmyr Gibbs",
+   "team": "DET",
+   "status": "questionable",
+   "kind": "status",
+   "confidence": 0.5,
+   "text": "Lions RB Jahmyr Gibbs (shoulder) and WR Amon-Ra St. Brown (ankle) were listed as non-participants at today’s practice.\n\nOriginal post"
+  },
+  {
+   "id": "at://did:plc:qre6zxbmr3ixhdmgsgdretb5/app.bsky.feed.post/3myxnmso2im2d|amonrastbrown|questionable|status",
+   "at": "2026-10-28T21:03:36.549Z",
+   "seen": "2026-10-28T21:21:02.224Z",
+   "handle": "adamscheftermirror.bsky.social",
+   "post": "at://did:plc:qre6zxbmr3ixhdmgsgdretb5/app.bsky.feed.post/3myxnmso2im2d",
+   "player": "Amon-Ra St. Brown",
+   "team": "DET",
+   "status": "questionable",
+   "kind": "status",
+   "confidence": 0.5,
+   "text": "Lions RB Jahmyr Gibbs (shoulder) and WR Amon-Ra St. Brown (ankle) were listed as non-participants at today’s practice.\n\nOriginal post"
+  },
+  {
+   "id": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3myxns3aulu2r|jeremiyahlove|limited|status",
+   "at": "2026-10-28T21:06:33.000Z",
+   "seen": "2026-10-28T21:21:02.224Z",
+   "handle": "rotowirenfl.bsky.social",
+   "post": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3myxns3aulu2r",
+   "player": "Jeremiyah Love",
+   "team": "ARI",
+   "status": "limited",
+   "kind": "status",
+   "confidence": 0.75,
+   "text": "Jeremiyah Love: Will be limited Wednesday \n\n https://www.rotowire.com/football/player/jeremiyah-love-19235"
+  },
+  {
+   "id": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3myxnuwqpqv2y|terranceferguson|out|status",
+   "at": "2026-10-28T21:08:09.000Z",
+   "seen": "2026-10-28T21:21:02.224Z",
+   "handle": "rotoworld-fb.bsky.social",
+   "post": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3myxnuwqpqv2y",
+   "player": "Terrance Ferguson",
+   "team": null,
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.85,
+   "text": "Terrance Ferguson (ankle) not returning in Week 8"
+  },
+  {
+   "id": "at://did:plc:fuqjc7x4gxvnwzksnlxwbe4x/app.bsky.feed.post/3myxnzlgxpsgv|dameonpierce|out|status",
+   "at": "2026-10-28T21:10:45.219Z",
+   "seen": "2026-10-28T21:21:02.224Z",
+   "handle": "nflnewsposter.bsky.social",
+   "post": "at://did:plc:fuqjc7x4gxvnwzksnlxwbe4x/app.bsky.feed.post/3myxnzlgxpsgv",
+   "player": "Dameon Pierce",
+   "team": "PHI",
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.9,
+   "text": "[Eagles] We have signed RB Jaydon Blue to the active roster. We have also signed G Evan Beerntsen, WR Quentin Skinner, and DB Shaun Wade to the practice squad.\n\nWe have placed RB Dameon Pierce on the "
+  },
+  {
+   "id": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3myxo5rab572q|rasheerice|limited|status",
+   "at": "2026-10-28T21:13:05.000Z",
+   "seen": "2026-10-28T21:21:02.224Z",
+   "handle": "rotowirenfl.bsky.social",
+   "post": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3myxo5rab572q",
+   "player": "Rashee Rice",
+   "team": "KC",
+   "status": "limited",
+   "kind": "status",
+   "confidence": 0.75,
+   "text": "Rashee Rice: Returns in limited fashion Wednesday \n\n https://www.rotowire.com/football/player/rashee-rice-16963"
+  },
+  {
+   "id": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3myxoex67yz2d|jeremiyahlove|limited|status",
+   "at": "2026-10-28T21:17:06.000Z",
+   "seen": "2026-10-28T21:21:02.224Z",
+   "handle": "rotoworld-fb.bsky.social",
+   "post": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3myxoex67yz2d",
+   "player": "Jeremiyah Love",
+   "team": "ARI",
+   "status": "limited",
+   "kind": "status",
+   "confidence": 0.8,
+   "text": "Jeremiyah Love (ankle) will be limited on Wed."
+  },
+  {
+   "id": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3myxofjqusy27|dameonpierce|out|status",
+   "at": "2026-10-28T21:17:26.000Z",
+   "seen": "2026-10-28T21:21:02.224Z",
+   "handle": "rotowirenfl.bsky.social",
+   "post": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3myxofjqusy27",
+   "player": "Dameon Pierce",
+   "team": "PHI",
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.9,
+   "text": "Dameon Pierce: Lands on injured reserve \n\n https://www.rotowire.com/football/player/dameon-pierce-15875"
+  },
+  {
+   "id": "at://did:plc:qre6zxbmr3ixhdmgsgdretb5/app.bsky.feed.post/3myxohm4yxw2f|dameonpierce|out|status",
+   "at": "2026-10-28T21:18:35.670Z",
+   "seen": "2026-10-28T21:21:02.224Z",
+   "handle": "adamscheftermirror.bsky.social",
+   "post": "at://did:plc:qre6zxbmr3ixhdmgsgdretb5/app.bsky.feed.post/3myxohm4yxw2f",
+   "player": "Dameon Pierce",
+   "team": "PHI",
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.9,
+   "text": "Eagles have placed RB Dameon Pierce on injured reserve and signed RB Jaydon Blue to their active roster.\n\nOriginal post"
   }
  ]
 }

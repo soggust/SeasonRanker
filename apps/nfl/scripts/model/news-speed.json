@@ -11679,6 +11679,54 @@
     "seen": "2026-10-28T20:59:35.871Z",
     "own": "2026-10-28T20:26:00.000Z"
    }
+  },
+  "401873023|laddmcconkey|q": {
+   "game": "401873023",
+   "start": "2026-10-30T00:15Z",
+   "team": "9",
+   "name": "Ladd McConkey",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-10-28T21:02:19.956Z",
+    "own": "2026-10-28T20:01:04.000Z",
+    "why": "@rotoworld-fb.bsky.social: Ladd McConkey (concussion) will practice on Wed."
+   }
+  },
+  "401873023|tylerwarren|q": {
+   "game": "401873023",
+   "start": "2026-10-30T00:15Z",
+   "team": "9",
+   "name": "Tyler Warren",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-10-28T21:02:19.956Z",
+    "own": "2026-10-28T20:05:42.000Z",
+    "why": "@rotoworld-fb.bsky.social: Tyler Warren (groin) limited in Wednesday practice"
+   }
+  },
+  "401873023|davanteadams|out": {
+   "game": "401873023",
+   "start": "2026-10-30T00:15Z",
+   "team": "9",
+   "name": "Davante Adams",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-10-28T21:02:19.956Z",
+    "own": "2026-10-28T20:59:56.000Z",
+    "why": "@rotowirenfl.bsky.social: Davante Adams: Undergoes hamstring surgery \n\n https://"
+   }
+  },
+  "401873035|dameonpierce|out": {
+   "game": "401873035",
+   "start": "2026-11-02T01:20Z",
+   "team": "21",
+   "name": "Dameon Pierce",
+   "status": "out",
+   "athlete": "4360238",
+   "espn": {
+    "seen": "2026-10-28T21:18:10.987Z",
+    "own": "2026-10-28T21:10:00.000Z"
+   }
   }
  }
 }
