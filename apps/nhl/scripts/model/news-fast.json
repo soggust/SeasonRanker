@@ -3,7 +3,7 @@
  "cursor": {
   "johnston-bot.bsky.social": "2026-10-25T21:08:24.897Z",
   "notfriedgehnic.bsky.social": "2026-10-28T18:12:23.303Z",
-  "dailyfaceoff.bsky.social": "2026-10-28T19:04:46.000Z",
+  "dailyfaceoff.bsky.social": "2026-10-28T19:27:15.000Z",
   "dfotoronto.bsky.social": "2026-10-28T18:57:51.000Z",
   "marklazerus.bsky.social": "2026-10-28T17:08:09.474Z"
  },
@@ -930,6 +930,19 @@
    "kind": "role",
    "confidence": 0.5,
    "text": "Maple Leafs lineup news: McKenna paired with Matthews, Roslovic, Tanev skating in regular jersey"
+  },
+  {
+   "id": "at://did:plc:3uus7y6h3rlrk6sbctzxm4bg/app.bsky.feed.post/3myxiajravs25|kirillmarchenko|out|status",
+   "at": "2026-10-28T19:27:15.000Z",
+   "seen": "2026-10-28T19:38:45.593Z",
+   "handle": "dailyfaceoff.bsky.social",
+   "post": "at://did:plc:3uus7y6h3rlrk6sbctzxm4bg/app.bsky.feed.post/3myxiajravs25",
+   "player": "Kirill Marchenko",
+   "team": "TOR",
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.95,
+   "text": "Leafs’ Kirill Marchenko out week-to-week with lower-body injury"
   }
  ]
 }
