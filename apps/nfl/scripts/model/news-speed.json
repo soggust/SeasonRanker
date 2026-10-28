@@ -12171,6 +12171,150 @@
     "seen": "2026-10-28T23:13:08.670Z",
     "own": "2026-10-28T23:02:00.000Z"
    }
+  },
+  "401873023|georgepickens|q": {
+   "game": "401873023",
+   "start": "2026-10-30T00:15Z",
+   "team": "9",
+   "name": "George Pickens",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-10-28T23:16:00.900Z",
+    "own": "2026-10-28T22:33:16.000Z",
+    "why": "@rotoworld-fb.bsky.social: George Pickens (shoulder/hamstring) limited Wed."
+   }
+  },
+  "401873023|jeremiyahlove|q": {
+   "game": "401873023",
+   "start": "2026-10-30T00:15Z",
+   "team": "9",
+   "name": "Jeremiyah Love",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-10-28T23:16:00.900Z",
+    "own": "2026-10-28T22:28:29.000Z",
+    "why": "@rotoworld-fb.bsky.social: Jeremiyah Love (ankle) to be limited Wednesday"
+   }
+  },
+  "401873023|stefondiggs|out": {
+   "game": "401873023",
+   "start": "2026-10-30T00:15Z",
+   "team": "9",
+   "name": "Stefon Diggs",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-10-28T23:16:00.900Z",
+    "own": "2026-10-28T22:53:34.000Z",
+    "why": "@rotowirenfl.bsky.social: Stefon Diggs: DNP due to 'hand/hamstring/rest' \n\n http"
+   }
+  },
+  "401873026|tyrellshavers|out": {
+   "game": "401873026",
+   "start": "2026-11-01T18:00Z",
+   "team": "2",
+   "name": "Tyrell Shavers",
+   "status": "out",
+   "athlete": "4241476",
+   "espn": {
+    "seen": "2026-10-28T23:54:43.625Z",
+    "own": "2026-10-28T23:45:00.000Z"
+   }
+  },
+  "401873032|colemanshelton|q": {
+   "game": "401873032",
+   "start": "2026-11-01T21:05Z",
+   "team": "14",
+   "name": "Coleman Shelton",
+   "status": "q",
+   "athlete": "3052180",
+   "espn": {
+    "seen": "2026-10-28T23:54:43.625Z",
+    "own": "2026-10-28T23:32:00.000Z"
+   }
+  },
+  "401873032|joecardona|q": {
+   "game": "401873032",
+   "start": "2026-11-01T21:05Z",
+   "team": "14",
+   "name": "Joe Cardona",
+   "status": "q",
+   "athlete": "2575907",
+   "espn": {
+    "seen": "2026-10-28T23:54:43.625Z",
+    "own": "2026-10-28T23:32:00.000Z"
+   }
+  },
+  "401873035|jerzhannewton|out": {
+   "game": "401873035",
+   "start": "2026-11-02T01:20Z",
+   "team": "28",
+   "name": "Jer'Zhan Newton",
+   "status": "out",
+   "athlete": "4430560",
+   "espn": {
+    "seen": "2026-10-28T23:54:43.625Z",
+    "own": "2026-10-28T23:25:00.000Z"
+   }
+  },
+  "401873035|moroojomo|q": {
+   "game": "401873035",
+   "start": "2026-11-02T01:20Z",
+   "team": "21",
+   "name": "Moro Ojomo",
+   "status": "q",
+   "athlete": "4362116",
+   "espn": {
+    "seen": "2026-10-28T23:54:43.625Z",
+    "own": "2026-10-28T23:05:00.000Z"
+   }
+  },
+  "401873035|smaelmondon|q": {
+   "game": "401873035",
+   "start": "2026-11-02T01:20Z",
+   "team": "21",
+   "name": "Smael Mondon Jr.",
+   "status": "q",
+   "athlete": "4431573",
+   "espn": {
+    "seen": "2026-10-28T23:54:43.625Z",
+    "own": "2026-10-28T23:04:00.000Z"
+   }
+  },
+  "401873035|jalyxhunt|q": {
+   "game": "401873035",
+   "start": "2026-11-02T01:20Z",
+   "team": "21",
+   "name": "Jalyx Hunt",
+   "status": "q",
+   "athlete": "4571162",
+   "espn": {
+    "seen": "2026-10-28T23:54:43.625Z",
+    "own": "2026-10-28T23:04:00.000Z"
+   }
+  },
+  "401873035|jonathanjones|q": {
+   "game": "401873035",
+   "start": "2026-11-02T01:20Z",
+   "team": "21",
+   "name": "Jonathan Jones",
+   "status": "q",
+   "athlete": "2971027",
+   "espn": {
+    "seen": "2026-10-28T23:54:43.625Z",
+    "own": "2026-10-28T23:03:00.000Z"
+   }
+  },
+  "401873035|jonathangreenard|q": {
+   "game": "401873035",
+   "start": "2026-11-02T01:20Z",
+   "team": "21",
+   "name": "Jonathan Greenard",
+   "status": "q",
+   "athlete": "3916409",
+   "espn": {
+    "seen": "2026-10-28T23:54:43.625Z",
+    "own": "2026-10-28T23:03:00.000Z"
+   }
   }
  }
 }
