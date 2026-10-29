@@ -2,8 +2,8 @@
  "sport": "nhl",
  "cursor": {
   "johnston-bot.bsky.social": "2026-10-29T15:33:36.339Z",
-  "notfriedgehnic.bsky.social": "2026-10-29T15:37:15.052Z",
-  "dailyfaceoff.bsky.social": "2026-10-29T16:13:23.000Z",
+  "notfriedgehnic.bsky.social": "2026-10-29T16:46:27.076Z",
+  "dailyfaceoff.bsky.social": "2026-10-29T16:45:39.000Z",
   "dfotoronto.bsky.social": "2026-10-29T15:50:58.000Z",
   "marklazerus.bsky.social": "2026-10-29T03:14:54.956Z"
  },
@@ -1008,6 +1008,71 @@
    "kind": "return",
    "confidence": 0.85,
    "text": "Penguins’ Ben Kindel to return after missing time following vasovagal episode"
+  },
+  {
+   "id": "at://did:plc:3uus7y6h3rlrk6sbctzxm4bg/app.bsky.feed.post/3myzog4i23p2u|taylorhall|out|status",
+   "at": "2026-10-29T16:23:05.000Z",
+   "seen": "2026-10-29T16:51:09.213Z",
+   "handle": "dailyfaceoff.bsky.social",
+   "post": "at://did:plc:3uus7y6h3rlrk6sbctzxm4bg/app.bsky.feed.post/3myzog4i23p2u",
+   "player": "Taylor Hall",
+   "team": "CAR",
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.7,
+   "text": "Hurricanes’ Taylor Hall to miss time with upper-body injury"
+  },
+  {
+   "id": "at://did:plc:3uus7y6h3rlrk6sbctzxm4bg/app.bsky.feed.post/3myzow7u4h32g|faber|active|return",
+   "at": "2026-10-29T16:32:05.000Z",
+   "seen": "2026-10-29T16:51:09.213Z",
+   "handle": "dailyfaceoff.bsky.social",
+   "post": "at://did:plc:3uus7y6h3rlrk6sbctzxm4bg/app.bsky.feed.post/3myzow7u4h32g",
+   "player": "Faber",
+   "team": "MIN",
+   "status": "active",
+   "kind": "return",
+   "confidence": 0.8,
+   "text": "Report: Wild’s Faber clears return to play protocol, Spurgeon out week to week"
+  },
+  {
+   "id": "at://did:plc:3uus7y6h3rlrk6sbctzxm4bg/app.bsky.feed.post/3myzow7u4h32g|spurgeon|out|status",
+   "at": "2026-10-29T16:32:05.000Z",
+   "seen": "2026-10-29T16:51:09.213Z",
+   "handle": "dailyfaceoff.bsky.social",
+   "post": "at://did:plc:3uus7y6h3rlrk6sbctzxm4bg/app.bsky.feed.post/3myzow7u4h32g",
+   "player": "Spurgeon",
+   "team": "MIN",
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.85,
+   "text": "Report: Wild’s Faber clears return to play protocol, Spurgeon out week to week"
+  },
+  {
+   "id": "at://did:plc:3uus7y6h3rlrk6sbctzxm4bg/app.bsky.feed.post/3myzpoi5rrq2u|victorhedman|active|return",
+   "at": "2026-10-29T16:45:39.000Z",
+   "seen": "2026-10-29T16:51:09.213Z",
+   "handle": "dailyfaceoff.bsky.social",
+   "post": "at://did:plc:3uus7y6h3rlrk6sbctzxm4bg/app.bsky.feed.post/3myzpoi5rrq2u",
+   "player": "Victor Hedman",
+   "team": "TBL",
+   "status": "active",
+   "kind": "return",
+   "confidence": 0.85,
+   "text": "Lightning’s Victor Hedman, Hagel to return against Jets"
+  },
+  {
+   "id": "at://did:plc:3uus7y6h3rlrk6sbctzxm4bg/app.bsky.feed.post/3myzpoi5rrq2u|hagel|active|return",
+   "at": "2026-10-29T16:45:39.000Z",
+   "seen": "2026-10-29T16:51:09.213Z",
+   "handle": "dailyfaceoff.bsky.social",
+   "post": "at://did:plc:3uus7y6h3rlrk6sbctzxm4bg/app.bsky.feed.post/3myzpoi5rrq2u",
+   "player": "Hagel",
+   "team": "TBL",
+   "status": "active",
+   "kind": "return",
+   "confidence": 0.85,
+   "text": "Lightning’s Victor Hedman, Hagel to return against Jets"
   }
  ]
 }

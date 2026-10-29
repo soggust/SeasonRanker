@@ -1,13 +1,13 @@
 {
  "sport": "nfl",
  "cursor": {
-  "adamscheftermirror.bsky.social": "2026-10-29T16:13:55.104Z",
+  "adamscheftermirror.bsky.social": "2026-10-29T16:28:42.848Z",
   "rapsheet.bsky.social": "2026-10-29T16:01:23.360Z",
   "nflnewsreposterbot.bsky.social": "2026-10-29T14:25:56.466Z",
   "insidenflnews.bsky.social": "2026-10-29T14:36:20.521Z",
-  "nflnewsposter.bsky.social": "2026-10-29T16:04:09.767Z",
-  "rotoworld-fb.bsky.social": "2026-10-29T16:15:26.000Z",
-  "rotowirenfl.bsky.social": "2026-10-29T15:56:44.000Z"
+  "nflnewsposter.bsky.social": "2026-10-29T16:20:07.503Z",
+  "rotoworld-fb.bsky.social": "2026-10-29T16:42:34.000Z",
+  "rotowirenfl.bsky.social": "2026-10-29T16:36:53.000Z"
  },
  "claims": [
   {
@@ -8355,6 +8355,19 @@
    "kind": "status",
    "confidence": 0.3,
    "text": "Rap: Bengals WR Ja’Marr Chase (ankle) missing Wednesday’s practice is not considered a big deal."
+  },
+  {
+   "id": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3myzpiy4mdy24|gainwell|active|return",
+   "at": "2026-10-29T16:42:34.000Z",
+   "seen": "2026-10-29T16:51:09.213Z",
+   "handle": "rotoworld-fb.bsky.social",
+   "post": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3myzpiy4mdy24",
+   "player": "Gainwell",
+   "team": null,
+   "status": "active",
+   "kind": "return",
+   "confidence": 0.6,
+   "text": "Gainwell (hip) returns to practice on Thursday"
   }
  ]
 }
