@@ -1,7 +1,7 @@
 {
  "sport": "nba",
  "cursor": {
-  "rotowirenba.bsky.social": "2026-10-29T18:33:38.000Z",
+  "rotowirenba.bsky.social": "2026-10-29T18:57:17.000Z",
   "insidenbanews.bsky.social": "2026-10-29T02:03:08.482Z",
   "shamsbot.bsky.social": "2026-10-29T16:48:17.000Z"
  },
@@ -5998,6 +5998,32 @@
    "kind": "status",
    "confidence": 0.85,
    "text": "Kawhi Leonard: To miss 3-4 weeks \n\n https://www.rotowire.com/basketball/player/kawhi-leonard-3195"
+  },
+  {
+   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3myzwwsjfqk2z|jalensmith|questionable|status",
+   "at": "2026-10-29T18:55:35.000Z",
+   "seen": "2026-10-29T19:12:29.734Z",
+   "handle": "rotowirenba.bsky.social",
+   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3myzwwsjfqk2z",
+   "player": "Jalen Smith",
+   "team": null,
+   "status": "questionable",
+   "kind": "status",
+   "confidence": 0.95,
+   "text": "Jalen Smith: Listed as questionable \n\n https://www.rotowire.com/basketball/player/jalen-smith-5169"
+  },
+  {
+   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3myzwzujysz26|robertwilliams|doubtful|status",
+   "at": "2026-10-29T18:57:17.000Z",
+   "seen": "2026-10-29T19:12:29.734Z",
+   "handle": "rotowirenba.bsky.social",
+   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3myzwzujysz26",
+   "player": "Robert Williams",
+   "team": null,
+   "status": "doubtful",
+   "kind": "status",
+   "confidence": 0.95,
+   "text": "Robert Williams: Doubtful for Thursday \n\n https://www.rotowire.com/basketball/player/robert-williams-4382"
   }
  ]
 }

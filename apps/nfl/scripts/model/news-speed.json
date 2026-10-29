@@ -12543,6 +12543,42 @@
     "seen": "2026-10-29T18:48:49.476Z",
     "own": "2026-10-29T18:38:00.000Z"
    }
+  },
+  "401873023|treveyonhenderson|q": {
+   "game": "401873023",
+   "start": "2026-10-30T00:15Z",
+   "team": "9",
+   "name": "TreVeyon Henderson",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-10-29T18:51:28.932Z",
+    "own": "2026-10-29T18:39:44.000Z",
+    "why": "@rotowirenfl.bsky.social: TreVeyon Henderson: Missing from practice due to ankle"
+   }
+  },
+  "401873026|raydavis|q": {
+   "game": "401873026",
+   "start": "2026-11-01T18:00Z",
+   "team": "2",
+   "name": "Ray Davis",
+   "status": "q",
+   "athlete": "4429501",
+   "espn": {
+    "seen": "2026-10-29T19:09:54.767Z",
+    "own": "2026-10-29T18:49:00.000Z"
+   }
+  },
+  "401873033|mansoordelane|q": {
+   "game": "401873033",
+   "start": "2026-11-01T21:25Z",
+   "team": "12",
+   "name": "Mansoor Delane",
+   "status": "q",
+   "athlete": "4880124",
+   "espn": {
+    "seen": "2026-10-29T19:09:54.767Z",
+    "own": "2026-10-29T18:52:00.000Z"
+   }
   }
  }
 }

@@ -6,8 +6,8 @@
   "nflnewsreposterbot.bsky.social": "2026-10-29T14:25:56.466Z",
   "insidenflnews.bsky.social": "2026-10-29T18:23:07.941Z",
   "nflnewsposter.bsky.social": "2026-10-29T18:48:45.734Z",
-  "rotoworld-fb.bsky.social": "2026-10-29T18:43:36.000Z",
-  "rotowirenfl.bsky.social": "2026-10-29T18:51:19.000Z"
+  "rotoworld-fb.bsky.social": "2026-10-29T19:05:38.000Z",
+  "rotowirenfl.bsky.social": "2026-10-29T18:55:40.000Z"
  },
  "claims": [
   {
@@ -8472,6 +8472,19 @@
    "kind": "return",
    "confidence": 0.8,
    "text": "Jadarian Price: Designated for return from IR \n\n https://www.rotowire.com/football/player/jadarian-price-19299"
+  },
+  {
+   "id": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3myzwqapuk624|rasheerice|limited|return",
+   "at": "2026-10-29T18:51:55.000Z",
+   "seen": "2026-10-29T19:12:29.734Z",
+   "handle": "rotoworld-fb.bsky.social",
+   "post": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3myzwqapuk624",
+   "player": "Rashee Rice",
+   "team": "KC",
+   "status": "limited",
+   "kind": "return",
+   "confidence": 0.45,
+   "text": "Rashee Rice (hamstring) practices again Thursday"
   }
  ]
 }
