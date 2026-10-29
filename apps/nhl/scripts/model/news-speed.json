@@ -1,147 +1,6 @@
 {
  "sport": "nhl",
  "entries": {
-  "401892537|williamnylander|q": {
-   "game": "401892537",
-   "start": "2026-10-19T23:30Z",
-   "team": "21",
-   "name": "William Nylander",
-   "status": "q",
-   "athlete": "3114736",
-   "espn": {
-    "seen": "2026-10-19T21:13:52.043Z",
-    "own": "2026-10-19T14:11:00.000Z"
-   },
-   "sleeper": {
-    "seen": "2026-10-19T21:13:52.043Z",
-    "own": "2026-10-19T14:20:47.141Z"
-   },
-   "bluesky": {
-    "seen": "2026-10-19T21:15:18.875Z",
-    "own": "2026-10-19T17:13:58.000Z",
-    "why": "@dfotoronto.bsky.social: Leafs lineup notes: William Nylander misses morning ska"
-   }
-  },
-  "401892537|johntavares|out": {
-   "game": "401892537",
-   "start": "2026-10-19T23:30Z",
-   "team": "21",
-   "name": "John Tavares",
-   "status": "out",
-   "athlete": "5160",
-   "espn": {
-    "seen": "2026-10-19T21:13:52.043Z",
-    "own": "2026-10-17T20:19:00.000Z"
-   }
-  },
-  "401892537|dakotajoshua|out": {
-   "game": "401892537",
-   "start": "2026-10-19T23:30Z",
-   "team": "21",
-   "name": "Dakota Joshua",
-   "status": "out",
-   "athlete": "4588638",
-   "espn": {
-    "seen": "2026-10-19T21:13:52.043Z",
-    "own": "2026-10-17T14:02:00.000Z"
-   }
-  },
-  "401892537|mileswood|out": {
-   "game": "401892537",
-   "start": "2026-10-19T23:30Z",
-   "team": "21",
-   "name": "Miles Wood",
-   "status": "out",
-   "athlete": "3042110",
-   "espn": {
-    "seen": "2026-10-19T21:13:52.043Z",
-    "own": "2026-10-15T22:35:00.000Z"
-   }
-  },
-  "401892537|christanev|out": {
-   "game": "401892537",
-   "start": "2026-10-19T23:30Z",
-   "team": "21",
-   "name": "Chris Tanev",
-   "status": "out",
-   "athlete": "5592",
-   "espn": {
-    "seen": "2026-10-19T21:13:52.043Z",
-    "own": "2026-10-15T14:30:00.000Z"
-   }
-  },
-  "401892537|maxdomi|out": {
-   "game": "401892537",
-   "start": "2026-10-19T23:30Z",
-   "team": "21",
-   "name": "Max Domi",
-   "status": "out",
-   "athlete": "3042014",
-   "espn": {
-    "seen": "2026-10-19T21:13:52.043Z",
-    "own": "2026-09-30T18:51:00.000Z"
-   }
-  },
-  "401892537|cadewebber|out": {
-   "game": "401892537",
-   "start": "2026-10-19T23:30Z",
-   "team": "21",
-   "name": "Cade Webber",
-   "status": "out",
-   "athlete": "4781709",
-   "espn": {
-    "seen": "2026-10-19T21:13:52.043Z",
-    "own": "2026-09-29T14:55:00.000Z"
-   }
-  },
-  "401892537|elvismerzlikins|out": {
-   "game": "401892537",
-   "start": "2026-10-19T23:30Z",
-   "team": "21",
-   "name": "Elvis Merzlikins",
-   "status": "out",
-   "athlete": "3151038",
-   "espn": {
-    "seen": "2026-10-19T21:13:52.043Z",
-    "own": "2026-09-29T14:24:00.000Z"
-   }
-  },
-  "401892537|williamvilleneuve|out": {
-   "game": "401892537",
-   "start": "2026-10-19T23:30Z",
-   "team": "21",
-   "name": "William Villeneuve",
-   "status": "out",
-   "athlete": "4697767",
-   "espn": {
-    "seen": "2026-10-19T21:13:52.043Z",
-    "own": "2026-09-29T04:30:00.000Z"
-   }
-  },
-  "401892537|quentinmusty|out": {
-   "game": "401892537",
-   "start": "2026-10-19T23:30Z",
-   "team": "18",
-   "name": "Quentin Musty",
-   "status": "out",
-   "athlete": "5149209",
-   "espn": {
-    "seen": "2026-10-19T21:13:52.043Z",
-    "own": "2026-09-28T22:20:00.000Z"
-   }
-  },
-  "401892537|kylekeyser|out": {
-   "game": "401892537",
-   "start": "2026-10-19T23:30Z",
-   "team": "18",
-   "name": "Kyle Keyser",
-   "status": "out",
-   "athlete": "4329962",
-   "espn": {
-    "seen": "2026-10-19T21:13:52.043Z",
-    "own": "2026-09-28T22:10:00.000Z"
-   }
-  },
   "401892538|michaelcarcone|out": {
    "game": "401892538",
    "start": "2026-10-20T01:00Z",
@@ -8938,6 +8797,30 @@
    "espn": {
     "seen": "2026-10-29T23:13:47.755Z",
     "own": "2026-10-29T22:06:00.000Z"
+   }
+  },
+  "401892606|mikematheson|out": {
+   "game": "401892606",
+   "start": "2026-10-30T00:00Z",
+   "team": "10",
+   "name": "Mike Matheson",
+   "status": "out",
+   "athlete": "2976851",
+   "espn": {
+    "seen": "2026-10-29T23:42:44.549Z",
+    "own": "2026-10-29T23:36:00.000Z"
+   }
+  },
+  "401892607|kendallcoyneschofield|out": {
+   "game": "401892607",
+   "start": "2026-10-30T00:00Z",
+   "team": "30",
+   "name": "Kendall Coyne Schofield",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-10-29T23:16:27.355Z",
+    "own": "2026-10-29T22:37:25.000Z",
+    "why": "@dailyfaceoff.bsky.social: Frost’s Kendall Coyne Schofield to miss 2026-27 after"
    }
   }
  }
