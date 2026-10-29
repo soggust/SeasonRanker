@@ -14681,6 +14681,11 @@
    "espn": {
     "seen": "2026-10-29T15:31:53.368Z",
     "own": "2026-10-29T04:38:00.000Z"
+   },
+   "bluesky": {
+    "seen": "2026-10-29T20:35:57.527Z",
+    "own": "2026-10-29T20:34:29.000Z",
+    "why": "@rotowirenba.bsky.social: Alperen Sengun: Questionable for Friday \n\n https://www"
    }
   },
   "401909283|marcussmart|out": {
@@ -15357,6 +15362,18 @@
    "sleeper": {
     "seen": "2026-10-29T20:14:28.021Z",
     "own": "2026-10-29T19:00:30.484Z"
+   }
+  },
+  "401909283|reedsheppard|out": {
+   "game": "401909283",
+   "start": "2026-10-31T00:00Z",
+   "team": "10",
+   "name": "Reed Sheppard",
+   "status": "out",
+   "athlete": "4711272",
+   "espn": {
+    "seen": "2026-10-29T20:46:40.142Z",
+    "own": "2026-10-29T20:36:00.000Z"
    }
   }
  }
