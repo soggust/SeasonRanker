@@ -2312,3 +2312,40 @@ test('D95 the testing audit\'s six recommendations: one beat-the-close, the prop
   assert.equal(GS.replayGuard(a, b, gRows(50), gRows(48, 11)).pass, true, 'two points down on 200 bets: inside the noise');
   assert.equal(GS.replayGuard(a, { ...b, beat: 0.3 }, gRows(50), gRows(30, 11)).pass, false, 'twenty down: beyond it');
 });
+
+test('D100 the Polymarket sharps as a free market signal: research only, the hook off unless POLY_SIGNAL names a registered variant, pre-registered before its results', async () => {
+  const PM = await import('../libs/ranker/scripts/model/polymarket.mjs');
+  const D = await import('../libs/ranker/scripts/model/desk.mjs');
+  const had = process.env.POLY_SIGNAL;
+  delete process.env.POLY_SIGNAL;
+  assert.equal(PM.polyVariant(), null, 'off by default: the champion');
+  assert.equal(PM.polySignal({ sport: 'nba', event: '1', market: 'ml', line: null, at: 1, side: 'over' }, 0.5), null);
+  const ctx = { sport: 'nba', event: '401810000', market: 'ml', line: null, side: 'over', f: 0.5, raw: 0.56, t: 2e12, at: 2e12 - 12 * 36e5, kind: 'o' };
+  assert.equal(D.chanceAt('ml', 0.5, 0.56, 0.5, ctx), D.chanceAt('ml', 0.5, 0.56, 0.5, { named: 0 }), 'nothing priced moves without the flag');
+  process.env.POLY_SIGNAL = 'bogus';
+  assert.equal(PM.polyVariant(), null, 'an unregistered variant is off');
+  process.env.POLY_SIGNAL = 'shift1';
+  assert.equal(PM.polyVariant(), 'shift1');
+  assert.equal(PM.polySignal({ sport: 'zzz', event: 'none', market: 'ml', line: null, at: 1, side: 'over' }, 0.5), null, 'no signal file, no flow: the chance stands');
+  if (had === undefined) delete process.env.POLY_SIGNAL;
+  else process.env.POLY_SIGNAL = had;
+  // (the registered variants and the shift's shape: nothing under the floor, in proportion to the saturation, the sign the flow's)
+  assert.deepEqual(PM.KAPPA, { shift1: 0.01, shift2: 0.02 });
+  assert.equal(PM.NET_MIN, 1000);
+  assert.equal(PM.SATURATE, 10000);
+  assert.equal(PM.flowShift(999, 'shift1'), 0);
+  assert.equal(PM.flowShift(5000, 'shift1'), 0.005);
+  assert.equal(PM.flowShift(-20000, 'shift2'), -0.02);
+  assert.equal(PM.flowShift(NaN, 'shift2'), 0);
+  // (free: the public endpoints only, no key anywhere)
+  const src = fs.readFileSync(path.resolve('libs/ranker/scripts/model/polymarket.mjs'), 'utf8');
+  assert.ok(!/api[_-]?key|authorization|private[_-]?key/i.test(src), 'no key, no account');
+  assert.ok(src.includes('gamma-api.polymarket.com') && src.includes('data-api.polymarket.com') && src.includes('clob.polymarket.com'));
+  // (pre-registered: the entry's date before every result's)
+  const reg = JSON.parse(fs.readFileSync(path.resolve('libs/ranker/scripts/model/prereg.json'), 'utf8'));
+  const e = reg.entries.find((x) => x.id === 'd100-polymarket-sharps');
+  assert.ok(e && e.variants.includes('shift1') && e.variants.includes('shift2'));
+  assert.ok(e.results.every((r) => Date.parse(r.date) >= Date.parse(e.date)), 'results after the registration');
+  const decisions = fs.readFileSync(path.resolve('libs/ranker/scripts/model/DECISIONS.md'), 'utf8');
+  assert.ok(decisions.includes('### D100.'));
+});

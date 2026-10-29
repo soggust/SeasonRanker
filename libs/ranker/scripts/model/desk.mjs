@@ -33,6 +33,7 @@ import { etDay } from './sources.mjs';
 import { MODEL_EPOCH } from './leagues.mjs';
 import { CLV_V, fairBeat } from './clv.mjs';
 import { hookChance } from './residual.mjs';
+import { polySignal } from './polymarket.mjs';
 import { knob } from './tuned.mjs';
 
 // (1,000 to start, so a full slate of bets leaves most of it on hand; the desk rebuys 1,000 whenever its
@@ -171,7 +172,11 @@ export const chanceAt = (market, fair, model, trust, ctx = null) => {
   const p = Math.min(0.995, Math.max(0.005, fair + named + trust * leanOf(model - fair, GAP[market])));
   if (!ctx || Object.keys(ctx).every((k) => k === 'named')) return p;
   const r = hookChance({ ...ctx, market: ctx.market ?? market, f: ctx.f ?? fair, raw: ctx.raw ?? model }, p);
-  return r ? r.p : p;
+  const q = r ? r.p : p;
+  // (research, DECISIONS.md D100: the Polymarket sharps' flow before the bet's moment as a shift of the chance,
+  // POLY_SIGNAL=<variant> in the environment only (the gate's candidate); off, nothing priced moves)
+  const ps = polySignal({ ...ctx, market: ctx.market ?? market }, q);
+  return ps ? ps.p : q;
 };
 
 // A researched CHECK's chance (run.mjs betProps): the research found nothing to explain the gap, or a reason the

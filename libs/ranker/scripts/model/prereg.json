@@ -85,7 +85,18 @@
     "mlb",
     "nfl"
    ],
-   "results": [],
+   "results": [
+    {
+     "date": "2026-10-29T12:30:13.120Z",
+     "variant": "shift1",
+     "text": "Gate (candidate env:POLY_SIGNAL=shift1 vs origin/master c26f0869, nba nhl mlb nfl): SHIP by ties, no layer worse, no measure better beyond noise; recency veto passed (projections untouched). History top picks' units: NBA +135.50u -> +135.83u, NHL -43.23u -> -44.48u, MLB -42.51u -> -40.37u, NFL unchanged; top picks' CLV moves of 0.0001-0.0004, all inside the noise. Not shipped: nothing improves beyond noise, the owner's scope is research only, and a live version needs a Polymarket feed in run.mjs."
+    },
+    {
+     "date": "2026-10-29T12:30:13.193Z",
+     "variant": "shift2",
+     "text": "Gate (env:POLY_SIGNAL=shift2 vs origin/master c26f0869): SHIP, better beyond noise in MLB on one measure (history top picks' CLV -0.0588 -> -0.0571, 95% [+0.0007, +0.0028]), ties everywhere else; recency veto passed. Top picks' units: MLB -42.51u -> -31.69u (+10.8u on 1,252u staked), NBA +135.50u -> +130.15u (-5.3u), NHL -43.23u -> -47.64u (-4.4u), NFL unchanged: mixed by sport, inside the noise on units. Not shipped this round (research only; a live Polymarket feed would be needed); held for the owner as a watching finding."
+    }
+   ],
    "hash": "bb5a971b2253a260"
   }
  ]

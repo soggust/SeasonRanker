@@ -561,6 +561,13 @@
    "sport": "nfl",
    "ref": "D86",
    "text": "History audit: 2026-10-29 code re-record held. the record guard refused: held: inputs shrank since the last record (its fingerprint): contex"
+  },
+  {
+   "date": "2026-10-29",
+   "group": "dropped",
+   "sport": null,
+   "ref": "D100",
+   "text": "Polymarket sharps' flow as a line shift: gate ties, replay net -7 to -12u (NBA/NFL up, NHL/MLB down); Polymarket close = Pinnacle. Not added"
   }
  ]
 }

@@ -404,7 +404,7 @@ export function finish(V, rows, keyOf, start, kind) {
   for (const x of rows) {
     // (research only: an optimistic intraday prop row (GATE_PROPS_INTRA) reads its close's own trust, as the close)
     const t = x.optimistic && close.get(x.key) ? (trustOf.get(close.get(x.key).id) ?? start(keyOf(x))) : x.kind !== 'c' && fin(x.at) ? trust.at(keyOf(x), x.at) : (trustOf.get(x.kind === 'c' ? x.id : close.get(x.key)?.id) ?? start(keyOf(x)));
-    const ctx = { sport: x.sport, market: kind === 'lines' ? x.market : 'prop', stat: x.stat, line: x.line, side: 'over', f: x.f, raw: modelOf(x), overOdds: x.overOdds, underOdds: x.underOdds, t: x.t, at: fin(x.at) ? x.at : x.t - (x.kind === 'o' ? 24 * 36e5 : 36e5), kind: x.kind, ...(x.kind === 'i' && fin(x.at) ? { hours: (x.t - x.at) / 36e5 } : {}), fo: x.fo ?? null, home: x.home ?? null, season: x.season, ...(fin(x.named) ? { named: x.named } : {}) };
+    const ctx = { sport: x.sport, event: x.event, market: kind === 'lines' ? x.market : 'prop', stat: x.stat, line: x.line, side: 'over', f: x.f, raw: modelOf(x), overOdds: x.overOdds, underOdds: x.underOdds, t: x.t, at: fin(x.at) ? x.at : x.t - (x.kind === 'o' ? 24 * 36e5 : 36e5), kind: x.kind, ...(x.kind === 'i' && fin(x.at) ? { hours: (x.t - x.at) / 36e5 } : {}), fo: x.fo ?? null, home: x.home ?? null, season: x.season, ...(fin(x.named) ? { named: x.named } : {}) };
     x.p = Math.min(0.999, Math.max(0.001, V.desk.chanceAt(kind === 'lines' ? x.market : 'prop', x.f, modelOf(x), t, ctx)));
     // (the current price before the residual blend (the trust's chance), what the confidence layer reads as the
     // blend's start: confidence.mjs features, D52)
