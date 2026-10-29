@@ -2,7 +2,7 @@
  "v": 1,
  "sport": "mlb",
  "epoch": "2026-10-26T15:00:00Z",
- "at": "2026-10-29T11:20:47.039Z",
+ "at": "2026-10-29T13:35:34.903Z",
  "from": "2021-07-18T17:11:00.000Z",
  "through": "2026-10-16T00:00:00.000Z",
  "n": {
@@ -2599,17 +2599,17 @@
    }
   }
  },
- "commit": "c487e3cd",
- "note": "D99. The live gates judge the bets the Bot staked, not the rows it held; a fast-lane run is no exemption from the props window (the owner, 2026-10-29: \"analyze recent data and look for any adjustments\")",
+ "commit": "e713116e",
+ "note": "D100. The Polymarket sharps as a free market signal (the owner, 2026-10-29: \"Research round: the Polymarket sharps as a free market signal\"; research only, nothing live changes)",
  "inputs": {
   "v": 1,
   "sport": "mlb",
   "code": {
    "props": "8cbb07134ab6",
    "games": "47aceba7d839",
-   "pricing": "a090f6ce7241",
+   "pricing": "21a99234ac74",
    "record": "f1439ac141ac",
-   "harness": "6035db77ac0c",
+   "harness": "a03d58481fe2",
    "residual": "e160c098db6031e5",
    "tuned": "75ba5ef16d4ef1db"
   },
@@ -2681,6 +2681,6 @@
     "want": 29
    }
   },
-  "hash": "9820127f45861a79"
+  "hash": "c00a55a9f584604c"
  }
 }

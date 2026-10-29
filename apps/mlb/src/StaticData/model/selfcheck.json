@@ -1,5 +1,5 @@
 {
- "at": "2026-10-29T11:22:50.745Z",
+ "at": "2026-10-29T13:37:40.752Z",
  "baseline": {
   "from": "2026-09-24",
   "to": "2026-10-22"
@@ -15,10 +15,10 @@
    "needs": null,
    "rows": [
     {
-     "allBias": -0.006,
+     "allBias": -0.0062,
      "bias": 0.0102,
      "e": 26.2756,
-     "fitBias": -0.009,
+     "fitBias": -0.0092,
      "key": "hits:over",
      "label": "Hits Over",
      "n": 48,
@@ -31,10 +31,10 @@
      "z": -0.3757
     },
     {
-     "allBias": -0.0068,
+     "allBias": -0.0062,
      "bias": -0.0513,
      "e": 4.9157,
-     "fitBias": -0.0078,
+     "fitBias": -0.0073,
      "key": "tb:under",
      "label": "Total Bases Under",
      "n": 8,
@@ -47,10 +47,10 @@
      "z": -0.666
     },
     {
-     "allBias": -0.0068,
+     "allBias": -0.0062,
      "bias": -0.2567,
      "e": 1.252,
-     "fitBias": -0.0078,
+     "fitBias": -0.0073,
      "key": "tb:over",
      "label": "Total Bases Over",
      "n": 3,
@@ -63,10 +63,10 @@
      "z": -0.2952
     },
     {
-     "allBias": -0.006,
+     "allBias": -0.0062,
      "bias": 0.215,
      "e": 5.855,
-     "fitBias": -0.009,
+     "fitBias": -0.0092,
      "key": "hits:under",
      "label": "Hits Under",
      "n": 12,
@@ -95,17 +95,17 @@
    "needs": null,
    "rows": [
     {
-     "allBias": -0.006,
+     "allBias": -0.0062,
      "byRole": [],
      "key": "prop:hits",
      "label": "Hits",
-     "mae": 0.6837,
+     "mae": 0.6838,
      "over": {
       "bias": 0.0843,
       "n": 150,
-      "ofMae": 0.1233
+      "ofMae": 0.1232
      },
-     "r": 0.0088,
+     "r": 0.0091,
      "selection": "over",
      "status": "flag",
      "under": {
@@ -115,17 +115,17 @@
      }
     },
     {
-     "allBias": 0.042,
+     "allBias": 0.0356,
      "byRole": [],
      "key": "prop:outs",
      "label": "Outs",
-     "mae": 2.9568,
+     "mae": 2.9504,
      "over": {
       "bias": -0.08,
       "n": 2,
       "ofMae": -0.0271
      },
-     "r": 0.0142,
+     "r": 0.0121,
      "selection": null,
      "status": "ok",
      "under": {
@@ -135,17 +135,17 @@
      }
     },
     {
-     "allBias": 0.0135,
+     "allBias": 0.0107,
      "byRole": [],
      "key": "prop:k",
      "label": "Strikeouts",
-     "mae": 1.7806,
+     "mae": 1.7793,
      "over": {
       "bias": -1.63,
       "n": 2,
-      "ofMae": -0.9154
+      "ofMae": -0.9161
      },
-     "r": 0.0076,
+     "r": 0.006,
      "selection": null,
      "status": "ok",
      "under": {
@@ -155,17 +155,17 @@
      }
     },
     {
-     "allBias": -0.0068,
+     "allBias": -0.0062,
      "byRole": [],
      "key": "prop:tb",
      "label": "Total Bases",
-     "mae": 1.3384,
+     "mae": 1.3386,
      "over": {
       "bias": -0.37,
       "n": 8,
       "ofMae": -0.2764
      },
-     "r": 0.0051,
+     "r": 0.0046,
      "selection": null,
      "status": "ok",
      "under": {
@@ -179,7 +179,7 @@
    "tested": 4,
    "threshold": "watch the all-player bias 10% of the error; flag 25%, or the bets' own miss 3x it the way that hurts their side (25+)",
    "title": "All-player and selection bias",
-   "value": 0.0088
+   "value": 0.0091
   },
   {
    "examples": [],
@@ -819,7 +819,7 @@
   },
   {
    "examples": [],
-   "headline": "Model files 7h old, 0 open bets overdue to grade; Odds API credits 275% left; 81 bets placed in a week of 5 games",
+   "headline": "Model files 1h old, 0 open bets overdue to grade; Odds API credits 275% left; 81 bets placed in a week of 5 games",
    "how": "the newest commit of the sport's model files, the open bets started 12 hours ago or more, The Odds API's credits (state.odds), the state's sources",
    "id": "C16",
    "metric": "ageH",
@@ -827,8 +827,8 @@
    "needs": null,
    "rows": [
     {
-     "ageH": 7,
-     "at": "2026-10-29T03:34:29Z",
+     "ageH": 1,
+     "at": "2026-10-29T12:30:59Z",
      "key": "files",
      "overdue": 0
     },
@@ -836,8 +836,8 @@
      "cycleEnd": "2026-11-19T04:06:35.755Z",
      "key": "credits",
      "monthly": 20000,
-     "remaining": 54970,
-     "share": 2.7485
+     "remaining": 54963,
+     "share": 2.7482
     },
     {
      "down": [],
@@ -853,7 +853,7 @@
    "tested": null,
    "threshold": "watch files 3h old with bets overdue, credits under 20%, a source down, or no bets in a week with games; flag 6h old with bets overdue, or credits under 10%",
    "title": "Ops",
-   "value": 7
+   "value": 1
   },
   {
    "examples": [],
@@ -1047,7 +1047,7 @@
      "key": "prop:tb:scale",
      "label": "Total Bases scale",
      "status": "info",
-     "to": 0.972,
+     "to": 0.971,
      "what": "refit"
     },
     {
