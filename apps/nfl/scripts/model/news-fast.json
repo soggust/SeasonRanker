@@ -4,9 +4,9 @@
   "adamscheftermirror.bsky.social": "2026-10-29T10:08:33.032Z",
   "rapsheet.bsky.social": "2026-10-28T14:02:17.022Z",
   "nflnewsreposterbot.bsky.social": "2026-10-22T13:33:43.592Z",
-  "insidenflnews.bsky.social": "2026-10-28T22:21:45.952Z",
+  "insidenflnews.bsky.social": "2026-10-29T12:10:56.332Z",
   "nflnewsposter.bsky.social": "2026-10-29T06:17:12.334Z",
-  "rotoworld-fb.bsky.social": "2026-10-29T00:29:36.000Z",
+  "rotoworld-fb.bsky.social": "2026-10-29T12:17:28.000Z",
   "rotowirenfl.bsky.social": "2026-10-29T00:16:27.000Z"
  },
  "claims": [
@@ -8329,6 +8329,19 @@
    "kind": "return",
    "confidence": 0.8,
    "text": "[Zenitz] Broncos star cornerback Pat Surtain, who has missed the last three games due to an ankle injury, is expected to be able to return to game action this week and play against the Chiefs on Sunda"
+  },
+  {
+   "id": "at://did:plc:mbr4badgf6yu56mquzackzew/app.bsky.feed.post/3myzadahg6s2n|matthewgolden|questionable|status",
+   "at": "2026-10-29T12:10:56.332Z",
+   "seen": "2026-10-29T12:28:37.544Z",
+   "handle": "insidenflnews.bsky.social",
+   "post": "at://did:plc:mbr4badgf6yu56mquzackzew/app.bsky.feed.post/3myzadahg6s2n",
+   "player": "Matthew Golden",
+   "team": "GB",
+   "status": "questionable",
+   "kind": "status",
+   "confidence": 0.5,
+   "text": "Rap: Packers WR Matthew Golden (shoulder, foot) is trending toward playing in Week 8."
   }
  ]
 }
