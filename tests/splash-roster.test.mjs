@@ -171,3 +171,18 @@ test('NBA numbers.json: every ranked player has his number, every team', () => {
     assert.ok(new Set(ranked.map((r) => r.team)).size >= 29, `nba ${season}: teams`);
   }
 });
+
+// ---- the NBA roster page's reader, on both markups Basketball-Reference has used
+test('NBA roster page: a number per player id, from the link (2026-10 markup) or the old data-append-csv', async () => {
+  const { parseRosterNumbers } = await import('../libs/ranker/scripts/splash/nba-roster.mjs');
+  const now =
+    `<tr ><th scope="row" class="center iz" data-stat="number" >0</th><td class="left " data-stat="player" csk="Tatum,Jayson" ><a href='/players/t/tatumja01.html'>Jayson Tatum</a></td><td class="center " data-stat="pos" csk="4" >PF</td></tr>\n` +
+    `<tr ><th scope="row" class="center " data-stat="number" >13</th><td class="left " data-stat="player" csk="George,Paul" ><a href='/players/g/georgpa01.html'>Paul George</a></td></tr>\n` +
+    `<tr ><th scope="row" class="center " data-stat="number" >8, 24</th><td class="left " data-stat="player" ><a href='/players/x/twonuxx01.html'>Two Numbers</a></td></tr>\n` +
+    `<tr ><th scope="row" class="center " data-stat="number" ></th><td class="left " data-stat="player" ><a href='/players/n/nonumxx01.html'>No Number</a></td></tr>`;
+  const got = parseRosterNumbers(now);
+  assert.deepEqual([...got], [['tatumja01', '0'], ['georgpa01', '13'], ['twonuxx01', '24']]);
+  const old = `<tr><th scope="row" class="center" data-stat="number" >23</th><td class="left " data-append-csv="jamesle01" data-stat="player"><a href="/players/j/jamesle01.html">LeBron James</a></td></tr>`;
+  assert.deepEqual([...parseRosterNumbers(old)], [['jamesle01', '23']]);
+  assert.equal(parseRosterNumbers('<table></table>').size, 0);
+});

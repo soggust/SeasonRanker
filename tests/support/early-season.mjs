@@ -7,8 +7,10 @@ import fs from 'node:fs';
 import path from 'node:path';
 import { expandRows, readJson, staticDir } from './engine.mjs';
 
-// (under this many games for the team that's played the most: early)
-export const EARLY_GAMES = 5;
+// (under this many games for the team that's played the most: early. 2026-10-29: at five games, two weeks into
+// the NBA, Min Games still left nobody out of a Top 50, so a whole season's shape is asked of the current one
+// only from its third week or so)
+export const EARLY_GAMES = 8;
 
 // The most games any row of the season being played has (its skill-players.json; none: 0)
 export function currentGames(sport) {

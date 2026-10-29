@@ -19,6 +19,7 @@ import { fetchRetry, pacer } from '../../../libs/ranker/scripts/fetch.mjs';
 import { currentSeason, mapBatched, seasonDir, seasonsAsked, siteRows, sortKeys, teamTable, writeBestGames, writeIfChanged } from '../../../libs/ranker/scripts/splash/files.mjs';
 import { buildOutcomes, divisionRanks, gameFor } from '../../../libs/ranker/scripts/splash/outcomes.mjs';
 import { bestOf, dayTitle, nbaGame } from '../../../libs/ranker/scripts/splash/best-game.mjs';
+import { parseRosterNumbers } from '../../../libs/ranker/scripts/splash/nba-roster.mjs';
 import { POSTSEASON, PLAY_IN, REGULAR, leagueSeason, postseasonGames, teamSchedule } from '../../../libs/ranker/scripts/analysis/season-state.mjs';
 
 const LEAGUE = 'basketball/nba';
@@ -136,14 +137,11 @@ async function bbrefSeries(season) {
 }
 
 // ---- jerseys: Basketball-Reference's roster pages, for the teams with a player still lacking a number
+// (the page's rows read by libs/ranker/scripts/splash/nba-roster.mjs, tested on its own)
 async function rosterNumbers(code, season) {
   const html = await fetchRetry(`${BBREF}/teams/${code}/${season}.html`, { headers: { 'User-Agent': UA }, attempts: 3, backoff: 5000, before: bbrefPace, rateLimit: 2, notFound: '' });
-  const out = new Map();
-  for (const m of html.matchAll(/data-stat="number"\s*>([^<]*)<\/th><td class="left "\s*data-append-csv="([^"]+)"/g)) {
-    // (two numbers in a season, "8, 24": the later one)
-    const num = m[1].split(',').map((x) => x.trim()).filter(Boolean).at(-1);
-    if (num) out.set(m[2], num);
-  }
+  const out = parseRosterNumbers(html);
+  if (!out.size && html) console.warn(`  ${code} ${season} roster: the page read but no numbers found in it (did its markup change?)`);
   return out;
 }
 
