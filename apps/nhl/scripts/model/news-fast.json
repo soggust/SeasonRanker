@@ -3,7 +3,7 @@
  "cursor": {
   "johnston-bot.bsky.social": "2026-10-29T15:33:36.339Z",
   "notfriedgehnic.bsky.social": "2026-10-29T18:09:49.563Z",
-  "dailyfaceoff.bsky.social": "2026-10-29T19:12:15.000Z",
+  "dailyfaceoff.bsky.social": "2026-10-29T19:31:25.000Z",
   "dfotoronto.bsky.social": "2026-10-29T17:57:00.000Z",
   "marklazerus.bsky.social": "2026-10-29T03:14:54.956Z"
  },
@@ -1112,6 +1112,19 @@
    "kind": "status",
    "confidence": 0.8,
    "text": "www.sportsnet.ca [Larkin decides to sit out until Red Wings complete trade]"
+  },
+  {
+   "id": "at://did:plc:3uus7y6h3rlrk6sbctzxm4bg/app.bsky.feed.post/3myzywvajau2o|dylanlarkin|out|status",
+   "at": "2026-10-29T19:31:25.000Z",
+   "seen": "2026-10-29T19:32:29.879Z",
+   "handle": "dailyfaceoff.bsky.social",
+   "post": "at://did:plc:3uus7y6h3rlrk6sbctzxm4bg/app.bsky.feed.post/3myzywvajau2o",
+   "player": "Dylan Larkin",
+   "team": "DET",
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.6,
+   "text": "‘Dylan’s had enough of the situation’: Larkin to sit out until Red Wings make trade"
   }
  ]
 }

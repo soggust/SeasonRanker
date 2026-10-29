@@ -15049,6 +15049,263 @@
    "espn": {
     "seen": "2026-10-29T19:10:54.233Z",
     "own": "2026-10-29T18:55:00.000Z"
+   },
+   "bluesky": {
+    "seen": "2026-10-29T19:12:29.734Z",
+    "own": "2026-10-29T18:55:35.000Z",
+    "why": "@rotowirenba.bsky.social: Jalen Smith: Listed as questionable \n\n https://www.rot"
+   }
+  },
+  "401909893|jalensmith|q": {
+   "game": "401909893",
+   "start": "2026-10-30T00:00Z",
+   "team": "1",
+   "name": "Jalen Smith",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-10-29T19:12:29.734Z",
+    "own": "2026-10-29T18:55:35.000Z",
+    "why": "@rotowirenba.bsky.social: Jalen Smith: Listed as questionable \n\n https://www.rot"
+   }
+  },
+  "401909893|robertwilliams|out": {
+   "game": "401909893",
+   "start": "2026-10-30T00:00Z",
+   "team": "1",
+   "name": "Robert Williams",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-10-29T19:12:29.734Z",
+    "own": "2026-10-29T18:57:17.000Z",
+    "why": "@rotowirenba.bsky.social: Robert Williams: Doubtful for Thursday \n\n https://www."
+   }
+  },
+  "401909894|jalensmith|q": {
+   "game": "401909894",
+   "start": "2026-10-30T00:00Z",
+   "team": "3",
+   "name": "Jalen Smith",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-10-29T19:12:29.734Z",
+    "own": "2026-10-29T18:55:35.000Z",
+    "why": "@rotowirenba.bsky.social: Jalen Smith: Listed as questionable \n\n https://www.rot"
+   }
+  },
+  "401909894|robertwilliams|out": {
+   "game": "401909894",
+   "start": "2026-10-30T00:00Z",
+   "team": "3",
+   "name": "Robert Williams",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-10-29T19:12:29.734Z",
+    "own": "2026-10-29T18:57:17.000Z",
+    "why": "@rotowirenba.bsky.social: Robert Williams: Doubtful for Thursday \n\n https://www."
+   }
+  },
+  "401909895|jalensmith|q": {
+   "game": "401909895",
+   "start": "2026-10-30T02:00Z",
+   "team": "22",
+   "name": "Jalen Smith",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-10-29T19:12:29.734Z",
+    "own": "2026-10-29T18:55:35.000Z",
+    "why": "@rotowirenba.bsky.social: Jalen Smith: Listed as questionable \n\n https://www.rot"
+   }
+  },
+  "401909895|robertwilliams|out": {
+   "game": "401909895",
+   "start": "2026-10-30T02:00Z",
+   "team": "22",
+   "name": "Robert Williams",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-10-29T19:12:29.734Z",
+    "own": "2026-10-29T18:57:17.000Z",
+    "why": "@rotowirenba.bsky.social: Robert Williams: Doubtful for Thursday \n\n https://www."
+   }
+  },
+  "401909277|jalensmith|q": {
+   "game": "401909277",
+   "start": "2026-10-30T23:00Z",
+   "team": "27",
+   "name": "Jalen Smith",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-10-29T19:12:29.734Z",
+    "own": "2026-10-29T18:55:35.000Z",
+    "why": "@rotowirenba.bsky.social: Jalen Smith: Listed as questionable \n\n https://www.rot"
+   }
+  },
+  "401909277|robertwilliams|out": {
+   "game": "401909277",
+   "start": "2026-10-30T23:00Z",
+   "team": "27",
+   "name": "Robert Williams",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-10-29T19:12:29.734Z",
+    "own": "2026-10-29T18:57:17.000Z",
+    "why": "@rotowirenba.bsky.social: Robert Williams: Doubtful for Thursday \n\n https://www."
+   }
+  },
+  "401909278|robertwilliams|out": {
+   "game": "401909278",
+   "start": "2026-10-30T23:30Z",
+   "team": "2",
+   "name": "Robert Williams",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-10-29T19:12:29.734Z",
+    "own": "2026-10-29T18:57:17.000Z",
+    "why": "@rotowirenba.bsky.social: Robert Williams: Doubtful for Thursday \n\n https://www."
+   }
+  },
+  "401909279|jalensmith|q": {
+   "game": "401909279",
+   "start": "2026-10-30T23:30Z",
+   "team": "17",
+   "name": "Jalen Smith",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-10-29T19:12:29.734Z",
+    "own": "2026-10-29T18:55:35.000Z",
+    "why": "@rotowirenba.bsky.social: Jalen Smith: Listed as questionable \n\n https://www.rot"
+   }
+  },
+  "401909279|robertwilliams|out": {
+   "game": "401909279",
+   "start": "2026-10-30T23:30Z",
+   "team": "17",
+   "name": "Robert Williams",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-10-29T19:12:29.734Z",
+    "own": "2026-10-29T18:57:17.000Z",
+    "why": "@rotowirenba.bsky.social: Robert Williams: Doubtful for Thursday \n\n https://www."
+   }
+  },
+  "401909280|jalensmith|q": {
+   "game": "401909280",
+   "start": "2026-10-30T23:30Z",
+   "team": "20",
+   "name": "Jalen Smith",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-10-29T19:12:29.734Z",
+    "own": "2026-10-29T18:55:35.000Z",
+    "why": "@rotowirenba.bsky.social: Jalen Smith: Listed as questionable \n\n https://www.rot"
+   }
+  },
+  "401909280|robertwilliams|out": {
+   "game": "401909280",
+   "start": "2026-10-30T23:30Z",
+   "team": "20",
+   "name": "Robert Williams",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-10-29T19:12:29.734Z",
+    "own": "2026-10-29T18:57:17.000Z",
+    "why": "@rotowirenba.bsky.social: Robert Williams: Doubtful for Thursday \n\n https://www."
+   }
+  },
+  "401909281|jalensmith|q": {
+   "game": "401909281",
+   "start": "2026-10-30T23:30Z",
+   "team": "28",
+   "name": "Jalen Smith",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-10-29T19:12:29.734Z",
+    "own": "2026-10-29T18:55:35.000Z",
+    "why": "@rotowirenba.bsky.social: Jalen Smith: Listed as questionable \n\n https://www.rot"
+   }
+  },
+  "401909281|robertwilliams|out": {
+   "game": "401909281",
+   "start": "2026-10-30T23:30Z",
+   "team": "28",
+   "name": "Robert Williams",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-10-29T19:12:29.734Z",
+    "own": "2026-10-29T18:57:17.000Z",
+    "why": "@rotowirenba.bsky.social: Robert Williams: Doubtful for Thursday \n\n https://www."
+   }
+  },
+  "401909282|jalensmith|q": {
+   "game": "401909282",
+   "start": "2026-10-31T00:00Z",
+   "team": "14",
+   "name": "Jalen Smith",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-10-29T19:12:29.734Z",
+    "own": "2026-10-29T18:55:35.000Z",
+    "why": "@rotowirenba.bsky.social: Jalen Smith: Listed as questionable \n\n https://www.rot"
+   }
+  },
+  "401909282|robertwilliams|out": {
+   "game": "401909282",
+   "start": "2026-10-31T00:00Z",
+   "team": "14",
+   "name": "Robert Williams",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-10-29T19:12:29.734Z",
+    "own": "2026-10-29T18:57:17.000Z",
+    "why": "@rotowirenba.bsky.social: Robert Williams: Doubtful for Thursday \n\n https://www."
+   }
+  },
+  "401909283|jalensmith|q": {
+   "game": "401909283",
+   "start": "2026-10-31T00:00Z",
+   "team": "6",
+   "name": "Jalen Smith",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-10-29T19:12:29.734Z",
+    "own": "2026-10-29T18:55:35.000Z",
+    "why": "@rotowirenba.bsky.social: Jalen Smith: Listed as questionable \n\n https://www.rot"
+   }
+  },
+  "401909283|robertwilliams|out": {
+   "game": "401909283",
+   "start": "2026-10-31T00:00Z",
+   "team": "6",
+   "name": "Robert Williams",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-10-29T19:12:29.734Z",
+    "own": "2026-10-29T18:57:17.000Z",
+    "why": "@rotowirenba.bsky.social: Robert Williams: Doubtful for Thursday \n\n https://www."
+   }
+  },
+  "401909284|jalensmith|q": {
+   "game": "401909284",
+   "start": "2026-10-31T00:00Z",
+   "team": "16",
+   "name": "Jalen Smith",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-10-29T19:12:29.734Z",
+    "own": "2026-10-29T18:55:35.000Z",
+    "why": "@rotowirenba.bsky.social: Jalen Smith: Listed as questionable \n\n https://www.rot"
+   }
+  },
+  "401909284|robertwilliams|out": {
+   "game": "401909284",
+   "start": "2026-10-31T00:00Z",
+   "team": "16",
+   "name": "Robert Williams",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-10-29T19:12:29.734Z",
+    "own": "2026-10-29T18:57:17.000Z",
+    "why": "@rotowirenba.bsky.social: Robert Williams: Doubtful for Thursday \n\n https://www."
    }
   }
  }
