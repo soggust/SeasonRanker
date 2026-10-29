@@ -14258,6 +14258,150 @@
     "own": "2026-10-29T00:50:05.618Z",
     "why": "@insidenbanews.bsky.social: Brandon Ingram (heel), Max Strus (foot), Yanic Konan"
    }
+  },
+  "401909277|trejohnson|q": {
+   "game": "401909277",
+   "start": "2026-10-30T23:00Z",
+   "team": "27",
+   "name": "Tre Johnson",
+   "status": "q",
+   "athlete": "5238230",
+   "espn": {
+    "seen": "2026-10-29T15:14:38.360Z",
+    "own": "2026-10-29T04:33:00.000Z"
+   }
+  },
+  "401909277|justinchampagnie|out": {
+   "game": "401909277",
+   "start": "2026-10-30T23:00Z",
+   "team": "27",
+   "name": "Justin Champagnie",
+   "status": "out",
+   "athlete": "4432907",
+   "espn": {
+    "seen": "2026-10-29T15:14:38.360Z",
+    "own": "2026-10-28T18:38:00.000Z"
+   }
+  },
+  "401909277|tristanvukcevic|out": {
+   "game": "401909277",
+   "start": "2026-10-30T23:00Z",
+   "team": "27",
+   "name": "Tristan Vukcevic",
+   "status": "out",
+   "athlete": "4997537",
+   "espn": {
+    "seen": "2026-10-29T15:14:38.360Z",
+    "own": "2026-10-01T19:11:00.000Z"
+   }
+  },
+  "401909277|jamirwatkins|out": {
+   "game": "401909277",
+   "start": "2026-10-30T23:00Z",
+   "team": "27",
+   "name": "Jamir Watkins",
+   "status": "out",
+   "athlete": "4606840",
+   "espn": {
+    "seen": "2026-10-29T15:14:38.360Z",
+    "own": "2026-07-30T20:11:00.000Z"
+   }
+  },
+  "401909277|cobywhite|out": {
+   "game": "401909277",
+   "start": "2026-10-30T23:00Z",
+   "team": "30",
+   "name": "Coby White",
+   "status": "out",
+   "athlete": "4395651",
+   "espn": {
+    "seen": "2026-10-29T15:14:38.360Z",
+    "own": "2026-10-26T22:41:00.000Z"
+   }
+  },
+  "401909277|konknueppel|out": {
+   "game": "401909277",
+   "start": "2026-10-30T23:00Z",
+   "team": "30",
+   "name": "Kon Knueppel",
+   "status": "out",
+   "athlete": "5061575",
+   "espn": {
+    "seen": "2026-10-29T15:14:38.360Z",
+    "own": "2026-10-26T22:35:00.000Z"
+   }
+  },
+  "401909277|grantwilliams|out": {
+   "game": "401909277",
+   "start": "2026-10-30T23:00Z",
+   "team": "30",
+   "name": "Grant Williams",
+   "status": "out",
+   "athlete": "4066218",
+   "espn": {
+    "seen": "2026-10-29T15:14:38.360Z",
+    "own": "2026-10-26T22:34:00.000Z"
+   }
+  },
+  "401909277|kylanboswell|out": {
+   "game": "401909277",
+   "start": "2026-10-30T23:00Z",
+   "team": "30",
+   "name": "Kylan Boswell",
+   "status": "out",
+   "athlete": "4684269",
+   "espn": {
+    "seen": "2026-10-29T15:14:38.360Z",
+    "own": "2026-10-20T20:55:00.000Z"
+   }
+  },
+  "401909279|egordemin|q": {
+   "game": "401909279",
+   "start": "2026-10-30T23:30Z",
+   "team": "17",
+   "name": "Egor Demin",
+   "status": "q",
+   "athlete": "5175643",
+   "espn": {
+    "seen": "2026-10-29T15:14:38.360Z",
+    "own": "2026-10-28T03:46:00.000Z"
+   }
+  },
+  "401909279|tylerbilodeau|out": {
+   "game": "401909279",
+   "start": "2026-10-30T23:30Z",
+   "team": "17",
+   "name": "Tyler Bilodeau",
+   "status": "out",
+   "athlete": "5105626",
+   "espn": {
+    "seen": "2026-10-29T15:14:38.360Z",
+    "own": "2026-10-25T17:19:00.000Z"
+   }
+  },
+  "401909279|isaiahjoe|q": {
+   "game": "401909279",
+   "start": "2026-10-30T23:30Z",
+   "team": "8",
+   "name": "Isaiah Joe",
+   "status": "q",
+   "athlete": "4395702",
+   "espn": {
+    "seen": "2026-10-29T15:14:38.360Z",
+    "own": "2026-10-29T04:32:00.000Z"
+   }
+  },
+  "401909279|jalenduren|out": {
+   "game": "401909279",
+   "start": "2026-10-30T23:30Z",
+   "team": "8",
+   "name": "Jalen Duren",
+   "status": "out",
+   "athlete": "4433621",
+   "espn": {
+    "seen": "2026-10-29T15:14:38.360Z",
+    "own": "2026-10-25T14:56:00.000Z"
+   }
   }
  }
 }
