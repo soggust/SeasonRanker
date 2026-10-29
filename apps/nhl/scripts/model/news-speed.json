@@ -1,264 +1,6 @@
 {
  "sport": "nhl",
  "entries": {
-  "401892535|igorshesterkin|out": {
-   "game": "401892535",
-   "start": "2026-10-19T23:00Z",
-   "team": "13",
-   "name": "Igor Shesterkin",
-   "status": "out",
-   "athlete": "3151297",
-   "espn": {
-    "seen": "2026-10-19T21:13:52.043Z",
-    "own": "2026-10-11T21:06:00.000Z"
-   }
-  },
-  "401892535|joeveleno|out": {
-   "game": "401892535",
-   "start": "2026-10-19T23:00Z",
-   "team": "13",
-   "name": "Joe Veleno",
-   "status": "out",
-   "athlete": "4352804",
-   "espn": {
-    "seen": "2026-10-19T21:13:52.043Z",
-    "own": "2026-10-10T17:18:00.000Z"
-   }
-  },
-  "401892535|joonaskorpisalo|out": {
-   "game": "401892535",
-   "start": "2026-10-19T23:00Z",
-   "team": "13",
-   "name": "Joonas Korpisalo",
-   "status": "out",
-   "athlete": "3069266",
-   "espn": {
-    "seen": "2026-10-19T21:13:52.043Z",
-    "own": "2026-10-10T17:11:00.000Z"
-   }
-  },
-  "401892535|aidanthompson|out": {
-   "game": "401892535",
-   "start": "2026-10-19T23:00Z",
-   "team": "13",
-   "name": "Aidan Thompson",
-   "status": "out",
-   "athlete": "5136624",
-   "espn": {
-    "seen": "2026-10-19T21:13:52.043Z",
-    "own": "2026-09-29T16:39:00.000Z"
-   }
-  },
-  "401892535|adamsykora|out": {
-   "game": "401892535",
-   "start": "2026-10-19T23:00Z",
-   "team": "13",
-   "name": "Adam Sykora",
-   "status": "out",
-   "athlete": "5080232",
-   "espn": {
-    "seen": "2026-10-19T21:13:52.043Z",
-    "own": "2026-09-29T01:35:00.000Z"
-   }
-  },
-  "401892535|ianmoore|out": {
-   "game": "401892535",
-   "start": "2026-10-19T23:00Z",
-   "team": "25",
-   "name": "Ian Moore",
-   "status": "out",
-   "athlete": "5188523",
-   "espn": {
-    "seen": "2026-10-19T21:13:52.043Z",
-    "own": "2026-10-16T18:17:00.000Z"
-   }
-  },
-  "401892535|ryanpoehling|out": {
-   "game": "401892535",
-   "start": "2026-10-19T23:00Z",
-   "team": "25",
-   "name": "Ryan Poehling",
-   "status": "out",
-   "athlete": "4233668",
-   "espn": {
-    "seen": "2026-10-19T21:13:52.043Z",
-    "own": "2026-10-13T17:19:00.000Z"
-   }
-  },
-  "401892535|troyterry|out": {
-   "game": "401892535",
-   "start": "2026-10-19T23:00Z",
-   "team": "25",
-   "name": "Troy Terry",
-   "status": "out",
-   "athlete": "3942905",
-   "espn": {
-    "seen": "2026-10-19T21:13:52.043Z",
-    "own": "2026-09-30T14:53:00.000Z"
-   }
-  },
-  "401892536|owentippett|out": {
-   "game": "401892536",
-   "start": "2026-10-19T23:00Z",
-   "team": "15",
-   "name": "Owen Tippett",
-   "status": "out",
-   "athlete": "4392072",
-   "espn": {
-    "seen": "2026-10-19T21:13:52.043Z",
-    "own": "2026-10-19T17:54:00.000Z"
-   },
-   "sleeper": {
-    "seen": "2026-10-19T21:13:52.043Z",
-    "own": "2026-10-19T18:00:47.853Z"
-   },
-   "bluesky": {
-    "seen": "2026-10-19T21:15:18.875Z",
-    "own": "2026-10-19T20:06:23.000Z",
-    "why": "@dailyfaceoff.bsky.social: Flyers place Owen Tippett on injured reserve"
-   }
-  },
-  "401892536|camyork|out": {
-   "game": "401892536",
-   "start": "2026-10-19T23:00Z",
-   "team": "15",
-   "name": "Cam York",
-   "status": "out",
-   "athlete": "4565235",
-   "espn": {
-    "seen": "2026-10-19T21:13:52.043Z",
-    "own": "2026-10-18T19:30:00.000Z"
-   },
-   "sleeper": {
-    "seen": "2026-10-19T21:13:52.043Z",
-    "own": "2026-10-18T19:35:44.215Z"
-   },
-   "bluesky": {
-    "seen": "2026-10-19T21:15:18.875Z",
-    "own": "2026-10-19T13:04:44.000Z",
-    "why": "@dailyfaceoff.bsky.social: Flyers place Cam York on injured reserve #nhl #nhlhoc"
-   }
-  },
-  "401892536|tysonfoerster|q": {
-   "game": "401892536",
-   "start": "2026-10-19T23:00Z",
-   "team": "15",
-   "name": "Tyson Foerster",
-   "status": "q",
-   "athlete": "4697406",
-   "espn": {
-    "seen": "2026-10-19T21:13:52.043Z",
-    "own": "2026-10-18T17:18:00.000Z"
-   },
-   "sleeper": {
-    "seen": "2026-10-19T21:13:52.043Z",
-    "own": "2026-10-18T17:20:43.836Z"
-   }
-  },
-  "401892536|seancouturier|q": {
-   "game": "401892536",
-   "start": "2026-10-19T23:00Z",
-   "team": "15",
-   "name": "Sean Couturier",
-   "status": "q",
-   "athlete": "2562601",
-   "espn": {
-    "seen": "2026-10-19T21:13:52.043Z",
-    "own": "2026-10-18T17:12:00.000Z"
-   },
-   "sleeper": {
-    "seen": "2026-10-19T21:13:52.043Z",
-    "own": "2026-10-18T17:15:43.809Z"
-   }
-  },
-  "401892536|rasmusristolainen|out": {
-   "game": "401892536",
-   "start": "2026-10-19T23:00Z",
-   "team": "15",
-   "name": "Rasmus Ristolainen",
-   "status": "out",
-   "athlete": "3041999",
-   "espn": {
-    "seen": "2026-10-19T21:13:52.043Z",
-    "own": "2026-10-14T17:16:00.000Z"
-   }
-  },
-  "401892536|traviskonecny|out": {
-   "game": "401892536",
-   "start": "2026-10-19T23:00Z",
-   "team": "15",
-   "name": "Travis Konecny",
-   "status": "out",
-   "athlete": "3900169",
-   "espn": {
-    "seen": "2026-10-19T21:13:52.043Z",
-    "own": "2026-10-11T18:01:00.000Z"
-   }
-  },
-  "401892536|nikitagrebenkin|out": {
-   "game": "401892536",
-   "start": "2026-10-19T23:00Z",
-   "team": "15",
-   "name": "Nikita Grebenkin",
-   "status": "out",
-   "athlete": "5188490",
-   "espn": {
-    "seen": "2026-10-19T21:13:52.043Z",
-    "own": "2026-10-10T16:58:00.000Z"
-   }
-  },
-  "401892536|loganoconnor|out": {
-   "game": "401892536",
-   "start": "2026-10-19T23:00Z",
-   "team": "17",
-   "name": "Logan O'Connor",
-   "status": "out",
-   "athlete": "3988782",
-   "espn": {
-    "seen": "2026-10-19T21:13:52.043Z",
-    "own": "2026-10-19T16:34:00.000Z"
-   },
-   "sleeper": {
-    "seen": "2026-10-19T21:13:52.043Z",
-    "own": "2026-10-19T16:35:47.547Z"
-   }
-  },
-  "401892536|zacharylheureux|out": {
-   "game": "401892536",
-   "start": "2026-10-19T23:00Z",
-   "team": "17",
-   "name": "Zachary L'Heureux",
-   "status": "out",
-   "athlete": "4874744",
-   "espn": {
-    "seen": "2026-10-19T21:13:52.043Z",
-    "own": "2026-10-17T19:31:00.000Z"
-   }
-  },
-  "401892536|nicolasroy|out": {
-   "game": "401892536",
-   "start": "2026-10-19T23:00Z",
-   "team": "17",
-   "name": "Nicolas Roy",
-   "status": "out",
-   "athlete": "3943996",
-   "espn": {
-    "seen": "2026-10-19T21:13:52.043Z",
-    "own": "2026-10-17T19:29:00.000Z"
-   }
-  },
-  "401892536|georgiimerkulov|out": {
-   "game": "401892536",
-   "start": "2026-10-19T23:00Z",
-   "team": "17",
-   "name": "Georgii Merkulov",
-   "status": "out",
-   "athlete": "5103687",
-   "espn": {
-    "seen": "2026-10-19T21:13:52.043Z",
-    "own": "2026-09-28T22:41:00.000Z"
-   }
-  },
   "401892537|williamnylander|q": {
    "game": "401892537",
    "start": "2026-10-19T23:30Z",
@@ -8310,6 +8052,10 @@
    "espn": {
     "seen": "2026-10-28T15:28:09.757Z",
     "own": "2026-09-29T16:21:00.000Z"
+   },
+   "sleeper": {
+    "seen": "2026-10-29T20:14:38.529Z",
+    "own": "2026-10-29T16:35:21.336Z"
    }
   },
   "401892607|matiasmaccelli|out": {
@@ -8610,6 +8356,10 @@
    "espn": {
     "seen": "2026-10-28T15:49:22.356Z",
     "own": "2026-10-26T21:18:00.000Z"
+   },
+   "sleeper": {
+    "seen": "2026-10-29T20:14:38.529Z",
+    "own": "2026-10-29T18:50:21.464Z"
    }
   },
   "401892609|alexturcotte|out": {
@@ -8658,6 +8408,10 @@
    "espn": {
     "seen": "2026-10-28T15:49:22.356Z",
     "own": "2026-09-17T19:39:00.000Z"
+   },
+   "sleeper": {
+    "seen": "2026-10-29T20:14:38.529Z",
+    "own": "2026-10-29T18:45:21.492Z"
    }
   },
   "401892609|warrenfoegele|q": {
@@ -8752,6 +8506,10 @@
     "seen": "2026-10-28T21:02:19.956Z",
     "own": "2026-10-28T20:48:16.000Z",
     "why": "@dailyfaceoff.bsky.social: Stars’ Kyle Capobianco to miss at least a week with l"
+   },
+   "sleeper": {
+    "seen": "2026-10-29T20:14:38.529Z",
+    "own": "2026-10-29T16:45:21.351Z"
    }
   },
   "401892601|brandonhagel|q": {
@@ -8847,6 +8605,10 @@
    "espn": {
     "seen": "2026-10-29T16:09:47.153Z",
     "own": "2026-10-29T15:56:00.000Z"
+   },
+   "sleeper": {
+    "seen": "2026-10-29T20:14:38.529Z",
+    "own": "2026-10-29T16:00:22.157Z"
    }
   },
   "401892611|carterhart|q": {
@@ -9087,6 +8849,10 @@
    "espn": {
     "seen": "2026-10-29T16:49:48.392Z",
     "own": "2026-10-29T16:29:00.000Z"
+   },
+   "sleeper": {
+    "seen": "2026-10-29T20:14:38.529Z",
+    "own": "2026-10-29T16:35:21.326Z"
    }
   },
   "401892600|alexvlasic|q": {
@@ -9099,6 +8865,10 @@
    "espn": {
     "seen": "2026-10-29T16:49:48.392Z",
     "own": "2026-10-29T16:27:00.000Z"
+   },
+   "sleeper": {
+    "seen": "2026-10-29T20:14:38.529Z",
+    "own": "2026-10-29T16:30:21.465Z"
    }
   },
   "401892607|spurgeon|out": {
@@ -9135,6 +8905,10 @@
    "espn": {
     "seen": "2026-10-29T18:39:54.839Z",
     "own": "2026-10-29T18:27:00.000Z"
+   },
+   "sleeper": {
+    "seen": "2026-10-29T20:14:38.529Z",
+    "own": "2026-10-29T18:30:21.805Z"
    }
   },
   "401892608|konstahelenius|out": {
@@ -9147,6 +8921,23 @@
    "espn": {
     "seen": "2026-10-29T19:25:42.354Z",
     "own": "2026-10-29T19:14:00.000Z"
+   },
+   "bluesky": {
+    "seen": "2026-10-29T19:53:56.581Z",
+    "own": "2026-10-29T19:49:20.000Z",
+    "why": "@dailyfaceoff.bsky.social: Sabres’ Konsta Helenius to miss next two games with u"
+   }
+  },
+  "401892608|justindanforth|out": {
+   "game": "401892608",
+   "start": "2026-10-30T02:00Z",
+   "team": "2",
+   "name": "Justin Danforth",
+   "status": "out",
+   "athlete": "4894355",
+   "espn": {
+    "seen": "2026-10-29T23:13:47.755Z",
+    "own": "2026-10-29T22:06:00.000Z"
    }
   }
  }

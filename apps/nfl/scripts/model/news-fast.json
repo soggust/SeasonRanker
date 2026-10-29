@@ -1,13 +1,13 @@
 {
  "sport": "nfl",
  "cursor": {
-  "adamscheftermirror.bsky.social": "2026-10-29T21:08:51.272Z",
+  "adamscheftermirror.bsky.social": "2026-10-29T23:08:56.708Z",
   "rapsheet.bsky.social": "2026-10-29T16:01:23.360Z",
   "nflnewsreposterbot.bsky.social": "2026-10-29T14:25:56.466Z",
   "insidenflnews.bsky.social": "2026-10-29T18:23:07.941Z",
-  "nflnewsposter.bsky.social": "2026-10-29T21:29:00.407Z",
-  "rotoworld-fb.bsky.social": "2026-10-29T21:15:33.000Z",
-  "rotowirenfl.bsky.social": "2026-10-29T21:35:16.000Z"
+  "nflnewsposter.bsky.social": "2026-10-29T23:16:07.039Z",
+  "rotoworld-fb.bsky.social": "2026-10-29T23:16:19.000Z",
+  "rotowirenfl.bsky.social": "2026-10-29T23:11:29.000Z"
  },
  "claims": [
   {
@@ -8836,6 +8836,97 @@
    "kind": "status",
    "confidence": 0.9,
    "text": "Jaylen Waddle: Limited Thursday \n\n https://www.rotowire.com/football/player/jaylen-waddle-15404"
+  },
+  {
+   "id": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3mz2aibcr4m2b|treylonburks|questionable|status",
+   "at": "2026-10-29T21:46:24.000Z",
+   "seen": "2026-10-29T23:16:27.355Z",
+   "handle": "rotoworld-fb.bsky.social",
+   "post": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3mz2aibcr4m2b",
+   "player": "Treylon Burks",
+   "team": null,
+   "status": "questionable",
+   "kind": "status",
+   "confidence": 0.6,
+   "text": "Treylon Burks downgrades to 'DNP' Thursday"
+  },
+  {
+   "id": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3mz2aicwyym2b|stefondiggs|active|status",
+   "at": "2026-10-29T21:46:26.000Z",
+   "seen": "2026-10-29T23:16:27.355Z",
+   "handle": "rotoworld-fb.bsky.social",
+   "post": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3mz2aicwyym2b",
+   "player": "Stefon Diggs",
+   "team": null,
+   "status": "active",
+   "kind": "status",
+   "confidence": 0.8,
+   "text": "Stefon Diggs upgrades from 'DNP' to full Thursday"
+  },
+  {
+   "id": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3mz2aidzfky2k|jaylenwaddle|limited|status",
+   "at": "2026-10-29T21:46:27.000Z",
+   "seen": "2026-10-29T23:16:27.355Z",
+   "handle": "rotoworld-fb.bsky.social",
+   "post": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3mz2aidzfky2k",
+   "player": "Jaylen Waddle",
+   "team": null,
+   "status": "limited",
+   "kind": "status",
+   "confidence": 0.85,
+   "text": "Jaylen Waddle upgrades to limited Thursday"
+  },
+  {
+   "id": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3mz2ayrw7qw27|devontasmith|questionable|status",
+   "at": "2026-10-29T21:55:38.000Z",
+   "seen": "2026-10-29T23:16:27.355Z",
+   "handle": "rotowirenfl.bsky.social",
+   "post": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3mz2ayrw7qw27",
+   "player": "DeVonta Smith",
+   "team": null,
+   "status": "questionable",
+   "kind": "status",
+   "confidence": 0.6,
+   "text": "DeVonta Smith: Sits out Thursday's practice \n\n https://www.rotowire.com/football/player/devonta-smith-15406"
+  },
+  {
+   "id": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3mz2eywgnx322|jeremiyahlove|limited|status",
+   "at": "2026-10-29T23:07:18.000Z",
+   "seen": "2026-10-29T23:16:27.355Z",
+   "handle": "rotoworld-fb.bsky.social",
+   "post": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3mz2eywgnx322",
+   "player": "Jeremiyah Love",
+   "team": null,
+   "status": "limited",
+   "kind": "status",
+   "confidence": 0.85,
+   "text": "Jeremiyah Love (ankle) limited again Thursday"
+  },
+  {
+   "id": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3mz2fafvizx2m|jeremiyahlove|limited|status",
+   "at": "2026-10-29T23:11:29.000Z",
+   "seen": "2026-10-29T23:16:27.355Z",
+   "handle": "rotowirenfl.bsky.social",
+   "post": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3mz2fafvizx2m",
+   "player": "Jeremiyah Love",
+   "team": null,
+   "status": "limited",
+   "kind": "status",
+   "confidence": 0.8,
+   "text": "Jeremiyah Love: Another limited session \n\n https://www.rotowire.com/football/player/jeremiyah-love-19235"
+  },
+  {
+   "id": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3mz2fizrvdx2f|zachcharbonnet|active|status",
+   "at": "2026-10-29T23:16:19.000Z",
+   "seen": "2026-10-29T23:16:27.355Z",
+   "handle": "rotoworld-fb.bsky.social",
+   "post": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3mz2fizrvdx2f",
+   "player": "Zach Charbonnet",
+   "team": null,
+   "status": "active",
+   "kind": "status",
+   "confidence": 0.85,
+   "text": "Zach Charbonnet (knee) practices in full Thursday"
   }
  ]
 }

@@ -1,7 +1,7 @@
 {
  "sport": "nba",
  "cursor": {
-  "rotowirenba.bsky.social": "2026-10-29T21:37:02.000Z",
+  "rotowirenba.bsky.social": "2026-10-29T22:22:53.000Z",
   "insidenbanews.bsky.social": "2026-10-29T02:03:08.482Z",
   "shamsbot.bsky.social": "2026-10-29T20:10:02.000Z"
  },
@@ -6089,6 +6089,32 @@
    "kind": "status",
    "confidence": 0.95,
    "text": "Dennis Schroder: Questionable for Friday \n\n https://www.rotowire.com/basketball/player/dennis-schroder-3444"
+  },
+  {
+   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mz2bzkhfqd2z|ruihachimura|questionable|status",
+   "at": "2026-10-29T22:13:58.000Z",
+   "seen": "2026-10-29T23:16:27.355Z",
+   "handle": "rotowirenba.bsky.social",
+   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mz2bzkhfqd2z",
+   "player": "Rui Hachimura",
+   "team": null,
+   "status": "questionable",
+   "kind": "status",
+   "confidence": 0.9,
+   "text": "Rui Hachimura: Questionable for Friday \n\n https://www.rotowire.com/basketball/player/rui-hachimura-4778"
+  },
+  {
+   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mz2cjitu7b2c|dejountemurray|out|status",
+   "at": "2026-10-29T22:22:53.000Z",
+   "seen": "2026-10-29T23:16:27.355Z",
+   "handle": "rotowirenba.bsky.social",
+   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mz2cjitu7b2c",
+   "player": "Dejounte Murray",
+   "team": null,
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.9,
+   "text": "Dejounte Murray: Late scratch Thursday \n\n https://www.rotowire.com/basketball/player/dejounte-murray-3856"
   }
  ]
 }

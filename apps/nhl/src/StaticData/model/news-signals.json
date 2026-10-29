@@ -10,9 +10,20 @@
    "kind": "benched",
    "direction": "down",
    "confidence": 0.85,
+   "headline": "Red Wings suspend Dylan Larkin, explore trade options",
+   "at": "2026-10-29T22:58:22.000Z"
+  },
+  {
+   "team": "5",
+   "abbr": "DET",
+   "athlete": "3114755",
+   "player": "Dylan Larkin",
+   "kind": "benched",
+   "direction": "down",
+   "confidence": 0.85,
    "headline": "Sources: Red Wings won't play Dylan Larkin for 'trade-related' reasons",
    "at": "2026-10-29T17:49:06.000Z"
   }
  ],
- "at": "2026-10-29T21:16:39.605Z"
+ "at": "2026-10-29T23:16:27.355Z"
 }

@@ -1,10 +1,10 @@
 {
  "sport": "nhl",
  "cursor": {
-  "johnston-bot.bsky.social": "2026-10-29T15:33:36.339Z",
-  "notfriedgehnic.bsky.social": "2026-10-29T18:09:49.563Z",
-  "dailyfaceoff.bsky.social": "2026-10-29T21:01:41.000Z",
-  "dfotoronto.bsky.social": "2026-10-29T20:21:10.000Z",
+  "johnston-bot.bsky.social": "2026-10-29T21:41:15.472Z",
+  "notfriedgehnic.bsky.social": "2026-10-29T21:38:15.417Z",
+  "dailyfaceoff.bsky.social": "2026-10-29T23:04:16.000Z",
+  "dfotoronto.bsky.social": "2026-10-29T22:28:19.000Z",
   "marklazerus.bsky.social": "2026-10-29T03:14:54.956Z"
  },
  "claims": [
@@ -1138,6 +1138,71 @@
    "kind": "status",
    "confidence": 0.93,
    "text": "Sabres’ Konsta Helenius to miss next two games with upper-body injury"
+  },
+  {
+   "id": "at://did:plc:sdobrsxnvwczrjydmnubhibh/app.bsky.feed.post/3mz27zpmaw32d|dylanlarkin|out|status",
+   "at": "2026-10-29T21:38:15.417Z",
+   "seen": "2026-10-29T23:16:27.355Z",
+   "handle": "notfriedgehnic.bsky.social",
+   "post": "at://did:plc:sdobrsxnvwczrjydmnubhibh/app.bsky.feed.post/3mz27zpmaw32d",
+   "player": "Dylan Larkin",
+   "team": "DET",
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.95,
+   "text": "The Red Wings have announced they are suspending Dylan Larkin without pay\n\n[Response to a quoted post] [Detroit Red Wings (@DetroitRedWings) on X]"
+  },
+  {
+   "id": "at://did:plc:ma4xzjexknxz7geuggbqbsmi/app.bsky.feed.post/3mz2a73fwly22|dylanlarkin|out|status",
+   "at": "2026-10-29T21:41:15.472Z",
+   "seen": "2026-10-29T23:16:27.355Z",
+   "handle": "johnston-bot.bsky.social",
+   "post": "at://did:plc:ma4xzjexknxz7geuggbqbsmi/app.bsky.feed.post/3mz2a73fwly22",
+   "player": "Dylan Larkin",
+   "team": "DET",
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.95,
+   "text": "The Red Wings have suspended Dylan Larkin without pay, and can really make it painful if they don't trade him in short order:\n\nLarkin will forfeit $41,237.11 in pay for each day of his suspension. [De"
+  },
+  {
+   "id": "at://did:plc:3uus7y6h3rlrk6sbctzxm4bg/app.bsky.feed.post/3mz2bsskib32i|dylanlarkin|out|status",
+   "at": "2026-10-29T22:10:11.000Z",
+   "seen": "2026-10-29T23:16:27.355Z",
+   "handle": "dailyfaceoff.bsky.social",
+   "post": "at://did:plc:3uus7y6h3rlrk6sbctzxm4bg/app.bsky.feed.post/3mz2bsskib32i",
+   "player": "Dylan Larkin",
+   "team": "DET",
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.97,
+   "text": "The Red Wings have announced they are suspending Dylan Larkin without pay."
+  },
+  {
+   "id": "at://did:plc:3uus7y6h3rlrk6sbctzxm4bg/app.bsky.feed.post/3mz2c2udigp25|dylanlarkin|out|status",
+   "at": "2026-10-29T22:14:42.000Z",
+   "seen": "2026-10-29T23:16:27.355Z",
+   "handle": "dailyfaceoff.bsky.social",
+   "post": "at://did:plc:3uus7y6h3rlrk6sbctzxm4bg/app.bsky.feed.post/3mz2c2udigp25",
+   "player": "Dylan Larkin",
+   "team": "DET",
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.97,
+   "text": "Red Wings suspend Dylan Larkin without pay"
+  },
+  {
+   "id": "at://did:plc:3uus7y6h3rlrk6sbctzxm4bg/app.bsky.feed.post/3mz2ddiaauy2k|kendallcoyneschofield|out|status",
+   "at": "2026-10-29T22:37:25.000Z",
+   "seen": "2026-10-29T23:16:27.355Z",
+   "handle": "dailyfaceoff.bsky.social",
+   "post": "at://did:plc:3uus7y6h3rlrk6sbctzxm4bg/app.bsky.feed.post/3mz2ddiaauy2k",
+   "player": "Kendall Coyne Schofield",
+   "team": "MIN",
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.8,
+   "text": "Frost’s Kendall Coyne Schofield to miss 2026-27 after pregnancy announcement"
   }
  ]
 }

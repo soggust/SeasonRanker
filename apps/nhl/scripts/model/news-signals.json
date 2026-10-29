@@ -86,7 +86,8 @@
   "50301039": "2026-10-27",
   "50303628": "2026-10-28",
   "50304728": "2026-10-28",
-  "50319798": "2026-10-29"
+  "50319798": "2026-10-29",
+  "50322532": "2026-10-29"
  },
  "signals": [
   {
@@ -237,6 +238,21 @@
    "confidence": 0.85,
    "story": "50319798",
    "headline": "Sources: Red Wings won't play Dylan Larkin for 'trade-related' reasons",
+   "model": "claude-haiku-5-5"
+  },
+  {
+   "id": "50322532|5|3114755|benched",
+   "day": "2026-10-29",
+   "at": "2026-10-29T22:58:22.000Z",
+   "team": "5",
+   "abbr": "DET",
+   "athlete": "3114755",
+   "player": "Dylan Larkin",
+   "kind": "benched",
+   "direction": "down",
+   "confidence": 0.85,
+   "story": "50322532",
+   "headline": "Red Wings suspend Dylan Larkin, explore trade options",
    "model": "claude-haiku-5-5"
   }
  ]
