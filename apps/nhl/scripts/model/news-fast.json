@@ -3,8 +3,8 @@
  "cursor": {
   "johnston-bot.bsky.social": "2026-10-25T21:08:24.897Z",
   "notfriedgehnic.bsky.social": "2026-10-28T18:12:23.303Z",
-  "dailyfaceoff.bsky.social": "2026-10-29T00:28:41.000Z",
-  "dfotoronto.bsky.social": "2026-10-28T21:45:46.000Z",
+  "dailyfaceoff.bsky.social": "2026-10-29T02:42:13.000Z",
+  "dfotoronto.bsky.social": "2026-10-29T02:49:39.000Z",
   "marklazerus.bsky.social": "2026-10-29T00:36:30.513Z"
  },
  "claims": [
@@ -982,6 +982,19 @@
    "kind": "status",
    "confidence": 0.9,
    "text": "Penguins place Elmer Soderblom on injured reserve, activate Justin Brazeau"
+  },
+  {
+   "id": "at://did:plc:3uus7y6h3rlrk6sbctzxm4bg/app.bsky.feed.post/3myyakckccf24|devincooley|out|status",
+   "at": "2026-10-29T02:42:13.000Z",
+   "seen": "2026-10-29T02:58:38.554Z",
+   "handle": "dailyfaceoff.bsky.social",
+   "post": "at://did:plc:3uus7y6h3rlrk6sbctzxm4bg/app.bsky.feed.post/3myyakckccf24",
+   "player": "Devin Cooley",
+   "team": "CGY",
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.5,
+   "text": "Flames’ Devin Cooley exits game with lower-body injury"
   }
  ]
 }
