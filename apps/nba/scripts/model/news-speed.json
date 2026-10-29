@@ -14127,6 +14127,137 @@
     "seen": "2026-10-29T01:39:41.956Z",
     "own": "2026-10-29T01:33:00.000Z"
    }
+  },
+  "401909893|mouhamedgueye|out": {
+   "game": "401909893",
+   "start": "2026-10-30T00:00Z",
+   "team": "1",
+   "name": "Mouhamed Gueye",
+   "status": "out",
+   "athlete": "4712863",
+   "espn": {
+    "seen": "2026-10-29T02:26:25.223Z",
+    "own": "2026-10-19T19:38:00.000Z"
+   }
+  },
+  "401909893|henriveesaar|out": {
+   "game": "401909893",
+   "start": "2026-10-30T00:00Z",
+   "team": "1",
+   "name": "Henri Veesaar",
+   "status": "out",
+   "athlete": "5105571",
+   "espn": {
+    "seen": "2026-10-29T02:26:25.223Z",
+    "own": "2026-09-21T19:50:00.000Z"
+   }
+  },
+  "401909893|alexcaruso|out": {
+   "game": "401909893",
+   "start": "2026-10-30T00:00Z",
+   "team": "1",
+   "name": "Alex Caruso",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-10-28T18:28:34.313Z",
+    "own": "2026-10-28T18:06:14.000Z",
+    "why": "@rotowirenba.bsky.social: Alex Caruso: Return timeline uncertain \n\n https://www."
+   }
+  },
+  "401909893|najimarshall|out": {
+   "game": "401909893",
+   "start": "2026-10-30T00:00Z",
+   "team": "1",
+   "name": "Naji Marshall",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-10-28T18:28:34.313Z",
+    "own": "2026-10-28T18:22:27.000Z",
+    "why": "@rotowirenba.bsky.social: Naji Marshall: Downgraded to doubtful \n\n https://www.r"
+   }
+  },
+  "401909893|aaronwiggins|q": {
+   "game": "401909893",
+   "start": "2026-10-30T00:00Z",
+   "team": "1",
+   "name": "Aaron Wiggins",
+   "status": "q",
+   "sleeper": {
+    "seen": "2026-10-28T20:19:47.558Z",
+    "own": "2026-10-28T19:15:22.820Z"
+   }
+  },
+  "401909893|ziairewilliams|out": {
+   "game": "401909893",
+   "start": "2026-10-30T00:00Z",
+   "team": "1",
+   "name": "Ziaire Williams",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-10-28T21:02:19.956Z",
+    "own": "2026-10-28T20:06:57.000Z",
+    "why": "@rotowirenba.bsky.social: Ziaire Williams: Ruled out Wednesday \n\n https://www.ro"
+   }
+  },
+  "401909893|tyresehaliburton|out": {
+   "game": "401909893",
+   "start": "2026-10-30T00:00Z",
+   "team": "1",
+   "name": "Tyrese Haliburton",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-10-28T22:14:49.243Z",
+    "own": "2026-10-28T21:30:36.000Z",
+    "why": "@rotowirenba.bsky.social: Tyrese Haliburton: Out at least two weeks \n\n https://w"
+   }
+  },
+  "401909893|laurimarkkanen|out": {
+   "game": "401909893",
+   "start": "2026-10-30T00:00Z",
+   "team": "1",
+   "name": "Lauri Markkanen",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-10-29T00:32:35.710Z",
+    "own": "2026-10-29T00:14:19.000Z",
+    "why": "@rotowirenba.bsky.social: Lauri Markkanen: Won't play Wednesday \n\n https://www.r"
+   }
+  },
+  "401909893|brandoningram|out": {
+   "game": "401909893",
+   "start": "2026-10-30T00:00Z",
+   "team": "1",
+   "name": "Brandon Ingram",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-10-29T01:21:50.888Z",
+    "own": "2026-10-29T01:00:31.000Z",
+    "why": "@rotowirenba.bsky.social: Brandon Ingram: To miss at least one more week \n\n http"
+   }
+  },
+  "401909893|maxstrus|out": {
+   "game": "401909893",
+   "start": "2026-10-30T00:00Z",
+   "team": "1",
+   "name": "Max Strus",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-10-29T00:52:30.413Z",
+    "own": "2026-10-29T00:50:05.618Z",
+    "why": "@insidenbanews.bsky.social: Brandon Ingram (heel), Max Strus (foot), Yanic Konan"
+   }
+  },
+  "401909893|yanickonanniederhauser|out": {
+   "game": "401909893",
+   "start": "2026-10-30T00:00Z",
+   "team": "1",
+   "name": "Yanic Konan Niederhauser",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-10-29T00:52:30.413Z",
+    "own": "2026-10-29T00:50:05.618Z",
+    "why": "@insidenbanews.bsky.social: Brandon Ingram (heel), Max Strus (foot), Yanic Konan"
+   }
   }
  }
 }
