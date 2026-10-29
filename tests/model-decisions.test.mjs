@@ -2349,3 +2349,18 @@ test('D100 the Polymarket sharps as a free market signal: research only, the hoo
   const decisions = fs.readFileSync(path.resolve('libs/ranker/scripts/model/DECISIONS.md'), 'utf8');
   assert.ok(decisions.includes('### D100.'));
 });
+
+// (desk run 40946891346's data check, 2026-10-29: an NHL trial LOVE staked the trial's 2.5u, the page's what-if read 1u)
+test('D101 a trial pick carries the trial’s stakes by band, the bet written with them, the page reading them', async () => {
+  const TR = await import('../libs/ranker/scripts/model/trusted.mjs');
+  const file = { v: TR.TRIAL_V, sport: 'nhl', trial: true, on: { love: true, mid: true }, rule: { love: { share: 0.5, kellyMax: null }, mid: 9 }, loveUnits: 2.5, kelly: 0.01, weights: { form: 1 } };
+  const lt = TR.liveTrial(file, { market: 'prop', kelly: 0.015, parts: { form: 0.02, base: 0.005 }, units: 1, held: false });
+  assert.equal(lt.band, 'high');
+  assert.equal(lt.units, 2.5);
+  assert.deepEqual(lt.stakes, { high: 2.5, medium: 0.5 });
+  assert.match(src('run.mjs'), /\.\.\.\(plain && lt\.stakes \? \{ units: lt\.stakes \} : \{\}\)/, 'a plain trial bet carries them');
+  assert.match(src('picks.mjs'), /trialUnits: b\.conf\.trial\.units/, 'its pick row too');
+  assert.match(fs.readFileSync(path.resolve('libs/ranker/src/engine/book/bet-why.ts'), 'utf8'), /base\.tierUnits\[level\]/, 'the what-if stakes the band at the trial’s');
+  const decisions = fs.readFileSync(path.resolve('libs/ranker/scripts/model/DECISIONS.md'), 'utf8');
+  assert.ok(decisions.includes('### D101.'));
+});

@@ -148,6 +148,35 @@ test('a placed bet the confidence layer caps (D52) reads back its own stake, hel
   assert.equal(desk.priceAt(wi, 105).level, 'medium', 'held to a LIKE at a better price');
 });
 
+// (desk run 40946891346's failed data check, 2026-10-29: Arturs Silovs Under 24.5 Saves, an NHL trial LOVE (D73) staked the
+// trial's fixed 2.5u where the return's formula reads 1u. The trial's stakes ride on the pick (picks.json trialUnits, D101):
+// the what-if reads a LOVE at the trial's stake and a LIKE at its step, the band still the Kelly range's)
+test('a two-band trial pick (D73) reads back the trial’s stakes: a LOVE’s fixed stake, a LIKE’s step, at every price', () => {
+  const p = 0.53;
+  const odds = -110;
+  const k = kellyOf(odds, p);
+  const ev = p * decimal(odds) - 1;
+  assert.ok(stakeFor(ev, 0.08, odds) < 2.5, 'the formula would stake less');
+  const file = { id: 'nhl-x', sport: 'nhl', score: k, chance: 53, level: 'high', tier: 'high', tierKelly: [0.01, null], trial: true, trialUnits: { high: 2.5, medium: 0.5 }, edge: true, kind: 'player', market: 'Saves', pick: 'Arturs Silovs Under 24.5 Saves', side: 'under', line: 24.5, odds, book: 'DraftKings', start: '2026-10-30T00:00:00Z', matchup: 'PIT @ NYR', teams: [], where: null, reason: '', model: 0.55, fair: 0.5, p, ev, units: 2.5, why: { fair: 0.5, trust: 0.6, lean: 0, fitted: true, from: 'book' } };
+  const row = desk.rowOf('nhl', file, false);
+  assert.equal(row.confidence, 'high');
+  const wi = desk.whatIfOf(row);
+  assert.deepEqual(wi.tierUnits, { high: 2.5, medium: 0.5 });
+  const at = desk.priceAt(wi, odds);
+  assert.equal(at.level, 'high');
+  assert.equal(at.units, 2.5, 'the trial’s LOVE stake, not the formula’s');
+  // (a worse price, the Kelly under the trial's floor: a LIKE at the step's stake)
+  const { worse } = desk.flipsAt(wi, odds);
+  assert.equal(worse.level, 'medium');
+  assert.equal(desk.priceAt(wi, desk.nextCent(worse.odds, -1)).units, 0.5);
+  // (a LIKE trial pick with the step off reads the formula's stake, as before)
+  const like = desk.rowOf('nhl', { ...file, level: 'medium', tier: 'medium', trialUnits: { high: 2.5, medium: null }, units: stakeFor(ev, 0.08, odds) }, false);
+  assert.equal(desk.priceAt(desk.whatIfOf(like), odds).units, stakeFor(ev, 0.08, odds));
+  // (a file from before D101, no trialUnits: a stake under the formula's still reads back as its ceiling)
+  const old = desk.rowOf('nhl', { ...file, level: 'medium', tier: 'medium', trialUnits: undefined, units: 0.5 }, false);
+  assert.equal(desk.priceAt(desk.whatIfOf(old), odds).units, 0.5);
+});
+
 test('flipsAt: the exact whole-cent prices where the band changes, either way', () => {
   for (const [p, odds] of [[0.535, -110], [0.56, -118], [0.62, -150], [0.45, 150], [0.58, 105], [0.3, 260]]) {
     const b = base(p, odds);

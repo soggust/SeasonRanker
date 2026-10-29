@@ -57,6 +57,8 @@ export interface BetWhyRow {
   tier?: Confidence | null;
   // (the two-band trial's LOVE Kelly range in place of the 2% floor (picks.json tierKelly, D73))
   tierKelly?: [number, number | null] | null;
+  // (the trial's stakes by band (picks.json trialUnits, D101): a LOVE's fixed stake, a LIKE's step; null where the return sizes it)
+  trialUnits?: { high: number | null; medium: number | null } | null;
   reasons?: string[];
   // (the news lag's tag (picks.json lag, D66): the popover's "Star out" line)
   lag?: { player: string; first?: string | null; min?: number | null } | null;
@@ -466,6 +468,9 @@ export interface WhatIfBase {
   // the two-band trial's range in place of the floor (D73))
   tier?: Confidence | null;
   tierKelly?: [number, number | null] | null;
+  // (the two-band trial's stakes by band (D101): at every price a LOVE stakes the trial's fixed stake and a LIKE its
+  // step, where the trial sets them; null, the return's formula)
+  tierUnits?: { high: number | null; medium: number | null } | null;
   win: number;
   // (the trusted chance's makings, for the caption: the bot's own chance, the book's no-vig, the trust)
   blend: { model: number; fair: number; trust: number } | null;
@@ -497,7 +502,8 @@ export function priceAt(base: WhatIfBase, american: number): PriceAt {
   else if (base.most === 'high' && level === 'lock') level = 'high';
   let units: number | null = null;
   if (level !== 'low') {
-    units = suspect || base.most === 'medium' ? PRACTICE_UNITS : stakeFor(ev, odds);
+    const fixed = base.tierUnits && (level === 'high' || level === 'medium') ? base.tierUnits[level] : null;
+    units = suspect || base.most === 'medium' ? PRACTICE_UNITS : fixed !== null && fixed !== undefined ? fixed : stakeFor(ev, odds);
     if (base.unitsCap !== null) units = Math.min(units, base.unitsCap);
   }
   return { odds, breakEven: 1 / d, edge: base.p - 1 / d, ev, kelly, level, units, suspect };
@@ -563,7 +569,7 @@ export function whatIfOf(r: BetWhyRow, placed = true): WhatIfBase | null {
   const plain = p * decimalOf(odds) - 1;
   const ratio = Number.isFinite(r.ev) && Math.abs(plain) > 1e-3 ? r.ev! / plain : 1;
   const win = ratio > 0.5 && ratio <= 1 + 1e-6 ? Math.min(1, ratio) : 1;
-  const base: WhatIfBase = { odds, p, bet, cap: null, unitsCap: null, win, blend: null, ...(bet && (r.tier === 'lock' || r.tier === 'high' || r.tier === 'medium') ? { tier: r.tier, ...(r.tierKelly ? { tierKelly: r.tierKelly } : {}) } : {}) };
+  const base: WhatIfBase = { odds, p, bet, cap: null, unitsCap: null, win, blend: null, ...(bet && (r.tier === 'lock' || r.tier === 'high' || r.tier === 'medium') ? { tier: r.tier, ...(r.tierKelly ? { tierKelly: r.tierKelly } : {}), ...(r.trialUnits ? { tierUnits: r.trialUnits } : {}) } : {}) };
   const at = priceAt(base, odds);
   // (a LIKE the score doesn't make: a practice, role or research pick's, held there at every price)
   // (and a placed bet the desk capped (picks.json cap 'medium': a rule's or the confidence layer's, D52): its band held

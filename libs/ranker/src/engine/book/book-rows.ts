@@ -6,7 +6,7 @@
 import { byBand, CheckResolved } from './desk-notes';
 import { BANDS, Confidence, PickWhy, confidenceOf, isSuspect, kellyOf } from './bet-why';
 import { heldTo } from './tiers';
-import type { BandCap } from './tiers';
+import type { BandCap, TrialUnits } from './tiers';
 import { americanOdds } from './bet-format';
 import { PlayerRef, playerCardPath } from '../player-link';
 import type { BotRecent } from './recent-form';
@@ -72,6 +72,8 @@ export interface BetRow {
   tier?: Confidence | null;
   // (the two-band trial's LOVE Kelly range in place of the 2% floor (picks.json tierKelly, D73): [from, to), to null for none)
   tierKelly?: [number, number | null] | null;
+  // (the trial's stakes by band (picks.json trialUnits, D101): a LOVE's fixed stake, a LIKE's step; null where the return sizes it)
+  trialUnits?: TrialUnits | null;
   reasons?: string[];
   // (the news lag's tag (picks.json lag, DECISIONS.md D66): the star out and when the desk first saw the news)
   lag?: NewsLag | null;
@@ -218,6 +220,8 @@ export interface Pick {
   tier?: Confidence | null;
   // (the two-band trial's LOVE Kelly range in place of the 2% floor (picks.json tierKelly, D73): [from, to), to null for none)
   tierKelly?: [number, number | null] | null;
+  // (the trial's stakes by band (picks.json trialUnits, D101))
+  trialUnits?: TrialUnits | null;
   reasons?: string[];
   lag?: NewsLag | null;
   // (when the Bot placed it: files that don't carry it, none)
@@ -335,7 +339,7 @@ export function rowOf(sport: string, p: Pick, check: boolean): BetRow {
     // (a reason tier (D58): the tier where the Kelly clears the 2% floor, else a LIKE; a PASS where there's no edge)
     confidence: p.practice ? 'medium' : cappedBand(tierBand(confidenceOf(sureness, p.p ?? (p.chance != null ? p.chance / 100 : null), p.edge), sureness, p.tier, p.tierKelly), p),
     ...(p.practice ? { practice: true } : {}),
-    ...(isTier(p.tier) ? { tier: p.tier, ...(p.tierKelly ? { tierKelly: p.tierKelly } : {}) } : {}),
+    ...(isTier(p.tier) ? { tier: p.tier, ...(p.tierKelly ? { tierKelly: p.tierKelly } : {}), ...(p.trialUnits ? { trialUnits: p.trialUnits } : {}) } : {}),
     ...(Array.isArray(p.reasons) && p.reasons.length ? { reasons: p.reasons.slice(0, 4) } : {}),
     ...(p.lag?.player ? { lag: p.lag } : {}),
     ...(p.cap === 'medium' || p.cap === 'high' ? { cap: p.cap } : {}),

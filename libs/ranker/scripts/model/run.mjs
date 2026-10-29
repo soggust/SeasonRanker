@@ -3116,7 +3116,7 @@ function withTrial(r, bet) {
   const plain = !bet.practice && !bet.suspect && !bet.topN && !bet.researchBet && !bet.researchAdjusted && !bet.context?.guard && !bet.context?.roleBet;
   const lt = r.trusted && bet.market === 'prop' ? liveTrial(r.trusted, { market: 'prop', kelly: stakeKelly(bet.odds, bet.p), parts: trialPartsOf(r, bet), units: Number.isFinite(bet.units) ? tierUnits(bet.units, 'medium') : bet.units, held: !plain }) : null;
   const band = lt?.band ?? 'medium';
-  bet.conf = { ...(bet.conf ?? {}), tier: band, trial: { v: r.trusted?.v ?? null, ...(lt ? { share: lt.share, kelly: [r.trusted.kelly, r.trusted.rule?.love?.kellyMax ?? null], pieces: lt.pieces.slice(0, 3).map(([k]) => k) } : {}) } };
+  bet.conf = { ...(bet.conf ?? {}), tier: band, trial: { v: r.trusted?.v ?? null, ...(lt ? { share: lt.share, kelly: [r.trusted.kelly, r.trusted.rule?.love?.kellyMax ?? null], pieces: lt.pieces.slice(0, 3).map(([k]) => k), ...(plain && lt.stakes ? { units: lt.stakes } : {}) } : {}) } };
   if (lt?.why) bet.conf.reasons = [lt.why];
   else delete bet.conf.reasons;
   if (plain && Number.isFinite(bet.units)) bet.units = Math.max(PRACTICE_UNITS, lt ? lt.units : tierUnits(bet.units, 'medium'));

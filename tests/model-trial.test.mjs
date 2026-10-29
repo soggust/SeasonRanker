@@ -106,6 +106,10 @@ test('D73 the live desk: the pieces as the replay splits them, the band from the
   const lt = liveTrial(file, { market: 'prop', kelly: 0.015, parts: { form: 0.02, opponent: 0.01, base: 0.005 }, units: 0.5, held: false });
   assert.equal(lt.band, 'high');
   assert.equal(lt.units, 2);
+  // (D101: each band's stake for the page's what-if; the step off, a LIKE's the formula's)
+  assert.deepEqual(lt.stakes, { high: 2, medium: null });
+  assert.deepEqual(liveTrial({ ...file, loveUnits: 2.5, rule: { ...file.rule, mid: 9 } }, { market: 'prop', kelly: 0.015, parts: { form: 0.02, opponent: 0.01, base: 0.005 }, units: 1, held: false }).stakes, { high: 2.5, medium: 0.5 });
+  assert.deepEqual(liveTrial({ ...file, rule: { love: null, mid: 0.4 } }, { market: 'prop', kelly: 0.015, parts: { form: 0.02, base: 0.005 }, units: 1, held: false }).stakes, { high: null, medium: 1 }, 'no LOVE rule: none; the step at 0.4, a share past it 1u');
   assert.equal(lt.why, 'LOVE (trial): driven by proven pieces: recent form, matchup vs position');
   assert.ok(lt.why.startsWith('LOVE (trial): driven by proven pieces: '));
   assert.equal(liveTrial(file, { market: 'prop', kelly: 0.015, parts: { form: 0.002, base: 0.03 }, units: 0.5, held: false }).band, 'medium');

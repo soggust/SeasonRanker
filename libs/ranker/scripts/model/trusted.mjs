@@ -421,8 +421,12 @@ export function liveTrial(file, bet) {
   const love = file.rule?.love ? { ...file.rule.love, kellyMax: file.rule.love.kellyMax ?? Infinity } : null;
   // (a piece switched off in TRIAL since the file was written stays off live, D95: the file's rule is the walk's, the switch the code's)
   const on = trialOn(file.sport) ?? {};
-  const { band, units } = trialBand({ ...bet, share: s.share, te: s.te }, { love: on.love === false ? null : love, mid: on.mid === false ? 0 : (file.rule?.mid ?? 0) }, o);
-  return { band, units, share: Math.round(s.share * 1e3) / 1e3, pieces: s.pieces, why: band === 'high' ? trialWhy(s.pieces) : null };
+  const choice = { love: on.love === false ? null : love, mid: on.mid === false ? 0 : (file.rule?.mid ?? 0) };
+  const { band, units } = trialBand({ ...bet, share: s.share, te: s.te }, choice, o);
+  // (each band's stake under the rule, for the page's what-if price (D101, bet-why.ts priceAt): a LOVE's fixed
+  // loveUnits, a LIKE's step; null where the return's formula sizes it (no LOVE rule earned, the step off))
+  const stakes = { high: choice.love ? o.loveUnits : null, medium: choice.mid ? midUnits({ ...bet, share: s.share }, choice.mid, o) : null };
+  return { band, units, stakes, share: Math.round(s.share * 1e3) / 1e3, pieces: s.pieces, why: band === 'high' ? trialWhy(s.pieces) : null };
 }
 
 // A live prop's pieces on its side (D73), as the replay splits a close row (gate-history.mjs propAttr and finish):

@@ -37,6 +37,9 @@ export function bandOrder(band: Confidence | Tier | null | undefined): number {
 // a suspect price, D46), 'high' a LOVE at most (the confidence layer's tiers, D52). A band held to it: the cap where
 // the band sits above it, else the band; a CHECK and a PASS as they are)
 export type BandCap = 'medium' | 'high';
+// (the two-band trial's stakes by band (picks.json trialUnits, DECISIONS.md D101): a LOVE's fixed stake, a LIKE's step;
+// null where the return's formula sizes it)
+export type TrialUnits = { high: number | null; medium: number | null };
 export function heldTo(band: Confidence, cap: BandCap | null | undefined): Confidence {
   if (!cap || band === 'check' || band === 'low') return band;
   return bandOrder(cap) > bandOrder(band) ? cap : band;

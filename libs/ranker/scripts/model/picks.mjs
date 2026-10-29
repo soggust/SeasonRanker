@@ -470,7 +470,7 @@ export function buildPicks(sport, ledger, trust, games, now, extra = {}) {
       // and those reasons with their records, the popover's list)
       // (the news lag's tag (D66): the star out and when the desk first saw it; the popover's "Star out" line)
       ...(!check && b.newsLag?.player ? { lag: { player: b.newsLag.player, first: b.newsLag.first ?? null, min: b.newsLag.min ?? null } } : {}),
-      ...(!check && tierOn(b) ? { tier: b.conf.tier, ...(tierKellyOf(b) ? { tierKelly: tierKellyOf(b), trial: true } : {}), ...(Array.isArray(b.conf.reasons) && b.conf.reasons.length ? { reasons: b.conf.reasons.slice(0, 4) } : {}) } : {}),
+      ...(!check && tierOn(b) ? { tier: b.conf.tier, ...(tierKellyOf(b) ? { tierKelly: tierKellyOf(b), trial: true, ...(b.conf.trial.units ? { trialUnits: b.conf.trial.units } : {}) } : {}), ...(Array.isArray(b.conf.reasons) && b.conf.reasons.length ? { reasons: b.conf.reasons.slice(0, 4) } : {}) } : {}),
       kind: KIND[b.market] ?? 'player',
       market: b.market === 'prop' ? b.statLabel : LABEL[b.market],
       pick: b.pick,
