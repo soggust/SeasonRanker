@@ -7885,6 +7885,11 @@
    "espn": {
     "seen": "2026-10-28T15:28:09.757Z",
     "own": "2026-10-28T03:14:00.000Z"
+   },
+   "bluesky": {
+    "seen": "2026-10-29T16:51:09.213Z",
+    "own": "2026-10-29T16:23:05.000Z",
+    "why": "@dailyfaceoff.bsky.social: Hurricanes’ Taylor Hall to miss time with upper-body "
    }
   },
   "401892603|alexandernikishin|out": {
@@ -9089,6 +9094,18 @@
    "espn": {
     "seen": "2026-10-29T16:49:48.392Z",
     "own": "2026-10-29T16:27:00.000Z"
+   }
+  },
+  "401892607|spurgeon|out": {
+   "game": "401892607",
+   "start": "2026-10-30T00:00Z",
+   "team": "30",
+   "name": "Spurgeon",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-10-29T16:51:09.213Z",
+    "own": "2026-10-29T16:32:05.000Z",
+    "why": "@dailyfaceoff.bsky.social: Report: Wild’s Faber clears return to play protocol, "
    }
   }
  }
