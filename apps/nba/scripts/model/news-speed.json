@@ -14858,6 +14858,11 @@
    "espn": {
     "seen": "2026-10-29T16:42:43.530Z",
     "own": "2026-10-29T05:06:00.000Z"
+   },
+   "bluesky": {
+    "seen": "2026-10-29T23:16:27.355Z",
+    "own": "2026-10-29T22:13:58.000Z",
+    "why": "@rotowirenba.bsky.social: Rui Hachimura: Questionable for Friday \n\n https://www."
    }
   },
   "401909284|yanickonanniederhauser|out": {
@@ -15732,6 +15737,11 @@
    "espn": {
     "seen": "2026-10-29T22:26:42.278Z",
     "own": "2026-10-29T22:19:00.000Z"
+   },
+   "bluesky": {
+    "seen": "2026-10-29T23:16:27.355Z",
+    "own": "2026-10-29T22:22:53.000Z",
+    "why": "@rotowirenba.bsky.social: Dejounte Murray: Late scratch Thursday \n\n https://www."
    }
   },
   "401909894|jordanpoole|out": {
@@ -15929,6 +15939,306 @@
     "seen": "2026-10-29T21:37:09.530Z",
     "own": "2026-10-29T21:37:02.000Z",
     "why": "@rotowirenba.bsky.social: Dennis Schroder: Questionable for Friday \n\n https://ww"
+   }
+  },
+  "401909893|ruihachimura|q": {
+   "game": "401909893",
+   "start": "2026-10-30T00:00Z",
+   "team": "1",
+   "name": "Rui Hachimura",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-10-29T23:16:27.355Z",
+    "own": "2026-10-29T22:13:58.000Z",
+    "why": "@rotowirenba.bsky.social: Rui Hachimura: Questionable for Friday \n\n https://www."
+   }
+  },
+  "401909893|dejountemurray|out": {
+   "game": "401909893",
+   "start": "2026-10-30T00:00Z",
+   "team": "1",
+   "name": "Dejounte Murray",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-10-29T23:16:27.355Z",
+    "own": "2026-10-29T22:22:53.000Z",
+    "why": "@rotowirenba.bsky.social: Dejounte Murray: Late scratch Thursday \n\n https://www."
+   }
+  },
+  "401909893|meleekthomas|out": {
+   "game": "401909893",
+   "start": "2026-10-30T00:00Z",
+   "team": "5",
+   "name": "Meleek Thomas",
+   "status": "out",
+   "athlete": "5041951",
+   "espn": {
+    "seen": "2026-10-29T23:29:43.090Z",
+    "own": "2026-10-29T23:21:00.000Z"
+   }
+  },
+  "401909894|ruihachimura|q": {
+   "game": "401909894",
+   "start": "2026-10-30T00:00Z",
+   "team": "3",
+   "name": "Rui Hachimura",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-10-29T23:16:27.355Z",
+    "own": "2026-10-29T22:13:58.000Z",
+    "why": "@rotowirenba.bsky.social: Rui Hachimura: Questionable for Friday \n\n https://www."
+   }
+  },
+  "401909895|ruihachimura|q": {
+   "game": "401909895",
+   "start": "2026-10-30T02:00Z",
+   "team": "22",
+   "name": "Rui Hachimura",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-10-29T23:16:27.355Z",
+    "own": "2026-10-29T22:13:58.000Z",
+    "why": "@rotowirenba.bsky.social: Rui Hachimura: Questionable for Friday \n\n https://www."
+   }
+  },
+  "401909895|dejountemurray|out": {
+   "game": "401909895",
+   "start": "2026-10-30T02:00Z",
+   "team": "22",
+   "name": "Dejounte Murray",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-10-29T23:16:27.355Z",
+    "own": "2026-10-29T22:22:53.000Z",
+    "why": "@rotowirenba.bsky.social: Dejounte Murray: Late scratch Thursday \n\n https://www."
+   }
+  },
+  "401909277|ruihachimura|q": {
+   "game": "401909277",
+   "start": "2026-10-30T23:00Z",
+   "team": "27",
+   "name": "Rui Hachimura",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-10-29T23:16:27.355Z",
+    "own": "2026-10-29T22:13:58.000Z",
+    "why": "@rotowirenba.bsky.social: Rui Hachimura: Questionable for Friday \n\n https://www."
+   }
+  },
+  "401909277|dejountemurray|out": {
+   "game": "401909277",
+   "start": "2026-10-30T23:00Z",
+   "team": "27",
+   "name": "Dejounte Murray",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-10-29T23:16:27.355Z",
+    "own": "2026-10-29T22:22:53.000Z",
+    "why": "@rotowirenba.bsky.social: Dejounte Murray: Late scratch Thursday \n\n https://www."
+   }
+  },
+  "401909278|ruihachimura|q": {
+   "game": "401909278",
+   "start": "2026-10-30T23:30Z",
+   "team": "2",
+   "name": "Rui Hachimura",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-10-29T23:16:27.355Z",
+    "own": "2026-10-29T22:13:58.000Z",
+    "why": "@rotowirenba.bsky.social: Rui Hachimura: Questionable for Friday \n\n https://www."
+   }
+  },
+  "401909278|dejountemurray|out": {
+   "game": "401909278",
+   "start": "2026-10-30T23:30Z",
+   "team": "2",
+   "name": "Dejounte Murray",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-10-29T23:16:27.355Z",
+    "own": "2026-10-29T22:22:53.000Z",
+    "why": "@rotowirenba.bsky.social: Dejounte Murray: Late scratch Thursday \n\n https://www."
+   }
+  },
+  "401909279|ruihachimura|q": {
+   "game": "401909279",
+   "start": "2026-10-30T23:30Z",
+   "team": "17",
+   "name": "Rui Hachimura",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-10-29T23:16:27.355Z",
+    "own": "2026-10-29T22:13:58.000Z",
+    "why": "@rotowirenba.bsky.social: Rui Hachimura: Questionable for Friday \n\n https://www."
+   }
+  },
+  "401909279|dejountemurray|out": {
+   "game": "401909279",
+   "start": "2026-10-30T23:30Z",
+   "team": "17",
+   "name": "Dejounte Murray",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-10-29T23:16:27.355Z",
+    "own": "2026-10-29T22:22:53.000Z",
+    "why": "@rotowirenba.bsky.social: Dejounte Murray: Late scratch Thursday \n\n https://www."
+   }
+  },
+  "401909280|ruihachimura|q": {
+   "game": "401909280",
+   "start": "2026-10-30T23:30Z",
+   "team": "20",
+   "name": "Rui Hachimura",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-10-29T23:16:27.355Z",
+    "own": "2026-10-29T22:13:58.000Z",
+    "why": "@rotowirenba.bsky.social: Rui Hachimura: Questionable for Friday \n\n https://www."
+   }
+  },
+  "401909280|dejountemurray|out": {
+   "game": "401909280",
+   "start": "2026-10-30T23:30Z",
+   "team": "20",
+   "name": "Dejounte Murray",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-10-29T23:16:27.355Z",
+    "own": "2026-10-29T22:22:53.000Z",
+    "why": "@rotowirenba.bsky.social: Dejounte Murray: Late scratch Thursday \n\n https://www."
+   }
+  },
+  "401909281|ruihachimura|q": {
+   "game": "401909281",
+   "start": "2026-10-30T23:30Z",
+   "team": "28",
+   "name": "Rui Hachimura",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-10-29T23:16:27.355Z",
+    "own": "2026-10-29T22:13:58.000Z",
+    "why": "@rotowirenba.bsky.social: Rui Hachimura: Questionable for Friday \n\n https://www."
+   }
+  },
+  "401909281|dejountemurray|out": {
+   "game": "401909281",
+   "start": "2026-10-30T23:30Z",
+   "team": "28",
+   "name": "Dejounte Murray",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-10-29T23:16:27.355Z",
+    "own": "2026-10-29T22:22:53.000Z",
+    "why": "@rotowirenba.bsky.social: Dejounte Murray: Late scratch Thursday \n\n https://www."
+   }
+  },
+  "401909282|ruihachimura|q": {
+   "game": "401909282",
+   "start": "2026-10-31T00:00Z",
+   "team": "14",
+   "name": "Rui Hachimura",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-10-29T23:16:27.355Z",
+    "own": "2026-10-29T22:13:58.000Z",
+    "why": "@rotowirenba.bsky.social: Rui Hachimura: Questionable for Friday \n\n https://www."
+   }
+  },
+  "401909282|dejountemurray|out": {
+   "game": "401909282",
+   "start": "2026-10-31T00:00Z",
+   "team": "14",
+   "name": "Dejounte Murray",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-10-29T23:16:27.355Z",
+    "own": "2026-10-29T22:22:53.000Z",
+    "why": "@rotowirenba.bsky.social: Dejounte Murray: Late scratch Thursday \n\n https://www."
+   }
+  },
+  "401909283|ruihachimura|q": {
+   "game": "401909283",
+   "start": "2026-10-31T00:00Z",
+   "team": "6",
+   "name": "Rui Hachimura",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-10-29T23:16:27.355Z",
+    "own": "2026-10-29T22:13:58.000Z",
+    "why": "@rotowirenba.bsky.social: Rui Hachimura: Questionable for Friday \n\n https://www."
+   }
+  },
+  "401909283|dejountemurray|out": {
+   "game": "401909283",
+   "start": "2026-10-31T00:00Z",
+   "team": "6",
+   "name": "Dejounte Murray",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-10-29T23:16:27.355Z",
+    "own": "2026-10-29T22:22:53.000Z",
+    "why": "@rotowirenba.bsky.social: Dejounte Murray: Late scratch Thursday \n\n https://www."
+   }
+  },
+  "401909284|dejountemurray|out": {
+   "game": "401909284",
+   "start": "2026-10-31T00:00Z",
+   "team": "16",
+   "name": "Dejounte Murray",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-10-29T23:16:27.355Z",
+    "own": "2026-10-29T22:22:53.000Z",
+    "why": "@rotowirenba.bsky.social: Dejounte Murray: Late scratch Thursday \n\n https://www."
+   }
+  },
+  "401909285|ruihachimura|q": {
+   "game": "401909285",
+   "start": "2026-10-31T02:00Z",
+   "team": "9",
+   "name": "Rui Hachimura",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-10-29T23:16:27.355Z",
+    "own": "2026-10-29T22:13:58.000Z",
+    "why": "@rotowirenba.bsky.social: Rui Hachimura: Questionable for Friday \n\n https://www."
+   }
+  },
+  "401909285|dejountemurray|out": {
+   "game": "401909285",
+   "start": "2026-10-31T02:00Z",
+   "team": "9",
+   "name": "Dejounte Murray",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-10-29T23:16:27.355Z",
+    "own": "2026-10-29T22:22:53.000Z",
+    "why": "@rotowirenba.bsky.social: Dejounte Murray: Late scratch Thursday \n\n https://www."
+   }
+  },
+  "401909286|ruihachimura|q": {
+   "game": "401909286",
+   "start": "2026-10-31T02:00Z",
+   "team": "21",
+   "name": "Rui Hachimura",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-10-29T23:16:27.355Z",
+    "own": "2026-10-29T22:13:58.000Z",
+    "why": "@rotowirenba.bsky.social: Rui Hachimura: Questionable for Friday \n\n https://www."
+   }
+  },
+  "401909286|dejountemurray|out": {
+   "game": "401909286",
+   "start": "2026-10-31T02:00Z",
+   "team": "21",
+   "name": "Dejounte Murray",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-10-29T23:16:27.355Z",
+    "own": "2026-10-29T22:22:53.000Z",
+    "why": "@rotowirenba.bsky.social: Dejounte Murray: Late scratch Thursday \n\n https://www."
    }
   }
  }
