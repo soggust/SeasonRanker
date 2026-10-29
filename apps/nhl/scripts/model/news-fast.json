@@ -3,7 +3,7 @@
  "cursor": {
   "johnston-bot.bsky.social": "2026-10-29T15:33:36.339Z",
   "notfriedgehnic.bsky.social": "2026-10-29T15:37:15.052Z",
-  "dailyfaceoff.bsky.social": "2026-10-29T15:10:29.000Z",
+  "dailyfaceoff.bsky.social": "2026-10-29T16:13:23.000Z",
   "dfotoronto.bsky.social": "2026-10-29T15:50:58.000Z",
   "marklazerus.bsky.social": "2026-10-29T03:14:54.956Z"
  },
@@ -995,6 +995,19 @@
    "kind": "status",
    "confidence": 0.5,
    "text": "Flames’ Devin Cooley exits game with lower-body injury"
+  },
+  {
+   "id": "at://did:plc:3uus7y6h3rlrk6sbctzxm4bg/app.bsky.feed.post/3myzn5toe7n2i|benkindel|active|return",
+   "at": "2026-10-29T16:00:33.000Z",
+   "seen": "2026-10-29T16:16:12.215Z",
+   "handle": "dailyfaceoff.bsky.social",
+   "post": "at://did:plc:3uus7y6h3rlrk6sbctzxm4bg/app.bsky.feed.post/3myzn5toe7n2i",
+   "player": "Ben Kindel",
+   "team": "PIT",
+   "status": "active",
+   "kind": "return",
+   "confidence": 0.85,
+   "text": "Penguins’ Ben Kindel to return after missing time following vasovagal episode"
   }
  ]
 }

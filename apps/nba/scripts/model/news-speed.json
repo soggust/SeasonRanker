@@ -14762,6 +14762,42 @@
     "seen": "2026-10-29T15:53:37.759Z",
     "own": "2026-02-09T21:43:00.000Z"
    }
+  },
+  "401909893|kawhileonard|out": {
+   "game": "401909893",
+   "start": "2026-10-30T00:00Z",
+   "team": "1",
+   "name": "Kawhi Leonard",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-10-29T15:55:14.263Z",
+    "own": "2026-10-29T15:39:36.000Z",
+    "why": "@rotowirenba.bsky.social: Kawhi Leonard: To miss 3-4 weeks \n\n https://www.rotowi"
+   }
+  },
+  "401909894|kawhileonard|out": {
+   "game": "401909894",
+   "start": "2026-10-30T00:00Z",
+   "team": "3",
+   "name": "Kawhi Leonard",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-10-29T15:55:14.263Z",
+    "own": "2026-10-29T15:39:36.000Z",
+    "why": "@rotowirenba.bsky.social: Kawhi Leonard: To miss 3-4 weeks \n\n https://www.rotowi"
+   }
+  },
+  "401909895|kawhileonard|out": {
+   "game": "401909895",
+   "start": "2026-10-30T02:00Z",
+   "team": "22",
+   "name": "Kawhi Leonard",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-10-29T15:55:14.263Z",
+    "own": "2026-10-29T15:39:36.000Z",
+    "why": "@rotowirenba.bsky.social: Kawhi Leonard: To miss 3-4 weeks \n\n https://www.rotowi"
+   }
   }
  }
 }
