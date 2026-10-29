@@ -14115,6 +14115,18 @@
     "own": "2026-10-29T00:50:05.618Z",
     "why": "@insidenbanews.bsky.social: Brandon Ingram (heel), Max Strus (foot), Yanic Konan"
    }
+  },
+  "401909894|jordanpoole|q": {
+   "game": "401909894",
+   "start": "2026-10-30T00:00Z",
+   "team": "3",
+   "name": "Jordan Poole",
+   "status": "q",
+   "athlete": "4277956",
+   "espn": {
+    "seen": "2026-10-29T01:39:41.956Z",
+    "own": "2026-10-29T01:33:00.000Z"
+   }
   }
  }
 }
