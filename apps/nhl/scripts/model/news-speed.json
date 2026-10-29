@@ -8830,6 +8830,11 @@
    "espn": {
     "seen": "2026-10-29T15:32:03.497Z",
     "own": "2026-10-29T15:21:00.000Z"
+   },
+   "bluesky": {
+    "seen": "2026-10-29T18:30:10.224Z",
+    "own": "2026-10-29T18:09:34.500Z",
+    "why": "@notfriedgehnic.bsky.social: www.sportsnet.ca [Larkin decides to sit out until R"
    }
   },
   "401892607|jaredspurgeon|out": {
@@ -9118,6 +9123,18 @@
     "seen": "2026-10-29T17:45:41.413Z",
     "own": "2026-10-29T17:16:58.000Z",
     "why": "@dailyfaceoff.bsky.social: Stars’ Capobianco out four weeks with lower-body inju"
+   }
+  },
+  "401892609|warrenfoegele|out": {
+   "game": "401892609",
+   "start": "2026-10-30T02:00Z",
+   "team": "14",
+   "name": "Warren Foegele",
+   "status": "out",
+   "athlete": "3151036",
+   "espn": {
+    "seen": "2026-10-29T18:39:54.839Z",
+    "own": "2026-10-29T18:27:00.000Z"
    }
   }
  }
