@@ -14798,6 +14798,198 @@
     "own": "2026-10-29T15:39:36.000Z",
     "why": "@rotowirenba.bsky.social: Kawhi Leonard: To miss 3-4 weeks \n\n https://www.rotowi"
    }
+  },
+  "401909284|anthonyedwards|out": {
+   "game": "401909284",
+   "start": "2026-10-31T00:00Z",
+   "team": "16",
+   "name": "Anthony Edwards",
+   "status": "out",
+   "athlete": "4594268",
+   "espn": {
+    "seen": "2026-10-29T16:42:43.530Z",
+    "own": "2026-10-27T22:52:00.000Z"
+   }
+  },
+  "401909284|dontedivincenzo|out": {
+   "game": "401909284",
+   "start": "2026-10-31T00:00Z",
+   "team": "16",
+   "name": "Donte DiVincenzo",
+   "status": "out",
+   "athlete": "3934673",
+   "espn": {
+    "seen": "2026-10-29T16:42:43.530Z",
+    "own": "2026-10-05T20:53:00.000Z"
+   }
+  },
+  "401909284|ruihachimura|q": {
+   "game": "401909284",
+   "start": "2026-10-31T00:00Z",
+   "team": "12",
+   "name": "Rui Hachimura",
+   "status": "q",
+   "athlete": "4066648",
+   "espn": {
+    "seen": "2026-10-29T16:42:43.530Z",
+    "own": "2026-10-29T05:06:00.000Z"
+   }
+  },
+  "401909284|yanickonanniederhauser|out": {
+   "game": "401909284",
+   "start": "2026-10-31T00:00Z",
+   "team": "12",
+   "name": "Yanic Konan Niederhauser",
+   "status": "out",
+   "athlete": "5108024",
+   "espn": {
+    "seen": "2026-10-29T16:42:43.530Z",
+    "own": "2026-10-29T01:15:00.000Z"
+   }
+  },
+  "401909284|maxstrus|out": {
+   "game": "401909284",
+   "start": "2026-10-31T00:00Z",
+   "team": "12",
+   "name": "Max Strus",
+   "status": "out",
+   "athlete": "4065778",
+   "espn": {
+    "seen": "2026-10-29T16:42:43.530Z",
+    "own": "2026-10-29T01:03:00.000Z"
+   }
+  },
+  "401909284|brandoningram|out": {
+   "game": "401909284",
+   "start": "2026-10-31T00:00Z",
+   "team": "12",
+   "name": "Brandon Ingram",
+   "status": "out",
+   "athlete": "3913176",
+   "espn": {
+    "seen": "2026-10-29T16:42:43.530Z",
+    "own": "2026-10-29T01:00:00.000Z"
+   }
+  },
+  "401909284|bradleybeal|out": {
+   "game": "401909284",
+   "start": "2026-10-31T00:00Z",
+   "team": "12",
+   "name": "Bradley Beal",
+   "status": "out",
+   "athlete": "6580",
+   "espn": {
+    "seen": "2026-10-29T16:42:43.530Z",
+    "own": "2026-10-15T01:03:00.000Z"
+   }
+  },
+  "401909284|jordanmiller|out": {
+   "game": "401909284",
+   "start": "2026-10-31T00:00Z",
+   "team": "12",
+   "name": "Jordan Miller",
+   "status": "out",
+   "athlete": "4396818",
+   "espn": {
+    "seen": "2026-10-29T16:42:43.530Z",
+    "own": "2026-08-26T20:04:00.000Z"
+   }
+  },
+  "401909285|guisantos|q": {
+   "game": "401909285",
+   "start": "2026-10-31T02:00Z",
+   "team": "9",
+   "name": "Gui Santos",
+   "status": "q",
+   "athlete": "4997536",
+   "espn": {
+    "seen": "2026-10-29T16:42:43.530Z",
+    "own": "2026-10-29T04:38:00.000Z"
+   }
+  },
+  "401909285|kristapsporzingis|out": {
+   "game": "401909285",
+   "start": "2026-10-31T02:00Z",
+   "team": "9",
+   "name": "Kristaps Porzingis",
+   "status": "out",
+   "athlete": "3102531",
+   "espn": {
+    "seen": "2026-10-29T16:42:43.530Z",
+    "own": "2026-10-28T14:25:00.000Z"
+   }
+  },
+  "401909285|mosesmoody|out": {
+   "game": "401909285",
+   "start": "2026-10-31T02:00Z",
+   "team": "9",
+   "name": "Moses Moody",
+   "status": "out",
+   "athlete": "4432171",
+   "espn": {
+    "seen": "2026-10-29T16:42:43.530Z",
+    "own": "2026-10-16T16:14:00.000Z"
+   }
+  },
+  "401909285|jimmybutler|out": {
+   "game": "401909285",
+   "start": "2026-10-31T02:00Z",
+   "team": "9",
+   "name": "Jimmy Butler III",
+   "status": "out",
+   "athlete": "6430",
+   "espn": {
+    "seen": "2026-10-29T16:42:43.530Z",
+    "own": "2026-10-16T16:11:00.000Z"
+   }
+  },
+  "401909285|ziairewilliams|q": {
+   "game": "401909285",
+   "start": "2026-10-31T02:00Z",
+   "team": "13",
+   "name": "Ziaire Williams",
+   "status": "q",
+   "athlete": "4433137",
+   "espn": {
+    "seen": "2026-10-29T16:42:43.530Z",
+    "own": "2026-10-29T05:05:00.000Z"
+   }
+  },
+  "401909285|lukadoncic|q": {
+   "game": "401909285",
+   "start": "2026-10-31T02:00Z",
+   "team": "13",
+   "name": "Luka Doncic",
+   "status": "q",
+   "athlete": "3945274",
+   "espn": {
+    "seen": "2026-10-29T16:42:43.530Z",
+    "own": "2026-10-29T05:05:00.000Z"
+   }
+  },
+  "401909285|cameroncarr|out": {
+   "game": "401909285",
+   "start": "2026-10-31T02:00Z",
+   "team": "13",
+   "name": "Cameron Carr",
+   "status": "out",
+   "athlete": "5113969",
+   "espn": {
+    "seen": "2026-10-29T16:42:43.530Z",
+    "own": "2026-10-28T20:12:00.000Z"
+   }
+  },
+  "401909285|adouthiero|out": {
+   "game": "401909285",
+   "start": "2026-10-31T02:00Z",
+   "team": "13",
+   "name": "Adou Thiero",
+   "status": "out",
+   "athlete": "5060631",
+   "espn": {
+    "seen": "2026-10-29T16:42:43.530Z",
+    "own": "2026-10-28T20:10:00.000Z"
+   }
   }
  }
 }
