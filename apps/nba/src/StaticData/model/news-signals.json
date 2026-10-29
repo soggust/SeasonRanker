@@ -3,6 +3,17 @@
  "days": 2,
  "signals": [
   {
+   "team": "30",
+   "abbr": "CHA",
+   "athlete": "4396971",
+   "player": "Naz Reid",
+   "kind": "benched",
+   "direction": "down",
+   "confidence": 0.4,
+   "headline": "Hornets bench Naz Reid at half for not meeting 'our standards'",
+   "at": "2026-10-29T02:23:55.000Z"
+  },
+  {
    "team": "27",
    "abbr": "WSH",
    "athlete": "5142718",
@@ -14,5 +25,5 @@
    "at": "2026-10-28T16:49:20.000Z"
   }
  ],
- "at": "2026-10-28T16:59:29.812Z"
+ "at": "2026-10-29T02:37:57.434Z"
 }

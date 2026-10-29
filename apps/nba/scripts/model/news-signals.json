@@ -159,7 +159,8 @@
   "50310964": "2026-10-28",
   "50311622": "2026-10-28",
   "50312370": "2026-10-29",
-  "50313096": "2026-10-29"
+  "50313096": "2026-10-29",
+  "50313376": "2026-10-29"
  },
  "signals": [
   {
@@ -430,6 +431,21 @@
    "confidence": 0.9,
    "story": "50309151",
    "headline": "Wizards upgrade No. 1 pick AJ Dybantsa to available vs. Cavaliers",
+   "model": "claude-haiku-5-5"
+  },
+  {
+   "id": "50313376|30|4396971|benched",
+   "day": "2026-10-29",
+   "at": "2026-10-29T02:23:55.000Z",
+   "team": "30",
+   "abbr": "CHA",
+   "athlete": "4396971",
+   "player": "Naz Reid",
+   "kind": "benched",
+   "direction": "down",
+   "confidence": 0.4,
+   "story": "50313376",
+   "headline": "Hornets bench Naz Reid at half for not meeting 'our standards'",
    "model": "claude-haiku-5-5"
   }
  ]
