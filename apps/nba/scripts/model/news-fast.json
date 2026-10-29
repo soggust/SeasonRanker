@@ -1,7 +1,7 @@
 {
  "sport": "nba",
  "cursor": {
-  "rotowirenba.bsky.social": "2026-10-29T20:34:29.000Z",
+  "rotowirenba.bsky.social": "2026-10-29T20:36:38.000Z",
   "insidenbanews.bsky.social": "2026-10-29T02:03:08.482Z",
   "shamsbot.bsky.social": "2026-10-29T20:10:02.000Z"
  },
@@ -6037,6 +6037,19 @@
    "kind": "status",
    "confidence": 0.95,
    "text": "Alperen Sengun: Questionable for Friday \n\n https://www.rotowire.com/basketball/player/alperen-sengun-5404"
+  },
+  {
+   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mz24ljawe32z|reedsheppard|out|status",
+   "at": "2026-10-29T20:36:38.000Z",
+   "seen": "2026-10-29T20:54:29.750Z",
+   "handle": "rotowirenba.bsky.social",
+   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mz24ljawe32z",
+   "player": "Reed Sheppard",
+   "team": null,
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.95,
+   "text": "Reed Sheppard: Ruled out for Friday \n\n https://www.rotowire.com/basketball/player/reed-sheppard-6257"
   }
  ]
 }
