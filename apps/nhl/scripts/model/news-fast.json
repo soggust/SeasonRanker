@@ -3,8 +3,8 @@
  "cursor": {
   "johnston-bot.bsky.social": "2026-10-29T15:33:36.339Z",
   "notfriedgehnic.bsky.social": "2026-10-29T17:10:26.663Z",
-  "dailyfaceoff.bsky.social": "2026-10-29T17:03:38.000Z",
-  "dfotoronto.bsky.social": "2026-10-29T15:50:58.000Z",
+  "dailyfaceoff.bsky.social": "2026-10-29T17:33:24.000Z",
+  "dfotoronto.bsky.social": "2026-10-29T17:34:53.000Z",
   "marklazerus.bsky.social": "2026-10-29T03:14:54.956Z"
  },
  "claims": [
@@ -1073,6 +1073,32 @@
    "kind": "return",
    "confidence": 0.85,
    "text": "Lightning’s Victor Hedman, Hagel to return against Jets"
+  },
+  {
+   "id": "at://did:plc:3uus7y6h3rlrk6sbctzxm4bg/app.bsky.feed.post/3myzrgic5oi26|capobianco|out|status",
+   "at": "2026-10-29T17:16:58.000Z",
+   "seen": "2026-10-29T17:45:41.413Z",
+   "handle": "dailyfaceoff.bsky.social",
+   "post": "at://did:plc:3uus7y6h3rlrk6sbctzxm4bg/app.bsky.feed.post/3myzrgic5oi26",
+   "player": "Capobianco",
+   "team": "DAL",
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.9,
+   "text": "Stars’ Capobianco out four weeks with lower-body injury, Steel returns to lineup"
+  },
+  {
+   "id": "at://did:plc:3uus7y6h3rlrk6sbctzxm4bg/app.bsky.feed.post/3myzrgic5oi26|steel|active|return",
+   "at": "2026-10-29T17:16:58.000Z",
+   "seen": "2026-10-29T17:45:41.413Z",
+   "handle": "dailyfaceoff.bsky.social",
+   "post": "at://did:plc:3uus7y6h3rlrk6sbctzxm4bg/app.bsky.feed.post/3myzrgic5oi26",
+   "player": "Steel",
+   "team": "DAL",
+   "status": "active",
+   "kind": "return",
+   "confidence": 0.9,
+   "text": "Stars’ Capobianco out four weeks with lower-body injury, Steel returns to lineup"
   }
  ]
 }

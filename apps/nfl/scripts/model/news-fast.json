@@ -1,13 +1,13 @@
 {
  "sport": "nfl",
  "cursor": {
-  "adamscheftermirror.bsky.social": "2026-10-29T17:03:51.208Z",
+  "adamscheftermirror.bsky.social": "2026-10-29T17:33:42.421Z",
   "rapsheet.bsky.social": "2026-10-29T16:01:23.360Z",
   "nflnewsreposterbot.bsky.social": "2026-10-29T14:25:56.466Z",
   "insidenflnews.bsky.social": "2026-10-29T17:05:45.072Z",
   "nflnewsposter.bsky.social": "2026-10-29T16:20:07.503Z",
   "rotoworld-fb.bsky.social": "2026-10-29T17:05:06.000Z",
-  "rotowirenfl.bsky.social": "2026-10-29T17:01:49.000Z"
+  "rotowirenfl.bsky.social": "2026-10-29T17:44:33.000Z"
  },
  "claims": [
   {
@@ -8394,6 +8394,19 @@
    "kind": "status",
    "confidence": 0.3,
    "text": "Carnell Tate (shoulder) not spotted at practice"
+  },
+  {
+   "id": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3myzsxsj7ql25|amonrastbrown|active|return",
+   "at": "2026-10-29T17:44:33.000Z",
+   "seen": "2026-10-29T17:45:41.413Z",
+   "handle": "rotowirenfl.bsky.social",
+   "post": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3myzsxsj7ql25",
+   "player": "Amon-Ra St. Brown",
+   "team": "DET",
+   "status": "active",
+   "kind": "return",
+   "confidence": 0.6,
+   "text": "Amon-Ra St. Brown: Returns to practice Thursday \n\n https://www.rotowire.com/football/player/amon-ra-st-brown-15332"
   }
  ]
 }
