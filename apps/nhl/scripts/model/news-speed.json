@@ -8742,6 +8742,11 @@
    "espn": {
     "seen": "2026-10-28T16:57:51.600Z",
     "own": "2026-10-28T16:40:00.000Z"
+   },
+   "bluesky": {
+    "seen": "2026-10-28T21:02:19.956Z",
+    "own": "2026-10-28T20:48:16.000Z",
+    "why": "@dailyfaceoff.bsky.social: Stars’ Kyle Capobianco to miss at least a week with l"
    }
   },
   "401892601|brandonhagel|q": {
@@ -8803,6 +8808,23 @@
    "espn": {
     "seen": "2026-10-28T20:02:53.698Z",
     "own": "2026-10-28T19:55:00.000Z"
+   },
+   "bluesky": {
+    "seen": "2026-10-28T21:21:02.224Z",
+    "own": "2026-10-28T21:19:35.000Z",
+    "why": "@dailyfaceoff.bsky.social: Penguins place Elmer Soderblom on injured reserve, ac"
+   }
+  },
+  "401892600|dylanlarkin|out": {
+   "game": "401892600",
+   "start": "2026-10-29T23:30Z",
+   "team": "5",
+   "name": "Dylan Larkin",
+   "status": "out",
+   "athlete": "3114755",
+   "espn": {
+    "seen": "2026-10-29T15:32:03.497Z",
+    "own": "2026-10-29T15:21:00.000Z"
    }
   }
  }
