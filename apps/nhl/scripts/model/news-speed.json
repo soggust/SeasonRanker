@@ -9107,6 +9107,18 @@
     "own": "2026-10-29T16:32:05.000Z",
     "why": "@dailyfaceoff.bsky.social: Report: Wild’s Faber clears return to play protocol, "
    }
+  },
+  "401892606|capobianco|out": {
+   "game": "401892606",
+   "start": "2026-10-30T00:00Z",
+   "team": "9",
+   "name": "Capobianco",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-10-29T17:45:41.413Z",
+    "own": "2026-10-29T17:16:58.000Z",
+    "why": "@dailyfaceoff.bsky.social: Stars’ Capobianco out four weeks with lower-body inju"
+   }
   }
  }
 }
