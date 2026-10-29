@@ -1,7 +1,7 @@
 {
  "sport": "nba",
  "cursor": {
-  "rotowirenba.bsky.social": "2026-10-29T18:57:17.000Z",
+  "rotowirenba.bsky.social": "2026-10-29T20:34:29.000Z",
   "insidenbanews.bsky.social": "2026-10-29T02:03:08.482Z",
   "shamsbot.bsky.social": "2026-10-29T20:10:02.000Z"
  },
@@ -6024,6 +6024,19 @@
    "kind": "status",
    "confidence": 0.95,
    "text": "Robert Williams: Doubtful for Thursday \n\n https://www.rotowire.com/basketball/player/robert-williams-4382"
+  },
+  {
+   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mz24hodipe2n|alperensengun|questionable|status",
+   "at": "2026-10-29T20:34:29.000Z",
+   "seen": "2026-10-29T20:35:57.527Z",
+   "handle": "rotowirenba.bsky.social",
+   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mz24hodipe2n",
+   "player": "Alperen Sengun",
+   "team": "HOU",
+   "status": "questionable",
+   "kind": "status",
+   "confidence": 0.95,
+   "text": "Alperen Sengun: Questionable for Friday \n\n https://www.rotowire.com/basketball/player/alperen-sengun-5404"
   }
  ]
 }

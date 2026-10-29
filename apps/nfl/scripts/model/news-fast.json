@@ -6,8 +6,8 @@
   "nflnewsreposterbot.bsky.social": "2026-10-29T14:25:56.466Z",
   "insidenflnews.bsky.social": "2026-10-29T18:23:07.941Z",
   "nflnewsposter.bsky.social": "2026-10-29T18:48:45.734Z",
-  "rotoworld-fb.bsky.social": "2026-10-29T20:21:39.000Z",
-  "rotowirenfl.bsky.social": "2026-10-29T20:20:52.000Z"
+  "rotoworld-fb.bsky.social": "2026-10-29T20:35:17.000Z",
+  "rotowirenfl.bsky.social": "2026-10-29T20:33:36.000Z"
  },
  "claims": [
   {
@@ -8641,6 +8641,58 @@
    "kind": "return",
    "confidence": 0.8,
    "text": "Jahmyr Gibbs returns to full session Thursday"
+  },
+  {
+   "id": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3mz247kdp5d2c|treveyonhenderson|out|status",
+   "at": "2026-10-29T20:29:57.000Z",
+   "seen": "2026-10-29T20:35:57.527Z",
+   "handle": "rotowirenfl.bsky.social",
+   "post": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3mz247kdp5d2c",
+   "player": "TreVeyon Henderson",
+   "team": null,
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.85,
+   "text": "TreVeyon Henderson: Sits Thursday due to illness \n\n https://www.rotowire.com/football/player/treveyon-henderson-18517"
+  },
+  {
+   "id": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3mz24g3do3u2b|breecehall|limited|status",
+   "at": "2026-10-29T20:33:36.000Z",
+   "seen": "2026-10-29T20:35:57.527Z",
+   "handle": "rotowirenfl.bsky.social",
+   "post": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3mz24g3do3u2b",
+   "player": "Breece Hall",
+   "team": null,
+   "status": "limited",
+   "kind": "status",
+   "confidence": 0.9,
+   "text": "Breece Hall: Logs another limited practice \n\n https://www.rotowire.com/football/player/breece-hall-15810"
+  },
+  {
+   "id": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3mz24izwsqk25|breecehall|limited|status",
+   "at": "2026-10-29T20:35:15.000Z",
+   "seen": "2026-10-29T20:35:57.527Z",
+   "handle": "rotoworld-fb.bsky.social",
+   "post": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3mz24izwsqk25",
+   "player": "Breece Hall",
+   "team": null,
+   "status": "limited",
+   "kind": "status",
+   "confidence": 0.92,
+   "text": "Breece Hall (quad) remains limited Thursday"
+  },
+  {
+   "id": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3mz24j4ca5i25|braelonallen|active|status",
+   "at": "2026-10-29T20:35:17.000Z",
+   "seen": "2026-10-29T20:35:57.527Z",
+   "handle": "rotoworld-fb.bsky.social",
+   "post": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3mz24j4ca5i25",
+   "player": "Braelon Allen",
+   "team": null,
+   "status": "active",
+   "kind": "status",
+   "confidence": 0.8,
+   "text": "Braelon Allen (ankle) upgrades to full session"
   }
  ]
 }

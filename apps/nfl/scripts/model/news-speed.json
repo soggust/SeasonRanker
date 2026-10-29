@@ -12663,6 +12663,66 @@
     "seen": "2026-10-29T20:18:53.730Z",
     "own": "2026-10-29T19:59:00.000Z"
    }
+  },
+  "401873023|aaronjones|q": {
+   "game": "401873023",
+   "start": "2026-10-30T00:15Z",
+   "team": "9",
+   "name": "Aaron Jones",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-10-29T20:22:30.121Z",
+    "own": "2026-10-29T19:58:57.000Z",
+    "why": "@rotoworld-fb.bsky.social: Aaron Jones (knee) returns to practice Thursday"
+   }
+  },
+  "401873023|kennygainwell|q": {
+   "game": "401873023",
+   "start": "2026-10-30T00:15Z",
+   "team": "9",
+   "name": "Kenny Gainwell",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-10-29T20:22:30.121Z",
+    "own": "2026-10-29T20:04:46.000Z",
+    "why": "@rotowirenfl.bsky.social: Kenny Gainwell: Limited at practice Thursday \n\n https:"
+   }
+  },
+  "401873023|emekaegbuka|q": {
+   "game": "401873023",
+   "start": "2026-10-30T00:15Z",
+   "team": "9",
+   "name": "Emeka Egbuka",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-10-29T20:22:30.121Z",
+    "own": "2026-10-29T20:06:22.000Z",
+    "why": "@rotowirenfl.bsky.social: Emeka Egbuka: Limited participant Thursday \n\n https://"
+   }
+  },
+  "401873023|malikwashington|q": {
+   "game": "401873023",
+   "start": "2026-10-30T00:15Z",
+   "team": "9",
+   "name": "Malik Washington",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-10-29T20:22:30.121Z",
+    "own": "2026-10-29T20:20:52.000Z",
+    "why": "@rotowirenfl.bsky.social: Malik Washington: Practices in limited fashion \n\n http"
+   }
+  },
+  "401873036|dmarcojackson|q": {
+   "game": "401873036",
+   "start": "2026-11-03T01:15Z",
+   "team": "3",
+   "name": "D'Marco Jackson",
+   "status": "q",
+   "athlete": "4241007",
+   "espn": {
+    "seen": "2026-10-29T20:32:35.135Z",
+    "own": "2026-10-29T20:13:00.000Z"
+   }
   }
  }
 }
