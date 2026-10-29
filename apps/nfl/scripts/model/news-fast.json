@@ -6,7 +6,7 @@
   "nflnewsreposterbot.bsky.social": "2026-10-29T14:25:56.466Z",
   "insidenflnews.bsky.social": "2026-10-29T18:23:07.941Z",
   "nflnewsposter.bsky.social": "2026-10-29T18:48:45.734Z",
-  "rotoworld-fb.bsky.social": "2026-10-29T19:05:38.000Z",
+  "rotoworld-fb.bsky.social": "2026-10-29T19:45:20.000Z",
   "rotowirenfl.bsky.social": "2026-10-29T19:28:00.000Z"
  },
  "claims": [
@@ -8485,6 +8485,19 @@
    "kind": "return",
    "confidence": 0.45,
    "text": "Rashee Rice (hamstring) practices again Thursday"
+  },
+  {
+   "id": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3myzzprhjj325|jadarian|questionable|return",
+   "at": "2026-10-29T19:45:20.000Z",
+   "seen": "2026-10-29T19:53:56.581Z",
+   "handle": "rotoworld-fb.bsky.social",
+   "post": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3myzzprhjj325",
+   "player": "Jadarian",
+   "team": "SEA",
+   "status": "questionable",
+   "kind": "return",
+   "confidence": 0.4,
+   "text": "Macdonald: 'Realistic' Jadarian returns this week"
   }
  ]
 }
