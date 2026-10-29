@@ -1,8 +1,8 @@
 {
  "sport": "nba",
  "cursor": {
-  "rotowirenba.bsky.social": "2026-10-29T01:03:24.000Z",
-  "insidenbanews.bsky.social": "2026-10-29T00:50:05.618Z",
+  "rotowirenba.bsky.social": "2026-10-29T02:06:37.000Z",
+  "insidenbanews.bsky.social": "2026-10-29T02:03:08.482Z",
   "shamsbot.bsky.social": "2026-10-28T21:26:25.000Z"
  },
  "claims": [
@@ -5855,6 +5855,136 @@
    "kind": "status",
    "confidence": 0.9,
    "text": "Brandon Ingram: To miss at least one more week \n\n https://www.rotowire.com/basketball/player/brandon-ingram-3861"
+  },
+  {
+   "id": "at://did:plc:ykcnnf6kqnn3lasmobrczoem/app.bsky.feed.post/3myy6dwhbnc2n|garland|active|starting",
+   "at": "2026-10-29T02:02:52.174Z",
+   "seen": "2026-10-29T02:16:25.145Z",
+   "handle": "insidenbanews.bsky.social",
+   "post": "at://did:plc:ykcnnf6kqnn3lasmobrczoem/app.bsky.feed.post/3myy6dwhbnc2n",
+   "player": "Garland",
+   "team": "LAC",
+   "status": "active",
+   "kind": "starting",
+   "confidence": 0.9,
+   "text": "Lineup alert: Clippers will start Garland, Dunn, Sanders, Jones Jr., Jackson"
+  },
+  {
+   "id": "at://did:plc:ykcnnf6kqnn3lasmobrczoem/app.bsky.feed.post/3myy6dwhbnc2n|dunn|active|starting",
+   "at": "2026-10-29T02:02:52.174Z",
+   "seen": "2026-10-29T02:16:25.145Z",
+   "handle": "insidenbanews.bsky.social",
+   "post": "at://did:plc:ykcnnf6kqnn3lasmobrczoem/app.bsky.feed.post/3myy6dwhbnc2n",
+   "player": "Dunn",
+   "team": "LAC",
+   "status": "active",
+   "kind": "starting",
+   "confidence": 0.9,
+   "text": "Lineup alert: Clippers will start Garland, Dunn, Sanders, Jones Jr., Jackson"
+  },
+  {
+   "id": "at://did:plc:ykcnnf6kqnn3lasmobrczoem/app.bsky.feed.post/3myy6dwhbnc2n|sanders|active|starting",
+   "at": "2026-10-29T02:02:52.174Z",
+   "seen": "2026-10-29T02:16:25.145Z",
+   "handle": "insidenbanews.bsky.social",
+   "post": "at://did:plc:ykcnnf6kqnn3lasmobrczoem/app.bsky.feed.post/3myy6dwhbnc2n",
+   "player": "Sanders",
+   "team": "LAC",
+   "status": "active",
+   "kind": "starting",
+   "confidence": 0.9,
+   "text": "Lineup alert: Clippers will start Garland, Dunn, Sanders, Jones Jr., Jackson"
+  },
+  {
+   "id": "at://did:plc:ykcnnf6kqnn3lasmobrczoem/app.bsky.feed.post/3myy6dwhbnc2n|jones|active|starting",
+   "at": "2026-10-29T02:02:52.174Z",
+   "seen": "2026-10-29T02:16:25.145Z",
+   "handle": "insidenbanews.bsky.social",
+   "post": "at://did:plc:ykcnnf6kqnn3lasmobrczoem/app.bsky.feed.post/3myy6dwhbnc2n",
+   "player": "Jones Jr.",
+   "team": "LAC",
+   "status": "active",
+   "kind": "starting",
+   "confidence": 0.9,
+   "text": "Lineup alert: Clippers will start Garland, Dunn, Sanders, Jones Jr., Jackson"
+  },
+  {
+   "id": "at://did:plc:ykcnnf6kqnn3lasmobrczoem/app.bsky.feed.post/3myy6dwhbnc2n|jackson|active|starting",
+   "at": "2026-10-29T02:02:52.174Z",
+   "seen": "2026-10-29T02:16:25.145Z",
+   "handle": "insidenbanews.bsky.social",
+   "post": "at://did:plc:ykcnnf6kqnn3lasmobrczoem/app.bsky.feed.post/3myy6dwhbnc2n",
+   "player": "Jackson",
+   "team": "LAC",
+   "status": "active",
+   "kind": "starting",
+   "confidence": 0.9,
+   "text": "Lineup alert: Clippers will start Garland, Dunn, Sanders, Jones Jr., Jackson"
+  },
+  {
+   "id": "at://did:plc:ykcnnf6kqnn3lasmobrczoem/app.bsky.feed.post/3myy6efytjc2n|reaves|active|starting",
+   "at": "2026-10-29T02:03:08.482Z",
+   "seen": "2026-10-29T02:16:25.145Z",
+   "handle": "insidenbanews.bsky.social",
+   "post": "at://did:plc:ykcnnf6kqnn3lasmobrczoem/app.bsky.feed.post/3myy6efytjc2n",
+   "player": "Reaves",
+   "team": "LAL",
+   "status": "active",
+   "kind": "starting",
+   "confidence": 0.9,
+   "text": "Lineup alert: Lakers will start Reaves, Grimes, Thybulle, LaRavia, Kessler"
+  },
+  {
+   "id": "at://did:plc:ykcnnf6kqnn3lasmobrczoem/app.bsky.feed.post/3myy6efytjc2n|grimes|active|starting",
+   "at": "2026-10-29T02:03:08.482Z",
+   "seen": "2026-10-29T02:16:25.145Z",
+   "handle": "insidenbanews.bsky.social",
+   "post": "at://did:plc:ykcnnf6kqnn3lasmobrczoem/app.bsky.feed.post/3myy6efytjc2n",
+   "player": "Grimes",
+   "team": "LAL",
+   "status": "active",
+   "kind": "starting",
+   "confidence": 0.9,
+   "text": "Lineup alert: Lakers will start Reaves, Grimes, Thybulle, LaRavia, Kessler"
+  },
+  {
+   "id": "at://did:plc:ykcnnf6kqnn3lasmobrczoem/app.bsky.feed.post/3myy6efytjc2n|thybulle|active|starting",
+   "at": "2026-10-29T02:03:08.482Z",
+   "seen": "2026-10-29T02:16:25.145Z",
+   "handle": "insidenbanews.bsky.social",
+   "post": "at://did:plc:ykcnnf6kqnn3lasmobrczoem/app.bsky.feed.post/3myy6efytjc2n",
+   "player": "Thybulle",
+   "team": "LAL",
+   "status": "active",
+   "kind": "starting",
+   "confidence": 0.9,
+   "text": "Lineup alert: Lakers will start Reaves, Grimes, Thybulle, LaRavia, Kessler"
+  },
+  {
+   "id": "at://did:plc:ykcnnf6kqnn3lasmobrczoem/app.bsky.feed.post/3myy6efytjc2n|laravia|active|starting",
+   "at": "2026-10-29T02:03:08.482Z",
+   "seen": "2026-10-29T02:16:25.145Z",
+   "handle": "insidenbanews.bsky.social",
+   "post": "at://did:plc:ykcnnf6kqnn3lasmobrczoem/app.bsky.feed.post/3myy6efytjc2n",
+   "player": "LaRavia",
+   "team": "LAL",
+   "status": "active",
+   "kind": "starting",
+   "confidence": 0.9,
+   "text": "Lineup alert: Lakers will start Reaves, Grimes, Thybulle, LaRavia, Kessler"
+  },
+  {
+   "id": "at://did:plc:ykcnnf6kqnn3lasmobrczoem/app.bsky.feed.post/3myy6efytjc2n|kessler|active|starting",
+   "at": "2026-10-29T02:03:08.482Z",
+   "seen": "2026-10-29T02:16:25.145Z",
+   "handle": "insidenbanews.bsky.social",
+   "post": "at://did:plc:ykcnnf6kqnn3lasmobrczoem/app.bsky.feed.post/3myy6efytjc2n",
+   "player": "Kessler",
+   "team": "LAL",
+   "status": "active",
+   "kind": "starting",
+   "confidence": 0.9,
+   "text": "Lineup alert: Lakers will start Reaves, Grimes, Thybulle, LaRavia, Kessler"
   }
  ]
 }
