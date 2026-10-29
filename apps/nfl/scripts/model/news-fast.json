@@ -1,13 +1,13 @@
 {
  "sport": "nfl",
  "cursor": {
-  "adamscheftermirror.bsky.social": "2026-10-29T18:48:43.147Z",
+  "adamscheftermirror.bsky.social": "2026-10-29T20:18:44.803Z",
   "rapsheet.bsky.social": "2026-10-29T16:01:23.360Z",
   "nflnewsreposterbot.bsky.social": "2026-10-29T14:25:56.466Z",
   "insidenflnews.bsky.social": "2026-10-29T18:23:07.941Z",
   "nflnewsposter.bsky.social": "2026-10-29T18:48:45.734Z",
-  "rotoworld-fb.bsky.social": "2026-10-29T19:45:20.000Z",
-  "rotowirenfl.bsky.social": "2026-10-29T19:28:00.000Z"
+  "rotoworld-fb.bsky.social": "2026-10-29T20:21:39.000Z",
+  "rotowirenfl.bsky.social": "2026-10-29T20:20:52.000Z"
  },
  "claims": [
   {
@@ -8498,6 +8498,149 @@
    "kind": "return",
    "confidence": 0.4,
    "text": "Macdonald: 'Realistic' Jadarian returns this week"
+  },
+  {
+   "id": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3mz22daplxu2b|aaronjones|limited|return",
+   "at": "2026-10-29T19:56:13.000Z",
+   "seen": "2026-10-29T20:22:30.121Z",
+   "handle": "rotowirenfl.bsky.social",
+   "post": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3mz22daplxu2b",
+   "player": "Aaron Jones",
+   "team": null,
+   "status": "limited",
+   "kind": "return",
+   "confidence": 0.8,
+   "text": "Aaron Jones: Returns to practice Thursday \n\n https://www.rotowire.com/football/player/aaron-jones-11763"
+  },
+  {
+   "id": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3mz22i4n55p2g|aaronjones|limited|return",
+   "at": "2026-10-29T19:58:57.000Z",
+   "seen": "2026-10-29T20:22:30.121Z",
+   "handle": "rotoworld-fb.bsky.social",
+   "post": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3mz22i4n55p2g",
+   "player": "Aaron Jones",
+   "team": null,
+   "status": "limited",
+   "kind": "return",
+   "confidence": 0.8,
+   "text": "Aaron Jones (knee) returns to practice Thursday"
+  },
+  {
+   "id": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3mz22sjjxlq2v|kennygainwell|limited|status",
+   "at": "2026-10-29T20:04:46.000Z",
+   "seen": "2026-10-29T20:22:30.121Z",
+   "handle": "rotowirenfl.bsky.social",
+   "post": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3mz22sjjxlq2v",
+   "player": "Kenny Gainwell",
+   "team": null,
+   "status": "limited",
+   "kind": "status",
+   "confidence": 0.9,
+   "text": "Kenny Gainwell: Limited at practice Thursday \n\n https://www.rotowire.com/football/player/kenny-gainwell-15222"
+  },
+  {
+   "id": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3mz22vflg6p2z|emekaegbuka|limited|status",
+   "at": "2026-10-29T20:06:22.000Z",
+   "seen": "2026-10-29T20:22:30.121Z",
+   "handle": "rotowirenfl.bsky.social",
+   "post": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3mz22vflg6p2z",
+   "player": "Emeka Egbuka",
+   "team": null,
+   "status": "limited",
+   "kind": "status",
+   "confidence": 0.9,
+   "text": "Emeka Egbuka: Limited participant Thursday \n\n https://www.rotowire.com/football/player/emeka-egbuka-18549"
+  },
+  {
+   "id": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3mz237pmzum2a|tylerwarren|limited|status",
+   "at": "2026-10-29T20:12:08.000Z",
+   "seen": "2026-10-29T20:22:30.121Z",
+   "handle": "rotoworld-fb.bsky.social",
+   "post": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3mz237pmzum2a",
+   "player": "Tyler Warren",
+   "team": null,
+   "status": "limited",
+   "kind": "status",
+   "confidence": 0.9,
+   "text": "Tyler Warren (groin) limited again Thursday"
+  },
+  {
+   "id": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3mz23epdmlf25|tylerwarren|limited|status",
+   "at": "2026-10-29T20:14:56.000Z",
+   "seen": "2026-10-29T20:22:30.121Z",
+   "handle": "rotowirenfl.bsky.social",
+   "post": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3mz23epdmlf25",
+   "player": "Tyler Warren",
+   "team": null,
+   "status": "limited",
+   "kind": "status",
+   "confidence": 0.9,
+   "text": "Tyler Warren: Limited again Thursday \n\n https://www.rotowire.com/football/player/tyler-warren-18534"
+  },
+  {
+   "id": "at://did:plc:qre6zxbmr3ixhdmgsgdretb5/app.bsky.feed.post/3mz23lj53tj2a|ajbrown|questionable|status",
+   "at": "2026-10-29T20:18:44.803Z",
+   "seen": "2026-10-29T20:22:30.121Z",
+   "handle": "adamscheftermirror.bsky.social",
+   "post": "at://did:plc:qre6zxbmr3ixhdmgsgdretb5/app.bsky.feed.post/3mz23lj53tj2a",
+   "player": "AJ Brown",
+   "team": "NE",
+   "status": "questionable",
+   "kind": "status",
+   "confidence": 0.8,
+   "text": "After being limited at practice Wednesday, the Patriots listed WR AJ Brown as a non-participant at practice today due to his ankle and knee injuries.\n\nOriginal post"
+  },
+  {
+   "id": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3mz23n3lfkq27|kylemonangai|questionable|status",
+   "at": "2026-10-29T20:19:37.000Z",
+   "seen": "2026-10-29T20:22:30.121Z",
+   "handle": "rotowirenfl.bsky.social",
+   "post": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3mz23n3lfkq27",
+   "player": "Kyle Monangai",
+   "team": null,
+   "status": "questionable",
+   "kind": "status",
+   "confidence": 0.55,
+   "text": "Kyle Monangai: Sidelined to begin Week 8 prep \n\n https://www.rotowire.com/football/player/kyle-monangai-18520"
+  },
+  {
+   "id": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3mz23pd63ag2q|malikwashington|limited|status",
+   "at": "2026-10-29T20:20:52.000Z",
+   "seen": "2026-10-29T20:22:30.121Z",
+   "handle": "rotowirenfl.bsky.social",
+   "post": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3mz23pd63ag2q",
+   "player": "Malik Washington",
+   "team": null,
+   "status": "limited",
+   "kind": "status",
+   "confidence": 0.9,
+   "text": "Malik Washington: Practices in limited fashion \n\n https://www.rotowire.com/football/player/malik-washington-17863"
+  },
+  {
+   "id": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3mz23qnk7v52p|treveyonhenderson|questionable|status",
+   "at": "2026-10-29T20:21:37.000Z",
+   "seen": "2026-10-29T20:22:30.121Z",
+   "handle": "rotoworld-fb.bsky.social",
+   "post": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3mz23qnk7v52p",
+   "player": "TreVeyon Henderson",
+   "team": null,
+   "status": "questionable",
+   "kind": "status",
+   "confidence": 0.75,
+   "text": "TreVeyon Henderson (illness) DNP, added to report"
+  },
+  {
+   "id": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3mz23qplqzf2d|jahmyrgibbs|active|return",
+   "at": "2026-10-29T20:21:39.000Z",
+   "seen": "2026-10-29T20:22:30.121Z",
+   "handle": "rotoworld-fb.bsky.social",
+   "post": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3mz23qplqzf2d",
+   "player": "Jahmyr Gibbs",
+   "team": null,
+   "status": "active",
+   "kind": "return",
+   "confidence": 0.8,
+   "text": "Jahmyr Gibbs returns to full session Thursday"
   }
  ]
 }
