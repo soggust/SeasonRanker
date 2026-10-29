@@ -15709,6 +15709,227 @@
     "own": "2026-10-29T21:05:00.000Z",
     "why": "@rotowirenba.bsky.social: Ivica Zubac: Still out with ankle sprain \n\n https://ww"
    }
+  },
+  "401909893|dennisschroder|q": {
+   "game": "401909893",
+   "start": "2026-10-30T00:00Z",
+   "team": "1",
+   "name": "Dennis Schroder",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-10-29T21:37:09.530Z",
+    "own": "2026-10-29T21:37:02.000Z",
+    "why": "@rotowirenba.bsky.social: Dennis Schroder: Questionable for Friday \n\n https://ww"
+   }
+  },
+  "401909894|dejountemurray|out": {
+   "game": "401909894",
+   "start": "2026-10-30T00:00Z",
+   "team": "3",
+   "name": "Dejounte Murray",
+   "status": "out",
+   "athlete": "3907497",
+   "espn": {
+    "seen": "2026-10-29T22:26:42.278Z",
+    "own": "2026-10-29T22:19:00.000Z"
+   }
+  },
+  "401909894|jordanpoole|out": {
+   "game": "401909894",
+   "start": "2026-10-30T00:00Z",
+   "team": "3",
+   "name": "Jordan Poole",
+   "status": "out",
+   "athlete": "4277956",
+   "espn": {
+    "seen": "2026-10-29T22:26:42.278Z",
+    "own": "2026-10-29T22:17:00.000Z"
+   }
+  },
+  "401909894|dennisschroder|q": {
+   "game": "401909894",
+   "start": "2026-10-30T00:00Z",
+   "team": "3",
+   "name": "Dennis Schroder",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-10-29T21:37:09.530Z",
+    "own": "2026-10-29T21:37:02.000Z",
+    "why": "@rotowirenba.bsky.social: Dennis Schroder: Questionable for Friday \n\n https://ww"
+   }
+  },
+  "401909895|dennisschroder|q": {
+   "game": "401909895",
+   "start": "2026-10-30T02:00Z",
+   "team": "22",
+   "name": "Dennis Schroder",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-10-29T21:37:09.530Z",
+    "own": "2026-10-29T21:37:02.000Z",
+    "why": "@rotowirenba.bsky.social: Dennis Schroder: Questionable for Friday \n\n https://ww"
+   }
+  },
+  "401909277|dennisschroder|q": {
+   "game": "401909277",
+   "start": "2026-10-30T23:00Z",
+   "team": "27",
+   "name": "Dennis Schroder",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-10-29T21:37:09.530Z",
+    "own": "2026-10-29T21:37:02.000Z",
+    "why": "@rotowirenba.bsky.social: Dennis Schroder: Questionable for Friday \n\n https://ww"
+   },
+   "athlete": "3032979",
+   "espn": {
+    "seen": "2026-10-29T22:26:42.278Z",
+    "own": "2026-10-29T21:37:00.000Z"
+   }
+  },
+  "401909278|dennisschroder|q": {
+   "game": "401909278",
+   "start": "2026-10-30T23:30Z",
+   "team": "2",
+   "name": "Dennis Schroder",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-10-29T21:37:09.530Z",
+    "own": "2026-10-29T21:37:02.000Z",
+    "why": "@rotowirenba.bsky.social: Dennis Schroder: Questionable for Friday \n\n https://ww"
+   }
+  },
+  "401909279|dennisschroder|q": {
+   "game": "401909279",
+   "start": "2026-10-30T23:30Z",
+   "team": "17",
+   "name": "Dennis Schroder",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-10-29T21:37:09.530Z",
+    "own": "2026-10-29T21:37:02.000Z",
+    "why": "@rotowirenba.bsky.social: Dennis Schroder: Questionable for Friday \n\n https://ww"
+   }
+  },
+  "401909280|jabariwalker|out": {
+   "game": "401909280",
+   "start": "2026-10-30T23:30Z",
+   "team": "20",
+   "name": "Jabari Walker",
+   "status": "out",
+   "athlete": "4432446",
+   "espn": {
+    "seen": "2026-10-29T22:26:42.278Z",
+    "own": "2026-10-29T21:34:00.000Z"
+   }
+  },
+  "401909280|jaylenbrown|q": {
+   "game": "401909280",
+   "start": "2026-10-30T23:30Z",
+   "team": "20",
+   "name": "Jaylen Brown",
+   "status": "q",
+   "athlete": "3917376",
+   "espn": {
+    "seen": "2026-10-29T22:26:42.278Z",
+    "own": "2026-10-29T21:34:00.000Z"
+   }
+  },
+  "401909280|dennisschroder|q": {
+   "game": "401909280",
+   "start": "2026-10-30T23:30Z",
+   "team": "20",
+   "name": "Dennis Schroder",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-10-29T21:37:09.530Z",
+    "own": "2026-10-29T21:37:02.000Z",
+    "why": "@rotowirenba.bsky.social: Dennis Schroder: Questionable for Friday \n\n https://ww"
+   }
+  },
+  "401909281|dennisschroder|q": {
+   "game": "401909281",
+   "start": "2026-10-30T23:30Z",
+   "team": "28",
+   "name": "Dennis Schroder",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-10-29T21:37:09.530Z",
+    "own": "2026-10-29T21:37:02.000Z",
+    "why": "@rotowirenba.bsky.social: Dennis Schroder: Questionable for Friday \n\n https://ww"
+   }
+  },
+  "401909282|dennisschroder|q": {
+   "game": "401909282",
+   "start": "2026-10-31T00:00Z",
+   "team": "14",
+   "name": "Dennis Schroder",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-10-29T21:37:09.530Z",
+    "own": "2026-10-29T21:37:02.000Z",
+    "why": "@rotowirenba.bsky.social: Dennis Schroder: Questionable for Friday \n\n https://ww"
+   }
+  },
+  "401909283|sergiodelarrea|out": {
+   "game": "401909283",
+   "start": "2026-10-31T00:00Z",
+   "team": "6",
+   "name": "Sergio de Larrea",
+   "status": "out",
+   "athlete": "5279129",
+   "espn": {
+    "seen": "2026-10-29T22:26:42.278Z",
+    "own": "2026-10-29T22:06:00.000Z"
+   }
+  },
+  "401909283|dennisschroder|q": {
+   "game": "401909283",
+   "start": "2026-10-31T00:00Z",
+   "team": "6",
+   "name": "Dennis Schroder",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-10-29T21:37:09.530Z",
+    "own": "2026-10-29T21:37:02.000Z",
+    "why": "@rotowirenba.bsky.social: Dennis Schroder: Questionable for Friday \n\n https://ww"
+   }
+  },
+  "401909284|dennisschroder|q": {
+   "game": "401909284",
+   "start": "2026-10-31T00:00Z",
+   "team": "16",
+   "name": "Dennis Schroder",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-10-29T21:37:09.530Z",
+    "own": "2026-10-29T21:37:02.000Z",
+    "why": "@rotowirenba.bsky.social: Dennis Schroder: Questionable for Friday \n\n https://ww"
+   }
+  },
+  "401909285|dennisschroder|q": {
+   "game": "401909285",
+   "start": "2026-10-31T02:00Z",
+   "team": "9",
+   "name": "Dennis Schroder",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-10-29T21:37:09.530Z",
+    "own": "2026-10-29T21:37:02.000Z",
+    "why": "@rotowirenba.bsky.social: Dennis Schroder: Questionable for Friday \n\n https://ww"
+   }
+  },
+  "401909286|dennisschroder|q": {
+   "game": "401909286",
+   "start": "2026-10-31T02:00Z",
+   "team": "21",
+   "name": "Dennis Schroder",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-10-29T21:37:09.530Z",
+    "own": "2026-10-29T21:37:02.000Z",
+    "why": "@rotowirenba.bsky.social: Dennis Schroder: Questionable for Friday \n\n https://ww"
+   }
   }
  }
 }
