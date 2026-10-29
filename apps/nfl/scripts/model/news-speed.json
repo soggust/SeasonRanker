@@ -12831,6 +12831,42 @@
     "seen": "2026-10-29T21:34:38.169Z",
     "own": "2026-10-29T21:24:00.000Z"
    }
+  },
+  "401873023|jaylenwaddle|q": {
+   "game": "401873023",
+   "start": "2026-10-30T00:15Z",
+   "team": "9",
+   "name": "Jaylen Waddle",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-10-29T21:37:09.530Z",
+    "own": "2026-10-29T21:35:16.000Z",
+    "why": "@rotowirenfl.bsky.social: Jaylen Waddle: Limited Thursday \n\n https://www.rotowir"
+   }
+  },
+  "401873035|nickallegretti|q": {
+   "game": "401873035",
+   "start": "2026-11-02T01:20Z",
+   "team": "28",
+   "name": "Nick Allegretti",
+   "status": "q",
+   "athlete": "3115922",
+   "espn": {
+    "seen": "2026-10-29T21:56:48.839Z",
+    "own": "2026-10-29T21:34:00.000Z"
+   }
+  },
+  "401873035|marcusepps|q": {
+   "game": "401873035",
+   "start": "2026-11-02T01:20Z",
+   "team": "21",
+   "name": "Marcus Epps",
+   "status": "q",
+   "athlete": "3139368",
+   "espn": {
+    "seen": "2026-10-29T21:56:48.839Z",
+    "own": "2026-10-29T21:46:00.000Z"
+   }
   }
  }
 }
