@@ -1,7 +1,7 @@
 {
  "sport": "nba",
  "cursor": {
-  "rotowirenba.bsky.social": "2026-10-28T23:45:26.000Z",
+  "rotowirenba.bsky.social": "2026-10-29T00:31:01.000Z",
   "insidenbanews.bsky.social": "2026-10-28T23:51:18.372Z",
   "shamsbot.bsky.social": "2026-10-28T21:26:25.000Z"
  },
@@ -5751,6 +5751,32 @@
    "kind": "starting",
    "confidence": 0.85,
    "text": "Lineup alert: Knicks will start Brunson, Bridges, Hart, Anunoby, Towns."
+  },
+  {
+   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3myxyaohmzx27|ajaymitchell|active|status",
+   "at": "2026-10-29T00:13:40.000Z",
+   "seen": "2026-10-29T00:32:35.710Z",
+   "handle": "rotowirenba.bsky.social",
+   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3myxyaohmzx27",
+   "player": "Ajay Mitchell",
+   "team": null,
+   "status": "active",
+   "kind": "status",
+   "confidence": 0.9,
+   "text": "Ajay Mitchell: Will play Wednesday \n\n https://www.rotowire.com/basketball/player/ajay-mitchell-6289"
+  },
+  {
+   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3myxybt6uhy2e|laurimarkkanen|out|status",
+   "at": "2026-10-29T00:14:19.000Z",
+   "seen": "2026-10-29T00:32:35.710Z",
+   "handle": "rotowirenba.bsky.social",
+   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3myxybt6uhy2e",
+   "player": "Lauri Markkanen",
+   "team": null,
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.9,
+   "text": "Lauri Markkanen: Won't play Wednesday \n\n https://www.rotowire.com/basketball/player/lauri-markkanen-4119"
   }
  ]
 }

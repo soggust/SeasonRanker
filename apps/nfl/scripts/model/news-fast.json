@@ -1,13 +1,13 @@
 {
  "sport": "nfl",
  "cursor": {
-  "adamscheftermirror.bsky.social": "2026-10-28T23:08:35.458Z",
+  "adamscheftermirror.bsky.social": "2026-10-29T00:24:30.954Z",
   "rapsheet.bsky.social": "2026-10-28T14:02:17.022Z",
   "nflnewsreposterbot.bsky.social": "2026-10-22T13:33:43.592Z",
   "insidenflnews.bsky.social": "2026-10-28T22:21:45.952Z",
   "nflnewsposter.bsky.social": "2026-10-28T22:40:52.041Z",
-  "rotoworld-fb.bsky.social": "2026-10-28T23:22:42.000Z",
-  "rotowirenfl.bsky.social": "2026-10-28T23:10:35.000Z"
+  "rotoworld-fb.bsky.social": "2026-10-29T00:29:36.000Z",
+  "rotowirenfl.bsky.social": "2026-10-29T00:16:27.000Z"
  },
  "claims": [
   {
@@ -8277,6 +8277,45 @@
    "kind": "status",
    "confidence": 0.3,
    "text": "Saquon Barkley (hamstring/back) DNP Wednesday"
+  },
+  {
+   "id": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3myxy6ijsbq2s|michaelwilson|limited|status",
+   "at": "2026-10-29T00:12:27.000Z",
+   "seen": "2026-10-29T00:32:35.710Z",
+   "handle": "rotowirenfl.bsky.social",
+   "post": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3myxy6ijsbq2s",
+   "player": "Michael Wilson",
+   "team": null,
+   "status": "limited",
+   "kind": "status",
+   "confidence": 0.85,
+   "text": "Michael Wilson: Limited Wednesday \n\n https://www.rotowire.com/football/player/michael-wilson-16957"
+  },
+  {
+   "id": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3myxyfnsf7n2z|tylerallgeier|questionable|status",
+   "at": "2026-10-29T00:16:27.000Z",
+   "seen": "2026-10-29T00:32:35.710Z",
+   "handle": "rotowirenfl.bsky.social",
+   "post": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3myxyfnsf7n2z",
+   "player": "Tyler Allgeier",
+   "team": null,
+   "status": "questionable",
+   "kind": "status",
+   "confidence": 0.5,
+   "text": "Tyler Allgeier: DNP on Wednesday \n\n https://www.rotowire.com/football/player/tyler-allgeier-15976"
+  },
+  {
+   "id": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3myxyng3hon2g|tylerallgeier|questionable|status",
+   "at": "2026-10-29T00:20:48.000Z",
+   "seen": "2026-10-29T00:32:35.710Z",
+   "handle": "rotoworld-fb.bsky.social",
+   "post": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3myxyng3hon2g",
+   "player": "Tyler Allgeier",
+   "team": null,
+   "status": "questionable",
+   "kind": "status",
+   "confidence": 0.55,
+   "text": "Tyler Allgeier (toe) DNP Wednesday"
   }
  ]
 }

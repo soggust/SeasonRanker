@@ -12315,6 +12315,90 @@
     "seen": "2026-10-28T23:54:43.625Z",
     "own": "2026-10-28T23:03:00.000Z"
    }
+  },
+  "401873024|tylerallgeier|q": {
+   "game": "401873024",
+   "start": "2026-11-01T18:00Z",
+   "team": "22",
+   "name": "Tyler Allgeier",
+   "status": "q",
+   "athlete": "4373626",
+   "espn": {
+    "seen": "2026-10-29T00:29:41.909Z",
+    "own": "2026-10-29T00:16:00.000Z"
+   }
+  },
+  "401873024|michaelwilson|q": {
+   "game": "401873024",
+   "start": "2026-11-01T18:00Z",
+   "team": "22",
+   "name": "Michael Wilson",
+   "status": "q",
+   "athlete": "4360761",
+   "espn": {
+    "seen": "2026-10-29T00:29:41.909Z",
+    "own": "2026-10-29T00:12:00.000Z"
+   }
+  },
+  "401873024|keitrelclark|q": {
+   "game": "401873024",
+   "start": "2026-11-01T18:00Z",
+   "team": "22",
+   "name": "Kei'Trel Clark",
+   "status": "q",
+   "athlete": "4426923",
+   "espn": {
+    "seen": "2026-10-29T00:29:41.909Z",
+    "own": "2026-10-29T00:10:00.000Z"
+   }
+  },
+  "401873024|elijahwilkinson|q": {
+   "game": "401873024",
+   "start": "2026-11-01T18:00Z",
+   "team": "22",
+   "name": "Elijah Wilkinson",
+   "status": "q",
+   "athlete": "3059839",
+   "espn": {
+    "seen": "2026-10-29T00:29:41.909Z",
+    "own": "2026-10-29T00:09:00.000Z"
+   }
+  },
+  "401873024|mackwilson|q": {
+   "game": "401873024",
+   "start": "2026-11-01T18:00Z",
+   "team": "22",
+   "name": "Mack Wilson Sr.",
+   "status": "q",
+   "athlete": "4040983",
+   "espn": {
+    "seen": "2026-10-29T00:29:41.909Z",
+    "own": "2026-10-29T00:09:00.000Z"
+   }
+  },
+  "401873024|zavencollins|q": {
+   "game": "401873024",
+   "start": "2026-11-01T18:00Z",
+   "team": "22",
+   "name": "Zaven Collins",
+   "status": "q",
+   "athlete": "4244606",
+   "espn": {
+    "seen": "2026-10-29T00:29:41.909Z",
+    "own": "2026-10-29T00:09:00.000Z"
+   }
+  },
+  "401873036|cobybryant|out": {
+   "game": "401873036",
+   "start": "2026-11-03T01:15Z",
+   "team": "3",
+   "name": "Coby Bryant",
+   "status": "out",
+   "athlete": "4239094",
+   "espn": {
+    "seen": "2026-10-29T00:29:41.909Z",
+    "own": "2026-10-28T23:52:00.000Z"
+   }
   }
  }
 }
