@@ -14690,6 +14690,78 @@
     "seen": "2026-10-29T15:31:53.368Z",
     "own": "2026-10-26T22:52:00.000Z"
    }
+  },
+  "401909282|simonefontecchio|q": {
+   "game": "401909282",
+   "start": "2026-10-31T00:00Z",
+   "team": "14",
+   "name": "Simone Fontecchio",
+   "status": "q",
+   "athlete": "3899664",
+   "espn": {
+    "seen": "2026-10-29T15:53:37.759Z",
+    "own": "2026-10-29T04:32:00.000Z"
+   }
+  },
+  "401909282|ivicazubac|q": {
+   "game": "401909282",
+   "start": "2026-10-31T00:00Z",
+   "team": "11",
+   "name": "Ivica Zubac",
+   "status": "q",
+   "athlete": "4017837",
+   "espn": {
+    "seen": "2026-10-29T15:53:37.759Z",
+    "own": "2026-10-29T04:33:00.000Z"
+   }
+  },
+  "401909282|tjmcconnell|out": {
+   "game": "401909282",
+   "start": "2026-10-31T00:00Z",
+   "team": "11",
+   "name": "T.J. McConnell",
+   "status": "out",
+   "athlete": "2530530",
+   "espn": {
+    "seen": "2026-10-29T15:53:37.759Z",
+    "own": "2026-10-28T21:43:00.000Z"
+   }
+  },
+  "401909282|bensheppard|out": {
+   "game": "401909282",
+   "start": "2026-10-31T00:00Z",
+   "team": "11",
+   "name": "Ben Sheppard",
+   "status": "out",
+   "athlete": "4433076",
+   "espn": {
+    "seen": "2026-10-29T15:53:37.759Z",
+    "own": "2026-10-28T21:41:00.000Z"
+   }
+  },
+  "401909282|tyresehaliburton|out": {
+   "game": "401909282",
+   "start": "2026-10-31T00:00Z",
+   "team": "11",
+   "name": "Tyrese Haliburton",
+   "status": "out",
+   "athlete": "4396993",
+   "espn": {
+    "seen": "2026-10-29T15:53:37.759Z",
+    "own": "2026-10-28T21:30:00.000Z"
+   }
+  },
+  "401909282|johnnyfurphy|out": {
+   "game": "401909282",
+   "start": "2026-10-31T00:00Z",
+   "team": "11",
+   "name": "Johnny Furphy",
+   "status": "out",
+   "athlete": "5157066",
+   "espn": {
+    "seen": "2026-10-29T15:53:37.759Z",
+    "own": "2026-02-09T21:43:00.000Z"
+   }
   }
  }
 }

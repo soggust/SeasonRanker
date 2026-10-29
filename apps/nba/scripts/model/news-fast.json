@@ -1,7 +1,7 @@
 {
  "sport": "nba",
  "cursor": {
-  "rotowirenba.bsky.social": "2026-10-29T14:56:58.000Z",
+  "rotowirenba.bsky.social": "2026-10-29T15:39:36.000Z",
   "insidenbanews.bsky.social": "2026-10-29T02:03:08.482Z",
   "shamsbot.bsky.social": "2026-10-28T21:26:25.000Z"
  },
@@ -5985,6 +5985,19 @@
    "kind": "starting",
    "confidence": 0.9,
    "text": "Lineup alert: Lakers will start Reaves, Grimes, Thybulle, LaRavia, Kessler"
+  },
+  {
+   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3myzlyee2ro24|kawhileonard|out|status",
+   "at": "2026-10-29T15:39:36.000Z",
+   "seen": "2026-10-29T15:55:14.263Z",
+   "handle": "rotowirenba.bsky.social",
+   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3myzlyee2ro24",
+   "player": "Kawhi Leonard",
+   "team": null,
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.85,
+   "text": "Kawhi Leonard: To miss 3-4 weeks \n\n https://www.rotowire.com/basketball/player/kawhi-leonard-3195"
   }
  ]
 }
