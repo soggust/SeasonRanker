@@ -1,13 +1,13 @@
 {
  "sport": "nfl",
  "cursor": {
-  "adamscheftermirror.bsky.social": "2026-10-29T20:53:47.525Z",
+  "adamscheftermirror.bsky.social": "2026-10-29T21:08:51.272Z",
   "rapsheet.bsky.social": "2026-10-29T16:01:23.360Z",
   "nflnewsreposterbot.bsky.social": "2026-10-29T14:25:56.466Z",
   "insidenflnews.bsky.social": "2026-10-29T18:23:07.941Z",
   "nflnewsposter.bsky.social": "2026-10-29T18:48:45.734Z",
-  "rotoworld-fb.bsky.social": "2026-10-29T20:48:46.000Z",
-  "rotowirenfl.bsky.social": "2026-10-29T20:51:51.000Z"
+  "rotoworld-fb.bsky.social": "2026-10-29T21:15:33.000Z",
+  "rotowirenfl.bsky.social": "2026-10-29T21:15:05.000Z"
  },
  "claims": [
   {
@@ -8719,6 +8719,97 @@
    "kind": "status",
    "confidence": 0.8,
    "text": "For the second straight day, the Ravens listed QB Lamar Jackson as a full participant at today’s practice.\n\nOriginal post"
+  },
+  {
+   "id": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3mz25oqqvky2o|djmoore|limited|status",
+   "at": "2026-10-29T20:56:20.000Z",
+   "seen": "2026-10-29T21:16:39.605Z",
+   "handle": "rotowirenfl.bsky.social",
+   "post": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3mz25oqqvky2o",
+   "player": "DJ Moore",
+   "team": "CHI",
+   "status": "limited",
+   "kind": "status",
+   "confidence": 0.9,
+   "text": "DJ Moore: Officially limited Thursday \n\n https://www.rotowire.com/football/player/dj-moore-12477"
+  },
+  {
+   "id": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3mz25wromcx2s|daltonkincaid|limited|status",
+   "at": "2026-10-29T21:00:50.000Z",
+   "seen": "2026-10-29T21:16:39.605Z",
+   "handle": "rotowirenfl.bsky.social",
+   "post": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3mz25wromcx2s",
+   "player": "Dalton Kincaid",
+   "team": "BUF",
+   "status": "limited",
+   "kind": "status",
+   "confidence": 0.9,
+   "text": "Dalton Kincaid: Limited in Thursday's practice \n\n https://www.rotowire.com/football/player/dalton-kincaid-16697"
+  },
+  {
+   "id": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3mz25ye6xgz2j|traviskelce|limited|status",
+   "at": "2026-10-29T21:01:43.000Z",
+   "seen": "2026-10-29T21:16:39.605Z",
+   "handle": "rotowirenfl.bsky.social",
+   "post": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3mz25ye6xgz2j",
+   "player": "Travis Kelce",
+   "team": "KC",
+   "status": "limited",
+   "kind": "status",
+   "confidence": 0.9,
+   "text": "Travis Kelce: Limited in Thursday's practice \n\n https://www.rotowire.com/football/player/travis-kelce-8783"
+  },
+  {
+   "id": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3mz26bevdjp2z|rasheerice|limited|status",
+   "at": "2026-10-29T21:06:46.000Z",
+   "seen": "2026-10-29T21:16:39.605Z",
+   "handle": "rotowirenfl.bsky.social",
+   "post": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3mz26bevdjp2z",
+   "player": "Rashee Rice",
+   "team": "KC",
+   "status": "limited",
+   "kind": "status",
+   "confidence": 0.9,
+   "text": "Rashee Rice: Stays limited Thursday \n\n https://www.rotowire.com/football/player/rashee-rice-16963"
+  },
+  {
+   "id": "at://did:plc:qre6zxbmr3ixhdmgsgdretb5/app.bsky.feed.post/3mz26es3sqp2m|jamarrchase|active|status",
+   "at": "2026-10-29T21:08:40.543Z",
+   "seen": "2026-10-29T21:16:39.605Z",
+   "handle": "adamscheftermirror.bsky.social",
+   "post": "at://did:plc:qre6zxbmr3ixhdmgsgdretb5/app.bsky.feed.post/3mz26es3sqp2m",
+   "player": "Ja'Marr Chase",
+   "team": "CIN",
+   "status": "active",
+   "kind": "status",
+   "confidence": 0.7,
+   "text": "One day after he didn’t practice, the Bengals listed WR Ja'Marr Chase as a full participant in today’s practice.\n\nOriginal post"
+  },
+  {
+   "id": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3mz26qb57cp2z|georgepickens|limited|status",
+   "at": "2026-10-29T21:15:05.000Z",
+   "seen": "2026-10-29T21:16:39.605Z",
+   "handle": "rotowirenfl.bsky.social",
+   "post": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3mz26qb57cp2z",
+   "player": "George Pickens",
+   "team": "DAL",
+   "status": "limited",
+   "kind": "status",
+   "confidence": 0.9,
+   "text": "George Pickens: Limited again Thursday \n\n https://www.rotowire.com/football/player/george-pickens-15853"
+  },
+  {
+   "id": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3mz26r4apv425|georgepickens|limited|status",
+   "at": "2026-10-29T21:15:33.000Z",
+   "seen": "2026-10-29T21:16:39.605Z",
+   "handle": "rotoworld-fb.bsky.social",
+   "post": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3mz26r4apv425",
+   "player": "George Pickens",
+   "team": "DAL",
+   "status": "limited",
+   "kind": "status",
+   "confidence": 0.9,
+   "text": "George Pickens limited again in Thursday's session"
   }
  ]
 }

@@ -1,7 +1,7 @@
 {
  "sport": "nba",
  "cursor": {
-  "rotowirenba.bsky.social": "2026-10-29T20:36:38.000Z",
+  "rotowirenba.bsky.social": "2026-10-29T21:08:13.000Z",
   "insidenbanews.bsky.social": "2026-10-29T02:03:08.482Z",
   "shamsbot.bsky.social": "2026-10-29T20:10:02.000Z"
  },
@@ -6050,6 +6050,32 @@
    "kind": "status",
    "confidence": 0.95,
    "text": "Reed Sheppard: Ruled out for Friday \n\n https://www.rotowire.com/basketball/player/reed-sheppard-6257"
+  },
+  {
+   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mz2667vtit22|ivicazubac|out|status",
+   "at": "2026-10-29T21:05:00.000Z",
+   "seen": "2026-10-29T21:16:39.605Z",
+   "handle": "rotowirenba.bsky.social",
+   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mz2667vtit22",
+   "player": "Ivica Zubac",
+   "team": null,
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.9,
+   "text": "Ivica Zubac: Still out with ankle sprain \n\n https://www.rotowire.com/basketball/player/ivica-zubac-3888"
+  },
+  {
+   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mz26dycgc42n|andrewnembhard|active|status",
+   "at": "2026-10-29T21:08:13.000Z",
+   "seen": "2026-10-29T21:16:39.605Z",
+   "handle": "rotowirenba.bsky.social",
+   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mz26dycgc42n",
+   "player": "Andrew Nembhard",
+   "team": null,
+   "status": "active",
+   "kind": "status",
+   "confidence": 0.6,
+   "text": "Andrew Nembhard: Probable for Friday \n\n https://www.rotowire.com/basketball/player/andrew-nembhard-5679"
   }
  ]
 }

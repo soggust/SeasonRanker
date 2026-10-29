@@ -15374,6 +15374,191 @@
    "espn": {
     "seen": "2026-10-29T20:46:40.142Z",
     "own": "2026-10-29T20:36:00.000Z"
+   },
+   "bluesky": {
+    "seen": "2026-10-29T20:54:29.750Z",
+    "own": "2026-10-29T20:36:38.000Z",
+    "why": "@rotowirenba.bsky.social: Reed Sheppard: Ruled out for Friday \n\n https://www.rot"
+   }
+  },
+  "401909893|reedsheppard|out": {
+   "game": "401909893",
+   "start": "2026-10-30T00:00Z",
+   "team": "1",
+   "name": "Reed Sheppard",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-10-29T20:54:29.750Z",
+    "own": "2026-10-29T20:36:38.000Z",
+    "why": "@rotowirenba.bsky.social: Reed Sheppard: Ruled out for Friday \n\n https://www.rot"
+   }
+  },
+  "401909894|reedsheppard|out": {
+   "game": "401909894",
+   "start": "2026-10-30T00:00Z",
+   "team": "3",
+   "name": "Reed Sheppard",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-10-29T20:54:29.750Z",
+    "own": "2026-10-29T20:36:38.000Z",
+    "why": "@rotowirenba.bsky.social: Reed Sheppard: Ruled out for Friday \n\n https://www.rot"
+   }
+  },
+  "401909895|reedsheppard|out": {
+   "game": "401909895",
+   "start": "2026-10-30T02:00Z",
+   "team": "22",
+   "name": "Reed Sheppard",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-10-29T20:54:29.750Z",
+    "own": "2026-10-29T20:36:38.000Z",
+    "why": "@rotowirenba.bsky.social: Reed Sheppard: Ruled out for Friday \n\n https://www.rot"
+   }
+  },
+  "401909277|reedsheppard|out": {
+   "game": "401909277",
+   "start": "2026-10-30T23:00Z",
+   "team": "27",
+   "name": "Reed Sheppard",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-10-29T20:54:29.750Z",
+    "own": "2026-10-29T20:36:38.000Z",
+    "why": "@rotowirenba.bsky.social: Reed Sheppard: Ruled out for Friday \n\n https://www.rot"
+   }
+  },
+  "401909278|reedsheppard|out": {
+   "game": "401909278",
+   "start": "2026-10-30T23:30Z",
+   "team": "2",
+   "name": "Reed Sheppard",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-10-29T20:54:29.750Z",
+    "own": "2026-10-29T20:36:38.000Z",
+    "why": "@rotowirenba.bsky.social: Reed Sheppard: Ruled out for Friday \n\n https://www.rot"
+   }
+  },
+  "401909279|reedsheppard|out": {
+   "game": "401909279",
+   "start": "2026-10-30T23:30Z",
+   "team": "17",
+   "name": "Reed Sheppard",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-10-29T20:54:29.750Z",
+    "own": "2026-10-29T20:36:38.000Z",
+    "why": "@rotowirenba.bsky.social: Reed Sheppard: Ruled out for Friday \n\n https://www.rot"
+   }
+  },
+  "401909280|reedsheppard|out": {
+   "game": "401909280",
+   "start": "2026-10-30T23:30Z",
+   "team": "20",
+   "name": "Reed Sheppard",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-10-29T20:54:29.750Z",
+    "own": "2026-10-29T20:36:38.000Z",
+    "why": "@rotowirenba.bsky.social: Reed Sheppard: Ruled out for Friday \n\n https://www.rot"
+   }
+  },
+  "401909281|reedsheppard|out": {
+   "game": "401909281",
+   "start": "2026-10-30T23:30Z",
+   "team": "28",
+   "name": "Reed Sheppard",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-10-29T20:54:29.750Z",
+    "own": "2026-10-29T20:36:38.000Z",
+    "why": "@rotowirenba.bsky.social: Reed Sheppard: Ruled out for Friday \n\n https://www.rot"
+   }
+  },
+  "401909282|reedsheppard|out": {
+   "game": "401909282",
+   "start": "2026-10-31T00:00Z",
+   "team": "14",
+   "name": "Reed Sheppard",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-10-29T20:54:29.750Z",
+    "own": "2026-10-29T20:36:38.000Z",
+    "why": "@rotowirenba.bsky.social: Reed Sheppard: Ruled out for Friday \n\n https://www.rot"
+   }
+  },
+  "401909282|andrewnembhard|q": {
+   "game": "401909282",
+   "start": "2026-10-31T00:00Z",
+   "team": "11",
+   "name": "Andrew Nembhard",
+   "status": "q",
+   "athlete": "4395712",
+   "espn": {
+    "seen": "2026-10-29T21:14:37.932Z",
+    "own": "2026-10-29T21:08:00.000Z"
+   }
+  },
+  "401909282|aaronnesmith|q": {
+   "game": "401909282",
+   "start": "2026-10-31T00:00Z",
+   "team": "11",
+   "name": "Aaron Nesmith",
+   "status": "q",
+   "athlete": "4396909",
+   "espn": {
+    "seen": "2026-10-29T21:14:37.932Z",
+    "own": "2026-10-29T21:07:00.000Z"
+   }
+  },
+  "401909282|ivicazubac|out": {
+   "game": "401909282",
+   "start": "2026-10-31T00:00Z",
+   "team": "11",
+   "name": "Ivica Zubac",
+   "status": "out",
+   "athlete": "4017837",
+   "espn": {
+    "seen": "2026-10-29T21:14:37.932Z",
+    "own": "2026-10-29T21:04:00.000Z"
+   }
+  },
+  "401909284|reedsheppard|out": {
+   "game": "401909284",
+   "start": "2026-10-31T00:00Z",
+   "team": "16",
+   "name": "Reed Sheppard",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-10-29T20:54:29.750Z",
+    "own": "2026-10-29T20:36:38.000Z",
+    "why": "@rotowirenba.bsky.social: Reed Sheppard: Ruled out for Friday \n\n https://www.rot"
+   }
+  },
+  "401909285|reedsheppard|out": {
+   "game": "401909285",
+   "start": "2026-10-31T02:00Z",
+   "team": "9",
+   "name": "Reed Sheppard",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-10-29T20:54:29.750Z",
+    "own": "2026-10-29T20:36:38.000Z",
+    "why": "@rotowirenba.bsky.social: Reed Sheppard: Ruled out for Friday \n\n https://www.rot"
+   }
+  },
+  "401909286|reedsheppard|out": {
+   "game": "401909286",
+   "start": "2026-10-31T02:00Z",
+   "team": "21",
+   "name": "Reed Sheppard",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-10-29T20:54:29.750Z",
+    "own": "2026-10-29T20:36:38.000Z",
+    "why": "@rotowirenba.bsky.social: Reed Sheppard: Ruled out for Friday \n\n https://www.rot"
    }
   }
  }

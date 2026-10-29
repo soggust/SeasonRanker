@@ -12747,6 +12747,54 @@
     "seen": "2026-10-29T20:52:38.237Z",
     "own": "2026-10-29T20:37:00.000Z"
    }
+  },
+  "401873023|djmoore|q": {
+   "game": "401873023",
+   "start": "2026-10-30T00:15Z",
+   "team": "9",
+   "name": "DJ Moore",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-10-29T20:54:29.750Z",
+    "own": "2026-10-29T20:48:45.000Z",
+    "why": "@rotoworld-fb.bsky.social: DJ Moore limited again in Thursday's practice"
+   }
+  },
+  "401873024|lukeschoonmaker|q": {
+   "game": "401873024",
+   "start": "2026-11-01T18:00Z",
+   "team": "6",
+   "name": "Luke Schoonmaker",
+   "status": "q",
+   "athlete": "4372096",
+   "espn": {
+    "seen": "2026-10-29T21:13:40.960Z",
+    "own": "2026-10-29T21:03:00.000Z"
+   }
+  },
+  "401873029|jacksonpowersjohnson|q": {
+   "game": "401873029",
+   "start": "2026-11-01T18:00Z",
+   "team": "13",
+   "name": "Jackson Powers-Johnson",
+   "status": "q",
+   "athlete": "4875295",
+   "espn": {
+    "seen": "2026-10-29T21:13:40.960Z",
+    "own": "2026-10-29T20:44:00.000Z"
+   }
+  },
+  "401873033|traviskelce|q": {
+   "game": "401873033",
+   "start": "2026-11-01T21:25Z",
+   "team": "12",
+   "name": "Travis Kelce",
+   "status": "q",
+   "athlete": "15847",
+   "espn": {
+    "seen": "2026-10-29T21:13:40.960Z",
+    "own": "2026-10-29T20:46:00.000Z"
+   }
   }
  }
 }
