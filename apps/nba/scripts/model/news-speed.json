@@ -13830,6 +13830,167 @@
    "espn": {
     "seen": "2026-10-29T00:21:50.544Z",
     "own": "2026-10-29T00:12:00.000Z"
+   },
+   "bluesky": {
+    "seen": "2026-10-29T00:32:35.710Z",
+    "own": "2026-10-29T00:14:19.000Z",
+    "why": "@rotowirenba.bsky.social: Lauri Markkanen: Won't play Wednesday \n\n https://www.r"
+   }
+  },
+  "401909891|laurimarkkanen|out": {
+   "game": "401909891",
+   "start": "2026-10-29T01:30Z",
+   "team": "6",
+   "name": "Lauri Markkanen",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-10-29T00:32:35.710Z",
+    "own": "2026-10-29T00:14:19.000Z",
+    "why": "@rotowirenba.bsky.social: Lauri Markkanen: Won't play Wednesday \n\n https://www.r"
+   }
+  },
+  "401909892|laurimarkkanen|out": {
+   "game": "401909892",
+   "start": "2026-10-29T02:30Z",
+   "team": "12",
+   "name": "Lauri Markkanen",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-10-29T00:32:35.710Z",
+    "own": "2026-10-29T00:14:19.000Z",
+    "why": "@rotowirenba.bsky.social: Lauri Markkanen: Won't play Wednesday \n\n https://www.r"
+   }
+  },
+  "401909894|yvesmissi|out": {
+   "game": "401909894",
+   "start": "2026-10-30T00:00Z",
+   "team": "3",
+   "name": "Yves Missi",
+   "status": "out",
+   "athlete": "5061589",
+   "espn": {
+    "seen": "2026-10-29T00:50:57.202Z",
+    "own": "2026-10-24T22:17:00.000Z"
+   }
+  },
+  "401909894|alexcaruso|out": {
+   "game": "401909894",
+   "start": "2026-10-30T00:00Z",
+   "team": "3",
+   "name": "Alex Caruso",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-10-28T18:28:34.313Z",
+    "own": "2026-10-28T18:06:14.000Z",
+    "why": "@rotowirenba.bsky.social: Alex Caruso: Return timeline uncertain \n\n https://www."
+   }
+  },
+  "401909894|najimarshall|out": {
+   "game": "401909894",
+   "start": "2026-10-30T00:00Z",
+   "team": "3",
+   "name": "Naji Marshall",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-10-28T18:28:34.313Z",
+    "own": "2026-10-28T18:22:27.000Z",
+    "why": "@rotowirenba.bsky.social: Naji Marshall: Downgraded to doubtful \n\n https://www.r"
+   }
+  },
+  "401909894|ziairewilliams|out": {
+   "game": "401909894",
+   "start": "2026-10-30T00:00Z",
+   "team": "3",
+   "name": "Ziaire Williams",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-10-28T21:02:19.956Z",
+    "own": "2026-10-28T20:06:57.000Z",
+    "why": "@rotowirenba.bsky.social: Ziaire Williams: Ruled out Wednesday \n\n https://www.ro"
+   }
+  },
+  "401909894|tyresehaliburton|out": {
+   "game": "401909894",
+   "start": "2026-10-30T00:00Z",
+   "team": "3",
+   "name": "Tyrese Haliburton",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-10-28T22:14:49.243Z",
+    "own": "2026-10-28T21:30:36.000Z",
+    "why": "@rotowirenba.bsky.social: Tyrese Haliburton: Out at least two weeks \n\n https://w"
+   }
+  },
+  "401909894|laurimarkkanen|out": {
+   "game": "401909894",
+   "start": "2026-10-30T00:00Z",
+   "team": "3",
+   "name": "Lauri Markkanen",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-10-29T00:32:35.710Z",
+    "own": "2026-10-29T00:14:19.000Z",
+    "why": "@rotowirenba.bsky.social: Lauri Markkanen: Won't play Wednesday \n\n https://www.r"
+   }
+  },
+  "401909894|dylancardwell|out": {
+   "game": "401909894",
+   "start": "2026-10-30T00:00Z",
+   "team": "23",
+   "name": "Dylan Cardwell",
+   "status": "out",
+   "athlete": "4433174",
+   "espn": {
+    "seen": "2026-10-29T00:50:57.202Z",
+    "own": "2026-10-26T22:09:00.000Z"
+   }
+  },
+  "401909894|maximeraynaud|out": {
+   "game": "401909894",
+   "start": "2026-10-30T00:00Z",
+   "team": "23",
+   "name": "Maxime Raynaud",
+   "status": "out",
+   "athlete": "4898371",
+   "espn": {
+    "seen": "2026-10-29T00:50:57.202Z",
+    "own": "2026-10-26T22:07:00.000Z"
+   }
+  },
+  "401909894|keeganmurray|out": {
+   "game": "401909894",
+   "start": "2026-10-30T00:00Z",
+   "team": "23",
+   "name": "Keegan Murray",
+   "status": "out",
+   "athlete": "4594327",
+   "espn": {
+    "seen": "2026-10-29T00:50:57.202Z",
+    "own": "2026-10-26T22:01:00.000Z"
+   }
+  },
+  "401909894|bensimmons|out": {
+   "game": "401909894",
+   "start": "2026-10-30T00:00Z",
+   "team": "23",
+   "name": "Ben Simmons",
+   "status": "out",
+   "athlete": "3907387",
+   "espn": {
+    "seen": "2026-10-29T00:50:57.202Z",
+    "own": "2026-10-21T04:22:00.000Z"
+   }
+  },
+  "401909895|laurimarkkanen|out": {
+   "game": "401909895",
+   "start": "2026-10-30T02:00Z",
+   "team": "22",
+   "name": "Lauri Markkanen",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-10-29T00:32:35.710Z",
+    "own": "2026-10-29T00:14:19.000Z",
+    "why": "@rotowirenba.bsky.social: Lauri Markkanen: Won't play Wednesday \n\n https://www.r"
    }
   }
  }

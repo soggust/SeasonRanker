@@ -1,8 +1,8 @@
 {
  "sport": "nba",
  "cursor": {
-  "rotowirenba.bsky.social": "2026-10-29T00:31:01.000Z",
-  "insidenbanews.bsky.social": "2026-10-28T23:51:18.372Z",
+  "rotowirenba.bsky.social": "2026-10-29T00:39:04.000Z",
+  "insidenbanews.bsky.social": "2026-10-29T00:50:05.618Z",
   "shamsbot.bsky.social": "2026-10-28T21:26:25.000Z"
  },
  "claims": [
@@ -5777,6 +5777,58 @@
    "kind": "status",
    "confidence": 0.9,
    "text": "Lauri Markkanen: Won't play Wednesday \n\n https://www.rotowire.com/basketball/player/lauri-markkanen-4119"
+  },
+  {
+   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3myxzo3g6p52l|karlanthonytowns|active|return",
+   "at": "2026-10-29T00:39:04.000Z",
+   "seen": "2026-10-29T00:52:30.413Z",
+   "handle": "rotowirenba.bsky.social",
+   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3myxzo3g6p52l",
+   "player": "Karl-Anthony Towns",
+   "team": null,
+   "status": "active",
+   "kind": "return",
+   "confidence": 0.5,
+   "text": "Karl-Anthony Towns: Returns to Wednesday's game \n\n https://www.rotowire.com/basketball/player/karl-anthony-towns-3741"
+  },
+  {
+   "id": "at://did:plc:ykcnnf6kqnn3lasmobrczoem/app.bsky.feed.post/3myy2bs6gvc2f|brandoningram|out|status",
+   "at": "2026-10-29T00:50:05.618Z",
+   "seen": "2026-10-29T00:52:30.413Z",
+   "handle": "insidenbanews.bsky.social",
+   "post": "at://did:plc:ykcnnf6kqnn3lasmobrczoem/app.bsky.feed.post/3myy2bs6gvc2f",
+   "player": "Brandon Ingram",
+   "team": null,
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.9,
+   "text": "Brandon Ingram (heel), Max Strus (foot), Yanic Konan Niederhauser (foot) to miss at least 1 more week."
+  },
+  {
+   "id": "at://did:plc:ykcnnf6kqnn3lasmobrczoem/app.bsky.feed.post/3myy2bs6gvc2f|maxstrus|out|status",
+   "at": "2026-10-29T00:50:05.618Z",
+   "seen": "2026-10-29T00:52:30.413Z",
+   "handle": "insidenbanews.bsky.social",
+   "post": "at://did:plc:ykcnnf6kqnn3lasmobrczoem/app.bsky.feed.post/3myy2bs6gvc2f",
+   "player": "Max Strus",
+   "team": null,
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.9,
+   "text": "Brandon Ingram (heel), Max Strus (foot), Yanic Konan Niederhauser (foot) to miss at least 1 more week."
+  },
+  {
+   "id": "at://did:plc:ykcnnf6kqnn3lasmobrczoem/app.bsky.feed.post/3myy2bs6gvc2f|yanickonanniederhauser|out|status",
+   "at": "2026-10-29T00:50:05.618Z",
+   "seen": "2026-10-29T00:52:30.413Z",
+   "handle": "insidenbanews.bsky.social",
+   "post": "at://did:plc:ykcnnf6kqnn3lasmobrczoem/app.bsky.feed.post/3myy2bs6gvc2f",
+   "player": "Yanic Konan Niederhauser",
+   "team": null,
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.9,
+   "text": "Brandon Ingram (heel), Max Strus (foot), Yanic Konan Niederhauser (foot) to miss at least 1 more week."
   }
  ]
 }
