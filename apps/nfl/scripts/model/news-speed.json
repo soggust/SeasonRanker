@@ -12867,6 +12867,54 @@
     "seen": "2026-10-29T21:56:48.839Z",
     "own": "2026-10-29T21:46:00.000Z"
    }
+  },
+  "401873023|jonnusmith|out": {
+   "game": "401873023",
+   "start": "2026-10-30T00:15Z",
+   "team": "9",
+   "name": "Jonnu Smith",
+   "status": "out",
+   "athlete": "3054212",
+   "espn": {
+    "seen": "2026-10-29T22:56:41.996Z",
+    "own": "2026-10-29T22:54:00.000Z"
+   }
+  },
+  "401873023|donovanjennings|out": {
+   "game": "401873023",
+   "start": "2026-10-30T00:15Z",
+   "team": "9",
+   "name": "Donovan Jennings",
+   "status": "out",
+   "athlete": "4360887",
+   "espn": {
+    "seen": "2026-10-29T22:56:41.996Z",
+    "own": "2026-10-29T22:54:00.000Z"
+   }
+  },
+  "401873023|kalebjohnson|out": {
+   "game": "401873023",
+   "start": "2026-10-30T00:15Z",
+   "team": "9",
+   "name": "Kaleb Johnson",
+   "status": "out",
+   "athlete": "4819231",
+   "espn": {
+    "seen": "2026-10-29T22:56:41.996Z",
+    "own": "2026-10-29T22:54:00.000Z"
+   }
+  },
+  "401873023|bobbybrown|out": {
+   "game": "401873023",
+   "start": "2026-10-30T00:15Z",
+   "team": "29",
+   "name": "Bobby Brown III",
+   "status": "out",
+   "athlete": "4372518",
+   "espn": {
+    "seen": "2026-10-29T22:56:41.996Z",
+    "own": "2026-10-28T18:00:00.000Z"
+   }
   }
  }
 }
