@@ -5,9 +5,9 @@
   "rapsheet.bsky.social": "2026-10-29T16:01:23.360Z",
   "nflnewsreposterbot.bsky.social": "2026-10-29T14:25:56.466Z",
   "insidenflnews.bsky.social": "2026-10-29T18:23:07.941Z",
-  "nflnewsposter.bsky.social": "2026-10-29T18:48:45.734Z",
+  "nflnewsposter.bsky.social": "2026-10-29T21:29:00.407Z",
   "rotoworld-fb.bsky.social": "2026-10-29T21:15:33.000Z",
-  "rotowirenfl.bsky.social": "2026-10-29T21:15:05.000Z"
+  "rotowirenfl.bsky.social": "2026-10-29T21:35:16.000Z"
  },
  "claims": [
   {
@@ -8810,6 +8810,32 @@
    "kind": "status",
    "confidence": 0.9,
    "text": "George Pickens limited again in Thursday's session"
+  },
+  {
+   "id": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3mz27i4hbe52v|aaronjones|limited|status",
+   "at": "2026-10-29T21:28:25.000Z",
+   "seen": "2026-10-29T21:37:09.530Z",
+   "handle": "rotowirenfl.bsky.social",
+   "post": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3mz27i4hbe52v",
+   "player": "Aaron Jones",
+   "team": null,
+   "status": "limited",
+   "kind": "status",
+   "confidence": 0.9,
+   "text": "Aaron Jones: Logs limited practice Thursday \n\n https://www.rotowire.com/football/player/aaron-jones-11763"
+  },
+  {
+   "id": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3mz27udmshu2j|jaylenwaddle|limited|status",
+   "at": "2026-10-29T21:35:16.000Z",
+   "seen": "2026-10-29T21:37:09.530Z",
+   "handle": "rotowirenfl.bsky.social",
+   "post": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3mz27udmshu2j",
+   "player": "Jaylen Waddle",
+   "team": null,
+   "status": "limited",
+   "kind": "status",
+   "confidence": 0.9,
+   "text": "Jaylen Waddle: Limited Thursday \n\n https://www.rotowire.com/football/player/jaylen-waddle-15404"
   }
  ]
 }

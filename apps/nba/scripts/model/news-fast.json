@@ -1,7 +1,7 @@
 {
  "sport": "nba",
  "cursor": {
-  "rotowirenba.bsky.social": "2026-10-29T21:08:13.000Z",
+  "rotowirenba.bsky.social": "2026-10-29T21:37:02.000Z",
   "insidenbanews.bsky.social": "2026-10-29T02:03:08.482Z",
   "shamsbot.bsky.social": "2026-10-29T20:10:02.000Z"
  },
@@ -6076,6 +6076,19 @@
    "kind": "status",
    "confidence": 0.6,
    "text": "Andrew Nembhard: Probable for Friday \n\n https://www.rotowire.com/basketball/player/andrew-nembhard-5679"
+  },
+  {
+   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mz27xj74w52v|dennisschroder|questionable|status",
+   "at": "2026-10-29T21:37:02.000Z",
+   "seen": "2026-10-29T21:37:09.530Z",
+   "handle": "rotowirenba.bsky.social",
+   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mz27xj74w52v",
+   "player": "Dennis Schroder",
+   "team": null,
+   "status": "questionable",
+   "kind": "status",
+   "confidence": 0.95,
+   "text": "Dennis Schroder: Questionable for Friday \n\n https://www.rotowire.com/basketball/player/dennis-schroder-3444"
   }
  ]
 }
