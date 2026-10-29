@@ -68,6 +68,25 @@
     }
    ],
    "hash": "28bb0138d144be0b"
+  },
+  {
+   "id": "d100-polymarket-sharps",
+   "date": "2026-10-29T10:35:45.842Z",
+   "by": "polymarket-agent",
+   "idea": "Polymarket's top sports wallets (today's sports leaderboard via the free public data API: all-time top 300 and month top 100; Gamma events and CLOB prices, no key, no spend) as a signal for the game lines. A wallet is scored walk-forward at a moment from its trades resolved before it alone: 500+ settled sports trades and a positive profit at price on 20+ matched trades (polymarket-sharps.mjs walletScorer). The scored wallets' net USDC flow on a matched market's home/over side before the Bot's bet moment (the archive's open snapshot; trades timestamped before it only) shifts the priced chance toward their side: KAPPA points at a net of 10,000 USDC or more, in proportion under it, nothing under 1,000 (polymarket.mjs polySignal, POLY_SIGNAL=<variant>). The universe (today's leaderboard) is chosen with hindsight; the write-up says so. Props out of scope.",
+   "bar": "Ships only if the champion/challenger gate (gate.mjs --candidate env:POLY_SIGNAL=<variant> --champion origin/master nba nhl mlb nfl) says SHIP in every sport with the recency veto passed; a beat-the-fair-close share or flat-ROI gain inside 1.645 game-clustered standard errors is inside the noise and is reported so, never a reason to ship. Step 2 (the sharps' own positions against the fair close, by sport and market, game-clustered SE against one half) and step 4 (Polymarket's close price as a second no-vig reference) are measurements only and ship nothing.",
+   "variants": [
+    "shift1",
+    "shift2"
+   ],
+   "sports": [
+    "nba",
+    "nhl",
+    "mlb",
+    "nfl"
+   ],
+   "results": [],
+   "hash": "bb5a971b2253a260"
   }
  ]
 }
