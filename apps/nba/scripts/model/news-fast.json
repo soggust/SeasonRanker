@@ -1,7 +1,7 @@
 {
  "sport": "nba",
  "cursor": {
-  "rotowirenba.bsky.social": "2026-10-29T00:39:04.000Z",
+  "rotowirenba.bsky.social": "2026-10-29T01:03:24.000Z",
   "insidenbanews.bsky.social": "2026-10-29T00:50:05.618Z",
   "shamsbot.bsky.social": "2026-10-28T21:26:25.000Z"
  },
@@ -5829,6 +5829,32 @@
    "kind": "status",
    "confidence": 0.9,
    "text": "Brandon Ingram (heel), Max Strus (foot), Yanic Konan Niederhauser (foot) to miss at least 1 more week."
+  },
+  {
+   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3myy2h7khsa2c|jaxsonhayes|none|starting",
+   "at": "2026-10-29T00:53:07.000Z",
+   "seen": "2026-10-29T01:21:50.888Z",
+   "handle": "rotowirenba.bsky.social",
+   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3myy2h7khsa2c",
+   "player": "Jaxson Hayes",
+   "team": null,
+   "status": "none",
+   "kind": "starting",
+   "confidence": 0.85,
+   "text": "Jaxson Hayes: Starting Wednesday \n\n https://www.rotowire.com/basketball/player/jaxson-hayes-4771"
+  },
+  {
+   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3myy2uhljdz2l|brandoningram|out|status",
+   "at": "2026-10-29T01:00:31.000Z",
+   "seen": "2026-10-29T01:21:50.888Z",
+   "handle": "rotowirenba.bsky.social",
+   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3myy2uhljdz2l",
+   "player": "Brandon Ingram",
+   "team": null,
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.9,
+   "text": "Brandon Ingram: To miss at least one more week \n\n https://www.rotowire.com/basketball/player/brandon-ingram-3861"
   }
  ]
 }
