@@ -32,7 +32,9 @@
                 "glob": "**/*",
                 "input": "apps/nfl/src/assets",
                 "output": "assets",
-                "ignore": ["**/*.psd"]
+                "ignore": [
+                  "**/*.psd"
+                ]
               },
               {
                 "glob": "**/*.json",
@@ -71,7 +73,15 @@
                   "maximumError": "100kb"
                 }
               ],
-              "outputHashing": "all"
+              "outputHashing": "all",
+              "optimization": {
+                "scripts": true,
+                "styles": {
+                  "minify": true,
+                  "inlineCritical": true
+                },
+                "fonts": false
+              }
             },
             "development": {
               "buildOptimizer": false,
@@ -193,7 +203,15 @@
                   "maximumError": "100kb"
                 }
               ],
-              "outputHashing": "all"
+              "outputHashing": "all",
+              "optimization": {
+                "scripts": true,
+                "styles": {
+                  "minify": true,
+                  "inlineCritical": true
+                },
+                "fonts": false
+              }
             },
             "development": {
               "buildOptimizer": false,
@@ -315,7 +333,15 @@
                   "maximumError": "100kb"
                 }
               ],
-              "outputHashing": "all"
+              "outputHashing": "all",
+              "optimization": {
+                "scripts": true,
+                "styles": {
+                  "minify": true,
+                  "inlineCritical": true
+                },
+                "fonts": false
+              }
             },
             "development": {
               "buildOptimizer": false,
@@ -437,7 +463,15 @@
                   "maximumError": "100kb"
                 }
               ],
-              "outputHashing": "all"
+              "outputHashing": "all",
+              "optimization": {
+                "scripts": true,
+                "styles": {
+                  "minify": true,
+                  "inlineCritical": true
+                },
+                "fonts": false
+              }
             },
             "development": {
               "buildOptimizer": false,
@@ -559,7 +593,15 @@
                   "maximumError": "100kb"
                 }
               ],
-              "outputHashing": "all"
+              "outputHashing": "all",
+              "optimization": {
+                "scripts": true,
+                "styles": {
+                  "minify": true,
+                  "inlineCritical": true
+                },
+                "fonts": false
+              }
             },
             "development": {
               "buildOptimizer": false,
