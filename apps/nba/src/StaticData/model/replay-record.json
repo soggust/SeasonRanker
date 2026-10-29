@@ -2,7 +2,7 @@
  "v": 1,
  "sport": "nba",
  "epoch": "2026-10-26T15:00:00Z",
- "at": "2026-10-27T15:54:24.769Z",
+ "at": "2026-10-29T11:09:36.248Z",
  "from": "2020-08-01T01:10:00.000Z",
  "through": "2026-06-11T00:40:00.000Z",
  "n": {
@@ -2503,7 +2503,7 @@
     "beat": 199,
     "clv": 5.5261,
     "pN": 6469,
-    "p": 3150.8591,
+    "p": 3150.8594,
     "wins": 3171
    },
    "spread:home": {
@@ -2583,7 +2583,7 @@
     "beat": 0,
     "clv": 0,
     "pN": 86,
-    "p": 44.2334,
+    "p": 44.2335,
     "wins": 50
    },
    "prop:pra": {
@@ -2593,7 +2593,7 @@
     "beat": 0,
     "clv": 0,
     "pN": 107,
-    "p": 54.8157,
+    "p": 54.8158,
     "wins": 62
    },
    "props": {
@@ -2603,7 +2603,7 @@
     "beat": 0,
     "clv": 0,
     "pN": 5244,
-    "p": 2730.7853,
+    "p": 2730.7856,
     "wins": 2761
    },
    "prop:pts:over": {
@@ -2643,7 +2643,7 @@
     "beat": 0,
     "clv": 0,
     "pN": 3776,
-    "p": 2009.204,
+    "p": 2009.2045,
     "wins": 2058
    },
    "prop:reb": {
@@ -2653,7 +2653,7 @@
     "beat": 0,
     "clv": 0,
     "pN": 4367,
-    "p": 2312.5922,
+    "p": 2312.5926,
     "wins": 2322
    },
    "prop:pra:over": {
@@ -2673,7 +2673,7 @@
     "beat": 0,
     "clv": 0,
     "pN": 28,
-    "p": 13.2681,
+    "p": 13.2679,
     "wins": 16
    },
    "prop:ast": {
@@ -2683,7 +2683,7 @@
     "beat": 0,
     "clv": 0,
     "pN": 36,
-    "p": 16.7555,
+    "p": 16.7553,
     "wins": 20
    },
    "prop:ast:over": {
@@ -2733,20 +2733,20 @@
     "beat": 0,
     "clv": 0,
     "pN": 591,
-    "p": 303.3882,
+    "p": 303.3881,
     "wins": 264
    }
   }
  },
- "commit": "e511f2e6",
- "note": "D98. A user's bet is never void over its price (the owner, 2026-10-26: \"why would you void a USERS bet when the line moves... only void a BOT bet if player doesn't play\")",
+ "commit": "c487e3cd",
+ "note": "D99. The live gates judge the bets the Bot staked, not the rows it held; a fast-lane run is no exemption from the props window (the owner, 2026-10-29: \"analyze recent data and look for any adjustments\")",
  "inputs": {
   "v": 1,
   "sport": "nba",
   "code": {
    "props": "8cbb07134ab6",
    "games": "47aceba7d839",
-   "pricing": "1089166cdb4d",
+   "pricing": "a090f6ce7241",
    "record": "f1439ac141ac",
    "harness": "6035db77ac0c",
    "residual": "2e121a9728d0164e",
@@ -2822,6 +2822,6 @@
     "want": 0
    }
   },
-  "hash": "2c4eaaaac363abd0"
+  "hash": "51d82d174365e1dd"
  }
 }

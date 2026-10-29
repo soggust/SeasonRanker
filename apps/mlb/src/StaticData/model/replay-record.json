@@ -2,7 +2,7 @@
  "v": 1,
  "sport": "mlb",
  "epoch": "2026-10-26T15:00:00Z",
- "at": "2026-10-27T16:05:06.592Z",
+ "at": "2026-10-29T11:20:47.039Z",
  "from": "2021-07-18T17:11:00.000Z",
  "through": "2026-10-16T00:00:00.000Z",
  "n": {
@@ -27,29 +27,29 @@
  },
  "practice": {
   "bets": 9148,
-  "won": 5014,
-  "lost": 4131,
+  "won": 5016,
+  "lost": 4129,
   "push": 3,
   "staked": 4574,
-  "profit": -153.3,
-  "roi": -0.0335,
+  "profit": -151.59,
+  "roi": -0.0331,
   "beat": null,
   "beatN": 0,
   "clv": null,
-  "fairProfit": 159.6092
+  "fairProfit": 161.4402
  },
  "pass": {
   "bets": 335173,
-  "won": 172739,
-  "lost": 161845,
+  "won": 172738,
+  "lost": 161846,
   "push": 589,
   "staked": 335173,
-  "profit": -17960.74,
+  "profit": -17962.92,
   "roi": -0.0536,
   "beat": null,
   "beatN": 0,
   "clv": null,
-  "fairProfit": 3336.2801
+  "fairProfit": 3333.9292
  },
  "byBand": {
   "lock": {
@@ -299,16 +299,16 @@
    "fairProfit": 3.1264,
    "practice": {
     "bets": 2383,
-    "won": 1249,
-    "lost": 1134,
+    "won": 1250,
+    "lost": 1133,
     "push": 0,
     "staked": 1191.5,
-    "profit": -47.02,
-    "roi": -0.0395,
+    "profit": -46.24,
+    "roi": -0.0388,
     "beat": null,
     "beatN": 0,
     "clv": null,
-    "fairProfit": 37.2086
+    "fairProfit": 38.0396
    },
    "lines": {
     "bets": 54,
@@ -353,16 +353,16 @@
    "fairProfit": -1.1022,
    "practice": {
     "bets": 2388,
-    "won": 1340,
-    "lost": 1048,
+    "won": 1341,
+    "lost": 1047,
     "push": 0,
     "staked": 1194,
-    "profit": -16.65,
-    "roi": -0.0139,
+    "profit": -15.72,
+    "roi": -0.0132,
     "beat": null,
     "beatN": 0,
     "clv": null,
-    "fairProfit": 74.0873
+    "fairProfit": 75.0873
    },
    "lines": {
     "bets": 114,
@@ -748,16 +748,16 @@
    },
    "practice": {
     "bets": 2383,
-    "won": 1249,
-    "lost": 1134,
+    "won": 1250,
+    "lost": 1133,
     "push": 0,
     "staked": 1191.5,
-    "profit": -47.02,
-    "roi": -0.0395,
+    "profit": -46.24,
+    "roi": -0.0388,
     "beat": null,
     "beatN": 0,
     "clv": null,
-    "fairProfit": 37.2086
+    "fairProfit": 38.0396
    },
    "byBand": {
     "lock": {
@@ -843,16 +843,16 @@
    },
    "practice": {
     "bets": 2388,
-    "won": 1340,
-    "lost": 1048,
+    "won": 1341,
+    "lost": 1047,
     "push": 0,
     "staked": 1194,
-    "profit": -16.65,
-    "roi": -0.0139,
+    "profit": -15.72,
+    "roi": -0.0132,
     "beat": null,
     "beatN": 0,
     "clv": null,
-    "fairProfit": 74.0873
+    "fairProfit": 75.0873
    },
    "byBand": {
     "lock": {
@@ -2599,15 +2599,15 @@
    }
   }
  },
- "commit": "e511f2e6",
- "note": "D98. A user's bet is never void over its price (the owner, 2026-10-26: \"why would you void a USERS bet when the line moves... only void a BOT bet if player doesn't play\")",
+ "commit": "c487e3cd",
+ "note": "D99. The live gates judge the bets the Bot staked, not the rows it held; a fast-lane run is no exemption from the props window (the owner, 2026-10-29: \"analyze recent data and look for any adjustments\")",
  "inputs": {
   "v": 1,
   "sport": "mlb",
   "code": {
    "props": "8cbb07134ab6",
    "games": "47aceba7d839",
-   "pricing": "1089166cdb4d",
+   "pricing": "a090f6ce7241",
    "record": "f1439ac141ac",
    "harness": "6035db77ac0c",
    "residual": "e160c098db6031e5",
@@ -2681,6 +2681,6 @@
     "want": 29
    }
   },
-  "hash": "1d6d22199d50350c"
+  "hash": "9820127f45861a79"
  }
 }

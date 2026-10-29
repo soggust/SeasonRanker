@@ -2,7 +2,7 @@
  "v": 1,
  "sport": "mma",
  "epoch": "2026-10-21T01:15:00Z",
- "at": "2026-10-27T16:07:09.160Z",
+ "at": "2026-10-29T11:22:49.250Z",
  "from": "2020-06-06T23:10:00.000Z",
  "through": "2026-10-18T01:45:00.000Z",
  "n": {
@@ -1497,7 +1497,7 @@
    "odds": -250,
    "p": 0.7147,
    "fair": 0.6894,
-   "kelly": 0.0009,
+   "kelly": 0.001,
    "band": "medium",
    "practice": false,
    "units": 0.5,
@@ -1874,7 +1874,7 @@
    "odds": -278,
    "p": 0.7358,
    "fair": 0.7047,
-   "kelly": 0.0006,
+   "kelly": 0.0007,
    "band": "medium",
    "practice": false,
    "units": 0.5,
@@ -2105,7 +2105,7 @@
     "beat": 130,
     "clv": -3.2709,
     "pN": 711,
-    "p": 478.2957,
+    "p": 478.2954,
     "wins": 484
    },
    "ml": {
@@ -2115,7 +2115,7 @@
     "beat": 190,
     "clv": -11.2771,
     "pN": 1179,
-    "p": 756.0103,
+    "p": 756.0101,
     "wins": 759
    },
    "lines": {
@@ -2125,7 +2125,7 @@
     "beat": 197,
     "clv": -12.3478,
     "pN": 1256,
-    "p": 791.7902,
+    "p": 791.79,
     "wins": 791
    },
    "all": {
@@ -2135,7 +2135,7 @@
     "beat": 197,
     "clv": -12.3478,
     "pN": 1256,
-    "p": 791.7902,
+    "p": 791.79,
     "wins": 791
    },
    "ml:home": {
@@ -2145,7 +2145,7 @@
     "beat": 60,
     "clv": -8.0062,
     "pN": 468,
-    "p": 277.7146,
+    "p": 277.7147,
     "wins": 275
    },
    "total:under": {
@@ -2180,15 +2180,15 @@
    }
   }
  },
- "commit": "e511f2e6",
- "note": "D98. A user's bet is never void over its price (the owner, 2026-10-26: \"why would you void a USERS bet when the line moves... only void a BOT bet if player doesn't play\")",
+ "commit": "c487e3cd",
+ "note": "D99. The live gates judge the bets the Bot staked, not the rows it held; a fast-lane run is no exemption from the props window (the owner, 2026-10-29: \"analyze recent data and look for any adjustments\")",
  "inputs": {
   "v": 1,
   "sport": "mma",
   "code": {
    "mma": "ecb5d1aa98af",
    "games": "47aceba7d839",
-   "pricing": "1089166cdb4d",
+   "pricing": "a090f6ce7241",
    "record": "f1439ac141ac",
    "harness": "6035db77ac0c",
    "tuned": "bf1af220e978a952"
@@ -2223,6 +2223,6 @@
     "want": 14
    }
   },
-  "hash": "b5d604efcaf1231a"
+  "hash": "b5edab0f6a929cb9"
  }
 }

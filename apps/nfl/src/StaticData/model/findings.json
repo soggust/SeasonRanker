@@ -556,18 +556,11 @@
    "text": "Self-tune: MMA held: best D88 mmaOpenFav 0 → 1 +25.71u before the last 8 weeks, but no win in the held-out last 8 weeks (-2.82u)"
   },
   {
-   "date": "2026-10-27",
+   "date": "2026-10-29",
    "group": "watching",
    "sport": "nfl",
    "ref": "D86",
-   "text": "History audit: 2026-10-27 code re-record held. the record guard refused: held: inputs shrank since the last record (its fingerprint): contex"
-  },
-  {
-   "date": "2026-10-27",
-   "group": "watching",
-   "sport": "nhl",
-   "ref": "D86",
-   "text": "History audit: 2026-10-27 code re-record held. the record guard refused: held: inputs changed, not the model: the replay moved -11.11u to -2"
+   "text": "History audit: 2026-10-29 code re-record held. the record guard refused: held: inputs shrank since the last record (its fingerprint): contex"
   }
  ]
 }
