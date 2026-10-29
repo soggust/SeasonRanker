@@ -13377,6 +13377,11 @@
     "seen": "2026-10-28T18:28:34.313Z",
     "own": "2026-10-28T18:22:27.000Z",
     "why": "@rotowirenba.bsky.social: Naji Marshall: Downgraded to doubtful \n\n https://www.r"
+   },
+   "athlete": "4278594",
+   "espn": {
+    "seen": "2026-10-29T00:21:50.544Z",
+    "own": "2026-10-28T23:52:00.000Z"
    }
   },
   "401909892|najimarshall|out": {
@@ -13813,6 +13818,18 @@
     "seen": "2026-10-28T22:14:49.243Z",
     "own": "2026-10-28T21:30:36.000Z",
     "why": "@rotowirenba.bsky.social: Tyrese Haliburton: Out at least two weeks \n\n https://w"
+   }
+  },
+  "401909890|laurimarkkanen|out": {
+   "game": "401909890",
+   "start": "2026-10-29T01:00Z",
+   "team": "26",
+   "name": "Lauri Markkanen",
+   "status": "out",
+   "athlete": "4066336",
+   "espn": {
+    "seen": "2026-10-29T00:21:50.544Z",
+    "own": "2026-10-29T00:12:00.000Z"
    }
   }
  }
