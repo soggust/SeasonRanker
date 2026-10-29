@@ -980,7 +980,9 @@ function marketGate(list, what, { bar: BAR, min: MIN }, epoch) {
 // Tracked panel. Since D95 (2026-10-26) the gate reads D56's beat the fair close, by market, as the replay's bar does (marketGate)
 export function propGate(bets, sport, epoch = MODEL_EPOCH) {
   const out = {};
-  const graded = (bets ?? []).filter((b) => b.sport === sport && b.market === 'prop' && !b.void && !inPractice(b) && ['won', 'lost', 'push'].includes(b.status) && clvIn(b) && b.propType).filter(sinceEpoch(epoch));
+  // (D99: the bets it staked alone, as the replay's bar (beatBar) judges: a tracked row (no edge, held) is not a bet,
+  // and pooling them read NHL's staked props (77% beat since 10-26) as 24%: every prop at the practice stake)
+  const graded = (bets ?? []).filter((b) => b.sport === sport && b.market === 'prop' && !b.void && !inPractice(b) && !isTracked(b) && ['won', 'lost', 'push'].includes(b.status) && clvIn(b) && b.propType).filter(sinceEpoch(epoch));
   const by = new Map();
   for (const b of graded) by.set(b.propType, [...(by.get(b.propType) ?? []), b]);
   const opts = beatOpts(sport);
@@ -993,7 +995,8 @@ export function propGate(bets, sport, epoch = MODEL_EPOCH) {
 // is the market's
 export const LINE_MARKETS = ['spread', 'total', 'ml'];
 export function lineGate(bets, sport, epoch = MODEL_EPOCH) {
-  const graded = (bets ?? []).filter((b) => b.sport === sport && b.market !== 'prop' && !b.void && !inPractice(b) && ['won', 'lost', 'push'].includes(b.status) && clvIn(b)).filter(sinceEpoch(epoch));
+  // (D99: staked bets alone, as propGate's)
+  const graded = (bets ?? []).filter((b) => b.sport === sport && b.market !== 'prop' && !b.void && !inPractice(b) && !isTracked(b) && ['won', 'lost', 'push'].includes(b.status) && clvIn(b)).filter(sinceEpoch(epoch));
   const opts = beatOpts(sport);
   const markets = {};
   for (const m of new Set([...LINE_MARKETS, ...graded.map((b) => b.market)])) {

@@ -2240,7 +2240,12 @@ test('D95 the testing audit\'s six recommendations: one beat-the-close, the prop
     assert.equal(T.propsLate(s, 8, 6), true, 'runs 6 hours apart stretch the last chance to 9');
   }
   assert.equal(T.propsLate('mma', 300), true, 'no propsBet: no hold');
-  assert.match(src('run.mjs'), /if \(!propsLate\(sport, rk\.hours, r\.gap\) && !FAST && !rk\.fast && !x\.newsLag\) \{/);
+  // (D99: a fast-lane run is no exemption of its own; a row bets early on its own team's fast news or its news lag)
+  assert.match(src('run.mjs'), /if \(!propsLate\(sport, rk\.hours, r\.gap\) && !rk\.fast && !x\.newsLag\) \{/);
+  assert.ok(!/propsLate\(sport, rk\.hours, r\.gap\) && !FAST/.test(src('run.mjs')), 'FAST alone never skips the props window');
+  // (D99: the live gates judge the staked bets alone, as the replay's bar does)
+  assert.match(src('desk.mjs'), /b\.market === 'prop' && !b\.void && !inPractice\(b\) && !isTracked\(b\)/);
+  assert.match(src('desk.mjs'), /b\.market !== 'prop' && !b\.void && !inPractice\(b\) && !isTracked\(b\)/);
   assert.match(src('run.mjs'), /\(late \|\| why === 'newsLag' \|\| !!riskOf\(game, x, phase\)\.fast\) && riskOf\(game, x, phase\)\.ev > 0/, 'no quote bought to bet early but on news');
   // (3) the D73 trial: the NBA's stake step off (a trial sport, every switch off), the NHL's LOVE on; a file written
   // with the step stays off live

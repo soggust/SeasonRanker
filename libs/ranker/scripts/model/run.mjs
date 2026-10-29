@@ -2783,9 +2783,13 @@ async function betProps(r) {
           // before the start, or the last chance, where D61's curve and the replay say a prop's price is worth most;
           // news bets go now (the fast lane's game, D68; fast news on his side, D49; the news lag's tag, D66). Held on
           // The Odds API's price this run: the game owes the late ask, as a lineup-risk hold does (D55 propAsk))
-          if (!propsLate(sport, rk.hours, r.gap) && !FAST && !rk.fast && !x.newsLag) {
+          // (D99, 2026-10-29: a fast-lane run (FAST) is no exemption of its own: its game's rows bet early only where the news
+          // is on his team (rk.fast) or his line lags it (newsLag); the rest wait for the window as any run's would.
+          // 2026-10-29's KC @ DEN fast run (a Chiefs lineman out) bet Bo Nix's and Jonah Coleman's props 91 hours early)
+          if (!propsLate(sport, rk.hours, r.gap) && !rk.fast && !x.newsLag) {
             if (fresh && x.prop.source === 'the odds api') heldHere++;
             run.lateHeld = (run.lateHeld ?? 0) + 1;
+            if (FAST) run.fastLateHeld = (run.fastLateHeld ?? 0) + 1;
             continue;
           }
           // (held on The Odds API's price this run: the game owes a late ask, D55 propAsk)
