@@ -12915,6 +12915,54 @@
     "seen": "2026-10-29T22:56:41.996Z",
     "own": "2026-10-28T18:00:00.000Z"
    }
+  },
+  "401873036|leonardwilliams|q": {
+   "game": "401873036",
+   "start": "2026-11-03T01:15Z",
+   "team": "26",
+   "name": "Leonard Williams",
+   "status": "q",
+   "athlete": "2971622",
+   "espn": {
+    "seen": "2026-10-29T23:02:41.309Z",
+    "own": "2026-10-29T22:55:00.000Z"
+   }
+  },
+  "401873036|uchennanwosu|q": {
+   "game": "401873036",
+   "start": "2026-11-03T01:15Z",
+   "team": "26",
+   "name": "Uchenna Nwosu",
+   "status": "q",
+   "athlete": "3120358",
+   "espn": {
+    "seen": "2026-10-29T23:02:41.309Z",
+    "own": "2026-10-29T22:54:00.000Z"
+   }
+  },
+  "401873036|patrickoconnell|q": {
+   "game": "401873036",
+   "start": "2026-11-03T01:15Z",
+   "team": "26",
+   "name": "Patrick O'Connell",
+   "status": "q",
+   "athlete": "4364623",
+   "espn": {
+    "seen": "2026-10-29T23:02:41.309Z",
+    "own": "2026-10-29T22:54:00.000Z"
+   }
+  },
+  "401873036|tyriceknight|q": {
+   "game": "401873036",
+   "start": "2026-11-03T01:15Z",
+   "team": "26",
+   "name": "Tyrice Knight",
+   "status": "q",
+   "athlete": "4686540",
+   "espn": {
+    "seen": "2026-10-29T23:02:41.309Z",
+    "own": "2026-10-29T22:54:00.000Z"
+   }
   }
  }
 }
