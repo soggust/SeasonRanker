@@ -1,8 +1,8 @@
 {
  "sport": "mma",
  "epoch": "2026-10-21T01:15:00Z",
- "commit": "e713116e",
- "at": "2026-10-29T13:37:40.472Z",
+ "commit": "3432ade3",
+ "at": "2026-10-29T22:06:27.928Z",
  "ml": {
   "trust": 0,
   "n": 1924,
@@ -253,11 +253,11 @@
   }
  ],
  "match": {
-  "total": 3983,
+  "total": 3999,
   "matched": 3135,
   "closed": 2827,
   "closedMatched": 2745,
-  "rate": 0.7871,
+  "rate": 0.7839,
   "closedRate": 0.971
  }
 }

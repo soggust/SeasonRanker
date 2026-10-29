@@ -1,5 +1,5 @@
 {
- "at": "2026-10-29T13:37:40.752Z",
+ "at": "2026-10-29T22:06:28.157Z",
  "baseline": {
   "from": "2026-09-24",
   "to": "2026-10-22"
@@ -819,7 +819,7 @@
   },
   {
    "examples": [],
-   "headline": "Model files 1h old, 0 open bets overdue to grade; Odds API credits 275% left; 81 bets placed in a week of 5 games",
+   "headline": "Model files 9h old, 0 open bets overdue to grade; Odds API credits 272% left; 81 bets placed in a week of 5 games",
    "how": "the newest commit of the sport's model files, the open bets started 12 hours ago or more, The Odds API's credits (state.odds), the state's sources",
    "id": "C16",
    "metric": "ageH",
@@ -827,7 +827,7 @@
    "needs": null,
    "rows": [
     {
-     "ageH": 1,
+     "ageH": 9,
      "at": "2026-10-29T12:30:59Z",
      "key": "files",
      "overdue": 0
@@ -836,8 +836,8 @@
      "cycleEnd": "2026-11-19T04:06:35.755Z",
      "key": "credits",
      "monthly": 20000,
-     "remaining": 54963,
-     "share": 2.7482
+     "remaining": 54424,
+     "share": 2.7212
     },
     {
      "down": [],
@@ -853,7 +853,7 @@
    "tested": null,
    "threshold": "watch files 3h old with bets overdue, credits under 20%, a source down, or no bets in a week with games; flag 6h old with bets overdue, or credits under 10%",
    "title": "Ops",
-   "value": 1
+   "value": 9
   },
   {
    "examples": [],

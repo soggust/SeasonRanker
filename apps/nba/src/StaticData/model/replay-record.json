@@ -2,7 +2,7 @@
  "v": 1,
  "sport": "nba",
  "epoch": "2026-10-26T15:00:00Z",
- "at": "2026-10-29T13:24:50.144Z",
+ "at": "2026-10-29T21:54:14.596Z",
  "from": "2020-08-01T01:10:00.000Z",
  "through": "2026-06-11T00:40:00.000Z",
  "n": {
@@ -2738,8 +2738,8 @@
    }
   }
  },
- "commit": "e713116e",
- "note": "D100. The Polymarket sharps as a free market signal (the owner, 2026-10-29: \"Research round: the Polymarket sharps as a free market signal\"; research only, nothing live changes)",
+ "commit": "3432ade3",
+ "note": "D101. A two-band trial pick carries the trial's stakes, so the page's what-if reads the stake the Bot placed (desk run 40946891346's failed data check, 2026-10-29)",
  "inputs": {
   "v": 1,
   "sport": "nba",
@@ -2747,7 +2747,7 @@
    "props": "8cbb07134ab6",
    "games": "47aceba7d839",
    "pricing": "21a99234ac74",
-   "record": "f1439ac141ac",
+   "record": "4dd4dae66072",
    "harness": "a03d58481fe2",
    "residual": "2e121a9728d0164e",
    "tuned": "e79e45590a673d4d"
@@ -2822,6 +2822,6 @@
     "want": 0
    }
   },
-  "hash": "1f26e95bee45018c"
+  "hash": "3ec2d94aee5649c8"
  }
 }

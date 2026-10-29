@@ -1,9 +1,9 @@
 {
  "v": 1,
  "sport": "nhl",
- "at": "2026-10-29T13:30:35.259Z",
+ "at": "2026-10-29T21:59:36.738Z",
  "epoch": "2026-10-26T15:00:00Z",
- "commit": "e713116e",
+ "commit": "3432ade3",
  "segments": {
   "ml:dog": {
    "policy": "legacy",
