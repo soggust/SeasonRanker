@@ -1,13 +1,13 @@
 {
  "sport": "nfl",
  "cursor": {
-  "adamscheftermirror.bsky.social": "2026-10-30T17:58:53.004Z",
+  "adamscheftermirror.bsky.social": "2026-10-30T18:28:50.701Z",
   "rapsheet.bsky.social": "2026-10-30T14:19:50.239Z",
   "nflnewsreposterbot.bsky.social": "2026-10-30T17:32:06.499Z",
-  "insidenflnews.bsky.social": "2026-10-30T17:37:53.624Z",
+  "insidenflnews.bsky.social": "2026-10-30T18:15:15.119Z",
   "nflnewsposter.bsky.social": "2026-10-30T17:38:59.050Z",
-  "rotoworld-fb.bsky.social": "2026-10-30T18:11:40.000Z",
-  "rotowirenfl.bsky.social": "2026-10-30T17:58:00.000Z"
+  "rotoworld-fb.bsky.social": "2026-10-30T18:28:56.000Z",
+  "rotowirenfl.bsky.social": "2026-10-30T18:16:12.000Z"
  },
  "claims": [
   {
@@ -9447,6 +9447,97 @@
    "kind": "starting",
    "confidence": 0.9,
    "text": "Ravens HC Jesse Minter announced that QB Lamar Jackson, who has missed the past three games due to a high ankle sprain, will start Sunday’s game at Buffalo.\n\nOriginal post"
+  },
+  {
+   "id": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3mz4f2wgbng2v|kennygainwell|questionable|status",
+   "at": "2026-10-30T18:13:45.000Z",
+   "seen": "2026-10-30T18:35:16.530Z",
+   "handle": "rotowirenfl.bsky.social",
+   "post": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3mz4f2wgbng2v",
+   "player": "Kenny Gainwell",
+   "team": null,
+   "status": "questionable",
+   "kind": "status",
+   "confidence": 0.9,
+   "text": "Kenny Gainwell: Questionable for Week 8 \n\n https://www.rotowire.com/football/player/kenny-gainwell-15222"
+  },
+  {
+   "id": "at://did:plc:mbr4badgf6yu56mquzackzew/app.bsky.feed.post/3mz4f5m3evc2i|rasheerice|active|status",
+   "at": "2026-10-30T18:15:15.119Z",
+   "seen": "2026-10-30T18:35:16.530Z",
+   "handle": "insidenflnews.bsky.social",
+   "post": "at://did:plc:mbr4badgf6yu56mquzackzew/app.bsky.feed.post/3mz4f5m3evc2i",
+   "player": "Rashee Rice",
+   "team": "KC",
+   "status": "active",
+   "kind": "status",
+   "confidence": 0.8,
+   "text": "Chiefs WR Rashee Rice (hamstring, knee) will play in Week 8."
+  },
+  {
+   "id": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3mz4f645jfg2z|rasheerice|active|status",
+   "at": "2026-10-30T18:15:31.000Z",
+   "seen": "2026-10-30T18:35:16.530Z",
+   "handle": "rotowirenfl.bsky.social",
+   "post": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3mz4f645jfg2z",
+   "player": "Rashee Rice",
+   "team": "KC",
+   "status": "active",
+   "kind": "status",
+   "confidence": 0.9,
+   "text": "Rashee Rice: Will play this Sunday \n\n https://www.rotowire.com/football/player/rashee-rice-16963"
+  },
+  {
+   "id": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3mz4f7d4myv2b|aaronjones|active|status",
+   "at": "2026-10-30T18:16:12.000Z",
+   "seen": "2026-10-30T18:35:16.530Z",
+   "handle": "rotowirenfl.bsky.social",
+   "post": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3mz4f7d4myv2b",
+   "player": "Aaron Jones",
+   "team": null,
+   "status": "active",
+   "kind": "status",
+   "confidence": 0.9,
+   "text": "Aaron Jones: Cleared for Sunday \n\n https://www.rotowire.com/football/player/aaron-jones-11763"
+  },
+  {
+   "id": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3mz4fgf43p52g|rasheerice|active|status",
+   "at": "2026-10-30T18:20:09.000Z",
+   "seen": "2026-10-30T18:35:16.530Z",
+   "handle": "rotoworld-fb.bsky.social",
+   "post": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3mz4fgf43p52g",
+   "player": "Rashee Rice",
+   "team": "KC",
+   "status": "active",
+   "kind": "status",
+   "confidence": 0.85,
+   "text": "Reid: Rashee Rice (hamstring) will play in Week 8"
+  },
+  {
+   "id": "at://did:plc:qre6zxbmr3ixhdmgsgdretb5/app.bsky.feed.post/3mz4fvvxxmo2d|emekaegbuka|out|status",
+   "at": "2026-10-30T18:28:50.701Z",
+   "seen": "2026-10-30T18:35:16.530Z",
+   "handle": "adamscheftermirror.bsky.social",
+   "post": "at://did:plc:qre6zxbmr3ixhdmgsgdretb5/app.bsky.feed.post/3mz4fvvxxmo2d",
+   "player": "Emeka Egbuka",
+   "team": "TB",
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.95,
+   "text": "Bucs ruled out WR Emeka Egbuka for Sunday’s game vs. the Falcons.\n\nOriginal post"
+  },
+  {
+   "id": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3mz4fw3bsvt2d|breecehall|questionable|status",
+   "at": "2026-10-30T18:28:56.000Z",
+   "seen": "2026-10-30T18:35:16.530Z",
+   "handle": "rotoworld-fb.bsky.social",
+   "post": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3mz4fw3bsvt2d",
+   "player": "Breece Hall",
+   "team": "NYJ",
+   "status": "questionable",
+   "kind": "status",
+   "confidence": 0.9,
+   "text": "Glenn: Breece Hall (quad) questionable for Week 8"
   }
  ]
 }
