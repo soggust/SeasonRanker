@@ -1,13 +1,13 @@
 {
  "sport": "nfl",
  "cursor": {
-  "adamscheftermirror.bsky.social": "2026-10-30T15:53:50.956Z",
+  "adamscheftermirror.bsky.social": "2026-10-30T16:24:05.579Z",
   "rapsheet.bsky.social": "2026-10-30T14:19:50.239Z",
   "nflnewsreposterbot.bsky.social": "2026-10-30T14:14:31.468Z",
   "insidenflnews.bsky.social": "2026-10-30T16:06:10.467Z",
   "nflnewsposter.bsky.social": "2026-10-30T15:53:04.403Z",
-  "rotoworld-fb.bsky.social": "2026-10-30T15:56:46.000Z",
-  "rotowirenfl.bsky.social": "2026-10-30T16:02:03.000Z"
+  "rotoworld-fb.bsky.social": "2026-10-30T16:23:13.000Z",
+  "rotowirenfl.bsky.social": "2026-10-30T16:32:26.000Z"
  },
  "claims": [
   {
@@ -9135,6 +9135,32 @@
    "kind": "status",
    "confidence": 0.5,
    "text": "Carnell Tate (shoulder) not practicing Friday"
+  },
+  {
+   "id": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3mz46o7bvro2y|ajbrown|limited|status",
+   "at": "2026-10-30T16:19:15.000Z",
+   "seen": "2026-10-30T16:34:46.595Z",
+   "handle": "rotoworld-fb.bsky.social",
+   "post": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3mz46o7bvro2y",
+   "player": "A.J. Brown",
+   "team": null,
+   "status": "limited",
+   "kind": "status",
+   "confidence": 0.45,
+   "text": "A.J. Brown (knee) absent from practice Friday"
+  },
+  {
+   "id": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3mz47frpfis2r|emekaegbuka|out|status",
+   "at": "2026-10-30T16:32:26.000Z",
+   "seen": "2026-10-30T16:34:46.595Z",
+   "handle": "rotowirenfl.bsky.social",
+   "post": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3mz47frpfis2r",
+   "player": "Emeka Egbuka",
+   "team": null,
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.95,
+   "text": "Emeka Egbuka: Ruled out for Week 8 \n\n https://www.rotowire.com/football/player/emeka-egbuka-18549"
   }
  ]
 }
