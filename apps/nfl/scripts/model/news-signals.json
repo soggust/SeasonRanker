@@ -446,7 +446,8 @@
   "50328239": "2026-10-30",
   "50328612": "2026-10-30",
   "50329240": "2026-10-30",
-  "50329330": "2026-10-30"
+  "50329330": "2026-10-30",
+  "50329508": "2026-10-30"
  },
  "signals": [
   {
@@ -1797,6 +1798,21 @@
    "confidence": 0.6,
    "story": "50329330",
    "headline": "Lamar Jackson expected to play as Ravens QB calls ankle pain 'bearable'",
+   "model": "claude-haiku-5-5"
+  },
+  {
+   "id": "50329508|22|4870808|return",
+   "day": "2026-10-30",
+   "at": "2026-10-30T18:46:22.000Z",
+   "team": "22",
+   "abbr": "ARI",
+   "athlete": "4870808",
+   "player": "Jeremiyah Love",
+   "kind": "return",
+   "direction": "up",
+   "confidence": 0.6,
+   "story": "50329508",
+   "headline": "Cardinals rookie RB Jeremiyah Love (ankle) set to return",
    "model": "claude-haiku-5-5"
   }
  ]

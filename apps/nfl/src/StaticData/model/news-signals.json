@@ -3,6 +3,17 @@
  "days": 2,
  "signals": [
   {
+   "team": "22",
+   "abbr": "ARI",
+   "athlete": "4870808",
+   "player": "Jeremiyah Love",
+   "kind": "return",
+   "direction": "up",
+   "confidence": 0.6,
+   "headline": "Cardinals rookie RB Jeremiyah Love (ankle) set to return",
+   "at": "2026-10-30T18:46:22.000Z"
+  },
+  {
    "team": "33",
    "abbr": "BAL",
    "athlete": "3916387",
@@ -36,5 +47,5 @@
    "at": "2026-10-28T19:38:59.000Z"
   }
  ],
- "at": "2026-10-30T18:13:21.918Z"
+ "at": "2026-10-30T18:52:33.286Z"
 }

@@ -4,7 +4,7 @@
   "johnston-bot.bsky.social": "2026-10-30T17:31:47.734Z",
   "notfriedgehnic.bsky.social": "2026-10-30T18:08:35.141Z",
   "dailyfaceoff.bsky.social": "2026-10-30T18:09:37.000Z",
-  "dfotoronto.bsky.social": "2026-10-30T18:10:07.000Z",
+  "dfotoronto.bsky.social": "2026-10-30T18:51:40.000Z",
   "marklazerus.bsky.social": "2026-10-30T02:42:48.767Z"
  },
  "claims": [
@@ -1242,6 +1242,32 @@
    "kind": "status",
    "confidence": 0.85,
    "text": "Flames’ Cooley placed on injured reserve; Zary week-to-week after knee surgery"
+  },
+  {
+   "id": "at://did:plc:knaj2vcp4x6t7hr7ewd6e3uz/app.bsky.feed.post/3mz4h4idzt427|christanev|none|role",
+   "at": "2026-10-30T18:50:25.000Z",
+   "seen": "2026-10-30T18:52:33.286Z",
+   "handle": "dfotoronto.bsky.social",
+   "post": "at://did:plc:knaj2vcp4x6t7hr7ewd6e3uz/app.bsky.feed.post/3mz4h4idzt427",
+   "player": "Chris Tanev",
+   "team": "TOR",
+   "status": "none",
+   "kind": "role",
+   "confidence": 0.7,
+   "text": "Maple Leafs lineup news: Chris Tanev paired with Morgan Rielly, Dakota Joshua returns to practice"
+  },
+  {
+   "id": "at://did:plc:knaj2vcp4x6t7hr7ewd6e3uz/app.bsky.feed.post/3mz4h4idzt427|dakotajoshua|limited|return",
+   "at": "2026-10-30T18:50:25.000Z",
+   "seen": "2026-10-30T18:52:33.286Z",
+   "handle": "dfotoronto.bsky.social",
+   "post": "at://did:plc:knaj2vcp4x6t7hr7ewd6e3uz/app.bsky.feed.post/3mz4h4idzt427",
+   "player": "Dakota Joshua",
+   "team": "TOR",
+   "status": "limited",
+   "kind": "return",
+   "confidence": 0.6,
+   "text": "Maple Leafs lineup news: Chris Tanev paired with Morgan Rielly, Dakota Joshua returns to practice"
   }
  ]
 }

@@ -1,9 +1,9 @@
 {
  "sport": "nba",
  "cursor": {
-  "rotowirenba.bsky.social": "2026-10-30T18:00:42.000Z",
+  "rotowirenba.bsky.social": "2026-10-30T18:45:48.000Z",
   "insidenbanews.bsky.social": "2026-10-29T02:03:08.482Z",
-  "shamsbot.bsky.social": "2026-10-30T17:26:11.000Z"
+  "shamsbot.bsky.social": "2026-10-30T18:40:24.000Z"
  },
  "claims": [
   {
@@ -6206,6 +6206,32 @@
    "kind": "status",
    "confidence": 0.6,
    "text": "Rui Hachimura: Upgraded to probable \n\n https://www.rotowire.com/basketball/player/rui-hachimura-4778"
+  },
+  {
+   "id": "at://did:plc:sa73fbx3vxzh2fw5pu5wmief/app.bsky.feed.post/3mz4gssaoje2u|jamorant|out|status",
+   "at": "2026-10-30T18:40:24.000Z",
+   "seen": "2026-10-30T18:52:33.286Z",
+   "handle": "shamsbot.bsky.social",
+   "post": "at://did:plc:sa73fbx3vxzh2fw5pu5wmief/app.bsky.feed.post/3mz4gssaoje2u",
+   "player": "Ja Morant",
+   "team": "POR",
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.95,
+   "text": "Portland Trail Blazers' Ja Morant has sustained a Grade 2 left hamstring strain and will miss at least four weeks, sources tell ESPN."
+  },
+  {
+   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mz4guawcq722|jamorant|out|status",
+   "at": "2026-10-30T18:45:48.000Z",
+   "seen": "2026-10-30T18:52:33.286Z",
+   "handle": "rotowirenba.bsky.social",
+   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mz4guawcq722",
+   "player": "Ja Morant",
+   "team": "POR",
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.95,
+   "text": "Ja Morant: Out four weeks with hamstring strain \n\n https://www.rotowire.com/basketball/player/ja-morant-4761"
   }
  ]
 }

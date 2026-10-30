@@ -6,7 +6,7 @@
   "nflnewsreposterbot.bsky.social": "2026-10-30T17:32:06.499Z",
   "insidenflnews.bsky.social": "2026-10-30T18:15:15.119Z",
   "nflnewsposter.bsky.social": "2026-10-30T17:38:59.050Z",
-  "rotoworld-fb.bsky.social": "2026-10-30T18:28:56.000Z",
+  "rotoworld-fb.bsky.social": "2026-10-30T18:42:23.000Z",
   "rotowirenfl.bsky.social": "2026-10-30T18:16:12.000Z"
  },
  "claims": [
@@ -9538,6 +9538,19 @@
    "kind": "status",
    "confidence": 0.9,
    "text": "Glenn: Breece Hall (quad) questionable for Week 8"
+  },
+  {
+   "id": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3mz4go57hrt2b|colbyparkinson|questionable|status",
+   "at": "2026-10-30T18:42:23.000Z",
+   "seen": "2026-10-30T18:52:33.286Z",
+   "handle": "rotoworld-fb.bsky.social",
+   "post": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3mz4go57hrt2b",
+   "player": "Colby Parkinson",
+   "team": null,
+   "status": "questionable",
+   "kind": "status",
+   "confidence": 0.95,
+   "text": "Colby Parkinson officially questionable for Week 8"
   }
  ]
 }
