@@ -8942,6 +8942,11 @@
    "espn": {
     "seen": "2026-10-27T00:08:39.754Z",
     "own": "2026-10-26T17:25:00.000Z"
+   },
+   "bluesky": {
+    "seen": "2026-10-30T17:17:53.809Z",
+    "own": "2026-10-30T17:11:26.845Z",
+    "why": "@insidenflnews.bsky.social: Falcons RB Brian Robinson Jr. (hamstring) has been r"
    }
   },
   "401873025|avieonterrell|out": {
@@ -12848,6 +12853,18 @@
     "seen": "2026-10-30T16:34:46.595Z",
     "own": "2026-10-30T16:32:26.000Z",
     "why": "@rotowirenfl.bsky.social: Emeka Egbuka: Ruled out for Week 8 \n\n https://www.roto"
+   }
+  },
+  "401873030|isiahpacheco|out": {
+   "game": "401873030",
+   "start": "2026-11-01T18:00Z",
+   "team": "8",
+   "name": "Isiah Pacheco",
+   "status": "out",
+   "athlete": "4361529",
+   "espn": {
+    "seen": "2026-10-30T17:27:11.126Z",
+    "own": "2026-10-30T17:09:00.000Z"
    }
   }
  }
