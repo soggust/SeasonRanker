@@ -13551,6 +13551,42 @@
     "seen": "2026-10-30T19:21:31.771Z",
     "own": "2026-10-30T19:12:00.000Z"
    }
+  },
+  "401873029|davidbailey|out": {
+   "game": "401873029",
+   "start": "2026-11-01T18:00Z",
+   "team": "20",
+   "name": "David Bailey",
+   "status": "out",
+   "athlete": "4685248",
+   "espn": {
+    "seen": "2026-10-30T19:26:52.576Z",
+    "own": "2026-10-30T19:17:00.000Z"
+   }
+  },
+  "401873028|antoniojohnson|out": {
+   "game": "401873028",
+   "start": "2026-11-01T18:00Z",
+   "team": "30",
+   "name": "Antonio Johnson",
+   "status": "out",
+   "athlete": "4429168",
+   "espn": {
+    "seen": "2026-10-30T19:26:52.576Z",
+    "own": "2026-10-29T23:34:00.000Z"
+   }
+  },
+  "401873033|rmasonthomas|q": {
+   "game": "401873033",
+   "start": "2026-11-01T21:25Z",
+   "team": "12",
+   "name": "R Mason Thomas",
+   "status": "q",
+   "athlete": "5081927",
+   "espn": {
+    "seen": "2026-10-30T19:26:52.576Z",
+    "own": "2026-10-30T19:11:00.000Z"
+   }
   }
  }
 }
