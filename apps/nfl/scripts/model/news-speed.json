@@ -10982,6 +10982,11 @@
    "espn": {
     "seen": "2026-10-28T20:59:35.871Z",
     "own": "2026-10-28T20:35:00.000Z"
+   },
+   "bluesky": {
+    "seen": "2026-10-30T18:35:16.530Z",
+    "own": "2026-10-30T18:13:45.000Z",
+    "why": "@rotowirenfl.bsky.social: Kenny Gainwell: Questionable for Week 8 \n\n https://www"
    }
   },
   "401873025|yayadiaby|q": {
@@ -13252,6 +13257,150 @@
    "espn": {
     "seen": "2026-10-30T18:29:42.127Z",
     "own": "2026-10-30T18:18:00.000Z"
+   }
+  },
+  "401873026|kennygainwell|q": {
+   "game": "401873026",
+   "start": "2026-11-01T18:00Z",
+   "team": "2",
+   "name": "Kenny Gainwell",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-10-30T18:35:16.530Z",
+    "own": "2026-10-30T18:13:45.000Z",
+    "why": "@rotowirenfl.bsky.social: Kenny Gainwell: Questionable for Week 8 \n\n https://www"
+   }
+  },
+  "401873031|kennygainwell|q": {
+   "game": "401873031",
+   "start": "2026-11-01T18:00Z",
+   "team": "4",
+   "name": "Kenny Gainwell",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-10-30T18:35:16.530Z",
+    "own": "2026-10-30T18:13:45.000Z",
+    "why": "@rotowirenfl.bsky.social: Kenny Gainwell: Questionable for Week 8 \n\n https://www"
+   }
+  },
+  "401873024|kennygainwell|q": {
+   "game": "401873024",
+   "start": "2026-11-01T18:00Z",
+   "team": "6",
+   "name": "Kenny Gainwell",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-10-30T18:35:16.530Z",
+    "own": "2026-10-30T18:13:45.000Z",
+    "why": "@rotowirenfl.bsky.social: Kenny Gainwell: Questionable for Week 8 \n\n https://www"
+   }
+  },
+  "401873030|kennygainwell|q": {
+   "game": "401873030",
+   "start": "2026-11-01T18:00Z",
+   "team": "8",
+   "name": "Kenny Gainwell",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-10-30T18:35:16.530Z",
+    "own": "2026-10-30T18:13:45.000Z",
+    "why": "@rotowirenfl.bsky.social: Kenny Gainwell: Questionable for Week 8 \n\n https://www"
+   }
+  },
+  "401873029|kennygainwell|q": {
+   "game": "401873029",
+   "start": "2026-11-01T18:00Z",
+   "team": "20",
+   "name": "Kenny Gainwell",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-10-30T18:35:16.530Z",
+    "own": "2026-10-30T18:13:45.000Z",
+    "why": "@rotowirenfl.bsky.social: Kenny Gainwell: Questionable for Week 8 \n\n https://www"
+   }
+  },
+  "401873027|kennygainwell|q": {
+   "game": "401873027",
+   "start": "2026-11-01T18:00Z",
+   "team": "23",
+   "name": "Kenny Gainwell",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-10-30T18:35:16.530Z",
+    "own": "2026-10-30T18:13:45.000Z",
+    "why": "@rotowirenfl.bsky.social: Kenny Gainwell: Questionable for Week 8 \n\n https://www"
+   }
+  },
+  "401873028|kennygainwell|q": {
+   "game": "401873028",
+   "start": "2026-11-01T18:00Z",
+   "team": "30",
+   "name": "Kenny Gainwell",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-10-30T18:35:16.530Z",
+    "own": "2026-10-30T18:13:45.000Z",
+    "why": "@rotowirenfl.bsky.social: Kenny Gainwell: Questionable for Week 8 \n\n https://www"
+   }
+  },
+  "401873032|joecardona|out": {
+   "game": "401873032",
+   "start": "2026-11-01T21:05Z",
+   "team": "14",
+   "name": "Joe Cardona",
+   "status": "out",
+   "athlete": "2575907",
+   "espn": {
+    "seen": "2026-10-30T18:38:25.351Z",
+    "own": "2026-10-30T18:33:00.000Z"
+   }
+  },
+  "401873032|jordanwhittington|q": {
+   "game": "401873032",
+   "start": "2026-11-01T21:05Z",
+   "team": "14",
+   "name": "Jordan Whittington",
+   "status": "q",
+   "athlete": "4569382",
+   "espn": {
+    "seen": "2026-10-30T18:38:25.351Z",
+    "own": "2026-10-30T18:32:00.000Z"
+   }
+  },
+  "401873032|kennygainwell|q": {
+   "game": "401873032",
+   "start": "2026-11-01T21:05Z",
+   "team": "14",
+   "name": "Kenny Gainwell",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-10-30T18:35:16.530Z",
+    "own": "2026-10-30T18:13:45.000Z",
+    "why": "@rotowirenfl.bsky.social: Kenny Gainwell: Questionable for Week 8 \n\n https://www"
+   }
+  },
+  "401873033|kennygainwell|q": {
+   "game": "401873033",
+   "start": "2026-11-01T21:25Z",
+   "team": "7",
+   "name": "Kenny Gainwell",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-10-30T18:35:16.530Z",
+    "own": "2026-10-30T18:13:45.000Z",
+    "why": "@rotowirenfl.bsky.social: Kenny Gainwell: Questionable for Week 8 \n\n https://www"
+   }
+  },
+  "401873034|kennygainwell|q": {
+   "game": "401873034",
+   "start": "2026-11-01T21:25Z",
+   "team": "15",
+   "name": "Kenny Gainwell",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-10-30T18:35:16.530Z",
+    "own": "2026-10-30T18:13:45.000Z",
+    "why": "@rotowirenfl.bsky.social: Kenny Gainwell: Questionable for Week 8 \n\n https://www"
    }
   }
  }
