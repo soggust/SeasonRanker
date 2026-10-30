@@ -1,7 +1,7 @@
 {
  "sport": "nba",
  "cursor": {
-  "rotowirenba.bsky.social": "2026-10-30T00:02:55.000Z",
+  "rotowirenba.bsky.social": "2026-10-30T00:04:12.000Z",
   "insidenbanews.bsky.social": "2026-10-29T02:03:08.482Z",
   "shamsbot.bsky.social": "2026-10-29T20:10:02.000Z"
  },
@@ -6128,6 +6128,19 @@
    "kind": "status",
    "confidence": 0.9,
    "text": "Cameron Johnson: Listed questionable for Friday \n\n https://www.rotowire.com/basketball/player/cameron-johnson-4916"
+  },
+  {
+   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mz2i6obq7422|lukadoncic|active|return",
+   "at": "2026-10-30T00:04:12.000Z",
+   "seen": "2026-10-30T00:18:44.559Z",
+   "handle": "rotowirenba.bsky.social",
+   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mz2i6obq7422",
+   "player": "Luka Doncic",
+   "team": null,
+   "status": "active",
+   "kind": "return",
+   "confidence": 0.8,
+   "text": "Luka Doncic: Set for Friday return \n\n https://www.rotowire.com/basketball/player/luka-doncic-4396"
   }
  ]
 }

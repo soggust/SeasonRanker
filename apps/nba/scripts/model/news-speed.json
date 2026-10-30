@@ -9734,6 +9734,11 @@
    "espn": {
     "seen": "2026-10-27T00:09:37.394Z",
     "own": "2026-10-25T22:41:00.000Z"
+   },
+   "bluesky": {
+    "seen": "2026-10-30T00:03:45.750Z",
+    "own": "2026-10-29T23:49:35.000Z",
+    "why": "@rotowirenba.bsky.social: Cameron Johnson: Listed questionable for Friday \n\n htt"
    }
   },
   "401909286|spencerjones|out": {
@@ -16239,6 +16244,126 @@
     "seen": "2026-10-29T23:16:27.355Z",
     "own": "2026-10-29T22:22:53.000Z",
     "why": "@rotowirenba.bsky.social: Dejounte Murray: Late scratch Thursday \n\n https://www."
+   }
+  },
+  "401909895|cameronjohnson|q": {
+   "game": "401909895",
+   "start": "2026-10-30T02:00Z",
+   "team": "22",
+   "name": "Cameron Johnson",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-10-30T00:03:45.750Z",
+    "own": "2026-10-29T23:49:35.000Z",
+    "why": "@rotowirenba.bsky.social: Cameron Johnson: Listed questionable for Friday \n\n htt"
+   }
+  },
+  "401909277|cameronjohnson|q": {
+   "game": "401909277",
+   "start": "2026-10-30T23:00Z",
+   "team": "27",
+   "name": "Cameron Johnson",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-10-30T00:03:45.750Z",
+    "own": "2026-10-29T23:49:35.000Z",
+    "why": "@rotowirenba.bsky.social: Cameron Johnson: Listed questionable for Friday \n\n htt"
+   }
+  },
+  "401909278|cameronjohnson|q": {
+   "game": "401909278",
+   "start": "2026-10-30T23:30Z",
+   "team": "2",
+   "name": "Cameron Johnson",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-10-30T00:03:45.750Z",
+    "own": "2026-10-29T23:49:35.000Z",
+    "why": "@rotowirenba.bsky.social: Cameron Johnson: Listed questionable for Friday \n\n htt"
+   }
+  },
+  "401909279|cameronjohnson|q": {
+   "game": "401909279",
+   "start": "2026-10-30T23:30Z",
+   "team": "17",
+   "name": "Cameron Johnson",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-10-30T00:03:45.750Z",
+    "own": "2026-10-29T23:49:35.000Z",
+    "why": "@rotowirenba.bsky.social: Cameron Johnson: Listed questionable for Friday \n\n htt"
+   }
+  },
+  "401909280|cameronjohnson|q": {
+   "game": "401909280",
+   "start": "2026-10-30T23:30Z",
+   "team": "20",
+   "name": "Cameron Johnson",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-10-30T00:03:45.750Z",
+    "own": "2026-10-29T23:49:35.000Z",
+    "why": "@rotowirenba.bsky.social: Cameron Johnson: Listed questionable for Friday \n\n htt"
+   }
+  },
+  "401909281|cameronjohnson|q": {
+   "game": "401909281",
+   "start": "2026-10-30T23:30Z",
+   "team": "28",
+   "name": "Cameron Johnson",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-10-30T00:03:45.750Z",
+    "own": "2026-10-29T23:49:35.000Z",
+    "why": "@rotowirenba.bsky.social: Cameron Johnson: Listed questionable for Friday \n\n htt"
+   }
+  },
+  "401909282|cameronjohnson|q": {
+   "game": "401909282",
+   "start": "2026-10-31T00:00Z",
+   "team": "14",
+   "name": "Cameron Johnson",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-10-30T00:03:45.750Z",
+    "own": "2026-10-29T23:49:35.000Z",
+    "why": "@rotowirenba.bsky.social: Cameron Johnson: Listed questionable for Friday \n\n htt"
+   }
+  },
+  "401909283|cameronjohnson|q": {
+   "game": "401909283",
+   "start": "2026-10-31T00:00Z",
+   "team": "6",
+   "name": "Cameron Johnson",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-10-30T00:03:45.750Z",
+    "own": "2026-10-29T23:49:35.000Z",
+    "why": "@rotowirenba.bsky.social: Cameron Johnson: Listed questionable for Friday \n\n htt"
+   }
+  },
+  "401909284|cameronjohnson|q": {
+   "game": "401909284",
+   "start": "2026-10-31T00:00Z",
+   "team": "16",
+   "name": "Cameron Johnson",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-10-30T00:03:45.750Z",
+    "own": "2026-10-29T23:49:35.000Z",
+    "why": "@rotowirenba.bsky.social: Cameron Johnson: Listed questionable for Friday \n\n htt"
+   }
+  },
+  "401909285|cameronjohnson|q": {
+   "game": "401909285",
+   "start": "2026-10-31T02:00Z",
+   "team": "9",
+   "name": "Cameron Johnson",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-10-30T00:03:45.750Z",
+    "own": "2026-10-29T23:49:35.000Z",
+    "why": "@rotowirenba.bsky.social: Cameron Johnson: Listed questionable for Friday \n\n htt"
    }
   }
  }
