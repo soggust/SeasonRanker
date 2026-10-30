@@ -12963,6 +12963,66 @@
     "seen": "2026-10-29T23:02:41.309Z",
     "own": "2026-10-29T22:54:00.000Z"
    }
+  },
+  "401873023|treylonburks|q": {
+   "game": "401873023",
+   "start": "2026-10-30T00:15Z",
+   "team": "9",
+   "name": "Treylon Burks",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-10-29T23:16:27.355Z",
+    "own": "2026-10-29T21:46:24.000Z",
+    "why": "@rotoworld-fb.bsky.social: Treylon Burks downgrades to 'DNP' Thursday"
+   }
+  },
+  "401873023|devontasmith|q": {
+   "game": "401873023",
+   "start": "2026-10-30T00:15Z",
+   "team": "9",
+   "name": "DeVonta Smith",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-10-29T23:16:27.355Z",
+    "own": "2026-10-29T21:55:38.000Z",
+    "why": "@rotowirenfl.bsky.social: DeVonta Smith: Sits out Thursday's practice \n\n https:/"
+   }
+  },
+  "401873024|hjaltefroholdt|q": {
+   "game": "401873024",
+   "start": "2026-11-01T18:00Z",
+   "team": "22",
+   "name": "Hjalte Froholdt",
+   "status": "q",
+   "athlete": "3886633",
+   "espn": {
+    "seen": "2026-10-30T00:00:39.690Z",
+    "own": "2026-10-29T23:08:00.000Z"
+   }
+  },
+  "401873028|antoniojohnson|q": {
+   "game": "401873028",
+   "start": "2026-11-01T18:00Z",
+   "team": "30",
+   "name": "Antonio Johnson",
+   "status": "q",
+   "athlete": "4429168",
+   "espn": {
+    "seen": "2026-10-30T00:00:39.690Z",
+    "own": "2026-10-29T23:34:00.000Z"
+   }
+  },
+  "401873036|anthonybradford|q": {
+   "game": "401873036",
+   "start": "2026-11-03T01:15Z",
+   "team": "26",
+   "name": "Anthony Bradford",
+   "status": "q",
+   "athlete": "4429211",
+   "espn": {
+    "seen": "2026-10-30T00:00:39.690Z",
+    "own": "2026-10-29T23:22:00.000Z"
+   }
   }
  }
 }

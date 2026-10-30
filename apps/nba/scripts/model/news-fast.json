@@ -1,7 +1,7 @@
 {
  "sport": "nba",
  "cursor": {
-  "rotowirenba.bsky.social": "2026-10-29T22:22:53.000Z",
+  "rotowirenba.bsky.social": "2026-10-30T00:02:55.000Z",
   "insidenbanews.bsky.social": "2026-10-29T02:03:08.482Z",
   "shamsbot.bsky.social": "2026-10-29T20:10:02.000Z"
  },
@@ -6115,6 +6115,19 @@
    "kind": "status",
    "confidence": 0.9,
    "text": "Dejounte Murray: Late scratch Thursday \n\n https://www.rotowire.com/basketball/player/dejounte-murray-3856"
+  },
+  {
+   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mz2hekdaik2l|cameronjohnson|questionable|status",
+   "at": "2026-10-29T23:49:35.000Z",
+   "seen": "2026-10-30T00:03:45.750Z",
+   "handle": "rotowirenba.bsky.social",
+   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mz2hekdaik2l",
+   "player": "Cameron Johnson",
+   "team": null,
+   "status": "questionable",
+   "kind": "status",
+   "confidence": 0.9,
+   "text": "Cameron Johnson: Listed questionable for Friday \n\n https://www.rotowire.com/basketball/player/cameron-johnson-4916"
   }
  ]
 }
