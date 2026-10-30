@@ -1,13 +1,13 @@
 {
  "sport": "nfl",
  "cursor": {
-  "adamscheftermirror.bsky.social": "2026-10-30T14:38:43.956Z",
+  "adamscheftermirror.bsky.social": "2026-10-30T15:53:50.956Z",
   "rapsheet.bsky.social": "2026-10-30T14:19:50.239Z",
   "nflnewsreposterbot.bsky.social": "2026-10-30T14:14:31.468Z",
-  "insidenflnews.bsky.social": "2026-10-30T15:45:00.135Z",
-  "nflnewsposter.bsky.social": "2026-10-30T14:17:42.740Z",
-  "rotoworld-fb.bsky.social": "2026-10-30T14:54:21.000Z",
-  "rotowirenfl.bsky.social": "2026-10-30T15:48:18.000Z"
+  "insidenflnews.bsky.social": "2026-10-30T16:06:10.467Z",
+  "nflnewsposter.bsky.social": "2026-10-30T15:53:04.403Z",
+  "rotoworld-fb.bsky.social": "2026-10-30T15:56:46.000Z",
+  "rotowirenfl.bsky.social": "2026-10-30T16:02:03.000Z"
  },
  "claims": [
   {
@@ -9109,6 +9109,32 @@
    "kind": "status",
    "confidence": 0.3,
    "text": "Emeka Egbuka: Sits out Friday's practice \n\n https://www.rotowire.com/football/player/emeka-egbuka-18549"
+  },
+  {
+   "id": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3mz45fxd4dx2y|emekaegbuka|questionable|status",
+   "at": "2026-10-30T15:56:45.000Z",
+   "seen": "2026-10-30T16:13:30.187Z",
+   "handle": "rotoworld-fb.bsky.social",
+   "post": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3mz45fxd4dx2y",
+   "player": "Emeka Egbuka",
+   "team": "TB",
+   "status": "questionable",
+   "kind": "status",
+   "confidence": 0.5,
+   "text": "Egbuka (concussion/foot) not spotted Friday"
+  },
+  {
+   "id": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3mz45fygb4e25|carnelltate|questionable|status",
+   "at": "2026-10-30T15:56:46.000Z",
+   "seen": "2026-10-30T16:13:30.187Z",
+   "handle": "rotoworld-fb.bsky.social",
+   "post": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3mz45fygb4e25",
+   "player": "Carnell Tate",
+   "team": "TEN",
+   "status": "questionable",
+   "kind": "status",
+   "confidence": 0.5,
+   "text": "Carnell Tate (shoulder) not practicing Friday"
   }
  ]
 }
