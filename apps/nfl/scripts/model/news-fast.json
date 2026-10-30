@@ -1,12 +1,12 @@
 {
  "sport": "nfl",
  "cursor": {
-  "adamscheftermirror.bsky.social": "2026-10-30T20:04:09.410Z",
+  "adamscheftermirror.bsky.social": "2026-10-30T20:33:53.567Z",
   "rapsheet.bsky.social": "2026-10-30T19:06:00.608Z",
   "nflnewsreposterbot.bsky.social": "2026-10-30T17:32:06.499Z",
   "insidenflnews.bsky.social": "2026-10-30T20:07:34.988Z",
   "nflnewsposter.bsky.social": "2026-10-30T19:52:11.400Z",
-  "rotoworld-fb.bsky.social": "2026-10-30T20:16:38.000Z",
+  "rotoworld-fb.bsky.social": "2026-10-30T20:21:03.000Z",
   "rotowirenfl.bsky.social": "2026-10-30T20:19:20.000Z"
  },
  "claims": [
@@ -9967,6 +9967,19 @@
    "kind": "status",
    "confidence": 0.95,
    "text": "Dontayvion Wicks: Ruled out for Week 8 \n\n https://www.rotowire.com/football/player/dontayvion-wicks-16658"
+  },
+  {
+   "id": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3mz4m6kqoqy2z|laddmcconkey|active|status",
+   "at": "2026-10-30T20:21:03.000Z",
+   "seen": "2026-10-30T20:42:19.301Z",
+   "handle": "rotoworld-fb.bsky.social",
+   "post": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3mz4m6kqoqy2z",
+   "player": "Ladd McConkey",
+   "team": "LAC",
+   "status": "active",
+   "kind": "status",
+   "confidence": 0.9,
+   "text": "Ladd McConkey removed from injury report Friday"
   }
  ]
 }

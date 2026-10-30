@@ -14129,6 +14129,66 @@
     "seen": "2026-10-30T20:18:44.148Z",
     "own": "2026-10-30T19:54:00.000Z"
    }
+  },
+  "401873032|deaneleonard|out": {
+   "game": "401873032",
+   "start": "2026-11-01T21:05Z",
+   "team": "24",
+   "name": "Deane Leonard",
+   "status": "out",
+   "athlete": "4690171",
+   "espn": {
+    "seen": "2026-10-30T20:39:41.473Z",
+    "own": "2026-10-30T20:20:00.000Z"
+   }
+  },
+  "401873032|kayodeawosika|out": {
+   "game": "401873032",
+   "start": "2026-11-01T21:05Z",
+   "team": "24",
+   "name": "Kayode Awosika",
+   "status": "out",
+   "athlete": "4040842",
+   "espn": {
+    "seen": "2026-10-30T20:39:41.473Z",
+    "own": "2026-10-30T20:19:00.000Z"
+   }
+  },
+  "401873032|brenenthompson|out": {
+   "game": "401873032",
+   "start": "2026-11-01T21:05Z",
+   "team": "24",
+   "name": "Brenen Thompson",
+   "status": "out",
+   "athlete": "4685553",
+   "espn": {
+    "seen": "2026-10-30T20:39:41.473Z",
+    "own": "2026-10-30T01:07:00.000Z"
+   }
+  },
+  "401873034|kadynproctor|out": {
+   "game": "401873034",
+   "start": "2026-11-01T21:25Z",
+   "team": "15",
+   "name": "Kadyn Proctor",
+   "status": "out",
+   "athlete": "4870976",
+   "espn": {
+    "seen": "2026-10-30T20:39:41.473Z",
+    "own": "2026-10-30T20:10:00.000Z"
+   }
+  },
+  "401873034|christianelliss|q": {
+   "game": "401873034",
+   "start": "2026-11-01T21:25Z",
+   "team": "17",
+   "name": "Christian Elliss",
+   "status": "q",
+   "athlete": "4245273",
+   "espn": {
+    "seen": "2026-10-30T20:39:41.473Z",
+    "own": "2026-10-30T20:07:00.000Z"
+   }
   }
  }
 }
