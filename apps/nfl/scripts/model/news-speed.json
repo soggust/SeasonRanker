@@ -13611,6 +13611,54 @@
     "seen": "2026-10-30T19:36:47.115Z",
     "own": "2026-10-30T19:28:00.000Z"
    }
+  },
+  "401873031|carnelltate|out": {
+   "game": "401873031",
+   "start": "2026-11-01T18:00Z",
+   "team": "10",
+   "name": "Carnell Tate",
+   "status": "out",
+   "athlete": "4871023",
+   "espn": {
+    "seen": "2026-10-30T19:57:44.633Z",
+    "own": "2026-10-30T15:48:00.000Z"
+   }
+  },
+  "401873030|rogermccreary|q": {
+   "game": "401873030",
+   "start": "2026-11-01T18:00Z",
+   "team": "8",
+   "name": "Roger McCreary",
+   "status": "q",
+   "athlete": "4371973",
+   "espn": {
+    "seen": "2026-10-30T19:57:44.633Z",
+    "own": "2026-10-30T19:34:00.000Z"
+   }
+  },
+  "401873029|patrickjohnson|out": {
+   "game": "401873029",
+   "start": "2026-11-01T18:00Z",
+   "team": "13",
+   "name": "Patrick Johnson",
+   "status": "out",
+   "athlete": "4243916",
+   "espn": {
+    "seen": "2026-10-30T19:57:44.633Z",
+    "own": "2026-10-30T19:44:00.000Z"
+   }
+  },
+  "401873029|jakobimeyers|q": {
+   "game": "401873029",
+   "start": "2026-11-01T18:00Z",
+   "team": "13",
+   "name": "Jakobi Meyers",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-10-30T19:39:23.287Z",
+    "own": "2026-10-30T19:36:31.000Z",
+    "why": "@rotoworld-fb.bsky.social: Jakobi Meyers DNP Friday, draws 'Q' tag for Week 8"
+   }
   }
  }
 }

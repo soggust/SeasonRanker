@@ -89,7 +89,8 @@
   "50319798": "2026-10-29",
   "50322532": "2026-10-29",
   "50324792": "2026-10-30",
-  "50325135": "2026-10-30"
+  "50325135": "2026-10-30",
+  "50329679": "2026-10-30"
  },
  "signals": [
   {
@@ -255,6 +256,51 @@
    "confidence": 0.85,
    "story": "50322532",
    "headline": "Red Wings suspend Dylan Larkin, explore trade options",
+   "model": "claude-haiku-5-5"
+  },
+  {
+   "id": "50329679|6|mikebabcock|coaching",
+   "day": "2026-10-30",
+   "at": "2026-10-30T19:47:43.000Z",
+   "team": "6",
+   "abbr": "EDM",
+   "athlete": null,
+   "player": "Mike Babcock",
+   "kind": "coaching",
+   "direction": "none",
+   "confidence": 0.9,
+   "story": "50329679",
+   "headline": "Oilers take accountability message from coach Mike Babcock's healthy scratches",
+   "model": "claude-haiku-5-5"
+  },
+  {
+   "id": "50329679|6|4024997|benched",
+   "day": "2026-10-30",
+   "at": "2026-10-30T19:47:43.000Z",
+   "team": "6",
+   "abbr": "EDM",
+   "athlete": "4024997",
+   "player": "Trent Frederic",
+   "kind": "benched",
+   "direction": "down",
+   "confidence": 0.4,
+   "story": "50329679",
+   "headline": "Oilers take accountability message from coach Mike Babcock's healthy scratches",
+   "model": "claude-haiku-5-5"
+  },
+  {
+   "id": "50329679|6|3151136|benched",
+   "day": "2026-10-30",
+   "at": "2026-10-30T19:47:43.000Z",
+   "team": "6",
+   "abbr": "EDM",
+   "athlete": "3151136",
+   "player": "Jake Walman",
+   "kind": "benched",
+   "direction": "down",
+   "confidence": 0.4,
+   "story": "50329679",
+   "headline": "Oilers take accountability message from coach Mike Babcock's healthy scratches",
    "model": "claude-haiku-5-5"
   }
  ]

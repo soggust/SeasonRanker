@@ -3,6 +3,39 @@
  "days": 2,
  "signals": [
   {
+   "team": "6",
+   "abbr": "EDM",
+   "athlete": null,
+   "player": "Mike Babcock",
+   "kind": "coaching",
+   "direction": "none",
+   "confidence": 0.9,
+   "headline": "Oilers take accountability message from coach Mike Babcock's healthy scratches",
+   "at": "2026-10-30T19:47:43.000Z"
+  },
+  {
+   "team": "6",
+   "abbr": "EDM",
+   "athlete": "4024997",
+   "player": "Trent Frederic",
+   "kind": "benched",
+   "direction": "down",
+   "confidence": 0.4,
+   "headline": "Oilers take accountability message from coach Mike Babcock's healthy scratches",
+   "at": "2026-10-30T19:47:43.000Z"
+  },
+  {
+   "team": "6",
+   "abbr": "EDM",
+   "athlete": "3151136",
+   "player": "Jake Walman",
+   "kind": "benched",
+   "direction": "down",
+   "confidence": 0.4,
+   "headline": "Oilers take accountability message from coach Mike Babcock's healthy scratches",
+   "at": "2026-10-30T19:47:43.000Z"
+  },
+  {
    "team": "5",
    "abbr": "DET",
    "athlete": "3114755",
@@ -25,5 +58,5 @@
    "at": "2026-10-29T17:49:06.000Z"
   }
  ],
- "at": "2026-10-29T23:16:27.355Z"
+ "at": "2026-10-30T20:00:12.216Z"
 }
