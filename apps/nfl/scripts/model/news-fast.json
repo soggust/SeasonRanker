@@ -1,11 +1,11 @@
 {
  "sport": "nfl",
  "cursor": {
-  "adamscheftermirror.bsky.social": "2026-10-29T23:23:45.019Z",
+  "adamscheftermirror.bsky.social": "2026-10-30T01:03:59.286Z",
   "rapsheet.bsky.social": "2026-10-29T23:42:15.567Z",
   "nflnewsreposterbot.bsky.social": "2026-10-29T14:25:56.466Z",
   "insidenflnews.bsky.social": "2026-10-30T00:49:18.755Z",
-  "nflnewsposter.bsky.social": "2026-10-30T00:57:32.483Z",
+  "nflnewsposter.bsky.social": "2026-10-30T01:17:46.878Z",
   "rotoworld-fb.bsky.social": "2026-10-29T23:16:19.000Z",
   "rotowirenfl.bsky.social": "2026-10-29T23:31:03.000Z"
  },
@@ -8953,6 +8953,19 @@
    "kind": "status",
    "confidence": 0.85,
    "text": "Michael Wilson: Stays limited Thursday \n\n https://www.rotowire.com/football/player/michael-wilson-16957"
+  },
+  {
+   "id": "at://did:plc:fuqjc7x4gxvnwzksnlxwbe4x/app.bsky.feed.post/3mz2mc7wu3kcw|christianwatson|questionable|status",
+   "at": "2026-10-30T01:17:46.878Z",
+   "seen": "2026-10-30T01:18:28.075Z",
+   "handle": "nflnewsposter.bsky.social",
+   "post": "at://did:plc:fuqjc7x4gxvnwzksnlxwbe4x/app.bsky.feed.post/3mz2mc7wu3kcw",
+   "player": "Christian Watson",
+   "team": "GB",
+   "status": "questionable",
+   "kind": "status",
+   "confidence": 0.9,
+   "text": "[Packers] WR Christian Watson is questionable to return with a chest injury twitter.com/packers/stat..."
   }
  ]
 }
