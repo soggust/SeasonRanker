@@ -1,7 +1,7 @@
 {
  "sport": "nba",
  "cursor": {
-  "rotowirenba.bsky.social": "2026-10-30T14:16:10.000Z",
+  "rotowirenba.bsky.social": "2026-10-30T15:12:50.000Z",
   "insidenbanews.bsky.social": "2026-10-29T02:03:08.482Z",
   "shamsbot.bsky.social": "2026-10-29T20:10:02.000Z"
  },
@@ -6167,6 +6167,19 @@
    "kind": "status",
    "confidence": 0.9,
    "text": "Noah Clowney: Downgraded to questionable \n\n https://www.rotowire.com/basketball/player/noah-clowney-5901"
+  },
+  {
+   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mz42xgdbos2n|konknueppel|out|status",
+   "at": "2026-10-30T15:12:50.000Z",
+   "seen": "2026-10-30T15:31:10.267Z",
+   "handle": "rotowirenba.bsky.social",
+   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mz42xgdbos2n",
+   "player": "Kon Knueppel",
+   "team": "CHA",
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.93,
+   "text": "Kon Knueppel: Remains out for Friday \n\n https://www.rotowire.com/basketball/player/kon-knueppel-6540"
   }
  ]
 }

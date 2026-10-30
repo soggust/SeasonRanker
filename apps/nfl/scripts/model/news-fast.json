@@ -7,7 +7,7 @@
   "insidenflnews.bsky.social": "2026-10-30T14:15:48.109Z",
   "nflnewsposter.bsky.social": "2026-10-30T14:17:42.740Z",
   "rotoworld-fb.bsky.social": "2026-10-30T14:54:21.000Z",
-  "rotowirenfl.bsky.social": "2026-10-30T04:23:16.000Z"
+  "rotowirenfl.bsky.social": "2026-10-30T15:16:07.000Z"
  },
  "claims": [
   {
@@ -9083,6 +9083,32 @@
    "kind": "status",
    "confidence": 0.9,
    "text": "Breece Hall (quad) will be limited on Friday"
+  },
+  {
+   "id": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3mz42x2bspr2v|breecehall|questionable|status",
+   "at": "2026-10-30T15:12:37.000Z",
+   "seen": "2026-10-30T15:31:10.267Z",
+   "handle": "rotowirenfl.bsky.social",
+   "post": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3mz42x2bspr2v",
+   "player": "Breece Hall",
+   "team": null,
+   "status": "questionable",
+   "kind": "status",
+   "confidence": 0.95,
+   "text": "Breece Hall: Listed questionable for Sunday \n\n https://www.rotowire.com/football/player/breece-hall-15810"
+  },
+  {
+   "id": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3mz435bxm5p2r|emekaegbuka|questionable|status",
+   "at": "2026-10-30T15:16:07.000Z",
+   "seen": "2026-10-30T15:31:10.267Z",
+   "handle": "rotowirenfl.bsky.social",
+   "post": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3mz435bxm5p2r",
+   "player": "Emeka Egbuka",
+   "team": null,
+   "status": "questionable",
+   "kind": "status",
+   "confidence": 0.3,
+   "text": "Emeka Egbuka: Sits out Friday's practice \n\n https://www.rotowire.com/football/player/emeka-egbuka-18549"
   }
  ]
 }

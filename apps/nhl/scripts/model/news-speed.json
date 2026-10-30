@@ -9642,6 +9642,78 @@
     "seen": "2026-10-30T15:08:56.263Z",
     "own": "2026-09-29T16:18:00.000Z"
    }
+  },
+  "401892623|joshmanson|out": {
+   "game": "401892623",
+   "start": "2026-11-01T02:00Z",
+   "team": "17",
+   "name": "Josh Manson",
+   "status": "out",
+   "athlete": "2590829",
+   "espn": {
+    "seen": "2026-10-30T15:29:43.479Z",
+    "own": "2026-10-29T04:10:00.000Z"
+   }
+  },
+  "401892623|zacharylheureux|out": {
+   "game": "401892623",
+   "start": "2026-11-01T02:00Z",
+   "team": "17",
+   "name": "Zachary L'Heureux",
+   "status": "out",
+   "athlete": "4874744",
+   "espn": {
+    "seen": "2026-10-30T15:29:43.479Z",
+    "own": "2026-10-23T21:39:00.000Z"
+   }
+  },
+  "401892623|brennanothmann|q": {
+   "game": "401892623",
+   "start": "2026-11-01T02:00Z",
+   "team": "3",
+   "name": "Brennan Othmann",
+   "status": "q",
+   "athlete": "4874733",
+   "espn": {
+    "seen": "2026-10-30T15:29:43.479Z",
+    "own": "2026-10-29T02:05:00.000Z"
+   }
+  },
+  "401892623|devincooley|q": {
+   "game": "401892623",
+   "start": "2026-11-01T02:00Z",
+   "team": "3",
+   "name": "Devin Cooley",
+   "status": "q",
+   "athlete": "4319911",
+   "espn": {
+    "seen": "2026-10-30T15:29:43.479Z",
+    "own": "2026-10-29T02:02:00.000Z"
+   }
+  },
+  "401892623|jonathanhuberdeau|out": {
+   "game": "401892623",
+   "start": "2026-11-01T02:00Z",
+   "team": "3",
+   "name": "Jonathan Huberdeau",
+   "status": "out",
+   "athlete": "2562606",
+   "espn": {
+    "seen": "2026-10-30T15:29:43.479Z",
+    "own": "2026-10-24T18:14:00.000Z"
+   }
+  },
+  "401892623|samuelhonzek|out": {
+   "game": "401892623",
+   "start": "2026-11-01T02:00Z",
+   "team": "3",
+   "name": "Samuel Honzek",
+   "status": "out",
+   "athlete": "5149191",
+   "espn": {
+    "seen": "2026-10-30T15:29:43.479Z",
+    "own": "2026-10-20T03:51:00.000Z"
+   }
   }
  }
 }
