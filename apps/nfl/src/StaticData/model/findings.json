@@ -563,11 +563,18 @@
    "text": "Polymarket sharps' flow as a line shift: gate ties, replay net -7 to -12u (NBA/NFL up, NHL/MLB down); Polymarket close = Pinnacle. Not added"
   },
   {
-   "date": "2026-10-29",
+   "date": "2026-10-30",
    "group": "watching",
    "sport": "nfl",
    "ref": "D86",
-   "text": "History audit: 2026-10-29 code re-record held. the record guard refused: held: inputs shrank since the last record (its fingerprint): contex"
+   "text": "History audit: 2026-10-30 code re-record held. the record guard refused: held: inputs shrank since the last record (its fingerprint): contex"
+  },
+  {
+   "date": "2026-10-30",
+   "group": "watching",
+   "sport": "nhl",
+   "ref": "D86",
+   "text": "History audit: 2026-10-30 code re-record held. the record guard refused: held: inputs changed, not the model: the replay moved -12.56u to -9"
   }
  ]
 }

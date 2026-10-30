@@ -1,8 +1,8 @@
 {
- "at": "2026-10-29T22:06:28.157Z",
+ "at": "2026-10-30T11:36:33.784Z",
  "baseline": {
-  "from": "2026-09-24",
-  "to": "2026-10-22"
+  "from": "2026-09-25",
+  "to": "2026-10-23"
  },
  "checks": [
   {
@@ -324,7 +324,7 @@
   },
   {
    "examples": [],
-   "headline": "Model files 0h old, 0 open bets overdue to grade; Odds API credits 272% left; 19 bets placed in a week of 14 games",
+   "headline": "Model files 3h old, 0 open bets overdue to grade; Odds API credits 271% left; 19 bets placed in a week of 14 games",
    "how": "the newest commit of the sport's model files, the open bets started 12 hours ago or more, The Odds API's credits (state.odds), the state's sources",
    "id": "C16",
    "metric": "ageH",
@@ -332,8 +332,8 @@
    "needs": null,
    "rows": [
     {
-     "ageH": 0,
-     "at": "2026-10-29T21:39:34Z",
+     "ageH": 3,
+     "at": "2026-10-30T08:04:08Z",
      "key": "files",
      "overdue": 0
     },
@@ -341,8 +341,8 @@
      "cycleEnd": "2026-11-19T04:06:35.755Z",
      "key": "credits",
      "monthly": 20000,
-     "remaining": 54422,
-     "share": 2.7211
+     "remaining": 54244,
+     "share": 2.7122
     },
     {
      "down": [],
@@ -358,7 +358,7 @@
    "tested": null,
    "threshold": "watch files 3h old with bets overdue, credits under 20%, a source down, or no bets in a week with games; flag 6h old with bets overdue, or credits under 10%",
    "title": "Ops",
-   "value": 0
+   "value": 3
   },
   {
    "examples": [],
@@ -701,7 +701,7 @@
   },
   {
    "examples": [],
-   "headline": "0 segments tested on 35 priced rows: none losing to the Book beyond the false discovery rate, none trending worse The priced history (every season, the gate's run of 2026-10-29): 2 leaks: side: under losing 0.08 nats per 100 rows to the Book, shrunk (n 331, z -2.58); price: dog losing 0.04 nats per 100 rows to the Book, shrunk (n 879, z -2.11).",
+   "headline": "0 segments tested on 35 priced rows: none losing to the Book beyond the false discovery rate, none trending worse The priced history (every season, the gate's run of 2026-10-30): 2 leaks: side: under losing 0.08 nats per 100 rows to the Book, shrunk (n 331, z -2.58); price: dog losing 0.04 nats per 100 rows to the Book, shrunk (n 879, z -2.11).",
    "how": "each graded row's log loss gain over the Book (its priced chance against the Book's no-vig: on the result and against the close, half each), a game's rows sharing their weight; a segment's mean, its standard error by game, z; the leaks ranked by the units staked into them in the last 28 days. Each leak's fix a candidate only: it ships when the replay gate passes it (node libs/ranker/scripts/model/gate.mjs --candidate <the fix>)",
    "id": "C23",
    "metric": "leaks",
@@ -720,7 +720,7 @@
    "how": "the day's last state.json for 35 days (git), the week's start against now; the changelog's entries this week verbatim",
    "id": "C9",
    "metric": "changes",
-   "n": 12,
+   "n": 13,
    "needs": null,
    "rows": [],
    "status": "info",
@@ -752,8 +752,8 @@
  },
  "v": 1,
  "window": {
-  "from": "2026-10-22",
-  "to": "2026-10-29"
+  "from": "2026-10-23",
+  "to": "2026-10-30"
  },
  "writeups": {
   "calls": 0,
