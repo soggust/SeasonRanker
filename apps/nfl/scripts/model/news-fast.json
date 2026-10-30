@@ -1,13 +1,13 @@
 {
  "sport": "nfl",
  "cursor": {
-  "adamscheftermirror.bsky.social": "2026-10-30T19:13:50.224Z",
+  "adamscheftermirror.bsky.social": "2026-10-30T19:29:03.559Z",
   "rapsheet.bsky.social": "2026-10-30T19:06:00.608Z",
   "nflnewsreposterbot.bsky.social": "2026-10-30T17:32:06.499Z",
   "insidenflnews.bsky.social": "2026-10-30T18:15:15.119Z",
   "nflnewsposter.bsky.social": "2026-10-30T19:11:27.953Z",
-  "rotoworld-fb.bsky.social": "2026-10-30T19:18:17.000Z",
-  "rotowirenfl.bsky.social": "2026-10-30T18:16:12.000Z"
+  "rotoworld-fb.bsky.social": "2026-10-30T19:36:34.000Z",
+  "rotowirenfl.bsky.social": "2026-10-30T19:31:47.000Z"
  },
  "claims": [
   {
@@ -9603,6 +9603,58 @@
    "kind": "status",
    "confidence": 0.9,
    "text": "Aaron Jones off injury report, will play in Week 8"
+  },
+  {
+   "id": "at://did:plc:qre6zxbmr3ixhdmgsgdretb5/app.bsky.feed.post/3mz4jblinfi2l|lamarjackson|active|status",
+   "at": "2026-10-30T19:29:03.559Z",
+   "seen": "2026-10-30T19:39:23.287Z",
+   "handle": "adamscheftermirror.bsky.social",
+   "post": "at://did:plc:qre6zxbmr3ixhdmgsgdretb5/app.bsky.feed.post/3mz4jblinfi2l",
+   "player": "Lamar Jackson",
+   "team": "BAL",
+   "status": "active",
+   "kind": "status",
+   "confidence": 0.9,
+   "text": "Lamar Jackson officially has no injury designation for Sunday’s game in Buffalo.\n\nRepost of @Ravens:\n\nOriginal post"
+  },
+  {
+   "id": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3mz4jghsn5v2r|colstonloveland|limited|status",
+   "at": "2026-10-30T19:31:47.000Z",
+   "seen": "2026-10-30T19:39:23.287Z",
+   "handle": "rotowirenfl.bsky.social",
+   "post": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3mz4jghsn5v2r",
+   "player": "Colston Loveland",
+   "team": "CHI",
+   "status": "limited",
+   "kind": "status",
+   "confidence": 0.9,
+   "text": "Colston Loveland: Limited Friday by neck issue \n\n https://www.rotowire.com/football/player/colston-loveland-18460"
+  },
+  {
+   "id": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3mz4joxbfex24|jakobimeyers|questionable|status",
+   "at": "2026-10-30T19:36:31.000Z",
+   "seen": "2026-10-30T19:39:23.287Z",
+   "handle": "rotoworld-fb.bsky.social",
+   "post": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3mz4joxbfex24",
+   "player": "Jakobi Meyers",
+   "team": "LV",
+   "status": "questionable",
+   "kind": "status",
+   "confidence": 0.85,
+   "text": "Jakobi Meyers DNP Friday, draws 'Q' tag for Week 8"
+  },
+  {
+   "id": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3mz4jozkfig2d|kylemonangai|out|status",
+   "at": "2026-10-30T19:36:34.000Z",
+   "seen": "2026-10-30T19:39:23.287Z",
+   "handle": "rotoworld-fb.bsky.social",
+   "post": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3mz4jozkfig2d",
+   "player": "Kyle Monangai",
+   "team": "CHI",
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.75,
+   "text": "Kyle Monangai (thumb/toe) remains sidelined"
   }
  ]
 }
