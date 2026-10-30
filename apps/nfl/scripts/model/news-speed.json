@@ -11729,6 +11729,11 @@
    "espn": {
     "seen": "2026-10-28T23:13:08.670Z",
     "own": "2026-10-28T22:48:00.000Z"
+   },
+   "bluesky": {
+    "seen": "2026-10-30T18:52:33.286Z",
+    "own": "2026-10-30T18:42:23.000Z",
+    "why": "@rotoworld-fb.bsky.social: Colby Parkinson officially questionable for Week 8"
    }
   },
   "401873035|stefondiggs|q": {
@@ -13413,6 +13418,126 @@
    "espn": {
     "seen": "2026-10-30T18:47:39.352Z",
     "own": "2026-10-30T18:33:00.000Z"
+   }
+  },
+  "401873026|colbyparkinson|q": {
+   "game": "401873026",
+   "start": "2026-11-01T18:00Z",
+   "team": "2",
+   "name": "Colby Parkinson",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-10-30T18:52:33.286Z",
+    "own": "2026-10-30T18:42:23.000Z",
+    "why": "@rotoworld-fb.bsky.social: Colby Parkinson officially questionable for Week 8"
+   }
+  },
+  "401873031|colbyparkinson|q": {
+   "game": "401873031",
+   "start": "2026-11-01T18:00Z",
+   "team": "4",
+   "name": "Colby Parkinson",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-10-30T18:52:33.286Z",
+    "own": "2026-10-30T18:42:23.000Z",
+    "why": "@rotoworld-fb.bsky.social: Colby Parkinson officially questionable for Week 8"
+   }
+  },
+  "401873024|colbyparkinson|q": {
+   "game": "401873024",
+   "start": "2026-11-01T18:00Z",
+   "team": "6",
+   "name": "Colby Parkinson",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-10-30T18:52:33.286Z",
+    "own": "2026-10-30T18:42:23.000Z",
+    "why": "@rotoworld-fb.bsky.social: Colby Parkinson officially questionable for Week 8"
+   }
+  },
+  "401873030|colbyparkinson|q": {
+   "game": "401873030",
+   "start": "2026-11-01T18:00Z",
+   "team": "8",
+   "name": "Colby Parkinson",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-10-30T18:52:33.286Z",
+    "own": "2026-10-30T18:42:23.000Z",
+    "why": "@rotoworld-fb.bsky.social: Colby Parkinson officially questionable for Week 8"
+   }
+  },
+  "401873029|colbyparkinson|q": {
+   "game": "401873029",
+   "start": "2026-11-01T18:00Z",
+   "team": "20",
+   "name": "Colby Parkinson",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-10-30T18:52:33.286Z",
+    "own": "2026-10-30T18:42:23.000Z",
+    "why": "@rotoworld-fb.bsky.social: Colby Parkinson officially questionable for Week 8"
+   }
+  },
+  "401873027|colbyparkinson|q": {
+   "game": "401873027",
+   "start": "2026-11-01T18:00Z",
+   "team": "23",
+   "name": "Colby Parkinson",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-10-30T18:52:33.286Z",
+    "own": "2026-10-30T18:42:23.000Z",
+    "why": "@rotoworld-fb.bsky.social: Colby Parkinson officially questionable for Week 8"
+   }
+  },
+  "401873025|colbyparkinson|q": {
+   "game": "401873025",
+   "start": "2026-11-01T18:00Z",
+   "team": "27",
+   "name": "Colby Parkinson",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-10-30T18:52:33.286Z",
+    "own": "2026-10-30T18:42:23.000Z",
+    "why": "@rotoworld-fb.bsky.social: Colby Parkinson officially questionable for Week 8"
+   }
+  },
+  "401873028|colbyparkinson|q": {
+   "game": "401873028",
+   "start": "2026-11-01T18:00Z",
+   "team": "30",
+   "name": "Colby Parkinson",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-10-30T18:52:33.286Z",
+    "own": "2026-10-30T18:42:23.000Z",
+    "why": "@rotoworld-fb.bsky.social: Colby Parkinson officially questionable for Week 8"
+   }
+  },
+  "401873033|colbyparkinson|q": {
+   "game": "401873033",
+   "start": "2026-11-01T21:25Z",
+   "team": "7",
+   "name": "Colby Parkinson",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-10-30T18:52:33.286Z",
+    "own": "2026-10-30T18:42:23.000Z",
+    "why": "@rotoworld-fb.bsky.social: Colby Parkinson officially questionable for Week 8"
+   }
+  },
+  "401873034|colbyparkinson|q": {
+   "game": "401873034",
+   "start": "2026-11-01T21:25Z",
+   "team": "15",
+   "name": "Colby Parkinson",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-10-30T18:52:33.286Z",
+    "own": "2026-10-30T18:42:23.000Z",
+    "why": "@rotoworld-fb.bsky.social: Colby Parkinson officially questionable for Week 8"
    }
   }
  }
