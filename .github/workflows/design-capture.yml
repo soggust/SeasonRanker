@@ -73,4 +73,9 @@ jobs:
           cd /tmp/boards-branch
           git add -A boards
           git commit -m "Design capture of master@$(git -C "$GITHUB_WORKSPACE" rev-parse --short HEAD)" || exit 0
-          git push origin design-boards
+          # (GitHub itself turned one push away with a 500 on 2026-10-30: a push that fails tries again, three times)
+          for attempt in 1 2 3; do
+            git push origin design-boards && exit 0
+            sleep $((attempt * 10))
+          done
+          exit 1
