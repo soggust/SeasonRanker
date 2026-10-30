@@ -1,7 +1,7 @@
 {
  "sport": "nba",
  "cursor": {
-  "rotowirenba.bsky.social": "2026-10-30T20:37:25.000Z",
+  "rotowirenba.bsky.social": "2026-10-30T20:52:11.000Z",
   "insidenbanews.bsky.social": "2026-10-30T19:15:23.134Z",
   "shamsbot.bsky.social": "2026-10-30T18:40:24.000Z"
  },
@@ -6271,6 +6271,19 @@
    "kind": "status",
    "confidence": 0.9,
    "text": "Gui Santos: Now questionable \n\n https://www.rotowire.com/basketball/player/gui-santos-5738"
+  },
+  {
+   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mz4nwaclky2q|jaylontyson|out|status",
+   "at": "2026-10-30T20:52:11.000Z",
+   "seen": "2026-10-30T21:03:24.984Z",
+   "handle": "rotowirenba.bsky.social",
+   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mz4nwaclky2q",
+   "player": "Jaylon Tyson",
+   "team": null,
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.95,
+   "text": "Jaylon Tyson: Ruled out for Saturday \n\n https://www.rotowire.com/basketball/player/jaylon-tyson-6277"
   }
  ]
 }

@@ -450,6 +450,7 @@
   "50329508": "2026-10-30",
   "50329594": "2026-10-30",
   "50329615": "2026-10-30",
+  "50329806": "2026-10-30",
   "50330421": "2026-10-30"
  },
  "signals": [
@@ -1831,6 +1832,21 @@
    "confidence": 0.6,
    "story": "50329594",
    "headline": "Chiefs get Rashee Rice back from injury for Broncos game",
+   "model": "claude-haiku-5-5"
+  },
+  {
+   "id": "50329806|29|toddwash|coaching",
+   "day": "2026-10-30",
+   "at": "2026-10-30T20:56:49.000Z",
+   "team": "29",
+   "abbr": "CAR",
+   "athlete": null,
+   "player": "Todd Wash",
+   "kind": "coaching",
+   "direction": "none",
+   "confidence": 0.85,
+   "story": "50329806",
+   "headline": "With 10 games left and Ejiro Evero out, what's next for Panthers' defense?",
    "model": "claude-haiku-5-5"
   }
  ]

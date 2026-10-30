@@ -4,10 +4,10 @@
   "adamscheftermirror.bsky.social": "2026-10-30T20:33:53.567Z",
   "rapsheet.bsky.social": "2026-10-30T19:06:00.608Z",
   "nflnewsreposterbot.bsky.social": "2026-10-30T17:32:06.499Z",
-  "insidenflnews.bsky.social": "2026-10-30T20:07:34.988Z",
+  "insidenflnews.bsky.social": "2026-10-30T20:47:53.494Z",
   "nflnewsposter.bsky.social": "2026-10-30T19:52:11.400Z",
-  "rotoworld-fb.bsky.social": "2026-10-30T20:21:03.000Z",
-  "rotowirenfl.bsky.social": "2026-10-30T20:19:20.000Z"
+  "rotoworld-fb.bsky.social": "2026-10-30T20:52:43.000Z",
+  "rotowirenfl.bsky.social": "2026-10-30T20:53:40.000Z"
  },
  "claims": [
   {
@@ -9980,6 +9980,71 @@
    "kind": "status",
    "confidence": 0.9,
    "text": "Ladd McConkey removed from injury report Friday"
+  },
+  {
+   "id": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3mz4nissxep2q|laddmcconkey|active|status",
+   "at": "2026-10-30T20:44:41.000Z",
+   "seen": "2026-10-30T21:03:24.984Z",
+   "handle": "rotowirenfl.bsky.social",
+   "post": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3mz4nissxep2q",
+   "player": "Ladd McConkey",
+   "team": null,
+   "status": "active",
+   "kind": "status",
+   "confidence": 0.95,
+   "text": "Ladd McConkey: Will play Sunday \n\n https://www.rotowire.com/football/player/ladd-mcconkey-17724"
+  },
+  {
+   "id": "at://did:plc:mbr4badgf6yu56mquzackzew/app.bsky.feed.post/3mz4nok6pkc2x|rjharvey|out|status",
+   "at": "2026-10-30T20:47:53.494Z",
+   "seen": "2026-10-30T21:03:24.984Z",
+   "handle": "insidenflnews.bsky.social",
+   "post": "at://did:plc:mbr4badgf6yu56mquzackzew/app.bsky.feed.post/3mz4nok6pkc2x",
+   "player": "RJ Harvey",
+   "team": "DEN",
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.95,
+   "text": "Broncos RB RJ Harvey (knee) has been ruled out for Week 8."
+  },
+  {
+   "id": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3mz4nx4npmi2p|jaylenwaddle|questionable|status",
+   "at": "2026-10-30T20:52:41.000Z",
+   "seen": "2026-10-30T21:03:24.984Z",
+   "handle": "rotoworld-fb.bsky.social",
+   "post": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3mz4nx4npmi2p",
+   "player": "Jaylen Waddle",
+   "team": null,
+   "status": "questionable",
+   "kind": "status",
+   "confidence": 0.9,
+   "text": "Jaylen Waddle (chest) questionable for Week 8"
+  },
+  {
+   "id": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3mz4nx72tdl2d|rjharvey|out|status",
+   "at": "2026-10-30T20:52:43.000Z",
+   "seen": "2026-10-30T21:03:24.984Z",
+   "handle": "rotoworld-fb.bsky.social",
+   "post": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3mz4nx72tdl2d",
+   "player": "RJ Harvey",
+   "team": "DEN",
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.95,
+   "text": "RJ Harvey (knee) to be sidelined for Week 8 vs. KC"
+  },
+  {
+   "id": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3mz4nyvgaxc2s|rjharvey|out|status",
+   "at": "2026-10-30T20:53:40.000Z",
+   "seen": "2026-10-30T21:03:24.984Z",
+   "handle": "rotowirenfl.bsky.social",
+   "post": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3mz4nyvgaxc2s",
+   "player": "RJ Harvey",
+   "team": "DEN",
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.95,
+   "text": "RJ Harvey: Ruled out for Sunday's game \n\n https://www.rotowire.com/football/player/rj-harvey-18522"
   }
  ]
 }

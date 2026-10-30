@@ -3,6 +3,17 @@
  "days": 2,
  "signals": [
   {
+   "team": "29",
+   "abbr": "CAR",
+   "athlete": null,
+   "player": "Todd Wash",
+   "kind": "coaching",
+   "direction": "none",
+   "confidence": 0.85,
+   "headline": "With 10 games left and Ejiro Evero out, what's next for Panthers' defense?",
+   "at": "2026-10-30T20:56:49.000Z"
+  },
+  {
    "team": "12",
    "abbr": "KC",
    "athlete": "4428331",
@@ -47,5 +58,5 @@
    "at": "2026-10-30T14:45:43.000Z"
   }
  ],
- "at": "2026-10-30T19:39:23.287Z"
+ "at": "2026-10-30T21:03:24.984Z"
 }
