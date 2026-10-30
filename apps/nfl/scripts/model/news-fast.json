@@ -4,10 +4,10 @@
   "adamscheftermirror.bsky.social": "2026-10-30T01:03:59.286Z",
   "rapsheet.bsky.social": "2026-10-29T23:42:15.567Z",
   "nflnewsreposterbot.bsky.social": "2026-10-29T14:25:56.466Z",
-  "insidenflnews.bsky.social": "2026-10-30T00:49:18.755Z",
-  "nflnewsposter.bsky.social": "2026-10-30T01:17:46.878Z",
-  "rotoworld-fb.bsky.social": "2026-10-29T23:16:19.000Z",
-  "rotowirenfl.bsky.social": "2026-10-29T23:31:03.000Z"
+  "insidenflnews.bsky.social": "2026-10-30T01:34:58.392Z",
+  "nflnewsposter.bsky.social": "2026-10-30T01:34:31.183Z",
+  "rotoworld-fb.bsky.social": "2026-10-30T01:25:47.000Z",
+  "rotowirenfl.bsky.social": "2026-10-30T01:25:35.000Z"
  },
  "claims": [
   {
@@ -8966,6 +8966,45 @@
    "kind": "status",
    "confidence": 0.9,
    "text": "[Packers] WR Christian Watson is questionable to return with a chest injury twitter.com/packers/stat..."
+  },
+  {
+   "id": "at://did:plc:mbr4badgf6yu56mquzackzew/app.bsky.feed.post/3mz2mdp6qx22h|christianwatson|questionable|status",
+   "at": "2026-10-30T01:18:36.419Z",
+   "seen": "2026-10-30T01:38:57.835Z",
+   "handle": "insidenflnews.bsky.social",
+   "post": "at://did:plc:mbr4badgf6yu56mquzackzew/app.bsky.feed.post/3mz2mdp6qx22h",
+   "player": "Christian Watson",
+   "team": "GB",
+   "status": "questionable",
+   "kind": "status",
+   "confidence": 0.93,
+   "text": "🚨 Status alert: Christian Watson (chest) questionable to return Thursday."
+  },
+  {
+   "id": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3mz2mq6zfli2y|christianwatson|questionable|status",
+   "at": "2026-10-30T01:25:35.000Z",
+   "seen": "2026-10-30T01:38:57.835Z",
+   "handle": "rotowirenfl.bsky.social",
+   "post": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3mz2mq6zfli2y",
+   "player": "Christian Watson",
+   "team": "GB",
+   "status": "questionable",
+   "kind": "status",
+   "confidence": 0.93,
+   "text": "Christian Watson: Questionable to return to TNF \n\n https://www.rotowire.com/football/player/christian-watson-15946"
+  },
+  {
+   "id": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3mz2mqkjywz2a|christianwatson|questionable|status",
+   "at": "2026-10-30T01:25:47.000Z",
+   "seen": "2026-10-30T01:38:57.835Z",
+   "handle": "rotoworld-fb.bsky.social",
+   "post": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3mz2mqkjywz2a",
+   "player": "Christian Watson",
+   "team": "GB",
+   "status": "questionable",
+   "kind": "status",
+   "confidence": 0.93,
+   "text": "Christian Watson (chest) questionable to return"
   }
  ]
 }
