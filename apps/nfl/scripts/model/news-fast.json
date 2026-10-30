@@ -7,7 +7,7 @@
   "insidenflnews.bsky.social": "2026-10-30T23:11:22.760Z",
   "nflnewsposter.bsky.social": "2026-10-30T23:00:34.518Z",
   "rotoworld-fb.bsky.social": "2026-10-30T23:05:03.000Z",
-  "rotowirenfl.bsky.social": "2026-10-30T22:38:25.000Z"
+  "rotowirenfl.bsky.social": "2026-10-30T23:24:58.000Z"
  },
  "claims": [
   {
@@ -10175,6 +10175,19 @@
    "kind": "status",
    "confidence": 0.85,
    "text": "Rap: DT Daron Payne will be out for \"the foreseeable future\" with a significant foot injury."
+  },
+  {
+   "id": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3mz4w3ieyyx2s|zachcharbonnet|limited|status",
+   "at": "2026-10-30T23:18:17.000Z",
+   "seen": "2026-10-30T23:43:36.469Z",
+   "handle": "rotowirenfl.bsky.social",
+   "post": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3mz4w3ieyyx2s",
+   "player": "Zach Charbonnet",
+   "team": null,
+   "status": "limited",
+   "kind": "status",
+   "confidence": 0.9,
+   "text": "Zach Charbonnet: Practices in limited capacity \n\n https://www.rotowire.com/football/player/zach-charbonnet-16897"
   }
  ]
 }

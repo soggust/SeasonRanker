@@ -14491,6 +14491,47 @@
    "espn": {
     "seen": "2026-10-30T23:11:08.546Z",
     "own": "2026-10-30T22:59:00.000Z"
+   },
+   "bluesky": {
+    "seen": "2026-10-30T23:13:40.908Z",
+    "own": "2026-10-30T23:03:52.356Z",
+    "why": "@insidenflnews.bsky.social: Rap: DT Daron Payne will be out for \"the foreseeable"
+   }
+  },
+  "401873024|kennyclark|q": {
+   "game": "401873024",
+   "start": "2026-11-01T18:00Z",
+   "team": "6",
+   "name": "Kenny Clark",
+   "status": "q",
+   "athlete": "3122752",
+   "espn": {
+    "seen": "2026-10-30T23:40:50.465Z",
+    "own": "2026-10-30T23:12:00.000Z"
+   }
+  },
+  "401873036|byronmurphy|q": {
+   "game": "401873036",
+   "start": "2026-11-03T01:15Z",
+   "team": "26",
+   "name": "Byron Murphy II",
+   "status": "q",
+   "athlete": "4570040",
+   "espn": {
+    "seen": "2026-10-30T23:40:50.465Z",
+    "own": "2026-10-30T23:16:00.000Z"
+   }
+  },
+  "401873036|brandonpili|q": {
+   "game": "401873036",
+   "start": "2026-11-03T01:15Z",
+   "team": "26",
+   "name": "Brandon Pili",
+   "status": "q",
+   "athlete": "4259651",
+   "espn": {
+    "seen": "2026-10-30T23:40:50.465Z",
+    "own": "2026-10-30T23:15:00.000Z"
    }
   }
  }
