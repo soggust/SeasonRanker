@@ -9858,6 +9858,18 @@
     "own": "2026-10-30T18:50:25.000Z",
     "why": "@dfotoronto.bsky.social: Maple Leafs lineup news: Chris Tanev paired with Morgan"
    }
+  },
+  "401892621|filipchytil|q": {
+   "game": "401892621",
+   "start": "2026-10-31T23:00Z",
+   "team": "22",
+   "name": "Filip Chytil",
+   "status": "q",
+   "athlete": "4233643",
+   "espn": {
+    "seen": "2026-10-30T19:22:39.652Z",
+    "own": "2026-10-30T19:04:00.000Z"
+   }
   }
  }
 }

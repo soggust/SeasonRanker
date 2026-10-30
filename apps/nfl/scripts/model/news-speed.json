@@ -13539,6 +13539,18 @@
     "own": "2026-10-30T18:42:23.000Z",
     "why": "@rotoworld-fb.bsky.social: Colby Parkinson officially questionable for Week 8"
    }
+  },
+  "401873026|greggaines|q": {
+   "game": "401873026",
+   "start": "2026-11-01T18:00Z",
+   "team": "2",
+   "name": "Greg Gaines",
+   "status": "q",
+   "athlete": "3127294",
+   "espn": {
+    "seen": "2026-10-30T19:21:31.771Z",
+    "own": "2026-10-30T19:12:00.000Z"
+   }
   }
  }
 }

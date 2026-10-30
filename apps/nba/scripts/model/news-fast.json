@@ -2,7 +2,7 @@
  "sport": "nba",
  "cursor": {
   "rotowirenba.bsky.social": "2026-10-30T18:45:48.000Z",
-  "insidenbanews.bsky.social": "2026-10-29T02:03:08.482Z",
+  "insidenbanews.bsky.social": "2026-10-30T19:15:23.134Z",
   "shamsbot.bsky.social": "2026-10-30T18:40:24.000Z"
  },
  "claims": [
@@ -6232,6 +6232,19 @@
    "kind": "status",
    "confidence": 0.95,
    "text": "Ja Morant: Out four weeks with hamstring strain \n\n https://www.rotowire.com/basketball/player/ja-morant-4761"
+  },
+  {
+   "id": "at://did:plc:ykcnnf6kqnn3lasmobrczoem/app.bsky.feed.post/3mz4ij4xbzc25|jamorant|out|status",
+   "at": "2026-10-30T19:15:23.134Z",
+   "seen": "2026-10-30T19:23:48.542Z",
+   "handle": "insidenbanews.bsky.social",
+   "post": "at://did:plc:ykcnnf6kqnn3lasmobrczoem/app.bsky.feed.post/3mz4ij4xbzc25",
+   "player": "Ja Morant",
+   "team": null,
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.9,
+   "text": "🚨 Shams: Ja Morant to miss at least 4 weeks with Grade 2 strained hamstring."
   }
  ]
 }
