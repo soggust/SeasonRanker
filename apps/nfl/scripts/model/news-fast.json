@@ -6,7 +6,7 @@
   "nflnewsreposterbot.bsky.social": "2026-10-30T14:14:31.468Z",
   "insidenflnews.bsky.social": "2026-10-30T14:15:48.109Z",
   "nflnewsposter.bsky.social": "2026-10-30T14:17:42.740Z",
-  "rotoworld-fb.bsky.social": "2026-10-30T14:27:55.000Z",
+  "rotoworld-fb.bsky.social": "2026-10-30T14:54:21.000Z",
   "rotowirenfl.bsky.social": "2026-10-30T04:23:16.000Z"
  },
  "claims": [
@@ -9070,6 +9070,19 @@
    "kind": "coaching",
    "confidence": 0.8,
    "text": "Panthers defensive pass-game coordinator Jonathan Cooley also is out, as @JFowlerESPN reported.\n\nOriginal post"
+  },
+  {
+   "id": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3mz3zweqq4j2y|breecehall|limited|status",
+   "at": "2026-10-30T14:54:21.000Z",
+   "seen": "2026-10-30T15:10:18.763Z",
+   "handle": "rotoworld-fb.bsky.social",
+   "post": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3mz3zweqq4j2y",
+   "player": "Breece Hall",
+   "team": "NYJ",
+   "status": "limited",
+   "kind": "status",
+   "confidence": 0.9,
+   "text": "Breece Hall (quad) will be limited on Friday"
   }
  ]
 }
