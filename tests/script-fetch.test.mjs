@@ -111,6 +111,22 @@ test("cachedDownload: kept and read back while fresh (a past season's for good),
     assert.equal(fs.readFileSync(file, 'utf8'), 'three', 'an empty body is not kept');
     assert.equal(await cachedDownload(path.join(dir, 'none'), async () => null), null);
     assert.ok(!fs.existsSync(path.join(dir, 'none')));
+    // (stale: a download that fails answers the kept copy with a warning; without it, or with nothing kept, the error:
+    // MoneyPuck's site down for the night, NHL update run 40962150359, 2026-10-29)
+    const down = async () => {
+      throw new Error('The operation was aborted due to timeout for https://example.test/skaters.csv');
+    };
+    const warned = [];
+    const warn = console.warn;
+    console.warn = (m) => warned.push(String(m));
+    try {
+      assert.equal(String(await cachedDownload(file, down, { freshHours: 0, stale: true })), 'three', 'the kept copy stands in');
+      assert.match(warned[0], /^::warning::a\.csv: the download failed \(The operation was aborted due to timeout for .*\); the copy kept \d+h ago stands in$/);
+    } finally {
+      console.warn = warn;
+    }
+    await assert.rejects(cachedDownload(file, down, { freshHours: 0 }), /aborted due to timeout/, 'not asked to: the error');
+    await assert.rejects(cachedDownload(path.join(dir, 'never'), down, { freshHours: 0, stale: true }), /aborted due to timeout/, 'nothing kept: the error');
   } finally {
     fs.rmSync(dir, { recursive: true, force: true });
   }

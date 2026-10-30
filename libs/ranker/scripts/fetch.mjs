@@ -68,9 +68,20 @@ export async function fetchRetry(url, options = {}) {
 // time; freshHours 0: always asked). The bytes, or null.
 //
 //   cachedDownload(path.join(CACHE, 'games.csv'), () => fetchRetry(url, { as: 'buffer' }), { current: true })
-export async function cachedDownload(file, download, { current = true, freshHours = 6 } = {}) {
+//   cachedDownload(file, download, { freshHours: 0, stale: true })   asked every time; the kept copy if the ask fails
+// stale: true — a download that fails (every try) while a kept copy exists answers the kept copy, however old, with a
+// warning on the run's page (a source down for the night doesn't fail the update: MoneyPuck, 2026-10-29); no copy, the error
+export async function cachedDownload(file, download, { current = true, freshHours = 6, stale = false } = {}) {
   if (existsSync(file) && (!current || (freshHours > 0 && Date.now() - statSync(file).mtimeMs < freshHours * 36e5))) return readFileSync(file);
-  const body = await download();
+  let body;
+  try {
+    body = await download();
+  } catch (err) {
+    if (!stale || !existsSync(file)) throw err;
+    const hours = Math.round((Date.now() - statSync(file).mtimeMs) / 36e5);
+    console.warn(`::warning::${path.basename(file)}: the download failed (${err?.message ?? err}); the copy kept ${hours}h ago stands in`);
+    return readFileSync(file);
+  }
   if (body?.length) {
     mkdirSync(path.dirname(file), { recursive: true });
     writeFileSync(file, body);

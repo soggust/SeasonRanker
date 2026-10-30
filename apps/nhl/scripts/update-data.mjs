@@ -29,7 +29,7 @@ import { createHash } from 'node:crypto';
 import path from 'node:path';
 import { curve, curvePlaces, keepGradeInput } from '../../../libs/ranker/scripts/grades.mjs';
 import { blendWithLastSeason } from '../../../libs/ranker/scripts/early-season.mjs';
-import { fetchRetry } from '../../../libs/ranker/scripts/fetch.mjs';
+import { fetchRetry, cachedDownload } from '../../../libs/ranker/scripts/fetch.mjs';
 import { coachesFor } from './coaches.mjs';
 import { gameLogPlan, readLogFiles, removeOldFile, writeLogFiles } from './game-log-files.mjs';
 import { addVsPosition } from './vs-position.mjs';
@@ -71,11 +71,11 @@ const CONFERENCE_TITLES = [5, 19];
 let nextSlot = 0;
 let cacheable = false;
 const asked = new Map();
-function get(url, as = 'json') {
-  if (!asked.has(url)) asked.set(url, cached(url, as, cacheable));
+function get(url, as = 'json', timeout = undefined) {
+  if (!asked.has(url)) asked.set(url, cached(url, as, cacheable, timeout));
   return asked.get(url);
 }
-async function cached(url, as, keep) {
+async function cached(url, as, keep, timeout) {
   const file = path.join(CACHE_DIR, createHash('sha1').update(url).digest('hex') + '.json');
   if (keep) {
     try {
@@ -86,7 +86,7 @@ async function cached(url, as, keep) {
       // (not asked before)
     }
   }
-  const body = await fetchPolitely(url, as);
+  const body = await fetchPolitely(url, as, timeout);
   if (keep && !emptyAnswer(body)) {
     await mkdir(CACHE_DIR, { recursive: true });
     await writeFile(file, JSON.stringify({ url, body }));
@@ -95,13 +95,13 @@ async function cached(url, as, keep) {
 }
 const emptyAnswer = (body) => body == null || body === '' || (Array.isArray(body.data) && !body.data.length);
 // (a 404: null; rate-limited, a 429: wait as long as the API asks, then try again: libs/ranker/scripts/fetch.mjs)
-function fetchPolitely(url, as) {
+function fetchPolitely(url, as, timeout = undefined) {
   const before = async () => {
     const slot = Math.max(nextSlot, Date.now());
     nextSlot = slot + 350;
     if (slot > Date.now()) await new Promise((r) => setTimeout(r, slot - Date.now()));
   };
-  return fetchRetry(url, { as, headers: { 'User-Agent': 'sports-ranker data script' }, attempts: 3, backoff: 3000, notFound: null, rateLimit: 4, before });
+  return fetchRetry(url, { as, headers: { 'User-Agent': 'sports-ranker data script' }, attempts: 3, backoff: 3000, notFound: null, rateLimit: 4, before, ...(timeout ? { timeout } : {}) });
 }
 
 // Every listed player's game log this season, regular season and playoffs, newest first:
@@ -183,8 +183,22 @@ async function report(kind, season, type = 2) {
 
 // A MoneyPuck season file (skaters, goalies or teams; the regular season's or the playoffs'), parsed:
 // rows by situation ("all", "5on5")
+// (MoneyPuck's site hangs some nights (run 40962150359, 2026-10-29: three tries timed out and the update failed): its
+// files get a longer try, and a season being played's copy is kept in .cache/moneypuck/update between runs (the
+// workflow restores it before this step) so a night it can't be read, last time's copy stands in with a warning on the
+// run's page. A finished season's is asked once and kept with the rest of its answers (get's cache); last season's,
+// read for the Coaching Lift, is kept once read)
+const MP_CACHE = path.join(ROOT, '../../.cache/moneypuck/update');
+const MP_TIMEOUT = 90000;
 async function moneypuck(kind, season, type = 2) {
-  const text = await get(`${MONEYPUCK}/${season - 1}/${type === 3 ? 'playoffs' : 'regular'}/${kind}.csv`, 'text');
+  const part = type === 3 ? 'playoffs' : 'regular';
+  const url = `${MONEYPUCK}/${season - 1}/${part}/${kind}.csv`;
+  const ask = async () => {
+    const body = await get(url, 'text', MP_TIMEOUT);
+    return body ? Buffer.from(body) : null;
+  };
+  const kept = cacheable ? await ask() : await cachedDownload(path.join(MP_CACHE, `${season - 1}-${part}-${kind}.csv`), ask, { current: season >= CURRENT_SEASON, freshHours: 0, stale: true });
+  const text = kept ? String(kept) : '';
   if (!text) return [];
   const [head, ...lines] = text.trim().split('\n');
   const keys = head.split(',');

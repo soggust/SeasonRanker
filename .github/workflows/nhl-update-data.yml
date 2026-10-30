@@ -52,6 +52,16 @@ jobs:
 
       # (the regular season, and from the first playoff game on the playoffs and both as well:
       # skill-players.post.json and .all.json; until then neither, last season's taken out)
+      # (MoneyPuck's files, kept between runs: the shots file, ~20 MB, the season being played's downloaded again
+      # after six hours (build-heat-maps.mjs FRESH_HOURS), not on every run; and the stats update's season files
+      # (update-data.mjs moneypuck), asked every run, last time's copy standing in on a night the site hangs)
+      - name: Restore the MoneyPuck cache
+        uses: actions/cache@v6
+        with:
+          path: .cache/moneypuck
+          key: nhl-moneypuck-${{ github.run_id }}
+          restore-keys: nhl-moneypuck-
+
       - name: Pull NHL stats
         run: npm run nhl:update-data
 
@@ -59,15 +69,6 @@ jobs:
       # (apps/nhl/scripts/build-splash.mjs; a failed run keeps yesterday's files, and says so on the run's page)
       - name: Build the splash's data
         run: node apps/nhl/scripts/build-splash.mjs || echo "::warning::Splash data not built (this step's log says why)"
-
-      # (MoneyPuck's shots file, ~20 MB, kept between runs: the season being played's is downloaded again after
-      # six hours (build-heat-maps.mjs FRESH_HOURS), not on every run)
-      - name: Restore the MoneyPuck cache
-        uses: actions/cache@v6
-        with:
-          path: .cache/moneypuck
-          key: nhl-moneypuck-${{ github.run_id }}
-          restore-keys: nhl-moneypuck-
 
       # The card's Heat Maps: every shot by zone on the rink (MoneyPuck's shots file; a failed run keeps
       # yesterday's files, and says so on the run's page)
