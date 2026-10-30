@@ -9726,6 +9726,78 @@
     "seen": "2026-10-30T16:23:04.949Z",
     "own": "2026-10-30T16:08:00.000Z"
    }
+  },
+  "401892613|connorzary|out": {
+   "game": "401892613",
+   "start": "2026-10-31T00:00Z",
+   "team": "3",
+   "name": "Connor Zary",
+   "status": "out",
+   "athlete": "4697407",
+   "espn": {
+    "seen": "2026-10-30T16:49:37.764Z",
+    "own": "2026-10-30T16:44:00.000Z"
+   }
+  },
+  "401892613|brennanothmann|out": {
+   "game": "401892613",
+   "start": "2026-10-31T00:00Z",
+   "team": "3",
+   "name": "Brennan Othmann",
+   "status": "out",
+   "athlete": "4874733",
+   "espn": {
+    "seen": "2026-10-30T16:49:37.764Z",
+    "own": "2026-10-30T16:38:00.000Z"
+   }
+  },
+  "401892613|devincooley|out": {
+   "game": "401892613",
+   "start": "2026-10-31T00:00Z",
+   "team": "3",
+   "name": "Devin Cooley",
+   "status": "out",
+   "athlete": "4319911",
+   "espn": {
+    "seen": "2026-10-30T16:49:37.764Z",
+    "own": "2026-10-30T16:32:00.000Z"
+   }
+  },
+  "401892623|connorzary|out": {
+   "game": "401892623",
+   "start": "2026-11-01T02:00Z",
+   "team": "3",
+   "name": "Connor Zary",
+   "status": "out",
+   "athlete": "4697407",
+   "espn": {
+    "seen": "2026-10-30T16:49:37.764Z",
+    "own": "2026-10-30T16:44:00.000Z"
+   }
+  },
+  "401892623|brennanothmann|out": {
+   "game": "401892623",
+   "start": "2026-11-01T02:00Z",
+   "team": "3",
+   "name": "Brennan Othmann",
+   "status": "out",
+   "athlete": "4874733",
+   "espn": {
+    "seen": "2026-10-30T16:49:37.764Z",
+    "own": "2026-10-30T16:38:00.000Z"
+   }
+  },
+  "401892623|devincooley|out": {
+   "game": "401892623",
+   "start": "2026-11-01T02:00Z",
+   "team": "3",
+   "name": "Devin Cooley",
+   "status": "out",
+   "athlete": "4319911",
+   "espn": {
+    "seen": "2026-10-30T16:49:37.764Z",
+    "own": "2026-10-30T16:32:00.000Z"
+   }
   }
  }
 }
