@@ -9822,6 +9822,30 @@
     "seen": "2026-10-30T17:16:56.230Z",
     "own": "2026-10-30T17:14:00.000Z"
    }
+  },
+  "401892613|cooley|out": {
+   "game": "401892613",
+   "start": "2026-10-31T00:00Z",
+   "team": "3",
+   "name": "Cooley",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-10-30T17:17:53.809Z",
+    "own": "2026-10-30T16:57:31.000Z",
+    "why": "@dailyfaceoff.bsky.social: Flames’ Cooley placed on injured reserve; Zary week-t"
+   }
+  },
+  "401892613|zary|out": {
+   "game": "401892613",
+   "start": "2026-10-31T00:00Z",
+   "team": "3",
+   "name": "Zary",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-10-30T17:17:53.809Z",
+    "own": "2026-10-30T16:57:31.000Z",
+    "why": "@dailyfaceoff.bsky.social: Flames’ Cooley placed on injured reserve; Zary week-t"
+   }
   }
  }
 }
