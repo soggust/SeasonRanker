@@ -128,8 +128,15 @@ export function lostAsk({ times, dk = [], markets = null, published = 0, boardPr
 // the last chance, where the last ask held rows for the lineup risk: their stat's line moves by the close, D42, so the
 // late price is the one worth betting; held), and 'refresh' (mid-window, the last ask REFRESH_H old or more, only while
 // the month projects under its target: refresh). Each spends its tier's share of the day's allowance (oddsapi.mjs TIERS)
+// (D102, 2026-10-30: 'window', once a game, for a board with no prices of its own: inside the props' betting window
+// (D95) a game asked before has a fresh quote to bet on, the ask deferred as a first one is (run.mjs defer: bought only
+// where a row's surviving lean clears the free or stored price). Before it a game first asked when the Book posted its
+// props, then refreshed, reached the window with no ask reason left (CAR @ GB, 2026-10-29: 22 suggestions with an edge
+// priced from the morning snapshot, nothing bettable; the NFL placed no prop bet in the four days after D95). And the
+// refreshes keep one ask in reserve for it and come only inside REFRESH_WITHIN hours of the start)
 export const REFRESH_H = 6;
-export function propAsk({ starOut = false, times, max, owed = false, boardPriced = false, nearAsked = false, until, open = 0, outsChanged = false, held = 0, lateAsked = false, last = false, sinceAsk = 0, refresh = false }) {
+export const REFRESH_WITHIN = 12;
+export function propAsk({ starOut = false, times, max, owed = false, boardPriced = false, nearAsked = false, until, open = 0, outsChanged = false, held = 0, lateAsked = false, last = false, sinceAsk = 0, refresh = false, window = false, windowAsked = false }) {
   if (times >= max) return null;
   if (times === 0) return 'first';
   // (D66: a star newly Out or Doubtful: his teammates' lines lag the news, so asked again ahead of the rest)
@@ -138,7 +145,8 @@ export function propAsk({ starOut = false, times, max, owed = false, boardPriced
   if (!boardPriced && outsChanged) return 'news';
   if (!boardPriced && last && !lateAsked && held > 0) return 'late';
   if (!nearAsked && until < 2.5 * HOUR && (open > 0 || owed)) return 'near';
-  if (!boardPriced && refresh && !last && sinceAsk >= REFRESH_H * HOUR) return 'refresh';
+  if (!boardPriced && window && !windowAsked) return 'window';
+  if (!boardPriced && refresh && !last && times < max - 1 && until <= REFRESH_WITHIN * HOUR && sinceAsk >= REFRESH_H * HOUR) return 'refresh';
   return null;
 }
 

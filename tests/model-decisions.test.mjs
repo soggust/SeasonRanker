@@ -1047,8 +1047,9 @@ test('D55 the $30 plan never exceeded, paced to about 95%; the lines bought on a
   assert.equal(propAsk({ times: 1, max: 6, until: 50 * H, outsChanged: true, boardPriced: true }), null);
   assert.equal(propAsk({ times: 1, max: 6, until: 2.8 * H, last: true, held: 3 }), 'late');
   assert.equal(propAsk({ times: 2, max: 6, until: 2.8 * H, last: true, held: 3, lateAsked: true }), null);
-  assert.equal(propAsk({ times: 1, max: 6, until: 40 * H, sinceAsk: REFRESH_H * H, refresh: true }), 'refresh');
-  assert.equal(propAsk({ times: 1, max: 6, until: 40 * H, sinceAsk: REFRESH_H * H, refresh: false }), null);
+  // (a refresh inside REFRESH_WITHIN hours of the start, D102; 40 hours out it was, before)
+  assert.equal(propAsk({ times: 1, max: 6, until: 10 * H, sinceAsk: REFRESH_H * H, refresh: true }), 'refresh');
+  assert.equal(propAsk({ times: 1, max: 6, until: 10 * H, sinceAsk: REFRESH_H * H, refresh: false }), null);
   assert.equal(propAsk({ times: 6, max: 6, until: 40 * H, outsChanged: true }), null);
   assert.ok(odds.TIERS.first > odds.TIERS.news && odds.TIERS.late > odds.TIERS.refresh);
   // (the watcher: never while a run is queued or running, the cooldown, the day's cap)
@@ -2363,4 +2364,30 @@ test('D101 a trial pick carries the trial’s stakes by band, the bet written wi
   assert.match(fs.readFileSync(path.resolve('libs/ranker/src/engine/book/bet-why.ts'), 'utf8'), /base\.tierUnits\[level\]/, 'the what-if stakes the band at the trial’s');
   const decisions = fs.readFileSync(path.resolve('libs/ranker/scripts/model/DECISIONS.md'), 'utf8');
   assert.ok(decisions.includes('### D101.'));
+});
+
+// (CAR @ GB, 2026-10-29: first asked when the Book posted its props, refreshed three times on Wednesday, and inside the
+// 3-hour betting window (the NFL's last phase) no ask reason was left: 22 suggestions with an edge priced from the
+// morning snapshot, nothing bettable; no NFL prop bet in the four days after D95)
+test('D102 a game asked before gets one fresh quote inside the props’ betting window, deferred till a row would be bet; refreshes keep an ask in reserve and come inside 12 hours', async () => {
+  const { propAsk, REFRESH_H, REFRESH_WITHIN } = await import('../libs/ranker/scripts/model/timing.mjs');
+  const odds = await import('../libs/ranker/scripts/model/oddsapi.mjs');
+  const H = 36e5;
+  assert.equal(propAsk({ times: 4, max: 6, until: 2.7 * H, last: true, window: true }), 'window', 'in the window, asked before, nothing else due');
+  assert.equal(propAsk({ times: 4, max: 6, until: 2.7 * H, last: true, window: true, windowAsked: true }), null, 'once a game');
+  assert.equal(propAsk({ times: 5, max: 6, until: 2.7 * H, last: true, window: true }), 'window', 'the reserved ask is its');
+  assert.equal(propAsk({ times: 6, max: 6, until: 2.7 * H, last: true, window: true }), null, 'the cap holds');
+  assert.equal(propAsk({ times: 4, max: 6, until: 2.7 * H, last: true, window: true, boardPriced: true }), null, 'a board with its own prices needs no quote to bet');
+  assert.equal(propAsk({ times: 4, max: 6, until: 2 * H, last: true, window: true, open: 2 }), 'near', 'the open bets’ near ask first');
+  assert.equal(propAsk({ times: 1, max: 6, until: 2.7 * H, last: true, window: true, held: 3 }), 'late', 'the late ask first where rows were held');
+  assert.equal(propAsk({ times: 1, max: 6, until: 40 * H, sinceAsk: REFRESH_H * H, refresh: true }), null, 'no refresh 40 hours out');
+  assert.equal(propAsk({ times: 1, max: 6, until: REFRESH_WITHIN * H, sinceAsk: REFRESH_H * H, refresh: true }), 'refresh');
+  assert.equal(propAsk({ times: 5, max: 6, until: 10 * H, sinceAsk: REFRESH_H * H, refresh: true }), null, 'the last ask kept for the window');
+  assert.equal(odds.TIERS.window, odds.TIERS.first);
+  const run = src('run.mjs');
+  assert.match(run, /window: propsLate\(sport, until \/ 36e5, r\.gap\), windowAsked: !!asked\[`\$\{game\.id\}:window`\]/, 'the desk asks for it');
+  assert.match(run, /\|\| why === 'window'\) && !owed/, 'deferred as a first ask is, in the last phase too');
+  assert.match(run, /if \(why === 'window'\) asked\[`\$\{game\.id\}:window`\] = 1;/, 'marked once bought');
+  const decisions = fs.readFileSync(path.resolve('libs/ranker/scripts/model/DECISIONS.md'), 'utf8');
+  assert.ok(decisions.includes('### D102.'));
 });

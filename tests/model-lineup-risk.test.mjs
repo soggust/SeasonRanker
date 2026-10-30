@@ -104,7 +104,8 @@ test('D42 the snapshot prices a suggestion, never a bet: rows marked, a moved li
   const run = src('run.mjs');
   assert.ok(/if \(x\.prop\.snapshot\) \{\s*run\.snapshotHeld = \(run\.snapshotHeld \?\? 0\) \+ 1;\s*continue;/.test(run));
   // (D66: the news lag's re-ask deferred the same way where the board has its own prices)
-  assert.ok(/const defer = \(why === 'first' \|\| \(why === 'newsLag' && boardPriced\)\) && phase !== 'last' && !owed && !!u\.lines\.oddsEvent && !DRY && !r\.propsSuggestOnly && \(boardPriced \|\| \(snap\?\.size \?\? 0\) > 0\)/.test(run));
+  // (D102: the window ask deferred the same way, in the last phase too)
+  assert.ok(/const defer = \(\(\(why === 'first' \|\| \(why === 'newsLag' && boardPriced\)\) && phase !== 'last'\) \|\| why === 'window'\) && !owed && !!u\.lines\.oddsEvent && !DRY && !r\.propsSuggestOnly && \(boardPriced \|\| \(snap\?\.size \?\? 0\) > 0\)/.test(run));
   // (D95: bought to bet only inside the props' betting window, or on news)
   assert.ok(/const want = bets\.some\(\(x\) => x\.priced && !x\.guard\?\.skip && \(late \|\| why === 'newsLag' \|\| !!riskOf\(game, x, phase\)\.fast\) && riskOf\(game, x, phase\)\.ev > 0\);\s*if \(want && \(await askNow\(\)\)\)/.test(run));
   assert.ok(/if \(!\(rk\.ev > 0\)\) \{\s*run\.heldRisk = \(run\.heldRisk \?\? 0\) \+ 1;\s*continue;/.test(run));

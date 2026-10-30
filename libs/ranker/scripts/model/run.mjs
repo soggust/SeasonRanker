@@ -2572,11 +2572,12 @@ async function betProps(r) {
       const sinceAsk = asked[`${game.id}:at`] ? r.now.getTime() - Date.parse(asked[`${game.id}:at`]) : 0;
       // (D66: a star newly Out or Doubtful on either report since the game's last ask: its props asked again first)
       const lagNew = LAG_SPORTS.has(sport) ? lagPending((r.lagState ??= readLag(sport)), game, r.live.get(game.id)?.injuries, asked[`${game.id}:lag`]) : [];
-      const why = propAsk({ starOut: lagNew.length > 0, times, max: PROP_ASKS, owed, boardPriced, nearAsked: !!asked[`${game.id}:near`], until, open: open.length, outsChanged, held: asked[`${game.id}:held`] ?? 0, lateAsked: !!asked[`${game.id}:late`], last: phase === 'last', sinceAsk, refresh: (r.propsRefresh ??= refreshOn()) });
+      const why = propAsk({ starOut: lagNew.length > 0, times, max: PROP_ASKS, owed, boardPriced, nearAsked: !!asked[`${game.id}:near`], until, open: open.length, outsChanged, held: asked[`${game.id}:held`] ?? 0, lateAsked: !!asked[`${game.id}:late`], last: phase === 'last', sinceAsk, refresh: (r.propsRefresh ??= refreshOn()), window: propsLate(sport, until / 36e5, r.gap), windowAsked: !!asked[`${game.id}:window`] });
       // (an ask that found none of the Book's props posted yet (free: an empty answer costs nothing) isn't counted; it's
       // tried again EMPTY_RETRY later, so the first ask lands soon after the Book posts them)
       const emptyWait = why === 'first' && asked[`${game.id}:empty`] && r.now.getTime() - Date.parse(asked[`${game.id}:empty`]) < EMPTY_RETRY;
-      if (why && why !== 'first') (run.asks ??= {})[why] = (run.asks[why] ?? 0) + 1;
+      // (a first or a window ask is counted where it is bought (askNow): deferred, it may not be)
+      if (why && why !== 'first' && why !== 'window') (run.asks ??= {})[why] = (run.asks[why] ?? 0) + 1;
       if (owed && times >= PROP_ASKS && !boardPriced) run.owedOut = (run.owedOut ?? 0) + 1;
       let fresh = false;
       // (rows this run's ask held for the lineup risk: the late ask's, D55)
@@ -2590,7 +2591,10 @@ async function betProps(r) {
       // suggestions off (the Book's board, or the snapshot) and the last chance not yet here, the game's props are
       // priced first; the ask comes only where a row's surviving lean clears the free price (askNow below), else the
       // run shows the suggestions and spends nothing. An owed ask, the near one and the last chance ask as before)
-      const defer = (why === 'first' || (why === 'newsLag' && boardPriced)) && phase !== 'last' && !owed && !!u.lines.oddsEvent && !DRY && !r.propsSuggestOnly && (boardPriced || (snap?.size ?? 0) > 0);
+      // (D102: the window ask (timing.mjs propAsk 'window': a game asked before, inside the props' betting window, once)
+      // is deferred the same way, in the last phase too: bought only where a row the Bot would bet now clears the free
+      // price; with no free price at all it is bought as a first ask would be)
+      const defer = (((why === 'first' || (why === 'newsLag' && boardPriced)) && phase !== 'last') || why === 'window') && !owed && !!u.lines.oddsEvent && !DRY && !r.propsSuggestOnly && (boardPriced || (snap?.size ?? 0) > 0);
       const askNow = async () => {
         // (the other books asked only for the markets the book returned on this game's last ask (:dk), so they
         // add none: props.mjs apiProps, oddsapi.mjs propAsks; their consensus the data's, never priced off)
@@ -2611,6 +2615,7 @@ async function betProps(r) {
           asked[`${game.id}:dk`] = api.dkMarkets ?? [];
           if (why === 'near') asked[`${game.id}:near`] = 1;
           if (why === 'late') asked[`${game.id}:late`] = 1;
+          if (why === 'window') asked[`${game.id}:window`] = 1;
           (run.asks ??= {})[why ?? 'first'] = (run.asks[why ?? 'first'] ?? 0) + 1;
           asked[`${game.id}:at`] = r.now.toISOString();
           if (outsNow !== null) asked[`${game.id}:outs`] = outsNow;
