@@ -2,10 +2,10 @@
  "sport": "nfl",
  "cursor": {
   "adamscheftermirror.bsky.social": "2026-10-30T18:28:50.701Z",
-  "rapsheet.bsky.social": "2026-10-30T14:19:50.239Z",
+  "rapsheet.bsky.social": "2026-10-30T19:06:00.608Z",
   "nflnewsreposterbot.bsky.social": "2026-10-30T17:32:06.499Z",
   "insidenflnews.bsky.social": "2026-10-30T18:15:15.119Z",
-  "nflnewsposter.bsky.social": "2026-10-30T17:38:59.050Z",
+  "nflnewsposter.bsky.social": "2026-10-30T19:11:27.953Z",
   "rotoworld-fb.bsky.social": "2026-10-30T18:42:23.000Z",
   "rotowirenfl.bsky.social": "2026-10-30T18:16:12.000Z"
  },
@@ -9551,6 +9551,32 @@
    "kind": "status",
    "confidence": 0.95,
    "text": "Colby Parkinson officially questionable for Week 8"
+  },
+  {
+   "id": "at://did:plc:hlvr2omhnmvdmfnvmcuhyevz/app.bsky.feed.post/3mz4hxdme5s2i|lamarjackson|active|status",
+   "at": "2026-10-30T19:05:26.121Z",
+   "seen": "2026-10-30T19:13:04.546Z",
+   "handle": "rapsheet.bsky.social",
+   "post": "at://did:plc:hlvr2omhnmvdmfnvmcuhyevz/app.bsky.feed.post/3mz4hxdme5s2i",
+   "player": "Lamar Jackson",
+   "team": "BAL",
+   "status": "active",
+   "kind": "status",
+   "confidence": 0.93,
+   "text": "Ravens QB Lamar Jackson will play this Sunday, coach Jesse Minter said. He was a full participant again."
+  },
+  {
+   "id": "at://did:plc:hlvr2omhnmvdmfnvmcuhyevz/app.bsky.feed.post/3mz4hyeilzs2i|emekaegbuka|out|status",
+   "at": "2026-10-30T19:06:00.608Z",
+   "seen": "2026-10-30T19:13:04.546Z",
+   "handle": "rapsheet.bsky.social",
+   "post": "at://did:plc:hlvr2omhnmvdmfnvmcuhyevz/app.bsky.feed.post/3mz4hyeilzs2i",
+   "player": "Emeka Egbuka",
+   "team": null,
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.9,
+   "text": "Emeka Egbuka ruled out."
   }
  ]
 }

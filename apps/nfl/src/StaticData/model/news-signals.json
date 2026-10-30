@@ -3,6 +3,17 @@
  "days": 2,
  "signals": [
   {
+   "team": "12",
+   "abbr": "KC",
+   "athlete": "4428331",
+   "player": "Rashee Rice",
+   "kind": "return",
+   "direction": "up",
+   "confidence": 0.6,
+   "headline": "Chiefs get Rashee Rice back from injury for Broncos game",
+   "at": "2026-10-30T18:52:15.000Z"
+  },
+  {
    "team": "22",
    "abbr": "ARI",
    "athlete": "4870808",
@@ -47,5 +58,5 @@
    "at": "2026-10-28T19:38:59.000Z"
   }
  ],
- "at": "2026-10-30T18:52:33.286Z"
+ "at": "2026-10-30T19:13:04.546Z"
 }

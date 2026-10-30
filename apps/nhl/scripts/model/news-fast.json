@@ -3,7 +3,7 @@
  "cursor": {
   "johnston-bot.bsky.social": "2026-10-30T17:31:47.734Z",
   "notfriedgehnic.bsky.social": "2026-10-30T18:08:35.141Z",
-  "dailyfaceoff.bsky.social": "2026-10-30T18:09:37.000Z",
+  "dailyfaceoff.bsky.social": "2026-10-30T19:12:37.000Z",
   "dfotoronto.bsky.social": "2026-10-30T18:51:40.000Z",
   "marklazerus.bsky.social": "2026-10-30T02:42:48.767Z"
  },
@@ -1268,6 +1268,19 @@
    "kind": "return",
    "confidence": 0.6,
    "text": "Maple Leafs lineup news: Chris Tanev paired with Morgan Rielly, Dakota Joshua returns to practice"
+  },
+  {
+   "id": "at://did:plc:3uus7y6h3rlrk6sbctzxm4bg/app.bsky.feed.post/3mz4ie6prls2u|joshmanson|out|status",
+   "at": "2026-10-30T19:12:37.000Z",
+   "seen": "2026-10-30T19:13:04.546Z",
+   "handle": "dailyfaceoff.bsky.social",
+   "post": "at://did:plc:3uus7y6h3rlrk6sbctzxm4bg/app.bsky.feed.post/3mz4ie6prls2u",
+   "player": "Josh Manson",
+   "team": "COL",
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.95,
+   "text": "Avalanche’s Josh Manson out eight weeks with ankle injury"
   }
  ]
 }

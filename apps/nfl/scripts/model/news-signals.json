@@ -447,7 +447,9 @@
   "50328612": "2026-10-30",
   "50329240": "2026-10-30",
   "50329330": "2026-10-30",
-  "50329508": "2026-10-30"
+  "50329508": "2026-10-30",
+  "50329594": "2026-10-30",
+  "50329615": "2026-10-30"
  },
  "signals": [
   {
@@ -1813,6 +1815,21 @@
    "confidence": 0.6,
    "story": "50329508",
    "headline": "Cardinals rookie RB Jeremiyah Love (ankle) set to return",
+   "model": "claude-haiku-5-5"
+  },
+  {
+   "id": "50329594|12|4428331|return",
+   "day": "2026-10-30",
+   "at": "2026-10-30T18:52:15.000Z",
+   "team": "12",
+   "abbr": "KC",
+   "athlete": "4428331",
+   "player": "Rashee Rice",
+   "kind": "return",
+   "direction": "up",
+   "confidence": 0.6,
+   "story": "50329594",
+   "headline": "Chiefs get Rashee Rice back from injury for Broncos game",
    "model": "claude-haiku-5-5"
   }
  ]

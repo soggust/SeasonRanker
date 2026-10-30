@@ -1,22 +1,6 @@
 {
  "sport": "nba",
  "entries": {
-  "401909088|devincarter|out": {
-   "game": "401909088",
-   "start": "2026-10-20T19:00Z",
-   "team": "2",
-   "name": "Devin Carter",
-   "status": "out",
-   "athlete": "4433188",
-   "espn": {
-    "seen": "2026-10-19T21:13:44.552Z",
-    "own": "2026-10-18T14:49:00.000Z"
-   },
-   "sleeper": {
-    "seen": "2026-10-19T21:13:44.552Z",
-    "own": "2026-10-19T20:40:05.865Z"
-   }
-  },
   "401909089|joshhart|q": {
    "game": "401909089",
    "start": "2026-10-20T23:00Z",
@@ -1177,42 +1161,6 @@
     "own": "2026-10-15T14:36:00.000Z"
    }
   },
-  "401909088|taureanprince|q": {
-   "game": "401909088",
-   "start": "2026-10-20T19:00Z",
-   "team": "8",
-   "name": "Taurean Prince",
-   "status": "q",
-   "athlete": "2990962",
-   "espn": {
-    "seen": "2026-10-19T22:40:08.266Z",
-    "own": "2026-10-19T22:13:00.000Z"
-   }
-  },
-  "401909088|ajdybantsa|q": {
-   "game": "401909088",
-   "start": "2026-10-20T19:00Z",
-   "team": "8",
-   "name": "AJ Dybantsa",
-   "status": "q",
-   "bluesky": {
-    "seen": "2026-10-19T21:15:18.875Z",
-    "own": "2026-10-19T17:20:19.000Z",
-    "why": "@rotowirenba.bsky.social: AJ Dybantsa: Remains day-to-day \n\n https://www.rotowir"
-   }
-  },
-  "401909088|dominickbarlow|out": {
-   "game": "401909088",
-   "start": "2026-10-20T19:00Z",
-   "team": "8",
-   "name": "Dominick Barlow",
-   "status": "out",
-   "bluesky": {
-    "seen": "2026-10-19T21:15:18.875Z",
-    "own": "2026-10-19T21:07:41.000Z",
-    "why": "@rotowirenba.bsky.social: Dominick Barlow: Out at least two weeks \n\n https://www"
-   }
-  },
   "401909089|ajdybantsa|q": {
    "game": "401909089",
    "start": "2026-10-20T23:00Z",
@@ -1544,35 +1492,6 @@
     "own": "2026-10-05T21:43:00.000Z"
    }
   },
-  "401909088|taureanprince|out": {
-   "game": "401909088",
-   "start": "2026-10-20T19:00Z",
-   "team": "8",
-   "name": "Taurean Prince",
-   "status": "out",
-   "athlete": "2990962",
-   "espn": {
-    "seen": "2026-10-20T14:31:36.345Z",
-    "own": "2026-10-20T14:17:00.000Z"
-   },
-   "bluesky": {
-    "seen": "2026-10-20T14:33:14.565Z",
-    "own": "2026-10-20T14:31:09.380Z",
-    "why": "@insidenbanews.bsky.social: Injuries 10/20\n\nBOS:\nNone\n\nDET:\nTaurean Prince - Out"
-   }
-  },
-  "401909088|naeqwantomlin|out": {
-   "game": "401909088",
-   "start": "2026-10-20T19:00Z",
-   "team": "8",
-   "name": "Nae'Qwan Tomlin",
-   "status": "out",
-   "bluesky": {
-    "seen": "2026-10-20T15:22:54.974Z",
-    "own": "2026-10-20T15:11:26.000Z",
-    "why": "@rotowirenba.bsky.social: Nae'Qwan Tomlin: Set to miss several weeks \n\n https://"
-   }
-  },
   "401909089|naeqwantomlin|out": {
    "game": "401909089",
    "start": "2026-10-20T23:00Z",
@@ -1612,18 +1531,6 @@
     "seen": "2026-10-22T15:32:09.445Z",
     "own": "2026-10-22T14:47:23.657Z",
     "why": "@insidenbanews.bsky.social: Injuries 10/22\n\nCLE:\nJarrett Allen - Questionable\nNa"
-   }
-  },
-  "401909088|dailynswain|out": {
-   "game": "401909088",
-   "start": "2026-10-20T19:00Z",
-   "team": "8",
-   "name": "Dailyn Swain",
-   "status": "out",
-   "bluesky": {
-    "seen": "2026-10-20T16:23:22.520Z",
-    "own": "2026-10-20T16:17:13.000Z",
-    "why": "@rotowirenba.bsky.social: Dailyn Swain: Out with illness \n\n https://www.rotowire"
    }
   },
   "401909089|dailynswain|out": {
@@ -14342,6 +14249,11 @@
    "sleeper": {
     "seen": "2026-10-29T20:14:28.021Z",
     "own": "2026-10-29T18:30:30.284Z"
+   },
+   "bluesky": {
+    "seen": "2026-10-30T15:31:10.267Z",
+    "own": "2026-10-30T15:12:50.000Z",
+    "why": "@rotowirenba.bsky.social: Kon Knueppel: Remains out for Friday \n\n https://www.ro"
    }
   },
   "401909277|grantwilliams|out": {
