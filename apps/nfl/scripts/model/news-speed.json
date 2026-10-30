@@ -13241,6 +13241,18 @@
     "own": "2026-10-30T17:48:56.000Z",
     "why": "@rotoworld-fb.bsky.social: DJ Moore (shoulder) to be questionable for Week 8"
    }
+  },
+  "401873030|jayward|q": {
+   "game": "401873030",
+   "start": "2026-11-01T18:00Z",
+   "team": "16",
+   "name": "Jay Ward",
+   "status": "q",
+   "athlete": "4568007",
+   "espn": {
+    "seen": "2026-10-30T18:29:42.127Z",
+    "own": "2026-10-30T18:18:00.000Z"
+   }
   }
  }
 }
