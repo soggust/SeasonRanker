@@ -8901,6 +8901,11 @@
    "espn": {
     "seen": "2026-10-27T00:08:39.754Z",
     "own": "2026-10-26T19:14:00.000Z"
+   },
+   "bluesky": {
+    "seen": "2026-10-30T16:34:46.595Z",
+    "own": "2026-10-30T16:32:26.000Z",
+    "why": "@rotowirenfl.bsky.social: Emeka Egbuka: Ruled out for Week 8 \n\n https://www.roto"
    }
   },
   "401873025|christianrozeboom|out": {
@@ -12723,6 +12728,126 @@
     "seen": "2026-10-30T15:31:10.267Z",
     "own": "2026-10-30T15:12:37.000Z",
     "why": "@rotowirenfl.bsky.social: Breece Hall: Listed questionable for Sunday \n\n https:/"
+   }
+  },
+  "401873026|emekaegbuka|out": {
+   "game": "401873026",
+   "start": "2026-11-01T18:00Z",
+   "team": "2",
+   "name": "Emeka Egbuka",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-10-30T16:34:46.595Z",
+    "own": "2026-10-30T16:32:26.000Z",
+    "why": "@rotowirenfl.bsky.social: Emeka Egbuka: Ruled out for Week 8 \n\n https://www.roto"
+   }
+  },
+  "401873031|emekaegbuka|out": {
+   "game": "401873031",
+   "start": "2026-11-01T18:00Z",
+   "team": "4",
+   "name": "Emeka Egbuka",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-10-30T16:34:46.595Z",
+    "own": "2026-10-30T16:32:26.000Z",
+    "why": "@rotowirenfl.bsky.social: Emeka Egbuka: Ruled out for Week 8 \n\n https://www.roto"
+   }
+  },
+  "401873024|emekaegbuka|out": {
+   "game": "401873024",
+   "start": "2026-11-01T18:00Z",
+   "team": "6",
+   "name": "Emeka Egbuka",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-10-30T16:34:46.595Z",
+    "own": "2026-10-30T16:32:26.000Z",
+    "why": "@rotowirenfl.bsky.social: Emeka Egbuka: Ruled out for Week 8 \n\n https://www.roto"
+   }
+  },
+  "401873030|emekaegbuka|out": {
+   "game": "401873030",
+   "start": "2026-11-01T18:00Z",
+   "team": "8",
+   "name": "Emeka Egbuka",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-10-30T16:34:46.595Z",
+    "own": "2026-10-30T16:32:26.000Z",
+    "why": "@rotowirenfl.bsky.social: Emeka Egbuka: Ruled out for Week 8 \n\n https://www.roto"
+   }
+  },
+  "401873029|emekaegbuka|out": {
+   "game": "401873029",
+   "start": "2026-11-01T18:00Z",
+   "team": "20",
+   "name": "Emeka Egbuka",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-10-30T16:34:46.595Z",
+    "own": "2026-10-30T16:32:26.000Z",
+    "why": "@rotowirenfl.bsky.social: Emeka Egbuka: Ruled out for Week 8 \n\n https://www.roto"
+   }
+  },
+  "401873027|emekaegbuka|out": {
+   "game": "401873027",
+   "start": "2026-11-01T18:00Z",
+   "team": "23",
+   "name": "Emeka Egbuka",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-10-30T16:34:46.595Z",
+    "own": "2026-10-30T16:32:26.000Z",
+    "why": "@rotowirenfl.bsky.social: Emeka Egbuka: Ruled out for Week 8 \n\n https://www.roto"
+   }
+  },
+  "401873028|emekaegbuka|out": {
+   "game": "401873028",
+   "start": "2026-11-01T18:00Z",
+   "team": "30",
+   "name": "Emeka Egbuka",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-10-30T16:34:46.595Z",
+    "own": "2026-10-30T16:32:26.000Z",
+    "why": "@rotowirenfl.bsky.social: Emeka Egbuka: Ruled out for Week 8 \n\n https://www.roto"
+   }
+  },
+  "401873032|emekaegbuka|out": {
+   "game": "401873032",
+   "start": "2026-11-01T21:05Z",
+   "team": "14",
+   "name": "Emeka Egbuka",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-10-30T16:34:46.595Z",
+    "own": "2026-10-30T16:32:26.000Z",
+    "why": "@rotowirenfl.bsky.social: Emeka Egbuka: Ruled out for Week 8 \n\n https://www.roto"
+   }
+  },
+  "401873033|emekaegbuka|out": {
+   "game": "401873033",
+   "start": "2026-11-01T21:25Z",
+   "team": "7",
+   "name": "Emeka Egbuka",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-10-30T16:34:46.595Z",
+    "own": "2026-10-30T16:32:26.000Z",
+    "why": "@rotowirenfl.bsky.social: Emeka Egbuka: Ruled out for Week 8 \n\n https://www.roto"
+   }
+  },
+  "401873034|emekaegbuka|out": {
+   "game": "401873034",
+   "start": "2026-11-01T21:25Z",
+   "team": "15",
+   "name": "Emeka Egbuka",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-10-30T16:34:46.595Z",
+    "own": "2026-10-30T16:32:26.000Z",
+    "why": "@rotowirenfl.bsky.social: Emeka Egbuka: Ruled out for Week 8 \n\n https://www.roto"
    }
   }
  }
