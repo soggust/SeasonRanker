@@ -1,13 +1,13 @@
 {
  "sport": "nfl",
  "cursor": {
-  "adamscheftermirror.bsky.social": "2026-10-30T20:33:53.567Z",
+  "adamscheftermirror.bsky.social": "2026-10-30T21:18:53.080Z",
   "rapsheet.bsky.social": "2026-10-30T19:06:00.608Z",
   "nflnewsreposterbot.bsky.social": "2026-10-30T17:32:06.499Z",
   "insidenflnews.bsky.social": "2026-10-30T20:47:53.494Z",
-  "nflnewsposter.bsky.social": "2026-10-30T19:52:11.400Z",
-  "rotoworld-fb.bsky.social": "2026-10-30T20:52:43.000Z",
-  "rotowirenfl.bsky.social": "2026-10-30T20:53:40.000Z"
+  "nflnewsposter.bsky.social": "2026-10-30T21:15:10.789Z",
+  "rotoworld-fb.bsky.social": "2026-10-30T21:19:04.000Z",
+  "rotowirenfl.bsky.social": "2026-10-30T21:23:42.000Z"
  },
  "claims": [
   {
@@ -10045,6 +10045,71 @@
    "kind": "status",
    "confidence": 0.95,
    "text": "RJ Harvey: Ruled out for Sunday's game \n\n https://www.rotowire.com/football/player/rj-harvey-18522"
+  },
+  {
+   "id": "at://did:plc:qre6zxbmr3ixhdmgsgdretb5/app.bsky.feed.post/3mz4ol4quja2l|rjharvey|out|status",
+   "at": "2026-10-30T21:03:52.391Z",
+   "seen": "2026-10-30T21:24:17.121Z",
+   "handle": "adamscheftermirror.bsky.social",
+   "post": "at://did:plc:qre6zxbmr3ixhdmgsgdretb5/app.bsky.feed.post/3mz4ol4quja2l",
+   "player": "RJ Harvey",
+   "team": "DEN",
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.95,
+   "text": "Broncos ruled out RB RJ Harvey for Sunday’s game vs. the Chiefs and are listing WR Jaylen Waddle as questionable.\n\nOriginal post [Injury Report: CB Pat Surtain II not assigned game status, 4 Broncos l"
+  },
+  {
+   "id": "at://did:plc:qre6zxbmr3ixhdmgsgdretb5/app.bsky.feed.post/3mz4ol4quja2l|jaylenwaddle|questionable|status",
+   "at": "2026-10-30T21:03:52.391Z",
+   "seen": "2026-10-30T21:24:17.121Z",
+   "handle": "adamscheftermirror.bsky.social",
+   "post": "at://did:plc:qre6zxbmr3ixhdmgsgdretb5/app.bsky.feed.post/3mz4ol4quja2l",
+   "player": "Jaylen Waddle",
+   "team": null,
+   "status": "questionable",
+   "kind": "status",
+   "confidence": 0.6,
+   "text": "Broncos ruled out RB RJ Harvey for Sunday’s game vs. the Chiefs and are listing WR Jaylen Waddle as questionable.\n\nOriginal post [Injury Report: CB Pat Surtain II not assigned game status, 4 Broncos l"
+  },
+  {
+   "id": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3mz4p4uslcs2v|jeremiyahlove|active|return",
+   "at": "2026-10-30T21:13:48.000Z",
+   "seen": "2026-10-30T21:24:17.121Z",
+   "handle": "rotowirenfl.bsky.social",
+   "post": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3mz4p4uslcs2v",
+   "player": "Jeremiyah Love",
+   "team": null,
+   "status": "active",
+   "kind": "return",
+   "confidence": 0.85,
+   "text": "Jeremiyah Love: Ready to return in Week 8 \n\n https://www.rotowire.com/football/player/jeremiyah-love-19235"
+  },
+  {
+   "id": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3mz4pf2ghpu2o|georgepickens|questionable|status",
+   "at": "2026-10-30T21:18:22.000Z",
+   "seen": "2026-10-30T21:24:17.121Z",
+   "handle": "rotowirenfl.bsky.social",
+   "post": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3mz4pf2ghpu2o",
+   "player": "George Pickens",
+   "team": null,
+   "status": "questionable",
+   "kind": "status",
+   "confidence": 0.9,
+   "text": "George Pickens: Questionable for Sunday \n\n https://www.rotowire.com/football/player/george-pickens-15853"
+  },
+  {
+   "id": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3mz4pgcf65s2d|georgepickens|questionable|status",
+   "at": "2026-10-30T21:19:04.000Z",
+   "seen": "2026-10-30T21:24:17.121Z",
+   "handle": "rotoworld-fb.bsky.social",
+   "post": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3mz4pgcf65s2d",
+   "player": "George Pickens",
+   "team": null,
+   "status": "questionable",
+   "kind": "status",
+   "confidence": 0.9,
+   "text": "George Pickens officially questionable for Week 8"
   }
  ]
 }

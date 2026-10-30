@@ -10733,6 +10733,11 @@
    "espn": {
     "seen": "2026-10-28T14:23:45.129Z",
     "own": "2026-10-28T14:08:00.000Z"
+   },
+   "bluesky": {
+    "seen": "2026-10-30T21:03:24.984Z",
+    "own": "2026-10-30T20:52:41.000Z",
+    "why": "@rotoworld-fb.bsky.social: Jaylen Waddle (chest) questionable for Week 8"
    }
   },
   "401873029|davidbailey|q": {
@@ -14200,6 +14205,143 @@
    "espn": {
     "seen": "2026-10-30T21:00:43.399Z",
     "own": "2026-10-29T21:32:00.000Z"
+   },
+   "bluesky": {
+    "seen": "2026-10-30T21:03:24.984Z",
+    "own": "2026-10-30T20:53:40.000Z",
+    "why": "@rotowirenfl.bsky.social: RJ Harvey: Ruled out for Sunday's game \n\n https://www."
+   }
+  },
+  "401873026|jaylenwaddle|q": {
+   "game": "401873026",
+   "start": "2026-11-01T18:00Z",
+   "team": "2",
+   "name": "Jaylen Waddle",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-10-30T21:03:24.984Z",
+    "own": "2026-10-30T20:52:41.000Z",
+    "why": "@rotoworld-fb.bsky.social: Jaylen Waddle (chest) questionable for Week 8"
+   }
+  },
+  "401873031|jaylenwaddle|q": {
+   "game": "401873031",
+   "start": "2026-11-01T18:00Z",
+   "team": "4",
+   "name": "Jaylen Waddle",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-10-30T21:03:24.984Z",
+    "own": "2026-10-30T20:52:41.000Z",
+    "why": "@rotoworld-fb.bsky.social: Jaylen Waddle (chest) questionable for Week 8"
+   }
+  },
+  "401873024|jaylenwaddle|q": {
+   "game": "401873024",
+   "start": "2026-11-01T18:00Z",
+   "team": "6",
+   "name": "Jaylen Waddle",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-10-30T21:03:24.984Z",
+    "own": "2026-10-30T20:52:41.000Z",
+    "why": "@rotoworld-fb.bsky.social: Jaylen Waddle (chest) questionable for Week 8"
+   }
+  },
+  "401873030|jaylenwaddle|q": {
+   "game": "401873030",
+   "start": "2026-11-01T18:00Z",
+   "team": "8",
+   "name": "Jaylen Waddle",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-10-30T21:03:24.984Z",
+    "own": "2026-10-30T20:52:41.000Z",
+    "why": "@rotoworld-fb.bsky.social: Jaylen Waddle (chest) questionable for Week 8"
+   }
+  },
+  "401873029|jaylenwaddle|q": {
+   "game": "401873029",
+   "start": "2026-11-01T18:00Z",
+   "team": "20",
+   "name": "Jaylen Waddle",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-10-30T21:03:24.984Z",
+    "own": "2026-10-30T20:52:41.000Z",
+    "why": "@rotoworld-fb.bsky.social: Jaylen Waddle (chest) questionable for Week 8"
+   }
+  },
+  "401873027|jaylenwaddle|q": {
+   "game": "401873027",
+   "start": "2026-11-01T18:00Z",
+   "team": "23",
+   "name": "Jaylen Waddle",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-10-30T21:03:24.984Z",
+    "own": "2026-10-30T20:52:41.000Z",
+    "why": "@rotoworld-fb.bsky.social: Jaylen Waddle (chest) questionable for Week 8"
+   }
+  },
+  "401873025|jaylenwaddle|q": {
+   "game": "401873025",
+   "start": "2026-11-01T18:00Z",
+   "team": "27",
+   "name": "Jaylen Waddle",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-10-30T21:03:24.984Z",
+    "own": "2026-10-30T20:52:41.000Z",
+    "why": "@rotoworld-fb.bsky.social: Jaylen Waddle (chest) questionable for Week 8"
+   }
+  },
+  "401873028|jaylenwaddle|q": {
+   "game": "401873028",
+   "start": "2026-11-01T18:00Z",
+   "team": "30",
+   "name": "Jaylen Waddle",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-10-30T21:03:24.984Z",
+    "own": "2026-10-30T20:52:41.000Z",
+    "why": "@rotoworld-fb.bsky.social: Jaylen Waddle (chest) questionable for Week 8"
+   }
+  },
+  "401873032|jaylenwaddle|q": {
+   "game": "401873032",
+   "start": "2026-11-01T21:05Z",
+   "team": "14",
+   "name": "Jaylen Waddle",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-10-30T21:03:24.984Z",
+    "own": "2026-10-30T20:52:41.000Z",
+    "why": "@rotoworld-fb.bsky.social: Jaylen Waddle (chest) questionable for Week 8"
+   }
+  },
+  "401873034|jaylenwaddle|q": {
+   "game": "401873034",
+   "start": "2026-11-01T21:25Z",
+   "team": "15",
+   "name": "Jaylen Waddle",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-10-30T21:03:24.984Z",
+    "own": "2026-10-30T20:52:41.000Z",
+    "why": "@rotoworld-fb.bsky.social: Jaylen Waddle (chest) questionable for Week 8"
+   }
+  },
+  "401873035|jaylenwaddle|q": {
+   "game": "401873035",
+   "start": "2026-11-02T01:20Z",
+   "team": "28",
+   "name": "Jaylen Waddle",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-10-30T21:03:24.984Z",
+    "own": "2026-10-30T20:52:41.000Z",
+    "why": "@rotoworld-fb.bsky.social: Jaylen Waddle (chest) questionable for Week 8"
    }
   }
  }
