@@ -1,7 +1,7 @@
 {
  "sport": "nba",
  "cursor": {
-  "rotowirenba.bsky.social": "2026-10-30T07:26:17.000Z",
+  "rotowirenba.bsky.social": "2026-10-30T14:16:10.000Z",
   "insidenbanews.bsky.social": "2026-10-29T02:03:08.482Z",
   "shamsbot.bsky.social": "2026-10-29T20:10:02.000Z"
  },
@@ -6154,6 +6154,19 @@
    "kind": "status",
    "confidence": 0.35,
    "text": "Ja Morant: Departs with hamstring issue \n\n https://www.rotowire.com/basketball/player/ja-morant-4761"
+  },
+  {
+   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mz3xs3yvah2r|noahclowney|questionable|status",
+   "at": "2026-10-30T14:16:10.000Z",
+   "seen": "2026-10-30T14:28:43.402Z",
+   "handle": "rotowirenba.bsky.social",
+   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mz3xs3yvah2r",
+   "player": "Noah Clowney",
+   "team": null,
+   "status": "questionable",
+   "kind": "status",
+   "confidence": 0.9,
+   "text": "Noah Clowney: Downgraded to questionable \n\n https://www.rotowire.com/basketball/player/noah-clowney-5901"
   }
  ]
 }
