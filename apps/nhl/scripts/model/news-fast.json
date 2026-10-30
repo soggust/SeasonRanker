@@ -3,7 +3,7 @@
  "cursor": {
   "johnston-bot.bsky.social": "2026-10-29T21:41:15.472Z",
   "notfriedgehnic.bsky.social": "2026-10-29T23:30:00.995Z",
-  "dailyfaceoff.bsky.social": "2026-10-30T00:22:38.000Z",
+  "dailyfaceoff.bsky.social": "2026-10-30T02:25:37.000Z",
   "dfotoronto.bsky.social": "2026-10-29T22:28:19.000Z",
   "marklazerus.bsky.social": "2026-10-30T00:58:55.837Z"
  },
@@ -1203,6 +1203,19 @@
    "kind": "status",
    "confidence": 0.8,
    "text": "Frost’s Kendall Coyne Schofield to miss 2026-27 after pregnancy announcement"
+  },
+  {
+   "id": "at://did:plc:3uus7y6h3rlrk6sbctzxm4bg/app.bsky.feed.post/3mz2q3jyho72k|ryanpulock|none|status",
+   "at": "2026-10-30T02:25:37.000Z",
+   "seen": "2026-10-30T02:37:46.611Z",
+   "handle": "dailyfaceoff.bsky.social",
+   "post": "at://did:plc:3uus7y6h3rlrk6sbctzxm4bg/app.bsky.feed.post/3mz2q3jyho72k",
+   "player": "Ryan Pulock",
+   "team": "NYI",
+   "status": "none",
+   "kind": "status",
+   "confidence": 0.35,
+   "text": "Islanders’ Ryan Pulock leaves game with upper-body injury"
   }
  ]
 }

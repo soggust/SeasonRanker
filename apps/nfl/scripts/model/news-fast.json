@@ -4,10 +4,10 @@
   "adamscheftermirror.bsky.social": "2026-10-30T01:03:59.286Z",
   "rapsheet.bsky.social": "2026-10-29T23:42:15.567Z",
   "nflnewsreposterbot.bsky.social": "2026-10-29T14:25:56.466Z",
-  "insidenflnews.bsky.social": "2026-10-30T02:06:53.699Z",
-  "nflnewsposter.bsky.social": "2026-10-30T02:16:00.514Z",
-  "rotoworld-fb.bsky.social": "2026-10-30T01:25:47.000Z",
-  "rotowirenfl.bsky.social": "2026-10-30T01:25:35.000Z"
+  "insidenflnews.bsky.social": "2026-10-30T02:26:25.341Z",
+  "nflnewsposter.bsky.social": "2026-10-30T02:26:56.844Z",
+  "rotoworld-fb.bsky.social": "2026-10-30T02:31:53.000Z",
+  "rotowirenfl.bsky.social": "2026-10-30T02:28:57.000Z"
  },
  "claims": [
   {
@@ -9005,6 +9005,45 @@
    "kind": "status",
    "confidence": 0.93,
    "text": "Christian Watson (chest) questionable to return"
+  },
+  {
+   "id": "at://did:plc:mbr4badgf6yu56mquzackzew/app.bsky.feed.post/3mz2q4xmgks25|christianwatson|active|return",
+   "at": "2026-10-30T02:26:25.341Z",
+   "seen": "2026-10-30T02:37:46.611Z",
+   "handle": "insidenflnews.bsky.social",
+   "post": "at://did:plc:mbr4badgf6yu56mquzackzew/app.bsky.feed.post/3mz2q4xmgks25",
+   "player": "Christian Watson",
+   "team": "GB",
+   "status": "active",
+   "kind": "return",
+   "confidence": 0.9,
+   "text": "Status alert: Christian Watson (chest, hospital visit) has returned to Thursday's game. 🥳"
+  },
+  {
+   "id": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3mz2qbig7nf2e|christianwatson|active|return",
+   "at": "2026-10-30T02:28:57.000Z",
+   "seen": "2026-10-30T02:37:46.611Z",
+   "handle": "rotowirenfl.bsky.social",
+   "post": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3mz2qbig7nf2e",
+   "player": "Christian Watson",
+   "team": "GB",
+   "status": "active",
+   "kind": "return",
+   "confidence": 0.9,
+   "text": "Christian Watson: Returns to Thursday's game \n\n https://www.rotowire.com/football/player/christian-watson-15946"
+  },
+  {
+   "id": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3mz2qgr2kxj25|christianwatson|active|return",
+   "at": "2026-10-30T02:31:53.000Z",
+   "seen": "2026-10-30T02:37:46.611Z",
+   "handle": "rotoworld-fb.bsky.social",
+   "post": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3mz2qgr2kxj25",
+   "player": "Christian Watson",
+   "team": "GB",
+   "status": "active",
+   "kind": "return",
+   "confidence": 0.9,
+   "text": "Christian Watson (chest) returns after trip to hospital"
   }
  ]
 }
