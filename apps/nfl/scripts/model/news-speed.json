@@ -11786,6 +11786,11 @@
    "sleeper": {
     "seen": "2026-10-30T20:18:44.148Z",
     "own": "2026-10-30T18:05:13.364Z"
+   },
+   "bluesky": {
+    "seen": "2026-10-30T21:24:17.121Z",
+    "own": "2026-10-30T21:19:04.000Z",
+    "why": "@rotoworld-fb.bsky.social: George Pickens officially questionable for Week 8"
    }
   },
   "401873024|quinnenwilliams|q": {
@@ -14342,6 +14347,138 @@
     "seen": "2026-10-30T21:03:24.984Z",
     "own": "2026-10-30T20:52:41.000Z",
     "why": "@rotoworld-fb.bsky.social: Jaylen Waddle (chest) questionable for Week 8"
+   }
+  },
+  "401873026|georgepickens|q": {
+   "game": "401873026",
+   "start": "2026-11-01T18:00Z",
+   "team": "2",
+   "name": "George Pickens",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-10-30T21:24:17.121Z",
+    "own": "2026-10-30T21:19:04.000Z",
+    "why": "@rotoworld-fb.bsky.social: George Pickens officially questionable for Week 8"
+   }
+  },
+  "401873031|georgepickens|q": {
+   "game": "401873031",
+   "start": "2026-11-01T18:00Z",
+   "team": "4",
+   "name": "George Pickens",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-10-30T21:24:17.121Z",
+    "own": "2026-10-30T21:19:04.000Z",
+    "why": "@rotoworld-fb.bsky.social: George Pickens officially questionable for Week 8"
+   }
+  },
+  "401873030|georgepickens|q": {
+   "game": "401873030",
+   "start": "2026-11-01T18:00Z",
+   "team": "8",
+   "name": "George Pickens",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-10-30T21:24:17.121Z",
+    "own": "2026-10-30T21:19:04.000Z",
+    "why": "@rotoworld-fb.bsky.social: George Pickens officially questionable for Week 8"
+   }
+  },
+  "401873029|georgepickens|q": {
+   "game": "401873029",
+   "start": "2026-11-01T18:00Z",
+   "team": "20",
+   "name": "George Pickens",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-10-30T21:24:17.121Z",
+    "own": "2026-10-30T21:19:04.000Z",
+    "why": "@rotoworld-fb.bsky.social: George Pickens officially questionable for Week 8"
+   }
+  },
+  "401873027|georgepickens|q": {
+   "game": "401873027",
+   "start": "2026-11-01T18:00Z",
+   "team": "23",
+   "name": "George Pickens",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-10-30T21:24:17.121Z",
+    "own": "2026-10-30T21:19:04.000Z",
+    "why": "@rotoworld-fb.bsky.social: George Pickens officially questionable for Week 8"
+   }
+  },
+  "401873025|georgepickens|q": {
+   "game": "401873025",
+   "start": "2026-11-01T18:00Z",
+   "team": "27",
+   "name": "George Pickens",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-10-30T21:24:17.121Z",
+    "own": "2026-10-30T21:19:04.000Z",
+    "why": "@rotoworld-fb.bsky.social: George Pickens officially questionable for Week 8"
+   }
+  },
+  "401873028|georgepickens|q": {
+   "game": "401873028",
+   "start": "2026-11-01T18:00Z",
+   "team": "30",
+   "name": "George Pickens",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-10-30T21:24:17.121Z",
+    "own": "2026-10-30T21:19:04.000Z",
+    "why": "@rotoworld-fb.bsky.social: George Pickens officially questionable for Week 8"
+   }
+  },
+  "401873032|georgepickens|q": {
+   "game": "401873032",
+   "start": "2026-11-01T21:05Z",
+   "team": "14",
+   "name": "George Pickens",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-10-30T21:24:17.121Z",
+    "own": "2026-10-30T21:19:04.000Z",
+    "why": "@rotoworld-fb.bsky.social: George Pickens officially questionable for Week 8"
+   }
+  },
+  "401873033|georgepickens|q": {
+   "game": "401873033",
+   "start": "2026-11-01T21:25Z",
+   "team": "7",
+   "name": "George Pickens",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-10-30T21:24:17.121Z",
+    "own": "2026-10-30T21:19:04.000Z",
+    "why": "@rotoworld-fb.bsky.social: George Pickens officially questionable for Week 8"
+   }
+  },
+  "401873034|georgepickens|q": {
+   "game": "401873034",
+   "start": "2026-11-01T21:25Z",
+   "team": "15",
+   "name": "George Pickens",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-10-30T21:24:17.121Z",
+    "own": "2026-10-30T21:19:04.000Z",
+    "why": "@rotoworld-fb.bsky.social: George Pickens officially questionable for Week 8"
+   }
+  },
+  "401873035|georgepickens|q": {
+   "game": "401873035",
+   "start": "2026-11-02T01:20Z",
+   "team": "28",
+   "name": "George Pickens",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-10-30T21:24:17.121Z",
+    "own": "2026-10-30T21:19:04.000Z",
+    "why": "@rotoworld-fb.bsky.social: George Pickens officially questionable for Week 8"
    }
   }
  }

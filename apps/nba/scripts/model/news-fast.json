@@ -1,7 +1,7 @@
 {
  "sport": "nba",
  "cursor": {
-  "rotowirenba.bsky.social": "2026-10-30T21:19:49.000Z",
+  "rotowirenba.bsky.social": "2026-10-30T21:44:00.000Z",
   "insidenbanews.bsky.social": "2026-10-30T19:15:23.134Z",
   "shamsbot.bsky.social": "2026-10-30T18:40:24.000Z"
  },
@@ -6297,6 +6297,32 @@
    "kind": "status",
    "confidence": 0.6,
    "text": "Dejounte Murray: Absent from injury report \n\n https://www.rotowire.com/basketball/player/dejounte-murray-3856"
+  },
+  {
+   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mz4q7srdcb2l|ajdybantsa|limited|status",
+   "at": "2026-10-30T21:33:20.000Z",
+   "seen": "2026-10-30T21:46:53.069Z",
+   "handle": "rotowirenba.bsky.social",
+   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mz4q7srdcb2l",
+   "player": "AJ Dybantsa",
+   "team": null,
+   "status": "limited",
+   "kind": "status",
+   "confidence": 0.9,
+   "text": "AJ Dybantsa: Will remain limited Friday \n\n https://www.rotowire.com/basketball/player/aj-dybantsa-6925"
+  },
+  {
+   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mz4qsvnztq27|tobiasharris|out|status",
+   "at": "2026-10-30T21:44:00.000Z",
+   "seen": "2026-10-30T21:46:53.069Z",
+   "handle": "rotowirenba.bsky.social",
+   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mz4qsvnztq27",
+   "player": "Tobias Harris",
+   "team": null,
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.95,
+   "text": "Tobias Harris: Remains out Saturday \n\n https://www.rotowire.com/basketball/player/tobias-harris-3211"
   }
  ]
 }
