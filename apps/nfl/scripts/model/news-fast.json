@@ -1,13 +1,13 @@
 {
  "sport": "nfl",
  "cursor": {
-  "adamscheftermirror.bsky.social": "2026-10-30T19:44:08.441Z",
+  "adamscheftermirror.bsky.social": "2026-10-30T20:04:09.410Z",
   "rapsheet.bsky.social": "2026-10-30T19:06:00.608Z",
   "nflnewsreposterbot.bsky.social": "2026-10-30T17:32:06.499Z",
-  "insidenflnews.bsky.social": "2026-10-30T20:00:11.960Z",
+  "insidenflnews.bsky.social": "2026-10-30T20:07:34.988Z",
   "nflnewsposter.bsky.social": "2026-10-30T19:52:11.400Z",
-  "rotoworld-fb.bsky.social": "2026-10-30T19:58:48.000Z",
-  "rotowirenfl.bsky.social": "2026-10-30T19:59:22.000Z"
+  "rotoworld-fb.bsky.social": "2026-10-30T20:16:38.000Z",
+  "rotowirenfl.bsky.social": "2026-10-30T20:19:20.000Z"
  },
  "claims": [
   {
@@ -9850,6 +9850,123 @@
    "kind": "status",
    "confidence": 0.95,
    "text": "Eagles WR DeVonta Smith (hamstring) has been ruled out for Week 8."
+  },
+  {
+   "id": "at://did:plc:mbr4badgf6yu56mquzackzew/app.bsky.feed.post/3mz4l57ppss25|dontayvionwicks|out|status",
+   "at": "2026-10-30T20:02:24.608Z",
+   "seen": "2026-10-30T20:21:00.523Z",
+   "handle": "insidenflnews.bsky.social",
+   "post": "at://did:plc:mbr4badgf6yu56mquzackzew/app.bsky.feed.post/3mz4l57ppss25",
+   "player": "Dontayvion Wicks",
+   "team": "PHI",
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.95,
+   "text": "Eagles WR Dontayvion Wicks (ankle) has been ruled out for Week 8."
+  },
+  {
+   "id": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3mz4l6us2r52z|jamarrchase|active|status",
+   "at": "2026-10-30T20:03:20.000Z",
+   "seen": "2026-10-30T20:21:00.523Z",
+   "handle": "rotoworld-fb.bsky.social",
+   "post": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3mz4l6us2r52z",
+   "player": "Ja'Marr Chase",
+   "team": "CIN",
+   "status": "active",
+   "kind": "status",
+   "confidence": 0.85,
+   "text": "Ja'Marr Chase (ankle) officially off injury report"
+  },
+  {
+   "id": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3mz4l7wztrh2s|carnelltate|out|status",
+   "at": "2026-10-30T20:03:56.000Z",
+   "seen": "2026-10-30T20:21:00.523Z",
+   "handle": "rotowirenfl.bsky.social",
+   "post": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3mz4l7wztrh2s",
+   "player": "Carnell Tate",
+   "team": "TEN",
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.9,
+   "text": "Carnell Tate: Ruled out for Week 8 \n\n https://www.rotowire.com/football/player/carnell-tate-19268"
+  },
+  {
+   "id": "at://did:plc:qre6zxbmr3ixhdmgsgdretb5/app.bsky.feed.post/3mz4lads5yi2z|devontasmith|out|status",
+   "at": "2026-10-30T20:04:09.410Z",
+   "seen": "2026-10-30T20:21:00.523Z",
+   "handle": "adamscheftermirror.bsky.social",
+   "post": "at://did:plc:qre6zxbmr3ixhdmgsgdretb5/app.bsky.feed.post/3mz4lads5yi2z",
+   "player": "DeVonta Smith",
+   "team": "PHI",
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.95,
+   "text": "Eagles ruled out WR DeVonta Smith but RB Saquon Barkley has no injury designation for Sunday night’s game vs. Washington.\n\nRepost of @Eagles:\n\nOriginal post"
+  },
+  {
+   "id": "at://did:plc:qre6zxbmr3ixhdmgsgdretb5/app.bsky.feed.post/3mz4lads5yi2z|saquonbarkley|active|status",
+   "at": "2026-10-30T20:04:09.410Z",
+   "seen": "2026-10-30T20:21:00.523Z",
+   "handle": "adamscheftermirror.bsky.social",
+   "post": "at://did:plc:qre6zxbmr3ixhdmgsgdretb5/app.bsky.feed.post/3mz4lads5yi2z",
+   "player": "Saquon Barkley",
+   "team": "PHI",
+   "status": "active",
+   "kind": "status",
+   "confidence": 0.5,
+   "text": "Eagles ruled out WR DeVonta Smith but RB Saquon Barkley has no injury designation for Sunday night’s game vs. Washington.\n\nRepost of @Eagles:\n\nOriginal post"
+  },
+  {
+   "id": "at://did:plc:mbr4badgf6yu56mquzackzew/app.bsky.feed.post/3mz4lghptac2l|stefondiggs|active|status",
+   "at": "2026-10-30T20:07:34.988Z",
+   "seen": "2026-10-30T20:21:00.523Z",
+   "handle": "insidenflnews.bsky.social",
+   "post": "at://did:plc:mbr4badgf6yu56mquzackzew/app.bsky.feed.post/3mz4lghptac2l",
+   "player": "Stefon Diggs",
+   "team": "WAS",
+   "status": "active",
+   "kind": "status",
+   "confidence": 0.85,
+   "text": "Commanders WR Stefon Diggs (hand, hamstring) is not listed on the injury report for Week 8."
+  },
+  {
+   "id": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3mz4lwoivq22f|stefondiggs|active|status",
+   "at": "2026-10-30T20:16:38.000Z",
+   "seen": "2026-10-30T20:21:00.523Z",
+   "handle": "rotoworld-fb.bsky.social",
+   "post": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3mz4lwoivq22f",
+   "player": "Stefon Diggs",
+   "team": "WAS",
+   "status": "active",
+   "kind": "status",
+   "confidence": 0.9,
+   "text": "Stefon Diggs cleared off Week 8 injury report"
+  },
+  {
+   "id": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3mz4lxuktgb2j|devontasmith|out|status",
+   "at": "2026-10-30T20:17:18.000Z",
+   "seen": "2026-10-30T20:21:00.523Z",
+   "handle": "rotowirenfl.bsky.social",
+   "post": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3mz4lxuktgb2j",
+   "player": "DeVonta Smith",
+   "team": "PHI",
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.95,
+   "text": "DeVonta Smith: Ruled out for Sunday's game \n\n https://www.rotowire.com/football/player/devonta-smith-15406"
+  },
+  {
+   "id": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3mz4m3ipvvu2q|dontayvionwicks|out|status",
+   "at": "2026-10-30T20:19:20.000Z",
+   "seen": "2026-10-30T20:21:00.523Z",
+   "handle": "rotowirenfl.bsky.social",
+   "post": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3mz4m3ipvvu2q",
+   "player": "Dontayvion Wicks",
+   "team": "PHI",
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.95,
+   "text": "Dontayvion Wicks: Ruled out for Week 8 \n\n https://www.rotowire.com/football/player/dontayvion-wicks-16658"
   }
  ]
 }
