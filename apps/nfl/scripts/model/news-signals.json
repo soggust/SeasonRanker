@@ -441,7 +441,8 @@
   "50323927": "2026-10-30",
   "50324081": "2026-10-30",
   "50325742": "2026-10-30",
-  "50325876": "2026-10-30"
+  "50325876": "2026-10-30",
+  "50328239": "2026-10-30"
  },
  "signals": [
   {
@@ -1762,6 +1763,21 @@
    "confidence": 0.9,
    "story": "50310259",
    "headline": "Winless Chargers sticking with Mike McDaniel as offensive playcaller",
+   "model": "claude-haiku-5-5"
+  },
+  {
+   "id": "50328239|29|toddwash|coaching",
+   "day": "2026-10-30",
+   "at": "2026-10-30T14:45:43.000Z",
+   "team": "29",
+   "abbr": "CAR",
+   "athlete": null,
+   "player": "Todd Wash",
+   "kind": "coaching",
+   "direction": "none",
+   "confidence": 0.9,
+   "story": "50328239",
+   "headline": "Panthers relieve Ejiro Evero of defensive coordinator duties",
    "model": "claude-haiku-5-5"
   }
  ]

@@ -1,7 +1,7 @@
 {
  "sport": "nfl",
  "cursor": {
-  "adamscheftermirror.bsky.social": "2026-10-30T14:23:56.499Z",
+  "adamscheftermirror.bsky.social": "2026-10-30T14:38:43.956Z",
   "rapsheet.bsky.social": "2026-10-30T14:19:50.239Z",
   "nflnewsreposterbot.bsky.social": "2026-10-30T14:14:31.468Z",
   "insidenflnews.bsky.social": "2026-10-30T14:15:48.109Z",
@@ -9057,6 +9057,19 @@
    "kind": "status",
    "confidence": 0.85,
    "text": "[Demovsky] Christian Watson said he was coughing up blood and broke a rib, but everything else checked out fine at the hospital so he got the OK to play. twitter.com/RobDemovsky/..."
+  },
+  {
+   "id": "at://did:plc:qre6zxbmr3ixhdmgsgdretb5/app.bsky.feed.post/3mz3z2flxv22n|jonathancooley|none|coaching",
+   "at": "2026-10-30T14:38:42.660Z",
+   "seen": "2026-10-30T14:49:38.559Z",
+   "handle": "adamscheftermirror.bsky.social",
+   "post": "at://did:plc:qre6zxbmr3ixhdmgsgdretb5/app.bsky.feed.post/3mz3z2flxv22n",
+   "player": "Jonathan Cooley",
+   "team": "CAR",
+   "status": "none",
+   "kind": "coaching",
+   "confidence": 0.8,
+   "text": "Panthers defensive pass-game coordinator Jonathan Cooley also is out, as @JFowlerESPN reported.\n\nOriginal post"
   }
  ]
 }

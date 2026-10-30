@@ -3,6 +3,17 @@
  "days": 2,
  "signals": [
   {
+   "team": "29",
+   "abbr": "CAR",
+   "athlete": null,
+   "player": "Todd Wash",
+   "kind": "coaching",
+   "direction": "none",
+   "confidence": 0.9,
+   "headline": "Panthers relieve Ejiro Evero of defensive coordinator duties",
+   "at": "2026-10-30T14:45:43.000Z"
+  },
+  {
    "team": "24",
    "abbr": "LAC",
    "athlete": null,
@@ -25,5 +36,5 @@
    "at": "2026-10-28T16:00:01.000Z"
   }
  ],
- "at": "2026-10-30T00:03:45.750Z"
+ "at": "2026-10-30T14:49:38.559Z"
 }
