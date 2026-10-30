@@ -1,7 +1,7 @@
 {
  "sport": "nba",
  "cursor": {
-  "rotowirenba.bsky.social": "2026-10-30T21:44:00.000Z",
+  "rotowirenba.bsky.social": "2026-10-30T23:13:31.000Z",
   "insidenbanews.bsky.social": "2026-10-30T19:15:23.134Z",
   "shamsbot.bsky.social": "2026-10-30T18:40:24.000Z"
  },
@@ -6323,6 +6323,84 @@
    "kind": "status",
    "confidence": 0.95,
    "text": "Tobias Harris: Remains out Saturday \n\n https://www.rotowire.com/basketball/player/tobias-harris-3211"
+  },
+  {
+   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mz4r5noaw227|jaylenbrown|out|status",
+   "at": "2026-10-30T21:50:01.000Z",
+   "seen": "2026-10-30T23:13:40.908Z",
+   "handle": "rotowirenba.bsky.social",
+   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mz4r5noaw227",
+   "player": "Jaylen Brown",
+   "team": null,
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.9,
+   "text": "Jaylen Brown: Downgraded to out \n\n https://www.rotowire.com/basketball/player/jaylen-brown-3894"
+  },
+  {
+   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mz4rkvlxy222|dennisschroder|active|status",
+   "at": "2026-10-30T21:57:26.000Z",
+   "seen": "2026-10-30T23:13:40.908Z",
+   "handle": "rotowirenba.bsky.social",
+   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mz4rkvlxy222",
+   "player": "Dennis Schroder",
+   "team": null,
+   "status": "active",
+   "kind": "status",
+   "confidence": 0.9,
+   "text": "Dennis Schroder: Will play Friday \n\n https://www.rotowire.com/basketball/player/dennis-schroder-3444"
+  },
+  {
+   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mz4swl7cj52n|karlanthonytowns|active|return",
+   "at": "2026-10-30T22:21:51.000Z",
+   "seen": "2026-10-30T23:13:40.908Z",
+   "handle": "rotowirenba.bsky.social",
+   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mz4swl7cj52n",
+   "player": "Karl-Anthony Towns",
+   "team": null,
+   "status": "active",
+   "kind": "return",
+   "confidence": 0.9,
+   "text": "Karl-Anthony Towns: Cleared to play Friday \n\n https://www.rotowire.com/basketball/player/karl-anthony-towns-3741"
+  },
+  {
+   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mz4t5xtmf22e|chetholmgren|out|status",
+   "at": "2026-10-30T22:25:59.000Z",
+   "seen": "2026-10-30T23:13:40.908Z",
+   "handle": "rotowirenba.bsky.social",
+   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mz4t5xtmf22e",
+   "player": "Chet Holmgren",
+   "team": null,
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.9,
+   "text": "Chet Holmgren: Remains out for Saturday \n\n https://www.rotowire.com/basketball/player/chet-holmgren-5697"
+  },
+  {
+   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mz4tvcdrxc27|alperensengun|out|status",
+   "at": "2026-10-30T22:39:02.000Z",
+   "seen": "2026-10-30T23:13:40.908Z",
+   "handle": "rotowirenba.bsky.social",
+   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mz4tvcdrxc27",
+   "player": "Alperen Sengun",
+   "team": null,
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.9,
+   "text": "Alperen Sengun: Ruled out Friday \n\n https://www.rotowire.com/basketball/player/alperen-sengun-5404"
+  },
+  {
+   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mz4vsxf5ye26|laurimarkkanen|questionable|status",
+   "at": "2026-10-30T23:13:31.000Z",
+   "seen": "2026-10-30T23:13:40.908Z",
+   "handle": "rotowirenba.bsky.social",
+   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mz4vsxf5ye26",
+   "player": "Lauri Markkanen",
+   "team": null,
+   "status": "questionable",
+   "kind": "status",
+   "confidence": 0.9,
+   "text": "Lauri Markkanen: Questionable versus Portland \n\n https://www.rotowire.com/basketball/player/lauri-markkanen-4119"
   }
  ]
 }

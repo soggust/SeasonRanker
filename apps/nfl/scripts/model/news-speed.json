@@ -14480,6 +14480,18 @@
     "own": "2026-10-30T21:19:04.000Z",
     "why": "@rotoworld-fb.bsky.social: George Pickens officially questionable for Week 8"
    }
+  },
+  "401873035|daronpayne|out": {
+   "game": "401873035",
+   "start": "2026-11-02T01:20Z",
+   "team": "28",
+   "name": "Daron Payne",
+   "status": "out",
+   "athlete": "3925354",
+   "espn": {
+    "seen": "2026-10-30T23:11:08.546Z",
+    "own": "2026-10-30T22:59:00.000Z"
+   }
   }
  }
 }

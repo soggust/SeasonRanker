@@ -1,10 +1,10 @@
 {
  "sport": "nhl",
  "cursor": {
-  "johnston-bot.bsky.social": "2026-10-30T21:18:39.805Z",
+  "johnston-bot.bsky.social": "2026-10-30T22:59:57.743Z",
   "notfriedgehnic.bsky.social": "2026-10-30T18:08:35.141Z",
-  "dailyfaceoff.bsky.social": "2026-10-30T21:45:58.000Z",
-  "dfotoronto.bsky.social": "2026-10-30T21:38:32.000Z",
+  "dailyfaceoff.bsky.social": "2026-10-30T23:02:10.000Z",
+  "dfotoronto.bsky.social": "2026-10-30T22:31:26.000Z",
   "marklazerus.bsky.social": "2026-10-30T02:42:48.767Z"
  },
  "claims": [
@@ -1281,6 +1281,19 @@
    "kind": "status",
    "confidence": 0.95,
    "text": "Avalanche’s Josh Manson out eight weeks with ankle injury"
+  },
+  {
+   "id": "at://did:plc:3uus7y6h3rlrk6sbctzxm4bg/app.bsky.feed.post/3mz4r4nznkv2k|filipchytil|out|status",
+   "at": "2026-10-30T21:49:28.000Z",
+   "seen": "2026-10-30T23:13:40.908Z",
+   "handle": "dailyfaceoff.bsky.social",
+   "post": "at://did:plc:3uus7y6h3rlrk6sbctzxm4bg/app.bsky.feed.post/3mz4r4nznkv2k",
+   "player": "Filip Chytil",
+   "team": "VAN",
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.95,
+   "text": "Canucks place Filip Chytil on injured reserve, Jacob Quillan recalled"
   }
  ]
 }

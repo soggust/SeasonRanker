@@ -1,18 +1,6 @@
 {
  "sport": "mlb",
  "days": 2,
- "signals": [
-  {
-   "team": "8",
-   "abbr": "MIL",
-   "athlete": null,
-   "player": null,
-   "kind": "coaching",
-   "direction": "none",
-   "confidence": 0.3,
-   "headline": "Pat Murphy defends decision to save Brewers ace Jacob Misiorowski for Game 5",
-   "at": "2026-10-28T22:27:56.000Z"
-  }
- ],
- "at": "2026-10-30T20:00:12.216Z"
+ "signals": [],
+ "at": "2026-10-30T23:13:40.908Z"
 }
