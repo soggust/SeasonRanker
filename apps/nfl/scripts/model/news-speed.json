@@ -9969,6 +9969,11 @@
    "espn": {
     "seen": "2026-10-27T15:03:50.322Z",
     "own": "2026-10-27T13:11:00.000Z"
+   },
+   "bluesky": {
+    "seen": "2026-10-30T15:31:10.267Z",
+    "own": "2026-10-30T15:12:37.000Z",
+    "why": "@rotowirenfl.bsky.social: Breece Hall: Listed questionable for Sunday \n\n https:/"
    }
   },
   "401873027|benskowronek|q": {
@@ -12622,6 +12627,102 @@
    "espn": {
     "seen": "2026-10-30T02:02:44.913Z",
     "own": "2026-10-30T01:48:00.000Z"
+   }
+  },
+  "401873026|breecehall|q": {
+   "game": "401873026",
+   "start": "2026-11-01T18:00Z",
+   "team": "2",
+   "name": "Breece Hall",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-10-30T15:31:10.267Z",
+    "own": "2026-10-30T15:12:37.000Z",
+    "why": "@rotowirenfl.bsky.social: Breece Hall: Listed questionable for Sunday \n\n https:/"
+   }
+  },
+  "401873031|breecehall|q": {
+   "game": "401873031",
+   "start": "2026-11-01T18:00Z",
+   "team": "4",
+   "name": "Breece Hall",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-10-30T15:31:10.267Z",
+    "own": "2026-10-30T15:12:37.000Z",
+    "why": "@rotowirenfl.bsky.social: Breece Hall: Listed questionable for Sunday \n\n https:/"
+   }
+  },
+  "401873024|breecehall|q": {
+   "game": "401873024",
+   "start": "2026-11-01T18:00Z",
+   "team": "6",
+   "name": "Breece Hall",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-10-30T15:31:10.267Z",
+    "own": "2026-10-30T15:12:37.000Z",
+    "why": "@rotowirenfl.bsky.social: Breece Hall: Listed questionable for Sunday \n\n https:/"
+   }
+  },
+  "401873030|breecehall|q": {
+   "game": "401873030",
+   "start": "2026-11-01T18:00Z",
+   "team": "8",
+   "name": "Breece Hall",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-10-30T15:31:10.267Z",
+    "own": "2026-10-30T15:12:37.000Z",
+    "why": "@rotowirenfl.bsky.social: Breece Hall: Listed questionable for Sunday \n\n https:/"
+   }
+  },
+  "401873027|breecehall|q": {
+   "game": "401873027",
+   "start": "2026-11-01T18:00Z",
+   "team": "23",
+   "name": "Breece Hall",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-10-30T15:31:10.267Z",
+    "own": "2026-10-30T15:12:37.000Z",
+    "why": "@rotowirenfl.bsky.social: Breece Hall: Listed questionable for Sunday \n\n https:/"
+   }
+  },
+  "401873025|breecehall|q": {
+   "game": "401873025",
+   "start": "2026-11-01T18:00Z",
+   "team": "27",
+   "name": "Breece Hall",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-10-30T15:31:10.267Z",
+    "own": "2026-10-30T15:12:37.000Z",
+    "why": "@rotowirenfl.bsky.social: Breece Hall: Listed questionable for Sunday \n\n https:/"
+   }
+  },
+  "401873028|breecehall|q": {
+   "game": "401873028",
+   "start": "2026-11-01T18:00Z",
+   "team": "30",
+   "name": "Breece Hall",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-10-30T15:31:10.267Z",
+    "own": "2026-10-30T15:12:37.000Z",
+    "why": "@rotowirenfl.bsky.social: Breece Hall: Listed questionable for Sunday \n\n https:/"
+   }
+  },
+  "401873032|breecehall|q": {
+   "game": "401873032",
+   "start": "2026-11-01T21:05Z",
+   "team": "14",
+   "name": "Breece Hall",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-10-30T15:31:10.267Z",
+    "own": "2026-10-30T15:12:37.000Z",
+    "why": "@rotowirenfl.bsky.social: Breece Hall: Listed questionable for Sunday \n\n https:/"
    }
   }
  }

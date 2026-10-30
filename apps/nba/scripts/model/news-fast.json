@@ -1,7 +1,7 @@
 {
  "sport": "nba",
  "cursor": {
-  "rotowirenba.bsky.social": "2026-10-30T15:12:50.000Z",
+  "rotowirenba.bsky.social": "2026-10-30T15:34:23.000Z",
   "insidenbanews.bsky.social": "2026-10-29T02:03:08.482Z",
   "shamsbot.bsky.social": "2026-10-29T20:10:02.000Z"
  },
@@ -6180,6 +6180,19 @@
    "kind": "status",
    "confidence": 0.93,
    "text": "Kon Knueppel: Remains out for Friday \n\n https://www.rotowire.com/basketball/player/kon-knueppel-6540"
+  },
+  {
+   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mz445xtnuu2q|dennisschroder|active|status",
+   "at": "2026-10-30T15:34:23.000Z",
+   "seen": "2026-10-30T15:51:53.524Z",
+   "handle": "rotowirenba.bsky.social",
+   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mz445xtnuu2q",
+   "player": "Dennis Schroder",
+   "team": null,
+   "status": "active",
+   "kind": "status",
+   "confidence": 0.6,
+   "text": "Dennis Schroder: Upgraded to probable \n\n https://www.rotowire.com/basketball/player/dennis-schroder-3444"
   }
  ]
 }
