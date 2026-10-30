@@ -1,13 +1,13 @@
 {
  "sport": "nfl",
  "cursor": {
-  "adamscheftermirror.bsky.social": "2026-10-30T01:03:59.286Z",
-  "rapsheet.bsky.social": "2026-10-29T23:42:15.567Z",
+  "adamscheftermirror.bsky.social": "2026-10-30T03:38:41.708Z",
+  "rapsheet.bsky.social": "2026-10-30T03:34:39.969Z",
   "nflnewsreposterbot.bsky.social": "2026-10-29T14:25:56.466Z",
   "insidenflnews.bsky.social": "2026-10-30T02:26:25.341Z",
-  "nflnewsposter.bsky.social": "2026-10-30T03:01:59.566Z",
-  "rotoworld-fb.bsky.social": "2026-10-30T02:31:53.000Z",
-  "rotowirenfl.bsky.social": "2026-10-30T02:28:57.000Z"
+  "nflnewsposter.bsky.social": "2026-10-30T04:07:33.887Z",
+  "rotoworld-fb.bsky.social": "2026-10-30T03:39:03.000Z",
+  "rotowirenfl.bsky.social": "2026-10-30T04:10:23.000Z"
  },
  "claims": [
   {
@@ -9044,6 +9044,19 @@
    "kind": "return",
    "confidence": 0.9,
    "text": "Christian Watson (chest) returns after trip to hospital"
+  },
+  {
+   "id": "at://did:plc:fuqjc7x4gxvnwzksnlxwbe4x/app.bsky.feed.post/3mz2vikgchc2w|christianwatson|active|status",
+   "at": "2026-10-30T04:02:22.873Z",
+   "seen": "2026-10-30T04:15:23.486Z",
+   "handle": "nflnewsposter.bsky.social",
+   "post": "at://did:plc:fuqjc7x4gxvnwzksnlxwbe4x/app.bsky.feed.post/3mz2vikgchc2w",
+   "player": "Christian Watson",
+   "team": "GB",
+   "status": "active",
+   "kind": "status",
+   "confidence": 0.85,
+   "text": "[Demovsky] Christian Watson said he was coughing up blood and broke a rib, but everything else checked out fine at the hospital so he got the OK to play. twitter.com/RobDemovsky/..."
   }
  ]
 }
