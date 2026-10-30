@@ -3,6 +3,17 @@
  "days": 2,
  "signals": [
   {
+   "team": "33",
+   "abbr": "BAL",
+   "athlete": "3916387",
+   "player": "Lamar Jackson",
+   "kind": "return",
+   "direction": "up",
+   "confidence": 0.6,
+   "headline": "Lamar Jackson expected to play as Ravens QB calls ankle pain 'bearable'",
+   "at": "2026-10-30T18:07:23.000Z"
+  },
+  {
    "team": "29",
    "abbr": "CAR",
    "athlete": null,
@@ -25,5 +36,5 @@
    "at": "2026-10-28T19:38:59.000Z"
   }
  ],
- "at": "2026-10-30T16:13:30.187Z"
+ "at": "2026-10-30T18:13:21.918Z"
 }

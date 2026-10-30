@@ -445,7 +445,8 @@
   "50327830": "2026-10-30",
   "50328239": "2026-10-30",
   "50328612": "2026-10-30",
-  "50329240": "2026-10-30"
+  "50329240": "2026-10-30",
+  "50329330": "2026-10-30"
  },
  "signals": [
   {
@@ -1781,6 +1782,21 @@
    "confidence": 0.9,
    "story": "50328239",
    "headline": "Panthers relieve Ejiro Evero of defensive coordinator duties",
+   "model": "claude-haiku-5-5"
+  },
+  {
+   "id": "50329330|33|3916387|return",
+   "day": "2026-10-30",
+   "at": "2026-10-30T18:07:23.000Z",
+   "team": "33",
+   "abbr": "BAL",
+   "athlete": "3916387",
+   "player": "Lamar Jackson",
+   "kind": "return",
+   "direction": "up",
+   "confidence": 0.6,
+   "story": "50329330",
+   "headline": "Lamar Jackson expected to play as Ravens QB calls ankle pain 'bearable'",
    "model": "claude-haiku-5-5"
   }
  ]

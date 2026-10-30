@@ -169,7 +169,8 @@
   "50320717": "2026-10-29",
   "50323505": "2026-10-30",
   "50325662": "2026-10-30",
-  "50328871": "2026-10-30"
+  "50328871": "2026-10-30",
+  "50329298": "2026-10-30"
  },
  "signals": [
   {
@@ -455,6 +456,21 @@
    "confidence": 0.4,
    "story": "50313376",
    "headline": "Hornets bench Naz Reid at half for not meeting 'our standards'",
+   "model": "claude-haiku-5-5"
+  },
+  {
+   "id": "50329298|25|4397018|role",
+   "day": "2026-10-30",
+   "at": "2026-10-30T18:06:33.000Z",
+   "team": "25",
+   "abbr": "OKC",
+   "athlete": "4397018",
+   "player": "Ochai Agbaji",
+   "kind": "role",
+   "direction": "up",
+   "confidence": 0.6,
+   "story": "50329298",
+   "headline": "Sources: Thunder signing Agbaji to fill roster after Williams, Wallace injuries",
    "model": "claude-haiku-5-5"
   }
  ]
