@@ -8241,6 +8241,11 @@
    "espn": {
     "seen": "2026-10-27T00:08:39.754Z",
     "own": "2026-10-20T16:10:00.000Z"
+   },
+   "bluesky": {
+    "seen": "2026-10-30T17:52:14.379Z",
+    "own": "2026-10-30T17:48:56.000Z",
+    "why": "@rotoworld-fb.bsky.social: DJ Moore (shoulder) to be questionable for Week 8"
    }
   },
   "401873026|edoliver|q": {
@@ -11241,6 +11246,11 @@
    "espn": {
     "seen": "2026-10-28T20:59:35.871Z",
     "own": "2026-10-28T20:28:00.000Z"
+   },
+   "bluesky": {
+    "seen": "2026-10-30T17:52:14.379Z",
+    "own": "2026-10-30T17:21:09.000Z",
+    "why": "@rotoworld-fb.bsky.social: Vrabel: A.J. Brown (knee) questionable for Week 8"
    }
   },
   "401873034|morganmoses|q": {
@@ -11337,6 +11347,11 @@
    "espn": {
     "seen": "2026-10-28T22:12:35.570Z",
     "own": "2026-10-28T21:43:00.000Z"
+   },
+   "bluesky": {
+    "seen": "2026-10-30T17:52:14.379Z",
+    "own": "2026-10-30T17:48:53.000Z",
+    "why": "@rotoworld-fb.bsky.social: Brady: Dalton Kincaid questionable for Week 8"
    }
   },
   "401873026|tjsanders|q": {
@@ -12865,6 +12880,366 @@
    "espn": {
     "seen": "2026-10-30T17:27:11.126Z",
     "own": "2026-10-30T17:09:00.000Z"
+   }
+  },
+  "401873026|ajbrown|q": {
+   "game": "401873026",
+   "start": "2026-11-01T18:00Z",
+   "team": "2",
+   "name": "A.J. Brown",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-10-30T17:52:14.379Z",
+    "own": "2026-10-30T17:21:09.000Z",
+    "why": "@rotoworld-fb.bsky.social: Vrabel: A.J. Brown (knee) questionable for Week 8"
+   }
+  },
+  "401873026|brianrobinson|out": {
+   "game": "401873026",
+   "start": "2026-11-01T18:00Z",
+   "team": "2",
+   "name": "Brian Robinson",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-10-30T17:52:14.379Z",
+    "own": "2026-10-30T17:26:00.000Z",
+    "why": "@rotoworld-fb.bsky.social: Brian Robinson (hammy) ruled out vs. Buccaneers"
+   }
+  },
+  "401873031|ajbrown|q": {
+   "game": "401873031",
+   "start": "2026-11-01T18:00Z",
+   "team": "4",
+   "name": "A.J. Brown",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-10-30T17:52:14.379Z",
+    "own": "2026-10-30T17:21:09.000Z",
+    "why": "@rotoworld-fb.bsky.social: Vrabel: A.J. Brown (knee) questionable for Week 8"
+   }
+  },
+  "401873031|brianrobinson|out": {
+   "game": "401873031",
+   "start": "2026-11-01T18:00Z",
+   "team": "4",
+   "name": "Brian Robinson",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-10-30T17:52:14.379Z",
+    "own": "2026-10-30T17:26:00.000Z",
+    "why": "@rotoworld-fb.bsky.social: Brian Robinson (hammy) ruled out vs. Buccaneers"
+   }
+  },
+  "401873031|djmoore|q": {
+   "game": "401873031",
+   "start": "2026-11-01T18:00Z",
+   "team": "4",
+   "name": "DJ Moore",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-10-30T17:52:14.379Z",
+    "own": "2026-10-30T17:48:56.000Z",
+    "why": "@rotoworld-fb.bsky.social: DJ Moore (shoulder) to be questionable for Week 8"
+   }
+  },
+  "401873024|ajbrown|q": {
+   "game": "401873024",
+   "start": "2026-11-01T18:00Z",
+   "team": "6",
+   "name": "A.J. Brown",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-10-30T17:52:14.379Z",
+    "own": "2026-10-30T17:21:09.000Z",
+    "why": "@rotoworld-fb.bsky.social: Vrabel: A.J. Brown (knee) questionable for Week 8"
+   }
+  },
+  "401873024|brianrobinson|out": {
+   "game": "401873024",
+   "start": "2026-11-01T18:00Z",
+   "team": "6",
+   "name": "Brian Robinson",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-10-30T17:52:14.379Z",
+    "own": "2026-10-30T17:26:00.000Z",
+    "why": "@rotoworld-fb.bsky.social: Brian Robinson (hammy) ruled out vs. Buccaneers"
+   }
+  },
+  "401873024|djmoore|q": {
+   "game": "401873024",
+   "start": "2026-11-01T18:00Z",
+   "team": "6",
+   "name": "DJ Moore",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-10-30T17:52:14.379Z",
+    "own": "2026-10-30T17:48:56.000Z",
+    "why": "@rotoworld-fb.bsky.social: DJ Moore (shoulder) to be questionable for Week 8"
+   }
+  },
+  "401873030|ajbrown|q": {
+   "game": "401873030",
+   "start": "2026-11-01T18:00Z",
+   "team": "8",
+   "name": "A.J. Brown",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-10-30T17:52:14.379Z",
+    "own": "2026-10-30T17:21:09.000Z",
+    "why": "@rotoworld-fb.bsky.social: Vrabel: A.J. Brown (knee) questionable for Week 8"
+   }
+  },
+  "401873030|brianrobinson|out": {
+   "game": "401873030",
+   "start": "2026-11-01T18:00Z",
+   "team": "8",
+   "name": "Brian Robinson",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-10-30T17:52:14.379Z",
+    "own": "2026-10-30T17:26:00.000Z",
+    "why": "@rotoworld-fb.bsky.social: Brian Robinson (hammy) ruled out vs. Buccaneers"
+   }
+  },
+  "401873030|djmoore|q": {
+   "game": "401873030",
+   "start": "2026-11-01T18:00Z",
+   "team": "8",
+   "name": "DJ Moore",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-10-30T17:52:14.379Z",
+    "own": "2026-10-30T17:48:56.000Z",
+    "why": "@rotoworld-fb.bsky.social: DJ Moore (shoulder) to be questionable for Week 8"
+   }
+  },
+  "401873029|ajbrown|q": {
+   "game": "401873029",
+   "start": "2026-11-01T18:00Z",
+   "team": "20",
+   "name": "A.J. Brown",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-10-30T17:52:14.379Z",
+    "own": "2026-10-30T17:21:09.000Z",
+    "why": "@rotoworld-fb.bsky.social: Vrabel: A.J. Brown (knee) questionable for Week 8"
+   }
+  },
+  "401873029|brianrobinson|out": {
+   "game": "401873029",
+   "start": "2026-11-01T18:00Z",
+   "team": "20",
+   "name": "Brian Robinson",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-10-30T17:52:14.379Z",
+    "own": "2026-10-30T17:26:00.000Z",
+    "why": "@rotoworld-fb.bsky.social: Brian Robinson (hammy) ruled out vs. Buccaneers"
+   }
+  },
+  "401873029|djmoore|q": {
+   "game": "401873029",
+   "start": "2026-11-01T18:00Z",
+   "team": "20",
+   "name": "DJ Moore",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-10-30T17:52:14.379Z",
+    "own": "2026-10-30T17:48:56.000Z",
+    "why": "@rotoworld-fb.bsky.social: DJ Moore (shoulder) to be questionable for Week 8"
+   }
+  },
+  "401873027|ajbrown|q": {
+   "game": "401873027",
+   "start": "2026-11-01T18:00Z",
+   "team": "23",
+   "name": "A.J. Brown",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-10-30T17:52:14.379Z",
+    "own": "2026-10-30T17:21:09.000Z",
+    "why": "@rotoworld-fb.bsky.social: Vrabel: A.J. Brown (knee) questionable for Week 8"
+   }
+  },
+  "401873027|brianrobinson|out": {
+   "game": "401873027",
+   "start": "2026-11-01T18:00Z",
+   "team": "23",
+   "name": "Brian Robinson",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-10-30T17:52:14.379Z",
+    "own": "2026-10-30T17:26:00.000Z",
+    "why": "@rotoworld-fb.bsky.social: Brian Robinson (hammy) ruled out vs. Buccaneers"
+   }
+  },
+  "401873027|djmoore|q": {
+   "game": "401873027",
+   "start": "2026-11-01T18:00Z",
+   "team": "23",
+   "name": "DJ Moore",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-10-30T17:52:14.379Z",
+    "own": "2026-10-30T17:48:56.000Z",
+    "why": "@rotoworld-fb.bsky.social: DJ Moore (shoulder) to be questionable for Week 8"
+   }
+  },
+  "401873025|ajbrown|q": {
+   "game": "401873025",
+   "start": "2026-11-01T18:00Z",
+   "team": "27",
+   "name": "A.J. Brown",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-10-30T17:52:14.379Z",
+    "own": "2026-10-30T17:21:09.000Z",
+    "why": "@rotoworld-fb.bsky.social: Vrabel: A.J. Brown (knee) questionable for Week 8"
+   }
+  },
+  "401873025|djmoore|q": {
+   "game": "401873025",
+   "start": "2026-11-01T18:00Z",
+   "team": "27",
+   "name": "DJ Moore",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-10-30T17:52:14.379Z",
+    "own": "2026-10-30T17:48:56.000Z",
+    "why": "@rotoworld-fb.bsky.social: DJ Moore (shoulder) to be questionable for Week 8"
+   }
+  },
+  "401873028|ajbrown|q": {
+   "game": "401873028",
+   "start": "2026-11-01T18:00Z",
+   "team": "30",
+   "name": "A.J. Brown",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-10-30T17:52:14.379Z",
+    "own": "2026-10-30T17:21:09.000Z",
+    "why": "@rotoworld-fb.bsky.social: Vrabel: A.J. Brown (knee) questionable for Week 8"
+   }
+  },
+  "401873028|brianrobinson|out": {
+   "game": "401873028",
+   "start": "2026-11-01T18:00Z",
+   "team": "30",
+   "name": "Brian Robinson",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-10-30T17:52:14.379Z",
+    "own": "2026-10-30T17:26:00.000Z",
+    "why": "@rotoworld-fb.bsky.social: Brian Robinson (hammy) ruled out vs. Buccaneers"
+   }
+  },
+  "401873028|djmoore|q": {
+   "game": "401873028",
+   "start": "2026-11-01T18:00Z",
+   "team": "30",
+   "name": "DJ Moore",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-10-30T17:52:14.379Z",
+    "own": "2026-10-30T17:48:56.000Z",
+    "why": "@rotoworld-fb.bsky.social: DJ Moore (shoulder) to be questionable for Week 8"
+   }
+  },
+  "401873032|ajbrown|q": {
+   "game": "401873032",
+   "start": "2026-11-01T21:05Z",
+   "team": "14",
+   "name": "A.J. Brown",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-10-30T17:52:14.379Z",
+    "own": "2026-10-30T17:21:09.000Z",
+    "why": "@rotoworld-fb.bsky.social: Vrabel: A.J. Brown (knee) questionable for Week 8"
+   }
+  },
+  "401873032|brianrobinson|out": {
+   "game": "401873032",
+   "start": "2026-11-01T21:05Z",
+   "team": "14",
+   "name": "Brian Robinson",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-10-30T17:52:14.379Z",
+    "own": "2026-10-30T17:26:00.000Z",
+    "why": "@rotoworld-fb.bsky.social: Brian Robinson (hammy) ruled out vs. Buccaneers"
+   }
+  },
+  "401873032|djmoore|q": {
+   "game": "401873032",
+   "start": "2026-11-01T21:05Z",
+   "team": "14",
+   "name": "DJ Moore",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-10-30T17:52:14.379Z",
+    "own": "2026-10-30T17:48:56.000Z",
+    "why": "@rotoworld-fb.bsky.social: DJ Moore (shoulder) to be questionable for Week 8"
+   }
+  },
+  "401873033|ajbrown|q": {
+   "game": "401873033",
+   "start": "2026-11-01T21:25Z",
+   "team": "7",
+   "name": "A.J. Brown",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-10-30T17:52:14.379Z",
+    "own": "2026-10-30T17:21:09.000Z",
+    "why": "@rotoworld-fb.bsky.social: Vrabel: A.J. Brown (knee) questionable for Week 8"
+   }
+  },
+  "401873033|brianrobinson|out": {
+   "game": "401873033",
+   "start": "2026-11-01T21:25Z",
+   "team": "7",
+   "name": "Brian Robinson",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-10-30T17:52:14.379Z",
+    "own": "2026-10-30T17:26:00.000Z",
+    "why": "@rotoworld-fb.bsky.social: Brian Robinson (hammy) ruled out vs. Buccaneers"
+   }
+  },
+  "401873033|djmoore|q": {
+   "game": "401873033",
+   "start": "2026-11-01T21:25Z",
+   "team": "7",
+   "name": "DJ Moore",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-10-30T17:52:14.379Z",
+    "own": "2026-10-30T17:48:56.000Z",
+    "why": "@rotoworld-fb.bsky.social: DJ Moore (shoulder) to be questionable for Week 8"
+   }
+  },
+  "401873034|brianrobinson|out": {
+   "game": "401873034",
+   "start": "2026-11-01T21:25Z",
+   "team": "15",
+   "name": "Brian Robinson",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-10-30T17:52:14.379Z",
+    "own": "2026-10-30T17:26:00.000Z",
+    "why": "@rotoworld-fb.bsky.social: Brian Robinson (hammy) ruled out vs. Buccaneers"
+   }
+  },
+  "401873034|djmoore|q": {
+   "game": "401873034",
+   "start": "2026-11-01T21:25Z",
+   "team": "15",
+   "name": "DJ Moore",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-10-30T17:52:14.379Z",
+    "own": "2026-10-30T17:48:56.000Z",
+    "why": "@rotoworld-fb.bsky.social: DJ Moore (shoulder) to be questionable for Week 8"
    }
   }
  }
