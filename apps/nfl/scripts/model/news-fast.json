@@ -5,7 +5,7 @@
   "rapsheet.bsky.social": "2026-10-30T23:50:45.295Z",
   "nflnewsreposterbot.bsky.social": "2026-10-30T22:57:34.763Z",
   "insidenflnews.bsky.social": "2026-10-31T15:14:44.147Z",
-  "nflnewsposter.bsky.social": "2026-10-31T18:17:29.737Z",
+  "nflnewsposter.bsky.social": "2026-10-31T18:26:38.403Z",
   "rotoworld-fb.bsky.social": "2026-10-31T17:12:15.000Z",
   "rotowirenfl.bsky.social": "2026-10-31T17:10:05.000Z"
  },
@@ -10409,6 +10409,19 @@
    "kind": "status",
    "confidence": 0.95,
    "text": "More about the Patriots ruling out WR A.J. Brown and RB TreVeyon Henderson for Sunday’s game vs. the Dolphins, via @MikeReiss:\n\nOriginal post"
+  },
+  {
+   "id": "at://did:plc:fuqjc7x4gxvnwzksnlxwbe4x/app.bsky.feed.post/3mz6wav6ahso7|jackbech|active|return",
+   "at": "2026-10-31T18:26:38.403Z",
+   "seen": "2026-10-31T18:45:52.464Z",
+   "handle": "nflnewsposter.bsky.social",
+   "post": "at://did:plc:fuqjc7x4gxvnwzksnlxwbe4x/app.bsky.feed.post/3mz6wav6ahso7",
+   "player": "Jack Bech",
+   "team": "LV",
+   "status": "active",
+   "kind": "return",
+   "confidence": 0.85,
+   "text": "[Rapoport] Raiders are expected to activate WR Jack Bech from Injured Reserve to play on Sunday against the Jets, source says. He’s been recovering from a fractured forearm. twitter.com/RapSheet/sta.."
   }
  ]
 }
