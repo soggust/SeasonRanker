@@ -3,7 +3,7 @@
  "cursor": {
   "johnston-bot.bsky.social": "2026-10-30T22:59:57.743Z",
   "notfriedgehnic.bsky.social": "2026-10-31T01:35:45.073Z",
-  "dailyfaceoff.bsky.social": "2026-10-31T16:49:13.000Z",
+  "dailyfaceoff.bsky.social": "2026-10-31T17:02:59.000Z",
   "dfotoronto.bsky.social": "2026-10-31T16:09:45.000Z",
   "marklazerus.bsky.social": "2026-10-31T00:50:34.520Z"
  },
@@ -1359,6 +1359,19 @@
    "kind": "return",
    "confidence": 0.8,
    "text": "Perron to make Stars debut, Lindell expected to return to lineup"
+  },
+  {
+   "id": "at://did:plc:3uus7y6h3rlrk6sbctzxm4bg/app.bsky.feed.post/3mz6rl7up3h27|coltonparayko|questionable|status",
+   "at": "2026-10-31T17:02:56.000Z",
+   "seen": "2026-10-31T17:21:46.995Z",
+   "handle": "dailyfaceoff.bsky.social",
+   "post": "at://did:plc:3uus7y6h3rlrk6sbctzxm4bg/app.bsky.feed.post/3mz6rl7up3h27",
+   "player": "Colton Parayko",
+   "team": "STL",
+   "status": "questionable",
+   "kind": "status",
+   "confidence": 0.9,
+   "text": "Blues’ Colton Parayko day-to-day with upper-body injury"
   }
  ]
 }

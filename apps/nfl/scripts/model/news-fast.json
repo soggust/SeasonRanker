@@ -1,13 +1,13 @@
 {
  "sport": "nfl",
  "cursor": {
-  "adamscheftermirror.bsky.social": "2026-10-31T16:28:53.968Z",
+  "adamscheftermirror.bsky.social": "2026-10-31T17:14:01.960Z",
   "rapsheet.bsky.social": "2026-10-30T23:50:45.295Z",
   "nflnewsreposterbot.bsky.social": "2026-10-30T22:57:34.763Z",
   "insidenflnews.bsky.social": "2026-10-31T15:14:44.147Z",
-  "nflnewsposter.bsky.social": "2026-10-31T16:50:49.812Z",
-  "rotoworld-fb.bsky.social": "2026-10-31T14:58:34.000Z",
-  "rotowirenfl.bsky.social": "2026-10-31T16:55:21.000Z"
+  "nflnewsposter.bsky.social": "2026-10-31T17:10:45.189Z",
+  "rotoworld-fb.bsky.social": "2026-10-31T17:12:15.000Z",
+  "rotowirenfl.bsky.social": "2026-10-31T17:10:05.000Z"
  },
  "claims": [
   {
@@ -10253,6 +10253,123 @@
    "kind": "status",
    "confidence": 0.95,
    "text": "Kyle Monangai: Won't play against Seattle \n\n https://www.rotowire.com/football/player/kyle-monangai-18520"
+  },
+  {
+   "id": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3mz6rdzlxzk2a|kylemonangai|out|status",
+   "at": "2026-10-31T16:58:54.000Z",
+   "seen": "2026-10-31T17:21:46.995Z",
+   "handle": "rotoworld-fb.bsky.social",
+   "post": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3mz6rdzlxzk2a",
+   "player": "Kyle Monangai",
+   "team": "CHI",
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.95,
+   "text": "Bears RB Kyle Monangai (thumb/toe) ruled out again"
+  },
+  {
+   "id": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3mz6rsyme762o|ajbrown|out|status",
+   "at": "2026-10-31T17:07:17.000Z",
+   "seen": "2026-10-31T17:21:46.995Z",
+   "handle": "rotowirenfl.bsky.social",
+   "post": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3mz6rsyme762o",
+   "player": "A.J. Brown",
+   "team": "NE",
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.95,
+   "text": "A.J. Brown: Won't play against Miami \n\n https://www.rotowire.com/football/player/aj-brown-13432"
+  },
+  {
+   "id": "at://did:plc:fuqjc7x4gxvnwzksnlxwbe4x/app.bsky.feed.post/3mz6rz6v6gc2p|ajbrown|out|status",
+   "at": "2026-10-31T17:10:45.189Z",
+   "seen": "2026-10-31T17:21:46.995Z",
+   "handle": "nflnewsposter.bsky.social",
+   "post": "at://did:plc:fuqjc7x4gxvnwzksnlxwbe4x/app.bsky.feed.post/3mz6rz6v6gc2p",
+   "player": "A.J. Brown",
+   "team": "NE",
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.95,
+   "text": "[Patriots] Patriots downgrade A.J. Brown, TreVeyon Henderson & Marcus Bryant to out for NE vs. MIA. twitter.com/patriots/sta..."
+  },
+  {
+   "id": "at://did:plc:fuqjc7x4gxvnwzksnlxwbe4x/app.bsky.feed.post/3mz6rz6v6gc2p|treveyonhenderson|out|status",
+   "at": "2026-10-31T17:10:45.189Z",
+   "seen": "2026-10-31T17:21:46.995Z",
+   "handle": "nflnewsposter.bsky.social",
+   "post": "at://did:plc:fuqjc7x4gxvnwzksnlxwbe4x/app.bsky.feed.post/3mz6rz6v6gc2p",
+   "player": "TreVeyon Henderson",
+   "team": "NE",
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.95,
+   "text": "[Patriots] Patriots downgrade A.J. Brown, TreVeyon Henderson & Marcus Bryant to out for NE vs. MIA. twitter.com/patriots/sta..."
+  },
+  {
+   "id": "at://did:plc:fuqjc7x4gxvnwzksnlxwbe4x/app.bsky.feed.post/3mz6rz6v6gc2p|marcusbryant|out|status",
+   "at": "2026-10-31T17:10:45.189Z",
+   "seen": "2026-10-31T17:21:46.995Z",
+   "handle": "nflnewsposter.bsky.social",
+   "post": "at://did:plc:fuqjc7x4gxvnwzksnlxwbe4x/app.bsky.feed.post/3mz6rz6v6gc2p",
+   "player": "Marcus Bryant",
+   "team": "NE",
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.95,
+   "text": "[Patriots] Patriots downgrade A.J. Brown, TreVeyon Henderson & Marcus Bryant to out for NE vs. MIA. twitter.com/patriots/sta..."
+  },
+  {
+   "id": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3mz6s3tvlf62p|ajbrown|out|status",
+   "at": "2026-10-31T17:12:14.000Z",
+   "seen": "2026-10-31T17:21:46.995Z",
+   "handle": "rotoworld-fb.bsky.social",
+   "post": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3mz6s3tvlf62p",
+   "player": "A.J. Brown",
+   "team": "NE",
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.95,
+   "text": "A.J. Brown (knee) ruled out for Week 8 vs. MIA"
+  },
+  {
+   "id": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3mz6s3v3wow2k|treveyonhenderson|out|status",
+   "at": "2026-10-31T17:12:15.000Z",
+   "seen": "2026-10-31T17:21:46.995Z",
+   "handle": "rotoworld-fb.bsky.social",
+   "post": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3mz6s3v3wow2k",
+   "player": "TreVeyon Henderson",
+   "team": "NE",
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.95,
+   "text": "TreVeyon Henderson (illness) out for Week 8"
+  },
+  {
+   "id": "at://did:plc:qre6zxbmr3ixhdmgsgdretb5/app.bsky.feed.post/3mz6s6yrsdr2d|ajbrown|out|status",
+   "at": "2026-10-31T17:13:59.912Z",
+   "seen": "2026-10-31T17:21:46.995Z",
+   "handle": "adamscheftermirror.bsky.social",
+   "post": "at://did:plc:qre6zxbmr3ixhdmgsgdretb5/app.bsky.feed.post/3mz6s6yrsdr2d",
+   "player": "A.J. Brown",
+   "team": "NE",
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.95,
+   "text": "Patriots downgrade A.J. Brown and TreVeyon Henderson to out for Sunday’s game versus the Dolphins.\n\nOriginal post"
+  },
+  {
+   "id": "at://did:plc:qre6zxbmr3ixhdmgsgdretb5/app.bsky.feed.post/3mz6s6yrsdr2d|treveyonhenderson|out|status",
+   "at": "2026-10-31T17:13:59.912Z",
+   "seen": "2026-10-31T17:21:46.995Z",
+   "handle": "adamscheftermirror.bsky.social",
+   "post": "at://did:plc:qre6zxbmr3ixhdmgsgdretb5/app.bsky.feed.post/3mz6s6yrsdr2d",
+   "player": "TreVeyon Henderson",
+   "team": "NE",
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.95,
+   "text": "Patriots downgrade A.J. Brown and TreVeyon Henderson to out for Sunday’s game versus the Dolphins.\n\nOriginal post"
   }
  ]
 }

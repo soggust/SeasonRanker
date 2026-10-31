@@ -1,7 +1,7 @@
 {
  "sport": "nba",
  "cursor": {
-  "rotowirenba.bsky.social": "2026-10-31T16:10:40.000Z",
+  "rotowirenba.bsky.social": "2026-10-31T17:16:48.000Z",
   "insidenbanews.bsky.social": "2026-10-30T19:15:23.134Z",
   "shamsbot.bsky.social": "2026-10-31T15:48:10.000Z"
  },
@@ -6453,6 +6453,45 @@
    "kind": "status",
    "confidence": 0.7,
    "text": "Cason Wallace: Undergoes shoulder surgery Friday \n\n https://www.rotowire.com/basketball/player/cason-wallace-5898"
+  },
+  {
+   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mz6rvayvyu2n|jaylenbrown|questionable|status",
+   "at": "2026-10-31T17:08:33.000Z",
+   "seen": "2026-10-31T17:21:46.995Z",
+   "handle": "rotowirenba.bsky.social",
+   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mz6rvayvyu2n",
+   "player": "Jaylen Brown",
+   "team": null,
+   "status": "questionable",
+   "kind": "status",
+   "confidence": 0.95,
+   "text": "Jaylen Brown: Questionable for Saturday \n\n https://www.rotowire.com/basketball/player/jaylen-brown-3894"
+  },
+  {
+   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mz6s4blfsv26|joelembiid|out|status",
+   "at": "2026-10-31T17:12:28.000Z",
+   "seen": "2026-10-31T17:21:46.995Z",
+   "handle": "rotowirenba.bsky.social",
+   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mz6s4blfsv26",
+   "player": "Joel Embiid",
+   "team": null,
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.97,
+   "text": "Joel Embiid: Ruled out for Saturday \n\n https://www.rotowire.com/basketball/player/joel-embiid-3572"
+  },
+  {
+   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mz6sdyyppk27|lebronjames|out|status",
+   "at": "2026-10-31T17:16:48.000Z",
+   "seen": "2026-10-31T17:21:46.995Z",
+   "handle": "rotowirenba.bsky.social",
+   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mz6sdyyppk27",
+   "player": "LeBron James",
+   "team": null,
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.93,
+   "text": "LeBron James: Won't play Saturday \n\n https://www.rotowire.com/basketball/player/lebron-james-2344"
   }
  ]
 }

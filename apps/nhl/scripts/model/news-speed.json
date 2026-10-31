@@ -9366,6 +9366,11 @@
    "espn": {
     "seen": "2026-10-31T15:53:26.481Z",
     "own": "2026-10-31T15:31:00.000Z"
+   },
+   "bluesky": {
+    "seen": "2026-10-31T16:15:31.485Z",
+    "own": "2026-10-31T15:59:55.000Z",
+    "why": "@dailyfaceoff.bsky.social: Canadiens’ Mike Matheson out two weeks with lower-bod"
    }
   },
   "401892627|bradenschneider|q": {
@@ -9402,6 +9407,30 @@
    "espn": {
     "seen": "2026-10-31T16:14:03.667Z",
     "own": "2026-10-31T15:57:00.000Z"
+   }
+  },
+  "401892617|ryanpulock|out": {
+   "game": "401892617",
+   "start": "2026-10-31T18:00Z",
+   "team": "12",
+   "name": "Ryan Pulock",
+   "status": "out",
+   "athlete": "3042019",
+   "espn": {
+    "seen": "2026-10-31T17:19:59.103Z",
+    "own": "2026-10-31T16:53:00.000Z"
+   }
+  },
+  "401892623|loganoconnor|out": {
+   "game": "401892623",
+   "start": "2026-11-01T02:00Z",
+   "team": "17",
+   "name": "Logan O'Connor",
+   "status": "out",
+   "athlete": "3988782",
+   "espn": {
+    "seen": "2026-10-31T17:19:59.103Z",
+    "own": "2026-10-31T17:10:00.000Z"
    }
   }
  }
