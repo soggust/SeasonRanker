@@ -18073,6 +18073,11 @@
    "sleeper": {
     "seen": "2026-10-30T20:19:38.427Z",
     "own": "2026-10-30T19:25:12.762Z"
+   },
+   "bluesky": {
+    "seen": "2026-10-31T17:46:49.319Z",
+    "own": "2026-10-31T17:33:16.000Z",
+    "why": "@rotowirenba.bsky.social: Reed Sheppard: Won't play Saturday \n\n https://www.roto"
    }
   },
   "401909902|stevenadams|out": {
@@ -18542,6 +18547,11 @@
    "espn": {
     "seen": "2026-10-31T17:33:14.946Z",
     "own": "2026-10-31T17:18:00.000Z"
+   },
+   "bluesky": {
+    "seen": "2026-10-31T17:46:49.319Z",
+    "own": "2026-10-31T17:31:33.000Z",
+    "why": "@rotowirenba.bsky.social: Fred VanVleet: Ruled out for Saturday \n\n https://www.r"
    }
   },
   "401909902|jaylenbrown|q": {
@@ -18578,6 +18588,234 @@
     "seen": "2026-10-31T17:21:46.995Z",
     "own": "2026-10-31T17:16:48.000Z",
     "why": "@rotowirenba.bsky.social: LeBron James: Won't play Saturday \n\n https://www.rotow"
+   }
+  },
+  "401909896|jabariwalker|q": {
+   "game": "401909896",
+   "start": "2026-10-31T19:00Z",
+   "team": "26",
+   "name": "Jabari Walker",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-10-31T17:46:49.319Z",
+    "own": "2026-10-31T17:25:37.000Z",
+    "why": "@rotowirenba.bsky.social: Jabari Walker: Questionable for Saturday \n\n https://ww"
+   }
+  },
+  "401909896|fredvanvleet|out": {
+   "game": "401909896",
+   "start": "2026-10-31T19:00Z",
+   "team": "26",
+   "name": "Fred VanVleet",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-10-31T17:46:49.319Z",
+    "own": "2026-10-31T17:31:33.000Z",
+    "why": "@rotowirenba.bsky.social: Fred VanVleet: Ruled out for Saturday \n\n https://www.r"
+   }
+  },
+  "401909896|reedsheppard|out": {
+   "game": "401909896",
+   "start": "2026-10-31T19:00Z",
+   "team": "26",
+   "name": "Reed Sheppard",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-10-31T17:46:49.319Z",
+    "own": "2026-10-31T17:33:16.000Z",
+    "why": "@rotowirenba.bsky.social: Reed Sheppard: Won't play Saturday \n\n https://www.roto"
+   }
+  },
+  "401909897|jabariwalker|q": {
+   "game": "401909897",
+   "start": "2026-10-31T22:00Z",
+   "team": "30",
+   "name": "Jabari Walker",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-10-31T17:46:49.319Z",
+    "own": "2026-10-31T17:25:37.000Z",
+    "why": "@rotowirenba.bsky.social: Jabari Walker: Questionable for Saturday \n\n https://ww"
+   }
+  },
+  "401909897|fredvanvleet|out": {
+   "game": "401909897",
+   "start": "2026-10-31T22:00Z",
+   "team": "30",
+   "name": "Fred VanVleet",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-10-31T17:46:49.319Z",
+    "own": "2026-10-31T17:31:33.000Z",
+    "why": "@rotowirenba.bsky.social: Fred VanVleet: Ruled out for Saturday \n\n https://www.r"
+   }
+  },
+  "401909897|reedsheppard|out": {
+   "game": "401909897",
+   "start": "2026-10-31T22:00Z",
+   "team": "30",
+   "name": "Reed Sheppard",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-10-31T17:46:49.319Z",
+    "own": "2026-10-31T17:33:16.000Z",
+    "why": "@rotowirenba.bsky.social: Reed Sheppard: Won't play Saturday \n\n https://www.roto"
+   }
+  },
+  "401909898|jabariwalker|q": {
+   "game": "401909898",
+   "start": "2026-10-31T23:00Z",
+   "team": "3",
+   "name": "Jabari Walker",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-10-31T17:46:49.319Z",
+    "own": "2026-10-31T17:25:37.000Z",
+    "why": "@rotowirenba.bsky.social: Jabari Walker: Questionable for Saturday \n\n https://ww"
+   }
+  },
+  "401909898|fredvanvleet|out": {
+   "game": "401909898",
+   "start": "2026-10-31T23:00Z",
+   "team": "3",
+   "name": "Fred VanVleet",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-10-31T17:46:49.319Z",
+    "own": "2026-10-31T17:31:33.000Z",
+    "why": "@rotowirenba.bsky.social: Fred VanVleet: Ruled out for Saturday \n\n https://www.r"
+   }
+  },
+  "401909898|reedsheppard|out": {
+   "game": "401909898",
+   "start": "2026-10-31T23:00Z",
+   "team": "3",
+   "name": "Reed Sheppard",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-10-31T17:46:49.319Z",
+    "own": "2026-10-31T17:33:16.000Z",
+    "why": "@rotowirenba.bsky.social: Reed Sheppard: Won't play Saturday \n\n https://www.roto"
+   }
+  },
+  "401909899|jabariwalker|q": {
+   "game": "401909899",
+   "start": "2026-11-01T00:00Z",
+   "team": "29",
+   "name": "Jabari Walker",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-10-31T17:46:49.319Z",
+    "own": "2026-10-31T17:25:37.000Z",
+    "why": "@rotowirenba.bsky.social: Jabari Walker: Questionable for Saturday \n\n https://ww"
+   }
+  },
+  "401909899|fredvanvleet|out": {
+   "game": "401909899",
+   "start": "2026-11-01T00:00Z",
+   "team": "29",
+   "name": "Fred VanVleet",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-10-31T17:46:49.319Z",
+    "own": "2026-10-31T17:31:33.000Z",
+    "why": "@rotowirenba.bsky.social: Fred VanVleet: Ruled out for Saturday \n\n https://www.r"
+   }
+  },
+  "401909899|reedsheppard|out": {
+   "game": "401909899",
+   "start": "2026-11-01T00:00Z",
+   "team": "29",
+   "name": "Reed Sheppard",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-10-31T17:46:49.319Z",
+    "own": "2026-10-31T17:33:16.000Z",
+    "why": "@rotowirenba.bsky.social: Reed Sheppard: Won't play Saturday \n\n https://www.roto"
+   }
+  },
+  "401909900|jabariwalker|q": {
+   "game": "401909900",
+   "start": "2026-11-01T00:00Z",
+   "team": "15",
+   "name": "Jabari Walker",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-10-31T17:46:49.319Z",
+    "own": "2026-10-31T17:25:37.000Z",
+    "why": "@rotowirenba.bsky.social: Jabari Walker: Questionable for Saturday \n\n https://ww"
+   }
+  },
+  "401909900|fredvanvleet|out": {
+   "game": "401909900",
+   "start": "2026-11-01T00:00Z",
+   "team": "15",
+   "name": "Fred VanVleet",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-10-31T17:46:49.319Z",
+    "own": "2026-10-31T17:31:33.000Z",
+    "why": "@rotowirenba.bsky.social: Fred VanVleet: Ruled out for Saturday \n\n https://www.r"
+   }
+  },
+  "401909900|reedsheppard|out": {
+   "game": "401909900",
+   "start": "2026-11-01T00:00Z",
+   "team": "15",
+   "name": "Reed Sheppard",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-10-31T17:46:49.319Z",
+    "own": "2026-10-31T17:33:16.000Z",
+    "why": "@rotowirenba.bsky.social: Reed Sheppard: Won't play Saturday \n\n https://www.roto"
+   }
+  },
+  "401909901|jabariwalker|q": {
+   "game": "401909901",
+   "start": "2026-11-01T00:00Z",
+   "team": "24",
+   "name": "Jabari Walker",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-10-31T17:46:49.319Z",
+    "own": "2026-10-31T17:25:37.000Z",
+    "why": "@rotowirenba.bsky.social: Jabari Walker: Questionable for Saturday \n\n https://ww"
+   }
+  },
+  "401909901|fredvanvleet|out": {
+   "game": "401909901",
+   "start": "2026-11-01T00:00Z",
+   "team": "24",
+   "name": "Fred VanVleet",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-10-31T17:46:49.319Z",
+    "own": "2026-10-31T17:31:33.000Z",
+    "why": "@rotowirenba.bsky.social: Fred VanVleet: Ruled out for Saturday \n\n https://www.r"
+   }
+  },
+  "401909901|reedsheppard|out": {
+   "game": "401909901",
+   "start": "2026-11-01T00:00Z",
+   "team": "24",
+   "name": "Reed Sheppard",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-10-31T17:46:49.319Z",
+    "own": "2026-10-31T17:33:16.000Z",
+    "why": "@rotowirenba.bsky.social: Reed Sheppard: Won't play Saturday \n\n https://www.roto"
+   }
+  },
+  "401909902|jabariwalker|q": {
+   "game": "401909902",
+   "start": "2026-11-01T00:30Z",
+   "team": "10",
+   "name": "Jabari Walker",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-10-31T17:46:49.319Z",
+    "own": "2026-10-31T17:25:37.000Z",
+    "why": "@rotowirenba.bsky.social: Jabari Walker: Questionable for Saturday \n\n https://ww"
    }
   }
  }
