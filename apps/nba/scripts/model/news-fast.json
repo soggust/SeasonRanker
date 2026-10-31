@@ -1,7 +1,7 @@
 {
  "sport": "nba",
  "cursor": {
-  "rotowirenba.bsky.social": "2026-10-31T19:51:30.000Z",
+  "rotowirenba.bsky.social": "2026-10-31T21:14:25.000Z",
   "insidenbanews.bsky.social": "2026-10-30T19:15:23.134Z",
   "shamsbot.bsky.social": "2026-10-31T15:48:10.000Z"
  },
@@ -6609,6 +6609,58 @@
    "kind": "status",
    "confidence": 0.93,
    "text": "Draymond Green: Won't play Sunday \n\n https://www.rotowire.com/basketball/player/draymond-green-3299"
+  },
+  {
+   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mz75c7sohn2c|mitchellrobinson|questionable|status",
+   "at": "2026-10-31T20:32:39.000Z",
+   "seen": "2026-10-31T21:15:46.804Z",
+   "handle": "rotowirenba.bsky.social",
+   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mz75c7sohn2c",
+   "player": "Mitchell Robinson",
+   "team": null,
+   "status": "questionable",
+   "kind": "status",
+   "confidence": 0.95,
+   "text": "Mitchell Robinson: Questionable for Sunday \n\n https://www.rotowire.com/basketball/player/mitchell-robinson-4426"
+  },
+  {
+   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mz76q2cprp2l|mikelbrown|out|status",
+   "at": "2026-10-31T20:58:16.000Z",
+   "seen": "2026-10-31T21:15:46.804Z",
+   "handle": "rotowirenba.bsky.social",
+   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mz76q2cprp2l",
+   "player": "Mikel Brown",
+   "team": null,
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.95,
+   "text": "Mikel Brown: Won't play Sunday \n\n https://www.rotowire.com/basketball/player/mikel-brown-6929"
+  },
+  {
+   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mz77fafj2l2z|obitoppin|questionable|status",
+   "at": "2026-10-31T21:10:07.000Z",
+   "seen": "2026-10-31T21:15:46.804Z",
+   "handle": "rotowirenba.bsky.social",
+   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mz77fafj2l2z",
+   "player": "Obi Toppin",
+   "team": null,
+   "status": "questionable",
+   "kind": "status",
+   "confidence": 0.95,
+   "text": "Obi Toppin: Questionable for Sunday \n\n https://www.rotowire.com/basketball/player/obi-toppin-5109"
+  },
+  {
+   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mz77mwa5jh2v|ivicazubac|out|status",
+   "at": "2026-10-31T21:14:25.000Z",
+   "seen": "2026-10-31T21:15:46.804Z",
+   "handle": "rotowirenba.bsky.social",
+   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mz77mwa5jh2v",
+   "player": "Ivica Zubac",
+   "team": null,
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.97,
+   "text": "Ivica Zubac: Ruled out for Sunday \n\n https://www.rotowire.com/basketball/player/ivica-zubac-3888"
   }
  ]
 }

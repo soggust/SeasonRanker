@@ -11068,6 +11068,11 @@
    "sleeper": {
     "seen": "2026-10-31T20:16:28.245Z",
     "own": "2026-10-31T00:40:16.792Z"
+   },
+   "bluesky": {
+    "seen": "2026-10-31T20:19:43.191Z",
+    "own": "2026-10-31T20:03:52.496Z",
+    "why": "@adamscheftermirror.bsky.social: Chargers placed S Derwin James Jr on injured re"
    }
   },
   "401873032|deaneleonard|q": {
@@ -15288,6 +15293,186 @@
    "espn": {
     "seen": "2026-10-31T20:16:28.245Z",
     "own": "2026-10-31T20:06:00.000Z"
+   }
+  },
+  "401873026|rjharvey|out": {
+   "game": "401873026",
+   "start": "2026-11-01T18:00Z",
+   "team": "2",
+   "name": "RJ Harvey",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-10-31T20:19:43.191Z",
+    "own": "2026-10-31T20:18:44.000Z",
+    "why": "@rotowirenfl.bsky.social: RJ Harvey: Lands on injured reserve \n\n https://www.rot"
+   }
+  },
+  "401873031|rjharvey|out": {
+   "game": "401873031",
+   "start": "2026-11-01T18:00Z",
+   "team": "4",
+   "name": "RJ Harvey",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-10-31T20:19:43.191Z",
+    "own": "2026-10-31T20:18:44.000Z",
+    "why": "@rotowirenfl.bsky.social: RJ Harvey: Lands on injured reserve \n\n https://www.rot"
+   }
+  },
+  "401873024|rjharvey|out": {
+   "game": "401873024",
+   "start": "2026-11-01T18:00Z",
+   "team": "6",
+   "name": "RJ Harvey",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-10-31T20:19:43.191Z",
+    "own": "2026-10-31T20:18:44.000Z",
+    "why": "@rotowirenfl.bsky.social: RJ Harvey: Lands on injured reserve \n\n https://www.rot"
+   }
+  },
+  "401873030|rjharvey|out": {
+   "game": "401873030",
+   "start": "2026-11-01T18:00Z",
+   "team": "8",
+   "name": "RJ Harvey",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-10-31T20:19:43.191Z",
+    "own": "2026-10-31T20:18:44.000Z",
+    "why": "@rotowirenfl.bsky.social: RJ Harvey: Lands on injured reserve \n\n https://www.rot"
+   }
+  },
+  "401873029|rjharvey|out": {
+   "game": "401873029",
+   "start": "2026-11-01T18:00Z",
+   "team": "20",
+   "name": "RJ Harvey",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-10-31T20:19:43.191Z",
+    "own": "2026-10-31T20:18:44.000Z",
+    "why": "@rotowirenfl.bsky.social: RJ Harvey: Lands on injured reserve \n\n https://www.rot"
+   }
+  },
+  "401873027|rjharvey|out": {
+   "game": "401873027",
+   "start": "2026-11-01T18:00Z",
+   "team": "23",
+   "name": "RJ Harvey",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-10-31T20:19:43.191Z",
+    "own": "2026-10-31T20:18:44.000Z",
+    "why": "@rotowirenfl.bsky.social: RJ Harvey: Lands on injured reserve \n\n https://www.rot"
+   }
+  },
+  "401873025|rjharvey|out": {
+   "game": "401873025",
+   "start": "2026-11-01T18:00Z",
+   "team": "27",
+   "name": "RJ Harvey",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-10-31T20:19:43.191Z",
+    "own": "2026-10-31T20:18:44.000Z",
+    "why": "@rotowirenfl.bsky.social: RJ Harvey: Lands on injured reserve \n\n https://www.rot"
+   }
+  },
+  "401873028|rjharvey|out": {
+   "game": "401873028",
+   "start": "2026-11-01T18:00Z",
+   "team": "30",
+   "name": "RJ Harvey",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-10-31T20:19:43.191Z",
+    "own": "2026-10-31T20:18:44.000Z",
+    "why": "@rotowirenfl.bsky.social: RJ Harvey: Lands on injured reserve \n\n https://www.rot"
+   }
+  },
+  "401873032|rjharvey|out": {
+   "game": "401873032",
+   "start": "2026-11-01T21:05Z",
+   "team": "14",
+   "name": "RJ Harvey",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-10-31T20:19:43.191Z",
+    "own": "2026-10-31T20:18:44.000Z",
+    "why": "@rotowirenfl.bsky.social: RJ Harvey: Lands on injured reserve \n\n https://www.rot"
+   }
+  },
+  "401873034|rjharvey|out": {
+   "game": "401873034",
+   "start": "2026-11-01T21:25Z",
+   "team": "15",
+   "name": "RJ Harvey",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-10-31T20:19:43.191Z",
+    "own": "2026-10-31T20:18:44.000Z",
+    "why": "@rotowirenfl.bsky.social: RJ Harvey: Lands on injured reserve \n\n https://www.rot"
+   }
+  },
+  "401873035|rjharvey|out": {
+   "game": "401873035",
+   "start": "2026-11-02T01:20Z",
+   "team": "28",
+   "name": "RJ Harvey",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-10-31T20:19:43.191Z",
+    "own": "2026-10-31T20:18:44.000Z",
+    "why": "@rotowirenfl.bsky.social: RJ Harvey: Lands on injured reserve \n\n https://www.rot"
+   }
+  },
+  "401873036|velusjones|out": {
+   "game": "401873036",
+   "start": "2026-11-03T01:15Z",
+   "team": "26",
+   "name": "Velus Jones Jr.",
+   "status": "out",
+   "athlete": "4035693",
+   "espn": {
+    "seen": "2026-10-31T21:12:37.643Z",
+    "own": "2026-10-31T20:57:00.000Z"
+   }
+  },
+  "401873036|uchennanwosu|out": {
+   "game": "401873036",
+   "start": "2026-11-03T01:15Z",
+   "team": "26",
+   "name": "Uchenna Nwosu",
+   "status": "out",
+   "athlete": "3120358",
+   "espn": {
+    "seen": "2026-10-31T21:12:37.643Z",
+    "own": "2026-10-31T20:57:00.000Z"
+   }
+  },
+  "401873036|rashidshaheed|out": {
+   "game": "401873036",
+   "start": "2026-11-03T01:15Z",
+   "team": "26",
+   "name": "Rashid Shaheed",
+   "status": "out",
+   "athlete": "4032473",
+   "espn": {
+    "seen": "2026-10-31T21:12:37.643Z",
+    "own": "2026-10-31T20:53:00.000Z"
+   }
+  },
+  "401873036|rjharvey|out": {
+   "game": "401873036",
+   "start": "2026-11-03T01:15Z",
+   "team": "26",
+   "name": "RJ Harvey",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-10-31T20:19:43.191Z",
+    "own": "2026-10-31T20:18:44.000Z",
+    "why": "@rotowirenfl.bsky.social: RJ Harvey: Lands on injured reserve \n\n https://www.rot"
    }
   }
  }

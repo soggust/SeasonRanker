@@ -1,13 +1,13 @@
 {
  "sport": "nfl",
  "cursor": {
-  "adamscheftermirror.bsky.social": "2026-10-31T20:03:59.627Z",
+  "adamscheftermirror.bsky.social": "2026-10-31T20:48:54.144Z",
   "rapsheet.bsky.social": "2026-10-31T19:21:57.682Z",
   "nflnewsreposterbot.bsky.social": "2026-10-30T22:57:34.763Z",
-  "insidenflnews.bsky.social": "2026-10-31T15:14:44.147Z",
-  "nflnewsposter.bsky.social": "2026-10-31T20:06:49.170Z",
-  "rotoworld-fb.bsky.social": "2026-10-31T19:16:32.000Z",
-  "rotowirenfl.bsky.social": "2026-10-31T20:18:44.000Z"
+  "insidenflnews.bsky.social": "2026-10-31T20:49:44.000Z",
+  "nflnewsposter.bsky.social": "2026-10-31T20:33:33.829Z",
+  "rotoworld-fb.bsky.social": "2026-10-31T21:03:42.000Z",
+  "rotowirenfl.bsky.social": "2026-10-31T20:53:14.000Z"
  },
  "claims": [
   {
@@ -10643,6 +10643,136 @@
    "kind": "status",
    "confidence": 0.93,
    "text": "RJ Harvey: Lands on injured reserve \n\n https://www.rotowire.com/football/player/rj-harvey-18522"
+  },
+  {
+   "id": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3mz75asy57q2d|rjharvey|out|status",
+   "at": "2026-10-31T20:31:52.000Z",
+   "seen": "2026-10-31T21:15:46.804Z",
+   "handle": "rotoworld-fb.bsky.social",
+   "post": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3mz75asy57q2d",
+   "player": "RJ Harvey",
+   "team": "DEN",
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.95,
+   "text": "Broncos move RJ Harvey (knee) to injured reserve"
+  },
+  {
+   "id": "at://did:plc:fuqjc7x4gxvnwzksnlxwbe4x/app.bsky.feed.post/3mz75dtslwco7|rjharvey|out|status",
+   "at": "2026-10-31T20:33:33.829Z",
+   "seen": "2026-10-31T21:15:46.804Z",
+   "handle": "nflnewsposter.bsky.social",
+   "post": "at://did:plc:fuqjc7x4gxvnwzksnlxwbe4x/app.bsky.feed.post/3mz75dtslwco7",
+   "player": "RJ Harvey",
+   "team": "DEN",
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.95,
+   "text": "[Rapoport] Broncos are placing emerging RB R.J. Harvey on short-term IR as he recovers from the knee injury he suffered in practice this week. \n\nHarvey will miss the next 4 games and is eligible to re"
+  },
+  {
+   "id": "at://did:plc:qre6zxbmr3ixhdmgsgdretb5/app.bsky.feed.post/3mz767blgzy2l|jadarianprice|active|status",
+   "at": "2026-10-31T20:48:54.144Z",
+   "seen": "2026-10-31T21:15:46.804Z",
+   "handle": "adamscheftermirror.bsky.social",
+   "post": "at://did:plc:qre6zxbmr3ixhdmgsgdretb5/app.bsky.feed.post/3mz767blgzy2l",
+   "player": "Jadarian Price",
+   "team": "SEA",
+   "status": "active",
+   "kind": "status",
+   "confidence": 0.8,
+   "text": "Seahawks running backs Jadarian Price and Zach Charbonnet have no injury designations for Monday night and both are now expected to play against the Bears. This will be Charbonnet’s season debut.\n\nOri"
+  },
+  {
+   "id": "at://did:plc:qre6zxbmr3ixhdmgsgdretb5/app.bsky.feed.post/3mz767blgzy2l|zachcharbonnet|active|status",
+   "at": "2026-10-31T20:48:54.144Z",
+   "seen": "2026-10-31T21:15:46.804Z",
+   "handle": "adamscheftermirror.bsky.social",
+   "post": "at://did:plc:qre6zxbmr3ixhdmgsgdretb5/app.bsky.feed.post/3mz767blgzy2l",
+   "player": "Zach Charbonnet",
+   "team": "SEA",
+   "status": "active",
+   "kind": "status",
+   "confidence": 0.85,
+   "text": "Seahawks running backs Jadarian Price and Zach Charbonnet have no injury designations for Monday night and both are now expected to play against the Bears. This will be Charbonnet’s season debut.\n\nOri"
+  },
+  {
+   "id": "at://did:plc:mbr4badgf6yu56mquzackzew/app.bsky.feed.post/3mz767eer3s2f|rjharvey|out|status",
+   "at": "2026-10-31T20:48:57.170Z",
+   "seen": "2026-10-31T21:15:46.804Z",
+   "handle": "insidenflnews.bsky.social",
+   "post": "at://did:plc:mbr4badgf6yu56mquzackzew/app.bsky.feed.post/3mz767eer3s2f",
+   "player": "RJ Harvey",
+   "team": "DEN",
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.9,
+   "text": "Rap: RJ Harvey (knee) to be placed on IR; will miss at least 4 games."
+  },
+  {
+   "id": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3mz767usylh2s|zachcharbonnet|active|status",
+   "at": "2026-10-31T20:49:14.000Z",
+   "seen": "2026-10-31T21:15:46.804Z",
+   "handle": "rotowirenfl.bsky.social",
+   "post": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3mz767usylh2s",
+   "player": "Zach Charbonnet",
+   "team": "SEA",
+   "status": "active",
+   "kind": "status",
+   "confidence": 0.9,
+   "text": "Zach Charbonnet: Will play Monday \n\n https://www.rotowire.com/football/player/zach-charbonnet-16897"
+  },
+  {
+   "id": "at://did:plc:mbr4badgf6yu56mquzackzew/app.bsky.feed.post/3mz76aqztks2f|rashidshaheed|out|status",
+   "at": "2026-10-31T20:49:44.000Z",
+   "seen": "2026-10-31T21:15:46.804Z",
+   "handle": "insidenflnews.bsky.social",
+   "post": "at://did:plc:mbr4badgf6yu56mquzackzew/app.bsky.feed.post/3mz76aqztks2f",
+   "player": "Rashid Shaheed",
+   "team": "SEA",
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.95,
+   "text": "Seahawks WR Rashid Shaheed (knee) has been ruled out for Week 8."
+  },
+  {
+   "id": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3mz76h266762q|rashidshaheed|out|status",
+   "at": "2026-10-31T20:53:14.000Z",
+   "seen": "2026-10-31T21:15:46.804Z",
+   "handle": "rotowirenfl.bsky.social",
+   "post": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3mz76h266762q",
+   "player": "Rashid Shaheed",
+   "team": "SEA",
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.95,
+   "text": "Rashid Shaheed: Ruled out for MNF \n\n https://www.rotowire.com/football/player/rashid-shaheed-16560"
+  },
+  {
+   "id": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3mz76jspfzm25|jadarianprice|active|return",
+   "at": "2026-10-31T20:54:47.000Z",
+   "seen": "2026-10-31T21:15:46.804Z",
+   "handle": "rotoworld-fb.bsky.social",
+   "post": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3mz76jspfzm25",
+   "player": "Jadarian Price",
+   "team": "SEA",
+   "status": "active",
+   "kind": "return",
+   "confidence": 0.9,
+   "text": "Jadarian Price to return for MNF in Week 8"
+  },
+  {
+   "id": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3mz76zr7vht24|rashidshaheed|out|status",
+   "at": "2026-10-31T21:03:42.000Z",
+   "seen": "2026-10-31T21:15:46.804Z",
+   "handle": "rotoworld-fb.bsky.social",
+   "post": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3mz76zr7vht24",
+   "player": "Rashid Shaheed",
+   "team": "SEA",
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.95,
+   "text": "Rashid Shaheed (knee) out for Week 8 vs. Bears"
   }
  ]
 }
