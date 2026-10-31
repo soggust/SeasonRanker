@@ -1,174 +1,6 @@
 {
  "sport": "nhl",
  "entries": {
-  "401892546|jasondickinson|out": {
-   "game": "401892546",
-   "start": "2026-10-21T01:00Z",
-   "team": "6",
-   "name": "Jason Dickinson",
-   "status": "out",
-   "athlete": "3042062",
-   "espn": {
-    "seen": "2026-10-19T21:13:52.043Z",
-    "own": "2026-10-16T20:28:00.000Z"
-   }
-  },
-  "401892546|ryannugenthopkins|out": {
-   "game": "401892546",
-   "start": "2026-10-21T01:00Z",
-   "team": "6",
-   "name": "Ryan Nugent-Hopkins",
-   "status": "out",
-   "athlete": "2562624",
-   "espn": {
-    "seen": "2026-10-19T21:13:52.043Z",
-    "own": "2026-10-16T20:24:00.000Z"
-   }
-  },
-  "401892546|alecregula|out": {
-   "game": "401892546",
-   "start": "2026-10-21T01:00Z",
-   "team": "6",
-   "name": "Alec Regula",
-   "status": "out",
-   "athlete": "4331611",
-   "espn": {
-    "seen": "2026-10-19T21:13:52.043Z",
-    "own": "2026-10-01T14:11:00.000Z"
-   }
-  },
-  "401892546|mattsavoie|out": {
-   "game": "401892546",
-   "start": "2026-10-21T01:00Z",
-   "team": "6",
-   "name": "Matt Savoie",
-   "status": "out",
-   "athlete": "5080153",
-   "espn": {
-    "seen": "2026-10-19T21:13:52.043Z",
-    "own": "2026-10-01T14:05:00.000Z"
-   }
-  },
-  "401892546|frederikandersen|out": {
-   "game": "401892546",
-   "start": "2026-10-21T01:00Z",
-   "team": "6",
-   "name": "Frederik Andersen",
-   "status": "out",
-   "athlete": "2517899",
-   "espn": {
-    "seen": "2026-10-19T21:13:52.043Z",
-    "own": "2026-09-29T17:53:00.000Z"
-   }
-  },
-  "401892546|mattiasjanmark|out": {
-   "game": "401892546",
-   "start": "2026-10-21T01:00Z",
-   "team": "6",
-   "name": "Mattias Janmark",
-   "status": "out",
-   "athlete": "3042085",
-   "espn": {
-    "seen": "2026-10-19T21:13:52.043Z",
-    "own": "2026-09-29T17:52:00.000Z"
-   }
-  },
-  "401892546|atroleppanen|out": {
-   "game": "401892546",
-   "start": "2026-10-21T01:00Z",
-   "team": "6",
-   "name": "Atro Leppanen",
-   "status": "out",
-   "athlete": "5278661",
-   "espn": {
-    "seen": "2026-10-19T21:13:52.043Z",
-    "own": "2026-09-29T16:22:00.000Z"
-   }
-  },
-  "401892546|ollimaatta|out": {
-   "game": "401892546",
-   "start": "2026-10-21T01:00Z",
-   "team": "30",
-   "name": "Olli Maatta",
-   "status": "out",
-   "athlete": "2976850",
-   "espn": {
-    "seen": "2026-10-19T21:13:52.043Z",
-    "own": "2026-10-19T01:58:00.000Z"
-   }
-  },
-  "401892546|nicosturm|out": {
-   "game": "401892546",
-   "start": "2026-10-21T01:00Z",
-   "team": "30",
-   "name": "Nico Sturm",
-   "status": "out",
-   "athlete": "4320625",
-   "espn": {
-    "seen": "2026-10-19T21:13:52.043Z",
-    "own": "2026-10-19T01:46:00.000Z"
-   }
-  },
-  "401892546|jaredspurgeon|out": {
-   "game": "401892546",
-   "start": "2026-10-21T01:00Z",
-   "team": "30",
-   "name": "Jared Spurgeon",
-   "status": "out",
-   "athlete": "5079",
-   "espn": {
-    "seen": "2026-10-19T21:13:52.043Z",
-    "own": "2026-10-19T01:42:00.000Z"
-   }
-  },
-  "401892546|filipgustavsson|out": {
-   "game": "401892546",
-   "start": "2026-10-21T01:00Z",
-   "team": "30",
-   "name": "Filip Gustavsson",
-   "status": "out",
-   "athlete": "4272674",
-   "espn": {
-    "seen": "2026-10-19T21:13:52.043Z",
-    "own": "2026-10-18T21:23:00.000Z"
-   }
-  },
-  "401892546|marcusfoligno|out": {
-   "game": "401892546",
-   "start": "2026-10-21T01:00Z",
-   "team": "30",
-   "name": "Marcus Foligno",
-   "status": "out",
-   "athlete": "5172",
-   "espn": {
-    "seen": "2026-10-19T21:13:52.043Z",
-    "own": "2026-10-12T22:12:00.000Z"
-   }
-  },
-  "401892546|nickfoligno|out": {
-   "game": "401892546",
-   "start": "2026-10-21T01:00Z",
-   "team": "30",
-   "name": "Nick Foligno",
-   "status": "out",
-   "athlete": "3535",
-   "espn": {
-    "seen": "2026-10-19T21:13:52.043Z",
-    "own": "2026-10-09T15:50:00.000Z"
-   }
-  },
-  "401892546|brockfaber|out": {
-   "game": "401892546",
-   "start": "2026-10-21T01:00Z",
-   "team": "30",
-   "name": "Brock Faber",
-   "status": "out",
-   "athlete": "4697449",
-   "espn": {
-    "seen": "2026-10-19T21:13:52.043Z",
-    "own": "2026-09-29T16:21:00.000Z"
-   }
-  },
   "401892547|brandonmontour|q": {
    "game": "401892547",
    "start": "2026-10-21T01:40Z",
@@ -9117,6 +8949,119 @@
    "espn": {
     "seen": "2026-10-31T00:44:40.885Z",
     "own": "2026-10-31T00:29:00.000Z"
+   },
+   "bluesky": {
+    "seen": "2026-10-31T00:46:02.806Z",
+    "own": "2026-10-31T00:36:07.000Z",
+    "why": "@dailyfaceoff.bsky.social: Hayden Hodgson has been suspended two games for board"
+   }
+  },
+  "401892614|haydenhodgson|out": {
+   "game": "401892614",
+   "start": "2026-10-31T17:00Z",
+   "team": "1",
+   "name": "Hayden Hodgson",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-10-31T00:46:02.806Z",
+    "own": "2026-10-31T00:36:07.000Z",
+    "why": "@dailyfaceoff.bsky.social: Hayden Hodgson has been suspended two games for board"
+   }
+  },
+  "401892615|haydenhodgson|out": {
+   "game": "401892615",
+   "start": "2026-10-31T17:00Z",
+   "team": "5",
+   "name": "Hayden Hodgson",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-10-31T00:46:02.806Z",
+    "own": "2026-10-31T00:36:07.000Z",
+    "why": "@dailyfaceoff.bsky.social: Hayden Hodgson has been suspended two games for board"
+   }
+  },
+  "401892616|haydenhodgson|out": {
+   "game": "401892616",
+   "start": "2026-10-31T18:00Z",
+   "team": "27",
+   "name": "Hayden Hodgson",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-10-31T00:46:02.806Z",
+    "own": "2026-10-31T00:36:07.000Z",
+    "why": "@dailyfaceoff.bsky.social: Hayden Hodgson has been suspended two games for board"
+   }
+  },
+  "401892617|haydenhodgson|out": {
+   "game": "401892617",
+   "start": "2026-10-31T18:00Z",
+   "team": "12",
+   "name": "Hayden Hodgson",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-10-31T00:46:02.806Z",
+    "own": "2026-10-31T00:36:07.000Z",
+    "why": "@dailyfaceoff.bsky.social: Hayden Hodgson has been suspended two games for board"
+   }
+  },
+  "401892618|haydenhodgson|out": {
+   "game": "401892618",
+   "start": "2026-10-31T20:00Z",
+   "team": "8",
+   "name": "Hayden Hodgson",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-10-31T00:46:02.806Z",
+    "own": "2026-10-31T00:36:07.000Z",
+    "why": "@dailyfaceoff.bsky.social: Hayden Hodgson has been suspended two games for board"
+   }
+  },
+  "401892620|haydenhodgson|out": {
+   "game": "401892620",
+   "start": "2026-10-31T23:00Z",
+   "team": "10",
+   "name": "Hayden Hodgson",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-10-31T00:46:02.806Z",
+    "own": "2026-10-31T00:36:07.000Z",
+    "why": "@dailyfaceoff.bsky.social: Hayden Hodgson has been suspended two games for board"
+   }
+  },
+  "401892621|haydenhodgson|out": {
+   "game": "401892621",
+   "start": "2026-10-31T23:00Z",
+   "team": "22",
+   "name": "Hayden Hodgson",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-10-31T00:46:02.806Z",
+    "own": "2026-10-31T00:36:07.000Z",
+    "why": "@dailyfaceoff.bsky.social: Hayden Hodgson has been suspended two games for board"
+   }
+  },
+  "401892622|haydenhodgson|out": {
+   "game": "401892622",
+   "start": "2026-11-01T00:00Z",
+   "team": "9",
+   "name": "Hayden Hodgson",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-10-31T00:46:02.806Z",
+    "own": "2026-10-31T00:36:07.000Z",
+    "why": "@dailyfaceoff.bsky.social: Hayden Hodgson has been suspended two games for board"
+   }
+  },
+  "401892623|haydenhodgson|out": {
+   "game": "401892623",
+   "start": "2026-11-01T02:00Z",
+   "team": "17",
+   "name": "Hayden Hodgson",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-10-31T00:46:02.806Z",
+    "own": "2026-10-31T00:36:07.000Z",
+    "why": "@dailyfaceoff.bsky.social: Hayden Hodgson has been suspended two games for board"
    }
   }
  }

@@ -1,9 +1,9 @@
 {
  "sport": "nba",
  "cursor": {
-  "rotowirenba.bsky.social": "2026-10-30T23:13:31.000Z",
+  "rotowirenba.bsky.social": "2026-10-31T01:02:26.000Z",
   "insidenbanews.bsky.social": "2026-10-30T19:15:23.134Z",
-  "shamsbot.bsky.social": "2026-10-30T18:40:24.000Z"
+  "shamsbot.bsky.social": "2026-10-31T01:02:13.000Z"
  },
  "claims": [
   {
@@ -6401,6 +6401,45 @@
    "kind": "status",
    "confidence": 0.9,
    "text": "Lauri Markkanen: Questionable versus Portland \n\n https://www.rotowire.com/basketball/player/lauri-markkanen-4119"
+  },
+  {
+   "id": "at://did:plc:sa73fbx3vxzh2fw5pu5wmief/app.bsky.feed.post/3mz53rtcjss2d|chetholmgren|out|status",
+   "at": "2026-10-31T00:57:20.000Z",
+   "seen": "2026-10-31T01:07:23.260Z",
+   "handle": "shamsbot.bsky.social",
+   "post": "at://did:plc:sa73fbx3vxzh2fw5pu5wmief/app.bsky.feed.post/3mz53rtcjss2d",
+   "player": "Chet Holmgren",
+   "team": "OKC",
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.95,
+   "text": "Oklahoma City Thunder's Chet Holmgren underwent treatment Friday to address a small patellar tendon tear and is expected to return to play in 8-to-10 weeks."
+  },
+  {
+   "id": "at://did:plc:sa73fbx3vxzh2fw5pu5wmief/app.bsky.feed.post/3mz5434hhdl2b|chetholmgren|out|status",
+   "at": "2026-10-31T01:02:13.000Z",
+   "seen": "2026-10-31T01:07:23.260Z",
+   "handle": "shamsbot.bsky.social",
+   "post": "at://did:plc:sa73fbx3vxzh2fw5pu5wmief/app.bsky.feed.post/3mz5434hhdl2b",
+   "player": "Chet Holmgren",
+   "team": "OKC",
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.9,
+   "text": "Holmgren had a biological treatment for the injury, and now will miss two-plus months with Jalen Williams and Cason Wallace already sidelined for most, if not all of this season."
+  },
+  {
+   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mz53vpyucs26|chetholmgren|out|status",
+   "at": "2026-10-31T01:02:26.000Z",
+   "seen": "2026-10-31T01:07:23.260Z",
+   "handle": "rotowirenba.bsky.social",
+   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mz53vpyucs26",
+   "player": "Chet Holmgren",
+   "team": "OKC",
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.9,
+   "text": "Chet Holmgren: To miss at least 8-10 weeks \n\n https://www.rotowire.com/basketball/player/chet-holmgren-5697"
   }
  ]
 }
