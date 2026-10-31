@@ -1,7 +1,7 @@
 {
  "sport": "nba",
  "cursor": {
-  "rotowirenba.bsky.social": "2026-10-31T17:16:48.000Z",
+  "rotowirenba.bsky.social": "2026-10-31T17:44:32.000Z",
   "insidenbanews.bsky.social": "2026-10-30T19:15:23.134Z",
   "shamsbot.bsky.social": "2026-10-31T15:48:10.000Z"
  },
@@ -6492,6 +6492,71 @@
    "kind": "status",
    "confidence": 0.93,
    "text": "LeBron James: Won't play Saturday \n\n https://www.rotowire.com/basketball/player/lebron-james-2344"
+  },
+  {
+   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mz6stscs7t2q|jabariwalker|questionable|status",
+   "at": "2026-10-31T17:25:37.000Z",
+   "seen": "2026-10-31T17:46:49.319Z",
+   "handle": "rotowirenba.bsky.social",
+   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mz6stscs7t2q",
+   "player": "Jabari Walker",
+   "team": null,
+   "status": "questionable",
+   "kind": "status",
+   "confidence": 0.95,
+   "text": "Jabari Walker: Questionable for Saturday \n\n https://www.rotowire.com/basketball/player/jabari-walker-5675"
+  },
+  {
+   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mz6sxvb2sq22|alperensengun|active|status",
+   "at": "2026-10-31T17:27:55.000Z",
+   "seen": "2026-10-31T17:46:49.319Z",
+   "handle": "rotowirenba.bsky.social",
+   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mz6sxvb2sq22",
+   "player": "Alperen Sengun",
+   "team": null,
+   "status": "active",
+   "kind": "status",
+   "confidence": 0.7,
+   "text": "Alperen Sengun: Not listed on injury report \n\n https://www.rotowire.com/basketball/player/alperen-sengun-5404"
+  },
+  {
+   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mz6t6f3jba22|fredvanvleet|out|status",
+   "at": "2026-10-31T17:31:33.000Z",
+   "seen": "2026-10-31T17:46:49.319Z",
+   "handle": "rotowirenba.bsky.social",
+   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mz6t6f3jba22",
+   "player": "Fred VanVleet",
+   "team": null,
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.97,
+   "text": "Fred VanVleet: Ruled out for Saturday \n\n https://www.rotowire.com/basketball/player/fred-vanvleet-3935"
+  },
+  {
+   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mz6tbhveb52v|reedsheppard|out|status",
+   "at": "2026-10-31T17:33:16.000Z",
+   "seen": "2026-10-31T17:46:49.319Z",
+   "handle": "rotowirenba.bsky.social",
+   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mz6tbhveb52v",
+   "player": "Reed Sheppard",
+   "team": null,
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.95,
+   "text": "Reed Sheppard: Won't play Saturday \n\n https://www.rotowire.com/basketball/player/reed-sheppard-6257"
+  },
+  {
+   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mz6tvlyxew2n|scoothenderson|none|starting",
+   "at": "2026-10-31T17:44:32.000Z",
+   "seen": "2026-10-31T17:46:49.319Z",
+   "handle": "rotowirenba.bsky.social",
+   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mz6tvlyxew2n",
+   "player": "Scoot Henderson",
+   "team": null,
+   "status": "none",
+   "kind": "starting",
+   "confidence": 0.95,
+   "text": "Scoot Henderson: Starting Saturday \n\n https://www.rotowire.com/basketball/player/scoot-henderson-5377"
   }
  ]
 }
