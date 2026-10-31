@@ -5,9 +5,9 @@
   "rapsheet.bsky.social": "2026-10-30T23:50:45.295Z",
   "nflnewsreposterbot.bsky.social": "2026-10-30T22:57:34.763Z",
   "insidenflnews.bsky.social": "2026-10-31T15:14:44.147Z",
-  "nflnewsposter.bsky.social": "2026-10-31T16:33:11.359Z",
+  "nflnewsposter.bsky.social": "2026-10-31T16:50:49.812Z",
   "rotoworld-fb.bsky.social": "2026-10-31T14:58:34.000Z",
-  "rotowirenfl.bsky.social": "2026-10-31T15:10:01.000Z"
+  "rotowirenfl.bsky.social": "2026-10-31T16:55:21.000Z"
  },
  "claims": [
   {
@@ -10240,6 +10240,19 @@
    "kind": "return",
    "confidence": 0.35,
    "text": "[Rapoport] Packers and star Micah Parsons are targeting a Thanksgiving Eve return to the field in the showdown against the Rams. www.espn.com/nfl/story/_/... [Sources: Packers, Micah Parsons target re"
+  },
+  {
+   "id": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3mz6r5npcr52y|kylemonangai|out|status",
+   "at": "2026-10-31T16:55:21.000Z",
+   "seen": "2026-10-31T16:56:51.582Z",
+   "handle": "rotowirenfl.bsky.social",
+   "post": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3mz6r5npcr52y",
+   "player": "Kyle Monangai",
+   "team": null,
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.95,
+   "text": "Kyle Monangai: Won't play against Seattle \n\n https://www.rotowire.com/football/player/kyle-monangai-18520"
   }
  ]
 }

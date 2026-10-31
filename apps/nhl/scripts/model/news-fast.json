@@ -3,7 +3,7 @@
  "cursor": {
   "johnston-bot.bsky.social": "2026-10-30T22:59:57.743Z",
   "notfriedgehnic.bsky.social": "2026-10-31T01:35:45.073Z",
-  "dailyfaceoff.bsky.social": "2026-10-31T16:31:09.000Z",
+  "dailyfaceoff.bsky.social": "2026-10-31T16:49:13.000Z",
   "dfotoronto.bsky.social": "2026-10-31T16:09:45.000Z",
   "marklazerus.bsky.social": "2026-10-31T00:50:34.520Z"
  },
@@ -1333,6 +1333,32 @@
    "kind": "return",
    "confidence": 0.93,
    "text": "Leafs activate Chris Tanev from injured reserve"
+  },
+  {
+   "id": "at://did:plc:3uus7y6h3rlrk6sbctzxm4bg/app.bsky.feed.post/3mz6qsota572h|perron|active|status",
+   "at": "2026-10-31T16:49:13.000Z",
+   "seen": "2026-10-31T16:56:51.582Z",
+   "handle": "dailyfaceoff.bsky.social",
+   "post": "at://did:plc:3uus7y6h3rlrk6sbctzxm4bg/app.bsky.feed.post/3mz6qsota572h",
+   "player": "Perron",
+   "team": "DAL",
+   "status": "active",
+   "kind": "status",
+   "confidence": 0.8,
+   "text": "Perron to make Stars debut, Lindell expected to return to lineup"
+  },
+  {
+   "id": "at://did:plc:3uus7y6h3rlrk6sbctzxm4bg/app.bsky.feed.post/3mz6qsota572h|lindell|active|return",
+   "at": "2026-10-31T16:49:13.000Z",
+   "seen": "2026-10-31T16:56:51.582Z",
+   "handle": "dailyfaceoff.bsky.social",
+   "post": "at://did:plc:3uus7y6h3rlrk6sbctzxm4bg/app.bsky.feed.post/3mz6qsota572h",
+   "player": "Lindell",
+   "team": "DAL",
+   "status": "active",
+   "kind": "return",
+   "confidence": 0.8,
+   "text": "Perron to make Stars debut, Lindell expected to return to lineup"
   }
  ]
 }
