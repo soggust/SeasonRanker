@@ -8791,6 +8791,198 @@
     "own": "2026-10-31T00:36:07.000Z",
     "why": "@dailyfaceoff.bsky.social: Hayden Hodgson has been suspended two games for board"
    }
+  },
+  "401892625|vincentdesharnais|out": {
+   "game": "401892625",
+   "start": "2026-11-01T20:30Z",
+   "team": "23",
+   "name": "Vincent Desharnais",
+   "status": "out",
+   "athlete": "4392260",
+   "espn": {
+    "seen": "2026-10-31T15:03:50.345Z",
+    "own": "2026-10-23T20:39:00.000Z"
+   }
+  },
+  "401892625|rasmussandin|out": {
+   "game": "401892625",
+   "start": "2026-11-01T20:30Z",
+   "team": "23",
+   "name": "Rasmus Sandin",
+   "status": "out",
+   "athlete": "4352803",
+   "espn": {
+    "seen": "2026-10-31T15:03:50.345Z",
+    "own": "2026-10-12T14:27:00.000Z"
+   }
+  },
+  "401892625|patrickthomas|out": {
+   "game": "401892625",
+   "start": "2026-11-01T20:30Z",
+   "team": "23",
+   "name": "Patrick Thomas",
+   "status": "out",
+   "athlete": "5188548",
+   "espn": {
+    "seen": "2026-10-31T15:03:50.345Z",
+    "own": "2026-09-29T17:07:00.000Z"
+   }
+  },
+  "401892625|joelerikssonek|q": {
+   "game": "401892625",
+   "start": "2026-11-01T20:30Z",
+   "team": "30",
+   "name": "Joel Eriksson Ek",
+   "status": "q",
+   "athlete": "3904091",
+   "espn": {
+    "seen": "2026-10-31T15:03:50.345Z",
+    "own": "2026-10-30T16:32:00.000Z"
+   }
+  },
+  "401892625|jaredspurgeon|out": {
+   "game": "401892625",
+   "start": "2026-11-01T20:30Z",
+   "team": "30",
+   "name": "Jared Spurgeon",
+   "status": "out",
+   "athlete": "5079",
+   "espn": {
+    "seen": "2026-10-31T15:03:50.345Z",
+    "own": "2026-10-29T23:51:00.000Z"
+   }
+  },
+  "401892625|brockfaber|out": {
+   "game": "401892625",
+   "start": "2026-11-01T20:30Z",
+   "team": "30",
+   "name": "Brock Faber",
+   "status": "out",
+   "athlete": "4697449",
+   "espn": {
+    "seen": "2026-10-31T15:03:50.345Z",
+    "own": "2026-10-29T16:28:00.000Z"
+   }
+  },
+  "401892625|filipgustavsson|out": {
+   "game": "401892625",
+   "start": "2026-11-01T20:30Z",
+   "team": "30",
+   "name": "Filip Gustavsson",
+   "status": "out",
+   "athlete": "4272674",
+   "espn": {
+    "seen": "2026-10-31T15:03:50.345Z",
+    "own": "2026-10-18T21:23:00.000Z"
+   }
+  },
+  "401892625|marcusfoligno|out": {
+   "game": "401892625",
+   "start": "2026-11-01T20:30Z",
+   "team": "30",
+   "name": "Marcus Foligno",
+   "status": "out",
+   "athlete": "5172",
+   "espn": {
+    "seen": "2026-10-31T15:03:50.345Z",
+    "own": "2026-10-12T22:12:00.000Z"
+   }
+  },
+  "401892625|nickfoligno|out": {
+   "game": "401892625",
+   "start": "2026-11-01T20:30Z",
+   "team": "30",
+   "name": "Nick Foligno",
+   "status": "out",
+   "athlete": "3535",
+   "espn": {
+    "seen": "2026-10-31T15:03:50.345Z",
+    "own": "2026-10-09T15:50:00.000Z"
+   }
+  },
+  "401892626|rasmusristolainen|out": {
+   "game": "401892626",
+   "start": "2026-11-01T21:00Z",
+   "team": "15",
+   "name": "Rasmus Ristolainen",
+   "status": "out",
+   "athlete": "3041999",
+   "espn": {
+    "seen": "2026-10-31T15:03:50.345Z",
+    "own": "2026-10-27T14:26:00.000Z"
+   }
+  },
+  "401892626|owentippett|out": {
+   "game": "401892626",
+   "start": "2026-11-01T21:00Z",
+   "team": "15",
+   "name": "Owen Tippett",
+   "status": "out",
+   "athlete": "4392072",
+   "espn": {
+    "seen": "2026-10-31T15:03:50.345Z",
+    "own": "2026-10-19T17:54:00.000Z"
+   }
+  },
+  "401892626|traviskonecny|out": {
+   "game": "401892626",
+   "start": "2026-11-01T21:00Z",
+   "team": "15",
+   "name": "Travis Konecny",
+   "status": "out",
+   "athlete": "3900169",
+   "espn": {
+    "seen": "2026-10-31T15:03:50.345Z",
+    "own": "2026-10-11T18:01:00.000Z"
+   }
+  },
+  "401892626|nikitagrebenkin|out": {
+   "game": "401892626",
+   "start": "2026-11-01T21:00Z",
+   "team": "15",
+   "name": "Nikita Grebenkin",
+   "status": "out",
+   "athlete": "5188490",
+   "espn": {
+    "seen": "2026-10-31T15:03:50.345Z",
+    "own": "2026-10-10T16:58:00.000Z"
+   }
+  },
+  "401892626|johnmarino|out": {
+   "game": "401892626",
+   "start": "2026-11-01T21:00Z",
+   "team": "129764",
+   "name": "John Marino",
+   "status": "out",
+   "athlete": "3941974",
+   "espn": {
+    "seen": "2026-10-31T15:03:50.345Z",
+    "own": "2026-10-24T17:55:00.000Z"
+   }
+  },
+  "401892626|michaelcarcone|out": {
+   "game": "401892626",
+   "start": "2026-11-01T21:00Z",
+   "team": "129764",
+   "name": "Michael Carcone",
+   "status": "out",
+   "athlete": "4031645",
+   "espn": {
+    "seen": "2026-10-31T15:03:50.345Z",
+    "own": "2026-10-20T21:18:00.000Z"
+   }
+  },
+  "401892626|mavericlamoureux|out": {
+   "game": "401892626",
+   "start": "2026-11-01T21:00Z",
+   "team": "129764",
+   "name": "Maveric Lamoureux",
+   "status": "out",
+   "athlete": "5080177",
+   "espn": {
+    "seen": "2026-10-31T15:03:50.345Z",
+    "own": "2026-09-28T21:02:00.000Z"
+   }
   }
  }
 }
