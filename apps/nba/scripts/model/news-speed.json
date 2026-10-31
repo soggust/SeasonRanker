@@ -18263,6 +18263,11 @@
    "espn": {
     "seen": "2026-10-31T05:08:29.140Z",
     "own": "2026-10-31T04:58:00.000Z"
+   },
+   "bluesky": {
+    "seen": "2026-10-31T17:21:46.995Z",
+    "own": "2026-10-31T17:08:33.000Z",
+    "why": "@rotowirenba.bsky.social: Jaylen Brown: Questionable for Saturday \n\n https://www"
    }
   },
   "401909902|reedsheppard|q": {
@@ -18323,6 +18328,11 @@
    "espn": {
     "seen": "2026-10-31T17:19:48.686Z",
     "own": "2026-10-31T17:17:00.000Z"
+   },
+   "bluesky": {
+    "seen": "2026-10-31T17:21:46.995Z",
+    "own": "2026-10-31T17:16:48.000Z",
+    "why": "@rotowirenba.bsky.social: LeBron James: Won't play Saturday \n\n https://www.rotow"
    }
   },
   "401909897|joelembiid|out": {
@@ -18335,6 +18345,239 @@
    "espn": {
     "seen": "2026-10-31T17:19:48.686Z",
     "own": "2026-10-31T17:12:00.000Z"
+   },
+   "bluesky": {
+    "seen": "2026-10-31T17:21:46.995Z",
+    "own": "2026-10-31T17:12:28.000Z",
+    "why": "@rotowirenba.bsky.social: Joel Embiid: Ruled out for Saturday \n\n https://www.rot"
+   }
+  },
+  "401909896|jaylenbrown|q": {
+   "game": "401909896",
+   "start": "2026-10-31T19:00Z",
+   "team": "26",
+   "name": "Jaylen Brown",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-10-31T17:21:46.995Z",
+    "own": "2026-10-31T17:08:33.000Z",
+    "why": "@rotowirenba.bsky.social: Jaylen Brown: Questionable for Saturday \n\n https://www"
+   }
+  },
+  "401909896|joelembiid|out": {
+   "game": "401909896",
+   "start": "2026-10-31T19:00Z",
+   "team": "26",
+   "name": "Joel Embiid",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-10-31T17:21:46.995Z",
+    "own": "2026-10-31T17:12:28.000Z",
+    "why": "@rotowirenba.bsky.social: Joel Embiid: Ruled out for Saturday \n\n https://www.rot"
+   }
+  },
+  "401909896|lebronjames|out": {
+   "game": "401909896",
+   "start": "2026-10-31T19:00Z",
+   "team": "26",
+   "name": "LeBron James",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-10-31T17:21:46.995Z",
+    "own": "2026-10-31T17:16:48.000Z",
+    "why": "@rotowirenba.bsky.social: LeBron James: Won't play Saturday \n\n https://www.rotow"
+   }
+  },
+  "401909898|jaylenbrown|q": {
+   "game": "401909898",
+   "start": "2026-10-31T23:00Z",
+   "team": "3",
+   "name": "Jaylen Brown",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-10-31T17:21:46.995Z",
+    "own": "2026-10-31T17:08:33.000Z",
+    "why": "@rotowirenba.bsky.social: Jaylen Brown: Questionable for Saturday \n\n https://www"
+   }
+  },
+  "401909898|joelembiid|out": {
+   "game": "401909898",
+   "start": "2026-10-31T23:00Z",
+   "team": "3",
+   "name": "Joel Embiid",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-10-31T17:21:46.995Z",
+    "own": "2026-10-31T17:12:28.000Z",
+    "why": "@rotowirenba.bsky.social: Joel Embiid: Ruled out for Saturday \n\n https://www.rot"
+   }
+  },
+  "401909898|lebronjames|out": {
+   "game": "401909898",
+   "start": "2026-10-31T23:00Z",
+   "team": "3",
+   "name": "LeBron James",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-10-31T17:21:46.995Z",
+    "own": "2026-10-31T17:16:48.000Z",
+    "why": "@rotowirenba.bsky.social: LeBron James: Won't play Saturday \n\n https://www.rotow"
+   }
+  },
+  "401909899|jaylenbrown|q": {
+   "game": "401909899",
+   "start": "2026-11-01T00:00Z",
+   "team": "29",
+   "name": "Jaylen Brown",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-10-31T17:21:46.995Z",
+    "own": "2026-10-31T17:08:33.000Z",
+    "why": "@rotowirenba.bsky.social: Jaylen Brown: Questionable for Saturday \n\n https://www"
+   }
+  },
+  "401909899|joelembiid|out": {
+   "game": "401909899",
+   "start": "2026-11-01T00:00Z",
+   "team": "29",
+   "name": "Joel Embiid",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-10-31T17:21:46.995Z",
+    "own": "2026-10-31T17:12:28.000Z",
+    "why": "@rotowirenba.bsky.social: Joel Embiid: Ruled out for Saturday \n\n https://www.rot"
+   }
+  },
+  "401909899|lebronjames|out": {
+   "game": "401909899",
+   "start": "2026-11-01T00:00Z",
+   "team": "29",
+   "name": "LeBron James",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-10-31T17:21:46.995Z",
+    "own": "2026-10-31T17:16:48.000Z",
+    "why": "@rotowirenba.bsky.social: LeBron James: Won't play Saturday \n\n https://www.rotow"
+   }
+  },
+  "401909900|jaylenbrown|q": {
+   "game": "401909900",
+   "start": "2026-11-01T00:00Z",
+   "team": "15",
+   "name": "Jaylen Brown",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-10-31T17:21:46.995Z",
+    "own": "2026-10-31T17:08:33.000Z",
+    "why": "@rotowirenba.bsky.social: Jaylen Brown: Questionable for Saturday \n\n https://www"
+   }
+  },
+  "401909900|joelembiid|out": {
+   "game": "401909900",
+   "start": "2026-11-01T00:00Z",
+   "team": "15",
+   "name": "Joel Embiid",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-10-31T17:21:46.995Z",
+    "own": "2026-10-31T17:12:28.000Z",
+    "why": "@rotowirenba.bsky.social: Joel Embiid: Ruled out for Saturday \n\n https://www.rot"
+   }
+  },
+  "401909900|lebronjames|out": {
+   "game": "401909900",
+   "start": "2026-11-01T00:00Z",
+   "team": "15",
+   "name": "LeBron James",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-10-31T17:21:46.995Z",
+    "own": "2026-10-31T17:16:48.000Z",
+    "why": "@rotowirenba.bsky.social: LeBron James: Won't play Saturday \n\n https://www.rotow"
+   }
+  },
+  "401909901|jaylenbrown|q": {
+   "game": "401909901",
+   "start": "2026-11-01T00:00Z",
+   "team": "24",
+   "name": "Jaylen Brown",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-10-31T17:21:46.995Z",
+    "own": "2026-10-31T17:08:33.000Z",
+    "why": "@rotowirenba.bsky.social: Jaylen Brown: Questionable for Saturday \n\n https://www"
+   }
+  },
+  "401909901|joelembiid|out": {
+   "game": "401909901",
+   "start": "2026-11-01T00:00Z",
+   "team": "24",
+   "name": "Joel Embiid",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-10-31T17:21:46.995Z",
+    "own": "2026-10-31T17:12:28.000Z",
+    "why": "@rotowirenba.bsky.social: Joel Embiid: Ruled out for Saturday \n\n https://www.rot"
+   }
+  },
+  "401909901|lebronjames|out": {
+   "game": "401909901",
+   "start": "2026-11-01T00:00Z",
+   "team": "24",
+   "name": "LeBron James",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-10-31T17:21:46.995Z",
+    "own": "2026-10-31T17:16:48.000Z",
+    "why": "@rotowirenba.bsky.social: LeBron James: Won't play Saturday \n\n https://www.rotow"
+   }
+  },
+  "401909902|fredvanvleet|out": {
+   "game": "401909902",
+   "start": "2026-11-01T00:30Z",
+   "team": "10",
+   "name": "Fred VanVleet",
+   "status": "out",
+   "athlete": "2991230",
+   "espn": {
+    "seen": "2026-10-31T17:33:14.946Z",
+    "own": "2026-10-31T17:18:00.000Z"
+   }
+  },
+  "401909902|jaylenbrown|q": {
+   "game": "401909902",
+   "start": "2026-11-01T00:30Z",
+   "team": "10",
+   "name": "Jaylen Brown",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-10-31T17:21:46.995Z",
+    "own": "2026-10-31T17:08:33.000Z",
+    "why": "@rotowirenba.bsky.social: Jaylen Brown: Questionable for Saturday \n\n https://www"
+   }
+  },
+  "401909902|joelembiid|out": {
+   "game": "401909902",
+   "start": "2026-11-01T00:30Z",
+   "team": "10",
+   "name": "Joel Embiid",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-10-31T17:21:46.995Z",
+    "own": "2026-10-31T17:12:28.000Z",
+    "why": "@rotowirenba.bsky.social: Joel Embiid: Ruled out for Saturday \n\n https://www.rot"
+   }
+  },
+  "401909902|lebronjames|out": {
+   "game": "401909902",
+   "start": "2026-11-01T00:30Z",
+   "team": "10",
+   "name": "LeBron James",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-10-31T17:21:46.995Z",
+    "own": "2026-10-31T17:16:48.000Z",
+    "why": "@rotowirenba.bsky.social: LeBron James: Won't play Saturday \n\n https://www.rotow"
    }
   }
  }
