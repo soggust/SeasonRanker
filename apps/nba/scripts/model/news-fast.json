@@ -1,7 +1,7 @@
 {
  "sport": "nba",
  "cursor": {
-  "rotowirenba.bsky.social": "2026-10-31T23:06:12.000Z",
+  "rotowirenba.bsky.social": "2026-10-31T23:31:48.000Z",
   "insidenbanews.bsky.social": "2026-10-30T19:15:23.134Z",
   "shamsbot.bsky.social": "2026-10-31T15:48:10.000Z"
  },
@@ -6713,6 +6713,19 @@
    "kind": "return",
    "confidence": 0.9,
    "text": "Stephon Castle: Cleared to play versus Minnesota \n\n https://www.rotowire.com/basketball/player/stephon-castle-6250"
+  },
+  {
+   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mz7hckvohp2n|joanberinger|none|starting",
+   "at": "2026-10-31T23:31:48.000Z",
+   "seen": "2026-10-31T23:43:27.602Z",
+   "handle": "rotowirenba.bsky.social",
+   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mz7hckvohp2n",
+   "player": "Joan Beringer",
+   "team": null,
+   "status": "none",
+   "kind": "starting",
+   "confidence": 0.85,
+   "text": "Joan Beringer: Starting Saturday \n\n https://www.rotowire.com/basketball/player/joan-beringer-6576"
   }
  ]
 }
