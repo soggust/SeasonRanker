@@ -1,7 +1,7 @@
 {
  "sport": "nba",
  "cursor": {
-  "rotowirenba.bsky.social": "2026-10-31T18:09:47.000Z",
+  "rotowirenba.bsky.social": "2026-10-31T19:06:46.000Z",
   "insidenbanews.bsky.social": "2026-10-30T19:15:23.134Z",
   "shamsbot.bsky.social": "2026-10-31T15:48:10.000Z"
  },
@@ -6570,6 +6570,19 @@
    "kind": "status",
    "confidence": 0.9,
    "text": "Lauri Markkanen: Will play Saturday \n\n https://www.rotowire.com/basketball/player/lauri-markkanen-4119"
+  },
+  {
+   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mz6yheyup52c|stephoncastle|questionable|status",
+   "at": "2026-10-31T19:06:03.000Z",
+   "seen": "2026-10-31T19:07:11.690Z",
+   "handle": "rotowirenba.bsky.social",
+   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mz6yheyup52c",
+   "player": "Stephon Castle",
+   "team": "SAS",
+   "status": "questionable",
+   "kind": "status",
+   "confidence": 0.95,
+   "text": "Stephon Castle: Questionable for Saturday \n\n https://www.rotowire.com/basketball/player/stephon-castle-6250"
   }
  ]
 }

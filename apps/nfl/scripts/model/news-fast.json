@@ -1,13 +1,13 @@
 {
  "sport": "nfl",
  "cursor": {
-  "adamscheftermirror.bsky.social": "2026-10-31T18:19:03.275Z",
+  "adamscheftermirror.bsky.social": "2026-10-31T19:04:10.620Z",
   "rapsheet.bsky.social": "2026-10-30T23:50:45.295Z",
   "nflnewsreposterbot.bsky.social": "2026-10-30T22:57:34.763Z",
   "insidenflnews.bsky.social": "2026-10-31T15:14:44.147Z",
-  "nflnewsposter.bsky.social": "2026-10-31T18:26:38.403Z",
+  "nflnewsposter.bsky.social": "2026-10-31T18:59:26.891Z",
   "rotoworld-fb.bsky.social": "2026-10-31T17:12:15.000Z",
-  "rotowirenfl.bsky.social": "2026-10-31T17:10:05.000Z"
+  "rotowirenfl.bsky.social": "2026-10-31T18:57:00.000Z"
  },
  "claims": [
   {
@@ -10422,6 +10422,71 @@
    "kind": "return",
    "confidence": 0.85,
    "text": "[Rapoport] Raiders are expected to activate WR Jack Bech from Injured Reserve to play on Sunday against the Jets, source says. He’s been recovering from a fractured forearm. twitter.com/RapSheet/sta.."
+  },
+  {
+   "id": "at://did:plc:fuqjc7x4gxvnwzksnlxwbe4x/app.bsky.feed.post/3mz6xrzwr62o7|colstonloveland|active|status",
+   "at": "2026-10-31T18:54:07.568Z",
+   "seen": "2026-10-31T19:07:11.690Z",
+   "handle": "nflnewsposter.bsky.social",
+   "post": "at://did:plc:fuqjc7x4gxvnwzksnlxwbe4x/app.bsky.feed.post/3mz6xrzwr62o7",
+   "player": "Colston Loveland",
+   "team": "CHI",
+   "status": "active",
+   "kind": "status",
+   "confidence": 0.9,
+   "text": "[Schefter] Bears TE Colston Loveland has no injury designation for Monday night’s game; RB Kyle Monangai officially is out. twitter.com/AdamSchefter..."
+  },
+  {
+   "id": "at://did:plc:fuqjc7x4gxvnwzksnlxwbe4x/app.bsky.feed.post/3mz6xrzwr62o7|kylemonangai|out|status",
+   "at": "2026-10-31T18:54:07.568Z",
+   "seen": "2026-10-31T19:07:11.690Z",
+   "handle": "nflnewsposter.bsky.social",
+   "post": "at://did:plc:fuqjc7x4gxvnwzksnlxwbe4x/app.bsky.feed.post/3mz6xrzwr62o7",
+   "player": "Kyle Monangai",
+   "team": "CHI",
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.9,
+   "text": "[Schefter] Bears TE Colston Loveland has no injury designation for Monday night’s game; RB Kyle Monangai officially is out. twitter.com/AdamSchefter..."
+  },
+  {
+   "id": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3mz6xx6tix22m|colstonloveland|active|status",
+   "at": "2026-10-31T18:57:00.000Z",
+   "seen": "2026-10-31T19:07:11.690Z",
+   "handle": "rotowirenfl.bsky.social",
+   "post": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3mz6xx6tix22m",
+   "player": "Colston Loveland",
+   "team": "CHI",
+   "status": "active",
+   "kind": "status",
+   "confidence": 0.95,
+   "text": "Colston Loveland: Cleared for Monday Night Football \n\n https://www.rotowire.com/football/player/colston-loveland-18460"
+  },
+  {
+   "id": "at://did:plc:qre6zxbmr3ixhdmgsgdretb5/app.bsky.feed.post/3mz6ydzcjo42m|colstonloveland|active|status",
+   "at": "2026-10-31T19:04:10.620Z",
+   "seen": "2026-10-31T19:07:11.690Z",
+   "handle": "adamscheftermirror.bsky.social",
+   "post": "at://did:plc:qre6zxbmr3ixhdmgsgdretb5/app.bsky.feed.post/3mz6ydzcjo42m",
+   "player": "Colston Loveland",
+   "team": "CHI",
+   "status": "active",
+   "kind": "status",
+   "confidence": 0.85,
+   "text": "Bears TE Colston Loveland has no injury designation for Monday night’s game; RB Kyle Monangai officially is out.\n\nRepost of @BearsPR:\n\nOriginal post"
+  },
+  {
+   "id": "at://did:plc:qre6zxbmr3ixhdmgsgdretb5/app.bsky.feed.post/3mz6ydzcjo42m|kylemonangai|out|status",
+   "at": "2026-10-31T19:04:10.620Z",
+   "seen": "2026-10-31T19:07:11.690Z",
+   "handle": "adamscheftermirror.bsky.social",
+   "post": "at://did:plc:qre6zxbmr3ixhdmgsgdretb5/app.bsky.feed.post/3mz6ydzcjo42m",
+   "player": "Kyle Monangai",
+   "team": "CHI",
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.85,
+   "text": "Bears TE Colston Loveland has no injury designation for Monday night’s game; RB Kyle Monangai officially is out.\n\nRepost of @BearsPR:\n\nOriginal post"
   }
  ]
 }

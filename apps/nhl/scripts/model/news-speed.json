@@ -9468,6 +9468,30 @@
     "seen": "2026-10-31T18:31:52.043Z",
     "own": "2026-10-31T18:17:00.000Z"
    }
+  },
+  "401892619|andreburakovsky|out": {
+   "game": "401892619",
+   "start": "2026-10-31T20:00Z",
+   "team": "14",
+   "name": "Andre Burakovsky",
+   "status": "out",
+   "athlete": "3042044",
+   "espn": {
+    "seen": "2026-10-31T19:05:57.118Z",
+    "own": "2026-10-31T18:35:00.000Z"
+   }
+  },
+  "401892628|andreburakovsky|out": {
+   "game": "401892628",
+   "start": "2026-11-02T01:00Z",
+   "team": "14",
+   "name": "Andre Burakovsky",
+   "status": "out",
+   "athlete": "3042044",
+   "espn": {
+    "seen": "2026-10-31T19:05:57.118Z",
+    "own": "2026-10-31T18:35:00.000Z"
+   }
   }
  }
 }
