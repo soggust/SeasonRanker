@@ -3,6 +3,17 @@
  "days": 2,
  "signals": [
   {
+   "team": "24",
+   "abbr": "LAC",
+   "athlete": "3691739",
+   "player": "Derwin James Jr",
+   "kind": "return",
+   "direction": "down",
+   "confidence": 0.3,
+   "headline": "Derwin James placed on injured reserve after hamstring rehab setback",
+   "at": "2026-10-31T23:08:41.000Z"
+  },
+  {
    "team": "20",
    "abbr": "NYJ",
    "athlete": "4428617",
@@ -80,5 +91,5 @@
    "at": "2026-10-30T14:45:43.000Z"
   }
  ],
- "at": "2026-10-31T20:19:43.191Z"
+ "at": "2026-10-31T23:15:27.743Z"
 }

@@ -464,7 +464,9 @@
   "50336399": "2026-10-31",
   "50337296": "2026-10-31",
   "50338005": "2026-10-31",
-  "50339066": "2026-10-31"
+  "50339066": "2026-10-31",
+  "50340383": "2026-10-31",
+  "50340504": "2026-10-31"
  },
  "signals": [
   {
@@ -1890,6 +1892,21 @@
    "confidence": 0.3,
    "story": "50339066",
    "headline": "T'Vondre Sweat placed on injured reserve with knee injury",
+   "model": "claude-haiku-5-5"
+  },
+  {
+   "id": "50340504|24|3691739|return",
+   "day": "2026-10-31",
+   "at": "2026-10-31T23:08:41.000Z",
+   "team": "24",
+   "abbr": "LAC",
+   "athlete": "3691739",
+   "player": "Derwin James Jr",
+   "kind": "return",
+   "direction": "down",
+   "confidence": 0.3,
+   "story": "50340504",
+   "headline": "Derwin James placed on injured reserve after hamstring rehab setback",
    "model": "claude-haiku-5-5"
   }
  ]

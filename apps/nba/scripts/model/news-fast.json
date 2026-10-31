@@ -1,7 +1,7 @@
 {
  "sport": "nba",
  "cursor": {
-  "rotowirenba.bsky.social": "2026-10-31T21:24:40.000Z",
+  "rotowirenba.bsky.social": "2026-10-31T23:06:12.000Z",
   "insidenbanews.bsky.social": "2026-10-30T19:15:23.134Z",
   "shamsbot.bsky.social": "2026-10-31T15:48:10.000Z"
  },
@@ -6674,6 +6674,45 @@
    "kind": "status",
    "confidence": 0.9,
    "text": "Dejounte Murray: Ruled out Saturday \n\n https://www.rotowire.com/basketball/player/dejounte-murray-3856"
+  },
+  {
+   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mz7d6vnrz422|rudygobert|out|status",
+   "at": "2026-10-31T22:18:10.000Z",
+   "seen": "2026-10-31T23:15:27.743Z",
+   "handle": "rotowirenba.bsky.social",
+   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mz7d6vnrz422",
+   "player": "Rudy Gobert",
+   "team": null,
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.95,
+   "text": "Rudy Gobert: Won't play Saturday \n\n https://www.rotowire.com/basketball/player/rudy-gobert-3440"
+  },
+  {
+   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mz7f474bta2q|marcussmart|active|starting",
+   "at": "2026-10-31T22:52:27.000Z",
+   "seen": "2026-10-31T23:15:27.743Z",
+   "handle": "rotowirenba.bsky.social",
+   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mz7f474bta2q",
+   "player": "Marcus Smart",
+   "team": null,
+   "status": "active",
+   "kind": "starting",
+   "confidence": 0.9,
+   "text": "Marcus Smart: Starting Saturday \n\n https://www.rotowire.com/basketball/player/marcus-smart-3575"
+  },
+  {
+   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mz7fusl47j27|stephoncastle|active|return",
+   "at": "2026-10-31T23:06:12.000Z",
+   "seen": "2026-10-31T23:15:27.743Z",
+   "handle": "rotowirenba.bsky.social",
+   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mz7fusl47j27",
+   "player": "Stephon Castle",
+   "team": null,
+   "status": "active",
+   "kind": "return",
+   "confidence": 0.9,
+   "text": "Stephon Castle: Cleared to play versus Minnesota \n\n https://www.rotowire.com/basketball/player/stephon-castle-6250"
   }
  ]
 }
