@@ -1,12 +1,12 @@
 {
  "sport": "nfl",
  "cursor": {
-  "adamscheftermirror.bsky.social": "2026-10-31T13:39:11.080Z",
+  "adamscheftermirror.bsky.social": "2026-10-31T13:53:59.004Z",
   "rapsheet.bsky.social": "2026-10-30T23:50:45.295Z",
   "nflnewsreposterbot.bsky.social": "2026-10-30T22:57:34.763Z",
   "insidenflnews.bsky.social": "2026-10-31T13:30:17.899Z",
   "nflnewsposter.bsky.social": "2026-10-31T05:10:20.863Z",
-  "rotoworld-fb.bsky.social": "2026-10-31T13:34:12.000Z",
+  "rotoworld-fb.bsky.social": "2026-10-31T13:42:39.000Z",
   "rotowirenfl.bsky.social": "2026-10-31T12:03:45.000Z"
  },
  "claims": [
@@ -10214,6 +10214,19 @@
    "kind": "return",
    "confidence": 0.3,
    "text": "Repost by @AdamSchefter\n\nSources: The #Packers and star Micah Parsons are targeting a Thanksgiving Eve return to the field in the showdown against the #Rams. The full story:\n\nClick to see original rep"
+  },
+  {
+   "id": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3mz6gf44c6o24|micahparsons|none|return",
+   "at": "2026-10-31T13:42:39.000Z",
+   "seen": "2026-10-31T14:02:41.461Z",
+   "handle": "rotoworld-fb.bsky.social",
+   "post": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3mz6gf44c6o24",
+   "player": "Micah Parsons",
+   "team": null,
+   "status": "none",
+   "kind": "return",
+   "confidence": 0.6,
+   "text": "Pelissero: Micah Parsons (knee) to practice next week"
   }
  ]
 }
