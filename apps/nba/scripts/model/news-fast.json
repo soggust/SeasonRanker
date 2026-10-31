@@ -1,7 +1,7 @@
 {
  "sport": "nba",
  "cursor": {
-  "rotowirenba.bsky.social": "2026-10-31T18:03:51.000Z",
+  "rotowirenba.bsky.social": "2026-10-31T18:09:47.000Z",
   "insidenbanews.bsky.social": "2026-10-30T19:15:23.134Z",
   "shamsbot.bsky.social": "2026-10-31T15:48:10.000Z"
  },
@@ -6557,6 +6557,19 @@
    "kind": "starting",
    "confidence": 0.95,
    "text": "Scoot Henderson: Starting Saturday \n\n https://www.rotowire.com/basketball/player/scoot-henderson-5377"
+  },
+  {
+   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mz6vcqzmtz2g|laurimarkkanen|active|status",
+   "at": "2026-10-31T18:09:47.000Z",
+   "seen": "2026-10-31T18:24:58.856Z",
+   "handle": "rotowirenba.bsky.social",
+   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mz6vcqzmtz2g",
+   "player": "Lauri Markkanen",
+   "team": null,
+   "status": "active",
+   "kind": "status",
+   "confidence": 0.9,
+   "text": "Lauri Markkanen: Will play Saturday \n\n https://www.rotowire.com/basketball/player/lauri-markkanen-4119"
   }
  ]
 }

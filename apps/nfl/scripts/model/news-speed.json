@@ -9593,6 +9593,11 @@
    "espn": {
     "seen": "2026-10-27T00:08:39.754Z",
     "own": "2026-10-21T00:30:00.000Z"
+   },
+   "bluesky": {
+    "seen": "2026-10-31T17:21:46.995Z",
+    "own": "2026-10-31T17:10:45.189Z",
+    "why": "@nflnewsposter.bsky.social: [Patriots] Patriots downgrade A.J. Brown, TreVeyon H"
    }
   },
   "401873035|marcusmariota|q": {
@@ -14952,6 +14957,11 @@
    "espn": {
     "seen": "2026-10-31T17:08:44.394Z",
     "own": "2026-10-31T17:04:00.000Z"
+   },
+   "bluesky": {
+    "seen": "2026-10-31T17:21:46.995Z",
+    "own": "2026-10-31T17:13:59.912Z",
+    "why": "@adamscheftermirror.bsky.social: Patriots downgrade A.J. Brown and TreVeyon Hend"
    }
   },
   "401873034|treveyonhenderson|out": {
@@ -14964,6 +14974,23 @@
    "espn": {
     "seen": "2026-10-31T17:18:49.400Z",
     "own": "2026-10-30T20:43:00.000Z"
+   },
+   "bluesky": {
+    "seen": "2026-10-31T17:21:46.995Z",
+    "own": "2026-10-31T17:13:59.912Z",
+    "why": "@adamscheftermirror.bsky.social: Patriots downgrade A.J. Brown and TreVeyon Hend"
+   }
+  },
+  "401873024|pjlocke|q": {
+   "game": "401873024",
+   "start": "2026-11-01T18:00Z",
+   "team": "6",
+   "name": "P.J. Locke",
+   "status": "q",
+   "athlete": "3929850",
+   "espn": {
+    "seen": "2026-10-31T18:22:42.640Z",
+    "own": "2026-10-31T18:15:00.000Z"
    }
   }
  }

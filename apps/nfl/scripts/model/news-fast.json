@@ -1,11 +1,11 @@
 {
  "sport": "nfl",
  "cursor": {
-  "adamscheftermirror.bsky.social": "2026-10-31T17:14:01.960Z",
+  "adamscheftermirror.bsky.social": "2026-10-31T18:19:03.275Z",
   "rapsheet.bsky.social": "2026-10-30T23:50:45.295Z",
   "nflnewsreposterbot.bsky.social": "2026-10-30T22:57:34.763Z",
   "insidenflnews.bsky.social": "2026-10-31T15:14:44.147Z",
-  "nflnewsposter.bsky.social": "2026-10-31T17:25:19.503Z",
+  "nflnewsposter.bsky.social": "2026-10-31T18:17:29.737Z",
   "rotoworld-fb.bsky.social": "2026-10-31T17:12:15.000Z",
   "rotowirenfl.bsky.social": "2026-10-31T17:10:05.000Z"
  },
@@ -10370,6 +10370,45 @@
    "kind": "status",
    "confidence": 0.95,
    "text": "Patriots downgrade A.J. Brown and TreVeyon Henderson to out for Sunday’s game versus the Dolphins.\n\nOriginal post"
+  },
+  {
+   "id": "at://did:plc:fuqjc7x4gxvnwzksnlxwbe4x/app.bsky.feed.post/3mz6vqjwbtco7|tvondresweat|out|status",
+   "at": "2026-10-31T18:17:29.737Z",
+   "seen": "2026-10-31T18:24:58.856Z",
+   "handle": "nflnewsposter.bsky.social",
+   "post": "at://did:plc:fuqjc7x4gxvnwzksnlxwbe4x/app.bsky.feed.post/3mz6vqjwbtco7",
+   "player": "T'Vondre Sweat",
+   "team": "NYJ",
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.95,
+   "text": "[Parkinson] Jets are placing DT T'Vondre Sweat on IR and signing DT Payton Page to the active roster. Sweat will have the ability to return later in the season.\n\nThey’re also elevating OL Brant Banks "
+  },
+  {
+   "id": "at://did:plc:qre6zxbmr3ixhdmgsgdretb5/app.bsky.feed.post/3mz6vtd7smh2n|ajbrown|out|status",
+   "at": "2026-10-31T18:19:03.275Z",
+   "seen": "2026-10-31T18:24:58.856Z",
+   "handle": "adamscheftermirror.bsky.social",
+   "post": "at://did:plc:qre6zxbmr3ixhdmgsgdretb5/app.bsky.feed.post/3mz6vtd7smh2n",
+   "player": "A.J. Brown",
+   "team": "NE",
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.95,
+   "text": "More about the Patriots ruling out WR A.J. Brown and RB TreVeyon Henderson for Sunday’s game vs. the Dolphins, via @MikeReiss:\n\nOriginal post"
+  },
+  {
+   "id": "at://did:plc:qre6zxbmr3ixhdmgsgdretb5/app.bsky.feed.post/3mz6vtd7smh2n|treveyonhenderson|out|status",
+   "at": "2026-10-31T18:19:03.275Z",
+   "seen": "2026-10-31T18:24:58.856Z",
+   "handle": "adamscheftermirror.bsky.social",
+   "post": "at://did:plc:qre6zxbmr3ixhdmgsgdretb5/app.bsky.feed.post/3mz6vtd7smh2n",
+   "player": "TreVeyon Henderson",
+   "team": "NE",
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.95,
+   "text": "More about the Patriots ruling out WR A.J. Brown and RB TreVeyon Henderson for Sunday’s game vs. the Dolphins, via @MikeReiss:\n\nOriginal post"
   }
  ]
 }

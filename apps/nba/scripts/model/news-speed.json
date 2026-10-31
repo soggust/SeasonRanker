@@ -18817,6 +18817,18 @@
     "own": "2026-10-31T17:25:37.000Z",
     "why": "@rotowirenba.bsky.social: Jabari Walker: Questionable for Saturday \n\n https://ww"
    }
+  },
+  "401909901|rudygobert|q": {
+   "game": "401909901",
+   "start": "2026-11-01T00:00Z",
+   "team": "16",
+   "name": "Rudy Gobert",
+   "status": "q",
+   "athlete": "3032976",
+   "espn": {
+    "seen": "2026-10-31T18:23:35.230Z",
+    "own": "2026-10-31T18:03:00.000Z"
+   }
   }
  }
 }
