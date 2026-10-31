@@ -3,7 +3,7 @@
  "cursor": {
   "johnston-bot.bsky.social": "2026-10-30T22:59:57.743Z",
   "notfriedgehnic.bsky.social": "2026-10-30T18:08:35.141Z",
-  "dailyfaceoff.bsky.social": "2026-10-31T00:08:46.000Z",
+  "dailyfaceoff.bsky.social": "2026-10-31T00:36:07.000Z",
   "dfotoronto.bsky.social": "2026-10-30T23:54:50.000Z",
   "marklazerus.bsky.social": "2026-10-30T02:42:48.767Z"
  },
@@ -1294,6 +1294,19 @@
    "kind": "status",
    "confidence": 0.95,
    "text": "Canucks place Filip Chytil on injured reserve, Jacob Quillan recalled"
+  },
+  {
+   "id": "at://did:plc:3uus7y6h3rlrk6sbctzxm4bg/app.bsky.feed.post/3mz52go5bls2q|haydenhodgson|out|status",
+   "at": "2026-10-31T00:36:07.000Z",
+   "seen": "2026-10-31T00:46:02.806Z",
+   "handle": "dailyfaceoff.bsky.social",
+   "post": "at://did:plc:3uus7y6h3rlrk6sbctzxm4bg/app.bsky.feed.post/3mz52go5bls2q",
+   "player": "Hayden Hodgson",
+   "team": null,
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.9,
+   "text": "Hayden Hodgson has been suspended two games for boarding Brandt Clarke"
   }
  ]
 }
