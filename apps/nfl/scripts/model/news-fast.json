@@ -1,7 +1,7 @@
 {
  "sport": "nfl",
  "cursor": {
-  "adamscheftermirror.bsky.social": "2026-10-31T19:18:56.029Z",
+  "adamscheftermirror.bsky.social": "2026-10-31T19:34:00.388Z",
   "rapsheet.bsky.social": "2026-10-31T19:21:57.682Z",
   "nflnewsreposterbot.bsky.social": "2026-10-30T22:57:34.763Z",
   "insidenflnews.bsky.social": "2026-10-31T15:14:44.147Z",
@@ -10565,6 +10565,45 @@
    "kind": "status",
    "confidence": 0.6,
    "text": "[Schefter] Rams activated K Joshua Karty from their practice squad. twitter.com/AdamSchefter..."
+  },
+  {
+   "id": "at://did:plc:qre6zxbmr3ixhdmgsgdretb5/app.bsky.feed.post/3mz6zzbhtdq2z|joshuakarty|active|status",
+   "at": "2026-10-31T19:33:57.736Z",
+   "seen": "2026-10-31T19:52:45.727Z",
+   "handle": "adamscheftermirror.bsky.social",
+   "post": "at://did:plc:qre6zxbmr3ixhdmgsgdretb5/app.bsky.feed.post/3mz6zzbhtdq2z",
+   "player": "Joshua Karty",
+   "team": "LAR",
+   "status": "active",
+   "kind": "status",
+   "confidence": 0.5,
+   "text": "Rams activated K Joshua Karty from their practice squad.\n\nOriginal post"
+  },
+  {
+   "id": "at://did:plc:qre6zxbmr3ixhdmgsgdretb5/app.bsky.feed.post/3mz6zzdwtkx2f|mansoordelane|out|status",
+   "at": "2026-10-31T19:34:00.388Z",
+   "seen": "2026-10-31T19:52:45.727Z",
+   "handle": "adamscheftermirror.bsky.social",
+   "post": "at://did:plc:qre6zxbmr3ixhdmgsgdretb5/app.bsky.feed.post/3mz6zzdwtkx2f",
+   "player": "Mansoor Delane",
+   "team": "KC",
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.95,
+   "text": "Chiefs downgraded CB Mansoor Delane to out for Sunday’s game in Denver due to a shoulder injury. Chiefs also placed CB L’Jarius Sneed on injured reserve.\n\nOriginal post"
+  },
+  {
+   "id": "at://did:plc:qre6zxbmr3ixhdmgsgdretb5/app.bsky.feed.post/3mz6zzdwtkx2f|ljariussneed|out|status",
+   "at": "2026-10-31T19:34:00.388Z",
+   "seen": "2026-10-31T19:52:45.727Z",
+   "handle": "adamscheftermirror.bsky.social",
+   "post": "at://did:plc:qre6zxbmr3ixhdmgsgdretb5/app.bsky.feed.post/3mz6zzdwtkx2f",
+   "player": "L'Jarius Sneed",
+   "team": "KC",
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.95,
+   "text": "Chiefs downgraded CB Mansoor Delane to out for Sunday’s game in Denver due to a shoulder injury. Chiefs also placed CB L’Jarius Sneed on injured reserve.\n\nOriginal post"
   }
  ]
 }

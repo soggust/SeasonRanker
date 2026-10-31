@@ -1,7 +1,7 @@
 {
  "sport": "nba",
  "cursor": {
-  "rotowirenba.bsky.social": "2026-10-31T19:06:46.000Z",
+  "rotowirenba.bsky.social": "2026-10-31T19:51:30.000Z",
   "insidenbanews.bsky.social": "2026-10-30T19:15:23.134Z",
   "shamsbot.bsky.social": "2026-10-31T15:48:10.000Z"
  },
@@ -6583,6 +6583,32 @@
    "kind": "status",
    "confidence": 0.95,
    "text": "Stephon Castle: Questionable for Saturday \n\n https://www.rotowire.com/basketball/player/stephon-castle-6250"
+  },
+  {
+   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mz72txehyr24|stephencurry|out|status",
+   "at": "2026-10-31T19:48:53.000Z",
+   "seen": "2026-10-31T19:52:45.727Z",
+   "handle": "rotowirenba.bsky.social",
+   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mz72txehyr24",
+   "player": "Stephen Curry",
+   "team": "GS",
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.95,
+   "text": "Stephen Curry: Ruled out for Sunday \n\n https://www.rotowire.com/basketball/player/stephen-curry-3014"
+  },
+  {
+   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mz72ynjsj224|draymondgreen|out|status",
+   "at": "2026-10-31T19:51:30.000Z",
+   "seen": "2026-10-31T19:52:45.727Z",
+   "handle": "rotowirenba.bsky.social",
+   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mz72ynjsj224",
+   "player": "Draymond Green",
+   "team": "GS",
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.93,
+   "text": "Draymond Green: Won't play Sunday \n\n https://www.rotowire.com/basketball/player/draymond-green-3299"
   }
  ]
 }
