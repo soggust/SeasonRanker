@@ -3,6 +3,17 @@
  "days": 2,
  "signals": [
   {
+   "team": "14",
+   "abbr": "OTT",
+   "athlete": "3150479",
+   "player": "Hayden Hodgson",
+   "kind": "benched",
+   "direction": "down",
+   "confidence": 0.6,
+   "headline": "Ottawa Senators F Hayden Hodgson suspended by NHL's Department of Player Safety",
+   "at": "2026-10-31T01:45:39.000Z"
+  },
+  {
    "team": "6",
    "abbr": "EDM",
    "athlete": null,
@@ -58,5 +69,5 @@
    "at": "2026-10-29T17:49:06.000Z"
   }
  ],
- "at": "2026-10-30T20:00:12.216Z"
+ "at": "2026-10-31T02:32:58.349Z"
 }

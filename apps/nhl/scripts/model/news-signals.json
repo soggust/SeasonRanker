@@ -91,7 +91,8 @@
   "50324792": "2026-10-30",
   "50325135": "2026-10-30",
   "50329679": "2026-10-30",
-  "50331644": "2026-10-30"
+  "50331644": "2026-10-30",
+  "50332490": "2026-10-31"
  },
  "signals": [
   {
@@ -302,6 +303,21 @@
    "confidence": 0.4,
    "story": "50329679",
    "headline": "Oilers take accountability message from coach Mike Babcock's healthy scratches",
+   "model": "claude-haiku-5-5"
+  },
+  {
+   "id": "50332490|14|3150479|benched",
+   "day": "2026-10-31",
+   "at": "2026-10-31T01:45:39.000Z",
+   "team": "14",
+   "abbr": "OTT",
+   "athlete": "3150479",
+   "player": "Hayden Hodgson",
+   "kind": "benched",
+   "direction": "down",
+   "confidence": 0.6,
+   "story": "50332490",
+   "headline": "Ottawa Senators F Hayden Hodgson suspended by NHL's Department of Player Safety",
    "model": "claude-haiku-5-5"
   }
  ]
