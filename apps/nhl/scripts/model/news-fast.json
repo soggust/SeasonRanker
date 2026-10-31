@@ -3,8 +3,8 @@
  "cursor": {
   "johnston-bot.bsky.social": "2026-10-30T22:59:57.743Z",
   "notfriedgehnic.bsky.social": "2026-10-31T01:35:45.073Z",
-  "dailyfaceoff.bsky.social": "2026-10-31T14:04:05.000Z",
-  "dfotoronto.bsky.social": "2026-10-31T15:44:42.000Z",
+  "dailyfaceoff.bsky.social": "2026-10-31T16:00:26.000Z",
+  "dfotoronto.bsky.social": "2026-10-31T16:09:45.000Z",
   "marklazerus.bsky.social": "2026-10-31T00:50:34.520Z"
  },
  "claims": [
@@ -1307,6 +1307,19 @@
    "kind": "status",
    "confidence": 0.9,
    "text": "Hayden Hodgson has been suspended two games for boarding Brandt Clarke"
+  },
+  {
+   "id": "at://did:plc:3uus7y6h3rlrk6sbctzxm4bg/app.bsky.feed.post/3mz6o2kkfvp2c|mikematheson|out|status",
+   "at": "2026-10-31T15:59:55.000Z",
+   "seen": "2026-10-31T16:15:31.485Z",
+   "handle": "dailyfaceoff.bsky.social",
+   "post": "at://did:plc:3uus7y6h3rlrk6sbctzxm4bg/app.bsky.feed.post/3mz6o2kkfvp2c",
+   "player": "Mike Matheson",
+   "team": "MTL",
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.95,
+   "text": "Canadiens’ Mike Matheson out two weeks with lower-body injury"
   }
  ]
 }
