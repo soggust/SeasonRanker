@@ -463,7 +463,8 @@
   "50335391": "2026-10-31",
   "50336399": "2026-10-31",
   "50337296": "2026-10-31",
-  "50338005": "2026-10-31"
+  "50338005": "2026-10-31",
+  "50339066": "2026-10-31"
  },
  "signals": [
   {
@@ -1874,6 +1875,21 @@
    "confidence": 0.6,
    "story": "50335391",
    "headline": "Sources: Packers, Micah Parsons target return for Thanksgiving Eve game vs. Rams",
+   "model": "claude-haiku-5-5"
+  },
+  {
+   "id": "50339066|20|4428617|return",
+   "day": "2026-10-31",
+   "at": "2026-10-31T20:16:54.000Z",
+   "team": "20",
+   "abbr": "NYJ",
+   "athlete": "4428617",
+   "player": "T'Vondre Sweat",
+   "kind": "return",
+   "direction": "down",
+   "confidence": 0.3,
+   "story": "50339066",
+   "headline": "T'Vondre Sweat placed on injured reserve with knee injury",
    "model": "claude-haiku-5-5"
   }
  ]

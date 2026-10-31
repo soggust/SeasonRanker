@@ -3,6 +3,17 @@
  "days": 2,
  "signals": [
   {
+   "team": "20",
+   "abbr": "NYJ",
+   "athlete": "4428617",
+   "player": "T'Vondre Sweat",
+   "kind": "return",
+   "direction": "down",
+   "confidence": 0.3,
+   "headline": "T'Vondre Sweat placed on injured reserve with knee injury",
+   "at": "2026-10-31T20:16:54.000Z"
+  },
+  {
    "team": "9",
    "abbr": "GB",
    "athlete": "4361423",
@@ -69,5 +80,5 @@
    "at": "2026-10-30T14:45:43.000Z"
   }
  ],
- "at": "2026-10-31T13:19:38.785Z"
+ "at": "2026-10-31T20:19:43.191Z"
 }

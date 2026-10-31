@@ -1,13 +1,13 @@
 {
  "sport": "nfl",
  "cursor": {
-  "adamscheftermirror.bsky.social": "2026-10-31T19:34:00.388Z",
+  "adamscheftermirror.bsky.social": "2026-10-31T20:03:59.627Z",
   "rapsheet.bsky.social": "2026-10-31T19:21:57.682Z",
   "nflnewsreposterbot.bsky.social": "2026-10-30T22:57:34.763Z",
   "insidenflnews.bsky.social": "2026-10-31T15:14:44.147Z",
-  "nflnewsposter.bsky.social": "2026-10-31T19:23:55.353Z",
+  "nflnewsposter.bsky.social": "2026-10-31T20:06:49.170Z",
   "rotoworld-fb.bsky.social": "2026-10-31T19:16:32.000Z",
-  "rotowirenfl.bsky.social": "2026-10-31T18:57:00.000Z"
+  "rotowirenfl.bsky.social": "2026-10-31T20:18:44.000Z"
  },
  "claims": [
   {
@@ -10604,6 +10604,45 @@
    "kind": "status",
    "confidence": 0.95,
    "text": "Chiefs downgraded CB Mansoor Delane to out for Sunday’s game in Denver due to a shoulder injury. Chiefs also placed CB L’Jarius Sneed on injured reserve.\n\nOriginal post"
+  },
+  {
+   "id": "at://did:plc:fuqjc7x4gxvnwzksnlxwbe4x/app.bsky.feed.post/3mz73krwesco7|derwinjames|out|status",
+   "at": "2026-10-31T20:01:39.253Z",
+   "seen": "2026-10-31T20:19:43.191Z",
+   "handle": "nflnewsposter.bsky.social",
+   "post": "at://did:plc:fuqjc7x4gxvnwzksnlxwbe4x/app.bsky.feed.post/3mz73krwesco7",
+   "player": "Derwin James Jr.",
+   "team": "LAC",
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.97,
+   "text": "[Chargers] Los Angeles Chargers Place Derwin James Jr. on Injured Reserve www.chargers.com/news/place-d..."
+  },
+  {
+   "id": "at://did:plc:qre6zxbmr3ixhdmgsgdretb5/app.bsky.feed.post/3mz73or3omx2p|derwinjames|out|status",
+   "at": "2026-10-31T20:03:52.496Z",
+   "seen": "2026-10-31T20:19:43.191Z",
+   "handle": "adamscheftermirror.bsky.social",
+   "post": "at://did:plc:qre6zxbmr3ixhdmgsgdretb5/app.bsky.feed.post/3mz73or3omx2p",
+   "player": "Derwin James Jr.",
+   "team": "LAC",
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.97,
+   "text": "Chargers placed S Derwin James Jr on injured reserve.\n\nOriginal post"
+  },
+  {
+   "id": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3mz74je6vkk2s|rjharvey|out|status",
+   "at": "2026-10-31T20:18:44.000Z",
+   "seen": "2026-10-31T20:19:43.191Z",
+   "handle": "rotowirenfl.bsky.social",
+   "post": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3mz74je6vkk2s",
+   "player": "RJ Harvey",
+   "team": null,
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.93,
+   "text": "RJ Harvey: Lands on injured reserve \n\n https://www.rotowire.com/football/player/rj-harvey-18522"
   }
  ]
 }
