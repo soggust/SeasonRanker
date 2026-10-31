@@ -17683,6 +17683,155 @@
     "seen": "2026-10-31T01:05:46.226Z",
     "own": "2026-10-30T20:51:00.000Z"
    }
+  },
+  "401909901|tobiasharris|out": {
+   "game": "401909901",
+   "start": "2026-11-01T00:00Z",
+   "team": "24",
+   "name": "Tobias Harris",
+   "status": "out",
+   "athlete": "6440",
+   "espn": {
+    "seen": "2026-10-31T01:42:01.352Z",
+    "own": "2026-10-30T21:44:00.000Z"
+   },
+   "bluesky": {
+    "seen": "2026-10-30T21:46:53.069Z",
+    "own": "2026-10-30T21:44:00.000Z",
+    "why": "@rotowirenba.bsky.social: Tobias Harris: Remains out Saturday \n\n https://www.rot"
+   }
+  },
+  "401909901|jaydenquaintance|out": {
+   "game": "401909901",
+   "start": "2026-11-01T00:00Z",
+   "team": "24",
+   "name": "Jayden Quaintance",
+   "status": "out",
+   "athlete": "5101845",
+   "espn": {
+    "seen": "2026-10-31T01:42:01.352Z",
+    "own": "2026-10-05T21:43:00.000Z"
+   }
+  },
+  "401909901|jamorant|out": {
+   "game": "401909901",
+   "start": "2026-11-01T00:00Z",
+   "team": "24",
+   "name": "Ja Morant",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-10-30T19:23:48.542Z",
+    "own": "2026-10-30T19:15:23.134Z",
+    "why": "@insidenbanews.bsky.social: 🚨 Shams: Ja Morant to miss at least 4 weeks with Gr"
+   }
+  },
+  "401909901|jaylenbrown|out": {
+   "game": "401909901",
+   "start": "2026-11-01T00:00Z",
+   "team": "24",
+   "name": "Jaylen Brown",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-10-30T23:13:40.908Z",
+    "own": "2026-10-30T21:50:01.000Z",
+    "why": "@rotowirenba.bsky.social: Jaylen Brown: Downgraded to out \n\n https://www.rotowir"
+   }
+  },
+  "401909901|guisantos|q": {
+   "game": "401909901",
+   "start": "2026-11-01T00:00Z",
+   "team": "24",
+   "name": "Gui Santos",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-10-30T20:42:19.301Z",
+    "own": "2026-10-30T20:37:25.000Z",
+    "why": "@rotowirenba.bsky.social: Gui Santos: Now questionable \n\n https://www.rotowire.c"
+   }
+  },
+  "401909901|jaylontyson|out": {
+   "game": "401909901",
+   "start": "2026-11-01T00:00Z",
+   "team": "24",
+   "name": "Jaylon Tyson",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-10-30T21:03:24.984Z",
+    "own": "2026-10-30T20:52:11.000Z",
+    "why": "@rotowirenba.bsky.social: Jaylon Tyson: Ruled out for Saturday \n\n https://www.ro"
+   }
+  },
+  "401909901|ajdybantsa|q": {
+   "game": "401909901",
+   "start": "2026-11-01T00:00Z",
+   "team": "24",
+   "name": "AJ Dybantsa",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-10-30T21:46:53.069Z",
+    "own": "2026-10-30T21:33:20.000Z",
+    "why": "@rotowirenba.bsky.social: AJ Dybantsa: Will remain limited Friday \n\n https://www"
+   }
+  },
+  "401909901|chetholmgren|out": {
+   "game": "401909901",
+   "start": "2026-11-01T00:00Z",
+   "team": "24",
+   "name": "Chet Holmgren",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-10-30T23:13:40.908Z",
+    "own": "2026-10-30T22:25:59.000Z",
+    "why": "@rotowirenba.bsky.social: Chet Holmgren: Remains out for Saturday \n\n https://www"
+   }
+  },
+  "401909901|alperensengun|out": {
+   "game": "401909901",
+   "start": "2026-11-01T00:00Z",
+   "team": "24",
+   "name": "Alperen Sengun",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-10-30T23:13:40.908Z",
+    "own": "2026-10-30T22:39:02.000Z",
+    "why": "@rotowirenba.bsky.social: Alperen Sengun: Ruled out Friday \n\n https://www.rotowi"
+   }
+  },
+  "401909901|laurimarkkanen|q": {
+   "game": "401909901",
+   "start": "2026-11-01T00:00Z",
+   "team": "24",
+   "name": "Lauri Markkanen",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-10-30T23:13:40.908Z",
+    "own": "2026-10-30T23:13:31.000Z",
+    "why": "@rotowirenba.bsky.social: Lauri Markkanen: Questionable versus Portland \n\n https"
+   }
+  },
+  "401909901|anthonyedwards|out": {
+   "game": "401909901",
+   "start": "2026-11-01T00:00Z",
+   "team": "16",
+   "name": "Anthony Edwards",
+   "status": "out",
+   "athlete": "4594268",
+   "espn": {
+    "seen": "2026-10-31T01:42:01.352Z",
+    "own": "2026-10-29T18:33:00.000Z"
+   }
+  },
+  "401909901|dontedivincenzo|out": {
+   "game": "401909901",
+   "start": "2026-11-01T00:00Z",
+   "team": "16",
+   "name": "Donte DiVincenzo",
+   "status": "out",
+   "athlete": "3934673",
+   "espn": {
+    "seen": "2026-10-31T01:42:01.352Z",
+    "own": "2026-10-05T20:53:00.000Z"
+   }
   }
  }
 }
