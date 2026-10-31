@@ -2,7 +2,7 @@
  "sport": "nfl",
  "cursor": {
   "adamscheftermirror.bsky.social": "2026-10-30T21:18:53.080Z",
-  "rapsheet.bsky.social": "2026-10-30T19:06:00.608Z",
+  "rapsheet.bsky.social": "2026-10-30T23:50:45.295Z",
   "nflnewsreposterbot.bsky.social": "2026-10-30T22:57:34.763Z",
   "insidenflnews.bsky.social": "2026-10-30T23:11:22.760Z",
   "nflnewsposter.bsky.social": "2026-10-30T23:00:34.518Z",
@@ -10188,6 +10188,19 @@
    "kind": "status",
    "confidence": 0.9,
    "text": "Zach Charbonnet: Practices in limited capacity \n\n https://www.rotowire.com/football/player/zach-charbonnet-16897"
+  },
+  {
+   "id": "at://did:plc:hlvr2omhnmvdmfnvmcuhyevz/app.bsky.feed.post/3mz4xvjpqrk2y|daronpayne|out|status",
+   "at": "2026-10-30T23:50:45.295Z",
+   "seen": "2026-10-31T00:03:35.121Z",
+   "handle": "rapsheet.bsky.social",
+   "post": "at://did:plc:hlvr2omhnmvdmfnvmcuhyevz/app.bsky.feed.post/3mz4xvjpqrk2y",
+   "player": "Daron Payne",
+   "team": "WAS",
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.8,
+   "text": "Commanders standout DT Daron Payne suffered a significant foot injury today in practice that will knock him out for the foreseeable future and likely land him IR, sources tell me and Mike Garafolo.\n\nP"
   }
  ]
 }
