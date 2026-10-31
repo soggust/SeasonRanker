@@ -3,6 +3,17 @@
  "days": 2,
  "signals": [
   {
+   "team": "9",
+   "abbr": "GB",
+   "athlete": "4361423",
+   "player": "Micah Parsons",
+   "kind": "return",
+   "direction": "up",
+   "confidence": 0.6,
+   "headline": "Sources: Packers, Micah Parsons target return for Thanksgiving Eve game vs. Rams",
+   "at": "2026-10-31T13:14:27.000Z"
+  },
+  {
    "team": "29",
    "abbr": "CAR",
    "athlete": null,
@@ -58,5 +69,5 @@
    "at": "2026-10-30T14:45:43.000Z"
   }
  ],
- "at": "2026-10-30T21:03:24.984Z"
+ "at": "2026-10-31T13:19:38.785Z"
 }

@@ -459,7 +459,8 @@
   "50331651": "2026-10-31",
   "50331710": "2026-10-31",
   "50332073": "2026-10-31",
-  "50333636": "2026-10-31"
+  "50333636": "2026-10-31",
+  "50335391": "2026-10-31"
  },
  "signals": [
   {
@@ -1855,6 +1856,21 @@
    "confidence": 0.85,
    "story": "50329806",
    "headline": "With 10 games left and Ejiro Evero out, what's next for Panthers' defense?",
+   "model": "claude-haiku-5-5"
+  },
+  {
+   "id": "50335391|9|4361423|return",
+   "day": "2026-10-31",
+   "at": "2026-10-31T13:14:27.000Z",
+   "team": "9",
+   "abbr": "GB",
+   "athlete": "4361423",
+   "player": "Micah Parsons",
+   "kind": "return",
+   "direction": "up",
+   "confidence": 0.6,
+   "story": "50335391",
+   "headline": "Sources: Packers, Micah Parsons target return for Thanksgiving Eve game vs. Rams",
    "model": "claude-haiku-5-5"
   }
  ]

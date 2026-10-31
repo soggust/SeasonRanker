@@ -1,12 +1,12 @@
 {
  "sport": "nfl",
  "cursor": {
-  "adamscheftermirror.bsky.social": "2026-10-31T11:39:00.474Z",
+  "adamscheftermirror.bsky.social": "2026-10-31T13:08:53.719Z",
   "rapsheet.bsky.social": "2026-10-30T23:50:45.295Z",
   "nflnewsreposterbot.bsky.social": "2026-10-30T22:57:34.763Z",
   "insidenflnews.bsky.social": "2026-10-30T23:11:22.760Z",
   "nflnewsposter.bsky.social": "2026-10-31T05:10:20.863Z",
-  "rotoworld-fb.bsky.social": "2026-10-31T00:25:38.000Z",
+  "rotoworld-fb.bsky.social": "2026-10-31T13:11:30.000Z",
   "rotowirenfl.bsky.social": "2026-10-31T12:03:45.000Z"
  },
  "claims": [
@@ -10201,6 +10201,19 @@
    "kind": "status",
    "confidence": 0.8,
    "text": "Commanders standout DT Daron Payne suffered a significant foot injury today in practice that will knock him out for the foreseeable future and likely land him IR, sources tell me and Mike Garafolo.\n\nP"
+  },
+  {
+   "id": "at://did:plc:qre6zxbmr3ixhdmgsgdretb5/app.bsky.feed.post/3mz6eips6n32n|micahparsons|active|return",
+   "at": "2026-10-31T13:08:53.719Z",
+   "seen": "2026-10-31T13:19:38.785Z",
+   "handle": "adamscheftermirror.bsky.social",
+   "post": "at://did:plc:qre6zxbmr3ixhdmgsgdretb5/app.bsky.feed.post/3mz6eips6n32n",
+   "player": "Micah Parsons",
+   "team": "GB",
+   "status": "active",
+   "kind": "return",
+   "confidence": 0.3,
+   "text": "Repost by @AdamSchefter\n\nSources: The #Packers and star Micah Parsons are targeting a Thanksgiving Eve return to the field in the showdown against the #Rams. The full story:\n\nClick to see original rep"
   }
  ]
 }
