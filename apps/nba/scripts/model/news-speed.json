@@ -18041,6 +18041,217 @@
     "seen": "2026-10-31T02:08:24.210Z",
     "own": "2026-10-06T19:17:00.000Z"
    }
+  },
+  "401909902|alperensengun|out": {
+   "game": "401909902",
+   "start": "2026-11-01T00:30Z",
+   "team": "10",
+   "name": "Alperen Sengun",
+   "status": "out",
+   "athlete": "4871144",
+   "espn": {
+    "seen": "2026-10-31T04:51:43.348Z",
+    "own": "2026-10-30T22:39:00.000Z"
+   },
+   "bluesky": {
+    "seen": "2026-10-30T23:13:40.908Z",
+    "own": "2026-10-30T22:39:02.000Z",
+    "why": "@rotowirenba.bsky.social: Alperen Sengun: Ruled out Friday \n\n https://www.rotowi"
+   }
+  },
+  "401909902|reedsheppard|out": {
+   "game": "401909902",
+   "start": "2026-11-01T00:30Z",
+   "team": "10",
+   "name": "Reed Sheppard",
+   "status": "out",
+   "athlete": "4711272",
+   "espn": {
+    "seen": "2026-10-31T04:51:43.348Z",
+    "own": "2026-10-30T19:19:00.000Z"
+   },
+   "sleeper": {
+    "seen": "2026-10-30T20:19:38.427Z",
+    "own": "2026-10-30T19:25:12.762Z"
+   }
+  },
+  "401909902|stevenadams|out": {
+   "game": "401909902",
+   "start": "2026-11-01T00:30Z",
+   "team": "10",
+   "name": "Steven Adams",
+   "status": "out",
+   "athlete": "2991235",
+   "espn": {
+    "seen": "2026-10-31T04:51:43.348Z",
+    "own": "2026-10-26T22:52:00.000Z"
+   }
+  },
+  "401909902|jamorant|out": {
+   "game": "401909902",
+   "start": "2026-11-01T00:30Z",
+   "team": "10",
+   "name": "Ja Morant",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-10-30T19:23:48.542Z",
+    "own": "2026-10-30T19:15:23.134Z",
+    "why": "@insidenbanews.bsky.social: 🚨 Shams: Ja Morant to miss at least 4 weeks with Gr"
+   }
+  },
+  "401909902|jaylenbrown|out": {
+   "game": "401909902",
+   "start": "2026-11-01T00:30Z",
+   "team": "10",
+   "name": "Jaylen Brown",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-10-30T23:13:40.908Z",
+    "own": "2026-10-30T21:50:01.000Z",
+    "why": "@rotowirenba.bsky.social: Jaylen Brown: Downgraded to out \n\n https://www.rotowir"
+   }
+  },
+  "401909902|guisantos|q": {
+   "game": "401909902",
+   "start": "2026-11-01T00:30Z",
+   "team": "10",
+   "name": "Gui Santos",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-10-30T20:42:19.301Z",
+    "own": "2026-10-30T20:37:25.000Z",
+    "why": "@rotowirenba.bsky.social: Gui Santos: Now questionable \n\n https://www.rotowire.c"
+   }
+  },
+  "401909902|jaylontyson|out": {
+   "game": "401909902",
+   "start": "2026-11-01T00:30Z",
+   "team": "10",
+   "name": "Jaylon Tyson",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-10-30T21:03:24.984Z",
+    "own": "2026-10-30T20:52:11.000Z",
+    "why": "@rotowirenba.bsky.social: Jaylon Tyson: Ruled out for Saturday \n\n https://www.ro"
+   }
+  },
+  "401909902|ajdybantsa|q": {
+   "game": "401909902",
+   "start": "2026-11-01T00:30Z",
+   "team": "10",
+   "name": "AJ Dybantsa",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-10-30T21:46:53.069Z",
+    "own": "2026-10-30T21:33:20.000Z",
+    "why": "@rotowirenba.bsky.social: AJ Dybantsa: Will remain limited Friday \n\n https://www"
+   }
+  },
+  "401909902|tobiasharris|out": {
+   "game": "401909902",
+   "start": "2026-11-01T00:30Z",
+   "team": "10",
+   "name": "Tobias Harris",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-10-30T21:46:53.069Z",
+    "own": "2026-10-30T21:44:00.000Z",
+    "why": "@rotowirenba.bsky.social: Tobias Harris: Remains out Saturday \n\n https://www.rot"
+   }
+  },
+  "401909902|chetholmgren|out": {
+   "game": "401909902",
+   "start": "2026-11-01T00:30Z",
+   "team": "10",
+   "name": "Chet Holmgren",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-10-30T23:13:40.908Z",
+    "own": "2026-10-30T22:25:59.000Z",
+    "why": "@rotowirenba.bsky.social: Chet Holmgren: Remains out for Saturday \n\n https://www"
+   },
+   "athlete": "4433255",
+   "espn": {
+    "seen": "2026-10-31T04:51:43.348Z",
+    "own": "2026-10-31T01:02:00.000Z"
+   }
+  },
+  "401909902|laurimarkkanen|q": {
+   "game": "401909902",
+   "start": "2026-11-01T00:30Z",
+   "team": "10",
+   "name": "Lauri Markkanen",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-10-30T23:13:40.908Z",
+    "own": "2026-10-30T23:13:31.000Z",
+    "why": "@rotowirenba.bsky.social: Lauri Markkanen: Questionable versus Portland \n\n https"
+   }
+  },
+  "401909902|casonwallace|out": {
+   "game": "401909902",
+   "start": "2026-11-01T00:30Z",
+   "team": "25",
+   "name": "Cason Wallace",
+   "status": "out",
+   "athlete": "4683692",
+   "espn": {
+    "seen": "2026-10-31T04:51:43.348Z",
+    "own": "2026-10-31T01:16:00.000Z"
+   },
+   "bluesky": {
+    "seen": "2026-10-31T01:33:35.862Z",
+    "own": "2026-10-31T01:16:12.000Z",
+    "why": "@rotowirenba.bsky.social: Cason Wallace: Undergoes shoulder surgery Friday \n\n ht"
+   }
+  },
+  "401909902|jalenwilliams|out": {
+   "game": "401909902",
+   "start": "2026-11-01T00:30Z",
+   "team": "25",
+   "name": "Jalen Williams",
+   "status": "out",
+   "athlete": "4593803",
+   "espn": {
+    "seen": "2026-10-31T04:51:43.348Z",
+    "own": "2026-10-28T23:41:00.000Z"
+   }
+  },
+  "401909902|alexcaruso|out": {
+   "game": "401909902",
+   "start": "2026-11-01T00:30Z",
+   "team": "25",
+   "name": "Alex Caruso",
+   "status": "out",
+   "athlete": "2991350",
+   "espn": {
+    "seen": "2026-10-31T04:51:43.348Z",
+    "own": "2026-10-28T18:06:00.000Z"
+   }
+  },
+  "401909902|thomassorber|out": {
+   "game": "401909902",
+   "start": "2026-11-01T00:30Z",
+   "team": "25",
+   "name": "Thomas Sorber",
+   "status": "out",
+   "athlete": "5061603",
+   "espn": {
+    "seen": "2026-10-31T04:51:43.348Z",
+    "own": "2026-10-27T21:43:00.000Z"
+   }
+  },
+  "401909902|nikolatopic|out": {
+   "game": "401909902",
+   "start": "2026-11-01T00:30Z",
+   "team": "25",
+   "name": "Nikola Topic",
+   "status": "out",
+   "athlete": "5159925",
+   "espn": {
+    "seen": "2026-10-31T04:51:43.348Z",
+    "own": "2026-10-27T21:38:00.000Z"
+   }
   }
  }
 }
