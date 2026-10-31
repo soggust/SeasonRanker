@@ -1,7 +1,7 @@
 {
  "sport": "nfl",
  "cursor": {
-  "adamscheftermirror.bsky.social": "2026-10-31T20:48:54.144Z",
+  "adamscheftermirror.bsky.social": "2026-10-31T21:23:55.412Z",
   "rapsheet.bsky.social": "2026-10-31T19:21:57.682Z",
   "nflnewsreposterbot.bsky.social": "2026-10-30T22:57:34.763Z",
   "insidenflnews.bsky.social": "2026-10-31T20:49:44.000Z",
@@ -10773,6 +10773,19 @@
    "kind": "status",
    "confidence": 0.95,
    "text": "Rashid Shaheed (knee) out for Week 8 vs. Bears"
+  },
+  {
+   "id": "at://did:plc:qre6zxbmr3ixhdmgsgdretb5/app.bsky.feed.post/3mz7a5viypt2t|rjharvey|out|status",
+   "at": "2026-10-31T21:23:55.412Z",
+   "seen": "2026-10-31T21:29:18.810Z",
+   "handle": "adamscheftermirror.bsky.social",
+   "post": "at://did:plc:qre6zxbmr3ixhdmgsgdretb5/app.bsky.feed.post/3mz7a5viypt2t",
+   "player": "R.J. Harvey",
+   "team": "DEN",
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.95,
+   "text": "Broncos officially placed RB R.J. Harvey on short-term IR after he suffered a knee injury during Thursday’s practice.\n\nOriginal post"
   }
  ]
 }

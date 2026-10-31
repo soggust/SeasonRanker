@@ -1,7 +1,7 @@
 {
  "sport": "nba",
  "cursor": {
-  "rotowirenba.bsky.social": "2026-10-31T21:14:25.000Z",
+  "rotowirenba.bsky.social": "2026-10-31T21:24:40.000Z",
   "insidenbanews.bsky.social": "2026-10-30T19:15:23.134Z",
   "shamsbot.bsky.social": "2026-10-31T15:48:10.000Z"
  },
@@ -6661,6 +6661,19 @@
    "kind": "status",
    "confidence": 0.97,
    "text": "Ivica Zubac: Ruled out for Sunday \n\n https://www.rotowire.com/basketball/player/ivica-zubac-3888"
+  },
+  {
+   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mz7a7a4cxk2g|dejountemurray|out|status",
+   "at": "2026-10-31T21:24:40.000Z",
+   "seen": "2026-10-31T21:29:18.810Z",
+   "handle": "rotowirenba.bsky.social",
+   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mz7a7a4cxk2g",
+   "player": "Dejounte Murray",
+   "team": null,
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.9,
+   "text": "Dejounte Murray: Ruled out Saturday \n\n https://www.rotowire.com/basketball/player/dejounte-murray-3856"
   }
  ]
 }

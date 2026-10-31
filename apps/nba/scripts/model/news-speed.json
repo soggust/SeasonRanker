@@ -18929,6 +18929,294 @@
     "seen": "2026-10-31T20:17:33.187Z",
     "own": "2026-10-31T17:15:21.947Z"
    }
+  },
+  "401909897|mitchellrobinson|q": {
+   "game": "401909897",
+   "start": "2026-10-31T22:00Z",
+   "team": "30",
+   "name": "Mitchell Robinson",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-10-31T21:15:46.804Z",
+    "own": "2026-10-31T20:32:39.000Z",
+    "why": "@rotowirenba.bsky.social: Mitchell Robinson: Questionable for Sunday \n\n https://"
+   }
+  },
+  "401909897|mikelbrown|out": {
+   "game": "401909897",
+   "start": "2026-10-31T22:00Z",
+   "team": "30",
+   "name": "Mikel Brown",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-10-31T21:15:46.804Z",
+    "own": "2026-10-31T20:58:16.000Z",
+    "why": "@rotowirenba.bsky.social: Mikel Brown: Won't play Sunday \n\n https://www.rotowire"
+   }
+  },
+  "401909897|obitoppin|q": {
+   "game": "401909897",
+   "start": "2026-10-31T22:00Z",
+   "team": "30",
+   "name": "Obi Toppin",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-10-31T21:15:46.804Z",
+    "own": "2026-10-31T21:10:07.000Z",
+    "why": "@rotowirenba.bsky.social: Obi Toppin: Questionable for Sunday \n\n https://www.rot"
+   }
+  },
+  "401909897|ivicazubac|out": {
+   "game": "401909897",
+   "start": "2026-10-31T22:00Z",
+   "team": "30",
+   "name": "Ivica Zubac",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-10-31T21:15:46.804Z",
+    "own": "2026-10-31T21:14:25.000Z",
+    "why": "@rotowirenba.bsky.social: Ivica Zubac: Ruled out for Sunday \n\n https://www.rotow"
+   }
+  },
+  "401909898|mitchellrobinson|q": {
+   "game": "401909898",
+   "start": "2026-10-31T23:00Z",
+   "team": "3",
+   "name": "Mitchell Robinson",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-10-31T21:15:46.804Z",
+    "own": "2026-10-31T20:32:39.000Z",
+    "why": "@rotowirenba.bsky.social: Mitchell Robinson: Questionable for Sunday \n\n https://"
+   }
+  },
+  "401909898|mikelbrown|out": {
+   "game": "401909898",
+   "start": "2026-10-31T23:00Z",
+   "team": "3",
+   "name": "Mikel Brown",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-10-31T21:15:46.804Z",
+    "own": "2026-10-31T20:58:16.000Z",
+    "why": "@rotowirenba.bsky.social: Mikel Brown: Won't play Sunday \n\n https://www.rotowire"
+   }
+  },
+  "401909898|obitoppin|q": {
+   "game": "401909898",
+   "start": "2026-10-31T23:00Z",
+   "team": "3",
+   "name": "Obi Toppin",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-10-31T21:15:46.804Z",
+    "own": "2026-10-31T21:10:07.000Z",
+    "why": "@rotowirenba.bsky.social: Obi Toppin: Questionable for Sunday \n\n https://www.rot"
+   }
+  },
+  "401909898|ivicazubac|out": {
+   "game": "401909898",
+   "start": "2026-10-31T23:00Z",
+   "team": "3",
+   "name": "Ivica Zubac",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-10-31T21:15:46.804Z",
+    "own": "2026-10-31T21:14:25.000Z",
+    "why": "@rotowirenba.bsky.social: Ivica Zubac: Ruled out for Sunday \n\n https://www.rotow"
+   }
+  },
+  "401909899|mitchellrobinson|q": {
+   "game": "401909899",
+   "start": "2026-11-01T00:00Z",
+   "team": "29",
+   "name": "Mitchell Robinson",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-10-31T21:15:46.804Z",
+    "own": "2026-10-31T20:32:39.000Z",
+    "why": "@rotowirenba.bsky.social: Mitchell Robinson: Questionable for Sunday \n\n https://"
+   }
+  },
+  "401909899|mikelbrown|out": {
+   "game": "401909899",
+   "start": "2026-11-01T00:00Z",
+   "team": "29",
+   "name": "Mikel Brown",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-10-31T21:15:46.804Z",
+    "own": "2026-10-31T20:58:16.000Z",
+    "why": "@rotowirenba.bsky.social: Mikel Brown: Won't play Sunday \n\n https://www.rotowire"
+   }
+  },
+  "401909899|obitoppin|q": {
+   "game": "401909899",
+   "start": "2026-11-01T00:00Z",
+   "team": "29",
+   "name": "Obi Toppin",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-10-31T21:15:46.804Z",
+    "own": "2026-10-31T21:10:07.000Z",
+    "why": "@rotowirenba.bsky.social: Obi Toppin: Questionable for Sunday \n\n https://www.rot"
+   }
+  },
+  "401909899|ivicazubac|out": {
+   "game": "401909899",
+   "start": "2026-11-01T00:00Z",
+   "team": "29",
+   "name": "Ivica Zubac",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-10-31T21:15:46.804Z",
+    "own": "2026-10-31T21:14:25.000Z",
+    "why": "@rotowirenba.bsky.social: Ivica Zubac: Ruled out for Sunday \n\n https://www.rotow"
+   }
+  },
+  "401909900|mitchellrobinson|q": {
+   "game": "401909900",
+   "start": "2026-11-01T00:00Z",
+   "team": "15",
+   "name": "Mitchell Robinson",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-10-31T21:15:46.804Z",
+    "own": "2026-10-31T20:32:39.000Z",
+    "why": "@rotowirenba.bsky.social: Mitchell Robinson: Questionable for Sunday \n\n https://"
+   }
+  },
+  "401909900|mikelbrown|out": {
+   "game": "401909900",
+   "start": "2026-11-01T00:00Z",
+   "team": "15",
+   "name": "Mikel Brown",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-10-31T21:15:46.804Z",
+    "own": "2026-10-31T20:58:16.000Z",
+    "why": "@rotowirenba.bsky.social: Mikel Brown: Won't play Sunday \n\n https://www.rotowire"
+   }
+  },
+  "401909900|obitoppin|q": {
+   "game": "401909900",
+   "start": "2026-11-01T00:00Z",
+   "team": "15",
+   "name": "Obi Toppin",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-10-31T21:15:46.804Z",
+    "own": "2026-10-31T21:10:07.000Z",
+    "why": "@rotowirenba.bsky.social: Obi Toppin: Questionable for Sunday \n\n https://www.rot"
+   }
+  },
+  "401909900|ivicazubac|out": {
+   "game": "401909900",
+   "start": "2026-11-01T00:00Z",
+   "team": "15",
+   "name": "Ivica Zubac",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-10-31T21:15:46.804Z",
+    "own": "2026-10-31T21:14:25.000Z",
+    "why": "@rotowirenba.bsky.social: Ivica Zubac: Ruled out for Sunday \n\n https://www.rotow"
+   }
+  },
+  "401909901|mitchellrobinson|q": {
+   "game": "401909901",
+   "start": "2026-11-01T00:00Z",
+   "team": "24",
+   "name": "Mitchell Robinson",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-10-31T21:15:46.804Z",
+    "own": "2026-10-31T20:32:39.000Z",
+    "why": "@rotowirenba.bsky.social: Mitchell Robinson: Questionable for Sunday \n\n https://"
+   }
+  },
+  "401909901|mikelbrown|out": {
+   "game": "401909901",
+   "start": "2026-11-01T00:00Z",
+   "team": "24",
+   "name": "Mikel Brown",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-10-31T21:15:46.804Z",
+    "own": "2026-10-31T20:58:16.000Z",
+    "why": "@rotowirenba.bsky.social: Mikel Brown: Won't play Sunday \n\n https://www.rotowire"
+   }
+  },
+  "401909901|obitoppin|q": {
+   "game": "401909901",
+   "start": "2026-11-01T00:00Z",
+   "team": "24",
+   "name": "Obi Toppin",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-10-31T21:15:46.804Z",
+    "own": "2026-10-31T21:10:07.000Z",
+    "why": "@rotowirenba.bsky.social: Obi Toppin: Questionable for Sunday \n\n https://www.rot"
+   }
+  },
+  "401909901|ivicazubac|out": {
+   "game": "401909901",
+   "start": "2026-11-01T00:00Z",
+   "team": "24",
+   "name": "Ivica Zubac",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-10-31T21:15:46.804Z",
+    "own": "2026-10-31T21:14:25.000Z",
+    "why": "@rotowirenba.bsky.social: Ivica Zubac: Ruled out for Sunday \n\n https://www.rotow"
+   }
+  },
+  "401909902|mitchellrobinson|q": {
+   "game": "401909902",
+   "start": "2026-11-01T00:30Z",
+   "team": "10",
+   "name": "Mitchell Robinson",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-10-31T21:15:46.804Z",
+    "own": "2026-10-31T20:32:39.000Z",
+    "why": "@rotowirenba.bsky.social: Mitchell Robinson: Questionable for Sunday \n\n https://"
+   }
+  },
+  "401909902|mikelbrown|out": {
+   "game": "401909902",
+   "start": "2026-11-01T00:30Z",
+   "team": "10",
+   "name": "Mikel Brown",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-10-31T21:15:46.804Z",
+    "own": "2026-10-31T20:58:16.000Z",
+    "why": "@rotowirenba.bsky.social: Mikel Brown: Won't play Sunday \n\n https://www.rotowire"
+   }
+  },
+  "401909902|obitoppin|q": {
+   "game": "401909902",
+   "start": "2026-11-01T00:30Z",
+   "team": "10",
+   "name": "Obi Toppin",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-10-31T21:15:46.804Z",
+    "own": "2026-10-31T21:10:07.000Z",
+    "why": "@rotowirenba.bsky.social: Obi Toppin: Questionable for Sunday \n\n https://www.rot"
+   }
+  },
+  "401909902|ivicazubac|out": {
+   "game": "401909902",
+   "start": "2026-11-01T00:30Z",
+   "team": "10",
+   "name": "Ivica Zubac",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-10-31T21:15:46.804Z",
+    "own": "2026-10-31T21:14:25.000Z",
+    "why": "@rotowirenba.bsky.social: Ivica Zubac: Ruled out for Sunday \n\n https://www.rotow"
+   }
   }
  }
 }
