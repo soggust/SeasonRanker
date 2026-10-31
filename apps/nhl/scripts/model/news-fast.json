@@ -3,7 +3,7 @@
  "cursor": {
   "johnston-bot.bsky.social": "2026-10-30T22:59:57.743Z",
   "notfriedgehnic.bsky.social": "2026-10-31T01:35:45.073Z",
-  "dailyfaceoff.bsky.social": "2026-10-31T16:00:26.000Z",
+  "dailyfaceoff.bsky.social": "2026-10-31T16:31:09.000Z",
   "dfotoronto.bsky.social": "2026-10-31T16:09:45.000Z",
   "marklazerus.bsky.social": "2026-10-31T00:50:34.520Z"
  },
@@ -1320,6 +1320,19 @@
    "kind": "status",
    "confidence": 0.95,
    "text": "Canadiens’ Mike Matheson out two weeks with lower-body injury"
+  },
+  {
+   "id": "at://did:plc:3uus7y6h3rlrk6sbctzxm4bg/app.bsky.feed.post/3mz6psfik3y26|christanev|active|return",
+   "at": "2026-10-31T16:31:09.000Z",
+   "seen": "2026-10-31T16:36:46.823Z",
+   "handle": "dailyfaceoff.bsky.social",
+   "post": "at://did:plc:3uus7y6h3rlrk6sbctzxm4bg/app.bsky.feed.post/3mz6psfik3y26",
+   "player": "Chris Tanev",
+   "team": "TOR",
+   "status": "active",
+   "kind": "return",
+   "confidence": 0.93,
+   "text": "Leafs activate Chris Tanev from injured reserve"
   }
  ]
 }

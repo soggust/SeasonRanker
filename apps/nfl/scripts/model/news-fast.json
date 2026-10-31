@@ -1,11 +1,11 @@
 {
  "sport": "nfl",
  "cursor": {
-  "adamscheftermirror.bsky.social": "2026-10-31T14:58:58.775Z",
+  "adamscheftermirror.bsky.social": "2026-10-31T16:28:53.968Z",
   "rapsheet.bsky.social": "2026-10-30T23:50:45.295Z",
   "nflnewsreposterbot.bsky.social": "2026-10-30T22:57:34.763Z",
   "insidenflnews.bsky.social": "2026-10-31T15:14:44.147Z",
-  "nflnewsposter.bsky.social": "2026-10-31T05:10:20.863Z",
+  "nflnewsposter.bsky.social": "2026-10-31T16:33:11.359Z",
   "rotoworld-fb.bsky.social": "2026-10-31T14:58:34.000Z",
   "rotowirenfl.bsky.social": "2026-10-31T15:10:01.000Z"
  },
@@ -10227,6 +10227,19 @@
    "kind": "return",
    "confidence": 0.6,
    "text": "Pelissero: Micah Parsons (knee) to practice next week"
+  },
+  {
+   "id": "at://did:plc:fuqjc7x4gxvnwzksnlxwbe4x/app.bsky.feed.post/3mz6pvzhplk2f|micahparsons|active|return",
+   "at": "2026-10-31T16:33:11.359Z",
+   "seen": "2026-10-31T16:36:46.823Z",
+   "handle": "nflnewsposter.bsky.social",
+   "post": "at://did:plc:fuqjc7x4gxvnwzksnlxwbe4x/app.bsky.feed.post/3mz6pvzhplk2f",
+   "player": "Micah Parsons",
+   "team": "GB",
+   "status": "active",
+   "kind": "return",
+   "confidence": 0.35,
+   "text": "[Rapoport] Packers and star Micah Parsons are targeting a Thanksgiving Eve return to the field in the showdown against the Rams. www.espn.com/nfl/story/_/... [Sources: Packers, Micah Parsons target re"
   }
  ]
 }
