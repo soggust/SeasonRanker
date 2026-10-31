@@ -1,12 +1,12 @@
 {
  "sport": "nfl",
  "cursor": {
-  "adamscheftermirror.bsky.social": "2026-10-31T19:04:10.620Z",
-  "rapsheet.bsky.social": "2026-10-30T23:50:45.295Z",
+  "adamscheftermirror.bsky.social": "2026-10-31T19:18:56.029Z",
+  "rapsheet.bsky.social": "2026-10-31T19:21:57.682Z",
   "nflnewsreposterbot.bsky.social": "2026-10-30T22:57:34.763Z",
   "insidenflnews.bsky.social": "2026-10-31T15:14:44.147Z",
-  "nflnewsposter.bsky.social": "2026-10-31T18:59:26.891Z",
-  "rotoworld-fb.bsky.social": "2026-10-31T17:12:15.000Z",
+  "nflnewsposter.bsky.social": "2026-10-31T19:23:55.353Z",
+  "rotoworld-fb.bsky.social": "2026-10-31T19:16:32.000Z",
   "rotowirenfl.bsky.social": "2026-10-31T18:57:00.000Z"
  },
  "claims": [
@@ -10487,6 +10487,84 @@
    "kind": "status",
    "confidence": 0.85,
    "text": "Bears TE Colston Loveland has no injury designation for Monday night’s game; RB Kyle Monangai officially is out.\n\nRepost of @BearsPR:\n\nOriginal post"
+  },
+  {
+   "id": "at://did:plc:fuqjc7x4gxvnwzksnlxwbe4x/app.bsky.feed.post/3mz6yy5c5bso7|mansoordelane|out|status",
+   "at": "2026-10-31T19:15:26.155Z",
+   "seen": "2026-10-31T19:28:24.695Z",
+   "handle": "nflnewsposter.bsky.social",
+   "post": "at://did:plc:fuqjc7x4gxvnwzksnlxwbe4x/app.bsky.feed.post/3mz6yy5c5bso7",
+   "player": "Mansoor Delane",
+   "team": "KC",
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.95,
+   "text": "[Chiefs] Injury update: CB Mansoor Delane is now listed as Out (Shoulder). \n\nR Mason Thomas will travel to Denver separate from the team (personal). twitter.com/Chiefs/statu..."
+  },
+  {
+   "id": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3mz6z24x72o24|tvondresweat|out|status",
+   "at": "2026-10-31T19:16:32.000Z",
+   "seen": "2026-10-31T19:28:24.695Z",
+   "handle": "rotoworld-fb.bsky.social",
+   "post": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3mz6z24x72o24",
+   "player": "T'Vondre Sweat",
+   "team": "NYJ",
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.9,
+   "text": "Massive loss, Jets place T'Vondre Sweat on IR"
+  },
+  {
+   "id": "at://did:plc:qre6zxbmr3ixhdmgsgdretb5/app.bsky.feed.post/3mz6z6fjvsd2u|mansoordelane|out|status",
+   "at": "2026-10-31T19:18:56.029Z",
+   "seen": "2026-10-31T19:28:24.695Z",
+   "handle": "adamscheftermirror.bsky.social",
+   "post": "at://did:plc:qre6zxbmr3ixhdmgsgdretb5/app.bsky.feed.post/3mz6z6fjvsd2u",
+   "player": "Mansoor Delane",
+   "team": "KC",
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.95,
+   "text": "Chiefs downgraded CB Mansoor Delane to out for Sunday’s game in Denver due to a shoulder injury.\n\nOriginal post"
+  },
+  {
+   "id": "at://did:plc:hlvr2omhnmvdmfnvmcuhyevz/app.bsky.feed.post/3mz6zdsont22a|mansoordelane|out|status",
+   "at": "2026-10-31T19:21:57.682Z",
+   "seen": "2026-10-31T19:28:24.695Z",
+   "handle": "rapsheet.bsky.social",
+   "post": "at://did:plc:hlvr2omhnmvdmfnvmcuhyevz/app.bsky.feed.post/3mz6zdsont22a",
+   "player": "Mansoor Delane",
+   "team": "KC",
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.95,
+   "text": "The Chiefs have downgraded CB Mansoor Delane to out with a shoulder injury. They also have placed CB L’Jarius Sneed on Reserve/Injured."
+  },
+  {
+   "id": "at://did:plc:hlvr2omhnmvdmfnvmcuhyevz/app.bsky.feed.post/3mz6zdsont22a|ljariussneed|out|status",
+   "at": "2026-10-31T19:21:57.682Z",
+   "seen": "2026-10-31T19:28:24.695Z",
+   "handle": "rapsheet.bsky.social",
+   "post": "at://did:plc:hlvr2omhnmvdmfnvmcuhyevz/app.bsky.feed.post/3mz6zdsont22a",
+   "player": "L'Jarius Sneed",
+   "team": "KC",
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.9,
+   "text": "The Chiefs have downgraded CB Mansoor Delane to out with a shoulder injury. They also have placed CB L’Jarius Sneed on Reserve/Injured."
+  },
+  {
+   "id": "at://did:plc:fuqjc7x4gxvnwzksnlxwbe4x/app.bsky.feed.post/3mz6zhcvmxco7|joshuakarty|active|status",
+   "at": "2026-10-31T19:23:55.353Z",
+   "seen": "2026-10-31T19:28:24.695Z",
+   "handle": "nflnewsposter.bsky.social",
+   "post": "at://did:plc:fuqjc7x4gxvnwzksnlxwbe4x/app.bsky.feed.post/3mz6zhcvmxco7",
+   "player": "Joshua Karty",
+   "team": "LAR",
+   "status": "active",
+   "kind": "status",
+   "confidence": 0.6,
+   "text": "[Schefter] Rams activated K Joshua Karty from their practice squad. twitter.com/AdamSchefter..."
   }
  ]
 }
