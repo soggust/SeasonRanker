@@ -1,18 +1,6 @@
 {
  "sport": "nba",
  "days": 2,
- "signals": [
-  {
-   "team": "25",
-   "abbr": "OKC",
-   "athlete": "4397018",
-   "player": "Ochai Agbaji",
-   "kind": "role",
-   "direction": "up",
-   "confidence": 0.6,
-   "headline": "Sources: Thunder signing Agbaji to fill roster after Williams, Wallace injuries",
-   "at": "2026-10-30T18:06:33.000Z"
-  }
- ],
- "at": "2026-10-31T02:32:58.349Z"
+ "signals": [],
+ "at": "2026-11-01T18:07:37.463Z"
 }
