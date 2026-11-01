@@ -1,13 +1,13 @@
 {
  "sport": "nfl",
  "cursor": {
-  "adamscheftermirror.bsky.social": "2026-11-01T17:49:09.611Z",
+  "adamscheftermirror.bsky.social": "2026-11-01T18:19:08.889Z",
   "rapsheet.bsky.social": "2026-11-01T17:30:56.044Z",
   "nflnewsreposterbot.bsky.social": "2026-10-30T22:57:34.763Z",
-  "insidenflnews.bsky.social": "2026-11-01T18:06:56.807Z",
-  "nflnewsposter.bsky.social": "2026-11-01T17:46:57.547Z",
-  "rotoworld-fb.bsky.social": "2026-11-01T16:53:58.000Z",
-  "rotowirenfl.bsky.social": "2026-11-01T16:51:06.000Z"
+  "insidenflnews.bsky.social": "2026-11-01T18:25:31.833Z",
+  "nflnewsposter.bsky.social": "2026-11-01T18:27:28.032Z",
+  "rotoworld-fb.bsky.social": "2026-11-01T18:14:57.000Z",
+  "rotowirenfl.bsky.social": "2026-11-01T18:27:14.000Z"
  },
  "claims": [
   {
@@ -11111,6 +11111,149 @@
    "kind": "restriction",
    "confidence": 0.85,
    "text": "Glazer: Eagles plan to have Saquon Barkley (hamstring, back) on snap count in Week 8."
+  },
+  {
+   "id": "at://did:plc:fuqjc7x4gxvnwzksnlxwbe4x/app.bsky.feed.post/3mzbfy4pm32gz|jakeferguson|questionable|status",
+   "at": "2026-11-01T18:13:23.668Z",
+   "seen": "2026-11-01T18:28:41.107Z",
+   "handle": "nflnewsposter.bsky.social",
+   "post": "at://did:plc:fuqjc7x4gxvnwzksnlxwbe4x/app.bsky.feed.post/3mzbfy4pm32gz",
+   "player": "Jake Ferguson",
+   "team": "DAL",
+   "status": "questionable",
+   "kind": "status",
+   "confidence": 0.95,
+   "text": "[Machota] Cowboys TE Jake Ferguson is questionable to return with an ankle injury twitter.com/jonmachota/s..."
+  },
+  {
+   "id": "at://did:plc:mbr4badgf6yu56mquzackzew/app.bsky.feed.post/3mzbfymrnc22v|jakeferguson|questionable|status",
+   "at": "2026-11-01T18:13:40.513Z",
+   "seen": "2026-11-01T18:28:41.107Z",
+   "handle": "insidenflnews.bsky.social",
+   "post": "at://did:plc:mbr4badgf6yu56mquzackzew/app.bsky.feed.post/3mzbfymrnc22v",
+   "player": "Jake Ferguson",
+   "team": "DAL",
+   "status": "questionable",
+   "kind": "status",
+   "confidence": 0.95,
+   "text": "🚨 Status alert: Jake Ferguson (ankle) questionable to return."
+  },
+  {
+   "id": "at://did:plc:fuqjc7x4gxvnwzksnlxwbe4x/app.bsky.feed.post/3mzbg4dz3zcgz|drakelondon|questionable|status",
+   "at": "2026-11-01T18:15:45.537Z",
+   "seen": "2026-11-01T18:28:41.107Z",
+   "handle": "nflnewsposter.bsky.social",
+   "post": "at://did:plc:fuqjc7x4gxvnwzksnlxwbe4x/app.bsky.feed.post/3mzbg4dz3zcgz",
+   "player": "Drake London",
+   "team": "ATL",
+   "status": "questionable",
+   "kind": "status",
+   "confidence": 0.9,
+   "text": "[McElhaney] Falcons WR Drake London is being evaluated for a possible concussion. He is questionable. twitter.com/tori_mcelhan..."
+  },
+  {
+   "id": "at://did:plc:mbr4badgf6yu56mquzackzew/app.bsky.feed.post/3mzbg5qx6l22v|drakelondon|questionable|status",
+   "at": "2026-11-01T18:16:32.660Z",
+   "seen": "2026-11-01T18:28:41.107Z",
+   "handle": "insidenflnews.bsky.social",
+   "post": "at://did:plc:mbr4badgf6yu56mquzackzew/app.bsky.feed.post/3mzbg5qx6l22v",
+   "player": "Drake London",
+   "team": "ATL",
+   "status": "questionable",
+   "kind": "status",
+   "confidence": 0.9,
+   "text": "🚨 Status alert: Drake London being evaluated for concussion; questionable to return."
+  },
+  {
+   "id": "at://did:plc:mbr4badgf6yu56mquzackzew/app.bsky.feed.post/3mzbg6d5bjk2v|deshaunwatson|active|return",
+   "at": "2026-11-01T18:16:51.735Z",
+   "seen": "2026-11-01T18:28:41.107Z",
+   "handle": "insidenflnews.bsky.social",
+   "post": "at://did:plc:mbr4badgf6yu56mquzackzew/app.bsky.feed.post/3mzbg6d5bjk2v",
+   "player": "Deshaun Watson",
+   "team": "CLE",
+   "status": "active",
+   "kind": "return",
+   "confidence": 0.8,
+   "text": "🚨 Status alert: Deshaun Watson (head) has returned to Sunday's game."
+  },
+  {
+   "id": "at://did:plc:mbr4badgf6yu56mquzackzew/app.bsky.feed.post/3mzbg7lofdk2v|lamarjackson|out|status",
+   "at": "2026-11-01T18:17:34.239Z",
+   "seen": "2026-11-01T18:28:41.107Z",
+   "handle": "insidenflnews.bsky.social",
+   "post": "at://did:plc:mbr4badgf6yu56mquzackzew/app.bsky.feed.post/3mzbg7lofdk2v",
+   "player": "Lamar Jackson",
+   "team": "BAL",
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.75,
+   "text": "🚨 Lineup alert: Tyler Huntley enters game in place of injured Lamar Jackson."
+  },
+  {
+   "id": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3mzbgaespfm2y|jakeferguson|none|status",
+   "at": "2026-11-01T18:18:00.000Z",
+   "seen": "2026-11-01T18:28:41.107Z",
+   "handle": "rotowirenfl.bsky.social",
+   "post": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3mzbgaespfm2y",
+   "player": "Jake Ferguson",
+   "team": "DAL",
+   "status": "none",
+   "kind": "status",
+   "confidence": 0.4,
+   "text": "Jake Ferguson: Injures ankle Sunday \n\n https://www.rotowire.com/football/player/jake-ferguson-15947"
+  },
+  {
+   "id": "at://did:plc:mbr4badgf6yu56mquzackzew/app.bsky.feed.post/3mzbgfxqp2s2v|lamarjackson|questionable|status",
+   "at": "2026-11-01T18:21:08.224Z",
+   "seen": "2026-11-01T18:28:41.107Z",
+   "handle": "insidenflnews.bsky.social",
+   "post": "at://did:plc:mbr4badgf6yu56mquzackzew/app.bsky.feed.post/3mzbgfxqp2s2v",
+   "player": "Lamar Jackson",
+   "team": "BAL",
+   "status": "questionable",
+   "kind": "status",
+   "confidence": 0.95,
+   "text": "🚨 Status alert: Lamar Jackson (right thumb) questionable to return."
+  },
+  {
+   "id": "at://did:plc:fuqjc7x4gxvnwzksnlxwbe4x/app.bsky.feed.post/3mzbgfy7mm2wj|lamarjackson|questionable|status",
+   "at": "2026-11-01T18:21:08.712Z",
+   "seen": "2026-11-01T18:28:41.107Z",
+   "handle": "nflnewsposter.bsky.social",
+   "post": "at://did:plc:fuqjc7x4gxvnwzksnlxwbe4x/app.bsky.feed.post/3mzbgfy7mm2wj",
+   "player": "Lamar Jackson",
+   "team": "BAL",
+   "status": "questionable",
+   "kind": "status",
+   "confidence": 0.95,
+   "text": "[Ravens] QB Lamar Jackson (right thumb) is questionable to return. twitter.com/Ravens/statu..."
+  },
+  {
+   "id": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3mzbgk7ubze2v|drakelondon|questionable|status",
+   "at": "2026-11-01T18:23:30.000Z",
+   "seen": "2026-11-01T18:28:41.107Z",
+   "handle": "rotowirenfl.bsky.social",
+   "post": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3mzbgk7ubze2v",
+   "player": "Drake London",
+   "team": "ATL",
+   "status": "questionable",
+   "kind": "status",
+   "confidence": 0.4,
+   "text": "Drake London: Possible concussion Sunday \n\n https://www.rotowire.com/football/player/drake-london-15868"
+  },
+  {
+   "id": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3mzbgpmjmi32r|lamarjackson|questionable|status",
+   "at": "2026-11-01T18:26:31.000Z",
+   "seen": "2026-11-01T18:28:41.107Z",
+   "handle": "rotowirenfl.bsky.social",
+   "post": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3mzbgpmjmi32r",
+   "player": "Lamar Jackson",
+   "team": "BAL",
+   "status": "questionable",
+   "kind": "status",
+   "confidence": 0.95,
+   "text": "Lamar Jackson: Questionable to return with thumb injury \n\n https://www.rotowire.com/football/player/lamar-jackson-12561"
   }
  ]
 }
