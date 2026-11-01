@@ -1,13 +1,13 @@
 {
  "sport": "nfl",
  "cursor": {
-  "adamscheftermirror.bsky.social": "2026-11-01T13:29:09.638Z",
-  "rapsheet.bsky.social": "2026-10-31T19:21:57.682Z",
+  "adamscheftermirror.bsky.social": "2026-11-01T14:44:09.069Z",
+  "rapsheet.bsky.social": "2026-11-01T14:48:01.964Z",
   "nflnewsreposterbot.bsky.social": "2026-10-30T22:57:34.763Z",
   "insidenflnews.bsky.social": "2026-11-01T12:21:11.924Z",
   "nflnewsposter.bsky.social": "2026-11-01T03:27:14.966Z",
   "rotoworld-fb.bsky.social": "2026-11-01T14:26:24.000Z",
-  "rotowirenfl.bsky.social": "2026-11-01T14:07:37.000Z"
+  "rotowirenfl.bsky.social": "2026-11-01T14:44:46.000Z"
  },
  "claims": [
   {
@@ -10877,6 +10877,84 @@
    "kind": "status",
    "confidence": 0.85,
    "text": "Jakobi Meyers (ankle/hamstring) will play vs. Indy"
+  },
+  {
+   "id": "at://did:plc:qre6zxbmr3ixhdmgsgdretb5/app.bsky.feed.post/3mzb2bxsppe2u|djmoore|active|status",
+   "at": "2026-11-01T14:44:09.069Z",
+   "seen": "2026-11-01T14:51:45.403Z",
+   "handle": "adamscheftermirror.bsky.social",
+   "post": "at://did:plc:qre6zxbmr3ixhdmgsgdretb5/app.bsky.feed.post/3mzb2bxsppe2u",
+   "player": "D.J. Moore",
+   "team": "BUF",
+   "status": "active",
+   "kind": "status",
+   "confidence": 0.8,
+   "text": "Bills WR D.J. Moore, who has missed the past two games due to a shoulder injury, is expected to play today vs. the Ravens.\n\nOriginal post"
+  },
+  {
+   "id": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3mzb2d33osd2y|djmoore|active|return",
+   "at": "2026-11-01T14:44:46.000Z",
+   "seen": "2026-11-01T14:51:45.403Z",
+   "handle": "rotowirenfl.bsky.social",
+   "post": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3mzb2d33osd2y",
+   "player": "DJ Moore",
+   "team": "BUF",
+   "status": "active",
+   "kind": "return",
+   "confidence": 0.7,
+   "text": "DJ Moore: On track for return Sunday \n\n https://www.rotowire.com/football/player/dj-moore-12477"
+  },
+  {
+   "id": "at://did:plc:hlvr2omhnmvdmfnvmcuhyevz/app.bsky.feed.post/3mzb2fqmm4s2b|braelonallen|none|starting",
+   "at": "2026-11-01T14:46:15.842Z",
+   "seen": "2026-11-01T14:51:45.403Z",
+   "handle": "rapsheet.bsky.social",
+   "post": "at://did:plc:hlvr2omhnmvdmfnvmcuhyevz/app.bsky.feed.post/3mzb2fqmm4s2b",
+   "player": "Braelon Allen",
+   "team": "NYJ",
+   "status": "none",
+   "kind": "starting",
+   "confidence": 0.9,
+   "text": "Jets RB Braelon Allen is slated to start again for the Jets, with Breece Hall still dealing with that quad injury. Allen has two 100-yard games as a starter, averaging nearly 5 yards per carry."
+  },
+  {
+   "id": "at://did:plc:hlvr2omhnmvdmfnvmcuhyevz/app.bsky.feed.post/3mzb2gp5fws2b|calvinridley|questionable|status",
+   "at": "2026-11-01T14:46:47.855Z",
+   "seen": "2026-11-01T14:51:45.403Z",
+   "handle": "rapsheet.bsky.social",
+   "post": "at://did:plc:hlvr2omhnmvdmfnvmcuhyevz/app.bsky.feed.post/3mzb2gp5fws2b",
+   "player": "Calvin Ridley",
+   "team": "TEN",
+   "status": "questionable",
+   "kind": "status",
+   "confidence": 0.9,
+   "text": "Titans WR Calvin Ridley (hip) is listed as questionable and and expected to play, source said."
+  },
+  {
+   "id": "at://did:plc:hlvr2omhnmvdmfnvmcuhyevz/app.bsky.feed.post/3mzb2hrec322b|jaylenwaddle|limited|status",
+   "at": "2026-11-01T14:47:23.733Z",
+   "seen": "2026-11-01T14:51:45.403Z",
+   "handle": "rapsheet.bsky.social",
+   "post": "at://did:plc:hlvr2omhnmvdmfnvmcuhyevz/app.bsky.feed.post/3mzb2hrec322b",
+   "player": "Jaylen Waddle",
+   "team": "DEN",
+   "status": "limited",
+   "kind": "status",
+   "confidence": 0.6,
+   "text": "Broncos WR Jaylen Waddle, who has been dealing with a chest injury that he aggravated last week, is trending in the right direction to play, source says."
+  },
+  {
+   "id": "at://did:plc:hlvr2omhnmvdmfnvmcuhyevz/app.bsky.feed.post/3mzb2ivszz22b|jakobimeyers|active|status",
+   "at": "2026-11-01T14:48:01.964Z",
+   "seen": "2026-11-01T14:51:45.403Z",
+   "handle": "rapsheet.bsky.social",
+   "post": "at://did:plc:hlvr2omhnmvdmfnvmcuhyevz/app.bsky.feed.post/3mzb2ivszz22b",
+   "player": "Jakobi Meyers",
+   "team": "JAX",
+   "status": "active",
+   "kind": "status",
+   "confidence": 0.9,
+   "text": "Jaguars WR Jakobi Meyers, questionable with hamstring and ankle injuries, is good to go today, per source."
   }
  ]
 }
