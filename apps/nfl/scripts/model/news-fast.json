@@ -1,13 +1,13 @@
 {
  "sport": "nfl",
  "cursor": {
-  "adamscheftermirror.bsky.social": "2026-10-31T23:23:55.810Z",
+  "adamscheftermirror.bsky.social": "2026-11-01T12:29:08.527Z",
   "rapsheet.bsky.social": "2026-10-31T19:21:57.682Z",
   "nflnewsreposterbot.bsky.social": "2026-10-30T22:57:34.763Z",
-  "insidenflnews.bsky.social": "2026-10-31T20:49:44.000Z",
+  "insidenflnews.bsky.social": "2026-11-01T12:21:11.924Z",
   "nflnewsposter.bsky.social": "2026-11-01T03:27:14.966Z",
   "rotoworld-fb.bsky.social": "2026-10-31T21:03:42.000Z",
-  "rotowirenfl.bsky.social": "2026-10-31T20:53:14.000Z"
+  "rotowirenfl.bsky.social": "2026-11-01T12:29:50.000Z"
  },
  "claims": [
   {
@@ -10786,6 +10786,45 @@
    "kind": "status",
    "confidence": 0.95,
    "text": "Broncos officially placed RB R.J. Harvey on short-term IR after he suffered a knee injury during Thursday’s practice.\n\nOriginal post"
+  },
+  {
+   "id": "at://did:plc:qre6zxbmr3ixhdmgsgdretb5/app.bsky.feed.post/3mzasqkhsqf2m|braelonallen|none|starting",
+   "at": "2026-11-01T12:29:08.527Z",
+   "seen": "2026-11-01T12:35:10.722Z",
+   "handle": "adamscheftermirror.bsky.social",
+   "post": "at://did:plc:qre6zxbmr3ixhdmgsgdretb5/app.bsky.feed.post/3mzasqkhsqf2m",
+   "player": "Braelon Allen",
+   "team": "NYJ",
+   "status": "none",
+   "kind": "starting",
+   "confidence": 0.9,
+   "text": "Repost by @AdamSchefter\n\n#Jets RB Braelon Allen is slated to start again for the Jets, with Breece Hall still dealing with that quad injury. Allen has two 100-yard games as a starter, averaging nearly"
+  },
+  {
+   "id": "at://did:plc:qre6zxbmr3ixhdmgsgdretb5/app.bsky.feed.post/3mzasqkhsqf2m|breecehall|questionable|status",
+   "at": "2026-11-01T12:29:08.527Z",
+   "seen": "2026-11-01T12:35:10.722Z",
+   "handle": "adamscheftermirror.bsky.social",
+   "post": "at://did:plc:qre6zxbmr3ixhdmgsgdretb5/app.bsky.feed.post/3mzasqkhsqf2m",
+   "player": "Breece Hall",
+   "team": "NYJ",
+   "status": "questionable",
+   "kind": "status",
+   "confidence": 0.5,
+   "text": "Repost by @AdamSchefter\n\n#Jets RB Braelon Allen is slated to start again for the Jets, with Breece Hall still dealing with that quad injury. Allen has two 100-yard games as a starter, averaging nearly"
+  },
+  {
+   "id": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3mzasrsgytd2o|braelonallen|none|starting",
+   "at": "2026-11-01T12:29:50.000Z",
+   "seen": "2026-11-01T12:35:10.722Z",
+   "handle": "rotowirenfl.bsky.social",
+   "post": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3mzasrsgytd2o",
+   "player": "Braelon Allen",
+   "team": "NYJ",
+   "status": "none",
+   "kind": "starting",
+   "confidence": 0.9,
+   "text": "Braelon Allen: Set to start Sunday \n\n https://www.rotowire.com/football/player/braelon-allen-17702"
   }
  ]
 }
