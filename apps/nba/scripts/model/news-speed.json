@@ -1,122 +1,6 @@
 {
  "sport": "nba",
  "entries": {
-  "401909842|bradleybeal|out": {
-   "game": "401909842",
-   "start": "2026-10-22T02:30Z",
-   "team": "12",
-   "name": "Bradley Beal",
-   "status": "out",
-   "athlete": "6580",
-   "espn": {
-    "seen": "2026-10-19T21:13:44.552Z",
-    "own": "2026-10-15T01:03:00.000Z"
-   }
-  },
-  "401909842|maxstrus|out": {
-   "game": "401909842",
-   "start": "2026-10-22T02:30Z",
-   "team": "12",
-   "name": "Max Strus",
-   "status": "out",
-   "athlete": "4065778",
-   "espn": {
-    "seen": "2026-10-19T21:13:44.552Z",
-    "own": "2026-10-05T22:21:00.000Z"
-   }
-  },
-  "401909842|yanickonanniederhauser|out": {
-   "game": "401909842",
-   "start": "2026-10-22T02:30Z",
-   "team": "12",
-   "name": "Yanic Konan Niederhauser",
-   "status": "out",
-   "athlete": "5108024",
-   "espn": {
-    "seen": "2026-10-19T21:13:44.552Z",
-    "own": "2026-09-28T18:07:00.000Z"
-   }
-  },
-  "401909842|brandoningram|out": {
-   "game": "401909842",
-   "start": "2026-10-22T02:30Z",
-   "team": "12",
-   "name": "Brandon Ingram",
-   "status": "out",
-   "athlete": "3913176",
-   "espn": {
-    "seen": "2026-10-19T21:13:44.552Z",
-    "own": "2026-09-28T18:01:00.000Z"
-   }
-  },
-  "401909842|jordanmiller|out": {
-   "game": "401909842",
-   "start": "2026-10-22T02:30Z",
-   "team": "12",
-   "name": "Jordan Miller",
-   "status": "out",
-   "athlete": "4396818",
-   "espn": {
-    "seen": "2026-10-19T21:13:44.552Z",
-    "own": "2026-08-26T20:04:00.000Z"
-   }
-  },
-  "401909842|bensimmons|out": {
-   "game": "401909842",
-   "start": "2026-10-22T02:30Z",
-   "team": "23",
-   "name": "Ben Simmons",
-   "status": "out",
-   "athlete": "3907387",
-   "espn": {
-    "seen": "2026-10-19T21:13:44.552Z",
-    "own": "2026-10-18T23:00:00.000Z"
-   },
-   "sleeper": {
-    "seen": "2026-10-21T20:01:28.860Z",
-    "own": "2026-10-21T04:25:41.358Z"
-   }
-  },
-  "401909842|malikmonk|q": {
-   "game": "401909842",
-   "start": "2026-10-22T02:30Z",
-   "team": "23",
-   "name": "Malik Monk",
-   "status": "q",
-   "athlete": "4066262",
-   "espn": {
-    "seen": "2026-10-19T21:13:44.552Z",
-    "own": "2026-10-16T23:25:00.000Z"
-   },
-   "sleeper": {
-    "seen": "2026-10-21T20:01:28.860Z",
-    "own": "2026-10-21T01:15:40.393Z"
-   }
-  },
-  "401909842|dylancardwell|out": {
-   "game": "401909842",
-   "start": "2026-10-22T02:30Z",
-   "team": "23",
-   "name": "Dylan Cardwell",
-   "status": "out",
-   "athlete": "4433174",
-   "espn": {
-    "seen": "2026-10-19T21:13:44.552Z",
-    "own": "2026-10-15T14:40:00.000Z"
-   }
-  },
-  "401909842|maximeraynaud|out": {
-   "game": "401909842",
-   "start": "2026-10-22T02:30Z",
-   "team": "23",
-   "name": "Maxime Raynaud",
-   "status": "out",
-   "athlete": "4898371",
-   "espn": {
-    "seen": "2026-10-19T21:13:44.552Z",
-    "own": "2026-10-15T14:36:00.000Z"
-   }
-  },
   "401909093|deanwade|q": {
    "game": "401909093",
    "start": "2026-10-22T23:00Z",
@@ -418,42 +302,6 @@
     "own": "2026-10-20T19:04:00.000Z"
    }
   },
-  "401909842|aaronnesmith|out": {
-   "game": "401909842",
-   "start": "2026-10-22T02:30Z",
-   "team": "12",
-   "name": "Aaron Nesmith",
-   "status": "out",
-   "bluesky": {
-    "seen": "2026-10-20T22:25:24.744Z",
-    "own": "2026-10-20T21:36:11.000Z",
-    "why": "@rotowirenba.bsky.social: Aaron Nesmith: Ruled out for regular-season opener \n\n "
-   }
-  },
-  "401909842|tjmcconnell|out": {
-   "game": "401909842",
-   "start": "2026-10-22T02:30Z",
-   "team": "12",
-   "name": "T.J. McConnell",
-   "status": "out",
-   "bluesky": {
-    "seen": "2026-10-20T22:25:24.744Z",
-    "own": "2026-10-20T21:38:26.000Z",
-    "why": "@rotowirenba.bsky.social: T.J. McConnell: Ruled out for Wednesday \n\n https://www"
-   }
-  },
-  "401909842|isaiahstewart|out": {
-   "game": "401909842",
-   "start": "2026-10-22T02:30Z",
-   "team": "12",
-   "name": "Isaiah Stewart",
-   "status": "out",
-   "bluesky": {
-    "seen": "2026-10-20T22:25:24.744Z",
-    "own": "2026-10-20T22:12:22.000Z",
-    "why": "@rotowirenba.bsky.social: Isaiah Stewart: Doubtful for Wednesday \n\n https://www."
-   }
-  },
   "401909093|deanwade|out": {
    "game": "401909093",
    "start": "2026-10-22T23:00Z",
@@ -464,30 +312,6 @@
    "espn": {
     "seen": "2026-10-20T22:39:07.463Z",
     "own": "2026-10-20T22:32:00.000Z"
-   }
-  },
-  "401909842|deanwade|out": {
-   "game": "401909842",
-   "start": "2026-10-22T02:30Z",
-   "team": "12",
-   "name": "Dean Wade",
-   "status": "out",
-   "bluesky": {
-    "seen": "2026-10-20T22:40:53.052Z",
-    "own": "2026-10-20T22:30:47.905Z",
-    "why": "@insidenbanews.bsky.social: Dean Wade (ankle) listed out Tuesday."
-   }
-  },
-  "401909842|collinsexton|q": {
-   "game": "401909842",
-   "start": "2026-10-22T02:30Z",
-   "team": "12",
-   "name": "Collin Sexton",
-   "status": "q",
-   "bluesky": {
-    "seen": "2026-10-21T00:17:43.117Z",
-    "own": "2026-10-21T00:06:44.000Z",
-    "why": "@rotowirenba.bsky.social: Collin Sexton: Questionable for Wednesday \n\n https://w"
    }
   },
   "401909093|tackofall|q": {
@@ -559,18 +383,6 @@
     "own": "2026-10-22T17:45:11.994Z"
    }
   },
-  "401909842|jarrettallen|q": {
-   "game": "401909842",
-   "start": "2026-10-22T02:30Z",
-   "team": "12",
-   "name": "Jarrett Allen",
-   "status": "q",
-   "bluesky": {
-    "seen": "2026-10-21T21:10:26.919Z",
-    "own": "2026-10-21T21:07:09.000Z",
-    "why": "@rotowirenba.bsky.social: Jarrett Allen: Questionable versus Philadelphia \n\n htt"
-   }
-  },
   "401909093|khalifadiop|out": {
    "game": "401909093",
    "start": "2026-10-22T23:00Z",
@@ -635,18 +447,6 @@
     "own": "2026-10-21T23:48:00.000Z"
    }
   },
-  "401909842|lukekennard|out": {
-   "game": "401909842",
-   "start": "2026-10-22T02:30Z",
-   "team": "12",
-   "name": "Luke Kennard",
-   "status": "out",
-   "bluesky": {
-    "seen": "2026-10-22T01:04:07.991Z",
-    "own": "2026-10-22T00:34:44.218Z",
-    "why": "@insidenbanews.bsky.social: Ott: Luke Kennard (knee) ruled out Wednesday."
-   }
-  },
   "401909093|lukekennard|out": {
    "game": "401909093",
    "start": "2026-10-22T23:00Z",
@@ -669,18 +469,6 @@
     "seen": "2026-10-22T01:04:07.991Z",
     "own": "2026-10-22T00:34:44.218Z",
     "why": "@insidenbanews.bsky.social: Ott: Luke Kennard (knee) ruled out Wednesday."
-   }
-  },
-  "401909842|malikmonk|out": {
-   "game": "401909842",
-   "start": "2026-10-22T02:30Z",
-   "team": "23",
-   "name": "Malik Monk",
-   "status": "out",
-   "athlete": "4066262",
-   "espn": {
-    "seen": "2026-10-22T01:50:18.514Z",
-    "own": "2026-10-22T01:31:00.000Z"
    }
   },
   "401909845|jonathanisaac|q": {
