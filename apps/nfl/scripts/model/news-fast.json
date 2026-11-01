@@ -6,7 +6,7 @@
   "nflnewsreposterbot.bsky.social": "2026-10-30T22:57:34.763Z",
   "insidenflnews.bsky.social": "2026-11-01T12:21:11.924Z",
   "nflnewsposter.bsky.social": "2026-11-01T03:27:14.966Z",
-  "rotoworld-fb.bsky.social": "2026-10-31T21:03:42.000Z",
+  "rotoworld-fb.bsky.social": "2026-11-01T13:23:47.000Z",
   "rotowirenfl.bsky.social": "2026-11-01T12:54:41.000Z"
  },
  "claims": [
@@ -10825,6 +10825,19 @@
    "kind": "starting",
    "confidence": 0.9,
    "text": "Braelon Allen: Set to start Sunday \n\n https://www.rotowire.com/football/player/braelon-allen-17702"
+  },
+  {
+   "id": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3mzavk7uuhr2f|kirkcousins|none|starting",
+   "at": "2026-11-01T13:19:17.000Z",
+   "seen": "2026-11-01T13:27:40.913Z",
+   "handle": "rotoworld-fb.bsky.social",
+   "post": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3mzavk7uuhr2f",
+   "player": "Kirk Cousins",
+   "team": "LV",
+   "status": "none",
+   "kind": "starting",
+   "confidence": 0.7,
+   "text": "Raiders plan to start Cousins as long as possible"
   }
  ]
 }
