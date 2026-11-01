@@ -15461,6 +15461,11 @@
    "espn": {
     "seen": "2026-10-31T21:12:37.643Z",
     "own": "2026-10-31T20:53:00.000Z"
+   },
+   "bluesky": {
+    "seen": "2026-10-31T21:15:46.804Z",
+    "own": "2026-10-31T21:03:42.000Z",
+    "why": "@rotoworld-fb.bsky.social: Rashid Shaheed (knee) out for Week 8 vs. Bears"
    }
   },
   "401873036|rjharvey|out": {
@@ -15473,6 +15478,18 @@
     "seen": "2026-10-31T20:19:43.191Z",
     "own": "2026-10-31T20:18:44.000Z",
     "why": "@rotowirenfl.bsky.social: RJ Harvey: Lands on injured reserve \n\n https://www.rot"
+   }
+  },
+  "401873036|malikmuhammad|q": {
+   "game": "401873036",
+   "start": "2026-11-03T01:15Z",
+   "team": "3",
+   "name": "Malik Muhammad II",
+   "status": "q",
+   "athlete": "4870953",
+   "espn": {
+    "seen": "2026-11-01T03:21:48.327Z",
+    "own": "2026-11-01T02:54:00.000Z"
    }
   }
  }
