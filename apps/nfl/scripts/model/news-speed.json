@@ -17334,6 +17334,30 @@
     "own": "2026-11-01T20:00:46.082Z",
     "why": "@insidenflnews.bsky.social: 🚨 Status alert: Jeremiyah Love (ankle) remains in l"
    }
+  },
+  "401873035|calebdowns|out": {
+   "game": "401873035",
+   "start": "2026-11-02T01:20Z",
+   "team": "28",
+   "name": "Caleb Downs",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-01T21:01:52.142Z",
+    "own": "2026-11-01T20:44:37.866Z",
+    "why": "@nflnewsposter.bsky.social: [Machota] Caleb Downs is out for the rest of the gam"
+   }
+  },
+  "401873036|calebdowns|out": {
+   "game": "401873036",
+   "start": "2026-11-03T01:15Z",
+   "team": "26",
+   "name": "Caleb Downs",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-01T21:01:52.142Z",
+    "own": "2026-11-01T20:44:37.866Z",
+    "why": "@nflnewsposter.bsky.social: [Machota] Caleb Downs is out for the rest of the gam"
+   }
   }
  }
 }

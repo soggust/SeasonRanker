@@ -1,7 +1,7 @@
 {
  "sport": "nba",
  "cursor": {
-  "rotowirenba.bsky.social": "2026-11-01T20:47:26.000Z",
+  "rotowirenba.bsky.social": "2026-11-01T21:14:05.000Z",
   "insidenbanews.bsky.social": "2026-10-30T19:15:23.134Z",
   "shamsbot.bsky.social": "2026-10-31T15:48:10.000Z"
  },
@@ -6791,6 +6791,19 @@
    "kind": "status",
    "confidence": 0.8,
    "text": "Dejounte Murray: Not listed on injury report \n\n https://www.rotowire.com/basketball/player/dejounte-murray-3856"
+  },
+  {
+   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mzbpqeffmm23|nicclaxton|doubtful|status",
+   "at": "2026-11-01T21:08:00.000Z",
+   "seen": "2026-11-01T21:23:48.156Z",
+   "handle": "rotowirenba.bsky.social",
+   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mzbpqeffmm23",
+   "player": "Nic Claxton",
+   "team": "BKN",
+   "status": "doubtful",
+   "kind": "status",
+   "confidence": 0.95,
+   "text": "Nic Claxton: Doubtful against Philadelphia \n\n https://www.rotowire.com/basketball/player/nic-claxton-4827"
   }
  ]
 }

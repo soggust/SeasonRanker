@@ -1,13 +1,13 @@
 {
  "sport": "nfl",
  "cursor": {
-  "adamscheftermirror.bsky.social": "2026-11-01T20:54:08.863Z",
-  "rapsheet.bsky.social": "2026-11-01T20:24:36.494Z",
+  "adamscheftermirror.bsky.social": "2026-11-01T21:09:10.673Z",
+  "rapsheet.bsky.social": "2026-11-01T21:11:18.351Z",
   "nflnewsreposterbot.bsky.social": "2026-10-30T22:57:34.763Z",
   "insidenflnews.bsky.social": "2026-11-01T20:53:54.038Z",
-  "nflnewsposter.bsky.social": "2026-11-01T21:00:41.905Z",
-  "rotoworld-fb.bsky.social": "2026-11-01T20:42:32.000Z",
-  "rotowirenfl.bsky.social": "2026-11-01T20:55:13.000Z"
+  "nflnewsposter.bsky.social": "2026-11-01T21:20:43.970Z",
+  "rotoworld-fb.bsky.social": "2026-11-01T21:22:35.000Z",
+  "rotowirenfl.bsky.social": "2026-11-01T21:17:19.000Z"
  },
  "claims": [
   {
@@ -11878,6 +11878,84 @@
    "kind": "status",
    "confidence": 0.95,
    "text": "[Davenport] Titans Peter Skoronski (hamstring) is questionable. twitter.com/TDavenport_N..."
+  },
+  {
+   "id": "at://did:plc:hlvr2omhnmvdmfnvmcuhyevz/app.bsky.feed.post/3mzbph3vp322c|jackcampbell|questionable|status",
+   "at": "2026-11-01T21:02:49.804Z",
+   "seen": "2026-11-01T21:23:48.156Z",
+   "handle": "rapsheet.bsky.social",
+   "post": "at://did:plc:hlvr2omhnmvdmfnvmcuhyevz/app.bsky.feed.post/3mzbph3vp322c",
+   "player": "Jack Campbell",
+   "team": "DET",
+   "status": "questionable",
+   "kind": "status",
+   "confidence": 0.35,
+   "text": "The Lions say star LB Jack Campbell is being transported to a local hospital to be evaluated for a neck injury."
+  },
+  {
+   "id": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3mzbpnzzg552y|jamescook|active|return",
+   "at": "2026-11-01T21:06:41.000Z",
+   "seen": "2026-11-01T21:23:48.156Z",
+   "handle": "rotowirenfl.bsky.social",
+   "post": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3mzbpnzzg552y",
+   "player": "James Cook",
+   "team": "BUF",
+   "status": "active",
+   "kind": "return",
+   "confidence": 0.9,
+   "text": "James Cook: Cleared to return Sunday \n\n https://www.rotowire.com/football/player/james-cook-15876"
+  },
+  {
+   "id": "at://did:plc:qre6zxbmr3ixhdmgsgdretb5/app.bsky.feed.post/3mzbpsh7lor2r|jackcampbell|questionable|status",
+   "at": "2026-11-01T21:09:10.673Z",
+   "seen": "2026-11-01T21:23:48.156Z",
+   "handle": "adamscheftermirror.bsky.social",
+   "post": "at://did:plc:qre6zxbmr3ixhdmgsgdretb5/app.bsky.feed.post/3mzbpsh7lor2r",
+   "player": "Jack Campbell",
+   "team": "DET",
+   "status": "questionable",
+   "kind": "status",
+   "confidence": 0.35,
+   "text": "Repost by @AdamSchefter\n\nJack Campbell is being transported to a local hospital to be evaluated for a neck injury.\n\nClick to see original repost"
+  },
+  {
+   "id": "at://did:plc:fuqjc7x4gxvnwzksnlxwbe4x/app.bsky.feed.post/3mzbpuccebkdb|mikecaliendo|none|starting",
+   "at": "2026-11-01T21:10:12.726Z",
+   "seen": "2026-11-01T21:23:48.156Z",
+   "handle": "nflnewsposter.bsky.social",
+   "post": "at://did:plc:fuqjc7x4gxvnwzksnlxwbe4x/app.bsky.feed.post/3mzbpuccebkdb",
+   "player": "Mike Caliendo",
+   "team": "KC",
+   "status": "none",
+   "kind": "starting",
+   "confidence": 0.8,
+   "text": "[Taylor] The Chiefs say Mike Caliendo will start instead of Kingsley Suamataia, per coach Andy Reid's decision.\n\nWe'll ask after the game to see why the change was made for this game. twitter.com/ByNa"
+  },
+  {
+   "id": "at://did:plc:fuqjc7x4gxvnwzksnlxwbe4x/app.bsky.feed.post/3mzbpuccebkdb|kingsleysuamataia|none|benched",
+   "at": "2026-11-01T21:10:12.726Z",
+   "seen": "2026-11-01T21:23:48.156Z",
+   "handle": "nflnewsposter.bsky.social",
+   "post": "at://did:plc:fuqjc7x4gxvnwzksnlxwbe4x/app.bsky.feed.post/3mzbpuccebkdb",
+   "player": "Kingsley Suamataia",
+   "team": "KC",
+   "status": "none",
+   "kind": "benched",
+   "confidence": 0.8,
+   "text": "[Taylor] The Chiefs say Mike Caliendo will start instead of Kingsley Suamataia, per coach Andy Reid's decision.\n\nWe'll ask after the game to see why the change was made for this game. twitter.com/ByNa"
+  },
+  {
+   "id": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3mzbpwrogjx2c|jeremiahlove|out|status",
+   "at": "2026-11-01T21:11:35.000Z",
+   "seen": "2026-11-01T21:23:48.156Z",
+   "handle": "rotowirenfl.bsky.social",
+   "post": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3mzbpwrogjx2c",
+   "player": "Jeremiah Love",
+   "team": null,
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.6,
+   "text": "Jeremiyah Love: Not returning to Sunday's contest \n\n https://www.rotowire.com/football/player/jeremiyah-love-19235"
   }
  ]
 }
