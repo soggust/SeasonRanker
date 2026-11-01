@@ -2,7 +2,7 @@
  "v": 1,
  "sport": "nba",
  "epoch": "2026-10-26T15:00:00Z",
- "at": "2026-10-30T11:24:03.857Z",
+ "at": "2026-11-01T09:09:59.593Z",
  "from": "2020-08-01T01:10:00.000Z",
  "through": "2026-06-11T00:40:00.000Z",
  "n": {
@@ -2643,7 +2643,7 @@
     "beat": 0,
     "clv": 0,
     "pN": 3776,
-    "p": 2009.2049,
+    "p": 2009.205,
     "wins": 2058
    },
    "prop:reb": {
@@ -2733,12 +2733,12 @@
     "beat": 0,
     "clv": 0,
     "pN": 591,
-    "p": 303.3881,
+    "p": 303.388,
     "wins": 264
    }
   }
  },
- "commit": "865e8bba",
+ "commit": "526ba05a",
  "note": "D102. A game asked before gets one fresh quote inside the props' betting window (the owner, 2026-10-30: \"why is the bot making nfl suggestions then not betting them (like bryce young last night rushing....it would have won)\")",
  "inputs": {
   "v": 1,
