@@ -15508,6 +15508,66 @@
     "seen": "2026-11-01T15:42:03.198Z",
     "own": "2026-11-01T15:17:00.000Z"
    }
+  },
+  "401873026|spencerbrown|out": {
+   "game": "401873026",
+   "start": "2026-11-01T18:00Z",
+   "team": "2",
+   "name": "Spencer Brown",
+   "status": "out",
+   "athlete": "4030899",
+   "espn": {
+    "seen": "2026-11-01T16:33:50.367Z",
+    "own": "2026-10-31T01:53:00.000Z"
+   }
+  },
+  "401873026|deealford|out": {
+   "game": "401873026",
+   "start": "2026-11-01T18:00Z",
+   "team": "2",
+   "name": "Dee Alford",
+   "status": "out",
+   "athlete": "4401823",
+   "espn": {
+    "seen": "2026-11-01T16:33:50.367Z",
+    "own": "2026-10-30T21:56:00.000Z"
+   }
+  },
+  "401873026|greggaines|out": {
+   "game": "401873026",
+   "start": "2026-11-01T18:00Z",
+   "team": "2",
+   "name": "Greg Gaines",
+   "status": "out",
+   "athlete": "3127294",
+   "espn": {
+    "seen": "2026-11-01T16:33:50.367Z",
+    "own": "2026-10-30T19:12:00.000Z"
+   }
+  },
+  "401873024|lukeschoonmaker|out": {
+   "game": "401873024",
+   "start": "2026-11-01T18:00Z",
+   "team": "6",
+   "name": "Luke Schoonmaker",
+   "status": "out",
+   "athlete": "4372096",
+   "espn": {
+    "seen": "2026-11-01T16:33:50.367Z",
+    "own": "2026-10-29T21:03:00.000Z"
+   }
+  },
+  "401873027|dillongabriel|out": {
+   "game": "401873027",
+   "start": "2026-11-01T18:00Z",
+   "team": "5",
+   "name": "Dillon Gabriel",
+   "status": "out",
+   "athlete": "4427238",
+   "espn": {
+    "seen": "2026-11-01T16:33:50.367Z",
+    "own": "2026-10-26T21:33:00.000Z"
+   }
   }
  }
 }
