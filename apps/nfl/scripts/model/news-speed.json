@@ -17142,6 +17142,78 @@
     "own": "2026-11-01T19:55:07.000Z",
     "why": "@rotowirenfl.bsky.social: Jake Ferguson: Ruled out for rest of game \n\n https://w"
    }
+  },
+  "401873033|tyleronyedim|out": {
+   "game": "401873033",
+   "start": "2026-11-01T21:25Z",
+   "team": "7",
+   "name": "Tyler Onyedim",
+   "status": "out",
+   "athlete": "4683535",
+   "espn": {
+    "seen": "2026-11-01T20:17:00.898Z",
+    "own": "2026-11-01T20:01:00.000Z"
+   }
+  },
+  "401873033|gavinortega|out": {
+   "game": "401873033",
+   "start": "2026-11-01T21:25Z",
+   "team": "7",
+   "name": "Gavin Ortega",
+   "status": "out",
+   "athlete": "5085625",
+   "espn": {
+    "seen": "2026-11-01T20:17:00.898Z",
+    "own": "2026-11-01T20:01:00.000Z"
+   }
+  },
+  "401873033|jordanjackson|out": {
+   "game": "401873033",
+   "start": "2026-11-01T21:25Z",
+   "team": "7",
+   "name": "Jordan Jackson",
+   "status": "out",
+   "athlete": "4261090",
+   "espn": {
+    "seen": "2026-11-01T20:17:00.898Z",
+    "own": "2026-11-01T20:01:00.000Z"
+   }
+  },
+  "401873033|dallenbentley|out": {
+   "game": "401873033",
+   "start": "2026-11-01T21:25Z",
+   "team": "7",
+   "name": "Dallen Bentley",
+   "status": "out",
+   "athlete": "5159802",
+   "espn": {
+    "seen": "2026-11-01T20:17:00.898Z",
+    "own": "2026-11-01T20:01:00.000Z"
+   }
+  },
+  "401873033|kagecasey|out": {
+   "game": "401873033",
+   "start": "2026-11-01T21:25Z",
+   "team": "7",
+   "name": "Kage Casey",
+   "status": "out",
+   "athlete": "4868598",
+   "espn": {
+    "seen": "2026-11-01T20:17:00.898Z",
+    "own": "2026-11-01T20:01:00.000Z"
+   }
+  },
+  "401873033|samehlinger|out": {
+   "game": "401873033",
+   "start": "2026-11-01T21:25Z",
+   "team": "7",
+   "name": "Sam Ehlinger",
+   "status": "out",
+   "athlete": "4241820",
+   "espn": {
+    "seen": "2026-11-01T20:17:00.898Z",
+    "own": "2026-11-01T20:01:00.000Z"
+   }
   }
  }
 }
