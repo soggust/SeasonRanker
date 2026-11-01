@@ -1,12 +1,12 @@
 {
  "sport": "nfl",
  "cursor": {
-  "adamscheftermirror.bsky.social": "2026-11-01T12:59:07.146Z",
+  "adamscheftermirror.bsky.social": "2026-11-01T13:29:09.638Z",
   "rapsheet.bsky.social": "2026-10-31T19:21:57.682Z",
   "nflnewsreposterbot.bsky.social": "2026-10-30T22:57:34.763Z",
   "insidenflnews.bsky.social": "2026-11-01T12:21:11.924Z",
   "nflnewsposter.bsky.social": "2026-11-01T03:27:14.966Z",
-  "rotoworld-fb.bsky.social": "2026-11-01T13:23:47.000Z",
+  "rotoworld-fb.bsky.social": "2026-11-01T13:46:05.000Z",
   "rotowirenfl.bsky.social": "2026-11-01T12:54:41.000Z"
  },
  "claims": [
@@ -10838,6 +10838,19 @@
    "kind": "starting",
    "confidence": 0.7,
    "text": "Raiders plan to start Cousins as long as possible"
+  },
+  {
+   "id": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3mzawkm2a322z|pickens|active|status",
+   "at": "2026-11-01T13:37:23.000Z",
+   "seen": "2026-11-01T13:48:26.544Z",
+   "handle": "rotoworld-fb.bsky.social",
+   "post": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3mzawkm2a322z",
+   "player": "Pickens",
+   "team": null,
+   "status": "active",
+   "kind": "status",
+   "confidence": 0.8,
+   "text": "Pickens (hamstring/shoulder) is expected to play"
   }
  ]
 }
