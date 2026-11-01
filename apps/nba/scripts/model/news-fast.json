@@ -1,7 +1,7 @@
 {
  "sport": "nba",
  "cursor": {
-  "rotowirenba.bsky.social": "2026-11-01T21:14:05.000Z",
+  "rotowirenba.bsky.social": "2026-11-01T22:08:11.000Z",
   "insidenbanews.bsky.social": "2026-10-30T19:15:23.134Z",
   "shamsbot.bsky.social": "2026-10-31T15:48:10.000Z"
  },
@@ -6804,6 +6804,32 @@
    "kind": "status",
    "confidence": 0.95,
    "text": "Nic Claxton: Doubtful against Philadelphia \n\n https://www.rotowire.com/basketball/player/nic-claxton-4827"
+  },
+  {
+   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mzbqrwjgdl2q|jaysontatum|active|return",
+   "at": "2026-11-01T21:26:46.000Z",
+   "seen": "2026-11-01T22:15:39.321Z",
+   "handle": "rotowirenba.bsky.social",
+   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mzbqrwjgdl2q",
+   "player": "Jayson Tatum",
+   "team": null,
+   "status": "active",
+   "kind": "return",
+   "confidence": 0.9,
+   "text": "Jayson Tatum: Returns versus Orlando \n\n https://www.rotowire.com/basketball/player/jayson-tatum-4108"
+  },
+  {
+   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mzbt3xmpfj2l|konknueppel|out|status",
+   "at": "2026-11-01T22:08:11.000Z",
+   "seen": "2026-11-01T22:15:39.321Z",
+   "handle": "rotowirenba.bsky.social",
+   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mzbt3xmpfj2l",
+   "player": "Kon Knueppel",
+   "team": null,
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.92,
+   "text": "Kon Knueppel: Out against Detroit \n\n https://www.rotowire.com/basketball/player/kon-knueppel-6540"
   }
  ]
 }

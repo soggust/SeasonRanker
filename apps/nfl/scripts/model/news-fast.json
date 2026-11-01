@@ -1,13 +1,13 @@
 {
  "sport": "nfl",
  "cursor": {
-  "adamscheftermirror.bsky.social": "2026-11-01T21:09:10.673Z",
-  "rapsheet.bsky.social": "2026-11-01T21:11:18.351Z",
+  "adamscheftermirror.bsky.social": "2026-11-01T21:54:31.464Z",
+  "rapsheet.bsky.social": "2026-11-01T22:12:21.679Z",
   "nflnewsreposterbot.bsky.social": "2026-10-30T22:57:34.763Z",
   "insidenflnews.bsky.social": "2026-11-01T20:53:54.038Z",
-  "nflnewsposter.bsky.social": "2026-11-01T21:20:43.970Z",
-  "rotoworld-fb.bsky.social": "2026-11-01T21:22:35.000Z",
-  "rotowirenfl.bsky.social": "2026-11-01T21:17:19.000Z"
+  "nflnewsposter.bsky.social": "2026-11-01T22:14:22.787Z",
+  "rotoworld-fb.bsky.social": "2026-11-01T22:12:40.000Z",
+  "rotowirenfl.bsky.social": "2026-11-01T22:13:23.000Z"
  },
  "claims": [
   {
@@ -11956,6 +11956,97 @@
    "kind": "status",
    "confidence": 0.6,
    "text": "Jeremiyah Love: Not returning to Sunday's contest \n\n https://www.rotowire.com/football/player/jeremiyah-love-19235"
+  },
+  {
+   "id": "at://did:plc:fuqjc7x4gxvnwzksnlxwbe4x/app.bsky.feed.post/3mzbr5itmtsdb|lamarjackson|out|status",
+   "at": "2026-11-01T21:33:15.315Z",
+   "seen": "2026-11-01T22:15:39.321Z",
+   "handle": "nflnewsposter.bsky.social",
+   "post": "at://did:plc:fuqjc7x4gxvnwzksnlxwbe4x/app.bsky.feed.post/3mzbr5itmtsdb",
+   "player": "Lamar Jackson",
+   "team": "BAL",
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.9,
+   "text": "[Zrebiec] Minter said that Lamar Jackson needs surgery and will go to IR. twitter.com/jeffzrebiec/..."
+  },
+  {
+   "id": "at://did:plc:fuqjc7x4gxvnwzksnlxwbe4x/app.bsky.feed.post/3mzbrfmptyc2d|tylerhuntley|questionable|status",
+   "at": "2026-11-01T21:37:47.822Z",
+   "seen": "2026-11-01T22:15:39.321Z",
+   "handle": "nflnewsposter.bsky.social",
+   "post": "at://did:plc:fuqjc7x4gxvnwzksnlxwbe4x/app.bsky.feed.post/3mzbrfmptyc2d",
+   "player": "Tyler Huntley",
+   "team": "BAL",
+   "status": "questionable",
+   "kind": "status",
+   "confidence": 0.7,
+   "text": "[Pelissero] Lamar Jackson's injury is potentially season-ending, Minter said. Meanwhile, Tyler Huntley's status is uncertain after he suffered a toe injury. The only healthy QB on Baltimore's roster i"
+  },
+  {
+   "id": "at://did:plc:qre6zxbmr3ixhdmgsgdretb5/app.bsky.feed.post/3mzbri43y3q2n|lamarjackson|out|status",
+   "at": "2026-11-01T21:39:10.958Z",
+   "seen": "2026-11-01T22:15:39.321Z",
+   "handle": "adamscheftermirror.bsky.social",
+   "post": "at://did:plc:qre6zxbmr3ixhdmgsgdretb5/app.bsky.feed.post/3mzbri43y3q2n",
+   "player": "Lamar Jackson",
+   "team": "BAL",
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.9,
+   "text": "Ravens QB Lamar Jackson needs thumb surgery and will be placed on injured reserve.\n\nOriginal post"
+  },
+  {
+   "id": "at://did:plc:hlvr2omhnmvdmfnvmcuhyevz/app.bsky.feed.post/3mzbrl6md622y|lamarjackson|out|status",
+   "at": "2026-11-01T21:40:54.349Z",
+   "seen": "2026-11-01T22:15:39.321Z",
+   "handle": "rapsheet.bsky.social",
+   "post": "at://did:plc:hlvr2omhnmvdmfnvmcuhyevz/app.bsky.feed.post/3mzbrl6md622y",
+   "player": "Lamar Jackson",
+   "team": "BAL",
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.9,
+   "text": "Ravens QB Lamar Jackson will have surgery on his thumb and will go on Injured Reserve, per coach Jesse Minter. “We’ll see” if it’s season ending."
+  },
+  {
+   "id": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3mzbrltjfzz24|lamarjackson|out|status",
+   "at": "2026-11-01T21:41:16.000Z",
+   "seen": "2026-11-01T22:15:39.321Z",
+   "handle": "rotoworld-fb.bsky.social",
+   "post": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3mzbrltjfzz24",
+   "player": "Lamar Jackson",
+   "team": "BAL",
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.9,
+   "text": "Lamar Jackson (thumb) to have surgery, headed to IR"
+  },
+  {
+   "id": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3mzbs3xewn72z|lamarjackson|out|status",
+   "at": "2026-11-01T21:50:17.000Z",
+   "seen": "2026-11-01T22:15:39.321Z",
+   "handle": "rotowirenfl.bsky.social",
+   "post": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3mzbs3xewn72z",
+   "player": "Lamar Jackson",
+   "team": "BAL",
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.9,
+   "text": "Lamar Jackson: Will have surgery and go on IR \n\n https://www.rotowire.com/football/player/lamar-jackson-12561"
+  },
+  {
+   "id": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3mzbsts4wpu2j|tylerhuntley|questionable|status",
+   "at": "2026-11-01T22:03:36.000Z",
+   "seen": "2026-11-01T22:15:39.321Z",
+   "handle": "rotowirenfl.bsky.social",
+   "post": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3mzbsts4wpu2j",
+   "player": "Tyler Huntley",
+   "team": "BAL",
+   "status": "questionable",
+   "kind": "status",
+   "confidence": 0.8,
+   "text": "Tyler Huntley: Status uncertain due to toe injury \n\n https://www.rotowire.com/football/player/tyler-huntley-14563"
   }
  ]
 }

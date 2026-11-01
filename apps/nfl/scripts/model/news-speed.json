@@ -17358,6 +17358,30 @@
     "own": "2026-11-01T20:44:37.866Z",
     "why": "@nflnewsposter.bsky.social: [Machota] Caleb Downs is out for the rest of the gam"
    }
+  },
+  "401873035|jeremiahlove|out": {
+   "game": "401873035",
+   "start": "2026-11-02T01:20Z",
+   "team": "28",
+   "name": "Jeremiah Love",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-01T21:23:48.156Z",
+    "own": "2026-11-01T21:11:35.000Z",
+    "why": "@rotowirenfl.bsky.social: Jeremiyah Love: Not returning to Sunday's contest \n\n h"
+   }
+  },
+  "401873036|jeremiahlove|out": {
+   "game": "401873036",
+   "start": "2026-11-03T01:15Z",
+   "team": "26",
+   "name": "Jeremiah Love",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-01T21:23:48.156Z",
+    "own": "2026-11-01T21:11:35.000Z",
+    "why": "@rotowirenfl.bsky.social: Jeremiyah Love: Not returning to Sunday's contest \n\n h"
+   }
   }
  }
 }
