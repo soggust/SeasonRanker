@@ -1,143 +1,6 @@
 {
  "sport": "nba",
  "entries": {
-  "401909838|jeramigrant|q": {
-   "game": "401909838",
-   "start": "2026-10-22T00:00Z",
-   "team": "29",
-   "name": "Jerami Grant",
-   "status": "q",
-   "athlete": "2991070",
-   "espn": {
-    "seen": "2026-10-19T21:13:44.552Z",
-    "own": "2026-10-16T23:06:00.000Z"
-   }
-  },
-  "401909838|ggjackson|q": {
-   "game": "401909838",
-   "start": "2026-10-22T00:00Z",
-   "team": "29",
-   "name": "GG Jackson",
-   "status": "q",
-   "athlete": "5105550",
-   "espn": {
-    "seen": "2026-10-19T21:13:44.552Z",
-    "own": "2026-10-16T23:02:00.000Z"
-   }
-  },
-  "401909838|isaiahstewart|out": {
-   "game": "401909838",
-   "start": "2026-10-22T00:00Z",
-   "team": "29",
-   "name": "Isaiah Stewart",
-   "status": "out",
-   "athlete": "4432810",
-   "espn": {
-    "seen": "2026-10-19T21:13:44.552Z",
-    "own": "2026-10-09T23:01:00.000Z"
-   },
-   "bluesky": {
-    "seen": "2026-10-20T22:25:24.744Z",
-    "own": "2026-10-20T22:12:22.000Z",
-    "why": "@rotowirenba.bsky.social: Isaiah Stewart: Doubtful for Wednesday \n\n https://www."
-   }
-  },
-  "401909838|blakehinson|q": {
-   "game": "401909838",
-   "start": "2026-10-22T00:00Z",
-   "team": "26",
-   "name": "Blake Hinson",
-   "status": "q",
-   "athlete": "4396963",
-   "espn": {
-    "seen": "2026-10-19T21:13:44.552Z",
-    "own": "2026-10-17T01:28:00.000Z"
-   }
-  },
-  "401909838|treyalexander|q": {
-   "game": "401909838",
-   "start": "2026-10-22T00:00Z",
-   "team": "26",
-   "name": "Trey Alexander",
-   "status": "q",
-   "athlete": "4433268",
-   "espn": {
-    "seen": "2026-10-19T21:13:44.552Z",
-    "own": "2026-10-17T01:27:00.000Z"
-   }
-  },
-  "401909838|kylefilipowski|q": {
-   "game": "401909838",
-   "start": "2026-10-22T00:00Z",
-   "team": "26",
-   "name": "Kyle Filipowski",
-   "status": "q",
-   "athlete": "4684793",
-   "espn": {
-    "seen": "2026-10-19T21:13:44.552Z",
-    "own": "2026-10-10T20:12:00.000Z"
-   }
-  },
-  "401909838|jusufnurkic|out": {
-   "game": "401909838",
-   "start": "2026-10-22T00:00Z",
-   "team": "26",
-   "name": "Jusuf Nurkic",
-   "status": "out",
-   "athlete": "3102530",
-   "espn": {
-    "seen": "2026-10-19T21:13:44.552Z",
-    "own": "2026-10-07T23:07:00.000Z"
-   }
-  },
-  "401909839|jaracewalker|q": {
-   "game": "401909839",
-   "start": "2026-10-22T00:00Z",
-   "team": "11",
-   "name": "Jarace Walker",
-   "status": "q",
-   "athlete": "5106060",
-   "espn": {
-    "seen": "2026-10-19T21:13:44.552Z",
-    "own": "2026-10-16T21:33:00.000Z"
-   }
-  },
-  "401909839|tjmcconnell|q": {
-   "game": "401909839",
-   "start": "2026-10-22T00:00Z",
-   "team": "11",
-   "name": "T.J. McConnell",
-   "status": "q",
-   "athlete": "2530530",
-   "espn": {
-    "seen": "2026-10-19T21:13:44.552Z",
-    "own": "2026-10-16T21:31:00.000Z"
-   }
-  },
-  "401909839|aaronnesmith|q": {
-   "game": "401909839",
-   "start": "2026-10-22T00:00Z",
-   "team": "11",
-   "name": "Aaron Nesmith",
-   "status": "q",
-   "athlete": "4396909",
-   "espn": {
-    "seen": "2026-10-19T21:13:44.552Z",
-    "own": "2026-10-15T17:33:00.000Z"
-   }
-  },
-  "401909839|johnnyfurphy|out": {
-   "game": "401909839",
-   "start": "2026-10-22T00:00Z",
-   "team": "11",
-   "name": "Johnny Furphy",
-   "status": "out",
-   "athlete": "5157066",
-   "espn": {
-    "seen": "2026-10-19T21:13:44.552Z",
-    "own": "2026-02-09T21:43:00.000Z"
-   }
-  },
   "401909840|santialdama|q": {
    "game": "401909840",
    "start": "2026-10-22T00:30Z",
@@ -848,30 +711,6 @@
     "own": "2026-10-22T21:15:13.228Z"
    }
   },
-  "401909838|brandinpodziemski|q": {
-   "game": "401909838",
-   "start": "2026-10-22T00:00Z",
-   "team": "29",
-   "name": "Brandin Podziemski",
-   "status": "q",
-   "bluesky": {
-    "seen": "2026-10-20T19:13:14.932Z",
-    "own": "2026-10-20T18:51:17.000Z",
-    "why": "@rotowirenba.bsky.social: Brandin Podziemski: Misses practice Tuesday \n\n https:/"
-   }
-  },
-  "401909839|brandinpodziemski|q": {
-   "game": "401909839",
-   "start": "2026-10-22T00:00Z",
-   "team": "3",
-   "name": "Brandin Podziemski",
-   "status": "q",
-   "bluesky": {
-    "seen": "2026-10-20T19:13:14.932Z",
-    "own": "2026-10-20T18:51:17.000Z",
-    "why": "@rotowirenba.bsky.social: Brandin Podziemski: Misses practice Tuesday \n\n https:/"
-   }
-  },
   "401909840|julianphillips|q": {
    "game": "401909840",
    "start": "2026-10-22T00:30Z",
@@ -910,112 +749,6 @@
    "espn": {
     "seen": "2026-10-20T19:31:37.347Z",
     "own": "2026-10-20T19:04:00.000Z"
-   }
-  },
-  "401909839|tjmcconnell|out": {
-   "game": "401909839",
-   "start": "2026-10-22T00:00Z",
-   "team": "11",
-   "name": "T.J. McConnell",
-   "status": "out",
-   "athlete": "2530530",
-   "espn": {
-    "seen": "2026-10-20T21:48:42.617Z",
-    "own": "2026-10-20T21:38:00.000Z"
-   },
-   "bluesky": {
-    "seen": "2026-10-20T22:25:24.744Z",
-    "own": "2026-10-20T21:38:26.000Z",
-    "why": "@rotowirenba.bsky.social: T.J. McConnell: Ruled out for Wednesday \n\n https://www"
-   },
-   "sleeper": {
-    "seen": "2026-10-21T20:01:28.860Z",
-    "own": "2026-10-21T00:30:40.503Z"
-   }
-  },
-  "401909839|aaronnesmith|out": {
-   "game": "401909839",
-   "start": "2026-10-22T00:00Z",
-   "team": "11",
-   "name": "Aaron Nesmith",
-   "status": "out",
-   "athlete": "4396909",
-   "espn": {
-    "seen": "2026-10-20T21:48:42.617Z",
-    "own": "2026-10-20T21:36:00.000Z"
-   },
-   "bluesky": {
-    "seen": "2026-10-20T22:25:24.744Z",
-    "own": "2026-10-20T21:36:11.000Z",
-    "why": "@rotowirenba.bsky.social: Aaron Nesmith: Ruled out for regular-season opener \n\n "
-   },
-   "sleeper": {
-    "seen": "2026-10-21T20:01:28.860Z",
-    "own": "2026-10-21T00:35:40.073Z"
-   }
-  },
-  "401909838|blakehinson|out": {
-   "game": "401909838",
-   "start": "2026-10-22T00:00Z",
-   "team": "26",
-   "name": "Blake Hinson",
-   "status": "out",
-   "athlete": "4396963",
-   "espn": {
-    "seen": "2026-10-20T22:14:44.029Z",
-    "own": "2026-10-20T22:12:00.000Z"
-   },
-   "sleeper": {
-    "seen": "2026-10-21T20:01:28.860Z",
-    "own": "2026-10-21T15:55:45.653Z"
-   }
-  },
-  "401909838|tonybradley|out": {
-   "game": "401909838",
-   "start": "2026-10-22T00:00Z",
-   "team": "26",
-   "name": "Tony Bradley",
-   "status": "out",
-   "athlete": "4065673",
-   "espn": {
-    "seen": "2026-10-20T22:14:44.029Z",
-    "own": "2026-10-20T22:08:00.000Z"
-   },
-   "sleeper": {
-    "seen": "2026-10-21T20:01:28.860Z",
-    "own": "2026-10-20T22:10:39.138Z"
-   }
-  },
-  "401909838|treyalexander|out": {
-   "game": "401909838",
-   "start": "2026-10-22T00:00Z",
-   "team": "26",
-   "name": "Trey Alexander",
-   "status": "out",
-   "athlete": "4433268",
-   "espn": {
-    "seen": "2026-10-20T22:14:44.029Z",
-    "own": "2026-10-20T22:06:00.000Z"
-   },
-   "sleeper": {
-    "seen": "2026-10-21T20:01:28.860Z",
-    "own": "2026-10-20T22:10:39.114Z"
-   }
-  },
-  "401909838|isaiahstewart|q": {
-   "game": "401909838",
-   "start": "2026-10-22T00:00Z",
-   "team": "29",
-   "name": "Isaiah Stewart",
-   "status": "q",
-   "athlete": "4432810",
-   "espn": {
-    "seen": "2026-10-20T22:16:44.417Z",
-    "own": "2026-10-20T22:13:00.000Z"
-   },
-   "sleeper": {
-    "seen": "2026-10-21T20:01:28.860Z",
-    "own": "2026-10-21T01:15:40.363Z"
    }
   },
   "401909840|calebmartin|out": {
@@ -1080,42 +813,6 @@
    "sleeper": {
     "seen": "2026-10-21T20:01:28.860Z",
     "own": "2026-10-20T22:10:39.136Z"
-   }
-  },
-  "401909838|aaronnesmith|out": {
-   "game": "401909838",
-   "start": "2026-10-22T00:00Z",
-   "team": "29",
-   "name": "Aaron Nesmith",
-   "status": "out",
-   "bluesky": {
-    "seen": "2026-10-20T22:25:24.744Z",
-    "own": "2026-10-20T21:36:11.000Z",
-    "why": "@rotowirenba.bsky.social: Aaron Nesmith: Ruled out for regular-season opener \n\n "
-   }
-  },
-  "401909838|tjmcconnell|out": {
-   "game": "401909838",
-   "start": "2026-10-22T00:00Z",
-   "team": "29",
-   "name": "T.J. McConnell",
-   "status": "out",
-   "bluesky": {
-    "seen": "2026-10-20T22:25:24.744Z",
-    "own": "2026-10-20T21:38:26.000Z",
-    "why": "@rotowirenba.bsky.social: T.J. McConnell: Ruled out for Wednesday \n\n https://www"
-   }
-  },
-  "401909839|isaiahstewart|out": {
-   "game": "401909839",
-   "start": "2026-10-22T00:00Z",
-   "team": "3",
-   "name": "Isaiah Stewart",
-   "status": "out",
-   "bluesky": {
-    "seen": "2026-10-20T22:25:24.744Z",
-    "own": "2026-10-20T22:12:22.000Z",
-    "why": "@rotowirenba.bsky.social: Isaiah Stewart: Doubtful for Wednesday \n\n https://www."
    }
   },
   "401909840|aaronnesmith|out": {
@@ -1274,30 +971,6 @@
     "own": "2026-10-20T22:32:00.000Z"
    }
   },
-  "401909838|deanwade|out": {
-   "game": "401909838",
-   "start": "2026-10-22T00:00Z",
-   "team": "29",
-   "name": "Dean Wade",
-   "status": "out",
-   "bluesky": {
-    "seen": "2026-10-20T22:40:53.052Z",
-    "own": "2026-10-20T22:30:47.905Z",
-    "why": "@insidenbanews.bsky.social: Dean Wade (ankle) listed out Tuesday."
-   }
-  },
-  "401909839|deanwade|out": {
-   "game": "401909839",
-   "start": "2026-10-22T00:00Z",
-   "team": "3",
-   "name": "Dean Wade",
-   "status": "out",
-   "bluesky": {
-    "seen": "2026-10-20T22:40:53.052Z",
-    "own": "2026-10-20T22:30:47.905Z",
-    "why": "@insidenbanews.bsky.social: Dean Wade (ankle) listed out Tuesday."
-   }
-  },
   "401909840|deanwade|out": {
    "game": "401909840",
    "start": "2026-10-22T00:30Z",
@@ -1452,30 +1125,6 @@
     "own": "2026-10-21T01:05:40.612Z"
    }
   },
-  "401909838|collinsexton|q": {
-   "game": "401909838",
-   "start": "2026-10-22T00:00Z",
-   "team": "29",
-   "name": "Collin Sexton",
-   "status": "q",
-   "bluesky": {
-    "seen": "2026-10-21T00:17:43.117Z",
-    "own": "2026-10-21T00:06:44.000Z",
-    "why": "@rotowirenba.bsky.social: Collin Sexton: Questionable for Wednesday \n\n https://w"
-   }
-  },
-  "401909839|collinsexton|q": {
-   "game": "401909839",
-   "start": "2026-10-22T00:00Z",
-   "team": "3",
-   "name": "Collin Sexton",
-   "status": "q",
-   "bluesky": {
-    "seen": "2026-10-21T00:17:43.117Z",
-    "own": "2026-10-21T00:06:44.000Z",
-    "why": "@rotowirenba.bsky.social: Collin Sexton: Questionable for Wednesday \n\n https://w"
-   }
-  },
   "401909840|collinsexton|q": {
    "game": "401909840",
    "start": "2026-10-22T00:30Z",
@@ -1611,30 +1260,6 @@
    "sleeper": {
     "seen": "2026-10-22T20:01:42.232Z",
     "own": "2026-10-22T17:45:11.994Z"
-   }
-  },
-  "401909838|jarrettallen|q": {
-   "game": "401909838",
-   "start": "2026-10-22T00:00Z",
-   "team": "29",
-   "name": "Jarrett Allen",
-   "status": "q",
-   "bluesky": {
-    "seen": "2026-10-21T21:10:26.919Z",
-    "own": "2026-10-21T21:07:09.000Z",
-    "why": "@rotowirenba.bsky.social: Jarrett Allen: Questionable versus Philadelphia \n\n htt"
-   }
-  },
-  "401909839|jarrettallen|q": {
-   "game": "401909839",
-   "start": "2026-10-22T00:00Z",
-   "team": "3",
-   "name": "Jarrett Allen",
-   "status": "q",
-   "bluesky": {
-    "seen": "2026-10-21T21:10:26.919Z",
-    "own": "2026-10-21T21:07:09.000Z",
-    "why": "@rotowirenba.bsky.social: Jarrett Allen: Questionable versus Philadelphia \n\n htt"
    }
   },
   "401909840|jarrettallen|q": {

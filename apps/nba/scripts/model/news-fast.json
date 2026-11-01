@@ -1,7 +1,7 @@
 {
  "sport": "nba",
  "cursor": {
-  "rotowirenba.bsky.social": "2026-10-31T23:31:48.000Z",
+  "rotowirenba.bsky.social": "2026-11-01T00:04:09.000Z",
   "insidenbanews.bsky.social": "2026-10-30T19:15:23.134Z",
   "shamsbot.bsky.social": "2026-10-31T15:48:10.000Z"
  },
@@ -6726,6 +6726,19 @@
    "kind": "starting",
    "confidence": 0.85,
    "text": "Joan Beringer: Starting Saturday \n\n https://www.rotowire.com/basketball/player/joan-beringer-6576"
+  },
+  {
+   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mz7j4gdoat26|ziairewilliams|questionable|status",
+   "at": "2026-11-01T00:04:09.000Z",
+   "seen": "2026-11-01T00:04:32.336Z",
+   "handle": "rotowirenba.bsky.social",
+   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mz7j4gdoat26",
+   "player": "Ziaire Williams",
+   "team": null,
+   "status": "questionable",
+   "kind": "status",
+   "confidence": 0.9,
+   "text": "Ziaire Williams: Questionable for Sunday \n\n https://www.rotowire.com/basketball/player/ziaire-williams-5400"
   }
  ]
 }
