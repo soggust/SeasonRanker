@@ -1,12 +1,12 @@
 {
  "sport": "nfl",
  "cursor": {
-  "adamscheftermirror.bsky.social": "2026-11-01T14:44:09.069Z",
+  "adamscheftermirror.bsky.social": "2026-11-01T15:14:14.834Z",
   "rapsheet.bsky.social": "2026-11-01T14:48:01.964Z",
   "nflnewsreposterbot.bsky.social": "2026-10-30T22:57:34.763Z",
   "insidenflnews.bsky.social": "2026-11-01T12:21:11.924Z",
   "nflnewsposter.bsky.social": "2026-11-01T03:27:14.966Z",
-  "rotoworld-fb.bsky.social": "2026-11-01T15:02:08.000Z",
+  "rotoworld-fb.bsky.social": "2026-11-01T15:20:11.000Z",
   "rotowirenfl.bsky.social": "2026-11-01T15:00:28.000Z"
  },
  "claims": [
@@ -10955,6 +10955,19 @@
    "kind": "status",
    "confidence": 0.9,
    "text": "Jaguars WR Jakobi Meyers, questionable with hamstring and ankle injuries, is good to go today, per source."
+  },
+  {
+   "id": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3mzb4cflwiu2d|djmoore|active|status",
+   "at": "2026-11-01T15:20:11.000Z",
+   "seen": "2026-11-01T15:23:37.685Z",
+   "handle": "rotoworld-fb.bsky.social",
+   "post": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3mzb4cflwiu2d",
+   "player": "DJ Moore",
+   "team": null,
+   "status": "active",
+   "kind": "status",
+   "confidence": 0.85,
+   "text": "DJ Moore (shoulder) expected to play vs. Ravens"
   }
  ]
 }
