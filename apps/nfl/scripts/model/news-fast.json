@@ -1,13 +1,13 @@
 {
  "sport": "nfl",
  "cursor": {
-  "adamscheftermirror.bsky.social": "2026-11-01T19:09:29.278Z",
+  "adamscheftermirror.bsky.social": "2026-11-01T19:24:10.464Z",
   "rapsheet.bsky.social": "2026-11-01T19:10:51.034Z",
   "nflnewsreposterbot.bsky.social": "2026-10-30T22:57:34.763Z",
-  "insidenflnews.bsky.social": "2026-11-01T19:09:14.597Z",
-  "nflnewsposter.bsky.social": "2026-11-01T19:18:56.973Z",
-  "rotoworld-fb.bsky.social": "2026-11-01T19:12:31.000Z",
-  "rotowirenfl.bsky.social": "2026-11-01T19:17:13.000Z"
+  "insidenflnews.bsky.social": "2026-11-01T19:32:40.181Z",
+  "nflnewsposter.bsky.social": "2026-11-01T19:33:28.546Z",
+  "rotoworld-fb.bsky.social": "2026-11-01T19:21:26.000Z",
+  "rotowirenfl.bsky.social": "2026-11-01T19:35:08.000Z"
  },
  "claims": [
   {
@@ -11423,6 +11423,45 @@
    "kind": "status",
    "confidence": 0.8,
    "text": "Jeremiyah Love (ankle) questionable to return"
+  },
+  {
+   "id": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3mzbjrs75hk2b|tylerhuntley|out|status",
+   "at": "2026-11-01T19:21:26.000Z",
+   "seen": "2026-11-01T19:36:47.244Z",
+   "handle": "rotoworld-fb.bsky.social",
+   "post": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3mzbjrs75hk2b",
+   "player": "Tyler Huntley",
+   "team": "BAL",
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.8,
+   "text": "Tyler Huntley (toe) will not return vs. Bills"
+  },
+  {
+   "id": "at://did:plc:qre6zxbmr3ixhdmgsgdretb5/app.bsky.feed.post/3mzbjwoslwk2u|jeremiyahlove|questionable|status",
+   "at": "2026-11-01T19:24:10.464Z",
+   "seen": "2026-11-01T19:36:47.244Z",
+   "handle": "adamscheftermirror.bsky.social",
+   "post": "at://did:plc:qre6zxbmr3ixhdmgsgdretb5/app.bsky.feed.post/3mzbjwoslwk2u",
+   "player": "Jeremiyah Love",
+   "team": "ARI",
+   "status": "questionable",
+   "kind": "status",
+   "confidence": 0.9,
+   "text": "Cardinals say RB Jeremiyah Love is questionable to return today due to an ankle injury.\n\nOriginal post"
+  },
+  {
+   "id": "at://did:plc:fuqjc7x4gxvnwzksnlxwbe4x/app.bsky.feed.post/3mzbk7tzroswj|tylerhuntley|questionable|status",
+   "at": "2026-11-01T19:29:17.967Z",
+   "seen": "2026-11-01T19:36:47.244Z",
+   "handle": "nflnewsposter.bsky.social",
+   "post": "at://did:plc:fuqjc7x4gxvnwzksnlxwbe4x/app.bsky.feed.post/3mzbk7tzroswj",
+   "player": "Tyler Huntley",
+   "team": "BAL",
+   "status": "questionable",
+   "kind": "status",
+   "confidence": 0.85,
+   "text": "[Garafolo] Tyler Huntley CAN return to the game if he’s cleared to do so. Joe Fagnano would have to leave and would only be able to come back in if Huntley was injured again. Didn’t have this correct "
   }
  ]
 }
