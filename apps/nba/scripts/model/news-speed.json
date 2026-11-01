@@ -17870,6 +17870,30 @@
     "own": "2026-11-01T20:41:11.000Z",
     "why": "@rotowirenba.bsky.social: Reed Sheppard: Questionable versus Celtics \n\n https://"
    }
+  },
+  "401909905|konknueppel|out": {
+   "game": "401909905",
+   "start": "2026-11-02T01:30Z",
+   "team": "9",
+   "name": "Kon Knueppel",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-01T22:15:39.321Z",
+    "own": "2026-11-01T22:08:11.000Z",
+    "why": "@rotowirenba.bsky.social: Kon Knueppel: Out against Detroit \n\n https://www.rotow"
+   }
+  },
+  "401909906|konknueppel|out": {
+   "game": "401909906",
+   "start": "2026-11-02T02:00Z",
+   "team": "13",
+   "name": "Kon Knueppel",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-01T22:15:39.321Z",
+    "own": "2026-11-01T22:08:11.000Z",
+    "why": "@rotowirenba.bsky.social: Kon Knueppel: Out against Detroit \n\n https://www.rotow"
+   }
   }
  }
 }
