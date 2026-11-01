@@ -1,13 +1,13 @@
 {
  "sport": "nfl",
  "cursor": {
-  "adamscheftermirror.bsky.social": "2026-11-01T20:09:08.350Z",
-  "rapsheet.bsky.social": "2026-11-01T19:10:51.034Z",
+  "adamscheftermirror.bsky.social": "2026-11-01T20:24:06.747Z",
+  "rapsheet.bsky.social": "2026-11-01T20:24:36.494Z",
   "nflnewsreposterbot.bsky.social": "2026-10-30T22:57:34.763Z",
   "insidenflnews.bsky.social": "2026-11-01T20:11:10.844Z",
-  "nflnewsposter.bsky.social": "2026-11-01T20:19:49.859Z",
+  "nflnewsposter.bsky.social": "2026-11-01T20:38:55.317Z",
   "rotoworld-fb.bsky.social": "2026-11-01T20:19:25.000Z",
-  "rotowirenfl.bsky.social": "2026-11-01T20:09:42.000Z"
+  "rotowirenfl.bsky.social": "2026-11-01T20:28:16.000Z"
  },
  "claims": [
   {
@@ -11774,6 +11774,45 @@
    "kind": "benched",
    "confidence": 0.85,
    "text": "Brissett benched for Minshew down 17-3 vs. Cowboys"
+  },
+  {
+   "id": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3mzbn6e5ql52e|bamknight|out|status",
+   "at": "2026-11-01T20:22:08.000Z",
+   "seen": "2026-11-01T20:40:54.934Z",
+   "handle": "rotowirenfl.bsky.social",
+   "post": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3mzbn6e5ql52e",
+   "player": "Bam Knight",
+   "team": null,
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.8,
+   "text": "Bam Knight: Won't return to Sunday's contest \n\n https://www.rotowire.com/football/player/bam-knight-16105"
+  },
+  {
+   "id": "at://did:plc:fuqjc7x4gxvnwzksnlxwbe4x/app.bsky.feed.post/3mzbnja4zw22d|jacobybrissett|none|benched",
+   "at": "2026-11-01T20:28:13.873Z",
+   "seen": "2026-11-01T20:40:54.934Z",
+   "handle": "nflnewsposter.bsky.social",
+   "post": "at://did:plc:fuqjc7x4gxvnwzksnlxwbe4x/app.bsky.feed.post/3mzbnja4zw22d",
+   "player": "Jacoby Brissett",
+   "team": "ARI",
+   "status": "none",
+   "kind": "benched",
+   "confidence": 0.9,
+   "text": "[Jones] The Cardinals have benched Jacoby Brissett and Gardner Minshew is now in at QB twitter.com/jjones9/stat..."
+  },
+  {
+   "id": "at://did:plc:fuqjc7x4gxvnwzksnlxwbe4x/app.bsky.feed.post/3mzbo4duf2cdb|jaydenwilliams|out|status",
+   "at": "2026-11-01T20:38:55.317Z",
+   "seen": "2026-11-01T20:40:54.934Z",
+   "handle": "nflnewsposter.bsky.social",
+   "post": "at://did:plc:fuqjc7x4gxvnwzksnlxwbe4x/app.bsky.feed.post/3mzbo4duf2cdb",
+   "player": "Jayden Williams",
+   "team": "ARI",
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.95,
+   "text": "[Cardinals] LT Jayden Williams (knee) has been ruled out. twitter.com/AZCardinals/..."
   }
  ]
 }

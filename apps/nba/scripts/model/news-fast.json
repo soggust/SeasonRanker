@@ -1,7 +1,7 @@
 {
  "sport": "nba",
  "cursor": {
-  "rotowirenba.bsky.social": "2026-11-01T18:42:18.000Z",
+  "rotowirenba.bsky.social": "2026-11-01T20:40:10.000Z",
   "insidenbanews.bsky.social": "2026-10-30T19:15:23.134Z",
   "shamsbot.bsky.social": "2026-10-31T15:48:10.000Z"
  },
@@ -6752,6 +6752,19 @@
    "kind": "status",
    "confidence": 0.8,
    "text": "Jalen Johnson: Doesn't return to Saturday's contest \n\n https://www.rotowire.com/basketball/player/jalen-johnson-5329"
+  },
+  {
+   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mzbo6lw4bs2g|fredvanvleet|active|status",
+   "at": "2026-11-01T20:40:10.000Z",
+   "seen": "2026-11-01T20:40:54.934Z",
+   "handle": "rotowirenba.bsky.social",
+   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mzbo6lw4bs2g",
+   "player": "Fred VanVleet",
+   "team": null,
+   "status": "active",
+   "kind": "status",
+   "confidence": 0.7,
+   "text": "Fred VanVleet: Not listed on injury report \n\n https://www.rotowire.com/basketball/player/fred-vanvleet-3935"
   }
  ]
 }
