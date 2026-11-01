@@ -9912,6 +9912,11 @@
    "sleeper": {
     "seen": "2026-10-31T20:16:28.245Z",
     "own": "2026-10-30T23:40:16.243Z"
+   },
+   "bluesky": {
+    "seen": "2026-11-01T14:51:45.403Z",
+    "own": "2026-11-01T14:46:47.855Z",
+    "why": "@rapsheet.bsky.social: Titans WR Calvin Ridley (hip) is listed as questionable a"
    }
   },
   "401873031|tyjaespears|q": {
@@ -15490,6 +15495,18 @@
    "espn": {
     "seen": "2026-11-01T03:21:48.327Z",
     "own": "2026-11-01T02:54:00.000Z"
+   }
+  },
+  "401873025|grahambarton|q": {
+   "game": "401873025",
+   "start": "2026-11-01T18:00Z",
+   "team": "27",
+   "name": "Graham Barton",
+   "status": "q",
+   "athlete": "4429251",
+   "espn": {
+    "seen": "2026-11-01T15:42:03.198Z",
+    "own": "2026-11-01T15:17:00.000Z"
    }
   }
  }
