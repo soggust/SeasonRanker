@@ -16706,6 +16706,66 @@
     "own": "2026-11-01T19:12:31.000Z",
     "why": "@rotoworld-fb.bsky.social: Jeremiyah Love (ankle) questionable to return"
    }
+  },
+  "401873032|tysimpson|out": {
+   "game": "401873032",
+   "start": "2026-11-01T21:05Z",
+   "team": "14",
+   "name": "Ty Simpson",
+   "status": "out",
+   "athlete": "4685522",
+   "espn": {
+    "seen": "2026-11-01T19:46:59.535Z",
+    "own": "2026-11-01T19:41:00.000Z"
+   }
+  },
+  "401873032|keagentrost|out": {
+   "game": "401873032",
+   "start": "2026-11-01T21:05Z",
+   "team": "14",
+   "name": "Keagen Trost",
+   "status": "out",
+   "athlete": "4575003",
+   "espn": {
+    "seen": "2026-11-01T19:46:59.535Z",
+    "own": "2026-11-01T19:41:00.000Z"
+   }
+  },
+  "401873032|billmurray|out": {
+   "game": "401873032",
+   "start": "2026-11-01T21:05Z",
+   "team": "14",
+   "name": "Bill Murray",
+   "status": "out",
+   "athlete": "3912189",
+   "espn": {
+    "seen": "2026-11-01T19:46:59.535Z",
+    "own": "2026-11-01T19:41:00.000Z"
+   }
+  },
+  "401873032|colbyparkinson|out": {
+   "game": "401873032",
+   "start": "2026-11-01T21:05Z",
+   "team": "14",
+   "name": "Colby Parkinson",
+   "status": "out",
+   "athlete": "4242557",
+   "espn": {
+    "seen": "2026-11-01T19:46:59.535Z",
+    "own": "2026-11-01T19:41:00.000Z"
+   }
+  },
+  "401873032|desjuanjohnson|out": {
+   "game": "401873032",
+   "start": "2026-11-01T21:05Z",
+   "team": "14",
+   "name": "Desjuan Johnson",
+   "status": "out",
+   "athlete": "4362294",
+   "espn": {
+    "seen": "2026-11-01T19:46:59.535Z",
+    "own": "2026-11-01T19:41:00.000Z"
+   }
   }
  }
 }
