@@ -1,13 +1,13 @@
 {
  "sport": "nfl",
  "cursor": {
-  "adamscheftermirror.bsky.social": "2026-11-01T18:49:04.886Z",
+  "adamscheftermirror.bsky.social": "2026-11-01T19:09:29.278Z",
   "rapsheet.bsky.social": "2026-11-01T18:32:54.791Z",
   "nflnewsreposterbot.bsky.social": "2026-10-30T22:57:34.763Z",
-  "insidenflnews.bsky.social": "2026-11-01T18:44:50.396Z",
-  "nflnewsposter.bsky.social": "2026-11-01T18:49:30.145Z",
+  "insidenflnews.bsky.social": "2026-11-01T19:09:14.597Z",
+  "nflnewsposter.bsky.social": "2026-11-01T19:08:43.207Z",
   "rotoworld-fb.bsky.social": "2026-11-01T18:41:28.000Z",
-  "rotowirenfl.bsky.social": "2026-11-01T18:38:50.000Z"
+  "rotowirenfl.bsky.social": "2026-11-01T19:08:24.000Z"
  },
  "claims": [
   {
@@ -11345,6 +11345,58 @@
    "kind": "status",
    "confidence": 0.95,
    "text": "Lamar Jackson has been ruled out with a right thumb injury.\n\nOriginal post"
+  },
+  {
+   "id": "at://did:plc:mbr4badgf6yu56mquzackzew/app.bsky.feed.post/3mzbink63qc2o|jeremiyahlove|questionable|status",
+   "at": "2026-11-01T19:01:09.902Z",
+   "seen": "2026-11-01T19:10:15.897Z",
+   "handle": "insidenflnews.bsky.social",
+   "post": "at://did:plc:mbr4badgf6yu56mquzackzew/app.bsky.feed.post/3mzbink63qc2o",
+   "player": "Jeremiyah Love",
+   "team": "ARI",
+   "status": "questionable",
+   "kind": "status",
+   "confidence": 0.95,
+   "text": "🚨 Status alert: Jeremiyah Love (ankle) questionable to return."
+  },
+  {
+   "id": "at://did:plc:fuqjc7x4gxvnwzksnlxwbe4x/app.bsky.feed.post/3mzbiqgfc7kwj|jeremiyahlove|questionable|status",
+   "at": "2026-11-01T19:02:46.606Z",
+   "seen": "2026-11-01T19:10:15.897Z",
+   "handle": "nflnewsposter.bsky.social",
+   "post": "at://did:plc:fuqjc7x4gxvnwzksnlxwbe4x/app.bsky.feed.post/3mzbiqgfc7kwj",
+   "player": "Jeremiyah Love",
+   "team": "ARI",
+   "status": "questionable",
+   "kind": "status",
+   "confidence": 0.95,
+   "text": "[Cardinals] RB Jeremiyah Love (ankle) is questionable to return. twitter.com/AZCardinals/..."
+  },
+  {
+   "id": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3mzbj2ilkgv2j|jeremiyahlove|none|status",
+   "at": "2026-11-01T19:08:24.000Z",
+   "seen": "2026-11-01T19:10:15.897Z",
+   "handle": "rotowirenfl.bsky.social",
+   "post": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3mzbj2ilkgv2j",
+   "player": "Jeremiyah Love",
+   "team": "ARI",
+   "status": "none",
+   "kind": "status",
+   "confidence": 0.4,
+   "text": "Jeremiyah Love: Officially has ankle injury \n\n https://www.rotowire.com/football/player/jeremiyah-love-19235"
+  },
+  {
+   "id": "at://did:plc:fuqjc7x4gxvnwzksnlxwbe4x/app.bsky.feed.post/3mzbj32hveswj|tylerhuntley|questionable|status",
+   "at": "2026-11-01T19:08:43.207Z",
+   "seen": "2026-11-01T19:10:15.897Z",
+   "handle": "nflnewsposter.bsky.social",
+   "post": "at://did:plc:fuqjc7x4gxvnwzksnlxwbe4x/app.bsky.feed.post/3mzbj32hveswj",
+   "player": "Tyler Huntley",
+   "team": "BAL",
+   "status": "questionable",
+   "kind": "status",
+   "confidence": 0.95,
+   "text": "[Ravens] QB Tyler Huntley (toe) is questionable. twitter.com/Ravens/statu..."
   }
  ]
 }
