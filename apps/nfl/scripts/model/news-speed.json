@@ -16766,6 +16766,42 @@
     "seen": "2026-11-01T19:46:59.535Z",
     "own": "2026-11-01T19:41:00.000Z"
    }
+  },
+  "401873032|theowease|out": {
+   "game": "401873032",
+   "start": "2026-11-01T21:05Z",
+   "team": "24",
+   "name": "Theo Wease Jr.",
+   "status": "out",
+   "athlete": "4426535",
+   "espn": {
+    "seen": "2026-11-01T19:52:50.750Z",
+    "own": "2026-11-01T19:40:00.000Z"
+   }
+  },
+  "401873032|rodneyshelley|out": {
+   "game": "401873032",
+   "start": "2026-11-01T21:05Z",
+   "team": "24",
+   "name": "Rodney Shelley",
+   "status": "out",
+   "athlete": "4838693",
+   "espn": {
+    "seen": "2026-11-01T19:52:50.750Z",
+    "own": "2026-11-01T19:40:00.000Z"
+   }
+  },
+  "401873032|dontejackson|out": {
+   "game": "401873032",
+   "start": "2026-11-01T21:05Z",
+   "team": "24",
+   "name": "Donte Jackson",
+   "status": "out",
+   "athlete": "3843769",
+   "espn": {
+    "seen": "2026-11-01T19:52:50.750Z",
+    "own": "2026-11-01T19:40:00.000Z"
+   }
   }
  }
 }
