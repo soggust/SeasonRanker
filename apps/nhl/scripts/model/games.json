@@ -1616,7 +1616,7 @@
 {"id":"401892616","date":"2026-10-31T18:00Z","season":2027,"type":2,"home":"27","away":"20","homeAbbr":"NSH","awayAbbr":"TB","neutral":false,"final":true,"hs":5,"as":4,"venue":"Nashville|TN|USA","indoor":true},
 {"id":"401892618","date":"2026-10-31T20:00Z","season":2027,"type":2,"home":"8","away":"2","homeAbbr":"LA","awayAbbr":"BUF","neutral":false,"final":true,"hs":2,"as":3,"venue":"Los Angeles|CA|USA","indoor":true},
 {"id":"401892619","date":"2026-10-31T20:00Z","season":2027,"type":2,"home":"18","away":"14","homeAbbr":"SJ","awayAbbr":"OTT","neutral":false,"final":true,"hs":1,"as":5,"venue":"San Jose|CA|USA","indoor":true},
-{"id":"401892620","date":"2026-10-31T23:00Z","season":2027,"type":2,"home":"10","away":"16","homeAbbr":"MTL","awayAbbr":"PIT","neutral":false,"final":false,"hs":null,"as":null,"venue":"Montreal|QC|Canada","indoor":true},
+{"id":"401892620","date":"2026-10-31T23:00Z","season":2027,"type":2,"home":"10","away":"16","homeAbbr":"MTL","awayAbbr":"PIT","neutral":false,"final":true,"hs":5,"as":4,"venue":"Montreal|QC|Canada","indoor":true},
 {"id":"401892621","date":"2026-10-31T23:00Z","season":2027,"type":2,"home":"22","away":"21","homeAbbr":"VAN","awayAbbr":"TOR","neutral":false,"final":true,"hs":2,"as":4,"venue":"Vancouver|BC|Canada","indoor":true},
 {"id":"401892622","date":"2026-11-01T00:00Z","season":2027,"type":2,"home":"9","away":"29","homeAbbr":"DAL","awayAbbr":"CBJ","neutral":false,"final":false,"hs":null,"as":null,"venue":"Dallas|TX|USA","indoor":true},
 {"id":"401892623","date":"2026-11-01T02:00Z","season":2027,"type":2,"home":"17","away":"3","homeAbbr":"COL","awayAbbr":"CGY","neutral":false,"final":false,"hs":null,"as":null,"venue":"Denver|CO|USA","indoor":true},
