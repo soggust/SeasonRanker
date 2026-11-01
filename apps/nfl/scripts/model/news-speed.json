@@ -17382,6 +17382,54 @@
     "own": "2026-11-01T21:11:35.000Z",
     "why": "@rotowirenfl.bsky.social: Jeremiyah Love: Not returning to Sunday's contest \n\n h"
    }
+  },
+  "401873035|hunterhenry|q": {
+   "game": "401873035",
+   "start": "2026-11-02T01:20Z",
+   "team": "28",
+   "name": "Hunter Henry",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-11-01T22:36:29.944Z",
+    "own": "2026-11-01T22:34:49.000Z",
+    "why": "@rotowirenfl.bsky.social: Hunter Henry: Questionable to return Sunday \n\n https:/"
+   }
+  },
+  "401873036|hunterhenry|q": {
+   "game": "401873036",
+   "start": "2026-11-03T01:15Z",
+   "team": "26",
+   "name": "Hunter Henry",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-11-01T22:36:29.944Z",
+    "own": "2026-11-01T22:34:49.000Z",
+    "why": "@rotowirenfl.bsky.social: Hunter Henry: Questionable to return Sunday \n\n https:/"
+   }
+  },
+  "401873037|tylerhuntley|q": {
+   "game": "401873037",
+   "start": "2026-11-06T01:15Z",
+   "team": "33",
+   "name": "Tyler Huntley",
+   "status": "q",
+   "athlete": "4035671",
+   "espn": {
+    "seen": "2026-11-01T23:01:57.532Z",
+    "own": "2026-11-01T22:03:00.000Z"
+   }
+  },
+  "401873037|lamarjackson|out": {
+   "game": "401873037",
+   "start": "2026-11-06T01:15Z",
+   "team": "33",
+   "name": "Lamar Jackson",
+   "status": "out",
+   "athlete": "3916387",
+   "espn": {
+    "seen": "2026-11-01T23:01:57.532Z",
+    "own": "2026-11-01T21:50:00.000Z"
+   }
   }
  }
 }

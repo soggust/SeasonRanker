@@ -1,7 +1,7 @@
 {
  "sport": "nba",
  "cursor": {
-  "rotowirenba.bsky.social": "2026-11-01T22:08:11.000Z",
+  "rotowirenba.bsky.social": "2026-11-01T23:04:41.000Z",
   "insidenbanews.bsky.social": "2026-10-30T19:15:23.134Z",
   "shamsbot.bsky.social": "2026-10-31T15:48:10.000Z"
  },
@@ -6830,6 +6830,19 @@
    "kind": "status",
    "confidence": 0.92,
    "text": "Kon Knueppel: Out against Detroit \n\n https://www.rotowire.com/basketball/player/kon-knueppel-6540"
+  },
+  {
+   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mzbwaz3okf2z|rudygobert|active|status",
+   "at": "2026-11-01T23:04:41.000Z",
+   "seen": "2026-11-01T23:04:42.619Z",
+   "handle": "rotowirenba.bsky.social",
+   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mzbwaz3okf2z",
+   "player": "Rudy Gobert",
+   "team": null,
+   "status": "active",
+   "kind": "status",
+   "confidence": 0.8,
+   "text": "Rudy Gobert: Missing from injury report \n\n https://www.rotowire.com/basketball/player/rudy-gobert-3440"
   }
  ]
 }
