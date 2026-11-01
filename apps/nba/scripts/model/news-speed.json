@@ -17822,6 +17822,54 @@
     "seen": "2026-11-01T21:00:38.116Z",
     "own": "2026-11-01T20:29:00.000Z"
    }
+  },
+  "401909904|reedsheppard|q": {
+   "game": "401909904",
+   "start": "2026-11-01T22:00Z",
+   "team": "11",
+   "name": "Reed Sheppard",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-11-01T21:01:52.142Z",
+    "own": "2026-11-01T20:41:11.000Z",
+    "why": "@rotowirenba.bsky.social: Reed Sheppard: Questionable versus Celtics \n\n https://"
+   }
+  },
+  "401909905|reedsheppard|q": {
+   "game": "401909905",
+   "start": "2026-11-02T01:30Z",
+   "team": "9",
+   "name": "Reed Sheppard",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-11-01T21:01:52.142Z",
+    "own": "2026-11-01T20:41:11.000Z",
+    "why": "@rotowirenba.bsky.social: Reed Sheppard: Questionable versus Celtics \n\n https://"
+   }
+  },
+  "401909906|ziairewilliams|out": {
+   "game": "401909906",
+   "start": "2026-11-02T02:00Z",
+   "team": "13",
+   "name": "Ziaire Williams",
+   "status": "out",
+   "athlete": "4433137",
+   "espn": {
+    "seen": "2026-11-01T21:13:50.387Z",
+    "own": "2026-11-01T21:04:00.000Z"
+   }
+  },
+  "401909906|reedsheppard|q": {
+   "game": "401909906",
+   "start": "2026-11-02T02:00Z",
+   "team": "13",
+   "name": "Reed Sheppard",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-11-01T21:01:52.142Z",
+    "own": "2026-11-01T20:41:11.000Z",
+    "why": "@rotowirenba.bsky.social: Reed Sheppard: Questionable versus Celtics \n\n https://"
+   }
   }
  }
 }
