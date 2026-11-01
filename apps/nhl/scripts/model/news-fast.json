@@ -3,7 +3,7 @@
  "cursor": {
   "johnston-bot.bsky.social": "2026-10-31T19:45:16.675Z",
   "notfriedgehnic.bsky.social": "2026-11-01T19:11:17.385Z",
-  "dailyfaceoff.bsky.social": "2026-11-01T20:25:52.000Z",
+  "dailyfaceoff.bsky.social": "2026-11-01T20:48:28.000Z",
   "dfotoronto.bsky.social": "2026-11-01T20:08:17.000Z",
   "marklazerus.bsky.social": "2026-11-01T20:36:46.498Z"
  },
@@ -1385,6 +1385,32 @@
    "kind": "status",
    "confidence": 0.95,
    "text": "Islanders’ Ryan Pulock out 2-4 weeks with upper-body injury"
+  },
+  {
+   "id": "at://did:plc:3uus7y6h3rlrk6sbctzxm4bg/app.bsky.feed.post/3mzbongu7if24|traviskonecny|active|status",
+   "at": "2026-11-01T20:48:28.000Z",
+   "seen": "2026-11-01T21:01:52.142Z",
+   "handle": "dailyfaceoff.bsky.social",
+   "post": "at://did:plc:3uus7y6h3rlrk6sbctzxm4bg/app.bsky.feed.post/3mzbongu7if24",
+   "player": "Travis Konecny",
+   "team": "PHI",
+   "status": "active",
+   "kind": "status",
+   "confidence": 0.95,
+   "text": "Flyers activate Travis Konecny, Owen Tippett off injured reserve"
+  },
+  {
+   "id": "at://did:plc:3uus7y6h3rlrk6sbctzxm4bg/app.bsky.feed.post/3mzbongu7if24|owentippett|active|status",
+   "at": "2026-11-01T20:48:28.000Z",
+   "seen": "2026-11-01T21:01:52.142Z",
+   "handle": "dailyfaceoff.bsky.social",
+   "post": "at://did:plc:3uus7y6h3rlrk6sbctzxm4bg/app.bsky.feed.post/3mzbongu7if24",
+   "player": "Owen Tippett",
+   "team": "PHI",
+   "status": "active",
+   "kind": "status",
+   "confidence": 0.95,
+   "text": "Flyers activate Travis Konecny, Owen Tippett off injured reserve"
   }
  ]
 }

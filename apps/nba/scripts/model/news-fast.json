@@ -1,7 +1,7 @@
 {
  "sport": "nba",
  "cursor": {
-  "rotowirenba.bsky.social": "2026-11-01T20:40:10.000Z",
+  "rotowirenba.bsky.social": "2026-11-01T20:47:26.000Z",
   "insidenbanews.bsky.social": "2026-10-30T19:15:23.134Z",
   "shamsbot.bsky.social": "2026-10-31T15:48:10.000Z"
  },
@@ -6765,6 +6765,32 @@
    "kind": "status",
    "confidence": 0.7,
    "text": "Fred VanVleet: Not listed on injury report \n\n https://www.rotowire.com/basketball/player/fred-vanvleet-3935"
+  },
+  {
+   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mzboafdyp72e|reedsheppard|questionable|status",
+   "at": "2026-11-01T20:41:11.000Z",
+   "seen": "2026-11-01T21:01:52.142Z",
+   "handle": "rotowirenba.bsky.social",
+   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mzboafdyp72e",
+   "player": "Reed Sheppard",
+   "team": null,
+   "status": "questionable",
+   "kind": "status",
+   "confidence": 0.9,
+   "text": "Reed Sheppard: Questionable versus Celtics \n\n https://www.rotowire.com/basketball/player/reed-sheppard-6257"
+  },
+  {
+   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mzbollpu2h24|dejountemurray|active|status",
+   "at": "2026-11-01T20:47:26.000Z",
+   "seen": "2026-11-01T21:01:52.142Z",
+   "handle": "rotowirenba.bsky.social",
+   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mzbollpu2h24",
+   "player": "Dejounte Murray",
+   "team": null,
+   "status": "active",
+   "kind": "status",
+   "confidence": 0.8,
+   "text": "Dejounte Murray: Not listed on injury report \n\n https://www.rotowire.com/basketball/player/dejounte-murray-3856"
   }
  ]
 }

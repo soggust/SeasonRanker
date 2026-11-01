@@ -1,13 +1,13 @@
 {
  "sport": "nfl",
  "cursor": {
-  "adamscheftermirror.bsky.social": "2026-11-01T20:24:06.747Z",
+  "adamscheftermirror.bsky.social": "2026-11-01T20:54:08.863Z",
   "rapsheet.bsky.social": "2026-11-01T20:24:36.494Z",
   "nflnewsreposterbot.bsky.social": "2026-10-30T22:57:34.763Z",
-  "insidenflnews.bsky.social": "2026-11-01T20:11:10.844Z",
-  "nflnewsposter.bsky.social": "2026-11-01T20:38:55.317Z",
-  "rotoworld-fb.bsky.social": "2026-11-01T20:19:25.000Z",
-  "rotowirenfl.bsky.social": "2026-11-01T20:28:16.000Z"
+  "insidenflnews.bsky.social": "2026-11-01T20:53:54.038Z",
+  "nflnewsposter.bsky.social": "2026-11-01T21:00:41.905Z",
+  "rotoworld-fb.bsky.social": "2026-11-01T20:42:32.000Z",
+  "rotowirenfl.bsky.social": "2026-11-01T20:55:13.000Z"
  },
  "claims": [
   {
@@ -11813,6 +11813,71 @@
    "kind": "status",
    "confidence": 0.95,
    "text": "[Cardinals] LT Jayden Williams (knee) has been ruled out. twitter.com/AZCardinals/..."
+  },
+  {
+   "id": "at://did:plc:fuqjc7x4gxvnwzksnlxwbe4x/app.bsky.feed.post/3mzbogkk5kkdb|calebdowns|out|status",
+   "at": "2026-11-01T20:44:37.866Z",
+   "seen": "2026-11-01T21:01:52.142Z",
+   "handle": "nflnewsposter.bsky.social",
+   "post": "at://did:plc:fuqjc7x4gxvnwzksnlxwbe4x/app.bsky.feed.post/3mzbogkk5kkdb",
+   "player": "Caleb Downs",
+   "team": null,
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.8,
+   "text": "[Machota] Caleb Downs is out for the rest of the game. He’s being evaluated for a concussion twitter.com/jonmachota/s..."
+  },
+  {
+   "id": "at://did:plc:mbr4badgf6yu56mquzackzew/app.bsky.feed.post/3mzbovoznuc2i|jamescook|active|return",
+   "at": "2026-11-01T20:53:05.885Z",
+   "seen": "2026-11-01T21:01:52.142Z",
+   "handle": "insidenflnews.bsky.social",
+   "post": "at://did:plc:mbr4badgf6yu56mquzackzew/app.bsky.feed.post/3mzbovoznuc2i",
+   "player": "James Cook",
+   "team": "BUF",
+   "status": "active",
+   "kind": "return",
+   "confidence": 0.7,
+   "text": "Status alert: James Cook (neck) returned to Bills bench."
+  },
+  {
+   "id": "at://did:plc:fuqjc7x4gxvnwzksnlxwbe4x/app.bsky.feed.post/3mzbp2urv7kdb|jackcampbell|out|status",
+   "at": "2026-11-01T20:55:59.694Z",
+   "seen": "2026-11-01T21:01:52.142Z",
+   "handle": "nflnewsposter.bsky.social",
+   "post": "at://did:plc:fuqjc7x4gxvnwzksnlxwbe4x/app.bsky.feed.post/3mzbp2urv7kdb",
+   "player": "Jack Campbell",
+   "team": "DET",
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.5,
+   "text": "[Lions] Jack Campbell is being transported to a local hospital to be evaluated for a neck injury. twitter.com/LionsPR/stat..."
+  },
+  {
+   "id": "at://did:plc:fuqjc7x4gxvnwzksnlxwbe4x/app.bsky.feed.post/3mzbp6mohpsdb|djreed|questionable|status",
+   "at": "2026-11-01T20:58:05.411Z",
+   "seen": "2026-11-01T21:01:52.142Z",
+   "handle": "nflnewsposter.bsky.social",
+   "post": "at://did:plc:fuqjc7x4gxvnwzksnlxwbe4x/app.bsky.feed.post/3mzbp6mohpsdb",
+   "player": "DJ Reed",
+   "team": "DET",
+   "status": "questionable",
+   "kind": "status",
+   "confidence": 0.95,
+   "text": "[Lions] Lions Injury Update: CB DJ Reed, Hip, Questionable twitter.com/LionsPR/stat..."
+  },
+  {
+   "id": "at://did:plc:fuqjc7x4gxvnwzksnlxwbe4x/app.bsky.feed.post/3mzbpdbwbvcdb|peterskoronski|questionable|status",
+   "at": "2026-11-01T21:00:41.905Z",
+   "seen": "2026-11-01T21:01:52.142Z",
+   "handle": "nflnewsposter.bsky.social",
+   "post": "at://did:plc:fuqjc7x4gxvnwzksnlxwbe4x/app.bsky.feed.post/3mzbpdbwbvcdb",
+   "player": "Peter Skoronski",
+   "team": "TEN",
+   "status": "questionable",
+   "kind": "status",
+   "confidence": 0.95,
+   "text": "[Davenport] Titans Peter Skoronski (hamstring) is questionable. twitter.com/TDavenport_N..."
   }
  ]
 }
