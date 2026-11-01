@@ -2,12 +2,12 @@
  "sport": "nfl",
  "cursor": {
   "adamscheftermirror.bsky.social": "2026-11-01T19:09:29.278Z",
-  "rapsheet.bsky.social": "2026-11-01T18:32:54.791Z",
+  "rapsheet.bsky.social": "2026-11-01T19:10:51.034Z",
   "nflnewsreposterbot.bsky.social": "2026-10-30T22:57:34.763Z",
   "insidenflnews.bsky.social": "2026-11-01T19:09:14.597Z",
-  "nflnewsposter.bsky.social": "2026-11-01T19:08:43.207Z",
-  "rotoworld-fb.bsky.social": "2026-11-01T18:41:28.000Z",
-  "rotowirenfl.bsky.social": "2026-11-01T19:08:24.000Z"
+  "nflnewsposter.bsky.social": "2026-11-01T19:18:56.973Z",
+  "rotoworld-fb.bsky.social": "2026-11-01T19:12:31.000Z",
+  "rotowirenfl.bsky.social": "2026-11-01T19:17:13.000Z"
  },
  "claims": [
   {
@@ -11397,6 +11397,32 @@
    "kind": "status",
    "confidence": 0.95,
    "text": "[Ravens] QB Tyler Huntley (toe) is questionable. twitter.com/Ravens/statu..."
+  },
+  {
+   "id": "at://did:plc:hlvr2omhnmvdmfnvmcuhyevz/app.bsky.feed.post/3mzbj6uevfs2u|tylerhuntley|questionable|status",
+   "at": "2026-11-01T19:10:51.034Z",
+   "seen": "2026-11-01T19:20:56.488Z",
+   "handle": "rapsheet.bsky.social",
+   "post": "at://did:plc:hlvr2omhnmvdmfnvmcuhyevz/app.bsky.feed.post/3mzbj6uevfs2u",
+   "player": "Tyler Huntley",
+   "team": "BAL",
+   "status": "questionable",
+   "kind": "status",
+   "confidence": 0.9,
+   "text": "Ravens undrafted QB Joe Fagnano is now in the game. He was the emergency No. 3 QB — the first one to be used all season. \n\nBaltimore QB Tyler Huntley is questionable with a toe injury."
+  },
+  {
+   "id": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3mzbjbttwf22b|jeremiyahlove|questionable|status",
+   "at": "2026-11-01T19:12:31.000Z",
+   "seen": "2026-11-01T19:20:56.488Z",
+   "handle": "rotoworld-fb.bsky.social",
+   "post": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3mzbjbttwf22b",
+   "player": "Jeremiyah Love",
+   "team": null,
+   "status": "questionable",
+   "kind": "status",
+   "confidence": 0.8,
+   "text": "Jeremiyah Love (ankle) questionable to return"
   }
  ]
 }
