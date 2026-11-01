@@ -8795,6 +8795,11 @@
    "espn": {
     "seen": "2026-10-27T00:08:39.754Z",
     "own": "2026-10-26T18:43:00.000Z"
+   },
+   "bluesky": {
+    "seen": "2026-11-01T17:25:28.825Z",
+    "own": "2026-11-01T16:36:00.000Z",
+    "why": "@rotoworld-fb.bsky.social: Breece Hall (quad) officially inactive vs. Raiders"
    }
   },
   "401873029|kikomauigoa|out": {
@@ -16491,6 +16496,150 @@
    "espn": {
     "seen": "2026-11-01T16:57:54.380Z",
     "own": "2026-11-01T16:40:00.000Z"
+   }
+  },
+  "401873026|breecehall|out": {
+   "game": "401873026",
+   "start": "2026-11-01T18:00Z",
+   "team": "2",
+   "name": "Breece Hall",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-01T17:25:28.825Z",
+    "own": "2026-11-01T16:36:00.000Z",
+    "why": "@rotoworld-fb.bsky.social: Breece Hall (quad) officially inactive vs. Raiders"
+   }
+  },
+  "401873031|breecehall|out": {
+   "game": "401873031",
+   "start": "2026-11-01T18:00Z",
+   "team": "4",
+   "name": "Breece Hall",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-01T17:25:28.825Z",
+    "own": "2026-11-01T16:36:00.000Z",
+    "why": "@rotoworld-fb.bsky.social: Breece Hall (quad) officially inactive vs. Raiders"
+   }
+  },
+  "401873024|breecehall|out": {
+   "game": "401873024",
+   "start": "2026-11-01T18:00Z",
+   "team": "6",
+   "name": "Breece Hall",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-01T17:25:28.825Z",
+    "own": "2026-11-01T16:36:00.000Z",
+    "why": "@rotoworld-fb.bsky.social: Breece Hall (quad) officially inactive vs. Raiders"
+   }
+  },
+  "401873030|breecehall|out": {
+   "game": "401873030",
+   "start": "2026-11-01T18:00Z",
+   "team": "8",
+   "name": "Breece Hall",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-01T17:25:28.825Z",
+    "own": "2026-11-01T16:36:00.000Z",
+    "why": "@rotoworld-fb.bsky.social: Breece Hall (quad) officially inactive vs. Raiders"
+   }
+  },
+  "401873027|breecehall|out": {
+   "game": "401873027",
+   "start": "2026-11-01T18:00Z",
+   "team": "23",
+   "name": "Breece Hall",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-01T17:25:28.825Z",
+    "own": "2026-11-01T16:36:00.000Z",
+    "why": "@rotoworld-fb.bsky.social: Breece Hall (quad) officially inactive vs. Raiders"
+   }
+  },
+  "401873025|breecehall|out": {
+   "game": "401873025",
+   "start": "2026-11-01T18:00Z",
+   "team": "27",
+   "name": "Breece Hall",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-01T17:25:28.825Z",
+    "own": "2026-11-01T16:36:00.000Z",
+    "why": "@rotoworld-fb.bsky.social: Breece Hall (quad) officially inactive vs. Raiders"
+   }
+  },
+  "401873028|breecehall|out": {
+   "game": "401873028",
+   "start": "2026-11-01T18:00Z",
+   "team": "30",
+   "name": "Breece Hall",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-01T17:25:28.825Z",
+    "own": "2026-11-01T16:36:00.000Z",
+    "why": "@rotoworld-fb.bsky.social: Breece Hall (quad) officially inactive vs. Raiders"
+   }
+  },
+  "401873032|breecehall|out": {
+   "game": "401873032",
+   "start": "2026-11-01T21:05Z",
+   "team": "14",
+   "name": "Breece Hall",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-01T17:25:28.825Z",
+    "own": "2026-11-01T16:36:00.000Z",
+    "why": "@rotoworld-fb.bsky.social: Breece Hall (quad) officially inactive vs. Raiders"
+   }
+  },
+  "401873033|breecehall|out": {
+   "game": "401873033",
+   "start": "2026-11-01T21:25Z",
+   "team": "7",
+   "name": "Breece Hall",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-01T17:25:28.825Z",
+    "own": "2026-11-01T16:36:00.000Z",
+    "why": "@rotoworld-fb.bsky.social: Breece Hall (quad) officially inactive vs. Raiders"
+   }
+  },
+  "401873034|breecehall|out": {
+   "game": "401873034",
+   "start": "2026-11-01T21:25Z",
+   "team": "15",
+   "name": "Breece Hall",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-01T17:25:28.825Z",
+    "own": "2026-11-01T16:36:00.000Z",
+    "why": "@rotoworld-fb.bsky.social: Breece Hall (quad) officially inactive vs. Raiders"
+   }
+  },
+  "401873035|breecehall|out": {
+   "game": "401873035",
+   "start": "2026-11-02T01:20Z",
+   "team": "28",
+   "name": "Breece Hall",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-01T17:25:28.825Z",
+    "own": "2026-11-01T16:36:00.000Z",
+    "why": "@rotoworld-fb.bsky.social: Breece Hall (quad) officially inactive vs. Raiders"
+   }
+  },
+  "401873036|breecehall|out": {
+   "game": "401873036",
+   "start": "2026-11-03T01:15Z",
+   "team": "26",
+   "name": "Breece Hall",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-01T17:25:28.825Z",
+    "own": "2026-11-01T16:36:00.000Z",
+    "why": "@rotoworld-fb.bsky.social: Breece Hall (quad) officially inactive vs. Raiders"
    }
   }
  }

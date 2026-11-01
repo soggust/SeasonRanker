@@ -1,10 +1,10 @@
 {
  "sport": "nfl",
  "cursor": {
-  "adamscheftermirror.bsky.social": "2026-11-01T17:19:05.179Z",
-  "rapsheet.bsky.social": "2026-11-01T17:10:11.600Z",
+  "adamscheftermirror.bsky.social": "2026-11-01T17:35:06.594Z",
+  "rapsheet.bsky.social": "2026-11-01T17:30:56.044Z",
   "nflnewsreposterbot.bsky.social": "2026-10-30T22:57:34.763Z",
-  "insidenflnews.bsky.social": "2026-11-01T17:11:45.468Z",
+  "insidenflnews.bsky.social": "2026-11-01T17:41:12.388Z",
   "nflnewsposter.bsky.social": "2026-11-01T17:11:45.723Z",
   "rotoworld-fb.bsky.social": "2026-11-01T16:53:58.000Z",
   "rotowirenfl.bsky.social": "2026-11-01T16:51:06.000Z"
@@ -11072,6 +11072,19 @@
    "kind": "status",
    "confidence": 0.55,
    "text": "Rap: Fernando Mendoza not expected to play until potentially Raiders fall out of playoff contention."
+  },
+  {
+   "id": "at://did:plc:mbr4badgf6yu56mquzackzew/app.bsky.feed.post/3mzbdskzoj22x|lamarjackson|active|return",
+   "at": "2026-11-01T17:34:29.868Z",
+   "seen": "2026-11-01T17:46:10.975Z",
+   "handle": "insidenflnews.bsky.social",
+   "post": "at://did:plc:mbr4badgf6yu56mquzackzew/app.bsky.feed.post/3mzbdskzoj22x",
+   "player": "Lamar Jackson",
+   "team": "BAL",
+   "status": "active",
+   "kind": "return",
+   "confidence": 0.9,
+   "text": "Lamar Jackson makes his return today vs. the Bills"
   }
  ]
 }
