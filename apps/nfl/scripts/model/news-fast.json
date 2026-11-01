@@ -1,13 +1,13 @@
 {
  "sport": "nfl",
  "cursor": {
-  "adamscheftermirror.bsky.social": "2026-11-01T18:19:08.889Z",
-  "rapsheet.bsky.social": "2026-11-01T17:30:56.044Z",
+  "adamscheftermirror.bsky.social": "2026-11-01T18:49:04.886Z",
+  "rapsheet.bsky.social": "2026-11-01T18:32:54.791Z",
   "nflnewsreposterbot.bsky.social": "2026-10-30T22:57:34.763Z",
-  "insidenflnews.bsky.social": "2026-11-01T18:25:31.833Z",
-  "nflnewsposter.bsky.social": "2026-11-01T18:27:28.032Z",
-  "rotoworld-fb.bsky.social": "2026-11-01T18:14:57.000Z",
-  "rotowirenfl.bsky.social": "2026-11-01T18:27:14.000Z"
+  "insidenflnews.bsky.social": "2026-11-01T18:44:50.396Z",
+  "nflnewsposter.bsky.social": "2026-11-01T18:49:30.145Z",
+  "rotoworld-fb.bsky.social": "2026-11-01T18:41:28.000Z",
+  "rotowirenfl.bsky.social": "2026-11-01T18:38:50.000Z"
  },
  "claims": [
   {
@@ -11254,6 +11254,97 @@
    "kind": "status",
    "confidence": 0.95,
    "text": "Lamar Jackson: Questionable to return with thumb injury \n\n https://www.rotowire.com/football/player/lamar-jackson-12561"
+  },
+  {
+   "id": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3mzbgxzmzlw2j|drakelondon|active|return",
+   "at": "2026-11-01T18:31:14.000Z",
+   "seen": "2026-11-01T18:49:34.857Z",
+   "handle": "rotowirenfl.bsky.social",
+   "post": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3mzbgxzmzlw2j",
+   "player": "Drake London",
+   "team": "ATL",
+   "status": "active",
+   "kind": "return",
+   "confidence": 0.9,
+   "text": "Drake London: Returns Sunday \n\n https://www.rotowire.com/football/player/drake-london-15868"
+  },
+  {
+   "id": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3mzbh2fmi222f|lamarjackson|questionable|status",
+   "at": "2026-11-01T18:32:33.000Z",
+   "seen": "2026-11-01T18:49:34.857Z",
+   "handle": "rotoworld-fb.bsky.social",
+   "post": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3mzbh2fmi222f",
+   "player": "Lamar Jackson",
+   "team": "BAL",
+   "status": "questionable",
+   "kind": "status",
+   "confidence": 0.85,
+   "text": "Lamar Jackson (thumb) questionable to return vs. Bills"
+  },
+  {
+   "id": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3mzbh2i42w22f|jakeferguson|questionable|status",
+   "at": "2026-11-01T18:32:36.000Z",
+   "seen": "2026-11-01T18:49:34.857Z",
+   "handle": "rotoworld-fb.bsky.social",
+   "post": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3mzbh2i42w22f",
+   "player": "Jake Ferguson",
+   "team": "DAL",
+   "status": "questionable",
+   "kind": "status",
+   "confidence": 0.85,
+   "text": "Jake Ferguson (ankle) questionable to return"
+  },
+  {
+   "id": "at://did:plc:mbr4badgf6yu56mquzackzew/app.bsky.feed.post/3mzbh53looc2o|lamarjackson|out|status",
+   "at": "2026-11-01T18:34:04.003Z",
+   "seen": "2026-11-01T18:49:34.857Z",
+   "handle": "insidenflnews.bsky.social",
+   "post": "at://did:plc:mbr4badgf6yu56mquzackzew/app.bsky.feed.post/3mzbh53looc2o",
+   "player": "Lamar Jackson",
+   "team": "BAL",
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.9,
+   "text": "🚨 Status alert: Lamar Jackson (right thumb) won't return."
+  },
+  {
+   "id": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3mzbhfncosq25|lamarjackson|out|status",
+   "at": "2026-11-01T18:38:50.000Z",
+   "seen": "2026-11-01T18:49:34.857Z",
+   "handle": "rotowirenfl.bsky.social",
+   "post": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3mzbhfncosq25",
+   "player": "Lamar Jackson",
+   "team": "BAL",
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.9,
+   "text": "Lamar Jackson: Ruled out for rest of Sunday's game \n\n https://www.rotowire.com/football/player/lamar-jackson-12561"
+  },
+  {
+   "id": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3mzbhkdpjdd22|lamarjackson|out|status",
+   "at": "2026-11-01T18:41:28.000Z",
+   "seen": "2026-11-01T18:49:34.857Z",
+   "handle": "rotoworld-fb.bsky.social",
+   "post": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3mzbhkdpjdd22",
+   "player": "Lamar Jackson",
+   "team": "BAL",
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.9,
+   "text": "Lamar Jackson (thumb) won't return vs. Bills"
+  },
+  {
+   "id": "at://did:plc:qre6zxbmr3ixhdmgsgdretb5/app.bsky.feed.post/3mzbhxwtitt2f|lamarjackson|out|status",
+   "at": "2026-11-01T18:49:04.886Z",
+   "seen": "2026-11-01T18:49:34.857Z",
+   "handle": "adamscheftermirror.bsky.social",
+   "post": "at://did:plc:qre6zxbmr3ixhdmgsgdretb5/app.bsky.feed.post/3mzbhxwtitt2f",
+   "player": "Lamar Jackson",
+   "team": "BAL",
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.95,
+   "text": "Lamar Jackson has been ruled out with a right thumb injury.\n\nOriginal post"
   }
  ]
 }
