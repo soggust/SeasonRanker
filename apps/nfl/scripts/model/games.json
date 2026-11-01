@@ -2869,7 +2869,7 @@
 {"id":"401873009","date":"2026-10-27T00:15Z","season":2026,"type":2,"home":"21","away":"6","homeAbbr":"PHI","awayAbbr":"DAL","neutral":false,"final":true,"hs":21,"as":38,"venue":"Philadelphia|PA|USA","indoor":false},
 {"id":"401873023","date":"2026-10-30T00:15Z","season":2026,"type":2,"home":"9","away":"29","homeAbbr":"GB","awayAbbr":"CAR","neutral":false,"final":true,"hs":27,"as":19,"venue":"Green Bay|WI|USA","indoor":false},
 {"id":"401873024","date":"2026-11-01T18:00Z","season":2026,"type":2,"home":"6","away":"22","homeAbbr":"DAL","awayAbbr":"ARI","neutral":false,"final":false,"hs":null,"as":null,"venue":"Arlington|TX|USA","indoor":true},
-{"id":"401873025","date":"2026-11-01T18:00Z","season":2026,"type":2,"home":"27","away":"1","homeAbbr":"TB","awayAbbr":"ATL","neutral":false,"final":false,"hs":null,"as":null,"venue":"Tampa|FL|USA","indoor":false},
+{"id":"401873025","date":"2026-11-01T18:00Z","season":2026,"type":2,"home":"27","away":"1","homeAbbr":"TB","awayAbbr":"ATL","neutral":false,"final":true,"hs":16,"as":0,"venue":"Tampa|FL|USA","indoor":false},
 {"id":"401873026","date":"2026-11-01T18:00Z","season":2026,"type":2,"home":"2","away":"33","homeAbbr":"BUF","awayAbbr":"BAL","neutral":false,"final":false,"hs":null,"as":null,"venue":"Orchard Park|NY|USA","indoor":false},
 {"id":"401873031","date":"2026-11-01T18:00Z","season":2026,"type":2,"home":"4","away":"10","homeAbbr":"CIN","awayAbbr":"TEN","neutral":false,"final":false,"hs":null,"as":null,"venue":"Cincinnati|OH|USA","indoor":false},
 {"id":"401873027","date":"2026-11-01T18:00Z","season":2026,"type":2,"home":"23","away":"5","homeAbbr":"PIT","awayAbbr":"CLE","neutral":false,"final":false,"hs":null,"as":null,"venue":"Pittsburgh|PA|USA","indoor":false},
