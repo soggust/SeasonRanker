@@ -1,13 +1,13 @@
 {
  "sport": "nfl",
  "cursor": {
-  "adamscheftermirror.bsky.social": "2026-11-01T22:24:14.900Z",
+  "adamscheftermirror.bsky.social": "2026-11-01T23:29:10.183Z",
   "rapsheet.bsky.social": "2026-11-01T22:12:21.679Z",
   "nflnewsreposterbot.bsky.social": "2026-10-30T22:57:34.763Z",
-  "insidenflnews.bsky.social": "2026-11-01T22:26:18.875Z",
-  "nflnewsposter.bsky.social": "2026-11-01T22:51:32.750Z",
-  "rotoworld-fb.bsky.social": "2026-11-01T22:57:54.000Z",
-  "rotowirenfl.bsky.social": "2026-11-01T23:03:20.000Z"
+  "insidenflnews.bsky.social": "2026-11-01T23:19:09.538Z",
+  "nflnewsposter.bsky.social": "2026-11-01T23:18:43.301Z",
+  "rotoworld-fb.bsky.social": "2026-11-01T23:11:17.000Z",
+  "rotowirenfl.bsky.social": "2026-11-01T23:31:48.000Z"
  },
  "claims": [
   {
@@ -12060,6 +12060,84 @@
    "kind": "status",
    "confidence": 0.9,
    "text": "Hunter Henry: Questionable to return Sunday \n\n https://www.rotowire.com/football/player/hunter-henry-10735"
+  },
+  {
+   "id": "at://did:plc:fuqjc7x4gxvnwzksnlxwbe4x/app.bsky.feed.post/3mzbx23ohnk2g|tylerhuntley|questionable|status",
+   "at": "2026-11-01T23:18:43.301Z",
+   "seen": "2026-11-01T23:34:02.494Z",
+   "handle": "nflnewsposter.bsky.social",
+   "post": "at://did:plc:fuqjc7x4gxvnwzksnlxwbe4x/app.bsky.feed.post/3mzbx23ohnk2g",
+   "player": "Tyler Huntley",
+   "team": "BAL",
+   "status": "questionable",
+   "kind": "status",
+   "confidence": 0.5,
+   "text": "[Schefter] Ravens QB Tyler “Snoop” Huntley suffered what is thought to be a turf toe injury today at Buffalo. He is expected to undergo an MRI tomorrow to determine how much time if any he could miss."
+  },
+  {
+   "id": "at://did:plc:fuqjc7x4gxvnwzksnlxwbe4x/app.bsky.feed.post/3mzbx23ohnk2g|lamarjackson|out|status",
+   "at": "2026-11-01T23:18:43.301Z",
+   "seen": "2026-11-01T23:34:02.494Z",
+   "handle": "nflnewsposter.bsky.social",
+   "post": "at://did:plc:fuqjc7x4gxvnwzksnlxwbe4x/app.bsky.feed.post/3mzbx23ohnk2g",
+   "player": "Lamar Jackson",
+   "team": "BAL",
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.9,
+   "text": "[Schefter] Ravens QB Tyler “Snoop” Huntley suffered what is thought to be a turf toe injury today at Buffalo. He is expected to undergo an MRI tomorrow to determine how much time if any he could miss."
+  },
+  {
+   "id": "at://did:plc:mbr4badgf6yu56mquzackzew/app.bsky.feed.post/3mzbx2cqd6s26|jaylenwatson|out|status",
+   "at": "2026-11-01T23:18:50.702Z",
+   "seen": "2026-11-01T23:34:02.494Z",
+   "handle": "insidenflnews.bsky.social",
+   "post": "at://did:plc:mbr4badgf6yu56mquzackzew/app.bsky.feed.post/3mzbx2cqd6s26",
+   "player": "Jaylen Watson",
+   "team": null,
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.8,
+   "text": "Status alert: Jaylen Watson (shoulder) won't return."
+  },
+  {
+   "id": "at://did:plc:mbr4badgf6yu56mquzackzew/app.bsky.feed.post/3mzbx2up3rc26|tylerhuntley|questionable|status",
+   "at": "2026-11-01T23:19:09.538Z",
+   "seen": "2026-11-01T23:34:02.494Z",
+   "handle": "insidenflnews.bsky.social",
+   "post": "at://did:plc:mbr4badgf6yu56mquzackzew/app.bsky.feed.post/3mzbx2up3rc26",
+   "player": "Tyler Huntley",
+   "team": "BAL",
+   "status": "questionable",
+   "kind": "status",
+   "confidence": 0.4,
+   "text": "Schefter: Tyler Huntley believed to have suffered turf toe injury."
+  },
+  {
+   "id": "at://did:plc:qre6zxbmr3ixhdmgsgdretb5/app.bsky.feed.post/3mzbxmrmgty2z|tylerhuntley|questionable|status",
+   "at": "2026-11-01T23:29:10.183Z",
+   "seen": "2026-11-01T23:34:02.494Z",
+   "handle": "adamscheftermirror.bsky.social",
+   "post": "at://did:plc:qre6zxbmr3ixhdmgsgdretb5/app.bsky.feed.post/3mzbxmrmgty2z",
+   "player": "Tyler Huntley",
+   "team": "BAL",
+   "status": "questionable",
+   "kind": "status",
+   "confidence": 0.5,
+   "text": "Ravens QB Tyler “Snoop” Huntley suffered what is thought to be a turf toe injury today at Buffalo, per source. He is expected to undergo an MRI tomorrow to determine how much time if any he could miss"
+  },
+  {
+   "id": "at://did:plc:qre6zxbmr3ixhdmgsgdretb5/app.bsky.feed.post/3mzbxmrmgty2z|lamarjackson|out|status",
+   "at": "2026-11-01T23:29:10.183Z",
+   "seen": "2026-11-01T23:34:02.494Z",
+   "handle": "adamscheftermirror.bsky.social",
+   "post": "at://did:plc:qre6zxbmr3ixhdmgsgdretb5/app.bsky.feed.post/3mzbxmrmgty2z",
+   "player": "Lamar Jackson",
+   "team": "BAL",
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.9,
+   "text": "Ravens QB Tyler “Snoop” Huntley suffered what is thought to be a turf toe injury today at Buffalo, per source. He is expected to undergo an MRI tomorrow to determine how much time if any he could miss"
   }
  ]
 }
