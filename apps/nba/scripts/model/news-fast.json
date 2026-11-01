@@ -1,7 +1,7 @@
 {
  "sport": "nba",
  "cursor": {
-  "rotowirenba.bsky.social": "2026-11-01T01:14:22.000Z",
+  "rotowirenba.bsky.social": "2026-11-01T01:43:53.000Z",
   "insidenbanews.bsky.social": "2026-10-30T19:15:23.134Z",
   "shamsbot.bsky.social": "2026-10-31T15:48:10.000Z"
  },
@@ -6739,6 +6739,19 @@
    "kind": "status",
    "confidence": 0.9,
    "text": "Ziaire Williams: Questionable for Sunday \n\n https://www.rotowire.com/basketball/player/ziaire-williams-5400"
+  },
+  {
+   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mz7oorcaxy2e|jalenjohnson|out|status",
+   "at": "2026-11-01T01:43:53.000Z",
+   "seen": "2026-11-01T01:48:35.597Z",
+   "handle": "rotowirenba.bsky.social",
+   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mz7oorcaxy2e",
+   "player": "Jalen Johnson",
+   "team": "ATL",
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.8,
+   "text": "Jalen Johnson: Doesn't return to Saturday's contest \n\n https://www.rotowire.com/basketball/player/jalen-johnson-5329"
   }
  ]
 }
