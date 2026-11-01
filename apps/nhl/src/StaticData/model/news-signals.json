@@ -12,40 +12,7 @@
    "confidence": 0.6,
    "headline": "Ottawa Senators F Hayden Hodgson suspended by NHL's Department of Player Safety",
    "at": "2026-10-31T01:45:39.000Z"
-  },
-  {
-   "team": "6",
-   "abbr": "EDM",
-   "athlete": null,
-   "player": "Mike Babcock",
-   "kind": "coaching",
-   "direction": "none",
-   "confidence": 0.9,
-   "headline": "Oilers take accountability message from coach Mike Babcock's healthy scratches",
-   "at": "2026-10-30T19:47:43.000Z"
-  },
-  {
-   "team": "6",
-   "abbr": "EDM",
-   "athlete": "4024997",
-   "player": "Trent Frederic",
-   "kind": "benched",
-   "direction": "down",
-   "confidence": 0.4,
-   "headline": "Oilers take accountability message from coach Mike Babcock's healthy scratches",
-   "at": "2026-10-30T19:47:43.000Z"
-  },
-  {
-   "team": "6",
-   "abbr": "EDM",
-   "athlete": "3151136",
-   "player": "Jake Walman",
-   "kind": "benched",
-   "direction": "down",
-   "confidence": 0.4,
-   "headline": "Oilers take accountability message from coach Mike Babcock's healthy scratches",
-   "at": "2026-10-30T19:47:43.000Z"
   }
  ],
- "at": "2026-10-31T23:15:27.743Z"
+ "at": "2026-11-01T19:57:45.897Z"
 }

@@ -3,7 +3,7 @@
  "cursor": {
   "johnston-bot.bsky.social": "2026-10-31T19:45:16.675Z",
   "notfriedgehnic.bsky.social": "2026-11-01T19:11:17.385Z",
-  "dailyfaceoff.bsky.social": "2026-11-01T18:48:58.000Z",
+  "dailyfaceoff.bsky.social": "2026-11-01T19:54:43.000Z",
   "dfotoronto.bsky.social": "2026-11-01T19:05:36.000Z",
   "marklazerus.bsky.social": "2026-11-01T18:01:15.893Z"
  },
@@ -1372,6 +1372,19 @@
    "kind": "status",
    "confidence": 0.9,
    "text": "Blues’ Colton Parayko day-to-day with upper-body injury"
+  },
+  {
+   "id": "at://did:plc:3uus7y6h3rlrk6sbctzxm4bg/app.bsky.feed.post/3mzblnd57xv2h|ryanpulock|out|status",
+   "at": "2026-11-01T19:54:43.000Z",
+   "seen": "2026-11-01T19:57:45.897Z",
+   "handle": "dailyfaceoff.bsky.social",
+   "post": "at://did:plc:3uus7y6h3rlrk6sbctzxm4bg/app.bsky.feed.post/3mzblnd57xv2h",
+   "player": "Ryan Pulock",
+   "team": "NYI",
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.95,
+   "text": "Islanders’ Ryan Pulock out 2-4 weeks with upper-body injury"
   }
  ]
 }

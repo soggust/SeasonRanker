@@ -4,10 +4,10 @@
   "adamscheftermirror.bsky.social": "2026-11-01T19:24:10.464Z",
   "rapsheet.bsky.social": "2026-11-01T19:10:51.034Z",
   "nflnewsreposterbot.bsky.social": "2026-10-30T22:57:34.763Z",
-  "insidenflnews.bsky.social": "2026-11-01T19:32:40.181Z",
-  "nflnewsposter.bsky.social": "2026-11-01T19:33:28.546Z",
-  "rotoworld-fb.bsky.social": "2026-11-01T19:21:26.000Z",
-  "rotowirenfl.bsky.social": "2026-11-01T19:35:08.000Z"
+  "insidenflnews.bsky.social": "2026-11-01T19:48:48.179Z",
+  "nflnewsposter.bsky.social": "2026-11-01T19:57:43.445Z",
+  "rotoworld-fb.bsky.social": "2026-11-01T19:57:11.000Z",
+  "rotowirenfl.bsky.social": "2026-11-01T19:55:07.000Z"
  },
  "claims": [
   {
@@ -11462,6 +11462,110 @@
    "kind": "status",
    "confidence": 0.85,
    "text": "[Garafolo] Tyler Huntley CAN return to the game if he’s cleared to do so. Joe Fagnano would have to leave and would only be able to come back in if Huntley was injured again. Didn’t have this correct "
+  },
+  {
+   "id": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3mzbkoe3svz2v|bamknight|out|status",
+   "at": "2026-11-01T19:37:24.000Z",
+   "seen": "2026-11-01T19:57:45.897Z",
+   "handle": "rotowirenfl.bsky.social",
+   "post": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3mzbkoe3svz2v",
+   "player": "Bam Knight",
+   "team": null,
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.75,
+   "text": "Bam Knight: Forced out of Sunday's game \n\n https://www.rotowire.com/football/player/bam-knight-16105"
+  },
+  {
+   "id": "at://did:plc:mbr4badgf6yu56mquzackzew/app.bsky.feed.post/3mzblcaglb22r|kendrickbourne|out|status",
+   "at": "2026-11-01T19:48:31.817Z",
+   "seen": "2026-11-01T19:57:45.897Z",
+   "handle": "insidenflnews.bsky.social",
+   "post": "at://did:plc:mbr4badgf6yu56mquzackzew/app.bsky.feed.post/3mzblcaglb22r",
+   "player": "Kendrick Bourne",
+   "team": null,
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.85,
+   "text": "🚨 Status alert: Kendrick Bourne (high-ankle sprain) won't return Sunday, per the broadcast."
+  },
+  {
+   "id": "at://did:plc:mbr4badgf6yu56mquzackzew/app.bsky.feed.post/3mzblcpzruk2r|jakeferguson|out|status",
+   "at": "2026-11-01T19:48:48.179Z",
+   "seen": "2026-11-01T19:57:45.897Z",
+   "handle": "insidenflnews.bsky.social",
+   "post": "at://did:plc:mbr4badgf6yu56mquzackzew/app.bsky.feed.post/3mzblcpzruk2r",
+   "player": "Jake Ferguson",
+   "team": null,
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.8,
+   "text": "🚨 Status alert: Jake Ferguson (ankle) won't return."
+  },
+  {
+   "id": "at://did:plc:fuqjc7x4gxvnwzksnlxwbe4x/app.bsky.feed.post/3mzbldjzxqsdb|djwonnum|out|status",
+   "at": "2026-11-01T19:49:15.447Z",
+   "seen": "2026-11-01T19:57:45.897Z",
+   "handle": "nflnewsposter.bsky.social",
+   "post": "at://did:plc:fuqjc7x4gxvnwzksnlxwbe4x/app.bsky.feed.post/3mzbldjzxqsdb",
+   "player": "DJ Wonnum",
+   "team": "DET",
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.9,
+   "text": "[Lions] Lions Injury Update:\n\nEDGE DJ Wonnum (Concussion) has been downgraded to Out.\n\nDB Brian Branch (Concussion) has been downgraded to Out. twitter.com/LionsPR/stat..."
+  },
+  {
+   "id": "at://did:plc:fuqjc7x4gxvnwzksnlxwbe4x/app.bsky.feed.post/3mzbldjzxqsdb|brianbranch|out|status",
+   "at": "2026-11-01T19:49:15.447Z",
+   "seen": "2026-11-01T19:57:45.897Z",
+   "handle": "nflnewsposter.bsky.social",
+   "post": "at://did:plc:fuqjc7x4gxvnwzksnlxwbe4x/app.bsky.feed.post/3mzbldjzxqsdb",
+   "player": "Brian Branch",
+   "team": "DET",
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.9,
+   "text": "[Lions] Lions Injury Update:\n\nEDGE DJ Wonnum (Concussion) has been downgraded to Out.\n\nDB Brian Branch (Concussion) has been downgraded to Out. twitter.com/LionsPR/stat..."
+  },
+  {
+   "id": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3mzblki3ldn2b|kendrickbourne|out|status",
+   "at": "2026-11-01T19:53:08.000Z",
+   "seen": "2026-11-01T19:57:45.897Z",
+   "handle": "rotoworld-fb.bsky.social",
+   "post": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3mzblki3ldn2b",
+   "player": "Kendrick Bourne",
+   "team": null,
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.9,
+   "text": "Kendrick Bourne (high-ankle sprain) out vs. DAL"
+  },
+  {
+   "id": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3mzblo22gxm2q|jakeferguson|out|status",
+   "at": "2026-11-01T19:55:07.000Z",
+   "seen": "2026-11-01T19:57:45.897Z",
+   "handle": "rotowirenfl.bsky.social",
+   "post": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3mzblo22gxm2q",
+   "player": "Jake Ferguson",
+   "team": null,
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.8,
+   "text": "Jake Ferguson: Ruled out for rest of game \n\n https://www.rotowire.com/football/player/jake-ferguson-15947"
+  },
+  {
+   "id": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3mzblrpsm7v25|bamknight|out|status",
+   "at": "2026-11-01T19:57:11.000Z",
+   "seen": "2026-11-01T19:57:45.897Z",
+   "handle": "rotoworld-fb.bsky.social",
+   "post": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3mzblrpsm7v25",
+   "player": "Bam Knight",
+   "team": null,
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.8,
+   "text": "Bam Knight (head) leaves vs. DAL, won't return"
   }
  ]
 }
