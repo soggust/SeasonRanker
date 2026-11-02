@@ -4,9 +4,9 @@
   "adamscheftermirror.bsky.social": "2026-11-02T17:34:20.042Z",
   "rapsheet.bsky.social": "2026-11-01T22:12:21.679Z",
   "nflnewsreposterbot.bsky.social": "2026-10-30T22:57:34.763Z",
-  "insidenflnews.bsky.social": "2026-11-02T13:51:07.061Z",
+  "insidenflnews.bsky.social": "2026-11-02T17:57:13.516Z",
   "nflnewsposter.bsky.social": "2026-11-02T16:14:51.168Z",
-  "rotoworld-fb.bsky.social": "2026-11-02T17:06:58.000Z",
+  "rotoworld-fb.bsky.social": "2026-11-02T17:47:16.000Z",
   "rotowirenfl.bsky.social": "2026-11-02T17:20:53.000Z"
  },
  "claims": [
@@ -12320,6 +12320,32 @@
    "kind": "status",
    "confidence": 0.4,
    "text": "'We'll see' if AJB (knee) practices this week"
+  },
+  {
+   "id": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3mzduyd3dew25|tyson|questionable|status",
+   "at": "2026-11-02T17:47:15.000Z",
+   "seen": "2026-11-02T18:07:21.599Z",
+   "handle": "rotoworld-fb.bsky.social",
+   "post": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3mzduyd3dew25",
+   "player": "Tyson",
+   "team": "NO",
+   "status": "questionable",
+   "kind": "status",
+   "confidence": 0.5,
+   "text": "Saints still deciding on Tyson's (hammy) return"
+  },
+  {
+   "id": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3mzduye5fyv2b|etienne|questionable|status",
+   "at": "2026-11-02T17:47:16.000Z",
+   "seen": "2026-11-02T18:07:21.599Z",
+   "handle": "rotoworld-fb.bsky.social",
+   "post": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3mzduye5fyv2b",
+   "player": "Etienne",
+   "team": "NO",
+   "status": "questionable",
+   "kind": "status",
+   "confidence": 0.5,
+   "text": "Saints undecided on Etienne's (hammy) return"
   }
  ]
 }

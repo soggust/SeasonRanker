@@ -1,7 +1,7 @@
 {
  "sport": "nba",
  "cursor": {
-  "rotowirenba.bsky.social": "2026-11-02T17:05:13.000Z",
+  "rotowirenba.bsky.social": "2026-11-02T18:06:10.000Z",
   "insidenbanews.bsky.social": "2026-10-30T19:15:23.134Z",
   "shamsbot.bsky.social": "2026-11-02T01:51:08.000Z"
  },
@@ -6895,6 +6895,19 @@
    "kind": "return",
    "confidence": 0.8,
    "text": "Brandon Ingram: Returns from G League assignment \n\n https://www.rotowire.com/basketball/player/brandon-ingram-3861"
+  },
+  {
+   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mzdvvd3rgm2n|alexsarr|out|status",
+   "at": "2026-11-02T18:03:28.000Z",
+   "seen": "2026-11-02T18:07:21.599Z",
+   "handle": "rotowirenba.bsky.social",
+   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mzdvvd3rgm2n",
+   "player": "Alex Sarr",
+   "team": "WAS",
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.95,
+   "text": "Alex Sarr: Confirmed out for Monday \n\n https://www.rotowire.com/basketball/player/alex-sarr-6240"
   }
  ]
 }
