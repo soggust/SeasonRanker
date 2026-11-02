@@ -19224,6 +19224,42 @@
     "seen": "2026-11-02T05:19:31.388Z",
     "own": "2026-11-02T00:24:00.000Z"
    }
+  },
+  "401909916|mitchellrobinson|q": {
+   "game": "401909916",
+   "start": "2026-11-03T01:30Z",
+   "team": "2",
+   "name": "Mitchell Robinson",
+   "status": "q",
+   "athlete": "4351852",
+   "espn": {
+    "seen": "2026-11-02T14:42:03.893Z",
+    "own": "2026-11-02T14:19:00.000Z"
+   }
+  },
+  "401909919|draymondgreen|q": {
+   "game": "401909919",
+   "start": "2026-11-03T03:00Z",
+   "team": "9",
+   "name": "Draymond Green",
+   "status": "q",
+   "athlete": "6589",
+   "espn": {
+    "seen": "2026-11-02T14:42:03.893Z",
+    "own": "2026-11-02T14:20:00.000Z"
+   }
+  },
+  "401909919|stephencurry|q": {
+   "game": "401909919",
+   "start": "2026-11-03T03:00Z",
+   "team": "9",
+   "name": "Stephen Curry",
+   "status": "q",
+   "athlete": "3975",
+   "espn": {
+    "seen": "2026-11-02T14:42:03.893Z",
+    "own": "2026-11-02T14:20:00.000Z"
+   }
   }
  }
 }
