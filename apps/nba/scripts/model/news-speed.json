@@ -18996,6 +18996,234 @@
     "seen": "2026-11-02T04:30:53.635Z",
     "own": "2026-11-02T04:19:00.000Z"
    }
+  },
+  "401909919|guisantos|q": {
+   "game": "401909919",
+   "start": "2026-11-03T03:00Z",
+   "team": "9",
+   "name": "Gui Santos",
+   "status": "q",
+   "athlete": "4997536",
+   "espn": {
+    "seen": "2026-11-02T05:19:31.388Z",
+    "own": "2026-11-02T04:49:00.000Z"
+   }
+  },
+  "401909920|derrickjones|q": {
+   "game": "401909920",
+   "start": "2026-11-03T03:00Z",
+   "team": "12",
+   "name": "Derrick Jones Jr.",
+   "status": "q",
+   "athlete": "3936099",
+   "espn": {
+    "seen": "2026-11-02T05:19:31.388Z",
+    "own": "2026-11-02T03:47:00.000Z"
+   }
+  },
+  "401909920|maxstrus|out": {
+   "game": "401909920",
+   "start": "2026-11-03T03:00Z",
+   "team": "12",
+   "name": "Max Strus",
+   "status": "out",
+   "athlete": "4065778",
+   "espn": {
+    "seen": "2026-11-02T05:19:31.388Z",
+    "own": "2026-11-02T00:45:00.000Z"
+   }
+  },
+  "401909920|yanickonanniederhauser|out": {
+   "game": "401909920",
+   "start": "2026-11-03T03:00Z",
+   "team": "12",
+   "name": "Yanic Konan Niederhauser",
+   "status": "out",
+   "athlete": "5108024",
+   "espn": {
+    "seen": "2026-11-02T05:19:31.388Z",
+    "own": "2026-11-01T20:17:00.000Z"
+   }
+  },
+  "401909920|brandoningram|out": {
+   "game": "401909920",
+   "start": "2026-11-03T03:00Z",
+   "team": "12",
+   "name": "Brandon Ingram",
+   "status": "out",
+   "athlete": "3913176",
+   "espn": {
+    "seen": "2026-11-02T05:19:31.388Z",
+    "own": "2026-11-01T16:04:00.000Z"
+   }
+  },
+  "401909920|bradleybeal|out": {
+   "game": "401909920",
+   "start": "2026-11-03T03:00Z",
+   "team": "12",
+   "name": "Bradley Beal",
+   "status": "out",
+   "athlete": "6580",
+   "espn": {
+    "seen": "2026-11-02T05:19:31.388Z",
+    "own": "2026-10-15T01:03:00.000Z"
+   }
+  },
+  "401909920|jordanmiller|out": {
+   "game": "401909920",
+   "start": "2026-11-03T03:00Z",
+   "team": "12",
+   "name": "Jordan Miller",
+   "status": "out",
+   "athlete": "4396818",
+   "espn": {
+    "seen": "2026-11-02T05:19:31.388Z",
+    "own": "2026-08-26T20:04:00.000Z"
+   }
+  },
+  "401909920|konknueppel|out": {
+   "game": "401909920",
+   "start": "2026-11-03T03:00Z",
+   "team": "12",
+   "name": "Kon Knueppel",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-01T22:15:39.321Z",
+    "own": "2026-11-01T22:08:11.000Z",
+    "why": "@rotowirenba.bsky.social: Kon Knueppel: Out against Detroit \n\n https://www.rotow"
+   }
+  },
+  "401909920|jakobpoeltl|out": {
+   "game": "401909920",
+   "start": "2026-11-03T03:00Z",
+   "team": "12",
+   "name": "Jakob Poeltl",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-02T01:48:21.376Z",
+    "own": "2026-11-02T01:44:30.000Z",
+    "why": "@rotowirenba.bsky.social: Jakob Poeltl: Late scratch Sunday \n\n https://www.rotow"
+   }
+  },
+  "401909920|kingstonflemings|out": {
+   "game": "401909920",
+   "start": "2026-11-03T03:00Z",
+   "team": "12",
+   "name": "Kingston Flemings",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-02T02:29:37.618Z",
+    "own": "2026-11-02T02:02:56.000Z",
+    "why": "@rotowirenba.bsky.social: Kingston Flemings: Suspended one game \n\n https://www.r"
+   }
+  },
+  "401909920|jakobpoeltl|q": {
+   "game": "401909920",
+   "start": "2026-11-03T03:00Z",
+   "team": "28",
+   "name": "Jakob Poeltl",
+   "status": "q",
+   "athlete": "3134908",
+   "espn": {
+    "seen": "2026-11-02T05:19:31.388Z",
+    "own": "2026-11-02T04:47:00.000Z"
+   }
+  },
+  "401909920|kawhileonard|out": {
+   "game": "401909920",
+   "start": "2026-11-03T03:00Z",
+   "team": "28",
+   "name": "Kawhi Leonard",
+   "status": "out",
+   "athlete": "6450",
+   "espn": {
+    "seen": "2026-11-02T05:19:31.388Z",
+    "own": "2026-10-29T15:39:00.000Z"
+   }
+  },
+  "401909920|natebittle|out": {
+   "game": "401909920",
+   "start": "2026-11-03T03:00Z",
+   "team": "28",
+   "name": "Nate Bittle",
+   "status": "out",
+   "athlete": "4432586",
+   "espn": {
+    "seen": "2026-11-02T05:19:31.388Z",
+    "own": "2026-10-27T19:31:00.000Z"
+   }
+  },
+  "401909921|ziairewilliams|out": {
+   "game": "401909921",
+   "start": "2026-11-03T03:00Z",
+   "team": "13",
+   "name": "Ziaire Williams",
+   "status": "out",
+   "athlete": "4433137",
+   "espn": {
+    "seen": "2026-11-02T05:19:31.388Z",
+    "own": "2026-11-01T21:04:00.000Z"
+   }
+  },
+  "401909921|adouthiero|out": {
+   "game": "401909921",
+   "start": "2026-11-03T03:00Z",
+   "team": "13",
+   "name": "Adou Thiero",
+   "status": "out",
+   "athlete": "5060631",
+   "espn": {
+    "seen": "2026-11-02T05:19:31.388Z",
+    "own": "2026-11-01T15:04:00.000Z"
+   }
+  },
+  "401909921|konknueppel|out": {
+   "game": "401909921",
+   "start": "2026-11-03T03:00Z",
+   "team": "13",
+   "name": "Kon Knueppel",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-01T22:15:39.321Z",
+    "own": "2026-11-01T22:08:11.000Z",
+    "why": "@rotowirenba.bsky.social: Kon Knueppel: Out against Detroit \n\n https://www.rotow"
+   }
+  },
+  "401909921|jakobpoeltl|out": {
+   "game": "401909921",
+   "start": "2026-11-03T03:00Z",
+   "team": "13",
+   "name": "Jakob Poeltl",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-02T01:48:21.376Z",
+    "own": "2026-11-02T01:44:30.000Z",
+    "why": "@rotowirenba.bsky.social: Jakob Poeltl: Late scratch Sunday \n\n https://www.rotow"
+   }
+  },
+  "401909921|kingstonflemings|out": {
+   "game": "401909921",
+   "start": "2026-11-03T03:00Z",
+   "team": "13",
+   "name": "Kingston Flemings",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-02T02:29:37.618Z",
+    "own": "2026-11-02T02:02:56.000Z",
+    "why": "@rotowirenba.bsky.social: Kingston Flemings: Suspended one game \n\n https://www.r"
+   }
+  },
+  "401909921|timhardaway|q": {
+   "game": "401909921",
+   "start": "2026-11-03T03:00Z",
+   "team": "14",
+   "name": "Tim Hardaway Jr.",
+   "status": "q",
+   "athlete": "2528210",
+   "espn": {
+    "seen": "2026-11-02T05:19:31.388Z",
+    "own": "2026-11-02T00:24:00.000Z"
+   }
   }
  }
 }
