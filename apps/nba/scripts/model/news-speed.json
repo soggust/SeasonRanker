@@ -1,86 +1,6 @@
 {
  "sport": "nba",
  "entries": {
-  "401909094|thomassorber|out": {
-   "game": "401909094",
-   "start": "2026-10-23T01:30Z",
-   "team": "25",
-   "name": "Thomas Sorber",
-   "status": "out",
-   "athlete": "5061603",
-   "espn": {
-    "seen": "2026-10-20T01:13:31.118Z",
-    "own": "2026-10-19T22:11:00.000Z"
-   },
-   "bluesky": {
-    "seen": "2026-10-22T15:32:09.445Z",
-    "own": "2026-10-22T14:47:23.657Z",
-    "why": "@insidenbanews.bsky.social: Injuries 10/22\n\nCLE:\nJarrett Allen - Questionable\nNa"
-   }
-  },
-  "401909094|nikolatopic|out": {
-   "game": "401909094",
-   "start": "2026-10-23T01:30Z",
-   "team": "25",
-   "name": "Nikola Topic",
-   "status": "out",
-   "athlete": "5159925",
-   "espn": {
-    "seen": "2026-10-20T01:13:31.118Z",
-    "own": "2026-10-19T22:09:00.000Z"
-   },
-   "bluesky": {
-    "seen": "2026-10-22T15:32:09.445Z",
-    "own": "2026-10-22T14:47:23.657Z",
-    "why": "@insidenbanews.bsky.social: Injuries 10/22\n\nCLE:\nJarrett Allen - Questionable\nNa"
-   }
-  },
-  "401909094|otegaoweh|out": {
-   "game": "401909094",
-   "start": "2026-10-23T01:30Z",
-   "team": "25",
-   "name": "Otega Oweh",
-   "status": "out",
-   "athlete": "5106270",
-   "espn": {
-    "seen": "2026-10-20T01:13:31.118Z",
-    "own": "2026-10-15T01:22:00.000Z"
-   }
-  },
-  "401909094|spencerjones|q": {
-   "game": "401909094",
-   "start": "2026-10-23T01:30Z",
-   "team": "7",
-   "name": "Spencer Jones",
-   "status": "q",
-   "athlete": "4592427",
-   "espn": {
-    "seen": "2026-10-20T01:13:31.118Z",
-    "own": "2026-10-18T18:47:00.000Z"
-   },
-   "bluesky": {
-    "seen": "2026-10-22T15:32:09.445Z",
-    "own": "2026-10-22T14:47:23.657Z",
-    "why": "@insidenbanews.bsky.social: Injuries 10/22\n\nCLE:\nJarrett Allen - Questionable\nNa"
-   }
-  },
-  "401909094|julianstrawther|out": {
-   "game": "401909094",
-   "start": "2026-10-23T01:30Z",
-   "team": "7",
-   "name": "Julian Strawther",
-   "status": "out",
-   "athlete": "4432181",
-   "espn": {
-    "seen": "2026-10-20T01:13:31.118Z",
-    "own": "2026-10-17T00:52:00.000Z"
-   },
-   "bluesky": {
-    "seen": "2026-10-22T15:32:09.445Z",
-    "own": "2026-10-22T14:47:23.657Z",
-    "why": "@insidenbanews.bsky.social: Injuries 10/22\n\nCLE:\nJarrett Allen - Questionable\nNa"
-   }
-  },
   "401909095|devincarter|out": {
    "game": "401909095",
    "start": "2026-10-23T23:00Z",
@@ -154,30 +74,6 @@
     "own": "2026-10-20T19:04:00.000Z"
    }
   },
-  "401909094|thomassorber|q": {
-   "game": "401909094",
-   "start": "2026-10-23T01:30Z",
-   "team": "25",
-   "name": "Thomas Sorber",
-   "status": "q",
-   "athlete": "5061603",
-   "espn": {
-    "seen": "2026-10-21T14:49:45.501Z",
-    "own": "2026-10-21T14:05:00.000Z"
-   }
-  },
-  "401909094|nikolatopic|q": {
-   "game": "401909094",
-   "start": "2026-10-23T01:30Z",
-   "team": "25",
-   "name": "Nikola Topic",
-   "status": "q",
-   "athlete": "5159925",
-   "espn": {
-    "seen": "2026-10-21T14:49:45.501Z",
-    "own": "2026-10-21T14:04:00.000Z"
-   }
-  },
   "401909096|tobiasharris|q": {
    "game": "401909096",
    "start": "2026-10-24T01:30Z",
@@ -190,30 +86,6 @@
     "own": "2026-10-21T14:05:00.000Z"
    }
   },
-  "401909094|jarrettallen|q": {
-   "game": "401909094",
-   "start": "2026-10-23T01:30Z",
-   "team": "25",
-   "name": "Jarrett Allen",
-   "status": "q",
-   "bluesky": {
-    "seen": "2026-10-21T21:10:26.919Z",
-    "own": "2026-10-21T21:07:09.000Z",
-    "why": "@rotowirenba.bsky.social: Jarrett Allen: Questionable versus Philadelphia \n\n htt"
-   }
-  },
-  "401909094|isaiahstewart|out": {
-   "game": "401909094",
-   "start": "2026-10-23T01:30Z",
-   "team": "25",
-   "name": "Isaiah Stewart",
-   "status": "out",
-   "bluesky": {
-    "seen": "2026-10-21T23:05:24.815Z",
-    "own": "2026-10-21T23:05:17.000Z",
-    "why": "@rotowirenba.bsky.social: Isaiah Stewart: Ruled out Wednesday \n\n https://www.rot"
-   }
-  },
   "401909096|stevenadams|out": {
    "game": "401909096",
    "start": "2026-10-24T01:30Z",
@@ -224,18 +96,6 @@
    "espn": {
     "seen": "2026-10-21T23:52:39.150Z",
     "own": "2026-10-21T23:48:00.000Z"
-   }
-  },
-  "401909094|lukekennard|out": {
-   "game": "401909094",
-   "start": "2026-10-23T01:30Z",
-   "team": "25",
-   "name": "Luke Kennard",
-   "status": "out",
-   "bluesky": {
-    "seen": "2026-10-22T01:04:07.991Z",
-    "own": "2026-10-22T00:34:44.218Z",
-    "why": "@insidenbanews.bsky.social: Ott: Luke Kennard (knee) ruled out Wednesday."
    }
   },
   "401909845|jonathanisaac|q": {
@@ -973,18 +833,6 @@
     "own": "2026-10-22T17:25:11.869Z"
    }
   },
-  "401909094|ajdybantsa|out": {
-   "game": "401909094",
-   "start": "2026-10-23T01:30Z",
-   "team": "25",
-   "name": "AJ Dybantsa",
-   "status": "out",
-   "bluesky": {
-    "seen": "2026-10-22T16:38:01.289Z",
-    "own": "2026-10-22T16:22:15.000Z",
-    "why": "@rotowirenba.bsky.social: AJ Dybantsa: Ruled out for Friday \n\n https://www.rotow"
-   }
-  },
   "401909848|ajdybantsa|out": {
    "game": "401909848",
    "start": "2026-10-23T20:00Z",
@@ -1175,30 +1023,6 @@
    "sleeper": {
     "seen": "2026-10-23T20:13:26.047Z",
     "own": "2026-10-23T08:35:18.512Z"
-   }
-  },
-  "401909094|konknueppel|out": {
-   "game": "401909094",
-   "start": "2026-10-23T01:30Z",
-   "team": "25",
-   "name": "Kon Knueppel",
-   "status": "out",
-   "bluesky": {
-    "seen": "2026-10-22T21:10:54.488Z",
-    "own": "2026-10-22T21:05:10.000Z",
-    "why": "@rotowirenba.bsky.social: Kon Knueppel: Still out with hamstring strain \n\n https"
-   }
-  },
-  "401909094|cobywhite|out": {
-   "game": "401909094",
-   "start": "2026-10-23T01:30Z",
-   "team": "25",
-   "name": "Coby White",
-   "status": "out",
-   "bluesky": {
-    "seen": "2026-10-22T21:10:54.488Z",
-    "own": "2026-10-22T21:07:34.000Z",
-    "why": "@rotowirenba.bsky.social: Coby White: Still sidelined with calf strain \n\n https:"
    }
   },
   "401909848|konknueppel|out": {
@@ -1534,18 +1358,6 @@
     "own": "2026-10-23T17:40:21.978Z"
    }
   },
-  "401909094|tobiasharris|out": {
-   "game": "401909094",
-   "start": "2026-10-23T01:30Z",
-   "team": "25",
-   "name": "Tobias Harris",
-   "status": "out",
-   "bluesky": {
-    "seen": "2026-10-22T22:24:25.424Z",
-    "own": "2026-10-22T22:03:54.000Z",
-    "why": "@rotowirenba.bsky.social: Tobias Harris: Ruled out for Friday \n\n https://www.rot"
-   }
-  },
   "401909848|tobiasharris|out": {
    "game": "401909848",
    "start": "2026-10-23T20:00Z",
@@ -1706,18 +1518,6 @@
     "own": "2026-10-22T23:50:14.413Z"
    }
   },
-  "401909094|spencerjones|out": {
-   "game": "401909094",
-   "start": "2026-10-23T01:30Z",
-   "team": "7",
-   "name": "Spencer Jones",
-   "status": "out",
-   "athlete": "4592427",
-   "espn": {
-    "seen": "2026-10-23T00:19:44.146Z",
-    "own": "2026-10-23T00:06:00.000Z"
-   }
-  },
   "401909850|cedriccoward|q": {
    "game": "401909850",
    "start": "2026-10-24T02:00Z",
@@ -1764,42 +1564,6 @@
    "sleeper": {
     "seen": "2026-10-23T20:13:26.047Z",
     "own": "2026-10-23T09:05:18.787Z"
-   }
-  },
-  "401909094|isaiahstewart|q": {
-   "game": "401909094",
-   "start": "2026-10-23T01:30Z",
-   "team": "25",
-   "name": "Isaiah Stewart",
-   "status": "q",
-   "bluesky": {
-    "seen": "2026-10-23T00:29:18.410Z",
-    "own": "2026-10-23T00:16:08.000Z",
-    "why": "@rotowirenba.bsky.social: Isaiah Stewart: Tagged questionable for Friday \n\n http"
-   }
-  },
-  "401909094|brandinpodziemski|q": {
-   "game": "401909094",
-   "start": "2026-10-23T01:30Z",
-   "team": "25",
-   "name": "Brandin Podziemski",
-   "status": "q",
-   "bluesky": {
-    "seen": "2026-10-23T00:29:18.410Z",
-    "own": "2026-10-23T00:04:47.000Z",
-    "why": "@rotowirenba.bsky.social: Brandin Podziemski: Questionable to play Friday \n\n htt"
-   }
-  },
-  "401909094|cedriccoward|out": {
-   "game": "401909094",
-   "start": "2026-10-23T01:30Z",
-   "team": "25",
-   "name": "Cedric Coward",
-   "status": "out",
-   "bluesky": {
-    "seen": "2026-10-23T00:29:18.410Z",
-    "own": "2026-10-23T00:21:39.000Z",
-    "why": "@rotowirenba.bsky.social: Cedric Coward: Doubtful for Friday \n\n https://www.roto"
    }
   },
   "401909848|brandinpodziemski|q": {

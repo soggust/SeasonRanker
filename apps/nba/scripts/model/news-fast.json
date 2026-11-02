@@ -1,7 +1,7 @@
 {
  "sport": "nba",
  "cursor": {
-  "rotowirenba.bsky.social": "2026-11-02T01:23:15.000Z",
+  "rotowirenba.bsky.social": "2026-11-02T01:44:30.000Z",
   "insidenbanews.bsky.social": "2026-10-30T19:15:23.134Z",
   "shamsbot.bsky.social": "2026-10-31T15:48:10.000Z"
  },
@@ -6843,6 +6843,19 @@
    "kind": "status",
    "confidence": 0.8,
    "text": "Rudy Gobert: Missing from injury report \n\n https://www.rotowire.com/basketball/player/rudy-gobert-3440"
+  },
+  {
+   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mzc76rklf52n|jakobpoeltl|out|status",
+   "at": "2026-11-02T01:44:30.000Z",
+   "seen": "2026-11-02T01:48:21.376Z",
+   "handle": "rotowirenba.bsky.social",
+   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mzc76rklf52n",
+   "player": "Jakob Poeltl",
+   "team": null,
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.9,
+   "text": "Jakob Poeltl: Late scratch Sunday \n\n https://www.rotowire.com/basketball/player/jakob-poeltl-3870"
   }
  ]
 }
