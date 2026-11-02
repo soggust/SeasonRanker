@@ -1,7 +1,7 @@
 {
  "sport": "nba",
  "cursor": {
-  "rotowirenba.bsky.social": "2026-11-02T21:23:03.000Z",
+  "rotowirenba.bsky.social": "2026-11-02T23:13:27.000Z",
   "insidenbanews.bsky.social": "2026-11-02T19:09:04.708Z",
   "shamsbot.bsky.social": "2026-11-02T19:03:58.000Z"
  },
@@ -7025,6 +7025,84 @@
    "kind": "status",
    "confidence": 0.92,
    "text": "Scottie Barnes: Questionable to face LAC \n\n https://www.rotowire.com/basketball/player/scottie-barnes-5390"
+  },
+  {
+   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mzeexhuivs2g|dejountemurray|out|status",
+   "at": "2026-11-02T22:33:07.000Z",
+   "seen": "2026-11-02T23:17:52.532Z",
+   "handle": "rotowirenba.bsky.social",
+   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mzeexhuivs2g",
+   "player": "Dejounte Murray",
+   "team": null,
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.9,
+   "text": "Dejounte Murray: Listed out Monday \n\n https://www.rotowire.com/basketball/player/dejounte-murray-3856"
+  },
+  {
+   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mzefrdcc4n2n|nicclaxton|out|status",
+   "at": "2026-11-02T22:47:34.000Z",
+   "seen": "2026-11-02T23:17:52.532Z",
+   "handle": "rotowirenba.bsky.social",
+   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mzefrdcc4n2n",
+   "player": "Nic Claxton",
+   "team": "BKN",
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.9,
+   "text": "Nic Claxton: Out again Monday \n\n https://www.rotowire.com/basketball/player/nic-claxton-4827"
+  },
+  {
+   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mzeg7mq3c327|cobywhite|none|benched",
+   "at": "2026-11-02T22:55:34.000Z",
+   "seen": "2026-11-02T23:17:52.532Z",
+   "handle": "rotowirenba.bsky.social",
+   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mzeg7mq3c327",
+   "player": "Coby White",
+   "team": null,
+   "status": "none",
+   "kind": "benched",
+   "confidence": 0.8,
+   "text": "Coby White: Won't start in season debut \n\n https://www.rotowire.com/basketball/player/coby-white-4801"
+  },
+  {
+   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mzege5cxwi2z|jalenjohnson|out|status",
+   "at": "2026-11-02T22:58:06.000Z",
+   "seen": "2026-11-02T23:17:52.532Z",
+   "handle": "rotowirenba.bsky.social",
+   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mzege5cxwi2z",
+   "player": "Jalen Johnson",
+   "team": "ATL",
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.9,
+   "text": "Jalen Johnson: Ruled out Monday \n\n https://www.rotowire.com/basketball/player/jalen-johnson-5329"
+  },
+  {
+   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mzeguncuu72r|obitoppin|out|status",
+   "at": "2026-11-02T23:07:19.000Z",
+   "seen": "2026-11-02T23:17:52.532Z",
+   "handle": "rotowirenba.bsky.social",
+   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mzeguncuu72r",
+   "player": "Obi Toppin",
+   "team": null,
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.9,
+   "text": "Obi Toppin: Dressing but won't play Monday \n\n https://www.rotowire.com/basketball/player/obi-toppin-5109"
+  },
+  {
+   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mzeh7lrqjl2e|kyrieirving|out|status",
+   "at": "2026-11-02T23:13:27.000Z",
+   "seen": "2026-11-02T23:17:52.532Z",
+   "handle": "rotowirenba.bsky.social",
+   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mzeh7lrqjl2e",
+   "player": "Kyrie Irving",
+   "team": null,
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.9,
+   "text": "Kyrie Irving: Out vs. Sacramento \n\n https://www.rotowire.com/basketball/player/kyrie-irving-3186"
   }
  ]
 }

@@ -1,13 +1,13 @@
 {
  "sport": "nfl",
  "cursor": {
-  "adamscheftermirror.bsky.social": "2026-11-02T21:44:29.477Z",
-  "rapsheet.bsky.social": "2026-11-02T21:28:46.544Z",
+  "adamscheftermirror.bsky.social": "2026-11-02T22:59:19.776Z",
+  "rapsheet.bsky.social": "2026-11-02T22:39:42.439Z",
   "nflnewsreposterbot.bsky.social": "2026-11-02T21:32:04.821Z",
-  "insidenflnews.bsky.social": "2026-11-02T21:43:15.473Z",
+  "insidenflnews.bsky.social": "2026-11-02T23:12:47.933Z",
   "nflnewsposter.bsky.social": "2026-11-02T21:22:49.462Z",
-  "rotoworld-fb.bsky.social": "2026-11-02T21:40:22.000Z",
-  "rotowirenfl.bsky.social": "2026-11-02T21:53:28.000Z"
+  "rotoworld-fb.bsky.social": "2026-11-02T23:13:52.000Z",
+  "rotowirenfl.bsky.social": "2026-11-02T23:11:47.000Z"
  },
  "claims": [
   {
@@ -12814,6 +12814,84 @@
    "kind": "starting",
    "confidence": 0.9,
    "text": "Gardner Minshew: Taking over as starting quarterback \n\n https://www.rotowire.com/football/player/gardner-minshew-13741"
+  },
+  {
+   "id": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3mzed7phg5w2e|jacobybrissett|none|benched",
+   "at": "2026-11-02T22:01:56.000Z",
+   "seen": "2026-11-02T23:17:52.532Z",
+   "handle": "rotowirenfl.bsky.social",
+   "post": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3mzed7phg5w2e",
+   "player": "Jacoby Brissett",
+   "team": "ARI",
+   "status": "none",
+   "kind": "benched",
+   "confidence": 0.85,
+   "text": "Jacoby Brissett: Loses starting gig, now No. 3 QB \n\n https://www.rotowire.com/football/player/jacoby-brissett-10919"
+  },
+  {
+   "id": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3mzedqdm4i32a|bamknight|none|status",
+   "at": "2026-11-02T22:11:14.000Z",
+   "seen": "2026-11-02T23:17:52.532Z",
+   "handle": "rotoworld-fb.bsky.social",
+   "post": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3mzedqdm4i32a",
+   "player": "Bam Knight",
+   "team": "ARI",
+   "status": "none",
+   "kind": "status",
+   "confidence": 0.3,
+   "text": "LaFleur: Bam Knight in concussion protocol"
+  },
+  {
+   "id": "at://did:plc:hlvr2omhnmvdmfnvmcuhyevz/app.bsky.feed.post/3mzefdapslc2z|gardnerminshew|none|starting",
+   "at": "2026-11-02T22:39:42.439Z",
+   "seen": "2026-11-02T23:17:52.532Z",
+   "handle": "rapsheet.bsky.social",
+   "post": "at://did:plc:hlvr2omhnmvdmfnvmcuhyevz/app.bsky.feed.post/3mzefdapslc2z",
+   "player": "Gardner Minshew",
+   "team": "ARI",
+   "status": "none",
+   "kind": "starting",
+   "confidence": 0.9,
+   "text": "The Cardinals are naming QB Gardner Minshew as their starting QB, one day after his heroics led to a dramatic win over the Cowboys.  \n\nJacoby Brissett heads to the bench"
+  },
+  {
+   "id": "at://did:plc:hlvr2omhnmvdmfnvmcuhyevz/app.bsky.feed.post/3mzefdapslc2z|jacobybrissett|none|benched",
+   "at": "2026-11-02T22:39:42.439Z",
+   "seen": "2026-11-02T23:17:52.532Z",
+   "handle": "rapsheet.bsky.social",
+   "post": "at://did:plc:hlvr2omhnmvdmfnvmcuhyevz/app.bsky.feed.post/3mzefdapslc2z",
+   "player": "Jacoby Brissett",
+   "team": "ARI",
+   "status": "none",
+   "kind": "benched",
+   "confidence": 0.9,
+   "text": "The Cardinals are naming QB Gardner Minshew as their starting QB, one day after his heroics led to a dramatic win over the Cowboys.  \n\nJacoby Brissett heads to the bench"
+  },
+  {
+   "id": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3mzefeidajy25|kendrickbourne|out|status",
+   "at": "2026-11-02T22:40:23.000Z",
+   "seen": "2026-11-02T23:17:52.532Z",
+   "handle": "rotowirenfl.bsky.social",
+   "post": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3mzefeidajy25",
+   "player": "Kendrick Bourne",
+   "team": "ARI",
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.85,
+   "text": "Kendrick Bourne: Expected to miss rest of season \n\n https://www.rotowire.com/football/player/kendrick-bourne-11847"
+  },
+  {
+   "id": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3mzeglv4pab25|kendrickbourne|out|status",
+   "at": "2026-11-02T23:02:25.000Z",
+   "seen": "2026-11-02T23:17:52.532Z",
+   "handle": "rotowirenfl.bsky.social",
+   "post": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3mzeglv4pab25",
+   "player": "Kendrick Bourne",
+   "team": "ARI",
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.95,
+   "text": "Kendrick Bourne: Out for season \n\n https://www.rotowire.com/football/player/kendrick-bourne-11847"
   }
  ]
 }
