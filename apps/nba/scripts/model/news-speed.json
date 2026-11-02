@@ -20206,6 +20206,54 @@
     "seen": "2026-11-02T21:13:19.668Z",
     "own": "2026-11-02T02:30:35.940Z"
    }
+  },
+  "401909919|brandonwilliams|q": {
+   "game": "401909919",
+   "start": "2026-11-03T03:00Z",
+   "team": "9",
+   "name": "Brandon Williams",
+   "status": "q",
+   "athlete": "4397040",
+   "espn": {
+    "seen": "2026-11-02T21:22:19.826Z",
+    "own": "2026-11-02T21:09:00.000Z"
+   }
+  },
+  "401909919|alhorford|out": {
+   "game": "401909919",
+   "start": "2026-11-03T03:00Z",
+   "team": "9",
+   "name": "Al Horford",
+   "status": "out",
+   "athlete": "3213",
+   "espn": {
+    "seen": "2026-11-02T21:22:19.826Z",
+    "own": "2026-11-02T21:07:00.000Z"
+   }
+  },
+  "401909920|ruihachimura|out": {
+   "game": "401909920",
+   "start": "2026-11-03T03:00Z",
+   "team": "12",
+   "name": "Rui Hachimura",
+   "status": "out",
+   "athlete": "4066648",
+   "espn": {
+    "seen": "2026-11-02T21:22:19.826Z",
+    "own": "2026-11-02T21:16:00.000Z"
+   }
+  },
+  "401909920|derrickjones|out": {
+   "game": "401909920",
+   "start": "2026-11-03T03:00Z",
+   "team": "12",
+   "name": "Derrick Jones Jr.",
+   "status": "out",
+   "athlete": "3936099",
+   "espn": {
+    "seen": "2026-11-02T21:22:19.826Z",
+    "own": "2026-11-02T21:12:00.000Z"
+   }
   }
  }
 }
