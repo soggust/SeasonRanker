@@ -18283,6 +18283,282 @@
     "seen": "2026-11-02T00:01:55.583Z",
     "own": "2026-10-07T23:07:00.000Z"
    }
+  },
+  "401909907|jakobpoeltl|out": {
+   "game": "401909907",
+   "start": "2026-11-03T00:00Z",
+   "team": "5",
+   "name": "Jakob Poeltl",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-02T01:48:21.376Z",
+    "own": "2026-11-02T01:44:30.000Z",
+    "why": "@rotowirenba.bsky.social: Jakob Poeltl: Late scratch Sunday \n\n https://www.rotow"
+   }
+  },
+  "401909908|jakobpoeltl|out": {
+   "game": "401909908",
+   "start": "2026-11-03T00:30Z",
+   "team": "30",
+   "name": "Jakob Poeltl",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-02T01:48:21.376Z",
+    "own": "2026-11-02T01:44:30.000Z",
+    "why": "@rotowirenba.bsky.social: Jakob Poeltl: Late scratch Sunday \n\n https://www.rotow"
+   }
+  },
+  "401909910|jakobpoeltl|out": {
+   "game": "401909910",
+   "start": "2026-11-03T00:30Z",
+   "team": "18",
+   "name": "Jakob Poeltl",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-02T01:48:21.376Z",
+    "own": "2026-11-02T01:44:30.000Z",
+    "why": "@rotowirenba.bsky.social: Jakob Poeltl: Late scratch Sunday \n\n https://www.rotow"
+   }
+  },
+  "401909911|jakobpoeltl|out": {
+   "game": "401909911",
+   "start": "2026-11-03T00:30Z",
+   "team": "19",
+   "name": "Jakob Poeltl",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-02T01:48:21.376Z",
+    "own": "2026-11-02T01:44:30.000Z",
+    "why": "@rotowirenba.bsky.social: Jakob Poeltl: Late scratch Sunday \n\n https://www.rotow"
+   }
+  },
+  "401909912|jakobpoeltl|out": {
+   "game": "401909912",
+   "start": "2026-11-03T00:30Z",
+   "team": "20",
+   "name": "Jakob Poeltl",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-02T01:48:21.376Z",
+    "own": "2026-11-02T01:44:30.000Z",
+    "why": "@rotowirenba.bsky.social: Jakob Poeltl: Late scratch Sunday \n\n https://www.rotow"
+   }
+  },
+  "401909913|tarikbiberovic|out": {
+   "game": "401909913",
+   "start": "2026-11-03T01:00Z",
+   "team": "6",
+   "name": "Tarik Biberovic",
+   "status": "out",
+   "athlete": "5148538",
+   "espn": {
+    "seen": "2026-11-02T01:55:56.707Z",
+    "own": "2026-11-01T23:19:00.000Z"
+   }
+  },
+  "401909913|derecklively|out": {
+   "game": "401909913",
+   "start": "2026-11-03T01:00Z",
+   "team": "6",
+   "name": "Dereck Lively II",
+   "status": "out",
+   "athlete": "4683688",
+   "espn": {
+    "seen": "2026-11-02T01:55:56.707Z",
+    "own": "2026-11-01T22:57:00.000Z"
+   }
+  },
+  "401909913|kyrieirving|q": {
+   "game": "401909913",
+   "start": "2026-11-03T01:00Z",
+   "team": "6",
+   "name": "Kyrie Irving",
+   "status": "q",
+   "athlete": "6442",
+   "espn": {
+    "seen": "2026-11-02T01:55:56.707Z",
+    "own": "2026-11-01T22:57:00.000Z"
+   }
+  },
+  "401909913|santialdama|out": {
+   "game": "401909913",
+   "start": "2026-11-03T01:00Z",
+   "team": "6",
+   "name": "Santi Aldama",
+   "status": "out",
+   "athlete": "4593125",
+   "espn": {
+    "seen": "2026-11-02T01:55:56.707Z",
+    "own": "2026-11-01T22:51:00.000Z"
+   }
+  },
+  "401909913|sergiodelarrea|out": {
+   "game": "401909913",
+   "start": "2026-11-03T01:00Z",
+   "team": "6",
+   "name": "Sergio de Larrea",
+   "status": "out",
+   "athlete": "5279129",
+   "espn": {
+    "seen": "2026-11-02T01:55:56.707Z",
+    "own": "2026-10-30T22:34:00.000Z"
+   }
+  },
+  "401909913|reedsheppard|q": {
+   "game": "401909913",
+   "start": "2026-11-03T01:00Z",
+   "team": "6",
+   "name": "Reed Sheppard",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-11-01T21:01:52.142Z",
+    "own": "2026-11-01T20:41:11.000Z",
+    "why": "@rotowirenba.bsky.social: Reed Sheppard: Questionable versus Celtics \n\n https://"
+   }
+  },
+  "401909913|konknueppel|out": {
+   "game": "401909913",
+   "start": "2026-11-03T01:00Z",
+   "team": "6",
+   "name": "Kon Knueppel",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-01T22:15:39.321Z",
+    "own": "2026-11-01T22:08:11.000Z",
+    "why": "@rotowirenba.bsky.social: Kon Knueppel: Out against Detroit \n\n https://www.rotow"
+   }
+  },
+  "401909913|jakobpoeltl|out": {
+   "game": "401909913",
+   "start": "2026-11-03T01:00Z",
+   "team": "6",
+   "name": "Jakob Poeltl",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-02T01:48:21.376Z",
+    "own": "2026-11-02T01:44:30.000Z",
+    "why": "@rotowirenba.bsky.social: Jakob Poeltl: Late scratch Sunday \n\n https://www.rotow"
+   }
+  },
+  "401909913|dylancardwell|out": {
+   "game": "401909913",
+   "start": "2026-11-03T01:00Z",
+   "team": "23",
+   "name": "Dylan Cardwell",
+   "status": "out",
+   "athlete": "4433174",
+   "espn": {
+    "seen": "2026-11-02T01:55:56.707Z",
+    "own": "2026-11-01T23:24:00.000Z"
+   }
+  },
+  "401909913|zachlavine|q": {
+   "game": "401909913",
+   "start": "2026-11-03T01:00Z",
+   "team": "23",
+   "name": "Zach LaVine",
+   "status": "q",
+   "athlete": "3064440",
+   "espn": {
+    "seen": "2026-11-02T01:55:56.707Z",
+    "own": "2026-11-01T23:20:00.000Z"
+   }
+  },
+  "401909913|maximeraynaud|out": {
+   "game": "401909913",
+   "start": "2026-11-03T01:00Z",
+   "team": "23",
+   "name": "Maxime Raynaud",
+   "status": "out",
+   "athlete": "4898371",
+   "espn": {
+    "seen": "2026-11-02T01:55:56.707Z",
+    "own": "2026-10-26T22:07:00.000Z"
+   }
+  },
+  "401909913|keeganmurray|out": {
+   "game": "401909913",
+   "start": "2026-11-03T01:00Z",
+   "team": "23",
+   "name": "Keegan Murray",
+   "status": "out",
+   "athlete": "4594327",
+   "espn": {
+    "seen": "2026-11-02T01:55:56.707Z",
+    "own": "2026-10-26T22:01:00.000Z"
+   }
+  },
+  "401909913|bensimmons|out": {
+   "game": "401909913",
+   "start": "2026-11-03T01:00Z",
+   "team": "23",
+   "name": "Ben Simmons",
+   "status": "out",
+   "athlete": "3907387",
+   "espn": {
+    "seen": "2026-11-02T01:55:56.707Z",
+    "own": "2026-10-21T04:22:00.000Z"
+   }
+  },
+  "401909914|jakobpoeltl|out": {
+   "game": "401909914",
+   "start": "2026-11-03T01:00Z",
+   "team": "29",
+   "name": "Jakob Poeltl",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-02T01:48:21.376Z",
+    "own": "2026-11-02T01:44:30.000Z",
+    "why": "@rotowirenba.bsky.social: Jakob Poeltl: Late scratch Sunday \n\n https://www.rotow"
+   }
+  },
+  "401909915|jakobpoeltl|out": {
+   "game": "401909915",
+   "start": "2026-11-03T01:00Z",
+   "team": "16",
+   "name": "Jakob Poeltl",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-02T01:48:21.376Z",
+    "own": "2026-11-02T01:44:30.000Z",
+    "why": "@rotowirenba.bsky.social: Jakob Poeltl: Late scratch Sunday \n\n https://www.rotow"
+   }
+  },
+  "401909916|jakobpoeltl|out": {
+   "game": "401909916",
+   "start": "2026-11-03T01:30Z",
+   "team": "10",
+   "name": "Jakob Poeltl",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-02T01:48:21.376Z",
+    "own": "2026-11-02T01:44:30.000Z",
+    "why": "@rotowirenba.bsky.social: Jakob Poeltl: Late scratch Sunday \n\n https://www.rotow"
+   }
+  },
+  "401909917|jakobpoeltl|out": {
+   "game": "401909917",
+   "start": "2026-11-03T01:30Z",
+   "team": "24",
+   "name": "Jakob Poeltl",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-02T01:48:21.376Z",
+    "own": "2026-11-02T01:44:30.000Z",
+    "why": "@rotowirenba.bsky.social: Jakob Poeltl: Late scratch Sunday \n\n https://www.rotow"
+   }
+  },
+  "401909918|jakobpoeltl|out": {
+   "game": "401909918",
+   "start": "2026-11-03T02:00Z",
+   "team": "7",
+   "name": "Jakob Poeltl",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-02T01:48:21.376Z",
+    "own": "2026-11-02T01:44:30.000Z",
+    "why": "@rotowirenba.bsky.social: Jakob Poeltl: Late scratch Sunday \n\n https://www.rotow"
+   }
   }
  }
 }

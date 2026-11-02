@@ -3,7 +3,7 @@
  "cursor": {
   "rotowirenba.bsky.social": "2026-11-02T01:44:30.000Z",
   "insidenbanews.bsky.social": "2026-10-30T19:15:23.134Z",
-  "shamsbot.bsky.social": "2026-10-31T15:48:10.000Z"
+  "shamsbot.bsky.social": "2026-11-02T01:51:08.000Z"
  },
  "claims": [
   {
@@ -6856,6 +6856,19 @@
    "kind": "status",
    "confidence": 0.9,
    "text": "Jakob Poeltl: Late scratch Sunday \n\n https://www.rotowire.com/basketball/player/jakob-poeltl-3870"
+  },
+  {
+   "id": "at://did:plc:sa73fbx3vxzh2fw5pu5wmief/app.bsky.feed.post/3mzc7qdlsxj2d|kingstonflemings|out|status",
+   "at": "2026-11-02T01:51:08.000Z",
+   "seen": "2026-11-02T01:57:54.784Z",
+   "handle": "shamsbot.bsky.social",
+   "post": "at://did:plc:sa73fbx3vxzh2fw5pu5wmief/app.bsky.feed.post/3mzc7qdlsxj2d",
+   "player": "Kingston Flemings",
+   "team": "ATL",
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.9,
+   "text": "Hawks guard Kingston Flemings has been suspended one game for intentionally elbowing Pelicans guard Bryce McGowens in the head."
   }
  ]
 }
