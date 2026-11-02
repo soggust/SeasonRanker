@@ -1,7 +1,7 @@
 {
  "sport": "nba",
  "cursor": {
-  "rotowirenba.bsky.social": "2026-11-02T01:44:30.000Z",
+  "rotowirenba.bsky.social": "2026-11-02T02:02:56.000Z",
   "insidenbanews.bsky.social": "2026-10-30T19:15:23.134Z",
   "shamsbot.bsky.social": "2026-11-02T01:51:08.000Z"
  },
@@ -6869,6 +6869,19 @@
    "kind": "status",
    "confidence": 0.9,
    "text": "Hawks guard Kingston Flemings has been suspended one game for intentionally elbowing Pelicans guard Bryce McGowens in the head."
+  },
+  {
+   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mzca7qe2ls2z|kingstonflemings|out|status",
+   "at": "2026-11-02T02:02:56.000Z",
+   "seen": "2026-11-02T02:29:37.618Z",
+   "handle": "rotowirenba.bsky.social",
+   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mzca7qe2ls2z",
+   "player": "Kingston Flemings",
+   "team": null,
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.9,
+   "text": "Kingston Flemings: Suspended one game \n\n https://www.rotowire.com/basketball/player/kingston-flemings-6927"
   }
  ]
 }
