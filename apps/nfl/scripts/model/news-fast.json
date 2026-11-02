@@ -1,13 +1,13 @@
 {
  "sport": "nfl",
  "cursor": {
-  "adamscheftermirror.bsky.social": "2026-11-02T00:44:25.910Z",
+  "adamscheftermirror.bsky.social": "2026-11-02T01:14:20.662Z",
   "rapsheet.bsky.social": "2026-11-01T22:12:21.679Z",
   "nflnewsreposterbot.bsky.social": "2026-10-30T22:57:34.763Z",
   "insidenflnews.bsky.social": "2026-11-02T00:06:11.705Z",
-  "nflnewsposter.bsky.social": "2026-11-02T00:39:50.599Z",
-  "rotoworld-fb.bsky.social": "2026-11-02T00:40:42.000Z",
-  "rotowirenfl.bsky.social": "2026-11-02T01:06:05.000Z"
+  "nflnewsposter.bsky.social": "2026-11-02T01:26:07.540Z",
+  "rotoworld-fb.bsky.social": "2026-11-02T01:17:00.000Z",
+  "rotowirenfl.bsky.social": "2026-11-02T01:22:38.000Z"
  },
  "claims": [
   {
@@ -12203,6 +12203,19 @@
    "kind": "status",
    "confidence": 0.95,
    "text": "Hunter Henry: Won't return Sunday \n\n https://www.rotowire.com/football/player/hunter-henry-10735"
+  },
+  {
+   "id": "at://did:plc:fuqjc7x4gxvnwzksnlxwbe4x/app.bsky.feed.post/3mzc65vs3t22g|lukemccaffrey|none|role",
+   "at": "2026-11-02T01:26:07.540Z",
+   "seen": "2026-11-02T01:27:49.136Z",
+   "handle": "nflnewsposter.bsky.social",
+   "post": "at://did:plc:fuqjc7x4gxvnwzksnlxwbe4x/app.bsky.feed.post/3mzc65vs3t22g",
+   "player": "Luke McCaffrey",
+   "team": null,
+   "status": "none",
+   "kind": "role",
+   "confidence": 0.35,
+   "text": "[NFL] Luke McCaffrey starting off SNF with a big kick return 🗣️ twitter.com/NFL/status/2..."
   }
  ]
 }
