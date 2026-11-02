@@ -19272,6 +19272,18 @@
     "seen": "2026-11-02T17:10:00.716Z",
     "own": "2026-11-02T17:05:00.000Z"
    }
+  },
+  "401909911|alexsarr|out": {
+   "game": "401909911",
+   "start": "2026-11-03T00:30Z",
+   "team": "27",
+   "name": "Alex Sarr",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-02T18:07:21.599Z",
+    "own": "2026-11-02T18:03:28.000Z",
+    "why": "@rotowirenba.bsky.social: Alex Sarr: Confirmed out for Monday \n\n https://www.rot"
+   }
   }
  }
 }
