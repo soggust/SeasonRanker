@@ -18703,6 +18703,114 @@
     "own": "2026-11-02T02:02:56.000Z",
     "why": "@rotowirenba.bsky.social: Kingston Flemings: Suspended one game \n\n https://www.r"
    }
+  },
+  "401909919|draymondgreen|out": {
+   "game": "401909919",
+   "start": "2026-11-03T03:00Z",
+   "team": "9",
+   "name": "Draymond Green",
+   "status": "out",
+   "athlete": "6589",
+   "espn": {
+    "seen": "2026-11-02T03:06:48.846Z",
+    "own": "2026-10-31T19:51:00.000Z"
+   }
+  },
+  "401909919|stephencurry|out": {
+   "game": "401909919",
+   "start": "2026-11-03T03:00Z",
+   "team": "9",
+   "name": "Stephen Curry",
+   "status": "out",
+   "athlete": "3975",
+   "espn": {
+    "seen": "2026-11-02T03:06:48.846Z",
+    "own": "2026-10-31T19:48:00.000Z"
+   }
+  },
+  "401909919|kristapsporzingis|out": {
+   "game": "401909919",
+   "start": "2026-11-03T03:00Z",
+   "team": "9",
+   "name": "Kristaps Porzingis",
+   "status": "out",
+   "athlete": "3102531",
+   "espn": {
+    "seen": "2026-11-02T03:06:48.846Z",
+    "own": "2026-10-28T14:25:00.000Z"
+   }
+  },
+  "401909919|mosesmoody|out": {
+   "game": "401909919",
+   "start": "2026-11-03T03:00Z",
+   "team": "9",
+   "name": "Moses Moody",
+   "status": "out",
+   "athlete": "4432171",
+   "espn": {
+    "seen": "2026-11-02T03:06:48.846Z",
+    "own": "2026-10-16T16:14:00.000Z"
+   }
+  },
+  "401909919|jimmybutler|out": {
+   "game": "401909919",
+   "start": "2026-11-03T03:00Z",
+   "team": "9",
+   "name": "Jimmy Butler III",
+   "status": "out",
+   "athlete": "6430",
+   "espn": {
+    "seen": "2026-11-02T03:06:48.846Z",
+    "own": "2026-10-16T16:11:00.000Z"
+   }
+  },
+  "401909919|konknueppel|out": {
+   "game": "401909919",
+   "start": "2026-11-03T03:00Z",
+   "team": "9",
+   "name": "Kon Knueppel",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-01T22:15:39.321Z",
+    "own": "2026-11-01T22:08:11.000Z",
+    "why": "@rotowirenba.bsky.social: Kon Knueppel: Out against Detroit \n\n https://www.rotow"
+   }
+  },
+  "401909919|jakobpoeltl|out": {
+   "game": "401909919",
+   "start": "2026-11-03T03:00Z",
+   "team": "9",
+   "name": "Jakob Poeltl",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-02T01:48:21.376Z",
+    "own": "2026-11-02T01:44:30.000Z",
+    "why": "@rotowirenba.bsky.social: Jakob Poeltl: Late scratch Sunday \n\n https://www.rotow"
+   }
+  },
+  "401909919|kingstonflemings|out": {
+   "game": "401909919",
+   "start": "2026-11-03T03:00Z",
+   "team": "9",
+   "name": "Kingston Flemings",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-02T02:29:37.618Z",
+    "own": "2026-11-02T02:02:56.000Z",
+    "why": "@rotowirenba.bsky.social: Kingston Flemings: Suspended one game \n\n https://www.r"
+   }
+  },
+  "401909919|markwilliams|out": {
+   "game": "401909919",
+   "start": "2026-11-03T03:00Z",
+   "team": "21",
+   "name": "Mark Williams",
+   "status": "out",
+   "athlete": "4701232",
+   "espn": {
+    "seen": "2026-11-02T03:06:48.846Z",
+    "own": "2026-09-11T16:03:00.000Z"
+   }
   }
  }
 }
