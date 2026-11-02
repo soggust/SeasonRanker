@@ -1,13 +1,13 @@
 {
  "sport": "nfl",
  "cursor": {
-  "adamscheftermirror.bsky.social": "2026-11-02T21:09:19.318Z",
-  "rapsheet.bsky.social": "2026-11-02T19:51:08.400Z",
-  "nflnewsreposterbot.bsky.social": "2026-10-30T22:57:34.763Z",
-  "insidenflnews.bsky.social": "2026-11-02T21:05:32.307Z",
-  "nflnewsposter.bsky.social": "2026-11-02T21:13:51.162Z",
-  "rotoworld-fb.bsky.social": "2026-11-02T21:13:24.000Z",
-  "rotowirenfl.bsky.social": "2026-11-02T21:11:48.000Z"
+  "adamscheftermirror.bsky.social": "2026-11-02T21:44:29.477Z",
+  "rapsheet.bsky.social": "2026-11-02T21:28:46.544Z",
+  "nflnewsreposterbot.bsky.social": "2026-11-02T21:32:04.821Z",
+  "insidenflnews.bsky.social": "2026-11-02T21:43:15.473Z",
+  "nflnewsposter.bsky.social": "2026-11-02T21:22:49.462Z",
+  "rotoworld-fb.bsky.social": "2026-11-02T21:40:22.000Z",
+  "rotowirenfl.bsky.social": "2026-11-02T21:53:28.000Z"
  },
  "claims": [
   {
@@ -12658,6 +12658,162 @@
    "kind": "return",
    "confidence": 0.97,
    "text": "Jadarian Price activated from IR, will play vs. Bears"
+  },
+  {
+   "id": "at://did:plc:mbr4badgf6yu56mquzackzew/app.bsky.feed.post/3mzeaw3s2nc27|jadarianprice|active|status",
+   "at": "2026-11-02T21:20:46.098Z",
+   "seen": "2026-11-02T21:57:32.011Z",
+   "handle": "insidenflnews.bsky.social",
+   "post": "at://did:plc:mbr4badgf6yu56mquzackzew/app.bsky.feed.post/3mzeaw3s2nc27",
+   "player": "Jadarian Price",
+   "team": null,
+   "status": "active",
+   "kind": "status",
+   "confidence": 0.9,
+   "text": "Jadarian Price officially activated to 53-man roster."
+  },
+  {
+   "id": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3mzeawit4gw2s|jadarianprice|active|status",
+   "at": "2026-11-02T21:20:59.000Z",
+   "seen": "2026-11-02T21:57:32.011Z",
+   "handle": "rotowirenfl.bsky.social",
+   "post": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3mzeawit4gw2s",
+   "player": "Jadarian Price",
+   "team": null,
+   "status": "active",
+   "kind": "status",
+   "confidence": 0.9,
+   "text": "Jadarian Price: Activated for Monday night game \n\n https://www.rotowire.com/football/player/jadarian-price-19299"
+  },
+  {
+   "id": "at://did:plc:mbr4badgf6yu56mquzackzew/app.bsky.feed.post/3mzeawpfdv227|tannermckee|none|starting",
+   "at": "2026-11-02T21:21:06.652Z",
+   "seen": "2026-11-02T21:57:32.011Z",
+   "handle": "insidenflnews.bsky.social",
+   "post": "at://did:plc:mbr4badgf6yu56mquzackzew/app.bsky.feed.post/3mzeawpfdv227",
+   "player": "Tanner McKee",
+   "team": "PHI",
+   "status": "none",
+   "kind": "starting",
+   "confidence": 0.9,
+   "text": "Sirianni: Tanner McKee will remain starting QB."
+  },
+  {
+   "id": "at://did:plc:hlvr2omhnmvdmfnvmcuhyevz/app.bsky.feed.post/3mzebefy65c26|jadarianprice|active|status",
+   "at": "2026-11-02T21:28:46.544Z",
+   "seen": "2026-11-02T21:57:32.011Z",
+   "handle": "rapsheet.bsky.social",
+   "post": "at://did:plc:hlvr2omhnmvdmfnvmcuhyevz/app.bsky.feed.post/3mzebefy65c26",
+   "player": "Jadarian Price",
+   "team": "SEA",
+   "status": "active",
+   "kind": "status",
+   "confidence": 0.85,
+   "text": "The Seahawks plan to activate first-round RB Jadarian Price from Injured Reserve to play tonight against the Bears, source says. His first game action since Sept. 27."
+  },
+  {
+   "id": "at://did:plc:rx22hq465sfe5g2qyyf5gzu2/app.bsky.feed.post/3mzebkd33zk2q|gardnerminshew|none|starting",
+   "at": "2026-11-02T21:32:04.821Z",
+   "seen": "2026-11-02T21:57:32.011Z",
+   "handle": "nflnewsreposterbot.bsky.social",
+   "post": "at://did:plc:rx22hq465sfe5g2qyyf5gzu2/app.bsky.feed.post/3mzebkd33zk2q",
+   "player": "Gardner Minshew",
+   "team": "ARI",
+   "status": "none",
+   "kind": "starting",
+   "confidence": 0.9,
+   "text": "Jonathan Jones: The Cardinals are naming Gardner Minshew their starting quarterback and benching Jacoby Brissett, head coach Mike LaFleur announces. Carson Beck will be QB2 and Brissett will be the em"
+  },
+  {
+   "id": "at://did:plc:rx22hq465sfe5g2qyyf5gzu2/app.bsky.feed.post/3mzebkd33zk2q|jacobybrissett|none|benched",
+   "at": "2026-11-02T21:32:04.821Z",
+   "seen": "2026-11-02T21:57:32.011Z",
+   "handle": "nflnewsreposterbot.bsky.social",
+   "post": "at://did:plc:rx22hq465sfe5g2qyyf5gzu2/app.bsky.feed.post/3mzebkd33zk2q",
+   "player": "Jacoby Brissett",
+   "team": "ARI",
+   "status": "none",
+   "kind": "benched",
+   "confidence": 0.9,
+   "text": "Jonathan Jones: The Cardinals are naming Gardner Minshew their starting quarterback and benching Jacoby Brissett, head coach Mike LaFleur announces. Carson Beck will be QB2 and Brissett will be the em"
+  },
+  {
+   "id": "at://did:plc:mbr4badgf6yu56mquzackzew/app.bsky.feed.post/3mzebndqhdc27|gardnerminshew|none|starting",
+   "at": "2026-11-02T21:33:46.186Z",
+   "seen": "2026-11-02T21:57:32.011Z",
+   "handle": "insidenflnews.bsky.social",
+   "post": "at://did:plc:mbr4badgf6yu56mquzackzew/app.bsky.feed.post/3mzebndqhdc27",
+   "player": "Gardner Minshew",
+   "team": "ARI",
+   "status": "none",
+   "kind": "starting",
+   "confidence": 0.9,
+   "text": "Rap: Gardner Minshew has been named the Cardinals’ starting QB for Week 9."
+  },
+  {
+   "id": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3mzebujps6c2b|tannermckee|none|starting",
+   "at": "2026-11-02T21:37:47.000Z",
+   "seen": "2026-11-02T21:57:32.011Z",
+   "handle": "rotowirenfl.bsky.social",
+   "post": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3mzebujps6c2b",
+   "player": "Tanner McKee",
+   "team": "PHI",
+   "status": "none",
+   "kind": "starting",
+   "confidence": 0.85,
+   "text": "Tanner McKee: Hanging on to starting job \n\n https://www.rotowire.com/football/player/tanner-mckee-16686"
+  },
+  {
+   "id": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3mzebz3tbpa2y|gardnerminshew|none|starting",
+   "at": "2026-11-02T21:40:20.000Z",
+   "seen": "2026-11-02T21:57:32.011Z",
+   "handle": "rotoworld-fb.bsky.social",
+   "post": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3mzebz3tbpa2y",
+   "player": "Gardner Minshew",
+   "team": "ARI",
+   "status": "none",
+   "kind": "starting",
+   "confidence": 0.9,
+   "text": "Cards name Minshew as starter vs. Seahawks"
+  },
+  {
+   "id": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3mzebz5ywsy2a|jacobybrissett|none|benched",
+   "at": "2026-11-02T21:40:22.000Z",
+   "seen": "2026-11-02T21:57:32.011Z",
+   "handle": "rotoworld-fb.bsky.social",
+   "post": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3mzebz5ywsy2a",
+   "player": "Jacoby Brissett",
+   "team": "ARI",
+   "status": "none",
+   "kind": "benched",
+   "confidence": 0.9,
+   "text": "Brissett loses starting job after Week 8 benching"
+  },
+  {
+   "id": "at://did:plc:qre6zxbmr3ixhdmgsgdretb5/app.bsky.feed.post/3mzeca32oln2a|gardnerminshew|none|starting",
+   "at": "2026-11-02T21:44:14.521Z",
+   "seen": "2026-11-02T21:57:32.011Z",
+   "handle": "adamscheftermirror.bsky.social",
+   "post": "at://did:plc:qre6zxbmr3ixhdmgsgdretb5/app.bsky.feed.post/3mzeca32oln2a",
+   "player": "Gardner Minshew",
+   "team": "ARI",
+   "status": "none",
+   "kind": "starting",
+   "confidence": 0.9,
+   "text": "Cardinals HC Mike LaFleur named Gardner Minshew II as Arizona’s starting QB for the Week 9 game in Seattle.\n\nOriginal post"
+  },
+  {
+   "id": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3mzece7tmfy2j|gardnerminshew|none|starting",
+   "at": "2026-11-02T21:46:33.000Z",
+   "seen": "2026-11-02T21:57:32.011Z",
+   "handle": "rotowirenfl.bsky.social",
+   "post": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3mzece7tmfy2j",
+   "player": "Gardner Minshew",
+   "team": "ARI",
+   "status": "none",
+   "kind": "starting",
+   "confidence": 0.9,
+   "text": "Gardner Minshew: Taking over as starting quarterback \n\n https://www.rotowire.com/football/player/gardner-minshew-13741"
   }
  ]
 }
