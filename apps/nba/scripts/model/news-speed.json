@@ -19545,6 +19545,580 @@
    "espn": {
     "seen": "2026-11-02T19:08:55.631Z",
     "own": "2026-11-02T18:55:00.000Z"
+   },
+   "bluesky": {
+    "seen": "2026-11-02T19:11:10.777Z",
+    "own": "2026-11-02T18:55:16.000Z",
+    "why": "@rotowirenba.bsky.social: Dejounte Murray: Downgraded to questionable \n\n https:/"
+   }
+  },
+  "401909907|kyrieirving|out": {
+   "game": "401909907",
+   "start": "2026-11-03T00:00Z",
+   "team": "5",
+   "name": "Kyrie Irving",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-02T19:11:10.777Z",
+    "own": "2026-11-02T18:51:16.000Z",
+    "why": "@rotowirenba.bsky.social: Kyrie Irving: Downgraded to doubtful \n\n https://www.ro"
+   }
+  },
+  "401909907|dejountemurray|q": {
+   "game": "401909907",
+   "start": "2026-11-03T00:00Z",
+   "team": "5",
+   "name": "Dejounte Murray",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-11-02T19:11:10.777Z",
+    "own": "2026-11-02T18:55:16.000Z",
+    "why": "@rotowirenba.bsky.social: Dejounte Murray: Downgraded to questionable \n\n https:/"
+   }
+  },
+  "401909907|paulgeorge|out": {
+   "game": "401909907",
+   "start": "2026-11-03T00:00Z",
+   "team": "5",
+   "name": "Paul George",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-02T19:11:10.777Z",
+    "own": "2026-11-02T19:06:48.000Z",
+    "why": "@rotowirenba.bsky.social: Paul George: Will sit out Monday \n\n https://www.rotowi"
+   }
+  },
+  "401909908|kyrieirving|out": {
+   "game": "401909908",
+   "start": "2026-11-03T00:30Z",
+   "team": "30",
+   "name": "Kyrie Irving",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-02T19:11:10.777Z",
+    "own": "2026-11-02T18:51:16.000Z",
+    "why": "@rotowirenba.bsky.social: Kyrie Irving: Downgraded to doubtful \n\n https://www.ro"
+   }
+  },
+  "401909908|dejountemurray|q": {
+   "game": "401909908",
+   "start": "2026-11-03T00:30Z",
+   "team": "30",
+   "name": "Dejounte Murray",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-11-02T19:11:10.777Z",
+    "own": "2026-11-02T18:55:16.000Z",
+    "why": "@rotowirenba.bsky.social: Dejounte Murray: Downgraded to questionable \n\n https:/"
+   }
+  },
+  "401909908|paulgeorge|out": {
+   "game": "401909908",
+   "start": "2026-11-03T00:30Z",
+   "team": "30",
+   "name": "Paul George",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-02T19:11:10.777Z",
+    "own": "2026-11-02T19:06:48.000Z",
+    "why": "@rotowirenba.bsky.social: Paul George: Will sit out Monday \n\n https://www.rotowi"
+   }
+  },
+  "401909909|kyrieirving|out": {
+   "game": "401909909",
+   "start": "2026-11-03T00:30Z",
+   "team": "11",
+   "name": "Kyrie Irving",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-02T19:11:10.777Z",
+    "own": "2026-11-02T18:51:16.000Z",
+    "why": "@rotowirenba.bsky.social: Kyrie Irving: Downgraded to doubtful \n\n https://www.ro"
+   }
+  },
+  "401909909|dejountemurray|q": {
+   "game": "401909909",
+   "start": "2026-11-03T00:30Z",
+   "team": "11",
+   "name": "Dejounte Murray",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-11-02T19:11:10.777Z",
+    "own": "2026-11-02T18:55:16.000Z",
+    "why": "@rotowirenba.bsky.social: Dejounte Murray: Downgraded to questionable \n\n https:/"
+   }
+  },
+  "401909909|paulgeorge|out": {
+   "game": "401909909",
+   "start": "2026-11-03T00:30Z",
+   "team": "11",
+   "name": "Paul George",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-02T19:11:10.777Z",
+    "own": "2026-11-02T19:06:48.000Z",
+    "why": "@rotowirenba.bsky.social: Paul George: Will sit out Monday \n\n https://www.rotowi"
+   }
+  },
+  "401909910|kyrieirving|out": {
+   "game": "401909910",
+   "start": "2026-11-03T00:30Z",
+   "team": "18",
+   "name": "Kyrie Irving",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-02T19:11:10.777Z",
+    "own": "2026-11-02T18:51:16.000Z",
+    "why": "@rotowirenba.bsky.social: Kyrie Irving: Downgraded to doubtful \n\n https://www.ro"
+   }
+  },
+  "401909910|dejountemurray|q": {
+   "game": "401909910",
+   "start": "2026-11-03T00:30Z",
+   "team": "18",
+   "name": "Dejounte Murray",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-11-02T19:11:10.777Z",
+    "own": "2026-11-02T18:55:16.000Z",
+    "why": "@rotowirenba.bsky.social: Dejounte Murray: Downgraded to questionable \n\n https:/"
+   }
+  },
+  "401909910|paulgeorge|out": {
+   "game": "401909910",
+   "start": "2026-11-03T00:30Z",
+   "team": "18",
+   "name": "Paul George",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-02T19:11:10.777Z",
+    "own": "2026-11-02T19:06:48.000Z",
+    "why": "@rotowirenba.bsky.social: Paul George: Will sit out Monday \n\n https://www.rotowi"
+   }
+  },
+  "401909911|kyrieirving|out": {
+   "game": "401909911",
+   "start": "2026-11-03T00:30Z",
+   "team": "19",
+   "name": "Kyrie Irving",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-02T19:11:10.777Z",
+    "own": "2026-11-02T18:51:16.000Z",
+    "why": "@rotowirenba.bsky.social: Kyrie Irving: Downgraded to doubtful \n\n https://www.ro"
+   }
+  },
+  "401909911|dejountemurray|q": {
+   "game": "401909911",
+   "start": "2026-11-03T00:30Z",
+   "team": "19",
+   "name": "Dejounte Murray",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-11-02T19:11:10.777Z",
+    "own": "2026-11-02T18:55:16.000Z",
+    "why": "@rotowirenba.bsky.social: Dejounte Murray: Downgraded to questionable \n\n https:/"
+   }
+  },
+  "401909911|paulgeorge|out": {
+   "game": "401909911",
+   "start": "2026-11-03T00:30Z",
+   "team": "19",
+   "name": "Paul George",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-02T19:11:10.777Z",
+    "own": "2026-11-02T19:06:48.000Z",
+    "why": "@rotowirenba.bsky.social: Paul George: Will sit out Monday \n\n https://www.rotowi"
+   }
+  },
+  "401909912|kyrieirving|out": {
+   "game": "401909912",
+   "start": "2026-11-03T00:30Z",
+   "team": "20",
+   "name": "Kyrie Irving",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-02T19:11:10.777Z",
+    "own": "2026-11-02T18:51:16.000Z",
+    "why": "@rotowirenba.bsky.social: Kyrie Irving: Downgraded to doubtful \n\n https://www.ro"
+   }
+  },
+  "401909912|dejountemurray|q": {
+   "game": "401909912",
+   "start": "2026-11-03T00:30Z",
+   "team": "20",
+   "name": "Dejounte Murray",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-11-02T19:11:10.777Z",
+    "own": "2026-11-02T18:55:16.000Z",
+    "why": "@rotowirenba.bsky.social: Dejounte Murray: Downgraded to questionable \n\n https:/"
+   }
+  },
+  "401909912|paulgeorge|out": {
+   "game": "401909912",
+   "start": "2026-11-03T00:30Z",
+   "team": "20",
+   "name": "Paul George",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-02T19:11:10.777Z",
+    "own": "2026-11-02T19:06:48.000Z",
+    "why": "@rotowirenba.bsky.social: Paul George: Will sit out Monday \n\n https://www.rotowi"
+   }
+  },
+  "401909913|kyrieirving|out": {
+   "game": "401909913",
+   "start": "2026-11-03T01:00Z",
+   "team": "6",
+   "name": "Kyrie Irving",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-02T19:11:10.777Z",
+    "own": "2026-11-02T18:51:16.000Z",
+    "why": "@rotowirenba.bsky.social: Kyrie Irving: Downgraded to doubtful \n\n https://www.ro"
+   }
+  },
+  "401909913|dejountemurray|q": {
+   "game": "401909913",
+   "start": "2026-11-03T01:00Z",
+   "team": "6",
+   "name": "Dejounte Murray",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-11-02T19:11:10.777Z",
+    "own": "2026-11-02T18:55:16.000Z",
+    "why": "@rotowirenba.bsky.social: Dejounte Murray: Downgraded to questionable \n\n https:/"
+   }
+  },
+  "401909913|paulgeorge|out": {
+   "game": "401909913",
+   "start": "2026-11-03T01:00Z",
+   "team": "6",
+   "name": "Paul George",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-02T19:11:10.777Z",
+    "own": "2026-11-02T19:06:48.000Z",
+    "why": "@rotowirenba.bsky.social: Paul George: Will sit out Monday \n\n https://www.rotowi"
+   }
+  },
+  "401909914|kyrieirving|out": {
+   "game": "401909914",
+   "start": "2026-11-03T01:00Z",
+   "team": "29",
+   "name": "Kyrie Irving",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-02T19:11:10.777Z",
+    "own": "2026-11-02T18:51:16.000Z",
+    "why": "@rotowirenba.bsky.social: Kyrie Irving: Downgraded to doubtful \n\n https://www.ro"
+   }
+  },
+  "401909914|paulgeorge|out": {
+   "game": "401909914",
+   "start": "2026-11-03T01:00Z",
+   "team": "29",
+   "name": "Paul George",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-02T19:11:10.777Z",
+    "own": "2026-11-02T19:06:48.000Z",
+    "why": "@rotowirenba.bsky.social: Paul George: Will sit out Monday \n\n https://www.rotowi"
+   }
+  },
+  "401909915|terrenceshannon|q": {
+   "game": "401909915",
+   "start": "2026-11-03T01:00Z",
+   "team": "16",
+   "name": "Terrence Shannon Jr.",
+   "status": "q",
+   "athlete": "4432847",
+   "espn": {
+    "seen": "2026-11-02T19:20:15.089Z",
+    "own": "2026-11-02T19:12:00.000Z"
+   }
+  },
+  "401909915|lameloball|q": {
+   "game": "401909915",
+   "start": "2026-11-03T01:00Z",
+   "team": "16",
+   "name": "LaMelo Ball",
+   "status": "q",
+   "athlete": "4432816",
+   "espn": {
+    "seen": "2026-11-02T19:20:15.089Z",
+    "own": "2026-11-02T19:10:00.000Z"
+   }
+  },
+  "401909915|kyrieirving|out": {
+   "game": "401909915",
+   "start": "2026-11-03T01:00Z",
+   "team": "16",
+   "name": "Kyrie Irving",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-02T19:11:10.777Z",
+    "own": "2026-11-02T18:51:16.000Z",
+    "why": "@rotowirenba.bsky.social: Kyrie Irving: Downgraded to doubtful \n\n https://www.ro"
+   }
+  },
+  "401909915|dejountemurray|q": {
+   "game": "401909915",
+   "start": "2026-11-03T01:00Z",
+   "team": "16",
+   "name": "Dejounte Murray",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-11-02T19:11:10.777Z",
+    "own": "2026-11-02T18:55:16.000Z",
+    "why": "@rotowirenba.bsky.social: Dejounte Murray: Downgraded to questionable \n\n https:/"
+   }
+  },
+  "401909915|paulgeorge|out": {
+   "game": "401909915",
+   "start": "2026-11-03T01:00Z",
+   "team": "16",
+   "name": "Paul George",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-02T19:11:10.777Z",
+    "own": "2026-11-02T19:06:48.000Z",
+    "why": "@rotowirenba.bsky.social: Paul George: Will sit out Monday \n\n https://www.rotowi"
+   }
+  },
+  "401909916|clintcapela|out": {
+   "game": "401909916",
+   "start": "2026-11-03T01:30Z",
+   "team": "10",
+   "name": "Clint Capela",
+   "status": "out",
+   "athlete": "3102529",
+   "espn": {
+    "seen": "2026-11-02T19:20:15.089Z",
+    "own": "2026-11-02T19:13:00.000Z"
+   }
+  },
+  "401909916|kyrieirving|out": {
+   "game": "401909916",
+   "start": "2026-11-03T01:30Z",
+   "team": "10",
+   "name": "Kyrie Irving",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-02T19:11:10.777Z",
+    "own": "2026-11-02T18:51:16.000Z",
+    "why": "@rotowirenba.bsky.social: Kyrie Irving: Downgraded to doubtful \n\n https://www.ro"
+   }
+  },
+  "401909916|dejountemurray|q": {
+   "game": "401909916",
+   "start": "2026-11-03T01:30Z",
+   "team": "10",
+   "name": "Dejounte Murray",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-11-02T19:11:10.777Z",
+    "own": "2026-11-02T18:55:16.000Z",
+    "why": "@rotowirenba.bsky.social: Dejounte Murray: Downgraded to questionable \n\n https:/"
+   }
+  },
+  "401909916|paulgeorge|out": {
+   "game": "401909916",
+   "start": "2026-11-03T01:30Z",
+   "team": "10",
+   "name": "Paul George",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-02T19:11:10.777Z",
+    "own": "2026-11-02T19:06:48.000Z",
+    "why": "@rotowirenba.bsky.social: Paul George: Will sit out Monday \n\n https://www.rotowi"
+   },
+   "athlete": "4251",
+   "espn": {
+    "seen": "2026-11-02T19:20:15.089Z",
+    "own": "2026-11-02T19:06:00.000Z"
+   }
+  },
+  "401909917|kyrieirving|out": {
+   "game": "401909917",
+   "start": "2026-11-03T01:30Z",
+   "team": "24",
+   "name": "Kyrie Irving",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-02T19:11:10.777Z",
+    "own": "2026-11-02T18:51:16.000Z",
+    "why": "@rotowirenba.bsky.social: Kyrie Irving: Downgraded to doubtful \n\n https://www.ro"
+   }
+  },
+  "401909917|dejountemurray|q": {
+   "game": "401909917",
+   "start": "2026-11-03T01:30Z",
+   "team": "24",
+   "name": "Dejounte Murray",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-11-02T19:11:10.777Z",
+    "own": "2026-11-02T18:55:16.000Z",
+    "why": "@rotowirenba.bsky.social: Dejounte Murray: Downgraded to questionable \n\n https:/"
+   }
+  },
+  "401909917|paulgeorge|out": {
+   "game": "401909917",
+   "start": "2026-11-03T01:30Z",
+   "team": "24",
+   "name": "Paul George",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-02T19:11:10.777Z",
+    "own": "2026-11-02T19:06:48.000Z",
+    "why": "@rotowirenba.bsky.social: Paul George: Will sit out Monday \n\n https://www.rotowi"
+   }
+  },
+  "401909918|kyrieirving|out": {
+   "game": "401909918",
+   "start": "2026-11-03T02:00Z",
+   "team": "7",
+   "name": "Kyrie Irving",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-02T19:11:10.777Z",
+    "own": "2026-11-02T18:51:16.000Z",
+    "why": "@rotowirenba.bsky.social: Kyrie Irving: Downgraded to doubtful \n\n https://www.ro"
+   }
+  },
+  "401909918|dejountemurray|q": {
+   "game": "401909918",
+   "start": "2026-11-03T02:00Z",
+   "team": "7",
+   "name": "Dejounte Murray",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-11-02T19:11:10.777Z",
+    "own": "2026-11-02T18:55:16.000Z",
+    "why": "@rotowirenba.bsky.social: Dejounte Murray: Downgraded to questionable \n\n https:/"
+   }
+  },
+  "401909918|paulgeorge|out": {
+   "game": "401909918",
+   "start": "2026-11-03T02:00Z",
+   "team": "7",
+   "name": "Paul George",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-02T19:11:10.777Z",
+    "own": "2026-11-02T19:06:48.000Z",
+    "why": "@rotowirenba.bsky.social: Paul George: Will sit out Monday \n\n https://www.rotowi"
+   }
+  },
+  "401909919|kyrieirving|out": {
+   "game": "401909919",
+   "start": "2026-11-03T03:00Z",
+   "team": "9",
+   "name": "Kyrie Irving",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-02T19:11:10.777Z",
+    "own": "2026-11-02T18:51:16.000Z",
+    "why": "@rotowirenba.bsky.social: Kyrie Irving: Downgraded to doubtful \n\n https://www.ro"
+   }
+  },
+  "401909919|dejountemurray|q": {
+   "game": "401909919",
+   "start": "2026-11-03T03:00Z",
+   "team": "9",
+   "name": "Dejounte Murray",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-11-02T19:11:10.777Z",
+    "own": "2026-11-02T18:55:16.000Z",
+    "why": "@rotowirenba.bsky.social: Dejounte Murray: Downgraded to questionable \n\n https:/"
+   }
+  },
+  "401909919|paulgeorge|out": {
+   "game": "401909919",
+   "start": "2026-11-03T03:00Z",
+   "team": "9",
+   "name": "Paul George",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-02T19:11:10.777Z",
+    "own": "2026-11-02T19:06:48.000Z",
+    "why": "@rotowirenba.bsky.social: Paul George: Will sit out Monday \n\n https://www.rotowi"
+   }
+  },
+  "401909920|kyrieirving|out": {
+   "game": "401909920",
+   "start": "2026-11-03T03:00Z",
+   "team": "12",
+   "name": "Kyrie Irving",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-02T19:11:10.777Z",
+    "own": "2026-11-02T18:51:16.000Z",
+    "why": "@rotowirenba.bsky.social: Kyrie Irving: Downgraded to doubtful \n\n https://www.ro"
+   }
+  },
+  "401909920|dejountemurray|q": {
+   "game": "401909920",
+   "start": "2026-11-03T03:00Z",
+   "team": "12",
+   "name": "Dejounte Murray",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-11-02T19:11:10.777Z",
+    "own": "2026-11-02T18:55:16.000Z",
+    "why": "@rotowirenba.bsky.social: Dejounte Murray: Downgraded to questionable \n\n https:/"
+   }
+  },
+  "401909920|paulgeorge|out": {
+   "game": "401909920",
+   "start": "2026-11-03T03:00Z",
+   "team": "12",
+   "name": "Paul George",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-02T19:11:10.777Z",
+    "own": "2026-11-02T19:06:48.000Z",
+    "why": "@rotowirenba.bsky.social: Paul George: Will sit out Monday \n\n https://www.rotowi"
+   }
+  },
+  "401909921|kyrieirving|out": {
+   "game": "401909921",
+   "start": "2026-11-03T03:00Z",
+   "team": "13",
+   "name": "Kyrie Irving",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-02T19:11:10.777Z",
+    "own": "2026-11-02T18:51:16.000Z",
+    "why": "@rotowirenba.bsky.social: Kyrie Irving: Downgraded to doubtful \n\n https://www.ro"
+   }
+  },
+  "401909921|dejountemurray|q": {
+   "game": "401909921",
+   "start": "2026-11-03T03:00Z",
+   "team": "13",
+   "name": "Dejounte Murray",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-11-02T19:11:10.777Z",
+    "own": "2026-11-02T18:55:16.000Z",
+    "why": "@rotowirenba.bsky.social: Dejounte Murray: Downgraded to questionable \n\n https:/"
+   }
+  },
+  "401909921|paulgeorge|out": {
+   "game": "401909921",
+   "start": "2026-11-03T03:00Z",
+   "team": "13",
+   "name": "Paul George",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-02T19:11:10.777Z",
+    "own": "2026-11-02T19:06:48.000Z",
+    "why": "@rotowirenba.bsky.social: Paul George: Will sit out Monday \n\n https://www.rotowi"
    }
   }
  }
