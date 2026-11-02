@@ -16751,6 +16751,30 @@
     "own": "2026-11-01T23:18:50.702Z",
     "why": "@insidenflnews.bsky.social: Status alert: Jaylen Watson (shoulder) won't return."
    }
+  },
+  "401873035|hunterhenry|out": {
+   "game": "401873035",
+   "start": "2026-11-02T01:20Z",
+   "team": "28",
+   "name": "Hunter Henry",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-02T00:24:34.647Z",
+    "own": "2026-11-02T00:11:35.000Z",
+    "why": "@rotowirenfl.bsky.social: Hunter Henry: Won't return Sunday \n\n https://www.rotow"
+   }
+  },
+  "401873036|hunterhenry|out": {
+   "game": "401873036",
+   "start": "2026-11-03T01:15Z",
+   "team": "26",
+   "name": "Hunter Henry",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-02T00:24:34.647Z",
+    "own": "2026-11-02T00:11:35.000Z",
+    "why": "@rotowirenfl.bsky.social: Hunter Henry: Won't return Sunday \n\n https://www.rotow"
+   }
   }
  }
 }
