@@ -3,7 +3,7 @@
  "cursor": {
   "johnston-bot.bsky.social": "2026-10-31T19:45:16.675Z",
   "notfriedgehnic.bsky.social": "2026-11-02T15:38:53.319Z",
-  "dailyfaceoff.bsky.social": "2026-11-02T16:09:19.000Z",
+  "dailyfaceoff.bsky.social": "2026-11-02T16:41:11.000Z",
   "dfotoronto.bsky.social": "2026-11-02T15:07:42.000Z",
   "marklazerus.bsky.social": "2026-11-02T15:26:40.736Z"
  },
@@ -1411,6 +1411,19 @@
    "kind": "status",
    "confidence": 0.95,
    "text": "Flyers activate Travis Konecny, Owen Tippett off injured reserve"
+  },
+  {
+   "id": "at://did:plc:3uus7y6h3rlrk6sbctzxm4bg/app.bsky.feed.post/3mzdrc2jpa32g|jacobmarkstrom|active|return",
+   "at": "2026-11-02T16:41:07.000Z",
+   "seen": "2026-11-02T16:43:39.620Z",
+   "handle": "dailyfaceoff.bsky.social",
+   "post": "at://did:plc:3uus7y6h3rlrk6sbctzxm4bg/app.bsky.feed.post/3mzdrc2jpa32g",
+   "player": "Jacob Markstrom",
+   "team": "FLA",
+   "status": "active",
+   "kind": "return",
+   "confidence": 0.85,
+   "text": "Jacob Markstrom set for Panthers’ return against Red Wings"
   }
  ]
 }
