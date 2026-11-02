@@ -3,7 +3,7 @@
  "cursor": {
   "johnston-bot.bsky.social": "2026-11-02T17:25:00.007Z",
   "notfriedgehnic.bsky.social": "2026-11-02T15:38:53.319Z",
-  "dailyfaceoff.bsky.social": "2026-11-02T17:48:47.000Z",
+  "dailyfaceoff.bsky.social": "2026-11-02T18:11:51.000Z",
   "dfotoronto.bsky.social": "2026-11-02T17:44:20.000Z",
   "marklazerus.bsky.social": "2026-11-02T15:26:40.736Z"
  },
@@ -1463,6 +1463,19 @@
    "kind": "starting",
    "confidence": 0.8,
    "text": "Leafs Practice Notes: Forward lines shuffled, Sergei Bobrovsky gets the start vs Mammoth"
+  },
+  {
+   "id": "at://did:plc:3uus7y6h3rlrk6sbctzxm4bg/app.bsky.feed.post/3mzdwecetir24|konstahelenius|out|status",
+   "at": "2026-11-02T18:11:51.000Z",
+   "seen": "2026-11-02T18:28:24.590Z",
+   "handle": "dailyfaceoff.bsky.social",
+   "post": "at://did:plc:3uus7y6h3rlrk6sbctzxm4bg/app.bsky.feed.post/3mzdwecetir24",
+   "player": "Konsta Helenius",
+   "team": "BUF",
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.95,
+   "text": "Sabres’ Konsta Helenius out week-to-week with upper-body injury"
   }
  ]
 }

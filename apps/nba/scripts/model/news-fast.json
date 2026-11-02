@@ -1,7 +1,7 @@
 {
  "sport": "nba",
  "cursor": {
-  "rotowirenba.bsky.social": "2026-11-02T18:06:10.000Z",
+  "rotowirenba.bsky.social": "2026-11-02T18:19:29.000Z",
   "insidenbanews.bsky.social": "2026-10-30T19:15:23.134Z",
   "shamsbot.bsky.social": "2026-11-02T01:51:08.000Z"
  },
@@ -6908,6 +6908,19 @@
    "kind": "status",
    "confidence": 0.95,
    "text": "Alex Sarr: Confirmed out for Monday \n\n https://www.rotowire.com/basketball/player/alex-sarr-6240"
+  },
+  {
+   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mzdwrwwbzo27|ivicazubac|out|status",
+   "at": "2026-11-02T18:19:29.000Z",
+   "seen": "2026-11-02T18:28:24.590Z",
+   "handle": "rotowirenba.bsky.social",
+   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mzdwrwwbzo27",
+   "player": "Ivica Zubac",
+   "team": null,
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.93,
+   "text": "Ivica Zubac: Remains out indefinitely \n\n https://www.rotowire.com/basketball/player/ivica-zubac-3888"
   }
  ]
 }
