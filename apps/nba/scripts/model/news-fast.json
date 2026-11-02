@@ -1,7 +1,7 @@
 {
  "sport": "nba",
  "cursor": {
-  "rotowirenba.bsky.social": "2026-11-02T23:13:27.000Z",
+  "rotowirenba.bsky.social": "2026-11-02T23:23:43.000Z",
   "insidenbanews.bsky.social": "2026-11-02T19:09:04.708Z",
   "shamsbot.bsky.social": "2026-11-02T19:03:58.000Z"
  },
@@ -7103,6 +7103,32 @@
    "kind": "status",
    "confidence": 0.9,
    "text": "Kyrie Irving: Out vs. Sacramento \n\n https://www.rotowire.com/basketball/player/kyrie-irving-3186"
+  },
+  {
+   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mzehhlh3il27|peytonwatson|out|status",
+   "at": "2026-11-02T23:17:55.000Z",
+   "seen": "2026-11-02T23:29:36.140Z",
+   "handle": "rotowirenba.bsky.social",
+   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mzehhlh3il27",
+   "player": "Peyton Watson",
+   "team": null,
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.93,
+   "text": "Peyton Watson: Won't play Monday \n\n https://www.rotowire.com/basketball/player/peyton-watson-5722"
+  },
+  {
+   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mzehrx3nvh2g|meleekthomas|none|starting",
+   "at": "2026-11-02T23:23:43.000Z",
+   "seen": "2026-11-02T23:29:36.140Z",
+   "handle": "rotowirenba.bsky.social",
+   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mzehrx3nvh2g",
+   "player": "Meleek Thomas",
+   "team": null,
+   "status": "none",
+   "kind": "starting",
+   "confidence": 0.9,
+   "text": "Meleek Thomas: Making first NBA start \n\n https://www.rotowire.com/basketball/player/meleek-thomas-6989"
   }
  ]
 }

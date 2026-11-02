@@ -18844,6 +18844,11 @@
     "seen": "2026-11-02T19:11:10.777Z",
     "own": "2026-11-02T18:51:16.000Z",
     "why": "@rotowirenba.bsky.social: Kyrie Irving: Downgraded to doubtful \n\n https://www.ro"
+   },
+   "athlete": "6442",
+   "espn": {
+    "seen": "2026-11-02T23:28:28.523Z",
+    "own": "2026-11-02T23:13:00.000Z"
    }
   },
   "401909913|dejountemurray|q": {
@@ -19517,6 +19522,11 @@
    "espn": {
     "seen": "2026-11-02T22:43:54.803Z",
     "own": "2026-11-02T22:33:00.000Z"
+   },
+   "bluesky": {
+    "seen": "2026-11-02T23:17:52.532Z",
+    "own": "2026-11-02T22:33:07.000Z",
+    "why": "@rotowirenba.bsky.social: Dejounte Murray: Listed out Monday \n\n https://www.roto"
    }
   },
   "401909909|jalenjohnson|out": {
@@ -19529,6 +19539,388 @@
    "espn": {
     "seen": "2026-11-02T23:06:52.126Z",
     "own": "2026-11-02T22:58:00.000Z"
+   },
+   "bluesky": {
+    "seen": "2026-11-02T23:17:52.532Z",
+    "own": "2026-11-02T22:58:06.000Z",
+    "why": "@rotowirenba.bsky.social: Jalen Johnson: Ruled out Monday \n\n https://www.rotowir"
+   }
+  },
+  "401909907|peytonwatson|out": {
+   "game": "401909907",
+   "start": "2026-11-03T00:00Z",
+   "team": "5",
+   "name": "Peyton Watson",
+   "status": "out",
+   "athlete": "4576087",
+   "espn": {
+    "seen": "2026-11-02T23:28:28.523Z",
+    "own": "2026-11-02T23:17:00.000Z"
+   }
+  },
+  "401909907|dejountemurray|out": {
+   "game": "401909907",
+   "start": "2026-11-03T00:00Z",
+   "team": "5",
+   "name": "Dejounte Murray",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-02T23:17:52.532Z",
+    "own": "2026-11-02T22:33:07.000Z",
+    "why": "@rotowirenba.bsky.social: Dejounte Murray: Listed out Monday \n\n https://www.roto"
+   }
+  },
+  "401909907|obitoppin|out": {
+   "game": "401909907",
+   "start": "2026-11-03T00:00Z",
+   "team": "5",
+   "name": "Obi Toppin",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-02T23:17:52.532Z",
+    "own": "2026-11-02T23:07:19.000Z",
+    "why": "@rotowirenba.bsky.social: Obi Toppin: Dressing but won't play Monday \n\n https://"
+   }
+  },
+  "401909908|dejountemurray|out": {
+   "game": "401909908",
+   "start": "2026-11-03T00:30Z",
+   "team": "30",
+   "name": "Dejounte Murray",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-02T23:17:52.532Z",
+    "own": "2026-11-02T22:33:07.000Z",
+    "why": "@rotowirenba.bsky.social: Dejounte Murray: Listed out Monday \n\n https://www.roto"
+   }
+  },
+  "401909908|obitoppin|out": {
+   "game": "401909908",
+   "start": "2026-11-03T00:30Z",
+   "team": "30",
+   "name": "Obi Toppin",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-02T23:17:52.532Z",
+    "own": "2026-11-02T23:07:19.000Z",
+    "why": "@rotowirenba.bsky.social: Obi Toppin: Dressing but won't play Monday \n\n https://"
+   }
+  },
+  "401909909|larrynance|out": {
+   "game": "401909909",
+   "start": "2026-11-03T00:30Z",
+   "team": "11",
+   "name": "Larry Nance Jr.",
+   "status": "out",
+   "athlete": "2580365",
+   "espn": {
+    "seen": "2026-11-02T23:28:28.523Z",
+    "own": "2026-11-02T23:10:00.000Z"
+   }
+  },
+  "401909909|obitoppin|out": {
+   "game": "401909909",
+   "start": "2026-11-03T00:30Z",
+   "team": "11",
+   "name": "Obi Toppin",
+   "status": "out",
+   "athlete": "4278355",
+   "espn": {
+    "seen": "2026-11-02T23:28:28.523Z",
+    "own": "2026-11-02T23:07:00.000Z"
+   },
+   "bluesky": {
+    "seen": "2026-11-02T23:17:52.532Z",
+    "own": "2026-11-02T23:07:19.000Z",
+    "why": "@rotowirenba.bsky.social: Obi Toppin: Dressing but won't play Monday \n\n https://"
+   }
+  },
+  "401909909|dejountemurray|out": {
+   "game": "401909909",
+   "start": "2026-11-03T00:30Z",
+   "team": "11",
+   "name": "Dejounte Murray",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-02T23:17:52.532Z",
+    "own": "2026-11-02T22:33:07.000Z",
+    "why": "@rotowirenba.bsky.social: Dejounte Murray: Listed out Monday \n\n https://www.roto"
+   }
+  },
+  "401909910|dejountemurray|out": {
+   "game": "401909910",
+   "start": "2026-11-03T00:30Z",
+   "team": "18",
+   "name": "Dejounte Murray",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-02T23:17:52.532Z",
+    "own": "2026-11-02T22:33:07.000Z",
+    "why": "@rotowirenba.bsky.social: Dejounte Murray: Listed out Monday \n\n https://www.roto"
+   }
+  },
+  "401909910|obitoppin|out": {
+   "game": "401909910",
+   "start": "2026-11-03T00:30Z",
+   "team": "18",
+   "name": "Obi Toppin",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-02T23:17:52.532Z",
+    "own": "2026-11-02T23:07:19.000Z",
+    "why": "@rotowirenba.bsky.social: Obi Toppin: Dressing but won't play Monday \n\n https://"
+   }
+  },
+  "401909911|dejountemurray|out": {
+   "game": "401909911",
+   "start": "2026-11-03T00:30Z",
+   "team": "19",
+   "name": "Dejounte Murray",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-02T23:17:52.532Z",
+    "own": "2026-11-02T22:33:07.000Z",
+    "why": "@rotowirenba.bsky.social: Dejounte Murray: Listed out Monday \n\n https://www.roto"
+   }
+  },
+  "401909911|obitoppin|out": {
+   "game": "401909911",
+   "start": "2026-11-03T00:30Z",
+   "team": "19",
+   "name": "Obi Toppin",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-02T23:17:52.532Z",
+    "own": "2026-11-02T23:07:19.000Z",
+    "why": "@rotowirenba.bsky.social: Obi Toppin: Dressing but won't play Monday \n\n https://"
+   }
+  },
+  "401909912|dejountemurray|out": {
+   "game": "401909912",
+   "start": "2026-11-03T00:30Z",
+   "team": "20",
+   "name": "Dejounte Murray",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-02T23:17:52.532Z",
+    "own": "2026-11-02T22:33:07.000Z",
+    "why": "@rotowirenba.bsky.social: Dejounte Murray: Listed out Monday \n\n https://www.roto"
+   }
+  },
+  "401909912|obitoppin|out": {
+   "game": "401909912",
+   "start": "2026-11-03T00:30Z",
+   "team": "20",
+   "name": "Obi Toppin",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-02T23:17:52.532Z",
+    "own": "2026-11-02T23:07:19.000Z",
+    "why": "@rotowirenba.bsky.social: Obi Toppin: Dressing but won't play Monday \n\n https://"
+   }
+  },
+  "401909913|dejountemurray|out": {
+   "game": "401909913",
+   "start": "2026-11-03T01:00Z",
+   "team": "6",
+   "name": "Dejounte Murray",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-02T23:17:52.532Z",
+    "own": "2026-11-02T22:33:07.000Z",
+    "why": "@rotowirenba.bsky.social: Dejounte Murray: Listed out Monday \n\n https://www.roto"
+   }
+  },
+  "401909913|obitoppin|out": {
+   "game": "401909913",
+   "start": "2026-11-03T01:00Z",
+   "team": "6",
+   "name": "Obi Toppin",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-02T23:17:52.532Z",
+    "own": "2026-11-02T23:07:19.000Z",
+    "why": "@rotowirenba.bsky.social: Obi Toppin: Dressing but won't play Monday \n\n https://"
+   }
+  },
+  "401909914|obitoppin|out": {
+   "game": "401909914",
+   "start": "2026-11-03T01:00Z",
+   "team": "29",
+   "name": "Obi Toppin",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-02T23:17:52.532Z",
+    "own": "2026-11-02T23:07:19.000Z",
+    "why": "@rotowirenba.bsky.social: Obi Toppin: Dressing but won't play Monday \n\n https://"
+   }
+  },
+  "401909915|dejountemurray|out": {
+   "game": "401909915",
+   "start": "2026-11-03T01:00Z",
+   "team": "16",
+   "name": "Dejounte Murray",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-02T23:17:52.532Z",
+    "own": "2026-11-02T22:33:07.000Z",
+    "why": "@rotowirenba.bsky.social: Dejounte Murray: Listed out Monday \n\n https://www.roto"
+   }
+  },
+  "401909915|obitoppin|out": {
+   "game": "401909915",
+   "start": "2026-11-03T01:00Z",
+   "team": "16",
+   "name": "Obi Toppin",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-02T23:17:52.532Z",
+    "own": "2026-11-02T23:07:19.000Z",
+    "why": "@rotowirenba.bsky.social: Obi Toppin: Dressing but won't play Monday \n\n https://"
+   }
+  },
+  "401909916|dejountemurray|out": {
+   "game": "401909916",
+   "start": "2026-11-03T01:30Z",
+   "team": "10",
+   "name": "Dejounte Murray",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-02T23:17:52.532Z",
+    "own": "2026-11-02T22:33:07.000Z",
+    "why": "@rotowirenba.bsky.social: Dejounte Murray: Listed out Monday \n\n https://www.roto"
+   }
+  },
+  "401909916|obitoppin|out": {
+   "game": "401909916",
+   "start": "2026-11-03T01:30Z",
+   "team": "10",
+   "name": "Obi Toppin",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-02T23:17:52.532Z",
+    "own": "2026-11-02T23:07:19.000Z",
+    "why": "@rotowirenba.bsky.social: Obi Toppin: Dressing but won't play Monday \n\n https://"
+   }
+  },
+  "401909917|dejountemurray|out": {
+   "game": "401909917",
+   "start": "2026-11-03T01:30Z",
+   "team": "24",
+   "name": "Dejounte Murray",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-02T23:17:52.532Z",
+    "own": "2026-11-02T22:33:07.000Z",
+    "why": "@rotowirenba.bsky.social: Dejounte Murray: Listed out Monday \n\n https://www.roto"
+   }
+  },
+  "401909917|obitoppin|out": {
+   "game": "401909917",
+   "start": "2026-11-03T01:30Z",
+   "team": "24",
+   "name": "Obi Toppin",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-02T23:17:52.532Z",
+    "own": "2026-11-02T23:07:19.000Z",
+    "why": "@rotowirenba.bsky.social: Obi Toppin: Dressing but won't play Monday \n\n https://"
+   }
+  },
+  "401909918|dejountemurray|out": {
+   "game": "401909918",
+   "start": "2026-11-03T02:00Z",
+   "team": "7",
+   "name": "Dejounte Murray",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-02T23:17:52.532Z",
+    "own": "2026-11-02T22:33:07.000Z",
+    "why": "@rotowirenba.bsky.social: Dejounte Murray: Listed out Monday \n\n https://www.roto"
+   }
+  },
+  "401909918|obitoppin|out": {
+   "game": "401909918",
+   "start": "2026-11-03T02:00Z",
+   "team": "7",
+   "name": "Obi Toppin",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-02T23:17:52.532Z",
+    "own": "2026-11-02T23:07:19.000Z",
+    "why": "@rotowirenba.bsky.social: Obi Toppin: Dressing but won't play Monday \n\n https://"
+   }
+  },
+  "401909919|dejountemurray|out": {
+   "game": "401909919",
+   "start": "2026-11-03T03:00Z",
+   "team": "9",
+   "name": "Dejounte Murray",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-02T23:17:52.532Z",
+    "own": "2026-11-02T22:33:07.000Z",
+    "why": "@rotowirenba.bsky.social: Dejounte Murray: Listed out Monday \n\n https://www.roto"
+   }
+  },
+  "401909919|obitoppin|out": {
+   "game": "401909919",
+   "start": "2026-11-03T03:00Z",
+   "team": "9",
+   "name": "Obi Toppin",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-02T23:17:52.532Z",
+    "own": "2026-11-02T23:07:19.000Z",
+    "why": "@rotowirenba.bsky.social: Obi Toppin: Dressing but won't play Monday \n\n https://"
+   }
+  },
+  "401909920|dejountemurray|out": {
+   "game": "401909920",
+   "start": "2026-11-03T03:00Z",
+   "team": "12",
+   "name": "Dejounte Murray",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-02T23:17:52.532Z",
+    "own": "2026-11-02T22:33:07.000Z",
+    "why": "@rotowirenba.bsky.social: Dejounte Murray: Listed out Monday \n\n https://www.roto"
+   }
+  },
+  "401909920|obitoppin|out": {
+   "game": "401909920",
+   "start": "2026-11-03T03:00Z",
+   "team": "12",
+   "name": "Obi Toppin",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-02T23:17:52.532Z",
+    "own": "2026-11-02T23:07:19.000Z",
+    "why": "@rotowirenba.bsky.social: Obi Toppin: Dressing but won't play Monday \n\n https://"
+   }
+  },
+  "401909921|dejountemurray|out": {
+   "game": "401909921",
+   "start": "2026-11-03T03:00Z",
+   "team": "13",
+   "name": "Dejounte Murray",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-02T23:17:52.532Z",
+    "own": "2026-11-02T22:33:07.000Z",
+    "why": "@rotowirenba.bsky.social: Dejounte Murray: Listed out Monday \n\n https://www.roto"
+   }
+  },
+  "401909921|obitoppin|out": {
+   "game": "401909921",
+   "start": "2026-11-03T03:00Z",
+   "team": "13",
+   "name": "Obi Toppin",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-02T23:17:52.532Z",
+    "own": "2026-11-02T23:07:19.000Z",
+    "why": "@rotowirenba.bsky.social: Obi Toppin: Dressing but won't play Monday \n\n https://"
    }
   }
  }
