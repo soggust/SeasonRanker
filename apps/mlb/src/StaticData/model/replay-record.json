@@ -2,7 +2,7 @@
  "v": 1,
  "sport": "mlb",
  "epoch": "2026-10-26T15:00:00Z",
- "at": "2026-11-01T09:21:09.310Z",
+ "at": "2026-11-02T10:16:03.552Z",
  "from": "2021-07-18T17:11:00.000Z",
  "through": "2026-10-16T00:00:00.000Z",
  "n": {
@@ -2599,7 +2599,7 @@
    }
   }
  },
- "commit": "526ba05a",
+ "commit": "0d92ab57",
  "note": "D102. A game asked before gets one fresh quote inside the props' betting window (the owner, 2026-10-30: \"why is the bot making nfl suggestions then not betting them (like bryce young last night rushing....it would have won)\")",
  "inputs": {
   "v": 1,
@@ -2665,7 +2665,20 @@
     "2024-05-11",
     "2026-08-08"
    ],
-   "planted": 9899.92
+   "planted": 9899.92,
+   "nulls": {
+    "fair": {
+     "mean": -13.52,
+     "sd": 20.26,
+     "z": 0.29
+    },
+    "shuffle": {
+     "mean": 5.83,
+     "sd": 20.01,
+     "z": -0.68
+    }
+   },
+   "actual": -7.68
   },
   "frozen": {
    "props": {

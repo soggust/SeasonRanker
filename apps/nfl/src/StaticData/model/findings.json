@@ -529,31 +529,10 @@
   },
   {
    "date": "2026-10-26",
-   "group": "watching",
-   "sport": "nba",
-   "ref": "D88",
-   "text": "Self-tune: NBA held: best D79 ownThr -10% → -5% +4.76u before the last 8 weeks, but no win in the held-out last 8 weeks (+0u)"
-  },
-  {
-   "date": "2026-10-26",
    "group": "shipped",
    "sport": "nhl",
    "ref": "D88",
    "text": "Self-tune: NHL D73 loveUnits 2 → 2.5: +6.16u (+15.92u → +22.08u), last 8 weeks +0.85u, newest season +6.16u"
-  },
-  {
-   "date": "2026-10-26",
-   "group": "watching",
-   "sport": "mlb",
-   "ref": "D88",
-   "text": "Self-tune: MLB held: best D88 leanMLines 0 → 0.005 +12.33u before the last 8 weeks, but no win in the held-out last 8 weeks (-0.05u)"
-  },
-  {
-   "date": "2026-10-26",
-   "group": "watching",
-   "sport": "mma",
-   "ref": "D88",
-   "text": "Self-tune: MMA held: best D88 mmaOpenFav 0 → 1 +25.71u before the last 8 weeks, but no win in the held-out last 8 weeks (-2.82u)"
   },
   {
    "date": "2026-10-29",
@@ -563,11 +542,39 @@
    "text": "Polymarket sharps' flow as a line shift: gate ties, replay net -7 to -12u (NBA/NFL up, NHL/MLB down); Polymarket close = Pinnacle. Not added"
   },
   {
-   "date": "2026-11-01",
+   "date": "2026-11-02",
    "group": "watching",
    "sport": "nfl",
    "ref": "D86",
-   "text": "History audit: 2026-11-01 nightly re-record held. the record guard refused: held: inputs shrank since the last record (its fingerprint): con"
+   "text": "History audit: 2026-11-02 weekly re-record held. the record guard refused: held: inputs shrank since the last record (its fingerprint): cont"
+  },
+  {
+   "date": "2026-11-02",
+   "group": "watching",
+   "sport": "nba",
+   "ref": "D88",
+   "text": "Self-tune: NBA held, nothing tried (no fresh held-out days since 2026-10-26 (the earlier weeks' holdouts consumed))"
+  },
+  {
+   "date": "2026-11-02",
+   "group": "watching",
+   "sport": "nhl",
+   "ref": "D88",
+   "text": "Self-tune: NHL held, nothing tried (no fresh held-out days since 2026-10-26 (the earlier weeks' holdouts consumed))"
+  },
+  {
+   "date": "2026-11-02",
+   "group": "watching",
+   "sport": "mlb",
+   "ref": "D88",
+   "text": "Self-tune: MLB held, nothing tried (no fresh held-out days since 2026-10-26 (the earlier weeks' holdouts consumed))"
+  },
+  {
+   "date": "2026-11-02",
+   "group": "watching",
+   "sport": "mma",
+   "ref": "D88",
+   "text": "Self-tune: MMA held, nothing tried (no fresh held-out days since 2026-10-26 (the earlier weeks' holdouts consumed))"
   }
  ]
 }

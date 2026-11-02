@@ -4,40 +4,17 @@
  "knobs": {},
  "changes": [],
  "last": {
-  "date": "2026-10-26",
-  "tried": 40,
-  "blocked": [],
-  "shipped": null,
-  "top": [
-   {
-    "id": "ownThr=-0.05",
-    "gain": 4.76,
-    "choose": 4.76,
-    "hold": 0,
-    "last": 0,
-    "pass": false,
-    "why": [
-     "no win in the held-out last 8 weeks (+0u)"
-    ]
-   },
-   {
-    "id": "ownThr=-0.075",
-    "gain": 4.1,
-    "choose": 4.1,
-    "hold": 0,
-    "last": 0,
-    "pass": false,
-    "why": [
-     "no win in the held-out last 8 weeks (+0u)"
-    ]
-   }
+  "date": "2026-11-02",
+  "tried": 0,
+  "blocked": [
+   "no fresh held-out days since 2026-10-26 (the earlier weeks' holdouts consumed)"
   ],
+  "shipped": null,
+  "top": [],
   "secs": {
-   "champion": 624,
-   "restake": 303,
-   "youngShrink=0.5": 315,
-   "youngShrink=0.75": 317,
-   "total": 1268
+   "champion": 597,
+   "restake": 287.2,
+   "total": 597
   }
  }
 }

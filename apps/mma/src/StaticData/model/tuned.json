@@ -4,23 +4,13 @@
  "knobs": {},
  "changes": [],
  "last": {
-  "date": "2026-10-26",
-  "tried": 2,
-  "blocked": [],
-  "shipped": null,
-  "top": [
-   {
-    "id": "mmaOpenFav=1",
-    "gain": 22.89,
-    "choose": 25.71,
-    "hold": -2.82,
-    "last": 9.01,
-    "pass": false,
-    "why": [
-     "no win in the held-out last 8 weeks (-2.82u)"
-    ]
-   }
+  "date": "2026-11-02",
+  "tried": 0,
+  "blocked": [
+   "no fresh held-out days since 2026-10-26 (the earlier weeks' holdouts consumed)"
   ],
+  "shipped": null,
+  "top": [],
   "secs": {
    "champion": 19,
    "restake": 0.4,

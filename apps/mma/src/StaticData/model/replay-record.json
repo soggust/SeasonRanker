@@ -2,7 +2,7 @@
  "v": 1,
  "sport": "mma",
  "epoch": "2026-10-21T01:15:00Z",
- "at": "2026-11-01T09:23:14.441Z",
+ "at": "2026-11-02T10:35:53.098Z",
  "from": "2020-06-06T23:10:00.000Z",
  "through": "2026-10-18T01:45:00.000Z",
  "n": {
@@ -2105,7 +2105,7 @@
     "beat": 132,
     "clv": -3.2629,
     "pN": 713,
-    "p": 478.8782,
+    "p": 478.8784,
     "wins": 484
    },
    "ml": {
@@ -2115,7 +2115,7 @@
     "beat": 194,
     "clv": -11.4283,
     "pN": 1184,
-    "p": 757.9313,
+    "p": 757.9315,
     "wins": 759
    },
    "lines": {
@@ -2125,7 +2125,7 @@
     "beat": 201,
     "clv": -12.499,
     "pN": 1261,
-    "p": 793.7109,
+    "p": 793.7111,
     "wins": 791
    },
    "all": {
@@ -2135,7 +2135,7 @@
     "beat": 201,
     "clv": -12.499,
     "pN": 1261,
-    "p": 793.7109,
+    "p": 793.7111,
     "wins": 791
    },
    "ml:home": {
@@ -2180,7 +2180,7 @@
    }
   }
  },
- "commit": "526ba05a",
+ "commit": "0d92ab57",
  "note": "D102. A game asked before gets one fresh quote inside the props' betting window (the owner, 2026-10-30: \"why is the bot making nfl suggestions then not betting them (like bryce young last night rushing....it would have won)\")",
  "inputs": {
   "v": 1,
@@ -2207,7 +2207,20 @@
     "2025-02-23",
     "2026-03-18"
    ],
-   "planted": 1236.91
+   "planted": 1236.91,
+   "nulls": {
+    "fair": {
+     "mean": -9.48,
+     "sd": 23.67,
+     "z": 0.12
+    },
+    "shuffle": {
+     "mean": 3.98,
+     "sd": 17.74,
+     "z": -0.6
+    }
+   },
+   "actual": -6.71
   },
   "frozen": {
    "props": {

@@ -1,4 +1,9 @@
 {
+ "v": 1,
+ "sport": "nhl",
+ "knobs": {
+  "loveUnits": 2.5
+ },
  "changes": [
   {
    "date": "2026-10-26",
@@ -24,31 +29,19 @@
    }
   }
  ],
- "v": 1,
- "sport": "nhl",
- "knobs": {
-  "loveUnits": 2.5
- },
  "last": {
-  "date": "2026-10-26",
-  "tried": 40,
-  "blocked": [],
-  "shipped": "loveUnits=2.5",
-  "top": [
-   {
-    "id": "loveUnits=2.5",
-    "gain": 6.16,
-    "choose": 5.31,
-    "hold": 0.85,
-    "last": 6.16,
-    "pass": true,
-    "why": []
-   }
+  "date": "2026-11-02",
+  "tried": 0,
+  "blocked": [
+   "no fresh held-out days since 2026-10-26 (the earlier weeks' holdouts consumed)",
+   "loveUnits changed 2026-10-26: cooling down till 2026-11-23"
   ],
+  "shipped": null,
+  "top": [],
   "secs": {
-   "champion": 409,
-   "restake": 204,
-   "total": 409
+   "champion": 382,
+   "restake": 175.3,
+   "total": 382
   }
  }
 }
