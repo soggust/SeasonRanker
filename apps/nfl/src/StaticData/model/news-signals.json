@@ -3,6 +3,50 @@
  "days": 2,
  "signals": [
   {
+   "team": "13",
+   "abbr": "LV",
+   "athlete": "4890973",
+   "player": "Ashton Jeanty",
+   "kind": "restriction",
+   "direction": "down",
+   "confidence": 0.4,
+   "headline": "Raiders' Ashton Jeanty limited to two carries in win vs. Jets",
+   "at": "2026-11-02T00:00:00.000Z"
+  },
+  {
+   "team": "13",
+   "abbr": "LV",
+   "athlete": null,
+   "player": "Klint Kubiak",
+   "kind": "coaching",
+   "direction": "none",
+   "confidence": 0.3,
+   "headline": "Raiders' Ashton Jeanty limited to two carries in win vs. Jets",
+   "at": "2026-11-02T00:00:00.000Z"
+  },
+  {
+   "team": "33",
+   "abbr": "BAL",
+   "athlete": "3916387",
+   "player": "Lamar Jackson",
+   "kind": "benched",
+   "direction": "down",
+   "confidence": 0.9,
+   "headline": "Ravens' Lamar Jackson needs thumb surgery, will be placed on IR",
+   "at": "2026-11-01T23:54:50.000Z"
+  },
+  {
+   "team": "33",
+   "abbr": "BAL",
+   "athlete": "4035671",
+   "player": "Tyler Huntley",
+   "kind": "starting",
+   "direction": "up",
+   "confidence": 0.8,
+   "headline": "Ravens' Lamar Jackson needs thumb surgery, will be placed on IR",
+   "at": "2026-11-01T23:54:50.000Z"
+  },
+  {
    "team": "24",
    "abbr": "LAC",
    "athlete": "3691739",
@@ -36,5 +80,5 @@
    "at": "2026-10-31T13:14:27.000Z"
   }
  ],
- "at": "2026-11-01T21:01:52.142Z"
+ "at": "2026-11-02T00:03:52.901Z"
 }

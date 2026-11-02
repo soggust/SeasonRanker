@@ -1,5 +1,5 @@
 {
- "at": "2026-11-01T00:04:24.422Z",
+ "at": "2026-11-02T00:03:39.274Z",
  "halves": [
   {
    "from": "2023-12-01",
@@ -111,17 +111,17 @@
    "to": "2026-12-01",
    "train": 11241,
    "model": {
-    "n": 280,
-    "logLoss": 0.6533,
-    "acc": 0.6464
+    "n": 291,
+    "logLoss": 0.6498,
+    "acc": 0.6529
    },
    "rating": {
-    "n": 280,
-    "logLoss": 0.6862,
-    "acc": 0.5589
+    "n": 291,
+    "logLoss": 0.6842,
+    "acc": 0.5619
    },
    "coin": {
-    "n": 280,
+    "n": 291,
     "logLoss": 0.6931,
     "acc": 0.5
    },
@@ -130,17 +130,17 @@
  ],
  "all": {
   "model": {
-   "n": 1834,
-   "logLoss": 0.6218,
-   "acc": 0.6527
+   "n": 1845,
+   "logLoss": 0.6215,
+   "acc": 0.6537
   },
   "rating": {
-   "n": 1834,
-   "logLoss": 0.6554,
-   "acc": 0.6028
+   "n": 1845,
+   "logLoss": 0.6553,
+   "acc": 0.603
   },
   "coin": {
-   "n": 1834,
+   "n": 1845,
    "logLoss": 0.6931,
    "acc": 0.5
   }
@@ -163,9 +163,9 @@
   {
    "from": 0.2,
    "to": 0.3,
-   "n": 239,
-   "mean": 0.2575,
-   "actual": 0.2134
+   "n": 243,
+   "mean": 0.2573,
+   "actual": 0.214
   },
   {
    "from": 0.3,
@@ -177,23 +177,23 @@
   {
    "from": 0.4,
    "to": 0.5,
-   "n": 451,
-   "mean": 0.4508,
-   "actual": 0.4257
+   "n": 453,
+   "mean": 0.4509,
+   "actual": 0.4238
   },
   {
    "from": 0.5,
    "to": 0.6,
-   "n": 350,
+   "n": 353,
    "mean": 0.5458,
-   "actual": 0.5286
+   "actual": 0.5297
   },
   {
    "from": 0.6,
    "to": 0.7,
-   "n": 221,
-   "mean": 0.6474,
-   "actual": 0.6425
+   "n": 223,
+   "mean": 0.6478,
+   "actual": 0.6457
   },
   {
    "from": 0.7,
@@ -219,7 +219,7 @@
  ],
  "note": "held out: each half fit on the bouts before it alone; no odds (none kept on this plan), so it says how the model predicts, not what it would have won",
  "totals": {
-  "at": "2026-11-01T00:04:24.422Z",
+  "at": "2026-11-02T00:03:39.274Z",
   "halves": [
    {
     "from": "2023-12-01",
@@ -345,59 +345,59 @@
     "from": "2026-06-01",
     "to": "2026-12-01",
     "train": 10984,
-    "bouts": 281,
+    "bouts": 292,
     "kept": 6,
     "line25": {
      "model": {
-      "n": 249,
-      "logLoss": 0.6706,
-      "acc": 0.5703
+      "n": 259,
+      "logLoss": 0.6686,
+      "acc": 0.5753
      },
      "byClass": {
-      "n": 249,
-      "logLoss": 0.6976,
-      "acc": 0.5301
+      "n": 259,
+      "logLoss": 0.6945,
+      "acc": 0.5328
      },
      "base": {
-      "n": 249,
-      "logLoss": 0.7068,
-      "acc": 0.4096
+      "n": 259,
+      "logLoss": 0.7059,
+      "acc": 0.417
      }
     }
    }
   ],
   "all": {
    "model": {
-    "n": 4090,
-    "logLoss": 0.6298,
-    "acc": 0.643
+    "n": 4114,
+    "logLoss": 0.6294,
+    "acc": 0.6437
    },
    "byClass": {
-    "n": 4090,
-    "logLoss": 0.65,
-    "acc": 0.6193
+    "n": 4114,
+    "logLoss": 0.6495,
+    "acc": 0.6198
    },
    "base": {
-    "n": 4090,
-    "logLoss": 0.6608,
-    "acc": 0.6051
+    "n": 4114,
+    "logLoss": 0.6605,
+    "acc": 0.6057
    }
   },
   "line25": {
    "model": {
-    "n": 1637,
-    "logLoss": 0.6612,
-    "acc": 0.5993
+    "n": 1647,
+    "logLoss": 0.661,
+    "acc": 0.5999
    },
    "byClass": {
-    "n": 1637,
-    "logLoss": 0.6796,
-    "acc": 0.573
+    "n": 1647,
+    "logLoss": 0.6793,
+    "acc": 0.5732
    },
    "base": {
-    "n": 1637,
+    "n": 1647,
     "logLoss": 0.6908,
-    "acc": 0.5376
+    "acc": 0.5379
    }
   },
   "byDivision": {
@@ -437,36 +437,36 @@
    },
    "Featherweight": {
     "model": {
-     "n": 204,
-     "logLoss": 0.689,
-     "acc": 0.5392
+     "n": 206,
+     "logLoss": 0.6879,
+     "acc": 0.5388
     },
     "byClass": {
-     "n": 204,
+     "n": 206,
      "logLoss": 0.7047,
      "acc": 0.5
     },
     "base": {
-     "n": 204,
+     "n": 206,
      "logLoss": 0.6951,
      "acc": 0.5
     }
    },
    "Flyweight": {
     "model": {
-     "n": 98,
-     "logLoss": 0.687,
-     "acc": 0.5
+     "n": 99,
+     "logLoss": 0.6866,
+     "acc": 0.5051
     },
     "byClass": {
-     "n": 98,
-     "logLoss": 0.6829,
-     "acc": 0.5816
+     "n": 99,
+     "logLoss": 0.6811,
+     "acc": 0.5859
     },
     "base": {
-     "n": 98,
-     "logLoss": 0.685,
-     "acc": 0.5816
+     "n": 99,
+     "logLoss": 0.6845,
+     "acc": 0.5859
     }
    },
    "Heavyweight": {
@@ -522,36 +522,36 @@
    },
    "Middleweight": {
     "model": {
-     "n": 190,
-     "logLoss": 0.6646,
-     "acc": 0.5895
+     "n": 192,
+     "logLoss": 0.6665,
+     "acc": 0.5885
     },
     "byClass": {
-     "n": 190,
-     "logLoss": 0.6876,
-     "acc": 0.5579
+     "n": 192,
+     "logLoss": 0.6877,
+     "acc": 0.5573
     },
     "base": {
-     "n": 190,
-     "logLoss": 0.7018,
-     "acc": 0.4421
+     "n": 192,
+     "logLoss": 0.7017,
+     "acc": 0.4427
     }
    },
    "W Bantamweight": {
     "model": {
-     "n": 54,
-     "logLoss": 0.6389,
-     "acc": 0.6296
+     "n": 55,
+     "logLoss": 0.6351,
+     "acc": 0.6364
     },
     "byClass": {
-     "n": 54,
-     "logLoss": 0.6651,
-     "acc": 0.6296
+     "n": 55,
+     "logLoss": 0.6603,
+     "acc": 0.6364
     },
     "base": {
-     "n": 54,
-     "logLoss": 0.6799,
-     "acc": 0.6296
+     "n": 55,
+     "logLoss": 0.679,
+     "acc": 0.6364
     }
    },
    "W Flyweight": {
@@ -573,36 +573,36 @@
    },
    "W Strawweight": {
     "model": {
-     "n": 85,
-     "logLoss": 0.5779,
-     "acc": 0.7176
+     "n": 86,
+     "logLoss": 0.5745,
+     "acc": 0.7209
     },
     "byClass": {
-     "n": 85,
-     "logLoss": 0.6001,
-     "acc": 0.7176
+     "n": 86,
+     "logLoss": 0.5973,
+     "acc": 0.7209
     },
     "base": {
-     "n": 85,
-     "logLoss": 0.6699,
-     "acc": 0.7176
+     "n": 86,
+     "logLoss": 0.6694,
+     "acc": 0.7209
     }
    },
    "Welterweight": {
     "model": {
-     "n": 180,
-     "logLoss": 0.6912,
-     "acc": 0.5722
+     "n": 183,
+     "logLoss": 0.6907,
+     "acc": 0.5738
     },
     "byClass": {
-     "n": 180,
-     "logLoss": 0.6934,
-     "acc": 0.5111
+     "n": 183,
+     "logLoss": 0.6936,
+     "acc": 0.5082
     },
     "base": {
-     "n": 180,
-     "logLoss": 0.694,
-     "acc": 0.5111
+     "n": 183,
+     "logLoss": 0.6943,
+     "acc": 0.5082
     }
    }
   },
@@ -617,37 +617,37 @@
    {
     "from": 0.3,
     "to": 0.4,
-    "n": 123,
-    "mean": 0.3647,
-    "actual": 0.3171
+    "n": 124,
+    "mean": 0.3645,
+    "actual": 0.3226
    },
    {
     "from": 0.4,
     "to": 0.5,
-    "n": 416,
-    "mean": 0.4577,
-    "actual": 0.4399
+    "n": 420,
+    "mean": 0.4578,
+    "actual": 0.4381
    },
    {
     "from": 0.5,
     "to": 0.6,
-    "n": 594,
-    "mean": 0.5502,
-    "actual": 0.5556
+    "n": 596,
+    "mean": 0.5501,
+    "actual": 0.5554
    },
    {
     "from": 0.6,
     "to": 0.7,
-    "n": 427,
+    "n": 429,
     "mean": 0.6437,
-    "actual": 0.63
+    "actual": 0.6317
    },
    {
     "from": 0.7,
     "to": 0.8,
-    "n": 61,
-    "mean": 0.7248,
-    "actual": 0.8852
+    "n": 62,
+    "mean": 0.7252,
+    "actual": 0.8871
    }
   ],
   "note": "held out: each half fit on the bouts before it alone; every bout at each line its rounds carry (score's rows, unweighted); line25 the three-round bouts at 2.5, the market's usual line; base: the line's share past it, byClass: the line's share in the weight class"

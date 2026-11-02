@@ -4,10 +4,10 @@
   "adamscheftermirror.bsky.social": "2026-11-01T23:29:10.183Z",
   "rapsheet.bsky.social": "2026-11-01T22:12:21.679Z",
   "nflnewsreposterbot.bsky.social": "2026-10-30T22:57:34.763Z",
-  "insidenflnews.bsky.social": "2026-11-01T23:19:09.538Z",
-  "nflnewsposter.bsky.social": "2026-11-01T23:18:43.301Z",
-  "rotoworld-fb.bsky.social": "2026-11-01T23:11:17.000Z",
-  "rotowirenfl.bsky.social": "2026-11-01T23:31:48.000Z"
+  "insidenflnews.bsky.social": "2026-11-02T00:01:54.415Z",
+  "nflnewsposter.bsky.social": "2026-11-01T23:58:43.889Z",
+  "rotoworld-fb.bsky.social": "2026-11-01T23:52:00.000Z",
+  "rotowirenfl.bsky.social": "2026-11-01T23:48:23.000Z"
  },
  "claims": [
   {
@@ -12138,6 +12138,32 @@
    "kind": "status",
    "confidence": 0.9,
    "text": "Ravens QB Tyler “Snoop” Huntley suffered what is thought to be a turf toe injury today at Buffalo, per source. He is expected to undergo an MRI tomorrow to determine how much time if any he could miss"
+  },
+  {
+   "id": "at://did:plc:fuqjc7x4gxvnwzksnlxwbe4x/app.bsky.feed.post/3mzbzbn2kvcdb|jakeferguson|none|status",
+   "at": "2026-11-01T23:58:43.889Z",
+   "seen": "2026-11-02T00:03:52.901Z",
+   "handle": "nflnewsposter.bsky.social",
+   "post": "at://did:plc:fuqjc7x4gxvnwzksnlxwbe4x/app.bsky.feed.post/3mzbzbn2kvcdb",
+   "player": "Jake Ferguson",
+   "team": "DAL",
+   "status": "none",
+   "kind": "status",
+   "confidence": 0.6,
+   "text": "[Fowler] Cowboys TE Jake Ferguson suffered a low ankle sprain Sunday in Arizona, per source. twitter.com/JFowlerESPN/..."
+  },
+  {
+   "id": "at://did:plc:mbr4badgf6yu56mquzackzew/app.bsky.feed.post/3mzbzhcqwhk26|jakeferguson|none|status",
+   "at": "2026-11-02T00:01:54.415Z",
+   "seen": "2026-11-02T00:03:52.901Z",
+   "handle": "insidenflnews.bsky.social",
+   "post": "at://did:plc:mbr4badgf6yu56mquzackzew/app.bsky.feed.post/3mzbzhcqwhk26",
+   "player": "Jake Ferguson",
+   "team": "DAL",
+   "status": "none",
+   "kind": "status",
+   "confidence": 0.5,
+   "text": "Fowler: Jake Ferguson suffered low ankle sprain."
   }
  ]
 }

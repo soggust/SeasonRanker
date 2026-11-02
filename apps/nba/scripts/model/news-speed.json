@@ -17970,6 +17970,555 @@
     "seen": "2026-11-01T23:32:13.464Z",
     "own": "2026-08-24T20:23:00.000Z"
    }
+  },
+  "401909911|jonathanisaac|out": {
+   "game": "401909911",
+   "start": "2026-11-03T00:30Z",
+   "team": "19",
+   "name": "Jonathan Isaac",
+   "status": "out",
+   "athlete": "4065654",
+   "espn": {
+    "seen": "2026-11-02T00:01:55.583Z",
+    "own": "2026-10-29T18:29:00.000Z"
+   }
+  },
+  "401909911|jalensuggs|out": {
+   "game": "401909911",
+   "start": "2026-11-03T00:30Z",
+   "team": "19",
+   "name": "Jalen Suggs",
+   "status": "out",
+   "athlete": "4432165",
+   "espn": {
+    "seen": "2026-11-02T00:01:55.583Z",
+    "own": "2026-10-26T18:44:00.000Z"
+   }
+  },
+  "401909911|paolobanchero|out": {
+   "game": "401909911",
+   "start": "2026-11-03T00:30Z",
+   "team": "19",
+   "name": "Paolo Banchero",
+   "status": "out",
+   "athlete": "4432573",
+   "espn": {
+    "seen": "2026-11-02T00:01:55.583Z",
+    "own": "2026-10-24T16:47:00.000Z"
+   }
+  },
+  "401909911|noahpenda|out": {
+   "game": "401909911",
+   "start": "2026-11-03T00:30Z",
+   "team": "19",
+   "name": "Noah Penda",
+   "status": "out",
+   "athlete": "5214637",
+   "espn": {
+    "seen": "2026-11-02T00:01:55.583Z",
+    "own": "2026-10-17T22:19:00.000Z"
+   }
+  },
+  "401909911|izaiyahnelson|out": {
+   "game": "401909911",
+   "start": "2026-11-03T00:30Z",
+   "team": "19",
+   "name": "Izaiyah Nelson",
+   "status": "out",
+   "athlete": "5107251",
+   "espn": {
+    "seen": "2026-11-02T00:01:55.583Z",
+    "own": "2026-09-28T21:33:00.000Z"
+   }
+  },
+  "401909911|reedsheppard|q": {
+   "game": "401909911",
+   "start": "2026-11-03T00:30Z",
+   "team": "19",
+   "name": "Reed Sheppard",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-11-01T21:01:52.142Z",
+    "own": "2026-11-01T20:41:11.000Z",
+    "why": "@rotowirenba.bsky.social: Reed Sheppard: Questionable versus Celtics \n\n https://"
+   }
+  },
+  "401909911|konknueppel|out": {
+   "game": "401909911",
+   "start": "2026-11-03T00:30Z",
+   "team": "19",
+   "name": "Kon Knueppel",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-01T22:15:39.321Z",
+    "own": "2026-11-01T22:08:11.000Z",
+    "why": "@rotowirenba.bsky.social: Kon Knueppel: Out against Detroit \n\n https://www.rotow"
+   }
+  },
+  "401909911|tristanvukcevic|out": {
+   "game": "401909911",
+   "start": "2026-11-03T00:30Z",
+   "team": "27",
+   "name": "Tristan Vukcevic",
+   "status": "out",
+   "athlete": "4997537",
+   "espn": {
+    "seen": "2026-11-02T00:01:55.583Z",
+    "own": "2026-11-01T21:51:00.000Z"
+   }
+  },
+  "401909911|alexsarr|q": {
+   "game": "401909911",
+   "start": "2026-11-03T00:30Z",
+   "team": "27",
+   "name": "Alex Sarr",
+   "status": "q",
+   "athlete": "5160992",
+   "espn": {
+    "seen": "2026-11-02T00:01:55.583Z",
+    "own": "2026-11-01T21:45:00.000Z"
+   }
+  },
+  "401909911|anthonygill|q": {
+   "game": "401909911",
+   "start": "2026-11-03T00:30Z",
+   "team": "27",
+   "name": "Anthony Gill",
+   "status": "q",
+   "athlete": "2581184",
+   "espn": {
+    "seen": "2026-11-02T00:01:55.583Z",
+    "own": "2026-11-01T21:40:00.000Z"
+   }
+  },
+  "401909911|justinchampagnie|out": {
+   "game": "401909911",
+   "start": "2026-11-03T00:30Z",
+   "team": "27",
+   "name": "Justin Champagnie",
+   "status": "out",
+   "athlete": "4432907",
+   "espn": {
+    "seen": "2026-11-02T00:01:55.583Z",
+    "own": "2026-10-28T18:38:00.000Z"
+   }
+  },
+  "401909911|jamirwatkins|out": {
+   "game": "401909911",
+   "start": "2026-11-03T00:30Z",
+   "team": "27",
+   "name": "Jamir Watkins",
+   "status": "out",
+   "athlete": "4606840",
+   "espn": {
+    "seen": "2026-11-02T00:01:55.583Z",
+    "own": "2026-07-30T20:11:00.000Z"
+   }
+  },
+  "401909912|joelembiid|q": {
+   "game": "401909912",
+   "start": "2026-11-03T00:30Z",
+   "team": "20",
+   "name": "Joel Embiid",
+   "status": "q",
+   "athlete": "3059318",
+   "espn": {
+    "seen": "2026-11-02T00:01:55.583Z",
+    "own": "2026-11-01T22:12:00.000Z"
+   }
+  },
+  "401909912|dominickbarlow|out": {
+   "game": "401909912",
+   "start": "2026-11-03T00:30Z",
+   "team": "20",
+   "name": "Dominick Barlow",
+   "status": "out",
+   "athlete": "4870562",
+   "espn": {
+    "seen": "2026-11-02T00:01:55.583Z",
+    "own": "2026-10-19T21:07:00.000Z"
+   }
+  },
+  "401909912|arielhukporti|out": {
+   "game": "401909912",
+   "start": "2026-11-03T00:30Z",
+   "team": "20",
+   "name": "Ariel Hukporti",
+   "status": "out",
+   "athlete": "4871141",
+   "espn": {
+    "seen": "2026-11-02T00:01:55.583Z",
+    "own": "2026-10-06T19:17:00.000Z"
+   }
+  },
+  "401909912|reedsheppard|q": {
+   "game": "401909912",
+   "start": "2026-11-03T00:30Z",
+   "team": "20",
+   "name": "Reed Sheppard",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-11-01T21:01:52.142Z",
+    "own": "2026-11-01T20:41:11.000Z",
+    "why": "@rotowirenba.bsky.social: Reed Sheppard: Questionable versus Celtics \n\n https://"
+   }
+  },
+  "401909912|konknueppel|out": {
+   "game": "401909912",
+   "start": "2026-11-03T00:30Z",
+   "team": "20",
+   "name": "Kon Knueppel",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-01T22:15:39.321Z",
+    "own": "2026-11-01T22:08:11.000Z",
+    "why": "@rotowirenba.bsky.social: Kon Knueppel: Out against Detroit \n\n https://www.rotow"
+   }
+  },
+  "401909912|jalensmith|q": {
+   "game": "401909912",
+   "start": "2026-11-03T00:30Z",
+   "team": "4",
+   "name": "Jalen Smith",
+   "status": "q",
+   "athlete": "4397189",
+   "espn": {
+    "seen": "2026-11-02T00:01:55.583Z",
+    "own": "2026-11-01T21:40:00.000Z"
+   }
+  },
+  "401909912|tobeawaka|q": {
+   "game": "401909912",
+   "start": "2026-11-03T00:30Z",
+   "team": "4",
+   "name": "Tobe Awaka",
+   "status": "q",
+   "athlete": "5105555",
+   "espn": {
+    "seen": "2026-11-02T00:01:55.583Z",
+    "own": "2026-11-01T21:17:00.000Z"
+   }
+  },
+  "401909912|nicclaxton|out": {
+   "game": "401909912",
+   "start": "2026-11-03T00:30Z",
+   "team": "4",
+   "name": "Nic Claxton",
+   "status": "out",
+   "athlete": "4278067",
+   "espn": {
+    "seen": "2026-11-02T00:01:55.583Z",
+    "own": "2026-11-01T21:08:00.000Z"
+   },
+   "sleeper": {
+    "seen": "2026-11-01T20:14:54.927Z",
+    "own": "2026-11-01T19:15:33.016Z"
+   }
+  },
+  "401909912|dailynswain|q": {
+   "game": "401909912",
+   "start": "2026-11-03T00:30Z",
+   "team": "4",
+   "name": "Dailyn Swain",
+   "status": "q",
+   "athlete": "4848625",
+   "espn": {
+    "seen": "2026-11-02T00:01:55.583Z",
+    "own": "2026-10-31T04:59:00.000Z"
+   }
+  },
+  "401909914|scottypippen|q": {
+   "game": "401909914",
+   "start": "2026-11-03T01:00Z",
+   "team": "29",
+   "name": "Scotty Pippen Jr.",
+   "status": "q",
+   "athlete": "4431785",
+   "espn": {
+    "seen": "2026-11-02T00:01:55.583Z",
+    "own": "2026-11-01T23:15:00.000Z"
+   }
+  },
+  "401909914|quintenpost|q": {
+   "game": "401909914",
+   "start": "2026-11-03T01:00Z",
+   "team": "29",
+   "name": "Quinten Post",
+   "status": "q",
+   "athlete": "4593016",
+   "espn": {
+    "seen": "2026-11-02T00:01:55.583Z",
+    "own": "2026-11-01T23:13:00.000Z"
+   }
+  },
+  "401909914|reedsheppard|q": {
+   "game": "401909914",
+   "start": "2026-11-03T01:00Z",
+   "team": "29",
+   "name": "Reed Sheppard",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-11-01T21:01:52.142Z",
+    "own": "2026-11-01T20:41:11.000Z",
+    "why": "@rotowirenba.bsky.social: Reed Sheppard: Questionable versus Celtics \n\n https://"
+   }
+  },
+  "401909914|konknueppel|out": {
+   "game": "401909914",
+   "start": "2026-11-03T01:00Z",
+   "team": "29",
+   "name": "Kon Knueppel",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-01T22:15:39.321Z",
+    "own": "2026-11-01T22:08:11.000Z",
+    "why": "@rotowirenba.bsky.social: Kon Knueppel: Out against Detroit \n\n https://www.rotow"
+   }
+  },
+  "401909914|treymurphy|q": {
+   "game": "401909914",
+   "start": "2026-11-03T01:00Z",
+   "team": "3",
+   "name": "Trey Murphy III",
+   "status": "q",
+   "athlete": "4397688",
+   "espn": {
+    "seen": "2026-11-02T00:01:55.583Z",
+    "own": "2026-11-01T20:19:00.000Z"
+   }
+  },
+  "401909914|jordanpoole|out": {
+   "game": "401909914",
+   "start": "2026-11-03T01:00Z",
+   "team": "3",
+   "name": "Jordan Poole",
+   "status": "out",
+   "athlete": "4277956",
+   "espn": {
+    "seen": "2026-11-02T00:01:55.583Z",
+    "own": "2026-11-01T20:11:00.000Z"
+   }
+  },
+  "401909914|yvesmissi|out": {
+   "game": "401909914",
+   "start": "2026-11-03T01:00Z",
+   "team": "3",
+   "name": "Yves Missi",
+   "status": "out",
+   "athlete": "5061589",
+   "espn": {
+    "seen": "2026-11-02T00:01:55.583Z",
+    "own": "2026-10-30T21:32:00.000Z"
+   }
+  },
+  "401909915|anthonyedwards|out": {
+   "game": "401909915",
+   "start": "2026-11-03T01:00Z",
+   "team": "16",
+   "name": "Anthony Edwards",
+   "status": "out",
+   "athlete": "4594268",
+   "espn": {
+    "seen": "2026-11-02T00:01:55.583Z",
+    "own": "2026-10-29T18:33:00.000Z"
+   }
+  },
+  "401909915|dontedivincenzo|out": {
+   "game": "401909915",
+   "start": "2026-11-03T01:00Z",
+   "team": "16",
+   "name": "Donte DiVincenzo",
+   "status": "out",
+   "athlete": "3934673",
+   "espn": {
+    "seen": "2026-11-02T00:01:55.583Z",
+    "own": "2026-10-05T20:53:00.000Z"
+   }
+  },
+  "401909915|reedsheppard|q": {
+   "game": "401909915",
+   "start": "2026-11-03T01:00Z",
+   "team": "16",
+   "name": "Reed Sheppard",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-11-01T21:01:52.142Z",
+    "own": "2026-11-01T20:41:11.000Z",
+    "why": "@rotowirenba.bsky.social: Reed Sheppard: Questionable versus Celtics \n\n https://"
+   }
+  },
+  "401909915|konknueppel|out": {
+   "game": "401909915",
+   "start": "2026-11-03T01:00Z",
+   "team": "16",
+   "name": "Kon Knueppel",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-01T22:15:39.321Z",
+    "own": "2026-11-01T22:08:11.000Z",
+    "why": "@rotowirenba.bsky.social: Kon Knueppel: Out against Detroit \n\n https://www.rotow"
+   }
+  },
+  "401909916|clintcapela|q": {
+   "game": "401909916",
+   "start": "2026-11-03T01:30Z",
+   "team": "10",
+   "name": "Clint Capela",
+   "status": "q",
+   "athlete": "3102529",
+   "espn": {
+    "seen": "2026-11-02T00:01:55.583Z",
+    "own": "2026-11-01T20:46:00.000Z"
+   }
+  },
+  "401909916|reedsheppard|q": {
+   "game": "401909916",
+   "start": "2026-11-03T01:30Z",
+   "team": "10",
+   "name": "Reed Sheppard",
+   "status": "q",
+   "athlete": "4711272",
+   "espn": {
+    "seen": "2026-11-02T00:01:55.583Z",
+    "own": "2026-11-01T20:41:00.000Z"
+   },
+   "bluesky": {
+    "seen": "2026-11-01T21:01:52.142Z",
+    "own": "2026-11-01T20:41:11.000Z",
+    "why": "@rotowirenba.bsky.social: Reed Sheppard: Questionable versus Celtics \n\n https://"
+   }
+  },
+  "401909916|stevenadams|out": {
+   "game": "401909916",
+   "start": "2026-11-03T01:30Z",
+   "team": "10",
+   "name": "Steven Adams",
+   "status": "out",
+   "athlete": "2991235",
+   "espn": {
+    "seen": "2026-11-02T00:01:55.583Z",
+    "own": "2026-10-26T22:52:00.000Z"
+   }
+  },
+  "401909916|konknueppel|out": {
+   "game": "401909916",
+   "start": "2026-11-03T01:30Z",
+   "team": "10",
+   "name": "Kon Knueppel",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-01T22:15:39.321Z",
+    "own": "2026-11-01T22:08:11.000Z",
+    "why": "@rotowirenba.bsky.social: Kon Knueppel: Out against Detroit \n\n https://www.rotow"
+   }
+  },
+  "401909916|mitchellrobinson|out": {
+   "game": "401909916",
+   "start": "2026-11-03T01:30Z",
+   "team": "2",
+   "name": "Mitchell Robinson",
+   "status": "out",
+   "athlete": "4351852",
+   "espn": {
+    "seen": "2026-11-02T00:01:55.583Z",
+    "own": "2026-11-01T15:05:00.000Z"
+   }
+  },
+  "401909916|devincarter|out": {
+   "game": "401909916",
+   "start": "2026-11-03T01:30Z",
+   "team": "2",
+   "name": "Devin Carter",
+   "status": "out",
+   "athlete": "4433188",
+   "espn": {
+    "seen": "2026-11-02T00:01:55.583Z",
+    "own": "2026-10-18T14:49:00.000Z"
+   }
+  },
+  "401909917|tobiasharris|out": {
+   "game": "401909917",
+   "start": "2026-11-03T01:30Z",
+   "team": "24",
+   "name": "Tobias Harris",
+   "status": "out",
+   "athlete": "6440",
+   "espn": {
+    "seen": "2026-11-02T00:01:55.583Z",
+    "own": "2026-10-30T21:44:00.000Z"
+   }
+  },
+  "401909917|jaydenquaintance|out": {
+   "game": "401909917",
+   "start": "2026-11-03T01:30Z",
+   "team": "24",
+   "name": "Jayden Quaintance",
+   "status": "out",
+   "athlete": "5101845",
+   "espn": {
+    "seen": "2026-11-02T00:01:55.583Z",
+    "own": "2026-10-05T21:43:00.000Z"
+   }
+  },
+  "401909917|reedsheppard|q": {
+   "game": "401909917",
+   "start": "2026-11-03T01:30Z",
+   "team": "24",
+   "name": "Reed Sheppard",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-11-01T21:01:52.142Z",
+    "own": "2026-11-01T20:41:11.000Z",
+    "why": "@rotowirenba.bsky.social: Reed Sheppard: Questionable versus Celtics \n\n https://"
+   }
+  },
+  "401909917|konknueppel|out": {
+   "game": "401909917",
+   "start": "2026-11-03T01:30Z",
+   "team": "24",
+   "name": "Kon Knueppel",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-01T22:15:39.321Z",
+    "own": "2026-11-01T22:08:11.000Z",
+    "why": "@rotowirenba.bsky.social: Kon Knueppel: Out against Detroit \n\n https://www.rotow"
+   }
+  },
+  "401909917|jarenjackson|out": {
+   "game": "401909917",
+   "start": "2026-11-03T01:30Z",
+   "team": "26",
+   "name": "Jaren Jackson Jr.",
+   "status": "out",
+   "athlete": "4277961",
+   "espn": {
+    "seen": "2026-11-02T00:01:55.583Z",
+    "own": "2026-10-27T19:25:00.000Z"
+   }
+  },
+  "401909917|treyalexander|out": {
+   "game": "401909917",
+   "start": "2026-11-03T01:30Z",
+   "team": "26",
+   "name": "Trey Alexander",
+   "status": "out",
+   "athlete": "4433268",
+   "espn": {
+    "seen": "2026-11-02T00:01:55.583Z",
+    "own": "2026-10-24T23:18:00.000Z"
+   }
+  },
+  "401909917|jusufnurkic|out": {
+   "game": "401909917",
+   "start": "2026-11-03T01:30Z",
+   "team": "26",
+   "name": "Jusuf Nurkic",
+   "status": "out",
+   "athlete": "3102530",
+   "espn": {
+    "seen": "2026-11-02T00:01:55.583Z",
+    "own": "2026-10-07T23:07:00.000Z"
+   }
   }
  }
 }

@@ -2876,7 +2876,7 @@
 {"id":"401873030","date":"2026-11-01T18:00Z","season":2026,"type":2,"home":"8","away":"16","homeAbbr":"DET","awayAbbr":"MIN","neutral":false,"final":true,"hs":19,"as":15,"venue":"Detroit|MI|USA","indoor":true},
 {"id":"401873028","date":"2026-11-01T18:00Z","season":2026,"type":2,"home":"30","away":"11","homeAbbr":"JAX","awayAbbr":"IND","neutral":false,"final":true,"hs":42,"as":7,"venue":"Jacksonville|FL|USA","indoor":false},
 {"id":"401873029","date":"2026-11-01T18:00Z","season":2026,"type":2,"home":"20","away":"13","homeAbbr":"NYJ","awayAbbr":"LV","neutral":false,"final":true,"hs":33,"as":38,"venue":"East Rutherford|NJ|USA","indoor":false},
-{"id":"401873032","date":"2026-11-01T21:05Z","season":2026,"type":2,"home":"14","away":"24","homeAbbr":"LAR","awayAbbr":"LAC","neutral":false,"final":false,"hs":null,"as":null,"venue":"Inglewood|CA|USA","indoor":false},
+{"id":"401873032","date":"2026-11-01T21:05Z","season":2026,"type":2,"home":"14","away":"24","homeAbbr":"LAR","awayAbbr":"LAC","neutral":false,"final":true,"hs":24,"as":9,"venue":"Inglewood|CA|USA","indoor":false},
 {"id":"401873033","date":"2026-11-01T21:25Z","season":2026,"type":2,"home":"7","away":"12","homeAbbr":"DEN","awayAbbr":"KC","neutral":false,"final":false,"hs":null,"as":null,"venue":"Denver|CO|USA","indoor":false},
 {"id":"401873034","date":"2026-11-01T21:25Z","season":2026,"type":2,"home":"15","away":"17","homeAbbr":"MIA","awayAbbr":"NE","neutral":false,"final":false,"hs":null,"as":null,"venue":"Miami Gardens|FL|USA","indoor":false},
 {"id":"401873035","date":"2026-11-02T01:20Z","season":2026,"type":2,"home":"28","away":"21","homeAbbr":"WSH","awayAbbr":"PHI","neutral":false,"final":false,"hs":null,"as":null,"venue":"Landover|MD|USA","indoor":false},
