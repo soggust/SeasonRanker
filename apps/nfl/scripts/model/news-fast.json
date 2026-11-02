@@ -4,10 +4,10 @@
   "adamscheftermirror.bsky.social": "2026-11-01T23:29:10.183Z",
   "rapsheet.bsky.social": "2026-11-01T22:12:21.679Z",
   "nflnewsreposterbot.bsky.social": "2026-10-30T22:57:34.763Z",
-  "insidenflnews.bsky.social": "2026-11-02T00:01:54.415Z",
-  "nflnewsposter.bsky.social": "2026-11-01T23:58:43.889Z",
-  "rotoworld-fb.bsky.social": "2026-11-01T23:52:00.000Z",
-  "rotowirenfl.bsky.social": "2026-11-01T23:48:23.000Z"
+  "insidenflnews.bsky.social": "2026-11-02T00:06:11.705Z",
+  "nflnewsposter.bsky.social": "2026-11-02T00:23:06.217Z",
+  "rotoworld-fb.bsky.social": "2026-11-02T00:18:47.000Z",
+  "rotowirenfl.bsky.social": "2026-11-02T00:11:35.000Z"
  },
  "claims": [
   {
@@ -12164,6 +12164,45 @@
    "kind": "status",
    "confidence": 0.5,
    "text": "Fowler: Jake Ferguson suffered low ankle sprain."
+  },
+  {
+   "id": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3mzbzov23cy2q|jakeferguson|none|status",
+   "at": "2026-11-02T00:06:08.000Z",
+   "seen": "2026-11-02T00:24:34.647Z",
+   "handle": "rotowirenfl.bsky.social",
+   "post": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3mzbzov23cy2q",
+   "player": "Jake Ferguson",
+   "team": "DAL",
+   "status": "none",
+   "kind": "status",
+   "confidence": 0.5,
+   "text": "Jake Ferguson: Sustains low-ankle sprain \n\n https://www.rotowire.com/football/player/jake-ferguson-15947"
+  },
+  {
+   "id": "at://did:plc:mbr4badgf6yu56mquzackzew/app.bsky.feed.post/3mzbzoy4t7c26|hunterhenry|out|status",
+   "at": "2026-11-02T00:06:11.705Z",
+   "seen": "2026-11-02T00:24:34.647Z",
+   "handle": "insidenflnews.bsky.social",
+   "post": "at://did:plc:mbr4badgf6yu56mquzackzew/app.bsky.feed.post/3mzbzoy4t7c26",
+   "player": "Hunter Henry",
+   "team": null,
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.85,
+   "text": "🚨 Status alert: Hunter Henry (foot) won't return."
+  },
+  {
+   "id": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3mzbzyn75i727|hunterhenry|out|status",
+   "at": "2026-11-02T00:11:35.000Z",
+   "seen": "2026-11-02T00:24:34.647Z",
+   "handle": "rotowirenfl.bsky.social",
+   "post": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3mzbzyn75i727",
+   "player": "Hunter Henry",
+   "team": null,
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.95,
+   "text": "Hunter Henry: Won't return Sunday \n\n https://www.rotowire.com/football/player/hunter-henry-10735"
   }
  ]
 }
