@@ -3,8 +3,8 @@
  "cursor": {
   "johnston-bot.bsky.social": "2026-10-31T19:45:16.675Z",
   "notfriedgehnic.bsky.social": "2026-11-02T15:38:53.319Z",
-  "dailyfaceoff.bsky.social": "2026-11-02T16:41:11.000Z",
-  "dfotoronto.bsky.social": "2026-11-02T15:07:42.000Z",
+  "dailyfaceoff.bsky.social": "2026-11-02T16:54:17.000Z",
+  "dfotoronto.bsky.social": "2026-11-02T16:50:47.000Z",
   "marklazerus.bsky.social": "2026-11-02T15:26:40.736Z"
  },
  "claims": [
@@ -1424,6 +1424,32 @@
    "kind": "return",
    "confidence": 0.85,
    "text": "Jacob Markstrom set for Panthers’ return against Red Wings"
+  },
+  {
+   "id": "at://did:plc:3uus7y6h3rlrk6sbctzxm4bg/app.bsky.feed.post/3mzdrzmjdld2f|evgenimalkin|questionable|status",
+   "at": "2026-11-02T16:54:17.000Z",
+   "seen": "2026-11-02T17:03:44.457Z",
+   "handle": "dailyfaceoff.bsky.social",
+   "post": "at://did:plc:3uus7y6h3rlrk6sbctzxm4bg/app.bsky.feed.post/3mzdrzmjdld2f",
+   "player": "Evgeni Malkin",
+   "team": "PIT",
+   "status": "questionable",
+   "kind": "status",
+   "confidence": 0.9,
+   "text": "Penguins’ Malkin, Korczak out day-to-day with lower-body injuries"
+  },
+  {
+   "id": "at://did:plc:3uus7y6h3rlrk6sbctzxm4bg/app.bsky.feed.post/3mzdrzmjdld2f|korczak|questionable|status",
+   "at": "2026-11-02T16:54:17.000Z",
+   "seen": "2026-11-02T17:03:44.457Z",
+   "handle": "dailyfaceoff.bsky.social",
+   "post": "at://did:plc:3uus7y6h3rlrk6sbctzxm4bg/app.bsky.feed.post/3mzdrzmjdld2f",
+   "player": "Korczak",
+   "team": "PIT",
+   "status": "questionable",
+   "kind": "status",
+   "confidence": 0.9,
+   "text": "Penguins’ Malkin, Korczak out day-to-day with lower-body injuries"
   }
  ]
 }

@@ -6,7 +6,7 @@
   "nflnewsreposterbot.bsky.social": "2026-10-30T22:57:34.763Z",
   "insidenflnews.bsky.social": "2026-11-02T13:51:07.061Z",
   "nflnewsposter.bsky.social": "2026-11-02T16:14:51.168Z",
-  "rotoworld-fb.bsky.social": "2026-11-02T15:41:43.000Z",
+  "rotoworld-fb.bsky.social": "2026-11-02T17:02:15.000Z",
   "rotowirenfl.bsky.social": "2026-11-02T16:43:16.000Z"
  },
  "claims": [
@@ -12307,6 +12307,19 @@
    "kind": "role",
    "confidence": 0.3,
    "text": "[Schultz] Chargers are signing former Ravens and Titans CB Jalyn Armour-Davis.\n\nThe former Alabama standout started 10 games for Tennessee last season before suffering a torn Achilles. He’s now fully "
+  },
+  {
+   "id": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3mzdshtzi242p|ajbrown|questionable|status",
+   "at": "2026-11-02T17:02:15.000Z",
+   "seen": "2026-11-02T17:03:44.457Z",
+   "handle": "rotoworld-fb.bsky.social",
+   "post": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3mzdshtzi242p",
+   "player": "A.J. Brown",
+   "team": null,
+   "status": "questionable",
+   "kind": "status",
+   "confidence": 0.4,
+   "text": "'We'll see' if AJB (knee) practices this week"
   }
  ]
 }
