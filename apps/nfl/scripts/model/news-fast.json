@@ -4,9 +4,9 @@
   "adamscheftermirror.bsky.social": "2026-11-02T11:59:20.735Z",
   "rapsheet.bsky.social": "2026-11-01T22:12:21.679Z",
   "nflnewsreposterbot.bsky.social": "2026-10-30T22:57:34.763Z",
-  "insidenflnews.bsky.social": "2026-11-02T02:28:18.632Z",
+  "insidenflnews.bsky.social": "2026-11-02T13:51:07.061Z",
   "nflnewsposter.bsky.social": "2026-11-02T05:32:33.402Z",
-  "rotoworld-fb.bsky.social": "2026-11-02T02:45:37.000Z",
+  "rotoworld-fb.bsky.social": "2026-11-02T13:50:43.000Z",
   "rotowirenfl.bsky.social": "2026-11-02T04:56:39.000Z"
  },
  "claims": [
@@ -12242,6 +12242,19 @@
    "kind": "status",
    "confidence": 0.9,
    "text": "More about Ravens QB Lamar Jackson needing surgery on his injured right thumb and having to go on injured reserve, via @jamisonhensley:\n\nOriginal post"
+  },
+  {
+   "id": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3mzdhj7piu625|tylerhuntley|out|status",
+   "at": "2026-11-02T13:46:10.000Z",
+   "seen": "2026-11-02T14:01:44.676Z",
+   "handle": "rotoworld-fb.bsky.social",
+   "post": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3mzdhj7piu625",
+   "player": "Tyler Huntley",
+   "team": "BAL",
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.9,
+   "text": "Rap: Huntley (toe) to miss 'extended time'"
   }
  ]
 }
