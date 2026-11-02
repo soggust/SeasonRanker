@@ -5,9 +5,9 @@
   "rapsheet.bsky.social": "2026-11-01T22:12:21.679Z",
   "nflnewsreposterbot.bsky.social": "2026-10-30T22:57:34.763Z",
   "insidenflnews.bsky.social": "2026-11-02T02:28:18.632Z",
-  "nflnewsposter.bsky.social": "2026-11-02T02:50:14.380Z",
+  "nflnewsposter.bsky.social": "2026-11-02T03:23:42.184Z",
   "rotoworld-fb.bsky.social": "2026-11-02T02:45:37.000Z",
-  "rotowirenfl.bsky.social": "2026-11-02T02:59:42.000Z"
+  "rotowirenfl.bsky.social": "2026-11-02T03:26:55.000Z"
  },
  "claims": [
   {
@@ -12216,6 +12216,19 @@
    "kind": "role",
    "confidence": 0.35,
    "text": "[NFL] Luke McCaffrey starting off SNF with a big kick return 🗣️ twitter.com/NFL/status/2..."
+  },
+  {
+   "id": "at://did:plc:fuqjc7x4gxvnwzksnlxwbe4x/app.bsky.feed.post/3mzcep26wes2e|michaelcarter|questionable|status",
+   "at": "2026-11-02T03:23:05.032Z",
+   "seen": "2026-11-02T03:29:25.915Z",
+   "handle": "nflnewsposter.bsky.social",
+   "post": "at://did:plc:fuqjc7x4gxvnwzksnlxwbe4x/app.bsky.feed.post/3mzcep26wes2e",
+   "player": "Michael Carter II",
+   "team": "PHI",
+   "status": "questionable",
+   "kind": "status",
+   "confidence": 0.9,
+   "text": "[Eagles] Injury Update: DB Michael Carter II (abdomen) is questionable to return. twitter.com/Eagles/statu..."
   }
  ]
 }

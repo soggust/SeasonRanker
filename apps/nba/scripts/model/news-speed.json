@@ -18811,6 +18811,179 @@
     "seen": "2026-11-02T03:06:48.846Z",
     "own": "2026-09-11T16:03:00.000Z"
    }
+  },
+  "401909909|obitoppin|q": {
+   "game": "401909909",
+   "start": "2026-11-03T00:30Z",
+   "team": "11",
+   "name": "Obi Toppin",
+   "status": "q",
+   "athlete": "4278355",
+   "espn": {
+    "seen": "2026-11-02T03:27:47.885Z",
+    "own": "2026-11-02T01:51:00.000Z"
+   }
+  },
+  "401909909|tjmcconnell|out": {
+   "game": "401909909",
+   "start": "2026-11-03T00:30Z",
+   "team": "11",
+   "name": "T.J. McConnell",
+   "status": "out",
+   "athlete": "2530530",
+   "espn": {
+    "seen": "2026-11-02T03:27:47.885Z",
+    "own": "2026-11-01T16:26:00.000Z"
+   }
+  },
+  "401909909|ivicazubac|out": {
+   "game": "401909909",
+   "start": "2026-11-03T00:30Z",
+   "team": "11",
+   "name": "Ivica Zubac",
+   "status": "out",
+   "athlete": "4017837",
+   "espn": {
+    "seen": "2026-11-02T03:27:47.885Z",
+    "own": "2026-10-31T21:14:00.000Z"
+   }
+  },
+  "401909909|johnnyfurphy|out": {
+   "game": "401909909",
+   "start": "2026-11-03T00:30Z",
+   "team": "11",
+   "name": "Johnny Furphy",
+   "status": "out",
+   "athlete": "5157066",
+   "espn": {
+    "seen": "2026-11-02T03:27:47.885Z",
+    "own": "2026-10-30T19:06:00.000Z"
+   }
+  },
+  "401909909|bensheppard|out": {
+   "game": "401909909",
+   "start": "2026-11-03T00:30Z",
+   "team": "11",
+   "name": "Ben Sheppard",
+   "status": "out",
+   "athlete": "4433076",
+   "espn": {
+    "seen": "2026-11-02T03:27:47.885Z",
+    "own": "2026-10-28T21:41:00.000Z"
+   }
+  },
+  "401909909|tyresehaliburton|out": {
+   "game": "401909909",
+   "start": "2026-11-03T00:30Z",
+   "team": "11",
+   "name": "Tyrese Haliburton",
+   "status": "out",
+   "athlete": "4396993",
+   "espn": {
+    "seen": "2026-11-02T03:27:47.885Z",
+    "own": "2026-10-28T21:30:00.000Z"
+   }
+  },
+  "401909909|reedsheppard|q": {
+   "game": "401909909",
+   "start": "2026-11-03T00:30Z",
+   "team": "11",
+   "name": "Reed Sheppard",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-11-01T21:01:52.142Z",
+    "own": "2026-11-01T20:41:11.000Z",
+    "why": "@rotowirenba.bsky.social: Reed Sheppard: Questionable versus Celtics \n\n https://"
+   }
+  },
+  "401909909|konknueppel|out": {
+   "game": "401909909",
+   "start": "2026-11-03T00:30Z",
+   "team": "11",
+   "name": "Kon Knueppel",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-01T22:15:39.321Z",
+    "own": "2026-11-01T22:08:11.000Z",
+    "why": "@rotowirenba.bsky.social: Kon Knueppel: Out against Detroit \n\n https://www.rotow"
+   }
+  },
+  "401909909|jakobpoeltl|out": {
+   "game": "401909909",
+   "start": "2026-11-03T00:30Z",
+   "team": "11",
+   "name": "Jakob Poeltl",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-02T01:48:21.376Z",
+    "own": "2026-11-02T01:44:30.000Z",
+    "why": "@rotowirenba.bsky.social: Jakob Poeltl: Late scratch Sunday \n\n https://www.rotow"
+   }
+  },
+  "401909909|kingstonflemings|out": {
+   "game": "401909909",
+   "start": "2026-11-03T00:30Z",
+   "team": "11",
+   "name": "Kingston Flemings",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-02T02:29:37.618Z",
+    "own": "2026-11-02T02:02:56.000Z",
+    "why": "@rotowirenba.bsky.social: Kingston Flemings: Suspended one game \n\n https://www.r"
+   },
+   "athlete": "5149077",
+   "espn": {
+    "seen": "2026-11-02T03:27:47.885Z",
+    "own": "2026-11-02T02:02:00.000Z"
+   }
+  },
+  "401909909|jalenjohnson|q": {
+   "game": "401909909",
+   "start": "2026-11-03T00:30Z",
+   "team": "1",
+   "name": "Jalen Johnson",
+   "status": "q",
+   "athlete": "4701230",
+   "espn": {
+    "seen": "2026-11-02T03:27:47.885Z",
+    "own": "2026-11-01T22:28:00.000Z"
+   }
+  },
+  "401909909|jocklandale|out": {
+   "game": "401909909",
+   "start": "2026-11-03T00:30Z",
+   "team": "1",
+   "name": "Jock Landale",
+   "status": "out",
+   "athlete": "3146557",
+   "espn": {
+    "seen": "2026-11-02T03:27:47.885Z",
+    "own": "2026-11-01T22:22:00.000Z"
+   }
+  },
+  "401909909|mouhamedgueye|out": {
+   "game": "401909909",
+   "start": "2026-11-03T00:30Z",
+   "team": "1",
+   "name": "Mouhamed Gueye",
+   "status": "out",
+   "athlete": "4712863",
+   "espn": {
+    "seen": "2026-11-02T03:27:47.885Z",
+    "own": "2026-10-19T19:38:00.000Z"
+   }
+  },
+  "401909909|henriveesaar|out": {
+   "game": "401909909",
+   "start": "2026-11-03T00:30Z",
+   "team": "1",
+   "name": "Henri Veesaar",
+   "status": "out",
+   "athlete": "5105571",
+   "espn": {
+    "seen": "2026-11-02T03:27:47.885Z",
+    "own": "2026-09-21T19:50:00.000Z"
+   }
   }
  }
 }
