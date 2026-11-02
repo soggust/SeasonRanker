@@ -1,7 +1,7 @@
 {
  "sport": "nba",
  "cursor": {
-  "rotowirenba.bsky.social": "2026-11-02T19:10:24.000Z",
+  "rotowirenba.bsky.social": "2026-11-02T21:06:37.000Z",
   "insidenbanews.bsky.social": "2026-11-02T19:09:04.708Z",
   "shamsbot.bsky.social": "2026-11-02T19:03:58.000Z"
  },
@@ -6973,6 +6973,32 @@
    "kind": "status",
    "confidence": 0.9,
    "text": "Paul George: Will sit out Monday \n\n https://www.rotowire.com/basketball/player/paul-george-3114"
+  },
+  {
+   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mze7zulzvf26|stephencurry|active|return",
+   "at": "2026-11-02T21:04:58.000Z",
+   "seen": "2026-11-02T21:14:25.858Z",
+   "handle": "rotowirenba.bsky.social",
+   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mze7zulzvf26",
+   "player": "Stephen Curry",
+   "team": "GS",
+   "status": "active",
+   "kind": "return",
+   "confidence": 0.9,
+   "text": "Stephen Curry: Set to return Monday \n\n https://www.rotowire.com/basketball/player/stephen-curry-3014"
+  },
+  {
+   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mzea4sb7wo27|draymondgreen|active|status",
+   "at": "2026-11-02T21:06:37.000Z",
+   "seen": "2026-11-02T21:14:25.858Z",
+   "handle": "rotowirenba.bsky.social",
+   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mzea4sb7wo27",
+   "player": "Draymond Green",
+   "team": "GS",
+   "status": "active",
+   "kind": "status",
+   "confidence": 0.9,
+   "text": "Draymond Green: Cleared to suit up \n\n https://www.rotowire.com/basketball/player/draymond-green-3299"
   }
  ]
 }
