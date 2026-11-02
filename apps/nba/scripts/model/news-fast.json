@@ -1,9 +1,9 @@
 {
  "sport": "nba",
  "cursor": {
-  "rotowirenba.bsky.social": "2026-11-02T18:19:29.000Z",
-  "insidenbanews.bsky.social": "2026-10-30T19:15:23.134Z",
-  "shamsbot.bsky.social": "2026-11-02T01:51:08.000Z"
+  "rotowirenba.bsky.social": "2026-11-02T19:10:24.000Z",
+  "insidenbanews.bsky.social": "2026-11-02T19:09:04.708Z",
+  "shamsbot.bsky.social": "2026-11-02T19:03:58.000Z"
  },
  "claims": [
   {
@@ -6921,6 +6921,58 @@
    "kind": "status",
    "confidence": 0.93,
    "text": "Ivica Zubac: Remains out indefinitely \n\n https://www.rotowire.com/basketball/player/ivica-zubac-3888"
+  },
+  {
+   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mzdykrquxv27|kyrieirving|doubtful|status",
+   "at": "2026-11-02T18:51:16.000Z",
+   "seen": "2026-11-02T19:11:10.777Z",
+   "handle": "rotowirenba.bsky.social",
+   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mzdykrquxv27",
+   "player": "Kyrie Irving",
+   "team": null,
+   "status": "doubtful",
+   "kind": "status",
+   "confidence": 0.9,
+   "text": "Kyrie Irving: Downgraded to doubtful \n\n https://www.rotowire.com/basketball/player/kyrie-irving-3186"
+  },
+  {
+   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mzdyp2bln62l|treymurphy|active|status",
+   "at": "2026-11-02T18:53:39.000Z",
+   "seen": "2026-11-02T19:11:10.777Z",
+   "handle": "rotowirenba.bsky.social",
+   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mzdyp2bln62l",
+   "player": "Trey Murphy",
+   "team": null,
+   "status": "active",
+   "kind": "status",
+   "confidence": 0.9,
+   "text": "Trey Murphy: Will play Monday \n\n https://www.rotowire.com/basketball/player/trey-murphy-5401"
+  },
+  {
+   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mzdyrwvgwx2g|dejountemurray|questionable|status",
+   "at": "2026-11-02T18:55:16.000Z",
+   "seen": "2026-11-02T19:11:10.777Z",
+   "handle": "rotowirenba.bsky.social",
+   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mzdyrwvgwx2g",
+   "player": "Dejounte Murray",
+   "team": null,
+   "status": "questionable",
+   "kind": "status",
+   "confidence": 0.9,
+   "text": "Dejounte Murray: Downgraded to questionable \n\n https://www.rotowire.com/basketball/player/dejounte-murray-3856"
+  },
+  {
+   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mzdzgkxicw27|paulgeorge|out|status",
+   "at": "2026-11-02T19:06:48.000Z",
+   "seen": "2026-11-02T19:11:10.777Z",
+   "handle": "rotowirenba.bsky.social",
+   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mzdzgkxicw27",
+   "player": "Paul George",
+   "team": null,
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.9,
+   "text": "Paul George: Will sit out Monday \n\n https://www.rotowire.com/basketball/player/paul-george-3114"
   }
  ]
 }

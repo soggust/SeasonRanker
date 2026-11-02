@@ -19534,6 +19534,18 @@
     "own": "2026-11-02T18:19:29.000Z",
     "why": "@rotowirenba.bsky.social: Ivica Zubac: Remains out indefinitely \n\n https://www.r"
    }
+  },
+  "401909914|dejountemurray|q": {
+   "game": "401909914",
+   "start": "2026-11-03T01:00Z",
+   "team": "3",
+   "name": "Dejounte Murray",
+   "status": "q",
+   "athlete": "3907497",
+   "espn": {
+    "seen": "2026-11-02T19:08:55.631Z",
+    "own": "2026-11-02T18:55:00.000Z"
+   }
   }
  }
 }

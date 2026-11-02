@@ -2,7 +2,7 @@
  "sport": "nfl",
  "cursor": {
   "adamscheftermirror.bsky.social": "2026-11-02T17:34:20.042Z",
-  "rapsheet.bsky.social": "2026-11-01T22:12:21.679Z",
+  "rapsheet.bsky.social": "2026-11-02T18:58:51.040Z",
   "nflnewsreposterbot.bsky.social": "2026-10-30T22:57:34.763Z",
   "insidenflnews.bsky.social": "2026-11-02T17:57:13.516Z",
   "nflnewsposter.bsky.social": "2026-11-02T16:14:51.168Z",
@@ -12346,6 +12346,84 @@
    "kind": "status",
    "confidence": 0.5,
    "text": "Saints undecided on Etienne's (hammy) return"
+  },
+  {
+   "id": "at://did:plc:hlvr2omhnmvdmfnvmcuhyevz/app.bsky.feed.post/3mzdyr3v33c26|djturner|questionable|status",
+   "at": "2026-11-02T18:54:48.489Z",
+   "seen": "2026-11-02T19:11:10.777Z",
+   "handle": "rapsheet.bsky.social",
+   "post": "at://did:plc:hlvr2omhnmvdmfnvmcuhyevz/app.bsky.feed.post/3mzdyr3v33c26",
+   "player": "DJ Turner",
+   "team": "CIN",
+   "status": "questionable",
+   "kind": "status",
+   "confidence": 0.9,
+   "text": "Injury updates:\n-- Bengals coach Zac Taylor says  CB DJ Turner (heel) is day-to-day, while Cashius Howell (wrist) is likely headed to IR.\n-- Falcons coach Kevin Stefanski says Samson Ebukam and Zachar"
+  },
+  {
+   "id": "at://did:plc:hlvr2omhnmvdmfnvmcuhyevz/app.bsky.feed.post/3mzdyr3v33c26|cashiushowell|out|status",
+   "at": "2026-11-02T18:54:48.489Z",
+   "seen": "2026-11-02T19:11:10.777Z",
+   "handle": "rapsheet.bsky.social",
+   "post": "at://did:plc:hlvr2omhnmvdmfnvmcuhyevz/app.bsky.feed.post/3mzdyr3v33c26",
+   "player": "Cashius Howell",
+   "team": "CIN",
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.7,
+   "text": "Injury updates:\n-- Bengals coach Zac Taylor says  CB DJ Turner (heel) is day-to-day, while Cashius Howell (wrist) is likely headed to IR.\n-- Falcons coach Kevin Stefanski says Samson Ebukam and Zachar"
+  },
+  {
+   "id": "at://did:plc:hlvr2omhnmvdmfnvmcuhyevz/app.bsky.feed.post/3mzdyr3v33c26|samsonebukam|out|status",
+   "at": "2026-11-02T18:54:48.489Z",
+   "seen": "2026-11-02T19:11:10.777Z",
+   "handle": "rapsheet.bsky.social",
+   "post": "at://did:plc:hlvr2omhnmvdmfnvmcuhyevz/app.bsky.feed.post/3mzdyr3v33c26",
+   "player": "Samson Ebukam",
+   "team": "ATL",
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.9,
+   "text": "Injury updates:\n-- Bengals coach Zac Taylor says  CB DJ Turner (heel) is day-to-day, while Cashius Howell (wrist) is likely headed to IR.\n-- Falcons coach Kevin Stefanski says Samson Ebukam and Zachar"
+  },
+  {
+   "id": "at://did:plc:hlvr2omhnmvdmfnvmcuhyevz/app.bsky.feed.post/3mzdyr3v33c26|zachariahbranch|out|status",
+   "at": "2026-11-02T18:54:48.489Z",
+   "seen": "2026-11-02T19:11:10.777Z",
+   "handle": "rapsheet.bsky.social",
+   "post": "at://did:plc:hlvr2omhnmvdmfnvmcuhyevz/app.bsky.feed.post/3mzdyr3v33c26",
+   "player": "Zachariah Branch",
+   "team": "ATL",
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.9,
+   "text": "Injury updates:\n-- Bengals coach Zac Taylor says  CB DJ Turner (heel) is day-to-day, while Cashius Howell (wrist) is likely headed to IR.\n-- Falcons coach Kevin Stefanski says Samson Ebukam and Zachar"
+  },
+  {
+   "id": "at://did:plc:hlvr2omhnmvdmfnvmcuhyevz/app.bsky.feed.post/3mzdyten27226|yayadiaby|none|status",
+   "at": "2026-11-02T18:56:04.768Z",
+   "seen": "2026-11-02T19:11:10.777Z",
+   "handle": "rapsheet.bsky.social",
+   "post": "at://did:plc:hlvr2omhnmvdmfnvmcuhyevz/app.bsky.feed.post/3mzdyten27226",
+   "player": "YaYa Diaby",
+   "team": "TB",
+   "status": "none",
+   "kind": "status",
+   "confidence": 0.3,
+   "text": "Bucs outside linebacker YaYa Diaby, who exited Sunday’s win early, is believed to have suffered an MCL sprain, source says. He’ll have an MRI this morning, but the hope is the injury is not one to cau"
+  },
+  {
+   "id": "at://did:plc:hlvr2omhnmvdmfnvmcuhyevz/app.bsky.feed.post/3mzdyyd7e4s26|davonhamilton|out|status",
+   "at": "2026-11-02T18:58:51.040Z",
+   "seen": "2026-11-02T19:11:10.777Z",
+   "handle": "rapsheet.bsky.social",
+   "post": "at://did:plc:hlvr2omhnmvdmfnvmcuhyevz/app.bsky.feed.post/3mzdyyd7e4s26",
+   "player": "DaVon Hamilton",
+   "team": "JAX",
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.8,
+   "text": "Sources: Jaguars standout DT DaVon Hamilton suffered a torn quad in Sunday’s win over the Colts, and he’s expected to be out for the season.\n\nHamilton will undergo more tests today, but a massive hole"
   }
  ]
 }
