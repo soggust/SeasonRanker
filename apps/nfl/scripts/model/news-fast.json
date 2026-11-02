@@ -1,13 +1,13 @@
 {
  "sport": "nfl",
  "cursor": {
-  "adamscheftermirror.bsky.social": "2026-11-02T11:59:20.735Z",
+  "adamscheftermirror.bsky.social": "2026-11-02T14:49:19.095Z",
   "rapsheet.bsky.social": "2026-11-01T22:12:21.679Z",
   "nflnewsreposterbot.bsky.social": "2026-10-30T22:57:34.763Z",
   "insidenflnews.bsky.social": "2026-11-02T13:51:07.061Z",
   "nflnewsposter.bsky.social": "2026-11-02T05:32:33.402Z",
-  "rotoworld-fb.bsky.social": "2026-11-02T13:50:43.000Z",
-  "rotowirenfl.bsky.social": "2026-11-02T04:56:39.000Z"
+  "rotoworld-fb.bsky.social": "2026-11-02T14:53:50.000Z",
+  "rotowirenfl.bsky.social": "2026-11-02T14:47:05.000Z"
  },
  "claims": [
   {
@@ -12255,6 +12255,19 @@
    "kind": "status",
    "confidence": 0.9,
    "text": "Rap: Huntley (toe) to miss 'extended time'"
+  },
+  {
+   "id": "at://did:plc:qre6zxbmr3ixhdmgsgdretb5/app.bsky.feed.post/3mzdl24wsmq2l|davonhamilton|out|status",
+   "at": "2026-11-02T14:49:19.095Z",
+   "seen": "2026-11-02T15:05:11.035Z",
+   "handle": "adamscheftermirror.bsky.social",
+   "post": "at://did:plc:qre6zxbmr3ixhdmgsgdretb5/app.bsky.feed.post/3mzdl24wsmq2l",
+   "player": "DaVon Hamilton",
+   "team": "JAX",
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.9,
+   "text": "Repost by @AdamSchefter\n\nSources: #Jaguars standout DT DaVon Hamilton suffered a torn quad in Sunday’s win over the #Colts, and he’s expected to be out for the season. Hamilton will undergo more tests"
   }
  ]
 }
