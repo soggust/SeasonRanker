@@ -1,13 +1,13 @@
 {
  "sport": "nfl",
  "cursor": {
-  "adamscheftermirror.bsky.social": "2026-11-02T17:34:20.042Z",
+  "adamscheftermirror.bsky.social": "2026-11-02T19:25:23.740Z",
   "rapsheet.bsky.social": "2026-11-02T18:58:51.040Z",
   "nflnewsreposterbot.bsky.social": "2026-10-30T22:57:34.763Z",
-  "insidenflnews.bsky.social": "2026-11-02T17:57:13.516Z",
+  "insidenflnews.bsky.social": "2026-11-02T19:28:55.372Z",
   "nflnewsposter.bsky.social": "2026-11-02T16:14:51.168Z",
-  "rotoworld-fb.bsky.social": "2026-11-02T17:47:16.000Z",
-  "rotowirenfl.bsky.social": "2026-11-02T17:20:53.000Z"
+  "rotoworld-fb.bsky.social": "2026-11-02T19:20:57.000Z",
+  "rotowirenfl.bsky.social": "2026-11-02T19:27:29.000Z"
  },
  "claims": [
   {
@@ -12424,6 +12424,45 @@
    "kind": "status",
    "confidence": 0.8,
    "text": "Sources: Jaguars standout DT DaVon Hamilton suffered a torn quad in Sunday’s win over the Colts, and he’s expected to be out for the season.\n\nHamilton will undergo more tests today, but a massive hole"
+  },
+  {
+   "id": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3mzdzxtinj72p|michaelpittman|out|status",
+   "at": "2026-11-02T19:16:28.000Z",
+   "seen": "2026-11-02T19:31:40.147Z",
+   "handle": "rotoworld-fb.bsky.social",
+   "post": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3mzdzxtinj72p",
+   "player": "Michael Pittman",
+   "team": "IND",
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.3,
+   "text": "Michael Pittman (foot) hopes to return after bye"
+  },
+  {
+   "id": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3mze2lju2wl2m|danieljones|none|starting",
+   "at": "2026-11-02T19:27:29.000Z",
+   "seen": "2026-11-02T19:31:40.147Z",
+   "handle": "rotowirenfl.bsky.social",
+   "post": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3mze2lju2wl2m",
+   "player": "Daniel Jones",
+   "team": "NYG",
+   "status": "none",
+   "kind": "starting",
+   "confidence": 0.8,
+   "text": "Daniel Jones: Sticking as starting quarterback \n\n https://www.rotowire.com/football/player/daniel-jones-13491"
+  },
+  {
+   "id": "at://did:plc:mbr4badgf6yu56mquzackzew/app.bsky.feed.post/3mze2o3wxbs2m|danieljones|none|starting",
+   "at": "2026-11-02T19:28:55.372Z",
+   "seen": "2026-11-02T19:31:40.147Z",
+   "handle": "insidenflnews.bsky.social",
+   "post": "at://did:plc:mbr4badgf6yu56mquzackzew/app.bsky.feed.post/3mze2o3wxbs2m",
+   "player": "Daniel Jones",
+   "team": "NYG",
+   "status": "none",
+   "kind": "starting",
+   "confidence": 0.8,
+   "text": "Steichen: Daniel Jones will remain starting QB."
   }
  ]
 }
