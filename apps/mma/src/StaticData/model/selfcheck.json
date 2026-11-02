@@ -1,5 +1,5 @@
 {
- "at": "2026-11-02T11:03:46.693Z",
+ "at": "2026-11-02T22:18:32.641Z",
  "baseline": {
   "from": "2026-09-28",
   "to": "2026-10-26"
@@ -74,11 +74,11 @@
   },
   {
    "examples": [],
-   "headline": "No bet placed this week was cut by a guard (25 placed)",
+   "headline": "No bet placed this week was cut by a guard (26 placed)",
    "how": "placed this week against the 28 days before: the bets a guard cut to a half unit, by kind",
    "id": "C8",
    "metric": "ratio",
-   "n": 25,
+   "n": 26,
    "needs": [
     "state.tallies (the guards' skips by day: the Bot keeps only the bets it placed)"
    ],
@@ -310,7 +310,7 @@
    "how": "open bets on games not started: past the gap now, or published at a band today's trust wouldn't give them; open bets past their start plus VOID_AFTER; this week's graded bets with no close read",
    "id": "C13",
    "metric": "stale",
-   "n": 23,
+   "n": 24,
    "needs": null,
    "rows": [
     {
@@ -338,25 +338,25 @@
   },
   {
    "examples": [],
-   "headline": "fairFrom unknown: missing on 6 of 25 bets this week (24%) against 29% before; fair chances from betonlineag",
+   "headline": "fairFrom unknown: missing on 7 of 26 bets this week (27%) against 29% before; fair chances from betonlineag",
    "how": "placed this week against the 28 days before: the share of the bets each field applies to that are missing it",
    "id": "C14",
    "metric": "share",
-   "n": 25,
+   "n": 26,
    "needs": null,
    "rows": [
     {
      "key": "fairFrom unknown",
-     "n": 6,
-     "of": 25,
-     "share": 0.24,
+     "n": 7,
+     "of": 26,
+     "share": 0.2692,
      "shareBase": 0.2885,
      "status": "ok"
     },
     {
      "key": "intent",
      "n": 0,
-     "of": 25,
+     "of": 26,
      "share": 0,
      "shareBase": 0,
      "status": "ok"
@@ -382,20 +382,20 @@
    "tested": null,
    "threshold": "watch a share up 5 points on the baseline (3+ bets, 20+ both); flag doubled (5+)",
    "title": "Data holes",
-   "value": 0.24
+   "value": 0.2692
   },
   {
    "examples": [],
-   "headline": "Model files 3h old, 0 open bets overdue to grade; Odds API credits 748% left; 25 bets placed in a week of 15 games",
+   "headline": "Model files 1h old, 0 open bets overdue to grade; Odds API credits 747% left; 26 bets placed in a week of 15 games",
    "how": "the newest commit of the sport's model files, the open bets started 12 hours ago or more, The Odds API's credits (state.odds), the state's sources",
    "id": "C16",
    "metric": "ageH",
-   "n": 25,
+   "n": 26,
    "needs": null,
    "rows": [
     {
-     "ageH": 3,
-     "at": "2026-11-02T07:17:56Z",
+     "ageH": 1,
+     "at": "2026-11-02T21:16:04Z",
      "key": "files",
      "overdue": 0
     },
@@ -403,8 +403,8 @@
      "cycleEnd": "2026-12-01T00:02:39.102Z",
      "key": "credits",
      "monthly": 20000,
-     "remaining": 149593,
-     "share": 7.4797
+     "remaining": 149309,
+     "share": 7.4655
     },
     {
      "down": [],
@@ -413,22 +413,22 @@
     {
      "games": 15,
      "key": "week",
-     "placed": 25
+     "placed": 26
     }
    ],
    "status": "ok",
    "tested": null,
    "threshold": "watch files 3h old with bets overdue, credits under 20%, a source down, or no bets in a week with games; flag 6h old with bets overdue, or credits under 10%",
    "title": "Ops",
-   "value": 3
+   "value": 1
   },
   {
    "examples": [],
-   "headline": "0 of 25 bets placed this week had the line already moving against them",
+   "headline": "0 of 26 bets placed this week had the line already moving against them",
    "how": "placed this week: a prop's line a point or more against its side since it opened; a game's spread 1.5 (NFL) or 0.5, its total a point, a moneyline without a spread move 3 points of the home chance. A prop moved twice the guard's limit should have been skipped",
    "id": "C2",
    "metric": "roiGap",
-   "n": 25,
+   "n": 26,
    "needs": null,
    "rows": [
     {
@@ -445,7 +445,7 @@
      "e": 2.8762,
      "key": "the rest",
      "n": 4,
-     "placed": 25,
+     "placed": 26,
      "profit": 0.55,
      "roi": 0.1571,
      "w": 3,
