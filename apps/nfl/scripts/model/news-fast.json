@@ -5,9 +5,9 @@
   "rapsheet.bsky.social": "2026-11-01T22:12:21.679Z",
   "nflnewsreposterbot.bsky.social": "2026-10-30T22:57:34.763Z",
   "insidenflnews.bsky.social": "2026-11-02T13:51:07.061Z",
-  "nflnewsposter.bsky.social": "2026-11-02T15:39:36.337Z",
-  "rotoworld-fb.bsky.social": "2026-11-02T14:53:50.000Z",
-  "rotowirenfl.bsky.social": "2026-11-02T15:35:20.000Z"
+  "nflnewsposter.bsky.social": "2026-11-02T15:59:36.476Z",
+  "rotoworld-fb.bsky.social": "2026-11-02T15:41:43.000Z",
+  "rotowirenfl.bsky.social": "2026-11-02T15:44:44.000Z"
  },
  "claims": [
   {
@@ -12281,6 +12281,19 @@
    "kind": "status",
    "confidence": 0.5,
    "text": "[Rapoport] Bucs outside linebacker YaYa Diaby, who exited Sunday’s win early, is believed to have suffered an MCL sprain, source says. He’ll have an MRI this morning, but the hope is the injury is not"
+  },
+  {
+   "id": "at://did:plc:fuqjc7x4gxvnwzksnlxwbe4x/app.bsky.feed.post/3mzdnvznxls2h|davonhamilton|out|status",
+   "at": "2026-11-02T15:40:42.769Z",
+   "seen": "2026-11-02T16:01:32.135Z",
+   "handle": "nflnewsposter.bsky.social",
+   "post": "at://did:plc:fuqjc7x4gxvnwzksnlxwbe4x/app.bsky.feed.post/3mzdnvznxls2h",
+   "player": "DaVon Hamilton",
+   "team": "JAX",
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.95,
+   "text": "[Rapoport] Jaguars standout DT DaVon Hamilton suffered a torn quad in Sunday’s win over the Colts, and he’s expected to be out for the season.\n\nHamilton will undergo more tests today, but a massive ho"
   }
  ]
 }
