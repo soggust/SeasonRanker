@@ -20241,6 +20241,11 @@
    "espn": {
     "seen": "2026-11-02T21:22:19.826Z",
     "own": "2026-11-02T21:16:00.000Z"
+   },
+   "bluesky": {
+    "seen": "2026-11-02T21:57:32.011Z",
+    "own": "2026-11-02T21:19:33.000Z",
+    "why": "@rotowirenba.bsky.social: Rui Hachimura: Won't play Monday \n\n https://www.rotowi"
    }
   },
   "401909920|derrickjones|out": {
@@ -20265,6 +20270,179 @@
    "espn": {
     "seen": "2026-11-02T21:56:02.119Z",
     "own": "2026-11-02T21:23:00.000Z"
+   },
+   "bluesky": {
+    "seen": "2026-11-02T21:57:32.011Z",
+    "own": "2026-11-02T21:23:03.000Z",
+    "why": "@rotowirenba.bsky.social: Scottie Barnes: Questionable to face LAC \n\n https://ww"
+   }
+  },
+  "401909907|ruihachimura|out": {
+   "game": "401909907",
+   "start": "2026-11-03T00:00Z",
+   "team": "5",
+   "name": "Rui Hachimura",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-02T21:57:32.011Z",
+    "own": "2026-11-02T21:19:33.000Z",
+    "why": "@rotowirenba.bsky.social: Rui Hachimura: Won't play Monday \n\n https://www.rotowi"
+   }
+  },
+  "401909908|ruihachimura|out": {
+   "game": "401909908",
+   "start": "2026-11-03T00:30Z",
+   "team": "30",
+   "name": "Rui Hachimura",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-02T21:57:32.011Z",
+    "own": "2026-11-02T21:19:33.000Z",
+    "why": "@rotowirenba.bsky.social: Rui Hachimura: Won't play Monday \n\n https://www.rotowi"
+   }
+  },
+  "401909909|ruihachimura|out": {
+   "game": "401909909",
+   "start": "2026-11-03T00:30Z",
+   "team": "11",
+   "name": "Rui Hachimura",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-02T21:57:32.011Z",
+    "own": "2026-11-02T21:19:33.000Z",
+    "why": "@rotowirenba.bsky.social: Rui Hachimura: Won't play Monday \n\n https://www.rotowi"
+   }
+  },
+  "401909910|ruihachimura|out": {
+   "game": "401909910",
+   "start": "2026-11-03T00:30Z",
+   "team": "18",
+   "name": "Rui Hachimura",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-02T21:57:32.011Z",
+    "own": "2026-11-02T21:19:33.000Z",
+    "why": "@rotowirenba.bsky.social: Rui Hachimura: Won't play Monday \n\n https://www.rotowi"
+   }
+  },
+  "401909911|ruihachimura|out": {
+   "game": "401909911",
+   "start": "2026-11-03T00:30Z",
+   "team": "19",
+   "name": "Rui Hachimura",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-02T21:57:32.011Z",
+    "own": "2026-11-02T21:19:33.000Z",
+    "why": "@rotowirenba.bsky.social: Rui Hachimura: Won't play Monday \n\n https://www.rotowi"
+   }
+  },
+  "401909912|ruihachimura|out": {
+   "game": "401909912",
+   "start": "2026-11-03T00:30Z",
+   "team": "20",
+   "name": "Rui Hachimura",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-02T21:57:32.011Z",
+    "own": "2026-11-02T21:19:33.000Z",
+    "why": "@rotowirenba.bsky.social: Rui Hachimura: Won't play Monday \n\n https://www.rotowi"
+   }
+  },
+  "401909913|ruihachimura|out": {
+   "game": "401909913",
+   "start": "2026-11-03T01:00Z",
+   "team": "6",
+   "name": "Rui Hachimura",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-02T21:57:32.011Z",
+    "own": "2026-11-02T21:19:33.000Z",
+    "why": "@rotowirenba.bsky.social: Rui Hachimura: Won't play Monday \n\n https://www.rotowi"
+   }
+  },
+  "401909914|ruihachimura|out": {
+   "game": "401909914",
+   "start": "2026-11-03T01:00Z",
+   "team": "29",
+   "name": "Rui Hachimura",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-02T21:57:32.011Z",
+    "own": "2026-11-02T21:19:33.000Z",
+    "why": "@rotowirenba.bsky.social: Rui Hachimura: Won't play Monday \n\n https://www.rotowi"
+   }
+  },
+  "401909915|ruihachimura|out": {
+   "game": "401909915",
+   "start": "2026-11-03T01:00Z",
+   "team": "16",
+   "name": "Rui Hachimura",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-02T21:57:32.011Z",
+    "own": "2026-11-02T21:19:33.000Z",
+    "why": "@rotowirenba.bsky.social: Rui Hachimura: Won't play Monday \n\n https://www.rotowi"
+   }
+  },
+  "401909916|ruihachimura|out": {
+   "game": "401909916",
+   "start": "2026-11-03T01:30Z",
+   "team": "10",
+   "name": "Rui Hachimura",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-02T21:57:32.011Z",
+    "own": "2026-11-02T21:19:33.000Z",
+    "why": "@rotowirenba.bsky.social: Rui Hachimura: Won't play Monday \n\n https://www.rotowi"
+   }
+  },
+  "401909917|ruihachimura|out": {
+   "game": "401909917",
+   "start": "2026-11-03T01:30Z",
+   "team": "24",
+   "name": "Rui Hachimura",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-02T21:57:32.011Z",
+    "own": "2026-11-02T21:19:33.000Z",
+    "why": "@rotowirenba.bsky.social: Rui Hachimura: Won't play Monday \n\n https://www.rotowi"
+   }
+  },
+  "401909918|ruihachimura|out": {
+   "game": "401909918",
+   "start": "2026-11-03T02:00Z",
+   "team": "7",
+   "name": "Rui Hachimura",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-02T21:57:32.011Z",
+    "own": "2026-11-02T21:19:33.000Z",
+    "why": "@rotowirenba.bsky.social: Rui Hachimura: Won't play Monday \n\n https://www.rotowi"
+   }
+  },
+  "401909919|ruihachimura|out": {
+   "game": "401909919",
+   "start": "2026-11-03T03:00Z",
+   "team": "9",
+   "name": "Rui Hachimura",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-02T21:57:32.011Z",
+    "own": "2026-11-02T21:19:33.000Z",
+    "why": "@rotowirenba.bsky.social: Rui Hachimura: Won't play Monday \n\n https://www.rotowi"
+   }
+  },
+  "401909921|ruihachimura|out": {
+   "game": "401909921",
+   "start": "2026-11-03T03:00Z",
+   "team": "13",
+   "name": "Rui Hachimura",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-02T21:57:32.011Z",
+    "own": "2026-11-02T21:19:33.000Z",
+    "why": "@rotowirenba.bsky.social: Rui Hachimura: Won't play Monday \n\n https://www.rotowi"
    }
   }
  }
