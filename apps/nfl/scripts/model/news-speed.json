@@ -16811,6 +16811,78 @@
     "seen": "2026-11-02T22:05:33.548Z",
     "own": "2026-11-02T21:54:00.000Z"
    }
+  },
+  "401873036|brandonpili|out": {
+   "game": "401873036",
+   "start": "2026-11-03T01:15Z",
+   "team": "26",
+   "name": "Brandon Pili",
+   "status": "out",
+   "athlete": "4259651",
+   "espn": {
+    "seen": "2026-11-02T23:53:00.439Z",
+    "own": "2026-10-30T23:15:00.000Z"
+   }
+  },
+  "401873036|jordanvandenberg|out": {
+   "game": "401873036",
+   "start": "2026-11-03T01:15Z",
+   "team": "3",
+   "name": "Jordan van den Berg",
+   "status": "out",
+   "athlete": "4875381",
+   "espn": {
+    "seen": "2026-11-02T23:53:00.439Z",
+    "own": "2026-11-02T23:47:00.000Z"
+   }
+  },
+  "401873036|casekeenum|out": {
+   "game": "401873036",
+   "start": "2026-11-03T01:15Z",
+   "team": "3",
+   "name": "Case Keenum",
+   "status": "out",
+   "athlete": "15168",
+   "espn": {
+    "seen": "2026-11-02T23:53:00.439Z",
+    "own": "2026-11-02T23:47:00.000Z"
+   }
+  },
+  "401873036|jaydenloving|out": {
+   "game": "401873036",
+   "start": "2026-11-03T01:15Z",
+   "team": "3",
+   "name": "Jayden Loving",
+   "status": "out",
+   "athlete": "4877376",
+   "espn": {
+    "seen": "2026-11-02T23:53:00.439Z",
+    "own": "2026-11-02T23:47:00.000Z"
+   }
+  },
+  "401873036|jordanmcfadden|out": {
+   "game": "401873036",
+   "start": "2026-11-03T01:15Z",
+   "team": "3",
+   "name": "Jordan McFadden",
+   "status": "out",
+   "athlete": "4360319",
+   "espn": {
+    "seen": "2026-11-02T23:53:00.439Z",
+    "own": "2026-11-02T23:47:00.000Z"
+   }
+  },
+  "401873036|malikmuhammad|out": {
+   "game": "401873036",
+   "start": "2026-11-03T01:15Z",
+   "team": "3",
+   "name": "Malik Muhammad II",
+   "status": "out",
+   "athlete": "4870953",
+   "espn": {
+    "seen": "2026-11-02T23:53:00.439Z",
+    "own": "2026-11-02T23:47:00.000Z"
+   }
   }
  }
 }
