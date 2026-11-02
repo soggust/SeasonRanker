@@ -1,7 +1,7 @@
 {
  "sport": "nfl",
  "cursor": {
-  "adamscheftermirror.bsky.social": "2026-11-02T10:29:15.272Z",
+  "adamscheftermirror.bsky.social": "2026-11-02T11:59:20.735Z",
   "rapsheet.bsky.social": "2026-11-01T22:12:21.679Z",
   "nflnewsreposterbot.bsky.social": "2026-10-30T22:57:34.763Z",
   "insidenflnews.bsky.social": "2026-11-02T02:28:18.632Z",
@@ -12229,6 +12229,19 @@
    "kind": "status",
    "confidence": 0.9,
    "text": "[Eagles] Injury Update: DB Michael Carter II (abdomen) is questionable to return. twitter.com/Eagles/statu..."
+  },
+  {
+   "id": "at://did:plc:qre6zxbmr3ixhdmgsgdretb5/app.bsky.feed.post/3mzdapblhsr2p|lamarjackson|out|status",
+   "at": "2026-11-02T11:44:17.452Z",
+   "seen": "2026-11-02T12:49:30.972Z",
+   "handle": "adamscheftermirror.bsky.social",
+   "post": "at://did:plc:qre6zxbmr3ixhdmgsgdretb5/app.bsky.feed.post/3mzdapblhsr2p",
+   "player": "Lamar Jackson",
+   "team": "BAL",
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.9,
+   "text": "More about Ravens QB Lamar Jackson needing surgery on his injured right thumb and having to go on injured reserve, via @jamisonhensley:\n\nOriginal post"
   }
  ]
 }
