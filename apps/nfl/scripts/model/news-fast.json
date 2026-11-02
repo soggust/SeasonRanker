@@ -5,7 +5,7 @@
   "rapsheet.bsky.social": "2026-11-01T22:12:21.679Z",
   "nflnewsreposterbot.bsky.social": "2026-10-30T22:57:34.763Z",
   "insidenflnews.bsky.social": "2026-11-02T13:51:07.061Z",
-  "nflnewsposter.bsky.social": "2026-11-02T15:59:36.476Z",
+  "nflnewsposter.bsky.social": "2026-11-02T16:14:51.168Z",
   "rotoworld-fb.bsky.social": "2026-11-02T15:41:43.000Z",
   "rotowirenfl.bsky.social": "2026-11-02T15:44:44.000Z"
  },
@@ -12294,6 +12294,19 @@
    "kind": "status",
    "confidence": 0.95,
    "text": "[Rapoport] Jaguars standout DT DaVon Hamilton suffered a torn quad in Sunday’s win over the Colts, and he’s expected to be out for the season.\n\nHamilton will undergo more tests today, but a massive ho"
+  },
+  {
+   "id": "at://did:plc:fuqjc7x4gxvnwzksnlxwbe4x/app.bsky.feed.post/3mzdpt3667s2g|jalynarmourdavis|none|role",
+   "at": "2026-11-02T16:14:51.168Z",
+   "seen": "2026-11-02T16:22:44.450Z",
+   "handle": "nflnewsposter.bsky.social",
+   "post": "at://did:plc:fuqjc7x4gxvnwzksnlxwbe4x/app.bsky.feed.post/3mzdpt3667s2g",
+   "player": "Jalyn Armour-Davis",
+   "team": "LAC",
+   "status": "none",
+   "kind": "role",
+   "confidence": 0.3,
+   "text": "[Schultz] Chargers are signing former Ravens and Titans CB Jalyn Armour-Davis.\n\nThe former Alabama standout started 10 games for Tennessee last season before suffering a torn Achilles. He’s now fully "
   }
  ]
 }

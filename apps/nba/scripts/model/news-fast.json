@@ -1,7 +1,7 @@
 {
  "sport": "nba",
  "cursor": {
-  "rotowirenba.bsky.social": "2026-11-02T15:16:04.000Z",
+  "rotowirenba.bsky.social": "2026-11-02T16:01:37.000Z",
   "insidenbanews.bsky.social": "2026-10-30T19:15:23.134Z",
   "shamsbot.bsky.social": "2026-11-02T01:51:08.000Z"
  },
@@ -6882,6 +6882,19 @@
    "kind": "status",
    "confidence": 0.9,
    "text": "Kingston Flemings: Suspended one game \n\n https://www.rotowire.com/basketball/player/kingston-flemings-6927"
+  },
+  {
+   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mzdp3gno7r2r|brandoningram|active|return",
+   "at": "2026-11-02T16:01:37.000Z",
+   "seen": "2026-11-02T16:22:44.450Z",
+   "handle": "rotowirenba.bsky.social",
+   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mzdp3gno7r2r",
+   "player": "Brandon Ingram",
+   "team": null,
+   "status": "active",
+   "kind": "return",
+   "confidence": 0.8,
+   "text": "Brandon Ingram: Returns from G League assignment \n\n https://www.rotowire.com/basketball/player/brandon-ingram-3861"
   }
  ]
 }
