@@ -20007,6 +20007,30 @@
     "own": "2026-11-02T23:17:55.000Z",
     "why": "@rotowirenba.bsky.social: Peyton Watson: Won't play Monday \n\n https://www.rotowi"
    }
+  },
+  "401909914|scottypippen|out": {
+   "game": "401909914",
+   "start": "2026-11-03T01:00Z",
+   "team": "29",
+   "name": "Scotty Pippen Jr.",
+   "status": "out",
+   "athlete": "4431785",
+   "espn": {
+    "seen": "2026-11-03T00:19:54.958Z",
+    "own": "2026-11-03T00:13:00.000Z"
+   }
+  },
+  "401909914|quintenpost|out": {
+   "game": "401909914",
+   "start": "2026-11-03T01:00Z",
+   "team": "29",
+   "name": "Quinten Post",
+   "status": "out",
+   "athlete": "4593016",
+   "espn": {
+    "seen": "2026-11-03T00:19:54.958Z",
+    "own": "2026-11-03T00:12:00.000Z"
+   }
   }
  }
 }
