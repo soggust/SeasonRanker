@@ -1,11 +1,11 @@
 {
  "sport": "nhl",
  "cursor": {
-  "johnston-bot.bsky.social": "2026-11-03T13:08:59.168Z",
-  "notfriedgehnic.bsky.social": "2026-11-02T22:56:28.338Z",
-  "dailyfaceoff.bsky.social": "2026-11-03T13:02:50.000Z",
-  "dfotoronto.bsky.social": "2026-11-03T13:01:52.000Z",
-  "marklazerus.bsky.social": "2026-11-02T18:48:47.169Z"
+  "johnston-bot.bsky.social": "2026-11-03T23:04:54.714Z",
+  "notfriedgehnic.bsky.social": "2026-11-03T19:05:28.655Z",
+  "dailyfaceoff.bsky.social": "2026-11-03T23:30:30.000Z",
+  "dfotoronto.bsky.social": "2026-11-03T22:51:41.000Z",
+  "marklazerus.bsky.social": "2026-11-03T21:25:03.209Z"
  },
  "claims": [
   {
@@ -1515,6 +1515,58 @@
    "kind": "status",
    "confidence": 0.85,
    "text": "Blackhawks’ Patrick Kane to miss time with upper-body injury. #nhl #nhlhockey #dailyfaceoff"
+  },
+  {
+   "id": "at://did:plc:ma4xzjexknxz7geuggbqbsmi/app.bsky.feed.post/3mzg62zzcp42f|johntavares|questionable|status",
+   "at": "2026-11-03T15:35:09.530Z",
+   "seen": "2026-11-03T23:48:14.330Z",
+   "handle": "johnston-bot.bsky.social",
+   "post": "at://did:plc:ma4xzjexknxz7geuggbqbsmi/app.bsky.feed.post/3mzg62zzcp42f",
+   "player": "John Tavares",
+   "team": "TOR",
+   "status": "questionable",
+   "kind": "status",
+   "confidence": 0.9,
+   "text": "John Tavares is skating in a non-contact sweater this morning and is now considered day to day, per the #leafs. \n\nHis return is nearing."
+  },
+  {
+   "id": "at://did:plc:knaj2vcp4x6t7hr7ewd6e3uz/app.bsky.feed.post/3mzg6o247jz23|johntavares|questionable|status",
+   "at": "2026-11-03T15:45:47.000Z",
+   "seen": "2026-11-03T23:48:14.330Z",
+   "handle": "dfotoronto.bsky.social",
+   "post": "at://did:plc:knaj2vcp4x6t7hr7ewd6e3uz/app.bsky.feed.post/3mzg6o247jz23",
+   "player": "John Tavares",
+   "team": "TOR",
+   "status": "questionable",
+   "kind": "status",
+   "confidence": 0.95,
+   "text": "John Tavares has been upgraded to day-to-day, per Leafs PR"
+  },
+  {
+   "id": "at://did:plc:knaj2vcp4x6t7hr7ewd6e3uz/app.bsky.feed.post/3mzgcmklmdt2n|johntavares|limited|status",
+   "at": "2026-11-03T16:56:32.000Z",
+   "seen": "2026-11-03T23:48:14.330Z",
+   "handle": "dfotoronto.bsky.social",
+   "post": "at://did:plc:knaj2vcp4x6t7hr7ewd6e3uz/app.bsky.feed.post/3mzgcmklmdt2n",
+   "player": "John Tavares",
+   "team": "TOR",
+   "status": "limited",
+   "kind": "status",
+   "confidence": 0.7,
+   "text": "Leafs lineup news: John Tavares skates in red non-contact jersey, Sergei Bobrovsky starts vs. Mammoth"
+  },
+  {
+   "id": "at://did:plc:3uus7y6h3rlrk6sbctzxm4bg/app.bsky.feed.post/3mzgiw6hmuh2u|howard|out|status",
+   "at": "2026-11-03T18:49:18.000Z",
+   "seen": "2026-11-03T23:48:14.330Z",
+   "handle": "dailyfaceoff.bsky.social",
+   "post": "at://did:plc:3uus7y6h3rlrk6sbctzxm4bg/app.bsky.feed.post/3mzgiw6hmuh2u",
+   "player": "Howard",
+   "team": "EDM",
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.9,
+   "text": "Oilers’ Howard out week-to-week with lower-body injury"
   }
  ]
 }
