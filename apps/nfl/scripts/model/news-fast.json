@@ -1,13 +1,13 @@
 {
  "sport": "nfl",
  "cursor": {
-  "adamscheftermirror.bsky.social": "2026-11-02T23:59:15.346Z",
+  "adamscheftermirror.bsky.social": "2026-11-03T00:44:20.081Z",
   "rapsheet.bsky.social": "2026-11-02T22:39:42.439Z",
   "nflnewsreposterbot.bsky.social": "2026-11-02T21:32:04.821Z",
   "insidenflnews.bsky.social": "2026-11-03T00:22:49.991Z",
-  "nflnewsposter.bsky.social": "2026-11-03T00:23:42.906Z",
+  "nflnewsposter.bsky.social": "2026-11-03T00:42:49.896Z",
   "rotoworld-fb.bsky.social": "2026-11-02T23:54:45.000Z",
-  "rotowirenfl.bsky.social": "2026-11-03T00:02:40.000Z"
+  "rotowirenfl.bsky.social": "2026-11-03T00:43:45.000Z"
  },
  "claims": [
   {
@@ -12931,6 +12931,58 @@
    "kind": "status",
    "confidence": 0.8,
    "text": "Jeremy McNichols (foot) expected to miss multiple months, per @tashanreed.bsky.social."
+  },
+  {
+   "id": "at://did:plc:fuqjc7x4gxvnwzksnlxwbe4x/app.bsky.feed.post/3mzem7fx2426c|loop|out|status",
+   "at": "2026-11-03T00:42:49.896Z",
+   "seen": "2026-11-03T00:45:42.890Z",
+   "handle": "nflnewsposter.bsky.social",
+   "post": "at://did:plc:fuqjc7x4gxvnwzksnlxwbe4x/app.bsky.feed.post/3mzem7fx2426c",
+   "player": "Loop",
+   "team": "BAL",
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.6,
+   "text": "[Zrebiec] Loop listed with a groin injury that Minter said will likely result in an IR trip. twitter.com/jeffzrebiec/...\n\n[Garafolo] Ravens list QB Joe Fagnano as limited in a projected practice repor"
+  },
+  {
+   "id": "at://did:plc:fuqjc7x4gxvnwzksnlxwbe4x/app.bsky.feed.post/3mzem7fx2426c|joefagnano|limited|status",
+   "at": "2026-11-03T00:42:49.896Z",
+   "seen": "2026-11-03T00:45:42.890Z",
+   "handle": "nflnewsposter.bsky.social",
+   "post": "at://did:plc:fuqjc7x4gxvnwzksnlxwbe4x/app.bsky.feed.post/3mzem7fx2426c",
+   "player": "Joe Fagnano",
+   "team": "BAL",
+   "status": "limited",
+   "kind": "status",
+   "confidence": 0.8,
+   "text": "[Zrebiec] Loop listed with a groin injury that Minter said will likely result in an IR trip. twitter.com/jeffzrebiec/...\n\n[Garafolo] Ravens list QB Joe Fagnano as limited in a projected practice repor"
+  },
+  {
+   "id": "at://did:plc:fuqjc7x4gxvnwzksnlxwbe4x/app.bsky.feed.post/3mzem7fx2426c|tylerhuntley|out|status",
+   "at": "2026-11-03T00:42:49.896Z",
+   "seen": "2026-11-03T00:45:42.890Z",
+   "handle": "nflnewsposter.bsky.social",
+   "post": "at://did:plc:fuqjc7x4gxvnwzksnlxwbe4x/app.bsky.feed.post/3mzem7fx2426c",
+   "player": "Tyler Huntley",
+   "team": "BAL",
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.4,
+   "text": "[Zrebiec] Loop listed with a groin injury that Minter said will likely result in an IR trip. twitter.com/jeffzrebiec/...\n\n[Garafolo] Ravens list QB Joe Fagnano as limited in a projected practice repor"
+  },
+  {
+   "id": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3mzemb2n7dg2y|bhayshultuten|questionable|status",
+   "at": "2026-11-03T00:43:45.000Z",
+   "seen": "2026-11-03T00:45:42.890Z",
+   "handle": "rotowirenfl.bsky.social",
+   "post": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3mzemb2n7dg2y",
+   "player": "Bhayshul Tuten",
+   "team": null,
+   "status": "questionable",
+   "kind": "status",
+   "confidence": 0.3,
+   "text": "Bhayshul Tuten: Dealing with ankle, foot injuries \n\n https://www.rotowire.com/football/player/bhayshul-tuten-18524"
   }
  ]
 }
