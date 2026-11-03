@@ -19039,6 +19039,102 @@
     "seen": "2026-11-03T05:13:46.994Z",
     "own": "2026-10-05T20:53:00.000Z"
    }
+  },
+  "401909933|tobiasharris|out": {
+   "game": "401909933",
+   "start": "2026-11-05T02:30Z",
+   "team": "24",
+   "name": "Tobias Harris",
+   "status": "out",
+   "athlete": "6440",
+   "espn": {
+    "seen": "2026-11-03T05:34:31.719Z",
+    "own": "2026-10-30T21:44:00.000Z"
+   }
+  },
+  "401909933|jaydenquaintance|out": {
+   "game": "401909933",
+   "start": "2026-11-05T02:30Z",
+   "team": "24",
+   "name": "Jayden Quaintance",
+   "status": "out",
+   "athlete": "5101845",
+   "espn": {
+    "seen": "2026-11-03T05:34:31.719Z",
+    "own": "2026-10-05T21:43:00.000Z"
+   }
+  },
+  "401909933|maxchristie|q": {
+   "game": "401909933",
+   "start": "2026-11-05T02:30Z",
+   "team": "6",
+   "name": "Max Christie",
+   "status": "q",
+   "athlete": "4432582",
+   "espn": {
+    "seen": "2026-11-03T05:34:31.719Z",
+    "own": "2026-11-03T02:30:00.000Z"
+   }
+  },
+  "401909933|kyrieirving|out": {
+   "game": "401909933",
+   "start": "2026-11-05T02:30Z",
+   "team": "6",
+   "name": "Kyrie Irving",
+   "status": "out",
+   "athlete": "6442",
+   "espn": {
+    "seen": "2026-11-03T05:34:31.719Z",
+    "own": "2026-11-02T23:13:00.000Z"
+   }
+  },
+  "401909933|santialdama|out": {
+   "game": "401909933",
+   "start": "2026-11-05T02:30Z",
+   "team": "6",
+   "name": "Santi Aldama",
+   "status": "out",
+   "athlete": "4593125",
+   "espn": {
+    "seen": "2026-11-03T05:34:31.719Z",
+    "own": "2026-11-02T23:12:00.000Z"
+   }
+  },
+  "401909933|tarikbiberovic|out": {
+   "game": "401909933",
+   "start": "2026-11-05T02:30Z",
+   "team": "6",
+   "name": "Tarik Biberovic",
+   "status": "out",
+   "athlete": "5148538",
+   "espn": {
+    "seen": "2026-11-03T05:34:31.719Z",
+    "own": "2026-11-01T23:19:00.000Z"
+   }
+  },
+  "401909933|derecklively|out": {
+   "game": "401909933",
+   "start": "2026-11-05T02:30Z",
+   "team": "6",
+   "name": "Dereck Lively II",
+   "status": "out",
+   "athlete": "4683688",
+   "espn": {
+    "seen": "2026-11-03T05:34:31.719Z",
+    "own": "2026-11-01T22:57:00.000Z"
+   }
+  },
+  "401909933|sergiodelarrea|out": {
+   "game": "401909933",
+   "start": "2026-11-05T02:30Z",
+   "team": "6",
+   "name": "Sergio de Larrea",
+   "status": "out",
+   "athlete": "5279129",
+   "espn": {
+    "seen": "2026-11-03T05:34:31.719Z",
+    "own": "2026-10-30T22:34:00.000Z"
+   }
   }
  }
 }
