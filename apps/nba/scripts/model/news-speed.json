@@ -19447,6 +19447,54 @@
     "seen": "2026-11-03T22:11:13.845Z",
     "own": "2026-11-03T01:30:00.000Z"
    }
+  },
+  "401909923|jocklandale|out": {
+   "game": "401909923",
+   "start": "2026-11-05T00:00Z",
+   "team": "1",
+   "name": "Jock Landale",
+   "status": "out",
+   "athlete": "3146557",
+   "espn": {
+    "seen": "2026-11-03T22:18:37.962Z",
+    "own": "2026-11-03T22:08:00.000Z"
+   }
+  },
+  "401909925|cobywhite|q": {
+   "game": "401909925",
+   "start": "2026-11-05T00:30Z",
+   "team": "30",
+   "name": "Coby White",
+   "status": "q",
+   "athlete": "4395651",
+   "espn": {
+    "seen": "2026-11-03T22:18:37.962Z",
+    "own": "2026-11-03T22:06:00.000Z"
+   }
+  },
+  "401909929|jaylontyson|out": {
+   "game": "401909929",
+   "start": "2026-11-05T01:00Z",
+   "team": "5",
+   "name": "Jaylon Tyson",
+   "status": "out",
+   "athlete": "4683747",
+   "espn": {
+    "seen": "2026-11-03T22:18:37.962Z",
+    "own": "2026-11-03T22:11:00.000Z"
+   }
+  },
+  "401909929|peytonwatson|out": {
+   "game": "401909929",
+   "start": "2026-11-05T01:00Z",
+   "team": "5",
+   "name": "Peyton Watson",
+   "status": "out",
+   "athlete": "4576087",
+   "espn": {
+    "seen": "2026-11-03T22:18:37.962Z",
+    "own": "2026-11-03T22:09:00.000Z"
+   }
   }
  }
 }
