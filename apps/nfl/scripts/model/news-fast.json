@@ -1,7 +1,7 @@
 {
  "sport": "nfl",
  "cursor": {
-  "adamscheftermirror.bsky.social": "2026-11-03T04:34:33.814Z",
+  "adamscheftermirror.bsky.social": "2026-11-03T11:44:37.354Z",
   "rapsheet.bsky.social": "2026-11-02T22:39:42.439Z",
   "nflnewsreposterbot.bsky.social": "2026-11-02T21:32:04.821Z",
   "insidenflnews.bsky.social": "2026-11-03T04:27:43.332Z",
@@ -13074,6 +13074,45 @@
    "kind": "status",
    "confidence": 0.95,
    "text": "[Bears] Bears DL Kentavius Street (Knee) is ruled OUT and DL Grady Jarrett (Groin) is DOUBTFUL to return. twitter.com/BearsPR/stat..."
+  },
+  {
+   "id": "at://did:plc:qre6zxbmr3ixhdmgsgdretb5/app.bsky.feed.post/3mzfqdlwfbf2t|lamarjackson|out|status",
+   "at": "2026-11-03T11:29:25.052Z",
+   "seen": "2026-11-03T12:44:38.708Z",
+   "handle": "adamscheftermirror.bsky.social",
+   "post": "at://did:plc:qre6zxbmr3ixhdmgsgdretb5/app.bsky.feed.post/3mzfqdlwfbf2t",
+   "player": "Lamar Jackson",
+   "team": "BAL",
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.95,
+   "text": "In addition to Lamar Jackson and Tyler Huntley being ruled out for Thursday’s game vs. the Jaguars, the Ravens' No. 3 quarterback Joe Fagnano is dealing with an ankle injury. Story via @jamisonhensley"
+  },
+  {
+   "id": "at://did:plc:qre6zxbmr3ixhdmgsgdretb5/app.bsky.feed.post/3mzfqdlwfbf2t|tylerhuntley|out|status",
+   "at": "2026-11-03T11:29:25.052Z",
+   "seen": "2026-11-03T12:44:38.708Z",
+   "handle": "adamscheftermirror.bsky.social",
+   "post": "at://did:plc:qre6zxbmr3ixhdmgsgdretb5/app.bsky.feed.post/3mzfqdlwfbf2t",
+   "player": "Tyler Huntley",
+   "team": "BAL",
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.95,
+   "text": "In addition to Lamar Jackson and Tyler Huntley being ruled out for Thursday’s game vs. the Jaguars, the Ravens' No. 3 quarterback Joe Fagnano is dealing with an ankle injury. Story via @jamisonhensley"
+  },
+  {
+   "id": "at://did:plc:qre6zxbmr3ixhdmgsgdretb5/app.bsky.feed.post/3mzfqdlwfbf2t|joefagnano|questionable|status",
+   "at": "2026-11-03T11:29:25.052Z",
+   "seen": "2026-11-03T12:44:38.708Z",
+   "handle": "adamscheftermirror.bsky.social",
+   "post": "at://did:plc:qre6zxbmr3ixhdmgsgdretb5/app.bsky.feed.post/3mzfqdlwfbf2t",
+   "player": "Joe Fagnano",
+   "team": "BAL",
+   "status": "questionable",
+   "kind": "status",
+   "confidence": 0.6,
+   "text": "In addition to Lamar Jackson and Tyler Huntley being ruled out for Thursday’s game vs. the Jaguars, the Ravens' No. 3 quarterback Joe Fagnano is dealing with an ankle injury. Story via @jamisonhensley"
   }
  ]
 }
