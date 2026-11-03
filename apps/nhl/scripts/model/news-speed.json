@@ -9090,6 +9090,18 @@
     "seen": "2026-11-02T19:46:12.172Z",
     "own": "2026-11-02T19:31:00.000Z"
    }
+  },
+  "401892635|brittacurlsalemme|out": {
+   "game": "401892635",
+   "start": "2026-11-04T00:00Z",
+   "team": "5",
+   "name": "Britta Curl-Salemme",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-03T02:54:47.610Z",
+    "own": "2026-11-03T02:29:05.000Z",
+    "why": "@dailyfaceoff.bsky.social: PWHL Detroit’s Britta Curl-Salemme to miss 2026-27 af"
+   }
   }
  }
 }
