@@ -7,7 +7,7 @@
   "insidenflnews.bsky.social": "2026-11-03T00:22:49.991Z",
   "nflnewsposter.bsky.social": "2026-11-03T00:42:49.896Z",
   "rotoworld-fb.bsky.social": "2026-11-02T23:54:45.000Z",
-  "rotowirenfl.bsky.social": "2026-11-03T00:43:45.000Z"
+  "rotowirenfl.bsky.social": "2026-11-03T00:54:18.000Z"
  },
  "claims": [
   {
@@ -12983,6 +12983,19 @@
    "kind": "status",
    "confidence": 0.3,
    "text": "Bhayshul Tuten: Dealing with ankle, foot injuries \n\n https://www.rotowire.com/football/player/bhayshul-tuten-18524"
+  },
+  {
+   "id": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3mzemkjg55h2s|zachcharbonnet|none|role",
+   "at": "2026-11-03T00:49:02.000Z",
+   "seen": "2026-11-03T01:07:37.263Z",
+   "handle": "rotowirenfl.bsky.social",
+   "post": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3mzemkjg55h2s",
+   "player": "Zach Charbonnet",
+   "team": null,
+   "status": "none",
+   "kind": "role",
+   "confidence": 0.35,
+   "text": "Zach Charbonnet: Works with starters in warmups \n\n https://www.rotowire.com/football/player/zach-charbonnet-16897"
   }
  ]
 }
