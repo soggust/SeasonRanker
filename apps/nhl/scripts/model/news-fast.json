@@ -3,7 +3,7 @@
  "cursor": {
   "johnston-bot.bsky.social": "2026-11-02T21:27:31.167Z",
   "notfriedgehnic.bsky.social": "2026-11-02T22:56:28.338Z",
-  "dailyfaceoff.bsky.social": "2026-11-03T00:38:04.000Z",
+  "dailyfaceoff.bsky.social": "2026-11-03T02:46:56.000Z",
   "dfotoronto.bsky.social": "2026-11-02T23:00:18.000Z",
   "marklazerus.bsky.social": "2026-11-02T18:48:47.169Z"
  },
@@ -1489,6 +1489,19 @@
    "kind": "starting",
    "confidence": 0.8,
    "text": "Jim Hiller defends decision to return the net to Sergei Bobrovsky vs. Mammoth on Tuesday: ‘We have a plan’"
+  },
+  {
+   "id": "at://did:plc:3uus7y6h3rlrk6sbctzxm4bg/app.bsky.feed.post/3mzes5gtrtc24|brittacurlsalemme|out|status",
+   "at": "2026-11-03T02:29:05.000Z",
+   "seen": "2026-11-03T02:54:47.610Z",
+   "handle": "dailyfaceoff.bsky.social",
+   "post": "at://did:plc:3uus7y6h3rlrk6sbctzxm4bg/app.bsky.feed.post/3mzes5gtrtc24",
+   "player": "Britta Curl-Salemme",
+   "team": "DET",
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.8,
+   "text": "PWHL Detroit’s Britta Curl-Salemme to miss 2026-27 after pregnancy announcement"
   }
  ]
 }

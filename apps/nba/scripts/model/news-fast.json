@@ -1,7 +1,7 @@
 {
  "sport": "nba",
  "cursor": {
-  "rotowirenba.bsky.social": "2026-11-03T02:05:38.000Z",
+  "rotowirenba.bsky.social": "2026-11-03T02:52:48.000Z",
   "insidenbanews.bsky.social": "2026-11-02T19:09:04.708Z",
   "shamsbot.bsky.social": "2026-11-02T19:03:58.000Z"
  },
@@ -7168,6 +7168,97 @@
    "kind": "starting",
    "confidence": 0.9,
    "text": "Brayden Burries: Starting Monday \n\n https://www.rotowire.com/basketball/player/brayden-burries-6967"
+  },
+  {
+   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mzerjgnnjg2l|scottiebarnes|active|status",
+   "at": "2026-11-03T02:17:54.000Z",
+   "seen": "2026-11-03T02:54:47.610Z",
+   "handle": "rotowirenba.bsky.social",
+   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mzerjgnnjg2l",
+   "player": "Scottie Barnes",
+   "team": "TOR",
+   "status": "active",
+   "kind": "status",
+   "confidence": 0.7,
+   "text": "Scottie Barnes: Upgraded to probable \n\n https://www.rotowire.com/basketball/player/scottie-barnes-5390"
+  },
+  {
+   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mzerqtgfj22r|jakobpoeltl|doubtful|status",
+   "at": "2026-11-03T02:22:03.000Z",
+   "seen": "2026-11-03T02:54:47.610Z",
+   "handle": "rotowirenba.bsky.social",
+   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mzerqtgfj22r",
+   "player": "Jakob Poeltl",
+   "team": "SAS",
+   "status": "doubtful",
+   "kind": "status",
+   "confidence": 0.95,
+   "text": "Jakob Poeltl: Downgraded to doubtful Monday \n\n https://www.rotowire.com/basketball/player/jakob-poeltl-3870"
+  },
+  {
+   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mzervo54lt2v|scottiebarnes|active|status",
+   "at": "2026-11-03T02:24:45.000Z",
+   "seen": "2026-11-03T02:54:47.610Z",
+   "handle": "rotowirenba.bsky.social",
+   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mzervo54lt2v",
+   "player": "Scottie Barnes",
+   "team": "TOR",
+   "status": "active",
+   "kind": "status",
+   "confidence": 0.95,
+   "text": "Scottie Barnes: Officially cleared to play Monday \n\n https://www.rotowire.com/basketball/player/scottie-barnes-5390"
+  },
+  {
+   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mzerxahxac2r|mitchellrobinson|active|return",
+   "at": "2026-11-03T02:25:38.000Z",
+   "seen": "2026-11-03T02:54:47.610Z",
+   "handle": "rotowirenba.bsky.social",
+   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mzerxahxac2r",
+   "player": "Mitchell Robinson",
+   "team": "NYK",
+   "status": "active",
+   "kind": "return",
+   "confidence": 0.3,
+   "text": "Mitchell Robinson: Likely to return Monday \n\n https://www.rotowire.com/basketball/player/mitchell-robinson-4426"
+  },
+  {
+   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mzes4fdd4a27|mitchellrobinson|active|return",
+   "at": "2026-11-03T02:28:30.000Z",
+   "seen": "2026-11-03T02:54:47.610Z",
+   "handle": "rotowirenba.bsky.social",
+   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mzes4fdd4a27",
+   "player": "Mitchell Robinson",
+   "team": "NYK",
+   "status": "active",
+   "kind": "return",
+   "confidence": 0.9,
+   "text": "Mitchell Robinson: Returns Monday \n\n https://www.rotowire.com/basketball/player/mitchell-robinson-4426"
+  },
+  {
+   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mzesowhwnc2r|ziairewilliams|none|benched",
+   "at": "2026-11-03T02:38:52.000Z",
+   "seen": "2026-11-03T02:54:47.610Z",
+   "handle": "rotowirenba.bsky.social",
+   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mzesowhwnc2r",
+   "player": "Ziaire Williams",
+   "team": null,
+   "status": "none",
+   "kind": "benched",
+   "confidence": 0.9,
+   "text": "Ziaire Williams: Not starting Monday \n\n https://www.rotowire.com/basketball/player/ziaire-williams-5400"
+  },
+  {
+   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mzet25hdxk2e|willrichard|none|starting",
+   "at": "2026-11-03T02:45:09.000Z",
+   "seen": "2026-11-03T02:54:47.610Z",
+   "handle": "rotowirenba.bsky.social",
+   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mzet25hdxk2e",
+   "player": "Will Richard",
+   "team": null,
+   "status": "none",
+   "kind": "starting",
+   "confidence": 0.9,
+   "text": "Will Richard: Moves into starting lineup Monday \n\n https://www.rotowire.com/basketball/player/will-richard-6625"
   }
  ]
 }
