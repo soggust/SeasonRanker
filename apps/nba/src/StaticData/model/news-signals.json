@@ -1,6 +1,51 @@
 {
  "sport": "nba",
  "days": 2,
- "signals": [],
- "at": "2026-11-01T18:07:37.463Z"
+ "signals": [
+  {
+   "team": "30",
+   "abbr": "CHA",
+   "athlete": "4395651",
+   "player": "Coby White",
+   "kind": "return",
+   "direction": "up",
+   "confidence": 0.9,
+   "headline": "Coby White returns for Hornets, Kon Knueppel 'right around the corner'",
+   "at": "2026-11-02T23:51:57.000Z"
+  },
+  {
+   "team": "30",
+   "abbr": "CHA",
+   "athlete": null,
+   "player": "Kon Knueppel",
+   "kind": "return",
+   "direction": "up",
+   "confidence": 0.6,
+   "headline": "Coby White returns for Hornets, Kon Knueppel 'right around the corner'",
+   "at": "2026-11-02T23:51:57.000Z"
+  },
+  {
+   "team": "9",
+   "abbr": "GS",
+   "athlete": null,
+   "player": "Stephen Curry",
+   "kind": "restriction",
+   "direction": "down",
+   "confidence": 0.4,
+   "headline": "Yaxel Lendeborg scores 37 points, most by a Warriors rookie since Stephen Curry",
+   "at": "2026-11-02T13:10:21.000Z"
+  },
+  {
+   "team": "3",
+   "abbr": "NO",
+   "athlete": "5149077",
+   "player": "Kingston Flemings",
+   "kind": "benched",
+   "direction": "down",
+   "confidence": 0.9,
+   "headline": "Hawks' Flemings suspended for elbowing Pelicans' McGowens in head",
+   "at": "2026-11-02T02:35:56.000Z"
+  }
+ ],
+ "at": "2026-11-03T00:04:54.564Z"
 }

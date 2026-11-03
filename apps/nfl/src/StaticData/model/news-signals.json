@@ -3,6 +3,116 @@
  "days": 2,
  "signals": [
   {
+   "team": "22",
+   "abbr": "ARI",
+   "athlete": "4038524",
+   "player": "Gardner Minshew II",
+   "kind": "starting",
+   "direction": "up",
+   "confidence": 0.9,
+   "headline": "Cardinals name Gardner Minshew as starter, move Jacoby Brissett to QB3",
+   "at": "2026-11-02T23:48:09.000Z"
+  },
+  {
+   "team": "22",
+   "abbr": "ARI",
+   "athlete": "2578570",
+   "player": "Jacoby Brissett",
+   "kind": "benched",
+   "direction": "down",
+   "confidence": 0.9,
+   "headline": "Cardinals name Gardner Minshew as starter, move Jacoby Brissett to QB3",
+   "at": "2026-11-02T23:48:09.000Z"
+  },
+  {
+   "team": "14",
+   "abbr": "LAR",
+   "athlete": "3122132",
+   "player": "Myles Garrett",
+   "kind": "return",
+   "direction": "up",
+   "confidence": 0.5,
+   "headline": "Myles Garrett will return to practice this week for Los Angeles Rams",
+   "at": "2026-11-02T23:40:20.000Z"
+  },
+  {
+   "team": "9",
+   "abbr": "GB",
+   "athlete": "4361423",
+   "player": "Micah Parsons",
+   "kind": "return",
+   "direction": "up",
+   "confidence": 0.5,
+   "headline": "Packers expect Parsons at practice 'sometime this week'",
+   "at": "2026-11-02T22:45:21.000Z"
+  },
+  {
+   "team": "18",
+   "abbr": "NO",
+   "athlete": null,
+   "player": "T.J. Paganetti",
+   "kind": "coaching",
+   "direction": "none",
+   "confidence": 0.9,
+   "headline": "Saints fire run-game coordinator after Paris flop",
+   "at": "2026-11-02T17:17:04.000Z"
+  },
+  {
+   "team": "29",
+   "abbr": "CAR",
+   "athlete": null,
+   "player": null,
+   "kind": "coaching",
+   "direction": "none",
+   "confidence": 0.9,
+   "headline": "Panthers bring back DeAngelo Hall as CB coach in 1st move since Evero firing",
+   "at": "2026-11-02T14:40:43.000Z"
+  },
+  {
+   "team": "22",
+   "abbr": "ARI",
+   "athlete": "4038524",
+   "player": "Gardner Minshew II",
+   "kind": "starting",
+   "direction": "up",
+   "confidence": 0.3,
+   "headline": "Cardinals' LaFleur noncommittal on QB after Minshew replaces Brissett in win",
+   "at": "2026-11-02T02:19:15.000Z"
+  },
+  {
+   "team": "22",
+   "abbr": "ARI",
+   "athlete": "2578570",
+   "player": "Jacoby Brissett",
+   "kind": "benched",
+   "direction": "down",
+   "confidence": 0.3,
+   "headline": "Cardinals' LaFleur noncommittal on QB after Minshew replaces Brissett in win",
+   "at": "2026-11-02T02:19:15.000Z"
+  },
+  {
+   "team": "11",
+   "abbr": "IND",
+   "athlete": "3917792",
+   "player": "Daniel Jones",
+   "kind": "benched",
+   "direction": "down",
+   "confidence": 0.3,
+   "headline": "Colts' Shane Steichen to 'evaluate everything,' including QB, after 42-7 loss",
+   "at": "2026-11-02T02:16:33.000Z"
+  },
+  {
+   "team": "11",
+   "abbr": "IND",
+   "athlete": "4429084",
+   "player": "Anthony Richardson Sr",
+   "kind": "starting",
+   "direction": "up",
+   "confidence": 0.3,
+   "headline": "Colts' Shane Steichen to 'evaluate everything,' including QB, after 42-7 loss",
+   "at": "2026-11-02T02:16:33.000Z"
+  },
+  {
    "team": "13",
    "abbr": "LV",
    "athlete": "4890973",
@@ -47,5 +157,5 @@
    "at": "2026-11-01T23:54:50.000Z"
   }
  ],
- "at": "2026-11-02T23:17:52.532Z"
+ "at": "2026-11-03T00:04:54.564Z"
 }

@@ -1,106 +1,6 @@
 {
  "sport": "nhl",
  "entries": {
-  "401892564|bowenbyram|q": {
-   "game": "401892564",
-   "start": "2026-10-24T00:00Z",
-   "team": "4",
-   "name": "Bowen Byram",
-   "status": "q",
-   "athlete": "4565225",
-   "espn": {
-    "seen": "2026-10-22T15:30:41.600Z",
-    "own": "2026-10-18T13:09:00.000Z"
-   }
-  },
-  "401892564|andrewmangiapane|out": {
-   "game": "401892564",
-   "start": "2026-10-24T00:00Z",
-   "team": "4",
-   "name": "Andrew Mangiapane",
-   "status": "out",
-   "athlete": "3149619",
-   "espn": {
-    "seen": "2026-10-22T15:30:41.600Z",
-    "own": "2026-10-07T15:40:00.000Z"
-   },
-   "sleeper": {
-    "seen": "2026-10-22T20:01:51.261Z",
-    "own": "2026-10-22T18:10:10.740Z"
-   }
-  },
-  "401892564|mikematheson|q": {
-   "game": "401892564",
-   "start": "2026-10-24T00:00Z",
-   "team": "10",
-   "name": "Mike Matheson",
-   "status": "q",
-   "athlete": "2976851",
-   "espn": {
-    "seen": "2026-10-22T15:30:41.600Z",
-    "own": "2026-10-21T14:07:00.000Z"
-   }
-  },
-  "401892564|florianxhekaj|out": {
-   "game": "401892564",
-   "start": "2026-10-24T00:00Z",
-   "team": "10",
-   "name": "Florian Xhekaj",
-   "status": "out",
-   "athlete": "5188457",
-   "espn": {
-    "seen": "2026-10-22T15:30:41.600Z",
-    "own": "2026-10-17T17:08:00.000Z"
-   }
-  },
-  "401892564|sammontembeault|out": {
-   "game": "401892564",
-   "start": "2026-10-24T00:00Z",
-   "team": "10",
-   "name": "Sam Montembeault",
-   "status": "out",
-   "athlete": "3942714",
-   "espn": {
-    "seen": "2026-10-22T15:30:41.600Z",
-    "own": "2026-10-10T21:20:00.000Z"
-   }
-  },
-  "401892564|ivandemidov|out": {
-   "game": "401892564",
-   "start": "2026-10-24T00:00Z",
-   "team": "10",
-   "name": "Ivan Demidov",
-   "status": "out",
-   "athlete": "5216860",
-   "espn": {
-    "seen": "2026-10-22T15:30:41.600Z",
-    "own": "2026-10-06T21:16:00.000Z"
-   }
-  },
-  "401892564|brycepickford|out": {
-   "game": "401892564",
-   "start": "2026-10-24T00:00Z",
-   "team": "10",
-   "name": "Bryce Pickford",
-   "status": "out",
-   "athlete": "5329651",
-   "espn": {
-    "seen": "2026-10-22T15:30:41.600Z",
-    "own": "2026-09-29T16:39:00.000Z"
-   }
-  },
-  "401892564|lucascondotta|out": {
-   "game": "401892564",
-   "start": "2026-10-24T00:00Z",
-   "team": "10",
-   "name": "Lucas Condotta",
-   "status": "out",
-   "athlete": "4997129",
-   "espn": {
-    "seen": "2026-10-22T15:30:41.600Z",
-    "own": "2026-09-29T16:38:00.000Z"
-   }
-  },
   "401892565|nicolasroy|q": {
    "game": "401892565",
    "start": "2026-10-24T01:00Z",
@@ -173,18 +73,6 @@
     "own": "2026-09-28T19:18:00.000Z"
    }
   },
-  "401892564|nicksuzuki|out": {
-   "game": "401892564",
-   "start": "2026-10-24T00:00Z",
-   "team": "10",
-   "name": "Nick Suzuki",
-   "status": "out",
-   "athlete": "4233594",
-   "espn": {
-    "seen": "2026-10-22T15:42:14.203Z",
-    "own": "2026-10-22T15:30:00.000Z"
-   }
-  },
   "401892565|nicolasroy|out": {
    "game": "401892565",
    "start": "2026-10-24T01:00Z",
@@ -195,18 +83,6 @@
    "espn": {
     "seen": "2026-10-22T18:47:51.061Z",
     "own": "2026-10-22T18:44:00.000Z"
-   }
-  },
-  "401892564|marshallrifai|out": {
-   "game": "401892564",
-   "start": "2026-10-24T00:00Z",
-   "team": "4",
-   "name": "Marshall Rifai",
-   "status": "out",
-   "bluesky": {
-    "seen": "2026-10-23T03:01:36.326Z",
-    "own": "2026-10-23T02:57:43.000Z",
-    "why": "@dfotoronto.bsky.social: Marshall Rifai is out week-to-week with a lower-body in"
    }
   },
   "401892565|marshallrifai|out": {
@@ -9241,6 +9117,10 @@
    "espn": {
     "seen": "2026-11-02T17:56:00.996Z",
     "own": "2026-11-02T17:40:00.000Z"
+   },
+   "sleeper": {
+    "seen": "2026-11-02T21:13:32.622Z",
+    "own": "2026-11-02T17:45:19.154Z"
    }
   },
   "401892636|evanrodrigues|q": {
@@ -9265,6 +9145,10 @@
    "espn": {
     "seen": "2026-11-02T18:48:21.954Z",
     "own": "2026-11-02T18:22:00.000Z"
+   },
+   "sleeper": {
+    "seen": "2026-11-02T21:13:32.622Z",
+    "own": "2026-11-02T18:25:19.231Z"
    }
   },
   "401892643|ajgreer|out": {
