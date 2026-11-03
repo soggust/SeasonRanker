@@ -19159,6 +19159,102 @@
     "seen": "2026-11-03T06:18:56.269Z",
     "own": "2026-11-03T06:03:00.000Z"
    }
+  },
+  "401909929|thomassorber|out": {
+   "game": "401909929",
+   "start": "2026-11-05T01:00Z",
+   "team": "25",
+   "name": "Thomas Sorber",
+   "status": "out",
+   "athlete": "5061603",
+   "espn": {
+    "seen": "2026-11-03T10:13:46.802Z",
+    "own": "2026-11-02T00:54:00.000Z"
+   }
+  },
+  "401909929|casonwallace|out": {
+   "game": "401909929",
+   "start": "2026-11-05T01:00Z",
+   "team": "25",
+   "name": "Cason Wallace",
+   "status": "out",
+   "athlete": "4683692",
+   "espn": {
+    "seen": "2026-11-03T10:13:46.802Z",
+    "own": "2026-10-31T01:16:00.000Z"
+   }
+  },
+  "401909929|chetholmgren|out": {
+   "game": "401909929",
+   "start": "2026-11-05T01:00Z",
+   "team": "25",
+   "name": "Chet Holmgren",
+   "status": "out",
+   "athlete": "4433255",
+   "espn": {
+    "seen": "2026-11-03T10:13:46.802Z",
+    "own": "2026-10-31T01:02:00.000Z"
+   }
+  },
+  "401909929|jalenwilliams|out": {
+   "game": "401909929",
+   "start": "2026-11-05T01:00Z",
+   "team": "25",
+   "name": "Jalen Williams",
+   "status": "out",
+   "athlete": "4593803",
+   "espn": {
+    "seen": "2026-11-03T10:13:46.802Z",
+    "own": "2026-10-28T23:41:00.000Z"
+   }
+  },
+  "401909929|alexcaruso|out": {
+   "game": "401909929",
+   "start": "2026-11-05T01:00Z",
+   "team": "25",
+   "name": "Alex Caruso",
+   "status": "out",
+   "athlete": "2991350",
+   "espn": {
+    "seen": "2026-11-03T10:13:46.802Z",
+    "own": "2026-10-28T18:06:00.000Z"
+   }
+  },
+  "401909929|nikolatopic|out": {
+   "game": "401909929",
+   "start": "2026-11-05T01:00Z",
+   "team": "25",
+   "name": "Nikola Topic",
+   "status": "out",
+   "athlete": "5159925",
+   "espn": {
+    "seen": "2026-11-03T10:13:46.802Z",
+    "own": "2026-10-27T21:38:00.000Z"
+   }
+  },
+  "401909929|peytonwatson|q": {
+   "game": "401909929",
+   "start": "2026-11-05T01:00Z",
+   "team": "5",
+   "name": "Peyton Watson",
+   "status": "q",
+   "athlete": "4576087",
+   "espn": {
+    "seen": "2026-11-03T10:13:46.802Z",
+    "own": "2026-11-03T05:29:00.000Z"
+   }
+  },
+  "401909929|jaylontyson|q": {
+   "game": "401909929",
+   "start": "2026-11-05T01:00Z",
+   "team": "5",
+   "name": "Jaylon Tyson",
+   "status": "q",
+   "athlete": "4683747",
+   "espn": {
+    "seen": "2026-11-03T10:13:46.802Z",
+    "own": "2026-11-03T05:29:00.000Z"
+   }
   }
  }
 }
