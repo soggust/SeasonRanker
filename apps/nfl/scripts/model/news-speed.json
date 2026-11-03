@@ -18575,6 +18575,126 @@
     "seen": "2026-11-03T01:05:14.703Z",
     "own": "2026-11-03T00:51:00.000Z"
    }
+  },
+  "401873037|rogerrosengarten|q": {
+   "game": "401873037",
+   "start": "2026-11-06T01:15Z",
+   "team": "33",
+   "name": "Roger Rosengarten",
+   "status": "q",
+   "athlete": "4430876",
+   "espn": {
+    "seen": "2026-11-03T01:27:02.761Z",
+    "own": "2026-11-03T01:05:00.000Z"
+   }
+  },
+  "401873037|johnsimpson|q": {
+   "game": "401873037",
+   "start": "2026-11-06T01:15Z",
+   "team": "33",
+   "name": "John Simpson",
+   "status": "q",
+   "athlete": "4035479",
+   "espn": {
+    "seen": "2026-11-03T01:27:02.761Z",
+    "own": "2026-11-03T01:05:00.000Z"
+   }
+  },
+  "401873037|roquansmith|q": {
+   "game": "401873037",
+   "start": "2026-11-06T01:15Z",
+   "team": "33",
+   "name": "Roquan Smith",
+   "status": "q",
+   "athlete": "3915189",
+   "espn": {
+    "seen": "2026-11-03T01:27:02.761Z",
+    "own": "2026-11-03T01:05:00.000Z"
+   }
+  },
+  "401873037|johnjenkins|q": {
+   "game": "401873037",
+   "start": "2026-11-06T01:15Z",
+   "team": "33",
+   "name": "John Jenkins",
+   "status": "q",
+   "athlete": "15846",
+   "espn": {
+    "seen": "2026-11-03T01:27:02.761Z",
+    "own": "2026-11-03T01:04:00.000Z"
+   }
+  },
+  "401873037|justicehill|q": {
+   "game": "401873037",
+   "start": "2026-11-06T01:15Z",
+   "team": "33",
+   "name": "Justice Hill",
+   "status": "q",
+   "athlete": "4038441",
+   "espn": {
+    "seen": "2026-11-03T01:27:02.761Z",
+    "own": "2026-11-03T01:04:00.000Z"
+   }
+  },
+  "401873037|treyhendrickson|q": {
+   "game": "401873037",
+   "start": "2026-11-06T01:15Z",
+   "team": "33",
+   "name": "Trey Hendrickson",
+   "status": "q",
+   "athlete": "3052743",
+   "espn": {
+    "seen": "2026-11-03T01:27:02.761Z",
+    "own": "2026-11-03T01:03:00.000Z"
+   }
+  },
+  "401873037|bransoncombs|q": {
+   "game": "401873037",
+   "start": "2026-11-06T01:15Z",
+   "team": "30",
+   "name": "Branson Combs",
+   "status": "q",
+   "athlete": "4572704",
+   "espn": {
+    "seen": "2026-11-03T01:27:02.761Z",
+    "own": "2026-11-03T00:59:00.000Z"
+   }
+  },
+  "401873037|jarrianjones|q": {
+   "game": "401873037",
+   "start": "2026-11-06T01:15Z",
+   "team": "30",
+   "name": "Jarrian Jones",
+   "status": "q",
+   "athlete": "4426448",
+   "espn": {
+    "seen": "2026-11-03T01:27:02.761Z",
+    "own": "2026-11-03T00:57:00.000Z"
+   }
+  },
+  "401873042|jacobsaylors|q": {
+   "game": "401873042",
+   "start": "2026-11-08T18:00Z",
+   "team": "8",
+   "name": "Jacob Saylors",
+   "status": "q",
+   "athlete": "4383429",
+   "espn": {
+    "seen": "2026-11-03T01:27:02.761Z",
+    "own": "2026-11-03T01:13:00.000Z"
+   }
+  },
+  "401873041|willlee|q": {
+   "game": "401873041",
+   "start": "2026-11-08T18:00Z",
+   "team": "29",
+   "name": "Will Lee III",
+   "status": "q",
+   "athlete": "5151083",
+   "espn": {
+    "seen": "2026-11-03T01:27:02.761Z",
+    "own": "2026-11-03T01:02:00.000Z"
+   }
   }
  }
 }
