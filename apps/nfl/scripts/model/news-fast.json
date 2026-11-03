@@ -4,8 +4,8 @@
   "adamscheftermirror.bsky.social": "2026-11-02T23:59:15.346Z",
   "rapsheet.bsky.social": "2026-11-02T22:39:42.439Z",
   "nflnewsreposterbot.bsky.social": "2026-11-02T21:32:04.821Z",
-  "insidenflnews.bsky.social": "2026-11-02T23:35:57.395Z",
-  "nflnewsposter.bsky.social": "2026-11-02T21:22:49.462Z",
+  "insidenflnews.bsky.social": "2026-11-03T00:22:49.991Z",
+  "nflnewsposter.bsky.social": "2026-11-03T00:23:42.906Z",
   "rotoworld-fb.bsky.social": "2026-11-02T23:54:45.000Z",
   "rotowirenfl.bsky.social": "2026-11-03T00:02:40.000Z"
  },
@@ -12892,6 +12892,45 @@
    "kind": "status",
    "confidence": 0.95,
    "text": "Kendrick Bourne: Out for season \n\n https://www.rotowire.com/football/player/kendrick-bourne-11847"
+  },
+  {
+   "id": "at://did:plc:fuqjc7x4gxvnwzksnlxwbe4x/app.bsky.feed.post/3mzekh25r2c2f|tylerloop|out|status",
+   "at": "2026-11-03T00:11:18.485Z",
+   "seen": "2026-11-03T00:30:00.539Z",
+   "handle": "nflnewsposter.bsky.social",
+   "post": "at://did:plc:fuqjc7x4gxvnwzksnlxwbe4x/app.bsky.feed.post/3mzekh25r2c2f",
+   "player": "Tyler Loop",
+   "team": "BAL",
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.35,
+   "text": "[Hensley] Ravens coach Jesse Minter said kicker Tyler Loop could go on injured reserve.  Baltimore has Jake Moody on the practice squad. twitter.com/jamisonhensl..."
+  },
+  {
+   "id": "at://did:plc:fuqjc7x4gxvnwzksnlxwbe4x/app.bsky.feed.post/3mzekqfjoo22f|kirkcousins|active|return",
+   "at": "2026-11-03T00:16:32.400Z",
+   "seen": "2026-11-03T00:30:00.539Z",
+   "handle": "nflnewsposter.bsky.social",
+   "post": "at://did:plc:fuqjc7x4gxvnwzksnlxwbe4x/app.bsky.feed.post/3mzekqfjoo22f",
+   "player": "Kirk Cousins",
+   "team": null,
+   "status": "active",
+   "kind": "return",
+   "confidence": 0.4,
+   "text": "[McFadden] Kubiak on the return of Kirko Chainz: \n\n“I think Kirk called the shot in the locker room after the game. ... I want our guys to enjoy the moment. I want our guys to enjoy winning because wi"
+  },
+  {
+   "id": "at://did:plc:mbr4badgf6yu56mquzackzew/app.bsky.feed.post/3mzel3nmtus2f|jeremymcnichols|out|status",
+   "at": "2026-11-03T00:22:49.991Z",
+   "seen": "2026-11-03T00:30:00.539Z",
+   "handle": "insidenflnews.bsky.social",
+   "post": "at://did:plc:mbr4badgf6yu56mquzackzew/app.bsky.feed.post/3mzel3nmtus2f",
+   "player": "Jeremy McNichols",
+   "team": null,
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.8,
+   "text": "Jeremy McNichols (foot) expected to miss multiple months, per @tashanreed.bsky.social."
   }
  ]
 }
