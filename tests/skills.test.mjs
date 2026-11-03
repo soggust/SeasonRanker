@@ -3,12 +3,11 @@
 // with the volume behind it (the sport's SKILL_MINIMUMS: below it, the part is skipped for him and he's
 // out of the others' pool on it), and the hover that says what a skill is made of (hover-text.ts
 // skillDefinition), and a stat only skills read (SKILL_DERIVED). On made-up rows, then the NBA's real
-// ones (Shooting: FT % at half weight).
+// ones (the pools; never a check on two real players' numbers, which move every night).
 import { test, before } from 'node:test';
 import assert from 'node:assert/strict';
 import path from 'node:path';
 import { loadEngine } from './support/engine.mjs';
-import { earlyCurrent } from './support/early-season.mjs';
 
 const ENTRY = path.join(import.meta.dirname, 'support', 'skills-entry.ts');
 let nba;
@@ -92,7 +91,7 @@ test("skills: each skill's hover says what it's made of", () => {
   assert.equal(skillTitle({ name: 'Shooting', standing: 'Top 8%', pct: 0.92, about: '3PM / G' }), 'Shooting: Top 8% · 92nd percentile\n3PM / G');
 });
 
-test("nba: Shooting on the real rows, FT % at half weight and the percentages only with the attempts behind them", (t) => {
+test('nba: Shooting on the real rows, the percentages only with the attempts behind them; FT % at half weight on fixed rows', () => {
   const { TabRanker, StatReader, SKILL_STATS, skillGroups, presetWeights, emptyIn, SKILL_UNITS, CURRENT_SEASON, DEFAULT_SETTINGS, skillsOf, SKILLS, SKILL_MINIMUMS } = nba;
   const position = 'PG';
   const rows = SKILL_UNITS;
@@ -129,16 +128,20 @@ test("nba: Shooting on the real rows, FT % at half weight and the percentages on
     }
   }
 
-  // Maxey (a 89% free throw shooter) and Doncic (78%, with more threes): the free throws count half, so
-  // the gap closes
-  const maxey = now.get('Tyrese Maxey');
-  const luka = [...now.keys()].find((n) => /^Luka Don/.test(n));
-  if (!maxey || !luka) return t.skip("Maxey or Doncic isn't among this season's point guards");
-  // (a season a game or two in: too few free throws for the half weight to show; support/early-season.mjs)
-  if (earlyCurrent('nba')) return t.skip('the NBA season being played is too young');
-  const gap = maxey.pct - now.get(luka).pct;
-  const oldGap = was.get('Tyrese Maxey').pct - was.get(luka).pct;
-  assert.ok(gap < oldGap, `Maxey over Doncic by ${gap}, was ${oldGap}`);
+  // Maxey (a 89% free throw shooter) and Doncic (78%, with more threes) as fixed rows beside four others:
+  // the free throws count half, so Maxey's lead closes. (Not the real two: this season's numbers move every
+  // night and a percentile pool can put either ahead; the desk's data check went red on them 2026-11-03.)
+  const pair = [guard('Maxey', 35, 90, 89, 50), guard('Doncic', 40, 110, 78, 90), guard('F1', 20, 60, 85, 40), guard('F2', 15, 50, 80, 40), guard('F3', 10, 40, 75, 40), guard('F4', 25, 75, 70, 40)];
+  const pctOf = (name) => skillsOf(position, SKILL_STATS[position], fakeReader, pair.find((p) => p.name === name), pair).find((s) => s.id === 'shooting').pct;
+  const gap = pctOf('Maxey') - pctOf('Doncic');
+  def.parts = parts.map(([key, dir]) => [key, dir]);
+  let oldGap;
+  try {
+    oldGap = pctOf('Maxey') - pctOf('Doncic');
+  } finally {
+    def.parts = parts;
+  }
+  assert.ok(gap > 0 && gap < oldGap, `Maxey over Doncic by ${gap}, was ${oldGap}`);
 });
 
 test('skills: a stat only skills read (SKILL_DERIVED), worked out from the row: MLB saves and holds as one', async () => {
