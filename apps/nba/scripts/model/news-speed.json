@@ -17741,6 +17741,11 @@
    "espn": {
     "seen": "2026-11-03T22:11:13.845Z",
     "own": "2026-11-03T21:04:00.000Z"
+   },
+   "bluesky": {
+    "seen": "2026-11-04T23:17:25.660Z",
+    "own": "2026-11-04T22:34:39.000Z",
+    "why": "@rotowirenba.bsky.social: Nic Claxton: Won't return from absence Wednesday \n\n ht"
    }
   },
   "401909926|jalensmith|q": {
@@ -19717,6 +19722,11 @@
    "espn": {
     "seen": "2026-11-04T23:15:57.301Z",
     "own": "2026-11-04T23:02:00.000Z"
+   },
+   "bluesky": {
+    "seen": "2026-11-04T23:17:25.660Z",
+    "own": "2026-11-04T23:05:23.000Z",
+    "why": "@rotowirenba.bsky.social: Jalen Johnson: Out again Wednesday \n\n https://www.roto"
    }
   },
   "401909928|treymurphy|out": {
@@ -19729,6 +19739,491 @@
    "espn": {
     "seen": "2026-11-04T23:15:57.301Z",
     "own": "2026-11-04T23:10:00.000Z"
+   },
+   "bluesky": {
+    "seen": "2026-11-04T23:17:25.660Z",
+    "own": "2026-11-04T23:10:27.000Z",
+    "why": "@rotowirenba.bsky.social: Trey Murphy: Won't play Wednesday \n\n https://www.rotow"
+   }
+  },
+  "401909922|nicclaxton|out": {
+   "game": "401909922",
+   "start": "2026-11-05T00:00Z",
+   "team": "8",
+   "name": "Nic Claxton",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-04T23:17:25.660Z",
+    "own": "2026-11-04T22:34:39.000Z",
+    "why": "@rotowirenba.bsky.social: Nic Claxton: Won't return from absence Wednesday \n\n ht"
+   }
+  },
+  "401909922|jalenjohnson|out": {
+   "game": "401909922",
+   "start": "2026-11-05T00:00Z",
+   "team": "8",
+   "name": "Jalen Johnson",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-04T23:17:25.660Z",
+    "own": "2026-11-04T23:05:23.000Z",
+    "why": "@rotowirenba.bsky.social: Jalen Johnson: Out again Wednesday \n\n https://www.roto"
+   }
+  },
+  "401909922|treymurphy|out": {
+   "game": "401909922",
+   "start": "2026-11-05T00:00Z",
+   "team": "8",
+   "name": "Trey Murphy",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-04T23:17:25.660Z",
+    "own": "2026-11-04T23:10:27.000Z",
+    "why": "@rotowirenba.bsky.social: Trey Murphy: Won't play Wednesday \n\n https://www.rotow"
+   }
+  },
+  "401909923|nicclaxton|out": {
+   "game": "401909923",
+   "start": "2026-11-05T00:00Z",
+   "team": "27",
+   "name": "Nic Claxton",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-04T23:17:25.660Z",
+    "own": "2026-11-04T22:34:39.000Z",
+    "why": "@rotowirenba.bsky.social: Nic Claxton: Won't return from absence Wednesday \n\n ht"
+   }
+  },
+  "401909923|treymurphy|out": {
+   "game": "401909923",
+   "start": "2026-11-05T00:00Z",
+   "team": "27",
+   "name": "Trey Murphy",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-04T23:17:25.660Z",
+    "own": "2026-11-04T23:10:27.000Z",
+    "why": "@rotowirenba.bsky.social: Trey Murphy: Won't play Wednesday \n\n https://www.rotow"
+   }
+  },
+  "401909924|nicclaxton|out": {
+   "game": "401909924",
+   "start": "2026-11-05T00:30Z",
+   "team": "2",
+   "name": "Nic Claxton",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-04T23:17:25.660Z",
+    "own": "2026-11-04T22:34:39.000Z",
+    "why": "@rotowirenba.bsky.social: Nic Claxton: Won't return from absence Wednesday \n\n ht"
+   }
+  },
+  "401909924|jalenjohnson|out": {
+   "game": "401909924",
+   "start": "2026-11-05T00:30Z",
+   "team": "2",
+   "name": "Jalen Johnson",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-04T23:17:25.660Z",
+    "own": "2026-11-04T23:05:23.000Z",
+    "why": "@rotowirenba.bsky.social: Jalen Johnson: Out again Wednesday \n\n https://www.roto"
+   }
+  },
+  "401909924|treymurphy|out": {
+   "game": "401909924",
+   "start": "2026-11-05T00:30Z",
+   "team": "2",
+   "name": "Trey Murphy",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-04T23:17:25.660Z",
+    "own": "2026-11-04T23:10:27.000Z",
+    "why": "@rotowirenba.bsky.social: Trey Murphy: Won't play Wednesday \n\n https://www.rotow"
+   }
+  },
+  "401909925|nicclaxton|out": {
+   "game": "401909925",
+   "start": "2026-11-05T00:30Z",
+   "team": "17",
+   "name": "Nic Claxton",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-04T23:17:25.660Z",
+    "own": "2026-11-04T22:34:39.000Z",
+    "why": "@rotowirenba.bsky.social: Nic Claxton: Won't return from absence Wednesday \n\n ht"
+   }
+  },
+  "401909925|jalenjohnson|out": {
+   "game": "401909925",
+   "start": "2026-11-05T00:30Z",
+   "team": "17",
+   "name": "Jalen Johnson",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-04T23:17:25.660Z",
+    "own": "2026-11-04T23:05:23.000Z",
+    "why": "@rotowirenba.bsky.social: Jalen Johnson: Out again Wednesday \n\n https://www.roto"
+   }
+  },
+  "401909925|treymurphy|out": {
+   "game": "401909925",
+   "start": "2026-11-05T00:30Z",
+   "team": "17",
+   "name": "Trey Murphy",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-04T23:17:25.660Z",
+    "own": "2026-11-04T23:10:27.000Z",
+    "why": "@rotowirenba.bsky.social: Trey Murphy: Won't play Wednesday \n\n https://www.rotow"
+   }
+  },
+  "401909926|jalenjohnson|out": {
+   "game": "401909926",
+   "start": "2026-11-05T00:30Z",
+   "team": "18",
+   "name": "Jalen Johnson",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-04T23:17:25.660Z",
+    "own": "2026-11-04T23:05:23.000Z",
+    "why": "@rotowirenba.bsky.social: Jalen Johnson: Out again Wednesday \n\n https://www.roto"
+   }
+  },
+  "401909926|treymurphy|out": {
+   "game": "401909926",
+   "start": "2026-11-05T00:30Z",
+   "team": "18",
+   "name": "Trey Murphy",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-04T23:17:25.660Z",
+    "own": "2026-11-04T23:10:27.000Z",
+    "why": "@rotowirenba.bsky.social: Trey Murphy: Won't play Wednesday \n\n https://www.rotow"
+   }
+  },
+  "401909927|nicclaxton|out": {
+   "game": "401909927",
+   "start": "2026-11-05T01:00Z",
+   "team": "29",
+   "name": "Nic Claxton",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-04T23:17:25.660Z",
+    "own": "2026-11-04T22:34:39.000Z",
+    "why": "@rotowirenba.bsky.social: Nic Claxton: Won't return from absence Wednesday \n\n ht"
+   }
+  },
+  "401909927|jalenjohnson|out": {
+   "game": "401909927",
+   "start": "2026-11-05T01:00Z",
+   "team": "29",
+   "name": "Jalen Johnson",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-04T23:17:25.660Z",
+    "own": "2026-11-04T23:05:23.000Z",
+    "why": "@rotowirenba.bsky.social: Jalen Johnson: Out again Wednesday \n\n https://www.roto"
+   }
+  },
+  "401909927|treymurphy|out": {
+   "game": "401909927",
+   "start": "2026-11-05T01:00Z",
+   "team": "29",
+   "name": "Trey Murphy",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-04T23:17:25.660Z",
+    "own": "2026-11-04T23:10:27.000Z",
+    "why": "@rotowirenba.bsky.social: Trey Murphy: Won't play Wednesday \n\n https://www.rotow"
+   }
+  },
+  "401909928|nicclaxton|out": {
+   "game": "401909928",
+   "start": "2026-11-05T01:00Z",
+   "team": "3",
+   "name": "Nic Claxton",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-04T23:17:25.660Z",
+    "own": "2026-11-04T22:34:39.000Z",
+    "why": "@rotowirenba.bsky.social: Nic Claxton: Won't return from absence Wednesday \n\n ht"
+   }
+  },
+  "401909928|jalenjohnson|out": {
+   "game": "401909928",
+   "start": "2026-11-05T01:00Z",
+   "team": "3",
+   "name": "Jalen Johnson",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-04T23:17:25.660Z",
+    "own": "2026-11-04T23:05:23.000Z",
+    "why": "@rotowirenba.bsky.social: Jalen Johnson: Out again Wednesday \n\n https://www.roto"
+   }
+  },
+  "401909929|jaylinwilliams|out": {
+   "game": "401909929",
+   "start": "2026-11-05T01:00Z",
+   "team": "25",
+   "name": "Jaylin Williams",
+   "status": "out",
+   "athlete": "4432823",
+   "espn": {
+    "seen": "2026-11-04T23:24:54.359Z",
+    "own": "2026-11-04T23:18:00.000Z"
+   }
+  },
+  "401909929|nicclaxton|out": {
+   "game": "401909929",
+   "start": "2026-11-05T01:00Z",
+   "team": "25",
+   "name": "Nic Claxton",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-04T23:17:25.660Z",
+    "own": "2026-11-04T22:34:39.000Z",
+    "why": "@rotowirenba.bsky.social: Nic Claxton: Won't return from absence Wednesday \n\n ht"
+   }
+  },
+  "401909929|jalenjohnson|out": {
+   "game": "401909929",
+   "start": "2026-11-05T01:00Z",
+   "team": "25",
+   "name": "Jalen Johnson",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-04T23:17:25.660Z",
+    "own": "2026-11-04T23:05:23.000Z",
+    "why": "@rotowirenba.bsky.social: Jalen Johnson: Out again Wednesday \n\n https://www.roto"
+   }
+  },
+  "401909929|treymurphy|out": {
+   "game": "401909929",
+   "start": "2026-11-05T01:00Z",
+   "team": "25",
+   "name": "Trey Murphy",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-04T23:17:25.660Z",
+    "own": "2026-11-04T23:10:27.000Z",
+    "why": "@rotowirenba.bsky.social: Trey Murphy: Won't play Wednesday \n\n https://www.rotow"
+   }
+  },
+  "401909930|nicclaxton|out": {
+   "game": "401909930",
+   "start": "2026-11-05T01:30Z",
+   "team": "10",
+   "name": "Nic Claxton",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-04T23:17:25.660Z",
+    "own": "2026-11-04T22:34:39.000Z",
+    "why": "@rotowirenba.bsky.social: Nic Claxton: Won't return from absence Wednesday \n\n ht"
+   }
+  },
+  "401909930|jalenjohnson|out": {
+   "game": "401909930",
+   "start": "2026-11-05T01:30Z",
+   "team": "10",
+   "name": "Jalen Johnson",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-04T23:17:25.660Z",
+    "own": "2026-11-04T23:05:23.000Z",
+    "why": "@rotowirenba.bsky.social: Jalen Johnson: Out again Wednesday \n\n https://www.roto"
+   }
+  },
+  "401909930|treymurphy|out": {
+   "game": "401909930",
+   "start": "2026-11-05T01:30Z",
+   "team": "10",
+   "name": "Trey Murphy",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-04T23:17:25.660Z",
+    "own": "2026-11-04T23:10:27.000Z",
+    "why": "@rotowirenba.bsky.social: Trey Murphy: Won't play Wednesday \n\n https://www.rotow"
+   }
+  },
+  "401909931|nicclaxton|out": {
+   "game": "401909931",
+   "start": "2026-11-05T02:00Z",
+   "team": "7",
+   "name": "Nic Claxton",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-04T23:17:25.660Z",
+    "own": "2026-11-04T22:34:39.000Z",
+    "why": "@rotowirenba.bsky.social: Nic Claxton: Won't return from absence Wednesday \n\n ht"
+   }
+  },
+  "401909931|jalenjohnson|out": {
+   "game": "401909931",
+   "start": "2026-11-05T02:00Z",
+   "team": "7",
+   "name": "Jalen Johnson",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-04T23:17:25.660Z",
+    "own": "2026-11-04T23:05:23.000Z",
+    "why": "@rotowirenba.bsky.social: Jalen Johnson: Out again Wednesday \n\n https://www.roto"
+   }
+  },
+  "401909931|treymurphy|out": {
+   "game": "401909931",
+   "start": "2026-11-05T02:00Z",
+   "team": "7",
+   "name": "Trey Murphy",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-04T23:17:25.660Z",
+    "own": "2026-11-04T23:10:27.000Z",
+    "why": "@rotowirenba.bsky.social: Trey Murphy: Won't play Wednesday \n\n https://www.rotow"
+   }
+  },
+  "401909932|nicclaxton|out": {
+   "game": "401909932",
+   "start": "2026-11-05T02:00Z",
+   "team": "21",
+   "name": "Nic Claxton",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-04T23:17:25.660Z",
+    "own": "2026-11-04T22:34:39.000Z",
+    "why": "@rotowirenba.bsky.social: Nic Claxton: Won't return from absence Wednesday \n\n ht"
+   }
+  },
+  "401909932|jalenjohnson|out": {
+   "game": "401909932",
+   "start": "2026-11-05T02:00Z",
+   "team": "21",
+   "name": "Jalen Johnson",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-04T23:17:25.660Z",
+    "own": "2026-11-04T23:05:23.000Z",
+    "why": "@rotowirenba.bsky.social: Jalen Johnson: Out again Wednesday \n\n https://www.roto"
+   }
+  },
+  "401909932|treymurphy|out": {
+   "game": "401909932",
+   "start": "2026-11-05T02:00Z",
+   "team": "21",
+   "name": "Trey Murphy",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-04T23:17:25.660Z",
+    "own": "2026-11-04T23:10:27.000Z",
+    "why": "@rotowirenba.bsky.social: Trey Murphy: Won't play Wednesday \n\n https://www.rotow"
+   }
+  },
+  "401909933|nicclaxton|out": {
+   "game": "401909933",
+   "start": "2026-11-05T02:30Z",
+   "team": "24",
+   "name": "Nic Claxton",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-04T23:17:25.660Z",
+    "own": "2026-11-04T22:34:39.000Z",
+    "why": "@rotowirenba.bsky.social: Nic Claxton: Won't return from absence Wednesday \n\n ht"
+   }
+  },
+  "401909933|jalenjohnson|out": {
+   "game": "401909933",
+   "start": "2026-11-05T02:30Z",
+   "team": "24",
+   "name": "Jalen Johnson",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-04T23:17:25.660Z",
+    "own": "2026-11-04T23:05:23.000Z",
+    "why": "@rotowirenba.bsky.social: Jalen Johnson: Out again Wednesday \n\n https://www.roto"
+   }
+  },
+  "401909933|treymurphy|out": {
+   "game": "401909933",
+   "start": "2026-11-05T02:30Z",
+   "team": "24",
+   "name": "Trey Murphy",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-04T23:17:25.660Z",
+    "own": "2026-11-04T23:10:27.000Z",
+    "why": "@rotowirenba.bsky.social: Trey Murphy: Won't play Wednesday \n\n https://www.rotow"
+   }
+  },
+  "401909934|nicclaxton|out": {
+   "game": "401909934",
+   "start": "2026-11-05T03:00Z",
+   "team": "23",
+   "name": "Nic Claxton",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-04T23:17:25.660Z",
+    "own": "2026-11-04T22:34:39.000Z",
+    "why": "@rotowirenba.bsky.social: Nic Claxton: Won't return from absence Wednesday \n\n ht"
+   }
+  },
+  "401909934|jalenjohnson|out": {
+   "game": "401909934",
+   "start": "2026-11-05T03:00Z",
+   "team": "23",
+   "name": "Jalen Johnson",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-04T23:17:25.660Z",
+    "own": "2026-11-04T23:05:23.000Z",
+    "why": "@rotowirenba.bsky.social: Jalen Johnson: Out again Wednesday \n\n https://www.roto"
+   }
+  },
+  "401909934|treymurphy|out": {
+   "game": "401909934",
+   "start": "2026-11-05T03:00Z",
+   "team": "23",
+   "name": "Trey Murphy",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-04T23:17:25.660Z",
+    "own": "2026-11-04T23:10:27.000Z",
+    "why": "@rotowirenba.bsky.social: Trey Murphy: Won't play Wednesday \n\n https://www.rotow"
+   }
+  },
+  "401909935|jalenjohnson|out": {
+   "game": "401909935",
+   "start": "2026-11-05T03:30Z",
+   "team": "12",
+   "name": "Jalen Johnson",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-04T23:17:25.660Z",
+    "own": "2026-11-04T23:05:23.000Z",
+    "why": "@rotowirenba.bsky.social: Jalen Johnson: Out again Wednesday \n\n https://www.roto"
+   }
+  },
+  "401909935|nicclaxton|out": {
+   "game": "401909935",
+   "start": "2026-11-05T03:30Z",
+   "team": "12",
+   "name": "Nic Claxton",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-04T23:17:25.660Z",
+    "own": "2026-11-04T22:34:39.000Z",
+    "why": "@rotowirenba.bsky.social: Nic Claxton: Won't return from absence Wednesday \n\n ht"
+   }
+  },
+  "401909935|treymurphy|out": {
+   "game": "401909935",
+   "start": "2026-11-05T03:30Z",
+   "team": "12",
+   "name": "Trey Murphy",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-04T23:17:25.660Z",
+    "own": "2026-11-04T23:10:27.000Z",
+    "why": "@rotowirenba.bsky.social: Trey Murphy: Won't play Wednesday \n\n https://www.rotow"
    }
   }
  }
