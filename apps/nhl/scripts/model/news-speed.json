@@ -8509,6 +8509,18 @@
     "own": "2026-11-03T18:49:18.000Z",
     "why": "@dailyfaceoff.bsky.social: Oilers’ Howard out week-to-week with lower-body injur"
    }
+  },
+  "401892642|jonathanmarchessault|out": {
+   "game": "401892642",
+   "start": "2026-11-04T01:00Z",
+   "team": "27",
+   "name": "Jonathan Marchessault",
+   "status": "out",
+   "athlete": "2967072",
+   "espn": {
+    "seen": "2026-11-04T00:34:41.490Z",
+    "own": "2026-11-04T00:32:00.000Z"
+   }
   }
  }
 }
