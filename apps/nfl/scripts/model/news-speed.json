@@ -1,138 +1,6 @@
 {
  "sport": "nfl",
  "entries": {
-  "401873011|cesarruiz|q": {
-   "game": "401873011",
-   "start": "2026-10-25T13:30Z",
-   "team": "18",
-   "name": "Cesar Ruiz",
-   "status": "q",
-   "athlete": "4258199",
-   "espn": {
-    "seen": "2026-10-20T05:51:35.802Z",
-    "own": "2026-10-20T00:17:00.000Z"
-   },
-   "sleeper": {
-    "seen": "2026-10-24T20:08:46.913Z",
-    "own": "2026-10-24T01:30:53.469Z"
-   }
-  },
-  "401873011|nathanshepherd|out": {
-   "game": "401873011",
-   "start": "2026-10-25T13:30Z",
-   "team": "18",
-   "name": "Nathan Shepherd",
-   "status": "out",
-   "athlete": "4076951",
-   "espn": {
-    "seen": "2026-10-20T05:51:35.802Z",
-    "own": "2026-10-19T17:09:00.000Z"
-   }
-  },
-  "401873011|anferneejennings|out": {
-   "game": "401873011",
-   "start": "2026-10-25T13:30Z",
-   "team": "18",
-   "name": "Anfernee Jennings",
-   "status": "out",
-   "athlete": "3925350",
-   "espn": {
-    "seen": "2026-10-20T05:51:35.802Z",
-    "own": "2026-10-19T17:09:00.000Z"
-   }
-  },
-  "401873011|kadenelliss|out": {
-   "game": "401873011",
-   "start": "2026-10-25T13:30Z",
-   "team": "18",
-   "name": "Kaden Elliss",
-   "status": "out",
-   "athlete": "3124890",
-   "espn": {
-    "seen": "2026-10-20T05:51:35.802Z",
-    "own": "2026-10-19T17:09:00.000Z"
-   }
-  },
-  "401873011|jordyntyson|out": {
-   "game": "401873011",
-   "start": "2026-10-25T13:30Z",
-   "team": "18",
-   "name": "Jordyn Tyson",
-   "status": "out",
-   "athlete": "4880281",
-   "espn": {
-    "seen": "2026-10-20T05:51:35.802Z",
-    "own": "2026-10-19T13:19:00.000Z"
-   },
-   "sleeper": {
-    "seen": "2026-10-24T20:08:46.913Z",
-    "own": "2026-10-24T16:05:57.634Z"
-   }
-  },
-  "401873011|koolaidmckinstry|q": {
-   "game": "401873011",
-   "start": "2026-10-25T13:30Z",
-   "team": "18",
-   "name": "Kool-Aid McKinstry",
-   "status": "q",
-   "athlete": "4433975",
-   "espn": {
-    "seen": "2026-10-20T05:51:35.802Z",
-    "own": "2026-10-18T21:06:00.000Z"
-   }
-  },
-  "401873011|benskowronek|out": {
-   "game": "401873011",
-   "start": "2026-10-25T13:30Z",
-   "team": "23",
-   "name": "Ben Skowronek",
-   "status": "out",
-   "athlete": "4035656",
-   "espn": {
-    "seen": "2026-10-20T05:51:35.802Z",
-    "own": "2026-10-19T17:15:00.000Z"
-   }
-  },
-  "401873011|romanwilson|out": {
-   "game": "401873011",
-   "start": "2026-10-25T13:30Z",
-   "team": "23",
-   "name": "Roman Wilson",
-   "status": "out",
-   "athlete": "4431492",
-   "espn": {
-    "seen": "2026-10-20T05:51:35.802Z",
-    "own": "2026-10-17T19:27:00.000Z"
-   }
-  },
-  "401873011|deshonelliott|out": {
-   "game": "401873011",
-   "start": "2026-10-25T13:30Z",
-   "team": "23",
-   "name": "DeShon Elliott",
-   "status": "out",
-   "athlete": "3929846",
-   "espn": {
-    "seen": "2026-10-20T05:51:35.802Z",
-    "own": "2026-10-17T01:42:00.000Z"
-   }
-  },
-  "401873011|michaelpittman|out": {
-   "game": "401873011",
-   "start": "2026-10-25T13:30Z",
-   "team": "23",
-   "name": "Michael Pittman Jr.",
-   "status": "out",
-   "athlete": "4035687",
-   "espn": {
-    "seen": "2026-10-20T05:51:35.802Z",
-    "own": "2026-10-10T19:52:00.000Z"
-   },
-   "sleeper": {
-    "seen": "2026-10-24T20:08:46.913Z",
-    "own": "2026-10-24T14:50:57.155Z"
-   }
-  },
   "401873017|cjhenderson|out": {
    "game": "401873017",
    "start": "2026-10-25T17:00Z",
@@ -1465,46 +1333,6 @@
     "own": "2026-10-23T19:25:23.943Z"
    }
   },
-  "401873011|nathanshepherd|q": {
-   "game": "401873011",
-   "start": "2026-10-25T13:30Z",
-   "team": "18",
-   "name": "Nathan Shepherd",
-   "status": "q",
-   "athlete": "4076951",
-   "espn": {
-    "seen": "2026-10-20T16:20:51.413Z",
-    "own": "2026-10-20T16:10:00.000Z"
-   },
-   "sleeper": {
-    "seen": "2026-10-24T20:08:46.913Z",
-    "own": "2026-10-23T22:05:52.152Z"
-   }
-  },
-  "401873011|kadenelliss|q": {
-   "game": "401873011",
-   "start": "2026-10-25T13:30Z",
-   "team": "18",
-   "name": "Kaden Elliss",
-   "status": "q",
-   "athlete": "3124890",
-   "espn": {
-    "seen": "2026-10-20T16:20:51.413Z",
-    "own": "2026-10-20T16:10:00.000Z"
-   }
-  },
-  "401873011|anferneejennings|q": {
-   "game": "401873011",
-   "start": "2026-10-25T13:30Z",
-   "team": "18",
-   "name": "Anfernee Jennings",
-   "status": "q",
-   "athlete": "3925350",
-   "espn": {
-    "seen": "2026-10-20T16:20:51.413Z",
-    "own": "2026-10-20T16:10:00.000Z"
-   }
-  },
   "401873017|deebosamuel|out": {
    "game": "401873017",
    "start": "2026-10-25T17:00Z",
@@ -1741,18 +1569,6 @@
    "athlete": "4569659",
    "espn": {
     "seen": "2026-10-20T16:20:51.413Z",
-    "own": "2026-10-20T16:10:00.000Z"
-   }
-  },
-  "401873011|benskowronek|q": {
-   "game": "401873011",
-   "start": "2026-10-25T13:30Z",
-   "team": "23",
-   "name": "Ben Skowronek",
-   "status": "q",
-   "athlete": "4035656",
-   "espn": {
-    "seen": "2026-10-20T16:48:06.257Z",
     "own": "2026-10-20T16:10:00.000Z"
    }
   },
@@ -3091,87 +2907,6 @@
     "why": "@rotoworld-fb.bsky.social: Pat Surtain (ankle) questionable, limited all week"
    }
   },
-  "401873011|cjdonaldson|q": {
-   "game": "401873011",
-   "start": "2026-10-25T13:30Z",
-   "team": "18",
-   "name": "CJ Donaldson",
-   "status": "q",
-   "athlete": "5081999",
-   "espn": {
-    "seen": "2026-10-21T21:55:42.864Z",
-    "own": "2026-10-21T21:40:00.000Z"
-   }
-  },
-  "401873011|alvinkamara|q": {
-   "game": "401873011",
-   "start": "2026-10-25T13:30Z",
-   "team": "18",
-   "name": "Alvin Kamara",
-   "status": "q",
-   "athlete": "3054850",
-   "espn": {
-    "seen": "2026-10-21T21:55:42.864Z",
-    "own": "2026-10-21T21:39:00.000Z"
-   }
-  },
-  "401873011|ricodowdle|q": {
-   "game": "401873011",
-   "start": "2026-10-25T13:30Z",
-   "team": "23",
-   "name": "Rico Dowdle",
-   "status": "q",
-   "athlete": "4038815",
-   "espn": {
-    "seen": "2026-10-21T21:55:42.864Z",
-    "own": "2026-10-21T21:39:00.000Z"
-   },
-   "bluesky": {
-    "seen": "2026-10-23T12:59:32.424Z",
-    "own": "2026-10-23T12:40:09.000Z",
-    "why": "@rotoworld-fb.bsky.social: Rico Dowdle (knee) questionable for Week 7"
-   },
-   "sleeper": {
-    "seen": "2026-10-23T20:12:40.007Z",
-    "own": "2026-10-23T13:25:20.674Z"
-   }
-  },
-  "401873011|sebastianjosephday|q": {
-   "game": "401873011",
-   "start": "2026-10-25T13:30Z",
-   "team": "23",
-   "name": "Sebastian Joseph-Day",
-   "status": "q",
-   "athlete": "3047495",
-   "espn": {
-    "seen": "2026-10-21T21:55:42.864Z",
-    "own": "2026-10-21T21:34:00.000Z"
-   }
-  },
-  "401873011|alexhighsmith|q": {
-   "game": "401873011",
-   "start": "2026-10-25T13:30Z",
-   "team": "23",
-   "name": "Alex Highsmith",
-   "status": "q",
-   "athlete": "4037333",
-   "espn": {
-    "seen": "2026-10-21T21:55:42.864Z",
-    "own": "2026-10-21T21:34:00.000Z"
-   }
-  },
-  "401873011|jalenramsey|q": {
-   "game": "401873011",
-   "start": "2026-10-25T13:30Z",
-   "team": "23",
-   "name": "Jalen Ramsey",
-   "status": "q",
-   "athlete": "3045373",
-   "espn": {
-    "seen": "2026-10-21T21:55:42.864Z",
-    "own": "2026-10-21T02:21:00.000Z"
-   }
-  },
   "401873014|justinjefferson|q": {
    "game": "401873014",
    "start": "2026-10-25T17:00Z",
@@ -3868,18 +3603,6 @@
     "own": "2026-10-22T15:24:00.000Z"
    }
   },
-  "401873011|sebastianjosephday|out": {
-   "game": "401873011",
-   "start": "2026-10-25T13:30Z",
-   "team": "23",
-   "name": "Sebastian Joseph-Day",
-   "status": "out",
-   "athlete": "3047495",
-   "espn": {
-    "seen": "2026-10-22T16:09:41.171Z",
-    "own": "2026-10-22T16:01:00.000Z"
-   }
-  },
   "401873022|zachcharbonnet|q": {
    "game": "401873022",
    "start": "2026-10-26T00:20Z",
@@ -3894,30 +3617,6 @@
    "sleeper": {
     "seen": "2026-10-23T20:12:40.007Z",
     "own": "2026-10-23T18:55:23.305Z"
-   }
-  },
-  "401873011|tjwatt|q": {
-   "game": "401873011",
-   "start": "2026-10-25T13:30Z",
-   "team": "23",
-   "name": "T.J. Watt",
-   "status": "q",
-   "athlete": "3045282",
-   "espn": {
-    "seen": "2026-10-22T19:25:46.494Z",
-    "own": "2026-10-22T19:12:00.000Z"
-   }
-  },
-  "401873011|brandinechols|out": {
-   "game": "401873011",
-   "start": "2026-10-25T13:30Z",
-   "team": "23",
-   "name": "Brandin Echols",
-   "status": "out",
-   "athlete": "4567979",
-   "espn": {
-    "seen": "2026-10-22T19:25:46.494Z",
-    "own": "2026-10-22T19:11:00.000Z"
    }
   },
   "401873014|cjallen|q": {
@@ -4440,18 +4139,6 @@
     "own": "2026-10-24T01:30:53.461Z"
    }
   },
-  "401873011|breecehall|q": {
-   "game": "401873011",
-   "start": "2026-10-25T13:30Z",
-   "team": "18",
-   "name": "Breece Hall",
-   "status": "q",
-   "bluesky": {
-    "seen": "2026-10-23T15:27:25.006Z",
-    "own": "2026-10-23T15:12:43.000Z",
-    "why": "@rotoworld-fb.bsky.social: Breece Hall (quad) questionable vs. Dolphins"
-   }
-  },
   "401873017|breecehall|q": {
    "game": "401873017",
    "start": "2026-10-25T17:00Z",
@@ -4579,18 +4266,6 @@
    "sleeper": {
     "seen": "2026-10-23T20:12:40.007Z",
     "own": "2026-10-23T17:15:24.190Z"
-   }
-  },
-  "401873011|davidmontgomery|out": {
-   "game": "401873011",
-   "start": "2026-10-25T13:30Z",
-   "team": "18",
-   "name": "David Montgomery",
-   "status": "out",
-   "bluesky": {
-    "seen": "2026-10-23T16:11:28.722Z",
-    "own": "2026-10-23T15:53:01.000Z",
-    "why": "@rotoworld-fb.bsky.social: Montgomery (groin) won't play vs. Giants"
    }
   },
   "401873017|davidmontgomery|out": {
@@ -5168,54 +4843,6 @@
    "espn": {
     "seen": "2026-10-23T22:48:24.684Z",
     "own": "2026-10-23T20:39:00.000Z"
-   }
-  },
-  "401873011|sampson|q": {
-   "game": "401873011",
-   "start": "2026-10-25T13:30Z",
-   "team": "18",
-   "name": "Sampson",
-   "status": "q",
-   "bluesky": {
-    "seen": "2026-10-23T22:50:14.417Z",
-    "own": "2026-10-23T17:45:08.000Z",
-    "why": "@rotoworld-fb.bsky.social: Judkins not on final injury report, Sampson questiona"
-   }
-  },
-  "401873011|jordanmason|q": {
-   "game": "401873011",
-   "start": "2026-10-25T13:30Z",
-   "team": "18",
-   "name": "Jordan Mason",
-   "status": "q",
-   "bluesky": {
-    "seen": "2026-10-23T22:50:14.417Z",
-    "own": "2026-10-23T18:16:16.000Z",
-    "why": "@rotoworld-fb.bsky.social: Jordan Mason (thumb) questionable after 3 FPs"
-   }
-  },
-  "401873011|christiankirk|q": {
-   "game": "401873011",
-   "start": "2026-10-25T13:30Z",
-   "team": "18",
-   "name": "Christian Kirk",
-   "status": "q",
-   "bluesky": {
-    "seen": "2026-10-23T22:50:14.417Z",
-    "own": "2026-10-23T20:45:11.000Z",
-    "why": "@rotoworld-fb.bsky.social: Christian Kirk questionable, expected to play Wk 7"
-   }
-  },
-  "401873011|patsurtain|q": {
-   "game": "401873011",
-   "start": "2026-10-25T13:30Z",
-   "team": "18",
-   "name": "Pat Surtain",
-   "status": "q",
-   "bluesky": {
-    "seen": "2026-10-23T22:50:14.417Z",
-    "own": "2026-10-23T21:38:12.000Z",
-    "why": "@rotoworld-fb.bsky.social: Pat Surtain (ankle) questionable, limited all week"
    }
   },
   "401873017|sampson|q": {
@@ -5999,90 +5626,6 @@
     "own": "2026-10-24T17:35:58.574Z"
    }
   },
-  "401873011|tyreewilson|out": {
-   "game": "401873011",
-   "start": "2026-10-25T13:30Z",
-   "team": "18",
-   "name": "Tyree Wilson",
-   "status": "out",
-   "athlete": "4372533",
-   "espn": {
-    "seen": "2026-10-25T12:14:09.241Z",
-    "own": "2026-10-25T12:04:00.000Z"
-   }
-  },
-  "401873011|zachwilson|out": {
-   "game": "401873011",
-   "start": "2026-10-25T13:30Z",
-   "team": "18",
-   "name": "Zach Wilson",
-   "status": "out",
-   "athlete": "4361259",
-   "espn": {
-    "seen": "2026-10-25T12:14:09.241Z",
-    "own": "2026-10-25T12:04:00.000Z"
-   }
-  },
-  "401873011|mikereid|out": {
-   "game": "401873011",
-   "start": "2026-10-25T13:30Z",
-   "team": "18",
-   "name": "Mike Reid",
-   "status": "out",
-   "athlete": "4775268",
-   "espn": {
-    "seen": "2026-10-25T12:14:09.241Z",
-    "own": "2026-10-25T12:04:00.000Z"
-   }
-  },
-  "401873011|johnridgeway|out": {
-   "game": "401873011",
-   "start": "2026-10-25T13:30Z",
-   "team": "18",
-   "name": "John Ridgeway III",
-   "status": "out",
-   "athlete": "4248047",
-   "espn": {
-    "seen": "2026-10-25T12:14:09.241Z",
-    "own": "2026-10-25T12:04:00.000Z"
-   }
-  },
-  "401873011|cesarruiz|out": {
-   "game": "401873011",
-   "start": "2026-10-25T13:30Z",
-   "team": "18",
-   "name": "Cesar Ruiz",
-   "status": "out",
-   "athlete": "4258199",
-   "espn": {
-    "seen": "2026-10-25T12:14:09.241Z",
-    "own": "2026-10-25T12:04:00.000Z"
-   }
-  },
-  "401873011|treytonwelch|out": {
-   "game": "401873011",
-   "start": "2026-10-25T13:30Z",
-   "team": "18",
-   "name": "Treyton Welch",
-   "status": "out",
-   "athlete": "4430684",
-   "espn": {
-    "seen": "2026-10-25T12:14:09.241Z",
-    "own": "2026-10-25T12:04:00.000Z"
-   }
-  },
-  "401873011|deshonelliott|q": {
-   "game": "401873011",
-   "start": "2026-10-25T13:30Z",
-   "team": "23",
-   "name": "DeShon Elliott",
-   "status": "q",
-   "athlete": "3929846",
-   "espn": {
-    "seen": "2026-10-25T12:14:09.241Z",
-    "own": "2026-10-24T17:03:00.000Z"
-   }
-  },
   "401873016|paulsonadebo|q": {
    "game": "401873016",
    "start": "2026-10-25T17:00Z",
@@ -6235,54 +5778,6 @@
    "espn": {
     "seen": "2026-10-25T12:14:09.241Z",
     "own": "2026-10-24T20:10:00.000Z"
-   }
-  },
-  "401873011|terellsmith|out": {
-   "game": "401873011",
-   "start": "2026-10-25T13:30Z",
-   "team": "23",
-   "name": "Terell Smith",
-   "status": "out",
-   "athlete": "4360935",
-   "espn": {
-    "seen": "2026-10-25T12:27:40.505Z",
-    "own": "2026-10-25T12:15:00.000Z"
-   }
-  },
-  "401873011|eliheidenreich|out": {
-   "game": "401873011",
-   "start": "2026-10-25T13:30Z",
-   "team": "23",
-   "name": "Eli Heidenreich",
-   "status": "out",
-   "athlete": "5081508",
-   "espn": {
-    "seen": "2026-10-25T12:27:40.505Z",
-    "own": "2026-10-25T12:15:00.000Z"
-   }
-  },
-  "401873011|willhoward|out": {
-   "game": "401873011",
-   "start": "2026-10-25T13:30Z",
-   "team": "23",
-   "name": "Will Howard",
-   "status": "out",
-   "athlete": "4429955",
-   "espn": {
-    "seen": "2026-10-25T12:27:40.505Z",
-    "own": "2026-10-25T12:15:00.000Z"
-   }
-  },
-  "401873011|drewallar|out": {
-   "game": "401873011",
-   "start": "2026-10-25T13:30Z",
-   "team": "23",
-   "name": "Drew Allar",
-   "status": "out",
-   "athlete": "4714771",
-   "espn": {
-    "seen": "2026-10-25T12:27:40.505Z",
-    "own": "2026-10-25T12:15:00.000Z"
    }
   },
   "401873017|olamidezaccheaus|out": {
@@ -16683,6 +16178,11 @@
    "espn": {
     "seen": "2026-11-01T23:01:57.532Z",
     "own": "2026-11-01T21:50:00.000Z"
+   },
+   "bluesky": {
+    "seen": "2026-11-04T12:50:05.326Z",
+    "own": "2026-11-04T12:34:34.293Z",
+    "why": "@adamscheftermirror.bsky.social: Sources: tests revealed that Ravens’ QB Tyler “"
    }
   },
   "401873035|isaacyiadom|out": {
@@ -19408,6 +18908,11 @@
    "sleeper": {
     "seen": "2026-11-03T20:18:45.370Z",
     "own": "2026-11-03T19:40:27.442Z"
+   },
+   "bluesky": {
+    "seen": "2026-11-04T12:50:05.326Z",
+    "own": "2026-11-04T12:39:45.449Z",
+    "why": "@insidenflnews.bsky.social: Schefter: Ravens QB Tyler Huntley suffered a season-"
    }
   },
   "401873038|cashiushowell|out": {
