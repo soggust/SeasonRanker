@@ -1,13 +1,13 @@
 {
  "sport": "nfl",
  "cursor": {
-  "adamscheftermirror.bsky.social": "2026-11-04T20:14:30.949Z",
+  "adamscheftermirror.bsky.social": "2026-11-04T20:44:34.225Z",
   "rapsheet.bsky.social": "2026-11-04T19:45:56.406Z",
   "nflnewsreposterbot.bsky.social": "2026-11-04T19:43:28.926Z",
-  "insidenflnews.bsky.social": "2026-11-04T19:52:46.839Z",
-  "nflnewsposter.bsky.social": "2026-11-04T19:48:06.681Z",
-  "rotoworld-fb.bsky.social": "2026-11-04T19:55:17.000Z",
-  "rotowirenfl.bsky.social": "2026-11-04T20:07:58.000Z"
+  "insidenflnews.bsky.social": "2026-11-04T20:43:48.834Z",
+  "nflnewsposter.bsky.social": "2026-11-04T20:48:03.460Z",
+  "rotoworld-fb.bsky.social": "2026-11-04T21:12:01.000Z",
+  "rotowirenfl.bsky.social": "2026-11-04T21:05:45.000Z"
  },
  "claims": [
   {
@@ -14309,6 +14309,123 @@
    "kind": "status",
    "confidence": 0.95,
    "text": "Bhayshul Tuten: Questionable for Thursday after no practice \n\n https://www.rotowire.com/football/player/bhayshul-tuten-18524"
+  },
+  {
+   "id": "at://did:plc:mbr4badgf6yu56mquzackzew/app.bsky.feed.post/3mzj6ute75226|camskattebo|questionable|status",
+   "at": "2026-11-04T20:27:34.903Z",
+   "seen": "2026-11-04T21:15:22.208Z",
+   "handle": "insidenflnews.bsky.social",
+   "post": "at://did:plc:mbr4badgf6yu56mquzackzew/app.bsky.feed.post/3mzj6ute75226",
+   "player": "Cam Skattebo",
+   "team": "NYG",
+   "status": "questionable",
+   "kind": "status",
+   "confidence": 0.9,
+   "text": "Giants RB Cam Skattebo (hamstring) remains day-to-day."
+  },
+  {
+   "id": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3mzj735nwlv25|tuten|questionable|status",
+   "at": "2026-11-04T20:31:06.000Z",
+   "seen": "2026-11-04T21:15:22.208Z",
+   "handle": "rotoworld-fb.bsky.social",
+   "post": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3mzj735nwlv25",
+   "player": "Tuten",
+   "team": null,
+   "status": "questionable",
+   "kind": "status",
+   "confidence": 0.6,
+   "text": "Tuten (foot/ankle) questionable, sits out all week"
+  },
+  {
+   "id": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3mzj77r3rcw2c|chrisrodriguez|active|status",
+   "at": "2026-11-04T20:33:41.000Z",
+   "seen": "2026-11-04T21:15:22.208Z",
+   "handle": "rotowirenfl.bsky.social",
+   "post": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3mzj77r3rcw2c",
+   "player": "Chris Rodriguez",
+   "team": null,
+   "status": "active",
+   "kind": "status",
+   "confidence": 0.7,
+   "text": "Chris Rodriguez: No Week 9 injury designation \n\n https://www.rotowire.com/football/player/chris-rodriguez-16933"
+  },
+  {
+   "id": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3mzj7dbpakz2d|chrisrodriguez|active|return",
+   "at": "2026-11-04T20:35:39.000Z",
+   "seen": "2026-11-04T21:15:22.208Z",
+   "handle": "rotoworld-fb.bsky.social",
+   "post": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3mzj7dbpakz2d",
+   "player": "Chris Rodriguez",
+   "team": null,
+   "status": "active",
+   "kind": "return",
+   "confidence": 0.9,
+   "text": "Chris Rodriguez (hand) cleared after three LPs"
+  },
+  {
+   "id": "at://did:plc:fuqjc7x4gxvnwzksnlxwbe4x/app.bsky.feed.post/3mzj7zgyovk22|nickbosa|limited|status",
+   "at": "2026-11-04T20:48:03.460Z",
+   "seen": "2026-11-04T21:15:22.208Z",
+   "handle": "nflnewsposter.bsky.social",
+   "post": "at://did:plc:fuqjc7x4gxvnwzksnlxwbe4x/app.bsky.feed.post/3mzj7zgyovk22",
+   "player": "Nick Bosa",
+   "team": null,
+   "status": "limited",
+   "kind": "status",
+   "confidence": 0.9,
+   "text": "[Garafolo] No practice for RB Christian McCaffrey (hamstring) or WR Mike Evans (achilles) today. Edge Nick Bosa (calf) will be limited. twitter.com/mikegarafolo..."
+  },
+  {
+   "id": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3mzja4baewi2g|davidmontgomery|out|status",
+   "at": "2026-11-04T20:49:37.000Z",
+   "seen": "2026-11-04T21:15:22.208Z",
+   "handle": "rotoworld-fb.bsky.social",
+   "post": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3mzja4baewi2g",
+   "player": "David Montgomery",
+   "team": null,
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.9,
+   "text": "Ryans: Montgomery (groin) will not play in Week 9"
+  },
+  {
+   "id": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3mzjab36swi25|davidmontgomery|out|status",
+   "at": "2026-11-04T20:52:17.000Z",
+   "seen": "2026-11-04T21:15:22.208Z",
+   "handle": "rotowirenfl.bsky.social",
+   "post": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3mzjab36swi25",
+   "player": "David Montgomery",
+   "team": null,
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.95,
+   "text": "David Montgomery: Will miss Sunday's game \n\n https://www.rotowire.com/football/player/david-montgomery-13556"
+  },
+  {
+   "id": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3mzjaz47ke52m|amonrastbrown|limited|status",
+   "at": "2026-11-04T21:05:45.000Z",
+   "seen": "2026-11-04T21:15:22.208Z",
+   "handle": "rotowirenfl.bsky.social",
+   "post": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3mzjaz47ke52m",
+   "player": "Amon-Ra St. Brown",
+   "team": "DET",
+   "status": "limited",
+   "kind": "status",
+   "confidence": 0.8,
+   "text": "Amon-Ra St. Brown: Limited at Wednesday's walkthrough \n\n https://www.rotowire.com/football/player/amon-ra-st-brown-15332"
+  },
+  {
+   "id": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3mzjbecu5ax2d|amonrastbrown|limited|status",
+   "at": "2026-11-04T21:12:01.000Z",
+   "seen": "2026-11-04T21:15:22.208Z",
+   "handle": "rotoworld-fb.bsky.social",
+   "post": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3mzjbecu5ax2d",
+   "player": "Amon-Ra St. Brown",
+   "team": "DET",
+   "status": "limited",
+   "kind": "status",
+   "confidence": 0.9,
+   "text": "St. Brown (rib) limited in Wednesday's practice"
   }
  ]
 }

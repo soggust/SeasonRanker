@@ -13857,6 +13857,66 @@
     "seen": "2026-11-04T20:26:26.896Z",
     "own": "2026-11-04T20:17:00.000Z"
    }
+  },
+  "401873040|drewogletree|q": {
+   "game": "401873040",
+   "start": "2026-11-08T18:00Z",
+   "team": "11",
+   "name": "Drew Ogletree",
+   "status": "q",
+   "athlete": "4722908",
+   "espn": {
+    "seen": "2026-11-04T21:12:40.444Z",
+    "own": "2026-11-04T20:42:00.000Z"
+   }
+  },
+  "401873040|akeemdavisgaither|q": {
+   "game": "401873040",
+   "start": "2026-11-08T18:00Z",
+   "team": "11",
+   "name": "Akeem Davis-Gaither",
+   "status": "q",
+   "athlete": "3917142",
+   "espn": {
+    "seen": "2026-11-04T21:12:40.444Z",
+    "own": "2026-11-04T20:42:00.000Z"
+   }
+  },
+  "401873042|amenogbongbemiga|q": {
+   "game": "401873042",
+   "start": "2026-11-08T18:00Z",
+   "team": "8",
+   "name": "Amen Ogbongbemiga",
+   "status": "q",
+   "athlete": "4038432",
+   "espn": {
+    "seen": "2026-11-04T21:12:40.444Z",
+    "own": "2026-11-04T21:02:00.000Z"
+   }
+  },
+  "401873042|amonrastbrown|q": {
+   "game": "401873042",
+   "start": "2026-11-08T18:00Z",
+   "team": "8",
+   "name": "Amon-Ra St. Brown",
+   "status": "q",
+   "athlete": "4374302",
+   "espn": {
+    "seen": "2026-11-04T21:12:40.444Z",
+    "own": "2026-11-04T21:00:00.000Z"
+   }
+  },
+  "401873046|davidmontgomery|out": {
+   "game": "401873046",
+   "start": "2026-11-08T21:05Z",
+   "team": "34",
+   "name": "David Montgomery",
+   "status": "out",
+   "athlete": "4035538",
+   "espn": {
+    "seen": "2026-11-04T21:12:40.444Z",
+    "own": "2026-11-04T20:52:00.000Z"
+   }
   }
  }
 }
