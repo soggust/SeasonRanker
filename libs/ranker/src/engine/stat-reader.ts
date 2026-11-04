@@ -153,6 +153,13 @@ export class StatReader {
     };
   }
 
+  // What one play of a volume stat comes to in the shown units (unit-scoring.ts: a whole-number stat's spread
+  // is read as at least one play): 1 on season totals; per game, 1 over his games; at pace, the pace over them
+  onePlay(player: SkillPlayer, stat: SkillStat): number {
+    if (!this.showsPerGame(stat) || !player.games) return 1;
+    return (1 / player.games) * (this.basis === 'pace17' ? PACE_GAMES[this.position] : 1);
+  }
+
   // The shown value: for volume stats, per game or at a full season's pace as the Stat Base setting says
   value(player: SkillPlayer, stat: SkillStat): number | null {
     const raw = this.raw(player, stat);

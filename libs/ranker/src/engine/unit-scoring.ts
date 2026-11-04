@@ -189,6 +189,9 @@ export function weightedTotals<T>(
   strengths?: Map<string, number>,
   // (a pooled tab's Position Adjustment: each unit's group, and the share of each score measured in it)
   adjust?: { of: (unit: T) => string; share: number },
+  // (what one play of a volume stat comes to in the values' units for a unit: 1 on season totals, 1 over his
+  // games per game, the pace over his games at a full season's pace; StatReader.onePlay. Left out: totals)
+  onePlay: (unit: T, stat: SkillStat) => number = () => 1,
 ): Map<T, number> {
   const totals = new Map<T, number>(units.map((unit) => [unit, 0]));
   const note = (unit: T, key: string, amount: number) => {
@@ -226,17 +229,23 @@ export function weightedTotals<T>(
     // worst, so a list's many unranked fighters don't squeeze its top ranks together at the cap.
     const better = stat.support ? (stat.supportHelps ? 1 : -1) : stat.negative ? -1 : 1;
     const scale = stat.scale;
+    // A stat counted in whole plays (a volume stat shown as a whole number) is read with a spread of at least
+    // one play (the list's middle one: one touchdown on totals; per game, one over a typical player's games): with
+    // nearly everyone at 0, one play was worth 7 standard deviations (the owner, 2026-11-04: Devin Lloyd's one
+    // defensive TD at +7.62 among 177 linebackers, 174 of them at 0). Nothing is capped: three score three.
+    const wholePlays = stat.kind === 'volume' && stat.format === 'int' && !scale;
+    const spread = wholePlays ? Math.max(sd, median(pairs.map(([unit]) => onePlay(unit, stat)))) : sd;
     const onScale = (z: number) => Math.max(-SCALE_Z, Math.min(SCALE_Z, z));
     // (Position Adjustment: each group's own average and spread, from its part of the same values)
     const groups = adjust && adjust.share > 0 && !scale ? groupScales(pairs, adjust.of) : null;
     const score = scale
       ? (v: number) => onScale(SCALE_Z * (1 - (2 * (v - scale[0])) / (scale[1] - scale[0])))
-      : (v: number) => (better * (v - mean)) / sd;
+      : (v: number) => (better * (v - mean)) / spread;
     // (the Position Adjustment's one shift for each unit's group, added to whatever he scores on the stat, a
     // missing value's too, so nothing within a group moves)
     const shiftOf = (unit: T) => {
       const own = groups ? groups.get(adjust!.of(unit)) : undefined;
-      return own ? (-adjust!.share * better * (own.mean - mean)) / sd : 0;
+      return own ? (-adjust!.share * better * (own.mean - mean)) / spread : 0;
     };
     const worst = Math.min(...pairs.map(([, v]) => score(v)));
     // (a sport can boost a stat behind its slider: the same 0-100% range, more effect at every step;
@@ -273,6 +282,12 @@ export function weightedTotals<T>(
   }
   return totals;
 }
+
+const median = (values: number[]): number => {
+  const sorted = [...values].sort((a, b) => a - b);
+  const mid = sorted.length >> 1;
+  return sorted.length % 2 ? sorted[mid] : (sorted[mid - 1] + sorted[mid]) / 2;
+};
 
 // Each group's average and spread over the values given (the Position Adjustment's): only a group with at
 // least 5 of them and some spread
