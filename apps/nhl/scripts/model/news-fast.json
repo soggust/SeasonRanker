@@ -1,11 +1,11 @@
 {
  "sport": "nhl",
  "cursor": {
-  "johnston-bot.bsky.social": "2026-11-04T02:57:05.365Z",
+  "johnston-bot.bsky.social": "2026-11-04T14:31:56.955Z",
   "notfriedgehnic.bsky.social": "2026-11-03T19:05:28.655Z",
-  "dailyfaceoff.bsky.social": "2026-11-04T13:02:36.000Z",
-  "dfotoronto.bsky.social": "2026-11-04T13:04:05.000Z",
-  "marklazerus.bsky.social": "2026-11-04T00:04:31.182Z"
+  "dailyfaceoff.bsky.social": "2026-11-04T15:14:54.000Z",
+  "dfotoronto.bsky.social": "2026-11-04T15:06:16.000Z",
+  "marklazerus.bsky.social": "2026-11-04T15:32:59.407Z"
  },
  "claims": [
   {
@@ -1567,6 +1567,19 @@
    "kind": "status",
    "confidence": 0.9,
    "text": "Oilers’ Howard out week-to-week with lower-body injury"
+  },
+  {
+   "id": "at://did:plc:3uus7y6h3rlrk6sbctzxm4bg/app.bsky.feed.post/3mzimuiohgs2r|johngibson|none|status",
+   "at": "2026-11-04T15:05:16.000Z",
+   "seen": "2026-11-04T15:41:29.919Z",
+   "handle": "dailyfaceoff.bsky.social",
+   "post": "at://did:plc:3uus7y6h3rlrk6sbctzxm4bg/app.bsky.feed.post/3mzimuiohgs2r",
+   "player": "John Gibson",
+   "team": "DET",
+   "status": "none",
+   "kind": "status",
+   "confidence": 0.3,
+   "text": "Red Wings’ John Gibson left the game last night with a lower-body injury. #nhl #nhlhockey #dailyfaceoff"
   }
  ]
 }

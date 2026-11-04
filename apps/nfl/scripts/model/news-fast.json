@@ -1,13 +1,13 @@
 {
  "sport": "nfl",
  "cursor": {
-  "adamscheftermirror.bsky.social": "2026-11-04T12:49:33.893Z",
+  "adamscheftermirror.bsky.social": "2026-11-04T15:39:32.588Z",
   "rapsheet.bsky.social": "2026-11-03T19:02:12.238Z",
-  "nflnewsreposterbot.bsky.social": "2026-11-04T12:25:03.111Z",
-  "insidenflnews.bsky.social": "2026-11-04T13:03:35.519Z",
-  "nflnewsposter.bsky.social": "2026-11-04T13:28:53.626Z",
-  "rotoworld-fb.bsky.social": "2026-11-03T23:03:46.000Z",
-  "rotowirenfl.bsky.social": "2026-11-04T00:17:30.000Z"
+  "nflnewsreposterbot.bsky.social": "2026-11-04T14:33:43.335Z",
+  "insidenflnews.bsky.social": "2026-11-04T14:15:32.156Z",
+  "nflnewsposter.bsky.social": "2026-11-04T14:45:50.966Z",
+  "rotoworld-fb.bsky.social": "2026-11-04T15:18:27.000Z",
+  "rotowirenfl.bsky.social": "2026-11-04T15:38:21.000Z"
  },
  "claims": [
   {
@@ -13542,6 +13542,136 @@
    "kind": "status",
    "confidence": 0.95,
    "text": "[Schefter] Tests revealed that Ravens’ QB Tyler “Snoop” Huntley suffered a season-ending turf toe injury. \n\nRavens QB Lamar Jackson is out indefinitely with a thumb injury, Huntley’s season is over du"
+  },
+  {
+   "id": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3mzii4fwarf2b|mackhollins|limited|return",
+   "at": "2026-11-04T13:40:13.000Z",
+   "seen": "2026-11-04T15:41:29.919Z",
+   "handle": "rotoworld-fb.bsky.social",
+   "post": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3mzii4fwarf2b",
+   "player": "Mack Hollins",
+   "team": null,
+   "status": "limited",
+   "kind": "return",
+   "confidence": 0.6,
+   "text": "Mack Hollins to return to practice Wednesday"
+  },
+  {
+   "id": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3mzijalfxkb2z|tylerhuntley|out|status",
+   "at": "2026-11-04T14:00:26.000Z",
+   "seen": "2026-11-04T15:41:29.919Z",
+   "handle": "rotowirenfl.bsky.social",
+   "post": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3mzijalfxkb2z",
+   "player": "Tyler Huntley",
+   "team": null,
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.8,
+   "text": "Tyler Huntley: Reportedly out for season with turf toe \n\n https://www.rotowire.com/football/player/tyler-huntley-14563"
+  },
+  {
+   "id": "at://did:plc:rx22hq465sfe5g2qyyf5gzu2/app.bsky.feed.post/3mzil43e2422v|deshaunwatson|questionable|status",
+   "at": "2026-11-04T14:33:43.335Z",
+   "seen": "2026-11-04T15:41:29.919Z",
+   "handle": "nflnewsreposterbot.bsky.social",
+   "post": "at://did:plc:rx22hq465sfe5g2qyyf5gzu2/app.bsky.feed.post/3mzil43e2422v",
+   "player": "Deshaun Watson",
+   "team": "CLE",
+   "status": "questionable",
+   "kind": "status",
+   "confidence": 0.8,
+   "text": "Adam Schefter: Browns QB Deshaun Watson has been placed in concussion protocol."
+  },
+  {
+   "id": "at://did:plc:qre6zxbmr3ixhdmgsgdretb5/app.bsky.feed.post/3mzil5do6hw2a|deshaunwatson|questionable|status",
+   "at": "2026-11-04T14:34:25.522Z",
+   "seen": "2026-11-04T15:41:29.919Z",
+   "handle": "adamscheftermirror.bsky.social",
+   "post": "at://did:plc:qre6zxbmr3ixhdmgsgdretb5/app.bsky.feed.post/3mzil5do6hw2a",
+   "player": "Deshaun Watson",
+   "team": "CLE",
+   "status": "questionable",
+   "kind": "status",
+   "confidence": 0.8,
+   "text": "Browns QB Deshaun Watson has been placed in concussion protocol.\n\nOriginal post"
+  },
+  {
+   "id": "at://did:plc:fuqjc7x4gxvnwzksnlxwbe4x/app.bsky.feed.post/3mzilq5diq22i|deshaunwatson|questionable|status",
+   "at": "2026-11-04T14:44:56.500Z",
+   "seen": "2026-11-04T15:41:29.919Z",
+   "handle": "nflnewsposter.bsky.social",
+   "post": "at://did:plc:fuqjc7x4gxvnwzksnlxwbe4x/app.bsky.feed.post/3mzilq5diq22i",
+   "player": "Deshaun Watson",
+   "team": "CLE",
+   "status": "questionable",
+   "kind": "status",
+   "confidence": 0.8,
+   "text": "[Browns] Deshaun Watson has been placed in concussion protocol twitter.com/Browns/statu..."
+  },
+  {
+   "id": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3mzilrtbvwf2e|deshaunwatson|questionable|status",
+   "at": "2026-11-04T14:45:52.000Z",
+   "seen": "2026-11-04T15:41:29.919Z",
+   "handle": "rotowirenfl.bsky.social",
+   "post": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3mzilrtbvwf2e",
+   "player": "Deshaun Watson",
+   "team": "CLE",
+   "status": "questionable",
+   "kind": "status",
+   "confidence": 0.8,
+   "text": "Deshaun Watson: Placed in concussion protocol \n\n https://www.rotowire.com/football/player/deshaun-watson-11712"
+  },
+  {
+   "id": "at://did:plc:qre6zxbmr3ixhdmgsgdretb5/app.bsky.feed.post/3mzimb7deof2r|shedeursanders|none|starting",
+   "at": "2026-11-04T14:54:28.931Z",
+   "seen": "2026-11-04T15:41:29.919Z",
+   "handle": "adamscheftermirror.bsky.social",
+   "post": "at://did:plc:qre6zxbmr3ixhdmgsgdretb5/app.bsky.feed.post/3mzimb7deof2r",
+   "player": "Shedeur Sanders",
+   "team": "CLE",
+   "status": "none",
+   "kind": "starting",
+   "confidence": 0.8,
+   "text": "With Deshaun Watson in concussion protocol, Browns QB Sheduer Sanders is next in line to start on Sunday’s game vs. the Saints.\n\nOriginal post"
+  },
+  {
+   "id": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3mzin3ts23425|deshaunwatson|questionable|status",
+   "at": "2026-11-04T15:09:22.000Z",
+   "seen": "2026-11-04T15:41:29.919Z",
+   "handle": "rotoworld-fb.bsky.social",
+   "post": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3mzin3ts23425",
+   "player": "Deshaun Watson",
+   "team": "CLE",
+   "status": "questionable",
+   "kind": "status",
+   "confidence": 0.8,
+   "text": "Browns put Deshaun Watson in concussion protocol"
+  },
+  {
+   "id": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3mzinm3ki3h25|tylerhuntley|out|status",
+   "at": "2026-11-04T15:18:27.000Z",
+   "seen": "2026-11-04T15:41:29.919Z",
+   "handle": "rotoworld-fb.bsky.social",
+   "post": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3mzinm3ki3h25",
+   "player": "Tyler Huntley",
+   "team": null,
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.9,
+   "text": "Huntley done for season with toe injury"
+  },
+  {
+   "id": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3mziopo53362q|bhayshultuten|questionable|status",
+   "at": "2026-11-04T15:38:21.000Z",
+   "seen": "2026-11-04T15:41:29.919Z",
+   "handle": "rotowirenfl.bsky.social",
+   "post": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3mziopo53362q",
+   "player": "Bhayshul Tuten",
+   "team": null,
+   "status": "questionable",
+   "kind": "status",
+   "confidence": 0.8,
+   "text": "Bhayshul Tuten: Trending toward game-time call Thursday \n\n https://www.rotowire.com/football/player/bhayshul-tuten-18524"
   }
  ]
 }
