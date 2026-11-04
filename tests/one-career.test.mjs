@@ -120,8 +120,14 @@ test('nba: "lebron james" is one search hit, his positions on it, opening on the
   assert.equal(compare.sides[0].season, engine.CURRENT_SEASON);
 });
 
-test('nba: LeBron\'s card has every season from every position in one Career, each ranked on its own tab', async () => {
-  const { engine, host, data, careers, asked } = await harness('nba', 'SF');
+test('nba: LeBron\'s card has every season from every position in one Career, each ranked on its own tab', async (t) => {
+  // (this season's tab the data's, never a guess: Basketball-Reference moves him between SF and PF as the season goes
+  // (2026-11-04: PF), and the desk's data check went red on the SF it assumed)
+  const nowTab = (units) => Object.entries(units).find(([tab, rows]) => tab !== 'TOP' && rows.some((p) => p.gsisId === LEBRON))?.[0];
+  const probe = await engineFor('nba');
+  const now = nowTab(probe.SKILL_UNITS);
+  if (!now) return t.skip("LeBron hasn't played this season yet");
+  const { engine, host, data, careers, asked } = await harness('nba', now);
   const files = careerFiles(careers, ['PG', 'SG', 'SF', 'PF', 'C'], LEBRON);
   assert.equal(new Set(files.map(([tab]) => tab)).size, 5, 'he played all five');
   const cards = new engine.PlayerCards(host, data);
@@ -135,17 +141,17 @@ test('nba: LeBron\'s card has every season from every position in one Career, ea
     [...files].sort((a, b) => a[1] - b[1]),
     'every finished season, its tab, games and rank there',
   );
-  assert.ok(lines.some((l) => l.season === engine.CURRENT_SEASON && l.position === 'SF'), 'and this season');
+  assert.ok(lines.some((l) => l.season === engine.CURRENT_SEASON && l.position === now), 'and this season');
   assert.ok(lines.every((l) => l.id === LEBRON));
   // (oldest first, one line a season: he never played two tabs in one)
   assert.deepEqual(lines.map((l) => l.season), [...new Set(lines.map((l) => l.season))].sort((a, b) => a - b));
   // (the career's totals span every tab: his games, all of them)
   const games = lines.reduce((n, l) => n + l.games, 0);
-  const nowGames = engine.SKILL_UNITS.SF.find((p) => p.gsisId === LEBRON).games;
+  const nowGames = engine.SKILL_UNITS[now].find((p) => p.gsisId === LEBRON).games;
   assert.equal(games, files.reduce((n, f) => n + f[2], 0) + nowGames);
-  // (the headline stats of a PF season: the card's (SF's) columns, the ones the PF tab shares by key)
-  const pf = lines.find((l) => l.position === 'PF');
-  assert.equal(pf.stats.length, engine.headlineStats('SF').length);
+  // (the headline stats of a PF season: the card's (this season's tab's) columns, the ones the PF tab shares by key)
+  const pf = lines.find((l) => l.position === 'PF' && l.season !== engine.CURRENT_SEASON);
+  assert.equal(pf.stats.length, engine.headlineStats(now).length);
   assert.ok(pf.stats.some((s) => s.value !== null), 'a PF season shows its stats');
   // (only the careers files of the tabs he played)
   assert.deepEqual([...new Set(asked)].sort(), ['C', 'PF', 'PG', 'SF', 'SG']);
