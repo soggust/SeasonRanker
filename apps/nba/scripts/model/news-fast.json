@@ -1,7 +1,7 @@
 {
  "sport": "nba",
  "cursor": {
-  "rotowirenba.bsky.social": "2026-11-04T00:14:09.000Z",
+  "rotowirenba.bsky.social": "2026-11-04T00:50:41.000Z",
   "insidenbanews.bsky.social": "2026-11-04T00:05:57.726Z",
   "shamsbot.bsky.social": "2026-11-03T14:00:30.000Z"
  },
@@ -7467,6 +7467,32 @@
    "kind": "status",
    "confidence": 0.6,
    "text": "Kawhi Leonard to be re-evaluated in 1 week after completing treatment for left knee swelling."
+  },
+  {
+   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mzh4ehvpdo2g|dylancardwell|active|status",
+   "at": "2026-11-04T00:37:18.000Z",
+   "seen": "2026-11-04T00:51:15.685Z",
+   "handle": "rotowirenba.bsky.social",
+   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mzh4ehvpdo2g",
+   "player": "Dylan Cardwell",
+   "team": null,
+   "status": "active",
+   "kind": "status",
+   "confidence": 0.8,
+   "text": "Dylan Cardwell: Not listed on injury report \n\n https://www.rotowire.com/basketball/player/dylan-cardwell-6638"
+  },
+  {
+   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mzh54esmbh2l|derrickjones|active|status",
+   "at": "2026-11-04T00:50:41.000Z",
+   "seen": "2026-11-04T00:51:15.685Z",
+   "handle": "rotowirenba.bsky.social",
+   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mzh54esmbh2l",
+   "player": "Derrick Jones",
+   "team": null,
+   "status": "active",
+   "kind": "status",
+   "confidence": 0.8,
+   "text": "Derrick Jones: Not listed on injury report \n\n https://www.rotowire.com/basketball/player/derrick-jones-4083"
   }
  ]
 }

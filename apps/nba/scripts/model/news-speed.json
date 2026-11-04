@@ -1,95 +1,6 @@
 {
  "sport": "nba",
  "entries": {
-  "401909856|mouhamedgueye|out": {
-   "game": "401909856",
-   "start": "2026-10-25T00:30Z",
-   "team": "1",
-   "name": "Mouhamed Gueye",
-   "status": "out",
-   "athlete": "4712863",
-   "espn": {
-    "seen": "2026-10-24T03:13:43.241Z",
-    "own": "2026-10-19T19:38:00.000Z"
-   }
-  },
-  "401909856|henriveesaar|out": {
-   "game": "401909856",
-   "start": "2026-10-25T00:30Z",
-   "team": "1",
-   "name": "Henri Veesaar",
-   "status": "out",
-   "athlete": "5105571",
-   "espn": {
-    "seen": "2026-10-24T03:13:43.241Z",
-    "own": "2026-09-21T19:50:00.000Z"
-   }
-  },
-  "401909856|cameronjohnson|out": {
-   "game": "401909856",
-   "start": "2026-10-25T00:30Z",
-   "team": "1",
-   "name": "Cameron Johnson",
-   "status": "out",
-   "bluesky": {
-    "seen": "2026-10-24T00:23:14.453Z",
-    "own": "2026-10-23T23:08:34.000Z",
-    "why": "@rotowirenba.bsky.social: Cameron Johnson: Won't play Saturday \n\n https://www.ro"
-   }
-  },
-  "401909856|reedsheppard|out": {
-   "game": "401909856",
-   "start": "2026-10-25T00:30Z",
-   "team": "1",
-   "name": "Reed Sheppard",
-   "status": "out",
-   "bluesky": {
-    "seen": "2026-10-24T00:23:14.453Z",
-    "own": "2026-10-24T00:21:44.000Z",
-    "why": "@rotowirenba.bsky.social: Reed Sheppard: Won't play Friday \n\n https://www.rotowi"
-   },
-   "athlete": "4711272",
-   "espn": {
-    "seen": "2026-10-24T03:13:43.241Z",
-    "own": "2026-10-24T00:21:00.000Z"
-   }
-  },
-  "401909856|cooperflagg|out": {
-   "game": "401909856",
-   "start": "2026-10-25T00:30Z",
-   "team": "1",
-   "name": "Cooper Flagg",
-   "status": "out",
-   "bluesky": {
-    "seen": "2026-10-24T01:08:03.622Z",
-    "own": "2026-10-24T01:04:06.000Z",
-    "why": "@rotowirenba.bsky.social: Cooper Flagg: Won't return Friday \n\n https://www.rotow"
-   }
-  },
-  "401909856|jalenduren|q": {
-   "game": "401909856",
-   "start": "2026-10-25T00:30Z",
-   "team": "1",
-   "name": "Jalen Duren",
-   "status": "q",
-   "bluesky": {
-    "seen": "2026-10-24T01:35:11.977Z",
-    "own": "2026-10-24T01:16:01.000Z",
-    "why": "@rotowirenba.bsky.social: Jalen Duren: Questionable to return Friday \n\n https://"
-   }
-  },
-  "401909856|paolobanchero|out": {
-   "game": "401909856",
-   "start": "2026-10-25T00:30Z",
-   "team": "1",
-   "name": "Paolo Banchero",
-   "status": "out",
-   "bluesky": {
-    "seen": "2026-10-24T01:35:11.977Z",
-    "own": "2026-10-24T01:22:39.000Z",
-    "why": "@rotowirenba.bsky.social: Paolo Banchero: Doubtful to return Friday \n\n https://w"
-   }
-  },
   "401909859|spencerjones|out": {
    "game": "401909859",
    "start": "2026-10-25T01:00Z",
@@ -367,18 +278,6 @@
     "own": "2026-10-16T16:11:00.000Z"
    }
   },
-  "401909856|cedriccoward|out": {
-   "game": "401909856",
-   "start": "2026-10-25T00:30Z",
-   "team": "1",
-   "name": "Cedric Coward",
-   "status": "out",
-   "bluesky": {
-    "seen": "2026-10-24T03:15:48.192Z",
-    "own": "2026-10-24T01:36:32.000Z",
-    "why": "@rotowirenba.bsky.social: Cedric Coward: Won't play Friday \n\n https://www.rotowi"
-   }
-  },
   "401909859|cedriccoward|out": {
    "game": "401909859",
    "start": "2026-10-25T01:00Z",
@@ -401,22 +300,6 @@
     "seen": "2026-10-24T03:15:48.192Z",
     "own": "2026-10-24T01:36:32.000Z",
     "why": "@rotowirenba.bsky.social: Cedric Coward: Won't play Friday \n\n https://www.rotowi"
-   }
-  },
-  "401909856|reedsheppard|q": {
-   "game": "401909856",
-   "start": "2026-10-25T00:30Z",
-   "team": "10",
-   "name": "Reed Sheppard",
-   "status": "q",
-   "athlete": "4711272",
-   "espn": {
-    "seen": "2026-10-24T13:54:42.315Z",
-    "own": "2026-10-24T13:45:00.000Z"
-   },
-   "sleeper": {
-    "seen": "2026-10-24T20:09:40.780Z",
-    "own": "2026-10-24T17:20:57.960Z"
    }
   },
   "401909860|charlesbassey|q": {
@@ -465,85 +348,6 @@
    "sleeper": {
     "seen": "2026-10-24T20:09:40.780Z",
     "own": "2026-10-24T14:10:56.845Z"
-   }
-  },
-  "401909856|stevenadams|q": {
-   "game": "401909856",
-   "start": "2026-10-25T00:30Z",
-   "team": "10",
-   "name": "Steven Adams",
-   "status": "q",
-   "athlete": "2991235",
-   "espn": {
-    "seen": "2026-10-24T16:46:40.158Z",
-    "own": "2026-10-24T15:16:00.000Z"
-   }
-  },
-  "401909856|fredvanvleet|q": {
-   "game": "401909856",
-   "start": "2026-10-25T00:30Z",
-   "team": "10",
-   "name": "Fred VanVleet",
-   "status": "q",
-   "athlete": "2991230",
-   "espn": {
-    "seen": "2026-10-24T16:46:40.158Z",
-    "own": "2026-10-24T15:13:00.000Z"
-   }
-  },
-  "401909856|fredvanvleet|out": {
-   "game": "401909856",
-   "start": "2026-10-25T00:30Z",
-   "team": "10",
-   "name": "Fred VanVleet",
-   "status": "out",
-   "athlete": "2991230",
-   "espn": {
-    "seen": "2026-10-24T17:18:41.222Z",
-    "own": "2026-10-24T17:14:00.000Z"
-   },
-   "sleeper": {
-    "seen": "2026-10-24T20:09:40.780Z",
-    "own": "2026-10-24T17:20:57.963Z"
-   }
-  },
-  "401909856|stevenadams|out": {
-   "game": "401909856",
-   "start": "2026-10-25T00:30Z",
-   "team": "10",
-   "name": "Steven Adams",
-   "status": "out",
-   "athlete": "2991235",
-   "espn": {
-    "seen": "2026-10-24T17:55:43.772Z",
-    "own": "2026-10-24T17:20:00.000Z"
-   },
-   "sleeper": {
-    "seen": "2026-10-24T20:09:40.780Z",
-    "own": "2026-10-24T17:25:57.971Z"
-   }
-  },
-  "401909856|marcussmart|out": {
-   "game": "401909856",
-   "start": "2026-10-25T00:30Z",
-   "team": "10",
-   "name": "Marcus Smart",
-   "status": "out",
-   "athlete": "2990992",
-   "espn": {
-    "seen": "2026-10-25T00:07:37.048Z",
-    "own": "2026-10-24T23:15:00.000Z"
-   }
-  },
-  "401909856|marcussmart|q": {
-   "game": "401909856",
-   "start": "2026-10-25T00:30Z",
-   "team": "10",
-   "name": "Marcus Smart",
-   "status": "q",
-   "sleeper": {
-    "seen": "2026-10-24T20:09:40.780Z",
-    "own": "2026-10-24T19:40:58.728Z"
    }
   },
   "401909859|yvesmissi|out": {
@@ -20342,6 +20146,18 @@
     "seen": "2026-11-04T00:09:10.690Z",
     "own": "2026-11-04T00:05:57.726Z",
     "why": "@insidenbanews.bsky.social: Kawhi Leonard to be re-evaluated in 1 week after com"
+   }
+  },
+  "401909934|preciousachiuwa|q": {
+   "game": "401909934",
+   "start": "2026-11-05T03:00Z",
+   "team": "23",
+   "name": "Precious Achiuwa",
+   "status": "q",
+   "athlete": "4431679",
+   "espn": {
+    "seen": "2026-11-04T00:49:36.468Z",
+    "own": "2026-11-04T00:36:00.000Z"
    }
   }
  }
