@@ -575,6 +575,48 @@
    "sport": "mma",
    "ref": "D88",
    "text": "Self-tune: MMA held, nothing tried (no fresh held-out days since 2026-10-26 (the earlier weeks' holdouts consumed))"
+  },
+  {
+   "date": "2026-11-04",
+   "group": "dropped",
+   "sport": null,
+   "ref": "D103",
+   "text": "Seasonal trends: league levels drift (NBA threes, NFL passing), but the Bot and the close already keep up; a trend term ties everywhere"
+  },
+  {
+   "date": "2026-11-04",
+   "group": "dropped",
+   "sport": null,
+   "ref": "D103",
+   "text": "Within-season drift by week or month: 4 of about 200 checks past noise, what chance alone gives; built and gated, ties on every measure"
+  },
+  {
+   "date": "2026-11-04",
+   "group": "dropped",
+   "sport": "nfl",
+   "ref": "D103",
+   "text": "NFL sharp lag (re-test): its small gain came from giving up picks that beat the close 69% of the time"
+  },
+  {
+   "date": "2026-11-04",
+   "group": "watching",
+   "sport": "nfl",
+   "ref": "D103",
+   "text": "NFL interceptions vs the defense’s EPA allowed: close (z 1.6), waits for 2026’s full season"
+  },
+  {
+   "date": "2026-11-04",
+   "group": "watching",
+   "sport": "nfl",
+   "ref": "D103",
+   "text": "Backup QBs (0 to 5 starts) still run about 30% over on rushing; no fix survives 146 games yet"
+  },
+  {
+   "date": "2026-11-04",
+   "group": "shipped",
+   "sport": "mma",
+   "ref": "D103",
+   "text": "MMA favorite-longshot calibration re-checked: still beats the raw no-vig in 4 of 5 seasons, stays on"
   }
  ]
 }
