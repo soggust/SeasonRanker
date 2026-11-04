@@ -1,13 +1,13 @@
 {
  "sport": "nfl",
  "cursor": {
-  "adamscheftermirror.bsky.social": "2026-11-04T19:14:36.719Z",
-  "rapsheet.bsky.social": "2026-11-04T19:09:18.329Z",
-  "nflnewsreposterbot.bsky.social": "2026-11-04T19:01:07.524Z",
-  "insidenflnews.bsky.social": "2026-11-04T19:00:29.157Z",
-  "nflnewsposter.bsky.social": "2026-11-04T19:05:35.099Z",
-  "rotoworld-fb.bsky.social": "2026-11-04T19:11:16.000Z",
-  "rotowirenfl.bsky.social": "2026-11-04T19:09:35.000Z"
+  "adamscheftermirror.bsky.social": "2026-11-04T20:14:30.949Z",
+  "rapsheet.bsky.social": "2026-11-04T19:45:56.406Z",
+  "nflnewsreposterbot.bsky.social": "2026-11-04T19:43:28.926Z",
+  "insidenflnews.bsky.social": "2026-11-04T19:52:46.839Z",
+  "nflnewsposter.bsky.social": "2026-11-04T19:48:06.681Z",
+  "rotoworld-fb.bsky.social": "2026-11-04T19:55:17.000Z",
+  "rotowirenfl.bsky.social": "2026-11-04T20:07:58.000Z"
  },
  "claims": [
   {
@@ -14244,6 +14244,71 @@
    "kind": "starting",
    "confidence": 0.8,
    "text": "More about the Philadelphia Eagles turning to Joe Milton as their starting quarterback Sunday against the New York Giants:\n\nOriginal post"
+  },
+  {
+   "id": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3mzj2w33if72z|joemilton|none|starting",
+   "at": "2026-11-04T19:16:41.000Z",
+   "seen": "2026-11-04T20:16:58.659Z",
+   "handle": "rotowirenfl.bsky.social",
+   "post": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3mzj2w33if72z",
+   "player": "Joe Milton",
+   "team": null,
+   "status": "none",
+   "kind": "starting",
+   "confidence": 0.9,
+   "text": "Joe Milton: Set to start Sunday \n\n https://www.rotowire.com/football/player/joe-milton-17830"
+  },
+  {
+   "id": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3mzj3dgsypt2b|tannermckee|none|benched",
+   "at": "2026-11-04T19:24:10.000Z",
+   "seen": "2026-11-04T20:16:58.659Z",
+   "handle": "rotowirenfl.bsky.social",
+   "post": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3mzj3dgsypt2b",
+   "player": "Tanner McKee",
+   "team": null,
+   "status": "none",
+   "kind": "benched",
+   "confidence": 0.9,
+   "text": "Tanner McKee: Benched for Joe Milton in Week 9 \n\n https://www.rotowire.com/football/player/tanner-mckee-16686"
+  },
+  {
+   "id": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3mzj3uhkxtt2b|tyson|active|return",
+   "at": "2026-11-04T19:33:41.000Z",
+   "seen": "2026-11-04T20:16:58.659Z",
+   "handle": "rotoworld-fb.bsky.social",
+   "post": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3mzj3uhkxtt2b",
+   "player": "Tyson",
+   "team": null,
+   "status": "active",
+   "kind": "return",
+   "confidence": 0.8,
+   "text": "Tyson (hamstring) designated to return from IR"
+  },
+  {
+   "id": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3mzj4d6kveq2q|hunterhenry|questionable|status",
+   "at": "2026-11-04T19:41:55.000Z",
+   "seen": "2026-11-04T20:16:58.659Z",
+   "handle": "rotowirenfl.bsky.social",
+   "post": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3mzj4d6kveq2q",
+   "player": "Hunter Henry",
+   "team": null,
+   "status": "questionable",
+   "kind": "status",
+   "confidence": 0.5,
+   "text": "Hunter Henry: Sitting out first practice of Week 9 \n\n https://www.rotowire.com/football/player/hunter-henry-10735"
+  },
+  {
+   "id": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3mzj5rr5rkj27|bhayshultuten|questionable|status",
+   "at": "2026-11-04T20:07:58.000Z",
+   "seen": "2026-11-04T20:16:58.659Z",
+   "handle": "rotowirenfl.bsky.social",
+   "post": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3mzj5rr5rkj27",
+   "player": "Bhayshul Tuten",
+   "team": null,
+   "status": "questionable",
+   "kind": "status",
+   "confidence": 0.95,
+   "text": "Bhayshul Tuten: Questionable for Thursday after no practice \n\n https://www.rotowire.com/football/player/bhayshul-tuten-18524"
   }
  ]
 }
