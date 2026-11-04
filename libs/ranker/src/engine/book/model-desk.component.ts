@@ -13,7 +13,6 @@ import { SummaryBox, athleteTeam, liveStat } from './live-props';
 import { EspnMmaScoreboard, LiveBout, boutResult, fightWords, mmaBouts } from './live-mma';
 import { pickTeamColor, splitPick } from './pick-style';
 import type { PlayerRef } from '../player-link';
-import { RecordHistoryFile, RecordTrend, recordTrendOf, trendUnits } from './record-trend';
 import { ExpectFile, LiveCheckRow, liveCheck, liveCheckRow } from './live-check';
 import { ADMIN } from '../account/features';
 import { Bars, CURVE_H, CURVE_W, CurvePoint, FormSquare, Streak, UnitsCurve, barsOf, squaresOf, pointAt, signedUnits, streakOf, unitsCurve, winPctOf } from './bot-stats';
@@ -21,7 +20,7 @@ import { Bars, CURVE_H, CURVE_W, CurvePoint, FormSquare, Streak, UnitsCurve, bar
 // Bot Stats (the Book's tab; the Algorithm till 2026-11-04, when the owner opened it to everyone): the Bot's
 // record in figures and charts first (the units, the record, the return, beating the close, the run it's on; the
 // units over time; each sport's and each band's bars; its last twenty), the tables under them. The research's
-// own panels (live against the replay, the trend of re-records) stay an admin's. The code-only desk's play-money betting
+// own panels (live against the replay) stay an admin's. The code-only desk's play-money betting
 // (libs/ranker/scripts/model/run.mjs: every market of every game, 0.5 to 3 units), on the Bot's history
 // (replay-history.ts botHistoryOf: today's algorithm replayed over the priced history before its epoch, plus its
 // real bets since, from each sport's data/model/replay-record.json and ledger.json). The build's time and the
@@ -124,12 +123,6 @@ export class ModelDeskComponent implements OnInit, OnDestroy {
   bandRows: HistoryRow[] = [];
   // (the pyramid (the owner, 2026-10-20): LOCK's, LOVE's and LIKE's share of the bets the three hold, a bar each)
   bandShares: Record<string, number | null> = {};
-  // (each sport's record at every re-record (record-trend.ts, D86): the trend line at the foot, the chip's sport or all)
-  private allTrends: RecordTrend[] = [];
-  readonly trendUnits = trendUnits;
-  get trends(): RecordTrend[] {
-    return this.allTrends.filter((t) => !this.sport || t.sport === this.sport);
-  }
   // (the build's time at the top: the version's epoch, replay-history.ts buildOf)
   buildAt: string | null = null;
   // (live against the replay (live-check.ts, D93): each sport's staked edge bets since its epoch, and since the ledger
@@ -340,7 +333,6 @@ export class ModelDeskComponent implements OnInit, OnDestroy {
   async ngOnInit(): Promise<void> {
     // (every sport's files asked at once, not each sport's one after another)
     const findings = getJson<FindingsFile>('/nfl/data/model/findings.json', { cache: 'no-cache' });
-    const trends = Promise.all(SPORTS.map((sport) => getJson<RecordHistoryFile>(`/${sport}/data/model/record-history.json`, { cache: 'no-cache' }).then((f) => recordTrendOf(sport, f))));
     const files = await Promise.all(
       SPORTS.map(async (sport) => {
         const [ledger, state, replay] = await Promise.all([
@@ -354,7 +346,6 @@ export class ModelDeskComponent implements OnInit, OnDestroy {
     );
     this.allReplays = files.map((f) => f.replay);
     this.findingsFile = await findings;
-    this.allTrends = (await trends).filter((t): t is RecordTrend => !!t);
     this.allStates = files.map((f) => f.state).filter((s): s is ModelState => !!s);
     this.takeLedger(files.flatMap((f) => f.ledger?.bets ?? []));
     this.epoch = deskEpochOf(this.allStates);

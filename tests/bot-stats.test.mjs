@@ -92,7 +92,7 @@ test('the page: Bot Stats, everyone\'s; one record (no staged switch, no replaye
   assert.ok(ts.includes('readonly botStats = (): boolean => true;'));
   const desk = fs.readFileSync(path.join(root, 'model-desk.component.html'), 'utf8');
   assert.ok(!desk.includes('stagedNames') && !desk.includes('rangeNote') && !desk.includes('desk-history-replay'));
-  assert.ok(desk.includes('@if (checks.length && admin())') && desk.includes('trends.length && admin()'));
+  assert.ok(desk.includes('@if (checks.length && admin())') && !desk.includes('desk-trend'));
   assert.ok(desk.includes('class="bs-curve-wrap"') && !desk.includes('label="The Climb"') && desk.includes('class="bs-hero"'));
 });
 
