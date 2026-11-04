@@ -1,8 +1,8 @@
 {
- "at": "2026-11-02T22:18:32.641Z",
+ "at": "2026-11-04T11:21:08.839Z",
  "baseline": {
-  "from": "2026-09-28",
-  "to": "2026-10-26"
+  "from": "2026-09-30",
+  "to": "2026-10-28"
  },
  "checks": [
   {
@@ -74,11 +74,11 @@
   },
   {
    "examples": [],
-   "headline": "No bet placed this week was cut by a guard (26 placed)",
+   "headline": "No bet placed this week was cut by a guard (24 placed)",
    "how": "placed this week against the 28 days before: the bets a guard cut to a half unit, by kind",
    "id": "C8",
    "metric": "ratio",
-   "n": 26,
+   "n": 24,
    "needs": [
     "state.tallies (the guards' skips by day: the Bot keeps only the bets it placed)"
    ],
@@ -306,11 +306,11 @@
    "examples": [
     "401922638:ml:4332765-2516131"
    ],
-   "headline": "1 open bets stale, 0 past their start by 48h ungraded, 4 of 19 graded this week without a close",
+   "headline": "1 open bets stale, 0 past their start by 48h ungraded, 0 of 19 graded this week without a close",
    "how": "open bets on games not started: past the gap now, or published at a band today's trust wouldn't give them; open bets past their start plus VOID_AFTER; this week's graded bets with no close read",
    "id": "C13",
    "metric": "stale",
-   "n": 24,
+   "n": 26,
    "needs": null,
    "rows": [
     {
@@ -326,7 +326,7 @@
     },
     {
      "key": "graded without a close",
-     "n": 4,
+     "n": 0,
      "of": 19
     }
    ],
@@ -338,64 +338,48 @@
   },
   {
    "examples": [],
-   "headline": "fairFrom unknown: missing on 7 of 26 bets this week (27%) against 29% before; fair chances from betonlineag",
+   "headline": "fairFrom unknown: missing on 7 of 24 bets this week (29%) against 27% before; fair chances from betonlineag",
    "how": "placed this week against the 28 days before: the share of the bets each field applies to that are missing it",
    "id": "C14",
    "metric": "share",
-   "n": 26,
+   "n": 24,
    "needs": null,
    "rows": [
     {
      "key": "fairFrom unknown",
      "n": 7,
-     "of": 26,
-     "share": 0.2692,
-     "shareBase": 0.2885,
+     "of": 24,
+     "share": 0.2917,
+     "shareBase": 0.2679,
      "status": "ok"
     },
     {
      "key": "intent",
      "n": 0,
-     "of": 26,
+     "of": 24,
      "share": 0,
      "shareBase": 0,
      "status": "ok"
-    },
-    {
-     "key": "publishedKelly",
-     "n": 0,
-     "of": 1,
-     "share": 0,
-     "shareBase": 0,
-     "status": "thin"
-    },
-    {
-     "key": "seen",
-     "n": 0,
-     "of": 4,
-     "share": 0,
-     "shareBase": 0,
-     "status": "thin"
     }
    ],
    "status": "ok",
    "tested": null,
    "threshold": "watch a share up 5 points on the baseline (3+ bets, 20+ both); flag doubled (5+)",
    "title": "Data holes",
-   "value": 0.2692
+   "value": 0.2917
   },
   {
    "examples": [],
-   "headline": "Model files 1h old, 0 open bets overdue to grade; Odds API credits 747% left; 26 bets placed in a week of 15 games",
+   "headline": "Model files 1h old, 0 open bets overdue to grade; Odds API credits 743% left; 24 bets placed in a week of 15 games",
    "how": "the newest commit of the sport's model files, the open bets started 12 hours ago or more, The Odds API's credits (state.odds), the state's sources",
    "id": "C16",
    "metric": "ageH",
-   "n": 26,
+   "n": 24,
    "needs": null,
    "rows": [
     {
      "ageH": 1,
-     "at": "2026-11-02T21:16:04Z",
+     "at": "2026-11-04T10:10:01Z",
      "key": "files",
      "overdue": 0
     },
@@ -403,8 +387,8 @@
      "cycleEnd": "2026-12-01T00:02:39.102Z",
      "key": "credits",
      "monthly": 20000,
-     "remaining": 149309,
-     "share": 7.4655
+     "remaining": 148614,
+     "share": 7.4307
     },
     {
      "down": [],
@@ -413,7 +397,7 @@
     {
      "games": 15,
      "key": "week",
-     "placed": 26
+     "placed": 24
     }
    ],
    "status": "ok",
@@ -424,11 +408,11 @@
   },
   {
    "examples": [],
-   "headline": "0 of 26 bets placed this week had the line already moving against them",
+   "headline": "0 of 24 bets placed this week had the line already moving against them",
    "how": "placed this week: a prop's line a point or more against its side since it opened; a game's spread 1.5 (NFL) or 0.5, its total a point, a moneyline without a spread move 3 points of the home chance. A prop moved twice the guard's limit should have been skipped",
    "id": "C2",
    "metric": "roiGap",
-   "n": 26,
+   "n": 24,
    "needs": null,
    "rows": [
     {
@@ -442,14 +426,14 @@
      "z": null
     },
     {
-     "e": 2.8762,
+     "e": 0,
      "key": "the rest",
-     "n": 4,
-     "placed": 26,
-     "profit": 0.55,
-     "roi": 0.1571,
-     "w": 3,
-     "z": 0.1386
+     "n": 0,
+     "placed": 24,
+     "profit": 0,
+     "roi": null,
+     "w": 0,
+     "z": null
     },
     {
      "key": "guard bugs",
@@ -504,16 +488,16 @@
   },
   {
    "examples": [],
-   "headline": "Moneyline: dogs 20% of this week's bets against 58% before",
+   "headline": "Moneyline: dogs 23% of this week's bets against 55% before",
    "how": "placed this week against the 28 days before: a dog is a plus price or a spread side getting points",
    "id": "C5",
    "metric": "moved",
-   "n": 15,
+   "n": 13,
    "needs": null,
    "rows": [
     {
-     "dogShare": 0.2,
-     "dogShareBase": 0.5806,
+     "dogShare": 0.2308,
+     "dogShareBase": 0.5455,
      "dogs": {
       "e": 0,
       "n": 0,
@@ -523,17 +507,17 @@
       "z": null
      },
      "favorites": {
-      "e": 1.4995,
-      "n": 2,
-      "profit": 0.91,
-      "roi": 0.364,
-      "w": 2,
-      "z": 0.8172
+      "e": 0,
+      "n": 0,
+      "profit": 0,
+      "roi": null,
+      "w": 0,
+      "z": null
      },
      "key": "ml",
-     "moved": -0.3806,
-     "n": 15,
-     "nBase": 31,
+     "moved": -0.3147,
+     "n": 13,
+     "nBase": 33,
      "status": "thin"
     }
    ],
@@ -541,15 +525,15 @@
    "tested": null,
    "threshold": "watch the dog share moved 20 points (20+ bets both); flag also the grown group z -2 (30+ graded)",
    "title": "Favorite/dog drift",
-   "value": -0.3806
+   "value": -0.3147
   },
   {
    "examples": [],
-   "headline": "total: beat the close 40% of 5, mean CLV -0.3 points; all bets 64% of 15",
+   "headline": "total: beat the close 50% of 9, mean CLV +0.0 points; all bets 67% of 19",
    "how": "graded this week by market and prop type, against the 28 days before and the last self-check; the return at the close counts the vig, so -4.5% is a flat close at -110",
    "id": "C6",
    "metric": "beat",
-   "n": 15,
+   "n": 19,
    "needs": null,
    "rows": [
     {
@@ -559,12 +543,12 @@
       "n": 14,
       "prob": 0.0011
      },
-     "beat": 0.4,
-     "ev": -0.0632,
+     "beat": 0.5,
+     "ev": -0.0545,
      "key": "total",
      "lastWeek": null,
-     "n": 5,
-     "prob": -0.0033,
+     "n": 9,
+     "prob": 0.0004,
      "status": "thin"
     },
     {
@@ -587,7 +571,7 @@
    "tested": null,
    "threshold": "watch beat under 47% or mean return at the close -6% (20+); flag beat under 44% (25+) or mean CLV under -1 point two weeks running",
    "title": "CLV by bet type",
-   "value": 0.4
+   "value": 0.5
   },
   {
    "examples": [],
@@ -680,10 +664,10 @@
      "z": -0.1381
     },
     {
-     "beat": 0.72,
-     "clvN": 36,
-     "clvProb": 0.012,
-     "clvSe": 0.0045,
+     "beat": 0.7308,
+     "clvN": 40,
+     "clvProb": 0.0113,
+     "clvSe": 0.004,
      "e": 22.1893,
      "key": "bets games: placed 24h or more before",
      "n": 40,
@@ -727,7 +711,7 @@
    "how": "the day's last state.json for 35 days (git), the week's start against now; the changelog's entries this week verbatim",
    "id": "C9",
    "metric": "changes",
-   "n": 16,
+   "n": 18,
    "needs": null,
    "rows": [],
    "status": "info",
@@ -759,8 +743,8 @@
  },
  "v": 1,
  "window": {
-  "from": "2026-10-26",
-  "to": "2026-11-02"
+  "from": "2026-10-28",
+  "to": "2026-11-04"
  },
  "writeups": {
   "calls": 0,

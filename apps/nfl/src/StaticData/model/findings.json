@@ -544,13 +544,6 @@
   {
    "date": "2026-11-02",
    "group": "watching",
-   "sport": "nfl",
-   "ref": "D86",
-   "text": "History audit: 2026-11-02 weekly re-record held. the record guard refused: held: inputs shrank since the last record (its fingerprint): cont"
-  },
-  {
-   "date": "2026-11-02",
-   "group": "watching",
    "sport": "nba",
    "ref": "D88",
    "text": "Self-tune: NBA held, nothing tried (no fresh held-out days since 2026-10-26 (the earlier weeks' holdouts consumed))"
@@ -617,6 +610,13 @@
    "sport": "mma",
    "ref": "D103",
    "text": "MMA favorite-longshot calibration re-checked: still beats the raw no-vig in 4 of 5 seasons, stays on"
+  },
+  {
+   "date": "2026-11-04",
+   "group": "watching",
+   "sport": "mma",
+   "ref": "D86",
+   "text": "History audit: 2026-11-04 code re-record held. the record guard refused: held: inputs shrank since the last record (its fingerprint): replay"
   }
  ]
 }
