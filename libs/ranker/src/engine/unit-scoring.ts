@@ -163,7 +163,7 @@ const SCALE_Z = 2.5;
 // flagged missingIsAverage and for support grades; a stat flagged skipMissing takes, for that unit, his
 // average over the skipMissing stats he does have (MMA: a fighter's striking stats that weren't kept
 // read as he did in the ones that were), or the list's average if he has none. Small samples aren't adjusted for unless the sport
-// says how much evidence a row's rates rest on (SPORT.reliability, 0-1: MMA's fights): then each
+// says how much evidence a row's rates rest on (SPORT.reliability, 0-1: MMA's fights, the NBA's minutes a game): then each
 // rate's score is scaled by it, so a few fights' perfect numbers count less than a long career's.
 // A pooled tab's Position Adjustment (adjust: pooled-tabs.ts adjustFor) measures each stat partly against
 // the unit's own group's average: his score against the whole pool, less share x how far his
@@ -252,13 +252,15 @@ export function weightedTotals<T>(
         if (parts) skipOf(unit).keys.push([stat.key, strength]);
         return;
       }
-      const scored = (v !== null ? score(v) : stat.missingIsAverage || stat.support ? 0 : worst) + shiftOf(unit);
-      // (a rate that isn't his own sample's, like the UFC's rank, isn't scaled: stat.settled)
+      const own = v !== null ? score(v) : stat.missingIsAverage || stat.support ? 0 : worst;
+      // (a rate that isn't his own sample's, like the UFC's rank, isn't scaled: stat.settled; the group's shift
+      // isn't either, the same for everyone in the group whatever their minutes, so the order within it holds)
       const trust = reliability && stat.kind === 'efficiency' && !stat.settled ? reliability(unit, stat) : 1;
-      totals.set(unit, (totals.get(unit) ?? 0) + scored * strength * trust);
-      note(unit, stat.key, scored * strength * trust);
+      const scored = own * trust + shiftOf(unit);
+      totals.set(unit, (totals.get(unit) ?? 0) + scored * strength);
+      note(unit, stat.key, scored * strength);
       if (stat.skipMissing) {
-        skipOf(unit).sum += scored * strength * trust;
+        skipOf(unit).sum += scored * strength;
         skipOf(unit).strength += strength;
       }
     });

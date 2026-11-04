@@ -213,6 +213,14 @@ export const SPORT: SportConfig = {
   // The card's Analysis tab: the teams' weekly AI write-ups (libs/ranker/scripts/analysis)
   analysis: true,
   recentGames: (position) => (position === 'TM' ? 7 : 5),
+  // A rate (PER, BPM, TS%, usage, on/off, the percentages...) counts in proportion to his minutes a game: a
+  // full share at 24 and above, half at 12, a quarter at 6, so a few garbage-time minutes can't make a
+  // ranking (the owner, 2026-11-04: a 2.5-minute guard #2 overall once the cap on scores came off). Volume
+  // stats per game aren't touched; a team's record and the support grades aren't his sample (settled)
+  reliability: (player) => {
+    const minutes = player.stats.minutes;
+    return minutes == null || !player.games ? 1 : Math.min(1, minutes / player.games / 24);
+  },
   copy: {
     noHolesIcon: 'verified',
     volumeOverEfficiency: 'Big numbers, below-average efficiency: empty stats',

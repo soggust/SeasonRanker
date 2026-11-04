@@ -204,6 +204,7 @@ const TEAMMATES_STAT: SkillStat = {
   kind: 'efficiency',
   format: 'grade',
   support: true,
+  settled: true,
 };
 const COACHING_STAT: SkillStat = {
   key: 'coaching',
@@ -212,16 +213,17 @@ const COACHING_STAT: SkillStat = {
   kind: 'efficiency',
   format: 'grade',
   support: true,
+  settled: true,
 };
 
 // Every position has the same columns; the presets (skill-presets.ts) weigh them for the position
 const NBA_STATS: SkillStat[] = [
   { key: 'games', label: 'Games', description: 'Games played (for context; not part of the ranking)', kind: 'efficiency', format: 'int', infoOnly: true },
   { key: 'minutes', label: 'Min', description: 'Minutes played (for context; not part of the ranking)', kind: 'volume', format: 'int', infoOnly: true },
-  { key: 'winPct', label: 'Record', description: "His team's win-loss record (ranked on win percentage; a traded player: his last team's)", kind: 'efficiency', format: 'record' },
+  { key: 'winPct', label: 'Record', description: "His team's win-loss record (ranked on win percentage; a traded player: his last team's)", kind: 'efficiency', settled: true, format: 'record' },
   // (Win Shares and VORP stay season totals under Per Game: a season's value, not a per-game rate)
-  { key: 'ws', label: 'Win Shares', description: 'Wins he produced, from his offense and defense (Basketball-Reference)', kind: 'efficiency', format: 'dec1' },
-  { key: 'vorp', label: 'VORP', description: 'Box Plus/Minus turned into value over a replacement-level player', kind: 'efficiency', format: 'dec1' },
+  { key: 'ws', label: 'Win Shares', description: 'Wins he produced, from his offense and defense (Basketball-Reference)', kind: 'efficiency', settled: true, format: 'dec1' },
+  { key: 'vorp', label: 'VORP', description: 'Box Plus/Minus turned into value over a replacement-level player', kind: 'efficiency', settled: true, format: 'dec1' },
   { key: 'points', label: 'PTS', description: 'Points', kind: 'volume', format: 'int' },
   { key: 'rebounds', label: 'REB', description: 'Rebounds', kind: 'volume', format: 'int' },
   { key: 'assists', label: 'AST', description: 'Assists', kind: 'volume', format: 'int' },
@@ -239,7 +241,7 @@ const NBA_STATS: SkillStat[] = [
   { key: 'usgPct', label: 'USG %', description: 'Share of his team\'s possessions he used while on the floor (shots, free throws, turnovers)', kind: 'efficiency', format: 'pctPoints' },
   { key: 'bpm', label: 'BPM', description: 'Points per 100 possessions he added over an average player, from the box score', kind: 'efficiency', format: 'dec1' },
   // (a season total like Win Shares, which already count it: for context)
-  { key: 'dws', label: 'DWS', description: 'Defensive Win Shares: the wins his defense produced, the defensive half of Win Shares (for context; not part of the ranking)', kind: 'efficiency', format: 'dec1', infoOnly: true },
+  { key: 'dws', label: 'DWS', description: 'Defensive Win Shares: the wins his defense produced, the defensive half of Win Shares (for context; not part of the ranking)', kind: 'efficiency', settled: true, format: 'dec1', infoOnly: true },
   { key: 'dbpm', label: 'DBPM', description: 'The defensive half of Box Plus/Minus', kind: 'efficiency', format: 'dec1' },
   { key: 'ws48', label: 'WS / 48', description: 'Win Shares per 48 minutes (.100 is about average)', kind: 'efficiency', format: 'avg3' },
   { key: 'onOff', label: 'On-Off', description: "His team's net rating per 100 possessions with him on the floor, minus with him off", kind: 'efficiency', format: 'dec1' },
@@ -258,7 +260,7 @@ const NBA_STATS: SkillStat[] = [
 // players at each spot, weighted by their minutes (engine/roster-grades)
 const TEAM_STATS: SkillStat[] = [
   { key: 'games', label: 'Games', description: 'Games played (for context; not part of the ranking)', kind: 'efficiency', format: 'int', infoOnly: true },
-  { key: 'winPct', label: 'Record', name: 'Record', description: 'The win-loss record (ranked on win percentage)', kind: 'efficiency', format: 'record' },
+  { key: 'winPct', label: 'Record', name: 'Record', description: 'The win-loss record (ranked on win percentage)', kind: 'efficiency', settled: true, format: 'record' },
   { key: 'recent', label: 'Recent', description: 'The last 7 games, newest first (newer ones count a little more)', kind: 'efficiency', format: 'recent' },
   { key: 'playoffWins', label: 'Playoff Wins', description: 'Playoff games won (16 is a title)', kind: 'efficiency', format: 'int' },
   { key: 'netRtg', label: 'Net Rtg', description: 'Points scored minus allowed per 100 possessions', kind: 'efficiency', format: 'dec1' },
@@ -293,7 +295,7 @@ const TEAM_STATS: SkillStat[] = [
 // what's his: how the team played against its talent and in close games
 const COACH_STATS: SkillStat[] = [
   { key: 'games', label: 'Games', description: 'Games coached (for context; not part of the ranking)', kind: 'efficiency', format: 'int', infoOnly: true },
-  { key: 'winPct', label: 'Record', description: 'His win-loss record (ranked on win percentage)', kind: 'efficiency', format: 'record' },
+  { key: 'winPct', label: 'Record', description: 'His win-loss record (ranked on win percentage)', kind: 'efficiency', settled: true, format: 'record' },
   { key: 'playoffWins', label: 'Playoff Wins', description: 'Playoff games won (16 is a title)', kind: 'efficiency', format: 'int' },
   // (ranks rather than the ratings themselves: league scoring drifts over the years, and "3rd" means the
   // same in any season)
