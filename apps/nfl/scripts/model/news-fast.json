@@ -5,7 +5,7 @@
   "rapsheet.bsky.social": "2026-11-03T19:02:12.238Z",
   "nflnewsreposterbot.bsky.social": "2026-11-04T12:25:03.111Z",
   "insidenflnews.bsky.social": "2026-11-04T13:03:35.519Z",
-  "nflnewsposter.bsky.social": "2026-11-03T21:20:37.526Z",
+  "nflnewsposter.bsky.social": "2026-11-04T13:28:53.626Z",
   "rotoworld-fb.bsky.social": "2026-11-03T23:03:46.000Z",
   "rotowirenfl.bsky.social": "2026-11-04T00:17:30.000Z"
  },
@@ -13516,6 +13516,32 @@
    "kind": "status",
    "confidence": 0.9,
    "text": "Injury update: Commanders DL Javon Kinlaw underwent season-ending surgery on his MCL Tuesday.\n\nKinlaw and Daron Payne have both suffered season-ending injuries in recent weeks.\n\nper Adam Schefter."
+  },
+  {
+   "id": "at://did:plc:fuqjc7x4gxvnwzksnlxwbe4x/app.bsky.feed.post/3mzihi5tl522x|tylerhuntley|out|status",
+   "at": "2026-11-04T13:28:53.626Z",
+   "seen": "2026-11-04T13:36:25.300Z",
+   "handle": "nflnewsposter.bsky.social",
+   "post": "at://did:plc:fuqjc7x4gxvnwzksnlxwbe4x/app.bsky.feed.post/3mzihi5tl522x",
+   "player": "Tyler Huntley",
+   "team": "BAL",
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.95,
+   "text": "[Schefter] Tests revealed that Ravens’ QB Tyler “Snoop” Huntley suffered a season-ending turf toe injury. \n\nRavens QB Lamar Jackson is out indefinitely with a thumb injury, Huntley’s season is over du"
+  },
+  {
+   "id": "at://did:plc:fuqjc7x4gxvnwzksnlxwbe4x/app.bsky.feed.post/3mzihi5tl522x|lamarjackson|out|status",
+   "at": "2026-11-04T13:28:53.626Z",
+   "seen": "2026-11-04T13:36:25.300Z",
+   "handle": "nflnewsposter.bsky.social",
+   "post": "at://did:plc:fuqjc7x4gxvnwzksnlxwbe4x/app.bsky.feed.post/3mzihi5tl522x",
+   "player": "Lamar Jackson",
+   "team": "BAL",
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.95,
+   "text": "[Schefter] Tests revealed that Ravens’ QB Tyler “Snoop” Huntley suffered a season-ending turf toe injury. \n\nRavens QB Lamar Jackson is out indefinitely with a thumb injury, Huntley’s season is over du"
   }
  ]
 }
