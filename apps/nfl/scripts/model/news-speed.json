@@ -15055,6 +15055,42 @@
     "seen": "2026-11-04T16:34:51.057Z",
     "own": "2026-11-04T16:32:00.000Z"
    }
+  },
+  "401873037|jeremymcnichols|out": {
+   "game": "401873037",
+   "start": "2026-11-06T01:15Z",
+   "team": "33",
+   "name": "Jeremy McNichols",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-04T17:11:28.965Z",
+    "own": "2026-11-04T17:09:41.000Z",
+    "why": "@rotowirenfl.bsky.social: Jeremy McNichols: Done for season with foot injury \n\n "
+   }
+  },
+  "401873045|garrettwilson|q": {
+   "game": "401873045",
+   "start": "2026-11-08T18:00Z",
+   "team": "20",
+   "name": "Garrett Wilson",
+   "status": "q",
+   "athlete": "4569618",
+   "espn": {
+    "seen": "2026-11-04T17:29:15.592Z",
+    "own": "2026-11-04T17:10:00.000Z"
+   }
+  },
+  "401873039|quincywilliams|q": {
+   "game": "401873039",
+   "start": "2026-11-08T18:00Z",
+   "team": "5",
+   "name": "Quincy Williams",
+   "status": "q",
+   "athlete": "3110565",
+   "espn": {
+    "seen": "2026-11-04T17:29:15.592Z",
+    "own": "2026-11-04T17:21:00.000Z"
+   }
   }
  }
 }

@@ -1,13 +1,13 @@
 {
  "sport": "nfl",
  "cursor": {
-  "adamscheftermirror.bsky.social": "2026-11-04T15:54:28.710Z",
-  "rapsheet.bsky.social": "2026-11-03T19:02:12.238Z",
+  "adamscheftermirror.bsky.social": "2026-11-04T17:24:29.119Z",
+  "rapsheet.bsky.social": "2026-11-04T17:19:29.792Z",
   "nflnewsreposterbot.bsky.social": "2026-11-04T14:33:43.335Z",
   "insidenflnews.bsky.social": "2026-11-04T17:08:37.666Z",
   "nflnewsposter.bsky.social": "2026-11-04T17:11:06.225Z",
-  "rotoworld-fb.bsky.social": "2026-11-04T17:01:07.000Z",
-  "rotowirenfl.bsky.social": "2026-11-04T17:09:41.000Z"
+  "rotoworld-fb.bsky.social": "2026-11-04T17:27:56.000Z",
+  "rotowirenfl.bsky.social": "2026-11-04T17:25:15.000Z"
  },
  "claims": [
   {
@@ -13776,6 +13776,71 @@
    "kind": "status",
    "confidence": 0.85,
    "text": "[Cimini] WR Garrett Wilson is in concussion protocol, per Aaron Glenn. twitter.com/richcimini/s..."
+  },
+  {
+   "id": "at://did:plc:hlvr2omhnmvdmfnvmcuhyevz/app.bsky.feed.post/3mzitxz2oqs2p|deshaunwatson|questionable|status",
+   "at": "2026-11-04T17:12:30.391Z",
+   "seen": "2026-11-04T17:31:49.321Z",
+   "handle": "rapsheet.bsky.social",
+   "post": "at://did:plc:hlvr2omhnmvdmfnvmcuhyevz/app.bsky.feed.post/3mzitxz2oqs2p",
+   "player": "Deshaun Watson",
+   "team": "CLE",
+   "status": "questionable",
+   "kind": "status",
+   "confidence": 0.6,
+   "text": "The Browns have placed QB Deshaun Watson in the NFL’s concussion protocol. Shedeur Sanders could make his first start for the Browns this season."
+  },
+  {
+   "id": "at://did:plc:hlvr2omhnmvdmfnvmcuhyevz/app.bsky.feed.post/3mziu37vig22p|mackhollins|limited|status",
+   "at": "2026-11-04T17:14:18.224Z",
+   "seen": "2026-11-04T17:31:49.321Z",
+   "handle": "rapsheet.bsky.social",
+   "post": "at://did:plc:hlvr2omhnmvdmfnvmcuhyevz/app.bsky.feed.post/3mziu37vig22p",
+   "player": "Mack Hollins",
+   "team": "NE",
+   "status": "limited",
+   "kind": "status",
+   "confidence": 0.6,
+   "text": "A big one for the Patriots: WR Mack Hollins is set to return to practice today, sources say. \n\nHollins, a glue guy for NE, has been on Injured Reserve with a calf injury and would help immensely vs th"
+  },
+  {
+   "id": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3mziulf3fsx2d|garrettwilson|questionable|status",
+   "at": "2026-11-04T17:23:20.000Z",
+   "seen": "2026-11-04T17:31:49.321Z",
+   "handle": "rotoworld-fb.bsky.social",
+   "post": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3mziulf3fsx2d",
+   "player": "Garrett Wilson",
+   "team": "NYJ",
+   "status": "questionable",
+   "kind": "status",
+   "confidence": 0.6,
+   "text": "Garrett Wilson placed in concussion protocol"
+  },
+  {
+   "id": "at://did:plc:qre6zxbmr3ixhdmgsgdretb5/app.bsky.feed.post/3mziunfoyth2p|garrettwilson|questionable|status",
+   "at": "2026-11-04T17:24:28.194Z",
+   "seen": "2026-11-04T17:31:49.321Z",
+   "handle": "adamscheftermirror.bsky.social",
+   "post": "at://did:plc:qre6zxbmr3ixhdmgsgdretb5/app.bsky.feed.post/3mziunfoyth2p",
+   "player": "Garrett Wilson",
+   "team": "NYJ",
+   "status": "questionable",
+   "kind": "status",
+   "confidence": 0.6,
+   "text": "Jets WR Garrett Wilson is in the concussion protocol.\n\nOriginal post"
+  },
+  {
+   "id": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3mziuosvz2b27|garrettwilson|questionable|status",
+   "at": "2026-11-04T17:25:15.000Z",
+   "seen": "2026-11-04T17:31:49.321Z",
+   "handle": "rotowirenfl.bsky.social",
+   "post": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3mziuosvz2b27",
+   "player": "Garrett Wilson",
+   "team": "NYJ",
+   "status": "questionable",
+   "kind": "status",
+   "confidence": 0.6,
+   "text": "Garrett Wilson: In the NFL's concussion protocol \n\n https://www.rotowire.com/football/player/garrett-wilson-15829"
   }
  ]
 }
