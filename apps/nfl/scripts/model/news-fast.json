@@ -5,8 +5,8 @@
   "rapsheet.bsky.social": "2026-11-03T19:02:12.238Z",
   "nflnewsreposterbot.bsky.social": "2026-11-04T14:33:43.335Z",
   "insidenflnews.bsky.social": "2026-11-04T15:53:17.132Z",
-  "nflnewsposter.bsky.social": "2026-11-04T14:45:50.966Z",
-  "rotoworld-fb.bsky.social": "2026-11-04T15:18:27.000Z",
+  "nflnewsposter.bsky.social": "2026-11-04T16:44:23.016Z",
+  "rotoworld-fb.bsky.social": "2026-11-04T16:39:21.000Z",
   "rotowirenfl.bsky.social": "2026-11-04T16:18:49.000Z"
  },
  "claims": [
@@ -13685,6 +13685,19 @@
    "kind": "return",
    "confidence": 0.5,
    "text": "Jordyn Tyson: Returning to practice Wednesday \n\n https://www.rotowire.com/football/player/jordyn-tyson-19233"
+  },
+  {
+   "id": "at://did:plc:fuqjc7x4gxvnwzksnlxwbe4x/app.bsky.feed.post/3mzisfpu5kk24|jordyntyson|active|return",
+   "at": "2026-11-04T16:44:23.016Z",
+   "seen": "2026-11-04T16:58:28.511Z",
+   "handle": "nflnewsposter.bsky.social",
+   "post": "at://did:plc:fuqjc7x4gxvnwzksnlxwbe4x/app.bsky.feed.post/3mzisfpu5kk24",
+   "player": "Jordyn Tyson",
+   "team": null,
+   "status": "active",
+   "kind": "return",
+   "confidence": 0.6,
+   "text": "[Underhill] Jordyn Tyson is returning to practice today, per source twitter.com/nick_underhi..."
   }
  ]
 }
