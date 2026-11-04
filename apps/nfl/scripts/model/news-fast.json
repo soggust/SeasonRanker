@@ -4,7 +4,7 @@
   "adamscheftermirror.bsky.social": "2026-11-04T12:49:33.893Z",
   "rapsheet.bsky.social": "2026-11-03T19:02:12.238Z",
   "nflnewsreposterbot.bsky.social": "2026-11-04T12:25:03.111Z",
-  "insidenflnews.bsky.social": "2026-11-04T12:39:45.449Z",
+  "insidenflnews.bsky.social": "2026-11-04T13:03:35.519Z",
   "nflnewsposter.bsky.social": "2026-11-03T21:20:37.526Z",
   "rotoworld-fb.bsky.social": "2026-11-03T23:03:46.000Z",
   "rotowirenfl.bsky.social": "2026-11-04T00:17:30.000Z"
@@ -13503,6 +13503,19 @@
    "kind": "status",
    "confidence": 0.9,
    "text": "Injury update: Commanders DL Javon Kinlaw underwent season-ending surgery Tuesday on his MCL. Now Commanders defensive linemen Kinlaw and Daron Payne both have suffered season-ending injuries in recen"
+  },
+  {
+   "id": "at://did:plc:mbr4badgf6yu56mquzackzew/app.bsky.feed.post/3mzig2w2kss2s|javonkinlaw|out|status",
+   "at": "2026-11-04T13:03:35.519Z",
+   "seen": "2026-11-04T13:27:19.010Z",
+   "handle": "insidenflnews.bsky.social",
+   "post": "at://did:plc:mbr4badgf6yu56mquzackzew/app.bsky.feed.post/3mzig2w2kss2s",
+   "player": "Javon Kinlaw",
+   "team": "WAS",
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.9,
+   "text": "Injury update: Commanders DL Javon Kinlaw underwent season-ending surgery on his MCL Tuesday.\n\nKinlaw and Daron Payne have both suffered season-ending injuries in recent weeks.\n\nper Adam Schefter."
   }
  ]
 }
