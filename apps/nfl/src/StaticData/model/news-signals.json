@@ -3,6 +3,61 @@
  "days": 2,
  "signals": [
   {
+   "team": "33",
+   "abbr": "BAL",
+   "athlete": "4429582",
+   "player": "Joe Fagnano",
+   "kind": "starting",
+   "direction": "up",
+   "confidence": 0.9,
+   "headline": "Rookie Joe Fagnano to start Thursday night vs. Jaguars, Jesse Minter says",
+   "at": "2026-11-03T23:33:00.000Z"
+  },
+  {
+   "team": "2",
+   "abbr": "BUF",
+   "athlete": "4034953",
+   "player": "CJ Gardner-Johnson",
+   "kind": "role",
+   "direction": "down",
+   "confidence": 0.6,
+   "headline": "Bills release C.J. Gardner-Johnson after one-game spitting suspension",
+   "at": "2026-11-03T22:45:59.000Z"
+  },
+  {
+   "team": "22",
+   "abbr": "ARI",
+   "athlete": "4870808",
+   "player": "Jeremiyah Love",
+   "kind": "role",
+   "direction": "down",
+   "confidence": 0.3,
+   "headline": "Cardinals RB Jeremiyah Love placed on IR, out 4-5 weeks with high ankle sprain",
+   "at": "2026-11-03T21:17:22.000Z"
+  },
+  {
+   "team": "3",
+   "abbr": "CHI",
+   "athlete": "4035369",
+   "player": "Jeffery Simmons",
+   "kind": "starting",
+   "direction": "up",
+   "confidence": 0.6,
+   "headline": "Jeffery Simmons stymies QB Sam Darnold, Seahawks in Bears debut",
+   "at": "2026-11-03T14:07:17.000Z"
+  },
+  {
+   "team": "1",
+   "abbr": "ATL",
+   "athlete": "5081394",
+   "player": "James Pearce Jr",
+   "kind": "return",
+   "direction": "up",
+   "confidence": 0.6,
+   "headline": "Falcons' James Pearce back from suspension, expected to play",
+   "at": "2026-11-03T00:14:23.000Z"
+  },
+  {
    "team": "22",
    "abbr": "ARI",
    "athlete": "4038524",
@@ -111,51 +166,7 @@
    "confidence": 0.3,
    "headline": "Colts' Shane Steichen to 'evaluate everything,' including QB, after 42-7 loss",
    "at": "2026-11-02T02:16:33.000Z"
-  },
-  {
-   "team": "13",
-   "abbr": "LV",
-   "athlete": "4890973",
-   "player": "Ashton Jeanty",
-   "kind": "restriction",
-   "direction": "down",
-   "confidence": 0.4,
-   "headline": "Raiders' Ashton Jeanty limited to two carries in win vs. Jets",
-   "at": "2026-11-02T00:00:00.000Z"
-  },
-  {
-   "team": "13",
-   "abbr": "LV",
-   "athlete": null,
-   "player": "Klint Kubiak",
-   "kind": "coaching",
-   "direction": "none",
-   "confidence": 0.3,
-   "headline": "Raiders' Ashton Jeanty limited to two carries in win vs. Jets",
-   "at": "2026-11-02T00:00:00.000Z"
-  },
-  {
-   "team": "33",
-   "abbr": "BAL",
-   "athlete": "3916387",
-   "player": "Lamar Jackson",
-   "kind": "benched",
-   "direction": "down",
-   "confidence": 0.9,
-   "headline": "Ravens' Lamar Jackson needs thumb surgery, will be placed on IR",
-   "at": "2026-11-01T23:54:50.000Z"
-  },
-  {
-   "team": "33",
-   "abbr": "BAL",
-   "athlete": "4035671",
-   "player": "Tyler Huntley",
-   "kind": "starting",
-   "direction": "up",
-   "confidence": 0.8,
-   "headline": "Ravens' Lamar Jackson needs thumb surgery, will be placed on IR",
-   "at": "2026-11-01T23:54:50.000Z"
   }
  ],
- "at": "2026-11-03T00:04:54.564Z"
+ "at": "2026-11-04T00:09:10.690Z"
 }

@@ -14283,6 +14283,11 @@
    "espn": {
     "seen": "2026-10-31T00:01:44.520Z",
     "own": "2026-10-30T19:39:00.000Z"
+   },
+   "bluesky": {
+    "seen": "2026-11-03T23:48:14.330Z",
+    "own": "2026-11-03T21:57:29.000Z",
+    "why": "@rotowirenfl.bsky.social: Jakobi Meyers: Remains limited in Tuesday's practice \n"
    }
   },
   "401873037|antonharrison|out": {
@@ -18554,6 +18559,11 @@
    "espn": {
     "seen": "2026-11-03T01:05:14.703Z",
     "own": "2026-11-03T00:48:00.000Z"
+   },
+   "bluesky": {
+    "seen": "2026-11-03T23:48:14.330Z",
+    "own": "2026-11-03T21:54:09.000Z",
+    "why": "@rotowirenfl.bsky.social: Chris Rodriguez: Limited in Tuesday's practice \n\n http"
    }
   },
   "401873038|djturner|q": {
@@ -19434,6 +19444,11 @@
    "espn": {
     "seen": "2026-11-03T16:46:03.393Z",
     "own": "2026-11-03T01:54:00.000Z"
+   },
+   "bluesky": {
+    "seen": "2026-11-03T23:48:14.330Z",
+    "own": "2026-11-03T21:42:45.000Z",
+    "why": "@rotoworld-fb.bsky.social: Tyler Loop (groin) lands on injured reserve"
    }
   },
   "401873048|jeremiyahlove|out": {
@@ -19470,6 +19485,90 @@
    "espn": {
     "seen": "2026-11-03T23:45:32.998Z",
     "own": "2026-11-03T02:03:00.000Z"
+   }
+  },
+  "401873051|christiandarrisaw|q": {
+   "game": "401873051",
+   "start": "2026-11-10T01:15Z",
+   "team": "16",
+   "name": "Christian Darrisaw",
+   "status": "q",
+   "athlete": "4361985",
+   "espn": {
+    "seen": "2026-11-04T00:06:39.957Z",
+    "own": "2026-11-02T20:04:00.000Z"
+   }
+  },
+  "401873051|kylermurray|q": {
+   "game": "401873051",
+   "start": "2026-11-10T01:15Z",
+   "team": "16",
+   "name": "Kyler Murray",
+   "status": "q",
+   "athlete": "3917315",
+   "espn": {
+    "seen": "2026-11-04T00:06:39.957Z",
+    "own": "2026-11-02T19:57:00.000Z"
+   }
+  },
+  "401873051|greggaines|q": {
+   "game": "401873051",
+   "start": "2026-11-10T01:15Z",
+   "team": "2",
+   "name": "Greg Gaines",
+   "status": "q",
+   "athlete": "3127294",
+   "espn": {
+    "seen": "2026-11-04T00:06:39.957Z",
+    "own": "2026-11-03T13:03:00.000Z"
+   }
+  },
+  "401873051|deealford|q": {
+   "game": "401873051",
+   "start": "2026-11-10T01:15Z",
+   "team": "2",
+   "name": "Dee Alford",
+   "status": "q",
+   "athlete": "4401823",
+   "espn": {
+    "seen": "2026-11-04T00:06:39.957Z",
+    "own": "2026-11-03T13:03:00.000Z"
+   }
+  },
+  "401873051|spencerbrown|q": {
+   "game": "401873051",
+   "start": "2026-11-10T01:15Z",
+   "team": "2",
+   "name": "Spencer Brown",
+   "status": "q",
+   "athlete": "4030899",
+   "espn": {
+    "seen": "2026-11-04T00:06:39.957Z",
+    "own": "2026-11-03T13:03:00.000Z"
+   }
+  },
+  "401873051|djmoore|q": {
+   "game": "401873051",
+   "start": "2026-11-10T01:15Z",
+   "team": "2",
+   "name": "DJ Moore",
+   "status": "q",
+   "athlete": "3915416",
+   "espn": {
+    "seen": "2026-11-04T00:06:39.957Z",
+    "own": "2026-11-01T22:13:00.000Z"
+   }
+  },
+  "401873051|tyrellshavers|out": {
+   "game": "401873051",
+   "start": "2026-11-10T01:15Z",
+   "team": "2",
+   "name": "Tyrell Shavers",
+   "status": "out",
+   "athlete": "4241476",
+   "espn": {
+    "seen": "2026-11-04T00:06:39.957Z",
+    "own": "2026-10-28T23:45:00.000Z"
    }
   }
  }

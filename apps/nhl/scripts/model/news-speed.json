@@ -8497,6 +8497,18 @@
     "seen": "2026-11-03T20:19:50.553Z",
     "own": "2026-11-03T17:15:22.742Z"
    }
+  },
+  "401892636|howard|out": {
+   "game": "401892636",
+   "start": "2026-11-04T00:30Z",
+   "team": "6",
+   "name": "Howard",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-03T23:48:14.330Z",
+    "own": "2026-11-03T18:49:18.000Z",
+    "why": "@dailyfaceoff.bsky.social: Oilers’ Howard out week-to-week with lower-body injur"
+   }
   }
  }
 }

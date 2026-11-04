@@ -2895,7 +2895,7 @@
 {"id":"401873048","date":"2026-11-08T21:25Z","season":2026,"type":2,"home":"26","away":"22","homeAbbr":"SEA","awayAbbr":"ARI","neutral":false,"final":false,"hs":null,"as":null,"venue":"Seattle|WA|USA","indoor":false},
 {"id":"401873049","date":"2026-11-08T21:25Z","season":2026,"type":2,"home":"17","away":"9","homeAbbr":"NE","awayAbbr":"GB","neutral":false,"final":false,"hs":null,"as":null,"venue":"Foxborough|MA|USA","indoor":false},
 {"id":"401873050","date":"2026-11-09T01:20Z","season":2026,"type":2,"home":"3","away":"27","homeAbbr":"CHI","awayAbbr":"TB","neutral":false,"final":false,"hs":null,"as":null,"venue":"Chicago|IL|USA","indoor":false},
-{"id":"401873051","date":"2026-11-10T01:15Z","season":2026,"type":2,"home":"16","away":"2","homeAbbr":"MIN","awayAbbr":"BUF","neutral":false,"final":false,"hs":null,"as":null,"venue":"Minneapolis|MN|USA"},
+{"id":"401873051","date":"2026-11-10T01:15Z","season":2026,"type":2,"home":"16","away":"2","homeAbbr":"MIN","awayAbbr":"BUF","neutral":false,"final":false,"hs":null,"as":null,"venue":"Minneapolis|MN|USA","indoor":true},
 {"id":"401873052","date":"2026-11-13T01:15Z","season":2026,"type":2,"home":"19","away":"28","homeAbbr":"NYG","awayAbbr":"WSH","neutral":false,"final":false,"hs":null,"as":null,"venue":"East Rutherford|NJ|USA"},
 {"id":"401873053","date":"2026-11-15T14:30Z","season":2026,"type":2,"home":"8","away":"17","homeAbbr":"DET","awayAbbr":"NE","neutral":true,"final":false,"hs":null,"as":null,"venue":"Munich||Germany"},
 {"id":"401873058","date":"2026-11-15T18:00Z","season":2026,"type":2,"home":"1","away":"12","homeAbbr":"ATL","awayAbbr":"KC","neutral":false,"final":false,"hs":null,"as":null,"venue":"Atlanta|GA|USA"},

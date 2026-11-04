@@ -1,5 +1,5 @@
 {
- "at": "2026-11-03T00:04:47.093Z",
+ "at": "2026-11-04T00:09:02.530Z",
  "halves": [
   {
    "from": "2023-12-01",
@@ -28,7 +28,7 @@
    "train": 9993,
    "model": {
     "n": 365,
-    "logLoss": 0.6243,
+    "logLoss": 0.6242,
     "acc": 0.6466
    },
    "rating": {
@@ -49,7 +49,7 @@
    "train": 10358,
    "model": {
     "n": 267,
-    "logLoss": 0.6083,
+    "logLoss": 0.6084,
     "acc": 0.6404
    },
    "rating": {
@@ -70,7 +70,7 @@
    "train": 10625,
    "model": {
     "n": 336,
-    "logLoss": 0.6278,
+    "logLoss": 0.6276,
     "acc": 0.6815
    },
    "rating": {
@@ -91,7 +91,7 @@
    "train": 10961,
    "model": {
     "n": 280,
-    "logLoss": 0.6031,
+    "logLoss": 0.6033,
     "acc": 0.6536
    },
    "rating": {
@@ -112,8 +112,8 @@
    "train": 11241,
    "model": {
     "n": 291,
-    "logLoss": 0.6498,
-    "acc": 0.6529
+    "logLoss": 0.65,
+    "acc": 0.6495
    },
    "rating": {
     "n": 291,
@@ -132,7 +132,7 @@
   "model": {
    "n": 1845,
    "logLoss": 0.6215,
-   "acc": 0.6537
+   "acc": 0.6531
   },
   "rating": {
    "n": 1845,
@@ -163,51 +163,51 @@
   {
    "from": 0.2,
    "to": 0.3,
-   "n": 243,
-   "mean": 0.2573,
-   "actual": 0.214
+   "n": 242,
+   "mean": 0.2572,
+   "actual": 0.2107
   },
   {
    "from": 0.3,
    "to": 0.4,
-   "n": 322,
-   "mean": 0.353,
-   "actual": 0.3199
+   "n": 323,
+   "mean": 0.3529,
+   "actual": 0.322
   },
   {
    "from": 0.4,
    "to": 0.5,
-   "n": 453,
-   "mean": 0.4509,
-   "actual": 0.4238
+   "n": 452,
+   "mean": 0.4508,
+   "actual": 0.4248
   },
   {
    "from": 0.5,
    "to": 0.6,
-   "n": 353,
-   "mean": 0.5458,
-   "actual": 0.5297
+   "n": 354,
+   "mean": 0.5457,
+   "actual": 0.5282
   },
   {
    "from": 0.6,
    "to": 0.7,
-   "n": 223,
-   "mean": 0.6478,
-   "actual": 0.6457
+   "n": 221,
+   "mean": 0.6473,
+   "actual": 0.6425
   },
   {
    "from": 0.7,
    "to": 0.8,
-   "n": 137,
-   "mean": 0.7417,
-   "actual": 0.7664
+   "n": 138,
+   "mean": 0.7406,
+   "actual": 0.7681
   },
   {
    "from": 0.8,
    "to": 0.9,
-   "n": 18,
-   "mean": 0.834,
-   "actual": 0.9444
+   "n": 19,
+   "mean": 0.8325,
+   "actual": 0.9474
   },
   {
    "from": 0.9,
@@ -219,7 +219,7 @@
  ],
  "note": "held out: each half fit on the bouts before it alone; no odds (none kept on this plan), so it says how the model predicts, not what it would have won",
  "totals": {
-  "at": "2026-11-03T00:04:47.093Z",
+  "at": "2026-11-04T00:09:02.530Z",
   "halves": [
    {
     "from": "2023-12-01",
@@ -254,7 +254,7 @@
     "line25": {
      "model": {
       "n": 322,
-      "logLoss": 0.65,
+      "logLoss": 0.6501,
       "acc": 0.6273
      },
      "byClass": {
@@ -646,7 +646,7 @@
     "from": 0.7,
     "to": 0.8,
     "n": 62,
-    "mean": 0.7252,
+    "mean": 0.7251,
     "actual": 0.8871
    }
   ],

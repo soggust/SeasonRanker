@@ -2,7 +2,7 @@
  "sport": "nba",
  "cursor": {
   "rotowirenba.bsky.social": "2026-11-03T23:43:08.000Z",
-  "insidenbanews.bsky.social": "2026-11-03T14:27:32.471Z",
+  "insidenbanews.bsky.social": "2026-11-04T00:05:57.726Z",
   "shamsbot.bsky.social": "2026-11-03T14:00:30.000Z"
  },
  "claims": [
@@ -7454,6 +7454,19 @@
    "kind": "status",
    "confidence": 0.85,
    "text": "Aaron Nesmith: Not listed on injury report \n\n https://www.rotowire.com/basketball/player/aaron-nesmith-5120"
+  },
+  {
+   "id": "at://did:plc:ykcnnf6kqnn3lasmobrczoem/app.bsky.feed.post/3mzh2mfpouc2r|kawhileonard|out|status",
+   "at": "2026-11-04T00:05:57.726Z",
+   "seen": "2026-11-04T00:09:10.690Z",
+   "handle": "insidenbanews.bsky.social",
+   "post": "at://did:plc:ykcnnf6kqnn3lasmobrczoem/app.bsky.feed.post/3mzh2mfpouc2r",
+   "player": "Kawhi Leonard",
+   "team": "LAC",
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.6,
+   "text": "Kawhi Leonard to be re-evaluated in 1 week after completing treatment for left knee swelling."
   }
  ]
 }
