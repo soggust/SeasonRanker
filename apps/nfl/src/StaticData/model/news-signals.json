@@ -122,51 +122,7 @@
    "confidence": 0.9,
    "headline": "Panthers bring back DeAngelo Hall as CB coach in 1st move since Evero firing",
    "at": "2026-11-02T14:40:43.000Z"
-  },
-  {
-   "team": "22",
-   "abbr": "ARI",
-   "athlete": "4038524",
-   "player": "Gardner Minshew II",
-   "kind": "starting",
-   "direction": "up",
-   "confidence": 0.3,
-   "headline": "Cardinals' LaFleur noncommittal on QB after Minshew replaces Brissett in win",
-   "at": "2026-11-02T02:19:15.000Z"
-  },
-  {
-   "team": "22",
-   "abbr": "ARI",
-   "athlete": "2578570",
-   "player": "Jacoby Brissett",
-   "kind": "benched",
-   "direction": "down",
-   "confidence": 0.3,
-   "headline": "Cardinals' LaFleur noncommittal on QB after Minshew replaces Brissett in win",
-   "at": "2026-11-02T02:19:15.000Z"
-  },
-  {
-   "team": "11",
-   "abbr": "IND",
-   "athlete": "3917792",
-   "player": "Daniel Jones",
-   "kind": "benched",
-   "direction": "down",
-   "confidence": 0.3,
-   "headline": "Colts' Shane Steichen to 'evaluate everything,' including QB, after 42-7 loss",
-   "at": "2026-11-02T02:16:33.000Z"
-  },
-  {
-   "team": "11",
-   "abbr": "IND",
-   "athlete": "4429084",
-   "player": "Anthony Richardson Sr",
-   "kind": "starting",
-   "direction": "up",
-   "confidence": 0.3,
-   "headline": "Colts' Shane Steichen to 'evaluate everything,' including QB, after 42-7 loss",
-   "at": "2026-11-02T02:16:33.000Z"
   }
  ],
- "at": "2026-11-04T00:09:10.690Z"
+ "at": "2026-11-04T02:22:15.751Z"
 }

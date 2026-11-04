@@ -19594,6 +19594,30 @@
     "seen": "2026-11-04T01:58:40.878Z",
     "own": "2026-11-04T01:30:00.000Z"
    }
+  },
+  "401873038|yasirabdullah|out": {
+   "game": "401873038",
+   "start": "2026-11-08T14:30Z",
+   "team": "1",
+   "name": "Yasir Abdullah",
+   "status": "out",
+   "athlete": "4360807",
+   "espn": {
+    "seen": "2026-11-04T02:19:40.337Z",
+    "own": "2026-11-04T01:50:00.000Z"
+   }
+  },
+  "401873041|bradychristensen|out": {
+   "game": "401873041",
+   "start": "2026-11-08T18:00Z",
+   "team": "29",
+   "name": "Brady Christensen",
+   "status": "out",
+   "athlete": "4256062",
+   "espn": {
+    "seen": "2026-11-04T02:19:40.337Z",
+    "own": "2026-11-04T01:46:00.000Z"
+   }
   }
  }
 }
