@@ -14493,6 +14493,114 @@
     "seen": "2026-11-04T23:12:42.750Z",
     "own": "2026-11-04T22:35:00.000Z"
    }
+  },
+  "401873044|saquonbarkley|q": {
+   "game": "401873044",
+   "start": "2026-11-08T18:00Z",
+   "team": "21",
+   "name": "Saquon Barkley",
+   "status": "q",
+   "athlete": "3929630",
+   "espn": {
+    "seen": "2026-11-04T23:35:32.974Z",
+    "own": "2026-11-04T23:20:00.000Z"
+   }
+  },
+  "401873044|jonathangreenard|q": {
+   "game": "401873044",
+   "start": "2026-11-08T18:00Z",
+   "team": "21",
+   "name": "Jonathan Greenard",
+   "status": "q",
+   "athlete": "3916409",
+   "espn": {
+    "seen": "2026-11-04T23:35:32.974Z",
+    "own": "2026-11-04T23:18:00.000Z"
+   }
+  },
+  "401873044|jalyxhunt|q": {
+   "game": "401873044",
+   "start": "2026-11-08T18:00Z",
+   "team": "21",
+   "name": "Jalyx Hunt",
+   "status": "q",
+   "athlete": "4571162",
+   "espn": {
+    "seen": "2026-11-04T23:35:32.974Z",
+    "own": "2026-11-04T23:18:00.000Z"
+   }
+  },
+  "401873044|jakeelliott|q": {
+   "game": "401873044",
+   "start": "2026-11-08T18:00Z",
+   "team": "21",
+   "name": "Jake Elliott",
+   "status": "q",
+   "athlete": "3050478",
+   "espn": {
+    "seen": "2026-11-04T23:35:32.974Z",
+    "own": "2026-11-04T23:17:00.000Z"
+   }
+  },
+  "401873043|kamcurl|q": {
+   "game": "401873043",
+   "start": "2026-11-08T18:00Z",
+   "team": "14",
+   "name": "Kam Curl",
+   "status": "q",
+   "athlete": "4242154",
+   "espn": {
+    "seen": "2026-11-04T23:35:32.974Z",
+    "own": "2026-11-04T23:13:00.000Z"
+   }
+  },
+  "401873043|jordanwhittington|q": {
+   "game": "401873043",
+   "start": "2026-11-08T18:00Z",
+   "team": "14",
+   "name": "Jordan Whittington",
+   "status": "q",
+   "athlete": "4569382",
+   "espn": {
+    "seen": "2026-11-04T23:35:32.974Z",
+    "own": "2026-11-04T23:11:00.000Z"
+   }
+  },
+  "401873043|steveavila|q": {
+   "game": "401873043",
+   "start": "2026-11-08T18:00Z",
+   "team": "14",
+   "name": "Steve Avila",
+   "status": "q",
+   "athlete": "4362474",
+   "espn": {
+    "seen": "2026-11-04T23:35:32.974Z",
+    "own": "2026-11-04T23:11:00.000Z"
+   }
+  },
+  "401873047|siranneal|q": {
+   "game": "401873047",
+   "start": "2026-11-08T21:25Z",
+   "team": "25",
+   "name": "Siran Neal",
+   "status": "q",
+   "athlete": "3057524",
+   "espn": {
+    "seen": "2026-11-04T23:35:32.974Z",
+    "own": "2026-11-04T23:29:00.000Z"
+   }
+  },
+  "401873047|christiankirk|q": {
+   "game": "401873047",
+   "start": "2026-11-08T21:25Z",
+   "team": "25",
+   "name": "Christian Kirk",
+   "status": "q",
+   "athlete": "3895856",
+   "espn": {
+    "seen": "2026-11-04T23:35:32.974Z",
+    "own": "2026-11-04T23:28:00.000Z"
+   }
   }
  }
 }
