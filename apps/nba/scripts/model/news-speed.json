@@ -1,54 +1,6 @@
 {
  "sport": "nba",
  "entries": {
-  "401909861|treyalexander|out": {
-   "game": "401909861",
-   "start": "2026-10-25T21:00Z",
-   "team": "26",
-   "name": "Trey Alexander",
-   "status": "out",
-   "athlete": "4433268",
-   "espn": {
-    "seen": "2026-10-25T02:06:51.548Z",
-    "own": "2026-10-24T23:18:00.000Z"
-   }
-  },
-  "401909861|jusufnurkic|out": {
-   "game": "401909861",
-   "start": "2026-10-25T21:00Z",
-   "team": "26",
-   "name": "Jusuf Nurkic",
-   "status": "out",
-   "athlete": "3102530",
-   "espn": {
-    "seen": "2026-10-25T02:06:51.548Z",
-    "own": "2026-10-07T23:07:00.000Z"
-   }
-  },
-  "401909861|adouthiero|out": {
-   "game": "401909861",
-   "start": "2026-10-25T21:00Z",
-   "team": "13",
-   "name": "Adou Thiero",
-   "status": "out",
-   "athlete": "5060631",
-   "espn": {
-    "seen": "2026-10-25T02:06:51.548Z",
-    "own": "2026-10-24T23:20:00.000Z"
-   }
-  },
-  "401909861|cameroncarr|out": {
-   "game": "401909861",
-   "start": "2026-10-25T21:00Z",
-   "team": "13",
-   "name": "Cameron Carr",
-   "status": "out",
-   "athlete": "5113969",
-   "espn": {
-    "seen": "2026-10-25T02:06:51.548Z",
-    "own": "2026-10-24T23:07:00.000Z"
-   }
-  },
   "401909862|tylerbilodeau|out": {
    "game": "401909862",
    "start": "2026-10-25T22:00Z",
@@ -20013,6 +19965,30 @@
    "espn": {
     "seen": "2026-11-04T20:15:12.883Z",
     "own": "2026-11-04T20:11:00.000Z"
+   }
+  },
+  "401909932|rasheerfleming|out": {
+   "game": "401909932",
+   "start": "2026-11-05T02:00Z",
+   "team": "21",
+   "name": "Rasheer Fleming",
+   "status": "out",
+   "athlete": "5105977",
+   "espn": {
+    "seen": "2026-11-04T21:07:42.622Z",
+    "own": "2026-11-04T20:17:00.000Z"
+   }
+  },
+  "401909934|daeqwonplowden|out": {
+   "game": "401909934",
+   "start": "2026-11-05T03:00Z",
+   "team": "23",
+   "name": "Daeqwon Plowden",
+   "status": "out",
+   "athlete": "4279318",
+   "espn": {
+    "seen": "2026-11-04T21:07:42.622Z",
+    "own": "2026-11-04T21:04:00.000Z"
    }
   }
  }
