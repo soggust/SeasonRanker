@@ -1,131 +1,6 @@
 {
  "sport": "nba",
  "entries": {
-  "401909859|spencerjones|out": {
-   "game": "401909859",
-   "start": "2026-10-25T01:00Z",
-   "team": "7",
-   "name": "Spencer Jones",
-   "status": "out",
-   "athlete": "4592427",
-   "espn": {
-    "seen": "2026-10-24T03:13:43.241Z",
-    "own": "2026-10-23T23:09:00.000Z"
-   },
-   "sleeper": {
-    "seen": "2026-10-24T20:09:40.780Z",
-    "own": "2026-10-24T08:40:55.625Z"
-   }
-  },
-  "401909859|cameronjohnson|out": {
-   "game": "401909859",
-   "start": "2026-10-25T01:00Z",
-   "team": "7",
-   "name": "Cameron Johnson",
-   "status": "out",
-   "athlete": "3138196",
-   "espn": {
-    "seen": "2026-10-24T03:13:43.241Z",
-    "own": "2026-10-23T23:08:00.000Z"
-   },
-   "bluesky": {
-    "seen": "2026-10-24T00:23:14.453Z",
-    "own": "2026-10-23T23:08:34.000Z",
-    "why": "@rotowirenba.bsky.social: Cameron Johnson: Won't play Saturday \n\n https://www.ro"
-   },
-   "sleeper": {
-    "seen": "2026-10-24T20:09:40.780Z",
-    "own": "2026-10-24T08:45:55.376Z"
-   }
-  },
-  "401909859|alphadiallo|q": {
-   "game": "401909859",
-   "start": "2026-10-25T01:00Z",
-   "team": "7",
-   "name": "Alpha Diallo",
-   "status": "q",
-   "athlete": "4065813",
-   "espn": {
-    "seen": "2026-10-24T03:13:43.241Z",
-    "own": "2026-10-23T23:06:00.000Z"
-   },
-   "sleeper": {
-    "seen": "2026-10-24T20:09:40.780Z",
-    "own": "2026-10-24T08:40:55.638Z"
-   }
-  },
-  "401909859|julianstrawther|out": {
-   "game": "401909859",
-   "start": "2026-10-25T01:00Z",
-   "team": "7",
-   "name": "Julian Strawther",
-   "status": "out",
-   "athlete": "4432181",
-   "espn": {
-    "seen": "2026-10-24T03:13:43.241Z",
-    "own": "2026-10-17T00:52:00.000Z"
-   }
-  },
-  "401909859|reedsheppard|out": {
-   "game": "401909859",
-   "start": "2026-10-25T01:00Z",
-   "team": "7",
-   "name": "Reed Sheppard",
-   "status": "out",
-   "bluesky": {
-    "seen": "2026-10-24T00:23:14.453Z",
-    "own": "2026-10-24T00:21:44.000Z",
-    "why": "@rotowirenba.bsky.social: Reed Sheppard: Won't play Friday \n\n https://www.rotowi"
-   }
-  },
-  "401909859|cooperflagg|out": {
-   "game": "401909859",
-   "start": "2026-10-25T01:00Z",
-   "team": "7",
-   "name": "Cooper Flagg",
-   "status": "out",
-   "bluesky": {
-    "seen": "2026-10-24T01:08:03.622Z",
-    "own": "2026-10-24T01:04:06.000Z",
-    "why": "@rotowirenba.bsky.social: Cooper Flagg: Won't return Friday \n\n https://www.rotow"
-   }
-  },
-  "401909859|jalenduren|q": {
-   "game": "401909859",
-   "start": "2026-10-25T01:00Z",
-   "team": "7",
-   "name": "Jalen Duren",
-   "status": "q",
-   "bluesky": {
-    "seen": "2026-10-24T01:35:11.977Z",
-    "own": "2026-10-24T01:16:01.000Z",
-    "why": "@rotowirenba.bsky.social: Jalen Duren: Questionable to return Friday \n\n https://"
-   }
-  },
-  "401909859|paolobanchero|out": {
-   "game": "401909859",
-   "start": "2026-10-25T01:00Z",
-   "team": "7",
-   "name": "Paolo Banchero",
-   "status": "out",
-   "bluesky": {
-    "seen": "2026-10-24T01:35:11.977Z",
-    "own": "2026-10-24T01:22:39.000Z",
-    "why": "@rotowirenba.bsky.social: Paolo Banchero: Doubtful to return Friday \n\n https://w"
-   }
-  },
-  "401909859|yvesmissi|q": {
-   "game": "401909859",
-   "start": "2026-10-25T01:00Z",
-   "team": "3",
-   "name": "Yves Missi",
-   "status": "q",
-   "athlete": "5061589",
-   "espn": {
-    "seen": "2026-10-24T03:13:43.241Z",
-    "own": "2026-10-24T02:46:00.000Z"
-   }
-  },
   "401909860|lukekennard|q": {
    "game": "401909860",
    "start": "2026-10-25T02:00Z",
@@ -278,18 +153,6 @@
     "own": "2026-10-16T16:11:00.000Z"
    }
   },
-  "401909859|cedriccoward|out": {
-   "game": "401909859",
-   "start": "2026-10-25T01:00Z",
-   "team": "7",
-   "name": "Cedric Coward",
-   "status": "out",
-   "bluesky": {
-    "seen": "2026-10-24T03:15:48.192Z",
-    "own": "2026-10-24T01:36:32.000Z",
-    "why": "@rotowirenba.bsky.social: Cedric Coward: Won't play Friday \n\n https://www.rotowi"
-   }
-  },
   "401909860|cedriccoward|out": {
    "game": "401909860",
    "start": "2026-10-25T02:00Z",
@@ -350,22 +213,6 @@
     "own": "2026-10-24T14:10:56.845Z"
    }
   },
-  "401909859|yvesmissi|out": {
-   "game": "401909859",
-   "start": "2026-10-25T01:00Z",
-   "team": "3",
-   "name": "Yves Missi",
-   "status": "out",
-   "athlete": "5061589",
-   "espn": {
-    "seen": "2026-10-25T00:07:37.048Z",
-    "own": "2026-10-24T22:17:00.000Z"
-   },
-   "sleeper": {
-    "seen": "2026-10-24T20:09:40.780Z",
-    "own": "2026-10-24T19:10:58.454Z"
-   }
-  },
   "401909860|osoighodaro|out": {
    "game": "401909860",
    "start": "2026-10-25T02:00Z",
@@ -412,18 +259,6 @@
    "espn": {
     "seen": "2026-10-25T00:07:37.048Z",
     "own": "2026-10-24T20:08:00.000Z"
-   }
-  },
-  "401909859|alphadiallo|out": {
-   "game": "401909859",
-   "start": "2026-10-25T01:00Z",
-   "team": "7",
-   "name": "Alpha Diallo",
-   "status": "out",
-   "athlete": "4065813",
-   "espn": {
-    "seen": "2026-10-25T00:17:46.827Z",
-    "own": "2026-10-25T00:03:00.000Z"
    }
   },
   "401909860|draymondgreen|out": {
@@ -20158,6 +19993,18 @@
    "espn": {
     "seen": "2026-11-04T00:49:36.468Z",
     "own": "2026-11-04T00:36:00.000Z"
+   }
+  },
+  "401909935|giannisantetokounmpo|q": {
+   "game": "401909935",
+   "start": "2026-11-05T03:30Z",
+   "team": "14",
+   "name": "Giannis Antetokounmpo",
+   "status": "q",
+   "athlete": "3032977",
+   "espn": {
+    "seen": "2026-11-04T01:13:36.040Z",
+    "own": "2026-11-04T01:06:00.000Z"
    }
   }
  }

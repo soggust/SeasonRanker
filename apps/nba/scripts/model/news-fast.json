@@ -1,7 +1,7 @@
 {
  "sport": "nba",
  "cursor": {
-  "rotowirenba.bsky.social": "2026-11-04T00:50:41.000Z",
+  "rotowirenba.bsky.social": "2026-11-04T01:05:31.000Z",
   "insidenbanews.bsky.social": "2026-11-04T00:05:57.726Z",
   "shamsbot.bsky.social": "2026-11-03T14:00:30.000Z"
  },
@@ -7493,6 +7493,19 @@
    "kind": "status",
    "confidence": 0.8,
    "text": "Derrick Jones: Not listed on injury report \n\n https://www.rotowire.com/basketball/player/derrick-jones-4083"
+  },
+  {
+   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mzh5wwabsh2z|giannisantetokounmpo|active|status",
+   "at": "2026-11-04T01:05:31.000Z",
+   "seen": "2026-11-04T01:15:12.866Z",
+   "handle": "rotowirenba.bsky.social",
+   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mzh5wwabsh2z",
+   "player": "Giannis Antetokounmpo",
+   "team": null,
+   "status": "active",
+   "kind": "status",
+   "confidence": 0.6,
+   "text": "Giannis Antetokounmpo: Probable for Wednesday \n\n https://www.rotowire.com/basketball/player/giannis-antetokounmpo-3456"
   }
  ]
 }

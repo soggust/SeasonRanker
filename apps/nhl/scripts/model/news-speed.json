@@ -1,70 +1,6 @@
 {
  "sport": "nhl",
  "entries": {
-  "401892575|johnmarino|out": {
-   "game": "401892575",
-   "start": "2026-10-25T01:00Z",
-   "team": "129764",
-   "name": "John Marino",
-   "status": "out",
-   "athlete": "3941974",
-   "espn": {
-    "seen": "2026-10-23T15:47:13.766Z",
-    "own": "2026-10-23T01:45:00.000Z"
-   },
-   "sleeper": {
-    "seen": "2026-10-24T20:09:54.177Z",
-    "own": "2026-10-24T17:55:54.045Z"
-   }
-  },
-  "401892575|michaelcarcone|out": {
-   "game": "401892575",
-   "start": "2026-10-25T01:00Z",
-   "team": "129764",
-   "name": "Michael Carcone",
-   "status": "out",
-   "athlete": "4031645",
-   "espn": {
-    "seen": "2026-10-23T15:47:13.766Z",
-    "own": "2026-10-20T21:18:00.000Z"
-   }
-  },
-  "401892575|mavericlamoureux|out": {
-   "game": "401892575",
-   "start": "2026-10-25T01:00Z",
-   "team": "129764",
-   "name": "Maveric Lamoureux",
-   "status": "out",
-   "athlete": "5080177",
-   "espn": {
-    "seen": "2026-10-23T15:47:13.766Z",
-    "own": "2026-09-28T21:02:00.000Z"
-   }
-  },
-  "401892575|anthonycirelli|q": {
-   "game": "401892575",
-   "start": "2026-10-25T01:00Z",
-   "team": "20",
-   "name": "Anthony Cirelli",
-   "status": "q",
-   "athlete": "3941973",
-   "espn": {
-    "seen": "2026-10-23T15:47:13.766Z",
-    "own": "2026-10-21T06:52:00.000Z"
-   }
-  },
-  "401892575|yannigourde|out": {
-   "game": "401892575",
-   "start": "2026-10-25T01:00Z",
-   "team": "20",
-   "name": "Yanni Gourde",
-   "status": "out",
-   "athlete": "3094261",
-   "espn": {
-    "seen": "2026-10-23T15:47:13.766Z",
-    "own": "2026-09-28T19:18:00.000Z"
-   }
-  },
   "401892576|mikaelbacklund|out": {
    "game": "401892576",
    "start": "2026-10-25T02:00Z",
@@ -265,18 +201,6 @@
     "own": "2026-09-29T16:21:00.000Z"
    }
   },
-  "401892575|johnmarino|q": {
-   "game": "401892575",
-   "start": "2026-10-25T01:00Z",
-   "team": "129764",
-   "name": "John Marino",
-   "status": "q",
-   "athlete": "3941974",
-   "espn": {
-    "seen": "2026-10-23T16:10:09.333Z",
-    "own": "2026-10-23T15:50:00.000Z"
-   }
-  },
   "401892576|mikaelbacklund|q": {
    "game": "401892576",
    "start": "2026-10-25T02:00Z",
@@ -311,22 +235,6 @@
    "espn": {
     "seen": "2026-10-23T16:10:09.333Z",
     "own": "2026-10-23T15:50:00.000Z"
-   }
-  },
-  "401892575|victorhedman|q": {
-   "game": "401892575",
-   "start": "2026-10-25T01:00Z",
-   "team": "20",
-   "name": "Victor Hedman",
-   "status": "q",
-   "athlete": "5157",
-   "espn": {
-    "seen": "2026-10-24T05:13:48.445Z",
-    "own": "2026-10-24T04:55:00.000Z"
-   },
-   "sleeper": {
-    "seen": "2026-10-24T20:09:54.177Z",
-    "own": "2026-10-24T05:00:52.733Z"
    }
   },
   "401892578|bowenbyram|q": {
@@ -835,18 +743,6 @@
    "sleeper": {
     "seen": "2026-10-24T20:09:54.177Z",
     "own": "2026-10-24T18:25:54.131Z"
-   }
-  },
-  "401892575|victorhedman|out": {
-   "game": "401892575",
-   "start": "2026-10-25T01:00Z",
-   "team": "20",
-   "name": "Victor Hedman",
-   "status": "out",
-   "athlete": "5157",
-   "espn": {
-    "seen": "2026-10-25T00:42:40.556Z",
-    "own": "2026-10-25T00:33:00.000Z"
    }
   },
   "401892578|bowenbyram|out": {
