@@ -1,7 +1,7 @@
 {
  "sport": "nba",
  "cursor": {
-  "rotowirenba.bsky.social": "2026-11-04T01:05:31.000Z",
+  "rotowirenba.bsky.social": "2026-11-04T19:05:52.000Z",
   "insidenbanews.bsky.social": "2026-11-04T00:05:57.726Z",
   "shamsbot.bsky.social": "2026-11-03T14:00:30.000Z"
  },
@@ -7506,6 +7506,71 @@
    "kind": "status",
    "confidence": 0.6,
    "text": "Giannis Antetokounmpo: Probable for Wednesday \n\n https://www.rotowire.com/basketball/player/giannis-antetokounmpo-3456"
+  },
+  {
+   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mzivxzzbos2n|jaysontatum|out|status",
+   "at": "2026-11-04T17:48:18.000Z",
+   "seen": "2026-11-04T19:15:38.243Z",
+   "handle": "rotowirenba.bsky.social",
+   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mzivxzzbos2n",
+   "player": "Jayson Tatum",
+   "team": "BOS",
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.95,
+   "text": "Jayson Tatum: Confirmed out for Wednesday \n\n https://www.rotowire.com/basketball/player/jayson-tatum-4108"
+  },
+  {
+   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mziwrxt3jw26|konknueppel|active|status",
+   "at": "2026-11-04T18:02:48.000Z",
+   "seen": "2026-11-04T19:15:38.243Z",
+   "handle": "rotowirenba.bsky.social",
+   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mziwrxt3jw26",
+   "player": "Kon Knueppel",
+   "team": "CHA",
+   "status": "active",
+   "kind": "status",
+   "confidence": 0.9,
+   "text": "Kon Knueppel: Cleared to play \n\n https://www.rotowire.com/basketball/player/kon-knueppel-6540"
+  },
+  {
+   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mzix3smvtg2c|joshhart|out|status",
+   "at": "2026-11-04T18:08:19.000Z",
+   "seen": "2026-11-04T19:15:38.243Z",
+   "handle": "rotowirenba.bsky.social",
+   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mzix3smvtg2c",
+   "player": "Josh Hart",
+   "team": "NYK",
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.9,
+   "text": "Josh Hart: Out with sore ankle \n\n https://www.rotowire.com/basketball/player/josh-hart-4136"
+  },
+  {
+   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mziyl2togn24|treymurphy|questionable|status",
+   "at": "2026-11-04T18:34:44.000Z",
+   "seen": "2026-11-04T19:15:38.243Z",
+   "handle": "rotowirenba.bsky.social",
+   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mziyl2togn24",
+   "player": "Trey Murphy",
+   "team": "NOP",
+   "status": "questionable",
+   "kind": "status",
+   "confidence": 0.9,
+   "text": "Trey Murphy: Downgraded to questionable \n\n https://www.rotowire.com/basketball/player/trey-murphy-5401"
+  },
+  {
+   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mzj2cqbllw2g|anthonyblack|active|status",
+   "at": "2026-11-04T19:05:52.000Z",
+   "seen": "2026-11-04T19:15:38.243Z",
+   "handle": "rotowirenba.bsky.social",
+   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mzj2cqbllw2g",
+   "player": "Anthony Black",
+   "team": "ORL",
+   "status": "active",
+   "kind": "status",
+   "confidence": 0.85,
+   "text": "Anthony Black: Removed from injury report \n\n https://www.rotowire.com/basketball/player/anthony-black-5910"
   }
  ]
 }

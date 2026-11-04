@@ -1,78 +1,6 @@
 {
  "sport": "nhl",
  "entries": {
-  "401892578|bowenbyram|q": {
-   "game": "401892578",
-   "start": "2026-10-25T19:00Z",
-   "team": "4",
-   "name": "Bowen Byram",
-   "status": "q",
-   "athlete": "4565225",
-   "espn": {
-    "seen": "2026-10-24T15:41:44.286Z",
-    "own": "2026-10-24T13:41:00.000Z"
-   }
-  },
-  "401892578|gustavforsling|q": {
-   "game": "401892578",
-   "start": "2026-10-25T19:00Z",
-   "team": "26",
-   "name": "Gustav Forsling",
-   "status": "q",
-   "athlete": "3151784",
-   "espn": {
-    "seen": "2026-10-24T15:41:44.286Z",
-    "own": "2026-10-23T02:28:00.000Z"
-   }
-  },
-  "401892578|jacobmarkstrom|out": {
-   "game": "401892578",
-   "start": "2026-10-25T19:00Z",
-   "team": "26",
-   "name": "Jacob Markstrom",
-   "status": "out",
-   "athlete": "5452",
-   "espn": {
-    "seen": "2026-10-24T15:41:44.286Z",
-    "own": "2026-10-20T21:23:00.000Z"
-   }
-  },
-  "401892578|bradmarchand|out": {
-   "game": "401892578",
-   "start": "2026-10-25T19:00Z",
-   "team": "26",
-   "name": "Brad Marchand",
-   "status": "out",
-   "athlete": "3852",
-   "espn": {
-    "seen": "2026-10-24T15:41:44.286Z",
-    "own": "2026-10-12T21:11:00.000Z"
-   }
-  },
-  "401892578|aleksanderbarkov|out": {
-   "game": "401892578",
-   "start": "2026-10-25T19:00Z",
-   "team": "26",
-   "name": "Aleksander Barkov",
-   "status": "out",
-   "athlete": "3041970",
-   "espn": {
-    "seen": "2026-10-24T15:41:44.286Z",
-    "own": "2026-10-06T18:38:00.000Z"
-   }
-  },
-  "401892578|jonahgadjovich|out": {
-   "game": "401892578",
-   "start": "2026-10-25T19:00Z",
-   "team": "26",
-   "name": "Jonah Gadjovich",
-   "status": "out",
-   "athlete": "4233890",
-   "espn": {
-    "seen": "2026-10-24T15:41:44.286Z",
-    "own": "2026-09-17T20:53:00.000Z"
-   }
-  },
   "401892579|radekfaksa|q": {
    "game": "401892579",
    "start": "2026-10-25T22:00Z",
@@ -491,22 +419,6 @@
    "sleeper": {
     "seen": "2026-10-24T20:09:54.177Z",
     "own": "2026-10-24T18:25:54.131Z"
-   }
-  },
-  "401892578|bowenbyram|out": {
-   "game": "401892578",
-   "start": "2026-10-25T19:00Z",
-   "team": "4",
-   "name": "Bowen Byram",
-   "status": "out",
-   "athlete": "4565225",
-   "espn": {
-    "seen": "2026-10-25T00:42:40.556Z",
-    "own": "2026-10-24T19:23:00.000Z"
-   },
-   "sleeper": {
-    "seen": "2026-10-24T20:09:54.177Z",
-    "own": "2026-10-24T19:30:54.318Z"
    }
   },
   "401892580|nicolasroy|out": {
@@ -9112,6 +9024,18 @@
    "espn": {
     "seen": "2026-11-04T17:15:02.431Z",
     "own": "2026-11-04T16:56:00.000Z"
+   }
+  },
+  "401892648|nicksuzuki|q": {
+   "game": "401892648",
+   "start": "2026-11-06T00:00Z",
+   "team": "10",
+   "name": "Nick Suzuki",
+   "status": "q",
+   "athlete": "4233594",
+   "espn": {
+    "seen": "2026-11-04T19:14:09.514Z",
+    "own": "2026-11-04T18:16:00.000Z"
    }
   }
  }

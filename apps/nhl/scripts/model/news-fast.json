@@ -2,9 +2,9 @@
  "sport": "nhl",
  "cursor": {
   "johnston-bot.bsky.social": "2026-11-04T16:07:34.507Z",
-  "notfriedgehnic.bsky.social": "2026-11-03T19:05:28.655Z",
-  "dailyfaceoff.bsky.social": "2026-11-04T17:05:40.000Z",
-  "dfotoronto.bsky.social": "2026-11-04T15:06:16.000Z",
+  "notfriedgehnic.bsky.social": "2026-11-04T19:11:40.482Z",
+  "dailyfaceoff.bsky.social": "2026-11-04T19:11:16.000Z",
+  "dfotoronto.bsky.social": "2026-11-04T19:08:13.000Z",
   "marklazerus.bsky.social": "2026-11-04T17:20:55.647Z"
  },
  "claims": [
@@ -1580,6 +1580,32 @@
    "kind": "status",
    "confidence": 0.3,
    "text": "Red Wings’ John Gibson left the game last night with a lower-body injury. #nhl #nhlhockey #dailyfaceoff"
+  },
+  {
+   "id": "at://did:plc:knaj2vcp4x6t7hr7ewd6e3uz/app.bsky.feed.post/3mziz6krzli26|jackroslovic|none|restriction",
+   "at": "2026-11-04T18:45:38.000Z",
+   "seen": "2026-11-04T19:15:38.243Z",
+   "handle": "dfotoronto.bsky.social",
+   "post": "at://did:plc:knaj2vcp4x6t7hr7ewd6e3uz/app.bsky.feed.post/3mziz6krzli26",
+   "player": "Jack Roslovic",
+   "team": "TOR",
+   "status": "none",
+   "kind": "restriction",
+   "confidence": 0.6,
+   "text": "Maple Leafs lineup news: Jack Roslovic receives maintenance day, Vinni Lettieri takes reps on 1st line"
+  },
+  {
+   "id": "at://did:plc:knaj2vcp4x6t7hr7ewd6e3uz/app.bsky.feed.post/3mziz6krzli26|vinnilettieri|none|role",
+   "at": "2026-11-04T18:45:38.000Z",
+   "seen": "2026-11-04T19:15:38.243Z",
+   "handle": "dfotoronto.bsky.social",
+   "post": "at://did:plc:knaj2vcp4x6t7hr7ewd6e3uz/app.bsky.feed.post/3mziz6krzli26",
+   "player": "Vinni Lettieri",
+   "team": "TOR",
+   "status": "none",
+   "kind": "role",
+   "confidence": 0.7,
+   "text": "Maple Leafs lineup news: Jack Roslovic receives maintenance day, Vinni Lettieri takes reps on 1st line"
   }
  ]
 }
