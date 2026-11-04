@@ -114,14 +114,14 @@ function statScores(engine, units, stat, adjust) {
 const zOf = (values, v) => {
   const mean = values.reduce((a, b) => a + b, 0) / values.length;
   const sd = Math.sqrt(values.reduce((a, b) => a + (b - mean) ** 2, 0) / values.length);
-  return Math.max(-2.5, Math.min(2.5, (v - mean) / sd));
+  return (v - mean) / sd;
 };
 // (how far his group's average sits from the pool's, on the pool's spread)
 const shiftOf = (values, all) => {
   const g = values.reduce((a, b) => a + b, 0) / values.length;
   const m = all.reduce((a, b) => a + b, 0) / all.length;
   const sd = Math.sqrt(all.reduce((a, b) => a + (b - m) ** 2, 0) / all.length);
-  return Math.max(-2.5, Math.min(2.5, (g - m) / sd));
+  return (g - m) / sd;
 };
 
 test('the sports with a pooled tab: MLB, the NBA and the NHL as each one gets its Top 50; never the NFL or MMA', () => {

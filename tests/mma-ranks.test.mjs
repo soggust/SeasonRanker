@@ -1,5 +1,5 @@
 // The MMA rankings audit's fixes (owner 2026-10-17): the rating scored on a fixed scale like Peak (1600 to
-// 2400, no z-cap tie among the elite), an inactive unranked UFC fighter counting as #12 on Org Rank (not the
+// 2400, the champion at the top whatever the list's spread), an inactive unranked UFC fighter counting as #12 on Org Rank (not the
 // pool's average), and the twelve striking and grappling rates at half strength behind their sliders in the
 // current lists as in the all-time ones (boxBoost). DEFAULT stays all-50; the sliders stay the only user weights.
 import { test } from 'node:test';
@@ -10,14 +10,14 @@ const BOX = ['slpm', 'strAcc', 'sapm', 'strDef', 'kd15', 'td15', 'tdAcc', 'tdDef
 const fighter = (name, stats, own = {}) => ({ gsisId: name, name, games: 10, statFights: 8, promotion: 'UFC', stats, ...own });
 const value = (u, s) => u.stats[s.key] ?? null;
 
-test('mma: the rating is scored on a fixed scale (1600 to 2400), so two elite ratings are not tied at the cap', async () => {
+test("mma: the rating is scored on a fixed scale (1600 to 2400), so a list of many 1800s doesn't set what an elite rating is worth", async () => {
   const { SKILL_STATS, weightedTotals, DEFAULT_SETTINGS } = await loadEngine('mma');
   const settings = DEFAULT_SETTINGS.sport;
   const stats = SKILL_STATS.LW;
   const rating = stats.find((s) => s.key === 'rating');
   assert.deepEqual(rating.scale, [2400, 1600]);
   assert.equal(rating.boost(settings), 12);
-  // (twenty fighters at 1800, two elite ones: standardized, both would clamp at +2.5 and tie)
+  // (twenty fighters at 1800, two elite ones: standardized, the pack's spread would set their scores)
   const units = [fighter('A', { rating: 2300 }), fighter('B', { rating: 2250 }), ...Array.from({ length: 20 }, (_, i) => fighter(`f${i}`, { rating: 1800 }))];
   const totals = weightedTotals(units, stats, { rating: 50 }, value, null, settings);
   const onScale = (v) => 2.5 * (1 - (2 * (v - 2400)) / (1600 - 2400)) * 12;

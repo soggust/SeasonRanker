@@ -148,11 +148,14 @@ export function statValue(unit: SkillPlayer, stat: SkillStat, context: ValueCont
   return unitStat(unit, stat.key as SkillStatKey, context.settings);
 }
 
-// Standard scores are capped here, so one extreme value (e.g. 100% on two chances) can't swamp a list
-const MAX_Z = 2.5;
+// A stat on a fixed scale (the UFC's rank) is laid from +2.5 at its best end to -2.5 at its worst; a value
+// past an end scores the end. Standard scores themselves aren't capped (the owner, 2026-11-04: eight NHL
+// skaters tied at the old +2.5 on goals with the leader a full point clear): a player 4 standard
+// deviations above the average scores 4. A rate from too small a sample is already "-" and average.
+const SCALE_Z = 2.5;
 
 // Weighted total for each unit. Every stat is put on the same scale first: its standard score (how
-// many standard deviations above or below the list's average), capped at +/-2.5 and flipped for
+// many standard deviations above or below the list's average), uncapped and flipped for
 // lower-is-better stats, so at the same slider every stat moves the ranking by the same amount and
 // the sliders alone decide what matters. The slider multiplies it (50 = 1x, 100 = 2x). Support
 // grades count at a fifth of that strength, against the player (credit for doing more with less) or
@@ -163,11 +166,11 @@ const MAX_Z = 2.5;
 // says how much evidence a row's rates rest on (SPORT.reliability, 0-1: MMA's fights): then each
 // rate's score is scaled by it, so a few fights' perfect numbers count less than a long career's.
 // A pooled tab's Position Adjustment (adjust: pooled-tabs.ts adjustFor) measures each stat partly against
-// the unit's own group's average: his score against the whole pool (capped), less share x how far his
+// the unit's own group's average: his score against the whole pool, less share x how far his
 // group's average sits from the pool's, on the pool's spread, so a stat his position piles up counts for
-// less. One shift a group, after the cap, the same for everyone in it: two players at one position keep their
-// order at every share (a group's own spread, or the cap after the shift, could swap two elite ones); a group
-// with under 5 values uses the whole pool's.
+// less. One shift a group, the same for everyone in it: two players at one position keep their order at
+// every share (a group's own spread could swap two elite ones); a group with under 5 values uses the whole
+// pool's.
 export function weightedTotals<T>(
   units: T[],
   stats: SkillStat[],
@@ -223,17 +226,17 @@ export function weightedTotals<T>(
     // worst, so a list's many unranked fighters don't squeeze its top ranks together at the cap.
     const better = stat.support ? (stat.supportHelps ? 1 : -1) : stat.negative ? -1 : 1;
     const scale = stat.scale;
-    const clamp = (z: number) => Math.max(-MAX_Z, Math.min(MAX_Z, z));
+    const onScale = (z: number) => Math.max(-SCALE_Z, Math.min(SCALE_Z, z));
     // (Position Adjustment: each group's own average and spread, from its part of the same values)
     const groups = adjust && adjust.share > 0 && !scale ? groupScales(pairs, adjust.of) : null;
     const score = scale
-      ? (v: number) => clamp(MAX_Z * (1 - (2 * (v - scale[0])) / (scale[1] - scale[0])))
-      : (v: number) => better * clamp((v - mean) / sd);
+      ? (v: number) => onScale(SCALE_Z * (1 - (2 * (v - scale[0])) / (scale[1] - scale[0])))
+      : (v: number) => (better * (v - mean)) / sd;
     // (the Position Adjustment's one shift for each unit's group, added to whatever he scores on the stat, a
     // missing value's too, so nothing within a group moves)
     const shiftOf = (unit: T) => {
       const own = groups ? groups.get(adjust!.of(unit)) : undefined;
-      return own ? -adjust!.share * better * clamp((own.mean - mean) / sd) : 0;
+      return own ? (-adjust!.share * better * (own.mean - mean)) / sd : 0;
     };
     const worst = Math.min(...pairs.map(([, v]) => score(v)));
     // (a sport can boost a stat behind its slider: the same 0-100% range, more effect at every step;
