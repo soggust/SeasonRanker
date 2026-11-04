@@ -19152,6 +19152,18 @@
     "own": "2026-11-04T13:40:13.000Z",
     "why": "@rotoworld-fb.bsky.social: Mack Hollins to return to practice Wednesday"
    }
+  },
+  "401873038|jordanbattle|q": {
+   "game": "401873038",
+   "start": "2026-11-08T14:30Z",
+   "team": "4",
+   "name": "Jordan Battle",
+   "status": "q",
+   "athlete": "4567098",
+   "espn": {
+    "seen": "2026-11-04T16:34:51.057Z",
+    "own": "2026-11-04T16:32:00.000Z"
+   }
   }
  }
 }
