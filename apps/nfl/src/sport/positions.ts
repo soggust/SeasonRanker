@@ -963,11 +963,11 @@ const FORCED_FUMBLES_STAT: SkillStat = { key: 'forcedFumbles', label: 'Forced Fu
 const INTERCEPTIONS_STAT: SkillStat = { key: 'interceptions', label: 'INTs', description: 'Interceptions', kind: 'volume', format: 'int' };
 const PASSES_DEFENDED_STAT: SkillStat = { key: 'passesDefended', label: 'Pass Def', description: 'Passes defended', kind: 'volume', format: 'int' };
 // (a lineman's or an edge's passes defended: mostly balls batted down at the line (the owner, 2026-10-21: "the JJ Watt
-// play"); scored, starting at 0, so DEFAULT doesn't move; Splash Plays already counts them)
+// play"); counted in DEFAULT at 50 like the tab's other stats (the owner, 2026-11-04; it started at 0 before).
+// Splash Plays counts them too)
 const FRONT_PASSES_DEFENDED_STAT: SkillStat = {
   ...PASSES_DEFENDED_STAT,
-  description: 'Passes defended: for a lineman or an edge, mostly passes batted down at the line (starts at 0: turn it up to count it)',
-  startsOff: true,
+  description: 'Passes defended: for a lineman or an edge, mostly passes batted down at the line',
 };
 const DEF_TDS_STAT: SkillStat = { key: 'defTds', label: 'Def TDs', description: 'Defensive touchdowns (interception and fumble returns)', kind: 'volume', format: 'int' };
 const DEF_TAKEAWAYS_STAT: SkillStat = { key: 'takeaways', label: 'Takeaways', description: 'Interceptions + opponent fumbles recovered', kind: 'volume', format: 'int' };
