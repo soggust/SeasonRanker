@@ -5,15 +5,15 @@
 // record, units, ROI, beat the fair close, the Book's own expectation) and the monotonic check (each band's realized
 // flat return and beat share against the band below). No refits, no API calls; seconds to rerun.
 //
-//   node libs/ranker/scripts/model/band-lab.mjs <sport|all> [--variant <name|all>] [--dump <dir>] [--write]
+//   node libs/ranker/scripts/model/band-lab.mjs <sport|all> [--variant <name|all>] [--dump <dir>]
 //
-// --write puts each sport's staged record (replay-record.mjs summarize's shape, the variant named in it) at
-// apps/<sport>/src/StaticData/model/replay-record.staged.json, which the Algorithm tab's Live / Staged switch reads
-// (admin only). The live rule is what gate.mjs --record writes; the lab never touches replay-record.json.
+// Prints only. (Till 2026-11-04 --write staged each variant's record for the Algorithm tab's Live / Staged switch;
+// Bot Stats shows one record, the live rule's, so the switch and the staged files are gone.) The live rule is what
+// gate.mjs --record writes; the lab never touches replay-record.json.
 
-import { existsSync, readFileSync, writeFileSync } from 'node:fs';
+import { existsSync, readFileSync } from 'node:fs';
 import path from 'node:path';
-import { beatBar, summarize } from './replay-record.mjs';
+import { beatBar } from './replay-record.mjs';
 import { placeTiers, placed, tierOf, tierUnits, walkReasons } from './reasons.mjs';
 import { CLV_RULE, GAME_HOURS, bandBets } from './clv-bands.mjs';
 import { classOf, shareOf, trialBand, trialWalk, trustBands, walkTrust } from './trusted.mjs';
@@ -27,7 +27,6 @@ const r1 = (v) => (fin(v) ? Math.round(v * 10) / 10 : null);
 const r2 = (v) => (fin(v) ? Math.round(v * 100) / 100 : null);
 const flat = (b) => (b.res === 'W' ? dec(b.odds) - 1 : b.res === 'L' ? -1 : 0);
 export const VARIANTS_FILE = path.join(import.meta.dirname, 'band-variants.json');
-export const stagedFile = (sport, root = ROOT) => path.join(root, 'apps', sport, 'src/StaticData/model/replay-record.staged.json');
 
 export function readVariants(file = VARIANTS_FILE) {
   const v = JSON.parse(readFileSync(file, 'utf8'));
@@ -221,14 +220,6 @@ export function tableOf(sport, lab) {
   return rows.join('\n');
 }
 
-// The staged record: summarize's shape over the variant's bets, the variant named
-export function stagedOf(dump, lab) {
-  const passed = dump.passed.map(([y, over, odds]) => ({ x: { y }, sd: { over: !!over, odds } }));
-  const flags = { ...lab.flags, tiers: { ...(lab.counts ?? {}), variant: lab.name } };
-  const out = summarize(dump.sport, lab.bets, passed, { ...dump.args, now: Date.parse(dump.at), flags, seasonsWithProps: new Set(dump.args.seasonsWithProps), seasonsAll: new Set(dump.args.seasonsAll) });
-  return { ...out, staged: { variant: lab.name, rule: lab.variant, at: new Date().toISOString(), mono: lab.mono } };
-}
-
 async function main() {
   const args = process.argv.slice(2);
   const val = (f) => (args.includes(f) ? args[args.indexOf(f) + 1] : undefined);
@@ -250,7 +241,6 @@ async function main() {
     if (existsSync(attrFile)) dump.attrRows = JSON.parse(readFileSync(attrFile, 'utf8'));
     // (D84: the props' context from the players' games before each bet, for the pattern variants)
     if (names.some((n) => variants[n]?.mode === 'pattern')) dump.ctx = contextOf(dir, sport, dump.bets);
-    const staged = { v: 1, sport, at: new Date().toISOString(), order: [], labels: {}, variants: {} };
     for (const name of names) {
       if (!variants[name]) throw new Error(`no variant ${name} in ${VARIANTS_FILE}`);
       // (a trusted variant (D72) needs the replay's pieces (<sport>-attr.json); MMA's replay has none: not staged there)
@@ -277,12 +267,7 @@ async function main() {
         const rows = [...by].filter(([, g]) => g.n >= 30).sort((a, b) => b[1].s / b[1].n - a[1].s / a[1].n);
         for (const [key, g] of rows) console.log(`  ${key}: ${g.n} checks, EV ${r1((g.s / g.n) * 100)}% (shrunk ${r1(((g.s / g.n) * g.n * 100) / (g.n + k))}%), beat ${r1((g.beat / g.n) * 100)}%; ${g.rn} graded, flat ${r1((g.rs / g.rn) * 100)}%`);
       }
-      staged.order.push(name);
-      // (the switch's readable name, band-variants.json's label (D72))
-      staged.labels[name] = variants[name].label ?? name;
-      staged.variants[name] = stagedOf(dump, lab);
     }
-    if (args.includes('--write')) writeFileSync(stagedFile(sport), JSON.stringify(staged));
   }
 }
 

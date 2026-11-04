@@ -2334,14 +2334,19 @@ mat-icon.gloves {
   overflow-y: auto;
 }
 
-// (the Algorithm: its own board scrolls inside it (model-desk.scss .desk-scroll), its host never does: the
-// scrollbar on a panel you can see, not on an invisible box; the owner's note, 2026-10-19)
+// (Bot Stats: the page itself scrolls, its scrollbar the window's edge, never a box inside it (the owner, 2026-11-04:
+// "the page should overflow, not some invisible div"); the header and the ticker go with it)
+:host:has(> .book-page.desk-view) {
+  overflow-y: auto;
+  @include chip.gold-scrollbar;
+}
+
+.book-page.desk-view {
+  flex: 1 0 auto;
+}
+
 .book-page.desk-view model-desk {
-  display: flex;
-  flex: 1;
-  flex-direction: column;
-  min-height: 0;
-  overflow: hidden;
+  display: block;
 }
 
 // (Open tickets, Cashed and the Algorithm: the page's width, as the board's)

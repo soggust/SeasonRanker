@@ -149,7 +149,8 @@ export class WalletPageComponent implements OnInit, OnDestroy {
   // "Stage as admin" against the emulators)
   readonly admin = (): boolean => ADMIN();
   // (the Book's Open Bets or Closed Bets tab: those bets alone, no tiles, the rest or the slip)
-  @Input() only: 'open' | 'closed' | null = null;
+  // (the Book's My Bets tab: the open and the cashed boards alone ('mine'); null: the whole wallet)
+  @Input() only: 'mine' | null = null;
   // (a link to the Book lands on its Place Bets, not the Algorithm or Open Bets)
   readonly toBets = (): void => chooseBetsView('bets');
   // (...and its Open and Cashed tabs: the open tickets, every ticket cashed)
@@ -180,15 +181,13 @@ export class WalletPageComponent implements OnInit, OnDestroy {
       }
     });
     // (once someone's signed in: the settled history where it shows (the wallet, Closed Bets), and the
-    // leaderboards and the bot's ledgers on the wallet itself only: Open and Closed Bets show neither)
+    // leaderboards and the bot's ledgers on the wallet itself only: My Bets shows neither)
     // (its first page only, untracked: loadSettled reads the history's state, and tracked, each page landing asked
     // for the next, the whole history read, a read a bet. Show more and a date range page on from there)
     effect(() => {
       if (!this.account.user()) return;
       untracked(() => {
-        if (this.only !== 'open' && this.wallet.settledState() === 'idle') void this.wallet.loadSettled();
-        // (Open Bets: whether there's any history, for its empty state, from the newest few)
-        else if (this.only === 'open') this.wallet.wantRecent();
+        if (this.wallet.settledState() === 'idle') void this.wallet.loadSettled();
         if (!this.only && !this.extrasAsked) {
           this.extrasAsked = true;
           void this.loadBoards();
@@ -203,7 +202,7 @@ export class WalletPageComponent implements OnInit, OnDestroy {
   // not again on a page that brought nothing (a failed one: Show more tries it then))
   private autoPaged = -1;
   private readonly rangePages = effect(() => {
-    if (this.only === 'open' || !this.account.user()) return;
+    if (!this.account.user()) return;
     if (this.wallet.settledState() !== 'more') return;
     if (this.range() !== 'all' && !this.rangeLoading()) return;
     if (this.settledShown().length >= this.ticketEnd()) return;
@@ -413,12 +412,10 @@ export class WalletPageComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     void this.account.start().catch(() => undefined);
     // (the open bets' games each minute: only while the page is in view, and only once one's near its start)
-    if (this.only !== 'closed') {
-      void this.refresh();
-      this.timer = setInterval(() => {
-        if (!document.hidden && this.tracked().some((b) => Date.parse(b.start) - NEAR <= Date.now())) void this.refresh();
-      }, 60e3);
-    }
+    void this.refresh();
+    this.timer = setInterval(() => {
+      if (!document.hidden && this.tracked().some((b) => Date.parse(b.start) - NEAR <= Date.now())) void this.refresh();
+    }, 60e3);
   }
 
   ngOnDestroy(): void {

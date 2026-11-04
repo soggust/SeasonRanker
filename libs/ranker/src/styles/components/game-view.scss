@@ -2199,3 +2199,29 @@ book-page .game-card card-panel.team-panel {
     grid-template-columns: minmax(0, 1fr);
   }
 }
+
+// (a scoring play's scorer, linked to his card (the owner, 2026-11-04): his face ringed in his team's color, his
+// name in the play's words bold in it, underlined on hover)
+.game-play-head-link {
+  align-self: center;
+  display: flex;
+  flex: none;
+
+  .game-play-head {
+    border-color: var(--team, var(--scoreboard-led));
+  }
+
+  &:hover .game-play-head {
+    filter: brightness(1.15);
+  }
+}
+
+.game-play-scorer {
+  font-weight: 800;
+  text-decoration: none;
+
+  &:hover,
+  &:focus-visible {
+    text-decoration: underline;
+  }
+}

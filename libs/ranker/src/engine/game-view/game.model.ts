@@ -142,6 +142,8 @@ export interface GamePlay {
   // text)
   headshot: string | null;
   scorer: string | null;
+  // (his ESPN id, for the link to his card (the owner, 2026-11-04): none where the box score doesn't have him)
+  scorerId?: string | null;
   // (when ESPN logged it, its wallclock: in-game-injury.ts orders a ruling against the plays)
   at: string | null;
 }

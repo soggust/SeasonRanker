@@ -220,8 +220,8 @@ test('the boards: open and settled tickets pinned to a corkboard panel, on the B
   // owner, 2026-10-19, thousands of tickets at once could crash a phone)
   assert.match(board('cashedBoard'), /\(click\)="newerTickets\(\$event\)"[\s\S]*@for \(b of ticketsDrawn\(\); track b\.id\)[\s\S]*class="ticket-stamp" \[ngClass\]="res\.tone"[\s\S]*@if \(ticketsMore\(\)\)[\s\S]*\(click\)="moreTickets\(\$event\)"/);
   assert.doesNotMatch(board('cashedBoard'), /settledTickets\(\); track/);
-  assert.match(html, /only === 'closed'\) \{[\s\S]*?ngTemplateOutlet="cashedBoard; context: \{ title: 'Cashed' \}"/);
-  assert.match(html, /only === 'open'\) \{[\s\S]*?ngTemplateOutlet="openBoard"/);
+  // (the Book's My Bets (the owner, 2026-11-04): the open board, then the cashed one)
+  assert.match(html, /only === 'mine'\) \{[\s\S]*?ngTemplateOutlet="openBoard"[\s\S]*?ngTemplateOutlet="cashedBoard; context: \{ title: 'Cashed' \}"/);
   assert.match(html, /ngTemplateOutlet="cashedBoard; context: \{ title: 'Settled' \}"/);
   assert.equal((html.match(/ngTemplateOutlet="openBoard"/g) ?? []).length, 2);
   assert.doesNotMatch(html, /<table|openPanel|settledPanel/);

@@ -106,10 +106,30 @@ const LABEL: Record<string, string> = { spread: 'Spread', total: 'Game total', m
 const KIND: Record<string, BetKind> = { spread: 'spread', total: 'total', ml: 'moneyline' };
 const lineText = (l: number | null) => (l === null ? '' : l > 0 ? `+${l}` : String(l));
 
-// A suggestion's words in its open row, at its price: the Bot's chance against the price's break-even
-export function suggestionReason(chance: number, odds: number): string {
+// A suggestion's words, for a bettor, not a quant (the owner, 2026-11-04: "humanish to a joe bettor"; the Kelly
+// popover keeps the math): how often the Bot sees it hitting out of 100, how often the price needs it to, and what
+// that comes to on a dollar over the long run, led by a word on the edge's size. Whole numbers, a decimal only
+// where the two would round the same
+export function chanceWords(chance: number, odds: number): { hits: string; needs: string; cents: number } {
   const d = odds > 0 ? 1 + odds / 100 : 1 + 100 / -odds;
-  return `Suggested by price: the Bot makes it ${Math.round(chance * 1000) / 10}% to win, and at ${sign(odds)} it needs ${Math.round(1000 / d) / 10}%.`;
+  const need = 1 / d;
+  const whole = Math.round(chance * 100) !== Math.round(need * 100);
+  const fmt = (v: number) => (whole ? String(Math.round(v * 100)) : (Math.round(v * 1000) / 10).toFixed(1));
+  return { hits: fmt(chance), needs: fmt(need), cents: Math.round((chance * d - 1) * 100) };
+}
+
+// (the edge's word: a small one, a nice one, a juicy one; none where it rounds to nothing)
+export function edgeHook(cents: number): string {
+  if (cents >= 5) return 'Ooh, a juicy one.';
+  if (cents >= 2) return 'Nice little edge here.';
+  return cents >= 1 ? 'Small edge, but it’s real.' : 'Barely an edge, but it’s there.';
+}
+
+const payoff = (cents: number) => (cents >= 1 ? ` That’s about ${cents}¢ profit on every $1 you bet, over the long run.` : '');
+
+export function suggestionReason(chance: number, odds: number): string {
+  const w = chanceWords(chance, odds);
+  return `${edgeHook(w.cents)} The Bot sees this hitting about ${w.hits} times in 100, and at ${sign(odds)} it only has to hit ${w.needs} to pay off.${payoff(w.cents)}`;
 }
 const sign = (odds: number) => americanOdds(odds).replace('-', '−');
 
@@ -142,9 +162,9 @@ export function repriced(row: BetRow, odds: number, from: LiveQuote['from'] = 'b
 // price's alone)
 export function reasonAt(row: Pick<BetRow, 'plain' | 'fair'>, p: number, odds: number): string {
   if (!row.plain) return suggestionReason(p, odds);
-  const d = odds > 0 ? 1 + odds / 100 : 1 + 100 / -odds;
-  const fair = Number.isFinite(row.fair) ? `, and the Book's no-vig price says ${Math.round(row.fair! * 1000) / 10}%` : '';
-  return `${row.plain} The Bot makes it ${Math.round(p * 1000) / 10}%; at ${sign(odds)} it needs ${Math.round(1000 / d) / 10}%${fair}.`;
+  const w = chanceWords(p, odds);
+  const book = Number.isFinite(row.fair) ? ` (the Book itself only gives it ${Math.round(row.fair! * 100)})` : '';
+  return `${row.plain} The Bot sees it hitting about ${w.hits} times in 100; at ${sign(odds)} it only has to hit ${w.needs}${book}.${payoff(w.cents)}`;
 }
 
 // (a game's two sides as the rows show them: their abbreviations and logos (ESPN's where the page has its board, a

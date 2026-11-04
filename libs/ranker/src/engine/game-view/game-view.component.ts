@@ -413,6 +413,32 @@ export class GameViewComponent implements AfterViewChecked, OnDestroy {
     return side === 'both' ? 'Both teams' : (side === 'away' ? game.away : game.home).name;
   }
 
+  // A scoring play's scorer as the site links a player (player-link.ts: his card in his sport's app, by his ESPN id
+  // and name), and his team's color (the game's side's: game.model.ts GameTeam color), the Book's convention
+  scorerRef(p: GamePlay, game: GameView): PlayerRef | null {
+    return p.scorer ? { sport: sportOf(game.league), name: p.scorer, id: p.scorerId ?? null } : null;
+  }
+
+  scorerColor(p: GamePlay, game: GameView): string | null {
+    return p.side ? (p.side === 'away' ? game.away : game.home).color : null;
+  }
+
+  // (the play's words split round the scorer's name as they write him: his full name, or "J.Allen" / "J. Allen", else
+  // his last name; [before, his name, after], none when the words don't name him)
+  scorerParts(p: GamePlay): [string, string, string] | null {
+    if (!p.scorer || !p.text) return null;
+    const parts = p.scorer.split(' ');
+    const first = parts[0] ?? '';
+    const last = parts.slice(1).join(' ');
+    const esc = (t: string) => t.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+    const tries = [esc(p.scorer), last ? `${esc(first[0])}\\.\\s?${esc(last)}` : null, last ? esc(last) : null].filter((x): x is string => !!x);
+    for (const t of tries) {
+      const m = p.text.match(new RegExp(t));
+      if (m && m.index !== undefined) return [p.text.slice(0, m.index), m[0], p.text.slice(m.index + m[0].length)];
+    }
+    return null;
+  }
+
   // A headshot: his card that season, like his name, when the site has him
   faceLinks(name: string | null): boolean {
     return !!name && !!this.games.link(name);

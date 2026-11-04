@@ -1585,15 +1585,11 @@ test("D72 the trusted-edge bands: measured and staged, none shipped; By Confiden
   const decisions = fs.readFileSync(path.resolve('libs/ranker/scripts/model/DECISIONS.md'), 'utf8');
   assert.ok(decisions.includes('### D72.') && decisions.includes('### D71.'));
   const html = fs.readFileSync(path.resolve('libs/ranker/src/engine/book/model-desk.component.html'), 'utf8');
-  assert.ok(html.includes('desk-share-bar') && html.includes('shares: bandShares') && html.includes('stagedLabels[n] ?? n'));
+  assert.ok(html.includes('bs-mini-band') && html.includes('bandBars.rows') && !html.includes('stagedLabels'));
   const hist = fs.readFileSync(path.resolve('libs/ranker/src/engine/book/replay-history.ts'), 'utf8');
-  assert.ok(hist.includes('export function bandSharesOf(') && hist.includes('labels?: Record<string, string>'));
-  // (a staged file names its rules; the live record is untouched by the lab)
-  for (const sport of ['nfl', 'nba', 'nhl', 'mlb']) {
-    const f = JSON.parse(fs.readFileSync(path.resolve('apps', sport, 'src/StaticData/model/replay-record.staged.json'), 'utf8'));
-    assert.ok(f.order.some((n) => n.startsWith('trust-')), sport);
-    for (const n of f.order) assert.ok(f.labels?.[n], `${sport} ${n}`);
-  }
+  assert.ok(hist.includes('export function bandSharesOf('));
+  // (the staged files and the Live / Staged switch went with the Bot Stats page, 2026-11-04: one record, the live rule's)
+  for (const sport of ['nfl', 'nba', 'nhl', 'mlb', 'mma']) assert.ok(!fs.existsSync(path.resolve('apps', sport, 'src/StaticData/model/replay-record.staged.json')), sport);
 });
 
 test('D73 the two-band trial: LIKE and LOVE, LOCK off, labelled a trial; LOVE on in the NHL, the LIKE stakes in the NBA; the 2% floor lowered for its LOVEs alone', async () => {
@@ -2390,4 +2386,13 @@ test('D102 a game asked before gets one fresh quote inside the props’ betting 
   assert.match(run, /if \(why === 'window'\) asked\[`\$\{game\.id\}:window`\] = 1;/, 'marked once bought');
   const decisions = fs.readFileSync(path.resolve('libs/ranker/scripts/model/DECISIONS.md'), 'utf8');
   assert.ok(decisions.includes('### D102.'));
+});
+
+test("D103 round T: trends and within-season drift measured, nothing ships; the trend flag gone from the projections", () => {
+  const decisions = fs.readFileSync(path.resolve("libs/ranker/scripts/model/DECISIONS.md"), "utf8");
+  assert.ok(decisions.includes("### D103."));
+  const project = fs.readFileSync(path.resolve("libs/ranker/scripts/model/project.mjs"), "utf8");
+  assert.ok(!project.includes("TREND_TERM"), "no trend term in the projections");
+  const findings = JSON.parse(fs.readFileSync(path.resolve("apps/nfl/src/StaticData/model/findings.json"), "utf8"));
+  assert.ok(findings.entries.some((e) => e.ref === "D103"));
 });

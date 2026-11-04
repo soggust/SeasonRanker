@@ -994,6 +994,8 @@ export function summarize(sport, bets, passed, { epoch, now, flags, rows, season
     practiceDays: daysOf(practice),
     // (every day's buckets by band, the Algorithm tab's range (the owner, 2026-10-19): dailyOf)
     daily: dailyOf(bets, settledAt, [...tracked, ...passRows]),
+    // (the bets before the daily buckets, a bucket a month by band: Bot Stats' All time chart (monthlyOf))
+    monthly: monthlyOf(bets, settledAt),
     streak: decided.length ? `${decided[0].res}${n}` : null,
     streakAt: decided.slice(0, Math.min(n, STREAK_CAP)).map((b) => new Date(settledAt(b)).toISOString()),
     brokeAt: decided[n] ? new Date(settledAt(decided[n])).toISOString() : null,
@@ -1041,6 +1043,27 @@ export function summarize(sport, bets, passed, { epoch, now, flags, rows, season
 // week before it, for a week across the turn of the year) and the file stays small
 // (vig: the profit less the fair-price profit of the day's bets with a fair chance (fairProfitOf), the Vig column's)
 export const DAILY_COLS = ['won', 'lost', 'push', 'staked', 'profit', 'beat', 'beatN', 'clv', 'vig'];
+
+// The bets settled before the daily buckets begin, a bucket an Eastern month by band (lock, high, medium; the
+// record's, never a practice pick or a pass): "won,lost,push,staked,profit". Bot Stats' units chart on All time (the
+// owner, 2026-11-04: its dates and its end must match the record's) draws these months, then the days. Small: about
+// 70 months a sport
+export const MONTHLY_COLS = ['won', 'lost', 'push', 'staked', 'profit'];
+export function monthlyOf(bets, settledAt = (b) => b.t + GAME_HOURS * 36e5) {
+  const before = dailyOf(bets, settledAt).from;
+  const bands = {};
+  for (const b of bets) {
+    if (b.practice || b.band === 'pass') continue;
+    const day = etDay(settledAt(b));
+    if (!before || day >= before) continue;
+    const d = ((bands[b.band] ??= {})[day.slice(0, 7)] ??= [0, 0, 0, 0, 0]);
+    d[b.res === 'W' ? 0 : b.res === 'L' ? 1 : 2]++;
+    d[3] = r2(d[3] + b.units);
+    d[4] = r2(d[4] + b.profit);
+  }
+  const sortKeys = (o, f) => Object.fromEntries(Object.keys(o).sort().map((k) => [k, f(o[k])]));
+  return { cols: MONTHLY_COLS, to: before, bands: sortKeys(bands, (months) => sortKeys(months, (d) => d.join(','))) };
+}
 export function dailyOf(bets, settledAt = (b) => b.t + GAME_HOURS * 36e5, extra = []) {
   if (!bets.length) return { cols: DAILY_COLS, from: null, bands: {} };
   const year = Number(etDay(maxOf(bets.map(settledAt))).slice(0, 4));

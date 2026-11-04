@@ -6,7 +6,7 @@ import { darkLogoOf } from '../team-look';
 import { matchupName } from './game-menu';
 import { BetGroup, SportGroup, TableSorts, betValue, byGame, gamesBySport } from './desk-columns';
 import { DESK_HELP } from './desk-help';
-import { BotHistory, HISTORY_RANGES, HistoryRange, HistoryRow, ReplayRecordFile, StagedReplayFile, VIG_TIP, bandSharesOf, beatText, beatTip, botHistoryOf, buildLabel, buildOf, emptyRow, finalAtOf, isHistoryRange, recordText, vigText, withPending } from './replay-history';
+import { BotHistory, HISTORY_RANGES, HistoryRange, HistoryRow, ReplayRecordFile, VIG_TIP, bandSharesOf, beatText, beatTip, botHistoryOf, buildLabel, buildOf, emptyRow, finalAtOf, isHistoryRange, recordText, vigText, withPending } from './replay-history';
 import { DeskPanel, FindingsFile, findingsOf, ESPN_LEAGUES, SPORTS, deskPanelOpen, UNIT_WORDS, DeskEpoch, epochFor, epochShared, countNowOf, deskEpochOf, edgeColorOf, epochLabel, isTracked, meterOf, propState, provisional, sideTextOf, sideTitleOf, splitOpenOf, toWin } from './desk-math';
 import { Board, Meter, ModelBet, ModelState, Settled } from './desk-model';
 import { SummaryBox, athleteTeam, liveStat } from './live-props';
@@ -15,8 +15,13 @@ import { pickTeamColor, splitPick } from './pick-style';
 import type { PlayerRef } from '../player-link';
 import { RecordHistoryFile, RecordTrend, recordTrendOf, trendUnits } from './record-trend';
 import { ExpectFile, LiveCheckRow, liveCheck, liveCheckRow } from './live-check';
+import { ADMIN } from '../account/features';
+import { Bars, CURVE_H, CURVE_W, CurvePoint, FormSquare, Streak, UnitsCurve, barsOf, squaresOf, pointAt, signedUnits, streakOf, unitsCurve, winPctOf } from './bot-stats';
 
-// The algorithm's admin panel (the Book, admins only): the code-only desk's play-money betting
+// Bot Stats (the Book's tab; the Algorithm till 2026-11-04, when the owner opened it to everyone): the Bot's
+// record in figures and charts first (the units, the record, the return, beating the close, the run it's on; the
+// units over time; each sport's and each band's bars; its last twenty), the tables under them. The research's
+// own panels (live against the replay, the trend of re-records) stay an admin's. The code-only desk's play-money betting
 // (libs/ranker/scripts/model/run.mjs: every market of every game, 0.5 to 3 units), on the Bot's history
 // (replay-history.ts botHistoryOf: today's algorithm replayed over the priced history before its epoch, plus its
 // real bets since, from each sport's data/model/replay-record.json and ledger.json). The build's time and the
@@ -37,14 +42,15 @@ const readSport = (): string | null => {
   }
 };
 
-// (the time range on show, remembered on this browser: All time to begin with)
+// (the time range on show, remembered on this browser: This week to begin with (the owner, 2026-11-04))
 const RANGE_KEY = 'deskRange';
+const RANGE_DEFAULT: HistoryRange = 'week';
 const readRange = (): HistoryRange => {
   try {
     const saved = localStorage.getItem(RANGE_KEY);
-    return isHistoryRange(saved) ? saved : 'all';
+    return isHistoryRange(saved) ? saved : RANGE_DEFAULT;
   } catch {
-    return 'all';
+    return RANGE_DEFAULT;
   }
 };
 
@@ -101,14 +107,6 @@ export class ModelDeskComponent implements OnInit, OnDestroy {
   // joined to the live ledger's bets since)
   history: BotHistory | null = null;
   private allReplays: (ReplayRecordFile | null)[] = [];
-  // (the band lab's staged records (band-lab.mjs --write, D70): each sport's replay under every variant tried; the
-  // Live / Staged switch on By Sport and By Confidence reads one, named, in place of the live replay. Admins only,
-  // as the whole tab is)
-  private allStaged: (StagedReplayFile | null)[] = [];
-  stagedNames: string[] = [];
-  stagedLabels: Record<string, string | undefined> = {};
-  view: 'live' | 'staged' = 'live';
-  variant: string | null = null;
   private allLedgerBets: ModelBet[] = [];
   // (the research's findings (desk-math.ts findingsOf): one shared file; the sport chip's own and the shared ones)
   private findingsFile: FindingsFile | null = null;
@@ -144,6 +142,90 @@ export class ModelDeskComponent implements OnInit, OnDestroy {
   private flipped = readFlipped();
 
   // ---------------------------------------------------------------------------
+  // Bot Stats: the figures, the units curve and its hover, the bars, the form (bot-stats.ts)
+  // ---------------------------------------------------------------------------
+  readonly admin = ADMIN;
+  readonly curveW = CURVE_W;
+  readonly curveH = CURVE_H;
+  readonly signedUnits = signedUnits;
+  readonly winPct = winPctOf;
+  curve: UnitsCurve | null = null;
+  sportBars: Bars<HistoryRow> = { rows: [], zero: 0 };
+  bandBars: Bars<HistoryRow> = { rows: [], zero: 0 };
+  form: FormSquare[] = [];
+  streak: Streak = { kind: null, n: 0 };
+  // (the day under the pointer or the arrow keys)
+  hover: CurvePoint | null = null;
+
+  hoverAt(e: PointerEvent): void {
+    if (!this.curve) return;
+    const box = (e.currentTarget as Element).getBoundingClientRect();
+    this.hover = pointAt(this.curve, box.width ? (e.clientX - box.left) / box.width : 1);
+  }
+
+  // (the arrows step a day, Home and End the ends, Escape lets it go)
+  hoverKey(e: KeyboardEvent): void {
+    const c = this.curve;
+    if (!c) return;
+    if (e.key === 'Escape') {
+      this.hover = null;
+      return;
+    }
+    const i = this.hover ? c.points.indexOf(this.hover) : c.points.length - 1;
+    const to = e.key === 'ArrowLeft' ? i - 1 : e.key === 'ArrowRight' ? i + 1 : e.key === 'Home' ? 0 : e.key === 'End' ? c.points.length - 1 : null;
+    if (to === null) return;
+    e.preventDefault();
+    this.hover = c.points[Math.max(0, Math.min(c.points.length - 1, to))];
+  }
+
+  // (a point's height in the chart's box, by its units)
+  yAt(v: number): number {
+    const c = this.curve!;
+    const span = c.max - c.min || 1;
+    return CURVE_H - 10 - ((v - c.min) / span) * (CURVE_H - 20);
+  }
+
+  // (a day as the hover says it: "Sat, Nov 1")
+  dayLabel(day: string | null): string {
+    if (!day) return '';
+    if (day === 'start') return 'The start';
+    if (day === 'before') return 'Earlier bets';
+    if (/^\d{4}-\d{2}$/.test(day)) return new Date(day + '-15T12:00:00Z').toLocaleDateString('en-US', { month: 'short', year: 'numeric', timeZone: 'UTC' });
+    return new Date(day + 'T12:00:00Z').toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric', timeZone: 'UTC' });
+  }
+
+  // (the hover card's middle as a share of the chart's width, kept clear of its edges)
+  hoverLeft(p: CurvePoint): number {
+    return Math.max(14, Math.min(86, (p.x / CURVE_W) * 100));
+  }
+
+  // (a figure on the LED digits: its number, then its unit small beside it in the heading face; the digits have
+  // no u or %, and a plain hyphen for the minus)
+  unitsFig(u: number): { num: string; unit: string } {
+    return { num: `${u > 0 ? '+' : u < 0 ? '-' : ''}${Math.abs(u).toFixed(1)}`, unit: 'u' };
+  }
+
+  pctFig(v: number | null | undefined): { num: string; unit: string } {
+    if (v === null || v === undefined || !Number.isFinite(v)) return { num: '-', unit: '' };
+    const r = Math.round(v * 1000) / 10;
+    return { num: `${r > 0 ? '+' : r < 0 ? '-' : ''}${Math.abs(r).toFixed(1)}`, unit: '%' };
+  }
+
+  beatFig(t: HistoryRow): { num: string; unit: string } {
+    const text = beatText(t);
+    return text.endsWith('%') ? { num: text.slice(0, -1), unit: '%' } : { num: '-', unit: '' };
+  }
+
+  // (the record whole, won-lost-pushed, no thousands' k: the digits have no letters)
+  recordFig(t: HistoryRow): string {
+    return `${t.won}-${t.lost}${t.push ? '-' + t.push : ''}`;
+  }
+
+  pctText(v: number | null | undefined): string {
+    return v === null || v === undefined ? '—' : `${Math.round(v * 1000) / 10}%`;
+  }
+
+  // ---------------------------------------------------------------------------
   // The time range: the Book's dropdown (its pill and its listbox), the history's panels by each bet's settling
   // ---------------------------------------------------------------------------
   readonly ranges = HISTORY_RANGES;
@@ -160,14 +242,6 @@ export class ModelDeskComponent implements OnInit, OnDestroy {
   // (the range in a sentence: "No bets settled this week")
   get rangeWords(): string {
     return this.range === 'all' ? 'yet' : this.rangeLabel.toLowerCase();
-  }
-
-  // (what the range holds: "This week: 42 replayed (games before this version) · 6 live")
-  rangeNote(h: BotHistory): string {
-    const p = h.rangeParts;
-    const parts = [`${p.replayed.toLocaleString('en-US')} replayed (games before this version)`, `${p.live.toLocaleString('en-US')} live (since it)`];
-    if (p.undated) parts.push(`${p.undated.toLocaleString('en-US')} replayed without dates left out`);
-    return `${this.rangeLabel}: ${parts.join(' · ')}`;
   }
 
   toggleRange(): void {
@@ -190,7 +264,7 @@ export class ModelDeskComponent implements OnInit, OnDestroy {
     if (range === this.range) return;
     this.range = range;
     try {
-      if (range === 'all') localStorage.removeItem(RANGE_KEY);
+      if (range === RANGE_DEFAULT) localStorage.removeItem(RANGE_KEY);
       else localStorage.setItem(RANGE_KEY, range);
     } catch {
       // (storage off: the choice lasts the visit)
@@ -269,24 +343,18 @@ export class ModelDeskComponent implements OnInit, OnDestroy {
     const trends = Promise.all(SPORTS.map((sport) => getJson<RecordHistoryFile>(`/${sport}/data/model/record-history.json`, { cache: 'no-cache' }).then((f) => recordTrendOf(sport, f))));
     const files = await Promise.all(
       SPORTS.map(async (sport) => {
-        const [ledger, state, replay, staged] = await Promise.all([
+        const [ledger, state, replay] = await Promise.all([
           getJson<{ bets?: ModelBet[] }>(`/${sport}/data/model/ledger.json`, { cache: 'no-cache' }),
           getJson<ModelState>(`/${sport}/data/model/state.json`, { cache: 'no-cache' }),
           // (none till the gate records a version with the replayed record: the live desk alone)
           getJson<ReplayRecordFile>(`/${sport}/data/model/replay-record.json`, { cache: 'no-cache' }),
-          getJson<StagedReplayFile>(`/${sport}/data/model/replay-record.staged.json`, { cache: 'no-cache' }),
         ]);
-        return { ledger, state, replay, staged };
+        return { ledger, state, replay };
       }),
     );
     this.allReplays = files.map((f) => f.replay);
     this.findingsFile = await findings;
     this.allTrends = (await trends).filter((t): t is RecordTrend => !!t);
-    this.allStaged = files.map((f) => f.staged);
-    this.stagedNames = [...new Set(this.allStaged.flatMap((f) => f?.order ?? []))];
-    // (each rule's readable name, band-variants.json's label (D72), else its id)
-    this.stagedLabels = Object.assign({}, ...this.allStaged.map((f) => f?.labels ?? {}));
-    this.variant = this.stagedNames[0] ?? null;
     this.allStates = files.map((f) => f.state).filter((s): s is ModelState => !!s);
     this.takeLedger(files.flatMap((f) => f.ledger?.bets ?? []));
     this.epoch = deskEpochOf(this.allStates);
@@ -335,23 +403,6 @@ export class ModelDeskComponent implements OnInit, OnDestroy {
     return this.allBets.filter((b) => b.status === 'open' && (!sport || b.sport === sport)).length;
   }
 
-  // (the replays on show: the live ones, or the staged variant's where a sport has it)
-  private replays(): (ReplayRecordFile | null)[] {
-    const name = this.variant;
-    if (this.view !== 'staged' || !name) return this.allReplays;
-    return this.allReplays.map((r, i) => this.allStaged[i]?.variants?.[name] ?? r);
-  }
-
-  setView(view: 'live' | 'staged'): void {
-    this.view = view;
-    this.show();
-  }
-
-  setVariant(name: string): void {
-    this.variant = name;
-    this.show();
-  }
-
   // (what's on show changed: its bets and states picked, the history built, the scores asked)
   private show(): void {
     this.pick();
@@ -373,7 +424,7 @@ export class ModelDeskComponent implements OnInit, OnDestroy {
   private buildHistory(): void {
     const ledger = withPending(this.allLedgerBets, (b) => (b.event ? this.finals.get(b.event) : null), (b) => this.provisional(b));
     this.pendingSports = new Set(ledger.filter((b) => b.pending && (!this.sport || b.sport === this.sport)).map((b) => b.sport));
-    const h = botHistoryOf(this.replays(), ledger, this.sport, Object.fromEntries(this.allStates.map((s) => [s.sport, s.label])), { range: this.range });
+    const h = botHistoryOf(this.allReplays, ledger, this.sport, Object.fromEntries(this.allStates.map((s) => [s.sport, s.label])), { range: this.range });
     this.history = h;
     const histBand = (label: string) => h.byBand.find((r) => r.label === label) ?? emptyRow(label);
     // (two bands, LOVE and LIKE (the two-band trial, DECISIONS.md D73: LOCK off); a LOCK row only where the shown
@@ -384,6 +435,13 @@ export class ModelDeskComponent implements OnInit, OnDestroy {
     const stakedPass = histBand('PASS');
     this.bandRows = [...(lock.bets ? [lock] : []), histBand('LOVE'), histBand('LIKE'), h.practice, h.pass, ...(stakedPass.bets || stakedPass.open ? [stakedPass] : [])];
     this.bandShares = bandSharesOf(this.bandRows);
+    // (Bot Stats' figures and charts, off the same history: bot-stats.ts)
+    this.curve = unitsCurve(this.allReplays, ledger, this.sport, this.range);
+    this.hover = null;
+    this.sportBars = barsOf(h.bySport.filter((r) => r.bets));
+    this.bandBars = barsOf(this.bandRows.filter((r) => r.bets));
+    this.form = squaresOf(h.last);
+    this.streak = streakOf(h.last);
     this.buildAt = buildOf(this.allReplays, this.sport, this.epoch ? ((this.sport ? epochFor(this.epoch, this.sport) : null) ?? epochShared(this.epoch)) : null).at;
   }
 
@@ -413,6 +471,23 @@ export class ModelDeskComponent implements OnInit, OnDestroy {
   // goes to Recently closed, pending, till the run grades it: desk-math.ts splitOpenOf)
   private splitOpen(now: number): void {
     ({ open: this.open, live: this.live } = splitOpenOf(this.bets, now, (b) => (b.event ? this.boards.get(b.event) : undefined)));
+  }
+
+  // (the open bets, the soonest first: Open Bets' list)
+  get openSoonest(): ModelBet[] {
+    return [...this.open].sort((a, b) => a.start.localeCompare(b.start) || a.pick.localeCompare(b.pick));
+  }
+
+  // (an open bet's expected value by its size: under 1% a sliver (orange), to 3% a soft green, past it the full green;
+  // none or under 0 the loss red)
+  evTone(ev: number | null | undefined): string {
+    if (ev === null || ev === undefined || !Number.isFinite(ev) || ev < 0) return 'ev-neg';
+    return ev < 0.01 ? 'ev-thin' : ev < 0.03 ? 'ev-soft' : 'ev-big';
+  }
+
+  // (an open bet's band as the Book names it)
+  openBand(b: ModelBet & { publishedLevel?: string }): string {
+    return ({ lock: 'LOCK', high: 'LOVE', medium: 'LIKE', low: 'PASS' } as Record<string, string>)[b.publishedLevel ?? 'medium'] ?? 'LIKE';
   }
 
   // (a closed bet's band, for its colour: the Book's tier names; a practice pick its own)

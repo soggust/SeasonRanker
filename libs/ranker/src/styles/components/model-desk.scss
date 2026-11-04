@@ -1130,18 +1130,18 @@ mat-icon.desk-gloves {
 // a soft gold area, a dashed zero line). Scoped to the Book: the wallet's own page keeps the desk's look
 // ===========================================================================
 :host-context(book-page) {
-  // (the tab fills the page under the Book's head: the build line on top, the board taking the rest, scrolling
-  // inside its own gold edge; book-page.scss keeps the host from scrolling)
+  // (Bot Stats on the Book: the page itself scrolls (book-page.scss))
   .model-desk {
+    // (a result's two colors the Book's and the wallet's (book-page.scss, wallet-page.scss): won the bright green, lost the
+    // soft red, so a win reads the same on every tab (the owner, 2026-11-04))
+    --win: #{v.$good-bright};
+    --loss: #{v.$bad-soft};
     background: none;
     border: none;
     box-shadow: none;
-    display: flex;
-    flex: 1;
-    flex-direction: column;
+    display: block;
     margin: 0;
     max-width: none;
-    min-height: 0;
     padding: 0 4px 12px;
   }
 
@@ -1157,32 +1157,18 @@ mat-icon.desk-gloves {
   // (the board: one scoreboard panel in the Book's gold rail, as the Book's own board; its panels scroll inside it
   // on a gold thumb, the rail staying put)
   .desk-board {
-    @include v.scoreboard-panel(v.$radius-lg, none);
-    background:
-      var(--scoreboard-dots) padding-box,
-      linear-gradient(var(--scoreboard), var(--scoreboard)) padding-box,
-      chip.$felt-gold border-box;
-    border: 1px solid transparent;
-    display: flex;
-    flex: 1;
-    flex-direction: column;
-    min-height: 0;
-    overflow: hidden;
+    display: block;
   }
 
   .desk-scroll {
-    flex: 1;
-    min-height: 0;
-    overflow-y: auto;
-    padding: 0 14px 14px;
-    @include chip.gold-scrollbar;
+    padding: 0 0 14px;
   }
 
   // (on a phone the board a little closer to its edge; narrower than the wide menu the page scrolls and the board is
   // as tall as its panels, as the Book's own board is there)
   @include v.down(small) {
     .desk-scroll {
-      padding: 0 8px 10px;
+      padding: 0 0 10px;
     }
   }
 
@@ -1671,11 +1657,6 @@ mat-icon.desk-gloves {
 }
 
 // (what a range holds, replayed and live, a quiet line over the panels)
-.desk-range-note {
-  font-size: v.$fs-11;
-  margin: v.$space-10 2px 0;
-}
-
 // (the Pick column a little apart from the Game's: In Play's and Open Bets')
 .desk-bets .desk-pick-col {
   padding-left: 26px;
@@ -1817,31 +1798,6 @@ mat-icon.desk-gloves {
 
 
 // (the band lab's Live / Staged switch (D70, admins only): two small pills and the staged rule's name)
-.desk-stage {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  margin: v.$space-10 2px 0;
-  font-size: v.$fs-11;
-}
-.desk-stage-btn,
-.desk-stage-pick {
-  font: inherit;
-  color: inherit;
-  background: transparent;
-  border: 1px solid color-mix(in srgb, currentColor 30%, transparent);
-  border-radius: 999px;
-  padding: 2px 10px;
-  cursor: pointer;
-}
-.desk-stage-btn.active {
-  border-color: currentColor;
-  font-weight: 600;
-}
-.desk-stage-pick option {
-  color: #000;
-}
-
 // (Findings (2026-10-20): the research's one-line findings by group, dated; compact, the dates and sports muted)
 .desk-findings .group-body {
   padding-bottom: v.$space-8;
@@ -1938,5 +1894,838 @@ mat-icon.desk-gloves {
 
   &.bad {
     color: v.$bad-soft;
+  }
+}
+
+// ===========================================================================
+// Bot Stats (the owner, 2026-11-04: the Algorithm made everyone's, "cute, with charts, in my design theme"): the
+// title, the five figures, the last twenty and the live part, the climb, and a bar in each table's Units. The
+// scoreboard's dots inside the tables' gold rail, the LED digits for the figures that move, the felt's gold for
+// the light; a win the site's green, a loss the chips' red (.model-desk --win, --loss)
+// ===========================================================================
+
+// ---- the dashboard: one big scoreboard card, the figures, the last twenty and the chart on it ----
+.bs-board {
+  @include v.scoreboard-panel($radius: v.$radius-xl, $shadow: 0 6px 18px rgba(0, 0, 0, 0.45));
+  @include chip.gold-rim;
+  border-radius: v.$radius-xl;
+  margin: 0 0 v.$space-16;
+  padding: v.$space-20 v.$space-24 v.$space-16;
+
+  @include v.down(phone) {
+    padding: v.$space-14 v.$space-14 v.$space-12;
+  }
+}
+
+// ---- the figures: the units the hero, then the record, the return, beating the close, the run ----
+.bs-hero {
+  display: grid;
+  gap: v.$space-16 0;
+  grid-template-columns: 1.5fr repeat(4, 1fr);
+  margin: 0 0 v.$space-16;
+
+  @include v.down(laptop) {
+    grid-template-columns: repeat(3, 1fr);
+
+    .bs-tile-hero {
+      grid-column: 1 / -1;
+    }
+
+    // (wrapped in rows: no hairlines between them)
+    .bs-tile {
+      border-left: none;
+      padding: 0;
+    }
+  }
+
+  @include v.down(phone) {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+.bs-tile {
+  --tone: #{v.$lettering};
+  @include v.enter($dy: 8px, $dur: 0.3s, $stagger: 50ms);
+  border-left: 1px solid rgba(255, 255, 255, 0.08);
+  display: flex;
+  flex-direction: column;
+  gap: v.$space-8;
+  min-width: 0;
+  padding: v.$space-4 v.$space-20;
+
+  &:first-child {
+    border-left: none;
+    padding-left: 0;
+  }
+
+  &:nth-child(1) {
+    --i: 0;
+  }
+  &:nth-child(2) {
+    --i: 1;
+  }
+  &:nth-child(3) {
+    --i: 2;
+  }
+  &:nth-child(4) {
+    --i: 3;
+  }
+  &:nth-child(5) {
+    --i: 4;
+  }
+
+  &.up {
+    --tone: var(--win);
+  }
+
+  &.down {
+    --tone: var(--loss);
+  }
+
+  // (the figures' own colors come from --tone: the .up / .down on the tile set it, not the text's color)
+  &.up,
+  &.down {
+    color: #fff !important;
+  }
+}
+
+.bs-label {
+  color: v.$text-faint;
+  font-size: v.$fs-11;
+  font-weight: 800;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+}
+
+.bs-value {
+  color: var(--tone);
+  font-size: 26px;
+  line-height: 1.25;
+  overflow-wrap: anywhere;
+  padding: v.$space-2 0;
+}
+
+// (a figure that moves on the LED digits, lit in its tone)
+.bs-led {
+  font-family: v.$font-led;
+  font-weight: 400;
+  letter-spacing: 3px;
+  text-shadow: 0 0 10px color-mix(in srgb, var(--tone) 55%, transparent);
+}
+
+// (a figure's unit, u or %, beside its digits: the heading face, smaller, a little apart)
+.bs-unit {
+  font-family: v.$font-heading;
+  font-size: 0.6em;
+  font-weight: 700;
+  letter-spacing: 0;
+  margin-left: v.$space-4;
+  opacity: 0.85;
+}
+
+.bs-tile-hero {
+  --tone: #{chip.$gold-led};
+  justify-content: center;
+
+  .bs-value {
+    font-size: 40px;
+  }
+
+  @include v.down(phone) {
+    grid-column: 1 / -1;
+  }
+}
+
+// ---- the last twenty and the live part since the latest version ----
+.bs-strip {
+  align-items: center;
+  display: flex;
+  flex-wrap: wrap;
+  gap: v.$space-10 v.$space-24;
+  grid-area: form;
+  padding: v.$space-6 0 v.$space-12;
+}
+
+.bs-strip-label {
+  color: v.$text-faint;
+  font-size: v.$fs-10;
+  font-weight: 800;
+  letter-spacing: 1.5px;
+  margin-right: v.$space-6;
+  text-transform: uppercase;
+}
+
+.bs-form {
+  align-items: center;
+  display: flex;
+  flex-wrap: wrap;
+  gap: v.$space-4;
+
+  .bs-strip-label {
+    margin-right: v.$space-14;
+  }
+}
+
+.bs-sq {
+  --tone: #{v.$neutral};
+  background: var(--tone);
+  border-radius: v.$radius-xs;
+  box-shadow:
+    inset 0 -2px 0 rgba(0, 0, 0, 0.3),
+    0 0 6px color-mix(in srgb, var(--tone) 45%, transparent);
+  border: 0;
+  cursor: pointer;
+  display: inline-block;
+  height: 14px;
+  padding: 0;
+  transition: scale v.$t-fast v.$ease-out, filter v.$t-fast ease;
+  width: 14px;
+
+  &:hover:not(:disabled),
+  &:focus-visible {
+    filter: brightness(1.25);
+    scale: 1.25;
+  }
+
+  &:focus-visible {
+    outline: 2px solid chip.$gold-led;
+    outline-offset: 2px;
+  }
+
+  &:disabled {
+    cursor: default;
+  }
+
+  animation: bs-pop 0.35s v.$ease-pop backwards;
+  animation-delay: calc(var(--i, 0) * 25ms);
+
+  @media (prefers-reduced-motion: reduce) {
+    animation: none;
+  }
+
+  &.W {
+    --tone: var(--win);
+  }
+
+  &.L {
+    --tone: var(--loss);
+  }
+
+  &.none {
+    background: transparent;
+    box-shadow: inset 0 0 0 1px v.$text-faint;
+  }
+
+  &.pending {
+    opacity: 0.6;
+  }
+}
+
+@keyframes bs-pop {
+  from {
+    opacity: 0;
+    scale: 0.4;
+  }
+}
+
+// ---- the climb: the units by game day, straight on the felt ----
+// (the charts' row: the units chart and the two bar charts, on one hairline under the strip)
+.bs-charts {
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  display: grid;
+  gap: v.$space-16 v.$space-28;
+  grid-template-areas:
+    "curve form form"
+    "curve sport band";
+  grid-template-columns: minmax(0, 1.5fr) minmax(0, 1fr) minmax(0, 1fr);
+  grid-template-rows: auto 1fr;
+  padding-top: v.$space-20;
+  row-gap: v.$space-24;
+
+  @include v.down(laptop) {
+    grid-template-areas:
+      "form form"
+      "curve curve"
+      "sport band";
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    grid-template-rows: none;
+  }
+
+  @include v.down(small) {
+    grid-template-areas:
+      "form"
+      "curve"
+      "sport"
+      "band";
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+.bs-curve-wrap {
+  grid-area: curve;
+  min-width: 0;
+}
+
+.bs-mini-sport {
+  grid-area: sport;
+}
+
+.bs-mini-band {
+  grid-area: band;
+}
+
+// (a bar chart: a row a sport or a band, its name, its bar on the chart's one scale, its units and record)
+.bs-mini {
+  --line: #{chip.$gold-led};
+  margin: 0;
+  min-width: 0;
+
+  @each $sport, $line in chip.$sport-line {
+    --line-#{$sport}: #{$line};
+  }
+
+  --line-mma: #d9a3ff;
+
+  .bs-curve-title {
+    display: block;
+    margin-bottom: v.$space-16;
+  }
+}
+
+.bs-mini-rows {
+  display: grid;
+  gap: v.$space-14;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.bs-mini-row {
+  align-items: center;
+  cursor: help;
+  display: grid;
+  gap: v.$space-12;
+  grid-template-columns: 66px minmax(0, 1fr) auto;
+}
+
+.bs-mini-label {
+  display: grid;
+  gap: v.$space-2;
+}
+
+.bs-mini-name {
+  align-items: center;
+  display: flex;
+  font-size: v.$fs-11;
+  font-weight: 800;
+  gap: v.$space-6;
+  letter-spacing: 0.06em;
+
+  .desk-league {
+    height: 16px;
+    width: 16px;
+  }
+}
+
+.bs-band-dot {
+  display: none;
+  background: var(--line);
+  border-radius: v.$radius-round;
+  box-shadow: 0 0 6px color-mix(in srgb, var(--line) 60%, transparent);
+  height: 8px;
+  width: 8px;
+}
+
+.bs-band-lock {
+  --line: #{chip.$lock-light};
+}
+
+.bs-band-love {
+  --line: #{v.$good-bright};
+}
+
+.bs-band-like {
+  --line: #{v.$caution};
+}
+
+.bs-band-pass {
+  --line: #{v.$neutral};
+}
+
+// (the small print under a name and under a bar)
+.bs-mini-vig,
+.bs-mini-meta {
+  color: v.$text-faint;
+  font-size: v.$fs-10;
+  font-weight: 700;
+  white-space: nowrap;
+
+  b {
+    color: v.$text-soft;
+    font-variant-numeric: tabular-nums;
+  }
+}
+
+.bs-mini-vig {
+  cursor: help;
+}
+
+.bs-mini-mid {
+  display: grid;
+  gap: v.$space-4;
+  min-width: 0;
+}
+
+.bs-mini-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: v.$space-2 v.$space-10;
+}
+
+.bs-mini-track {
+  background: v.$panel-rule;
+  border-radius: v.$radius-pill;
+  display: block;
+  height: 8px;
+  overflow: hidden;
+  position: relative;
+
+  // (zero, marked: a bar right of it won, left of it lost)
+  .bs-bar-zero {
+    background: rgba(255, 255, 255, 0.7);
+    width: 2px;
+  }
+}
+
+// (the key under a chart's title: what the bars mean)
+.bs-mini-key {
+  color: v.$text-faint;
+  display: block;
+  font-size: v.$fs-10;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  margin-top: v.$space-4;
+
+  .up {
+    color: var(--win);
+  }
+
+  .down {
+    color: var(--loss);
+  }
+}
+
+// (a sport's or a band's own colour on the bar, a loss its colour dimmed and the red of a loss at its end)
+.bs-mini-fill {
+  background: var(--win);
+  border-radius: v.$radius-pill;
+  box-shadow: 0 0 6px color-mix(in srgb, var(--win) 45%, transparent);
+  height: 100%;
+  position: absolute;
+  top: 0;
+
+  &.down {
+    background: var(--loss);
+    box-shadow: 0 0 6px color-mix(in srgb, var(--loss) 45%, transparent);
+  }
+
+  animation: bs-grow 0.6s v.$ease-out backwards;
+  transform-origin: left;
+
+  @media (prefers-reduced-motion: reduce) {
+    animation: none;
+  }
+}
+
+.bs-mini-val {
+  display: grid;
+  font-family: v.$font-hand;
+  font-size: v.$fs-13;
+  font-variant-numeric: tabular-nums;
+  gap: v.$space-4;
+  justify-items: end;
+  line-height: 1.15;
+  min-width: 58px;
+
+  small {
+    color: v.$text-faint;
+    font-family: v.$font-base;
+    font-size: v.$fs-10;
+    font-weight: 700;
+  }
+}
+
+.bs-curve {
+  --total: #f2c54b;
+
+  @each $sport, $line in chip.$sport-line {
+    --line-#{$sport}: #{$line};
+  }
+
+  --line-mma: #d9a3ff;
+
+  .desk-legend {
+    display: flex;
+    flex-wrap: wrap;
+    gap: v.$space-4 v.$space-14;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+
+    li {
+      --line: var(--total);
+      align-items: center;
+      color: v.$text-dim;
+      display: flex;
+      font-size: v.$fs-11;
+      font-weight: 800;
+      gap: v.$space-6;
+      letter-spacing: 0.04em;
+    }
+
+    i {
+      background: var(--line);
+      border-radius: v.$radius-xxs;
+      height: 3px;
+      width: 14px;
+    }
+
+    .total i {
+      box-shadow: 0 0 4px var(--line);
+      height: 4px;
+    }
+
+    b {
+      color: v.$lettering;
+      font-family: v.$font-hand;
+      font-variant-numeric: tabular-nums;
+      font-weight: 400;
+    }
+  }
+}
+
+.bs-curve-head {
+  align-items: flex-start;
+  display: flex;
+  flex-direction: column;
+  gap: v.$space-14;
+  margin-bottom: v.$space-20;
+  padding-top: v.$space-6;
+}
+
+.bs-curve-title {
+  font-size: v.$fs-13;
+  font-weight: 800;
+
+  small {
+    color: v.$text-faint;
+    font-weight: 600;
+    margin-left: v.$space-8;
+  }
+}
+
+.bs-plot {
+  display: grid;
+  gap: v.$space-8;
+  grid-template-columns: 40px 1fr;
+}
+
+.bs-ticks {
+  height: 128px;
+  position: relative;
+
+  span {
+    color: v.$text-faint;
+    font-size: v.$fs-10;
+    font-variant-numeric: tabular-nums;
+    font-weight: 700;
+    position: absolute;
+    right: 0;
+    translate: 0 -50%;
+  }
+}
+
+.bs-chart {
+  border-radius: v.$radius-sm;
+  cursor: crosshair;
+  height: 128px;
+  outline: none;
+  position: relative;
+  touch-action: pan-y;
+
+  &:focus-visible {
+    box-shadow: 0 0 0 2px chip.$gold-led;
+  }
+
+  svg {
+    display: block;
+    height: 100%;
+    inset: 0;
+    position: absolute;
+    width: 100%;
+  }
+}
+
+.bs-grid {
+  stroke: rgba(255, 255, 255, 0.08);
+  stroke-width: 1;
+  vector-effect: non-scaling-stroke;
+
+  &.bs-zero {
+    stroke: rgba(255, 255, 255, 0.3);
+  }
+}
+
+.bs-area {
+  fill: color-mix(in srgb, var(--total) 10%, transparent);
+}
+
+.bs-line {
+  fill: none;
+  stroke: var(--total);
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-width: 2;
+  vector-effect: non-scaling-stroke;
+
+  animation: bs-draw 1.1s v.$ease-out backwards;
+
+  @media (prefers-reduced-motion: reduce) {
+    animation: none;
+  }
+}
+
+// (a sport's line: thinner and softer, under the total's)
+.bs-sport-line {
+  opacity: 0.85;
+  stroke: var(--line);
+  stroke-width: 1.5;
+}
+
+@keyframes bs-draw {
+  from {
+    opacity: 0;
+  }
+}
+
+.bs-cross {
+  stroke: rgba(255, 255, 255, 0.35);
+  stroke-width: 1;
+  vector-effect: non-scaling-stroke;
+}
+
+// (a point: round however the chart stretches, ringed in the board's black so it reads over a line)
+.bs-dot {
+  --line: var(--total);
+  background: var(--line);
+  border-radius: v.$radius-round;
+  box-shadow: 0 0 0 2px v.$scoreboard-black;
+  height: 10px;
+  pointer-events: none;
+  position: absolute;
+  translate: -50% -50%;
+  width: 10px;
+}
+
+.bs-dot-sport {
+  height: 8px;
+  width: 8px;
+}
+
+// (the units now: a soft halo breathing round it)
+.bs-end::after {
+  border-radius: inherit;
+  box-shadow: 0 0 0 0 color-mix(in srgb, var(--total) 60%, transparent);
+  content: "";
+  inset: 0;
+  position: absolute;
+
+  animation: bs-breathe 2.4s ease-out infinite;
+
+  @media (prefers-reduced-motion: reduce) {
+    animation: none;
+  }
+}
+
+@keyframes bs-breathe {
+  70%,
+  100% {
+    box-shadow: 0 0 0 10px transparent;
+  }
+}
+
+// (the day's card: the value first, the day and each sport under it)
+.bs-tip {
+  @include chip.player-card-face;
+  border: 1px solid #b38a3c;
+  border-radius: v.$radius-lg;
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.55);
+  display: grid;
+  gap: v.$space-2;
+  min-width: 128px;
+  padding: v.$space-8 v.$space-10;
+  pointer-events: none;
+  position: absolute;
+  top: 6px;
+  translate: -50% 0;
+  z-index: 2;
+
+  &.low {
+    bottom: 6px;
+    top: auto;
+  }
+
+  > b {
+    font-family: v.$font-heading;
+    font-size: v.$fs-18;
+    font-weight: 600;
+  }
+}
+
+.bs-tip-day {
+  color: v.$text-dim;
+  font-size: v.$fs-11;
+  font-weight: 800;
+  order: 2;
+
+  small {
+    color: v.$text-faint;
+    font-size: v.$fs-10;
+  }
+}
+
+.bs-tip-row {
+  --line: var(--total);
+  align-items: center;
+  color: v.$text-dim;
+  display: flex;
+  font-size: v.$fs-11;
+  font-weight: 800;
+  gap: v.$space-6;
+  order: 3;
+
+  i {
+    background: var(--line);
+    border-radius: v.$radius-xxs;
+    height: 2px;
+    width: 10px;
+  }
+
+  b {
+    color: v.$lettering;
+    font-variant-numeric: tabular-nums;
+    margin-left: auto;
+  }
+}
+
+// ---- a bar in each table's Units: the table's one scale, zero where its worst loss and best gain put it ----
+.bs-units {
+  white-space: nowrap;
+}
+
+.bs-bar {
+  background: v.$panel-rule;
+  border-radius: v.$radius-pill;
+  display: block;
+  height: 5px;
+  margin: v.$space-4 auto 0;
+  max-width: 96px;
+  min-width: 56px;
+  overflow: hidden;
+  position: relative;
+}
+
+.bs-bar-zero {
+  background: rgba(255, 255, 255, 0.45);
+  height: 100%;
+  position: absolute;
+  top: 0;
+  width: 1px;
+}
+
+.bs-bar-fill {
+  background: var(--win);
+  border-radius: v.$radius-pill;
+  height: 100%;
+  position: absolute;
+  top: 0;
+
+  &.down {
+    background: var(--loss);
+  }
+
+  animation: bs-grow 0.6s v.$ease-out backwards;
+  transform-origin: left;
+
+  @media (prefers-reduced-motion: reduce) {
+    animation: none;
+  }
+}
+
+@keyframes bs-grow {
+  from {
+    scale: 0 1;
+  }
+}
+
+@media (forced-colors: active) {
+  .bs-sq.W {
+    background: Highlight;
+  }
+
+  .bs-sq.L {
+    background: CanvasText;
+  }
+}
+
+// (an open bet's clock where a result goes)
+.desk-open-strip .desk-history-res mat-icon {
+  font-size: 14px;
+  height: 14px;
+  line-height: 22px;
+  width: 14px;
+}
+
+// (Practice and PASS on the confidence chart: as if bet, never the record, so a step quieter)
+.bs-band-practice,
+.bs-band-pass {
+  opacity: 0.7;
+}
+
+.bs-band-practice {
+  --line: #{v.$text-soft};
+}
+
+// (the chart title and the Last 20 on one line: the same type, the same 22px line, the same top (the owner, 2026-11-04))
+.bs-curve-head .bs-curve-title,
+.bs-strip .bs-strip-label {
+  color: v.$lettering;
+  font-size: v.$fs-13;
+  font-weight: 800;
+  letter-spacing: 0;
+  line-height: 22px;
+  text-transform: none;
+}
+
+.bs-form {
+  min-height: 22px;
+}
+
+// (an open bet's EV by its size: a sliver orange, a small one a soft green, a big one the full green)
+.desk-history-bet .desk-ev {
+  &.ev-thin {
+    color: v.$doubtful !important;
+  }
+
+  &.ev-soft {
+    color: color-mix(in srgb, var(--win) 60%, #fff) !important;
+  }
+
+  &.ev-big {
+    color: var(--win) !important;
+  }
+
+  &.ev-neg {
+    color: var(--loss) !important;
   }
 }

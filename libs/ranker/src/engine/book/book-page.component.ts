@@ -199,8 +199,10 @@ export class BookPageComponent implements OnInit, OnDestroy {
     (event.target as HTMLElement).style.visibility = 'hidden';
   }
 
-  // (the model desk, the Algorithm: an admin's, and on the dev server)
+  // (the admin's own pieces on the Book: the CHECK rows, the desk notes, the game menu's desk columns)
   readonly desk = (): boolean => canUse('experimental');
+  // (Bot Stats, the tab the Algorithm was: everyone's since 2026-11-04, the owner's)
+  readonly botStats = (): boolean => true;
   // (a note to the bot: a signed-in admin's alone, the dev server too (the rules keep only an admin's))
   readonly admin = ADMIN;
   readonly canUse = canUse;
@@ -239,6 +241,8 @@ export class BookPageComponent implements OnInit, OnDestroy {
   // (the Open tab's count: the user's bets not yet settled)
   readonly openCount = (): number => this.wallet.openBets().length;
   readonly hasClosed = (): boolean => canUse('book') && this.wallet.hasSettled();
+  // (My Bets: either kind of ticket)
+  readonly hasMine = (): boolean => this.hasOpen() || this.hasClosed();
   // (Live: the day's games as they're played (live-tab.component.ts, live.service.ts), the tab there whenever the
   // day has games on or still to come; and while it's the view showing with games on the card at all, so it
   // doesn't vanish under the viewer as the last game ends (ALL DONE TONIGHT). Its count: the games on now)
@@ -250,9 +254,8 @@ export class BookPageComponent implements OnInit, OnDestroy {
   get view(): BetsView {
     const view = betsView();
     if (view === 'live') return this.hasLive() ? view : 'bets';
-    if (view === 'desk') return this.desk() ? view : 'bets';
-    if (view === 'open') return this.hasOpen() ? view : 'bets';
-    if (view === 'closed') return this.hasClosed() ? view : 'bets';
+    if (view === 'desk') return this.botStats() ? view : 'bets';
+    if (view === 'open' || view === 'closed') return this.hasMine() ? view : 'bets';
     return view;
   }
   set view(view: BetsView) {
@@ -1311,7 +1314,7 @@ export class BookPageComponent implements OnInit, OnDestroy {
     return gamePicksHead(n);
   }
   get viewsShown(): boolean {
-    return viewsShown({ desk: !!this.desk(), open: !!this.hasOpen(), closed: !!this.hasClosed(), live: !!this.hasLive() });
+    return viewsShown({ desk: !!this.botStats(), open: !!this.hasOpen(), closed: !!this.hasClosed(), live: !!this.hasLive() });
   }
   bandOpen(band: string): boolean {
     return !this.closedBands.has(band);

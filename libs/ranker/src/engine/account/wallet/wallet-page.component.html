@@ -193,12 +193,14 @@
       <p>{{ start | number }} play units to start. Bet any game's lines from the Book, the Bot's picks lit up, and watch them settle from the final score. No real money, ever.</p>
       <button type="button" class="app-btn-primary" (click)="account.openLogin()">Sign in</button>
     </section>
-  } @else if (only === 'closed') {
-  <!-- The Book's Cashed tab: the settled bets' corkboard alone -->
-  <ng-container *ngTemplateOutlet="cashedBoard; context: { title: 'Cashed' }"></ng-container>
-  } @else if (only === 'open') {
-  <!-- The Book's Open tickets tab: the open bets' corkboard alone -->
-  <ng-container *ngTemplateOutlet="openBoard"></ng-container>
+  } @else if (only === 'mine') {
+  <!-- The Book's My Bets tab: the open tickets' corkboard, then the cashed ones' -->
+  @if (wallet.openBets().length) {
+    <ng-container *ngTemplateOutlet="openBoard"></ng-container>
+  }
+  @if (wallet.hasSettled()) {
+    <ng-container *ngTemplateOutlet="cashedBoard; context: { title: 'Cashed' }"></ng-container>
+  }
   } @else {
   <!-- The wallet (docs/wallet-redesign/README.md): the account pages' hero, then panels on the sheet, each under a bar
        in the wallet's felt green with its title in the sand -->

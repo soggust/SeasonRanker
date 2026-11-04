@@ -191,14 +191,14 @@ export async function loadGame(league: string, eventId: string): Promise<GameVie
 
   // The players' headshots by ESPN id, and by the play-by-play's short name ("D.Henry")
   const shortKey = (name: string) => name.toLowerCase().replace(/[\s.]/g, '');
-  type Face = { headshot: string; name: string };
+  type Face = { headshot: string; name: string; id: string | null };
   const faces = new Map<string, Face>();
   const facesByName = new Map<string, Face>();
   for (const t of box) {
     for (const g of t.groups) {
       for (const r of g.rows) {
         if (!r.headshot) continue;
-        const face = { headshot: r.headshot, name: r.name };
+        const face = { headshot: r.headshot, name: r.name, id: r.id ? String(r.id) : null };
         if (r.id) faces.set(r.id, face);
         facesByName.set(shortKey(r.short), face);
         // (and his first initial with his last name: "Derrick Henry" as the plays write him, "D.Henry")
@@ -237,7 +237,7 @@ export async function loadGame(league: string, eventId: string): Promise<GameVie
     scoring: !!p.scoringPlay,
     side: sideOf(p.team?.id),
     kind: p.type?.text ?? null,
-    ...((face) => ({ headshot: face?.headshot ?? null, scorer: face?.name ?? null }))(scorerFace(p)),
+    ...((face) => ({ headshot: face?.headshot ?? null, scorer: face?.name ?? null, scorerId: face?.id ?? null }))(scorerFace(p)),
     at: p.wallclock ?? null,
   });
   // (a play's period by name: ESPN's, or from its number: the NFL's scoring plays carry just that)

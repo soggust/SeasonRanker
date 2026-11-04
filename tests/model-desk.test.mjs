@@ -542,7 +542,7 @@ test("every hover the desk's template asks for is written (desk-help.ts)", () =>
   assert.deepEqual(missing, []);
 });
 
-test("the Algorithm tab (the owner, 2026-10-19): the time range and the chips on one line, one scrolling board, By Sport and By Confidence open, In Play above Open Bets, those and Recently closed shut, the build at the foot, no Under the hood", () => {
+test("Bot Stats (the Algorithm tab till 2026-11-04; the owner, 2026-10-19): the time range and the chips on one line, one board, the sports and bands as charts on the dashboard (no tables), In Play above Open Bets, those and Recently closed shut, the build at the foot, no Under the hood", () => {
   const html = fs.readFileSync(path.join(ROOT, 'libs/ranker/src/engine/book/model-desk.component.html'), 'utf8');
   const ts = fs.readFileSync(path.join(ROOT, 'libs/ranker/src/engine/book/model-desk.component.ts'), 'utf8');
   const panels = [...html.matchAll(/<card-panel\b([^>]*)>/g)].map((m) => ({
@@ -554,8 +554,6 @@ test("the Algorithm tab (the owner, 2026-10-19): the time range and the chips on
   assert.deepEqual(
     panels.map((p) => [p.label, p.key, p.toggles]),
     [
-      ['By Sport', 'sport', true],
-      ['By Confidence', 'confidence', true],
       ["'In Play · ' + liveRisk.toFixed(1) + 'u'", 'live', true],
       ['Open Bets', 'open', true],
       ['Recently closed', 'closed', true],
@@ -582,7 +580,9 @@ test("the Algorithm tab (the owner, 2026-10-19): the time range and the chips on
   // (two bands under the trial, D73: a LOCK row only where the shown record has LOCK bets)
   assert.ok(ts.includes("this.bandRows = [...(lock.bets ? [lock] : []), histBand('LOVE'), histBand('LIKE'), h.practice, h.pass, ...(stakedPass.bets || stakedPass.open ? [stakedPass] : [])];"), 'D87: Practice and PASS the tracked rows as if bet');
   // (By Sport's rows and the closed bets by their league's mark; a closed bet's band in its colour, no "replayed at the")
-  assert.match(html, /@if \(t\.sport\) \{<span class="desk-history-league">/);
+  assert.match(html, /<span class="desk-history-league">/);
+  // (the sports and the bands on the dashboard's bar charts, before every panel (the owner, 2026-11-04))
+  assert.ok(html.indexOf('bs-mini-sport') > 0 && html.indexOf('bs-mini-band') < Math.min(...panels.map((p) => p.at)));
   assert.match(html, /class="desk-history-tag" \[ngClass\]="bandClass\(b\)"/);
   assert.doesNotMatch(html, /replayed at the/);
 });

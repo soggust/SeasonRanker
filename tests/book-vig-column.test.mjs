@@ -119,13 +119,14 @@ test('the history: a bet bought better than fair shows a gain; the tracked as-if
   assert.equal(book.vigText(wOld.overall), '—');
 });
 
-test('the column: Vig left of ROI in By Sport and By Confidence, its cell before the ROI cell, the hover written', () => {
+test('the vig: under each sport and band on the Bot Stats charts, before the return and beating the close, the hover written', () => {
   const html = fs.readFileSync(path.join(ROOT, 'libs/ranker/src/engine/book/model-desk.component.html'), 'utf8');
-  const heads = [...html.matchAll(/<thead>\s*<tr>(.*?)<\/tr>/gs)].map((m) => [...m[1].matchAll(/>([^<>]*)<\/th>/g)].map((x) => x[1]));
-  const history = heads.filter((h) => h.includes('Beat close') && h.includes('Record'));
-  assert.equal(history.length, 2);
-  for (const h of history) assert.deepEqual(h.slice(h.indexOf('Units')), ['Units', 'Vig', 'ROI', 'Beat close']);
-  const row = html.match(/<ng-template #histRow[\s\S]*?<\/ng-template>/)[0];
-  assert.ok(row.indexOf('vigText(t)') > row.indexOf('units(t.profit)') && row.indexOf('vigText(t)') < row.indexOf('pct(t.roi)'));
+  // (the By Sport and By Confidence tables became the dashboard's bar charts (the owner, 2026-11-04))
+  const charts = [...html.matchAll(/<figure class="bs-mini [\s\S]*?<\/figure>/g)].map((m) => m[0]);
+  assert.equal(charts.length, 2);
+  for (const c of charts) {
+    assert.ok(c.indexOf('vigText(r.row)') > 0 && c.indexOf('vigText(r.row)') < c.indexOf('ROI <b') && c.indexOf('ROI <b') < c.indexOf('beatText(r.row)'));
+    assert.ok(c.includes('[attr.title]="vigTip"'));
+  }
   assert.match(book.VIG_TIP, /What the Book's margin cost \(or best-price shopping gained\)/);
 });

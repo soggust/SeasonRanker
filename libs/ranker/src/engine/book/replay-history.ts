@@ -78,21 +78,14 @@ export interface ReplayRecordFile {
   // (the newest year's days in buckets by band (replay-record.mjs dailyOf: "won,lost,push,staked,profit,beat,beatN"),
   // from its first day: the time range's sums; none in a file from before them)
   daily?: { cols: string[]; from: string | null; bands: Record<string, Record<string, string>> };
+  // (the bets before the daily buckets, by Eastern month and band, up to the day `to` (replay-record.mjs monthlyOf):
+  // Bot Stats' All time chart; a file from before 2026-11-04 has none)
+  monthly?: { cols: string[]; to: string | null; bands: Record<string, Record<string, string>> };
   flags: { timing: { open: number; close: number; openSeen: number; openClean: number; openInWindow: number }; context: { full: number[]; ratingsOnly: number[] }; price: string; shop?: { shopped: number; better: number; dk: number }; placement: string; split: string; notSeen: string };
 }
 
 // The band lab's staged records (band-lab.mjs --write, DECISIONS.md D70): a sport's replay under each band rule tried,
 // by its name, in the order tried; the Algorithm tab's Live / Staged switch reads one in place of the live replay
-export interface StagedReplayFile {
-  v: number;
-  sport: string;
-  at: string;
-  order: string[];
-  // (each rule's readable name, band-variants.json's label (D72); a file from before it has none: the id shows)
-  labels?: Record<string, string>;
-  variants: Record<string, ReplayRecordFile & { staged?: { variant: string } }>;
-}
-
 // (By Confidence's pyramid (the owner, 2026-10-20): LOCK's, LOVE's and LIKE's share of the bets the three hold; the
 // practice picks, PASS and an empty board none)
 export function bandSharesOf(rows: { label: string; bets: number }[]): Record<string, number | null> {
@@ -197,7 +190,7 @@ const ET = new Intl.DateTimeFormat('en-CA', { timeZone: 'America/New_York', year
 export const etDay = (t: string | number | Date): string => ET.format(new Date(t));
 const GAME_HOURS = 3;
 // (a live bet's settling: its grading, else its game's end)
-const settledOf = (b: ModelBet): string => b.gradedAt ?? new Date(Date.parse(b.start) + GAME_HOURS * 36e5).toISOString();
+export const settledOf = (b: ModelBet): string => b.gradedAt ?? new Date(Date.parse(b.start) + GAME_HOURS * 36e5).toISOString();
 
 // ---- the pending bets (the owner, 2026-10-22): a bet whose game ESPN shows final, before the desk's run grades it ----
 
@@ -238,7 +231,7 @@ export function rangeDays(range: HistoryRange, now: number | Date = Date.now()):
   if (range === 'month') return { from: today.slice(0, 8) + '01', to: today };
   return { from: today.slice(0, 5) + '01-01', to: today };
 }
-const inDays = (day: string, r: { from: string; to: string } | null): boolean => !r || (day >= r.from && day <= r.to);
+export const inDays = (day: string, r: { from: string; to: string } | null): boolean => !r || (day >= r.from && day <= r.to);
 
 // (the bands' replayed days in the range, summed into a tally: null without the file's buckets)
 export function dailyTally(f: ReplayRecordFile, bands: string[], r: { from: string; to: string }): ReplayTally | null {
@@ -407,6 +400,30 @@ export function caveatOf(files: ReplayRecordFile[]): string {
   const shopped = files.reduce((s, f) => s + (f.flags?.shop?.shopped ?? 0), 0);
   const price = shopped ? `the best US price where the history has every book at that moment (${shopped} of ${open + close} bets), else the Book's own` : "the Book's price nearest the placement";
   return `Today's Bot replayed on every priced game before its latest version, plus its real bets since: ${open} bets at a clean open where its edge survived the lineup risk, ${close} at the close; ${ctx}. ${price}; the live desk's gates, CHECKs and research can't be replayed. Practice picks apart.`;
+}
+
+// (where a sport's live side starts: just after its replay's last game, so a re-record (its epoch moved to now) never
+// drops the real bets between the price archive's end and the record, last night's among them (the owner,
+// 2026-10-23); no replay's games, its epoch)
+function replaysOf(files: (ReplayRecordFile | null | undefined)[], sport: string | null): Map<string, ReplayRecordFile> {
+  const replays = new Map<string, ReplayRecordFile>();
+  for (const f of files) if (f && f.v === 1 && f.sport && (!sport || f.sport === sport)) replays.set(f.sport, f);
+  return replays;
+}
+const liveStartOf = (replays: Map<string, ReplayRecordFile>, s: string): string | null => {
+  const f = replays.get(s);
+  return f?.through ? new Date(Date.parse(f.through) + 1).toISOString() : (f?.epoch ?? null);
+};
+
+// The live bets the record counts (botHistoryOf's live side, for Bot Stats' chart: bot-stats.ts unitsCurve): the sport's
+// (every sport's), not tracked, not a practice pick, on games since the sport's live side starts, settled in the range (an
+// open bet only pending with a result); All time, every one
+export function liveRealOf(files: (ReplayRecordFile | null | undefined)[], bets: ModelBet[], sport: string | null, range: HistoryRange, now: number | Date = Date.now()): ModelBet[] {
+  const days = rangeDays(range, now);
+  const replays = replaysOf(files, sport);
+  return bets.filter(
+    (b) => (!sport || b.sport === sport) && !isTracked(b) && !practiceOf(b) && liveSince(b, liveStartOf(replays, b.sport)) && (!days || ((b.status !== 'open' || !!b.pending) && inDays(etDay(settledOf(b)), days))),
+  );
 }
 
 // The Bot's history on show: the sports' replay files (a sport without one contributes its live ledger alone), the

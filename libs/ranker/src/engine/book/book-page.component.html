@@ -16,21 +16,19 @@
     @if (viewsShown) {
       <nav class="book-views" aria-label="View">
         <button type="button" [class.active]="view === 'bets'" [attr.aria-current]="view === 'bets' ? 'page' : null" (click)="view = 'bets'">The Book</button>
-        <!-- (Live: the day's games as they're played, with how many are on now and a blinking dot while any are; just
-             Live with none on; there whenever the day has games on or to come) -->
+        <!-- (Games (Live till 2026-11-04, the owner's): the day's games as they're played, with how many are on now and a
+             blinking dot while any are; just Games with none on; there whenever the day has games on or to come) -->
         @if (hasLive()) {
           <button type="button" class="live-view" [class.active]="view === 'live'" [attr.aria-current]="view === 'live' ? 'page' : null" (click)="view = 'live'">
-            @if (liveCount()) {<i class="live-dot" aria-hidden="true"></i>}Live@if (liveCount()) { · {{ liveCount() }}}
+            @if (liveCount()) {<i class="live-dot" aria-hidden="true"></i>}Games@if (liveCount()) { · {{ liveCount() }}}
           </button>
         }
-        @if (hasOpen()) {
-          <button type="button" [class.active]="view === 'open'" [attr.aria-current]="view === 'open' ? 'page' : null" (click)="view = 'open'">Open · {{ openCount() }}</button>
+        <!-- (My Bets (the owner, 2026-11-04): the open tickets and the cashed ones on one tab, the open count on it) -->
+        @if (hasMine()) {
+          <button type="button" [class.active]="view === 'open' || view === 'closed'" [attr.aria-current]="view === 'open' || view === 'closed' ? 'page' : null" (click)="view = 'open'">My Bets@if (openCount()) { · {{ openCount() }}}</button>
         }
-        @if (hasClosed()) {
-          <button type="button" [class.active]="view === 'closed'" [attr.aria-current]="view === 'closed' ? 'page' : null" (click)="view = 'closed'">Cashed</button>
-        }
-        @if (desk()) {
-          <button type="button" [class.active]="view === 'desk'" [attr.aria-current]="view === 'desk' ? 'page' : null" (click)="view = 'desk'">Algorithm</button>
+        @if (botStats()) {
+          <button type="button" [class.active]="view === 'desk'" [attr.aria-current]="view === 'desk' ? 'page' : null" (click)="view = 'desk'">Bot Stats</button>
         }
       </nav>
     }
@@ -63,10 +61,8 @@
     <!-- (Live: one card, the day's games as they're played; the bot's read on a game from the board's picks, each
          game's venue from the picks' places) -->
     <live-tab [boards]="liveBoards" [places]="places"></live-tab>
-  } @else if (view === 'open') {
-    <wallet-page only="open"></wallet-page>
-  } @else if (view === 'closed') {
-    <wallet-page only="closed"></wallet-page>
+  } @else if (view === 'open' || view === 'closed') {
+    <wallet-page only="mine"></wallet-page>
   } @else {
   <!-- The work: the board down the middle (its controls over it), the ticket and the recent form down the right
        on a wide screen. On a wide screen the page stands still and the board alone scrolls -->

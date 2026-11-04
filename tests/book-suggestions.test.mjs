@@ -64,7 +64,8 @@ test('suggestionsOf: the sides with an edge at the price, never a guard\'s pass,
   assert.equal(prop.confidence, 'lock');
   assert.equal(prop.pickId, '401:prop:rushYds:4426348');
   assert.equal(prop.athleteId, '4426348');
-  assert.match(spread.reason, /Suggested by price: the Bot makes it 54% to win, and at −110 it needs 52\.4%/);
+  // (a bettor's words (the owner, 2026-11-04): times in 100, what the price needs, the cents on a dollar)
+  assert.equal(spread.reason, 'Nice little edge here. The Bot sees this hitting about 54 times in 100, and at −110 it only has to hit 52 to pay off. That’s about 3¢ profit on every $1 you bet, over the long run.');
   assert.deepEqual(suggestionsOf('nfl', board(), Date.parse(START) + 1, () => ({})), []);
 });
 
@@ -236,7 +237,7 @@ test("a suggestion with the board's why reads as a bet in the popover: its parts
   assert.equal(s.model, 0.6);
   assert.equal(s.fair, 0.5);
   assert.equal(s.why.trust, 0.5);
-  assert.equal(s.reason, "WSH +7.5: the Bot has it close. The Bot makes it 54%; at −110 it needs 52.4%, and the Book's no-vig price says 50%.", "the desk's write-up, the price said at the latest");
+  assert.equal(s.reason, 'WSH +7.5: the Bot has it close. The Bot sees it hitting about 54 times in 100; at −110 it only has to hit 52 (the Book itself only gives it 50). That’s about 3¢ profit on every $1 you bet, over the long run.', "the desk's write-up, the price said at the latest");
   const bw = book.betWhy([s], 0);
   assert.deepEqual(bw.parts.map((p) => p.key), ['price', 'lean']);
   assert.ok(Math.abs(bw.parts[0].amount + bw.parts[1].amount - bw.score) < 1e-9, 'the parts add to the score');
@@ -245,7 +246,7 @@ test("a suggestion with the board's why reads as a bet in the popover: its parts
   assert.equal(bw.facts[0].value, 'Starting QB +1.2 pts · Rest −0.4 pts');
   // (at another price: the parts worked again there, the price sentence that price's)
   const moved = repriced(s, -105, 'espn');
-  assert.match(moved.reason, /^WSH \+7\.5: the Bot has it close\. The Bot makes it 54%; at −105 it needs 51\.2%/);
+  assert.match(moved.reason, /^WSH \+7\.5: the Bot has it close\. The Bot sees it hitting about 54 times in 100; at −105 it only has to hit 51 /);
   const mw = book.betWhy([moved], 0);
   assert.ok(Math.abs(mw.parts[0].amount + mw.parts[1].amount - mw.score) < 1e-9);
   // (a prop's: its projection against the Book's implied mean, and his usage)
@@ -253,5 +254,5 @@ test("a suggestion with the board's why reads as a bet in the popover: its parts
   assert.deepEqual(facts.map((f) => `${f.label}: ${f.value}`), ['Bot vs Book mean: 262.40 vs 246.66', 'Usage: 36.5 dropbacks', 'What moved it: the opponent +4.1%']);
   // (a side without a why: the price's words alone, as before)
   const bare = suggestionsOf('nfl', { sport: 'nfl', at: BOARD_AT, games: [game()] }, NOW, () => ({})).find((r) => r.pick === 'WSH +7.5');
-  assert.match(bare.reason, /^Suggested by price/);
+  assert.match(bare.reason, /^Nice little edge here\. The Bot sees this hitting/);
 });

@@ -882,18 +882,24 @@
                           <span class="game-play-clock">{{ p.clock }}</span>
                         }
                         <!-- (a scoring play: the scorer, right before what he did) -->
+                        @let who = p.scoring ? scorerRef(p, g) : null;
                         @if (p.scoring && p.headshot) {
-                          <img class="game-play-head" [src]="p.headshot" alt="" loading="lazy" (error)="p.headshot = null" [class.face-link]="faceLinks(p.scorer)" [title]="faceLinks(p.scorer) ? 'Open ' + p.scorer : ''" (click)="openFace(p.scorer, g)" />
+                          @if (who) {
+                            <a class="game-play-head-link" [playerLink]="who" playerLinkFace [style.--team]="scorerColor(p, g)"><img class="game-play-head" [src]="p.headshot" alt="" loading="lazy" (error)="p.headshot = null" /></a>
+                          } @else {
+                            <img class="game-play-head" [src]="p.headshot" alt="" loading="lazy" (error)="p.headshot = null" />
+                          }
                         }
+                        <ng-template #playWords>@let sp = who ? scorerParts(p) : null;@if (who && sp) {<ng-container>{{ sp[0] }}</ng-container><a class="game-play-scorer" [playerLink]="who" [style.color]="scorerColor(p, g)">{{ sp[1] }}</a><ng-container>{{ sp[2] }}</ng-container>} @else {<ng-container>{{ p.text }}</ng-container>}</ng-template>
                         @if (tags) {
                           <span class="game-play-main">
-                            <span class="game-play-text">{{ p.text }}</span>
+                            <span class="game-play-text"><ng-container *ngTemplateOutlet="playWords"></ng-container></span>
                             @for (t of tags.tags; track $index) {
                               <span class="game-play-tag" [ngClass]="t.impact"><span aria-hidden="true">{{ t.impact === 'good' ? '▲' : '▼' }}</span>{{ t.text }}</span>
                             }
                           </span>
                         } @else {
-                          <span class="game-play-text">{{ p.text }}</span>
+                          <span class="game-play-text"><ng-container *ngTemplateOutlet="playWords"></ng-container></span>
                         }
                         @if (p.scoring && p.score) {
                           <span class="game-play-score">{{ p.score }}</span>
