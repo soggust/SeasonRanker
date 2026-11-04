@@ -1,7 +1,7 @@
 {
  "sport": "nba",
  "cursor": {
-  "rotowirenba.bsky.social": "2026-11-04T20:11:33.000Z",
+  "rotowirenba.bsky.social": "2026-11-04T23:12:00.000Z",
   "insidenbanews.bsky.social": "2026-11-04T00:05:57.726Z",
   "shamsbot.bsky.social": "2026-11-04T20:33:22.000Z"
  },
@@ -7584,6 +7584,58 @@
    "kind": "status",
    "confidence": 0.35,
    "text": "Isaiah Jackson: Added to injury report \n\n https://www.rotowire.com/basketball/player/isaiah-jackson-5403"
+  },
+  {
+   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mzjfl2tkux24|ajdybantsa|active|restriction",
+   "at": "2026-11-04T22:27:23.000Z",
+   "seen": "2026-11-04T23:17:25.660Z",
+   "handle": "rotowirenba.bsky.social",
+   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mzjfl2tkux24",
+   "player": "AJ Dybantsa",
+   "team": null,
+   "status": "active",
+   "kind": "restriction",
+   "confidence": 0.8,
+   "text": "AJ Dybantsa: Minutes restriction lifted \n\n https://www.rotowire.com/basketball/player/aj-dybantsa-6925"
+  },
+  {
+   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mzjfy35j7h27|nicclaxton|out|status",
+   "at": "2026-11-04T22:34:39.000Z",
+   "seen": "2026-11-04T23:17:25.660Z",
+   "handle": "rotowirenba.bsky.social",
+   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mzjfy35j7h27",
+   "player": "Nic Claxton",
+   "team": null,
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.9,
+   "text": "Nic Claxton: Won't return from absence Wednesday \n\n https://www.rotowire.com/basketball/player/nic-claxton-4827"
+  },
+  {
+   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mzjhozhfr72c|jalenjohnson|out|status",
+   "at": "2026-11-04T23:05:23.000Z",
+   "seen": "2026-11-04T23:17:25.660Z",
+   "handle": "rotowirenba.bsky.social",
+   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mzjhozhfr72c",
+   "player": "Jalen Johnson",
+   "team": null,
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.9,
+   "text": "Jalen Johnson: Out again Wednesday \n\n https://www.rotowire.com/basketball/player/jalen-johnson-5329"
+  },
+  {
+   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mzjhy3jved22|treymurphy|out|status",
+   "at": "2026-11-04T23:10:27.000Z",
+   "seen": "2026-11-04T23:17:25.660Z",
+   "handle": "rotowirenba.bsky.social",
+   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mzjhy3jved22",
+   "player": "Trey Murphy",
+   "team": null,
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.9,
+   "text": "Trey Murphy: Won't play Wednesday \n\n https://www.rotowire.com/basketball/player/trey-murphy-5401"
   }
  ]
 }

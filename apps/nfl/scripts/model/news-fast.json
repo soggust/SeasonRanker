@@ -1,13 +1,13 @@
 {
  "sport": "nfl",
  "cursor": {
-  "adamscheftermirror.bsky.social": "2026-11-04T21:59:35.768Z",
+  "adamscheftermirror.bsky.social": "2026-11-04T22:49:32.077Z",
   "rapsheet.bsky.social": "2026-11-04T19:45:56.406Z",
   "nflnewsreposterbot.bsky.social": "2026-11-04T21:51:29.738Z",
-  "insidenflnews.bsky.social": "2026-11-04T22:09:10.818Z",
+  "insidenflnews.bsky.social": "2026-11-04T22:34:44.169Z",
   "nflnewsposter.bsky.social": "2026-11-04T21:22:14.754Z",
-  "rotoworld-fb.bsky.social": "2026-11-04T22:15:29.000Z",
-  "rotowirenfl.bsky.social": "2026-11-04T22:09:48.000Z"
+  "rotoworld-fb.bsky.social": "2026-11-04T22:59:55.000Z",
+  "rotowirenfl.bsky.social": "2026-11-04T22:35:27.000Z"
  },
  "claims": [
   {
@@ -14647,6 +14647,71 @@
    "kind": "status",
    "confidence": 0.9,
    "text": "Denzel Boston (calf) limited in Wednesday practice"
+  },
+  {
+   "id": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3mzjf4lw4qh2e|alvinkamara|none|restriction",
+   "at": "2026-11-04T22:19:17.000Z",
+   "seen": "2026-11-04T23:17:25.660Z",
+   "handle": "rotowirenfl.bsky.social",
+   "post": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3mzjf4lw4qh2e",
+   "player": "Alvin Kamara",
+   "team": "NO",
+   "status": "none",
+   "kind": "restriction",
+   "confidence": 0.3,
+   "text": "Alvin Kamara: DNP due to rest, back \n\n https://www.rotowire.com/football/player/alvin-kamara-11732"
+  },
+  {
+   "id": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3mzjf5u325z24|bryceyoung|active|status",
+   "at": "2026-11-04T22:19:59.000Z",
+   "seen": "2026-11-04T23:17:25.660Z",
+   "handle": "rotoworld-fb.bsky.social",
+   "post": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3mzjf5u325z24",
+   "player": "Bryce Young",
+   "team": "CAR",
+   "status": "active",
+   "kind": "status",
+   "confidence": 0.8,
+   "text": "Bryce Young (ankle) listed as a full participant"
+  },
+  {
+   "id": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3mzjfgkivpt2b|denzelboston|limited|status",
+   "at": "2026-11-04T22:24:51.000Z",
+   "seen": "2026-11-04T23:17:25.660Z",
+   "handle": "rotowirenfl.bsky.social",
+   "post": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3mzjfgkivpt2b",
+   "player": "Denzel Boston",
+   "team": null,
+   "status": "limited",
+   "kind": "status",
+   "confidence": 0.8,
+   "text": "Denzel Boston: Limited by calf injury Wednesday \n\n https://www.rotowire.com/football/player/denzel-boston-19298"
+  },
+  {
+   "id": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3mzjfnoojzr2f|christianwatson|limited|status",
+   "at": "2026-11-04T22:28:51.000Z",
+   "seen": "2026-11-04T23:17:25.660Z",
+   "handle": "rotoworld-fb.bsky.social",
+   "post": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3mzjfnoojzr2f",
+   "player": "Christian Watson",
+   "team": "GB",
+   "status": "limited",
+   "kind": "status",
+   "confidence": 0.8,
+   "text": "Christian Watson (rib) listed as limited on Wed."
+  },
+  {
+   "id": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3mzjhfafezy2d|patbryant|active|status",
+   "at": "2026-11-04T22:59:55.000Z",
+   "seen": "2026-11-04T23:17:25.660Z",
+   "handle": "rotoworld-fb.bsky.social",
+   "post": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3mzjhfafezy2d",
+   "player": "Pat Bryant",
+   "team": "DEN",
+   "status": "active",
+   "kind": "status",
+   "confidence": 0.8,
+   "text": "Pat Bryant (ankle) practicing in full for Week 9"
   }
  ]
 }
