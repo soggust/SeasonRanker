@@ -1,66 +1,6 @@
 {
  "sport": "nba",
  "entries": {
-  "401909862|tylerbilodeau|out": {
-   "game": "401909862",
-   "start": "2026-10-25T22:00Z",
-   "team": "17",
-   "name": "Tyler Bilodeau",
-   "status": "out",
-   "athlete": "5105626",
-   "espn": {
-    "seen": "2026-10-25T02:06:51.548Z",
-    "own": "2026-10-23T21:08:00.000Z"
-   }
-  },
-  "401909862|aaronnesmith|q": {
-   "game": "401909862",
-   "start": "2026-10-25T22:00Z",
-   "team": "11",
-   "name": "Aaron Nesmith",
-   "status": "q",
-   "athlete": "4396909",
-   "espn": {
-    "seen": "2026-10-25T02:06:51.548Z",
-    "own": "2026-10-24T21:05:00.000Z"
-   }
-  },
-  "401909862|tjmcconnell|out": {
-   "game": "401909862",
-   "start": "2026-10-25T22:00Z",
-   "team": "11",
-   "name": "T.J. McConnell",
-   "status": "out",
-   "athlete": "2530530",
-   "espn": {
-    "seen": "2026-10-25T02:06:51.548Z",
-    "own": "2026-10-24T21:03:00.000Z"
-   }
-  },
-  "401909862|bensheppard|out": {
-   "game": "401909862",
-   "start": "2026-10-25T22:00Z",
-   "team": "11",
-   "name": "Ben Sheppard",
-   "status": "out",
-   "athlete": "4433076",
-   "espn": {
-    "seen": "2026-10-25T02:06:51.548Z",
-    "own": "2026-10-23T22:53:00.000Z"
-   }
-  },
-  "401909862|johnnyfurphy|out": {
-   "game": "401909862",
-   "start": "2026-10-25T22:00Z",
-   "team": "11",
-   "name": "Johnny Furphy",
-   "status": "out",
-   "athlete": "5157066",
-   "espn": {
-    "seen": "2026-10-25T02:06:51.548Z",
-    "own": "2026-02-09T21:43:00.000Z"
-   }
-  },
   "401909863|josealvarado|q": {
    "game": "401909863",
    "start": "2026-10-25T23:00Z",
@@ -345,18 +285,6 @@
     "own": "2026-10-25T00:16:00.292Z"
    }
   },
-  "401909862|mikelbrown|out": {
-   "game": "401909862",
-   "start": "2026-10-25T22:00Z",
-   "team": "17",
-   "name": "Mikel Brown Jr.",
-   "status": "out",
-   "athlete": "5101761",
-   "espn": {
-    "seen": "2026-10-25T02:30:40.138Z",
-    "own": "2026-10-25T02:28:00.000Z"
-   }
-  },
   "401909866|joelembiid|q": {
    "game": "401909866",
    "start": "2026-10-25T23:30Z",
@@ -451,18 +379,6 @@
    "espn": {
     "seen": "2026-10-25T03:57:41.700Z",
     "own": "2026-10-24T20:08:00.000Z"
-   }
-  },
-  "401909862|tylerbilodeau|q": {
-   "game": "401909862",
-   "start": "2026-10-25T22:00Z",
-   "team": "17",
-   "name": "Tyler Bilodeau",
-   "status": "q",
-   "athlete": "5105626",
-   "espn": {
-    "seen": "2026-10-25T17:14:17.227Z",
-    "own": "2026-10-25T13:43:00.000Z"
    }
   },
   "401909866|lebronjames|q": {

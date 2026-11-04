@@ -14361,6 +14361,90 @@
     "seen": "2026-11-04T22:06:53.103Z",
     "own": "2026-11-04T21:59:00.000Z"
    }
+  },
+  "401873045|masontaylor|q": {
+   "game": "401873045",
+   "start": "2026-11-08T18:00Z",
+   "team": "20",
+   "name": "Mason Taylor",
+   "status": "q",
+   "athlete": "4808766",
+   "espn": {
+    "seen": "2026-11-04T22:15:28.178Z",
+    "own": "2026-11-04T21:53:00.000Z"
+   }
+  },
+  "401873039|carsonschwesinger|q": {
+   "game": "401873039",
+   "start": "2026-11-08T18:00Z",
+   "team": "5",
+   "name": "Carson Schwesinger",
+   "status": "q",
+   "athlete": "4876017",
+   "espn": {
+    "seen": "2026-11-04T22:15:28.178Z",
+    "own": "2026-11-04T22:09:00.000Z"
+   }
+  },
+  "401873039|jaredverse|q": {
+   "game": "401873039",
+   "start": "2026-11-08T18:00Z",
+   "team": "5",
+   "name": "Jared Verse",
+   "status": "q",
+   "athlete": "4578085",
+   "espn": {
+    "seen": "2026-11-04T22:15:28.178Z",
+    "own": "2026-11-04T22:09:00.000Z"
+   }
+  },
+  "401873039|elgtonjenkins|q": {
+   "game": "401873039",
+   "start": "2026-11-08T18:00Z",
+   "team": "5",
+   "name": "Elgton Jenkins",
+   "status": "q",
+   "athlete": "3115485",
+   "espn": {
+    "seen": "2026-11-04T22:15:28.178Z",
+    "own": "2026-11-04T22:09:00.000Z"
+   }
+  },
+  "401873039|mylesharden|q": {
+   "game": "401873039",
+   "start": "2026-11-08T18:00Z",
+   "team": "5",
+   "name": "Myles Harden",
+   "status": "q",
+   "athlete": "4695783",
+   "espn": {
+    "seen": "2026-11-04T22:15:28.178Z",
+    "own": "2026-11-04T22:08:00.000Z"
+   }
+  },
+  "401873039|austinbarber|q": {
+   "game": "401873039",
+   "start": "2026-11-08T18:00Z",
+   "team": "5",
+   "name": "Austin Barber",
+   "status": "q",
+   "athlete": "4597310",
+   "espn": {
+    "seen": "2026-11-04T22:15:28.178Z",
+    "own": "2026-11-04T22:08:00.000Z"
+   }
+  },
+  "401873039|maliekcollins|q": {
+   "game": "401873039",
+   "start": "2026-11-08T18:00Z",
+   "team": "5",
+   "name": "Maliek Collins",
+   "status": "q",
+   "athlete": "3040471",
+   "espn": {
+    "seen": "2026-11-04T22:15:28.178Z",
+    "own": "2026-11-04T22:08:00.000Z"
+   }
   }
  }
 }
