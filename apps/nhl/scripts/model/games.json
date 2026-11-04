@@ -1637,7 +1637,7 @@
 {"id":"401892637","date":"2026-11-04T00:00Z","season":2027,"type":2,"home":"13","away":"19","homeAbbr":"NYR","awayAbbr":"STL","neutral":false,"final":true,"hs":3,"as":1,"venue":"New York|NY|USA","indoor":true},
 {"id":"401892639","date":"2026-11-04T00:00Z","season":2027,"type":2,"home":"16","away":"37","homeAbbr":"PIT","awayAbbr":"VGK","neutral":false,"final":true,"hs":2,"as":3,"venue":"Pittsburgh|PA|USA","indoor":true},
 {"id":"401892633","date":"2026-11-04T00:00Z","season":2027,"type":2,"home":"21","away":"129764","homeAbbr":"TOR","awayAbbr":"UTA","neutral":false,"final":true,"hs":2,"as":3,"venue":"Toronto|ON|Canada","indoor":true},
-{"id":"401892636","date":"2026-11-04T00:30Z","season":2027,"type":2,"home":"11","away":"6","homeAbbr":"NJ","awayAbbr":"EDM","neutral":false,"final":false,"hs":null,"as":null,"venue":"Newark|NJ|USA","indoor":true},
+{"id":"401892636","date":"2026-11-04T00:30Z","season":2027,"type":2,"home":"11","away":"6","homeAbbr":"NJ","awayAbbr":"EDM","neutral":false,"final":true,"hs":4,"as":3,"venue":"Newark|NJ|USA","indoor":true},
 {"id":"401892642","date":"2026-11-04T01:00Z","season":2027,"type":2,"home":"27","away":"7","homeAbbr":"NSH","awayAbbr":"CAR","neutral":false,"final":false,"hs":null,"as":null,"venue":"Nashville|TN|USA","indoor":true},
 {"id":"401892643","date":"2026-11-04T02:00Z","season":2027,"type":2,"home":"22","away":"25","homeAbbr":"VAN","awayAbbr":"ANA","neutral":false,"final":false,"hs":null,"as":null,"venue":"Vancouver|BC|Canada","indoor":true},
 {"id":"401892644","date":"2026-11-05T00:30Z","season":2027,"type":2,"home":"2","away":"14","homeAbbr":"BUF","awayAbbr":"OTT","neutral":false,"final":false,"hs":null,"as":null,"venue":"Buffalo|NY|USA","indoor":true},
