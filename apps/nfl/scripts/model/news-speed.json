@@ -14457,6 +14457,18 @@
     "own": "2026-11-04T22:15:29.000Z",
     "why": "@rotoworld-fb.bsky.social: Denzel Boston (calf) limited in Wednesday practice"
    }
+  },
+  "401873041|bobbyokereke|out": {
+   "game": "401873041",
+   "start": "2026-11-08T18:00Z",
+   "team": "29",
+   "name": "Bobby Okereke",
+   "status": "out",
+   "athlete": "3117253",
+   "espn": {
+    "seen": "2026-11-04T22:31:44.860Z",
+    "own": "2026-11-04T22:19:00.000Z"
+   }
   }
  }
 }
