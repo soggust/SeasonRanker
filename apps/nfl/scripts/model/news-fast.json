@@ -4,10 +4,10 @@
   "adamscheftermirror.bsky.social": "2026-11-04T15:54:28.710Z",
   "rapsheet.bsky.social": "2026-11-03T19:02:12.238Z",
   "nflnewsreposterbot.bsky.social": "2026-11-04T14:33:43.335Z",
-  "insidenflnews.bsky.social": "2026-11-04T15:53:17.132Z",
-  "nflnewsposter.bsky.social": "2026-11-04T16:44:23.016Z",
-  "rotoworld-fb.bsky.social": "2026-11-04T16:39:21.000Z",
-  "rotowirenfl.bsky.social": "2026-11-04T16:18:49.000Z"
+  "insidenflnews.bsky.social": "2026-11-04T17:08:37.666Z",
+  "nflnewsposter.bsky.social": "2026-11-04T17:11:06.225Z",
+  "rotoworld-fb.bsky.social": "2026-11-04T17:01:07.000Z",
+  "rotowirenfl.bsky.social": "2026-11-04T17:09:41.000Z"
  },
  "claims": [
   {
@@ -13698,6 +13698,84 @@
    "kind": "return",
    "confidence": 0.6,
    "text": "[Underhill] Jordyn Tyson is returning to practice today, per source twitter.com/nick_underhi..."
+  },
+  {
+   "id": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3mzitdodntm2y|shedeursanders|none|starting",
+   "at": "2026-11-04T17:01:07.000Z",
+   "seen": "2026-11-04T17:11:28.965Z",
+   "handle": "rotoworld-fb.bsky.social",
+   "post": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3mzitdodntm2y",
+   "player": "Shedeur Sanders",
+   "team": "CLE",
+   "status": "none",
+   "kind": "starting",
+   "confidence": 0.4,
+   "text": "Cabot: 'Vibe' is that Shedeur will start vs. NO"
+  },
+  {
+   "id": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3mzitdpzuhc2q|deshaunwatson|questionable|status",
+   "at": "2026-11-04T17:01:09.000Z",
+   "seen": "2026-11-04T17:11:28.965Z",
+   "handle": "rotowirenfl.bsky.social",
+   "post": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3mzitdpzuhc2q",
+   "player": "Deshaun Watson",
+   "team": "CLE",
+   "status": "questionable",
+   "kind": "status",
+   "confidence": 0.4,
+   "text": "Deshaun Watson: May not clear concussion protocol in time \n\n https://www.rotowire.com/football/player/deshaun-watson-11712"
+  },
+  {
+   "id": "at://did:plc:fuqjc7x4gxvnwzksnlxwbe4x/app.bsky.feed.post/3mzitgjo3g22p|bhayshultuten|questionable|status",
+   "at": "2026-11-04T17:02:43.823Z",
+   "seen": "2026-11-04T17:11:28.965Z",
+   "handle": "nflnewsposter.bsky.social",
+   "post": "at://did:plc:fuqjc7x4gxvnwzksnlxwbe4x/app.bsky.feed.post/3mzitgjo3g22p",
+   "player": "Bhayshul Tuten",
+   "team": "JAX",
+   "status": "questionable",
+   "kind": "status",
+   "confidence": 0.95,
+   "text": "[Wolfe] Jaguars RB Bhayshul Tuten will be a game-time decision Thursday vs. Ravens with ankle & foot injuries, per HC Liam Coen.\n\nCoen said Tuten told him he feels better & will do limited practice. t"
+  },
+  {
+   "id": "at://did:plc:mbr4badgf6yu56mquzackzew/app.bsky.feed.post/3mzitr34k722q|garrettwilson|questionable|status",
+   "at": "2026-11-04T17:08:37.666Z",
+   "seen": "2026-11-04T17:11:28.965Z",
+   "handle": "insidenflnews.bsky.social",
+   "post": "at://did:plc:mbr4badgf6yu56mquzackzew/app.bsky.feed.post/3mzitr34k722q",
+   "player": "Garrett Wilson",
+   "team": "NYJ",
+   "status": "questionable",
+   "kind": "status",
+   "confidence": 0.9,
+   "text": "Garrett Wilson is in concussion protocol and considered day to day."
+  },
+  {
+   "id": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3mzitsyb3rx2s|jeremymcnichols|out|status",
+   "at": "2026-11-04T17:09:41.000Z",
+   "seen": "2026-11-04T17:11:28.965Z",
+   "handle": "rotowirenfl.bsky.social",
+   "post": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3mzitsyb3rx2s",
+   "player": "Jeremy McNichols",
+   "team": null,
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.95,
+   "text": "Jeremy McNichols: Done for season with foot injury \n\n https://www.rotowire.com/football/player/jeremy-mcnichols-11767"
+  },
+  {
+   "id": "at://did:plc:fuqjc7x4gxvnwzksnlxwbe4x/app.bsky.feed.post/3mzitvis7ds2s|garrettwilson|questionable|status",
+   "at": "2026-11-04T17:11:06.225Z",
+   "seen": "2026-11-04T17:11:28.965Z",
+   "handle": "nflnewsposter.bsky.social",
+   "post": "at://did:plc:fuqjc7x4gxvnwzksnlxwbe4x/app.bsky.feed.post/3mzitvis7ds2s",
+   "player": "Garrett Wilson",
+   "team": "NYJ",
+   "status": "questionable",
+   "kind": "status",
+   "confidence": 0.85,
+   "text": "[Cimini] WR Garrett Wilson is in concussion protocol, per Aaron Glenn. twitter.com/richcimini/s..."
   }
  ]
 }
