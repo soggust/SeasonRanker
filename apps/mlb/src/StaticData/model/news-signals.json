@@ -3,6 +3,17 @@
  "days": 2,
  "signals": [
   {
+   "team": "18",
+   "abbr": "HOU",
+   "athlete": null,
+   "player": "Albert Pujols",
+   "kind": "coaching",
+   "direction": "none",
+   "confidence": 0.6,
+   "headline": "Albert Pujols to interview for Astros' managerial job, sources say",
+   "at": "2026-11-04T21:31:55.000Z"
+  },
+  {
    "team": "12",
    "abbr": "SEA",
    "athlete": null,
@@ -14,5 +25,5 @@
    "at": "2026-11-03T18:29:42.000Z"
   }
  ],
- "at": "2026-11-04T00:09:10.690Z"
+ "at": "2026-11-05T00:06:23.384Z"
 }

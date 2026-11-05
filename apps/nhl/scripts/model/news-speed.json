@@ -1,42 +1,6 @@
 {
  "sport": "nhl",
  "entries": {
-  "401892580|nicolasroy|q": {
-   "game": "401892580",
-   "start": "2026-10-26T00:00Z",
-   "team": "17",
-   "name": "Nicolas Roy",
-   "status": "q",
-   "athlete": "3943996",
-   "espn": {
-    "seen": "2026-10-24T15:41:44.286Z",
-    "own": "2026-10-24T13:41:00.000Z"
-   }
-  },
-  "401892580|zacharylheureux|out": {
-   "game": "401892580",
-   "start": "2026-10-26T00:00Z",
-   "team": "17",
-   "name": "Zachary L'Heureux",
-   "status": "out",
-   "athlete": "4874744",
-   "espn": {
-    "seen": "2026-10-24T15:41:44.286Z",
-    "own": "2026-10-23T21:39:00.000Z"
-   }
-  },
-  "401892580|georgiimerkulov|out": {
-   "game": "401892580",
-   "start": "2026-10-26T00:00Z",
-   "team": "17",
-   "name": "Georgii Merkulov",
-   "status": "out",
-   "athlete": "5103687",
-   "espn": {
-    "seen": "2026-10-24T15:41:44.286Z",
-    "own": "2026-09-28T22:41:00.000Z"
-   }
-  },
   "401892581|jackthompson|out": {
    "game": "401892581",
    "start": "2026-10-26T02:00Z",
@@ -143,18 +107,6 @@
    "espn": {
     "seen": "2026-10-24T15:41:44.286Z",
     "own": "2026-09-29T16:21:00.000Z"
-   }
-  },
-  "401892580|nicolasroy|out": {
-   "game": "401892580",
-   "start": "2026-10-26T00:00Z",
-   "team": "17",
-   "name": "Nicolas Roy",
-   "status": "out",
-   "athlete": "3943996",
-   "espn": {
-    "seen": "2026-10-25T00:42:40.556Z",
-    "own": "2026-10-24T20:08:00.000Z"
    }
   },
   "401892582|igorshesterkin|out": {

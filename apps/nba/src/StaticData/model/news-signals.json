@@ -3,27 +3,16 @@
  "days": 2,
  "signals": [
   {
-   "team": "30",
-   "abbr": "CHA",
-   "athlete": "4395651",
-   "player": "Coby White",
+   "team": "28",
+   "abbr": "TOR",
+   "athlete": "6450",
+   "player": "Kawhi Leonard",
    "kind": "return",
    "direction": "up",
-   "confidence": 0.9,
-   "headline": "Coby White returns for Hornets, Kon Knueppel 'right around the corner'",
-   "at": "2026-11-02T23:51:57.000Z"
-  },
-  {
-   "team": "30",
-   "abbr": "CHA",
-   "athlete": null,
-   "player": "Kon Knueppel",
-   "kind": "return",
-   "direction": "up",
-   "confidence": 0.6,
-   "headline": "Coby White returns for Hornets, Kon Knueppel 'right around the corner'",
-   "at": "2026-11-02T23:51:57.000Z"
+   "confidence": 0.4,
+   "headline": "Raptors' Kawhi Leonard completes knee treatment, begins 'return to play process'",
+   "at": "2026-11-04T11:54:32.000Z"
   }
  ],
- "at": "2026-11-04T13:27:19.010Z"
+ "at": "2026-11-05T00:06:23.384Z"
 }

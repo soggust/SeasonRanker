@@ -1,7 +1,7 @@
 {
  "sport": "nba",
  "cursor": {
-  "rotowirenba.bsky.social": "2026-11-04T23:31:25.000Z",
+  "rotowirenba.bsky.social": "2026-11-04T23:46:34.000Z",
   "insidenbanews.bsky.social": "2026-11-04T00:05:57.726Z",
   "shamsbot.bsky.social": "2026-11-04T20:33:22.000Z"
  },
@@ -7636,6 +7636,32 @@
    "kind": "status",
    "confidence": 0.9,
    "text": "Trey Murphy: Won't play Wednesday \n\n https://www.rotowire.com/basketball/player/trey-murphy-5401"
+  },
+  {
+   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mzjjvsvwdv2v|kingstonflemings|none|starting",
+   "at": "2026-11-04T23:44:59.000Z",
+   "seen": "2026-11-05T00:06:23.384Z",
+   "handle": "rotowirenba.bsky.social",
+   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mzjjvsvwdv2v",
+   "player": "Kingston Flemings",
+   "team": null,
+   "status": "none",
+   "kind": "starting",
+   "confidence": 0.9,
+   "text": "Kingston Flemings: Starting Wednesday \n\n https://www.rotowire.com/basketball/player/kingston-flemings-6927"
+  },
+  {
+   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mzjjyolc5l2c|cjmccollum|none|benched",
+   "at": "2026-11-04T23:46:34.000Z",
+   "seen": "2026-11-05T00:06:23.384Z",
+   "handle": "rotowirenba.bsky.social",
+   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mzjjyolc5l2c",
+   "player": "CJ McCollum",
+   "team": null,
+   "status": "none",
+   "kind": "benched",
+   "confidence": 0.85,
+   "text": "CJ McCollum: Not starting Wednesday \n\n https://www.rotowire.com/basketball/player/cj-mccollum-3437"
   }
  ]
 }

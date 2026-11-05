@@ -3,6 +3,105 @@
  "days": 2,
  "signals": [
   {
+   "team": "9",
+   "abbr": "GB",
+   "athlete": "4361423",
+   "player": "Micah Parsons",
+   "kind": "return",
+   "direction": "up",
+   "confidence": 0.3,
+   "headline": "Packers open Micah Parsons' practice window; still mum on return",
+   "at": "2026-11-04T23:30:02.000Z"
+  },
+  {
+   "team": "25",
+   "abbr": "SF",
+   "athlete": "4360438",
+   "player": "Brandon Aiyuk",
+   "kind": "return",
+   "direction": "up",
+   "confidence": 0.6,
+   "headline": "Brandon Aiyuk files to be reinstated, plans to report to 49ers on Friday",
+   "at": "2026-11-04T22:06:59.000Z"
+  },
+  {
+   "team": "21",
+   "abbr": "PHI",
+   "athlete": null,
+   "player": "Joe Milton",
+   "kind": "starting",
+   "direction": "up",
+   "confidence": 0.9,
+   "headline": "Sources: Slumping Eagles turn to Joe Milton as starting QB vs. Giants",
+   "at": "2026-11-04T20:02:44.000Z"
+  },
+  {
+   "team": "21",
+   "abbr": "PHI",
+   "athlete": "4685201",
+   "player": "Tanner McKee",
+   "kind": "benched",
+   "direction": "down",
+   "confidence": 0.9,
+   "headline": "Sources: Slumping Eagles turn to Joe Milton as starting QB vs. Giants",
+   "at": "2026-11-04T20:02:44.000Z"
+  },
+  {
+   "team": "20",
+   "abbr": "NYJ",
+   "athlete": "4427366",
+   "player": "Breece Hall",
+   "kind": "return",
+   "direction": "up",
+   "confidence": 0.4,
+   "headline": "Jets' Garrett Wilson in concussion protocol, Breece Hall trending toward return",
+   "at": "2026-11-04T18:42:51.000Z"
+  },
+  {
+   "team": "20",
+   "abbr": "NYJ",
+   "athlete": "4427366",
+   "player": "Breece Hall",
+   "kind": "starting",
+   "direction": "up",
+   "confidence": 0.9,
+   "headline": "Aaron Glenn says Breece Hall is Jets' starter despite Braelon Allen's emergence",
+   "at": "2026-11-04T13:51:27.000Z"
+  },
+  {
+   "team": "20",
+   "abbr": "NYJ",
+   "athlete": "4685247",
+   "player": "Braelon Allen",
+   "kind": "benched",
+   "direction": "down",
+   "confidence": 0.5,
+   "headline": "Aaron Glenn says Breece Hall is Jets' starter despite Braelon Allen's emergence",
+   "at": "2026-11-04T13:51:27.000Z"
+  },
+  {
+   "team": "7",
+   "abbr": "DEN",
+   "athlete": "4702555",
+   "player": "Jonah Coleman",
+   "kind": "role",
+   "direction": "up",
+   "confidence": 0.6,
+   "headline": "Why Broncos rookie Jonah Coleman is primed to be Denver's primary running back",
+   "at": "2026-11-04T11:00:10.000Z"
+  },
+  {
+   "team": "29",
+   "abbr": "CAR",
+   "athlete": null,
+   "player": "Todd Wash",
+   "kind": "coaching",
+   "direction": "none",
+   "confidence": 0.9,
+   "headline": "Panthers defenders: We're in 'great hands' after DC switch-up",
+   "at": "2026-11-04T02:41:11.000Z"
+  },
+  {
    "team": "33",
    "abbr": "BAL",
    "athlete": "4429582",
@@ -56,40 +155,7 @@
    "confidence": 0.6,
    "headline": "Falcons' James Pearce back from suspension, expected to play",
    "at": "2026-11-03T00:14:23.000Z"
-  },
-  {
-   "team": "22",
-   "abbr": "ARI",
-   "athlete": "4038524",
-   "player": "Gardner Minshew II",
-   "kind": "starting",
-   "direction": "up",
-   "confidence": 0.9,
-   "headline": "Cardinals name Gardner Minshew as starter, move Jacoby Brissett to QB3",
-   "at": "2026-11-02T23:48:09.000Z"
-  },
-  {
-   "team": "22",
-   "abbr": "ARI",
-   "athlete": "2578570",
-   "player": "Jacoby Brissett",
-   "kind": "benched",
-   "direction": "down",
-   "confidence": 0.9,
-   "headline": "Cardinals name Gardner Minshew as starter, move Jacoby Brissett to QB3",
-   "at": "2026-11-02T23:48:09.000Z"
-  },
-  {
-   "team": "14",
-   "abbr": "LAR",
-   "athlete": "3122132",
-   "player": "Myles Garrett",
-   "kind": "return",
-   "direction": "up",
-   "confidence": 0.5,
-   "headline": "Myles Garrett will return to practice this week for Los Angeles Rams",
-   "at": "2026-11-02T23:40:20.000Z"
   }
  ],
- "at": "2026-11-04T23:17:25.660Z"
+ "at": "2026-11-05T00:06:23.384Z"
 }
