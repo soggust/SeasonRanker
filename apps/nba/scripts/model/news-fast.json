@@ -1,7 +1,7 @@
 {
  "sport": "nba",
  "cursor": {
-  "rotowirenba.bsky.social": "2026-11-05T22:24:40.000Z",
+  "rotowirenba.bsky.social": "2026-11-05T23:03:33.000Z",
   "insidenbanews.bsky.social": "2026-11-04T00:05:57.726Z",
   "shamsbot.bsky.social": "2026-11-04T20:33:22.000Z"
  },
@@ -7909,6 +7909,32 @@
    "kind": "status",
    "confidence": 0.85,
    "text": "Santi Aldama: Upgraded to Probable Friday \n\n https://www.rotowire.com/basketball/player/santi-aldama-5428"
+  },
+  {
+   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mzlxfw7y7s2n|anthonydavis|questionable|status",
+   "at": "2026-11-05T22:51:57.000Z",
+   "seen": "2026-11-05T23:03:44.610Z",
+   "handle": "rotowirenba.bsky.social",
+   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mzlxfw7y7s2n",
+   "player": "Anthony Davis",
+   "team": null,
+   "status": "questionable",
+   "kind": "status",
+   "confidence": 0.9,
+   "text": "Anthony Davis: Tagged questionable for Friday \n\n https://www.rotowire.com/basketball/player/anthony-davis-3297"
+  },
+  {
+   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mzly2nvz3c2z|scottypippen|out|status",
+   "at": "2026-11-05T23:03:33.000Z",
+   "seen": "2026-11-05T23:03:44.610Z",
+   "handle": "rotowirenba.bsky.social",
+   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mzly2nvz3c2z",
+   "player": "Scotty Pippen",
+   "team": null,
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.95,
+   "text": "Scotty Pippen: Out vs. Thunder \n\n https://www.rotowire.com/basketball/player/scotty-pippen-5685"
   }
  ]
 }

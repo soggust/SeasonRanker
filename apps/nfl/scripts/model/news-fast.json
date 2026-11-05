@@ -7,7 +7,7 @@
   "insidenflnews.bsky.social": "2026-11-05T21:06:06.043Z",
   "nflnewsposter.bsky.social": "2026-11-05T22:08:59.314Z",
   "rotoworld-fb.bsky.social": "2026-11-05T22:39:22.000Z",
-  "rotowirenfl.bsky.social": "2026-11-05T22:38:37.000Z"
+  "rotowirenfl.bsky.social": "2026-11-05T22:58:22.000Z"
  },
  "claims": [
   {
@@ -15713,6 +15713,32 @@
    "kind": "status",
    "confidence": 0.7,
    "text": "Kincaid (chest) sports non-contact jersey, limited"
+  },
+  {
+   "id": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3mzlx66o2dw2s|christianmccaffrey|limited|status",
+   "at": "2026-11-05T22:47:37.000Z",
+   "seen": "2026-11-05T23:03:44.610Z",
+   "handle": "rotowirenfl.bsky.social",
+   "post": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3mzlx66o2dw2s",
+   "player": "Christian McCaffrey",
+   "team": null,
+   "status": "limited",
+   "kind": "status",
+   "confidence": 0.8,
+   "text": "Christian McCaffrey: Officially limited Thrusday \n\n https://www.rotowire.com/football/player/christian-mccaffrey-11690"
+  },
+  {
+   "id": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3mzlxrf7meh2v|deebosamuel|out|status",
+   "at": "2026-11-05T22:58:22.000Z",
+   "seen": "2026-11-05T23:03:44.610Z",
+   "handle": "rotowirenfl.bsky.social",
+   "post": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3mzlxrf7meh2v",
+   "player": "Deebo Samuel",
+   "team": null,
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.5,
+   "text": "Deebo Samuel: DNP on Thursday \n\n https://www.rotowire.com/football/player/deebo-samuel-13429"
   }
  ]
 }

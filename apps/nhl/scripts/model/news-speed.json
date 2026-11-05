@@ -1,126 +1,6 @@
 {
  "sport": "nhl",
  "entries": {
-  "401892582|igorshesterkin|out": {
-   "game": "401892582",
-   "start": "2026-10-26T23:00Z",
-   "team": "13",
-   "name": "Igor Shesterkin",
-   "status": "out",
-   "athlete": "3151297",
-   "espn": {
-    "seen": "2026-10-26T05:02:33.986Z",
-    "own": "2026-10-11T21:06:00.000Z"
-   }
-  },
-  "401892582|joeveleno|out": {
-   "game": "401892582",
-   "start": "2026-10-26T23:00Z",
-   "team": "13",
-   "name": "Joe Veleno",
-   "status": "out",
-   "athlete": "4352804",
-   "espn": {
-    "seen": "2026-10-26T05:02:33.986Z",
-    "own": "2026-10-10T17:18:00.000Z"
-   }
-  },
-  "401892582|joonaskorpisalo|out": {
-   "game": "401892582",
-   "start": "2026-10-26T23:00Z",
-   "team": "13",
-   "name": "Joonas Korpisalo",
-   "status": "out",
-   "athlete": "3069266",
-   "espn": {
-    "seen": "2026-10-26T05:02:33.986Z",
-    "own": "2026-10-10T17:11:00.000Z"
-   }
-  },
-  "401892582|aidanthompson|out": {
-   "game": "401892582",
-   "start": "2026-10-26T23:00Z",
-   "team": "13",
-   "name": "Aidan Thompson",
-   "status": "out",
-   "athlete": "5136624",
-   "espn": {
-    "seen": "2026-10-26T05:02:33.986Z",
-    "own": "2026-09-29T16:39:00.000Z"
-   }
-  },
-  "401892582|adamsykora|out": {
-   "game": "401892582",
-   "start": "2026-10-26T23:00Z",
-   "team": "13",
-   "name": "Adam Sykora",
-   "status": "out",
-   "athlete": "5080232",
-   "espn": {
-    "seen": "2026-10-26T05:02:33.986Z",
-    "own": "2026-09-29T01:35:00.000Z"
-   }
-  },
-  "401892582|quintonbyfield|q": {
-   "game": "401892582",
-   "start": "2026-10-26T23:00Z",
-   "team": "8",
-   "name": "Quinton Byfield",
-   "status": "q",
-   "athlete": "4697383",
-   "espn": {
-    "seen": "2026-10-26T05:02:33.986Z",
-    "own": "2026-10-25T13:09:00.000Z"
-   }
-  },
-  "401892582|alexturcotte|out": {
-   "game": "401892582",
-   "start": "2026-10-26T23:00Z",
-   "team": "8",
-   "name": "Alex Turcotte",
-   "status": "out",
-   "athlete": "4565226",
-   "espn": {
-    "seen": "2026-10-26T05:02:33.986Z",
-    "own": "2026-10-10T18:09:00.000Z"
-   }
-  },
-  "401892582|jakubdvorak|out": {
-   "game": "401892582",
-   "start": "2026-10-26T23:00Z",
-   "team": "8",
-   "name": "Jakub Dvorak",
-   "status": "out",
-   "athlete": "5149241",
-   "espn": {
-    "seen": "2026-10-26T05:02:33.986Z",
-    "own": "2026-09-24T19:49:00.000Z"
-   }
-  },
-  "401892582|janjenik|out": {
-   "game": "401892582",
-   "start": "2026-10-26T23:00Z",
-   "team": "8",
-   "name": "Jan Jenik",
-   "status": "out",
-   "athlete": "4587568",
-   "espn": {
-    "seen": "2026-10-26T05:02:33.986Z",
-    "own": "2026-09-24T19:45:00.000Z"
-   }
-  },
-  "401892582|kevinfiala|out": {
-   "game": "401892582",
-   "start": "2026-10-26T23:00Z",
-   "team": "8",
-   "name": "Kevin Fiala",
-   "status": "out",
-   "athlete": "3114743",
-   "espn": {
-    "seen": "2026-10-26T05:02:33.986Z",
-    "own": "2026-09-17T19:39:00.000Z"
-   }
-  },
   "401892583|mikaelbacklund|q": {
    "game": "401892583",
    "start": "2026-10-27T00:30Z",
@@ -423,22 +303,6 @@
    "espn": {
     "seen": "2026-10-26T05:02:33.986Z",
     "own": "2026-10-06T15:39:00.000Z"
-   }
-  },
-  "401892582|matszuccarello|out": {
-   "game": "401892582",
-   "start": "2026-10-26T23:00Z",
-   "team": "8",
-   "name": "Mats Zuccarello",
-   "status": "out",
-   "athlete": "5560",
-   "espn": {
-    "seen": "2026-10-26T16:59:36.917Z",
-    "own": "2026-10-26T15:19:00.000Z"
-   },
-   "sleeper": {
-    "seen": "2026-10-26T20:16:47.466Z",
-    "own": "2026-10-26T15:25:59.696Z"
    }
   },
   "401892585|camyork|out": {
@@ -1371,18 +1235,6 @@
    "espn": {
     "seen": "2026-10-26T16:59:36.917Z",
     "own": "2026-09-28T20:52:00.000Z"
-   }
-  },
-  "401892582|zuccarello|out": {
-   "game": "401892582",
-   "start": "2026-10-26T23:00Z",
-   "team": "8",
-   "name": "Zuccarello",
-   "status": "out",
-   "bluesky": {
-    "seen": "2026-10-26T17:01:21.826Z",
-    "own": "2026-10-26T16:07:05.000Z",
-    "why": "@dailyfaceoff.bsky.social: Kings’ Zuccarello out against Rangers with upper-body"
    }
   },
   "401892585|rasmusristolainen|out": {
@@ -7716,6 +7568,10 @@
    "espn": {
     "seen": "2026-11-04T16:01:52.291Z",
     "own": "2026-10-06T21:16:00.000Z"
+   },
+   "sleeper": {
+    "seen": "2026-11-05T20:00:41.679Z",
+    "own": "2026-11-04T21:10:27.866Z"
    }
   },
   "401892648|brycepickford|out": {
@@ -7824,6 +7680,10 @@
    "espn": {
     "seen": "2026-11-04T16:01:52.291Z",
     "own": "2026-10-30T16:12:00.000Z"
+   },
+   "sleeper": {
+    "seen": "2026-11-05T20:00:41.679Z",
+    "own": "2026-11-05T17:00:43.870Z"
    }
   },
   "401892649|marcokasper|out": {
@@ -7836,6 +7696,10 @@
    "espn": {
     "seen": "2026-11-04T16:01:52.291Z",
     "own": "2026-10-30T16:10:00.000Z"
+   },
+   "sleeper": {
+    "seen": "2026-11-05T20:00:41.679Z",
+    "own": "2026-11-05T17:00:43.874Z"
    }
   },
   "401892649|simonedvinsson|out": {
@@ -8348,6 +8212,10 @@
    "espn": {
     "seen": "2026-11-04T16:01:52.291Z",
     "own": "2026-10-19T15:39:00.000Z"
+   },
+   "sleeper": {
+    "seen": "2026-11-05T20:00:41.679Z",
+    "own": "2026-11-04T21:10:27.863Z"
    }
   },
   "401892656|tomwillander|q": {
@@ -8654,6 +8522,10 @@
    "espn": {
     "seen": "2026-11-04T22:29:40.138Z",
     "own": "2026-11-04T22:16:00.000Z"
+   },
+   "sleeper": {
+    "seen": "2026-11-05T20:00:41.679Z",
+    "own": "2026-11-05T16:50:43.683Z"
    }
   },
   "401892647|curtisdouglas|out": {
@@ -8738,6 +8610,10 @@
    "espn": {
     "seen": "2026-11-05T16:49:41.465Z",
     "own": "2026-11-05T16:34:00.000Z"
+   },
+   "sleeper": {
+    "seen": "2026-11-05T20:00:41.679Z",
+    "own": "2026-11-05T16:35:43.601Z"
    }
   },
   "401892660|jaredspurgeon|out": {
@@ -8966,6 +8842,11 @@
    "espn": {
     "seen": "2026-11-05T17:46:46.726Z",
     "own": "2026-11-05T17:15:00.000Z"
+   },
+   "bluesky": {
+    "seen": "2026-11-05T20:24:12.731Z",
+    "own": "2026-11-05T20:05:22.000Z",
+    "why": "@dailyfaceoff.bsky.social: Rangers waive James Reimer, place Sean Durzi on injur"
    }
   },
   "401892655|miroheiskanen|out": {
@@ -8978,6 +8859,10 @@
    "espn": {
     "seen": "2026-11-05T17:46:46.726Z",
     "own": "2026-11-05T17:36:00.000Z"
+   },
+   "sleeper": {
+    "seen": "2026-11-05T20:00:41.679Z",
+    "own": "2026-11-05T17:40:43.747Z"
    }
   },
   "401892655|samsteel|out": {
@@ -8990,6 +8875,10 @@
    "espn": {
     "seen": "2026-11-05T17:46:46.726Z",
     "own": "2026-11-05T17:36:00.000Z"
+   },
+   "sleeper": {
+    "seen": "2026-11-05T20:00:41.679Z",
+    "own": "2026-11-05T17:35:43.814Z"
    }
   }
  }
