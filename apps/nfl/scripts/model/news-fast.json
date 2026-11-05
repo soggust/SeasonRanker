@@ -6,8 +6,8 @@
   "nflnewsreposterbot.bsky.social": "2026-11-05T18:24:37.305Z",
   "insidenflnews.bsky.social": "2026-11-05T21:06:06.043Z",
   "nflnewsposter.bsky.social": "2026-11-05T22:08:59.314Z",
-  "rotoworld-fb.bsky.social": "2026-11-05T21:54:21.000Z",
-  "rotowirenfl.bsky.social": "2026-11-05T22:10:21.000Z"
+  "rotoworld-fb.bsky.social": "2026-11-05T22:39:22.000Z",
+  "rotowirenfl.bsky.social": "2026-11-05T22:38:37.000Z"
  },
  "claims": [
   {
@@ -15648,6 +15648,71 @@
    "kind": "status",
    "confidence": 0.9,
    "text": "Dalton Kincaid: Limited at practice Thursday \n\n https://www.rotowire.com/football/player/dalton-kincaid-16697"
+  },
+  {
+   "id": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3mzlw7ymcl525|rasheerice|active|status",
+   "at": "2026-11-05T22:30:44.000Z",
+   "seen": "2026-11-05T22:41:34.641Z",
+   "handle": "rotoworld-fb.bsky.social",
+   "post": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3mzlw7ymcl525",
+   "player": "Rashee Rice",
+   "team": "KC",
+   "status": "active",
+   "kind": "status",
+   "confidence": 0.8,
+   "text": "Rashee Rice (hamstring/knee) upgrades to full"
+  },
+  {
+   "id": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3mzlwfipoy72r|saquonbarkley|limited|status",
+   "at": "2026-11-05T22:33:49.000Z",
+   "seen": "2026-11-05T22:41:34.641Z",
+   "handle": "rotowirenfl.bsky.social",
+   "post": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3mzlwfipoy72r",
+   "player": "Saquon Barkley",
+   "team": "PHI",
+   "status": "limited",
+   "kind": "status",
+   "confidence": 0.9,
+   "text": "Saquon Barkley: Limited Thursday \n\n https://www.rotowire.com/football/player/saquon-barkley-12507"
+  },
+  {
+   "id": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3mzlwo3evqm2s|devontasmith|questionable|status",
+   "at": "2026-11-05T22:38:37.000Z",
+   "seen": "2026-11-05T22:41:34.641Z",
+   "handle": "rotowirenfl.bsky.social",
+   "post": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3mzlwo3evqm2s",
+   "player": "DeVonta Smith",
+   "team": "PHI",
+   "status": "questionable",
+   "kind": "status",
+   "confidence": 0.7,
+   "text": "DeVonta Smith: Misses Thursday's practice \n\n https://www.rotowire.com/football/player/devonta-smith-15406"
+  },
+  {
+   "id": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3mzlwpfgxoo2y|djmoore|limited|status",
+   "at": "2026-11-05T22:39:21.000Z",
+   "seen": "2026-11-05T22:41:34.641Z",
+   "handle": "rotoworld-fb.bsky.social",
+   "post": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3mzlwpfgxoo2y",
+   "player": "DJ Moore",
+   "team": "CHI",
+   "status": "limited",
+   "kind": "status",
+   "confidence": 0.9,
+   "text": "DJ Moore (shoulder) limited in non-contact jersey"
+  },
+  {
+   "id": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3mzlwpgh6zr2f|kincaid|limited|status",
+   "at": "2026-11-05T22:39:22.000Z",
+   "seen": "2026-11-05T22:41:34.641Z",
+   "handle": "rotoworld-fb.bsky.social",
+   "post": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3mzlwpgh6zr2f",
+   "player": "Kincaid",
+   "team": "BUF",
+   "status": "limited",
+   "kind": "status",
+   "confidence": 0.7,
+   "text": "Kincaid (chest) sports non-contact jersey, limited"
   }
  ]
 }

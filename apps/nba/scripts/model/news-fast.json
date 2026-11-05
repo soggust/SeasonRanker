@@ -1,7 +1,7 @@
 {
  "sport": "nba",
  "cursor": {
-  "rotowirenba.bsky.social": "2026-11-05T22:15:50.000Z",
+  "rotowirenba.bsky.social": "2026-11-05T22:24:40.000Z",
   "insidenbanews.bsky.social": "2026-11-04T00:05:57.726Z",
   "shamsbot.bsky.social": "2026-11-04T20:33:22.000Z"
  },
@@ -7896,6 +7896,19 @@
    "kind": "status",
    "confidence": 0.95,
    "text": "Peyton Watson: Listed questionable for Friday \n\n https://www.rotowire.com/basketball/player/peyton-watson-5722"
+  },
+  {
+   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mzlvv4scjt22|santialdama|active|status",
+   "at": "2026-11-05T22:24:40.000Z",
+   "seen": "2026-11-05T22:41:34.641Z",
+   "handle": "rotowirenba.bsky.social",
+   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mzlvv4scjt22",
+   "player": "Santi Aldama",
+   "team": "MEM",
+   "status": "active",
+   "kind": "status",
+   "confidence": 0.85,
+   "text": "Santi Aldama: Upgraded to Probable Friday \n\n https://www.rotowire.com/basketball/player/santi-aldama-5428"
   }
  ]
 }

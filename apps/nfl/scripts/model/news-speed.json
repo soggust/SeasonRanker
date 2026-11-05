@@ -14844,6 +14844,150 @@
     "seen": "2026-11-05T22:17:44.052Z",
     "own": "2026-11-05T22:03:00.000Z"
    }
+  },
+  "401873037|djmoore|q": {
+   "game": "401873037",
+   "start": "2026-11-06T01:15Z",
+   "team": "33",
+   "name": "DJ Moore",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-11-05T22:20:33.483Z",
+    "own": "2026-11-05T22:04:10.000Z",
+    "why": "@rotowirenfl.bsky.social: DJ Moore: Limited participant Thursday \n\n https://www."
+   }
+  },
+  "401873037|daltonkincaid|q": {
+   "game": "401873037",
+   "start": "2026-11-06T01:15Z",
+   "team": "33",
+   "name": "Dalton Kincaid",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-11-05T22:20:33.483Z",
+    "own": "2026-11-05T22:10:21.000Z",
+    "why": "@rotowirenfl.bsky.social: Dalton Kincaid: Limited at practice Thursday \n\n https:"
+   }
+  },
+  "401873040|demarvionovershown|q": {
+   "game": "401873040",
+   "start": "2026-11-08T18:00Z",
+   "team": "6",
+   "name": "DeMarvion Overshown",
+   "status": "q",
+   "athlete": "4362088",
+   "espn": {
+    "seen": "2026-11-05T22:38:48.557Z",
+    "own": "2026-11-05T22:21:00.000Z"
+   }
+  },
+  "401873040|joeyporter|q": {
+   "game": "401873040",
+   "start": "2026-11-08T18:00Z",
+   "team": "6",
+   "name": "Joey Porter Jr.",
+   "status": "q",
+   "athlete": "4426506",
+   "espn": {
+    "seen": "2026-11-05T22:38:48.557Z",
+    "own": "2026-11-05T22:21:00.000Z"
+   }
+  },
+  "401873051|andrewvanginkel|q": {
+   "game": "401873051",
+   "start": "2026-11-10T01:15Z",
+   "team": "16",
+   "name": "Andrew Van Ginkel",
+   "status": "q",
+   "athlete": "3133487",
+   "espn": {
+    "seen": "2026-11-05T22:38:48.557Z",
+    "own": "2026-11-05T22:31:00.000Z"
+   }
+  },
+  "401873051|isaiahrodgers|q": {
+   "game": "401873051",
+   "start": "2026-11-10T01:15Z",
+   "team": "16",
+   "name": "Isaiah Rodgers",
+   "status": "q",
+   "athlete": "4044540",
+   "espn": {
+    "seen": "2026-11-05T22:38:48.557Z",
+    "own": "2026-11-05T22:31:00.000Z"
+   }
+  },
+  "401873051|jakegolday|q": {
+   "game": "401873051",
+   "start": "2026-11-10T01:15Z",
+   "team": "16",
+   "name": "Jake Golday",
+   "status": "q",
+   "athlete": "4877652",
+   "espn": {
+    "seen": "2026-11-05T22:38:48.557Z",
+    "own": "2026-11-05T22:30:00.000Z"
+   }
+  },
+  "401873051|jauanjennings|q": {
+   "game": "401873051",
+   "start": "2026-11-10T01:15Z",
+   "team": "16",
+   "name": "Jauan Jennings",
+   "status": "q",
+   "athlete": "3886598",
+   "espn": {
+    "seen": "2026-11-05T22:38:48.557Z",
+    "own": "2026-11-05T22:30:00.000Z"
+   }
+  },
+  "401873051|demondclaiborne|q": {
+   "game": "401873051",
+   "start": "2026-11-10T01:15Z",
+   "team": "16",
+   "name": "Demond Claiborne",
+   "status": "q",
+   "athlete": "4832846",
+   "espn": {
+    "seen": "2026-11-05T22:38:48.557Z",
+    "own": "2026-11-05T22:28:00.000Z"
+   }
+  },
+  "401873051|diondawkins|q": {
+   "game": "401873051",
+   "start": "2026-11-10T01:15Z",
+   "team": "2",
+   "name": "Dion Dawkins",
+   "status": "q",
+   "athlete": "3051324",
+   "espn": {
+    "seen": "2026-11-05T22:38:48.557Z",
+    "own": "2026-11-05T22:13:00.000Z"
+   }
+  },
+  "401873051|alecanderson|q": {
+   "game": "401873051",
+   "start": "2026-11-10T01:15Z",
+   "team": "2",
+   "name": "Alec Anderson",
+   "status": "q",
+   "athlete": "4367203",
+   "espn": {
+    "seen": "2026-11-05T22:38:48.557Z",
+    "own": "2026-11-05T22:12:00.000Z"
+   }
+  },
+  "401873051|joshuapalmer|q": {
+   "game": "401873051",
+   "start": "2026-11-10T01:15Z",
+   "team": "2",
+   "name": "Joshua Palmer",
+   "status": "q",
+   "athlete": "4242433",
+   "espn": {
+    "seen": "2026-11-05T22:38:48.557Z",
+    "own": "2026-11-05T22:11:00.000Z"
+   }
   }
  }
 }
