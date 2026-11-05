@@ -5,9 +5,9 @@
   "rapsheet.bsky.social": "2026-11-04T19:45:56.406Z",
   "nflnewsreposterbot.bsky.social": "2026-11-04T21:51:29.738Z",
   "insidenflnews.bsky.social": "2026-11-04T23:18:27.925Z",
-  "nflnewsposter.bsky.social": "2026-11-04T21:22:14.754Z",
+  "nflnewsposter.bsky.social": "2026-11-05T00:25:51.730Z",
   "rotoworld-fb.bsky.social": "2026-11-05T00:06:31.000Z",
-  "rotowirenfl.bsky.social": "2026-11-04T23:25:30.000Z"
+  "rotowirenfl.bsky.social": "2026-11-05T00:36:08.000Z"
  },
  "claims": [
   {
@@ -14712,6 +14712,19 @@
    "kind": "status",
    "confidence": 0.8,
    "text": "Pat Bryant (ankle) practicing in full for Week 9"
+  },
+  {
+   "id": "at://did:plc:fuqjc7x4gxvnwzksnlxwbe4x/app.bsky.feed.post/3mzjm6vund224|jalenhurts|out|status",
+   "at": "2026-11-05T00:25:51.730Z",
+   "seen": "2026-11-05T00:44:23.968Z",
+   "handle": "nflnewsposter.bsky.social",
+   "post": "at://did:plc:fuqjc7x4gxvnwzksnlxwbe4x/app.bsky.feed.post/3mzjm6vund224",
+   "player": "Jalen Hurts",
+   "team": "PHI",
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.6,
+   "text": "[McManus] Eagles QB Jalen Hurts was at the practice facility today. He sat in on both the team meeting and other meetings.\n\nHe did not address the team but his presence did provide a morale boost for "
   }
  ]
 }
