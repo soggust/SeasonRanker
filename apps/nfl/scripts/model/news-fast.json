@@ -1,13 +1,13 @@
 {
  "sport": "nfl",
  "cursor": {
-  "adamscheftermirror.bsky.social": "2026-11-05T15:54:34.152Z",
+  "adamscheftermirror.bsky.social": "2026-11-05T17:14:38.726Z",
   "rapsheet.bsky.social": "2026-11-04T19:45:56.406Z",
   "nflnewsreposterbot.bsky.social": "2026-11-04T21:51:29.738Z",
-  "insidenflnews.bsky.social": "2026-11-05T14:57:02.463Z",
+  "insidenflnews.bsky.social": "2026-11-05T16:46:47.218Z",
   "nflnewsposter.bsky.social": "2026-11-05T16:21:39.124Z",
-  "rotoworld-fb.bsky.social": "2026-11-05T15:33:53.000Z",
-  "rotowirenfl.bsky.social": "2026-11-05T15:41:52.000Z"
+  "rotoworld-fb.bsky.social": "2026-11-05T16:59:41.000Z",
+  "rotowirenfl.bsky.social": "2026-11-05T17:04:09.000Z"
  },
  "claims": [
   {
@@ -14868,6 +14868,58 @@
    "kind": "status",
    "confidence": 0.6,
    "text": "Sam Darnold: Considered week-to-week \n\n https://www.rotowire.com/football/player/sam-darnold-12490"
+  },
+  {
+   "id": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3mzlchvq5s42b|mikeevans|doubtful|status",
+   "at": "2026-11-05T16:37:15.000Z",
+   "seen": "2026-11-05T17:16:28.547Z",
+   "handle": "rotoworld-fb.bsky.social",
+   "post": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3mzlchvq5s42b",
+   "player": "Mike Evans",
+   "team": null,
+   "status": "doubtful",
+   "kind": "status",
+   "confidence": 0.5,
+   "text": "Unlikely that Evans or Deebo will play in Week 9"
+  },
+  {
+   "id": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3mzlchvq5s42b|deebosamuel|doubtful|status",
+   "at": "2026-11-05T16:37:15.000Z",
+   "seen": "2026-11-05T17:16:28.547Z",
+   "handle": "rotoworld-fb.bsky.social",
+   "post": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3mzlchvq5s42b",
+   "player": "Deebo Samuel",
+   "team": null,
+   "status": "doubtful",
+   "kind": "status",
+   "confidence": 0.5,
+   "text": "Unlikely that Evans or Deebo will play in Week 9"
+  },
+  {
+   "id": "at://did:plc:mbr4badgf6yu56mquzackzew/app.bsky.feed.post/3mzlcywtjuk2m|mikeevans|doubtful|status",
+   "at": "2026-11-05T16:46:47.218Z",
+   "seen": "2026-11-05T17:16:28.547Z",
+   "handle": "insidenflnews.bsky.social",
+   "post": "at://did:plc:mbr4badgf6yu56mquzackzew/app.bsky.feed.post/3mzlcywtjuk2m",
+   "player": "Mike Evans",
+   "team": null,
+   "status": "doubtful",
+   "kind": "status",
+   "confidence": 0.8,
+   "text": "Lynch: Mike Evans (Achilles), Deebo Samuel (hamstring) unlikely to be available Week 9."
+  },
+  {
+   "id": "at://did:plc:mbr4badgf6yu56mquzackzew/app.bsky.feed.post/3mzlcywtjuk2m|deebosamuel|doubtful|status",
+   "at": "2026-11-05T16:46:47.218Z",
+   "seen": "2026-11-05T17:16:28.547Z",
+   "handle": "insidenflnews.bsky.social",
+   "post": "at://did:plc:mbr4badgf6yu56mquzackzew/app.bsky.feed.post/3mzlcywtjuk2m",
+   "player": "Deebo Samuel",
+   "team": null,
+   "status": "doubtful",
+   "kind": "status",
+   "confidence": 0.8,
+   "text": "Lynch: Mike Evans (Achilles), Deebo Samuel (hamstring) unlikely to be available Week 9."
   }
  ]
 }

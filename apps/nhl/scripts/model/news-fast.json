@@ -3,8 +3,8 @@
  "cursor": {
   "johnston-bot.bsky.social": "2026-11-05T13:22:36.429Z",
   "notfriedgehnic.bsky.social": "2026-11-05T14:32:27.304Z",
-  "dailyfaceoff.bsky.social": "2026-11-05T16:16:22.000Z",
-  "dfotoronto.bsky.social": "2026-11-05T15:09:01.000Z",
+  "dailyfaceoff.bsky.social": "2026-11-05T17:01:40.000Z",
+  "dfotoronto.bsky.social": "2026-11-05T16:56:40.000Z",
   "marklazerus.bsky.social": "2026-11-05T15:58:42.734Z"
  },
  "claims": [
@@ -1619,6 +1619,45 @@
    "kind": "return",
    "confidence": 0.3,
    "text": "Nick Paul looking forward to playing with John Tavares ahead of veteran’s hopeful return vs. Canadiens"
+  },
+  {
+   "id": "at://did:plc:3uus7y6h3rlrk6sbctzxm4bg/app.bsky.feed.post/3mzld3ocrbd24|suzuki|active|return",
+   "at": "2026-11-05T16:48:18.000Z",
+   "seen": "2026-11-05T17:16:28.547Z",
+   "handle": "dailyfaceoff.bsky.social",
+   "post": "at://did:plc:3uus7y6h3rlrk6sbctzxm4bg/app.bsky.feed.post/3mzld3ocrbd24",
+   "player": "Suzuki",
+   "team": "MTL",
+   "status": "active",
+   "kind": "return",
+   "confidence": 0.9,
+   "text": "Canadiens’ Suzuki, Dach to return from injuries against Mammoth"
+  },
+  {
+   "id": "at://did:plc:3uus7y6h3rlrk6sbctzxm4bg/app.bsky.feed.post/3mzld3ocrbd24|dach|active|return",
+   "at": "2026-11-05T16:48:18.000Z",
+   "seen": "2026-11-05T17:16:28.547Z",
+   "handle": "dailyfaceoff.bsky.social",
+   "post": "at://did:plc:3uus7y6h3rlrk6sbctzxm4bg/app.bsky.feed.post/3mzld3ocrbd24",
+   "player": "Dach",
+   "team": "MTL",
+   "status": "active",
+   "kind": "return",
+   "confidence": 0.9,
+   "text": "Canadiens’ Suzuki, Dach to return from injuries against Mammoth"
+  },
+  {
+   "id": "at://did:plc:3uus7y6h3rlrk6sbctzxm4bg/app.bsky.feed.post/3mzldtkk5ib2i|ivandemidov|out|status",
+   "at": "2026-11-05T17:01:40.000Z",
+   "seen": "2026-11-05T17:16:28.547Z",
+   "handle": "dailyfaceoff.bsky.social",
+   "post": "at://did:plc:3uus7y6h3rlrk6sbctzxm4bg/app.bsky.feed.post/3mzldtkk5ib2i",
+   "player": "Ivan Demidov",
+   "team": "MTL",
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.4,
+   "text": "Canadiens’ Ivan Demidov fractured ankle in preseason. #nhl #nhlhockey #dailyfaceoff"
   }
  ]
 }
