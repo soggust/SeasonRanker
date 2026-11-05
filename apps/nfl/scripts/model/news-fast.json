@@ -1,13 +1,13 @@
 {
  "sport": "nfl",
  "cursor": {
-  "adamscheftermirror.bsky.social": "2026-11-05T21:34:35.410Z",
+  "adamscheftermirror.bsky.social": "2026-11-05T21:49:33.607Z",
   "rapsheet.bsky.social": "2026-11-05T19:15:49.242Z",
   "nflnewsreposterbot.bsky.social": "2026-11-05T18:24:37.305Z",
   "insidenflnews.bsky.social": "2026-11-05T21:06:06.043Z",
   "nflnewsposter.bsky.social": "2026-11-05T21:44:27.908Z",
-  "rotoworld-fb.bsky.social": "2026-11-05T21:45:19.000Z",
-  "rotowirenfl.bsky.social": "2026-11-05T21:39:32.000Z"
+  "rotoworld-fb.bsky.social": "2026-11-05T21:54:21.000Z",
+  "rotowirenfl.bsky.social": "2026-11-05T21:57:26.000Z"
  },
  "claims": [
   {
@@ -15531,6 +15531,97 @@
    "kind": "status",
    "confidence": 0.5,
    "text": "A.J. Brown (ankle/knee) sits out again on Thursday"
+  },
+  {
+   "id": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3mzltvdrd622r|treveyonhenderson|none|status",
+   "at": "2026-11-05T21:49:00.000Z",
+   "seen": "2026-11-05T22:00:34.675Z",
+   "handle": "rotowirenfl.bsky.social",
+   "post": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3mzltvdrd622r",
+   "player": "TreVeyon Henderson",
+   "team": "NE",
+   "status": "none",
+   "kind": "status",
+   "confidence": 0.3,
+   "text": "TreVeyon Henderson: Logs another 'DNP' Thursday \n\n https://www.rotowire.com/football/player/treveyon-henderson-18517"
+  },
+  {
+   "id": "at://did:plc:qre6zxbmr3ixhdmgsgdretb5/app.bsky.feed.post/3mzltwdquw52m|ajbrown|none|status",
+   "at": "2026-11-05T21:49:33.607Z",
+   "seen": "2026-11-05T22:00:34.675Z",
+   "handle": "adamscheftermirror.bsky.social",
+   "post": "at://did:plc:qre6zxbmr3ixhdmgsgdretb5/app.bsky.feed.post/3mzltwdquw52m",
+   "player": "AJ Brown",
+   "team": "NE",
+   "status": "none",
+   "kind": "status",
+   "confidence": 0.3,
+   "text": "No practice again today for AJ Brown and TreVeyon Henderson.\n\nOriginal post [Week 9 Injury Report: Patriots vs. Packers]"
+  },
+  {
+   "id": "at://did:plc:qre6zxbmr3ixhdmgsgdretb5/app.bsky.feed.post/3mzltwdquw52m|treveyonhenderson|none|status",
+   "at": "2026-11-05T21:49:33.607Z",
+   "seen": "2026-11-05T22:00:34.675Z",
+   "handle": "adamscheftermirror.bsky.social",
+   "post": "at://did:plc:qre6zxbmr3ixhdmgsgdretb5/app.bsky.feed.post/3mzltwdquw52m",
+   "player": "TreVeyon Henderson",
+   "team": "NE",
+   "status": "none",
+   "kind": "status",
+   "confidence": 0.3,
+   "text": "No practice again today for AJ Brown and TreVeyon Henderson.\n\nOriginal post [Week 9 Injury Report: Patriots vs. Packers]"
+  },
+  {
+   "id": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3mzlu2kxkg22q|georgepickens|limited|status",
+   "at": "2026-11-05T21:51:55.000Z",
+   "seen": "2026-11-05T22:00:34.675Z",
+   "handle": "rotowirenfl.bsky.social",
+   "post": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3mzlu2kxkg22q",
+   "player": "George Pickens",
+   "team": null,
+   "status": "limited",
+   "kind": "status",
+   "confidence": 0.8,
+   "text": "George Pickens: Another limited session \n\n https://www.rotowire.com/football/player/george-pickens-15853"
+  },
+  {
+   "id": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3mzlu6tpi322y|mylesgarrett|none|status",
+   "at": "2026-11-05T21:54:18.000Z",
+   "seen": "2026-11-05T22:00:34.675Z",
+   "handle": "rotoworld-fb.bsky.social",
+   "post": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3mzlu6tpi322y",
+   "player": "Myles Garrett",
+   "team": "CLE",
+   "status": "none",
+   "kind": "status",
+   "confidence": 0.3,
+   "text": "Myles Garrett (knee) practices again Thursday"
+  },
+  {
+   "id": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3mzlu6uxi3e2d|georgepickens|limited|status",
+   "at": "2026-11-05T21:54:19.000Z",
+   "seen": "2026-11-05T22:00:34.675Z",
+   "handle": "rotoworld-fb.bsky.social",
+   "post": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3mzlu6uxi3e2d",
+   "player": "George Pickens",
+   "team": null,
+   "status": "limited",
+   "kind": "status",
+   "confidence": 0.85,
+   "text": "George Pickens (hamstring) limited again Thursday"
+  },
+  {
+   "id": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3mzlu6warlr2z|tuten|active|status",
+   "at": "2026-11-05T21:54:21.000Z",
+   "seen": "2026-11-05T22:00:34.675Z",
+   "handle": "rotoworld-fb.bsky.social",
+   "post": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3mzlu6warlr2z",
+   "player": "Tuten",
+   "team": "JAX",
+   "status": "active",
+   "kind": "status",
+   "confidence": 0.6,
+   "text": "Fowler: Tuten (ankle/foot) should be good for TNF"
   }
  ]
 }
