@@ -6,8 +6,8 @@ import { darkLogoOf } from '../team-look';
 import { matchupName } from './game-menu';
 import { BetGroup, SportGroup, TableSorts, betValue, byGame, gamesBySport } from './desk-columns';
 import { DESK_HELP } from './desk-help';
-import { BotHistory, HISTORY_RANGES, HistoryRange, HistoryRow, ReplayRecordFile, VIG_TIP, bandSharesOf, beatText, beatTip, botHistoryOf, buildLabel, buildOf, emptyRow, finalAtOf, isHistoryRange, recordText, vigText, withPending } from './replay-history';
-import { DeskPanel, FindingsFile, findingsOf, ESPN_LEAGUES, SPORTS, deskPanelOpen, UNIT_WORDS, DeskEpoch, epochFor, epochShared, countNowOf, deskEpochOf, edgeColorOf, epochLabel, isTracked, meterOf, propState, provisional, sideTextOf, sideTitleOf, splitOpenOf, toWin } from './desk-math';
+import { BotHistory, HISTORY_RANGES, HistoryRange, HistoryRow, ReplayRecordFile, VIG_TIP, bandSharesOf, beatText, beatTip, botHistoryOf, emptyRow, finalAtOf, isHistoryRange, recordText, vigText, withPending } from './replay-history';
+import { DeskPanel, FindingsFile, findingsOf, ESPN_LEAGUES, SPORTS, deskPanelOpen, UNIT_WORDS, DeskEpoch, epochFor, countNowOf, deskEpochOf, edgeColorOf, isTracked, meterOf, propState, provisional, sideTextOf, sideTitleOf, splitOpenOf, toWin } from './desk-math';
 import { Board, Meter, ModelBet, ModelState, Settled } from './desk-model';
 import { SummaryBox, athleteTeam, liveStat } from './live-props';
 import { EspnMmaScoreboard, LiveBout, boutResult, fightWords, mmaBouts } from './live-mma';
@@ -118,13 +118,10 @@ export class ModelDeskComponent implements OnInit, OnDestroy {
   readonly vigTip = VIG_TIP;
   readonly recordTip = recordTip;
   readonly compactCount = compactCount;
-  readonly buildLabel = buildLabel;
   // (By Confidence's rows, LOCK first, PASS last, the practice picks between LIKE and PASS, the history's)
   bandRows: HistoryRow[] = [];
   // (the pyramid (the owner, 2026-10-20): LOCK's, LOVE's and LIKE's share of the bets the three hold, a bar each)
   bandShares: Record<string, number | null> = {};
-  // (the build's time at the top: the version's epoch, replay-history.ts buildOf)
-  buildAt: string | null = null;
   // (live against the replay (live-check.ts, D93): each sport's staked edge bets since its epoch, and since the ledger
   // began, against what the replay's same rules say bets like them return; the chip's sport or every sport)
   private allChecks: { sport: string; epoch: LiveCheckRow; all: LiveCheckRow }[] = [];
@@ -370,14 +367,6 @@ export class ModelDeskComponent implements OnInit, OnDestroy {
     clearInterval(this.scoreTimer);
   }
 
-  get epochTitle(): string {
-    const by = this.epoch?.bySport;
-    if (!by) return this.help['epoch'];
-    return `${this.help['epoch']}\n${Object.entries(by)
-      .map(([sport, at]) => `${sport.toUpperCase()}: ${epochLabel(at)}`)
-      .join(' · ')}`;
-  }
-
   setSport(sport: string | null): void {
     this.sport = sport;
     try {
@@ -433,7 +422,6 @@ export class ModelDeskComponent implements OnInit, OnDestroy {
     this.bandBars = barsOf(this.bandRows.filter((r) => r.bets));
     this.form = squaresOf(h.last);
     this.streak = streakOf(h.last);
-    this.buildAt = buildOf(this.allReplays, this.sport, this.epoch ? ((this.sport ? epochFor(this.epoch, this.sport) : null) ?? epochShared(this.epoch)) : null).at;
   }
 
   // (the ledger and its bets as read: the placed ones apart from the tracked markets and, with the split on, the

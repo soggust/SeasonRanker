@@ -566,12 +566,11 @@ test("Bot Stats (the Algorithm tab till 2026-11-04; the owner, 2026-10-19): the 
   // (open from the start: the two breakdowns alone; a tap the other way, kept)
   assert.deepEqual(['sport', 'confidence', 'open', 'live', 'closed', 'findings', 'check'].map((k) => desk.deskPanelOpen(k)), [true, true, false, false, false, false, false]);
   assert.deepEqual(['sport', 'open'].map((k) => desk.deskPanelOpen(k, new Set(['sport', 'open']))), [false, true]);
-  // (the time range and the chips in one bar, before the board; the build after every panel, at the board's foot; no
-  // commit, no note; no "Live since this version" line; every panel inside the board)
+  // (the time range and the chips in one bar, before the board; no build line (the owner, 2026-11-04); no "Live since this version" line; every panel inside the board)
   const bar = html.indexOf('<div class="desk-bar">');
   const board = html.indexOf('<div class="desk-board">');
   assert.ok(bar > 0 && bar < html.indexOf('class="desk-range"') && html.indexOf('class="desk-range"') < html.indexOf('desk-sports') && html.indexOf('desk-sports') < board);
-  assert.ok(html.indexOf('<p class="desk-build-line"') > Math.max(...panels.map((p) => p.at)));
+  assert.doesNotMatch(html, /desk-build/);
   assert.doesNotMatch(html, /Live since this version|desk-live-line/);
   assert.ok(panels.every((p) => p.at > board));
   assert.doesNotMatch(html, /buildInfo\.(commit|note)|desk-hood|hoodOpen|Under the hood/);

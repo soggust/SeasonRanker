@@ -1592,24 +1592,6 @@ mat-icon.desk-gloves {
   justify-content: space-between;
 }
 
-// (the build at the board's foot: small and muted, centred under the last panel)
-.desk-build-line {
-  align-items: baseline;
-  color: v.$text-faint;
-  display: flex;
-  font-size: v.$fs-11;
-  gap: v.$space-6;
-  justify-content: center;
-  margin: v.$space-16 0 0;
-}
-
-.desk-build-tag {
-  font-size: v.$fs-10;
-  font-weight: 800;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-}
-
 // (the Pick column a little apart from the Game's: In Play's and Open Bets')
 .desk-bets .desk-pick-col {
   padding-left: 26px;
