@@ -2,7 +2,7 @@
  "v": 1,
  "sport": "mlb",
  "epoch": "2026-10-26T15:00:00Z",
- "at": "2026-11-05T22:20:56.767Z",
+ "at": "2026-11-05T23:04:00.870Z",
  "from": "2021-07-18T17:11:00.000Z",
  "through": "2026-10-16T00:00:00.000Z",
  "n": {
@@ -2873,8 +2873,8 @@
    }
   }
  },
- "commit": "d98dc8e5",
- "note": "D105. A passed CHECK leaves the page at once (the owner, 2026-11-04: \"I still have one of the checks\"; \"yes please\" to never showing passed ones)",
+ "commit": "8b971dc4",
+ "note": "D106. \"Beat the close\" means the market moved our way; the off-market price discount measured and held (the coordinator's ledger review, 2026-11-05: \"the site says it beats the close 92%, which overstates things\")",
  "inputs": {
   "v": 1,
   "sport": "mlb",
@@ -2883,7 +2883,7 @@
    "games": "47aceba7d839",
    "pricing": "b706945a4947",
    "record": "fdec826e35bb",
-   "harness": "a03d58481fe2",
+   "harness": "0948907b80e0",
    "residual": "0f1cad093bf42957",
    "tuned": "75ba5ef16d4ef1db"
   },
@@ -2955,6 +2955,6 @@
     "want": 29
    }
   },
-  "hash": "706fa2b8d4979c87"
+  "hash": "74ab7cdddd929633"
  }
 }

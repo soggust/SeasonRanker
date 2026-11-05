@@ -2,7 +2,7 @@
  "v": 1,
  "sport": "nhl",
  "epoch": "2026-10-26T15:00:00Z",
- "at": "2026-11-05T22:15:26.076Z",
+ "at": "2026-11-05T22:58:26.150Z",
  "from": "2021-01-27T00:00:00.000Z",
  "through": "2026-10-14T01:55:00.000Z",
  "n": {
@@ -3095,8 +3095,8 @@
    }
   }
  },
- "commit": "d98dc8e5",
- "note": "D105. A passed CHECK leaves the page at once (the owner, 2026-11-04: \"I still have one of the checks\"; \"yes please\" to never showing passed ones)",
+ "commit": "8b971dc4",
+ "note": "D106. \"Beat the close\" means the market moved our way; the off-market price discount measured and held (the coordinator's ledger review, 2026-11-05: \"the site says it beats the close 92%, which overstates things\")",
  "inputs": {
   "v": 1,
   "sport": "nhl",
@@ -3105,7 +3105,7 @@
    "games": "47aceba7d839",
    "pricing": "b706945a4947",
    "record": "fdec826e35bb",
-   "harness": "a03d58481fe2",
+   "harness": "0948907b80e0",
    "residual": "0ea9af83fbd4d825",
    "tuned": "df11fd594cc55b23"
   },
@@ -3177,6 +3177,6 @@
     "want": 229
    }
   },
-  "hash": "5df0988a7174538a"
+  "hash": "d851ddbb1e5822b2"
  }
 }

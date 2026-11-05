@@ -1,9 +1,9 @@
 {
  "v": 1,
  "sport": "nba",
- "at": "2026-11-05T22:11:57.865Z",
+ "at": "2026-11-05T22:55:17.790Z",
  "epoch": "2026-10-26T15:00:00Z",
- "commit": "d98dc8e5",
+ "commit": "8b971dc4",
  "segments": {
   "ml:dog": {
    "policy": "legacy",
