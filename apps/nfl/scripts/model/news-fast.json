@@ -4,10 +4,10 @@
   "adamscheftermirror.bsky.social": "2026-11-05T18:29:38.095Z",
   "rapsheet.bsky.social": "2026-11-04T19:45:56.406Z",
   "nflnewsreposterbot.bsky.social": "2026-11-05T18:24:37.305Z",
-  "insidenflnews.bsky.social": "2026-11-05T16:46:47.218Z",
-  "nflnewsposter.bsky.social": "2026-11-05T18:26:37.102Z",
-  "rotoworld-fb.bsky.social": "2026-11-05T18:29:13.000Z",
-  "rotowirenfl.bsky.social": "2026-11-05T18:10:44.000Z"
+  "insidenflnews.bsky.social": "2026-11-05T18:32:28.611Z",
+  "nflnewsposter.bsky.social": "2026-11-05T18:32:32.912Z",
+  "rotoworld-fb.bsky.social": "2026-11-05T18:38:15.000Z",
+  "rotowirenfl.bsky.social": "2026-11-05T18:49:58.000Z"
  },
  "claims": [
   {
@@ -15037,6 +15037,84 @@
    "kind": "status",
    "confidence": 0.6,
    "text": "Just in: Vikings QB Carson Wentz will start Monday night’s game vs. the Buffalo Bills while Kyler Murray deals with what the team has called a “sore hamstring.”\n\nOriginal post"
+  },
+  {
+   "id": "at://did:plc:fuqjc7x4gxvnwzksnlxwbe4x/app.bsky.feed.post/3mzlirx23vs2a|ajbrown|questionable|status",
+   "at": "2026-11-05T18:30:15.001Z",
+   "seen": "2026-11-05T18:51:20.910Z",
+   "handle": "nflnewsposter.bsky.social",
+   "post": "at://did:plc:fuqjc7x4gxvnwzksnlxwbe4x/app.bsky.feed.post/3mzlirx23vs2a",
+   "player": "AJ Brown",
+   "team": "NE",
+   "status": "questionable",
+   "kind": "status",
+   "confidence": 0.6,
+   "text": "[Lopez] Adam Schefter on Patriots WR AJ Brown’s knee:\n\n“It flared up .. The knee held him out last week, and the knee is threatening to hold him out this week. I think that raises some concerns as to "
+  },
+  {
+   "id": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3mzliso446i2j|carsonwentz|none|starting",
+   "at": "2026-11-05T18:30:39.000Z",
+   "seen": "2026-11-05T18:51:20.910Z",
+   "handle": "rotowirenfl.bsky.social",
+   "post": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3mzliso446i2j",
+   "player": "Carson Wentz",
+   "team": null,
+   "status": "none",
+   "kind": "starting",
+   "confidence": 0.5,
+   "text": "Carson Wentz: In line to draw MNF start \n\n https://www.rotowire.com/football/player/carson-wentz-10856"
+  },
+  {
+   "id": "at://did:plc:mbr4badgf6yu56mquzackzew/app.bsky.feed.post/3mzlivlt7sc2l|carsonwentz|active|starting",
+   "at": "2026-11-05T18:32:17.461Z",
+   "seen": "2026-11-05T18:51:20.910Z",
+   "handle": "insidenflnews.bsky.social",
+   "post": "at://did:plc:mbr4badgf6yu56mquzackzew/app.bsky.feed.post/3mzlivlt7sc2l",
+   "player": "Carson Wentz",
+   "team": null,
+   "status": "active",
+   "kind": "starting",
+   "confidence": 0.8,
+   "text": "Carson Wentz will start Week 9."
+  },
+  {
+   "id": "at://did:plc:mbr4badgf6yu56mquzackzew/app.bsky.feed.post/3mzlivwhhik2l|kylermurray|questionable|status",
+   "at": "2026-11-05T18:32:28.611Z",
+   "seen": "2026-11-05T18:51:20.910Z",
+   "handle": "insidenflnews.bsky.social",
+   "post": "at://did:plc:mbr4badgf6yu56mquzackzew/app.bsky.feed.post/3mzlivwhhik2l",
+   "player": "Kyler Murray",
+   "team": null,
+   "status": "questionable",
+   "kind": "status",
+   "confidence": 0.6,
+   "text": "Kyler Murray considered week-to-week with hamstring strain."
+  },
+  {
+   "id": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3mzlj5xn3li27|kylermurray|out|status",
+   "at": "2026-11-05T18:36:58.000Z",
+   "seen": "2026-11-05T18:51:20.910Z",
+   "handle": "rotowirenfl.bsky.social",
+   "post": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3mzlj5xn3li27",
+   "player": "Kyler Murray",
+   "team": null,
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.9,
+   "text": "Kyler Murray: Out Monday due to hamstring strain, won't go on IR \n\n https://www.rotowire.com/football/player/kyler-murray-13613"
+  },
+  {
+   "id": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3mzljab6jza25|kylermurray|questionable|status",
+   "at": "2026-11-05T18:38:15.000Z",
+   "seen": "2026-11-05T18:51:20.910Z",
+   "handle": "rotoworld-fb.bsky.social",
+   "post": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3mzljab6jza25",
+   "player": "Kyler Murray",
+   "team": null,
+   "status": "questionable",
+   "kind": "status",
+   "confidence": 0.6,
+   "text": "Schefter: Kyler Murray (hamstring) 'week to week'"
   }
  ]
 }
