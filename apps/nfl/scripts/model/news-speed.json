@@ -14520,6 +14520,66 @@
     "seen": "2026-11-05T03:56:20.409Z",
     "own": "2026-11-05T03:40:00.000Z"
    }
+  },
+  "401873040|jalenthompson|out": {
+   "game": "401873040",
+   "start": "2026-11-08T18:00Z",
+   "team": "6",
+   "name": "Jalen Thompson",
+   "status": "out",
+   "athlete": "4043089",
+   "espn": {
+    "seen": "2026-11-05T04:18:36.874Z",
+    "own": "2026-11-05T03:45:00.000Z"
+   }
+  },
+  "401873042|malikherring|q": {
+   "game": "401873042",
+   "start": "2026-11-08T18:00Z",
+   "team": "15",
+   "name": "Malik Herring",
+   "status": "q",
+   "athlete": "4259547",
+   "espn": {
+    "seen": "2026-11-05T04:18:36.874Z",
+    "own": "2026-11-05T03:53:00.000Z"
+   }
+  },
+  "401873049|gregvanroten|out": {
+   "game": "401873049",
+   "start": "2026-11-08T21:25Z",
+   "team": "17",
+   "name": "Greg Van Roten",
+   "status": "out",
+   "athlete": "15718",
+   "espn": {
+    "seen": "2026-11-05T04:18:36.874Z",
+    "own": "2026-11-05T03:55:00.000Z"
+   }
+  },
+  "401873048|isaiahadams|out": {
+   "game": "401873048",
+   "start": "2026-11-08T21:25Z",
+   "team": "22",
+   "name": "Isaiah Adams",
+   "status": "out",
+   "athlete": "5084939",
+   "espn": {
+    "seen": "2026-11-05T04:18:36.874Z",
+    "own": "2026-11-05T03:52:00.000Z"
+   }
+  },
+  "401873051|jordanhancock|out": {
+   "game": "401873051",
+   "start": "2026-11-10T01:15Z",
+   "team": "2",
+   "name": "Jordan Hancock",
+   "status": "out",
+   "athlete": "4596480",
+   "espn": {
+    "seen": "2026-11-05T04:18:36.874Z",
+    "own": "2026-11-05T03:59:00.000Z"
+   }
   }
  }
 }
