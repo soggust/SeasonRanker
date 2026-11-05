@@ -20057,6 +20057,30 @@
     "own": "2026-11-05T01:35:00.000Z",
     "why": "@rotowirenba.bsky.social: Jalen Smith: Won't return Wednesday \n\n https://www.rot"
    }
+  },
+  "401909934|demarderozan|out": {
+   "game": "401909934",
+   "start": "2026-11-05T03:00Z",
+   "team": "23",
+   "name": "DeMar DeRozan",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-05T02:22:57.257Z",
+    "own": "2026-11-05T02:05:00.000Z",
+    "why": "@rotowirenba.bsky.social: DeMar DeRozan: Late scratch Wednesday \n\n https://www.r"
+   }
+  },
+  "401909935|demarderozan|out": {
+   "game": "401909935",
+   "start": "2026-11-05T03:30Z",
+   "team": "12",
+   "name": "DeMar DeRozan",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-05T02:22:57.257Z",
+    "own": "2026-11-05T02:05:00.000Z",
+    "why": "@rotowirenba.bsky.social: DeMar DeRozan: Late scratch Wednesday \n\n https://www.r"
+   }
   }
  }
 }
