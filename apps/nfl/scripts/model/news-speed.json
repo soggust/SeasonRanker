@@ -14640,6 +14640,30 @@
     "own": "2026-11-05T16:46:47.218Z",
     "why": "@insidenflnews.bsky.social: Lynch: Mike Evans (Achilles), Deebo Samuel (hamstrin"
    }
+  },
+  "401873037|kylermurray|q": {
+   "game": "401873037",
+   "start": "2026-11-06T01:15Z",
+   "team": "33",
+   "name": "Kyler Murray",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-11-05T18:51:20.910Z",
+    "own": "2026-11-05T18:38:15.000Z",
+    "why": "@rotoworld-fb.bsky.social: Schefter: Kyler Murray (hamstring) 'week to week'"
+   }
+  },
+  "401873044|maliknabers|q": {
+   "game": "401873044",
+   "start": "2026-11-08T18:00Z",
+   "team": "19",
+   "name": "Malik Nabers",
+   "status": "q",
+   "athlete": "4595348",
+   "espn": {
+    "seen": "2026-11-05T18:57:03.047Z",
+    "own": "2026-11-05T18:46:00.000Z"
+   }
   }
  }
 }
