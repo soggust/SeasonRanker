@@ -1,7 +1,7 @@
 {
  "sport": "nba",
  "cursor": {
-  "rotowirenba.bsky.social": "2026-11-05T01:00:03.000Z",
+  "rotowirenba.bsky.social": "2026-11-05T01:40:27.000Z",
   "insidenbanews.bsky.social": "2026-11-04T00:05:57.726Z",
   "shamsbot.bsky.social": "2026-11-04T20:33:22.000Z"
  },
@@ -7688,6 +7688,19 @@
    "kind": "starting",
    "confidence": 0.85,
    "text": "Aday Mara: Starting Wednesday \n\n https://www.rotowire.com/basketball/player/aday-mara-6932"
+  },
+  {
+   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mzjq2khebw2n|jalensmith|out|status",
+   "at": "2026-11-05T01:35:00.000Z",
+   "seen": "2026-11-05T01:40:31.478Z",
+   "handle": "rotowirenba.bsky.social",
+   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mzjq2khebw2n",
+   "player": "Jalen Smith",
+   "team": null,
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.6,
+   "text": "Jalen Smith: Won't return Wednesday \n\n https://www.rotowire.com/basketball/player/jalen-smith-5169"
   }
  ]
 }

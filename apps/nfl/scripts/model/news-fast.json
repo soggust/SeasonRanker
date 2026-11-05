@@ -1,7 +1,7 @@
 {
  "sport": "nfl",
  "cursor": {
-  "adamscheftermirror.bsky.social": "2026-11-04T23:35:00.574Z",
+  "adamscheftermirror.bsky.social": "2026-11-05T01:19:39.310Z",
   "rapsheet.bsky.social": "2026-11-04T19:45:56.406Z",
   "nflnewsreposterbot.bsky.social": "2026-11-04T21:51:29.738Z",
   "insidenflnews.bsky.social": "2026-11-04T23:18:27.925Z",
@@ -14725,6 +14725,19 @@
    "kind": "status",
    "confidence": 0.6,
    "text": "[McManus] Eagles QB Jalen Hurts was at the practice facility today. He sat in on both the team meeting and other meetings.\n\nHe did not address the team but his presence did provide a morale boost for "
+  },
+  {
+   "id": "at://did:plc:qre6zxbmr3ixhdmgsgdretb5/app.bsky.feed.post/3mzjp73zae32z|malachitoney|out|status",
+   "at": "2026-11-05T01:19:39.310Z",
+   "seen": "2026-11-05T01:40:31.478Z",
+   "handle": "adamscheftermirror.bsky.social",
+   "post": "at://did:plc:qre6zxbmr3ixhdmgsgdretb5/app.bsky.feed.post/3mzjp73zae32z",
+   "player": "Malachi Toney",
+   "team": null,
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.8,
+   "text": "Repost by @AdamSchefter\n\nSources: Malachi Toney has a high ankle sprain and will have surgery, which will allow him to return for the College Football Playoff. The timeline for return from this injury"
   }
  ]
 }
