@@ -6,7 +6,7 @@ import { darkLogoOf } from '../team-look';
 import { matchupName } from './game-menu';
 import { BetGroup, SportGroup, TableSorts, betValue, byGame, gamesBySport } from './desk-columns';
 import { DESK_HELP } from './desk-help';
-import { BotHistory, HISTORY_RANGES, HistoryRange, HistoryRow, ReplayRecordFile, VIG_TIP, bandSharesOf, beatText, beatTip, botHistoryOf, emptyRow, finalAtOf, isHistoryRange, recordText, vigText, withPending } from './replay-history';
+import { BotHistory, HISTORY_RANGES, HistoryRange, HistoryRow, ReplayRecordFile, VIG_TIP, bandSharesOf, beatText, beatTip, botHistoryOf, emptyRow, finalAtOf, isHistoryRange, moveText, moveTip, recordText, vigText, withPending } from './replay-history';
 import { DeskPanel, FindingsFile, findingsOf, ESPN_LEAGUES, SPORTS, deskPanelOpen, UNIT_WORDS, DeskEpoch, epochFor, countNowOf, deskEpochOf, edgeColorOf, isTracked, meterOf, propState, provisional, sideTextOf, sideTitleOf, splitOpenOf, toWin } from './desk-math';
 import { Board, Meter, ModelBet, ModelState, Settled } from './desk-model';
 import { SummaryBox, athleteTeam, liveStat } from './live-props';
@@ -114,6 +114,9 @@ export class ModelDeskComponent implements OnInit, OnDestroy {
   // (Beat close: the share that beat the fair close from BEAT_MIN bets, the count and mean return on hover, D56)
   readonly beatText = beatText;
   readonly beatTip = beatTip;
+  // (Beats the close since D106: the market's move, the share of the bets it went toward from BEAT_MIN, ties on hover)
+  readonly moveText = moveText;
+  readonly moveTip = moveTip;
   readonly vigText = vigText;
   readonly vigTip = VIG_TIP;
   readonly recordTip = recordTip;
@@ -202,7 +205,7 @@ export class ModelDeskComponent implements OnInit, OnDestroy {
   }
 
   beatFig(t: HistoryRow): { num: string; unit: string } {
-    const text = beatText(t);
+    const text = moveText(t);
     return text.endsWith('%') ? { num: text.slice(0, -1), unit: '%' } : { num: '-', unit: '' };
   }
 

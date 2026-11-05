@@ -66,7 +66,8 @@ export interface ModelBet {
   book?: string;
   fairFrom?: string;
   // (its closing-line value once its game has started: clv.mjs)
-  clv?: { pts: number | null; prob: number | null; ev: number | null; beat: boolean | null } | null;
+  // (q: the close's no-vig chance of its side at its line; beat: its own price against that, never the market's move)
+  clv?: { pts: number | null; prob: number | null; ev: number | null; beat: boolean | null; q?: number | null } | null;
 }
 
 export type TestNumbers = { maeMargin: number; maeTotal: number; winHit: number; winLogLoss: number };
@@ -393,6 +394,11 @@ export interface Tally {
   clvN: number;
   clvBeat: number | null;
   clvEv: number | null;
+  // (the market's move from the bet to the close (DECISIONS.md D106, replay-history.ts moveOf): the bets with one,
+  // how many it went their way and against them (the rest ties); the page's "beat the close")
+  mvN?: number;
+  mvToward?: number;
+  mvAgainst?: number;
 }
 
 // (a game in play as the scoreboard has it: home and away scores, whether it's over, and ESPN's state: not

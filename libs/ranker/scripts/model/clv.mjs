@@ -166,6 +166,32 @@ export function revalueClv(bet, sigma, dist, carryOf = () => null) {
   return true;
 }
 
+// The market's move on a bet (DECISIONS.md D106: what "beat the close" means on the page): whether the market went its
+// way from the bet to the close. A close at another line: the line's own way (clv.pts, the points it got better than
+// the close, its own side's way: over 0 the market moved toward the bet, under 0 against). A close at the bet's own
+// line (a moneyline, pts 0, or a market with no line): the close's no-vig chance of its side (clv.q) less the fair
+// chance when it bet (bet.fair), toward past CLV_TIE, against under -CLV_TIE, else a tie (the market didn't move).
+// { dir: 1 | -1 | 0, by (the fair's move, a same-line close's; null for a moved line) } or null (no close, no fair).
+// Apart from clv.beat and clv.ev (the bet's own price against the close: a shopped price is usually better than the
+// close's fair even when the market moved away), which the gates and the replay's bars still read
+export function moveOf(bet) {
+  const c = bet?.clv;
+  if (!c) return null;
+  if (fin(c.pts) && c.pts !== 0) return { dir: Math.sign(c.pts), by: null };
+  if (!fin(c.q) || !fin(bet.fair)) return null;
+  const by = round(c.q - bet.fair, 4);
+  return { dir: by > CLV_TIE ? 1 : by < -CLV_TIE ? -1 : 0, by };
+}
+// (the moves across bets: n with one, toward, against and tied; share the toward of the untied; by the mean move of
+// the same-line ones)
+export function moveSummary(bets) {
+  const m = bets.map(moveOf).filter(Boolean);
+  const toward = m.filter((x) => x.dir === 1).length;
+  const against = m.filter((x) => x.dir === -1).length;
+  const by = m.map((x) => x.by).filter(fin);
+  return { n: m.length, toward, against, tie: m.length - toward - against, share: toward + against ? round(toward / (toward + against), 4) : null, by: by.length ? round(by.reduce((s, x) => s + x, 0) / by.length, 4) : null };
+}
+
 // CLV across bets: how many have it (a price to compare: clv.prob), the share that beat the close of those that
 // didn't tie it, the ties' share, the mean points (spreads, totals, props), chance (prob: the CLV) and expected
 // return at the close (ev, the vig in it); out: the rows with a close and no CLV (a moved line not carried, no price)
@@ -177,5 +203,7 @@ export function clvSummary(bets) {
     return v.length ? round(v.reduce((s, x) => s + x, 0) / v.length, 4) : null;
   };
   const out = bets.filter((b) => b.clv && !fin(b.clv.prob)).length;
-  return { n: withClv.length, beat: decided.length ? round(decided.filter((b) => b.clv.beat).length / decided.length, 4) : null, tie: withClv.length ? round((withClv.length - decided.length) / withClv.length, 4) : null, pts: mean('pts'), prob: mean('prob'), ev: mean('ev'), ...(out ? { out } : {}) };
+  // (beat: the bet's own price against the close (clv.beat); moved: the market's move (moveOf, D106), the page's "beat
+  // the close")
+  return { n: withClv.length, moved: moveSummary(bets), beat: decided.length ? round(decided.filter((b) => b.clv.beat).length / decided.length, 4) : null, tie: withClv.length ? round((withClv.length - decided.length) / withClv.length, 4) : null, pts: mean('pts'), prob: mean('prob'), ev: mean('ev'), ...(out ? { out } : {}) };
 }

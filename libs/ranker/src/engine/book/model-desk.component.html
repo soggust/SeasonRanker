@@ -160,7 +160,7 @@
         <span class="bs-label">Return</span>
         @let figRoi = pctFig(h.overall.roi);<span class="bs-value bs-led">{{ figRoi.num }}@if (figRoi.unit) {<small class="bs-unit">{{ figRoi.unit }}</small>}</span>
       </div>
-      <div class="bs-tile" role="listitem" [attr.title]="beatTip(h.overall)">
+      <div class="bs-tile" role="listitem" [attr.title]="moveTip(h.overall)">
         <span class="bs-label">Beats the close</span>
         @let figBeat = beatFig(h.overall);<span class="bs-value bs-led">{{ figBeat.num }}@if (figBeat.unit) {<small class="bs-unit">{{ figBeat.unit }}</small>}</span>
       </div>
@@ -249,7 +249,7 @@
             @for (r of sportBars.rows; track r.row.label) {
               <li class="bs-mini-row" [style.--line]="'var(--line-' + r.row.sport + ')'" [attr.title]="recordTip(r.row) + ' · ' + units(r.row.profit) + ' · ROI ' + pct(r.row.roi)">
                 <span class="bs-mini-label"><span class="bs-mini-name"><ng-container *ngTemplateOutlet="leagueMark; context: { $implicit: r.row.sport, titled: false }"></ng-container>{{ (r.row.sport ?? r.row.label).toUpperCase() }}</span><small class="bs-mini-vig" [attr.title]="vigTip">Vig {{ vigText(r.row) }}</small></span>
-                <span class="bs-mini-mid"><span class="bs-mini-track" aria-hidden="true"><i class="bs-bar-zero" [style.left.%]="sportBars.zero"></i><i class="bs-mini-fill" [class.down]="!r.up" [style.left.%]="r.left" [style.width.%]="r.width"></i></span><small class="bs-mini-meta"><span [attr.title]="help['roi']">ROI <b [class.up]="(r.row.roi ?? 0) > 0" [class.down]="(r.row.roi ?? 0) < 0">{{ pct(r.row.roi) }}</b></span><span [attr.title]="beatTip(r.row)">Beats close <b>{{ beatText(r.row) }}</b></span></small></span>
+                <span class="bs-mini-mid"><span class="bs-mini-track" aria-hidden="true"><i class="bs-bar-zero" [style.left.%]="sportBars.zero"></i><i class="bs-mini-fill" [class.down]="!r.up" [style.left.%]="r.left" [style.width.%]="r.width"></i></span><small class="bs-mini-meta"><span [attr.title]="help['roi']">ROI <b [class.up]="(r.row.roi ?? 0) > 0" [class.down]="(r.row.roi ?? 0) < 0">{{ pct(r.row.roi) }}</b></span><span [attr.title]="moveTip(r.row)">Beats close <b>{{ moveText(r.row) }}</b></span></small></span>
                 <span class="bs-mini-val" [class.up]="r.row.profit > 0" [class.down]="r.row.profit < 0">{{ signedUnits(r.row.profit) }}<small>{{ recordFig(r.row) }}</small></span>
               </li>
             }
@@ -263,7 +263,7 @@
             @for (r of bandBars.rows; track r.row.label) {
               <li class="bs-mini-row" [ngClass]="'bs-band-' + r.row.label.toLowerCase()" [attr.title]="recordTip(r.row) + ' · ' + units(r.row.profit) + ' · ROI ' + pct(r.row.roi)">
                 <span class="bs-mini-label"><span class="bs-mini-name"><i class="bs-band-dot" aria-hidden="true"></i>{{ r.row.label === 'PASS' ? 'Passed' : r.row.label }}</span><small class="bs-mini-vig" [attr.title]="vigTip">Vig {{ vigText(r.row) }}</small></span>
-                <span class="bs-mini-mid"><span class="bs-mini-track" aria-hidden="true"><i class="bs-bar-zero" [style.left.%]="bandBars.zero"></i><i class="bs-mini-fill" [class.down]="!r.up" [style.left.%]="r.left" [style.width.%]="r.width"></i></span><small class="bs-mini-meta"><span [attr.title]="help['roi']">ROI <b [class.up]="(r.row.roi ?? 0) > 0" [class.down]="(r.row.roi ?? 0) < 0">{{ pct(r.row.roi) }}</b></span><span [attr.title]="beatTip(r.row)">Beats close <b>{{ beatText(r.row) }}</b></span></small></span>
+                <span class="bs-mini-mid"><span class="bs-mini-track" aria-hidden="true"><i class="bs-bar-zero" [style.left.%]="bandBars.zero"></i><i class="bs-mini-fill" [class.down]="!r.up" [style.left.%]="r.left" [style.width.%]="r.width"></i></span><small class="bs-mini-meta"><span [attr.title]="help['roi']">ROI <b [class.up]="(r.row.roi ?? 0) > 0" [class.down]="(r.row.roi ?? 0) < 0">{{ pct(r.row.roi) }}</b></span><span [attr.title]="moveTip(r.row)">Beats close <b>{{ moveText(r.row) }}</b></span></small></span>
                 <span class="bs-mini-val" [class.up]="r.row.profit > 0" [class.down]="r.row.profit < 0">{{ signedUnits(r.row.profit) }}<small>{{ recordFig(r.row) }}</small></span>
               </li>
             }
@@ -470,7 +470,7 @@
         <div class="group-body">
           <table class="desk-check-table">
             <thead>
-              <tr><th>Sport</th><th title="Staked edge bets graded">Bets</th><th title="Flat return a bet, live">Live</th><th title="What the replay's same rules returned on bets like these (by market and side)">Replay</th><th title="Live less the replay, in standard errors of the live bets (|z| 2 or more: amber, 3: red; under 30 bets: too few)">z</th><th title="Beat the fair close: a positive expected return at the close's no-vig (the replay's on the keys it checks)">Beat close</th><th title="The wins against the Bot's chance summed">Won / said</th></tr>
+              <tr><th>Sport</th><th title="Staked edge bets graded">Bets</th><th title="Flat return a bet, live">Live</th><th title="What the replay's same rules returned on bets like these (by market and side)">Replay</th><th title="Live less the replay, in standard errors of the live bets (|z| 2 or more: amber, 3: red; under 30 bets: too few)">z</th><th title="The bet's own price against the close: a positive expected return at the close's no-vig (the replay's on the keys it checks). Not whether the market moved its way">Price vs close</th><th title="The wins against the Bot's chance summed">Won / said</th></tr>
             </thead>
             <tbody>
               @for (c of checks; track c.sport) {

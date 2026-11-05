@@ -5,7 +5,7 @@
 // the live ledger's real bets on the games from the epoch on (the same algorithm, so they are the replay going
 // forward). No Angular here (tested under Node: tests/book-replay-history.test.mjs)
 import { ModelBet, Settled, Tally } from './desk-model';
-import { isTracked } from './desk-math';
+import { isTracked, moveOf } from './desk-math';
 import { compactRecord } from './bet-format';
 
 const fin = Number.isFinite;
@@ -27,6 +27,11 @@ export interface ReplayTally {
   // (the same bets paid at their fair no-vig chance, same results (replay-record.mjs fairProfitOf): the Vig column's
   // alone; none in a file from before it)
   fairProfit?: number;
+  // (the market's move on the bets placed before the close (D106, replay-record.mjs fairMoveOf): their way, against,
+  // and the bets with one, ties among them; none in a file from before it)
+  toward?: number;
+  against?: number;
+  mvN?: number;
 }
 export interface ReplayBet {
   id: string;
@@ -242,6 +247,11 @@ export function dailyTally(f: ReplayRecordFile, bands: string[], r: { from: stri
   // (the Vig column's gap: a file's buckets from before it have none)
   const vigAt = f.daily.cols?.indexOf('vig') ?? -1;
   let vigGap = 0;
+  // (the market's move (D106): a file's buckets from before it have none, its days none)
+  const colAt = (k: string): number => f.daily?.cols?.indexOf(k) ?? -1;
+  const mv = { toward: colAt('toward'), against: colAt('against'), n: colAt('mvN') };
+  const hasMv = mv.toward >= 0 && mv.against >= 0 && mv.n >= 0;
+  if (hasMv) Object.assign(t, { toward: 0, against: 0, mvN: 0 });
   for (const band of bands) {
     for (const [day, d] of Object.entries(f.daily.bands[band] ?? {})) {
       if (!inDays(day, r)) continue;
@@ -256,6 +266,12 @@ export function dailyTally(f: ReplayRecordFile, bands: string[], r: { from: stri
       t.beatN += beatN;
       clvSum += clv;
       if (vigAt >= 0) vigGap += Number(d.split(',')[vigAt]) || 0;
+      if (hasMv) {
+        const c = d.split(',');
+        t.toward = (t.toward ?? 0) + (Number(c[mv.toward]) || 0);
+        t.against = (t.against ?? 0) + (Number(c[mv.against]) || 0);
+        t.mvN = (t.mvN ?? 0) + (Number(c[mv.n]) || 0);
+      }
     }
   }
   if (vigAt >= 0) t.fairProfit = t.profit - vigGap;
@@ -268,7 +284,7 @@ export function dailyTally(f: ReplayRecordFile, bands: string[], r: { from: stri
 const BAND_LABELS: Record<string, string> = { lock: 'LOCK', high: 'LOVE', medium: 'LIKE', low: 'PASS' };
 const MARKET_LABELS: Record<string, string> = { lines: 'Game lines', props: 'Props' };
 
-export const emptyRow = (label: string): HistoryRow => ({ label, bets: 0, won: 0, lost: 0, push: 0, staked: 0, profit: 0, roi: null, open: 0, clvN: 0, clvBeat: null, clvEv: null, replayed: 0, live: 0, pending: 0 });
+export const emptyRow = (label: string): HistoryRow => ({ label, bets: 0, won: 0, lost: 0, push: 0, staked: 0, profit: 0, roi: null, open: 0, clvN: 0, clvBeat: null, clvEv: null, mvN: 0, mvToward: 0, mvAgainst: 0, replayed: 0, live: 0, pending: 0 });
 
 // Beat the fair close (DECISIONS.md D56), one definition for the replayed and the live bets: a bet placed before the
 // close beat it when its own price has a positive expected return at the close's no-vig fair chance, a close at the
@@ -312,6 +328,22 @@ export function vigText(t: Pick<HistoryRow, 'vigGap' | 'vigStaked'>): string {
   const r = Math.round(v * 1000) / 10;
   return r === 0 ? '0.0%' : `${r > 0 ? '+' : '−'}${Math.abs(r).toFixed(1)}%`;
 }
+// The market's move (DECISIONS.md D106, the owner's "beat the close" since 2026-11-05): of the bets with a close, the
+// share where the market went their way from the bet to the close (the line toward them, or the no-vig chance of their
+// side up), ties (no move) left out of the share and counted on the hover. Replaces the price-against-the-close share
+// (beatText: a shopped price is nearly always better than the close's fair, so it read 90%+ while the market moved
+// against the bets two times in three); that one stays for the decisions it pins. From BEAT_MIN bets with a move
+export function moveText(t: Pick<HistoryRow, 'mvN' | 'mvToward' | 'mvAgainst'>): string {
+  const n = (t.mvToward ?? 0) + (t.mvAgainst ?? 0);
+  return (t.mvN ?? 0) >= BEAT_MIN && n ? `${Math.round(((t.mvToward ?? 0) / n) * 100)}%` : '—';
+}
+export function moveTip(t: Pick<HistoryRow, 'mvN' | 'mvToward' | 'mvAgainst'>): string {
+  const n = t.mvN ?? 0;
+  if (!n) return 'No bets with a close yet';
+  const tie = n - (t.mvToward ?? 0) - (t.mvAgainst ?? 0);
+  return `How often the market moved toward the Bot's side between the bet and the close: ${(t.mvToward ?? 0).toLocaleString('en-US')} toward, ${(t.mvAgainst ?? 0).toLocaleString('en-US')} against, ${tie.toLocaleString('en-US')} with no move (left out of the share)${n < BEAT_MIN ? ` (the share from ${BEAT_MIN})` : ''}`;
+}
+
 export const VIG_TIP = "What the Book's margin cost (or best-price shopping gained): actual ROI minus ROI at fair prices.";
 
 // (a replay tally onto a row; a live bet onto a row: a graded one, never a void or tracked one. A file from before
@@ -333,6 +365,11 @@ function addReplay(row: HistoryRow, t: ReplayTally | null | undefined): HistoryR
     row.clvBeat = ((row.clvBeat ?? 0) * row.clvN + t.beat * t.beatN) / (row.clvN + t.beatN);
     row.clvEv = ((row.clvEv ?? 0) * row.clvN + t.clv * t.beatN) / (row.clvN + t.beatN);
     row.clvN += t.beatN;
+  }
+  if (t.mvN) {
+    row.mvN = (row.mvN ?? 0) + t.mvN;
+    row.mvToward = (row.mvToward ?? 0) + (t.toward ?? 0);
+    row.mvAgainst = (row.mvAgainst ?? 0) + (t.against ?? 0);
   }
   return row;
 }
@@ -358,6 +395,12 @@ function addLive(row: HistoryRow, b: ModelBet): HistoryRow {
     row.clvBeat = ((row.clvBeat ?? 0) * row.clvN + (ev > 0 ? 1 : 0)) / (row.clvN + 1);
     row.clvEv = ((row.clvEv ?? 0) * row.clvN + ev) / (row.clvN + 1);
     row.clvN++;
+  }
+  const mv = moveOf(b);
+  if (mv !== null) {
+    row.mvN = (row.mvN ?? 0) + 1;
+    if (mv === 1) row.mvToward = (row.mvToward ?? 0) + 1;
+    if (mv === -1) row.mvAgainst = (row.mvAgainst ?? 0) + 1;
   }
   return row;
 }

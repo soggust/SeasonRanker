@@ -125,7 +125,7 @@ test('the vig: under each sport and band on the Bot Stats charts, before the ret
   const charts = [...html.matchAll(/<figure class="bs-mini [\s\S]*?<\/figure>/g)].map((m) => m[0]);
   assert.equal(charts.length, 2);
   for (const c of charts) {
-    assert.ok(c.indexOf('vigText(r.row)') > 0 && c.indexOf('vigText(r.row)') < c.indexOf('ROI <b') && c.indexOf('ROI <b') < c.indexOf('beatText(r.row)'));
+    assert.ok(c.indexOf('vigText(r.row)') > 0 && c.indexOf('vigText(r.row)') < c.indexOf('ROI <b') && c.indexOf('ROI <b') < c.indexOf('moveText(r.row)'));
     assert.ok(c.includes('[attr.title]="vigTip"'));
   }
   assert.match(book.VIG_TIP, /What the Book's margin cost \(or best-price shopping gained\)/);

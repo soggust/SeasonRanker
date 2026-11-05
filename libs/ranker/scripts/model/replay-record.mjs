@@ -71,7 +71,9 @@ const BANDS = ['lock', 'high', 'medium'];
 // their mean expected return at the fair close)
 // (fairProfit: the same bets paid at their fair no-vig chance (bet.fair, its side's), same results: the Algorithm
 // tab's Vig column alone (the owner, 2026-10-26), display only; a bet without a fair chance adds its own profit, no gap)
-export const emptyTally = () => ({ bets: 0, won: 0, lost: 0, push: 0, staked: 0, profit: 0, roi: null, beat: 0, beatN: 0, clv: 0, fairProfit: 0 });
+// (toward, against, mvN: the market's move on the bets placed before the close (D106, fairMoveOf): how many it went
+// their way, against them, and how many had one, ties among them; the page's "beat the close")
+export const emptyTally = () => ({ bets: 0, won: 0, lost: 0, push: 0, staked: 0, profit: 0, roi: null, beat: 0, beatN: 0, clv: 0, fairProfit: 0, toward: 0, against: 0, mvN: 0 });
 export const fairProfitOf = (b) => (fin(b.fair) && b.fair > 0 && b.fair < 1 ? (b.res === 'W' ? b.units * (1 / b.fair - 1) : b.res === 'L' ? -b.units : 0) : null);
 export function addBet(t, b) {
   t.fairProfit = r4((t.fairProfit ?? 0) + (fairProfitOf(b) ?? b.profit));
@@ -84,6 +86,11 @@ export function addBet(t, b) {
     t.beatN++;
     t.beat += b.beat;
     t.clv += fin(b.clv) ? b.clv : 0;
+  }
+  if (b.mv === 1 || b.mv === -1 || b.mv === 0) {
+    t.mvN = (t.mvN ?? 0) + 1;
+    if (b.mv === 1) t.toward = (t.toward ?? 0) + 1;
+    if (b.mv === -1) t.against = (t.against ?? 0) + 1;
   }
   return t;
 }
@@ -189,6 +196,25 @@ export function fairBeatOf(x, over, odds, close) {
   const q = over ? close.f : 1 - close.f;
   const clv = r4(q * dec(odds) - 1);
   return { beat: clv > 0 ? 1 : 0, clv };
+}
+
+// The market's move on a bet placed before the close (DECISIONS.md D106, clv.mjs moveOf's for the replay): 1 where
+// the market went its way from the bet to the close, -1 against, 0 a tie (the fair moved CLV_TIE or less); a close
+// at another line by the line's own way (its side's points better than the close, as clv.pts: a spread's line is the
+// home's, a total's or prop's the over's), at the bet's own line the close's no-vig chance of its side
+// less the fair when it bet (fS). { dir, by (the fair's move; null for a moved line) } or null
+export const MOVE_TIE = 0.001;
+export function fairMoveOf(x, over, fS, close) {
+  if (!close) return null;
+  const same = x.market === 'ml' || (x.line == null && close.line == null) || close.line === x.line;
+  if (!same) {
+    if (!fin(close.line) || !fin(x.line)) return null;
+    const d = x.market === 'spread' ? x.line - close.line : close.line - x.line;
+    return { dir: Math.sign(over ? d : -d), by: null };
+  }
+  if (!fin(close.f) || close.f <= 0 || close.f >= 1 || !fin(fS)) return null;
+  const by = r4((over ? close.f : 1 - close.f) - fS);
+  return { dir: by > MOVE_TIE ? 1 : by < -MOVE_TIE ? -1 : 0, by };
 }
 
 // The bar's own place (D51): lines bets { season, profit, full? } (full: a barred bet's units, band and profit at its
@@ -476,7 +502,7 @@ export function replayRecord(V, sport, rows, { events = null, names = () => ({ h
           if (!barred) units = fullUnits;
         }
       }
-      const bet = betOf(x, sd, { units, band, practice: false, timing: placed.timing, fb: placed.timing === 'open' ? fairBeatOf(x, sd.over, sd.odds, placed.close) : null, names, survival: placed.s });
+      const bet = betOf(x, sd, { units, band, practice: false, timing: placed.timing, fb: placed.timing === 'open' ? fairBeatOf(x, sd.over, sd.odds, placed.close) : null, mv: placed.timing === 'open' ? fairMoveOf(x, sd.over, sd.fS, placed.close) : null, names, survival: placed.s });
       // (where a window placed it (D63): its hours before the start and the policy)
       if (placed.window) Object.assign(bet, { hours: r2(placed.hours), window: placed.window });
       // (a barred line keeps what it would have staked at full: the bar's own place below)
@@ -774,7 +800,7 @@ export function replayRecord(V, sport, rows, { events = null, names = () => ({ h
     const picked = rs.filter((r) => r.sd.edge > 0 && !r.marginHeld).sort((a, b) => b.sd.edge - a.sd.edge).slice(0, need);
     for (const r of picked) {
       r.practice = true;
-      (staked ? bets : tracked).push(betOf(r.x, r.sd, { units: practiceUnits, band: 'medium', practice: true, timing: r.x.kind === 'o' ? 'open' : 'close', fb: r.x.kind === 'o' ? fairBeatOf(r.x, r.sd.over, r.sd.odds, closes.get(r.x.key ?? r.x.id.replace(/:o$/, '')) ?? null) : null, names, survival: 1 }));
+      (staked ? bets : tracked).push(betOf(r.x, r.sd, { units: practiceUnits, band: 'medium', practice: true, timing: r.x.kind === 'o' ? 'open' : 'close', fb: r.x.kind === 'o' ? fairBeatOf(r.x, r.sd.over, r.sd.odds, closes.get(r.x.key ?? r.x.id.replace(/:o$/, '')) ?? null) : null, mv: r.x.kind === 'o' ? fairMoveOf(r.x, r.sd.over, r.sd.fS, closes.get(r.x.key ?? r.x.id.replace(/:o$/, '')) ?? null) : null, names, survival: 1 }));
     }
   }
   bets.sort((a, b) => a.t - b.t || a.id.localeCompare(b.id));
@@ -916,7 +942,7 @@ export function ownBar(bets, { verdict, key, practiceUnits = 0.5, flags = {} }) 
   return out;
 }
 
-function betOf(x, sd, { units, band, practice, timing, fb = null, names, survival, noAttr = false }) {
+function betOf(x, sd, { units, band, practice, timing, fb = null, mv = null, names, survival, noAttr = false }) {
   if (noAttr) x = { ...x, attr: null };
   const res = x.y === null || x.y === undefined ? 'P' : (x.y === 1) === sd.over ? 'W' : 'L';
   // (research only (REPLAY_ATTR, D72): the row's pieces of the edge on the bet's own side)
@@ -924,11 +950,11 @@ function betOf(x, sd, { units, band, practice, timing, fb = null, names, surviva
   if (x.attr) {
     const s = sd.over ? 1 : -1;
     const attr = Object.fromEntries(Object.entries(x.attr).map(([k, v]) => [k, Math.round(s * v * 1e5) / 1e5]));
-    return { ...betOf(x, sd, { units, band, practice, timing, fb, names, survival, noAttr: true }), attr, lam: r4(x.lam) };
+    return { ...betOf(x, sd, { units, band, practice, timing, fb, mv, names, survival, noAttr: true }), attr, lam: r4(x.lam) };
   }
   const profit = res === 'W' ? r2(units * (dec(sd.odds) - 1)) : res === 'L' ? -units : 0;
   const w = wordsOf(x, sd.over, names);
-  return { factsAt: fin(x.factsAt) ? x.factsAt : null, id: x.key ?? x.id, event: String(x.event), sport: x.sport, season: x.season, market: x.market, stat: x.stat, line: x.line ?? null, side: sd.over ? (x.market === 'prop' || x.market === 'total' ? 'over' : 'home') : x.market === 'prop' || x.market === 'total' ? 'under' : 'away', pick: w.pick, matchup: w.matchup, player: w.player, odds: sd.odds, ...(sd.book ? { book: sd.book } : {}), p: r4(sd.pS), fair: r4(sd.fS), kelly: r4(sd.kelly), band, practice, units, res, profit, timing, beat: fb ? fb.beat : null, clv: fb ? fb.clv : null, survival: r4(survival), t: x.t, at: fin(x.at) ? x.at : timing === 'open' ? x.t - 24 * 36e5 : x.t - 36e5 };
+  return { factsAt: fin(x.factsAt) ? x.factsAt : null, id: x.key ?? x.id, event: String(x.event), sport: x.sport, season: x.season, market: x.market, stat: x.stat, line: x.line ?? null, side: sd.over ? (x.market === 'prop' || x.market === 'total' ? 'over' : 'home') : x.market === 'prop' || x.market === 'total' ? 'under' : 'away', pick: w.pick, matchup: w.matchup, player: w.player, odds: sd.odds, ...(sd.book ? { book: sd.book } : {}), p: r4(sd.pS), fair: r4(sd.fS), kelly: r4(sd.kelly), band, practice, units, res, profit, timing, beat: fb ? fb.beat : null, clv: fb ? fb.clv : null, mv: mv ? mv.dir : null, survival: r4(survival), t: x.t, at: fin(x.at) ? x.at : timing === 'open' ? x.t - 24 * 36e5 : x.t - 36e5 };
 }
 
 // The file's content from the replayed bets (practice picks among them, flagged) and the rows that passed
@@ -1042,7 +1068,8 @@ export function summarize(sport, bets, passed, { epoch, now, flags, rows, season
 // a range without the bets; All time reads the whole file's tallies, so the buckets start at the newest bet's year (a
 // week before it, for a week across the turn of the year) and the file stays small
 // (vig: the profit less the fair-price profit of the day's bets with a fair chance (fairProfitOf), the Vig column's)
-export const DAILY_COLS = ['won', 'lost', 'push', 'staked', 'profit', 'beat', 'beatN', 'clv', 'vig'];
+// (toward, against, mvN: the market's move, D106, as the tallies')
+export const DAILY_COLS = ['won', 'lost', 'push', 'staked', 'profit', 'beat', 'beatN', 'clv', 'vig', 'toward', 'against', 'mvN'];
 
 // The bets settled before the daily buckets begin, a bucket an Eastern month by band (lock, high, medium; the
 // record's, never a practice pick or a pass): "won,lost,push,staked,profit". Bot Stats' units chart on All time (the
@@ -1075,7 +1102,7 @@ export function dailyOf(bets, settledAt = (b) => b.t + GAME_HOURS * 36e5, extra 
     const day = etDay(settledAt(b));
     if (day < from) continue;
     const band = b.band === 'pass' ? 'pass' : b.practice ? 'practice' : b.band;
-    const d = ((bands[band] ??= {})[day] ??= [0, 0, 0, 0, 0, 0, 0, 0, 0]);
+    const d = ((bands[band] ??= {})[day] ??= [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]);
     d[b.res === 'W' ? 0 : b.res === 'L' ? 1 : 2]++;
     d[3] = r2(d[3] + b.units);
     d[4] = r2(d[4] + b.profit);
@@ -1086,6 +1113,11 @@ export function dailyOf(bets, settledAt = (b) => b.t + GAME_HOURS * 36e5, extra 
     }
     const fp = fairProfitOf(b);
     if (fp !== null) d[8] = r4(d[8] + b.profit - fp);
+    if (b.mv === 1 || b.mv === -1 || b.mv === 0) {
+      d[11]++;
+      if (b.mv === 1) d[9]++;
+      if (b.mv === -1) d[10]++;
+    }
   }
   const text = (d) => {
     let n = d.length;

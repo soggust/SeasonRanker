@@ -39,6 +39,19 @@ export function atUnit(b: ModelBet): ModelBet {
 // (what a bet pays on top of its stake if it wins, at its American odds)
 export const toWin = (b: Pick<ModelBet, 'odds' | 'units'>): number => (b.odds > 0 ? (b.units * b.odds) / 100 : (b.units * 100) / -b.odds);
 
+// The market's move on a bet from when it bet to the close (DECISIONS.md D106; clv.mjs moveOf, the bettor's): a close at
+// another line by the line's own way (clv.pts: over 0 toward the bet), else the close's no-vig chance of its side
+// (clv.q) less the fair when it bet: 1 toward, -1 against, 0 a tie (MOVE_TIE or less); null with neither
+export const MOVE_TIE = 0.001;
+export function moveOf(b: Pick<ModelBet, 'clv' | 'fair'>): -1 | 0 | 1 | null {
+  const c = b.clv;
+  if (!c) return null;
+  if (typeof c.pts === 'number' && Number.isFinite(c.pts) && c.pts !== 0) return c.pts > 0 ? 1 : -1;
+  if (typeof c.q !== 'number' || !Number.isFinite(c.q) || typeof b.fair !== 'number' || !Number.isFinite(b.fair)) return null;
+  const by = Math.round((c.q - b.fair) * 1e4) / 1e4;
+  return by > MOVE_TIE ? 1 : by < -MOVE_TIE ? -1 : 0;
+}
+
 // A record of some bets: the graded ones won, lost and pushed, their units and return; the open ones counted;
 // and their closing-line value (the bets with a price CLV, clv.prob: the share of those not tied that beat the
 // close, the mean CLV, the bet's own price against the close's no-vig chance at its line; clvEv keeps its old name)
@@ -49,6 +62,11 @@ export function tally(label: string, bets: ModelBet[]): Tally {
   t.clvN = closes.length;
   t.clvBeat = decided.length ? decided.filter((c) => c.beat).length / decided.length : null;
   t.clvEv = mean(closes.map((c) => c.prob).filter((v): v is number => v !== null && v !== undefined));
+  // (the market's move on each bet, D106)
+  const moves = bets.map(moveOf).filter((m): m is -1 | 0 | 1 => m !== null);
+  t.mvN = moves.length;
+  t.mvToward = moves.filter((m) => m === 1).length;
+  t.mvAgainst = moves.filter((m) => m === -1).length;
   for (const b of bets) {
     if (b.status === 'open') {
       t.open++;
