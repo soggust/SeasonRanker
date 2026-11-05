@@ -142,6 +142,45 @@ export function codeOf(dir) {
 const decided = (b) => b.status === 'won' || b.status === 'lost' || b.status === 'push';
 const yOf = (b) => (b.status === 'won' ? 1 : b.status === 'lost' ? 0 : null);
 
+// (measuring only, DECISIONS.md D106's challenger: GATE_CONSENSUS_PULL=1 prices each ledger row against its fair pulled
+// toward the other books' consensus at its line (fairConsensus, oddsapi.mjs consensusOf: the median no-vig of the
+// books beside the desk's), fairP = fair + w (consensus - fair). w is self-tuned walk-forward by kind (props, game
+// lines): the slope of the close's move (clv.q - fair, a close at the row's own line) on the gap, over every sport's
+// rows whose game started PULL_LAG_H hours or more before the row was placed, clamped to [0, 1] and shrunk by
+// n / (n + PULL_N0). The row's book fair (f, the measures' baseline) is unchanged; only the version's price moves.
+// The priced history has no consensus (D74: the props' dense snapshots are hours from a placement), so it ties there)
+export const CONSENSUS_PULL = process.env.GATE_CONSENSUS_PULL === '1';
+export const PULL_N0 = 200;
+export const PULL_LAG_H = 4;
+const pullKind = (b) => (b.market === 'prop' ? 'prop' : 'line');
+export function pullWeights(ledgers, { n0 = PULL_N0, lagH = PULL_LAG_H } = {}) {
+  const rows = [];
+  for (const l of Object.values(ledgers)) for (const b of l?.bets ?? []) {
+    if (!b || b.void || !fin(b.fair) || !fin(b.fairConsensus) || !fin(b.clv?.q) || !(b.market === 'ml' || b.clv.pts === 0 || b.clv.pts === null)) continue;
+    const t = Date.parse(b.start);
+    if (fin(t)) rows.push({ kind: pullKind(b), t, x: b.fairConsensus - b.fair, y: b.clv.q - b.fair });
+  }
+  return (kind, at) => {
+    let sxy = 0;
+    let sxx = 0;
+    let n = 0;
+    for (const r of rows) if (r.kind === kind && r.t + lagH * 36e5 <= at) (sxy += r.x * r.y), (sxx += r.x * r.x), n++;
+    return sxx > 0 ? r4(Math.min(1, Math.max(0, sxy / sxx)) * (n / (n + n0))) : 0;
+  };
+}
+export function pulledFair(b, wAt) {
+  if (!fin(b.fair) || !fin(b.fairConsensus)) return b.fair;
+  const w = wAt(pullKind(b), Date.parse(b.placedAt ?? b.start));
+  return Math.min(0.999, Math.max(0.001, b.fair + w * (b.fairConsensus - b.fair)));
+}
+let pullW = null;
+const withPull = (list, ledgers) => {
+  if (!CONSENSUS_PULL) return list;
+  pullW ??= pullWeights(ledgers);
+  return list.map((b) => ({ ...b, fairP: pulledFair(b, pullW) }));
+};
+const fairP = (b) => (fin(b.fairP) ? b.fairP : b.fair);
+
 // Every sport's ledger props with a result or a close (bets and tracked rows), since PROP_FROM
 export function pricedProps(ledgers) {
   const out = [];
@@ -154,7 +193,7 @@ export function pricedProps(ledgers) {
       if (!decided(b) && !fin(b.clv?.q)) continue;
       out.push({ ...b, sport: b.sport ?? sport });
     }
-  return out.sort((a, b) => Date.parse(a.start) - Date.parse(b.start) || String(a.id).localeCompare(String(b.id)));
+  return withPull(out, ledgers).sort((a, b) => Date.parse(a.start) - Date.parse(b.start) || String(a.id).localeCompare(String(b.id)));
 }
 
 // A prop's row in the over's frame at the version's over chance pOver
@@ -295,13 +334,13 @@ export function pricePropsWalk(V, sport, all, mOf, { log = () => {} } = {}) {
     for (const b of today) {
       let pOver;
       if (fit) {
-        const x = V.correct.frameOf({ sport: b.sport, stat: b.propType, line: b.line, side: b.side, model: b.modelRaw, fair: b.fair, odds: b.odds, otherOdds: b.otherOdds, home: b.home, hours: (Date.parse(b.start) - Date.parse(b.placedAt ?? b.start)) / 36e5 });
+        const x = V.correct.frameOf({ sport: b.sport, stat: b.propType, line: b.line, side: b.side, model: b.modelRaw, fair: fairP(b), odds: b.odds, otherOdds: b.otherOdds, home: b.home, hours: (Date.parse(b.start) - Date.parse(b.placedAt ?? b.start)) / 36e5 });
         pOver = V.correct.correctedOver(fit, x);
       } else {
         // (the row as the residual model's ctx (residual.mjs; a version with desk.mjs chanceAt's hook reads it, an
         // older chanceAt ignores it): the side's frame, the bet's moment)
-        const ctx = { sport: b.sport, market: 'prop', stat: b.propType, line: b.line, side: b.side, f: b.fair, raw: b.modelRaw, overOdds: b.side === 'over' ? b.odds : b.otherOdds, underOdds: b.side === 'over' ? b.otherOdds : b.odds, t: Date.parse(b.start), at: Date.parse(b.placedAt ?? b.start), home: b.home ?? null, hours: (Date.parse(b.start) - Date.parse(b.placedAt ?? b.start)) / 36e5 };
-        const ps = V.desk.chanceAt('prop', b.fair, b.modelRaw, trustAt(b), ctx);
+        const ctx = { sport: b.sport, market: 'prop', stat: b.propType, line: b.line, side: b.side, f: fairP(b), raw: b.modelRaw, overOdds: b.side === 'over' ? b.odds : b.otherOdds, underOdds: b.side === 'over' ? b.otherOdds : b.odds, t: Date.parse(b.start), at: Date.parse(b.placedAt ?? b.start), home: b.home ?? null, hours: (Date.parse(b.start) - Date.parse(b.placedAt ?? b.start)) / 36e5 };
+        const ps = V.desk.chanceAt('prop', fairP(b), b.modelRaw, trustAt(b), ctx);
         pOver = b.side === 'over' ? ps : 1 - ps;
       }
       if (fin(pOver)) out.set(String(b.id), Math.min(0.999, Math.max(0.001, pOver)));
@@ -455,12 +494,12 @@ export async function scoreVersion(dir, sport, { refit = false, propsLayer = tru
   const ledgerTotals = (ledgerOf(sport).bets ?? []).filter((b) => b.market === 'total' && !b.void && (decided(b) || fin(b.clv?.q)) && fin(b.fair) && fin(b.model) && Date.parse(b.placedAt ?? b.start) >= Date.parse(V.leagues.MODEL_EPOCH ?? PROP_FROM));
   const trust = Object.fromEntries(MARKETS.map((m) => [m, m === 'total' && V.desk.trustStart ? V.desk.fitTrust(ledgerTotals, V.desk.trustStart('total')).trust : V.desk.fitTrust(V.backtest.trustBets(btRep.filter((b) => b.market === m)), 0.5).trust]));
   const evScale = fin(state.evScale) ? state.evScale : 0.08;
-  const ledgerLines = (ledgerOf(sport).bets ?? []).filter((b) => MARKETS.includes(b.market) && !b.void && (decided(b) || fin(b.clv?.q)) && fin(b.fair) && Date.parse(b.start) >= Date.parse(PROP_FROM)).map((b) => ({ ...b, sport }));
+  const ledgerLines = withPull((ledgerOf(sport).bets ?? []).filter((b) => MARKETS.includes(b.market) && !b.void && (decided(b) || fin(b.clv?.q)) && fin(b.fair) && Date.parse(b.start) >= Date.parse(PROP_FROM)).map((b) => ({ ...b, sport })), Object.fromEntries(SPORTS.map((s) => [s, ledgerOf(s)])));
   const linesAt = (list, expOf) =>
     V.backtest
       .repriced(list, expOf, params, shape)
       .map((b) => {
-        const p = V.desk.chanceAt(b.market, b.fair, b.model, trust[b.market] ?? 0.5, fin(b.named) ? { named: b.named } : null);
+        const p = V.desk.chanceAt(b.market, fairP(b), b.model, trust[b.market] ?? 0.5, fin(b.named) ? { named: b.named } : null);
         const x = lineRow({ ...b, when: b.when ?? null }, p);
         return { ...x, stake: stakesOf(V, x, evScale), src: b.when ? 'backtest' : 'ledger' };
       })

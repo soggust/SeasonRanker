@@ -2415,3 +2415,20 @@ test("D105 a passed CHECK leaves the page at once", async () => {
   const at = "2026-11-04T23:00:00Z";
   assert.equal(listedCheck({ hidden: true, passedAt: at, resolved: { as: "passed", at } }, new Date(at)), false);
 });
+
+test("D106 beat the close is the market's move; the off-market price discount measured and held, the live desk never prices off the consensus", async () => {
+  const decisions = fs.readFileSync(path.resolve("libs/ranker/scripts/model/DECISIONS.md"), "utf8");
+  assert.ok(decisions.includes("### D106."));
+  // (the page's figure: the market's move, ties out of the share; the old price share kept for D56 and D95's readers)
+  const { moveOf, clvSummary } = await import("../libs/ranker/scripts/model/clv.mjs");
+  assert.equal(moveOf({ fair: 0.5, clv: { pts: 0, q: 0.4951, beat: true } }).dir, -1, "a shopped price that beat the close while the market moved away reads against");
+  assert.ok("moved" in clvSummary([]) && "beat" in clvSummary([]));
+  const html = fs.readFileSync(path.resolve("libs/ranker/src/engine/book/model-desk.component.html"), "utf8").replace(/\r\n/g, "\n");
+  assert.ok(html.includes('[attr.title]="moveTip(h.overall)"') && !html.includes("beatText(r.row)"), "Bot Stats' Beats the close reads the move");
+  const ts = fs.readFileSync(path.resolve("libs/ranker/src/engine/book/model-desk.component.ts"), "utf8");
+  assert.match(ts, /beatFig\(t: HistoryRow\): \{ num: string; unit: string \} \{\s+const text = moveText\(t\);/);
+  // (the challenger stays a measuring flag of the gate; the live pricing reads no consensus (oddsapi.mjs: "the data's"))
+  const gate = fs.readFileSync(path.resolve("libs/ranker/scripts/model/gate.mjs"), "utf8");
+  assert.ok(gate.includes("process.env.GATE_CONSENSUS_PULL === '1'"));
+  for (const f of ["desk.mjs", "props.mjs", "run.mjs", "leagues.mjs"]) assert.ok(!fs.readFileSync(path.resolve("libs/ranker/scripts/model", f), "utf8").includes("CONSENSUS_PULL"), `${f} has no consensus pull`);
+});

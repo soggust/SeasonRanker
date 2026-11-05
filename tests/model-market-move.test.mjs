@@ -87,3 +87,18 @@ test('the page: Beats the close reads the move, the replay and the live bets joi
   assert.deepEqual([h.overall.mvN, h.overall.mvToward, h.overall.mvAgainst], [11, 4, 6]);
   assert.equal(h.overall.clvN, 11, 'the old price share still tallied');
 });
+
+test("the gate's consensus pull (measuring only, D106): w walk-forward from the closes' move on the gap, clamped, shrunk", async () => {
+  const { pullWeights, pulledFair, PULL_N0 } = await import('../libs/ranker/scripts/model/gate.mjs');
+  // (50 props whose close went half way to the consensus, games before the day; one after it unread)
+  const bets = Array.from({ length: 50 }, (_, i) => ({ market: 'prop', start: '2026-10-20T00:00:00Z', fair: 0.5, fairConsensus: 0.46 + (i % 5) * 0.01, clv: { pts: 0, q: 0.5 + ((0.46 + (i % 5) * 0.01) - 0.5) / 2 } }));
+  bets.push({ market: 'prop', start: '2026-10-25T00:00:00Z', fair: 0.5, fairConsensus: 0.4, clv: { pts: 0, q: 0.6 } });
+  const w = pullWeights({ nba: { bets } });
+  const at = Date.parse('2026-10-22T00:00:00Z');
+  assert.ok(Math.abs(w('prop', at) - 0.5 * (50 / (50 + PULL_N0))) < 1e-4);
+  assert.equal(w('line', at), 0, 'no lines: no pull');
+  assert.equal(w('prop', Date.parse('2026-10-19T00:00:00Z')), 0, 'nothing before');
+  const b = { market: 'prop', placedAt: '2026-10-22T00:00:00Z', fair: 0.5, fairConsensus: 0.45 };
+  assert.ok(Math.abs(pulledFair(b, w) - (0.5 - 0.05 * w('prop', at))) < 1e-9);
+  assert.equal(pulledFair({ ...b, fairConsensus: undefined }, w), 0.5, 'no consensus: the fair as it was');
+});
