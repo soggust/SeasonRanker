@@ -4,10 +4,10 @@
   "adamscheftermirror.bsky.social": "2026-11-05T18:29:38.095Z",
   "rapsheet.bsky.social": "2026-11-05T19:15:49.242Z",
   "nflnewsreposterbot.bsky.social": "2026-11-05T18:24:37.305Z",
-  "insidenflnews.bsky.social": "2026-11-05T20:23:00.387Z",
-  "nflnewsposter.bsky.social": "2026-11-05T20:14:09.550Z",
-  "rotoworld-fb.bsky.social": "2026-11-05T19:49:48.000Z",
-  "rotowirenfl.bsky.social": "2026-11-05T20:23:30.000Z"
+  "insidenflnews.bsky.social": "2026-11-05T20:27:08.448Z",
+  "nflnewsposter.bsky.social": "2026-11-05T20:42:42.362Z",
+  "rotoworld-fb.bsky.social": "2026-11-05T20:30:08.000Z",
+  "rotowirenfl.bsky.social": "2026-11-05T20:40:33.000Z"
  },
  "claims": [
   {
@@ -15167,6 +15167,19 @@
    "kind": "return",
    "confidence": 0.5,
    "text": "Saquon Barkley (hamstring/back) back at practice"
+  },
+  {
+   "id": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3mzlq2x7bib2s|kylemonangai|questionable|status",
+   "at": "2026-11-05T20:40:33.000Z",
+   "seen": "2026-11-05T20:43:57.807Z",
+   "handle": "rotowirenfl.bsky.social",
+   "post": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3mzlq2x7bib2s",
+   "player": "Kyle Monangai",
+   "team": null,
+   "status": "questionable",
+   "kind": "status",
+   "confidence": 0.35,
+   "text": "Kyle Monangai: Another DNP on Thursday \n\n https://www.rotowire.com/football/player/kyle-monangai-18520"
   }
  ]
 }
