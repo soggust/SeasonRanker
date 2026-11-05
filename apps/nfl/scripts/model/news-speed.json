@@ -14760,6 +14760,90 @@
     "own": "2026-11-05T21:26:47.000Z",
     "why": "@rotowirenfl.bsky.social: Jordyn Tyson: Remains limited Thursday \n\n https://www."
    }
+  },
+  "401873037|georgepickens|q": {
+   "game": "401873037",
+   "start": "2026-11-06T01:15Z",
+   "team": "33",
+   "name": "George Pickens",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-11-05T22:00:34.675Z",
+    "own": "2026-11-05T21:54:19.000Z",
+    "why": "@rotoworld-fb.bsky.social: George Pickens (hamstring) limited again Thursday"
+   }
+  },
+  "401873044|dariusalexander|q": {
+   "game": "401873044",
+   "start": "2026-11-08T18:00Z",
+   "team": "19",
+   "name": "Darius Alexander",
+   "status": "q",
+   "athlete": "4426542",
+   "espn": {
+    "seen": "2026-11-05T22:17:44.052Z",
+    "own": "2026-11-05T22:00:00.000Z"
+   }
+  },
+  "401873049|brendenschooler|q": {
+   "game": "401873049",
+   "start": "2026-11-08T21:25Z",
+   "team": "17",
+   "name": "Brenden Schooler",
+   "status": "q",
+   "athlete": "4047941",
+   "espn": {
+    "seen": "2026-11-05T22:17:44.052Z",
+    "own": "2026-11-05T21:55:00.000Z"
+   }
+  },
+  "401873049|marcusjones|q": {
+   "game": "401873049",
+   "start": "2026-11-08T21:25Z",
+   "team": "17",
+   "name": "Marcus Jones",
+   "status": "q",
+   "athlete": "4241720",
+   "espn": {
+    "seen": "2026-11-05T22:17:44.052Z",
+    "own": "2026-11-05T21:54:00.000Z"
+   }
+  },
+  "401873051|tyjohnson|q": {
+   "game": "401873051",
+   "start": "2026-11-10T01:15Z",
+   "team": "2",
+   "name": "Ty Johnson",
+   "status": "q",
+   "athlete": "3915411",
+   "espn": {
+    "seen": "2026-11-05T22:17:44.052Z",
+    "own": "2026-11-05T22:03:00.000Z"
+   }
+  },
+  "401873051|daltonkincaid|q": {
+   "game": "401873051",
+   "start": "2026-11-10T01:15Z",
+   "team": "2",
+   "name": "Dalton Kincaid",
+   "status": "q",
+   "athlete": "4385690",
+   "espn": {
+    "seen": "2026-11-05T22:17:44.052Z",
+    "own": "2026-11-05T22:03:00.000Z"
+   }
+  },
+  "401873051|keoncoleman|q": {
+   "game": "401873051",
+   "start": "2026-11-10T01:15Z",
+   "team": "2",
+   "name": "Keon Coleman",
+   "status": "q",
+   "athlete": "4635008",
+   "espn": {
+    "seen": "2026-11-05T22:17:44.052Z",
+    "own": "2026-11-05T22:03:00.000Z"
+   }
   }
  }
 }

@@ -1,7 +1,7 @@
 {
  "sport": "nba",
  "cursor": {
-  "rotowirenba.bsky.social": "2026-11-05T21:09:56.000Z",
+  "rotowirenba.bsky.social": "2026-11-05T22:15:50.000Z",
   "insidenbanews.bsky.social": "2026-11-04T00:05:57.726Z",
   "shamsbot.bsky.social": "2026-11-04T20:33:22.000Z"
  },
@@ -7844,6 +7844,58 @@
    "kind": "status",
    "confidence": 0.95,
    "text": "Payton Pritchard: Listed as questionable \n\n https://www.rotowire.com/basketball/player/payton-pritchard-5131"
+  },
+  {
+   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mzluslgnc62n|konknueppel|out|status",
+   "at": "2026-11-05T22:05:21.000Z",
+   "seen": "2026-11-05T22:20:33.483Z",
+   "handle": "rotowirenba.bsky.social",
+   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mzluslgnc62n",
+   "player": "Kon Knueppel",
+   "team": null,
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.95,
+   "text": "Kon Knueppel: Out with hamstring strain \n\n https://www.rotowire.com/basketball/player/kon-knueppel-6540"
+  },
+  {
+   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mzluxoqwrb2e|moussadiabate|questionable|status",
+   "at": "2026-11-05T22:08:12.000Z",
+   "seen": "2026-11-05T22:20:33.483Z",
+   "handle": "rotowirenba.bsky.social",
+   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mzluxoqwrb2e",
+   "player": "Moussa Diabate",
+   "team": null,
+   "status": "questionable",
+   "kind": "status",
+   "confidence": 0.95,
+   "text": "Moussa Diabate: Questionable for Friday \n\n https://www.rotowire.com/basketball/player/moussa-diabate-5708"
+  },
+  {
+   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mzlvalkaaf2v|jarrettallen|questionable|status",
+   "at": "2026-11-05T22:13:11.000Z",
+   "seen": "2026-11-05T22:20:33.483Z",
+   "handle": "rotowirenba.bsky.social",
+   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mzlvalkaaf2v",
+   "player": "Jarrett Allen",
+   "team": null,
+   "status": "questionable",
+   "kind": "status",
+   "confidence": 0.95,
+   "text": "Jarrett Allen: Questionable for Friday \n\n https://www.rotowire.com/basketball/player/jarrett-allen-4122"
+  },
+  {
+   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mzlvfdjko727|peytonwatson|questionable|status",
+   "at": "2026-11-05T22:15:50.000Z",
+   "seen": "2026-11-05T22:20:33.483Z",
+   "handle": "rotowirenba.bsky.social",
+   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mzlvfdjko727",
+   "player": "Peyton Watson",
+   "team": null,
+   "status": "questionable",
+   "kind": "status",
+   "confidence": 0.95,
+   "text": "Peyton Watson: Listed questionable for Friday \n\n https://www.rotowire.com/basketball/player/peyton-watson-5722"
   }
  ]
 }
