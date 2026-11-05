@@ -2,7 +2,7 @@
  "v": 1,
  "sport": "nfl",
  "epoch": "2026-10-26T15:00:00Z",
- "at": "2026-11-05T09:06:46.639Z",
+ "at": "2026-11-05T22:05:34.857Z",
  "from": "2020-09-11T00:20:00.000Z",
  "through": "2026-10-19T00:23:00.000Z",
  "n": {
@@ -23,7 +23,10 @@
   "beat": 0.6944,
   "beatN": 36,
   "clv": 0.012,
-  "fairProfit": 43.6889
+  "fairProfit": 43.6889,
+  "toward": 17,
+  "against": 14,
+  "mvN": 36
  },
  "practice": {
   "bets": 2413,
@@ -36,7 +39,10 @@
   "beat": null,
   "beatN": 0,
   "clv": null,
-  "fairProfit": -30.7293
+  "fairProfit": -30.7293,
+  "toward": 0,
+  "against": 0,
+  "mvN": 0
  },
  "pass": {
   "bets": 39738,
@@ -49,7 +55,10 @@
   "beat": null,
   "beatN": 0,
   "clv": null,
-  "fairProfit": 575.1108
+  "fairProfit": 575.1108,
+  "toward": 0,
+  "against": 0,
+  "mvN": 0
  },
  "byBand": {
   "lock": {
@@ -63,7 +72,10 @@
    "beat": null,
    "beatN": 0,
    "clv": null,
-   "fairProfit": 0
+   "fairProfit": 0,
+   "toward": 0,
+   "against": 0,
+   "mvN": 0
   },
   "high": {
    "bets": 0,
@@ -76,7 +88,10 @@
    "beat": null,
    "beatN": 0,
    "clv": null,
-   "fairProfit": 0
+   "fairProfit": 0,
+   "toward": 0,
+   "against": 0,
+   "mvN": 0
   },
   "medium": {
    "bets": 2995,
@@ -89,7 +104,10 @@
    "beat": 0.6944,
    "beatN": 36,
    "clv": 0.012,
-   "fairProfit": 43.6889
+   "fairProfit": 43.6889,
+   "toward": 17,
+   "against": 14,
+   "mvN": 36
   }
  },
  "byMarket": {
@@ -104,7 +122,10 @@
    "beat": 0.6944,
    "beatN": 36,
    "clv": 0.012,
-   "fairProfit": -28.5553
+   "fairProfit": -28.5553,
+   "toward": 17,
+   "against": 14,
+   "mvN": 36
   },
   "props": {
    "bets": 2302,
@@ -117,7 +138,10 @@
    "beat": null,
    "beatN": 0,
    "clv": null,
-   "fairProfit": 72.2442
+   "fairProfit": 72.2442,
+   "toward": 0,
+   "against": 0,
+   "mvN": 0
   }
  },
  "bySeason": [
@@ -135,6 +159,9 @@
    "beatN": 0,
    "clv": null,
    "fairProfit": -16.2633,
+   "toward": 0,
+   "against": 0,
+   "mvN": 0,
    "practice": {
     "bets": 88,
     "won": 44,
@@ -146,7 +173,10 @@
     "beat": null,
     "beatN": 0,
     "clv": null,
-    "fairProfit": 0.0458
+    "fairProfit": 0.0458,
+    "toward": 0,
+    "against": 0,
+    "mvN": 0
    },
    "lines": {
     "bets": 137,
@@ -159,7 +189,10 @@
     "beat": null,
     "beatN": 0,
     "clv": null,
-    "fairProfit": -16.2633
+    "fairProfit": -16.2633,
+    "toward": 0,
+    "against": 0,
+    "mvN": 0
    },
    "props": {
     "bets": 0,
@@ -172,7 +205,10 @@
     "beat": null,
     "beatN": 0,
     "clv": null,
-    "fairProfit": 0
+    "fairProfit": 0,
+    "toward": 0,
+    "against": 0,
+    "mvN": 0
    }
   },
   {
@@ -189,6 +225,9 @@
    "beatN": 0,
    "clv": null,
    "fairProfit": 8.9477,
+   "toward": 0,
+   "against": 0,
+   "mvN": 0,
    "practice": {
     "bets": 198,
     "won": 90,
@@ -200,7 +239,10 @@
     "beat": null,
     "beatN": 0,
     "clv": null,
-    "fairProfit": -8.7319
+    "fairProfit": -8.7319,
+    "toward": 0,
+    "against": 0,
+    "mvN": 0
    },
    "lines": {
     "bets": 108,
@@ -213,7 +255,10 @@
     "beat": null,
     "beatN": 0,
     "clv": null,
-    "fairProfit": 8.9477
+    "fairProfit": 8.9477,
+    "toward": 0,
+    "against": 0,
+    "mvN": 0
    },
    "props": {
     "bets": 0,
@@ -226,7 +271,10 @@
     "beat": null,
     "beatN": 0,
     "clv": null,
-    "fairProfit": 0
+    "fairProfit": 0,
+    "toward": 0,
+    "against": 0,
+    "mvN": 0
    }
   },
   {
@@ -243,6 +291,9 @@
    "beatN": 0,
    "clv": null,
    "fairProfit": -19.1495,
+   "toward": 0,
+   "against": 0,
+   "mvN": 0,
    "practice": {
     "bets": 159,
     "won": 59,
@@ -254,7 +305,10 @@
     "beat": null,
     "beatN": 0,
     "clv": null,
-    "fairProfit": -20.8124
+    "fairProfit": -20.8124,
+    "toward": 0,
+    "against": 0,
+    "mvN": 0
    },
    "lines": {
     "bets": 100,
@@ -267,7 +321,10 @@
     "beat": null,
     "beatN": 0,
     "clv": null,
-    "fairProfit": -19.1495
+    "fairProfit": -19.1495,
+    "toward": 0,
+    "against": 0,
+    "mvN": 0
    },
    "props": {
     "bets": 0,
@@ -280,7 +337,10 @@
     "beat": null,
     "beatN": 0,
     "clv": null,
-    "fairProfit": 0
+    "fairProfit": 0,
+    "toward": 0,
+    "against": 0,
+    "mvN": 0
    }
   },
   {
@@ -297,6 +357,9 @@
    "beatN": 36,
    "clv": 0.012,
    "fairProfit": -5.6482,
+   "toward": 17,
+   "against": 14,
+   "mvN": 36,
    "practice": {
     "bets": 591,
     "won": 296,
@@ -308,7 +371,10 @@
     "beat": null,
     "beatN": 0,
     "clv": null,
-    "fairProfit": -2.4368
+    "fairProfit": -2.4368,
+    "toward": 0,
+    "against": 0,
+    "mvN": 0
    },
    "lines": {
     "bets": 114,
@@ -321,7 +387,10 @@
     "beat": 0.6944,
     "beatN": 36,
     "clv": 0.012,
-    "fairProfit": -4.0527
+    "fairProfit": -4.0527,
+    "toward": 17,
+    "against": 14,
+    "mvN": 36
    },
    "props": {
     "bets": 269,
@@ -334,7 +403,10 @@
     "beat": null,
     "beatN": 0,
     "clv": null,
-    "fairProfit": -1.5955
+    "fairProfit": -1.5955,
+    "toward": 0,
+    "against": 0,
+    "mvN": 0
    }
   },
   {
@@ -351,6 +423,9 @@
    "beatN": 0,
    "clv": null,
    "fairProfit": -4.0701,
+   "toward": 0,
+   "against": 0,
+   "mvN": 0,
    "practice": {
     "bets": 820,
     "won": 384,
@@ -362,7 +437,10 @@
     "beat": null,
     "beatN": 0,
     "clv": null,
-    "fairProfit": -19.768
+    "fairProfit": -19.768,
+    "toward": 0,
+    "against": 0,
+    "mvN": 0
    },
    "lines": {
     "bets": 87,
@@ -375,7 +453,10 @@
     "beat": null,
     "beatN": 0,
     "clv": null,
-    "fairProfit": -3.8902
+    "fairProfit": -3.8902,
+    "toward": 0,
+    "against": 0,
+    "mvN": 0
    },
    "props": {
     "bets": 80,
@@ -388,7 +469,10 @@
     "beat": null,
     "beatN": 0,
     "clv": null,
-    "fairProfit": -0.1799
+    "fairProfit": -0.1799,
+    "toward": 0,
+    "against": 0,
+    "mvN": 0
    }
   },
   {
@@ -405,6 +489,9 @@
    "beatN": 0,
    "clv": null,
    "fairProfit": 55.4622,
+   "toward": 0,
+   "against": 0,
+   "mvN": 0,
    "practice": {
     "bets": 423,
     "won": 237,
@@ -416,7 +503,10 @@
     "beat": null,
     "beatN": 0,
     "clv": null,
-    "fairProfit": 19.4253
+    "fairProfit": 19.4253,
+    "toward": 0,
+    "against": 0,
+    "mvN": 0
    },
    "lines": {
     "bets": 110,
@@ -429,7 +519,10 @@
     "beat": null,
     "beatN": 0,
     "clv": null,
-    "fairProfit": -0.268
+    "fairProfit": -0.268,
+    "toward": 0,
+    "against": 0,
+    "mvN": 0
    },
    "props": {
     "bets": 1676,
@@ -442,7 +535,10 @@
     "beat": null,
     "beatN": 0,
     "clv": null,
-    "fairProfit": 55.7302
+    "fairProfit": 55.7302,
+    "toward": 0,
+    "against": 0,
+    "mvN": 0
    }
   },
   {
@@ -459,6 +555,9 @@
    "beatN": 0,
    "clv": null,
    "fairProfit": 24.4101,
+   "toward": 0,
+   "against": 0,
+   "mvN": 0,
    "practice": {
     "bets": 134,
     "won": 71,
@@ -470,7 +569,10 @@
     "beat": null,
     "beatN": 0,
     "clv": null,
-    "fairProfit": 1.5487
+    "fairProfit": 1.5487,
+    "toward": 0,
+    "against": 0,
+    "mvN": 0
    },
    "lines": {
     "bets": 37,
@@ -483,7 +585,10 @@
     "beat": null,
     "beatN": 0,
     "clv": null,
-    "fairProfit": 6.1207
+    "fairProfit": 6.1207,
+    "toward": 0,
+    "against": 0,
+    "mvN": 0
    },
    "props": {
     "bets": 277,
@@ -496,7 +601,10 @@
     "beat": null,
     "beatN": 0,
     "clv": null,
-    "fairProfit": 18.2894
+    "fairProfit": 18.2894,
+    "toward": 0,
+    "against": 0,
+    "mvN": 0
    }
   }
  ],
@@ -513,7 +621,10 @@
     "beat": null,
     "beatN": 0,
     "clv": null,
-    "fairProfit": -17.6763
+    "fairProfit": -17.6763,
+    "toward": 0,
+    "against": 0,
+    "mvN": 0
    },
    "practice": {
     "bets": 72,
@@ -526,7 +637,10 @@
     "beat": null,
     "beatN": 0,
     "clv": null,
-    "fairProfit": 0.0766
+    "fairProfit": 0.0766,
+    "toward": 0,
+    "against": 0,
+    "mvN": 0
    },
    "byBand": {
     "lock": {
@@ -540,7 +654,10 @@
      "beat": null,
      "beatN": 0,
      "clv": null,
-     "fairProfit": 0
+     "fairProfit": 0,
+     "toward": 0,
+     "against": 0,
+     "mvN": 0
     },
     "high": {
      "bets": 0,
@@ -553,7 +670,10 @@
      "beat": null,
      "beatN": 0,
      "clv": null,
-     "fairProfit": 0
+     "fairProfit": 0,
+     "toward": 0,
+     "against": 0,
+     "mvN": 0
     },
     "medium": {
      "bets": 128,
@@ -566,7 +686,10 @@
      "beat": null,
      "beatN": 0,
      "clv": null,
-     "fairProfit": -17.6763
+     "fairProfit": -17.6763,
+     "toward": 0,
+     "against": 0,
+     "mvN": 0
     }
    },
    "lines": {
@@ -580,7 +703,10 @@
     "beat": null,
     "beatN": 0,
     "clv": null,
-    "fairProfit": -17.6763
+    "fairProfit": -17.6763,
+    "toward": 0,
+    "against": 0,
+    "mvN": 0
    },
    "props": {
     "bets": 0,
@@ -593,7 +719,10 @@
     "beat": null,
     "beatN": 0,
     "clv": null,
-    "fairProfit": 0
+    "fairProfit": 0,
+    "toward": 0,
+    "against": 0,
+    "mvN": 0
    }
   },
   "2021": {
@@ -608,7 +737,10 @@
     "beat": null,
     "beatN": 0,
     "clv": null,
-    "fairProfit": 7.7685
+    "fairProfit": 7.7685,
+    "toward": 0,
+    "against": 0,
+    "mvN": 0
    },
    "practice": {
     "bets": 183,
@@ -621,7 +753,10 @@
     "beat": null,
     "beatN": 0,
     "clv": null,
-    "fairProfit": -6.289
+    "fairProfit": -6.289,
+    "toward": 0,
+    "against": 0,
+    "mvN": 0
    },
    "byBand": {
     "lock": {
@@ -635,7 +770,10 @@
      "beat": null,
      "beatN": 0,
      "clv": null,
-     "fairProfit": 0
+     "fairProfit": 0,
+     "toward": 0,
+     "against": 0,
+     "mvN": 0
     },
     "high": {
      "bets": 0,
@@ -648,7 +786,10 @@
      "beat": null,
      "beatN": 0,
      "clv": null,
-     "fairProfit": 0
+     "fairProfit": 0,
+     "toward": 0,
+     "against": 0,
+     "mvN": 0
     },
     "medium": {
      "bets": 101,
@@ -661,7 +802,10 @@
      "beat": null,
      "beatN": 0,
      "clv": null,
-     "fairProfit": 7.7685
+     "fairProfit": 7.7685,
+     "toward": 0,
+     "against": 0,
+     "mvN": 0
     }
    },
    "lines": {
@@ -675,7 +819,10 @@
     "beat": null,
     "beatN": 0,
     "clv": null,
-    "fairProfit": 7.7685
+    "fairProfit": 7.7685,
+    "toward": 0,
+    "against": 0,
+    "mvN": 0
    },
    "props": {
     "bets": 0,
@@ -688,7 +835,10 @@
     "beat": null,
     "beatN": 0,
     "clv": null,
-    "fairProfit": 0
+    "fairProfit": 0,
+    "toward": 0,
+    "against": 0,
+    "mvN": 0
    }
   },
   "2022": {
@@ -703,7 +853,10 @@
     "beat": null,
     "beatN": 0,
     "clv": null,
-    "fairProfit": -9.0392
+    "fairProfit": -9.0392,
+    "toward": 0,
+    "against": 0,
+    "mvN": 0
    },
    "practice": {
     "bets": 164,
@@ -716,7 +869,10 @@
     "beat": null,
     "beatN": 0,
     "clv": null,
-    "fairProfit": -18.2056
+    "fairProfit": -18.2056,
+    "toward": 0,
+    "against": 0,
+    "mvN": 0
    },
    "byBand": {
     "lock": {
@@ -730,7 +886,10 @@
      "beat": null,
      "beatN": 0,
      "clv": null,
-     "fairProfit": 0
+     "fairProfit": 0,
+     "toward": 0,
+     "against": 0,
+     "mvN": 0
     },
     "high": {
      "bets": 0,
@@ -743,7 +902,10 @@
      "beat": null,
      "beatN": 0,
      "clv": null,
-     "fairProfit": 0
+     "fairProfit": 0,
+     "toward": 0,
+     "against": 0,
+     "mvN": 0
     },
     "medium": {
      "bets": 99,
@@ -756,7 +918,10 @@
      "beat": null,
      "beatN": 0,
      "clv": null,
-     "fairProfit": -9.0392
+     "fairProfit": -9.0392,
+     "toward": 0,
+     "against": 0,
+     "mvN": 0
     }
    },
    "lines": {
@@ -770,7 +935,10 @@
     "beat": null,
     "beatN": 0,
     "clv": null,
-    "fairProfit": -9.0392
+    "fairProfit": -9.0392,
+    "toward": 0,
+    "against": 0,
+    "mvN": 0
    },
    "props": {
     "bets": 0,
@@ -783,7 +951,10 @@
     "beat": null,
     "beatN": 0,
     "clv": null,
-    "fairProfit": 0
+    "fairProfit": 0,
+    "toward": 0,
+    "against": 0,
+    "mvN": 0
    }
   },
   "2023": {
@@ -798,7 +969,10 @@
     "beat": 0.6944,
     "beatN": 36,
     "clv": 0.012,
-    "fairProfit": -13.0979
+    "fairProfit": -13.0979,
+    "toward": 17,
+    "against": 14,
+    "mvN": 36
    },
    "practice": {
     "bets": 530,
@@ -811,7 +985,10 @@
     "beat": null,
     "beatN": 0,
     "clv": null,
-    "fairProfit": -15.2833
+    "fairProfit": -15.2833,
+    "toward": 0,
+    "against": 0,
+    "mvN": 0
    },
    "byBand": {
     "lock": {
@@ -825,7 +1002,10 @@
      "beat": null,
      "beatN": 0,
      "clv": null,
-     "fairProfit": 0
+     "fairProfit": 0,
+     "toward": 0,
+     "against": 0,
+     "mvN": 0
     },
     "high": {
      "bets": 0,
@@ -838,7 +1018,10 @@
      "beat": null,
      "beatN": 0,
      "clv": null,
-     "fairProfit": 0
+     "fairProfit": 0,
+     "toward": 0,
+     "against": 0,
+     "mvN": 0
     },
     "medium": {
      "bets": 351,
@@ -851,7 +1034,10 @@
      "beat": 0.6944,
      "beatN": 36,
      "clv": 0.012,
-     "fairProfit": -13.0979
+     "fairProfit": -13.0979,
+     "toward": 17,
+     "against": 14,
+     "mvN": 36
     }
    },
    "lines": {
@@ -865,7 +1051,10 @@
     "beat": 0.6944,
     "beatN": 36,
     "clv": 0.012,
-    "fairProfit": -10.6812
+    "fairProfit": -10.6812,
+    "toward": 17,
+    "against": 14,
+    "mvN": 36
    },
    "props": {
     "bets": 224,
@@ -878,7 +1067,10 @@
     "beat": null,
     "beatN": 0,
     "clv": null,
-    "fairProfit": -2.4167
+    "fairProfit": -2.4167,
+    "toward": 0,
+    "against": 0,
+    "mvN": 0
    }
   },
   "2024": {
@@ -893,7 +1085,10 @@
     "beat": null,
     "beatN": 0,
     "clv": null,
-    "fairProfit": -3.3866
+    "fairProfit": -3.3866,
+    "toward": 0,
+    "against": 0,
+    "mvN": 0
    },
    "practice": {
     "bets": 783,
@@ -906,7 +1101,10 @@
     "beat": null,
     "beatN": 0,
     "clv": null,
-    "fairProfit": -12.7829
+    "fairProfit": -12.7829,
+    "toward": 0,
+    "against": 0,
+    "mvN": 0
    },
    "byBand": {
     "lock": {
@@ -920,7 +1118,10 @@
      "beat": null,
      "beatN": 0,
      "clv": null,
-     "fairProfit": 0
+     "fairProfit": 0,
+     "toward": 0,
+     "against": 0,
+     "mvN": 0
     },
     "high": {
      "bets": 0,
@@ -933,7 +1134,10 @@
      "beat": null,
      "beatN": 0,
      "clv": null,
-     "fairProfit": 0
+     "fairProfit": 0,
+     "toward": 0,
+     "against": 0,
+     "mvN": 0
     },
     "medium": {
      "bets": 198,
@@ -946,7 +1150,10 @@
      "beat": null,
      "beatN": 0,
      "clv": null,
-     "fairProfit": -3.3866
+     "fairProfit": -3.3866,
+     "toward": 0,
+     "against": 0,
+     "mvN": 0
     }
    },
    "lines": {
@@ -960,7 +1167,10 @@
     "beat": null,
     "beatN": 0,
     "clv": null,
-    "fairProfit": -5.7198
+    "fairProfit": -5.7198,
+    "toward": 0,
+    "against": 0,
+    "mvN": 0
    },
    "props": {
     "bets": 120,
@@ -973,7 +1183,10 @@
     "beat": null,
     "beatN": 0,
     "clv": null,
-    "fairProfit": 2.3332
+    "fairProfit": 2.3332,
+    "toward": 0,
+    "against": 0,
+    "mvN": 0
    }
   },
   "2025": {
@@ -988,7 +1201,10 @@
     "beat": null,
     "beatN": 0,
     "clv": null,
-    "fairProfit": 43.9489
+    "fairProfit": 43.9489,
+    "toward": 0,
+    "against": 0,
+    "mvN": 0
    },
    "practice": {
     "bets": 538,
@@ -1001,7 +1217,10 @@
     "beat": null,
     "beatN": 0,
     "clv": null,
-    "fairProfit": 20.8972
+    "fairProfit": 20.8972,
+    "toward": 0,
+    "against": 0,
+    "mvN": 0
    },
    "byBand": {
     "lock": {
@@ -1015,7 +1234,10 @@
      "beat": null,
      "beatN": 0,
      "clv": null,
-     "fairProfit": 0
+     "fairProfit": 0,
+     "toward": 0,
+     "against": 0,
+     "mvN": 0
     },
     "high": {
      "bets": 0,
@@ -1028,7 +1250,10 @@
      "beat": null,
      "beatN": 0,
      "clv": null,
-     "fairProfit": 0
+     "fairProfit": 0,
+     "toward": 0,
+     "against": 0,
+     "mvN": 0
     },
     "medium": {
      "bets": 1460,
@@ -1041,7 +1266,10 @@
      "beat": null,
      "beatN": 0,
      "clv": null,
-     "fairProfit": 43.9489
+     "fairProfit": 43.9489,
+     "toward": 0,
+     "against": 0,
+     "mvN": 0
     }
    },
    "lines": {
@@ -1055,7 +1283,10 @@
     "beat": null,
     "beatN": 0,
     "clv": null,
-    "fairProfit": 0.9973
+    "fairProfit": 0.9973,
+    "toward": 0,
+    "against": 0,
+    "mvN": 0
    },
    "props": {
     "bets": 1350,
@@ -1068,7 +1299,10 @@
     "beat": null,
     "beatN": 0,
     "clv": null,
-    "fairProfit": 42.9516
+    "fairProfit": 42.9516,
+    "toward": 0,
+    "against": 0,
+    "mvN": 0
    }
   },
   "2026": {
@@ -1083,7 +1317,10 @@
     "beat": null,
     "beatN": 0,
     "clv": null,
-    "fairProfit": 35.1715
+    "fairProfit": 35.1715,
+    "toward": 0,
+    "against": 0,
+    "mvN": 0
    },
    "practice": {
     "bets": 143,
@@ -1096,7 +1333,10 @@
     "beat": null,
     "beatN": 0,
     "clv": null,
-    "fairProfit": 0.8577
+    "fairProfit": 0.8577,
+    "toward": 0,
+    "against": 0,
+    "mvN": 0
    },
    "byBand": {
     "lock": {
@@ -1110,7 +1350,10 @@
      "beat": null,
      "beatN": 0,
      "clv": null,
-     "fairProfit": 0
+     "fairProfit": 0,
+     "toward": 0,
+     "against": 0,
+     "mvN": 0
     },
     "high": {
      "bets": 0,
@@ -1123,7 +1366,10 @@
      "beat": null,
      "beatN": 0,
      "clv": null,
-     "fairProfit": 0
+     "fairProfit": 0,
+     "toward": 0,
+     "against": 0,
+     "mvN": 0
     },
     "medium": {
      "bets": 658,
@@ -1136,7 +1382,10 @@
      "beat": null,
      "beatN": 0,
      "clv": null,
-     "fairProfit": 35.1715
+     "fairProfit": 35.1715,
+     "toward": 0,
+     "against": 0,
+     "mvN": 0
     }
    },
    "lines": {
@@ -1150,7 +1399,10 @@
     "beat": null,
     "beatN": 0,
     "clv": null,
-    "fairProfit": 5.7954
+    "fairProfit": 5.7954,
+    "toward": 0,
+    "against": 0,
+    "mvN": 0
    },
    "props": {
     "bets": 608,
@@ -1163,7 +1415,10 @@
     "beat": null,
     "beatN": 0,
     "clv": null,
-    "fairProfit": 29.3761
+    "fairProfit": 29.3761,
+    "toward": 0,
+    "against": 0,
+    "mvN": 0
    }
   }
  },
@@ -1251,7 +1506,10 @@
    "beat",
    "beatN",
    "clv",
-   "vig"
+   "vig",
+   "toward",
+   "against",
+   "mvN"
   ],
   "from": "2025-12-25",
   "bands": {
@@ -2678,7 +2936,7 @@
    }
   }
  },
- "commit": "831eb4ab",
+ "commit": "d98dc8e5",
  "note": "D105. A passed CHECK leaves the page at once (the owner, 2026-11-04: \"I still have one of the checks\"; \"yes please\" to never showing passed ones)",
  "inputs": {
   "v": 1,
@@ -2686,8 +2944,8 @@
   "code": {
    "props": "8cbb07134ab6",
    "games": "47aceba7d839",
-   "pricing": "21a99234ac74",
-   "record": "d1a6e3d01843",
+   "pricing": "b706945a4947",
+   "record": "fdec826e35bb",
    "harness": "a03d58481fe2",
    "residual": "a057b73daaf466cc",
    "tuned": "75ba5ef16d4ef1db"
@@ -2853,6 +3111,6 @@
     "want": 55
    }
   },
-  "hash": "3a7bb6ed8cf5a09d"
+  "hash": "dc91648cdfbb362f"
  }
 }

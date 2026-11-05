@@ -616,7 +616,7 @@
    "group": "watching",
    "sport": "mma",
    "ref": "D86",
-   "text": "History audit: 2026-11-05 nightly re-record held. the record guard refused: held: inputs shrank since the last record (its fingerprint): rep"
+   "text": "History audit: 2026-11-05 code re-record held. the record guard refused: held: inputs shrank since the last record (its fingerprint): replay"
   }
  ]
 }

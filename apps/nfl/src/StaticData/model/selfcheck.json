@@ -1,5 +1,5 @@
 {
- "at": "2026-11-05T09:24:23.587Z",
+ "at": "2026-11-05T22:22:50.056Z",
  "baseline": {
   "from": "2026-10-01",
   "to": "2026-10-29"
@@ -121,7 +121,7 @@
   },
   {
    "examples": [],
-   "headline": "ml trust: to 0 (0.05 to 0); 106 changelog entries this week",
+   "headline": "ml trust: to 0 (0.05 to 0); 101 changelog entries this week",
    "how": "the day's last state.json for 35 days (git), the week's start against now; the changelog's entries this week verbatim",
    "id": "C9",
    "metric": "changes",
@@ -139,9 +139,9 @@
     {
      "key": "changelog:Open bets priced again on news",
      "label": "Open bets priced again on news",
-     "n": 27,
+     "n": 22,
      "status": "watch",
-     "what": "27 changes this week"
+     "what": "22 changes this week"
     },
     {
      "from": 32,
@@ -1111,7 +1111,7 @@
      "key": "shadow:small",
      "lost": 88,
      "n": 186,
-     "open": 74,
+     "open": 95,
      "profit": -2.05,
      "push": 0,
      "won": 98
@@ -1692,7 +1692,7 @@
   },
   {
    "examples": [],
-   "headline": "Model files 4h old, 0 open bets overdue to grade; Odds API credits 739% left; 380 bets placed in a week of 14 games",
+   "headline": "Model files 3h old, 0 open bets overdue to grade; Odds API credits 738% left; 380 bets placed in a week of 14 games",
    "how": "the newest commit of the sport's model files, the open bets started 12 hours ago or more, The Odds API's credits (state.odds), the state's sources",
    "id": "C16",
    "metric": "ageH",
@@ -1700,8 +1700,8 @@
    "needs": null,
    "rows": [
     {
-     "ageH": 4,
-     "at": "2026-11-05T05:08:11Z",
+     "ageH": 3,
+     "at": "2026-11-05T19:22:29Z",
      "key": "files",
      "overdue": 0
     },
@@ -1709,8 +1709,8 @@
      "cycleEnd": "2026-12-01T00:02:39.102Z",
      "key": "credits",
      "monthly": 20000,
-     "remaining": 147748,
-     "share": 7.3874
+     "remaining": 147574,
+     "share": 7.3787
     },
     {
      "down": [],
@@ -1726,7 +1726,7 @@
    "tested": null,
    "threshold": "watch files 3h old with bets overdue, credits under 20%, a source down, or no bets in a week with games; flag 6h old with bets overdue, or credits under 10%",
    "title": "Ops",
-   "value": 4
+   "value": 3
   },
   {
    "examples": [
@@ -1959,7 +1959,7 @@
   },
   {
    "examples": [],
-   "headline": "1749 graded (945 bets, 804 CHECKs), 190 with a line moved since it opened: no difference past z 2.5 by the move's way or the lead time",
+   "headline": "1749 graded (945 bets, 804 CHECKs), 186 with a line moved since it opened: no difference past z 2.5 by the move's way or the lead time",
    "how": "every graded bet and CHECK: the line's move from its open to when it was bet, its side's way (a prop's line, a game's spread, total or moneyline chance, as C2; a prop's unmoved line by its fair chance's move, 2.5 points or more, where its open price was kept, since 2026-10-13: before that a prop's move is its line's alone, so 'unmoved' holds the ones the market moved by the price only, most of the NHL's at 0.5 and 1.5), the record against the Book's fair chance (overBook: won less the chance, a bet, weighted as zOf); by the hours before the start it was placed, the CLV chance (clvProb, its standard error clvSe) and the share that beat the close. Never applied: it says where to look",
    "id": "C19",
    "metric": "graded",
@@ -2083,28 +2083,28 @@
      "clvN": 0,
      "clvProb": null,
      "clvSe": null,
-     "e": 3.4534,
+     "e": 1.5574,
      "key": "CHECKs props: moved against",
-     "n": 7,
-     "overBook": 0.0781,
-     "profit": 0.399,
-     "roi": 0.057,
-     "w": 4,
-     "z": 0.4147
+     "n": 3,
+     "overBook": 0.1475,
+     "profit": 0.581,
+     "roi": 0.1937,
+     "w": 2,
+     "z": 0.512
     },
     {
      "beat": null,
      "clvN": 0,
      "clvProb": null,
      "clvSe": null,
-     "e": 3.4535,
+     "e": 1.4042,
      "key": "CHECKs props: unmoved",
-     "n": 7,
-     "overBook": 0.0781,
-     "profit": 0.257,
-     "roi": 0.0367,
-     "w": 4,
-     "z": 0.4151
+     "n": 3,
+     "overBook": -0.1347,
+     "profit": -1.074,
+     "roi": -0.358,
+     "w": 1,
+     "z": -0.4688
     },
     {
      "beat": null,
@@ -2333,24 +2333,24 @@
      "z": -0.7741
     },
     {
-     "e": 59.939,
+     "e": 60.9306,
      "key": "CHECKs: line far over, the Bot against it",
-     "n": 120,
-     "overBook": 0.0505,
-     "profit": 4.829,
-     "roi": 0.0402,
-     "w": 66,
-     "z": 1.1068
+     "n": 122,
+     "overBook": 0.0579,
+     "profit": 6.647,
+     "roi": 0.0545,
+     "w": 68,
+     "z": 1.2803
     },
     {
-     "e": 14.3304,
+     "e": 14.7306,
      "key": "CHECKs: line far under, the Bot against it",
-     "n": 29,
-     "overBook": -0.2183,
-     "profit": -13.657,
-     "roi": -0.4709,
+     "n": 30,
+     "overBook": -0.2244,
+     "profit": -14.657,
+     "roi": -0.4886,
      "w": 8,
-     "z": -2.3526
+     "z": -2.4608
     },
     {
      "e": 1.4865,
@@ -2363,14 +2363,14 @@
      "z": -0.5618
     },
     {
-     "e": 161.5127,
+     "e": 160.1209,
      "key": "CHECKs: line near the projection",
-     "n": 323,
-     "overBook": 0.0015,
-     "profit": -15.425,
-     "roi": -0.0478,
-     "w": 162,
-     "z": 0.0545
+     "n": 320,
+     "overBook": -0.0004,
+     "profit": -16.243,
+     "roi": -0.0508,
+     "w": 160,
+     "z": -0.0136
     }
    ],
    "status": "info",

@@ -1,5 +1,5 @@
 {
- "at": "2026-11-05T09:24:23.587Z",
+ "at": "2026-11-05T22:22:50.056Z",
  "baseline": {
   "from": "2026-10-01",
   "to": "2026-10-29"
@@ -103,7 +103,7 @@
   },
   {
    "examples": [],
-   "headline": "Model files 141h old, 0 open bets overdue to grade; Odds API credits 739% left; 0 bets placed in a week of 2 games",
+   "headline": "Model files 154h old, 0 open bets overdue to grade; Odds API credits 738% left; 0 bets placed in a week of 2 games",
    "how": "the newest commit of the sport's model files, the open bets started 12 hours ago or more, The Odds API's credits (state.odds), the state's sources",
    "id": "C16",
    "metric": "ageH",
@@ -111,7 +111,7 @@
    "needs": null,
    "rows": [
     {
-     "ageH": 141,
+     "ageH": 154,
      "at": "2026-10-30T12:19:04Z",
      "key": "files",
      "overdue": 0
@@ -120,8 +120,8 @@
      "cycleEnd": "2026-12-01T00:02:39.102Z",
      "key": "credits",
      "monthly": 20000,
-     "remaining": 147748,
-     "share": 7.3874
+     "remaining": 147550,
+     "share": 7.3775
     },
     {
      "down": [],
@@ -137,7 +137,7 @@
    "tested": null,
    "threshold": "watch files 3h old with bets overdue, credits under 20%, a source down, or no bets in a week with games; flag 6h old with bets overdue, or credits under 10%",
    "title": "Ops",
-   "value": 141
+   "value": 154
   },
   {
    "examples": [
@@ -1319,7 +1319,7 @@
  "sport": "mlb",
  "summary": {
   "flag": 1,
-  "headline": "All-player and selection bias: Hits Overs: the bets projected +0.08 off (mean - actual, 150 bets) against an all-player bias of -0.01; Ops: Model files 141h old, 0 open bets overdue to grade; Odds API credits 739% left; 0 bets placed in a week of 2 games",
+  "headline": "All-player and selection bias: Hits Overs: the bets projected +0.08 off (mean - actual, 150 bets) against an all-player bias of -0.01; Ops: Model files 154h old, 0 open bets overdue to grade; Odds API credits 738% left; 0 bets placed in a week of 2 games",
   "info": 4,
   "ok": 4,
   "partial": 0,
