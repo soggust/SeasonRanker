@@ -14592,6 +14592,18 @@
     "seen": "2026-11-05T05:06:53.938Z",
     "own": "2026-11-05T04:52:00.000Z"
    }
+  },
+  "401873037|samdarnold|out": {
+   "game": "401873037",
+   "start": "2026-11-06T01:15Z",
+   "team": "33",
+   "name": "Sam Darnold",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-05T15:47:44.897Z",
+    "own": "2026-11-05T15:41:52.000Z",
+    "why": "@rotowirenfl.bsky.social: Sam Darnold: Considered week-to-week \n\n https://www.ro"
+   }
   }
  }
 }
