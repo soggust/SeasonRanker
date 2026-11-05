@@ -20081,6 +20081,30 @@
     "own": "2026-11-05T02:05:00.000Z",
     "why": "@rotowirenba.bsky.social: DeMar DeRozan: Late scratch Wednesday \n\n https://www.r"
    }
+  },
+  "401909934|isaiahstewart|out": {
+   "game": "401909934",
+   "start": "2026-11-05T03:00Z",
+   "team": "23",
+   "name": "Isaiah Stewart",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-05T02:47:04.959Z",
+    "own": "2026-11-05T02:30:59.000Z",
+    "why": "@rotowirenba.bsky.social: Isaiah Stewart: Doubtful to return \n\n https://www.roto"
+   }
+  },
+  "401909935|isaiahstewart|out": {
+   "game": "401909935",
+   "start": "2026-11-05T03:30Z",
+   "team": "12",
+   "name": "Isaiah Stewart",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-05T02:47:04.959Z",
+    "own": "2026-11-05T02:30:59.000Z",
+    "why": "@rotowirenba.bsky.social: Isaiah Stewart: Doubtful to return \n\n https://www.roto"
+   }
   }
  }
 }
