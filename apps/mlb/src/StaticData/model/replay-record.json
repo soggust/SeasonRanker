@@ -2,7 +2,7 @@
  "v": 1,
  "sport": "mlb",
  "epoch": "2026-10-26T15:00:00Z",
- "at": "2026-11-05T03:35:39.272Z",
+ "at": "2026-11-05T09:22:23.090Z",
  "from": "2021-07-18T17:11:00.000Z",
  "through": "2026-10-16T00:00:00.000Z",
  "n": {
@@ -2648,7 +2648,7 @@
    }
   }
  },
- "commit": "0abb5aff",
+ "commit": "831eb4ab",
  "note": "D105. A passed CHECK leaves the page at once (the owner, 2026-11-04: \"I still have one of the checks\"; \"yes please\" to never showing passed ones)",
  "inputs": {
   "v": 1,

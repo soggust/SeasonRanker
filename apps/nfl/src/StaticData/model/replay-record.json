@@ -2,7 +2,7 @@
  "v": 1,
  "sport": "nfl",
  "epoch": "2026-10-26T15:00:00Z",
- "at": "2026-11-05T03:19:39.125Z",
+ "at": "2026-11-05T09:06:46.639Z",
  "from": "2020-09-11T00:20:00.000Z",
  "through": "2026-10-19T00:23:00.000Z",
  "n": {
@@ -2678,7 +2678,7 @@
    }
   }
  },
- "commit": "0abb5aff",
+ "commit": "831eb4ab",
  "note": "D105. A passed CHECK leaves the page at once (the owner, 2026-11-04: \"I still have one of the checks\"; \"yes please\" to never showing passed ones)",
  "inputs": {
   "v": 1,
