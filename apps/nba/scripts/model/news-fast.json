@@ -1,7 +1,7 @@
 {
  "sport": "nba",
  "cursor": {
-  "rotowirenba.bsky.social": "2026-11-05T03:44:43.000Z",
+  "rotowirenba.bsky.social": "2026-11-05T05:17:08.000Z",
   "insidenbanews.bsky.social": "2026-11-04T00:05:57.726Z",
   "shamsbot.bsky.social": "2026-11-04T20:33:22.000Z"
  },
@@ -7805,6 +7805,19 @@
    "kind": "status",
    "confidence": 0.85,
    "text": "Jarrett Allen: Doesn't return Wednesday \n\n https://www.rotowire.com/basketball/player/jarrett-allen-4122"
+  },
+  {
+   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mzjyu2mgv52q|vitkrejci|out|status",
+   "at": "2026-11-05T04:12:26.000Z",
+   "seen": "2026-11-05T05:22:49.752Z",
+   "handle": "rotowirenba.bsky.social",
+   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mzjyu2mgv52q",
+   "player": "Vit Krejci",
+   "team": null,
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.8,
+   "text": "Vit Krejci: Won't return Wednesday \n\n https://www.rotowire.com/basketball/player/vit-krejci-5233"
   }
  ]
 }

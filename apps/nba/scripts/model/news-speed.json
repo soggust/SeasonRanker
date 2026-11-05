@@ -20105,6 +20105,198 @@
     "own": "2026-11-05T02:30:59.000Z",
     "why": "@rotowirenba.bsky.social: Isaiah Stewart: Doubtful to return \n\n https://www.roto"
    }
+  },
+  "401909936|jordangoodwin|out": {
+   "game": "401909936",
+   "start": "2026-11-06T02:00Z",
+   "team": "21",
+   "name": "Jordan Goodwin",
+   "status": "out",
+   "athlete": "4278402",
+   "espn": {
+    "seen": "2026-11-05T05:13:38.231Z",
+    "own": "2026-11-05T01:04:00.000Z"
+   }
+  },
+  "401909936|rasheerfleming|out": {
+   "game": "401909936",
+   "start": "2026-11-06T02:00Z",
+   "team": "21",
+   "name": "Rasheer Fleming",
+   "status": "out",
+   "athlete": "5105977",
+   "espn": {
+    "seen": "2026-11-05T05:13:38.231Z",
+    "own": "2026-11-04T20:17:00.000Z"
+   }
+  },
+  "401909936|markwilliams|out": {
+   "game": "401909936",
+   "start": "2026-11-06T02:00Z",
+   "team": "21",
+   "name": "Mark Williams",
+   "status": "out",
+   "athlete": "4701232",
+   "espn": {
+    "seen": "2026-11-05T05:13:38.231Z",
+    "own": "2026-09-11T16:03:00.000Z"
+   }
+  },
+  "401909936|nicclaxton|out": {
+   "game": "401909936",
+   "start": "2026-11-06T02:00Z",
+   "team": "21",
+   "name": "Nic Claxton",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-04T23:17:25.660Z",
+    "own": "2026-11-04T22:34:39.000Z",
+    "why": "@rotowirenba.bsky.social: Nic Claxton: Won't return from absence Wednesday \n\n ht"
+   }
+  },
+  "401909936|jalenjohnson|out": {
+   "game": "401909936",
+   "start": "2026-11-06T02:00Z",
+   "team": "21",
+   "name": "Jalen Johnson",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-04T23:17:25.660Z",
+    "own": "2026-11-04T23:05:23.000Z",
+    "why": "@rotowirenba.bsky.social: Jalen Johnson: Out again Wednesday \n\n https://www.roto"
+   }
+  },
+  "401909936|treymurphy|out": {
+   "game": "401909936",
+   "start": "2026-11-06T02:00Z",
+   "team": "21",
+   "name": "Trey Murphy",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-04T23:17:25.660Z",
+    "own": "2026-11-04T23:10:27.000Z",
+    "why": "@rotowirenba.bsky.social: Trey Murphy: Won't play Wednesday \n\n https://www.rotow"
+   }
+  },
+  "401909936|jalensmith|out": {
+   "game": "401909936",
+   "start": "2026-11-06T02:00Z",
+   "team": "21",
+   "name": "Jalen Smith",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-05T01:40:31.478Z",
+    "own": "2026-11-05T01:35:00.000Z",
+    "why": "@rotowirenba.bsky.social: Jalen Smith: Won't return Wednesday \n\n https://www.rot"
+   }
+  },
+  "401909936|demarderozan|out": {
+   "game": "401909936",
+   "start": "2026-11-06T02:00Z",
+   "team": "21",
+   "name": "DeMar DeRozan",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-05T02:22:57.257Z",
+    "own": "2026-11-05T02:05:00.000Z",
+    "why": "@rotowirenba.bsky.social: DeMar DeRozan: Late scratch Wednesday \n\n https://www.r"
+   }
+  },
+  "401909936|isaiahstewart|out": {
+   "game": "401909936",
+   "start": "2026-11-06T02:00Z",
+   "team": "21",
+   "name": "Isaiah Stewart",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-05T02:47:04.959Z",
+    "own": "2026-11-05T02:30:59.000Z",
+    "why": "@rotowirenba.bsky.social: Isaiah Stewart: Doubtful to return \n\n https://www.roto"
+   }
+  },
+  "401909936|paytonpritchard|out": {
+   "game": "401909936",
+   "start": "2026-11-06T02:00Z",
+   "team": "21",
+   "name": "Payton Pritchard",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-05T03:47:40.055Z",
+    "own": "2026-11-05T02:56:42.000Z",
+    "why": "@rotowirenba.bsky.social: Payton Pritchard: Doesn't return Wednesday \n\n https://"
+   }
+  },
+  "401909936|jarrettallen|out": {
+   "game": "401909936",
+   "start": "2026-11-06T02:00Z",
+   "team": "21",
+   "name": "Jarrett Allen",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-05T03:47:40.055Z",
+    "own": "2026-11-05T03:36:47.000Z",
+    "why": "@rotowirenba.bsky.social: Jarrett Allen: Doesn't return Wednesday \n\n https://www"
+   }
+  },
+  "401909936|jonathanisaac|out": {
+   "game": "401909936",
+   "start": "2026-11-06T02:00Z",
+   "team": "19",
+   "name": "Jonathan Isaac",
+   "status": "out",
+   "athlete": "4065654",
+   "espn": {
+    "seen": "2026-11-05T05:13:38.231Z",
+    "own": "2026-11-02T15:22:00.000Z"
+   }
+  },
+  "401909936|jalensuggs|out": {
+   "game": "401909936",
+   "start": "2026-11-06T02:00Z",
+   "team": "19",
+   "name": "Jalen Suggs",
+   "status": "out",
+   "athlete": "4432165",
+   "espn": {
+    "seen": "2026-11-05T05:13:38.231Z",
+    "own": "2026-10-26T18:44:00.000Z"
+   }
+  },
+  "401909936|paolobanchero|out": {
+   "game": "401909936",
+   "start": "2026-11-06T02:00Z",
+   "team": "19",
+   "name": "Paolo Banchero",
+   "status": "out",
+   "athlete": "4432573",
+   "espn": {
+    "seen": "2026-11-05T05:13:38.231Z",
+    "own": "2026-10-24T16:47:00.000Z"
+   }
+  },
+  "401909936|noahpenda|out": {
+   "game": "401909936",
+   "start": "2026-11-06T02:00Z",
+   "team": "19",
+   "name": "Noah Penda",
+   "status": "out",
+   "athlete": "5214637",
+   "espn": {
+    "seen": "2026-11-05T05:13:38.231Z",
+    "own": "2026-10-17T22:19:00.000Z"
+   }
+  },
+  "401909936|izaiyahnelson|out": {
+   "game": "401909936",
+   "start": "2026-11-06T02:00Z",
+   "team": "19",
+   "name": "Izaiyah Nelson",
+   "status": "out",
+   "athlete": "5107251",
+   "espn": {
+    "seen": "2026-11-05T05:13:38.231Z",
+    "own": "2026-09-28T21:33:00.000Z"
+   }
   }
  }
 }
