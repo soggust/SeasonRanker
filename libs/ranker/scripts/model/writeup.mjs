@@ -891,7 +891,7 @@ export function plainOf(sheet) {
   if (check) {
     // (said plainly: a big Kelly on the model's own number has won at about the book's rate (2026-10, 509 of
     // them at +10 or more), and the gap's CHECKs lost far more than they won). Big only where it is: a role's at
-    // the CHECK bar or over (checks.mjs CHECK_KELLY), never a news CHECK's (one at any Kelly)
+    // the CHECK bar or over (checks.mjs CHECK_KELLY), never a news CHECK's (its own words)
     const big = fin(sheet.price?.checkKellyPct) && sheet.price.checkKellyPct >= CHECK_KELLY * 100;
     risk = bet.checkCause === 'news' ? "The news on his team is a change the market prices faster than the Bot reads it from the logs, so the Bot's own number isn't value by itself." : bet.checkCause === 'role' ? `${big ? 'A big Kelly on the Bot' : 'The Bot'}'s own number isn't value by itself: such numbers have won at about the Book's rate, and a role change is news the market prices faster than the Bot reads it.` : 'A gap that size has more often been the Bot missing something than an edge: the gap CHECKs lost far more than they won, so it is not bet.';
   } else {

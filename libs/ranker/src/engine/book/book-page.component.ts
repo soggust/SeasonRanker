@@ -1061,7 +1061,7 @@ export class BookPageComponent implements OnInit, OnDestroy {
       const k = this.checkKelly(r);
       const chances = `the Bot ${r.chance ?? '–'}%, the Book's ${Number.isFinite(r.fair) ? Math.round(r.fair! * 100) : '–'}%`;
       if (this.passed(r)) return `Passed · no longer a CHECK: ${r.resolved?.why ?? 'under the CHECK bar now'} (${chances})`;
-      // (too big to bet blind only where it is: at the bar or over; a news CHECK's held for the news, at any Kelly)
+      // (too big to bet blind only where it is: at the bar or over; a news CHECK's held for the news, over the bar too since D104)
       const kText = k === null ? 'the Bot' : `a ${betScoreText(k * 100)} Kelly with its doubt cleared`;
       const held = r.checkCause === 'news' ? 'held for the news' : k !== null && this.checkBar !== null && k >= this.checkBar ? 'too big to bet blind' : 'kept for a look';
       return `CHECK · ${kText}, ${held}: ${this.checkCauseText(r).toLowerCase()} (${chances})`;

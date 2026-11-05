@@ -1,7 +1,7 @@
 // The CHECK rule (libs/ranker/scripts/model/checks.mjs shadowOf, 2026-10-12, the owner's "CHECKs should be for
 // crazy value, not inappropriate math"): a gap's skip a PASS kept as a shadow, a role's a CHECK only at a cleared
 // Kelly of +1 or more (2026-10-18: checkKelly, the stake's Kelly at the chance it'd be bet at with its doubt
-// answered, never the model's own number; else a shadow, 'small'), the news's always; the shadows graded but out of everything a
+// answered, never the model's own number; else a shadow, 'small'), the news's the same (D104, 2026-11-04); the shadows graded but out of everything a
 // CHECK acts on (the page, the board's marks, the research, the notes, the re-pricing, the tallies but their own),
 // and a shown one that turns a shadow passed, its price frozen. The board and the run judge it alike.
 import { test } from 'node:test';
@@ -22,7 +22,7 @@ const NEWS = { skip: true, kind: 'news', news: 'offense', why: 'news (offense): 
 // (Ty Johnson's receptions under 1.5 at +139: the model's 57.45% against the book's 39.47%, priced at a trust of 0.5)
 const prop = (over = {}) => ({ id: '401:prop:rec:9', event: '401', sport: 'nfl', start: '2026-10-10T17:00:00Z', placedAt: '2026-10-09T11:00:00Z', matchup: 'BUF @ NYJ', market: 'prop', propType: 'rec', statLabel: 'Receptions', player: 'Ty Johnson', athlete: 9, team: 2, side: 'under', line: 1.5, odds: 139, otherOdds: -170, model: 0.5745, fair: 0.3947, p: 0.42, ev: 0, units: 0.5, intent: 'action', pick: 'Ty Johnson Under 1.5 Receptions', trust: 0.5, projection: { mean: 1.48, implied: 2.2, fairOver: 0.6, record: 10.5 }, status: 'open', profit: 0, ...over });
 
-test('shadowOf: the gap a PASS always; a role a CHECK only at a cleared Kelly of +1 or more; the news always a CHECK', () => {
+test('shadowOf: the gap a PASS always; a role or news a CHECK only at a cleared Kelly of +1 or more', () => {
   assert.deepEqual(CHECK_RULE, { kelly: 0.01 });
   assert.equal(CHECK_KELLY, 0.01);
   // (the model's Kelly: picks.mjs kellyOf at the price and the model's chance)
@@ -42,7 +42,9 @@ test('shadowOf: the gap a PASS always; a role a CHECK only at a cleared Kelly of
   // (no price or chance to judge it by: a shadow, never a confident CHECK)
   assert.equal(shadowOf({ cause: 'role', odds: null, model: 0.7 }).passAs, 'small');
   assert.equal(shadowOf({ cause: 'role', odds: 100, model: 0.7 }).passAs, 'small');
-  assert.equal(shadowOf({ cause: 'news', odds: -110, model: 0.51, fair: 0.5 }), null);
+  // (the news held to the same bar (D104): under it a shadow, over it a CHECK)
+  assert.equal(shadowOf({ cause: 'news', odds: -110, model: 0.51, fair: 0.5 }).passAs, 'small');
+  assert.equal(shadowOf({ cause: 'news', odds: 139, model: 0.5745, fair: 0.3947, trust: 0.5, line: 1.5 }), null);
   // (at the bar exactly (+100, the book's 50%, the model's 51% at a trust of 0.5: 50.5%, a Kelly of 0.01): a CHECK)
   assert.equal(shadowOf({ cause: 'role', odds: 100, model: 0.51, fair: 0.5, trust: 0.5 }), null);
   assert.equal(shadowOf({ cause: 'role', odds: 100, model: 0.5098, fair: 0.5, trust: 0.5 }).passAs, 'small');
@@ -56,8 +58,10 @@ test("checkOf: a shadow marked hidden with its passAs and words; a shown one as 
   assert.deepEqual([small.hidden, small.passAs, small.cause], [true, 'small', 'role']);
   const big = checkOf(prop(), ROLE);
   assert.deepEqual([big.hidden, big.passAs], [undefined, undefined]);
+  // (the news under the bar a shadow too, over it shown (D104))
   const news = checkOf(prop({ odds: -110, model: 0.51 }), NEWS);
-  assert.equal(news.hidden, undefined);
+  assert.deepEqual([news.hidden, news.passAs, news.cause], [true, 'small', 'news']);
+  assert.equal(checkOf(prop(), NEWS).hidden, undefined);
 });
 
 test('a shown CHECK that turns a shadow: passed, its price frozen as shown, shown in that state a while; back over the bar, written as any CHECK', () => {
@@ -174,13 +178,13 @@ test('the board and the run judge a prop alike: a check band exactly where the r
   }
 });
 
-test("a role at an assumed -110 (no real price): a shadow, never a CHECK on a made-up price; the news's still a CHECK", () => {
+test("a role or news at an assumed -110 (no real price): a shadow, never a CHECK on a made-up price", () => {
   const sh = shadowOf({ cause: 'role', odds: 139, model: 0.5745, fair: 0.3947, oddsAssumed: true });
   assert.equal(sh.passAs, 'small');
   assert.match(sh.why, /no real price/);
   assert.equal(checkOf(prop({ oddsAssumed: true }), ROLE).hidden, true);
   assert.equal(checkOf(prop({ oddsAssumed: false }), ROLE).hidden, undefined);
-  assert.equal(shadowOf({ cause: 'news', odds: -110, model: 0.6, oddsAssumed: true }), null);
+  assert.equal(shadowOf({ cause: 'news', odds: -110, model: 0.6, oddsAssumed: true }).passAs, 'small');
 });
 
 test('a passed CHECK that closes and trips again: opened again as a plain shadow, graded in its byPassAs', () => {
@@ -216,15 +220,15 @@ test('the stored CHECKs judged by the rule (rejudgeChecks): one from before it, 
   const checks = [gap, small, big, news, graded, old];
   assert.ok(listedCheck(gap, now));
   const passed = rejudgeChecks(checks, now);
-  assert.deepEqual(passed.map((c) => c.id), ['gap', 'small', 'old']);
+  assert.deepEqual(passed.map((c) => c.id), ['gap', 'small', 'news', 'old'], 'the news under the bar passed too (D104)');
   assert.deepEqual([gap.hidden, gap.passAs, gap.resolved.as, gap.passedAt, gap.odds], [true, 'gap', 'passed', now.toISOString(), 139]);
-  assert.deepEqual([small.passAs, big.hidden, news.hidden, graded.hidden, old.passAs], ['small', undefined, undefined, undefined, 'gap']);
+  assert.deepEqual([small.passAs, big.hidden, news.hidden, graded.hidden, old.passAs], ['small', undefined, true, undefined, 'gap']);
   // (listed in its passed state a while, then gone; never a CHECK the page shows)
   assert.ok(listedCheck(gap, later(1)));
   assert.ok(!listedCheck(gap, new Date(now.getTime() + PASSED_SHOWN)));
   const listed = Object.fromEntries(buildPicks('nfl', { bets: [], checks }, {}, new Map(), later(1)).checks.map((c) => [c.id, c.resolved?.as ?? null]));
-  assert.deepEqual(listed, { big: null, news: null, gap: 'passed', small: 'passed', old: 'passed' });
-  assert.ok(!buildPicks('nfl', { bets: [], checks }, {}, new Map(), new Date(now.getTime() + PASSED_SHOWN + 1)).checks.some((c) => ['gap', 'small', 'old'].includes(c.id)));
+  assert.deepEqual(listed, { big: null, news: 'passed', gap: 'passed', small: 'passed', old: 'passed' });
+  assert.ok(!buildPicks('nfl', { bets: [], checks }, {}, new Map(), new Date(now.getTime() + PASSED_SHOWN + 1)).checks.some((c) => ['gap', 'small', 'news', 'old'].includes(c.id)));
   // (judged once: a second pass passes none)
   assert.deepEqual(rejudgeChecks(checks, later(1)), []);
   // (the research never pays for one the rule passes, judged from its own fields though not yet passed)

@@ -65,8 +65,9 @@
 //   rule     (2026-10-12, the owner's: "CHECKs should be for crazy value, not inappropriate math") a guard's skip is
 //            a CHECK the page shows only where it's worth a person's look (shadowOf, the one rule run.mjs and the
 //            board both read): a role's at a model Kelly of CHECK_KELLY or more on the model's own side (picks.mjs
-//            kellyOf at its price and the model's chance, untrusted), the news's always (an uncertainty hold, not
-//            a value call). The gap's never: the gap CHECKs went 18-35 (34% against the book's 49%, -17.7u) over
+//            kellyOf at its price and the model's chance, untrusted), the news's the same since 2026-11-04 (D104: was
+//            always, an uncertainty hold; those under the bar went 58-61, -8.06u, the owner: "they just seem like
+//            bad value"). The gap's never: the gap CHECKs went 18-35 (34% against the book's 49%, -17.7u) over
 //            their first four days, the model missing something, not value. Each of those a PASS, not bet, kept
 //            as a shadow (hidden: true; passAs 'gap' or 'small', passWhy its words): graded as any CHECK so the
 //            rule can be checked again (the small role CHECKs went 61-45, +8.2u, the best group, and the owner's
@@ -93,7 +94,7 @@ import { REPRICE_BY } from './timing.mjs';
 // (the most CHECK picks the page shows a sport, the biggest cleared Kelly first)
 export const CHECK_TOP = 20;
 
-// (the CHECK bar: a role CHECK only at this cleared Kelly or more on the model's own side (checkKelly), published
+// (the CHECK bar: a role or news CHECK (D104) only at this cleared Kelly or more on the model's own side (checkKelly), published
 // in picks.json (checkRule), the page reading it from there. Was +10 on the model's own Kelly (the owner's, 10-12);
 // 2026-10-18 judged by the cleared chance's (the audit: a +31.73 Kelly on the model's own number is the raw
 // model's overconfidence, not value), which tops out near +2 (the lean held to half the GAP, at the trust): +1,
@@ -119,7 +120,7 @@ export function checkKelly({ market = 'prop', odds, model, fair, trust, line } =
 const kellyText = (k) => `${k >= 0 ? '+' : '-'}${Math.abs(k * 100).toFixed(2)}`;
 
 // Whether a guard's skip (cause: causeOf's) is a shadow, not a CHECK the page shows (the rule above): null (a
-// CHECK), else { passAs, why }: 'gap' (the gap's, always), 'small' (a role's under CHECK_KELLY, or with no
+// CHECK), else { passAs, why }: 'gap' (the gap's, always), 'small' (a role's or a news one's (D104) under CHECK_KELLY, or with no
 // Kelly to judge it by: an assumed -110's (oddsAssumed) a made-up price, judged as none). odds, model, fair: the
 // model's side's price and chances; market, trust, line: its cleared Kelly's (checkKelly)
 export function shadowOf({ cause, odds, model, fair, oddsAssumed = false, market = 'prop', trust = null, line = null }) {
@@ -127,7 +128,7 @@ export function shadowOf({ cause, odds, model, fair, oddsAssumed = false, market
     const pts = Number.isFinite(model) && Number.isFinite(fair) ? Math.round(Math.abs(model - fair) * 100) : null;
     return { passAs: 'gap', why: `the Bot is ${pts === null ? 'far' : `${pts} points`} off the Book with nothing to explain it; that is usually the Bot missing something` };
   }
-  if (cause === 'role') {
+  if (cause === 'role' || cause === 'news') {
     if (oddsAssumed) return { passAs: 'small', why: 'no real price to judge it by (an assumed -110): under the CHECK bar' };
     const k = checkKelly({ market, odds, model, fair, trust, line });
     if (k === null || !(k >= CHECK_KELLY)) return { passAs: 'small', why: k === null ? 'no Kelly to judge it by: under the CHECK bar' : `a ${kellyText(k)} Kelly with the doubt cleared (the Bot's own ${Math.round(model * 100)}%): under the CHECK bar (+${(CHECK_KELLY * 100).toFixed(0)})` };

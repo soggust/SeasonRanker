@@ -2396,3 +2396,13 @@ test("D103 round T: trends and within-season drift measured, nothing ships; the 
   const findings = JSON.parse(fs.readFileSync(path.resolve("apps/nfl/src/StaticData/model/findings.json"), "utf8"));
   assert.ok(findings.entries.some((e) => e.ref === "D103"));
 });
+
+test("D104 a news CHECK clears the CHECK bar as a role one does: under +1 a shadow", async () => {
+  const { shadowOf, CHECK_KELLY } = await import("../libs/ranker/scripts/model/checks.mjs");
+  const decisions = fs.readFileSync(path.resolve("libs/ranker/scripts/model/DECISIONS.md"), "utf8");
+  assert.ok(decisions.includes("### D104."));
+  assert.equal(CHECK_KELLY, 0.01);
+  // (the Rice CHECK as shown, NYJ @ KC 2026-11-08: a -5.67 cleared Kelly, a shadow now)
+  assert.equal(shadowOf({ cause: "news", odds: -112, model: 0.5023, fair: 0.5011, trust: 5, line: 60.5 }).passAs, "small");
+  assert.equal(shadowOf({ cause: "news", odds: 139, model: 0.5745, fair: 0.3947, trust: 0.5, line: 1.5 }), null);
+});

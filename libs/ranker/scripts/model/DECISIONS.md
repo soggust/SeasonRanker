@@ -1601,3 +1601,11 @@ Resolved 2026-10-18:
 - **Gate (D22):** nothing priced moved (the flag's code reverted). Not an epoch change (D4). No re-record.
 - **Never:** a trend or month term on the seasons it was picked on; a term shipped on a gate's SHIP that rests on one line while its own units are worse; a fixed-weight term where the soft-terms rule asks for a shrunk one.
 - **Tests:** `tests/model-decisions.test.mjs` D103 (`project.mjs` has no `TREND_TERM`; the entry's there).
+
+### D104. A news CHECK clears the same +1 bar as a role one (the owner, 2026-11-04: "why do i have 3 checks ? they just seem like bad value?")
+- **Date:** 2026-11-04.
+- **What showed:** three NFL CHECKs (Rashee Rice Under 60.5 Rec Yds, Patrick Mahomes Under 246.5 Pass Yds and Under 32.5 Pass Att, NYJ @ KC) at cleared Kelly -5.67, -7.10 and -7.53. One Chiefs offense headline made every KC offensive prop a news CHECK: since D20 the news's were shown at any Kelly (an uncertainty hold), the +1 bar a role's alone.
+- **Measured:** every shown, graded news CHECK, all sports, at 1u: under the bar 58-61, -8.06u; at +1 or over 1-0, +0.87u. Under the bar they lose a little, crowd the page and spend research.
+- **Rule (`checks.mjs shadowOf`):** a news CHECK is a CHECK only at a cleared Kelly of `CHECK_KELLY` (+1) or more, as a role's (an assumed -110 a shadow too); under it a shadow (`passAs` 'small'), graded as any, out of the page, the research, the notes and the re-pricing. The stored ones are judged again at each run's start (`rejudgeChecks`), so the three pass on the next run and show as passed for `PASSED_SHOWN`.
+- **Bets:** none change: a news CHECK under the bar, researched and cleared, is priced at the same cleared chance and passes. No epoch, no history re-record (the replay has no CHECKs: D22's tie for live-only code).
+- **Tests:** `tests/model-check-rule.test.mjs` (the news at and under the bar, at an assumed -110), `tests/model-decisions.test.mjs` D104.
