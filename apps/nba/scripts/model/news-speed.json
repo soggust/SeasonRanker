@@ -20465,6 +20465,30 @@
     "own": "2026-11-05T04:12:26.000Z",
     "why": "@rotowirenba.bsky.social: Vit Krejci: Won't return Wednesday \n\n https://www.roto"
    }
+  },
+  "401909936|jordangoodwin|q": {
+   "game": "401909936",
+   "start": "2026-11-06T02:00Z",
+   "team": "21",
+   "name": "Jordan Goodwin",
+   "status": "q",
+   "athlete": "4278402",
+   "espn": {
+    "seen": "2026-11-05T15:17:53.559Z",
+    "own": "2026-11-05T15:04:00.000Z"
+   }
+  },
+  "401909936|rasheerfleming|q": {
+   "game": "401909936",
+   "start": "2026-11-06T02:00Z",
+   "team": "21",
+   "name": "Rasheer Fleming",
+   "status": "q",
+   "athlete": "5105977",
+   "espn": {
+    "seen": "2026-11-05T15:17:53.559Z",
+    "own": "2026-11-05T15:04:00.000Z"
+   }
   }
  }
 }

@@ -2,9 +2,9 @@
  "sport": "nhl",
  "cursor": {
   "johnston-bot.bsky.social": "2026-11-05T13:22:36.429Z",
-  "notfriedgehnic.bsky.social": "2026-11-04T19:11:40.482Z",
-  "dailyfaceoff.bsky.social": "2026-11-05T14:19:36.000Z",
-  "dfotoronto.bsky.social": "2026-11-05T13:06:58.000Z",
+  "notfriedgehnic.bsky.social": "2026-11-05T14:32:27.304Z",
+  "dailyfaceoff.bsky.social": "2026-11-05T15:04:57.000Z",
+  "dfotoronto.bsky.social": "2026-11-05T15:09:01.000Z",
   "marklazerus.bsky.social": "2026-11-05T13:38:54.637Z"
  },
  "claims": [
@@ -1606,6 +1606,19 @@
    "kind": "role",
    "confidence": 0.7,
    "text": "Maple Leafs lineup news: Jack Roslovic receives maintenance day, Vinni Lettieri takes reps on 1st line"
+  },
+  {
+   "id": "at://did:plc:knaj2vcp4x6t7hr7ewd6e3uz/app.bsky.feed.post/3mzl5k4xtc42e|johntavares|active|return",
+   "at": "2026-11-05T15:09:01.000Z",
+   "seen": "2026-11-05T15:19:39.886Z",
+   "handle": "dfotoronto.bsky.social",
+   "post": "at://did:plc:knaj2vcp4x6t7hr7ewd6e3uz/app.bsky.feed.post/3mzl5k4xtc42e",
+   "player": "John Tavares",
+   "team": "TOR",
+   "status": "active",
+   "kind": "return",
+   "confidence": 0.3,
+   "text": "Nick Paul looking forward to playing with John Tavares ahead of veteran’s hopeful return vs. Canadiens"
   }
  ]
 }
