@@ -1,13 +1,13 @@
 {
  "sport": "nfl",
  "cursor": {
-  "adamscheftermirror.bsky.social": "2026-11-05T17:44:35.571Z",
+  "adamscheftermirror.bsky.social": "2026-11-05T18:29:38.095Z",
   "rapsheet.bsky.social": "2026-11-04T19:45:56.406Z",
-  "nflnewsreposterbot.bsky.social": "2026-11-04T21:51:29.738Z",
+  "nflnewsreposterbot.bsky.social": "2026-11-05T18:24:37.305Z",
   "insidenflnews.bsky.social": "2026-11-05T16:46:47.218Z",
-  "nflnewsposter.bsky.social": "2026-11-05T16:21:39.124Z",
-  "rotoworld-fb.bsky.social": "2026-11-05T16:59:41.000Z",
-  "rotowirenfl.bsky.social": "2026-11-05T18:04:00.000Z"
+  "nflnewsposter.bsky.social": "2026-11-05T18:26:37.102Z",
+  "rotoworld-fb.bsky.social": "2026-11-05T18:29:13.000Z",
+  "rotowirenfl.bsky.social": "2026-11-05T18:10:44.000Z"
  },
  "claims": [
   {
@@ -14920,6 +14920,123 @@
    "kind": "status",
    "confidence": 0.8,
    "text": "Lynch: Mike Evans (Achilles), Deebo Samuel (hamstring) unlikely to be available Week 9."
+  },
+  {
+   "id": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3mzlhp2tbib25|deshaunwatson|questionable|status",
+   "at": "2026-11-05T18:10:44.000Z",
+   "seen": "2026-11-05T18:30:31.240Z",
+   "handle": "rotowirenfl.bsky.social",
+   "post": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3mzlhp2tbib25",
+   "player": "Deshaun Watson",
+   "team": null,
+   "status": "questionable",
+   "kind": "status",
+   "confidence": 0.3,
+   "text": "Deshaun Watson: Missing another practice \n\n https://www.rotowire.com/football/player/deshaun-watson-11712"
+  },
+  {
+   "id": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3mzlhxmwsoa2p|garrettwilson|questionable|status",
+   "at": "2026-11-05T18:15:31.000Z",
+   "seen": "2026-11-05T18:30:31.240Z",
+   "handle": "rotoworld-fb.bsky.social",
+   "post": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3mzlhxmwsoa2p",
+   "player": "Garrett Wilson",
+   "team": "NYJ",
+   "status": "questionable",
+   "kind": "status",
+   "confidence": 0.5,
+   "text": "Garrett Wilson (concussion) not at practice again"
+  },
+  {
+   "id": "at://did:plc:rx22hq465sfe5g2qyyf5gzu2/app.bsky.feed.post/3mzlihuyepc2x|carsonwentz|active|starting",
+   "at": "2026-11-05T18:24:37.305Z",
+   "seen": "2026-11-05T18:30:31.240Z",
+   "handle": "nflnewsreposterbot.bsky.social",
+   "post": "at://did:plc:rx22hq465sfe5g2qyyf5gzu2/app.bsky.feed.post/3mzlihuyepc2x",
+   "player": "Carson Wentz",
+   "team": "MIN",
+   "status": "active",
+   "kind": "starting",
+   "confidence": 0.9,
+   "text": "Adam Schefter: Just in: Vikings QB Carson Wentz will start Monday night’s game vs. the Buffalo Bills while Kyler Murray deals with what the team has called a “sore hamstring.”"
+  },
+  {
+   "id": "at://did:plc:rx22hq465sfe5g2qyyf5gzu2/app.bsky.feed.post/3mzlihuyepc2x|kylermurray|questionable|status",
+   "at": "2026-11-05T18:24:37.305Z",
+   "seen": "2026-11-05T18:30:31.240Z",
+   "handle": "nflnewsreposterbot.bsky.social",
+   "post": "at://did:plc:rx22hq465sfe5g2qyyf5gzu2/app.bsky.feed.post/3mzlihuyepc2x",
+   "player": "Kyler Murray",
+   "team": "MIN",
+   "status": "questionable",
+   "kind": "status",
+   "confidence": 0.6,
+   "text": "Adam Schefter: Just in: Vikings QB Carson Wentz will start Monday night’s game vs. the Buffalo Bills while Kyler Murray deals with what the team has called a “sore hamstring.”"
+  },
+  {
+   "id": "at://did:plc:fuqjc7x4gxvnwzksnlxwbe4x/app.bsky.feed.post/3mzlilhaevc2a|carsonwentz|active|starting",
+   "at": "2026-11-05T18:26:37.102Z",
+   "seen": "2026-11-05T18:30:31.240Z",
+   "handle": "nflnewsposter.bsky.social",
+   "post": "at://did:plc:fuqjc7x4gxvnwzksnlxwbe4x/app.bsky.feed.post/3mzlilhaevc2a",
+   "player": "Carson Wentz",
+   "team": "MIN",
+   "status": "active",
+   "kind": "starting",
+   "confidence": 0.9,
+   "text": "[Schefter] Vikings QB Carson Wentz will start Monday night’s game vs. the Buffalo Bills while Kyler Murray deals with what the team has called a “sore hamstring.” twitter.com/adamschefter..."
+  },
+  {
+   "id": "at://did:plc:fuqjc7x4gxvnwzksnlxwbe4x/app.bsky.feed.post/3mzlilhaevc2a|kylermurray|questionable|status",
+   "at": "2026-11-05T18:26:37.102Z",
+   "seen": "2026-11-05T18:30:31.240Z",
+   "handle": "nflnewsposter.bsky.social",
+   "post": "at://did:plc:fuqjc7x4gxvnwzksnlxwbe4x/app.bsky.feed.post/3mzlilhaevc2a",
+   "player": "Kyler Murray",
+   "team": "MIN",
+   "status": "questionable",
+   "kind": "status",
+   "confidence": 0.6,
+   "text": "[Schefter] Vikings QB Carson Wentz will start Monday night’s game vs. the Buffalo Bills while Kyler Murray deals with what the team has called a “sore hamstring.” twitter.com/adamschefter..."
+  },
+  {
+   "id": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3mzliq4ehi72b|carsonwentz|active|starting",
+   "at": "2026-11-05T18:29:13.000Z",
+   "seen": "2026-11-05T18:30:31.240Z",
+   "handle": "rotoworld-fb.bsky.social",
+   "post": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3mzliq4ehi72b",
+   "player": "Carson Wentz",
+   "team": "MIN",
+   "status": "active",
+   "kind": "starting",
+   "confidence": 0.8,
+   "text": "Schefter: Wentz will start in Week 9 vs. Bills"
+  },
+  {
+   "id": "at://did:plc:qre6zxbmr3ixhdmgsgdretb5/app.bsky.feed.post/3mzliqtuuzm2u|carsonwentz|active|starting",
+   "at": "2026-11-05T18:29:38.095Z",
+   "seen": "2026-11-05T18:30:31.240Z",
+   "handle": "adamscheftermirror.bsky.social",
+   "post": "at://did:plc:qre6zxbmr3ixhdmgsgdretb5/app.bsky.feed.post/3mzliqtuuzm2u",
+   "player": "Carson Wentz",
+   "team": "MIN",
+   "status": "active",
+   "kind": "starting",
+   "confidence": 0.9,
+   "text": "Just in: Vikings QB Carson Wentz will start Monday night’s game vs. the Buffalo Bills while Kyler Murray deals with what the team has called a “sore hamstring.”\n\nOriginal post"
+  },
+  {
+   "id": "at://did:plc:qre6zxbmr3ixhdmgsgdretb5/app.bsky.feed.post/3mzliqtuuzm2u|kylermurray|questionable|status",
+   "at": "2026-11-05T18:29:38.095Z",
+   "seen": "2026-11-05T18:30:31.240Z",
+   "handle": "adamscheftermirror.bsky.social",
+   "post": "at://did:plc:qre6zxbmr3ixhdmgsgdretb5/app.bsky.feed.post/3mzliqtuuzm2u",
+   "player": "Kyler Murray",
+   "team": "MIN",
+   "status": "questionable",
+   "kind": "status",
+   "confidence": 0.6,
+   "text": "Just in: Vikings QB Carson Wentz will start Monday night’s game vs. the Buffalo Bills while Kyler Murray deals with what the team has called a “sore hamstring.”\n\nOriginal post"
   }
  ]
 }
