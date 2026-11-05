@@ -2,7 +2,7 @@
  "v": 1,
  "sport": "nhl",
  "epoch": "2026-10-26T15:00:00Z",
- "at": "2026-11-04T11:13:39.736Z",
+ "at": "2026-11-05T02:32:20.850Z",
  "from": "2021-01-27T00:00:00.000Z",
  "through": "2026-10-14T01:55:00.000Z",
  "n": {
@@ -2858,8 +2858,8 @@
    }
   }
  },
- "commit": "dfe4b507",
- "note": "D103. Seasonal trends and within-season drift, and the re-tests of past near-misses (round T; the owner, 2026-11-04: \"searching those leaks, year by year, looking for algorithmic increases... test all that + our unique ideas we tried previously\"): measured walk-forward, nothing holds beyond noise, nothing ships",
+ "commit": "6296a508",
+ "note": "D104. A news CHECK clears the same +1 bar as a role one (the owner, 2026-11-04: \"why do i have 3 checks ? they just seem like bad value?\")",
  "inputs": {
   "v": 1,
   "sport": "nhl",
