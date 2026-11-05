@@ -1,7 +1,7 @@
 {
  "sport": "nba",
  "cursor": {
-  "rotowirenba.bsky.social": "2026-11-05T01:40:27.000Z",
+  "rotowirenba.bsky.social": "2026-11-05T01:54:47.000Z",
   "insidenbanews.bsky.social": "2026-11-04T00:05:57.726Z",
   "shamsbot.bsky.social": "2026-11-04T20:33:22.000Z"
  },
@@ -7701,6 +7701,45 @@
    "kind": "status",
    "confidence": 0.6,
    "text": "Jalen Smith: Won't return Wednesday \n\n https://www.rotowire.com/basketball/player/jalen-smith-5169"
+  },
+  {
+   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mzjr5om27z2r|jarrettallen|doubtful|status",
+   "at": "2026-11-05T01:54:39.000Z",
+   "seen": "2026-11-05T02:01:03.010Z",
+   "handle": "rotowirenba.bsky.social",
+   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mzjr5om27z2r",
+   "player": "Jarrett Allen",
+   "team": "CLE",
+   "status": "doubtful",
+   "kind": "status",
+   "confidence": 0.9,
+   "text": "Jarrett Allen: Doubtful to return Wednesday \n\n https://www.rotowire.com/basketball/player/jarrett-allen-4122"
+  },
+  {
+   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mzjr5vf6t627|cobywhite|active|return",
+   "at": "2026-11-05T01:54:46.000Z",
+   "seen": "2026-11-05T02:01:03.010Z",
+   "handle": "rotowirenba.bsky.social",
+   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mzjr5vf6t627",
+   "player": "Coby White",
+   "team": "CHI",
+   "status": "active",
+   "kind": "return",
+   "confidence": 0.6,
+   "text": "Coby White: Returns after brief exit \n\n https://www.rotowire.com/basketball/player/coby-white-4801"
+  },
+  {
+   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mzjr5wdlyr2z|konknueppel|out|status",
+   "at": "2026-11-05T01:54:47.000Z",
+   "seen": "2026-11-05T02:01:03.010Z",
+   "handle": "rotowirenba.bsky.social",
+   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mzjr5wdlyr2z",
+   "player": "Kon Knueppel",
+   "team": "CHA",
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.8,
+   "text": "Kon Knueppel: Won't return Wednesday \n\n https://www.rotowire.com/basketball/player/kon-knueppel-6540"
   }
  ]
 }

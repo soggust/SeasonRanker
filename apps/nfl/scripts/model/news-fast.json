@@ -1,12 +1,12 @@
 {
  "sport": "nfl",
  "cursor": {
-  "adamscheftermirror.bsky.social": "2026-11-05T01:19:39.310Z",
+  "adamscheftermirror.bsky.social": "2026-11-05T01:49:31.871Z",
   "rapsheet.bsky.social": "2026-11-04T19:45:56.406Z",
   "nflnewsreposterbot.bsky.social": "2026-11-04T21:51:29.738Z",
   "insidenflnews.bsky.social": "2026-11-04T23:18:27.925Z",
   "nflnewsposter.bsky.social": "2026-11-05T00:45:09.907Z",
-  "rotoworld-fb.bsky.social": "2026-11-05T00:51:18.000Z",
+  "rotoworld-fb.bsky.social": "2026-11-05T01:57:20.000Z",
   "rotowirenfl.bsky.social": "2026-11-05T00:36:08.000Z"
  },
  "claims": [
@@ -14738,6 +14738,32 @@
    "kind": "status",
    "confidence": 0.8,
    "text": "Repost by @AdamSchefter\n\nSources: Malachi Toney has a high ankle sprain and will have surgery, which will allow him to return for the College Football Playoff. The timeline for return from this injury"
+  },
+  {
+   "id": "at://did:plc:qre6zxbmr3ixhdmgsgdretb5/app.bsky.feed.post/3mzjqujjwuh2r|joshjacobs|active|status",
+   "at": "2026-11-05T01:49:31.871Z",
+   "seen": "2026-11-05T02:01:03.010Z",
+   "handle": "adamscheftermirror.bsky.social",
+   "post": "at://did:plc:qre6zxbmr3ixhdmgsgdretb5/app.bsky.feed.post/3mzjqujjwuh2r",
+   "player": "Josh Jacobs",
+   "team": "GB",
+   "status": "active",
+   "kind": "status",
+   "confidence": 0.4,
+   "text": "Packers RB Josh Jacobs is not anticipating missing more time despite additional allegations. Story via @RobDemovsky:\n\nOriginal post"
+  },
+  {
+   "id": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3mzjrcide7i2g|joshjacobs|active|status",
+   "at": "2026-11-05T01:57:20.000Z",
+   "seen": "2026-11-05T02:01:03.010Z",
+   "handle": "rotoworld-fb.bsky.social",
+   "post": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3mzjrcide7i2g",
+   "player": "Josh Jacobs",
+   "team": "GB",
+   "status": "active",
+   "kind": "status",
+   "confidence": 0.4,
+   "text": "Josh Jacobs not anticipating missing more games"
   }
  ]
 }

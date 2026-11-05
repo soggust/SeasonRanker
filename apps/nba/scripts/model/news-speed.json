@@ -20021,6 +20021,42 @@
     "seen": "2026-11-05T01:27:25.853Z",
     "own": "2026-11-05T01:04:00.000Z"
    }
+  },
+  "401909933|jalensmith|out": {
+   "game": "401909933",
+   "start": "2026-11-05T02:30Z",
+   "team": "24",
+   "name": "Jalen Smith",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-05T01:40:31.478Z",
+    "own": "2026-11-05T01:35:00.000Z",
+    "why": "@rotowirenba.bsky.social: Jalen Smith: Won't return Wednesday \n\n https://www.rot"
+   }
+  },
+  "401909934|jalensmith|out": {
+   "game": "401909934",
+   "start": "2026-11-05T03:00Z",
+   "team": "23",
+   "name": "Jalen Smith",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-05T01:40:31.478Z",
+    "own": "2026-11-05T01:35:00.000Z",
+    "why": "@rotowirenba.bsky.social: Jalen Smith: Won't return Wednesday \n\n https://www.rot"
+   }
+  },
+  "401909935|jalensmith|out": {
+   "game": "401909935",
+   "start": "2026-11-05T03:30Z",
+   "team": "12",
+   "name": "Jalen Smith",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-05T01:40:31.478Z",
+    "own": "2026-11-05T01:35:00.000Z",
+    "why": "@rotowirenba.bsky.social: Jalen Smith: Won't return Wednesday \n\n https://www.rot"
+   }
   }
  }
 }

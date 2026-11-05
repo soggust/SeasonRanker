@@ -14280,6 +14280,30 @@
     "seen": "2026-11-05T00:55:40.027Z",
     "own": "2026-11-05T00:35:00.000Z"
    }
+  },
+  "401873037|malachitoney|out": {
+   "game": "401873037",
+   "start": "2026-11-06T01:15Z",
+   "team": "33",
+   "name": "Malachi Toney",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-05T01:40:31.478Z",
+    "own": "2026-11-05T01:19:39.310Z",
+    "why": "@adamscheftermirror.bsky.social: Repost by @AdamSchefter\n\nSources: Malachi Toney"
+   }
+  },
+  "401873042|brianbranch|q": {
+   "game": "401873042",
+   "start": "2026-11-08T18:00Z",
+   "team": "8",
+   "name": "Brian Branch",
+   "status": "q",
+   "athlete": "4692025",
+   "espn": {
+    "seen": "2026-11-05T01:58:49.492Z",
+    "own": "2026-11-05T01:32:00.000Z"
+   }
   }
  }
 }
