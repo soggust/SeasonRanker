@@ -194,7 +194,9 @@ const round = (v, d = 1) => (v === null || !Number.isFinite(v) ? null : Math.rou
 const pct = (v) => (num(v) === null ? null : round(num(v) * 100, 1));
 const sum = (rows, f) => rows.reduce((total, row) => total + (f(row) ?? 0), 0);
 
-// ESPN's athletes for a season (id and name), for headshots: name -> id
+// ESPN's athletes for a season (id and name), for headshots: name -> id. Every one, isqualified=false: by default
+// the list holds only the qualified players (2026-11-04: 313 of the 2027 season's, a third of the photos missing,
+// Anthony Edwards's among them)
 const norm = (name) =>
   name
     .normalize('NFD')
@@ -208,7 +210,7 @@ const espnIds = new Map();
 async function espnAthletes(season) {
   const out = new Map();
   try {
-    const data = await json(`https://site.web.api.espn.com/apis/common/v3/sports/basketball/nba/statistics/byathlete?season=${season}&seasontype=2&limit=1000`);
+    const data = await json(`https://site.web.api.espn.com/apis/common/v3/sports/basketball/nba/statistics/byathlete?season=${season}&seasontype=2&limit=1000&isqualified=false`);
     for (const a of data.athletes ?? []) {
       const key = norm(a.athlete.displayName);
       out.set(key, Number(a.athlete.id));
