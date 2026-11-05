@@ -6,7 +6,7 @@
   "nflnewsreposterbot.bsky.social": "2026-11-05T18:24:37.305Z",
   "insidenflnews.bsky.social": "2026-11-05T18:32:28.611Z",
   "nflnewsposter.bsky.social": "2026-11-05T19:28:49.330Z",
-  "rotoworld-fb.bsky.social": "2026-11-05T19:00:46.000Z",
+  "rotoworld-fb.bsky.social": "2026-11-05T19:49:48.000Z",
   "rotowirenfl.bsky.social": "2026-11-05T19:38:26.000Z"
  },
  "claims": [
@@ -15154,6 +15154,19 @@
    "kind": "role",
    "confidence": 0.7,
    "text": "Vikings coach Kevin O'Connell says Kyler Murray is week-to-week with his hamstring strain, so Max Brosmer will be the backup."
+  },
+  {
+   "id": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3mzlna7pm5f2b|saquonbarkley|limited|return",
+   "at": "2026-11-05T19:49:48.000Z",
+   "seen": "2026-11-05T20:02:02.236Z",
+   "handle": "rotoworld-fb.bsky.social",
+   "post": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3mzlna7pm5f2b",
+   "player": "Saquon Barkley",
+   "team": "PHI",
+   "status": "limited",
+   "kind": "return",
+   "confidence": 0.5,
+   "text": "Saquon Barkley (hamstring/back) back at practice"
   }
  ]
 }
