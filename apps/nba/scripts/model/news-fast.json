@@ -1,7 +1,7 @@
 {
  "sport": "nba",
  "cursor": {
-  "rotowirenba.bsky.social": "2026-11-05T02:14:25.000Z",
+  "rotowirenba.bsky.social": "2026-11-05T02:30:59.000Z",
   "insidenbanews.bsky.social": "2026-11-04T00:05:57.726Z",
   "shamsbot.bsky.social": "2026-11-04T20:33:22.000Z"
  },
@@ -7766,6 +7766,19 @@
    "kind": "starting",
    "confidence": 0.85,
    "text": "Zaccharie Risacher: Starting versus Spurs \n\n https://www.rotowire.com/basketball/player/zaccharie-risacher-6249"
+  },
+  {
+   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mzjt6o6bjk2v|isaiahstewart|doubtful|status",
+   "at": "2026-11-05T02:30:59.000Z",
+   "seen": "2026-11-05T02:47:04.959Z",
+   "handle": "rotowirenba.bsky.social",
+   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mzjt6o6bjk2v",
+   "player": "Isaiah Stewart",
+   "team": null,
+   "status": "doubtful",
+   "kind": "status",
+   "confidence": 0.9,
+   "text": "Isaiah Stewart: Doubtful to return \n\n https://www.rotowire.com/basketball/player/isaiah-stewart-5137"
   }
  ]
 }

@@ -6,8 +6,8 @@
   "nflnewsreposterbot.bsky.social": "2026-11-04T21:51:29.738Z",
   "insidenflnews.bsky.social": "2026-11-04T23:18:27.925Z",
   "nflnewsposter.bsky.social": "2026-11-05T00:45:09.907Z",
-  "rotoworld-fb.bsky.social": "2026-11-05T02:19:46.000Z",
-  "rotowirenfl.bsky.social": "2026-11-05T02:21:43.000Z"
+  "rotoworld-fb.bsky.social": "2026-11-05T02:46:19.000Z",
+  "rotowirenfl.bsky.social": "2026-11-05T02:25:13.000Z"
  },
  "claims": [
   {
@@ -14816,6 +14816,32 @@
    "kind": "status",
    "confidence": 0.5,
    "text": "Drew Lock: Listed as limited Wednesday \n\n https://www.rotowire.com/football/player/drew-lock-13736"
+  },
+  {
+   "id": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3mzjsuea4g52j|michaelwilson|limited|status",
+   "at": "2026-11-05T02:25:13.000Z",
+   "seen": "2026-11-05T02:47:04.959Z",
+   "handle": "rotowirenfl.bsky.social",
+   "post": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3mzjsuea4g52j",
+   "player": "Michael Wilson",
+   "team": null,
+   "status": "limited",
+   "kind": "status",
+   "confidence": 0.85,
+   "text": "Michael Wilson: Stays limited Wednesday \n\n https://www.rotowire.com/football/player/michael-wilson-16957"
+  },
+  {
+   "id": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3mzjt2k2tuy2y|drewlock|limited|status",
+   "at": "2026-11-05T02:28:41.000Z",
+   "seen": "2026-11-05T02:47:04.959Z",
+   "handle": "rotoworld-fb.bsky.social",
+   "post": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3mzjt2k2tuy2y",
+   "player": "Drew Lock",
+   "team": null,
+   "status": "limited",
+   "kind": "status",
+   "confidence": 0.85,
+   "text": "Drew Lock (elbow) limited Wednesday"
   }
  ]
 }

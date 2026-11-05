@@ -14340,6 +14340,90 @@
     "seen": "2026-11-05T02:08:55.023Z",
     "own": "2026-11-05T01:50:00.000Z"
    }
+  },
+  "401873048|quentonnelson|q": {
+   "game": "401873048",
+   "start": "2026-11-08T21:25Z",
+   "team": "26",
+   "name": "Quenton Nelson",
+   "status": "q",
+   "athlete": "3129308",
+   "espn": {
+    "seen": "2026-11-05T02:44:31.941Z",
+    "own": "2026-11-05T02:35:00.000Z"
+   }
+  },
+  "401873048|anthonybradford|q": {
+   "game": "401873048",
+   "start": "2026-11-08T21:25Z",
+   "team": "26",
+   "name": "Anthony Bradford",
+   "status": "q",
+   "athlete": "4429211",
+   "espn": {
+    "seen": "2026-11-05T02:44:31.941Z",
+    "own": "2026-11-05T02:35:00.000Z"
+   }
+  },
+  "401873048|connorotoole|q": {
+   "game": "401873048",
+   "start": "2026-11-08T21:25Z",
+   "team": "26",
+   "name": "Connor O'Toole",
+   "status": "q",
+   "athlete": "4605491",
+   "espn": {
+    "seen": "2026-11-05T02:44:31.941Z",
+    "own": "2026-11-05T02:34:00.000Z"
+   }
+  },
+  "401873050|zavierscott|q": {
+   "game": "401873050",
+   "start": "2026-11-09T01:20Z",
+   "team": "3",
+   "name": "Zavier Scott",
+   "status": "q",
+   "athlete": "4257364",
+   "espn": {
+    "seen": "2026-11-05T02:44:31.941Z",
+    "own": "2026-11-05T02:28:00.000Z"
+   }
+  },
+  "401873050|theobenedet|q": {
+   "game": "401873050",
+   "start": "2026-11-09T01:20Z",
+   "team": "3",
+   "name": "Theo Benedet",
+   "status": "q",
+   "athlete": "5125873",
+   "espn": {
+    "seen": "2026-11-05T02:44:31.941Z",
+    "own": "2026-11-05T02:27:00.000Z"
+   }
+  },
+  "401873050|tykeesmith|q": {
+   "game": "401873050",
+   "start": "2026-11-09T01:20Z",
+   "team": "27",
+   "name": "Tykee Smith",
+   "status": "q",
+   "athlete": "4428522",
+   "espn": {
+    "seen": "2026-11-05T02:44:31.941Z",
+    "own": "2026-11-05T02:30:00.000Z"
+   }
+  },
+  "401873050|kennygainwell|q": {
+   "game": "401873050",
+   "start": "2026-11-09T01:20Z",
+   "team": "27",
+   "name": "Kenny Gainwell",
+   "status": "q",
+   "athlete": "4371733",
+   "espn": {
+    "seen": "2026-11-05T02:44:31.941Z",
+    "own": "2026-11-05T02:15:00.000Z"
+   }
   }
  }
 }
