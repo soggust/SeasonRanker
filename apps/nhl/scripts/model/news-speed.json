@@ -8667,6 +8667,66 @@
     "seen": "2026-11-05T01:39:03.902Z",
     "own": "2026-11-05T01:12:00.000Z"
    }
+  },
+  "401892659|konstahelenius|out": {
+   "game": "401892659",
+   "start": "2026-11-07T00:00Z",
+   "team": "2",
+   "name": "Konsta Helenius",
+   "status": "out",
+   "athlete": "5216882",
+   "espn": {
+    "seen": "2026-11-05T16:30:57.269Z",
+    "own": "2026-11-02T17:29:00.000Z"
+   }
+  },
+  "401892659|justindanforth|out": {
+   "game": "401892659",
+   "start": "2026-11-07T00:00Z",
+   "team": "2",
+   "name": "Justin Danforth",
+   "status": "out",
+   "athlete": "4894355",
+   "espn": {
+    "seen": "2026-11-05T16:30:57.269Z",
+    "own": "2026-10-29T22:06:00.000Z"
+   }
+  },
+  "401892659|alexlyon|out": {
+   "game": "401892659",
+   "start": "2026-11-07T00:00Z",
+   "team": "2",
+   "name": "Alex Lyon",
+   "status": "out",
+   "athlete": "3654006",
+   "espn": {
+    "seen": "2026-11-05T16:30:57.269Z",
+    "own": "2026-10-15T17:59:00.000Z"
+   }
+  },
+  "401892659|mattgrzelcyk|out": {
+   "game": "401892659",
+   "start": "2026-11-07T00:00Z",
+   "team": "2",
+   "name": "Matt Grzelcyk",
+   "status": "out",
+   "athlete": "3069448",
+   "espn": {
+    "seen": "2026-11-05T16:30:57.269Z",
+    "own": "2026-10-13T20:51:00.000Z"
+   }
+  },
+  "401892659|jackrathbone|out": {
+   "game": "401892659",
+   "start": "2026-11-07T00:00Z",
+   "team": "2",
+   "name": "Jack Rathbone",
+   "status": "out",
+   "athlete": "4419767",
+   "espn": {
+    "seen": "2026-11-05T16:30:57.269Z",
+    "own": "2026-09-28T20:52:00.000Z"
+   }
   }
  }
 }
