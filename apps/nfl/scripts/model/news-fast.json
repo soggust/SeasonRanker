@@ -1,7 +1,7 @@
 {
  "sport": "nfl",
  "cursor": {
-  "adamscheftermirror.bsky.social": "2026-11-05T01:49:31.871Z",
+  "adamscheftermirror.bsky.social": "2026-11-05T08:59:36.027Z",
   "rapsheet.bsky.social": "2026-11-04T19:45:56.406Z",
   "nflnewsreposterbot.bsky.social": "2026-11-04T21:51:29.738Z",
   "insidenflnews.bsky.social": "2026-11-04T23:18:27.925Z",
@@ -14842,6 +14842,19 @@
    "kind": "status",
    "confidence": 0.85,
    "text": "Drew Lock (elbow) limited Wednesday"
+  },
+  {
+   "id": "at://did:plc:qre6zxbmr3ixhdmgsgdretb5/app.bsky.feed.post/3mzkivkc7ii2p|jalenhurts|out|status",
+   "at": "2026-11-05T08:59:36.027Z",
+   "seen": "2026-11-05T09:06:05.959Z",
+   "handle": "adamscheftermirror.bsky.social",
+   "post": "at://did:plc:qre6zxbmr3ixhdmgsgdretb5/app.bsky.feed.post/3mzkivkc7ii2p",
+   "player": "Jalen Hurts",
+   "team": "PHI",
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.7,
+   "text": "Eagles quarterback Jalen Hurts made an appearance Wednesday at the team's practice facility, marking the first time some players had seen him since he was put on injured reserve because of blood clots"
   }
  ]
 }
