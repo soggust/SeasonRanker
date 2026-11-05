@@ -1,7 +1,7 @@
 {
  "sport": "nba",
  "cursor": {
-  "rotowirenba.bsky.social": "2026-11-05T20:52:08.000Z",
+  "rotowirenba.bsky.social": "2026-11-05T21:09:56.000Z",
   "insidenbanews.bsky.social": "2026-11-04T00:05:57.726Z",
   "shamsbot.bsky.social": "2026-11-04T20:33:22.000Z"
  },
@@ -7818,6 +7818,32 @@
    "kind": "status",
    "confidence": 0.8,
    "text": "Vit Krejci: Won't return Wednesday \n\n https://www.rotowire.com/basketball/player/vit-krejci-5233"
+  },
+  {
+   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mzlrnid3fb2q|jaysontatum|active|status",
+   "at": "2026-11-05T21:08:48.000Z",
+   "seen": "2026-11-05T21:26:14.152Z",
+   "handle": "rotowirenba.bsky.social",
+   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mzlrnid3fb2q",
+   "player": "Jayson Tatum",
+   "team": "BOS",
+   "status": "active",
+   "kind": "status",
+   "confidence": 0.95,
+   "text": "Jayson Tatum: Cleared from injury report \n\n https://www.rotowire.com/basketball/player/jayson-tatum-4108"
+  },
+  {
+   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mzlrpionmm2n|paytonpritchard|questionable|status",
+   "at": "2026-11-05T21:09:56.000Z",
+   "seen": "2026-11-05T21:26:14.152Z",
+   "handle": "rotowirenba.bsky.social",
+   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mzlrpionmm2n",
+   "player": "Payton Pritchard",
+   "team": "BOS",
+   "status": "questionable",
+   "kind": "status",
+   "confidence": 0.95,
+   "text": "Payton Pritchard: Listed as questionable \n\n https://www.rotowire.com/basketball/player/payton-pritchard-5131"
   }
  ]
 }

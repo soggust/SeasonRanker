@@ -2,9 +2,9 @@
  "sport": "nhl",
  "cursor": {
   "johnston-bot.bsky.social": "2026-11-05T17:59:59.541Z",
-  "notfriedgehnic.bsky.social": "2026-11-05T14:32:27.304Z",
-  "dailyfaceoff.bsky.social": "2026-11-05T21:04:27.000Z",
-  "dfotoronto.bsky.social": "2026-11-05T20:05:52.000Z",
+  "notfriedgehnic.bsky.social": "2026-11-05T21:08:39.466Z",
+  "dailyfaceoff.bsky.social": "2026-11-05T21:08:18.000Z",
+  "dfotoronto.bsky.social": "2026-11-05T21:08:52.000Z",
   "marklazerus.bsky.social": "2026-11-05T15:58:42.734Z"
  },
  "claims": [
@@ -1684,6 +1684,19 @@
    "kind": "return",
    "confidence": 0.9,
    "text": "Cooley has been activated off IR after missing the past week and a half with a lower-body injury. The 29-year-old was riding a four-game winning streak before his injury and has posted a 2.69 GAA and "
+  },
+  {
+   "id": "at://did:plc:sdobrsxnvwczrjydmnubhibh/app.bsky.feed.post/3mzlrn7c4bs2b|reimer|active|return",
+   "at": "2026-11-05T21:08:39.466Z",
+   "seen": "2026-11-05T21:26:14.152Z",
+   "handle": "notfriedgehnic.bsky.social",
+   "post": "at://did:plc:sdobrsxnvwczrjydmnubhibh/app.bsky.feed.post/3mzlrn7c4bs2b",
+   "player": "Reimer",
+   "team": "NYR",
+   "status": "active",
+   "kind": "return",
+   "confidence": 0.85,
+   "text": "Cleared\n\nNew: Reimer (NYR)\n\nSorry for the delay, long drive"
   }
  ]
 }

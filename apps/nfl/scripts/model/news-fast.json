@@ -1,13 +1,13 @@
 {
  "sport": "nfl",
  "cursor": {
-  "adamscheftermirror.bsky.social": "2026-11-05T18:29:38.095Z",
+  "adamscheftermirror.bsky.social": "2026-11-05T21:19:41.487Z",
   "rapsheet.bsky.social": "2026-11-05T19:15:49.242Z",
   "nflnewsreposterbot.bsky.social": "2026-11-05T18:24:37.305Z",
   "insidenflnews.bsky.social": "2026-11-05T21:06:06.043Z",
-  "nflnewsposter.bsky.social": "2026-11-05T21:01:39.398Z",
-  "rotoworld-fb.bsky.social": "2026-11-05T20:51:57.000Z",
-  "rotowirenfl.bsky.social": "2026-11-05T20:57:47.000Z"
+  "nflnewsposter.bsky.social": "2026-11-05T21:07:01.544Z",
+  "rotoworld-fb.bsky.social": "2026-11-05T21:18:41.000Z",
+  "rotowirenfl.bsky.social": "2026-11-05T21:26:12.000Z"
  },
  "claims": [
   {
@@ -15206,6 +15206,162 @@
    "kind": "status",
    "confidence": 0.95,
    "text": "Schefter: Ravens officially placed QBs Lamar Jackson and Tyler Huntley on injured reserve."
+  },
+  {
+   "id": "at://did:plc:fuqjc7x4gxvnwzksnlxwbe4x/app.bsky.feed.post/3mzlrkbsx42do|lamarjackson|out|status",
+   "at": "2026-11-05T21:07:01.544Z",
+   "seen": "2026-11-05T21:26:14.152Z",
+   "handle": "nflnewsposter.bsky.social",
+   "post": "at://did:plc:fuqjc7x4gxvnwzksnlxwbe4x/app.bsky.feed.post/3mzlrkbsx42do",
+   "player": "Lamar Jackson",
+   "team": "BAL",
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.95,
+   "text": "[Pelissero] The Ravens signed QB Austin Reed to the 53-man roster and officially placed QBs Lamar Jackson and Tyler Huntley on injured reserve. twitter.com/TomPelissero..."
+  },
+  {
+   "id": "at://did:plc:fuqjc7x4gxvnwzksnlxwbe4x/app.bsky.feed.post/3mzlrkbsx42do|tylerhuntley|out|status",
+   "at": "2026-11-05T21:07:01.544Z",
+   "seen": "2026-11-05T21:26:14.152Z",
+   "handle": "nflnewsposter.bsky.social",
+   "post": "at://did:plc:fuqjc7x4gxvnwzksnlxwbe4x/app.bsky.feed.post/3mzlrkbsx42do",
+   "player": "Tyler Huntley",
+   "team": "BAL",
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.95,
+   "text": "[Pelissero] The Ravens signed QB Austin Reed to the 53-man roster and officially placed QBs Lamar Jackson and Tyler Huntley on injured reserve. twitter.com/TomPelissero..."
+  },
+  {
+   "id": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3mzlrukrm3y2s|mikeevans|limited|restriction",
+   "at": "2026-11-05T21:12:46.000Z",
+   "seen": "2026-11-05T21:26:14.152Z",
+   "handle": "rotowirenfl.bsky.social",
+   "post": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3mzlrukrm3y2s",
+   "player": "Mike Evans",
+   "team": "TB",
+   "status": "limited",
+   "kind": "restriction",
+   "confidence": 0.5,
+   "text": "Mike Evans: Misses open portion Thursday \n\n https://www.rotowire.com/football/player/mike-evans-9253"
+  },
+  {
+   "id": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3mzlrx47yuk25|christianmccaffrey|limited|return",
+   "at": "2026-11-05T21:14:11.000Z",
+   "seen": "2026-11-05T21:26:14.152Z",
+   "handle": "rotoworld-fb.bsky.social",
+   "post": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3mzlrx47yuk25",
+   "player": "Christian McCaffrey",
+   "team": "SF",
+   "status": "limited",
+   "kind": "return",
+   "confidence": 0.6,
+   "text": "Christian McCaffrey (hamstring) returns to practice"
+  },
+  {
+   "id": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3mzls52olq427|lamarjackson|out|status",
+   "at": "2026-11-05T21:17:31.000Z",
+   "seen": "2026-11-05T21:26:14.152Z",
+   "handle": "rotowirenfl.bsky.social",
+   "post": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3mzls52olq427",
+   "player": "Lamar Jackson",
+   "team": "BAL",
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.95,
+   "text": "Lamar Jackson: Officially placed on IR \n\n https://www.rotowire.com/football/player/lamar-jackson-12561"
+  },
+  {
+   "id": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3mzls6aootp25|amonrastbrown|limited|status",
+   "at": "2026-11-05T21:18:11.000Z",
+   "seen": "2026-11-05T21:26:14.152Z",
+   "handle": "rotowirenfl.bsky.social",
+   "post": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3mzls6aootp25",
+   "player": "Amon-Ra St. Brown",
+   "team": "DET",
+   "status": "limited",
+   "kind": "status",
+   "confidence": 0.9,
+   "text": "Amon-Ra St. Brown: Remains limited Thursday \n\n https://www.rotowire.com/football/player/amon-ra-st-brown-15332"
+  },
+  {
+   "id": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3mzls74ydmq2b|amonrastbrown|limited|status",
+   "at": "2026-11-05T21:18:41.000Z",
+   "seen": "2026-11-05T21:26:14.152Z",
+   "handle": "rotoworld-fb.bsky.social",
+   "post": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3mzls74ydmq2b",
+   "player": "Amon-Ra St. Brown",
+   "team": "DET",
+   "status": "limited",
+   "kind": "status",
+   "confidence": 0.9,
+   "text": "St. Brown (rib) gets in limited practice Thursday"
+  },
+  {
+   "id": "at://did:plc:qre6zxbmr3ixhdmgsgdretb5/app.bsky.feed.post/3mzlsartr5o2p|lamarjackson|out|status",
+   "at": "2026-11-05T21:19:36.440Z",
+   "seen": "2026-11-05T21:26:14.152Z",
+   "handle": "adamscheftermirror.bsky.social",
+   "post": "at://did:plc:qre6zxbmr3ixhdmgsgdretb5/app.bsky.feed.post/3mzlsartr5o2p",
+   "player": "Lamar Jackson",
+   "team": "BAL",
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.95,
+   "text": "Ravens officially placed QBs Lamar Jackson and Tyler Huntley on injured reserve.\n\nOriginal post"
+  },
+  {
+   "id": "at://did:plc:qre6zxbmr3ixhdmgsgdretb5/app.bsky.feed.post/3mzlsartr5o2p|tylerhuntley|out|status",
+   "at": "2026-11-05T21:19:36.440Z",
+   "seen": "2026-11-05T21:26:14.152Z",
+   "handle": "adamscheftermirror.bsky.social",
+   "post": "at://did:plc:qre6zxbmr3ixhdmgsgdretb5/app.bsky.feed.post/3mzlsartr5o2p",
+   "player": "Tyler Huntley",
+   "team": "BAL",
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.95,
+   "text": "Ravens officially placed QBs Lamar Jackson and Tyler Huntley on injured reserve.\n\nOriginal post"
+  },
+  {
+   "id": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3mzlsc25td62y|tylerhuntley|out|status",
+   "at": "2026-11-05T21:20:18.000Z",
+   "seen": "2026-11-05T21:26:14.152Z",
+   "handle": "rotowirenfl.bsky.social",
+   "post": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3mzlsc25td62y",
+   "player": "Tyler Huntley",
+   "team": "BAL",
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.95,
+   "text": "Tyler Huntley: Joins Lamar on IR \n\n https://www.rotowire.com/football/player/tyler-huntley-14563"
+  },
+  {
+   "id": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3mzlsi4a57p2o|maliknabers|questionable|status",
+   "at": "2026-11-05T21:23:42.000Z",
+   "seen": "2026-11-05T21:26:14.152Z",
+   "handle": "rotowirenfl.bsky.social",
+   "post": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3mzlsi4a57p2o",
+   "player": "Malik Nabers",
+   "team": "NYG",
+   "status": "questionable",
+   "kind": "status",
+   "confidence": 0.5,
+   "text": "Malik Nabers: DNP due to knee injury \n\n https://www.rotowire.com/football/player/malik-nabers-17704"
+  },
+  {
+   "id": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3mzlsml6qst2c|haroldfannin|none|status",
+   "at": "2026-11-05T21:26:12.000Z",
+   "seen": "2026-11-05T21:26:14.152Z",
+   "handle": "rotowirenfl.bsky.social",
+   "post": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3mzlsml6qst2c",
+   "player": "Harold Fannin",
+   "team": "CLE",
+   "status": "none",
+   "kind": "status",
+   "confidence": 0.4,
+   "text": "Harold Fannin: Added to Week 9 injury report \n\n https://www.rotowire.com/football/player/harold-fannin-18472"
   }
  ]
 }
