@@ -1,7 +1,7 @@
 {
  "sport": "nba",
  "cursor": {
-  "rotowirenba.bsky.social": "2026-11-05T01:54:47.000Z",
+  "rotowirenba.bsky.social": "2026-11-05T02:14:25.000Z",
   "insidenbanews.bsky.social": "2026-11-04T00:05:57.726Z",
   "shamsbot.bsky.social": "2026-11-04T20:33:22.000Z"
  },
@@ -7740,6 +7740,32 @@
    "kind": "status",
    "confidence": 0.8,
    "text": "Kon Knueppel: Won't return Wednesday \n\n https://www.rotowire.com/basketball/player/kon-knueppel-6540"
+  },
+  {
+   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mzjrq6wn432r|demarderozan|out|status",
+   "at": "2026-11-05T02:05:00.000Z",
+   "seen": "2026-11-05T02:22:57.257Z",
+   "handle": "rotowirenba.bsky.social",
+   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mzjrq6wn432r",
+   "player": "DeMar DeRozan",
+   "team": null,
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.8,
+   "text": "DeMar DeRozan: Late scratch Wednesday \n\n https://www.rotowire.com/basketball/player/demar-derozan-3019"
+  },
+  {
+   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mzjsb23kvb2n|zaccharierisacher|none|starting",
+   "at": "2026-11-05T02:14:25.000Z",
+   "seen": "2026-11-05T02:22:57.257Z",
+   "handle": "rotowirenba.bsky.social",
+   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mzjsb23kvb2n",
+   "player": "Zaccharie Risacher",
+   "team": "ATL",
+   "status": "none",
+   "kind": "starting",
+   "confidence": 0.85,
+   "text": "Zaccharie Risacher: Starting versus Spurs \n\n https://www.rotowire.com/basketball/player/zaccharie-risacher-6249"
   }
  ]
 }

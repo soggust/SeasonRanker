@@ -6,8 +6,8 @@
   "nflnewsreposterbot.bsky.social": "2026-11-04T21:51:29.738Z",
   "insidenflnews.bsky.social": "2026-11-04T23:18:27.925Z",
   "nflnewsposter.bsky.social": "2026-11-05T00:45:09.907Z",
-  "rotoworld-fb.bsky.social": "2026-11-05T01:57:20.000Z",
-  "rotowirenfl.bsky.social": "2026-11-05T00:36:08.000Z"
+  "rotoworld-fb.bsky.social": "2026-11-05T02:19:46.000Z",
+  "rotowirenfl.bsky.social": "2026-11-05T02:21:43.000Z"
  },
  "claims": [
   {
@@ -14764,6 +14764,58 @@
    "kind": "status",
    "confidence": 0.4,
    "text": "Josh Jacobs not anticipating missing more games"
+  },
+  {
+   "id": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3mzjrlc66742z|kylemonangai|questionable|status",
+   "at": "2026-11-05T02:02:15.000Z",
+   "seen": "2026-11-05T02:22:57.257Z",
+   "handle": "rotowirenfl.bsky.social",
+   "post": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3mzjrlc66742z",
+   "player": "Kyle Monangai",
+   "team": null,
+   "status": "questionable",
+   "kind": "status",
+   "confidence": 0.35,
+   "text": "Kyle Monangai: Misses Wednesday's walkthrough \n\n https://www.rotowire.com/football/player/kyle-monangai-18520"
+  },
+  {
+   "id": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3mzjscf25lc25|kennygainwell|limited|status",
+   "at": "2026-11-05T02:15:10.000Z",
+   "seen": "2026-11-05T02:22:57.257Z",
+   "handle": "rotowirenfl.bsky.social",
+   "post": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3mzjscf25lc25",
+   "player": "Kenny Gainwell",
+   "team": null,
+   "status": "limited",
+   "kind": "status",
+   "confidence": 0.5,
+   "text": "Kenny Gainwell: Limited Wednesday \n\n https://www.rotowire.com/football/player/kenny-gainwell-15222"
+  },
+  {
+   "id": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3mzjskmi4sc2z|bamknight|questionable|status",
+   "at": "2026-11-05T02:19:46.000Z",
+   "seen": "2026-11-05T02:22:57.257Z",
+   "handle": "rotoworld-fb.bsky.social",
+   "post": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3mzjskmi4sc2z",
+   "player": "Bam Knight",
+   "team": null,
+   "status": "questionable",
+   "kind": "status",
+   "confidence": 0.4,
+   "text": "Bam Knight (concussion) DNP Wednesday"
+  },
+  {
+   "id": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3mzjso3h2an2q|drewlock|limited|status",
+   "at": "2026-11-05T02:21:43.000Z",
+   "seen": "2026-11-05T02:22:57.257Z",
+   "handle": "rotowirenfl.bsky.social",
+   "post": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3mzjso3h2an2q",
+   "player": "Drew Lock",
+   "team": null,
+   "status": "limited",
+   "kind": "status",
+   "confidence": 0.5,
+   "text": "Drew Lock: Listed as limited Wednesday \n\n https://www.rotowire.com/football/player/drew-lock-13736"
   }
  ]
 }
