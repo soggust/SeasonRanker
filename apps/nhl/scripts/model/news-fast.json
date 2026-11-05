@@ -3,8 +3,8 @@
  "cursor": {
   "johnston-bot.bsky.social": "2026-11-05T17:59:59.541Z",
   "notfriedgehnic.bsky.social": "2026-11-05T14:32:27.304Z",
-  "dailyfaceoff.bsky.social": "2026-11-05T19:25:06.000Z",
-  "dfotoronto.bsky.social": "2026-11-05T19:26:54.000Z",
+  "dailyfaceoff.bsky.social": "2026-11-05T20:05:25.000Z",
+  "dfotoronto.bsky.social": "2026-11-05T20:05:52.000Z",
   "marklazerus.bsky.social": "2026-11-05T15:58:42.734Z"
  },
  "claims": [
@@ -1658,6 +1658,19 @@
    "kind": "status",
    "confidence": 0.4,
    "text": "Canadiens’ Ivan Demidov fractured ankle in preseason. #nhl #nhlhockey #dailyfaceoff"
+  },
+  {
+   "id": "at://did:plc:3uus7y6h3rlrk6sbctzxm4bg/app.bsky.feed.post/3mzlo42c7zi2f|seandurzi|out|status",
+   "at": "2026-11-05T20:05:22.000Z",
+   "seen": "2026-11-05T20:24:12.731Z",
+   "handle": "dailyfaceoff.bsky.social",
+   "post": "at://did:plc:3uus7y6h3rlrk6sbctzxm4bg/app.bsky.feed.post/3mzlo42c7zi2f",
+   "player": "Sean Durzi",
+   "team": "NYR",
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.9,
+   "text": "Rangers waive James Reimer, place Sean Durzi on injured reserve"
   }
  ]
 }
