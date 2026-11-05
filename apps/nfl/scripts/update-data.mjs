@@ -1154,7 +1154,10 @@ async function seasonEndReserve(espnByGsis) {
 // Injury report statuses that mean a player won't play (Questionable players usually do)
 const INJURED_STATUSES = ['Out', 'Doubtful', 'Injured Reserve'];
 
-// ESPN injury report: ESPN athlete id -> status (Out, Doubtful, Questionable, ...)
+// ESPN injury report: ESPN athlete id -> status (Out, Doubtful, Questionable, ...). The league's report first, then
+// each team's roster for whoever it leaves out: the report can drop a player its rosters still carry as hurt
+// (2026-11-04: Lamar Jackson, out for thumb surgery and headed to IR, missing from it while Tyler Huntley was on
+// it; the Ravens' roster had them both Out). A roster that fails is skipped: the report's word stands.
 async function espnInjuries() {
   const report = await getJson(`${SITE}/injuries`);
   const statuses = new Map();
@@ -1164,6 +1167,26 @@ async function espnInjuries() {
       if (id) statuses.set(id, injury.status);
     }
   }
+  let added = 0;
+  await Promise.all(
+    report.injuries
+      .map((t) => t.id)
+      .filter(Boolean)
+      .map(async (team) => {
+        const roster = await getJson(`${SITE}/teams/${team}/roster`).catch(() => null);
+        for (const group of roster?.athletes ?? []) {
+          for (const a of group.items ?? []) {
+            const id = Number(a.id);
+            const status = a.injuries?.[0]?.status;
+            if (id && status && !statuses.has(id)) {
+              statuses.set(id, status);
+              added++;
+            }
+          }
+        }
+      }),
+  );
+  if (added) console.log(`Injuries: ${added} more from the teams' rosters than the league's report`);
   return statuses;
 }
 
