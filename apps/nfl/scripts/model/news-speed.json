@@ -14304,6 +14304,42 @@
     "seen": "2026-11-05T01:58:49.492Z",
     "own": "2026-11-05T01:32:00.000Z"
    }
+  },
+  "401873043|ronnierivers|out": {
+   "game": "401873043",
+   "start": "2026-11-08T18:00Z",
+   "team": "14",
+   "name": "Ronnie Rivers",
+   "status": "out",
+   "athlete": "4243003",
+   "espn": {
+    "seen": "2026-11-05T02:08:55.023Z",
+    "own": "2026-11-05T02:03:00.000Z"
+   }
+  },
+  "401873041|krisabramsdraine|q": {
+   "game": "401873041",
+   "start": "2026-11-08T18:00Z",
+   "team": "7",
+   "name": "Kris Abrams-Draine",
+   "status": "q",
+   "athlete": "4429193",
+   "espn": {
+    "seen": "2026-11-05T02:08:55.023Z",
+    "own": "2026-11-05T01:52:00.000Z"
+   }
+  },
+  "401873047|natehobbs|out": {
+   "game": "401873047",
+   "start": "2026-11-08T21:25Z",
+   "team": "25",
+   "name": "Nate Hobbs",
+   "status": "out",
+   "athlete": "4240542",
+   "espn": {
+    "seen": "2026-11-05T02:08:55.023Z",
+    "own": "2026-11-05T01:50:00.000Z"
+   }
   }
  }
 }
