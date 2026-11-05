@@ -2,7 +2,7 @@
  "v": 1,
  "sport": "nba",
  "epoch": "2026-10-26T15:00:00Z",
- "at": "2026-11-05T02:25:53.901Z",
+ "at": "2026-11-05T03:24:56.167Z",
  "from": "2020-08-01T01:10:00.000Z",
  "through": "2026-06-11T00:40:00.000Z",
  "n": {
@@ -2576,7 +2576,7 @@
     "beat": 199,
     "clv": 5.5261,
     "pN": 6481,
-    "p": 3155.6862,
+    "p": 3155.6861,
     "wins": 3177
    },
    "spread:home": {
@@ -2676,7 +2676,7 @@
     "beat": 0,
     "clv": 0,
     "pN": 5256,
-    "p": 2735.6124,
+    "p": 2735.6123,
     "wins": 2767
    },
    "prop:pts:over": {
@@ -2716,7 +2716,7 @@
     "beat": 0,
     "clv": 0,
     "pN": 3772,
-    "p": 2007.543,
+    "p": 2007.5427,
     "wins": 2058
    },
    "prop:reb": {
@@ -2726,7 +2726,7 @@
     "beat": 0,
     "clv": 0,
     "pN": 4363,
-    "p": 2310.8846,
+    "p": 2310.8844,
     "wins": 2321
    },
    "prop:pra:over": {
@@ -2756,7 +2756,7 @@
     "beat": 0,
     "clv": 0,
     "pN": 36,
-    "p": 16.7553,
+    "p": 16.7554,
     "wins": 20
    },
    "prop:ast:over": {
@@ -2766,7 +2766,7 @@
     "beat": 0,
     "clv": 0,
     "pN": 8,
-    "p": 3.4873,
+    "p": 3.4874,
     "wins": 4
    },
    "prop:fg3:under": {
@@ -2806,13 +2806,13 @@
     "beat": 0,
     "clv": 0,
     "pN": 591,
-    "p": 303.3416,
+    "p": 303.3417,
     "wins": 263
    }
   }
  },
- "commit": "6296a508",
- "note": "D104. A news CHECK clears the same +1 bar as a role one (the owner, 2026-11-04: \"why do i have 3 checks ? they just seem like bad value?\")",
+ "commit": "0abb5aff",
+ "note": "D105. A passed CHECK leaves the page at once (the owner, 2026-11-04: \"I still have one of the checks\"; \"yes please\" to never showing passed ones)",
  "inputs": {
   "v": 1,
   "sport": "nba",

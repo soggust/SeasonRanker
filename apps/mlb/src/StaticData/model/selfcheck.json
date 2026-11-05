@@ -1,5 +1,5 @@
 {
- "at": "2026-11-05T02:41:54.105Z",
+ "at": "2026-11-05T03:37:42.515Z",
  "baseline": {
   "from": "2026-10-01",
   "to": "2026-10-29"
@@ -103,7 +103,7 @@
   },
   {
    "examples": [],
-   "headline": "Model files 134h old, 0 open bets overdue to grade; Odds API credits 739% left; 0 bets placed in a week of 2 games",
+   "headline": "Model files 135h old, 0 open bets overdue to grade; Odds API credits 739% left; 0 bets placed in a week of 2 games",
    "how": "the newest commit of the sport's model files, the open bets started 12 hours ago or more, The Odds API's credits (state.odds), the state's sources",
    "id": "C16",
    "metric": "ageH",
@@ -111,7 +111,7 @@
    "needs": null,
    "rows": [
     {
-     "ageH": 134,
+     "ageH": 135,
      "at": "2026-10-30T12:19:04Z",
      "key": "files",
      "overdue": 0
@@ -120,8 +120,8 @@
      "cycleEnd": "2026-12-01T00:02:39.102Z",
      "key": "credits",
      "monthly": 20000,
-     "remaining": 147867,
-     "share": 7.3934
+     "remaining": 147842,
+     "share": 7.3921
     },
     {
      "down": [],
@@ -137,56 +137,7 @@
    "tested": null,
    "threshold": "watch files 3h old with bets overdue, credits under 20%, a source down, or no bets in a week with games; flag 6h old with bets overdue, or credits under 10%",
    "title": "Ops",
-   "value": 134
-  },
-  {
-   "examples": [],
-   "headline": "0 of 21 graded bets (0%) saw the Book move against them after placement; they went 0 won vs 0 expected",
-   "how": "graded this week: a game bet whose later fair chance fell 3 points or more, or its line moved 0.5 against it; a prop whose close moved half a point against it",
-   "id": "C1",
-   "metric": "share",
-   "n": 21,
-   "needs": [
-    "inputsAtStart (the injury and starter hashes as the game started)"
-   ],
-   "rows": [
-    {
-     "changed": 0,
-     "key": "games",
-     "n": 3,
-     "share": 0
-    },
-    {
-     "changed": 0,
-     "key": "props",
-     "n": 18,
-     "share": 0
-    },
-    {
-     "clvEv": null,
-     "e": 0,
-     "key": "changed",
-     "n": 0,
-     "profit": 0,
-     "roi": null,
-     "w": 0,
-     "z": null
-    },
-    {
-     "e": 10.4885,
-     "key": "unchanged",
-     "n": 21,
-     "profit": 2.204,
-     "roi": 0.2099,
-     "w": 13,
-     "z": 1.1155
-    }
-   ],
-   "status": "partial",
-   "tested": null,
-   "threshold": "watch 30% (15+ bets), flag 40% or the changed group z -2 (20+)",
-   "title": "Inputs changed after placement",
-   "value": 0
+   "value": 135
   },
   {
    "examples": [
@@ -321,22 +272,7 @@
   },
   {
    "examples": [],
-   "headline": "0 of 21 graded bets (0%) had their premise break in the game",
-   "how": "graded this week: a bet whose premise broke (postmortem.mjs: its weight under 1) by the disruption's kind",
-   "id": "C12",
-   "metric": "share",
-   "n": 21,
-   "needs": null,
-   "rows": [],
-   "status": "ok",
-   "tested": null,
-   "threshold": "watch 10%, flag 15% (15+ graded)",
-   "title": "Disruption",
-   "value": 0
-  },
-  {
-   "examples": [],
-   "headline": "0 open bets stale, 0 past their start by 48h ungraded, 0 of 21 graded this week without a close",
+   "headline": "0 open bets stale, 0 past their start by 48h ungraded, 0 of 0 graded this week without a close",
    "how": "open bets on games not started: past the gap now, or published at a band today's trust wouldn't give them; open bets past their start plus VOID_AFTER; this week's graded bets with no close read",
    "id": "C13",
    "metric": "stale",
@@ -355,7 +291,7 @@
     {
      "key": "graded without a close",
      "n": 0,
-     "of": 21
+     "of": 0
     }
    ],
    "status": "ok",
@@ -378,6 +314,55 @@
    "threshold": "a leak: 40 rows in 8 games or more, losing to the Book's no-vig beyond a 10% false discovery rate (Benjamini-Hochberg over every segment tested), its shrunk loss (n / (n + 100)) under 0; a trend: this week worse than the weeks before by 2 standard errors; a flag with a leak staked into in the last 28 days",
    "title": "Leaks against the Book (priced history)",
    "value": 0
+  },
+  {
+   "examples": [],
+   "headline": "No graded bets with a later price this week",
+   "how": "graded this week: a game bet whose later fair chance fell 3 points or more, or its line moved 0.5 against it; a prop whose close moved half a point against it",
+   "id": "C1",
+   "metric": "share",
+   "n": 0,
+   "needs": [
+    "inputsAtStart (the injury and starter hashes as the game started)"
+   ],
+   "rows": [
+    {
+     "changed": 0,
+     "key": "games",
+     "n": 0,
+     "share": null
+    },
+    {
+     "changed": 0,
+     "key": "props",
+     "n": 0,
+     "share": null
+    },
+    {
+     "clvEv": null,
+     "e": 0,
+     "key": "changed",
+     "n": 0,
+     "profit": 0,
+     "roi": null,
+     "w": 0,
+     "z": null
+    },
+    {
+     "e": 0,
+     "key": "unchanged",
+     "n": 0,
+     "profit": 0,
+     "roi": null,
+     "w": 0,
+     "z": null
+    }
+   ],
+   "status": "thin",
+   "tested": null,
+   "threshold": "watch 30% (15+ bets), flag 40% or the changed group z -2 (20+)",
+   "title": "Inputs changed after placement",
+   "value": null
   },
   {
    "examples": [],
@@ -421,46 +406,28 @@
   },
   {
    "examples": [],
-   "headline": "1 of 18 graded props (6%) saw the market move away after the bet; beat the close 61%",
+   "headline": "No graded props with a close this week",
    "how": "graded props this week: the close a point or more against the side, or the CLV lost (2 points of chance or more); per prop type",
    "id": "C3",
    "metric": "share",
-   "n": 18,
+   "n": 0,
    "needs": null,
    "rows": [
     {
-     "beat": 0.6111,
-     "ev": -0.0623,
+     "beat": null,
+     "ev": null,
      "key": "all",
      "label": "All props",
-     "moved": 1,
-     "n": 18,
-     "share": 0.0556
-    },
-    {
-     "beat": 0.5882,
-     "ev": -0.0631,
-     "key": "prop:hits",
-     "label": "Hits",
-     "moved": 1,
-     "n": 17,
-     "share": 0.0588
-    },
-    {
-     "beat": 1,
-     "ev": -0.0487,
-     "key": "prop:tb",
-     "label": "Total Bases",
      "moved": 0,
-     "n": 1,
-     "share": 0
+     "n": 0,
+     "share": null
     }
    ],
    "status": "thin",
    "tested": null,
    "threshold": "watch 45% (25+ props), flag 55% or a beat rate under 42%",
    "title": "Market moved after the bet, the Bot didn't",
-   "value": 0.0556
+   "value": null
   },
   {
    "examples": [],
@@ -494,119 +461,18 @@
   },
   {
    "examples": [],
-   "headline": "hits: beat the close 59% of 17, mean CLV -0.1 points; all bets 67% of 21",
+   "headline": "No graded bets with a close this week",
    "how": "graded this week by market and prop type, against the 28 days before and the last self-check; the return at the close counts the vig, so -4.5% is a flat close at -110",
    "id": "C6",
    "metric": "beat",
-   "n": 21,
+   "n": 0,
    "needs": null,
-   "rows": [
-    {
-     "base": {
-      "beat": 0.5283,
-      "ev": -0.0626,
-      "n": 191,
-      "prob": 0.0008
-     },
-     "beat": 0.5882,
-     "ev": -0.0631,
-     "key": "prop:hits",
-     "lastWeek": {
-      "beat": 0.5217,
-      "ev": -0.0586,
-      "n": 28,
-      "prob": 0.0016
-     },
-     "n": 17,
-     "prob": -0.0005,
-     "status": "thin"
-    },
-    {
-     "base": {
-      "beat": 0.1,
-      "ev": -0.0423,
-      "n": 14,
-      "prob": -0.0052
-     },
-     "beat": 1,
-     "ev": -0.0011,
-     "key": "ml",
-     "lastWeek": {
-      "beat": 1,
-      "ev": -0.0404,
-      "n": 1,
-      "prob": 0.0022
-     },
-     "n": 1,
-     "prob": 0.0113,
-     "status": "thin"
-    },
-    {
-     "base": {
-      "beat": 0.7059,
-      "ev": -0.0583,
-      "n": 30,
-      "prob": 0.003
-     },
-     "beat": 1,
-     "ev": -0.0487,
-     "key": "prop:tb",
-     "lastWeek": {
-      "beat": 0.6667,
-      "ev": -0.0426,
-      "n": 3,
-      "prob": 0.0146
-     },
-     "n": 1,
-     "prob": 0.0096,
-     "status": "thin"
-    },
-    {
-     "base": {
-      "beat": 0.7143,
-      "ev": -0.0372,
-      "n": 11,
-      "prob": 0.003
-     },
-     "beat": 1,
-     "ev": -0.0292,
-     "key": "spread",
-     "lastWeek": {
-      "beat": 1,
-      "ev": -0.0365,
-      "n": 1,
-      "prob": 0.0046
-     },
-     "n": 1,
-     "prob": 0.009,
-     "status": "thin"
-    },
-    {
-     "base": {
-      "beat": 0.6667,
-      "ev": -0.0356,
-      "n": 13,
-      "prob": 0.004
-     },
-     "beat": 1,
-     "ev": 0.0186,
-     "key": "total",
-     "lastWeek": {
-      "beat": 1,
-      "ev": -0.036,
-      "n": 1,
-      "prob": 0.005
-     },
-     "n": 1,
-     "prob": 0.0327,
-     "status": "thin"
-    }
-   ],
+   "rows": [],
    "status": "thin",
    "tested": null,
    "threshold": "watch beat under 47% or mean return at the close -6% (20+); flag beat under 44% (25+) or mean CLV under -1 point two weeks running",
    "title": "CLV by bet type",
-   "value": 0.5882
+   "value": null
   },
   {
    "examples": [],
@@ -673,6 +539,21 @@
    "threshold": "watch twice the baseline share (10+ bets); flag 3x and a quarter of placements, or a new kind on 20+",
    "title": "Guards cutting unusually often",
    "value": 0
+  },
+  {
+   "examples": [],
+   "headline": "No graded bets this week",
+   "how": "graded this week: a bet whose premise broke (postmortem.mjs: its weight under 1) by the disruption's kind",
+   "id": "C12",
+   "metric": "share",
+   "n": 0,
+   "needs": null,
+   "rows": [],
+   "status": "thin",
+   "tested": null,
+   "threshold": "watch 10%, flag 15% (15+ graded)",
+   "title": "Disruption",
+   "value": null
   },
   {
    "examples": [],
@@ -793,7 +674,7 @@
   },
   {
    "examples": [],
-   "headline": "No term, param or trust dropped; 21 changelog entries this week",
+   "headline": "No term, param or trust dropped; 18 changelog entries this week",
    "how": "the day's last state.json for 35 days (git), the week's start against now; the changelog's entries this week verbatim",
    "id": "C9",
    "metric": "changes",
@@ -1215,7 +1096,7 @@
   },
   {
    "examples": [],
-   "headline": "5 of 7 spots shifted: hits|under|1.5 -0.001 (n 4, pooled only (its own rung: too few rows (200 needed))), k|over|>2.5 -0.063 (n 2, pooled only (its own rung: too few rows (200 needed))), outs|over|>2.5 -0.063 (n 2, pooled only (its own rung: too few rows (200 needed))), tb|over|1.5 -0.001 (n 8, pooled only (its own rung: too few rows (200 needed))), tb|under|1.5 -0.001 (n 23, pooled only (its own rung: too few rows (200 needed)))",
+   "headline": "5 of 7 spots shifted: hits|under|1.5 -0.001 (n 4, pooled only (its own rung: too few rows (200 needed))), k|over|>2.5 -0.066 (n 2, pooled only (its own rung: too few rows (200 needed))), outs|over|>2.5 -0.066 (n 2, pooled only (its own rung: too few rows (200 needed))), tb|over|1.5 -0.001 (n 8, pooled only (its own rung: too few rows (200 needed))), tb|under|1.5 -0.001 (n 23, pooled only (its own rung: too few rows (200 needed)))",
    "how": "state.calib as the last run left it (calib.mjs fitCalib: every graded prop since MODEL_EPOCH, the tracked rows among them, by its raw model chance), each spot's shift, target and held-out gain; the week's graded props of each spot, the sum of their raw chances (said), of the chances as shifted (shifted) and their wins. Never more than the desk applies: it says where the model's been running hot or cold",
    "id": "C21",
    "metric": "spots shifted",
@@ -1227,37 +1108,37 @@
      "kept": false,
      "key": "hits|over|0.5",
      "n": 150,
-     "said": 5.7318,
+     "said": null,
      "shift": 0,
-     "shifted": 5.7318,
+     "shifted": null,
      "target": 0,
-     "week": 10,
+     "week": 0,
      "why": "too few rows (200 needed)",
-     "won": 6
+     "won": 0
     },
     {
      "gain": null,
      "kept": false,
      "key": "hits|under|0.5",
      "n": 54,
-     "said": 2.4787,
+     "said": null,
      "shift": 0,
-     "shifted": 2.4787,
+     "shifted": null,
      "target": 0,
-     "week": 6,
+     "week": 0,
      "why": "too few rows (200 needed)",
-     "won": 5
+     "won": 0
     },
     {
      "gain": null,
      "kept": true,
      "key": "tb|under|1.5",
      "n": 23,
-     "said": 0.6345,
+     "said": null,
      "shift": -0.0006,
-     "shifted": 0.6344,
+     "shifted": null,
      "target": 0,
-     "week": 1,
+     "week": 0,
      "why": "pooled only (its own rung: too few rows (200 needed))",
      "won": 0
     },
@@ -1279,13 +1160,13 @@
      "kept": true,
      "key": "hits|under|1.5",
      "n": 4,
-     "said": 0.7322,
+     "said": null,
      "shift": -0.0006,
-     "shifted": 0.7321,
+     "shifted": null,
      "target": 0,
-     "week": 1,
+     "week": 0,
      "why": "pooled only (its own rung: too few rows (200 needed))",
-     "won": 1
+     "won": 0
     },
     {
      "gain": null,
@@ -1293,7 +1174,7 @@
      "key": "k|over|>2.5",
      "n": 2,
      "said": null,
-     "shift": -0.0627,
+     "shift": -0.0657,
      "shifted": null,
      "target": 0,
      "week": 0,
@@ -1306,7 +1187,7 @@
      "key": "outs|over|>2.5",
      "n": 2,
      "said": null,
-     "shift": -0.0627,
+     "shift": -0.0657,
      "shifted": null,
      "target": 0,
      "week": 0,
@@ -1438,11 +1319,11 @@
  "sport": "mlb",
  "summary": {
   "flag": 1,
-  "headline": "All-player and selection bias: Hits Overs: the bets projected +0.08 off (mean - actual, 150 bets) against an all-player bias of -0.01; Ops: Model files 134h old, 0 open bets overdue to grade; Odds API credits 739% left; 0 bets placed in a week of 2 games",
+  "headline": "All-player and selection bias: Hits Overs: the bets projected +0.08 off (mean - actual, 150 bets) against an all-player bias of -0.01; Ops: Model files 135h old, 0 open bets overdue to grade; Odds API credits 739% left; 0 bets placed in a week of 2 games",
   "info": 4,
-  "ok": 5,
-  "partial": 1,
-  "thin": 11,
+  "ok": 4,
+  "partial": 0,
+  "thin": 13,
   "watch": 1
  },
  "v": 1,
