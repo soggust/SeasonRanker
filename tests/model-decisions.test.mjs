@@ -2406,3 +2406,12 @@ test("D104 a news CHECK clears the CHECK bar as a role one does: under +1 a shad
   assert.equal(shadowOf({ cause: "news", odds: -112, model: 0.5023, fair: 0.5011, trust: 5, line: 60.5 }).passAs, "small");
   assert.equal(shadowOf({ cause: "news", odds: 139, model: 0.5745, fair: 0.3947, trust: 0.5, line: 1.5 }), null);
 });
+
+test("D105 a passed CHECK leaves the page at once", async () => {
+  const { PASSED_SHOWN, listedCheck } = await import("../libs/ranker/scripts/model/checks.mjs");
+  const decisions = fs.readFileSync(path.resolve("libs/ranker/scripts/model/DECISIONS.md"), "utf8");
+  assert.ok(decisions.includes("### D105."));
+  assert.equal(PASSED_SHOWN, 0);
+  const at = "2026-11-04T23:00:00Z";
+  assert.equal(listedCheck({ hidden: true, passedAt: at, resolved: { as: "passed", at } }, new Date(at)), false);
+});

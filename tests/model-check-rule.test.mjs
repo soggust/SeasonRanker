@@ -76,8 +76,9 @@ test('a shown CHECK that turns a shadow: passed, its price frozen as shown, show
   // (still a shadow: frozen)
   assert.equal(upsertCheck(ledger, checkOf(prop({ odds: -120, model: 0.56 }), ROLE), later(2)), null);
   assert.equal(ledger.checks[0].odds, 139);
-  // (the page lists it in its passed state for PASSED_SHOWN, then not)
-  assert.ok(listedCheck(c, later(2)));
+  // (off the page at once (D105: PASSED_SHOWN 0), its passing kept on it)
+  assert.equal(PASSED_SHOWN, 0);
+  assert.ok(!listedCheck(c, later(2)));
   assert.ok(!listedCheck(c, new Date(t1.getTime() + PASSED_SHOWN)));
   // (back over the bar: written again, shown, its passing dropped)
   assert.equal(upsertCheck(ledger, checkOf(prop({ odds: 150 }), ROLE), later(3)), 'updated');
@@ -138,7 +139,7 @@ test('the tallies: a shadow only in its own byPassAs; the learning and its advic
   assert.deepEqual([l.byPassAs.gap.lost, l.byPassAs.gap.open, l.byPassAs.small.won], [1, 1, 1]);
 });
 
-test('buildPicks: the shown CHECKs alone (a passed one a while, in its passed state), the biggest cleared Kelly first; the rule and the numbers the page leads with', () => {
+test('buildPicks: the shown CHECKs alone (a passed one never, D105), the biggest cleared Kelly first; the rule and the numbers the page leads with', () => {
   const t1 = later(1);
   const passed = { ...checkOf(prop({ id: 'p' }), ROLE), hidden: true, passAs: 'small', passedAt: t1.toISOString(), resolved: { at: t1.toISOString(), as: 'passed', why: 'a +5.50 Kelly on the model\'s own number: under the CHECK bar (+10)' } };
   const ledger = {
@@ -146,7 +147,7 @@ test('buildPicks: the shown CHECKs alone (a passed one a while, in its passed st
     checks: [checkOf(prop({ id: 'big' }), ROLE), checkOf(prop({ id: 'bigger', odds: 160 }), ROLE), checkOf(prop({ id: 'gap' }), GAP), checkOf(prop({ id: 'small', odds: -110, model: 0.55 }), ROLE), passed],
   };
   const out = buildPicks('nfl', ledger, {}, new Map(), later(2));
-  assert.deepEqual(out.checks.map((c) => c.id), ['bigger', 'big', 'p']);
+  assert.deepEqual(out.checks.map((c) => c.id), ['bigger', 'big']);
   assert.deepEqual(out.checkRule, CHECK_RULE);
   const big = out.checks.find((c) => c.id === 'big');
   assert.deepEqual([big.checkCause, big.roleReason, big.checkKelly, big.modelKelly, big.mean, big.implied, big.lineRecord], ['role', 'group-out', checkKelly(prop()), modelKelly(139, 0.5745), 1.48, 2.2, { over: 0.6, n: 10.5 }]);
@@ -156,9 +157,6 @@ test('buildPicks: the shown CHECKs alone (a passed one a while, in its passed st
   assert.match(big.reason, /Would be a \+2\.37 Kelly bet with its doubt cleared \(the under 57% against the Book's no-vig 39%\); the Bot's 1\.48 vs the Book's 2\.20 catches\. Not bet on this side/);
   assert.doesNotMatch(big.reason, /model's own number/);
   assert.match(big.risk, /isn't value by itself/);
-  const p = out.checks.find((c) => c.id === 'p');
-  assert.deepEqual([p.resolved.as, p.level], ['passed', 'check']);
-  assert.match(p.resolved.why, /under the CHECK bar/);
   // (past PASSED_SHOWN: gone)
   assert.deepEqual(buildPicks('nfl', ledger, {}, new Map(), new Date(t1.getTime() + PASSED_SHOWN)).checks.map((c) => c.id), ['bigger', 'big']);
 });
@@ -223,11 +221,11 @@ test('the stored CHECKs judged by the rule (rejudgeChecks): one from before it, 
   assert.deepEqual(passed.map((c) => c.id), ['gap', 'small', 'news', 'old'], 'the news under the bar passed too (D104)');
   assert.deepEqual([gap.hidden, gap.passAs, gap.resolved.as, gap.passedAt, gap.odds], [true, 'gap', 'passed', now.toISOString(), 139]);
   assert.deepEqual([small.passAs, big.hidden, news.hidden, graded.hidden, old.passAs], ['small', undefined, true, undefined, 'gap']);
-  // (listed in its passed state a while, then gone; never a CHECK the page shows)
-  assert.ok(listedCheck(gap, later(1)));
+  // (passed: off the page at once (D105), never a CHECK the page shows)
+  assert.ok(!listedCheck(gap, later(1)));
   assert.ok(!listedCheck(gap, new Date(now.getTime() + PASSED_SHOWN)));
   const listed = Object.fromEntries(buildPicks('nfl', { bets: [], checks }, {}, new Map(), later(1)).checks.map((c) => [c.id, c.resolved?.as ?? null]));
-  assert.deepEqual(listed, { big: null, news: 'passed', gap: 'passed', small: 'passed', old: 'passed' });
+  assert.deepEqual(listed, { big: null });
   assert.ok(!buildPicks('nfl', { bets: [], checks }, {}, new Map(), new Date(now.getTime() + PASSED_SHOWN + 1)).checks.some((c) => ['gap', 'small', 'news', 'old'].includes(c.id)));
   // (judged once: a second pass passes none)
   assert.deepEqual(rejudgeChecks(checks, later(1)), []);

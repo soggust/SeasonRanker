@@ -1609,3 +1609,10 @@ Resolved 2026-10-18:
 - **Rule (`checks.mjs shadowOf`):** a news CHECK is a CHECK only at a cleared Kelly of `CHECK_KELLY` (+1) or more, as a role's (an assumed -110 a shadow too); under it a shadow (`passAs` 'small'), graded as any, out of the page, the research, the notes and the re-pricing. The stored ones are judged again at each run's start (`rejudgeChecks`), so the three pass on the next run and show as passed for `PASSED_SHOWN`.
 - **Bets:** none change: a news CHECK under the bar, researched and cleared, is priced at the same cleared chance and passes. No epoch, no history re-record (the replay has no CHECKs: D22's tie for live-only code).
 - **Tests:** `tests/model-check-rule.test.mjs` (the news at and under the bar, at an assumed -110), `tests/model-decisions.test.mjs` D104.
+
+### D105. A passed CHECK leaves the page at once (the owner, 2026-11-04: "I still have one of the checks"; "yes please" to never showing passed ones)
+- **Date:** 2026-11-04.
+- **What showed:** after D104, Patrick Mahomes Under 246.5 Pass Yds stayed on the page as "Passed · no longer a CHECK" for `PASSED_SHOWN` (6 hours), and read as a CHECK still there.
+- **Rule (`checks.mjs PASSED_SHOWN` 0):** a CHECK that turns a shadow is off the page the run it passes (`listedCheck`, `picks.mjs`). Its passing is still written on it (`resolved` { as: 'passed', why }, `passedAt`), its price frozen, and it is graded as any shadow.
+- **Bets:** none change. No epoch, no history re-record.
+- **Tests:** `tests/model-check-rule.test.mjs` (a passed CHECK never listed), `tests/model-decisions.test.mjs` D105.

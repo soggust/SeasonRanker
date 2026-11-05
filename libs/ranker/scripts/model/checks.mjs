@@ -79,7 +79,7 @@
 //            losers, so it's shown as context (the write-up, the page), never a rule
 //   passed   a CHECK the page showed that turns a shadow (its role's Kelly fell under the bar, a gap's an older
 //            CHECK's): its price frozen as it was shown (never written over: it's graded at that price), resolved
-//            { as: 'passed', why } and passedAt, and the page shows it in that state for PASSED_SHOWN, so it
+//            { as: 'passed', why } and passedAt, and the page showed it in that state for PASSED_SHOWN (0 since D105), so it
 //            doesn't vanish without a word; shown again (back over the bar), written as any CHECK; closed and
 //            tripped again, a plain shadow. The stored ones judged by the rule too (rejudgeChecks, each run's
 //            start): one from before it, or one no run prices again, passed the same way. A role's at an assumed
@@ -101,8 +101,9 @@ export const CHECK_TOP = 20;
 // the old LIKE's bar, kept 178 of the 417 stored role CHECKs, 68-49 graded)
 export const CHECK_KELLY = 0.01;
 export const CHECK_RULE = { kelly: CHECK_KELLY };
-// (how long the page shows a CHECK that turned a shadow, in its passed state)
-export const PASSED_SHOWN = 6 * 3600e3;
+// (how long the page showed a CHECK that turned a shadow, in its passed state: 6 hours till 2026-11-04, then none
+// (D105, the owner: a passed CHECK still on the page read as a CHECK); its passing still written on it and graded)
+export const PASSED_SHOWN = 0;
 
 // (the model's own Kelly on a side: picks.mjs kellyOf at its price and the model's chance, rounded as a CHECK
 // keeps it (4 places), so the board and the run judge the same number; null without either)
