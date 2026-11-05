@@ -20577,6 +20577,102 @@
     "seen": "2026-11-05T21:24:39.925Z",
     "own": "2026-10-05T21:43:00.000Z"
    }
+  },
+  "401909292|kamjones|q": {
+   "game": "401909292",
+   "start": "2026-11-07T01:00Z",
+   "team": "15",
+   "name": "Kam Jones",
+   "status": "q",
+   "athlete": "4697268",
+   "espn": {
+    "seen": "2026-11-05T21:47:22.739Z",
+    "own": "2026-11-05T14:58:00.000Z"
+   }
+  },
+  "401909292|kawhileonard|out": {
+   "game": "401909292",
+   "start": "2026-11-07T01:00Z",
+   "team": "28",
+   "name": "Kawhi Leonard",
+   "status": "out",
+   "athlete": "6450",
+   "espn": {
+    "seen": "2026-11-05T21:47:22.739Z",
+    "own": "2026-11-04T00:14:00.000Z"
+   }
+  },
+  "401909292|natebittle|out": {
+   "game": "401909292",
+   "start": "2026-11-07T01:00Z",
+   "team": "28",
+   "name": "Nate Bittle",
+   "status": "out",
+   "athlete": "4432586",
+   "espn": {
+    "seen": "2026-11-05T21:47:22.739Z",
+    "own": "2026-11-02T20:20:00.000Z"
+   }
+  },
+  "401909293|yvesmissi|out": {
+   "game": "401909293",
+   "start": "2026-11-07T01:00Z",
+   "team": "3",
+   "name": "Yves Missi",
+   "status": "out",
+   "athlete": "5061589",
+   "espn": {
+    "seen": "2026-11-05T21:47:22.739Z",
+    "own": "2026-11-05T20:47:00.000Z"
+   }
+  },
+  "401909293|treymurphy|q": {
+   "game": "401909293",
+   "start": "2026-11-07T01:00Z",
+   "team": "3",
+   "name": "Trey Murphy III",
+   "status": "q",
+   "athlete": "4397688",
+   "espn": {
+    "seen": "2026-11-05T21:47:22.739Z",
+    "own": "2026-11-05T20:19:00.000Z"
+   }
+  },
+  "401909293|terrenceshannon|q": {
+   "game": "401909293",
+   "start": "2026-11-07T01:00Z",
+   "team": "16",
+   "name": "Terrence Shannon Jr.",
+   "status": "q",
+   "athlete": "4432847",
+   "espn": {
+    "seen": "2026-11-05T21:47:22.739Z",
+    "own": "2026-11-05T15:03:00.000Z"
+   }
+  },
+  "401909293|anthonyedwards|out": {
+   "game": "401909293",
+   "start": "2026-11-07T01:00Z",
+   "team": "16",
+   "name": "Anthony Edwards",
+   "status": "out",
+   "athlete": "4594268",
+   "espn": {
+    "seen": "2026-11-05T21:47:22.739Z",
+    "own": "2026-10-29T18:33:00.000Z"
+   }
+  },
+  "401909293|dontedivincenzo|out": {
+   "game": "401909293",
+   "start": "2026-11-07T01:00Z",
+   "team": "16",
+   "name": "Donte DiVincenzo",
+   "status": "out",
+   "athlete": "3934673",
+   "espn": {
+    "seen": "2026-11-05T21:47:22.739Z",
+    "own": "2026-10-05T20:53:00.000Z"
+   }
   }
  }
 }

@@ -1,13 +1,13 @@
 {
  "sport": "nfl",
  "cursor": {
-  "adamscheftermirror.bsky.social": "2026-11-05T21:19:41.487Z",
+  "adamscheftermirror.bsky.social": "2026-11-05T21:34:35.410Z",
   "rapsheet.bsky.social": "2026-11-05T19:15:49.242Z",
   "nflnewsreposterbot.bsky.social": "2026-11-05T18:24:37.305Z",
   "insidenflnews.bsky.social": "2026-11-05T21:06:06.043Z",
-  "nflnewsposter.bsky.social": "2026-11-05T21:07:01.544Z",
-  "rotoworld-fb.bsky.social": "2026-11-05T21:18:41.000Z",
-  "rotowirenfl.bsky.social": "2026-11-05T21:26:12.000Z"
+  "nflnewsposter.bsky.social": "2026-11-05T21:44:27.908Z",
+  "rotoworld-fb.bsky.social": "2026-11-05T21:45:19.000Z",
+  "rotowirenfl.bsky.social": "2026-11-05T21:39:32.000Z"
  },
  "claims": [
   {
@@ -15362,6 +15362,175 @@
    "kind": "status",
    "confidence": 0.4,
    "text": "Harold Fannin: Added to Week 9 injury report \n\n https://www.rotowire.com/football/player/harold-fannin-18472"
+  },
+  {
+   "id": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3mzlsnmppuu2o|jordyntyson|limited|status",
+   "at": "2026-11-05T21:26:47.000Z",
+   "seen": "2026-11-05T21:48:52.951Z",
+   "handle": "rotowirenfl.bsky.social",
+   "post": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3mzlsnmppuu2o",
+   "player": "Jordyn Tyson",
+   "team": null,
+   "status": "limited",
+   "kind": "status",
+   "confidence": 0.9,
+   "text": "Jordyn Tyson: Remains limited Thursday \n\n https://www.rotowire.com/football/player/jordyn-tyson-19233"
+  },
+  {
+   "id": "at://did:plc:fuqjc7x4gxvnwzksnlxwbe4x/app.bsky.feed.post/3mzlss745icdo|christianmccaffrey|active|status",
+   "at": "2026-11-05T21:29:20.877Z",
+   "seen": "2026-11-05T21:48:52.951Z",
+   "handle": "nflnewsposter.bsky.social",
+   "post": "at://did:plc:fuqjc7x4gxvnwzksnlxwbe4x/app.bsky.feed.post/3mzlss745icdo",
+   "player": "Christian McCaffrey",
+   "team": "SF",
+   "status": "active",
+   "kind": "status",
+   "confidence": 0.6,
+   "text": "[Inman] 49ers’ practice sights:\nRB Christian McCaffrey (hamstring) back in action\n\nNo WRs Mike Evans, Deebo Samuel, Christian Kirk\n\nCB Upton Stout (shoulder) sheds no-contact jersey twitter.com/CamInm"
+  },
+  {
+   "id": "at://did:plc:fuqjc7x4gxvnwzksnlxwbe4x/app.bsky.feed.post/3mzlss745icdo|uptonstout|limited|status",
+   "at": "2026-11-05T21:29:20.877Z",
+   "seen": "2026-11-05T21:48:52.951Z",
+   "handle": "nflnewsposter.bsky.social",
+   "post": "at://did:plc:fuqjc7x4gxvnwzksnlxwbe4x/app.bsky.feed.post/3mzlss745icdo",
+   "player": "Upton Stout",
+   "team": "SF",
+   "status": "limited",
+   "kind": "status",
+   "confidence": 0.5,
+   "text": "[Inman] 49ers’ practice sights:\nRB Christian McCaffrey (hamstring) back in action\n\nNo WRs Mike Evans, Deebo Samuel, Christian Kirk\n\nCB Upton Stout (shoulder) sheds no-contact jersey twitter.com/CamInm"
+  },
+  {
+   "id": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3mzlssmvbav2m|camskattebo|out|status",
+   "at": "2026-11-05T21:29:35.000Z",
+   "seen": "2026-11-05T21:48:52.951Z",
+   "handle": "rotowirenfl.bsky.social",
+   "post": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3mzlssmvbav2m",
+   "player": "Cam Skattebo",
+   "team": "NYG",
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.6,
+   "text": "Cam Skattebo: Remains sidelined at practice \n\n https://www.rotowire.com/football/player/cam-skattebo-18514"
+  },
+  {
+   "id": "at://did:plc:fuqjc7x4gxvnwzksnlxwbe4x/app.bsky.feed.post/3mzlssors7sdo|deshaunwatson|questionable|status",
+   "at": "2026-11-05T21:29:37.315Z",
+   "seen": "2026-11-05T21:48:52.951Z",
+   "handle": "nflnewsposter.bsky.social",
+   "post": "at://did:plc:fuqjc7x4gxvnwzksnlxwbe4x/app.bsky.feed.post/3mzlssors7sdo",
+   "player": "Deshaun Watson",
+   "team": "CLE",
+   "status": "questionable",
+   "kind": "status",
+   "confidence": 0.6,
+   "text": "[Schefter] Browns QB Deshaun Watson did not practice again Thursday while he remains in concussion protocol; Shedeur Sanders is in line to start Sunday vs. the Saints. twitter.com/AdamSchefter..."
+  },
+  {
+   "id": "at://did:plc:fuqjc7x4gxvnwzksnlxwbe4x/app.bsky.feed.post/3mzlssors7sdo|shedeursanders|none|starting",
+   "at": "2026-11-05T21:29:37.315Z",
+   "seen": "2026-11-05T21:48:52.951Z",
+   "handle": "nflnewsposter.bsky.social",
+   "post": "at://did:plc:fuqjc7x4gxvnwzksnlxwbe4x/app.bsky.feed.post/3mzlssors7sdo",
+   "player": "Shedeur Sanders",
+   "team": "CLE",
+   "status": "none",
+   "kind": "starting",
+   "confidence": 0.6,
+   "text": "[Schefter] Browns QB Deshaun Watson did not practice again Thursday while he remains in concussion protocol; Shedeur Sanders is in line to start Sunday vs. the Saints. twitter.com/AdamSchefter..."
+  },
+  {
+   "id": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3mzlt326jfu2o|rasheerice|active|status",
+   "at": "2026-11-05T21:34:17.000Z",
+   "seen": "2026-11-05T21:48:52.951Z",
+   "handle": "rotowirenfl.bsky.social",
+   "post": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3mzlt326jfu2o",
+   "player": "Rashee Rice",
+   "team": "KC",
+   "status": "active",
+   "kind": "status",
+   "confidence": 0.85,
+   "text": "Rashee Rice: Full participant Thursday \n\n https://www.rotowire.com/football/player/rashee-rice-16963"
+  },
+  {
+   "id": "at://did:plc:qre6zxbmr3ixhdmgsgdretb5/app.bsky.feed.post/3mzlt3l632b2p|deshaunwatson|questionable|status",
+   "at": "2026-11-05T21:34:35.410Z",
+   "seen": "2026-11-05T21:48:52.951Z",
+   "handle": "adamscheftermirror.bsky.social",
+   "post": "at://did:plc:qre6zxbmr3ixhdmgsgdretb5/app.bsky.feed.post/3mzlt3l632b2p",
+   "player": "Deshaun Watson",
+   "team": "CLE",
+   "status": "questionable",
+   "kind": "status",
+   "confidence": 0.6,
+   "text": "Browns QB Deshaun Watson did not practice again Thursday while he remains in concussion protocol; Shedeur Sanders is in line to start Sunday vs. the Saints.\n\nOriginal post"
+  },
+  {
+   "id": "at://did:plc:qre6zxbmr3ixhdmgsgdretb5/app.bsky.feed.post/3mzlt3l632b2p|shedeursanders|none|starting",
+   "at": "2026-11-05T21:34:35.410Z",
+   "seen": "2026-11-05T21:48:52.951Z",
+   "handle": "adamscheftermirror.bsky.social",
+   "post": "at://did:plc:qre6zxbmr3ixhdmgsgdretb5/app.bsky.feed.post/3mzlt3l632b2p",
+   "player": "Shedeur Sanders",
+   "team": "CLE",
+   "status": "none",
+   "kind": "starting",
+   "confidence": 0.6,
+   "text": "Browns QB Deshaun Watson did not practice again Thursday while he remains in concussion protocol; Shedeur Sanders is in line to start Sunday vs. the Saints.\n\nOriginal post"
+  },
+  {
+   "id": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3mzlt6el7dc2s|christianwatson|limited|status",
+   "at": "2026-11-05T21:36:09.000Z",
+   "seen": "2026-11-05T21:48:52.951Z",
+   "handle": "rotowirenfl.bsky.social",
+   "post": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3mzlt6el7dc2s",
+   "player": "Christian Watson",
+   "team": "GB",
+   "status": "limited",
+   "kind": "status",
+   "confidence": 0.9,
+   "text": "Christian Watson: Stays limited Thursday \n\n https://www.rotowire.com/football/player/christian-watson-15946"
+  },
+  {
+   "id": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3mzltd7uqug2z|ajbrown|questionable|status",
+   "at": "2026-11-05T21:38:52.000Z",
+   "seen": "2026-11-05T21:48:52.951Z",
+   "handle": "rotowirenfl.bsky.social",
+   "post": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3mzltd7uqug2z",
+   "player": "A.J. Brown",
+   "team": "PHI",
+   "status": "questionable",
+   "kind": "status",
+   "confidence": 0.5,
+   "text": "A.J. Brown: Thursday's DNP confirmed \n\n https://www.rotowire.com/football/player/aj-brown-13432"
+  },
+  {
+   "id": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3mzlthkfjul2a|christianwatson|limited|status",
+   "at": "2026-11-05T21:41:17.000Z",
+   "seen": "2026-11-05T21:48:52.951Z",
+   "handle": "rotoworld-fb.bsky.social",
+   "post": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3mzlthkfjul2a",
+   "player": "Christian Watson",
+   "team": "GB",
+   "status": "limited",
+   "kind": "status",
+   "confidence": 0.9,
+   "text": "Christian Watson (rib) limited in practice Thursday"
+  },
+  {
+   "id": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3mzltorswlr22|ajbrown|questionable|status",
+   "at": "2026-11-05T21:45:19.000Z",
+   "seen": "2026-11-05T21:48:52.951Z",
+   "handle": "rotoworld-fb.bsky.social",
+   "post": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3mzltorswlr22",
+   "player": "A.J. Brown",
+   "team": "PHI",
+   "status": "questionable",
+   "kind": "status",
+   "confidence": 0.5,
+   "text": "A.J. Brown (ankle/knee) sits out again on Thursday"
   }
  ]
 }
