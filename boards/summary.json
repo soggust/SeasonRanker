@@ -1,10 +1,10 @@
 {
- "commit": "2532f3d",
+ "commit": "e806808",
  "boards": [
   {
    "file": "Main.dc.html",
    "path": "/book/",
-   "size": 1044362,
+   "size": 1035022,
    "errors": [],
    "w": 1440,
    "h": 900,
@@ -13,7 +13,7 @@
   {
    "file": "Phone.dc.html",
    "path": "/book/",
-   "size": 1054683,
+   "size": 1051161,
    "errors": [],
    "w": 390,
    "h": 844,
@@ -22,7 +22,7 @@
   {
    "file": "Wallet.dc.html",
    "path": "/wallet/",
-   "size": 948866,
+   "size": 946715,
    "errors": [],
    "w": 1440,
    "h": 900,
@@ -31,7 +31,7 @@
   {
    "file": "WalletPhone.dc.html",
    "path": "/wallet/",
-   "size": 948863,
+   "size": 946712,
    "errors": [],
    "w": 390,
    "h": 844,
