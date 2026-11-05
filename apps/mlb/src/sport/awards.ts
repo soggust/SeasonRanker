@@ -18,7 +18,8 @@ export const AWARD_INFO: Record<AwardId, AwardInfo> = {
   as: { name: 'All-Star', short: 'AS', icon: { name: 'star', metal: 'bronze' } },
 };
 
-// World Series [champion, runner-up] by season, as MLB team ids (the franchise's current id: the
+// World Series [champion, runner-up] by season, as MLB team ids, through 2025; from 2026 the data script writes
+// them on the rows ('ws', 'pennant': update-data.mjs worldSeriesOf), read where a season isn't here (the franchise's current id: the
 // 2003 Marlins are 146, the 2002 Angels 108)
 const WORLD_SERIES: Record<number, [number, number]> = {
   2000: [147, 121],
@@ -72,12 +73,12 @@ export function awardsFor(unit: SkillPlayer, _position: SkillPosition, season: n
   const wins: AwardWin[] = [];
   const series = WORLD_SERIES[season];
   const team = teamId(unit.teamLogo);
-  if (series?.[0] === team) wins.push({ id: 'ws', title: `${season} World Series Champion` });
-  if (series?.includes(team)) {
+  const own = new Set(unit.awards ?? []);
+  if (series ? series[0] === team : own.has('ws')) wins.push({ id: 'ws', title: `${season} World Series Champion` });
+  if (series ? series.includes(team) : own.has('pennant')) {
     const league = LEAGUES[team] === 'AL' ? 'American League' : 'National League';
     wins.push({ id: 'pennant', title: `${season} ${league} Pennant` });
   }
-  const own = new Set(unit.awards ?? []);
   for (const id of ORDER) {
     if (own.has(id)) wins.push({ id, title: `${season} ${AWARD_INFO[id].name}` });
   }

@@ -503,6 +503,28 @@ async function partSources(season, part, counts, constants) {
   };
 }
 
+// The World Series off the season's schedule (gameType W): { champion, runnerUp } as MLB team ids once a team has
+// four wins, else null (not played, or not over). The champion's players get 'ws', both teams' 'pennant'
+// (src/sport/awards.ts), so a new season's trophies come with the data, not a hand list (the owner, 2026-11-04:
+// the Brewers' 2026 title had no trophies a week after it)
+export function worldSeriesOf(schedule) {
+  const wins = new Map();
+  for (const date of schedule?.dates ?? []) {
+    for (const game of date.games ?? []) {
+      if (game.gameType !== 'W' || game.status?.abstractGameState !== 'Final') continue;
+      for (const side of ['home', 'away']) {
+        const t = game.teams?.[side];
+        if (t?.team?.id) wins.set(t.team.id, (wins.get(t.team.id) ?? 0) + (t.isWinner ? 1 : 0));
+      }
+    }
+  }
+  const champion = [...wins].find(([, n]) => n >= 4)?.[0];
+  const runnerUp = [...wins.keys()].find((id) => id !== champion);
+  return champion && runnerUp ? { champion, runnerUp } : null;
+}
+// (a team's World Series badges: worldSeriesOf's)
+const seriesBadges = (series, teamId) => (!series || teamId == null ? [] : [...(teamId === series.champion ? ['ws'] : []), ...(teamId === series.champion || teamId === series.runnerUp ? ['pennant'] : [])]);
+
 async function buildSeason(season) {
   const current = season === CURRENT_SEASON;
   cacheOn = !current && process.env.CACHE !== '0';
@@ -522,7 +544,9 @@ async function buildSeason(season) {
       (await previousTab(fileOf('regular'), 'TM')).filter((t) => t.stats?.parkFactor != null).map((t) => [Number(t.gsisId.slice(3)), t.stats.parkFactor]),
     );
   if (!parkRows) console.warn(`${season}: park factors failed, ${parks.size} teams' kept from the last run`);
-  const ctx = { season, current, awards, injured, parks, teams };
+  const series = worldSeriesOf(teams.schedule);
+  if (series) console.log(`${season}: World Series ${series.champion} over ${series.runnerUp}`);
+  const ctx = { season, current, awards, injured, parks, teams, series };
   const sources = { regular };
   if (PARTS.some((p) => p !== 'regular')) {
     const post = await postCounts(season);
@@ -594,7 +618,7 @@ function carryFailed(out, before, failed, { season, part, awards, injured, sched
 }
 
 // A part's rows, every tab
-async function buildRows(src, part, { season, current, awards, injured, parks, teams, roles }) {
+async function buildRows(src, part, { season, current, awards, injured, parks, teams, roles, series }) {
   const { hitting, pitching, sabH, sabP, fielding, xBat, xPit, scBat, scPit, sprint, pitchCustom, oaa } = src;
   const statcast = season >= 2015;
 
@@ -609,7 +633,7 @@ async function buildRows(src, part, { season, current, awards, injured, parks, t
     name: split.player.fullName,
     teamLogo: logo(split.team),
     teamName: split.team?.name ?? null,
-    awards: [...(awards.get(split.player.id) ?? [])],
+    awards: [...seriesBadges(series, split.team?.id), ...(awards.get(split.player.id) ?? [])],
     ...(injured.has(split.player.id) ? { injured: true, injuryStatus: injured.get(split.player.id) } : {}),
   });
   const sc = (map, id, key, d = 3) => {
@@ -755,7 +779,7 @@ async function buildRows(src, part, { season, current, awards, injured, parks, t
   // Teams (the app's Teams tab, first): the standings (record, runs scored and allowed), postseason
   // wins, the team's OPS and ERA, its fielding runs, its park, and its wins against what the run
   // differential implies (a Pythagorean expectation, exponent 1.83: close games)
-  out.TM = teamRows(teams, part, teamDef, parks, logo);
+  out.TM = teamRows(teams, part, teamDef, parks, logo, series);
 
   for (const tab of [...TABS, 'TM']) out[tab].sort((a, b) => a.name.localeCompare(b.name));
   return out;
@@ -781,7 +805,7 @@ async function teamSources(season) {
   return { standings, hitting, pitching, postHitting, postPitching, schedule };
 }
 
-function teamRows({ standings, hitting, pitching, postHitting, postPitching, schedule }, part, teamDef, parks, logo) {
+function teamRows({ standings, hitting, pitching, postHitting, postPitching, schedule }, part, teamDef, parks, logo, series = null) {
   schedule ??= { dates: [] };
   const batting = part === 'regular' ? hitting : part === 'post' ? postHitting : mergeSplits(hitting, postHitting);
   const staff = part === 'regular' ? pitching : part === 'post' ? postPitching : mergeSplits(pitching, postPitching);
@@ -870,7 +894,7 @@ function teamRows({ standings, hitting, pitching, postHitting, postPitching, sch
         pythDiff: gp ? round(t.wins - gp * pyth, 1) : null,
         parkFactor: parks.get(id) ?? null,
       },
-      awards: [],
+      awards: seriesBadges(series, id),
     };
   });
 }
