@@ -2,11 +2,11 @@
  "sport": "nfl",
  "cursor": {
   "adamscheftermirror.bsky.social": "2026-11-05T18:29:38.095Z",
-  "rapsheet.bsky.social": "2026-11-04T19:45:56.406Z",
+  "rapsheet.bsky.social": "2026-11-05T19:15:49.242Z",
   "nflnewsreposterbot.bsky.social": "2026-11-05T18:24:37.305Z",
   "insidenflnews.bsky.social": "2026-11-05T18:32:28.611Z",
   "nflnewsposter.bsky.social": "2026-11-05T18:52:08.811Z",
-  "rotoworld-fb.bsky.social": "2026-11-05T18:38:15.000Z",
+  "rotoworld-fb.bsky.social": "2026-11-05T19:00:46.000Z",
   "rotowirenfl.bsky.social": "2026-11-05T18:49:58.000Z"
  },
  "claims": [
@@ -15115,6 +15115,45 @@
    "kind": "status",
    "confidence": 0.6,
    "text": "Schefter: Kyler Murray (hamstring) 'week to week'"
+  },
+  {
+   "id": "at://did:plc:hlvr2omhnmvdmfnvmcuhyevz/app.bsky.feed.post/3mzllbvdszs22|carsonwentz|none|starting",
+   "at": "2026-11-05T19:14:57.575Z",
+   "seen": "2026-11-05T19:20:30.017Z",
+   "handle": "rapsheet.bsky.social",
+   "post": "at://did:plc:hlvr2omhnmvdmfnvmcuhyevz/app.bsky.feed.post/3mzllbvdszs22",
+   "player": "Carson Wentz",
+   "team": "MIN",
+   "status": "none",
+   "kind": "starting",
+   "confidence": 0.6,
+   "text": "The Vikings are planning to start Carson Wentz on MNF against the Bills, as Kyler Murray’s hamstring injury would limit his mobility. Murray could also make it worse by playing. \n\nWhen healthy, Wentz "
+  },
+  {
+   "id": "at://did:plc:hlvr2omhnmvdmfnvmcuhyevz/app.bsky.feed.post/3mzlldgmh6k22|kylermurray|out|status",
+   "at": "2026-11-05T19:15:49.242Z",
+   "seen": "2026-11-05T19:20:30.017Z",
+   "handle": "rapsheet.bsky.social",
+   "post": "at://did:plc:hlvr2omhnmvdmfnvmcuhyevz/app.bsky.feed.post/3mzlldgmh6k22",
+   "player": "Kyler Murray",
+   "team": "MIN",
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.8,
+   "text": "Vikings coach Kevin O'Connell says Kyler Murray is week-to-week with his hamstring strain, so Max Brosmer will be the backup."
+  },
+  {
+   "id": "at://did:plc:hlvr2omhnmvdmfnvmcuhyevz/app.bsky.feed.post/3mzlldgmh6k22|maxbrosmer|none|role",
+   "at": "2026-11-05T19:15:49.242Z",
+   "seen": "2026-11-05T19:20:30.017Z",
+   "handle": "rapsheet.bsky.social",
+   "post": "at://did:plc:hlvr2omhnmvdmfnvmcuhyevz/app.bsky.feed.post/3mzlldgmh6k22",
+   "player": "Max Brosmer",
+   "team": "MIN",
+   "status": "none",
+   "kind": "role",
+   "confidence": 0.7,
+   "text": "Vikings coach Kevin O'Connell says Kyler Murray is week-to-week with his hamstring strain, so Max Brosmer will be the backup."
   }
  ]
 }
