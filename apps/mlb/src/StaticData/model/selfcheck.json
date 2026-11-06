@@ -1,8 +1,8 @@
 {
- "at": "2026-11-05T23:05:55.573Z",
+ "at": "2026-11-06T11:37:25.053Z",
  "baseline": {
-  "from": "2026-10-01",
-  "to": "2026-10-29"
+  "from": "2026-10-02",
+  "to": "2026-10-30"
  },
  "checks": [
   {
@@ -11,7 +11,7 @@
    "how": "each prop fit's all-player bias (projected - actual over every player) against its mean error; the 28 days' graded props' own miss by side and role",
    "id": "C10",
    "metric": "r",
-   "n": 243,
+   "n": 240,
    "needs": null,
    "rows": [
     {
@@ -29,9 +29,9 @@
      "selection": "over",
      "status": "flag",
      "under": {
-      "bias": -0.0555,
-      "n": 58,
-      "ofMae": -0.0812
+      "bias": -0.0391,
+      "n": 55,
+      "ofMae": -0.0572
      }
     },
     {
@@ -103,7 +103,7 @@
   },
   {
    "examples": [],
-   "headline": "Model files 154h old, 0 open bets overdue to grade; Odds API credits 738% left; 0 bets placed in a week of 2 games",
+   "headline": "Model files 167h old, 0 open bets overdue to grade; Odds API credits 737% left; 0 bets placed in a week of 2 games",
    "how": "the newest commit of the sport's model files, the open bets started 12 hours ago or more, The Odds API's credits (state.odds), the state's sources",
    "id": "C16",
    "metric": "ageH",
@@ -111,7 +111,7 @@
    "needs": null,
    "rows": [
     {
-     "ageH": 154,
+     "ageH": 167,
      "at": "2026-10-30T12:19:04Z",
      "key": "files",
      "overdue": 0
@@ -120,8 +120,8 @@
      "cycleEnd": "2026-12-01T00:02:39.102Z",
      "key": "credits",
      "monthly": 20000,
-     "remaining": 147529,
-     "share": 7.3765
+     "remaining": 147403,
+     "share": 7.3702
     },
     {
      "down": [],
@@ -137,7 +137,7 @@
    "tested": null,
    "threshold": "watch files 3h old with bets overdue, credits under 20%, a source down, or no bets in a week with games; flag 6h old with bets overdue, or credits under 10%",
    "title": "Ops",
-   "value": 154
+   "value": 167
   },
   {
    "examples": [
@@ -151,7 +151,7 @@
    "how": "graded in the 28 days, by team, opponent, player, home or away, role depth, the vacated term, teammates out or questionable, back-to-backs, a backup QB, the weather, the lead time, the start hour, the prices, the band, the guard and the disruption",
    "id": "C7",
    "metric": "z",
-   "n": 284,
+   "n": 278,
    "needs": null,
    "rows": [
     {
@@ -165,18 +165,6 @@
      "value": "4-7pm",
      "w": 9,
      "z": -2.4496
-    },
-    {
-     "dim": "team",
-     "e": 8.4989,
-     "key": "team: CHW",
-     "n": 16,
-     "profit": -4.948,
-     "roi": -0.5821,
-     "status": "ok",
-     "value": "CHW",
-     "w": 4,
-     "z": -2.2796
     },
     {
      "dim": "lead time",
@@ -203,16 +191,28 @@
      "z": -2.1218
     },
     {
-     "dim": "back-to-back",
-     "e": 11.3414,
-     "key": "back-to-back: yes",
-     "n": 25,
-     "profit": -3.504,
-     "roi": -0.2695,
+     "dim": "team",
+     "e": 7.3584,
+     "key": "team: CHW",
+     "n": 14,
+     "profit": -3.948,
+     "roi": -0.5264,
      "status": "ok",
-     "value": "yes",
-     "w": 6.9,
-     "z": -1.8752
+     "value": "CHW",
+     "w": 4,
+     "z": -1.8178
+    },
+    {
+     "dim": "opponent",
+     "e": 35.9914,
+     "key": "opponent: CLE",
+     "n": 66,
+     "profit": -5.687,
+     "roi": -0.1698,
+     "status": "ok",
+     "value": "CLE",
+     "w": 30,
+     "z": -1.5069
     }
    ],
    "status": "ok",
@@ -302,7 +302,7 @@
   },
   {
    "examples": [],
-   "headline": "13 segments tested on 285 priced rows: none losing to the Book beyond the false discovery rate, none trending worse The priced history (every season, the gate's run of 2026-11-05): none of 37 segments losing on 276507 rows.",
+   "headline": "13 segments tested on 285 priced rows: none losing to the Book beyond the false discovery rate, none trending worse The priced history (every season, the gate's run of 2026-11-06): none of 37 segments losing on 276507 rows.",
    "how": "each graded row's log loss gain over the Book (its priced chance against the Book's no-vig: on the result and against the close, half each), a game's rows sharing their weight; a segment's mean, its standard error by game, z; the leaks ranked by the units staked into them in the last 28 days. Each leak's fix a candidate only: it ships when the replay gate passes it (node libs/ranker/scripts/model/gate.mjs --candidate <the fix>)",
    "id": "C23",
    "metric": "leaks",
@@ -674,21 +674,13 @@
   },
   {
    "examples": [],
-   "headline": "No term, param or trust dropped; 21 changelog entries this week",
+   "headline": "No term, param or trust dropped; 13 changelog entries this week",
    "how": "the day's last state.json for 35 days (git), the week's start against now; the changelog's entries this week verbatim",
    "id": "C9",
    "metric": "changes",
-   "n": 28,
+   "n": 29,
    "needs": null,
    "rows": [
-    {
-     "from": 0.972,
-     "key": "prop:tb:scale",
-     "label": "Total Bases scale",
-     "status": "info",
-     "to": 0.971,
-     "what": "refit"
-    },
     {
      "at": "2026-11-03T06:19:31.328Z",
      "from": 0,
@@ -1096,7 +1088,7 @@
   },
   {
    "examples": [],
-   "headline": "5 of 7 spots shifted: hits|under|1.5 -0.051 (n 4, pooled only (its own rung: too few rows (200 needed))), k|over|>2.5 -0.065 (n 2, pooled only (its own rung: too few rows (200 needed))), outs|over|>2.5 -0.065 (n 2, pooled only (its own rung: too few rows (200 needed))), tb|over|1.5 -0.051 (n 8, pooled only (its own rung: too few rows (200 needed))), tb|under|1.5 -0.051 (n 23, pooled only (its own rung: too few rows (200 needed)))",
+   "headline": "5 of 7 spots shifted: hits|under|1.5 -0.059 (n 4, pooled only (its own rung: too few rows (200 needed))), k|over|>2.5 -0.067 (n 2, pooled only (its own rung: too few rows (200 needed))), outs|over|>2.5 -0.067 (n 2, pooled only (its own rung: too few rows (200 needed))), tb|over|1.5 -0.059 (n 8, pooled only (its own rung: too few rows (200 needed))), tb|under|1.5 -0.059 (n 23, pooled only (its own rung: too few rows (200 needed)))",
    "how": "state.calib as the last run left it (calib.mjs fitCalib: every graded prop since MODEL_EPOCH, the tracked rows among them, by its raw model chance), each spot's shift, target and held-out gain; the week's graded props of each spot, the sum of their raw chances (said), of the chances as shifted (shifted) and their wins. Never more than the desk applies: it says where the model's been running hot or cold",
    "id": "C21",
    "metric": "spots shifted",
@@ -1135,7 +1127,7 @@
      "key": "tb|under|1.5",
      "n": 23,
      "said": null,
-     "shift": -0.0507,
+     "shift": -0.0595,
      "shifted": null,
      "target": 0,
      "week": 0,
@@ -1148,7 +1140,7 @@
      "key": "tb|over|1.5",
      "n": 8,
      "said": null,
-     "shift": -0.0507,
+     "shift": -0.0595,
      "shifted": null,
      "target": 0,
      "week": 0,
@@ -1161,7 +1153,7 @@
      "key": "hits|under|1.5",
      "n": 4,
      "said": null,
-     "shift": -0.0507,
+     "shift": -0.0595,
      "shifted": null,
      "target": 0,
      "week": 0,
@@ -1174,7 +1166,7 @@
      "key": "k|over|>2.5",
      "n": 2,
      "said": null,
-     "shift": -0.0648,
+     "shift": -0.0673,
      "shifted": null,
      "target": 0,
      "week": 0,
@@ -1187,7 +1179,7 @@
      "key": "outs|over|>2.5",
      "n": 2,
      "said": null,
-     "shift": -0.0648,
+     "shift": -0.0673,
      "shifted": null,
      "target": 0,
      "week": 0,
@@ -1319,7 +1311,7 @@
  "sport": "mlb",
  "summary": {
   "flag": 1,
-  "headline": "All-player and selection bias: Hits Overs: the bets projected +0.08 off (mean - actual, 150 bets) against an all-player bias of -0.01; Ops: Model files 154h old, 0 open bets overdue to grade; Odds API credits 738% left; 0 bets placed in a week of 2 games",
+  "headline": "All-player and selection bias: Hits Overs: the bets projected +0.08 off (mean - actual, 150 bets) against an all-player bias of -0.01; Ops: Model files 167h old, 0 open bets overdue to grade; Odds API credits 737% left; 0 bets placed in a week of 2 games",
   "info": 4,
   "ok": 4,
   "partial": 0,
@@ -1328,8 +1320,8 @@
  },
  "v": 1,
  "window": {
-  "from": "2026-10-29",
-  "to": "2026-11-05"
+  "from": "2026-10-30",
+  "to": "2026-11-06"
  },
  "writeups": {
   "calls": 0,

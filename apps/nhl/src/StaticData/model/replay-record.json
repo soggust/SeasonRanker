@@ -2,7 +2,7 @@
  "v": 1,
  "sport": "nhl",
  "epoch": "2026-10-26T15:00:00Z",
- "at": "2026-11-05T22:58:26.150Z",
+ "at": "2026-11-06T11:29:10.316Z",
  "from": "2021-01-27T00:00:00.000Z",
  "through": "2026-10-14T01:55:00.000Z",
  "n": {
@@ -18,12 +18,12 @@
   "lost": 2182,
   "push": 11,
   "staked": 3327.5,
-  "profit": -32.97,
-  "roi": -0.0099,
+  "profit": -31.82,
+  "roi": -0.0096,
   "beat": 0.531,
   "beatN": 678,
   "clv": 0.0039,
-  "fairProfit": 117.4944,
+  "fairProfit": 118.7122,
   "toward": 272,
   "against": 416,
   "mvN": 717
@@ -34,28 +34,28 @@
   "lost": 2251,
   "push": 38,
   "staked": 2457.5,
-  "profit": -58.12,
+  "profit": -58.21,
   "roi": -0.0237,
   "beat": null,
   "beatN": 0,
   "clv": null,
-  "fairProfit": 79.3675,
+  "fairProfit": 79.267,
   "toward": 0,
   "against": 0,
   "mvN": 0
  },
  "pass": {
   "bets": 147120,
-  "won": 75900,
-  "lost": 70964,
+  "won": 75904,
+  "lost": 70960,
   "push": 256,
   "staked": 147120,
-  "profit": -6413.52,
-  "roi": -0.0436,
+  "profit": -6406.38,
+  "roi": -0.0435,
   "beat": null,
   "beatN": 0,
   "clv": null,
-  "fairProfit": 1909.27,
+  "fairProfit": 1916.8452,
   "toward": 0,
   "against": 0,
   "mvN": 0
@@ -99,12 +99,12 @@
    "lost": 1928,
    "push": 11,
    "staked": 2052.5,
-   "profit": -48.26,
-   "roi": -0.0235,
+   "profit": -47.11,
+   "roi": -0.023,
    "beat": 0.531,
    "beatN": 678,
    "clv": 0.0039,
-   "fairProfit": 22.5196,
+   "fairProfit": 23.7374,
    "toward": 272,
    "against": 416,
    "mvN": 717
@@ -133,12 +133,12 @@
    "lost": 1367,
    "push": 0,
    "staked": 2591,
-   "profit": -26.03,
-   "roi": -0.01,
+   "profit": -24.88,
+   "roi": -0.0096,
    "beat": null,
    "beatN": 0,
    "clv": null,
-   "fairProfit": 130.9263,
+   "fairProfit": 132.1441,
    "toward": 0,
    "against": 0,
    "mvN": 0
@@ -351,12 +351,12 @@
    "lost": 898,
    "push": 4,
    "staked": 1276.5,
-   "profit": -16.52,
-   "roi": -0.0129,
+   "profit": -15.37,
+   "roi": -0.012,
    "beat": 0.5529,
    "beatN": 170,
    "clv": 0.0065,
-   "fairProfit": 49.1358,
+   "fairProfit": 50.3536,
    "toward": 80,
    "against": 90,
    "mvN": 177,
@@ -366,12 +366,12 @@
     "lost": 376,
     "push": 1,
     "staked": 444.5,
-    "profit": 18.77,
-    "roi": 0.0422,
+    "profit": 18.68,
+    "roi": 0.042,
     "beat": null,
     "beatN": 0,
     "clv": null,
-    "fairProfit": 47.819,
+    "fairProfit": 47.7185,
     "toward": 0,
     "against": 0,
     "mvN": 0
@@ -398,12 +398,12 @@
     "lost": 765,
     "push": 0,
     "staked": 1140.5,
-    "profit": -24.01,
-    "roi": -0.0211,
+    "profit": -22.86,
+    "roi": -0.02,
     "beat": null,
     "beatN": 0,
     "clv": null,
-    "fairProfit": 42.6987,
+    "fairProfit": 43.9165,
     "toward": 0,
     "against": 0,
     "mvN": 0
@@ -848,12 +848,12 @@
     "lost": 511,
     "push": 4,
     "staked": 611,
-    "profit": -29.88,
-    "roi": -0.0489,
+    "profit": -28.73,
+    "roi": -0.047,
     "beat": 0.5596,
     "beatN": 193,
     "clv": 0.0017,
-    "fairProfit": -5.8805,
+    "fairProfit": -4.6627,
     "toward": 88,
     "against": 107,
     "mvN": 199
@@ -913,12 +913,12 @@
      "lost": 511,
      "push": 4,
      "staked": 611,
-     "profit": -29.88,
-     "roi": -0.0489,
+     "profit": -28.73,
+     "roi": -0.047,
      "beat": 0.5596,
      "beatN": 193,
      "clv": 0.0017,
-     "fairProfit": -5.8805,
+     "fairProfit": -4.6627,
      "toward": 88,
      "against": 107,
      "mvN": 199
@@ -946,12 +946,12 @@
     "lost": 345,
     "push": 0,
     "staked": 455,
-    "profit": -29.42,
-    "roi": -0.0647,
+    "profit": -28.27,
+    "roi": -0.0621,
     "beat": null,
     "beatN": 0,
     "clv": null,
-    "fairProfit": -4.014,
+    "fairProfit": -2.7962,
     "toward": 0,
     "against": 0,
     "mvN": 0
@@ -980,12 +980,12 @@
     "lost": 458,
     "push": 0,
     "staked": 549,
-    "profit": 20.46,
-    "roi": 0.0373,
+    "profit": 20.37,
+    "roi": 0.0371,
     "beat": null,
     "beatN": 0,
     "clv": null,
-    "fairProfit": 56.4324,
+    "fairProfit": 56.3319,
     "toward": 0,
     "against": 0,
     "mvN": 0
@@ -1707,7 +1707,7 @@
     "2026-01-18": "91,99,0,190,-21.71,0,0,0,-10.6065",
     "2026-01-19": "108,117,0,225,-21.08,0,0,0,-12.1555",
     "2026-01-20": "162,139,0,301,6.06,0,0,0,-18.8864",
-    "2026-01-21": "42,59,0,101,-17.16,0,0,0,-5.232",
+    "2026-01-21": "43,58,0,101,-15.06,0,0,0,-5.3642",
     "2026-01-22": "191,191,0,382,-17.43,0,0,0,-22.0832",
     "2026-01-23": "86,77,0,163,5.07,0,0,0,-10.2775",
     "2026-01-24": "190,174,0,364,7.63,0,0,0,-22.4825",
@@ -2049,7 +2049,7 @@
     "2023-06": "1,0,0,0.5,0.5",
     "2023-10": "15,20,1,18,-1.72",
     "2023-11": "112,117,2,118.5,6.84",
-    "2023-12": "185,262,0,377.5,-26.66",
+    "2023-12": "185,262,0,377.5,-25.51",
     "2024-01": "89,118,1,104,-2.88",
     "2024-02": "33,54,0,43.5,-6.62",
     "2024-03": "74,87,0,80.5,-1.54",
@@ -2840,10 +2840,10 @@
     "love": {
      "share": 0.3,
      "kellyMax": null,
-     "z": 1.54,
-     "n": 786,
-     "roi": 0.034,
-     "rest": -0.0317
+     "z": 1.51,
+     "n": 787,
+     "roi": 0.0326,
+     "rest": -0.0314
     },
     "mid": 9,
     "months": 32,
@@ -2920,7 +2920,7 @@
     "beat": 360,
     "clv": 2.6384,
     "pN": 4030,
-    "p": 1904.1197,
+    "p": 1904.1195,
     "wins": 1848
    },
    "ml:home": {
@@ -3010,7 +3010,7 @@
     "beat": 0,
     "clv": 0,
     "pN": 2325,
-    "p": 1128.2996,
+    "p": 1128.2994,
     "wins": 1099
    },
    "props": {
@@ -3020,7 +3020,7 @@
     "beat": 0,
     "clv": 0,
     "pN": 2571,
-    "p": 1238.041,
+    "p": 1238.0408,
     "wins": 1204
    },
    "prop:pts:over": {
@@ -3050,7 +3050,7 @@
     "beat": 0,
     "clv": 0,
     "pN": 2212,
-    "p": 1077.3189,
+    "p": 1077.3187,
     "wins": 1050
    },
    "prop:pts:under": {
@@ -3095,8 +3095,8 @@
    }
   }
  },
- "commit": "8b971dc4",
- "note": "D106. \"Beat the close\" means the market moved our way; the off-market price discount measured and held (the coordinator's ledger review, 2026-11-05: \"the site says it beats the close 92%, which overstates things\")",
+ "commit": "8b6f34e2",
+ "note": "D107. Betting on the Bot's own conviction instead of the price gap: measured and held (the owner, 2026-11-06: \"the bot is a bit too worried about value and not simply winning bets\")",
  "inputs": {
   "v": 1,
   "sport": "nhl",
@@ -3104,8 +3104,8 @@
    "props": "8cbb07134ab6",
    "games": "47aceba7d839",
    "pricing": "b706945a4947",
-   "record": "fdec826e35bb",
-   "harness": "0948907b80e0",
+   "record": "c935ce75de58",
+   "harness": "7b5fa79c7abc",
    "residual": "0ea9af83fbd4d825",
    "tuned": "df11fd594cc55b23"
   },
@@ -3152,7 +3152,7 @@
    "keys": 156076,
    "bets": 4041
   },
-  "units": -32.97,
+  "units": -31.82,
   "canary": {
    "moved": 0,
    "compared": 7066,
@@ -3161,7 +3161,7 @@
     "2024-04-14",
     "2025-12-14"
    ],
-   "planted": 5815.85
+   "planted": 5803.26
   },
   "frozen": {
    "props": {
@@ -3177,6 +3177,6 @@
     "want": 229
    }
   },
-  "hash": "d851ddbb1e5822b2"
+  "hash": "e2aedf745cf00bc2"
  }
 }

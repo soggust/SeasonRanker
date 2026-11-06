@@ -2,7 +2,7 @@
  "v": 1,
  "sport": "nba",
  "epoch": "2026-10-26T15:00:00Z",
- "at": "2026-11-05T22:53:57.903Z",
+ "at": "2026-11-06T11:24:05.156Z",
  "from": "2020-08-01T01:10:00.000Z",
  "through": "2026-06-11T00:40:00.000Z",
  "n": {
@@ -46,16 +46,16 @@
  },
  "pass": {
   "bets": 241773,
-  "won": 124094,
-  "lost": 117509,
+  "won": 124095,
+  "lost": 117508,
   "push": 170,
   "staked": 241773,
-  "profit": -9958.18,
+  "profit": -9955.98,
   "roi": -0.0412,
   "beat": null,
   "beatN": 0,
   "clv": null,
-  "fairProfit": 4525.1731,
+  "fairProfit": 4527.5065,
   "toward": 0,
   "against": 0,
   "mvN": 0
@@ -2834,7 +2834,7 @@
     "beat": 199,
     "clv": 5.5261,
     "pN": 6481,
-    "p": 3155.686,
+    "p": 3155.6864,
     "wins": 3177
    },
    "spread:home": {
@@ -2934,7 +2934,7 @@
     "beat": 0,
     "clv": 0,
     "pN": 5256,
-    "p": 2735.6122,
+    "p": 2735.6126,
     "wins": 2767
    },
    "prop:pts:over": {
@@ -2974,7 +2974,7 @@
     "beat": 0,
     "clv": 0,
     "pN": 3772,
-    "p": 2007.5429,
+    "p": 2007.5433,
     "wins": 2058
    },
    "prop:reb": {
@@ -2984,7 +2984,7 @@
     "beat": 0,
     "clv": 0,
     "pN": 4363,
-    "p": 2310.8844,
+    "p": 2310.8848,
     "wins": 2321
    },
    "prop:pra:over": {
@@ -3069,8 +3069,8 @@
    }
   }
  },
- "commit": "8b971dc4",
- "note": "D106. \"Beat the close\" means the market moved our way; the off-market price discount measured and held (the coordinator's ledger review, 2026-11-05: \"the site says it beats the close 92%, which overstates things\")",
+ "commit": "8b6f34e2",
+ "note": "D107. Betting on the Bot's own conviction instead of the price gap: measured and held (the owner, 2026-11-06: \"the bot is a bit too worried about value and not simply winning bets\")",
  "inputs": {
   "v": 1,
   "sport": "nba",
@@ -3078,8 +3078,8 @@
    "props": "8cbb07134ab6",
    "games": "47aceba7d839",
    "pricing": "b706945a4947",
-   "record": "fdec826e35bb",
-   "harness": "0948907b80e0",
+   "record": "c935ce75de58",
+   "harness": "7b5fa79c7abc",
    "residual": "c981f3e1bbb332c9",
    "tuned": "e79e45590a673d4d"
   },
@@ -3153,6 +3153,6 @@
     "want": 0
    }
   },
-  "hash": "990dddc7ce4593ec"
+  "hash": "7720fe566f74a856"
  }
 }
