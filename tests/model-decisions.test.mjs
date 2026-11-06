@@ -2432,3 +2432,21 @@ test("D106 beat the close is the market's move; the off-market price discount me
   assert.ok(gate.includes("process.env.GATE_CONSENSUS_PULL === '1'"));
   for (const f of ["desk.mjs", "props.mjs", "run.mjs", "leagues.mjs"]) assert.ok(!fs.readFileSync(path.resolve("libs/ranker/scripts/model", f), "utf8").includes("CONSENSUS_PULL"), `${f} has no consensus pull`);
 });
+
+test("D107 the conviction stake measured and held: a replay flag only, tracked at no lean, a soft fitted minimum", async () => {
+  const decisions = fs.readFileSync(path.resolve("libs/ranker/scripts/model/DECISIONS.md"), "utf8");
+  assert.ok(decisions.includes("### D107."));
+  const C = await import("../libs/ranker/scripts/model/conviction.mjs");
+  assert.ok(Math.abs(C.convictionOf(0.6, false, 0.45) + 0.05) < 1e-9, "a side's lean is its own chance less its fair");
+  const fit0 = C.fitConviction([]);
+  assert.deepEqual([fit0.cMin, fit0.span], [0, C.SPAN0], "no evidence: no minimum");
+  assert.equal(C.convictionUnits(-0.01, fit0), 0, "the model not siding with the bet: tracked");
+  assert.equal(C.convictionUnits(0.01, { cMin: 0.02, span: 0.1 }), 0.5, "under the minimum: the practice stake, never off");
+  assert.equal(C.convictionUnits(0.5, { cMin: 0.02, span: 0.1 }), 3);
+  // (losers at small leans raise the minimum)
+  const list = [...Array(40)].map((_, i) => ({ c: i < 20 ? 0.005 : 0.08, flat: i < 20 ? -1 : 0.9 }));
+  assert.equal(C.fitConviction(list).cMin, 0.01);
+  // (measuring only: off unless the replay's flag; the live desk never reads it)
+  assert.ok(fs.readFileSync(path.resolve("libs/ranker/scripts/model/conviction.mjs"), "utf8").includes("process.env.REPLAY_CONVICTION === '1'"));
+  for (const f of ["desk.mjs", "props.mjs", "run.mjs", "picks.mjs", "leagues.mjs"]) assert.ok(!fs.readFileSync(path.resolve("libs/ranker/scripts/model", f), "utf8").includes("conviction.mjs"), `${f} reads no conviction`);
+});

@@ -39,6 +39,7 @@ import * as WINDOWS from './windows.mjs';
 import * as REASONS from './reasons.mjs';
 import * as SHOP from './best-price.mjs';
 import * as LEAN from './lean.mjs';
+import * as CONV from './conviction.mjs';
 
 export const REPLAY_V = 1;
 export const REPLAY_LAST = 20;
@@ -318,6 +319,8 @@ export function replayRecord(V, sport, rows, { events = null, names = () => ({ h
   const leanBets = new Map();
   // (D88's margin rule: each bet's { mg: { e, d }, x, sd })
   const marginBets = new Map();
+  // (D107's conviction challenger, measuring only (REPLAY_CONVICTION=1, conviction.mjs): each placed bet's own-model lean)
+  const convBets = new Map();
   const flags = { open: 0, close: 0, openSeen: 0, openClean: 0, openInWindow: 0, openHeld: 0, closeHeld: 0, barred: 0 };
   const keys = new Set([...opens.keys(), ...closes.keys()]);
   // (the betting windows (DECISIONS.md D63, windows.mjs): a game line's intraday snapshots (rows.intra, D61) beside its
@@ -521,6 +524,10 @@ export function replayRecord(V, sport, rows, { events = null, names = () => ({ h
         const mg = o === null ? null : LEAN.marginOf({ p: sd.pS, odds: sd.odds, fair: sd.fS, own: sd.over ? o : 1 - o });
         if (mg) marginBets.set(bet, { mg, x, sd });
       }
+      if (CONV.CONVICTION && sport !== 'mma') {
+        const c = CONV.convictionOf(x.raw, sd.over, sd.fS);
+        if (c !== null) convBets.set(bet, { c, x, sd });
+      }
       if (x.market === 'prop' && LEAN.leanGap) {
         const g = LEAN.leanGap(x, sd.over);
         if (g !== null) leanBets.set(bet, g);
@@ -552,6 +559,53 @@ export function replayRecord(V, sport, rows, { events = null, names = () => ({ h
       bets.push(...kept);
     }
     flags.margin = fm;
+  }
+  // (D107's conviction challenger (REPLAY_CONVICTION=1, measuring only): a bet the Bot's own model doesn't side with
+  // (c <= 0) is tracked as D88's held ones are; the rest staked by c (conviction.mjs convictionUnits, the month's fit on
+  // the group's bets settled before it) in place of the price's stake, before the bars, guards and tiers below hold it)
+  if (CONV.CONVICTION && convBets.size) {
+    const flatB = (b) => (b.res === 'W' ? dec(b.odds) - 1 : b.res === 'L' ? -1 : 0);
+    const groupOf = (b) => (b.market === 'prop' ? 'props' : 'lines');
+    const walk = CONV.walkConviction([...convBets].map(([b, it]) => ({ t: b.t + GAME_HOURS * 36e5, group: groupOf(b), c: it.c, flat: flatB(b) })));
+    const fc = { bets: 0, tracked: 0, before: 0, after: 0 };
+    const out = new Set();
+    const dumpC = [];
+    const live = new Set(bets);
+    for (const [b, it] of convBets) {
+      if (!live.has(b)) continue;
+      fc.bets++;
+      const fit = walk(fin(b.at) ? b.at : b.t, groupOf(b));
+      const u = CONV.convictionUnits(it.c, fit, { practice: practiceUnits });
+      const was = b.full ? b.full.units : b.units;
+      const wasProfit = b.full ? b.full.profit : b.profit;
+      dumpC.push({ t: b.t, market: b.market, stat: b.stat, c: r4(it.c), fS: b.fair, p: b.p, odds: b.odds, res: b.res, mv: b.mv, units0: b.units, u, cMin: fit.cMin, span: r4(fit.span) });
+      fc.before = r2(fc.before + b.profit);
+      if (u === 0) {
+        out.add(b);
+        fc.tracked++;
+        if (b.full) flags.barred--;
+        hold.delete(b);
+        shopOnlyBets.delete(b);
+        leanBets.delete(b);
+        passes.push({ x: it.x, sd: it.sd, convictionHeld: true });
+        continue;
+      }
+      const at = (units) => (was > 0 ? r2((wasProfit * units) / was) : 0);
+      if (b.full) Object.assign(b.full, { units: u, profit: at(u) });
+      else Object.assign(b, { units: u, profit: at(u) });
+      fc.after = r2(fc.after + b.profit);
+    }
+    if (out.size) {
+      const kept = bets.filter((b) => !out.has(b));
+      bets.length = 0;
+      bets.push(...kept);
+    }
+    flags.conviction = fc;
+    if (process.env.REPLAY_DUMP) {
+      try {
+        writeFileSync(path.join(process.env.REPLAY_DUMP, `${sport}-conv.json`), JSON.stringify(dumpC));
+      } catch {}
+    }
   }
   // (the bar's own place (DECISIONS.md D51), walk-forward by season: the bar stakes a season's lines only where, on
   // every season before, the lines as it staked them earned at least what they would have at full stakes (the first

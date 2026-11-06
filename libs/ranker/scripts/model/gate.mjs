@@ -758,6 +758,8 @@ export async function scoreVersion(dir, sport, { refit = false, propsLayer = tru
   // (the history's props first: its anchor fit walk-forward by season (gate-history.mjs propHistoryRows, D33) prices
   // the ledger's replayed rows at the newest season's pull, the one the live desk reads)
   const histProps = histMatches.length ? propHistoryRows(V, sport, histIndex, histMatches, current, { factsLead: H.context.dayOfMinLead?.(sport) ?? null }) : { open: [], close: [], anchor: null };
+  // (D107's signal read: every history line close with the version's raw model chance, the fair and the result)
+  if (process.env.REPLAY_DUMP && histLines.close.length) { try { writeFileSync(path.join(process.env.REPLAY_DUMP, `${sport}-lineclose.json`), JSON.stringify(histLines.close.map((x) => [x.market, x.f, x.raw, x.p, x.y, x.t, x.season]))); } catch {} }
   if (process.env.REPLAY_DUMP && histProps.close.length) { try { writeFileSync(path.join(process.env.REPLAY_DUMP, `${sport}-propclose.json`), JSON.stringify(histProps.close.map((x) => [x.event, x.stat, x.name, x.line, x.f, x.p, x.y, x.mu ?? null, x.t, x.season, x.key, x.raw, x.anch ?? null, x.yrs ?? null]))); writeFileSync(path.join(process.env.REPLAY_DUMP, `${sport}-propopen.json`), JSON.stringify(histProps.open.map((x) => [x.id, x.p, x.f, x.raw, x.anch ?? null, x.yrs ?? null]))); if (histProps.anchor?.young) writeFileSync(path.join(process.env.REPLAY_DUMP, `${sport}-pullyoung.json`), JSON.stringify(histProps.anchor.young)); } catch {} }
   if (hist.props.length) {
     // (by season: the history's player games with a DraftKings close, and the closes priced (D69's coverage check))
