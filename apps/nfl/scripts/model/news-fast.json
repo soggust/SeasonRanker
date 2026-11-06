@@ -3,11 +3,11 @@
  "cursor": {
   "adamscheftermirror.bsky.social": "2026-11-06T16:29:44.191Z",
   "rapsheet.bsky.social": "2026-11-06T03:29:31.313Z",
-  "nflnewsreposterbot.bsky.social": "2026-11-05T18:24:37.305Z",
+  "nflnewsreposterbot.bsky.social": "2026-11-06T17:28:39.017Z",
   "insidenflnews.bsky.social": "2026-11-06T16:18:11.162Z",
-  "nflnewsposter.bsky.social": "2026-11-06T17:02:20.836Z",
+  "nflnewsposter.bsky.social": "2026-11-06T17:29:12.778Z",
   "rotoworld-fb.bsky.social": "2026-11-06T17:11:03.000Z",
-  "rotowirenfl.bsky.social": "2026-11-06T17:09:43.000Z"
+  "rotowirenfl.bsky.social": "2026-11-06T17:32:03.000Z"
  },
  "claims": [
   {
@@ -16194,6 +16194,71 @@
    "kind": "status",
    "confidence": 0.6,
    "text": "Malik Nabers (knee) back practicing on Friday"
+  },
+  {
+   "id": "at://did:plc:fuqjc7x4gxvnwzksnlxwbe4x/app.bsky.feed.post/3mznuzqzyek3a|saquonbarkley|limited|status",
+   "at": "2026-11-06T17:14:41.522Z",
+   "seen": "2026-11-06T17:34:12.366Z",
+   "handle": "nflnewsposter.bsky.social",
+   "post": "at://did:plc:fuqjc7x4gxvnwzksnlxwbe4x/app.bsky.feed.post/3mznuzqzyek3a",
+   "player": "Saquon Barkley",
+   "team": "PHI",
+   "status": "limited",
+   "kind": "status",
+   "confidence": 0.5,
+   "text": "[Zangaro] Saquon Barkley (hamstring/back) is practicing again. twitter.com/DZangaroNBCS..."
+  },
+  {
+   "id": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3mznvbunuzq25|deshaunwatson|limited|status",
+   "at": "2026-11-06T17:19:13.000Z",
+   "seen": "2026-11-06T17:34:12.366Z",
+   "handle": "rotowirenfl.bsky.social",
+   "post": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3mznvbunuzq25",
+   "player": "Deshaun Watson",
+   "team": "CLE",
+   "status": "limited",
+   "kind": "status",
+   "confidence": 0.6,
+   "text": "Deshaun Watson: Returns to practice field Friday \n\n https://www.rotowire.com/football/player/deshaun-watson-11712"
+  },
+  {
+   "id": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3mznvcf2ssf2i|emekaegbuka|questionable|status",
+   "at": "2026-11-06T17:19:30.000Z",
+   "seen": "2026-11-06T17:34:12.366Z",
+   "handle": "rotowirenfl.bsky.social",
+   "post": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3mznvcf2ssf2i",
+   "player": "Emeka Egbuka",
+   "team": "TB",
+   "status": "questionable",
+   "kind": "status",
+   "confidence": 0.8,
+   "text": "Emeka Egbuka: Could be game-time call \n\n https://www.rotowire.com/football/player/emeka-egbuka-18549"
+  },
+  {
+   "id": "at://did:plc:rx22hq465sfe5g2qyyf5gzu2/app.bsky.feed.post/3mznvspqfj22t|mylesgarrett|active|return",
+   "at": "2026-11-06T17:28:39.017Z",
+   "seen": "2026-11-06T17:34:12.366Z",
+   "handle": "nflnewsreposterbot.bsky.social",
+   "post": "at://did:plc:rx22hq465sfe5g2qyyf5gzu2/app.bsky.feed.post/3mznvspqfj22t",
+   "player": "Myles Garrett",
+   "team": "LAR",
+   "status": "active",
+   "kind": "return",
+   "confidence": 0.7,
+   "text": "Mike Garafolo: #Rams star Myles Garrett, working his way back from knee surgery that landed him on Injured Reserve, is on track to be activated ahead of Sunday vs. the #Commanders, per me and @RapShee"
+  },
+  {
+   "id": "at://did:plc:fuqjc7x4gxvnwzksnlxwbe4x/app.bsky.feed.post/3mznvtpwnbs2b|mylesgarrett|active|return",
+   "at": "2026-11-06T17:29:12.778Z",
+   "seen": "2026-11-06T17:34:12.366Z",
+   "handle": "nflnewsposter.bsky.social",
+   "post": "at://did:plc:fuqjc7x4gxvnwzksnlxwbe4x/app.bsky.feed.post/3mznvtpwnbs2b",
+   "player": "Myles Garrett",
+   "team": "LAR",
+   "status": "active",
+   "kind": "return",
+   "confidence": 0.65,
+   "text": "[Garafolo] Rams star Myles Garrett, working his way back from knee surgery that landed him on Injured Reserve, is on track to be activated ahead of Sunday vs. the Commanders. twitter.com/MikeGarafolo."
   }
  ]
 }
