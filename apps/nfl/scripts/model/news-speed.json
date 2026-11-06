@@ -14920,6 +14920,18 @@
     "own": "2026-11-06T15:39:08.564Z",
     "why": "@insidenflnews.bsky.social: Jets WR Garrett Wilson (concussion) has been ruled o"
    }
+  },
+  "401873045|trevinwallace|out": {
+   "game": "401873045",
+   "start": "2026-11-08T18:00Z",
+   "team": "20",
+   "name": "Trevin Wallace",
+   "status": "out",
+   "athlete": "4683815",
+   "espn": {
+    "seen": "2026-11-06T15:59:42.822Z",
+    "own": "2026-11-06T15:50:00.000Z"
+   }
   }
  }
 }
