@@ -1,63 +1,6 @@
 {
  "sport": "nba",
  "entries": {
-  "401909874|marcussmart|q": {
-   "game": "401909874",
-   "start": "2026-10-27T00:30Z",
-   "team": "10",
-   "name": "Marcus Smart",
-   "status": "q",
-   "athlete": "2990992",
-   "espn": {
-    "seen": "2026-10-26T00:41:15.679Z",
-    "own": "2026-10-25T21:26:00.000Z"
-   }
-  },
-  "401909874|stevenadams|out": {
-   "game": "401909874",
-   "start": "2026-10-27T00:30Z",
-   "team": "10",
-   "name": "Steven Adams",
-   "status": "out",
-   "athlete": "2991235",
-   "espn": {
-    "seen": "2026-10-26T00:41:15.679Z",
-    "own": "2026-10-25T21:24:00.000Z"
-   },
-   "sleeper": {
-    "seen": "2026-10-26T20:16:35.808Z",
-    "own": "2026-10-26T14:35:14.144Z"
-   },
-   "bluesky": {
-    "seen": "2026-10-26T23:50:51.748Z",
-    "own": "2026-10-26T22:53:02.800Z",
-    "why": "@insidenbanews.bsky.social: Udoka: Steven Adams (calf) expected to miss at least"
-   }
-  },
-  "401909874|mouhamedgueye|out": {
-   "game": "401909874",
-   "start": "2026-10-27T00:30Z",
-   "team": "1",
-   "name": "Mouhamed Gueye",
-   "status": "out",
-   "athlete": "4712863",
-   "espn": {
-    "seen": "2026-10-26T00:41:15.679Z",
-    "own": "2026-10-19T19:38:00.000Z"
-   }
-  },
-  "401909874|henriveesaar|out": {
-   "game": "401909874",
-   "start": "2026-10-27T00:30Z",
-   "team": "1",
-   "name": "Henri Veesaar",
-   "status": "out",
-   "athlete": "5105571",
-   "espn": {
-    "seen": "2026-10-26T00:41:15.679Z",
-    "own": "2026-09-21T19:50:00.000Z"
-   }
-  },
   "401909876|alphadiallo|q": {
    "game": "401909876",
    "start": "2026-10-27T02:00Z",
@@ -246,42 +189,6 @@
     "own": "2026-10-25T00:12:00.000Z"
    }
   },
-  "401909874|najimarshall|out": {
-   "game": "401909874",
-   "start": "2026-10-27T00:30Z",
-   "team": "10",
-   "name": "Naji Marshall",
-   "status": "out",
-   "bluesky": {
-    "seen": "2026-10-26T05:03:40.538Z",
-    "own": "2026-10-25T20:25:50.000Z",
-    "why": "@rotowirenba.bsky.social: Naji Marshall: Out for Monday \n\n https://www.rotowire."
-   }
-  },
-  "401909874|ajdybantsa|out": {
-   "game": "401909874",
-   "start": "2026-10-27T00:30Z",
-   "team": "10",
-   "name": "AJ Dybantsa",
-   "status": "out",
-   "bluesky": {
-    "seen": "2026-10-26T05:03:40.538Z",
-    "own": "2026-10-25T20:52:44.000Z",
-    "why": "@rotowirenba.bsky.social: AJ Dybantsa: Ruled out for Monday \n\n https://www.rotow"
-   }
-  },
-  "401909874|osoighodaro|out": {
-   "game": "401909874",
-   "start": "2026-10-27T00:30Z",
-   "team": "10",
-   "name": "Oso Ighodaro",
-   "status": "out",
-   "bluesky": {
-    "seen": "2026-10-26T05:03:40.538Z",
-    "own": "2026-10-25T22:25:24.000Z",
-    "why": "@rotowirenba.bsky.social: Oso Ighodaro: Doubtful for Monday \n\n https://www.rotow"
-   }
-  },
   "401909875|najimarshall|out": {
    "game": "401909875",
    "start": "2026-10-27T01:00Z",
@@ -383,22 +290,6 @@
     "own": "2026-10-26T14:05:00.000Z"
    }
   },
-  "401909874|marcussmart|out": {
-   "game": "401909874",
-   "start": "2026-10-27T00:30Z",
-   "team": "10",
-   "name": "Marcus Smart",
-   "status": "out",
-   "athlete": "2990992",
-   "espn": {
-    "seen": "2026-10-26T16:59:27.198Z",
-    "own": "2026-10-26T16:20:00.000Z"
-   },
-   "sleeper": {
-    "seen": "2026-10-26T20:16:35.808Z",
-    "own": "2026-10-26T18:15:15.391Z"
-   }
-  },
   "401909875|karimlopez|q": {
    "game": "401909875",
    "start": "2026-10-27T01:00Z",
@@ -413,18 +304,6 @@
    "sleeper": {
     "seen": "2026-10-26T20:16:35.808Z",
     "own": "2026-10-26T19:20:59.216Z"
-   }
-  },
-  "401909874|ivicazubac|out": {
-   "game": "401909874",
-   "start": "2026-10-27T00:30Z",
-   "team": "10",
-   "name": "Ivica Zubac",
-   "status": "out",
-   "bluesky": {
-    "seen": "2026-10-26T18:40:14.272Z",
-    "own": "2026-10-26T18:20:15.000Z",
-    "why": "@rotowirenba.bsky.social: Ivica Zubac: Listed out for Monday \n\n https://www.roto"
    }
   },
   "401909875|ivicazubac|out": {
@@ -673,18 +552,6 @@
     "own": "2026-10-26T19:20:59.233Z"
    }
   },
-  "401909874|tobiasharris|out": {
-   "game": "401909874",
-   "start": "2026-10-27T00:30Z",
-   "team": "10",
-   "name": "Tobias Harris",
-   "status": "out",
-   "bluesky": {
-    "seen": "2026-10-26T22:37:11.118Z",
-    "own": "2026-10-26T21:48:45.000Z",
-    "why": "@rotowirenba.bsky.social: Tobias Harris: Won't play Tuesday \n\n https://www.rotow"
-   }
-  },
   "401909875|tobiasharris|out": {
    "game": "401909875",
    "start": "2026-10-27T01:00Z",
@@ -719,30 +586,6 @@
    "espn": {
     "seen": "2026-10-26T22:54:42.488Z",
     "own": "2026-10-26T22:42:00.000Z"
-   }
-  },
-  "401909874|cobywhite|out": {
-   "game": "401909874",
-   "start": "2026-10-27T00:30Z",
-   "team": "10",
-   "name": "Coby White",
-   "status": "out",
-   "bluesky": {
-    "seen": "2026-10-26T23:50:51.748Z",
-    "own": "2026-10-26T22:41:46.000Z",
-    "why": "@rotowirenba.bsky.social: Coby White: Won't return during road trip \n\n https://w"
-   }
-  },
-  "401909874|andrewnembhard|out": {
-   "game": "401909874",
-   "start": "2026-10-27T00:30Z",
-   "team": "10",
-   "name": "Andrew Nembhard",
-   "status": "out",
-   "bluesky": {
-    "seen": "2026-10-26T23:50:51.748Z",
-    "own": "2026-10-26T22:42:14.000Z",
-    "why": "@rotowirenba.bsky.social: Andrew Nembhard: Out vs. Bucks \n\n https://www.rotowire"
    }
   },
   "401909875|cobywhite|out": {

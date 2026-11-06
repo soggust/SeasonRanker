@@ -1,13 +1,13 @@
 {
  "sport": "nfl",
  "cursor": {
-  "adamscheftermirror.bsky.social": "2026-11-05T23:49:42.812Z",
+  "adamscheftermirror.bsky.social": "2026-11-06T00:24:35.257Z",
   "rapsheet.bsky.social": "2026-11-05T23:40:10.485Z",
   "nflnewsreposterbot.bsky.social": "2026-11-05T18:24:37.305Z",
   "insidenflnews.bsky.social": "2026-11-05T21:06:06.043Z",
   "nflnewsposter.bsky.social": "2026-11-05T23:46:08.003Z",
-  "rotoworld-fb.bsky.social": "2026-11-05T23:50:59.000Z",
-  "rotowirenfl.bsky.social": "2026-11-06T00:13:15.000Z"
+  "rotoworld-fb.bsky.social": "2026-11-06T00:26:48.000Z",
+  "rotowirenfl.bsky.social": "2026-11-06T00:22:53.000Z"
  },
  "claims": [
   {
@@ -15856,6 +15856,58 @@
    "kind": "status",
    "confidence": 0.85,
    "text": "Drew Lock: Another limited practice \n\n https://www.rotowire.com/football/player/drew-lock-13736"
+  },
+  {
+   "id": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3mzm4buqw5j2q|michaelwilson|limited|status",
+   "at": "2026-11-06T00:19:10.000Z",
+   "seen": "2026-11-06T00:35:27.437Z",
+   "handle": "rotowirenfl.bsky.social",
+   "post": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3mzm4buqw5j2q",
+   "player": "Michael Wilson",
+   "team": null,
+   "status": "limited",
+   "kind": "status",
+   "confidence": 0.9,
+   "text": "Michael Wilson: Stays limited in practice \n\n https://www.rotowire.com/football/player/michael-wilson-16957"
+  },
+  {
+   "id": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3mzm4ijbefr2q|bamknight|questionable|status",
+   "at": "2026-11-06T00:22:53.000Z",
+   "seen": "2026-11-06T00:35:27.437Z",
+   "handle": "rotowirenfl.bsky.social",
+   "post": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3mzm4ijbefr2q",
+   "player": "Bam Knight",
+   "team": null,
+   "status": "questionable",
+   "kind": "status",
+   "confidence": 0.4,
+   "text": "Bam Knight: Another DNP on Thursday \n\n https://www.rotowire.com/football/player/bam-knight-16105"
+  },
+  {
+   "id": "at://did:plc:qre6zxbmr3ixhdmgsgdretb5/app.bsky.feed.post/3mzm4lkiih42l|carsonwentz|none|starting",
+   "at": "2026-11-06T00:24:35.257Z",
+   "seen": "2026-11-06T00:35:27.437Z",
+   "handle": "adamscheftermirror.bsky.social",
+   "post": "at://did:plc:qre6zxbmr3ixhdmgsgdretb5/app.bsky.feed.post/3mzm4lkiih42l",
+   "player": "Carson Wentz",
+   "team": "MIN",
+   "status": "none",
+   "kind": "starting",
+   "confidence": 0.8,
+   "text": "More about the Vikings starting QB Carson Wentz against Bills and ruling out QB Kyler Murray due to his hamstring injury, via @SeifertESPN:\n\nOriginal post"
+  },
+  {
+   "id": "at://did:plc:qre6zxbmr3ixhdmgsgdretb5/app.bsky.feed.post/3mzm4lkiih42l|kylermurray|out|status",
+   "at": "2026-11-06T00:24:35.257Z",
+   "seen": "2026-11-06T00:35:27.437Z",
+   "handle": "adamscheftermirror.bsky.social",
+   "post": "at://did:plc:qre6zxbmr3ixhdmgsgdretb5/app.bsky.feed.post/3mzm4lkiih42l",
+   "player": "Kyler Murray",
+   "team": null,
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.85,
+   "text": "More about the Vikings starting QB Carson Wentz against Bills and ruling out QB Kyler Murray due to his hamstring injury, via @SeifertESPN:\n\nOriginal post"
   }
  ]
 }
