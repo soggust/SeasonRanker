@@ -12,8 +12,10 @@
 //   and the PFL's fights; where ESPN's athlete stats leave a bout out, its core API's for that bout).
 //   Opponents' stats are fetched too, so what a fighter absorbs is counted.
 // - UFC.com's rankings page: each division's champion and top 15, and the pound-for-pound lists
-// - UFC.com's fighter pages, for UFC fighters without a fight in six months: their status there
-//   ("Retired" or "Not Fighting" moves them to the retired fighters; checked monthly, cached)
+// - UFC.com's fighter pages, for every fighter whose last major fight was in the UFC: their status there.
+//   "Retired" (or "Not Fighting" after six months without a fight) moves them to the retired fighters;
+//   "Not Fighting" with a recent fight is a release: still listed, but no longer a UFC fighter (the UFC
+//   Fighters Only setting leaves him out). Checked monthly, weekly in the two months after a fight; cached
 // - Wikipedia's List of UFC champions: every UFC title reign (interim ones too) and its defenses
 //
 // Usage: npm run mma:update-data
@@ -27,6 +29,7 @@ import { allFights } from './fights.mjs';
 import { shareRows } from '../../../libs/ranker/scripts/shared-rows.mjs';
 import { fetchRetry, pacer } from '../../../libs/ranker/scripts/fetch.mjs';
 import { PARAMS, cautious, deviationOn, history, rate, tabOf, weightOf } from './rating.mjs';
+import { statusOf, tryout, ufcStanding } from './ufc-status.mjs';
 
 const ROOT = path.resolve(import.meta.dirname, '..');
 const STATIC = path.join(ROOT, 'src/StaticData');
@@ -347,8 +350,7 @@ async function ufcStatus(name) {
     .replace(/^-|-$/g, '');
   const html = await get(ATHLETE + slug, 'text').catch(() => null);
   if (!html) return null;
-  const tags = [...html.matchAll(/hero-profile__tag">\s*([^<]*)/g)].map((m) => m[1].trim());
-  return tags.find((t) => /^(Active|Retired|Not Fighting)$/i.test(t)) ?? (tags.length ? 'Active' : null);
+  return statusOf(html);
 }
 
 // ---------------------------------------------------------------------------
@@ -609,23 +611,31 @@ for (const id of needed) {
 }
 await writeFile(CACHE, JSON.stringify(cache));
 
-// Retired by the UFC's own word: a UFC fighter without a fight in six months whose UFC.com page says
-// "Retired" or "Not Fighting" (Stipe Miocic, Chris Weidman...) isn't active, whatever the two-year rule
-// says. Checked monthly per fighter.
+// The UFC's own word (ufcStanding): retired (Stipe Miocic, Chris Weidman...) leaves the active list, whatever
+// the two-year rule says; released (cut after a recent fight: Darren Elkins, Court McGee...) stays listed,
+// but not as a UFC fighter. Every fighter whose last major fight was the UFC's, checked monthly per
+// fighter, weekly in the two months after a fight (when cuts come). (the owner, 2026-11-06: cut fighters
+// were still under UFC Fighters Only)
 const sixMonths = new Date(Date.now() - 182 * 864e5).toISOString().slice(0, 10);
-const monthAgo = Date.now() - 30 * 864e5;
+const twoMonths = new Date(Date.now() - 61 * 864e5).toISOString().slice(0, 10);
+const released = new Set();
 let statuses = 0;
 for (const id of [...activeSet]) {
-  const last = byFighter.get(id)[0];
-  if (last.date >= sixMonths || last.league !== 'ufc') continue;
+  const last = lastMajor(byFighter.get(id));
+  if (last?.league !== 'ufc') continue;
   const entry = (cache[id] ??= {});
-  if (!entry.statusAt || entry.statusAt < monthAgo) {
-    // (a page that didn't load keeps the status known before)
-    entry.status = (await ufcStatus(entry.bio?.name ?? last.fighters.find((f) => f.id === id).name)) ?? entry.status ?? null;
+  const every = (last.date >= twoMonths ? 7 : 30) * 864e5;
+  if (!entry.statusAt || entry.statusAt < Date.now() - every || typeof entry.status === 'string') {
+    // (a page that didn't load keeps the status known before; a status cached as text is the older form)
+    const found = await ufcStatus(entry.bio?.name ?? last.fighters.find((f) => f.id === id).name);
+    entry.status = found ?? (typeof entry.status === 'string' ? { status: entry.status, division: null } : entry.status ?? null);
     entry.statusAt = Date.now();
     statuses++;
   }
-  if (/^(Retired|Not Fighting)$/i.test(entry.status ?? '')) activeSet.delete(id);
+  const standing = ufcStanding(entry.status, { lastDate: last.date, sixMonths, division: entry.bio?.division });
+  if (standing === 'retired') activeSet.delete(id);
+  // (a Contender Series tryout last: a UFC fighter only once UFC.com lists him, signed, as Active)
+  if (standing === 'released' || (tryout(last) && !/^active$/i.test(entry.status?.status ?? ''))) released.add(id);
 }
 // Retirements UFC.com hasn't caught up with yet (still "Active" there): by name
 const RETIRED = ['Jon Jones', 'Dustin Poirier'];
@@ -634,7 +644,7 @@ for (const id of [...activeSet]) {
   if (RETIRED.includes(name)) activeSet.delete(id);
 }
 await writeFile(CACHE, JSON.stringify(cache));
-console.log(`UFC.com statuses: ${statuses} checked; ${activeSet.size} active`);
+console.log(`UFC.com statuses: ${statuses} checked; ${activeSet.size} active, ${released.size} released by the UFC`);
 
 // His division: ESPN's for him, else his last fight's (not a catchweight)
 const homeTab = (id) => DIVISIONS[cache[id]?.bio?.division] ?? byFighter.get(id).find((f) => f.tab)?.tab ?? null;
@@ -751,10 +761,10 @@ for (const id of active) {
       teamLogo: b?.flag ?? 'assets/textures/octagon.svg',
       teamName: b?.gym ?? null,
       country: b?.country ?? null,
-      // (his promotion now: his last fight's)
-      promotion: PROMOTIONS[fights[0].league] ?? null,
+      // (his promotion now: his last fight's; none for a fighter the UFC has released, until he fights again)
+      promotion: released.has(id) ? null : (PROMOTIONS[fights[0].league] ?? null),
       // (a UFC fight in his career: the UFC Fighters Only setting's all-time lists)
-      ufcCareer: fights.some((f) => f.league === 'ufc'),
+      ufcCareer: fights.some((f) => f.league === 'ufc' && !tryout(f)),
       // (his whole pro career, as the Record column reads it: the regional fights too)
       games: proFights(b?.pro, fights.length),
       // (his own stats or his opponent's: what he absorbs comes from theirs)
