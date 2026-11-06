@@ -9981,6 +9981,11 @@
    "espn": {
     "seen": "2026-11-03T00:02:15.042Z",
     "own": "2026-11-02T18:33:00.000Z"
+   },
+   "bluesky": {
+    "seen": "2026-11-06T13:37:05.495Z",
+    "own": "2026-11-06T13:35:33.000Z",
+    "why": "@rotoworld-fb.bsky.social: Brian Robinson (hammy) won't play vs. Bengals"
    }
   },
   "401873038|billybowman|out": {
@@ -14621,6 +14626,90 @@
    "espn": {
     "seen": "2026-11-06T13:33:48.384Z",
     "own": "2026-11-06T13:26:00.000Z"
+   }
+  },
+  "401873040|brianrobinson|out": {
+   "game": "401873040",
+   "start": "2026-11-08T18:00Z",
+   "team": "11",
+   "name": "Brian Robinson",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-06T13:37:05.495Z",
+    "own": "2026-11-06T13:35:33.000Z",
+    "why": "@rotoworld-fb.bsky.social: Brian Robinson (hammy) won't play vs. Bengals"
+   }
+  },
+  "401873045|brianrobinson|out": {
+   "game": "401873045",
+   "start": "2026-11-08T18:00Z",
+   "team": "12",
+   "name": "Brian Robinson",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-06T13:37:05.495Z",
+    "own": "2026-11-06T13:35:33.000Z",
+    "why": "@rotoworld-fb.bsky.social: Brian Robinson (hammy) won't play vs. Bengals"
+   }
+  },
+  "401873042|brianrobinson|out": {
+   "game": "401873042",
+   "start": "2026-11-08T18:00Z",
+   "team": "15",
+   "name": "Brian Robinson",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-06T13:37:05.495Z",
+    "own": "2026-11-06T13:35:33.000Z",
+    "why": "@rotoworld-fb.bsky.social: Brian Robinson (hammy) won't play vs. Bengals"
+   }
+  },
+  "401873039|brianrobinson|out": {
+   "game": "401873039",
+   "start": "2026-11-08T18:00Z",
+   "team": "18",
+   "name": "Brian Robinson",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-06T13:37:05.495Z",
+    "own": "2026-11-06T13:35:33.000Z",
+    "why": "@rotoworld-fb.bsky.social: Brian Robinson (hammy) won't play vs. Bengals"
+   }
+  },
+  "401873044|brianrobinson|out": {
+   "game": "401873044",
+   "start": "2026-11-08T18:00Z",
+   "team": "21",
+   "name": "Brian Robinson",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-06T13:37:05.495Z",
+    "own": "2026-11-06T13:35:33.000Z",
+    "why": "@rotoworld-fb.bsky.social: Brian Robinson (hammy) won't play vs. Bengals"
+   }
+  },
+  "401873043|brianrobinson|out": {
+   "game": "401873043",
+   "start": "2026-11-08T18:00Z",
+   "team": "28",
+   "name": "Brian Robinson",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-06T13:37:05.495Z",
+    "own": "2026-11-06T13:35:33.000Z",
+    "why": "@rotoworld-fb.bsky.social: Brian Robinson (hammy) won't play vs. Bengals"
+   }
+  },
+  "401873041|brianrobinson|out": {
+   "game": "401873041",
+   "start": "2026-11-08T18:00Z",
+   "team": "29",
+   "name": "Brian Robinson",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-06T13:37:05.495Z",
+    "own": "2026-11-06T13:35:33.000Z",
+    "why": "@rotoworld-fb.bsky.social: Brian Robinson (hammy) won't play vs. Bengals"
    }
   }
  }
