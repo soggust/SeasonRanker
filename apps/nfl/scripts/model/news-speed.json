@@ -12922,6 +12922,11 @@
    "espn": {
     "seen": "2026-11-04T22:06:53.103Z",
     "own": "2026-11-04T21:50:00.000Z"
+   },
+   "bluesky": {
+    "seen": "2026-11-06T15:00:49.460Z",
+    "own": "2026-11-06T14:49:26.000Z",
+    "why": "@rotowirenfl.bsky.social: George Pickens: Will remain limited Friday \n\n https://"
    }
   },
   "401873045|rasheerice|q": {
@@ -14710,6 +14715,198 @@
     "seen": "2026-11-06T13:37:05.495Z",
     "own": "2026-11-06T13:35:33.000Z",
     "why": "@rotoworld-fb.bsky.social: Brian Robinson (hammy) won't play vs. Bengals"
+   }
+  },
+  "401873038|camskattebo|out": {
+   "game": "401873038",
+   "start": "2026-11-08T14:30Z",
+   "team": "1",
+   "name": "Cam Skattebo",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-06T15:00:49.460Z",
+    "own": "2026-11-06T14:47:07.000Z",
+    "why": "@rotowirenfl.bsky.social: Cam Skattebo: Seemingly out for Week 9 \n\n https://www."
+   }
+  },
+  "401873038|georgepickens|q": {
+   "game": "401873038",
+   "start": "2026-11-08T14:30Z",
+   "team": "1",
+   "name": "George Pickens",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-11-06T15:00:49.460Z",
+    "own": "2026-11-06T14:49:26.000Z",
+    "why": "@rotowirenfl.bsky.social: George Pickens: Will remain limited Friday \n\n https://"
+   }
+  },
+  "401873040|camskattebo|out": {
+   "game": "401873040",
+   "start": "2026-11-08T18:00Z",
+   "team": "11",
+   "name": "Cam Skattebo",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-06T15:00:49.460Z",
+    "own": "2026-11-06T14:47:07.000Z",
+    "why": "@rotowirenfl.bsky.social: Cam Skattebo: Seemingly out for Week 9 \n\n https://www."
+   }
+  },
+  "401873045|camskattebo|out": {
+   "game": "401873045",
+   "start": "2026-11-08T18:00Z",
+   "team": "12",
+   "name": "Cam Skattebo",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-06T15:00:49.460Z",
+    "own": "2026-11-06T14:47:07.000Z",
+    "why": "@rotowirenfl.bsky.social: Cam Skattebo: Seemingly out for Week 9 \n\n https://www."
+   }
+  },
+  "401873045|georgepickens|q": {
+   "game": "401873045",
+   "start": "2026-11-08T18:00Z",
+   "team": "12",
+   "name": "George Pickens",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-11-06T15:00:49.460Z",
+    "own": "2026-11-06T14:49:26.000Z",
+    "why": "@rotowirenfl.bsky.social: George Pickens: Will remain limited Friday \n\n https://"
+   }
+  },
+  "401873042|camskattebo|out": {
+   "game": "401873042",
+   "start": "2026-11-08T18:00Z",
+   "team": "15",
+   "name": "Cam Skattebo",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-06T15:00:49.460Z",
+    "own": "2026-11-06T14:47:07.000Z",
+    "why": "@rotowirenfl.bsky.social: Cam Skattebo: Seemingly out for Week 9 \n\n https://www."
+   }
+  },
+  "401873042|georgepickens|q": {
+   "game": "401873042",
+   "start": "2026-11-08T18:00Z",
+   "team": "15",
+   "name": "George Pickens",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-11-06T15:00:49.460Z",
+    "own": "2026-11-06T14:49:26.000Z",
+    "why": "@rotowirenfl.bsky.social: George Pickens: Will remain limited Friday \n\n https://"
+   }
+  },
+  "401873039|camskattebo|out": {
+   "game": "401873039",
+   "start": "2026-11-08T18:00Z",
+   "team": "18",
+   "name": "Cam Skattebo",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-06T15:00:49.460Z",
+    "own": "2026-11-06T14:47:07.000Z",
+    "why": "@rotowirenfl.bsky.social: Cam Skattebo: Seemingly out for Week 9 \n\n https://www."
+   }
+  },
+  "401873039|georgepickens|q": {
+   "game": "401873039",
+   "start": "2026-11-08T18:00Z",
+   "team": "18",
+   "name": "George Pickens",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-11-06T15:00:49.460Z",
+    "own": "2026-11-06T14:49:26.000Z",
+    "why": "@rotowirenfl.bsky.social: George Pickens: Will remain limited Friday \n\n https://"
+   }
+  },
+  "401873039|watson|out": {
+   "game": "401873039",
+   "start": "2026-11-08T18:00Z",
+   "team": "18",
+   "name": "Watson",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-06T15:00:49.460Z",
+    "own": "2026-11-06T14:52:33.000Z",
+    "why": "@rotoworld-fb.bsky.social: Rap: Watson (concussion) 'unlikely' to play vs. Saint"
+   }
+  },
+  "401873044|camskattebo|out": {
+   "game": "401873044",
+   "start": "2026-11-08T18:00Z",
+   "team": "21",
+   "name": "Cam Skattebo",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-06T15:00:49.460Z",
+    "own": "2026-11-06T14:47:07.000Z",
+    "why": "@rotowirenfl.bsky.social: Cam Skattebo: Seemingly out for Week 9 \n\n https://www."
+   }
+  },
+  "401873044|georgepickens|q": {
+   "game": "401873044",
+   "start": "2026-11-08T18:00Z",
+   "team": "21",
+   "name": "George Pickens",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-11-06T15:00:49.460Z",
+    "own": "2026-11-06T14:49:26.000Z",
+    "why": "@rotowirenfl.bsky.social: George Pickens: Will remain limited Friday \n\n https://"
+   }
+  },
+  "401873043|camskattebo|out": {
+   "game": "401873043",
+   "start": "2026-11-08T18:00Z",
+   "team": "28",
+   "name": "Cam Skattebo",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-06T15:00:49.460Z",
+    "own": "2026-11-06T14:47:07.000Z",
+    "why": "@rotowirenfl.bsky.social: Cam Skattebo: Seemingly out for Week 9 \n\n https://www."
+   }
+  },
+  "401873043|georgepickens|q": {
+   "game": "401873043",
+   "start": "2026-11-08T18:00Z",
+   "team": "28",
+   "name": "George Pickens",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-11-06T15:00:49.460Z",
+    "own": "2026-11-06T14:49:26.000Z",
+    "why": "@rotowirenfl.bsky.social: George Pickens: Will remain limited Friday \n\n https://"
+   }
+  },
+  "401873041|camskattebo|out": {
+   "game": "401873041",
+   "start": "2026-11-08T18:00Z",
+   "team": "29",
+   "name": "Cam Skattebo",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-06T15:00:49.460Z",
+    "own": "2026-11-06T14:47:07.000Z",
+    "why": "@rotowirenfl.bsky.social: Cam Skattebo: Seemingly out for Week 9 \n\n https://www."
+   }
+  },
+  "401873041|georgepickens|q": {
+   "game": "401873041",
+   "start": "2026-11-08T18:00Z",
+   "team": "29",
+   "name": "George Pickens",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-11-06T15:00:49.460Z",
+    "own": "2026-11-06T14:49:26.000Z",
+    "why": "@rotowirenfl.bsky.social: George Pickens: Will remain limited Friday \n\n https://"
    }
   }
  }
