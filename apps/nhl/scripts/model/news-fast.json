@@ -3,9 +3,9 @@
  "cursor": {
   "johnston-bot.bsky.social": "2026-11-05T17:59:59.541Z",
   "notfriedgehnic.bsky.social": "2026-11-05T21:08:39.466Z",
-  "dailyfaceoff.bsky.social": "2026-11-05T23:01:16.000Z",
-  "dfotoronto.bsky.social": "2026-11-05T22:02:21.000Z",
-  "marklazerus.bsky.social": "2026-11-05T21:40:15.505Z"
+  "dailyfaceoff.bsky.social": "2026-11-05T23:54:01.000Z",
+  "dfotoronto.bsky.social": "2026-11-05T23:05:16.000Z",
+  "marklazerus.bsky.social": "2026-11-06T00:16:17.487Z"
  },
  "claims": [
   {
@@ -1697,6 +1697,32 @@
    "kind": "return",
    "confidence": 0.85,
    "text": "Cleared\n\nNew: Reimer (NYR)\n\nSorry for the delay, long drive"
+  },
+  {
+   "id": "at://did:plc:54vdi5eoabhod2vumsbcpi7g/app.bsky.feed.post/3mzm22zeqok5t|greenway|out|status",
+   "at": "2026-11-05T23:39:33.050Z",
+   "seen": "2026-11-06T00:18:02.557Z",
+   "handle": "marklazerus.bsky.social",
+   "post": "at://did:plc:54vdi5eoabhod2vumsbcpi7g/app.bsky.feed.post/3mzm22zeqok5t",
+   "player": "Greenway",
+   "team": "CHI",
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.95,
+   "text": "Blackhawks in warmups:\nBertuzzi-Bedard-Kantserov\nMangiapane-Frondell-Teräväinen\nMoore-Nazar-Donato\nSmith-Greene-Boucher\n\nVlasic-Cole\nKaiser-Levshunov\nDel Mastro-Rinzel \n\nSöderblom\nKnight \n\nGreenway an"
+  },
+  {
+   "id": "at://did:plc:54vdi5eoabhod2vumsbcpi7g/app.bsky.feed.post/3mzm22zeqok5t|korchinski|out|status",
+   "at": "2026-11-05T23:39:33.050Z",
+   "seen": "2026-11-06T00:18:02.557Z",
+   "handle": "marklazerus.bsky.social",
+   "post": "at://did:plc:54vdi5eoabhod2vumsbcpi7g/app.bsky.feed.post/3mzm22zeqok5t",
+   "player": "Korchinski",
+   "team": "CHI",
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.95,
+   "text": "Blackhawks in warmups:\nBertuzzi-Bedard-Kantserov\nMangiapane-Frondell-Teräväinen\nMoore-Nazar-Donato\nSmith-Greene-Boucher\n\nVlasic-Cole\nKaiser-Levshunov\nDel Mastro-Rinzel \n\nSöderblom\nKnight \n\nGreenway an"
   }
  ]
 }

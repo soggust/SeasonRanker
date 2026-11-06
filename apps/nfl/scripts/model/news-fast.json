@@ -1,13 +1,13 @@
 {
  "sport": "nfl",
  "cursor": {
-  "adamscheftermirror.bsky.social": "2026-11-05T21:49:33.607Z",
-  "rapsheet.bsky.social": "2026-11-05T19:15:49.242Z",
+  "adamscheftermirror.bsky.social": "2026-11-05T23:49:42.812Z",
+  "rapsheet.bsky.social": "2026-11-05T23:40:10.485Z",
   "nflnewsreposterbot.bsky.social": "2026-11-05T18:24:37.305Z",
   "insidenflnews.bsky.social": "2026-11-05T21:06:06.043Z",
-  "nflnewsposter.bsky.social": "2026-11-05T22:08:59.314Z",
-  "rotoworld-fb.bsky.social": "2026-11-05T22:39:22.000Z",
-  "rotowirenfl.bsky.social": "2026-11-05T22:58:22.000Z"
+  "nflnewsposter.bsky.social": "2026-11-05T23:46:08.003Z",
+  "rotoworld-fb.bsky.social": "2026-11-05T23:50:59.000Z",
+  "rotowirenfl.bsky.social": "2026-11-06T00:13:15.000Z"
  },
  "claims": [
   {
@@ -15739,6 +15739,123 @@
    "kind": "status",
    "confidence": 0.5,
    "text": "Deebo Samuel: DNP on Thursday \n\n https://www.rotowire.com/football/player/deebo-samuel-13429"
+  },
+  {
+   "id": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3mzlyqde4zv2f|maliknabers|active|status",
+   "at": "2026-11-05T23:15:40.000Z",
+   "seen": "2026-11-06T00:18:02.557Z",
+   "handle": "rotoworld-fb.bsky.social",
+   "post": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3mzlyqde4zv2f",
+   "player": "Malik Nabers",
+   "team": "NYG",
+   "status": "active",
+   "kind": "status",
+   "confidence": 0.8,
+   "text": "Malik Nabers (knee) DNP, says he is good for Wk 9"
+  },
+  {
+   "id": "at://did:plc:hlvr2omhnmvdmfnvmcuhyevz/app.bsky.feed.post/3mzm24537bk2m|lamarjackson|out|status",
+   "at": "2026-11-05T23:40:10.485Z",
+   "seen": "2026-11-06T00:18:02.557Z",
+   "handle": "rapsheet.bsky.social",
+   "post": "at://did:plc:hlvr2omhnmvdmfnvmcuhyevz/app.bsky.feed.post/3mzm24537bk2m",
+   "player": "Lamar Jackson",
+   "team": "BAL",
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.9,
+   "text": "QB Austin Reed will be the backup tonight, with Lamar Jackson and Tyler Huntley on IR."
+  },
+  {
+   "id": "at://did:plc:hlvr2omhnmvdmfnvmcuhyevz/app.bsky.feed.post/3mzm24537bk2m|tylerhuntley|out|status",
+   "at": "2026-11-05T23:40:10.485Z",
+   "seen": "2026-11-06T00:18:02.557Z",
+   "handle": "rapsheet.bsky.social",
+   "post": "at://did:plc:hlvr2omhnmvdmfnvmcuhyevz/app.bsky.feed.post/3mzm24537bk2m",
+   "player": "Tyler Huntley",
+   "team": "BAL",
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.9,
+   "text": "QB Austin Reed will be the backup tonight, with Lamar Jackson and Tyler Huntley on IR."
+  },
+  {
+   "id": "at://did:plc:hlvr2omhnmvdmfnvmcuhyevz/app.bsky.feed.post/3mzm24537bk2m|austinreed|none|role",
+   "at": "2026-11-05T23:40:10.485Z",
+   "seen": "2026-11-06T00:18:02.557Z",
+   "handle": "rapsheet.bsky.social",
+   "post": "at://did:plc:hlvr2omhnmvdmfnvmcuhyevz/app.bsky.feed.post/3mzm24537bk2m",
+   "player": "Austin Reed",
+   "team": "BAL",
+   "status": "none",
+   "kind": "role",
+   "confidence": 0.8,
+   "text": "QB Austin Reed will be the backup tonight, with Lamar Jackson and Tyler Huntley on IR."
+  },
+  {
+   "id": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3mzm274t7ar2a|bhayshultuten|active|status",
+   "at": "2026-11-05T23:41:50.000Z",
+   "seen": "2026-11-06T00:18:02.557Z",
+   "handle": "rotoworld-fb.bsky.social",
+   "post": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3mzm274t7ar2a",
+   "player": "Bhayshul Tuten",
+   "team": "JAX",
+   "status": "active",
+   "kind": "status",
+   "confidence": 0.9,
+   "text": "Rap: Bhayshul Tuten (ankle/foot) will play on TNF"
+  },
+  {
+   "id": "at://did:plc:fuqjc7x4gxvnwzksnlxwbe4x/app.bsky.feed.post/3mzm2grzrx23a|bhayshultuten|active|status",
+   "at": "2026-11-05T23:46:08.003Z",
+   "seen": "2026-11-06T00:18:02.557Z",
+   "handle": "nflnewsposter.bsky.social",
+   "post": "at://did:plc:fuqjc7x4gxvnwzksnlxwbe4x/app.bsky.feed.post/3mzm2grzrx23a",
+   "player": "Bhayshul Tuten",
+   "team": "JAX",
+   "status": "active",
+   "kind": "status",
+   "confidence": 0.95,
+   "text": "[DiRocco] Jaguars running back Bhayshul Tuten and defensive end Travon Walker are active and will play in tonight’s game against the Baltimore Ravens. twitter.com/ESPNdirocco/..."
+  },
+  {
+   "id": "at://did:plc:fuqjc7x4gxvnwzksnlxwbe4x/app.bsky.feed.post/3mzm2grzrx23a|travonwalker|active|status",
+   "at": "2026-11-05T23:46:08.003Z",
+   "seen": "2026-11-06T00:18:02.557Z",
+   "handle": "nflnewsposter.bsky.social",
+   "post": "at://did:plc:fuqjc7x4gxvnwzksnlxwbe4x/app.bsky.feed.post/3mzm2grzrx23a",
+   "player": "Travon Walker",
+   "team": "JAX",
+   "status": "active",
+   "kind": "status",
+   "confidence": 0.95,
+   "text": "[DiRocco] Jaguars running back Bhayshul Tuten and defensive end Travon Walker are active and will play in tonight’s game against the Baltimore Ravens. twitter.com/ESPNdirocco/..."
+  },
+  {
+   "id": "at://did:plc:qre6zxbmr3ixhdmgsgdretb5/app.bsky.feed.post/3mzm2n6wew52a|bhayshultuten|active|status",
+   "at": "2026-11-05T23:49:42.812Z",
+   "seen": "2026-11-06T00:18:02.557Z",
+   "handle": "adamscheftermirror.bsky.social",
+   "post": "at://did:plc:qre6zxbmr3ixhdmgsgdretb5/app.bsky.feed.post/3mzm2n6wew52a",
+   "player": "Bhayshul Tuten",
+   "team": "JAX",
+   "status": "active",
+   "kind": "status",
+   "confidence": 0.95,
+   "text": "Jaguars RB Bhayshul Tuten, who is listed as questionable for tonight, officially is active versus the Ravens.\n\nRepost of @Jaguars:\n\nOriginal post"
+  },
+  {
+   "id": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3mzm3xc3tsq2y|drewlock|limited|status",
+   "at": "2026-11-06T00:13:15.000Z",
+   "seen": "2026-11-06T00:18:02.557Z",
+   "handle": "rotowirenfl.bsky.social",
+   "post": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3mzm3xc3tsq2y",
+   "player": "Drew Lock",
+   "team": null,
+   "status": "limited",
+   "kind": "status",
+   "confidence": 0.85,
+   "text": "Drew Lock: Another limited practice \n\n https://www.rotowire.com/football/player/drew-lock-13736"
   }
  ]
 }

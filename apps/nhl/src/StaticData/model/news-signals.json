@@ -1,6 +1,18 @@
 {
  "sport": "nhl",
  "days": 2,
- "signals": [],
- "at": "2026-11-02T01:48:21.376Z"
+ "signals": [
+  {
+   "team": "26",
+   "abbr": "FLA",
+   "athlete": "3852",
+   "player": "Brad Marchand",
+   "kind": "return",
+   "direction": "up",
+   "confidence": 0.3,
+   "headline": "Panthers' Brad Marchand could be back in 6 weeks after knee injury",
+   "at": "2026-11-05T19:17:05.000Z"
+  }
+ ],
+ "at": "2026-11-06T00:18:02.557Z"
 }

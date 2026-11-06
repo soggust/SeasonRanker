@@ -3,6 +3,28 @@
  "days": 2,
  "signals": [
   {
+   "team": "17",
+   "abbr": "CIN",
+   "athlete": null,
+   "player": "Joe Torres",
+   "kind": "coaching",
+   "direction": "none",
+   "confidence": 0.9,
+   "headline": "Francona brings in former assistant Joe Torres as Reds pitching coach",
+   "at": "2026-11-05T11:28:33.000Z"
+  },
+  {
+   "team": "12",
+   "abbr": "SEA",
+   "athlete": null,
+   "player": "Jason Kanzler",
+   "kind": "coaching",
+   "direction": "none",
+   "confidence": 0.9,
+   "headline": "Mariners introduce first-time manager Jason Kanzler",
+   "at": "2026-11-05T02:43:13.000Z"
+  },
+  {
    "team": "18",
    "abbr": "HOU",
    "athlete": null,
@@ -14,5 +36,5 @@
    "at": "2026-11-04T21:31:55.000Z"
   }
  ],
- "at": "2026-11-05T18:30:31.240Z"
+ "at": "2026-11-06T00:18:02.557Z"
 }

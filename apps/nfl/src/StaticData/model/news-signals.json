@@ -3,6 +3,61 @@
  "days": 2,
  "signals": [
   {
+   "team": "16",
+   "abbr": "MIN",
+   "athlete": "2573079",
+   "player": "Carson Wentz",
+   "kind": "starting",
+   "direction": "up",
+   "confidence": 0.9,
+   "headline": "Vikings to start QB Carson Wentz against Bills with Kyler Murray ruled out",
+   "at": "2026-11-06T00:12:35.000Z"
+  },
+  {
+   "team": "20",
+   "abbr": "NYJ",
+   "athlete": "4427366",
+   "player": "Breece Hall",
+   "kind": "return",
+   "direction": "up",
+   "confidence": 0.6,
+   "headline": "Jets' Breece Hall says he's ready to play, cites threats for social media exit",
+   "at": "2026-11-06T00:10:29.000Z"
+  },
+  {
+   "team": "26",
+   "abbr": "SEA",
+   "athlete": "3924327",
+   "player": "Drew Lock",
+   "kind": "starting",
+   "direction": "up",
+   "confidence": 0.6,
+   "headline": "Seahawks' Lock says elbow feeling 'better' ahead of start vs. Cardinals",
+   "at": "2026-11-05T23:24:08.000Z"
+  },
+  {
+   "team": "33",
+   "abbr": "BAL",
+   "athlete": "2578570",
+   "player": "Jacoby Brissett",
+   "kind": "starting",
+   "direction": "up",
+   "confidence": 0.5,
+   "headline": "Ravens look to stabilize crumbling season with QB Jacoby Brissett",
+   "at": "2026-11-05T00:57:25.000Z"
+  },
+  {
+   "team": "18",
+   "abbr": "NO",
+   "athlete": "4880281",
+   "player": "Jordyn Tyson",
+   "kind": "return",
+   "direction": "up",
+   "confidence": 0.4,
+   "headline": "Saints' Jordyn Tyson returns to practice, listed as limited participant",
+   "at": "2026-11-05T00:54:48.000Z"
+  },
+  {
    "team": "9",
    "abbr": "GB",
    "athlete": "4361423",
@@ -100,18 +155,7 @@
    "confidence": 0.9,
    "headline": "Panthers defenders: We're in 'great hands' after DC switch-up",
    "at": "2026-11-04T02:41:11.000Z"
-  },
-  {
-   "team": "33",
-   "abbr": "BAL",
-   "athlete": "4429582",
-   "player": "Joe Fagnano",
-   "kind": "starting",
-   "direction": "up",
-   "confidence": 0.9,
-   "headline": "Rookie Joe Fagnano to start Thursday night vs. Jaguars, Jesse Minter says",
-   "at": "2026-11-03T23:33:00.000Z"
   }
  ],
- "at": "2026-11-05T23:03:44.610Z"
+ "at": "2026-11-06T00:18:02.557Z"
 }

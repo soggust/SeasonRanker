@@ -3,6 +3,17 @@
  "days": 2,
  "signals": [
   {
+   "team": "13",
+   "abbr": "LAL",
+   "athlete": "4683774",
+   "player": "Bronny James",
+   "kind": "benched",
+   "direction": "down",
+   "confidence": 0.9,
+   "headline": "Bronny James assigned to Coachella Valley Lakers in G League",
+   "at": "2026-11-05T21:40:58.000Z"
+  },
+  {
    "team": "28",
    "abbr": "TOR",
    "athlete": "6450",
@@ -14,5 +25,5 @@
    "at": "2026-11-04T11:54:32.000Z"
   }
  ],
- "at": "2026-11-05T00:06:23.384Z"
+ "at": "2026-11-06T00:18:02.557Z"
 }
