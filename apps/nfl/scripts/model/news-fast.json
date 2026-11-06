@@ -1,13 +1,13 @@
 {
  "sport": "nfl",
  "cursor": {
-  "adamscheftermirror.bsky.social": "2026-11-06T15:44:52.995Z",
+  "adamscheftermirror.bsky.social": "2026-11-06T16:29:44.191Z",
   "rapsheet.bsky.social": "2026-11-06T03:29:31.313Z",
   "nflnewsreposterbot.bsky.social": "2026-11-05T18:24:37.305Z",
-  "insidenflnews.bsky.social": "2026-11-06T16:03:39.391Z",
-  "nflnewsposter.bsky.social": "2026-11-06T16:07:15.643Z",
-  "rotoworld-fb.bsky.social": "2026-11-06T15:50:24.000Z",
-  "rotowirenfl.bsky.social": "2026-11-06T14:52:11.000Z"
+  "insidenflnews.bsky.social": "2026-11-06T16:18:11.162Z",
+  "nflnewsposter.bsky.social": "2026-11-06T16:33:49.489Z",
+  "rotoworld-fb.bsky.social": "2026-11-06T16:26:27.000Z",
+  "rotowirenfl.bsky.social": "2026-11-06T16:39:49.000Z"
  },
  "claims": [
   {
@@ -16129,6 +16129,45 @@
    "kind": "status",
    "confidence": 0.9,
    "text": "Garrett Wilson (concussion) won't play vs. Chiefs"
+  },
+  {
+   "id": "at://did:plc:qre6zxbmr3ixhdmgsgdretb5/app.bsky.feed.post/3mznroljdyr2t|garrettwilson|out|status",
+   "at": "2026-11-06T16:14:45.325Z",
+   "seen": "2026-11-06T16:44:25.828Z",
+   "handle": "adamscheftermirror.bsky.social",
+   "post": "at://did:plc:qre6zxbmr3ixhdmgsgdretb5/app.bsky.feed.post/3mznroljdyr2t",
+   "player": "Garrett Wilson",
+   "team": "NYJ",
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.97,
+   "text": "Jets ruled out WR Garrett Wilson for Sunday’s game versus the Chiefs due to his concussion.\n\nOriginal post"
+  },
+  {
+   "id": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3mznrrjzkqf2b|garrettwilson|out|status",
+   "at": "2026-11-06T16:16:24.000Z",
+   "seen": "2026-11-06T16:44:25.828Z",
+   "handle": "rotowirenfl.bsky.social",
+   "post": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3mznrrjzkqf2b",
+   "player": "Garrett Wilson",
+   "team": "NYJ",
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.97,
+   "text": "Garrett Wilson: Ruled out for Sunday \n\n https://www.rotowire.com/football/player/garrett-wilson-15829"
+  },
+  {
+   "id": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3mznsdiriek2l|breecehall|active|status",
+   "at": "2026-11-06T16:26:27.000Z",
+   "seen": "2026-11-06T16:44:25.828Z",
+   "handle": "rotoworld-fb.bsky.social",
+   "post": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3mznsdiriek2l",
+   "player": "Breece Hall",
+   "team": "NYJ",
+   "status": "active",
+   "kind": "status",
+   "confidence": 0.9,
+   "text": "Glenn: Breece Hall (quad) will play vs. Chiefs"
   }
  ]
 }

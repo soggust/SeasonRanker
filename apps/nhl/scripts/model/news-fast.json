@@ -3,8 +3,8 @@
  "cursor": {
   "johnston-bot.bsky.social": "2026-11-05T17:59:59.541Z",
   "notfriedgehnic.bsky.social": "2026-11-05T21:08:39.466Z",
-  "dailyfaceoff.bsky.social": "2026-11-06T15:13:05.000Z",
-  "dfotoronto.bsky.social": "2026-11-06T15:56:42.000Z",
+  "dailyfaceoff.bsky.social": "2026-11-06T16:24:23.000Z",
+  "dfotoronto.bsky.social": "2026-11-06T16:43:13.000Z",
   "marklazerus.bsky.social": "2026-11-06T12:24:23.511Z"
  },
  "claims": [
@@ -1736,6 +1736,19 @@
    "kind": "return",
    "confidence": 0.8,
    "text": "NHL Notebook: Connor Hellebuyck addresses Jets fans, Nick Suzuki returns for Canadiens"
+  },
+  {
+   "id": "at://did:plc:knaj2vcp4x6t7hr7ewd6e3uz/app.bsky.feed.post/3mzntbiq3w22h|johntavares|none|role",
+   "at": "2026-11-06T16:43:13.000Z",
+   "seen": "2026-11-06T16:44:25.828Z",
+   "handle": "dfotoronto.bsky.social",
+   "post": "at://did:plc:knaj2vcp4x6t7hr7ewd6e3uz/app.bsky.feed.post/3mzntbiq3w22h",
+   "player": "John Tavares",
+   "team": "TOR",
+   "status": "none",
+   "kind": "role",
+   "confidence": 0.4,
+   "text": "Maple Leafs lineup news: John Tavares skates in regular jersey on line with Nick Paul, William Nylander"
   }
  ]
 }
