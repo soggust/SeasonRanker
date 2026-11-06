@@ -1,7 +1,7 @@
 {
  "sport": "nfl",
  "cursor": {
-  "adamscheftermirror.bsky.social": "2026-11-06T16:29:44.191Z",
+  "adamscheftermirror.bsky.social": "2026-11-06T19:04:44.768Z",
   "rapsheet.bsky.social": "2026-11-06T18:41:54.465Z",
   "nflnewsreposterbot.bsky.social": "2026-11-06T17:28:39.017Z",
   "insidenflnews.bsky.social": "2026-11-06T18:24:36.291Z",
@@ -16532,6 +16532,19 @@
    "kind": "return",
    "confidence": 0.5,
    "text": "Rams star Myles Garrett, working his way back from knee surgery that landed him on Injured Reserve, is on track to be activated ahead of Sunday’s game at the Commanders, per me and Mike Garafolo.\n\nGar"
+  },
+  {
+   "id": "at://did:plc:qre6zxbmr3ixhdmgsgdretb5/app.bsky.feed.post/3mzo36khpt22t|shedeursanders|active|starting",
+   "at": "2026-11-06T19:04:44.768Z",
+   "seen": "2026-11-06T19:07:07.485Z",
+   "handle": "adamscheftermirror.bsky.social",
+   "post": "at://did:plc:qre6zxbmr3ixhdmgsgdretb5/app.bsky.feed.post/3mzo36khpt22t",
+   "player": "Shedeur Sanders",
+   "team": "CLE",
+   "status": "active",
+   "kind": "starting",
+   "confidence": 0.9,
+   "text": "Browns QB Shedeur Sanders will start his first game of the season Sunday at New Orleans.\n\nOriginal post"
   }
  ]
 }
