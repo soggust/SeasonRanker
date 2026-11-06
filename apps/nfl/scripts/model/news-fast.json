@@ -4,10 +4,10 @@
   "adamscheftermirror.bsky.social": "2026-11-06T19:04:44.768Z",
   "rapsheet.bsky.social": "2026-11-06T18:41:54.465Z",
   "nflnewsreposterbot.bsky.social": "2026-11-06T17:28:39.017Z",
-  "insidenflnews.bsky.social": "2026-11-06T18:24:36.291Z",
-  "nflnewsposter.bsky.social": "2026-11-06T18:25:56.739Z",
-  "rotoworld-fb.bsky.social": "2026-11-06T18:35:48.000Z",
-  "rotowirenfl.bsky.social": "2026-11-06T18:30:54.000Z"
+  "insidenflnews.bsky.social": "2026-11-06T19:31:28.974Z",
+  "nflnewsposter.bsky.social": "2026-11-06T19:30:18.444Z",
+  "rotoworld-fb.bsky.social": "2026-11-06T20:14:19.000Z",
+  "rotowirenfl.bsky.social": "2026-11-06T20:13:36.000Z"
  },
  "claims": [
   {
@@ -16545,6 +16545,84 @@
    "kind": "starting",
    "confidence": 0.9,
    "text": "Browns QB Shedeur Sanders will start his first game of the season Sunday at New Orleans.\n\nOriginal post"
+  },
+  {
+   "id": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3mzo3ksvi5x2s|jordyntyson|questionable|status",
+   "at": "2026-11-06T19:11:36.000Z",
+   "seen": "2026-11-06T20:15:14.447Z",
+   "handle": "rotoworld-fb.bsky.social",
+   "post": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3mzo3ksvi5x2s",
+   "player": "Jordyn Tyson",
+   "team": null,
+   "status": "questionable",
+   "kind": "status",
+   "confidence": 0.9,
+   "text": "Jordyn Tyson (hamstring) questionable for Week 9"
+  },
+  {
+   "id": "at://did:plc:mbr4badgf6yu56mquzackzew/app.bsky.feed.post/3mzo4oebm6225|maliknabers|active|status",
+   "at": "2026-11-06T19:31:28.974Z",
+   "seen": "2026-11-06T20:15:14.447Z",
+   "handle": "insidenflnews.bsky.social",
+   "post": "at://did:plc:mbr4badgf6yu56mquzackzew/app.bsky.feed.post/3mzo4oebm6225",
+   "player": "Malik Nabers",
+   "team": "NYG",
+   "status": "active",
+   "kind": "status",
+   "confidence": 0.85,
+   "text": "Harbaugh: Malik Nabers (knee) will be full-go in Week 9."
+  },
+  {
+   "id": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3mzo5l2llv22e|denzelboston|active|status",
+   "at": "2026-11-06T19:47:31.000Z",
+   "seen": "2026-11-06T20:15:14.447Z",
+   "handle": "rotowirenfl.bsky.social",
+   "post": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3mzo5l2llv22e",
+   "player": "Denzel Boston",
+   "team": null,
+   "status": "active",
+   "kind": "status",
+   "confidence": 0.9,
+   "text": "Denzel Boston: Cleared for Sunday \n\n https://www.rotowire.com/football/player/denzel-boston-19298"
+  },
+  {
+   "id": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3mzo65zgxry2s|kylemonangai|questionable|status",
+   "at": "2026-11-06T19:58:08.000Z",
+   "seen": "2026-11-06T20:15:14.447Z",
+   "handle": "rotowirenfl.bsky.social",
+   "post": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3mzo65zgxry2s",
+   "player": "Kyle Monangai",
+   "team": null,
+   "status": "questionable",
+   "kind": "status",
+   "confidence": 0.9,
+   "text": "Kyle Monangai: Questionable for Sunday \n\n https://www.rotowire.com/football/player/kyle-monangai-18520"
+  },
+  {
+   "id": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3mzo6snb5b225|georgepickens|questionable|status",
+   "at": "2026-11-06T20:09:40.000Z",
+   "seen": "2026-11-06T20:15:14.447Z",
+   "handle": "rotowirenfl.bsky.social",
+   "post": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3mzo6snb5b225",
+   "player": "George Pickens",
+   "team": null,
+   "status": "questionable",
+   "kind": "status",
+   "confidence": 0.9,
+   "text": "George Pickens: Questionable for Week 9 \n\n https://www.rotowire.com/football/player/george-pickens-15853"
+  },
+  {
+   "id": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3mzo6zp52a225|jakeferguson|questionable|status",
+   "at": "2026-11-06T20:13:36.000Z",
+   "seen": "2026-11-06T20:15:14.447Z",
+   "handle": "rotowirenfl.bsky.social",
+   "post": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3mzo6zp52a225",
+   "player": "Jake Ferguson",
+   "team": null,
+   "status": "questionable",
+   "kind": "status",
+   "confidence": 0.9,
+   "text": "Jake Ferguson: Listed as questionable for Sunday \n\n https://www.rotowire.com/football/player/jake-ferguson-15947"
   }
  ]
 }
