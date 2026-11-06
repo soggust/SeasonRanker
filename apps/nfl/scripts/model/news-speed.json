@@ -12690,6 +12690,11 @@
    "espn": {
     "seen": "2026-11-04T15:39:38.874Z",
     "own": "2026-11-04T14:45:00.000Z"
+   },
+   "bluesky": {
+    "seen": "2026-11-06T17:34:12.366Z",
+    "own": "2026-11-06T17:19:13.000Z",
+    "why": "@rotowirenfl.bsky.social: Deshaun Watson: Returns to practice field Friday \n\n ht"
    }
   },
   "401873037|mackhollins|q": {
@@ -14139,6 +14144,11 @@
    "espn": {
     "seen": "2026-11-05T18:57:03.047Z",
     "own": "2026-11-05T18:46:00.000Z"
+   },
+   "bluesky": {
+    "seen": "2026-11-06T17:13:43.994Z",
+    "own": "2026-11-06T17:11:03.000Z",
+    "why": "@rotoworld-fb.bsky.social: Malik Nabers (knee) back practicing on Friday"
    }
   },
   "401873050|zavierscott|out": {
@@ -14919,6 +14929,11 @@
     "seen": "2026-11-06T15:49:54.587Z",
     "own": "2026-11-06T15:39:08.564Z",
     "why": "@insidenflnews.bsky.social: Jets WR Garrett Wilson (concussion) has been ruled o"
+   },
+   "athlete": "4569618",
+   "espn": {
+    "seen": "2026-11-06T18:09:51.585Z",
+    "own": "2026-11-06T16:16:00.000Z"
    }
   },
   "401873045|trevinwallace|out": {
@@ -14931,6 +14946,35 @@
    "espn": {
     "seen": "2026-11-06T15:59:42.822Z",
     "own": "2026-11-06T15:50:00.000Z"
+   }
+  },
+  "401873040|akeemdavisgaither|out": {
+   "game": "401873040",
+   "start": "2026-11-08T18:00Z",
+   "team": "11",
+   "name": "Akeem Davis-Gaither",
+   "status": "out",
+   "athlete": "3917142",
+   "espn": {
+    "seen": "2026-11-06T18:09:51.585Z",
+    "own": "2026-11-05T20:46:00.000Z"
+   }
+  },
+  "401873048|bamknight|out": {
+   "game": "401873048",
+   "start": "2026-11-08T21:25Z",
+   "team": "22",
+   "name": "Bam Knight",
+   "status": "out",
+   "athlete": "4427728",
+   "espn": {
+    "seen": "2026-11-06T18:09:51.585Z",
+    "own": "2026-11-06T17:58:00.000Z"
+   },
+   "bluesky": {
+    "seen": "2026-11-06T17:57:37.346Z",
+    "own": "2026-11-06T17:51:11.704Z",
+    "why": "@insidenflnews.bsky.social: Cardinals RB Bam Knight (concussion) has been ruled "
    }
   }
  }
