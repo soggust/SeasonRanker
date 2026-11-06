@@ -4,9 +4,9 @@
   "adamscheftermirror.bsky.social": "2026-11-06T16:29:44.191Z",
   "rapsheet.bsky.social": "2026-11-06T03:29:31.313Z",
   "nflnewsreposterbot.bsky.social": "2026-11-06T17:28:39.017Z",
-  "insidenflnews.bsky.social": "2026-11-06T16:18:11.162Z",
-  "nflnewsposter.bsky.social": "2026-11-06T17:29:12.778Z",
-  "rotoworld-fb.bsky.social": "2026-11-06T17:11:03.000Z",
+  "insidenflnews.bsky.social": "2026-11-06T17:51:11.704Z",
+  "nflnewsposter.bsky.social": "2026-11-06T17:51:42.840Z",
+  "rotoworld-fb.bsky.social": "2026-11-06T17:37:53.000Z",
   "rotowirenfl.bsky.social": "2026-11-06T17:32:03.000Z"
  },
  "claims": [
@@ -16259,6 +16259,32 @@
    "kind": "return",
    "confidence": 0.65,
    "text": "[Garafolo] Rams star Myles Garrett, working his way back from knee surgery that landed him on Injured Reserve, is on track to be activated ahead of Sunday vs. the Commanders. twitter.com/MikeGarafolo."
+  },
+  {
+   "id": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3mznwdaqzpc2e|mylesgarrett|active|status",
+   "at": "2026-11-06T17:37:53.000Z",
+   "seen": "2026-11-06T17:57:37.346Z",
+   "handle": "rotoworld-fb.bsky.social",
+   "post": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3mznwdaqzpc2e",
+   "player": "Myles Garrett",
+   "team": "CLE",
+   "status": "active",
+   "kind": "status",
+   "confidence": 0.8,
+   "text": "Myles Garrett (knee) 'on track' to play vs. Commanders"
+  },
+  {
+   "id": "at://did:plc:mbr4badgf6yu56mquzackzew/app.bsky.feed.post/3mznx2zqzy22g|bamknight|out|status",
+   "at": "2026-11-06T17:51:11.704Z",
+   "seen": "2026-11-06T17:57:37.346Z",
+   "handle": "insidenflnews.bsky.social",
+   "post": "at://did:plc:mbr4badgf6yu56mquzackzew/app.bsky.feed.post/3mznx2zqzy22g",
+   "player": "Bam Knight",
+   "team": "ARI",
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.95,
+   "text": "Cardinals RB Bam Knight (concussion) has been ruled out for Week 9."
   }
  ]
 }
