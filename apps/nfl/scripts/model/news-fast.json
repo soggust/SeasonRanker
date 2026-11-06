@@ -4,10 +4,10 @@
   "adamscheftermirror.bsky.social": "2026-11-06T21:34:46.197Z",
   "rapsheet.bsky.social": "2026-11-06T18:41:54.465Z",
   "nflnewsreposterbot.bsky.social": "2026-11-06T17:28:39.017Z",
-  "insidenflnews.bsky.social": "2026-11-06T22:04:46.398Z",
-  "nflnewsposter.bsky.social": "2026-11-06T21:56:49.699Z",
-  "rotoworld-fb.bsky.social": "2026-11-06T22:11:49.000Z",
-  "rotowirenfl.bsky.social": "2026-11-06T22:12:18.000Z"
+  "insidenflnews.bsky.social": "2026-11-06T22:46:11.459Z",
+  "nflnewsposter.bsky.social": "2026-11-06T22:18:41.429Z",
+  "rotoworld-fb.bsky.social": "2026-11-06T22:47:06.000Z",
+  "rotowirenfl.bsky.social": "2026-11-06T22:29:44.000Z"
  },
  "claims": [
   {
@@ -17143,6 +17143,71 @@
    "kind": "status",
    "confidence": 0.95,
    "text": "Rams rule out Terrance Ferguson (ankle/hamstring)"
+  },
+  {
+   "id": "at://did:plc:fuqjc7x4gxvnwzksnlxwbe4x/app.bsky.feed.post/3mzofzdxtis2e|quentonnelson|out|status",
+   "at": "2026-11-06T22:18:41.429Z",
+   "seen": "2026-11-06T23:04:34.024Z",
+   "handle": "nflnewsposter.bsky.social",
+   "post": "at://did:plc:fuqjc7x4gxvnwzksnlxwbe4x/app.bsky.feed.post/3mzofzdxtis2e",
+   "player": "Quenton Nelson",
+   "team": "SEA",
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.7,
+   "text": "[Rapoport] Seahawks G Quenton Nelson will have surgery to clean out some cartilage in his knee, as fragments had been causing an issue recently.\n\nThe plan is for Nelson to avoid Injured Reserve, and h"
+  },
+  {
+   "id": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3mzogeozjz22r|christianmccaffrey|active|status",
+   "at": "2026-11-06T22:25:01.000Z",
+   "seen": "2026-11-06T23:04:34.024Z",
+   "handle": "rotoworld-fb.bsky.social",
+   "post": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3mzogeozjz22r",
+   "player": "Christian McCaffrey",
+   "team": "SF",
+   "status": "active",
+   "kind": "status",
+   "confidence": 0.85,
+   "text": "Christian McCaffrey (hamstring) will face Raiders"
+  },
+  {
+   "id": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3mzoggng4yz25|drewlock|none|starting",
+   "at": "2026-11-06T22:26:07.000Z",
+   "seen": "2026-11-06T23:04:34.024Z",
+   "handle": "rotowirenfl.bsky.social",
+   "post": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3mzoggng4yz25",
+   "player": "Drew Lock",
+   "team": null,
+   "status": "none",
+   "kind": "starting",
+   "confidence": 0.8,
+   "text": "Drew Lock: Set for Week 9 start \n\n https://www.rotowire.com/football/player/drew-lock-13736"
+  },
+  {
+   "id": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3mzogn4r4cd26|terranceferguson|out|status",
+   "at": "2026-11-06T22:29:44.000Z",
+   "seen": "2026-11-06T23:04:34.024Z",
+   "handle": "rotowirenfl.bsky.social",
+   "post": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3mzogn4r4cd26",
+   "player": "Terrance Ferguson",
+   "team": null,
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.85,
+   "text": "Terrance Ferguson: Suffers hamstring injury, out again \n\n https://www.rotowire.com/football/player/terrance-ferguson-18497"
+  },
+  {
+   "id": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3mzohm5y2xc22|mikeevans|out|status",
+   "at": "2026-11-06T22:47:06.000Z",
+   "seen": "2026-11-06T23:04:34.024Z",
+   "handle": "rotoworld-fb.bsky.social",
+   "post": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3mzohm5y2xc22",
+   "player": "Mike Evans",
+   "team": "SF",
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.4,
+   "text": "49ers rule out Mike Evans (Achilles) vs. Raiders"
   }
  ]
 }

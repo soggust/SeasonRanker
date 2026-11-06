@@ -10781,6 +10781,11 @@
    "sleeper": {
     "seen": "2026-11-06T20:12:35.427Z",
     "own": "2026-11-06T19:55:16.764Z"
+   },
+   "bluesky": {
+    "seen": "2026-11-06T22:15:31.252Z",
+    "own": "2026-11-06T22:11:49.000Z",
+    "why": "@rotoworld-fb.bsky.social: Rams rule out Terrance Ferguson (ankle/hamstring)"
    }
   },
   "401873043|mylesgarrett|out": {
@@ -12601,6 +12606,11 @@
    "sleeper": {
     "seen": "2026-11-06T20:12:35.427Z",
     "own": "2026-11-06T19:10:16.522Z"
+   },
+   "bluesky": {
+    "seen": "2026-11-06T22:15:31.252Z",
+    "own": "2026-11-06T21:19:45.521Z",
+    "why": "@adamscheftermirror.bsky.social: Patriots officially ruled out WR AJ Brown and R"
    }
   },
   "401873037|tylerloop|out": {
@@ -12987,6 +12997,11 @@
    "espn": {
     "seen": "2026-11-04T21:12:40.444Z",
     "own": "2026-11-04T21:00:00.000Z"
+   },
+   "bluesky": {
+    "seen": "2026-11-06T22:15:31.252Z",
+    "own": "2026-11-06T21:44:05.000Z",
+    "why": "@rotoworld-fb.bsky.social: Amon-Ra St. Brown (ribs) questionable for Week 9"
    }
   },
   "401873046|davidmontgomery|out": {
@@ -16207,6 +16222,11 @@
    "espn": {
     "seen": "2026-11-06T22:12:37.309Z",
     "own": "2026-11-06T21:06:00.000Z"
+   },
+   "bluesky": {
+    "seen": "2026-11-06T22:15:31.252Z",
+    "own": "2026-11-06T22:00:23.000Z",
+    "why": "@rotowirenfl.bsky.social: Deebo Samuel: Ruled out for Sunday \n\n https://www.roto"
    }
   },
   "401873047|mikeevans|out": {
@@ -16219,6 +16239,11 @@
    "espn": {
     "seen": "2026-11-06T22:12:37.309Z",
     "own": "2026-11-06T20:50:00.000Z"
+   },
+   "bluesky": {
+    "seen": "2026-11-06T22:15:31.252Z",
+    "own": "2026-11-06T22:05:48.000Z",
+    "why": "@rotowirenfl.bsky.social: Mike Evans: Won't play Sunday \n\n https://www.rotowire."
    }
   },
   "401873047|christiankirk|out": {
@@ -16231,6 +16256,11 @@
    "espn": {
     "seen": "2026-11-06T22:12:37.309Z",
     "own": "2026-11-05T23:02:00.000Z"
+   },
+   "bluesky": {
+    "seen": "2026-11-06T22:15:31.252Z",
+    "own": "2026-11-06T21:53:53.999Z",
+    "why": "@insidenflnews.bsky.social: Mike Evans (Achilles), Deebo Samuel (hamstring), Chr"
    }
   },
   "401873048|quentonnelson|out": {
@@ -16243,6 +16273,11 @@
    "espn": {
     "seen": "2026-11-06T22:12:37.309Z",
     "own": "2026-11-06T01:51:00.000Z"
+   },
+   "bluesky": {
+    "seen": "2026-11-06T22:15:31.252Z",
+    "own": "2026-11-06T22:02:07.000Z",
+    "why": "@rotoworld-fb.bsky.social: Nelson (knee) will have minor procedure, out"
    }
   },
   "401873051|samfranklin|q": {
@@ -16255,6 +16290,966 @@
    "espn": {
     "seen": "2026-11-06T22:12:37.309Z",
     "own": "2026-11-06T22:01:00.000Z"
+   }
+  },
+  "401873038|amonrastbrown|q": {
+   "game": "401873038",
+   "start": "2026-11-08T14:30Z",
+   "team": "1",
+   "name": "Amon-Ra St. Brown",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-11-06T22:15:31.252Z",
+    "own": "2026-11-06T21:44:05.000Z",
+    "why": "@rotoworld-fb.bsky.social: Amon-Ra St. Brown (ribs) questionable for Week 9"
+   }
+  },
+  "401873038|devontasmith|out": {
+   "game": "401873038",
+   "start": "2026-11-08T14:30Z",
+   "team": "1",
+   "name": "DeVonta Smith",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-06T22:15:31.252Z",
+    "own": "2026-11-06T21:09:15.000Z",
+    "why": "@rotowirenfl.bsky.social: DeVonta Smith: Won't play Sunday \n\n https://www.rotowi"
+   }
+  },
+  "401873038|mikeevans|out": {
+   "game": "401873038",
+   "start": "2026-11-08T14:30Z",
+   "team": "1",
+   "name": "Mike Evans",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-06T22:15:31.252Z",
+    "own": "2026-11-06T22:05:48.000Z",
+    "why": "@rotowirenfl.bsky.social: Mike Evans: Won't play Sunday \n\n https://www.rotowire."
+   }
+  },
+  "401873038|deebosamuel|out": {
+   "game": "401873038",
+   "start": "2026-11-08T14:30Z",
+   "team": "1",
+   "name": "Deebo Samuel",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-06T22:15:31.252Z",
+    "own": "2026-11-06T22:00:23.000Z",
+    "why": "@rotowirenfl.bsky.social: Deebo Samuel: Ruled out for Sunday \n\n https://www.roto"
+   }
+  },
+  "401873038|christiankirk|out": {
+   "game": "401873038",
+   "start": "2026-11-08T14:30Z",
+   "team": "1",
+   "name": "Christian Kirk",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-06T22:15:31.252Z",
+    "own": "2026-11-06T21:53:53.999Z",
+    "why": "@insidenflnews.bsky.social: Mike Evans (Achilles), Deebo Samuel (hamstring), Chr"
+   }
+  },
+  "401873038|djmoore|q": {
+   "game": "401873038",
+   "start": "2026-11-08T14:30Z",
+   "team": "1",
+   "name": "DJ Moore",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-11-06T22:15:31.252Z",
+    "own": "2026-11-06T21:55:27.000Z",
+    "why": "@rotowirenfl.bsky.social: DJ Moore: Remains limited at practice \n\n https://www.r"
+   }
+  },
+  "401873040|amonrastbrown|q": {
+   "game": "401873040",
+   "start": "2026-11-08T18:00Z",
+   "team": "11",
+   "name": "Amon-Ra St. Brown",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-11-06T22:15:31.252Z",
+    "own": "2026-11-06T21:44:05.000Z",
+    "why": "@rotoworld-fb.bsky.social: Amon-Ra St. Brown (ribs) questionable for Week 9"
+   }
+  },
+  "401873040|devontasmith|out": {
+   "game": "401873040",
+   "start": "2026-11-08T18:00Z",
+   "team": "11",
+   "name": "DeVonta Smith",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-06T22:15:31.252Z",
+    "own": "2026-11-06T21:09:15.000Z",
+    "why": "@rotowirenfl.bsky.social: DeVonta Smith: Won't play Sunday \n\n https://www.rotowi"
+   }
+  },
+  "401873040|mikeevans|out": {
+   "game": "401873040",
+   "start": "2026-11-08T18:00Z",
+   "team": "11",
+   "name": "Mike Evans",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-06T22:15:31.252Z",
+    "own": "2026-11-06T22:05:48.000Z",
+    "why": "@rotowirenfl.bsky.social: Mike Evans: Won't play Sunday \n\n https://www.rotowire."
+   }
+  },
+  "401873040|deebosamuel|out": {
+   "game": "401873040",
+   "start": "2026-11-08T18:00Z",
+   "team": "11",
+   "name": "Deebo Samuel",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-06T22:15:31.252Z",
+    "own": "2026-11-06T22:00:23.000Z",
+    "why": "@rotowirenfl.bsky.social: Deebo Samuel: Ruled out for Sunday \n\n https://www.roto"
+   }
+  },
+  "401873040|christiankirk|out": {
+   "game": "401873040",
+   "start": "2026-11-08T18:00Z",
+   "team": "11",
+   "name": "Christian Kirk",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-06T22:15:31.252Z",
+    "own": "2026-11-06T21:53:53.999Z",
+    "why": "@insidenflnews.bsky.social: Mike Evans (Achilles), Deebo Samuel (hamstring), Chr"
+   }
+  },
+  "401873040|djmoore|q": {
+   "game": "401873040",
+   "start": "2026-11-08T18:00Z",
+   "team": "11",
+   "name": "DJ Moore",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-11-06T22:15:31.252Z",
+    "own": "2026-11-06T21:55:27.000Z",
+    "why": "@rotowirenfl.bsky.social: DJ Moore: Remains limited at practice \n\n https://www.r"
+   }
+  },
+  "401873045|amonrastbrown|q": {
+   "game": "401873045",
+   "start": "2026-11-08T18:00Z",
+   "team": "12",
+   "name": "Amon-Ra St. Brown",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-11-06T22:15:31.252Z",
+    "own": "2026-11-06T21:44:05.000Z",
+    "why": "@rotoworld-fb.bsky.social: Amon-Ra St. Brown (ribs) questionable for Week 9"
+   }
+  },
+  "401873045|devontasmith|out": {
+   "game": "401873045",
+   "start": "2026-11-08T18:00Z",
+   "team": "12",
+   "name": "DeVonta Smith",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-06T22:15:31.252Z",
+    "own": "2026-11-06T21:09:15.000Z",
+    "why": "@rotowirenfl.bsky.social: DeVonta Smith: Won't play Sunday \n\n https://www.rotowi"
+   }
+  },
+  "401873045|mikeevans|out": {
+   "game": "401873045",
+   "start": "2026-11-08T18:00Z",
+   "team": "12",
+   "name": "Mike Evans",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-06T22:15:31.252Z",
+    "own": "2026-11-06T22:05:48.000Z",
+    "why": "@rotowirenfl.bsky.social: Mike Evans: Won't play Sunday \n\n https://www.rotowire."
+   }
+  },
+  "401873045|deebosamuel|out": {
+   "game": "401873045",
+   "start": "2026-11-08T18:00Z",
+   "team": "12",
+   "name": "Deebo Samuel",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-06T22:15:31.252Z",
+    "own": "2026-11-06T22:00:23.000Z",
+    "why": "@rotowirenfl.bsky.social: Deebo Samuel: Ruled out for Sunday \n\n https://www.roto"
+   }
+  },
+  "401873045|christiankirk|out": {
+   "game": "401873045",
+   "start": "2026-11-08T18:00Z",
+   "team": "12",
+   "name": "Christian Kirk",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-06T22:15:31.252Z",
+    "own": "2026-11-06T21:53:53.999Z",
+    "why": "@insidenflnews.bsky.social: Mike Evans (Achilles), Deebo Samuel (hamstring), Chr"
+   }
+  },
+  "401873045|djmoore|q": {
+   "game": "401873045",
+   "start": "2026-11-08T18:00Z",
+   "team": "12",
+   "name": "DJ Moore",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-11-06T22:15:31.252Z",
+    "own": "2026-11-06T21:55:27.000Z",
+    "why": "@rotowirenfl.bsky.social: DJ Moore: Remains limited at practice \n\n https://www.r"
+   }
+  },
+  "401873042|devontasmith|out": {
+   "game": "401873042",
+   "start": "2026-11-08T18:00Z",
+   "team": "15",
+   "name": "DeVonta Smith",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-06T22:15:31.252Z",
+    "own": "2026-11-06T21:09:15.000Z",
+    "why": "@rotowirenfl.bsky.social: DeVonta Smith: Won't play Sunday \n\n https://www.rotowi"
+   }
+  },
+  "401873042|mikeevans|out": {
+   "game": "401873042",
+   "start": "2026-11-08T18:00Z",
+   "team": "15",
+   "name": "Mike Evans",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-06T22:15:31.252Z",
+    "own": "2026-11-06T22:05:48.000Z",
+    "why": "@rotowirenfl.bsky.social: Mike Evans: Won't play Sunday \n\n https://www.rotowire."
+   }
+  },
+  "401873042|deebosamuel|out": {
+   "game": "401873042",
+   "start": "2026-11-08T18:00Z",
+   "team": "15",
+   "name": "Deebo Samuel",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-06T22:15:31.252Z",
+    "own": "2026-11-06T22:00:23.000Z",
+    "why": "@rotowirenfl.bsky.social: Deebo Samuel: Ruled out for Sunday \n\n https://www.roto"
+   }
+  },
+  "401873042|christiankirk|out": {
+   "game": "401873042",
+   "start": "2026-11-08T18:00Z",
+   "team": "15",
+   "name": "Christian Kirk",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-06T22:15:31.252Z",
+    "own": "2026-11-06T21:53:53.999Z",
+    "why": "@insidenflnews.bsky.social: Mike Evans (Achilles), Deebo Samuel (hamstring), Chr"
+   }
+  },
+  "401873042|djmoore|q": {
+   "game": "401873042",
+   "start": "2026-11-08T18:00Z",
+   "team": "15",
+   "name": "DJ Moore",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-11-06T22:15:31.252Z",
+    "own": "2026-11-06T21:55:27.000Z",
+    "why": "@rotowirenfl.bsky.social: DJ Moore: Remains limited at practice \n\n https://www.r"
+   }
+  },
+  "401873042|djwonnum|out": {
+   "game": "401873042",
+   "start": "2026-11-08T18:00Z",
+   "team": "8",
+   "name": "DJ Wonnum",
+   "status": "out",
+   "athlete": "4038849",
+   "espn": {
+    "seen": "2026-11-06T23:02:15.906Z",
+    "own": "2026-11-06T22:48:00.000Z"
+   }
+  },
+  "401873042|djreed|out": {
+   "game": "401873042",
+   "start": "2026-11-08T18:00Z",
+   "team": "8",
+   "name": "D.J. Reed",
+   "status": "out",
+   "athlete": "3139387",
+   "espn": {
+    "seen": "2026-11-06T23:02:15.906Z",
+    "own": "2026-11-06T22:47:00.000Z"
+   }
+  },
+  "401873042|cademays|out": {
+   "game": "401873042",
+   "start": "2026-11-08T18:00Z",
+   "team": "8",
+   "name": "Cade Mays",
+   "status": "out",
+   "athlete": "4361788",
+   "espn": {
+    "seen": "2026-11-06T23:02:15.906Z",
+    "own": "2026-11-06T22:47:00.000Z"
+   }
+  },
+  "401873042|sionevaki|q": {
+   "game": "401873042",
+   "start": "2026-11-08T18:00Z",
+   "team": "8",
+   "name": "Sione Vaki",
+   "status": "q",
+   "athlete": "4912274",
+   "espn": {
+    "seen": "2026-11-06T23:02:15.906Z",
+    "own": "2026-11-06T22:30:00.000Z"
+   }
+  },
+  "401873039|amonrastbrown|q": {
+   "game": "401873039",
+   "start": "2026-11-08T18:00Z",
+   "team": "18",
+   "name": "Amon-Ra St. Brown",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-11-06T22:15:31.252Z",
+    "own": "2026-11-06T21:44:05.000Z",
+    "why": "@rotoworld-fb.bsky.social: Amon-Ra St. Brown (ribs) questionable for Week 9"
+   }
+  },
+  "401873039|devontasmith|out": {
+   "game": "401873039",
+   "start": "2026-11-08T18:00Z",
+   "team": "18",
+   "name": "DeVonta Smith",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-06T22:15:31.252Z",
+    "own": "2026-11-06T21:09:15.000Z",
+    "why": "@rotowirenfl.bsky.social: DeVonta Smith: Won't play Sunday \n\n https://www.rotowi"
+   }
+  },
+  "401873039|mikeevans|out": {
+   "game": "401873039",
+   "start": "2026-11-08T18:00Z",
+   "team": "18",
+   "name": "Mike Evans",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-06T22:15:31.252Z",
+    "own": "2026-11-06T22:05:48.000Z",
+    "why": "@rotowirenfl.bsky.social: Mike Evans: Won't play Sunday \n\n https://www.rotowire."
+   }
+  },
+  "401873039|deebosamuel|out": {
+   "game": "401873039",
+   "start": "2026-11-08T18:00Z",
+   "team": "18",
+   "name": "Deebo Samuel",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-06T22:15:31.252Z",
+    "own": "2026-11-06T22:00:23.000Z",
+    "why": "@rotowirenfl.bsky.social: Deebo Samuel: Ruled out for Sunday \n\n https://www.roto"
+   }
+  },
+  "401873039|christiankirk|out": {
+   "game": "401873039",
+   "start": "2026-11-08T18:00Z",
+   "team": "18",
+   "name": "Christian Kirk",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-06T22:15:31.252Z",
+    "own": "2026-11-06T21:53:53.999Z",
+    "why": "@insidenflnews.bsky.social: Mike Evans (Achilles), Deebo Samuel (hamstring), Chr"
+   }
+  },
+  "401873039|djmoore|q": {
+   "game": "401873039",
+   "start": "2026-11-08T18:00Z",
+   "team": "18",
+   "name": "DJ Moore",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-11-06T22:15:31.252Z",
+    "own": "2026-11-06T21:55:27.000Z",
+    "why": "@rotowirenfl.bsky.social: DJ Moore: Remains limited at practice \n\n https://www.r"
+   }
+  },
+  "401873044|michaelcarter|out": {
+   "game": "401873044",
+   "start": "2026-11-08T18:00Z",
+   "team": "21",
+   "name": "Michael Carter II",
+   "status": "out",
+   "athlete": "4240456",
+   "espn": {
+    "seen": "2026-11-06T23:02:15.906Z",
+    "own": "2026-11-06T22:32:00.000Z"
+   }
+  },
+  "401873044|amonrastbrown|q": {
+   "game": "401873044",
+   "start": "2026-11-08T18:00Z",
+   "team": "21",
+   "name": "Amon-Ra St. Brown",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-11-06T22:15:31.252Z",
+    "own": "2026-11-06T21:44:05.000Z",
+    "why": "@rotoworld-fb.bsky.social: Amon-Ra St. Brown (ribs) questionable for Week 9"
+   }
+  },
+  "401873044|mikeevans|out": {
+   "game": "401873044",
+   "start": "2026-11-08T18:00Z",
+   "team": "21",
+   "name": "Mike Evans",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-06T22:15:31.252Z",
+    "own": "2026-11-06T22:05:48.000Z",
+    "why": "@rotowirenfl.bsky.social: Mike Evans: Won't play Sunday \n\n https://www.rotowire."
+   }
+  },
+  "401873044|deebosamuel|out": {
+   "game": "401873044",
+   "start": "2026-11-08T18:00Z",
+   "team": "21",
+   "name": "Deebo Samuel",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-06T22:15:31.252Z",
+    "own": "2026-11-06T22:00:23.000Z",
+    "why": "@rotowirenfl.bsky.social: Deebo Samuel: Ruled out for Sunday \n\n https://www.roto"
+   }
+  },
+  "401873044|christiankirk|out": {
+   "game": "401873044",
+   "start": "2026-11-08T18:00Z",
+   "team": "21",
+   "name": "Christian Kirk",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-06T22:15:31.252Z",
+    "own": "2026-11-06T21:53:53.999Z",
+    "why": "@insidenflnews.bsky.social: Mike Evans (Achilles), Deebo Samuel (hamstring), Chr"
+   }
+  },
+  "401873044|djmoore|q": {
+   "game": "401873044",
+   "start": "2026-11-08T18:00Z",
+   "team": "21",
+   "name": "DJ Moore",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-11-06T22:15:31.252Z",
+    "own": "2026-11-06T21:55:27.000Z",
+    "why": "@rotowirenfl.bsky.social: DJ Moore: Remains limited at practice \n\n https://www.r"
+   }
+  },
+  "401873043|amonrastbrown|q": {
+   "game": "401873043",
+   "start": "2026-11-08T18:00Z",
+   "team": "28",
+   "name": "Amon-Ra St. Brown",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-11-06T22:15:31.252Z",
+    "own": "2026-11-06T21:44:05.000Z",
+    "why": "@rotoworld-fb.bsky.social: Amon-Ra St. Brown (ribs) questionable for Week 9"
+   }
+  },
+  "401873043|devontasmith|out": {
+   "game": "401873043",
+   "start": "2026-11-08T18:00Z",
+   "team": "28",
+   "name": "DeVonta Smith",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-06T22:15:31.252Z",
+    "own": "2026-11-06T21:09:15.000Z",
+    "why": "@rotowirenfl.bsky.social: DeVonta Smith: Won't play Sunday \n\n https://www.rotowi"
+   }
+  },
+  "401873043|mikeevans|out": {
+   "game": "401873043",
+   "start": "2026-11-08T18:00Z",
+   "team": "28",
+   "name": "Mike Evans",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-06T22:15:31.252Z",
+    "own": "2026-11-06T22:05:48.000Z",
+    "why": "@rotowirenfl.bsky.social: Mike Evans: Won't play Sunday \n\n https://www.rotowire."
+   }
+  },
+  "401873043|deebosamuel|out": {
+   "game": "401873043",
+   "start": "2026-11-08T18:00Z",
+   "team": "28",
+   "name": "Deebo Samuel",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-06T22:15:31.252Z",
+    "own": "2026-11-06T22:00:23.000Z",
+    "why": "@rotowirenfl.bsky.social: Deebo Samuel: Ruled out for Sunday \n\n https://www.roto"
+   }
+  },
+  "401873043|christiankirk|out": {
+   "game": "401873043",
+   "start": "2026-11-08T18:00Z",
+   "team": "28",
+   "name": "Christian Kirk",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-06T22:15:31.252Z",
+    "own": "2026-11-06T21:53:53.999Z",
+    "why": "@insidenflnews.bsky.social: Mike Evans (Achilles), Deebo Samuel (hamstring), Chr"
+   }
+  },
+  "401873043|djmoore|q": {
+   "game": "401873043",
+   "start": "2026-11-08T18:00Z",
+   "team": "28",
+   "name": "DJ Moore",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-11-06T22:15:31.252Z",
+    "own": "2026-11-06T21:55:27.000Z",
+    "why": "@rotowirenfl.bsky.social: DJ Moore: Remains limited at practice \n\n https://www.r"
+   }
+  },
+  "401873041|amonrastbrown|q": {
+   "game": "401873041",
+   "start": "2026-11-08T18:00Z",
+   "team": "29",
+   "name": "Amon-Ra St. Brown",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-11-06T22:15:31.252Z",
+    "own": "2026-11-06T21:44:05.000Z",
+    "why": "@rotoworld-fb.bsky.social: Amon-Ra St. Brown (ribs) questionable for Week 9"
+   }
+  },
+  "401873041|devontasmith|out": {
+   "game": "401873041",
+   "start": "2026-11-08T18:00Z",
+   "team": "29",
+   "name": "DeVonta Smith",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-06T22:15:31.252Z",
+    "own": "2026-11-06T21:09:15.000Z",
+    "why": "@rotowirenfl.bsky.social: DeVonta Smith: Won't play Sunday \n\n https://www.rotowi"
+   }
+  },
+  "401873041|mikeevans|out": {
+   "game": "401873041",
+   "start": "2026-11-08T18:00Z",
+   "team": "29",
+   "name": "Mike Evans",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-06T22:15:31.252Z",
+    "own": "2026-11-06T22:05:48.000Z",
+    "why": "@rotowirenfl.bsky.social: Mike Evans: Won't play Sunday \n\n https://www.rotowire."
+   }
+  },
+  "401873041|deebosamuel|out": {
+   "game": "401873041",
+   "start": "2026-11-08T18:00Z",
+   "team": "29",
+   "name": "Deebo Samuel",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-06T22:15:31.252Z",
+    "own": "2026-11-06T22:00:23.000Z",
+    "why": "@rotowirenfl.bsky.social: Deebo Samuel: Ruled out for Sunday \n\n https://www.roto"
+   }
+  },
+  "401873041|christiankirk|out": {
+   "game": "401873041",
+   "start": "2026-11-08T18:00Z",
+   "team": "29",
+   "name": "Christian Kirk",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-06T22:15:31.252Z",
+    "own": "2026-11-06T21:53:53.999Z",
+    "why": "@insidenflnews.bsky.social: Mike Evans (Achilles), Deebo Samuel (hamstring), Chr"
+   }
+  },
+  "401873041|djmoore|q": {
+   "game": "401873041",
+   "start": "2026-11-08T18:00Z",
+   "team": "29",
+   "name": "DJ Moore",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-11-06T22:15:31.252Z",
+    "own": "2026-11-06T21:55:27.000Z",
+    "why": "@rotowirenfl.bsky.social: DJ Moore: Remains limited at practice \n\n https://www.r"
+   }
+  },
+  "401873046|kendallwilliamson|out": {
+   "game": "401873046",
+   "start": "2026-11-08T21:05Z",
+   "team": "24",
+   "name": "Kendall Williamson",
+   "status": "out",
+   "athlete": "4360745",
+   "espn": {
+    "seen": "2026-11-06T23:02:15.906Z",
+    "own": "2026-11-06T22:12:00.000Z"
+   }
+  },
+  "401873046|amonrastbrown|q": {
+   "game": "401873046",
+   "start": "2026-11-08T21:05Z",
+   "team": "24",
+   "name": "Amon-Ra St. Brown",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-11-06T22:15:31.252Z",
+    "own": "2026-11-06T21:44:05.000Z",
+    "why": "@rotoworld-fb.bsky.social: Amon-Ra St. Brown (ribs) questionable for Week 9"
+   }
+  },
+  "401873046|devontasmith|out": {
+   "game": "401873046",
+   "start": "2026-11-08T21:05Z",
+   "team": "24",
+   "name": "DeVonta Smith",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-06T22:15:31.252Z",
+    "own": "2026-11-06T21:09:15.000Z",
+    "why": "@rotowirenfl.bsky.social: DeVonta Smith: Won't play Sunday \n\n https://www.rotowi"
+   }
+  },
+  "401873046|mikeevans|out": {
+   "game": "401873046",
+   "start": "2026-11-08T21:05Z",
+   "team": "24",
+   "name": "Mike Evans",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-06T22:15:31.252Z",
+    "own": "2026-11-06T22:05:48.000Z",
+    "why": "@rotowirenfl.bsky.social: Mike Evans: Won't play Sunday \n\n https://www.rotowire."
+   }
+  },
+  "401873046|deebosamuel|out": {
+   "game": "401873046",
+   "start": "2026-11-08T21:05Z",
+   "team": "24",
+   "name": "Deebo Samuel",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-06T22:15:31.252Z",
+    "own": "2026-11-06T22:00:23.000Z",
+    "why": "@rotowirenfl.bsky.social: Deebo Samuel: Ruled out for Sunday \n\n https://www.roto"
+   }
+  },
+  "401873046|christiankirk|out": {
+   "game": "401873046",
+   "start": "2026-11-08T21:05Z",
+   "team": "24",
+   "name": "Christian Kirk",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-06T22:15:31.252Z",
+    "own": "2026-11-06T21:53:53.999Z",
+    "why": "@insidenflnews.bsky.social: Mike Evans (Achilles), Deebo Samuel (hamstring), Chr"
+   }
+  },
+  "401873046|djmoore|q": {
+   "game": "401873046",
+   "start": "2026-11-08T21:05Z",
+   "team": "24",
+   "name": "DJ Moore",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-11-06T22:15:31.252Z",
+    "own": "2026-11-06T21:55:27.000Z",
+    "why": "@rotowirenfl.bsky.social: DJ Moore: Remains limited at practice \n\n https://www.r"
+   }
+  },
+  "401873049|amonrastbrown|q": {
+   "game": "401873049",
+   "start": "2026-11-08T21:25Z",
+   "team": "17",
+   "name": "Amon-Ra St. Brown",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-11-06T22:15:31.252Z",
+    "own": "2026-11-06T21:44:05.000Z",
+    "why": "@rotoworld-fb.bsky.social: Amon-Ra St. Brown (ribs) questionable for Week 9"
+   }
+  },
+  "401873049|devontasmith|out": {
+   "game": "401873049",
+   "start": "2026-11-08T21:25Z",
+   "team": "17",
+   "name": "DeVonta Smith",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-06T22:15:31.252Z",
+    "own": "2026-11-06T21:09:15.000Z",
+    "why": "@rotowirenfl.bsky.social: DeVonta Smith: Won't play Sunday \n\n https://www.rotowi"
+   }
+  },
+  "401873049|mikeevans|out": {
+   "game": "401873049",
+   "start": "2026-11-08T21:25Z",
+   "team": "17",
+   "name": "Mike Evans",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-06T22:15:31.252Z",
+    "own": "2026-11-06T22:05:48.000Z",
+    "why": "@rotowirenfl.bsky.social: Mike Evans: Won't play Sunday \n\n https://www.rotowire."
+   }
+  },
+  "401873049|deebosamuel|out": {
+   "game": "401873049",
+   "start": "2026-11-08T21:25Z",
+   "team": "17",
+   "name": "Deebo Samuel",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-06T22:15:31.252Z",
+    "own": "2026-11-06T22:00:23.000Z",
+    "why": "@rotowirenfl.bsky.social: Deebo Samuel: Ruled out for Sunday \n\n https://www.roto"
+   }
+  },
+  "401873049|christiankirk|out": {
+   "game": "401873049",
+   "start": "2026-11-08T21:25Z",
+   "team": "17",
+   "name": "Christian Kirk",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-06T22:15:31.252Z",
+    "own": "2026-11-06T21:53:53.999Z",
+    "why": "@insidenflnews.bsky.social: Mike Evans (Achilles), Deebo Samuel (hamstring), Chr"
+   }
+  },
+  "401873049|djmoore|q": {
+   "game": "401873049",
+   "start": "2026-11-08T21:25Z",
+   "team": "17",
+   "name": "DJ Moore",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-11-06T22:15:31.252Z",
+    "own": "2026-11-06T21:55:27.000Z",
+    "why": "@rotowirenfl.bsky.social: DJ Moore: Remains limited at practice \n\n https://www.r"
+   }
+  },
+  "401873047|amonrastbrown|q": {
+   "game": "401873047",
+   "start": "2026-11-08T21:25Z",
+   "team": "25",
+   "name": "Amon-Ra St. Brown",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-11-06T22:15:31.252Z",
+    "own": "2026-11-06T21:44:05.000Z",
+    "why": "@rotoworld-fb.bsky.social: Amon-Ra St. Brown (ribs) questionable for Week 9"
+   }
+  },
+  "401873047|devontasmith|out": {
+   "game": "401873047",
+   "start": "2026-11-08T21:25Z",
+   "team": "25",
+   "name": "DeVonta Smith",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-06T22:15:31.252Z",
+    "own": "2026-11-06T21:09:15.000Z",
+    "why": "@rotowirenfl.bsky.social: DeVonta Smith: Won't play Sunday \n\n https://www.rotowi"
+   }
+  },
+  "401873047|djmoore|q": {
+   "game": "401873047",
+   "start": "2026-11-08T21:25Z",
+   "team": "25",
+   "name": "DJ Moore",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-11-06T22:15:31.252Z",
+    "own": "2026-11-06T21:55:27.000Z",
+    "why": "@rotowirenfl.bsky.social: DJ Moore: Remains limited at practice \n\n https://www.r"
+   }
+  },
+  "401873047|thomasbooker|out": {
+   "game": "401873047",
+   "start": "2026-11-08T21:25Z",
+   "team": "13",
+   "name": "Thomas Booker IV",
+   "status": "out",
+   "athlete": "4360749",
+   "espn": {
+    "seen": "2026-11-06T23:02:15.906Z",
+    "own": "2026-11-06T22:41:00.000Z"
+   }
+  },
+  "401873048|amonrastbrown|q": {
+   "game": "401873048",
+   "start": "2026-11-08T21:25Z",
+   "team": "26",
+   "name": "Amon-Ra St. Brown",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-11-06T22:15:31.252Z",
+    "own": "2026-11-06T21:44:05.000Z",
+    "why": "@rotoworld-fb.bsky.social: Amon-Ra St. Brown (ribs) questionable for Week 9"
+   }
+  },
+  "401873048|devontasmith|out": {
+   "game": "401873048",
+   "start": "2026-11-08T21:25Z",
+   "team": "26",
+   "name": "DeVonta Smith",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-06T22:15:31.252Z",
+    "own": "2026-11-06T21:09:15.000Z",
+    "why": "@rotowirenfl.bsky.social: DeVonta Smith: Won't play Sunday \n\n https://www.rotowi"
+   }
+  },
+  "401873048|mikeevans|out": {
+   "game": "401873048",
+   "start": "2026-11-08T21:25Z",
+   "team": "26",
+   "name": "Mike Evans",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-06T22:15:31.252Z",
+    "own": "2026-11-06T22:05:48.000Z",
+    "why": "@rotowirenfl.bsky.social: Mike Evans: Won't play Sunday \n\n https://www.rotowire."
+   }
+  },
+  "401873048|deebosamuel|out": {
+   "game": "401873048",
+   "start": "2026-11-08T21:25Z",
+   "team": "26",
+   "name": "Deebo Samuel",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-06T22:15:31.252Z",
+    "own": "2026-11-06T22:00:23.000Z",
+    "why": "@rotowirenfl.bsky.social: Deebo Samuel: Ruled out for Sunday \n\n https://www.roto"
+   }
+  },
+  "401873048|christiankirk|out": {
+   "game": "401873048",
+   "start": "2026-11-08T21:25Z",
+   "team": "26",
+   "name": "Christian Kirk",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-06T22:15:31.252Z",
+    "own": "2026-11-06T21:53:53.999Z",
+    "why": "@insidenflnews.bsky.social: Mike Evans (Achilles), Deebo Samuel (hamstring), Chr"
+   }
+  },
+  "401873048|djmoore|q": {
+   "game": "401873048",
+   "start": "2026-11-08T21:25Z",
+   "team": "26",
+   "name": "DJ Moore",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-11-06T22:15:31.252Z",
+    "own": "2026-11-06T21:55:27.000Z",
+    "why": "@rotowirenfl.bsky.social: DJ Moore: Remains limited at practice \n\n https://www.r"
+   }
+  },
+  "401873050|amonrastbrown|q": {
+   "game": "401873050",
+   "start": "2026-11-09T01:20Z",
+   "team": "3",
+   "name": "Amon-Ra St. Brown",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-11-06T22:15:31.252Z",
+    "own": "2026-11-06T21:44:05.000Z",
+    "why": "@rotoworld-fb.bsky.social: Amon-Ra St. Brown (ribs) questionable for Week 9"
+   }
+  },
+  "401873050|devontasmith|out": {
+   "game": "401873050",
+   "start": "2026-11-09T01:20Z",
+   "team": "3",
+   "name": "DeVonta Smith",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-06T22:15:31.252Z",
+    "own": "2026-11-06T21:09:15.000Z",
+    "why": "@rotowirenfl.bsky.social: DeVonta Smith: Won't play Sunday \n\n https://www.rotowi"
+   }
+  },
+  "401873050|mikeevans|out": {
+   "game": "401873050",
+   "start": "2026-11-09T01:20Z",
+   "team": "3",
+   "name": "Mike Evans",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-06T22:15:31.252Z",
+    "own": "2026-11-06T22:05:48.000Z",
+    "why": "@rotowirenfl.bsky.social: Mike Evans: Won't play Sunday \n\n https://www.rotowire."
+   }
+  },
+  "401873050|deebosamuel|out": {
+   "game": "401873050",
+   "start": "2026-11-09T01:20Z",
+   "team": "3",
+   "name": "Deebo Samuel",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-06T22:15:31.252Z",
+    "own": "2026-11-06T22:00:23.000Z",
+    "why": "@rotowirenfl.bsky.social: Deebo Samuel: Ruled out for Sunday \n\n https://www.roto"
+   }
+  },
+  "401873050|christiankirk|out": {
+   "game": "401873050",
+   "start": "2026-11-09T01:20Z",
+   "team": "3",
+   "name": "Christian Kirk",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-06T22:15:31.252Z",
+    "own": "2026-11-06T21:53:53.999Z",
+    "why": "@insidenflnews.bsky.social: Mike Evans (Achilles), Deebo Samuel (hamstring), Chr"
+   }
+  },
+  "401873050|djmoore|q": {
+   "game": "401873050",
+   "start": "2026-11-09T01:20Z",
+   "team": "3",
+   "name": "DJ Moore",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-11-06T22:15:31.252Z",
+    "own": "2026-11-06T21:55:27.000Z",
+    "why": "@rotowirenfl.bsky.social: DJ Moore: Remains limited at practice \n\n https://www.r"
    }
   }
  }

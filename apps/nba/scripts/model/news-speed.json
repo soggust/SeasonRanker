@@ -20798,6 +20798,35 @@
     "seen": "2026-11-06T22:13:34.959Z",
     "own": "2026-11-06T21:07:00.000Z"
    }
+  },
+  "401909287|jalenjohnson|out": {
+   "game": "401909287",
+   "start": "2026-11-07T00:00Z",
+   "team": "1",
+   "name": "Jalen Johnson",
+   "status": "out",
+   "athlete": "4701230",
+   "espn": {
+    "seen": "2026-11-06T23:03:08.370Z",
+    "own": "2026-11-06T22:06:00.000Z"
+   },
+   "bluesky": {
+    "seen": "2026-11-06T22:15:31.252Z",
+    "own": "2026-11-06T22:06:08.000Z",
+    "why": "@rotowirenba.bsky.social: Jalen Johnson: Ruled out for Friday \n\n https://www.rot"
+   }
+  },
+  "401909287|anthonydavis|out": {
+   "game": "401909287",
+   "start": "2026-11-07T00:00Z",
+   "team": "27",
+   "name": "Anthony Davis",
+   "status": "out",
+   "athlete": "6583",
+   "espn": {
+    "seen": "2026-11-06T23:03:08.370Z",
+    "own": "2026-11-06T22:37:00.000Z"
+   }
   }
  }
 }

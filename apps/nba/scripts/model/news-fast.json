@@ -1,7 +1,7 @@
 {
  "sport": "nba",
  "cursor": {
-  "rotowirenba.bsky.social": "2026-11-06T22:06:08.000Z",
+  "rotowirenba.bsky.social": "2026-11-06T22:37:05.000Z",
   "insidenbanews.bsky.social": "2026-11-06T21:19:50.569Z",
   "shamsbot.bsky.social": "2026-11-04T20:33:22.000Z"
  },
@@ -8026,6 +8026,32 @@
    "kind": "status",
    "confidence": 0.95,
    "text": "Jalen Johnson: Ruled out for Friday \n\n https://www.rotowire.com/basketball/player/jalen-johnson-5329"
+  },
+  {
+   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mzog6fssgo2h|draymondgreen|questionable|status",
+   "at": "2026-11-06T22:21:31.000Z",
+   "seen": "2026-11-06T23:04:34.024Z",
+   "handle": "rotowirenba.bsky.social",
+   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mzog6fssgo2h",
+   "player": "Draymond Green",
+   "team": "GS",
+   "status": "questionable",
+   "kind": "status",
+   "confidence": 0.95,
+   "text": "Draymond Green: Questionable versus Orlando \n\n https://www.rotowire.com/basketball/player/draymond-green-3299"
+  },
+  {
+   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mzoh2arwwt2g|anthonydavis|out|status",
+   "at": "2026-11-06T22:37:05.000Z",
+   "seen": "2026-11-06T23:04:34.024Z",
+   "handle": "rotowirenba.bsky.social",
+   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mzoh2arwwt2g",
+   "player": "Anthony Davis",
+   "team": "DAL",
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.95,
+   "text": "Anthony Davis: Ruled out Friday night \n\n https://www.rotowire.com/basketball/player/anthony-davis-3297"
   }
  ]
 }
