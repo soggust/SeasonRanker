@@ -1,13 +1,13 @@
 {
  "sport": "nfl",
  "cursor": {
-  "adamscheftermirror.bsky.social": "2026-11-06T12:09:43.247Z",
+  "adamscheftermirror.bsky.social": "2026-11-06T13:39:42.839Z",
   "rapsheet.bsky.social": "2026-11-06T03:29:31.313Z",
   "nflnewsreposterbot.bsky.social": "2026-11-05T18:24:37.305Z",
   "insidenflnews.bsky.social": "2026-11-06T13:03:52.338Z",
   "nflnewsposter.bsky.social": "2026-11-06T04:22:51.616Z",
   "rotoworld-fb.bsky.social": "2026-11-06T13:35:33.000Z",
-  "rotowirenfl.bsky.social": "2026-11-06T05:39:02.000Z"
+  "rotowirenfl.bsky.social": "2026-11-06T13:44:48.000Z"
  },
  "claims": [
   {
@@ -15986,6 +15986,32 @@
    "kind": "status",
    "confidence": 0.9,
    "text": "Brian Robinson (hammy) won't play vs. Bengals"
+  },
+  {
+   "id": "at://did:plc:qre6zxbmr3ixhdmgsgdretb5/app.bsky.feed.post/3mznizdy3qz2s|brianrobinson|out|status",
+   "at": "2026-11-06T13:39:42.839Z",
+   "seen": "2026-11-06T13:57:44.383Z",
+   "handle": "adamscheftermirror.bsky.social",
+   "post": "at://did:plc:qre6zxbmr3ixhdmgsgdretb5/app.bsky.feed.post/3mznizdy3qz2s",
+   "player": "Brian Robinson Jr.",
+   "team": "ATL",
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.95,
+   "text": "Falcons ruled out RB Brian Robinson Jr. for Sunday’s game in Madrid against the Bengals due to a hamstring injury.\n\nOriginal post"
+  },
+  {
+   "id": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3mznjchkkgr2d|brianrobinson|out|status",
+   "at": "2026-11-06T13:44:48.000Z",
+   "seen": "2026-11-06T13:57:44.383Z",
+   "handle": "rotowirenfl.bsky.social",
+   "post": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3mznjchkkgr2d",
+   "player": "Brian Robinson",
+   "team": "ATL",
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.95,
+   "text": "Brian Robinson: Ruled out for Sunday's game \n\n https://www.rotowire.com/football/player/brian-robinson-15907"
   }
  ]
 }
