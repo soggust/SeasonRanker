@@ -15012,6 +15012,78 @@
     "seen": "2026-11-05T23:00:43.179Z",
     "own": "2026-11-05T22:32:00.000Z"
    }
+  },
+  "401873037|kedonslovis|out": {
+   "game": "401873037",
+   "start": "2026-11-06T01:15Z",
+   "team": "33",
+   "name": "Kedon Slovis",
+   "status": "out",
+   "athlete": "4428512",
+   "espn": {
+    "seen": "2026-11-06T00:08:55.376Z",
+    "own": "2026-11-05T23:53:00.000Z"
+   }
+  },
+  "401873037|natewiggins|out": {
+   "game": "401873037",
+   "start": "2026-11-06T01:15Z",
+   "team": "33",
+   "name": "Nate Wiggins",
+   "status": "out",
+   "athlete": "4601278",
+   "espn": {
+    "seen": "2026-11-06T00:08:55.376Z",
+    "own": "2026-11-05T01:06:00.000Z"
+   }
+  },
+  "401873037|christianmccaffrey|q": {
+   "game": "401873037",
+   "start": "2026-11-06T01:15Z",
+   "team": "33",
+   "name": "Christian McCaffrey",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-11-05T23:03:44.610Z",
+    "own": "2026-11-05T22:47:37.000Z",
+    "why": "@rotowirenfl.bsky.social: Christian McCaffrey: Officially limited Thrusday \n\n ht"
+   }
+  },
+  "401873037|camronsilmoncraig|out": {
+   "game": "401873037",
+   "start": "2026-11-06T01:15Z",
+   "team": "30",
+   "name": "Cam'Ron Silmon-Craig",
+   "status": "out",
+   "athlete": "4877475",
+   "espn": {
+    "seen": "2026-11-06T00:08:55.376Z",
+    "own": "2026-11-05T23:48:00.000Z"
+   }
+  },
+  "401873044|tannermckee|q": {
+   "game": "401873044",
+   "start": "2026-11-08T18:00Z",
+   "team": "21",
+   "name": "Tanner McKee",
+   "status": "q",
+   "athlete": "4685201",
+   "espn": {
+    "seen": "2026-11-06T00:08:55.376Z",
+    "own": "2026-11-05T23:08:00.000Z"
+   }
+  },
+  "401873043|dyamibrown|q": {
+   "game": "401873043",
+   "start": "2026-11-08T18:00Z",
+   "team": "28",
+   "name": "Dyami Brown",
+   "status": "q",
+   "athlete": "4361577",
+   "espn": {
+    "seen": "2026-11-06T00:08:55.376Z",
+    "own": "2026-11-05T23:39:00.000Z"
+   }
   }
  }
 }
