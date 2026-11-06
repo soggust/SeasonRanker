@@ -1,11 +1,11 @@
 {
  "sport": "nfl",
  "cursor": {
-  "adamscheftermirror.bsky.social": "2026-11-06T00:54:35.796Z",
-  "rapsheet.bsky.social": "2026-11-05T23:40:10.485Z",
+  "adamscheftermirror.bsky.social": "2026-11-06T03:44:39.107Z",
+  "rapsheet.bsky.social": "2026-11-06T03:29:31.313Z",
   "nflnewsreposterbot.bsky.social": "2026-11-05T18:24:37.305Z",
   "insidenflnews.bsky.social": "2026-11-06T03:25:03.743Z",
-  "nflnewsposter.bsky.social": "2026-11-06T03:22:01.144Z",
+  "nflnewsposter.bsky.social": "2026-11-06T03:34:16.987Z",
   "rotoworld-fb.bsky.social": "2026-11-06T01:32:41.000Z",
   "rotowirenfl.bsky.social": "2026-11-06T00:22:53.000Z"
  },
@@ -15934,6 +15934,45 @@
    "kind": "status",
    "confidence": 0.9,
    "text": "🚨 Status alert: Kyle Hamilton (hip) won't return Thursday."
+  },
+  {
+   "id": "at://did:plc:fuqjc7x4gxvnwzksnlxwbe4x/app.bsky.feed.post/3mzmgukurv23a|kylehamilton|out|status",
+   "at": "2026-11-06T03:28:35.164Z",
+   "seen": "2026-11-06T03:48:01.310Z",
+   "handle": "nflnewsposter.bsky.social",
+   "post": "at://did:plc:fuqjc7x4gxvnwzksnlxwbe4x/app.bsky.feed.post/3mzmgukurv23a",
+   "player": "Kyle Hamilton",
+   "team": "BAL",
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.9,
+   "text": "[Ravens] Kyle Hamilton (hip) has been ruled out. twitter.com/Ravens/statu..."
+  },
+  {
+   "id": "at://did:plc:hlvr2omhnmvdmfnvmcuhyevz/app.bsky.feed.post/3mzmgwagduk2g|kylehamilton|out|status",
+   "at": "2026-11-06T03:29:31.313Z",
+   "seen": "2026-11-06T03:48:01.310Z",
+   "handle": "rapsheet.bsky.social",
+   "post": "at://did:plc:hlvr2omhnmvdmfnvmcuhyevz/app.bsky.feed.post/3mzmgwagduk2g",
+   "player": "Kyle Hamilton",
+   "team": "BAL",
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.92,
+   "text": "Ravens S Kyle Hamilton (hip) has been ruled out."
+  },
+  {
+   "id": "at://did:plc:qre6zxbmr3ixhdmgsgdretb5/app.bsky.feed.post/3mzmhrcarq52d|kylehamilton|out|status",
+   "at": "2026-11-06T03:44:39.107Z",
+   "seen": "2026-11-06T03:48:01.310Z",
+   "handle": "adamscheftermirror.bsky.social",
+   "post": "at://did:plc:qre6zxbmr3ixhdmgsgdretb5/app.bsky.feed.post/3mzmhrcarq52d",
+   "player": "Kyle Hamilton",
+   "team": "BAL",
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.8,
+   "text": "Ravens ruled out S Kyle Hamilton for the remainder of tonight’s game due to a hip injury.\n\nOriginal post"
   }
  ]
 }
