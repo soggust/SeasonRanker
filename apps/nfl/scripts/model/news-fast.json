@@ -1,12 +1,12 @@
 {
  "sport": "nfl",
  "cursor": {
-  "adamscheftermirror.bsky.social": "2026-11-06T00:24:35.257Z",
+  "adamscheftermirror.bsky.social": "2026-11-06T00:54:35.796Z",
   "rapsheet.bsky.social": "2026-11-05T23:40:10.485Z",
   "nflnewsreposterbot.bsky.social": "2026-11-05T18:24:37.305Z",
-  "insidenflnews.bsky.social": "2026-11-05T21:06:06.043Z",
+  "insidenflnews.bsky.social": "2026-11-06T00:43:28.550Z",
   "nflnewsposter.bsky.social": "2026-11-05T23:46:08.003Z",
-  "rotoworld-fb.bsky.social": "2026-11-06T00:26:48.000Z",
+  "rotoworld-fb.bsky.social": "2026-11-06T00:40:17.000Z",
   "rotowirenfl.bsky.social": "2026-11-06T00:22:53.000Z"
  },
  "claims": [
@@ -15908,6 +15908,19 @@
    "kind": "status",
    "confidence": 0.85,
    "text": "More about the Vikings starting QB Carson Wentz against Bills and ruling out QB Kyler Murray due to his hamstring injury, via @SeifertESPN:\n\nOriginal post"
+  },
+  {
+   "id": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3mzm5hnbh672g|jordyntyson|limited|status",
+   "at": "2026-11-06T00:40:17.000Z",
+   "seen": "2026-11-06T01:03:23.660Z",
+   "handle": "rotoworld-fb.bsky.social",
+   "post": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3mzm5hnbh672g",
+   "player": "Jordyn Tyson",
+   "team": null,
+   "status": "limited",
+   "kind": "status",
+   "confidence": 0.9,
+   "text": "Jordyn Tyson (hamstring) remains limited on Thurs."
   }
  ]
 }

@@ -14538,6 +14538,66 @@
     "seen": "2026-11-06T00:08:55.376Z",
     "own": "2026-11-05T23:39:00.000Z"
    }
+  },
+  "401873037|kylermurray|out": {
+   "game": "401873037",
+   "start": "2026-11-06T01:15Z",
+   "team": "33",
+   "name": "Kyler Murray",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-06T00:35:27.437Z",
+    "own": "2026-11-06T00:24:35.257Z",
+    "why": "@adamscheftermirror.bsky.social: More about the Vikings starting QB Carson Wentz"
+   }
+  },
+  "401873048|leonardwilliams|q": {
+   "game": "401873048",
+   "start": "2026-11-08T21:25Z",
+   "team": "26",
+   "name": "Leonard Williams",
+   "status": "q",
+   "athlete": "2971622",
+   "espn": {
+    "seen": "2026-11-06T01:00:44.582Z",
+    "own": "2026-11-06T00:46:00.000Z"
+   }
+  },
+  "401873048|ernestjones|q": {
+   "game": "401873048",
+   "start": "2026-11-08T21:25Z",
+   "team": "26",
+   "name": "Ernest Jones IV",
+   "status": "q",
+   "athlete": "4362851",
+   "espn": {
+    "seen": "2026-11-06T01:00:44.582Z",
+    "own": "2026-11-06T00:42:00.000Z"
+   }
+  },
+  "401873048|derickhall|q": {
+   "game": "401873048",
+   "start": "2026-11-08T21:25Z",
+   "team": "26",
+   "name": "Derick Hall",
+   "status": "q",
+   "athlete": "4567226",
+   "espn": {
+    "seen": "2026-11-06T01:00:44.582Z",
+    "own": "2026-11-06T00:32:00.000Z"
+   }
+  },
+  "401873048|maxmelton|q": {
+   "game": "401873048",
+   "start": "2026-11-08T21:25Z",
+   "team": "22",
+   "name": "Max Melton",
+   "status": "q",
+   "athlete": "4698113",
+   "espn": {
+    "seen": "2026-11-06T01:00:44.582Z",
+    "own": "2026-11-06T00:38:00.000Z"
+   }
   }
  }
 }
