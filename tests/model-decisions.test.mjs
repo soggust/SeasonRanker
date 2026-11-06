@@ -2485,3 +2485,13 @@ test("D108 within-season recency measured: a replay flag only, half-lives shrunk
   G.walkTrust(hrows, () => "spread", fit, () => 0.5);
   assert.ok(seen.every((l) => l.every((x) => x === 1)));
 });
+
+test("D109 stale prices measured and held: no age or news discount, the desk unchanged", () => {
+  const decisions = fs.readFileSync(path.resolve("libs/ranker/scripts/model/DECISIONS.md"), "utf8");
+  assert.ok(decisions.includes("### D109."));
+  // (nothing built: the desk reads no price age or news-since-move discount)
+  for (const f of ["desk.mjs", "props.mjs", "run.mjs", "best-price.mjs", "oddsapi.mjs"]) {
+    const src = fs.readFileSync(path.resolve("libs/ranker/scripts/model", f), "utf8");
+    assert.ok(!/STALE_PRICE|staleDiscount/.test(src), `${f} has no stale-price discount`);
+  }
+});
