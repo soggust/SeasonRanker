@@ -1,12 +1,12 @@
 {
  "sport": "nfl",
  "cursor": {
-  "adamscheftermirror.bsky.social": "2026-11-06T13:39:42.839Z",
+  "adamscheftermirror.bsky.social": "2026-11-06T15:44:52.995Z",
   "rapsheet.bsky.social": "2026-11-06T03:29:31.313Z",
   "nflnewsreposterbot.bsky.social": "2026-11-05T18:24:37.305Z",
-  "insidenflnews.bsky.social": "2026-11-06T14:47:17.018Z",
-  "nflnewsposter.bsky.social": "2026-11-06T04:22:51.616Z",
-  "rotoworld-fb.bsky.social": "2026-11-06T15:10:07.000Z",
+  "insidenflnews.bsky.social": "2026-11-06T15:39:08.564Z",
+  "nflnewsposter.bsky.social": "2026-11-06T15:40:37.585Z",
+  "rotoworld-fb.bsky.social": "2026-11-06T15:45:54.000Z",
   "rotowirenfl.bsky.social": "2026-11-06T14:52:11.000Z"
  },
  "claims": [
@@ -16064,6 +16064,58 @@
    "kind": "status",
    "confidence": 0.7,
    "text": "Rap: Watson (concussion) 'unlikely' to play vs. Saints"
+  },
+  {
+   "id": "at://did:plc:mbr4badgf6yu56mquzackzew/app.bsky.feed.post/3mznpovnxls2a|garrettwilson|out|status",
+   "at": "2026-11-06T15:39:08.564Z",
+   "seen": "2026-11-06T15:49:54.587Z",
+   "handle": "insidenflnews.bsky.social",
+   "post": "at://did:plc:mbr4badgf6yu56mquzackzew/app.bsky.feed.post/3mznpovnxls2a",
+   "player": "Garrett Wilson",
+   "team": "NYJ",
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.95,
+   "text": "Jets WR Garrett Wilson (concussion) has been ruled out for Week 9."
+  },
+  {
+   "id": "at://did:plc:fuqjc7x4gxvnwzksnlxwbe4x/app.bsky.feed.post/3mznprkkq4k2j|brianrobinson|out|status",
+   "at": "2026-11-06T15:40:37.585Z",
+   "seen": "2026-11-06T15:49:54.587Z",
+   "handle": "nflnewsposter.bsky.social",
+   "post": "at://did:plc:fuqjc7x4gxvnwzksnlxwbe4x/app.bsky.feed.post/3mznprkkq4k2j",
+   "player": "Brian Robinson Jr.",
+   "team": "ATL",
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.9,
+   "text": "[McElhaney] A change to the injury report: RB Brian Robinson Jr. (hamstring) has been ruled OUT. James Pearce Jr. is dealing with a back issue that the Falcons will monitor throughout the weekend, per"
+  },
+  {
+   "id": "at://did:plc:fuqjc7x4gxvnwzksnlxwbe4x/app.bsky.feed.post/3mznprkkq4k2j|billybowman|active|status",
+   "at": "2026-11-06T15:40:37.585Z",
+   "seen": "2026-11-06T15:49:54.587Z",
+   "handle": "nflnewsposter.bsky.social",
+   "post": "at://did:plc:fuqjc7x4gxvnwzksnlxwbe4x/app.bsky.feed.post/3mznprkkq4k2j",
+   "player": "Billy Bowman Jr.",
+   "team": "ATL",
+   "status": "active",
+   "kind": "status",
+   "confidence": 0.85,
+   "text": "[McElhaney] A change to the injury report: RB Brian Robinson Jr. (hamstring) has been ruled OUT. James Pearce Jr. is dealing with a back issue that the Falcons will monitor throughout the weekend, per"
+  },
+  {
+   "id": "at://did:plc:fuqjc7x4gxvnwzksnlxwbe4x/app.bsky.feed.post/3mznprkkq4k2j|jamespearce|questionable|status",
+   "at": "2026-11-06T15:40:37.585Z",
+   "seen": "2026-11-06T15:49:54.587Z",
+   "handle": "nflnewsposter.bsky.social",
+   "post": "at://did:plc:fuqjc7x4gxvnwzksnlxwbe4x/app.bsky.feed.post/3mznprkkq4k2j",
+   "player": "James Pearce Jr.",
+   "team": "ATL",
+   "status": "questionable",
+   "kind": "status",
+   "confidence": 0.3,
+   "text": "[McElhaney] A change to the injury report: RB Brian Robinson Jr. (hamstring) has been ruled OUT. James Pearce Jr. is dealing with a back issue that the Falcons will monitor throughout the weekend, per"
   }
  ]
 }
