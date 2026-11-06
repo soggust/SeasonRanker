@@ -2,12 +2,12 @@
  "sport": "nfl",
  "cursor": {
   "adamscheftermirror.bsky.social": "2026-11-06T16:29:44.191Z",
-  "rapsheet.bsky.social": "2026-11-06T03:29:31.313Z",
+  "rapsheet.bsky.social": "2026-11-06T18:41:54.465Z",
   "nflnewsreposterbot.bsky.social": "2026-11-06T17:28:39.017Z",
   "insidenflnews.bsky.social": "2026-11-06T18:24:36.291Z",
-  "nflnewsposter.bsky.social": "2026-11-06T17:51:42.840Z",
-  "rotoworld-fb.bsky.social": "2026-11-06T18:22:15.000Z",
-  "rotowirenfl.bsky.social": "2026-11-06T18:23:53.000Z"
+  "nflnewsposter.bsky.social": "2026-11-06T18:25:56.739Z",
+  "rotoworld-fb.bsky.social": "2026-11-06T18:35:48.000Z",
+  "rotowirenfl.bsky.social": "2026-11-06T18:30:54.000Z"
  },
  "claims": [
   {
@@ -16428,6 +16428,110 @@
    "kind": "status",
    "confidence": 0.5,
    "text": "Giants HC John Harbaugh says WR Malik Nabers' knee is not a concern."
+  },
+  {
+   "id": "at://did:plc:fuqjc7x4gxvnwzksnlxwbe4x/app.bsky.feed.post/3mznyz677yk2b|shedeursanders|active|starting",
+   "at": "2026-11-06T18:25:56.739Z",
+   "seen": "2026-11-06T18:45:40.457Z",
+   "handle": "nflnewsposter.bsky.social",
+   "post": "at://did:plc:fuqjc7x4gxvnwzksnlxwbe4x/app.bsky.feed.post/3mznyz677yk2b",
+   "player": "Shedeur Sanders",
+   "team": "CLE",
+   "status": "active",
+   "kind": "starting",
+   "confidence": 0.9,
+   "text": "[Siciliano] Shedeur Sanders will start at QB for the Browns Sunday, per Todd Monken.\n\nDeshaun Watson is questionable, but still hasn't cleared concussion protocol. twitter.com/AndrewSicili..."
+  },
+  {
+   "id": "at://did:plc:fuqjc7x4gxvnwzksnlxwbe4x/app.bsky.feed.post/3mznyz677yk2b|deshaunwatson|questionable|status",
+   "at": "2026-11-06T18:25:56.739Z",
+   "seen": "2026-11-06T18:45:40.457Z",
+   "handle": "nflnewsposter.bsky.social",
+   "post": "at://did:plc:fuqjc7x4gxvnwzksnlxwbe4x/app.bsky.feed.post/3mznyz677yk2b",
+   "player": "Deshaun Watson",
+   "team": "CLE",
+   "status": "questionable",
+   "kind": "status",
+   "confidence": 0.85,
+   "text": "[Siciliano] Shedeur Sanders will start at QB for the Browns Sunday, per Todd Monken.\n\nDeshaun Watson is questionable, but still hasn't cleared concussion protocol. twitter.com/AndrewSicili..."
+  },
+  {
+   "id": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3mznz4b6fra2b|deshaunwatson|questionable|benched",
+   "at": "2026-11-06T18:27:40.000Z",
+   "seen": "2026-11-06T18:45:40.457Z",
+   "handle": "rotowirenfl.bsky.social",
+   "post": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3mznz4b6fra2b",
+   "player": "Deshaun Watson",
+   "team": "CLE",
+   "status": "questionable",
+   "kind": "benched",
+   "confidence": 0.9,
+   "text": "Deshaun Watson: Listed as questionable, won't start \n\n https://www.rotowire.com/football/player/deshaun-watson-11712"
+  },
+  {
+   "id": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3mznz54nxes2e|haroldfannin|active|status",
+   "at": "2026-11-06T18:28:09.000Z",
+   "seen": "2026-11-06T18:45:40.457Z",
+   "handle": "rotowirenfl.bsky.social",
+   "post": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3mznz54nxes2e",
+   "player": "Harold Fannin",
+   "team": null,
+   "status": "active",
+   "kind": "status",
+   "confidence": 0.9,
+   "text": "Harold Fannin: Will play Sunday \n\n https://www.rotowire.com/football/player/harold-fannin-18472"
+  },
+  {
+   "id": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3mznzauqwvp2d|treveyonhenderson|out|status",
+   "at": "2026-11-06T18:30:15.000Z",
+   "seen": "2026-11-06T18:45:40.457Z",
+   "handle": "rotowirenfl.bsky.social",
+   "post": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3mznzauqwvp2d",
+   "player": "TreVeyon Henderson",
+   "team": null,
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.9,
+   "text": "TreVeyon Henderson: Won't play Sunday against Green Bay \n\n https://www.rotowire.com/football/player/treveyon-henderson-18517"
+  },
+  {
+   "id": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3mznzkrh5d42r|shedeursanders|active|starting",
+   "at": "2026-11-06T18:35:47.000Z",
+   "seen": "2026-11-06T18:45:40.457Z",
+   "handle": "rotoworld-fb.bsky.social",
+   "post": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3mznzkrh5d42r",
+   "player": "Shedeur Sanders",
+   "team": "CLE",
+   "status": "active",
+   "kind": "starting",
+   "confidence": 0.9,
+   "text": "Shedeur Sanders will start in Week 9 vs. Saints"
+  },
+  {
+   "id": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3mznzkstt2k22|deshaunwatson|none|benched",
+   "at": "2026-11-06T18:35:48.000Z",
+   "seen": "2026-11-06T18:45:40.457Z",
+   "handle": "rotoworld-fb.bsky.social",
+   "post": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3mznzkstt2k22",
+   "player": "Deshaun Watson",
+   "team": "CLE",
+   "status": "none",
+   "kind": "benched",
+   "confidence": 0.85,
+   "text": "Watson (concussion) won't start vs. Saints"
+  },
+  {
+   "id": "at://did:plc:hlvr2omhnmvdmfnvmcuhyevz/app.bsky.feed.post/3mznzs4iqzk2r|mylesgarrett|active|return",
+   "at": "2026-11-06T18:39:53.808Z",
+   "seen": "2026-11-06T18:45:40.457Z",
+   "handle": "rapsheet.bsky.social",
+   "post": "at://did:plc:hlvr2omhnmvdmfnvmcuhyevz/app.bsky.feed.post/3mznzs4iqzk2r",
+   "player": "Myles Garrett",
+   "team": "LAR",
+   "status": "active",
+   "kind": "return",
+   "confidence": 0.5,
+   "text": "Rams star Myles Garrett, working his way back from knee surgery that landed him on Injured Reserve, is on track to be activated ahead of Sunday’s game at the Commanders, per me and Mike Garafolo.\n\nGar"
   }
  ]
 }

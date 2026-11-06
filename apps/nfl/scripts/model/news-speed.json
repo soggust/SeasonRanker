@@ -11042,6 +11042,11 @@
    "espn": {
     "seen": "2026-11-03T00:02:15.042Z",
     "own": "2026-11-02T19:13:00.000Z"
+   },
+   "bluesky": {
+    "seen": "2026-11-06T18:25:34.331Z",
+    "own": "2026-11-06T18:15:35.773Z",
+    "why": "@insidenflnews.bsky.social: Patriots RB TreVeyon Henderson (illness) has been ru"
    }
   },
   "401873049|mackhollins|out": {
@@ -11066,6 +11071,11 @@
    "espn": {
     "seen": "2026-11-03T00:02:15.042Z",
     "own": "2026-11-02T16:43:00.000Z"
+   },
+   "bluesky": {
+    "seen": "2026-11-06T18:25:34.331Z",
+    "own": "2026-11-06T18:22:14.000Z",
+    "why": "@rotoworld-fb.bsky.social: A.J. Brown (ankle/knee) ruled out for Week 9"
    }
   },
   "401873049|marcusbryant|out": {
@@ -14987,6 +14997,138 @@
    "espn": {
     "seen": "2026-11-06T18:19:45.954Z",
     "own": "2026-11-06T18:18:00.000Z"
+   }
+  },
+  "401873038|bamknight|out": {
+   "game": "401873038",
+   "start": "2026-11-08T14:30Z",
+   "team": "1",
+   "name": "Bam Knight",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-06T18:25:34.331Z",
+    "own": "2026-11-06T18:17:43.000Z",
+    "why": "@rotoworld-fb.bsky.social: Bam Knight (concussion) won't play vs. Seahawks"
+   }
+  },
+  "401873040|bamknight|out": {
+   "game": "401873040",
+   "start": "2026-11-08T18:00Z",
+   "team": "11",
+   "name": "Bam Knight",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-06T18:25:34.331Z",
+    "own": "2026-11-06T18:17:43.000Z",
+    "why": "@rotoworld-fb.bsky.social: Bam Knight (concussion) won't play vs. Seahawks"
+   }
+  },
+  "401873045|bamknight|out": {
+   "game": "401873045",
+   "start": "2026-11-08T18:00Z",
+   "team": "12",
+   "name": "Bam Knight",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-06T18:25:34.331Z",
+    "own": "2026-11-06T18:17:43.000Z",
+    "why": "@rotoworld-fb.bsky.social: Bam Knight (concussion) won't play vs. Seahawks"
+   }
+  },
+  "401873042|bamknight|out": {
+   "game": "401873042",
+   "start": "2026-11-08T18:00Z",
+   "team": "15",
+   "name": "Bam Knight",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-06T18:25:34.331Z",
+    "own": "2026-11-06T18:17:43.000Z",
+    "why": "@rotoworld-fb.bsky.social: Bam Knight (concussion) won't play vs. Seahawks"
+   }
+  },
+  "401873039|bamknight|out": {
+   "game": "401873039",
+   "start": "2026-11-08T18:00Z",
+   "team": "18",
+   "name": "Bam Knight",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-06T18:25:34.331Z",
+    "own": "2026-11-06T18:17:43.000Z",
+    "why": "@rotoworld-fb.bsky.social: Bam Knight (concussion) won't play vs. Seahawks"
+   }
+  },
+  "401873044|bamknight|out": {
+   "game": "401873044",
+   "start": "2026-11-08T18:00Z",
+   "team": "21",
+   "name": "Bam Knight",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-06T18:25:34.331Z",
+    "own": "2026-11-06T18:17:43.000Z",
+    "why": "@rotoworld-fb.bsky.social: Bam Knight (concussion) won't play vs. Seahawks"
+   }
+  },
+  "401873043|bamknight|out": {
+   "game": "401873043",
+   "start": "2026-11-08T18:00Z",
+   "team": "28",
+   "name": "Bam Knight",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-06T18:25:34.331Z",
+    "own": "2026-11-06T18:17:43.000Z",
+    "why": "@rotoworld-fb.bsky.social: Bam Knight (concussion) won't play vs. Seahawks"
+   }
+  },
+  "401873041|bamknight|out": {
+   "game": "401873041",
+   "start": "2026-11-08T18:00Z",
+   "team": "29",
+   "name": "Bam Knight",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-06T18:25:34.331Z",
+    "own": "2026-11-06T18:17:43.000Z",
+    "why": "@rotoworld-fb.bsky.social: Bam Knight (concussion) won't play vs. Seahawks"
+   }
+  },
+  "401873046|bamknight|out": {
+   "game": "401873046",
+   "start": "2026-11-08T21:05Z",
+   "team": "24",
+   "name": "Bam Knight",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-06T18:25:34.331Z",
+    "own": "2026-11-06T18:17:43.000Z",
+    "why": "@rotoworld-fb.bsky.social: Bam Knight (concussion) won't play vs. Seahawks"
+   }
+  },
+  "401873049|bamknight|out": {
+   "game": "401873049",
+   "start": "2026-11-08T21:25Z",
+   "team": "17",
+   "name": "Bam Knight",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-06T18:25:34.331Z",
+    "own": "2026-11-06T18:17:43.000Z",
+    "why": "@rotoworld-fb.bsky.social: Bam Knight (concussion) won't play vs. Seahawks"
+   }
+  },
+  "401873047|bamknight|out": {
+   "game": "401873047",
+   "start": "2026-11-08T21:25Z",
+   "team": "25",
+   "name": "Bam Knight",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-06T18:25:34.331Z",
+    "own": "2026-11-06T18:17:43.000Z",
+    "why": "@rotoworld-fb.bsky.social: Bam Knight (concussion) won't play vs. Seahawks"
    }
   }
  }

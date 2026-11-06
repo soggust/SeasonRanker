@@ -20505,6 +20505,11 @@
    "espn": {
     "seen": "2026-11-06T18:15:45.174Z",
     "own": "2026-11-06T17:59:00.000Z"
+   },
+   "bluesky": {
+    "seen": "2026-11-06T18:25:34.331Z",
+    "own": "2026-11-06T17:59:51.000Z",
+    "why": "@rotowirenba.bsky.social: Immanuel Quickley: Downgraded to questionable \n\n https"
    }
   },
   "401909293|terrenceshannon|out": {
@@ -20529,6 +20534,102 @@
    "espn": {
     "seen": "2026-11-06T18:23:53.151Z",
     "own": "2026-11-06T18:09:00.000Z"
+   }
+  },
+  "401909287|immanuelquickley|q": {
+   "game": "401909287",
+   "start": "2026-11-07T00:00Z",
+   "team": "1",
+   "name": "Immanuel Quickley",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-11-06T18:25:34.331Z",
+    "own": "2026-11-06T17:59:51.000Z",
+    "why": "@rotowirenba.bsky.social: Immanuel Quickley: Downgraded to questionable \n\n https"
+   }
+  },
+  "401909288|immanuelquickley|q": {
+   "game": "401909288",
+   "start": "2026-11-07T00:00Z",
+   "team": "30",
+   "name": "Immanuel Quickley",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-11-06T18:25:34.331Z",
+    "own": "2026-11-06T17:59:51.000Z",
+    "why": "@rotowirenba.bsky.social: Immanuel Quickley: Downgraded to questionable \n\n https"
+   }
+  },
+  "401909289|immanuelquickley|q": {
+   "game": "401909289",
+   "start": "2026-11-07T00:30Z",
+   "team": "5",
+   "name": "Immanuel Quickley",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-11-06T18:25:34.331Z",
+    "own": "2026-11-06T17:59:51.000Z",
+    "why": "@rotowirenba.bsky.social: Immanuel Quickley: Downgraded to questionable \n\n https"
+   }
+  },
+  "401909290|immanuelquickley|q": {
+   "game": "401909290",
+   "start": "2026-11-07T01:00Z",
+   "team": "6",
+   "name": "Immanuel Quickley",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-11-06T18:25:34.331Z",
+    "own": "2026-11-06T17:59:51.000Z",
+    "why": "@rotowirenba.bsky.social: Immanuel Quickley: Downgraded to questionable \n\n https"
+   }
+  },
+  "401909291|immanuelquickley|q": {
+   "game": "401909291",
+   "start": "2026-11-07T01:00Z",
+   "team": "29",
+   "name": "Immanuel Quickley",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-11-06T18:25:34.331Z",
+    "own": "2026-11-06T17:59:51.000Z",
+    "why": "@rotowirenba.bsky.social: Immanuel Quickley: Downgraded to questionable \n\n https"
+   }
+  },
+  "401909293|immanuelquickley|q": {
+   "game": "401909293",
+   "start": "2026-11-07T01:00Z",
+   "team": "3",
+   "name": "Immanuel Quickley",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-11-06T18:25:34.331Z",
+    "own": "2026-11-06T17:59:51.000Z",
+    "why": "@rotowirenba.bsky.social: Immanuel Quickley: Downgraded to questionable \n\n https"
+   }
+  },
+  "401909294|immanuelquickley|q": {
+   "game": "401909294",
+   "start": "2026-11-07T03:00Z",
+   "team": "13",
+   "name": "Immanuel Quickley",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-11-06T18:25:34.331Z",
+    "own": "2026-11-06T17:59:51.000Z",
+    "why": "@rotowirenba.bsky.social: Immanuel Quickley: Downgraded to questionable \n\n https"
+   }
+  },
+  "401909295|immanuelquickley|q": {
+   "game": "401909295",
+   "start": "2026-11-07T03:00Z",
+   "team": "23",
+   "name": "Immanuel Quickley",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-11-06T18:25:34.331Z",
+    "own": "2026-11-06T17:59:51.000Z",
+    "why": "@rotowirenba.bsky.social: Immanuel Quickley: Downgraded to questionable \n\n https"
    }
   }
  }
