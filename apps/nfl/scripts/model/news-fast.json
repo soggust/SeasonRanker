@@ -4,10 +4,10 @@
   "adamscheftermirror.bsky.social": "2026-11-06T13:39:42.839Z",
   "rapsheet.bsky.social": "2026-11-06T03:29:31.313Z",
   "nflnewsreposterbot.bsky.social": "2026-11-05T18:24:37.305Z",
-  "insidenflnews.bsky.social": "2026-11-06T13:03:52.338Z",
+  "insidenflnews.bsky.social": "2026-11-06T14:47:17.018Z",
   "nflnewsposter.bsky.social": "2026-11-06T04:22:51.616Z",
-  "rotoworld-fb.bsky.social": "2026-11-06T14:02:49.000Z",
-  "rotowirenfl.bsky.social": "2026-11-06T14:39:15.000Z"
+  "rotoworld-fb.bsky.social": "2026-11-06T14:56:29.000Z",
+  "rotowirenfl.bsky.social": "2026-11-06T14:52:11.000Z"
  },
  "claims": [
   {
@@ -16012,6 +16012,58 @@
    "kind": "status",
    "confidence": 0.95,
    "text": "Brian Robinson: Ruled out for Sunday's game \n\n https://www.rotowire.com/football/player/brian-robinson-15907"
+  },
+  {
+   "id": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3mznmruwxhs22|camskattebo|out|status",
+   "at": "2026-11-06T14:47:07.000Z",
+   "seen": "2026-11-06T15:00:49.460Z",
+   "handle": "rotowirenfl.bsky.social",
+   "post": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3mznmruwxhs22",
+   "player": "Cam Skattebo",
+   "team": null,
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.6,
+   "text": "Cam Skattebo: Seemingly out for Week 9 \n\n https://www.rotowire.com/football/player/cam-skattebo-18514"
+  },
+  {
+   "id": "at://did:plc:mbr4badgf6yu56mquzackzew/app.bsky.feed.post/3mznms6bg7s23|brianrobinson|out|status",
+   "at": "2026-11-06T14:47:17.018Z",
+   "seen": "2026-11-06T15:00:49.460Z",
+   "handle": "insidenflnews.bsky.social",
+   "post": "at://did:plc:mbr4badgf6yu56mquzackzew/app.bsky.feed.post/3mznms6bg7s23",
+   "player": "Brian Robinson Jr.",
+   "team": "ATL",
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.95,
+   "text": "Falcons RB Brian Robinson Jr. (hamstring) has been ruled out for Sunday’s game against the Bengals in Madrid."
+  },
+  {
+   "id": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3mznmw267cd22|georgepickens|limited|status",
+   "at": "2026-11-06T14:49:26.000Z",
+   "seen": "2026-11-06T15:00:49.460Z",
+   "handle": "rotowirenfl.bsky.social",
+   "post": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3mznmw267cd22",
+   "player": "George Pickens",
+   "team": null,
+   "status": "limited",
+   "kind": "status",
+   "confidence": 0.8,
+   "text": "George Pickens: Will remain limited Friday \n\n https://www.rotowire.com/football/player/george-pickens-15853"
+  },
+  {
+   "id": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3mznn3m5bq32e|watson|doubtful|status",
+   "at": "2026-11-06T14:52:33.000Z",
+   "seen": "2026-11-06T15:00:49.460Z",
+   "handle": "rotoworld-fb.bsky.social",
+   "post": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3mznn3m5bq32e",
+   "player": "Watson",
+   "team": "NO",
+   "status": "doubtful",
+   "kind": "status",
+   "confidence": 0.7,
+   "text": "Rap: Watson (concussion) 'unlikely' to play vs. Saints"
   }
  ]
 }
