@@ -4,8 +4,8 @@
   "adamscheftermirror.bsky.social": "2026-11-06T00:54:35.796Z",
   "rapsheet.bsky.social": "2026-11-05T23:40:10.485Z",
   "nflnewsreposterbot.bsky.social": "2026-11-05T18:24:37.305Z",
-  "insidenflnews.bsky.social": "2026-11-06T02:39:18.029Z",
-  "nflnewsposter.bsky.social": "2026-11-06T02:52:21.367Z",
+  "insidenflnews.bsky.social": "2026-11-06T03:25:03.743Z",
+  "nflnewsposter.bsky.social": "2026-11-06T03:22:01.144Z",
   "rotoworld-fb.bsky.social": "2026-11-06T01:32:41.000Z",
   "rotowirenfl.bsky.social": "2026-11-06T00:22:53.000Z"
  },
@@ -15921,6 +15921,19 @@
    "kind": "status",
    "confidence": 0.9,
    "text": "Jordyn Tyson (hamstring) remains limited on Thurs."
+  },
+  {
+   "id": "at://did:plc:mbr4badgf6yu56mquzackzew/app.bsky.feed.post/3mzmgobarzc27|kylehamilton|out|status",
+   "at": "2026-11-06T03:25:03.743Z",
+   "seen": "2026-11-06T03:25:47.521Z",
+   "handle": "insidenflnews.bsky.social",
+   "post": "at://did:plc:mbr4badgf6yu56mquzackzew/app.bsky.feed.post/3mzmgobarzc27",
+   "player": "Kyle Hamilton",
+   "team": null,
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.9,
+   "text": "🚨 Status alert: Kyle Hamilton (hip) won't return Thursday."
   }
  ]
 }
