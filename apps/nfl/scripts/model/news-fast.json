@@ -1,13 +1,13 @@
 {
  "sport": "nfl",
  "cursor": {
-  "adamscheftermirror.bsky.social": "2026-11-06T19:04:44.768Z",
+  "adamscheftermirror.bsky.social": "2026-11-06T21:04:53.339Z",
   "rapsheet.bsky.social": "2026-11-06T18:41:54.465Z",
   "nflnewsreposterbot.bsky.social": "2026-11-06T17:28:39.017Z",
-  "insidenflnews.bsky.social": "2026-11-06T19:31:28.974Z",
-  "nflnewsposter.bsky.social": "2026-11-06T19:30:18.444Z",
-  "rotoworld-fb.bsky.social": "2026-11-06T20:14:19.000Z",
-  "rotowirenfl.bsky.social": "2026-11-06T20:13:36.000Z"
+  "insidenflnews.bsky.social": "2026-11-06T20:42:29.301Z",
+  "nflnewsposter.bsky.social": "2026-11-06T21:04:37.981Z",
+  "rotoworld-fb.bsky.social": "2026-11-06T21:03:51.000Z",
+  "rotowirenfl.bsky.social": "2026-11-06T21:01:52.000Z"
  },
  "claims": [
   {
@@ -16623,6 +16623,149 @@
    "kind": "status",
    "confidence": 0.9,
    "text": "Jake Ferguson: Listed as questionable for Sunday \n\n https://www.rotowire.com/football/player/jake-ferguson-15947"
+  },
+  {
+   "id": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3mzo7mbjvxe22|emekaegbuka|questionable|status",
+   "at": "2026-11-06T20:24:00.000Z",
+   "seen": "2026-11-06T21:05:24.842Z",
+   "handle": "rotowirenfl.bsky.social",
+   "post": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3mzo7mbjvxe22",
+   "player": "Emeka Egbuka",
+   "team": "TB",
+   "status": "questionable",
+   "kind": "status",
+   "confidence": 0.95,
+   "text": "Emeka Egbuka: Officially questionable for Week 9 \n\n https://www.rotowire.com/football/player/emeka-egbuka-18549"
+  },
+  {
+   "id": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3mzo7tgofyj2e|emekaegbuka|questionable|status",
+   "at": "2026-11-06T20:28:00.000Z",
+   "seen": "2026-11-06T21:05:24.842Z",
+   "handle": "rotoworld-fb.bsky.social",
+   "post": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3mzo7tgofyj2e",
+   "player": "Emeka Egbuka",
+   "team": "TB",
+   "status": "questionable",
+   "kind": "status",
+   "confidence": 0.9,
+   "text": "Egbuka (foot) gets full practice, questionable vs. Bears"
+  },
+  {
+   "id": "at://did:plc:mbr4badgf6yu56mquzackzew/app.bsky.feed.post/3mzoandagrk2p|micahparsons|out|status",
+   "at": "2026-11-06T20:42:29.301Z",
+   "seen": "2026-11-06T21:05:24.842Z",
+   "handle": "insidenflnews.bsky.social",
+   "post": "at://did:plc:mbr4badgf6yu56mquzackzew/app.bsky.feed.post/3mzoandagrk2p",
+   "player": "Micah Parsons",
+   "team": "GB",
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.95,
+   "text": "Packers EDGE Micah Parsons (knee) has been ruled out for Week 9."
+  },
+  {
+   "id": "at://did:plc:qre6zxbmr3ixhdmgsgdretb5/app.bsky.feed.post/3mzob2cdybr2u|mylesgarrett|active|status",
+   "at": "2026-11-06T20:49:44.488Z",
+   "seen": "2026-11-06T21:05:24.842Z",
+   "handle": "adamscheftermirror.bsky.social",
+   "post": "at://did:plc:qre6zxbmr3ixhdmgsgdretb5/app.bsky.feed.post/3mzob2cdybr2u",
+   "player": "Myles Garrett",
+   "team": "CLE",
+   "status": "active",
+   "kind": "status",
+   "confidence": 0.7,
+   "text": "More about outside linebacker Myles Garrett being expected to play Sunday against the Commanders “barring any sort of setbacks” with his knee injury, via @sarahbarshop:\n\nOriginal post"
+  },
+  {
+   "id": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3mzoblo2dd62q|christianwatson|active|status",
+   "at": "2026-11-06T20:59:27.000Z",
+   "seen": "2026-11-06T21:05:24.842Z",
+   "handle": "rotoworld-fb.bsky.social",
+   "post": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3mzoblo2dd62q",
+   "player": "Christian Watson",
+   "team": "GB",
+   "status": "active",
+   "kind": "status",
+   "confidence": 0.9,
+   "text": "Christian Watson (rib) off injury report vs. Pats"
+  },
+  {
+   "id": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3mzobtkqfza2y|devontasmith|out|status",
+   "at": "2026-11-06T21:03:51.000Z",
+   "seen": "2026-11-06T21:05:24.842Z",
+   "handle": "rotoworld-fb.bsky.social",
+   "post": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3mzobtkqfza2y",
+   "player": "DeVonta Smith",
+   "team": "PHI",
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.95,
+   "text": "DeVonta Smith (hamstring) ruled out vs. Giants"
+  },
+  {
+   "id": "at://did:plc:fuqjc7x4gxvnwzksnlxwbe4x/app.bsky.feed.post/3mzobuweiuc2g|camskattebo|doubtful|status",
+   "at": "2026-11-06T21:04:37.981Z",
+   "seen": "2026-11-06T21:05:24.842Z",
+   "handle": "nflnewsposter.bsky.social",
+   "post": "at://did:plc:fuqjc7x4gxvnwzksnlxwbe4x/app.bsky.feed.post/3mzobuweiuc2g",
+   "player": "Cam Skattebo",
+   "team": "NYG",
+   "status": "doubtful",
+   "kind": "status",
+   "confidence": 0.95,
+   "text": "[Schefter] Giants are listing RB Cam Skattebo as doubtful for Sunday’s game vs. the Eagles due to his hamstring injury. twitter.com/AdamSchefter..."
+  },
+  {
+   "id": "at://did:plc:qre6zxbmr3ixhdmgsgdretb5/app.bsky.feed.post/3mzobv6e4xd2s|shedeursanders|none|starting",
+   "at": "2026-11-06T21:04:46.271Z",
+   "seen": "2026-11-06T21:05:24.842Z",
+   "handle": "adamscheftermirror.bsky.social",
+   "post": "at://did:plc:qre6zxbmr3ixhdmgsgdretb5/app.bsky.feed.post/3mzobv6e4xd2s",
+   "player": "Shedeur Sanders",
+   "team": "CLE",
+   "status": "none",
+   "kind": "starting",
+   "confidence": 0.9,
+   "text": "More about the Cleveland Browns starting Shedeur Sanders for Sunday’s game at New Orleans Saints as Deshaun Watson remains in concussion protocol, via @DanielOyefusi:\n\nOriginal post"
+  },
+  {
+   "id": "at://did:plc:qre6zxbmr3ixhdmgsgdretb5/app.bsky.feed.post/3mzobv6e4xd2s|deshaunwatson|out|status",
+   "at": "2026-11-06T21:04:46.271Z",
+   "seen": "2026-11-06T21:05:24.842Z",
+   "handle": "adamscheftermirror.bsky.social",
+   "post": "at://did:plc:qre6zxbmr3ixhdmgsgdretb5/app.bsky.feed.post/3mzobv6e4xd2s",
+   "player": "Deshaun Watson",
+   "team": "CLE",
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.6,
+   "text": "More about the Cleveland Browns starting Shedeur Sanders for Sunday’s game at New Orleans Saints as Deshaun Watson remains in concussion protocol, via @DanielOyefusi:\n\nOriginal post"
+  },
+  {
+   "id": "at://did:plc:qre6zxbmr3ixhdmgsgdretb5/app.bsky.feed.post/3mzobvezwdv2q|devontasmith|out|status",
+   "at": "2026-11-06T21:04:53.339Z",
+   "seen": "2026-11-06T21:05:24.842Z",
+   "handle": "adamscheftermirror.bsky.social",
+   "post": "at://did:plc:qre6zxbmr3ixhdmgsgdretb5/app.bsky.feed.post/3mzobvezwdv2q",
+   "player": "DeVonta Smith",
+   "team": "PHI",
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.95,
+   "text": "Eagles WRs DeVonta Smith (hamstring) and Dontayvion Wicks (ankle) are out for Sunday vs. Giants.\n\nRepost of @Eagles:\n\nOriginal post"
+  },
+  {
+   "id": "at://did:plc:qre6zxbmr3ixhdmgsgdretb5/app.bsky.feed.post/3mzobvezwdv2q|dontayvionwicks|out|status",
+   "at": "2026-11-06T21:04:53.339Z",
+   "seen": "2026-11-06T21:05:24.842Z",
+   "handle": "adamscheftermirror.bsky.social",
+   "post": "at://did:plc:qre6zxbmr3ixhdmgsgdretb5/app.bsky.feed.post/3mzobvezwdv2q",
+   "player": "Dontayvion Wicks",
+   "team": "PHI",
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.95,
+   "text": "Eagles WRs DeVonta Smith (hamstring) and Dontayvion Wicks (ankle) are out for Sunday vs. Giants.\n\nRepost of @Eagles:\n\nOriginal post"
   }
  ]
 }

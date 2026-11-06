@@ -10162,6 +10162,11 @@
    "sleeper": {
     "seen": "2026-11-06T20:12:35.427Z",
     "own": "2026-11-06T14:55:14.927Z"
+   },
+   "bluesky": {
+    "seen": "2026-11-06T20:15:14.447Z",
+    "own": "2026-11-06T20:13:36.000Z",
+    "why": "@rotowirenfl.bsky.social: Jake Ferguson: Listed as questionable for Sunday \n\n ht"
    }
   },
   "401873040|malachilawrence|q": {
@@ -12278,6 +12283,11 @@
    "sleeper": {
     "seen": "2026-11-06T20:12:35.427Z",
     "own": "2026-11-06T20:05:04.140Z"
+   },
+   "bluesky": {
+    "seen": "2026-11-06T20:15:14.447Z",
+    "own": "2026-11-06T19:58:08.000Z",
+    "why": "@rotowirenfl.bsky.social: Kyle Monangai: Questionable for Sunday \n\n https://www."
    }
   },
   "401873037|olaivavegaioane|q": {
@@ -15464,6 +15474,558 @@
    "sleeper": {
     "seen": "2026-11-06T20:12:35.427Z",
     "own": "2026-11-06T18:25:17.930Z"
+   }
+  },
+  "401873038|jordyntyson|q": {
+   "game": "401873038",
+   "start": "2026-11-08T14:30Z",
+   "team": "1",
+   "name": "Jordyn Tyson",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-11-06T20:15:14.447Z",
+    "own": "2026-11-06T19:11:36.000Z",
+    "why": "@rotoworld-fb.bsky.social: Jordyn Tyson (hamstring) questionable for Week 9"
+   }
+  },
+  "401873038|kylemonangai|q": {
+   "game": "401873038",
+   "start": "2026-11-08T14:30Z",
+   "team": "1",
+   "name": "Kyle Monangai",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-11-06T20:15:14.447Z",
+    "own": "2026-11-06T19:58:08.000Z",
+    "why": "@rotowirenfl.bsky.social: Kyle Monangai: Questionable for Sunday \n\n https://www."
+   }
+  },
+  "401873038|jakeferguson|q": {
+   "game": "401873038",
+   "start": "2026-11-08T14:30Z",
+   "team": "1",
+   "name": "Jake Ferguson",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-11-06T20:15:14.447Z",
+    "own": "2026-11-06T20:13:36.000Z",
+    "why": "@rotowirenfl.bsky.social: Jake Ferguson: Listed as questionable for Sunday \n\n ht"
+   }
+  },
+  "401873040|jalentravis|q": {
+   "game": "401873040",
+   "start": "2026-11-08T18:00Z",
+   "team": "11",
+   "name": "Jalen Travis",
+   "status": "q",
+   "athlete": "4892240",
+   "espn": {
+    "seen": "2026-11-06T21:02:28.933Z",
+    "own": "2026-11-06T20:38:00.000Z"
+   }
+  },
+  "401873040|ajhaulcy|q": {
+   "game": "401873040",
+   "start": "2026-11-08T18:00Z",
+   "team": "11",
+   "name": "A.J. Haulcy",
+   "status": "q",
+   "athlete": "4905664",
+   "espn": {
+    "seen": "2026-11-06T21:02:28.933Z",
+    "own": "2026-11-06T20:38:00.000Z"
+   }
+  },
+  "401873040|jordyntyson|q": {
+   "game": "401873040",
+   "start": "2026-11-08T18:00Z",
+   "team": "11",
+   "name": "Jordyn Tyson",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-11-06T20:15:14.447Z",
+    "own": "2026-11-06T19:11:36.000Z",
+    "why": "@rotoworld-fb.bsky.social: Jordyn Tyson (hamstring) questionable for Week 9"
+   }
+  },
+  "401873040|kylemonangai|q": {
+   "game": "401873040",
+   "start": "2026-11-08T18:00Z",
+   "team": "11",
+   "name": "Kyle Monangai",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-11-06T20:15:14.447Z",
+    "own": "2026-11-06T19:58:08.000Z",
+    "why": "@rotowirenfl.bsky.social: Kyle Monangai: Questionable for Sunday \n\n https://www."
+   }
+  },
+  "401873040|malachilawrence|out": {
+   "game": "401873040",
+   "start": "2026-11-08T18:00Z",
+   "team": "6",
+   "name": "Malachi Lawrence",
+   "status": "out",
+   "athlete": "4710067",
+   "espn": {
+    "seen": "2026-11-06T21:02:28.933Z",
+    "own": "2026-11-06T20:28:00.000Z"
+   }
+  },
+  "401873045|jordyntyson|q": {
+   "game": "401873045",
+   "start": "2026-11-08T18:00Z",
+   "team": "12",
+   "name": "Jordyn Tyson",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-11-06T20:15:14.447Z",
+    "own": "2026-11-06T19:11:36.000Z",
+    "why": "@rotoworld-fb.bsky.social: Jordyn Tyson (hamstring) questionable for Week 9"
+   }
+  },
+  "401873045|kylemonangai|q": {
+   "game": "401873045",
+   "start": "2026-11-08T18:00Z",
+   "team": "12",
+   "name": "Kyle Monangai",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-11-06T20:15:14.447Z",
+    "own": "2026-11-06T19:58:08.000Z",
+    "why": "@rotowirenfl.bsky.social: Kyle Monangai: Questionable for Sunday \n\n https://www."
+   }
+  },
+  "401873045|jakeferguson|q": {
+   "game": "401873045",
+   "start": "2026-11-08T18:00Z",
+   "team": "12",
+   "name": "Jake Ferguson",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-11-06T20:15:14.447Z",
+    "own": "2026-11-06T20:13:36.000Z",
+    "why": "@rotowirenfl.bsky.social: Jake Ferguson: Listed as questionable for Sunday \n\n ht"
+   }
+  },
+  "401873045|nahshonwright|q": {
+   "game": "401873045",
+   "start": "2026-11-08T18:00Z",
+   "team": "20",
+   "name": "Nahshon Wright",
+   "status": "q",
+   "athlete": "4570470",
+   "espn": {
+    "seen": "2026-11-06T21:02:28.933Z",
+    "own": "2026-11-06T20:17:00.000Z"
+   }
+  },
+  "401873042|jordyntyson|q": {
+   "game": "401873042",
+   "start": "2026-11-08T18:00Z",
+   "team": "15",
+   "name": "Jordyn Tyson",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-11-06T20:15:14.447Z",
+    "own": "2026-11-06T19:11:36.000Z",
+    "why": "@rotoworld-fb.bsky.social: Jordyn Tyson (hamstring) questionable for Week 9"
+   }
+  },
+  "401873042|kylemonangai|q": {
+   "game": "401873042",
+   "start": "2026-11-08T18:00Z",
+   "team": "15",
+   "name": "Kyle Monangai",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-11-06T20:15:14.447Z",
+    "own": "2026-11-06T19:58:08.000Z",
+    "why": "@rotowirenfl.bsky.social: Kyle Monangai: Questionable for Sunday \n\n https://www."
+   }
+  },
+  "401873042|jakeferguson|q": {
+   "game": "401873042",
+   "start": "2026-11-08T18:00Z",
+   "team": "15",
+   "name": "Jake Ferguson",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-11-06T20:15:14.447Z",
+    "own": "2026-11-06T20:13:36.000Z",
+    "why": "@rotowirenfl.bsky.social: Jake Ferguson: Listed as questionable for Sunday \n\n ht"
+   }
+  },
+  "401873039|kylemonangai|q": {
+   "game": "401873039",
+   "start": "2026-11-08T18:00Z",
+   "team": "18",
+   "name": "Kyle Monangai",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-11-06T20:15:14.447Z",
+    "own": "2026-11-06T19:58:08.000Z",
+    "why": "@rotowirenfl.bsky.social: Kyle Monangai: Questionable for Sunday \n\n https://www."
+   }
+  },
+  "401873039|jakeferguson|q": {
+   "game": "401873039",
+   "start": "2026-11-08T18:00Z",
+   "team": "18",
+   "name": "Jake Ferguson",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-11-06T20:15:14.447Z",
+    "own": "2026-11-06T20:13:36.000Z",
+    "why": "@rotowirenfl.bsky.social: Jake Ferguson: Listed as questionable for Sunday \n\n ht"
+   }
+  },
+  "401873039|jordyntyson|q": {
+   "game": "401873039",
+   "start": "2026-11-08T18:00Z",
+   "team": "5",
+   "name": "Jordyn Tyson",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-11-06T20:15:14.447Z",
+    "own": "2026-11-06T19:11:36.000Z",
+    "why": "@rotoworld-fb.bsky.social: Jordyn Tyson (hamstring) questionable for Week 9"
+   }
+  },
+  "401873044|jordyntyson|q": {
+   "game": "401873044",
+   "start": "2026-11-08T18:00Z",
+   "team": "21",
+   "name": "Jordyn Tyson",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-11-06T20:15:14.447Z",
+    "own": "2026-11-06T19:11:36.000Z",
+    "why": "@rotoworld-fb.bsky.social: Jordyn Tyson (hamstring) questionable for Week 9"
+   }
+  },
+  "401873044|kylemonangai|q": {
+   "game": "401873044",
+   "start": "2026-11-08T18:00Z",
+   "team": "21",
+   "name": "Kyle Monangai",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-11-06T20:15:14.447Z",
+    "own": "2026-11-06T19:58:08.000Z",
+    "why": "@rotowirenfl.bsky.social: Kyle Monangai: Questionable for Sunday \n\n https://www."
+   }
+  },
+  "401873044|jakeferguson|q": {
+   "game": "401873044",
+   "start": "2026-11-08T18:00Z",
+   "team": "21",
+   "name": "Jake Ferguson",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-11-06T20:15:14.447Z",
+    "own": "2026-11-06T20:13:36.000Z",
+    "why": "@rotowirenfl.bsky.social: Jake Ferguson: Listed as questionable for Sunday \n\n ht"
+   }
+  },
+  "401873043|jordyntyson|q": {
+   "game": "401873043",
+   "start": "2026-11-08T18:00Z",
+   "team": "28",
+   "name": "Jordyn Tyson",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-11-06T20:15:14.447Z",
+    "own": "2026-11-06T19:11:36.000Z",
+    "why": "@rotoworld-fb.bsky.social: Jordyn Tyson (hamstring) questionable for Week 9"
+   }
+  },
+  "401873043|kylemonangai|q": {
+   "game": "401873043",
+   "start": "2026-11-08T18:00Z",
+   "team": "28",
+   "name": "Kyle Monangai",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-11-06T20:15:14.447Z",
+    "own": "2026-11-06T19:58:08.000Z",
+    "why": "@rotowirenfl.bsky.social: Kyle Monangai: Questionable for Sunday \n\n https://www."
+   }
+  },
+  "401873043|jakeferguson|q": {
+   "game": "401873043",
+   "start": "2026-11-08T18:00Z",
+   "team": "28",
+   "name": "Jake Ferguson",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-11-06T20:15:14.447Z",
+    "own": "2026-11-06T20:13:36.000Z",
+    "why": "@rotowirenfl.bsky.social: Jake Ferguson: Listed as questionable for Sunday \n\n ht"
+   }
+  },
+  "401873041|jordyntyson|q": {
+   "game": "401873041",
+   "start": "2026-11-08T18:00Z",
+   "team": "29",
+   "name": "Jordyn Tyson",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-11-06T20:15:14.447Z",
+    "own": "2026-11-06T19:11:36.000Z",
+    "why": "@rotoworld-fb.bsky.social: Jordyn Tyson (hamstring) questionable for Week 9"
+   }
+  },
+  "401873041|kylemonangai|q": {
+   "game": "401873041",
+   "start": "2026-11-08T18:00Z",
+   "team": "29",
+   "name": "Kyle Monangai",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-11-06T20:15:14.447Z",
+    "own": "2026-11-06T19:58:08.000Z",
+    "why": "@rotowirenfl.bsky.social: Kyle Monangai: Questionable for Sunday \n\n https://www."
+   }
+  },
+  "401873041|jakeferguson|q": {
+   "game": "401873041",
+   "start": "2026-11-08T18:00Z",
+   "team": "29",
+   "name": "Jake Ferguson",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-11-06T20:15:14.447Z",
+    "own": "2026-11-06T20:13:36.000Z",
+    "why": "@rotowirenfl.bsky.social: Jake Ferguson: Listed as questionable for Sunday \n\n ht"
+   }
+  },
+  "401873046|jordyntyson|q": {
+   "game": "401873046",
+   "start": "2026-11-08T21:05Z",
+   "team": "24",
+   "name": "Jordyn Tyson",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-11-06T20:15:14.447Z",
+    "own": "2026-11-06T19:11:36.000Z",
+    "why": "@rotoworld-fb.bsky.social: Jordyn Tyson (hamstring) questionable for Week 9"
+   }
+  },
+  "401873046|kylemonangai|q": {
+   "game": "401873046",
+   "start": "2026-11-08T21:05Z",
+   "team": "24",
+   "name": "Kyle Monangai",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-11-06T20:15:14.447Z",
+    "own": "2026-11-06T19:58:08.000Z",
+    "why": "@rotowirenfl.bsky.social: Kyle Monangai: Questionable for Sunday \n\n https://www."
+   }
+  },
+  "401873046|georgepickens|q": {
+   "game": "401873046",
+   "start": "2026-11-08T21:05Z",
+   "team": "24",
+   "name": "George Pickens",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-11-06T20:15:14.447Z",
+    "own": "2026-11-06T20:09:40.000Z",
+    "why": "@rotowirenfl.bsky.social: George Pickens: Questionable for Week 9 \n\n https://www"
+   }
+  },
+  "401873046|jakeferguson|q": {
+   "game": "401873046",
+   "start": "2026-11-08T21:05Z",
+   "team": "24",
+   "name": "Jake Ferguson",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-11-06T20:15:14.447Z",
+    "own": "2026-11-06T20:13:36.000Z",
+    "why": "@rotowirenfl.bsky.social: Jake Ferguson: Listed as questionable for Sunday \n\n ht"
+   }
+  },
+  "401873049|jordyntyson|q": {
+   "game": "401873049",
+   "start": "2026-11-08T21:25Z",
+   "team": "17",
+   "name": "Jordyn Tyson",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-11-06T20:15:14.447Z",
+    "own": "2026-11-06T19:11:36.000Z",
+    "why": "@rotoworld-fb.bsky.social: Jordyn Tyson (hamstring) questionable for Week 9"
+   }
+  },
+  "401873049|kylemonangai|q": {
+   "game": "401873049",
+   "start": "2026-11-08T21:25Z",
+   "team": "17",
+   "name": "Kyle Monangai",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-11-06T20:15:14.447Z",
+    "own": "2026-11-06T19:58:08.000Z",
+    "why": "@rotowirenfl.bsky.social: Kyle Monangai: Questionable for Sunday \n\n https://www."
+   }
+  },
+  "401873049|georgepickens|q": {
+   "game": "401873049",
+   "start": "2026-11-08T21:25Z",
+   "team": "17",
+   "name": "George Pickens",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-11-06T20:15:14.447Z",
+    "own": "2026-11-06T20:09:40.000Z",
+    "why": "@rotowirenfl.bsky.social: George Pickens: Questionable for Week 9 \n\n https://www"
+   }
+  },
+  "401873049|jakeferguson|q": {
+   "game": "401873049",
+   "start": "2026-11-08T21:25Z",
+   "team": "17",
+   "name": "Jake Ferguson",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-11-06T20:15:14.447Z",
+    "own": "2026-11-06T20:13:36.000Z",
+    "why": "@rotowirenfl.bsky.social: Jake Ferguson: Listed as questionable for Sunday \n\n ht"
+   }
+  },
+  "401873047|jordyntyson|q": {
+   "game": "401873047",
+   "start": "2026-11-08T21:25Z",
+   "team": "25",
+   "name": "Jordyn Tyson",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-11-06T20:15:14.447Z",
+    "own": "2026-11-06T19:11:36.000Z",
+    "why": "@rotoworld-fb.bsky.social: Jordyn Tyson (hamstring) questionable for Week 9"
+   }
+  },
+  "401873047|kylemonangai|q": {
+   "game": "401873047",
+   "start": "2026-11-08T21:25Z",
+   "team": "25",
+   "name": "Kyle Monangai",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-11-06T20:15:14.447Z",
+    "own": "2026-11-06T19:58:08.000Z",
+    "why": "@rotowirenfl.bsky.social: Kyle Monangai: Questionable for Sunday \n\n https://www."
+   }
+  },
+  "401873047|georgepickens|q": {
+   "game": "401873047",
+   "start": "2026-11-08T21:25Z",
+   "team": "25",
+   "name": "George Pickens",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-11-06T20:15:14.447Z",
+    "own": "2026-11-06T20:09:40.000Z",
+    "why": "@rotowirenfl.bsky.social: George Pickens: Questionable for Week 9 \n\n https://www"
+   }
+  },
+  "401873047|jakeferguson|q": {
+   "game": "401873047",
+   "start": "2026-11-08T21:25Z",
+   "team": "25",
+   "name": "Jake Ferguson",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-11-06T20:15:14.447Z",
+    "own": "2026-11-06T20:13:36.000Z",
+    "why": "@rotowirenfl.bsky.social: Jake Ferguson: Listed as questionable for Sunday \n\n ht"
+   }
+  },
+  "401873048|jordyntyson|q": {
+   "game": "401873048",
+   "start": "2026-11-08T21:25Z",
+   "team": "26",
+   "name": "Jordyn Tyson",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-11-06T20:15:14.447Z",
+    "own": "2026-11-06T19:11:36.000Z",
+    "why": "@rotoworld-fb.bsky.social: Jordyn Tyson (hamstring) questionable for Week 9"
+   }
+  },
+  "401873048|kylemonangai|q": {
+   "game": "401873048",
+   "start": "2026-11-08T21:25Z",
+   "team": "26",
+   "name": "Kyle Monangai",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-11-06T20:15:14.447Z",
+    "own": "2026-11-06T19:58:08.000Z",
+    "why": "@rotowirenfl.bsky.social: Kyle Monangai: Questionable for Sunday \n\n https://www."
+   }
+  },
+  "401873048|georgepickens|q": {
+   "game": "401873048",
+   "start": "2026-11-08T21:25Z",
+   "team": "26",
+   "name": "George Pickens",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-11-06T20:15:14.447Z",
+    "own": "2026-11-06T20:09:40.000Z",
+    "why": "@rotowirenfl.bsky.social: George Pickens: Questionable for Week 9 \n\n https://www"
+   }
+  },
+  "401873048|jakeferguson|q": {
+   "game": "401873048",
+   "start": "2026-11-08T21:25Z",
+   "team": "26",
+   "name": "Jake Ferguson",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-11-06T20:15:14.447Z",
+    "own": "2026-11-06T20:13:36.000Z",
+    "why": "@rotowirenfl.bsky.social: Jake Ferguson: Listed as questionable for Sunday \n\n ht"
+   }
+  },
+  "401873050|tyriquestevenson|q": {
+   "game": "401873050",
+   "start": "2026-11-09T01:20Z",
+   "team": "3",
+   "name": "Tyrique Stevenson Sr.",
+   "status": "q",
+   "athlete": "4426374",
+   "espn": {
+    "seen": "2026-11-06T21:02:28.933Z",
+    "own": "2026-11-06T20:02:00.000Z"
+   }
+  },
+  "401873050|georgepickens|q": {
+   "game": "401873050",
+   "start": "2026-11-09T01:20Z",
+   "team": "3",
+   "name": "George Pickens",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-11-06T20:15:14.447Z",
+    "own": "2026-11-06T20:09:40.000Z",
+    "why": "@rotowirenfl.bsky.social: George Pickens: Questionable for Week 9 \n\n https://www"
+   }
+  },
+  "401873050|jakeferguson|q": {
+   "game": "401873050",
+   "start": "2026-11-09T01:20Z",
+   "team": "3",
+   "name": "Jake Ferguson",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-11-06T20:15:14.447Z",
+    "own": "2026-11-06T20:13:36.000Z",
+    "why": "@rotowirenfl.bsky.social: Jake Ferguson: Listed as questionable for Sunday \n\n ht"
    }
   }
  }

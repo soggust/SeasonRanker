@@ -1,7 +1,7 @@
 {
  "sport": "nba",
  "cursor": {
-  "rotowirenba.bsky.social": "2026-11-06T19:05:59.000Z",
+  "rotowirenba.bsky.social": "2026-11-06T20:49:56.000Z",
   "insidenbanews.bsky.social": "2026-11-04T00:05:57.726Z",
   "shamsbot.bsky.social": "2026-11-04T20:33:22.000Z"
  },
@@ -7974,6 +7974,32 @@
    "kind": "status",
    "confidence": 0.5,
    "text": "Kyrie Irving: Added to injury report \n\n https://www.rotowire.com/basketball/player/kyrie-irving-3186"
+  },
+  {
+   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mzo7gu7pjd2t|brandoningram|none|return",
+   "at": "2026-11-06T20:20:58.000Z",
+   "seen": "2026-11-06T21:05:24.842Z",
+   "handle": "rotowirenba.bsky.social",
+   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mzo7gu7pjd2t",
+   "player": "Brandon Ingram",
+   "team": "NOP",
+   "status": "none",
+   "kind": "return",
+   "confidence": 0.4,
+   "text": "Brandon Ingram: Nearing return \n\n https://www.rotowire.com/basketball/player/brandon-ingram-3861"
+  },
+  {
+   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mzob2nxd362x|guisantos|questionable|status",
+   "at": "2026-11-06T20:49:56.000Z",
+   "seen": "2026-11-06T21:05:24.842Z",
+   "handle": "rotowirenba.bsky.social",
+   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mzob2nxd362x",
+   "player": "Gui Santos",
+   "team": "GSW",
+   "status": "questionable",
+   "kind": "status",
+   "confidence": 0.95,
+   "text": "Gui Santos: Questionable for Saturday \n\n https://www.rotowire.com/basketball/player/gui-santos-5738"
   }
  ]
 }
