@@ -20477,6 +20477,42 @@
     "own": "2026-11-06T17:57:15.000Z",
     "why": "@rotowirenba.bsky.social: Moussa Diabate: Ruled out for Friday \n\n https://www.ro"
    }
+  },
+  "401909292|jakobpoeltl|q": {
+   "game": "401909292",
+   "start": "2026-11-07T01:00Z",
+   "team": "28",
+   "name": "Jakob Poeltl",
+   "status": "q",
+   "athlete": "3134908",
+   "espn": {
+    "seen": "2026-11-06T18:15:45.174Z",
+    "own": "2026-11-06T18:03:00.000Z"
+   }
+  },
+  "401909292|immanuelquickley|q": {
+   "game": "401909292",
+   "start": "2026-11-07T01:00Z",
+   "team": "28",
+   "name": "Immanuel Quickley",
+   "status": "q",
+   "athlete": "4395724",
+   "espn": {
+    "seen": "2026-11-06T18:15:45.174Z",
+    "own": "2026-11-06T17:59:00.000Z"
+   }
+  },
+  "401909293|terrenceshannon|out": {
+   "game": "401909293",
+   "start": "2026-11-07T01:00Z",
+   "team": "16",
+   "name": "Terrence Shannon Jr.",
+   "status": "out",
+   "athlete": "4432847",
+   "espn": {
+    "seen": "2026-11-06T18:15:45.174Z",
+    "own": "2026-11-06T18:06:00.000Z"
+   }
   }
  }
 }
