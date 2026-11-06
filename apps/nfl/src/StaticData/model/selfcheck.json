@@ -1,5 +1,5 @@
 {
- "at": "2026-11-06T11:37:25.053Z",
+ "at": "2026-11-06T13:06:18.449Z",
  "baseline": {
   "from": "2026-10-02",
   "to": "2026-10-30"
@@ -121,7 +121,7 @@
   },
   {
    "examples": [],
-   "headline": "ml trust: to 0 (0.05 to 0); 92 changelog entries this week",
+   "headline": "ml trust: to 0 (0.05 to 0); 85 changelog entries this week",
    "how": "the day's last state.json for 35 days (git), the week's start against now; the changelog's entries this week verbatim",
    "id": "C9",
    "metric": "changes",
@@ -1780,7 +1780,7 @@
   },
   {
    "examples": [],
-   "headline": "Model files 4h old, 0 open bets overdue to grade; Odds API credits 737% left; 404 bets placed in a week of 14 games",
+   "headline": "Model files 6h old, 0 open bets overdue to grade; Odds API credits 737% left; 404 bets placed in a week of 14 games",
    "how": "the newest commit of the sport's model files, the open bets started 12 hours ago or more, The Odds API's credits (state.odds), the state's sources",
    "id": "C16",
    "metric": "ageH",
@@ -1788,7 +1788,7 @@
    "needs": null,
    "rows": [
     {
-     "ageH": 4,
+     "ageH": 6,
      "at": "2026-11-06T06:52:27Z",
      "key": "files",
      "overdue": 0
@@ -1814,7 +1814,7 @@
    "tested": null,
    "threshold": "watch files 3h old with bets overdue, credits under 20%, a source down, or no bets in a week with games; flag 6h old with bets overdue, or credits under 10%",
    "title": "Ops",
-   "value": 4
+   "value": 6
   },
   {
    "examples": [
