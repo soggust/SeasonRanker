@@ -1,8 +1,8 @@
 {
  "sport": "nba",
  "cursor": {
-  "rotowirenba.bsky.social": "2026-11-06T20:49:56.000Z",
-  "insidenbanews.bsky.social": "2026-11-04T00:05:57.726Z",
+  "rotowirenba.bsky.social": "2026-11-06T22:06:08.000Z",
+  "insidenbanews.bsky.social": "2026-11-06T21:19:50.569Z",
   "shamsbot.bsky.social": "2026-11-04T20:33:22.000Z"
  },
  "claims": [
@@ -8000,6 +8000,32 @@
    "kind": "status",
    "confidence": 0.95,
    "text": "Gui Santos: Questionable for Saturday \n\n https://www.rotowire.com/basketball/player/gui-santos-5738"
+  },
+  {
+   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mzoedmfvkv2v|joshhart|out|status",
+   "at": "2026-11-06T21:48:38.000Z",
+   "seen": "2026-11-06T22:15:31.252Z",
+   "handle": "rotowirenba.bsky.social",
+   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mzoedmfvkv2v",
+   "player": "Josh Hart",
+   "team": "NYK",
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.95,
+   "text": "Josh Hart: Ruled out for Saturday \n\n https://www.rotowire.com/basketball/player/josh-hart-4136"
+  },
+  {
+   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mzofcwiekx2n|jalenjohnson|out|status",
+   "at": "2026-11-06T22:06:08.000Z",
+   "seen": "2026-11-06T22:15:31.252Z",
+   "handle": "rotowirenba.bsky.social",
+   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mzofcwiekx2n",
+   "player": "Jalen Johnson",
+   "team": "ATL",
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.95,
+   "text": "Jalen Johnson: Ruled out for Friday \n\n https://www.rotowire.com/basketball/player/jalen-johnson-5329"
   }
  ]
 }

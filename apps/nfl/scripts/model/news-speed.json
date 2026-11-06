@@ -10487,6 +10487,11 @@
    "espn": {
     "seen": "2026-11-03T00:02:15.042Z",
     "own": "2026-11-02T19:19:00.000Z"
+   },
+   "bluesky": {
+    "seen": "2026-11-06T21:05:24.842Z",
+    "own": "2026-11-06T21:04:53.339Z",
+    "why": "@adamscheftermirror.bsky.social: Eagles WRs DeVonta Smith (hamstring) and Dontay"
    }
   },
   "401873044|devontasmith|out": {
@@ -10499,6 +10504,11 @@
    "espn": {
     "seen": "2026-11-03T00:02:15.042Z",
     "own": "2026-11-02T19:19:00.000Z"
+   },
+   "bluesky": {
+    "seen": "2026-11-06T21:05:24.842Z",
+    "own": "2026-11-06T21:04:53.339Z",
+    "why": "@adamscheftermirror.bsky.social: Eagles WRs DeVonta Smith (hamstring) and Dontay"
    }
   },
   "401873044|jonathanjones|out": {
@@ -11161,6 +11171,11 @@
    "espn": {
     "seen": "2026-11-03T00:02:15.042Z",
     "own": "2026-11-02T19:39:00.000Z"
+   },
+   "bluesky": {
+    "seen": "2026-11-06T21:05:24.842Z",
+    "own": "2026-11-06T20:42:29.301Z",
+    "why": "@insidenflnews.bsky.social: Packers EDGE Micah Parsons (knee) has been ruled out"
    }
   },
   "401873047|dezhaunstribling|out": {
@@ -12532,6 +12547,11 @@
    "espn": {
     "seen": "2026-11-03T13:33:58.386Z",
     "own": "2026-11-03T13:03:00.000Z"
+   },
+   "bluesky": {
+    "seen": "2026-11-06T21:05:24.842Z",
+    "own": "2026-11-06T20:28:00.000Z",
+    "why": "@rotoworld-fb.bsky.social: Egbuka (foot) gets full practice, questionable vs. Be"
    }
   },
   "401873037|tylerhuntley|out": {
@@ -15001,6 +15021,11 @@
     "seen": "2026-11-06T15:00:49.460Z",
     "own": "2026-11-06T14:47:07.000Z",
     "why": "@rotowirenfl.bsky.social: Cam Skattebo: Seemingly out for Week 9 \n\n https://www."
+   },
+   "athlete": "4696981",
+   "espn": {
+    "seen": "2026-11-06T22:12:37.309Z",
+    "own": "2026-11-06T21:18:00.000Z"
    }
   },
   "401873044|georgepickens|q": {
@@ -16026,6 +16051,210 @@
     "seen": "2026-11-06T20:15:14.447Z",
     "own": "2026-11-06T20:13:36.000Z",
     "why": "@rotowirenfl.bsky.social: Jake Ferguson: Listed as questionable for Sunday \n\n ht"
+   }
+  },
+  "401873039|deshaunwatson|out": {
+   "game": "401873039",
+   "start": "2026-11-08T18:00Z",
+   "team": "5",
+   "name": "Deshaun Watson",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-06T21:05:24.842Z",
+    "own": "2026-11-06T21:04:46.271Z",
+    "why": "@adamscheftermirror.bsky.social: More about the Cleveland Browns starting Shedeu"
+   }
+  },
+  "401873043|treylonburks|out": {
+   "game": "401873043",
+   "start": "2026-11-08T18:00Z",
+   "team": "28",
+   "name": "Treylon Burks",
+   "status": "out",
+   "athlete": "4567156",
+   "espn": {
+    "seen": "2026-11-06T22:12:37.309Z",
+    "own": "2026-11-06T21:31:00.000Z"
+   }
+  },
+  "401873043|dyamibrown|out": {
+   "game": "401873043",
+   "start": "2026-11-08T18:00Z",
+   "team": "28",
+   "name": "Dyami Brown",
+   "status": "out",
+   "athlete": "4361577",
+   "espn": {
+    "seen": "2026-11-06T22:12:37.309Z",
+    "own": "2026-11-06T17:28:00.000Z"
+   }
+  },
+  "401873041|krisabramsdraine|out": {
+   "game": "401873041",
+   "start": "2026-11-08T18:00Z",
+   "team": "7",
+   "name": "Kris Abrams-Draine",
+   "status": "out",
+   "athlete": "4429193",
+   "espn": {
+    "seen": "2026-11-06T22:12:37.309Z",
+    "own": "2026-11-06T21:46:00.000Z"
+   }
+  },
+  "401873041|eyiomauwazurike|out": {
+   "game": "401873041",
+   "start": "2026-11-08T18:00Z",
+   "team": "7",
+   "name": "Eyioma Uwazurike",
+   "status": "out",
+   "athlete": "4066109",
+   "espn": {
+    "seen": "2026-11-06T22:12:37.309Z",
+    "own": "2026-11-06T21:45:00.000Z"
+   }
+  },
+  "401873041|brandonjones|out": {
+   "game": "401873041",
+   "start": "2026-11-08T18:00Z",
+   "team": "7",
+   "name": "Brandon Jones",
+   "status": "out",
+   "athlete": "4039059",
+   "espn": {
+    "seen": "2026-11-06T22:12:37.309Z",
+    "own": "2026-11-06T21:45:00.000Z"
+   }
+  },
+  "401873041|dondreatillman|q": {
+   "game": "401873041",
+   "start": "2026-11-08T18:00Z",
+   "team": "7",
+   "name": "Dondrea Tillman",
+   "status": "q",
+   "athlete": "5216101",
+   "espn": {
+    "seen": "2026-11-06T22:12:37.309Z",
+    "own": "2026-11-06T21:44:00.000Z"
+   }
+  },
+  "401873046|reedblankenship|out": {
+   "game": "401873046",
+   "start": "2026-11-08T21:05Z",
+   "team": "34",
+   "name": "Reed Blankenship",
+   "status": "out",
+   "athlete": "4243956",
+   "espn": {
+    "seen": "2026-11-06T22:12:37.309Z",
+    "own": "2026-11-06T22:06:00.000Z"
+   }
+  },
+  "401873049|seanrhyan|out": {
+   "game": "401873049",
+   "start": "2026-11-08T21:25Z",
+   "team": "9",
+   "name": "Sean Rhyan",
+   "status": "out",
+   "athlete": "4426411",
+   "espn": {
+    "seen": "2026-11-06T22:12:37.309Z",
+    "own": "2026-11-06T21:51:00.000Z"
+   }
+  },
+  "401873049|zairefranklin|out": {
+   "game": "401873049",
+   "start": "2026-11-08T21:25Z",
+   "team": "9",
+   "name": "Zaire Franklin",
+   "status": "out",
+   "athlete": "3124005",
+   "espn": {
+    "seen": "2026-11-06T22:12:37.309Z",
+    "own": "2026-11-06T21:51:00.000Z"
+   }
+  },
+  "401873049|joshwhyle|out": {
+   "game": "401873049",
+   "start": "2026-11-08T21:25Z",
+   "team": "9",
+   "name": "Josh Whyle",
+   "status": "out",
+   "athlete": "4360086",
+   "espn": {
+    "seen": "2026-11-06T22:12:37.309Z",
+    "own": "2026-11-06T21:50:00.000Z"
+   }
+  },
+  "401873049|travisglover|out": {
+   "game": "401873049",
+   "start": "2026-11-08T21:25Z",
+   "team": "9",
+   "name": "Travis Glover",
+   "status": "out",
+   "athlete": "4361904",
+   "espn": {
+    "seen": "2026-11-06T22:12:37.309Z",
+    "own": "2026-11-06T01:29:00.000Z"
+   }
+  },
+  "401873047|deebosamuel|out": {
+   "game": "401873047",
+   "start": "2026-11-08T21:25Z",
+   "team": "25",
+   "name": "Deebo Samuel Sr.",
+   "status": "out",
+   "athlete": "3126486",
+   "espn": {
+    "seen": "2026-11-06T22:12:37.309Z",
+    "own": "2026-11-06T21:06:00.000Z"
+   }
+  },
+  "401873047|mikeevans|out": {
+   "game": "401873047",
+   "start": "2026-11-08T21:25Z",
+   "team": "25",
+   "name": "Mike Evans",
+   "status": "out",
+   "athlete": "16737",
+   "espn": {
+    "seen": "2026-11-06T22:12:37.309Z",
+    "own": "2026-11-06T20:50:00.000Z"
+   }
+  },
+  "401873047|christiankirk|out": {
+   "game": "401873047",
+   "start": "2026-11-08T21:25Z",
+   "team": "25",
+   "name": "Christian Kirk",
+   "status": "out",
+   "athlete": "3895856",
+   "espn": {
+    "seen": "2026-11-06T22:12:37.309Z",
+    "own": "2026-11-05T23:02:00.000Z"
+   }
+  },
+  "401873048|quentonnelson|out": {
+   "game": "401873048",
+   "start": "2026-11-08T21:25Z",
+   "team": "26",
+   "name": "Quenton Nelson",
+   "status": "out",
+   "athlete": "3129308",
+   "espn": {
+    "seen": "2026-11-06T22:12:37.309Z",
+    "own": "2026-11-06T01:51:00.000Z"
+   }
+  },
+  "401873051|samfranklin|q": {
+   "game": "401873051",
+   "start": "2026-11-10T01:15Z",
+   "team": "2",
+   "name": "Sam Franklin Jr.",
+   "status": "q",
+   "athlete": "4044133",
+   "espn": {
+    "seen": "2026-11-06T22:12:37.309Z",
+    "own": "2026-11-06T22:01:00.000Z"
    }
   }
  }
