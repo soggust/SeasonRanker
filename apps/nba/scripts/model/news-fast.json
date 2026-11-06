@@ -1,7 +1,7 @@
 {
  "sport": "nba",
  "cursor": {
-  "rotowirenba.bsky.social": "2026-11-06T17:57:15.000Z",
+  "rotowirenba.bsky.social": "2026-11-06T18:21:54.000Z",
   "insidenbanews.bsky.social": "2026-11-04T00:05:57.726Z",
   "shamsbot.bsky.social": "2026-11-04T20:33:22.000Z"
  },
@@ -7948,6 +7948,19 @@
    "kind": "status",
    "confidence": 0.95,
    "text": "Moussa Diabate: Ruled out for Friday \n\n https://www.rotowire.com/basketball/player/moussa-diabate-5708"
+  },
+  {
+   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mznxkjddvp2t|immanuelquickley|questionable|status",
+   "at": "2026-11-06T17:59:51.000Z",
+   "seen": "2026-11-06T18:25:34.331Z",
+   "handle": "rotowirenba.bsky.social",
+   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mznxkjddvp2t",
+   "player": "Immanuel Quickley",
+   "team": null,
+   "status": "questionable",
+   "kind": "status",
+   "confidence": 0.9,
+   "text": "Immanuel Quickley: Downgraded to questionable \n\n https://www.rotowire.com/basketball/player/immanuel-quickley-5201"
   }
  ]
 }

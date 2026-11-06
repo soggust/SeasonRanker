@@ -4,10 +4,10 @@
   "adamscheftermirror.bsky.social": "2026-11-06T16:29:44.191Z",
   "rapsheet.bsky.social": "2026-11-06T03:29:31.313Z",
   "nflnewsreposterbot.bsky.social": "2026-11-06T17:28:39.017Z",
-  "insidenflnews.bsky.social": "2026-11-06T17:51:11.704Z",
+  "insidenflnews.bsky.social": "2026-11-06T18:24:36.291Z",
   "nflnewsposter.bsky.social": "2026-11-06T17:51:42.840Z",
-  "rotoworld-fb.bsky.social": "2026-11-06T17:37:53.000Z",
-  "rotowirenfl.bsky.social": "2026-11-06T17:32:03.000Z"
+  "rotoworld-fb.bsky.social": "2026-11-06T18:22:15.000Z",
+  "rotowirenfl.bsky.social": "2026-11-06T18:23:53.000Z"
  },
  "claims": [
   {
@@ -16285,6 +16285,149 @@
    "kind": "status",
    "confidence": 0.95,
    "text": "Cardinals RB Bam Knight (concussion) has been ruled out for Week 9."
+  },
+  {
+   "id": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3mznxoqghor2y|bryceyoung|active|status",
+   "at": "2026-11-06T18:02:12.000Z",
+   "seen": "2026-11-06T18:25:34.331Z",
+   "handle": "rotowirenfl.bsky.social",
+   "post": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3mznxoqghor2y",
+   "player": "Bryce Young",
+   "team": "CAR",
+   "status": "active",
+   "kind": "status",
+   "confidence": 0.8,
+   "text": "Bryce Young: Ready to play, ankle improving \n\n https://www.rotowire.com/football/player/bryce-young-16807"
+  },
+  {
+   "id": "at://did:plc:mbr4badgf6yu56mquzackzew/app.bsky.feed.post/3mznyfsugt22l|ajbrown|out|status",
+   "at": "2026-11-06T18:15:07.316Z",
+   "seen": "2026-11-06T18:25:34.331Z",
+   "handle": "insidenflnews.bsky.social",
+   "post": "at://did:plc:mbr4badgf6yu56mquzackzew/app.bsky.feed.post/3mznyfsugt22l",
+   "player": "A.J. Brown",
+   "team": "NE",
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.95,
+   "text": "Patriots WR A.J. Brown (ankle, knee) has been ruled out for Week 9."
+  },
+  {
+   "id": "at://did:plc:mbr4badgf6yu56mquzackzew/app.bsky.feed.post/3mznygnytv22l|treveyonhenderson|out|status",
+   "at": "2026-11-06T18:15:35.773Z",
+   "seen": "2026-11-06T18:25:34.331Z",
+   "handle": "insidenflnews.bsky.social",
+   "post": "at://did:plc:mbr4badgf6yu56mquzackzew/app.bsky.feed.post/3mznygnytv22l",
+   "player": "TreVeyon Henderson",
+   "team": "NE",
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.95,
+   "text": "Patriots RB TreVeyon Henderson (illness) has been ruled out for Week 9."
+  },
+  {
+   "id": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3mznykhungl2p|bamknight|out|status",
+   "at": "2026-11-06T18:17:43.000Z",
+   "seen": "2026-11-06T18:25:34.331Z",
+   "handle": "rotoworld-fb.bsky.social",
+   "post": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3mznykhungl2p",
+   "player": "Bam Knight",
+   "team": null,
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.85,
+   "text": "Bam Knight (concussion) won't play vs. Seahawks"
+  },
+  {
+   "id": "at://did:plc:mbr4badgf6yu56mquzackzew/app.bsky.feed.post/3mznyp6jzz22l|shedeursanders|none|starting",
+   "at": "2026-11-06T18:20:21.547Z",
+   "seen": "2026-11-06T18:25:34.331Z",
+   "handle": "insidenflnews.bsky.social",
+   "post": "at://did:plc:mbr4badgf6yu56mquzackzew/app.bsky.feed.post/3mznyp6jzz22l",
+   "player": "Shedeur Sanders",
+   "team": "CLE",
+   "status": "none",
+   "kind": "starting",
+   "confidence": 0.9,
+   "text": "Browns HC Todd Monken says Shedeur Sanders will start in Week 9."
+  },
+  {
+   "id": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3mznysgum3l2b|ajbrown|out|status",
+   "at": "2026-11-06T18:22:10.000Z",
+   "seen": "2026-11-06T18:25:34.331Z",
+   "handle": "rotowirenfl.bsky.social",
+   "post": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3mznysgum3l2b",
+   "player": "A.J. Brown",
+   "team": "NE",
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.95,
+   "text": "A.J. Brown: Won't play in Sunday's game \n\n https://www.rotowire.com/football/player/aj-brown-13432"
+  },
+  {
+   "id": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3mznysk7plr2u|ajbrown|out|status",
+   "at": "2026-11-06T18:22:14.000Z",
+   "seen": "2026-11-06T18:25:34.331Z",
+   "handle": "rotoworld-fb.bsky.social",
+   "post": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3mznysk7plr2u",
+   "player": "A.J. Brown",
+   "team": "NE",
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.95,
+   "text": "A.J. Brown (ankle/knee) ruled out for Week 9"
+  },
+  {
+   "id": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3mznyslia5d2t|bryceyoung|active|status",
+   "at": "2026-11-06T18:22:15.000Z",
+   "seen": "2026-11-06T18:25:34.331Z",
+   "handle": "rotoworld-fb.bsky.social",
+   "post": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3mznyslia5d2t",
+   "player": "Bryce Young",
+   "team": "CAR",
+   "status": "active",
+   "kind": "status",
+   "confidence": 0.9,
+   "text": "Canales says Young (ankle) will play vs. Broncos"
+  },
+  {
+   "id": "at://did:plc:mbr4badgf6yu56mquzackzew/app.bsky.feed.post/3mznyvgzezk2l|haroldfannin|active|status",
+   "at": "2026-11-06T18:23:51.767Z",
+   "seen": "2026-11-06T18:25:34.331Z",
+   "handle": "insidenflnews.bsky.social",
+   "post": "at://did:plc:mbr4badgf6yu56mquzackzew/app.bsky.feed.post/3mznyvgzezk2l",
+   "player": "Harold Fannin Jr.",
+   "team": "CLE",
+   "status": "active",
+   "kind": "status",
+   "confidence": 0.9,
+   "text": "Browns TE Harold Fannin Jr. (groin) will play in Week 9."
+  },
+  {
+   "id": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3mznyvijzp722|shedeursanders|none|starting",
+   "at": "2026-11-06T18:23:53.000Z",
+   "seen": "2026-11-06T18:25:34.331Z",
+   "handle": "rotowirenfl.bsky.social",
+   "post": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3mznyvijzp722",
+   "player": "Shedeur Sanders",
+   "team": "CLE",
+   "status": "none",
+   "kind": "starting",
+   "confidence": 0.9,
+   "text": "Shedeur Sanders: Will start Sunday \n\n https://www.rotowire.com/football/player/shedeur-sanders-18479"
+  },
+  {
+   "id": "at://did:plc:mbr4badgf6yu56mquzackzew/app.bsky.feed.post/3mznywri5ik2l|maliknabers|active|status",
+   "at": "2026-11-06T18:24:36.291Z",
+   "seen": "2026-11-06T18:25:34.331Z",
+   "handle": "insidenflnews.bsky.social",
+   "post": "at://did:plc:mbr4badgf6yu56mquzackzew/app.bsky.feed.post/3mznywri5ik2l",
+   "player": "Malik Nabers",
+   "team": "NYG",
+   "status": "active",
+   "kind": "status",
+   "confidence": 0.5,
+   "text": "Giants HC John Harbaugh says WR Malik Nabers' knee is not a concern."
   }
  ]
 }

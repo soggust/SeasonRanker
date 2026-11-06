@@ -3,9 +3,9 @@
  "cursor": {
   "johnston-bot.bsky.social": "2026-11-05T17:59:59.541Z",
   "notfriedgehnic.bsky.social": "2026-11-05T21:08:39.466Z",
-  "dailyfaceoff.bsky.social": "2026-11-06T17:04:01.000Z",
-  "dfotoronto.bsky.social": "2026-11-06T17:33:48.000Z",
-  "marklazerus.bsky.social": "2026-11-06T16:46:11.373Z"
+  "dailyfaceoff.bsky.social": "2026-11-06T18:08:00.000Z",
+  "dfotoronto.bsky.social": "2026-11-06T18:16:17.000Z",
+  "marklazerus.bsky.social": "2026-11-06T18:14:42.614Z"
  },
  "claims": [
   {
@@ -1749,6 +1749,32 @@
    "kind": "role",
    "confidence": 0.4,
    "text": "Maple Leafs lineup news: John Tavares skates in regular jersey on line with Nick Paul, William Nylander"
+  },
+  {
+   "id": "at://did:plc:3uus7y6h3rlrk6sbctzxm4bg/app.bsky.feed.post/3mznxiuoc7i2a|ryanmcleod|none|benched",
+   "at": "2026-11-06T17:58:55.000Z",
+   "seen": "2026-11-06T18:25:34.331Z",
+   "handle": "dailyfaceoff.bsky.social",
+   "post": "at://did:plc:3uus7y6h3rlrk6sbctzxm4bg/app.bsky.feed.post/3mznxiuoc7i2a",
+   "player": "Ryan McLeod",
+   "team": "BUF",
+   "status": "none",
+   "kind": "benched",
+   "confidence": 0.95,
+   "text": "Sabres’ Ryan McLeod, Louis Crevier healthy scratches Friday against Columbus"
+  },
+  {
+   "id": "at://did:plc:3uus7y6h3rlrk6sbctzxm4bg/app.bsky.feed.post/3mznxiuoc7i2a|louiscrevier|none|benched",
+   "at": "2026-11-06T17:58:55.000Z",
+   "seen": "2026-11-06T18:25:34.331Z",
+   "handle": "dailyfaceoff.bsky.social",
+   "post": "at://did:plc:3uus7y6h3rlrk6sbctzxm4bg/app.bsky.feed.post/3mznxiuoc7i2a",
+   "player": "Louis Crevier",
+   "team": "BUF",
+   "status": "none",
+   "kind": "benched",
+   "confidence": 0.95,
+   "text": "Sabres’ Ryan McLeod, Louis Crevier healthy scratches Friday against Columbus"
   }
  ]
 }
