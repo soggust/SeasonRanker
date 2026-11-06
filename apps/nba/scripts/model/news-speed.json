@@ -20160,6 +20160,203 @@
     "seen": "2026-11-06T04:06:48.013Z",
     "own": "2026-11-04T23:58:00.000Z"
    }
+  },
+  "401909287|keshongilbert|out": {
+   "game": "401909287",
+   "start": "2026-11-07T00:00Z",
+   "team": "1",
+   "name": "Keshon Gilbert",
+   "status": "out",
+   "athlete": "4585618",
+   "espn": {
+    "seen": "2026-11-06T06:04:32.285Z",
+    "own": "2026-11-05T22:41:00.000Z"
+   }
+  },
+  "401909287|asanewell|out": {
+   "game": "401909287",
+   "start": "2026-11-07T00:00Z",
+   "team": "1",
+   "name": "Asa Newell",
+   "status": "out",
+   "athlete": "4873201",
+   "espn": {
+    "seen": "2026-11-06T06:04:32.285Z",
+    "own": "2026-11-05T22:33:00.000Z"
+   }
+  },
+  "401909287|jocklandale|out": {
+   "game": "401909287",
+   "start": "2026-11-07T00:00Z",
+   "team": "1",
+   "name": "Jock Landale",
+   "status": "out",
+   "athlete": "3146557",
+   "espn": {
+    "seen": "2026-11-06T06:04:32.285Z",
+    "own": "2026-11-05T22:12:00.000Z"
+   }
+  },
+  "401909287|jalenjohnson|q": {
+   "game": "401909287",
+   "start": "2026-11-07T00:00Z",
+   "team": "1",
+   "name": "Jalen Johnson",
+   "status": "q",
+   "athlete": "4701230",
+   "espn": {
+    "seen": "2026-11-06T06:04:32.285Z",
+    "own": "2026-11-05T22:08:00.000Z"
+   }
+  },
+  "401909287|mouhamedgueye|out": {
+   "game": "401909287",
+   "start": "2026-11-07T00:00Z",
+   "team": "1",
+   "name": "Mouhamed Gueye",
+   "status": "out",
+   "athlete": "4712863",
+   "espn": {
+    "seen": "2026-11-06T06:04:32.285Z",
+    "own": "2026-10-19T19:38:00.000Z"
+   }
+  },
+  "401909287|henriveesaar|out": {
+   "game": "401909287",
+   "start": "2026-11-07T00:00Z",
+   "team": "1",
+   "name": "Henri Veesaar",
+   "status": "out",
+   "athlete": "5105571",
+   "espn": {
+    "seen": "2026-11-06T06:04:32.285Z",
+    "own": "2026-09-21T19:50:00.000Z"
+   }
+  },
+  "401909287|konknueppel|out": {
+   "game": "401909287",
+   "start": "2026-11-07T00:00Z",
+   "team": "1",
+   "name": "Kon Knueppel",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-05T22:20:33.483Z",
+    "own": "2026-11-05T22:05:21.000Z",
+    "why": "@rotowirenba.bsky.social: Kon Knueppel: Out with hamstring strain \n\n https://www"
+   }
+  },
+  "401909287|moussadiabate|q": {
+   "game": "401909287",
+   "start": "2026-11-07T00:00Z",
+   "team": "1",
+   "name": "Moussa Diabate",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-11-05T22:20:33.483Z",
+    "own": "2026-11-05T22:08:12.000Z",
+    "why": "@rotowirenba.bsky.social: Moussa Diabate: Questionable for Friday \n\n https://www"
+   }
+  },
+  "401909287|jarrettallen|q": {
+   "game": "401909287",
+   "start": "2026-11-07T00:00Z",
+   "team": "1",
+   "name": "Jarrett Allen",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-11-05T22:20:33.483Z",
+    "own": "2026-11-05T22:13:11.000Z",
+    "why": "@rotowirenba.bsky.social: Jarrett Allen: Questionable for Friday \n\n https://www."
+   }
+  },
+  "401909287|peytonwatson|q": {
+   "game": "401909287",
+   "start": "2026-11-07T00:00Z",
+   "team": "1",
+   "name": "Peyton Watson",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-11-05T22:20:33.483Z",
+    "own": "2026-11-05T22:15:50.000Z",
+    "why": "@rotowirenba.bsky.social: Peyton Watson: Listed questionable for Friday \n\n https"
+   }
+  },
+  "401909287|anthonydavis|q": {
+   "game": "401909287",
+   "start": "2026-11-07T00:00Z",
+   "team": "1",
+   "name": "Anthony Davis",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-11-05T23:03:44.610Z",
+    "own": "2026-11-05T22:51:57.000Z",
+    "why": "@rotowirenba.bsky.social: Anthony Davis: Tagged questionable for Friday \n\n https"
+   },
+   "athlete": "6583",
+   "espn": {
+    "seen": "2026-11-06T06:04:32.285Z",
+    "own": "2026-11-05T22:51:00.000Z"
+   }
+  },
+  "401909287|scottypippen|out": {
+   "game": "401909287",
+   "start": "2026-11-07T00:00Z",
+   "team": "1",
+   "name": "Scotty Pippen",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-05T23:03:44.610Z",
+    "own": "2026-11-05T23:03:33.000Z",
+    "why": "@rotowirenba.bsky.social: Scotty Pippen: Out vs. Thunder \n\n https://www.rotowire"
+   }
+  },
+  "401909287|reecebeekman|out": {
+   "game": "401909287",
+   "start": "2026-11-07T00:00Z",
+   "team": "27",
+   "name": "Reece Beekman",
+   "status": "out",
+   "athlete": "4432187",
+   "espn": {
+    "seen": "2026-11-06T06:04:32.285Z",
+    "own": "2026-11-02T18:22:00.000Z"
+   }
+  },
+  "401909287|tristanvukcevic|out": {
+   "game": "401909287",
+   "start": "2026-11-07T00:00Z",
+   "team": "27",
+   "name": "Tristan Vukcevic",
+   "status": "out",
+   "athlete": "4997537",
+   "espn": {
+    "seen": "2026-11-06T06:04:32.285Z",
+    "own": "2026-11-01T21:51:00.000Z"
+   }
+  },
+  "401909287|justinchampagnie|out": {
+   "game": "401909287",
+   "start": "2026-11-07T00:00Z",
+   "team": "27",
+   "name": "Justin Champagnie",
+   "status": "out",
+   "athlete": "4432907",
+   "espn": {
+    "seen": "2026-11-06T06:04:32.285Z",
+    "own": "2026-10-28T18:38:00.000Z"
+   }
+  },
+  "401909287|jamirwatkins|out": {
+   "game": "401909287",
+   "start": "2026-11-07T00:00Z",
+   "team": "27",
+   "name": "Jamir Watkins",
+   "status": "out",
+   "athlete": "4606840",
+   "espn": {
+    "seen": "2026-11-06T06:04:32.285Z",
+    "own": "2026-07-30T20:11:00.000Z"
+   }
   }
  }
 }
