@@ -2450,3 +2450,38 @@ test("D107 the conviction stake measured and held: a replay flag only, tracked a
   assert.ok(fs.readFileSync(path.resolve("libs/ranker/scripts/model/conviction.mjs"), "utf8").includes("process.env.REPLAY_CONVICTION === '1'"));
   for (const f of ["desk.mjs", "props.mjs", "run.mjs", "picks.mjs", "leagues.mjs"]) assert.ok(!fs.readFileSync(path.resolve("libs/ranker/scripts/model", f), "utf8").includes("conviction.mjs"), `${f} reads no conviction`);
 });
+
+test("D108 within-season recency measured: a replay flag only, half-lives shrunk toward flat, picked on earlier seasons", async () => {
+  const decisions = fs.readFileSync(path.resolve("libs/ranker/scripts/model/DECISIONS.md"), "utf8");
+  assert.ok(decisions.includes("### D108."));
+  const R = await import("../libs/ranker/scripts/model/recency.mjs");
+  // (the flat today is in the grid and is what any sport reads with the flag off)
+  assert.ok(R.HL_GRID.includes(Infinity));
+  for (const s of ["nfl", "nba", "nhl", "mlb"]) for (const k of ["lines", "props"]) assert.equal(R.hlOf(s, k, false), Infinity, `${s} ${k} flat when off`);
+  // (shrunk toward flat: a row however old keeps 1 - SHRINK of its weight, never off)
+  assert.equal(R.SHRINK, 0.5);
+  assert.ok(Math.abs(R.dayFactor(1e6, 15) - 0.5) < 1e-9);
+  assert.equal(R.dayFactor(0, 15), 1);
+  assert.equal(R.dayFactor(100, Infinity), 1);
+  // (each season aged from its own newest row: last season read from its end, not from today)
+  const rows = [{ t: 0, season: 1 }, { t: 30 * 864e5, season: 1 }, { t: 400 * 864e5, season: 2 }];
+  const f = R.seasonFactors(rows, 30);
+  assert.ok(Math.abs(f[0] - 0.75) < 1e-9 && f[1] === 1 && f[2] === 1);
+  // (rescaled to the effective count, never more evidence than the rows are worth)
+  const w = R.recencyWeights(rows, 30);
+  const sw = w.reduce((a, b) => a + b, 0);
+  assert.ok(sw <= rows.length + 1e-9 && sw > 2.9);
+  // (measuring only: the flag; the live desk reads none of it)
+  assert.ok(fs.readFileSync(path.resolve("libs/ranker/scripts/model/recency.mjs"), "utf8").includes("process.env.REPLAY_RECENCY === '1'"));
+  for (const f2 of ["desk.mjs", "props.mjs", "run.mjs", "picks.mjs", "leagues.mjs", "project.mjs"]) assert.ok(!fs.readFileSync(path.resolve("libs/ranker/scripts/model", f2), "utf8").includes("recency.mjs"), `${f2} reads no recency`);
+  // (no form term without the flag: the shipped context unchanged)
+  const H = await import("../libs/ranker/scripts/model/hockey.mjs");
+  assert.ok(!H.HOCKEY_TERMS.some((t) => t.key === "xgForm"));
+  // (the history's trust walk with no weigh is the flat one)
+  const G = await import("../libs/ranker/scripts/model/gate-history.mjs");
+  const seen = [];
+  const fit = (list) => (seen.push(list.map((b) => b.tw ?? 1)), { trust: 0.1 });
+  const hrows = [0, 1, 2].map((i) => ({ t: Date.UTC(2026, i, 5), season: 2026, market: "spread", raw: 0.55, f: 0.5, y: 1, event: String(i) }));
+  G.walkTrust(hrows, () => "spread", fit, () => 0.5);
+  assert.ok(seen.every((l) => l.every((x) => x === 1)));
+});

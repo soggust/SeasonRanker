@@ -126,7 +126,7 @@ export function resolveVersion(spec) {
 }
 
 // (a version's code by part, as hashes: what changed between two)
-const PARTS = { props: ['project.mjs', 'props.mjs', 'matchups.mjs', 'playerlogs.mjs'], games: ['ratings.mjs', 'context.mjs', 'margins.mjs', 'football.mjs', 'hockey.mjs', 'baseball.mjs', 'teamstats.mjs', 'terms.mjs', 'officials.mjs', 'leagues.mjs'], pricing: ['correct.mjs', 'desk.mjs', 'calib.mjs', 'backtest.mjs', 'clv.mjs', 'anchor.mjs'], live: ['run.mjs', 'timing.mjs', 'lineup-risk.mjs', 'suggest.mjs', 'checks.mjs', 'check-learn.mjs', 'check-patterns.mjs', 'research.mjs', 'picks.mjs', 'board.mjs', 'news.mjs', 'notes.mjs', 'playchance.mjs', 'anytime.mjs', 'oddsapi.mjs', 'espn.mjs'], mma: ['fights-model.mjs', 'fights-totals.mjs', 'fights-venue.mjs', 'mma-desk.mjs'] };
+const PARTS = { props: ['project.mjs', 'props.mjs', 'matchups.mjs', 'playerlogs.mjs'], games: ['ratings.mjs', 'context.mjs', 'margins.mjs', 'football.mjs', 'hockey.mjs', 'baseball.mjs', 'teamstats.mjs', 'terms.mjs', 'officials.mjs', 'leagues.mjs'], pricing: ['correct.mjs', 'desk.mjs', 'calib.mjs', 'backtest.mjs', 'clv.mjs', 'anchor.mjs', 'recency.mjs'], live: ['run.mjs', 'timing.mjs', 'lineup-risk.mjs', 'suggest.mjs', 'checks.mjs', 'check-learn.mjs', 'check-patterns.mjs', 'research.mjs', 'picks.mjs', 'board.mjs', 'news.mjs', 'notes.mjs', 'playchance.mjs', 'anytime.mjs', 'oddsapi.mjs', 'espn.mjs'], mma: ['fights-model.mjs', 'fights-totals.mjs', 'fights-venue.mjs', 'mma-desk.mjs'] };
 export function codeOf(dir) {
   const out = {};
   for (const [part, files] of Object.entries(PARTS)) {
@@ -312,6 +312,14 @@ export function pricePropsWalk(V, sport, all, mOf, { log = () => {} } = {}) {
   const out = new Map();
   const rowsAll = V.correct ? V.correct.corrRows(withM) : null;
   const keyOf = (b) => `prop:${b.propType}`;
+  // (D108: the trust's rows at the version's within-season recency, REPLAY_RECENCY=1 only (recency.mjs): each sport's rows
+  // aged from its own newest, the weights rescaled to their effective count; none: flat)
+  const hlP = V.recency?.hlOf ? V.recency.hlOf(sport, 'props') : Infinity;
+  const weighP = (list) => {
+    if (!fin(hlP) || !list.length) return list;
+    const w = V.recency.recencyWeights(list, hlP, { tOf: (b) => Date.parse(b.start), seasonOf: (b) => b.sport });
+    return list.map((b, i) => ({ ...b, tw: (b.tw ?? 1) * w[i] }));
+  };
   let corrDays = 0;
   for (const d of days) {
     const before = (t) => etDay(t) < d;
@@ -324,7 +332,7 @@ export function pricePropsWalk(V, sport, all, mOf, { log = () => {} } = {}) {
     }
     let trustAt = null;
     if (!fit) {
-      const prior = withM.filter((b) => before(Date.parse(b.start)));
+      const prior = weighP(withM.filter((b) => before(Date.parse(b.start))));
       const minePrior = prior.filter((b) => b.sport === sport);
       const keys = [...new Set(today.map(keyOf))];
       const ladder = V.desk.fitBuckets ? V.desk.fitBuckets(prior, minePrior, keyOf, keys) : null;
@@ -382,7 +390,7 @@ export async function scoreVersion(dir, sport, { refit = false, propsLayer = tru
   // (lineupRisk: the lineup risk's fit on the history's opens against their closes (lineup-risk.mjs, D42); none before it)
   // (picks, replay: the bands (picks.mjs edgeLevel) and the replayed record (replay-record.mjs, the Bot's history);
   // a version from before them has no replayed record)
-  for (const n of ['leagues', 'ratings', 'context', 'margins', 'backtest', 'desk', 'props', 'project', 'correct', 'anchor', 'lineup-risk', 'picks', 'replay-record', 'confidence', 'reasons', 'clv-bands', 'windows', 'trusted', 'tuned']) V[n === 'lineup-risk' ? 'lineupRisk' : n === 'replay-record' ? 'replay' : n === 'clv-bands' ? 'clvBands' : n] = await load(dir, n);
+  for (const n of ['leagues', 'ratings', 'context', 'margins', 'backtest', 'desk', 'props', 'project', 'correct', 'anchor', 'lineup-risk', 'picks', 'replay-record', 'confidence', 'reasons', 'clv-bands', 'windows', 'trusted', 'tuned', 'recency']) V[n === 'lineup-risk' ? 'lineupRisk' : n === 'replay-record' ? 'replay' : n === 'clv-bands' ? 'clvBands' : n] = await load(dir, n);
   // (the loaders: this checkout's, so both versions read the same history)
   const H = { context: await import('./context.mjs'), logs: await import('./playerlogs.mjs'), props: await import('./props.mjs'), fitcache: await import('./fitcache.mjs'), espn: await import('./espn.mjs'), history: await import('./gate-history.mjs') };
   const cfg = V.leagues.LEAGUES[sport];
@@ -492,7 +500,14 @@ export async function scoreVersion(dir, sport, { refit = false, propsLayer = tru
   // (the totals' trust (D44, a version with trustStart): from 0, on the ledger's own graded totals alone, never the
   // backtest's closes, as the live desk fits it; the rest on the backtest's closes from 0.5 as before)
   const ledgerTotals = (ledgerOf(sport).bets ?? []).filter((b) => b.market === 'total' && !b.void && (decided(b) || fin(b.clv?.q)) && fin(b.fair) && fin(b.model) && Date.parse(b.placedAt ?? b.start) >= Date.parse(V.leagues.MODEL_EPOCH ?? PROP_FROM));
-  const trust = Object.fromEntries(MARKETS.map((m) => [m, m === 'total' && V.desk.trustStart ? V.desk.fitTrust(ledgerTotals, V.desk.trustStart('total')).trust : V.desk.fitTrust(V.backtest.trustBets(btRep.filter((b) => b.market === m)), 0.5).trust]));
+  // (D108: the trust's rows at the version's within-season recency, REPLAY_RECENCY=1 only (recency.mjs); none: flat)
+  const hlL = V.recency?.hlOf ? V.recency.hlOf(sport, 'lines') : Infinity;
+  const weighL = (list) => {
+    if (!fin(hlL) || !list.length) return list;
+    const w = V.recency.recencyWeights(list, hlL, { tOf: (b) => Date.parse(b.start), seasonOf: () => sport });
+    return list.map((b, i) => ({ ...b, tw: (b.tw ?? 1) * w[i] }));
+  };
+  const trust = Object.fromEntries(MARKETS.map((m) => [m, m === 'total' && V.desk.trustStart ? V.desk.fitTrust(ledgerTotals, V.desk.trustStart('total')).trust : V.desk.fitTrust(weighL(V.backtest.trustBets(btRep.filter((b) => b.market === m))), 0.5).trust]));
   const evScale = fin(state.evScale) ? state.evScale : 0.08;
   const ledgerLines = withPull((ledgerOf(sport).bets ?? []).filter((b) => MARKETS.includes(b.market) && !b.void && (decided(b) || fin(b.clv?.q)) && fin(b.fair) && Date.parse(b.start) >= Date.parse(PROP_FROM)).map((b) => ({ ...b, sport })), Object.fromEntries(SPORTS.map((s) => [s, ledgerOf(s)])));
   const linesAt = (list, expOf) =>

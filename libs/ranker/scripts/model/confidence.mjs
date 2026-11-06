@@ -55,6 +55,7 @@
 import { existsSync, readFileSync } from 'node:fs';
 import path from 'node:path';
 import { seasonWeight } from './gate-score.mjs';
+import { hlOf, seasonFactors } from './recency.mjs';
 import { SETTLE_MS, binLoss, clip, fitLogit, implied, lineBucket, logit, monthKey, monthStart, oneSe, runAt, runningStats, sigmoid, specOf } from './residual.mjs';
 import { PRACTICE_UNITS, decimal, stakeFor, stakeKelly } from './desk.mjs';
 
@@ -348,7 +349,18 @@ export function fitWalk(rows, { sport = null, every = EVERY_MONTHS, log = () => 
     if (before.length < min) continue;
     let cur = null;
     for (const k of before) if (fin(k.row.season) && (cur === null || k.row.season > cur)) cur = k.row.season;
-    const wOf = (k) => (sport && fin(cur) && fin(k.row.season) ? Math.max(0.02, seasonWeight(sport, k.row.season, cur).w) : 1) * (k.ev > 0 ? betWeight : 1);
+    // (D108's within-season recency, REPLAY_RECENCY=1 only (recency.mjs): each kind's rows aged from their season's newest
+    // before the cutoff, the factors rescaled to a mean of 1; off: 1)
+    const recent = new Map();
+    for (const kind of ['props', 'lines']) {
+      const hl = hlOf(sport, kind);
+      if (!Number.isFinite(hl)) continue;
+      const mine = before.filter((k) => (k.row.market === 'prop') === (kind === 'props'));
+      const f = seasonFactors(mine, hl, { tOf: (k) => k.row.t, seasonOf: (k) => k.row.season });
+      const mean = f.reduce((a, b) => a + b, 0) / Math.max(1, f.length);
+      mine.forEach((k, j) => recent.set(k, f[j] / mean));
+    }
+    const wOf = (k) => (sport && fin(cur) && fin(k.row.season) ? Math.max(0.02, seasonWeight(sport, k.row.season, cur).w) : 1) * (k.ev > 0 ? betWeight : 1) * (recent.get(k) ?? 1);
     const t0 = Date.now();
     const win = fitPart(before, run, (k) => k.y, wOf, { prev: prev.win, min, offset });
     // (the beat part's prior is a coin: whether a pick beats the close has nothing to do with its chance at the price)

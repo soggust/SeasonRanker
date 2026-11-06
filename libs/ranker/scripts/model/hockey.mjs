@@ -12,6 +12,7 @@
 
 import { term } from './terms.mjs';
 import { moneypuckGames, pool } from './sources.mjs';
+import { FORM_HL, RECENCY } from './recency.mjs';
 
 
 export const HOCKEY_TERMS = [
@@ -19,6 +20,8 @@ export const HOCKEY_TERMS = [
   term('xgT', 'strength', 't', 'Expected goals (total)', "to the total per expected goal a game of both teams' for and against over average"),
   term('goalieX', 'starters', 'm', 'Goalie GSAx', 'per goal a game its starter saves above expected over its usual, against the other side'),
   term('lastChange', 'matchups', 'm', 'Last change', "per 10 points of both teams' share of goals from their top three scorers over average"),
+  // (D108's challenger, REPLAY_RECENCY=1 only: the expected goals' recent form, soft)
+  ...(RECENCY ? [{ ...term('xgForm', 'strength', 'm', 'Expected goals form', 'per expected goal a game the recent games (faded, recency.mjs FORM_HL) say beyond the season to date'), soft: true }] : []),
 ];
 
 // (MoneyPuck's team codes, where they differ from ESPN's)
@@ -65,12 +68,18 @@ export function hockeyOf(facts, live) {
     const n = w * (t?.n ?? 0) + 10;
     return { sf: (w * (t?.sf ?? 0) + 10 * lgShots.avg) / n, sa: (w * (t?.sa ?? 0) + 10 * lgShots.avg) / n };
   };
+  // (D108: each team's this season's games faded by FORM_HL games (fk a game), beside its flat sums: form, the faded
+  // edge rescaled to the season's games less the flat one, over the season's own denominator)
+  const fk = Math.pow(0.5, 1 / (FORM_HL.nhl ?? 16));
+  const forms = new Map();
   const team = (id, season) => {
     const t = teams.get(id);
-    if (!t) return { edge: 0, sum: 0 };
+    if (!t) return { edge: 0, sum: 0, form: 0 };
     const w = t.season === season ? 1 : 0.5;
     const n = w * t.n + 10;
-    return { edge: (w * (t.xgf - t.xga)) / n, sum: (w * (t.xgf + t.xga) + 10 * 2 * lg.xg) / n - 2 * lg.xg };
+    const fm = forms.get(id);
+    const form = RECENCY && fm && fm.season === season && fm.fn > 0 ? (fm.fs * (fm.n / fm.fn) - fm.s) / n : 0;
+    return { edge: (w * (t.xgf - t.xga)) / n, sum: (w * (t.xgf + t.xga) + 10 * 2 * lg.xg) / n - 2 * lg.xg, form };
   };
   const gsax = (id, season) => {
     const s = goalies.get(id);
@@ -106,7 +115,7 @@ export function hockeyOf(facts, live) {
     const shA = shotRate(g.away, g.season);
     const expShots = [(shH.sf * shA.sa) / lgShots.avg, (shA.sf * shH.sa) / lgShots.avg];
     return {
-      terms: { xgEdge: h.edge - a.edge, xgT: h.sum + a.sum, goalieX: gh - ga, lastChange: (sh + sa - 2 * lg.share) * 10 },
+      terms: { xgEdge: h.edge - a.edge, xgT: h.sum + a.sum, goalieX: gh - ga, lastChange: (sh + sa - 2 * lg.share) * 10, ...(RECENCY ? { xgForm: h.form - a.form } : {}) },
       // (what was known before the goalies (context.mjs DAY_OF_TERMS): each side's last starter)
       early: { goalieX: vsUsual((recent.get(g.home) ?? []).at(-1) ?? null, g.home) - vsUsual((recent.get(g.away) ?? []).at(-1) ?? null, g.away) },
       info: { xg: [r3(h.edge), r3(a.edge)], gsaxVsUsual: [r3(gh), r3(ga)], topThree: [r3(sh), r3(sa)], shots: expShots.map((x) => Math.round(x * 10) / 10), shotsAvg: Math.round(lgShots.avg * 10) / 10 },
@@ -136,6 +145,15 @@ export function hockeyOf(facts, live) {
             const t = teams.get(id);
             const keep = !t ? 0 : t.season === g.season ? 1 : 0.5;
             teams.set(id, { season: g.season, n: (t?.n ?? 0) * keep + 1, xgf: (t?.xgf ?? 0) * keep + xf, xga: (t?.xga ?? 0) * keep + xa });
+            if (RECENCY) {
+              const fm0 = forms.get(id);
+              const fm = fm0 && fm0.season === g.season ? fm0 : { season: g.season, s: 0, n: 0, fs: 0, fn: 0 };
+              fm.s += xf - xa;
+              fm.n += 1;
+              fm.fs = fm.fs * fk + (xf - xa);
+              fm.fn = fm.fn * fk + 1;
+              forms.set(id, fm);
+            }
             // (the game's goals saved above expected, shared among its goalies by the shots each faced)
             const list = f[where] ?? [];
             const shots = list.reduce((s, x) => s + x[1], 0) || 1;

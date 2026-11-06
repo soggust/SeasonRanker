@@ -24,6 +24,7 @@ import { OFFICIAL_TERMS, gatherOfficials, officialsOf, refereesOf } from './offi
 import { FOOTBALL_TERMS, WX_COVER, footballOf, gatherFootball } from './football.mjs';
 import { HOCKEY_TERMS, gatherHockey, hockeyOf } from './hockey.mjs';
 import { BASEBALL_TERMS, baseballOf, gatherBaseball } from './baseball.mjs';
+import { FORM_HL, RECENCY } from './recency.mjs';
 import { DAY, PITCH_COLS, elevations, etDay, forecast, geocode, isoDay, miles, mlbHands, mlbPitching, mlbSchedule, nflverseGames, pitchLine, pool } from './sources.mjs';
 
 
@@ -155,6 +156,8 @@ export const TERMS = {
     TRAVEL,
     term('pitcher', 'starters', 'm', 'Pitcher edge', 'per run a 9 innings its starter allows fewer than the other'),
     term('pitcherT', 'starters', 't', 'Pitchers (total)', 'to the total per run a 9 innings both starters allow under average'),
+    // (D108's challenger, REPLAY_RECENCY=1 only: the starter's recent form, soft)
+    ...(RECENCY ? [{ ...term('pitcherForm', 'starters', 'm', 'Pitcher form', 'per run a 9 innings his recent starts (faded, recency.mjs FORM_HL) say beyond his season to date, against the other'), soft: true }] : []),
     term('temp', 'weather', 't', 'Temperature', 'to the total per 10°F over 70°F (outdoors)'),
     term('windOut', 'weather', 't', 'Wind out', 'to the total per 10 mph blowing out toward center (in: negative)'),
     term('rain', 'weather', 't', 'Rain', "to the total when it's raining at first pitch (StatsAPI's report; a coming game without one posted is none, and flagged when rain is forecast)"),
@@ -175,7 +178,7 @@ export const DAY_OF_TERMS = {
   nfl: { qb: ['starters'], qbT: ['starters'], olChanges: ['starters'], cold: ['weather'], wind: ['weather'], precip: ['weather'], snow: ['weather'], crosswind: ['weather'], ...REFS },
   nba: { out: ['inactives'], outT: ['inactives'], ...REFS },
   nhl: { goalie: ['goalies'], goalieT: ['goalies'], goalieX: ['goalies'], ...REFS },
-  mlb: { pitcher: ['probables'], pitcherT: ['probables'], platoon: ['lineups', 'probables'], platoonT: ['lineups', 'probables'], 'parkL:': ['lineups', 'probables'], 'parkLT:': ['lineups', 'probables'], temp: ['weather'], windOut: ['weather'], rain: ['weather'], airThin: ['weather'], ...REFS, refZoneX: ['officials', 'probables'] },
+  mlb: { pitcher: ['probables'], pitcherT: ['probables'], pitcherForm: ['probables'], platoon: ['lineups', 'probables'], platoonT: ['lineups', 'probables'], 'parkL:': ['lineups', 'probables'], 'parkLT:': ['lineups', 'probables'], temp: ['weather'], windOut: ['weather'], rain: ['weather'], airThin: ['weather'], ...REFS, refZoneX: ['officials', 'probables'] },
 };
 // (a term's day-of facts, [] for none: by its key, a park's lean by its prefix)
 export function dayOfFacts(sport, key) {
@@ -1504,10 +1507,20 @@ const STARTERS = {
     const fipRaw = (x) => (13 * x[6] + 3 * (x[4] + x[5]) - 2 * x[3]) / Math.max(1, x[0] / 3);
     const lgRa9 = ra9(lgLine);
     const fipC = lgRa9 - fipRaw(lgLine);
-    const quality = (id, season, day) => {
+    // (D108's form (REPLAY_RECENCY=1): his season's starts faded by FORM_HL starts, rescaled to their count, through
+    // the same line and prior, less the flat one's)
+    const fk = Math.pow(0.5, 1 / (FORM_HL.mlb ?? 6));
+    const quality = (id, season, day, faded = false) => {
       const p = facts.pitchers?.[id];
       if (!p) return 0;
-      const cur = sum((p.logs?.[season] ?? []).filter((r) => r[0] < day));
+      const rows = (p.logs?.[season] ?? []).filter((r) => r[0] < day);
+      let cur = sum(rows);
+      if (faded && rows.length) {
+        const ord = [...rows].sort((a, b) => a[0] - b[0]);
+        const w = ord.map((_, i) => Math.pow(fk, ord.length - 1 - i));
+        const k = ord.length / w.reduce((a, b) => a + b, 0);
+        cur = cur.map((_, j) => ord.reduce((s, r, i) => s + k * w[i] * (r[j + 1] ?? 0), 0));
+      }
       const prevRows = p.logs?.[season - 1];
       const prev = prevRows ? sum(prevRows) : (p.totals?.[season - 1] ?? [0, 0, 0, 0, 0, 0, 0]);
       const K = 120;
@@ -1525,8 +1538,9 @@ const STARTERS = {
       const hq = f.hp ? quality(f.hp, g.season, day) : 0;
       const aq = f.ap ? quality(f.ap, g.season, day) : 0;
       if (!g.final && (!f.hp || !f.ap)) flags.push('a starting pitcher not announced');
+      const form = (pid, q) => (RECENCY && pid ? quality(pid, g.season, day, true) - q : 0);
       return {
-        terms: { pitcher: hq - aq, pitcherT: hq + aq },
+        terms: { pitcher: hq - aq, pitcherT: hq + aq, ...(RECENCY ? { pitcherForm: form(f.hp, hq) - form(f.ap, aq) } : {}) },
         info: { home: facts.pitchers?.[f.hp]?.n ?? null, away: facts.pitchers?.[f.ap]?.n ?? null, saved: [hq, aq] },
         flags,
       };

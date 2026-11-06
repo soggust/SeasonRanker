@@ -271,7 +271,10 @@ export function propIndexByPlayer(index, rows, games = []) {
 // f, y, q, event, t })
 // The map also answers at(k, t): k's trust as of the month of t, from the rows of the months before it (a row priced
 // before its game's month, an open, reads the trust as of its own snapshot: no result after it, DECISIONS.md D48)
-export function walkTrust(rows, keyOf, fitTrust, start) {
+// weigh: the fit's rows weighted (D108's within-season recency, a version with recency.mjs under REPLAY_RECENCY=1:
+// each row's tw); none, every row 1 as before
+export function walkTrust(rows, keyOf, fitTrust, start, weigh = null) {
+  const fitOf = (list, k) => fitTrust(weigh ? weigh(list) : list, start(k)).trust;
   const months = [...new Set(rows.map((x) => new Date(x.t).toISOString().slice(0, 7)))].sort();
   const out = new Map();
   const monthOf = (t) => new Date(t).toISOString().slice(0, 7);
@@ -287,11 +290,11 @@ export function walkTrust(rows, keyOf, fitTrust, start) {
     const id = `${k}|${m}`;
     if (memo.has(id)) return memo.get(id);
     const list = (byKey.get(k) ?? []).filter((x) => monthOf(x.t) < m).map(asBet);
-    const v = list.length ? fitTrust(list, start(k)).trust : start(k);
+    const v = list.length ? fitOf(list, k) : start(k);
     memo.set(id, v);
     return v;
   };
-  function asBet(x) { return ({ market: x.market, model: x.raw, fair: x.f, event: x.event, status: x.y === 1 ? 'won' : x.y === 0 ? 'lost' : 'push', ...(fin(x.q) ? { clv: { q: x.q } } : {}), ...(fin(x.named) ? { named: x.named } : {}) }); }
+  function asBet(x) { return ({ market: x.market, model: x.raw, fair: x.f, event: x.event, status: x.y === 1 ? 'won' : x.y === 0 ? 'lost' : 'push', ...(fin(x.q) ? { clv: { q: x.q } } : {}), ...(fin(x.named) ? { named: x.named } : {}), ...(weigh ? { t: x.t, season: x.season } : {}) }); }
   const sorted = [...rows].sort((a, b) => a.t - b.t);
   const prior = new Map();
   let i = 0;
@@ -303,7 +306,7 @@ export function walkTrust(rows, keyOf, fitTrust, start) {
       const k = keyOf(x);
       if (!cache.has(k)) {
         const list = prior.get(k) ?? [];
-        cache.set(k, list.length ? fitTrust(list, start(k)).trust : start(k));
+        cache.set(k, list.length ? fitOf(list, k) : start(k));
       }
       out.set(x, cache.get(k));
     }
@@ -397,7 +400,10 @@ export function finish(V, rows, keyOf, start, kind) {
   // (the model the trust reads and prices: the anchored chance where the version has it (anch, D33), else the
   // bot's own (raw))
   const modelOf = (x) => (fin(x.anch) ? x.anch : x.raw);
-  const trust = walkTrust(closeRows.map((x) => ({ ...x, raw: modelOf(x) })), keyOf, V.desk.fitTrust, start);
+  // (D108: the version's within-season recency on the trust's rows, REPLAY_RECENCY=1 only (recency.mjs hlOf); none: flat)
+  const hl = V.recency?.hlOf ? V.recency.hlOf(closeRows[0]?.sport, kind) : Infinity;
+  const weigh = fin(hl) ? (list) => { const w = V.recency.recencyWeights(list, hl); return list.map((b, i) => ({ ...b, tw: w[i] })); } : null;
+  const trust = walkTrust(closeRows.map((x) => ({ ...x, raw: modelOf(x) })), keyOf, V.desk.fitTrust, start, weigh);
   const trustOf = new Map([...trust].map(([x, t]) => [x.id, t]));
   // (a close row at its own month's trust; an open row at the trust as of its own snapshot (the months before the
   // snapshot's: no result after it), its game's close row's where it has no snapshot time)
