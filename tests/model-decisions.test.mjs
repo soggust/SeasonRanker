@@ -2585,3 +2585,26 @@ test("D110 the under shade and the no-overs rule measured: environment flags, th
   for (const f of ["desk.mjs", "lean.mjs", "anchor.mjs", "correct.mjs", "calib.mjs", "picks.mjs", "leagues.mjs"]) assert.ok(!src(f).includes("shade.mjs"), `${f} reads no shade`);
   assert.ok(!/NO_OVERS_DISCOUNT|oversDiscount/.test(src("shade.mjs") + src("props.mjs") + src("gate.mjs")), "no discount on top of the shade");
 });
+
+test("D111 the over-shade as a function of public attention measured and held: the research script in place and reading nothing of the desk, the shade in shade.mjs still flat by sport and stat", async () => {
+  const decisions = fs.readFileSync(path.resolve("libs/ranker/scripts/model/DECISIONS.md"), "utf8");
+  assert.ok(decisions.includes("### D111."));
+  // (the measurement is re-runnable from the repo: props <nhl|nba> [c|o] and lines <sport> [dk|pin])
+  const research = fs.readFileSync(path.resolve("libs/ranker/scripts/model/research/attention-shade.mjs"), "utf8");
+  assert.ok(research.includes("D111"));
+  assert.match(research, /MODE === 'props'/);
+  assert.match(research, /MODE === 'lines'/);
+  // (research only: it reads the archive and the player-log cache, never the desk's modules; nothing in the desk reads it)
+  assert.ok(!/from '\.\.\/(desk|props|shade|gate|run)\.mjs'/.test(research), "the research script imports nothing of the desk");
+  for (const f of ["desk.mjs", "props.mjs", "shade.mjs", "gate.mjs", "gate-history.mjs", "run.mjs"]) assert.ok(!src(f).includes("attention-shade"), `${f} reads no attention research`);
+  // (nothing built: no attention term in the shade; the fit and the walk are keyed by sport and stat alone)
+  const shade = src("shade.mjs");
+  assert.ok(!/ATTENTION_SHADE|attention/i.test(shade), "no attention term in shade.mjs");
+  assert.match(shade, /const k = `\$\{x\.sport\}\|\$\{x\.stat\}`;/);
+  const S = await import("../libs/ranker/scripts/model/shade.mjs");
+  const rows = [{ sport: "nhl", stat: "sh", t: Date.UTC(2025, 0, 10), f: 0.55, y: 0 }, { sport: "nhl", stat: "sh", t: Date.UTC(2025, 0, 11), f: 0.55, y: 1 }];
+  // (the same rows read the same shade whatever else is on them: a playoff flag or a market tier changes nothing)
+  const a = S.fitShade(rows).shade;
+  const b = S.fitShade(rows.map((r) => ({ ...r, playoff: true, market: 2, slate: 1 }))).shade;
+  assert.equal(a, b);
+});
