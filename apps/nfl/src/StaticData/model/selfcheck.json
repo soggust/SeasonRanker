@@ -1,5 +1,5 @@
 {
- "at": "2026-11-07T16:21:10.744Z",
+ "at": "2026-11-07T18:06:45.914Z",
  "baseline": {
   "from": "2026-10-03",
   "to": "2026-10-31"
@@ -434,16 +434,16 @@
     "401873040:prop:anyTd:4360967",
     "401873042:prop:anyTd:4429795"
    ],
-   "headline": "25 open bets stale (run the desk with replace), 0 past their start by 48h ungraded, 46 of 77 graded this week without a close",
+   "headline": "26 open bets stale (run the desk with replace), 0 past their start by 48h ungraded, 46 of 77 graded this week without a close",
    "how": "open bets on games not started: past the gap now, or published at a band today's trust wouldn't give them; open bets past their start plus VOID_AFTER; this week's graded bets with no close read",
    "id": "C13",
    "metric": "stale",
-   "n": 341,
+   "n": 357,
    "needs": null,
    "rows": [
     {
      "key": "stale",
-     "n": 25,
+     "n": 26,
      "why": [
       "past the gap",
       "published LIKE, PASS at today's trust"
@@ -463,7 +463,7 @@
    "tested": null,
    "threshold": "watch 5 stale; flag 10 stale or any open 48h past its start",
    "title": "Stale open book and pipeline",
-   "value": 25
+   "value": 26
   },
   {
    "examples": [],
@@ -912,7 +912,7 @@
    "how": "placed this week against the 28 days before: the share of the bets each field applies to that are missing it",
    "id": "C14",
    "metric": "share",
-   "n": 420,
+   "n": 436,
    "needs": null,
    "rows": [
     {
@@ -925,9 +925,9 @@
     },
     {
      "key": "fairFrom unknown",
-     "n": 6,
-     "of": 33,
-     "share": 0.1818,
+     "n": 11,
+     "of": 49,
+     "share": 0.2245,
      "shareBase": 0.3182,
      "status": "ok"
     },
@@ -950,7 +950,7 @@
     {
      "key": "intent",
      "n": 0,
-     "of": 420,
+     "of": 436,
      "share": 0,
      "shareBase": 0.0053,
      "status": "ok"
@@ -974,7 +974,7 @@
     {
      "key": "publishedKelly",
      "n": 0,
-     "of": 6,
+     "of": 8,
      "share": 0,
      "shareBase": 0,
      "status": "thin"
@@ -1112,7 +1112,7 @@
      "key": "shadow:gap",
      "lost": 27,
      "n": 50,
-     "open": 0,
+     "open": 1,
      "profit": -5.62,
      "push": 0,
      "won": 23
@@ -1315,28 +1315,36 @@
   },
   {
    "examples": [],
-   "headline": "line moved: 8 of 420 bets placed this week (2%) against 3% before",
+   "headline": "line moved: 9 of 436 bets placed this week (2%) against 3% before",
    "how": "placed this week against the 28 days before: the bets a guard cut to a half unit, by kind",
    "id": "C8",
    "metric": "ratio",
-   "n": 420,
+   "n": 436,
    "needs": [
     "state.tallies (the guards' skips by day: the Bot keeps only the bets it placed)"
    ],
    "rows": [
     {
      "key": "line moved",
-     "n": 8,
-     "ratio": 0.6032,
-     "share": 0.019,
+     "n": 9,
+     "ratio": 0.6537,
+     "share": 0.0206,
      "shareBase": 0.0316,
+     "status": "ok"
+    },
+    {
+     "key": "news",
+     "n": 9,
+     "ratio": null,
+     "share": 0.0206,
+     "shareBase": 0,
      "status": "ok"
     },
     {
      "key": "no odds api price",
      "n": 7,
-     "ratio": 3.9583,
-     "share": 0.0167,
+     "ratio": 3.8131,
+     "share": 0.0161,
      "shareBase": 0.0042,
      "status": "ok"
     },
@@ -1344,15 +1352,15 @@
      "key": "ml:fav:late: picks' worth of history and live bets: under , the practice stake till the segment earns it",
      "n": 5,
      "ratio": null,
-     "share": 0.0119,
+     "share": 0.0115,
      "shareBase": 0,
      "status": "ok"
     },
     {
-     "key": "news",
-     "n": 4,
+     "key": "ml:fav:early: picks' worth of history and live bets: under , the practice stake till the segment earns it; ml:away: the bot's own bets there u flat on",
+     "n": 3,
      "ratio": null,
-     "share": 0.0095,
+     "share": 0.0069,
      "shareBase": 0,
      "status": "ok"
     },
@@ -1360,23 +1368,39 @@
      "key": "total:over:late: picks' worth of history and live bets: under , the practice stake till the segment earns it",
      "n": 3,
      "ratio": null,
-     "share": 0.0071,
+     "share": 0.0069,
      "shareBase": 0,
      "status": "ok"
     },
     {
      "key": "ml:dog:late: practice stake: net % a pick over picks' worth, not past se",
      "n": 2,
-     "ratio": 4.5238,
-     "share": 0.0048,
+     "ratio": 4.3578,
+     "share": 0.0046,
      "shareBase": 0.0011,
+     "status": "ok"
+    },
+    {
+     "key": "spread:fav:early: picks' worth of history and live bets: under , the practice stake till the segment earns it",
+     "n": 2,
+     "ratio": null,
+     "share": 0.0046,
+     "shareBase": 0,
      "status": "ok"
     },
     {
      "key": "a retractable roof not yet said open or closed: its weather unseen; total:over:late: picks' worth of history and live bets: under , the practice stake till the segment earns it",
      "n": 1,
      "ratio": null,
-     "share": 0.0024,
+     "share": 0.0023,
+     "shareBase": 0,
+     "status": "ok"
+    },
+    {
+     "key": "a retractable roof not yet said open or closed: its weather unseen; total:under:early: picks' worth of history and live bets: under , the practice stake till the segment earns it",
+     "n": 1,
+     "ratio": null,
+     "share": 0.0023,
      "shareBase": 0,
      "status": "ok"
     },
@@ -1384,7 +1408,7 @@
      "key": "against the bot's own lean",
      "n": 1,
      "ratio": null,
-     "share": 0.0024,
+     "share": 0.0023,
      "shareBase": 0,
      "status": "ok"
     },
@@ -1392,15 +1416,15 @@
      "key": "ml:dog:early: picks' worth of history and live bets: under , the practice stake till the segment earns it",
      "n": 1,
      "ratio": null,
-     "share": 0.0024,
+     "share": 0.0023,
      "shareBase": 0,
      "status": "ok"
     },
     {
      "key": "passtd prop:passtd:over: practice stake: net % a pick over picks' worth, not past se",
      "n": 1,
-     "ratio": 1.131,
-     "share": 0.0024,
+     "ratio": 1.0894,
+     "share": 0.0023,
      "shareBase": 0.0021,
      "status": "ok"
     },
@@ -1408,7 +1432,23 @@
      "key": "qb joe fagnano starts for tyler huntley, with too few starts to measure him",
      "n": 1,
      "ratio": null,
-     "share": 0.0024,
+     "share": 0.0023,
+     "shareBase": 0,
+     "status": "ok"
+    },
+    {
+     "key": "qb joe milton iii starts for jalen hurts, with too few starts to measure him",
+     "n": 1,
+     "ratio": null,
+     "share": 0.0023,
+     "shareBase": 0,
+     "status": "ok"
+    },
+    {
+     "key": "spread:fav:early: picks' worth of history and live bets: under , the practice stake till the segment earns it; clears only at caesars price",
+     "n": 1,
+     "ratio": null,
+     "share": 0.0023,
      "shareBase": 0,
      "status": "ok"
     },
@@ -1416,15 +1456,31 @@
      "key": "spread:fav:late: picks' worth of history and live bets: under , the practice stake till the segment earns it",
      "n": 1,
      "ratio": null,
-     "share": 0.0024,
+     "share": 0.0023,
+     "shareBase": 0,
+     "status": "ok"
+    },
+    {
+     "key": "total:over:early: picks' worth of history and live bets: under , the practice stake till the segment earns it",
+     "n": 1,
+     "ratio": null,
+     "share": 0.0023,
+     "shareBase": 0,
+     "status": "ok"
+    },
+    {
+     "key": "total:under:early: picks' worth of history and live bets: under , the practice stake till the segment earns it",
+     "n": 1,
+     "ratio": null,
+     "share": 0.0023,
      "shareBase": 0,
      "status": "ok"
     },
     {
      "key": "total:under:late: picks' worth of history and live bets: under , the practice stake till the segment earns it",
      "n": 1,
-     "ratio": 1.131,
-     "share": 0.0024,
+     "ratio": 1.0894,
+     "share": 0.0023,
      "shareBase": 0.0021,
      "status": "ok"
     },
@@ -1593,7 +1649,7 @@
    "tested": null,
    "threshold": "watch twice the baseline share (10+ bets); flag 3x and a quarter of placements, or a new kind on 20+",
    "title": "Guards cutting unusually often",
-   "value": 0.6032
+   "value": 0.6537
   },
   {
    "examples": [],
@@ -1601,7 +1657,7 @@
    "how": "placed this week against the 28 days before: a dog is a plus price or a spread side getting points",
    "id": "C5",
    "metric": "moved",
-   "n": 410,
+   "n": 419,
    "needs": null,
    "rows": [
     {
@@ -1630,7 +1686,7 @@
      "status": "ok"
     },
     {
-     "dogShare": 0.3077,
+     "dogShare": 0.2778,
      "dogShareBase": 0.1786,
      "dogs": {
       "e": 0.6214,
@@ -1649,13 +1705,13 @@
       "z": 0.6425
      },
      "key": "ml",
-     "moved": 0.1291,
-     "n": 13,
+     "moved": 0.0992,
+     "n": 18,
      "nBase": 28,
      "status": "thin"
     },
     {
-     "dogShare": 0.5,
+     "dogShare": 0.6429,
      "dogShareBase": 0.625,
      "dogs": {
       "e": 2.5116,
@@ -1674,8 +1730,8 @@
       "z": 0.6691
      },
      "key": "spread",
-     "moved": -0.125,
-     "n": 10,
+     "moved": 0.0179,
+     "n": 14,
      "nBase": 16,
      "status": "thin"
     }
@@ -1807,7 +1863,7 @@
   },
   {
    "examples": [],
-   "headline": "3 plain write-ups (mean 514 characters), 0 Claude analyses tried this week (0 ok); AI calls 0, $0.00 this week, $0.00 of $25 this month",
+   "headline": "5 plain write-ups (mean 515 characters), 0 Claude analyses tried this week (0 ok); AI calls 0, $0.00 this week, $0.00 of $25 this month",
    "how": "writeups.json's plain and Claude write-ups, and the AI usage log's calls this week (ai-budget.mjs: every sport's spend counts against the caps)",
    "id": "C15",
    "metric": "rejectRate",
@@ -1817,8 +1873,8 @@
     {
      "key": "plain",
      "legacy": 0,
-     "meanLength": 513.6667,
-     "n": 3
+     "meanLength": 515.2,
+     "n": 5
     },
     {
      "key": "claude",
@@ -1853,16 +1909,16 @@
   },
   {
    "examples": [],
-   "headline": "Model files 1h old, 0 open bets overdue to grade; Odds API credits 734% left; 420 bets placed in a week of 14 games",
+   "headline": "Model files 0h old, 0 open bets overdue to grade; Odds API credits 734% left; 436 bets placed in a week of 14 games",
    "how": "the newest commit of the sport's model files, the open bets started 12 hours ago or more, The Odds API's credits (state.odds), the state's sources",
    "id": "C16",
    "metric": "ageH",
-   "n": 420,
+   "n": 436,
    "needs": null,
    "rows": [
     {
-     "ageH": 1,
-     "at": "2026-11-07T15:19:49Z",
+     "ageH": 0,
+     "at": "2026-11-07T17:34:59Z",
      "key": "files",
      "overdue": 0
     },
@@ -1870,8 +1926,8 @@
      "cycleEnd": "2026-12-01T00:02:39.102Z",
      "key": "credits",
      "monthly": 20000,
-     "remaining": 146808,
-     "share": 7.3404
+     "remaining": 146784,
+     "share": 7.3392
     },
     {
      "down": [],
@@ -1880,14 +1936,14 @@
     {
      "games": 14,
      "key": "week",
-     "placed": 420
+     "placed": 436
     }
    ],
    "status": "ok",
    "tested": null,
    "threshold": "watch files 3h old with bets overdue, credits under 20%, a source down, or no bets in a week with games; flag 6h old with bets overdue, or credits under 10%",
    "title": "Ops",
-   "value": 1
+   "value": 0
   },
   {
    "examples": [
@@ -1897,18 +1953,18 @@
     "401873027:ml",
     "401873025:total"
    ],
-   "headline": "13 of 420 bets placed this week had the line already moving against them: ROI 5.0% against -28.6% for the rest",
+   "headline": "16 of 436 bets placed this week had the line already moving against them: ROI 5.0% against -28.6% for the rest",
    "how": "placed this week: a prop's line a point or more against its side since it opened; a game's spread 1.5 (NFL) or 0.5, its total a point, a moneyline without a spread move 3 points of the home chance. A prop moved twice the guard's limit should have been skipped",
    "id": "C2",
    "metric": "roiGap",
-   "n": 420,
+   "n": 436,
    "needs": null,
    "rows": [
     {
      "e": 6.5247,
      "key": "moving against",
      "n": 12,
-     "placed": 13,
+     "placed": 16,
      "profit": 0.301,
      "roi": 0.0502,
      "w": 7,
@@ -1918,7 +1974,7 @@
      "e": 17.9781,
      "key": "the rest",
      "n": 65,
-     "placed": 407,
+     "placed": 420,
      "profit": -9.288,
      "roi": -0.2858,
      "w": 19.3,
@@ -3056,7 +3112,7 @@
   "calls": 0,
   "capHits": 0,
   "cost": 0,
-  "plain": 3,
+  "plain": 5,
   "rejected": 0,
   "sample": [],
   "written": 0

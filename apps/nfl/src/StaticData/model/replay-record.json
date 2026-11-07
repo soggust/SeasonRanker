@@ -2,7 +2,7 @@
  "v": 1,
  "sport": "nfl",
  "epoch": "2026-10-26T15:00:00Z",
- "at": "2026-11-07T16:04:11.349Z",
+ "at": "2026-11-07T17:49:21.154Z",
  "from": "2020-09-11T00:20:00.000Z",
  "through": "2026-10-19T00:23:00.000Z",
  "n": {
@@ -2936,8 +2936,8 @@
    }
   }
  },
- "commit": "892dcdad",
- "note": "D110. The Books' over-shade on NHL and NBA player props: the under shade (soft) and the no-overs rule (hard) measured and held (the owner's ledger mining, 2026-11-07: \"the bot has been staking into that bias\")",
+ "commit": "cccd872d",
+ "note": "D111. The over-shade as a function of public attention (the quantal-response idea): measured on the whole priced history and held, the shade is flat (the owner, 2026-11-07: \"go through on 9 seasons\")",
  "inputs": {
   "v": 1,
   "sport": "nfl",
