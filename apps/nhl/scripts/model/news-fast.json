@@ -3,7 +3,7 @@
  "cursor": {
   "johnston-bot.bsky.social": "2026-11-06T20:02:44.583Z",
   "notfriedgehnic.bsky.social": "2026-11-06T19:25:51.202Z",
-  "dailyfaceoff.bsky.social": "2026-11-07T17:11:58.000Z",
+  "dailyfaceoff.bsky.social": "2026-11-07T17:53:02.000Z",
   "dfotoronto.bsky.social": "2026-11-07T17:11:57.000Z",
   "marklazerus.bsky.social": "2026-11-07T16:04:08.783Z"
  },
@@ -1853,6 +1853,19 @@
    "kind": "status",
    "confidence": 0.9,
    "text": "Panthers’ Anton Lundell day-to-day with undisclosed injury"
+  },
+  {
+   "id": "at://did:plc:3uus7y6h3rlrk6sbctzxm4bg/app.bsky.feed.post/3mzqhnbdtfh2g|tavares|active|return",
+   "at": "2026-11-07T17:53:02.000Z",
+   "seen": "2026-11-07T17:55:08.654Z",
+   "handle": "dailyfaceoff.bsky.social",
+   "post": "at://did:plc:3uus7y6h3rlrk6sbctzxm4bg/app.bsky.feed.post/3mzqhnbdtfh2g",
+   "player": "Tavares",
+   "team": "TOR",
+   "status": "active",
+   "kind": "return",
+   "confidence": 0.9,
+   "text": "Leafs’ Tavares to return after nine-game absence"
   }
  ]
 }

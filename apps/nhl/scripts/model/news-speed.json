@@ -9444,6 +9444,18 @@
     "own": "2026-11-07T17:11:58.000Z",
     "why": "@dailyfaceoff.bsky.social: Panthers’ Anton Lundell day-to-day with undisclosed i"
    }
+  },
+  "401892677|eliassalomonsson|out": {
+   "game": "401892677",
+   "start": "2026-11-08T23:00Z",
+   "team": "28",
+   "name": "Elias Salomonsson",
+   "status": "out",
+   "athlete": "5080223",
+   "espn": {
+    "seen": "2026-11-07T17:53:48.961Z",
+    "own": "2026-11-07T17:48:00.000Z"
+   }
   }
  }
 }

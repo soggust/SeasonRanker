@@ -4,10 +4,10 @@
   "adamscheftermirror.bsky.social": "2026-11-07T13:59:48.306Z",
   "rapsheet.bsky.social": "2026-11-06T18:41:54.465Z",
   "nflnewsreposterbot.bsky.social": "2026-11-06T17:28:39.017Z",
-  "insidenflnews.bsky.social": "2026-11-07T15:00:26.912Z",
-  "nflnewsposter.bsky.social": "2026-11-07T16:17:39.012Z",
-  "rotoworld-fb.bsky.social": "2026-11-07T17:25:36.000Z",
-  "rotowirenfl.bsky.social": "2026-11-07T17:29:03.000Z"
+  "insidenflnews.bsky.social": "2026-11-07T17:45:49.275Z",
+  "nflnewsposter.bsky.social": "2026-11-07T17:54:17.611Z",
+  "rotoworld-fb.bsky.social": "2026-11-07T17:53:02.000Z",
+  "rotowirenfl.bsky.social": "2026-11-07T17:48:18.000Z"
  },
  "claims": [
   {
@@ -17351,6 +17351,71 @@
    "kind": "status",
    "confidence": 0.85,
    "text": "[Pelissero] Seahawks QB Drew Lock has been battling severe tendinitis in his throwing elbow. But he looked good in limited practice reps and will start Sunday against Arizona in place of injured Sam D"
+  },
+  {
+   "id": "at://did:plc:mbr4badgf6yu56mquzackzew/app.bsky.feed.post/3mzqhadq2v22o|mylesgarrett|active|return",
+   "at": "2026-11-07T17:45:49.275Z",
+   "seen": "2026-11-07T17:55:08.654Z",
+   "handle": "insidenflnews.bsky.social",
+   "post": "at://did:plc:mbr4badgf6yu56mquzackzew/app.bsky.feed.post/3mzqhadq2v22o",
+   "player": "Myles Garrett",
+   "team": null,
+   "status": "active",
+   "kind": "return",
+   "confidence": 0.9,
+   "text": "Myles Garrett (knee) officially activated from IR."
+  },
+  {
+   "id": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3mzqherveeu2y|mylesgarrett|active|return",
+   "at": "2026-11-07T17:48:18.000Z",
+   "seen": "2026-11-07T17:55:08.654Z",
+   "handle": "rotowirenfl.bsky.social",
+   "post": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3mzqherveeu2y",
+   "player": "Myles Garrett",
+   "team": null,
+   "status": "active",
+   "kind": "return",
+   "confidence": 0.9,
+   "text": "Myles Garrett: Activated from IR \n\n https://www.rotowire.com/football/player/myles-garrett-11914"
+  },
+  {
+   "id": "at://did:plc:fuqjc7x4gxvnwzksnlxwbe4x/app.bsky.feed.post/3mzqhm6fip22i|jordyntyson|active|status",
+   "at": "2026-11-07T17:52:26.337Z",
+   "seen": "2026-11-07T17:55:08.654Z",
+   "handle": "nflnewsposter.bsky.social",
+   "post": "at://did:plc:fuqjc7x4gxvnwzksnlxwbe4x/app.bsky.feed.post/3mzqhm6fip22i",
+   "player": "Jordyn Tyson",
+   "team": "NO",
+   "status": "active",
+   "kind": "status",
+   "confidence": 0.6,
+   "text": "[Schultz] Saints rookie WR Jordyn Tyson plans to make his NFL debut Sunday vs the Browns.\n\nTyson, the No. 8 overall pick, has yet to play this season due to a hamstring, but “should be good to go” for"
+  },
+  {
+   "id": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3mzqhnbdkcd2y|mylesgarrett|active|return",
+   "at": "2026-11-07T17:53:02.000Z",
+   "seen": "2026-11-07T17:55:08.654Z",
+   "handle": "rotoworld-fb.bsky.social",
+   "post": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3mzqhnbdkcd2y",
+   "player": "Myles Garrett",
+   "team": "LAR",
+   "status": "active",
+   "kind": "return",
+   "confidence": 0.6,
+   "text": "Rams activate Myles Garrett from IR"
+  },
+  {
+   "id": "at://did:plc:fuqjc7x4gxvnwzksnlxwbe4x/app.bsky.feed.post/3mzqhpij6sk2i|deshaunwatson|questionable|status",
+   "at": "2026-11-07T17:54:17.611Z",
+   "seen": "2026-11-07T17:55:08.654Z",
+   "handle": "nflnewsposter.bsky.social",
+   "post": "at://did:plc:fuqjc7x4gxvnwzksnlxwbe4x/app.bsky.feed.post/3mzqhpij6sk2i",
+   "player": "Deshaun Watson",
+   "team": "CLE",
+   "status": "questionable",
+   "kind": "status",
+   "confidence": 0.85,
+   "text": "[Browns] QB Deshaun Watson has cleared concussion protocol and remains questionable \n\nWe've signed DT Sam Kamara to the active roster, signed TE Carsen Ryan to the practice squad and elevated Ryan for"
   }
  ]
 }
