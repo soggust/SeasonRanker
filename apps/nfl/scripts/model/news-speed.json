@@ -10315,6 +10315,11 @@
    "espn": {
     "seen": "2026-11-03T00:02:15.042Z",
     "own": "2026-11-02T19:16:00.000Z"
+   },
+   "bluesky": {
+    "seen": "2026-11-07T19:38:42.361Z",
+    "own": "2026-11-07T19:32:21.112Z",
+    "why": "@rapsheet.bsky.social: The Jets have downgraded Joseph Ossai, Nahshon Wright and"
    }
   },
   "401873045|davidbailey|out": {
@@ -14156,6 +14161,11 @@
    "espn": {
     "seen": "2026-11-05T03:56:20.409Z",
     "own": "2026-11-05T03:37:00.000Z"
+   },
+   "bluesky": {
+    "seen": "2026-11-07T19:38:42.361Z",
+    "own": "2026-11-07T19:32:21.112Z",
+    "why": "@rapsheet.bsky.social: The Jets have downgraded Joseph Ossai, Nahshon Wright and"
    }
   },
   "401873050|braxtonjones|out": {
@@ -17783,6 +17793,11 @@
    "espn": {
     "seen": "2026-11-07T18:53:38.115Z",
     "own": "2026-11-07T18:43:00.000Z"
+   },
+   "bluesky": {
+    "seen": "2026-11-07T19:38:42.361Z",
+    "own": "2026-11-07T19:32:21.112Z",
+    "why": "@rapsheet.bsky.social: The Jets have downgraded Joseph Ossai, Nahshon Wright and"
    }
   },
   "401873043|jerzhannewton|q": {
@@ -17807,6 +17822,11 @@
    "espn": {
     "seen": "2026-11-07T19:14:35.204Z",
     "own": "2026-11-07T19:12:00.000Z"
+   },
+   "bluesky": {
+    "seen": "2026-11-07T19:38:42.361Z",
+    "own": "2026-11-07T19:24:19.000Z",
+    "why": "@rotowirenfl.bsky.social: Kyler Murray: Out for Monday's game \n\n https://www.rot"
    }
   },
   "401873051|jauanjennings|out": {
@@ -17819,6 +17839,11 @@
    "espn": {
     "seen": "2026-11-07T19:14:35.204Z",
     "own": "2026-11-07T19:12:00.000Z"
+   },
+   "bluesky": {
+    "seen": "2026-11-07T19:38:42.361Z",
+    "own": "2026-11-07T19:24:26.898Z",
+    "why": "@insidenflnews.bsky.social: Jauan Jennings (calf) ruled out Week 9."
    }
   },
   "401873051|demondclaiborne|out": {
@@ -17843,6 +17868,318 @@
    "espn": {
     "seen": "2026-11-07T19:14:35.204Z",
     "own": "2026-11-07T01:37:00.000Z"
+   }
+  },
+  "401873038|kylermurray|out": {
+   "game": "401873038",
+   "start": "2026-11-08T14:30Z",
+   "team": "1",
+   "name": "Kyler Murray",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-07T19:38:42.361Z",
+    "own": "2026-11-07T19:24:19.000Z",
+    "why": "@rotowirenfl.bsky.social: Kyler Murray: Out for Monday's game \n\n https://www.rot"
+   }
+  },
+  "401873038|jauanjennings|out": {
+   "game": "401873038",
+   "start": "2026-11-08T14:30Z",
+   "team": "1",
+   "name": "Jauan Jennings",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-07T19:38:42.361Z",
+    "own": "2026-11-07T19:24:26.898Z",
+    "why": "@insidenflnews.bsky.social: Jauan Jennings (calf) ruled out Week 9."
+   }
+  },
+  "401873040|kylermurray|out": {
+   "game": "401873040",
+   "start": "2026-11-08T18:00Z",
+   "team": "11",
+   "name": "Kyler Murray",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-07T19:38:42.361Z",
+    "own": "2026-11-07T19:24:19.000Z",
+    "why": "@rotowirenfl.bsky.social: Kyler Murray: Out for Monday's game \n\n https://www.rot"
+   }
+  },
+  "401873040|jauanjennings|out": {
+   "game": "401873040",
+   "start": "2026-11-08T18:00Z",
+   "team": "11",
+   "name": "Jauan Jennings",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-07T19:38:42.361Z",
+    "own": "2026-11-07T19:24:26.898Z",
+    "why": "@insidenflnews.bsky.social: Jauan Jennings (calf) ruled out Week 9."
+   }
+  },
+  "401873045|kylermurray|out": {
+   "game": "401873045",
+   "start": "2026-11-08T18:00Z",
+   "team": "12",
+   "name": "Kyler Murray",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-07T19:38:42.361Z",
+    "own": "2026-11-07T19:24:19.000Z",
+    "why": "@rotowirenfl.bsky.social: Kyler Murray: Out for Monday's game \n\n https://www.rot"
+   }
+  },
+  "401873045|jauanjennings|out": {
+   "game": "401873045",
+   "start": "2026-11-08T18:00Z",
+   "team": "12",
+   "name": "Jauan Jennings",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-07T19:38:42.361Z",
+    "own": "2026-11-07T19:24:26.898Z",
+    "why": "@insidenflnews.bsky.social: Jauan Jennings (calf) ruled out Week 9."
+   }
+  },
+  "401873042|kylermurray|out": {
+   "game": "401873042",
+   "start": "2026-11-08T18:00Z",
+   "team": "15",
+   "name": "Kyler Murray",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-07T19:38:42.361Z",
+    "own": "2026-11-07T19:24:19.000Z",
+    "why": "@rotowirenfl.bsky.social: Kyler Murray: Out for Monday's game \n\n https://www.rot"
+   }
+  },
+  "401873042|jauanjennings|out": {
+   "game": "401873042",
+   "start": "2026-11-08T18:00Z",
+   "team": "15",
+   "name": "Jauan Jennings",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-07T19:38:42.361Z",
+    "own": "2026-11-07T19:24:26.898Z",
+    "why": "@insidenflnews.bsky.social: Jauan Jennings (calf) ruled out Week 9."
+   }
+  },
+  "401873039|kylermurray|out": {
+   "game": "401873039",
+   "start": "2026-11-08T18:00Z",
+   "team": "18",
+   "name": "Kyler Murray",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-07T19:38:42.361Z",
+    "own": "2026-11-07T19:24:19.000Z",
+    "why": "@rotowirenfl.bsky.social: Kyler Murray: Out for Monday's game \n\n https://www.rot"
+   }
+  },
+  "401873039|jauanjennings|out": {
+   "game": "401873039",
+   "start": "2026-11-08T18:00Z",
+   "team": "18",
+   "name": "Jauan Jennings",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-07T19:38:42.361Z",
+    "own": "2026-11-07T19:24:26.898Z",
+    "why": "@insidenflnews.bsky.social: Jauan Jennings (calf) ruled out Week 9."
+   }
+  },
+  "401873044|kylermurray|out": {
+   "game": "401873044",
+   "start": "2026-11-08T18:00Z",
+   "team": "21",
+   "name": "Kyler Murray",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-07T19:38:42.361Z",
+    "own": "2026-11-07T19:24:19.000Z",
+    "why": "@rotowirenfl.bsky.social: Kyler Murray: Out for Monday's game \n\n https://www.rot"
+   }
+  },
+  "401873044|jauanjennings|out": {
+   "game": "401873044",
+   "start": "2026-11-08T18:00Z",
+   "team": "21",
+   "name": "Jauan Jennings",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-07T19:38:42.361Z",
+    "own": "2026-11-07T19:24:26.898Z",
+    "why": "@insidenflnews.bsky.social: Jauan Jennings (calf) ruled out Week 9."
+   }
+  },
+  "401873043|kylermurray|out": {
+   "game": "401873043",
+   "start": "2026-11-08T18:00Z",
+   "team": "28",
+   "name": "Kyler Murray",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-07T19:38:42.361Z",
+    "own": "2026-11-07T19:24:19.000Z",
+    "why": "@rotowirenfl.bsky.social: Kyler Murray: Out for Monday's game \n\n https://www.rot"
+   }
+  },
+  "401873043|jauanjennings|out": {
+   "game": "401873043",
+   "start": "2026-11-08T18:00Z",
+   "team": "28",
+   "name": "Jauan Jennings",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-07T19:38:42.361Z",
+    "own": "2026-11-07T19:24:26.898Z",
+    "why": "@insidenflnews.bsky.social: Jauan Jennings (calf) ruled out Week 9."
+   }
+  },
+  "401873041|kylermurray|out": {
+   "game": "401873041",
+   "start": "2026-11-08T18:00Z",
+   "team": "29",
+   "name": "Kyler Murray",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-07T19:38:42.361Z",
+    "own": "2026-11-07T19:24:19.000Z",
+    "why": "@rotowirenfl.bsky.social: Kyler Murray: Out for Monday's game \n\n https://www.rot"
+   }
+  },
+  "401873041|jauanjennings|out": {
+   "game": "401873041",
+   "start": "2026-11-08T18:00Z",
+   "team": "29",
+   "name": "Jauan Jennings",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-07T19:38:42.361Z",
+    "own": "2026-11-07T19:24:26.898Z",
+    "why": "@insidenflnews.bsky.social: Jauan Jennings (calf) ruled out Week 9."
+   }
+  },
+  "401873046|kylermurray|out": {
+   "game": "401873046",
+   "start": "2026-11-08T21:05Z",
+   "team": "24",
+   "name": "Kyler Murray",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-07T19:38:42.361Z",
+    "own": "2026-11-07T19:24:19.000Z",
+    "why": "@rotowirenfl.bsky.social: Kyler Murray: Out for Monday's game \n\n https://www.rot"
+   }
+  },
+  "401873046|jauanjennings|out": {
+   "game": "401873046",
+   "start": "2026-11-08T21:05Z",
+   "team": "24",
+   "name": "Jauan Jennings",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-07T19:38:42.361Z",
+    "own": "2026-11-07T19:24:26.898Z",
+    "why": "@insidenflnews.bsky.social: Jauan Jennings (calf) ruled out Week 9."
+   }
+  },
+  "401873049|kylermurray|out": {
+   "game": "401873049",
+   "start": "2026-11-08T21:25Z",
+   "team": "17",
+   "name": "Kyler Murray",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-07T19:38:42.361Z",
+    "own": "2026-11-07T19:24:19.000Z",
+    "why": "@rotowirenfl.bsky.social: Kyler Murray: Out for Monday's game \n\n https://www.rot"
+   }
+  },
+  "401873049|jauanjennings|out": {
+   "game": "401873049",
+   "start": "2026-11-08T21:25Z",
+   "team": "17",
+   "name": "Jauan Jennings",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-07T19:38:42.361Z",
+    "own": "2026-11-07T19:24:26.898Z",
+    "why": "@insidenflnews.bsky.social: Jauan Jennings (calf) ruled out Week 9."
+   }
+  },
+  "401873047|kylermurray|out": {
+   "game": "401873047",
+   "start": "2026-11-08T21:25Z",
+   "team": "25",
+   "name": "Kyler Murray",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-07T19:38:42.361Z",
+    "own": "2026-11-07T19:24:19.000Z",
+    "why": "@rotowirenfl.bsky.social: Kyler Murray: Out for Monday's game \n\n https://www.rot"
+   }
+  },
+  "401873047|jauanjennings|out": {
+   "game": "401873047",
+   "start": "2026-11-08T21:25Z",
+   "team": "25",
+   "name": "Jauan Jennings",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-07T19:38:42.361Z",
+    "own": "2026-11-07T19:24:26.898Z",
+    "why": "@insidenflnews.bsky.social: Jauan Jennings (calf) ruled out Week 9."
+   }
+  },
+  "401873048|kylermurray|out": {
+   "game": "401873048",
+   "start": "2026-11-08T21:25Z",
+   "team": "26",
+   "name": "Kyler Murray",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-07T19:38:42.361Z",
+    "own": "2026-11-07T19:24:19.000Z",
+    "why": "@rotowirenfl.bsky.social: Kyler Murray: Out for Monday's game \n\n https://www.rot"
+   }
+  },
+  "401873048|jauanjennings|out": {
+   "game": "401873048",
+   "start": "2026-11-08T21:25Z",
+   "team": "26",
+   "name": "Jauan Jennings",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-07T19:38:42.361Z",
+    "own": "2026-11-07T19:24:26.898Z",
+    "why": "@insidenflnews.bsky.social: Jauan Jennings (calf) ruled out Week 9."
+   }
+  },
+  "401873050|kylermurray|out": {
+   "game": "401873050",
+   "start": "2026-11-09T01:20Z",
+   "team": "3",
+   "name": "Kyler Murray",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-07T19:38:42.361Z",
+    "own": "2026-11-07T19:24:19.000Z",
+    "why": "@rotowirenfl.bsky.social: Kyler Murray: Out for Monday's game \n\n https://www.rot"
+   }
+  },
+  "401873050|jauanjennings|out": {
+   "game": "401873050",
+   "start": "2026-11-09T01:20Z",
+   "team": "3",
+   "name": "Jauan Jennings",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-07T19:38:42.361Z",
+    "own": "2026-11-07T19:24:26.898Z",
+    "why": "@insidenflnews.bsky.social: Jauan Jennings (calf) ruled out Week 9."
    }
   }
  }
