@@ -17604,6 +17604,174 @@
     "seen": "2026-11-07T18:29:39.272Z",
     "own": "2026-11-07T00:34:00.000Z"
    }
+  },
+  "401873038|joshpalmer|out": {
+   "game": "401873038",
+   "start": "2026-11-08T14:30Z",
+   "team": "1",
+   "name": "Josh Palmer",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-07T18:39:23.242Z",
+    "own": "2026-11-07T18:37:39.892Z",
+    "why": "@insidenflnews.bsky.social: Josh Palmer (hamstring) ruled out Week 9."
+   }
+  },
+  "401873040|joshpalmer|out": {
+   "game": "401873040",
+   "start": "2026-11-08T18:00Z",
+   "team": "11",
+   "name": "Josh Palmer",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-07T18:39:23.242Z",
+    "own": "2026-11-07T18:37:39.892Z",
+    "why": "@insidenflnews.bsky.social: Josh Palmer (hamstring) ruled out Week 9."
+   }
+  },
+  "401873045|joshpalmer|out": {
+   "game": "401873045",
+   "start": "2026-11-08T18:00Z",
+   "team": "12",
+   "name": "Josh Palmer",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-07T18:39:23.242Z",
+    "own": "2026-11-07T18:37:39.892Z",
+    "why": "@insidenflnews.bsky.social: Josh Palmer (hamstring) ruled out Week 9."
+   }
+  },
+  "401873042|joshpalmer|out": {
+   "game": "401873042",
+   "start": "2026-11-08T18:00Z",
+   "team": "15",
+   "name": "Josh Palmer",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-07T18:39:23.242Z",
+    "own": "2026-11-07T18:37:39.892Z",
+    "why": "@insidenflnews.bsky.social: Josh Palmer (hamstring) ruled out Week 9."
+   }
+  },
+  "401873039|joshpalmer|out": {
+   "game": "401873039",
+   "start": "2026-11-08T18:00Z",
+   "team": "18",
+   "name": "Josh Palmer",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-07T18:39:23.242Z",
+    "own": "2026-11-07T18:37:39.892Z",
+    "why": "@insidenflnews.bsky.social: Josh Palmer (hamstring) ruled out Week 9."
+   }
+  },
+  "401873044|joshpalmer|out": {
+   "game": "401873044",
+   "start": "2026-11-08T18:00Z",
+   "team": "21",
+   "name": "Josh Palmer",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-07T18:39:23.242Z",
+    "own": "2026-11-07T18:37:39.892Z",
+    "why": "@insidenflnews.bsky.social: Josh Palmer (hamstring) ruled out Week 9."
+   }
+  },
+  "401873043|joshpalmer|out": {
+   "game": "401873043",
+   "start": "2026-11-08T18:00Z",
+   "team": "28",
+   "name": "Josh Palmer",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-07T18:39:23.242Z",
+    "own": "2026-11-07T18:37:39.892Z",
+    "why": "@insidenflnews.bsky.social: Josh Palmer (hamstring) ruled out Week 9."
+   }
+  },
+  "401873041|joshpalmer|out": {
+   "game": "401873041",
+   "start": "2026-11-08T18:00Z",
+   "team": "29",
+   "name": "Josh Palmer",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-07T18:39:23.242Z",
+    "own": "2026-11-07T18:37:39.892Z",
+    "why": "@insidenflnews.bsky.social: Josh Palmer (hamstring) ruled out Week 9."
+   }
+  },
+  "401873046|joshpalmer|out": {
+   "game": "401873046",
+   "start": "2026-11-08T21:05Z",
+   "team": "24",
+   "name": "Josh Palmer",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-07T18:39:23.242Z",
+    "own": "2026-11-07T18:37:39.892Z",
+    "why": "@insidenflnews.bsky.social: Josh Palmer (hamstring) ruled out Week 9."
+   }
+  },
+  "401873049|joshpalmer|out": {
+   "game": "401873049",
+   "start": "2026-11-08T21:25Z",
+   "team": "17",
+   "name": "Josh Palmer",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-07T18:39:23.242Z",
+    "own": "2026-11-07T18:37:39.892Z",
+    "why": "@insidenflnews.bsky.social: Josh Palmer (hamstring) ruled out Week 9."
+   }
+  },
+  "401873047|joshpalmer|out": {
+   "game": "401873047",
+   "start": "2026-11-08T21:25Z",
+   "team": "25",
+   "name": "Josh Palmer",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-07T18:39:23.242Z",
+    "own": "2026-11-07T18:37:39.892Z",
+    "why": "@insidenflnews.bsky.social: Josh Palmer (hamstring) ruled out Week 9."
+   }
+  },
+  "401873048|joshpalmer|out": {
+   "game": "401873048",
+   "start": "2026-11-08T21:25Z",
+   "team": "26",
+   "name": "Josh Palmer",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-07T18:39:23.242Z",
+    "own": "2026-11-07T18:37:39.892Z",
+    "why": "@insidenflnews.bsky.social: Josh Palmer (hamstring) ruled out Week 9."
+   }
+  },
+  "401873050|joshpalmer|out": {
+   "game": "401873050",
+   "start": "2026-11-09T01:20Z",
+   "team": "3",
+   "name": "Josh Palmer",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-07T18:39:23.242Z",
+    "own": "2026-11-07T18:37:39.892Z",
+    "why": "@insidenflnews.bsky.social: Josh Palmer (hamstring) ruled out Week 9."
+   }
+  },
+  "401873051|joshuapalmer|out": {
+   "game": "401873051",
+   "start": "2026-11-10T01:15Z",
+   "team": "2",
+   "name": "Joshua Palmer",
+   "status": "out",
+   "athlete": "4242433",
+   "espn": {
+    "seen": "2026-11-07T18:47:46.348Z",
+    "own": "2026-11-07T18:39:00.000Z"
+   }
   }
  }
 }
