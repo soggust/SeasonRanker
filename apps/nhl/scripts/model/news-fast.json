@@ -3,8 +3,8 @@
  "cursor": {
   "johnston-bot.bsky.social": "2026-11-06T20:02:44.583Z",
   "notfriedgehnic.bsky.social": "2026-11-06T19:25:51.202Z",
-  "dailyfaceoff.bsky.social": "2026-11-07T16:09:25.000Z",
-  "dfotoronto.bsky.social": "2026-11-07T16:36:06.000Z",
+  "dailyfaceoff.bsky.social": "2026-11-07T17:11:58.000Z",
+  "dfotoronto.bsky.social": "2026-11-07T17:11:57.000Z",
   "marklazerus.bsky.social": "2026-11-07T16:04:08.783Z"
  },
  "claims": [
@@ -1801,6 +1801,58 @@
    "kind": "return",
    "confidence": 0.6,
    "text": "Auston Matthews says John Tavares has been best player on the ice at practice ahead of return vs. Canadiens"
+  },
+  {
+   "id": "at://did:plc:knaj2vcp4x6t7hr7ewd6e3uz/app.bsky.feed.post/3mzqetpmpgi2f|johntavares|active|return",
+   "at": "2026-11-07T17:02:58.000Z",
+   "seen": "2026-11-07T17:12:14.750Z",
+   "handle": "dfotoronto.bsky.social",
+   "post": "at://did:plc:knaj2vcp4x6t7hr7ewd6e3uz/app.bsky.feed.post/3mzqetpmpgi2f",
+   "player": "John Tavares",
+   "team": "TOR",
+   "status": "active",
+   "kind": "return",
+   "confidence": 0.95,
+   "text": "Jim Hiller confirms John Tavares will return to Maple Leafs’ lineup vs. Canadiens on Saturday"
+  },
+  {
+   "id": "at://did:plc:knaj2vcp4x6t7hr7ewd6e3uz/app.bsky.feed.post/3mzqfdrujmu2g|johntavares|active|return",
+   "at": "2026-11-07T17:11:57.000Z",
+   "seen": "2026-11-07T17:12:14.750Z",
+   "handle": "dfotoronto.bsky.social",
+   "post": "at://did:plc:knaj2vcp4x6t7hr7ewd6e3uz/app.bsky.feed.post/3mzqfdrujmu2g",
+   "player": "John Tavares",
+   "team": "TOR",
+   "status": "active",
+   "kind": "return",
+   "confidence": 0.9,
+   "text": "Leafs vs Canadiens Game 18 Preview: Tavares Returns, McKenna Off PP1, Bobrovsky Starts & Best Bets"
+  },
+  {
+   "id": "at://did:plc:knaj2vcp4x6t7hr7ewd6e3uz/app.bsky.feed.post/3mzqfdrujmu2g|mckenna|none|role",
+   "at": "2026-11-07T17:11:57.000Z",
+   "seen": "2026-11-07T17:12:14.750Z",
+   "handle": "dfotoronto.bsky.social",
+   "post": "at://did:plc:knaj2vcp4x6t7hr7ewd6e3uz/app.bsky.feed.post/3mzqfdrujmu2g",
+   "player": "McKenna",
+   "team": "TOR",
+   "status": "none",
+   "kind": "role",
+   "confidence": 0.8,
+   "text": "Leafs vs Canadiens Game 18 Preview: Tavares Returns, McKenna Off PP1, Bobrovsky Starts & Best Bets"
+  },
+  {
+   "id": "at://did:plc:3uus7y6h3rlrk6sbctzxm4bg/app.bsky.feed.post/3mzqfdt3tli25|antonlundell|questionable|status",
+   "at": "2026-11-07T17:11:58.000Z",
+   "seen": "2026-11-07T17:12:14.750Z",
+   "handle": "dailyfaceoff.bsky.social",
+   "post": "at://did:plc:3uus7y6h3rlrk6sbctzxm4bg/app.bsky.feed.post/3mzqfdt3tli25",
+   "player": "Anton Lundell",
+   "team": "FLA",
+   "status": "questionable",
+   "kind": "status",
+   "confidence": 0.9,
+   "text": "Panthers’ Anton Lundell day-to-day with undisclosed injury"
   }
  ]
 }
