@@ -1,8 +1,8 @@
 {
  "sport": "nba",
  "cursor": {
-  "rotowirenba.bsky.social": "2026-11-07T00:42:53.000Z",
-  "insidenbanews.bsky.social": "2026-11-07T00:54:12.795Z",
+  "rotowirenba.bsky.social": "2026-11-07T01:07:47.000Z",
+  "insidenbanews.bsky.social": "2026-11-07T01:04:12.325Z",
   "shamsbot.bsky.social": "2026-11-04T20:33:22.000Z"
  },
  "claims": [
@@ -9092,6 +9092,32 @@
    "kind": "starting",
    "confidence": 0.8,
    "text": "Caleb Martin: Starting Friday \n\n https://www.rotowire.com/basketball/player/caleb-martin-4931"
+  },
+  {
+   "id": "at://did:plc:ykcnnf6kqnn3lasmobrczoem/app.bsky.feed.post/3mzopbcsp5k2j|brandonmiller|out|status",
+   "at": "2026-11-07T01:04:12.325Z",
+   "seen": "2026-11-07T01:12:29.931Z",
+   "handle": "insidenbanews.bsky.social",
+   "post": "at://did:plc:ykcnnf6kqnn3lasmobrczoem/app.bsky.feed.post/3mzopbcsp5k2j",
+   "player": "Brandon Miller",
+   "team": null,
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.8,
+   "text": "Status alert: Brandon Miller (groin) won't return."
+  },
+  {
+   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mzophq4e2m2g|brandonmiller|out|status",
+   "at": "2026-11-07T01:07:47.000Z",
+   "seen": "2026-11-07T01:12:29.931Z",
+   "handle": "rotowirenba.bsky.social",
+   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mzophq4e2m2g",
+   "player": "Brandon Miller",
+   "team": null,
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.8,
+   "text": "Brandon Miller: Won't return Friday \n\n https://www.rotowire.com/basketball/player/brandon-miller-5896"
   }
  ]
 }
