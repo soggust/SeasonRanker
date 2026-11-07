@@ -1,7 +1,7 @@
 {
  "sport": "nba",
  "cursor": {
-  "rotowirenba.bsky.social": "2026-11-07T04:27:47.000Z",
+  "rotowirenba.bsky.social": "2026-11-07T18:11:28.000Z",
   "insidenbanews.bsky.social": "2026-11-07T05:11:20.386Z",
   "shamsbot.bsky.social": "2026-11-04T20:33:22.000Z"
  },
@@ -9118,6 +9118,19 @@
    "kind": "status",
    "confidence": 0.8,
    "text": "Brandon Miller: Won't return Friday \n\n https://www.rotowire.com/basketball/player/brandon-miller-5896"
+  },
+  {
+   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mzqio7r5552h|jarrettallen|out|status",
+   "at": "2026-11-07T18:11:28.000Z",
+   "seen": "2026-11-07T18:39:23.242Z",
+   "handle": "rotowirenba.bsky.social",
+   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mzqio7r5552h",
+   "player": "Jarrett Allen",
+   "team": null,
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.95,
+   "text": "Jarrett Allen: Out Saturday \n\n https://www.rotowire.com/basketball/player/jarrett-allen-4122"
   }
  ]
 }

@@ -3,9 +3,9 @@
  "cursor": {
   "johnston-bot.bsky.social": "2026-11-06T20:02:44.583Z",
   "notfriedgehnic.bsky.social": "2026-11-06T19:25:51.202Z",
-  "dailyfaceoff.bsky.social": "2026-11-07T17:53:02.000Z",
-  "dfotoronto.bsky.social": "2026-11-07T17:11:57.000Z",
-  "marklazerus.bsky.social": "2026-11-07T16:04:08.783Z"
+  "dailyfaceoff.bsky.social": "2026-11-07T18:15:56.000Z",
+  "dfotoronto.bsky.social": "2026-11-07T18:02:33.000Z",
+  "marklazerus.bsky.social": "2026-11-07T17:56:54.257Z"
  },
  "claims": [
   {
@@ -1866,6 +1866,32 @@
    "kind": "return",
    "confidence": 0.9,
    "text": "Leafs’ Tavares to return after nine-game absence"
+  },
+  {
+   "id": "at://did:plc:54vdi5eoabhod2vumsbcpi7g/app.bsky.feed.post/3mzqhu5vng22l|bobyram|questionable|status",
+   "at": "2026-11-07T17:56:54.257Z",
+   "seen": "2026-11-07T18:39:23.242Z",
+   "handle": "marklazerus.bsky.social",
+   "post": "at://did:plc:54vdi5eoabhod2vumsbcpi7g/app.bsky.feed.post/3mzqhu5vng22l",
+   "player": "Bo Byram",
+   "team": null,
+   "status": "questionable",
+   "kind": "status",
+   "confidence": 0.75,
+   "text": "Blashill had no update on Bo Byram. Is it getting concerning.\n\n\"We'd like to have him in the lineup, but it's not necessarily something that's concerning, I wouldn't say that. I started with day-to-da"
+  },
+  {
+   "id": "at://did:plc:3uus7y6h3rlrk6sbctzxm4bg/app.bsky.feed.post/3mzqiw6zcw72n|jameshagens|out|status",
+   "at": "2026-11-07T18:15:56.000Z",
+   "seen": "2026-11-07T18:39:23.242Z",
+   "handle": "dailyfaceoff.bsky.social",
+   "post": "at://did:plc:3uus7y6h3rlrk6sbctzxm4bg/app.bsky.feed.post/3mzqiw6zcw72n",
+   "player": "James Hagens",
+   "team": "BOS",
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.95,
+   "text": "Bruins place James Hagens on injured reserve"
   }
  ]
 }

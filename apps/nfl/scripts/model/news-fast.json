@@ -1,13 +1,13 @@
 {
  "sport": "nfl",
  "cursor": {
-  "adamscheftermirror.bsky.social": "2026-11-07T13:59:48.306Z",
-  "rapsheet.bsky.social": "2026-11-06T18:41:54.465Z",
+  "adamscheftermirror.bsky.social": "2026-11-07T18:19:53.773Z",
+  "rapsheet.bsky.social": "2026-11-07T18:06:30.092Z",
   "nflnewsreposterbot.bsky.social": "2026-11-06T17:28:39.017Z",
-  "insidenflnews.bsky.social": "2026-11-07T17:45:49.275Z",
+  "insidenflnews.bsky.social": "2026-11-07T18:37:39.892Z",
   "nflnewsposter.bsky.social": "2026-11-07T17:54:17.611Z",
-  "rotoworld-fb.bsky.social": "2026-11-07T17:53:02.000Z",
-  "rotowirenfl.bsky.social": "2026-11-07T17:48:18.000Z"
+  "rotoworld-fb.bsky.social": "2026-11-07T18:02:02.000Z",
+  "rotowirenfl.bsky.social": "2026-11-07T18:12:55.000Z"
  },
  "claims": [
   {
@@ -17416,6 +17416,97 @@
    "kind": "status",
    "confidence": 0.85,
    "text": "[Browns] QB Deshaun Watson has cleared concussion protocol and remains questionable \n\nWe've signed DT Sam Kamara to the active roster, signed TE Carsen Ryan to the practice squad and elevated Ryan for"
+  },
+  {
+   "id": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3mzqi5e3izc2u|jordyntyson|active|status",
+   "at": "2026-11-07T18:02:02.000Z",
+   "seen": "2026-11-07T18:39:23.242Z",
+   "handle": "rotoworld-fb.bsky.social",
+   "post": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3mzqi5e3izc2u",
+   "player": "Jordyn Tyson",
+   "team": null,
+   "status": "active",
+   "kind": "status",
+   "confidence": 0.85,
+   "text": "Schultz: Jordyn Tyson (hamstring) good to go vs. Browns"
+  },
+  {
+   "id": "at://did:plc:hlvr2omhnmvdmfnvmcuhyevz/app.bsky.feed.post/3mzqie3bbck2u|mylesgarrett|active|return",
+   "at": "2026-11-07T18:05:48.358Z",
+   "seen": "2026-11-07T18:39:23.242Z",
+   "handle": "rapsheet.bsky.social",
+   "post": "at://did:plc:hlvr2omhnmvdmfnvmcuhyevz/app.bsky.feed.post/3mzqie3bbck2u",
+   "player": "Myles Garrett",
+   "team": null,
+   "status": "active",
+   "kind": "return",
+   "confidence": 0.5,
+   "text": "The Rams have now officially activated star OLB Myles Garrett from Injured Reserve."
+  },
+  {
+   "id": "at://did:plc:hlvr2omhnmvdmfnvmcuhyevz/app.bsky.feed.post/3mzqifd2qbs2u|deshaunwatson|questionable|status",
+   "at": "2026-11-07T18:06:30.092Z",
+   "seen": "2026-11-07T18:39:23.242Z",
+   "handle": "rapsheet.bsky.social",
+   "post": "at://did:plc:hlvr2omhnmvdmfnvmcuhyevz/app.bsky.feed.post/3mzqifd2qbs2u",
+   "player": "Deshaun Watson",
+   "team": "CLE",
+   "status": "questionable",
+   "kind": "status",
+   "confidence": 0.85,
+   "text": "Browns QB Deshaun Watson has also cleared concussion protocol and remains questionable. Shedeur Sanders will start."
+  },
+  {
+   "id": "at://did:plc:hlvr2omhnmvdmfnvmcuhyevz/app.bsky.feed.post/3mzqifd2qbs2u|shedeursanders|none|starting",
+   "at": "2026-11-07T18:06:30.092Z",
+   "seen": "2026-11-07T18:39:23.242Z",
+   "handle": "rapsheet.bsky.social",
+   "post": "at://did:plc:hlvr2omhnmvdmfnvmcuhyevz/app.bsky.feed.post/3mzqifd2qbs2u",
+   "player": "Shedeur Sanders",
+   "team": "CLE",
+   "status": "none",
+   "kind": "starting",
+   "confidence": 0.8,
+   "text": "Browns QB Deshaun Watson has also cleared concussion protocol and remains questionable. Shedeur Sanders will start."
+  },
+  {
+   "id": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3mzqiqt37ld22|deshaunwatson|questionable|status",
+   "at": "2026-11-07T18:12:55.000Z",
+   "seen": "2026-11-07T18:39:23.242Z",
+   "handle": "rotowirenfl.bsky.social",
+   "post": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3mzqiqt37ld22",
+   "player": "Deshaun Watson",
+   "team": "CLE",
+   "status": "questionable",
+   "kind": "status",
+   "confidence": 0.85,
+   "text": "Deshaun Watson: Clears concussion protocol, still questionable \n\n https://www.rotowire.com/football/player/deshaun-watson-11712"
+  },
+  {
+   "id": "at://did:plc:qre6zxbmr3ixhdmgsgdretb5/app.bsky.feed.post/3mzqj5blqbu2s|deshaunwatson|questionable|status",
+   "at": "2026-11-07T18:19:53.773Z",
+   "seen": "2026-11-07T18:39:23.242Z",
+   "handle": "adamscheftermirror.bsky.social",
+   "post": "at://did:plc:qre6zxbmr3ixhdmgsgdretb5/app.bsky.feed.post/3mzqj5blqbu2s",
+   "player": "Deshaun Watson",
+   "team": "CLE",
+   "status": "questionable",
+   "kind": "status",
+   "confidence": 0.85,
+   "text": "Browns QB Deshaun Watson now has cleared concussion protocol and remains questionable for Sunday’s game at New Orleans.\n\nOriginal post"
+  },
+  {
+   "id": "at://did:plc:mbr4badgf6yu56mquzackzew/app.bsky.feed.post/3mzqk52aits2x|joshpalmer|out|status",
+   "at": "2026-11-07T18:37:39.892Z",
+   "seen": "2026-11-07T18:39:23.242Z",
+   "handle": "insidenflnews.bsky.social",
+   "post": "at://did:plc:mbr4badgf6yu56mquzackzew/app.bsky.feed.post/3mzqk52aits2x",
+   "player": "Josh Palmer",
+   "team": null,
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.9,
+   "text": "Josh Palmer (hamstring) ruled out Week 9."
   }
  ]
 }
