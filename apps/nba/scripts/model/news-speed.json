@@ -20677,6 +20677,270 @@
     "own": "2026-11-06T21:48:38.000Z",
     "why": "@rotowirenba.bsky.social: Josh Hart: Ruled out for Saturday \n\n https://www.rotow"
    }
+  },
+  "401909941|jaylinwilliams|out": {
+   "game": "401909941",
+   "start": "2026-11-08T01:00Z",
+   "team": "25",
+   "name": "Jaylin Williams",
+   "status": "out",
+   "athlete": "4432823",
+   "espn": {
+    "seen": "2026-11-07T03:55:40.270Z",
+    "own": "2026-11-05T23:20:00.000Z"
+   }
+  },
+  "401909941|nikolatopic|out": {
+   "game": "401909941",
+   "start": "2026-11-08T01:00Z",
+   "team": "25",
+   "name": "Nikola Topic",
+   "status": "out",
+   "athlete": "5159925",
+   "espn": {
+    "seen": "2026-11-07T03:55:40.270Z",
+    "own": "2026-11-03T22:49:00.000Z"
+   }
+  },
+  "401909941|thomassorber|out": {
+   "game": "401909941",
+   "start": "2026-11-08T01:00Z",
+   "team": "25",
+   "name": "Thomas Sorber",
+   "status": "out",
+   "athlete": "5061603",
+   "espn": {
+    "seen": "2026-11-07T03:55:40.270Z",
+    "own": "2026-11-03T22:45:00.000Z"
+   }
+  },
+  "401909941|casonwallace|out": {
+   "game": "401909941",
+   "start": "2026-11-08T01:00Z",
+   "team": "25",
+   "name": "Cason Wallace",
+   "status": "out",
+   "athlete": "4683692",
+   "espn": {
+    "seen": "2026-11-07T03:55:40.270Z",
+    "own": "2026-10-31T01:16:00.000Z"
+   }
+  },
+  "401909941|chetholmgren|out": {
+   "game": "401909941",
+   "start": "2026-11-08T01:00Z",
+   "team": "25",
+   "name": "Chet Holmgren",
+   "status": "out",
+   "athlete": "4433255",
+   "espn": {
+    "seen": "2026-11-07T03:55:40.270Z",
+    "own": "2026-10-31T01:02:00.000Z"
+   }
+  },
+  "401909941|jalenwilliams|out": {
+   "game": "401909941",
+   "start": "2026-11-08T01:00Z",
+   "team": "25",
+   "name": "Jalen Williams",
+   "status": "out",
+   "athlete": "4593803",
+   "espn": {
+    "seen": "2026-11-07T03:55:40.270Z",
+    "own": "2026-10-28T23:41:00.000Z"
+   }
+  },
+  "401909941|immanuelquickley|out": {
+   "game": "401909941",
+   "start": "2026-11-08T01:00Z",
+   "team": "25",
+   "name": "Immanuel Quickley",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-07T00:20:30.381Z",
+    "own": "2026-11-06T23:41:07.000Z",
+    "why": "@rotowirenba.bsky.social: Immanuel Quickley: Ruled out for Friday \n\n https://www"
+   }
+  },
+  "401909941|jarrettallen|out": {
+   "game": "401909941",
+   "start": "2026-11-08T01:00Z",
+   "team": "25",
+   "name": "Jarrett Allen",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-07T00:20:30.381Z",
+    "own": "2026-11-06T23:55:36.000Z",
+    "why": "@rotowirenba.bsky.social: Jarrett Allen: Won't play Friday \n\n https://www.rotowi"
+   }
+  },
+  "401909941|brandonmiller|out": {
+   "game": "401909941",
+   "start": "2026-11-08T01:00Z",
+   "team": "25",
+   "name": "Brandon Miller",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-07T01:12:29.931Z",
+    "own": "2026-11-07T01:07:47.000Z",
+    "why": "@rotowirenba.bsky.social: Brandon Miller: Won't return Friday \n\n https://www.rot"
+   }
+  },
+  "401909941|anthonydavis|out": {
+   "game": "401909941",
+   "start": "2026-11-08T01:00Z",
+   "team": "27",
+   "name": "Anthony Davis",
+   "status": "out",
+   "athlete": "6583",
+   "espn": {
+    "seen": "2026-11-07T03:55:40.270Z",
+    "own": "2026-11-06T22:37:00.000Z"
+   }
+  },
+  "401909941|reecebeekman|out": {
+   "game": "401909941",
+   "start": "2026-11-08T01:00Z",
+   "team": "27",
+   "name": "Reece Beekman",
+   "status": "out",
+   "athlete": "4432187",
+   "espn": {
+    "seen": "2026-11-07T03:55:40.270Z",
+    "own": "2026-11-02T18:22:00.000Z"
+   }
+  },
+  "401909941|tristanvukcevic|out": {
+   "game": "401909941",
+   "start": "2026-11-08T01:00Z",
+   "team": "27",
+   "name": "Tristan Vukcevic",
+   "status": "out",
+   "athlete": "4997537",
+   "espn": {
+    "seen": "2026-11-07T03:55:40.270Z",
+    "own": "2026-11-01T21:51:00.000Z"
+   }
+  },
+  "401909941|justinchampagnie|out": {
+   "game": "401909941",
+   "start": "2026-11-08T01:00Z",
+   "team": "27",
+   "name": "Justin Champagnie",
+   "status": "out",
+   "athlete": "4432907",
+   "espn": {
+    "seen": "2026-11-07T03:55:40.270Z",
+    "own": "2026-10-28T18:38:00.000Z"
+   }
+  },
+  "401909941|jamirwatkins|out": {
+   "game": "401909941",
+   "start": "2026-11-08T01:00Z",
+   "team": "27",
+   "name": "Jamir Watkins",
+   "status": "out",
+   "athlete": "4606840",
+   "espn": {
+    "seen": "2026-11-07T03:55:40.270Z",
+    "own": "2026-07-30T20:11:00.000Z"
+   }
+  },
+  "401909944|vitkrejci|out": {
+   "game": "401909944",
+   "start": "2026-11-08T03:00Z",
+   "team": "22",
+   "name": "Vit Krejci",
+   "status": "out",
+   "athlete": "4578893",
+   "espn": {
+    "seen": "2026-11-07T03:55:40.270Z",
+    "own": "2026-11-05T05:17:00.000Z"
+   }
+  },
+  "401909944|jamorant|out": {
+   "game": "401909944",
+   "start": "2026-11-08T03:00Z",
+   "team": "22",
+   "name": "Ja Morant",
+   "status": "out",
+   "athlete": "4279888",
+   "espn": {
+    "seen": "2026-11-07T03:55:40.270Z",
+    "own": "2026-10-30T18:45:00.000Z"
+   }
+  },
+  "401909944|shaedonsharpe|out": {
+   "game": "401909944",
+   "start": "2026-11-08T03:00Z",
+   "team": "22",
+   "name": "Shaedon Sharpe",
+   "status": "out",
+   "athlete": "4914336",
+   "espn": {
+    "seen": "2026-11-07T03:55:40.270Z",
+    "own": "2026-08-24T20:23:00.000Z"
+   }
+  },
+  "401909944|immanuelquickley|out": {
+   "game": "401909944",
+   "start": "2026-11-08T03:00Z",
+   "team": "22",
+   "name": "Immanuel Quickley",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-07T00:20:30.381Z",
+    "own": "2026-11-06T23:41:07.000Z",
+    "why": "@rotowirenba.bsky.social: Immanuel Quickley: Ruled out for Friday \n\n https://www"
+   }
+  },
+  "401909944|jarrettallen|out": {
+   "game": "401909944",
+   "start": "2026-11-08T03:00Z",
+   "team": "22",
+   "name": "Jarrett Allen",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-07T00:20:30.381Z",
+    "own": "2026-11-06T23:55:36.000Z",
+    "why": "@rotowirenba.bsky.social: Jarrett Allen: Won't play Friday \n\n https://www.rotowi"
+   }
+  },
+  "401909944|brandonmiller|out": {
+   "game": "401909944",
+   "start": "2026-11-08T03:00Z",
+   "team": "22",
+   "name": "Brandon Miller",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-07T01:12:29.931Z",
+    "own": "2026-11-07T01:07:47.000Z",
+    "why": "@rotowirenba.bsky.social: Brandon Miller: Won't return Friday \n\n https://www.rot"
+   }
+  },
+  "401909944|tobiasharris|out": {
+   "game": "401909944",
+   "start": "2026-11-08T03:00Z",
+   "team": "24",
+   "name": "Tobias Harris",
+   "status": "out",
+   "athlete": "6440",
+   "espn": {
+    "seen": "2026-11-07T03:55:40.270Z",
+    "own": "2026-10-30T21:44:00.000Z"
+   }
+  },
+  "401909944|jaydenquaintance|out": {
+   "game": "401909944",
+   "start": "2026-11-08T03:00Z",
+   "team": "24",
+   "name": "Jayden Quaintance",
+   "status": "out",
+   "athlete": "5101845",
+   "espn": {
+    "seen": "2026-11-07T03:55:40.270Z",
+    "own": "2026-10-05T21:43:00.000Z"
+   }
   }
  }
 }
