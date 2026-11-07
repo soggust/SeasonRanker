@@ -20117,6 +20117,11 @@
    "espn": {
     "seen": "2026-11-07T00:00:40.437Z",
     "own": "2026-11-06T23:44:00.000Z"
+   },
+   "bluesky": {
+    "seen": "2026-11-07T00:20:30.381Z",
+    "own": "2026-11-06T23:44:25.000Z",
+    "why": "@rotowirenba.bsky.social: Scottie Barnes: Ruled out Friday \n\n https://www.rotowi"
    }
   },
   "401909292|immanuelquickley|out": {
@@ -20129,6 +20134,11 @@
    "espn": {
     "seen": "2026-11-07T00:00:40.437Z",
     "own": "2026-11-06T23:41:00.000Z"
+   },
+   "bluesky": {
+    "seen": "2026-11-07T00:20:30.381Z",
+    "own": "2026-11-06T23:41:07.000Z",
+    "why": "@rotowirenba.bsky.social: Immanuel Quickley: Ruled out for Friday \n\n https://www"
    }
   },
   "401909289|jarrettallen|out": {
@@ -20141,6 +20151,138 @@
    "espn": {
     "seen": "2026-11-07T00:08:43.060Z",
     "own": "2026-11-06T23:55:00.000Z"
+   }
+  },
+  "401909290|jarrettallen|out": {
+   "game": "401909290",
+   "start": "2026-11-07T01:00Z",
+   "team": "6",
+   "name": "Jarrett Allen",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-07T00:20:30.381Z",
+    "own": "2026-11-06T23:55:36.000Z",
+    "why": "@rotowirenba.bsky.social: Jarrett Allen: Won't play Friday \n\n https://www.rotowi"
+   }
+  },
+  "401909290|immanuelquickley|out": {
+   "game": "401909290",
+   "start": "2026-11-07T01:00Z",
+   "team": "6",
+   "name": "Immanuel Quickley",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-07T00:20:30.381Z",
+    "own": "2026-11-06T23:41:07.000Z",
+    "why": "@rotowirenba.bsky.social: Immanuel Quickley: Ruled out for Friday \n\n https://www"
+   }
+  },
+  "401909291|jarrettallen|out": {
+   "game": "401909291",
+   "start": "2026-11-07T01:00Z",
+   "team": "29",
+   "name": "Jarrett Allen",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-07T00:20:30.381Z",
+    "own": "2026-11-06T23:55:36.000Z",
+    "why": "@rotowirenba.bsky.social: Jarrett Allen: Won't play Friday \n\n https://www.rotowi"
+   }
+  },
+  "401909291|immanuelquickley|out": {
+   "game": "401909291",
+   "start": "2026-11-07T01:00Z",
+   "team": "29",
+   "name": "Immanuel Quickley",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-07T00:20:30.381Z",
+    "own": "2026-11-06T23:41:07.000Z",
+    "why": "@rotowirenba.bsky.social: Immanuel Quickley: Ruled out for Friday \n\n https://www"
+   }
+  },
+  "401909292|jarrettallen|out": {
+   "game": "401909292",
+   "start": "2026-11-07T01:00Z",
+   "team": "15",
+   "name": "Jarrett Allen",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-07T00:20:30.381Z",
+    "own": "2026-11-06T23:55:36.000Z",
+    "why": "@rotowirenba.bsky.social: Jarrett Allen: Won't play Friday \n\n https://www.rotowi"
+   }
+  },
+  "401909293|jarrettallen|out": {
+   "game": "401909293",
+   "start": "2026-11-07T01:00Z",
+   "team": "3",
+   "name": "Jarrett Allen",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-07T00:20:30.381Z",
+    "own": "2026-11-06T23:55:36.000Z",
+    "why": "@rotowirenba.bsky.social: Jarrett Allen: Won't play Friday \n\n https://www.rotowi"
+   }
+  },
+  "401909293|immanuelquickley|out": {
+   "game": "401909293",
+   "start": "2026-11-07T01:00Z",
+   "team": "3",
+   "name": "Immanuel Quickley",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-07T00:20:30.381Z",
+    "own": "2026-11-06T23:41:07.000Z",
+    "why": "@rotowirenba.bsky.social: Immanuel Quickley: Ruled out for Friday \n\n https://www"
+   }
+  },
+  "401909294|jarrettallen|out": {
+   "game": "401909294",
+   "start": "2026-11-07T03:00Z",
+   "team": "13",
+   "name": "Jarrett Allen",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-07T00:20:30.381Z",
+    "own": "2026-11-06T23:55:36.000Z",
+    "why": "@rotowirenba.bsky.social: Jarrett Allen: Won't play Friday \n\n https://www.rotowi"
+   }
+  },
+  "401909294|immanuelquickley|out": {
+   "game": "401909294",
+   "start": "2026-11-07T03:00Z",
+   "team": "13",
+   "name": "Immanuel Quickley",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-07T00:20:30.381Z",
+    "own": "2026-11-06T23:41:07.000Z",
+    "why": "@rotowirenba.bsky.social: Immanuel Quickley: Ruled out for Friday \n\n https://www"
+   }
+  },
+  "401909295|jarrettallen|out": {
+   "game": "401909295",
+   "start": "2026-11-07T03:00Z",
+   "team": "23",
+   "name": "Jarrett Allen",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-07T00:20:30.381Z",
+    "own": "2026-11-06T23:55:36.000Z",
+    "why": "@rotowirenba.bsky.social: Jarrett Allen: Won't play Friday \n\n https://www.rotowi"
+   }
+  },
+  "401909295|immanuelquickley|out": {
+   "game": "401909295",
+   "start": "2026-11-07T03:00Z",
+   "team": "23",
+   "name": "Immanuel Quickley",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-07T00:20:30.381Z",
+    "own": "2026-11-06T23:41:07.000Z",
+    "why": "@rotowirenba.bsky.social: Immanuel Quickley: Ruled out for Friday \n\n https://www"
    }
   }
  }

@@ -1,12 +1,12 @@
 {
  "sport": "nfl",
  "cursor": {
-  "adamscheftermirror.bsky.social": "2026-11-06T23:54:46.842Z",
+  "adamscheftermirror.bsky.social": "2026-11-07T00:24:46.525Z",
   "rapsheet.bsky.social": "2026-11-06T18:41:54.465Z",
   "nflnewsreposterbot.bsky.social": "2026-11-06T17:28:39.017Z",
   "insidenflnews.bsky.social": "2026-11-06T23:56:30.361Z",
   "nflnewsposter.bsky.social": "2026-11-06T23:07:32.531Z",
-  "rotoworld-fb.bsky.social": "2026-11-07T00:02:45.000Z",
+  "rotoworld-fb.bsky.social": "2026-11-07T00:33:20.000Z",
   "rotowirenfl.bsky.social": "2026-11-06T22:29:44.000Z"
  },
  "claims": [
@@ -17260,6 +17260,32 @@
    "kind": "status",
    "confidence": 0.8,
    "text": "49ers DE Nick Bosa (calf) and RB Christian McCaffrey (hamstring) will return from injury Sunday while WR Mike Evans will miss his second consecutive game because of Achilles tendinitis. Story via @nwa"
+  },
+  {
+   "id": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3mzon2sd5j22n|traviskelce|active|status",
+   "at": "2026-11-07T00:24:46.000Z",
+   "seen": "2026-11-07T00:35:22.619Z",
+   "handle": "rotoworld-fb.bsky.social",
+   "post": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3mzon2sd5j22n",
+   "player": "Travis Kelce",
+   "team": "KC",
+   "status": "active",
+   "kind": "status",
+   "confidence": 0.9,
+   "text": "Travis Kelce (ankle) ready to face Jets, 2 FPs"
+  },
+  {
+   "id": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3mzonk53gtt2p|georgepickens|questionable|status",
+   "at": "2026-11-07T00:33:20.000Z",
+   "seen": "2026-11-07T00:35:22.619Z",
+   "handle": "rotoworld-fb.bsky.social",
+   "post": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3mzonk53gtt2p",
+   "player": "George Pickens",
+   "team": null,
+   "status": "questionable",
+   "kind": "status",
+   "confidence": 0.85,
+   "text": "George Pickens (hamstring) questionable in Week 9"
   }
  ]
 }
