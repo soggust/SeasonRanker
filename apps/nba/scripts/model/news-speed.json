@@ -20452,6 +20452,280 @@
     "seen": "2026-11-07T01:53:43.733Z",
     "own": "2026-10-17T00:52:00.000Z"
    }
+  },
+  "401909942|draymondgreen|q": {
+   "game": "401909942",
+   "start": "2026-11-08T01:30Z",
+   "team": "9",
+   "name": "Draymond Green",
+   "status": "q",
+   "athlete": "6589",
+   "espn": {
+    "seen": "2026-11-07T02:14:24.232Z",
+    "own": "2026-11-06T22:21:00.000Z"
+   },
+   "bluesky": {
+    "seen": "2026-11-06T23:04:34.024Z",
+    "own": "2026-11-06T22:21:31.000Z",
+    "why": "@rotowirenba.bsky.social: Draymond Green: Questionable versus Orlando \n\n https:/"
+   }
+  },
+  "401909942|garypayton|q": {
+   "game": "401909942",
+   "start": "2026-11-08T01:30Z",
+   "team": "9",
+   "name": "Gary Payton II",
+   "status": "q",
+   "athlete": "3134903",
+   "espn": {
+    "seen": "2026-11-07T02:14:24.232Z",
+    "own": "2026-11-06T22:21:00.000Z"
+   }
+  },
+  "401909942|kristapsporzingis|out": {
+   "game": "401909942",
+   "start": "2026-11-08T01:30Z",
+   "team": "9",
+   "name": "Kristaps Porzingis",
+   "status": "out",
+   "athlete": "3102531",
+   "espn": {
+    "seen": "2026-11-07T02:14:24.232Z",
+    "own": "2026-11-06T21:26:00.000Z"
+   }
+  },
+  "401909942|guisantos|q": {
+   "game": "401909942",
+   "start": "2026-11-08T01:30Z",
+   "team": "9",
+   "name": "Gui Santos",
+   "status": "q",
+   "athlete": "4997536",
+   "espn": {
+    "seen": "2026-11-07T02:14:24.232Z",
+    "own": "2026-11-06T20:49:00.000Z"
+   },
+   "bluesky": {
+    "seen": "2026-11-06T21:05:24.842Z",
+    "own": "2026-11-06T20:49:56.000Z",
+    "why": "@rotowirenba.bsky.social: Gui Santos: Questionable for Saturday \n\n https://www.r"
+   }
+  },
+  "401909942|mosesmoody|out": {
+   "game": "401909942",
+   "start": "2026-11-08T01:30Z",
+   "team": "9",
+   "name": "Moses Moody",
+   "status": "out",
+   "athlete": "4432171",
+   "espn": {
+    "seen": "2026-11-07T02:14:24.232Z",
+    "own": "2026-10-16T16:14:00.000Z"
+   }
+  },
+  "401909942|jimmybutler|out": {
+   "game": "401909942",
+   "start": "2026-11-08T01:30Z",
+   "team": "9",
+   "name": "Jimmy Butler III",
+   "status": "out",
+   "athlete": "6430",
+   "espn": {
+    "seen": "2026-11-07T02:14:24.232Z",
+    "own": "2026-10-16T16:11:00.000Z"
+   }
+  },
+  "401909942|immanuelquickley|out": {
+   "game": "401909942",
+   "start": "2026-11-08T01:30Z",
+   "team": "9",
+   "name": "Immanuel Quickley",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-07T00:20:30.381Z",
+    "own": "2026-11-06T23:41:07.000Z",
+    "why": "@rotowirenba.bsky.social: Immanuel Quickley: Ruled out for Friday \n\n https://www"
+   }
+  },
+  "401909942|jarrettallen|out": {
+   "game": "401909942",
+   "start": "2026-11-08T01:30Z",
+   "team": "9",
+   "name": "Jarrett Allen",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-07T00:20:30.381Z",
+    "own": "2026-11-06T23:55:36.000Z",
+    "why": "@rotowirenba.bsky.social: Jarrett Allen: Won't play Friday \n\n https://www.rotowi"
+   }
+  },
+  "401909942|brandonmiller|out": {
+   "game": "401909942",
+   "start": "2026-11-08T01:30Z",
+   "team": "9",
+   "name": "Brandon Miller",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-07T01:12:29.931Z",
+    "own": "2026-11-07T01:07:47.000Z",
+    "why": "@rotowirenba.bsky.social: Brandon Miller: Won't return Friday \n\n https://www.rot"
+   }
+  },
+  "401909942|jonathanisaac|out": {
+   "game": "401909942",
+   "start": "2026-11-08T01:30Z",
+   "team": "19",
+   "name": "Jonathan Isaac",
+   "status": "out",
+   "athlete": "4065654",
+   "espn": {
+    "seen": "2026-11-07T02:14:24.232Z",
+    "own": "2026-11-05T15:12:00.000Z"
+   }
+  },
+  "401909942|jalensuggs|out": {
+   "game": "401909942",
+   "start": "2026-11-08T01:30Z",
+   "team": "19",
+   "name": "Jalen Suggs",
+   "status": "out",
+   "athlete": "4432165",
+   "espn": {
+    "seen": "2026-11-07T02:14:24.232Z",
+    "own": "2026-10-26T18:44:00.000Z"
+   }
+  },
+  "401909942|paolobanchero|out": {
+   "game": "401909942",
+   "start": "2026-11-08T01:30Z",
+   "team": "19",
+   "name": "Paolo Banchero",
+   "status": "out",
+   "athlete": "4432573",
+   "espn": {
+    "seen": "2026-11-07T02:14:24.232Z",
+    "own": "2026-10-24T16:47:00.000Z"
+   }
+  },
+  "401909942|noahpenda|out": {
+   "game": "401909942",
+   "start": "2026-11-08T01:30Z",
+   "team": "19",
+   "name": "Noah Penda",
+   "status": "out",
+   "athlete": "5214637",
+   "espn": {
+    "seen": "2026-11-07T02:14:24.232Z",
+    "own": "2026-10-17T22:19:00.000Z"
+   }
+  },
+  "401909942|izaiyahnelson|out": {
+   "game": "401909942",
+   "start": "2026-11-08T01:30Z",
+   "team": "19",
+   "name": "Izaiyah Nelson",
+   "status": "out",
+   "athlete": "5107251",
+   "espn": {
+    "seen": "2026-11-07T02:14:24.232Z",
+    "own": "2026-09-28T21:33:00.000Z"
+   }
+  },
+  "401909943|rasheerfleming|q": {
+   "game": "401909943",
+   "start": "2026-11-08T02:00Z",
+   "team": "21",
+   "name": "Rasheer Fleming",
+   "status": "q",
+   "athlete": "5105977",
+   "espn": {
+    "seen": "2026-11-07T02:14:24.232Z",
+    "own": "2026-11-07T00:20:00.000Z"
+   }
+  },
+  "401909943|jordangoodwin|q": {
+   "game": "401909943",
+   "start": "2026-11-08T02:00Z",
+   "team": "21",
+   "name": "Jordan Goodwin",
+   "status": "q",
+   "athlete": "4278402",
+   "espn": {
+    "seen": "2026-11-07T02:14:24.232Z",
+    "own": "2026-11-07T00:20:00.000Z"
+   }
+  },
+  "401909943|markwilliams|out": {
+   "game": "401909943",
+   "start": "2026-11-08T02:00Z",
+   "team": "21",
+   "name": "Mark Williams",
+   "status": "out",
+   "athlete": "4701232",
+   "espn": {
+    "seen": "2026-11-07T02:14:24.232Z",
+    "own": "2026-09-11T16:03:00.000Z"
+   }
+  },
+  "401909943|immanuelquickley|out": {
+   "game": "401909943",
+   "start": "2026-11-08T02:00Z",
+   "team": "21",
+   "name": "Immanuel Quickley",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-07T00:20:30.381Z",
+    "own": "2026-11-06T23:41:07.000Z",
+    "why": "@rotowirenba.bsky.social: Immanuel Quickley: Ruled out for Friday \n\n https://www"
+   }
+  },
+  "401909943|jarrettallen|out": {
+   "game": "401909943",
+   "start": "2026-11-08T02:00Z",
+   "team": "21",
+   "name": "Jarrett Allen",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-07T00:20:30.381Z",
+    "own": "2026-11-06T23:55:36.000Z",
+    "why": "@rotowirenba.bsky.social: Jarrett Allen: Won't play Friday \n\n https://www.rotowi"
+   }
+  },
+  "401909943|brandonmiller|out": {
+   "game": "401909943",
+   "start": "2026-11-08T02:00Z",
+   "team": "21",
+   "name": "Brandon Miller",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-07T01:12:29.931Z",
+    "own": "2026-11-07T01:07:47.000Z",
+    "why": "@rotowirenba.bsky.social: Brandon Miller: Won't return Friday \n\n https://www.rot"
+   }
+  },
+  "401909943|clintcapela|out": {
+   "game": "401909943",
+   "start": "2026-11-08T02:00Z",
+   "team": "10",
+   "name": "Clint Capela",
+   "status": "out",
+   "athlete": "3102529",
+   "espn": {
+    "seen": "2026-11-07T02:14:24.232Z",
+    "own": "2026-11-06T20:32:00.000Z"
+   }
+  },
+  "401909943|stevenadams|out": {
+   "game": "401909943",
+   "start": "2026-11-08T02:00Z",
+   "team": "10",
+   "name": "Steven Adams",
+   "status": "out",
+   "athlete": "2991235",
+   "espn": {
+    "seen": "2026-11-07T02:14:24.232Z",
+    "own": "2026-11-05T00:21:00.000Z"
+   }
   }
  }
 }
