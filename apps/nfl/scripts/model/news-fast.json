@@ -4,9 +4,9 @@
   "adamscheftermirror.bsky.social": "2026-11-07T13:59:48.306Z",
   "rapsheet.bsky.social": "2026-11-06T18:41:54.465Z",
   "nflnewsreposterbot.bsky.social": "2026-11-06T17:28:39.017Z",
-  "insidenflnews.bsky.social": "2026-11-07T14:30:49.496Z",
+  "insidenflnews.bsky.social": "2026-11-07T15:00:26.912Z",
   "nflnewsposter.bsky.social": "2026-11-07T01:55:41.402Z",
-  "rotoworld-fb.bsky.social": "2026-11-07T14:44:50.000Z",
+  "rotoworld-fb.bsky.social": "2026-11-07T15:02:43.000Z",
   "rotowirenfl.bsky.social": "2026-11-07T14:40:16.000Z"
  },
  "claims": [
@@ -17299,6 +17299,19 @@
    "kind": "status",
    "confidence": 0.3,
    "text": "Pelissero: Kyler Murray was diagnosed with a Grade 2 hamstring strain."
+  },
+  {
+   "id": "at://did:plc:mbr4badgf6yu56mquzackzew/app.bsky.feed.post/3mzq5ymzjcs2j|ajbrown|out|status",
+   "at": "2026-11-07T15:00:26.912Z",
+   "seen": "2026-11-07T15:07:41.453Z",
+   "handle": "insidenflnews.bsky.social",
+   "post": "at://did:plc:mbr4badgf6yu56mquzackzew/app.bsky.feed.post/3mzq5ymzjcs2j",
+   "player": "AJ Brown",
+   "team": "NE",
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.6,
+   "text": "Pelissero: Patriots optimistic AJ Brown (ankle, knee) will be back “sooner rather than later, perhaps after Week 11 bye.”"
   }
  ]
 }
