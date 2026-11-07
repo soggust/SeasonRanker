@@ -3,6 +3,94 @@
  "days": 2,
  "signals": [
   {
+   "team": "26",
+   "abbr": "SEA",
+   "athlete": "3912547",
+   "player": "Sam Darnold",
+   "kind": "benched",
+   "direction": "down",
+   "confidence": 0.5,
+   "headline": "Seahawks' Quenton Nelson, Sam Darnold among starters ruled out",
+   "at": "2026-11-07T00:09:26.000Z"
+  },
+  {
+   "team": "25",
+   "abbr": "SF",
+   "athlete": "4040605",
+   "player": "Nick Bosa",
+   "kind": "return",
+   "direction": "up",
+   "confidence": 0.8,
+   "headline": "Nick Bosa back, Christian McCaffrey good to go for Niners",
+   "at": "2026-11-06T23:03:00.000Z"
+  },
+  {
+   "team": "19",
+   "abbr": "NYG",
+   "athlete": "4595348",
+   "player": "Malik Nabers",
+   "kind": "return",
+   "direction": "up",
+   "confidence": 0.6,
+   "headline": "Giants' Cam Skattebo doubtful vs. Eagles; Malik Nabers 'full go'",
+   "at": "2026-11-06T22:38:03.000Z"
+  },
+  {
+   "team": "14",
+   "abbr": "LAR",
+   "athlete": "3122132",
+   "player": "Myles Garrett",
+   "kind": "return",
+   "direction": "up",
+   "confidence": 0.8,
+   "headline": "Rams' Myles Garrett to be activated from injured reserve, play vs. Commanders",
+   "at": "2026-11-06T22:24:26.000Z"
+  },
+  {
+   "team": "5",
+   "abbr": "CLE",
+   "athlete": "4432762",
+   "player": "Shedeur Sanders",
+   "kind": "starting",
+   "direction": "up",
+   "confidence": 0.9,
+   "headline": "Browns to start Sanders at QB vs. Saints with Watson in protocol",
+   "at": "2026-11-06T18:56:40.000Z"
+  },
+  {
+   "team": "5",
+   "abbr": "CLE",
+   "athlete": "3122840",
+   "player": "Deshaun Watson",
+   "kind": "benched",
+   "direction": "down",
+   "confidence": 0.6,
+   "headline": "Browns to start Sanders at QB vs. Saints with Watson in protocol",
+   "at": "2026-11-06T18:56:40.000Z"
+  },
+  {
+   "team": "15",
+   "abbr": "MIA",
+   "athlete": "4870976",
+   "player": "Kadyn Proctor",
+   "kind": "return",
+   "direction": "up",
+   "confidence": 0.9,
+   "headline": "Dolphins to get rookie OL Kadyn Proctor back from concussion",
+   "at": "2026-11-06T17:24:08.000Z"
+  },
+  {
+   "team": "9",
+   "abbr": "GB",
+   "athlete": "4361423",
+   "player": "Micah Parsons",
+   "kind": "return",
+   "direction": "up",
+   "confidence": 0.5,
+   "headline": "Packers give Micah Parsons boost in return from ACL injury",
+   "at": "2026-11-06T11:00:07.000Z"
+  },
+  {
    "team": "16",
    "abbr": "MIN",
    "athlete": "2573079",
@@ -56,18 +144,7 @@
    "confidence": 0.4,
    "headline": "Saints' Jordyn Tyson returns to practice, listed as limited participant",
    "at": "2026-11-05T00:54:48.000Z"
-  },
-  {
-   "team": "9",
-   "abbr": "GB",
-   "athlete": "4361423",
-   "player": "Micah Parsons",
-   "kind": "return",
-   "direction": "up",
-   "confidence": 0.3,
-   "headline": "Packers open Micah Parsons' practice window; still mum on return",
-   "at": "2026-11-04T23:30:02.000Z"
   }
  ],
- "at": "2026-11-06T22:15:31.252Z"
+ "at": "2026-11-07T00:20:30.381Z"
 }

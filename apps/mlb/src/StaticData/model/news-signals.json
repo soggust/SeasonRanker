@@ -3,6 +3,17 @@
  "days": 2,
  "signals": [
   {
+   "team": "12",
+   "abbr": "SEA",
+   "athlete": null,
+   "player": "Tanner Swanson",
+   "kind": "coaching",
+   "direction": "none",
+   "confidence": 0.8,
+   "headline": "Sources: Mariners to hire Yankees' Tanner Swanson as bench coach",
+   "at": "2026-11-06T22:18:04.000Z"
+  },
+  {
    "team": "17",
    "abbr": "CIN",
    "athlete": null,
@@ -25,5 +36,5 @@
    "at": "2026-11-05T02:43:13.000Z"
   }
  ],
- "at": "2026-11-06T22:15:31.252Z"
+ "at": "2026-11-07T00:20:30.381Z"
 }

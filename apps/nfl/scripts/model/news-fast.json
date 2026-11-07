@@ -1,12 +1,12 @@
 {
  "sport": "nfl",
  "cursor": {
-  "adamscheftermirror.bsky.social": "2026-11-06T21:34:46.197Z",
+  "adamscheftermirror.bsky.social": "2026-11-06T23:54:46.842Z",
   "rapsheet.bsky.social": "2026-11-06T18:41:54.465Z",
   "nflnewsreposterbot.bsky.social": "2026-11-06T17:28:39.017Z",
-  "insidenflnews.bsky.social": "2026-11-06T22:46:11.459Z",
-  "nflnewsposter.bsky.social": "2026-11-06T22:18:41.429Z",
-  "rotoworld-fb.bsky.social": "2026-11-06T22:47:06.000Z",
+  "insidenflnews.bsky.social": "2026-11-06T23:56:30.361Z",
+  "nflnewsposter.bsky.social": "2026-11-06T23:07:32.531Z",
+  "rotoworld-fb.bsky.social": "2026-11-07T00:02:45.000Z",
   "rotowirenfl.bsky.social": "2026-11-06T22:29:44.000Z"
  },
  "claims": [
@@ -17208,6 +17208,58 @@
    "kind": "status",
    "confidence": 0.4,
    "text": "49ers rule out Mike Evans (Achilles) vs. Raiders"
+  },
+  {
+   "id": "at://did:plc:qre6zxbmr3ixhdmgsgdretb5/app.bsky.feed.post/3mzolf5bppw2y|terranceferguson|out|status",
+   "at": "2026-11-06T23:54:45.700Z",
+   "seen": "2026-11-07T00:20:30.381Z",
+   "handle": "adamscheftermirror.bsky.social",
+   "post": "at://did:plc:qre6zxbmr3ixhdmgsgdretb5/app.bsky.feed.post/3mzolf5bppw2y",
+   "player": "Terrance Ferguson",
+   "team": "LAR",
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.95,
+   "text": "Rams now say TE Terrance Ferguson is out for Sunday’s game against the Commanders.\n\nOriginal post"
+  },
+  {
+   "id": "at://did:plc:qre6zxbmr3ixhdmgsgdretb5/app.bsky.feed.post/3mzolf6crkx2s|nickbosa|active|return",
+   "at": "2026-11-06T23:54:46.842Z",
+   "seen": "2026-11-07T00:20:30.381Z",
+   "handle": "adamscheftermirror.bsky.social",
+   "post": "at://did:plc:qre6zxbmr3ixhdmgsgdretb5/app.bsky.feed.post/3mzolf6crkx2s",
+   "player": "Nick Bosa",
+   "team": "SF",
+   "status": "active",
+   "kind": "return",
+   "confidence": 0.9,
+   "text": "49ers DE Nick Bosa (calf) and RB Christian McCaffrey (hamstring) will return from injury Sunday while WR Mike Evans will miss his second consecutive game because of Achilles tendinitis. Story via @nwa"
+  },
+  {
+   "id": "at://did:plc:qre6zxbmr3ixhdmgsgdretb5/app.bsky.feed.post/3mzolf6crkx2s|christianmccaffrey|active|return",
+   "at": "2026-11-06T23:54:46.842Z",
+   "seen": "2026-11-07T00:20:30.381Z",
+   "handle": "adamscheftermirror.bsky.social",
+   "post": "at://did:plc:qre6zxbmr3ixhdmgsgdretb5/app.bsky.feed.post/3mzolf6crkx2s",
+   "player": "Christian McCaffrey",
+   "team": "SF",
+   "status": "active",
+   "kind": "return",
+   "confidence": 0.9,
+   "text": "49ers DE Nick Bosa (calf) and RB Christian McCaffrey (hamstring) will return from injury Sunday while WR Mike Evans will miss his second consecutive game because of Achilles tendinitis. Story via @nwa"
+  },
+  {
+   "id": "at://did:plc:qre6zxbmr3ixhdmgsgdretb5/app.bsky.feed.post/3mzolf6crkx2s|mikeevans|out|status",
+   "at": "2026-11-06T23:54:46.842Z",
+   "seen": "2026-11-07T00:20:30.381Z",
+   "handle": "adamscheftermirror.bsky.social",
+   "post": "at://did:plc:qre6zxbmr3ixhdmgsgdretb5/app.bsky.feed.post/3mzolf6crkx2s",
+   "player": "Mike Evans",
+   "team": null,
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.8,
+   "text": "49ers DE Nick Bosa (calf) and RB Christian McCaffrey (hamstring) will return from injury Sunday while WR Mike Evans will miss his second consecutive game because of Achilles tendinitis. Story via @nwa"
   }
  ]
 }

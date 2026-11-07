@@ -3,6 +3,17 @@
  "days": 2,
  "signals": [
   {
+   "team": "9",
+   "abbr": "GS",
+   "athlete": "3102531",
+   "player": "Kristaps Porzingis",
+   "kind": "return",
+   "direction": "none",
+   "confidence": 0.3,
+   "headline": "Warriors' Kristaps Porzingis to 'step away,' prioritize health",
+   "at": "2026-11-06T23:57:17.000Z"
+  },
+  {
    "team": "13",
    "abbr": "LAL",
    "athlete": "4683774",
@@ -14,5 +25,5 @@
    "at": "2026-11-05T21:40:58.000Z"
   }
  ],
- "at": "2026-11-06T12:43:10.799Z"
+ "at": "2026-11-07T00:20:30.381Z"
 }
