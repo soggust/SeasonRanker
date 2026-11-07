@@ -4,10 +4,10 @@
   "adamscheftermirror.bsky.social": "2026-11-07T13:59:48.306Z",
   "rapsheet.bsky.social": "2026-11-06T18:41:54.465Z",
   "nflnewsreposterbot.bsky.social": "2026-11-06T17:28:39.017Z",
-  "insidenflnews.bsky.social": "2026-11-07T12:53:44.244Z",
+  "insidenflnews.bsky.social": "2026-11-07T14:30:49.496Z",
   "nflnewsposter.bsky.social": "2026-11-07T01:55:41.402Z",
-  "rotoworld-fb.bsky.social": "2026-11-07T14:17:45.000Z",
-  "rotowirenfl.bsky.social": "2026-11-06T22:29:44.000Z"
+  "rotoworld-fb.bsky.social": "2026-11-07T14:44:50.000Z",
+  "rotowirenfl.bsky.social": "2026-11-07T14:40:16.000Z"
  },
  "claims": [
   {
@@ -17286,6 +17286,19 @@
    "kind": "status",
    "confidence": 0.85,
    "text": "George Pickens (hamstring) questionable in Week 9"
+  },
+  {
+   "id": "at://did:plc:mbr4badgf6yu56mquzackzew/app.bsky.feed.post/3mzq4dnx3is2j|kylermurray|none|status",
+   "at": "2026-11-07T14:30:49.496Z",
+   "seen": "2026-11-07T14:47:44.304Z",
+   "handle": "insidenflnews.bsky.social",
+   "post": "at://did:plc:mbr4badgf6yu56mquzackzew/app.bsky.feed.post/3mzq4dnx3is2j",
+   "player": "Kyler Murray",
+   "team": "ARI",
+   "status": "none",
+   "kind": "status",
+   "confidence": 0.3,
+   "text": "Pelissero: Kyler Murray was diagnosed with a Grade 2 hamstring strain."
   }
  ]
 }
