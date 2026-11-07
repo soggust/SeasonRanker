@@ -1,7 +1,7 @@
 {
  "v": 1,
  "sport": "nfl",
- "at": "2026-11-06T12:49:11.783Z",
+ "at": "2026-11-07T16:04:11.349Z",
  "epoch": "2026-10-26T15:00:00Z",
  "markets": {
   "ml": {
@@ -423,16 +423,16 @@
     "ev": null,
     "evS": null,
     "beat": null,
-    "roi": 0.0613,
-    "rn": 453,
+    "roi": 0.0701,
+    "rn": 458,
     "stats": {
      "n": 0,
      "s": 0,
      "s2": 0,
      "beat": 0,
-     "rn": 453,
-     "rs": 27.7884,
-     "rs2": 453.6478
+     "rn": 458,
+     "rs": 32.098,
+     "rs2": 457.3592
     },
     "why": "0 with a close, - shrunk",
     "seasons": {
@@ -585,16 +585,16 @@
     "ev": null,
     "evS": null,
     "beat": null,
-    "roi": -0.1681,
-    "rn": 19,
+    "roi": -0.2347,
+    "rn": 26,
     "stats": {
      "n": 0,
      "s": 0,
      "s2": 0,
      "beat": 0,
-     "rn": 19,
-     "rs": -3.1933,
-     "rs2": 23.737
+     "rn": 26,
+     "rs": -6.1033,
+     "rs2": 30.7981
     },
     "why": "0 with a close, - shrunk",
     "seasons": {
@@ -740,6 +740,33 @@
     "family": "stat",
     "label": "passAtt unders"
    },
+   "kelly2": {
+    "on": false,
+    "strong": false,
+    "n": 0,
+    "ev": null,
+    "evS": null,
+    "beat": null,
+    "roi": -0.0442,
+    "rn": 452,
+    "stats": {
+     "n": 0,
+     "s": 0,
+     "s2": 0,
+     "beat": 0,
+     "rn": 452,
+     "rs": -19.9924,
+     "rs2": 440.8117
+    },
+    "why": "0 with a close, - shrunk",
+    "seasons": {
+     "lead": 0,
+     "of": 0,
+     "pos": 0
+    },
+    "family": "size",
+    "label": "a Kelly score of 2% or more"
+   },
    "stat:rushAtt:over": {
     "on": false,
     "strong": false,
@@ -793,33 +820,6 @@
     },
     "family": "stat",
     "label": "rushYds overs"
-   },
-   "kelly2": {
-    "on": false,
-    "strong": false,
-    "n": 0,
-    "ev": null,
-    "evS": null,
-    "beat": null,
-    "roi": -0.0439,
-    "rn": 450,
-    "stats": {
-     "n": 0,
-     "s": 0,
-     "s2": 0,
-     "beat": 0,
-     "rn": 450,
-     "rs": -19.7331,
-     "rs2": 439.263
-    },
-    "why": "0 with a close, - shrunk",
-    "seasons": {
-     "lead": 0,
-     "of": 0,
-     "pos": 0
-    },
-    "family": "size",
-    "label": "a Kelly score of 2% or more"
    },
    "stat:passInt:over": {
     "on": false,
@@ -882,16 +882,16 @@
     "ev": null,
     "evS": null,
     "beat": null,
-    "roi": 0.3957,
-    "rn": 37,
+    "roi": 0.3669,
+    "rn": 39,
     "stats": {
      "n": 0,
      "s": 0,
      "s2": 0,
      "beat": 0,
-     "rn": 37,
-     "rs": 14.6419,
-     "rs2": 26.7682
+     "rn": 39,
+     "rs": 14.3086,
+     "rs2": 28.2127
     },
     "why": "0 with a close, - shrunk",
     "seasons": {
@@ -1073,5 +1073,5 @@
   }
  },
  "k": 100,
- "commit": "7131fda5"
+ "commit": "892dcdad"
 }

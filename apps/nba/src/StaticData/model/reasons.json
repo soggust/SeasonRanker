@@ -1,7 +1,7 @@
 {
  "v": 1,
  "sport": "nba",
- "at": "2026-11-06T12:54:08.073Z",
+ "at": "2026-11-07T16:08:57.165Z",
  "epoch": "2026-10-26T15:00:00Z",
  "markets": {
   "spread": {
@@ -801,16 +801,16 @@
     "ev": null,
     "evS": null,
     "beat": null,
-    "roi": 0.1386,
-    "rn": 86,
+    "roi": 0.1657,
+    "rn": 84,
     "stats": {
      "n": 0,
      "s": 0,
      "s2": 0,
      "beat": 0,
-     "rn": 86,
-     "rs": 11.9229,
-     "rs2": 82.447
+     "rn": 84,
+     "rs": 13.9229,
+     "rs2": 80.447
     },
     "why": "0 with a close, - shrunk",
     "seasons": {
@@ -828,16 +828,16 @@
     "ev": null,
     "evS": null,
     "beat": null,
-    "roi": 0.1454,
-    "rn": 21,
+    "roi": 0.2027,
+    "rn": 20,
     "stats": {
      "n": 0,
      "s": 0,
      "s2": 0,
      "beat": 0,
-     "rn": 21,
-     "rs": 3.0533,
-     "rs2": 21.299
+     "rn": 20,
+     "rs": 4.0533,
+     "rs2": 20.299
     },
     "why": "0 with a close, - shrunk",
     "seasons": {
@@ -1100,5 +1100,5 @@
   }
  },
  "k": 100,
- "commit": "7131fda5"
+ "commit": "892dcdad"
 }

@@ -1,12 +1,12 @@
 {
  "sport": "nhl",
  "epoch": "2026-10-26T15:00:00Z",
- "commit": "7131fda5",
- "at": "2026-11-06T12:59:39.610Z",
+ "commit": "892dcdad",
+ "at": "2026-11-07T16:14:29.100Z",
  "current": 2027,
- "held": 532,
- "before": 17.97,
- "after": 3.01,
+ "held": 541,
+ "before": -0.62,
+ "after": -0.72,
  "keys": {
   "ml:away": {
    "n": 292,
@@ -33,12 +33,12 @@
    "sum": 0.44
   },
   "prop:sog:over": {
-   "n": 113,
-   "sum": -3.88
+   "n": 114,
+   "sum": -4.88
   },
   "prop:sog:under": {
-   "n": 2212,
-   "sum": -43.71
+   "n": 2233,
+   "sum": -44.95
   },
   "spread:away": {
    "n": 232,

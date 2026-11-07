@@ -1,12 +1,12 @@
 {
  "v": 1,
- "at": "2026-11-06T12:49:03.700Z",
+ "at": "2026-11-07T16:04:04.111Z",
  "rows": 27978,
  "pooled": {
-  "n": 11658,
+  "n": 11633,
   "rows": 27978,
-  "keptRaw": 0.9765,
-  "kept": 0.9765,
+  "keptRaw": 0.9783,
+  "kept": 0.9783,
   "moved": 0.503,
   "lead": 48.04,
   "edgeOpen": 0.019,
@@ -37,14 +37,14 @@
    "from": "own"
   },
   "passInt": {
-   "n": 775,
+   "n": 776,
    "rows": 1592,
-   "keptRaw": 0.9961,
-   "kept": 0.9961,
+   "keptRaw": 0.996,
+   "kept": 0.996,
    "moved": 0.03,
    "lead": 48.039,
    "edgeOpen": 0.0215,
-   "edgeClose": 0.0215,
+   "edgeClose": 0.0214,
    "from": "own"
   },
   "passTd": {
@@ -70,14 +70,14 @@
    "from": "own"
   },
   "rec": {
-   "n": 2388,
+   "n": 2362,
    "rows": 6185,
-   "keptRaw": 0.9983,
-   "kept": 0.9983,
+   "keptRaw": 1.0076,
+   "kept": 1,
    "moved": 0.222,
    "lead": 48.041,
    "edgeOpen": 0.0182,
-   "edgeClose": 0.0181,
+   "edgeClose": 0.0184,
    "from": "own"
   },
   "recYds": {
@@ -127,5 +127,5 @@
  },
  "sport": "nfl",
  "epoch": "2026-10-26T15:00:00Z",
- "commit": "7131fda5"
+ "commit": "892dcdad"
 }

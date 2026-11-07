@@ -2,7 +2,7 @@
  "v": 1,
  "sport": "mlb",
  "epoch": "2026-10-26T15:00:00Z",
- "at": "2026-11-06T13:04:24.242Z",
+ "at": "2026-11-07T16:19:15.423Z",
  "from": "2021-07-18T17:11:00.000Z",
  "through": "2026-10-16T00:00:00.000Z",
  "n": {
@@ -2873,24 +2873,24 @@
    }
   }
  },
- "commit": "7131fda5",
- "note": "D108. Within-season recency (recent form and recent model-vs-market accuracy): measured and held (the owner, 2026-11-06: \"are we leaning too far into history and not enough on current?\")",
+ "commit": "892dcdad",
+ "note": "D110. The Books' over-shade on NHL and NBA player props: the under shade (soft) and the no-overs rule (hard) measured and held (the owner's ledger mining, 2026-11-07: \"the bot has been staking into that bias\")",
  "inputs": {
   "v": 1,
   "sport": "mlb",
   "code": {
-   "props": "8cbb07134ab6",
+   "props": "c21af3470845",
    "games": "e48553675c1d",
    "pricing": "815ed957cfb6",
-   "record": "c935ce75de58",
-   "harness": "c14248556a8f",
+   "record": "1c8c0ab20393",
+   "harness": "36c8c288f598",
    "residual": "0f1cad093bf42957",
    "tuned": "75ba5ef16d4ef1db"
   },
   "fit": {
    "wf": true,
-   "code": "0f797cd5d6f3e95e",
-   "expected": "0f797cd5d6f3e95e",
+   "code": "a86cd2895a29232d",
+   "expected": "a86cd2895a29232d",
    "seasons": [
     "2023:53081",
     "2024:106845",
@@ -2955,6 +2955,6 @@
     "want": 29
    }
   },
-  "hash": "65fa609403014c36"
+  "hash": "4ef34469c0abbfd4"
  }
 }

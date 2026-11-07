@@ -1,12 +1,12 @@
 {
  "sport": "nba",
  "epoch": "2026-10-26T15:00:00Z",
- "commit": "7131fda5",
- "at": "2026-11-06T12:55:30.171Z",
+ "commit": "892dcdad",
+ "at": "2026-11-07T16:10:15.307Z",
  "current": 2027,
  "held": 1123,
- "before": -44.24,
- "after": -22.12,
+ "before": -40.82,
+ "after": -20.41,
  "keys": {
   "ml:away": {
    "n": 699,
@@ -33,12 +33,12 @@
    "sum": 40.84
   },
   "prop:pra:over": {
-   "n": 21,
-   "sum": 3.05
+   "n": 20,
+   "sum": 4.05
   },
   "prop:pra:under": {
-   "n": 86,
-   "sum": 11.92
+   "n": 84,
+   "sum": 13.92
   },
   "prop:pts:over": {
    "n": 21,
