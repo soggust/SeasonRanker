@@ -1,8 +1,8 @@
 {
  "sport": "nba",
  "cursor": {
-  "rotowirenba.bsky.social": "2026-11-06T23:55:36.000Z",
-  "insidenbanews.bsky.social": "2026-11-07T00:34:57.342Z",
+  "rotowirenba.bsky.social": "2026-11-07T00:42:53.000Z",
+  "insidenbanews.bsky.social": "2026-11-07T00:54:12.795Z",
   "shamsbot.bsky.social": "2026-11-04T20:33:22.000Z"
  },
  "claims": [
@@ -8936,6 +8936,162 @@
    "kind": "starting",
    "confidence": 0.85,
    "text": "Lineup alert: Pelicans will start Fears, Murray, Murphy III, Williamson, Matkovic."
+  },
+  {
+   "id": "at://did:plc:ykcnnf6kqnn3lasmobrczoem/app.bsky.feed.post/3mzonrjxcd223|george|none|starting",
+   "at": "2026-11-07T00:37:29.203Z",
+   "seen": "2026-11-07T00:59:00.953Z",
+   "handle": "insidenbanews.bsky.social",
+   "post": "at://did:plc:ykcnnf6kqnn3lasmobrczoem/app.bsky.feed.post/3mzonrjxcd223",
+   "player": "George",
+   "team": "UTA",
+   "status": "none",
+   "kind": "starting",
+   "confidence": 0.85,
+   "text": "Lineup alert: Jazz will start George, Peterson, Bailey, Markkanen, Hayes."
+  },
+  {
+   "id": "at://did:plc:ykcnnf6kqnn3lasmobrczoem/app.bsky.feed.post/3mzonrjxcd223|peterson|none|starting",
+   "at": "2026-11-07T00:37:29.203Z",
+   "seen": "2026-11-07T00:59:00.953Z",
+   "handle": "insidenbanews.bsky.social",
+   "post": "at://did:plc:ykcnnf6kqnn3lasmobrczoem/app.bsky.feed.post/3mzonrjxcd223",
+   "player": "Peterson",
+   "team": "UTA",
+   "status": "none",
+   "kind": "starting",
+   "confidence": 0.85,
+   "text": "Lineup alert: Jazz will start George, Peterson, Bailey, Markkanen, Hayes."
+  },
+  {
+   "id": "at://did:plc:ykcnnf6kqnn3lasmobrczoem/app.bsky.feed.post/3mzonrjxcd223|bailey|none|starting",
+   "at": "2026-11-07T00:37:29.203Z",
+   "seen": "2026-11-07T00:59:00.953Z",
+   "handle": "insidenbanews.bsky.social",
+   "post": "at://did:plc:ykcnnf6kqnn3lasmobrczoem/app.bsky.feed.post/3mzonrjxcd223",
+   "player": "Bailey",
+   "team": "UTA",
+   "status": "none",
+   "kind": "starting",
+   "confidence": 0.85,
+   "text": "Lineup alert: Jazz will start George, Peterson, Bailey, Markkanen, Hayes."
+  },
+  {
+   "id": "at://did:plc:ykcnnf6kqnn3lasmobrczoem/app.bsky.feed.post/3mzonrjxcd223|markkanen|none|starting",
+   "at": "2026-11-07T00:37:29.203Z",
+   "seen": "2026-11-07T00:59:00.953Z",
+   "handle": "insidenbanews.bsky.social",
+   "post": "at://did:plc:ykcnnf6kqnn3lasmobrczoem/app.bsky.feed.post/3mzonrjxcd223",
+   "player": "Markkanen",
+   "team": "UTA",
+   "status": "none",
+   "kind": "starting",
+   "confidence": 0.85,
+   "text": "Lineup alert: Jazz will start George, Peterson, Bailey, Markkanen, Hayes."
+  },
+  {
+   "id": "at://did:plc:ykcnnf6kqnn3lasmobrczoem/app.bsky.feed.post/3mzonrjxcd223|hayes|none|starting",
+   "at": "2026-11-07T00:37:29.203Z",
+   "seen": "2026-11-07T00:59:00.953Z",
+   "handle": "insidenbanews.bsky.social",
+   "post": "at://did:plc:ykcnnf6kqnn3lasmobrczoem/app.bsky.feed.post/3mzonrjxcd223",
+   "player": "Hayes",
+   "team": "UTA",
+   "status": "none",
+   "kind": "starting",
+   "confidence": 0.85,
+   "text": "Lineup alert: Jazz will start George, Peterson, Bailey, Markkanen, Hayes."
+  },
+  {
+   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mzonu2vrby2g|jamalshead|none|starting",
+   "at": "2026-11-07T00:38:54.000Z",
+   "seen": "2026-11-07T00:59:00.953Z",
+   "handle": "rotowirenba.bsky.social",
+   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mzonu2vrby2g",
+   "player": "Jamal Shead",
+   "team": null,
+   "status": "none",
+   "kind": "starting",
+   "confidence": 0.8,
+   "text": "Jamal Shead: Starting Friday \n\n https://www.rotowire.com/basketball/player/jamal-shead-6296"
+  },
+  {
+   "id": "at://did:plc:ykcnnf6kqnn3lasmobrczoem/app.bsky.feed.post/3mzonyney2s23|irving|none|starting",
+   "at": "2026-11-07T00:41:27.680Z",
+   "seen": "2026-11-07T00:59:00.953Z",
+   "handle": "insidenbanews.bsky.social",
+   "post": "at://did:plc:ykcnnf6kqnn3lasmobrczoem/app.bsky.feed.post/3mzonyney2s23",
+   "player": "Irving",
+   "team": "DAL",
+   "status": "none",
+   "kind": "starting",
+   "confidence": 0.85,
+   "text": "Lineup alert: Mavs will start Irving, Martin, Flagg, Washington, Gafford."
+  },
+  {
+   "id": "at://did:plc:ykcnnf6kqnn3lasmobrczoem/app.bsky.feed.post/3mzonyney2s23|martin|none|starting",
+   "at": "2026-11-07T00:41:27.680Z",
+   "seen": "2026-11-07T00:59:00.953Z",
+   "handle": "insidenbanews.bsky.social",
+   "post": "at://did:plc:ykcnnf6kqnn3lasmobrczoem/app.bsky.feed.post/3mzonyney2s23",
+   "player": "Martin",
+   "team": "DAL",
+   "status": "none",
+   "kind": "starting",
+   "confidence": 0.85,
+   "text": "Lineup alert: Mavs will start Irving, Martin, Flagg, Washington, Gafford."
+  },
+  {
+   "id": "at://did:plc:ykcnnf6kqnn3lasmobrczoem/app.bsky.feed.post/3mzonyney2s23|flagg|none|starting",
+   "at": "2026-11-07T00:41:27.680Z",
+   "seen": "2026-11-07T00:59:00.953Z",
+   "handle": "insidenbanews.bsky.social",
+   "post": "at://did:plc:ykcnnf6kqnn3lasmobrczoem/app.bsky.feed.post/3mzonyney2s23",
+   "player": "Flagg",
+   "team": "DAL",
+   "status": "none",
+   "kind": "starting",
+   "confidence": 0.85,
+   "text": "Lineup alert: Mavs will start Irving, Martin, Flagg, Washington, Gafford."
+  },
+  {
+   "id": "at://did:plc:ykcnnf6kqnn3lasmobrczoem/app.bsky.feed.post/3mzonyney2s23|washington|none|starting",
+   "at": "2026-11-07T00:41:27.680Z",
+   "seen": "2026-11-07T00:59:00.953Z",
+   "handle": "insidenbanews.bsky.social",
+   "post": "at://did:plc:ykcnnf6kqnn3lasmobrczoem/app.bsky.feed.post/3mzonyney2s23",
+   "player": "Washington",
+   "team": "DAL",
+   "status": "none",
+   "kind": "starting",
+   "confidence": 0.85,
+   "text": "Lineup alert: Mavs will start Irving, Martin, Flagg, Washington, Gafford."
+  },
+  {
+   "id": "at://did:plc:ykcnnf6kqnn3lasmobrczoem/app.bsky.feed.post/3mzonyney2s23|gafford|none|starting",
+   "at": "2026-11-07T00:41:27.680Z",
+   "seen": "2026-11-07T00:59:00.953Z",
+   "handle": "insidenbanews.bsky.social",
+   "post": "at://did:plc:ykcnnf6kqnn3lasmobrczoem/app.bsky.feed.post/3mzonyney2s23",
+   "player": "Gafford",
+   "team": "DAL",
+   "status": "none",
+   "kind": "starting",
+   "confidence": 0.85,
+   "text": "Lineup alert: Mavs will start Irving, Martin, Flagg, Washington, Gafford."
+  },
+  {
+   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mzoo37apkp2k|calebmartin|none|starting",
+   "at": "2026-11-07T00:42:53.000Z",
+   "seen": "2026-11-07T00:59:00.953Z",
+   "handle": "rotowirenba.bsky.social",
+   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mzoo37apkp2k",
+   "player": "Caleb Martin",
+   "team": "DAL",
+   "status": "none",
+   "kind": "starting",
+   "confidence": 0.8,
+   "text": "Caleb Martin: Starting Friday \n\n https://www.rotowire.com/basketball/player/caleb-martin-4931"
   }
  ]
 }
