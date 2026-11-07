@@ -20296,6 +20296,162 @@
     "seen": "2026-11-07T00:48:37.360Z",
     "own": "2026-11-07T00:36:00.000Z"
    }
+  },
+  "401909294|brandonmiller|out": {
+   "game": "401909294",
+   "start": "2026-11-07T03:00Z",
+   "team": "13",
+   "name": "Brandon Miller",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-07T01:12:29.931Z",
+    "own": "2026-11-07T01:07:47.000Z",
+    "why": "@rotowirenba.bsky.social: Brandon Miller: Won't return Friday \n\n https://www.rot"
+   }
+  },
+  "401909295|brandonmiller|out": {
+   "game": "401909295",
+   "start": "2026-11-07T03:00Z",
+   "team": "23",
+   "name": "Brandon Miller",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-07T01:12:29.931Z",
+    "own": "2026-11-07T01:07:47.000Z",
+    "why": "@rotowirenba.bsky.social: Brandon Miller: Won't return Friday \n\n https://www.rot"
+   }
+  },
+  "401909938|tjmcconnell|out": {
+   "game": "401909938",
+   "start": "2026-11-07T22:00Z",
+   "team": "11",
+   "name": "T.J. McConnell",
+   "status": "out",
+   "athlete": "2530530",
+   "espn": {
+    "seen": "2026-11-07T01:53:43.733Z",
+    "own": "2026-11-06T23:06:00.000Z"
+   }
+  },
+  "401909938|kellyoubre|q": {
+   "game": "401909938",
+   "start": "2026-11-07T22:00Z",
+   "team": "11",
+   "name": "Kelly Oubre Jr.",
+   "status": "q",
+   "athlete": "3133603",
+   "espn": {
+    "seen": "2026-11-07T01:53:43.733Z",
+    "own": "2026-11-06T23:04:00.000Z"
+   }
+  },
+  "401909938|johnnyfurphy|out": {
+   "game": "401909938",
+   "start": "2026-11-07T22:00Z",
+   "team": "11",
+   "name": "Johnny Furphy",
+   "status": "out",
+   "athlete": "5157066",
+   "espn": {
+    "seen": "2026-11-07T01:53:43.733Z",
+    "own": "2026-10-30T19:06:00.000Z"
+   }
+  },
+  "401909938|bensheppard|out": {
+   "game": "401909938",
+   "start": "2026-11-07T22:00Z",
+   "team": "11",
+   "name": "Ben Sheppard",
+   "status": "out",
+   "athlete": "4433076",
+   "espn": {
+    "seen": "2026-11-07T01:53:43.733Z",
+    "own": "2026-10-28T21:41:00.000Z"
+   }
+  },
+  "401909938|tyresehaliburton|out": {
+   "game": "401909938",
+   "start": "2026-11-07T22:00Z",
+   "team": "11",
+   "name": "Tyrese Haliburton",
+   "status": "out",
+   "athlete": "4396993",
+   "espn": {
+    "seen": "2026-11-07T01:53:43.733Z",
+    "own": "2026-10-28T21:30:00.000Z"
+   }
+  },
+  "401909938|moussadiabate|out": {
+   "game": "401909938",
+   "start": "2026-11-07T22:00Z",
+   "team": "11",
+   "name": "Moussa Diabate",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-06T17:57:37.346Z",
+    "own": "2026-11-06T17:57:15.000Z",
+    "why": "@rotowirenba.bsky.social: Moussa Diabate: Ruled out for Friday \n\n https://www.ro"
+   }
+  },
+  "401909938|immanuelquickley|out": {
+   "game": "401909938",
+   "start": "2026-11-07T22:00Z",
+   "team": "11",
+   "name": "Immanuel Quickley",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-07T00:20:30.381Z",
+    "own": "2026-11-06T23:41:07.000Z",
+    "why": "@rotowirenba.bsky.social: Immanuel Quickley: Ruled out for Friday \n\n https://www"
+   }
+  },
+  "401909938|jarrettallen|out": {
+   "game": "401909938",
+   "start": "2026-11-07T22:00Z",
+   "team": "11",
+   "name": "Jarrett Allen",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-07T00:20:30.381Z",
+    "own": "2026-11-06T23:55:36.000Z",
+    "why": "@rotowirenba.bsky.social: Jarrett Allen: Won't play Friday \n\n https://www.rotowi"
+   }
+  },
+  "401909938|brandonmiller|out": {
+   "game": "401909938",
+   "start": "2026-11-07T22:00Z",
+   "team": "11",
+   "name": "Brandon Miller",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-07T01:12:29.931Z",
+    "own": "2026-11-07T01:07:47.000Z",
+    "why": "@rotowirenba.bsky.social: Brandon Miller: Won't return Friday \n\n https://www.rot"
+   }
+  },
+  "401909938|demarderozan|q": {
+   "game": "401909938",
+   "start": "2026-11-07T22:00Z",
+   "team": "7",
+   "name": "DeMar DeRozan",
+   "status": "q",
+   "athlete": "3978",
+   "espn": {
+    "seen": "2026-11-07T01:53:43.733Z",
+    "own": "2026-11-06T22:48:00.000Z"
+   }
+  },
+  "401909938|julianstrawther|out": {
+   "game": "401909938",
+   "start": "2026-11-07T22:00Z",
+   "team": "7",
+   "name": "Julian Strawther",
+   "status": "out",
+   "athlete": "4432181",
+   "espn": {
+    "seen": "2026-11-07T01:53:43.733Z",
+    "own": "2026-10-17T00:52:00.000Z"
+   }
   }
  }
 }
