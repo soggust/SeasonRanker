@@ -1,12 +1,12 @@
 {
  "sport": "nfl",
  "cursor": {
-  "adamscheftermirror.bsky.social": "2026-11-07T18:19:53.773Z",
+  "adamscheftermirror.bsky.social": "2026-11-07T19:49:53.391Z",
   "rapsheet.bsky.social": "2026-11-07T19:32:21.112Z",
   "nflnewsreposterbot.bsky.social": "2026-11-06T17:28:39.017Z",
   "insidenflnews.bsky.social": "2026-11-07T19:24:26.898Z",
   "nflnewsposter.bsky.social": "2026-11-07T17:54:17.611Z",
-  "rotoworld-fb.bsky.social": "2026-11-07T18:02:02.000Z",
+  "rotoworld-fb.bsky.social": "2026-11-07T19:40:35.000Z",
   "rotowirenfl.bsky.social": "2026-11-07T19:24:19.000Z"
  },
  "claims": [
@@ -17585,6 +17585,45 @@
    "kind": "status",
    "confidence": 0.95,
    "text": "The Jets have downgraded Joseph Ossai, Nahshon Wright and VJ Payne to out. All were previously questionable."
+  },
+  {
+   "id": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3mzqnnlcr5d2t|kylermurray|out|status",
+   "at": "2026-11-07T19:40:35.000Z",
+   "seen": "2026-11-07T19:59:31.614Z",
+   "handle": "rotoworld-fb.bsky.social",
+   "post": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3mzqnnlcr5d2t",
+   "player": "Kyler Murray",
+   "team": "MIN",
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.9,
+   "text": "Kyler Murray (hammy) ruled out for MNF in Week 9"
+  },
+  {
+   "id": "at://did:plc:qre6zxbmr3ixhdmgsgdretb5/app.bsky.feed.post/3mzqo6737fm2a|malachilawrence|out|status",
+   "at": "2026-11-07T19:49:53.391Z",
+   "seen": "2026-11-07T19:59:31.614Z",
+   "handle": "adamscheftermirror.bsky.social",
+   "post": "at://did:plc:qre6zxbmr3ixhdmgsgdretb5/app.bsky.feed.post/3mzqo6737fm2a",
+   "player": "Malachi Lawrence",
+   "team": "DAL",
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.9,
+   "text": "Cowboys placed OLB Malachi Lawrence on injured reserve and activated OLB Marist Liufau from injured reserve-Designated for Return.\n\nOriginal post"
+  },
+  {
+   "id": "at://did:plc:qre6zxbmr3ixhdmgsgdretb5/app.bsky.feed.post/3mzqo6737fm2a|maristliufau|active|return",
+   "at": "2026-11-07T19:49:53.391Z",
+   "seen": "2026-11-07T19:59:31.614Z",
+   "handle": "adamscheftermirror.bsky.social",
+   "post": "at://did:plc:qre6zxbmr3ixhdmgsgdretb5/app.bsky.feed.post/3mzqo6737fm2a",
+   "player": "Marist Liufau",
+   "team": "DAL",
+   "status": "active",
+   "kind": "return",
+   "confidence": 0.8,
+   "text": "Cowboys placed OLB Malachi Lawrence on injured reserve and activated OLB Marist Liufau from injured reserve-Designated for Return.\n\nOriginal post"
   }
  ]
 }
