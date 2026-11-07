@@ -9432,6 +9432,18 @@
     "seen": "2026-11-07T17:11:18.966Z",
     "own": "2026-11-07T16:55:00.000Z"
    }
+  },
+  "401892674|antonlundell|q": {
+   "game": "401892674",
+   "start": "2026-11-08T18:00Z",
+   "team": "26",
+   "name": "Anton Lundell",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-11-07T17:12:14.750Z",
+    "own": "2026-11-07T17:11:58.000Z",
+    "why": "@dailyfaceoff.bsky.social: Panthers’ Anton Lundell day-to-day with undisclosed i"
+   }
   }
  }
 }
