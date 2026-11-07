@@ -4,7 +4,7 @@
   "johnston-bot.bsky.social": "2026-11-06T20:02:44.583Z",
   "notfriedgehnic.bsky.social": "2026-11-06T19:25:51.202Z",
   "dailyfaceoff.bsky.social": "2026-11-07T16:09:25.000Z",
-  "dfotoronto.bsky.social": "2026-11-07T15:33:21.000Z",
+  "dfotoronto.bsky.social": "2026-11-07T16:36:06.000Z",
   "marklazerus.bsky.social": "2026-11-07T16:04:08.783Z"
  },
  "claims": [
@@ -1788,6 +1788,19 @@
    "kind": "status",
    "confidence": 0.8,
    "text": "Cleared \n\nRathbone (BUF) on waivers"
+  },
+  {
+   "id": "at://did:plc:knaj2vcp4x6t7hr7ewd6e3uz/app.bsky.feed.post/3mzqddnswjw2f|johntavares|active|return",
+   "at": "2026-11-07T16:36:05.000Z",
+   "seen": "2026-11-07T16:39:27.287Z",
+   "handle": "dfotoronto.bsky.social",
+   "post": "at://did:plc:knaj2vcp4x6t7hr7ewd6e3uz/app.bsky.feed.post/3mzqddnswjw2f",
+   "player": "John Tavares",
+   "team": "TOR",
+   "status": "active",
+   "kind": "return",
+   "confidence": 0.6,
+   "text": "Auston Matthews says John Tavares has been best player on the ice at practice ahead of return vs. Canadiens"
   }
  ]
 }
