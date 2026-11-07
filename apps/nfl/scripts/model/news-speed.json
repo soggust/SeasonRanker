@@ -15962,6 +15962,11 @@
     "seen": "2026-11-06T20:15:14.447Z",
     "own": "2026-11-06T19:11:36.000Z",
     "why": "@rotoworld-fb.bsky.social: Jordyn Tyson (hamstring) questionable for Week 9"
+   },
+   "athlete": "4880281",
+   "espn": {
+    "seen": "2026-11-07T22:12:37.416Z",
+    "own": "2026-11-07T21:09:00.000Z"
    }
   },
   "401873044|jordyntyson|q": {
@@ -18562,6 +18567,30 @@
    "sleeper": {
     "seen": "2026-11-07T20:21:44.233Z",
     "own": "2026-11-07T06:30:07.458Z"
+   }
+  },
+  "401873041|patbryant|q": {
+   "game": "401873041",
+   "start": "2026-11-08T18:00Z",
+   "team": "7",
+   "name": "Pat Bryant",
+   "status": "q",
+   "athlete": "4600981",
+   "espn": {
+    "seen": "2026-11-07T22:12:37.416Z",
+    "own": "2026-11-07T21:35:00.000Z"
+   }
+  },
+  "401873049|mackhollins|q": {
+   "game": "401873049",
+   "start": "2026-11-08T21:25Z",
+   "team": "17",
+   "name": "Mack Hollins",
+   "status": "q",
+   "athlete": "2991662",
+   "espn": {
+    "seen": "2026-11-07T22:12:37.416Z",
+    "own": "2026-11-07T21:23:00.000Z"
    }
   }
  }
