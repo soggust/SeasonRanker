@@ -21025,6 +21025,95 @@
     "seen": "2026-11-07T16:03:57.546Z",
     "own": "2026-11-07T15:07:00.000Z"
    }
+  },
+  "401909938|desmondbane|out": {
+   "game": "401909938",
+   "start": "2026-11-07T22:00Z",
+   "team": "11",
+   "name": "Desmond Bane",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-07T19:38:42.361Z",
+    "own": "2026-11-07T19:36:42.000Z",
+    "why": "@rotowirenba.bsky.social: Desmond Bane: Ruled out Saturday \n\n https://www.rotowi"
+   }
+  },
+  "401909939|desmondbane|out": {
+   "game": "401909939",
+   "start": "2026-11-08T00:30Z",
+   "team": "1",
+   "name": "Desmond Bane",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-07T19:38:42.361Z",
+    "own": "2026-11-07T19:36:42.000Z",
+    "why": "@rotowirenba.bsky.social: Desmond Bane: Ruled out Saturday \n\n https://www.rotowi"
+   }
+  },
+  "401909940|desmondbane|out": {
+   "game": "401909940",
+   "start": "2026-11-08T01:00Z",
+   "team": "5",
+   "name": "Desmond Bane",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-07T19:38:42.361Z",
+    "own": "2026-11-07T19:36:42.000Z",
+    "why": "@rotowirenba.bsky.social: Desmond Bane: Ruled out Saturday \n\n https://www.rotowi"
+   }
+  },
+  "401909941|desmondbane|out": {
+   "game": "401909941",
+   "start": "2026-11-08T01:00Z",
+   "team": "25",
+   "name": "Desmond Bane",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-07T19:38:42.361Z",
+    "own": "2026-11-07T19:36:42.000Z",
+    "why": "@rotowirenba.bsky.social: Desmond Bane: Ruled out Saturday \n\n https://www.rotowi"
+   }
+  },
+  "401909942|desmondbane|out": {
+   "game": "401909942",
+   "start": "2026-11-08T01:30Z",
+   "team": "9",
+   "name": "Desmond Bane",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-07T19:38:42.361Z",
+    "own": "2026-11-07T19:36:42.000Z",
+    "why": "@rotowirenba.bsky.social: Desmond Bane: Ruled out Saturday \n\n https://www.rotowi"
+   },
+   "athlete": "4066320",
+   "espn": {
+    "seen": "2026-11-07T19:46:00.911Z",
+    "own": "2026-11-07T19:31:00.000Z"
+   }
+  },
+  "401909943|desmondbane|out": {
+   "game": "401909943",
+   "start": "2026-11-08T02:00Z",
+   "team": "21",
+   "name": "Desmond Bane",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-07T19:38:42.361Z",
+    "own": "2026-11-07T19:36:42.000Z",
+    "why": "@rotowirenba.bsky.social: Desmond Bane: Ruled out Saturday \n\n https://www.rotowi"
+   }
+  },
+  "401909944|desmondbane|out": {
+   "game": "401909944",
+   "start": "2026-11-08T03:00Z",
+   "team": "22",
+   "name": "Desmond Bane",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-07T19:38:42.361Z",
+    "own": "2026-11-07T19:36:42.000Z",
+    "why": "@rotowirenba.bsky.social: Desmond Bane: Ruled out Saturday \n\n https://www.rotowi"
+   }
   }
  }
 }
