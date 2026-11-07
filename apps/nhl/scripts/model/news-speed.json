@@ -8927,6 +8927,11 @@
    "espn": {
     "seen": "2026-11-07T16:04:14.453Z",
     "own": "2026-11-07T15:15:00.000Z"
+   },
+   "bluesky": {
+    "seen": "2026-11-07T18:39:23.242Z",
+    "own": "2026-11-07T18:15:56.000Z",
+    "why": "@dailyfaceoff.bsky.social: Bruins place James Hagens on injured reserve"
    }
   },
   "401892674|matthewpoitras|q": {
@@ -9467,6 +9472,162 @@
    "espn": {
     "seen": "2026-11-07T18:21:39.973Z",
     "own": "2026-11-07T18:00:00.000Z"
+   }
+  },
+  "401892664|bobyram|q": {
+   "game": "401892664",
+   "start": "2026-11-07T22:00Z",
+   "team": "124292",
+   "name": "Bo Byram",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-11-07T18:39:23.242Z",
+    "own": "2026-11-07T17:56:54.257Z",
+    "why": "@marklazerus.bsky.social: Blashill had no update on Bo Byram. Is it getting conc"
+   }
+  },
+  "401892665|bobyram|q": {
+   "game": "401892665",
+   "start": "2026-11-08T00:00Z",
+   "team": "21",
+   "name": "Bo Byram",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-11-07T18:39:23.242Z",
+    "own": "2026-11-07T17:56:54.257Z",
+    "why": "@marklazerus.bsky.social: Blashill had no update on Bo Byram. Is it getting conc"
+   }
+  },
+  "401892666|bobyram|q": {
+   "game": "401892666",
+   "start": "2026-11-08T00:00Z",
+   "team": "14",
+   "name": "Bo Byram",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-11-07T18:39:23.242Z",
+    "own": "2026-11-07T17:56:54.257Z",
+    "why": "@marklazerus.bsky.social: Blashill had no update on Bo Byram. Is it getting conc"
+   }
+  },
+  "401892667|bobyram|q": {
+   "game": "401892667",
+   "start": "2026-11-08T00:00Z",
+   "team": "12",
+   "name": "Bo Byram",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-11-07T18:39:23.242Z",
+    "own": "2026-11-07T17:56:54.257Z",
+    "why": "@marklazerus.bsky.social: Blashill had no update on Bo Byram. Is it getting conc"
+   }
+  },
+  "401892668|bobyram|q": {
+   "game": "401892668",
+   "start": "2026-11-08T01:00Z",
+   "team": "7",
+   "name": "Bo Byram",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-11-07T18:39:23.242Z",
+    "own": "2026-11-07T17:56:54.257Z",
+    "why": "@marklazerus.bsky.social: Blashill had no update on Bo Byram. Is it getting conc"
+   }
+  },
+  "401892669|bobyram|q": {
+   "game": "401892669",
+   "start": "2026-11-08T01:00Z",
+   "team": "9",
+   "name": "Bo Byram",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-11-07T18:39:23.242Z",
+    "own": "2026-11-07T17:56:54.257Z",
+    "why": "@marklazerus.bsky.social: Blashill had no update on Bo Byram. Is it getting conc"
+   }
+  },
+  "401892670|bobyram|q": {
+   "game": "401892670",
+   "start": "2026-11-08T01:00Z",
+   "team": "30",
+   "name": "Bo Byram",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-11-07T18:39:23.242Z",
+    "own": "2026-11-07T17:56:54.257Z",
+    "why": "@marklazerus.bsky.social: Blashill had no update on Bo Byram. Is it getting conc"
+   }
+  },
+  "401892671|bobyram|q": {
+   "game": "401892671",
+   "start": "2026-11-08T02:00Z",
+   "team": "17",
+   "name": "Bo Byram",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-11-07T18:39:23.242Z",
+    "own": "2026-11-07T17:56:54.257Z",
+    "why": "@marklazerus.bsky.social: Blashill had no update on Bo Byram. Is it getting conc"
+   }
+  },
+  "401892672|bobyram|q": {
+   "game": "401892672",
+   "start": "2026-11-08T02:00Z",
+   "team": "8",
+   "name": "Bo Byram",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-11-07T18:39:23.242Z",
+    "own": "2026-11-07T17:56:54.257Z",
+    "why": "@marklazerus.bsky.social: Blashill had no update on Bo Byram. Is it getting conc"
+   }
+  },
+  "401892673|bobyram|q": {
+   "game": "401892673",
+   "start": "2026-11-08T03:00Z",
+   "team": "6",
+   "name": "Bo Byram",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-11-07T18:39:23.242Z",
+    "own": "2026-11-07T17:56:54.257Z",
+    "why": "@marklazerus.bsky.social: Blashill had no update on Bo Byram. Is it getting conc"
+   }
+  },
+  "401892674|bobyram|q": {
+   "game": "401892674",
+   "start": "2026-11-08T18:00Z",
+   "team": "1",
+   "name": "Bo Byram",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-11-07T18:39:23.242Z",
+    "own": "2026-11-07T17:56:54.257Z",
+    "why": "@marklazerus.bsky.social: Blashill had no update on Bo Byram. Is it getting conc"
+   }
+  },
+  "401892675|bobyram|q": {
+   "game": "401892675",
+   "start": "2026-11-08T20:30Z",
+   "team": "2",
+   "name": "Bo Byram",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-11-07T18:39:23.242Z",
+    "own": "2026-11-07T17:56:54.257Z",
+    "why": "@marklazerus.bsky.social: Blashill had no update on Bo Byram. Is it getting conc"
+   }
+  },
+  "401892677|bobyram|q": {
+   "game": "401892677",
+   "start": "2026-11-08T23:00Z",
+   "team": "28",
+   "name": "Bo Byram",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-11-07T18:39:23.242Z",
+    "own": "2026-11-07T17:56:54.257Z",
+    "why": "@marklazerus.bsky.social: Blashill had no update on Bo Byram. Is it getting conc"
    }
   }
  }
