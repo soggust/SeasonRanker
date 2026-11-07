@@ -301,12 +301,20 @@ function wantOf(state, OPTIONAL, sport) {
 // The props' pricer of a version, walk-forward by slate day: pOver for each of this sport's rows, from the rows of
 // every sport before its day. With the learned correction (correct.mjs) its tuned fit; before it (or under its
 // minimum rows) the trust's shrink by the line's size (desk.mjs fitBuckets, bucketTrustOf, chanceAt)
-export function pricePropsWalk(V, sport, all, mOf, { log = () => {} } = {}) {
+// (D110: shadeAt(sport, stat, placedMs) -> the under shade (shade.mjs walkShade) where the version prices the sport's
+// props off a shaded fair (UNDER_SHADE=1): each row's fair read as its side's shaded one (fairS) by the trust's fit,
+// the chance and the residual's ctx; the row's fair (every measure's) stays the Book's)
+export function pricePropsWalk(V, sport, all, mOf, { log = () => {}, shadeAt = null } = {}) {
   const mine = all.filter((b) => b.sport === sport);
   const withM = all.map((b) => {
     const m = mOf(b);
-    return fin(m) ? { ...b, modelRaw: m, model: m } : null;
+    if (!fin(m)) return null;
+    const fairS = shadeAt && V.shade?.shadedSide && V.shade.shadeOn?.(b.sport) ? V.shade.shadedSide(fairP(b), b.side === 'over', shadeAt(b.sport, b.propType, Date.parse(b.placedAt ?? b.start))) : null;
+    return { ...b, modelRaw: m, model: m, ...(fin(fairS) ? { fairS } : {}) };
   }).filter(Boolean);
+  const fairX = (b) => (fin(b.fairS) ? b.fairS : fairP(b));
+  // (the trust's rows read the shaded fair too: the fit sits on the fair the chance is built from)
+  const asTrust = (list) => (shadeAt ? list.map((b) => (fin(b.fairS) ? { ...b, fair: b.fairS } : b)) : list);
   const byId = new Map(withM.map((b) => [String(b.id), b]));
   const days = [...new Set(mine.map((b) => etDay(Date.parse(b.start))))].sort();
   const out = new Map();
@@ -332,7 +340,7 @@ export function pricePropsWalk(V, sport, all, mOf, { log = () => {} } = {}) {
     }
     let trustAt = null;
     if (!fit) {
-      const prior = weighP(withM.filter((b) => before(Date.parse(b.start))));
+      const prior = asTrust(weighP(withM.filter((b) => before(Date.parse(b.start)))));
       const minePrior = prior.filter((b) => b.sport === sport);
       const keys = [...new Set(today.map(keyOf))];
       const ladder = V.desk.fitBuckets ? V.desk.fitBuckets(prior, minePrior, keyOf, keys) : null;
@@ -342,19 +350,19 @@ export function pricePropsWalk(V, sport, all, mOf, { log = () => {} } = {}) {
     for (const b of today) {
       let pOver;
       if (fit) {
-        const x = V.correct.frameOf({ sport: b.sport, stat: b.propType, line: b.line, side: b.side, model: b.modelRaw, fair: fairP(b), odds: b.odds, otherOdds: b.otherOdds, home: b.home, hours: (Date.parse(b.start) - Date.parse(b.placedAt ?? b.start)) / 36e5 });
+        const x = V.correct.frameOf({ sport: b.sport, stat: b.propType, line: b.line, side: b.side, model: b.modelRaw, fair: fairX(b), odds: b.odds, otherOdds: b.otherOdds, home: b.home, hours: (Date.parse(b.start) - Date.parse(b.placedAt ?? b.start)) / 36e5 });
         pOver = V.correct.correctedOver(fit, x);
       } else {
         // (the row as the residual model's ctx (residual.mjs; a version with desk.mjs chanceAt's hook reads it, an
         // older chanceAt ignores it): the side's frame, the bet's moment)
-        const ctx = { sport: b.sport, market: 'prop', stat: b.propType, line: b.line, side: b.side, f: fairP(b), raw: b.modelRaw, overOdds: b.side === 'over' ? b.odds : b.otherOdds, underOdds: b.side === 'over' ? b.otherOdds : b.odds, t: Date.parse(b.start), at: Date.parse(b.placedAt ?? b.start), home: b.home ?? null, hours: (Date.parse(b.start) - Date.parse(b.placedAt ?? b.start)) / 36e5 };
-        const ps = V.desk.chanceAt('prop', fairP(b), b.modelRaw, trustAt(b), ctx);
+        const ctx = { sport: b.sport, market: 'prop', stat: b.propType, line: b.line, side: b.side, f: fairX(b), raw: b.modelRaw, overOdds: b.side === 'over' ? b.odds : b.otherOdds, underOdds: b.side === 'over' ? b.otherOdds : b.odds, t: Date.parse(b.start), at: Date.parse(b.placedAt ?? b.start), home: b.home ?? null, hours: (Date.parse(b.start) - Date.parse(b.placedAt ?? b.start)) / 36e5 };
+        const ps = V.desk.chanceAt('prop', fairX(b), b.modelRaw, trustAt(b), ctx);
         pOver = b.side === 'over' ? ps : 1 - ps;
       }
       if (fin(pOver)) out.set(String(b.id), Math.min(0.999, Math.max(0.001, pOver)));
     }
   }
-  log(`props priced on ${days.length} slate days (${corrDays} by the learned correction, ${days.length - corrDays} by the trust's shrink)`);
+  log(`props priced on ${days.length} slate days (${corrDays} by the learned correction, ${days.length - corrDays} by the trust's shrink${shadeAt ? '; the fair shaded (D110)' : ''})`);
   return out;
 }
 
@@ -390,7 +398,7 @@ export async function scoreVersion(dir, sport, { refit = false, propsLayer = tru
   // (lineupRisk: the lineup risk's fit on the history's opens against their closes (lineup-risk.mjs, D42); none before it)
   // (picks, replay: the bands (picks.mjs edgeLevel) and the replayed record (replay-record.mjs, the Bot's history);
   // a version from before them has no replayed record)
-  for (const n of ['leagues', 'ratings', 'context', 'margins', 'backtest', 'desk', 'props', 'project', 'correct', 'anchor', 'lineup-risk', 'picks', 'replay-record', 'confidence', 'reasons', 'clv-bands', 'windows', 'trusted', 'tuned', 'recency']) V[n === 'lineup-risk' ? 'lineupRisk' : n === 'replay-record' ? 'replay' : n === 'clv-bands' ? 'clvBands' : n] = await load(dir, n);
+  for (const n of ['leagues', 'ratings', 'context', 'margins', 'backtest', 'desk', 'props', 'project', 'correct', 'anchor', 'lineup-risk', 'picks', 'replay-record', 'confidence', 'reasons', 'clv-bands', 'windows', 'trusted', 'tuned', 'recency', 'shade']) V[n === 'lineup-risk' ? 'lineupRisk' : n === 'replay-record' ? 'replay' : n === 'clv-bands' ? 'clvBands' : n] = await load(dir, n);
   // (the loaders: this checkout's, so both versions read the same history)
   const H = { context: await import('./context.mjs'), logs: await import('./playerlogs.mjs'), props: await import('./props.mjs'), fitcache: await import('./fitcache.mjs'), espn: await import('./espn.mjs'), history: await import('./gate-history.mjs') };
   const cfg = V.leagues.LEAGUES[sport];
@@ -806,11 +814,22 @@ export async function scoreVersion(dir, sport, { refit = false, propsLayer = tru
     const pOver = a ? a.over : V.project.lineChances(b.line, mu, fp, mix).over;
     if (fin(pOver)) replayM.set(id, b.side === 'over' ? pOver : 1 - pOver);
   }
+  // (D110's under shade (shade.mjs): the fit by stat on every graded prop close in the history, reported for every sport
+  // (the owner sees the NFL's and MLB's numbers too); where the version shades this sport's props (UNDER_SHADE=1), the
+  // ledger's rows are priced off the fair shaded by the walk over the history's closes and every sport's graded ledger
+  // props before the row's day, and --record writes the fit for the live desk (shade.json))
+  const shadeRows = histProps.close.filter((x) => x.y === 0 || x.y === 1).map((x) => ({ sport, stat: x.stat, t: x.t, f: x.f, y: x.y }));
+  const shadeFit = V.shade?.fitShadeByStat && shadeRows.length ? { ...V.shade.fitShadeByStat(shadeRows), sport, on: !!V.shade.shadeOn?.(sport), n0: V.shade.SHADE_N0, max: V.shade.SHADE_MAX } : null;
+  if (shadeFit) say(`under shade by stat (D110, ${shadeFit.on ? 'pricing this sport' : 'the readout only'}): ${V.shade.shadeText(shadeFit)}`);
+  const shadeAt = V.shade?.shadeOn?.(sport) ? V.shade.walkShade([...shadeRows, ...priced.filter((b) => decided(b) && b.status !== 'push').map((b) => ({ sport: b.sport, stat: b.propType, t: Date.parse(b.start), f: b.side === 'over' ? b.fair : 1 - b.fair, y: b.side === 'over' ? yOf(b) : 1 - yOf(b) }))], { by: 'day' }) : null;
   const priceWith = (mOf, label) => {
-    const pOver = pricePropsWalk(V, sport, priced, mOf, { log: (s) => say(`${label}: ${s}`) });
+    const pOver = pricePropsWalk(V, sport, priced, mOf, { log: (s) => say(`${label}: ${s}`), shadeAt });
     return mineProps.filter((b) => pOver.has(String(b.id))).map((b) => {
       const x = propRow(b, pOver.get(String(b.id)));
-      return { ...x, stake: stakesOf(V, x, evScale) };
+      const stake = stakesOf(V, x, evScale);
+      // (D110's hard rule (NO_PROP_OVERS=1): a player-prop over in a shaded sport is never staked, tracked only)
+      if (V.shade?.overHeld?.(sport, 'prop', true)) stake.over = 0;
+      return { ...x, stake };
     });
   };
   const propsSaved = mineProps.length ? priceWith(savedM, 'saved chances') : [];
@@ -914,6 +933,9 @@ export async function scoreVersion(dir, sport, { refit = false, propsLayer = tru
     anchor: histProps.anchor ?? null,
     // (the lineup risk (D42): each stat's survival of the Bot's edge from the open to the close, what --record writes)
     risk: histProps.risk ?? null,
+    // (the under shade by stat (D110, shade.mjs): the fit on every graded prop close to date; what --record writes for
+    // the live desk where the version prices the sport off it (on), the readout alone otherwise)
+    shade: shadeFit,
     // (the lines' history bar (D51): what --record writes for the live desk)
     lineBar,
     propBar: V.desk.propBar && histProps.close.length ? propBarOf(V, histProps.close, current) : null,
@@ -1254,6 +1276,13 @@ function recordScore(version, sport, score, frozen, inputs = null) {
     const out = path.join(ROOT, 'apps', sport, 'src/StaticData/model/lineup-risk.json');
     writeFileSync(out, `${JSON.stringify({ ...score.risk, sport, epoch: score.epoch, commit: entry.commit }, null, 1)}\n`);
     console.log(`${sport}: the lineup risk by stat written (${path.relative(ROOT, out)}): ${Object.entries(score.risk.stats).map(([k, v]) => `${k} ${v.kept ?? 'none'}`).join(', ')}`);
+  }
+  // (the under shade by stat (D110, shade.mjs): the fit on every graded prop close to date, what the live desk reads
+  // (readShade) where the version prices the sport off it; a version that doesn't leaves the file as it is)
+  if (score.shade?.on && score.shade.stats) {
+    const out = path.join(ROOT, 'apps', sport, 'src/StaticData/model/shade.json');
+    writeFileSync(out, `${JSON.stringify({ sport, epoch: score.epoch, commit: entry.commit, at: entry.at, current: score.current, n0: score.shade.n0, max: score.shade.max, stats: score.shade.stats }, null, 1)}\n`);
+    console.log(`${sport}: the under shade by stat written (${path.relative(ROOT, out)}): ${Object.entries(score.shade.stats).map(([k, v]) => `${k} ${v.shade}`).join(', ')}`);
   }
   // (the replayed record (replay-record.mjs: the Bot's history): what this version would have bet over the priced
   // history before its epoch; picks.mjs merges it with the live ledger since. A version without it leaves the file)

@@ -40,6 +40,7 @@ import * as REASONS from './reasons.mjs';
 import * as SHOP from './best-price.mjs';
 import * as LEAN from './lean.mjs';
 import * as CONV from './conviction.mjs';
+import * as SHADE from './shade.mjs';
 
 export const REPLAY_V = 1;
 export const REPLAY_LAST = 20;
@@ -322,6 +323,10 @@ export function replayRecord(V, sport, rows, { events = null, names = () => ({ h
   // (D107's conviction challenger, measuring only (REPLAY_CONVICTION=1, conviction.mjs): each placed bet's own-model lean)
   const convBets = new Map();
   const flags = { open: 0, close: 0, openSeen: 0, openClean: 0, openInWindow: 0, openHeld: 0, closeHeld: 0, barred: 0 };
+  // (D110's hard rule (NO_PROP_OVERS=1, shade.mjs overHeld, measuring only): a player-prop over in a shaded sport is
+  // never placed; it passes (tracked, the PASS's as-if tally, D87), the close still read where an open was held)
+  const oversHeld = (x, sd) => SHADE.overHeld?.(sport, x.market, sd.over) === true;
+  flags.oversHeld = 0;
   const keys = new Set([...opens.keys(), ...closes.keys()]);
   // (the betting windows (DECISIONS.md D63, windows.mjs): a game line's intraday snapshots (rows.intra, D61) beside its
   // open and close, each a candidate placement at its own price and hours; each segment's policy (the archive's open,
@@ -452,6 +457,7 @@ export function replayRecord(V, sport, rows, { events = null, names = () => ({ h
         const p = s < 1 ? o.f + Math.min(1, Math.max(0, s)) * (o.p - o.f) : o.p;
         const sd = sideOf(V, o, p);
         if (sd.ev > 0 && lagHeldOf(o, sd, hours)) flags.lagHeld++;
+        else if (sd.ev > 0 && oversHeld(o, sd)) flags.oversHeld++;
         else if (sd.ev > 0) placed = { x: o, sd, timing: 'open', s, close: c ?? null };
       }
     }
@@ -467,7 +473,8 @@ export function replayRecord(V, sport, rows, { events = null, names = () => ({ h
     } else if (!placed && c && !knownAt(c)) flags.closeHeld++;
     else if (!placed && c) {
       const sd = sideOf(V, c, c.p);
-      if (sd.ev > 0) placed = { x: c, sd, timing: 'close', s: 1, close: null };
+      if (sd.ev > 0 && oversHeld(c, sd)) (flags.oversHeld++, passes.push({ x: c, sd, overHeld: true }));
+      else if (sd.ev > 0) placed = { x: c, sd, timing: 'close', s: 1, close: null };
       else passes.push({ x: c, sd });
     } else if (!placed && o && knownAt(o)) {
       passes.push({ x: o, sd: sideOf(V, o, o.p) });
@@ -1096,6 +1103,8 @@ export function summarize(sport, bets, passed, { epoch, now, flags, rows, season
       // (D79, the Bot's own consistent losers: the bets held, their units before and after, each key's record (own-bar.json))
       ...(flags.ownBar ? { ownBar: flags.ownBar } : {}),
       ...(flags.margin ? { margin: flags.margin } : {}),
+      // (D110's hard rule, measuring only: the player-prop overs held from the record)
+      ...(flags.oversHeld ? { oversHeld: flags.oversHeld } : {}),
       ...(flags.mmaOpenFav ? { mmaOpenFav: flags.mmaOpenFav } : {}),
       ...(flags.leanGuard ? { leanGuard: flags.leanGuard } : {}),
       // (the reason tiers (D58): the bets by band and by would-be band, and whether LOVE and LOCK have earned their place)

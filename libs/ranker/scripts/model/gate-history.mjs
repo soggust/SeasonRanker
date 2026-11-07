@@ -403,18 +403,24 @@ export function finish(V, rows, keyOf, start, kind) {
   // (D108: the version's within-season recency on the trust's rows, REPLAY_RECENCY=1 only (recency.mjs hlOf); none: flat)
   const hl = V.recency?.hlOf ? V.recency.hlOf(closeRows[0]?.sport, kind) : Infinity;
   const weigh = fin(hl) ? (list) => { const w = V.recency.recencyWeights(list, hl); return list.map((b, i) => ({ ...b, tw: w[i] })); } : null;
-  const trust = walkTrust(closeRows.map((x) => ({ ...x, raw: modelOf(x) })), keyOf, V.desk.fitTrust, start, weigh);
+  // (D110: the under shade, UNDER_SHADE=1 only (shade.mjs, a version with it, the shaded sports' props): each row's fair
+  // read as shaded toward the over by the stat's shade fit walk-forward on the closes before its month (x.fs); the
+  // trust's fit, the chance and the residual's ctx read the shaded fair, the row's f (every measure's) stays the Book's)
+  const shadeAt = kind === 'props' && V.shade?.shadeOn?.(closeRows[0]?.sport) ? V.shade.walkShade(closeRows.filter((x) => x.y === 0 || x.y === 1).map((x) => ({ sport: x.sport, stat: x.stat, t: x.t, f: x.f, y: x.y }))) : null;
+  if (shadeAt) for (const x of rows) x.fs = V.shade.shadedOver(x.f, shadeAt(x.sport, x.stat, fin(x.at) ? x.at : x.t));
+  const fairOf = (x) => (fin(x.fs) ? x.fs : x.f);
+  const trust = walkTrust(closeRows.map((x) => ({ ...x, raw: modelOf(x), f: fairOf(x) })), keyOf, V.desk.fitTrust, start, weigh);
   const trustOf = new Map([...trust].map(([x, t]) => [x.id, t]));
   // (a close row at its own month's trust; an open row at the trust as of its own snapshot (the months before the
   // snapshot's: no result after it), its game's close row's where it has no snapshot time)
   for (const x of rows) {
     // (research only: an optimistic intraday prop row (GATE_PROPS_INTRA) reads its close's own trust, as the close)
     const t = x.optimistic && close.get(x.key) ? (trustOf.get(close.get(x.key).id) ?? start(keyOf(x))) : x.kind !== 'c' && fin(x.at) ? trust.at(keyOf(x), x.at) : (trustOf.get(x.kind === 'c' ? x.id : close.get(x.key)?.id) ?? start(keyOf(x)));
-    const ctx = { sport: x.sport, event: x.event, market: kind === 'lines' ? x.market : 'prop', stat: x.stat, line: x.line, side: 'over', f: x.f, raw: modelOf(x), overOdds: x.overOdds, underOdds: x.underOdds, t: x.t, at: fin(x.at) ? x.at : x.t - (x.kind === 'o' ? 24 * 36e5 : 36e5), kind: x.kind, ...(x.kind === 'i' && fin(x.at) ? { hours: (x.t - x.at) / 36e5 } : {}), fo: x.fo ?? null, home: x.home ?? null, season: x.season, ...(fin(x.named) ? { named: x.named } : {}) };
-    x.p = Math.min(0.999, Math.max(0.001, V.desk.chanceAt(kind === 'lines' ? x.market : 'prop', x.f, modelOf(x), t, ctx)));
+    const ctx = { sport: x.sport, event: x.event, market: kind === 'lines' ? x.market : 'prop', stat: x.stat, line: x.line, side: 'over', f: fairOf(x), raw: modelOf(x), overOdds: x.overOdds, underOdds: x.underOdds, t: x.t, at: fin(x.at) ? x.at : x.t - (x.kind === 'o' ? 24 * 36e5 : 36e5), kind: x.kind, ...(x.kind === 'i' && fin(x.at) ? { hours: (x.t - x.at) / 36e5 } : {}), fo: x.fo ?? null, home: x.home ?? null, season: x.season, ...(fin(x.named) ? { named: x.named } : {}) };
+    x.p = Math.min(0.999, Math.max(0.001, V.desk.chanceAt(kind === 'lines' ? x.market : 'prop', fairOf(x), modelOf(x), t, ctx)));
     // (the current price before the residual blend (the trust's chance), what the confidence layer reads as the
     // blend's start: confidence.mjs features, D52)
-    x.pCur = Math.min(0.999, Math.max(0.001, V.desk.chanceAt(kind === 'lines' ? x.market : 'prop', x.f, modelOf(x), t)));
+    x.pCur = Math.min(0.999, Math.max(0.001, V.desk.chanceAt(kind === 'lines' ? x.market : 'prop', fairOf(x), modelOf(x), t)));
     x.trust = t;
     // (research only (REPLAY_ATTR, D72): the pieces' parts of the edge (p - f): each projection piece's part of the
     // Bot's own chance less the fair, scaled by what the anchor and the trust kept of it (pCur - f over raw - f), the

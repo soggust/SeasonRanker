@@ -582,7 +582,9 @@ test('D32 the residual model, on since the owner\'s O3: every live path passes t
   // (every live path passes the ctx: the props with the anchored raw and only where the Book priced the prop; the
   // game lines through choose and the board; the trust fit and the backtest never (four arguments: the current
   // price the blend sits on); the weekly collector with the blend off in its process)
-  assert.match(src('props.mjs'), /chanceAt\('prop', x\.fair, x\.model, t, rctx && \{ \.\.\.rctx, side: x\.side, f: x\.fair, raw: x\.raw \}\)/, 'priceProps passes the side\'s ctx with its raw');
+  // (D110: the fair the blend sits on is fS(x), the side's shaded fair where the under shade priced it, the Book's otherwise)
+  assert.match(src('props.mjs'), /chanceAt\('prop', fS\(x\), x\.model, t, rctx && \{ \.\.\.rctx, side: x\.side, f: fS\(x\), raw: x\.raw \}\)/, 'priceProps passes the side\'s ctx with its raw');
+  assert.match(src('props.mjs'), /const fS = \(x\) => \(Number\.isFinite\(x\.fairShaded\) \? x\.fairShaded : x\.fair\);/, 'the fair read is the Book\'s unless the shade priced the side');
   assert.match(src('props.mjs'), /const rctx = prop\.prices && residOn\(\) \?/, 'only a prop the Book priced');
   assert.match(src('props.mjs'), /\{ side: 'over', model: cal\.over, raw: pA,/, 'the raw is the anchored chance');
   assert.match(src('desk.mjs'), /export function choose\(market, trust, evScale, ctx = null\)/);
@@ -2494,4 +2496,92 @@ test("D109 stale prices measured and held: no age or news discount, the desk unc
     const src = fs.readFileSync(path.resolve("libs/ranker/scripts/model", f), "utf8");
     assert.ok(!/STALE_PRICE|staleDiscount/.test(src), `${f} has no stale-price discount`);
   }
+});
+
+test("D110 the under shade and the no-overs rule measured: environment flags, the shade self-tuned walk-forward and clamped, the Book's fair kept on every row, no double count", async () => {
+  const decisions = fs.readFileSync(path.resolve("libs/ranker/scripts/model/DECISIONS.md"), "utf8");
+  assert.ok(decisions.includes("### D110."));
+  const S = await import("../libs/ranker/scripts/model/shade.mjs");
+  // (each rule's live setting is its shipped constant; the environment overrides it for one run, the gate's candidate)
+  assert.match(src("shade.mjs"), /export const UNDER_SHADE = envOn\('UNDER_SHADE', SHADE_PRICING\);/);
+  assert.match(src("shade.mjs"), /export const NO_PROP_OVERS = envOn\('NO_PROP_OVERS', NO_OVERS_PRICING\);/);
+  assert.equal(S.UNDER_SHADE, process.env.UNDER_SHADE === "1" ? true : process.env.UNDER_SHADE === "0" ? false : S.SHADE_PRICING);
+  assert.equal(S.NO_PROP_OVERS, process.env.NO_PROP_OVERS === "1" ? true : process.env.NO_PROP_OVERS === "0" ? false : S.NO_OVERS_PRICING);
+  // (the family: the NHL's and the NBA's props, the mining's; the rest only ever a readout)
+  assert.deepEqual(S.SHADE_SPORTS, ["nhl", "nba"]);
+  assert.equal(S.shadeOn("nhl", false), false);
+  assert.equal(S.shadeOn("nhl", true), true);
+  assert.equal(S.shadeOn("nfl", true), false);
+  assert.equal(S.overHeld("nba", "prop", true, true), true, "the hard rule holds a prop over");
+  assert.equal(S.overHeld("nba", "prop", false, true), false, "never an under");
+  assert.equal(S.overHeld("nba", "total", true, true), false, "never a game total's over");
+  assert.equal(S.overHeld("nhl", "prop", true, false), false, "off: nothing held");
+  // (the fit: the under's actual rate less its no-vig fair, mean(f - y) in the over's frame, shrunk n / (n + N0),
+  // clamped to [0, SHADE_MAX]: never a shade the other way, never past the cap)
+  assert.equal(S.SHADE_N0, 500);
+  assert.equal(S.SHADE_MAX, 0.04);
+  const rows = [...Array(2000)].map((_, i) => ({ f: 0.5, y: i % 100 < 48 ? 1 : 0 }));
+  const fit = S.fitShade(rows);
+  assert.equal(fit.n, 2000);
+  assert.ok(Math.abs(fit.raw - 0.02) < 1e-9, "the raw shade is the under's edge over its fair");
+  assert.ok(Math.abs(fit.shade - (0.02 * 2000) / 2500) < 1e-4, "shrunk by n / (n + N0)");
+  assert.equal(S.fitShade([{ f: 0.5, y: 1 }, { f: 0.5, y: 1 }]).shade, 0, "overs winning: no shade, never the other way");
+  assert.equal(S.fitShade([...Array(100000)].map(() => ({ f: 0.6, y: 0 }))).shade, S.SHADE_MAX, "clamped at the cap");
+  assert.equal(S.fitShade([{ f: 0.5, y: null }]).n, 0, "a push teaches nothing");
+  // (the sides: the under's fair up by s, the over's down by s; the Book's fair itself untouched (shadedOver at 0))
+  assert.ok(Math.abs(S.shadedSide(0.48, false, 0.02) - 0.5) < 1e-9);
+  assert.ok(Math.abs(S.shadedSide(0.52, true, 0.02) - 0.5) < 1e-9);
+  assert.equal(S.shadedOver(0.5, 0), 0.5);
+  // (the walk: no row teaches its own month (the history's trust walk's convention), by day for the ledger)
+  const w = S.walkShade([{ sport: "nhl", stat: "sog", t: Date.UTC(2026, 0, 5), f: 0.5, y: 0 }], { n0: 1 });
+  assert.equal(w("nhl", "sog", Date.UTC(2026, 0, 20)), 0, "its own month: nothing learned yet");
+  assert.equal(w("nhl", "sog", Date.UTC(2026, 1, 2)), S.SHADE_MAX, "the month after: the row counts (0.5 x 1/2, clamped)");
+  assert.equal(w("nhl", "pts", Date.UTC(2026, 1, 2)), 0, "another stat: its own rows only");
+  const wd = S.walkShade([{ sport: "nhl", stat: "sog", t: Date.UTC(2026, 0, 5, 23), f: 0.5, y: 0 }], { by: "day", n0: 1 });
+  assert.equal(wd("nhl", "sog", Date.UTC(2026, 0, 5, 1)), 0);
+  assert.equal(wd("nhl", "sog", Date.UTC(2026, 0, 6, 1)), S.SHADE_MAX);
+  // (the gate's history pricing (gate-history.mjs finish): with the shade on, a later month's row is priced off the shaded
+  // fair (fs) while its f, every measure's, stays the Book's; with it off nothing moves. The residual off for the check,
+  // as the gate's champion runs it)
+  const G = await import("../libs/ranker/scripts/model/gate-history.mjs");
+  const desk = await import("../libs/ranker/scripts/model/desk.mjs");
+  const hrows = () => {
+    const out = [];
+    for (let m = 0; m < 4; m++) for (let i = 0; i < 40; i++) {
+      const t = Date.UTC(2026, m, 3 + (i % 20), 23);
+      out.push({ id: `p:sog:${i}:${m}:c`, key: `p:sog:${i}:${m}`, event: `${m}-${i}`, sport: "nhl", market: "prop", stat: "sog", kind: "c", line: 2.5, day: `2026-${String(m + 1).padStart(2, "0")}-${String(3 + (i % 20)).padStart(2, "0")}`, t, at: t - 36e5, season: 2026, f: 0.5, raw: 0.5, y: i % 10 < 7 ? 0 : 1, overOdds: -110, underOdds: -110, w: 1 });
+    }
+    return out;
+  };
+  const was = { on: process.env.RESID_ON, off: process.env.RESID_OFF };
+  process.env.RESID_OFF = "1";
+  delete process.env.RESID_ON;
+  try {
+    const off = G.finish({ desk, shade: null }, hrows(), () => "sog@mid", () => 0.5, "props");
+    for (const x of off.close) assert.ok(Math.abs(x.p - 0.5) < 1e-9 && x.fs === undefined, "off: the Book's fair, nothing shaded");
+    const on = G.finish({ desk, shade: { ...S, shadeOn: () => true } }, hrows(), () => "sog@mid", () => 0.5, "props");
+    const first = on.close.filter((x) => x.id.endsWith(":0:c"));
+    const later = on.close.filter((x) => x.id.endsWith(":3:c"));
+    assert.ok(first.every((x) => Math.abs(x.fs - 0.5) < 1e-9 && Math.abs(x.p - 0.5) < 1e-9), "the first month: nothing settled before it, no shade");
+    assert.ok(later.every((x) => x.f === 0.5), "the Book's fair stays on the row");
+    assert.ok(later.every((x) => x.fs < 0.5 - 0.005 && x.p < 0.5 - 0.005), "a later month: priced off the fair shaded toward the under");
+    assert.ok(later.every((x) => x.fs >= 0.5 - S.SHADE_MAX - 1e-9), "never past the cap");
+  } finally {
+    if (was.off === undefined) delete process.env.RESID_OFF;
+    else process.env.RESID_OFF = was.off;
+    if (was.on !== undefined) process.env.RESID_ON = was.on;
+  }
+  // (every path reads the rules through shade.mjs alone: the live props' fair and the ledger row's fairShaded beside the
+  // Book's; the hard rule in the live desk and the replay; the gate's history and ledger layers)
+  assert.match(src("props.mjs"), /const shade = prop\.prices && shadeOn\(sport\) \? shadeOf\(readShade\(sport\), prop\.stat\.key\) : 0;/);
+  assert.match(src("props.mjs"), /fair: book\.fairOver, \.\.\.\(shade > 0 \? \{ fairShaded: fairS \} : \{\}\)/, "the over's recorded fair is the Book's, the shaded one beside it");
+  assert.match(src("run.mjs"), /overHeld\(sport, 'prop', x\.side === 'over'\)/);
+  assert.match(src("run.mjs"), /fairShaded: round\(x\.fairShaded, 4\)/);
+  assert.match(src("replay-record.mjs"), /SHADE\.overHeld\?\.\(sport, x\.market, sd\.over\)/);
+  assert.match(src("gate-history.mjs"), /V\.shade\?\.shadeOn\?\.\(closeRows\[0\]\?\.sport\) \? V\.shade\.walkShade/);
+  assert.match(src("gate.mjs"), /V\.shade\?\.overHeld\?\.\(sport, 'prop', true\)/);
+  // (no double count: one term for the family; the trust, the margin rule, the anchor and the correction read no shade,
+  // and no separate "no overs" discount sits on the soft term)
+  for (const f of ["desk.mjs", "lean.mjs", "anchor.mjs", "correct.mjs", "calib.mjs", "picks.mjs", "leagues.mjs"]) assert.ok(!src(f).includes("shade.mjs"), `${f} reads no shade`);
+  assert.ok(!/NO_OVERS_DISCOUNT|oversDiscount/.test(src("shade.mjs") + src("props.mjs") + src("gate.mjs")), "no discount on top of the shade");
 });

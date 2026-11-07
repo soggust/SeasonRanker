@@ -80,6 +80,7 @@ import { calSides } from './calib.mjs';
 import { anchorEntry, anchoredChances } from './anchor.mjs';
 import { bucketTrustOf, heldEv, chanceAt, decimal, fairPair, gapGuard, outcomeOf, stakeFor, suspectOf, trustedUnits } from './desk.mjs';
 import { residOn } from './residual.mjs';
+import { readShade, shadeOf, shadeOn, shadedOver } from './shade.mjs';
 import { correctSides } from './correct.mjs';
 import { FEEDS, SKEW_MIN_LINE, TRY_VL, ctxFactor, ctxKeys, exitMix, factorProduct, fitStat, fullMin, impliedMean, lineChances, makeModel, middleF, rAt, squadF, squadIn, squadMkt, squadRead, squadSum, trOpenFit, trOpenOf } from './project.mjs';
 import { mlbMatchups, nbaMatchups, nflMatchups, nhlMatchups } from './matchups.mjs';
@@ -2087,16 +2088,23 @@ export function priceProps(sport, game, props, fitted, idx, exp, info, live, tru
     // (each side's model chance with its spot's live calibration (calib.mjs: a small shift fit on the graded
     // props since the epoch, 0 till a spot's rows and its held-out gain bear it out); raw, the projection's)
     const cal = calSides(calib, prop.stat.key, prop.line, pA, pushA);
+    // (D110's under shade (shade.mjs, UNDER_SHADE; off: nothing moves): the Book's fair read as shaded toward the over
+    // by the stat's recorded shade (shade.json, the gate's fit on every graded close), before the trust's blend and the
+    // residual's; each side's shaded fair rides beside the Book's (fairShaded), which the row, the edge and the
+    // measures keep. Only where the Book priced it (an assumed -110 says nothing of the Book's shade))
+    const shade = prop.prices && shadeOn(sport) ? shadeOf(readShade(sport), prop.stat.key) : 0;
+    const fairS = shade > 0 ? shadedOver(book.fairOver, shade) : book.fairOver;
+    const fS = (x) => (Number.isFinite(x.fairShaded) ? x.fairShaded : x.fair);
     const sides = [
       // (D74: the side's best US price where this run's quote brought one (prop.best), its book with it)
-      { side: 'over', model: cal.over, raw: pA, pure: pOver, cal: cal.so, fair: book.fairOver, odds: bestOdds(prop, 'over', book.over), ...bestBook(prop, 'over') },
-      { side: 'under', model: cal.under, raw: 1 - pA, pure: 1 - pOver, cal: cal.su, fair: 1 - book.fairOver, odds: bestOdds(prop, 'under', book.under), ...bestBook(prop, 'under') },
+      { side: 'over', model: cal.over, raw: pA, pure: pOver, cal: cal.so, fair: book.fairOver, ...(shade > 0 ? { fairShaded: fairS } : {}), odds: bestOdds(prop, 'over', book.over), ...bestBook(prop, 'over') },
+      { side: 'under', model: cal.under, raw: 1 - pA, pure: 1 - pOver, cal: cal.su, fair: 1 - book.fairOver, ...(shade > 0 ? { fairShaded: 1 - fairS } : {}), odds: bestOdds(prop, 'under', book.under), ...bestBook(prop, 'under') },
     ];
     // (the learned correction where it's fit (correct.mjs, 2026-10-18): each side's chance the fit's, from the raw
     // model and the book's no-vig, the calibration inside it (its rows are the raw chances), the lean kept, cut,
     // or turned over by where the model has beaten the book; the trust no longer shrinks the chance, it sizes the
     // stake (trustedUnits). None (too few rows): the trusted chance as before)
-    const corr = correctSides(correction, { sport, stat: prop.stat.key, line: prop.line, pOver: pA, fairOver: book.fairOver, overOdds: book.over, underOdds: book.under, home, hours: (Date.parse(game.date) - Date.now()) / 36e5 });
+    const corr = correctSides(correction, { sport, stat: prop.stat.key, line: prop.line, pOver: pA, fairOver: fairS, overOdds: book.over, underOdds: book.under, home, hours: (Date.parse(game.date) - Date.now()) / 36e5 });
     // (the row as the residual model's ctx (residual.mjs hookChance; DECISIONS.md D32, on since the owner's O3 of
     // 2026-10-19): the side's own fair chance and its raw, the anchored chance pA, the one the model was fit on in
     // the priced history and the one the gate's replay hands it (the calibration and the trust stay outside the
@@ -2104,9 +2112,9 @@ export function priceProps(sport, game, props, fitted, idx, exp, info, live, tru
     // moment now. Only where the Book priced it: an assumed -110 is no price of the Book's to correct)
     const rctx = prop.prices && residOn() ? { sport, market: 'prop', stat: prop.stat.key, line: prop.line, overOdds: book.over, underOdds: book.under, t: Date.parse(game.date), at: Date.now(), home, hours: (Date.parse(game.date) - Date.now()) / 36e5 } : null;
     for (const x of sides) {
-      x.p = corr ? corr[x.side] : chanceAt('prop', x.fair, x.model, t, rctx && { ...rctx, side: x.side, f: x.fair, raw: x.raw });
+      x.p = corr ? corr[x.side] : chanceAt('prop', fS(x), x.model, t, rctx && { ...rctx, side: x.side, f: fS(x), raw: x.raw });
       // (the trusted chance before the residual blend, kept beside it: the board and the report read the move)
-      x.pTrust = corr || !rctx ? null : chanceAt('prop', x.fair, x.model, t);
+      x.pTrust = corr || !rctx ? null : chanceAt('prop', fS(x), x.model, t);
       x.ev = (1 - pushA) * (x.p * decimal(x.odds) - 1);
       x.edge = x.p - x.fair;
     }
@@ -2416,6 +2424,8 @@ export function priceProps(sport, game, props, fitted, idx, exp, info, live, tru
       // its pull toward the book's implied mean, 0 the bot's own number)
       ...(anch ? { modelPure: round(modelPure, 4), anchor: { pull: anch.pull, mean: anch.mean, implied: anch.im } } : {}),
       fair,
+      // (D110: the side's fair shaded toward the over, where the shade priced it; the row's fair stays the Book's)
+      ...(Number.isFinite(pick.fairShaded) ? { fairShaded: round(pick.fairShaded, 4) } : {}),
       odds,
       // (D74: the code of its best price's book; none, DraftKings' own or ESPN's board)
       ...(pick.book ? { book: pick.book } : {}),

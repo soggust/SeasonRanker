@@ -180,6 +180,7 @@ import { gameRows, logLines, lostSince, propRows } from './linelog.mjs';
 import { runMma } from './mma-desk.mjs';
 import { heldNow, holdFor, lagHeld, lagOf, readWindows } from './windows.mjs';
 import { CORRECT_WINDOW, officialLookup } from './nhl-official.mjs';
+import { overHeld } from './shade.mjs';
 
 const ROOT = path.resolve(import.meta.dirname, '../../../..');
 // (the return a side has to show to get the 3-unit top stake; a smaller one scales down to 0.5)
@@ -2968,7 +2969,11 @@ async function betProps(r) {
     const tagOnly = x.researchPractice || PRACTICE_STAKED ? null : slatePick;
     // (D88's margin rule: a side the Bot's own model puts under the fair price, bet on a small price edge: tracked, not
     // bet (D90, the owner's exception to D1: intent track, 0u, graded and learned from, never in the record))
-    const marginG = x.ev > 0 ? marginGuardOf(sport, 'props', { p: x.p, odds: x.odds, fair: x.fair, own: Number.isFinite(x.modelRaw) ? x.modelRaw : x.model }) : { held: false };
+    const marginRule = x.ev > 0 ? marginGuardOf(sport, 'props', { p: x.p, odds: x.odds, fair: x.fair, own: Number.isFinite(x.modelRaw) ? x.modelRaw : x.model }) : { held: false };
+    // (D110's hard rule (shade.mjs overHeld, NO_PROP_OVERS; off: nothing held): a player-prop over in a shaded sport is
+    // tracked exactly as D88's held sides are (the same hold the edge flag reads), never staked)
+    const overG = x.ev > 0 && overHeld(sport, 'prop', x.side === 'over') ? { held: true, why: "a player-prop over in a sport whose prop lines sit shaded toward the over: tracked, not bet (D110's hard rule)" } : { held: false };
+    const marginG = marginRule.held ? marginRule : overG;
     const edge = marginEdge(x.ev > 0 || !!x.researchBet || !!x.roleBet || !!topN, marginG);
     if (topN) x.units = PRACTICE_UNITS;
     // (the stat's CLV gate (r.propGate): failing, bet as ever at the practice stake, the gate's word on the row)
@@ -3236,6 +3241,8 @@ function propBet(r, game, x, exp, { id, intent, units, trackUnits, tested }) {
     // (its chance before the live calibration and the shift, where one moved it: calib.mjs)
     ...(Number.isFinite(x.modelRaw) ? { modelRaw: round(x.modelRaw, 4), cal: round(x.cal ?? 0, 4) } : {}),
     fair: round(x.fair, 4),
+    // (D110: the side's fair shaded toward the over where the shade priced it (shade.mjs); the fair above stays the Book's)
+    ...(Number.isFinite(x.fairShaded) ? { fairShaded: round(x.fairShaded, 4) } : {}),
     // (the trust it was priced at, its line's bucket's: a CHECK's cleared Kelly reads it, checks.mjs checkKelly)
     ...(Number.isFinite(x.trust) ? { trust: round(x.trust, 3) } : {}),
     p: round(x.p, 4),
