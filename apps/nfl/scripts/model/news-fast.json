@@ -2,12 +2,12 @@
  "sport": "nfl",
  "cursor": {
   "adamscheftermirror.bsky.social": "2026-11-07T18:19:53.773Z",
-  "rapsheet.bsky.social": "2026-11-07T18:06:30.092Z",
+  "rapsheet.bsky.social": "2026-11-07T19:32:21.112Z",
   "nflnewsreposterbot.bsky.social": "2026-11-06T17:28:39.017Z",
-  "insidenflnews.bsky.social": "2026-11-07T18:37:39.892Z",
+  "insidenflnews.bsky.social": "2026-11-07T19:24:26.898Z",
   "nflnewsposter.bsky.social": "2026-11-07T17:54:17.611Z",
   "rotoworld-fb.bsky.social": "2026-11-07T18:02:02.000Z",
-  "rotowirenfl.bsky.social": "2026-11-07T19:17:21.000Z"
+  "rotowirenfl.bsky.social": "2026-11-07T19:24:19.000Z"
  },
  "claims": [
   {
@@ -17507,6 +17507,84 @@
    "kind": "status",
    "confidence": 0.9,
    "text": "Josh Palmer (hamstring) ruled out Week 9."
+  },
+  {
+   "id": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3mzqmqhynj52b|kylermurray|out|status",
+   "at": "2026-11-07T19:24:19.000Z",
+   "seen": "2026-11-07T19:38:42.361Z",
+   "handle": "rotowirenfl.bsky.social",
+   "post": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3mzqmqhynj52b",
+   "player": "Kyler Murray",
+   "team": null,
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.9,
+   "text": "Kyler Murray: Out for Monday's game \n\n https://www.rotowire.com/football/player/kyler-murray-13613"
+  },
+  {
+   "id": "at://did:plc:mbr4badgf6yu56mquzackzew/app.bsky.feed.post/3mzqmqp7jnc2x|jauanjennings|out|status",
+   "at": "2026-11-07T19:24:26.898Z",
+   "seen": "2026-11-07T19:38:42.361Z",
+   "handle": "insidenflnews.bsky.social",
+   "post": "at://did:plc:mbr4badgf6yu56mquzackzew/app.bsky.feed.post/3mzqmqp7jnc2x",
+   "player": "Jauan Jennings",
+   "team": null,
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.95,
+   "text": "Jauan Jennings (calf) ruled out Week 9."
+  },
+  {
+   "id": "at://did:plc:hlvr2omhnmvdmfnvmcuhyevz/app.bsky.feed.post/3mzqn5ka4hc2f|johnnynewton|active|return",
+   "at": "2026-11-07T19:31:37.877Z",
+   "seen": "2026-11-07T19:38:42.361Z",
+   "handle": "rapsheet.bsky.social",
+   "post": "at://did:plc:hlvr2omhnmvdmfnvmcuhyevz/app.bsky.feed.post/3mzqn5ka4hc2f",
+   "player": "Johnny Newton",
+   "team": "WAS",
+   "status": "active",
+   "kind": "return",
+   "confidence": 0.95,
+   "text": "The Commanders are activating DL Johnny Newton, who practiced fully all week as he's recovering from a torn pectoral muscle, to the 53-man roster from IR. He was previously listed as questionable."
+  },
+  {
+   "id": "at://did:plc:hlvr2omhnmvdmfnvmcuhyevz/app.bsky.feed.post/3mzqn6thfas2f|josephossai|out|status",
+   "at": "2026-11-07T19:32:21.112Z",
+   "seen": "2026-11-07T19:38:42.361Z",
+   "handle": "rapsheet.bsky.social",
+   "post": "at://did:plc:hlvr2omhnmvdmfnvmcuhyevz/app.bsky.feed.post/3mzqn6thfas2f",
+   "player": "Joseph Ossai",
+   "team": "NYJ",
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.95,
+   "text": "The Jets have downgraded Joseph Ossai, Nahshon Wright and VJ Payne to out. All were previously questionable."
+  },
+  {
+   "id": "at://did:plc:hlvr2omhnmvdmfnvmcuhyevz/app.bsky.feed.post/3mzqn6thfas2f|nahshonwright|out|status",
+   "at": "2026-11-07T19:32:21.112Z",
+   "seen": "2026-11-07T19:38:42.361Z",
+   "handle": "rapsheet.bsky.social",
+   "post": "at://did:plc:hlvr2omhnmvdmfnvmcuhyevz/app.bsky.feed.post/3mzqn6thfas2f",
+   "player": "Nahshon Wright",
+   "team": "NYJ",
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.95,
+   "text": "The Jets have downgraded Joseph Ossai, Nahshon Wright and VJ Payne to out. All were previously questionable."
+  },
+  {
+   "id": "at://did:plc:hlvr2omhnmvdmfnvmcuhyevz/app.bsky.feed.post/3mzqn6thfas2f|vjpayne|out|status",
+   "at": "2026-11-07T19:32:21.112Z",
+   "seen": "2026-11-07T19:38:42.361Z",
+   "handle": "rapsheet.bsky.social",
+   "post": "at://did:plc:hlvr2omhnmvdmfnvmcuhyevz/app.bsky.feed.post/3mzqn6thfas2f",
+   "player": "VJ Payne",
+   "team": "NYJ",
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.95,
+   "text": "The Jets have downgraded Joseph Ossai, Nahshon Wright and VJ Payne to out. All were previously questionable."
   }
  ]
 }
