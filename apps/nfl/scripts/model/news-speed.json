@@ -17784,6 +17784,66 @@
     "seen": "2026-11-07T18:53:38.115Z",
     "own": "2026-11-07T18:43:00.000Z"
    }
+  },
+  "401873043|jerzhannewton|q": {
+   "game": "401873043",
+   "start": "2026-11-08T18:00Z",
+   "team": "28",
+   "name": "Jer'Zhan Newton",
+   "status": "q",
+   "athlete": "4430560",
+   "espn": {
+    "seen": "2026-11-07T19:14:35.204Z",
+    "own": "2026-11-07T01:37:00.000Z"
+   }
+  },
+  "401873051|kylermurray|out": {
+   "game": "401873051",
+   "start": "2026-11-10T01:15Z",
+   "team": "16",
+   "name": "Kyler Murray",
+   "status": "out",
+   "athlete": "3917315",
+   "espn": {
+    "seen": "2026-11-07T19:14:35.204Z",
+    "own": "2026-11-07T19:12:00.000Z"
+   }
+  },
+  "401873051|jauanjennings|out": {
+   "game": "401873051",
+   "start": "2026-11-10T01:15Z",
+   "team": "16",
+   "name": "Jauan Jennings",
+   "status": "out",
+   "athlete": "3886598",
+   "espn": {
+    "seen": "2026-11-07T19:14:35.204Z",
+    "own": "2026-11-07T19:12:00.000Z"
+   }
+  },
+  "401873051|demondclaiborne|out": {
+   "game": "401873051",
+   "start": "2026-11-10T01:15Z",
+   "team": "16",
+   "name": "Demond Claiborne",
+   "status": "out",
+   "athlete": "4832846",
+   "espn": {
+    "seen": "2026-11-07T19:14:35.204Z",
+    "own": "2026-11-07T19:12:00.000Z"
+   }
+  },
+  "401873052|jerzhannewton|q": {
+   "game": "401873052",
+   "start": "2026-11-13T01:15Z",
+   "team": "28",
+   "name": "Jer'Zhan Newton",
+   "status": "q",
+   "athlete": "4430560",
+   "espn": {
+    "seen": "2026-11-07T19:14:35.204Z",
+    "own": "2026-11-07T01:37:00.000Z"
+   }
   }
  }
 }
