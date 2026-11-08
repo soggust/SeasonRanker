@@ -6,8 +6,8 @@
   "nflnewsreposterbot.bsky.social": "2026-11-06T17:28:39.017Z",
   "insidenflnews.bsky.social": "2026-11-08T13:06:03.673Z",
   "nflnewsposter.bsky.social": "2026-11-08T00:10:37.902Z",
-  "rotoworld-fb.bsky.social": "2026-11-08T13:06:59.000Z",
-  "rotowirenfl.bsky.social": "2026-11-08T12:33:11.000Z"
+  "rotoworld-fb.bsky.social": "2026-11-08T13:29:17.000Z",
+  "rotowirenfl.bsky.social": "2026-11-08T13:26:41.000Z"
  },
  "claims": [
   {
@@ -17858,6 +17858,45 @@
    "kind": "status",
    "confidence": 0.9,
    "text": "‼️ Rap: Lamar Jackson to miss 6-9 weeks with fractured and dislocated thumb."
+  },
+  {
+   "id": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3mzsj4igu4v2l|monangai|out|status",
+   "at": "2026-11-08T13:24:46.000Z",
+   "seen": "2026-11-08T13:34:19.144Z",
+   "handle": "rotoworld-fb.bsky.social",
+   "post": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3mzsj4igu4v2l",
+   "player": "Monangai",
+   "team": null,
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.9,
+   "text": "Monangai out Week 9, expected back after the bye"
+  },
+  {
+   "id": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3mzsj7vcgtf22|mikeevans|questionable|status",
+   "at": "2026-11-08T13:26:41.000Z",
+   "seen": "2026-11-08T13:34:19.144Z",
+   "handle": "rotowirenfl.bsky.social",
+   "post": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3mzsj7vcgtf22",
+   "player": "Mike Evans",
+   "team": "TB",
+   "status": "questionable",
+   "kind": "status",
+   "confidence": 0.85,
+   "text": "Mike Evans: 'Questionable at best' for Week 10 \n\n https://www.rotowire.com/football/player/mike-evans-9253"
+  },
+  {
+   "id": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3mzsjekgv6a2q|watson|out|status",
+   "at": "2026-11-08T13:29:17.000Z",
+   "seen": "2026-11-08T13:34:19.144Z",
+   "handle": "rotoworld-fb.bsky.social",
+   "post": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3mzsjekgv6a2q",
+   "player": "Watson",
+   "team": null,
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.8,
+   "text": "Watson clears concussion protocol, will not play"
   }
  ]
 }
