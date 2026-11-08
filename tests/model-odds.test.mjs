@@ -62,16 +62,19 @@ test('clvOf: points better than the close, its own side\'s way; the closing chan
   const close = { line: -4.5, odds: -110, fair: 0.5 };
   const home = clvOf({ market: 'spread', side: 'home', line: -3.5, odds: -110, fair: 0.5 }, close, 13.5);
   assert.equal(home.pts, 1);
-  assert.ok(home.prob > 0 && home.ev > 0);
-  assert.equal(home.beat, true);
+  // (D115: a close at another line is never judged; the chance carried to the bet's line stays for the trust fit)
+  assert.ok(home.q > 0.5 && home.carried === true, JSON.stringify(home));
+  assert.deepEqual([home.prob, home.beat, home.result, home.line], [null, null, 'line moved', 'moved']);
   const over = clvOf({ market: 'total', side: 'over', line: 48.5, odds: -110, fair: 0.5 }, { line: 47.5, odds: -110, fair: 0.5 }, 13.5);
   assert.equal(over.pts, -1);
-  assert.equal(over.beat, false);
+  assert.equal(over.beat, null);
+  assert.ok(over.q < 0.5);
   const ml = clvOf({ market: 'ml', side: 'home', line: null, odds: 150, fair: 0.4 }, { line: null, odds: 120, fair: 0.44 }, 13.5);
   assert.equal(ml.pts, null);
-  // (its price, the vig out at the close's margin: 0.4 / (0.4545 / 0.44), against the close's 0.44)
-  near(ml.prob, 0.0528);
+  // (D115: the close's no-vig 0.44 less the chance +150 implies, 0.4: +4 points, the vig never handed back)
+  near(ml.prob, 0.04);
   assert.equal(ml.beat, true);
+  near(ml.cents, 22.7, 0.051);
   assert.equal(clvOf({ market: 'ml' }, null, 13.5), null);
 });
 

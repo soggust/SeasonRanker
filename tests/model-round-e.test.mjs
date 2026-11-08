@@ -8,6 +8,7 @@ import assert from 'node:assert/strict';
 import { makeModel } from '../libs/ranker/scripts/model/project.mjs';
 import { ROLE_BET, ROLE_BET_N, ROLE_BET_UNITS, STATS, priceProps, roleGateOf } from '../libs/ranker/scripts/model/props.mjs';
 import { LINE_GATE_MIN, propGate } from '../libs/ranker/scripts/model/desk.mjs';
+import { CLV_V } from '../libs/ranker/scripts/model/clv.mjs';
 
 const BASE = { K: 16, w: 0, a: 0, b: 0, roleK: Infinity, vc: 0, qs: 1 };
 
@@ -185,7 +186,7 @@ test("priceProps: the QB-out headline is no news CHECK once the report has the q
 });
 
 test('propGate: a stat whose last 200 graded props beat the fair close under the bar (D95: D56\'s definition) is bet at the practice stake; past it, or under 40 graded, bet; game markets, voids and other sports never count', () => {
-  const bet = (i, type, ev, extra = {}) => ({ id: `p${i}`, sport: 'nfl', market: 'prop', propType: type, status: i % 2 ? 'won' : 'lost', gradedAt: new Date(Date.UTC(2026, 9, 1, i % 24, Math.floor(i / 24))).toISOString(), clv: { ev, prob: ev, pts: 0, beat: ev > 0, v: 2 }, ...extra });
+  const bet = (i, type, ev, extra = {}) => ({ id: `p${i}`, sport: 'nfl', market: 'prop', propType: type, status: i % 2 ? 'won' : 'lost', gradedAt: new Date(Date.UTC(2026, 9, 1, i % 24, Math.floor(i / 24))).toISOString(), clv: { ev, prob: ev, pts: 0, beat: ev > 0, v: CLV_V }, ...extra });
   const bets = [
     ...Array.from({ length: LINE_GATE_MIN }, (_, i) => bet(i, 'recYds', -0.03)),
     ...Array.from({ length: LINE_GATE_MIN }, (_, i) => bet(100 + i, 'rec', 0.02)),

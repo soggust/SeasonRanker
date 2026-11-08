@@ -184,7 +184,9 @@ test("clvOf with the margins: a half point onto the NFL's 3 is worth more than o
   const dist = { sigma: 13.5, sigmaT: 13.5, shape };
   const onto3 = clvOf({ market: 'spread', side: 'home', line: -2.5, odds: -110, fair: 0.5 }, { line: -3, odds: -110, fair: 0.5 }, 13.5, dist);
   const onto8 = clvOf({ market: 'spread', side: 'home', line: -7.5, odds: -110, fair: 0.5 }, { line: -8, odds: -110, fair: 0.5 }, 13.5, dist);
-  assert.ok(onto3.prob > onto8.prob && onto8.prob > 0, `${onto3.prob} vs ${onto8.prob}`);
+  // (D115: a moved line is never judged; the carried chance (q, flagged) is the trust fit's alone)
+  assert.ok(onto3.q > onto8.q && onto8.q > 0.5, `${onto3.q} vs ${onto8.q}`);
+  assert.deepEqual([onto3.prob, onto3.beat, onto3.result, onto3.carried], [null, null, 'line moved', true]);
   // (the same line: the close's own chance)
   near(atLine('spread', 'away', { line: 3, fair: 0.47 }, 3, dist), 0.47, 1e-6);
 });
