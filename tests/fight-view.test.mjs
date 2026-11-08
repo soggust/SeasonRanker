@@ -103,7 +103,10 @@ test('the fight view: the ledger’s fighters first, the winner, the facts, the 
   assert.deepEqual([ml.market, ml.kind, ml.units, ml.price, ml.open, ml.close, ml.other, ml.chance, ml.result, ml.beat, ml.book], ['Moneyline', 'Bet', 1, '+150', '+140', '+160', '-180', 44, '+1.5u', false, 'DraftKings']);
   assert.equal(ml.placedAt, '2026-10-16T14:00:00Z');
   assert.equal(ml.gradedAt, '2026-10-18T04:00:00Z');
-  assert.deepEqual([total.market, total.kind, total.units, total.open, total.close, total.result], ['Rounds', 'Tracked', 0.5, null, null, 'Would have +0.42u']);
+  // (a pass: no units, no as-if return, its side's fate as a fact (the owner, 2026-11-07: a pick shown with units is a bet))
+  assert.deepEqual([total.market, total.kind, total.units, total.status, total.open, total.close, total.result], ['Rounds', 'Pass', 0, 'pass', null, null, 'Not bet · side came in']);
+  assert.equal(f.fightBetOf({ ...ROWS[0], status: 'open' }).result, 'Not bet');
+  assert.equal(f.fightBetOf({ ...ROWS[0], status: 'lost' }).result, 'Not bet · side missed');
 });
 
 test('the fight view without ESPN’s card: the ledger’s words; an open row to come; nothing at all, none', () => {

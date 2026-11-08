@@ -55,14 +55,14 @@
         <section class="fight-section" aria-label="The Bot on this fight">
           <h3>The Bot</h3>
           @if (!v.bets.length) {
-            <p class="fight-note">{{ fights.loading() ? 'Loading…' : 'The Bot had no bet or tracked row on this fight.' }}</p>
+            <p class="fight-note">{{ fights.loading() ? 'Loading…' : 'The Bot had no bet on this fight and did not price it.' }}</p>
           }
           @for (b of v.bets; track b.id) {
             <div class="fight-bet" [ngClass]="b.status">
               <div class="fight-bet-head">
                 <span class="fight-bet-market">{{ b.market }}</span>
                 <b class="fight-bet-pick">{{ b.pick }}</b>
-                <span class="fight-tag" [class.tracked]="b.kind === 'Tracked'" [attr.title]="b.kind === 'Tracked' ? 'Tracked: nothing staked, its as-if units' : 'Staked'">{{ b.kind }} · {{ b.units }}u</span>
+                <span class="fight-tag" [class.tracked]="b.kind === 'Pass'" [attr.title]="b.kind === 'Pass' ? 'Pass: priced, not bet. The Bot had no edge at this price, so it recommends nothing here.' : 'Staked'">{{ b.kind === 'Bet' ? 'Bet · ' + b.units + 'u' : 'Pass' }}</span>
                 <span class="fight-bet-result" [ngClass]="b.status">{{ b.result }}</span>
               </div>
               <dl class="fight-prices">

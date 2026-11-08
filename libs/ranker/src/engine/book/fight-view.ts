@@ -57,8 +57,10 @@ export interface FightBetView {
   id: string;
   market: string;
   pick: string;
-  // (a staked bet, or a row the desk only tracked (nothing staked: its as-if units))
-  kind: 'Bet' | 'Tracked';
+  // (a staked bet, or a pass: a bout the desk priced and didn't bet (the owner, 2026-11-07: "if you are recommending
+  // me to bet, you should be betting it" — a pick shown with units is a bet, so a pass shows none, no as-if units))
+  kind: 'Bet' | 'Pass';
+  // (a bet's stake; a pass 0)
   units: number;
   book: string | null;
   price: string;
@@ -68,8 +70,9 @@ export interface FightBetView {
   chance: number | null;
   placedAt: string | null;
   gradedAt: string | null;
-  status: 'won' | 'lost' | 'push' | 'open';
-  // ("+1.25u", "-2u", a tracked row's "would have +0.4u"; open: "Open")
+  // (a pass's: 'pass', whatever the bout did: it's no result of the Bot's)
+  status: 'won' | 'lost' | 'push' | 'open' | 'pass';
+  // ("+1.25u", "-2u"; open: "Open"; a pass: "Not bet", and once the bout's over whether its side came in, as a fact, not a return)
   result: string;
   beat: boolean | null;
   why: string | null;
@@ -144,21 +147,25 @@ export function tickerFight(g: Pick<GameBoard, 'sport' | 'state' | 'start' | 'de
 const MARKET_WORDS: Record<string, string> = { ml: 'Moneyline', total: 'Rounds', spread: 'Spread' };
 
 // One of the Bot's rows on the bout, worded: the price it took and when, the open (the ledger's first look at the
-// bout, a moneyline's side), the close, the other side's price, bet or tracked and its units, and how it came out
+// bout, a moneyline's side), the close, the other side's price, a bet with its units or a pass with none, and how it
+// came out (a pass: whether its side came in, as a fact; never a return it didn't take)
 export function fightBetOf(r: FightLedgerRow): FightBetView {
   const staked = (r.units ?? 0) > 0 && r.intent !== 'track';
-  const u = staked ? (r.units ?? 0) : (r.trackUnits ?? 0);
-  const status: FightBetView['status'] = r.status === 'won' || r.status === 'lost' || r.status === 'push' ? r.status : r.status === 'void' ? 'push' : 'open';
+  const u = staked ? (r.units ?? 0) : 0;
+  const graded: 'won' | 'lost' | 'push' | 'open' = r.status === 'won' || r.status === 'lost' || r.status === 'push' ? r.status : r.status === 'void' ? 'push' : 'open';
+  const status: FightBetView['status'] = staked ? graded : 'pass';
   const open = r.market === 'ml' ? r.seen?.open?.odds?.[r.side === 'home' ? 'home' : 'away'] : undefined;
   const closeOdds = r.close?.odds;
-  // (what it came to: a bet its profit; a tracked row what it would have, at its as-if units)
-  const won = status === 'won' ? u * (r.odds > 0 ? r.odds / 100 : 100 / Math.abs(r.odds)) : status === 'lost' ? -u : 0;
-  const result = status === 'open' ? 'Open' : status === 'push' ? 'Push' : staked ? units(r.profit ?? won) : `Would have ${units(won)}`;
+  // (what it came to: a bet its profit; a pass "Not bet", and the side's fate once the bout's graded)
+  const won = graded === 'won' ? u * (r.odds > 0 ? r.odds / 100 : 100 / Math.abs(r.odds)) : graded === 'lost' ? -u : 0;
+  const result = !staked
+    ? graded === 'open' ? 'Not bet' : graded === 'push' ? 'Not bet · push' : `Not bet · side ${graded === 'won' ? 'came in' : 'missed'}`
+    : graded === 'open' ? 'Open' : graded === 'push' ? 'Push' : units(r.profit ?? won);
   return {
     id: r.id,
     market: MARKET_WORDS[r.market] ?? r.market,
     pick: r.pick,
-    kind: staked ? 'Bet' : 'Tracked',
+    kind: staked ? 'Bet' : 'Pass',
     units: Number(u.toFixed(2)),
     book: r.book ?? null,
     price: oddsText(r.odds),
