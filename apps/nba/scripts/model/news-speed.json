@@ -18641,6 +18641,11 @@
    "espn": {
     "seen": "2026-11-07T03:55:40.270Z",
     "own": "2026-11-06T22:37:00.000Z"
+   },
+   "bluesky": {
+    "seen": "2026-11-08T00:18:20.653Z",
+    "own": "2026-11-07T23:33:38.000Z",
+    "why": "@rotowirenba.bsky.social: Anthony Davis: Ruled out for Saturday \n\n https://www.r"
    }
   },
   "401909941|reecebeekman|out": {
@@ -19489,6 +19494,11 @@
    "espn": {
     "seen": "2026-11-07T23:00:38.790Z",
     "own": "2026-11-07T15:05:00.000Z"
+   },
+   "bluesky": {
+    "seen": "2026-11-08T00:18:20.653Z",
+    "own": "2026-11-07T23:10:56.000Z",
+    "why": "@rotowirenba.bsky.social: Joan Beringer: Questionable for Sunday \n\n https://www."
    }
   },
   "401909947|terrenceshannon|out": {
@@ -19645,6 +19655,11 @@
    "espn": {
     "seen": "2026-11-08T00:00:35.312Z",
     "own": "2026-11-07T23:14:00.000Z"
+   },
+   "bluesky": {
+    "seen": "2026-11-08T00:18:20.653Z",
+    "own": "2026-11-07T23:14:44.000Z",
+    "why": "@rotowirenba.bsky.social: Lauri Markkanen: Questionable for Sunday \n\n https://ww"
    }
   },
   "401909949|desmondbane|out": {
@@ -19873,6 +19888,366 @@
     "seen": "2026-11-07T22:15:42.826Z",
     "own": "2026-11-07T22:11:34.000Z",
     "why": "@rotowirenba.bsky.social: Luka Doncic: Questionable for Sunday \n\n https://www.ro"
+   }
+  },
+  "401909940|joanberinger|q": {
+   "game": "401909940",
+   "start": "2026-11-08T01:00Z",
+   "team": "5",
+   "name": "Joan Beringer",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-11-08T00:18:20.653Z",
+    "own": "2026-11-07T23:10:56.000Z",
+    "why": "@rotowirenba.bsky.social: Joan Beringer: Questionable for Sunday \n\n https://www."
+   }
+  },
+  "401909940|laurimarkkanen|q": {
+   "game": "401909940",
+   "start": "2026-11-08T01:00Z",
+   "team": "5",
+   "name": "Lauri Markkanen",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-11-08T00:18:20.653Z",
+    "own": "2026-11-07T23:14:44.000Z",
+    "why": "@rotowirenba.bsky.social: Lauri Markkanen: Questionable for Sunday \n\n https://ww"
+   }
+  },
+  "401909940|anthonydavis|out": {
+   "game": "401909940",
+   "start": "2026-11-08T01:00Z",
+   "team": "5",
+   "name": "Anthony Davis",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-08T00:18:20.653Z",
+    "own": "2026-11-07T23:33:38.000Z",
+    "why": "@rotowirenba.bsky.social: Anthony Davis: Ruled out for Saturday \n\n https://www.r"
+   }
+  },
+  "401909941|joanberinger|q": {
+   "game": "401909941",
+   "start": "2026-11-08T01:00Z",
+   "team": "25",
+   "name": "Joan Beringer",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-11-08T00:18:20.653Z",
+    "own": "2026-11-07T23:10:56.000Z",
+    "why": "@rotowirenba.bsky.social: Joan Beringer: Questionable for Sunday \n\n https://www."
+   }
+  },
+  "401909941|laurimarkkanen|q": {
+   "game": "401909941",
+   "start": "2026-11-08T01:00Z",
+   "team": "25",
+   "name": "Lauri Markkanen",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-11-08T00:18:20.653Z",
+    "own": "2026-11-07T23:14:44.000Z",
+    "why": "@rotowirenba.bsky.social: Lauri Markkanen: Questionable for Sunday \n\n https://ww"
+   }
+  },
+  "401909942|joanberinger|q": {
+   "game": "401909942",
+   "start": "2026-11-08T01:30Z",
+   "team": "9",
+   "name": "Joan Beringer",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-11-08T00:18:20.653Z",
+    "own": "2026-11-07T23:10:56.000Z",
+    "why": "@rotowirenba.bsky.social: Joan Beringer: Questionable for Sunday \n\n https://www."
+   }
+  },
+  "401909942|laurimarkkanen|q": {
+   "game": "401909942",
+   "start": "2026-11-08T01:30Z",
+   "team": "9",
+   "name": "Lauri Markkanen",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-11-08T00:18:20.653Z",
+    "own": "2026-11-07T23:14:44.000Z",
+    "why": "@rotowirenba.bsky.social: Lauri Markkanen: Questionable for Sunday \n\n https://ww"
+   }
+  },
+  "401909942|anthonydavis|out": {
+   "game": "401909942",
+   "start": "2026-11-08T01:30Z",
+   "team": "9",
+   "name": "Anthony Davis",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-08T00:18:20.653Z",
+    "own": "2026-11-07T23:33:38.000Z",
+    "why": "@rotowirenba.bsky.social: Anthony Davis: Ruled out for Saturday \n\n https://www.r"
+   }
+  },
+  "401909943|joanberinger|q": {
+   "game": "401909943",
+   "start": "2026-11-08T02:00Z",
+   "team": "21",
+   "name": "Joan Beringer",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-11-08T00:18:20.653Z",
+    "own": "2026-11-07T23:10:56.000Z",
+    "why": "@rotowirenba.bsky.social: Joan Beringer: Questionable for Sunday \n\n https://www."
+   }
+  },
+  "401909943|laurimarkkanen|q": {
+   "game": "401909943",
+   "start": "2026-11-08T02:00Z",
+   "team": "21",
+   "name": "Lauri Markkanen",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-11-08T00:18:20.653Z",
+    "own": "2026-11-07T23:14:44.000Z",
+    "why": "@rotowirenba.bsky.social: Lauri Markkanen: Questionable for Sunday \n\n https://ww"
+   }
+  },
+  "401909943|anthonydavis|out": {
+   "game": "401909943",
+   "start": "2026-11-08T02:00Z",
+   "team": "21",
+   "name": "Anthony Davis",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-08T00:18:20.653Z",
+    "own": "2026-11-07T23:33:38.000Z",
+    "why": "@rotowirenba.bsky.social: Anthony Davis: Ruled out for Saturday \n\n https://www.r"
+   }
+  },
+  "401909944|joanberinger|q": {
+   "game": "401909944",
+   "start": "2026-11-08T03:00Z",
+   "team": "22",
+   "name": "Joan Beringer",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-11-08T00:18:20.653Z",
+    "own": "2026-11-07T23:10:56.000Z",
+    "why": "@rotowirenba.bsky.social: Joan Beringer: Questionable for Sunday \n\n https://www."
+   }
+  },
+  "401909944|laurimarkkanen|q": {
+   "game": "401909944",
+   "start": "2026-11-08T03:00Z",
+   "team": "22",
+   "name": "Lauri Markkanen",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-11-08T00:18:20.653Z",
+    "own": "2026-11-07T23:14:44.000Z",
+    "why": "@rotowirenba.bsky.social: Lauri Markkanen: Questionable for Sunday \n\n https://ww"
+   }
+  },
+  "401909944|anthonydavis|out": {
+   "game": "401909944",
+   "start": "2026-11-08T03:00Z",
+   "team": "22",
+   "name": "Anthony Davis",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-08T00:18:20.653Z",
+    "own": "2026-11-07T23:33:38.000Z",
+    "why": "@rotowirenba.bsky.social: Anthony Davis: Ruled out for Saturday \n\n https://www.r"
+   }
+  },
+  "401909945|joanberinger|q": {
+   "game": "401909945",
+   "start": "2026-11-08T20:30Z",
+   "team": "4",
+   "name": "Joan Beringer",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-11-08T00:18:20.653Z",
+    "own": "2026-11-07T23:10:56.000Z",
+    "why": "@rotowirenba.bsky.social: Joan Beringer: Questionable for Sunday \n\n https://www."
+   }
+  },
+  "401909945|laurimarkkanen|q": {
+   "game": "401909945",
+   "start": "2026-11-08T20:30Z",
+   "team": "4",
+   "name": "Lauri Markkanen",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-11-08T00:18:20.653Z",
+    "own": "2026-11-07T23:14:44.000Z",
+    "why": "@rotowirenba.bsky.social: Lauri Markkanen: Questionable for Sunday \n\n https://ww"
+   }
+  },
+  "401909945|anthonydavis|out": {
+   "game": "401909945",
+   "start": "2026-11-08T20:30Z",
+   "team": "4",
+   "name": "Anthony Davis",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-08T00:18:20.653Z",
+    "own": "2026-11-07T23:33:38.000Z",
+    "why": "@rotowirenba.bsky.social: Anthony Davis: Ruled out for Saturday \n\n https://www.r"
+   }
+  },
+  "401909946|joanberinger|q": {
+   "game": "401909946",
+   "start": "2026-11-08T23:00Z",
+   "team": "8",
+   "name": "Joan Beringer",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-11-08T00:18:20.653Z",
+    "own": "2026-11-07T23:10:56.000Z",
+    "why": "@rotowirenba.bsky.social: Joan Beringer: Questionable for Sunday \n\n https://www."
+   }
+  },
+  "401909946|laurimarkkanen|q": {
+   "game": "401909946",
+   "start": "2026-11-08T23:00Z",
+   "team": "8",
+   "name": "Lauri Markkanen",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-11-08T00:18:20.653Z",
+    "own": "2026-11-07T23:14:44.000Z",
+    "why": "@rotowirenba.bsky.social: Lauri Markkanen: Questionable for Sunday \n\n https://ww"
+   }
+  },
+  "401909946|anthonydavis|out": {
+   "game": "401909946",
+   "start": "2026-11-08T23:00Z",
+   "team": "8",
+   "name": "Anthony Davis",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-08T00:18:20.653Z",
+    "own": "2026-11-07T23:33:38.000Z",
+    "why": "@rotowirenba.bsky.social: Anthony Davis: Ruled out for Saturday \n\n https://www.r"
+   }
+  },
+  "401909947|anthonydavis|out": {
+   "game": "401909947",
+   "start": "2026-11-09T00:00Z",
+   "team": "16",
+   "name": "Anthony Davis",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-08T00:18:20.653Z",
+    "own": "2026-11-07T23:33:38.000Z",
+    "why": "@rotowirenba.bsky.social: Anthony Davis: Ruled out for Saturday \n\n https://www.r"
+   }
+  },
+  "401909949|joanberinger|q": {
+   "game": "401909949",
+   "start": "2026-11-09T01:00Z",
+   "team": "15",
+   "name": "Joan Beringer",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-11-08T00:18:20.653Z",
+    "own": "2026-11-07T23:10:56.000Z",
+    "why": "@rotowirenba.bsky.social: Joan Beringer: Questionable for Sunday \n\n https://www."
+   }
+  },
+  "401909949|laurimarkkanen|q": {
+   "game": "401909949",
+   "start": "2026-11-09T01:00Z",
+   "team": "15",
+   "name": "Lauri Markkanen",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-11-08T00:18:20.653Z",
+    "own": "2026-11-07T23:14:44.000Z",
+    "why": "@rotowirenba.bsky.social: Lauri Markkanen: Questionable for Sunday \n\n https://ww"
+   }
+  },
+  "401909949|anthonydavis|out": {
+   "game": "401909949",
+   "start": "2026-11-09T01:00Z",
+   "team": "15",
+   "name": "Anthony Davis",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-08T00:18:20.653Z",
+    "own": "2026-11-07T23:33:38.000Z",
+    "why": "@rotowirenba.bsky.social: Anthony Davis: Ruled out for Saturday \n\n https://www.r"
+   }
+  },
+  "401909950|joanberinger|q": {
+   "game": "401909950",
+   "start": "2026-11-09T02:00Z",
+   "team": "12",
+   "name": "Joan Beringer",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-11-08T00:18:20.653Z",
+    "own": "2026-11-07T23:10:56.000Z",
+    "why": "@rotowirenba.bsky.social: Joan Beringer: Questionable for Sunday \n\n https://www."
+   }
+  },
+  "401909950|laurimarkkanen|q": {
+   "game": "401909950",
+   "start": "2026-11-09T02:00Z",
+   "team": "12",
+   "name": "Lauri Markkanen",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-11-08T00:18:20.653Z",
+    "own": "2026-11-07T23:14:44.000Z",
+    "why": "@rotowirenba.bsky.social: Lauri Markkanen: Questionable for Sunday \n\n https://ww"
+   }
+  },
+  "401909950|anthonydavis|out": {
+   "game": "401909950",
+   "start": "2026-11-09T02:00Z",
+   "team": "12",
+   "name": "Anthony Davis",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-08T00:18:20.653Z",
+    "own": "2026-11-07T23:33:38.000Z",
+    "why": "@rotowirenba.bsky.social: Anthony Davis: Ruled out for Saturday \n\n https://www.r"
+   }
+  },
+  "401909951|joanberinger|q": {
+   "game": "401909951",
+   "start": "2026-11-09T02:00Z",
+   "team": "23",
+   "name": "Joan Beringer",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-11-08T00:18:20.653Z",
+    "own": "2026-11-07T23:10:56.000Z",
+    "why": "@rotowirenba.bsky.social: Joan Beringer: Questionable for Sunday \n\n https://www."
+   }
+  },
+  "401909951|laurimarkkanen|q": {
+   "game": "401909951",
+   "start": "2026-11-09T02:00Z",
+   "team": "23",
+   "name": "Lauri Markkanen",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-11-08T00:18:20.653Z",
+    "own": "2026-11-07T23:14:44.000Z",
+    "why": "@rotowirenba.bsky.social: Lauri Markkanen: Questionable for Sunday \n\n https://ww"
+   }
+  },
+  "401909951|anthonydavis|out": {
+   "game": "401909951",
+   "start": "2026-11-09T02:00Z",
+   "team": "23",
+   "name": "Anthony Davis",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-08T00:18:20.653Z",
+    "own": "2026-11-07T23:33:38.000Z",
+    "why": "@rotowirenba.bsky.social: Anthony Davis: Ruled out for Saturday \n\n https://www.r"
    }
   }
  }
