@@ -20002,6 +20002,11 @@
    "espn": {
     "seen": "2026-11-08T19:13:28.414Z",
     "own": "2026-11-08T18:55:00.000Z"
+   },
+   "bluesky": {
+    "seen": "2026-11-08T19:14:57.032Z",
+    "own": "2026-11-08T18:55:29.000Z",
+    "why": "@rotowirenba.bsky.social: Norman Powell: Out Sunday \n\n https://www.rotowire.com/"
    }
   },
   "401909946|lukadoncic|out": {
@@ -20043,6 +20048,227 @@
    "espn": {
     "seen": "2026-11-08T19:13:28.414Z",
     "own": "2026-11-08T18:21:00.000Z"
+   },
+   "bluesky": {
+    "seen": "2026-11-08T19:14:57.032Z",
+    "own": "2026-11-08T18:21:14.000Z",
+    "why": "@rotowirenba.bsky.social: Mitchell Robinson: Questionable to play Sunday \n\n http"
+   }
+  },
+  "401909945|lukadoncic|out": {
+   "game": "401909945",
+   "start": "2026-11-08T20:30Z",
+   "team": "4",
+   "name": "Luka Doncic",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-08T19:14:57.032Z",
+    "own": "2026-11-08T18:19:53.000Z",
+    "why": "@rotowirenba.bsky.social: Luka Doncic: Ruled out Sunday \n\n https://www.rotowire."
+   }
+  },
+  "401909945|mitchellrobinson|q": {
+   "game": "401909945",
+   "start": "2026-11-08T20:30Z",
+   "team": "4",
+   "name": "Mitchell Robinson",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-11-08T19:14:57.032Z",
+    "own": "2026-11-08T18:21:14.000Z",
+    "why": "@rotowirenba.bsky.social: Mitchell Robinson: Questionable to play Sunday \n\n http"
+   }
+  },
+  "401909946|mitchellrobinson|q": {
+   "game": "401909946",
+   "start": "2026-11-08T23:00Z",
+   "team": "8",
+   "name": "Mitchell Robinson",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-11-08T19:14:57.032Z",
+    "own": "2026-11-08T18:21:14.000Z",
+    "why": "@rotowirenba.bsky.social: Mitchell Robinson: Questionable to play Sunday \n\n http"
+   }
+  },
+  "401909946|normanpowell|out": {
+   "game": "401909946",
+   "start": "2026-11-08T23:00Z",
+   "team": "8",
+   "name": "Norman Powell",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-08T19:14:57.032Z",
+    "own": "2026-11-08T18:55:29.000Z",
+    "why": "@rotowirenba.bsky.social: Norman Powell: Out Sunday \n\n https://www.rotowire.com/"
+   }
+  },
+  "401909947|lukadoncic|out": {
+   "game": "401909947",
+   "start": "2026-11-09T00:00Z",
+   "team": "16",
+   "name": "Luka Doncic",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-08T19:14:57.032Z",
+    "own": "2026-11-08T18:19:53.000Z",
+    "why": "@rotowirenba.bsky.social: Luka Doncic: Ruled out Sunday \n\n https://www.rotowire."
+   }
+  },
+  "401909947|mitchellrobinson|q": {
+   "game": "401909947",
+   "start": "2026-11-09T00:00Z",
+   "team": "16",
+   "name": "Mitchell Robinson",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-11-08T19:14:57.032Z",
+    "own": "2026-11-08T18:21:14.000Z",
+    "why": "@rotowirenba.bsky.social: Mitchell Robinson: Questionable to play Sunday \n\n http"
+   }
+  },
+  "401909947|normanpowell|out": {
+   "game": "401909947",
+   "start": "2026-11-09T00:00Z",
+   "team": "16",
+   "name": "Norman Powell",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-08T19:14:57.032Z",
+    "own": "2026-11-08T18:55:29.000Z",
+    "why": "@rotowirenba.bsky.social: Norman Powell: Out Sunday \n\n https://www.rotowire.com/"
+   }
+  },
+  "401909948|lukadoncic|out": {
+   "game": "401909948",
+   "start": "2026-11-09T00:30Z",
+   "team": "6",
+   "name": "Luka Doncic",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-08T19:14:57.032Z",
+    "own": "2026-11-08T18:19:53.000Z",
+    "why": "@rotowirenba.bsky.social: Luka Doncic: Ruled out Sunday \n\n https://www.rotowire."
+   }
+  },
+  "401909948|mitchellrobinson|q": {
+   "game": "401909948",
+   "start": "2026-11-09T00:30Z",
+   "team": "6",
+   "name": "Mitchell Robinson",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-11-08T19:14:57.032Z",
+    "own": "2026-11-08T18:21:14.000Z",
+    "why": "@rotowirenba.bsky.social: Mitchell Robinson: Questionable to play Sunday \n\n http"
+   }
+  },
+  "401909948|normanpowell|out": {
+   "game": "401909948",
+   "start": "2026-11-09T00:30Z",
+   "team": "6",
+   "name": "Norman Powell",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-08T19:14:57.032Z",
+    "own": "2026-11-08T18:55:29.000Z",
+    "why": "@rotowirenba.bsky.social: Norman Powell: Out Sunday \n\n https://www.rotowire.com/"
+   }
+  },
+  "401909949|lukadoncic|out": {
+   "game": "401909949",
+   "start": "2026-11-09T01:00Z",
+   "team": "15",
+   "name": "Luka Doncic",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-08T19:14:57.032Z",
+    "own": "2026-11-08T18:19:53.000Z",
+    "why": "@rotowirenba.bsky.social: Luka Doncic: Ruled out Sunday \n\n https://www.rotowire."
+   }
+  },
+  "401909949|normanpowell|out": {
+   "game": "401909949",
+   "start": "2026-11-09T01:00Z",
+   "team": "15",
+   "name": "Norman Powell",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-08T19:14:57.032Z",
+    "own": "2026-11-08T18:55:29.000Z",
+    "why": "@rotowirenba.bsky.social: Norman Powell: Out Sunday \n\n https://www.rotowire.com/"
+   }
+  },
+  "401909950|lukadoncic|out": {
+   "game": "401909950",
+   "start": "2026-11-09T02:00Z",
+   "team": "12",
+   "name": "Luka Doncic",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-08T19:14:57.032Z",
+    "own": "2026-11-08T18:19:53.000Z",
+    "why": "@rotowirenba.bsky.social: Luka Doncic: Ruled out Sunday \n\n https://www.rotowire."
+   }
+  },
+  "401909950|mitchellrobinson|q": {
+   "game": "401909950",
+   "start": "2026-11-09T02:00Z",
+   "team": "12",
+   "name": "Mitchell Robinson",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-11-08T19:14:57.032Z",
+    "own": "2026-11-08T18:21:14.000Z",
+    "why": "@rotowirenba.bsky.social: Mitchell Robinson: Questionable to play Sunday \n\n http"
+   }
+  },
+  "401909950|normanpowell|out": {
+   "game": "401909950",
+   "start": "2026-11-09T02:00Z",
+   "team": "12",
+   "name": "Norman Powell",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-08T19:14:57.032Z",
+    "own": "2026-11-08T18:55:29.000Z",
+    "why": "@rotowirenba.bsky.social: Norman Powell: Out Sunday \n\n https://www.rotowire.com/"
+   }
+  },
+  "401909951|lukadoncic|out": {
+   "game": "401909951",
+   "start": "2026-11-09T02:00Z",
+   "team": "23",
+   "name": "Luka Doncic",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-08T19:14:57.032Z",
+    "own": "2026-11-08T18:19:53.000Z",
+    "why": "@rotowirenba.bsky.social: Luka Doncic: Ruled out Sunday \n\n https://www.rotowire."
+   }
+  },
+  "401909951|mitchellrobinson|q": {
+   "game": "401909951",
+   "start": "2026-11-09T02:00Z",
+   "team": "23",
+   "name": "Mitchell Robinson",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-11-08T19:14:57.032Z",
+    "own": "2026-11-08T18:21:14.000Z",
+    "why": "@rotowirenba.bsky.social: Mitchell Robinson: Questionable to play Sunday \n\n http"
+   }
+  },
+  "401909951|normanpowell|out": {
+   "game": "401909951",
+   "start": "2026-11-09T02:00Z",
+   "team": "23",
+   "name": "Norman Powell",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-08T19:14:57.032Z",
+    "own": "2026-11-08T18:55:29.000Z",
+    "why": "@rotowirenba.bsky.social: Norman Powell: Out Sunday \n\n https://www.rotowire.com/"
    }
   }
  }

@@ -2,12 +2,12 @@
  "sport": "nfl",
  "cursor": {
   "adamscheftermirror.bsky.social": "2026-11-08T17:50:03.674Z",
-  "rapsheet.bsky.social": "2026-11-08T19:12:46.746Z",
+  "rapsheet.bsky.social": "2026-11-08T19:35:34.486Z",
   "nflnewsreposterbot.bsky.social": "2026-11-06T17:28:39.017Z",
-  "insidenflnews.bsky.social": "2026-11-08T19:12:22.381Z",
-  "nflnewsposter.bsky.social": "2026-11-08T19:05:04.522Z",
+  "insidenflnews.bsky.social": "2026-11-08T19:37:41.709Z",
+  "nflnewsposter.bsky.social": "2026-11-08T19:38:03.415Z",
   "rotoworld-fb.bsky.social": "2026-11-08T17:48:12.000Z",
-  "rotowirenfl.bsky.social": "2026-11-08T19:11:01.000Z"
+  "rotowirenfl.bsky.social": "2026-11-08T19:35:57.000Z"
  },
  "claims": [
   {
@@ -18235,6 +18235,32 @@
    "kind": "status",
    "confidence": 0.4,
    "text": "[Tomasson] Broncos WR Jaylen Waddle being evaluated for concussion twitter.com/christomasso..."
+  },
+  {
+   "id": "at://did:plc:mbr4badgf6yu56mquzackzew/app.bsky.feed.post/3mzt54lynkc2e|tylergoodson|questionable|status",
+   "at": "2026-11-08T19:22:45.526Z",
+   "seen": "2026-11-08T19:39:00.579Z",
+   "handle": "insidenflnews.bsky.social",
+   "post": "at://did:plc:mbr4badgf6yu56mquzackzew/app.bsky.feed.post/3mzt54lynkc2e",
+   "player": "Tyler Goodson",
+   "team": null,
+   "status": "questionable",
+   "kind": "status",
+   "confidence": 0.85,
+   "text": "🚨 Status alert: Tyler Goodson (knee) questionable to return."
+  },
+  {
+   "id": "at://did:plc:mbr4badgf6yu56mquzackzew/app.bsky.feed.post/3mzt5hhyxu22e|patrickmahomes|active|return",
+   "at": "2026-11-08T19:28:50.441Z",
+   "seen": "2026-11-08T19:39:00.579Z",
+   "handle": "insidenflnews.bsky.social",
+   "post": "at://did:plc:mbr4badgf6yu56mquzackzew/app.bsky.feed.post/3mzt5hhyxu22e",
+   "player": "Patrick Mahomes",
+   "team": "KC",
+   "status": "active",
+   "kind": "return",
+   "confidence": 0.7,
+   "text": "🚨 Status alert: Patrick Mahomes (right arm) has returned to Sunday's game."
   }
  ]
 }
