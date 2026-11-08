@@ -1,13 +1,13 @@
 {
  "sport": "nfl",
  "cursor": {
-  "adamscheftermirror.bsky.social": "2026-11-08T20:25:16.826Z",
+  "adamscheftermirror.bsky.social": "2026-11-08T21:25:07.266Z",
   "rapsheet.bsky.social": "2026-11-08T20:02:23.434Z",
   "nflnewsreposterbot.bsky.social": "2026-11-06T17:28:39.017Z",
-  "insidenflnews.bsky.social": "2026-11-08T21:15:24.042Z",
-  "nflnewsposter.bsky.social": "2026-11-08T21:15:04.809Z",
-  "rotoworld-fb.bsky.social": "2026-11-08T21:13:32.000Z",
-  "rotowirenfl.bsky.social": "2026-11-08T21:04:52.000Z"
+  "insidenflnews.bsky.social": "2026-11-08T21:21:31.454Z",
+  "nflnewsposter.bsky.social": "2026-11-08T21:30:28.691Z",
+  "rotoworld-fb.bsky.social": "2026-11-08T21:27:27.000Z",
+  "rotowirenfl.bsky.social": "2026-11-08T21:23:25.000Z"
  },
  "claims": [
   {
@@ -18508,6 +18508,45 @@
    "kind": "status",
    "confidence": 0.8,
    "text": "Xavier Worthy: Won't return to contest \n\n https://www.rotowire.com/football/player/xavier-worthy-17687"
+  },
+  {
+   "id": "at://did:plc:fuqjc7x4gxvnwzksnlxwbe4x/app.bsky.feed.post/3mztdk5bq7s75|laddmcconkey|questionable|status",
+   "at": "2026-11-08T21:17:42.307Z",
+   "seen": "2026-11-08T21:30:34.472Z",
+   "handle": "nflnewsposter.bsky.social",
+   "post": "at://did:plc:fuqjc7x4gxvnwzksnlxwbe4x/app.bsky.feed.post/3mztdk5bq7s75",
+   "player": "Ladd McConkey",
+   "team": "LAC",
+   "status": "questionable",
+   "kind": "status",
+   "confidence": 0.95,
+   "text": "[Chargers] injury update: Ladd McConkey (back) is questionable twitter.com/chargers/sta..."
+  },
+  {
+   "id": "at://did:plc:mbr4badgf6yu56mquzackzew/app.bsky.feed.post/3mztdqf7ti22e|laddmcconkey|questionable|status",
+   "at": "2026-11-08T21:21:11.961Z",
+   "seen": "2026-11-08T21:30:34.472Z",
+   "handle": "insidenflnews.bsky.social",
+   "post": "at://did:plc:mbr4badgf6yu56mquzackzew/app.bsky.feed.post/3mztdqf7ti22e",
+   "player": "Ladd McConkey",
+   "team": "LAC",
+   "status": "questionable",
+   "kind": "status",
+   "confidence": 0.93,
+   "text": "🚨 Status alert: Ladd McConkey (back) questionable to return."
+  },
+  {
+   "id": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3mzte3lovra2j|laddmcconkey|questionable|status",
+   "at": "2026-11-08T21:27:27.000Z",
+   "seen": "2026-11-08T21:30:34.472Z",
+   "handle": "rotoworld-fb.bsky.social",
+   "post": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3mzte3lovra2j",
+   "player": "Ladd McConkey",
+   "team": "LAC",
+   "status": "questionable",
+   "kind": "status",
+   "confidence": 0.92,
+   "text": "Ladd McConkey (back) suddenly questionable in Wk 9"
   }
  ]
 }
