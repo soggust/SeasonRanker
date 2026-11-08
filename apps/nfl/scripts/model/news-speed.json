@@ -18681,6 +18681,18 @@
     "own": "2026-11-07T22:03:36.000Z",
     "why": "@rotoworld-fb.bsky.social: Brian Robinson hits IR with hamstring injury"
    }
+  },
+  "401873038|beauxcollins|q": {
+   "game": "401873038",
+   "start": "2026-11-08T14:30Z",
+   "team": "1",
+   "name": "Beaux Collins",
+   "status": "q",
+   "athlete": "4431210",
+   "espn": {
+    "seen": "2026-11-08T00:49:41.199Z",
+    "own": "2026-11-08T00:27:00.000Z"
+   }
   }
  }
 }

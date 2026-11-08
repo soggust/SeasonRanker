@@ -1,7 +1,7 @@
 {
  "sport": "nba",
  "cursor": {
-  "rotowirenba.bsky.social": "2026-11-08T00:31:51.000Z",
+  "rotowirenba.bsky.social": "2026-11-08T00:51:11.000Z",
   "insidenbanews.bsky.social": "2026-11-07T05:11:20.386Z",
   "shamsbot.bsky.social": "2026-11-04T20:33:22.000Z"
  },
@@ -9248,6 +9248,32 @@
    "kind": "starting",
    "confidence": 0.8,
    "text": "Meleek Thomas: Starting Saturday \n\n https://www.rotowire.com/basketball/player/meleek-thomas-6989"
+  },
+  {
+   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mzr6e7pdr32s|adaymara|none|starting",
+   "at": "2026-11-08T00:39:35.000Z",
+   "seen": "2026-11-08T00:52:22.409Z",
+   "handle": "rotowirenba.bsky.social",
+   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mzr6e7pdr32s",
+   "player": "Aday Mara",
+   "team": null,
+   "status": "none",
+   "kind": "starting",
+   "confidence": 0.9,
+   "text": "Aday Mara: Starting Saturday \n\n https://www.rotowire.com/basketball/player/aday-mara-6932"
+  },
+  {
+   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mzr6iqpcff2g|jaredmccain|none|benched",
+   "at": "2026-11-08T00:42:07.000Z",
+   "seen": "2026-11-08T00:52:22.409Z",
+   "handle": "rotowirenba.bsky.social",
+   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mzr6iqpcff2g",
+   "player": "Jared McCain",
+   "team": null,
+   "status": "none",
+   "kind": "benched",
+   "confidence": 0.85,
+   "text": "Jared McCain: Returns to bench Saturday \n\n https://www.rotowire.com/basketball/player/jared-mccain-6266"
   }
  ]
 }
