@@ -20396,6 +20396,162 @@
     "seen": "2026-11-08T19:36:23.532Z",
     "own": "2026-11-08T19:24:00.000Z"
    }
+  },
+  "401873046|theowease|out": {
+   "game": "401873046",
+   "start": "2026-11-08T21:05Z",
+   "team": "24",
+   "name": "Theo Wease Jr.",
+   "status": "out",
+   "athlete": "4426535",
+   "espn": {
+    "seen": "2026-11-08T19:58:03.890Z",
+    "own": "2026-11-08T19:39:00.000Z"
+   }
+  },
+  "401873046|tylergoodson|q": {
+   "game": "401873046",
+   "start": "2026-11-08T21:05Z",
+   "team": "24",
+   "name": "Tyler Goodson",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-11-08T19:39:00.579Z",
+    "own": "2026-11-08T19:22:45.526Z",
+    "why": "@insidenflnews.bsky.social: 🚨 Status alert: Tyler Goodson (knee) questionable t"
+   }
+  },
+  "401873046|febechinwaiwu|out": {
+   "game": "401873046",
+   "start": "2026-11-08T21:05Z",
+   "team": "34",
+   "name": "Febechi Nwaiwu",
+   "status": "out",
+   "athlete": "4880873",
+   "espn": {
+    "seen": "2026-11-08T19:58:03.890Z",
+    "own": "2026-11-08T19:37:00.000Z"
+   }
+  },
+  "401873046|bradensmith|out": {
+   "game": "401873046",
+   "start": "2026-11-08T21:05Z",
+   "team": "34",
+   "name": "Braden Smith",
+   "status": "out",
+   "athlete": "3121595",
+   "espn": {
+    "seen": "2026-11-08T19:58:03.890Z",
+    "own": "2026-11-08T19:37:00.000Z"
+   }
+  },
+  "401873046|cadestover|out": {
+   "game": "401873046",
+   "start": "2026-11-08T21:05Z",
+   "team": "34",
+   "name": "Cade Stover",
+   "status": "out",
+   "athlete": "4426496",
+   "espn": {
+    "seen": "2026-11-08T19:58:03.890Z",
+    "own": "2026-11-08T19:37:00.000Z"
+   }
+  },
+  "401873046|natethomas|out": {
+   "game": "401873046",
+   "start": "2026-11-08T21:05Z",
+   "team": "34",
+   "name": "Nate Thomas",
+   "status": "out",
+   "athlete": "4428656",
+   "espn": {
+    "seen": "2026-11-08T19:58:03.890Z",
+    "own": "2026-11-08T19:37:00.000Z"
+   }
+  },
+  "401873049|charleswoods|out": {
+   "game": "401873049",
+   "start": "2026-11-08T21:25Z",
+   "team": "17",
+   "name": "Charles Woods",
+   "status": "out",
+   "athlete": "4368113",
+   "espn": {
+    "seen": "2026-11-08T19:58:03.890Z",
+    "own": "2026-11-08T19:24:00.000Z"
+   }
+  },
+  "401873049|tylergoodson|q": {
+   "game": "401873049",
+   "start": "2026-11-08T21:25Z",
+   "team": "17",
+   "name": "Tyler Goodson",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-11-08T19:39:00.579Z",
+    "own": "2026-11-08T19:22:45.526Z",
+    "why": "@insidenflnews.bsky.social: 🚨 Status alert: Tyler Goodson (knee) questionable t"
+   }
+  },
+  "401873049|marshawnlloyd|out": {
+   "game": "401873049",
+   "start": "2026-11-08T21:25Z",
+   "team": "9",
+   "name": "MarShawn Lloyd",
+   "status": "out",
+   "athlete": "4429023",
+   "espn": {
+    "seen": "2026-11-08T19:58:03.890Z",
+    "own": "2026-11-06T20:52:00.000Z"
+   }
+  },
+  "401873047|tylergoodson|q": {
+   "game": "401873047",
+   "start": "2026-11-08T21:25Z",
+   "team": "25",
+   "name": "Tyler Goodson",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-11-08T19:39:00.579Z",
+    "own": "2026-11-08T19:22:45.526Z",
+    "why": "@insidenflnews.bsky.social: 🚨 Status alert: Tyler Goodson (knee) questionable t"
+   }
+  },
+  "401873048|tylergoodson|q": {
+   "game": "401873048",
+   "start": "2026-11-08T21:25Z",
+   "team": "26",
+   "name": "Tyler Goodson",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-11-08T19:39:00.579Z",
+    "own": "2026-11-08T19:22:45.526Z",
+    "why": "@insidenflnews.bsky.social: 🚨 Status alert: Tyler Goodson (knee) questionable t"
+   }
+  },
+  "401873050|tylergoodson|q": {
+   "game": "401873050",
+   "start": "2026-11-09T01:20Z",
+   "team": "3",
+   "name": "Tyler Goodson",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-11-08T19:39:00.579Z",
+    "own": "2026-11-08T19:22:45.526Z",
+    "why": "@insidenflnews.bsky.social: 🚨 Status alert: Tyler Goodson (knee) questionable t"
+   }
+  },
+  "401873051|tylergoodson|q": {
+   "game": "401873051",
+   "start": "2026-11-10T01:15Z",
+   "team": "16",
+   "name": "Tyler Goodson",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-11-08T19:39:00.579Z",
+    "own": "2026-11-08T19:22:45.526Z",
+    "why": "@insidenflnews.bsky.social: 🚨 Status alert: Tyler Goodson (knee) questionable t"
+   }
   }
  }
 }

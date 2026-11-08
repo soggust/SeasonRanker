@@ -20270,6 +20270,90 @@
     "own": "2026-11-08T18:55:29.000Z",
     "why": "@rotowirenba.bsky.social: Norman Powell: Out Sunday \n\n https://www.rotowire.com/"
    }
+  },
+  "401909957|clintcapela|out": {
+   "game": "401909957",
+   "start": "2026-11-10T01:30Z",
+   "team": "10",
+   "name": "Clint Capela",
+   "status": "out",
+   "athlete": "3102529",
+   "espn": {
+    "seen": "2026-11-08T19:58:57.163Z",
+    "own": "2026-11-06T20:32:00.000Z"
+   }
+  },
+  "401909957|stevenadams|out": {
+   "game": "401909957",
+   "start": "2026-11-10T01:30Z",
+   "team": "10",
+   "name": "Steven Adams",
+   "status": "out",
+   "athlete": "2991235",
+   "espn": {
+    "seen": "2026-11-08T19:58:57.163Z",
+    "own": "2026-11-05T00:21:00.000Z"
+   }
+  },
+  "401909957|julianstrawther|out": {
+   "game": "401909957",
+   "start": "2026-11-10T01:30Z",
+   "team": "7",
+   "name": "Julian Strawther",
+   "status": "out",
+   "athlete": "4432181",
+   "espn": {
+    "seen": "2026-11-08T19:58:57.163Z",
+    "own": "2026-10-17T00:52:00.000Z"
+   }
+  },
+  "401909958|jordangoodwin|out": {
+   "game": "401909958",
+   "start": "2026-11-10T02:00Z",
+   "team": "21",
+   "name": "Jordan Goodwin",
+   "status": "out",
+   "athlete": "4278402",
+   "espn": {
+    "seen": "2026-11-08T19:58:57.163Z",
+    "own": "2026-11-08T01:08:00.000Z"
+   }
+  },
+  "401909958|markwilliams|out": {
+   "game": "401909958",
+   "start": "2026-11-10T02:00Z",
+   "team": "21",
+   "name": "Mark Williams",
+   "status": "out",
+   "athlete": "4701232",
+   "espn": {
+    "seen": "2026-11-08T19:58:57.163Z",
+    "own": "2026-09-11T16:03:00.000Z"
+   }
+  },
+  "401909958|tobiasharris|out": {
+   "game": "401909958",
+   "start": "2026-11-10T02:00Z",
+   "team": "24",
+   "name": "Tobias Harris",
+   "status": "out",
+   "athlete": "6440",
+   "espn": {
+    "seen": "2026-11-08T19:58:57.163Z",
+    "own": "2026-10-30T21:44:00.000Z"
+   }
+  },
+  "401909958|jaydenquaintance|out": {
+   "game": "401909958",
+   "start": "2026-11-10T02:00Z",
+   "team": "24",
+   "name": "Jayden Quaintance",
+   "status": "out",
+   "athlete": "5101845",
+   "espn": {
+    "seen": "2026-11-08T19:58:57.163Z",
+    "own": "2026-10-05T21:43:00.000Z"
+   }
   }
  }
 }

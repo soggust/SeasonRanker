@@ -2,12 +2,12 @@
  "sport": "nfl",
  "cursor": {
   "adamscheftermirror.bsky.social": "2026-11-08T17:50:03.674Z",
-  "rapsheet.bsky.social": "2026-11-08T19:35:34.486Z",
+  "rapsheet.bsky.social": "2026-11-08T19:40:29.748Z",
   "nflnewsreposterbot.bsky.social": "2026-11-06T17:28:39.017Z",
-  "insidenflnews.bsky.social": "2026-11-08T19:37:41.709Z",
-  "nflnewsposter.bsky.social": "2026-11-08T19:38:03.415Z",
-  "rotoworld-fb.bsky.social": "2026-11-08T17:48:12.000Z",
-  "rotowirenfl.bsky.social": "2026-11-08T19:35:57.000Z"
+  "insidenflnews.bsky.social": "2026-11-08T20:00:16.079Z",
+  "nflnewsposter.bsky.social": "2026-11-08T19:58:24.254Z",
+  "rotoworld-fb.bsky.social": "2026-11-08T19:53:29.000Z",
+  "rotowirenfl.bsky.social": "2026-11-08T19:58:03.000Z"
  },
  "claims": [
   {
@@ -18261,6 +18261,71 @@
    "kind": "return",
    "confidence": 0.7,
    "text": "🚨 Status alert: Patrick Mahomes (right arm) has returned to Sunday's game."
+  },
+  {
+   "id": "at://did:plc:fuqjc7x4gxvnwzksnlxwbe4x/app.bsky.feed.post/3mzt6gexuzk75|jaylenwaddle|out|status",
+   "at": "2026-11-08T19:46:07.446Z",
+   "seen": "2026-11-08T20:00:18.279Z",
+   "handle": "nflnewsposter.bsky.social",
+   "post": "at://did:plc:fuqjc7x4gxvnwzksnlxwbe4x/app.bsky.feed.post/3mzt6gexuzk75",
+   "player": "Jaylen Waddle",
+   "team": "DEN",
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.85,
+   "text": "[Garafolo] The Broncos ruled out WR Jaylen Waddle and CB Riley Moss with concussions. twitter.com/MikeGarafolo..."
+  },
+  {
+   "id": "at://did:plc:fuqjc7x4gxvnwzksnlxwbe4x/app.bsky.feed.post/3mzt6gexuzk75|rileymoss|out|status",
+   "at": "2026-11-08T19:46:07.446Z",
+   "seen": "2026-11-08T20:00:18.279Z",
+   "handle": "nflnewsposter.bsky.social",
+   "post": "at://did:plc:fuqjc7x4gxvnwzksnlxwbe4x/app.bsky.feed.post/3mzt6gexuzk75",
+   "player": "Riley Moss",
+   "team": "DEN",
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.85,
+   "text": "[Garafolo] The Broncos ruled out WR Jaylen Waddle and CB Riley Moss with concussions. twitter.com/MikeGarafolo..."
+  },
+  {
+   "id": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3mzt6rvrjem2y|jaylenwaddle|out|status",
+   "at": "2026-11-08T19:52:34.000Z",
+   "seen": "2026-11-08T20:00:18.279Z",
+   "handle": "rotowirenfl.bsky.social",
+   "post": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3mzt6rvrjem2y",
+   "player": "Jaylen Waddle",
+   "team": null,
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.8,
+   "text": "Jaylen Waddle: Ruled out for rest of Sunday's game \n\n https://www.rotowire.com/football/player/jaylen-waddle-15404"
+  },
+  {
+   "id": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3mzt6tkky2x25|jaylenwaddle|out|status",
+   "at": "2026-11-08T19:53:29.000Z",
+   "seen": "2026-11-08T20:00:18.279Z",
+   "handle": "rotoworld-fb.bsky.social",
+   "post": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3mzt6tkky2x25",
+   "player": "Jaylen Waddle",
+   "team": null,
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.8,
+   "text": "Waddle (concussion) ruled out for second half"
+  },
+  {
+   "id": "at://did:plc:mbr4badgf6yu56mquzackzew/app.bsky.feed.post/3mzt77oc37k2n|jjmccarthy|out|status",
+   "at": "2026-11-08T20:00:16.079Z",
+   "seen": "2026-11-08T20:00:18.279Z",
+   "handle": "insidenflnews.bsky.social",
+   "post": "at://did:plc:mbr4badgf6yu56mquzackzew/app.bsky.feed.post/3mzt77oc37k2n",
+   "player": "JJ McCarthy",
+   "team": "MIN",
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.6,
+   "text": "Lineup alert: Jameis Winston enters game in place of injured JJ McCarthy."
   }
  ]
 }
