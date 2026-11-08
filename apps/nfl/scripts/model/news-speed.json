@@ -19327,6 +19327,78 @@
     "own": "2026-11-08T14:32:07.874Z",
     "why": "@rapsheet.bsky.social: Dolphins RB Jaylen Wright (quad), listed as questionable,"
    }
+  },
+  "401873046|camskattebo|out": {
+   "game": "401873046",
+   "start": "2026-11-08T21:05Z",
+   "team": "24",
+   "name": "Cam Skattebo",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-08T15:36:21.213Z",
+    "own": "2026-11-08T15:26:58.000Z",
+    "why": "@rotowirenfl.bsky.social: Cam Skattebo: Listed as doubtful, reportedly pushing t"
+   }
+  },
+  "401873049|camskattebo|out": {
+   "game": "401873049",
+   "start": "2026-11-08T21:25Z",
+   "team": "17",
+   "name": "Cam Skattebo",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-08T15:36:21.213Z",
+    "own": "2026-11-08T15:26:58.000Z",
+    "why": "@rotowirenfl.bsky.social: Cam Skattebo: Listed as doubtful, reportedly pushing t"
+   }
+  },
+  "401873047|camskattebo|out": {
+   "game": "401873047",
+   "start": "2026-11-08T21:25Z",
+   "team": "25",
+   "name": "Cam Skattebo",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-08T15:36:21.213Z",
+    "own": "2026-11-08T15:26:58.000Z",
+    "why": "@rotowirenfl.bsky.social: Cam Skattebo: Listed as doubtful, reportedly pushing t"
+   }
+  },
+  "401873048|camskattebo|out": {
+   "game": "401873048",
+   "start": "2026-11-08T21:25Z",
+   "team": "26",
+   "name": "Cam Skattebo",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-08T15:36:21.213Z",
+    "own": "2026-11-08T15:26:58.000Z",
+    "why": "@rotowirenfl.bsky.social: Cam Skattebo: Listed as doubtful, reportedly pushing t"
+   }
+  },
+  "401873050|camskattebo|out": {
+   "game": "401873050",
+   "start": "2026-11-09T01:20Z",
+   "team": "3",
+   "name": "Cam Skattebo",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-08T15:36:21.213Z",
+    "own": "2026-11-08T15:26:58.000Z",
+    "why": "@rotowirenfl.bsky.social: Cam Skattebo: Listed as doubtful, reportedly pushing t"
+   }
+  },
+  "401873051|camskattebo|out": {
+   "game": "401873051",
+   "start": "2026-11-10T01:15Z",
+   "team": "16",
+   "name": "Cam Skattebo",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-08T15:36:21.213Z",
+    "own": "2026-11-08T15:26:58.000Z",
+    "why": "@rotowirenfl.bsky.social: Cam Skattebo: Listed as doubtful, reportedly pushing t"
+   }
   }
  }
 }

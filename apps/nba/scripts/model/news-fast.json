@@ -7,19 +7,6 @@
  },
  "claims": [
   {
-   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3my5xqv7pyo2o|franzwagner|limited|status",
-   "at": "2026-10-18T15:55:37.000Z",
-   "seen": "2026-10-19T21:15:18.875Z",
-   "handle": "rotowirenba.bsky.social",
-   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3my5xqv7pyo2o",
-   "player": "Franz Wagner",
-   "team": "ORL",
-   "status": "limited",
-   "kind": "status",
-   "confidence": 0.8,
-   "text": "Franz Wagner: Limited in Sunday's practice \n\n https://www.rotowire.com/basketball/player/franz-wagner-5370"
-  },
-  {
    "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3my62sdlssa2z|ajdybantsa|questionable|status",
    "at": "2026-10-18T16:50:07.000Z",
    "seen": "2026-10-19T21:15:18.875Z",

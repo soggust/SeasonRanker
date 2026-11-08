@@ -2,27 +2,14 @@
  "sport": "nfl",
  "cursor": {
   "adamscheftermirror.bsky.social": "2026-11-08T15:15:40.055Z",
-  "rapsheet.bsky.social": "2026-11-08T15:35:34.815Z",
+  "rapsheet.bsky.social": "2026-11-08T15:42:50.381Z",
   "nflnewsreposterbot.bsky.social": "2026-11-06T17:28:39.017Z",
-  "insidenflnews.bsky.social": "2026-11-08T14:50:29.498Z",
+  "insidenflnews.bsky.social": "2026-11-08T15:48:00.894Z",
   "nflnewsposter.bsky.social": "2026-11-08T00:10:37.902Z",
   "rotoworld-fb.bsky.social": "2026-11-08T15:20:55.000Z",
   "rotowirenfl.bsky.social": "2026-11-08T15:36:20.000Z"
  },
  "claims": [
-  {
-   "id": "at://did:plc:qre6zxbmr3ixhdmgsgdretb5/app.bsky.feed.post/3my5xbk7pyf25|tylerwarren|out|status",
-   "at": "2026-10-18T15:47:02.742Z",
-   "seen": "2026-10-19T21:15:18.875Z",
-   "handle": "adamscheftermirror.bsky.social",
-   "post": "at://did:plc:qre6zxbmr3ixhdmgsgdretb5/app.bsky.feed.post/3my5xbk7pyf25",
-   "player": "Tyler Warren",
-   "team": "IND",
-   "status": "out",
-   "kind": "status",
-   "confidence": 0.95,
-   "text": "Colts TE Tyler Warren is inactive today.\n\nOriginal post"
-  },
   {
    "id": "at://did:plc:mbr4badgf6yu56mquzackzew/app.bsky.feed.post/3my6257vlec2u|najeeharris|none|starting",
    "at": "2026-10-18T16:38:19.036Z",

@@ -8962,6 +8962,11 @@
     "seen": "2026-11-07T17:12:14.750Z",
     "own": "2026-11-07T17:11:58.000Z",
     "why": "@dailyfaceoff.bsky.social: Panthers’ Anton Lundell day-to-day with undisclosed i"
+   },
+   "athlete": "4697395",
+   "espn": {
+    "seen": "2026-11-08T15:55:46.796Z",
+    "own": "2026-11-08T13:39:00.000Z"
    }
   },
   "401892677|eliassalomonsson|out": {
@@ -9214,6 +9219,18 @@
    "espn": {
     "seen": "2026-11-08T02:41:54.999Z",
     "own": "2026-11-08T02:38:00.000Z"
+   }
+  },
+  "401892678|kevinbahl|out": {
+   "game": "401892678",
+   "start": "2026-11-09T00:00Z",
+   "team": "3",
+   "name": "Kevin Bahl",
+   "status": "out",
+   "athlete": "4378686",
+   "espn": {
+    "seen": "2026-11-08T15:55:46.796Z",
+    "own": "2026-11-08T15:43:00.000Z"
    }
   }
  }
