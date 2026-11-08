@@ -19449,6 +19449,11 @@
    "espn": {
     "seen": "2026-11-08T00:00:35.312Z",
     "own": "2026-11-06T20:20:00.000Z"
+   },
+   "bluesky": {
+    "seen": "2026-11-08T01:13:25.271Z",
+    "own": "2026-11-08T01:11:34.000Z",
+    "why": "@rotowirenba.bsky.social: Brandon Ingram: Remains out Sunday \n\n https://www.roto"
    }
   },
   "401909950|yanickonanniederhauser|out": {
@@ -19977,6 +19982,227 @@
     "seen": "2026-11-08T00:18:20.653Z",
     "own": "2026-11-07T23:33:38.000Z",
     "why": "@rotowirenba.bsky.social: Anthony Davis: Ruled out for Saturday \n\n https://www.r"
+   }
+  },
+  "401909942|isaiahjackson|out": {
+   "game": "401909942",
+   "start": "2026-11-08T01:30Z",
+   "team": "9",
+   "name": "Isaiah Jackson",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-08T01:13:25.271Z",
+    "own": "2026-11-08T01:03:39.000Z",
+    "why": "@rotowirenba.bsky.social: Isaiah Jackson: Ruled out for Sunday \n\n https://www.ro"
+   }
+  },
+  "401909942|brandoningram|out": {
+   "game": "401909942",
+   "start": "2026-11-08T01:30Z",
+   "team": "9",
+   "name": "Brandon Ingram",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-08T01:13:25.271Z",
+    "own": "2026-11-08T01:11:34.000Z",
+    "why": "@rotowirenba.bsky.social: Brandon Ingram: Remains out Sunday \n\n https://www.roto"
+   }
+  },
+  "401909943|jordangoodwin|out": {
+   "game": "401909943",
+   "start": "2026-11-08T02:00Z",
+   "team": "21",
+   "name": "Jordan Goodwin",
+   "status": "out",
+   "athlete": "4278402",
+   "espn": {
+    "seen": "2026-11-08T01:22:27.659Z",
+    "own": "2026-11-08T01:08:00.000Z"
+   }
+  },
+  "401909943|isaiahjackson|out": {
+   "game": "401909943",
+   "start": "2026-11-08T02:00Z",
+   "team": "21",
+   "name": "Isaiah Jackson",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-08T01:13:25.271Z",
+    "own": "2026-11-08T01:03:39.000Z",
+    "why": "@rotowirenba.bsky.social: Isaiah Jackson: Ruled out for Sunday \n\n https://www.ro"
+   }
+  },
+  "401909943|brandoningram|out": {
+   "game": "401909943",
+   "start": "2026-11-08T02:00Z",
+   "team": "21",
+   "name": "Brandon Ingram",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-08T01:13:25.271Z",
+    "own": "2026-11-08T01:11:34.000Z",
+    "why": "@rotowirenba.bsky.social: Brandon Ingram: Remains out Sunday \n\n https://www.roto"
+   }
+  },
+  "401909944|isaiahjackson|out": {
+   "game": "401909944",
+   "start": "2026-11-08T03:00Z",
+   "team": "22",
+   "name": "Isaiah Jackson",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-08T01:13:25.271Z",
+    "own": "2026-11-08T01:03:39.000Z",
+    "why": "@rotowirenba.bsky.social: Isaiah Jackson: Ruled out for Sunday \n\n https://www.ro"
+   }
+  },
+  "401909944|brandoningram|out": {
+   "game": "401909944",
+   "start": "2026-11-08T03:00Z",
+   "team": "22",
+   "name": "Brandon Ingram",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-08T01:13:25.271Z",
+    "own": "2026-11-08T01:11:34.000Z",
+    "why": "@rotowirenba.bsky.social: Brandon Ingram: Remains out Sunday \n\n https://www.roto"
+   }
+  },
+  "401909945|isaiahjackson|out": {
+   "game": "401909945",
+   "start": "2026-11-08T20:30Z",
+   "team": "4",
+   "name": "Isaiah Jackson",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-08T01:13:25.271Z",
+    "own": "2026-11-08T01:03:39.000Z",
+    "why": "@rotowirenba.bsky.social: Isaiah Jackson: Ruled out for Sunday \n\n https://www.ro"
+   }
+  },
+  "401909945|brandoningram|out": {
+   "game": "401909945",
+   "start": "2026-11-08T20:30Z",
+   "team": "4",
+   "name": "Brandon Ingram",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-08T01:13:25.271Z",
+    "own": "2026-11-08T01:11:34.000Z",
+    "why": "@rotowirenba.bsky.social: Brandon Ingram: Remains out Sunday \n\n https://www.roto"
+   }
+  },
+  "401909946|isaiahjackson|out": {
+   "game": "401909946",
+   "start": "2026-11-08T23:00Z",
+   "team": "8",
+   "name": "Isaiah Jackson",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-08T01:13:25.271Z",
+    "own": "2026-11-08T01:03:39.000Z",
+    "why": "@rotowirenba.bsky.social: Isaiah Jackson: Ruled out for Sunday \n\n https://www.ro"
+   }
+  },
+  "401909946|brandoningram|out": {
+   "game": "401909946",
+   "start": "2026-11-08T23:00Z",
+   "team": "8",
+   "name": "Brandon Ingram",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-08T01:13:25.271Z",
+    "own": "2026-11-08T01:11:34.000Z",
+    "why": "@rotowirenba.bsky.social: Brandon Ingram: Remains out Sunday \n\n https://www.roto"
+   }
+  },
+  "401909947|isaiahjackson|out": {
+   "game": "401909947",
+   "start": "2026-11-09T00:00Z",
+   "team": "16",
+   "name": "Isaiah Jackson",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-08T01:13:25.271Z",
+    "own": "2026-11-08T01:03:39.000Z",
+    "why": "@rotowirenba.bsky.social: Isaiah Jackson: Ruled out for Sunday \n\n https://www.ro"
+   }
+  },
+  "401909947|brandoningram|out": {
+   "game": "401909947",
+   "start": "2026-11-09T00:00Z",
+   "team": "16",
+   "name": "Brandon Ingram",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-08T01:13:25.271Z",
+    "own": "2026-11-08T01:11:34.000Z",
+    "why": "@rotowirenba.bsky.social: Brandon Ingram: Remains out Sunday \n\n https://www.roto"
+   }
+  },
+  "401909949|isaiahjackson|out": {
+   "game": "401909949",
+   "start": "2026-11-09T01:00Z",
+   "team": "15",
+   "name": "Isaiah Jackson",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-08T01:13:25.271Z",
+    "own": "2026-11-08T01:03:39.000Z",
+    "why": "@rotowirenba.bsky.social: Isaiah Jackson: Ruled out for Sunday \n\n https://www.ro"
+   }
+  },
+  "401909949|brandoningram|out": {
+   "game": "401909949",
+   "start": "2026-11-09T01:00Z",
+   "team": "15",
+   "name": "Brandon Ingram",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-08T01:13:25.271Z",
+    "own": "2026-11-08T01:11:34.000Z",
+    "why": "@rotowirenba.bsky.social: Brandon Ingram: Remains out Sunday \n\n https://www.roto"
+   }
+  },
+  "401909950|isaiahjackson|out": {
+   "game": "401909950",
+   "start": "2026-11-09T02:00Z",
+   "team": "12",
+   "name": "Isaiah Jackson",
+   "status": "out",
+   "athlete": "4432170",
+   "espn": {
+    "seen": "2026-11-08T01:22:27.659Z",
+    "own": "2026-11-08T01:03:00.000Z"
+   },
+   "bluesky": {
+    "seen": "2026-11-08T01:13:25.271Z",
+    "own": "2026-11-08T01:03:39.000Z",
+    "why": "@rotowirenba.bsky.social: Isaiah Jackson: Ruled out for Sunday \n\n https://www.ro"
+   }
+  },
+  "401909951|isaiahjackson|out": {
+   "game": "401909951",
+   "start": "2026-11-09T02:00Z",
+   "team": "23",
+   "name": "Isaiah Jackson",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-08T01:13:25.271Z",
+    "own": "2026-11-08T01:03:39.000Z",
+    "why": "@rotowirenba.bsky.social: Isaiah Jackson: Ruled out for Sunday \n\n https://www.ro"
+   }
+  },
+  "401909951|brandoningram|out": {
+   "game": "401909951",
+   "start": "2026-11-09T02:00Z",
+   "team": "23",
+   "name": "Brandon Ingram",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-08T01:13:25.271Z",
+    "own": "2026-11-08T01:11:34.000Z",
+    "why": "@rotowirenba.bsky.social: Brandon Ingram: Remains out Sunday \n\n https://www.roto"
    }
   }
  }
