@@ -3,9 +3,9 @@
  "cursor": {
   "johnston-bot.bsky.social": "2026-11-08T01:26:11.710Z",
   "notfriedgehnic.bsky.social": "2026-11-08T19:18:40.624Z",
-  "dailyfaceoff.bsky.social": "2026-11-08T21:26:55.000Z",
-  "dfotoronto.bsky.social": "2026-11-08T21:57:49.000Z",
-  "marklazerus.bsky.social": "2026-11-08T20:10:55.303Z"
+  "dailyfaceoff.bsky.social": "2026-11-08T22:38:02.000Z",
+  "dfotoronto.bsky.social": "2026-11-08T22:20:03.000Z",
+  "marklazerus.bsky.social": "2026-11-08T22:38:12.103Z"
  },
  "claims": [
   {
@@ -1970,6 +1970,58 @@
    "kind": "status",
    "confidence": 0.95,
    "text": "Flames’ Kevin Bahl to miss rest of 2026-27 with ruptured Achilles tendon"
+  },
+  {
+   "id": "at://did:plc:knaj2vcp4x6t7hr7ewd6e3uz/app.bsky.feed.post/3mztgzn52nj2p|morganrielly|out|status",
+   "at": "2026-11-08T22:20:03.000Z",
+   "seen": "2026-11-08T22:39:47.617Z",
+   "handle": "dfotoronto.bsky.social",
+   "post": "at://did:plc:knaj2vcp4x6t7hr7ewd6e3uz/app.bsky.feed.post/3mztgzn52nj2p",
+   "player": "Morgan Rielly",
+   "team": "TOR",
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.95,
+   "text": "Maple Leafs lineup news: Morgan Rielly, Chris Tanev ruled out vs. Devils, Cole McWard paired with Dakota Mermis"
+  },
+  {
+   "id": "at://did:plc:knaj2vcp4x6t7hr7ewd6e3uz/app.bsky.feed.post/3mztgzn52nj2p|christanev|out|status",
+   "at": "2026-11-08T22:20:03.000Z",
+   "seen": "2026-11-08T22:39:47.617Z",
+   "handle": "dfotoronto.bsky.social",
+   "post": "at://did:plc:knaj2vcp4x6t7hr7ewd6e3uz/app.bsky.feed.post/3mztgzn52nj2p",
+   "player": "Chris Tanev",
+   "team": "TOR",
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.95,
+   "text": "Maple Leafs lineup news: Morgan Rielly, Chris Tanev ruled out vs. Devils, Cole McWard paired with Dakota Mermis"
+  },
+  {
+   "id": "at://did:plc:knaj2vcp4x6t7hr7ewd6e3uz/app.bsky.feed.post/3mztgzn52nj2p|colemcward|none|role",
+   "at": "2026-11-08T22:20:03.000Z",
+   "seen": "2026-11-08T22:39:47.617Z",
+   "handle": "dfotoronto.bsky.social",
+   "post": "at://did:plc:knaj2vcp4x6t7hr7ewd6e3uz/app.bsky.feed.post/3mztgzn52nj2p",
+   "player": "Cole McWard",
+   "team": "TOR",
+   "status": "none",
+   "kind": "role",
+   "confidence": 0.8,
+   "text": "Maple Leafs lineup news: Morgan Rielly, Chris Tanev ruled out vs. Devils, Cole McWard paired with Dakota Mermis"
+  },
+  {
+   "id": "at://did:plc:knaj2vcp4x6t7hr7ewd6e3uz/app.bsky.feed.post/3mztgzn52nj2p|dakotamermis|none|role",
+   "at": "2026-11-08T22:20:03.000Z",
+   "seen": "2026-11-08T22:39:47.617Z",
+   "handle": "dfotoronto.bsky.social",
+   "post": "at://did:plc:knaj2vcp4x6t7hr7ewd6e3uz/app.bsky.feed.post/3mztgzn52nj2p",
+   "player": "Dakota Mermis",
+   "team": "TOR",
+   "status": "none",
+   "kind": "role",
+   "confidence": 0.8,
+   "text": "Maple Leafs lineup news: Morgan Rielly, Chris Tanev ruled out vs. Devils, Cole McWard paired with Dakota Mermis"
   }
  ]
 }

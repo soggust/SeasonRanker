@@ -1,13 +1,13 @@
 {
  "sport": "nfl",
  "cursor": {
-  "adamscheftermirror.bsky.social": "2026-11-08T22:10:03.043Z",
+  "adamscheftermirror.bsky.social": "2026-11-08T22:25:09.813Z",
   "rapsheet.bsky.social": "2026-11-08T20:02:23.434Z",
   "nflnewsreposterbot.bsky.social": "2026-11-06T17:28:39.017Z",
-  "insidenflnews.bsky.social": "2026-11-08T21:53:58.270Z",
-  "nflnewsposter.bsky.social": "2026-11-08T22:11:39.960Z",
-  "rotoworld-fb.bsky.social": "2026-11-08T22:07:45.000Z",
-  "rotowirenfl.bsky.social": "2026-11-08T22:12:14.000Z"
+  "insidenflnews.bsky.social": "2026-11-08T22:26:15.121Z",
+  "nflnewsposter.bsky.social": "2026-11-08T22:37:44.045Z",
+  "rotoworld-fb.bsky.social": "2026-11-08T22:34:22.000Z",
+  "rotowirenfl.bsky.social": "2026-11-08T22:38:46.000Z"
  },
  "claims": [
   {
@@ -18599,6 +18599,32 @@
    "kind": "status",
    "confidence": 0.9,
    "text": "[Cardinals] DL Roy Lopez (toe) is questionable to return. twitter.com/AZCardinals/..."
+  },
+  {
+   "id": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3mztgzoliy32k|terranceferguson|none|status",
+   "at": "2026-11-08T22:20:04.000Z",
+   "seen": "2026-11-08T22:39:47.617Z",
+   "handle": "rotowirenfl.bsky.social",
+   "post": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3mztgzoliy32k",
+   "player": "Terrance Ferguson",
+   "team": null,
+   "status": "none",
+   "kind": "status",
+   "confidence": 0.5,
+   "text": "Terrance Ferguson: Suffers hamstring injury \n\n https://www.rotowire.com/football/player/terrance-ferguson-18497"
+  },
+  {
+   "id": "at://did:plc:mbr4badgf6yu56mquzackzew/app.bsky.feed.post/3mzthepkt622w|pukanacua|none|status",
+   "at": "2026-11-08T22:26:15.121Z",
+   "seen": "2026-11-08T22:39:47.617Z",
+   "handle": "insidenflnews.bsky.social",
+   "post": "at://did:plc:mbr4badgf6yu56mquzackzew/app.bsky.feed.post/3mzthepkt622w",
+   "player": "Puka Nacua",
+   "team": "LAR",
+   "status": "none",
+   "kind": "status",
+   "confidence": 0.5,
+   "text": "‼️ Garafolo: Puka Nacua will undergo MRI for knee injury.\n\nRams currently don't believe he suffered a torn ACL."
   }
  ]
 }
