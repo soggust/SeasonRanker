@@ -19581,6 +19581,78 @@
     "own": "2026-11-08T01:30:40.000Z",
     "why": "@rotowirenba.bsky.social: Keegan Murray: Questionable for Sunday \n\n https://www."
    }
+  },
+  "401909945|deandreayton|out": {
+   "game": "401909945",
+   "start": "2026-11-08T20:30Z",
+   "team": "4",
+   "name": "Deandre Ayton",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-08T03:12:30.150Z",
+    "own": "2026-11-08T02:47:18.000Z",
+    "why": "@rotowirenba.bsky.social: Deandre Ayton: Won't return Saturday \n\n https://www.ro"
+   }
+  },
+  "401909946|deandreayton|out": {
+   "game": "401909946",
+   "start": "2026-11-08T23:00Z",
+   "team": "8",
+   "name": "Deandre Ayton",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-08T03:12:30.150Z",
+    "own": "2026-11-08T02:47:18.000Z",
+    "why": "@rotowirenba.bsky.social: Deandre Ayton: Won't return Saturday \n\n https://www.ro"
+   }
+  },
+  "401909947|deandreayton|out": {
+   "game": "401909947",
+   "start": "2026-11-09T00:00Z",
+   "team": "16",
+   "name": "Deandre Ayton",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-08T03:12:30.150Z",
+    "own": "2026-11-08T02:47:18.000Z",
+    "why": "@rotowirenba.bsky.social: Deandre Ayton: Won't return Saturday \n\n https://www.ro"
+   }
+  },
+  "401909949|deandreayton|out": {
+   "game": "401909949",
+   "start": "2026-11-09T01:00Z",
+   "team": "15",
+   "name": "Deandre Ayton",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-08T03:12:30.150Z",
+    "own": "2026-11-08T02:47:18.000Z",
+    "why": "@rotowirenba.bsky.social: Deandre Ayton: Won't return Saturday \n\n https://www.ro"
+   }
+  },
+  "401909950|deandreayton|out": {
+   "game": "401909950",
+   "start": "2026-11-09T02:00Z",
+   "team": "12",
+   "name": "Deandre Ayton",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-08T03:12:30.150Z",
+    "own": "2026-11-08T02:47:18.000Z",
+    "why": "@rotowirenba.bsky.social: Deandre Ayton: Won't return Saturday \n\n https://www.ro"
+   }
+  },
+  "401909951|deandreayton|out": {
+   "game": "401909951",
+   "start": "2026-11-09T02:00Z",
+   "team": "23",
+   "name": "Deandre Ayton",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-08T03:12:30.150Z",
+    "own": "2026-11-08T02:47:18.000Z",
+    "why": "@rotowirenba.bsky.social: Deandre Ayton: Won't return Saturday \n\n https://www.ro"
+   }
   }
  }
 }
