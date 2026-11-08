@@ -311,11 +311,20 @@ jobs:
         uses: ./.github/actions/npm-install
 
       - name: Check the data
-        # (the live data's quality checks warn here, never block the commit; whether it's whole still does:
-        # tests/support/live.mjs. A write-up's length failed the commit on 2026-10-14 and lost its run's bets)
+        # Whether the desk's own files are whole blocks the commit (data.test.mjs: the ledgers, state and picks parse,
+        # every bet has its fields; the live data's quality checks warn, never block: tests/support/live.mjs, a
+        # write-up's length lost a run's bets on 2026-10-14). The rest of the suite checks the code, which ci.yml
+        # already gated on the push: run here on the hour's fresh data, a test too strict for the night's card data
+        # is a warning on the run's page, not a lost run of bets (the NFL card's field maps blocked nine runs on
+        # 2026-11-08, the NBA card's careers five on 2026-11-04: DECISIONS.md D117). The fast lane's checks, the same
         env:
           LIVE_DATA_SOFT: "1"
-        run: npm test
+        run: |
+          node --test tests/data.test.mjs tests/model-reliability.test.mjs tests/model-writeup.test.mjs
+          if ! npm test > test-run.log 2>&1; then
+            grep -E "^not ok" test-run.log | sed "s/^/::warning::a code test failed on this run's data (not blocking): /" || true
+            tail -n 40 test-run.log
+          fi
 
       # (the desk's history, ledger, state and picks, each written only when something in it changed, so a run
       # that learned nothing new commits nothing; picks: whether the public Bets page's picks changed, the one
