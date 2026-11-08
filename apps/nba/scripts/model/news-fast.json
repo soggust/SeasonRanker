@@ -1,7 +1,7 @@
 {
  "sport": "nba",
  "cursor": {
-  "rotowirenba.bsky.social": "2026-11-08T03:30:20.000Z",
+  "rotowirenba.bsky.social": "2026-11-08T04:04:00.000Z",
   "insidenbanews.bsky.social": "2026-11-07T05:11:20.386Z",
   "shamsbot.bsky.social": "2026-11-04T20:33:22.000Z"
  },
@@ -9339,6 +9339,19 @@
    "kind": "status",
    "confidence": 0.85,
    "text": "Deandre Ayton: Won't return Saturday \n\n https://www.rotowire.com/basketball/player/deandre-ayton-4372"
+  },
+  {
+   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mzrjrqt2nu2h|mikelbrown|out|status",
+   "at": "2026-11-08T04:04:00.000Z",
+   "seen": "2026-11-08T04:07:00.307Z",
+   "handle": "rotowirenba.bsky.social",
+   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mzrjrqt2nu2h",
+   "player": "Mikel Brown",
+   "team": null,
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.8,
+   "text": "Mikel Brown: Scores 18 points Saturday, won't play Sunday \n\n https://www.rotowire.com/basketball/player/mikel-brown-6929"
   }
  ]
 }
