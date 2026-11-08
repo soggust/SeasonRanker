@@ -1,5 +1,5 @@
 {
- "at": "2026-11-08T04:14:50.094Z",
+ "at": "2026-11-08T07:22:01.160Z",
  "baseline": {
   "from": "2026-10-04",
   "to": "2026-11-01"
@@ -253,7 +253,7 @@
   },
   {
    "examples": [],
-   "headline": "Model files 207h old, 0 open bets overdue to grade; Odds API credits 732% left; 0 bets placed in a week of 0 games",
+   "headline": "Model files 1h old, 0 open bets overdue to grade; Odds API credits 732% left; 0 bets placed in a week of 0 games",
    "how": "the newest commit of the sport's model files, the open bets started 12 hours ago or more, The Odds API's credits (state.odds), the state's sources",
    "id": "C16",
    "metric": "ageH",
@@ -261,8 +261,8 @@
    "needs": null,
    "rows": [
     {
-     "ageH": 207,
-     "at": "2026-10-30T12:19:04Z",
+     "ageH": 1,
+     "at": "2026-11-08T00:06:23-06:00",
      "key": "files",
      "overdue": 0
     },
@@ -270,8 +270,8 @@
      "cycleEnd": "2026-12-01T00:02:39.102Z",
      "key": "credits",
      "monthly": 20000,
-     "remaining": 146483,
-     "share": 7.3242
+     "remaining": 146456,
+     "share": 7.3228
     },
     {
      "down": [],
@@ -287,7 +287,7 @@
    "tested": null,
    "threshold": "watch files 3h old with bets overdue, credits under 20%, a source down, or no bets in a week with games; flag 6h old with bets overdue, or credits under 10%",
    "title": "Ops",
-   "value": 207
+   "value": 1
   },
   {
    "examples": [],
@@ -663,7 +663,7 @@
   },
   {
    "examples": [],
-   "headline": "No term, param or trust dropped; 13 changelog entries this week",
+   "headline": "No term, param or trust dropped; 19 changelog entries this week",
    "how": "the day's last state.json for 35 days (git), the week's start against now; the changelog's entries this week verbatim",
    "id": "C9",
    "metric": "changes",
@@ -671,122 +671,122 @@
    "needs": null,
    "rows": [
     {
-     "at": "2026-11-03T06:19:31.328Z",
-     "from": 0,
+     "at": "2026-11-05T00:04:53.956Z",
+     "from": -0.0306,
      "key": "log:0",
-     "label": "live calibration: outs|over|>2.5",
+     "label": "live calibration: hits|under|1.5",
      "status": "info",
-     "to": -0.03,
+     "to": -0.0006,
      "what": "changelog",
-     "why": "2 graded rows of its own (own shift 0), the rest pooled from its line class, at most 0.03 a rung a run"
+     "why": "4 graded rows of its own (own shift 0), the rest pooled from its line class, at most 0.03 a rung a run"
     },
     {
-     "at": "2026-11-04T00:07:57.733Z",
-     "from": -0.03,
+     "at": "2026-11-05T00:04:53.956Z",
+     "from": -0.0306,
      "key": "log:1",
-     "label": "live calibration: k|over|>2.5",
+     "label": "live calibration: tb|over|1.5",
      "status": "info",
-     "to": -0.06,
+     "to": -0.0006,
      "what": "changelog",
-     "why": "2 graded rows of its own (own shift 0), the rest pooled from its line class, at most 0.03 a rung a run"
+     "why": "8 graded rows of its own (own shift 0), the rest pooled from its line class, at most 0.03 a rung a run"
     },
     {
-     "at": "2026-11-04T00:07:57.733Z",
-     "from": -0.03,
+     "at": "2026-11-05T00:04:53.956Z",
+     "from": -0.0306,
      "key": "log:2",
-     "label": "live calibration: outs|over|>2.5",
+     "label": "live calibration: tb|under|1.5",
      "status": "info",
-     "to": -0.06,
+     "to": -0.0006,
      "what": "changelog",
-     "why": "2 graded rows of its own (own shift 0), the rest pooled from its line class, at most 0.03 a rung a run"
+     "why": "23 graded rows of its own (own shift 0), the rest pooled from its line class, at most 0.03 a rung a run"
     },
     {
-     "at": "2026-11-04T05:42:53.547Z",
-     "from": -0.0567,
+     "at": "2026-11-05T06:33:37.995Z",
+     "from": -0.0006,
      "key": "log:3",
      "label": "live calibration: hits|under|1.5",
      "status": "info",
-     "to": -0.0306,
+     "to": -0.0507,
      "what": "changelog",
      "why": "4 graded rows of its own (own shift 0), the rest pooled from its line class, at most 0.03 a rung a run"
     },
     {
-     "at": "2026-11-04T05:42:53.547Z",
-     "from": -0.0567,
+     "at": "2026-11-05T06:33:37.995Z",
+     "from": -0.0006,
      "key": "log:4",
      "label": "live calibration: tb|over|1.5",
      "status": "info",
-     "to": -0.0306,
+     "to": -0.0507,
      "what": "changelog",
      "why": "8 graded rows of its own (own shift 0), the rest pooled from its line class, at most 0.03 a rung a run"
     },
     {
-     "at": "2026-11-04T05:42:53.547Z",
-     "from": -0.0567,
+     "at": "2026-11-05T06:33:37.995Z",
+     "from": -0.0006,
      "key": "log:5",
      "label": "live calibration: tb|under|1.5",
      "status": "info",
-     "to": -0.0306,
+     "to": -0.0507,
      "what": "changelog",
      "why": "23 graded rows of its own (own shift 0), the rest pooled from its line class, at most 0.03 a rung a run"
     },
     {
-     "at": "2026-11-05T00:04:53.956Z",
-     "from": -0.0306,
+     "at": "2026-11-08T03:45:15.723Z",
+     "from": -0.0496,
      "key": "log:6",
      "label": "live calibration: hits|under|1.5",
      "status": "info",
-     "to": -0.0006,
+     "to": -0.0235,
      "what": "changelog",
      "why": "4 graded rows of its own (own shift 0), the rest pooled from its line class, at most 0.03 a rung a run"
     },
     {
-     "at": "2026-11-05T00:04:53.956Z",
-     "from": -0.0306,
+     "at": "2026-11-08T03:45:15.723Z",
+     "from": -0.0496,
      "key": "log:7",
      "label": "live calibration: tb|over|1.5",
      "status": "info",
-     "to": -0.0006,
+     "to": -0.0235,
      "what": "changelog",
      "why": "8 graded rows of its own (own shift 0), the rest pooled from its line class, at most 0.03 a rung a run"
     },
     {
-     "at": "2026-11-05T00:04:53.956Z",
-     "from": -0.0306,
+     "at": "2026-11-08T03:45:15.723Z",
+     "from": -0.0496,
      "key": "log:8",
      "label": "live calibration: tb|under|1.5",
      "status": "info",
-     "to": -0.0006,
+     "to": -0.0235,
      "what": "changelog",
      "why": "23 graded rows of its own (own shift 0), the rest pooled from its line class, at most 0.03 a rung a run"
     },
     {
-     "at": "2026-11-05T06:33:37.995Z",
-     "from": -0.0006,
+     "at": "2026-11-08T06:28:38.623Z",
+     "from": -0.0235,
      "key": "log:9",
      "label": "live calibration: hits|under|1.5",
      "status": "info",
-     "to": -0.0507,
+     "to": -0.051,
      "what": "changelog",
      "why": "4 graded rows of its own (own shift 0), the rest pooled from its line class, at most 0.03 a rung a run"
     },
     {
-     "at": "2026-11-05T06:33:37.995Z",
-     "from": -0.0006,
+     "at": "2026-11-08T06:28:38.623Z",
+     "from": -0.0235,
      "key": "log:10",
      "label": "live calibration: tb|over|1.5",
      "status": "info",
-     "to": -0.0507,
+     "to": -0.051,
      "what": "changelog",
      "why": "8 graded rows of its own (own shift 0), the rest pooled from its line class, at most 0.03 a rung a run"
     },
     {
-     "at": "2026-11-05T06:33:37.995Z",
-     "from": -0.0006,
+     "at": "2026-11-08T06:28:38.623Z",
+     "from": -0.0235,
      "key": "log:11",
      "label": "live calibration: tb|under|1.5",
      "status": "info",
-     "to": -0.0507,
+     "to": -0.051,
      "what": "changelog",
      "why": "23 graded rows of its own (own shift 0), the rest pooled from its line class, at most 0.03 a rung a run"
     }
@@ -807,10 +807,10 @@
    "needs": null,
    "rows": [
     {
-     "beat": 0.7333,
+     "beat": 0.0333,
      "clvN": 30,
-     "clvProb": 0.003,
-     "clvSe": 0.002,
+     "clvProb": -0.03,
+     "clvSe": 0.0025,
      "e": 14.4262,
      "key": "bets props: moved against",
      "n": 30,
@@ -821,10 +821,10 @@
      "z": 0.2137
     },
     {
-     "beat": 0.5294,
+     "beat": 0.0153,
      "clvN": 196,
-     "clvProb": 0.0005,
-     "clvSe": 0.001,
+     "clvProb": -0.0361,
+     "clvSe": 0.0011,
      "e": 103.3395,
      "key": "bets props: unmoved",
      "n": 198,
@@ -835,10 +835,10 @@
      "z": -0.771
     },
     {
-     "beat": 0.5595,
+     "beat": 0.0066,
      "clvN": 151,
-     "clvProb": 0.0006,
-     "clvSe": 0.0009,
+     "clvProb": -0.0366,
+     "clvSe": 0.0011,
      "e": 80.5447,
      "key": "bets props: unmoved, its price too",
      "n": 151,
@@ -849,10 +849,10 @@
      "z": -0.0901
     },
     {
-     "beat": 0.7778,
+     "beat": 0.0667,
      "clvN": 15,
-     "clvProb": 0.0073,
-     "clvSe": 0.0033,
+     "clvProb": -0.028,
+     "clvSe": 0.0041,
      "e": 7.2248,
      "key": "bets props: moved with",
      "n": 15,
@@ -863,10 +863,10 @@
      "z": 0.4195
     },
     {
-     "beat": 1,
+     "beat": 0.3333,
      "clvN": 3,
-     "clvProb": 0.0299,
-     "clvSe": 0.0032,
+     "clvProb": -0.0037,
+     "clvSe": 0.009,
      "e": 1.3479,
      "key": "bets props: moved with, past the limit",
      "n": 3,
@@ -877,10 +877,10 @@
      "z": 0.7714
     },
     {
-     "beat": 0.1818,
-     "clvN": 12,
-     "clvProb": -0.0034,
-     "clvSe": 0.003,
+     "beat": 0.0833,
+     "clvN": 13,
+     "clvProb": -0.0195,
+     "clvSe": 0.0033,
      "e": 6.5326,
      "key": "bets games: moved against",
      "n": 14,
@@ -891,10 +891,10 @@
      "z": -0.2868
     },
     {
-     "beat": 0.8667,
-     "clvN": 18,
-     "clvProb": 0.0068,
-     "clvSe": 0.0024,
+     "beat": 0.0625,
+     "clvN": 16,
+     "clvProb": -0.0171,
+     "clvSe": 0.003,
      "e": 10.7897,
      "key": "bets games: unmoved",
      "n": 22,
@@ -907,8 +907,8 @@
     {
      "beat": 0,
      "clvN": 5,
-     "clvProb": -0.0039,
-     "clvSe": 0.002,
+     "clvProb": -0.0191,
+     "clvSe": 0.0038,
      "e": 1.6988,
      "key": "bets games: moved with",
      "n": 5,
@@ -919,10 +919,10 @@
      "z": 0.9527
     },
     {
-     "beat": 0.5543,
+     "beat": 0.0118,
      "clvN": 169,
-     "clvProb": 0.0008,
-     "clvSe": 0.0008,
+     "clvProb": -0.0358,
+     "clvSe": 0.001,
      "e": 88.8189,
      "key": "bets props: placed 0-3h before",
      "n": 169,
@@ -933,10 +933,10 @@
      "z": 0.0284
     },
     {
-     "beat": 0.5625,
+     "beat": 0,
      "clvN": 52,
-     "clvProb": 0.0005,
-     "clvSe": 0.0012,
+     "clvProb": -0.0342,
+     "clvSe": 0.0017,
      "e": 25.6087,
      "key": "bets props: placed 3-6h before",
      "n": 52,
@@ -947,10 +947,10 @@
      "z": -0.7369
     },
     {
-     "beat": 1,
+     "beat": 0,
      "clvN": 3,
-     "clvProb": 0.0199,
-     "clvSe": 0.0077,
+     "clvProb": -0.0208,
+     "clvSe": 0.0081,
      "e": 1.6582,
      "key": "bets props: placed 12-24h before",
      "n": 3,
@@ -961,10 +961,10 @@
      "z": 1.5663
     },
     {
-     "beat": 0.5625,
+     "beat": 0.1765,
      "clvN": 17,
-     "clvProb": 0.0049,
-     "clvSe": 0.0077,
+     "clvProb": -0.0295,
+     "clvSe": 0.0081,
      "e": 8.9047,
      "key": "bets props: placed 24h or more before",
      "n": 19,
@@ -981,10 +981,10 @@
      "recordZ": -0.545
     },
     {
-     "beat": 0.5,
-     "clvN": 24,
-     "clvProb": 0.0017,
-     "clvSe": 0.0024,
+     "beat": 0.0476,
+     "clvN": 22,
+     "clvProb": -0.0186,
+     "clvSe": 0.0023,
      "e": 11.2532,
      "key": "bets games: placed 0-3h before",
      "n": 25,
@@ -995,10 +995,10 @@
      "z": 0.2738
     },
     {
-     "beat": 0.625,
-     "clvN": 8,
-     "clvProb": 0.0042,
-     "clvSe": 0.0031,
+     "beat": 0.1429,
+     "clvN": 7,
+     "clvProb": -0.0122,
+     "clvSe": 0.0044,
      "e": 4.5481,
      "key": "bets games: placed 3-6h before",
      "n": 10,
@@ -1009,10 +1009,10 @@
      "z": 0.2879
     },
     {
-     "beat": null,
-     "clvN": 0,
-     "clvProb": null,
-     "clvSe": null,
+     "beat": 0,
+     "clvN": 2,
+     "clvProb": -0.0279,
+     "clvSe": 0.0029,
      "e": 1.6278,
      "key": "bets games: placed 6-12h before",
      "n": 3,
@@ -1023,10 +1023,10 @@
      "z": -1.8977
     },
     {
-     "beat": 0.3333,
+     "beat": 0,
      "clvN": 3,
-     "clvProb": -0.0041,
-     "clvSe": 0.0036,
+     "clvProb": -0.0242,
+     "clvSe": 0.0082,
      "e": 1.592,
      "key": "bets games: placed 24h or more before",
      "n": 3,
@@ -1077,7 +1077,7 @@
   },
   {
    "examples": [],
-   "headline": "5 of 7 spots shifted: hits|under|1.5 -0.050 (n 4, pooled only (its own rung: too few rows (200 needed))), k|over|>2.5 -0.059 (n 2, pooled only (its own rung: too few rows (200 needed))), outs|over|>2.5 -0.059 (n 2, pooled only (its own rung: too few rows (200 needed))), tb|over|1.5 -0.050 (n 8, pooled only (its own rung: too few rows (200 needed))), tb|under|1.5 -0.050 (n 23, pooled only (its own rung: too few rows (200 needed)))",
+   "headline": "5 of 7 spots shifted: hits|under|1.5 -0.051 (n 4, pooled only (its own rung: too few rows (200 needed))), k|over|>2.5 -0.055 (n 2, pooled only (its own rung: too few rows (200 needed))), outs|over|>2.5 -0.055 (n 2, pooled only (its own rung: too few rows (200 needed))), tb|over|1.5 -0.051 (n 8, pooled only (its own rung: too few rows (200 needed))), tb|under|1.5 -0.051 (n 23, pooled only (its own rung: too few rows (200 needed)))",
    "how": "state.calib as the last run left it (calib.mjs fitCalib: every graded prop since MODEL_EPOCH, the tracked rows among them, by its raw model chance), each spot's shift, target and held-out gain; the week's graded props of each spot, the sum of their raw chances (said), of the chances as shifted (shifted) and their wins. Never more than the desk applies: it says where the model's been running hot or cold",
    "id": "C21",
    "metric": "spots shifted",
@@ -1116,7 +1116,7 @@
      "key": "tb|under|1.5",
      "n": 23,
      "said": null,
-     "shift": -0.0496,
+     "shift": -0.051,
      "shifted": null,
      "target": 0,
      "week": 0,
@@ -1129,7 +1129,7 @@
      "key": "tb|over|1.5",
      "n": 8,
      "said": null,
-     "shift": -0.0496,
+     "shift": -0.051,
      "shifted": null,
      "target": 0,
      "week": 0,
@@ -1142,7 +1142,7 @@
      "key": "hits|under|1.5",
      "n": 4,
      "said": null,
-     "shift": -0.0496,
+     "shift": -0.051,
      "shifted": null,
      "target": 0,
      "week": 0,
@@ -1155,7 +1155,7 @@
      "key": "k|over|>2.5",
      "n": 2,
      "said": null,
-     "shift": -0.0591,
+     "shift": -0.0553,
      "shifted": null,
      "target": 0,
      "week": 0,
@@ -1168,7 +1168,7 @@
      "key": "outs|over|>2.5",
      "n": 2,
      "said": null,
-     "shift": -0.0591,
+     "shift": -0.0553,
      "shifted": null,
      "target": 0,
      "week": 0,

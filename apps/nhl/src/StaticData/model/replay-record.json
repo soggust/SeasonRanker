@@ -2,7 +2,7 @@
  "v": 1,
  "sport": "nhl",
  "epoch": "2026-10-26T15:00:00Z",
- "at": "2026-11-08T04:04:06.125Z",
+ "at": "2026-11-08T07:13:26.009Z",
  "from": "2021-01-27T00:00:00.000Z",
  "through": "2026-10-14T01:55:00.000Z",
  "n": {
@@ -17,13 +17,13 @@
   "won": 1860,
   "lost": 2192,
   "push": 11,
-  "staked": 2705.5,
-  "profit": -54.1,
-  "roi": -0.02,
+  "staked": 2563.5,
+  "profit": -73.71,
+  "roi": -0.0288,
   "beat": 0.531,
   "beatN": 678,
   "clv": 0.0039,
-  "fairProfit": 57.3175,
+  "fairProfit": 27.5194,
   "toward": 272,
   "against": 416,
   "mvN": 717
@@ -46,16 +46,16 @@
  },
  "pass": {
   "bets": 147109,
-  "won": 75908,
-  "lost": 70945,
+  "won": 75911,
+  "lost": 70942,
   "push": 256,
   "staked": 147109,
-  "profit": -6379.06,
-  "roi": -0.0434,
+  "profit": -6373.42,
+  "roi": -0.0433,
   "beat": null,
   "beatN": 0,
   "clv": null,
-  "fairProfit": 1945.1687,
+  "fairProfit": 1951.1712,
   "toward": 0,
   "against": 0,
   "mvN": 0
@@ -78,33 +78,33 @@
    "mvN": 0
   },
   "high": {
-   "bets": 289,
-   "won": 146,
-   "lost": 143,
+   "bets": 218,
+   "won": 105,
+   "lost": 113,
    "push": 0,
-   "staked": 722.5,
-   "profit": -7.71,
-   "roi": -0.0107,
+   "staked": 545,
+   "profit": -32.29,
+   "roi": -0.0592,
    "beat": null,
    "beatN": 0,
    "clv": null,
-   "fairProfit": 37.208,
+   "fairProfit": -0.04,
    "toward": 0,
    "against": 0,
    "mvN": 0
   },
   "medium": {
-   "bets": 3774,
-   "won": 1714,
-   "lost": 2049,
+   "bets": 3845,
+   "won": 1755,
+   "lost": 2079,
    "push": 11,
-   "staked": 1983,
-   "profit": -46.39,
-   "roi": -0.0234,
+   "staked": 2018.5,
+   "profit": -41.42,
+   "roi": -0.0205,
    "beat": 0.531,
    "beatN": 678,
    "clv": 0.0039,
-   "fairProfit": 20.1095,
+   "fairProfit": 27.5594,
    "toward": 272,
    "against": 416,
    "mvN": 717
@@ -132,13 +132,13 @@
    "won": 1216,
    "lost": 1377,
    "push": 0,
-   "staked": 1969,
-   "profit": -47.16,
-   "roi": -0.024,
+   "staked": 1827,
+   "profit": -66.77,
+   "roi": -0.0365,
    "beat": null,
    "beatN": 0,
    "clv": null,
-   "fairProfit": 70.7494,
+   "fairProfit": 40.9513,
    "toward": 0,
    "against": 0,
    "mvN": 0
@@ -416,13 +416,13 @@
    "won": 202,
    "lost": 236,
    "push": 0,
-   "staked": 287,
-   "profit": -26.09,
-   "roi": -0.0909,
+   "staked": 283,
+   "profit": -30.39,
+   "roi": -0.1074,
    "beat": 0.4286,
    "beatN": 21,
    "clv": -0.0053,
-   "fairProfit": -12.9095,
+   "fairProfit": -17.7292,
    "toward": 10,
    "against": 12,
    "mvN": 22,
@@ -463,13 +463,13 @@
     "won": 161,
     "lost": 182,
     "push": 0,
-    "staked": 239.5,
-    "profit": -23.86,
-    "roi": -0.0996,
+    "staked": 235.5,
+    "profit": -28.16,
+    "roi": -0.1196,
     "beat": null,
     "beatN": 0,
     "clv": null,
-    "fairProfit": -10.3741,
+    "fairProfit": -15.1938,
     "toward": 0,
     "against": 0,
     "mvN": 0
@@ -482,13 +482,13 @@
    "won": 479,
    "lost": 465,
    "push": 0,
-   "staked": 978,
-   "profit": 14.49,
-   "roi": 0.0148,
+   "staked": 840,
+   "profit": -0.82,
+   "roi": -0.001,
    "beat": 0.6842,
    "beatN": 38,
    "clv": 0.0223,
-   "fairProfit": 70.9926,
+   "fairProfit": 46.0142,
    "toward": 22,
    "against": 15,
    "mvN": 38,
@@ -529,13 +529,13 @@
     "won": 412,
     "lost": 408,
     "push": 0,
-    "staked": 916,
-    "profit": 1.43,
-    "roi": 0.0016,
+    "staked": 778,
+    "profit": -13.88,
+    "roi": -0.0178,
     "beat": null,
     "beatN": 0,
     "clv": null,
-    "fairProfit": 58.7828,
+    "fairProfit": 33.8044,
     "toward": 0,
     "against": 0,
     "mvN": 0
@@ -1079,13 +1079,13 @@
     "won": 288,
     "lost": 290,
     "push": 0,
-    "staked": 535,
-    "profit": 31.71,
-    "roi": 0.0593,
+    "staked": 393,
+    "profit": 12.1,
+    "roi": 0.0308,
     "beat": 0.5938,
     "beatN": 32,
     "clv": 0.0066,
-    "fairProfit": 62.5418,
+    "fairProfit": 32.7437,
     "toward": 16,
     "against": 16,
     "mvN": 32
@@ -1124,33 +1124,33 @@
      "mvN": 0
     },
     "high": {
-     "bets": 123,
-     "won": 67,
-     "lost": 56,
+     "bets": 52,
+     "won": 26,
+     "lost": 26,
      "push": 0,
-     "staked": 307.5,
-     "profit": 25.45,
-     "roi": 0.0828,
+     "staked": 130,
+     "profit": 0.87,
+     "roi": 0.0067,
      "beat": null,
      "beatN": 0,
      "clv": null,
-     "fairProfit": 46.2189,
+     "fairProfit": 8.9709,
      "toward": 0,
      "against": 0,
      "mvN": 0
     },
     "medium": {
-     "bets": 455,
-     "won": 221,
-     "lost": 234,
+     "bets": 526,
+     "won": 262,
+     "lost": 264,
      "push": 0,
-     "staked": 227.5,
-     "profit": 6.26,
-     "roi": 0.0275,
+     "staked": 263,
+     "profit": 11.23,
+     "roi": 0.0427,
      "beat": 0.5938,
      "beatN": 32,
      "clv": 0.0066,
-     "fairProfit": 16.3229,
+     "fairProfit": 23.7728,
      "toward": 16,
      "against": 16,
      "mvN": 32
@@ -1177,13 +1177,13 @@
     "won": 230,
     "lost": 235,
     "push": 0,
-    "staked": 478.5,
-    "profit": 22.63,
-    "roi": 0.0473,
+    "staked": 336.5,
+    "profit": 3.02,
+    "roi": 0.009,
     "beat": null,
     "beatN": 0,
     "clv": null,
-    "fairProfit": 53.9619,
+    "fairProfit": 24.1638,
     "toward": 0,
     "against": 0,
     "mvN": 0
@@ -1989,10 +1989,8 @@
   "bands": {
    "high": {
     "2024-11": "12,17,0,72.5,-18.09",
-    "2025-05": "2,0,0,5,5.38",
     "2025-06": "1,2,0,7.5,-2.83",
     "2025-10": "13,14,0,67.5,-2.87",
-    "2025-11": "39,30,0,172.5,19.2",
     "2025-12": "10,8,0,45,7.9"
    },
    "medium": {
@@ -2034,10 +2032,10 @@
     "2025-02": "13,11,0,12,2.22",
     "2025-03": "22,28,0,25,0.4",
     "2025-04": "18,27,0,22.5,-2.33",
-    "2025-05": "6,5,0,5.5,0.67",
+    "2025-05": "8,5,0,6.5,1.75",
     "2025-06": "2,4,0,3,-1.07",
     "2025-10": "46,50,0,48,-1.69",
-    "2025-11": "58,57,0,57.5,4.08",
+    "2025-11": "97,87,0,92,7.97",
     "2025-12": "33,29,0,31,2.78"
    }
   }
@@ -2795,8 +2793,8 @@
   },
   "tiers": {
    "lock": 0,
-   "high": 291,
-   "medium": 3772,
+   "high": 220,
+   "medium": 3843,
    "would": {
     "lock": 0,
     "high": 0,
@@ -2811,13 +2809,13 @@
     "love": {
      "share": 0.7,
      "kellyMax": null,
-     "z": 1.24,
-     "n": 650,
-     "roi": 0.0272,
-     "rest": -0.0283
+     "z": 1.2,
+     "n": 651,
+     "roi": 0.0256,
+     "rest": -0.028
     },
     "mid": 9,
-    "months": 18,
+    "months": 16,
     "of": 70
    }
   },
@@ -2891,7 +2889,7 @@
     "beat": 360,
     "clv": 2.6384,
     "pN": 4052,
-    "p": 1917.989,
+    "p": 1917.9902,
     "wins": 1860
    },
    "ml:home": {
@@ -2981,7 +2979,7 @@
     "beat": 0,
     "clv": 0,
     "pN": 2347,
-    "p": 1142.1689,
+    "p": 1142.1698,
     "wins": 1111
    },
    "props": {
@@ -2991,7 +2989,7 @@
     "beat": 0,
     "clv": 0,
     "pN": 2593,
-    "p": 1251.9103,
+    "p": 1251.9115,
     "wins": 1216
    },
    "prop:pts:over": {
@@ -3011,7 +3009,7 @@
     "beat": 0,
     "clv": 0,
     "pN": 224,
-    "p": 97.9933,
+    "p": 97.9936,
     "wins": 91
    },
    "prop:sog:under": {
@@ -3021,7 +3019,7 @@
     "beat": 0,
     "clv": 0,
     "pN": 2233,
-    "p": 1090.7483,
+    "p": 1090.7492,
     "wins": 1062
    },
    "prop:pts:under": {
@@ -3031,7 +3029,7 @@
     "beat": 0,
     "clv": 0,
     "pN": 219,
-    "p": 96.8745,
+    "p": 96.8748,
     "wins": 90
    },
    "prop:saves:under": {
@@ -3066,16 +3064,16 @@
    }
   }
  },
- "commit": "433aa55b",
- "note": "D112. MMA's card practice picks are staked again, MMA only (the owner, 2026-11-07: \"only getting 1 bet a month on mma tells us something is wrong\" ... \"mma only for sure\")",
+ "commit": "17cb70db",
+ "note": "D116. The Book's band headers and Bot Stats count the same live bets: the record's live side starts just after the replay's last game, never at the algorithm's epoch (the owner, 2026-11-08: \"my bot stats does not match my book home page stats\")",
  "inputs": {
   "v": 1,
   "sport": "nhl",
   "code": {
    "props": "c21af3470845",
    "games": "e48553675c1d",
-   "pricing": "cbb2db31838e",
-   "record": "e2781da20b23",
+   "pricing": "8bd303438afa",
+   "record": "46b23ba593dd",
    "harness": "36c8c288f598",
    "residual": "0ea9af83fbd4d825",
    "tuned": "df11fd594cc55b23"
@@ -3123,7 +3121,7 @@
    "keys": 156076,
    "bets": 4063
   },
-  "units": -54.1,
+  "units": -73.71,
   "canary": {
    "moved": 0,
    "compared": 7098,
@@ -3148,6 +3146,6 @@
     "want": 229
    }
   },
-  "hash": "87df09411424e476"
+  "hash": "07437a34556e573d"
  }
 }

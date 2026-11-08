@@ -2,7 +2,7 @@
  "v": 1,
  "sport": "nfl",
  "epoch": "2026-10-26T15:00:00Z",
- "at": "2026-11-08T03:51:43.915Z",
+ "at": "2026-11-08T07:04:15.804Z",
  "from": "2020-09-11T00:20:00.000Z",
  "through": "2026-10-19T00:23:00.000Z",
  "n": {
@@ -2936,16 +2936,16 @@
    }
   }
  },
- "commit": "433aa55b",
- "note": "D112. MMA's card practice picks are staked again, MMA only (the owner, 2026-11-07: \"only getting 1 bet a month on mma tells us something is wrong\" ... \"mma only for sure\")",
+ "commit": "17cb70db",
+ "note": "D116. The Book's band headers and Bot Stats count the same live bets: the record's live side starts just after the replay's last game, never at the algorithm's epoch (the owner, 2026-11-08: \"my bot stats does not match my book home page stats\")",
  "inputs": {
   "v": 1,
   "sport": "nfl",
   "code": {
    "props": "c21af3470845",
    "games": "e48553675c1d",
-   "pricing": "cbb2db31838e",
-   "record": "e2781da20b23",
+   "pricing": "8bd303438afa",
+   "record": "46b23ba593dd",
    "harness": "36c8c288f598",
    "residual": "a057b73daaf466cc",
    "tuned": "75ba5ef16d4ef1db"
@@ -3111,6 +3111,6 @@
     "want": 55
    }
   },
-  "hash": "92253492563bf1aa"
+  "hash": "7dc14e11dce0ffda"
  }
 }
