@@ -1221,7 +1221,11 @@ export const liveSince = (b, epoch) => !epoch || !(Date.parse(b.start) < Date.pa
 // calendar year's (the band headers' "This year"), and each part alone with the replay's flags. record(list,
 // opts) is desk.mjs record; levelOf(b) a live bet's published band; practiceOf(bets) its practice record
 export function mergeRecord(replay, published, { epoch, now = Date.now(), record, levelOf = (b) => b.publishedLevel, practiceOf = null } = {}) {
-  const live = replay ? published.filter((b) => liveSince(b, replay.epoch ?? epoch)) : published;
+  // (the live side starts where the caller says (picks.mjs recordBlocks: just after the replay's last game), the
+  // file's epoch only without one: the replay's epoch is the algorithm's, days after its archive ends, and the real
+  // bets between the two were in neither part, so the band headers ran 131 NHL bets short of Bot Stats (D116))
+  const from = epoch ?? replay?.epoch ?? null;
+  const live = replay ? published.filter((b) => liveSince(b, from)) : published;
   const year = yearOf(now);
   const liveYear = live.filter((b) => yearOf(Date.parse(b.start)) === year);
   const bands = ['lock', 'high', 'medium', 'low'];
@@ -1236,7 +1240,7 @@ export function mergeRecord(replay, published, { epoch, now = Date.now(), record
     ...(livePractice || replay ? { practice: pageTally(sumTally(livePractice, replay?.practice)) } : {}),
     byMarket: { lines: pageTally(sumTally(record(live.filter((b) => b.market !== 'prop')), replay?.byMarket?.lines)), props: pageTally(sumTally(record(live.filter((b) => b.market === 'prop')), replay?.byMarket?.props)) },
     year: { year: Number(year), overall: pageTally(sumTally(record(liveYear), ry?.all)), byLevel: byLevelOf(liveYear, { byBand: ry?.byBand }), ...(livePracticeYear || ry ? { practice: pageTally(sumTally(livePracticeYear, ry?.practice)) } : {}) },
-    live: { from: replay?.epoch ?? epoch ?? null, overall: pageTally(record(live)), byLevel: Object.fromEntries(bands.map((l) => [l, pageTally(record(live.filter((b) => levelOf(b) === l)))])), ...(livePractice ? { practice: pageTally(livePractice) } : {}) },
+    live: { from, overall: pageTally(record(live)), byLevel: Object.fromEntries(bands.map((l) => [l, pageTally(record(live.filter((b) => levelOf(b) === l)))])), ...(livePractice ? { practice: pageTally(livePractice) } : {}) },
     replay: replay ? { at: replay.at, epoch: replay.epoch, commit: replay.commit ?? null, from: replay.from, through: replay.through, n: replay.n, overall: pageTally(replay.overall), practice: pageTally(replay.practice), flags: replay.flags } : null,
     caveat: caveatOf(replay),
   };

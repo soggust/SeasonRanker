@@ -250,3 +250,26 @@ test("recordBlocks: the live part starts after the replay's last game, so a re-r
   const { recent } = picks.recordBlocks('nba', { bets: [bet] }, now, { replay });
   assert.equal(recent.last[0].pick, 'Last night');
 });
+
+test("D116 merge: the live side starts where the caller says, not at the replay file's later epoch (the bets between the archive's end and the epoch counted once, on both pages)", () => {
+  const rows = [];
+  for (let i = 0; i < 20; i++) rows.push(propRows(i, { season: 2025, p: 0.62, y: i % 2 }));
+  const replay = replayRecord(V, 'nba', split(rows), { names, epoch: EPOCH, now: Date.parse('2026-10-19T20:00:00Z') });
+  // (the file's epoch twelve days after its last priced game, as the live files' are)
+  const later = { ...replay, epoch: '2026-10-31T15:00:00Z' };
+  const live = (id, start, status, level) => ({ id, sport: 'nba', start, status, publishedLevel: level, published: true, intent: 'edge', units: 1, profit: status === 'won' ? 0.91 : -1, market: 'prop', odds: -110 });
+  const published = [live('a', '2026-10-20T00:00:00Z', 'won', 'high'), live('b', '2026-10-25T00:00:00Z', 'lost', 'medium'), live('c', '2026-11-01T00:00:00Z', 'won', 'medium'), live('old', '2026-10-18T00:00:00Z', 'won', 'lock')];
+  const rec = mergeRecord(later, published, { epoch: EPOCH, now: Date.parse('2026-11-02T00:00:00Z'), record: desk.record, practiceOf: desk.practiceRecord });
+  assert.equal(rec.live.from, EPOCH);
+  assert.equal(rec.live.overall.wins, 2);
+  assert.equal(rec.live.overall.losses, 1);
+  assert.equal(rec.overall.wins, replay.overall.won + 2);
+  assert.equal(rec.year.byLevel.high.wins, 1);
+  assert.equal(rec.year.byLevel.medium.wins, 1);
+  assert.equal(rec.year.byLevel.medium.losses, 1);
+  assert.equal(rec.byLevel.lock.wins, replay.byBand.lock.won, "the bet before the live start is the replay's");
+  // (no start given: the file's epoch, as before)
+  const byFile = mergeRecord(later, published, { now: Date.parse('2026-11-02T00:00:00Z'), record: desk.record, practiceOf: desk.practiceRecord });
+  assert.equal(byFile.live.from, '2026-10-31T15:00:00Z');
+  assert.equal(byFile.live.overall.wins, 1);
+});

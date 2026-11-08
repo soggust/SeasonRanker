@@ -2679,3 +2679,14 @@ test("D115 closing-line value is the Bot's one honest scorecard: the close's no-
   assert.match(src('desk.mjs'), /const clvIn = \(b\) => b\.clv\?\.v === CLV_V && fairBeat\(b\) !== null;/);
   assert.match(src('clv.mjs'), /export function fairBeat\(bet\) \{\s+const c = bet\?\.clv;\s+if \(!c \|\| !fin\(c\.ev\)\) return null;\s+if \(!\(bet\.market === 'ml' \|\| c\.pts === 0\)\) return null;\s+return c\.ev > 0 \? 1 : 0;/);
 });
+
+test("D116 the Book's band headers and Bot Stats count the same live bets: the record's live side starts where its caller says (just after the replay's last game), the file's epoch only without one", async () => {
+  const decisions = fs.readFileSync(path.join(MODEL, 'DECISIONS.md'), 'utf8');
+  assert.ok(decisions.includes('### D116.'));
+  const rep = src('replay-record.mjs');
+  assert.match(rep, /const from = epoch \?\? replay\?\.epoch \?\? null;\s+const live = replay \? published\.filter\(\(b\) => liveSince\(b, from\)\) : published;/);
+  assert.match(rep, /live: \{ from, overall:/);
+  // (picks.mjs names the start: the moment after the replay's last game, its epoch only without one; the page the same)
+  assert.match(src('picks.mjs'), /const epoch = replay\?\.through \? new Date\(Date\.parse\(replay\.through\) \+ 1\)\.toISOString\(\) : \(replay\?\.epoch \?\? extra\.epoch \?\? null\);/);
+  assert.match(fs.readFileSync(path.join(MODEL, '../../src/engine/book/replay-history.ts'), 'utf8'), /return f\?\.through \? new Date\(Date\.parse\(f\.through\) \+ 1\)\.toISOString\(\) : \(f\?\.epoch \?\? null\);/);
+});
