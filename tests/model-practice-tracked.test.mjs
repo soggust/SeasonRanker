@@ -52,7 +52,8 @@ test('D87: the desks pick the practice candidates whatever PRACTICE_STAKED, and 
   assert.match(run, /if \(tagOnly && isTracked\(bet\)\) Object\.assign\(bet, practiceTag\(tagOnly\)\);/);
   const mma = src('mma-desk.mjs');
   assert.match(mma, /const forced = mmaPracticePicks\(mlNew,/);
-  assert.match(mma, /if \(!PRACTICE_STAKED\) \{\s*if \(isTracked\(b\)\) Object\.assign\(b, practiceTag\(t\)\);\s*continue;/);
+  // (D112: by the per-sport switch; MMA's on, the rest off)
+  assert.match(mma, /if \(!practiceStaked\(SPORT\)\) \{\s*if \(isTracked\(b\)\) Object\.assign\(b, practiceTag\(t\)\);\s*continue;/);
   const rep = src('replay-record.mjs');
   assert.match(rep, /\(staked \? bets : tracked\)\.push\(betOf\(/);
   assert.equal(PRACTICE_UNITS, 0.5);

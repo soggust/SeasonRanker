@@ -1166,9 +1166,26 @@ test('D57 the slate practice picks are tracked, not staked: no pick forced into 
   // (D87: still picked, never staked: the props' topN only while staked, MMA's tag on a tracked row only, the replay's
   // practice rows apart from its bets)
   assert.match(src('run.mjs'), /const topN = x\.researchPractice \?\? \(PRACTICE_STAKED \? slatePick : null\);/);
-  assert.match(src('mma-desk.mjs'), /if \(!PRACTICE_STAKED\) \{\s*if \(isTracked\(b\)\) Object\.assign\(b, practiceTag\(t\)\);\s*continue;/);
-  assert.match(src('replay-record.mjs'), /const staked = V\.desk\.PRACTICE_STAKED !== false;/);
+  // (D112: MMA's by the per-sport switch, staked; the other sports still off)
+  assert.match(src('mma-desk.mjs'), /if \(!practiceStaked\(SPORT\)\) \{\s*if \(isTracked\(b\)\) Object\.assign\(b, practiceTag\(t\)\);\s*continue;/);
+  assert.match(src('replay-record.mjs'), /const staked = V\.desk\.practiceStaked \? V\.desk\.practiceStaked\(sport\) : V\.desk\.PRACTICE_STAKED !== false;/);
   assert.match(src('replay-record.mjs'), /\(staked \? bets : tracked\)\.push\(betOf\(/);
+  for (const s of ['nfl', 'nba', 'nhl', 'mlb']) assert.equal(D.practiceStaked(s), false, `${s} stays tracked (D57)`);
+});
+
+test('D112 MMA\'s card practice picks are staked again at the practice stake (the owner, 2026-11-07: "mma only for sure"); the other sports stay D57\'s tracked rows', async () => {
+  const D = await import('../libs/ranker/scripts/model/desk.mjs');
+  assert.equal(D.PRACTICE_STAKED, false, 'the all-sports switch stays off (D57)');
+  assert.deepEqual([...D.PRACTICE_STAKED_SPORTS], ['mma']);
+  assert.equal(D.practiceStaked('mma'), true);
+  assert.equal(D.PRACTICE_UNITS, 0.5, 'a flat half unit, never Kelly');
+  assert.equal(D.PRACTICE_N.mma, 3, 'three a card');
+  // (the staked pick is a practice pick: tallied apart from the record while PRACTICE_SPLIT, so no gate, cap or trust fit moves)
+  assert.equal(D.PRACTICE_SPLIT, true);
+  const mma = src('mma-desk.mjs');
+  assert.match(mma, /Object\.assign\(b, \{ intent: 'edge', units: PRACTICE_UNITS, topN: t, practice: `practice: its card's #/);
+  assert.match(mma, /practiceStaked\(SPORT\) \? `at \$\{PRACTICE_UNITS\}u \(D112\)` : 'tracked at no stake \(D87\)'/);
+  assert.match(src('DECISIONS.md'), /^### D112\. /m);
 });
 
 test('D87 the slate practice picks keep being picked and are tagged on their tracked rows at no stake; the Algorithm tab shows them as if bet', async () => {

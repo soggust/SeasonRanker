@@ -853,7 +853,8 @@ export function replayRecord(V, sport, rows, { events = null, names = () => ({ h
   for (const r of passes) (passBy.get(String(r.x.event)) ?? passBy.set(String(r.x.event), []).get(String(r.x.event))).push(r);
   // (picked whatever PRACTICE_STAKED (D87); while it's off (D57) they're tracked: kept apart (tracked), never among the
   // bets (the record, the bands, the bars, the strip), tallied as if bet at the practice stake (summarize's practice))
-  const staked = V.desk.PRACTICE_STAKED !== false;
+  // (D112: MMA's staked again; an older version's desk has no practiceStaked)
+  const staked = V.desk.practiceStaked ? V.desk.practiceStaked(sport) : V.desk.PRACTICE_STAKED !== false;
   const tracked = [];
   for (const [event, rs] of passBy) {
     const quota = V.desk.slateQuota(practiceN, gamesOn.get(etDay(rs[0].x.t))?.size ?? 1);

@@ -889,6 +889,10 @@ export const PRACTICE_SPLIT = true;
 // about the vig, NFL -71u, NBA -58u, NHL -85u, MLB -192u): no slate pick is forced into a bet, so the best of the rest
 // stay tracked rows like every other one short of the vig, graded and learned from at no stake. DECISIONS.md D57
 export const PRACTICE_STAKED = false;
+// (by sport: MMA's card picks staked again at the practice stake since 2026-11-07 (the owner: "mma only for sure"), the
+// one sport with no other action near the bell (its late trust 0, D56); the others stay D57's tracked rows. DECISIONS.md D112)
+export const PRACTICE_STAKED_SPORTS = new Set(['mma']);
+export const practiceStaked = (sport) => PRACTICE_STAKED || PRACTICE_STAKED_SPORTS.has(sport);
 export const PRACTICE_N = { nfl: 15, nhl: 6, mlb: 3, nba: 8, mma: 3 };
 // (a slate's practice pick: placed for the slate, not for clearing the vig. A tracked row tagged as the slate's
 // practice candidate (practiceTracked, D87: picked every run whatever PRACTICE_STAKED, at no stake) is never one: to
