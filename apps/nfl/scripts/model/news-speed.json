@@ -16334,6 +16334,11 @@
     "seen": "2026-11-06T21:05:24.842Z",
     "own": "2026-11-06T21:04:46.271Z",
     "why": "@adamscheftermirror.bsky.social: More about the Cleveland Browns starting Shedeu"
+   },
+   "athlete": "3122840",
+   "espn": {
+    "seen": "2026-11-08T16:42:16.971Z",
+    "own": "2026-11-08T12:33:00.000Z"
    }
   },
   "401873043|treylonburks|out": {
@@ -19326,6 +19331,11 @@
     "seen": "2026-11-08T14:41:56.935Z",
     "own": "2026-11-08T14:32:07.874Z",
     "why": "@rapsheet.bsky.social: Dolphins RB Jaylen Wright (quad), listed as questionable,"
+   },
+   "athlete": "4682745",
+   "espn": {
+    "seen": "2026-11-08T16:42:16.971Z",
+    "own": "2026-11-08T12:39:00.000Z"
    }
   },
   "401873046|camskattebo|out": {
@@ -19434,6 +19444,126 @@
    "espn": {
     "seen": "2026-11-08T16:29:39.457Z",
     "own": "2026-11-06T20:09:00.000Z"
+   }
+  },
+  "401873045|timpatrick|out": {
+   "game": "401873045",
+   "start": "2026-11-08T18:00Z",
+   "team": "20",
+   "name": "Tim Patrick",
+   "status": "out",
+   "athlete": "3134353",
+   "espn": {
+    "seen": "2026-11-08T16:42:16.971Z",
+    "own": "2026-11-08T16:39:00.000Z"
+   }
+  },
+  "401873045|blakefreeland|out": {
+   "game": "401873045",
+   "start": "2026-11-08T18:00Z",
+   "team": "20",
+   "name": "Blake Freeland",
+   "status": "out",
+   "athlete": "4429636",
+   "espn": {
+    "seen": "2026-11-08T16:42:16.971Z",
+    "own": "2026-11-08T16:39:00.000Z"
+   }
+  },
+  "401873045|kohllevao|out": {
+   "game": "401873045",
+   "start": "2026-11-08T18:00Z",
+   "team": "20",
+   "name": "Kohl Levao",
+   "status": "out",
+   "athlete": "4373951",
+   "espn": {
+    "seen": "2026-11-08T16:42:16.971Z",
+    "own": "2026-11-08T16:39:00.000Z"
+   }
+  },
+  "401873042|jacobsaylors|out": {
+   "game": "401873042",
+   "start": "2026-11-08T18:00Z",
+   "team": "8",
+   "name": "Jacob Saylors",
+   "status": "out",
+   "athlete": "4383429",
+   "espn": {
+    "seen": "2026-11-08T16:42:16.971Z",
+    "own": "2026-11-07T01:51:00.000Z"
+   }
+  },
+  "401873044|coltonhood|out": {
+   "game": "401873044",
+   "start": "2026-11-08T18:00Z",
+   "team": "19",
+   "name": "Colton Hood",
+   "status": "out",
+   "athlete": "4921249",
+   "espn": {
+    "seen": "2026-11-08T16:42:16.971Z",
+    "own": "2026-11-05T22:50:00.000Z"
+   }
+  },
+  "401873043|trentmcduffie|out": {
+   "game": "401873043",
+   "start": "2026-11-08T18:00Z",
+   "team": "14",
+   "name": "Trent McDuffie",
+   "status": "out",
+   "athlete": "4426405",
+   "espn": {
+    "seen": "2026-11-08T16:42:16.971Z",
+    "own": "2026-11-06T19:57:00.000Z"
+   }
+  },
+  "401873041|samehlinger|out": {
+   "game": "401873041",
+   "start": "2026-11-08T18:00Z",
+   "team": "7",
+   "name": "Sam Ehlinger",
+   "status": "out",
+   "athlete": "4241820",
+   "espn": {
+    "seen": "2026-11-08T16:42:16.971Z",
+    "own": "2026-11-08T16:36:00.000Z"
+   }
+  },
+  "401873041|liljordanhumphrey|out": {
+   "game": "401873041",
+   "start": "2026-11-08T18:00Z",
+   "team": "7",
+   "name": "Lil'Jordan Humphrey",
+   "status": "out",
+   "athlete": "4039057",
+   "espn": {
+    "seen": "2026-11-08T16:42:16.971Z",
+    "own": "2026-11-08T16:36:00.000Z"
+   }
+  },
+  "401873041|dallenbentley|out": {
+   "game": "401873041",
+   "start": "2026-11-08T18:00Z",
+   "team": "7",
+   "name": "Dallen Bentley",
+   "status": "out",
+   "athlete": "5159802",
+   "espn": {
+    "seen": "2026-11-08T16:42:16.971Z",
+    "own": "2026-11-08T16:36:00.000Z"
+   }
+  },
+  "401873041|kagecasey|out": {
+   "game": "401873041",
+   "start": "2026-11-08T18:00Z",
+   "team": "7",
+   "name": "Kage Casey",
+   "status": "out",
+   "athlete": "4868598",
+   "espn": {
+    "seen": "2026-11-08T16:42:16.971Z",
+    "own": "2026-11-08T16:36:00.000Z"
    }
   }
  }
