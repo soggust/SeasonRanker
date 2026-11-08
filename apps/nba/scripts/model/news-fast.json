@@ -1,7 +1,7 @@
 {
  "sport": "nba",
  "cursor": {
-  "rotowirenba.bsky.social": "2026-11-08T16:20:19.000Z",
+  "rotowirenba.bsky.social": "2026-11-08T17:14:08.000Z",
   "insidenbanews.bsky.social": "2026-11-07T05:11:20.386Z",
   "shamsbot.bsky.social": "2026-11-04T20:33:22.000Z"
  },
@@ -9352,6 +9352,32 @@
    "kind": "status",
    "confidence": 0.9,
    "text": "Keyonte George: Questionable Sunday \n\n https://www.rotowire.com/basketball/player/keyonte-george-5899"
+  },
+  {
+   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mzsvsnax3d2n|scottiebarnes|questionable|status",
+   "at": "2026-11-08T17:11:55.000Z",
+   "seen": "2026-11-08T17:16:19.452Z",
+   "handle": "rotowirenba.bsky.social",
+   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mzsvsnax3d2n",
+   "player": "Scottie Barnes",
+   "team": "TOR",
+   "status": "questionable",
+   "kind": "status",
+   "confidence": 0.95,
+   "text": "Scottie Barnes: Questionable for Monday \n\n https://www.rotowire.com/basketball/player/scottie-barnes-5390"
+  },
+  {
+   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mzsvwmy54l2n|immanuelquickley|questionable|status",
+   "at": "2026-11-08T17:14:08.000Z",
+   "seen": "2026-11-08T17:16:19.452Z",
+   "handle": "rotowirenba.bsky.social",
+   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mzsvwmy54l2n",
+   "player": "Immanuel Quickley",
+   "team": "TOR",
+   "status": "questionable",
+   "kind": "status",
+   "confidence": 0.95,
+   "text": "Immanuel Quickley: Questionable for Monday \n\n https://www.rotowire.com/basketball/player/immanuel-quickley-5201"
   }
  ]
 }
