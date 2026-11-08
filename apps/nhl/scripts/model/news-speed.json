@@ -1,54 +1,6 @@
 {
  "sport": "nhl",
  "entries": {
-  "401892598|nicolasroy|q": {
-   "game": "401892598",
-   "start": "2026-10-29T01:00Z",
-   "team": "17",
-   "name": "Nicolas Roy",
-   "status": "q",
-   "athlete": "3943996",
-   "espn": {
-    "seen": "2026-10-27T15:32:56.107Z",
-    "own": "2026-10-26T13:11:00.000Z"
-   }
-  },
-  "401892598|zacharylheureux|out": {
-   "game": "401892598",
-   "start": "2026-10-29T01:00Z",
-   "team": "17",
-   "name": "Zachary L'Heureux",
-   "status": "out",
-   "athlete": "4874744",
-   "espn": {
-    "seen": "2026-10-27T15:32:56.107Z",
-    "own": "2026-10-23T21:39:00.000Z"
-   }
-  },
-  "401892598|connorhellebuyck|out": {
-   "game": "401892598",
-   "start": "2026-10-29T01:00Z",
-   "team": "11",
-   "name": "Connor Hellebuyck",
-   "status": "out",
-   "athlete": "3020225",
-   "espn": {
-    "seen": "2026-10-27T15:32:56.107Z",
-    "own": "2026-10-26T16:36:00.000Z"
-   }
-  },
-  "401892598|seamuscasey|out": {
-   "game": "401892598",
-   "start": "2026-10-29T01:00Z",
-   "team": "11",
-   "name": "Seamus Casey",
-   "status": "out",
-   "athlete": "5080212",
-   "espn": {
-    "seen": "2026-10-27T15:32:56.107Z",
-    "own": "2026-10-02T17:31:00.000Z"
-   }
-  },
   "401892599|jaredmccann|out": {
    "game": "401892599",
    "start": "2026-10-29T02:00Z",

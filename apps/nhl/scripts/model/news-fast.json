@@ -3,9 +3,9 @@
  "cursor": {
   "johnston-bot.bsky.social": "2026-11-07T23:30:19.186Z",
   "notfriedgehnic.bsky.social": "2026-11-07T23:23:18.550Z",
-  "dailyfaceoff.bsky.social": "2026-11-07T22:23:31.000Z",
+  "dailyfaceoff.bsky.social": "2026-11-08T01:09:02.000Z",
   "dfotoronto.bsky.social": "2026-11-07T22:05:34.000Z",
-  "marklazerus.bsky.social": "2026-11-08T00:36:54.179Z"
+  "marklazerus.bsky.social": "2026-11-08T01:11:02.749Z"
  },
  "claims": [
   {
@@ -1931,6 +1931,32 @@
    "kind": "return",
    "confidence": 0.7,
    "text": "\"Why are you taking that opportunity away from Gavin McKenna?\"\n\n@zackphillips_ on Gavin McKenna being demoted from the first power play unit with the return of John Tavares to the lineup.\n\nPresented b"
+  },
+  {
+   "id": "at://did:plc:3uus7y6h3rlrk6sbctzxm4bg/app.bsky.feed.post/3mzr7yvgxby2a|zachhyman|active|return",
+   "at": "2026-11-08T01:09:02.000Z",
+   "seen": "2026-11-08T01:13:25.271Z",
+   "handle": "dailyfaceoff.bsky.social",
+   "post": "at://did:plc:3uus7y6h3rlrk6sbctzxm4bg/app.bsky.feed.post/3mzr7yvgxby2a",
+   "player": "Zach Hyman",
+   "team": "EDM",
+   "status": "active",
+   "kind": "return",
+   "confidence": 0.9,
+   "text": "Oilers activate Zach Hyman, Devon Levi off IR"
+  },
+  {
+   "id": "at://did:plc:3uus7y6h3rlrk6sbctzxm4bg/app.bsky.feed.post/3mzr7yvgxby2a|devonlevi|active|return",
+   "at": "2026-11-08T01:09:02.000Z",
+   "seen": "2026-11-08T01:13:25.271Z",
+   "handle": "dailyfaceoff.bsky.social",
+   "post": "at://did:plc:3uus7y6h3rlrk6sbctzxm4bg/app.bsky.feed.post/3mzr7yvgxby2a",
+   "player": "Devon Levi",
+   "team": "EDM",
+   "status": "active",
+   "kind": "return",
+   "confidence": 0.7,
+   "text": "Oilers activate Zach Hyman, Devon Levi off IR"
   }
  ]
 }

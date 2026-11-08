@@ -1,7 +1,7 @@
 {
  "sport": "nba",
  "cursor": {
-  "rotowirenba.bsky.social": "2026-11-08T00:51:11.000Z",
+  "rotowirenba.bsky.social": "2026-11-08T01:11:34.000Z",
   "insidenbanews.bsky.social": "2026-11-07T05:11:20.386Z",
   "shamsbot.bsky.social": "2026-11-04T20:33:22.000Z"
  },
@@ -9274,6 +9274,45 @@
    "kind": "benched",
    "confidence": 0.85,
    "text": "Jared McCain: Returns to bench Saturday \n\n https://www.rotowire.com/basketball/player/jared-mccain-6266"
+  },
+  {
+   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mzr7odpzqu2t|onyekaokongwu|active|return",
+   "at": "2026-11-08T01:03:08.000Z",
+   "seen": "2026-11-08T01:13:25.271Z",
+   "handle": "rotowirenba.bsky.social",
+   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mzr7odpzqu2t",
+   "player": "Onyeka Okongwu",
+   "team": null,
+   "status": "active",
+   "kind": "return",
+   "confidence": 0.9,
+   "text": "Onyeka Okongwu: Returns to Saturday's game \n\n https://www.rotowire.com/basketball/player/onyeka-okongwu-5118"
+  },
+  {
+   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mzr7papt7l2f|isaiahjackson|out|status",
+   "at": "2026-11-08T01:03:39.000Z",
+   "seen": "2026-11-08T01:13:25.271Z",
+   "handle": "rotowirenba.bsky.social",
+   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mzr7papt7l2f",
+   "player": "Isaiah Jackson",
+   "team": null,
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.95,
+   "text": "Isaiah Jackson: Ruled out for Sunday \n\n https://www.rotowire.com/basketball/player/isaiah-jackson-5403"
+  },
+  {
+   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mzra5ghbbm2t|brandoningram|out|status",
+   "at": "2026-11-08T01:11:34.000Z",
+   "seen": "2026-11-08T01:13:25.271Z",
+   "handle": "rotowirenba.bsky.social",
+   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mzra5ghbbm2t",
+   "player": "Brandon Ingram",
+   "team": null,
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.95,
+   "text": "Brandon Ingram: Remains out Sunday \n\n https://www.rotowire.com/basketball/player/brandon-ingram-3861"
   }
  ]
 }
