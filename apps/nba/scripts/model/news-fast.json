@@ -1,7 +1,7 @@
 {
  "sport": "nba",
  "cursor": {
-  "rotowirenba.bsky.social": "2026-11-07T22:33:16.000Z",
+  "rotowirenba.bsky.social": "2026-11-08T00:08:17.000Z",
   "insidenbanews.bsky.social": "2026-11-07T05:11:20.386Z",
   "shamsbot.bsky.social": "2026-11-04T20:33:22.000Z"
  },
@@ -9183,6 +9183,58 @@
    "kind": "status",
    "confidence": 0.9,
    "text": "Luka Doncic: Questionable for Sunday \n\n https://www.rotowire.com/basketball/player/luka-doncic-4396"
+  },
+  {
+   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mzqzfpsjpx2x|joanberinger|questionable|status",
+   "at": "2026-11-07T23:10:56.000Z",
+   "seen": "2026-11-08T00:18:20.653Z",
+   "handle": "rotowirenba.bsky.social",
+   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mzqzfpsjpx2x",
+   "player": "Joan Beringer",
+   "team": null,
+   "status": "questionable",
+   "kind": "status",
+   "confidence": 0.95,
+   "text": "Joan Beringer: Questionable for Sunday \n\n https://www.rotowire.com/basketball/player/joan-beringer-6576"
+  },
+  {
+   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mzqzmj5deq2y|laurimarkkanen|questionable|status",
+   "at": "2026-11-07T23:14:44.000Z",
+   "seen": "2026-11-08T00:18:20.653Z",
+   "handle": "rotowirenba.bsky.social",
+   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mzqzmj5deq2y",
+   "player": "Lauri Markkanen",
+   "team": null,
+   "status": "questionable",
+   "kind": "status",
+   "confidence": 0.95,
+   "text": "Lauri Markkanen: Questionable for Sunday \n\n https://www.rotowire.com/basketball/player/lauri-markkanen-4119"
+  },
+  {
+   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mzr2ocq5mj2n|anthonydavis|out|status",
+   "at": "2026-11-07T23:33:38.000Z",
+   "seen": "2026-11-08T00:18:20.653Z",
+   "handle": "rotowirenba.bsky.social",
+   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mzr2ocq5mj2n",
+   "player": "Anthony Davis",
+   "team": null,
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.95,
+   "text": "Anthony Davis: Ruled out for Saturday \n\n https://www.rotowire.com/basketball/player/anthony-davis-3297"
+  },
+  {
+   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mzr4malhmg2g|dannywolf|none|starting",
+   "at": "2026-11-08T00:08:17.000Z",
+   "seen": "2026-11-08T00:18:20.653Z",
+   "handle": "rotowirenba.bsky.social",
+   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mzr4malhmg2g",
+   "player": "Danny Wolf",
+   "team": null,
+   "status": "none",
+   "kind": "starting",
+   "confidence": 0.9,
+   "text": "Danny Wolf: Starting Saturday \n\n https://www.rotowire.com/basketball/player/danny-wolf-6560"
   }
  ]
 }

@@ -3,6 +3,28 @@
  "days": 2,
  "signals": [
   {
+   "team": "18",
+   "abbr": "NO",
+   "athlete": "4685260",
+   "player": "Kelvin Banks Jr",
+   "kind": "return",
+   "direction": "up",
+   "confidence": 0.9,
+   "headline": "Saints activate WR Jordyn Tyson, LT Kelvin Banks, cut RB Kendre Miller",
+   "at": "2026-11-07T21:08:08.000Z"
+  },
+  {
+   "team": "5",
+   "abbr": "CLE",
+   "athlete": "4432762",
+   "player": "Shedeur Sanders",
+   "kind": "starting",
+   "direction": "up",
+   "confidence": 0.8,
+   "headline": "Browns QB Deshaun Watson out of concussion protocol",
+   "at": "2026-11-07T19:18:22.000Z"
+  },
+  {
    "team": "26",
    "abbr": "SEA",
    "athlete": "3912547",
@@ -89,40 +111,7 @@
    "confidence": 0.5,
    "headline": "Packers give Micah Parsons boost in return from ACL injury",
    "at": "2026-11-06T11:00:07.000Z"
-  },
-  {
-   "team": "16",
-   "abbr": "MIN",
-   "athlete": "2573079",
-   "player": "Carson Wentz",
-   "kind": "starting",
-   "direction": "up",
-   "confidence": 0.9,
-   "headline": "Vikings to start QB Carson Wentz against Bills with Kyler Murray ruled out",
-   "at": "2026-11-06T00:12:35.000Z"
-  },
-  {
-   "team": "20",
-   "abbr": "NYJ",
-   "athlete": "4427366",
-   "player": "Breece Hall",
-   "kind": "return",
-   "direction": "up",
-   "confidence": 0.6,
-   "headline": "Jets' Breece Hall says he's ready to play, cites threats for social media exit",
-   "at": "2026-11-06T00:10:29.000Z"
-  },
-  {
-   "team": "26",
-   "abbr": "SEA",
-   "athlete": "3924327",
-   "player": "Drew Lock",
-   "kind": "starting",
-   "direction": "up",
-   "confidence": 0.6,
-   "headline": "Seahawks' Lock says elbow feeling 'better' ahead of start vs. Cardinals",
-   "at": "2026-11-05T23:24:08.000Z"
   }
  ],
- "at": "2026-11-07T00:59:00.953Z"
+ "at": "2026-11-08T00:18:20.653Z"
 }
