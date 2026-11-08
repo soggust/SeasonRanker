@@ -19945,6 +19945,18 @@
     "own": "2026-11-08T04:04:00.000Z",
     "why": "@rotowirenba.bsky.social: Mikel Brown: Scores 18 points Saturday, won't play Sun"
    }
+  },
+  "401909945|normanpowell|q": {
+   "game": "401909945",
+   "start": "2026-11-08T20:30Z",
+   "team": "4",
+   "name": "Norman Powell",
+   "status": "q",
+   "athlete": "2595516",
+   "espn": {
+    "seen": "2026-11-08T15:12:25.732Z",
+    "own": "2026-11-08T15:03:00.000Z"
+   }
   }
  }
 }
