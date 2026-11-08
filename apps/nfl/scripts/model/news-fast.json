@@ -1,41 +1,15 @@
 {
  "sport": "nfl",
  "cursor": {
-  "adamscheftermirror.bsky.social": "2026-11-07T21:39:54.584Z",
+  "adamscheftermirror.bsky.social": "2026-11-08T12:10:11.844Z",
   "rapsheet.bsky.social": "2026-11-07T19:32:21.112Z",
   "nflnewsreposterbot.bsky.social": "2026-11-06T17:28:39.017Z",
-  "insidenflnews.bsky.social": "2026-11-07T21:28:29.073Z",
+  "insidenflnews.bsky.social": "2026-11-08T13:06:03.673Z",
   "nflnewsposter.bsky.social": "2026-11-08T00:10:37.902Z",
-  "rotoworld-fb.bsky.social": "2026-11-07T22:03:36.000Z",
-  "rotowirenfl.bsky.social": "2026-11-07T21:44:36.000Z"
+  "rotoworld-fb.bsky.social": "2026-11-08T13:06:59.000Z",
+  "rotowirenfl.bsky.social": "2026-11-08T12:33:11.000Z"
  },
  "claims": [
-  {
-   "id": "at://did:plc:qre6zxbmr3ixhdmgsgdretb5/app.bsky.feed.post/3my5jliojuu24|treveyonhenderson|active|status",
-   "at": "2026-10-18T11:42:04.352Z",
-   "seen": "2026-10-19T21:15:18.875Z",
-   "handle": "adamscheftermirror.bsky.social",
-   "post": "at://did:plc:qre6zxbmr3ixhdmgsgdretb5/app.bsky.feed.post/3my5jliojuu24",
-   "player": "TreVeyon Henderson",
-   "team": "NE",
-   "status": "active",
-   "kind": "status",
-   "confidence": 0.6,
-   "text": "Repost by @adamschefter\n\n#Patriots RB TreVeyon Henderson (ankle) and LT Will Campbell (ankle), both of whom are questionable, are likely to play against the #Jets, sources say. With AJ Brown returning"
-  },
-  {
-   "id": "at://did:plc:qre6zxbmr3ixhdmgsgdretb5/app.bsky.feed.post/3my5jliojuu24|willcampbell|active|status",
-   "at": "2026-10-18T11:42:04.352Z",
-   "seen": "2026-10-19T21:15:18.875Z",
-   "handle": "adamscheftermirror.bsky.social",
-   "post": "at://did:plc:qre6zxbmr3ixhdmgsgdretb5/app.bsky.feed.post/3my5jliojuu24",
-   "player": "Will Campbell",
-   "team": "NE",
-   "status": "active",
-   "kind": "status",
-   "confidence": 0.6,
-   "text": "Repost by @adamschefter\n\n#Patriots RB TreVeyon Henderson (ankle) and LT Will Campbell (ankle), both of whom are questionable, are likely to play against the #Jets, sources say. With AJ Brown returning"
-  },
   {
    "id": "at://did:plc:hlvr2omhnmvdmfnvmcuhyevz/app.bsky.feed.post/3my5rdhawgs2a|joealt|out|status",
    "at": "2026-10-18T14:00:44.393Z",
@@ -17819,6 +17793,71 @@
    "kind": "status",
    "confidence": 0.9,
    "text": "Brian Robinson hits IR with hamstring injury"
+  },
+  {
+   "id": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3mzsbxp3rmn22|emekaegbuka|active|return",
+   "at": "2026-11-08T11:16:49.000Z",
+   "seen": "2026-11-08T13:07:24.722Z",
+   "handle": "rotowirenfl.bsky.social",
+   "post": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3mzsbxp3rmn22",
+   "player": "Emeka Egbuka",
+   "team": "TB",
+   "status": "active",
+   "kind": "return",
+   "confidence": 0.85,
+   "text": "Emeka Egbuka: Expected to return Sunday \n\n https://www.rotowire.com/football/player/emeka-egbuka-18549"
+  },
+  {
+   "id": "at://did:plc:qre6zxbmr3ixhdmgsgdretb5/app.bsky.feed.post/3mzsex4q6d72d|samdarnold|questionable|status",
+   "at": "2026-11-08T12:10:11.844Z",
+   "seen": "2026-11-08T13:07:24.722Z",
+   "handle": "adamscheftermirror.bsky.social",
+   "post": "at://did:plc:qre6zxbmr3ixhdmgsgdretb5/app.bsky.feed.post/3mzsex4q6d72d",
+   "player": "Sam Darnold",
+   "team": "SEA",
+   "status": "questionable",
+   "kind": "status",
+   "confidence": 0.5,
+   "text": "Sources: Seahawks QB Sam Darnold is in jeopardy of missing Seattle’s Week 10 game vs. the Raiders.\n\nOriginal post"
+  },
+  {
+   "id": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3mzsfsodal22d|kylemonangai|out|status",
+   "at": "2026-11-08T12:25:36.000Z",
+   "seen": "2026-11-08T13:07:24.722Z",
+   "handle": "rotowirenfl.bsky.social",
+   "post": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3mzsfsodal22d",
+   "player": "Kyle Monangai",
+   "team": "CHI",
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.8,
+   "text": "Kyle Monangai: Not expected to return Sunday \n\n https://www.rotowire.com/football/player/kyle-monangai-18520"
+  },
+  {
+   "id": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3mzsgaa3urj22|deshaunwatson|out|status",
+   "at": "2026-11-08T12:33:11.000Z",
+   "seen": "2026-11-08T13:07:24.722Z",
+   "handle": "rotowirenfl.bsky.social",
+   "post": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3mzsgaa3urj22",
+   "player": "Deshaun Watson",
+   "team": "CLE",
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.8,
+   "text": "Deshaun Watson: Likely inactive Sunday \n\n https://www.rotowire.com/football/player/deshaun-watson-11712"
+  },
+  {
+   "id": "at://did:plc:mbr4badgf6yu56mquzackzew/app.bsky.feed.post/3mzsi2z6wfs2d|lamarjackson|out|status",
+   "at": "2026-11-08T13:06:03.673Z",
+   "seen": "2026-11-08T13:07:24.722Z",
+   "handle": "insidenflnews.bsky.social",
+   "post": "at://did:plc:mbr4badgf6yu56mquzackzew/app.bsky.feed.post/3mzsi2z6wfs2d",
+   "player": "Lamar Jackson",
+   "team": "BAL",
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.9,
+   "text": "‼️ Rap: Lamar Jackson to miss 6-9 weeks with fractured and dislocated thumb."
   }
  ]
 }
