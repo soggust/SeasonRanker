@@ -1,7 +1,7 @@
 {
  "sport": "nba",
  "cursor": {
-  "rotowirenba.bsky.social": "2026-11-08T15:07:32.000Z",
+  "rotowirenba.bsky.social": "2026-11-08T16:20:19.000Z",
   "insidenbanews.bsky.social": "2026-11-07T05:11:20.386Z",
   "shamsbot.bsky.social": "2026-11-04T20:33:22.000Z"
  },
@@ -9339,6 +9339,32 @@
    "kind": "status",
    "confidence": 0.8,
    "text": "Mikel Brown: Scores 18 points Saturday, won't play Sunday \n\n https://www.rotowire.com/basketball/player/mikel-brown-6929"
+  },
+  {
+   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mzss3kneis2h|jalenduren|out|status",
+   "at": "2026-11-08T16:05:19.000Z",
+   "seen": "2026-11-08T16:32:35.632Z",
+   "handle": "rotowirenba.bsky.social",
+   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mzss3kneis2h",
+   "player": "Jalen Duren",
+   "team": "DET",
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.9,
+   "text": "Jalen Duren: To miss at least two more weeks \n\n https://www.rotowire.com/basketball/player/jalen-duren-5703"
+  },
+  {
+   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mzsswff36p2n|keyontegeorge|questionable|status",
+   "at": "2026-11-08T16:20:19.000Z",
+   "seen": "2026-11-08T16:32:35.632Z",
+   "handle": "rotowirenba.bsky.social",
+   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mzsswff36p2n",
+   "player": "Keyonte George",
+   "team": "UTA",
+   "status": "questionable",
+   "kind": "status",
+   "confidence": 0.9,
+   "text": "Keyonte George: Questionable Sunday \n\n https://www.rotowire.com/basketball/player/keyonte-george-5899"
   }
  ]
 }

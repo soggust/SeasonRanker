@@ -19399,6 +19399,42 @@
     "own": "2026-11-08T15:26:58.000Z",
     "why": "@rotowirenfl.bsky.social: Cam Skattebo: Listed as doubtful, reportedly pushing t"
    }
+  },
+  "401873040|joeyporter|out": {
+   "game": "401873040",
+   "start": "2026-11-08T18:00Z",
+   "team": "6",
+   "name": "Joey Porter Jr.",
+   "status": "out",
+   "athlete": "4426506",
+   "espn": {
+    "seen": "2026-11-08T16:29:39.457Z",
+    "own": "2026-11-07T00:43:00.000Z"
+   }
+  },
+  "401873040|demarvionovershown|out": {
+   "game": "401873040",
+   "start": "2026-11-08T18:00Z",
+   "team": "6",
+   "name": "DeMarvion Overshown",
+   "status": "out",
+   "athlete": "4362088",
+   "espn": {
+    "seen": "2026-11-08T16:29:39.457Z",
+    "own": "2026-11-07T00:32:00.000Z"
+   }
+  },
+  "401873040|georgepickens|out": {
+   "game": "401873040",
+   "start": "2026-11-08T18:00Z",
+   "team": "6",
+   "name": "George Pickens",
+   "status": "out",
+   "athlete": "4426354",
+   "espn": {
+    "seen": "2026-11-08T16:29:39.457Z",
+    "own": "2026-11-06T20:09:00.000Z"
+   }
   }
  }
 }
