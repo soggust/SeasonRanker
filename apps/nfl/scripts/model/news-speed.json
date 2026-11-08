@@ -14937,6 +14937,11 @@
    "sleeper": {
     "seen": "2026-11-07T20:21:44.233Z",
     "own": "2026-11-07T01:30:06.567Z"
+   },
+   "bluesky": {
+    "seen": "2026-11-08T14:41:56.935Z",
+    "own": "2026-11-08T14:25:22.828Z",
+    "why": "@rapsheet.bsky.social: Eagles QB Tanner McKee (rib) is expected to serve as the "
    }
   },
   "401873043|dyamibrown|q": {
@@ -19309,6 +19314,18 @@
     "seen": "2026-11-08T13:55:21.947Z",
     "own": "2026-11-08T13:42:21.000Z",
     "why": "@rotoworld-fb.bsky.social: Garafolo: Evans \"questionable at best\" for Week 10"
+   }
+  },
+  "401873042|jaylenwright|out": {
+   "game": "401873042",
+   "start": "2026-11-08T18:00Z",
+   "team": "15",
+   "name": "Jaylen Wright",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-08T14:41:56.935Z",
+    "own": "2026-11-08T14:32:07.874Z",
+    "why": "@rapsheet.bsky.social: Dolphins RB Jaylen Wright (quad), listed as questionable,"
    }
   }
  }
