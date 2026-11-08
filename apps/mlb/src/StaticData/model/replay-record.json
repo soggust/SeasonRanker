@@ -2,7 +2,7 @@
  "v": 1,
  "sport": "mlb",
  "epoch": "2026-10-26T15:00:00Z",
- "at": "2026-11-08T07:20:00.120Z",
+ "at": "2026-11-08T09:26:17.650Z",
  "from": "2021-07-18T17:11:00.000Z",
  "through": "2026-10-16T00:00:00.000Z",
  "n": {
@@ -2873,7 +2873,7 @@
    }
   }
  },
- "commit": "17cb70db",
+ "commit": "76316fc6",
  "note": "D116. The Book's band headers and Bot Stats count the same live bets: the record's live side starts just after the replay's last game, never at the algorithm's epoch (the owner, 2026-11-08: \"my bot stats does not match my book home page stats\")",
  "inputs": {
   "v": 1,
