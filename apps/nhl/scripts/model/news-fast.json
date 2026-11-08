@@ -3,9 +3,9 @@
  "cursor": {
   "johnston-bot.bsky.social": "2026-11-08T01:26:11.710Z",
   "notfriedgehnic.bsky.social": "2026-11-07T23:23:18.550Z",
-  "dailyfaceoff.bsky.social": "2026-11-08T01:09:02.000Z",
-  "dfotoronto.bsky.social": "2026-11-08T01:36:37.000Z",
-  "marklazerus.bsky.social": "2026-11-08T02:01:22.546Z"
+  "dailyfaceoff.bsky.social": "2026-11-08T02:24:49.000Z",
+  "dfotoronto.bsky.social": "2026-11-08T02:21:21.000Z",
+  "marklazerus.bsky.social": "2026-11-08T02:21:15.934Z"
  },
  "claims": [
   {
@@ -1970,6 +1970,19 @@
    "kind": "status",
    "confidence": 0.5,
    "text": "Morgan Rielly is done for the night due to a lower-body injury."
+  },
+  {
+   "id": "at://did:plc:3uus7y6h3rlrk6sbctzxm4bg/app.bsky.feed.post/3mzreaffvx227|morganrielly|out|status",
+   "at": "2026-11-08T02:24:49.000Z",
+   "seen": "2026-11-08T02:25:25.794Z",
+   "handle": "dailyfaceoff.bsky.social",
+   "post": "at://did:plc:3uus7y6h3rlrk6sbctzxm4bg/app.bsky.feed.post/3mzreaffvx227",
+   "player": "Morgan Rielly",
+   "team": "TOR",
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.35,
+   "text": "Leafs’ Morgan Rielly leaves game with lower-body injury"
   }
  ]
 }
