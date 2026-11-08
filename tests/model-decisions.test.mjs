@@ -2625,3 +2625,20 @@ test("D111 the over-shade as a function of public attention measured and held: t
   const b = S.fitShade(rows.map((r) => ({ ...r, playoff: true, market: 2, slate: 1 }))).shade;
   assert.equal(a, b);
 });
+
+test("D113 the NHL record's swing of 2026-11-07 was the walk-forward fit searched again on a moved cache: the search reproducible, its cache key the fit's code and rows alone, no clock in the search", async () => {
+  const decisions = fs.readFileSync(path.resolve("libs/ranker/scripts/model/DECISIONS.md"), "utf8");
+  assert.ok(decisions.includes("### D113."));
+  const gate = src("gate.mjs");
+  // (a season's fit read from the wf cache by the fit's code and its row count alone: nothing of the players cache or the
+  // context facts it was searched on, so a fit is the picture of the cache on the day it was searched)
+  assert.match(gate, /c\.fit && c\.fit\.code === code && \(c\.fit\.rows === before\.length \|\| process\.env\.GATE_WF_ANYROWS === '1'\)/);
+  // (saved only where the version's code is this checkout's: a champion's or an old version's search is never cached)
+  assert.match(gate, /if \(cacheable\) H\.fitcache\.saveFit\(sport, \{ fits, at: Date\.now\(\), finals: before\.length, rows: before\.length/);
+  // (the walk-forward search reads no clock and none of the live soft terms (soft null, reuse null): reproducible on a fixed cache)
+  assert.match(gate, /fits = V\.props\.fitProps\(sport, before, expPts, info, facts, market, totals, listed, null, null\)\.fits;/);
+  // (props.mjs is a FIT_FILE: an edit to its pricing alone searches every sport's fits again, on the cache of that day)
+  const F = await import("../libs/ranker/scripts/model/fitcache.mjs");
+  assert.ok(F.FIT_FILES.includes("props.mjs"));
+  assert.ok(F.FIT_FILES.includes("project.mjs"));
+});

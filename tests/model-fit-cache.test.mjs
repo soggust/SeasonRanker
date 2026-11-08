@@ -422,3 +422,22 @@ for (const sport of ["nhl", "nfl"]) {
     },
   );
 }
+
+// (D113: the NHL record's 22u swing of 2026-11-07 was the walk-forward fit searched again on a cache 12 days newer; the
+// search itself picks the same settings on the same rows, so a swing at a refit is what the fit read, not luck in the search)
+test("D113 two fresh searches on the same rows are one fit: the settings of every stat and every row's projection", () => {
+  const first = fitProps("nhl", nhlRows(), new Map(), new Map());
+  const rows = nhlRows();
+  const second = fitProps("nhl", rows, new Map(), new Map());
+  assert.deepEqual(Object.keys(second.fits).sort(), Object.keys(first.fits).sort());
+  for (const st of STATS.nhl)
+    assert.deepEqual(
+      encodeFit(second.fits[st.key]?.params ?? null),
+      encodeFit(first.fits[st.key]?.params ?? null),
+      st.key,
+    );
+  assert.deepEqual(
+    fitDiffs(first, second, STATS.nhl, (st) => statRows("nhl", st, rows)),
+    [],
+  );
+});
