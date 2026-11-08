@@ -20490,6 +20490,107 @@
     "own": "2026-11-08T22:08:24.000Z",
     "why": "@rotowirenba.bsky.social: Anthony Davis: Questionable to suit up Monday \n\n https"
    }
+  },
+  "401909951|domantassabonis|q": {
+   "game": "401909951",
+   "start": "2026-11-09T02:00Z",
+   "team": "23",
+   "name": "Domantas Sabonis",
+   "status": "q",
+   "athlete": "3155942",
+   "espn": {
+    "seen": "2026-11-08T23:41:26.217Z",
+    "own": "2026-11-08T22:53:00.000Z"
+   }
+  },
+  "401909957|anthonydavis|q": {
+   "game": "401909957",
+   "start": "2026-11-10T01:30Z",
+   "team": "10",
+   "name": "Anthony Davis",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-11-08T22:15:24.034Z",
+    "own": "2026-11-08T22:08:24.000Z",
+    "why": "@rotowirenba.bsky.social: Anthony Davis: Questionable to suit up Monday \n\n https"
+   }
+  },
+  "401909957|cameronjohnson|q": {
+   "game": "401909957",
+   "start": "2026-11-10T01:30Z",
+   "team": "7",
+   "name": "Cameron Johnson",
+   "status": "q",
+   "athlete": "3138196",
+   "espn": {
+    "seen": "2026-11-08T23:41:26.217Z",
+    "own": "2026-11-08T22:51:00.000Z"
+   }
+  },
+  "401909957|demarderozan|q": {
+   "game": "401909957",
+   "start": "2026-11-10T01:30Z",
+   "team": "7",
+   "name": "DeMar DeRozan",
+   "status": "q",
+   "athlete": "3978",
+   "espn": {
+    "seen": "2026-11-08T23:41:26.217Z",
+    "own": "2026-11-08T22:51:00.000Z"
+   }
+  },
+  "401909957|christianbraun|q": {
+   "game": "401909957",
+   "start": "2026-11-10T01:30Z",
+   "team": "7",
+   "name": "Christian Braun",
+   "status": "q",
+   "athlete": "4431767",
+   "espn": {
+    "seen": "2026-11-08T23:41:26.217Z",
+    "own": "2026-11-08T22:46:00.000Z"
+   }
+  },
+  "401909957|jamalmurray|q": {
+   "game": "401909957",
+   "start": "2026-11-10T01:30Z",
+   "team": "7",
+   "name": "Jamal Murray",
+   "status": "q",
+   "athlete": "3936299",
+   "espn": {
+    "seen": "2026-11-08T23:41:26.217Z",
+    "own": "2026-11-08T22:43:00.000Z"
+   }
+  },
+  "401909957|aarongordon|q": {
+   "game": "401909957",
+   "start": "2026-11-10T01:30Z",
+   "team": "7",
+   "name": "Aaron Gordon",
+   "status": "q",
+   "athlete": "3064290",
+   "espn": {
+    "seen": "2026-11-08T23:41:26.217Z",
+    "own": "2026-11-08T22:42:00.000Z"
+   }
+  },
+  "401909957|nikolajokic|q": {
+   "game": "401909957",
+   "start": "2026-11-10T01:30Z",
+   "team": "7",
+   "name": "Nikola Jokic",
+   "status": "q",
+   "athlete": "3112335",
+   "espn": {
+    "seen": "2026-11-08T23:41:26.217Z",
+    "own": "2026-11-08T22:36:00.000Z"
+   },
+   "bluesky": {
+    "seen": "2026-11-08T22:39:47.617Z",
+    "own": "2026-11-08T22:36:05.000Z",
+    "why": "@rotowirenba.bsky.social: Nikola Jokic: Questionable to play Monday \n\n https://w"
+   }
   }
  }
 }

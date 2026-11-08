@@ -1,37 +1,11 @@
 {
  "sport": "nba",
  "cursor": {
-  "rotowirenba.bsky.social": "2026-11-08T22:36:05.000Z",
+  "rotowirenba.bsky.social": "2026-11-08T23:14:07.000Z",
   "insidenbanews.bsky.social": "2026-11-08T18:11:49.382Z",
   "shamsbot.bsky.social": "2026-11-08T18:05:20.000Z"
  },
  "claims": [
-  {
-   "id": "at://did:plc:sa73fbx3vxzh2fw5pu5wmief/app.bsky.feed.post/3my6ppeez5v2k|bensimmons|out|status",
-   "at": "2026-10-18T23:00:21.000Z",
-   "seen": "2026-10-19T21:15:18.875Z",
-   "handle": "shamsbot.bsky.social",
-   "post": "at://did:plc:sa73fbx3vxzh2fw5pu5wmief/app.bsky.feed.post/3my6ppeez5v2k",
-   "player": "Ben Simmons",
-   "team": "SAC",
-   "status": "out",
-   "kind": "status",
-   "confidence": 0.95,
-   "text": "An MRI confirmed a season-ending torn right Achilles tendon for Ben Simmons. A devastating turn of events on the eve of his NBA return after rehabilitating from back surgeries."
-  },
-  {
-   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3my6qfcxrpj2o|stephencurry|none|status",
-   "at": "2026-10-18T23:16:32.000Z",
-   "seen": "2026-10-19T21:15:18.875Z",
-   "handle": "rotowirenba.bsky.social",
-   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3my6qfcxrpj2o",
-   "player": "Stephen Curry",
-   "team": "GSW",
-   "status": "none",
-   "kind": "status",
-   "confidence": 0.3,
-   "text": "Stephen Curry: Appears to injure knee \n\n https://www.rotowire.com/basketball/player/stephen-curry-3014"
-  },
   {
    "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3my6ryqfs2n2j|stephencurry|none|status",
    "at": "2026-10-18T23:45:18.000Z",
@@ -9482,6 +9456,71 @@
    "kind": "status",
    "confidence": 0.95,
    "text": "Nikola Jokic: Questionable to play Monday \n\n https://www.rotowire.com/basketball/player/nikola-jokic-3612"
+  },
+  {
+   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mzti63yjx22p|quentingrimes|none|starting",
+   "at": "2026-11-08T22:40:26.000Z",
+   "seen": "2026-11-08T23:43:10.786Z",
+   "handle": "rotowirenba.bsky.social",
+   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mzti63yjx22p",
+   "player": "Quentin Grimes",
+   "team": null,
+   "status": "none",
+   "kind": "starting",
+   "confidence": 0.9,
+   "text": "Quentin Grimes: Starting against Pistons \n\n https://www.rotowire.com/basketball/player/quentin-grimes-5391"
+  },
+  {
+   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mzticxnqf22p|jamalmurray|questionable|status",
+   "at": "2026-11-08T22:43:10.000Z",
+   "seen": "2026-11-08T23:43:10.786Z",
+   "handle": "rotowirenba.bsky.social",
+   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mzticxnqf22p",
+   "player": "Jamal Murray",
+   "team": "DEN",
+   "status": "questionable",
+   "kind": "status",
+   "confidence": 0.9,
+   "text": "Jamal Murray: Questionable against Houston \n\n https://www.rotowire.com/basketball/player/jamal-murray-3882"
+  },
+  {
+   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mztij7em6r2y|christianbraun|questionable|status",
+   "at": "2026-11-08T22:46:39.000Z",
+   "seen": "2026-11-08T23:43:10.786Z",
+   "handle": "rotowirenba.bsky.social",
+   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mztij7em6r2y",
+   "player": "Christian Braun",
+   "team": "DEN",
+   "status": "questionable",
+   "kind": "status",
+   "confidence": 0.9,
+   "text": "Christian Braun: Questionable for Monday \n\n https://www.rotowire.com/basketball/player/christian-braun-5710"
+  },
+  {
+   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mztivfo4aw2p|domantassabonis|questionable|status",
+   "at": "2026-11-08T22:53:28.000Z",
+   "seen": "2026-11-08T23:43:10.786Z",
+   "handle": "rotowirenba.bsky.social",
+   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mztivfo4aw2p",
+   "player": "Domantas Sabonis",
+   "team": "SAC",
+   "status": "questionable",
+   "kind": "status",
+   "confidence": 0.9,
+   "text": "Domantas Sabonis: Downgraded to questionable Sunday \n\n https://www.rotowire.com/basketball/player/domantas-sabonis-3865"
+  },
+  {
+   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mztk2ddim32c|laurimarkkanen|out|status",
+   "at": "2026-11-08T23:14:07.000Z",
+   "seen": "2026-11-08T23:43:10.786Z",
+   "handle": "rotowirenba.bsky.social",
+   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mztk2ddim32c",
+   "player": "Lauri Markkanen",
+   "team": "UTA",
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.95,
+   "text": "Lauri Markkanen: Out Sunday \n\n https://www.rotowire.com/basketball/player/lauri-markkanen-4119"
   }
  ]
 }

@@ -1,28 +1,15 @@
 {
  "sport": "nfl",
  "cursor": {
-  "adamscheftermirror.bsky.social": "2026-11-08T22:25:09.813Z",
+  "adamscheftermirror.bsky.social": "2026-11-08T22:40:28.832Z",
   "rapsheet.bsky.social": "2026-11-08T20:02:23.434Z",
   "nflnewsreposterbot.bsky.social": "2026-11-06T17:28:39.017Z",
-  "insidenflnews.bsky.social": "2026-11-08T22:26:15.121Z",
-  "nflnewsposter.bsky.social": "2026-11-08T22:37:44.045Z",
-  "rotoworld-fb.bsky.social": "2026-11-08T22:34:22.000Z",
-  "rotowirenfl.bsky.social": "2026-11-08T22:38:46.000Z"
+  "insidenflnews.bsky.social": "2026-11-08T23:38:03.972Z",
+  "nflnewsposter.bsky.social": "2026-11-08T23:42:30.971Z",
+  "rotoworld-fb.bsky.social": "2026-11-08T23:01:35.000Z",
+  "rotowirenfl.bsky.social": "2026-11-08T23:37:52.000Z"
  },
  "claims": [
-  {
-   "id": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3my6pfedb6c2n|kincaid|questionable|status",
-   "at": "2026-10-18T22:58:40.000Z",
-   "seen": "2026-10-19T21:15:18.875Z",
-   "handle": "rotoworld-fb.bsky.social",
-   "post": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3my6pfedb6c2n",
-   "player": "Kincaid",
-   "team": null,
-   "status": "questionable",
-   "kind": "status",
-   "confidence": 0.8,
-   "text": "Kincaid (ribs) questionable to return vs. Raiders"
-  },
   {
    "id": "at://did:plc:rx22hq465sfe5g2qyyf5gzu2/app.bsky.feed.post/3myacgwm46c2o|jalenhurts|out|status",
    "at": "2026-10-19T14:12:14.243Z",
@@ -18625,6 +18612,58 @@
    "kind": "status",
    "confidence": 0.5,
    "text": "‼️ Garafolo: Puka Nacua will undergo MRI for knee injury.\n\nRams currently don't believe he suffered a torn ACL."
+  },
+  {
+   "id": "at://did:plc:qre6zxbmr3ixhdmgsgdretb5/app.bsky.feed.post/3mzti65qpwm2g|pukanacua|questionable|status",
+   "at": "2026-11-08T22:40:28.832Z",
+   "seen": "2026-11-08T23:43:10.786Z",
+   "handle": "adamscheftermirror.bsky.social",
+   "post": "at://did:plc:qre6zxbmr3ixhdmgsgdretb5/app.bsky.feed.post/3mzti65qpwm2g",
+   "player": "Puka Nacua",
+   "team": "LAR",
+   "status": "questionable",
+   "kind": "status",
+   "confidence": 0.4,
+   "text": "All-Pro WR Puka Nacua suffered a knee injury on the Rams’ final offensive snap today, and will undergo an MRI on Monday to determine the extent of the injury, per @MikeGarafolo and me. The team does n"
+  },
+  {
+   "id": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3mztjdw4k4s2k|xavierworthy|questionable|status",
+   "at": "2026-11-08T23:01:35.000Z",
+   "seen": "2026-11-08T23:43:10.786Z",
+   "handle": "rotoworld-fb.bsky.social",
+   "post": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3mztjdw4k4s2k",
+   "player": "Xavier Worthy",
+   "team": "KC",
+   "status": "questionable",
+   "kind": "status",
+   "confidence": 0.3,
+   "text": "Xavier Worthy injures hamstring vs. Jets"
+  },
+  {
+   "id": "at://did:plc:fuqjc7x4gxvnwzksnlxwbe4x/app.bsky.feed.post/3mztkibosxk75|joshjacobs|none|benched",
+   "at": "2026-11-08T23:21:56.014Z",
+   "seen": "2026-11-08T23:43:10.786Z",
+   "handle": "nflnewsposter.bsky.social",
+   "post": "at://did:plc:fuqjc7x4gxvnwzksnlxwbe4x/app.bsky.feed.post/3mztkibosxk75",
+   "player": "Josh Jacobs",
+   "team": null,
+   "status": "none",
+   "kind": "benched",
+   "confidence": 0.4,
+   "text": "[Schneidman] Josh Jacobs is still on the sideline in full uniform catching balls, but he doesn't start the second half. twitter.com/mattschneidm..."
+  },
+  {
+   "id": "at://did:plc:mbr4badgf6yu56mquzackzew/app.bsky.feed.post/3mztlf4skh22w|drewlock|active|return",
+   "at": "2026-11-08T23:38:03.972Z",
+   "seen": "2026-11-08T23:43:10.786Z",
+   "handle": "insidenflnews.bsky.social",
+   "post": "at://did:plc:mbr4badgf6yu56mquzackzew/app.bsky.feed.post/3mztlf4skh22w",
+   "player": "Drew Lock",
+   "team": null,
+   "status": "active",
+   "kind": "return",
+   "confidence": 0.5,
+   "text": "Status alert: Drew Lock has returned to Sunday's game."
   }
  ]
 }

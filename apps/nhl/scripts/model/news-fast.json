@@ -3,24 +3,11 @@
  "cursor": {
   "johnston-bot.bsky.social": "2026-11-08T01:26:11.710Z",
   "notfriedgehnic.bsky.social": "2026-11-08T19:18:40.624Z",
-  "dailyfaceoff.bsky.social": "2026-11-08T22:38:02.000Z",
+  "dailyfaceoff.bsky.social": "2026-11-08T23:23:36.000Z",
   "dfotoronto.bsky.social": "2026-11-08T22:20:03.000Z",
-  "marklazerus.bsky.social": "2026-11-08T22:38:12.103Z"
+  "marklazerus.bsky.social": "2026-11-08T23:34:44.455Z"
  },
  "claims": [
-  {
-   "id": "at://did:plc:3uus7y6h3rlrk6sbctzxm4bg/app.bsky.feed.post/3my6r7yzlc32f|camyork|out|status",
-   "at": "2026-10-18T23:31:28.000Z",
-   "seen": "2026-10-19T21:15:18.875Z",
-   "handle": "dailyfaceoff.bsky.social",
-   "post": "at://did:plc:3uus7y6h3rlrk6sbctzxm4bg/app.bsky.feed.post/3my6r7yzlc32f",
-   "player": "Cam York",
-   "team": "PHI",
-   "status": "out",
-   "kind": "status",
-   "confidence": 0.95,
-   "text": "Flyers place Cam York on injured reserve"
-  },
   {
    "id": "at://did:plc:3uus7y6h3rlrk6sbctzxm4bg/app.bsky.feed.post/3mya6oaaklg22|camyork|out|status",
    "at": "2026-10-19T13:04:44.000Z",
