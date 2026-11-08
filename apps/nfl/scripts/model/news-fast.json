@@ -1,13 +1,13 @@
 {
  "sport": "nfl",
  "cursor": {
-  "adamscheftermirror.bsky.social": "2026-11-08T21:25:07.266Z",
+  "adamscheftermirror.bsky.social": "2026-11-08T22:10:03.043Z",
   "rapsheet.bsky.social": "2026-11-08T20:02:23.434Z",
   "nflnewsreposterbot.bsky.social": "2026-11-06T17:28:39.017Z",
-  "insidenflnews.bsky.social": "2026-11-08T21:21:31.454Z",
-  "nflnewsposter.bsky.social": "2026-11-08T21:30:28.691Z",
-  "rotoworld-fb.bsky.social": "2026-11-08T21:27:27.000Z",
-  "rotowirenfl.bsky.social": "2026-11-08T21:23:25.000Z"
+  "insidenflnews.bsky.social": "2026-11-08T21:53:58.270Z",
+  "nflnewsposter.bsky.social": "2026-11-08T22:11:39.960Z",
+  "rotoworld-fb.bsky.social": "2026-11-08T22:07:45.000Z",
+  "rotowirenfl.bsky.social": "2026-11-08T22:12:14.000Z"
  },
  "claims": [
   {
@@ -18547,6 +18547,58 @@
    "kind": "status",
    "confidence": 0.92,
    "text": "Ladd McConkey (back) suddenly questionable in Wk 9"
+  },
+  {
+   "id": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3mztftk3tu52i|joshjacobs|questionable|status",
+   "at": "2026-11-08T21:58:45.000Z",
+   "seen": "2026-11-08T22:15:24.034Z",
+   "handle": "rotoworld-fb.bsky.social",
+   "post": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3mztftk3tu52i",
+   "player": "Josh Jacobs",
+   "team": "GB",
+   "status": "questionable",
+   "kind": "status",
+   "confidence": 0.9,
+   "text": "Jacobs (hand) questionable to return vs. Pats"
+  },
+  {
+   "id": "at://did:plc:fuqjc7x4gxvnwzksnlxwbe4x/app.bsky.feed.post/3mztfuxju2275|joshjacobs|questionable|status",
+   "at": "2026-11-08T21:59:32.864Z",
+   "seen": "2026-11-08T22:15:24.034Z",
+   "handle": "nflnewsposter.bsky.social",
+   "post": "at://did:plc:fuqjc7x4gxvnwzksnlxwbe4x/app.bsky.feed.post/3mztfuxju2275",
+   "player": "Josh Jacobs",
+   "team": "GB",
+   "status": "questionable",
+   "kind": "status",
+   "confidence": 0.95,
+   "text": "[Packers] RB Josh Jacobs (hand) is questionable to return. twitter.com/packers/stat..."
+  },
+  {
+   "id": "at://did:plc:qre6zxbmr3ixhdmgsgdretb5/app.bsky.feed.post/3mztghqlzdm2b|joshjacobs|questionable|status",
+   "at": "2026-11-08T22:10:03.043Z",
+   "seen": "2026-11-08T22:15:24.034Z",
+   "handle": "adamscheftermirror.bsky.social",
+   "post": "at://did:plc:qre6zxbmr3ixhdmgsgdretb5/app.bsky.feed.post/3mztghqlzdm2b",
+   "player": "Josh Jacobs",
+   "team": "GB",
+   "status": "questionable",
+   "kind": "status",
+   "confidence": 0.9,
+   "text": "Josh Jacobs has a hand injury and the team says he’s questionable to return today.\n\nOriginal post"
+  },
+  {
+   "id": "at://did:plc:fuqjc7x4gxvnwzksnlxwbe4x/app.bsky.feed.post/3mztgjxot5k2d|roylopez|questionable|status",
+   "at": "2026-11-08T22:11:17.671Z",
+   "seen": "2026-11-08T22:15:24.034Z",
+   "handle": "nflnewsposter.bsky.social",
+   "post": "at://did:plc:fuqjc7x4gxvnwzksnlxwbe4x/app.bsky.feed.post/3mztgjxot5k2d",
+   "player": "Roy Lopez",
+   "team": "ARI",
+   "status": "questionable",
+   "kind": "status",
+   "confidence": 0.9,
+   "text": "[Cardinals] DL Roy Lopez (toe) is questionable to return. twitter.com/AZCardinals/..."
   }
  ]
 }
