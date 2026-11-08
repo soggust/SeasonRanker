@@ -1,93 +1,15 @@
 {
  "sport": "nfl",
  "cursor": {
-  "adamscheftermirror.bsky.social": "2026-11-08T12:10:11.844Z",
+  "adamscheftermirror.bsky.social": "2026-11-08T14:00:00.229Z",
   "rapsheet.bsky.social": "2026-11-07T19:32:21.112Z",
   "nflnewsreposterbot.bsky.social": "2026-11-06T17:28:39.017Z",
   "insidenflnews.bsky.social": "2026-11-08T13:06:03.673Z",
   "nflnewsposter.bsky.social": "2026-11-08T00:10:37.902Z",
-  "rotoworld-fb.bsky.social": "2026-11-08T13:46:58.000Z",
+  "rotoworld-fb.bsky.social": "2026-11-08T14:09:52.000Z",
   "rotowirenfl.bsky.social": "2026-11-08T13:42:09.000Z"
  },
  "claims": [
-  {
-   "id": "at://did:plc:hlvr2omhnmvdmfnvmcuhyevz/app.bsky.feed.post/3my5rdhawgs2a|joealt|out|status",
-   "at": "2026-10-18T14:00:44.393Z",
-   "seen": "2026-10-19T21:15:18.875Z",
-   "handle": "rapsheet.bsky.social",
-   "post": "at://did:plc:hlvr2omhnmvdmfnvmcuhyevz/app.bsky.feed.post/3my5rdhawgs2a",
-   "player": "Joe Alt",
-   "team": "LAC",
-   "status": "out",
-   "kind": "status",
-   "confidence": 0.5,
-   "text": "Chargers OT Joe Alt, who has missed a couple games with a neck injury, received good news after a visit to a specialist this week, sources say. Alt is expected to ramp up this week, with a return to t"
-  },
-  {
-   "id": "at://did:plc:hlvr2omhnmvdmfnvmcuhyevz/app.bsky.feed.post/3my5rerwbts2a|patfreiermuth|active|status",
-   "at": "2026-10-18T14:01:29.139Z",
-   "seen": "2026-10-19T21:15:18.875Z",
-   "handle": "rapsheet.bsky.social",
-   "post": "at://did:plc:hlvr2omhnmvdmfnvmcuhyevz/app.bsky.feed.post/3my5rerwbts2a",
-   "player": "Pat Freiermuth",
-   "team": "PIT",
-   "status": "active",
-   "kind": "status",
-   "confidence": 0.55,
-   "text": "The Steelers are optimistic that TE Pat Freiermuth, who was added to the injury report with a calf injury on Saturday, will play, sources say."
-  },
-  {
-   "id": "at://did:plc:hlvr2omhnmvdmfnvmcuhyevz/app.bsky.feed.post/3my5rmbgzdc2a|seantucker|out|status",
-   "at": "2026-10-18T14:05:40.296Z",
-   "seen": "2026-10-19T21:15:18.875Z",
-   "handle": "rapsheet.bsky.social",
-   "post": "at://did:plc:hlvr2omhnmvdmfnvmcuhyevz/app.bsky.feed.post/3my5rmbgzdc2a",
-   "player": "Sean Tucker",
-   "team": "TB",
-   "status": "out",
-   "kind": "status",
-   "confidence": 0.8,
-   "text": "Bucs RB Sean Tucker (quad) is listed as questionable and is not expected to go today, sources say."
-  },
-  {
-   "id": "at://did:plc:hlvr2omhnmvdmfnvmcuhyevz/app.bsky.feed.post/3my5rnayd6k2a|kenyonsadiq|active|status",
-   "at": "2026-10-18T14:06:13.370Z",
-   "seen": "2026-10-19T21:15:18.875Z",
-   "handle": "rapsheet.bsky.social",
-   "post": "at://did:plc:hlvr2omhnmvdmfnvmcuhyevz/app.bsky.feed.post/3my5rnayd6k2a",
-   "player": "Kenyon Sadiq",
-   "team": "NYJ",
-   "status": "active",
-   "kind": "status",
-   "confidence": 0.8,
-   "text": "Jets TE Kenyon Sadiq (concussion) should be good to go after having a full practice on Friday, source says."
-  },
-  {
-   "id": "at://did:plc:hlvr2omhnmvdmfnvmcuhyevz/app.bsky.feed.post/3my5rohakxk2a|andrewthomas|active|status",
-   "at": "2026-10-18T14:06:53.487Z",
-   "seen": "2026-10-19T21:15:18.875Z",
-   "handle": "rapsheet.bsky.social",
-   "post": "at://did:plc:hlvr2omhnmvdmfnvmcuhyevz/app.bsky.feed.post/3my5rohakxk2a",
-   "player": "Andrew Thomas",
-   "team": "NYG",
-   "status": "active",
-   "kind": "status",
-   "confidence": 0.6,
-   "text": "Giants LT  Andrew Thomas (groin) and edge Abdul Carter (calf) are both expected to play, sources say. Both are listed as questionable."
-  },
-  {
-   "id": "at://did:plc:hlvr2omhnmvdmfnvmcuhyevz/app.bsky.feed.post/3my5rohakxk2a|abdulcarter|active|status",
-   "at": "2026-10-18T14:06:53.487Z",
-   "seen": "2026-10-19T21:15:18.875Z",
-   "handle": "rapsheet.bsky.social",
-   "post": "at://did:plc:hlvr2omhnmvdmfnvmcuhyevz/app.bsky.feed.post/3my5rohakxk2a",
-   "player": "Abdul Carter",
-   "team": "NYG",
-   "status": "active",
-   "kind": "status",
-   "confidence": 0.6,
-   "text": "Giants LT  Andrew Thomas (groin) and edge Abdul Carter (calf) are both expected to play, sources say. Both are listed as questionable."
-  },
   {
    "id": "at://did:plc:hlvr2omhnmvdmfnvmcuhyevz/app.bsky.feed.post/3my5smhvc3k23|alvinkamara|active|status",
    "at": "2026-10-18T14:23:40.797Z",
@@ -17910,6 +17832,19 @@
    "kind": "status",
    "confidence": 0.8,
    "text": "Garafolo: Evans \"questionable at best\" for Week 10"
+  },
+  {
+   "id": "at://did:plc:qre6zxbmr3ixhdmgsgdretb5/app.bsky.feed.post/3mzsl3hvcbv2p|joemilton|none|starting",
+   "at": "2026-11-08T14:00:00.229Z",
+   "seen": "2026-11-08T14:16:53.459Z",
+   "handle": "adamscheftermirror.bsky.social",
+   "post": "at://did:plc:qre6zxbmr3ixhdmgsgdretb5/app.bsky.feed.post/3mzsl3hvcbv2p",
+   "player": "Joe Milton",
+   "team": "PHI",
+   "status": "none",
+   "kind": "starting",
+   "confidence": 0.9,
+   "text": "Eagles QB Joe Milton will start his first game today since Nov. 25, 2023, when led Tennessee to a 48-24 win over Vanderbilt while throwing for a career-high 383 yards and four touchdowns and rushing f"
   }
  ]
 }
