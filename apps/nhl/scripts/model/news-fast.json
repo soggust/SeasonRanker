@@ -1,11 +1,11 @@
 {
  "sport": "nhl",
  "cursor": {
-  "johnston-bot.bsky.social": "2026-11-07T23:30:19.186Z",
+  "johnston-bot.bsky.social": "2026-11-08T01:26:11.710Z",
   "notfriedgehnic.bsky.social": "2026-11-07T23:23:18.550Z",
   "dailyfaceoff.bsky.social": "2026-11-08T01:09:02.000Z",
-  "dfotoronto.bsky.social": "2026-11-07T22:05:34.000Z",
-  "marklazerus.bsky.social": "2026-11-08T01:11:02.749Z"
+  "dfotoronto.bsky.social": "2026-11-08T01:36:37.000Z",
+  "marklazerus.bsky.social": "2026-11-08T01:42:56.045Z"
  },
  "claims": [
   {
@@ -1957,6 +1957,19 @@
    "kind": "return",
    "confidence": 0.7,
    "text": "Oilers activate Zach Hyman, Devon Levi off IR"
+  },
+  {
+   "id": "at://did:plc:ma4xzjexknxz7geuggbqbsmi/app.bsky.feed.post/3mzraxm3ans2y|morganrielly|out|status",
+   "at": "2026-11-08T01:26:11.710Z",
+   "seen": "2026-11-08T01:43:55.814Z",
+   "handle": "johnston-bot.bsky.social",
+   "post": "at://did:plc:ma4xzjexknxz7geuggbqbsmi/app.bsky.feed.post/3mzraxm3ans2y",
+   "player": "Morgan Rielly",
+   "team": "TOR",
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.5,
+   "text": "Morgan Rielly is done for the night due to a lower-body injury."
   }
  ]
 }

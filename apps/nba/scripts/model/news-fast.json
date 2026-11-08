@@ -1,7 +1,7 @@
 {
  "sport": "nba",
  "cursor": {
-  "rotowirenba.bsky.social": "2026-11-08T01:11:34.000Z",
+  "rotowirenba.bsky.social": "2026-11-08T01:30:40.000Z",
   "insidenbanews.bsky.social": "2026-11-07T05:11:20.386Z",
   "shamsbot.bsky.social": "2026-11-04T20:33:22.000Z"
  },
@@ -9313,6 +9313,19 @@
    "kind": "status",
    "confidence": 0.95,
    "text": "Brandon Ingram: Remains out Sunday \n\n https://www.rotowire.com/basketball/player/brandon-ingram-3861"
+  },
+  {
+   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mzrb7latp72v|keeganmurray|questionable|status",
+   "at": "2026-11-08T01:30:40.000Z",
+   "seen": "2026-11-08T01:43:55.814Z",
+   "handle": "rotowirenba.bsky.social",
+   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mzrb7latp72v",
+   "player": "Keegan Murray",
+   "team": null,
+   "status": "questionable",
+   "kind": "status",
+   "confidence": 0.9,
+   "text": "Keegan Murray: Questionable for Sunday \n\n https://www.rotowire.com/basketball/player/keegan-murray-5699"
   }
  ]
 }
