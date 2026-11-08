@@ -144,7 +144,8 @@ import { ROSTER_MIN, eventOf, gameOf, json, linesOf, roster, scoreboard, teamIds
 import { adjust, dynamicTerms, expect, fit, fitContext, gateOf, namedIdx, replay, round, setDynamic } from './ratings.mjs';
 import { OPTIONAL, enrich, featurize, gather } from './context.mjs';
 import { RECHECK, finalSummary, postmortems, propPostmortem, recheckSummary, usualRoles } from './postmortem.mjs';
-import { CLV_V, closeOf, closingLines, clvOf, clvSummary, propCarry, propCloseOf, revalueClv } from './clv.mjs';
+import { CLV_TIE, CLV_V, closeOf, closingLines, clvOf, clvSummary, propCarry, propCloseOf, revalueClv } from './clv.mjs';
+import { clvTable, clvTableText } from './clv-table.mjs';
 import { ANYTIME_TD, OUTLIER, SPORT_KEYS, anytimeOn, call, canSpend, consensusFields, gameLines, hasKey, linesFromEvent, linesSig, linesWant, matchNearest, MONTHLY, projectedMonth, refreshOn, usageSummary } from './oddsapi.mjs';
 import { backtestBets, evaluate, repriced, snapshots, trustBets } from './backtest.mjs';
 import { BANDS, buildPicks, kellyOf, levelOf, unlock } from './picks.mjs';
@@ -1521,7 +1522,8 @@ async function captureClose(r) {
       for (const bet of mine) {
         const was = bet.clv;
         let close = bet.market === 'prop' ? propCloseOf(bet, props) : closeOf(bet, lines);
-        if (close) close.source = 'close';
+        // (ESPN's close is DraftKings' (ESPN_PROVIDER): the close's book, D115, the CLV table's and clv.book)
+        if (close) Object.assign(close, { source: 'close', book: 'draftkings' });
         // (a prop whose board kept no price (the NFL's): the line and price The Odds API gave near the start)
         if (bet.market === 'prop' && close && close.odds === null && near(bet)) close = { ...bet.seen, source: 'odds api near the start' };
         // (an anytime touchdown, on no board ESPN shows, or a game ESPN keeps no close for: the same)
@@ -1552,6 +1554,9 @@ async function captureClose(r) {
   }
   if (fresh.length) console.log(`${sport}: closing lines for ${got} of ${fresh.length} bets on games played`);
   if (again || valued) console.log(`${sport}: CLV valued again (clv.mjs v${CLV_V}): ${again} closes read again, ${valued} from the close kept`);
+  // (the closing-line scorecard, D115 (clv-table.mjs): every run's log, by market and book; saveState keeps the rows)
+  r.clvTable = clvTable(r.ledger.bets, sport);
+  if (r.clvTable.length) console.log(clvTableText(r.clvTable, { title: `${sport}: closing-line value (D115; staked graded bets; CLV the close's no-vig chance less the chance our price implied, in points; beat past ${CLV_TIE * 100} points)` }));
 }
 
 // 4. the open bets graded against their finals (a prop from its box score: a player who didn't play is no
@@ -3560,6 +3565,8 @@ function saveState(r) {
     book: BOOK,
     odds: hasKey() ? usageSummary() : null,
     clv: { all: clvSummary(ledger.bets), ...Object.fromEntries([...MARKETS, 'prop'].map((m) => [m, clvSummary(ledger.bets.filter((b) => b.market === m))])) },
+    // (the closing-line scorecard by market and book, D115: clv-table.mjs clvTable, as captureClose logged it)
+    clvTable: r.clvTable ?? clvTable(ledger.bets, sport),
   });
   state.changelog = state.changelog.slice(-200);
   if (!DRY) {

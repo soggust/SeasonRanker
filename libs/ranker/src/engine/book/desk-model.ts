@@ -65,9 +65,11 @@ export interface ModelBet {
   // (the book it's priced and placed at, and where its fair chance came from: Pinnacle's or the book's own)
   book?: string;
   fairFrom?: string;
-  // (its closing-line value once its game has started: clv.mjs)
-  // (q: the close's no-vig chance of its side at its line; beat: its own price against that, never the market's move)
-  clv?: { pts: number | null; prob: number | null; ev: number | null; beat: boolean | null; q?: number | null } | null;
+  // (its closing-line value once its game has started: clv.mjs, DECISIONS.md D115)
+  // (q: the close's no-vig chance of its side at its line; prob: q less the chance its own price implied, in
+  // probability; cents the same in cents of American odds; beat: prob past the tie band, never the market's move;
+  // line 'moved': the close at another line, not judged; book: the close's (Pinnacle's, the US books' median, DraftKings'))
+  clv?: { pts: number | null; prob: number | null; cents?: number | null; ev: number | null; beat: boolean | null; q?: number | null; result?: string | null; line?: 'same' | 'moved'; book?: string; carried?: boolean; why?: string; v?: number } | null;
 }
 
 export type TestNumbers = { maeMargin: number; maeTotal: number; winHit: number; winLogLoss: number };
@@ -131,6 +133,26 @@ export interface ModelState {
   // off, bet at the practice stake (0.5u) till its CLV over its last `window` graded line bets since the epoch is
   // positive again)
   lineGate?: LineGate | null;
+  // (the closing-line scorecard by market and book, DECISIONS.md D115: clv-table.mjs clvTable; prob the mean CLV in
+  // probability, cents in cents of American odds, beat the share judged that beat the close, roi the flat return)
+  clvTable?: ClvTableRow[] | null;
+}
+export interface ClvTableRow {
+  sport: string;
+  market: string;
+  book: string;
+  bets: number;
+  judged: number;
+  prob: number | null;
+  cents: number | null;
+  beat: number | null;
+  missed: number | null;
+  tie: number | null;
+  moved: number;
+  noClose: number;
+  staked: number | null;
+  profit: number | null;
+  roi: number | null;
 }
 
 export interface LineGate {

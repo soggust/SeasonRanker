@@ -2642,3 +2642,40 @@ test("D113 the NHL record's swing of 2026-11-07 was the walk-forward fit searche
   assert.ok(F.FIT_FILES.includes("props.mjs"));
   assert.ok(F.FIT_FILES.includes("project.mjs"));
 });
+
+test("D115 closing-line value is the Bot's one honest scorecard: the close's no-vig chance less the chance our price implied, in points and cents; the vig never handed back; a moved line never judged; the sharpest close kept; the table every run", async () => {
+  const decisions = fs.readFileSync(path.resolve('libs/ranker/scripts/model/DECISIONS.md'), 'utf8');
+  assert.ok(decisions.includes('### D115.'));
+  const C = await import('../libs/ranker/scripts/model/clv.mjs');
+  const T = await import('../libs/ranker/scripts/model/clv-table.mjs');
+  assert.equal(C.CLV_V, 3);
+  // (the definition: a -110 price at a 50% no-vig close is under 0 by the vig, never 0; v2 read it as 0 and a shopped
+  // price as a beat)
+  const atVig = C.clvOf({ market: 'total', side: 'over', line: 44.5, odds: -110 }, { line: 44.5, odds: -110, fair: 0.5, source: 'close' }, 1.6);
+  assert.ok(atVig.prob < -0.02 && atVig.beat === false && atVig.result === 'missed', JSON.stringify(atVig));
+  assert.equal(atVig.cents, -10);
+  // (the sign of beat agrees with D56's fairBeat, the gates' and the replay's: one definition, up to the tie band)
+  for (const odds of [-130, -110, 100, 115, 150]) {
+    const c = C.clvOf({ market: 'ml', side: 'home', odds }, { line: null, odds: -115, fair: 0.52, source: 'close' }, 1.6);
+    if (c.beat !== null) assert.equal(C.fairBeat({ market: 'ml', clv: c }), c.beat ? 1 : 0, `${odds}`);
+  }
+  // (a moved line: said so, never beat or missed, the carried chance for the trust fit alone)
+  const moved = C.clvOf({ market: 'spread', side: 'home', line: -3, odds: -110 }, { line: -4, odds: -110, fair: 0.5, source: 'close' }, 13);
+  assert.deepEqual([moved.line, moved.result, moved.beat, moved.prob, moved.carried], ['moved', 'line moved', null, null, true]);
+  // (the sharpest close: Pinnacle, the US median, DraftKings, in that order)
+  assert.equal(C.sharpClose([{ book: 'draftkings', fair: 0.5 }, { book: 'pinnacle', fair: 0.51 }]).book, 'pinnacle');
+  assert.equal(C.sharpClose([{ book: 'draftkings', fair: 0.5 }, { book: 'fanduel', fair: 0.52 }]).book, 'consensus');
+  assert.equal(C.sharpClose([{ book: 'draftkings', fair: 0.5 }]).book, 'draftkings');
+  // (the live desk: ESPN's close is DraftKings', named; the table logged every run and kept in state.json)
+  const run = src('run.mjs');
+  assert.match(run, /if \(close\) Object\.assign\(close, \{ source: 'close', book: 'draftkings' \}\);/);
+  assert.match(run, /r\.clvTable = clvTable\(r\.ledger\.bets, sport\);\s+if \(r\.clvTable\.length\) console\.log\(clvTableText\(r\.clvTable/);
+  assert.match(run, /clvTable: r\.clvTable \?\? clvTable\(ledger\.bets, sport\),/);
+  // (the table counts the staked graded bets alone: tracked rows, open rows and the practice slate's 0u never in it)
+  assert.equal(T.scored({ intent: 'track', units: 0, status: 'won' }), false);
+  assert.equal(T.scored({ intent: 'edge', units: 0.5, status: 'open' }), false);
+  assert.equal(T.scored({ intent: 'edge', units: 0.5, status: 'push' }), true);
+  // (not a pricing change: no epoch bump for it; the gates still read D56's fairBeat (ev at the bet's own line))
+  assert.match(src('desk.mjs'), /const clvIn = \(b\) => b\.clv\?\.v === CLV_V && fairBeat\(b\) !== null;/);
+  assert.match(src('clv.mjs'), /export function fairBeat\(bet\) \{\s+const c = bet\?\.clv;\s+if \(!c \|\| !fin\(c\.ev\)\) return null;\s+if \(!\(bet\.market === 'ml' \|\| c\.pts === 0\)\) return null;\s+return c\.ev > 0 \? 1 : 0;/);
+});

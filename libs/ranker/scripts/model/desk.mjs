@@ -969,8 +969,8 @@ const beatOf = (list) => (list.length ? round(list.filter((b) => fairBeat(b) ===
 const byGraded = (a, b) => Date.parse(a.gradedAt ?? a.start ?? 0) - Date.parse(b.gradedAt ?? b.start ?? 0);
 // One market's gate (a line market's, a prop stat's) as the replay's bar reads it (replay-record.mjs beatBar, D60): its
 // last LINE_GATE_N graded bets with a fair close at their own line, from MIN of them, beat the fair close at least BAR
-// of the time, else the practice stake (D1: never off). The CLV (prob: the no-vig chance moved the bet's way) is shown,
-// never judged: a bet can move the chance its way while its own price still loses to the close (D93's audit)
+// of the time, else the practice stake (D1: never off). The CLV (prob, D115: the close's no-vig chance less the chance
+// the bet's own price implied; its sign agrees with ev's) is shown beside it, the beat share judged
 function marketGate(list, what, { bar: BAR, min: MIN }, epoch) {
   const last = [...list].sort(byGraded).slice(-LINE_GATE_N);
   const n = last.length;

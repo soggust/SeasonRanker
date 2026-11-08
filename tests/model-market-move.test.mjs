@@ -13,10 +13,11 @@ import { loadEngine } from './support/engine.mjs';
 const book = await loadEngine('nfl', { entry: path.join(import.meta.dirname, 'support', 'book-entry.ts'), data: {} });
 
 test('moveOf: the fair from the bet to the close at the same line; a moved line by its own way; ties for no move', () => {
-  // (a shopped price better than the close's fair while the market moved away: the old share's beat, the move against)
+  // (a shopped price at even money while the market moved away to a 49.51% fair: no edge on the close (D115: -0.49
+  // points, missed; v2 called it a beat by handing the close's vig back), and the market moved against it)
   const shopped = { market: 'prop', side: 'under', line: 0.5, odds: 100, fair: 0.5 };
   const c = clvOf(shopped, { line: 0.5, odds: -115, fair: 0.4951 }, null);
-  assert.equal(c.beat, true, 'its price beat the close');
+  assert.equal(c.beat, false, 'its price has no edge on the close');
   assert.deepEqual(moveOf({ ...shopped, clv: c }), { dir: -1, by: -0.0049 }, 'the market moved against it');
   // (toward, and a tie at CLV_TIE or less)
   assert.equal(moveOf({ fair: 0.5, clv: { pts: 0, q: 0.52 } }).dir, 1);
@@ -30,7 +31,7 @@ test('moveOf: the fair from the bet to the close at the same line; a moved line 
   assert.equal(moveOf({ clv: { pts: 0, q: 0.5 } }), null);
 });
 
-test('moveSummary and clvSummary: the share toward of the untied, ties counted apart, the old beat kept beside it', () => {
+test('moveSummary and clvSummary: the share toward of the untied, ties counted apart, the price share beside it', () => {
   const bets = [
     { fair: 0.5, clv: { pts: 0, q: 0.53, prob: 0.03, beat: true } },
     { fair: 0.5, clv: { pts: 0, q: 0.48, prob: 0.01, beat: true } },
@@ -43,7 +44,8 @@ test('moveSummary and clvSummary: the share toward of the untied, ties counted a
   assert.equal(m.share, 0.5);
   assert.equal(m.by, -0.005, 'the mean move of the same-line four');
   const s = clvSummary(bets);
-  assert.equal(s.beat, 1, 'the old share: every untied price beat the close');
+  assert.equal(s.beat, 0.75, 'the price share (D115): three of the four judged beat the close, the tie in the denominator');
+  assert.equal(s.tie, 0.25);
   assert.deepEqual(s.moved, m, 'the move beside it');
 });
 

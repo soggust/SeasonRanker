@@ -87,21 +87,31 @@ export function propCloseOf(bet, board) {
   return { line, odds, fair };
 }
 
-// A bet's CLV against its close (round F, 2026-10-18: the loss review's B1-B6). CLV is the bet's own price against
-// the close's no-vig chance at the bet's own line, the vig out of both: prob = q - mine, where
-//   q     the close's fair (no-vig) chance of the bet's side, carried to the bet's line where the line moved: a
-//         spread or total through the margins' chances (dist, margins.mjs atLine; without them about 0.4 / sigma a
-//         point), a prop through its stat's own spread (carry(side, fromLine, fairSide, toLine): propCarry); a
-//         moved line with no way to carry it is left out with its reason (why), never counted as zero or a loss
-//   mine  the bet's price with the vig out at the close's own margin on that side (its implied chance over the
-//         close's implied over its fair): a price that didn't move is 0, the vig never read as lost value. With
-//         no closing price, bet.fair (the book's fair when it bet)
-// ev is apart: the expected return at q and the bet's own price (a push's share out), the vig in it (a bet at the
-// close itself returns about minus the vig). beat: true past +CLV_TIE, false under -CLV_TIE, null a tie (result
-// says which: 'beat', 'tie', 'lose'). pts: the points it got better than the close, its own side's way (spreads,
-// totals, props; a fixed line's 0). v: CLV_V, the definition's version (an older row is valued again: revalueClv)
-export const CLV_V = 2;
+// A bet's CLV against its close (DECISIONS.md D115, 2026-11-08; before it round F's v2, 2026-10-18). One honest
+// number: how much better the price we took was than the market's closing price for the same thing. prob is the
+// close's no-vig chance of the bet's side at the bet's own line (q, the sharpest close kept: close.book) less the
+// chance the price we took implies (its vig in it: 1 / decimal(odds)), in probability (0.0123 is 1.23 points);
+// cents the same in cents of American odds (the bet's price less the fair closing price at q, both on one scale
+// where even money is 0: +120 against a fair +110 is +10, -105 against a fair -115 is +10). A price with no edge on
+// the close is under 0 by about the vig: the vig is never handed back (v2 took the close's vig out of our price, so
+// a shopped price beat DraftKings' closing vig price almost every time: NBA 89% beat on a mean CLV of about 0).
+//   beat     true past +CLV_TIE, false under -CLV_TIE, null a tie or no judgement; result says which: 'beat', 'missed',
+//            'tie', 'line moved', or null (no price to compare)
+//   line     'same' where the close is at the bet's line (a moneyline always), 'moved' where it isn't: a moved line is
+//            never called beat or missed (prob, cents, ev null; result 'line moved', why says the lines). q is then
+//            the close carried to the bet's line where the fit can (the margins' chances, a prop's stat spread), kept
+//            for the trust fit alone and flagged carried: true; null where it can't
+//   pts      the points the bet's line is better than the close's, its own side's way (spreads, totals, props; a
+//            moneyline's null); 0 at the same line
+//   ev       the expected return of the bet's own price at q, a push's share out (the same sign as prob: D56's
+//            fairBeat reads it, so the gates and the replay's bar agree with beat up to the tie band)
+//   book     the close's book: 'pinnacle', 'consensus' (the US books' median), 'draftkings' (ESPN's close), or none
+//   v        CLV_V, the definition's version (an older row is valued again: revalueClv)
+export const CLV_V = 3;
 export const CLV_TIE = 0.001;
+// (American odds from a chance, and odds on the cents scale: even money 0, +120 is 20, -115 is -15)
+export const americanOf = (p) => (p >= 0.5 ? (-100 * p) / (1 - p) : (100 * (1 - p)) / p);
+export const centsOf = (american) => (american > 0 ? american - 100 : american + 100);
 export function clvOf(bet, close, sigma, dist = null, carry = null) {
   if (!close) return null;
   // (the points it got better than the close, its own side's way)
@@ -111,25 +121,47 @@ export function clvOf(bet, close, sigma, dist = null, carry = null) {
     else if (bet.market === 'total' || bet.market === 'prop') pts = bet.side === 'over' ? close.line - bet.line : bet.line - close.line;
   }
   pts = pts === null ? null : round(pts, 2);
-  const none = (why) => ({ pts, prob: null, ev: null, q: null, beat: null, result: null, why, v: CLV_V });
-  if (!fin(close.fair) || close.fair <= 0 || close.fair >= 1) return none('no closing price');
-  // (the closing fair chance of its side at its own line)
-  let q = close.fair;
-  if (pts) {
-    if (bet.market === 'spread' || bet.market === 'total') q = (dist ? atLine(bet.market, bet.side, close, bet.line, dist) : null) ?? (sigma ? close.fair + pts * (0.4 / sigma) : null);
-    else q = bet.market === 'prop' && carry ? carry(bet.side, close.line, close.fair, bet.line) : null;
-    if (!fin(q)) return none(`line moved from ${bet.line} to ${close.line}: no equivalent line to carry the close to`);
+  const moved = pts !== null && pts !== 0;
+  const book = close.book ?? (close.source === 'close' ? 'draftkings' : null);
+  const base = { pts, prob: null, cents: null, ev: null, q: null, beat: null, result: null, line: moved ? 'moved' : 'same', ...(book ? { book } : {}), v: CLV_V };
+  if (!fin(close.fair) || close.fair <= 0 || close.fair >= 1) return { ...base, why: 'no closing price' };
+  if (moved) {
+    // (the close carried to the bet's line for the trust fit (desk.mjs fitTrust reads q), never judged: the market
+    // moved the line, so no price at the bet's line closed)
+    let q = null;
+    if (bet.market === 'spread' || bet.market === 'total') q = (dist ? atLine(bet.market, bet.side, close, bet.line, dist) : null) ?? (sigma ? close.fair + pts * (0.4 / sigma) : null) ?? (carry ? carry(bet.side, close.line, close.fair, bet.line) : null);
+    else q = carry ? carry(bet.side, close.line, close.fair, bet.line) : null;
+    q = fin(q) ? round(Math.min(0.99, Math.max(0.01, q)), 4) : null;
+    return { ...base, q, ...(q === null ? {} : { carried: true }), result: 'line moved', why: `the close is at ${close.line}, the bet at ${bet.line}: no closing price at the bet's line, not judged` };
   }
-  q = Math.min(0.99, Math.max(0.01, q));
-  // (the bet's own price, the vig out at the close's margin on its side)
-  const k = fin(close.odds) && close.odds ? implied(close.odds) / close.fair : null;
-  const mine = k && fin(bet.odds) && bet.odds ? implied(bet.odds) / k : fin(bet.fair) ? bet.fair : null;
-  const prob = mine === null ? null : round(q - mine, 4);
-  // (q leaves a push out, margins.mjs cond: a push gives the stake back, so only the rest is won or lost, as
-  // desk.mjs choose prices it; bet.push, the model's push chance at its line, where it kept one)
-  const ev = fin(bet.odds) && bet.odds ? round((1 - (bet.push ?? 0)) * (q * decimal(bet.odds) - 1), 4) : null;
-  const result = prob === null ? null : prob > CLV_TIE ? 'beat' : prob < -CLV_TIE ? 'lose' : 'tie';
-  return { pts, prob, ev, q: round(q, 4), beat: result === 'beat' ? true : result === 'lose' ? false : null, result, v: CLV_V, ...(prob === null ? { why: 'no price to compare' } : {}) };
+  const q = Math.min(0.99, Math.max(0.01, close.fair));
+  if (!fin(bet.odds) || !bet.odds) return { ...base, q: round(q, 4), why: 'no price to compare' };
+  const prob = round(q - implied(bet.odds), 4);
+  const cents = round(centsOf(bet.odds) - centsOf(americanOf(q)), 1);
+  // (q leaves a push out, margins.mjs cond: a push gives the stake back, so only the rest is won or lost, as desk.mjs
+  // choose prices it; bet.push, the model's push chance at its line, where it kept one)
+  const ev = round((1 - (bet.push ?? 0)) * (q * decimal(bet.odds) - 1), 4);
+  const result = prob > CLV_TIE ? 'beat' : prob < -CLV_TIE ? 'missed' : 'tie';
+  return { ...base, prob, cents, ev, q: round(q, 4), beat: result === 'beat' ? true : result === 'missed' ? false : null, result };
+}
+
+// The sharpest close among the closes kept for a bet's side at its line (D115): Pinnacle's no-vig where the archive
+// has it, else the median no-vig of two or more US books' closes, else DraftKings' own, else the first. Each candidate
+// { book, line, odds, fair } (fair its side's no-vig chance; odds its price there, null where unknown). null with none
+export function sharpClose(candidates) {
+  const ok = (candidates ?? []).filter((c) => c && fin(c.fair) && c.fair > 0 && c.fair < 1);
+  if (!ok.length) return null;
+  const pin = ok.find((c) => c.book === 'pinnacle');
+  if (pin) return { ...pin, book: 'pinnacle' };
+  const us = ok.filter((c) => c.book && c.book !== 'pinnacle' && c.book !== 'consensus');
+  if (us.length >= 2) {
+    const fairs = us.map((c) => c.fair).sort((a, b) => a - b);
+    const mid = fairs.length % 2 ? fairs[(fairs.length - 1) / 2] : (fairs[fairs.length / 2 - 1] + fairs[fairs.length / 2]) / 2;
+    const dk = us.find((c) => c.book === 'draftkings');
+    return { line: us[0].line ?? null, odds: dk?.odds ?? null, fair: round(mid, 4), book: 'consensus', n: us.length };
+  }
+  const dk = ok.find((c) => c.book === 'draftkings');
+  return dk ? { ...dk, book: 'draftkings' } : { ...ok[0] };
 }
 
 // Beat the fair close, D56's one definition, for a live bet (DECISIONS.md D95: the live gates read it as the replay
@@ -192,18 +224,20 @@ export function moveSummary(bets) {
   return { n: m.length, toward, against, tie: m.length - toward - against, share: toward + against ? round(toward / (toward + against), 4) : null, by: by.length ? round(by.reduce((s, x) => s + x, 0) / by.length, 4) : null };
 }
 
-// CLV across bets: how many have it (a price to compare: clv.prob), the share that beat the close of those that
-// didn't tie it, the ties' share, the mean points (spreads, totals, props), chance (prob: the CLV) and expected
-// return at the close (ev, the vig in it); out: the rows with a close and no CLV (a moved line not carried, no price)
+// CLV across bets (D115): n the bets judged (a close at their line and a price to compare: clv.prob); beat the share of
+// them that beat the close (ties and misses in the denominator), missed the share that missed it, tie the ties';
+// prob the mean CLV (probability), cents the mean in cents, ev the mean return at the close; pts the mean points on
+// the bets with a line; out the rows with a close and no judgement (a moved line, no price), lineMoved of them the
+// lines that moved; moved the market's move (moveOf, D106), the page's "beat the close"
 export function clvSummary(bets) {
   const withClv = bets.filter((b) => b.clv && fin(b.clv.prob));
-  const decided = withClv.filter((b) => b.clv.beat === true || b.clv.beat === false);
-  const mean = (key) => {
-    const v = withClv.map((b) => b.clv[key]).filter(fin);
+  const mean = (list, key) => {
+    const v = list.map((b) => b.clv[key]).filter(fin);
     return v.length ? round(v.reduce((s, x) => s + x, 0) / v.length, 4) : null;
   };
-  const out = bets.filter((b) => b.clv && !fin(b.clv.prob)).length;
-  // (beat: the bet's own price against the close (clv.beat); moved: the market's move (moveOf, D106), the page's "beat
-  // the close")
-  return { n: withClv.length, moved: moveSummary(bets), beat: decided.length ? round(decided.filter((b) => b.clv.beat).length / decided.length, 4) : null, tie: withClv.length ? round((withClv.length - decided.length) / withClv.length, 4) : null, pts: mean('pts'), prob: mean('prob'), ev: mean('ev'), ...(out ? { out } : {}) };
+  const share = (pred) => (withClv.length ? round(withClv.filter(pred).length / withClv.length, 4) : null);
+  const outRows = bets.filter((b) => b.clv && !fin(b.clv.prob));
+  const out = outRows.length;
+  const lineMoved = outRows.filter((b) => b.clv.line === 'moved' || b.clv.result === 'line moved').length;
+  return { n: withClv.length, moved: moveSummary(bets), beat: share((b) => b.clv.beat === true), missed: share((b) => b.clv.beat === false), tie: share((b) => b.clv.beat === null), pts: mean(bets.filter((b) => b.clv), 'pts'), prob: mean(withClv, 'prob'), cents: mean(withClv, 'cents'), ev: mean(withClv, 'ev'), ...(out ? { out, lineMoved } : {}) };
 }
