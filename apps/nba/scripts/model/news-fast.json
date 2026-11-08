@@ -1,7 +1,7 @@
 {
  "sport": "nba",
  "cursor": {
-  "rotowirenba.bsky.social": "2026-11-08T18:55:47.000Z",
+  "rotowirenba.bsky.social": "2026-11-08T20:35:47.000Z",
   "insidenbanews.bsky.social": "2026-11-08T18:11:49.382Z",
   "shamsbot.bsky.social": "2026-11-08T18:05:20.000Z"
  },
@@ -9417,6 +9417,19 @@
    "kind": "status",
    "confidence": 0.95,
    "text": "Norman Powell: Out Sunday \n\n https://www.rotowire.com/basketball/player/norman-powell-3726"
+  },
+  {
+   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mztb76wacc2c|keeganmurray|active|return",
+   "at": "2026-11-08T20:35:47.000Z",
+   "seen": "2026-11-08T21:15:36.862Z",
+   "handle": "rotowirenba.bsky.social",
+   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mztb76wacc2c",
+   "player": "Keegan Murray",
+   "team": null,
+   "status": "active",
+   "kind": "return",
+   "confidence": 0.8,
+   "text": "Keegan Murray: Returning versus Miami \n\n https://www.rotowire.com/basketball/player/keegan-murray-5699"
   }
  ]
 }

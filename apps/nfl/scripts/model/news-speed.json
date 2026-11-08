@@ -12883,6 +12883,10 @@
    "espn": {
     "seen": "2026-11-04T00:06:39.957Z",
     "own": "2026-10-28T23:45:00.000Z"
+   },
+   "sleeper": {
+    "seen": "2026-11-08T21:12:40.089Z",
+    "own": "2026-11-07T21:05:12.436Z"
    }
   },
   "401873048|jamesconner|out": {
@@ -13061,6 +13065,10 @@
     "seen": "2026-11-07T16:06:15.969Z",
     "own": "2026-11-07T15:57:57.339Z",
     "why": "@nflnewsposter.bsky.social: [Pelissero] Seahawks QB Drew Lock has been battling "
+   },
+   "sleeper": {
+    "seen": "2026-11-08T21:12:40.089Z",
+    "own": "2026-11-08T15:00:18.749Z"
    }
   },
   "401873037|tuten|q": {
@@ -14396,6 +14404,10 @@
    "espn": {
     "seen": "2026-11-05T04:18:36.874Z",
     "own": "2026-11-05T03:55:00.000Z"
+   },
+   "sleeper": {
+    "seen": "2026-11-08T21:12:40.089Z",
+    "own": "2026-11-08T03:45:14.648Z"
    }
   },
   "401873048|isaiahadams|out": {
@@ -14825,6 +14837,10 @@
    "espn": {
     "seen": "2026-11-05T22:38:48.557Z",
     "own": "2026-11-05T22:13:00.000Z"
+   },
+   "sleeper": {
+    "seen": "2026-11-08T21:12:40.089Z",
+    "own": "2026-11-08T02:05:14.059Z"
    }
   },
   "401873051|alecanderson|q": {
@@ -14837,6 +14853,10 @@
    "espn": {
     "seen": "2026-11-05T22:38:48.557Z",
     "own": "2026-11-05T22:12:00.000Z"
+   },
+   "sleeper": {
+    "seen": "2026-11-08T21:12:40.089Z",
+    "own": "2026-11-08T02:15:14.133Z"
    }
   },
   "401873051|joshuapalmer|q": {
@@ -14873,6 +14893,10 @@
    "espn": {
     "seen": "2026-11-05T23:00:43.179Z",
     "own": "2026-11-05T22:32:00.000Z"
+   },
+   "sleeper": {
+    "seen": "2026-11-08T21:12:40.089Z",
+    "own": "2026-11-08T05:10:16.355Z"
    }
   },
   "401873037|kedonslovis|out": {
@@ -18185,6 +18209,10 @@
     "seen": "2026-11-07T19:38:42.361Z",
     "own": "2026-11-07T19:24:19.000Z",
     "why": "@rotowirenfl.bsky.social: Kyler Murray: Out for Monday's game \n\n https://www.rot"
+   },
+   "sleeper": {
+    "seen": "2026-11-08T21:12:40.089Z",
+    "own": "2026-11-08T05:10:16.381Z"
    }
   },
   "401873051|jauanjennings|out": {
@@ -18218,6 +18246,10 @@
    "espn": {
     "seen": "2026-11-07T19:14:35.204Z",
     "own": "2026-11-07T19:12:00.000Z"
+   },
+   "sleeper": {
+    "seen": "2026-11-08T21:12:40.089Z",
+    "own": "2026-11-08T05:10:16.407Z"
    }
   },
   "401873052|jerzhannewton|q": {
@@ -20479,6 +20511,10 @@
    "espn": {
     "seen": "2026-11-08T19:58:03.890Z",
     "own": "2026-11-08T19:24:00.000Z"
+   },
+   "sleeper": {
+    "seen": "2026-11-08T21:12:40.089Z",
+    "own": "2026-11-08T19:30:20.779Z"
    }
   },
   "401873049|tylergoodson|q": {
@@ -20503,6 +20539,10 @@
    "espn": {
     "seen": "2026-11-08T19:58:03.890Z",
     "own": "2026-11-06T20:52:00.000Z"
+   },
+   "sleeper": {
+    "seen": "2026-11-08T21:12:40.089Z",
+    "own": "2026-11-08T20:15:21.003Z"
    }
   },
   "401873047|tylergoodson|q": {
@@ -20551,6 +20591,285 @@
     "seen": "2026-11-08T19:39:00.579Z",
     "own": "2026-11-08T19:22:45.526Z",
     "why": "@insidenflnews.bsky.social: 🚨 Status alert: Tyler Goodson (knee) questionable t"
+   }
+  },
+  "401873049|behrenmorton|out": {
+   "game": "401873049",
+   "start": "2026-11-08T21:25Z",
+   "team": "17",
+   "name": "Behren Morton",
+   "status": "out",
+   "athlete": "4431465",
+   "espn": {
+    "seen": "2026-11-08T21:12:40.089Z",
+    "own": "2026-11-08T20:19:00.000Z"
+   },
+   "sleeper": {
+    "seen": "2026-11-08T21:12:40.089Z",
+    "own": "2026-11-08T20:20:21.243Z"
+   }
+  },
+  "401873049|dametriouscrownover|out": {
+   "game": "401873049",
+   "start": "2026-11-08T21:25Z",
+   "team": "17",
+   "name": "Dametrious Crownover",
+   "status": "out",
+   "athlete": "4431526",
+   "espn": {
+    "seen": "2026-11-08T21:12:40.089Z",
+    "own": "2026-11-08T19:59:00.000Z"
+   }
+  },
+  "401873049|jaylenwaddle|out": {
+   "game": "401873049",
+   "start": "2026-11-08T21:25Z",
+   "team": "17",
+   "name": "Jaylen Waddle",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-08T20:00:18.279Z",
+    "own": "2026-11-08T19:53:29.000Z",
+    "why": "@rotoworld-fb.bsky.social: Waddle (concussion) ruled out for second half"
+   }
+  },
+  "401873049|donovanjennings|out": {
+   "game": "401873049",
+   "start": "2026-11-08T21:25Z",
+   "team": "9",
+   "name": "Donovan Jennings",
+   "status": "out",
+   "athlete": "4360887",
+   "espn": {
+    "seen": "2026-11-08T21:12:40.089Z",
+    "own": "2026-11-08T19:58:00.000Z"
+   }
+  },
+  "401873047|kurtisrourke|out": {
+   "game": "401873047",
+   "start": "2026-11-08T21:25Z",
+   "team": "25",
+   "name": "Kurtis Rourke",
+   "status": "out",
+   "athlete": "4430431",
+   "espn": {
+    "seen": "2026-11-08T21:12:40.089Z",
+    "own": "2026-11-08T20:01:00.000Z"
+   }
+  },
+  "401873047|khalidkareem|out": {
+   "game": "401873047",
+   "start": "2026-11-08T21:25Z",
+   "team": "25",
+   "name": "Khalid Kareem",
+   "status": "out",
+   "athlete": "4039029",
+   "espn": {
+    "seen": "2026-11-08T21:12:40.089Z",
+    "own": "2026-11-08T20:01:00.000Z"
+   }
+  },
+  "401873047|tatumbethune|out": {
+   "game": "401873047",
+   "start": "2026-11-08T21:25Z",
+   "team": "25",
+   "name": "Tatum Bethune",
+   "status": "out",
+   "athlete": "4426698",
+   "espn": {
+    "seen": "2026-11-08T21:12:40.089Z",
+    "own": "2026-11-08T20:01:00.000Z"
+   }
+  },
+  "401873047|enriquecruz|out": {
+   "game": "401873047",
+   "start": "2026-11-08T21:25Z",
+   "team": "25",
+   "name": "Enrique Cruz Jr.",
+   "status": "out",
+   "athlete": "4691556",
+   "espn": {
+    "seen": "2026-11-08T21:12:40.089Z",
+    "own": "2026-11-08T20:01:00.000Z"
+   }
+  },
+  "401873047|jaylenwaddle|out": {
+   "game": "401873047",
+   "start": "2026-11-08T21:25Z",
+   "team": "25",
+   "name": "Jaylen Waddle",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-08T20:00:18.279Z",
+    "own": "2026-11-08T19:53:29.000Z",
+    "why": "@rotoworld-fb.bsky.social: Waddle (concussion) ruled out for second half"
+   }
+  },
+  "401873047|dontethornton|out": {
+   "game": "401873047",
+   "start": "2026-11-08T21:25Z",
+   "team": "13",
+   "name": "Dont'e Thornton Jr.",
+   "status": "out",
+   "athlete": "4432775",
+   "espn": {
+    "seen": "2026-11-08T21:12:40.089Z",
+    "own": "2026-11-08T20:31:00.000Z"
+   },
+   "sleeper": {
+    "seen": "2026-11-08T21:12:40.089Z",
+    "own": "2026-11-08T20:35:21.232Z"
+   }
+  },
+  "401873047|malikbenson|out": {
+   "game": "401873047",
+   "start": "2026-11-08T21:25Z",
+   "team": "13",
+   "name": "Malik Benson",
+   "status": "out",
+   "athlete": "5150247",
+   "espn": {
+    "seen": "2026-11-08T21:12:40.089Z",
+    "own": "2026-11-08T20:23:00.000Z"
+   },
+   "sleeper": {
+    "seen": "2026-11-08T21:12:40.089Z",
+    "own": "2026-11-08T20:30:21.254Z"
+   }
+  },
+  "401873047|aidanoconnell|out": {
+   "game": "401873047",
+   "start": "2026-11-08T21:25Z",
+   "team": "13",
+   "name": "Aidan O'Connell",
+   "status": "out",
+   "athlete": "4260394",
+   "espn": {
+    "seen": "2026-11-08T21:12:40.089Z",
+    "own": "2026-11-08T20:19:00.000Z"
+   },
+   "sleeper": {
+    "seen": "2026-11-08T21:12:40.089Z",
+    "own": "2026-11-08T20:20:21.256Z"
+   }
+  },
+  "401873047|daltonjohnson|out": {
+   "game": "401873047",
+   "start": "2026-11-08T21:25Z",
+   "team": "13",
+   "name": "Dalton Johnson",
+   "status": "out",
+   "athlete": "4682488",
+   "espn": {
+    "seen": "2026-11-08T21:12:40.089Z",
+    "own": "2026-11-08T19:59:00.000Z"
+   }
+  },
+  "401873047|brycecabeldue|out": {
+   "game": "401873047",
+   "start": "2026-11-08T21:25Z",
+   "team": "13",
+   "name": "Bryce Cabeldue",
+   "status": "out",
+   "athlete": "4612077",
+   "espn": {
+    "seen": "2026-11-08T21:12:40.089Z",
+    "own": "2026-11-08T19:59:00.000Z"
+   }
+  },
+  "401873048|jaylenwaddle|out": {
+   "game": "401873048",
+   "start": "2026-11-08T21:25Z",
+   "team": "26",
+   "name": "Jaylen Waddle",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-08T20:00:18.279Z",
+    "own": "2026-11-08T19:53:29.000Z",
+    "why": "@rotoworld-fb.bsky.social: Waddle (concussion) ruled out for second half"
+   }
+  },
+  "401873048|albertreese|out": {
+   "game": "401873048",
+   "start": "2026-11-08T21:25Z",
+   "team": "22",
+   "name": "Albert Reese IV",
+   "status": "out",
+   "athlete": "4683506",
+   "espn": {
+    "seen": "2026-11-08T21:12:40.089Z",
+    "own": "2026-11-08T20:02:00.000Z"
+   }
+  },
+  "401873048|starlingthomasv|out": {
+   "game": "401873048",
+   "start": "2026-11-08T21:25Z",
+   "team": "22",
+   "name": "Starling Thomas V",
+   "status": "out",
+   "athlete": "4363408",
+   "espn": {
+    "seen": "2026-11-08T21:12:40.089Z",
+    "own": "2026-11-08T20:02:00.000Z"
+   }
+  },
+  "401873048|ekuleota|out": {
+   "game": "401873048",
+   "start": "2026-11-08T21:25Z",
+   "team": "22",
+   "name": "Eku Leota",
+   "status": "out",
+   "athlete": "4361272",
+   "espn": {
+    "seen": "2026-11-08T21:12:40.089Z",
+    "own": "2026-11-08T20:02:00.000Z"
+   }
+  },
+  "401873050|jaylenwaddle|out": {
+   "game": "401873050",
+   "start": "2026-11-09T01:20Z",
+   "team": "3",
+   "name": "Jaylen Waddle",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-08T20:00:18.279Z",
+    "own": "2026-11-08T19:53:29.000Z",
+    "why": "@rotoworld-fb.bsky.social: Waddle (concussion) ruled out for second half"
+   }
+  },
+  "401873051|theojackson|q": {
+   "game": "401873051",
+   "start": "2026-11-10T01:15Z",
+   "team": "16",
+   "name": "Theo Jackson",
+   "status": "q",
+   "sleeper": {
+    "seen": "2026-11-08T21:12:40.089Z",
+    "own": "2026-11-08T05:10:16.368Z"
+   }
+  },
+  "401873051|jaylenwaddle|out": {
+   "game": "401873051",
+   "start": "2026-11-10T01:15Z",
+   "team": "16",
+   "name": "Jaylen Waddle",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-08T20:00:18.279Z",
+    "own": "2026-11-08T19:53:29.000Z",
+    "why": "@rotoworld-fb.bsky.social: Waddle (concussion) ruled out for second half"
+   }
+  },
+  "401873051|jjmccarthy|out": {
+   "game": "401873051",
+   "start": "2026-11-10T01:15Z",
+   "team": "16",
+   "name": "JJ McCarthy",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-08T20:00:18.279Z",
+    "own": "2026-11-08T20:00:16.079Z",
+    "why": "@insidenflnews.bsky.social: Lineup alert: Jameis Winston enters game in place of"
    }
   }
  }
