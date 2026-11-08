@@ -18806,6 +18806,342 @@
     "seen": "2026-11-08T13:20:57.251Z",
     "own": "2026-11-08T13:04:00.000Z"
    }
+  },
+  "401873038|monangai|out": {
+   "game": "401873038",
+   "start": "2026-11-08T14:30Z",
+   "team": "1",
+   "name": "Monangai",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-08T13:34:19.144Z",
+    "own": "2026-11-08T13:24:46.000Z",
+    "why": "@rotoworld-fb.bsky.social: Monangai out Week 9, expected back after the bye"
+   }
+  },
+  "401873038|watson|out": {
+   "game": "401873038",
+   "start": "2026-11-08T14:30Z",
+   "team": "1",
+   "name": "Watson",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-08T13:34:19.144Z",
+    "own": "2026-11-08T13:29:17.000Z",
+    "why": "@rotoworld-fb.bsky.social: Watson clears concussion protocol, will not play"
+   }
+  },
+  "401873040|monangai|out": {
+   "game": "401873040",
+   "start": "2026-11-08T18:00Z",
+   "team": "11",
+   "name": "Monangai",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-08T13:34:19.144Z",
+    "own": "2026-11-08T13:24:46.000Z",
+    "why": "@rotoworld-fb.bsky.social: Monangai out Week 9, expected back after the bye"
+   }
+  },
+  "401873040|watson|out": {
+   "game": "401873040",
+   "start": "2026-11-08T18:00Z",
+   "team": "11",
+   "name": "Watson",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-08T13:34:19.144Z",
+    "own": "2026-11-08T13:29:17.000Z",
+    "why": "@rotoworld-fb.bsky.social: Watson clears concussion protocol, will not play"
+   }
+  },
+  "401873045|monangai|out": {
+   "game": "401873045",
+   "start": "2026-11-08T18:00Z",
+   "team": "12",
+   "name": "Monangai",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-08T13:34:19.144Z",
+    "own": "2026-11-08T13:24:46.000Z",
+    "why": "@rotoworld-fb.bsky.social: Monangai out Week 9, expected back after the bye"
+   }
+  },
+  "401873045|watson|out": {
+   "game": "401873045",
+   "start": "2026-11-08T18:00Z",
+   "team": "12",
+   "name": "Watson",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-08T13:34:19.144Z",
+    "own": "2026-11-08T13:29:17.000Z",
+    "why": "@rotoworld-fb.bsky.social: Watson clears concussion protocol, will not play"
+   }
+  },
+  "401873042|monangai|out": {
+   "game": "401873042",
+   "start": "2026-11-08T18:00Z",
+   "team": "15",
+   "name": "Monangai",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-08T13:34:19.144Z",
+    "own": "2026-11-08T13:24:46.000Z",
+    "why": "@rotoworld-fb.bsky.social: Monangai out Week 9, expected back after the bye"
+   }
+  },
+  "401873042|watson|out": {
+   "game": "401873042",
+   "start": "2026-11-08T18:00Z",
+   "team": "15",
+   "name": "Watson",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-08T13:34:19.144Z",
+    "own": "2026-11-08T13:29:17.000Z",
+    "why": "@rotoworld-fb.bsky.social: Watson clears concussion protocol, will not play"
+   }
+  },
+  "401873039|monangai|out": {
+   "game": "401873039",
+   "start": "2026-11-08T18:00Z",
+   "team": "18",
+   "name": "Monangai",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-08T13:34:19.144Z",
+    "own": "2026-11-08T13:24:46.000Z",
+    "why": "@rotoworld-fb.bsky.social: Monangai out Week 9, expected back after the bye"
+   }
+  },
+  "401873044|monangai|out": {
+   "game": "401873044",
+   "start": "2026-11-08T18:00Z",
+   "team": "21",
+   "name": "Monangai",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-08T13:34:19.144Z",
+    "own": "2026-11-08T13:24:46.000Z",
+    "why": "@rotoworld-fb.bsky.social: Monangai out Week 9, expected back after the bye"
+   }
+  },
+  "401873044|watson|out": {
+   "game": "401873044",
+   "start": "2026-11-08T18:00Z",
+   "team": "21",
+   "name": "Watson",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-08T13:34:19.144Z",
+    "own": "2026-11-08T13:29:17.000Z",
+    "why": "@rotoworld-fb.bsky.social: Watson clears concussion protocol, will not play"
+   }
+  },
+  "401873043|monangai|out": {
+   "game": "401873043",
+   "start": "2026-11-08T18:00Z",
+   "team": "28",
+   "name": "Monangai",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-08T13:34:19.144Z",
+    "own": "2026-11-08T13:24:46.000Z",
+    "why": "@rotoworld-fb.bsky.social: Monangai out Week 9, expected back after the bye"
+   }
+  },
+  "401873043|watson|out": {
+   "game": "401873043",
+   "start": "2026-11-08T18:00Z",
+   "team": "28",
+   "name": "Watson",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-08T13:34:19.144Z",
+    "own": "2026-11-08T13:29:17.000Z",
+    "why": "@rotoworld-fb.bsky.social: Watson clears concussion protocol, will not play"
+   }
+  },
+  "401873041|monangai|out": {
+   "game": "401873041",
+   "start": "2026-11-08T18:00Z",
+   "team": "29",
+   "name": "Monangai",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-08T13:34:19.144Z",
+    "own": "2026-11-08T13:24:46.000Z",
+    "why": "@rotoworld-fb.bsky.social: Monangai out Week 9, expected back after the bye"
+   }
+  },
+  "401873041|watson|out": {
+   "game": "401873041",
+   "start": "2026-11-08T18:00Z",
+   "team": "29",
+   "name": "Watson",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-08T13:34:19.144Z",
+    "own": "2026-11-08T13:29:17.000Z",
+    "why": "@rotoworld-fb.bsky.social: Watson clears concussion protocol, will not play"
+   }
+  },
+  "401873046|monangai|out": {
+   "game": "401873046",
+   "start": "2026-11-08T21:05Z",
+   "team": "24",
+   "name": "Monangai",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-08T13:34:19.144Z",
+    "own": "2026-11-08T13:24:46.000Z",
+    "why": "@rotoworld-fb.bsky.social: Monangai out Week 9, expected back after the bye"
+   }
+  },
+  "401873046|watson|out": {
+   "game": "401873046",
+   "start": "2026-11-08T21:05Z",
+   "team": "24",
+   "name": "Watson",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-08T13:34:19.144Z",
+    "own": "2026-11-08T13:29:17.000Z",
+    "why": "@rotoworld-fb.bsky.social: Watson clears concussion protocol, will not play"
+   }
+  },
+  "401873049|monangai|out": {
+   "game": "401873049",
+   "start": "2026-11-08T21:25Z",
+   "team": "17",
+   "name": "Monangai",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-08T13:34:19.144Z",
+    "own": "2026-11-08T13:24:46.000Z",
+    "why": "@rotoworld-fb.bsky.social: Monangai out Week 9, expected back after the bye"
+   }
+  },
+  "401873049|watson|out": {
+   "game": "401873049",
+   "start": "2026-11-08T21:25Z",
+   "team": "17",
+   "name": "Watson",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-08T13:34:19.144Z",
+    "own": "2026-11-08T13:29:17.000Z",
+    "why": "@rotoworld-fb.bsky.social: Watson clears concussion protocol, will not play"
+   }
+  },
+  "401873047|monangai|out": {
+   "game": "401873047",
+   "start": "2026-11-08T21:25Z",
+   "team": "25",
+   "name": "Monangai",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-08T13:34:19.144Z",
+    "own": "2026-11-08T13:24:46.000Z",
+    "why": "@rotoworld-fb.bsky.social: Monangai out Week 9, expected back after the bye"
+   }
+  },
+  "401873047|watson|out": {
+   "game": "401873047",
+   "start": "2026-11-08T21:25Z",
+   "team": "25",
+   "name": "Watson",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-08T13:34:19.144Z",
+    "own": "2026-11-08T13:29:17.000Z",
+    "why": "@rotoworld-fb.bsky.social: Watson clears concussion protocol, will not play"
+   }
+  },
+  "401873048|monangai|out": {
+   "game": "401873048",
+   "start": "2026-11-08T21:25Z",
+   "team": "26",
+   "name": "Monangai",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-08T13:34:19.144Z",
+    "own": "2026-11-08T13:24:46.000Z",
+    "why": "@rotoworld-fb.bsky.social: Monangai out Week 9, expected back after the bye"
+   }
+  },
+  "401873048|watson|out": {
+   "game": "401873048",
+   "start": "2026-11-08T21:25Z",
+   "team": "26",
+   "name": "Watson",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-08T13:34:19.144Z",
+    "own": "2026-11-08T13:29:17.000Z",
+    "why": "@rotoworld-fb.bsky.social: Watson clears concussion protocol, will not play"
+   }
+  },
+  "401873050|monangai|out": {
+   "game": "401873050",
+   "start": "2026-11-09T01:20Z",
+   "team": "3",
+   "name": "Monangai",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-08T13:34:19.144Z",
+    "own": "2026-11-08T13:24:46.000Z",
+    "why": "@rotoworld-fb.bsky.social: Monangai out Week 9, expected back after the bye"
+   }
+  },
+  "401873050|watson|out": {
+   "game": "401873050",
+   "start": "2026-11-09T01:20Z",
+   "team": "3",
+   "name": "Watson",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-08T13:34:19.144Z",
+    "own": "2026-11-08T13:29:17.000Z",
+    "why": "@rotoworld-fb.bsky.social: Watson clears concussion protocol, will not play"
+   }
+  },
+  "401873050|mikeevans|q": {
+   "game": "401873050",
+   "start": "2026-11-09T01:20Z",
+   "team": "27",
+   "name": "Mike Evans",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-11-08T13:34:19.144Z",
+    "own": "2026-11-08T13:26:41.000Z",
+    "why": "@rotowirenfl.bsky.social: Mike Evans: 'Questionable at best' for Week 10 \n\n http"
+   }
+  },
+  "401873051|monangai|out": {
+   "game": "401873051",
+   "start": "2026-11-10T01:15Z",
+   "team": "16",
+   "name": "Monangai",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-08T13:34:19.144Z",
+    "own": "2026-11-08T13:24:46.000Z",
+    "why": "@rotoworld-fb.bsky.social: Monangai out Week 9, expected back after the bye"
+   }
+  },
+  "401873051|watson|out": {
+   "game": "401873051",
+   "start": "2026-11-10T01:15Z",
+   "team": "16",
+   "name": "Watson",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-08T13:34:19.144Z",
+    "own": "2026-11-08T13:29:17.000Z",
+    "why": "@rotoworld-fb.bsky.social: Watson clears concussion protocol, will not play"
+   }
   }
  }
 }

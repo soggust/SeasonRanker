@@ -6,8 +6,8 @@
   "nflnewsreposterbot.bsky.social": "2026-11-06T17:28:39.017Z",
   "insidenflnews.bsky.social": "2026-11-08T13:06:03.673Z",
   "nflnewsposter.bsky.social": "2026-11-08T00:10:37.902Z",
-  "rotoworld-fb.bsky.social": "2026-11-08T13:29:17.000Z",
-  "rotowirenfl.bsky.social": "2026-11-08T13:26:41.000Z"
+  "rotoworld-fb.bsky.social": "2026-11-08T13:46:58.000Z",
+  "rotowirenfl.bsky.social": "2026-11-08T13:42:09.000Z"
  },
  "claims": [
   {
@@ -17897,6 +17897,19 @@
    "kind": "status",
    "confidence": 0.8,
    "text": "Watson clears concussion protocol, will not play"
+  },
+  {
+   "id": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3mzsk3wkspb2l|evans|questionable|status",
+   "at": "2026-11-08T13:42:21.000Z",
+   "seen": "2026-11-08T13:55:21.947Z",
+   "handle": "rotoworld-fb.bsky.social",
+   "post": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3mzsk3wkspb2l",
+   "player": "Evans",
+   "team": null,
+   "status": "questionable",
+   "kind": "status",
+   "confidence": 0.8,
+   "text": "Garafolo: Evans \"questionable at best\" for Week 10"
   }
  ]
 }
