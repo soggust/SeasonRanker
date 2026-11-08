@@ -3,7 +3,7 @@
  "cursor": {
   "johnston-bot.bsky.social": "2026-11-08T01:26:11.710Z",
   "notfriedgehnic.bsky.social": "2026-11-08T16:26:47.341Z",
-  "dailyfaceoff.bsky.social": "2026-11-08T16:02:07.000Z",
+  "dailyfaceoff.bsky.social": "2026-11-08T16:42:29.000Z",
   "dfotoronto.bsky.social": "2026-11-08T16:29:22.000Z",
   "marklazerus.bsky.social": "2026-11-08T16:03:17.188Z"
  },
@@ -1983,6 +1983,19 @@
    "kind": "status",
    "confidence": 0.35,
    "text": "Leafs’ Morgan Rielly leaves game with lower-body injury"
+  },
+  {
+   "id": "at://did:plc:3uus7y6h3rlrk6sbctzxm4bg/app.bsky.feed.post/3mzsu6223lf2n|kevinbahl|out|status",
+   "at": "2026-11-08T16:42:29.000Z",
+   "seen": "2026-11-08T16:56:32.992Z",
+   "handle": "dailyfaceoff.bsky.social",
+   "post": "at://did:plc:3uus7y6h3rlrk6sbctzxm4bg/app.bsky.feed.post/3mzsu6223lf2n",
+   "player": "Kevin Bahl",
+   "team": "CGY",
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.95,
+   "text": "Flames’ Kevin Bahl to miss rest of 2026-27 with ruptured Achilles tendon"
   }
  ]
 }
