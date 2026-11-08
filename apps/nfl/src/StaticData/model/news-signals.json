@@ -67,29 +67,7 @@
    "confidence": 0.8,
    "headline": "Rams' Myles Garrett to be activated from injured reserve, play vs. Commanders",
    "at": "2026-11-06T22:24:26.000Z"
-  },
-  {
-   "team": "5",
-   "abbr": "CLE",
-   "athlete": "4432762",
-   "player": "Shedeur Sanders",
-   "kind": "starting",
-   "direction": "up",
-   "confidence": 0.9,
-   "headline": "Browns to start Sanders at QB vs. Saints with Watson in protocol",
-   "at": "2026-11-06T18:56:40.000Z"
-  },
-  {
-   "team": "5",
-   "abbr": "CLE",
-   "athlete": "3122840",
-   "player": "Deshaun Watson",
-   "kind": "benched",
-   "direction": "down",
-   "confidence": 0.6,
-   "headline": "Browns to start Sanders at QB vs. Saints with Watson in protocol",
-   "at": "2026-11-06T18:56:40.000Z"
   }
  ],
- "at": "2026-11-08T18:15:31.992Z"
+ "at": "2026-11-08T19:14:57.032Z"
 }

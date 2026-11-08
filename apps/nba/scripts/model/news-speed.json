@@ -18271,6 +18271,11 @@
    "espn": {
     "seen": "2026-11-07T22:13:43.503Z",
     "own": "2026-10-25T14:56:00.000Z"
+   },
+   "bluesky": {
+    "seen": "2026-11-08T16:32:35.632Z",
+    "own": "2026-11-08T16:05:19.000Z",
+    "why": "@rotowirenba.bsky.social: Jalen Duren: To miss at least two more weeks \n\n https:"
    }
   },
   "401909946|jarrettallen|out": {
@@ -19968,6 +19973,11 @@
    "espn": {
     "seen": "2026-11-08T16:30:49.147Z",
     "own": "2026-11-08T16:19:00.000Z"
+   },
+   "bluesky": {
+    "seen": "2026-11-08T16:32:35.632Z",
+    "own": "2026-11-08T16:20:19.000Z",
+    "why": "@rotowirenba.bsky.social: Keyonte George: Questionable Sunday \n\n https://www.rot"
    }
   },
   "401909948|grantnelson|q": {
@@ -19980,6 +19990,59 @@
    "espn": {
     "seen": "2026-11-08T16:30:49.147Z",
     "own": "2026-11-08T16:21:00.000Z"
+   }
+  },
+  "401909945|normanpowell|out": {
+   "game": "401909945",
+   "start": "2026-11-08T20:30Z",
+   "team": "4",
+   "name": "Norman Powell",
+   "status": "out",
+   "athlete": "2595516",
+   "espn": {
+    "seen": "2026-11-08T19:13:28.414Z",
+    "own": "2026-11-08T18:55:00.000Z"
+   }
+  },
+  "401909946|lukadoncic|out": {
+   "game": "401909946",
+   "start": "2026-11-08T23:00Z",
+   "team": "13",
+   "name": "Luka Doncic",
+   "status": "out",
+   "athlete": "3945274",
+   "espn": {
+    "seen": "2026-11-08T19:13:28.414Z",
+    "own": "2026-11-08T18:19:00.000Z"
+   },
+   "bluesky": {
+    "seen": "2026-11-08T18:15:31.992Z",
+    "own": "2026-11-08T18:11:49.382Z",
+    "why": "@insidenbanews.bsky.social: Luka Doncic (back) ruled out Sunday."
+   }
+  },
+  "401909949|garytrent|q": {
+   "game": "401909949",
+   "start": "2026-11-09T01:00Z",
+   "team": "15",
+   "name": "Gary Trent Jr.",
+   "status": "q",
+   "athlete": "4277843",
+   "espn": {
+    "seen": "2026-11-08T19:13:28.414Z",
+    "own": "2026-11-08T18:23:00.000Z"
+   }
+  },
+  "401909949|mitchellrobinson|q": {
+   "game": "401909949",
+   "start": "2026-11-09T01:00Z",
+   "team": "2",
+   "name": "Mitchell Robinson",
+   "status": "q",
+   "athlete": "4351852",
+   "espn": {
+    "seen": "2026-11-08T19:13:28.414Z",
+    "own": "2026-11-08T18:21:00.000Z"
    }
   }
  }

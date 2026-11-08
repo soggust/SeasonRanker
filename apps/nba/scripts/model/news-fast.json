@@ -1,24 +1,11 @@
 {
  "sport": "nba",
  "cursor": {
-  "rotowirenba.bsky.social": "2026-11-08T18:15:00.000Z",
+  "rotowirenba.bsky.social": "2026-11-08T18:55:47.000Z",
   "insidenbanews.bsky.social": "2026-11-08T18:11:49.382Z",
   "shamsbot.bsky.social": "2026-11-08T18:05:20.000Z"
  },
  "claims": [
-  {
-   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3my6a2ti7eo2j|konknueppel|none|return",
-   "at": "2026-10-18T18:24:21.000Z",
-   "seen": "2026-10-19T21:15:18.875Z",
-   "handle": "rotowirenba.bsky.social",
-   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3my6a2ti7eo2j",
-   "player": "Kon Knueppel",
-   "team": "CHA",
-   "status": "none",
-   "kind": "return",
-   "confidence": 0.5,
-   "text": "Kon Knueppel: Ramping up toward return \n\n https://www.rotowire.com/basketball/player/kon-knueppel-6540"
-  },
   {
    "id": "at://did:plc:sa73fbx3vxzh2fw5pu5wmief/app.bsky.feed.post/3my6ppeez5v2k|bensimmons|out|status",
    "at": "2026-10-18T23:00:21.000Z",
@@ -9391,6 +9378,45 @@
    "kind": "status",
    "confidence": 0.95,
    "text": "Luka Doncic (back) ruled out Sunday."
+  },
+  {
+   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mzszm77s7t2h|lukadoncic|out|status",
+   "at": "2026-11-08T18:19:53.000Z",
+   "seen": "2026-11-08T19:14:57.032Z",
+   "handle": "rotowirenba.bsky.social",
+   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mzszm77s7t2h",
+   "player": "Luka Doncic",
+   "team": null,
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.95,
+   "text": "Luka Doncic: Ruled out Sunday \n\n https://www.rotowire.com/basketball/player/luka-doncic-4396"
+  },
+  {
+   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mzszolp7m52t|mitchellrobinson|questionable|status",
+   "at": "2026-11-08T18:21:14.000Z",
+   "seen": "2026-11-08T19:14:57.032Z",
+   "handle": "rotowirenba.bsky.social",
+   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mzszolp7m52t",
+   "player": "Mitchell Robinson",
+   "team": null,
+   "status": "questionable",
+   "kind": "status",
+   "confidence": 0.95,
+   "text": "Mitchell Robinson: Questionable to play Sunday \n\n https://www.rotowire.com/basketball/player/mitchell-robinson-4426"
+  },
+  {
+   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mzt3ltp2i22t|normanpowell|out|status",
+   "at": "2026-11-08T18:55:29.000Z",
+   "seen": "2026-11-08T19:14:57.032Z",
+   "handle": "rotowirenba.bsky.social",
+   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mzt3ltp2i22t",
+   "player": "Norman Powell",
+   "team": null,
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.95,
+   "text": "Norman Powell: Out Sunday \n\n https://www.rotowire.com/basketball/player/norman-powell-3726"
   }
  ]
 }

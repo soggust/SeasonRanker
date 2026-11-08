@@ -2,40 +2,14 @@
  "sport": "nfl",
  "cursor": {
   "adamscheftermirror.bsky.social": "2026-11-08T17:50:03.674Z",
-  "rapsheet.bsky.social": "2026-11-08T17:25:19.077Z",
+  "rapsheet.bsky.social": "2026-11-08T19:12:46.746Z",
   "nflnewsreposterbot.bsky.social": "2026-11-06T17:28:39.017Z",
-  "insidenflnews.bsky.social": "2026-11-08T18:05:06.393Z",
-  "nflnewsposter.bsky.social": "2026-11-08T18:00:35.798Z",
+  "insidenflnews.bsky.social": "2026-11-08T19:12:22.381Z",
+  "nflnewsposter.bsky.social": "2026-11-08T19:05:04.522Z",
   "rotoworld-fb.bsky.social": "2026-11-08T17:48:12.000Z",
-  "rotowirenfl.bsky.social": "2026-11-08T17:52:08.000Z"
+  "rotowirenfl.bsky.social": "2026-11-08T19:11:01.000Z"
  },
  "claims": [
-  {
-   "id": "at://did:plc:qre6zxbmr3ixhdmgsgdretb5/app.bsky.feed.post/3my6cgyztt525|djmoore|out|status",
-   "at": "2026-10-18T19:06:57.214Z",
-   "seen": "2026-10-19T21:15:18.875Z",
-   "handle": "adamscheftermirror.bsky.social",
-   "post": "at://did:plc:qre6zxbmr3ixhdmgsgdretb5/app.bsky.feed.post/3my6cgyztt525",
-   "player": "DJ Moore",
-   "team": "BUF",
-   "status": "out",
-   "kind": "status",
-   "confidence": 0.95,
-   "text": "Bills WR DJ Moore is inactive; Josh Palmer is active.\n\nOriginal post"
-  },
-  {
-   "id": "at://did:plc:qre6zxbmr3ixhdmgsgdretb5/app.bsky.feed.post/3my6cgyztt525|joshpalmer|active|status",
-   "at": "2026-10-18T19:06:57.214Z",
-   "seen": "2026-10-19T21:15:18.875Z",
-   "handle": "adamscheftermirror.bsky.social",
-   "post": "at://did:plc:qre6zxbmr3ixhdmgsgdretb5/app.bsky.feed.post/3my6cgyztt525",
-   "player": "Josh Palmer",
-   "team": "BUF",
-   "status": "active",
-   "kind": "status",
-   "confidence": 0.95,
-   "text": "Bills WR DJ Moore is inactive; Josh Palmer is active.\n\nOriginal post"
-  },
   {
    "id": "at://did:plc:hlvr2omhnmvdmfnvmcuhyevz/app.bsky.feed.post/3my6h2sc5w22d|blakegrupe|doubtful|status",
    "at": "2026-10-18T20:29:36.304Z",
@@ -18248,6 +18222,19 @@
    "kind": "starting",
    "confidence": 0.9,
    "text": "Jordyn Tyson announced with Saints offensive starters."
+  },
+  {
+   "id": "at://did:plc:fuqjc7x4gxvnwzksnlxwbe4x/app.bsky.feed.post/3mzt3aubwq22n|jaylenwaddle|questionable|status",
+   "at": "2026-11-08T18:49:20.952Z",
+   "seen": "2026-11-08T19:14:57.032Z",
+   "handle": "nflnewsposter.bsky.social",
+   "post": "at://did:plc:fuqjc7x4gxvnwzksnlxwbe4x/app.bsky.feed.post/3mzt3aubwq22n",
+   "player": "Jaylen Waddle",
+   "team": "DEN",
+   "status": "questionable",
+   "kind": "status",
+   "confidence": 0.4,
+   "text": "[Tomasson] Broncos WR Jaylen Waddle being evaluated for concussion twitter.com/christomasso..."
   }
  ]
 }
