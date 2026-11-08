@@ -11651,6 +11651,11 @@
    "espn": {
     "seen": "2026-11-03T00:02:15.042Z",
     "own": "2026-11-02T23:47:00.000Z"
+   },
+   "bluesky": {
+    "seen": "2026-11-08T13:07:24.722Z",
+    "own": "2026-11-08T12:25:36.000Z",
+    "why": "@rotowirenfl.bsky.social: Kyle Monangai: Not expected to return Sunday \n\n https:"
    }
   },
   "401873050|malikmuhammad|out": {
@@ -18716,6 +18721,90 @@
    "espn": {
     "seen": "2026-11-08T03:43:44.094Z",
     "own": "2026-11-08T03:11:00.000Z"
+   }
+  },
+  "401873038|jackstrand|out": {
+   "game": "401873038",
+   "start": "2026-11-08T14:30Z",
+   "team": "1",
+   "name": "Jack Strand",
+   "status": "out",
+   "athlete": "5344782",
+   "espn": {
+    "seen": "2026-11-08T13:20:57.251Z",
+    "own": "2026-11-08T13:05:00.000Z"
+   }
+  },
+  "401873038|drakejackson|out": {
+   "game": "401873038",
+   "start": "2026-11-08T14:30Z",
+   "team": "1",
+   "name": "Drake Jackson",
+   "status": "out",
+   "athlete": "4569511",
+   "espn": {
+    "seen": "2026-11-08T13:20:57.251Z",
+    "own": "2026-11-08T13:05:00.000Z"
+   }
+  },
+  "401873038|robertlongerbeam|out": {
+   "game": "401873038",
+   "start": "2026-11-08T14:30Z",
+   "team": "1",
+   "name": "Robert Longerbeam",
+   "status": "out",
+   "athlete": "4575860",
+   "espn": {
+    "seen": "2026-11-08T13:20:57.251Z",
+    "own": "2026-11-08T13:05:00.000Z"
+   }
+  },
+  "401873038|andydalton|out": {
+   "game": "401873038",
+   "start": "2026-11-08T14:30Z",
+   "team": "1",
+   "name": "Andy Dalton",
+   "status": "out",
+   "athlete": "14012",
+   "espn": {
+    "seen": "2026-11-08T13:20:57.251Z",
+    "own": "2026-11-08T13:05:00.000Z"
+   }
+  },
+  "401873038|landonrobinson|out": {
+   "game": "401873038",
+   "start": "2026-11-08T14:30Z",
+   "team": "4",
+   "name": "Landon Robinson",
+   "status": "out",
+   "athlete": "5081542",
+   "espn": {
+    "seen": "2026-11-08T13:20:57.251Z",
+    "own": "2026-11-08T13:04:00.000Z"
+   }
+  },
+  "401873038|myleshinton|out": {
+   "game": "401873038",
+   "start": "2026-11-08T14:30Z",
+   "team": "4",
+   "name": "Myles Hinton",
+   "status": "out",
+   "athlete": "4429000",
+   "espn": {
+    "seen": "2026-11-08T13:20:57.251Z",
+    "own": "2026-11-08T13:04:00.000Z"
+   }
+  },
+  "401873038|connorlew|out": {
+   "game": "401873038",
+   "start": "2026-11-08T14:30Z",
+   "team": "4",
+   "name": "Connor Lew",
+   "status": "out",
+   "athlete": "4870866",
+   "espn": {
+    "seen": "2026-11-08T13:20:57.251Z",
+    "own": "2026-11-08T13:04:00.000Z"
    }
   }
  }
