@@ -1,28 +1,15 @@
 {
  "sport": "nfl",
  "cursor": {
-  "adamscheftermirror.bsky.social": "2026-11-08T14:00:00.229Z",
-  "rapsheet.bsky.social": "2026-11-08T14:33:22.249Z",
+  "adamscheftermirror.bsky.social": "2026-11-08T15:15:40.055Z",
+  "rapsheet.bsky.social": "2026-11-08T15:35:34.815Z",
   "nflnewsreposterbot.bsky.social": "2026-11-06T17:28:39.017Z",
   "insidenflnews.bsky.social": "2026-11-08T14:50:29.498Z",
   "nflnewsposter.bsky.social": "2026-11-08T00:10:37.902Z",
-  "rotoworld-fb.bsky.social": "2026-11-08T14:53:50.000Z",
-  "rotowirenfl.bsky.social": "2026-11-08T14:22:47.000Z"
+  "rotoworld-fb.bsky.social": "2026-11-08T15:20:55.000Z",
+  "rotowirenfl.bsky.social": "2026-11-08T15:36:20.000Z"
  },
  "claims": [
-  {
-   "id": "at://did:plc:qre6zxbmr3ixhdmgsgdretb5/app.bsky.feed.post/3my5wgrkgeq25|quinshonjudkins|out|status",
-   "at": "2026-10-18T15:32:04.460Z",
-   "seen": "2026-10-19T21:15:18.875Z",
-   "handle": "adamscheftermirror.bsky.social",
-   "post": "at://did:plc:qre6zxbmr3ixhdmgsgdretb5/app.bsky.feed.post/3my5wgrkgeq25",
-   "player": "Quinshon Judkins",
-   "team": "CLE",
-   "status": "out",
-   "kind": "status",
-   "confidence": 0.95,
-   "text": "Browns RB Quinshon Judkins, who was questionable with an ankle injury, is out today.\n\nOriginal post"
-  },
   {
    "id": "at://did:plc:qre6zxbmr3ixhdmgsgdretb5/app.bsky.feed.post/3my5xbk7pyf25|tylerwarren|out|status",
    "at": "2026-10-18T15:47:02.742Z",
@@ -17923,6 +17910,32 @@
    "kind": "status",
    "confidence": 0.85,
    "text": "Bears RB Kyle Monangai (thumb/toe) won't play today, but he's expected back in Week 11. Fresh legs for Chicago.\n\nMeanwhile, DB Malik Muhammad II (toe) and CB Tyrique Stevenson Sr. (thumb) should be go"
+  },
+  {
+   "id": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3mzspm6ke3d26|camskattebo|questionable|status",
+   "at": "2026-11-08T15:20:55.000Z",
+   "seen": "2026-11-08T15:36:21.213Z",
+   "handle": "rotoworld-fb.bsky.social",
+   "post": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3mzspm6ke3d26",
+   "player": "Cam Skattebo",
+   "team": null,
+   "status": "questionable",
+   "kind": "status",
+   "confidence": 0.4,
+   "text": "Schefter: Skattebo (hamstring) is pushing to play"
+  },
+  {
+   "id": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3mzspwynb7v2b|camskattebo|doubtful|status",
+   "at": "2026-11-08T15:26:58.000Z",
+   "seen": "2026-11-08T15:36:21.213Z",
+   "handle": "rotowirenfl.bsky.social",
+   "post": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3mzspwynb7v2b",
+   "player": "Cam Skattebo",
+   "team": null,
+   "status": "doubtful",
+   "kind": "status",
+   "confidence": 0.9,
+   "text": "Cam Skattebo: Listed as doubtful, reportedly pushing to play \n\n https://www.rotowire.com/football/player/cam-skattebo-18514"
   }
  ]
 }
