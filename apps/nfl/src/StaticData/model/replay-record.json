@@ -2,7 +2,7 @@
  "v": 1,
  "sport": "nfl",
  "epoch": "2026-10-26T15:00:00Z",
- "at": "2026-11-07T17:49:21.154Z",
+ "at": "2026-11-08T03:51:43.915Z",
  "from": "2020-09-11T00:20:00.000Z",
  "through": "2026-10-19T00:23:00.000Z",
  "n": {
@@ -46,16 +46,16 @@
  },
  "pass": {
   "bets": 39728,
-  "won": 20247,
-  "lost": 19433,
+  "won": 20248,
+  "lost": 19432,
   "push": 48,
   "staked": 39728,
-  "profit": -1670.68,
-  "roi": -0.0421,
+  "profit": -1668.73,
+  "roi": -0.042,
   "beat": null,
   "beatN": 0,
   "clv": null,
-  "fairProfit": 620.3288,
+  "fairProfit": 622.3937,
   "toward": 0,
   "against": 0,
   "mvN": 0
@@ -2551,7 +2551,7 @@
     "beat": 25,
     "clv": 0.4326,
     "pN": 2995,
-    "p": 1472.4011,
+    "p": 1472.4008,
     "wins": 1445
    },
    "spread:away": {
@@ -2651,7 +2651,7 @@
     "beat": 0,
     "clv": 0,
     "pN": 2314,
-    "p": 1210.9798,
+    "p": 1210.9795,
     "wins": 1203
    },
    "prop:recYds:under": {
@@ -2861,7 +2861,7 @@
     "beat": 0,
     "clv": 0,
     "pN": 194,
-    "p": 99.2348,
+    "p": 99.2347,
     "wins": 86
    },
    "prop:rushRecYds:over": {
@@ -2891,7 +2891,7 @@
     "beat": 0,
     "clv": 0,
     "pN": 33,
-    "p": 15.9784,
+    "p": 15.9782,
     "wins": 16
    },
    "prop:passTd": {
@@ -2901,7 +2901,7 @@
     "beat": 0,
     "clv": 0,
     "pN": 191,
-    "p": 93.8466,
+    "p": 93.8464,
     "wins": 87
    },
    "prop:passInt:under": {
@@ -2911,7 +2911,7 @@
     "beat": 0,
     "clv": 0,
     "pN": 119,
-    "p": 61.332,
+    "p": 61.3319,
     "wins": 54
    },
    "prop:passTd:over": {
@@ -2936,16 +2936,16 @@
    }
   }
  },
- "commit": "cccd872d",
- "note": "D111. The over-shade as a function of public attention (the quantal-response idea): measured on the whole priced history and held, the shade is flat (the owner, 2026-11-07: \"go through on 9 seasons\")",
+ "commit": "433aa55b",
+ "note": "D112. MMA's card practice picks are staked again, MMA only (the owner, 2026-11-07: \"only getting 1 bet a month on mma tells us something is wrong\" ... \"mma only for sure\")",
  "inputs": {
   "v": 1,
   "sport": "nfl",
   "code": {
    "props": "c21af3470845",
    "games": "e48553675c1d",
-   "pricing": "815ed957cfb6",
-   "record": "1c8c0ab20393",
+   "pricing": "cbb2db31838e",
+   "record": "e2781da20b23",
    "harness": "36c8c288f598",
    "residual": "a057b73daaf466cc",
    "tuned": "75ba5ef16d4ef1db"
@@ -3111,6 +3111,6 @@
     "want": 55
    }
   },
-  "hash": "ad3bcee788f45c43"
+  "hash": "92253492563bf1aa"
  }
 }

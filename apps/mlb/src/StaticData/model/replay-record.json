@@ -2,7 +2,7 @@
  "v": 1,
  "sport": "mlb",
  "epoch": "2026-10-26T15:00:00Z",
- "at": "2026-11-07T18:04:47.297Z",
+ "at": "2026-11-08T04:11:59.565Z",
  "from": "2021-07-18T17:11:00.000Z",
  "through": "2026-10-16T00:00:00.000Z",
  "n": {
@@ -2873,16 +2873,16 @@
    }
   }
  },
- "commit": "cccd872d",
- "note": "D111. The over-shade as a function of public attention (the quantal-response idea): measured on the whole priced history and held, the shade is flat (the owner, 2026-11-07: \"go through on 9 seasons\")",
+ "commit": "433aa55b",
+ "note": "D112. MMA's card practice picks are staked again, MMA only (the owner, 2026-11-07: \"only getting 1 bet a month on mma tells us something is wrong\" ... \"mma only for sure\")",
  "inputs": {
   "v": 1,
   "sport": "mlb",
   "code": {
    "props": "c21af3470845",
    "games": "e48553675c1d",
-   "pricing": "815ed957cfb6",
-   "record": "1c8c0ab20393",
+   "pricing": "cbb2db31838e",
+   "record": "e2781da20b23",
    "harness": "36c8c288f598",
    "residual": "0f1cad093bf42957",
    "tuned": "75ba5ef16d4ef1db"
@@ -2955,6 +2955,6 @@
     "want": 29
    }
   },
-  "hash": "4ef34469c0abbfd4"
+  "hash": "a785cc30ba464299"
  }
 }
