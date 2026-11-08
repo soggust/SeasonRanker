@@ -9231,6 +9231,371 @@
    "espn": {
     "seen": "2026-11-08T15:55:46.796Z",
     "own": "2026-11-08T15:43:00.000Z"
+   },
+   "bluesky": {
+    "seen": "2026-11-08T16:56:32.992Z",
+    "own": "2026-11-08T16:42:29.000Z",
+    "why": "@dailyfaceoff.bsky.social: Flames’ Kevin Bahl to miss rest of 2026-27 with ruptu"
+   }
+  },
+  "401892678|brennanothmann|out": {
+   "game": "401892678",
+   "start": "2026-11-09T00:00Z",
+   "team": "3",
+   "name": "Brennan Othmann",
+   "status": "out",
+   "athlete": "4874733",
+   "espn": {
+    "seen": "2026-11-08T18:13:47.436Z",
+    "own": "2026-11-08T18:04:00.000Z"
+   }
+  },
+  "401892680|coltondach|q": {
+   "game": "401892680",
+   "start": "2026-11-10T01:00Z",
+   "team": "6",
+   "name": "Colton Dach",
+   "status": "q",
+   "athlete": "4874940",
+   "espn": {
+    "seen": "2026-11-08T18:13:47.436Z",
+    "own": "2026-11-08T15:14:00.000Z"
+   }
+  },
+  "401892680|ryannugenthopkins|q": {
+   "game": "401892680",
+   "start": "2026-11-10T01:00Z",
+   "team": "6",
+   "name": "Ryan Nugent-Hopkins",
+   "status": "q",
+   "athlete": "2562624",
+   "espn": {
+    "seen": "2026-11-08T18:13:47.436Z",
+    "own": "2026-11-08T05:22:00.000Z"
+   }
+  },
+  "401892680|isaachoward|out": {
+   "game": "401892680",
+   "start": "2026-11-10T01:00Z",
+   "team": "6",
+   "name": "Isaac Howard",
+   "status": "out",
+   "athlete": "5080179",
+   "espn": {
+    "seen": "2026-11-08T18:13:47.436Z",
+    "own": "2026-11-06T00:04:00.000Z"
+   }
+  },
+  "401892680|alecregula|out": {
+   "game": "401892680",
+   "start": "2026-11-10T01:00Z",
+   "team": "6",
+   "name": "Alec Regula",
+   "status": "out",
+   "athlete": "4331611",
+   "espn": {
+    "seen": "2026-11-08T18:13:47.436Z",
+    "own": "2026-10-01T14:11:00.000Z"
+   }
+  },
+  "401892680|mattsavoie|out": {
+   "game": "401892680",
+   "start": "2026-11-10T01:00Z",
+   "team": "6",
+   "name": "Matt Savoie",
+   "status": "out",
+   "athlete": "5080153",
+   "espn": {
+    "seen": "2026-11-08T18:13:47.436Z",
+    "own": "2026-10-01T14:05:00.000Z"
+   }
+  },
+  "401892680|frederikandersen|out": {
+   "game": "401892680",
+   "start": "2026-11-10T01:00Z",
+   "team": "6",
+   "name": "Frederik Andersen",
+   "status": "out",
+   "athlete": "2517899",
+   "espn": {
+    "seen": "2026-11-08T18:13:47.436Z",
+    "own": "2026-09-29T17:53:00.000Z"
+   }
+  },
+  "401892680|mattiasjanmark|out": {
+   "game": "401892680",
+   "start": "2026-11-10T01:00Z",
+   "team": "6",
+   "name": "Mattias Janmark",
+   "status": "out",
+   "athlete": "3042085",
+   "espn": {
+    "seen": "2026-11-08T18:13:47.436Z",
+    "own": "2026-09-29T17:52:00.000Z"
+   }
+  },
+  "401892680|albertssmits|q": {
+   "game": "401892680",
+   "start": "2026-11-10T01:00Z",
+   "team": "13",
+   "name": "Alberts Smits",
+   "status": "q",
+   "athlete": "5334662",
+   "espn": {
+    "seen": "2026-11-08T18:13:47.436Z",
+    "own": "2026-11-08T13:39:00.000Z"
+   }
+  },
+  "401892680|seandurzi|out": {
+   "game": "401892680",
+   "start": "2026-11-10T01:00Z",
+   "team": "13",
+   "name": "Sean Durzi",
+   "status": "out",
+   "athlete": "4378683",
+   "espn": {
+    "seen": "2026-11-08T18:13:47.436Z",
+    "own": "2026-11-05T19:23:00.000Z"
+   }
+  },
+  "401892680|igorshesterkin|out": {
+   "game": "401892680",
+   "start": "2026-11-10T01:00Z",
+   "team": "13",
+   "name": "Igor Shesterkin",
+   "status": "out",
+   "athlete": "3151297",
+   "espn": {
+    "seen": "2026-11-08T18:13:47.436Z",
+    "own": "2026-10-11T21:06:00.000Z"
+   }
+  },
+  "401892680|joeveleno|out": {
+   "game": "401892680",
+   "start": "2026-11-10T01:00Z",
+   "team": "13",
+   "name": "Joe Veleno",
+   "status": "out",
+   "athlete": "4352804",
+   "espn": {
+    "seen": "2026-11-08T18:13:47.436Z",
+    "own": "2026-10-10T17:18:00.000Z"
+   }
+  },
+  "401892680|aidanthompson|out": {
+   "game": "401892680",
+   "start": "2026-11-10T01:00Z",
+   "team": "13",
+   "name": "Aidan Thompson",
+   "status": "out",
+   "athlete": "5136624",
+   "espn": {
+    "seen": "2026-11-08T18:13:47.436Z",
+    "own": "2026-09-29T16:39:00.000Z"
+   }
+  },
+  "401892680|adamsykora|out": {
+   "game": "401892680",
+   "start": "2026-11-10T01:00Z",
+   "team": "13",
+   "name": "Adam Sykora",
+   "status": "out",
+   "athlete": "5080232",
+   "espn": {
+    "seen": "2026-11-08T18:13:47.436Z",
+    "own": "2026-09-29T01:35:00.000Z"
+   }
+  },
+  "401892681|tomwillander|q": {
+   "game": "401892681",
+   "start": "2026-11-10T02:30Z",
+   "team": "22",
+   "name": "Tom Willander",
+   "status": "q",
+   "athlete": "5149180",
+   "espn": {
+    "seen": "2026-11-08T18:13:47.436Z",
+    "own": "2026-11-08T13:39:00.000Z"
+   }
+  },
+  "401892681|filipchytil|out": {
+   "game": "401892681",
+   "start": "2026-11-10T02:30Z",
+   "team": "22",
+   "name": "Filip Chytil",
+   "status": "out",
+   "athlete": "4233643",
+   "espn": {
+    "seen": "2026-11-08T18:13:47.436Z",
+    "own": "2026-11-03T18:34:00.000Z"
+   }
+  },
+  "401892681|akilthomas|out": {
+   "game": "401892681",
+   "start": "2026-11-10T02:30Z",
+   "team": "22",
+   "name": "Akil Thomas",
+   "status": "out",
+   "athlete": "4378682",
+   "espn": {
+    "seen": "2026-11-08T18:13:47.436Z",
+    "own": "2026-09-29T17:05:00.000Z"
+   }
+  },
+  "401892681|mackenziemaceachern|out": {
+   "game": "401892681",
+   "start": "2026-11-10T02:30Z",
+   "team": "22",
+   "name": "Mackenzie MacEachern",
+   "status": "out",
+   "athlete": "3069342",
+   "espn": {
+    "seen": "2026-11-08T18:13:47.436Z",
+    "own": "2026-09-29T17:03:00.000Z"
+   }
+  },
+  "401892681|thatcherdemko|out": {
+   "game": "401892681",
+   "start": "2026-11-10T02:30Z",
+   "team": "22",
+   "name": "Thatcher Demko",
+   "status": "out",
+   "athlete": "3096217",
+   "espn": {
+    "seen": "2026-11-08T18:13:47.436Z",
+    "own": "2026-09-28T17:58:00.000Z"
+   }
+  },
+  "401892681|rasmusristolainen|out": {
+   "game": "401892681",
+   "start": "2026-11-10T02:30Z",
+   "team": "15",
+   "name": "Rasmus Ristolainen",
+   "status": "out",
+   "athlete": "3041999",
+   "espn": {
+    "seen": "2026-11-08T18:13:47.436Z",
+    "own": "2026-10-27T14:26:00.000Z"
+   }
+  },
+  "401892681|nikitagrebenkin|out": {
+   "game": "401892681",
+   "start": "2026-11-10T02:30Z",
+   "team": "15",
+   "name": "Nikita Grebenkin",
+   "status": "out",
+   "athlete": "5188490",
+   "espn": {
+    "seen": "2026-11-08T18:13:47.436Z",
+    "own": "2026-10-10T16:58:00.000Z"
+   }
+  },
+  "401892682|igorchernyshov|out": {
+   "game": "401892682",
+   "start": "2026-11-10T03:00Z",
+   "team": "18",
+   "name": "Igor Chernyshov",
+   "status": "out",
+   "athlete": "5216907",
+   "espn": {
+    "seen": "2026-11-08T18:13:47.436Z",
+    "own": "2026-10-28T16:49:00.000Z"
+   }
+  },
+  "401892682|alexanderwennberg|out": {
+   "game": "401892682",
+   "start": "2026-11-10T03:00Z",
+   "team": "18",
+   "name": "Alexander Wennberg",
+   "status": "out",
+   "athlete": "3042017",
+   "espn": {
+    "seen": "2026-11-08T18:13:47.436Z",
+    "own": "2026-10-28T16:46:00.000Z"
+   }
+  },
+  "401892682|quentinmusty|out": {
+   "game": "401892682",
+   "start": "2026-11-10T03:00Z",
+   "team": "18",
+   "name": "Quentin Musty",
+   "status": "out",
+   "athlete": "5149209",
+   "espn": {
+    "seen": "2026-11-08T18:13:47.436Z",
+    "own": "2026-09-28T22:20:00.000Z"
+   }
+  },
+  "401892682|kylekeyser|out": {
+   "game": "401892682",
+   "start": "2026-11-10T03:00Z",
+   "team": "18",
+   "name": "Kyle Keyser",
+   "status": "out",
+   "athlete": "4329962",
+   "espn": {
+    "seen": "2026-11-08T18:13:47.436Z",
+    "own": "2026-09-28T22:10:00.000Z"
+   }
+  },
+  "401892682|mathewbarzal|out": {
+   "game": "401892682",
+   "start": "2026-11-10T03:00Z",
+   "team": "12",
+   "name": "Mathew Barzal",
+   "status": "out",
+   "athlete": "3899946",
+   "espn": {
+    "seen": "2026-11-08T18:13:47.436Z",
+    "own": "2026-11-04T17:34:00.000Z"
+   }
+  },
+  "401892682|ryanpulock|out": {
+   "game": "401892682",
+   "start": "2026-11-10T03:00Z",
+   "team": "12",
+   "name": "Ryan Pulock",
+   "status": "out",
+   "athlete": "3042019",
+   "espn": {
+    "seen": "2026-11-08T18:13:47.436Z",
+    "own": "2026-11-01T17:56:00.000Z"
+   }
+  },
+  "401892682|matiasmaccelli|out": {
+   "game": "401892682",
+   "start": "2026-11-10T03:00Z",
+   "team": "12",
+   "name": "Matias Maccelli",
+   "status": "out",
+   "athlete": "4587580",
+   "espn": {
+    "seen": "2026-11-08T18:13:47.436Z",
+    "own": "2026-10-26T17:31:00.000Z"
+   }
+  },
+  "401892682|calumritchie|out": {
+   "game": "401892682",
+   "start": "2026-11-10T03:00Z",
+   "team": "12",
+   "name": "Calum Ritchie",
+   "status": "out",
+   "athlete": "5149210",
+   "espn": {
+    "seen": "2026-11-08T18:13:47.436Z",
+    "own": "2026-10-26T17:28:00.000Z"
+   }
+  },
+  "401892682|alexanderromanov|out": {
+   "game": "401892682",
+   "start": "2026-11-10T03:00Z",
+   "team": "12",
+   "name": "Alexander Romanov",
+   "status": "out",
+   "athlete": "4587854",
+   "espn": {
+    "seen": "2026-11-08T18:13:47.436Z",
+    "own": "2026-10-19T13:56:00.000Z"
    }
   }
  }

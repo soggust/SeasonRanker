@@ -1,9 +1,9 @@
 {
  "sport": "nba",
  "cursor": {
-  "rotowirenba.bsky.social": "2026-11-08T17:14:08.000Z",
-  "insidenbanews.bsky.social": "2026-11-07T05:11:20.386Z",
-  "shamsbot.bsky.social": "2026-11-04T20:33:22.000Z"
+  "rotowirenba.bsky.social": "2026-11-08T18:15:00.000Z",
+  "insidenbanews.bsky.social": "2026-11-08T18:11:49.382Z",
+  "shamsbot.bsky.social": "2026-11-08T18:05:20.000Z"
  },
  "claims": [
   {
@@ -9378,6 +9378,19 @@
    "kind": "status",
    "confidence": 0.95,
    "text": "Immanuel Quickley: Questionable for Monday \n\n https://www.rotowire.com/basketball/player/immanuel-quickley-5201"
+  },
+  {
+   "id": "at://did:plc:ykcnnf6kqnn3lasmobrczoem/app.bsky.feed.post/3mzsz5qzgwc22|lukadoncic|out|status",
+   "at": "2026-11-08T18:11:49.382Z",
+   "seen": "2026-11-08T18:15:31.992Z",
+   "handle": "insidenbanews.bsky.social",
+   "post": "at://did:plc:ykcnnf6kqnn3lasmobrczoem/app.bsky.feed.post/3mzsz5qzgwc22",
+   "player": "Luka Doncic",
+   "team": "LAL",
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.95,
+   "text": "Luka Doncic (back) ruled out Sunday."
   }
  ]
 }

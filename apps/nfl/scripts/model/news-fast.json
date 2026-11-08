@@ -1,13 +1,13 @@
 {
  "sport": "nfl",
  "cursor": {
-  "adamscheftermirror.bsky.social": "2026-11-08T16:49:58.465Z",
-  "rapsheet.bsky.social": "2026-11-08T16:39:39.594Z",
+  "adamscheftermirror.bsky.social": "2026-11-08T17:50:03.674Z",
+  "rapsheet.bsky.social": "2026-11-08T17:25:19.077Z",
   "nflnewsreposterbot.bsky.social": "2026-11-06T17:28:39.017Z",
-  "insidenflnews.bsky.social": "2026-11-08T16:28:20.885Z",
-  "nflnewsposter.bsky.social": "2026-11-08T16:59:06.171Z",
-  "rotoworld-fb.bsky.social": "2026-11-08T16:46:01.000Z",
-  "rotowirenfl.bsky.social": "2026-11-08T16:46:50.000Z"
+  "insidenflnews.bsky.social": "2026-11-08T18:05:06.393Z",
+  "nflnewsposter.bsky.social": "2026-11-08T18:00:35.798Z",
+  "rotoworld-fb.bsky.social": "2026-11-08T17:48:12.000Z",
+  "rotowirenfl.bsky.social": "2026-11-08T17:52:08.000Z"
  },
  "claims": [
   {
@@ -18183,6 +18183,71 @@
    "kind": "status",
    "confidence": 0.95,
    "text": "Giants RB Cam Skattebo he is officially inactive today.\n\nOriginal post"
+  },
+  {
+   "id": "at://did:plc:qre6zxbmr3ixhdmgsgdretb5/app.bsky.feed.post/3mzswazbbvk2l|camskattebo|out|status",
+   "at": "2026-11-08T17:19:57.369Z",
+   "seen": "2026-11-08T18:15:31.992Z",
+   "handle": "adamscheftermirror.bsky.social",
+   "post": "at://did:plc:qre6zxbmr3ixhdmgsgdretb5/app.bsky.feed.post/3mzswazbbvk2l",
+   "player": "Cam Skattebo",
+   "team": "NYG",
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.95,
+   "text": "Giants RB Cam Skattebo is officially inactive today.\n\nOriginal post"
+  },
+  {
+   "id": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3mzsxazpt4f22|jordyntyson|none|benched",
+   "at": "2026-11-08T17:37:51.000Z",
+   "seen": "2026-11-08T18:15:31.992Z",
+   "handle": "rotowirenfl.bsky.social",
+   "post": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3mzsxazpt4f22",
+   "player": "Jordyn Tyson",
+   "team": null,
+   "status": "none",
+   "kind": "benched",
+   "confidence": 0.45,
+   "text": "Jordyn Tyson: Not with starters in warmups \n\n https://www.rotowire.com/football/player/jordyn-tyson-19233"
+  },
+  {
+   "id": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3mzsxqtb36k2b|breecehall|none|starting",
+   "at": "2026-11-08T17:46:41.000Z",
+   "seen": "2026-11-08T18:15:31.992Z",
+   "handle": "rotowirenfl.bsky.social",
+   "post": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3mzsxqtb36k2b",
+   "player": "Breece Hall",
+   "team": "NYJ",
+   "status": "none",
+   "kind": "starting",
+   "confidence": 0.7,
+   "text": "Breece Hall: Looks like Sunday starter \n\n https://www.rotowire.com/football/player/breece-hall-15810"
+  },
+  {
+   "id": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3mzsy2la4cx2e|jonahcoleman|none|starting",
+   "at": "2026-11-08T17:52:08.000Z",
+   "seen": "2026-11-08T18:15:31.992Z",
+   "handle": "rotowirenfl.bsky.social",
+   "post": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3mzsy2la4cx2e",
+   "player": "Jonah Coleman",
+   "team": null,
+   "status": "none",
+   "kind": "starting",
+   "confidence": 0.45,
+   "text": "Jonah Coleman: Works with starters in warmups \n\n https://www.rotowire.com/football/player/jonah-coleman-19241"
+  },
+  {
+   "id": "at://did:plc:mbr4badgf6yu56mquzackzew/app.bsky.feed.post/3mzsyrf5msk22|jordyntyson|none|starting",
+   "at": "2026-11-08T18:04:54.281Z",
+   "seen": "2026-11-08T18:15:31.992Z",
+   "handle": "insidenflnews.bsky.social",
+   "post": "at://did:plc:mbr4badgf6yu56mquzackzew/app.bsky.feed.post/3mzsyrf5msk22",
+   "player": "Jordyn Tyson",
+   "team": "NO",
+   "status": "none",
+   "kind": "starting",
+   "confidence": 0.9,
+   "text": "Jordyn Tyson announced with Saints offensive starters."
   }
  ]
 }
