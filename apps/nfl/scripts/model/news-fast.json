@@ -1,54 +1,15 @@
 {
  "sport": "nfl",
  "cursor": {
-  "adamscheftermirror.bsky.social": "2026-11-09T13:45:07.949Z",
+  "adamscheftermirror.bsky.social": "2026-11-09T16:50:07.864Z",
   "rapsheet.bsky.social": "2026-11-09T15:03:14.842Z",
   "nflnewsreposterbot.bsky.social": "2026-11-06T17:28:39.017Z",
-  "insidenflnews.bsky.social": "2026-11-09T15:00:44.738Z",
-  "nflnewsposter.bsky.social": "2026-11-09T14:57:05.540Z",
-  "rotoworld-fb.bsky.social": "2026-11-09T13:07:42.000Z",
-  "rotowirenfl.bsky.social": "2026-11-09T15:08:39.000Z"
+  "insidenflnews.bsky.social": "2026-11-09T16:48:40.168Z",
+  "nflnewsposter.bsky.social": "2026-11-09T16:40:02.702Z",
+  "rotoworld-fb.bsky.social": "2026-11-09T16:42:17.000Z",
+  "rotowirenfl.bsky.social": "2026-11-09T16:48:29.000Z"
  },
  "claims": [
-  {
-   "id": "at://did:plc:fuqjc7x4gxvnwzksnlxwbe4x/app.bsky.feed.post/3myakewitx25q|saucegardner|out|status",
-   "at": "2026-10-19T16:34:16.964Z",
-   "seen": "2026-10-19T21:15:18.875Z",
-   "handle": "nflnewsposter.bsky.social",
-   "post": "at://did:plc:fuqjc7x4gxvnwzksnlxwbe4x/app.bsky.feed.post/3myakewitx25q",
-   "player": "Sauce Gardner",
-   "team": "IND",
-   "status": "out",
-   "kind": "status",
-   "confidence": 0.8,
-   "text": "[Rapoport]  Pro Bowl CB Sauce Garder, who was unable to finish Sunday's loss to the Titans, has a mild calf strain that makes him week-to-week, sources say after the MRI.\n\nGardner is expected to miss "
-  },
-  {
-   "id": "at://did:plc:qre6zxbmr3ixhdmgsgdretb5/app.bsky.feed.post/3myakt3bujh2v|saucegardner|out|status",
-   "at": "2026-10-19T16:42:11.631Z",
-   "seen": "2026-10-19T21:15:18.875Z",
-   "handle": "adamscheftermirror.bsky.social",
-   "post": "at://did:plc:qre6zxbmr3ixhdmgsgdretb5/app.bsky.feed.post/3myakt3bujh2v",
-   "player": "Sauce Gardner",
-   "team": "IND",
-   "status": "out",
-   "kind": "status",
-   "confidence": 0.8,
-   "text": "Repost by @adamschefter\n\nMore #Colts news: Pro Bowl CB Sauce Garder, who was unable to finish Sunday's loss to the #Titans, has a mild calf strain that makes him week-to-week, sources say after the MR"
-  },
-  {
-   "id": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3myakyzufq22f|jalondaniels|none|starting",
-   "at": "2026-10-19T16:45:31.000Z",
-   "seen": "2026-10-19T21:15:18.875Z",
-   "handle": "rotoworld-fb.bsky.social",
-   "post": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3myakyzufq22f",
-   "player": "Jalon Daniels",
-   "team": "TB",
-   "status": "none",
-   "kind": "starting",
-   "confidence": 0.8,
-   "text": "Bucs preparing for Jalon Daniels to start Week 7"
-  },
   {
    "id": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3myalrfjmse2q|saucegardner|out|status",
    "at": "2026-10-19T16:59:09.000Z",
@@ -18729,6 +18690,58 @@
    "kind": "status",
    "confidence": 0.35,
    "text": "Jake Ferguson: Headed for imaging on knee \n\n https://www.rotowire.com/football/player/jake-ferguson-15947"
+  },
+  {
+   "id": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3mzvefh4cxv2f|ferguson|out|status",
+   "at": "2026-11-09T16:38:17.000Z",
+   "seen": "2026-11-09T16:50:42.500Z",
+   "handle": "rotoworld-fb.bsky.social",
+   "post": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3mzvefh4cxv2f",
+   "player": "Ferguson",
+   "team": null,
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.6,
+   "text": "Ferguson (hammy) likely out a 'couple weeks'"
+  },
+  {
+   "id": "at://did:plc:fuqjc7x4gxvnwzksnlxwbe4x/app.bsky.feed.post/3mzvehodzfs2d|deshaunwatson|active|starting",
+   "at": "2026-11-09T16:39:32.763Z",
+   "seen": "2026-11-09T16:50:42.500Z",
+   "handle": "nflnewsposter.bsky.social",
+   "post": "at://did:plc:fuqjc7x4gxvnwzksnlxwbe4x/app.bsky.feed.post/3mzvehodzfs2d",
+   "player": "Deshaun Watson",
+   "team": "CLE",
+   "status": "active",
+   "kind": "starting",
+   "confidence": 0.85,
+   "text": "[Fowler] The Browns plan to start Deshaun Watson in Week 10 vs the Texans, per source. \n\nShedeur Sanders filled in Sunday in New Orleans, but returning to Watson was the expected move once he cleared "
+  },
+  {
+   "id": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3mzvexo7usz24|deshaunwatson|active|starting",
+   "at": "2026-11-09T16:48:29.000Z",
+   "seen": "2026-11-09T16:50:42.500Z",
+   "handle": "rotowirenfl.bsky.social",
+   "post": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3mzvexo7usz24",
+   "player": "Deshaun Watson",
+   "team": "CLE",
+   "status": "active",
+   "kind": "starting",
+   "confidence": 0.8,
+   "text": "Deshaun Watson: On track to start Week 10 \n\n https://www.rotowire.com/football/player/deshaun-watson-11712"
+  },
+  {
+   "id": "at://did:plc:qre6zxbmr3ixhdmgsgdretb5/app.bsky.feed.post/3mzvf2lnduh2r|deshaunwatson|active|starting",
+   "at": "2026-11-09T16:50:07.366Z",
+   "seen": "2026-11-09T16:50:42.500Z",
+   "handle": "adamscheftermirror.bsky.social",
+   "post": "at://did:plc:qre6zxbmr3ixhdmgsgdretb5/app.bsky.feed.post/3mzvf2lnduh2r",
+   "player": "Deshaun Watson",
+   "team": "CLE",
+   "status": "active",
+   "kind": "starting",
+   "confidence": 0.85,
+   "text": "Repost by @AdamSchefter\n\nThe Browns plan to start Deshaun Watson in Week 10 vs the Texans, per source. Shedeur Sanders filled in Sunday in New Orleans, but returning to Watson was the expected move on"
   }
  ]
 }

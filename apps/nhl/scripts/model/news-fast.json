@@ -3,24 +3,11 @@
  "cursor": {
   "johnston-bot.bsky.social": "2026-11-09T05:30:03.025Z",
   "notfriedgehnic.bsky.social": "2026-11-09T15:11:26.954Z",
-  "dailyfaceoff.bsky.social": "2026-11-09T15:02:06.000Z",
+  "dailyfaceoff.bsky.social": "2026-11-09T16:39:19.000Z",
   "dfotoronto.bsky.social": "2026-11-09T15:32:09.000Z",
   "marklazerus.bsky.social": "2026-11-09T15:27:50.607Z"
  },
  "claims": [
-  {
-   "id": "at://did:plc:3uus7y6h3rlrk6sbctzxm4bg/app.bsky.feed.post/3myajhcvxec24|taylorhall|out|status",
-   "at": "2026-10-19T16:17:43.000Z",
-   "seen": "2026-10-19T21:15:18.875Z",
-   "handle": "dailyfaceoff.bsky.social",
-   "post": "at://did:plc:3uus7y6h3rlrk6sbctzxm4bg/app.bsky.feed.post/3myajhcvxec24",
-   "player": "Taylor Hall",
-   "team": "CAR",
-   "status": "out",
-   "kind": "status",
-   "confidence": 0.95,
-   "text": "Hurricanes place Taylor Hall on injured reserve"
-  },
   {
    "id": "at://did:plc:knaj2vcp4x6t7hr7ewd6e3uz/app.bsky.feed.post/3myamlwa6242j|williamnylander|questionable|status",
    "at": "2026-10-19T17:13:58.000Z",
