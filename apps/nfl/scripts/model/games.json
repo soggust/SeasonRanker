@@ -2891,7 +2891,7 @@
 {"id":"401873043","date":"2026-11-08T18:00Z","season":2026,"type":2,"home":"28","away":"14","homeAbbr":"WSH","awayAbbr":"LAR","neutral":false,"final":true,"hs":13,"as":20,"venue":"Landover|MD|USA","indoor":false},
 {"id":"401873044","date":"2026-11-08T18:00Z","season":2026,"type":2,"home":"21","away":"19","homeAbbr":"PHI","awayAbbr":"NYG","neutral":false,"final":true,"hs":11,"as":19,"venue":"Philadelphia|PA|USA","indoor":false},
 {"id":"401873046","date":"2026-11-08T21:05Z","season":2026,"type":2,"home":"24","away":"34","homeAbbr":"LAC","awayAbbr":"HOU","neutral":false,"final":false,"hs":null,"as":null,"venue":"Inglewood|CA|USA","indoor":false},
-{"id":"401873047","date":"2026-11-08T21:25Z","season":2026,"type":2,"home":"25","away":"13","homeAbbr":"SF","awayAbbr":"LV","neutral":false,"final":false,"hs":null,"as":null,"venue":"Santa Clara|CA|USA","indoor":false},
+{"id":"401873047","date":"2026-11-08T21:25Z","season":2026,"type":2,"home":"25","away":"13","homeAbbr":"SF","awayAbbr":"LV","neutral":false,"final":true,"hs":38,"as":17,"venue":"Santa Clara|CA|USA","indoor":false},
 {"id":"401873048","date":"2026-11-08T21:25Z","season":2026,"type":2,"home":"26","away":"22","homeAbbr":"SEA","awayAbbr":"ARI","neutral":false,"final":false,"hs":null,"as":null,"venue":"Seattle|WA|USA","indoor":false},
 {"id":"401873049","date":"2026-11-08T21:25Z","season":2026,"type":2,"home":"17","away":"9","homeAbbr":"NE","awayAbbr":"GB","neutral":false,"final":false,"hs":null,"as":null,"venue":"Foxborough|MA|USA","indoor":false},
 {"id":"401873050","date":"2026-11-09T01:20Z","season":2026,"type":2,"home":"3","away":"27","homeAbbr":"CHI","awayAbbr":"TB","neutral":false,"final":false,"hs":null,"as":null,"venue":"Chicago|IL|USA","indoor":false},
