@@ -146,13 +146,14 @@ test('the time range (the owner, 2026-10-19): Today to All time by the Eastern d
   const NOW = Date.parse('2026-10-21T16:00:00Z'); // a Wednesday, Eastern
   assert.deepEqual(book.rangeDays('today', NOW), { from: '2026-10-21', to: '2026-10-21' });
   assert.deepEqual(book.rangeDays('yesterday', NOW), { from: '2026-10-20', to: '2026-10-20' });
-  assert.deepEqual(book.rangeDays('week', NOW), { from: '2026-10-19', to: '2026-10-21' }, 'a week from its Monday');
+  assert.deepEqual(book.rangeDays('week', NOW), { from: '2026-10-15', to: '2026-10-21' }, 'the last seven days, today the seventh (D118)');
   assert.deepEqual(book.rangeDays('month', NOW), { from: '2026-10-01', to: '2026-10-21' });
   assert.deepEqual(book.rangeDays('year', NOW), { from: '2026-01-01', to: '2026-10-21' });
   assert.equal(book.rangeDays('all', NOW), null);
   // (just past midnight UTC is still the evening before in the East)
   assert.deepEqual(book.rangeDays('today', Date.parse('2026-10-22T02:00:00Z')), { from: '2026-10-21', to: '2026-10-21' });
-  assert.deepEqual(book.rangeDays('week', Date.parse('2026-10-19T12:00:00Z')), { from: '2026-10-19', to: '2026-10-19' }, 'a Monday is its own week');
+  assert.deepEqual(book.rangeDays('week', Date.parse('2026-10-19T12:00:00Z')), { from: '2026-10-13', to: '2026-10-19' }, 'a Monday too: never an empty week (D118)');
+  assert.equal(book.HISTORY_RANGES.find((r) => r.value === 'week').label, 'Last 7 days');
   assert.ok(book.HISTORY_RANGES.map((r) => r.value).join() === 'today,yesterday,week,month,year,all');
   const EPOCH = '2026-10-19T17:15:00Z';
   const f = {
@@ -175,14 +176,14 @@ test('the time range (the owner, 2026-10-19): Today to All time by the Eastern d
   ];
   const week = book.botHistoryOf([f], bets, null, { nfl: 'NFL' }, { range: 'week', now: NOW });
   assert.equal(week.range, 'week');
-  // (the replay's Monday: 2-2-1 (high's loss and medium's 2-1-1), the live a (graded the 20th) and b (graded at midnight Eastern, the 21st))
-  assert.deepEqual([week.overall.won, week.overall.lost, week.overall.push, week.overall.open], [3, 3, 1, 0]);
-  assert.deepEqual(week.rangeParts, { replayed: 6, live: 2, undated: 0 });
+  // (the last seven days: the replay's 18th (medium 1-0) and Monday (high's loss, medium's 2-1-1), the live a (graded the 20th) and b (graded at midnight Eastern, the 21st))
+  assert.deepEqual([week.overall.won, week.overall.lost, week.overall.push, week.overall.open], [4, 3, 1, 0]);
+  assert.deepEqual(week.rangeParts, { replayed: 7, live: 2, undated: 0 });
   assert.equal(week.overall.clvN, 3);
   const band = Object.fromEntries(week.byBand.map((r) => [r.label, r]));
-  assert.deepEqual([band.LOCK.bets, band.LOVE.won, band.LOVE.lost, band.LIKE.won], [0, 1, 1, 2]);
+  assert.deepEqual([band.LOCK.bets, band.LOVE.won, band.LOVE.lost, band.LIKE.won], [0, 1, 1, 3]);
   assert.deepEqual([week.practice.won, week.practice.bets], [1, 1]);
-  assert.ok(week.last.every((b) => b.at >= '2026-10-19'), 'the strip in the range: the replay\'s last that settled in it');
+  assert.ok(week.last.every((b) => b.at >= '2026-10-15'), 'the strip in the range: the replay\'s last that settled in it');
   const today = book.botHistoryOf([f], bets, null, {}, { range: 'today', now: NOW });
   assert.deepEqual([today.overall.lost, today.overall.bets, today.rangeParts.replayed], [1, 1, 0], 'b graded at midnight Eastern: today');
   const year = book.botHistoryOf([f], bets, null, {}, { range: 'year', now: NOW });
@@ -318,7 +319,7 @@ test('botHistoryOf: a tracked practice row on Practice as if 0.5u, a tracked pas
   assert.equal(band.LIKE.live, 1);
   assert.equal(band.PASS, undefined);
   assert.equal(all.sports[0].pass.tracked, 2);
-  // (the time range: this week (Monday the 19th to the 21st): the file's buckets and the live rows graded in it)
+  // (the time range: the last seven days (the 15th to the 21st): the file's buckets and the live rows graded in it)
   const week = book.botHistoryOf([f], bets, 'nfl', { nfl: 'NFL' }, { range: 'week', now: Date.parse('2026-10-21T20:00:00Z') });
   assert.deepEqual([week.practice.won, week.practice.bets], [2, 2]);
   assert.deepEqual([week.pass.won, week.pass.lost], [1, 3], 'the 10th\'s pass is last week');

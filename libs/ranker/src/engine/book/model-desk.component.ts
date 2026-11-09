@@ -41,7 +41,8 @@ const readSport = (): string | null => {
   }
 };
 
-// (the time range on show, remembered on this browser: This week to begin with (the owner, 2026-11-04))
+// (the time range on show, remembered on this browser: the last seven days to begin with (the owner, 2026-11-04; rolling,
+// never a Monday's empty week, D118))
 const RANGE_KEY = 'deskRange';
 const RANGE_DEFAULT: HistoryRange = 'week';
 const readRange = (): HistoryRange => {

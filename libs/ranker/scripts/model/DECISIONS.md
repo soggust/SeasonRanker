@@ -1746,3 +1746,10 @@ Resolved 2026-10-18:
 - **Rule:** before its commit the hourly desk runs, hard, exactly the fast lane's checks: `tests/data.test.mjs` (the ledgers, state and picks parse and every bet is whole), `tests/model-reliability.test.mjs`, `tests/model-writeup.test.mjs` (the live data's quality, warnings under `LIVE_DATA_SOFT`). Then the full suite, whose failures are warnings on the run's page with the failing tests' names, never a lost run of bets. CI on the push (`ci.yml`) still gates every test hard, and the data workflows gate their own files the same way.
 - **Code:** `.github/workflows/model-desk.yml`. **Tests:** `tests/workflows.test.mjs` D117 (the desk's and the data workflows' "Check the data": the whole-data line first, the suite inside the warning block, never a bare `npm test`; the fast lane's the same three files).
 - **Never:** a card's data test between the desk and its bets; a bare `npm test` as a blocking step in a bot's workflow.
+
+### D118. Bot Stats' week is the last seven days, never a calendar week that starts empty (the owner, 2026-11-09: "bot stats not showing any games or bets")
+- **Date:** 2026-11-09.
+- **What was wrong:** the Algorithm tab's default time range, "This week", ran from Monday to today (Eastern). At 2 AM Eastern on Monday 2026-11-09 it held no graded bet, so the page opened with no games and no bets, every chart empty, though All time and This year were whole (checked on the live site's files). Not a broken file or a broken page: an empty window.
+- **Rule:** the week range (`replay-history.ts rangeDays('week')`) is today and the six days before it, labelled "Last 7 days", the same window the Book's Recent form card uses (picks.mjs recentOf), so the two pages read the same week. The default stays this range. Today, Yesterday, This month, This year and All time are unchanged.
+- **Code:** `libs/ranker/src/engine/book/replay-history.ts`, `model-desk.component.ts` (the comment). **Tests:** `tests/book-replay-history.test.mjs` (the range from a Wednesday and from a Monday, the label, the history over it).
+- **Never:** a default range on Bot Stats that can be empty by the calendar alone.

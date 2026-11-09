@@ -183,7 +183,7 @@ export type HistoryRange = 'today' | 'yesterday' | 'week' | 'month' | 'year' | '
 export const HISTORY_RANGES: { value: HistoryRange; label: string }[] = [
   { value: 'today', label: 'Today' },
   { value: 'yesterday', label: 'Yesterday' },
-  { value: 'week', label: 'This week' },
+  { value: 'week', label: 'Last 7 days' },
   { value: 'month', label: 'This month' },
   { value: 'year', label: 'This year' },
   { value: 'all', label: 'All time' },
@@ -232,7 +232,10 @@ export function rangeDays(range: HistoryRange, now: number | Date = Date.now()):
   const day = (offset: number) => new Date(Date.UTC(y, m - 1, d + offset)).toISOString().slice(0, 10);
   if (range === 'today') return { from: today, to: today };
   if (range === 'yesterday') return { from: day(-1), to: day(-1) };
-  if (range === 'week') return { from: day(-((new Date(Date.UTC(y, m - 1, d)).getUTCDay() + 6) % 7)), to: today };
+  // (the week rolls: today and the six days before it, the Book's Recent form's window. From its Monday till 2026-11-09,
+  // when Bot Stats opened empty at 2 AM Eastern on a Monday, not a bet graded in "this week" yet (the owner: "bot stats
+  // not showing any games or bets"); DECISIONS.md D118)
+  if (range === 'week') return { from: day(-6), to: today };
   if (range === 'month') return { from: today.slice(0, 8) + '01', to: today };
   return { from: today.slice(0, 5) + '01-01', to: today };
 }
