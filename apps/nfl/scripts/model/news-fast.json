@@ -2,27 +2,14 @@
  "sport": "nfl",
  "cursor": {
   "adamscheftermirror.bsky.social": "2026-11-09T13:45:07.949Z",
-  "rapsheet.bsky.social": "2026-11-09T01:24:31.455Z",
+  "rapsheet.bsky.social": "2026-11-09T15:03:14.842Z",
   "nflnewsreposterbot.bsky.social": "2026-11-06T17:28:39.017Z",
-  "insidenflnews.bsky.social": "2026-11-09T13:02:21.820Z",
-  "nflnewsposter.bsky.social": "2026-11-09T14:43:58.445Z",
+  "insidenflnews.bsky.social": "2026-11-09T15:00:44.738Z",
+  "nflnewsposter.bsky.social": "2026-11-09T14:57:05.540Z",
   "rotoworld-fb.bsky.social": "2026-11-09T13:07:42.000Z",
   "rotowirenfl.bsky.social": "2026-11-09T14:38:34.000Z"
  },
  "claims": [
-  {
-   "id": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3myaewxj7iq2p|malikwillis|active|status",
-   "at": "2026-10-19T14:56:59.000Z",
-   "seen": "2026-10-19T21:15:18.875Z",
-   "handle": "rotowirenfl.bsky.social",
-   "post": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3myaewxj7iq2p",
-   "player": "Malik Willis",
-   "team": null,
-   "status": "active",
-   "kind": "status",
-   "confidence": 0.85,
-   "text": "Malik Willis: Ready to go after minor injury \n\n https://www.rotowire.com/football/player/malik-willis-15872"
-  },
   {
    "id": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3myagdinxdo2z|mikeevans|questionable|status",
    "at": "2026-10-19T15:21:53.000Z",
