@@ -1,24 +1,11 @@
 {
  "sport": "nba",
  "cursor": {
-  "rotowirenba.bsky.social": "2026-11-09T22:04:10.000Z",
+  "rotowirenba.bsky.social": "2026-11-09T23:13:41.000Z",
   "insidenbanews.bsky.social": "2026-11-08T18:11:49.382Z",
   "shamsbot.bsky.social": "2026-11-08T18:05:20.000Z"
  },
  "claims": [
-  {
-   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3myb5j5gxmy24|casonwallace|active|status",
-   "at": "2026-10-19T22:16:39.000Z",
-   "seen": "2026-10-19T22:41:38.820Z",
-   "handle": "rotowirenba.bsky.social",
-   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3myb5j5gxmy24",
-   "player": "Cason Wallace",
-   "team": "OKC",
-   "status": "active",
-   "kind": "status",
-   "confidence": 0.85,
-   "text": "Cason Wallace: Not listed on injury report \n\n https://www.rotowire.com/basketball/player/cason-wallace-5898"
-  },
   {
    "id": "at://did:plc:ykcnnf6kqnn3lasmobrczoem/app.bsky.feed.post/3myctxomgh22l|taureanprince|out|status",
    "at": "2026-10-20T14:31:09.380Z",
@@ -9547,6 +9534,97 @@
    "kind": "status",
    "confidence": 0.8,
    "text": "Zion Williamson: Sitting out Monday \n\n https://www.rotowire.com/basketball/player/zion-williamson-4777"
+  },
+  {
+   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mzvyawf4q425|austinreaves|out|status",
+   "at": "2026-11-09T22:33:41.000Z",
+   "seen": "2026-11-09T23:14:23.696Z",
+   "handle": "rotowirenba.bsky.social",
+   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mzvyawf4q425",
+   "player": "Austin Reaves",
+   "team": "LAL",
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.95,
+   "text": "Austin Reaves: Won't play Monday \n\n https://www.rotowire.com/basketball/player/austin-reaves-5334"
+  },
+  {
+   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mzvz7bibwj24|scottiebarnes|out|status",
+   "at": "2026-11-09T22:50:39.000Z",
+   "seen": "2026-11-09T23:14:23.696Z",
+   "handle": "rotowirenba.bsky.social",
+   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mzvz7bibwj24",
+   "player": "Scottie Barnes",
+   "team": "TOR",
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.95,
+   "text": "Scottie Barnes: Out vs. Memphis \n\n https://www.rotowire.com/basketball/player/scottie-barnes-5390"
+  },
+  {
+   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mzvzfvzomz2n|immanuelquickley|out|status",
+   "at": "2026-11-09T22:54:22.000Z",
+   "seen": "2026-11-09T23:14:23.696Z",
+   "handle": "rotowirenba.bsky.social",
+   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mzvzfvzomz2n",
+   "player": "Immanuel Quickley",
+   "team": "TOR",
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.95,
+   "text": "Immanuel Quickley: Ruled out Monday \n\n https://www.rotowire.com/basketball/player/immanuel-quickley-5201"
+  },
+  {
+   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mzw226xmcr2s|giannisantetokounmpo|active|status",
+   "at": "2026-11-09T23:05:42.000Z",
+   "seen": "2026-11-09T23:14:23.696Z",
+   "handle": "rotowirenba.bsky.social",
+   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mzw226xmcr2s",
+   "player": "Giannis Antetokounmpo",
+   "team": "MIL",
+   "status": "active",
+   "kind": "status",
+   "confidence": 0.6,
+   "text": "Giannis Antetokounmpo: Tagged probable for Tuesday \n\n https://www.rotowire.com/basketball/player/giannis-antetokounmpo-3456"
+  },
+  {
+   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mzw22khmoa25|desmondbane|active|status",
+   "at": "2026-11-09T23:05:54.000Z",
+   "seen": "2026-11-09T23:14:23.696Z",
+   "handle": "rotowirenba.bsky.social",
+   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mzw22khmoa25",
+   "player": "Desmond Bane",
+   "team": "ORL",
+   "status": "active",
+   "kind": "status",
+   "confidence": 0.9,
+   "text": "Desmond Bane: Cleared from injury report \n\n https://www.rotowire.com/basketball/player/desmond-bane-5159"
+  },
+  {
+   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mzw2e6p3js2i|jalensuggs|out|status",
+   "at": "2026-11-09T23:11:17.000Z",
+   "seen": "2026-11-09T23:14:23.696Z",
+   "handle": "rotowirenba.bsky.social",
+   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mzw2e6p3js2i",
+   "player": "Jalen Suggs",
+   "team": "ORL",
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.95,
+   "text": "Jalen Suggs: Remains out for Tuesday \n\n https://www.rotowire.com/basketball/player/jalen-suggs-5379"
+  },
+  {
+   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mzw2ihjgwf2z|jarrettallen|active|status",
+   "at": "2026-11-09T23:13:41.000Z",
+   "seen": "2026-11-09T23:14:23.696Z",
+   "handle": "rotowirenba.bsky.social",
+   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mzw2ihjgwf2z",
+   "player": "Jarrett Allen",
+   "team": "CLE",
+   "status": "active",
+   "kind": "status",
+   "confidence": 0.85,
+   "text": "Jarrett Allen: Cleared to play \n\n https://www.rotowire.com/basketball/player/jarrett-allen-4122"
   }
  ]
 }

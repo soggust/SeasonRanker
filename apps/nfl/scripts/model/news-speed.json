@@ -20102,6 +20102,54 @@
     "own": "2026-11-09T16:38:17.000Z",
     "why": "@rotoworld-fb.bsky.social: Ferguson (hammy) likely out a 'couple weeks'"
    }
+  },
+  "401873051|joshpalmer|out": {
+   "game": "401873051",
+   "start": "2026-11-10T01:15Z",
+   "team": "2",
+   "name": "Josh Palmer",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-09T22:15:21.812Z",
+    "own": "2026-11-09T21:42:13.682Z",
+    "why": "@insidenflnews.bsky.social: Bills WR Josh Palmer (hamstring) has been placed on "
+   }
+  },
+  "401873052|shytuttle|q": {
+   "game": "401873052",
+   "start": "2026-11-13T01:15Z",
+   "team": "28",
+   "name": "Shy Tuttle",
+   "status": "q",
+   "athlete": "3886601",
+   "espn": {
+    "seen": "2026-11-09T23:12:36.389Z",
+    "own": "2026-11-09T22:44:00.000Z"
+   }
+  },
+  "401873052|colsonyankoff|q": {
+   "game": "401873052",
+   "start": "2026-11-13T01:15Z",
+   "team": "28",
+   "name": "Colson Yankoff",
+   "status": "q",
+   "athlete": "4361088",
+   "espn": {
+    "seen": "2026-11-09T23:12:36.389Z",
+    "own": "2026-11-09T22:43:00.000Z"
+   }
+  },
+  "401873052|chigokonkwo|q": {
+   "game": "401873052",
+   "start": "2026-11-13T01:15Z",
+   "team": "28",
+   "name": "Chig Okonkwo",
+   "status": "q",
+   "athlete": "4360635",
+   "espn": {
+    "seen": "2026-11-09T23:12:36.389Z",
+    "own": "2026-11-09T02:12:00.000Z"
+   }
   }
  }
 }
