@@ -1,41 +1,15 @@
 {
  "sport": "nfl",
  "cursor": {
-  "adamscheftermirror.bsky.social": "2026-11-09T17:50:07.880Z",
+  "adamscheftermirror.bsky.social": "2026-11-09T18:40:10.927Z",
   "rapsheet.bsky.social": "2026-11-09T15:03:14.842Z",
-  "nflnewsreposterbot.bsky.social": "2026-11-09T17:45:58.027Z",
-  "insidenflnews.bsky.social": "2026-11-09T16:48:40.168Z",
-  "nflnewsposter.bsky.social": "2026-11-09T18:05:38.956Z",
-  "rotoworld-fb.bsky.social": "2026-11-09T18:07:39.000Z",
-  "rotowirenfl.bsky.social": "2026-11-09T18:00:39.000Z"
+  "nflnewsreposterbot.bsky.social": "2026-11-09T18:11:52.513Z",
+  "insidenflnews.bsky.social": "2026-11-09T18:43:15.009Z",
+  "nflnewsposter.bsky.social": "2026-11-09T18:36:32.992Z",
+  "rotoworld-fb.bsky.social": "2026-11-09T18:21:13.000Z",
+  "rotowirenfl.bsky.social": "2026-11-09T18:46:03.000Z"
  },
  "claims": [
-  {
-   "id": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3myaqz2u76c2y|danieljones|none|starting",
-   "at": "2026-10-19T18:32:54.000Z",
-   "seen": "2026-10-19T21:15:18.875Z",
-   "handle": "rotoworld-fb.bsky.social",
-   "post": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3myaqz2u76c2y",
-   "player": "Daniel Jones",
-   "team": "IND",
-   "status": "none",
-   "kind": "starting",
-   "confidence": 0.85,
-   "text": "Steichen: Daniel Jones to remain starter"
-  },
-  {
-   "id": "at://did:plc:fuqjc7x4gxvnwzksnlxwbe4x/app.bsky.feed.post/3myarvyzlt2bc|elijaharroyo|out|status",
-   "at": "2026-10-19T18:49:06.228Z",
-   "seen": "2026-10-19T21:15:18.875Z",
-   "handle": "nflnewsposter.bsky.social",
-   "post": "at://did:plc:fuqjc7x4gxvnwzksnlxwbe4x/app.bsky.feed.post/3myarvyzlt2bc",
-   "player": "Elijah Arroyo",
-   "team": "SEA",
-   "status": "out",
-   "kind": "status",
-   "confidence": 0.8,
-   "text": "[Fowler] Seahawks TE Elijah Arroyo is expected to miss time with a shoulder injury suffered Thursday, per sources. \n\nStill determining severity but could be an extended absence. Hence, the Deguara sig"
-  },
   {
    "id": "at://did:plc:fuqjc7x4gxvnwzksnlxwbe4x/app.bsky.feed.post/3myasfdmf5kbc|cjgardnerjohnson|out|status",
    "at": "2026-10-19T18:57:40.646Z",
@@ -18833,6 +18807,32 @@
    "kind": "status",
    "confidence": 0.9,
    "text": "Reid: Mahomes (elbow) considered 'day-to-day'"
+  },
+  {
+   "id": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3mzvjq5uug72n|patrickmahomes|questionable|status",
+   "at": "2026-11-09T18:13:46.000Z",
+   "seen": "2026-11-09T18:51:24.405Z",
+   "handle": "rotowirenfl.bsky.social",
+   "post": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3mzvjq5uug72n",
+   "player": "Patrick Mahomes",
+   "team": "KC",
+   "status": "questionable",
+   "kind": "status",
+   "confidence": 0.9,
+   "text": "Patrick Mahomes: Deemed day-to-day by Reid \n\n https://www.rotowire.com/football/player/patrick-mahomes-11839"
+  },
+  {
+   "id": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3mzvk4jinoj2k|xavierworthy|questionable|status",
+   "at": "2026-11-09T18:20:40.000Z",
+   "seen": "2026-11-09T18:51:24.405Z",
+   "handle": "rotowirenfl.bsky.social",
+   "post": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3mzvk4jinoj2k",
+   "player": "Xavier Worthy",
+   "team": "KC",
+   "status": "questionable",
+   "kind": "status",
+   "confidence": 0.9,
+   "text": "Xavier Worthy: Considered day-to-day, per Reid \n\n https://www.rotowire.com/football/player/xavier-worthy-17687"
   }
  ]
 }

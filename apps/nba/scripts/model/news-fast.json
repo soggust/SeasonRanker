@@ -1,7 +1,7 @@
 {
  "sport": "nba",
  "cursor": {
-  "rotowirenba.bsky.social": "2026-11-09T18:06:37.000Z",
+  "rotowirenba.bsky.social": "2026-11-09T18:41:53.000Z",
   "insidenbanews.bsky.social": "2026-11-08T18:11:49.382Z",
   "shamsbot.bsky.social": "2026-11-08T18:05:20.000Z"
  },
@@ -9521,6 +9521,32 @@
    "kind": "status",
    "confidence": 0.8,
    "text": "Luka Doncic: Absent from injury report \n\n https://www.rotowire.com/basketball/player/luka-doncic-4396"
+  },
+  {
+   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mzvjiz3uvr24|austinreaves|questionable|status",
+   "at": "2026-11-09T18:09:46.000Z",
+   "seen": "2026-11-09T18:51:24.405Z",
+   "handle": "rotowirenba.bsky.social",
+   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mzvjiz3uvr24",
+   "player": "Austin Reaves",
+   "team": "LAL",
+   "status": "questionable",
+   "kind": "status",
+   "confidence": 0.9,
+   "text": "Austin Reaves: Questionable with illness \n\n https://www.rotowire.com/basketball/player/austin-reaves-5334"
+  },
+  {
+   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mzvlch72q62c|devinvassell|out|status",
+   "at": "2026-11-09T18:41:53.000Z",
+   "seen": "2026-11-09T18:51:24.405Z",
+   "handle": "rotowirenba.bsky.social",
+   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mzvlch72q62c",
+   "player": "Devin Vassell",
+   "team": null,
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.9,
+   "text": "Devin Vassell: Ruled out for Monday \n\n https://www.rotowire.com/basketball/player/devin-vassell-5113"
   }
  ]
 }
