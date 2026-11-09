@@ -3,11 +3,11 @@
  "cursor": {
   "adamscheftermirror.bsky.social": "2026-11-09T16:50:07.864Z",
   "rapsheet.bsky.social": "2026-11-09T15:03:14.842Z",
-  "nflnewsreposterbot.bsky.social": "2026-11-06T17:28:39.017Z",
+  "nflnewsreposterbot.bsky.social": "2026-11-09T17:45:58.027Z",
   "insidenflnews.bsky.social": "2026-11-09T16:48:40.168Z",
   "nflnewsposter.bsky.social": "2026-11-09T17:12:36.513Z",
-  "rotoworld-fb.bsky.social": "2026-11-09T17:22:26.000Z",
-  "rotowirenfl.bsky.social": "2026-11-09T16:55:42.000Z"
+  "rotoworld-fb.bsky.social": "2026-11-09T17:40:34.000Z",
+  "rotowirenfl.bsky.social": "2026-11-09T17:46:24.000Z"
  },
  "claims": [
   {
@@ -18729,6 +18729,45 @@
    "kind": "starting",
    "confidence": 0.7,
    "text": "Fowler: Watson expected to start vs. Texans"
+  },
+  {
+   "id": "at://did:plc:rx22hq465sfe5g2qyyf5gzu2/app.bsky.feed.post/3mzvi5wclw22w|samdarnold|out|status",
+   "at": "2026-11-09T17:45:40.521Z",
+   "seen": "2026-11-09T17:48:24.718Z",
+   "handle": "nflnewsreposterbot.bsky.social",
+   "post": "at://did:plc:rx22hq465sfe5g2qyyf5gzu2/app.bsky.feed.post/3mzvi5wclw22w",
+   "player": "Sam Darnold",
+   "team": "SEA",
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.92,
+   "text": "Adam Schefter: Seahawks HC Mike Macdonald told @BrockHuard and @TheMikeSalk on Seattle Sports 710 ESPN that he is ruling out Sam Darnold for this week’s game vs the Raiders. But tests on Drew Lock’s o"
+  },
+  {
+   "id": "at://did:plc:rx22hq465sfe5g2qyyf5gzu2/app.bsky.feed.post/3mzvi5wclw22w|drewlock|active|starting",
+   "at": "2026-11-09T17:45:40.521Z",
+   "seen": "2026-11-09T17:48:24.718Z",
+   "handle": "nflnewsreposterbot.bsky.social",
+   "post": "at://did:plc:rx22hq465sfe5g2qyyf5gzu2/app.bsky.feed.post/3mzvi5wclw22w",
+   "player": "Drew Lock",
+   "team": "SEA",
+   "status": "active",
+   "kind": "starting",
+   "confidence": 0.72,
+   "text": "Adam Schefter: Seahawks HC Mike Macdonald told @BrockHuard and @TheMikeSalk on Seattle Sports 710 ESPN that he is ruling out Sam Darnold for this week’s game vs the Raiders. But tests on Drew Lock’s o"
+  },
+  {
+   "id": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3mzvi7a42wd2z|samdarnold|out|status",
+   "at": "2026-11-09T17:46:24.000Z",
+   "seen": "2026-11-09T17:48:24.718Z",
+   "handle": "rotowirenfl.bsky.social",
+   "post": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3mzvi7a42wd2z",
+   "player": "Sam Darnold",
+   "team": "SEA",
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.9,
+   "text": "Sam Darnold: Not ready to return in Week 10 \n\n https://www.rotowire.com/football/player/sam-darnold-12490"
   }
  ]
 }
