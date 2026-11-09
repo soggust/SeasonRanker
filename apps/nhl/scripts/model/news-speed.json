@@ -8349,6 +8349,42 @@
     "seen": "2026-11-08T23:41:39.098Z",
     "own": "2026-11-08T23:22:00.000Z"
    }
+  },
+  "401892680|connorhellebuyck|out": {
+   "game": "401892680",
+   "start": "2026-11-10T01:00Z",
+   "team": "6",
+   "name": "Connor Hellebuyck",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-09T13:14:36.673Z",
+    "own": "2026-11-09T13:07:42.000Z",
+    "why": "@dailyfaceoff.bsky.social: This Week in the NHL: Hellebuyck returns to Winnipeg "
+   }
+  },
+  "401892681|connorhellebuyck|out": {
+   "game": "401892681",
+   "start": "2026-11-10T02:30Z",
+   "team": "22",
+   "name": "Connor Hellebuyck",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-09T13:14:36.673Z",
+    "own": "2026-11-09T13:07:42.000Z",
+    "why": "@dailyfaceoff.bsky.social: This Week in the NHL: Hellebuyck returns to Winnipeg "
+   }
+  },
+  "401892682|connorhellebuyck|out": {
+   "game": "401892682",
+   "start": "2026-11-10T03:00Z",
+   "team": "18",
+   "name": "Connor Hellebuyck",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-09T13:14:36.673Z",
+    "own": "2026-11-09T13:07:42.000Z",
+    "why": "@dailyfaceoff.bsky.social: This Week in the NHL: Hellebuyck returns to Winnipeg "
+   }
   }
  }
 }
