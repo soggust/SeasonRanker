@@ -3,7 +3,7 @@
  "cursor": {
   "johnston-bot.bsky.social": "2026-11-09T03:39:21.881Z",
   "notfriedgehnic.bsky.social": "2026-11-08T19:18:40.624Z",
-  "dailyfaceoff.bsky.social": "2026-11-09T03:43:14.000Z",
+  "dailyfaceoff.bsky.social": "2026-11-09T04:58:07.000Z",
   "dfotoronto.bsky.social": "2026-11-09T03:25:14.000Z",
   "marklazerus.bsky.social": "2026-11-08T23:34:44.455Z"
  },
@@ -2074,6 +2074,19 @@
    "kind": "status",
    "confidence": 0.9,
    "text": "Devils’ Connor Hellebuyck won’t play in return to Winnipeg due to team’s ‘reduction in expected win probability’"
+  },
+  {
+   "id": "at://did:plc:3uus7y6h3rlrk6sbctzxm4bg/app.bsky.feed.post/3mzu5bgs6ud2k|connorhellebuyck|none|benched",
+   "at": "2026-11-09T04:58:07.000Z",
+   "seen": "2026-11-09T05:21:05.512Z",
+   "handle": "dailyfaceoff.bsky.social",
+   "post": "at://did:plc:3uus7y6h3rlrk6sbctzxm4bg/app.bsky.feed.post/3mzu5bgs6ud2k",
+   "player": "Connor Hellebuyck",
+   "team": "NJD",
+   "status": "none",
+   "kind": "benched",
+   "confidence": 0.85,
+   "text": "\"This is a goaltender that's not going to play every night... it just made sense\" \n\nSheldon Keefe on the New Jersey Devils statement explaining that Connor Hellebuyck will not start in his return to W"
   }
  ]
 }
