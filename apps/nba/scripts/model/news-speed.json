@@ -20250,6 +20250,134 @@
     "seen": "2026-11-09T02:34:39.146Z",
     "own": "2026-11-08T22:04:00.000Z"
    }
+  },
+  "401909955|natebittle|out": {
+   "game": "401909955",
+   "start": "2026-11-10T00:30Z",
+   "team": "28",
+   "name": "Nate Bittle",
+   "status": "out",
+   "athlete": "4432586",
+   "espn": {
+    "seen": "2026-11-09T03:08:39.907Z",
+    "own": "2026-11-08T21:20:00.000Z"
+   }
+  },
+  "401909955|immanuelquickley|q": {
+   "game": "401909955",
+   "start": "2026-11-10T00:30Z",
+   "team": "28",
+   "name": "Immanuel Quickley",
+   "status": "q",
+   "athlete": "4395724",
+   "espn": {
+    "seen": "2026-11-09T03:08:39.907Z",
+    "own": "2026-11-08T17:14:00.000Z"
+   },
+   "sleeper": {
+    "seen": "2026-11-08T21:13:52.409Z",
+    "own": "2026-11-08T18:30:19.584Z"
+   }
+  },
+  "401909955|scottiebarnes|q": {
+   "game": "401909955",
+   "start": "2026-11-10T00:30Z",
+   "team": "28",
+   "name": "Scottie Barnes",
+   "status": "q",
+   "athlete": "4433134",
+   "espn": {
+    "seen": "2026-11-09T03:08:39.907Z",
+    "own": "2026-11-08T17:11:00.000Z"
+   },
+   "sleeper": {
+    "seen": "2026-11-08T21:13:52.409Z",
+    "own": "2026-11-08T18:30:19.600Z"
+   }
+  },
+  "401909955|kawhileonard|out": {
+   "game": "401909955",
+   "start": "2026-11-10T00:30Z",
+   "team": "28",
+   "name": "Kawhi Leonard",
+   "status": "out",
+   "athlete": "6450",
+   "espn": {
+    "seen": "2026-11-09T03:08:39.907Z",
+    "own": "2026-11-04T00:14:00.000Z"
+   }
+  },
+  "401909955|normanpowell|out": {
+   "game": "401909955",
+   "start": "2026-11-10T00:30Z",
+   "team": "28",
+   "name": "Norman Powell",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-08T19:14:57.032Z",
+    "own": "2026-11-08T18:55:29.000Z",
+    "why": "@rotowirenba.bsky.social: Norman Powell: Out Sunday \n\n https://www.rotowire.com/"
+   }
+  },
+  "401909955|anthonydavis|q": {
+   "game": "401909955",
+   "start": "2026-11-10T00:30Z",
+   "team": "28",
+   "name": "Anthony Davis",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-11-08T22:15:24.034Z",
+    "own": "2026-11-08T22:08:24.000Z",
+    "why": "@rotowirenba.bsky.social: Anthony Davis: Questionable to suit up Monday \n\n https"
+   }
+  },
+  "401909955|domantassabonis|out": {
+   "game": "401909955",
+   "start": "2026-11-10T00:30Z",
+   "team": "28",
+   "name": "Domantas Sabonis",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-09T01:32:07.446Z",
+    "own": "2026-11-09T01:03:30.000Z",
+    "why": "@rotowirenba.bsky.social: Domantas Sabonis: Out Sunday \n\n https://www.rotowire.c"
+   }
+  },
+  "401909955|scottypippen|out": {
+   "game": "401909955",
+   "start": "2026-11-10T00:30Z",
+   "team": "29",
+   "name": "Scotty Pippen Jr.",
+   "status": "out",
+   "athlete": "4431785",
+   "espn": {
+    "seen": "2026-11-09T03:08:39.907Z",
+    "own": "2026-11-08T23:07:00.000Z"
+   }
+  },
+  "401909955|isaiahstewart|out": {
+   "game": "401909955",
+   "start": "2026-11-10T00:30Z",
+   "team": "29",
+   "name": "Isaiah Stewart",
+   "status": "out",
+   "athlete": "4432810",
+   "espn": {
+    "seen": "2026-11-09T03:08:39.907Z",
+    "own": "2026-11-08T23:01:00.000Z"
+   }
+  },
+  "401909955|richiesaunders|out": {
+   "game": "401909955",
+   "start": "2026-11-10T00:30Z",
+   "team": "29",
+   "name": "Richie Saunders",
+   "status": "out",
+   "athlete": "5105462",
+   "espn": {
+    "seen": "2026-11-09T03:08:39.907Z",
+    "own": "2026-11-07T17:24:00.000Z"
+   }
   }
  }
 }
