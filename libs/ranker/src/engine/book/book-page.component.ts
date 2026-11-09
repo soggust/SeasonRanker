@@ -281,6 +281,9 @@ export class BookPageComponent implements OnInit, OnDestroy {
   readonly gameLimit = 15;
   // (the CHECKs an admin's All Games shows, the biggest gaps first, over the 40 bets)
   readonly checkLimit = 10;
+  // (the suggestions All Games shows (suggestions.ts: an edge at the latest price, not a bet the Bot made), the best
+  // first, in their own folded section under the bands (D119); a game chosen, all of its own)
+  readonly suggestLimit = 10;
   open = new Set<number>();
   readonly insteadText = insteadText;
   // each game's venue and kickoff weather, from its picks ("nfl|CHI @ GB")
@@ -497,7 +500,7 @@ export class BookPageComponent implements OnInit, OnDestroy {
     // (a game with a row on show on it, a bet or a suggestion, is a picked one: its rows count it (pickedGames).
     // Only a row on show: a game whose picks the list hides (a practice pick with no edge) is here by its lines,
     // never gone from the dropdown (game-menu.ts linesOnlyGames))
-    for (const g of linesOnlyGames(this.lines.boards().values(), shownEvents(this.listed))) {
+    for (const g of linesOnlyGames(this.lines.boards().values(), shownEvents(this.listed.filter((r) => !r.suggested)))) {
       out.push({ key: linesKey(g), sport: g.sport, matchup: g.matchup, start: g.start, count: null, teams: [g.away, g.home].map((t) => this.menuTeam(g.sport, t.abbr, t.logo)), ...this.cardOf(g.sport, g.event) });
     }
     return out;
@@ -631,9 +634,11 @@ export class BookPageComponent implements OnInit, OnDestroy {
     const rows = kinds.length ? inGame.filter((r) => kinds.includes(r.betType)) : inGame;
     const limit = this.game ? this.gameLimit : this.limit;
     const checkLimit = this.game ? Infinity : this.checkLimit;
+    const suggestLimit = this.game ? Infinity : this.suggestLimit;
     let bets = 0;
     let checks = 0;
-    return rows.filter((r) => (r.check ? checks++ < checkLimit : bets++ < limit));
+    let suggested = 0;
+    return rows.filter((r) => (r.check ? checks++ < checkLimit : r.suggested ? suggested++ < suggestLimit : bets++ < limit));
   }
 
   // The bets in the chosen game; none chosen, the chosen sport's (book-rows.ts sportRows); neither, all of them.
@@ -756,7 +761,8 @@ export class BookPageComponent implements OnInit, OnDestroy {
   private pickedGames(rows: BetRow[]): MenuGameIn[] {
     const byGame = new Map<string, MenuGameIn & { count: number; bets: number }>();
     for (const r of rows) {
-      if (!r.game) continue;
+      // (a suggestion isn't a pick: it counts for no game (D119); its game is in the menu by its lines, linesOnly)
+      if (!r.game || r.suggested) continue;
       const key = this.gameKey(r);
       const game = byGame.get(key) ?? { key, sport: r.sport, matchup: r.game.matchup, start: r.game.kickoff ?? null, date: r.game.date, count: 0, bets: 0, teams: r.game.teams?.map((t) => this.menuTeam(r.sport, t.abbr, t.logo)), ...this.cardOf(r.sport, r.pickId?.split(':')[0] ?? '') };
       if (r.check) game.count++;
@@ -796,7 +802,7 @@ export class BookPageComponent implements OnInit, OnDestroy {
     return this.sportCount('');
   }
   sportCount(sport: string): number {
-    return Math.min(this.limit, sportRows(this.listed, sport).filter((r) => !r.check).length);
+    return Math.min(this.limit, sportRows(this.listed, sport).filter((r) => !r.check && !r.suggested).length);
   }
 
   // The dropdown's value: the chosen game's key, else the chosen sport (game-menu.ts sportChoice), else Best
@@ -976,7 +982,11 @@ export class BookPageComponent implements OnInit, OnDestroy {
 
   // (the locks and CHECKs shown: above the ranks, the first bet under them #1)
   lockCount(rows: BetRow[]): number {
-    return rows.filter((r) => unranked(r.confidence)).length;
+    return rows.filter((r) => !r.suggested && unranked(r.confidence)).length;
+  }
+  // (the Bot's bets among the rows, the ranks' count: a suggestion has no rank (D119))
+  betCount(rows: BetRow[]): number {
+    return rows.filter((r) => !r.suggested).length;
   }
 
   // (a click on the row itself, not one of its controls nor its open content: the chevron's toggle; book-rows.ts
@@ -1266,46 +1276,51 @@ export class BookPageComponent implements OnInit, OnDestroy {
     return this.sumsFor.sums;
   }
   // (a band's season as its header says it: "23–9 · +18.4u"; none till a bet in it is graded)
-  bandRecord(band: Confidence): { record: string; full: string | null; units: string; up: boolean } | null {
-    const t = this.bandRecords.get(band);
+  bandRecord(band: Confidence | 'suggested'): { record: string; full: string | null; units: string; up: boolean } | null {
+    const t = band === 'suggested' ? null : this.bandRecords.get(band);
     if (!t || !(t.wins + t.losses + t.pushes)) return null;
     const r = { won: t.wins, lost: t.losses, push: t.pushes };
     return { record: compactRecord(r), full: recordTip(r), units: `${t.profit >= 0 ? '+' : '−'}${Math.abs(t.profit).toFixed(1)}u`, up: t.profit >= 0 };
   }
 
   // The sections: the rows shown, in their order (the locks, an admin's CHECKs, then the rest by their Kelly score),
-  // grouped by band, LOCK, CHECK, LOVE, LIKE; the passes and fades not on Best Bets at all (a game's own lines tag
-  // them: game-lines' PASS / FADE). Each row keeps its place in the list (i: the rank tile's number and its popover's
-  // index)
-  readonly BAND_SECTIONS: readonly { band: Confidence; tier: 'lock' | 'check' | 'love' | 'like'; name: string }[] = [
+  // grouped by band, LOCK, CHECK, LOVE, LIKE: the Bot's bets alone, so the bands are Bot Stats' bets (D119); under
+  // them the suggestions (suggestions.ts: a side the Bot sees an edge on at the latest price but didn't bet, no
+  // stake, no rank) in one folded section of their own, "Seen, not bet". The passes and fades not on Best Bets at
+  // all (a game's own lines tag them: game-lines' PASS / FADE). Each row keeps its place in the list (i: the rank
+  // tile's number and its popover's index)
+  readonly BAND_SECTIONS: readonly { band: Confidence | 'suggested'; tier: 'lock' | 'check' | 'love' | 'like' | 'suggested'; name: string }[] = [
     { band: 'lock', tier: 'lock', name: 'Locks' },
     { band: 'check', tier: 'check', name: 'Checks' },
     { band: 'high', tier: 'love', name: 'Loves' },
     { band: 'medium', tier: 'like', name: 'Likes' },
+    { band: 'suggested', tier: 'suggested', name: 'Seen, not bet' },
   ];
-  // (each band's icon on its header, a stroke path: a padlock, a question, a heart, a thumbs-up)
+  // (each band's icon on its header, a stroke path: a padlock, a question, a heart, a thumbs-up, an eye)
   readonly BAND_ICONS: Record<string, string> = {
     lock: 'M6 11h12v10H6zM8 11V7a4 4 0 0 1 8 0v4',
     check: 'M12 17h.01M9.6 9.3a2.5 2.5 0 1 1 3.6 2.3c-.8.5-1.2 1-1.2 1.9M12 21a9 9 0 1 0 0-18 9 9 0 0 0 0 18z',
     love: 'M12 20s-7-4.4-7-10a4 4 0 0 1 7-2.6A4 4 0 0 1 19 10c0 5.6-7 10-7 10z',
     like: 'M7 11v9H4v-9zM7 11l4-7a2 2 0 0 1 3 2l-1 4h5a2 2 0 0 1 2 2.3l-1.3 6A2 2 0 0 1 16.7 20H7',
+    suggested: 'M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7S2 12 2 12zM12 15a3 3 0 1 0 0-6 3 3 0 0 0 0 6z',
   };
-  get sections(): { band: Confidence; tier: string; name: string; rows: { r: BetRow; i: number }[] }[] {
-    const shown = this.shown;
-    return this.BAND_SECTIONS.map((s) => ({ ...s, rows: shown.map((r, i) => ({ r, i })).filter(({ r }) => this.grade(r) === s.tier) })).filter((s) => s.rows.length);
+  get sections(): { band: Confidence | 'suggested'; tier: string; name: string; rows: { r: BetRow; i: number }[] }[] {
+    const rows = this.shown.map((r, i) => ({ r, i }));
+    // (a suggestion is in its own section and no band's (D119))
+    return this.BAND_SECTIONS.map((s) => ({ ...s, rows: rows.filter(({ r }) => (s.tier === 'suggested' ? !!r.suggested : !r.suggested && this.grade(r) === s.tier)) })).filter((s) => s.rows.length);
   }
-  // (whether anything favorable is on the board: a LOCK, LOVE or LIKE, an admin's CHECKs not counted; none, Best
-  // Bets says so in one line, the CHECKs under it)
+  // (whether anything favorable is on the board: a LOCK, LOVE or LIKE the Bot bet, an admin's CHECKs and the
+  // suggestions not counted (D119); none, Best Bets says so in one line, the CHECKs and the suggestions under it)
   get favorable(): boolean {
-    return this.shown.some((r) => favorableGrade(this.grade(r)));
+    return this.shown.some((r) => !r.suggested && favorableGrade(this.grade(r)));
   }
-  // (how many picks the bands hold: a chosen game's picks header)
+  // (how many picks the bands hold: a chosen game's picks header; the suggestions aren't picks)
   get sectionCount(): number {
-    return this.sections.reduce((n, s) => n + s.rows.length, 0);
+    return this.sections.reduce((n, s) => (s.tier === 'suggested' ? n : n + s.rows.length), 0);
   }
   // (the bands folded shut: the CHECKs start shut (an admin's held bets are a long list, its count on the band's
   // badge))
-  readonly closedBands = new Set<string>(['check']);
+  readonly closedBands = new Set<string>(['check', 'suggested']);
   // (a chosen game's picks: its own bordered section above the game's menu, folded shut each time a game is chosen,
   // its header saying how many)
   gamePicksOpen = false;

@@ -8,6 +8,9 @@
 // past its edge drops off (PASS). The Bot's own bets (picks.json, D27: every open bet) keep the price it locked,
 // with the live one beside it and a "moved" note where they differ; a suggestion the Bot has since bet becomes
 // that bet (one row a market). No Angular here (tests/book-suggestions.test.mjs)
+// (D119, the owner, 2026-11-09: "its got likes with no BETS which makes no sense". A suggestion is never a pick: it
+// carries no stake, it sorts after every bet the Bot made, and the Book lists it in its own folded section, "Seen,
+// not bet", never in the LIKE / LOVE / LOCK bands, which hold the Bot's bets alone, so they match Bot Stats)
 import type { BoardGame, BoardProp, BoardSide, BoardWhy, ModelBoard } from '../account/wallet/lines.service';
 import type { GameBoard, Price } from '../account/wallet/wallet-math';
 import { americanOdds, teamLogo } from './bet-format';
@@ -149,7 +152,7 @@ export function repriced(row: BetRow, odds: number, from: LiveQuote['from'] = 'b
     price: at.odds,
     odds: americanOdds(at.odds),
     ev: at.ev,
-    ...(at.units === null ? {} : { units: at.units }),
+    // (no stake: a suggestion isn't a bet (D119); the K popover's what-if sizes one at its price)
     livePrice: at.odds,
     liveFrom: from,
     liveBook: book,
@@ -307,8 +310,9 @@ export function rejudged(row: BetRow, q: LiveQuote | null): BetRow | null {
 }
 
 // The list: the Bot's rows (its bets and an admin's CHECKs) with the suggestions on markets it holds nothing on,
-// one row a market (a suggestion the Bot has since bet is that bet), in the board's order (desk-notes byBand: the
-// bands, then the Kelly score). A suggestion's id from idOf (the page keeps one a side, so an open row stays open
+// one row a market (a suggestion the Bot has since bet is that bet): the Bot's bets first in the board's order
+// (desk-notes byBand: the bands, then the Kelly score), then the suggestions in theirs (D119: a suggestion never
+// takes a bet's rank or its band's place). A suggestion's id from idOf (the page keeps one a side, so an open row stays open
 // as its price moves)
 export function joinSuggestions(rows: readonly BetRow[], suggestions: readonly BetRow[], idOf: (key: string) => number): BetRow[] {
   const held = new Set(rows.map(marketKeyOf).filter((k): k is string => !!k));
@@ -322,7 +326,7 @@ export function joinSuggestions(rows: readonly BetRow[], suggestions: readonly B
     seen.add(own);
     kept.push({ ...s, id: idOf(own) });
   }
-  return [...rows, ...kept].sort(byBand);
+  return [...[...rows].sort(byBand), ...kept.sort(byBand)];
 }
 
 // A bet's locked price and when, for its row: "Bet at −109 · 2:05 PM" (another day's, its weekday first: "Sun

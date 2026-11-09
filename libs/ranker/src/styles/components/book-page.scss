@@ -1357,6 +1357,12 @@ mat-icon.gloves {
     flex: 1;
   }
 
+  // (the suggestions' header's words in place of a record: plain, faint)
+  .band-hint {
+    color: v.$text-faint;
+    font-weight: 400;
+  }
+
   .band-record {
     color: v.$grey-light;
     font-size: v.$fs-12;
@@ -1408,6 +1414,13 @@ mat-icon.gloves {
     --band-color: #{v.$caution};
     --band-glow: rgba(255, 205, 0, 0.45);
     --band-wash: rgba(255, 205, 0, 0.16);
+  }
+
+  // (the suggestions, "Seen, not bet" (D119): the board's faint light, no glow; not a band the Bot bet)
+  &.suggested {
+    --band-color: #{v.$text-dim};
+    --band-glow: rgba(255, 255, 255, 0.18);
+    --band-wash: rgba(255, 255, 255, 0.06);
   }
 
 }
@@ -1498,6 +1511,17 @@ mat-icon.gloves {
     font-size: v.$fs-18;
     padding-top: 0;
     text-shadow: 0 0 8px rgba(chip.$check-light, 0.65);
+  }
+
+  // (a suggestion's tile: an eye in the board's faint light, no rank (D119))
+  &.suggested {
+    color: v.$text-faint;
+    padding-top: 0;
+    text-shadow: none;
+
+    .mat-icon {
+      @include v.icon-size(18px);
+    }
   }
 
   &.lock {

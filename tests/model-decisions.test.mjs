@@ -2690,3 +2690,22 @@ test("D116 the Book's band headers and Bot Stats count the same live bets: the r
   assert.match(src('picks.mjs'), /const epoch = replay\?\.through \? new Date\(Date\.parse\(replay\.through\) \+ 1\)\.toISOString\(\) : \(replay\?\.epoch \?\? extra\.epoch \?\? null\);/);
   assert.match(fs.readFileSync(path.join(MODEL, '../../src/engine/book/replay-history.ts'), 'utf8'), /return f\?\.through \? new Date\(Date\.parse\(f\.through\) \+ 1\)\.toISOString\(\) : \(f\?\.epoch \?\? null\);/);
 });
+
+test("D119 the Book's LIKE / LOVE / LOCK bands hold the Bot's bets alone, so they match Bot Stats: a suggestion (an edge at the latest price, not bet) carries no stake, sorts after every bet and sits in its own folded section, never in a band", async () => {
+  const decisions = fs.readFileSync(path.join(MODEL, 'DECISIONS.md'), 'utf8');
+  assert.ok(decisions.includes('### D119.'));
+  const book = (f) => fs.readFileSync(path.join(MODEL, '../../src/engine/book', f), 'utf8');
+  const sug = book('suggestions.ts');
+  // (the bets first, then the suggestions; no stake on a suggestion)
+  assert.match(sug, /return \[\.\.\.\[\.\.\.rows\]\.sort\(byBand\), \.\.\.kept\.sort\(byBand\)\];/);
+  assert.doesNotMatch(sug, /units: at\.units/);
+  const page = book('book-page.component.ts');
+  assert.match(page, /\{ band: 'suggested', tier: 'suggested', name: 'Seen, not bet' \}/);
+  assert.match(page, /s\.tier === 'suggested' \? !!r\.suggested : !r\.suggested && this\.grade\(r\) === s\.tier/);
+  assert.match(page, /this\.shown\.some\(\(r\) => !r\.suggested && favorableGrade\(this\.grade\(r\)\)\)/);
+  assert.match(page, /closedBands = new Set<string>\(\['check', 'suggested'\]\)/);
+  assert.match(page, /!r\.suggested && unranked\(r\.confidence\)/);
+  const html = book('book-page.component.html');
+  assert.match(html, /@else if \(r\.suggested\) \{/);
+  assert.match(html, /@let n = betCount\(shown\);/);
+});

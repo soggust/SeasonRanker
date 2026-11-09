@@ -253,9 +253,10 @@
   </div>
 
   <!-- The board: a dot-matrix scoreboard, the only thing that scrolls on a wide screen. Best Bets: one section per
-       band (LOCK, an admin's CHECK, LOVE, LIKE), its header a button that folds it, sticky to the top of the
-       scroller while its rows pass; nothing favorable (no LOCK, LOVE or LIKE), one line saying so (an admin's CHECKs
-       under it). The passes and fades aren't on it: a game's own lines tag them (game-lines' PASS / FADE). A game
+       band (LOCK, an admin's CHECK, LOVE, LIKE: the Bot's bets alone, D119), its header a button that folds it, sticky
+       to the top of the scroller while its rows pass; under the bands the suggestions (an edge at the latest price
+       the Bot didn't bet: no stake, no rank) in one folded section, "Seen, not bet"; nothing favorable (no LOCK,
+       LOVE or LIKE), one line saying so (an admin's CHECKs and the suggestions under it). The passes and fades aren't on it: a game's own lines tag them (game-lines' PASS / FADE). A game
        chosen: its every line on top, its picks under them -->
   <section class="board" aria-label="The Book">
     <div class="board-scroll">
@@ -283,6 +284,9 @@
                  chance. A CHECK's a "?", no rank (it isn't a bet); its meter opens why it isn't bet -->
             @if (r.check) {
               <span class="bet-rank check" title="A CHECK: why it isn't bet"><span aria-hidden="true">?</span><span class="visually-hidden">CHECK</span></span>
+            } @else if (r.suggested) {
+              <!-- (a suggestion: an eye, no rank; it isn't one of the Bot's bets (D119)) -->
+              <span class="bet-rank suggested" title="Seen, not bet: the Bot sees an edge here at the latest price but didn't bet it (no book price yet, or the edge opened since its last run)"><mat-icon fontIcon="visibility" aria-hidden="true"></mat-icon><span class="visually-hidden">Seen, not bet</span></span>
             } @else {
               <span
                 class="bet-rank"
@@ -463,7 +467,7 @@
       </ng-template>
 
       @let locks = lockCount(shown);
-      @let n = shown.length;
+      @let n = betCount(shown);
       <ol class="book-list">
         <!-- (a game chosen (the game view; Best Bets as it was): on top a compact bordered section of the bot's picks
              in that game, folded shut with its count showing; under it the game's full menu, every line to bet, open) -->
@@ -522,6 +526,10 @@
               <span class="band-space"></span>
               @if (bandRecord(s.band); as rec) {
                 <span class="band-record" [title]="bandRecordTitle">This year <b [attr.title]="rec.full">{{ rec.record }}</b> · <b class="band-units" [class.down]="!rec.up">{{ rec.units }}</b></span>
+              }
+              <!-- (the suggestions' header says what they are in place of a record: they aren't bets (D119)) -->
+              @if (s.tier === 'suggested') {
+                <span class="band-record band-hint" title="Sides the Bot sees an edge on at the latest price but hasn't bet: it had no book price yet, or the edge opened since its last run. No stake, no rank; the Bot's record counts none of them.">an edge now, not the Bot's bet</span>
               }
             </button>
             @if (bandOpen(s.band)) {

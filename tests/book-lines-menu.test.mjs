@@ -95,9 +95,10 @@ test('a board prop with prices is found and never falls to the preview\'s assume
   assert.match(gl, /readonly previewWanted = computed\(\(\) => !this\.onlyPick\(\) && !this\.propRows\(\)\.length\)/);
   const ls = fs.readFileSync(path.join(dir, 'account/wallet/lines.service.ts'), 'utf8');
   assert.match(ls, /modelGame\(sport: string, event: string\): BoardGame \| undefined \{\s*return modelGameOf\(this\.modelAll\(\)\.get\(sport\)\?\.games, event\);/);
-  // (and the dropdown's lines-only games are the rows on show's complement)
+  // (and the dropdown's lines-only games are the complement of the Bot's bets on show; a suggestion isn't a pick, so
+  // its game is in the menu by its lines, D119)
   const bp = fs.readFileSync(path.join(dir, 'book/book-page.component.ts'), 'utf8');
-  assert.match(bp, /linesOnlyGames\(this\.lines\.boards\(\)\.values\(\), shownEvents\(this\.listed\)\)/);
+  assert.match(bp, /linesOnlyGames\(this\.lines\.boards\(\)\.values\(\), shownEvents\(this\.listed\.filter\(\(r\) => !r\.suggested\)\)\)/);
 });
 
 test("a game's props the Bot hasn't priced yet read 'not priced yet · opens <time>': no price, no Kelly score, nothing to take, never 'assumed'", () => {

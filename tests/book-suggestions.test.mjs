@@ -145,16 +145,20 @@ test('withLive: a bet keeps the price it locked, its band and its Kelly score; t
   assert.equal(withLive(bet, null).moved, false);
 });
 
-test('joinSuggestions: a suggestion the Bot has bet is that bet (either side of the market); one row a side; band order', () => {
-  const bet = { ...rowOf('nfl', pick({ side: 'home', pick: 'SF -7.5', line: -7.5 }), false), id: 0 };
+test('joinSuggestions: a suggestion the Bot has bet is that bet (either side of the market); one row a side; the bets first in band order, then the suggestions (D119)', () => {
+  // (the bet a LIKE, the suggestion a LOVE: the bet still first)
+  const bet = { ...rowOf('nfl', pick({ side: 'home', pick: 'SF -7.5', line: -7.5, level: 'medium', score: 0.01 }), false), id: 0 };
   const sugs = suggestionsOf('nfl', board(), NOW, () => ({}));
   const ids = new Map();
   const idOf = (k) => (ids.has(k) ? ids.get(k) : (ids.set(k, 100 + ids.size), ids.get(k)));
   const list = joinSuggestions([bet], [...sugs, ...sugs], idOf);
-  assert.deepEqual(list.map((r) => [r.pick, !!r.suggested]), [
-    ['Jayden Daniels Over 39.5 Rush Yds', true],
-    ['SF -7.5', false],
+  // (D119: the Bot's LIKE bet ahead of the LOCK suggestion: a suggestion never takes a bet's rank or its band's place)
+  assert.deepEqual(list.map((r) => [r.pick, !!r.suggested, r.confidence]), [
+    ['SF -7.5', false, 'medium'],
+    ['Jayden Daniels Over 39.5 Rush Yds', true, 'lock'],
   ]);
+  // (and no stake on a suggestion: it isn't a bet)
+  assert.equal(list[1].units, undefined);
   assert.equal(marketKeyOf(bet), marketKeyOf(sugs[0]));
   // (the ids by side, the same each time the prices move)
   const again = joinSuggestions([bet], suggestionsOf('nfl', board(), NOW, () => ({ espn: espn(-105) })), idOf);
@@ -202,7 +206,8 @@ test('a side the desk caps (board.json cap, DECISIONS.md D46): a LIKE at most at
   assert.equal(spread.confidence, 'medium');
   assert.equal(spread.cap, 'medium');
   assert.equal(spread.capWhy, 'the lines at the practice stake');
-  assert.equal(spread.units, 0.5);
+  // (D119: a suggestion carries no stake; the popover's what-if sizes one at its price, held to the practice stake below)
+  assert.equal(spread.units, undefined);
   assert.equal(prop.confidence, 'medium');
   // (at a price with no edge it's gone, as any suggestion)
   assert.equal(repriced(spread, -150), null);

@@ -26,7 +26,8 @@ test('no off-the-board fold anywhere on Best Bets: its markup, members and style
 test('favorable: a LOCK, LOVE or LIKE; a CHECK, a pass or a fade is not', () => {
   for (const g of ['lock', 'love', 'like']) assert.equal(book.favorableGrade(g), true, g);
   for (const g of ['check', 'pass', 'fade', null, undefined]) assert.equal(book.favorableGrade(g), false, String(g));
-  assert.match(ts, /get favorable\(\): boolean \{\s*return this\.shown\.some\(\(r\) => favorableGrade\(this\.grade\(r\)\)\);/);
+  // (D119: a suggestion, an edge the Bot didn't bet, is never favorable on its own)
+  assert.match(ts, /get favorable\(\): boolean \{\s*return this\.shown\.some\(\(r\) => !r\.suggested && favorableGrade\(this\.grade\(r\)\)\);/);
 });
 
 test('nothing favorable: one centred line and a smaller one, the CHECK bands still under it', () => {
