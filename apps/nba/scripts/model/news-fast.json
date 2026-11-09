@@ -1,7 +1,7 @@
 {
  "sport": "nba",
  "cursor": {
-  "rotowirenba.bsky.social": "2026-11-09T01:03:30.000Z",
+  "rotowirenba.bsky.social": "2026-11-09T02:24:13.000Z",
   "insidenbanews.bsky.social": "2026-11-08T18:11:49.382Z",
   "shamsbot.bsky.social": "2026-11-08T18:05:20.000Z"
  },
@@ -9534,6 +9534,19 @@
    "kind": "status",
    "confidence": 0.9,
    "text": "Domantas Sabonis: Out Sunday \n\n https://www.rotowire.com/basketball/player/domantas-sabonis-3865"
+  },
+  {
+   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mztuoa54hx2w|keyontegeorge|out|status",
+   "at": "2026-11-09T02:24:13.000Z",
+   "seen": "2026-11-09T02:28:35.780Z",
+   "handle": "rotowirenba.bsky.social",
+   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mztuoa54hx2w",
+   "player": "Keyonte George",
+   "team": "UTA",
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.8,
+   "text": "Keyonte George: Won't return Sunday \n\n https://www.rotowire.com/basketball/player/keyonte-george-5899"
   }
  ]
 }
