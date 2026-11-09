@@ -1,5 +1,5 @@
 {
- "at": "2026-11-09T11:43:09.816Z",
+ "at": "2026-11-09T22:58:35.886Z",
  "baseline": {
   "from": "2026-10-05",
   "to": "2026-11-02"
@@ -90,7 +90,7 @@
   },
   {
    "examples": [],
-   "headline": "0 plain write-ups, 0 Claude analyses tried this week (0 ok); AI calls 0, $0.00 this week, $0.00 of $25 this month",
+   "headline": "0 plain write-ups, 0 Claude analyses tried this week (0 ok); AI calls 0, $0.00 this week, $0.25 of $25 this month",
    "how": "writeups.json's plain and Claude write-ups, and the AI usage log's calls this week (ai-budget.mjs: every sport's spend counts against the caps)",
    "id": "C15",
    "metric": "rejectRate",
@@ -125,9 +125,9 @@
     {
      "dayCap": 1.5,
      "key": "ai spend",
-     "month": 0,
+     "month": 0.2535,
      "monthCap": 25,
-     "share": 0
+     "share": 0.0101
     }
    ],
    "status": "partial",
@@ -310,7 +310,7 @@
    "how": "open bets on games not started: past the gap now, or published at a band today's trust wouldn't give them; open bets past their start plus VOID_AFTER; this week's graded bets with no close read",
    "id": "C13",
    "metric": "stale",
-   "n": 21,
+   "n": 22,
    "needs": null,
    "rows": [
     {
@@ -339,7 +339,7 @@
   },
   {
    "examples": [],
-   "headline": "Model files 3h old, 0 open bets overdue to grade; Odds API credits 100% left; 19 bets placed in a week of 19 games",
+   "headline": "Model files 1h old, 0 open bets overdue to grade; Odds API credits 99% left; 19 bets placed in a week of 19 games",
    "how": "the newest commit of the sport's model files, the open bets started 12 hours ago or more, The Odds API's credits (state.odds), the state's sources",
    "id": "C16",
    "metric": "ageH",
@@ -347,8 +347,8 @@
    "needs": null,
    "rows": [
     {
-     "ageH": 3,
-     "at": "2026-11-09T08:14:25Z",
+     "ageH": 1,
+     "at": "2026-11-09T21:18:51Z",
      "key": "files",
      "overdue": 0
     },
@@ -356,8 +356,8 @@
      "cycleEnd": "2026-12-01T00:02:39.102Z",
      "key": "credits",
      "monthly": 20000,
-     "remaining": 19933,
-     "share": 0.9967
+     "remaining": 19736,
+     "share": 0.9868
     },
     {
      "down": [],
@@ -373,7 +373,7 @@
    "tested": null,
    "threshold": "watch files 3h old with bets overdue, credits under 20%, a source down, or no bets in a week with games; flag 6h old with bets overdue, or credits under 10%",
    "title": "Ops",
-   "value": 3
+   "value": 1
   },
   {
    "examples": [],
@@ -395,14 +395,14 @@
      "z": null
     },
     {
-     "e": 3.1593,
+     "e": 2.6244,
      "key": "the rest",
-     "n": 5,
+     "n": 4,
      "placed": 19,
-     "profit": 0.719,
-     "roi": 0.2054,
-     "w": 4,
-     "z": 0.8031
+     "profit": 0.334,
+     "roi": 0.1113,
+     "w": 3,
+     "z": 0.4081
     },
     {
      "key": "guard bugs",
@@ -457,15 +457,15 @@
   },
   {
    "examples": [],
-   "headline": "Moneyline: dogs 29% of this week's bets against 46% before",
+   "headline": "Moneyline: dogs 25% of this week's bets against 46% before",
    "how": "placed this week against the 28 days before: a dog is a plus price or a spread side getting points",
    "id": "C5",
    "metric": "moved",
-   "n": 7,
+   "n": 8,
    "needs": null,
    "rows": [
     {
-     "dogShare": 0.2857,
+     "dogShare": 0.25,
      "dogShareBase": 0.4565,
      "dogs": {
       "e": 0,
@@ -484,8 +484,8 @@
       "z": 0.4364
      },
      "key": "ml",
-     "moved": -0.1708,
-     "n": 7,
+     "moved": -0.2065,
+     "n": 8,
      "nBase": 46,
      "status": "thin"
     }
@@ -494,7 +494,7 @@
    "tested": null,
    "threshold": "watch the dog share moved 20 points (20+ bets both); flag also the grown group z -2 (30+ graded)",
    "title": "Favorite/dog drift",
-   "value": -0.1708
+   "value": -0.2065
   },
   {
    "examples": [],
@@ -597,7 +597,7 @@
   },
   {
    "examples": [],
-   "headline": "fairFrom unknown: missing on 9 of 19 bets this week (47%) against 27% before; fair chances from betonlineag",
+   "headline": "fairFrom unknown: missing on 8 of 19 bets this week (42%) against 28% before; fair chances from betonlineag",
    "how": "placed this week against the 28 days before: the share of the bets each field applies to that are missing it",
    "id": "C14",
    "metric": "share",
@@ -606,10 +606,10 @@
    "rows": [
     {
      "key": "fairFrom unknown",
-     "n": 9,
+     "n": 8,
      "of": 19,
-     "share": 0.4737,
-     "shareBase": 0.2727,
+     "share": 0.4211,
+     "shareBase": 0.2821,
      "status": "thin"
     },
     {
@@ -631,7 +631,7 @@
     {
      "key": "seen",
      "n": 0,
-     "of": 5,
+     "of": 4,
      "share": 0,
      "shareBase": 0,
      "status": "thin"
@@ -641,7 +641,7 @@
    "tested": null,
    "threshold": "watch a share up 5 points on the baseline (3+ bets, 20+ both); flag doubled (5+)",
    "title": "Data holes",
-   "value": 0.4737
+   "value": 0.4211
   },
   {
    "examples": [],
