@@ -3,24 +3,11 @@
  "cursor": {
   "johnston-bot.bsky.social": "2026-11-09T05:30:03.025Z",
   "notfriedgehnic.bsky.social": "2026-11-09T19:15:10.716Z",
-  "dailyfaceoff.bsky.social": "2026-11-09T21:13:42.000Z",
-  "dfotoronto.bsky.social": "2026-11-09T20:41:17.000Z",
+  "dailyfaceoff.bsky.social": "2026-11-09T21:52:19.000Z",
+  "dfotoronto.bsky.social": "2026-11-09T22:14:42.000Z",
   "marklazerus.bsky.social": "2026-11-09T18:29:01.748Z"
  },
  "claims": [
-  {
-   "id": "at://did:plc:3uus7y6h3rlrk6sbctzxm4bg/app.bsky.feed.post/3myb473vvfj2g|owentippett|out|status",
-   "at": "2026-10-19T21:53:08.000Z",
-   "seen": "2026-10-19T22:41:38.820Z",
-   "handle": "dailyfaceoff.bsky.social",
-   "post": "at://did:plc:3uus7y6h3rlrk6sbctzxm4bg/app.bsky.feed.post/3myb473vvfj2g",
-   "player": "Owen Tippett",
-   "team": "PHI",
-   "status": "out",
-   "kind": "status",
-   "confidence": 0.95,
-   "text": "Flyers place Owen Tippett on injured reserve #nhl #nhlhockey #dailyfaceoff"
-  },
   {
    "id": "at://did:plc:3uus7y6h3rlrk6sbctzxm4bg/app.bsky.feed.post/3mybsbmy5ts2f|bryanrust|none|status",
    "at": "2026-10-20T04:28:15.000Z",
@@ -2061,6 +2048,32 @@
    "kind": "status",
    "confidence": 0.85,
    "text": "Report: Maple Leafs prospect Ben Danford out week-to-week with broken wrist"
+  },
+  {
+   "id": "at://did:plc:3uus7y6h3rlrk6sbctzxm4bg/app.bsky.feed.post/3mzvvwxjlum2h|alexwennberg|active|return",
+   "at": "2026-11-09T21:52:19.000Z",
+   "seen": "2026-11-09T22:15:21.812Z",
+   "handle": "dailyfaceoff.bsky.social",
+   "post": "at://did:plc:3uus7y6h3rlrk6sbctzxm4bg/app.bsky.feed.post/3mzvvwxjlum2h",
+   "player": "Alex Wennberg",
+   "team": "SJ",
+   "status": "active",
+   "kind": "return",
+   "confidence": 0.95,
+   "text": "Sharks’ Alex Wennberg activated off IR, will return to lineup"
+  },
+  {
+   "id": "at://did:plc:knaj2vcp4x6t7hr7ewd6e3uz/app.bsky.feed.post/3mzvx6ypobf2e|bendanford|out|status",
+   "at": "2026-11-09T22:14:42.000Z",
+   "seen": "2026-11-09T22:15:21.812Z",
+   "handle": "dfotoronto.bsky.social",
+   "post": "at://did:plc:knaj2vcp4x6t7hr7ewd6e3uz/app.bsky.feed.post/3mzvx6ypobf2e",
+   "player": "Ben Danford",
+   "team": "TOR",
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.92,
+   "text": "Per Joshua Kloke, Ben Danford is out week-to-week with a broken wrist\n\nRead More Here 💻 | https://theleafsnati..."
   }
  ]
 }

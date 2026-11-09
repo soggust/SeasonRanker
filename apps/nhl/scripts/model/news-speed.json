@@ -1,42 +1,6 @@
 {
  "sport": "nhl",
  "entries": {
-  "401892611|carterhart|q": {
-   "game": "401892611",
-   "start": "2026-10-30T22:00Z",
-   "team": "37",
-   "name": "Carter Hart",
-   "status": "q",
-   "athlete": "4064582",
-   "espn": {
-    "seen": "2026-10-29T16:09:47.153Z",
-    "own": "2026-10-28T14:13:00.000Z"
-   }
-  },
-  "401892611|parkerwotherspoon|out": {
-   "game": "401892611",
-   "start": "2026-10-30T22:00Z",
-   "team": "37",
-   "name": "Parker Wotherspoon",
-   "status": "out",
-   "athlete": "3942638",
-   "espn": {
-    "seen": "2026-10-29T16:09:47.153Z",
-    "own": "2026-10-21T19:24:00.000Z"
-   }
-  },
-  "401892611|seamuscasey|out": {
-   "game": "401892611",
-   "start": "2026-10-30T22:00Z",
-   "team": "11",
-   "name": "Seamus Casey",
-   "status": "out",
-   "athlete": "5080212",
-   "espn": {
-    "seen": "2026-10-29T16:09:47.153Z",
-    "own": "2026-10-02T17:31:00.000Z"
-   }
-  },
   "401892612|jacobmarkstrom|out": {
    "game": "401892612",
    "start": "2026-10-30T23:00Z",
@@ -9141,6 +9105,18 @@
    "espn": {
     "seen": "2026-11-09T21:13:58.195Z",
     "own": "2026-11-09T20:55:00.000Z"
+   }
+  },
+  "401892683|bendanford|out": {
+   "game": "401892683",
+   "start": "2026-11-11T00:00Z",
+   "team": "21",
+   "name": "Ben Danford",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-09T21:15:24.760Z",
+    "own": "2026-11-09T20:41:17.000Z",
+    "why": "@dfotoronto.bsky.social: Report: Maple Leafs prospect Ben Danford out week-to-we"
    }
   }
  }

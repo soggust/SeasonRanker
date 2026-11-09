@@ -1,7 +1,7 @@
 {
  "sport": "nba",
  "cursor": {
-  "rotowirenba.bsky.social": "2026-11-09T20:49:39.000Z",
+  "rotowirenba.bsky.social": "2026-11-09T22:04:10.000Z",
   "insidenbanews.bsky.social": "2026-11-08T18:11:49.382Z",
   "shamsbot.bsky.social": "2026-11-08T18:05:20.000Z"
  },
@@ -9534,6 +9534,19 @@
    "kind": "status",
    "confidence": 0.9,
    "text": "Trey Murphy: Out Monday \n\n https://www.rotowire.com/basketball/player/trey-murphy-5401"
+  },
+  {
+   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mzvvsp4lwh2h|zionwilliamson|out|status",
+   "at": "2026-11-09T21:49:56.000Z",
+   "seen": "2026-11-09T22:15:21.812Z",
+   "handle": "rotowirenba.bsky.social",
+   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mzvvsp4lwh2h",
+   "player": "Zion Williamson",
+   "team": null,
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.8,
+   "text": "Zion Williamson: Sitting out Monday \n\n https://www.rotowire.com/basketball/player/zion-williamson-4777"
   }
  ]
 }
