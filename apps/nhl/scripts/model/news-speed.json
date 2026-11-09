@@ -8127,6 +8127,10 @@
    "espn": {
     "seen": "2026-11-08T18:13:47.436Z",
     "own": "2026-11-03T18:34:00.000Z"
+   },
+   "sleeper": {
+    "seen": "2026-11-09T20:02:32.984Z",
+    "own": "2026-11-09T18:25:45.368Z"
    }
   },
   "401892681|akilthomas|out": {
@@ -8247,6 +8251,10 @@
    "espn": {
     "seen": "2026-11-08T18:13:47.436Z",
     "own": "2026-11-04T17:34:00.000Z"
+   },
+   "sleeper": {
+    "seen": "2026-11-09T20:02:32.984Z",
+    "own": "2026-11-09T18:55:45.673Z"
    }
   },
   "401892682|ryanpulock|out": {
@@ -8271,6 +8279,10 @@
    "espn": {
     "seen": "2026-11-08T18:13:47.436Z",
     "own": "2026-10-26T17:31:00.000Z"
+   },
+   "sleeper": {
+    "seen": "2026-11-09T20:02:32.984Z",
+    "own": "2026-11-09T19:00:45.513Z"
    }
   },
   "401892682|calumritchie|out": {
@@ -9056,6 +9068,11 @@
    "espn": {
     "seen": "2026-11-09T17:16:53.461Z",
     "own": "2026-11-09T17:10:00.000Z"
+   },
+   "bluesky": {
+    "seen": "2026-11-09T18:51:24.405Z",
+    "own": "2026-11-09T18:13:10.000Z",
+    "why": "@dailyfaceoff.bsky.social: Rangers’ Alberts Smits out week-to-week with upper-bo"
    }
   },
   "401892680|coltondach|out": {
@@ -9068,6 +9085,10 @@
    "espn": {
     "seen": "2026-11-09T18:02:51.102Z",
     "own": "2026-11-09T17:48:00.000Z"
+   },
+   "sleeper": {
+    "seen": "2026-11-09T20:02:32.984Z",
+    "own": "2026-11-09T17:50:12.905Z"
    }
   },
   "401892681|tomwillander|out": {
@@ -9080,6 +9101,46 @@
    "espn": {
     "seen": "2026-11-09T18:49:57.822Z",
     "own": "2026-11-09T18:22:00.000Z"
+   },
+   "sleeper": {
+    "seen": "2026-11-09T20:02:32.984Z",
+    "own": "2026-11-09T18:25:45.340Z"
+   }
+  },
+  "401892684|jakeevans|q": {
+   "game": "401892684",
+   "start": "2026-11-11T00:00Z",
+   "team": "10",
+   "name": "Jake Evans",
+   "status": "q",
+   "athlete": "4393049",
+   "espn": {
+    "seen": "2026-11-09T21:13:58.195Z",
+    "own": "2026-11-09T20:03:00.000Z"
+   }
+  },
+  "401892686|conorgarland|out": {
+   "game": "401892686",
+   "start": "2026-11-11T00:30Z",
+   "team": "29",
+   "name": "Conor Garland",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-09T20:03:48.288Z",
+    "own": "2026-11-09T19:07:24.000Z",
+    "why": "@dailyfaceoff.bsky.social: Blue Jackets’ Conor Garland out indefinitely with upp"
+   }
+  },
+  "401892689|erikgustafsson|q": {
+   "game": "401892689",
+   "start": "2026-11-11T03:00Z",
+   "team": "8",
+   "name": "Erik Gustafsson",
+   "status": "q",
+   "athlete": "5774",
+   "espn": {
+    "seen": "2026-11-09T21:13:58.195Z",
+    "own": "2026-11-09T20:55:00.000Z"
    }
   }
  }

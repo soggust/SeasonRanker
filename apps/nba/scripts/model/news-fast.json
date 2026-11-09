@@ -1,50 +1,11 @@
 {
  "sport": "nba",
  "cursor": {
-  "rotowirenba.bsky.social": "2026-11-09T19:23:07.000Z",
+  "rotowirenba.bsky.social": "2026-11-09T20:49:39.000Z",
   "insidenbanews.bsky.social": "2026-11-08T18:11:49.382Z",
   "shamsbot.bsky.social": "2026-11-08T18:05:20.000Z"
  },
  "claims": [
-  {
-   "id": "at://did:plc:ykcnnf6kqnn3lasmobrczoem/app.bsky.feed.post/3myaz4qe63s2z|dominickbarlow|out|status",
-   "at": "2026-10-19T20:58:08.212Z",
-   "seen": "2026-10-19T21:15:18.875Z",
-   "handle": "insidenbanews.bsky.social",
-   "post": "at://did:plc:ykcnnf6kqnn3lasmobrczoem/app.bsky.feed.post/3myaz4qe63s2z",
-   "player": "Dominick Barlow",
-   "team": null,
-   "status": "out",
-   "kind": "status",
-   "confidence": 0.8,
-   "text": "Dominick Barlow (back) to miss at least 2 weeks."
-  },
-  {
-   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3myaznt35kt2a|dominickbarlow|out|status",
-   "at": "2026-10-19T21:07:41.000Z",
-   "seen": "2026-10-19T21:15:18.875Z",
-   "handle": "rotowirenba.bsky.social",
-   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3myaznt35kt2a",
-   "player": "Dominick Barlow",
-   "team": null,
-   "status": "out",
-   "kind": "status",
-   "confidence": 0.95,
-   "text": "Dominick Barlow: Out at least two weeks \n\n https://www.rotowire.com/basketball/player/dominick-barlow-5670"
-  },
-  {
-   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3myazxzdgxy2j|adembona|questionable|status",
-   "at": "2026-10-19T21:13:23.000Z",
-   "seen": "2026-10-19T21:15:18.875Z",
-   "handle": "rotowirenba.bsky.social",
-   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3myazxzdgxy2j",
-   "player": "Adem Bona",
-   "team": "PHI",
-   "status": "questionable",
-   "kind": "status",
-   "confidence": 0.95,
-   "text": "Adem Bona: Questionable for Tuesday \n\n https://www.rotowire.com/basketball/player/adem-bona-6287"
-  },
   {
    "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3myb5j5gxmy24|casonwallace|active|status",
    "at": "2026-10-19T22:16:39.000Z",
@@ -9560,6 +9521,19 @@
    "kind": "status",
    "confidence": 0.6,
    "text": "Cameron Johnson: Upgraded to probable \n\n https://www.rotowire.com/basketball/player/cameron-johnson-4916"
+  },
+  {
+   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mzvsgwa3u72c|treymurphy|out|status",
+   "at": "2026-11-09T20:49:39.000Z",
+   "seen": "2026-11-09T21:15:24.760Z",
+   "handle": "rotowirenba.bsky.social",
+   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mzvsgwa3u72c",
+   "player": "Trey Murphy",
+   "team": "NOP",
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.9,
+   "text": "Trey Murphy: Out Monday \n\n https://www.rotowire.com/basketball/player/trey-murphy-5401"
   }
  ]
 }

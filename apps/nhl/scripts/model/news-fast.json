@@ -3,24 +3,11 @@
  "cursor": {
   "johnston-bot.bsky.social": "2026-11-09T05:30:03.025Z",
   "notfriedgehnic.bsky.social": "2026-11-09T19:15:10.716Z",
-  "dailyfaceoff.bsky.social": "2026-11-09T20:00:34.000Z",
-  "dfotoronto.bsky.social": "2026-11-09T19:38:21.000Z",
+  "dailyfaceoff.bsky.social": "2026-11-09T21:13:42.000Z",
+  "dfotoronto.bsky.social": "2026-11-09T20:41:17.000Z",
   "marklazerus.bsky.social": "2026-11-09T18:29:01.748Z"
  },
  "claims": [
-  {
-   "id": "at://did:plc:3uus7y6h3rlrk6sbctzxm4bg/app.bsky.feed.post/3myawa7ud6x24|owentippett|out|status",
-   "at": "2026-10-19T20:06:23.000Z",
-   "seen": "2026-10-19T21:15:18.875Z",
-   "handle": "dailyfaceoff.bsky.social",
-   "post": "at://did:plc:3uus7y6h3rlrk6sbctzxm4bg/app.bsky.feed.post/3myawa7ud6x24",
-   "player": "Owen Tippett",
-   "team": "PHI",
-   "status": "out",
-   "kind": "status",
-   "confidence": 0.95,
-   "text": "Flyers place Owen Tippett on injured reserve"
-  },
   {
    "id": "at://did:plc:3uus7y6h3rlrk6sbctzxm4bg/app.bsky.feed.post/3myb473vvfj2g|owentippett|out|status",
    "at": "2026-10-19T21:53:08.000Z",
@@ -2061,6 +2048,19 @@
    "kind": "benched",
    "confidence": 0.8,
    "text": "Jets head coach Scott Arniel shares his thoughts on Connor Hellebuyck not starting in his return to Winnipeg.\n\n🎥 - TSN"
+  },
+  {
+   "id": "at://did:plc:knaj2vcp4x6t7hr7ewd6e3uz/app.bsky.feed.post/3mzvrxxijcd24|bendanford|out|status",
+   "at": "2026-11-09T20:41:17.000Z",
+   "seen": "2026-11-09T21:15:24.760Z",
+   "handle": "dfotoronto.bsky.social",
+   "post": "at://did:plc:knaj2vcp4x6t7hr7ewd6e3uz/app.bsky.feed.post/3mzvrxxijcd24",
+   "player": "Ben Danford",
+   "team": "TOR",
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.85,
+   "text": "Report: Maple Leafs prospect Ben Danford out week-to-week with broken wrist"
   }
  ]
 }
