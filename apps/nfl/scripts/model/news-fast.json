@@ -1,7 +1,7 @@
 {
  "sport": "nfl",
  "cursor": {
-  "adamscheftermirror.bsky.social": "2026-11-09T08:25:23.292Z",
+  "adamscheftermirror.bsky.social": "2026-11-09T08:40:08.355Z",
   "rapsheet.bsky.social": "2026-11-09T01:24:31.455Z",
   "nflnewsreposterbot.bsky.social": "2026-11-06T17:28:39.017Z",
   "insidenflnews.bsky.social": "2026-11-09T05:05:19.581Z",
@@ -18859,6 +18859,19 @@
    "kind": "status",
    "confidence": 0.9,
    "text": "[Buccaneers] Antoine Winfield Jr. (ankle) has been downgraded to OUT for the remainder of today's game. twitter.com/BuccaneersCo..."
+  },
+  {
+   "id": "at://did:plc:qre6zxbmr3ixhdmgsgdretb5/app.bsky.feed.post/3mzujogkmja2j|lutherburden|questionable|status",
+   "at": "2026-11-09T08:40:08.355Z",
+   "seen": "2026-11-09T08:41:55.479Z",
+   "handle": "adamscheftermirror.bsky.social",
+   "post": "at://did:plc:qre6zxbmr3ixhdmgsgdretb5/app.bsky.feed.post/3mzujogkmja2j",
+   "player": "Luther Burden III",
+   "team": "CHI",
+   "status": "questionable",
+   "kind": "status",
+   "confidence": 0.5,
+   "text": "Bears WR Luther Burden III suffered a concussion late and Sunday nights win over Tampa Bay, now is in concussion protocol.\n\nOriginal post"
   }
  ]
 }
