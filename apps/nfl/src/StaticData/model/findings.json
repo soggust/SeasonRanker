@@ -522,13 +522,6 @@
   },
   {
    "date": "2026-10-26",
-   "group": "watching",
-   "sport": "nfl",
-   "ref": "D88",
-   "text": "Self-tune: NFL held: best D88 leanLambdaLines 0 → 1 +11.23u before the last 8 weeks, but no win in the held-out last 8 weeks (-0.35u)"
-  },
-  {
-   "date": "2026-10-26",
    "group": "shipped",
    "sport": "nhl",
    "ref": "D88",
@@ -544,23 +537,9 @@
   {
    "date": "2026-11-02",
    "group": "watching",
-   "sport": "nba",
-   "ref": "D88",
-   "text": "Self-tune: NBA held, nothing tried (no fresh held-out days since 2026-10-26 (the earlier weeks' holdouts consumed))"
-  },
-  {
-   "date": "2026-11-02",
-   "group": "watching",
    "sport": "nhl",
    "ref": "D88",
    "text": "Self-tune: NHL held, nothing tried (no fresh held-out days since 2026-10-26 (the earlier weeks' holdouts consumed))"
-  },
-  {
-   "date": "2026-11-02",
-   "group": "watching",
-   "sport": "mlb",
-   "ref": "D88",
-   "text": "Self-tune: MLB held, nothing tried (no fresh held-out days since 2026-10-26 (the earlier weeks' holdouts consumed))"
   },
   {
    "date": "2026-11-02",
@@ -612,11 +591,39 @@
    "text": "MMA favorite-longshot calibration re-checked: still beats the raw no-vig in 4 of 5 seasons, stays on"
   },
   {
-   "date": "2026-11-08",
+   "date": "2026-11-09",
+   "group": "watching",
+   "sport": "nhl",
+   "ref": "D86",
+   "text": "History audit: 2026-11-09 weekly re-record held. the record guard refused: held: inputs changed, not the model: the replay moved -73.71u to "
+  },
+  {
+   "date": "2026-11-09",
    "group": "watching",
    "sport": "mma",
    "ref": "D86",
-   "text": "History audit: 2026-11-08 nightly re-record held. the record guard refused: held: inputs shrank since the last record (its fingerprint): rep"
+   "text": "History audit: 2026-11-09 weekly re-record held. the record guard refused: held: inputs shrank since the last record (its fingerprint): repl"
+  },
+  {
+   "date": "2026-11-09",
+   "group": "watching",
+   "sport": "nfl",
+   "ref": "D88",
+   "text": "Self-tune: NFL held, nothing tried (no fresh held-out days since 2026-10-26 (the earlier weeks' holdouts consumed))"
+  },
+  {
+   "date": "2026-11-09",
+   "group": "watching",
+   "sport": "nba",
+   "ref": "D88",
+   "text": "Self-tune: NBA held, nothing tried (no fresh held-out days since 2026-11-02 (the earlier weeks' holdouts consumed))"
+  },
+  {
+   "date": "2026-11-09",
+   "group": "watching",
+   "sport": "mlb",
+   "ref": "D88",
+   "text": "Self-tune: MLB held, nothing tried (no fresh held-out days since 2026-11-02 (the earlier weeks' holdouts consumed))"
   }
  ]
 }

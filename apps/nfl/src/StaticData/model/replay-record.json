@@ -2,7 +2,7 @@
  "v": 1,
  "sport": "nfl",
  "epoch": "2026-10-26T15:00:00Z",
- "at": "2026-11-08T09:08:04.676Z",
+ "at": "2026-11-09T10:25:37.823Z",
  "from": "2020-09-11T00:20:00.000Z",
  "through": "2026-10-19T00:23:00.000Z",
  "n": {
@@ -46,16 +46,16 @@
  },
  "pass": {
   "bets": 39728,
-  "won": 20248,
-  "lost": 19432,
+  "won": 20247,
+  "lost": 19433,
   "push": 48,
   "staked": 39728,
-  "profit": -1668.73,
-  "roi": -0.042,
+  "profit": -1670.68,
+  "roi": -0.0421,
   "beat": null,
   "beatN": 0,
   "clv": null,
-  "fairProfit": 622.3937,
+  "fairProfit": 620.3288,
   "toward": 0,
   "against": 0,
   "mvN": 0
@@ -2551,7 +2551,7 @@
     "beat": 25,
     "clv": 0.4326,
     "pN": 2995,
-    "p": 1472.4008,
+    "p": 1472.4012,
     "wins": 1445
    },
    "spread:away": {
@@ -2651,7 +2651,7 @@
     "beat": 0,
     "clv": 0,
     "pN": 2314,
-    "p": 1210.9795,
+    "p": 1210.9799,
     "wins": 1203
    },
    "prop:recYds:under": {
@@ -2861,7 +2861,7 @@
     "beat": 0,
     "clv": 0,
     "pN": 194,
-    "p": 99.2347,
+    "p": 99.235,
     "wins": 86
    },
    "prop:rushRecYds:over": {
@@ -2891,7 +2891,7 @@
     "beat": 0,
     "clv": 0,
     "pN": 33,
-    "p": 15.9782,
+    "p": 15.9784,
     "wins": 16
    },
    "prop:passTd": {
@@ -2901,7 +2901,7 @@
     "beat": 0,
     "clv": 0,
     "pN": 191,
-    "p": 93.8464,
+    "p": 93.8465,
     "wins": 87
    },
    "prop:passInt:under": {
@@ -2911,7 +2911,7 @@
     "beat": 0,
     "clv": 0,
     "pN": 119,
-    "p": 61.3319,
+    "p": 61.3322,
     "wins": 54
    },
    "prop:passTd:over": {
@@ -2921,7 +2921,7 @@
     "beat": 0,
     "clv": 0,
     "pN": 158,
-    "p": 77.8682,
+    "p": 77.8681,
     "wins": 71
    },
    "prop:rushRecYds:under": {
@@ -2936,8 +2936,8 @@
    }
   }
  },
- "commit": "76316fc6",
- "note": "D116. The Book's band headers and Bot Stats count the same live bets: the record's live side starts just after the replay's last game, never at the algorithm's epoch (the owner, 2026-11-08: \"my bot stats does not match my book home page stats\")",
+ "commit": "bcb34473",
+ "note": "D118. Bot Stats' week is the last seven days, never a calendar week that starts empty (the owner, 2026-11-09: \"bot stats not showing any games or bets\")",
  "inputs": {
   "v": 1,
   "sport": "nfl",
@@ -3095,7 +3095,20 @@
     "2025-12-14",
     "2026-01-13"
    ],
-   "planted": -19.29
+   "planted": -19.29,
+   "nulls": {
+    "fair": {
+     "mean": -78.5,
+     "sd": 48.9,
+     "z": 1.18
+    },
+    "shuffle": {
+     "mean": -12.61,
+     "sd": 31.72,
+     "z": -0.25
+    }
+   },
+   "actual": -20.59
   },
   "frozen": {
    "props": {

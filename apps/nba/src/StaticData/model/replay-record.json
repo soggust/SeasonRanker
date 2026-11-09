@@ -2,7 +2,7 @@
  "v": 1,
  "sport": "nba",
  "epoch": "2026-10-26T15:00:00Z",
- "at": "2026-11-08T09:14:11.064Z",
+ "at": "2026-11-09T10:32:18.059Z",
  "from": "2020-08-01T01:10:00.000Z",
  "through": "2026-06-11T00:40:00.000Z",
  "n": {
@@ -2834,7 +2834,7 @@
     "beat": 199,
     "clv": 5.5261,
     "pN": 6478,
-    "p": 3154.1136,
+    "p": 3154.1138,
     "wins": 3177
    },
    "spread:home": {
@@ -2934,7 +2934,7 @@
     "beat": 0,
     "clv": 0,
     "pN": 5253,
-    "p": 2734.0398,
+    "p": 2734.04,
     "wins": 2767
    },
    "prop:pts:over": {
@@ -2974,7 +2974,7 @@
     "beat": 0,
     "clv": 0,
     "pN": 3772,
-    "p": 2007.5432,
+    "p": 2007.5435,
     "wins": 2058
    },
    "prop:reb": {
@@ -2984,7 +2984,7 @@
     "beat": 0,
     "clv": 0,
     "pN": 4363,
-    "p": 2310.8847,
+    "p": 2310.8849,
     "wins": 2321
    },
    "prop:pra:over": {
@@ -3064,13 +3064,13 @@
     "beat": 0,
     "clv": 0,
     "pN": 591,
-    "p": 303.3415,
+    "p": 303.3414,
     "wins": 263
    }
   }
  },
- "commit": "76316fc6",
- "note": "D116. The Book's band headers and Bot Stats count the same live bets: the record's live side starts just after the replay's last game, never at the algorithm's epoch (the owner, 2026-11-08: \"my bot stats does not match my book home page stats\")",
+ "commit": "bcb34473",
+ "note": "D118. Bot Stats' week is the last seven days, never a calendar week that starts empty (the owner, 2026-11-09: \"bot stats not showing any games or bets\")",
  "inputs": {
   "v": 1,
   "sport": "nba",
@@ -3137,7 +3137,20 @@
     "2024-05-28",
     "2025-03-27"
    ],
-   "planted": 7806.21
+   "planted": 7806.21,
+   "nulls": {
+    "fair": {
+     "mean": -161.22,
+     "sd": 51.85,
+     "z": 5.25
+    },
+    "shuffle": {
+     "mean": -42.05,
+     "sd": 56.96,
+     "z": 2.69
+    }
+   },
+   "actual": 111.05
   },
   "frozen": {
    "props": {

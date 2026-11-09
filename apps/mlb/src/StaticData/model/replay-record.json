@@ -2,7 +2,7 @@
  "v": 1,
  "sport": "mlb",
  "epoch": "2026-10-26T15:00:00Z",
- "at": "2026-11-08T09:26:17.650Z",
+ "at": "2026-11-09T11:01:16.606Z",
  "from": "2021-07-18T17:11:00.000Z",
  "through": "2026-10-16T00:00:00.000Z",
  "n": {
@@ -2873,8 +2873,8 @@
    }
   }
  },
- "commit": "76316fc6",
- "note": "D116. The Book's band headers and Bot Stats count the same live bets: the record's live side starts just after the replay's last game, never at the algorithm's epoch (the owner, 2026-11-08: \"my bot stats does not match my book home page stats\")",
+ "commit": "bcb34473",
+ "note": "D118. Bot Stats' week is the last seven days, never a calendar week that starts empty (the owner, 2026-11-09: \"bot stats not showing any games or bets\")",
  "inputs": {
   "v": 1,
   "sport": "mlb",
@@ -2939,7 +2939,20 @@
     "2024-05-11",
     "2026-08-08"
    ],
-   "planted": 9900.13
+   "planted": 9900.13,
+   "nulls": {
+    "fair": {
+     "mean": -13.58,
+     "sd": 20.09,
+     "z": 0.3
+    },
+    "shuffle": {
+     "mean": 5.71,
+     "sd": 19.82,
+     "z": -0.66
+    }
+   },
+   "actual": -7.47
   },
   "frozen": {
    "props": {
