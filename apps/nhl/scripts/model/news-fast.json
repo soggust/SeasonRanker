@@ -3,7 +3,7 @@
  "cursor": {
   "johnston-bot.bsky.social": "2026-11-08T01:26:11.710Z",
   "notfriedgehnic.bsky.social": "2026-11-08T19:18:40.624Z",
-  "dailyfaceoff.bsky.social": "2026-11-08T23:23:36.000Z",
+  "dailyfaceoff.bsky.social": "2026-11-09T01:05:57.000Z",
   "dfotoronto.bsky.social": "2026-11-09T00:09:34.000Z",
   "marklazerus.bsky.social": "2026-11-08T23:34:44.455Z"
  },
@@ -2009,6 +2009,19 @@
    "kind": "role",
    "confidence": 0.8,
    "text": "Maple Leafs lineup news: Morgan Rielly, Chris Tanev ruled out vs. Devils, Cole McWard paired with Dakota Mermis"
+  },
+  {
+   "id": "at://did:plc:3uus7y6h3rlrk6sbctzxm4bg/app.bsky.feed.post/3mztprl2bzg22|anthonymantha|out|status",
+   "at": "2026-11-09T00:56:36.000Z",
+   "seen": "2026-11-09T01:32:07.446Z",
+   "handle": "dailyfaceoff.bsky.social",
+   "post": "at://did:plc:3uus7y6h3rlrk6sbctzxm4bg/app.bsky.feed.post/3mztprl2bzg22",
+   "player": "Anthony Mantha",
+   "team": "NJD",
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.8,
+   "text": "Devils’ Anthony Mantha to ‘miss some time’ with throat injury"
   }
  ]
 }

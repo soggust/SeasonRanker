@@ -1,7 +1,7 @@
 {
  "sport": "nba",
  "cursor": {
-  "rotowirenba.bsky.social": "2026-11-09T00:27:25.000Z",
+  "rotowirenba.bsky.social": "2026-11-09T01:03:30.000Z",
   "insidenbanews.bsky.social": "2026-11-08T18:11:49.382Z",
   "shamsbot.bsky.social": "2026-11-08T18:05:20.000Z"
  },
@@ -9521,6 +9521,19 @@
    "kind": "status",
    "confidence": 0.9,
    "text": "Mitchell Robinson: Cleared to play Sunday \n\n https://www.rotowire.com/basketball/player/mitchell-robinson-4426"
+  },
+  {
+   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mztq5vzvvy25|domantassabonis|out|status",
+   "at": "2026-11-09T01:03:30.000Z",
+   "seen": "2026-11-09T01:32:07.446Z",
+   "handle": "rotowirenba.bsky.social",
+   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mztq5vzvvy25",
+   "player": "Domantas Sabonis",
+   "team": null,
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.9,
+   "text": "Domantas Sabonis: Out Sunday \n\n https://www.rotowire.com/basketball/player/domantas-sabonis-3865"
   }
  ]
 }

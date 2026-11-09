@@ -1,13 +1,13 @@
 {
  "sport": "nfl",
  "cursor": {
-  "adamscheftermirror.bsky.social": "2026-11-09T00:00:37.286Z",
-  "rapsheet.bsky.social": "2026-11-08T20:02:23.434Z",
+  "adamscheftermirror.bsky.social": "2026-11-09T01:30:19.713Z",
+  "rapsheet.bsky.social": "2026-11-09T01:24:31.455Z",
   "nflnewsreposterbot.bsky.social": "2026-11-06T17:28:39.017Z",
-  "insidenflnews.bsky.social": "2026-11-09T00:07:56.216Z",
-  "nflnewsposter.bsky.social": "2026-11-09T00:01:23.015Z",
-  "rotoworld-fb.bsky.social": "2026-11-09T00:40:08.000Z",
-  "rotowirenfl.bsky.social": "2026-11-09T00:37:29.000Z"
+  "insidenflnews.bsky.social": "2026-11-09T01:23:56.122Z",
+  "nflnewsposter.bsky.social": "2026-11-09T01:22:55.485Z",
+  "rotoworld-fb.bsky.social": "2026-11-09T01:29:18.000Z",
+  "rotowirenfl.bsky.social": "2026-11-09T01:30:54.000Z"
  },
  "claims": [
   {
@@ -18703,6 +18703,110 @@
    "kind": "status",
    "confidence": 0.8,
    "text": "Rhamondre Stevenson: Out for remainder of Sunday's game \n\n https://www.rotowire.com/football/player/rhamondre-stevenson-15372"
+  },
+  {
+   "id": "at://did:plc:fuqjc7x4gxvnwzksnlxwbe4x/app.bsky.feed.post/3mztpbyba2k75|drewlock|questionable|status",
+   "at": "2026-11-09T00:47:53.514Z",
+   "seen": "2026-11-09T01:32:07.446Z",
+   "handle": "nflnewsposter.bsky.social",
+   "post": "at://did:plc:fuqjc7x4gxvnwzksnlxwbe4x/app.bsky.feed.post/3mztpbyba2k75",
+   "player": "Drew Lock",
+   "team": "SEA",
+   "status": "questionable",
+   "kind": "status",
+   "confidence": 0.7,
+   "text": "[Condotta] Mike Macdonald says Drew Lock suffered an oblique injury and it’s up in the air if he’ll be available next week. twitter.com/bcondotta/st..."
+  },
+  {
+   "id": "at://did:plc:mbr4badgf6yu56mquzackzew/app.bsky.feed.post/3mztpiohgzc2e|drewlock|questionable|status",
+   "at": "2026-11-09T00:51:38.113Z",
+   "seen": "2026-11-09T01:32:07.446Z",
+   "handle": "insidenflnews.bsky.social",
+   "post": "at://did:plc:mbr4badgf6yu56mquzackzew/app.bsky.feed.post/3mztpiohgzc2e",
+   "player": "Drew Lock",
+   "team": "SEA",
+   "status": "questionable",
+   "kind": "status",
+   "confidence": 0.7,
+   "text": "Drew Lock suffered oblique injury and it's up in the air if he'll be available Week 10, via Bob Condotta."
+  },
+  {
+   "id": "at://did:plc:fuqjc7x4gxvnwzksnlxwbe4x/app.bsky.feed.post/3mztqlawyz275|joshjacobs|questionable|status",
+   "at": "2026-11-09T01:10:58.348Z",
+   "seen": "2026-11-09T01:32:07.446Z",
+   "handle": "nflnewsposter.bsky.social",
+   "post": "at://did:plc:fuqjc7x4gxvnwzksnlxwbe4x/app.bsky.feed.post/3mztqlawyz275",
+   "player": "Josh Jacobs",
+   "team": "GB",
+   "status": "questionable",
+   "kind": "status",
+   "confidence": 0.6,
+   "text": "[Schneidman] Josh Jacobs fractured a finger, LaFleur says. Hope to figure out a way for him to play with it, but he couldn’t go today after it happened. twitter.com/mattschneidm..."
+  },
+  {
+   "id": "at://did:plc:mbr4badgf6yu56mquzackzew/app.bsky.feed.post/3mztqrjezzs2e|joshjacobs|questionable|status",
+   "at": "2026-11-09T01:14:28.523Z",
+   "seen": "2026-11-09T01:32:07.446Z",
+   "handle": "insidenflnews.bsky.social",
+   "post": "at://did:plc:mbr4badgf6yu56mquzackzew/app.bsky.feed.post/3mztqrjezzs2e",
+   "player": "Josh Jacobs",
+   "team": "GB",
+   "status": "questionable",
+   "kind": "status",
+   "confidence": 0.6,
+   "text": "Josh Jacobs suffered fractured finger in Week 9.\n\nPackers hope to figure out a way for him to play with the injury, via Matt Schneidman."
+  },
+  {
+   "id": "at://did:plc:qre6zxbmr3ixhdmgsgdretb5/app.bsky.feed.post/3mztqsku3pj2c|joshjacobs|questionable|status",
+   "at": "2026-11-09T01:15:03.533Z",
+   "seen": "2026-11-09T01:32:07.446Z",
+   "handle": "adamscheftermirror.bsky.social",
+   "post": "at://did:plc:qre6zxbmr3ixhdmgsgdretb5/app.bsky.feed.post/3mztqsku3pj2c",
+   "player": "Josh Jacobs",
+   "team": "GB",
+   "status": "questionable",
+   "kind": "status",
+   "confidence": 0.6,
+   "text": "Repost by @AdamSchefter\n\nJosh Jacobs fractured a finger, LaFleur says. Hope to figure out a way for him to play with it, but he couldn’t go today after it happened.\n\nClick to see original repost"
+  },
+  {
+   "id": "at://did:plc:fuqjc7x4gxvnwzksnlxwbe4x/app.bsky.feed.post/3mztramuc4c75|patrickmahomes|questionable|status",
+   "at": "2026-11-09T01:22:55.485Z",
+   "seen": "2026-11-09T01:32:07.446Z",
+   "handle": "nflnewsposter.bsky.social",
+   "post": "at://did:plc:fuqjc7x4gxvnwzksnlxwbe4x/app.bsky.feed.post/3mztramuc4c75",
+   "player": "Patrick Mahomes",
+   "team": "KC",
+   "status": "questionable",
+   "kind": "status",
+   "confidence": 0.5,
+   "text": "[Rapoport] Chiefs QB Patrick Mahomes underwent an MRI following today’s win and the tests did not reveal a major injury. \n\nMahomes’ elbow strain/sprain will be monitored over the next few days for pai"
+  },
+  {
+   "id": "at://did:plc:mbr4badgf6yu56mquzackzew/app.bsky.feed.post/3mztrcgorwk2e|patrickmahomes|questionable|status",
+   "at": "2026-11-09T01:23:56.122Z",
+   "seen": "2026-11-09T01:32:07.446Z",
+   "handle": "insidenflnews.bsky.social",
+   "post": "at://did:plc:mbr4badgf6yu56mquzackzew/app.bsky.feed.post/3mztrcgorwk2e",
+   "player": "Patrick Mahomes",
+   "team": "KC",
+   "status": "questionable",
+   "kind": "status",
+   "confidence": 0.5,
+   "text": "Rap: Patrick Mahomes (right elbow) MRI didn't reveal major injury.\n\nMahomes' elbow strain/sprain will continue to be monitored over next few days."
+  },
+  {
+   "id": "at://did:plc:hlvr2omhnmvdmfnvmcuhyevz/app.bsky.feed.post/3mztrdif6ps2i|patrickmahomes|questionable|status",
+   "at": "2026-11-09T01:24:31.455Z",
+   "seen": "2026-11-09T01:32:07.446Z",
+   "handle": "rapsheet.bsky.social",
+   "post": "at://did:plc:hlvr2omhnmvdmfnvmcuhyevz/app.bsky.feed.post/3mztrdif6ps2i",
+   "player": "Patrick Mahomes",
+   "team": "KC",
+   "status": "questionable",
+   "kind": "status",
+   "confidence": 0.5,
+   "text": "Chiefs QB Patrick Mahomes underwent an MRI following today’s win and sources say the tests did not reveal a major injury. \n\nMahomes’ elbow strain/sprain will be monitored over the next few days for pa"
   }
  ]
 }
