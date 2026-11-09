@@ -3,7 +3,7 @@
  "cursor": {
   "johnston-bot.bsky.social": "2026-11-09T03:39:21.881Z",
   "notfriedgehnic.bsky.social": "2026-11-08T19:18:40.624Z",
-  "dailyfaceoff.bsky.social": "2026-11-09T03:20:43.000Z",
+  "dailyfaceoff.bsky.social": "2026-11-09T03:43:14.000Z",
   "dfotoronto.bsky.social": "2026-11-09T03:25:14.000Z",
   "marklazerus.bsky.social": "2026-11-08T23:34:44.455Z"
  },
@@ -2061,6 +2061,19 @@
    "kind": "benched",
    "confidence": 0.9,
    "text": "Sheldon Keefe cites Connor Hellebuyck's workload as a big reason he won't play in Winnipeg. That would have been his 4th start in 8 days."
+  },
+  {
+   "id": "at://did:plc:3uus7y6h3rlrk6sbctzxm4bg/app.bsky.feed.post/3mztz3jsjr32t|connorhellebuyck|out|status",
+   "at": "2026-11-09T03:43:14.000Z",
+   "seen": "2026-11-09T04:00:35.734Z",
+   "handle": "dailyfaceoff.bsky.social",
+   "post": "at://did:plc:3uus7y6h3rlrk6sbctzxm4bg/app.bsky.feed.post/3mztz3jsjr32t",
+   "player": "Connor Hellebuyck",
+   "team": "NJ",
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.9,
+   "text": "Devils’ Connor Hellebuyck won’t play in return to Winnipeg due to team’s ‘reduction in expected win probability’"
   }
  ]
 }

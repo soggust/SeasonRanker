@@ -20378,6 +20378,243 @@
     "seen": "2026-11-09T03:08:39.907Z",
     "own": "2026-11-07T17:24:00.000Z"
    }
+  },
+  "401909952|asanewell|out": {
+   "game": "401909952",
+   "start": "2026-11-10T00:00Z",
+   "team": "1",
+   "name": "Asa Newell",
+   "status": "out",
+   "athlete": "4873201",
+   "espn": {
+    "seen": "2026-11-09T03:58:43.537Z",
+    "own": "2026-11-08T22:15:00.000Z"
+   }
+  },
+  "401909952|keshongilbert|out": {
+   "game": "401909952",
+   "start": "2026-11-10T00:00Z",
+   "team": "1",
+   "name": "Keshon Gilbert",
+   "status": "out",
+   "athlete": "4585618",
+   "espn": {
+    "seen": "2026-11-09T03:58:43.537Z",
+    "own": "2026-11-08T22:13:00.000Z"
+   }
+  },
+  "401909952|jocklandale|out": {
+   "game": "401909952",
+   "start": "2026-11-10T00:00Z",
+   "team": "1",
+   "name": "Jock Landale",
+   "status": "out",
+   "athlete": "3146557",
+   "espn": {
+    "seen": "2026-11-09T03:58:43.537Z",
+    "own": "2026-11-08T22:11:00.000Z"
+   }
+  },
+  "401909952|mouhamedgueye|out": {
+   "game": "401909952",
+   "start": "2026-11-10T00:00Z",
+   "team": "1",
+   "name": "Mouhamed Gueye",
+   "status": "out",
+   "athlete": "4712863",
+   "espn": {
+    "seen": "2026-11-09T03:58:43.537Z",
+    "own": "2026-10-19T19:38:00.000Z"
+   }
+  },
+  "401909952|henriveesaar|out": {
+   "game": "401909952",
+   "start": "2026-11-10T00:00Z",
+   "team": "1",
+   "name": "Henri Veesaar",
+   "status": "out",
+   "athlete": "5105571",
+   "espn": {
+    "seen": "2026-11-09T03:58:43.537Z",
+    "own": "2026-09-21T19:50:00.000Z"
+   }
+  },
+  "401909952|lukadoncic|out": {
+   "game": "401909952",
+   "start": "2026-11-10T00:00Z",
+   "team": "1",
+   "name": "Luka Doncic",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-08T19:14:57.032Z",
+    "own": "2026-11-08T18:19:53.000Z",
+    "why": "@rotowirenba.bsky.social: Luka Doncic: Ruled out Sunday \n\n https://www.rotowire."
+   },
+   "athlete": "3945274",
+   "espn": {
+    "seen": "2026-11-09T03:58:43.537Z",
+    "own": "2026-11-08T18:19:00.000Z"
+   },
+   "sleeper": {
+    "seen": "2026-11-08T21:13:52.409Z",
+    "own": "2026-11-08T18:25:19.157Z"
+   }
+  },
+  "401909952|mitchellrobinson|q": {
+   "game": "401909952",
+   "start": "2026-11-10T00:00Z",
+   "team": "1",
+   "name": "Mitchell Robinson",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-11-08T19:14:57.032Z",
+    "own": "2026-11-08T18:21:14.000Z",
+    "why": "@rotowirenba.bsky.social: Mitchell Robinson: Questionable to play Sunday \n\n http"
+   }
+  },
+  "401909952|normanpowell|out": {
+   "game": "401909952",
+   "start": "2026-11-10T00:00Z",
+   "team": "1",
+   "name": "Norman Powell",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-08T19:14:57.032Z",
+    "own": "2026-11-08T18:55:29.000Z",
+    "why": "@rotowirenba.bsky.social: Norman Powell: Out Sunday \n\n https://www.rotowire.com/"
+   }
+  },
+  "401909952|anthonydavis|q": {
+   "game": "401909952",
+   "start": "2026-11-10T00:00Z",
+   "team": "1",
+   "name": "Anthony Davis",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-11-08T22:15:24.034Z",
+    "own": "2026-11-08T22:08:24.000Z",
+    "why": "@rotowirenba.bsky.social: Anthony Davis: Questionable to suit up Monday \n\n https"
+   }
+  },
+  "401909952|domantassabonis|out": {
+   "game": "401909952",
+   "start": "2026-11-10T00:00Z",
+   "team": "1",
+   "name": "Domantas Sabonis",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-09T01:32:07.446Z",
+    "own": "2026-11-09T01:03:30.000Z",
+    "why": "@rotowirenba.bsky.social: Domantas Sabonis: Out Sunday \n\n https://www.rotowire.c"
+   }
+  },
+  "401909952|quentingrimes|q": {
+   "game": "401909952",
+   "start": "2026-11-10T00:00Z",
+   "team": "13",
+   "name": "Quentin Grimes",
+   "status": "q",
+   "athlete": "4397014",
+   "espn": {
+    "seen": "2026-11-09T03:58:43.537Z",
+    "own": "2026-11-09T02:01:00.000Z"
+   }
+  },
+  "401909959|willrichard|out": {
+   "game": "401909959",
+   "start": "2026-11-10T03:00Z",
+   "team": "9",
+   "name": "Will Richard",
+   "status": "out",
+   "athlete": "4897262",
+   "espn": {
+    "seen": "2026-11-09T03:58:43.537Z",
+    "own": "2026-11-09T01:52:00.000Z"
+   }
+  },
+  "401909959|guisantos|q": {
+   "game": "401909959",
+   "start": "2026-11-10T03:00Z",
+   "team": "9",
+   "name": "Gui Santos",
+   "status": "q",
+   "athlete": "4997536",
+   "espn": {
+    "seen": "2026-11-09T03:58:43.537Z",
+    "own": "2026-11-09T01:13:00.000Z"
+   }
+  },
+  "401909959|kristapsporzingis|out": {
+   "game": "401909959",
+   "start": "2026-11-10T03:00Z",
+   "team": "9",
+   "name": "Kristaps Porzingis",
+   "status": "out",
+   "athlete": "3102531",
+   "espn": {
+    "seen": "2026-11-09T03:58:43.537Z",
+    "own": "2026-11-06T21:26:00.000Z"
+   }
+  },
+  "401909959|mosesmoody|out": {
+   "game": "401909959",
+   "start": "2026-11-10T03:00Z",
+   "team": "9",
+   "name": "Moses Moody",
+   "status": "out",
+   "athlete": "4432171",
+   "espn": {
+    "seen": "2026-11-09T03:58:43.537Z",
+    "own": "2026-10-16T16:14:00.000Z"
+   }
+  },
+  "401909959|jimmybutler|out": {
+   "game": "401909959",
+   "start": "2026-11-10T03:00Z",
+   "team": "9",
+   "name": "Jimmy Butler III",
+   "status": "out",
+   "athlete": "6430",
+   "espn": {
+    "seen": "2026-11-09T03:58:43.537Z",
+    "own": "2026-10-16T16:11:00.000Z"
+   }
+  },
+  "401909959|anthonydavis|q": {
+   "game": "401909959",
+   "start": "2026-11-10T03:00Z",
+   "team": "9",
+   "name": "Anthony Davis",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-11-08T22:15:24.034Z",
+    "own": "2026-11-08T22:08:24.000Z",
+    "why": "@rotowirenba.bsky.social: Anthony Davis: Questionable to suit up Monday \n\n https"
+   }
+  },
+  "401909959|domantassabonis|out": {
+   "game": "401909959",
+   "start": "2026-11-10T03:00Z",
+   "team": "9",
+   "name": "Domantas Sabonis",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-09T01:32:07.446Z",
+    "own": "2026-11-09T01:03:30.000Z",
+    "why": "@rotowirenba.bsky.social: Domantas Sabonis: Out Sunday \n\n https://www.rotowire.c"
+   }
+  },
+  "401909959|yvesmissi|out": {
+   "game": "401909959",
+   "start": "2026-11-10T03:00Z",
+   "team": "3",
+   "name": "Yves Missi",
+   "status": "out",
+   "athlete": "5061589",
+   "espn": {
+    "seen": "2026-11-09T03:58:43.537Z",
+    "own": "2026-11-05T20:47:00.000Z"
+   }
   }
  }
 }
