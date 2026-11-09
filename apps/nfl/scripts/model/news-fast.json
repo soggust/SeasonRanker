@@ -5,9 +5,9 @@
   "rapsheet.bsky.social": "2026-11-09T01:24:31.455Z",
   "nflnewsreposterbot.bsky.social": "2026-11-06T17:28:39.017Z",
   "insidenflnews.bsky.social": "2026-11-09T01:45:17.922Z",
-  "nflnewsposter.bsky.social": "2026-11-09T03:16:50.041Z",
-  "rotoworld-fb.bsky.social": "2026-11-09T02:59:00.000Z",
-  "rotowirenfl.bsky.social": "2026-11-09T03:16:05.000Z"
+  "nflnewsposter.bsky.social": "2026-11-09T03:20:47.567Z",
+  "rotoworld-fb.bsky.social": "2026-11-09T03:21:11.000Z",
+  "rotowirenfl.bsky.social": "2026-11-09T03:30:23.000Z"
  },
  "claims": [
   {
@@ -18846,6 +18846,19 @@
    "kind": "status",
    "confidence": 0.9,
    "text": "[Bears] Bears DB Tyrique Stevenson Sr. (Hand) is Questionable to return. twitter.com/BearsPR/stat..."
+  },
+  {
+   "id": "at://did:plc:fuqjc7x4gxvnwzksnlxwbe4x/app.bsky.feed.post/3mztxtfda3s25|antoinewinfield|out|status",
+   "at": "2026-11-09T03:20:47.567Z",
+   "seen": "2026-11-09T03:39:37.337Z",
+   "handle": "nflnewsposter.bsky.social",
+   "post": "at://did:plc:fuqjc7x4gxvnwzksnlxwbe4x/app.bsky.feed.post/3mztxtfda3s25",
+   "player": "Antoine Winfield Jr.",
+   "team": "TB",
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.9,
+   "text": "[Buccaneers] Antoine Winfield Jr. (ankle) has been downgraded to OUT for the remainder of today's game. twitter.com/BuccaneersCo..."
   }
  ]
 }

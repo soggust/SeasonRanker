@@ -1,10 +1,10 @@
 {
  "sport": "nhl",
  "cursor": {
-  "johnston-bot.bsky.social": "2026-11-08T01:26:11.710Z",
+  "johnston-bot.bsky.social": "2026-11-09T03:39:21.881Z",
   "notfriedgehnic.bsky.social": "2026-11-08T19:18:40.624Z",
-  "dailyfaceoff.bsky.social": "2026-11-09T03:11:41.000Z",
-  "dfotoronto.bsky.social": "2026-11-09T02:58:27.000Z",
+  "dailyfaceoff.bsky.social": "2026-11-09T03:20:43.000Z",
+  "dfotoronto.bsky.social": "2026-11-09T03:25:14.000Z",
   "marklazerus.bsky.social": "2026-11-08T23:34:44.455Z"
  },
  "claims": [
@@ -2035,6 +2035,32 @@
    "kind": "status",
    "confidence": 0.35,
    "text": "Leafs’ Sissons exits game due to lower-body injury"
+  },
+  {
+   "id": "at://did:plc:ma4xzjexknxz7geuggbqbsmi/app.bsky.feed.post/3mztxqt52gr23|connorhellebuyck|out|benched",
+   "at": "2026-11-09T03:19:19.794Z",
+   "seen": "2026-11-09T03:39:37.337Z",
+   "handle": "johnston-bot.bsky.social",
+   "post": "at://did:plc:ma4xzjexknxz7geuggbqbsmi/app.bsky.feed.post/3mztxqt52gr23",
+   "player": "Connor Hellebuyck",
+   "team": "NJD",
+   "status": "out",
+   "kind": "benched",
+   "confidence": 0.9,
+   "text": "The #NJDevils announce that Connor Hellebuyck won't start Tuesday's game in Winnipeg, citing a team decision that would reduce their odds of winning the game."
+  },
+  {
+   "id": "at://did:plc:ma4xzjexknxz7geuggbqbsmi/app.bsky.feed.post/3mztyunrdh42i|connorhellebuyck|out|benched",
+   "at": "2026-11-09T03:39:21.881Z",
+   "seen": "2026-11-09T03:39:37.337Z",
+   "handle": "johnston-bot.bsky.social",
+   "post": "at://did:plc:ma4xzjexknxz7geuggbqbsmi/app.bsky.feed.post/3mztyunrdh42i",
+   "player": "Connor Hellebuyck",
+   "team": "NJD",
+   "status": "out",
+   "kind": "benched",
+   "confidence": 0.9,
+   "text": "Sheldon Keefe cites Connor Hellebuyck's workload as a big reason he won't play in Winnipeg. That would have been his 4th start in 8 days."
   }
  ]
 }
