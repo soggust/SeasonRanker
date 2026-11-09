@@ -1,37 +1,11 @@
 {
  "sport": "nba",
  "cursor": {
-  "rotowirenba.bsky.social": "2026-11-09T18:41:53.000Z",
+  "rotowirenba.bsky.social": "2026-11-09T19:23:07.000Z",
   "insidenbanews.bsky.social": "2026-11-08T18:11:49.382Z",
   "shamsbot.bsky.social": "2026-11-08T18:05:20.000Z"
  },
  "claims": [
-  {
-   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3myastojr4e2o|brandinpodziemski|questionable|status",
-   "at": "2026-10-19T19:05:41.000Z",
-   "seen": "2026-10-19T21:15:18.875Z",
-   "handle": "rotowirenba.bsky.social",
-   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3myastojr4e2o",
-   "player": "Brandin Podziemski",
-   "team": "GSW",
-   "status": "questionable",
-   "kind": "status",
-   "confidence": 0.95,
-   "text": "Brandin Podziemski: Questionable for Wednesday \n\n https://www.rotowire.com/basketball/player/brandin-podziemski-5889"
-  },
-  {
-   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3myatvbsrbh2u|yaxellendeborg|none|starting",
-   "at": "2026-10-19T19:24:29.000Z",
-   "seen": "2026-10-19T21:15:18.875Z",
-   "handle": "rotowirenba.bsky.social",
-   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3myatvbsrbh2u",
-   "player": "Yaxel Lendeborg",
-   "team": null,
-   "status": "none",
-   "kind": "starting",
-   "confidence": 0.9,
-   "text": "Yaxel Lendeborg: Confirmed as starter \n\n https://www.rotowire.com/basketball/player/yaxel-lendeborg-6562"
-  },
   {
    "id": "at://did:plc:ykcnnf6kqnn3lasmobrczoem/app.bsky.feed.post/3myaz4qe63s2z|dominickbarlow|out|status",
    "at": "2026-10-19T20:58:08.212Z",
@@ -9547,6 +9521,45 @@
    "kind": "status",
    "confidence": 0.9,
    "text": "Devin Vassell: Ruled out for Monday \n\n https://www.rotowire.com/basketball/player/devin-vassell-5113"
+  },
+  {
+   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mzvneqjsyg22|jamalmurray|active|status",
+   "at": "2026-11-09T19:18:57.000Z",
+   "seen": "2026-11-09T20:03:48.288Z",
+   "handle": "rotowirenba.bsky.social",
+   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mzvneqjsyg22",
+   "player": "Jamal Murray",
+   "team": "DEN",
+   "status": "active",
+   "kind": "status",
+   "confidence": 0.6,
+   "text": "Jamal Murray: Upgraded to probable \n\n https://www.rotowire.com/basketball/player/jamal-murray-3882"
+  },
+  {
+   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mzvnijwggw24|nikolajokic|active|status",
+   "at": "2026-11-09T19:21:05.000Z",
+   "seen": "2026-11-09T20:03:48.288Z",
+   "handle": "rotowirenba.bsky.social",
+   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mzvnijwggw24",
+   "player": "Nikola Jokic",
+   "team": "DEN",
+   "status": "active",
+   "kind": "status",
+   "confidence": 0.6,
+   "text": "Nikola Jokic: Upgraded to probable \n\n https://www.rotowire.com/basketball/player/nikola-jokic-3612"
+  },
+  {
+   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mzvnm622su25|cameronjohnson|active|status",
+   "at": "2026-11-09T19:23:07.000Z",
+   "seen": "2026-11-09T20:03:48.288Z",
+   "handle": "rotowirenba.bsky.social",
+   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mzvnm622su25",
+   "player": "Cameron Johnson",
+   "team": null,
+   "status": "active",
+   "kind": "status",
+   "confidence": 0.6,
+   "text": "Cameron Johnson: Upgraded to probable \n\n https://www.rotowire.com/basketball/player/cameron-johnson-4916"
   }
  ]
 }

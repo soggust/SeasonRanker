@@ -2,25 +2,12 @@
  "sport": "nhl",
  "cursor": {
   "johnston-bot.bsky.social": "2026-11-09T05:30:03.025Z",
-  "notfriedgehnic.bsky.social": "2026-11-09T15:11:26.954Z",
-  "dailyfaceoff.bsky.social": "2026-11-09T18:13:10.000Z",
-  "dfotoronto.bsky.social": "2026-11-09T18:46:26.000Z",
+  "notfriedgehnic.bsky.social": "2026-11-09T19:15:10.716Z",
+  "dailyfaceoff.bsky.social": "2026-11-09T20:00:34.000Z",
+  "dfotoronto.bsky.social": "2026-11-09T19:38:21.000Z",
   "marklazerus.bsky.social": "2026-11-09T18:29:01.748Z"
  },
  "claims": [
-  {
-   "id": "at://did:plc:3uus7y6h3rlrk6sbctzxm4bg/app.bsky.feed.post/3myasqaog3d2h|chabot|out|status",
-   "at": "2026-10-19T19:03:46.000Z",
-   "seen": "2026-10-19T21:15:18.875Z",
-   "handle": "dailyfaceoff.bsky.social",
-   "post": "at://did:plc:3uus7y6h3rlrk6sbctzxm4bg/app.bsky.feed.post/3myasqaog3d2h",
-   "player": "Chabot",
-   "team": "OTT",
-   "status": "out",
-   "kind": "status",
-   "confidence": 0.95,
-   "text": "Senators’ Chabot out 1-2 weeks with upper-body injury. #nhl #nhlhockey #dailyfaceoff"
-  },
   {
    "id": "at://did:plc:3uus7y6h3rlrk6sbctzxm4bg/app.bsky.feed.post/3myawa7ud6x24|owentippett|out|status",
    "at": "2026-10-19T20:06:23.000Z",
@@ -2048,6 +2035,32 @@
    "kind": "status",
    "confidence": 0.95,
    "text": "Rangers’ Alberts Smits out week-to-week with upper-body injury"
+  },
+  {
+   "id": "at://did:plc:3uus7y6h3rlrk6sbctzxm4bg/app.bsky.feed.post/3mzvmq3jzdl23|conorgarland|out|status",
+   "at": "2026-11-09T19:07:24.000Z",
+   "seen": "2026-11-09T20:03:48.288Z",
+   "handle": "dailyfaceoff.bsky.social",
+   "post": "at://did:plc:3uus7y6h3rlrk6sbctzxm4bg/app.bsky.feed.post/3mzvmq3jzdl23",
+   "player": "Conor Garland",
+   "team": "CBJ",
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.95,
+   "text": "Blue Jackets’ Conor Garland out indefinitely with upper-body injury"
+  },
+  {
+   "id": "at://did:plc:3uus7y6h3rlrk6sbctzxm4bg/app.bsky.feed.post/3mzvpp5mblp2w|connorhellebuyck|none|benched",
+   "at": "2026-11-09T20:00:34.000Z",
+   "seen": "2026-11-09T20:03:48.288Z",
+   "handle": "dailyfaceoff.bsky.social",
+   "post": "at://did:plc:3uus7y6h3rlrk6sbctzxm4bg/app.bsky.feed.post/3mzvpp5mblp2w",
+   "player": "Connor Hellebuyck",
+   "team": "WPG",
+   "status": "none",
+   "kind": "benched",
+   "confidence": 0.8,
+   "text": "Jets head coach Scott Arniel shares his thoughts on Connor Hellebuyck not starting in his return to Winnipeg.\n\n🎥 - TSN"
   }
  ]
 }
