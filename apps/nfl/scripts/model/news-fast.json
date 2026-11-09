@@ -1,13 +1,13 @@
 {
  "sport": "nfl",
  "cursor": {
-  "adamscheftermirror.bsky.social": "2026-11-09T16:50:07.864Z",
+  "adamscheftermirror.bsky.social": "2026-11-09T17:50:07.880Z",
   "rapsheet.bsky.social": "2026-11-09T15:03:14.842Z",
   "nflnewsreposterbot.bsky.social": "2026-11-09T17:45:58.027Z",
   "insidenflnews.bsky.social": "2026-11-09T16:48:40.168Z",
-  "nflnewsposter.bsky.social": "2026-11-09T17:12:36.513Z",
-  "rotoworld-fb.bsky.social": "2026-11-09T17:40:34.000Z",
-  "rotowirenfl.bsky.social": "2026-11-09T17:46:24.000Z"
+  "nflnewsposter.bsky.social": "2026-11-09T18:05:38.956Z",
+  "rotoworld-fb.bsky.social": "2026-11-09T18:07:39.000Z",
+  "rotowirenfl.bsky.social": "2026-11-09T18:00:39.000Z"
  },
  "claims": [
   {
@@ -18768,6 +18768,71 @@
    "kind": "status",
    "confidence": 0.9,
    "text": "Sam Darnold: Not ready to return in Week 10 \n\n https://www.rotowire.com/football/player/sam-darnold-12490"
+  },
+  {
+   "id": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3mzvievynii24|samdarnold|out|status",
+   "at": "2026-11-09T17:49:34.000Z",
+   "seen": "2026-11-09T18:08:41.459Z",
+   "handle": "rotoworld-fb.bsky.social",
+   "post": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3mzvievynii24",
+   "player": "Sam Darnold",
+   "team": "SEA",
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.95,
+   "text": "Macdonald: Darnold (quad) won't play in Week 10"
+  },
+  {
+   "id": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3mzviex5g4i2m|drewlock|active|starting",
+   "at": "2026-11-09T17:49:36.000Z",
+   "seen": "2026-11-09T18:08:41.459Z",
+   "handle": "rotoworld-fb.bsky.social",
+   "post": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3mzviex5g4i2m",
+   "player": "Drew Lock",
+   "team": "SEA",
+   "status": "active",
+   "kind": "starting",
+   "confidence": 0.85,
+   "text": "Drew Lock (oblique) expected to start vs. Raiders"
+  },
+  {
+   "id": "at://did:plc:qre6zxbmr3ixhdmgsgdretb5/app.bsky.feed.post/3mzvifveajb27|samdarnold|out|status",
+   "at": "2026-11-09T17:50:07.880Z",
+   "seen": "2026-11-09T18:08:41.459Z",
+   "handle": "adamscheftermirror.bsky.social",
+   "post": "at://did:plc:qre6zxbmr3ixhdmgsgdretb5/app.bsky.feed.post/3mzvifveajb27",
+   "player": "Sam Darnold",
+   "team": "SEA",
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.95,
+   "text": "Seahawks HC Mike Macdonald told @BrockHuard and @TheMikeSalk on Seattle Sports 710 ESPN that he is ruling out Sam Darnold for this week’s game vs the Raiders. But tests on Drew Lock’s oblique injury w"
+  },
+  {
+   "id": "at://did:plc:qre6zxbmr3ixhdmgsgdretb5/app.bsky.feed.post/3mzvifveajb27|drewlock|active|starting",
+   "at": "2026-11-09T17:50:07.880Z",
+   "seen": "2026-11-09T18:08:41.459Z",
+   "handle": "adamscheftermirror.bsky.social",
+   "post": "at://did:plc:qre6zxbmr3ixhdmgsgdretb5/app.bsky.feed.post/3mzvifveajb27",
+   "player": "Drew Lock",
+   "team": "SEA",
+   "status": "active",
+   "kind": "starting",
+   "confidence": 0.8,
+   "text": "Seahawks HC Mike Macdonald told @BrockHuard and @TheMikeSalk on Seattle Sports 710 ESPN that he is ruling out Sam Darnold for this week’s game vs the Raiders. But tests on Drew Lock’s oblique injury w"
+  },
+  {
+   "id": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3mzvjfabh6m22|patrickmahomes|questionable|status",
+   "at": "2026-11-09T18:07:39.000Z",
+   "seen": "2026-11-09T18:08:41.459Z",
+   "handle": "rotoworld-fb.bsky.social",
+   "post": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3mzvjfabh6m22",
+   "player": "Patrick Mahomes",
+   "team": "KC",
+   "status": "questionable",
+   "kind": "status",
+   "confidence": 0.9,
+   "text": "Reid: Mahomes (elbow) considered 'day-to-day'"
   }
  ]
 }

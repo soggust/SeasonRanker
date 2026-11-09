@@ -4,23 +4,10 @@
   "johnston-bot.bsky.social": "2026-11-09T05:30:03.025Z",
   "notfriedgehnic.bsky.social": "2026-11-09T15:11:26.954Z",
   "dailyfaceoff.bsky.social": "2026-11-09T17:41:34.000Z",
-  "dfotoronto.bsky.social": "2026-11-09T17:46:04.000Z",
-  "marklazerus.bsky.social": "2026-11-09T15:27:50.607Z"
+  "dfotoronto.bsky.social": "2026-11-09T17:50:37.000Z",
+  "marklazerus.bsky.social": "2026-11-09T18:04:53.464Z"
  },
  "claims": [
-  {
-   "id": "at://did:plc:3uus7y6h3rlrk6sbctzxm4bg/app.bsky.feed.post/3myaoqmsq2s2h|chabot|out|status",
-   "at": "2026-10-19T17:52:24.000Z",
-   "seen": "2026-10-19T21:15:18.875Z",
-   "handle": "dailyfaceoff.bsky.social",
-   "post": "at://did:plc:3uus7y6h3rlrk6sbctzxm4bg/app.bsky.feed.post/3myaoqmsq2s2h",
-   "player": "Chabot",
-   "team": "OTT",
-   "status": "out",
-   "kind": "status",
-   "confidence": 0.95,
-   "text": "Senators’ Chabot out 1-2 weeks with upper-body injury"
-  },
   {
    "id": "at://did:plc:3uus7y6h3rlrk6sbctzxm4bg/app.bsky.feed.post/3myaqy62ri724|lukeevangelista|active|return",
    "at": "2026-10-19T18:32:24.000Z",
