@@ -7,19 +7,6 @@
  },
  "claims": [
   {
-   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3myamxb7ezz2o|ajdybantsa|questionable|status",
-   "at": "2026-10-19T17:20:19.000Z",
-   "seen": "2026-10-19T21:15:18.875Z",
-   "handle": "rotowirenba.bsky.social",
-   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3myamxb7ezz2o",
-   "player": "AJ Dybantsa",
-   "team": null,
-   "status": "questionable",
-   "kind": "status",
-   "confidence": 0.85,
-   "text": "AJ Dybantsa: Remains day-to-day \n\n https://www.rotowire.com/basketball/player/aj-dybantsa-6925"
-  },
-  {
    "id": "at://did:plc:ykcnnf6kqnn3lasmobrczoem/app.bsky.feed.post/3myanpji3s22z|nicclaxton|out|status",
    "at": "2026-10-19T17:33:53.633Z",
    "seen": "2026-10-19T21:15:18.875Z",

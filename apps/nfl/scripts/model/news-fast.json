@@ -5,37 +5,11 @@
   "rapsheet.bsky.social": "2026-11-09T15:03:14.842Z",
   "nflnewsreposterbot.bsky.social": "2026-11-06T17:28:39.017Z",
   "insidenflnews.bsky.social": "2026-11-09T16:48:40.168Z",
-  "nflnewsposter.bsky.social": "2026-11-09T16:40:02.702Z",
-  "rotoworld-fb.bsky.social": "2026-11-09T16:42:17.000Z",
-  "rotowirenfl.bsky.social": "2026-11-09T16:48:29.000Z"
+  "nflnewsposter.bsky.social": "2026-11-09T17:12:36.513Z",
+  "rotoworld-fb.bsky.social": "2026-11-09T16:51:25.000Z",
+  "rotowirenfl.bsky.social": "2026-11-09T16:55:42.000Z"
  },
  "claims": [
-  {
-   "id": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3myalrfjmse2q|saucegardner|out|status",
-   "at": "2026-10-19T16:59:09.000Z",
-   "seen": "2026-10-19T21:15:18.875Z",
-   "handle": "rotoworld-fb.bsky.social",
-   "post": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3myalrfjmse2q",
-   "player": "Sauce Gardner",
-   "team": "IND",
-   "status": "out",
-   "kind": "status",
-   "confidence": 0.75,
-   "text": "Sauce Gardner (calf) expected to miss time"
-  },
-  {
-   "id": "at://did:plc:mbr4badgf6yu56mquzackzew/app.bsky.feed.post/3myam7abvhs2z|elijaharroyo|out|status",
-   "at": "2026-10-19T17:06:53.378Z",
-   "seen": "2026-10-19T21:15:18.875Z",
-   "handle": "insidenflnews.bsky.social",
-   "post": "at://did:plc:mbr4badgf6yu56mquzackzew/app.bsky.feed.post/3myam7abvhs2z",
-   "player": "Elijah Arroyo",
-   "team": "SEA",
-   "status": "out",
-   "kind": "status",
-   "confidence": 0.8,
-   "text": "Fowler: Seahawks TE Elijah Arroyo (shoulder) is expected to miss time."
-  },
   {
    "id": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3myaqz2u76c2y|danieljones|none|starting",
    "at": "2026-10-19T18:32:54.000Z",
@@ -18742,6 +18716,19 @@
    "kind": "starting",
    "confidence": 0.85,
    "text": "Repost by @AdamSchefter\n\nThe Browns plan to start Deshaun Watson in Week 10 vs the Texans, per source. Shedeur Sanders filled in Sunday in New Orleans, but returning to Watson was the expected move on"
+  },
+  {
+   "id": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3mzvf4wi3gm2l|watson|active|starting",
+   "at": "2026-11-09T16:51:25.000Z",
+   "seen": "2026-11-09T17:21:33.161Z",
+   "handle": "rotoworld-fb.bsky.social",
+   "post": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3mzvf4wi3gm2l",
+   "player": "Watson",
+   "team": null,
+   "status": "active",
+   "kind": "starting",
+   "confidence": 0.7,
+   "text": "Fowler: Watson expected to start vs. Texans"
   }
  ]
 }

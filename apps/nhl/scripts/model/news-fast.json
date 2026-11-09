@@ -3,50 +3,11 @@
  "cursor": {
   "johnston-bot.bsky.social": "2026-11-09T05:30:03.025Z",
   "notfriedgehnic.bsky.social": "2026-11-09T15:11:26.954Z",
-  "dailyfaceoff.bsky.social": "2026-11-09T16:39:19.000Z",
+  "dailyfaceoff.bsky.social": "2026-11-09T17:05:45.000Z",
   "dfotoronto.bsky.social": "2026-11-09T15:32:09.000Z",
   "marklazerus.bsky.social": "2026-11-09T15:27:50.607Z"
  },
  "claims": [
-  {
-   "id": "at://did:plc:knaj2vcp4x6t7hr7ewd6e3uz/app.bsky.feed.post/3myamlwa6242j|williamnylander|questionable|status",
-   "at": "2026-10-19T17:13:58.000Z",
-   "seen": "2026-10-19T21:15:18.875Z",
-   "handle": "dfotoronto.bsky.social",
-   "post": "at://did:plc:knaj2vcp4x6t7hr7ewd6e3uz/app.bsky.feed.post/3myamlwa6242j",
-   "player": "William Nylander",
-   "team": "TOR",
-   "status": "questionable",
-   "kind": "status",
-   "confidence": 0.9,
-   "text": "Leafs lineup notes: William Nylander misses morning skate with illness, game-time decision vs. Sharks"
-  },
-  {
-   "id": "at://did:plc:3uus7y6h3rlrk6sbctzxm4bg/app.bsky.feed.post/3myamylflzc2g|maccelli|out|status",
-   "at": "2026-10-19T17:21:03.000Z",
-   "seen": "2026-10-19T21:15:18.875Z",
-   "handle": "dailyfaceoff.bsky.social",
-   "post": "at://did:plc:3uus7y6h3rlrk6sbctzxm4bg/app.bsky.feed.post/3myamylflzc2g",
-   "player": "Maccelli",
-   "team": "NYI",
-   "status": "out",
-   "kind": "status",
-   "confidence": 0.7,
-   "text": "Islanders’ Maccelli, Ritchie to miss time with lower-body injuries"
-  },
-  {
-   "id": "at://did:plc:3uus7y6h3rlrk6sbctzxm4bg/app.bsky.feed.post/3myamylflzc2g|ritchie|out|status",
-   "at": "2026-10-19T17:21:03.000Z",
-   "seen": "2026-10-19T21:15:18.875Z",
-   "handle": "dailyfaceoff.bsky.social",
-   "post": "at://did:plc:3uus7y6h3rlrk6sbctzxm4bg/app.bsky.feed.post/3myamylflzc2g",
-   "player": "Ritchie",
-   "team": "NYI",
-   "status": "out",
-   "kind": "status",
-   "confidence": 0.7,
-   "text": "Islanders’ Maccelli, Ritchie to miss time with lower-body injuries"
-  },
   {
    "id": "at://did:plc:3uus7y6h3rlrk6sbctzxm4bg/app.bsky.feed.post/3myaoqmsq2s2h|chabot|out|status",
    "at": "2026-10-19T17:52:24.000Z",
