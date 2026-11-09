@@ -3,8 +3,8 @@
  "cursor": {
   "johnston-bot.bsky.social": "2026-11-08T01:26:11.710Z",
   "notfriedgehnic.bsky.social": "2026-11-08T19:18:40.624Z",
-  "dailyfaceoff.bsky.social": "2026-11-09T01:05:57.000Z",
-  "dfotoronto.bsky.social": "2026-11-09T02:48:54.000Z",
+  "dailyfaceoff.bsky.social": "2026-11-09T03:11:41.000Z",
+  "dfotoronto.bsky.social": "2026-11-09T02:58:27.000Z",
   "marklazerus.bsky.social": "2026-11-08T23:34:44.455Z"
  },
  "claims": [
@@ -2022,6 +2022,19 @@
    "kind": "status",
    "confidence": 0.8,
    "text": "Devils’ Anthony Mantha to ‘miss some time’ with throat injury"
+  },
+  {
+   "id": "at://did:plc:3uus7y6h3rlrk6sbctzxm4bg/app.bsky.feed.post/3mztxd4lwpa24|sissons|questionable|status",
+   "at": "2026-11-09T03:11:41.000Z",
+   "seen": "2026-11-09T03:17:57.657Z",
+   "handle": "dailyfaceoff.bsky.social",
+   "post": "at://did:plc:3uus7y6h3rlrk6sbctzxm4bg/app.bsky.feed.post/3mztxd4lwpa24",
+   "player": "Sissons",
+   "team": "TOR",
+   "status": "questionable",
+   "kind": "status",
+   "confidence": 0.35,
+   "text": "Leafs’ Sissons exits game due to lower-body injury"
   }
  ]
 }
