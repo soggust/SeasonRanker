@@ -1,7 +1,7 @@
 {
  "sport": "nfl",
  "cursor": {
-  "adamscheftermirror.bsky.social": "2026-11-09T08:40:08.355Z",
+  "adamscheftermirror.bsky.social": "2026-11-09T11:15:08.260Z",
   "rapsheet.bsky.social": "2026-11-09T01:24:31.455Z",
   "nflnewsreposterbot.bsky.social": "2026-11-06T17:28:39.017Z",
   "insidenflnews.bsky.social": "2026-11-09T05:05:19.581Z",
@@ -18872,6 +18872,19 @@
    "kind": "status",
    "confidence": 0.5,
    "text": "Bears WR Luther Burden III suffered a concussion late and Sunday nights win over Tampa Bay, now is in concussion protocol.\n\nOriginal post"
+  },
+  {
+   "id": "at://did:plc:qre6zxbmr3ixhdmgsgdretb5/app.bsky.feed.post/3mzusdks6u32u|justinherbert|questionable|status",
+   "at": "2026-11-09T11:15:07.378Z",
+   "seen": "2026-11-09T11:27:36.725Z",
+   "handle": "adamscheftermirror.bsky.social",
+   "post": "at://did:plc:qre6zxbmr3ixhdmgsgdretb5/app.bsky.feed.post/3mzusdks6u32u",
+   "player": "Justin Herbert",
+   "team": "LAC",
+   "status": "questionable",
+   "kind": "status",
+   "confidence": 0.3,
+   "text": "Chargers QB Justin Herbert will undergo testing on the middle finger on his left hand. Head coach Jim Harbaugh said it “could be a fracture, we'll find out.”\n\nOriginal post"
   }
  ]
 }
