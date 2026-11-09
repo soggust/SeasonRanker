@@ -21265,6 +21265,18 @@
     "own": "2026-11-09T21:49:56.000Z",
     "why": "@rotowirenba.bsky.social: Zion Williamson: Sitting out Monday \n\n https://www.rot"
    }
+  },
+  "401909952|austinreaves|out": {
+   "game": "401909952",
+   "start": "2026-11-10T00:00Z",
+   "team": "13",
+   "name": "Austin Reaves",
+   "status": "out",
+   "athlete": "4066457",
+   "espn": {
+    "seen": "2026-11-09T22:37:44.397Z",
+    "own": "2026-11-09T22:32:00.000Z"
+   }
   }
  }
 }
