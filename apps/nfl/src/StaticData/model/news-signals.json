@@ -3,6 +3,61 @@
  "days": 2,
  "signals": [
   {
+   "team": "7",
+   "abbr": "DEN",
+   "athlete": "4372016",
+   "player": "Jaylen Waddle",
+   "kind": "return",
+   "direction": "down",
+   "confidence": 0.3,
+   "headline": "Broncos WR Jaylen Waddle, CB Riley Moss suffer concussions against Panthers",
+   "at": "2026-11-08T23:55:20.000Z"
+  },
+  {
+   "team": "19",
+   "abbr": "NYG",
+   "athlete": "4242335",
+   "player": "Jonathan Taylor",
+   "kind": "role",
+   "direction": "none",
+   "confidence": 0.3,
+   "headline": "John Harbaugh: Giants did pull offer for Jonathan Taylor but 'things do change'",
+   "at": "2026-11-08T23:49:40.000Z"
+  },
+  {
+   "team": "14",
+   "abbr": "LAR",
+   "athlete": "3122132",
+   "player": "Myles Garrett",
+   "kind": "return",
+   "direction": "up",
+   "confidence": 0.8,
+   "headline": "Myles Garrett has three sacks in return to help Rams stop Commanders",
+   "at": "2026-11-08T23:30:43.000Z"
+  },
+  {
+   "team": "33",
+   "abbr": "BAL",
+   "athlete": "3916387",
+   "player": "Lamar Jackson",
+   "kind": "return",
+   "direction": "up",
+   "confidence": 0.4,
+   "headline": "Sources: Lamar Jackson told Ravens teammates he plans to return this season",
+   "at": "2026-11-08T14:19:32.000Z"
+  },
+  {
+   "team": "26",
+   "abbr": "SEA",
+   "athlete": "3912547",
+   "player": "Sam Darnold",
+   "kind": "benched",
+   "direction": "down",
+   "confidence": 0.3,
+   "headline": "Sources: Seahawks' Sam Darnold in jeopardy of missing Week 10 game vs. Raiders",
+   "at": "2026-11-08T13:33:54.000Z"
+  },
+  {
    "team": "18",
    "abbr": "NO",
    "athlete": "4685260",
@@ -36,5 +91,5 @@
    "at": "2026-11-07T00:09:26.000Z"
   }
  ],
- "at": "2026-11-08T23:43:10.786Z"
+ "at": "2026-11-09T00:03:25.678Z"
 }

@@ -178,126 +178,6 @@
     "why": "@rotowirenba.bsky.social: Tyrese Haliburton: Out at least two weeks \n\n https://w"
    }
   },
-  "401909894|yvesmissi|out": {
-   "game": "401909894",
-   "start": "2026-10-30T00:00Z",
-   "team": "3",
-   "name": "Yves Missi",
-   "status": "out",
-   "athlete": "5061589",
-   "espn": {
-    "seen": "2026-10-29T00:50:57.202Z",
-    "own": "2026-10-24T22:17:00.000Z"
-   }
-  },
-  "401909894|alexcaruso|out": {
-   "game": "401909894",
-   "start": "2026-10-30T00:00Z",
-   "team": "3",
-   "name": "Alex Caruso",
-   "status": "out",
-   "bluesky": {
-    "seen": "2026-10-28T18:28:34.313Z",
-    "own": "2026-10-28T18:06:14.000Z",
-    "why": "@rotowirenba.bsky.social: Alex Caruso: Return timeline uncertain \n\n https://www."
-   }
-  },
-  "401909894|najimarshall|out": {
-   "game": "401909894",
-   "start": "2026-10-30T00:00Z",
-   "team": "3",
-   "name": "Naji Marshall",
-   "status": "out",
-   "bluesky": {
-    "seen": "2026-10-28T18:28:34.313Z",
-    "own": "2026-10-28T18:22:27.000Z",
-    "why": "@rotowirenba.bsky.social: Naji Marshall: Downgraded to doubtful \n\n https://www.r"
-   }
-  },
-  "401909894|ziairewilliams|out": {
-   "game": "401909894",
-   "start": "2026-10-30T00:00Z",
-   "team": "3",
-   "name": "Ziaire Williams",
-   "status": "out",
-   "bluesky": {
-    "seen": "2026-10-28T21:02:19.956Z",
-    "own": "2026-10-28T20:06:57.000Z",
-    "why": "@rotowirenba.bsky.social: Ziaire Williams: Ruled out Wednesday \n\n https://www.ro"
-   }
-  },
-  "401909894|tyresehaliburton|out": {
-   "game": "401909894",
-   "start": "2026-10-30T00:00Z",
-   "team": "3",
-   "name": "Tyrese Haliburton",
-   "status": "out",
-   "bluesky": {
-    "seen": "2026-10-28T22:14:49.243Z",
-    "own": "2026-10-28T21:30:36.000Z",
-    "why": "@rotowirenba.bsky.social: Tyrese Haliburton: Out at least two weeks \n\n https://w"
-   }
-  },
-  "401909894|laurimarkkanen|out": {
-   "game": "401909894",
-   "start": "2026-10-30T00:00Z",
-   "team": "3",
-   "name": "Lauri Markkanen",
-   "status": "out",
-   "bluesky": {
-    "seen": "2026-10-29T00:32:35.710Z",
-    "own": "2026-10-29T00:14:19.000Z",
-    "why": "@rotowirenba.bsky.social: Lauri Markkanen: Won't play Wednesday \n\n https://www.r"
-   }
-  },
-  "401909894|dylancardwell|out": {
-   "game": "401909894",
-   "start": "2026-10-30T00:00Z",
-   "team": "23",
-   "name": "Dylan Cardwell",
-   "status": "out",
-   "athlete": "4433174",
-   "espn": {
-    "seen": "2026-10-29T00:50:57.202Z",
-    "own": "2026-10-26T22:09:00.000Z"
-   }
-  },
-  "401909894|maximeraynaud|out": {
-   "game": "401909894",
-   "start": "2026-10-30T00:00Z",
-   "team": "23",
-   "name": "Maxime Raynaud",
-   "status": "out",
-   "athlete": "4898371",
-   "espn": {
-    "seen": "2026-10-29T00:50:57.202Z",
-    "own": "2026-10-26T22:07:00.000Z"
-   }
-  },
-  "401909894|keeganmurray|out": {
-   "game": "401909894",
-   "start": "2026-10-30T00:00Z",
-   "team": "23",
-   "name": "Keegan Murray",
-   "status": "out",
-   "athlete": "4594327",
-   "espn": {
-    "seen": "2026-10-29T00:50:57.202Z",
-    "own": "2026-10-26T22:01:00.000Z"
-   }
-  },
-  "401909894|bensimmons|out": {
-   "game": "401909894",
-   "start": "2026-10-30T00:00Z",
-   "team": "23",
-   "name": "Ben Simmons",
-   "status": "out",
-   "athlete": "3907387",
-   "espn": {
-    "seen": "2026-10-29T00:50:57.202Z",
-    "own": "2026-10-21T04:22:00.000Z"
-   }
-  },
   "401909895|laurimarkkanen|out": {
    "game": "401909895",
    "start": "2026-10-30T02:00Z",
@@ -308,42 +188,6 @@
     "seen": "2026-10-29T00:32:35.710Z",
     "own": "2026-10-29T00:14:19.000Z",
     "why": "@rotowirenba.bsky.social: Lauri Markkanen: Won't play Wednesday \n\n https://www.r"
-   }
-  },
-  "401909894|brandoningram|out": {
-   "game": "401909894",
-   "start": "2026-10-30T00:00Z",
-   "team": "3",
-   "name": "Brandon Ingram",
-   "status": "out",
-   "bluesky": {
-    "seen": "2026-10-29T00:52:30.413Z",
-    "own": "2026-10-29T00:50:05.618Z",
-    "why": "@insidenbanews.bsky.social: Brandon Ingram (heel), Max Strus (foot), Yanic Konan"
-   }
-  },
-  "401909894|maxstrus|out": {
-   "game": "401909894",
-   "start": "2026-10-30T00:00Z",
-   "team": "3",
-   "name": "Max Strus",
-   "status": "out",
-   "bluesky": {
-    "seen": "2026-10-29T00:52:30.413Z",
-    "own": "2026-10-29T00:50:05.618Z",
-    "why": "@insidenbanews.bsky.social: Brandon Ingram (heel), Max Strus (foot), Yanic Konan"
-   }
-  },
-  "401909894|yanickonanniederhauser|out": {
-   "game": "401909894",
-   "start": "2026-10-30T00:00Z",
-   "team": "3",
-   "name": "Yanic Konan Niederhauser",
-   "status": "out",
-   "bluesky": {
-    "seen": "2026-10-29T00:52:30.413Z",
-    "own": "2026-10-29T00:50:05.618Z",
-    "why": "@insidenbanews.bsky.social: Brandon Ingram (heel), Max Strus (foot), Yanic Konan"
    }
   },
   "401909895|brandoningram|out": {
@@ -374,153 +218,6 @@
    "game": "401909895",
    "start": "2026-10-30T02:00Z",
    "team": "22",
-   "name": "Yanic Konan Niederhauser",
-   "status": "out",
-   "bluesky": {
-    "seen": "2026-10-29T00:52:30.413Z",
-    "own": "2026-10-29T00:50:05.618Z",
-    "why": "@insidenbanews.bsky.social: Brandon Ingram (heel), Max Strus (foot), Yanic Konan"
-   }
-  },
-  "401909894|jordanpoole|q": {
-   "game": "401909894",
-   "start": "2026-10-30T00:00Z",
-   "team": "3",
-   "name": "Jordan Poole",
-   "status": "q",
-   "athlete": "4277956",
-   "espn": {
-    "seen": "2026-10-29T01:39:41.956Z",
-    "own": "2026-10-29T01:33:00.000Z"
-   },
-   "sleeper": {
-    "seen": "2026-10-29T20:14:28.021Z",
-    "own": "2026-10-29T16:50:30.039Z"
-   }
-  },
-  "401909893|mouhamedgueye|out": {
-   "game": "401909893",
-   "start": "2026-10-30T00:00Z",
-   "team": "1",
-   "name": "Mouhamed Gueye",
-   "status": "out",
-   "athlete": "4712863",
-   "espn": {
-    "seen": "2026-10-29T02:26:25.223Z",
-    "own": "2026-10-19T19:38:00.000Z"
-   }
-  },
-  "401909893|henriveesaar|out": {
-   "game": "401909893",
-   "start": "2026-10-30T00:00Z",
-   "team": "1",
-   "name": "Henri Veesaar",
-   "status": "out",
-   "athlete": "5105571",
-   "espn": {
-    "seen": "2026-10-29T02:26:25.223Z",
-    "own": "2026-09-21T19:50:00.000Z"
-   }
-  },
-  "401909893|alexcaruso|out": {
-   "game": "401909893",
-   "start": "2026-10-30T00:00Z",
-   "team": "1",
-   "name": "Alex Caruso",
-   "status": "out",
-   "bluesky": {
-    "seen": "2026-10-28T18:28:34.313Z",
-    "own": "2026-10-28T18:06:14.000Z",
-    "why": "@rotowirenba.bsky.social: Alex Caruso: Return timeline uncertain \n\n https://www."
-   }
-  },
-  "401909893|najimarshall|out": {
-   "game": "401909893",
-   "start": "2026-10-30T00:00Z",
-   "team": "1",
-   "name": "Naji Marshall",
-   "status": "out",
-   "bluesky": {
-    "seen": "2026-10-28T18:28:34.313Z",
-    "own": "2026-10-28T18:22:27.000Z",
-    "why": "@rotowirenba.bsky.social: Naji Marshall: Downgraded to doubtful \n\n https://www.r"
-   }
-  },
-  "401909893|aaronwiggins|q": {
-   "game": "401909893",
-   "start": "2026-10-30T00:00Z",
-   "team": "1",
-   "name": "Aaron Wiggins",
-   "status": "q",
-   "sleeper": {
-    "seen": "2026-10-28T20:19:47.558Z",
-    "own": "2026-10-28T19:15:22.820Z"
-   }
-  },
-  "401909893|ziairewilliams|out": {
-   "game": "401909893",
-   "start": "2026-10-30T00:00Z",
-   "team": "1",
-   "name": "Ziaire Williams",
-   "status": "out",
-   "bluesky": {
-    "seen": "2026-10-28T21:02:19.956Z",
-    "own": "2026-10-28T20:06:57.000Z",
-    "why": "@rotowirenba.bsky.social: Ziaire Williams: Ruled out Wednesday \n\n https://www.ro"
-   }
-  },
-  "401909893|tyresehaliburton|out": {
-   "game": "401909893",
-   "start": "2026-10-30T00:00Z",
-   "team": "1",
-   "name": "Tyrese Haliburton",
-   "status": "out",
-   "bluesky": {
-    "seen": "2026-10-28T22:14:49.243Z",
-    "own": "2026-10-28T21:30:36.000Z",
-    "why": "@rotowirenba.bsky.social: Tyrese Haliburton: Out at least two weeks \n\n https://w"
-   }
-  },
-  "401909893|laurimarkkanen|out": {
-   "game": "401909893",
-   "start": "2026-10-30T00:00Z",
-   "team": "1",
-   "name": "Lauri Markkanen",
-   "status": "out",
-   "bluesky": {
-    "seen": "2026-10-29T00:32:35.710Z",
-    "own": "2026-10-29T00:14:19.000Z",
-    "why": "@rotowirenba.bsky.social: Lauri Markkanen: Won't play Wednesday \n\n https://www.r"
-   }
-  },
-  "401909893|brandoningram|out": {
-   "game": "401909893",
-   "start": "2026-10-30T00:00Z",
-   "team": "1",
-   "name": "Brandon Ingram",
-   "status": "out",
-   "bluesky": {
-    "seen": "2026-10-29T01:21:50.888Z",
-    "own": "2026-10-29T01:00:31.000Z",
-    "why": "@rotowirenba.bsky.social: Brandon Ingram: To miss at least one more week \n\n http"
-   }
-  },
-  "401909893|maxstrus|out": {
-   "game": "401909893",
-   "start": "2026-10-30T00:00Z",
-   "team": "1",
-   "name": "Max Strus",
-   "status": "out",
-   "bluesky": {
-    "seen": "2026-10-29T00:52:30.413Z",
-    "own": "2026-10-29T00:50:05.618Z",
-    "why": "@insidenbanews.bsky.social: Brandon Ingram (heel), Max Strus (foot), Yanic Konan"
-   }
-  },
-  "401909893|yanickonanniederhauser|out": {
-   "game": "401909893",
-   "start": "2026-10-30T00:00Z",
-   "team": "1",
    "name": "Yanic Konan Niederhauser",
    "status": "out",
    "bluesky": {
@@ -1091,30 +788,6 @@
     "own": "2026-10-30T19:10:12.615Z"
    }
   },
-  "401909893|kawhileonard|out": {
-   "game": "401909893",
-   "start": "2026-10-30T00:00Z",
-   "team": "1",
-   "name": "Kawhi Leonard",
-   "status": "out",
-   "bluesky": {
-    "seen": "2026-10-29T15:55:14.263Z",
-    "own": "2026-10-29T15:39:36.000Z",
-    "why": "@rotowirenba.bsky.social: Kawhi Leonard: To miss 3-4 weeks \n\n https://www.rotowi"
-   }
-  },
-  "401909894|kawhileonard|out": {
-   "game": "401909894",
-   "start": "2026-10-30T00:00Z",
-   "team": "3",
-   "name": "Kawhi Leonard",
-   "status": "out",
-   "bluesky": {
-    "seen": "2026-10-29T15:55:14.263Z",
-    "own": "2026-10-29T15:39:36.000Z",
-    "why": "@rotowirenba.bsky.social: Kawhi Leonard: To miss 3-4 weeks \n\n https://www.rotowi"
-   }
-  },
   "401909895|kawhileonard|out": {
    "game": "401909895",
    "start": "2026-10-30T02:00Z",
@@ -1361,38 +1034,6 @@
     "own": "2026-10-29T16:40:00.000Z"
    }
   },
-  "401909893|meleekthomas|q": {
-   "game": "401909893",
-   "start": "2026-10-30T00:00Z",
-   "team": "5",
-   "name": "Meleek Thomas",
-   "status": "q",
-   "athlete": "5041951",
-   "espn": {
-    "seen": "2026-10-29T17:44:02.816Z",
-    "own": "2026-10-29T17:06:00.000Z"
-   },
-   "sleeper": {
-    "seen": "2026-10-29T20:14:28.021Z",
-    "own": "2026-10-29T17:10:29.992Z"
-   }
-  },
-  "401909893|jaylontyson|q": {
-   "game": "401909893",
-   "start": "2026-10-30T00:00Z",
-   "team": "5",
-   "name": "Jaylon Tyson",
-   "status": "q",
-   "athlete": "4683747",
-   "espn": {
-    "seen": "2026-10-29T17:44:02.816Z",
-    "own": "2026-10-29T17:05:00.000Z"
-   },
-   "sleeper": {
-    "seen": "2026-10-29T20:14:28.021Z",
-    "own": "2026-10-29T17:10:29.990Z"
-   }
-  },
   "401909895|robertwilliams|q": {
    "game": "401909895",
    "start": "2026-10-30T02:00Z",
@@ -1428,54 +1069,6 @@
    "sleeper": {
     "seen": "2026-10-29T20:14:28.021Z",
     "own": "2026-10-29T19:00:30.484Z"
-   }
-  },
-  "401909893|jalensmith|q": {
-   "game": "401909893",
-   "start": "2026-10-30T00:00Z",
-   "team": "1",
-   "name": "Jalen Smith",
-   "status": "q",
-   "bluesky": {
-    "seen": "2026-10-29T19:12:29.734Z",
-    "own": "2026-10-29T18:55:35.000Z",
-    "why": "@rotowirenba.bsky.social: Jalen Smith: Listed as questionable \n\n https://www.rot"
-   }
-  },
-  "401909893|robertwilliams|out": {
-   "game": "401909893",
-   "start": "2026-10-30T00:00Z",
-   "team": "1",
-   "name": "Robert Williams",
-   "status": "out",
-   "bluesky": {
-    "seen": "2026-10-29T19:12:29.734Z",
-    "own": "2026-10-29T18:57:17.000Z",
-    "why": "@rotowirenba.bsky.social: Robert Williams: Doubtful for Thursday \n\n https://www."
-   }
-  },
-  "401909894|jalensmith|q": {
-   "game": "401909894",
-   "start": "2026-10-30T00:00Z",
-   "team": "3",
-   "name": "Jalen Smith",
-   "status": "q",
-   "bluesky": {
-    "seen": "2026-10-29T19:12:29.734Z",
-    "own": "2026-10-29T18:55:35.000Z",
-    "why": "@rotowirenba.bsky.social: Jalen Smith: Listed as questionable \n\n https://www.rot"
-   }
-  },
-  "401909894|robertwilliams|out": {
-   "game": "401909894",
-   "start": "2026-10-30T00:00Z",
-   "team": "3",
-   "name": "Robert Williams",
-   "status": "out",
-   "bluesky": {
-    "seen": "2026-10-29T19:12:29.734Z",
-    "own": "2026-10-29T18:57:17.000Z",
-    "why": "@rotowirenba.bsky.social: Robert Williams: Doubtful for Thursday \n\n https://www."
    }
   },
   "401909895|jalensmith|q": {
@@ -1714,30 +1307,6 @@
     "own": "2026-10-30T19:25:12.762Z"
    }
   },
-  "401909893|reedsheppard|out": {
-   "game": "401909893",
-   "start": "2026-10-30T00:00Z",
-   "team": "1",
-   "name": "Reed Sheppard",
-   "status": "out",
-   "bluesky": {
-    "seen": "2026-10-29T20:54:29.750Z",
-    "own": "2026-10-29T20:36:38.000Z",
-    "why": "@rotowirenba.bsky.social: Reed Sheppard: Ruled out for Friday \n\n https://www.rot"
-   }
-  },
-  "401909894|reedsheppard|out": {
-   "game": "401909894",
-   "start": "2026-10-30T00:00Z",
-   "team": "3",
-   "name": "Reed Sheppard",
-   "status": "out",
-   "bluesky": {
-    "seen": "2026-10-29T20:54:29.750Z",
-    "own": "2026-10-29T20:36:38.000Z",
-    "why": "@rotowirenba.bsky.social: Reed Sheppard: Ruled out for Friday \n\n https://www.rot"
-   }
-  },
   "401909895|reedsheppard|out": {
    "game": "401909895",
    "start": "2026-10-30T02:00Z",
@@ -1911,30 +1480,6 @@
     "why": "@rotowirenba.bsky.social: Reed Sheppard: Ruled out for Friday \n\n https://www.rot"
    }
   },
-  "401909893|ivicazubac|out": {
-   "game": "401909893",
-   "start": "2026-10-30T00:00Z",
-   "team": "1",
-   "name": "Ivica Zubac",
-   "status": "out",
-   "bluesky": {
-    "seen": "2026-10-29T21:16:39.605Z",
-    "own": "2026-10-29T21:05:00.000Z",
-    "why": "@rotowirenba.bsky.social: Ivica Zubac: Still out with ankle sprain \n\n https://ww"
-   }
-  },
-  "401909894|ivicazubac|out": {
-   "game": "401909894",
-   "start": "2026-10-30T00:00Z",
-   "team": "3",
-   "name": "Ivica Zubac",
-   "status": "out",
-   "bluesky": {
-    "seen": "2026-10-29T21:16:39.605Z",
-    "own": "2026-10-29T21:05:00.000Z",
-    "why": "@rotowirenba.bsky.social: Ivica Zubac: Still out with ankle sprain \n\n https://ww"
-   }
-  },
   "401909895|ivicazubac|out": {
    "game": "401909895",
    "start": "2026-10-30T02:00Z",
@@ -2053,59 +1598,6 @@
     "seen": "2026-10-29T21:16:39.605Z",
     "own": "2026-10-29T21:05:00.000Z",
     "why": "@rotowirenba.bsky.social: Ivica Zubac: Still out with ankle sprain \n\n https://ww"
-   }
-  },
-  "401909893|dennisschroder|q": {
-   "game": "401909893",
-   "start": "2026-10-30T00:00Z",
-   "team": "1",
-   "name": "Dennis Schroder",
-   "status": "q",
-   "bluesky": {
-    "seen": "2026-10-29T21:37:09.530Z",
-    "own": "2026-10-29T21:37:02.000Z",
-    "why": "@rotowirenba.bsky.social: Dennis Schroder: Questionable for Friday \n\n https://ww"
-   }
-  },
-  "401909894|dejountemurray|out": {
-   "game": "401909894",
-   "start": "2026-10-30T00:00Z",
-   "team": "3",
-   "name": "Dejounte Murray",
-   "status": "out",
-   "athlete": "3907497",
-   "espn": {
-    "seen": "2026-10-29T22:26:42.278Z",
-    "own": "2026-10-29T22:19:00.000Z"
-   },
-   "bluesky": {
-    "seen": "2026-10-29T23:16:27.355Z",
-    "own": "2026-10-29T22:22:53.000Z",
-    "why": "@rotowirenba.bsky.social: Dejounte Murray: Late scratch Thursday \n\n https://www."
-   }
-  },
-  "401909894|jordanpoole|out": {
-   "game": "401909894",
-   "start": "2026-10-30T00:00Z",
-   "team": "3",
-   "name": "Jordan Poole",
-   "status": "out",
-   "athlete": "4277956",
-   "espn": {
-    "seen": "2026-10-29T22:26:42.278Z",
-    "own": "2026-10-29T22:17:00.000Z"
-   }
-  },
-  "401909894|dennisschroder|q": {
-   "game": "401909894",
-   "start": "2026-10-30T00:00Z",
-   "team": "3",
-   "name": "Dennis Schroder",
-   "status": "q",
-   "bluesky": {
-    "seen": "2026-10-29T21:37:09.530Z",
-    "own": "2026-10-29T21:37:02.000Z",
-    "why": "@rotowirenba.bsky.social: Dennis Schroder: Questionable for Friday \n\n https://ww"
    }
   },
   "401909895|dennisschroder|q": {
@@ -2295,54 +1787,6 @@
     "seen": "2026-10-29T21:37:09.530Z",
     "own": "2026-10-29T21:37:02.000Z",
     "why": "@rotowirenba.bsky.social: Dennis Schroder: Questionable for Friday \n\n https://ww"
-   }
-  },
-  "401909893|ruihachimura|q": {
-   "game": "401909893",
-   "start": "2026-10-30T00:00Z",
-   "team": "1",
-   "name": "Rui Hachimura",
-   "status": "q",
-   "bluesky": {
-    "seen": "2026-10-29T23:16:27.355Z",
-    "own": "2026-10-29T22:13:58.000Z",
-    "why": "@rotowirenba.bsky.social: Rui Hachimura: Questionable for Friday \n\n https://www."
-   }
-  },
-  "401909893|dejountemurray|out": {
-   "game": "401909893",
-   "start": "2026-10-30T00:00Z",
-   "team": "1",
-   "name": "Dejounte Murray",
-   "status": "out",
-   "bluesky": {
-    "seen": "2026-10-29T23:16:27.355Z",
-    "own": "2026-10-29T22:22:53.000Z",
-    "why": "@rotowirenba.bsky.social: Dejounte Murray: Late scratch Thursday \n\n https://www."
-   }
-  },
-  "401909893|meleekthomas|out": {
-   "game": "401909893",
-   "start": "2026-10-30T00:00Z",
-   "team": "5",
-   "name": "Meleek Thomas",
-   "status": "out",
-   "athlete": "5041951",
-   "espn": {
-    "seen": "2026-10-29T23:29:43.090Z",
-    "own": "2026-10-29T23:21:00.000Z"
-   }
-  },
-  "401909894|ruihachimura|q": {
-   "game": "401909894",
-   "start": "2026-10-30T00:00Z",
-   "team": "3",
-   "name": "Rui Hachimura",
-   "status": "q",
-   "bluesky": {
-    "seen": "2026-10-29T23:16:27.355Z",
-    "own": "2026-10-29T22:13:58.000Z",
-    "why": "@rotowirenba.bsky.social: Rui Hachimura: Questionable for Friday \n\n https://www."
    }
   },
   "401909895|ruihachimura|q": {
@@ -20501,6 +19945,11 @@
    "espn": {
     "seen": "2026-11-08T23:41:26.217Z",
     "own": "2026-11-08T22:53:00.000Z"
+   },
+   "bluesky": {
+    "seen": "2026-11-08T23:43:10.786Z",
+    "own": "2026-11-08T22:53:28.000Z",
+    "why": "@rotowirenba.bsky.social: Domantas Sabonis: Downgraded to questionable Sunday \n\n"
    }
   },
   "401909957|anthonydavis|q": {
@@ -20549,6 +19998,11 @@
    "espn": {
     "seen": "2026-11-08T23:41:26.217Z",
     "own": "2026-11-08T22:46:00.000Z"
+   },
+   "bluesky": {
+    "seen": "2026-11-08T23:43:10.786Z",
+    "own": "2026-11-08T22:46:39.000Z",
+    "why": "@rotowirenba.bsky.social: Christian Braun: Questionable for Monday \n\n https://ww"
    }
   },
   "401909957|jamalmurray|q": {
@@ -20561,6 +20015,11 @@
    "espn": {
     "seen": "2026-11-08T23:41:26.217Z",
     "own": "2026-11-08T22:43:00.000Z"
+   },
+   "bluesky": {
+    "seen": "2026-11-08T23:43:10.786Z",
+    "own": "2026-11-08T22:43:10.000Z",
+    "why": "@rotowirenba.bsky.social: Jamal Murray: Questionable against Houston \n\n https://"
    }
   },
   "401909957|aarongordon|q": {
@@ -20590,6 +20049,18 @@
     "seen": "2026-11-08T22:39:47.617Z",
     "own": "2026-11-08T22:36:05.000Z",
     "why": "@rotowirenba.bsky.social: Nikola Jokic: Questionable to play Monday \n\n https://w"
+   }
+  },
+  "401909949|garytrent|out": {
+   "game": "401909949",
+   "start": "2026-11-09T01:00Z",
+   "team": "15",
+   "name": "Gary Trent Jr.",
+   "status": "out",
+   "athlete": "4277843",
+   "espn": {
+    "seen": "2026-11-09T00:01:37.658Z",
+    "own": "2026-11-08T23:58:00.000Z"
    }
   }
  }

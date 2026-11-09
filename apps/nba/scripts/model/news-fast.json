@@ -1,24 +1,11 @@
 {
  "sport": "nba",
  "cursor": {
-  "rotowirenba.bsky.social": "2026-11-08T23:14:07.000Z",
+  "rotowirenba.bsky.social": "2026-11-08T23:59:45.000Z",
   "insidenbanews.bsky.social": "2026-11-08T18:11:49.382Z",
   "shamsbot.bsky.social": "2026-11-08T18:05:20.000Z"
  },
  "claims": [
-  {
-   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3my6ryqfs2n2j|stephencurry|none|status",
-   "at": "2026-10-18T23:45:18.000Z",
-   "seen": "2026-10-19T21:15:18.875Z",
-   "handle": "rotowirenba.bsky.social",
-   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3my6ryqfs2n2j",
-   "player": "Stephen Curry",
-   "team": "GSW",
-   "status": "none",
-   "kind": "status",
-   "confidence": 0.3,
-   "text": "Stephen Curry: Suffers minor ankle injury \n\n https://www.rotowire.com/basketball/player/stephen-curry-3014"
-  },
   {
    "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3myamxb7ezz2o|ajdybantsa|questionable|status",
    "at": "2026-10-19T17:20:19.000Z",
