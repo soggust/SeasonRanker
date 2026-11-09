@@ -20782,6 +20782,11 @@
    "espn": {
     "seen": "2026-11-09T18:20:44.891Z",
     "own": "2026-11-09T18:09:00.000Z"
+   },
+   "bluesky": {
+    "seen": "2026-11-09T18:51:24.405Z",
+    "own": "2026-11-09T18:09:46.000Z",
+    "why": "@rotowirenba.bsky.social: Austin Reaves: Questionable with illness \n\n https://ww"
    }
   },
   "401909955|collinmurrayboyles|q": {
@@ -20794,6 +20799,119 @@
    "espn": {
     "seen": "2026-11-09T18:42:40.912Z",
     "own": "2026-11-09T18:28:00.000Z"
+   }
+  },
+  "401909952|devinvassell|out": {
+   "game": "401909952",
+   "start": "2026-11-10T00:00Z",
+   "team": "1",
+   "name": "Devin Vassell",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-09T18:51:24.405Z",
+    "own": "2026-11-09T18:41:53.000Z",
+    "why": "@rotowirenba.bsky.social: Devin Vassell: Ruled out for Monday \n\n https://www.rot"
+   }
+  },
+  "401909953|devinvassell|out": {
+   "game": "401909953",
+   "start": "2026-11-10T00:00Z",
+   "team": "30",
+   "name": "Devin Vassell",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-09T18:51:24.405Z",
+    "own": "2026-11-09T18:41:53.000Z",
+    "why": "@rotowirenba.bsky.social: Devin Vassell: Ruled out for Monday \n\n https://www.rot"
+   }
+  },
+  "401909954|devinvassell|out": {
+   "game": "401909954",
+   "start": "2026-11-10T00:00Z",
+   "team": "8",
+   "name": "Devin Vassell",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-09T18:51:24.405Z",
+    "own": "2026-11-09T18:41:53.000Z",
+    "why": "@rotowirenba.bsky.social: Devin Vassell: Ruled out for Monday \n\n https://www.rot"
+   }
+  },
+  "401909955|devinvassell|out": {
+   "game": "401909955",
+   "start": "2026-11-10T00:30Z",
+   "team": "28",
+   "name": "Devin Vassell",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-09T18:51:24.405Z",
+    "own": "2026-11-09T18:41:53.000Z",
+    "why": "@rotowirenba.bsky.social: Devin Vassell: Ruled out for Monday \n\n https://www.rot"
+   }
+  },
+  "401909956|morezjohnson|q": {
+   "game": "401909956",
+   "start": "2026-11-10T01:00Z",
+   "team": "6",
+   "name": "Morez Johnson Jr.",
+   "status": "q",
+   "athlete": "4873153",
+   "espn": {
+    "seen": "2026-11-09T19:01:38.047Z",
+    "own": "2026-11-09T18:48:00.000Z"
+   }
+  },
+  "401909956|devinvassell|out": {
+   "game": "401909956",
+   "start": "2026-11-10T01:00Z",
+   "team": "6",
+   "name": "Devin Vassell",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-09T18:51:24.405Z",
+    "own": "2026-11-09T18:41:53.000Z",
+    "why": "@rotowirenba.bsky.social: Devin Vassell: Ruled out for Monday \n\n https://www.rot"
+   }
+  },
+  "401909957|devinvassell|out": {
+   "game": "401909957",
+   "start": "2026-11-10T01:30Z",
+   "team": "10",
+   "name": "Devin Vassell",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-09T18:51:24.405Z",
+    "own": "2026-11-09T18:41:53.000Z",
+    "why": "@rotowirenba.bsky.social: Devin Vassell: Ruled out for Monday \n\n https://www.rot"
+   }
+  },
+  "401909958|devinvassell|out": {
+   "game": "401909958",
+   "start": "2026-11-10T02:00Z",
+   "team": "21",
+   "name": "Devin Vassell",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-09T18:51:24.405Z",
+    "own": "2026-11-09T18:41:53.000Z",
+    "why": "@rotowirenba.bsky.social: Devin Vassell: Ruled out for Monday \n\n https://www.rot"
+   },
+   "athlete": "4395630",
+   "espn": {
+    "seen": "2026-11-09T19:01:38.047Z",
+    "own": "2026-11-09T18:41:00.000Z"
+   }
+  },
+  "401909959|devinvassell|out": {
+   "game": "401909959",
+   "start": "2026-11-10T03:00Z",
+   "team": "9",
+   "name": "Devin Vassell",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-09T18:51:24.405Z",
+    "own": "2026-11-09T18:41:53.000Z",
+    "why": "@rotowirenba.bsky.social: Devin Vassell: Ruled out for Monday \n\n https://www.rot"
    }
   }
  }
