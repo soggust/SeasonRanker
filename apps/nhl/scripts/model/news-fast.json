@@ -3,24 +3,11 @@
  "cursor": {
   "johnston-bot.bsky.social": "2026-11-09T05:30:03.025Z",
   "notfriedgehnic.bsky.social": "2026-11-08T19:18:40.624Z",
-  "dailyfaceoff.bsky.social": "2026-11-09T05:57:26.000Z",
-  "dfotoronto.bsky.social": "2026-11-09T12:05:25.000Z",
+  "dailyfaceoff.bsky.social": "2026-11-09T13:07:42.000Z",
+  "dfotoronto.bsky.social": "2026-11-09T13:03:27.000Z",
   "marklazerus.bsky.social": "2026-11-08T23:34:44.455Z"
  },
  "claims": [
-  {
-   "id": "at://did:plc:3uus7y6h3rlrk6sbctzxm4bg/app.bsky.feed.post/3mya6oaaklg22|camyork|out|status",
-   "at": "2026-10-19T13:04:44.000Z",
-   "seen": "2026-10-19T21:15:18.875Z",
-   "handle": "dailyfaceoff.bsky.social",
-   "post": "at://did:plc:3uus7y6h3rlrk6sbctzxm4bg/app.bsky.feed.post/3mya6oaaklg22",
-   "player": "Cam York",
-   "team": "PHI",
-   "status": "out",
-   "kind": "status",
-   "confidence": 0.95,
-   "text": "Flyers place Cam York on injured reserve #nhl #nhlhockey #dailyfaceoff"
-  },
   {
    "id": "at://did:plc:3uus7y6h3rlrk6sbctzxm4bg/app.bsky.feed.post/3myajhcvxec24|taylorhall|out|status",
    "at": "2026-10-19T16:17:43.000Z",
@@ -2100,6 +2087,32 @@
    "kind": "benched",
    "confidence": 0.85,
    "text": "New, for @TheAthletic: Devils stunningly announce that Connor Hellebuyck will not start in return to Winnipeg, citing a \"reduction in our expected win probability\" 🔗⬇️"
+  },
+  {
+   "id": "at://did:plc:3uus7y6h3rlrk6sbctzxm4bg/app.bsky.feed.post/3mzuyat3wob23|connorhellebuyck|out|status",
+   "at": "2026-11-09T13:00:57.000Z",
+   "seen": "2026-11-09T13:14:36.673Z",
+   "handle": "dailyfaceoff.bsky.social",
+   "post": "at://did:plc:3uus7y6h3rlrk6sbctzxm4bg/app.bsky.feed.post/3mzuyat3wob23",
+   "player": "Connor Hellebuyck",
+   "team": null,
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.9,
+   "text": "Connor Hellebuyck won’t play in his return to Winnipeg. What are your thoughts on this? ⬇️ 👀 #nhl #nhlhockey #dailyfaceoff"
+  },
+  {
+   "id": "at://did:plc:3uus7y6h3rlrk6sbctzxm4bg/app.bsky.feed.post/3mzuymv5f7s27|connorhellebuyck|out|benched",
+   "at": "2026-11-09T13:07:42.000Z",
+   "seen": "2026-11-09T13:14:36.673Z",
+   "handle": "dailyfaceoff.bsky.social",
+   "post": "at://did:plc:3uus7y6h3rlrk6sbctzxm4bg/app.bsky.feed.post/3mzuymv5f7s27",
+   "player": "Connor Hellebuyck",
+   "team": null,
+   "status": "out",
+   "kind": "benched",
+   "confidence": 0.85,
+   "text": "This Week in the NHL: Hellebuyck returns to Winnipeg (on the bench)"
   }
  ]
 }
