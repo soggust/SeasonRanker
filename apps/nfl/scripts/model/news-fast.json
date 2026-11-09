@@ -7,35 +7,9 @@
   "insidenflnews.bsky.social": "2026-11-09T15:00:44.738Z",
   "nflnewsposter.bsky.social": "2026-11-09T14:57:05.540Z",
   "rotoworld-fb.bsky.social": "2026-11-09T13:07:42.000Z",
-  "rotowirenfl.bsky.social": "2026-11-09T14:38:34.000Z"
+  "rotowirenfl.bsky.social": "2026-11-09T15:08:39.000Z"
  },
  "claims": [
-  {
-   "id": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3myagdinxdo2z|mikeevans|questionable|status",
-   "at": "2026-10-19T15:21:53.000Z",
-   "seen": "2026-10-19T21:15:18.875Z",
-   "handle": "rotowirenfl.bsky.social",
-   "post": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3myagdinxdo2z",
-   "player": "Mike Evans",
-   "team": "TB",
-   "status": "questionable",
-   "kind": "status",
-   "confidence": 0.85,
-   "text": "Mike Evans: Shaping up as game-time call Monday \n\n https://www.rotowire.com/football/player/mike-evans-9253"
-  },
-  {
-   "id": "at://did:plc:qre6zxbmr3ixhdmgsgdretb5/app.bsky.feed.post/3myagmv4rc727|jalenhurts|out|status",
-   "at": "2026-10-19T15:27:08.879Z",
-   "seen": "2026-10-19T21:15:18.875Z",
-   "handle": "adamscheftermirror.bsky.social",
-   "post": "at://did:plc:qre6zxbmr3ixhdmgsgdretb5/app.bsky.feed.post/3myagmv4rc727",
-   "player": "Jalen Hurts",
-   "team": "PHI",
-   "status": "out",
-   "kind": "status",
-   "confidence": 0.8,
-   "text": "More about Eagles quarterback Jalen Hurts now being expected to miss the rest of the season after doctors discovered multiple blood clots in his lungs:\n\nOriginal post"
-  },
   {
    "id": "at://did:plc:fuqjc7x4gxvnwzksnlxwbe4x/app.bsky.feed.post/3myakewitx25q|saucegardner|out|status",
    "at": "2026-10-19T16:34:16.964Z",
