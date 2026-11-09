@@ -4,10 +4,10 @@
   "adamscheftermirror.bsky.social": "2026-11-09T00:00:37.286Z",
   "rapsheet.bsky.social": "2026-11-08T20:02:23.434Z",
   "nflnewsreposterbot.bsky.social": "2026-11-06T17:28:39.017Z",
-  "insidenflnews.bsky.social": "2026-11-08T23:59:37.032Z",
+  "insidenflnews.bsky.social": "2026-11-09T00:07:56.216Z",
   "nflnewsposter.bsky.social": "2026-11-09T00:01:23.015Z",
-  "rotoworld-fb.bsky.social": "2026-11-09T00:00:14.000Z",
-  "rotowirenfl.bsky.social": "2026-11-09T00:02:59.000Z"
+  "rotoworld-fb.bsky.social": "2026-11-09T00:40:08.000Z",
+  "rotowirenfl.bsky.social": "2026-11-09T00:37:29.000Z"
  },
  "claims": [
   {
@@ -18690,6 +18690,19 @@
    "kind": "return",
    "confidence": 0.4,
    "text": "Pat Bryant: Makes impact in return to action \n\n https://www.rotowire.com/football/player/pat-bryant-18562"
+  },
+  {
+   "id": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3mztnomck2f2c|rhamondrestevenson|out|status",
+   "at": "2026-11-09T00:19:09.000Z",
+   "seen": "2026-11-09T00:40:54.833Z",
+   "handle": "rotowirenfl.bsky.social",
+   "post": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3mztnomck2f2c",
+   "player": "Rhamondre Stevenson",
+   "team": "NE",
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.8,
+   "text": "Rhamondre Stevenson: Out for remainder of Sunday's game \n\n https://www.rotowire.com/football/player/rhamondre-stevenson-15372"
   }
  ]
 }

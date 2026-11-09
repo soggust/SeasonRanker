@@ -20062,6 +20062,54 @@
     "seen": "2026-11-09T00:01:37.658Z",
     "own": "2026-11-08T23:58:00.000Z"
    }
+  },
+  "401909958|devinvassell|q": {
+   "game": "401909958",
+   "start": "2026-11-10T02:00Z",
+   "team": "24",
+   "name": "Devin Vassell",
+   "status": "q",
+   "athlete": "4395630",
+   "espn": {
+    "seen": "2026-11-09T00:39:32.911Z",
+    "own": "2026-11-09T00:20:00.000Z"
+   }
+  },
+  "401909961|adembona|out": {
+   "game": "401909961",
+   "start": "2026-11-11T01:00Z",
+   "team": "20",
+   "name": "Adem Bona",
+   "status": "out",
+   "athlete": "5105637",
+   "espn": {
+    "seen": "2026-11-09T00:39:32.911Z",
+    "own": "2026-11-07T23:07:00.000Z"
+   }
+  },
+  "401909961|dominickbarlow|out": {
+   "game": "401909961",
+   "start": "2026-11-11T01:00Z",
+   "team": "20",
+   "name": "Dominick Barlow",
+   "status": "out",
+   "athlete": "4870562",
+   "espn": {
+    "seen": "2026-11-09T00:39:32.911Z",
+    "own": "2026-11-04T22:41:00.000Z"
+   }
+  },
+  "401909961|arielhukporti|out": {
+   "game": "401909961",
+   "start": "2026-11-11T01:00Z",
+   "team": "20",
+   "name": "Ariel Hukporti",
+   "status": "out",
+   "athlete": "4871141",
+   "espn": {
+    "seen": "2026-11-09T00:39:32.911Z",
+    "own": "2026-10-06T19:17:00.000Z"
+   }
   }
  }
 }

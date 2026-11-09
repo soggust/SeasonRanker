@@ -1,7 +1,7 @@
 {
  "sport": "nba",
  "cursor": {
-  "rotowirenba.bsky.social": "2026-11-08T23:59:45.000Z",
+  "rotowirenba.bsky.social": "2026-11-09T00:27:25.000Z",
   "insidenbanews.bsky.social": "2026-11-08T18:11:49.382Z",
   "shamsbot.bsky.social": "2026-11-08T18:05:20.000Z"
  },
@@ -9508,6 +9508,19 @@
    "kind": "status",
    "confidence": 0.95,
    "text": "Lauri Markkanen: Out Sunday \n\n https://www.rotowire.com/basketball/player/lauri-markkanen-4119"
+  },
+  {
+   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mztnswtv6t2p|mitchellrobinson|active|status",
+   "at": "2026-11-09T00:21:34.000Z",
+   "seen": "2026-11-09T00:40:54.833Z",
+   "handle": "rotowirenba.bsky.social",
+   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mztnswtv6t2p",
+   "player": "Mitchell Robinson",
+   "team": null,
+   "status": "active",
+   "kind": "status",
+   "confidence": 0.9,
+   "text": "Mitchell Robinson: Cleared to play Sunday \n\n https://www.rotowire.com/basketball/player/mitchell-robinson-4426"
   }
  ]
 }
