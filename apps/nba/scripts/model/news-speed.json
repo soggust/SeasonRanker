@@ -20615,6 +20615,114 @@
     "seen": "2026-11-09T03:58:43.537Z",
     "own": "2026-11-05T20:47:00.000Z"
    }
+  },
+  "401909956|sergiodelarrea|out": {
+   "game": "401909956",
+   "start": "2026-11-10T01:00Z",
+   "team": "6",
+   "name": "Sergio de Larrea",
+   "status": "out",
+   "athlete": "5279129",
+   "espn": {
+    "seen": "2026-11-09T04:19:33.426Z",
+    "own": "2026-11-05T22:24:00.000Z"
+   }
+  },
+  "401909956|tarikbiberovic|out": {
+   "game": "401909956",
+   "start": "2026-11-10T01:00Z",
+   "team": "6",
+   "name": "Tarik Biberovic",
+   "status": "out",
+   "athlete": "5148538",
+   "espn": {
+    "seen": "2026-11-09T04:19:33.426Z",
+    "own": "2026-11-01T23:19:00.000Z"
+   }
+  },
+  "401909956|derecklively|out": {
+   "game": "401909956",
+   "start": "2026-11-10T01:00Z",
+   "team": "6",
+   "name": "Dereck Lively II",
+   "status": "out",
+   "athlete": "4683688",
+   "espn": {
+    "seen": "2026-11-09T04:19:33.426Z",
+    "own": "2026-11-01T22:57:00.000Z"
+   }
+  },
+  "401909956|anthonydavis|q": {
+   "game": "401909956",
+   "start": "2026-11-10T01:00Z",
+   "team": "6",
+   "name": "Anthony Davis",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-11-08T22:15:24.034Z",
+    "own": "2026-11-08T22:08:24.000Z",
+    "why": "@rotowirenba.bsky.social: Anthony Davis: Questionable to suit up Monday \n\n https"
+   }
+  },
+  "401909956|domantassabonis|out": {
+   "game": "401909956",
+   "start": "2026-11-10T01:00Z",
+   "team": "6",
+   "name": "Domantas Sabonis",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-09T01:32:07.446Z",
+    "own": "2026-11-09T01:03:30.000Z",
+    "why": "@rotowirenba.bsky.social: Domantas Sabonis: Out Sunday \n\n https://www.rotowire.c"
+   }
+  },
+  "401909956|tjmcconnell|q": {
+   "game": "401909956",
+   "start": "2026-11-10T01:00Z",
+   "team": "11",
+   "name": "T.J. McConnell",
+   "status": "q",
+   "athlete": "2530530",
+   "espn": {
+    "seen": "2026-11-09T04:19:33.426Z",
+    "own": "2026-11-08T23:24:00.000Z"
+   }
+  },
+  "401909956|tyresehaliburton|out": {
+   "game": "401909956",
+   "start": "2026-11-10T01:00Z",
+   "team": "11",
+   "name": "Tyrese Haliburton",
+   "status": "out",
+   "athlete": "4396993",
+   "espn": {
+    "seen": "2026-11-09T04:19:33.426Z",
+    "own": "2026-11-07T20:46:00.000Z"
+   }
+  },
+  "401909956|johnnyfurphy|out": {
+   "game": "401909956",
+   "start": "2026-11-10T01:00Z",
+   "team": "11",
+   "name": "Johnny Furphy",
+   "status": "out",
+   "athlete": "5157066",
+   "espn": {
+    "seen": "2026-11-09T04:19:33.426Z",
+    "own": "2026-10-30T19:06:00.000Z"
+   }
+  },
+  "401909956|bensheppard|out": {
+   "game": "401909956",
+   "start": "2026-11-10T01:00Z",
+   "team": "11",
+   "name": "Ben Sheppard",
+   "status": "out",
+   "athlete": "4433076",
+   "espn": {
+    "seen": "2026-11-09T04:19:33.426Z",
+    "own": "2026-10-28T21:41:00.000Z"
+   }
   }
  }
 }
