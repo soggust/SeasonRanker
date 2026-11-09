@@ -21277,6 +21277,78 @@
     "seen": "2026-11-09T22:37:44.397Z",
     "own": "2026-11-09T22:32:00.000Z"
    }
+  },
+  "401909955|scottiebarnes|out": {
+   "game": "401909955",
+   "start": "2026-11-10T00:30Z",
+   "team": "28",
+   "name": "Scottie Barnes",
+   "status": "out",
+   "athlete": "4433134",
+   "espn": {
+    "seen": "2026-11-09T22:51:37.887Z",
+    "own": "2026-11-09T22:49:00.000Z"
+   }
+  },
+  "401909960|joshhart|q": {
+   "game": "401909960",
+   "start": "2026-11-11T00:30Z",
+   "team": "18",
+   "name": "Josh Hart",
+   "status": "q",
+   "athlete": "3062679",
+   "espn": {
+    "seen": "2026-11-09T22:51:37.887Z",
+    "own": "2026-11-09T22:04:00.000Z"
+   }
+  },
+  "401909960|devinvassell|out": {
+   "game": "401909960",
+   "start": "2026-11-11T00:30Z",
+   "team": "18",
+   "name": "Devin Vassell",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-09T18:51:24.405Z",
+    "own": "2026-11-09T18:41:53.000Z",
+    "why": "@rotowirenba.bsky.social: Devin Vassell: Ruled out for Monday \n\n https://www.rot"
+   }
+  },
+  "401909960|zionwilliamson|out": {
+   "game": "401909960",
+   "start": "2026-11-11T00:30Z",
+   "team": "18",
+   "name": "Zion Williamson",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-09T22:15:21.812Z",
+    "own": "2026-11-09T21:49:56.000Z",
+    "why": "@rotowirenba.bsky.social: Zion Williamson: Sitting out Monday \n\n https://www.rot"
+   }
+  },
+  "401909960|tylerherro|q": {
+   "game": "401909960",
+   "start": "2026-11-11T00:30Z",
+   "team": "15",
+   "name": "Tyler Herro",
+   "status": "q",
+   "athlete": "4395725",
+   "espn": {
+    "seen": "2026-11-09T22:51:37.887Z",
+    "own": "2026-11-09T22:21:00.000Z"
+   }
+  },
+  "401909960|garytrent|q": {
+   "game": "401909960",
+   "start": "2026-11-11T00:30Z",
+   "team": "15",
+   "name": "Gary Trent Jr.",
+   "status": "q",
+   "athlete": "4277843",
+   "espn": {
+    "seen": "2026-11-09T22:51:37.887Z",
+    "own": "2026-11-09T15:57:00.000Z"
+   }
   }
  }
 }
