@@ -4,25 +4,12 @@
   "adamscheftermirror.bsky.social": "2026-11-10T13:35:15.880Z",
   "rapsheet.bsky.social": "2026-11-09T22:38:32.578Z",
   "nflnewsreposterbot.bsky.social": "2026-11-10T00:04:33.292Z",
-  "insidenflnews.bsky.social": "2026-11-10T13:26:56.221Z",
+  "insidenflnews.bsky.social": "2026-11-10T14:01:11.167Z",
   "nflnewsposter.bsky.social": "2026-11-10T06:41:10.996Z",
   "rotoworld-fb.bsky.social": "2026-11-10T13:52:17.000Z",
   "rotowirenfl.bsky.social": "2026-11-10T05:17:53.000Z"
  },
  "claims": [
-  {
-   "id": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3mycslf4bfp26|alecpierce|out|status",
-   "at": "2026-10-20T14:06:22.000Z",
-   "seen": "2026-10-20T14:33:14.565Z",
-   "handle": "rotoworld-fb.bsky.social",
-   "post": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3mycslf4bfp26",
-   "player": "Alec Pierce",
-   "team": "IND",
-   "status": "out",
-   "kind": "status",
-   "confidence": 0.5,
-   "text": "Alec Pierce won't return to practice this week"
-  },
   {
    "id": "at://did:plc:qre6zxbmr3ixhdmgsgdretb5/app.bsky.feed.post/3myddon7vuh2u|terrymclaurin|out|status",
    "at": "2026-10-20T19:12:25.695Z",
