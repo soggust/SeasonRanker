@@ -1,12 +1,12 @@
 {
  "sport": "nfl",
  "cursor": {
-  "adamscheftermirror.bsky.social": "2026-11-10T16:05:23.702Z",
+  "adamscheftermirror.bsky.social": "2026-11-10T16:25:18.966Z",
   "rapsheet.bsky.social": "2026-11-10T16:14:09.972Z",
   "nflnewsreposterbot.bsky.social": "2026-11-10T15:57:09.288Z",
   "insidenflnews.bsky.social": "2026-11-10T16:09:37.511Z",
   "nflnewsposter.bsky.social": "2026-11-10T16:18:14.314Z",
-  "rotoworld-fb.bsky.social": "2026-11-10T15:40:02.000Z",
+  "rotoworld-fb.bsky.social": "2026-11-10T16:37:58.000Z",
   "rotowirenfl.bsky.social": "2026-11-10T16:24:09.000Z"
  },
  "claims": [
@@ -18508,6 +18508,19 @@
    "kind": "status",
    "confidence": 0.95,
    "text": "[Schefter] Dolphins standout DT Zach Sieler ruptured his biceps and will undergo season-ending surgery, with a 5-6 month recovery expected, per sources. The injury happened on first play Sunday and he"
+  },
+  {
+   "id": "at://did:plc:qre6zxbmr3ixhdmgsgdretb5/app.bsky.feed.post/3mzxu55nmya2s|zachsieler|out|status",
+   "at": "2026-11-10T16:25:18.966Z",
+   "seen": "2026-11-10T16:45:14.689Z",
+   "handle": "adamscheftermirror.bsky.social",
+   "post": "at://did:plc:qre6zxbmr3ixhdmgsgdretb5/app.bsky.feed.post/3mzxu55nmya2s",
+   "player": "Zach Sieler",
+   "team": "MIA",
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.95,
+   "text": "Dolphins standout DT Zach Sieler ruptured his biceps and will undergo season-ending surgery, with a 5-6 month recovery expected, per sources. The injury happened on first play Sunday and he played the"
   }
  ]
 }

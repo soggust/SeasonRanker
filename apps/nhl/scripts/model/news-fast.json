@@ -1,26 +1,13 @@
 {
  "sport": "nhl",
  "cursor": {
-  "johnston-bot.bsky.social": "2026-11-10T12:34:37.523Z",
+  "johnston-bot.bsky.social": "2026-11-10T16:41:59.943Z",
   "notfriedgehnic.bsky.social": "2026-11-09T19:15:10.716Z",
   "dailyfaceoff.bsky.social": "2026-11-10T15:53:56.000Z",
   "dfotoronto.bsky.social": "2026-11-10T16:10:15.000Z",
   "marklazerus.bsky.social": "2026-11-10T15:49:21.948Z"
  },
  "claims": [
-  {
-   "id": "at://did:plc:3uus7y6h3rlrk6sbctzxm4bg/app.bsky.feed.post/3myd3b5oor622|jacobmarkstrom|out|status",
-   "at": "2026-10-20T16:41:43.000Z",
-   "seen": "2026-10-20T16:50:42.610Z",
-   "handle": "dailyfaceoff.bsky.social",
-   "post": "at://did:plc:3uus7y6h3rlrk6sbctzxm4bg/app.bsky.feed.post/3myd3b5oor622",
-   "player": "Jacob Markstrom",
-   "team": "FLA",
-   "status": "out",
-   "kind": "status",
-   "confidence": 0.9,
-   "text": "Panthers’ Jacob Markstrom to miss 10-14 days; Cooper Black recalled"
-  },
   {
    "id": "at://did:plc:3uus7y6h3rlrk6sbctzxm4bg/app.bsky.feed.post/3myd4zfrp4k2h|mattroy|active|return",
    "at": "2026-10-20T17:13:10.000Z",
