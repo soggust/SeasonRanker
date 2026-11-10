@@ -4,8 +4,8 @@
   "adamscheftermirror.bsky.social": "2026-11-10T00:15:12.177Z",
   "rapsheet.bsky.social": "2026-11-09T22:38:32.578Z",
   "nflnewsreposterbot.bsky.social": "2026-11-10T00:04:33.292Z",
-  "insidenflnews.bsky.social": "2026-11-10T00:24:35.807Z",
-  "nflnewsposter.bsky.social": "2026-11-10T01:19:47.886Z",
+  "insidenflnews.bsky.social": "2026-11-10T01:36:31.189Z",
+  "nflnewsposter.bsky.social": "2026-11-10T01:36:20.220Z",
   "rotoworld-fb.bsky.social": "2026-11-09T22:57:44.000Z",
   "rotowirenfl.bsky.social": "2026-11-10T00:25:25.000Z"
  },
@@ -18482,6 +18482,32 @@
    "kind": "status",
    "confidence": 0.85,
    "text": "[Furtado] WR Ladd McConkey is considered day-to-day, according to Harbaugh, after he dealt with back spasms during pregame warmups Sunday.\n\nHarbaugh: \"Kept trying throughout the entire game to get bac"
+  },
+  {
+   "id": "at://did:plc:fuqjc7x4gxvnwzksnlxwbe4x/app.bsky.feed.post/3mzwchjrl5s2o|kylevannoy|questionable|status",
+   "at": "2026-11-10T01:36:20.220Z",
+   "seen": "2026-11-10T01:37:38.174Z",
+   "handle": "nflnewsposter.bsky.social",
+   "post": "at://did:plc:fuqjc7x4gxvnwzksnlxwbe4x/app.bsky.feed.post/3mzwchjrl5s2o",
+   "player": "Kyle Van Noy",
+   "team": "MIN",
+   "status": "questionable",
+   "kind": "status",
+   "confidence": 0.95,
+   "text": "[Vikings] Kyle Van Noy (calf) is questionable to return. twitter.com/Vikings/stat..."
+  },
+  {
+   "id": "at://did:plc:mbr4badgf6yu56mquzackzew/app.bsky.feed.post/3mzwchuad322z|kylevannoy|questionable|status",
+   "at": "2026-11-10T01:36:31.189Z",
+   "seen": "2026-11-10T01:37:38.174Z",
+   "handle": "insidenflnews.bsky.social",
+   "post": "at://did:plc:mbr4badgf6yu56mquzackzew/app.bsky.feed.post/3mzwchuad322z",
+   "player": "Kyle Van Noy",
+   "team": null,
+   "status": "questionable",
+   "kind": "status",
+   "confidence": 0.93,
+   "text": "🚨 Status alert: Kyle Van Noy (calf) questionable to return."
   }
  ]
 }
