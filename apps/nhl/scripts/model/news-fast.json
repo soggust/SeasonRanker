@@ -3,8 +3,8 @@
  "cursor": {
   "johnston-bot.bsky.social": "2026-11-10T12:34:37.523Z",
   "notfriedgehnic.bsky.social": "2026-11-09T19:15:10.716Z",
-  "dailyfaceoff.bsky.social": "2026-11-10T03:31:30.000Z",
-  "dfotoronto.bsky.social": "2026-11-10T11:05:46.000Z",
+  "dailyfaceoff.bsky.social": "2026-11-10T13:03:36.000Z",
+  "dfotoronto.bsky.social": "2026-11-10T13:07:34.000Z",
   "marklazerus.bsky.social": "2026-11-10T03:45:34.090Z"
  },
  "claims": [
@@ -2074,6 +2074,19 @@
    "kind": "benched",
    "confidence": 0.8,
    "text": "New, for @TheAthletic: Connor Hellebuyck isn’t starting in his Winnipeg return, but he’ll hear the boos 🔗⬇️"
+  },
+  {
+   "id": "at://did:plc:knaj2vcp4x6t7hr7ewd6e3uz/app.bsky.feed.post/3mzxj3km5fb2n|connorhellebuyck|none|benched",
+   "at": "2026-11-10T13:07:34.000Z",
+   "seen": "2026-11-10T13:10:37.926Z",
+   "handle": "dfotoronto.bsky.social",
+   "post": "at://did:plc:knaj2vcp4x6t7hr7ewd6e3uz/app.bsky.feed.post/3mzxj3km5fb2n",
+   "player": "Connor Hellebuyck",
+   "team": "NJ",
+   "status": "none",
+   "kind": "benched",
+   "confidence": 0.6,
+   "text": "NHL Notebook: New Jersey Devils won’t start Connor Hellebuyck in Tuesday’s return to Winnipeg"
   }
  ]
 }
