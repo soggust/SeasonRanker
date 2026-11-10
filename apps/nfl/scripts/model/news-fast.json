@@ -1,12 +1,12 @@
 {
  "sport": "nfl",
  "cursor": {
-  "adamscheftermirror.bsky.social": "2026-11-10T01:45:17.531Z",
+  "adamscheftermirror.bsky.social": "2026-11-10T02:50:28.268Z",
   "rapsheet.bsky.social": "2026-11-09T22:38:32.578Z",
   "nflnewsreposterbot.bsky.social": "2026-11-10T00:04:33.292Z",
-  "insidenflnews.bsky.social": "2026-11-10T02:23:43.669Z",
-  "nflnewsposter.bsky.social": "2026-11-10T02:24:38.342Z",
-  "rotoworld-fb.bsky.social": "2026-11-09T22:57:44.000Z",
+  "insidenflnews.bsky.social": "2026-11-10T02:36:01.731Z",
+  "nflnewsposter.bsky.social": "2026-11-10T02:49:17.341Z",
+  "rotoworld-fb.bsky.social": "2026-11-10T02:39:04.000Z",
   "rotowirenfl.bsky.social": "2026-11-10T02:32:46.000Z"
  },
  "claims": [
@@ -18417,6 +18417,45 @@
    "kind": "status",
    "confidence": 0.93,
    "text": "🚨 Status alert: Kyle Van Noy (calf) questionable to return."
+  },
+  {
+   "id": "at://did:plc:qre6zxbmr3ixhdmgsgdretb5/app.bsky.feed.post/3mzwfquzltf2g|rhamondrestevenson|questionable|status",
+   "at": "2026-11-10T02:35:15.142Z",
+   "seen": "2026-11-10T02:56:48.783Z",
+   "handle": "adamscheftermirror.bsky.social",
+   "post": "at://did:plc:qre6zxbmr3ixhdmgsgdretb5/app.bsky.feed.post/3mzwfquzltf2g",
+   "player": "Rhamondre Stevenson",
+   "team": "NE",
+   "status": "questionable",
+   "kind": "status",
+   "confidence": 0.35,
+   "text": "Patriots RB Rhamondre Stevenson is dealing with a knee tendon issue that is not expected to require surgery but could sideline him for a short period of time, per source.\n\nOriginal post"
+  },
+  {
+   "id": "at://did:plc:mbr4badgf6yu56mquzackzew/app.bsky.feed.post/3mzwfsbeoh22z|rhamondrestevenson|out|status",
+   "at": "2026-11-10T02:36:01.731Z",
+   "seen": "2026-11-10T02:56:48.783Z",
+   "handle": "insidenflnews.bsky.social",
+   "post": "at://did:plc:mbr4badgf6yu56mquzackzew/app.bsky.feed.post/3mzwfsbeoh22z",
+   "player": "Rhamondre Stevenson",
+   "team": "NE",
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.8,
+   "text": "Rap: Rhamondre Stevenson expected to miss next few weeks due to plantaris tendon issue in back of knee."
+  },
+  {
+   "id": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3mzwfxpyide2v|rhamondrestevenson|questionable|status",
+   "at": "2026-11-10T02:39:04.000Z",
+   "seen": "2026-11-10T02:56:48.783Z",
+   "handle": "rotoworld-fb.bsky.social",
+   "post": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3mzwfxpyide2v",
+   "player": "Rhamondre Stevenson",
+   "team": "NE",
+   "status": "questionable",
+   "kind": "status",
+   "confidence": 0.3,
+   "text": "Rhamondre (knee) could miss 'short period of time'"
   }
  ]
 }
