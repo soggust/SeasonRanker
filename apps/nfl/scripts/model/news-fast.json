@@ -1,13 +1,13 @@
 {
  "sport": "nfl",
  "cursor": {
-  "adamscheftermirror.bsky.social": "2026-11-10T15:35:19.023Z",
-  "rapsheet.bsky.social": "2026-11-09T22:38:32.578Z",
+  "adamscheftermirror.bsky.social": "2026-11-10T16:05:23.702Z",
+  "rapsheet.bsky.social": "2026-11-10T16:14:09.972Z",
   "nflnewsreposterbot.bsky.social": "2026-11-10T15:57:09.288Z",
-  "insidenflnews.bsky.social": "2026-11-10T16:01:14.440Z",
-  "nflnewsposter.bsky.social": "2026-11-10T16:01:59.708Z",
+  "insidenflnews.bsky.social": "2026-11-10T16:09:37.511Z",
+  "nflnewsposter.bsky.social": "2026-11-10T16:18:14.314Z",
   "rotoworld-fb.bsky.social": "2026-11-10T15:40:02.000Z",
-  "rotowirenfl.bsky.social": "2026-11-10T16:00:52.000Z"
+  "rotowirenfl.bsky.social": "2026-11-10T16:24:09.000Z"
  },
  "claims": [
   {
@@ -18469,6 +18469,45 @@
    "kind": "status",
    "confidence": 0.45,
    "text": "Justin Herbert: Likely to play through finger injury \n\n https://www.rotowire.com/football/player/justin-herbert-14446"
+  },
+  {
+   "id": "at://did:plc:mbr4badgf6yu56mquzackzew/app.bsky.feed.post/3mzxtb3pynk2y|zachsieler|out|status",
+   "at": "2026-11-10T16:09:37.511Z",
+   "seen": "2026-11-10T16:24:25.064Z",
+   "handle": "insidenflnews.bsky.social",
+   "post": "at://did:plc:mbr4badgf6yu56mquzackzew/app.bsky.feed.post/3mzxtb3pynk2y",
+   "player": "Zach Sieler",
+   "team": "MIA",
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.95,
+   "text": "‼️ BREAKING NEWS \n\nDolphins DT Zach Sieler suffered a torn biceps and will undergo season-ending surgery, with a 5-6 month recovery expected, per Adam Schefter. \n\nThe injury occurred on the first play"
+  },
+  {
+   "id": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3mzxtcn5fnn2u|mikeevans|out|status",
+   "at": "2026-11-10T16:10:29.000Z",
+   "seen": "2026-11-10T16:24:25.064Z",
+   "handle": "rotowirenfl.bsky.social",
+   "post": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3mzxtcn5fnn2u",
+   "player": "Mike Evans",
+   "team": null,
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.8,
+   "text": "Mike Evans: Not trending toward Week 10 return \n\n https://www.rotowire.com/football/player/mike-evans-9253"
+  },
+  {
+   "id": "at://did:plc:fuqjc7x4gxvnwzksnlxwbe4x/app.bsky.feed.post/3mzxtd4ffe22t|zachsieler|out|status",
+   "at": "2026-11-10T16:10:45.320Z",
+   "seen": "2026-11-10T16:24:25.064Z",
+   "handle": "nflnewsposter.bsky.social",
+   "post": "at://did:plc:fuqjc7x4gxvnwzksnlxwbe4x/app.bsky.feed.post/3mzxtd4ffe22t",
+   "player": "Zach Sieler",
+   "team": "MIA",
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.95,
+   "text": "[Schefter] Dolphins standout DT Zach Sieler ruptured his biceps and will undergo season-ending surgery, with a 5-6 month recovery expected, per sources. The injury happened on first play Sunday and he"
   }
  ]
 }

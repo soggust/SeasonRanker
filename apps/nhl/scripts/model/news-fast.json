@@ -4,7 +4,7 @@
   "johnston-bot.bsky.social": "2026-11-10T12:34:37.523Z",
   "notfriedgehnic.bsky.social": "2026-11-09T19:15:10.716Z",
   "dailyfaceoff.bsky.social": "2026-11-10T15:53:56.000Z",
-  "dfotoronto.bsky.social": "2026-11-10T16:01:13.000Z",
+  "dfotoronto.bsky.social": "2026-11-10T16:10:15.000Z",
   "marklazerus.bsky.social": "2026-11-10T15:49:21.948Z"
  },
  "claims": [
@@ -2113,6 +2113,45 @@
    "kind": "status",
    "confidence": 0.9,
    "text": "Leafs’ Rielly out day-to-day; Sissons out week-to-week"
+  },
+  {
+   "id": "at://did:plc:knaj2vcp4x6t7hr7ewd6e3uz/app.bsky.feed.post/3mzxtc7mh3o25|kirillmarchenko|out|status",
+   "at": "2026-11-10T16:10:15.000Z",
+   "seen": "2026-11-10T16:24:25.064Z",
+   "handle": "dfotoronto.bsky.social",
+   "post": "at://did:plc:knaj2vcp4x6t7hr7ewd6e3uz/app.bsky.feed.post/3mzxtc7mh3o25",
+   "player": "Kirill Marchenko",
+   "team": "TOR",
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.7,
+   "text": "Leafs injury news: Kirill Marchenko, Colton Sissons listed as week-to-week, Morgan Rielly day-to-day"
+  },
+  {
+   "id": "at://did:plc:knaj2vcp4x6t7hr7ewd6e3uz/app.bsky.feed.post/3mzxtc7mh3o25|coltonsissons|out|status",
+   "at": "2026-11-10T16:10:15.000Z",
+   "seen": "2026-11-10T16:24:25.064Z",
+   "handle": "dfotoronto.bsky.social",
+   "post": "at://did:plc:knaj2vcp4x6t7hr7ewd6e3uz/app.bsky.feed.post/3mzxtc7mh3o25",
+   "player": "Colton Sissons",
+   "team": "TOR",
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.7,
+   "text": "Leafs injury news: Kirill Marchenko, Colton Sissons listed as week-to-week, Morgan Rielly day-to-day"
+  },
+  {
+   "id": "at://did:plc:knaj2vcp4x6t7hr7ewd6e3uz/app.bsky.feed.post/3mzxtc7mh3o25|morganrielly|questionable|status",
+   "at": "2026-11-10T16:10:15.000Z",
+   "seen": "2026-11-10T16:24:25.064Z",
+   "handle": "dfotoronto.bsky.social",
+   "post": "at://did:plc:knaj2vcp4x6t7hr7ewd6e3uz/app.bsky.feed.post/3mzxtc7mh3o25",
+   "player": "Morgan Rielly",
+   "team": "TOR",
+   "status": "questionable",
+   "kind": "status",
+   "confidence": 0.8,
+   "text": "Leafs injury news: Kirill Marchenko, Colton Sissons listed as week-to-week, Morgan Rielly day-to-day"
   }
  ]
 }
