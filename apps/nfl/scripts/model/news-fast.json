@@ -1,11 +1,11 @@
 {
  "sport": "nfl",
  "cursor": {
-  "adamscheftermirror.bsky.social": "2026-11-10T02:50:28.268Z",
+  "adamscheftermirror.bsky.social": "2026-11-10T03:05:15.789Z",
   "rapsheet.bsky.social": "2026-11-09T22:38:32.578Z",
   "nflnewsreposterbot.bsky.social": "2026-11-10T00:04:33.292Z",
   "insidenflnews.bsky.social": "2026-11-10T02:36:01.731Z",
-  "nflnewsposter.bsky.social": "2026-11-10T02:49:17.341Z",
+  "nflnewsposter.bsky.social": "2026-11-10T03:12:43.878Z",
   "rotoworld-fb.bsky.social": "2026-11-10T02:39:04.000Z",
   "rotowirenfl.bsky.social": "2026-11-10T02:32:46.000Z"
  },
@@ -18456,6 +18456,45 @@
    "kind": "status",
    "confidence": 0.3,
    "text": "Rhamondre (knee) could miss 'short period of time'"
+  },
+  {
+   "id": "at://did:plc:fuqjc7x4gxvnwzksnlxwbe4x/app.bsky.feed.post/3mzwh7kywbk2z|christianbenford|questionable|status",
+   "at": "2026-11-10T03:01:21.783Z",
+   "seen": "2026-11-10T03:17:12.013Z",
+   "handle": "nflnewsposter.bsky.social",
+   "post": "at://did:plc:fuqjc7x4gxvnwzksnlxwbe4x/app.bsky.feed.post/3mzwh7kywbk2z",
+   "player": "Christian Benford",
+   "team": "BUF",
+   "status": "questionable",
+   "kind": "status",
+   "confidence": 0.95,
+   "text": "[Bills] Injury Update: CB Christian Benford (wrist) is questionable to return. twitter.com/BuffaloBills..."
+  },
+  {
+   "id": "at://did:plc:qre6zxbmr3ixhdmgsgdretb5/app.bsky.feed.post/3mzwhgkavzf2j|christianbenford|questionable|status",
+   "at": "2026-11-10T03:05:15.789Z",
+   "seen": "2026-11-10T03:17:12.013Z",
+   "handle": "adamscheftermirror.bsky.social",
+   "post": "at://did:plc:qre6zxbmr3ixhdmgsgdretb5/app.bsky.feed.post/3mzwhgkavzf2j",
+   "player": "Christian Benford",
+   "team": "BUF",
+   "status": "questionable",
+   "kind": "status",
+   "confidence": 0.95,
+   "text": "Bills say CB Christian Benford is questionable to return tonight due to a wrist injury.\n\nOriginal post"
+  },
+  {
+   "id": "at://did:plc:fuqjc7x4gxvnwzksnlxwbe4x/app.bsky.feed.post/3mzwhsr4tm22z|christianbenford|active|status",
+   "at": "2026-11-10T03:12:05.737Z",
+   "seen": "2026-11-10T03:17:12.013Z",
+   "handle": "nflnewsposter.bsky.social",
+   "post": "at://did:plc:fuqjc7x4gxvnwzksnlxwbe4x/app.bsky.feed.post/3mzwhsr4tm22z",
+   "player": "Christian Benford",
+   "team": "BUF",
+   "status": "active",
+   "kind": "status",
+   "confidence": 0.9,
+   "text": "[Bills] Benford was cleared to return. twitter.com/BuffaloBills..."
   }
  ]
 }
