@@ -1,7 +1,7 @@
 {
  "sport": "nhl",
  "cursor": {
-  "johnston-bot.bsky.social": "2026-11-09T05:30:03.025Z",
+  "johnston-bot.bsky.social": "2026-11-10T12:34:37.523Z",
   "notfriedgehnic.bsky.social": "2026-11-09T19:15:10.716Z",
   "dailyfaceoff.bsky.social": "2026-11-10T03:31:30.000Z",
   "dfotoronto.bsky.social": "2026-11-10T11:05:46.000Z",
@@ -2061,6 +2061,19 @@
    "kind": "status",
    "confidence": 0.92,
    "text": "Per Joshua Kloke, Ben Danford is out week-to-week with a broken wrist\n\nRead More Here 💻 | https://theleafsnati..."
+  },
+  {
+   "id": "at://did:plc:ma4xzjexknxz7geuggbqbsmi/app.bsky.feed.post/3mzxhanq7py2n|connorhellebuyck|none|benched",
+   "at": "2026-11-10T12:34:37.523Z",
+   "seen": "2026-11-10T12:37:09.169Z",
+   "handle": "johnston-bot.bsky.social",
+   "post": "at://did:plc:ma4xzjexknxz7geuggbqbsmi/app.bsky.feed.post/3mzxhanq7py2n",
+   "player": "Connor Hellebuyck",
+   "team": null,
+   "status": "none",
+   "kind": "benched",
+   "confidence": 0.8,
+   "text": "New, for @TheAthletic: Connor Hellebuyck isn’t starting in his Winnipeg return, but he’ll hear the boos 🔗⬇️"
   }
  ]
 }
