@@ -1,174 +1,6 @@
 {
  "sport": "nhl",
  "entries": {
-  "401892616|zemgusgirgensons|q": {
-   "game": "401892616",
-   "start": "2026-10-31T18:00Z",
-   "team": "20",
-   "name": "Zemgus Girgensons",
-   "status": "q",
-   "athlete": "2968829",
-   "espn": {
-    "seen": "2026-10-30T15:08:56.263Z",
-    "own": "2026-10-30T13:17:00.000Z"
-   }
-  },
-  "401892616|yannigourde|out": {
-   "game": "401892616",
-   "start": "2026-10-31T18:00Z",
-   "team": "20",
-   "name": "Yanni Gourde",
-   "status": "out",
-   "athlete": "3094261",
-   "espn": {
-    "seen": "2026-10-30T15:08:56.263Z",
-    "own": "2026-09-28T19:18:00.000Z"
-   }
-  },
-  "401892617|ryanpulock|q": {
-   "game": "401892617",
-   "start": "2026-10-31T18:00Z",
-   "team": "12",
-   "name": "Ryan Pulock",
-   "status": "q",
-   "athlete": "3042019",
-   "espn": {
-    "seen": "2026-10-30T15:08:56.263Z",
-    "own": "2026-10-30T01:07:00.000Z"
-   }
-  },
-  "401892617|matiasmaccelli|out": {
-   "game": "401892617",
-   "start": "2026-10-31T18:00Z",
-   "team": "12",
-   "name": "Matias Maccelli",
-   "status": "out",
-   "athlete": "4587580",
-   "espn": {
-    "seen": "2026-10-30T15:08:56.263Z",
-    "own": "2026-10-26T17:31:00.000Z"
-   }
-  },
-  "401892617|calumritchie|out": {
-   "game": "401892617",
-   "start": "2026-10-31T18:00Z",
-   "team": "12",
-   "name": "Calum Ritchie",
-   "status": "out",
-   "athlete": "5149210",
-   "espn": {
-    "seen": "2026-10-30T15:08:56.263Z",
-    "own": "2026-10-26T17:28:00.000Z"
-   }
-  },
-  "401892617|alexanderromanov|out": {
-   "game": "401892617",
-   "start": "2026-10-31T18:00Z",
-   "team": "12",
-   "name": "Alexander Romanov",
-   "status": "out",
-   "athlete": "4587854",
-   "espn": {
-    "seen": "2026-10-30T15:08:56.263Z",
-    "own": "2026-10-19T13:56:00.000Z"
-   }
-  },
-  "401892617|mathewbarzal|out": {
-   "game": "401892617",
-   "start": "2026-10-31T18:00Z",
-   "team": "12",
-   "name": "Mathew Barzal",
-   "status": "out",
-   "athlete": "3899946",
-   "espn": {
-    "seen": "2026-10-30T15:08:56.263Z",
-    "own": "2026-10-15T16:57:00.000Z"
-   }
-  },
-  "401892617|zachhyman|out": {
-   "game": "401892617",
-   "start": "2026-10-31T18:00Z",
-   "team": "6",
-   "name": "Zach Hyman",
-   "status": "out",
-   "athlete": "5509",
-   "espn": {
-    "seen": "2026-10-30T15:08:56.263Z",
-    "own": "2026-10-28T16:04:00.000Z"
-   }
-  },
-  "401892617|devonlevi|out": {
-   "game": "401892617",
-   "start": "2026-10-31T18:00Z",
-   "team": "6",
-   "name": "Devon Levi",
-   "status": "out",
-   "athlete": "4894487",
-   "espn": {
-    "seen": "2026-10-30T15:08:56.263Z",
-    "own": "2026-10-24T17:37:00.000Z"
-   }
-  },
-  "401892617|alecregula|out": {
-   "game": "401892617",
-   "start": "2026-10-31T18:00Z",
-   "team": "6",
-   "name": "Alec Regula",
-   "status": "out",
-   "athlete": "4331611",
-   "espn": {
-    "seen": "2026-10-30T15:08:56.263Z",
-    "own": "2026-10-01T14:11:00.000Z"
-   }
-  },
-  "401892617|mattsavoie|out": {
-   "game": "401892617",
-   "start": "2026-10-31T18:00Z",
-   "team": "6",
-   "name": "Matt Savoie",
-   "status": "out",
-   "athlete": "5080153",
-   "espn": {
-    "seen": "2026-10-30T15:08:56.263Z",
-    "own": "2026-10-01T14:05:00.000Z"
-   }
-  },
-  "401892617|frederikandersen|out": {
-   "game": "401892617",
-   "start": "2026-10-31T18:00Z",
-   "team": "6",
-   "name": "Frederik Andersen",
-   "status": "out",
-   "athlete": "2517899",
-   "espn": {
-    "seen": "2026-10-30T15:08:56.263Z",
-    "own": "2026-09-29T17:53:00.000Z"
-   }
-  },
-  "401892617|mattiasjanmark|out": {
-   "game": "401892617",
-   "start": "2026-10-31T18:00Z",
-   "team": "6",
-   "name": "Mattias Janmark",
-   "status": "out",
-   "athlete": "3042085",
-   "espn": {
-    "seen": "2026-10-30T15:08:56.263Z",
-    "own": "2026-09-29T17:52:00.000Z"
-   }
-  },
-  "401892617|atroleppanen|out": {
-   "game": "401892617",
-   "start": "2026-10-31T18:00Z",
-   "team": "6",
-   "name": "Atro Leppanen",
-   "status": "out",
-   "athlete": "5278661",
-   "espn": {
-    "seen": "2026-10-30T15:08:56.263Z",
-    "own": "2026-09-29T16:22:00.000Z"
-   }
-  },
   "401892618|brandtclarke|q": {
    "game": "401892618",
    "start": "2026-10-31T20:00Z",
@@ -971,30 +803,6 @@
     "why": "@dailyfaceoff.bsky.social: Hayden Hodgson has been suspended two games for board"
    }
   },
-  "401892616|haydenhodgson|out": {
-   "game": "401892616",
-   "start": "2026-10-31T18:00Z",
-   "team": "27",
-   "name": "Hayden Hodgson",
-   "status": "out",
-   "bluesky": {
-    "seen": "2026-10-31T00:46:02.806Z",
-    "own": "2026-10-31T00:36:07.000Z",
-    "why": "@dailyfaceoff.bsky.social: Hayden Hodgson has been suspended two games for board"
-   }
-  },
-  "401892617|haydenhodgson|out": {
-   "game": "401892617",
-   "start": "2026-10-31T18:00Z",
-   "team": "12",
-   "name": "Hayden Hodgson",
-   "status": "out",
-   "bluesky": {
-    "seen": "2026-10-31T00:46:02.806Z",
-    "own": "2026-10-31T00:36:07.000Z",
-    "why": "@dailyfaceoff.bsky.social: Hayden Hodgson has been suspended two games for board"
-   }
-  },
   "401892618|haydenhodgson|out": {
    "game": "401892618",
    "start": "2026-10-31T20:00Z",
@@ -1652,18 +1460,6 @@
     "own": "2026-10-31T15:15:00.000Z"
    }
   },
-  "401892617|ryanpulock|out": {
-   "game": "401892617",
-   "start": "2026-10-31T18:00Z",
-   "team": "12",
-   "name": "Ryan Pulock",
-   "status": "out",
-   "athlete": "3042019",
-   "espn": {
-    "seen": "2026-10-31T17:19:59.103Z",
-    "own": "2026-10-31T16:53:00.000Z"
-   }
-  },
   "401892623|loganoconnor|out": {
    "game": "401892623",
    "start": "2026-11-01T02:00Z",
@@ -1678,30 +1474,6 @@
    "sleeper": {
     "seen": "2026-10-31T20:17:44.981Z",
     "own": "2026-10-31T17:15:11.461Z"
-   }
-  },
-  "401892616|erikcernak|out": {
-   "game": "401892616",
-   "start": "2026-10-31T18:00Z",
-   "team": "20",
-   "name": "Erik Cernak",
-   "status": "out",
-   "athlete": "3904178",
-   "espn": {
-    "seen": "2026-10-31T17:45:12.432Z",
-    "own": "2026-10-31T17:30:00.000Z"
-   }
-  },
-  "401892616|zemgusgirgensons|out": {
-   "game": "401892616",
-   "start": "2026-10-31T18:00Z",
-   "team": "20",
-   "name": "Zemgus Girgensons",
-   "status": "out",
-   "athlete": "2968829",
-   "espn": {
-    "seen": "2026-10-31T17:45:12.432Z",
-    "own": "2026-10-31T17:27:00.000Z"
    }
   },
   "401892618|adriankempe|out": {

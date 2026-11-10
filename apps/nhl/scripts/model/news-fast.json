@@ -1,39 +1,13 @@
 {
  "sport": "nhl",
  "cursor": {
-  "johnston-bot.bsky.social": "2026-11-10T16:41:59.943Z",
-  "notfriedgehnic.bsky.social": "2026-11-10T17:26:04.651Z",
-  "dailyfaceoff.bsky.social": "2026-11-10T17:28:28.000Z",
-  "dfotoronto.bsky.social": "2026-11-10T17:42:18.000Z",
+  "johnston-bot.bsky.social": "2026-11-10T18:22:34.892Z",
+  "notfriedgehnic.bsky.social": "2026-11-10T19:05:03.022Z",
+  "dailyfaceoff.bsky.social": "2026-11-10T19:11:23.000Z",
+  "dfotoronto.bsky.social": "2026-11-10T19:12:53.000Z",
   "marklazerus.bsky.social": "2026-11-10T16:55:17.449Z"
  },
  "claims": [
-  {
-   "id": "at://did:plc:3uus7y6h3rlrk6sbctzxm4bg/app.bsky.feed.post/3mydddff5ci2p|sanderson|active|return",
-   "at": "2026-10-20T19:06:08.000Z",
-   "seen": "2026-10-20T19:13:14.932Z",
-   "handle": "dailyfaceoff.bsky.social",
-   "post": "at://did:plc:3uus7y6h3rlrk6sbctzxm4bg/app.bsky.feed.post/3mydddff5ci2p",
-   "player": "Sanderson",
-   "team": "OTT",
-   "status": "active",
-   "kind": "return",
-   "confidence": 0.8,
-   "text": "Sanderson’s return much needed for Senators’ injury-riddled blueline"
-  },
-  {
-   "id": "at://did:plc:3uus7y6h3rlrk6sbctzxm4bg/app.bsky.feed.post/3myddt33hxs24|mikaelbacklund|questionable|status",
-   "at": "2026-10-20T19:14:54.000Z",
-   "seen": "2026-10-20T19:33:13.835Z",
-   "handle": "dailyfaceoff.bsky.social",
-   "post": "at://did:plc:3uus7y6h3rlrk6sbctzxm4bg/app.bsky.feed.post/3myddt33hxs24",
-   "player": "Mikael Backlund",
-   "team": "CGY",
-   "status": "questionable",
-   "kind": "status",
-   "confidence": 0.93,
-   "text": "Flames’ Mikael Backlund day-to-day with upper-body injury"
-  },
   {
    "id": "at://did:plc:3uus7y6h3rlrk6sbctzxm4bg/app.bsky.feed.post/3mydqh7ub6b2k|jakesanderson|active|return",
    "at": "2026-10-20T23:00:55.000Z",
@@ -2139,6 +2113,84 @@
    "kind": "status",
    "confidence": 0.7,
    "text": "Maple Leafs Prospect Roundup: Brody Pepoy popping off, Ben Danford out week-to-week"
+  },
+  {
+   "id": "at://did:plc:3uus7y6h3rlrk6sbctzxm4bg/app.bsky.feed.post/3mzxzyaahvz2c|marcokasper|active|status",
+   "at": "2026-11-10T18:09:56.000Z",
+   "seen": "2026-11-10T19:15:16.001Z",
+   "handle": "dailyfaceoff.bsky.social",
+   "post": "at://did:plc:3uus7y6h3rlrk6sbctzxm4bg/app.bsky.feed.post/3mzxzyaahvz2c",
+   "player": "Marco Kasper",
+   "team": "DET",
+   "status": "active",
+   "kind": "status",
+   "confidence": 0.95,
+   "text": "Red Wings activate Marco Kasper, Mason Appleton off IR"
+  },
+  {
+   "id": "at://did:plc:3uus7y6h3rlrk6sbctzxm4bg/app.bsky.feed.post/3mzxzyaahvz2c|masonappleton|active|status",
+   "at": "2026-11-10T18:09:56.000Z",
+   "seen": "2026-11-10T19:15:16.001Z",
+   "handle": "dailyfaceoff.bsky.social",
+   "post": "at://did:plc:3uus7y6h3rlrk6sbctzxm4bg/app.bsky.feed.post/3mzxzyaahvz2c",
+   "player": "Mason Appleton",
+   "team": "DET",
+   "status": "active",
+   "kind": "status",
+   "confidence": 0.95,
+   "text": "Red Wings activate Marco Kasper, Mason Appleton off IR"
+  },
+  {
+   "id": "at://did:plc:3uus7y6h3rlrk6sbctzxm4bg/app.bsky.feed.post/3mzy4isrivw2c|loganmailloux|active|status",
+   "at": "2026-11-10T18:55:00.000Z",
+   "seen": "2026-11-10T19:15:16.001Z",
+   "handle": "dailyfaceoff.bsky.social",
+   "post": "at://did:plc:3uus7y6h3rlrk6sbctzxm4bg/app.bsky.feed.post/3mzy4isrivw2c",
+   "player": "Logan Mailloux",
+   "team": "STL",
+   "status": "active",
+   "kind": "status",
+   "confidence": 0.95,
+   "text": "Blues activate Logan Mailloux from IR for season debut"
+  },
+  {
+   "id": "at://did:plc:3uus7y6h3rlrk6sbctzxm4bg/app.bsky.feed.post/3mzy4yy4lnt2k|samoreilly|active|status",
+   "at": "2026-11-10T19:04:02.000Z",
+   "seen": "2026-11-10T19:15:16.001Z",
+   "handle": "dailyfaceoff.bsky.social",
+   "post": "at://did:plc:3uus7y6h3rlrk6sbctzxm4bg/app.bsky.feed.post/3mzy4yy4lnt2k",
+   "player": "Sam O’Reilly",
+   "team": "TBL",
+   "status": "active",
+   "kind": "status",
+   "confidence": 0.9,
+   "text": "Lightning recall Sam O’Reilly from AHL, place Brayden Point on IR"
+  },
+  {
+   "id": "at://did:plc:3uus7y6h3rlrk6sbctzxm4bg/app.bsky.feed.post/3mzy4yy4lnt2k|braydenpoint|out|status",
+   "at": "2026-11-10T19:04:02.000Z",
+   "seen": "2026-11-10T19:15:16.001Z",
+   "handle": "dailyfaceoff.bsky.social",
+   "post": "at://did:plc:3uus7y6h3rlrk6sbctzxm4bg/app.bsky.feed.post/3mzy4yy4lnt2k",
+   "player": "Brayden Point",
+   "team": "TBL",
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.95,
+   "text": "Lightning recall Sam O’Reilly from AHL, place Brayden Point on IR"
+  },
+  {
+   "id": "at://did:plc:3uus7y6h3rlrk6sbctzxm4bg/app.bsky.feed.post/3mzy5g4v4wl2k|joshmorrissey|active|return",
+   "at": "2026-11-10T19:11:23.000Z",
+   "seen": "2026-11-10T19:15:16.001Z",
+   "handle": "dailyfaceoff.bsky.social",
+   "post": "at://did:plc:3uus7y6h3rlrk6sbctzxm4bg/app.bsky.feed.post/3mzy5g4v4wl2k",
+   "player": "Josh Morrissey",
+   "team": "WPG",
+   "status": "active",
+   "kind": "return",
+   "confidence": 0.95,
+   "text": "Jets’ Josh Morrissey returns to lineup after 14-game absence. #nhl #nhlhockey #dailyfaceoff"
   }
  ]
 }
