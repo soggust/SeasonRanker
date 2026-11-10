@@ -4,38 +4,12 @@
   "adamscheftermirror.bsky.social": "2026-11-10T01:45:17.531Z",
   "rapsheet.bsky.social": "2026-11-09T22:38:32.578Z",
   "nflnewsreposterbot.bsky.social": "2026-11-10T00:04:33.292Z",
-  "insidenflnews.bsky.social": "2026-11-10T01:55:21.850Z",
-  "nflnewsposter.bsky.social": "2026-11-10T01:53:41.982Z",
+  "insidenflnews.bsky.social": "2026-11-10T02:23:43.669Z",
+  "nflnewsposter.bsky.social": "2026-11-10T02:24:38.342Z",
   "rotoworld-fb.bsky.social": "2026-11-09T22:57:44.000Z",
-  "rotowirenfl.bsky.social": "2026-11-10T00:25:25.000Z"
+  "rotowirenfl.bsky.social": "2026-11-10T02:32:46.000Z"
  },
  "claims": [
-  {
-   "id": "at://did:plc:qre6zxbmr3ixhdmgsgdretb5/app.bsky.feed.post/3mybkois7oo2u|mikeevans|out|status",
-   "at": "2026-10-20T02:12:17.767Z",
-   "seen": "2026-10-20T02:43:44.619Z",
-   "handle": "adamscheftermirror.bsky.social",
-   "post": "at://did:plc:qre6zxbmr3ixhdmgsgdretb5/app.bsky.feed.post/3mybkois7oo2u",
-   "player": "Mike Evans",
-   "team": "SF",
-   "status": "out",
-   "kind": "status",
-   "confidence": 0.8,
-   "text": "Mike Evans (achilles) is out for the remainder of the game.\n\nOriginal post"
-  },
-  {
-   "id": "at://did:plc:fuqjc7x4gxvnwzksnlxwbe4x/app.bsky.feed.post/3myblgqklys2t|jonahjackson|questionable|status",
-   "at": "2026-10-20T02:25:51.320Z",
-   "seen": "2026-10-20T02:43:44.619Z",
-   "handle": "nflnewsposter.bsky.social",
-   "post": "at://did:plc:fuqjc7x4gxvnwzksnlxwbe4x/app.bsky.feed.post/3myblgqklys2t",
-   "player": "Jonah Jackson",
-   "team": "CHI",
-   "status": "questionable",
-   "kind": "status",
-   "confidence": 0.7,
-   "text": "[Fowler] Bears OG Jonah Jackson has a hip flexor injury and is considered week-to-week, per source. Status for TNF in doubt but shouldn’t be long term. twitter.com/JFowlerESPN/..."
-  },
   {
    "id": "at://did:plc:mbr4badgf6yu56mquzackzew/app.bsky.feed.post/3mybpdlczp22y|mikeevans|out|status",
    "at": "2026-10-20T03:35:40.130Z",
