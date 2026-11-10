@@ -5,24 +5,11 @@
   "rapsheet.bsky.social": "2026-11-09T22:38:32.578Z",
   "nflnewsreposterbot.bsky.social": "2026-11-10T00:04:33.292Z",
   "insidenflnews.bsky.social": "2026-11-10T00:24:35.807Z",
-  "nflnewsposter.bsky.social": "2026-11-10T00:24:22.633Z",
+  "nflnewsposter.bsky.social": "2026-11-10T01:00:42.521Z",
   "rotoworld-fb.bsky.social": "2026-11-09T22:57:44.000Z",
   "rotowirenfl.bsky.social": "2026-11-10T00:25:25.000Z"
  },
  "claims": [
-  {
-   "id": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3mybgjusqmg2p|terrymclaurin|out|status",
-   "at": "2026-10-20T00:58:07.000Z",
-   "seen": "2026-10-20T01:15:20.146Z",
-   "handle": "rotowirenfl.bsky.social",
-   "post": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3mybgjusqmg2p",
-   "player": "Terry McLaurin",
-   "team": "WAS",
-   "status": "out",
-   "kind": "status",
-   "confidence": 0.6,
-   "text": "Terry McLaurin: Carted off with knee injury \n\n https://www.rotowire.com/football/player/terry-mclaurin-13536"
-  },
   {
    "id": "at://did:plc:qre6zxbmr3ixhdmgsgdretb5/app.bsky.feed.post/3mybhd26zyc2v|terrymclaurin|out|status",
    "at": "2026-10-20T01:12:12.126Z",

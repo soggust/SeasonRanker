@@ -19166,6 +19166,242 @@
     "own": "2026-11-10T00:00:13.000Z",
     "why": "@rotowirenba.bsky.social: Brandon Ingram: Remains out for Tuesday \n\n https://www"
    }
+  },
+  "401909963|keyontegeorge|out": {
+   "game": "401909963",
+   "start": "2026-11-11T02:00Z",
+   "team": "26",
+   "name": "Keyonte George",
+   "status": "out",
+   "athlete": "4433627",
+   "espn": {
+    "seen": "2026-11-10T01:02:43.959Z",
+    "own": "2026-11-10T00:08:00.000Z"
+   },
+   "bluesky": {
+    "seen": "2026-11-10T00:43:21.164Z",
+    "own": "2026-11-10T00:08:29.000Z",
+    "why": "@rotowirenba.bsky.social: Keyonte George: Won't play Tuesday \n\n https://www.roto"
+   }
+  },
+  "401909963|laurimarkkanen|q": {
+   "game": "401909963",
+   "start": "2026-11-11T02:00Z",
+   "team": "26",
+   "name": "Lauri Markkanen",
+   "status": "q",
+   "athlete": "4066336",
+   "espn": {
+    "seen": "2026-11-10T01:02:43.959Z",
+    "own": "2026-11-10T00:08:00.000Z"
+   }
+  },
+  "401909963|jusufnurkic|out": {
+   "game": "401909963",
+   "start": "2026-11-11T02:00Z",
+   "team": "26",
+   "name": "Jusuf Nurkic",
+   "status": "out",
+   "athlete": "3102530",
+   "espn": {
+    "seen": "2026-11-10T01:02:43.959Z",
+    "own": "2026-11-06T18:20:00.000Z"
+   }
+  },
+  "401909963|jarenjackson|out": {
+   "game": "401909963",
+   "start": "2026-11-11T02:00Z",
+   "team": "26",
+   "name": "Jaren Jackson Jr.",
+   "status": "out",
+   "athlete": "4277961",
+   "espn": {
+    "seen": "2026-11-10T01:02:43.959Z",
+    "own": "2026-10-27T19:25:00.000Z"
+   }
+  },
+  "401909963|zionwilliamson|out": {
+   "game": "401909963",
+   "start": "2026-11-11T02:00Z",
+   "team": "26",
+   "name": "Zion Williamson",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-09T22:15:21.812Z",
+    "own": "2026-11-09T21:49:56.000Z",
+    "why": "@rotowirenba.bsky.social: Zion Williamson: Sitting out Monday \n\n https://www.rot"
+   }
+  },
+  "401909963|brandoningram|out": {
+   "game": "401909963",
+   "start": "2026-11-11T02:00Z",
+   "team": "26",
+   "name": "Brandon Ingram",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-10T00:05:41.407Z",
+    "own": "2026-11-10T00:00:13.000Z",
+    "why": "@rotowirenba.bsky.social: Brandon Ingram: Remains out for Tuesday \n\n https://www"
+   }
+  },
+  "401909963|giannisantetokounmpo|q": {
+   "game": "401909963",
+   "start": "2026-11-11T02:00Z",
+   "team": "14",
+   "name": "Giannis Antetokounmpo",
+   "status": "q",
+   "athlete": "3032977",
+   "espn": {
+    "seen": "2026-11-10T01:02:43.959Z",
+    "own": "2026-11-09T23:05:00.000Z"
+   }
+  },
+  "401909964|maximeraynaud|out": {
+   "game": "401909964",
+   "start": "2026-11-11T03:00Z",
+   "team": "23",
+   "name": "Maxime Raynaud",
+   "status": "out",
+   "athlete": "4898371",
+   "espn": {
+    "seen": "2026-11-10T01:02:43.959Z",
+    "own": "2026-11-10T00:37:00.000Z"
+   }
+  },
+  "401909964|keeganmurray|q": {
+   "game": "401909964",
+   "start": "2026-11-11T03:00Z",
+   "team": "23",
+   "name": "Keegan Murray",
+   "status": "q",
+   "athlete": "4594327",
+   "espn": {
+    "seen": "2026-11-10T01:02:43.959Z",
+    "own": "2026-11-10T00:36:00.000Z"
+   },
+   "bluesky": {
+    "seen": "2026-11-10T00:43:21.164Z",
+    "own": "2026-11-10T00:36:05.000Z",
+    "why": "@rotowirenba.bsky.social: Keegan Murray: Questionable for Tuesday \n\n https://www"
+   }
+  },
+  "401909964|domantassabonis|q": {
+   "game": "401909964",
+   "start": "2026-11-11T03:00Z",
+   "team": "23",
+   "name": "Domantas Sabonis",
+   "status": "q",
+   "athlete": "3155942",
+   "espn": {
+    "seen": "2026-11-10T01:02:43.959Z",
+    "own": "2026-11-10T00:35:00.000Z"
+   },
+   "bluesky": {
+    "seen": "2026-11-10T00:43:21.164Z",
+    "own": "2026-11-10T00:35:22.000Z",
+    "why": "@rotowirenba.bsky.social: Domantas Sabonis: Questionable for Tuesday \n\n https://"
+   }
+  },
+  "401909964|bensimmons|out": {
+   "game": "401909964",
+   "start": "2026-11-11T03:00Z",
+   "team": "23",
+   "name": "Ben Simmons",
+   "status": "out",
+   "athlete": "3907387",
+   "espn": {
+    "seen": "2026-11-10T01:02:43.959Z",
+    "own": "2026-10-21T04:22:00.000Z"
+   }
+  },
+  "401909964|zionwilliamson|out": {
+   "game": "401909964",
+   "start": "2026-11-11T03:00Z",
+   "team": "23",
+   "name": "Zion Williamson",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-09T22:15:21.812Z",
+    "own": "2026-11-09T21:49:56.000Z",
+    "why": "@rotowirenba.bsky.social: Zion Williamson: Sitting out Monday \n\n https://www.rot"
+   }
+  },
+  "401909964|brandoningram|out": {
+   "game": "401909964",
+   "start": "2026-11-11T03:00Z",
+   "team": "23",
+   "name": "Brandon Ingram",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-10T00:05:41.407Z",
+    "own": "2026-11-10T00:00:13.000Z",
+    "why": "@rotowirenba.bsky.social: Brandon Ingram: Remains out for Tuesday \n\n https://www"
+   }
+  },
+  "401909964|jalensuggs|out": {
+   "game": "401909964",
+   "start": "2026-11-11T03:00Z",
+   "team": "19",
+   "name": "Jalen Suggs",
+   "status": "out",
+   "athlete": "4432165",
+   "espn": {
+    "seen": "2026-11-10T01:02:43.959Z",
+    "own": "2026-11-09T23:11:00.000Z"
+   },
+   "bluesky": {
+    "seen": "2026-11-09T23:14:23.696Z",
+    "own": "2026-11-09T23:11:17.000Z",
+    "why": "@rotowirenba.bsky.social: Jalen Suggs: Remains out for Tuesday \n\n https://www.ro"
+   }
+  },
+  "401909964|jonathanisaac|out": {
+   "game": "401909964",
+   "start": "2026-11-11T03:00Z",
+   "team": "19",
+   "name": "Jonathan Isaac",
+   "status": "out",
+   "athlete": "4065654",
+   "espn": {
+    "seen": "2026-11-10T01:02:43.959Z",
+    "own": "2026-11-09T23:10:00.000Z"
+   }
+  },
+  "401909964|paolobanchero|out": {
+   "game": "401909964",
+   "start": "2026-11-11T03:00Z",
+   "team": "19",
+   "name": "Paolo Banchero",
+   "status": "out",
+   "athlete": "4432573",
+   "espn": {
+    "seen": "2026-11-10T01:02:43.959Z",
+    "own": "2026-10-24T16:47:00.000Z"
+   }
+  },
+  "401909964|noahpenda|out": {
+   "game": "401909964",
+   "start": "2026-11-11T03:00Z",
+   "team": "19",
+   "name": "Noah Penda",
+   "status": "out",
+   "athlete": "5214637",
+   "espn": {
+    "seen": "2026-11-10T01:02:43.959Z",
+    "own": "2026-10-17T22:19:00.000Z"
+   }
+  },
+  "401909964|izaiyahnelson|out": {
+   "game": "401909964",
+   "start": "2026-11-11T03:00Z",
+   "team": "19",
+   "name": "Izaiyah Nelson",
+   "status": "out",
+   "athlete": "5107251",
+   "espn": {
+    "seen": "2026-11-10T01:02:43.959Z",
+    "own": "2026-09-28T21:33:00.000Z"
+   }
   }
  }
 }
