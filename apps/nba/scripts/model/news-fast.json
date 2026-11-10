@@ -1,24 +1,11 @@
 {
  "sport": "nba",
  "cursor": {
-  "rotowirenba.bsky.social": "2026-11-10T22:12:41.000Z",
+  "rotowirenba.bsky.social": "2026-11-10T23:05:33.000Z",
   "insidenbanews.bsky.social": "2026-11-08T18:11:49.382Z",
   "shamsbot.bsky.social": "2026-11-08T18:05:20.000Z"
  },
  "claims": [
-  {
-   "id": "at://did:plc:ykcnnf6kqnn3lasmobrczoem/app.bsky.feed.post/3mydordxcrc2l|deanwade|out|status",
-   "at": "2026-10-20T22:30:47.905Z",
-   "seen": "2026-10-20T22:40:53.052Z",
-   "handle": "insidenbanews.bsky.social",
-   "post": "at://did:plc:ykcnnf6kqnn3lasmobrczoem/app.bsky.feed.post/3mydordxcrc2l",
-   "player": "Dean Wade",
-   "team": null,
-   "status": "out",
-   "kind": "status",
-   "confidence": 0.9,
-   "text": "Dean Wade (ankle) listed out Tuesday."
-  },
   {
    "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mydsdp234g2w|deniavdija|questionable|status",
    "at": "2026-10-20T23:34:44.000Z",
@@ -9430,6 +9417,71 @@
    "kind": "status",
    "confidence": 0.7,
    "text": "Bilal Coulibaly: Not listed on injury report \n\n https://www.rotowire.com/basketball/player/bilal-coulibaly-5945"
+  },
+  {
+   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mzyi2fkc242a|normanpowell|questionable|status",
+   "at": "2026-11-10T22:21:41.000Z",
+   "seen": "2026-11-10T23:20:43.421Z",
+   "handle": "rotowirenba.bsky.social",
+   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mzyi2fkc242a",
+   "player": "Norman Powell",
+   "team": null,
+   "status": "questionable",
+   "kind": "status",
+   "confidence": 0.9,
+   "text": "Norman Powell: Questionable for Wednesday \n\n https://www.rotowire.com/basketball/player/norman-powell-3726"
+  },
+  {
+   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mzyjkbgfki2r|devinvassell|questionable|status",
+   "at": "2026-11-10T22:48:27.000Z",
+   "seen": "2026-11-10T23:20:43.421Z",
+   "handle": "rotowirenba.bsky.social",
+   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mzyjkbgfki2r",
+   "player": "Devin Vassell",
+   "team": null,
+   "status": "questionable",
+   "kind": "status",
+   "confidence": 0.9,
+   "text": "Devin Vassell: Questionable against Chicago \n\n https://www.rotowire.com/basketball/player/devin-vassell-5113"
+  },
+  {
+   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mzyjplss4x2u|mikelbrown|active|status",
+   "at": "2026-11-10T22:51:26.000Z",
+   "seen": "2026-11-10T23:20:43.421Z",
+   "handle": "rotowirenba.bsky.social",
+   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mzyjplss4x2u",
+   "player": "Mikel Brown",
+   "team": null,
+   "status": "active",
+   "kind": "status",
+   "confidence": 0.6,
+   "text": "Mikel Brown: Not listed on injury report \n\n https://www.rotowire.com/basketball/player/mikel-brown-6929"
+  },
+  {
+   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mzyk4aeumj2a|joshhart|out|status",
+   "at": "2026-11-10T22:58:30.000Z",
+   "seen": "2026-11-10T23:20:43.421Z",
+   "handle": "rotowirenba.bsky.social",
+   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mzyk4aeumj2a",
+   "player": "Josh Hart",
+   "team": null,
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.9,
+   "text": "Josh Hart: Ruled out for Tuesday \n\n https://www.rotowire.com/basketball/player/josh-hart-4136"
+  },
+  {
+   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mzykitvufz2g|austinreaves|active|return",
+   "at": "2026-11-10T23:05:33.000Z",
+   "seen": "2026-11-10T23:20:43.421Z",
+   "handle": "rotowirenba.bsky.social",
+   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mzykitvufz2g",
+   "player": "Austin Reaves",
+   "team": null,
+   "status": "active",
+   "kind": "return",
+   "confidence": 0.85,
+   "text": "Austin Reaves: Set to return Wednesday \n\n https://www.rotowire.com/basketball/player/austin-reaves-5334"
   }
  ]
 }

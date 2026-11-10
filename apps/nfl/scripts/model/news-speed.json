@@ -22940,6 +22940,54 @@
     "seen": "2026-11-10T22:12:39.039Z",
     "own": "2026-11-10T21:29:00.000Z"
    }
+  },
+  "401873052|coltonhood|q": {
+   "game": "401873052",
+   "start": "2026-11-13T01:15Z",
+   "team": "19",
+   "name": "Colton Hood",
+   "status": "q",
+   "athlete": "4921249",
+   "espn": {
+    "seen": "2026-11-10T23:17:56.802Z",
+    "own": "2026-11-10T23:03:00.000Z"
+   }
+  },
+  "401873052|malikwillis|out": {
+   "game": "401873052",
+   "start": "2026-11-13T01:15Z",
+   "team": "19",
+   "name": "Malik Willis",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-10T22:15:26.504Z",
+    "own": "2026-11-10T21:32:20.000Z",
+    "why": "@rotowirenfl.bsky.social: Malik Willis: Move to IR official \n\n https://www.rotow"
+   }
+  },
+  "401873052|gardnerminshew|out": {
+   "game": "401873052",
+   "start": "2026-11-13T01:15Z",
+   "team": "19",
+   "name": "Gardner Minshew",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-10T22:15:26.504Z",
+    "own": "2026-11-10T22:13:16.000Z",
+    "why": "@rotowirenfl.bsky.social: Gardner Minshew: Placed on IR \n\n https://www.rotowire."
+   }
+  },
+  "401873055|stonesmartt|q": {
+   "game": "401873055",
+   "start": "2026-11-15T18:00Z",
+   "team": "18",
+   "name": "Stone Smartt",
+   "status": "q",
+   "athlete": "4250764",
+   "espn": {
+    "seen": "2026-11-10T23:17:56.802Z",
+    "own": "2026-11-10T23:04:00.000Z"
+   }
   }
  }
 }
