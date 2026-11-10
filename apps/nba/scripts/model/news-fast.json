@@ -7,19 +7,6 @@
  },
  "claims": [
   {
-   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mycw7pvdnx2o|naeqwantomlin|out|status",
-   "at": "2026-10-20T15:11:26.000Z",
-   "seen": "2026-10-20T15:22:54.974Z",
-   "handle": "rotowirenba.bsky.social",
-   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mycw7pvdnx2o",
-   "player": "Nae'Qwan Tomlin",
-   "team": null,
-   "status": "out",
-   "kind": "status",
-   "confidence": 0.8,
-   "text": "Nae'Qwan Tomlin: Set to miss several weeks \n\n https://www.rotowire.com/basketball/player/naeqwan-tomlin-6311"
-  },
-  {
    "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3myczve7xde2a|dailynswain|out|status",
    "at": "2026-10-20T16:17:13.000Z",
    "seen": "2026-10-20T16:23:22.520Z",

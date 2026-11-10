@@ -7,7 +7,7 @@
   "insidenflnews.bsky.social": "2026-11-10T14:52:49.325Z",
   "nflnewsposter.bsky.social": "2026-11-10T06:41:10.996Z",
   "rotoworld-fb.bsky.social": "2026-11-10T13:52:17.000Z",
-  "rotowirenfl.bsky.social": "2026-11-10T05:17:53.000Z"
+  "rotowirenfl.bsky.social": "2026-11-10T15:19:18.000Z"
  },
  "claims": [
   {
@@ -18417,6 +18417,19 @@
    "kind": "return",
    "confidence": 0.6,
    "text": "🚨 Status alert: Carson Wentz (ankle) has returned to Monday's game."
+  },
+  {
+   "id": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3mzxqh4il3m2n|pukanacua|out|status",
+   "at": "2026-11-10T15:19:18.000Z",
+   "seen": "2026-11-10T15:22:51.355Z",
+   "handle": "rotowirenfl.bsky.social",
+   "post": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3mzxqh4il3m2n",
+   "player": "Puka Nacua",
+   "team": "LAR",
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.6,
+   "text": "Puka Nacua: Likely to miss at least one month \n\n https://www.rotowire.com/football/player/puka-nacua-16790"
   }
  ]
 }
