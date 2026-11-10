@@ -21936,6 +21936,54 @@
     "seen": "2026-11-10T01:01:45.541Z",
     "own": "2026-11-10T00:24:00.000Z"
    }
+  },
+  "401873060|joshjacobs|q": {
+   "game": "401873060",
+   "start": "2026-11-15T18:00Z",
+   "team": "9",
+   "name": "Josh Jacobs",
+   "status": "q",
+   "athlete": "4047365",
+   "espn": {
+    "seen": "2026-11-10T01:22:40.843Z",
+    "own": "2026-11-09T21:21:00.000Z"
+   }
+  },
+  "401873063|donovanezeiruaku|q": {
+   "game": "401873063",
+   "start": "2026-11-15T21:25Z",
+   "team": "6",
+   "name": "Donovan Ezeiruaku",
+   "status": "q",
+   "athlete": "4683848",
+   "espn": {
+    "seen": "2026-11-10T01:22:40.843Z",
+    "own": "2026-11-10T01:11:00.000Z"
+   }
+  },
+  "401873063|jakeferguson|q": {
+   "game": "401873063",
+   "start": "2026-11-15T21:25Z",
+   "team": "6",
+   "name": "Jake Ferguson",
+   "status": "q",
+   "athlete": "4242355",
+   "espn": {
+    "seen": "2026-11-10T01:22:40.843Z",
+    "own": "2026-11-09T22:03:00.000Z"
+   }
+  },
+  "401873063|renardogreen|q": {
+   "game": "401873063",
+   "start": "2026-11-15T21:25Z",
+   "team": "25",
+   "name": "Renardo Green",
+   "status": "q",
+   "athlete": "4427325",
+   "espn": {
+    "seen": "2026-11-10T01:22:40.843Z",
+    "own": "2026-11-10T01:17:00.000Z"
+   }
   }
  }
 }

@@ -5,24 +5,11 @@
   "rapsheet.bsky.social": "2026-11-09T22:38:32.578Z",
   "nflnewsreposterbot.bsky.social": "2026-11-10T00:04:33.292Z",
   "insidenflnews.bsky.social": "2026-11-10T00:24:35.807Z",
-  "nflnewsposter.bsky.social": "2026-11-10T01:00:42.521Z",
+  "nflnewsposter.bsky.social": "2026-11-10T01:19:47.886Z",
   "rotoworld-fb.bsky.social": "2026-11-09T22:57:44.000Z",
   "rotowirenfl.bsky.social": "2026-11-10T00:25:25.000Z"
  },
  "claims": [
-  {
-   "id": "at://did:plc:qre6zxbmr3ixhdmgsgdretb5/app.bsky.feed.post/3mybhd26zyc2v|terrymclaurin|out|status",
-   "at": "2026-10-20T01:12:12.126Z",
-   "seen": "2026-10-20T01:15:20.146Z",
-   "handle": "adamscheftermirror.bsky.social",
-   "post": "at://did:plc:qre6zxbmr3ixhdmgsgdretb5/app.bsky.feed.post/3mybhd26zyc2v",
-   "player": "Terry McLaurin",
-   "team": "WAS",
-   "status": "out",
-   "kind": "status",
-   "confidence": 0.97,
-   "text": "Commanders officially ruled out WR Terry McLaurin due to a knee injury.\n\nOriginal post"
-  },
   {
    "id": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3mybj2atprj22|mikeevans|questionable|status",
    "at": "2026-10-20T01:43:04.000Z",
@@ -18482,6 +18469,19 @@
    "kind": "status",
    "confidence": 0.75,
    "text": "[Schefter] With veteran QB Gardner Minshew sidelined due to a UCL injury, the Cardinals are signing QB Josh Johnson off the Bengals’ practice squad, per sources. The Cardinals will be Johnson’s 15th N"
+  },
+  {
+   "id": "at://did:plc:fuqjc7x4gxvnwzksnlxwbe4x/app.bsky.feed.post/3mzwbjxfxxkvy|laddmcconkey|questionable|status",
+   "at": "2026-11-10T01:19:47.886Z",
+   "seen": "2026-11-10T01:25:04.406Z",
+   "handle": "nflnewsposter.bsky.social",
+   "post": "at://did:plc:fuqjc7x4gxvnwzksnlxwbe4x/app.bsky.feed.post/3mzwbjxfxxkvy",
+   "player": "Ladd McConkey",
+   "team": "LAC",
+   "status": "questionable",
+   "kind": "status",
+   "confidence": 0.85,
+   "text": "[Furtado] WR Ladd McConkey is considered day-to-day, according to Harbaugh, after he dealt with back spasms during pregame warmups Sunday.\n\nHarbaugh: \"Kept trying throughout the entire game to get bac"
   }
  ]
 }
