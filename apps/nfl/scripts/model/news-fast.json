@@ -1,13 +1,13 @@
 {
  "sport": "nfl",
  "cursor": {
-  "adamscheftermirror.bsky.social": "2026-11-10T13:35:15.880Z",
+  "adamscheftermirror.bsky.social": "2026-11-10T15:35:19.023Z",
   "rapsheet.bsky.social": "2026-11-09T22:38:32.578Z",
   "nflnewsreposterbot.bsky.social": "2026-11-10T00:04:33.292Z",
-  "insidenflnews.bsky.social": "2026-11-10T14:52:49.325Z",
-  "nflnewsposter.bsky.social": "2026-11-10T06:41:10.996Z",
-  "rotoworld-fb.bsky.social": "2026-11-10T13:52:17.000Z",
-  "rotowirenfl.bsky.social": "2026-11-10T15:19:18.000Z"
+  "insidenflnews.bsky.social": "2026-11-10T15:33:32.956Z",
+  "nflnewsposter.bsky.social": "2026-11-10T15:34:02.502Z",
+  "rotoworld-fb.bsky.social": "2026-11-10T15:40:02.000Z",
+  "rotowirenfl.bsky.social": "2026-11-10T15:38:48.000Z"
  },
  "claims": [
   {
@@ -18430,6 +18430,19 @@
    "kind": "status",
    "confidence": 0.6,
    "text": "Puka Nacua: Likely to miss at least one month \n\n https://www.rotowire.com/football/player/puka-nacua-16790"
+  },
+  {
+   "id": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3mzxrd57trb2z|terranceferguson|out|return",
+   "at": "2026-11-10T15:34:58.000Z",
+   "seen": "2026-11-10T15:43:22.878Z",
+   "handle": "rotowirenfl.bsky.social",
+   "post": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3mzxrd57trb2z",
+   "player": "Terrance Ferguson",
+   "team": null,
+   "status": "out",
+   "kind": "return",
+   "confidence": 0.6,
+   "text": "Terrance Ferguson: Return from IR not guaranteed \n\n https://www.rotowire.com/football/player/terrance-ferguson-18497"
   }
  ]
 }
