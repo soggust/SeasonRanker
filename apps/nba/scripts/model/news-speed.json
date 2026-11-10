@@ -18937,6 +18937,18 @@
     "own": "2026-11-10T17:33:57.000Z",
     "why": "@rotowirenba.bsky.social: Kawhi Leonard: Remains out for at least one more week "
    }
+  },
+  "401909963|laurimarkkanen|out": {
+   "game": "401909963",
+   "start": "2026-11-11T02:00Z",
+   "team": "26",
+   "name": "Lauri Markkanen",
+   "status": "out",
+   "athlete": "4066336",
+   "espn": {
+    "seen": "2026-11-10T18:45:41.690Z",
+    "own": "2026-11-10T18:30:00.000Z"
+   }
   }
  }
 }
