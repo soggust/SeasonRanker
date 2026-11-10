@@ -1,7 +1,7 @@
 {
  "sport": "nba",
  "cursor": {
-  "rotowirenba.bsky.social": "2026-11-10T00:02:12.000Z",
+  "rotowirenba.bsky.social": "2026-11-10T00:43:03.000Z",
   "insidenbanews.bsky.social": "2026-11-08T18:11:49.382Z",
   "shamsbot.bsky.social": "2026-11-08T18:05:20.000Z"
  },
@@ -9651,6 +9651,45 @@
    "kind": "status",
    "confidence": 0.95,
    "text": "Brandon Ingram: Remains out for Tuesday \n\n https://www.rotowire.com/basketball/player/brandon-ingram-3861"
+  },
+  {
+   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mzw5kgzyha2h|keyontegeorge|out|status",
+   "at": "2026-11-10T00:08:29.000Z",
+   "seen": "2026-11-10T00:43:21.164Z",
+   "handle": "rotowirenba.bsky.social",
+   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mzw5kgzyha2h",
+   "player": "Keyonte George",
+   "team": "UTA",
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.95,
+   "text": "Keyonte George: Won't play Tuesday \n\n https://www.rotowire.com/basketball/player/keyonte-george-5899"
+  },
+  {
+   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mzw72jd2n72i|domantassabonis|questionable|status",
+   "at": "2026-11-10T00:35:22.000Z",
+   "seen": "2026-11-10T00:43:21.164Z",
+   "handle": "rotowirenba.bsky.social",
+   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mzw72jd2n72i",
+   "player": "Domantas Sabonis",
+   "team": "SAC",
+   "status": "questionable",
+   "kind": "status",
+   "confidence": 0.95,
+   "text": "Domantas Sabonis: Questionable for Tuesday \n\n https://www.rotowire.com/basketball/player/domantas-sabonis-3865"
+  },
+  {
+   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mzw73stv642s|keeganmurray|questionable|status",
+   "at": "2026-11-10T00:36:05.000Z",
+   "seen": "2026-11-10T00:43:21.164Z",
+   "handle": "rotowirenba.bsky.social",
+   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mzw73stv642s",
+   "player": "Keegan Murray",
+   "team": "SAC",
+   "status": "questionable",
+   "kind": "status",
+   "confidence": 0.95,
+   "text": "Keegan Murray: Questionable for Tuesday \n\n https://www.rotowire.com/basketball/player/keegan-murray-5699"
   }
  ]
 }

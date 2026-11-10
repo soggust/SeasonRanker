@@ -20238,6 +20238,11 @@
    "espn": {
     "seen": "2026-11-10T00:00:42.694Z",
     "own": "2026-11-09T23:51:00.000Z"
+   },
+   "bluesky": {
+    "seen": "2026-11-10T00:05:41.407Z",
+    "own": "2026-11-10T00:00:25.794Z",
+    "why": "@adamscheftermirror.bsky.social: Bills LT Dion Dawkins is inactive tonight.\n\nRep"
    }
   },
   "401873051|greggaines|out": {
@@ -21846,6 +21851,54 @@
    "espn": {
     "seen": "2026-11-10T00:00:42.694Z",
     "own": "2026-10-23T00:28:00.000Z"
+   }
+  },
+  "401873052|darnellmooney|q": {
+   "game": "401873052",
+   "start": "2026-11-13T01:15Z",
+   "team": "19",
+   "name": "Darnell Mooney",
+   "status": "q",
+   "athlete": "4040655",
+   "espn": {
+    "seen": "2026-11-10T00:40:44.684Z",
+    "own": "2026-11-10T00:30:00.000Z"
+   }
+  },
+  "401873052|malikharrison|q": {
+   "game": "401873052",
+   "start": "2026-11-13T01:15Z",
+   "team": "19",
+   "name": "Malik Harrison",
+   "status": "q",
+   "athlete": "4040615",
+   "espn": {
+    "seen": "2026-11-10T00:40:44.684Z",
+    "own": "2026-11-10T00:09:00.000Z"
+   }
+  },
+  "401873052|abdulcarter|q": {
+   "game": "401873052",
+   "start": "2026-11-13T01:15Z",
+   "team": "19",
+   "name": "Abdul Carter",
+   "status": "q",
+   "athlete": "4725996",
+   "espn": {
+    "seen": "2026-11-10T00:40:44.684Z",
+    "own": "2026-11-10T00:09:00.000Z"
+   }
+  },
+  "401873060|theojackson|q": {
+   "game": "401873060",
+   "start": "2026-11-15T18:00Z",
+   "team": "16",
+   "name": "Theo Jackson",
+   "status": "q",
+   "athlete": "4242436",
+   "espn": {
+    "seen": "2026-11-10T00:40:44.684Z",
+    "own": "2026-11-09T23:54:00.000Z"
    }
   }
  }

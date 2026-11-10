@@ -1,28 +1,15 @@
 {
  "sport": "nfl",
  "cursor": {
-  "adamscheftermirror.bsky.social": "2026-11-10T00:00:25.794Z",
+  "adamscheftermirror.bsky.social": "2026-11-10T00:15:12.177Z",
   "rapsheet.bsky.social": "2026-11-09T22:38:32.578Z",
   "nflnewsreposterbot.bsky.social": "2026-11-10T00:04:33.292Z",
-  "insidenflnews.bsky.social": "2026-11-09T23:48:14.864Z",
-  "nflnewsposter.bsky.social": "2026-11-09T23:28:08.472Z",
+  "insidenflnews.bsky.social": "2026-11-10T00:24:35.807Z",
+  "nflnewsposter.bsky.social": "2026-11-10T00:24:22.633Z",
   "rotoworld-fb.bsky.social": "2026-11-09T22:57:44.000Z",
-  "rotowirenfl.bsky.social": "2026-11-10T00:00:21.000Z"
+  "rotowirenfl.bsky.social": "2026-11-10T00:25:25.000Z"
  },
  "claims": [
-  {
-   "id": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3mybdxngo332a|ajbrown|limited|status",
-   "at": "2026-10-20T00:12:08.000Z",
-   "seen": "2026-10-20T01:15:20.146Z",
-   "handle": "rotowirenfl.bsky.social",
-   "post": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3mybdxngo332a",
-   "player": "AJ Brown",
-   "team": "NE",
-   "status": "limited",
-   "kind": "status",
-   "confidence": 0.9,
-   "text": "A.J. Brown: Limited on Monday's practice estimate \n\n https://www.rotowire.com/football/player/aj-brown-13432"
-  },
   {
    "id": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3mybgjusqmg2p|terrymclaurin|out|status",
    "at": "2026-10-20T00:58:07.000Z",
@@ -18482,6 +18469,32 @@
    "kind": "status",
    "confidence": 0.8,
    "text": "Adam Schefter: With veteran QB Gardner Minshew sidelined due to a UCL injury, the Cardinals are signing QB Josh Johnson off the Bengals’ practice squad, per sources. The Cardinals will be Johnson’s 15"
+  },
+  {
+   "id": "at://did:plc:qre6zxbmr3ixhdmgsgdretb5/app.bsky.feed.post/3mzw5whdgnl26|gardnerminshew|out|status",
+   "at": "2026-11-10T00:15:12.177Z",
+   "seen": "2026-11-10T00:43:21.164Z",
+   "handle": "adamscheftermirror.bsky.social",
+   "post": "at://did:plc:qre6zxbmr3ixhdmgsgdretb5/app.bsky.feed.post/3mzw5whdgnl26",
+   "player": "Gardner Minshew",
+   "team": "ARI",
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.8,
+   "text": "With veteran QB Gardner Minshew sidelined due to a UCL injury, the Cardinals are signing QB Josh Johnson off the Bengals’ practice squad, per sources. The Cardinals will be Johnson’s 15th NFL team in "
+  },
+  {
+   "id": "at://did:plc:fuqjc7x4gxvnwzksnlxwbe4x/app.bsky.feed.post/3mzw6gu7fj223|gardnerminshew|out|status",
+   "at": "2026-11-10T00:24:22.633Z",
+   "seen": "2026-11-10T00:43:21.164Z",
+   "handle": "nflnewsposter.bsky.social",
+   "post": "at://did:plc:fuqjc7x4gxvnwzksnlxwbe4x/app.bsky.feed.post/3mzw6gu7fj223",
+   "player": "Gardner Minshew",
+   "team": "ARI",
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.75,
+   "text": "[Schefter] With veteran QB Gardner Minshew sidelined due to a UCL injury, the Cardinals are signing QB Josh Johnson off the Bengals’ practice squad, per sources. The Cardinals will be Johnson’s 15th N"
   }
  ]
 }
