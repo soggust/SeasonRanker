@@ -18348,6 +18348,11 @@
    "espn": {
     "seen": "2026-11-10T22:13:36.460Z",
     "own": "2026-11-09T15:41:00.000Z"
+   },
+   "bluesky": {
+    "seen": "2026-11-10T23:20:43.421Z",
+    "own": "2026-11-10T22:21:41.000Z",
+    "why": "@rotowirenba.bsky.social: Norman Powell: Questionable for Wednesday \n\n https://w"
    }
   },
   "401909969|zachcollins|q": {
@@ -18384,6 +18389,11 @@
    "espn": {
     "seen": "2026-11-10T22:13:36.460Z",
     "own": "2026-11-10T04:32:00.000Z"
+   },
+   "bluesky": {
+    "seen": "2026-11-10T23:20:43.421Z",
+    "own": "2026-11-10T22:48:27.000Z",
+    "why": "@rotowirenba.bsky.social: Devin Vassell: Questionable against Chicago \n\n https:/"
    }
   },
   "401909969|tobiasharris|out": {
@@ -18860,6 +18870,282 @@
     "seen": "2026-11-10T22:15:26.504Z",
     "own": "2026-11-10T22:07:13.000Z",
     "why": "@rotowirenba.bsky.social: Jaylon Tyson: Questionable for Wednesday \n\n https://ww"
+   }
+  },
+  "401909960|devinvassell|q": {
+   "game": "401909960",
+   "start": "2026-11-11T00:30Z",
+   "team": "18",
+   "name": "Devin Vassell",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-11-10T23:20:43.421Z",
+    "own": "2026-11-10T22:48:27.000Z",
+    "why": "@rotowirenba.bsky.social: Devin Vassell: Questionable against Chicago \n\n https:/"
+   }
+  },
+  "401909960|normanpowell|q": {
+   "game": "401909960",
+   "start": "2026-11-11T00:30Z",
+   "team": "18",
+   "name": "Norman Powell",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-11-10T23:20:43.421Z",
+    "own": "2026-11-10T22:21:41.000Z",
+    "why": "@rotowirenba.bsky.social: Norman Powell: Questionable for Wednesday \n\n https://w"
+   }
+  },
+  "401909960|tylerherro|out": {
+   "game": "401909960",
+   "start": "2026-11-11T00:30Z",
+   "team": "15",
+   "name": "Tyler Herro",
+   "status": "out",
+   "athlete": "4395725",
+   "espn": {
+    "seen": "2026-11-10T23:34:43.259Z",
+    "own": "2026-11-10T23:20:00.000Z"
+   }
+  },
+  "401909961|normanpowell|q": {
+   "game": "401909961",
+   "start": "2026-11-11T01:00Z",
+   "team": "20",
+   "name": "Norman Powell",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-11-10T23:20:43.421Z",
+    "own": "2026-11-10T22:21:41.000Z",
+    "why": "@rotowirenba.bsky.social: Norman Powell: Questionable for Wednesday \n\n https://w"
+   }
+  },
+  "401909961|devinvassell|q": {
+   "game": "401909961",
+   "start": "2026-11-11T01:00Z",
+   "team": "20",
+   "name": "Devin Vassell",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-11-10T23:20:43.421Z",
+    "own": "2026-11-10T22:48:27.000Z",
+    "why": "@rotowirenba.bsky.social: Devin Vassell: Questionable against Chicago \n\n https:/"
+   }
+  },
+  "401909962|normanpowell|q": {
+   "game": "401909962",
+   "start": "2026-11-11T02:00Z",
+   "team": "21",
+   "name": "Norman Powell",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-11-10T23:20:43.421Z",
+    "own": "2026-11-10T22:21:41.000Z",
+    "why": "@rotowirenba.bsky.social: Norman Powell: Questionable for Wednesday \n\n https://w"
+   }
+  },
+  "401909962|devinvassell|q": {
+   "game": "401909962",
+   "start": "2026-11-11T02:00Z",
+   "team": "21",
+   "name": "Devin Vassell",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-11-10T23:20:43.421Z",
+    "own": "2026-11-10T22:48:27.000Z",
+    "why": "@rotowirenba.bsky.social: Devin Vassell: Questionable against Chicago \n\n https:/"
+   }
+  },
+  "401909963|normanpowell|q": {
+   "game": "401909963",
+   "start": "2026-11-11T02:00Z",
+   "team": "26",
+   "name": "Norman Powell",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-11-10T23:20:43.421Z",
+    "own": "2026-11-10T22:21:41.000Z",
+    "why": "@rotowirenba.bsky.social: Norman Powell: Questionable for Wednesday \n\n https://w"
+   }
+  },
+  "401909963|devinvassell|q": {
+   "game": "401909963",
+   "start": "2026-11-11T02:00Z",
+   "team": "26",
+   "name": "Devin Vassell",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-11-10T23:20:43.421Z",
+    "own": "2026-11-10T22:48:27.000Z",
+    "why": "@rotowirenba.bsky.social: Devin Vassell: Questionable against Chicago \n\n https:/"
+   }
+  },
+  "401909964|normanpowell|q": {
+   "game": "401909964",
+   "start": "2026-11-11T03:00Z",
+   "team": "23",
+   "name": "Norman Powell",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-11-10T23:20:43.421Z",
+    "own": "2026-11-10T22:21:41.000Z",
+    "why": "@rotowirenba.bsky.social: Norman Powell: Questionable for Wednesday \n\n https://w"
+   }
+  },
+  "401909964|devinvassell|q": {
+   "game": "401909964",
+   "start": "2026-11-11T03:00Z",
+   "team": "23",
+   "name": "Devin Vassell",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-11-10T23:20:43.421Z",
+    "own": "2026-11-10T22:48:27.000Z",
+    "why": "@rotowirenba.bsky.social: Devin Vassell: Questionable against Chicago \n\n https:/"
+   }
+  },
+  "401909965|normanpowell|q": {
+   "game": "401909965",
+   "start": "2026-11-11T04:00Z",
+   "team": "22",
+   "name": "Norman Powell",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-11-10T23:20:43.421Z",
+    "own": "2026-11-10T22:21:41.000Z",
+    "why": "@rotowirenba.bsky.social: Norman Powell: Questionable for Wednesday \n\n https://w"
+   }
+  },
+  "401909965|devinvassell|q": {
+   "game": "401909965",
+   "start": "2026-11-11T04:00Z",
+   "team": "22",
+   "name": "Devin Vassell",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-11-10T23:20:43.421Z",
+    "own": "2026-11-10T22:48:27.000Z",
+    "why": "@rotowirenba.bsky.social: Devin Vassell: Questionable against Chicago \n\n https:/"
+   }
+  },
+  "401909966|normanpowell|q": {
+   "game": "401909966",
+   "start": "2026-11-12T00:00Z",
+   "team": "11",
+   "name": "Norman Powell",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-11-10T23:20:43.421Z",
+    "own": "2026-11-10T22:21:41.000Z",
+    "why": "@rotowirenba.bsky.social: Norman Powell: Questionable for Wednesday \n\n https://w"
+   }
+  },
+  "401909966|devinvassell|q": {
+   "game": "401909966",
+   "start": "2026-11-12T00:00Z",
+   "team": "11",
+   "name": "Devin Vassell",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-11-10T23:20:43.421Z",
+    "own": "2026-11-10T22:48:27.000Z",
+    "why": "@rotowirenba.bsky.social: Devin Vassell: Questionable against Chicago \n\n https:/"
+   }
+  },
+  "401909972|normanpowell|q": {
+   "game": "401909972",
+   "start": "2026-11-12T01:00Z",
+   "team": "3",
+   "name": "Norman Powell",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-11-10T23:20:43.421Z",
+    "own": "2026-11-10T22:21:41.000Z",
+    "why": "@rotowirenba.bsky.social: Norman Powell: Questionable for Wednesday \n\n https://w"
+   }
+  },
+  "401909972|devinvassell|q": {
+   "game": "401909972",
+   "start": "2026-11-12T01:00Z",
+   "team": "3",
+   "name": "Devin Vassell",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-11-10T23:20:43.421Z",
+    "own": "2026-11-10T22:48:27.000Z",
+    "why": "@rotowirenba.bsky.social: Devin Vassell: Questionable against Chicago \n\n https:/"
+   }
+  },
+  "401909974|normanpowell|q": {
+   "game": "401909974",
+   "start": "2026-11-12T02:30Z",
+   "team": "10",
+   "name": "Norman Powell",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-11-10T23:20:43.421Z",
+    "own": "2026-11-10T22:21:41.000Z",
+    "why": "@rotowirenba.bsky.social: Norman Powell: Questionable for Wednesday \n\n https://w"
+   }
+  },
+  "401909974|devinvassell|q": {
+   "game": "401909974",
+   "start": "2026-11-12T02:30Z",
+   "team": "10",
+   "name": "Devin Vassell",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-11-10T23:20:43.421Z",
+    "own": "2026-11-10T22:48:27.000Z",
+    "why": "@rotowirenba.bsky.social: Devin Vassell: Questionable against Chicago \n\n https:/"
+   }
+  },
+  "401909974|joshhart|out": {
+   "game": "401909974",
+   "start": "2026-11-12T02:30Z",
+   "team": "10",
+   "name": "Josh Hart",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-10T23:20:43.421Z",
+    "own": "2026-11-10T22:58:30.000Z",
+    "why": "@rotowirenba.bsky.social: Josh Hart: Ruled out for Tuesday \n\n https://www.rotowi"
+   }
+  },
+  "401909975|normanpowell|q": {
+   "game": "401909975",
+   "start": "2026-11-12T03:00Z",
+   "team": "22",
+   "name": "Norman Powell",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-11-10T23:20:43.421Z",
+    "own": "2026-11-10T22:21:41.000Z",
+    "why": "@rotowirenba.bsky.social: Norman Powell: Questionable for Wednesday \n\n https://w"
+   }
+  },
+  "401909975|devinvassell|q": {
+   "game": "401909975",
+   "start": "2026-11-12T03:00Z",
+   "team": "22",
+   "name": "Devin Vassell",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-11-10T23:20:43.421Z",
+    "own": "2026-11-10T22:48:27.000Z",
+    "why": "@rotowirenba.bsky.social: Devin Vassell: Questionable against Chicago \n\n https:/"
+   }
+  },
+  "401909975|joshhart|out": {
+   "game": "401909975",
+   "start": "2026-11-12T03:00Z",
+   "team": "22",
+   "name": "Josh Hart",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-10T23:20:43.421Z",
+    "own": "2026-11-10T22:58:30.000Z",
+    "why": "@rotowirenba.bsky.social: Josh Hart: Ruled out for Tuesday \n\n https://www.rotowi"
    }
   }
  }
