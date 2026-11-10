@@ -1,6 +1,29 @@
 {
  "sport": "nhl",
  "days": 2,
- "signals": [],
- "at": "2026-11-07T19:21:32.059Z"
+ "signals": [
+  {
+   "team": "11",
+   "abbr": "NJ",
+   "athlete": "3020225",
+   "player": "Connor Hellebuyck",
+   "kind": "benched",
+   "direction": "down",
+   "confidence": 0.7,
+   "headline": "Jets disappointed ex-goalie Connor Hellebuyck sitting out",
+   "at": "2026-11-09T23:17:46.000Z"
+  },
+  {
+   "team": "11",
+   "abbr": "NJ",
+   "athlete": "3020225",
+   "player": "Connor Hellebuyck",
+   "kind": "benched",
+   "direction": "down",
+   "confidence": 0.8,
+   "headline": "Connor Hellebuyck won't play in return to Winnipeg with Devils",
+   "at": "2026-11-09T04:48:43.000Z"
+  }
+ ],
+ "at": "2026-11-10T00:05:41.407Z"
 }

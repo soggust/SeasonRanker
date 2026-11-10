@@ -3,6 +3,127 @@
  "days": 2,
  "signals": [
   {
+   "team": "6",
+   "abbr": "DAL",
+   "athlete": "4242355",
+   "player": "Jake Ferguson",
+   "kind": "benched",
+   "direction": "down",
+   "confidence": 0.4,
+   "headline": "Schottenheimer: Cowboys will be without Ferguson, Goodson for 'multiple weeks'",
+   "at": "2026-11-09T23:39:50.000Z"
+  },
+  {
+   "team": "6",
+   "abbr": "DAL",
+   "athlete": "4429676",
+   "player": "Tyler Goodson",
+   "kind": "benched",
+   "direction": "down",
+   "confidence": 0.4,
+   "headline": "Schottenheimer: Cowboys will be without Ferguson, Goodson for 'multiple weeks'",
+   "at": "2026-11-09T23:39:50.000Z"
+  },
+  {
+   "team": "25",
+   "abbr": "SF",
+   "athlete": "4360438",
+   "player": "Brandon Aiyuk",
+   "kind": "return",
+   "direction": "up",
+   "confidence": 0.8,
+   "headline": "Brandon Aiyuk reinstated by NFL; 49ers have 2-game roster exemption for receiver",
+   "at": "2026-11-09T23:14:11.000Z"
+  },
+  {
+   "team": "25",
+   "abbr": "SF",
+   "athlete": "5086161",
+   "player": "Jaden Dugger",
+   "kind": "role",
+   "direction": "up",
+   "confidence": 0.4,
+   "headline": "The key behind 49ers' 7-1 start? Big contributions from the team's youth",
+   "at": "2026-11-09T21:28:52.000Z"
+  },
+  {
+   "team": "25",
+   "abbr": "SF",
+   "athlete": "4431466",
+   "player": "Jordan Watkins",
+   "kind": "role",
+   "direction": "up",
+   "confidence": 0.4,
+   "headline": "The key behind 49ers' 7-1 start? Big contributions from the team's youth",
+   "at": "2026-11-09T21:28:52.000Z"
+  },
+  {
+   "team": "5",
+   "abbr": "CLE",
+   "athlete": "3122840",
+   "player": "Deshaun Watson",
+   "kind": "starting",
+   "direction": "up",
+   "confidence": 0.7,
+   "headline": "Source: Browns returning to Watson as QB1 despite Sanders' strong fill-in start",
+   "at": "2026-11-09T20:02:47.000Z"
+  },
+  {
+   "team": "5",
+   "abbr": "CLE",
+   "athlete": "4432762",
+   "player": "Shedeur Sanders",
+   "kind": "benched",
+   "direction": "down",
+   "confidence": 0.7,
+   "headline": "Source: Browns returning to Watson as QB1 despite Sanders' strong fill-in start",
+   "at": "2026-11-09T20:02:47.000Z"
+  },
+  {
+   "team": "18",
+   "abbr": "NO",
+   "athlete": "4880281",
+   "player": "Jordyn Tyson",
+   "kind": "role",
+   "direction": "up",
+   "confidence": 0.5,
+   "headline": "Jordyn Tyson's Saints debut showed promise, rookie mistakes",
+   "at": "2026-11-09T19:12:14.000Z"
+  },
+  {
+   "team": "26",
+   "abbr": "SEA",
+   "athlete": "3924327",
+   "player": "Drew Lock",
+   "kind": "starting",
+   "direction": "up",
+   "confidence": 0.8,
+   "headline": "Seahawks to start QB Drew Lock vs. Raiders, giving Sam Darnold more time to heal",
+   "at": "2026-11-09T19:10:30.000Z"
+  },
+  {
+   "team": "26",
+   "abbr": "SEA",
+   "athlete": "3912547",
+   "player": "Sam Darnold",
+   "kind": "benched",
+   "direction": "down",
+   "confidence": 0.7,
+   "headline": "Seahawks to start QB Drew Lock vs. Raiders, giving Sam Darnold more time to heal",
+   "at": "2026-11-09T19:10:30.000Z"
+  },
+  {
+   "team": "20",
+   "abbr": "NYJ",
+   "athlete": "4361767",
+   "player": "Will McDonald IV",
+   "kind": "role",
+   "direction": "down",
+   "confidence": 0.5,
+   "headline": "Sources: Jets DE Will McDonald IV, frustrated by lack of use, requests trade",
+   "at": "2026-11-09T19:08:34.000Z"
+  },
+  {
    "team": "7",
    "abbr": "DEN",
    "athlete": "4372016",
@@ -58,5 +179,5 @@
    "at": "2026-11-08T13:33:54.000Z"
   }
  ],
- "at": "2026-11-09T21:15:24.760Z"
+ "at": "2026-11-10T00:05:41.407Z"
 }

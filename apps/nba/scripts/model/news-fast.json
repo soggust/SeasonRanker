@@ -1,7 +1,7 @@
 {
  "sport": "nba",
  "cursor": {
-  "rotowirenba.bsky.social": "2026-11-09T23:13:41.000Z",
+  "rotowirenba.bsky.social": "2026-11-10T00:02:12.000Z",
   "insidenbanews.bsky.social": "2026-11-08T18:11:49.382Z",
   "shamsbot.bsky.social": "2026-11-08T18:05:20.000Z"
  },
@@ -9625,6 +9625,32 @@
    "kind": "status",
    "confidence": 0.85,
    "text": "Jarrett Allen: Cleared to play \n\n https://www.rotowire.com/basketball/player/jarrett-allen-4122"
+  },
+  {
+   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mzw4h6ovxv24|danissjenkins|none|starting",
+   "at": "2026-11-09T23:48:46.000Z",
+   "seen": "2026-11-10T00:05:41.407Z",
+   "handle": "rotowirenba.bsky.social",
+   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mzw4h6ovxv24",
+   "player": "Daniss Jenkins",
+   "team": null,
+   "status": "none",
+   "kind": "starting",
+   "confidence": 0.9,
+   "text": "Daniss Jenkins: Promoted to starting lineup \n\n https://www.rotowire.com/basketball/player/daniss-jenkins-6336"
+  },
+  {
+   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mzw53onfaj22|brandoningram|out|status",
+   "at": "2026-11-10T00:00:13.000Z",
+   "seen": "2026-11-10T00:05:41.407Z",
+   "handle": "rotowirenba.bsky.social",
+   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mzw53onfaj22",
+   "player": "Brandon Ingram",
+   "team": null,
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.95,
+   "text": "Brandon Ingram: Remains out for Tuesday \n\n https://www.rotowire.com/basketball/player/brandon-ingram-3861"
   }
  ]
 }
