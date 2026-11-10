@@ -1,7 +1,7 @@
 {
  "sport": "nba",
  "cursor": {
-  "rotowirenba.bsky.social": "2026-11-10T05:38:06.000Z",
+  "rotowirenba.bsky.social": "2026-11-10T17:33:57.000Z",
   "insidenbanews.bsky.social": "2026-11-08T18:11:49.382Z",
   "shamsbot.bsky.social": "2026-11-08T18:05:20.000Z"
  },
@@ -9534,6 +9534,19 @@
    "kind": "starting",
    "confidence": 0.8,
    "text": "Herbert Jones: Starting Monday \n\n https://www.rotowire.com/basketball/player/herbert-jones-5414"
+  },
+  {
+   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mzxxxvhvtc22|kawhileonard|out|status",
+   "at": "2026-11-10T17:33:57.000Z",
+   "seen": "2026-11-10T17:45:35.797Z",
+   "handle": "rotowirenba.bsky.social",
+   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mzxxxvhvtc22",
+   "player": "Kawhi Leonard",
+   "team": "LAC",
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.9,
+   "text": "Kawhi Leonard: Remains out for at least one more week \n\n https://www.rotowire.com/basketball/player/kawhi-leonard-3195"
   }
  ]
 }

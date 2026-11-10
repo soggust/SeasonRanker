@@ -1,146 +1,6 @@
 {
  "sport": "nhl",
  "entries": {
-  "401892614|bowenbyram|q": {
-   "game": "401892614",
-   "start": "2026-10-31T17:00Z",
-   "team": "4",
-   "name": "Bowen Byram",
-   "status": "q",
-   "athlete": "4565225",
-   "espn": {
-    "seen": "2026-10-30T15:08:56.263Z",
-    "own": "2026-10-30T13:17:00.000Z"
-   }
-  },
-  "401892615|albertjohansson|q": {
-   "game": "401892615",
-   "start": "2026-10-31T17:00Z",
-   "team": "5",
-   "name": "Albert Johansson",
-   "status": "q",
-   "athlete": "4565282",
-   "espn": {
-    "seen": "2026-10-30T15:08:56.263Z",
-    "own": "2026-10-30T13:17:00.000Z"
-   }
-  },
-  "401892615|dylanlarkin|out": {
-   "game": "401892615",
-   "start": "2026-10-31T17:00Z",
-   "team": "5",
-   "name": "Dylan Larkin",
-   "status": "out",
-   "athlete": "3114755",
-   "espn": {
-    "seen": "2026-10-30T15:08:56.263Z",
-    "own": "2026-10-29T22:03:00.000Z"
-   }
-  },
-  "401892615|simonedvinsson|out": {
-   "game": "401892615",
-   "start": "2026-10-31T17:00Z",
-   "team": "5",
-   "name": "Simon Edvinsson",
-   "status": "out",
-   "athlete": "4874720",
-   "espn": {
-    "seen": "2026-10-30T15:08:56.263Z",
-    "own": "2026-10-14T15:15:00.000Z"
-   }
-  },
-  "401892615|masonappleton|out": {
-   "game": "401892615",
-   "start": "2026-10-31T17:00Z",
-   "team": "5",
-   "name": "Mason Appleton",
-   "status": "out",
-   "athlete": "3942043",
-   "espn": {
-    "seen": "2026-10-30T15:08:56.263Z",
-    "own": "2026-10-06T21:08:00.000Z"
-   },
-   "sleeper": {
-    "seen": "2026-10-30T20:19:50.448Z",
-    "own": "2026-10-30T16:15:07.710Z"
-   }
-  },
-  "401892615|marcokasper|out": {
-   "game": "401892615",
-   "start": "2026-10-31T17:00Z",
-   "team": "5",
-   "name": "Marco Kasper",
-   "status": "out",
-   "athlete": "5080152",
-   "espn": {
-    "seen": "2026-10-30T15:08:56.263Z",
-    "own": "2026-10-06T15:39:00.000Z"
-   },
-   "sleeper": {
-    "seen": "2026-10-30T20:19:50.448Z",
-    "own": "2026-10-30T16:15:07.710Z"
-   }
-  },
-  "401892615|rossjohnston|out": {
-   "game": "401892615",
-   "start": "2026-10-31T17:00Z",
-   "team": "19",
-   "name": "Ross Johnston",
-   "status": "out",
-   "athlete": "3067822",
-   "espn": {
-    "seen": "2026-10-30T15:08:56.263Z",
-    "own": "2026-10-19T02:33:00.000Z"
-   }
-  },
-  "401892615|toreykrug|out": {
-   "game": "401892615",
-   "start": "2026-10-31T17:00Z",
-   "team": "19",
-   "name": "Torey Krug",
-   "status": "out",
-   "athlete": "2952729",
-   "espn": {
-    "seen": "2026-10-30T15:08:56.263Z",
-    "own": "2026-10-13T01:42:00.000Z"
-   }
-  },
-  "401892615|dillondube|out": {
-   "game": "401892615",
-   "start": "2026-10-31T17:00Z",
-   "team": "19",
-   "name": "Dillon Dube",
-   "status": "out",
-   "athlete": "4063268",
-   "espn": {
-    "seen": "2026-10-30T15:08:56.263Z",
-    "own": "2026-10-10T21:13:00.000Z"
-   }
-  },
-  "401892615|tylertucker|out": {
-   "game": "401892615",
-   "start": "2026-10-31T17:00Z",
-   "team": "19",
-   "name": "Tyler Tucker",
-   "status": "out",
-   "athlete": "4587904",
-   "espn": {
-    "seen": "2026-10-30T15:08:56.263Z",
-    "own": "2026-09-30T19:39:00.000Z"
-   }
-  },
-  "401892615|loganmailloux|out": {
-   "game": "401892615",
-   "start": "2026-10-31T17:00Z",
-   "team": "19",
-   "name": "Logan Mailloux",
-   "status": "out",
-   "athlete": "4874748",
-   "espn": {
-    "seen": "2026-10-30T15:08:56.263Z",
-    "own": "2026-09-28T15:40:00.000Z"
-   }
-  },
   "401892616|zemgusgirgensons|q": {
    "game": "401892616",
    "start": "2026-10-31T18:00Z",
@@ -997,22 +857,6 @@
     "own": "2026-10-20T03:51:00.000Z"
    }
   },
-  "401892615|albertjohansson|out": {
-   "game": "401892615",
-   "start": "2026-10-31T17:00Z",
-   "team": "5",
-   "name": "Albert Johansson",
-   "status": "out",
-   "athlete": "4565282",
-   "espn": {
-    "seen": "2026-10-30T16:23:04.949Z",
-    "own": "2026-10-30T16:08:00.000Z"
-   },
-   "sleeper": {
-    "seen": "2026-10-30T20:19:50.448Z",
-    "own": "2026-10-30T16:10:07.768Z"
-   }
-  },
   "401892623|connorzary|out": {
    "game": "401892623",
    "start": "2026-11-01T02:00Z",
@@ -1051,22 +895,6 @@
    "espn": {
     "seen": "2026-10-30T16:49:37.764Z",
     "own": "2026-10-30T16:32:00.000Z"
-   }
-  },
-  "401892615|coltonparayko|q": {
-   "game": "401892615",
-   "start": "2026-10-31T17:00Z",
-   "team": "19",
-   "name": "Colton Parayko",
-   "status": "q",
-   "athlete": "3069341",
-   "espn": {
-    "seen": "2026-10-30T17:16:56.230Z",
-    "own": "2026-10-30T17:10:00.000Z"
-   },
-   "sleeper": {
-    "seen": "2026-10-30T20:19:50.448Z",
-    "own": "2026-10-30T17:50:07.903Z"
    }
   },
   "401892623|loganoconnor|q": {
@@ -1137,30 +965,6 @@
     "seen": "2026-10-31T00:44:40.885Z",
     "own": "2026-10-31T00:29:00.000Z"
    },
-   "bluesky": {
-    "seen": "2026-10-31T00:46:02.806Z",
-    "own": "2026-10-31T00:36:07.000Z",
-    "why": "@dailyfaceoff.bsky.social: Hayden Hodgson has been suspended two games for board"
-   }
-  },
-  "401892614|haydenhodgson|out": {
-   "game": "401892614",
-   "start": "2026-10-31T17:00Z",
-   "team": "1",
-   "name": "Hayden Hodgson",
-   "status": "out",
-   "bluesky": {
-    "seen": "2026-10-31T00:46:02.806Z",
-    "own": "2026-10-31T00:36:07.000Z",
-    "why": "@dailyfaceoff.bsky.social: Hayden Hodgson has been suspended two games for board"
-   }
-  },
-  "401892615|haydenhodgson|out": {
-   "game": "401892615",
-   "start": "2026-10-31T17:00Z",
-   "team": "5",
-   "name": "Hayden Hodgson",
-   "status": "out",
    "bluesky": {
     "seen": "2026-10-31T00:46:02.806Z",
     "own": "2026-10-31T00:36:07.000Z",
@@ -1846,30 +1650,6 @@
    "espn": {
     "seen": "2026-10-31T15:53:26.481Z",
     "own": "2026-10-31T15:15:00.000Z"
-   }
-  },
-  "401892614|bowenbyram|out": {
-   "game": "401892614",
-   "start": "2026-10-31T17:00Z",
-   "team": "4",
-   "name": "Bowen Byram",
-   "status": "out",
-   "athlete": "4565225",
-   "espn": {
-    "seen": "2026-10-31T16:02:21.358Z",
-    "own": "2026-10-31T15:50:00.000Z"
-   }
-  },
-  "401892615|coltonparayko|out": {
-   "game": "401892615",
-   "start": "2026-10-31T17:00Z",
-   "team": "19",
-   "name": "Colton Parayko",
-   "status": "out",
-   "athlete": "3069341",
-   "espn": {
-    "seen": "2026-10-31T16:14:03.667Z",
-    "own": "2026-10-31T15:57:00.000Z"
    }
   },
   "401892617|ryanpulock|out": {
@@ -9420,6 +9200,18 @@
    "espn": {
     "seen": "2026-11-10T16:44:22.818Z",
     "own": "2026-09-27T15:21:00.000Z"
+   }
+  },
+  "401892685|linusullmark|out": {
+   "game": "401892685",
+   "start": "2026-11-11T00:00Z",
+   "team": "14",
+   "name": "Linus Ullmark",
+   "status": "out",
+   "athlete": "3069285",
+   "espn": {
+    "seen": "2026-11-10T17:44:22.173Z",
+    "own": "2026-11-10T16:41:00.000Z"
    }
   }
  }

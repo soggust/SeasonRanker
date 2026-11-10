@@ -2,38 +2,12 @@
  "sport": "nhl",
  "cursor": {
   "johnston-bot.bsky.social": "2026-11-10T16:41:59.943Z",
-  "notfriedgehnic.bsky.social": "2026-11-09T19:15:10.716Z",
-  "dailyfaceoff.bsky.social": "2026-11-10T15:53:56.000Z",
-  "dfotoronto.bsky.social": "2026-11-10T16:10:15.000Z",
-  "marklazerus.bsky.social": "2026-11-10T15:49:21.948Z"
+  "notfriedgehnic.bsky.social": "2026-11-10T17:26:04.651Z",
+  "dailyfaceoff.bsky.social": "2026-11-10T17:28:28.000Z",
+  "dfotoronto.bsky.social": "2026-11-10T17:42:18.000Z",
+  "marklazerus.bsky.social": "2026-11-10T16:55:17.449Z"
  },
  "claims": [
-  {
-   "id": "at://did:plc:3uus7y6h3rlrk6sbctzxm4bg/app.bsky.feed.post/3myd4zfrp4k2h|mattroy|active|return",
-   "at": "2026-10-20T17:13:10.000Z",
-   "seen": "2026-10-20T17:33:37.181Z",
-   "handle": "dailyfaceoff.bsky.social",
-   "post": "at://did:plc:3uus7y6h3rlrk6sbctzxm4bg/app.bsky.feed.post/3myd4zfrp4k2h",
-   "player": "Matt Roy",
-   "team": "WSH",
-   "status": "active",
-   "kind": "return",
-   "confidence": 0.9,
-   "text": "Capitals’ Matt Roy to return against Kings after missing six games"
-  },
-  {
-   "id": "at://did:plc:3uus7y6h3rlrk6sbctzxm4bg/app.bsky.feed.post/3myd6rndpwf2h|esalindell|out|status",
-   "at": "2026-10-20T17:44:37.000Z",
-   "seen": "2026-10-20T18:16:26.920Z",
-   "handle": "dailyfaceoff.bsky.social",
-   "post": "at://did:plc:3uus7y6h3rlrk6sbctzxm4bg/app.bsky.feed.post/3myd6rndpwf2h",
-   "player": "Esa Lindell",
-   "team": "DAL",
-   "status": "out",
-   "kind": "status",
-   "confidence": 0.95,
-   "text": "Stars’ Esa Lindell out against Bruins with lower-body injury"
-  },
   {
    "id": "at://did:plc:3uus7y6h3rlrk6sbctzxm4bg/app.bsky.feed.post/3mydddff5ci2p|sanderson|active|return",
    "at": "2026-10-20T19:06:08.000Z",
@@ -2139,6 +2113,32 @@
    "kind": "status",
    "confidence": 0.8,
    "text": "Leafs injury news: Kirill Marchenko, Colton Sissons listed as week-to-week, Morgan Rielly day-to-day"
+  },
+  {
+   "id": "at://did:plc:3uus7y6h3rlrk6sbctzxm4bg/app.bsky.feed.post/3mzxvgwhylu2k|joshmorrissey|active|return",
+   "at": "2026-11-10T16:48:40.000Z",
+   "seen": "2026-11-10T17:45:35.797Z",
+   "handle": "dailyfaceoff.bsky.social",
+   "post": "at://did:plc:3uus7y6h3rlrk6sbctzxm4bg/app.bsky.feed.post/3mzxvgwhylu2k",
+   "player": "Josh Morrissey",
+   "team": "WPG",
+   "status": "active",
+   "kind": "return",
+   "confidence": 0.95,
+   "text": "Jets’ Josh Morrissey returns to lineup after 14-game absence"
+  },
+  {
+   "id": "at://did:plc:knaj2vcp4x6t7hr7ewd6e3uz/app.bsky.feed.post/3mzxwuoqlyd2c|bendanford|out|status",
+   "at": "2026-11-10T17:14:16.000Z",
+   "seen": "2026-11-10T17:45:35.797Z",
+   "handle": "dfotoronto.bsky.social",
+   "post": "at://did:plc:knaj2vcp4x6t7hr7ewd6e3uz/app.bsky.feed.post/3mzxwuoqlyd2c",
+   "player": "Ben Danford",
+   "team": "TOR",
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.7,
+   "text": "Maple Leafs Prospect Roundup: Brody Pepoy popping off, Ben Danford out week-to-week"
   }
  ]
 }
