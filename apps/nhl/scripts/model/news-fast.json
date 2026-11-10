@@ -3,9 +3,9 @@
  "cursor": {
   "johnston-bot.bsky.social": "2026-11-10T12:34:37.523Z",
   "notfriedgehnic.bsky.social": "2026-11-09T19:15:10.716Z",
-  "dailyfaceoff.bsky.social": "2026-11-10T15:03:01.000Z",
-  "dfotoronto.bsky.social": "2026-11-10T15:40:30.000Z",
-  "marklazerus.bsky.social": "2026-11-10T03:45:34.090Z"
+  "dailyfaceoff.bsky.social": "2026-11-10T15:53:56.000Z",
+  "dfotoronto.bsky.social": "2026-11-10T16:01:13.000Z",
+  "marklazerus.bsky.social": "2026-11-10T15:49:21.948Z"
  },
  "claims": [
   {
@@ -2087,6 +2087,32 @@
    "kind": "benched",
    "confidence": 0.6,
    "text": "NHL Notebook: New Jersey Devils won’t start Connor Hellebuyck in Tuesday’s return to Winnipeg"
+  },
+  {
+   "id": "at://did:plc:3uus7y6h3rlrk6sbctzxm4bg/app.bsky.feed.post/3mzxsf2eedr2p|rielly|out|status",
+   "at": "2026-11-10T15:53:56.000Z",
+   "seen": "2026-11-10T16:04:00.408Z",
+   "handle": "dailyfaceoff.bsky.social",
+   "post": "at://did:plc:3uus7y6h3rlrk6sbctzxm4bg/app.bsky.feed.post/3mzxsf2eedr2p",
+   "player": "Rielly",
+   "team": "TOR",
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.9,
+   "text": "Leafs’ Rielly out day-to-day; Sissons out week-to-week"
+  },
+  {
+   "id": "at://did:plc:3uus7y6h3rlrk6sbctzxm4bg/app.bsky.feed.post/3mzxsf2eedr2p|sissons|out|status",
+   "at": "2026-11-10T15:53:56.000Z",
+   "seen": "2026-11-10T16:04:00.408Z",
+   "handle": "dailyfaceoff.bsky.social",
+   "post": "at://did:plc:3uus7y6h3rlrk6sbctzxm4bg/app.bsky.feed.post/3mzxsf2eedr2p",
+   "player": "Sissons",
+   "team": "TOR",
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.9,
+   "text": "Leafs’ Rielly out day-to-day; Sissons out week-to-week"
   }
  ]
 }

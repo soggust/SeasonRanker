@@ -3,11 +3,11 @@
  "cursor": {
   "adamscheftermirror.bsky.social": "2026-11-10T15:35:19.023Z",
   "rapsheet.bsky.social": "2026-11-09T22:38:32.578Z",
-  "nflnewsreposterbot.bsky.social": "2026-11-10T00:04:33.292Z",
-  "insidenflnews.bsky.social": "2026-11-10T15:33:32.956Z",
-  "nflnewsposter.bsky.social": "2026-11-10T15:34:02.502Z",
+  "nflnewsreposterbot.bsky.social": "2026-11-10T15:57:09.288Z",
+  "insidenflnews.bsky.social": "2026-11-10T16:01:14.440Z",
+  "nflnewsposter.bsky.social": "2026-11-10T16:01:59.708Z",
   "rotoworld-fb.bsky.social": "2026-11-10T15:40:02.000Z",
-  "rotowirenfl.bsky.social": "2026-11-10T15:38:48.000Z"
+  "rotowirenfl.bsky.social": "2026-11-10T16:00:52.000Z"
  },
  "claims": [
   {
@@ -18443,6 +18443,32 @@
    "kind": "return",
    "confidence": 0.6,
    "text": "Terrance Ferguson: Return from IR not guaranteed \n\n https://www.rotowire.com/football/player/terrance-ferguson-18497"
+  },
+  {
+   "id": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3mzxrxlcc5r22|rhamondrestevenson|out|status",
+   "at": "2026-11-10T15:46:24.000Z",
+   "seen": "2026-11-10T16:04:00.408Z",
+   "handle": "rotowirenfl.bsky.social",
+   "post": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3mzxrxlcc5r22",
+   "player": "Rhamondre Stevenson",
+   "team": "NE",
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.4,
+   "text": "Rhamondre Stevenson: Likely to miss multiple weeks \n\n https://www.rotowire.com/football/player/rhamondre-stevenson-15372"
+  },
+  {
+   "id": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3mzxsrgy6ez2c|justinherbert|active|status",
+   "at": "2026-11-10T16:00:52.000Z",
+   "seen": "2026-11-10T16:04:00.408Z",
+   "handle": "rotowirenfl.bsky.social",
+   "post": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3mzxsrgy6ez2c",
+   "player": "Justin Herbert",
+   "team": "LAC",
+   "status": "active",
+   "kind": "status",
+   "confidence": 0.45,
+   "text": "Justin Herbert: Likely to play through finger injury \n\n https://www.rotowire.com/football/player/justin-herbert-14446"
   }
  ]
 }
