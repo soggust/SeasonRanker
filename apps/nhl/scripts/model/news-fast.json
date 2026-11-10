@@ -2,9 +2,9 @@
  "sport": "nhl",
  "cursor": {
   "johnston-bot.bsky.social": "2026-11-10T19:43:02.587Z",
-  "notfriedgehnic.bsky.social": "2026-11-10T19:37:48.286Z",
-  "dailyfaceoff.bsky.social": "2026-11-10T19:49:01.000Z",
-  "dfotoronto.bsky.social": "2026-11-10T19:19:24.000Z",
+  "notfriedgehnic.bsky.social": "2026-11-10T20:08:57.249Z",
+  "dailyfaceoff.bsky.social": "2026-11-10T21:10:30.000Z",
+  "dfotoronto.bsky.social": "2026-11-10T20:02:58.000Z",
   "marklazerus.bsky.social": "2026-11-10T16:55:17.449Z"
  },
  "claims": [
@@ -2243,6 +2243,19 @@
    "kind": "status",
    "confidence": 0.5,
    "text": "Kings’ Mats Zuccarello rejoins lineup; Kevin Fiala close to return"
+  },
+  {
+   "id": "at://did:plc:3uus7y6h3rlrk6sbctzxm4bg/app.bsky.feed.post/3mzycdggqfv2k|jaredspurgeon|active|status",
+   "at": "2026-11-10T20:39:21.000Z",
+   "seen": "2026-11-10T21:15:30.044Z",
+   "handle": "dailyfaceoff.bsky.social",
+   "post": "at://did:plc:3uus7y6h3rlrk6sbctzxm4bg/app.bsky.feed.post/3mzycdggqfv2k",
+   "player": "Jared Spurgeon",
+   "team": "MIN",
+   "status": "active",
+   "kind": "status",
+   "confidence": 0.93,
+   "text": "Wild activate Jared Spurgeon off injured reserve"
   }
  ]
 }

@@ -1,41 +1,15 @@
 {
  "sport": "nfl",
  "cursor": {
-  "adamscheftermirror.bsky.social": "2026-11-10T19:55:18.648Z",
-  "rapsheet.bsky.social": "2026-11-10T19:39:13.163Z",
+  "adamscheftermirror.bsky.social": "2026-11-10T21:15:17.521Z",
+  "rapsheet.bsky.social": "2026-11-10T21:02:04.176Z",
   "nflnewsreposterbot.bsky.social": "2026-11-10T18:38:15.366Z",
-  "insidenflnews.bsky.social": "2026-11-10T19:52:37.741Z",
-  "nflnewsposter.bsky.social": "2026-11-10T19:49:45.534Z",
-  "rotoworld-fb.bsky.social": "2026-11-10T19:46:31.000Z",
-  "rotowirenfl.bsky.social": "2026-11-10T19:43:12.000Z"
+  "insidenflnews.bsky.social": "2026-11-10T20:57:58.902Z",
+  "nflnewsposter.bsky.social": "2026-11-10T21:09:21.257Z",
+  "rotoworld-fb.bsky.social": "2026-11-10T21:07:01.000Z",
+  "rotowirenfl.bsky.social": "2026-11-10T21:08:02.000Z"
  },
  "claims": [
-  {
-   "id": "at://did:plc:fuqjc7x4gxvnwzksnlxwbe4x/app.bsky.feed.post/3mydipp34d2g5|carsonsteele|out|status",
-   "at": "2026-10-20T20:42:30.004Z",
-   "seen": "2026-10-20T21:00:42.602Z",
-   "handle": "nflnewsposter.bsky.social",
-   "post": "at://did:plc:fuqjc7x4gxvnwzksnlxwbe4x/app.bsky.feed.post/3mydipp34d2g5",
-   "player": "Carson Steele",
-   "team": "PHI",
-   "status": "out",
-   "kind": "status",
-   "confidence": 0.8,
-   "text": "[Eagles] We have signed RB Elijah Mitchell to the Practice Squad and released C James Brockermeyer and RB Ian Wheeler from the unit. We have also waived RB Jaydon Blue. RB Carson Steele has been Waive"
-  },
-  {
-   "id": "at://did:plc:qre6zxbmr3ixhdmgsgdretb5/app.bsky.feed.post/3mydjkdggva2z|carsonsteele|out|status",
-   "at": "2026-10-20T20:57:23.731Z",
-   "seen": "2026-10-20T21:00:42.602Z",
-   "handle": "adamscheftermirror.bsky.social",
-   "post": "at://did:plc:qre6zxbmr3ixhdmgsgdretb5/app.bsky.feed.post/3mydjkdggva2z",
-   "player": "Carson Steele",
-   "team": "PHI",
-   "status": "out",
-   "kind": "status",
-   "confidence": 0.8,
-   "text": "Eagles’ roster moves: 🏈Signed RB Elijah Mitchell to their practice squad. 🏈Released C James Brockermeyer and RB Ian Wheeler from their practice squad. 🏈Waived RB Jaydon Blue. 🏈Waived/injured RB Ca"
-  },
   {
    "id": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3mydkllrkkd2z|kylemonangai|questionable|status",
    "at": "2026-10-20T21:15:59.000Z",
@@ -18547,6 +18521,110 @@
    "kind": "starting",
    "confidence": 0.8,
    "text": "Raiders No. 1 overall pick Fernando Mendoza will now take over as the starting QB following Kirk Cousins’ trade to Minnesota. Las Vegas is 4-5, and Mendoza’s first two career starts will come against "
+  },
+  {
+   "id": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3mzyamwrmhm2h|kylermurray|questionable|status",
+   "at": "2026-11-10T20:08:53.000Z",
+   "seen": "2026-11-10T21:15:30.044Z",
+   "handle": "rotoworld-fb.bsky.social",
+   "post": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3mzyamwrmhm2h",
+   "player": "Kyler Murray",
+   "team": "ARI",
+   "status": "questionable",
+   "kind": "status",
+   "confidence": 0.45,
+   "text": "Kyler dealing with grade 2 hamstring strain"
+  },
+  {
+   "id": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3mzyavjqsmc2w|kylermurray|questionable|status",
+   "at": "2026-11-10T20:13:41.000Z",
+   "seen": "2026-11-10T21:15:30.044Z",
+   "handle": "rotowirenfl.bsky.social",
+   "post": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3mzyavjqsmc2w",
+   "player": "Kyler Murray",
+   "team": "ARI",
+   "status": "questionable",
+   "kind": "status",
+   "confidence": 0.45,
+   "text": "Kyler Murray: Managing Grade 2 hamstring strain \n\n https://www.rotowire.com/football/player/kyler-murray-13613"
+  },
+  {
+   "id": "at://did:plc:qre6zxbmr3ixhdmgsgdretb5/app.bsky.feed.post/3mzyayhwh6q2h|fernandomendoza|none|starting",
+   "at": "2026-11-10T20:15:20.678Z",
+   "seen": "2026-11-10T21:15:30.044Z",
+   "handle": "adamscheftermirror.bsky.social",
+   "post": "at://did:plc:qre6zxbmr3ixhdmgsgdretb5/app.bsky.feed.post/3mzyayhwh6q2h",
+   "player": "Fernando Mendoza",
+   "team": "LV",
+   "status": "none",
+   "kind": "starting",
+   "confidence": 0.8,
+   "text": "Repost by @AdamSchefter\n\n@fernandomendoza is happy to share that he's started a new position as QB1 for the @Raiders\n\nClick to see original repost"
+  },
+  {
+   "id": "at://did:plc:fuqjc7x4gxvnwzksnlxwbe4x/app.bsky.feed.post/3mzycpk3fgc5r|malikwillis|out|status",
+   "at": "2026-11-10T20:46:08.453Z",
+   "seen": "2026-11-10T21:15:30.044Z",
+   "handle": "nflnewsposter.bsky.social",
+   "post": "at://did:plc:fuqjc7x4gxvnwzksnlxwbe4x/app.bsky.feed.post/3mzycpk3fgc5r",
+   "player": "Malik Willis",
+   "team": "MIA",
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.97,
+   "text": "[Pelissero] Dolphins are placing QB Malik Willis on IR.\n\nWillis has been battling a groin injury that impacted his mobility. An MRI showed it has now developed into a core muscle injury, which require"
+  },
+  {
+   "id": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3mzyd4tyhvl2v|malikwillis|out|status",
+   "at": "2026-11-10T20:53:34.000Z",
+   "seen": "2026-11-10T21:15:30.044Z",
+   "handle": "rotoworld-fb.bsky.social",
+   "post": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3mzyd4tyhvl2v",
+   "player": "Malik Willis",
+   "team": "MIA",
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.97,
+   "text": "Groin injury sends Malik Willis to injured reserve"
+  },
+  {
+   "id": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3mzydgdtrsa24|malikwillis|out|status",
+   "at": "2026-11-10T20:58:53.000Z",
+   "seen": "2026-11-10T21:15:30.044Z",
+   "handle": "rotowirenfl.bsky.social",
+   "post": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3mzydgdtrsa24",
+   "player": "Malik Willis",
+   "team": "MIA",
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.97,
+   "text": "Malik Willis: Headed for IR with core-muscle injury \n\n https://www.rotowire.com/football/player/malik-willis-15872"
+  },
+  {
+   "id": "at://did:plc:qre6zxbmr3ixhdmgsgdretb5/app.bsky.feed.post/3mzydivt5562g|malikwillis|out|status",
+   "at": "2026-11-10T21:00:19.603Z",
+   "seen": "2026-11-10T21:15:30.044Z",
+   "handle": "adamscheftermirror.bsky.social",
+   "post": "at://did:plc:qre6zxbmr3ixhdmgsgdretb5/app.bsky.feed.post/3mzydivt5562g",
+   "player": "Malik Willis",
+   "team": "MIA",
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.97,
+   "text": "Dolphins are placing QB Malik Willis on injured reserve due to a groin injury.\n\nOriginal post"
+  },
+  {
+   "id": "at://did:plc:qre6zxbmr3ixhdmgsgdretb5/app.bsky.feed.post/3mzydiwcfnx2y|kylemccord|none|starting",
+   "at": "2026-11-10T21:00:20.102Z",
+   "seen": "2026-11-10T21:15:30.044Z",
+   "handle": "adamscheftermirror.bsky.social",
+   "post": "at://did:plc:qre6zxbmr3ixhdmgsgdretb5/app.bsky.feed.post/3mzydiwcfnx2y",
+   "player": "Kyle McCord",
+   "team": "MIA",
+   "status": "none",
+   "kind": "starting",
+   "confidence": 0.85,
+   "text": "Kyle McCord, whom the Dolphins acquired last summer from the Packers, becomes Miami’s new starting quarterback. QB Brady Cook is on the practice squad.\n\nOriginal post"
   }
  ]
 }
