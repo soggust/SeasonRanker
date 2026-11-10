@@ -8854,6 +8854,18 @@
     "own": "2026-11-09T20:41:17.000Z",
     "why": "@dfotoronto.bsky.social: Report: Maple Leafs prospect Ben Danford out week-to-we"
    }
+  },
+  "401892683|coltonsissons|out": {
+   "game": "401892683",
+   "start": "2026-11-11T00:00Z",
+   "team": "21",
+   "name": "Colton Sissons",
+   "status": "out",
+   "athlete": "2993474",
+   "espn": {
+    "seen": "2026-11-10T15:48:24.756Z",
+    "own": "2026-11-10T15:34:00.000Z"
+   }
   }
  }
 }
