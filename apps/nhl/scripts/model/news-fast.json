@@ -1,10 +1,10 @@
 {
  "sport": "nhl",
  "cursor": {
-  "johnston-bot.bsky.social": "2026-11-10T18:22:34.892Z",
-  "notfriedgehnic.bsky.social": "2026-11-10T19:05:03.022Z",
-  "dailyfaceoff.bsky.social": "2026-11-10T19:11:23.000Z",
-  "dfotoronto.bsky.social": "2026-11-10T19:12:53.000Z",
+  "johnston-bot.bsky.social": "2026-11-10T19:43:02.587Z",
+  "notfriedgehnic.bsky.social": "2026-11-10T19:37:48.286Z",
+  "dailyfaceoff.bsky.social": "2026-11-10T19:49:01.000Z",
+  "dfotoronto.bsky.social": "2026-11-10T19:19:24.000Z",
   "marklazerus.bsky.social": "2026-11-10T16:55:17.449Z"
  },
  "claims": [
@@ -2191,6 +2191,58 @@
    "kind": "return",
    "confidence": 0.95,
    "text": "Jets’ Josh Morrissey returns to lineup after 14-game absence. #nhl #nhlhockey #dailyfaceoff"
+  },
+  {
+   "id": "at://did:plc:3uus7y6h3rlrk6sbctzxm4bg/app.bsky.feed.post/3mzy5quzs4h2c|aleksanderbarkov|out|status",
+   "at": "2026-11-10T19:17:24.000Z",
+   "seen": "2026-11-10T20:01:16.227Z",
+   "handle": "dailyfaceoff.bsky.social",
+   "post": "at://did:plc:3uus7y6h3rlrk6sbctzxm4bg/app.bsky.feed.post/3mzy5quzs4h2c",
+   "player": "Aleksander Barkov",
+   "team": "FLA",
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.7,
+   "text": "Panthers coach Maurice: ‘We’re within two weeks’ of Barkov, Marchand returning"
+  },
+  {
+   "id": "at://did:plc:3uus7y6h3rlrk6sbctzxm4bg/app.bsky.feed.post/3mzy5quzs4h2c|bradmarchand|out|status",
+   "at": "2026-11-10T19:17:24.000Z",
+   "seen": "2026-11-10T20:01:16.227Z",
+   "handle": "dailyfaceoff.bsky.social",
+   "post": "at://did:plc:3uus7y6h3rlrk6sbctzxm4bg/app.bsky.feed.post/3mzy5quzs4h2c",
+   "player": "Brad Marchand",
+   "team": "FLA",
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.7,
+   "text": "Panthers coach Maurice: ‘We’re within two weeks’ of Barkov, Marchand returning"
+  },
+  {
+   "id": "at://did:plc:3uus7y6h3rlrk6sbctzxm4bg/app.bsky.feed.post/3mzy6rfdyap2c|matszuccarello|active|status",
+   "at": "2026-11-10T19:35:35.000Z",
+   "seen": "2026-11-10T20:01:16.227Z",
+   "handle": "dailyfaceoff.bsky.social",
+   "post": "at://did:plc:3uus7y6h3rlrk6sbctzxm4bg/app.bsky.feed.post/3mzy6rfdyap2c",
+   "player": "Mats Zuccarello",
+   "team": "LAK",
+   "status": "active",
+   "kind": "status",
+   "confidence": 0.9,
+   "text": "Kings’ Mats Zuccarello rejoins lineup; Kevin Fiala close to return"
+  },
+  {
+   "id": "at://did:plc:3uus7y6h3rlrk6sbctzxm4bg/app.bsky.feed.post/3mzy6rfdyap2c|kevinfiala|out|status",
+   "at": "2026-11-10T19:35:35.000Z",
+   "seen": "2026-11-10T20:01:16.227Z",
+   "handle": "dailyfaceoff.bsky.social",
+   "post": "at://did:plc:3uus7y6h3rlrk6sbctzxm4bg/app.bsky.feed.post/3mzy6rfdyap2c",
+   "player": "Kevin Fiala",
+   "team": "LAK",
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.5,
+   "text": "Kings’ Mats Zuccarello rejoins lineup; Kevin Fiala close to return"
   }
  ]
 }

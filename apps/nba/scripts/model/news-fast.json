@@ -1,24 +1,11 @@
 {
  "sport": "nba",
  "cursor": {
-  "rotowirenba.bsky.social": "2026-11-10T18:30:16.000Z",
+  "rotowirenba.bsky.social": "2026-11-10T19:25:09.000Z",
   "insidenbanews.bsky.social": "2026-11-08T18:11:49.382Z",
   "shamsbot.bsky.social": "2026-11-08T18:05:20.000Z"
  },
  "claims": [
-  {
-   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mydfto52rz2a|bamadebayo|active|status",
-   "at": "2026-10-20T19:51:01.000Z",
-   "seen": "2026-10-20T20:03:16.249Z",
-   "handle": "rotowirenba.bsky.social",
-   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mydfto52rz2a",
-   "player": "Bam Adebayo",
-   "team": "MIA",
-   "status": "active",
-   "kind": "status",
-   "confidence": 0.8,
-   "text": "Bam Adebayo: Off injury report \n\n https://www.rotowire.com/basketball/player/bam-adebayo-4153"
-  },
   {
    "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mydhwbrb6d27|cobywhite|out|status",
    "at": "2026-10-20T20:28:17.000Z",
@@ -9495,6 +9482,32 @@
    "kind": "status",
    "confidence": 0.95,
    "text": "Lauri Markkanen: Ruled out with wrist sprain \n\n https://www.rotowire.com/basketball/player/lauri-markkanen-4119"
+  },
+  {
+   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mzy5vmwfhn2h|joshhart|doubtful|status",
+   "at": "2026-11-10T19:20:03.000Z",
+   "seen": "2026-11-10T20:01:16.227Z",
+   "handle": "rotowirenba.bsky.social",
+   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mzy5vmwfhn2h",
+   "player": "Josh Hart",
+   "team": null,
+   "status": "doubtful",
+   "kind": "status",
+   "confidence": 0.9,
+   "text": "Josh Hart: Downgraded to doubtful \n\n https://www.rotowire.com/basketball/player/josh-hart-4136"
+  },
+  {
+   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mzy66qq2fe2z|zionwilliamson|active|status",
+   "at": "2026-11-10T19:25:09.000Z",
+   "seen": "2026-11-10T20:01:16.227Z",
+   "handle": "rotowirenba.bsky.social",
+   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mzy66qq2fe2z",
+   "player": "Zion Williamson",
+   "team": null,
+   "status": "active",
+   "kind": "status",
+   "confidence": 0.6,
+   "text": "Zion Williamson: Absent from injury report \n\n https://www.rotowire.com/basketball/player/zion-williamson-4777"
   }
  ]
 }

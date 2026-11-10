@@ -1,13 +1,13 @@
 {
  "sport": "nfl",
  "cursor": {
-  "adamscheftermirror.bsky.social": "2026-11-10T18:55:21.414Z",
-  "rapsheet.bsky.social": "2026-11-10T18:48:48.592Z",
+  "adamscheftermirror.bsky.social": "2026-11-10T19:55:18.648Z",
+  "rapsheet.bsky.social": "2026-11-10T19:39:13.163Z",
   "nflnewsreposterbot.bsky.social": "2026-11-10T18:38:15.366Z",
-  "insidenflnews.bsky.social": "2026-11-10T19:04:11.096Z",
-  "nflnewsposter.bsky.social": "2026-11-10T19:07:24.200Z",
-  "rotoworld-fb.bsky.social": "2026-11-10T18:43:40.000Z",
-  "rotowirenfl.bsky.social": "2026-11-10T18:43:04.000Z"
+  "insidenflnews.bsky.social": "2026-11-10T19:52:37.741Z",
+  "nflnewsposter.bsky.social": "2026-11-10T19:49:45.534Z",
+  "rotoworld-fb.bsky.social": "2026-11-10T19:46:31.000Z",
+  "rotowirenfl.bsky.social": "2026-11-10T19:43:12.000Z"
  },
  "claims": [
   {
@@ -18521,6 +18521,32 @@
    "kind": "status",
    "confidence": 0.45,
    "text": "[Raanan] JJ McCarthy (hip) and Cam Skattebo (hamstring) practicing as expected. Good sign with game on Thursday night vs. WAS and this being the only practice of week.\n\nOnly Giants player not at pract"
+  },
+  {
+   "id": "at://did:plc:mbr4badgf6yu56mquzackzew/app.bsky.feed.post/3mzy6zpbrmk24|fernandomendoza|active|starting",
+   "at": "2026-11-10T19:40:14.483Z",
+   "seen": "2026-11-10T20:01:16.227Z",
+   "handle": "insidenflnews.bsky.social",
+   "post": "at://did:plc:mbr4badgf6yu56mquzackzew/app.bsky.feed.post/3mzy6zpbrmk24",
+   "player": "Fernando Mendoza",
+   "team": "LV",
+   "status": "active",
+   "kind": "starting",
+   "confidence": 0.8,
+   "text": "🚨 Schefter: Raiders n.º 1 overall pick Fernando Mendoza will now take over as the starting QB."
+  },
+  {
+   "id": "at://did:plc:qre6zxbmr3ixhdmgsgdretb5/app.bsky.feed.post/3mzy6zyemlu2l|fernandomendoza|active|starting",
+   "at": "2026-11-10T19:40:23.990Z",
+   "seen": "2026-11-10T20:01:16.227Z",
+   "handle": "adamscheftermirror.bsky.social",
+   "post": "at://did:plc:qre6zxbmr3ixhdmgsgdretb5/app.bsky.feed.post/3mzy6zyemlu2l",
+   "player": "Fernando Mendoza",
+   "team": "LV",
+   "status": "active",
+   "kind": "starting",
+   "confidence": 0.8,
+   "text": "Raiders No. 1 overall pick Fernando Mendoza will now take over as the starting QB following Kirk Cousins’ trade to Minnesota. Las Vegas is 4-5, and Mendoza’s first two career starts will come against "
   }
  ]
 }
