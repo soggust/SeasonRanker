@@ -1,28 +1,15 @@
 {
  "sport": "nfl",
  "cursor": {
-  "adamscheftermirror.bsky.social": "2026-11-10T00:15:12.177Z",
+  "adamscheftermirror.bsky.social": "2026-11-10T01:45:17.531Z",
   "rapsheet.bsky.social": "2026-11-09T22:38:32.578Z",
   "nflnewsreposterbot.bsky.social": "2026-11-10T00:04:33.292Z",
-  "insidenflnews.bsky.social": "2026-11-10T01:36:31.189Z",
-  "nflnewsposter.bsky.social": "2026-11-10T01:36:20.220Z",
+  "insidenflnews.bsky.social": "2026-11-10T01:44:59.978Z",
+  "nflnewsposter.bsky.social": "2026-11-10T01:46:10.525Z",
   "rotoworld-fb.bsky.social": "2026-11-09T22:57:44.000Z",
   "rotowirenfl.bsky.social": "2026-11-10T00:25:25.000Z"
  },
  "claims": [
-  {
-   "id": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3mybj2atprj22|mikeevans|questionable|status",
-   "at": "2026-10-20T01:43:04.000Z",
-   "seen": "2026-10-20T02:43:44.619Z",
-   "handle": "rotowirenfl.bsky.social",
-   "post": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3mybj2atprj22",
-   "player": "Mike Evans",
-   "team": "SF",
-   "status": "questionable",
-   "kind": "status",
-   "confidence": 0.9,
-   "text": "Mike Evans: Questionable to return Monday \n\n https://www.rotowire.com/football/player/mike-evans-9253"
-  },
   {
    "id": "at://did:plc:qre6zxbmr3ixhdmgsgdretb5/app.bsky.feed.post/3mybjtibjas2w|mikeevans|questionable|status",
    "at": "2026-10-20T01:57:11.243Z",

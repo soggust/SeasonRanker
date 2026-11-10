@@ -1,7 +1,7 @@
 {
  "sport": "nba",
  "cursor": {
-  "rotowirenba.bsky.social": "2026-11-10T00:46:52.000Z",
+  "rotowirenba.bsky.social": "2026-11-10T01:49:45.000Z",
   "insidenbanews.bsky.social": "2026-11-08T18:11:49.382Z",
   "shamsbot.bsky.social": "2026-11-08T18:05:20.000Z"
  },
@@ -9690,6 +9690,19 @@
    "kind": "status",
    "confidence": 0.95,
    "text": "Keegan Murray: Questionable for Tuesday \n\n https://www.rotowire.com/basketball/player/keegan-murray-5699"
+  },
+  {
+   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mzwcz2fevq24|herbertjones|none|starting",
+   "at": "2026-11-10T01:46:07.000Z",
+   "seen": "2026-11-10T01:50:23.694Z",
+   "handle": "rotowirenba.bsky.social",
+   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mzwcz2fevq24",
+   "player": "Herbert Jones",
+   "team": "NOP",
+   "status": "none",
+   "kind": "starting",
+   "confidence": 0.8,
+   "text": "Herbert Jones: Starting Monday \n\n https://www.rotowire.com/basketball/player/herbert-jones-5414"
   }
  ]
 }
