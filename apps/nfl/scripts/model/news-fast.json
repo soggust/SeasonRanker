@@ -4,10 +4,10 @@
   "adamscheftermirror.bsky.social": "2026-11-10T23:15:21.792Z",
   "rapsheet.bsky.social": "2026-11-10T21:02:04.176Z",
   "nflnewsreposterbot.bsky.social": "2026-11-10T18:38:15.366Z",
-  "insidenflnews.bsky.social": "2026-11-10T22:23:46.338Z",
+  "insidenflnews.bsky.social": "2026-11-11T00:21:26.814Z",
   "nflnewsposter.bsky.social": "2026-11-10T23:05:26.995Z",
   "rotoworld-fb.bsky.social": "2026-11-10T22:44:43.000Z",
-  "rotowirenfl.bsky.social": "2026-11-10T22:13:16.000Z"
+  "rotowirenfl.bsky.social": "2026-11-11T00:05:21.000Z"
  },
  "claims": [
   {
@@ -18599,6 +18599,45 @@
    "kind": "status",
    "confidence": 0.97,
    "text": "Cardinals officially placed QB Gardner Minshew II and WR Michael Wilson on injured reserve. Neither player is expected to play again this season.\n\nOriginal post"
+  },
+  {
+   "id": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3mzyntrjlpn22|travisetienne|questionable|status",
+   "at": "2026-11-11T00:05:21.000Z",
+   "seen": "2026-11-11T00:26:20.450Z",
+   "handle": "rotowirenfl.bsky.social",
+   "post": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3mzyntrjlpn22",
+   "player": "Travis Etienne",
+   "team": null,
+   "status": "questionable",
+   "kind": "status",
+   "confidence": 0.6,
+   "text": "Travis Etienne: Coach non-committal on Week 10 return \n\n https://www.rotowire.com/football/player/travis-etienne-15385"
+  },
+  {
+   "id": "at://did:plc:mbr4badgf6yu56mquzackzew/app.bsky.feed.post/3mzyonjlz7k2u|gardnerminshew|out|status",
+   "at": "2026-11-11T00:19:45.739Z",
+   "seen": "2026-11-11T00:26:20.450Z",
+   "handle": "insidenflnews.bsky.social",
+   "post": "at://did:plc:mbr4badgf6yu56mquzackzew/app.bsky.feed.post/3mzyonjlz7k2u",
+   "player": "Gardner Minshew",
+   "team": null,
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.95,
+   "text": "Gardner Minshew (elbow) officially placed on IR."
+  },
+  {
+   "id": "at://did:plc:mbr4badgf6yu56mquzackzew/app.bsky.feed.post/3mzyoqjyhec2u|malikwillis|out|status",
+   "at": "2026-11-11T00:21:26.814Z",
+   "seen": "2026-11-11T00:26:20.450Z",
+   "handle": "insidenflnews.bsky.social",
+   "post": "at://did:plc:mbr4badgf6yu56mquzackzew/app.bsky.feed.post/3mzyoqjyhec2u",
+   "player": "Malik Willis",
+   "team": "MIA",
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.95,
+   "text": "Pelissero: Dolphins QB Malik Willis (groin) will be placed on IR and miss at least 4 games."
   }
  ]
 }

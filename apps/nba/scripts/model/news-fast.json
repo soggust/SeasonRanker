@@ -1,37 +1,11 @@
 {
  "sport": "nba",
  "cursor": {
-  "rotowirenba.bsky.social": "2026-11-10T23:24:09.000Z",
+  "rotowirenba.bsky.social": "2026-11-11T00:24:37.000Z",
   "insidenbanews.bsky.social": "2026-11-08T18:11:49.382Z",
   "shamsbot.bsky.social": "2026-11-08T18:05:20.000Z"
  },
  "claims": [
-  {
-   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mydu4vguay2l|collinsexton|questionable|status",
-   "at": "2026-10-21T00:06:44.000Z",
-   "seen": "2026-10-21T00:17:43.117Z",
-   "handle": "rotowirenba.bsky.social",
-   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mydu4vguay2l",
-   "player": "Collin Sexton",
-   "team": null,
-   "status": "questionable",
-   "kind": "status",
-   "confidence": 0.95,
-   "text": "Collin Sexton: Questionable for Wednesday \n\n https://www.rotowire.com/basketball/player/collin-sexton-4412"
-  },
-  {
-   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3myduzdbdbw2i|osoighodaro|active|status",
-   "at": "2026-10-21T00:22:38.000Z",
-   "seen": "2026-10-21T01:37:58.313Z",
-   "handle": "rotowirenba.bsky.social",
-   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3myduzdbdbw2i",
-   "player": "Oso Ighodaro",
-   "team": null,
-   "status": "active",
-   "kind": "status",
-   "confidence": 0.75,
-   "text": "Oso Ighodaro: Not listed on injury report \n\n https://www.rotowire.com/basketball/player/oso-ighodaro-6293"
-  },
   {
    "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3myg2kp454z2o|jarrettallen|questionable|status",
    "at": "2026-10-21T21:07:09.000Z",
@@ -9456,6 +9430,32 @@
    "kind": "status",
    "confidence": 0.85,
    "text": "Tyler Herro: Sidelined versus Knicks \n\n https://www.rotowire.com/basketball/player/tyler-herro-4780"
+  },
+  {
+   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mzyo3pzq2j23|ryanrollins|active|starting",
+   "at": "2026-11-11T00:09:48.000Z",
+   "seen": "2026-11-11T00:26:20.450Z",
+   "handle": "rotowirenba.bsky.social",
+   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mzyo3pzq2j23",
+   "player": "Ryan Rollins",
+   "team": null,
+   "status": "active",
+   "kind": "starting",
+   "confidence": 0.9,
+   "text": "Ryan Rollins: Starting versus Knicks \n\n https://www.rotowire.com/basketball/player/ryan-rollins-5668"
+  },
+  {
+   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mzyow7zduj23|giannisantetokounmpo|questionable|status",
+   "at": "2026-11-11T00:24:37.000Z",
+   "seen": "2026-11-11T00:26:20.450Z",
+   "handle": "rotowirenba.bsky.social",
+   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mzyow7zduj23",
+   "player": "Giannis Antetokounmpo",
+   "team": null,
+   "status": "questionable",
+   "kind": "status",
+   "confidence": 0.9,
+   "text": "Giannis Antetokounmpo: Now questionable Tuesday \n\n https://www.rotowire.com/basketball/player/giannis-antetokounmpo-3456"
   }
  ]
 }
