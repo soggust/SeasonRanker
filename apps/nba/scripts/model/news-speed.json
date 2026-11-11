@@ -18643,6 +18643,203 @@
     "seen": "2026-11-11T04:27:51.575Z",
     "own": "2026-11-10T23:07:00.000Z"
    }
+  },
+  "401909973|laurimarkkanen|out": {
+   "game": "401909973",
+   "start": "2026-11-12T02:00Z",
+   "team": "26",
+   "name": "Lauri Markkanen",
+   "status": "out",
+   "athlete": "4066336",
+   "espn": {
+    "seen": "2026-11-11T06:21:32.897Z",
+    "own": "2026-11-10T18:30:00.000Z"
+   }
+  },
+  "401909973|keyontegeorge|out": {
+   "game": "401909973",
+   "start": "2026-11-12T02:00Z",
+   "team": "26",
+   "name": "Keyonte George",
+   "status": "out",
+   "athlete": "4433627",
+   "espn": {
+    "seen": "2026-11-11T06:21:32.897Z",
+    "own": "2026-11-10T00:08:00.000Z"
+   }
+  },
+  "401909973|jusufnurkic|out": {
+   "game": "401909973",
+   "start": "2026-11-12T02:00Z",
+   "team": "26",
+   "name": "Jusuf Nurkic",
+   "status": "out",
+   "athlete": "3102530",
+   "espn": {
+    "seen": "2026-11-11T06:21:32.897Z",
+    "own": "2026-11-06T18:20:00.000Z"
+   }
+  },
+  "401909973|jarenjackson|out": {
+   "game": "401909973",
+   "start": "2026-11-12T02:00Z",
+   "team": "26",
+   "name": "Jaren Jackson Jr.",
+   "status": "out",
+   "athlete": "4277961",
+   "espn": {
+    "seen": "2026-11-11T06:21:32.897Z",
+    "own": "2026-10-27T19:25:00.000Z"
+   }
+  },
+  "401909973|jaylontyson|q": {
+   "game": "401909973",
+   "start": "2026-11-12T02:00Z",
+   "team": "26",
+   "name": "Jaylon Tyson",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-11-10T22:15:26.504Z",
+    "own": "2026-11-10T22:07:13.000Z",
+    "why": "@rotowirenba.bsky.social: Jaylon Tyson: Questionable for Wednesday \n\n https://ww"
+   }
+  },
+  "401909973|normanpowell|q": {
+   "game": "401909973",
+   "start": "2026-11-12T02:00Z",
+   "team": "26",
+   "name": "Norman Powell",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-11-10T23:20:43.421Z",
+    "own": "2026-11-10T22:21:41.000Z",
+    "why": "@rotowirenba.bsky.social: Norman Powell: Questionable for Wednesday \n\n https://w"
+   }
+  },
+  "401909973|devinvassell|q": {
+   "game": "401909973",
+   "start": "2026-11-12T02:00Z",
+   "team": "26",
+   "name": "Devin Vassell",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-11-10T23:20:43.421Z",
+    "own": "2026-11-10T22:48:27.000Z",
+    "why": "@rotowirenba.bsky.social: Devin Vassell: Questionable against Chicago \n\n https:/"
+   }
+  },
+  "401909973|joshhart|out": {
+   "game": "401909973",
+   "start": "2026-11-12T02:00Z",
+   "team": "26",
+   "name": "Josh Hart",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-10T23:20:43.421Z",
+    "own": "2026-11-10T22:58:30.000Z",
+    "why": "@rotowirenba.bsky.social: Josh Hart: Ruled out for Tuesday \n\n https://www.rotowi"
+   }
+  },
+  "401909973|tylerherro|out": {
+   "game": "401909973",
+   "start": "2026-11-12T02:00Z",
+   "team": "26",
+   "name": "Tyler Herro",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-11T00:02:50.957Z",
+    "own": "2026-11-10T23:24:09.000Z",
+    "why": "@rotowirenba.bsky.social: Tyler Herro: Sidelined versus Knicks \n\n https://www.ro"
+   }
+  },
+  "401909973|giannisantetokounmpo|q": {
+   "game": "401909973",
+   "start": "2026-11-12T02:00Z",
+   "team": "26",
+   "name": "Giannis Antetokounmpo",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-11-11T00:26:20.450Z",
+    "own": "2026-11-11T00:24:37.000Z",
+    "why": "@rotowirenba.bsky.social: Giannis Antetokounmpo: Now questionable Tuesday \n\n htt"
+   }
+  },
+  "401909973|tristandasilva|out": {
+   "game": "401909973",
+   "start": "2026-11-12T02:00Z",
+   "team": "26",
+   "name": "Tristan da Silva",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-11T01:37:33.773Z",
+    "own": "2026-11-11T01:34:45.000Z",
+    "why": "@rotowirenba.bsky.social: Tristan da Silva: Downgraded to out \n\n https://www.rot"
+   },
+   "athlete": "4702382",
+   "espn": {
+    "seen": "2026-11-11T06:21:32.897Z",
+    "own": "2026-11-11T01:34:00.000Z"
+   }
+  },
+  "401909973|jalensuggs|out": {
+   "game": "401909973",
+   "start": "2026-11-12T02:00Z",
+   "team": "19",
+   "name": "Jalen Suggs",
+   "status": "out",
+   "athlete": "4432165",
+   "espn": {
+    "seen": "2026-11-11T06:21:32.897Z",
+    "own": "2026-11-09T23:11:00.000Z"
+   }
+  },
+  "401909973|jonathanisaac|out": {
+   "game": "401909973",
+   "start": "2026-11-12T02:00Z",
+   "team": "19",
+   "name": "Jonathan Isaac",
+   "status": "out",
+   "athlete": "4065654",
+   "espn": {
+    "seen": "2026-11-11T06:21:32.897Z",
+    "own": "2026-11-09T23:10:00.000Z"
+   }
+  },
+  "401909973|paolobanchero|out": {
+   "game": "401909973",
+   "start": "2026-11-12T02:00Z",
+   "team": "19",
+   "name": "Paolo Banchero",
+   "status": "out",
+   "athlete": "4432573",
+   "espn": {
+    "seen": "2026-11-11T06:21:32.897Z",
+    "own": "2026-10-24T16:47:00.000Z"
+   }
+  },
+  "401909973|noahpenda|out": {
+   "game": "401909973",
+   "start": "2026-11-12T02:00Z",
+   "team": "19",
+   "name": "Noah Penda",
+   "status": "out",
+   "athlete": "5214637",
+   "espn": {
+    "seen": "2026-11-11T06:21:32.897Z",
+    "own": "2026-10-17T22:19:00.000Z"
+   }
+  },
+  "401909973|izaiyahnelson|out": {
+   "game": "401909973",
+   "start": "2026-11-12T02:00Z",
+   "team": "19",
+   "name": "Izaiyah Nelson",
+   "status": "out",
+   "athlete": "5107251",
+   "espn": {
+    "seen": "2026-11-11T06:21:32.897Z",
+    "own": "2026-09-28T21:33:00.000Z"
+   }
   }
  }
 }
