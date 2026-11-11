@@ -3,9 +3,9 @@
  "cursor": {
   "johnston-bot.bsky.social": "2026-11-11T02:20:24.625Z",
   "notfriedgehnic.bsky.social": "2026-11-10T21:54:27.056Z",
-  "dailyfaceoff.bsky.social": "2026-11-11T17:03:31.000Z",
-  "dfotoronto.bsky.social": "2026-11-11T17:12:28.000Z",
-  "marklazerus.bsky.social": "2026-11-11T03:49:10.414Z"
+  "dailyfaceoff.bsky.social": "2026-11-11T17:34:51.000Z",
+  "dfotoronto.bsky.social": "2026-11-11T17:26:29.000Z",
+  "marklazerus.bsky.social": "2026-11-11T17:25:56.919Z"
  },
  "claims": [
   {
@@ -2217,6 +2217,19 @@
    "kind": "status",
    "confidence": 0.93,
    "text": "Wild activate Jared Spurgeon off injured reserve"
+  },
+  {
+   "id": "at://did:plc:knaj2vcp4x6t7hr7ewd6e3uz/app.bsky.feed.post/3n22hzdwikp2q|zackmacewen|out|status",
+   "at": "2026-11-11T17:26:25.000Z",
+   "seen": "2026-11-11T17:39:19.377Z",
+   "handle": "dfotoronto.bsky.social",
+   "post": "at://did:plc:knaj2vcp4x6t7hr7ewd6e3uz/app.bsky.feed.post/3n22hzdwikp2q",
+   "player": "Zack MacEwen",
+   "team": "TOR",
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.8,
+   "text": "Maple Leafs lineup news: Zack MacEwen doesn’t skate, Chris Tanev paired with Dakota Mermis"
   }
  ]
 }

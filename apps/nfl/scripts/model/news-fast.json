@@ -5,37 +5,11 @@
   "rapsheet.bsky.social": "2026-11-10T21:02:04.176Z",
   "nflnewsreposterbot.bsky.social": "2026-11-10T18:38:15.366Z",
   "insidenflnews.bsky.social": "2026-11-11T16:30:31.337Z",
-  "nflnewsposter.bsky.social": "2026-11-11T17:09:13.039Z",
+  "nflnewsposter.bsky.social": "2026-11-11T17:27:29.695Z",
   "rotoworld-fb.bsky.social": "2026-11-11T17:15:30.000Z",
-  "rotowirenfl.bsky.social": "2026-11-11T17:12:29.000Z"
+  "rotowirenfl.bsky.social": "2026-11-11T17:38:12.000Z"
  },
  "claims": [
-  {
-   "id": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3myfo5p57me2f|mayfield|limited|return",
-   "at": "2026-10-21T17:25:07.000Z",
-   "seen": "2026-10-21T17:42:17.133Z",
-   "handle": "rotoworld-fb.bsky.social",
-   "post": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3myfo5p57me2f",
-   "player": "Mayfield",
-   "team": null,
-   "status": "limited",
-   "kind": "return",
-   "confidence": 0.6,
-   "text": "Mayfield (thumb) returns to practice on Wednesday"
-  },
-  {
-   "id": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3myfovhvefu22|rasheerice|questionable|status",
-   "at": "2026-10-21T17:38:25.000Z",
-   "seen": "2026-10-21T17:42:17.133Z",
-   "handle": "rotoworld-fb.bsky.social",
-   "post": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3myfovhvefu22",
-   "player": "Rashee Rice",
-   "team": "KC",
-   "status": "questionable",
-   "kind": "status",
-   "confidence": 0.5,
-   "text": "Rashee Rice (hamstring) won't practice Wednesday"
-  },
   {
    "id": "at://did:plc:qre6zxbmr3ixhdmgsgdretb5/app.bsky.feed.post/3myfqjjnez222|kobieturner|out|status",
    "at": "2026-10-21T18:07:32.312Z",
@@ -18612,6 +18586,32 @@
    "kind": "status",
    "confidence": 0.85,
    "text": "Omar Cooper limited on Wednesday"
+  },
+  {
+   "id": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3n22hqum2os2g|garrettwilson|limited|return",
+   "at": "2026-11-11T17:21:41.000Z",
+   "seen": "2026-11-11T17:39:19.377Z",
+   "handle": "rotowirenfl.bsky.social",
+   "post": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3n22hqum2os2g",
+   "player": "Garrett Wilson",
+   "team": null,
+   "status": "limited",
+   "kind": "return",
+   "confidence": 0.8,
+   "text": "Garrett Wilson: Returning to limited parctice \n\n https://www.rotowire.com/football/player/garrett-wilson-15829"
+  },
+  {
+   "id": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3n22ibfxysv2g|omarcooper|limited|status",
+   "at": "2026-11-11T17:30:56.000Z",
+   "seen": "2026-11-11T17:39:19.377Z",
+   "handle": "rotowirenfl.bsky.social",
+   "post": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3n22ibfxysv2g",
+   "player": "Omar Cooper",
+   "team": null,
+   "status": "limited",
+   "kind": "status",
+   "confidence": 0.85,
+   "text": "Omar Cooper: To be limited in Wednesday's practice \n\n https://www.rotowire.com/football/player/omar-cooper-19314"
   }
  ]
 }
