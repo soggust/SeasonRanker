@@ -16066,6 +16066,294 @@
     "seen": "2026-11-11T21:26:23.951Z",
     "own": "2026-11-11T21:05:00.000Z"
    }
+  },
+  "401873052|chrisrodriguez|q": {
+   "game": "401873052",
+   "start": "2026-11-13T01:15Z",
+   "team": "19",
+   "name": "Chris Rodriguez",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-11-11T21:29:05.365Z",
+    "own": "2026-11-11T21:20:50.000Z",
+    "why": "@rotowirenfl.bsky.social: Chris Rodriguez: Practices on limited basis \n\n https:/"
+   }
+  },
+  "401873053|jaredgoff|q": {
+   "game": "401873053",
+   "start": "2026-11-15T14:30Z",
+   "team": "8",
+   "name": "Jared Goff",
+   "status": "q",
+   "athlete": "3046779",
+   "espn": {
+    "seen": "2026-11-11T22:12:38.632Z",
+    "own": "2026-11-11T21:27:00.000Z"
+   }
+  },
+  "401873053|amonrastbrown|q": {
+   "game": "401873053",
+   "start": "2026-11-15T14:30Z",
+   "team": "8",
+   "name": "Amon-Ra St. Brown",
+   "status": "q",
+   "athlete": "4374302",
+   "espn": {
+    "seen": "2026-11-11T22:12:38.632Z",
+    "own": "2026-11-11T21:22:00.000Z"
+   }
+  },
+  "401873060|treysmack|q": {
+   "game": "401873060",
+   "start": "2026-11-15T18:00Z",
+   "team": "9",
+   "name": "Trey Smack",
+   "status": "q",
+   "athlete": "4869461",
+   "espn": {
+    "seen": "2026-11-11T22:12:38.632Z",
+    "own": "2026-11-11T21:52:00.000Z"
+   }
+  },
+  "401873060|savionwilliams|q": {
+   "game": "401873060",
+   "start": "2026-11-15T18:00Z",
+   "team": "9",
+   "name": "Savion Williams",
+   "status": "q",
+   "athlete": "4431487",
+   "espn": {
+    "seen": "2026-11-11T22:12:38.632Z",
+    "own": "2026-11-11T21:52:00.000Z"
+   }
+  },
+  "401873060|tjhockenson|q": {
+   "game": "401873060",
+   "start": "2026-11-15T18:00Z",
+   "team": "16",
+   "name": "T.J. Hockenson",
+   "status": "q",
+   "athlete": "4036133",
+   "espn": {
+    "seen": "2026-11-11T22:12:38.632Z",
+    "own": "2026-11-11T21:31:00.000Z"
+   }
+  },
+  "401873057|anthonyhill|q": {
+   "game": "401873057",
+   "start": "2026-11-15T18:00Z",
+   "team": "10",
+   "name": "Anthony Hill Jr.",
+   "status": "q",
+   "athlete": "4870805",
+   "espn": {
+    "seen": "2026-11-11T22:12:38.632Z",
+    "own": "2026-11-11T21:30:00.000Z"
+   }
+  },
+  "401873057|codybarton|q": {
+   "game": "401873057",
+   "start": "2026-11-15T18:00Z",
+   "team": "10",
+   "name": "Cody Barton",
+   "status": "q",
+   "athlete": "3926229",
+   "espn": {
+    "seen": "2026-11-11T22:12:38.632Z",
+    "own": "2026-11-11T21:30:00.000Z"
+   }
+  },
+  "401873057|antoniojohnson|q": {
+   "game": "401873057",
+   "start": "2026-11-15T18:00Z",
+   "team": "30",
+   "name": "Antonio Johnson",
+   "status": "q",
+   "athlete": "4429168",
+   "espn": {
+    "seen": "2026-11-11T22:12:38.632Z",
+    "own": "2026-11-11T21:25:00.000Z"
+   }
+  },
+  "401873057|bransoncombs|q": {
+   "game": "401873057",
+   "start": "2026-11-15T18:00Z",
+   "team": "30",
+   "name": "Branson Combs",
+   "status": "q",
+   "athlete": "4572704",
+   "espn": {
+    "seen": "2026-11-11T22:12:38.632Z",
+    "own": "2026-11-11T21:25:00.000Z"
+   }
+  },
+  "401873057|roberthainsey|q": {
+   "game": "401873057",
+   "start": "2026-11-15T18:00Z",
+   "team": "30",
+   "name": "Robert Hainsey",
+   "status": "q",
+   "athlete": "4242391",
+   "espn": {
+    "seen": "2026-11-11T22:12:38.632Z",
+    "own": "2026-11-11T21:25:00.000Z"
+   }
+  },
+  "401873057|travonwalker|q": {
+   "game": "401873057",
+   "start": "2026-11-15T18:00Z",
+   "team": "30",
+   "name": "Travon Walker",
+   "status": "q",
+   "athlete": "4426349",
+   "espn": {
+    "seen": "2026-11-11T22:12:38.632Z",
+    "own": "2026-11-11T21:24:00.000Z"
+   }
+  },
+  "401873057|ezracleveland|q": {
+   "game": "401873057",
+   "start": "2026-11-15T18:00Z",
+   "team": "30",
+   "name": "Ezra Cleveland",
+   "status": "q",
+   "athlete": "4048231",
+   "espn": {
+    "seen": "2026-11-11T22:12:38.632Z",
+    "own": "2026-11-11T21:24:00.000Z"
+   }
+  },
+  "401873057|chrisrodriguez|q": {
+   "game": "401873057",
+   "start": "2026-11-15T18:00Z",
+   "team": "30",
+   "name": "Chris Rodriguez Jr.",
+   "status": "q",
+   "athlete": "4362619",
+   "espn": {
+    "seen": "2026-11-11T22:12:38.632Z",
+    "own": "2026-11-11T21:20:00.000Z"
+   }
+  },
+  "401873057|jakobimeyers|q": {
+   "game": "401873057",
+   "start": "2026-11-15T18:00Z",
+   "team": "30",
+   "name": "Jakobi Meyers",
+   "status": "q",
+   "athlete": "3916433",
+   "espn": {
+    "seen": "2026-11-11T22:12:38.632Z",
+    "own": "2026-11-11T21:16:00.000Z"
+   }
+  },
+  "401873059|malikherring|q": {
+   "game": "401873059",
+   "start": "2026-11-15T18:00Z",
+   "team": "15",
+   "name": "Malik Herring",
+   "status": "q",
+   "athlete": "4259547",
+   "espn": {
+    "seen": "2026-11-11T22:12:38.632Z",
+    "own": "2026-11-11T21:38:00.000Z"
+   }
+  },
+  "401873059|tuckeraddington|q": {
+   "game": "401873059",
+   "start": "2026-11-15T18:00Z",
+   "team": "15",
+   "name": "Tucker Addington",
+   "status": "q",
+   "athlete": "4034729",
+   "espn": {
+    "seen": "2026-11-11T22:12:38.632Z",
+    "own": "2026-11-11T21:38:00.000Z"
+   }
+  },
+  "401873059|aaronbrewer|q": {
+   "game": "401873059",
+   "start": "2026-11-15T18:00Z",
+   "team": "15",
+   "name": "Aaron Brewer",
+   "status": "q",
+   "athlete": "4040537",
+   "espn": {
+    "seen": "2026-11-11T22:12:38.632Z",
+    "own": "2026-11-11T21:38:00.000Z"
+   }
+  },
+  "401873059|chrisbell|q": {
+   "game": "401873059",
+   "start": "2026-11-15T18:00Z",
+   "team": "15",
+   "name": "Chris Bell",
+   "status": "q",
+   "athlete": "4869961",
+   "espn": {
+    "seen": "2026-11-11T22:12:38.632Z",
+    "own": "2026-11-11T01:20:00.000Z"
+   }
+  },
+  "401873054|harrisonphillips|q": {
+   "game": "401873054",
+   "start": "2026-11-15T18:00Z",
+   "team": "20",
+   "name": "Harrison Phillips",
+   "status": "q",
+   "athlete": "3117255",
+   "espn": {
+    "seen": "2026-11-11T22:12:38.632Z",
+    "own": "2026-11-11T22:11:00.000Z"
+   }
+  },
+  "401873054|christianbenford|q": {
+   "game": "401873054",
+   "start": "2026-11-15T18:00Z",
+   "team": "2",
+   "name": "Christian Benford",
+   "status": "q",
+   "athlete": "4379778",
+   "espn": {
+    "seen": "2026-11-11T22:12:38.632Z",
+    "own": "2026-11-11T22:01:00.000Z"
+   }
+  },
+  "401873054|spencerbrown|q": {
+   "game": "401873054",
+   "start": "2026-11-15T18:00Z",
+   "team": "2",
+   "name": "Spencer Brown",
+   "status": "q",
+   "athlete": "4030899",
+   "espn": {
+    "seen": "2026-11-11T22:12:38.632Z",
+    "own": "2026-11-11T22:01:00.000Z"
+   }
+  },
+  "401873054|connormcgovern|q": {
+   "game": "401873054",
+   "start": "2026-11-15T18:00Z",
+   "team": "2",
+   "name": "Connor McGovern",
+   "status": "q",
+   "athlete": "4033748",
+   "espn": {
+    "seen": "2026-11-11T22:12:38.632Z",
+    "own": "2026-11-11T22:00:00.000Z"
+   }
+  },
+  "401873054|daltonkincaid|q": {
+   "game": "401873054",
+   "start": "2026-11-15T18:00Z",
+   "team": "2",
+   "name": "Dalton Kincaid",
+   "status": "q",
+   "athlete": "4385690",
+   "espn": {
+    "seen": "2026-11-11T22:12:38.632Z",
+    "own": "2026-11-11T21:57:00.000Z"
+   }
   }
  }
 }

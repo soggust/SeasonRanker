@@ -1,7 +1,7 @@
 {
  "sport": "nba",
  "cursor": {
-  "rotowirenba.bsky.social": "2026-11-11T21:18:21.000Z",
+  "rotowirenba.bsky.social": "2026-11-11T22:13:37.000Z",
   "insidenbanews.bsky.social": "2026-11-08T18:11:49.382Z",
   "shamsbot.bsky.social": "2026-11-08T18:05:20.000Z"
  },
@@ -9625,6 +9625,32 @@
    "kind": "status",
    "confidence": 0.5,
    "text": "Ajay Mitchell: Dealing with left ankle sprain \n\n https://www.rotowire.com/basketball/player/ajay-mitchell-6289"
+  },
+  {
+   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3n22xoj3qdf2v|joelembiid|questionable|status",
+   "at": "2026-11-11T22:06:41.000Z",
+   "seen": "2026-11-11T22:15:17.169Z",
+   "handle": "rotowirenba.bsky.social",
+   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3n22xoj3qdf2v",
+   "player": "Joel Embiid",
+   "team": null,
+   "status": "questionable",
+   "kind": "status",
+   "confidence": 0.95,
+   "text": "Joel Embiid: Questionable to play Thursday \n\n https://www.rotowire.com/basketball/player/joel-embiid-3572"
+  },
+  {
+   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3n22y2vsavd26|derecklively|out|status",
+   "at": "2026-11-11T22:13:37.000Z",
+   "seen": "2026-11-11T22:15:17.169Z",
+   "handle": "rotowirenba.bsky.social",
+   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3n22y2vsavd26",
+   "player": "Dereck Lively",
+   "team": null,
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.92,
+   "text": "Dereck Lively: Still out Thursday \n\n https://www.rotowire.com/basketball/player/dereck-lively-5904"
   }
  ]
 }
