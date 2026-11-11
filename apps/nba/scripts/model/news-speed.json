@@ -18852,6 +18852,54 @@
     "own": "2026-11-11T01:34:45.000Z",
     "why": "@rotowirenba.bsky.social: Tristan da Silva: Downgraded to out \n\n https://www.rot"
    }
+  },
+  "401909971|tylerherro|q": {
+   "game": "401909971",
+   "start": "2026-11-12T01:00Z",
+   "team": "15",
+   "name": "Tyler Herro",
+   "status": "q",
+   "athlete": "4395725",
+   "espn": {
+    "seen": "2026-11-11T15:08:27.234Z",
+    "own": "2026-11-11T14:58:00.000Z"
+   }
+  },
+  "401909973|keyontegeorge|q": {
+   "game": "401909973",
+   "start": "2026-11-12T02:00Z",
+   "team": "26",
+   "name": "Keyonte George",
+   "status": "q",
+   "athlete": "4433627",
+   "espn": {
+    "seen": "2026-11-11T15:08:27.234Z",
+    "own": "2026-11-11T15:00:00.000Z"
+   }
+  },
+  "401909973|laurimarkkanen|q": {
+   "game": "401909973",
+   "start": "2026-11-12T02:00Z",
+   "team": "26",
+   "name": "Lauri Markkanen",
+   "status": "q",
+   "athlete": "4066336",
+   "espn": {
+    "seen": "2026-11-11T15:08:27.234Z",
+    "own": "2026-11-11T14:45:00.000Z"
+   }
+  },
+  "401909973|tristandasilva|q": {
+   "game": "401909973",
+   "start": "2026-11-12T02:00Z",
+   "team": "19",
+   "name": "Tristan da Silva",
+   "status": "q",
+   "athlete": "4702382",
+   "espn": {
+    "seen": "2026-11-11T15:08:27.234Z",
+    "own": "2026-11-11T15:00:00.000Z"
+   }
   }
  }
 }
