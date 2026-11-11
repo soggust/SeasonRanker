@@ -4,7 +4,7 @@
   "adamscheftermirror.bsky.social": "2026-11-11T15:45:23.246Z",
   "rapsheet.bsky.social": "2026-11-10T21:02:04.176Z",
   "nflnewsreposterbot.bsky.social": "2026-11-10T18:38:15.366Z",
-  "insidenflnews.bsky.social": "2026-11-11T15:31:55.569Z",
+  "insidenflnews.bsky.social": "2026-11-11T16:30:31.337Z",
   "nflnewsposter.bsky.social": "2026-11-10T23:05:26.995Z",
   "rotoworld-fb.bsky.social": "2026-11-11T15:41:38.000Z",
   "rotowirenfl.bsky.social": "2026-11-11T14:38:21.000Z"
@@ -18664,6 +18664,19 @@
    "kind": "status",
    "confidence": 0.4,
    "text": "Graziano: Puka won't miss rest of regular season"
+  },
+  {
+   "id": "at://did:plc:mbr4badgf6yu56mquzackzew/app.bsky.feed.post/3n22evewi422h|anthonygould|none|starting",
+   "at": "2026-11-11T16:30:31.337Z",
+   "seen": "2026-11-11T16:36:14.111Z",
+   "handle": "insidenflnews.bsky.social",
+   "post": "at://did:plc:mbr4badgf6yu56mquzackzew/app.bsky.feed.post/3n22evewi422h",
+   "player": "Anthony Gould",
+   "team": "IND",
+   "status": "none",
+   "kind": "starting",
+   "confidence": 0.9,
+   "text": "Steichen: Anthony Gould will start in slot for Josh Downs."
   }
  ]
 }
