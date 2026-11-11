@@ -1,7 +1,7 @@
 {
  "sport": "nba",
  "cursor": {
-  "rotowirenba.bsky.social": "2026-11-11T03:38:42.000Z",
+  "rotowirenba.bsky.social": "2026-11-11T03:58:20.000Z",
   "insidenbanews.bsky.social": "2026-11-08T18:11:49.382Z",
   "shamsbot.bsky.social": "2026-11-08T18:05:20.000Z"
  },
@@ -9508,6 +9508,45 @@
    "kind": "starting",
    "confidence": 0.8,
    "text": "Jamal Cain: Starting Tuesday \n\n https://www.rotowire.com/basketball/player/jamal-cain-5796"
+  },
+  {
+   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mzz2dzpmv52g|jaredmccain|none|starting",
+   "at": "2026-11-11T03:49:11.000Z",
+   "seen": "2026-11-11T04:07:31.508Z",
+   "handle": "rotowirenba.bsky.social",
+   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mzz2dzpmv52g",
+   "player": "Jared McCain",
+   "team": null,
+   "status": "none",
+   "kind": "starting",
+   "confidence": 0.9,
+   "text": "Jared McCain: Starting Tuesday \n\n https://www.rotowire.com/basketball/player/jared-mccain-6266"
+  },
+  {
+   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mzz2kpopex2i|sidycissoko|none|starting",
+   "at": "2026-11-11T03:52:56.000Z",
+   "seen": "2026-11-11T04:07:31.508Z",
+   "handle": "rotowirenba.bsky.social",
+   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mzz2kpopex2i",
+   "player": "Sidy Cissoko",
+   "team": null,
+   "status": "none",
+   "kind": "starting",
+   "confidence": 0.9,
+   "text": "Sidy Cissoko: Starting Tuesday \n\n https://www.rotowire.com/basketball/player/sidy-cissoko-5799"
+  },
+  {
+   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mzz2uemume2u|scoothenderson|none|benched",
+   "at": "2026-11-11T03:58:20.000Z",
+   "seen": "2026-11-11T04:07:31.508Z",
+   "handle": "rotowirenba.bsky.social",
+   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mzz2uemume2u",
+   "player": "Scoot Henderson",
+   "team": null,
+   "status": "none",
+   "kind": "benched",
+   "confidence": 0.9,
+   "text": "Scoot Henderson: Not starting Tuesday \n\n https://www.rotowire.com/basketball/player/scoot-henderson-5377"
   }
  ]
 }
