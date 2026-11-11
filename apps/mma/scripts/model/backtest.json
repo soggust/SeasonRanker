@@ -1,5 +1,5 @@
 {
- "at": "2026-11-10T00:05:35.520Z",
+ "at": "2026-11-11T00:02:44.721Z",
  "halves": [
   {
    "from": "2023-12-01",
@@ -28,7 +28,7 @@
    "train": 9993,
    "model": {
     "n": 365,
-    "logLoss": 0.6241,
+    "logLoss": 0.6242,
     "acc": 0.6466
    },
    "rating": {
@@ -49,7 +49,7 @@
    "train": 10358,
    "model": {
     "n": 267,
-    "logLoss": 0.6081,
+    "logLoss": 0.6082,
     "acc": 0.6404
    },
    "rating": {
@@ -91,7 +91,7 @@
    "train": 10961,
    "model": {
     "n": 280,
-    "logLoss": 0.6032,
+    "logLoss": 0.6031,
     "acc": 0.6571
    },
    "rating": {
@@ -104,7 +104,7 @@
     "logLoss": 0.6931,
     "acc": 0.5
    },
-   "kept": 13
+   "kept": 12
   },
   {
    "from": "2026-06-01",
@@ -112,8 +112,8 @@
    "train": 11241,
    "model": {
     "n": 305,
-    "logLoss": 0.6468,
-    "acc": 0.6525
+    "logLoss": 0.6466,
+    "acc": 0.6492
    },
    "rating": {
     "n": 305,
@@ -132,7 +132,7 @@
   "model": {
    "n": 1859,
    "logLoss": 0.6209,
-   "acc": 0.6552
+   "acc": 0.6547
   },
   "rating": {
    "n": 1859,
@@ -177,23 +177,23 @@
   {
    "from": 0.4,
    "to": 0.5,
-   "n": 451,
-   "mean": 0.4507,
-   "actual": 0.4213
+   "n": 450,
+   "mean": 0.4506,
+   "actual": 0.4222
   },
   {
    "from": 0.5,
    "to": 0.6,
-   "n": 357,
-   "mean": 0.5458,
-   "actual": 0.5378
+   "n": 359,
+   "mean": 0.5459,
+   "actual": 0.5348
   },
   {
    "from": 0.6,
    "to": 0.7,
-   "n": 224,
-   "mean": 0.6476,
-   "actual": 0.6384
+   "n": 223,
+   "mean": 0.6478,
+   "actual": 0.6413
   },
   {
    "from": 0.7,
@@ -213,13 +213,13 @@
    "from": 0.9,
    "to": 1,
    "n": 4,
-   "mean": 0.905,
+   "mean": 0.9051,
    "actual": 0.5
   }
  ],
  "note": "held out: each half fit on the bouts before it alone; no odds (none kept on this plan), so it says how the model predicts, not what it would have won",
  "totals": {
-  "at": "2026-11-10T00:05:35.520Z",
+  "at": "2026-11-11T00:02:44.721Z",
   "halves": [
    {
     "from": "2023-12-01",

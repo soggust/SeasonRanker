@@ -3,6 +3,28 @@
  "days": 2,
  "signals": [
   {
+   "team": "1",
+   "abbr": "ATL",
+   "athlete": "4372066",
+   "player": "Jake Moody",
+   "kind": "starting",
+   "direction": "up",
+   "confidence": 0.6,
+   "headline": "Source: Falcons cutting kicker Nick Folk, signing Jake Moody",
+   "at": "2026-11-10T18:21:07.000Z"
+  },
+  {
+   "team": "1",
+   "abbr": "ATL",
+   "athlete": "10621",
+   "player": "Nick Folk",
+   "kind": "benched",
+   "direction": "down",
+   "confidence": 0.6,
+   "headline": "Source: Falcons cutting kicker Nick Folk, signing Jake Moody",
+   "at": "2026-11-10T18:21:07.000Z"
+  },
+  {
    "team": "6",
    "abbr": "DAL",
    "athlete": "4242355",
@@ -122,40 +144,7 @@
    "confidence": 0.5,
    "headline": "Sources: Jets DE Will McDonald IV, frustrated by lack of use, requests trade",
    "at": "2026-11-09T19:08:34.000Z"
-  },
-  {
-   "team": "7",
-   "abbr": "DEN",
-   "athlete": "4372016",
-   "player": "Jaylen Waddle",
-   "kind": "return",
-   "direction": "down",
-   "confidence": 0.3,
-   "headline": "Broncos WR Jaylen Waddle, CB Riley Moss suffer concussions against Panthers",
-   "at": "2026-11-08T23:55:20.000Z"
-  },
-  {
-   "team": "19",
-   "abbr": "NYG",
-   "athlete": "4242335",
-   "player": "Jonathan Taylor",
-   "kind": "role",
-   "direction": "none",
-   "confidence": 0.3,
-   "headline": "John Harbaugh: Giants did pull offer for Jonathan Taylor but 'things do change'",
-   "at": "2026-11-08T23:49:40.000Z"
-  },
-  {
-   "team": "14",
-   "abbr": "LAR",
-   "athlete": "3122132",
-   "player": "Myles Garrett",
-   "kind": "return",
-   "direction": "up",
-   "confidence": 0.8,
-   "headline": "Myles Garrett has three sacks in return to help Rams stop Commanders",
-   "at": "2026-11-08T23:30:43.000Z"
   }
  ],
- "at": "2026-11-10T14:34:00.100Z"
+ "at": "2026-11-11T00:02:50.957Z"
 }

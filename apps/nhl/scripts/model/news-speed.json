@@ -1,82 +1,6 @@
 {
  "sport": "nhl",
  "entries": {
-  "401892622|kylecapobianco|out": {
-   "game": "401892622",
-   "start": "2026-11-01T00:00Z",
-   "team": "9",
-   "name": "Kyle Capobianco",
-   "status": "out",
-   "athlete": "3939716",
-   "espn": {
-    "seen": "2026-10-30T15:08:56.263Z",
-    "own": "2026-10-29T16:42:00.000Z"
-   },
-   "sleeper": {
-    "seen": "2026-10-31T20:17:44.981Z",
-    "own": "2026-10-31T17:00:11.476Z"
-   }
-  },
-  "401892622|esalindell|out": {
-   "game": "401892622",
-   "start": "2026-11-01T00:00Z",
-   "team": "9",
-   "name": "Esa Lindell",
-   "status": "out",
-   "athlete": "3069352",
-   "espn": {
-    "seen": "2026-10-30T15:08:56.263Z",
-    "own": "2026-10-27T16:45:00.000Z"
-   }
-  },
-  "401892622|radekfaksa|out": {
-   "game": "401892622",
-   "start": "2026-11-01T00:00Z",
-   "team": "9",
-   "name": "Radek Faksa",
-   "status": "out",
-   "athlete": "2976842",
-   "espn": {
-    "seen": "2026-10-30T15:08:56.263Z",
-    "own": "2026-10-27T16:33:00.000Z"
-   }
-  },
-  "401892622|oskarback|out": {
-   "game": "401892622",
-   "start": "2026-11-01T00:00Z",
-   "team": "9",
-   "name": "Oskar Back",
-   "status": "out",
-   "athlete": "4894398",
-   "espn": {
-    "seen": "2026-10-30T15:08:56.263Z",
-    "own": "2026-10-24T18:32:00.000Z"
-   }
-  },
-  "401892622|mattduchene|out": {
-   "game": "401892622",
-   "start": "2026-11-01T00:00Z",
-   "team": "9",
-   "name": "Matt Duchene",
-   "status": "out",
-   "athlete": "5161",
-   "espn": {
-    "seen": "2026-10-30T15:08:56.263Z",
-    "own": "2026-10-12T16:46:00.000Z"
-   }
-  },
-  "401892622|lukekrys|out": {
-   "game": "401892622",
-   "start": "2026-11-01T00:00Z",
-   "team": "9",
-   "name": "Luke Krys",
-   "status": "out",
-   "athlete": "5207357",
-   "espn": {
-    "seen": "2026-10-30T15:08:56.263Z",
-    "own": "2026-09-29T16:18:00.000Z"
-   }
-  },
   "401892623|joshmanson|out": {
    "game": "401892623",
    "start": "2026-11-01T02:00Z",
@@ -199,18 +123,6 @@
    "espn": {
     "seen": "2026-10-30T17:16:56.230Z",
     "own": "2026-10-30T17:14:00.000Z"
-   }
-  },
-  "401892622|haydenhodgson|out": {
-   "game": "401892622",
-   "start": "2026-11-01T00:00Z",
-   "team": "9",
-   "name": "Hayden Hodgson",
-   "status": "out",
-   "bluesky": {
-    "seen": "2026-10-31T00:46:02.806Z",
-    "own": "2026-10-31T00:36:07.000Z",
-    "why": "@dailyfaceoff.bsky.social: Hayden Hodgson has been suspended two games for board"
    }
   },
   "401892623|haydenhodgson|out": {

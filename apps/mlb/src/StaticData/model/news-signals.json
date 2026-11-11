@@ -1,6 +1,18 @@
 {
  "sport": "mlb",
  "days": 2,
- "signals": [],
- "at": "2026-11-08T22:39:47.617Z"
+ "signals": [
+  {
+   "team": "19",
+   "abbr": "LAD",
+   "athlete": null,
+   "player": "Pedro Guerrero",
+   "kind": "coaching",
+   "direction": "none",
+   "confidence": 0.9,
+   "headline": "Dodgers hire Pedro Guerrero away from Marlins as new hitting coach",
+   "at": "2026-11-10T22:32:06.000Z"
+  }
+ ],
+ "at": "2026-11-11T00:02:50.957Z"
 }

@@ -1,50 +1,11 @@
 {
  "sport": "nba",
  "cursor": {
-  "rotowirenba.bsky.social": "2026-11-10T23:05:33.000Z",
+  "rotowirenba.bsky.social": "2026-11-10T23:24:09.000Z",
   "insidenbanews.bsky.social": "2026-11-08T18:11:49.382Z",
   "shamsbot.bsky.social": "2026-11-08T18:05:20.000Z"
  },
  "claims": [
-  {
-   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mydsdp234g2w|deniavdija|questionable|status",
-   "at": "2026-10-20T23:34:44.000Z",
-   "seen": "2026-10-20T23:57:09.390Z",
-   "handle": "rotowirenba.bsky.social",
-   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mydsdp234g2w",
-   "player": "Deni Avdija",
-   "team": "POR",
-   "status": "questionable",
-   "kind": "status",
-   "confidence": 0.9,
-   "text": "Deni Avdija: Questionable for Wednesday \n\n https://www.rotowire.com/basketball/player/deni-avdija-5152"
-  },
-  {
-   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mydt2r5u472a|stephencurry|active|status",
-   "at": "2026-10-20T23:47:38.000Z",
-   "seen": "2026-10-20T23:57:09.390Z",
-   "handle": "rotowirenba.bsky.social",
-   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mydt2r5u472a",
-   "player": "Stephen Curry",
-   "team": "GSW",
-   "status": "active",
-   "kind": "status",
-   "confidence": 0.8,
-   "text": "Stephen Curry: Probable for Opening Night"
-  },
-  {
-   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mydtad6h4526|brandinpodziemski|out|status",
-   "at": "2026-10-20T23:50:45.000Z",
-   "seen": "2026-10-20T23:57:09.390Z",
-   "handle": "rotowirenba.bsky.social",
-   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mydtad6h4526",
-   "player": "Brandin Podziemski",
-   "team": "GSW",
-   "status": "out",
-   "kind": "status",
-   "confidence": 0.95,
-   "text": "Brandin Podziemski: Ruled out for regular-season opener \n\n https://www.rotowire.com/basketball/player/brandin-podziemski-5889"
-  },
   {
    "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mydu4vguay2l|collinsexton|questionable|status",
    "at": "2026-10-21T00:06:44.000Z",
@@ -9482,6 +9443,19 @@
    "kind": "return",
    "confidence": 0.85,
    "text": "Austin Reaves: Set to return Wednesday \n\n https://www.rotowire.com/basketball/player/austin-reaves-5334"
+  },
+  {
+   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mzylk4b2vg23|tylerherro|out|status",
+   "at": "2026-11-10T23:24:09.000Z",
+   "seen": "2026-11-11T00:02:50.957Z",
+   "handle": "rotowirenba.bsky.social",
+   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mzylk4b2vg23",
+   "player": "Tyler Herro",
+   "team": null,
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.85,
+   "text": "Tyler Herro: Sidelined versus Knicks \n\n https://www.rotowire.com/basketball/player/tyler-herro-4780"
   }
  ]
 }
