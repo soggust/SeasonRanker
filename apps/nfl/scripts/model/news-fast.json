@@ -1,41 +1,15 @@
 {
  "sport": "nfl",
  "cursor": {
-  "adamscheftermirror.bsky.social": "2026-11-11T18:15:26.842Z",
+  "adamscheftermirror.bsky.social": "2026-11-11T18:30:29.185Z",
   "rapsheet.bsky.social": "2026-11-10T21:02:04.176Z",
   "nflnewsreposterbot.bsky.social": "2026-11-10T18:38:15.366Z",
-  "insidenflnews.bsky.social": "2026-11-11T18:14:54.608Z",
+  "insidenflnews.bsky.social": "2026-11-11T18:32:06.051Z",
   "nflnewsposter.bsky.social": "2026-11-11T18:09:14.508Z",
   "rotoworld-fb.bsky.social": "2026-11-11T18:03:27.000Z",
-  "rotowirenfl.bsky.social": "2026-11-11T18:02:24.000Z"
+  "rotowirenfl.bsky.social": "2026-11-11T18:32:56.000Z"
  },
  "claims": [
-  {
-   "id": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3myfrulfbkm27|davidmontgomery|questionable|status",
-   "at": "2026-10-21T18:31:37.000Z",
-   "seen": "2026-10-21T18:47:14.430Z",
-   "handle": "rotoworld-fb.bsky.social",
-   "post": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3myfrulfbkm27",
-   "player": "David Montgomery",
-   "team": null,
-   "status": "questionable",
-   "kind": "status",
-   "confidence": 0.5,
-   "text": "David Montgomery (groin) begins Week 7 with DNP"
-  },
-  {
-   "id": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3myfs4nnqhx2r|warren|questionable|status",
-   "at": "2026-10-21T18:36:07.000Z",
-   "seen": "2026-10-21T18:47:14.430Z",
-   "handle": "rotoworld-fb.bsky.social",
-   "post": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3myfs4nnqhx2r",
-   "player": "Warren",
-   "team": null,
-   "status": "questionable",
-   "kind": "status",
-   "confidence": 0.5,
-   "text": "Warren (groin) not practicing to start Week 7"
-  },
   {
    "id": "at://did:plc:mbr4badgf6yu56mquzackzew/app.bsky.feed.post/3myftswllk22j|kylemonangai|out|status",
    "at": "2026-10-21T19:06:29.181Z",
