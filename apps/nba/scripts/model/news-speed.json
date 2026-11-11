@@ -18249,6 +18249,131 @@
     "own": "2026-11-11T01:34:45.000Z",
     "why": "@rotowirenba.bsky.social: Tristan da Silva: Downgraded to out \n\n https://www.rot"
    }
+  },
+  "401909967|joshhart|out": {
+   "game": "401909967",
+   "start": "2026-11-12T00:00Z",
+   "team": "18",
+   "name": "Josh Hart",
+   "status": "out",
+   "athlete": "3062679",
+   "espn": {
+    "seen": "2026-11-11T03:24:44.645Z",
+    "own": "2026-11-10T22:58:00.000Z"
+   },
+   "bluesky": {
+    "seen": "2026-11-10T23:20:43.421Z",
+    "own": "2026-11-10T22:58:30.000Z",
+    "why": "@rotowirenba.bsky.social: Josh Hart: Ruled out for Tuesday \n\n https://www.rotowi"
+   }
+  },
+  "401909967|laurimarkkanen|out": {
+   "game": "401909967",
+   "start": "2026-11-12T00:00Z",
+   "team": "18",
+   "name": "Lauri Markkanen",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-10T19:15:16.001Z",
+    "own": "2026-11-10T18:30:16.000Z",
+    "why": "@rotowirenba.bsky.social: Lauri Markkanen: Ruled out with wrist sprain \n\n https:"
+   }
+  },
+  "401909967|jaylontyson|q": {
+   "game": "401909967",
+   "start": "2026-11-12T00:00Z",
+   "team": "18",
+   "name": "Jaylon Tyson",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-11-10T22:15:26.504Z",
+    "own": "2026-11-10T22:07:13.000Z",
+    "why": "@rotowirenba.bsky.social: Jaylon Tyson: Questionable for Wednesday \n\n https://ww"
+   }
+  },
+  "401909967|normanpowell|q": {
+   "game": "401909967",
+   "start": "2026-11-12T00:00Z",
+   "team": "18",
+   "name": "Norman Powell",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-11-10T23:20:43.421Z",
+    "own": "2026-11-10T22:21:41.000Z",
+    "why": "@rotowirenba.bsky.social: Norman Powell: Questionable for Wednesday \n\n https://w"
+   }
+  },
+  "401909967|devinvassell|q": {
+   "game": "401909967",
+   "start": "2026-11-12T00:00Z",
+   "team": "18",
+   "name": "Devin Vassell",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-11-10T23:20:43.421Z",
+    "own": "2026-11-10T22:48:27.000Z",
+    "why": "@rotowirenba.bsky.social: Devin Vassell: Questionable against Chicago \n\n https:/"
+   }
+  },
+  "401909967|tylerherro|out": {
+   "game": "401909967",
+   "start": "2026-11-12T00:00Z",
+   "team": "18",
+   "name": "Tyler Herro",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-11T00:02:50.957Z",
+    "own": "2026-11-10T23:24:09.000Z",
+    "why": "@rotowirenba.bsky.social: Tyler Herro: Sidelined versus Knicks \n\n https://www.ro"
+   }
+  },
+  "401909967|giannisantetokounmpo|q": {
+   "game": "401909967",
+   "start": "2026-11-12T00:00Z",
+   "team": "18",
+   "name": "Giannis Antetokounmpo",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-11-11T00:26:20.450Z",
+    "own": "2026-11-11T00:24:37.000Z",
+    "why": "@rotowirenba.bsky.social: Giannis Antetokounmpo: Now questionable Tuesday \n\n htt"
+   }
+  },
+  "401909967|tristandasilva|out": {
+   "game": "401909967",
+   "start": "2026-11-12T00:00Z",
+   "team": "18",
+   "name": "Tristan da Silva",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-11T01:37:33.773Z",
+    "own": "2026-11-11T01:34:45.000Z",
+    "why": "@rotowirenba.bsky.social: Tristan da Silva: Downgraded to out \n\n https://www.rot"
+   }
+  },
+  "401909967|sammerrill|out": {
+   "game": "401909967",
+   "start": "2026-11-12T00:00Z",
+   "team": "5",
+   "name": "Sam Merrill",
+   "status": "out",
+   "athlete": "4066757",
+   "espn": {
+    "seen": "2026-11-11T03:24:44.645Z",
+    "own": "2026-11-10T22:12:00.000Z"
+   }
+  },
+  "401909967|jaylontyson|out": {
+   "game": "401909967",
+   "start": "2026-11-12T00:00Z",
+   "team": "5",
+   "name": "Jaylon Tyson",
+   "status": "out",
+   "athlete": "4683747",
+   "espn": {
+    "seen": "2026-11-11T03:24:44.645Z",
+    "own": "2026-11-10T22:07:00.000Z"
+   }
   }
  }
 }
