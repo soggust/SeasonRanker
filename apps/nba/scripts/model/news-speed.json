@@ -19083,6 +19083,246 @@
     "seen": "2026-11-11T22:03:40.179Z",
     "own": "2026-11-11T21:54:00.000Z"
    }
+  },
+  "401909966|joelembiid|q": {
+   "game": "401909966",
+   "start": "2026-11-12T00:00Z",
+   "team": "11",
+   "name": "Joel Embiid",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-11-11T22:15:17.169Z",
+    "own": "2026-11-11T22:06:41.000Z",
+    "why": "@rotowirenba.bsky.social: Joel Embiid: Questionable to play Thursday \n\n https://"
+   }
+  },
+  "401909966|derecklively|out": {
+   "game": "401909966",
+   "start": "2026-11-12T00:00Z",
+   "team": "11",
+   "name": "Dereck Lively",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-11T22:15:17.169Z",
+    "own": "2026-11-11T22:13:37.000Z",
+    "why": "@rotowirenba.bsky.social: Dereck Lively: Still out Thursday \n\n https://www.rotow"
+   }
+  },
+  "401909967|joelembiid|q": {
+   "game": "401909967",
+   "start": "2026-11-12T00:00Z",
+   "team": "18",
+   "name": "Joel Embiid",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-11-11T22:15:17.169Z",
+    "own": "2026-11-11T22:06:41.000Z",
+    "why": "@rotowirenba.bsky.social: Joel Embiid: Questionable to play Thursday \n\n https://"
+   }
+  },
+  "401909967|derecklively|out": {
+   "game": "401909967",
+   "start": "2026-11-12T00:00Z",
+   "team": "18",
+   "name": "Dereck Lively",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-11T22:15:17.169Z",
+    "own": "2026-11-11T22:13:37.000Z",
+    "why": "@rotowirenba.bsky.social: Dereck Lively: Still out Thursday \n\n https://www.rotow"
+   }
+  },
+  "401909968|joelembiid|q": {
+   "game": "401909968",
+   "start": "2026-11-12T00:00Z",
+   "team": "28",
+   "name": "Joel Embiid",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-11-11T22:15:17.169Z",
+    "own": "2026-11-11T22:06:41.000Z",
+    "why": "@rotowirenba.bsky.social: Joel Embiid: Questionable to play Thursday \n\n https://"
+   }
+  },
+  "401909968|derecklively|out": {
+   "game": "401909968",
+   "start": "2026-11-12T00:00Z",
+   "team": "28",
+   "name": "Dereck Lively",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-11T22:15:17.169Z",
+    "own": "2026-11-11T22:13:37.000Z",
+    "why": "@rotowirenba.bsky.social: Dereck Lively: Still out Thursday \n\n https://www.rotow"
+   }
+  },
+  "401909969|joelembiid|q": {
+   "game": "401909969",
+   "start": "2026-11-12T01:00Z",
+   "team": "4",
+   "name": "Joel Embiid",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-11-11T22:15:17.169Z",
+    "own": "2026-11-11T22:06:41.000Z",
+    "why": "@rotowirenba.bsky.social: Joel Embiid: Questionable to play Thursday \n\n https://"
+   }
+  },
+  "401909969|derecklively|out": {
+   "game": "401909969",
+   "start": "2026-11-12T01:00Z",
+   "team": "4",
+   "name": "Dereck Lively",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-11T22:15:17.169Z",
+    "own": "2026-11-11T22:13:37.000Z",
+    "why": "@rotowirenba.bsky.social: Dereck Lively: Still out Thursday \n\n https://www.rotow"
+   }
+  },
+  "401909970|joelembiid|q": {
+   "game": "401909970",
+   "start": "2026-11-12T01:00Z",
+   "team": "29",
+   "name": "Joel Embiid",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-11-11T22:15:17.169Z",
+    "own": "2026-11-11T22:06:41.000Z",
+    "why": "@rotowirenba.bsky.social: Joel Embiid: Questionable to play Thursday \n\n https://"
+   }
+  },
+  "401909970|derecklively|out": {
+   "game": "401909970",
+   "start": "2026-11-12T01:00Z",
+   "team": "29",
+   "name": "Dereck Lively",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-11T22:15:17.169Z",
+    "own": "2026-11-11T22:13:37.000Z",
+    "why": "@rotowirenba.bsky.social: Dereck Lively: Still out Thursday \n\n https://www.rotow"
+   }
+  },
+  "401909971|joelembiid|q": {
+   "game": "401909971",
+   "start": "2026-11-12T01:00Z",
+   "team": "15",
+   "name": "Joel Embiid",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-11-11T22:15:17.169Z",
+    "own": "2026-11-11T22:06:41.000Z",
+    "why": "@rotowirenba.bsky.social: Joel Embiid: Questionable to play Thursday \n\n https://"
+   }
+  },
+  "401909971|derecklively|out": {
+   "game": "401909971",
+   "start": "2026-11-12T01:00Z",
+   "team": "15",
+   "name": "Dereck Lively",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-11T22:15:17.169Z",
+    "own": "2026-11-11T22:13:37.000Z",
+    "why": "@rotowirenba.bsky.social: Dereck Lively: Still out Thursday \n\n https://www.rotow"
+   }
+  },
+  "401909972|joelembiid|q": {
+   "game": "401909972",
+   "start": "2026-11-12T01:00Z",
+   "team": "3",
+   "name": "Joel Embiid",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-11-11T22:15:17.169Z",
+    "own": "2026-11-11T22:06:41.000Z",
+    "why": "@rotowirenba.bsky.social: Joel Embiid: Questionable to play Thursday \n\n https://"
+   }
+  },
+  "401909972|derecklively|out": {
+   "game": "401909972",
+   "start": "2026-11-12T01:00Z",
+   "team": "3",
+   "name": "Dereck Lively",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-11T22:15:17.169Z",
+    "own": "2026-11-11T22:13:37.000Z",
+    "why": "@rotowirenba.bsky.social: Dereck Lively: Still out Thursday \n\n https://www.rotow"
+   }
+  },
+  "401909973|joelembiid|q": {
+   "game": "401909973",
+   "start": "2026-11-12T02:00Z",
+   "team": "26",
+   "name": "Joel Embiid",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-11-11T22:15:17.169Z",
+    "own": "2026-11-11T22:06:41.000Z",
+    "why": "@rotowirenba.bsky.social: Joel Embiid: Questionable to play Thursday \n\n https://"
+   }
+  },
+  "401909973|derecklively|out": {
+   "game": "401909973",
+   "start": "2026-11-12T02:00Z",
+   "team": "26",
+   "name": "Dereck Lively",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-11T22:15:17.169Z",
+    "own": "2026-11-11T22:13:37.000Z",
+    "why": "@rotowirenba.bsky.social: Dereck Lively: Still out Thursday \n\n https://www.rotow"
+   }
+  },
+  "401909974|joelembiid|q": {
+   "game": "401909974",
+   "start": "2026-11-12T02:30Z",
+   "team": "10",
+   "name": "Joel Embiid",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-11-11T22:15:17.169Z",
+    "own": "2026-11-11T22:06:41.000Z",
+    "why": "@rotowirenba.bsky.social: Joel Embiid: Questionable to play Thursday \n\n https://"
+   }
+  },
+  "401909974|derecklively|out": {
+   "game": "401909974",
+   "start": "2026-11-12T02:30Z",
+   "team": "10",
+   "name": "Dereck Lively",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-11T22:15:17.169Z",
+    "own": "2026-11-11T22:13:37.000Z",
+    "why": "@rotowirenba.bsky.social: Dereck Lively: Still out Thursday \n\n https://www.rotow"
+   }
+  },
+  "401909975|joelembiid|q": {
+   "game": "401909975",
+   "start": "2026-11-12T03:00Z",
+   "team": "22",
+   "name": "Joel Embiid",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-11-11T22:15:17.169Z",
+    "own": "2026-11-11T22:06:41.000Z",
+    "why": "@rotowirenba.bsky.social: Joel Embiid: Questionable to play Thursday \n\n https://"
+   }
+  },
+  "401909975|derecklively|out": {
+   "game": "401909975",
+   "start": "2026-11-12T03:00Z",
+   "team": "22",
+   "name": "Dereck Lively",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-11T22:15:17.169Z",
+    "own": "2026-11-11T22:13:37.000Z",
+    "why": "@rotowirenba.bsky.social: Dereck Lively: Still out Thursday \n\n https://www.rotow"
+   }
   }
  }
 }

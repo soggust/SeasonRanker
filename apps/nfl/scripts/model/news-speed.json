@@ -16438,6 +16438,102 @@
     "seen": "2026-11-11T22:40:36.929Z",
     "own": "2026-11-11T22:25:00.000Z"
    }
+  },
+  "401873053|brianbranch|q": {
+   "game": "401873053",
+   "start": "2026-11-15T14:30Z",
+   "team": "8",
+   "name": "Brian Branch",
+   "status": "q",
+   "athlete": "4692025",
+   "espn": {
+    "seen": "2026-11-11T23:00:39.021Z",
+    "own": "2026-11-11T22:47:00.000Z"
+   }
+  },
+  "401873053|reggiegilliam|out": {
+   "game": "401873053",
+   "start": "2026-11-15T14:30Z",
+   "team": "17",
+   "name": "Reggie Gilliam",
+   "status": "out",
+   "athlete": "4039505",
+   "espn": {
+    "seen": "2026-11-11T23:00:39.021Z",
+    "own": "2026-11-11T22:36:00.000Z"
+   }
+  },
+  "401873056|azeezalshaair|q": {
+   "game": "401873056",
+   "start": "2026-11-15T18:00Z",
+   "team": "34",
+   "name": "Azeez Al-Shaair",
+   "status": "q",
+   "athlete": "3919117",
+   "espn": {
+    "seen": "2026-11-11T23:00:39.021Z",
+    "own": "2026-11-11T22:44:00.000Z"
+   }
+  },
+  "401873056|keylanrutledge|q": {
+   "game": "401873056",
+   "start": "2026-11-15T18:00Z",
+   "team": "34",
+   "name": "Keylan Rutledge",
+   "status": "q",
+   "athlete": "4839498",
+   "espn": {
+    "seen": "2026-11-11T23:00:39.021Z",
+    "own": "2026-11-11T22:43:00.000Z"
+   }
+  },
+  "401873056|wyattteller|q": {
+   "game": "401873056",
+   "start": "2026-11-15T18:00Z",
+   "team": "34",
+   "name": "Wyatt Teller",
+   "status": "q",
+   "athlete": "3045474",
+   "espn": {
+    "seen": "2026-11-11T23:00:39.021Z",
+    "own": "2026-11-11T22:43:00.000Z"
+   }
+  },
+  "401873056|brevinjordan|q": {
+   "game": "401873056",
+   "start": "2026-11-15T18:00Z",
+   "team": "34",
+   "name": "Brevin Jordan",
+   "status": "q",
+   "athlete": "4362504",
+   "espn": {
+    "seen": "2026-11-11T23:00:39.021Z",
+    "own": "2026-11-11T22:43:00.000Z"
+   }
+  },
+  "401873056|marvinharrison|q": {
+   "game": "401873056",
+   "start": "2026-11-15T18:00Z",
+   "team": "34",
+   "name": "Marvin Harrison Jr.",
+   "status": "q",
+   "athlete": "4432708",
+   "espn": {
+    "seen": "2026-11-11T23:00:39.021Z",
+    "own": "2026-11-11T22:42:00.000Z"
+   }
+  },
+  "401873064|derrickharmon|out": {
+   "game": "401873064",
+   "start": "2026-11-16T01:20Z",
+   "team": "23",
+   "name": "Derrick Harmon",
+   "status": "out",
+   "athlete": "4682980",
+   "espn": {
+    "seen": "2026-11-11T23:00:39.021Z",
+    "own": "2026-11-11T22:34:00.000Z"
+   }
   }
  }
 }

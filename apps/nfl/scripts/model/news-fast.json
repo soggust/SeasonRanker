@@ -1,28 +1,15 @@
 {
  "sport": "nfl",
  "cursor": {
-  "adamscheftermirror.bsky.social": "2026-11-11T21:45:21.291Z",
+  "adamscheftermirror.bsky.social": "2026-11-11T22:45:21.056Z",
   "rapsheet.bsky.social": "2026-11-10T21:02:04.176Z",
   "nflnewsreposterbot.bsky.social": "2026-11-10T18:38:15.366Z",
-  "insidenflnews.bsky.social": "2026-11-11T22:14:40.408Z",
+  "insidenflnews.bsky.social": "2026-11-11T22:43:15.247Z",
   "nflnewsposter.bsky.social": "2026-11-11T20:05:07.920Z",
-  "rotoworld-fb.bsky.social": "2026-11-11T21:38:27.000Z",
-  "rotowirenfl.bsky.social": "2026-11-11T22:04:49.000Z"
+  "rotoworld-fb.bsky.social": "2026-11-11T23:00:02.000Z",
+  "rotowirenfl.bsky.social": "2026-11-11T23:01:56.000Z"
  },
  "claims": [
-  {
-   "id": "at://did:plc:qre6zxbmr3ixhdmgsgdretb5/app.bsky.feed.post/3myg7vau3wd2d|jonahcoleman|active|return",
-   "at": "2026-10-21T22:42:31.877Z",
-   "seen": "2026-10-21T22:43:21.610Z",
-   "handle": "adamscheftermirror.bsky.social",
-   "post": "at://did:plc:qre6zxbmr3ixhdmgsgdretb5/app.bsky.feed.post/3myg7vau3wd2d",
-   "player": "Jonah Coleman",
-   "team": "DEN",
-   "status": "active",
-   "kind": "return",
-   "confidence": 0.9,
-   "text": "Broncos designated RB Jonah Coleman for return from injured reserve.\n\nOriginal post"
-  },
   {
    "id": "at://did:plc:fuqjc7x4gxvnwzksnlxwbe4x/app.bsky.feed.post/3mygb2hi2ps2z|zachcharbonnet|active|status",
    "at": "2026-10-21T23:03:20.418Z",
@@ -18521,6 +18508,136 @@
    "kind": "return",
    "confidence": 0.5,
    "text": "Travis Etienne (hamstring) had 21-day practice window opened."
+  },
+  {
+   "id": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3n22yvsmkfk2g|alvinkamara|none|status",
+   "at": "2026-11-11T22:28:40.000Z",
+   "seen": "2026-11-11T23:02:28.600Z",
+   "handle": "rotowirenfl.bsky.social",
+   "post": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3n22yvsmkfk2g",
+   "player": "Alvin Kamara",
+   "team": null,
+   "status": "none",
+   "kind": "status",
+   "confidence": 0.3,
+   "text": "Alvin Kamara: DNP on Wednesday \n\n https://www.rotowire.com/football/player/alvin-kamara-11732"
+  },
+  {
+   "id": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3n22zewwuls2y|denzelboston|out|status",
+   "at": "2026-11-11T22:37:08.000Z",
+   "seen": "2026-11-11T23:02:28.600Z",
+   "handle": "rotoworld-fb.bsky.social",
+   "post": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3n22zewwuls2y",
+   "player": "Denzel Boston",
+   "team": null,
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.8,
+   "text": "Denzel Boston (toe) sits out with new injury"
+  },
+  {
+   "id": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3n22zj4mmb223|haroldfannin|limited|status",
+   "at": "2026-11-11T22:39:28.000Z",
+   "seen": "2026-11-11T23:02:28.600Z",
+   "handle": "rotowirenfl.bsky.social",
+   "post": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3n22zj4mmb223",
+   "player": "Harold Fannin",
+   "team": null,
+   "status": "limited",
+   "kind": "status",
+   "confidence": 0.7,
+   "text": "Harold Fannin: Limited on Wednesday \n\n https://www.rotowire.com/football/player/harold-fannin-18472"
+  },
+  {
+   "id": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3n22zjo6ooa2x|woodymarks|limited|status",
+   "at": "2026-11-11T22:39:46.000Z",
+   "seen": "2026-11-11T23:02:28.600Z",
+   "handle": "rotowirenfl.bsky.social",
+   "post": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3n22zjo6ooa2x",
+   "player": "Woody Marks",
+   "team": null,
+   "status": "limited",
+   "kind": "status",
+   "confidence": 0.7,
+   "text": "Woody Marks: Limited at practice Wednesday \n\n https://www.rotowire.com/football/player/woody-marks-18449"
+  },
+  {
+   "id": "at://did:plc:mbr4badgf6yu56mquzackzew/app.bsky.feed.post/3n22zpusuws2t|treveyonhenderson|out|status",
+   "at": "2026-11-11T22:43:15.247Z",
+   "seen": "2026-11-11T23:02:28.600Z",
+   "handle": "insidenflnews.bsky.social",
+   "post": "at://did:plc:mbr4badgf6yu56mquzackzew/app.bsky.feed.post/3n22zpusuws2t",
+   "player": "TreVeyon Henderson",
+   "team": "NE",
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.9,
+   "text": "TreVeyon Henderson (illness) listed out for Week 10."
+  },
+  {
+   "id": "at://did:plc:qre6zxbmr3ixhdmgsgdretb5/app.bsky.feed.post/3n22ztn4lrq2b|treveyonhenderson|out|status",
+   "at": "2026-11-11T22:45:21.056Z",
+   "seen": "2026-11-11T23:02:28.600Z",
+   "handle": "adamscheftermirror.bsky.social",
+   "post": "at://did:plc:qre6zxbmr3ixhdmgsgdretb5/app.bsky.feed.post/3n22ztn4lrq2b",
+   "player": "TreVeyon Henderson",
+   "team": "NE",
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.97,
+   "text": "Patriots ruled out RB TreVeyon Henderson for Sunday’s game in Germany against the Lions.\n\nOriginal post [Week 10 Injury Report: Patriots at Lions]"
+  },
+  {
+   "id": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3n23243sp272g|ajbrown|limited|status",
+   "at": "2026-11-11T22:50:05.000Z",
+   "seen": "2026-11-11T23:02:28.600Z",
+   "handle": "rotowirenfl.bsky.social",
+   "post": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3n23243sp272g",
+   "player": "A.J. Brown",
+   "team": null,
+   "status": "limited",
+   "kind": "status",
+   "confidence": 0.7,
+   "text": "A.J. Brown: Limited practice session Wednesday \n\n https://www.rotowire.com/football/player/aj-brown-13432"
+  },
+  {
+   "id": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3n232ftfigl2o|ajbrown|limited|status",
+   "at": "2026-11-11T22:55:31.000Z",
+   "seen": "2026-11-11T23:02:28.600Z",
+   "handle": "rotoworld-fb.bsky.social",
+   "post": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3n232ftfigl2o",
+   "player": "A.J. Brown",
+   "team": null,
+   "status": "limited",
+   "kind": "status",
+   "confidence": 0.7,
+   "text": "AJB (knee/ankle) limited in Wednesday practice"
+  },
+  {
+   "id": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3n232nvvqft2v|treveyonhenderson|out|status",
+   "at": "2026-11-11T23:00:02.000Z",
+   "seen": "2026-11-11T23:02:28.600Z",
+   "handle": "rotoworld-fb.bsky.social",
+   "post": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3n232nvvqft2v",
+   "player": "TreVeyon Henderson",
+   "team": "NE",
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.95,
+   "text": "Patriots rule out TreVeyon Henderson for Week 10"
+  },
+  {
+   "id": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3n232rc3xfo2x|treveyonhenderson|out|status",
+   "at": "2026-11-11T23:01:56.000Z",
+   "seen": "2026-11-11T23:02:28.600Z",
+   "handle": "rotowirenfl.bsky.social",
+   "post": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3n232rc3xfo2x",
+   "player": "TreVeyon Henderson",
+   "team": "NE",
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.97,
+   "text": "TreVeyon Henderson: Deemed out for Sunday's game \n\n https://www.rotowire.com/football/player/treveyon-henderson-18517"
   }
  ]
 }
