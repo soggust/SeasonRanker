@@ -5,63 +5,11 @@
   "rapsheet.bsky.social": "2026-11-10T21:02:04.176Z",
   "nflnewsreposterbot.bsky.social": "2026-11-10T18:38:15.366Z",
   "insidenflnews.bsky.social": "2026-11-11T16:30:31.337Z",
-  "nflnewsposter.bsky.social": "2026-11-10T23:05:26.995Z",
-  "rotoworld-fb.bsky.social": "2026-11-11T16:57:14.000Z",
-  "rotowirenfl.bsky.social": "2026-11-11T14:38:21.000Z"
+  "nflnewsposter.bsky.social": "2026-11-11T17:09:13.039Z",
+  "rotoworld-fb.bsky.social": "2026-11-11T17:15:30.000Z",
+  "rotowirenfl.bsky.social": "2026-11-11T17:12:29.000Z"
  },
  "claims": [
-  {
-   "id": "at://did:plc:fuqjc7x4gxvnwzksnlxwbe4x/app.bsky.feed.post/3myfmqnrrm22u|jjmccarthy|none|starting",
-   "at": "2026-10-21T16:59:56.643Z",
-   "seen": "2026-10-21T17:42:17.133Z",
-   "handle": "nflnewsposter.bsky.social",
-   "post": "at://did:plc:fuqjc7x4gxvnwzksnlxwbe4x/app.bsky.feed.post/3myfmqnrrm22u",
-   "player": "J.J. McCarthy",
-   "team": "NYG",
-   "status": "none",
-   "kind": "starting",
-   "confidence": 0.9,
-   "text": "[Fowler] The Giants plan to start J.J. McCarthy on Sunday vs. Houston. twitter.com/jfowlerespn/..."
-  },
-  {
-   "id": "at://did:plc:qre6zxbmr3ixhdmgsgdretb5/app.bsky.feed.post/3myfmv5akzb26|lamarjackson|questionable|status",
-   "at": "2026-10-21T17:02:26.985Z",
-   "seen": "2026-10-21T17:42:17.133Z",
-   "handle": "adamscheftermirror.bsky.social",
-   "post": "at://did:plc:qre6zxbmr3ixhdmgsgdretb5/app.bsky.feed.post/3myfmv5akzb26",
-   "player": "Lamar Jackson",
-   "team": "BAL",
-   "status": "questionable",
-   "kind": "status",
-   "confidence": 0.5,
-   "text": "No sign of Ravens QB Lamar Jackson at the start of Wednesday’s practice.\n\nOriginal post"
-  },
-  {
-   "id": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3myfnn6oabf2t|lamarjackson|questionable|status",
-   "at": "2026-10-21T17:15:53.000Z",
-   "seen": "2026-10-21T17:42:17.133Z",
-   "handle": "rotoworld-fb.bsky.social",
-   "post": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3myfnn6oabf2t",
-   "player": "Lamar Jackson",
-   "team": "BAL",
-   "status": "questionable",
-   "kind": "status",
-   "confidence": 0.5,
-   "text": "Lamar (ankle) not seen at the start of practice"
-  },
-  {
-   "id": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3myfnn7u55q2h|adonaimitchell|limited|return",
-   "at": "2026-10-21T17:15:55.000Z",
-   "seen": "2026-10-21T17:42:17.133Z",
-   "handle": "rotoworld-fb.bsky.social",
-   "post": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3myfnn7u55q2h",
-   "player": "Adonai Mitchell",
-   "team": null,
-   "status": "limited",
-   "kind": "return",
-   "confidence": 0.6,
-   "text": "Adonai Mitchell (finger) returns to practice"
-  },
   {
    "id": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3myfo5p57me2f|mayfield|limited|return",
    "at": "2026-10-21T17:25:07.000Z",
@@ -18651,6 +18599,19 @@
    "kind": "starting",
    "confidence": 0.85,
    "text": "Steichen: Anthony Gould to start in slot"
+  },
+  {
+   "id": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3n22hftbfuf2t|omarcooper|limited|status",
+   "at": "2026-11-11T17:15:30.000Z",
+   "seen": "2026-11-11T17:17:24.109Z",
+   "handle": "rotoworld-fb.bsky.social",
+   "post": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3n22hftbfuf2t",
+   "player": "Omar Cooper",
+   "team": null,
+   "status": "limited",
+   "kind": "status",
+   "confidence": 0.85,
+   "text": "Omar Cooper limited on Wednesday"
   }
  ]
 }
