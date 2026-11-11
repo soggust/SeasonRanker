@@ -23156,6 +23156,30 @@
     "seen": "2026-11-11T00:00:46.496Z",
     "own": "2026-11-08T19:01:00.000Z"
    }
+  },
+  "401873052|travisetienne|q": {
+   "game": "401873052",
+   "start": "2026-11-13T01:15Z",
+   "team": "19",
+   "name": "Travis Etienne",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-11-11T00:26:20.450Z",
+    "own": "2026-11-11T00:05:21.000Z",
+    "why": "@rotowirenfl.bsky.social: Travis Etienne: Coach non-committal on Week 10 return "
+   }
+  },
+  "401873065|kylehamilton|q": {
+   "game": "401873065",
+   "start": "2026-11-17T01:15Z",
+   "team": "33",
+   "name": "Kyle Hamilton",
+   "status": "q",
+   "athlete": "4575517",
+   "espn": {
+    "seen": "2026-11-11T00:42:44.341Z",
+    "own": "2026-11-11T00:15:00.000Z"
+   }
   }
  }
 }
