@@ -1,7 +1,7 @@
 {
  "sport": "nba",
  "cursor": {
-  "rotowirenba.bsky.social": "2026-11-11T20:04:15.000Z",
+  "rotowirenba.bsky.social": "2026-11-11T21:18:21.000Z",
   "insidenbanews.bsky.social": "2026-11-08T18:11:49.382Z",
   "shamsbot.bsky.social": "2026-11-08T18:05:20.000Z"
  },
@@ -9612,6 +9612,19 @@
    "kind": "status",
    "confidence": 0.9,
    "text": "Keyonte George: Questionable to play Wednesday \n\n https://www.rotowire.com/basketball/player/keyonte-george-5899"
+  },
+  {
+   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3n22uy2mxuf2l|ajaymitchell|questionable|status",
+   "at": "2026-11-11T21:18:21.000Z",
+   "seen": "2026-11-11T21:29:05.365Z",
+   "handle": "rotowirenba.bsky.social",
+   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3n22uy2mxuf2l",
+   "player": "Ajay Mitchell",
+   "team": null,
+   "status": "questionable",
+   "kind": "status",
+   "confidence": 0.5,
+   "text": "Ajay Mitchell: Dealing with left ankle sprain \n\n https://www.rotowire.com/basketball/player/ajay-mitchell-6289"
   }
  ]
 }

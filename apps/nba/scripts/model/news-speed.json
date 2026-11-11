@@ -19346,6 +19346,30 @@
     "seen": "2026-11-11T21:13:53.504Z",
     "own": "2026-11-11T20:55:27.585Z"
    }
+  },
+  "401909975|chrisyoungblood|out": {
+   "game": "401909975",
+   "start": "2026-11-12T03:00Z",
+   "team": "22",
+   "name": "Chris Youngblood",
+   "status": "out",
+   "athlete": "4706557",
+   "espn": {
+    "seen": "2026-11-11T21:27:21.284Z",
+    "own": "2026-11-11T21:05:00.000Z"
+   }
+  },
+  "401909975|ajaymitchell|out": {
+   "game": "401909975",
+   "start": "2026-11-12T03:00Z",
+   "team": "25",
+   "name": "Ajay Mitchell",
+   "status": "out",
+   "athlete": "4900671",
+   "espn": {
+    "seen": "2026-11-11T21:27:21.284Z",
+    "own": "2026-11-11T21:17:00.000Z"
+   }
   }
  }
 }
