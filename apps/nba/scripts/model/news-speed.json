@@ -19185,6 +19185,11 @@
    "espn": {
     "seen": "2026-11-11T18:20:49.386Z",
     "own": "2026-11-11T18:06:00.000Z"
+   },
+   "bluesky": {
+    "seen": "2026-11-11T18:22:33.920Z",
+    "own": "2026-11-11T18:06:06.000Z",
+    "why": "@rotowirenba.bsky.social: Karl-Anthony Towns: Questionable to face Cleveland \n\n "
    }
   },
   "401909967|paulgeorge|out": {
@@ -19197,6 +19202,126 @@
     "seen": "2026-11-11T18:00:18.879Z",
     "own": "2026-11-11T17:55:53.000Z",
     "why": "@rotowirenba.bsky.social: Paul George: Out Wednesday \n\n https://www.rotowire.com"
+   }
+  },
+  "401909966|karlanthonytowns|q": {
+   "game": "401909966",
+   "start": "2026-11-12T00:00Z",
+   "team": "11",
+   "name": "Karl-Anthony Towns",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-11-11T18:22:33.920Z",
+    "own": "2026-11-11T18:06:06.000Z",
+    "why": "@rotowirenba.bsky.social: Karl-Anthony Towns: Questionable to face Cleveland \n\n "
+   }
+  },
+  "401909968|karlanthonytowns|q": {
+   "game": "401909968",
+   "start": "2026-11-12T00:00Z",
+   "team": "28",
+   "name": "Karl-Anthony Towns",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-11-11T18:22:33.920Z",
+    "own": "2026-11-11T18:06:06.000Z",
+    "why": "@rotowirenba.bsky.social: Karl-Anthony Towns: Questionable to face Cleveland \n\n "
+   }
+  },
+  "401909969|calebwilson|q": {
+   "game": "401909969",
+   "start": "2026-11-12T01:00Z",
+   "team": "4",
+   "name": "Caleb Wilson",
+   "status": "q",
+   "athlete": "5095151",
+   "espn": {
+    "seen": "2026-11-11T18:32:38.054Z",
+    "own": "2026-11-11T18:21:00.000Z"
+   }
+  },
+  "401909969|karlanthonytowns|q": {
+   "game": "401909969",
+   "start": "2026-11-12T01:00Z",
+   "team": "4",
+   "name": "Karl-Anthony Towns",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-11-11T18:22:33.920Z",
+    "own": "2026-11-11T18:06:06.000Z",
+    "why": "@rotowirenba.bsky.social: Karl-Anthony Towns: Questionable to face Cleveland \n\n "
+   }
+  },
+  "401909970|karlanthonytowns|q": {
+   "game": "401909970",
+   "start": "2026-11-12T01:00Z",
+   "team": "29",
+   "name": "Karl-Anthony Towns",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-11-11T18:22:33.920Z",
+    "own": "2026-11-11T18:06:06.000Z",
+    "why": "@rotowirenba.bsky.social: Karl-Anthony Towns: Questionable to face Cleveland \n\n "
+   }
+  },
+  "401909971|karlanthonytowns|q": {
+   "game": "401909971",
+   "start": "2026-11-12T01:00Z",
+   "team": "15",
+   "name": "Karl-Anthony Towns",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-11-11T18:22:33.920Z",
+    "own": "2026-11-11T18:06:06.000Z",
+    "why": "@rotowirenba.bsky.social: Karl-Anthony Towns: Questionable to face Cleveland \n\n "
+   }
+  },
+  "401909972|karlanthonytowns|q": {
+   "game": "401909972",
+   "start": "2026-11-12T01:00Z",
+   "team": "3",
+   "name": "Karl-Anthony Towns",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-11-11T18:22:33.920Z",
+    "own": "2026-11-11T18:06:06.000Z",
+    "why": "@rotowirenba.bsky.social: Karl-Anthony Towns: Questionable to face Cleveland \n\n "
+   }
+  },
+  "401909973|karlanthonytowns|q": {
+   "game": "401909973",
+   "start": "2026-11-12T02:00Z",
+   "team": "26",
+   "name": "Karl-Anthony Towns",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-11-11T18:22:33.920Z",
+    "own": "2026-11-11T18:06:06.000Z",
+    "why": "@rotowirenba.bsky.social: Karl-Anthony Towns: Questionable to face Cleveland \n\n "
+   }
+  },
+  "401909974|karlanthonytowns|q": {
+   "game": "401909974",
+   "start": "2026-11-12T02:30Z",
+   "team": "10",
+   "name": "Karl-Anthony Towns",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-11-11T18:22:33.920Z",
+    "own": "2026-11-11T18:06:06.000Z",
+    "why": "@rotowirenba.bsky.social: Karl-Anthony Towns: Questionable to face Cleveland \n\n "
+   }
+  },
+  "401909975|karlanthonytowns|q": {
+   "game": "401909975",
+   "start": "2026-11-12T03:00Z",
+   "team": "22",
+   "name": "Karl-Anthony Towns",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-11-11T18:22:33.920Z",
+    "own": "2026-11-11T18:06:06.000Z",
+    "why": "@rotowirenba.bsky.social: Karl-Anthony Towns: Questionable to face Cleveland \n\n "
    }
   }
  }
