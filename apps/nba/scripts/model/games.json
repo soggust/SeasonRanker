@@ -1478,7 +1478,7 @@
 {"id":"401909962","date":"2026-11-11T02:00Z","season":2027,"type":2,"home":"21","away":"12","homeAbbr":"PHX","awayAbbr":"LAC","neutral":false,"final":true,"hs":133,"as":110,"venue":"Phoenix|AZ|","indoor":true},
 {"id":"401909963","date":"2026-11-11T02:00Z","season":2027,"type":2,"home":"26","away":"14","homeAbbr":"UTAH","awayAbbr":"MIA","neutral":false,"final":true,"hs":109,"as":115,"venue":"Salt Lake City|UT|","indoor":true},
 {"id":"401909964","date":"2026-11-11T03:00Z","season":2027,"type":2,"home":"23","away":"19","homeAbbr":"SAC","awayAbbr":"ORL","neutral":false,"final":true,"hs":100,"as":107,"venue":"Sacramento|CA|","indoor":true},
-{"id":"401909965","date":"2026-11-11T04:00Z","season":2027,"type":2,"home":"22","away":"25","homeAbbr":"POR","awayAbbr":"OKC","neutral":false,"final":false,"hs":null,"as":null,"venue":"Portland|OR|","indoor":true},
+{"id":"401909965","date":"2026-11-11T04:00Z","season":2027,"type":2,"home":"22","away":"25","homeAbbr":"POR","awayAbbr":"OKC","neutral":false,"final":true,"hs":123,"as":103,"venue":"Portland|OR|","indoor":true},
 {"id":"401909968","date":"2026-11-12T00:00Z","season":2027,"type":2,"home":"28","away":"2","homeAbbr":"TOR","awayAbbr":"BOS","neutral":false,"final":false,"hs":null,"as":null,"venue":"Toronto|ON|","indoor":true},
 {"id":"401909967","date":"2026-11-12T00:00Z","season":2027,"type":2,"home":"18","away":"5","homeAbbr":"NY","awayAbbr":"CLE","neutral":false,"final":false,"hs":null,"as":null,"venue":"New York|NY|","indoor":true},
 {"id":"401909966","date":"2026-11-12T00:00Z","season":2027,"type":2,"home":"11","away":"27","homeAbbr":"IND","awayAbbr":"WSH","neutral":false,"final":false,"hs":null,"as":null,"venue":"Indianapolis|IN|","indoor":true},
