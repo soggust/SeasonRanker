@@ -1,54 +1,15 @@
 {
  "sport": "nfl",
  "cursor": {
-  "adamscheftermirror.bsky.social": "2026-11-11T00:50:49.619Z",
+  "adamscheftermirror.bsky.social": "2026-11-11T13:10:25.026Z",
   "rapsheet.bsky.social": "2026-11-10T21:02:04.176Z",
   "nflnewsreposterbot.bsky.social": "2026-11-10T18:38:15.366Z",
-  "insidenflnews.bsky.social": "2026-11-11T00:21:26.814Z",
+  "insidenflnews.bsky.social": "2026-11-11T14:07:14.384Z",
   "nflnewsposter.bsky.social": "2026-11-10T23:05:26.995Z",
-  "rotoworld-fb.bsky.social": "2026-11-10T22:44:43.000Z",
-  "rotowirenfl.bsky.social": "2026-11-11T00:05:21.000Z"
+  "rotoworld-fb.bsky.social": "2026-11-11T14:16:48.000Z",
+  "rotowirenfl.bsky.social": "2026-11-11T14:19:39.000Z"
  },
  "claims": [
-  {
-   "id": "at://did:plc:qre6zxbmr3ixhdmgsgdretb5/app.bsky.feed.post/3myf7zvgyu22q|samfranklin|out|status",
-   "at": "2026-10-21T13:12:27.942Z",
-   "seen": "2026-10-21T13:27:33.757Z",
-   "handle": "adamscheftermirror.bsky.social",
-   "post": "at://did:plc:qre6zxbmr3ixhdmgsgdretb5/app.bsky.feed.post/3myf7zvgyu22q",
-   "player": "Sam Franklin Jr.",
-   "team": "BUF",
-   "status": "out",
-   "kind": "status",
-   "confidence": 0.95,
-   "text": "Bills DB Sam Franklin Jr. was suspended one game today for unsportsmanlike conduct versus the Las Vegas Raiders.\n\nOriginal post"
-  },
-  {
-   "id": "at://did:plc:qre6zxbmr3ixhdmgsgdretb5/app.bsky.feed.post/3myfauuq7q72h|samfranklin|out|status",
-   "at": "2026-10-21T13:27:33.230Z",
-   "seen": "2026-10-21T13:27:33.757Z",
-   "handle": "adamscheftermirror.bsky.social",
-   "post": "at://did:plc:qre6zxbmr3ixhdmgsgdretb5/app.bsky.feed.post/3myfauuq7q72h",
-   "player": "Sam Franklin Jr.",
-   "team": "BUF",
-   "status": "out",
-   "kind": "status",
-   "confidence": 0.97,
-   "text": "Bills DB Sam Franklin Jr. was suspended one game today for unsportsmanlike conduct that the league said was a spitting incident vs. the Las Vegas Raiders.\n\nOriginal post"
-  },
-  {
-   "id": "at://did:plc:fuqjc7x4gxvnwzksnlxwbe4x/app.bsky.feed.post/3myfdtexflk23|samfranklin|out|status",
-   "at": "2026-10-21T14:20:24.381Z",
-   "seen": "2026-10-21T14:51:21.679Z",
-   "handle": "nflnewsposter.bsky.social",
-   "post": "at://did:plc:fuqjc7x4gxvnwzksnlxwbe4x/app.bsky.feed.post/3myfdtexflk23",
-   "player": "Sam Franklin Jr.",
-   "team": "BUF",
-   "status": "out",
-   "kind": "status",
-   "confidence": 0.9,
-   "text": "[Schefter] Bills DB Sam Franklin Jr. was suspended one game today for unsportsmanlike conduct that the league said was a spitting incident vs. the Las Vegas Raiders. twitter.com/AdamSchefter..."
-  },
   {
    "id": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3myfk3bkez32b|jjmccarthy|none|starting",
    "at": "2026-10-21T16:12:11.000Z",
@@ -18638,6 +18599,58 @@
    "kind": "status",
    "confidence": 0.95,
    "text": "Pelissero: Dolphins QB Malik Willis (groin) will be placed on IR and miss at least 4 games."
+  },
+  {
+   "id": "at://did:plc:qre6zxbmr3ixhdmgsgdretb5/app.bsky.feed.post/3mzzzpktnw524|fernandomendoza|none|starting",
+   "at": "2026-11-11T13:10:25.026Z",
+   "seen": "2026-11-11T14:35:58.507Z",
+   "handle": "adamscheftermirror.bsky.social",
+   "post": "at://did:plc:qre6zxbmr3ixhdmgsgdretb5/app.bsky.feed.post/3mzzzpktnw524",
+   "player": "Fernando Mendoza",
+   "team": "LV",
+   "status": "none",
+   "kind": "starting",
+   "confidence": 0.9,
+   "text": "More about the Raiders naming former No. 1 overall pick Fernando Mendoza their starting QB, via @ryanmcfadden_:\n\nOriginal post"
+  },
+  {
+   "id": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3n2254pw3og22|pukanacua|out|return",
+   "at": "2026-11-11T14:11:27.000Z",
+   "seen": "2026-11-11T14:35:58.507Z",
+   "handle": "rotowirenfl.bsky.social",
+   "post": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3n2254pw3og22",
+   "player": "Puka Nacua",
+   "team": "LAR",
+   "status": "out",
+   "kind": "return",
+   "confidence": 0.3,
+   "text": "Puka Nacua: May be tracking for Week 14 or 15 return \n\n https://www.rotowire.com/football/player/puka-nacua-16790"
+  },
+  {
+   "id": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3n225gbvede2i|deshaunwatson|active|starting",
+   "at": "2026-11-11T14:16:48.000Z",
+   "seen": "2026-11-11T14:35:58.507Z",
+   "handle": "rotoworld-fb.bsky.social",
+   "post": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3n225gbvede2i",
+   "player": "Deshaun Watson",
+   "team": "CLE",
+   "status": "active",
+   "kind": "starting",
+   "confidence": 0.85,
+   "text": "Cabot: Watson gets starting nod for Week 10"
+  },
+  {
+   "id": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3n225lem56h22|deshaunwatson|active|starting",
+   "at": "2026-11-11T14:19:39.000Z",
+   "seen": "2026-11-11T14:35:58.507Z",
+   "handle": "rotowirenfl.bsky.social",
+   "post": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3n225lem56h22",
+   "player": "Deshaun Watson",
+   "team": "CLE",
+   "status": "active",
+   "kind": "starting",
+   "confidence": 0.8,
+   "text": "Deshaun Watson: Remains in line to start Sunday \n\n https://www.rotowire.com/football/player/deshaun-watson-11712"
   }
  ]
 }
