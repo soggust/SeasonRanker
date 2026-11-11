@@ -18124,6 +18124,131 @@
     "own": "2026-11-11T00:24:37.000Z",
     "why": "@rotowirenba.bsky.social: Giannis Antetokounmpo: Now questionable Tuesday \n\n htt"
    }
+  },
+  "401909962|tristandasilva|out": {
+   "game": "401909962",
+   "start": "2026-11-11T02:00Z",
+   "team": "21",
+   "name": "Tristan da Silva",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-11T01:37:33.773Z",
+    "own": "2026-11-11T01:34:45.000Z",
+    "why": "@rotowirenba.bsky.social: Tristan da Silva: Downgraded to out \n\n https://www.rot"
+   }
+  },
+  "401909962|camchristie|out": {
+   "game": "401909962",
+   "start": "2026-11-11T02:00Z",
+   "team": "12",
+   "name": "Cam Christie",
+   "status": "out",
+   "athlete": "4845363",
+   "espn": {
+    "seen": "2026-11-11T01:50:43.556Z",
+    "own": "2026-11-11T01:37:00.000Z"
+   }
+  },
+  "401909963|tristandasilva|out": {
+   "game": "401909963",
+   "start": "2026-11-11T02:00Z",
+   "team": "26",
+   "name": "Tristan da Silva",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-11T01:37:33.773Z",
+    "own": "2026-11-11T01:34:45.000Z",
+    "why": "@rotowirenba.bsky.social: Tristan da Silva: Downgraded to out \n\n https://www.rot"
+   }
+  },
+  "401909964|tristandasilva|out": {
+   "game": "401909964",
+   "start": "2026-11-11T03:00Z",
+   "team": "23",
+   "name": "Tristan da Silva",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-11T01:37:33.773Z",
+    "own": "2026-11-11T01:34:45.000Z",
+    "why": "@rotowirenba.bsky.social: Tristan da Silva: Downgraded to out \n\n https://www.rot"
+   },
+   "athlete": "4702382",
+   "espn": {
+    "seen": "2026-11-11T01:50:43.556Z",
+    "own": "2026-11-11T01:31:00.000Z"
+   }
+  },
+  "401909965|tristandasilva|out": {
+   "game": "401909965",
+   "start": "2026-11-11T04:00Z",
+   "team": "22",
+   "name": "Tristan da Silva",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-11T01:37:33.773Z",
+    "own": "2026-11-11T01:34:45.000Z",
+    "why": "@rotowirenba.bsky.social: Tristan da Silva: Downgraded to out \n\n https://www.rot"
+   }
+  },
+  "401909966|tristandasilva|out": {
+   "game": "401909966",
+   "start": "2026-11-12T00:00Z",
+   "team": "11",
+   "name": "Tristan da Silva",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-11T01:37:33.773Z",
+    "own": "2026-11-11T01:34:45.000Z",
+    "why": "@rotowirenba.bsky.social: Tristan da Silva: Downgraded to out \n\n https://www.rot"
+   }
+  },
+  "401909969|tristandasilva|out": {
+   "game": "401909969",
+   "start": "2026-11-12T01:00Z",
+   "team": "4",
+   "name": "Tristan da Silva",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-11T01:37:33.773Z",
+    "own": "2026-11-11T01:34:45.000Z",
+    "why": "@rotowirenba.bsky.social: Tristan da Silva: Downgraded to out \n\n https://www.rot"
+   }
+  },
+  "401909970|tristandasilva|out": {
+   "game": "401909970",
+   "start": "2026-11-12T01:00Z",
+   "team": "29",
+   "name": "Tristan da Silva",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-11T01:37:33.773Z",
+    "own": "2026-11-11T01:34:45.000Z",
+    "why": "@rotowirenba.bsky.social: Tristan da Silva: Downgraded to out \n\n https://www.rot"
+   }
+  },
+  "401909972|tristandasilva|out": {
+   "game": "401909972",
+   "start": "2026-11-12T01:00Z",
+   "team": "3",
+   "name": "Tristan da Silva",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-11T01:37:33.773Z",
+    "own": "2026-11-11T01:34:45.000Z",
+    "why": "@rotowirenba.bsky.social: Tristan da Silva: Downgraded to out \n\n https://www.rot"
+   }
+  },
+  "401909974|tristandasilva|out": {
+   "game": "401909974",
+   "start": "2026-11-12T02:30Z",
+   "team": "10",
+   "name": "Tristan da Silva",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-11T01:37:33.773Z",
+    "own": "2026-11-11T01:34:45.000Z",
+    "why": "@rotowirenba.bsky.social: Tristan da Silva: Downgraded to out \n\n https://www.rot"
+   }
   }
  }
 }
