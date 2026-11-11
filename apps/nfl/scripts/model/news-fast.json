@@ -1,41 +1,15 @@
 {
  "sport": "nfl",
  "cursor": {
-  "adamscheftermirror.bsky.social": "2026-11-11T15:45:23.246Z",
+  "adamscheftermirror.bsky.social": "2026-11-11T18:15:26.842Z",
   "rapsheet.bsky.social": "2026-11-10T21:02:04.176Z",
   "nflnewsreposterbot.bsky.social": "2026-11-10T18:38:15.366Z",
-  "insidenflnews.bsky.social": "2026-11-11T16:30:31.337Z",
-  "nflnewsposter.bsky.social": "2026-11-11T17:58:05.408Z",
-  "rotoworld-fb.bsky.social": "2026-11-11T17:58:52.000Z",
-  "rotowirenfl.bsky.social": "2026-11-11T17:59:07.000Z"
+  "insidenflnews.bsky.social": "2026-11-11T18:14:54.608Z",
+  "nflnewsposter.bsky.social": "2026-11-11T18:09:14.508Z",
+  "rotoworld-fb.bsky.social": "2026-11-11T18:03:27.000Z",
+  "rotowirenfl.bsky.social": "2026-11-11T18:02:24.000Z"
  },
  "claims": [
-  {
-   "id": "at://did:plc:qre6zxbmr3ixhdmgsgdretb5/app.bsky.feed.post/3myfqjjnez222|kobieturner|out|status",
-   "at": "2026-10-21T18:07:32.312Z",
-   "seen": "2026-10-21T18:25:28.797Z",
-   "handle": "adamscheftermirror.bsky.social",
-   "post": "at://did:plc:qre6zxbmr3ixhdmgsgdretb5/app.bsky.feed.post/3myfqjjnez222",
-   "player": "Kobie Turner",
-   "team": "LAR",
-   "status": "out",
-   "kind": "status",
-   "confidence": 0.9,
-   "text": "Rams placed DE Kobie Turner on injured reserve.\n\nOriginal post"
-  },
-  {
-   "id": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3myfqq4dow22u|davidmontgomery|out|status",
-   "at": "2026-10-21T18:11:13.000Z",
-   "seen": "2026-10-21T18:25:28.797Z",
-   "handle": "rotowirenfl.bsky.social",
-   "post": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3myfqq4dow22u",
-   "player": "David Montgomery",
-   "team": null,
-   "status": "out",
-   "kind": "status",
-   "confidence": 0.6,
-   "text": "David Montgomery: Still sidelined at practice \n\n https://www.rotowire.com/football/player/david-montgomery-13556"
-  },
   {
    "id": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3myfrulfbkm27|davidmontgomery|questionable|status",
    "at": "2026-10-21T18:31:37.000Z",
@@ -18651,6 +18625,32 @@
    "kind": "status",
    "confidence": 0.5,
    "text": "Josh Jacobs: Could return in 2-to-3 weeks \n\n https://www.rotowire.com/football/player/josh-jacobs-13582"
+  },
+  {
+   "id": "at://did:plc:fuqjc7x4gxvnwzksnlxwbe4x/app.bsky.feed.post/3n22jyvuu5c2m|jaylonmoore|questionable|status",
+   "at": "2026-11-11T18:01:58.481Z",
+   "seen": "2026-11-11T18:22:33.920Z",
+   "handle": "nflnewsposter.bsky.social",
+   "post": "at://did:plc:fuqjc7x4gxvnwzksnlxwbe4x/app.bsky.feed.post/3n22jyvuu5c2m",
+   "player": "Jaylon Moore",
+   "team": "KC",
+   "status": "questionable",
+   "kind": "status",
+   "confidence": 0.5,
+   "text": "[Taylor] Andy Reid said Jaylon Moore (right ankle) & Peter Woods (neck) are not expected to practice today. \n\n“I’m going to stick with (Harrison) Butker,” Reid said. twitter.com/bynatetaylor..."
+  },
+  {
+   "id": "at://did:plc:fuqjc7x4gxvnwzksnlxwbe4x/app.bsky.feed.post/3n22jyvuu5c2m|peterwoods|questionable|status",
+   "at": "2026-11-11T18:01:58.481Z",
+   "seen": "2026-11-11T18:22:33.920Z",
+   "handle": "nflnewsposter.bsky.social",
+   "post": "at://did:plc:fuqjc7x4gxvnwzksnlxwbe4x/app.bsky.feed.post/3n22jyvuu5c2m",
+   "player": "Peter Woods",
+   "team": "KC",
+   "status": "questionable",
+   "kind": "status",
+   "confidence": 0.5,
+   "text": "[Taylor] Andy Reid said Jaylon Moore (right ankle) & Peter Woods (neck) are not expected to practice today. \n\n“I’m going to stick with (Harrison) Butker,” Reid said. twitter.com/bynatetaylor..."
   }
  ]
 }

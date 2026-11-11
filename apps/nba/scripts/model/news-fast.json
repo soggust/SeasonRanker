@@ -1,7 +1,7 @@
 {
  "sport": "nba",
  "cursor": {
-  "rotowirenba.bsky.social": "2026-11-11T17:55:53.000Z",
+  "rotowirenba.bsky.social": "2026-11-11T18:21:40.000Z",
   "insidenbanews.bsky.social": "2026-11-08T18:11:49.382Z",
   "shamsbot.bsky.social": "2026-11-08T18:05:20.000Z"
  },
@@ -9573,6 +9573,19 @@
    "kind": "status",
    "confidence": 0.93,
    "text": "Paul George: Out Wednesday \n\n https://www.rotowire.com/basketball/player/paul-george-3114"
+  },
+  {
+   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3n22kabznmo2o|karlanthonytowns|questionable|status",
+   "at": "2026-11-11T18:06:06.000Z",
+   "seen": "2026-11-11T18:22:33.920Z",
+   "handle": "rotowirenba.bsky.social",
+   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3n22kabznmo2o",
+   "player": "Karl-Anthony Towns",
+   "team": null,
+   "status": "questionable",
+   "kind": "status",
+   "confidence": 0.95,
+   "text": "Karl-Anthony Towns: Questionable to face Cleveland \n\n https://www.rotowire.com/basketball/player/karl-anthony-towns-3741"
   }
  ]
 }

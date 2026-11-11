@@ -193,90 +193,6 @@
     "own": "2026-09-28T21:02:00.000Z"
    }
   },
-  "401892624|taylorhall|out": {
-   "game": "401892624",
-   "start": "2026-11-01T18:00Z",
-   "team": "7",
-   "name": "Taylor Hall",
-   "status": "out",
-   "athlete": "5428",
-   "espn": {
-    "seen": "2026-10-31T15:24:45.300Z",
-    "own": "2026-10-29T16:10:00.000Z"
-   }
-  },
-  "401892624|alexandernikishin|out": {
-   "game": "401892624",
-   "start": "2026-11-01T18:00Z",
-   "team": "7",
-   "name": "Alexander Nikishin",
-   "status": "out",
-   "athlete": "4915850",
-   "espn": {
-    "seen": "2026-10-31T15:24:45.300Z",
-    "own": "2026-10-26T16:39:00.000Z"
-   }
-  },
-  "401892624|jordanstaal|out": {
-   "game": "401892624",
-   "start": "2026-11-01T18:00Z",
-   "team": "7",
-   "name": "Jordan Staal",
-   "status": "out",
-   "athlete": "3541",
-   "espn": {
-    "seen": "2026-10-31T15:24:45.300Z",
-    "own": "2026-10-15T21:54:00.000Z"
-   }
-  },
-  "401892624|vladislavnamestnikov|out": {
-   "game": "401892624",
-   "start": "2026-11-01T18:00Z",
-   "team": "28",
-   "name": "Vladislav Namestnikov",
-   "status": "out",
-   "athlete": "2562622",
-   "espn": {
-    "seen": "2026-10-31T15:24:45.300Z",
-    "own": "2026-10-23T18:11:00.000Z"
-   }
-  },
-  "401892624|nickbjugstad|out": {
-   "game": "401892624",
-   "start": "2026-11-01T18:00Z",
-   "team": "28",
-   "name": "Nick Bjugstad",
-   "status": "out",
-   "athlete": "5828",
-   "espn": {
-    "seen": "2026-10-31T15:24:45.300Z",
-    "own": "2026-10-23T16:48:00.000Z"
-   }
-  },
-  "401892624|joshmorrissey|out": {
-   "game": "401892624",
-   "start": "2026-11-01T18:00Z",
-   "team": "28",
-   "name": "Josh Morrissey",
-   "status": "out",
-   "athlete": "3042016",
-   "espn": {
-    "seen": "2026-10-31T15:24:45.300Z",
-    "own": "2026-10-19T15:39:00.000Z"
-   }
-  },
-  "401892624|garrettbrown|out": {
-   "game": "401892624",
-   "start": "2026-11-01T18:00Z",
-   "team": "28",
-   "name": "Garrett Brown",
-   "status": "out",
-   "athlete": "5104207",
-   "espn": {
-    "seen": "2026-10-31T15:24:45.300Z",
-    "own": "2026-09-29T15:55:00.000Z"
-   }
-  },
   "401892627|seandurzi|q": {
    "game": "401892627",
    "start": "2026-11-01T23:00Z",
@@ -9132,6 +9048,18 @@
    "espn": {
     "seen": "2026-11-11T17:37:55.596Z",
     "own": "2026-11-11T17:15:00.000Z"
+   }
+  },
+  "401892696|mikematheson|q": {
+   "game": "401892696",
+   "start": "2026-11-13T00:00Z",
+   "team": "10",
+   "name": "Mike Matheson",
+   "status": "q",
+   "athlete": "2976851",
+   "espn": {
+    "seen": "2026-11-11T18:21:03.284Z",
+    "own": "2026-11-11T17:55:00.000Z"
    }
   }
  }

@@ -19174,6 +19174,30 @@
     "own": "2026-11-11T17:55:53.000Z",
     "why": "@rotowirenba.bsky.social: Paul George: Out Wednesday \n\n https://www.rotowire.com"
    }
+  },
+  "401909967|karlanthonytowns|q": {
+   "game": "401909967",
+   "start": "2026-11-12T00:00Z",
+   "team": "18",
+   "name": "Karl-Anthony Towns",
+   "status": "q",
+   "athlete": "3136195",
+   "espn": {
+    "seen": "2026-11-11T18:20:49.386Z",
+    "own": "2026-11-11T18:06:00.000Z"
+   }
+  },
+  "401909967|paulgeorge|out": {
+   "game": "401909967",
+   "start": "2026-11-12T00:00Z",
+   "team": "18",
+   "name": "Paul George",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-11T18:00:18.879Z",
+    "own": "2026-11-11T17:55:53.000Z",
+    "why": "@rotowirenba.bsky.social: Paul George: Out Wednesday \n\n https://www.rotowire.com"
+   }
   }
  }
 }
