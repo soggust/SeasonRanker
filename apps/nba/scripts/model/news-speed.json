@@ -19400,6 +19400,30 @@
     "own": "2026-11-11T18:22:50.000Z",
     "why": "@rotowirenba.bsky.social: Lauri Markkanen: Will miss at least one month \n\n https"
    }
+  },
+  "401909971|mylesturner|out": {
+   "game": "401909971",
+   "start": "2026-11-12T01:00Z",
+   "team": "15",
+   "name": "Myles Turner",
+   "status": "out",
+   "athlete": "3133628",
+   "espn": {
+    "seen": "2026-11-11T19:16:33.573Z",
+    "own": "2026-11-11T19:02:00.000Z"
+   }
+  },
+  "401909971|quentingrimes|out": {
+   "game": "401909971",
+   "start": "2026-11-12T01:00Z",
+   "team": "13",
+   "name": "Quentin Grimes",
+   "status": "out",
+   "athlete": "4397014",
+   "espn": {
+    "seen": "2026-11-11T19:16:33.573Z",
+    "own": "2026-11-11T19:06:00.000Z"
+   }
   }
  }
 }
