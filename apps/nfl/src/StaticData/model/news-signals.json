@@ -100,51 +100,7 @@
    "confidence": 0.7,
    "headline": "Source: Browns returning to Watson as QB1 despite Sanders' strong fill-in start",
    "at": "2026-11-09T20:02:47.000Z"
-  },
-  {
-   "team": "18",
-   "abbr": "NO",
-   "athlete": "4880281",
-   "player": "Jordyn Tyson",
-   "kind": "role",
-   "direction": "up",
-   "confidence": 0.5,
-   "headline": "Jordyn Tyson's Saints debut showed promise, rookie mistakes",
-   "at": "2026-11-09T19:12:14.000Z"
-  },
-  {
-   "team": "26",
-   "abbr": "SEA",
-   "athlete": "3924327",
-   "player": "Drew Lock",
-   "kind": "starting",
-   "direction": "up",
-   "confidence": 0.8,
-   "headline": "Seahawks to start QB Drew Lock vs. Raiders, giving Sam Darnold more time to heal",
-   "at": "2026-11-09T19:10:30.000Z"
-  },
-  {
-   "team": "26",
-   "abbr": "SEA",
-   "athlete": "3912547",
-   "player": "Sam Darnold",
-   "kind": "benched",
-   "direction": "down",
-   "confidence": 0.7,
-   "headline": "Seahawks to start QB Drew Lock vs. Raiders, giving Sam Darnold more time to heal",
-   "at": "2026-11-09T19:10:30.000Z"
-  },
-  {
-   "team": "20",
-   "abbr": "NYJ",
-   "athlete": "4361767",
-   "player": "Will McDonald IV",
-   "kind": "role",
-   "direction": "down",
-   "confidence": 0.5,
-   "headline": "Sources: Jets DE Will McDonald IV, frustrated by lack of use, requests trade",
-   "at": "2026-11-09T19:08:34.000Z"
   }
  ],
- "at": "2026-11-11T00:02:50.957Z"
+ "at": "2026-11-11T19:29:32.701Z"
 }
