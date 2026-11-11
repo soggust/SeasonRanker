@@ -7,7 +7,7 @@
   "insidenflnews.bsky.social": "2026-11-11T14:07:14.384Z",
   "nflnewsposter.bsky.social": "2026-11-10T23:05:26.995Z",
   "rotoworld-fb.bsky.social": "2026-11-11T14:16:48.000Z",
-  "rotowirenfl.bsky.social": "2026-11-11T14:19:39.000Z"
+  "rotowirenfl.bsky.social": "2026-11-11T14:38:21.000Z"
  },
  "claims": [
   {
@@ -18651,6 +18651,19 @@
    "kind": "starting",
    "confidence": 0.8,
    "text": "Deshaun Watson: Remains in line to start Sunday \n\n https://www.rotowire.com/football/player/deshaun-watson-11712"
+  },
+  {
+   "id": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3n226msxg6p23|deshaunwatson|active|starting",
+   "at": "2026-11-11T14:38:21.000Z",
+   "seen": "2026-11-11T15:03:02.863Z",
+   "handle": "rotowirenfl.bsky.social",
+   "post": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3n226msxg6p23",
+   "player": "Deshaun Watson",
+   "team": null,
+   "status": "active",
+   "kind": "starting",
+   "confidence": 0.9,
+   "text": "Deshaun Watson: Officially named Week 10 starter \n\n https://www.rotowire.com/football/player/deshaun-watson-11712"
   }
  ]
 }
