@@ -18840,6 +18840,18 @@
     "seen": "2026-11-11T06:21:32.897Z",
     "own": "2026-09-28T21:33:00.000Z"
    }
+  },
+  "401909975|tristandasilva|out": {
+   "game": "401909975",
+   "start": "2026-11-12T03:00Z",
+   "team": "22",
+   "name": "Tristan da Silva",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-11T01:37:33.773Z",
+    "own": "2026-11-11T01:34:45.000Z",
+    "why": "@rotowirenba.bsky.social: Tristan da Silva: Downgraded to out \n\n https://www.rot"
+   }
   }
  }
 }
