@@ -6,49 +6,10 @@
   "nflnewsreposterbot.bsky.social": "2026-11-10T18:38:15.366Z",
   "insidenflnews.bsky.social": "2026-11-11T16:30:31.337Z",
   "nflnewsposter.bsky.social": "2026-11-10T23:05:26.995Z",
-  "rotoworld-fb.bsky.social": "2026-11-11T15:41:38.000Z",
+  "rotoworld-fb.bsky.social": "2026-11-11T16:57:14.000Z",
   "rotowirenfl.bsky.social": "2026-11-11T14:38:21.000Z"
  },
  "claims": [
-  {
-   "id": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3myflh5jkx32j|jameiswinston|none|benched",
-   "at": "2026-10-21T16:36:43.000Z",
-   "seen": "2026-10-21T17:42:17.133Z",
-   "handle": "rotowirenfl.bsky.social",
-   "post": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3myflh5jkx32j",
-   "player": "Jameis Winston",
-   "team": null,
-   "status": "none",
-   "kind": "benched",
-   "confidence": 0.8,
-   "text": "Jameis Winston: Ceding starting gig to McCarthy \n\n https://www.rotowire.com/football/player/jameis-winston-10037"
-  },
-  {
-   "id": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3myflnubqoy2e|jjmccarthy|none|starting",
-   "at": "2026-10-21T16:40:28.000Z",
-   "seen": "2026-10-21T17:42:17.133Z",
-   "handle": "rotoworld-fb.bsky.social",
-   "post": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3myflnubqoy2e",
-   "player": "J.J. McCarthy",
-   "team": null,
-   "status": "none",
-   "kind": "starting",
-   "confidence": 0.9,
-   "text": "Fowler: J.J. McCarthy will start Week 7 vs. Texans"
-  },
-  {
-   "id": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3myfm77zutu2g|adonaimitchell|limited|status",
-   "at": "2026-10-21T16:50:11.000Z",
-   "seen": "2026-10-21T17:42:17.133Z",
-   "handle": "rotowirenfl.bsky.social",
-   "post": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3myfm77zutu2g",
-   "player": "Adonai Mitchell",
-   "team": null,
-   "status": "limited",
-   "kind": "status",
-   "confidence": 0.85,
-   "text": "Adonai Mitchell: Returning to practice in limited fashion \n\n https://www.rotowire.com/football/player/adonai-mitchell-17668"
-  },
   {
    "id": "at://did:plc:fuqjc7x4gxvnwzksnlxwbe4x/app.bsky.feed.post/3myfmqnrrm22u|jjmccarthy|none|starting",
    "at": "2026-10-21T16:59:56.643Z",
@@ -18677,6 +18638,19 @@
    "kind": "starting",
    "confidence": 0.9,
    "text": "Steichen: Anthony Gould will start in slot for Josh Downs."
+  },
+  {
+   "id": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3n22ffahwey2p|anthonygould|none|starting",
+   "at": "2026-11-11T16:39:23.000Z",
+   "seen": "2026-11-11T16:57:22.345Z",
+   "handle": "rotoworld-fb.bsky.social",
+   "post": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3n22ffahwey2p",
+   "player": "Anthony Gould",
+   "team": "IND",
+   "status": "none",
+   "kind": "starting",
+   "confidence": 0.85,
+   "text": "Steichen: Anthony Gould to start in slot"
   }
  ]
 }
