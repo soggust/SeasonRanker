@@ -16354,6 +16354,42 @@
     "seen": "2026-11-11T22:12:38.632Z",
     "own": "2026-11-11T21:57:00.000Z"
    }
+  },
+  "401873052|georgepickens|q": {
+   "game": "401873052",
+   "start": "2026-11-13T01:15Z",
+   "team": "19",
+   "name": "George Pickens",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-11-11T22:15:17.169Z",
+    "own": "2026-11-11T21:45:10.000Z",
+    "why": "@rotowirenfl.bsky.social: George Pickens: Limited at Wednesday's practice \n\n htt"
+   }
+  },
+  "401873055|alvinkamara|q": {
+   "game": "401873055",
+   "start": "2026-11-15T18:00Z",
+   "team": "18",
+   "name": "Alvin Kamara",
+   "status": "q",
+   "athlete": "3054850",
+   "espn": {
+    "seen": "2026-11-11T22:23:56.309Z",
+    "own": "2026-11-11T22:12:00.000Z"
+   }
+  },
+  "401873063|devinmoore|out": {
+   "game": "401873063",
+   "start": "2026-11-15T21:25Z",
+   "team": "6",
+   "name": "Devin Moore",
+   "status": "out",
+   "athlete": "4702577",
+   "espn": {
+    "seen": "2026-11-11T22:23:56.309Z",
+    "own": "2026-11-11T22:11:00.000Z"
+   }
   }
  }
 }
