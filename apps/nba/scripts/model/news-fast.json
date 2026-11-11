@@ -1,7 +1,7 @@
 {
  "sport": "nba",
  "cursor": {
-  "rotowirenba.bsky.social": "2026-11-11T01:04:15.000Z",
+  "rotowirenba.bsky.social": "2026-11-11T01:34:45.000Z",
   "insidenbanews.bsky.social": "2026-11-08T18:11:49.382Z",
   "shamsbot.bsky.social": "2026-11-08T18:05:20.000Z"
  },
@@ -9482,6 +9482,19 @@
    "kind": "status",
    "confidence": 0.9,
    "text": "Giannis Antetokounmpo: Cleared to play Tuesday \n\n https://www.rotowire.com/basketball/player/giannis-antetokounmpo-3456"
+  },
+  {
+   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mzystmwwbv2p|tristandasilva|out|status",
+   "at": "2026-11-11T01:34:45.000Z",
+   "seen": "2026-11-11T01:37:33.773Z",
+   "handle": "rotowirenba.bsky.social",
+   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mzystmwwbv2p",
+   "player": "Tristan da Silva",
+   "team": null,
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.93,
+   "text": "Tristan da Silva: Downgraded to out \n\n https://www.rotowire.com/basketball/player/tristan-da-silva-6267"
   }
  ]
 }
