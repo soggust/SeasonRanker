@@ -1,13 +1,13 @@
 {
  "sport": "nfl",
  "cursor": {
-  "adamscheftermirror.bsky.social": "2026-11-11T18:30:29.185Z",
+  "adamscheftermirror.bsky.social": "2026-11-11T18:45:26.851Z",
   "rapsheet.bsky.social": "2026-11-10T21:02:04.176Z",
   "nflnewsreposterbot.bsky.social": "2026-11-10T18:38:15.366Z",
   "insidenflnews.bsky.social": "2026-11-11T18:32:06.051Z",
-  "nflnewsposter.bsky.social": "2026-11-11T18:09:14.508Z",
-  "rotoworld-fb.bsky.social": "2026-11-11T18:03:27.000Z",
-  "rotowirenfl.bsky.social": "2026-11-11T18:32:56.000Z"
+  "nflnewsposter.bsky.social": "2026-11-11T19:00:14.826Z",
+  "rotoworld-fb.bsky.social": "2026-11-11T18:56:44.000Z",
+  "rotowirenfl.bsky.social": "2026-11-11T19:04:28.000Z"
  },
  "claims": [
   {
@@ -18625,6 +18625,45 @@
    "kind": "status",
    "confidence": 0.5,
    "text": "[Taylor] Andy Reid said Jaylon Moore (right ankle) & Peter Woods (neck) are not expected to practice today. \n\n“I’m going to stick with (Harrison) Butker,” Reid said. twitter.com/bynatetaylor..."
+  },
+  {
+   "id": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3n22ml3jewq2n|xavierworthy|limited|status",
+   "at": "2026-11-11T18:47:55.000Z",
+   "seen": "2026-11-11T19:06:28.833Z",
+   "handle": "rotoworld-fb.bsky.social",
+   "post": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3n22ml3jewq2n",
+   "player": "Xavier Worthy",
+   "team": "KC",
+   "status": "limited",
+   "kind": "status",
+   "confidence": 0.6,
+   "text": "Xavier Worthy (hamstring) will practice Wednesday"
+  },
+  {
+   "id": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3n22n2thcds2i|pickens|limited|status",
+   "at": "2026-11-11T18:56:44.000Z",
+   "seen": "2026-11-11T19:06:28.833Z",
+   "handle": "rotoworld-fb.bsky.social",
+   "post": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3n22n2thcds2i",
+   "player": "Pickens",
+   "team": null,
+   "status": "limited",
+   "kind": "status",
+   "confidence": 0.5,
+   "text": "Pickens (hamstring) expected to practice Wednesday"
+  },
+  {
+   "id": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3n22nio4sgk2y|davidmontgomery|questionable|status",
+   "at": "2026-11-11T19:04:28.000Z",
+   "seen": "2026-11-11T19:06:28.833Z",
+   "handle": "rotowirenfl.bsky.social",
+   "post": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3n22nio4sgk2y",
+   "player": "David Montgomery",
+   "team": null,
+   "status": "questionable",
+   "kind": "status",
+   "confidence": 0.5,
+   "text": "David Montgomery: Still sidelined at practice \n\n https://www.rotowire.com/football/player/david-montgomery-13556"
   }
  ]
 }
