@@ -1,7 +1,7 @@
 {
  "sport": "nba",
  "cursor": {
-  "rotowirenba.bsky.social": "2026-11-11T16:53:03.000Z",
+  "rotowirenba.bsky.social": "2026-11-11T17:55:53.000Z",
   "insidenbanews.bsky.social": "2026-11-08T18:11:49.382Z",
   "shamsbot.bsky.social": "2026-11-08T18:05:20.000Z"
  },
@@ -9560,6 +9560,19 @@
    "kind": "status",
    "confidence": 0.9,
    "text": "Mikel Brown: Sidelined Wednesday with illness \n\n https://www.rotowire.com/basketball/player/mikel-brown-6929"
+  },
+  {
+   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3n22jo23uan26|paulgeorge|out|status",
+   "at": "2026-11-11T17:55:53.000Z",
+   "seen": "2026-11-11T18:00:18.879Z",
+   "handle": "rotowirenba.bsky.social",
+   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3n22jo23uan26",
+   "player": "Paul George",
+   "team": null,
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.93,
+   "text": "Paul George: Out Wednesday \n\n https://www.rotowire.com/basketball/player/paul-george-3114"
   }
  ]
 }

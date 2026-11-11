@@ -5,9 +5,9 @@
   "rapsheet.bsky.social": "2026-11-10T21:02:04.176Z",
   "nflnewsreposterbot.bsky.social": "2026-11-10T18:38:15.366Z",
   "insidenflnews.bsky.social": "2026-11-11T16:30:31.337Z",
-  "nflnewsposter.bsky.social": "2026-11-11T17:27:29.695Z",
-  "rotoworld-fb.bsky.social": "2026-11-11T17:15:30.000Z",
-  "rotowirenfl.bsky.social": "2026-11-11T17:38:12.000Z"
+  "nflnewsposter.bsky.social": "2026-11-11T17:58:05.408Z",
+  "rotoworld-fb.bsky.social": "2026-11-11T17:58:52.000Z",
+  "rotowirenfl.bsky.social": "2026-11-11T17:59:07.000Z"
  },
  "claims": [
   {
@@ -18612,6 +18612,45 @@
    "kind": "status",
    "confidence": 0.85,
    "text": "Omar Cooper: To be limited in Wednesday's practice \n\n https://www.rotowire.com/football/player/omar-cooper-19314"
+  },
+  {
+   "id": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3n22jlfy5i72f|carnelltate|questionable|status",
+   "at": "2026-11-11T17:54:25.000Z",
+   "seen": "2026-11-11T18:00:18.879Z",
+   "handle": "rotoworld-fb.bsky.social",
+   "post": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3n22jlfy5i72f",
+   "player": "Carnell Tate",
+   "team": "TEN",
+   "status": "questionable",
+   "kind": "status",
+   "confidence": 0.4,
+   "text": "Carnell Tate misses another practice Wednesday"
+  },
+  {
+   "id": "at://did:plc:fuqjc7x4gxvnwzksnlxwbe4x/app.bsky.feed.post/3n22jrxm4ps2m|joshjacobs|out|status",
+   "at": "2026-11-11T17:58:05.408Z",
+   "seen": "2026-11-11T18:00:18.879Z",
+   "handle": "nflnewsposter.bsky.social",
+   "post": "at://did:plc:fuqjc7x4gxvnwzksnlxwbe4x/app.bsky.feed.post/3n22jrxm4ps2m",
+   "player": "Josh Jacobs",
+   "team": "GB",
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.9,
+   "text": "[Rapoport] Packers RB Josh Jacobs, who will have surgery later this week on his broken ring finger, could return as quickly as 2-3 weeks. GB will decide Sat. if IR is necessary but it’s not guaranteed"
+  },
+  {
+   "id": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3n22jtt54pv25|joshjacobs|out|status",
+   "at": "2026-11-11T17:59:07.000Z",
+   "seen": "2026-11-11T18:00:18.879Z",
+   "handle": "rotowirenfl.bsky.social",
+   "post": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3n22jtt54pv25",
+   "player": "Josh Jacobs",
+   "team": "GB",
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.5,
+   "text": "Josh Jacobs: Could return in 2-to-3 weeks \n\n https://www.rotowire.com/football/player/josh-jacobs-13582"
   }
  ]
 }
