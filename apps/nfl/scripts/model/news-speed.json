@@ -23264,6 +23264,30 @@
     "seen": "2026-11-11T17:36:42.116Z",
     "own": "2026-11-11T17:17:00.000Z"
    }
+  },
+  "401873052|garrettwilson|q": {
+   "game": "401873052",
+   "start": "2026-11-13T01:15Z",
+   "team": "19",
+   "name": "Garrett Wilson",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-11-11T17:39:19.377Z",
+    "own": "2026-11-11T17:21:41.000Z",
+    "why": "@rotowirenfl.bsky.social: Garrett Wilson: Returning to limited parctice \n\n https"
+   }
+  },
+  "401873052|colsonyankoff|out": {
+   "game": "401873052",
+   "start": "2026-11-13T01:15Z",
+   "team": "28",
+   "name": "Colson Yankoff",
+   "status": "out",
+   "athlete": "4361088",
+   "espn": {
+    "seen": "2026-11-11T17:53:38.479Z",
+    "own": "2026-11-11T17:51:00.000Z"
+   }
   }
  }
 }
