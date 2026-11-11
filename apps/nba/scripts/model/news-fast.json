@@ -1,7 +1,7 @@
 {
  "sport": "nba",
  "cursor": {
-  "rotowirenba.bsky.social": "2026-11-11T00:46:25.000Z",
+  "rotowirenba.bsky.social": "2026-11-11T01:04:15.000Z",
   "insidenbanews.bsky.social": "2026-11-08T18:11:49.382Z",
   "shamsbot.bsky.social": "2026-11-08T18:05:20.000Z"
  },
@@ -9469,6 +9469,19 @@
    "kind": "starting",
    "confidence": 0.85,
    "text": "Jordan Walsh: Starting Tuesday \n\n https://www.rotowire.com/basketball/player/jordan-walsh-5942"
+  },
+  {
+   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mzyr54ae442r|giannisantetokounmpo|active|status",
+   "at": "2026-11-11T01:04:15.000Z",
+   "seen": "2026-11-11T01:15:38.859Z",
+   "handle": "rotowirenba.bsky.social",
+   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mzyr54ae442r",
+   "player": "Giannis Antetokounmpo",
+   "team": "MIL",
+   "status": "active",
+   "kind": "status",
+   "confidence": 0.9,
+   "text": "Giannis Antetokounmpo: Cleared to play Tuesday \n\n https://www.rotowire.com/basketball/player/giannis-antetokounmpo-3456"
   }
  ]
 }
