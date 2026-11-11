@@ -1,12 +1,12 @@
 {
  "sport": "nfl",
  "cursor": {
-  "adamscheftermirror.bsky.social": "2026-11-11T13:10:25.026Z",
+  "adamscheftermirror.bsky.social": "2026-11-11T15:45:23.246Z",
   "rapsheet.bsky.social": "2026-11-10T21:02:04.176Z",
   "nflnewsreposterbot.bsky.social": "2026-11-10T18:38:15.366Z",
   "insidenflnews.bsky.social": "2026-11-11T15:31:55.569Z",
   "nflnewsposter.bsky.social": "2026-11-10T23:05:26.995Z",
-  "rotoworld-fb.bsky.social": "2026-11-11T14:16:48.000Z",
+  "rotoworld-fb.bsky.social": "2026-11-11T15:41:38.000Z",
   "rotowirenfl.bsky.social": "2026-11-11T14:38:21.000Z"
  },
  "claims": [
@@ -18664,6 +18664,19 @@
    "kind": "starting",
    "confidence": 0.9,
    "text": "Deshaun Watson: Officially named Week 10 starter \n\n https://www.rotowire.com/football/player/deshaun-watson-11712"
+  },
+  {
+   "id": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3n22c5xplhf2g|pukanacua|none|status",
+   "at": "2026-11-11T15:41:38.000Z",
+   "seen": "2026-11-11T15:54:24.315Z",
+   "handle": "rotoworld-fb.bsky.social",
+   "post": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3n22c5xplhf2g",
+   "player": "Puka Nacua",
+   "team": "LAR",
+   "status": "none",
+   "kind": "status",
+   "confidence": 0.4,
+   "text": "Graziano: Puka won't miss rest of regular season"
   }
  ]
 }

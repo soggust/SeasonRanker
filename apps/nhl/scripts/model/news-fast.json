@@ -3,24 +3,11 @@
  "cursor": {
   "johnston-bot.bsky.social": "2026-11-11T02:20:24.625Z",
   "notfriedgehnic.bsky.social": "2026-11-10T21:54:27.056Z",
-  "dailyfaceoff.bsky.social": "2026-11-11T15:09:30.000Z",
+  "dailyfaceoff.bsky.social": "2026-11-11T15:45:36.000Z",
   "dfotoronto.bsky.social": "2026-11-11T15:09:29.000Z",
   "marklazerus.bsky.social": "2026-11-11T03:49:10.414Z"
  },
  "claims": [
-  {
-   "id": "at://did:plc:3uus7y6h3rlrk6sbctzxm4bg/app.bsky.feed.post/3myfiapqmnh2u|loganthompson|out|status",
-   "at": "2026-10-21T15:39:26.000Z",
-   "seen": "2026-10-21T15:54:22.560Z",
-   "handle": "dailyfaceoff.bsky.social",
-   "post": "at://did:plc:3uus7y6h3rlrk6sbctzxm4bg/app.bsky.feed.post/3myfiapqmnh2u",
-   "player": "Logan Thompson",
-   "team": "WSH",
-   "status": "out",
-   "kind": "status",
-   "confidence": 0.9,
-   "text": "Capitals’ Logan Thompson out day-to-day with lower-body injury"
-  },
   {
    "id": "at://did:plc:3uus7y6h3rlrk6sbctzxm4bg/app.bsky.feed.post/3myfqs4eclc25|jakesanderson|active|return",
    "at": "2026-10-21T18:12:20.000Z",
