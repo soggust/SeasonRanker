@@ -78,29 +78,7 @@
    "confidence": 0.4,
    "headline": "The key behind 49ers' 7-1 start? Big contributions from the team's youth",
    "at": "2026-11-09T21:28:52.000Z"
-  },
-  {
-   "team": "5",
-   "abbr": "CLE",
-   "athlete": "3122840",
-   "player": "Deshaun Watson",
-   "kind": "starting",
-   "direction": "up",
-   "confidence": 0.7,
-   "headline": "Source: Browns returning to Watson as QB1 despite Sanders' strong fill-in start",
-   "at": "2026-11-09T20:02:47.000Z"
-  },
-  {
-   "team": "5",
-   "abbr": "CLE",
-   "athlete": "4432762",
-   "player": "Shedeur Sanders",
-   "kind": "benched",
-   "direction": "down",
-   "confidence": 0.7,
-   "headline": "Source: Browns returning to Watson as QB1 despite Sanders' strong fill-in start",
-   "at": "2026-11-09T20:02:47.000Z"
   }
  ],
- "at": "2026-11-11T19:29:32.701Z"
+ "at": "2026-11-11T21:15:44.044Z"
 }

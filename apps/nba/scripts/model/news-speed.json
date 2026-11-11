@@ -1,239 +1,6 @@
 {
  "sport": "nba",
  "entries": {
-  "401909903|jonathanisaac|out": {
-   "game": "401909903",
-   "start": "2026-11-01T20:30Z",
-   "team": "19",
-   "name": "Jonathan Isaac",
-   "status": "out",
-   "athlete": "4065654",
-   "espn": {
-    "seen": "2026-11-01T02:07:55.786Z",
-    "own": "2026-10-29T18:29:00.000Z"
-   }
-  },
-  "401909903|jalensuggs|out": {
-   "game": "401909903",
-   "start": "2026-11-01T20:30Z",
-   "team": "19",
-   "name": "Jalen Suggs",
-   "status": "out",
-   "athlete": "4432165",
-   "espn": {
-    "seen": "2026-11-01T02:07:55.786Z",
-    "own": "2026-10-26T18:44:00.000Z"
-   }
-  },
-  "401909903|paolobanchero|out": {
-   "game": "401909903",
-   "start": "2026-11-01T20:30Z",
-   "team": "19",
-   "name": "Paolo Banchero",
-   "status": "out",
-   "athlete": "4432573",
-   "espn": {
-    "seen": "2026-11-01T02:07:55.786Z",
-    "own": "2026-10-24T16:47:00.000Z"
-   }
-  },
-  "401909903|noahpenda|out": {
-   "game": "401909903",
-   "start": "2026-11-01T20:30Z",
-   "team": "19",
-   "name": "Noah Penda",
-   "status": "out",
-   "athlete": "5214637",
-   "espn": {
-    "seen": "2026-11-01T02:07:55.786Z",
-    "own": "2026-10-17T22:19:00.000Z"
-   }
-  },
-  "401909903|izaiyahnelson|out": {
-   "game": "401909903",
-   "start": "2026-11-01T20:30Z",
-   "team": "19",
-   "name": "Izaiyah Nelson",
-   "status": "out",
-   "athlete": "5107251",
-   "espn": {
-    "seen": "2026-11-01T02:07:55.786Z",
-    "own": "2026-09-28T21:33:00.000Z"
-   }
-  },
-  "401909903|jaylenbrown|q": {
-   "game": "401909903",
-   "start": "2026-11-01T20:30Z",
-   "team": "19",
-   "name": "Jaylen Brown",
-   "status": "q",
-   "bluesky": {
-    "seen": "2026-10-31T17:21:46.995Z",
-    "own": "2026-10-31T17:08:33.000Z",
-    "why": "@rotowirenba.bsky.social: Jaylen Brown: Questionable for Saturday \n\n https://www"
-   }
-  },
-  "401909903|joelembiid|out": {
-   "game": "401909903",
-   "start": "2026-11-01T20:30Z",
-   "team": "19",
-   "name": "Joel Embiid",
-   "status": "out",
-   "bluesky": {
-    "seen": "2026-10-31T17:21:46.995Z",
-    "own": "2026-10-31T17:12:28.000Z",
-    "why": "@rotowirenba.bsky.social: Joel Embiid: Ruled out for Saturday \n\n https://www.rot"
-   }
-  },
-  "401909903|lebronjames|out": {
-   "game": "401909903",
-   "start": "2026-11-01T20:30Z",
-   "team": "19",
-   "name": "LeBron James",
-   "status": "out",
-   "bluesky": {
-    "seen": "2026-10-31T17:21:46.995Z",
-    "own": "2026-10-31T17:16:48.000Z",
-    "why": "@rotowirenba.bsky.social: LeBron James: Won't play Saturday \n\n https://www.rotow"
-   }
-  },
-  "401909903|jabariwalker|q": {
-   "game": "401909903",
-   "start": "2026-11-01T20:30Z",
-   "team": "19",
-   "name": "Jabari Walker",
-   "status": "q",
-   "bluesky": {
-    "seen": "2026-10-31T17:46:49.319Z",
-    "own": "2026-10-31T17:25:37.000Z",
-    "why": "@rotowirenba.bsky.social: Jabari Walker: Questionable for Saturday \n\n https://ww"
-   }
-  },
-  "401909903|fredvanvleet|out": {
-   "game": "401909903",
-   "start": "2026-11-01T20:30Z",
-   "team": "19",
-   "name": "Fred VanVleet",
-   "status": "out",
-   "bluesky": {
-    "seen": "2026-10-31T17:46:49.319Z",
-    "own": "2026-10-31T17:31:33.000Z",
-    "why": "@rotowirenba.bsky.social: Fred VanVleet: Ruled out for Saturday \n\n https://www.r"
-   }
-  },
-  "401909903|reedsheppard|out": {
-   "game": "401909903",
-   "start": "2026-11-01T20:30Z",
-   "team": "19",
-   "name": "Reed Sheppard",
-   "status": "out",
-   "bluesky": {
-    "seen": "2026-10-31T17:46:49.319Z",
-    "own": "2026-10-31T17:33:16.000Z",
-    "why": "@rotowirenba.bsky.social: Reed Sheppard: Won't play Saturday \n\n https://www.roto"
-   }
-  },
-  "401909903|mitchellrobinson|q": {
-   "game": "401909903",
-   "start": "2026-11-01T20:30Z",
-   "team": "19",
-   "name": "Mitchell Robinson",
-   "status": "q",
-   "bluesky": {
-    "seen": "2026-10-31T21:15:46.804Z",
-    "own": "2026-10-31T20:32:39.000Z",
-    "why": "@rotowirenba.bsky.social: Mitchell Robinson: Questionable for Sunday \n\n https://"
-   },
-   "athlete": "4351852",
-   "espn": {
-    "seen": "2026-11-01T02:07:55.786Z",
-    "own": "2026-10-31T20:32:00.000Z"
-   }
-  },
-  "401909903|mikelbrown|out": {
-   "game": "401909903",
-   "start": "2026-11-01T20:30Z",
-   "team": "19",
-   "name": "Mikel Brown",
-   "status": "out",
-   "bluesky": {
-    "seen": "2026-10-31T21:15:46.804Z",
-    "own": "2026-10-31T20:58:16.000Z",
-    "why": "@rotowirenba.bsky.social: Mikel Brown: Won't play Sunday \n\n https://www.rotowire"
-   }
-  },
-  "401909903|obitoppin|q": {
-   "game": "401909903",
-   "start": "2026-11-01T20:30Z",
-   "team": "19",
-   "name": "Obi Toppin",
-   "status": "q",
-   "bluesky": {
-    "seen": "2026-10-31T21:15:46.804Z",
-    "own": "2026-10-31T21:10:07.000Z",
-    "why": "@rotowirenba.bsky.social: Obi Toppin: Questionable for Sunday \n\n https://www.rot"
-   }
-  },
-  "401909903|ivicazubac|out": {
-   "game": "401909903",
-   "start": "2026-11-01T20:30Z",
-   "team": "19",
-   "name": "Ivica Zubac",
-   "status": "out",
-   "bluesky": {
-    "seen": "2026-10-31T21:15:46.804Z",
-    "own": "2026-10-31T21:14:25.000Z",
-    "why": "@rotowirenba.bsky.social: Ivica Zubac: Ruled out for Sunday \n\n https://www.rotow"
-   }
-  },
-  "401909903|dejountemurray|out": {
-   "game": "401909903",
-   "start": "2026-11-01T20:30Z",
-   "team": "19",
-   "name": "Dejounte Murray",
-   "status": "out",
-   "bluesky": {
-    "seen": "2026-10-31T21:29:18.810Z",
-    "own": "2026-10-31T21:24:40.000Z",
-    "why": "@rotowirenba.bsky.social: Dejounte Murray: Ruled out Saturday \n\n https://www.rot"
-   }
-  },
-  "401909903|rudygobert|out": {
-   "game": "401909903",
-   "start": "2026-11-01T20:30Z",
-   "team": "19",
-   "name": "Rudy Gobert",
-   "status": "out",
-   "bluesky": {
-    "seen": "2026-10-31T23:15:27.743Z",
-    "own": "2026-10-31T22:18:10.000Z",
-    "why": "@rotowirenba.bsky.social: Rudy Gobert: Won't play Saturday \n\n https://www.rotowi"
-   }
-  },
-  "401909903|ziairewilliams|q": {
-   "game": "401909903",
-   "start": "2026-11-01T20:30Z",
-   "team": "19",
-   "name": "Ziaire Williams",
-   "status": "q",
-   "bluesky": {
-    "seen": "2026-11-01T00:04:32.336Z",
-    "own": "2026-11-01T00:04:09.000Z",
-    "why": "@rotowirenba.bsky.social: Ziaire Williams: Questionable for Sunday \n\n https://ww"
-   }
-  },
-  "401909903|devincarter|out": {
-   "game": "401909903",
-   "start": "2026-11-01T20:30Z",
-   "team": "2",
-   "name": "Devin Carter",
-   "status": "out",
-   "athlete": "4433188",
-   "espn": {
-    "seen": "2026-11-01T02:07:55.786Z",
-    "own": "2026-10-18T14:49:00.000Z"
-   }
-  },
   "401909904|ivicazubac|out": {
    "game": "401909904",
    "start": "2026-11-01T22:00Z",
@@ -868,18 +635,6 @@
    "espn": {
     "seen": "2026-11-01T03:22:41.119Z",
     "own": "2026-08-26T20:04:00.000Z"
-   }
-  },
-  "401909903|mitchellrobinson|out": {
-   "game": "401909903",
-   "start": "2026-11-01T20:30Z",
-   "team": "2",
-   "name": "Mitchell Robinson",
-   "status": "out",
-   "athlete": "4351852",
-   "espn": {
-    "seen": "2026-11-01T15:18:50.502Z",
-    "own": "2026-11-01T15:05:00.000Z"
    }
   },
   "401909904|obitoppin|out": {
@@ -16965,6 +16720,10 @@
     "seen": "2026-11-10T23:20:43.421Z",
     "own": "2026-11-10T22:21:41.000Z",
     "why": "@rotowirenba.bsky.social: Norman Powell: Questionable for Wednesday \n\n https://w"
+   },
+   "sleeper": {
+    "seen": "2026-11-11T21:13:53.504Z",
+    "own": "2026-11-10T22:40:19.981Z"
    }
   },
   "401909969|zachcollins|q": {
@@ -16977,6 +16736,10 @@
    "espn": {
     "seen": "2026-11-10T22:13:36.460Z",
     "own": "2026-11-09T15:41:00.000Z"
+   },
+   "sleeper": {
+    "seen": "2026-11-11T21:13:53.504Z",
+    "own": "2026-11-10T22:40:20.003Z"
    }
   },
   "401909969|joshhart|out": {
@@ -17006,6 +16769,10 @@
     "seen": "2026-11-10T23:20:43.421Z",
     "own": "2026-11-10T22:48:27.000Z",
     "why": "@rotowirenba.bsky.social: Devin Vassell: Questionable against Chicago \n\n https:/"
+   },
+   "sleeper": {
+    "seen": "2026-11-11T21:13:53.504Z",
+    "own": "2026-11-10T23:00:20.067Z"
    }
   },
   "401909969|tobiasharris|out": {
@@ -17018,6 +16785,10 @@
    "espn": {
     "seen": "2026-11-10T22:13:36.460Z",
     "own": "2026-11-09T00:27:00.000Z"
+   },
+   "sleeper": {
+    "seen": "2026-11-11T21:13:53.504Z",
+    "own": "2026-11-11T20:05:27.494Z"
    }
   },
   "401909969|jaydenquaintance|out": {
@@ -17158,6 +16929,10 @@
    "espn": {
     "seen": "2026-11-10T22:13:36.460Z",
     "own": "2026-11-10T21:36:00.000Z"
+   },
+   "sleeper": {
+    "seen": "2026-11-11T21:13:53.504Z",
+    "own": "2026-11-10T22:45:20.357Z"
    }
   },
   "401909974|willrichard|out": {
@@ -17182,6 +16957,10 @@
    "espn": {
     "seen": "2026-11-10T22:13:36.460Z",
     "own": "2026-11-10T21:24:00.000Z"
+   },
+   "sleeper": {
+    "seen": "2026-11-11T21:13:53.504Z",
+    "own": "2026-11-10T21:30:19.820Z"
    }
   },
   "401909974|kristapsporzingis|out": {
@@ -17242,6 +17021,10 @@
    "espn": {
     "seen": "2026-11-10T22:13:36.460Z",
     "own": "2026-11-05T05:17:00.000Z"
+   },
+   "sleeper": {
+    "seen": "2026-11-11T21:13:53.504Z",
+    "own": "2026-11-11T20:00:26.835Z"
    }
   },
   "401909975|shaedonsharpe|out": {
@@ -17398,6 +17181,10 @@
    "espn": {
     "seen": "2026-11-10T22:59:42.602Z",
     "own": "2026-11-10T22:05:00.000Z"
+   },
+   "sleeper": {
+    "seen": "2026-11-11T21:13:53.504Z",
+    "own": "2026-11-10T22:45:20.321Z"
    }
   },
   "401909966|jaylontyson|q": {
@@ -17458,6 +17245,10 @@
    "espn": {
     "seen": "2026-11-10T22:59:42.602Z",
     "own": "2026-11-10T22:51:00.000Z"
+   },
+   "sleeper": {
+    "seen": "2026-11-11T21:13:53.504Z",
+    "own": "2026-11-10T23:00:19.801Z"
    }
   },
   "401909974|jaylontyson|q": {
@@ -17967,6 +17758,10 @@
    "espn": {
     "seen": "2026-11-11T00:43:37.266Z",
     "own": "2026-11-10T23:13:00.000Z"
+   },
+   "sleeper": {
+    "seen": "2026-11-11T21:13:53.504Z",
+    "own": "2026-11-11T05:40:23.357Z"
    }
   },
   "401909970|scottypippen|out": {
@@ -17979,6 +17774,10 @@
    "espn": {
     "seen": "2026-11-11T00:43:37.266Z",
     "own": "2026-11-10T23:09:00.000Z"
+   },
+   "sleeper": {
+    "seen": "2026-11-11T21:13:53.504Z",
+    "own": "2026-11-10T23:15:19.657Z"
    }
   },
   "401909970|quintenpost|out": {
@@ -17991,6 +17790,10 @@
    "espn": {
     "seen": "2026-11-11T00:43:37.266Z",
     "own": "2026-11-10T23:09:00.000Z"
+   },
+   "sleeper": {
+    "seen": "2026-11-11T21:13:53.504Z",
+    "own": "2026-11-11T05:30:22.578Z"
    }
   },
   "401909970|richiesaunders|out": {
@@ -18289,6 +18092,10 @@
     "seen": "2026-11-10T22:15:26.504Z",
     "own": "2026-11-10T22:07:13.000Z",
     "why": "@rotowirenba.bsky.social: Jaylon Tyson: Questionable for Wednesday \n\n https://ww"
+   },
+   "sleeper": {
+    "seen": "2026-11-11T21:13:53.504Z",
+    "own": "2026-11-10T22:45:20.295Z"
    }
   },
   "401909967|normanpowell|q": {
@@ -18361,6 +18168,10 @@
    "espn": {
     "seen": "2026-11-11T03:24:44.645Z",
     "own": "2026-11-10T22:12:00.000Z"
+   },
+   "sleeper": {
+    "seen": "2026-11-11T21:13:53.504Z",
+    "own": "2026-11-10T22:45:20.308Z"
    }
   },
   "401909967|jaylontyson|out": {
@@ -18397,6 +18208,10 @@
    "espn": {
     "seen": "2026-11-11T04:27:51.575Z",
     "own": "2026-11-10T21:51:00.000Z"
+   },
+   "sleeper": {
+    "seen": "2026-11-11T21:13:53.504Z",
+    "own": "2026-11-10T22:45:20.347Z"
    }
   },
   "401909968|immanuelquickley|q": {
@@ -18409,6 +18224,10 @@
    "espn": {
     "seen": "2026-11-11T04:27:51.575Z",
     "own": "2026-11-10T21:49:00.000Z"
+   },
+   "sleeper": {
+    "seen": "2026-11-11T21:13:53.504Z",
+    "own": "2026-11-10T22:10:19.813Z"
    }
   },
   "401909968|scottiebarnes|out": {
@@ -18421,6 +18240,10 @@
    "espn": {
     "seen": "2026-11-11T04:27:51.575Z",
     "own": "2026-11-10T21:48:00.000Z"
+   },
+   "sleeper": {
+    "seen": "2026-11-11T21:13:53.504Z",
+    "own": "2026-11-10T22:00:20.084Z"
    }
   },
   "401909968|kawhileonard|out": {
@@ -18433,6 +18256,10 @@
    "espn": {
     "seen": "2026-11-11T04:27:51.575Z",
     "own": "2026-11-10T17:33:00.000Z"
+   },
+   "sleeper": {
+    "seen": "2026-11-11T21:13:53.504Z",
+    "own": "2026-11-10T21:30:19.873Z"
    }
   },
   "401909968|natebittle|out": {
@@ -18659,6 +18486,10 @@
     "seen": "2026-11-11T18:43:22.074Z",
     "own": "2026-11-11T18:22:50.000Z",
     "why": "@rotowirenba.bsky.social: Lauri Markkanen: Will miss at least one month \n\n https"
+   },
+   "sleeper": {
+    "seen": "2026-11-11T21:13:53.504Z",
+    "own": "2026-11-11T18:35:26.807Z"
    }
   },
   "401909973|keyontegeorge|out": {
@@ -18868,6 +18699,10 @@
    "espn": {
     "seen": "2026-11-11T15:08:27.234Z",
     "own": "2026-11-11T14:58:00.000Z"
+   },
+   "sleeper": {
+    "seen": "2026-11-11T21:13:53.504Z",
+    "own": "2026-11-11T20:05:27.587Z"
    }
   },
   "401909973|keyontegeorge|q": {
@@ -18880,6 +18715,10 @@
    "espn": {
     "seen": "2026-11-11T15:08:27.234Z",
     "own": "2026-11-11T15:00:00.000Z"
+   },
+   "sleeper": {
+    "seen": "2026-11-11T21:13:53.504Z",
+    "own": "2026-11-11T20:55:27.597Z"
    }
   },
   "401909973|laurimarkkanen|q": {
@@ -18904,6 +18743,10 @@
    "espn": {
     "seen": "2026-11-11T15:08:27.234Z",
     "own": "2026-11-11T15:00:00.000Z"
+   },
+   "sleeper": {
+    "seen": "2026-11-11T21:13:53.504Z",
+    "own": "2026-11-11T20:55:27.572Z"
    }
   },
   "401909972|mikelbrown|out": {
@@ -18921,6 +18764,10 @@
     "seen": "2026-11-11T16:57:22.345Z",
     "own": "2026-11-11T16:40:24.000Z",
     "why": "@rotowirenba.bsky.social: Mikel Brown: Sidelined Wednesday with illness \n\n https"
+   },
+   "sleeper": {
+    "seen": "2026-11-11T21:13:53.504Z",
+    "own": "2026-11-11T20:15:27.456Z"
    }
   },
   "401909972|bennedictmathurin|out": {
@@ -18933,6 +18780,10 @@
    "espn": {
     "seen": "2026-11-11T16:34:35.823Z",
     "own": "2026-11-11T16:29:00.000Z"
+   },
+   "sleeper": {
+    "seen": "2026-11-11T21:13:53.504Z",
+    "own": "2026-11-11T20:15:27.446Z"
    }
   },
   "401909966|mikelbrown|out": {
@@ -19053,6 +18904,10 @@
    "espn": {
     "seen": "2026-11-11T17:37:41.129Z",
     "own": "2026-11-11T17:03:00.000Z"
+   },
+   "sleeper": {
+    "seen": "2026-11-11T21:13:53.504Z",
+    "own": "2026-11-11T19:55:27.443Z"
    }
   },
   "401909968|traycejacksondavis|out": {
@@ -19065,6 +18920,10 @@
    "espn": {
     "seen": "2026-11-11T17:58:35.255Z",
     "own": "2026-11-11T17:37:00.000Z"
+   },
+   "sleeper": {
+    "seen": "2026-11-11T21:13:53.504Z",
+    "own": "2026-11-11T20:15:27.468Z"
    }
   },
   "401909966|paulgeorge|out": {
@@ -19094,6 +18953,10 @@
    "espn": {
     "seen": "2026-11-11T18:10:18.128Z",
     "own": "2026-11-11T17:53:00.000Z"
+   },
+   "sleeper": {
+    "seen": "2026-11-11T21:13:53.504Z",
+    "own": "2026-11-11T20:05:27.508Z"
    }
   },
   "401909969|paulgeorge|out": {
@@ -19195,6 +19058,10 @@
     "seen": "2026-11-11T18:22:33.920Z",
     "own": "2026-11-11T18:06:06.000Z",
     "why": "@rotowirenba.bsky.social: Karl-Anthony Towns: Questionable to face Cleveland \n\n "
+   },
+   "sleeper": {
+    "seen": "2026-11-11T21:13:53.504Z",
+    "own": "2026-11-11T20:05:27.536Z"
    }
   },
   "401909967|paulgeorge|out": {
@@ -19243,6 +19110,10 @@
    "espn": {
     "seen": "2026-11-11T18:32:38.054Z",
     "own": "2026-11-11T18:21:00.000Z"
+   },
+   "sleeper": {
+    "seen": "2026-11-11T21:13:53.504Z",
+    "own": "2026-11-11T20:05:27.556Z"
    }
   },
   "401909969|karlanthonytowns|q": {
@@ -19411,6 +19282,10 @@
    "espn": {
     "seen": "2026-11-11T19:16:33.573Z",
     "own": "2026-11-11T19:02:00.000Z"
+   },
+   "sleeper": {
+    "seen": "2026-11-11T21:13:53.504Z",
+    "own": "2026-11-11T20:05:27.600Z"
    }
   },
   "401909971|quentingrimes|out": {
@@ -19423,6 +19298,10 @@
    "espn": {
     "seen": "2026-11-11T19:16:33.573Z",
     "own": "2026-11-11T19:06:00.000Z"
+   },
+   "sleeper": {
+    "seen": "2026-11-11T21:13:53.504Z",
+    "own": "2026-11-11T20:05:27.617Z"
    }
   },
   "401909969|tobeawaka|out": {
@@ -19435,6 +19314,37 @@
    "espn": {
     "seen": "2026-11-11T19:39:13.477Z",
     "own": "2026-11-11T19:18:00.000Z"
+   },
+   "sleeper": {
+    "seen": "2026-11-11T21:13:53.504Z",
+    "own": "2026-11-11T20:05:27.571Z"
+   }
+  },
+  "401909967|joshhart|q": {
+   "game": "401909967",
+   "start": "2026-11-12T00:00Z",
+   "team": "18",
+   "name": "Josh Hart",
+   "status": "q",
+   "sleeper": {
+    "seen": "2026-11-11T21:13:53.504Z",
+    "own": "2026-11-11T20:05:27.523Z"
+   }
+  },
+  "401909973|jamalcain|q": {
+   "game": "401909973",
+   "start": "2026-11-12T02:00Z",
+   "team": "19",
+   "name": "Jamal Cain",
+   "status": "q",
+   "athlete": "4278572",
+   "espn": {
+    "seen": "2026-11-11T21:13:53.504Z",
+    "own": "2026-11-11T19:50:00.000Z"
+   },
+   "sleeper": {
+    "seen": "2026-11-11T21:13:53.504Z",
+    "own": "2026-11-11T20:55:27.585Z"
    }
   }
  }

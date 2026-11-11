@@ -1,24 +1,11 @@
 {
  "sport": "nba",
  "cursor": {
-  "rotowirenba.bsky.social": "2026-11-11T19:05:34.000Z",
+  "rotowirenba.bsky.social": "2026-11-11T20:04:15.000Z",
   "insidenbanews.bsky.social": "2026-11-08T18:11:49.382Z",
   "shamsbot.bsky.social": "2026-11-08T18:05:20.000Z"
  },
  "claims": [
-  {
-   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3myg2kp454z2o|jarrettallen|questionable|status",
-   "at": "2026-10-21T21:07:09.000Z",
-   "seen": "2026-10-21T21:10:26.919Z",
-   "handle": "rotowirenba.bsky.social",
-   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3myg2kp454z2o",
-   "player": "Jarrett Allen",
-   "team": null,
-   "status": "questionable",
-   "kind": "status",
-   "confidence": 0.9,
-   "text": "Jarrett Allen: Questionable versus Philadelphia \n\n https://www.rotowire.com/basketball/player/jarrett-allen-4122"
-  },
   {
    "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3myg7hetdt72k|bilalcoulibaly|none|starting",
    "at": "2026-10-21T22:34:46.000Z",
@@ -9612,6 +9599,19 @@
    "kind": "status",
    "confidence": 0.95,
    "text": "Tyler Herro: Questionable Wednesday \n\n https://www.rotowire.com/basketball/player/tyler-herro-4780"
+  },
+  {
+   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3n22qtkydhi2y|keyontegeorge|questionable|status",
+   "at": "2026-11-11T20:04:15.000Z",
+   "seen": "2026-11-11T21:15:44.044Z",
+   "handle": "rotowirenba.bsky.social",
+   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3n22qtkydhi2y",
+   "player": "Keyonte George",
+   "team": "UTA",
+   "status": "questionable",
+   "kind": "status",
+   "confidence": 0.9,
+   "text": "Keyonte George: Questionable to play Wednesday \n\n https://www.rotowire.com/basketball/player/keyonte-george-5899"
   }
  ]
 }

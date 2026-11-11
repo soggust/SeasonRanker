@@ -1,11 +1,11 @@
 {
  "sport": "nhl",
  "cursor": {
-  "johnston-bot.bsky.social": "2026-11-11T02:20:24.625Z",
+  "johnston-bot.bsky.social": "2026-11-11T19:58:19.312Z",
   "notfriedgehnic.bsky.social": "2026-11-11T19:05:59.817Z",
-  "dailyfaceoff.bsky.social": "2026-11-11T19:09:22.000Z",
-  "dfotoronto.bsky.social": "2026-11-11T18:53:26.000Z",
-  "marklazerus.bsky.social": "2026-11-11T19:04:58.733Z"
+  "dailyfaceoff.bsky.social": "2026-11-11T21:15:37.000Z",
+  "dfotoronto.bsky.social": "2026-11-11T20:44:40.000Z",
+  "marklazerus.bsky.social": "2026-11-11T20:51:02.069Z"
  },
  "claims": [
   {
@@ -2230,6 +2230,19 @@
    "kind": "status",
    "confidence": 0.9,
    "text": "Senators’ Nick Cousins out at least a week after Chychrun hit"
+  },
+  {
+   "id": "at://did:plc:3uus7y6h3rlrk6sbctzxm4bg/app.bsky.feed.post/3n22ut76ahp2l|rasmusristolainen|active|return",
+   "at": "2026-11-11T21:15:37.000Z",
+   "seen": "2026-11-11T21:15:44.044Z",
+   "handle": "dailyfaceoff.bsky.social",
+   "post": "at://did:plc:3uus7y6h3rlrk6sbctzxm4bg/app.bsky.feed.post/3n22ut76ahp2l",
+   "player": "Rasmus Ristolainen",
+   "team": "PHI",
+   "status": "active",
+   "kind": "return",
+   "confidence": 0.95,
+   "text": "Flyers activate Rasmus Ristolainen off injured reserve"
   }
  ]
 }
