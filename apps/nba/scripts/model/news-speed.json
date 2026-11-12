@@ -19839,6 +19839,42 @@
     "seen": "2026-11-12T02:39:24.889Z",
     "own": "2026-11-08T16:05:00.000Z"
    }
+  },
+  "401909977|calebwilson|out": {
+   "game": "401909977",
+   "start": "2026-11-13T00:00Z",
+   "team": "27",
+   "name": "Caleb Wilson",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-12T02:58:40.454Z",
+    "own": "2026-11-12T02:53:56.000Z",
+    "why": "@rotowirenba.bsky.social: Caleb Wilson: Won't return Wednesday \n\n https://www.ro"
+   }
+  },
+  "401909978|calebwilson|out": {
+   "game": "401909978",
+   "start": "2026-11-13T01:00Z",
+   "team": "16",
+   "name": "Caleb Wilson",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-12T02:58:40.454Z",
+    "own": "2026-11-12T02:53:56.000Z",
+    "why": "@rotowirenba.bsky.social: Caleb Wilson: Won't return Wednesday \n\n https://www.ro"
+   }
+  },
+  "401909979|calebwilson|out": {
+   "game": "401909979",
+   "start": "2026-11-13T02:00Z",
+   "team": "21",
+   "name": "Caleb Wilson",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-12T02:58:40.454Z",
+    "own": "2026-11-12T02:53:56.000Z",
+    "why": "@rotowirenba.bsky.social: Caleb Wilson: Won't return Wednesday \n\n https://www.ro"
+   }
   }
  }
 }

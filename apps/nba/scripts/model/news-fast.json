@@ -1,7 +1,7 @@
 {
  "sport": "nba",
  "cursor": {
-  "rotowirenba.bsky.social": "2026-11-12T02:57:38.000Z",
+  "rotowirenba.bsky.social": "2026-11-12T03:14:48.000Z",
   "insidenbanews.bsky.social": "2026-11-08T18:11:49.382Z",
   "shamsbot.bsky.social": "2026-11-08T18:05:20.000Z"
  },
@@ -9703,6 +9703,19 @@
    "kind": "status",
    "confidence": 0.8,
    "text": "Caleb Wilson: Won't return Wednesday \n\n https://www.rotowire.com/basketball/player/caleb-wilson-6926"
+  },
+  {
+   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3n23ivhm6tu26|austinreaves|out|status",
+   "at": "2026-11-12T03:14:48.000Z",
+   "seen": "2026-11-12T03:16:09.304Z",
+   "handle": "rotowirenba.bsky.social",
+   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3n23ivhm6tu26",
+   "player": "Austin Reaves",
+   "team": "LAL",
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.85,
+   "text": "Austin Reaves: Won't return Wednesday \n\n https://www.rotowire.com/basketball/player/austin-reaves-5334"
   }
  ]
 }
