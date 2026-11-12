@@ -4,7 +4,7 @@
   "johnston-bot.bsky.social": "2026-11-11T19:58:19.312Z",
   "notfriedgehnic.bsky.social": "2026-11-11T19:05:59.817Z",
   "dailyfaceoff.bsky.social": "2026-11-12T15:28:39.000Z",
-  "dfotoronto.bsky.social": "2026-11-12T13:12:37.000Z",
+  "dfotoronto.bsky.social": "2026-11-12T15:49:08.000Z",
   "marklazerus.bsky.social": "2026-11-12T14:10:33.981Z"
  },
  "claims": [
@@ -2269,6 +2269,19 @@
    "kind": "status",
    "confidence": 0.95,
    "text": "Mammoth’s Dylan Guenther out 2-4 weeks with upper-body injury."
+  },
+  {
+   "id": "at://did:plc:knaj2vcp4x6t7hr7ewd6e3uz/app.bsky.feed.post/3n24t2cwvt32a|coltonsissons|out|status",
+   "at": "2026-11-12T15:49:08.000Z",
+   "seen": "2026-11-12T15:54:23.590Z",
+   "handle": "dfotoronto.bsky.social",
+   "post": "at://did:plc:knaj2vcp4x6t7hr7ewd6e3uz/app.bsky.feed.post/3n24t2cwvt32a",
+   "player": "Colton Sissons",
+   "team": "TOR",
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.93,
+   "text": "The Leafs have put Colton Sissons on IR and called up Brendan Brisson"
   }
  ]
 }
