@@ -11,19 +11,6 @@
  },
  "claims": [
   {
-   "id": "at://did:plc:fuqjc7x4gxvnwzksnlxwbe4x/app.bsky.feed.post/3myhsafhbj22f|saquonbarkley|active|status",
-   "at": "2026-10-22T13:43:32.969Z",
-   "seen": "2026-10-22T15:32:09.445Z",
-   "handle": "nflnewsposter.bsky.social",
-   "post": "at://did:plc:fuqjc7x4gxvnwzksnlxwbe4x/app.bsky.feed.post/3myhsafhbj22f",
-   "player": "Saquon Barkley",
-   "team": "PHI",
-   "status": "active",
-   "kind": "status",
-   "confidence": 0.8,
-   "text": "[Garafolo] Eagles RB Saquon Barkley is expected to return to practice today and is in line to play Monday against the Cowboys, sources say. A lift for the team’s offense with a banged-up backfield and"
-  },
-  {
    "id": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3myhsrc3o7y25|saquonbarkley|limited|status",
    "at": "2026-10-22T13:52:59.000Z",
    "seen": "2026-10-22T15:32:09.445Z",
