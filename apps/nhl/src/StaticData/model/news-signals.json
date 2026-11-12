@@ -1,29 +1,6 @@
 {
  "sport": "nhl",
  "days": 2,
- "signals": [
-  {
-   "team": "8",
-   "abbr": "LA",
-   "athlete": "5560",
-   "player": "Mats Zuccarello",
-   "kind": "return",
-   "direction": "up",
-   "confidence": 0.8,
-   "headline": "Kings expect to get Kevin Fiala back this week, sources say",
-   "at": "2026-11-10T20:04:27.000Z"
-  },
-  {
-   "team": "8",
-   "abbr": "LA",
-   "athlete": "3114743",
-   "player": "Kevin Fiala",
-   "kind": "return",
-   "direction": "up",
-   "confidence": 0.6,
-   "headline": "Kings expect to get Kevin Fiala back this week, sources say",
-   "at": "2026-11-10T20:04:27.000Z"
-  }
- ],
- "at": "2026-11-12T00:16:41.501Z"
+ "signals": [],
+ "at": "2026-11-12T20:21:23.324Z"
 }
