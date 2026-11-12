@@ -19346,6 +19346,11 @@
    "espn": {
     "seen": "2026-11-12T00:00:54.216Z",
     "own": "2026-11-11T23:27:00.000Z"
+   },
+   "bluesky": {
+    "seen": "2026-11-12T00:16:41.501Z",
+    "own": "2026-11-11T23:27:39.000Z",
+    "why": "@rotowirenba.bsky.social: Norman Powell: Ruled out Wednesday \n\n https://www.roto"
    }
   },
   "401909969|devinvassell|out": {
@@ -19358,6 +19363,11 @@
    "espn": {
     "seen": "2026-11-12T00:00:54.216Z",
     "own": "2026-11-11T23:26:00.000Z"
+   },
+   "bluesky": {
+    "seen": "2026-11-12T00:16:41.501Z",
+    "own": "2026-11-11T23:26:11.000Z",
+    "why": "@rotowirenba.bsky.social: Devin Vassell: Won't play Wednesday \n\n https://www.rot"
    }
   },
   "401909972|treymurphy|out": {
@@ -19370,6 +19380,330 @@
    "espn": {
     "seen": "2026-11-12T00:00:54.216Z",
     "own": "2026-11-11T23:47:00.000Z"
+   }
+  },
+  "401909969|dailynswain|out": {
+   "game": "401909969",
+   "start": "2026-11-12T01:00Z",
+   "team": "4",
+   "name": "Dailyn Swain",
+   "status": "out",
+   "athlete": "4848625",
+   "espn": {
+    "seen": "2026-11-12T00:34:36.469Z",
+    "own": "2026-11-12T00:21:00.000Z"
+   }
+  },
+  "401909969|brandonmiller|out": {
+   "game": "401909969",
+   "start": "2026-11-12T01:00Z",
+   "team": "4",
+   "name": "Brandon Miller",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-12T00:16:41.501Z",
+    "own": "2026-11-12T00:06:52.000Z",
+    "why": "@rotowirenba.bsky.social: Brandon Miller: Out again Thursday \n\n https://www.roto"
+   }
+  },
+  "401909969|moussadiabate|q": {
+   "game": "401909969",
+   "start": "2026-11-12T01:00Z",
+   "team": "4",
+   "name": "Moussa Diabate",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-11-12T00:16:41.501Z",
+    "own": "2026-11-12T00:10:27.000Z",
+    "why": "@rotowirenba.bsky.social: Moussa Diabate: Probable for Thursday \n\n https://www.r"
+   }
+  },
+  "401909970|normanpowell|out": {
+   "game": "401909970",
+   "start": "2026-11-12T01:00Z",
+   "team": "29",
+   "name": "Norman Powell",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-12T00:16:41.501Z",
+    "own": "2026-11-11T23:27:39.000Z",
+    "why": "@rotowirenba.bsky.social: Norman Powell: Ruled out Wednesday \n\n https://www.roto"
+   }
+  },
+  "401909970|devinvassell|out": {
+   "game": "401909970",
+   "start": "2026-11-12T01:00Z",
+   "team": "29",
+   "name": "Devin Vassell",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-12T00:16:41.501Z",
+    "own": "2026-11-11T23:26:11.000Z",
+    "why": "@rotowirenba.bsky.social: Devin Vassell: Won't play Wednesday \n\n https://www.rot"
+   }
+  },
+  "401909970|brandonmiller|out": {
+   "game": "401909970",
+   "start": "2026-11-12T01:00Z",
+   "team": "29",
+   "name": "Brandon Miller",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-12T00:16:41.501Z",
+    "own": "2026-11-12T00:06:52.000Z",
+    "why": "@rotowirenba.bsky.social: Brandon Miller: Out again Thursday \n\n https://www.roto"
+   }
+  },
+  "401909970|moussadiabate|q": {
+   "game": "401909970",
+   "start": "2026-11-12T01:00Z",
+   "team": "29",
+   "name": "Moussa Diabate",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-11-12T00:16:41.501Z",
+    "own": "2026-11-12T00:10:27.000Z",
+    "why": "@rotowirenba.bsky.social: Moussa Diabate: Probable for Thursday \n\n https://www.r"
+   }
+  },
+  "401909971|normanpowell|out": {
+   "game": "401909971",
+   "start": "2026-11-12T01:00Z",
+   "team": "15",
+   "name": "Norman Powell",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-12T00:16:41.501Z",
+    "own": "2026-11-11T23:27:39.000Z",
+    "why": "@rotowirenba.bsky.social: Norman Powell: Ruled out Wednesday \n\n https://www.roto"
+   }
+  },
+  "401909971|devinvassell|out": {
+   "game": "401909971",
+   "start": "2026-11-12T01:00Z",
+   "team": "15",
+   "name": "Devin Vassell",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-12T00:16:41.501Z",
+    "own": "2026-11-11T23:26:11.000Z",
+    "why": "@rotowirenba.bsky.social: Devin Vassell: Won't play Wednesday \n\n https://www.rot"
+   }
+  },
+  "401909971|brandonmiller|out": {
+   "game": "401909971",
+   "start": "2026-11-12T01:00Z",
+   "team": "15",
+   "name": "Brandon Miller",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-12T00:16:41.501Z",
+    "own": "2026-11-12T00:06:52.000Z",
+    "why": "@rotowirenba.bsky.social: Brandon Miller: Out again Thursday \n\n https://www.roto"
+   }
+  },
+  "401909971|moussadiabate|q": {
+   "game": "401909971",
+   "start": "2026-11-12T01:00Z",
+   "team": "15",
+   "name": "Moussa Diabate",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-11-12T00:16:41.501Z",
+    "own": "2026-11-12T00:10:27.000Z",
+    "why": "@rotowirenba.bsky.social: Moussa Diabate: Probable for Thursday \n\n https://www.r"
+   }
+  },
+  "401909972|normanpowell|out": {
+   "game": "401909972",
+   "start": "2026-11-12T01:00Z",
+   "team": "3",
+   "name": "Norman Powell",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-12T00:16:41.501Z",
+    "own": "2026-11-11T23:27:39.000Z",
+    "why": "@rotowirenba.bsky.social: Norman Powell: Ruled out Wednesday \n\n https://www.roto"
+   }
+  },
+  "401909972|devinvassell|out": {
+   "game": "401909972",
+   "start": "2026-11-12T01:00Z",
+   "team": "3",
+   "name": "Devin Vassell",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-12T00:16:41.501Z",
+    "own": "2026-11-11T23:26:11.000Z",
+    "why": "@rotowirenba.bsky.social: Devin Vassell: Won't play Wednesday \n\n https://www.rot"
+   }
+  },
+  "401909972|brandonmiller|out": {
+   "game": "401909972",
+   "start": "2026-11-12T01:00Z",
+   "team": "3",
+   "name": "Brandon Miller",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-12T00:16:41.501Z",
+    "own": "2026-11-12T00:06:52.000Z",
+    "why": "@rotowirenba.bsky.social: Brandon Miller: Out again Thursday \n\n https://www.roto"
+   }
+  },
+  "401909972|moussadiabate|q": {
+   "game": "401909972",
+   "start": "2026-11-12T01:00Z",
+   "team": "3",
+   "name": "Moussa Diabate",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-11-12T00:16:41.501Z",
+    "own": "2026-11-12T00:10:27.000Z",
+    "why": "@rotowirenba.bsky.social: Moussa Diabate: Probable for Thursday \n\n https://www.r"
+   }
+  },
+  "401909973|normanpowell|out": {
+   "game": "401909973",
+   "start": "2026-11-12T02:00Z",
+   "team": "26",
+   "name": "Norman Powell",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-12T00:16:41.501Z",
+    "own": "2026-11-11T23:27:39.000Z",
+    "why": "@rotowirenba.bsky.social: Norman Powell: Ruled out Wednesday \n\n https://www.roto"
+   }
+  },
+  "401909973|devinvassell|out": {
+   "game": "401909973",
+   "start": "2026-11-12T02:00Z",
+   "team": "26",
+   "name": "Devin Vassell",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-12T00:16:41.501Z",
+    "own": "2026-11-11T23:26:11.000Z",
+    "why": "@rotowirenba.bsky.social: Devin Vassell: Won't play Wednesday \n\n https://www.rot"
+   }
+  },
+  "401909973|brandonmiller|out": {
+   "game": "401909973",
+   "start": "2026-11-12T02:00Z",
+   "team": "26",
+   "name": "Brandon Miller",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-12T00:16:41.501Z",
+    "own": "2026-11-12T00:06:52.000Z",
+    "why": "@rotowirenba.bsky.social: Brandon Miller: Out again Thursday \n\n https://www.roto"
+   }
+  },
+  "401909973|moussadiabate|q": {
+   "game": "401909973",
+   "start": "2026-11-12T02:00Z",
+   "team": "26",
+   "name": "Moussa Diabate",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-11-12T00:16:41.501Z",
+    "own": "2026-11-12T00:10:27.000Z",
+    "why": "@rotowirenba.bsky.social: Moussa Diabate: Probable for Thursday \n\n https://www.r"
+   }
+  },
+  "401909974|normanpowell|out": {
+   "game": "401909974",
+   "start": "2026-11-12T02:30Z",
+   "team": "10",
+   "name": "Norman Powell",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-12T00:16:41.501Z",
+    "own": "2026-11-11T23:27:39.000Z",
+    "why": "@rotowirenba.bsky.social: Norman Powell: Ruled out Wednesday \n\n https://www.roto"
+   }
+  },
+  "401909974|devinvassell|out": {
+   "game": "401909974",
+   "start": "2026-11-12T02:30Z",
+   "team": "10",
+   "name": "Devin Vassell",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-12T00:16:41.501Z",
+    "own": "2026-11-11T23:26:11.000Z",
+    "why": "@rotowirenba.bsky.social: Devin Vassell: Won't play Wednesday \n\n https://www.rot"
+   }
+  },
+  "401909974|brandonmiller|out": {
+   "game": "401909974",
+   "start": "2026-11-12T02:30Z",
+   "team": "10",
+   "name": "Brandon Miller",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-12T00:16:41.501Z",
+    "own": "2026-11-12T00:06:52.000Z",
+    "why": "@rotowirenba.bsky.social: Brandon Miller: Out again Thursday \n\n https://www.roto"
+   }
+  },
+  "401909974|moussadiabate|q": {
+   "game": "401909974",
+   "start": "2026-11-12T02:30Z",
+   "team": "10",
+   "name": "Moussa Diabate",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-11-12T00:16:41.501Z",
+    "own": "2026-11-12T00:10:27.000Z",
+    "why": "@rotowirenba.bsky.social: Moussa Diabate: Probable for Thursday \n\n https://www.r"
+   }
+  },
+  "401909975|normanpowell|out": {
+   "game": "401909975",
+   "start": "2026-11-12T03:00Z",
+   "team": "22",
+   "name": "Norman Powell",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-12T00:16:41.501Z",
+    "own": "2026-11-11T23:27:39.000Z",
+    "why": "@rotowirenba.bsky.social: Norman Powell: Ruled out Wednesday \n\n https://www.roto"
+   }
+  },
+  "401909975|devinvassell|out": {
+   "game": "401909975",
+   "start": "2026-11-12T03:00Z",
+   "team": "22",
+   "name": "Devin Vassell",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-12T00:16:41.501Z",
+    "own": "2026-11-11T23:26:11.000Z",
+    "why": "@rotowirenba.bsky.social: Devin Vassell: Won't play Wednesday \n\n https://www.rot"
+   }
+  },
+  "401909975|brandonmiller|out": {
+   "game": "401909975",
+   "start": "2026-11-12T03:00Z",
+   "team": "22",
+   "name": "Brandon Miller",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-12T00:16:41.501Z",
+    "own": "2026-11-12T00:06:52.000Z",
+    "why": "@rotowirenba.bsky.social: Brandon Miller: Out again Thursday \n\n https://www.roto"
+   }
+  },
+  "401909975|moussadiabate|q": {
+   "game": "401909975",
+   "start": "2026-11-12T03:00Z",
+   "team": "22",
+   "name": "Moussa Diabate",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-11-12T00:16:41.501Z",
+    "own": "2026-11-12T00:10:27.000Z",
+    "why": "@rotowirenba.bsky.social: Moussa Diabate: Probable for Thursday \n\n https://www.r"
    }
   }
  }

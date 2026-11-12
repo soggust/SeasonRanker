@@ -6,23 +6,10 @@
   "nflnewsreposterbot.bsky.social": "2026-11-10T18:38:15.366Z",
   "insidenflnews.bsky.social": "2026-11-11T22:43:15.247Z",
   "nflnewsposter.bsky.social": "2026-11-11T20:05:07.920Z",
-  "rotoworld-fb.bsky.social": "2026-11-12T00:02:57.000Z",
+  "rotoworld-fb.bsky.social": "2026-11-12T00:34:41.000Z",
   "rotowirenfl.bsky.social": "2026-11-12T00:10:03.000Z"
  },
  "claims": [
-  {
-   "id": "at://did:plc:hlvr2omhnmvdmfnvmcuhyevz/app.bsky.feed.post/3mygfmpycks2a|jjmccarthy|none|starting",
-   "at": "2026-10-22T00:25:08.284Z",
-   "seen": "2026-10-22T01:04:07.991Z",
-   "handle": "rapsheet.bsky.social",
-   "post": "at://did:plc:hlvr2omhnmvdmfnvmcuhyevz/app.bsky.feed.post/3mygfmpycks2a",
-   "player": "JJ McCarthy",
-   "team": "NYG",
-   "status": "none",
-   "kind": "starting",
-   "confidence": 0.8,
-   "text": "JJ McCarthy is the new Giants starter."
-  },
   {
    "id": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3mygikfpqmr2t|zachcharbonnet|active|status",
    "at": "2026-10-22T01:17:31.000Z",
@@ -18586,6 +18573,32 @@
    "kind": "status",
    "confidence": 0.8,
    "text": "Drew Lock: Limited Wednesday \n\n https://www.rotowire.com/football/player/drew-lock-13736"
+  },
+  {
+   "id": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3n237p4iqwc25|bhayshultuten|none|status",
+   "at": "2026-11-12T00:30:12.000Z",
+   "seen": "2026-11-12T00:36:19.243Z",
+   "handle": "rotoworld-fb.bsky.social",
+   "post": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3n237p4iqwc25",
+   "player": "Bhayshul Tuten",
+   "team": "JAX",
+   "status": "none",
+   "kind": "status",
+   "confidence": 0.4,
+   "text": "Bhayshul Tuten (ankle/foot) DNP Wednesday"
+  },
+  {
+   "id": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3n237x57jx42t|jakobimeyers|none|status",
+   "at": "2026-11-12T00:34:41.000Z",
+   "seen": "2026-11-12T00:36:19.243Z",
+   "handle": "rotoworld-fb.bsky.social",
+   "post": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3n237x57jx42t",
+   "player": "Jakobi Meyers",
+   "team": "LV",
+   "status": "none",
+   "kind": "status",
+   "confidence": 0.4,
+   "text": "Jakobi Meyers (ankle) DNP Wednesday"
   }
  ]
 }

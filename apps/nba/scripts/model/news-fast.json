@@ -1,24 +1,11 @@
 {
  "sport": "nba",
  "cursor": {
-  "rotowirenba.bsky.social": "2026-11-12T00:10:27.000Z",
+  "rotowirenba.bsky.social": "2026-11-12T00:35:34.000Z",
   "insidenbanews.bsky.social": "2026-11-08T18:11:49.382Z",
   "shamsbot.bsky.social": "2026-11-08T18:05:20.000Z"
  },
  "claims": [
-  {
-   "id": "at://did:plc:ykcnnf6kqnn3lasmobrczoem/app.bsky.feed.post/3mygg5vaf522z|lukekennard|out|status",
-   "at": "2026-10-22T00:34:44.218Z",
-   "seen": "2026-10-22T01:04:07.991Z",
-   "handle": "insidenbanews.bsky.social",
-   "post": "at://did:plc:ykcnnf6kqnn3lasmobrczoem/app.bsky.feed.post/3mygg5vaf522z",
-   "player": "Luke Kennard",
-   "team": null,
-   "status": "out",
-   "kind": "status",
-   "confidence": 0.9,
-   "text": "Ott: Luke Kennard (knee) ruled out Wednesday."
-  },
   {
    "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3myghw4qojm2l|stephencurry|active|status",
    "at": "2026-10-22T01:06:11.000Z",
