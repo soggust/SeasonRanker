@@ -7740,6 +7740,11 @@
    "espn": {
     "seen": "2026-11-11T16:34:51.817Z",
     "own": "2026-11-10T15:34:00.000Z"
+   },
+   "bluesky": {
+    "seen": "2026-11-12T15:54:23.590Z",
+    "own": "2026-11-12T15:49:08.000Z",
+    "why": "@dfotoronto.bsky.social: The Leafs have put Colton Sissons on IR and called up B"
    }
   },
   "401892697|kirillmarchenko|out": {
@@ -8630,6 +8635,150 @@
    "espn": {
     "seen": "2026-11-12T14:28:57.904Z",
     "own": "2026-11-12T14:09:00.000Z"
+   }
+  },
+  "401892706|tomwillander|q": {
+   "game": "401892706",
+   "start": "2026-11-14T02:00Z",
+   "team": "22",
+   "name": "Tom Willander",
+   "status": "q",
+   "athlete": "5149180",
+   "espn": {
+    "seen": "2026-11-12T16:13:59.085Z",
+    "own": "2026-11-10T14:24:00.000Z"
+   }
+  },
+  "401892706|filipchytil|out": {
+   "game": "401892706",
+   "start": "2026-11-14T02:00Z",
+   "team": "22",
+   "name": "Filip Chytil",
+   "status": "out",
+   "athlete": "4233643",
+   "espn": {
+    "seen": "2026-11-12T16:13:59.085Z",
+    "own": "2026-11-09T18:22:00.000Z"
+   }
+  },
+  "401892706|mackenziemaceachern|out": {
+   "game": "401892706",
+   "start": "2026-11-14T02:00Z",
+   "team": "22",
+   "name": "Mackenzie MacEachern",
+   "status": "out",
+   "athlete": "3069342",
+   "espn": {
+    "seen": "2026-11-12T16:13:59.085Z",
+    "own": "2026-09-29T17:03:00.000Z"
+   }
+  },
+  "401892706|thatcherdemko|out": {
+   "game": "401892706",
+   "start": "2026-11-14T02:00Z",
+   "team": "22",
+   "name": "Thatcher Demko",
+   "status": "out",
+   "athlete": "3096217",
+   "espn": {
+    "seen": "2026-11-12T16:13:59.085Z",
+    "own": "2026-09-28T17:58:00.000Z"
+   }
+  },
+  "401892706|albertssmits|out": {
+   "game": "401892706",
+   "start": "2026-11-14T02:00Z",
+   "team": "13",
+   "name": "Alberts Smits",
+   "status": "out",
+   "athlete": "5334662",
+   "espn": {
+    "seen": "2026-11-12T16:13:59.085Z",
+    "own": "2026-11-10T22:13:00.000Z"
+   }
+  },
+  "401892706|seandurzi|out": {
+   "game": "401892706",
+   "start": "2026-11-14T02:00Z",
+   "team": "13",
+   "name": "Sean Durzi",
+   "status": "out",
+   "athlete": "4378683",
+   "espn": {
+    "seen": "2026-11-12T16:13:59.085Z",
+    "own": "2026-11-05T19:23:00.000Z"
+   }
+  },
+  "401892706|igorshesterkin|out": {
+   "game": "401892706",
+   "start": "2026-11-14T02:00Z",
+   "team": "13",
+   "name": "Igor Shesterkin",
+   "status": "out",
+   "athlete": "3151297",
+   "espn": {
+    "seen": "2026-11-12T16:13:59.085Z",
+    "own": "2026-10-11T21:06:00.000Z"
+   }
+  },
+  "401892706|joeveleno|out": {
+   "game": "401892706",
+   "start": "2026-11-14T02:00Z",
+   "team": "13",
+   "name": "Joe Veleno",
+   "status": "out",
+   "athlete": "4352804",
+   "espn": {
+    "seen": "2026-11-12T16:13:59.085Z",
+    "own": "2026-10-10T17:18:00.000Z"
+   }
+  },
+  "401892706|aidanthompson|out": {
+   "game": "401892706",
+   "start": "2026-11-14T02:00Z",
+   "team": "13",
+   "name": "Aidan Thompson",
+   "status": "out",
+   "athlete": "5136624",
+   "espn": {
+    "seen": "2026-11-12T16:13:59.085Z",
+    "own": "2026-09-29T16:39:00.000Z"
+   }
+  },
+  "401892706|adamsykora|out": {
+   "game": "401892706",
+   "start": "2026-11-14T02:00Z",
+   "team": "13",
+   "name": "Adam Sykora",
+   "status": "out",
+   "athlete": "5080232",
+   "espn": {
+    "seen": "2026-11-12T16:13:59.085Z",
+    "own": "2026-09-29T01:35:00.000Z"
+   }
+  },
+  "401892707|noahhanifin|out": {
+   "game": "401892707",
+   "start": "2026-11-14T03:00Z",
+   "team": "37",
+   "name": "Noah Hanifin",
+   "status": "out",
+   "athlete": "3652964",
+   "espn": {
+    "seen": "2026-11-12T16:13:59.085Z",
+    "own": "2026-11-10T20:34:00.000Z"
+   }
+  },
+  "401892707|jonathanmarchessault|out": {
+   "game": "401892707",
+   "start": "2026-11-14T03:00Z",
+   "team": "27",
+   "name": "Jonathan Marchessault",
+   "status": "out",
+   "athlete": "2967072",
+   "espn": {
+    "seen": "2026-11-12T16:13:59.085Z",
+    "own": "2026-11-12T02:37:00.000Z"
    }
   }
  }
