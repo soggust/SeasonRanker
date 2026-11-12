@@ -1,37 +1,11 @@
 {
  "sport": "nba",
  "cursor": {
-  "rotowirenba.bsky.social": "2026-11-12T01:09:37.000Z",
+  "rotowirenba.bsky.social": "2026-11-12T01:59:37.000Z",
   "insidenbanews.bsky.social": "2026-11-08T18:11:49.382Z",
   "shamsbot.bsky.social": "2026-11-08T18:05:20.000Z"
  },
  "claims": [
-  {
-   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mygjn45r772s|khamanmaluach|none|starting",
-   "at": "2026-10-22T01:36:55.000Z",
-   "seen": "2026-10-22T01:52:02.530Z",
-   "handle": "rotowirenba.bsky.social",
-   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mygjn45r772s",
-   "player": "Khaman Maluach",
-   "team": null,
-   "status": "none",
-   "kind": "starting",
-   "confidence": 0.8,
-   "text": "Khaman Maluach: Starting Wednesday \n\n https://www.rotowire.com/basketball/player/khaman-maluach-6542"
-  },
-  {
-   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mygjxmvpbw2m|deanthonymelton|none|starting",
-   "at": "2026-10-22T01:42:49.000Z",
-   "seen": "2026-10-22T01:52:02.530Z",
-   "handle": "rotowirenba.bsky.social",
-   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mygjxmvpbw2m",
-   "player": "De'Anthony Melton",
-   "team": null,
-   "status": "none",
-   "kind": "starting",
-   "confidence": 0.8,
-   "text": "De'Anthony Melton: Starting Wednesday \n\n https://www.rotowire.com/basketball/player/deanthony-melton-4368"
-  },
   {
    "id": "at://did:plc:ykcnnf6kqnn3lasmobrczoem/app.bsky.feed.post/3myhvskohu226|jarrettallen|questionable|status",
    "at": "2026-10-22T14:47:23.657Z",
@@ -9677,6 +9651,32 @@
    "kind": "status",
    "confidence": 0.6,
    "text": "Moussa Diabate: Probable for Thursday \n\n https://www.rotowire.com/basketball/player/moussa-diabate-5708"
+  },
+  {
+   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3n23cxoevlx2y|jamalcain|out|status",
+   "at": "2026-11-12T01:28:40.000Z",
+   "seen": "2026-11-12T02:16:51.823Z",
+   "handle": "rotowirenba.bsky.social",
+   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3n23cxoevlx2y",
+   "player": "Jamal Cain",
+   "team": null,
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.95,
+   "text": "Jamal Cain: Ruled out for Wednesday \n\n https://www.rotowire.com/basketball/player/jamal-cain-5796"
+  },
+  {
+   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3n23eozoru72u|aaronnesmith|out|status",
+   "at": "2026-11-12T01:59:37.000Z",
+   "seen": "2026-11-12T02:16:51.823Z",
+   "handle": "rotowirenba.bsky.social",
+   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3n23eozoru72u",
+   "player": "Aaron Nesmith",
+   "team": null,
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.9,
+   "text": "Aaron Nesmith: Won't return Wednesday \n\n https://www.rotowire.com/basketball/player/aaron-nesmith-5120"
   }
  ]
 }
