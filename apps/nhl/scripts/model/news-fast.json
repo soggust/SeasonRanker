@@ -3,7 +3,7 @@
  "cursor": {
   "johnston-bot.bsky.social": "2026-11-11T19:58:19.312Z",
   "notfriedgehnic.bsky.social": "2026-11-11T19:05:59.817Z",
-  "dailyfaceoff.bsky.social": "2026-11-12T02:49:18.000Z",
+  "dailyfaceoff.bsky.social": "2026-11-12T05:04:42.000Z",
   "dfotoronto.bsky.social": "2026-11-11T23:54:27.000Z",
   "marklazerus.bsky.social": "2026-11-12T04:23:53.673Z"
  },
@@ -2256,6 +2256,19 @@
    "kind": "status",
    "confidence": 0.9,
    "text": "Senators’ Nick Cousins out at least a week after Chychrun hit. #nhl #nhlhockey #dailyfaceoff"
+  },
+  {
+   "id": "at://did:plc:3uus7y6h3rlrk6sbctzxm4bg/app.bsky.feed.post/3n23ozy5qhp2p|dylanguenther|out|status",
+   "at": "2026-11-12T05:04:42.000Z",
+   "seen": "2026-11-12T05:14:14.028Z",
+   "handle": "dailyfaceoff.bsky.social",
+   "post": "at://did:plc:3uus7y6h3rlrk6sbctzxm4bg/app.bsky.feed.post/3n23ozy5qhp2p",
+   "player": "Dylan Guenther",
+   "team": "UTA",
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.95,
+   "text": "Mammoth’s Dylan Guenther out 2-4 weeks with upper-body injury"
   }
  ]
 }
