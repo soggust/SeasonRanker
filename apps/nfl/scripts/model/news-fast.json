@@ -5,50 +5,11 @@
   "rapsheet.bsky.social": "2026-11-10T21:02:04.176Z",
   "nflnewsreposterbot.bsky.social": "2026-11-10T18:38:15.366Z",
   "insidenflnews.bsky.social": "2026-11-12T14:41:34.431Z",
-  "nflnewsposter.bsky.social": "2026-11-12T05:56:25.896Z",
+  "nflnewsposter.bsky.social": "2026-11-12T19:27:35.964Z",
   "rotoworld-fb.bsky.social": "2026-11-12T17:47:38.000Z",
-  "rotowirenfl.bsky.social": "2026-11-12T18:52:48.000Z"
+  "rotowirenfl.bsky.social": "2026-11-12T19:20:50.000Z"
  },
  "claims": [
-  {
-   "id": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3myiew33wrh2s|ricodowdle|limited|status",
-   "at": "2026-10-22T19:17:47.000Z",
-   "seen": "2026-10-22T19:31:22.997Z",
-   "handle": "rotowirenfl.bsky.social",
-   "post": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3myiew33wrh2s",
-   "player": "Rico Dowdle",
-   "team": null,
-   "status": "limited",
-   "kind": "status",
-   "confidence": 0.9,
-   "text": "Rico Dowdle: Limited again Thursday \n\n https://www.rotowire.com/football/player/rico-dowdle-14657"
-  },
-  {
-   "id": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3myifdxs4kx2t|saquonbarkley|limited|status",
-   "at": "2026-10-22T19:25:33.000Z",
-   "seen": "2026-10-22T19:31:22.997Z",
-   "handle": "rotoworld-fb.bsky.social",
-   "post": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3myifdxs4kx2t",
-   "player": "Saquon Barkley",
-   "team": null,
-   "status": "limited",
-   "kind": "status",
-   "confidence": 0.6,
-   "text": "Saquon Barkley (hamstring) resumes practicing Thu."
-  },
-  {
-   "id": "at://did:plc:mbr4badgf6yu56mquzackzew/app.bsky.feed.post/3myifjnszdk26|zachcharbonnet|active|return",
-   "at": "2026-10-22T19:28:44.831Z",
-   "seen": "2026-10-22T19:31:22.997Z",
-   "handle": "insidenflnews.bsky.social",
-   "post": "at://did:plc:mbr4badgf6yu56mquzackzew/app.bsky.feed.post/3myifjnszdk26",
-   "player": "Zach Charbonnet",
-   "team": null,
-   "status": "active",
-   "kind": "return",
-   "confidence": 0.9,
-   "text": "Zach Charbonnet (knee) activated from PUP list."
-  },
   {
    "id": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3myig3kmjgu2s|alvinkamara|limited|status",
    "at": "2026-10-22T19:38:45.000Z",
