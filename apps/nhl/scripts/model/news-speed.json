@@ -8792,6 +8792,42 @@
     "own": "2026-11-12T16:02:25.547Z",
     "why": "@johnston-bot.bsky.social: Chris Tanev is scratched tonight by the #leafs due to"
    }
+  },
+  "401892700|johnathankovacevic|out": {
+   "game": "401892700",
+   "start": "2026-11-13T00:00Z",
+   "team": "11",
+   "name": "Johnathan Kovacevic",
+   "status": "out",
+   "athlete": "4587933",
+   "espn": {
+    "seen": "2026-11-12T17:16:55.087Z",
+    "own": "2026-11-12T16:52:00.000Z"
+   }
+  },
+  "401892700|brettpesce|out": {
+   "game": "401892700",
+   "start": "2026-11-13T00:00Z",
+   "team": "11",
+   "name": "Brett Pesce",
+   "status": "out",
+   "athlete": "3025535",
+   "espn": {
+    "seen": "2026-11-12T17:16:55.087Z",
+    "own": "2026-11-12T16:48:00.000Z"
+   }
+  },
+  "401892707|jonathanmarchessault|q": {
+   "game": "401892707",
+   "start": "2026-11-14T03:00Z",
+   "team": "27",
+   "name": "Jonathan Marchessault",
+   "status": "q",
+   "athlete": "2967072",
+   "espn": {
+    "seen": "2026-11-12T17:16:55.087Z",
+    "own": "2026-11-12T17:02:00.000Z"
+   }
   }
  }
 }

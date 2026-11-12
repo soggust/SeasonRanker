@@ -1,41 +1,15 @@
 {
  "sport": "nfl",
  "cursor": {
-  "adamscheftermirror.bsky.social": "2026-11-12T15:30:27.121Z",
+  "adamscheftermirror.bsky.social": "2026-11-12T17:00:25.319Z",
   "rapsheet.bsky.social": "2026-11-10T21:02:04.176Z",
   "nflnewsreposterbot.bsky.social": "2026-11-10T18:38:15.366Z",
   "insidenflnews.bsky.social": "2026-11-12T14:41:34.431Z",
   "nflnewsposter.bsky.social": "2026-11-12T05:56:25.896Z",
-  "rotoworld-fb.bsky.social": "2026-11-12T13:28:33.000Z",
-  "rotowirenfl.bsky.social": "2026-11-12T16:47:36.000Z"
+  "rotoworld-fb.bsky.social": "2026-11-12T17:11:58.000Z",
+  "rotowirenfl.bsky.social": "2026-11-12T17:02:25.000Z"
  },
  "claims": [
-  {
-   "id": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3myi5qpq23o2p|lamarjackson|limited|status",
-   "at": "2026-10-22T17:09:31.000Z",
-   "seen": "2026-10-22T17:20:04.372Z",
-   "handle": "rotowirenfl.bsky.social",
-   "post": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3myi5qpq23o2p",
-   "player": "Lamar Jackson",
-   "team": "BAL",
-   "status": "limited",
-   "kind": "status",
-   "confidence": 0.6,
-   "text": "Lamar Jackson: Present for start of practice Thursday \n\n https://www.rotowire.com/football/player/lamar-jackson-12561"
-  },
-  {
-   "id": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3myi662ayc22f|simmons|out|status",
-   "at": "2026-10-22T17:16:58.000Z",
-   "seen": "2026-10-22T17:20:04.372Z",
-   "handle": "rotoworld-fb.bsky.social",
-   "post": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3myi662ayc22f",
-   "player": "Simmons",
-   "team": "KC",
-   "status": "out",
-   "kind": "status",
-   "confidence": 0.9,
-   "text": "Chiefs place Simmons (back) on injured reserve"
-  },
   {
    "id": "at://did:plc:fuqjc7x4gxvnwzksnlxwbe4x/app.bsky.feed.post/3myi6ifqf6223|tylerwarren|questionable|status",
    "at": "2026-10-22T17:22:46.607Z",
