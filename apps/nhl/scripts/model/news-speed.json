@@ -8577,6 +8577,11 @@
    "espn": {
     "seen": "2026-11-12T01:32:32.443Z",
     "own": "2026-11-12T01:21:00.000Z"
+   },
+   "bluesky": {
+    "seen": "2026-11-12T05:14:14.028Z",
+    "own": "2026-11-12T05:04:42.000Z",
+    "why": "@dailyfaceoff.bsky.social: Mammoth’s Dylan Guenther out 2-4 weeks with upper-bod"
    }
   },
   "401892704|logancooley|out": {
@@ -8613,6 +8618,18 @@
    "espn": {
     "seen": "2026-11-12T05:12:47.674Z",
     "own": "2026-11-12T04:45:00.000Z"
+   }
+  },
+  "401892704|logancooley|q": {
+   "game": "401892704",
+   "start": "2026-11-13T02:00Z",
+   "team": "129764",
+   "name": "Logan Cooley",
+   "status": "q",
+   "athlete": "5080143",
+   "espn": {
+    "seen": "2026-11-12T14:28:57.904Z",
+    "own": "2026-11-12T14:09:00.000Z"
    }
   }
  }
