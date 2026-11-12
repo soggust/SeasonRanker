@@ -1,12 +1,12 @@
 {
  "v": 1,
- "at": "2026-11-09T10:31:58.827Z",
+ "at": "2026-11-12T09:08:58.585Z",
  "rows": 147815,
  "pooled": {
-  "n": 35283,
+  "n": 35131,
   "rows": 147815,
-  "keptRaw": 0.8962,
-  "kept": 0.8962,
+  "keptRaw": 0.8959,
+  "kept": 0.8959,
   "moved": 0.381,
   "lead": 12.068,
   "edgeOpen": 0.0189,
@@ -15,29 +15,29 @@
  },
  "stats": {
   "ast": {
-   "n": 1061,
+   "n": 1163,
    "rows": 23913,
-   "keptRaw": 0.8111,
-   "kept": 0.8111,
+   "keptRaw": 0.8421,
+   "kept": 0.8421,
    "moved": 0.334,
    "lead": 12.068,
-   "edgeOpen": 0.014,
-   "edgeClose": 0.0113,
+   "edgeOpen": 0.0138,
+   "edgeClose": 0.0116,
    "from": "own"
   },
   "fg3": {
-   "n": 9234,
+   "n": 8940,
    "rows": 28796,
-   "keptRaw": 0.929,
-   "kept": 0.929,
+   "keptRaw": 0.9207,
+   "kept": 0.9207,
    "moved": 0.177,
    "lead": 12.068,
-   "edgeOpen": 0.0165,
-   "edgeClose": 0.0153,
+   "edgeOpen": 0.0164,
+   "edgeClose": 0.0151,
    "from": "own"
   },
   "pra": {
-   "n": 2602,
+   "n": 2600,
    "rows": 25884,
    "keptRaw": 0.877,
    "kept": 0.877,
@@ -48,29 +48,29 @@
    "from": "own"
   },
   "pts": {
-   "n": 4885,
+   "n": 4746,
    "rows": 35352,
-   "keptRaw": 0.8966,
-   "kept": 0.8966,
+   "keptRaw": 0.8909,
+   "kept": 0.8909,
    "moved": 0.492,
    "lead": 12.068,
-   "edgeOpen": 0.0144,
+   "edgeOpen": 0.0145,
    "edgeClose": 0.0129,
    "from": "own"
   },
   "reb": {
-   "n": 17501,
+   "n": 17682,
    "rows": 33870,
-   "keptRaw": 0.8888,
-   "kept": 0.8888,
+   "keptRaw": 0.8918,
+   "kept": 0.8918,
    "moved": 0.325,
    "lead": 12.068,
    "edgeOpen": 0.0218,
-   "edgeClose": 0.0194,
+   "edgeClose": 0.0195,
    "from": "own"
   }
  },
  "sport": "nba",
  "epoch": "2026-10-26T15:00:00Z",
- "commit": "bcb34473"
+ "commit": "4a5ec1fd"
 }

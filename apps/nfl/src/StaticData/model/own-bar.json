@@ -1,10 +1,10 @@
 {
  "sport": "nfl",
  "epoch": "2026-10-26T15:00:00Z",
- "commit": "bcb34473",
- "at": "2026-11-09T10:27:45.313Z",
+ "commit": "4a5ec1fd",
+ "at": "2026-11-12T09:04:27.390Z",
  "current": 2026,
- "held": 476,
+ "held": 500,
  "before": 0,
  "after": 0,
  "keys": {
@@ -17,72 +17,72 @@
    "sum": -3.5
   },
   "prop:passAtt:over": {
-   "n": 11,
-   "sum": 0.15
+   "n": 12,
+   "sum": -0.85
   },
   "prop:passAtt:under": {
-   "n": 234,
-   "sum": 5.11
+   "n": 215,
+   "sum": 1.6
   },
   "prop:passCmp:over": {
-   "n": 13,
-   "sum": 3.31
+   "n": 15,
+   "sum": 1.31
   },
   "prop:passCmp:under": {
-   "n": 39,
-   "sum": 0.96
+   "n": 46,
+   "sum": 1.65
   },
   "prop:passInt:over": {
    "n": 75,
-   "sum": -10.96
+   "sum": -14.56
   },
   "prop:passInt:under": {
-   "n": 119,
-   "sum": -14.74
+   "n": 122,
+   "sum": -12.35
   },
   "prop:passTd:over": {
-   "n": 158,
-   "sum": -6.59
+   "n": 116,
+   "sum": -6.93
   },
   "prop:passTd:under": {
-   "n": 33,
-   "sum": 0.59
+   "n": 37,
+   "sum": -1.95
   },
   "prop:passYds:over": {
-   "n": 35,
-   "sum": -12.29
+   "n": 40,
+   "sum": -11.61
   },
   "prop:passYds:under": {
-   "n": 14,
-   "sum": 4.8
+   "n": 12,
+   "sum": 4.92
   },
   "prop:rec:over": {
-   "n": 26,
-   "sum": -6.1
+   "n": 40,
+   "sum": -11.2
   },
   "prop:rec:under": {
-   "n": 459,
-   "sum": 31.1
+   "n": 400,
+   "sum": 31.43
   },
   "prop:recYds:over": {
-   "n": 9,
-   "sum": -5.26
+   "n": 11,
+   "sum": -7.26
   },
   "prop:recYds:under": {
-   "n": 520,
-   "sum": 21.59
+   "n": 542,
+   "sum": 22.34
   },
   "prop:rushAtt:over": {
    "n": 6,
    "sum": -1.45
   },
   "prop:rushAtt:under": {
-   "n": 255,
-   "sum": 6.39
+   "n": 254,
+   "sum": 3.67
   },
   "prop:rushRecYds:over": {
-   "n": 7,
-   "sum": -3.22
+   "n": 10,
+   "sum": -6.22
   },
   "prop:rushRecYds:under": {
    "n": 5,
@@ -90,11 +90,11 @@
   },
   "prop:rushYds:over": {
    "n": 8,
-   "sum": -0.34
+   "sum": -0.68
   },
   "prop:rushYds:under": {
-   "n": 288,
-   "sum": -5.6
+   "n": 316,
+   "sum": 0.47
   },
   "spread:away": {
    "n": 52,

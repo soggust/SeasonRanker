@@ -2,7 +2,7 @@
  "v": 1,
  "sport": "mlb",
  "epoch": "2026-10-26T15:00:00Z",
- "at": "2026-11-09T11:01:16.606Z",
+ "at": "2026-11-12T09:19:40.771Z",
  "from": "2021-07-18T17:11:00.000Z",
  "through": "2026-10-16T00:00:00.000Z",
  "n": {
@@ -2873,8 +2873,8 @@
    }
   }
  },
- "commit": "bcb34473",
- "note": "D118. Bot Stats' week is the last seven days, never a calendar week that starts empty (the owner, 2026-11-09: \"bot stats not showing any games or bets\")",
+ "commit": "4a5ec1fd",
+ "note": "D119. The Book's bands are the Bot's bets alone: a suggestion is never a LIKE (the owner, 2026-11-09: \"its got likes with no BETS which makes no sense\")",
  "inputs": {
   "v": 1,
   "sport": "mlb",
@@ -2884,7 +2884,7 @@
    "pricing": "8bd303438afa",
    "record": "46b23ba593dd",
    "harness": "36c8c288f598",
-   "residual": "0f1cad093bf42957",
+   "residual": "dea575140dfd2670",
    "tuned": "75ba5ef16d4ef1db"
   },
   "fit": {
@@ -2939,20 +2939,7 @@
     "2024-05-11",
     "2026-08-08"
    ],
-   "planted": 9900.13,
-   "nulls": {
-    "fair": {
-     "mean": -13.58,
-     "sd": 20.09,
-     "z": 0.3
-    },
-    "shuffle": {
-     "mean": 5.71,
-     "sd": 19.82,
-     "z": -0.66
-    }
-   },
-   "actual": -7.47
+   "planted": 9900.13
   },
   "frozen": {
    "props": {
@@ -2968,6 +2955,6 @@
     "want": 29
    }
   },
-  "hash": "d8b546dce31207ef"
+  "hash": "b5ff7665de349069"
  }
 }
