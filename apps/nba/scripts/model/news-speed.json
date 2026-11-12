@@ -19563,6 +19563,78 @@
     "seen": "2026-11-12T01:39:34.948Z",
     "own": "2026-11-08T22:26:00.000Z"
    }
+  },
+  "401909975|jamalcain|out": {
+   "game": "401909975",
+   "start": "2026-11-12T03:00Z",
+   "team": "22",
+   "name": "Jamal Cain",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-12T02:16:51.823Z",
+    "own": "2026-11-12T01:28:40.000Z",
+    "why": "@rotowirenba.bsky.social: Jamal Cain: Ruled out for Wednesday \n\n https://www.rot"
+   }
+  },
+  "401909975|aaronnesmith|out": {
+   "game": "401909975",
+   "start": "2026-11-12T03:00Z",
+   "team": "22",
+   "name": "Aaron Nesmith",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-12T02:16:51.823Z",
+    "own": "2026-11-12T01:59:37.000Z",
+    "why": "@rotowirenba.bsky.social: Aaron Nesmith: Won't return Wednesday \n\n https://www.r"
+   }
+  },
+  "401909978|jamalcain|out": {
+   "game": "401909978",
+   "start": "2026-11-13T01:00Z",
+   "team": "16",
+   "name": "Jamal Cain",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-12T02:16:51.823Z",
+    "own": "2026-11-12T01:28:40.000Z",
+    "why": "@rotowirenba.bsky.social: Jamal Cain: Ruled out for Wednesday \n\n https://www.rot"
+   }
+  },
+  "401909978|aaronnesmith|out": {
+   "game": "401909978",
+   "start": "2026-11-13T01:00Z",
+   "team": "16",
+   "name": "Aaron Nesmith",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-12T02:16:51.823Z",
+    "own": "2026-11-12T01:59:37.000Z",
+    "why": "@rotowirenba.bsky.social: Aaron Nesmith: Won't return Wednesday \n\n https://www.r"
+   }
+  },
+  "401909979|jamalcain|out": {
+   "game": "401909979",
+   "start": "2026-11-13T02:00Z",
+   "team": "21",
+   "name": "Jamal Cain",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-12T02:16:51.823Z",
+    "own": "2026-11-12T01:28:40.000Z",
+    "why": "@rotowirenba.bsky.social: Jamal Cain: Ruled out for Wednesday \n\n https://www.rot"
+   }
+  },
+  "401909979|aaronnesmith|out": {
+   "game": "401909979",
+   "start": "2026-11-13T02:00Z",
+   "team": "21",
+   "name": "Aaron Nesmith",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-12T02:16:51.823Z",
+    "own": "2026-11-12T01:59:37.000Z",
+    "why": "@rotowirenba.bsky.social: Aaron Nesmith: Won't return Wednesday \n\n https://www.r"
+   }
   }
  }
 }
