@@ -3,24 +3,11 @@
  "cursor": {
   "johnston-bot.bsky.social": "2026-11-12T16:02:25.547Z",
   "notfriedgehnic.bsky.social": "2026-11-12T16:59:13.353Z",
-  "dailyfaceoff.bsky.social": "2026-11-12T21:07:15.000Z",
-  "dfotoronto.bsky.social": "2026-11-12T21:04:48.000Z",
+  "dailyfaceoff.bsky.social": "2026-11-12T22:12:04.000Z",
+  "dfotoronto.bsky.social": "2026-11-12T21:59:00.000Z",
   "marklazerus.bsky.social": "2026-11-12T16:42:52.678Z"
  },
  "claims": [
-  {
-   "id": "at://did:plc:3uus7y6h3rlrk6sbctzxm4bg/app.bsky.feed.post/3myilllstwe24|bryanrust|out|status",
-   "at": "2026-10-22T21:17:12.000Z",
-   "seen": "2026-10-22T21:32:15.227Z",
-   "handle": "dailyfaceoff.bsky.social",
-   "post": "at://did:plc:3uus7y6h3rlrk6sbctzxm4bg/app.bsky.feed.post/3myilllstwe24",
-   "player": "Bryan Rust",
-   "team": "PIT",
-   "status": "out",
-   "kind": "status",
-   "confidence": 0.95,
-   "text": "Penguins’ Bryan Rust out at least six weeks with lower-body injury"
-  },
   {
    "id": "at://did:plc:3uus7y6h3rlrk6sbctzxm4bg/app.bsky.feed.post/3myiw2ma33325|mitchmarner|out|status",
    "at": "2026-10-23T00:24:33.000Z",
@@ -2321,6 +2308,84 @@
    "kind": "return",
    "confidence": 0.9,
    "text": "Canadiens’ Mike Matheson returns to lineup after six-game absence"
+  },
+  {
+   "id": "at://did:plc:3uus7y6h3rlrk6sbctzxm4bg/app.bsky.feed.post/3n25ewuba5e2a|pageau|out|status",
+   "at": "2026-11-12T21:09:20.000Z",
+   "seen": "2026-11-12T22:14:58.283Z",
+   "handle": "dailyfaceoff.bsky.social",
+   "post": "at://did:plc:3uus7y6h3rlrk6sbctzxm4bg/app.bsky.feed.post/3n25ewuba5e2a",
+   "player": "Pageau",
+   "team": "NYI",
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.9,
+   "text": "Islanders’ Pageau out with lower-body injury, Maccelli, Pulock returns to lineup"
+  },
+  {
+   "id": "at://did:plc:3uus7y6h3rlrk6sbctzxm4bg/app.bsky.feed.post/3n25ewuba5e2a|maccelli|active|return",
+   "at": "2026-11-12T21:09:20.000Z",
+   "seen": "2026-11-12T22:14:58.283Z",
+   "handle": "dailyfaceoff.bsky.social",
+   "post": "at://did:plc:3uus7y6h3rlrk6sbctzxm4bg/app.bsky.feed.post/3n25ewuba5e2a",
+   "player": "Maccelli",
+   "team": "NYI",
+   "status": "active",
+   "kind": "return",
+   "confidence": 0.85,
+   "text": "Islanders’ Pageau out with lower-body injury, Maccelli, Pulock returns to lineup"
+  },
+  {
+   "id": "at://did:plc:3uus7y6h3rlrk6sbctzxm4bg/app.bsky.feed.post/3n25ewuba5e2a|pulock|active|return",
+   "at": "2026-11-12T21:09:20.000Z",
+   "seen": "2026-11-12T22:14:58.283Z",
+   "handle": "dailyfaceoff.bsky.social",
+   "post": "at://did:plc:3uus7y6h3rlrk6sbctzxm4bg/app.bsky.feed.post/3n25ewuba5e2a",
+   "player": "Pulock",
+   "team": "NYI",
+   "status": "active",
+   "kind": "return",
+   "confidence": 0.85,
+   "text": "Islanders’ Pageau out with lower-body injury, Maccelli, Pulock returns to lineup"
+  },
+  {
+   "id": "at://did:plc:3uus7y6h3rlrk6sbctzxm4bg/app.bsky.feed.post/3n25h7skzch23|konstahelenius|out|status",
+   "at": "2026-11-12T21:50:07.000Z",
+   "seen": "2026-11-12T22:14:58.283Z",
+   "handle": "dailyfaceoff.bsky.social",
+   "post": "at://did:plc:3uus7y6h3rlrk6sbctzxm4bg/app.bsky.feed.post/3n25h7skzch23",
+   "player": "Konsta Helenius",
+   "team": "BUF",
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.9,
+   "text": "Sabres place Konsta Helenius on injured reserve, activate Alex Lyon"
+  },
+  {
+   "id": "at://did:plc:3uus7y6h3rlrk6sbctzxm4bg/app.bsky.feed.post/3n25h7skzch23|alexlyon|active|status",
+   "at": "2026-11-12T21:50:07.000Z",
+   "seen": "2026-11-12T22:14:58.283Z",
+   "handle": "dailyfaceoff.bsky.social",
+   "post": "at://did:plc:3uus7y6h3rlrk6sbctzxm4bg/app.bsky.feed.post/3n25h7skzch23",
+   "player": "Alex Lyon",
+   "team": "BUF",
+   "status": "active",
+   "kind": "status",
+   "confidence": 0.85,
+   "text": "Sabres place Konsta Helenius on injured reserve, activate Alex Lyon"
+  },
+  {
+   "id": "at://did:plc:3uus7y6h3rlrk6sbctzxm4bg/app.bsky.feed.post/3n25hxrrend2j|patrickkane|active|return",
+   "at": "2026-11-12T22:03:32.000Z",
+   "seen": "2026-11-12T22:14:58.283Z",
+   "handle": "dailyfaceoff.bsky.social",
+   "post": "at://did:plc:3uus7y6h3rlrk6sbctzxm4bg/app.bsky.feed.post/3n25hxrrend2j",
+   "player": "Patrick Kane",
+   "team": "CHI",
+   "status": "active",
+   "kind": "return",
+   "confidence": 0.9,
+   "text": "Blackhawks’ Patrick Kane activated from IR, expected to return vs. Sabres"
   }
  ]
 }

@@ -16598,6 +16598,114 @@
     "seen": "2026-11-12T21:04:30.423Z",
     "own": "2026-11-12T20:44:00.000Z"
    }
+  },
+  "401873052|rhamondrestevenson|q": {
+   "game": "401873052",
+   "start": "2026-11-13T01:15Z",
+   "team": "19",
+   "name": "Rhamondre Stevenson",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-11-12T21:08:23.299Z",
+    "own": "2026-11-12T21:05:10.729Z",
+    "why": "@nflnewsposter.bsky.social: [Schefter] AJ Brown and Rhamondre Stevenson both wer"
+   }
+  },
+  "401873058|jaydnott|q": {
+   "game": "401873058",
+   "start": "2026-11-15T18:00Z",
+   "team": "12",
+   "name": "Jaydn Ott",
+   "status": "q",
+   "athlete": "4685489",
+   "espn": {
+    "seen": "2026-11-12T22:12:35.134Z",
+    "own": "2026-11-12T21:39:00.000Z"
+   }
+  },
+  "401873057|tonypollard|q": {
+   "game": "401873057",
+   "start": "2026-11-15T18:00Z",
+   "team": "10",
+   "name": "Tony Pollard",
+   "status": "q",
+   "athlete": "3916148",
+   "espn": {
+    "seen": "2026-11-12T22:12:35.134Z",
+    "own": "2026-11-12T21:16:00.000Z"
+   }
+  },
+  "401873057|kevinwinston|q": {
+   "game": "401873057",
+   "start": "2026-11-15T18:00Z",
+   "team": "10",
+   "name": "Kevin Winston Jr.",
+   "status": "q",
+   "athlete": "4685617",
+   "espn": {
+    "seen": "2026-11-12T22:12:35.134Z",
+    "own": "2026-11-12T21:03:00.000Z"
+   }
+  },
+  "401873059|jaredwayne|q": {
+   "game": "401873059",
+   "start": "2026-11-15T18:00Z",
+   "team": "15",
+   "name": "Jared Wayne",
+   "status": "q",
+   "athlete": "4430681",
+   "espn": {
+    "seen": "2026-11-12T22:12:35.134Z",
+    "own": "2026-11-12T21:33:00.000Z"
+   }
+  },
+  "401873055|quincyriley|q": {
+   "game": "401873055",
+   "start": "2026-11-15T18:00Z",
+   "team": "18",
+   "name": "Quincy Riley",
+   "status": "q",
+   "athlete": "4428350",
+   "espn": {
+    "seen": "2026-11-12T22:12:35.134Z",
+    "own": "2026-11-12T21:43:00.000Z"
+   }
+  },
+  "401873055|taliesefuaga|q": {
+   "game": "401873055",
+   "start": "2026-11-15T18:00Z",
+   "team": "18",
+   "name": "Taliese Fuaga",
+   "status": "q",
+   "athlete": "4606711",
+   "espn": {
+    "seen": "2026-11-12T22:12:35.134Z",
+    "own": "2026-11-12T21:43:00.000Z"
+   }
+  },
+  "401873054|samfranklin|q": {
+   "game": "401873054",
+   "start": "2026-11-15T18:00Z",
+   "team": "2",
+   "name": "Sam Franklin Jr.",
+   "status": "q",
+   "athlete": "4044133",
+   "espn": {
+    "seen": "2026-11-12T22:12:35.134Z",
+    "own": "2026-11-12T21:30:00.000Z"
+   }
+  },
+  "401873064|jalendavis|out": {
+   "game": "401873064",
+   "start": "2026-11-16T01:20Z",
+   "team": "4",
+   "name": "Jalen Davis",
+   "status": "out",
+   "athlete": "3125356",
+   "espn": {
+    "seen": "2026-11-12T22:12:35.134Z",
+    "own": "2026-11-12T21:30:00.000Z"
+   }
   }
  }
 }

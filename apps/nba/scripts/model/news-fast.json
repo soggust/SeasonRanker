@@ -1,24 +1,11 @@
 {
  "sport": "nba",
  "cursor": {
-  "rotowirenba.bsky.social": "2026-11-12T21:05:05.000Z",
+  "rotowirenba.bsky.social": "2026-11-12T22:12:36.000Z",
   "insidenbanews.bsky.social": "2026-11-08T18:11:49.382Z",
   "shamsbot.bsky.social": "2026-11-08T18:05:20.000Z"
  },
  "claims": [
-  {
-   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3myio74g45n2v|tobiasharris|out|status",
-   "at": "2026-10-22T22:03:54.000Z",
-   "seen": "2026-10-22T22:24:25.424Z",
-   "handle": "rotowirenba.bsky.social",
-   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3myio74g45n2v",
-   "player": "Tobias Harris",
-   "team": null,
-   "status": "out",
-   "kind": "status",
-   "confidence": 0.95,
-   "text": "Tobias Harris: Ruled out for Friday \n\n https://www.rotowire.com/basketball/player/tobias-harris-3211"
-  },
   {
    "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3myiuurcxje2t|collinsexton|active|status",
    "at": "2026-10-23T00:03:23.000Z",
@@ -9638,6 +9625,71 @@
    "kind": "status",
    "confidence": 0.75,
    "text": "Yves Missi: Unlikely to play Friday \n\n https://www.rotowire.com/basketball/player/yves-missi-6268"
+  },
+  {
+   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3n25gg3tbte2l|calebwilson|out|status",
+   "at": "2026-11-12T21:35:45.000Z",
+   "seen": "2026-11-12T22:14:58.283Z",
+   "handle": "rotowirenba.bsky.social",
+   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3n25gg3tbte2l",
+   "player": "Caleb Wilson",
+   "team": null,
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.9,
+   "text": "Caleb Wilson: To miss at least four weeks \n\n https://www.rotowire.com/basketball/player/caleb-wilson-6926"
+  },
+  {
+   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3n25hxxu7vw2u|jalensuggs|questionable|status",
+   "at": "2026-11-12T22:03:38.000Z",
+   "seen": "2026-11-12T22:14:58.283Z",
+   "handle": "rotowirenba.bsky.social",
+   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3n25hxxu7vw2u",
+   "player": "Jalen Suggs",
+   "team": null,
+   "status": "questionable",
+   "kind": "status",
+   "confidence": 0.95,
+   "text": "Jalen Suggs: Upgraded to questionable for Friday \n\n https://www.rotowire.com/basketball/player/jalen-suggs-5379"
+  },
+  {
+   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3n25hzyxnop27|jamalcain|questionable|status",
+   "at": "2026-11-12T22:04:46.000Z",
+   "seen": "2026-11-12T22:14:58.283Z",
+   "handle": "rotowirenba.bsky.social",
+   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3n25hzyxnop27",
+   "player": "Jamal Cain",
+   "team": null,
+   "status": "questionable",
+   "kind": "status",
+   "confidence": 0.95,
+   "text": "Jamal Cain: Questionable for Friday \n\n https://www.rotowire.com/basketball/player/jamal-cain-5796"
+  },
+  {
+   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3n25i7vsl2r2v|evanmobley|out|status",
+   "at": "2026-11-12T22:08:04.000Z",
+   "seen": "2026-11-12T22:14:58.283Z",
+   "handle": "rotowirenba.bsky.social",
+   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3n25i7vsl2r2v",
+   "player": "Evan Mobley",
+   "team": null,
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.9,
+   "text": "Evan Mobley: Won't play Friday \n\n https://www.rotowire.com/basketball/player/evan-mobley-5355"
+  },
+  {
+   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3n25ihyuabd27|mylesturner|active|status",
+   "at": "2026-11-12T22:12:36.000Z",
+   "seen": "2026-11-12T22:14:58.283Z",
+   "handle": "rotowirenba.bsky.social",
+   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3n25ihyuabd27",
+   "player": "Myles Turner",
+   "team": null,
+   "status": "active",
+   "kind": "status",
+   "confidence": 0.95,
+   "text": "Myles Turner: Cleared for Friday \n\n https://www.rotowire.com/basketball/player/myles-turner-3725"
   }
  ]
 }
