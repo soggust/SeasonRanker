@@ -1,7 +1,7 @@
 {
  "sport": "nba",
  "cursor": {
-  "rotowirenba.bsky.social": "2026-11-12T17:03:00.000Z",
+  "rotowirenba.bsky.social": "2026-11-12T18:07:38.000Z",
   "insidenbanews.bsky.social": "2026-11-08T18:11:49.382Z",
   "shamsbot.bsky.social": "2026-11-08T18:05:20.000Z"
  },
@@ -9599,6 +9599,32 @@
    "kind": "status",
    "confidence": 0.85,
    "text": "Stephen Curry: Won't return vs. Houston \n\n https://www.rotowire.com/basketball/player/stephen-curry-3014"
+  },
+  {
+   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3n252o7mqxe2l|scottiebarnes|out|status",
+   "at": "2026-11-12T18:05:32.000Z",
+   "seen": "2026-11-12T18:09:15.542Z",
+   "handle": "rotowirenba.bsky.social",
+   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3n252o7mqxe2l",
+   "player": "Scottie Barnes",
+   "team": "TOR",
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.95,
+   "text": "Scottie Barnes: Ruled out Thursday \n\n https://www.rotowire.com/basketball/player/scottie-barnes-5390"
+  },
+  {
+   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3n252ry23ip2o|lebronjames|out|status",
+   "at": "2026-11-12T18:07:38.000Z",
+   "seen": "2026-11-12T18:09:15.542Z",
+   "handle": "rotowirenba.bsky.social",
+   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3n252ry23ip2o",
+   "player": "LeBron James",
+   "team": "LAL",
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.93,
+   "text": "LeBron James: Sitting out Thursday \n\n https://www.rotowire.com/basketball/player/lebron-james-2344"
   }
  ]
 }
