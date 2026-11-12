@@ -6,36 +6,10 @@
   "nflnewsreposterbot.bsky.social": "2026-11-10T18:38:15.366Z",
   "insidenflnews.bsky.social": "2026-11-12T14:41:34.431Z",
   "nflnewsposter.bsky.social": "2026-11-12T19:27:35.964Z",
-  "rotoworld-fb.bsky.social": "2026-11-12T17:47:38.000Z",
+  "rotoworld-fb.bsky.social": "2026-11-12T19:56:01.000Z",
   "rotowirenfl.bsky.social": "2026-11-12T19:20:50.000Z"
  },
  "claims": [
-  {
-   "id": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3myig3kmjgu2s|alvinkamara|limited|status",
-   "at": "2026-10-22T19:38:45.000Z",
-   "seen": "2026-10-22T20:02:56.040Z",
-   "handle": "rotowirenfl.bsky.social",
-   "post": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3myig3kmjgu2s",
-   "player": "Alvin Kamara",
-   "team": "NO",
-   "status": "limited",
-   "kind": "status",
-   "confidence": 0.9,
-   "text": "Alvin Kamara: Limited again Thursday \n\n https://www.rotowire.com/football/player/alvin-kamara-11732"
-  },
-  {
-   "id": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3myigwjotia22|buckyirving|limited|status",
-   "at": "2026-10-22T19:53:50.000Z",
-   "seen": "2026-10-22T20:02:56.040Z",
-   "handle": "rotowirenfl.bsky.social",
-   "post": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3myigwjotia22",
-   "player": "Bucky Irving",
-   "team": "TB",
-   "status": "limited",
-   "kind": "status",
-   "confidence": 0.9,
-   "text": "Bucky Irving: Logs limited practice Thursday \n\n https://www.rotowire.com/football/player/bucky-irving-17784"
-  },
   {
    "id": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3myihd3ydlg2r|emekaegbuka|out|status",
    "at": "2026-10-22T20:00:52.000Z",
@@ -18248,6 +18222,32 @@
    "kind": "return",
    "confidence": 0.5,
    "text": "Sean McVay said that WR Davante Adams returning after the Rams host the Green Bay Packers in Week 12 is a “realistic timeline for him.” Story via @sarahbarshop:\n\nOriginal post"
+  },
+  {
+   "id": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3n25atonwk52m|davidmontgomery|limited|status",
+   "at": "2026-11-12T19:55:58.000Z",
+   "seen": "2026-11-12T19:58:56.595Z",
+   "handle": "rotoworld-fb.bsky.social",
+   "post": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3n25atonwk52m",
+   "player": "David Montgomery",
+   "team": null,
+   "status": "limited",
+   "kind": "status",
+   "confidence": 0.5,
+   "text": "David Montgomery (groin) working out at practice"
+  },
+  {
+   "id": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3n25atqxvu52k|woodymarks|questionable|status",
+   "at": "2026-11-12T19:56:01.000Z",
+   "seen": "2026-11-12T19:58:56.595Z",
+   "handle": "rotoworld-fb.bsky.social",
+   "post": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3n25atqxvu52k",
+   "player": "Woody Marks",
+   "team": null,
+   "status": "questionable",
+   "kind": "status",
+   "confidence": 0.5,
+   "text": "Woody Marks (knee) not practicing in media portion"
   }
  ]
 }
