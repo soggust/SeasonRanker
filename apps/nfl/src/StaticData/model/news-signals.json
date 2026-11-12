@@ -3,6 +3,105 @@
  "days": 2,
  "signals": [
   {
+   "team": "14",
+   "abbr": "LAR",
+   "athlete": "16800",
+   "player": "Davante Adams",
+   "kind": "return",
+   "direction": "up",
+   "confidence": 0.4,
+   "headline": "Sean McVay: Rams optimistic WR Davante Adams will return 'sooner than later'",
+   "at": "2026-11-11T23:36:14.000Z"
+  },
+  {
+   "team": "22",
+   "abbr": "ARI",
+   "athlete": "4430841",
+   "player": "Carson Beck",
+   "kind": "starting",
+   "direction": "up",
+   "confidence": 0.9,
+   "headline": "Cardinals to start rookie QB Carson Beck against Rams",
+   "at": "2026-11-11T22:47:54.000Z"
+  },
+  {
+   "team": "22",
+   "abbr": "ARI",
+   "athlete": "4038524",
+   "player": "Gardner Minshew II",
+   "kind": "benched",
+   "direction": "down",
+   "confidence": 0.8,
+   "headline": "Cardinals to start rookie QB Carson Beck against Rams",
+   "at": "2026-11-11T22:47:54.000Z"
+  },
+  {
+   "team": "20",
+   "abbr": "NYJ",
+   "athlete": "4361767",
+   "player": "Will McDonald IV",
+   "kind": "role",
+   "direction": "up",
+   "confidence": 0.7,
+   "headline": "Jets' Will McDonald has 'earned' bigger role, coach says",
+   "at": "2026-11-11T21:13:37.000Z"
+  },
+  {
+   "team": "12",
+   "abbr": "KC",
+   "athlete": "3055899",
+   "player": "Harrison Butker",
+   "kind": "starting",
+   "direction": "none",
+   "confidence": 0.9,
+   "headline": "Chiefs sticking with struggling Harrison Butker as kicker this week",
+   "at": "2026-11-11T20:50:47.000Z"
+  },
+  {
+   "team": "5",
+   "abbr": "CLE",
+   "athlete": "3122840",
+   "player": "Deshaun Watson",
+   "kind": "starting",
+   "direction": "up",
+   "confidence": 0.9,
+   "headline": "Browns' Monken: Watson over Sanders QB decision based on 'full body of work'",
+   "at": "2026-11-11T18:13:33.000Z"
+  },
+  {
+   "team": "5",
+   "abbr": "CLE",
+   "athlete": "4432762",
+   "player": "Shedeur Sanders",
+   "kind": "benched",
+   "direction": "down",
+   "confidence": 0.8,
+   "headline": "Browns' Monken: Watson over Sanders QB decision based on 'full body of work'",
+   "at": "2026-11-11T18:13:33.000Z"
+  },
+  {
+   "team": "13",
+   "abbr": "LV",
+   "athlete": "4837248",
+   "player": "Fernando Mendoza",
+   "kind": "starting",
+   "direction": "up",
+   "confidence": 0.95,
+   "headline": "Raiders name Fernando Mendoza starting QB after trading Kirk Cousins",
+   "at": "2026-11-11T14:30:32.000Z"
+  },
+  {
+   "team": "13",
+   "abbr": "LV",
+   "athlete": "14880",
+   "player": "Kirk Cousins",
+   "kind": "benched",
+   "direction": "down",
+   "confidence": 0.9,
+   "headline": "Raiders name Fernando Mendoza starting QB after trading Kirk Cousins",
+   "at": "2026-11-11T14:30:32.000Z"
+  },
+  {
    "team": "1",
    "abbr": "ATL",
    "athlete": "4372066",
@@ -23,40 +122,7 @@
    "confidence": 0.6,
    "headline": "Source: Falcons cutting kicker Nick Folk, signing Jake Moody",
    "at": "2026-11-10T18:21:07.000Z"
-  },
-  {
-   "team": "6",
-   "abbr": "DAL",
-   "athlete": "4242355",
-   "player": "Jake Ferguson",
-   "kind": "benched",
-   "direction": "down",
-   "confidence": 0.4,
-   "headline": "Schottenheimer: Cowboys will be without Ferguson, Goodson for 'multiple weeks'",
-   "at": "2026-11-09T23:39:50.000Z"
-  },
-  {
-   "team": "6",
-   "abbr": "DAL",
-   "athlete": "4429676",
-   "player": "Tyler Goodson",
-   "kind": "benched",
-   "direction": "down",
-   "confidence": 0.4,
-   "headline": "Schottenheimer: Cowboys will be without Ferguson, Goodson for 'multiple weeks'",
-   "at": "2026-11-09T23:39:50.000Z"
-  },
-  {
-   "team": "25",
-   "abbr": "SF",
-   "athlete": "4360438",
-   "player": "Brandon Aiyuk",
-   "kind": "return",
-   "direction": "up",
-   "confidence": 0.8,
-   "headline": "Brandon Aiyuk reinstated by NFL; 49ers have 2-game roster exemption for receiver",
-   "at": "2026-11-09T23:14:11.000Z"
   }
  ],
- "at": "2026-11-11T21:29:05.365Z"
+ "at": "2026-11-12T00:16:41.501Z"
 }

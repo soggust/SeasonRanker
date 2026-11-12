@@ -1,50 +1,11 @@
 {
  "sport": "nba",
  "cursor": {
-  "rotowirenba.bsky.social": "2026-11-11T22:33:42.000Z",
+  "rotowirenba.bsky.social": "2026-11-12T00:10:27.000Z",
   "insidenbanews.bsky.social": "2026-11-08T18:11:49.382Z",
   "shamsbot.bsky.social": "2026-11-08T18:05:20.000Z"
  },
  "claims": [
-  {
-   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mygb5x4rwo2d|isaiahstewart|out|status",
-   "at": "2026-10-21T23:05:17.000Z",
-   "seen": "2026-10-21T23:05:24.815Z",
-   "handle": "rotowirenba.bsky.social",
-   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mygb5x4rwo2d",
-   "player": "Isaiah Stewart",
-   "team": null,
-   "status": "out",
-   "kind": "status",
-   "confidence": 0.95,
-   "text": "Isaiah Stewart: Ruled out Wednesday \n\n https://www.rotowire.com/basketball/player/isaiah-stewart-5137"
-  },
-  {
-   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mygd4quij72p|herbertjones|none|benched",
-   "at": "2026-10-21T23:40:24.000Z",
-   "seen": "2026-10-22T00:03:46.483Z",
-   "handle": "rotowirenba.bsky.social",
-   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mygd4quij72p",
-   "player": "Herbert Jones",
-   "team": null,
-   "status": "none",
-   "kind": "benched",
-   "confidence": 0.85,
-   "text": "Herbert Jones: Not starting Wednesday \n\n https://www.rotowire.com/basketball/player/herbert-jones-5414"
-  },
-  {
-   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mygd4zabte2r|jeremiahfears|none|starting",
-   "at": "2026-10-21T23:40:33.000Z",
-   "seen": "2026-10-22T00:03:46.483Z",
-   "handle": "rotowirenba.bsky.social",
-   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mygd4zabte2r",
-   "player": "Jeremiah Fears",
-   "team": null,
-   "status": "none",
-   "kind": "starting",
-   "confidence": 0.85,
-   "text": "Jeremiah Fears: Starting regular-season opener \n\n https://www.rotowire.com/basketball/player/jeremiah-fears-6546"
-  },
   {
    "id": "at://did:plc:ykcnnf6kqnn3lasmobrczoem/app.bsky.feed.post/3mygg5vaf522z|lukekennard|out|status",
    "at": "2026-10-22T00:34:44.218Z",
@@ -9677,6 +9638,71 @@
    "kind": "status",
    "confidence": 0.95,
    "text": "Tyrese Haliburton: To miss at least 10 more days \n\n https://www.rotowire.com/basketball/player/tyrese-haliburton-5114"
+  },
+  {
+   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3n2344o4dms2l|devinvassell|out|status",
+   "at": "2026-11-11T23:26:11.000Z",
+   "seen": "2026-11-12T00:16:41.501Z",
+   "handle": "rotowirenba.bsky.social",
+   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3n2344o4dms2l",
+   "player": "Devin Vassell",
+   "team": null,
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.95,
+   "text": "Devin Vassell: Won't play Wednesday \n\n https://www.rotowire.com/basketball/player/devin-vassell-5113"
+  },
+  {
+   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3n2347c2fob2o|normanpowell|out|status",
+   "at": "2026-11-11T23:27:39.000Z",
+   "seen": "2026-11-12T00:16:41.501Z",
+   "handle": "rotowirenba.bsky.social",
+   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3n2347c2fob2o",
+   "player": "Norman Powell",
+   "team": null,
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.95,
+   "text": "Norman Powell: Ruled out Wednesday \n\n https://www.rotowire.com/basketball/player/norman-powell-3726"
+  },
+  {
+   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3n234wkrjfy2a|kellyoubre|none|starting",
+   "at": "2026-11-11T23:40:40.000Z",
+   "seen": "2026-11-12T00:16:41.501Z",
+   "handle": "rotowirenba.bsky.social",
+   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3n234wkrjfy2a",
+   "player": "Kelly Oubre",
+   "team": null,
+   "status": "none",
+   "kind": "starting",
+   "confidence": 0.9,
+   "text": "Kelly Oubre: Back in starting lineup \n\n https://www.rotowire.com/basketball/player/kelly-oubre-3721"
+  },
+  {
+   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3n236ffanuq2y|brandonmiller|out|status",
+   "at": "2026-11-12T00:06:52.000Z",
+   "seen": "2026-11-12T00:16:41.501Z",
+   "handle": "rotowirenba.bsky.social",
+   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3n236ffanuq2y",
+   "player": "Brandon Miller",
+   "team": null,
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.9,
+   "text": "Brandon Miller: Out again Thursday \n\n https://www.rotowire.com/basketball/player/brandon-miller-5896"
+  },
+  {
+   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3n236lsexlf2l|moussadiabate|questionable|status",
+   "at": "2026-11-12T00:10:27.000Z",
+   "seen": "2026-11-12T00:16:41.501Z",
+   "handle": "rotowirenba.bsky.social",
+   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3n236lsexlf2l",
+   "player": "Moussa Diabate",
+   "team": null,
+   "status": "questionable",
+   "kind": "status",
+   "confidence": 0.6,
+   "text": "Moussa Diabate: Probable for Thursday \n\n https://www.rotowire.com/basketball/player/moussa-diabate-5708"
   }
  ]
 }
