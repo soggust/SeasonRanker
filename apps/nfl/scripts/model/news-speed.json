@@ -17026,6 +17026,102 @@
     "seen": "2026-11-12T00:07:41.860Z",
     "own": "2026-11-11T23:30:00.000Z"
    }
+  },
+  "401873052|bamknight|q": {
+   "game": "401873052",
+   "start": "2026-11-13T01:15Z",
+   "team": "19",
+   "name": "Bam Knight",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-11-12T00:16:41.501Z",
+    "own": "2026-11-11T23:48:53.000Z",
+    "why": "@rotowirenfl.bsky.social: Bam Knight: Officially limited Wednesday \n\n https://ww"
+   }
+  },
+  "401873052|drewlock|q": {
+   "game": "401873052",
+   "start": "2026-11-13T01:15Z",
+   "team": "19",
+   "name": "Drew Lock",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-11-12T00:16:41.501Z",
+    "own": "2026-11-12T00:10:03.000Z",
+    "why": "@rotowirenfl.bsky.social: Drew Lock: Limited Wednesday \n\n https://www.rotowire.c"
+   }
+  },
+  "401873062|patrickoconnell|q": {
+   "game": "401873062",
+   "start": "2026-11-15T21:05Z",
+   "team": "26",
+   "name": "Patrick O'Connell",
+   "status": "q",
+   "athlete": "4364623",
+   "espn": {
+    "seen": "2026-11-12T00:26:18.253Z",
+    "own": "2026-11-12T00:25:00.000Z"
+   }
+  },
+  "401873062|derickhall|q": {
+   "game": "401873062",
+   "start": "2026-11-15T21:05Z",
+   "team": "26",
+   "name": "Derick Hall",
+   "status": "q",
+   "athlete": "4567226",
+   "espn": {
+    "seen": "2026-11-12T00:26:18.253Z",
+    "own": "2026-11-12T00:25:00.000Z"
+   }
+  },
+  "401873062|anthonybradford|q": {
+   "game": "401873062",
+   "start": "2026-11-15T21:05Z",
+   "team": "26",
+   "name": "Anthony Bradford",
+   "status": "q",
+   "athlete": "4429211",
+   "espn": {
+    "seen": "2026-11-12T00:26:18.253Z",
+    "own": "2026-11-12T00:24:00.000Z"
+   }
+  },
+  "401873061|andrewwingard|q": {
+   "game": "401873061",
+   "start": "2026-11-15T21:05Z",
+   "team": "22",
+   "name": "Andrew Wingard",
+   "status": "q",
+   "athlete": "3918331",
+   "espn": {
+    "seen": "2026-11-12T00:26:18.253Z",
+    "own": "2026-11-12T00:16:00.000Z"
+   }
+  },
+  "401873061|dantestills|q": {
+   "game": "401873061",
+   "start": "2026-11-15T21:05Z",
+   "team": "22",
+   "name": "Dante Stills",
+   "status": "q",
+   "athlete": "4362225",
+   "espn": {
+    "seen": "2026-11-12T00:26:18.253Z",
+    "own": "2026-11-12T00:14:00.000Z"
+   }
+  },
+  "401873061|maxmelton|q": {
+   "game": "401873061",
+   "start": "2026-11-15T21:05Z",
+   "team": "22",
+   "name": "Max Melton",
+   "status": "q",
+   "athlete": "4698113",
+   "espn": {
+    "seen": "2026-11-12T00:26:18.253Z",
+    "own": "2026-11-12T00:14:00.000Z"
+   }
   }
  }
 }
