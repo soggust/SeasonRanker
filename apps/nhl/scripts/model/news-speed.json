@@ -8780,6 +8780,18 @@
     "seen": "2026-11-12T16:13:59.085Z",
     "own": "2026-11-12T02:37:00.000Z"
    }
+  },
+  "401892697|christanev|out": {
+   "game": "401892697",
+   "start": "2026-11-13T00:00Z",
+   "team": "21",
+   "name": "Chris Tanev",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-12T16:15:16.142Z",
+    "own": "2026-11-12T16:02:25.547Z",
+    "why": "@johnston-bot.bsky.social: Chris Tanev is scratched tonight by the #leafs due to"
+   }
   }
  }
 }

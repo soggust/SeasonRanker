@@ -3,24 +3,11 @@
  "cursor": {
   "johnston-bot.bsky.social": "2026-11-12T16:02:25.547Z",
   "notfriedgehnic.bsky.social": "2026-11-11T19:05:59.817Z",
-  "dailyfaceoff.bsky.social": "2026-11-12T15:28:39.000Z",
-  "dfotoronto.bsky.social": "2026-11-12T15:49:08.000Z",
+  "dailyfaceoff.bsky.social": "2026-11-12T16:35:02.000Z",
+  "dfotoronto.bsky.social": "2026-11-12T16:25:41.000Z",
   "marklazerus.bsky.social": "2026-11-12T16:09:18.885Z"
  },
  "claims": [
-  {
-   "id": "at://did:plc:3uus7y6h3rlrk6sbctzxm4bg/app.bsky.feed.post/3myi3ar7m7l2i|linusullmark|out|status",
-   "at": "2026-10-22T16:24:48.000Z",
-   "seen": "2026-10-22T16:38:01.289Z",
-   "handle": "dailyfaceoff.bsky.social",
-   "post": "at://did:plc:3uus7y6h3rlrk6sbctzxm4bg/app.bsky.feed.post/3myi3ar7m7l2i",
-   "player": "Linus Ullmark",
-   "team": "OTT",
-   "status": "out",
-   "kind": "status",
-   "confidence": 0.9,
-   "text": "Senators place Linus Ullmark on injured reserve"
-  },
   {
    "id": "at://did:plc:3uus7y6h3rlrk6sbctzxm4bg/app.bsky.feed.post/3myie26hr262f|jaredspurgeon|active|return",
    "at": "2026-10-22T19:02:11.000Z",
@@ -2269,6 +2256,45 @@
    "kind": "status",
    "confidence": 0.8,
    "text": "Chris Tanev is scratched tonight by the #leafs due to \"planned maintenance.\"\n\nLoad management strikes again"
+  },
+  {
+   "id": "at://did:plc:knaj2vcp4x6t7hr7ewd6e3uz/app.bsky.feed.post/3n24ulzrhkh2l|coltonsissons|out|status",
+   "at": "2026-11-12T16:16:56.000Z",
+   "seen": "2026-11-12T16:36:25.115Z",
+   "handle": "dfotoronto.bsky.social",
+   "post": "at://did:plc:knaj2vcp4x6t7hr7ewd6e3uz/app.bsky.feed.post/3n24ulzrhkh2l",
+   "player": "Colton Sissons",
+   "team": "TOR",
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.9,
+   "text": "Maple Leafs recall Brendan Brisson from Toronto Marlies, place Colton Sissons on IR"
+  },
+  {
+   "id": "at://did:plc:knaj2vcp4x6t7hr7ewd6e3uz/app.bsky.feed.post/3n24v3nzr6h2l|christanev|out|status",
+   "at": "2026-11-12T16:25:41.000Z",
+   "seen": "2026-11-12T16:36:25.115Z",
+   "handle": "dfotoronto.bsky.social",
+   "post": "at://did:plc:knaj2vcp4x6t7hr7ewd6e3uz/app.bsky.feed.post/3n24v3nzr6h2l",
+   "player": "Chris Tanev",
+   "team": "TOR",
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.85,
+   "text": "Maple Leafs lineup news: Chris Tanev out due to planned maintenance, Cole McWard in vs. Wild"
+  },
+  {
+   "id": "at://did:plc:knaj2vcp4x6t7hr7ewd6e3uz/app.bsky.feed.post/3n24v3nzr6h2l|colemcward|active|starting",
+   "at": "2026-11-12T16:25:41.000Z",
+   "seen": "2026-11-12T16:36:25.115Z",
+   "handle": "dfotoronto.bsky.social",
+   "post": "at://did:plc:knaj2vcp4x6t7hr7ewd6e3uz/app.bsky.feed.post/3n24v3nzr6h2l",
+   "player": "Cole McWard",
+   "team": "TOR",
+   "status": "active",
+   "kind": "starting",
+   "confidence": 0.8,
+   "text": "Maple Leafs lineup news: Chris Tanev out due to planned maintenance, Cole McWard in vs. Wild"
   }
  ]
 }

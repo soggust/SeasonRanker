@@ -11,32 +11,6 @@
  },
  "claims": [
   {
-   "id": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3myi3kqnwva27|jeremiyahlove|out|status",
-   "at": "2026-10-22T16:30:23.000Z",
-   "seen": "2026-10-22T16:38:01.289Z",
-   "handle": "rotoworld-fb.bsky.social",
-   "post": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3myi3kqnwva27",
-   "player": "Jeremiyah Love",
-   "team": null,
-   "status": "out",
-   "kind": "status",
-   "confidence": 0.85,
-   "text": "Jeremiyah Love (ankle) not expected to play vs DEN"
-  },
-  {
-   "id": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3myi3pxnza72x|matthewgolden|none|status",
-   "at": "2026-10-22T16:33:19.000Z",
-   "seen": "2026-10-22T16:38:01.289Z",
-   "handle": "rotowirenfl.bsky.social",
-   "post": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3myi3pxnza72x",
-   "player": "Matthew Golden",
-   "team": null,
-   "status": "none",
-   "kind": "status",
-   "confidence": 0.3,
-   "text": "Matthew Golden: Coach not worried about shoulder \n\n https://www.rotowire.com/football/player/matthew-golden-18500"
-  },
-  {
    "id": "at://did:plc:fuqjc7x4gxvnwzksnlxwbe4x/app.bsky.feed.post/3myi4sygdbk2n|joshsimmons|out|status",
    "at": "2026-10-22T16:52:54.259Z",
    "seen": "2026-10-22T16:59:19.072Z",
