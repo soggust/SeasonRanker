@@ -7,35 +7,9 @@
   "insidenflnews.bsky.social": "2026-11-12T14:41:34.431Z",
   "nflnewsposter.bsky.social": "2026-11-12T05:56:25.896Z",
   "rotoworld-fb.bsky.social": "2026-11-12T17:47:38.000Z",
-  "rotowirenfl.bsky.social": "2026-11-12T17:32:57.000Z"
+  "rotowirenfl.bsky.social": "2026-11-12T18:16:56.000Z"
  },
  "claims": [
-  {
-   "id": "at://did:plc:fuqjc7x4gxvnwzksnlxwbe4x/app.bsky.feed.post/3myib5xcduc2r|elijaharroyo|out|status",
-   "at": "2026-10-22T18:10:37.144Z",
-   "seen": "2026-10-22T18:25:58.936Z",
-   "handle": "nflnewsposter.bsky.social",
-   "post": "at://did:plc:fuqjc7x4gxvnwzksnlxwbe4x/app.bsky.feed.post/3myib5xcduc2r",
-   "player": "Elijah Arroyo",
-   "team": "SEA",
-   "status": "out",
-   "kind": "status",
-   "confidence": 0.88,
-   "text": "[Schefter] Seahawks TE Elijah Arroyo is undergoing shoulder surgery today and will miss the rest of the season. twitter.com/adamschefter..."
-  },
-  {
-   "id": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3myibdekkih2l|zachcharbonnet|active|return",
-   "at": "2026-10-22T18:13:38.000Z",
-   "seen": "2026-10-22T18:25:58.936Z",
-   "handle": "rotoworld-fb.bsky.social",
-   "post": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3myibdekkih2l",
-   "player": "Zach Charbonnet",
-   "team": "SEA",
-   "status": "active",
-   "kind": "return",
-   "confidence": 0.94,
-   "text": "Seahawks activate Zach Charbonnet (knee) from PUP"
-  },
   {
    "id": "at://did:plc:hlvr2omhnmvdmfnvmcuhyevz/app.bsky.feed.post/3myicga6t422v|joshsimmons|out|status",
    "at": "2026-10-22T18:33:08.647Z",

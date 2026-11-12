@@ -20095,6 +20095,11 @@
    "espn": {
     "seen": "2026-11-12T04:30:45.372Z",
     "own": "2026-11-10T21:48:00.000Z"
+   },
+   "bluesky": {
+    "seen": "2026-11-12T18:09:15.542Z",
+    "own": "2026-11-12T18:05:32.000Z",
+    "why": "@rotowirenba.bsky.social: Scottie Barnes: Ruled out Thursday \n\n https://www.roto"
    }
   },
   "401909976|natebittle|out": {
@@ -20118,6 +20123,23 @@
    "sleeper": {
     "seen": "2026-11-11T21:13:53.504Z",
     "own": "2026-11-11T20:15:27.468Z"
+   },
+   "athlete": "4431684",
+   "espn": {
+    "seen": "2026-11-12T18:28:37.855Z",
+    "own": "2026-11-12T18:09:00.000Z"
+   }
+  },
+  "401909976|lebronjames|out": {
+   "game": "401909976",
+   "start": "2026-11-13T00:00Z",
+   "team": "20",
+   "name": "LeBron James",
+   "status": "out",
+   "athlete": "1966",
+   "espn": {
+    "seen": "2026-11-12T18:28:37.855Z",
+    "own": "2026-11-12T18:07:00.000Z"
    }
   }
  }
