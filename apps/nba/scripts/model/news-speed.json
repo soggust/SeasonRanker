@@ -19323,6 +19323,54 @@
     "own": "2026-11-11T22:13:37.000Z",
     "why": "@rotowirenba.bsky.social: Dereck Lively: Still out Thursday \n\n https://www.rotow"
    }
+  },
+  "401909969|dailynswain|q": {
+   "game": "401909969",
+   "start": "2026-11-12T01:00Z",
+   "team": "4",
+   "name": "Dailyn Swain",
+   "status": "q",
+   "athlete": "4848625",
+   "espn": {
+    "seen": "2026-11-12T00:00:54.216Z",
+    "own": "2026-11-11T23:28:00.000Z"
+   }
+  },
+  "401909969|normanpowell|out": {
+   "game": "401909969",
+   "start": "2026-11-12T01:00Z",
+   "team": "4",
+   "name": "Norman Powell",
+   "status": "out",
+   "athlete": "2595516",
+   "espn": {
+    "seen": "2026-11-12T00:00:54.216Z",
+    "own": "2026-11-11T23:27:00.000Z"
+   }
+  },
+  "401909969|devinvassell|out": {
+   "game": "401909969",
+   "start": "2026-11-12T01:00Z",
+   "team": "24",
+   "name": "Devin Vassell",
+   "status": "out",
+   "athlete": "4395630",
+   "espn": {
+    "seen": "2026-11-12T00:00:54.216Z",
+    "own": "2026-11-11T23:26:00.000Z"
+   }
+  },
+  "401909972|treymurphy|out": {
+   "game": "401909972",
+   "start": "2026-11-12T01:00Z",
+   "team": "3",
+   "name": "Trey Murphy III",
+   "status": "out",
+   "athlete": "4397688",
+   "espn": {
+    "seen": "2026-11-12T00:00:54.216Z",
+    "own": "2026-11-11T23:47:00.000Z"
+   }
   }
  }
 }
