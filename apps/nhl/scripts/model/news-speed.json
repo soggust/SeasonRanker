@@ -8185,6 +8185,11 @@
    "espn": {
     "seen": "2026-11-11T16:34:51.817Z",
     "own": "2026-11-02T17:29:00.000Z"
+   },
+   "bluesky": {
+    "seen": "2026-11-12T22:14:58.283Z",
+    "own": "2026-11-12T21:50:07.000Z",
+    "why": "@dailyfaceoff.bsky.social: Sabres place Konsta Helenius on injured reserve, acti"
    }
   },
   "401892702|justindanforth|out": {
@@ -8887,6 +8892,18 @@
    "espn": {
     "seen": "2026-11-12T20:19:52.772Z",
     "own": "2026-11-12T20:04:00.000Z"
+   }
+  },
+  "401892705|pageau|out": {
+   "game": "401892705",
+   "start": "2026-11-13T03:00Z",
+   "team": "12",
+   "name": "Pageau",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-12T22:14:58.283Z",
+    "own": "2026-11-12T21:09:20.000Z",
+    "why": "@dailyfaceoff.bsky.social: Islanders’ Pageau out with lower-body injury, Maccell"
    }
   }
  }

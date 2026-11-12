@@ -1,8 +1,8 @@
 {
  "sport": "nba",
  "cursor": {
-  "rotowirenba.bsky.social": "2026-11-12T22:12:36.000Z",
-  "insidenbanews.bsky.social": "2026-11-08T18:11:49.382Z",
+  "rotowirenba.bsky.social": "2026-11-12T23:07:16.000Z",
+  "insidenbanews.bsky.social": "2026-11-12T22:42:56.875Z",
   "shamsbot.bsky.social": "2026-11-08T18:05:20.000Z"
  },
  "claims": [
@@ -9690,6 +9690,71 @@
    "kind": "status",
    "confidence": 0.95,
    "text": "Myles Turner: Cleared for Friday \n\n https://www.rotowire.com/basketball/player/myles-turner-3725"
+  },
+  {
+   "id": "at://did:plc:ykcnnf6kqnn3lasmobrczoem/app.bsky.feed.post/3n25ivrnpws2t|calebwilson|out|status",
+   "at": "2026-11-12T22:20:18.864Z",
+   "seen": "2026-11-12T23:14:54.732Z",
+   "handle": "insidenbanews.bsky.social",
+   "post": "at://did:plc:ykcnnf6kqnn3lasmobrczoem/app.bsky.feed.post/3n25ivrnpws2t",
+   "player": "Caleb Wilson",
+   "team": null,
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.95,
+   "text": "Shams: Caleb Wilson will undergo surgery for fractured hand and miss 4-6 weeks."
+  },
+  {
+   "id": "at://did:plc:ykcnnf6kqnn3lasmobrczoem/app.bsky.feed.post/3n25k6aqwkk2t|marcussmart|out|status",
+   "at": "2026-11-12T22:42:56.875Z",
+   "seen": "2026-11-12T23:14:54.732Z",
+   "handle": "insidenbanews.bsky.social",
+   "post": "at://did:plc:ykcnnf6kqnn3lasmobrczoem/app.bsky.feed.post/3n25k6aqwkk2t",
+   "player": "Marcus Smart",
+   "team": null,
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.95,
+   "text": "Shams: Marcus Smart suspended three games for punching Charles Bassey."
+  },
+  {
+   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3n25lbtdo3i2m|aaronnesmith|questionable|status",
+   "at": "2026-11-12T23:02:50.000Z",
+   "seen": "2026-11-12T23:14:54.732Z",
+   "handle": "rotowirenba.bsky.social",
+   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3n25lbtdo3i2m",
+   "player": "Aaron Nesmith",
+   "team": null,
+   "status": "questionable",
+   "kind": "status",
+   "confidence": 0.9,
+   "text": "Aaron Nesmith: Tagged questionable for Friday \n\n https://www.rotowire.com/basketball/player/aaron-nesmith-5120"
+  },
+  {
+   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3n25lg6q4i52l|deaaronfox|questionable|status",
+   "at": "2026-11-12T23:05:16.000Z",
+   "seen": "2026-11-12T23:14:54.732Z",
+   "handle": "rotowirenba.bsky.social",
+   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3n25lg6q4i52l",
+   "player": "De'Aaron Fox",
+   "team": null,
+   "status": "questionable",
+   "kind": "status",
+   "confidence": 0.9,
+   "text": "De'Aaron Fox: Listed questionable for Friday \n\n https://www.rotowire.com/basketball/player/deaaron-fox-4116"
+  },
+  {
+   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3n25ljravsq27|devinvassell|questionable|status",
+   "at": "2026-11-12T23:07:16.000Z",
+   "seen": "2026-11-12T23:14:54.732Z",
+   "handle": "rotowirenba.bsky.social",
+   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3n25ljravsq27",
+   "player": "Devin Vassell",
+   "team": null,
+   "status": "questionable",
+   "kind": "status",
+   "confidence": 0.9,
+   "text": "Devin Vassell: Questionable for Friday \n\n https://www.rotowire.com/basketball/player/devin-vassell-5113"
   }
  ]
 }
