@@ -5,24 +5,11 @@
   "rapsheet.bsky.social": "2026-11-10T21:02:04.176Z",
   "nflnewsreposterbot.bsky.social": "2026-11-10T18:38:15.366Z",
   "insidenflnews.bsky.social": "2026-11-11T22:43:15.247Z",
-  "nflnewsposter.bsky.social": "2026-11-12T02:07:04.957Z",
+  "nflnewsposter.bsky.social": "2026-11-12T02:17:46.743Z",
   "rotoworld-fb.bsky.social": "2026-11-12T00:34:41.000Z",
   "rotowirenfl.bsky.social": "2026-11-12T00:10:03.000Z"
  },
  "claims": [
-  {
-   "id": "at://did:plc:qre6zxbmr3ixhdmgsgdretb5/app.bsky.feed.post/3myglvtu2os2h|jjmccarthy|active|starting",
-   "at": "2026-10-22T02:17:36.696Z",
-   "seen": "2026-10-22T02:43:18.686Z",
-   "handle": "adamscheftermirror.bsky.social",
-   "post": "at://did:plc:qre6zxbmr3ixhdmgsgdretb5/app.bsky.feed.post/3myglvtu2os2h",
-   "player": "J.J. McCarthy",
-   "team": "NYG",
-   "status": "active",
-   "kind": "starting",
-   "confidence": 0.85,
-   "text": "More about the New York Giants turning to J.J. McCarthy as their starting quarterback for Sunday’s game against the Houston Texans, via @JordanRaanan:\n\nOriginal post"
-  },
   {
    "id": "at://did:plc:rx22hq465sfe5g2qyyf5gzu2/app.bsky.feed.post/3myhrofn5rc2v|saquonbarkley|active|status",
    "at": "2026-10-22T13:33:29.177Z",
