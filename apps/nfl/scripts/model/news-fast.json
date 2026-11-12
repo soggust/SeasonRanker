@@ -7,22 +7,9 @@
   "insidenflnews.bsky.social": "2026-11-12T14:41:34.431Z",
   "nflnewsposter.bsky.social": "2026-11-12T05:56:25.896Z",
   "rotoworld-fb.bsky.social": "2026-11-12T13:28:33.000Z",
-  "rotowirenfl.bsky.social": "2026-11-12T16:12:30.000Z"
+  "rotowirenfl.bsky.social": "2026-11-12T16:47:36.000Z"
  },
  "claims": [
-  {
-   "id": "at://did:plc:fuqjc7x4gxvnwzksnlxwbe4x/app.bsky.feed.post/3myi4sygdbk2n|joshsimmons|out|status",
-   "at": "2026-10-22T16:52:54.259Z",
-   "seen": "2026-10-22T16:59:19.072Z",
-   "handle": "nflnewsposter.bsky.social",
-   "post": "at://did:plc:fuqjc7x4gxvnwzksnlxwbe4x/app.bsky.feed.post/3myi4sygdbk2n",
-   "player": "Josh Simmons",
-   "team": "KC",
-   "status": "out",
-   "kind": "status",
-   "confidence": 0.9,
-   "text": "[Derrick] Rick Burkholder, Chiefs VP of sports medicine, says LT Josh Simmons will go on injured reserve “to return to full function.” He says he has plateaued with his current rehab and needs more ti"
-  },
   {
    "id": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3myi5qpq23o2p|lamarjackson|limited|status",
    "at": "2026-10-22T17:09:31.000Z",

@@ -4,8 +4,8 @@
   "johnston-bot.bsky.social": "2026-11-12T16:02:25.547Z",
   "notfriedgehnic.bsky.social": "2026-11-11T19:05:59.817Z",
   "dailyfaceoff.bsky.social": "2026-11-12T16:35:02.000Z",
-  "dfotoronto.bsky.social": "2026-11-12T16:25:41.000Z",
-  "marklazerus.bsky.social": "2026-11-12T16:09:18.885Z"
+  "dfotoronto.bsky.social": "2026-11-12T16:52:28.000Z",
+  "marklazerus.bsky.social": "2026-11-12T16:42:52.678Z"
  },
  "claims": [
   {
@@ -2295,6 +2295,32 @@
    "kind": "starting",
    "confidence": 0.8,
    "text": "Maple Leafs lineup news: Chris Tanev out due to planned maintenance, Cole McWard in vs. Wild"
+  },
+  {
+   "id": "at://did:plc:54vdi5eoabhod2vumsbcpi7g/app.bsky.feed.post/3n24w2ff6vk2h|patrickkane|active|return",
+   "at": "2026-11-12T16:42:52.678Z",
+   "seen": "2026-11-12T16:56:34.666Z",
+   "handle": "marklazerus.bsky.social",
+   "post": "at://did:plc:54vdi5eoabhod2vumsbcpi7g/app.bsky.feed.post/3n24w2ff6vk2h",
+   "player": "Patrick Kane",
+   "team": "CHI",
+   "status": "active",
+   "kind": "return",
+   "confidence": 0.6,
+   "text": "Patrick Kane is \"probable\" to return tonight, per Jeff Blashill. Teuvo Teräväinen will come out of the lineup if he does. Sounds unlikely that Kane will be with Bedard and Kantserov, however."
+  },
+  {
+   "id": "at://did:plc:54vdi5eoabhod2vumsbcpi7g/app.bsky.feed.post/3n24w2ff6vk2h|teuvoteravainen|none|benched",
+   "at": "2026-11-12T16:42:52.678Z",
+   "seen": "2026-11-12T16:56:34.666Z",
+   "handle": "marklazerus.bsky.social",
+   "post": "at://did:plc:54vdi5eoabhod2vumsbcpi7g/app.bsky.feed.post/3n24w2ff6vk2h",
+   "player": "Teuvo Teräväinen",
+   "team": "CHI",
+   "status": "none",
+   "kind": "benched",
+   "confidence": 0.3,
+   "text": "Patrick Kane is \"probable\" to return tonight, per Jeff Blashill. Teuvo Teräväinen will come out of the lineup if he does. Sounds unlikely that Kane will be with Bedard and Kantserov, however."
   }
  ]
 }
