@@ -1,37 +1,11 @@
 {
  "sport": "nba",
  "cursor": {
-  "rotowirenba.bsky.social": "2026-11-12T18:54:41.000Z",
+  "rotowirenba.bsky.social": "2026-11-12T21:05:05.000Z",
   "insidenbanews.bsky.social": "2026-11-08T18:11:49.382Z",
   "shamsbot.bsky.social": "2026-11-08T18:05:20.000Z"
  },
  "claims": [
-  {
-   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3myikw3f6qf27|konknueppel|out|status",
-   "at": "2026-10-22T21:05:10.000Z",
-   "seen": "2026-10-22T21:10:54.488Z",
-   "handle": "rotowirenba.bsky.social",
-   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3myikw3f6qf27",
-   "player": "Kon Knueppel",
-   "team": null,
-   "status": "out",
-   "kind": "status",
-   "confidence": 0.9,
-   "text": "Kon Knueppel: Still out with hamstring strain \n\n https://www.rotowire.com/basketball/player/kon-knueppel-6540"
-  },
-  {
-   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3myil2emdeq2e|cobywhite|out|status",
-   "at": "2026-10-22T21:07:34.000Z",
-   "seen": "2026-10-22T21:10:54.488Z",
-   "handle": "rotowirenba.bsky.social",
-   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3myil2emdeq2e",
-   "player": "Coby White",
-   "team": null,
-   "status": "out",
-   "kind": "status",
-   "confidence": 0.85,
-   "text": "Coby White: Still sidelined with calf strain \n\n https://www.rotowire.com/basketball/player/coby-white-4801"
-  },
   {
    "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3myio74g45n2v|tobiasharris|out|status",
    "at": "2026-10-22T22:03:54.000Z",
@@ -9638,6 +9612,32 @@
    "kind": "status",
    "confidence": 0.4,
    "text": "Pelle Larsson: Dealing with illness \n\n https://www.rotowire.com/basketball/player/pelle-larsson-6013"
+  },
+  {
+   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3n25dsfd7qq2p|treymurphy|doubtful|status",
+   "at": "2026-11-12T20:48:56.000Z",
+   "seen": "2026-11-12T21:08:23.299Z",
+   "handle": "rotowirenba.bsky.social",
+   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3n25dsfd7qq2p",
+   "player": "Trey Murphy",
+   "team": null,
+   "status": "doubtful",
+   "kind": "status",
+   "confidence": 0.9,
+   "text": "Trey Murphy: Doubtful for Friday \n\n https://www.rotowire.com/basketball/player/trey-murphy-5401"
+  },
+  {
+   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3n25dvrvy4k2m|yvesmissi|doubtful|status",
+   "at": "2026-11-12T20:50:50.000Z",
+   "seen": "2026-11-12T21:08:23.299Z",
+   "handle": "rotowirenba.bsky.social",
+   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3n25dvrvy4k2m",
+   "player": "Yves Missi",
+   "team": null,
+   "status": "doubtful",
+   "kind": "status",
+   "confidence": 0.75,
+   "text": "Yves Missi: Unlikely to play Friday \n\n https://www.rotowire.com/basketball/player/yves-missi-6268"
   }
  ]
 }
