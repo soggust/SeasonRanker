@@ -1,7 +1,7 @@
 {
  "sport": "nba",
  "cursor": {
-  "rotowirenba.bsky.social": "2026-11-12T03:14:48.000Z",
+  "rotowirenba.bsky.social": "2026-11-12T03:51:29.000Z",
   "insidenbanews.bsky.social": "2026-11-08T18:11:49.382Z",
   "shamsbot.bsky.social": "2026-11-08T18:05:20.000Z"
  },
@@ -9716,6 +9716,19 @@
    "kind": "status",
    "confidence": 0.85,
    "text": "Austin Reaves: Won't return Wednesday \n\n https://www.rotowire.com/basketball/player/austin-reaves-5334"
+  },
+  {
+   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3n23j5fmfis2y|stephencurry|out|status",
+   "at": "2026-11-12T03:19:15.000Z",
+   "seen": "2026-11-12T03:57:58.366Z",
+   "handle": "rotowirenba.bsky.social",
+   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3n23j5fmfis2y",
+   "player": "Stephen Curry",
+   "team": "GSW",
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.85,
+   "text": "Stephen Curry: Won't return vs. Houston \n\n https://www.rotowire.com/basketball/player/stephen-curry-3014"
   }
  ]
 }
