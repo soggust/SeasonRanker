@@ -9,19 +9,6 @@
  },
  "claims": [
   {
-   "id": "at://did:plc:3uus7y6h3rlrk6sbctzxm4bg/app.bsky.feed.post/3myie26hr262f|jaredspurgeon|active|return",
-   "at": "2026-10-22T19:02:11.000Z",
-   "seen": "2026-10-22T19:10:27.369Z",
-   "handle": "dailyfaceoff.bsky.social",
-   "post": "at://did:plc:3uus7y6h3rlrk6sbctzxm4bg/app.bsky.feed.post/3myie26hr262f",
-   "player": "Jared Spurgeon",
-   "team": "MIN",
-   "status": "active",
-   "kind": "return",
-   "confidence": 0.95,
-   "text": "Wild’s Jared Spurgeon returns after four-game absence"
-  },
-  {
    "id": "at://did:plc:3uus7y6h3rlrk6sbctzxm4bg/app.bsky.feed.post/3myif2qrhfc2q|alexwennberg|out|status",
    "at": "2026-10-22T19:20:24.000Z",
    "seen": "2026-10-22T19:31:22.997Z",
