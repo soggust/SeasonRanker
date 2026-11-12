@@ -1,7 +1,7 @@
 {
  "sport": "nfl",
  "cursor": {
-  "adamscheftermirror.bsky.social": "2026-11-12T09:05:25.258Z",
+  "adamscheftermirror.bsky.social": "2026-11-12T10:35:24.399Z",
   "rapsheet.bsky.social": "2026-11-10T21:02:04.176Z",
   "nflnewsreposterbot.bsky.social": "2026-11-10T18:38:15.366Z",
   "insidenflnews.bsky.social": "2026-11-12T10:07:47.154Z",
@@ -18573,6 +18573,19 @@
    "kind": "status",
    "confidence": 0.4,
    "text": "Jakobi Meyers (ankle) DNP Wednesday"
+  },
+  {
+   "id": "at://did:plc:qre6zxbmr3ixhdmgsgdretb5/app.bsky.feed.post/3n24bjclspl2z|davanteadams|out|return",
+   "at": "2026-11-12T10:35:24.399Z",
+   "seen": "2026-11-12T10:46:24.208Z",
+   "handle": "adamscheftermirror.bsky.social",
+   "post": "at://did:plc:qre6zxbmr3ixhdmgsgdretb5/app.bsky.feed.post/3n24bjclspl2z",
+   "player": "Davante Adams",
+   "team": "LAR",
+   "status": "out",
+   "kind": "return",
+   "confidence": 0.5,
+   "text": "Sean McVay said that WR Davante Adams returning after the Rams host the Green Bay Packers in Week 12 is a “realistic timeline for him.” Story via @sarahbarshop:\n\nOriginal post"
   }
  ]
 }
