@@ -1691,7 +1691,7 @@
 {"id":"401892692","date":"2026-11-12T02:00Z","season":2027,"type":2,"home":"6","away":"15","homeAbbr":"EDM","awayAbbr":"PHI","neutral":false,"final":true,"hs":3,"as":2,"venue":"Edmonton|AB|Canada","indoor":true},
 {"id":"401892693","date":"2026-11-12T02:30Z","season":2027,"type":2,"home":"37","away":"129764","homeAbbr":"VGK","awayAbbr":"UTA","neutral":false,"final":true,"hs":5,"as":3,"venue":"Las Vegas|NV|USA","indoor":true},
 {"id":"401892694","date":"2026-11-12T03:00Z","season":2027,"type":2,"home":"25","away":"27","homeAbbr":"ANA","awayAbbr":"NSH","neutral":false,"final":true,"hs":2,"as":4,"venue":"Anaheim|CA|USA","indoor":true},
-{"id":"401892695","date":"2026-11-12T03:00Z","season":2027,"type":2,"home":"18","away":"16","homeAbbr":"SJ","awayAbbr":"PIT","neutral":false,"final":false,"hs":null,"as":null,"venue":"San Jose|CA|USA","indoor":true},
+{"id":"401892695","date":"2026-11-12T03:00Z","season":2027,"type":2,"home":"18","away":"16","homeAbbr":"SJ","awayAbbr":"PIT","neutral":false,"final":true,"hs":2,"as":3,"venue":"San Jose|CA|USA","indoor":true},
 {"id":"401891808","date":"2026-11-12T17:00Z","season":2027,"type":2,"home":"124292","away":"7","homeAbbr":"SEA","awayAbbr":"CAR","neutral":true,"final":false,"hs":null,"as":null,"venue":"Helsinki||Finland","indoor":true},
 {"id":"401892696","date":"2026-11-13T00:00Z","season":2027,"type":2,"home":"1","away":"10","homeAbbr":"BOS","awayAbbr":"MTL","neutral":false,"final":false,"hs":null,"as":null,"venue":"Boston|MA|USA","indoor":true},
 {"id":"401892698","date":"2026-11-13T00:00Z","season":2027,"type":2,"home":"14","away":"17","homeAbbr":"OTT","awayAbbr":"COL","neutral":false,"final":false,"hs":null,"as":null,"venue":"Ottawa|ON|Canada","indoor":true},
