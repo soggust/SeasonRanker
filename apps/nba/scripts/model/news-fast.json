@@ -1,7 +1,7 @@
 {
  "sport": "nba",
  "cursor": {
-  "rotowirenba.bsky.social": "2026-11-12T18:07:38.000Z",
+  "rotowirenba.bsky.social": "2026-11-12T18:35:04.000Z",
   "insidenbanews.bsky.social": "2026-11-08T18:11:49.382Z",
   "shamsbot.bsky.social": "2026-11-08T18:05:20.000Z"
  },
@@ -9625,6 +9625,19 @@
    "kind": "status",
    "confidence": 0.93,
    "text": "LeBron James: Sitting out Thursday \n\n https://www.rotowire.com/basketball/player/lebron-james-2344"
+  },
+  {
+   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3n254cz7ho627|pellelarsson|none|status",
+   "at": "2026-11-12T18:35:04.000Z",
+   "seen": "2026-11-12T18:50:22.383Z",
+   "handle": "rotowirenba.bsky.social",
+   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3n254cz7ho627",
+   "player": "Pelle Larsson",
+   "team": null,
+   "status": "none",
+   "kind": "status",
+   "confidence": 0.4,
+   "text": "Pelle Larsson: Dealing with illness \n\n https://www.rotowire.com/basketball/player/pelle-larsson-6013"
   }
  ]
 }

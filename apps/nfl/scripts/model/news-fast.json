@@ -1,7 +1,7 @@
 {
  "sport": "nfl",
  "cursor": {
-  "adamscheftermirror.bsky.social": "2026-11-12T17:00:25.319Z",
+  "adamscheftermirror.bsky.social": "2026-11-12T18:30:28.112Z",
   "rapsheet.bsky.social": "2026-11-10T21:02:04.176Z",
   "nflnewsreposterbot.bsky.social": "2026-11-10T18:38:15.366Z",
   "insidenflnews.bsky.social": "2026-11-12T14:41:34.431Z",
@@ -10,45 +10,6 @@
   "rotowirenfl.bsky.social": "2026-11-12T18:16:56.000Z"
  },
  "claims": [
-  {
-   "id": "at://did:plc:hlvr2omhnmvdmfnvmcuhyevz/app.bsky.feed.post/3myicga6t422v|joshsimmons|out|status",
-   "at": "2026-10-22T18:33:08.647Z",
-   "seen": "2026-10-22T18:49:16.541Z",
-   "handle": "rapsheet.bsky.social",
-   "post": "at://did:plc:hlvr2omhnmvdmfnvmcuhyevz/app.bsky.feed.post/3myicga6t422v",
-   "player": "Josh Simmons",
-   "team": "KC",
-   "status": "out",
-   "kind": "status",
-   "confidence": 0.9,
-   "text": "Chiefs head athletic trainer Rick Burkholder tells reporters that LT Josh Simmons (bulging disc) is going to be placed on IR.  \n\nVia @bynatetaylor.bsky.social, Burkholder said: \"Worked his tail off & "
-  },
-  {
-   "id": "at://did:plc:hlvr2omhnmvdmfnvmcuhyevz/app.bsky.feed.post/3myicgpavuc2v|zachcharbonnet|active|status",
-   "at": "2026-10-22T18:33:24.445Z",
-   "seen": "2026-10-22T18:49:16.541Z",
-   "handle": "rapsheet.bsky.social",
-   "post": "at://did:plc:hlvr2omhnmvdmfnvmcuhyevz/app.bsky.feed.post/3myicgpavuc2v",
-   "player": "Zach Charbonnet",
-   "team": "SEA",
-   "status": "active",
-   "kind": "status",
-   "confidence": 0.9,
-   "text": "The Seahawks have activated RB Zach Charbonnet from the PUP list, a significant move."
-  },
-  {
-   "id": "at://did:plc:qre6zxbmr3ixhdmgsgdretb5/app.bsky.feed.post/3myicodmgey2h|joshsimmons|out|status",
-   "at": "2026-10-22T18:37:40.587Z",
-   "seen": "2026-10-22T18:49:16.541Z",
-   "handle": "adamscheftermirror.bsky.social",
-   "post": "at://did:plc:qre6zxbmr3ixhdmgsgdretb5/app.bsky.feed.post/3myicodmgey2h",
-   "player": "Josh Simmons",
-   "team": "KC",
-   "status": "out",
-   "kind": "status",
-   "confidence": 0.95,
-   "text": "Chiefs now have officially placed OT Josh Simmons on injured reserve.\n\nOriginal post"
-  },
   {
    "id": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3myiew33wrh2s|ricodowdle|limited|status",
    "at": "2026-10-22T19:17:47.000Z",
