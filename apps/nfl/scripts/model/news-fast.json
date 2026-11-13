@@ -1,28 +1,15 @@
 {
  "sport": "nfl",
  "cursor": {
-  "adamscheftermirror.bsky.social": "2026-11-13T12:40:34.837Z",
+  "adamscheftermirror.bsky.social": "2026-11-13T13:40:32.665Z",
   "rapsheet.bsky.social": "2026-11-13T00:15:15.301Z",
   "nflnewsreposterbot.bsky.social": "2026-11-10T18:38:15.366Z",
-  "insidenflnews.bsky.social": "2026-11-13T13:37:21.536Z",
+  "insidenflnews.bsky.social": "2026-11-13T13:37:51.401Z",
   "nflnewsposter.bsky.social": "2026-11-13T03:14:16.355Z",
   "rotoworld-fb.bsky.social": "2026-11-13T06:53:34.000Z",
-  "rotowirenfl.bsky.social": "2026-11-13T13:18:52.000Z"
+  "rotowirenfl.bsky.social": "2026-11-13T13:52:57.000Z"
  },
  "claims": [
-  {
-   "id": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3mykd6f5aun2v|pukanacua|active|status",
-   "at": "2026-10-23T13:51:58.000Z",
-   "seen": "2026-10-23T14:11:02.672Z",
-   "handle": "rotoworld-fb.bsky.social",
-   "post": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3mykd6f5aun2v",
-   "player": "Puka Nacua",
-   "team": "LAR",
-   "status": "active",
-   "kind": "status",
-   "confidence": 0.3,
-   "text": "Rap: Nacua calf injury not considered serious"
-  },
   {
    "id": "at://did:plc:mbr4badgf6yu56mquzackzew/app.bsky.feed.post/3mykebpevl222|bakermayfield|active|status",
    "at": "2026-10-23T14:11:43.763Z",
@@ -18300,6 +18287,32 @@
    "kind": "starting",
    "confidence": 0.7,
    "text": "Rap: Kirk Cousins expected to start for Vikings in Week 10."
+  },
+  {
+   "id": "at://did:plc:mbr4badgf6yu56mquzackzew/app.bsky.feed.post/3n2746htt422s|patrickmahomes|active|starting",
+   "at": "2026-11-13T13:37:51.401Z",
+   "seen": "2026-11-13T13:57:54.114Z",
+   "handle": "insidenflnews.bsky.social",
+   "post": "at://did:plc:mbr4badgf6yu56mquzackzew/app.bsky.feed.post/3n2746htt422s",
+   "player": "Patrick Mahomes",
+   "team": "KC",
+   "status": "active",
+   "kind": "starting",
+   "confidence": 0.85,
+   "text": "Rap: Patrick Mahomes (knee, right elbow) expected to start Week 10."
+  },
+  {
+   "id": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3n274zibzzf26|kirkcousins|active|starting",
+   "at": "2026-11-13T13:52:57.000Z",
+   "seen": "2026-11-13T13:57:54.114Z",
+   "handle": "rotowirenfl.bsky.social",
+   "post": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3n274zibzzf26",
+   "player": "Kirk Cousins",
+   "team": null,
+   "status": "active",
+   "kind": "starting",
+   "confidence": 0.8,
+   "text": "Kirk Cousins: Expected to start versus Green Bay \n\n https://www.rotowire.com/football/player/kirk-cousins-8057"
   }
  ]
 }

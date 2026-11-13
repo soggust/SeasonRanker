@@ -11676,6 +11676,11 @@
    "espn": {
     "seen": "2026-11-10T00:00:42.694Z",
     "own": "2026-11-09T21:28:00.000Z"
+   },
+   "bluesky": {
+    "seen": "2026-11-13T13:37:25.881Z",
+    "own": "2026-11-13T13:18:52.000Z",
+    "why": "@rotowirenfl.bsky.social: TreVeyon Henderson: Working toward return, but timetab"
    }
   },
   "401873053|benbrown|out": {
@@ -16372,6 +16377,90 @@
    "espn": {
     "seen": "2026-11-13T01:33:39.815Z",
     "own": "2026-11-13T01:07:00.000Z"
+   }
+  },
+  "401873058|treveyonhenderson|out": {
+   "game": "401873058",
+   "start": "2026-11-15T18:00Z",
+   "team": "1",
+   "name": "TreVeyon Henderson",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-13T13:37:25.881Z",
+    "own": "2026-11-13T13:18:52.000Z",
+    "why": "@rotowirenfl.bsky.social: TreVeyon Henderson: Working toward return, but timetab"
+   }
+  },
+  "401873056|treveyonhenderson|out": {
+   "game": "401873056",
+   "start": "2026-11-15T18:00Z",
+   "team": "5",
+   "name": "TreVeyon Henderson",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-13T13:37:25.881Z",
+    "own": "2026-11-13T13:18:52.000Z",
+    "why": "@rotowirenfl.bsky.social: TreVeyon Henderson: Working toward return, but timetab"
+   }
+  },
+  "401873060|treveyonhenderson|out": {
+   "game": "401873060",
+   "start": "2026-11-15T18:00Z",
+   "team": "9",
+   "name": "TreVeyon Henderson",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-13T13:37:25.881Z",
+    "own": "2026-11-13T13:18:52.000Z",
+    "why": "@rotowirenfl.bsky.social: TreVeyon Henderson: Working toward return, but timetab"
+   }
+  },
+  "401873057|treveyonhenderson|out": {
+   "game": "401873057",
+   "start": "2026-11-15T18:00Z",
+   "team": "10",
+   "name": "TreVeyon Henderson",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-13T13:37:25.881Z",
+    "own": "2026-11-13T13:18:52.000Z",
+    "why": "@rotowirenfl.bsky.social: TreVeyon Henderson: Working toward return, but timetab"
+   }
+  },
+  "401873059|treveyonhenderson|out": {
+   "game": "401873059",
+   "start": "2026-11-15T18:00Z",
+   "team": "11",
+   "name": "TreVeyon Henderson",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-13T13:37:25.881Z",
+    "own": "2026-11-13T13:18:52.000Z",
+    "why": "@rotowirenfl.bsky.social: TreVeyon Henderson: Working toward return, but timetab"
+   }
+  },
+  "401873055|treveyonhenderson|out": {
+   "game": "401873055",
+   "start": "2026-11-15T18:00Z",
+   "team": "18",
+   "name": "TreVeyon Henderson",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-13T13:37:25.881Z",
+    "own": "2026-11-13T13:18:52.000Z",
+    "why": "@rotowirenfl.bsky.social: TreVeyon Henderson: Working toward return, but timetab"
+   }
+  },
+  "401873054|treveyonhenderson|out": {
+   "game": "401873054",
+   "start": "2026-11-15T18:00Z",
+   "team": "20",
+   "name": "TreVeyon Henderson",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-13T13:37:25.881Z",
+    "own": "2026-11-13T13:18:52.000Z",
+    "why": "@rotowirenfl.bsky.social: TreVeyon Henderson: Working toward return, but timetab"
    }
   }
  }
