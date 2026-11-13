@@ -17481,6 +17481,11 @@
     "seen": "2026-11-12T21:08:23.299Z",
     "own": "2026-11-12T20:48:56.000Z",
     "why": "@rotowirenba.bsky.social: Trey Murphy: Doubtful for Friday \n\n https://www.rotowi"
+   },
+   "athlete": "4397688",
+   "espn": {
+    "seen": "2026-11-13T18:18:41.072Z",
+    "own": "2026-11-13T18:07:00.000Z"
    }
   },
   "401909300|calebwilson|out": {
@@ -18831,6 +18836,18 @@
     "seen": "2026-11-13T03:31:28.925Z",
     "own": "2026-11-13T03:04:38.000Z",
     "why": "@rotowirenba.bsky.social: Bub Carrington: Ruled out Thursday \n\n https://www.roto"
+   }
+  },
+  "401909300|dejountemurray|q": {
+   "game": "401909300",
+   "start": "2026-11-14T01:00Z",
+   "team": "3",
+   "name": "Dejounte Murray",
+   "status": "q",
+   "athlete": "3907497",
+   "espn": {
+    "seen": "2026-11-13T18:18:41.072Z",
+    "own": "2026-11-13T18:08:00.000Z"
    }
   }
  }
