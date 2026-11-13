@@ -1,7 +1,7 @@
 {
  "sport": "nba",
  "cursor": {
-  "rotowirenba.bsky.social": "2026-11-13T02:44:19.000Z",
+  "rotowirenba.bsky.social": "2026-11-13T03:28:14.000Z",
   "insidenbanews.bsky.social": "2026-11-13T00:32:39.398Z",
   "shamsbot.bsky.social": "2026-11-08T18:05:20.000Z"
  },
@@ -10093,6 +10093,19 @@
    "kind": "status",
    "confidence": 0.95,
    "text": "Ajay Mitchell: Questionable for Friday \n\n https://www.rotowire.com/basketball/player/ajay-mitchell-6289"
+  },
+  {
+   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3n25ys6zwut2o|bubcarrington|out|status",
+   "at": "2026-11-13T03:04:38.000Z",
+   "seen": "2026-11-13T03:31:28.925Z",
+   "handle": "rotowirenba.bsky.social",
+   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3n25ys6zwut2o",
+   "player": "Bub Carrington",
+   "team": null,
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.95,
+   "text": "Bub Carrington: Ruled out Thursday \n\n https://www.rotowire.com/basketball/player/bub-carrington-6270"
   }
  ]
 }

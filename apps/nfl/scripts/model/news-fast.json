@@ -4,25 +4,12 @@
   "adamscheftermirror.bsky.social": "2026-11-13T01:10:30.047Z",
   "rapsheet.bsky.social": "2026-11-13T00:15:15.301Z",
   "nflnewsreposterbot.bsky.social": "2026-11-10T18:38:15.366Z",
-  "insidenflnews.bsky.social": "2026-11-13T03:00:34.292Z",
-  "nflnewsposter.bsky.social": "2026-11-12T23:44:21.588Z",
+  "insidenflnews.bsky.social": "2026-11-13T03:30:41.087Z",
+  "nflnewsposter.bsky.social": "2026-11-13T03:14:16.355Z",
   "rotoworld-fb.bsky.social": "2026-11-13T02:07:53.000Z",
   "rotowirenfl.bsky.social": "2026-11-13T00:39:12.000Z"
  },
  "claims": [
-  {
-   "id": "at://did:plc:fuqjc7x4gxvnwzksnlxwbe4x/app.bsky.feed.post/3myj76zouwkg3|colekmet|out|status",
-   "at": "2026-10-23T03:08:05.466Z",
-   "seen": "2026-10-23T03:22:45.339Z",
-   "handle": "nflnewsposter.bsky.social",
-   "post": "at://did:plc:fuqjc7x4gxvnwzksnlxwbe4x/app.bsky.feed.post/3myj76zouwkg3",
-   "player": "Cole Kmet",
-   "team": "CHI",
-   "status": "out",
-   "kind": "status",
-   "confidence": 0.95,
-   "text": "[Bears] Bears TE Cole Kmet (Knee) has been ruled Out. twitter.com/BearsPR/stat..."
-  },
   {
    "id": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3myk75xxqjd2l|ricodowdle|questionable|status",
    "at": "2026-10-23T12:40:09.000Z",

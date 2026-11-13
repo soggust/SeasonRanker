@@ -3,37 +3,11 @@
  "cursor": {
   "johnston-bot.bsky.social": "2026-11-12T16:02:25.547Z",
   "notfriedgehnic.bsky.social": "2026-11-12T16:59:13.353Z",
-  "dailyfaceoff.bsky.social": "2026-11-13T02:45:57.000Z",
-  "dfotoronto.bsky.social": "2026-11-13T02:43:54.000Z",
+  "dailyfaceoff.bsky.social": "2026-11-13T03:18:03.000Z",
+  "dfotoronto.bsky.social": "2026-11-13T03:04:11.000Z",
   "marklazerus.bsky.social": "2026-11-13T01:33:14.446Z"
  },
  "claims": [
-  {
-   "id": "at://did:plc:knaj2vcp4x6t7hr7ewd6e3uz/app.bsky.feed.post/3myj75vgglb2e|marshallrifai|out|status",
-   "at": "2026-10-23T03:07:27.000Z",
-   "seen": "2026-10-23T03:22:45.339Z",
-   "handle": "dfotoronto.bsky.social",
-   "post": "at://did:plc:knaj2vcp4x6t7hr7ewd6e3uz/app.bsky.feed.post/3myj75vgglb2e",
-   "player": "Marshall Rifai",
-   "team": "TOR",
-   "status": "out",
-   "kind": "status",
-   "confidence": 0.95,
-   "text": "Maple Leafs to place Marshall Rifai on IR, week-to-week with lower-body injury"
-  },
-  {
-   "id": "at://did:plc:3uus7y6h3rlrk6sbctzxm4bg/app.bsky.feed.post/3myj7tu5bhp2j|marshallrifai|out|status",
-   "at": "2026-10-23T03:19:44.000Z",
-   "seen": "2026-10-23T03:22:45.339Z",
-   "handle": "dailyfaceoff.bsky.social",
-   "post": "at://did:plc:3uus7y6h3rlrk6sbctzxm4bg/app.bsky.feed.post/3myj7tu5bhp2j",
-   "player": "Marshall Rifai",
-   "team": "TOR",
-   "status": "out",
-   "kind": "status",
-   "confidence": 0.97,
-   "text": "Leafs’ Marshall Rifai placed on IR, week-to-week with lower-body injury"
-  },
   {
    "id": "at://did:plc:3uus7y6h3rlrk6sbctzxm4bg/app.bsky.feed.post/3myjkfg44h62i|mattiasekholm|out|status",
    "at": "2026-10-23T06:28:30.000Z",
@@ -2373,6 +2347,19 @@
    "kind": "status",
    "confidence": 0.95,
    "text": "Lightning’s Anthony Cirelli, Erik Cernak out vs. Blue Jackets"
+  },
+  {
+   "id": "at://did:plc:3uus7y6h3rlrk6sbctzxm4bg/app.bsky.feed.post/3n25zk7boq327|seanmonahan|none|status",
+   "at": "2026-11-13T03:18:03.000Z",
+   "seen": "2026-11-13T03:31:28.925Z",
+   "handle": "dailyfaceoff.bsky.social",
+   "post": "at://did:plc:3uus7y6h3rlrk6sbctzxm4bg/app.bsky.feed.post/3n25zk7boq327",
+   "player": "Sean Monahan",
+   "team": "CBJ",
+   "status": "none",
+   "kind": "status",
+   "confidence": 0.3,
+   "text": "Blue Jackets’ Sean Monahan leaves game with upper-body injury"
   }
  ]
 }
