@@ -1,24 +1,11 @@
 {
  "sport": "nba",
  "cursor": {
-  "rotowirenba.bsky.social": "2026-11-13T05:28:55.000Z",
+  "rotowirenba.bsky.social": "2026-11-13T17:08:16.000Z",
   "insidenbanews.bsky.social": "2026-11-13T00:32:39.398Z",
   "shamsbot.bsky.social": "2026-11-08T18:05:20.000Z"
  },
  "claims": [
-  {
-   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mykopyk6qa2z|joshgiddey|active|status",
-   "at": "2026-10-23T17:18:40.000Z",
-   "seen": "2026-10-23T22:50:14.417Z",
-   "handle": "rotowirenba.bsky.social",
-   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mykopyk6qa2z",
-   "player": "Josh Giddey",
-   "team": null,
-   "status": "active",
-   "kind": "status",
-   "confidence": 0.9,
-   "text": "Josh Giddey: Cleared to play Friday \n\n https://www.rotowire.com/basketball/player/josh-giddey-5366"
-  },
   {
    "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mykxh533vm24|brandinpodziemski|active|status",
    "at": "2026-10-23T19:54:46.000Z",
@@ -10093,6 +10080,19 @@
    "kind": "status",
    "confidence": 0.95,
    "text": "Bub Carrington: Ruled out Thursday \n\n https://www.rotowire.com/basketball/player/bub-carrington-6270"
+  },
+  {
+   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3n27hwpstjn2m|jalensuggs|questionable|status",
+   "at": "2026-11-13T17:08:16.000Z",
+   "seen": "2026-11-13T17:18:41.398Z",
+   "handle": "rotowirenba.bsky.social",
+   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3n27hwpstjn2m",
+   "player": "Jalen Suggs",
+   "team": null,
+   "status": "questionable",
+   "kind": "status",
+   "confidence": 0.95,
+   "text": "Jalen Suggs: Remains questionable Friday \n\n https://www.rotowire.com/basketball/player/jalen-suggs-5379"
   }
  ]
 }

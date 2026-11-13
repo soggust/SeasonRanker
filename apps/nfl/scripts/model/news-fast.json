@@ -1,80 +1,15 @@
 {
  "sport": "nfl",
  "cursor": {
-  "adamscheftermirror.bsky.social": "2026-11-13T16:00:34.431Z",
+  "adamscheftermirror.bsky.social": "2026-11-13T17:00:36.883Z",
   "rapsheet.bsky.social": "2026-11-13T16:47:11.751Z",
   "nflnewsreposterbot.bsky.social": "2026-11-10T18:38:15.366Z",
   "insidenflnews.bsky.social": "2026-11-13T16:50:12.210Z",
-  "nflnewsposter.bsky.social": "2026-11-13T15:37:53.529Z",
-  "rotoworld-fb.bsky.social": "2026-11-13T16:49:45.000Z",
-  "rotowirenfl.bsky.social": "2026-11-13T16:58:07.000Z"
+  "nflnewsposter.bsky.social": "2026-11-13T17:00:07.179Z",
+  "rotoworld-fb.bsky.social": "2026-11-13T17:12:14.000Z",
+  "rotowirenfl.bsky.social": "2026-11-13T17:10:54.000Z"
  },
  "claims": [
-  {
-   "id": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3myknte5bx323|buckyirving|active|status",
-   "at": "2026-10-23T17:02:39.000Z",
-   "seen": "2026-10-23T22:50:14.417Z",
-   "handle": "rotowirenfl.bsky.social",
-   "post": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3myknte5bx323",
-   "player": "Bucky Irving",
-   "team": "TB",
-   "status": "active",
-   "kind": "status",
-   "confidence": 0.8,
-   "text": "Bucky Irving: Avoids injury designation \n\n https://www.rotowire.com/football/player/bucky-irving-17784"
-  },
-  {
-   "id": "at://did:plc:mbr4badgf6yu56mquzackzew/app.bsky.feed.post/3mykobdtb7k24|brianrobinson|out|status",
-   "at": "2026-10-23T17:10:29.071Z",
-   "seen": "2026-10-23T22:50:14.417Z",
-   "handle": "insidenflnews.bsky.social",
-   "post": "at://did:plc:mbr4badgf6yu56mquzackzew/app.bsky.feed.post/3mykobdtb7k24",
-   "player": "Brian Robinson Jr.",
-   "team": "ATL",
-   "status": "out",
-   "kind": "status",
-   "confidence": 0.95,
-   "text": "Falcons RB Brian Robinson Jr. (hamstring) has been ruled out for Week 7."
-  },
-  {
-   "id": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3mykokl5nou24|brianrobinson|out|status",
-   "at": "2026-10-23T17:15:38.000Z",
-   "seen": "2026-10-23T22:50:14.417Z",
-   "handle": "rotowirenfl.bsky.social",
-   "post": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3mykokl5nou24",
-   "player": "Brian Robinson Jr.",
-   "team": "ATL",
-   "status": "out",
-   "kind": "status",
-   "confidence": 0.95,
-   "text": "Brian Robinson: Won't play in Week 7 \n\n https://www.rotowire.com/football/player/brian-robinson-15907"
-  },
-  {
-   "id": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3mykopbpgns2b|brianrobinson|out|status",
-   "at": "2026-10-23T17:18:16.000Z",
-   "seen": "2026-10-23T22:50:14.417Z",
-   "handle": "rotoworld-fb.bsky.social",
-   "post": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3mykopbpgns2b",
-   "player": "Brian Robinson Jr.",
-   "team": "ATL",
-   "status": "out",
-   "kind": "status",
-   "confidence": 0.95,
-   "text": "Brian Robinson (hamstring) out for Week 7"
-  },
-  {
-   "id": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3mykopcu4vn2l|emekaegbuka|out|status",
-   "at": "2026-10-23T17:18:17.000Z",
-   "seen": "2026-10-23T22:50:14.417Z",
-   "handle": "rotoworld-fb.bsky.social",
-   "post": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3mykopcu4vn2l",
-   "player": "Emeka Egbuka",
-   "team": "TB",
-   "status": "out",
-   "kind": "status",
-   "confidence": 0.95,
-   "text": "Update: Egbuka (concussion/foot) ruled out vs. Panthers"
-  },
   {
    "id": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3mykpykfr5h2s|jeremiyahlove|out|status",
    "at": "2026-10-23T17:41:21.000Z",
@@ -18079,6 +18014,84 @@
    "kind": "status",
    "confidence": 0.95,
    "text": "A.J. Brown: Listed as questionable to face Detroit \n\n https://www.rotowire.com/football/player/aj-brown-13432"
+  },
+  {
+   "id": "at://did:plc:qre6zxbmr3ixhdmgsgdretb5/app.bsky.feed.post/3n27hiztm3d24|ajbrown|questionable|status",
+   "at": "2026-11-13T17:00:36.883Z",
+   "seen": "2026-11-13T17:18:41.398Z",
+   "handle": "adamscheftermirror.bsky.social",
+   "post": "at://did:plc:qre6zxbmr3ixhdmgsgdretb5/app.bsky.feed.post/3n27hiztm3d24",
+   "player": "AJ Brown",
+   "team": "NE",
+   "status": "questionable",
+   "kind": "status",
+   "confidence": 0.95,
+   "text": "AJ Brown and Rhamondre Stevenson both are listed as questionable for Sunday’s game in Munich against the Lions.\n\nOriginal post [Injury Report Analysis: A.J. Brown, Rhamondre Stevenson among nine Patri"
+  },
+  {
+   "id": "at://did:plc:qre6zxbmr3ixhdmgsgdretb5/app.bsky.feed.post/3n27hiztm3d24|rhamondrestevenson|questionable|status",
+   "at": "2026-11-13T17:00:36.883Z",
+   "seen": "2026-11-13T17:18:41.398Z",
+   "handle": "adamscheftermirror.bsky.social",
+   "post": "at://did:plc:qre6zxbmr3ixhdmgsgdretb5/app.bsky.feed.post/3n27hiztm3d24",
+   "player": "Rhamondre Stevenson",
+   "team": "NE",
+   "status": "questionable",
+   "kind": "status",
+   "confidence": 0.95,
+   "text": "AJ Brown and Rhamondre Stevenson both are listed as questionable for Sunday’s game in Munich against the Lions.\n\nOriginal post [Injury Report Analysis: A.J. Brown, Rhamondre Stevenson among nine Patri"
+  },
+  {
+   "id": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3n27hnfdf2i2m|rhamondrestevenson|questionable|status",
+   "at": "2026-11-13T17:03:03.000Z",
+   "seen": "2026-11-13T17:18:41.398Z",
+   "handle": "rotoworld-fb.bsky.social",
+   "post": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3n27hnfdf2i2m",
+   "player": "Rhamondre Stevenson",
+   "team": "NE",
+   "status": "questionable",
+   "kind": "status",
+   "confidence": 0.95,
+   "text": "Stevenson (knee) officially questionable vs. Lions"
+  },
+  {
+   "id": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3n27hv3mutp2z|rhamondrestevenson|questionable|status",
+   "at": "2026-11-13T17:07:21.000Z",
+   "seen": "2026-11-13T17:18:41.398Z",
+   "handle": "rotowirenfl.bsky.social",
+   "post": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3n27hv3mutp2z",
+   "player": "Rhamondre Stevenson",
+   "team": "NE",
+   "status": "questionable",
+   "kind": "status",
+   "confidence": 0.95,
+   "text": "Rhamondre Stevenson: Listed questionable for Sunday \n\n https://www.rotowire.com/football/player/rhamondre-stevenson-15372"
+  },
+  {
+   "id": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3n27i3h26uf2f|denzelboston|limited|status",
+   "at": "2026-11-13T17:10:54.000Z",
+   "seen": "2026-11-13T17:18:41.398Z",
+   "handle": "rotowirenfl.bsky.social",
+   "post": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3n27i3h26uf2f",
+   "player": "Denzel Boston",
+   "team": null,
+   "status": "limited",
+   "kind": "status",
+   "confidence": 0.5,
+   "text": "Denzel Boston: Returns to practice Friday \n\n https://www.rotowire.com/football/player/denzel-boston-19298"
+  },
+  {
+   "id": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3n27i5stxym25|ajbrown|questionable|status",
+   "at": "2026-11-13T17:12:14.000Z",
+   "seen": "2026-11-13T17:18:41.398Z",
+   "handle": "rotoworld-fb.bsky.social",
+   "post": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3n27i5stxym25",
+   "player": "AJ Brown",
+   "team": "NE",
+   "status": "questionable",
+   "kind": "status",
+   "confidence": 0.95,
+   "text": "Patriots list A.J. Brown questionable for Week 10"
   }
  ]
 }
