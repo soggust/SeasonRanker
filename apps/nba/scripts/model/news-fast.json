@@ -1,7 +1,7 @@
 {
  "sport": "nba",
  "cursor": {
-  "rotowirenba.bsky.social": "2026-11-13T18:09:02.000Z",
+  "rotowirenba.bsky.social": "2026-11-13T18:24:10.000Z",
   "insidenbanews.bsky.social": "2026-11-13T00:32:39.398Z",
   "shamsbot.bsky.social": "2026-11-08T18:05:20.000Z"
  },
@@ -10106,6 +10106,45 @@
    "kind": "status",
    "confidence": 0.9,
    "text": "Trey Murphy: Won't play Friday \n\n https://www.rotowire.com/basketball/player/trey-murphy-5401"
+  },
+  {
+   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3n27lhbjfzo26|yvesmissi|out|status",
+   "at": "2026-11-13T18:11:12.000Z",
+   "seen": "2026-11-13T18:24:22.867Z",
+   "handle": "rotowirenba.bsky.social",
+   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3n27lhbjfzo26",
+   "player": "Yves Missi",
+   "team": null,
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.9,
+   "text": "Yves Missi: Ruled out Friday \n\n https://www.rotowire.com/basketball/player/yves-missi-6268"
+  },
+  {
+   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3n27lxoxbxj2m|pellelarsson|doubtful|status",
+   "at": "2026-11-13T18:20:23.000Z",
+   "seen": "2026-11-13T18:24:22.867Z",
+   "handle": "rotowirenba.bsky.social",
+   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3n27lxoxbxj2m",
+   "player": "Pelle Larsson",
+   "team": null,
+   "status": "doubtful",
+   "kind": "status",
+   "confidence": 0.9,
+   "text": "Pelle Larsson: Downgraded to doubtful \n\n https://www.rotowire.com/basketball/player/pelle-larsson-6013"
+  },
+  {
+   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3n27m6h4dqy2v|giannisantetokounmpo|active|status",
+   "at": "2026-11-13T18:24:10.000Z",
+   "seen": "2026-11-13T18:24:22.867Z",
+   "handle": "rotowirenba.bsky.social",
+   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3n27m6h4dqy2v",
+   "player": "Giannis Antetokounmpo",
+   "team": null,
+   "status": "active",
+   "kind": "status",
+   "confidence": 0.9,
+   "text": "Giannis Antetokounmpo: Will play Friday \n\n https://www.rotowire.com/basketball/player/giannis-antetokounmpo-3456"
   }
  ]
 }
