@@ -16766,6 +16766,198 @@
     "seen": "2026-11-12T23:12:33.979Z",
     "own": "2026-11-12T22:57:00.000Z"
    }
+  },
+  "401873052|jcdavis|out": {
+   "game": "401873052",
+   "start": "2026-11-13T01:15Z",
+   "team": "19",
+   "name": "J.C. Davis",
+   "status": "out",
+   "athlete": "5082353",
+   "espn": {
+    "seen": "2026-11-13T00:00:48.559Z",
+    "own": "2026-11-12T23:53:00.000Z"
+   }
+  },
+  "401873052|malikharrison|out": {
+   "game": "401873052",
+   "start": "2026-11-13T01:15Z",
+   "team": "19",
+   "name": "Malik Harrison",
+   "status": "out",
+   "athlete": "4040615",
+   "espn": {
+    "seen": "2026-11-13T00:00:48.559Z",
+    "own": "2026-11-12T23:53:00.000Z"
+   }
+  },
+  "401873052|paulsonadebo|out": {
+   "game": "401873052",
+   "start": "2026-11-13T01:15Z",
+   "team": "19",
+   "name": "Paulson Adebo",
+   "status": "out",
+   "athlete": "4242547",
+   "espn": {
+    "seen": "2026-11-13T00:00:48.559Z",
+    "own": "2026-11-12T23:53:00.000Z"
+   }
+  },
+  "401873052|davidmontgomery|q": {
+   "game": "401873052",
+   "start": "2026-11-13T01:15Z",
+   "team": "19",
+   "name": "David Montgomery",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-11-12T23:14:54.732Z",
+    "own": "2026-11-12T22:25:22.000Z",
+    "why": "@rotowirenfl.bsky.social: David Montgomery: Returns to limited practice Thursday"
+   }
+  },
+  "401873052|marvinharrison|out": {
+   "game": "401873052",
+   "start": "2026-11-13T01:15Z",
+   "team": "19",
+   "name": "Marvin Harrison",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-12T23:14:54.732Z",
+    "own": "2026-11-12T22:50:55.000Z",
+    "why": "@rotowirenfl.bsky.social: Marvin Harrison: Downgrades to 'DNP' Thursday \n\n https"
+   }
+  },
+  "401873052|rickybarber|out": {
+   "game": "401873052",
+   "start": "2026-11-13T01:15Z",
+   "team": "28",
+   "name": "Ricky Barber",
+   "status": "out",
+   "athlete": "4428343",
+   "espn": {
+    "seen": "2026-11-13T00:00:48.559Z",
+    "own": "2026-11-12T23:47:00.000Z"
+   }
+  },
+  "401873063|trentwilliams|q": {
+   "game": "401873063",
+   "start": "2026-11-15T21:25Z",
+   "team": "25",
+   "name": "Trent Williams",
+   "status": "q",
+   "athlete": "13241",
+   "espn": {
+    "seen": "2026-11-13T00:00:48.559Z",
+    "own": "2026-11-12T23:42:00.000Z"
+   }
+  },
+  "401873063|dregreenlaw|q": {
+   "game": "401873063",
+   "start": "2026-11-15T21:25Z",
+   "team": "25",
+   "name": "Dre Greenlaw",
+   "status": "q",
+   "athlete": "3916903",
+   "espn": {
+    "seen": "2026-11-13T00:00:48.559Z",
+    "own": "2026-11-12T02:20:00.000Z"
+   }
+  },
+  "401873065|olaivavegaioane|q": {
+   "game": "401873065",
+   "start": "2026-11-17T01:15Z",
+   "team": "33",
+   "name": "Olaivavega Ioane",
+   "status": "q",
+   "athlete": "4832793",
+   "espn": {
+    "seen": "2026-11-13T00:00:48.559Z",
+    "own": "2026-11-12T23:43:00.000Z"
+   }
+  },
+  "401873065|rashodbateman|q": {
+   "game": "401873065",
+   "start": "2026-11-17T01:15Z",
+   "team": "33",
+   "name": "Rashod Bateman",
+   "status": "q",
+   "athlete": "4360939",
+   "espn": {
+    "seen": "2026-11-13T00:00:48.559Z",
+    "own": "2026-11-12T23:42:00.000Z"
+   }
+  },
+  "401873065|rodneyshelley|q": {
+   "game": "401873065",
+   "start": "2026-11-17T01:15Z",
+   "team": "24",
+   "name": "Rodney Shelley",
+   "status": "q",
+   "athlete": "4838693",
+   "espn": {
+    "seen": "2026-11-13T00:00:48.559Z",
+    "own": "2026-11-12T23:42:00.000Z"
+   }
+  },
+  "401873065|camhart|q": {
+   "game": "401873065",
+   "start": "2026-11-17T01:15Z",
+   "team": "24",
+   "name": "Cam Hart",
+   "status": "q",
+   "athlete": "4427404",
+   "espn": {
+    "seen": "2026-11-13T00:00:48.559Z",
+    "own": "2026-11-12T23:42:00.000Z"
+   }
+  },
+  "401873065|bransontaylor|q": {
+   "game": "401873065",
+   "start": "2026-11-17T01:15Z",
+   "team": "24",
+   "name": "Branson Taylor",
+   "status": "q",
+   "athlete": "4433914",
+   "espn": {
+    "seen": "2026-11-13T00:00:48.559Z",
+    "own": "2026-11-12T23:42:00.000Z"
+   }
+  },
+  "401873065|alexharkey|q": {
+   "game": "401873065",
+   "start": "2026-11-17T01:15Z",
+   "team": "24",
+   "name": "Alex Harkey",
+   "status": "q",
+   "athlete": "5082660",
+   "espn": {
+    "seen": "2026-11-13T00:00:48.559Z",
+    "own": "2026-11-12T23:41:00.000Z"
+   }
+  },
+  "401873065|treharris|q": {
+   "game": "401873065",
+   "start": "2026-11-17T01:15Z",
+   "team": "24",
+   "name": "Tre' Harris",
+   "status": "q",
+   "athlete": "4686612",
+   "espn": {
+    "seen": "2026-11-13T00:00:48.559Z",
+    "own": "2026-11-12T23:41:00.000Z"
+   }
+  },
+  "401873065|keatonmitchell|q": {
+   "game": "401873065",
+   "start": "2026-11-17T01:15Z",
+   "team": "24",
+   "name": "Keaton Mitchell",
+   "status": "q",
+   "athlete": "4596334",
+   "espn": {
+    "seen": "2026-11-13T00:00:48.559Z",
+    "own": "2026-11-09T02:46:00.000Z"
+   }
   }
  }
 }
