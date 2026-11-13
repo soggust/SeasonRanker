@@ -3,104 +3,13 @@
  "cursor": {
   "adamscheftermirror.bsky.social": "2026-11-13T17:35:35.384Z",
   "rapsheet.bsky.social": "2026-11-13T16:47:11.751Z",
-  "nflnewsreposterbot.bsky.social": "2026-11-10T18:38:15.366Z",
+  "nflnewsreposterbot.bsky.social": "2026-11-13T18:01:20.702Z",
   "insidenflnews.bsky.social": "2026-11-13T16:50:12.210Z",
-  "nflnewsposter.bsky.social": "2026-11-13T17:00:07.179Z",
-  "rotoworld-fb.bsky.social": "2026-11-13T17:12:14.000Z",
+  "nflnewsposter.bsky.social": "2026-11-13T18:03:04.668Z",
+  "rotoworld-fb.bsky.social": "2026-11-13T18:01:14.000Z",
   "rotowirenfl.bsky.social": "2026-11-13T17:38:21.000Z"
  },
  "claims": [
-  {
-   "id": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3mykq7c46ot2r|jeremiyahlove|out|status",
-   "at": "2026-10-23T17:45:07.000Z",
-   "seen": "2026-10-23T22:50:14.417Z",
-   "handle": "rotoworld-fb.bsky.social",
-   "post": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3mykq7c46ot2r",
-   "player": "Jeremiyah Love",
-   "team": "ARI",
-   "status": "out",
-   "kind": "status",
-   "confidence": 0.95,
-   "text": "Jeremiyah Love (ankle) ruled out vs. Broncos"
-  },
-  {
-   "id": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3mykq7d6ani24|judkins|active|status",
-   "at": "2026-10-23T17:45:08.000Z",
-   "seen": "2026-10-23T22:50:14.417Z",
-   "handle": "rotoworld-fb.bsky.social",
-   "post": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3mykq7d6ani24",
-   "player": "Judkins",
-   "team": "CLE",
-   "status": "active",
-   "kind": "status",
-   "confidence": 0.8,
-   "text": "Judkins not on final injury report, Sampson questionable"
-  },
-  {
-   "id": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3mykq7d6ani24|sampson|questionable|status",
-   "at": "2026-10-23T17:45:08.000Z",
-   "seen": "2026-10-23T22:50:14.417Z",
-   "handle": "rotoworld-fb.bsky.social",
-   "post": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3mykq7d6ani24",
-   "player": "Sampson",
-   "team": null,
-   "status": "questionable",
-   "kind": "status",
-   "confidence": 0.85,
-   "text": "Judkins not on final injury report, Sampson questionable"
-  },
-  {
-   "id": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3mykq7earrp26|concepcion|active|status",
-   "at": "2026-10-23T17:45:09.000Z",
-   "seen": "2026-10-23T22:50:14.417Z",
-   "handle": "rotoworld-fb.bsky.social",
-   "post": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3mykq7earrp26",
-   "player": "Concepcion",
-   "team": null,
-   "status": "active",
-   "kind": "status",
-   "confidence": 0.8,
-   "text": "Concepcion and Boston clear injury report for Wk 7"
-  },
-  {
-   "id": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3mykq7earrp26|boston|active|status",
-   "at": "2026-10-23T17:45:09.000Z",
-   "seen": "2026-10-23T22:50:14.417Z",
-   "handle": "rotoworld-fb.bsky.social",
-   "post": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3mykq7earrp26",
-   "player": "Boston",
-   "team": null,
-   "status": "active",
-   "kind": "status",
-   "confidence": 0.8,
-   "text": "Concepcion and Boston clear injury report for Wk 7"
-  },
-  {
-   "id": "at://did:plc:mbr4badgf6yu56mquzackzew/app.bsky.feed.post/3mykqcdlox22b|jeremiyahlove|out|status",
-   "at": "2026-10-23T17:46:49.860Z",
-   "seen": "2026-10-23T22:50:14.417Z",
-   "handle": "insidenflnews.bsky.social",
-   "post": "at://did:plc:mbr4badgf6yu56mquzackzew/app.bsky.feed.post/3mykqcdlox22b",
-   "player": "Jeremiyah Love",
-   "team": "ARI",
-   "status": "out",
-   "kind": "status",
-   "confidence": 0.95,
-   "text": "Cardinals RB Jeremiyah Love (ankle) has been ruled out for Week 7."
-  },
-  {
-   "id": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3mykqhew3x627|denzelward|questionable|status",
-   "at": "2026-10-23T17:49:38.000Z",
-   "seen": "2026-10-23T22:50:14.417Z",
-   "handle": "rotoworld-fb.bsky.social",
-   "post": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3mykqhew3x627",
-   "player": "Denzel Ward",
-   "team": "CLE",
-   "status": "questionable",
-   "kind": "status",
-   "confidence": 0.95,
-   "text": "Denzel Ward a surprise questionable for Browns"
-  },
   {
    "id": "at://did:plc:mbr4badgf6yu56mquzackzew/app.bsky.feed.post/3mykrlagqr22b|colekmet|out|status",
    "at": "2026-10-23T18:09:42.284Z",
@@ -18092,6 +18001,32 @@
    "kind": "status",
    "confidence": 0.95,
    "text": "Jonathon Brooks: Listed as doubtful for Week 10 \n\n https://www.rotowire.com/football/player/jonathon-brooks-17747"
+  },
+  {
+   "id": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3n27k5vi2we2q|jonathonbrooks|doubtful|status",
+   "at": "2026-11-13T17:48:04.000Z",
+   "seen": "2026-11-13T18:03:42.951Z",
+   "handle": "rotoworld-fb.bsky.social",
+   "post": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3n27k5vi2we2q",
+   "player": "Jonathon Brooks",
+   "team": null,
+   "status": "doubtful",
+   "kind": "status",
+   "confidence": 0.95,
+   "text": "Jonathon Brooks (core) doubtful vs. Saints"
+  },
+  {
+   "id": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3n27kvhel5o25|bamknight|active|status",
+   "at": "2026-11-13T18:01:14.000Z",
+   "seen": "2026-11-13T18:03:42.951Z",
+   "handle": "rotoworld-fb.bsky.social",
+   "post": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3n27kvhel5o25",
+   "player": "Bam Knight",
+   "team": null,
+   "status": "active",
+   "kind": "status",
+   "confidence": 0.95,
+   "text": "Bam Knight off injury report, will play vs. Rams"
   }
  ]
 }
