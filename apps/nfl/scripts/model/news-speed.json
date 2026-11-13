@@ -17080,6 +17080,102 @@
     "seen": "2026-11-13T18:08:23.504Z",
     "own": "2026-11-13T01:58:00.000Z"
    }
+  },
+  "401873058|divinedeablo|out": {
+   "game": "401873058",
+   "start": "2026-11-15T18:00Z",
+   "team": "1",
+   "name": "Divine Deablo",
+   "status": "out",
+   "athlete": "4037626",
+   "espn": {
+    "seen": "2026-11-13T18:31:54.889Z",
+    "own": "2026-11-13T18:18:00.000Z"
+   }
+  },
+  "401873056|ronniehickman|out": {
+   "game": "401873056",
+   "start": "2026-11-15T18:00Z",
+   "team": "5",
+   "name": "Ronnie Hickman",
+   "status": "out",
+   "athlete": "4569620",
+   "espn": {
+    "seen": "2026-11-13T18:31:54.889Z",
+    "own": "2026-11-13T18:20:00.000Z"
+   }
+  },
+  "401873056|michaelburton|out": {
+   "game": "401873056",
+   "start": "2026-11-15T18:00Z",
+   "team": "5",
+   "name": "Michael Burton",
+   "status": "out",
+   "athlete": "2515270",
+   "espn": {
+    "seen": "2026-11-13T18:31:54.889Z",
+    "own": "2026-11-13T18:20:00.000Z"
+   }
+  },
+  "401873060|xaviermckinney|q": {
+   "game": "401873060",
+   "start": "2026-11-15T18:00Z",
+   "team": "9",
+   "name": "Xavier McKinney",
+   "status": "q",
+   "athlete": "4241470",
+   "espn": {
+    "seen": "2026-11-13T18:31:54.889Z",
+    "own": "2026-11-13T18:18:00.000Z"
+   }
+  },
+  "401873059|lukerhodes|out": {
+   "game": "401873059",
+   "start": "2026-11-15T18:00Z",
+   "team": "11",
+   "name": "Luke Rhodes",
+   "status": "out",
+   "athlete": "2566045",
+   "espn": {
+    "seen": "2026-11-13T18:31:54.889Z",
+    "own": "2026-11-13T18:14:00.000Z"
+   }
+  },
+  "401873059|jerrytillery|out": {
+   "game": "401873059",
+   "start": "2026-11-15T18:00Z",
+   "team": "11",
+   "name": "Jerry Tillery",
+   "status": "out",
+   "athlete": "3863182",
+   "espn": {
+    "seen": "2026-11-13T18:31:54.889Z",
+    "own": "2026-11-13T18:14:00.000Z"
+   }
+  },
+  "401873059|jayloncarlies|out": {
+   "game": "401873059",
+   "start": "2026-11-15T18:00Z",
+   "team": "11",
+   "name": "Jaylon Carlies",
+   "status": "out",
+   "athlete": "4601021",
+   "espn": {
+    "seen": "2026-11-13T18:31:54.889Z",
+    "own": "2026-11-13T18:13:00.000Z"
+   }
+  },
+  "401873059|moaliecox|out": {
+   "game": "401873059",
+   "start": "2026-11-15T18:00Z",
+   "team": "11",
+   "name": "Mo Alie-Cox",
+   "status": "out",
+   "athlete": "2998565",
+   "espn": {
+    "seen": "2026-11-13T18:31:54.889Z",
+    "own": "2026-11-13T18:13:00.000Z"
+   }
   }
  }
 }
