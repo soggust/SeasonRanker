@@ -3,24 +3,11 @@
  "cursor": {
   "johnston-bot.bsky.social": "2026-11-12T16:02:25.547Z",
   "notfriedgehnic.bsky.social": "2026-11-12T16:59:13.353Z",
-  "dailyfaceoff.bsky.social": "2026-11-12T23:55:49.000Z",
+  "dailyfaceoff.bsky.social": "2026-11-13T00:55:14.000Z",
   "dfotoronto.bsky.social": "2026-11-12T21:59:00.000Z",
   "marklazerus.bsky.social": "2026-11-12T23:49:07.313Z"
  },
  "claims": [
-  {
-   "id": "at://did:plc:3uus7y6h3rlrk6sbctzxm4bg/app.bsky.feed.post/3myixsg7e2e2s|igorchernyshov|none|status",
-   "at": "2026-10-23T00:55:46.000Z",
-   "seen": "2026-10-23T01:05:34.694Z",
-   "handle": "dailyfaceoff.bsky.social",
-   "post": "at://did:plc:3uus7y6h3rlrk6sbctzxm4bg/app.bsky.feed.post/3myixsg7e2e2s",
-   "player": "Igor Chernyshov",
-   "team": "SJ",
-   "status": "none",
-   "kind": "status",
-   "confidence": 0.4,
-   "text": "Sharks’ Igor Chernyshov leaves game with injury"
-  },
   {
    "id": "at://did:plc:knaj2vcp4x6t7hr7ewd6e3uz/app.bsky.feed.post/3myj6mijtxu2x|marshallrifai|out|status",
    "at": "2026-10-23T02:57:43.000Z",

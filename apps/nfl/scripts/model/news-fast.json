@@ -1,12 +1,12 @@
 {
  "sport": "nfl",
  "cursor": {
-  "adamscheftermirror.bsky.social": "2026-11-12T21:20:28.977Z",
+  "adamscheftermirror.bsky.social": "2026-11-13T00:55:29.719Z",
   "rapsheet.bsky.social": "2026-11-13T00:15:15.301Z",
   "nflnewsreposterbot.bsky.social": "2026-11-10T18:38:15.366Z",
-  "insidenflnews.bsky.social": "2026-11-13T00:30:06.881Z",
+  "insidenflnews.bsky.social": "2026-11-13T00:42:04.088Z",
   "nflnewsposter.bsky.social": "2026-11-12T23:44:21.588Z",
-  "rotoworld-fb.bsky.social": "2026-11-13T00:15:43.000Z",
+  "rotoworld-fb.bsky.social": "2026-11-13T00:51:43.000Z",
   "rotowirenfl.bsky.social": "2026-11-13T00:39:12.000Z"
  },
  "claims": [
@@ -18287,6 +18287,32 @@
    "kind": "status",
    "confidence": 0.93,
    "text": "Puka Nacua: Lands on injured reserve \n\n https://www.rotowire.com/football/player/puka-nacua-16790"
+  },
+  {
+   "id": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3n25rejuke62c|pukanacua|out|status",
+   "at": "2026-11-13T00:51:43.000Z",
+   "seen": "2026-11-13T01:01:16.403Z",
+   "handle": "rotoworld-fb.bsky.social",
+   "post": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3n25rejuke62c",
+   "player": "Puka Nacua",
+   "team": "LAR",
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.95,
+   "text": "Rams place Nacua (knee/toe) on injured reserve"
+  },
+  {
+   "id": "at://did:plc:qre6zxbmr3ixhdmgsgdretb5/app.bsky.feed.post/3n25rlbb4wj2r|pukanacua|out|status",
+   "at": "2026-11-13T00:55:29.719Z",
+   "seen": "2026-11-13T01:01:16.403Z",
+   "handle": "adamscheftermirror.bsky.social",
+   "post": "at://did:plc:qre6zxbmr3ixhdmgsgdretb5/app.bsky.feed.post/3n25rlbb4wj2r",
+   "player": "Puka Nacua",
+   "team": "LAR",
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.97,
+   "text": "Rams placed WR Puka Nacua on injured reserve due to his MCL injury. HC Sean McVay has said he expects Nacua to miss “extended time.”\n\nOriginal post"
   }
  ]
 }
