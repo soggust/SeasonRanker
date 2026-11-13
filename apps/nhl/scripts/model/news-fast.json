@@ -3,9 +3,9 @@
  "cursor": {
   "johnston-bot.bsky.social": "2026-11-12T16:02:25.547Z",
   "notfriedgehnic.bsky.social": "2026-11-12T16:59:13.353Z",
-  "dailyfaceoff.bsky.social": "2026-11-13T21:15:47.000Z",
+  "dailyfaceoff.bsky.social": "2026-11-13T22:07:12.000Z",
   "dfotoronto.bsky.social": "2026-11-13T20:35:54.000Z",
-  "marklazerus.bsky.social": "2026-11-13T19:39:17.134Z"
+  "marklazerus.bsky.social": "2026-11-13T21:37:58.871Z"
  },
  "claims": [
   {
@@ -2347,6 +2347,32 @@
    "kind": "status",
    "confidence": 0.95,
    "text": "Devils place Johnathan Kovacevic on injured reserve, recall Anton Silaev"
+  },
+  {
+   "id": "at://did:plc:3uus7y6h3rlrk6sbctzxm4bg/app.bsky.feed.post/3n27ynbkd4523|garland|out|status",
+   "at": "2026-11-13T22:07:12.000Z",
+   "seen": "2026-11-13T22:17:04.648Z",
+   "handle": "dailyfaceoff.bsky.social",
+   "post": "at://did:plc:3uus7y6h3rlrk6sbctzxm4bg/app.bsky.feed.post/3n27ynbkd4523",
+   "player": "Garland",
+   "team": "CBJ",
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.9,
+   "text": "Blue Jackets’ Garland placed on IR, Monahan day-to-day with upper-body injuries"
+  },
+  {
+   "id": "at://did:plc:3uus7y6h3rlrk6sbctzxm4bg/app.bsky.feed.post/3n27ynbkd4523|monahan|questionable|status",
+   "at": "2026-11-13T22:07:12.000Z",
+   "seen": "2026-11-13T22:17:04.648Z",
+   "handle": "dailyfaceoff.bsky.social",
+   "post": "at://did:plc:3uus7y6h3rlrk6sbctzxm4bg/app.bsky.feed.post/3n27ynbkd4523",
+   "player": "Monahan",
+   "team": "CBJ",
+   "status": "questionable",
+   "kind": "status",
+   "confidence": 0.85,
+   "text": "Blue Jackets’ Garland placed on IR, Monahan day-to-day with upper-body injuries"
   }
  ]
 }

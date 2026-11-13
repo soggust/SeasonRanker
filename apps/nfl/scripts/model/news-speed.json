@@ -13641,6 +13641,11 @@
    "sleeper": {
     "seen": "2026-11-13T20:12:37.918Z",
     "own": "2026-11-13T19:10:31.773Z"
+   },
+   "bluesky": {
+    "seen": "2026-11-13T21:17:25.268Z",
+    "own": "2026-11-13T21:08:17.000Z",
+    "why": "@rotowirenfl.bsky.social: David Montgomery: Questionable for Sunday's game \n\n ht"
    }
   },
   "401873056|reedblankenship|q": {
@@ -16234,6 +16239,11 @@
    "espn": {
     "seen": "2026-11-12T23:12:33.979Z",
     "own": "2026-11-12T03:23:00.000Z"
+   },
+   "bluesky": {
+    "seen": "2026-11-13T21:17:25.268Z",
+    "own": "2026-11-13T21:15:18.000Z",
+    "why": "@rotoworld-fb.bsky.social: Will Anderson (ankle) questionable for Week 10"
    }
   },
   "401873063|juanyehthomas|q": {
@@ -17347,6 +17357,11 @@
    "sleeper": {
     "seen": "2026-11-13T20:12:37.918Z",
     "own": "2026-11-13T19:20:32.939Z"
+   },
+   "bluesky": {
+    "seen": "2026-11-13T21:17:25.268Z",
+    "own": "2026-11-13T20:34:56.000Z",
+    "why": "@rotoworld-fb.bsky.social: Kenneth Walker (groin) officially questionable"
    }
   },
   "401873055|christenmiller|out": {
@@ -17491,6 +17506,11 @@
    "espn": {
     "seen": "2026-11-13T21:12:39.000Z",
     "own": "2026-11-13T17:28:00.000Z"
+   },
+   "bluesky": {
+    "seen": "2026-11-13T21:17:25.268Z",
+    "own": "2026-11-13T21:10:49.000Z",
+    "why": "@rotoworld-fb.bsky.social: Texans rule out Marvin Harrison Jr. (hamstring)"
    }
   },
   "401873056|daniellehunter|out": {
@@ -17503,6 +17523,11 @@
    "espn": {
     "seen": "2026-11-13T21:12:39.000Z",
     "own": "2026-11-12T23:31:00.000Z"
+   },
+   "bluesky": {
+    "seen": "2026-11-13T21:17:25.268Z",
+    "own": "2026-11-13T21:15:20.000Z",
+    "why": "@rotoworld-fb.bsky.social: Danielle Hunter (hamstring) ruled out for Week 10"
    }
   },
   "401873060|travisetienne|q": {
@@ -17719,6 +17744,532 @@
     "seen": "2026-11-13T20:16:56.519Z",
     "own": "2026-11-13T19:27:27.000Z",
     "why": "@rotoworld-fb.bsky.social: Garrett (knee) questionable, expected to play"
+   }
+  },
+  "401873053|kennethwalker|q": {
+   "game": "401873053",
+   "start": "2026-11-15T14:30Z",
+   "team": "8",
+   "name": "Kenneth Walker",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-11-13T21:17:25.268Z",
+    "own": "2026-11-13T20:34:56.000Z",
+    "why": "@rotoworld-fb.bsky.social: Kenneth Walker (groin) officially questionable"
+   }
+  },
+  "401873053|davidmontgomery|q": {
+   "game": "401873053",
+   "start": "2026-11-15T14:30Z",
+   "team": "8",
+   "name": "David Montgomery",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-11-13T21:17:25.268Z",
+    "own": "2026-11-13T21:08:17.000Z",
+    "why": "@rotowirenfl.bsky.social: David Montgomery: Questionable for Sunday's game \n\n ht"
+   }
+  },
+  "401873053|tjhockenson|out": {
+   "game": "401873053",
+   "start": "2026-11-15T14:30Z",
+   "team": "8",
+   "name": "T.J. Hockenson",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-13T21:17:25.268Z",
+    "own": "2026-11-13T21:14:41.000Z",
+    "why": "@rotowirenfl.bsky.social: T.J. Hockenson: Ruled out for Week 10 \n\n https://www.r"
+   }
+  },
+  "401873058|davidmontgomery|q": {
+   "game": "401873058",
+   "start": "2026-11-15T18:00Z",
+   "team": "1",
+   "name": "David Montgomery",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-11-13T21:17:25.268Z",
+    "own": "2026-11-13T21:08:17.000Z",
+    "why": "@rotowirenfl.bsky.social: David Montgomery: Questionable for Sunday's game \n\n ht"
+   }
+  },
+  "401873058|tjhockenson|out": {
+   "game": "401873058",
+   "start": "2026-11-15T18:00Z",
+   "team": "1",
+   "name": "T.J. Hockenson",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-13T21:17:25.268Z",
+    "own": "2026-11-13T21:14:41.000Z",
+    "why": "@rotowirenfl.bsky.social: T.J. Hockenson: Ruled out for Week 10 \n\n https://www.r"
+   }
+  },
+  "401873056|kennethwalker|q": {
+   "game": "401873056",
+   "start": "2026-11-15T18:00Z",
+   "team": "5",
+   "name": "Kenneth Walker",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-11-13T21:17:25.268Z",
+    "own": "2026-11-13T20:34:56.000Z",
+    "why": "@rotoworld-fb.bsky.social: Kenneth Walker (groin) officially questionable"
+   }
+  },
+  "401873056|tjhockenson|out": {
+   "game": "401873056",
+   "start": "2026-11-15T18:00Z",
+   "team": "5",
+   "name": "T.J. Hockenson",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-13T21:17:25.268Z",
+    "own": "2026-11-13T21:14:41.000Z",
+    "why": "@rotowirenfl.bsky.social: T.J. Hockenson: Ruled out for Week 10 \n\n https://www.r"
+   }
+  },
+  "401873056|keylanrutledge|out": {
+   "game": "401873056",
+   "start": "2026-11-15T18:00Z",
+   "team": "34",
+   "name": "Keylan Rutledge",
+   "status": "out",
+   "athlete": "4839498",
+   "espn": {
+    "seen": "2026-11-13T22:12:40.472Z",
+    "own": "2026-11-13T21:35:00.000Z"
+   }
+  },
+  "401873056|trentbrown|q": {
+   "game": "401873056",
+   "start": "2026-11-15T18:00Z",
+   "team": "34",
+   "name": "Trent Brown",
+   "status": "q",
+   "athlete": "3043109",
+   "espn": {
+    "seen": "2026-11-13T22:12:40.472Z",
+    "own": "2026-11-13T21:26:00.000Z"
+   }
+  },
+  "401873060|kennethwalker|q": {
+   "game": "401873060",
+   "start": "2026-11-15T18:00Z",
+   "team": "9",
+   "name": "Kenneth Walker",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-11-13T21:17:25.268Z",
+    "own": "2026-11-13T20:34:56.000Z",
+    "why": "@rotoworld-fb.bsky.social: Kenneth Walker (groin) officially questionable"
+   }
+  },
+  "401873060|davidmontgomery|q": {
+   "game": "401873060",
+   "start": "2026-11-15T18:00Z",
+   "team": "9",
+   "name": "David Montgomery",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-11-13T21:17:25.268Z",
+    "own": "2026-11-13T21:08:17.000Z",
+    "why": "@rotowirenfl.bsky.social: David Montgomery: Questionable for Sunday's game \n\n ht"
+   }
+  },
+  "401873060|tjhockenson|out": {
+   "game": "401873060",
+   "start": "2026-11-15T18:00Z",
+   "team": "9",
+   "name": "T.J. Hockenson",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-13T21:17:25.268Z",
+    "own": "2026-11-13T21:14:41.000Z",
+    "why": "@rotowirenfl.bsky.social: T.J. Hockenson: Ruled out for Week 10 \n\n https://www.r"
+   },
+   "athlete": "4036133",
+   "espn": {
+    "seen": "2026-11-13T22:12:40.472Z",
+    "own": "2026-11-13T21:14:00.000Z"
+   }
+  },
+  "401873060|jordanaddison|q": {
+   "game": "401873060",
+   "start": "2026-11-15T18:00Z",
+   "team": "16",
+   "name": "Jordan Addison",
+   "status": "q",
+   "athlete": "4429205",
+   "espn": {
+    "seen": "2026-11-13T22:12:40.472Z",
+    "own": "2026-11-13T21:17:00.000Z"
+   },
+   "bluesky": {
+    "seen": "2026-11-13T21:17:25.268Z",
+    "own": "2026-11-13T21:17:16.000Z",
+    "why": "@rotowirenfl.bsky.social: Jordan Addison: Questionable due to thumb injury \n\n ht"
+   }
+  },
+  "401873060|blakecashman|out": {
+   "game": "401873060",
+   "start": "2026-11-15T18:00Z",
+   "team": "16",
+   "name": "Blake Cashman",
+   "status": "out",
+   "athlete": "3728281",
+   "espn": {
+    "seen": "2026-11-13T22:12:40.472Z",
+    "own": "2026-11-13T00:28:00.000Z"
+   }
+  },
+  "401873057|kennethwalker|q": {
+   "game": "401873057",
+   "start": "2026-11-15T18:00Z",
+   "team": "10",
+   "name": "Kenneth Walker",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-11-13T21:17:25.268Z",
+    "own": "2026-11-13T20:34:56.000Z",
+    "why": "@rotoworld-fb.bsky.social: Kenneth Walker (groin) officially questionable"
+   }
+  },
+  "401873057|davidmontgomery|q": {
+   "game": "401873057",
+   "start": "2026-11-15T18:00Z",
+   "team": "10",
+   "name": "David Montgomery",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-11-13T21:17:25.268Z",
+    "own": "2026-11-13T21:08:17.000Z",
+    "why": "@rotowirenfl.bsky.social: David Montgomery: Questionable for Sunday's game \n\n ht"
+   }
+  },
+  "401873057|tjhockenson|out": {
+   "game": "401873057",
+   "start": "2026-11-15T18:00Z",
+   "team": "10",
+   "name": "T.J. Hockenson",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-13T21:17:25.268Z",
+    "own": "2026-11-13T21:14:41.000Z",
+    "why": "@rotowirenfl.bsky.social: T.J. Hockenson: Ruled out for Week 10 \n\n https://www.r"
+   }
+  },
+  "401873059|willmallory|q": {
+   "game": "401873059",
+   "start": "2026-11-15T18:00Z",
+   "team": "11",
+   "name": "Will Mallory",
+   "status": "q",
+   "athlete": "4362523",
+   "espn": {
+    "seen": "2026-11-13T22:12:40.472Z",
+    "own": "2026-11-13T22:01:00.000Z"
+   }
+  },
+  "401873059|kennethwalker|q": {
+   "game": "401873059",
+   "start": "2026-11-15T18:00Z",
+   "team": "11",
+   "name": "Kenneth Walker",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-11-13T21:17:25.268Z",
+    "own": "2026-11-13T20:34:56.000Z",
+    "why": "@rotoworld-fb.bsky.social: Kenneth Walker (groin) officially questionable"
+   }
+  },
+  "401873059|davidmontgomery|q": {
+   "game": "401873059",
+   "start": "2026-11-15T18:00Z",
+   "team": "11",
+   "name": "David Montgomery",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-11-13T21:17:25.268Z",
+    "own": "2026-11-13T21:08:17.000Z",
+    "why": "@rotowirenfl.bsky.social: David Montgomery: Questionable for Sunday's game \n\n ht"
+   }
+  },
+  "401873059|tjhockenson|out": {
+   "game": "401873059",
+   "start": "2026-11-15T18:00Z",
+   "team": "11",
+   "name": "T.J. Hockenson",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-13T21:17:25.268Z",
+    "own": "2026-11-13T21:14:41.000Z",
+    "why": "@rotowirenfl.bsky.social: T.J. Hockenson: Ruled out for Week 10 \n\n https://www.r"
+   }
+  },
+  "401873059|jaredwayne|out": {
+   "game": "401873059",
+   "start": "2026-11-15T18:00Z",
+   "team": "15",
+   "name": "Jared Wayne",
+   "status": "out",
+   "athlete": "4430681",
+   "espn": {
+    "seen": "2026-11-13T22:12:40.472Z",
+    "own": "2026-11-13T21:57:00.000Z"
+   }
+  },
+  "401873055|kennethwalker|q": {
+   "game": "401873055",
+   "start": "2026-11-15T18:00Z",
+   "team": "18",
+   "name": "Kenneth Walker",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-11-13T21:17:25.268Z",
+    "own": "2026-11-13T20:34:56.000Z",
+    "why": "@rotoworld-fb.bsky.social: Kenneth Walker (groin) officially questionable"
+   }
+  },
+  "401873055|davidmontgomery|q": {
+   "game": "401873055",
+   "start": "2026-11-15T18:00Z",
+   "team": "18",
+   "name": "David Montgomery",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-11-13T21:17:25.268Z",
+    "own": "2026-11-13T21:08:17.000Z",
+    "why": "@rotowirenfl.bsky.social: David Montgomery: Questionable for Sunday's game \n\n ht"
+   }
+  },
+  "401873055|tjhockenson|out": {
+   "game": "401873055",
+   "start": "2026-11-15T18:00Z",
+   "team": "18",
+   "name": "T.J. Hockenson",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-13T21:17:25.268Z",
+    "own": "2026-11-13T21:14:41.000Z",
+    "why": "@rotowirenfl.bsky.social: T.J. Hockenson: Ruled out for Week 10 \n\n https://www.r"
+   }
+  },
+  "401873054|jarvisbrownlee|q": {
+   "game": "401873054",
+   "start": "2026-11-15T18:00Z",
+   "team": "20",
+   "name": "Jarvis Brownlee Jr.",
+   "status": "q",
+   "athlete": "4426817",
+   "espn": {
+    "seen": "2026-11-13T22:12:40.472Z",
+    "own": "2026-11-13T21:23:00.000Z"
+   }
+  },
+  "401873054|adonaimitchell|q": {
+   "game": "401873054",
+   "start": "2026-11-15T18:00Z",
+   "team": "20",
+   "name": "Adonai Mitchell",
+   "status": "q",
+   "athlete": "4597500",
+   "espn": {
+    "seen": "2026-11-13T22:12:40.472Z",
+    "own": "2026-11-13T21:18:00.000Z"
+   }
+  },
+  "401873054|kennethwalker|q": {
+   "game": "401873054",
+   "start": "2026-11-15T18:00Z",
+   "team": "20",
+   "name": "Kenneth Walker",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-11-13T21:17:25.268Z",
+    "own": "2026-11-13T20:34:56.000Z",
+    "why": "@rotoworld-fb.bsky.social: Kenneth Walker (groin) officially questionable"
+   }
+  },
+  "401873054|davidmontgomery|q": {
+   "game": "401873054",
+   "start": "2026-11-15T18:00Z",
+   "team": "20",
+   "name": "David Montgomery",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-11-13T21:17:25.268Z",
+    "own": "2026-11-13T21:08:17.000Z",
+    "why": "@rotowirenfl.bsky.social: David Montgomery: Questionable for Sunday's game \n\n ht"
+   }
+  },
+  "401873054|tjhockenson|out": {
+   "game": "401873054",
+   "start": "2026-11-15T18:00Z",
+   "team": "20",
+   "name": "T.J. Hockenson",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-13T21:17:25.268Z",
+    "own": "2026-11-13T21:14:41.000Z",
+    "why": "@rotowirenfl.bsky.social: T.J. Hockenson: Ruled out for Week 10 \n\n https://www.r"
+   }
+  },
+  "401873062|kennethwalker|q": {
+   "game": "401873062",
+   "start": "2026-11-15T21:05Z",
+   "team": "13",
+   "name": "Kenneth Walker",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-11-13T21:17:25.268Z",
+    "own": "2026-11-13T20:34:56.000Z",
+    "why": "@rotoworld-fb.bsky.social: Kenneth Walker (groin) officially questionable"
+   }
+  },
+  "401873062|davidmontgomery|q": {
+   "game": "401873062",
+   "start": "2026-11-15T21:05Z",
+   "team": "13",
+   "name": "David Montgomery",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-11-13T21:17:25.268Z",
+    "own": "2026-11-13T21:08:17.000Z",
+    "why": "@rotowirenfl.bsky.social: David Montgomery: Questionable for Sunday's game \n\n ht"
+   }
+  },
+  "401873062|tjhockenson|out": {
+   "game": "401873062",
+   "start": "2026-11-15T21:05Z",
+   "team": "13",
+   "name": "T.J. Hockenson",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-13T21:17:25.268Z",
+    "own": "2026-11-13T21:14:41.000Z",
+    "why": "@rotowirenfl.bsky.social: T.J. Hockenson: Ruled out for Week 10 \n\n https://www.r"
+   }
+  },
+  "401873061|kennethwalker|q": {
+   "game": "401873061",
+   "start": "2026-11-15T21:05Z",
+   "team": "22",
+   "name": "Kenneth Walker",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-11-13T21:17:25.268Z",
+    "own": "2026-11-13T20:34:56.000Z",
+    "why": "@rotoworld-fb.bsky.social: Kenneth Walker (groin) officially questionable"
+   }
+  },
+  "401873061|davidmontgomery|q": {
+   "game": "401873061",
+   "start": "2026-11-15T21:05Z",
+   "team": "22",
+   "name": "David Montgomery",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-11-13T21:17:25.268Z",
+    "own": "2026-11-13T21:08:17.000Z",
+    "why": "@rotowirenfl.bsky.social: David Montgomery: Questionable for Sunday's game \n\n ht"
+   }
+  },
+  "401873061|tjhockenson|out": {
+   "game": "401873061",
+   "start": "2026-11-15T21:05Z",
+   "team": "22",
+   "name": "T.J. Hockenson",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-13T21:17:25.268Z",
+    "own": "2026-11-13T21:14:41.000Z",
+    "why": "@rotowirenfl.bsky.social: T.J. Hockenson: Ruled out for Week 10 \n\n https://www.r"
+   }
+  },
+  "401873061|steveavila|out": {
+   "game": "401873061",
+   "start": "2026-11-15T21:05Z",
+   "team": "14",
+   "name": "Steve Avila",
+   "status": "out",
+   "athlete": "4362474",
+   "espn": {
+    "seen": "2026-11-13T22:12:40.472Z",
+    "own": "2026-11-13T21:58:00.000Z"
+   }
+  },
+  "401873063|kennethwalker|q": {
+   "game": "401873063",
+   "start": "2026-11-15T21:25Z",
+   "team": "6",
+   "name": "Kenneth Walker",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-11-13T21:17:25.268Z",
+    "own": "2026-11-13T20:34:56.000Z",
+    "why": "@rotoworld-fb.bsky.social: Kenneth Walker (groin) officially questionable"
+   }
+  },
+  "401873063|davidmontgomery|q": {
+   "game": "401873063",
+   "start": "2026-11-15T21:25Z",
+   "team": "6",
+   "name": "David Montgomery",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-11-13T21:17:25.268Z",
+    "own": "2026-11-13T21:08:17.000Z",
+    "why": "@rotowirenfl.bsky.social: David Montgomery: Questionable for Sunday's game \n\n ht"
+   }
+  },
+  "401873063|tjhockenson|out": {
+   "game": "401873063",
+   "start": "2026-11-15T21:25Z",
+   "team": "6",
+   "name": "T.J. Hockenson",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-13T21:17:25.268Z",
+    "own": "2026-11-13T21:14:41.000Z",
+    "why": "@rotowirenfl.bsky.social: T.J. Hockenson: Ruled out for Week 10 \n\n https://www.r"
+   }
+  },
+  "401873064|kennethwalker|q": {
+   "game": "401873064",
+   "start": "2026-11-16T01:20Z",
+   "team": "4",
+   "name": "Kenneth Walker",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-11-13T21:17:25.268Z",
+    "own": "2026-11-13T20:34:56.000Z",
+    "why": "@rotoworld-fb.bsky.social: Kenneth Walker (groin) officially questionable"
+   }
+  },
+  "401873064|davidmontgomery|q": {
+   "game": "401873064",
+   "start": "2026-11-16T01:20Z",
+   "team": "4",
+   "name": "David Montgomery",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-11-13T21:17:25.268Z",
+    "own": "2026-11-13T21:08:17.000Z",
+    "why": "@rotowirenfl.bsky.social: David Montgomery: Questionable for Sunday's game \n\n ht"
+   }
+  },
+  "401873064|tjhockenson|out": {
+   "game": "401873064",
+   "start": "2026-11-16T01:20Z",
+   "team": "4",
+   "name": "T.J. Hockenson",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-13T21:17:25.268Z",
+    "own": "2026-11-13T21:14:41.000Z",
+    "why": "@rotowirenfl.bsky.social: T.J. Hockenson: Ruled out for Week 10 \n\n https://www.r"
    }
   }
  }
