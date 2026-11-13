@@ -1,18 +1,6 @@
 {
  "sport": "mlb",
  "days": 2,
- "signals": [
-  {
-   "team": "18",
-   "abbr": "HOU",
-   "athlete": null,
-   "player": "Brad Ausmus",
-   "kind": "coaching",
-   "direction": "none",
-   "confidence": 0.9,
-   "headline": "Astros hire Yankees bench coach Brad Ausmus as new manager",
-   "at": "2026-11-11T18:49:40.000Z"
-  }
- ],
- "at": "2026-11-12T23:14:54.732Z"
+ "signals": [],
+ "at": "2026-11-13T20:16:56.519Z"
 }

@@ -1,24 +1,11 @@
 {
  "sport": "nba",
  "cursor": {
-  "rotowirenba.bsky.social": "2026-11-13T18:24:10.000Z",
-  "insidenbanews.bsky.social": "2026-11-13T00:32:39.398Z",
+  "rotowirenba.bsky.social": "2026-11-13T19:57:51.000Z",
+  "insidenbanews.bsky.social": "2026-11-13T20:00:09.852Z",
   "shamsbot.bsky.social": "2026-11-08T18:05:20.000Z"
  },
  "claims": [
-  {
-   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mykxh533vm24|brandinpodziemski|active|status",
-   "at": "2026-10-23T19:54:46.000Z",
-   "seen": "2026-10-23T22:50:14.417Z",
-   "handle": "rotowirenba.bsky.social",
-   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mykxh533vm24",
-   "player": "Brandin Podziemski",
-   "team": null,
-   "status": "active",
-   "kind": "status",
-   "confidence": 0.7,
-   "text": "Brandin Podziemski: Upgraded to probable \n\n https://www.rotowire.com/basketball/player/brandin-podziemski-5889"
-  },
   {
    "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3myl3cjejhf2i|lebronjames|questionable|status",
    "at": "2026-10-23T21:03:47.000Z",
