@@ -11,19 +11,6 @@
  },
  "claims": [
   {
-   "id": "at://did:plc:mbr4badgf6yu56mquzackzew/app.bsky.feed.post/3myklxs4qtc24|emekaegbuka|doubtful|status",
-   "at": "2026-10-23T16:29:21.034Z",
-   "seen": "2026-10-23T16:32:56.353Z",
-   "handle": "insidenflnews.bsky.social",
-   "post": "at://did:plc:mbr4badgf6yu56mquzackzew/app.bsky.feed.post/3myklxs4qtc24",
-   "player": "Emeka Egbuka",
-   "team": "TB",
-   "status": "doubtful",
-   "kind": "status",
-   "confidence": 0.95,
-   "text": "Buccaneers WR Emeka Egbuka (concussion, foot) is doubtful for Week 7."
-  },
-  {
    "id": "at://did:plc:qre6zxbmr3ixhdmgsgdretb5/app.bsky.feed.post/3mykmgzvcgz2m|bakermayfield|active|return",
    "at": "2026-10-23T16:37:52.467Z",
    "seen": "2026-10-23T16:54:22.393Z",
