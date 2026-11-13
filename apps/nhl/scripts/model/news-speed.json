@@ -8709,6 +8709,18 @@
     "own": "2026-11-12T21:09:20.000Z",
     "why": "@dailyfaceoff.bsky.social: Islanders’ Pageau out with lower-body injury, Maccell"
    }
+  },
+  "401892704|nickschmaltz|out": {
+   "game": "401892704",
+   "start": "2026-11-13T02:00Z",
+   "team": "129764",
+   "name": "Nick Schmaltz",
+   "status": "out",
+   "athlete": "3114770",
+   "espn": {
+    "seen": "2026-11-13T01:42:17.239Z",
+    "own": "2026-11-13T01:30:00.000Z"
+   }
   }
  }
 }
