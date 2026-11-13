@@ -4,10 +4,10 @@
   "adamscheftermirror.bsky.social": "2026-11-12T21:20:28.977Z",
   "rapsheet.bsky.social": "2026-11-13T00:15:15.301Z",
   "nflnewsreposterbot.bsky.social": "2026-11-10T18:38:15.366Z",
-  "insidenflnews.bsky.social": "2026-11-12T23:20:57.032Z",
+  "insidenflnews.bsky.social": "2026-11-13T00:30:06.881Z",
   "nflnewsposter.bsky.social": "2026-11-12T23:44:21.588Z",
   "rotoworld-fb.bsky.social": "2026-11-13T00:15:43.000Z",
-  "rotowirenfl.bsky.social": "2026-11-13T00:28:11.000Z"
+  "rotowirenfl.bsky.social": "2026-11-13T00:39:12.000Z"
  },
  "claims": [
   {
@@ -18261,6 +18261,32 @@
    "kind": "return",
    "confidence": 0.3,
    "text": "Mike Evans: Close to returning from injury \n\n https://www.rotowire.com/football/player/mike-evans-9253"
+  },
+  {
+   "id": "at://did:plc:mbr4badgf6yu56mquzackzew/app.bsky.feed.post/3n25q5uv6bc2y|pukanacua|out|status",
+   "at": "2026-11-13T00:30:06.881Z",
+   "seen": "2026-11-13T00:39:55.931Z",
+   "handle": "insidenflnews.bsky.social",
+   "post": "at://did:plc:mbr4badgf6yu56mquzackzew/app.bsky.feed.post/3n25q5uv6bc2y",
+   "player": "Puka Nacua",
+   "team": "LAR",
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.95,
+   "text": "Rams WR Puka Nacua (knee, toe) has officially been placed on IR and will miss at least 4 games."
+  },
+  {
+   "id": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3n25qo4xhm52x|pukanacua|out|status",
+   "at": "2026-11-13T00:39:12.000Z",
+   "seen": "2026-11-13T00:39:55.931Z",
+   "handle": "rotowirenfl.bsky.social",
+   "post": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3n25qo4xhm52x",
+   "player": "Puka Nacua",
+   "team": "LAR",
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.93,
+   "text": "Puka Nacua: Lands on injured reserve \n\n https://www.rotowire.com/football/player/puka-nacua-16790"
   }
  ]
 }
