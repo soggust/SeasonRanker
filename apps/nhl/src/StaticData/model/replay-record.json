@@ -2,7 +2,7 @@
  "v": 1,
  "sport": "nhl",
  "epoch": "2026-10-26T15:00:00Z",
- "at": "2026-11-12T09:13:46.648Z",
+ "at": "2026-11-13T09:13:37.717Z",
  "from": "2021-01-27T00:00:00.000Z",
  "through": "2026-10-14T01:55:00.000Z",
  "n": {
@@ -46,16 +46,16 @@
  },
  "pass": {
   "bets": 147143,
-  "won": 75919,
-  "lost": 70968,
+  "won": 75916,
+  "lost": 70971,
   "push": 256,
   "staked": 147143,
-  "profit": -6386.98,
+  "profit": -6392.5,
   "roi": -0.0434,
   "beat": null,
   "beatN": 0,
   "clv": null,
-  "fairProfit": 1939.6687,
+  "fairProfit": 1933.7782,
   "toward": 0,
   "against": 0,
   "mvN": 0
@@ -2899,7 +2899,7 @@
     "beat": 360,
     "clv": 2.6384,
     "pN": 3955,
-    "p": 1864.7895,
+    "p": 1864.79,
     "wins": 1806
    },
    "ml:home": {
@@ -2989,7 +2989,7 @@
     "beat": 0,
     "clv": 0,
     "pN": 2250,
-    "p": 1088.969,
+    "p": 1088.9694,
     "wins": 1057
    },
    "props": {
@@ -2999,7 +2999,7 @@
     "beat": 0,
     "clv": 0,
     "pN": 2496,
-    "p": 1198.7108,
+    "p": 1198.7113,
     "wins": 1162
    },
    "prop:pts:over": {
@@ -3019,7 +3019,7 @@
     "beat": 0,
     "clv": 0,
     "pN": 224,
-    "p": 97.9937,
+    "p": 97.9938,
     "wins": 91
    },
    "prop:sog:under": {
@@ -3029,7 +3029,7 @@
     "beat": 0,
     "clv": 0,
     "pN": 2136,
-    "p": 1037.5484,
+    "p": 1037.5488,
     "wins": 1008
    },
    "prop:pts:under": {
@@ -3039,7 +3039,7 @@
     "beat": 0,
     "clv": 0,
     "pN": 219,
-    "p": 96.8749,
+    "p": 96.875,
     "wins": 90
    },
    "prop:saves:under": {
@@ -3074,7 +3074,7 @@
    }
   }
  },
- "commit": "4a5ec1fd",
+ "commit": "44dfd752",
  "note": "D119. The Book's bands are the Bot's bets alone: a suggestion is never a LIKE (the owner, 2026-11-09: \"its got likes with no BETS which makes no sense\")",
  "inputs": {
   "v": 1,

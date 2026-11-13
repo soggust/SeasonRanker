@@ -2,7 +2,7 @@
  "v": 1,
  "sport": "nhl",
  "trial": true,
- "at": "2026-11-12T09:13:46.648Z",
+ "at": "2026-11-13T09:13:37.717Z",
  "epoch": "2026-10-26T15:00:00Z",
  "on": {
   "love": true,
@@ -26,7 +26,6 @@
   "context": 1,
   "fit": 1,
   "base": 1,
-  "vacated": 1,
   "opponent": 1,
   "form": 1
  },
@@ -34,5 +33,5 @@
   "love": 161,
   "like": 3805
  },
- "commit": "4a5ec1fd"
+ "commit": "44dfd752"
 }
