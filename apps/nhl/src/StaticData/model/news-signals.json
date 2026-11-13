@@ -1,6 +1,18 @@
 {
  "sport": "nhl",
  "days": 2,
- "signals": [],
- "at": "2026-11-12T20:21:23.324Z"
+ "signals": [
+  {
+   "team": "8",
+   "abbr": "LA",
+   "athlete": "3114743",
+   "player": "Kevin Fiala",
+   "kind": "return",
+   "direction": "up",
+   "confidence": 0.9,
+   "headline": "Kings' Kevin Fiala 'looks good,' coach says, will debut Thursday vs. Islanders",
+   "at": "2026-11-12T21:22:22.000Z"
+  }
+ ],
+ "at": "2026-11-13T00:14:39.242Z"
 }

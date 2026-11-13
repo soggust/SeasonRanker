@@ -3,6 +3,28 @@
  "days": 2,
  "signals": [
   {
+   "team": "13",
+   "abbr": "LV",
+   "athlete": "4837248",
+   "player": "Fernando Mendoza",
+   "kind": "starting",
+   "direction": "up",
+   "confidence": 0.6,
+   "headline": "Fernando Mendoza relishes 'once-in-a-lifetime' opportunity as Raiders' QB1",
+   "at": "2026-11-12T01:31:39.000Z"
+  },
+  {
+   "team": "15",
+   "abbr": "MIA",
+   "athlete": "4242512",
+   "player": "Malik Willis",
+   "kind": "starting",
+   "direction": "none",
+   "confidence": 0.5,
+   "headline": "Dolphins hopeful QB Malik Willis will be back this season",
+   "at": "2026-11-12T01:12:02.000Z"
+  },
+  {
    "team": "14",
    "abbr": "LAR",
    "athlete": "16800",
@@ -102,5 +124,5 @@
    "at": "2026-11-11T14:30:32.000Z"
   }
  ],
- "at": "2026-11-12T18:30:10.723Z"
+ "at": "2026-11-13T00:14:39.242Z"
 }

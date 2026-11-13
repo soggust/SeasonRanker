@@ -4,51 +4,12 @@
   "adamscheftermirror.bsky.social": "2026-11-12T21:20:28.977Z",
   "rapsheet.bsky.social": "2026-11-12T22:25:18.125Z",
   "nflnewsreposterbot.bsky.social": "2026-11-10T18:38:15.366Z",
-  "insidenflnews.bsky.social": "2026-11-12T22:42:10.514Z",
-  "nflnewsposter.bsky.social": "2026-11-12T22:53:54.643Z",
-  "rotoworld-fb.bsky.social": "2026-11-12T22:41:42.000Z",
-  "rotowirenfl.bsky.social": "2026-11-12T22:59:49.000Z"
+  "insidenflnews.bsky.social": "2026-11-12T23:20:57.032Z",
+  "nflnewsposter.bsky.social": "2026-11-12T23:44:21.588Z",
+  "rotoworld-fb.bsky.social": "2026-11-12T23:44:36.000Z",
+  "rotowirenfl.bsky.social": "2026-11-13T00:03:41.000Z"
  },
  "claims": [
-  {
-   "id": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3myisbjpf3c2k|mikewashington|questionable|status",
-   "at": "2026-10-22T23:16:50.000Z",
-   "seen": "2026-10-22T23:24:09.344Z",
-   "handle": "rotoworld-fb.bsky.social",
-   "post": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3myisbjpf3c2k",
-   "player": "Mike Washington",
-   "team": null,
-   "status": "questionable",
-   "kind": "status",
-   "confidence": 0.6,
-   "text": "Mike Washington (foot/back) downgrades to DNP"
-  },
-  {
-   "id": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3myisiugmqz2k|dallasgoedert|questionable|status",
-   "at": "2026-10-22T23:20:56.000Z",
-   "seen": "2026-10-22T23:24:09.344Z",
-   "handle": "rotowirenfl.bsky.social",
-   "post": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3myisiugmqz2k",
-   "player": "Dallas Goedert",
-   "team": null,
-   "status": "questionable",
-   "kind": "status",
-   "confidence": 0.6,
-   "text": "Dallas Goedert: Misses practice Thursday \n\n https://www.rotowire.com/football/player/dallas-goedert-12860"
-  },
-  {
-   "id": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3myisozbxqe2p|jaylenwaddle|limited|status",
-   "at": "2026-10-22T23:24:23.000Z",
-   "seen": "2026-10-22T23:39:19.404Z",
-   "handle": "rotowirenfl.bsky.social",
-   "post": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3myisozbxqe2p",
-   "player": "Jaylen Waddle",
-   "team": "MIA",
-   "status": "limited",
-   "kind": "status",
-   "confidence": 0.9,
-   "text": "Jaylen Waddle: Logs limited practice Thursday \n\n https://www.rotowire.com/football/player/jaylen-waddle-15404"
-  },
   {
    "id": "at://did:plc:fuqjc7x4gxvnwzksnlxwbe4x/app.bsky.feed.post/3myj76zouwkg3|colekmet|out|status",
    "at": "2026-10-23T03:08:05.466Z",
@@ -18196,6 +18157,84 @@
    "kind": "status",
    "confidence": 0.5,
    "text": "T.J. Hockenson: Misses Thursday's practice \n\n https://www.rotowire.com/football/player/tj-hockenson-13610"
+  },
+  {
+   "id": "at://did:plc:mbr4badgf6yu56mquzackzew/app.bsky.feed.post/3n25mc7bses2t|justinherbert|active|status",
+   "at": "2026-11-12T23:20:57.032Z",
+   "seen": "2026-11-13T00:14:39.242Z",
+   "handle": "insidenflnews.bsky.social",
+   "post": "at://did:plc:mbr4badgf6yu56mquzackzew/app.bsky.feed.post/3n25mc7bses2t",
+   "player": "Justin Herbert",
+   "team": null,
+   "status": "active",
+   "kind": "status",
+   "confidence": 0.6,
+   "text": "Justin Herbert (left hand) not listed on injury report for Week 10."
+  },
+  {
+   "id": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3n25mnph2vq2v|laddmcconkey|limited|status",
+   "at": "2026-11-12T23:27:22.000Z",
+   "seen": "2026-11-13T00:14:39.242Z",
+   "handle": "rotowirenfl.bsky.social",
+   "post": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3n25mnph2vq2v",
+   "player": "Ladd McConkey",
+   "team": null,
+   "status": "limited",
+   "kind": "status",
+   "confidence": 0.5,
+   "text": "Ladd McConkey: Sits out Thursday's practice \n\n https://www.rotowire.com/football/player/ladd-mcconkey-17724"
+  },
+  {
+   "id": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3n25n2otl2223|mikeevans|limited|status",
+   "at": "2026-11-12T23:34:38.000Z",
+   "seen": "2026-11-13T00:14:39.242Z",
+   "handle": "rotowirenfl.bsky.social",
+   "post": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3n25n2otl2223",
+   "player": "Mike Evans",
+   "team": null,
+   "status": "limited",
+   "kind": "status",
+   "confidence": 0.4,
+   "text": "Mike Evans: Another DNP on Thursday \n\n https://www.rotowire.com/football/player/mike-evans-9253"
+  },
+  {
+   "id": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3n25naj3xqh2x|deebosamuel|limited|status",
+   "at": "2026-11-12T23:37:53.000Z",
+   "seen": "2026-11-13T00:14:39.242Z",
+   "handle": "rotowirenfl.bsky.social",
+   "post": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3n25naj3xqh2x",
+   "player": "Deebo Samuel",
+   "team": null,
+   "status": "limited",
+   "kind": "status",
+   "confidence": 0.6,
+   "text": "Deebo Samuel: Stays limited Thursday \n\n https://www.rotowire.com/football/player/deebo-samuel-13429"
+  },
+  {
+   "id": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3n25nmimiom2u|laddmcconkey|out|status",
+   "at": "2026-11-12T23:44:36.000Z",
+   "seen": "2026-11-13T00:14:39.242Z",
+   "handle": "rotoworld-fb.bsky.social",
+   "post": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3n25nmimiom2u",
+   "player": "Ladd McConkey",
+   "team": null,
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.7,
+   "text": "Ladd McConkey (back) sits out to begin Week 10"
+  },
+  {
+   "id": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3n25oomx26g2s|drewlock|limited|status",
+   "at": "2026-11-13T00:03:41.000Z",
+   "seen": "2026-11-13T00:14:39.242Z",
+   "handle": "rotowirenfl.bsky.social",
+   "post": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3n25oomx26g2s",
+   "player": "Drew Lock",
+   "team": null,
+   "status": "limited",
+   "kind": "status",
+   "confidence": 0.6,
+   "text": "Drew Lock: Remains limited in practice \n\n https://www.rotowire.com/football/player/drew-lock-13736"
   }
  ]
 }

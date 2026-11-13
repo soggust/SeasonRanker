@@ -3,9 +3,9 @@
  "cursor": {
   "johnston-bot.bsky.social": "2026-11-12T16:02:25.547Z",
   "notfriedgehnic.bsky.social": "2026-11-12T16:59:13.353Z",
-  "dailyfaceoff.bsky.social": "2026-11-12T23:06:52.000Z",
+  "dailyfaceoff.bsky.social": "2026-11-12T23:55:49.000Z",
   "dfotoronto.bsky.social": "2026-11-12T21:59:00.000Z",
-  "marklazerus.bsky.social": "2026-11-12T16:42:52.678Z"
+  "marklazerus.bsky.social": "2026-11-12T23:49:07.313Z"
  },
  "claims": [
   {
@@ -2386,6 +2386,32 @@
    "kind": "return",
    "confidence": 0.9,
    "text": "Blackhawks’ Patrick Kane activated from IR, expected to return vs. Sabres"
+  },
+  {
+   "id": "at://did:plc:3uus7y6h3rlrk6sbctzxm4bg/app.bsky.feed.post/3n25oal3iym2a|anthonycirelli|out|status",
+   "at": "2026-11-12T23:55:49.000Z",
+   "seen": "2026-11-13T00:14:39.242Z",
+   "handle": "dailyfaceoff.bsky.social",
+   "post": "at://did:plc:3uus7y6h3rlrk6sbctzxm4bg/app.bsky.feed.post/3n25oal3iym2a",
+   "player": "Anthony Cirelli",
+   "team": "TB",
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.95,
+   "text": "Lightning’s Anthony Cirelli, Erik Cernak out vs. Blue Jackets"
+  },
+  {
+   "id": "at://did:plc:3uus7y6h3rlrk6sbctzxm4bg/app.bsky.feed.post/3n25oal3iym2a|erikcernak|out|status",
+   "at": "2026-11-12T23:55:49.000Z",
+   "seen": "2026-11-13T00:14:39.242Z",
+   "handle": "dailyfaceoff.bsky.social",
+   "post": "at://did:plc:3uus7y6h3rlrk6sbctzxm4bg/app.bsky.feed.post/3n25oal3iym2a",
+   "player": "Erik Cernak",
+   "team": "TB",
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.95,
+   "text": "Lightning’s Anthony Cirelli, Erik Cernak out vs. Blue Jackets"
   }
  ]
 }
