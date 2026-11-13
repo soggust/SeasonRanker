@@ -13035,6 +13035,11 @@
    "espn": {
     "seen": "2026-11-10T00:00:42.694Z",
     "own": "2026-11-09T23:49:00.000Z"
+   },
+   "bluesky": {
+    "seen": "2026-11-13T22:34:40.193Z",
+    "own": "2026-11-13T22:30:29.242Z",
+    "why": "@insidenflnews.bsky.social: 49ers WR Mike Evans (Achilles) has been ruled out fo"
    }
   },
   "401873063|brandonaiyuk|out": {
@@ -14141,6 +14146,11 @@
    "espn": {
     "seen": "2026-11-10T16:01:42.204Z",
     "own": "2026-11-10T15:44:00.000Z"
+   },
+   "bluesky": {
+    "seen": "2026-11-13T22:34:40.193Z",
+    "own": "2026-11-13T22:34:06.227Z",
+    "why": "@nflnewsposter.bsky.social: [Archer] George Pickens carries no injury designatio"
    }
   },
   "401873063|lukeschoonmaker|q": {
@@ -16384,6 +16394,11 @@
    "espn": {
     "seen": "2026-11-13T00:00:48.559Z",
     "own": "2026-11-12T23:42:00.000Z"
+   },
+   "bluesky": {
+    "seen": "2026-11-13T22:34:40.193Z",
+    "own": "2026-11-13T22:18:13.000Z",
+    "why": "@rotoworld-fb.bsky.social: Trent Williams (shoulder) questionable to play"
    }
   },
   "401873063|dregreenlaw|q": {
@@ -18492,6 +18507,11 @@
     "seen": "2026-11-13T22:17:04.648Z",
     "own": "2026-11-13T21:55:36.760Z",
     "why": "@adamscheftermirror.bsky.social: Vikings ruled out these players for Sunday’s ga"
+   },
+   "athlete": "4629149",
+   "espn": {
+    "seen": "2026-11-13T23:50:33.986Z",
+    "own": "2026-11-13T22:37:00.000Z"
    }
   },
   "401873057|adonaimitchell|q": {
@@ -18864,6 +18884,359 @@
     "seen": "2026-11-13T22:17:04.648Z",
     "own": "2026-11-13T21:28:44.000Z",
     "why": "@rotoworld-fb.bsky.social: Wilson, Cooper, Mitchell questionable vs. Bills"
+   }
+  },
+  "401873053|joeyporter|q": {
+   "game": "401873053",
+   "start": "2026-11-15T14:30Z",
+   "team": "8",
+   "name": "Joey Porter Jr.",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-11-13T22:34:40.193Z",
+    "own": "2026-11-13T22:34:06.227Z",
+    "why": "@nflnewsposter.bsky.social: [Archer] George Pickens carries no injury designatio"
+   }
+  },
+  "401873053|daronbland|q": {
+   "game": "401873053",
+   "start": "2026-11-15T14:30Z",
+   "team": "8",
+   "name": "Daron Bland",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-11-13T22:34:40.193Z",
+    "own": "2026-11-13T22:34:06.227Z",
+    "why": "@nflnewsposter.bsky.social: [Archer] George Pickens carries no injury designatio"
+   }
+  },
+  "401873053|brendenschooler|q": {
+   "game": "401873053",
+   "start": "2026-11-15T14:30Z",
+   "team": "17",
+   "name": "Brenden Schooler",
+   "status": "q",
+   "athlete": "4047941",
+   "espn": {
+    "seen": "2026-11-13T23:50:33.986Z",
+    "own": "2026-11-13T22:38:00.000Z"
+   }
+  },
+  "401873058|joeyporter|q": {
+   "game": "401873058",
+   "start": "2026-11-15T18:00Z",
+   "team": "1",
+   "name": "Joey Porter Jr.",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-11-13T22:34:40.193Z",
+    "own": "2026-11-13T22:34:06.227Z",
+    "why": "@nflnewsposter.bsky.social: [Archer] George Pickens carries no injury designatio"
+   }
+  },
+  "401873058|daronbland|q": {
+   "game": "401873058",
+   "start": "2026-11-15T18:00Z",
+   "team": "1",
+   "name": "Daron Bland",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-11-13T22:34:40.193Z",
+    "own": "2026-11-13T22:34:06.227Z",
+    "why": "@nflnewsposter.bsky.social: [Archer] George Pickens carries no injury designatio"
+   }
+  },
+  "401873056|joeyporter|q": {
+   "game": "401873056",
+   "start": "2026-11-15T18:00Z",
+   "team": "5",
+   "name": "Joey Porter Jr.",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-11-13T22:34:40.193Z",
+    "own": "2026-11-13T22:34:06.227Z",
+    "why": "@nflnewsposter.bsky.social: [Archer] George Pickens carries no injury designatio"
+   }
+  },
+  "401873056|daronbland|q": {
+   "game": "401873056",
+   "start": "2026-11-15T18:00Z",
+   "team": "5",
+   "name": "Daron Bland",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-11-13T22:34:40.193Z",
+    "own": "2026-11-13T22:34:06.227Z",
+    "why": "@nflnewsposter.bsky.social: [Archer] George Pickens carries no injury designatio"
+   }
+  },
+  "401873060|joeyporter|q": {
+   "game": "401873060",
+   "start": "2026-11-15T18:00Z",
+   "team": "9",
+   "name": "Joey Porter Jr.",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-11-13T22:34:40.193Z",
+    "own": "2026-11-13T22:34:06.227Z",
+    "why": "@nflnewsposter.bsky.social: [Archer] George Pickens carries no injury designatio"
+   }
+  },
+  "401873060|daronbland|q": {
+   "game": "401873060",
+   "start": "2026-11-15T18:00Z",
+   "team": "9",
+   "name": "Daron Bland",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-11-13T22:34:40.193Z",
+    "own": "2026-11-13T22:34:06.227Z",
+    "why": "@nflnewsposter.bsky.social: [Archer] George Pickens carries no injury designatio"
+   }
+  },
+  "401873060|joshuametellus|q": {
+   "game": "401873060",
+   "start": "2026-11-15T18:00Z",
+   "team": "16",
+   "name": "Joshua Metellus",
+   "status": "q",
+   "athlete": "4046537",
+   "espn": {
+    "seen": "2026-11-13T23:50:33.986Z",
+    "own": "2026-11-13T22:38:00.000Z"
+   }
+  },
+  "401873057|joeyporter|q": {
+   "game": "401873057",
+   "start": "2026-11-15T18:00Z",
+   "team": "10",
+   "name": "Joey Porter Jr.",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-11-13T22:34:40.193Z",
+    "own": "2026-11-13T22:34:06.227Z",
+    "why": "@nflnewsposter.bsky.social: [Archer] George Pickens carries no injury designatio"
+   }
+  },
+  "401873057|daronbland|q": {
+   "game": "401873057",
+   "start": "2026-11-15T18:00Z",
+   "team": "10",
+   "name": "Daron Bland",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-11-13T22:34:40.193Z",
+    "own": "2026-11-13T22:34:06.227Z",
+    "why": "@nflnewsposter.bsky.social: [Archer] George Pickens carries no injury designatio"
+   }
+  },
+  "401873059|joeyporter|q": {
+   "game": "401873059",
+   "start": "2026-11-15T18:00Z",
+   "team": "11",
+   "name": "Joey Porter Jr.",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-11-13T22:34:40.193Z",
+    "own": "2026-11-13T22:34:06.227Z",
+    "why": "@nflnewsposter.bsky.social: [Archer] George Pickens carries no injury designatio"
+   }
+  },
+  "401873059|daronbland|q": {
+   "game": "401873059",
+   "start": "2026-11-15T18:00Z",
+   "team": "11",
+   "name": "Daron Bland",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-11-13T22:34:40.193Z",
+    "own": "2026-11-13T22:34:06.227Z",
+    "why": "@nflnewsposter.bsky.social: [Archer] George Pickens carries no injury designatio"
+   }
+  },
+  "401873055|joeyporter|q": {
+   "game": "401873055",
+   "start": "2026-11-15T18:00Z",
+   "team": "18",
+   "name": "Joey Porter Jr.",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-11-13T22:34:40.193Z",
+    "own": "2026-11-13T22:34:06.227Z",
+    "why": "@nflnewsposter.bsky.social: [Archer] George Pickens carries no injury designatio"
+   }
+  },
+  "401873055|daronbland|q": {
+   "game": "401873055",
+   "start": "2026-11-15T18:00Z",
+   "team": "18",
+   "name": "Daron Bland",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-11-13T22:34:40.193Z",
+    "own": "2026-11-13T22:34:06.227Z",
+    "why": "@nflnewsposter.bsky.social: [Archer] George Pickens carries no injury designatio"
+   }
+  },
+  "401873054|joeyporter|q": {
+   "game": "401873054",
+   "start": "2026-11-15T18:00Z",
+   "team": "20",
+   "name": "Joey Porter Jr.",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-11-13T22:34:40.193Z",
+    "own": "2026-11-13T22:34:06.227Z",
+    "why": "@nflnewsposter.bsky.social: [Archer] George Pickens carries no injury designatio"
+   }
+  },
+  "401873054|daronbland|q": {
+   "game": "401873054",
+   "start": "2026-11-15T18:00Z",
+   "team": "20",
+   "name": "Daron Bland",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-11-13T22:34:40.193Z",
+    "own": "2026-11-13T22:34:06.227Z",
+    "why": "@nflnewsposter.bsky.social: [Archer] George Pickens carries no injury designatio"
+   }
+  },
+  "401873054|spencerbrown|out": {
+   "game": "401873054",
+   "start": "2026-11-15T18:00Z",
+   "team": "2",
+   "name": "Spencer Brown",
+   "status": "out",
+   "athlete": "4030899",
+   "espn": {
+    "seen": "2026-11-13T23:50:33.986Z",
+    "own": "2026-11-13T22:37:00.000Z"
+   }
+  },
+  "401873062|joeyporter|q": {
+   "game": "401873062",
+   "start": "2026-11-15T21:05Z",
+   "team": "13",
+   "name": "Joey Porter Jr.",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-11-13T22:34:40.193Z",
+    "own": "2026-11-13T22:34:06.227Z",
+    "why": "@nflnewsposter.bsky.social: [Archer] George Pickens carries no injury designatio"
+   }
+  },
+  "401873062|daronbland|q": {
+   "game": "401873062",
+   "start": "2026-11-15T21:05Z",
+   "team": "13",
+   "name": "Daron Bland",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-11-13T22:34:40.193Z",
+    "own": "2026-11-13T22:34:06.227Z",
+    "why": "@nflnewsposter.bsky.social: [Archer] George Pickens carries no injury designatio"
+   }
+  },
+  "401873061|joeyporter|q": {
+   "game": "401873061",
+   "start": "2026-11-15T21:05Z",
+   "team": "22",
+   "name": "Joey Porter Jr.",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-11-13T22:34:40.193Z",
+    "own": "2026-11-13T22:34:06.227Z",
+    "why": "@nflnewsposter.bsky.social: [Archer] George Pickens carries no injury designatio"
+   }
+  },
+  "401873061|daronbland|q": {
+   "game": "401873061",
+   "start": "2026-11-15T21:05Z",
+   "team": "22",
+   "name": "Daron Bland",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-11-13T22:34:40.193Z",
+    "own": "2026-11-13T22:34:06.227Z",
+    "why": "@nflnewsposter.bsky.social: [Archer] George Pickens carries no injury designatio"
+   }
+  },
+  "401873063|daronbland|q": {
+   "game": "401873063",
+   "start": "2026-11-15T21:25Z",
+   "team": "6",
+   "name": "DaRon Bland",
+   "status": "q",
+   "athlete": "4248911",
+   "espn": {
+    "seen": "2026-11-13T23:50:33.986Z",
+    "own": "2026-11-13T22:52:00.000Z"
+   },
+   "bluesky": {
+    "seen": "2026-11-13T22:34:40.193Z",
+    "own": "2026-11-13T22:34:06.227Z",
+    "why": "@nflnewsposter.bsky.social: [Archer] George Pickens carries no injury designatio"
+   }
+  },
+  "401873063|juanyehthomas|out": {
+   "game": "401873063",
+   "start": "2026-11-15T21:25Z",
+   "team": "6",
+   "name": "Juanyeh Thomas",
+   "status": "out",
+   "athlete": "4360590",
+   "espn": {
+    "seen": "2026-11-13T23:50:33.986Z",
+    "own": "2026-11-13T22:51:00.000Z"
+   }
+  },
+  "401873063|donovanezeiruaku|out": {
+   "game": "401873063",
+   "start": "2026-11-15T21:25Z",
+   "team": "6",
+   "name": "Donovan Ezeiruaku",
+   "status": "out",
+   "athlete": "4683848",
+   "espn": {
+    "seen": "2026-11-13T23:50:33.986Z",
+    "own": "2026-11-13T22:51:00.000Z"
+   }
+  },
+  "401873063|jonathanmingo|out": {
+   "game": "401873063",
+   "start": "2026-11-15T21:25Z",
+   "team": "6",
+   "name": "Jonathan Mingo",
+   "status": "out",
+   "athlete": "4426485",
+   "espn": {
+    "seen": "2026-11-13T23:50:33.986Z",
+    "own": "2026-11-13T00:13:00.000Z"
+   }
+  },
+  "401873064|joeyporter|q": {
+   "game": "401873064",
+   "start": "2026-11-16T01:20Z",
+   "team": "4",
+   "name": "Joey Porter Jr.",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-11-13T22:34:40.193Z",
+    "own": "2026-11-13T22:34:06.227Z",
+    "why": "@nflnewsposter.bsky.social: [Archer] George Pickens carries no injury designatio"
+   }
+  },
+  "401873064|daronbland|q": {
+   "game": "401873064",
+   "start": "2026-11-16T01:20Z",
+   "team": "4",
+   "name": "Daron Bland",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-11-13T22:34:40.193Z",
+    "own": "2026-11-13T22:34:06.227Z",
+    "why": "@nflnewsposter.bsky.social: [Archer] George Pickens carries no injury designatio"
    }
   }
  }

@@ -6,36 +6,10 @@
   "nflnewsreposterbot.bsky.social": "2026-11-13T18:01:20.702Z",
   "insidenflnews.bsky.social": "2026-11-13T22:30:29.242Z",
   "nflnewsposter.bsky.social": "2026-11-13T22:34:06.227Z",
-  "rotoworld-fb.bsky.social": "2026-11-13T22:18:13.000Z",
-  "rotowirenfl.bsky.social": "2026-11-13T22:17:12.000Z"
+  "rotoworld-fb.bsky.social": "2026-11-13T23:07:20.000Z",
+  "rotowirenfl.bsky.social": "2026-11-13T23:05:20.000Z"
  },
  "claims": [
-  {
-   "id": "at://did:plc:fuqjc7x4gxvnwzksnlxwbe4x/app.bsky.feed.post/3mylaut3n42g3|tremaineedmunds|out|status",
-   "at": "2026-10-23T22:43:29.960Z",
-   "seen": "2026-10-23T22:50:14.417Z",
-   "handle": "nflnewsposter.bsky.social",
-   "post": "at://did:plc:fuqjc7x4gxvnwzksnlxwbe4x/app.bsky.feed.post/3mylaut3n42g3",
-   "player": "Tremaine Edmunds",
-   "team": "NYG",
-   "status": "out",
-   "kind": "status",
-   "confidence": 0.95,
-   "text": "[Raanan] Giants middle linebacker Tremaine Edmunds is out for the season with a torn chest muscle. www.espn.com/nfl/story/_/... [Giants LB Tremaine Edmunds (chest) out for year, source says]"
-  },
-  {
-   "id": "at://did:plc:qre6zxbmr3ixhdmgsgdretb5/app.bsky.feed.post/3mylb4nsuj22j|tremaineedmunds|out|status",
-   "at": "2026-10-23T22:47:52.842Z",
-   "seen": "2026-10-23T22:50:14.417Z",
-   "handle": "adamscheftermirror.bsky.social",
-   "post": "at://did:plc:qre6zxbmr3ixhdmgsgdretb5/app.bsky.feed.post/3mylb4nsuj22j",
-   "player": "Tremaine Edmunds",
-   "team": "NYG",
-   "status": "out",
-   "kind": "status",
-   "confidence": 0.95,
-   "text": "More about New York Giants middle linebacker Tremaine Edmunds being out for the season with a torn chest muscle, via @JordanRaanan:\n\nOriginal post"
-  },
   {
    "id": "at://did:plc:mbr4badgf6yu56mquzackzew/app.bsky.feed.post/3myn6jxikk22f|jordanmason|active|return",
    "at": "2026-10-24T17:06:57.471Z",
@@ -18209,6 +18183,58 @@
    "kind": "status",
    "confidence": 0.85,
    "text": "[Archer] George Pickens carries no injury designation and will be available Sunday. Same with DeMarvion Overshown. Joey Porter Jr. is questionable after a limited practice Friday. Daron Bland added wi"
+  },
+  {
+   "id": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3n2a2bobuv42r|georgepickens|active|status",
+   "at": "2026-11-13T22:36:30.000Z",
+   "seen": "2026-11-13T23:55:26.195Z",
+   "handle": "rotoworld-fb.bsky.social",
+   "post": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3n2a2bobuv42r",
+   "player": "George Pickens",
+   "team": null,
+   "status": "active",
+   "kind": "status",
+   "confidence": 0.85,
+   "text": "George Pickens (hamstring) cleared to face 49ers"
+  },
+  {
+   "id": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3n2a2wpnc5t2y|patrickmahomes|active|status",
+   "at": "2026-11-13T22:48:17.000Z",
+   "seen": "2026-11-13T23:55:26.195Z",
+   "handle": "rotowirenfl.bsky.social",
+   "post": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3n2a2wpnc5t2y",
+   "player": "Patrick Mahomes",
+   "team": "KC",
+   "status": "active",
+   "kind": "status",
+   "confidence": 0.6,
+   "text": "Patrick Mahomes: No injury designation \n\n https://www.rotowire.com/football/player/patrick-mahomes-11839"
+  },
+  {
+   "id": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3n2a3v7w4by2s|laddmcconkey|questionable|status",
+   "at": "2026-11-13T23:05:20.000Z",
+   "seen": "2026-11-13T23:55:26.195Z",
+   "handle": "rotowirenfl.bsky.social",
+   "post": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3n2a3v7w4by2s",
+   "player": "Ladd McConkey",
+   "team": "LAC",
+   "status": "questionable",
+   "kind": "status",
+   "confidence": 0.5,
+   "text": "Ladd McConkey: Remains sidelined at practice Friday \n\n https://www.rotowire.com/football/player/ladd-mcconkey-17724"
+  },
+  {
+   "id": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3n2a3yrwkjm2r|laddmcconkey|questionable|status",
+   "at": "2026-11-13T23:07:20.000Z",
+   "seen": "2026-11-13T23:55:26.195Z",
+   "handle": "rotoworld-fb.bsky.social",
+   "post": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3n2a3yrwkjm2r",
+   "player": "Ladd McConkey",
+   "team": "LAC",
+   "status": "questionable",
+   "kind": "status",
+   "confidence": 0.5,
+   "text": "Ladd McConkey (back) misses another practice"
   }
  ]
 }

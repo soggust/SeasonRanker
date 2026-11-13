@@ -1,63 +1,11 @@
 {
  "sport": "nba",
  "cursor": {
-  "rotowirenba.bsky.social": "2026-11-13T22:15:53.000Z",
+  "rotowirenba.bsky.social": "2026-11-13T23:47:30.000Z",
   "insidenbanews.bsky.social": "2026-11-13T20:00:09.852Z",
   "shamsbot.bsky.social": "2026-11-13T20:16:26.000Z"
  },
  "claims": [
-  {
-   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mylarmwn7r2i|kellyoubre|none|benched",
-   "at": "2026-10-23T22:41:42.000Z",
-   "seen": "2026-10-23T22:50:14.417Z",
-   "handle": "rotowirenba.bsky.social",
-   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mylarmwn7r2i",
-   "player": "Kelly Oubre",
-   "team": null,
-   "status": "none",
-   "kind": "benched",
-   "confidence": 0.9,
-   "text": "Kelly Oubre: Not starting Friday \n\n https://www.rotowire.com/basketball/player/kelly-oubre-3721"
-  },
-  {
-   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mylavzpqcj2i|aaronnesmith|none|benched",
-   "at": "2026-10-23T22:44:10.000Z",
-   "seen": "2026-10-23T22:50:14.417Z",
-   "handle": "rotowirenba.bsky.social",
-   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mylavzpqcj2i",
-   "player": "Aaron Nesmith",
-   "team": null,
-   "status": "none",
-   "kind": "benched",
-   "confidence": 0.9,
-   "text": "Aaron Nesmith: Not starting Friday \n\n https://www.rotowire.com/basketball/player/aaron-nesmith-5120"
-  },
-  {
-   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mylcbnsxtj27|cameronjohnson|out|status",
-   "at": "2026-10-23T23:08:34.000Z",
-   "seen": "2026-10-24T00:23:14.453Z",
-   "handle": "rotowirenba.bsky.social",
-   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mylcbnsxtj27",
-   "player": "Cameron Johnson",
-   "team": null,
-   "status": "out",
-   "kind": "status",
-   "confidence": 0.9,
-   "text": "Cameron Johnson: Won't play Saturday \n\n https://www.rotowire.com/basketball/player/cameron-johnson-4916"
-  },
-  {
-   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3myleg3mdcf2t|keldonjohnson|active|status",
-   "at": "2026-10-23T23:46:50.000Z",
-   "seen": "2026-10-24T00:23:14.453Z",
-   "handle": "rotowirenba.bsky.social",
-   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3myleg3mdcf2t",
-   "player": "Keldon Johnson",
-   "team": null,
-   "status": "active",
-   "kind": "status",
-   "confidence": 0.9,
-   "text": "Keldon Johnson: Will play vs. Houston \n\n https://www.rotowire.com/basketball/player/keldon-johnson-4782"
-  },
   {
    "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mylgeikilg2i|reedsheppard|out|status",
    "at": "2026-10-24T00:21:44.000Z",
@@ -10184,6 +10132,58 @@
    "kind": "status",
    "confidence": 0.9,
    "text": "Precious Achiuwa: Ruled out with sore ankle \n\n https://www.rotowire.com/basketball/player/precious-achiuwa-5249"
+  },
+  {
+   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3n2a3ts6txy2p|pellelarsson|out|status",
+   "at": "2026-11-13T23:04:32.000Z",
+   "seen": "2026-11-13T23:55:26.195Z",
+   "handle": "rotowirenba.bsky.social",
+   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3n2a3ts6txy2p",
+   "player": "Pelle Larsson",
+   "team": null,
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.95,
+   "text": "Pelle Larsson: Downgraded to out \n\n https://www.rotowire.com/basketball/player/pelle-larsson-6013"
+  },
+  {
+   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3n2a4ra4ecu2m|klaythompson|out|status",
+   "at": "2026-11-13T23:21:00.000Z",
+   "seen": "2026-11-13T23:55:26.195Z",
+   "handle": "rotowirenba.bsky.social",
+   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3n2a4ra4ecu2m",
+   "player": "Klay Thompson",
+   "team": null,
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.95,
+   "text": "Klay Thompson: Ruled out Friday \n\n https://www.rotowire.com/basketball/player/klay-thompson-3197"
+  },
+  {
+   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3n2a5qrt4fe2l|ousmanedieng|none|starting",
+   "at": "2026-11-13T23:38:39.000Z",
+   "seen": "2026-11-13T23:55:26.195Z",
+   "handle": "rotowirenba.bsky.social",
+   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3n2a5qrt4fe2l",
+   "player": "Ousmane Dieng",
+   "team": null,
+   "status": "none",
+   "kind": "starting",
+   "confidence": 0.9,
+   "text": "Ousmane Dieng: Promoted to starting position \n\n https://www.rotowire.com/basketball/player/ousmane-dieng-5695"
+  },
+  {
+   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3n2a5v54wzf2q|tristandasilva|none|starting",
+   "at": "2026-11-13T23:41:05.000Z",
+   "seen": "2026-11-13T23:55:26.195Z",
+   "handle": "rotowirenba.bsky.social",
+   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3n2a5v54wzf2q",
+   "player": "Tristan da Silva",
+   "team": null,
+   "status": "none",
+   "kind": "starting",
+   "confidence": 0.9,
+   "text": "Tristan da Silva: Starting Friday \n\n https://www.rotowire.com/basketball/player/tristan-da-silva-6267"
   }
  ]
 }

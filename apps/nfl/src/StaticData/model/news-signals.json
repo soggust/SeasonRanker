@@ -23,40 +23,7 @@
    "confidence": 0.5,
    "headline": "Dolphins hopeful QB Malik Willis will be back this season",
    "at": "2026-11-12T01:12:02.000Z"
-  },
-  {
-   "team": "14",
-   "abbr": "LAR",
-   "athlete": "16800",
-   "player": "Davante Adams",
-   "kind": "return",
-   "direction": "up",
-   "confidence": 0.4,
-   "headline": "Sean McVay: Rams optimistic WR Davante Adams will return 'sooner than later'",
-   "at": "2026-11-11T23:36:14.000Z"
-  },
-  {
-   "team": "22",
-   "abbr": "ARI",
-   "athlete": "4430841",
-   "player": "Carson Beck",
-   "kind": "starting",
-   "direction": "up",
-   "confidence": 0.9,
-   "headline": "Cardinals to start rookie QB Carson Beck against Rams",
-   "at": "2026-11-11T22:47:54.000Z"
-  },
-  {
-   "team": "22",
-   "abbr": "ARI",
-   "athlete": "4038524",
-   "player": "Gardner Minshew II",
-   "kind": "benched",
-   "direction": "down",
-   "confidence": 0.8,
-   "headline": "Cardinals to start rookie QB Carson Beck against Rams",
-   "at": "2026-11-11T22:47:54.000Z"
   }
  ],
- "at": "2026-11-13T21:17:25.268Z"
+ "at": "2026-11-13T23:55:26.195Z"
 }

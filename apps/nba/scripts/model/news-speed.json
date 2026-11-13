@@ -19024,6 +19024,11 @@
     "seen": "2026-11-13T18:24:22.867Z",
     "own": "2026-11-13T18:20:23.000Z",
     "why": "@rotowirenba.bsky.social: Pelle Larsson: Downgraded to doubtful \n\n https://www.r"
+   },
+   "athlete": "4601025",
+   "espn": {
+    "seen": "2026-11-13T23:53:33.121Z",
+    "own": "2026-11-13T23:04:00.000Z"
    }
   },
   "401909299|pellelarsson|out": {
@@ -19362,6 +19367,30 @@
     "seen": "2026-11-13T22:17:04.648Z",
     "own": "2026-11-13T21:20:31.000Z",
     "why": "@rotowirenba.bsky.social: Precious Achiuwa: Ruled out with sore ankle \n\n https:/"
+   }
+  },
+  "401909298|klaythompson|out": {
+   "game": "401909298",
+   "start": "2026-11-14T01:00Z",
+   "team": "14",
+   "name": "Klay Thompson",
+   "status": "out",
+   "athlete": "6475",
+   "espn": {
+    "seen": "2026-11-13T23:53:33.121Z",
+    "own": "2026-11-13T23:21:00.000Z"
+   }
+  },
+  "401909298|naeqwantomlin|out": {
+   "game": "401909298",
+   "start": "2026-11-14T01:00Z",
+   "team": "5",
+   "name": "Nae'Qwan Tomlin",
+   "status": "out",
+   "athlete": "5106268",
+   "espn": {
+    "seen": "2026-11-13T23:53:33.121Z",
+    "own": "2026-10-20T15:11:00.000Z"
    }
   }
  }

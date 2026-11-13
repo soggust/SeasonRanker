@@ -9910,6 +9910,30 @@
     "own": "2026-11-13T22:07:12.000Z",
     "why": "@dailyfaceoff.bsky.social: Blue Jackets’ Garland placed on IR, Monahan day-to-da"
    }
+  },
+  "401892706|guillaumebrisebois|out": {
+   "game": "401892706",
+   "start": "2026-11-14T02:00Z",
+   "team": "22",
+   "name": "Guillaume Brisebois",
+   "status": "out",
+   "athlete": "3942866",
+   "espn": {
+    "seen": "2026-11-13T23:53:50.489Z",
+    "own": "2026-11-13T22:59:00.000Z"
+   }
+  },
+  "401892718|logancooley|out": {
+   "game": "401892718",
+   "start": "2026-11-15T02:00Z",
+   "team": "129764",
+   "name": "Logan Cooley",
+   "status": "out",
+   "athlete": "5080143",
+   "espn": {
+    "seen": "2026-11-13T23:53:50.489Z",
+    "own": "2026-11-13T23:19:00.000Z"
+   }
   }
  }
 }
