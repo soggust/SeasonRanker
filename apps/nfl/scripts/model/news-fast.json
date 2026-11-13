@@ -1,7 +1,7 @@
 {
  "sport": "nfl",
  "cursor": {
-  "adamscheftermirror.bsky.social": "2026-11-13T12:25:31.677Z",
+  "adamscheftermirror.bsky.social": "2026-11-13T12:40:34.837Z",
   "rapsheet.bsky.social": "2026-11-13T00:15:15.301Z",
   "nflnewsreposterbot.bsky.social": "2026-11-10T18:38:15.366Z",
   "insidenflnews.bsky.social": "2026-11-13T04:14:09.767Z",
@@ -10,19 +10,6 @@
   "rotowirenfl.bsky.social": "2026-11-13T05:17:47.000Z"
  },
  "claims": [
-  {
-   "id": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3myk75xxqjd2l|ricodowdle|questionable|status",
-   "at": "2026-10-23T12:40:09.000Z",
-   "seen": "2026-10-23T12:59:32.424Z",
-   "handle": "rotoworld-fb.bsky.social",
-   "post": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3myk75xxqjd2l",
-   "player": "Rico Dowdle",
-   "team": null,
-   "status": "questionable",
-   "kind": "status",
-   "confidence": 0.9,
-   "text": "Rico Dowdle (knee) questionable for Week 7"
-  },
   {
    "id": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3mykaiwwlja2o|ricodowdle|questionable|status",
    "at": "2026-10-23T13:04:11.000Z",
