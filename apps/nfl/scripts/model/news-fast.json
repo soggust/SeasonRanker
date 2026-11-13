@@ -4,7 +4,7 @@
   "adamscheftermirror.bsky.social": "2026-11-13T01:10:30.047Z",
   "rapsheet.bsky.social": "2026-11-13T00:15:15.301Z",
   "nflnewsreposterbot.bsky.social": "2026-11-10T18:38:15.366Z",
-  "insidenflnews.bsky.social": "2026-11-13T02:01:50.901Z",
+  "insidenflnews.bsky.social": "2026-11-13T03:00:34.292Z",
   "nflnewsposter.bsky.social": "2026-11-12T23:44:21.588Z",
   "rotoworld-fb.bsky.social": "2026-11-13T02:07:53.000Z",
   "rotowirenfl.bsky.social": "2026-11-13T00:39:12.000Z"
@@ -18313,6 +18313,19 @@
    "kind": "status",
    "confidence": 0.97,
    "text": "Rams placed WR Puka Nacua on injured reserve due to his MCL injury. HC Sean McVay has said he expects Nacua to miss “extended time.”\n\nOriginal post"
+  },
+  {
+   "id": "at://did:plc:mbr4badgf6yu56mquzackzew/app.bsky.feed.post/3n25y2ly5uc27|chigokonkwo|active|status",
+   "at": "2026-11-13T02:51:26.814Z",
+   "seen": "2026-11-13T03:01:49.640Z",
+   "handle": "insidenflnews.bsky.social",
+   "post": "at://did:plc:mbr4badgf6yu56mquzackzew/app.bsky.feed.post/3n25y2ly5uc27",
+   "player": "Chig Okonkwo",
+   "team": null,
+   "status": "active",
+   "kind": "status",
+   "confidence": 0.9,
+   "text": "Status alert: Chig Okonkwo (back) has returned to Thursday's game."
   }
  ]
 }

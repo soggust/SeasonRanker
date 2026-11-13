@@ -3,24 +3,11 @@
  "cursor": {
   "johnston-bot.bsky.social": "2026-11-12T16:02:25.547Z",
   "notfriedgehnic.bsky.social": "2026-11-12T16:59:13.353Z",
-  "dailyfaceoff.bsky.social": "2026-11-13T01:30:30.000Z",
-  "dfotoronto.bsky.social": "2026-11-13T01:18:49.000Z",
+  "dailyfaceoff.bsky.social": "2026-11-13T02:45:57.000Z",
+  "dfotoronto.bsky.social": "2026-11-13T02:43:54.000Z",
   "marklazerus.bsky.social": "2026-11-13T01:33:14.446Z"
  },
  "claims": [
-  {
-   "id": "at://did:plc:knaj2vcp4x6t7hr7ewd6e3uz/app.bsky.feed.post/3myj6mijtxu2x|marshallrifai|out|status",
-   "at": "2026-10-23T02:57:43.000Z",
-   "seen": "2026-10-23T03:01:36.326Z",
-   "handle": "dfotoronto.bsky.social",
-   "post": "at://did:plc:knaj2vcp4x6t7hr7ewd6e3uz/app.bsky.feed.post/3myj6mijtxu2x",
-   "player": "Marshall Rifai",
-   "team": null,
-   "status": "out",
-   "kind": "status",
-   "confidence": 0.9,
-   "text": "Marshall Rifai is out week-to-week with a lower-body injury and will be placed on IR"
-  },
   {
    "id": "at://did:plc:knaj2vcp4x6t7hr7ewd6e3uz/app.bsky.feed.post/3myj75vgglb2e|marshallrifai|out|status",
    "at": "2026-10-23T03:07:27.000Z",
