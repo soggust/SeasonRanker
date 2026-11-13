@@ -1,54 +1,15 @@
 {
  "sport": "nfl",
  "cursor": {
-  "adamscheftermirror.bsky.social": "2026-11-13T15:45:33.831Z",
+  "adamscheftermirror.bsky.social": "2026-11-13T16:00:34.431Z",
   "rapsheet.bsky.social": "2026-11-13T00:15:15.301Z",
   "nflnewsreposterbot.bsky.social": "2026-11-10T18:38:15.366Z",
   "insidenflnews.bsky.social": "2026-11-13T14:33:06.610Z",
   "nflnewsposter.bsky.social": "2026-11-13T15:37:53.529Z",
-  "rotoworld-fb.bsky.social": "2026-11-13T15:51:12.000Z",
-  "rotowirenfl.bsky.social": "2026-11-13T15:51:51.000Z"
+  "rotoworld-fb.bsky.social": "2026-11-13T16:04:42.000Z",
+  "rotowirenfl.bsky.social": "2026-11-13T16:14:24.000Z"
  },
  "claims": [
-  {
-   "id": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3mykktpe5pa22|tylerwarren|questionable|status",
-   "at": "2026-10-23T16:09:10.000Z",
-   "seen": "2026-10-23T16:11:28.722Z",
-   "handle": "rotowirenfl.bsky.social",
-   "post": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3mykktpe5pa22",
-   "player": "Tyler Warren",
-   "team": "IND",
-   "status": "questionable",
-   "kind": "status",
-   "confidence": 0.3,
-   "text": "Tyler Warren: Remains out of practice Friday \n\n https://www.rotowire.com/football/player/tyler-warren-18534"
-  },
-  {
-   "id": "at://did:plc:fuqjc7x4gxvnwzksnlxwbe4x/app.bsky.feed.post/3mykkyp3ivs2d|lamarjackson|limited|status",
-   "at": "2026-10-23T16:11:57.656Z",
-   "seen": "2026-10-23T16:32:56.353Z",
-   "handle": "nflnewsposter.bsky.social",
-   "post": "at://did:plc:fuqjc7x4gxvnwzksnlxwbe4x/app.bsky.feed.post/3mykkyp3ivs2d",
-   "player": "Lamar Jackson",
-   "team": "BAL",
-   "status": "limited",
-   "kind": "status",
-   "confidence": 0.9,
-   "text": "[Hensley] Lamar Jackson has just come out onto the field for Friday's practice, which continues to be an encouraging sign.\n\nJackson has been limited for the past two practices. He's dealing with a lef"
-  },
-  {
-   "id": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3mykl6at7rf26|lamarjackson|limited|status",
-   "at": "2026-10-23T16:15:03.000Z",
-   "seen": "2026-10-23T16:32:56.353Z",
-   "handle": "rotoworld-fb.bsky.social",
-   "post": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3mykl6at7rf26",
-   "player": "Lamar Jackson",
-   "team": "BAL",
-   "status": "limited",
-   "kind": "status",
-   "confidence": 0.8,
-   "text": "Lamar Jackson (ankle) practicing again on Friday"
-  },
   {
    "id": "at://did:plc:mbr4badgf6yu56mquzackzew/app.bsky.feed.post/3myklxs4qtc24|emekaegbuka|doubtful|status",
    "at": "2026-10-23T16:29:21.034Z",
@@ -18209,6 +18170,32 @@
    "kind": "status",
    "confidence": 0.85,
    "text": "Glenn 'confident' Wilson (concussion) will play vs. Bills"
+  },
+  {
+   "id": "at://did:plc:qre6zxbmr3ixhdmgsgdretb5/app.bsky.feed.post/3n27e5obk7m2v|lamarjackson|out|status",
+   "at": "2026-11-13T16:00:34.431Z",
+   "seen": "2026-11-13T16:16:54.444Z",
+   "handle": "adamscheftermirror.bsky.social",
+   "post": "at://did:plc:qre6zxbmr3ixhdmgsgdretb5/app.bsky.feed.post/3n27e5obk7m2v",
+   "player": "Lamar Jackson",
+   "team": "BAL",
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.8,
+   "text": "More about Ravens QB Lamar Jackson undergoing thumb surgery for an injury that has a typical recovery timeline of six to 10 weeks, via @jamisonhensley:\n\nOriginal post"
+  },
+  {
+   "id": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3n27ef2uecm2c|omarcooper|active|status",
+   "at": "2026-11-13T16:04:42.000Z",
+   "seen": "2026-11-13T16:16:54.444Z",
+   "handle": "rotoworld-fb.bsky.social",
+   "post": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3n27ef2uecm2c",
+   "player": "Omar Cooper",
+   "team": null,
+   "status": "active",
+   "kind": "status",
+   "confidence": 0.7,
+   "text": "Omar Cooper (ankle) practicing in full Friday"
   }
  ]
 }
