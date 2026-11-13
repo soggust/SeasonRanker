@@ -1,41 +1,15 @@
 {
  "sport": "nfl",
  "cursor": {
-  "adamscheftermirror.bsky.social": "2026-11-13T13:40:32.665Z",
+  "adamscheftermirror.bsky.social": "2026-11-13T14:30:34.672Z",
   "rapsheet.bsky.social": "2026-11-13T00:15:15.301Z",
   "nflnewsreposterbot.bsky.social": "2026-11-10T18:38:15.366Z",
-  "insidenflnews.bsky.social": "2026-11-13T14:19:08.756Z",
+  "insidenflnews.bsky.social": "2026-11-13T14:33:06.610Z",
   "nflnewsposter.bsky.social": "2026-11-13T03:14:16.355Z",
-  "rotoworld-fb.bsky.social": "2026-11-13T06:53:34.000Z",
+  "rotoworld-fb.bsky.social": "2026-11-13T14:39:01.000Z",
   "rotowirenfl.bsky.social": "2026-11-13T14:05:07.000Z"
  },
  "claims": [
-  {
-   "id": "at://did:plc:fuqjc7x4gxvnwzksnlxwbe4x/app.bsky.feed.post/3mykffu5guk2g|antonharrison|out|status",
-   "at": "2026-10-23T14:31:56.719Z",
-   "seen": "2026-10-23T14:52:12.388Z",
-   "handle": "nflnewsposter.bsky.social",
-   "post": "at://did:plc:fuqjc7x4gxvnwzksnlxwbe4x/app.bsky.feed.post/3mykffu5guk2g",
-   "player": "Anton Harrison",
-   "team": "JAX",
-   "status": "out",
-   "kind": "status",
-   "confidence": 0.97,
-   "text": "[Rapoport] Jaguars starting LT Anton Harrison was revealed to have suffered a torn ACL during his surgery yesterday. \n\nThe hope was just an arthroscopic procedure, but instead there was more damage. H"
-  },
-  {
-   "id": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3mykfgtvpy72t|alvinkamara|active|status",
-   "at": "2026-10-23T14:32:29.000Z",
-   "seen": "2026-10-23T14:52:12.388Z",
-   "handle": "rotoworld-fb.bsky.social",
-   "post": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3mykfgtvpy72t",
-   "player": "Alvin Kamara",
-   "team": null,
-   "status": "active",
-   "kind": "status",
-   "confidence": 0.8,
-   "text": "Kamara (back) off injury report for Week 7"
-  },
   {
    "id": "at://did:plc:mbr4badgf6yu56mquzackzew/app.bsky.feed.post/3mykg35d67k22|adonaimitchell|active|status",
    "at": "2026-10-23T14:43:50.989Z",
@@ -18300,6 +18274,32 @@
    "kind": "starting",
    "confidence": 0.8,
    "text": "Kirk Cousins: Expected to start versus Green Bay \n\n https://www.rotowire.com/football/player/kirk-cousins-8057"
+  },
+  {
+   "id": "at://did:plc:mbr4badgf6yu56mquzackzew/app.bsky.feed.post/3n277bbigk22s|lamarjackson|out|status",
+   "at": "2026-11-13T14:33:06.610Z",
+   "seen": "2026-11-13T14:39:36.838Z",
+   "handle": "insidenflnews.bsky.social",
+   "post": "at://did:plc:mbr4badgf6yu56mquzackzew/app.bsky.feed.post/3n277bbigk22s",
+   "player": "Lamar Jackson",
+   "team": "BAL",
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.95,
+   "text": "🚨 Ravens say Lamar Jackson will miss about 6-10 weeks with broken and dislocated thumb."
+  },
+  {
+   "id": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3n277luad432r|lamarjackson|out|status",
+   "at": "2026-11-13T14:39:01.000Z",
+   "seen": "2026-11-13T14:39:36.838Z",
+   "handle": "rotoworld-fb.bsky.social",
+   "post": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3n277luad432r",
+   "player": "Lamar Jackson",
+   "team": "BAL",
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.95,
+   "text": "Minter confirms Jackson (thumb) is out 6-10 weeks"
   }
  ]
 }

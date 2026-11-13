@@ -100,29 +100,7 @@
    "confidence": 0.8,
    "headline": "Browns' Monken: Watson over Sanders QB decision based on 'full body of work'",
    "at": "2026-11-11T18:13:33.000Z"
-  },
-  {
-   "team": "13",
-   "abbr": "LV",
-   "athlete": "4837248",
-   "player": "Fernando Mendoza",
-   "kind": "starting",
-   "direction": "up",
-   "confidence": 0.95,
-   "headline": "Raiders name Fernando Mendoza starting QB after trading Kirk Cousins",
-   "at": "2026-11-11T14:30:32.000Z"
-  },
-  {
-   "team": "13",
-   "abbr": "LV",
-   "athlete": "14880",
-   "player": "Kirk Cousins",
-   "kind": "benched",
-   "direction": "down",
-   "confidence": 0.9,
-   "headline": "Raiders name Fernando Mendoza starting QB after trading Kirk Cousins",
-   "at": "2026-11-11T14:30:32.000Z"
   }
  ],
- "at": "2026-11-13T00:14:39.242Z"
+ "at": "2026-11-13T14:39:36.838Z"
 }
