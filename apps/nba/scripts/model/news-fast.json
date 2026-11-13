@@ -1,7 +1,7 @@
 {
  "sport": "nba",
  "cursor": {
-  "rotowirenba.bsky.social": "2026-11-13T17:08:16.000Z",
+  "rotowirenba.bsky.social": "2026-11-13T18:09:02.000Z",
   "insidenbanews.bsky.social": "2026-11-13T00:32:39.398Z",
   "shamsbot.bsky.social": "2026-11-08T18:05:20.000Z"
  },
@@ -10093,6 +10093,19 @@
    "kind": "status",
    "confidence": 0.95,
    "text": "Jalen Suggs: Remains questionable Friday \n\n https://www.rotowire.com/basketball/player/jalen-suggs-5379"
+  },
+  {
+   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3n27l7s552f2u|treymurphy|out|status",
+   "at": "2026-11-13T18:07:01.000Z",
+   "seen": "2026-11-13T18:11:10.622Z",
+   "handle": "rotowirenba.bsky.social",
+   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3n27l7s552f2u",
+   "player": "Trey Murphy",
+   "team": "NOP",
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.9,
+   "text": "Trey Murphy: Won't play Friday \n\n https://www.rotowire.com/basketball/player/trey-murphy-5401"
   }
  ]
 }

@@ -17056,6 +17056,30 @@
     "own": "2026-11-13T17:38:21.000Z",
     "why": "@rotowirenfl.bsky.social: Jonathon Brooks: Listed as doubtful for Week 10 \n\n htt"
    }
+  },
+  "401873062|chriscollier|q": {
+   "game": "401873062",
+   "start": "2026-11-15T21:05Z",
+   "team": "13",
+   "name": "Chris Collier",
+   "status": "q",
+   "athlete": "4698191",
+   "espn": {
+    "seen": "2026-11-13T18:08:23.504Z",
+    "own": "2026-11-13T18:03:00.000Z"
+   }
+  },
+  "401873061|hjaltefroholdt|out": {
+   "game": "401873061",
+   "start": "2026-11-15T21:05Z",
+   "team": "22",
+   "name": "Hjalte Froholdt",
+   "status": "out",
+   "athlete": "3886633",
+   "espn": {
+    "seen": "2026-11-13T18:08:23.504Z",
+    "own": "2026-11-13T01:58:00.000Z"
+   }
   }
  }
 }

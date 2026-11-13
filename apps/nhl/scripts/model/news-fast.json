@@ -3,37 +3,11 @@
  "cursor": {
   "johnston-bot.bsky.social": "2026-11-12T16:02:25.547Z",
   "notfriedgehnic.bsky.social": "2026-11-12T16:59:13.353Z",
-  "dailyfaceoff.bsky.social": "2026-11-13T17:47:32.000Z",
+  "dailyfaceoff.bsky.social": "2026-11-13T18:09:52.000Z",
   "dfotoronto.bsky.social": "2026-11-13T18:03:17.000Z",
   "marklazerus.bsky.social": "2026-11-13T18:03:19.092Z"
  },
  "claims": [
-  {
-   "id": "at://did:plc:sdobrsxnvwczrjydmnubhibh/app.bsky.feed.post/3mykrmjsvb726|hunt|active|status",
-   "at": "2026-10-23T18:10:25.583Z",
-   "seen": "2026-10-23T22:50:14.417Z",
-   "handle": "notfriedgehnic.bsky.social",
-   "post": "at://did:plc:sdobrsxnvwczrjydmnubhibh/app.bsky.feed.post/3mykrmjsvb726",
-   "player": "Hunt",
-   "team": "MIN",
-   "status": "active",
-   "kind": "status",
-   "confidence": 0.5,
-   "text": "Cleared \n\nHunt (MIN) & St. Ivany (WIN) on waivers"
-  },
-  {
-   "id": "at://did:plc:sdobrsxnvwczrjydmnubhibh/app.bsky.feed.post/3mykrmjsvb726|stivany|active|status",
-   "at": "2026-10-23T18:10:25.583Z",
-   "seen": "2026-10-23T22:50:14.417Z",
-   "handle": "notfriedgehnic.bsky.social",
-   "post": "at://did:plc:sdobrsxnvwczrjydmnubhibh/app.bsky.feed.post/3mykrmjsvb726",
-   "player": "St. Ivany",
-   "team": "WIN",
-   "status": "active",
-   "kind": "status",
-   "confidence": 0.5,
-   "text": "Cleared \n\nHunt (MIN) & St. Ivany (WIN) on waivers"
-  },
   {
    "id": "at://did:plc:3uus7y6h3rlrk6sbctzxm4bg/app.bsky.feed.post/3mylh7xvufl2f|devonlevi|out|status",
    "at": "2026-10-24T00:37:06.000Z",
