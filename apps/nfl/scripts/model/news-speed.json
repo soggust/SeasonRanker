@@ -12351,6 +12351,11 @@
    "espn": {
     "seen": "2026-11-10T00:00:42.694Z",
     "own": "2026-11-09T18:46:00.000Z"
+   },
+   "bluesky": {
+    "seen": "2026-11-13T17:42:20.391Z",
+    "own": "2026-11-13T17:38:21.000Z",
+    "why": "@rotowirenfl.bsky.social: Jonathon Brooks: Listed as doubtful for Week 10 \n\n htt"
    }
   },
   "401873055|bradychristensen|out": {
@@ -16894,6 +16899,162 @@
     "seen": "2026-11-13T16:58:21.272Z",
     "own": "2026-11-13T16:45:22.000Z",
     "why": "@rotowirenfl.bsky.social: Amon-Ra St. Brown: Listed as questionable for Sunday \n"
+   }
+  },
+  "401873053|jonathonbrooks|out": {
+   "game": "401873053",
+   "start": "2026-11-15T14:30Z",
+   "team": "8",
+   "name": "Jonathon Brooks",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-13T17:42:20.391Z",
+    "own": "2026-11-13T17:38:21.000Z",
+    "why": "@rotowirenfl.bsky.social: Jonathon Brooks: Listed as doubtful for Week 10 \n\n htt"
+   }
+  },
+  "401873058|jonathonbrooks|out": {
+   "game": "401873058",
+   "start": "2026-11-15T18:00Z",
+   "team": "1",
+   "name": "Jonathon Brooks",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-13T17:42:20.391Z",
+    "own": "2026-11-13T17:38:21.000Z",
+    "why": "@rotowirenfl.bsky.social: Jonathon Brooks: Listed as doubtful for Week 10 \n\n htt"
+   }
+  },
+  "401873056|jonathonbrooks|out": {
+   "game": "401873056",
+   "start": "2026-11-15T18:00Z",
+   "team": "5",
+   "name": "Jonathon Brooks",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-13T17:42:20.391Z",
+    "own": "2026-11-13T17:38:21.000Z",
+    "why": "@rotowirenfl.bsky.social: Jonathon Brooks: Listed as doubtful for Week 10 \n\n htt"
+   }
+  },
+  "401873060|jonathonbrooks|out": {
+   "game": "401873060",
+   "start": "2026-11-15T18:00Z",
+   "team": "9",
+   "name": "Jonathon Brooks",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-13T17:42:20.391Z",
+    "own": "2026-11-13T17:38:21.000Z",
+    "why": "@rotowirenfl.bsky.social: Jonathon Brooks: Listed as doubtful for Week 10 \n\n htt"
+   }
+  },
+  "401873057|anthonyhill|out": {
+   "game": "401873057",
+   "start": "2026-11-15T18:00Z",
+   "team": "10",
+   "name": "Anthony Hill Jr.",
+   "status": "out",
+   "athlete": "4870805",
+   "espn": {
+    "seen": "2026-11-13T17:46:39.572Z",
+    "own": "2026-11-13T17:35:00.000Z"
+   }
+  },
+  "401873057|codybarton|out": {
+   "game": "401873057",
+   "start": "2026-11-15T18:00Z",
+   "team": "10",
+   "name": "Cody Barton",
+   "status": "out",
+   "athlete": "3926229",
+   "espn": {
+    "seen": "2026-11-13T17:46:39.572Z",
+    "own": "2026-11-13T17:35:00.000Z"
+   }
+  },
+  "401873057|peterskoronski|out": {
+   "game": "401873057",
+   "start": "2026-11-15T18:00Z",
+   "team": "10",
+   "name": "Peter Skoronski",
+   "status": "out",
+   "athlete": "4429100",
+   "espn": {
+    "seen": "2026-11-13T17:46:39.572Z",
+    "own": "2026-11-13T17:33:00.000Z"
+   }
+  },
+  "401873057|jonathonbrooks|out": {
+   "game": "401873057",
+   "start": "2026-11-15T18:00Z",
+   "team": "10",
+   "name": "Jonathon Brooks",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-13T17:42:20.391Z",
+    "own": "2026-11-13T17:38:21.000Z",
+    "why": "@rotowirenfl.bsky.social: Jonathon Brooks: Listed as doubtful for Week 10 \n\n htt"
+   }
+  },
+  "401873059|jonathonbrooks|out": {
+   "game": "401873059",
+   "start": "2026-11-15T18:00Z",
+   "team": "11",
+   "name": "Jonathon Brooks",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-13T17:42:20.391Z",
+    "own": "2026-11-13T17:38:21.000Z",
+    "why": "@rotowirenfl.bsky.social: Jonathon Brooks: Listed as doubtful for Week 10 \n\n htt"
+   }
+  },
+  "401873054|jonathonbrooks|out": {
+   "game": "401873054",
+   "start": "2026-11-15T18:00Z",
+   "team": "20",
+   "name": "Jonathon Brooks",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-13T17:42:20.391Z",
+    "own": "2026-11-13T17:38:21.000Z",
+    "why": "@rotowirenfl.bsky.social: Jonathon Brooks: Listed as doubtful for Week 10 \n\n htt"
+   }
+  },
+  "401873062|jonathonbrooks|out": {
+   "game": "401873062",
+   "start": "2026-11-15T21:05Z",
+   "team": "13",
+   "name": "Jonathon Brooks",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-13T17:42:20.391Z",
+    "own": "2026-11-13T17:38:21.000Z",
+    "why": "@rotowirenfl.bsky.social: Jonathon Brooks: Listed as doubtful for Week 10 \n\n htt"
+   }
+  },
+  "401873061|jonathonbrooks|out": {
+   "game": "401873061",
+   "start": "2026-11-15T21:05Z",
+   "team": "22",
+   "name": "Jonathon Brooks",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-13T17:42:20.391Z",
+    "own": "2026-11-13T17:38:21.000Z",
+    "why": "@rotowirenfl.bsky.social: Jonathon Brooks: Listed as doubtful for Week 10 \n\n htt"
+   }
+  },
+  "401873063|jonathonbrooks|out": {
+   "game": "401873063",
+   "start": "2026-11-15T21:25Z",
+   "team": "6",
+   "name": "Jonathon Brooks",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-13T17:42:20.391Z",
+    "own": "2026-11-13T17:38:21.000Z",
+    "why": "@rotowirenfl.bsky.social: Jonathon Brooks: Listed as doubtful for Week 10 \n\n htt"
    }
   }
  }
