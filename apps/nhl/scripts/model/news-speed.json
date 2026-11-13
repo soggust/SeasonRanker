@@ -9225,6 +9225,11 @@
    "espn": {
     "seen": "2026-11-13T16:34:04.778Z",
     "own": "2026-11-12T16:52:00.000Z"
+   },
+   "bluesky": {
+    "seen": "2026-11-13T21:17:25.268Z",
+    "own": "2026-11-13T20:44:55.000Z",
+    "why": "@dailyfaceoff.bsky.social: Devils place Johnathan Kovacevic on injured reserve, "
    }
   },
   "401892714|anthonymantha|out": {
@@ -9880,6 +9885,30 @@
    "espn": {
     "seen": "2026-11-13T21:15:54.345Z",
     "own": "2026-11-13T20:30:00.000Z"
+   }
+  },
+  "401892715|garland|out": {
+   "game": "401892715",
+   "start": "2026-11-15T00:00Z",
+   "team": "29",
+   "name": "Garland",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-13T22:17:04.648Z",
+    "own": "2026-11-13T22:07:12.000Z",
+    "why": "@dailyfaceoff.bsky.social: Blue Jackets’ Garland placed on IR, Monahan day-to-da"
+   }
+  },
+  "401892715|monahan|q": {
+   "game": "401892715",
+   "start": "2026-11-15T00:00Z",
+   "team": "29",
+   "name": "Monahan",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-11-13T22:17:04.648Z",
+    "own": "2026-11-13T22:07:12.000Z",
+    "why": "@dailyfaceoff.bsky.social: Blue Jackets’ Garland placed on IR, Monahan day-to-da"
    }
   }
  }

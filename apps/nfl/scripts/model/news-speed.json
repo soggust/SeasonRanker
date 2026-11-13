@@ -12022,6 +12022,11 @@
    "espn": {
     "seen": "2026-11-10T00:00:42.694Z",
     "own": "2026-11-06T20:48:00.000Z"
+   },
+   "bluesky": {
+    "seen": "2026-11-13T22:17:04.648Z",
+    "own": "2026-11-13T21:51:05.000Z",
+    "why": "@rotoworld-fb.bsky.social: Packers rule out Micah Parsons for Week 10"
    }
   },
   "401873060|jakobethomas|out": {
@@ -12046,6 +12051,11 @@
    "espn": {
     "seen": "2026-11-10T00:00:42.694Z",
     "own": "2026-11-09T23:49:00.000Z"
+   },
+   "bluesky": {
+    "seen": "2026-11-13T22:17:04.648Z",
+    "own": "2026-11-13T21:55:36.760Z",
+    "why": "@adamscheftermirror.bsky.social: Vikings ruled out these players for Sunday’s ga"
    }
   },
   "401873060|charlesdemmings|out": {
@@ -12070,6 +12080,11 @@
    "espn": {
     "seen": "2026-11-10T00:00:42.694Z",
     "own": "2026-11-09T23:49:00.000Z"
+   },
+   "bluesky": {
+    "seen": "2026-11-13T22:17:04.648Z",
+    "own": "2026-11-13T21:55:36.760Z",
+    "why": "@adamscheftermirror.bsky.social: Vikings ruled out these players for Sunday’s ga"
    }
   },
   "401873060|calebbanks|out": {
@@ -14606,6 +14621,11 @@
    "espn": {
     "seen": "2026-11-11T17:15:40.559Z",
     "own": "2026-11-11T17:02:00.000Z"
+   },
+   "bluesky": {
+    "seen": "2026-11-13T22:17:04.648Z",
+    "own": "2026-11-13T21:28:44.000Z",
+    "why": "@rotoworld-fb.bsky.social: Wilson, Cooper, Mitchell questionable vs. Bills"
    }
   },
   "401873052|omarcooper|q": {
@@ -17922,6 +17942,11 @@
    "espn": {
     "seen": "2026-11-13T22:12:40.472Z",
     "own": "2026-11-13T00:28:00.000Z"
+   },
+   "bluesky": {
+    "seen": "2026-11-13T22:17:04.648Z",
+    "own": "2026-11-13T21:55:36.760Z",
+    "why": "@adamscheftermirror.bsky.social: Vikings ruled out these players for Sunday’s ga"
    }
   },
   "401873057|kennethwalker|q": {
@@ -18078,6 +18103,11 @@
    "espn": {
     "seen": "2026-11-13T22:12:40.472Z",
     "own": "2026-11-13T21:18:00.000Z"
+   },
+   "bluesky": {
+    "seen": "2026-11-13T22:17:04.648Z",
+    "own": "2026-11-13T21:28:44.000Z",
+    "why": "@rotoworld-fb.bsky.social: Wilson, Cooper, Mitchell questionable vs. Bills"
    }
   },
   "401873054|kennethwalker|q": {
@@ -18270,6 +18300,570 @@
     "seen": "2026-11-13T21:17:25.268Z",
     "own": "2026-11-13T21:14:41.000Z",
     "why": "@rotowirenfl.bsky.social: T.J. Hockenson: Ruled out for Week 10 \n\n https://www.r"
+   }
+  },
+  "401873053|adonaimitchell|q": {
+   "game": "401873053",
+   "start": "2026-11-15T14:30Z",
+   "team": "8",
+   "name": "Adonai Mitchell",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-11-13T22:17:04.648Z",
+    "own": "2026-11-13T21:28:44.000Z",
+    "why": "@rotoworld-fb.bsky.social: Wilson, Cooper, Mitchell questionable vs. Bills"
+   }
+  },
+  "401873053|omarcooper|q": {
+   "game": "401873053",
+   "start": "2026-11-15T14:30Z",
+   "team": "8",
+   "name": "Omar Cooper",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-11-13T22:17:04.648Z",
+    "own": "2026-11-13T21:28:44.000Z",
+    "why": "@rotoworld-fb.bsky.social: Wilson, Cooper, Mitchell questionable vs. Bills"
+   }
+  },
+  "401873053|jordanaddison|q": {
+   "game": "401873053",
+   "start": "2026-11-15T14:30Z",
+   "team": "8",
+   "name": "Jordan Addison",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-11-13T22:17:04.648Z",
+    "own": "2026-11-13T21:19:50.000Z",
+    "why": "@rotoworld-fb.bsky.social: Jordan Addison (thumb) a surprise questionable"
+   }
+  },
+  "401873053|wilson|q": {
+   "game": "401873053",
+   "start": "2026-11-15T14:30Z",
+   "team": "8",
+   "name": "Wilson",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-11-13T22:17:04.648Z",
+    "own": "2026-11-13T21:28:44.000Z",
+    "why": "@rotoworld-fb.bsky.social: Wilson, Cooper, Mitchell questionable vs. Bills"
+   }
+  },
+  "401873058|adonaimitchell|q": {
+   "game": "401873058",
+   "start": "2026-11-15T18:00Z",
+   "team": "1",
+   "name": "Adonai Mitchell",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-11-13T22:17:04.648Z",
+    "own": "2026-11-13T21:28:44.000Z",
+    "why": "@rotoworld-fb.bsky.social: Wilson, Cooper, Mitchell questionable vs. Bills"
+   }
+  },
+  "401873058|omarcooper|q": {
+   "game": "401873058",
+   "start": "2026-11-15T18:00Z",
+   "team": "1",
+   "name": "Omar Cooper",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-11-13T22:17:04.648Z",
+    "own": "2026-11-13T21:28:44.000Z",
+    "why": "@rotoworld-fb.bsky.social: Wilson, Cooper, Mitchell questionable vs. Bills"
+   }
+  },
+  "401873058|jordanaddison|q": {
+   "game": "401873058",
+   "start": "2026-11-15T18:00Z",
+   "team": "1",
+   "name": "Jordan Addison",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-11-13T22:17:04.648Z",
+    "own": "2026-11-13T21:19:50.000Z",
+    "why": "@rotoworld-fb.bsky.social: Jordan Addison (thumb) a surprise questionable"
+   }
+  },
+  "401873058|wilson|q": {
+   "game": "401873058",
+   "start": "2026-11-15T18:00Z",
+   "team": "1",
+   "name": "Wilson",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-11-13T22:17:04.648Z",
+    "own": "2026-11-13T21:28:44.000Z",
+    "why": "@rotoworld-fb.bsky.social: Wilson, Cooper, Mitchell questionable vs. Bills"
+   }
+  },
+  "401873056|adonaimitchell|q": {
+   "game": "401873056",
+   "start": "2026-11-15T18:00Z",
+   "team": "5",
+   "name": "Adonai Mitchell",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-11-13T22:17:04.648Z",
+    "own": "2026-11-13T21:28:44.000Z",
+    "why": "@rotoworld-fb.bsky.social: Wilson, Cooper, Mitchell questionable vs. Bills"
+   }
+  },
+  "401873056|omarcooper|q": {
+   "game": "401873056",
+   "start": "2026-11-15T18:00Z",
+   "team": "5",
+   "name": "Omar Cooper",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-11-13T22:17:04.648Z",
+    "own": "2026-11-13T21:28:44.000Z",
+    "why": "@rotoworld-fb.bsky.social: Wilson, Cooper, Mitchell questionable vs. Bills"
+   }
+  },
+  "401873056|jordanaddison|q": {
+   "game": "401873056",
+   "start": "2026-11-15T18:00Z",
+   "team": "5",
+   "name": "Jordan Addison",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-11-13T22:17:04.648Z",
+    "own": "2026-11-13T21:19:50.000Z",
+    "why": "@rotoworld-fb.bsky.social: Jordan Addison (thumb) a surprise questionable"
+   }
+  },
+  "401873056|wilson|q": {
+   "game": "401873056",
+   "start": "2026-11-15T18:00Z",
+   "team": "5",
+   "name": "Wilson",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-11-13T22:17:04.648Z",
+    "own": "2026-11-13T21:28:44.000Z",
+    "why": "@rotoworld-fb.bsky.social: Wilson, Cooper, Mitchell questionable vs. Bills"
+   }
+  },
+  "401873060|adonaimitchell|q": {
+   "game": "401873060",
+   "start": "2026-11-15T18:00Z",
+   "team": "9",
+   "name": "Adonai Mitchell",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-11-13T22:17:04.648Z",
+    "own": "2026-11-13T21:28:44.000Z",
+    "why": "@rotoworld-fb.bsky.social: Wilson, Cooper, Mitchell questionable vs. Bills"
+   }
+  },
+  "401873060|omarcooper|q": {
+   "game": "401873060",
+   "start": "2026-11-15T18:00Z",
+   "team": "9",
+   "name": "Omar Cooper",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-11-13T22:17:04.648Z",
+    "own": "2026-11-13T21:28:44.000Z",
+    "why": "@rotoworld-fb.bsky.social: Wilson, Cooper, Mitchell questionable vs. Bills"
+   }
+  },
+  "401873060|wilson|q": {
+   "game": "401873060",
+   "start": "2026-11-15T18:00Z",
+   "team": "9",
+   "name": "Wilson",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-11-13T22:17:04.648Z",
+    "own": "2026-11-13T21:28:44.000Z",
+    "why": "@rotoworld-fb.bsky.social: Wilson, Cooper, Mitchell questionable vs. Bills"
+   }
+  },
+  "401873060|tyrioningramdawkins|out": {
+   "game": "401873060",
+   "start": "2026-11-15T18:00Z",
+   "team": "16",
+   "name": "Tyrion Ingram-Dawkins",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-13T22:17:04.648Z",
+    "own": "2026-11-13T21:55:36.760Z",
+    "why": "@adamscheftermirror.bsky.social: Vikings ruled out these players for Sunday’s ga"
+   }
+  },
+  "401873057|adonaimitchell|q": {
+   "game": "401873057",
+   "start": "2026-11-15T18:00Z",
+   "team": "10",
+   "name": "Adonai Mitchell",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-11-13T22:17:04.648Z",
+    "own": "2026-11-13T21:28:44.000Z",
+    "why": "@rotoworld-fb.bsky.social: Wilson, Cooper, Mitchell questionable vs. Bills"
+   }
+  },
+  "401873057|omarcooper|q": {
+   "game": "401873057",
+   "start": "2026-11-15T18:00Z",
+   "team": "10",
+   "name": "Omar Cooper",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-11-13T22:17:04.648Z",
+    "own": "2026-11-13T21:28:44.000Z",
+    "why": "@rotoworld-fb.bsky.social: Wilson, Cooper, Mitchell questionable vs. Bills"
+   }
+  },
+  "401873057|jordanaddison|q": {
+   "game": "401873057",
+   "start": "2026-11-15T18:00Z",
+   "team": "10",
+   "name": "Jordan Addison",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-11-13T22:17:04.648Z",
+    "own": "2026-11-13T21:19:50.000Z",
+    "why": "@rotoworld-fb.bsky.social: Jordan Addison (thumb) a surprise questionable"
+   }
+  },
+  "401873057|wilson|q": {
+   "game": "401873057",
+   "start": "2026-11-15T18:00Z",
+   "team": "10",
+   "name": "Wilson",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-11-13T22:17:04.648Z",
+    "own": "2026-11-13T21:28:44.000Z",
+    "why": "@rotoworld-fb.bsky.social: Wilson, Cooper, Mitchell questionable vs. Bills"
+   }
+  },
+  "401873059|adonaimitchell|q": {
+   "game": "401873059",
+   "start": "2026-11-15T18:00Z",
+   "team": "11",
+   "name": "Adonai Mitchell",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-11-13T22:17:04.648Z",
+    "own": "2026-11-13T21:28:44.000Z",
+    "why": "@rotoworld-fb.bsky.social: Wilson, Cooper, Mitchell questionable vs. Bills"
+   }
+  },
+  "401873059|omarcooper|q": {
+   "game": "401873059",
+   "start": "2026-11-15T18:00Z",
+   "team": "11",
+   "name": "Omar Cooper",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-11-13T22:17:04.648Z",
+    "own": "2026-11-13T21:28:44.000Z",
+    "why": "@rotoworld-fb.bsky.social: Wilson, Cooper, Mitchell questionable vs. Bills"
+   }
+  },
+  "401873059|jordanaddison|q": {
+   "game": "401873059",
+   "start": "2026-11-15T18:00Z",
+   "team": "11",
+   "name": "Jordan Addison",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-11-13T22:17:04.648Z",
+    "own": "2026-11-13T21:19:50.000Z",
+    "why": "@rotoworld-fb.bsky.social: Jordan Addison (thumb) a surprise questionable"
+   }
+  },
+  "401873059|wilson|q": {
+   "game": "401873059",
+   "start": "2026-11-15T18:00Z",
+   "team": "11",
+   "name": "Wilson",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-11-13T22:17:04.648Z",
+    "own": "2026-11-13T21:28:44.000Z",
+    "why": "@rotoworld-fb.bsky.social: Wilson, Cooper, Mitchell questionable vs. Bills"
+   }
+  },
+  "401873055|adonaimitchell|q": {
+   "game": "401873055",
+   "start": "2026-11-15T18:00Z",
+   "team": "18",
+   "name": "Adonai Mitchell",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-11-13T22:17:04.648Z",
+    "own": "2026-11-13T21:28:44.000Z",
+    "why": "@rotoworld-fb.bsky.social: Wilson, Cooper, Mitchell questionable vs. Bills"
+   }
+  },
+  "401873055|omarcooper|q": {
+   "game": "401873055",
+   "start": "2026-11-15T18:00Z",
+   "team": "18",
+   "name": "Omar Cooper",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-11-13T22:17:04.648Z",
+    "own": "2026-11-13T21:28:44.000Z",
+    "why": "@rotoworld-fb.bsky.social: Wilson, Cooper, Mitchell questionable vs. Bills"
+   }
+  },
+  "401873055|jordanaddison|q": {
+   "game": "401873055",
+   "start": "2026-11-15T18:00Z",
+   "team": "18",
+   "name": "Jordan Addison",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-11-13T22:17:04.648Z",
+    "own": "2026-11-13T21:19:50.000Z",
+    "why": "@rotoworld-fb.bsky.social: Jordan Addison (thumb) a surprise questionable"
+   }
+  },
+  "401873055|wilson|q": {
+   "game": "401873055",
+   "start": "2026-11-15T18:00Z",
+   "team": "18",
+   "name": "Wilson",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-11-13T22:17:04.648Z",
+    "own": "2026-11-13T21:28:44.000Z",
+    "why": "@rotoworld-fb.bsky.social: Wilson, Cooper, Mitchell questionable vs. Bills"
+   }
+  },
+  "401873054|jordanaddison|q": {
+   "game": "401873054",
+   "start": "2026-11-15T18:00Z",
+   "team": "20",
+   "name": "Jordan Addison",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-11-13T22:17:04.648Z",
+    "own": "2026-11-13T21:19:50.000Z",
+    "why": "@rotoworld-fb.bsky.social: Jordan Addison (thumb) a surprise questionable"
+   }
+  },
+  "401873054|wilson|q": {
+   "game": "401873054",
+   "start": "2026-11-15T18:00Z",
+   "team": "20",
+   "name": "Wilson",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-11-13T22:17:04.648Z",
+    "own": "2026-11-13T21:28:44.000Z",
+    "why": "@rotoworld-fb.bsky.social: Wilson, Cooper, Mitchell questionable vs. Bills"
+   }
+  },
+  "401873062|dontethornton|q": {
+   "game": "401873062",
+   "start": "2026-11-15T21:05Z",
+   "team": "13",
+   "name": "Dont'e Thornton Jr.",
+   "status": "q",
+   "athlete": "4432775",
+   "espn": {
+    "seen": "2026-11-13T22:32:31.306Z",
+    "own": "2026-11-13T22:14:00.000Z"
+   }
+  },
+  "401873062|adonaimitchell|q": {
+   "game": "401873062",
+   "start": "2026-11-15T21:05Z",
+   "team": "13",
+   "name": "Adonai Mitchell",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-11-13T22:17:04.648Z",
+    "own": "2026-11-13T21:28:44.000Z",
+    "why": "@rotoworld-fb.bsky.social: Wilson, Cooper, Mitchell questionable vs. Bills"
+   }
+  },
+  "401873062|omarcooper|q": {
+   "game": "401873062",
+   "start": "2026-11-15T21:05Z",
+   "team": "13",
+   "name": "Omar Cooper",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-11-13T22:17:04.648Z",
+    "own": "2026-11-13T21:28:44.000Z",
+    "why": "@rotoworld-fb.bsky.social: Wilson, Cooper, Mitchell questionable vs. Bills"
+   }
+  },
+  "401873062|jordanaddison|q": {
+   "game": "401873062",
+   "start": "2026-11-15T21:05Z",
+   "team": "13",
+   "name": "Jordan Addison",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-11-13T22:17:04.648Z",
+    "own": "2026-11-13T21:19:50.000Z",
+    "why": "@rotoworld-fb.bsky.social: Jordan Addison (thumb) a surprise questionable"
+   }
+  },
+  "401873062|wilson|q": {
+   "game": "401873062",
+   "start": "2026-11-15T21:05Z",
+   "team": "13",
+   "name": "Wilson",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-11-13T22:17:04.648Z",
+    "own": "2026-11-13T21:28:44.000Z",
+    "why": "@rotoworld-fb.bsky.social: Wilson, Cooper, Mitchell questionable vs. Bills"
+   }
+  },
+  "401873061|adonaimitchell|q": {
+   "game": "401873061",
+   "start": "2026-11-15T21:05Z",
+   "team": "22",
+   "name": "Adonai Mitchell",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-11-13T22:17:04.648Z",
+    "own": "2026-11-13T21:28:44.000Z",
+    "why": "@rotoworld-fb.bsky.social: Wilson, Cooper, Mitchell questionable vs. Bills"
+   }
+  },
+  "401873061|omarcooper|q": {
+   "game": "401873061",
+   "start": "2026-11-15T21:05Z",
+   "team": "22",
+   "name": "Omar Cooper",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-11-13T22:17:04.648Z",
+    "own": "2026-11-13T21:28:44.000Z",
+    "why": "@rotoworld-fb.bsky.social: Wilson, Cooper, Mitchell questionable vs. Bills"
+   }
+  },
+  "401873061|jordanaddison|q": {
+   "game": "401873061",
+   "start": "2026-11-15T21:05Z",
+   "team": "22",
+   "name": "Jordan Addison",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-11-13T22:17:04.648Z",
+    "own": "2026-11-13T21:19:50.000Z",
+    "why": "@rotoworld-fb.bsky.social: Jordan Addison (thumb) a surprise questionable"
+   }
+  },
+  "401873061|wilson|q": {
+   "game": "401873061",
+   "start": "2026-11-15T21:05Z",
+   "team": "22",
+   "name": "Wilson",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-11-13T22:17:04.648Z",
+    "own": "2026-11-13T21:28:44.000Z",
+    "why": "@rotoworld-fb.bsky.social: Wilson, Cooper, Mitchell questionable vs. Bills"
+   }
+  },
+  "401873063|adonaimitchell|q": {
+   "game": "401873063",
+   "start": "2026-11-15T21:25Z",
+   "team": "6",
+   "name": "Adonai Mitchell",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-11-13T22:17:04.648Z",
+    "own": "2026-11-13T21:28:44.000Z",
+    "why": "@rotoworld-fb.bsky.social: Wilson, Cooper, Mitchell questionable vs. Bills"
+   }
+  },
+  "401873063|omarcooper|q": {
+   "game": "401873063",
+   "start": "2026-11-15T21:25Z",
+   "team": "6",
+   "name": "Omar Cooper",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-11-13T22:17:04.648Z",
+    "own": "2026-11-13T21:28:44.000Z",
+    "why": "@rotoworld-fb.bsky.social: Wilson, Cooper, Mitchell questionable vs. Bills"
+   }
+  },
+  "401873063|jordanaddison|q": {
+   "game": "401873063",
+   "start": "2026-11-15T21:25Z",
+   "team": "6",
+   "name": "Jordan Addison",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-11-13T22:17:04.648Z",
+    "own": "2026-11-13T21:19:50.000Z",
+    "why": "@rotoworld-fb.bsky.social: Jordan Addison (thumb) a surprise questionable"
+   }
+  },
+  "401873063|wilson|q": {
+   "game": "401873063",
+   "start": "2026-11-15T21:25Z",
+   "team": "6",
+   "name": "Wilson",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-11-13T22:17:04.648Z",
+    "own": "2026-11-13T21:28:44.000Z",
+    "why": "@rotoworld-fb.bsky.social: Wilson, Cooper, Mitchell questionable vs. Bills"
+   }
+  },
+  "401873064|adonaimitchell|q": {
+   "game": "401873064",
+   "start": "2026-11-16T01:20Z",
+   "team": "4",
+   "name": "Adonai Mitchell",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-11-13T22:17:04.648Z",
+    "own": "2026-11-13T21:28:44.000Z",
+    "why": "@rotoworld-fb.bsky.social: Wilson, Cooper, Mitchell questionable vs. Bills"
+   }
+  },
+  "401873064|omarcooper|q": {
+   "game": "401873064",
+   "start": "2026-11-16T01:20Z",
+   "team": "4",
+   "name": "Omar Cooper",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-11-13T22:17:04.648Z",
+    "own": "2026-11-13T21:28:44.000Z",
+    "why": "@rotoworld-fb.bsky.social: Wilson, Cooper, Mitchell questionable vs. Bills"
+   }
+  },
+  "401873064|jordanaddison|q": {
+   "game": "401873064",
+   "start": "2026-11-16T01:20Z",
+   "team": "4",
+   "name": "Jordan Addison",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-11-13T22:17:04.648Z",
+    "own": "2026-11-13T21:19:50.000Z",
+    "why": "@rotoworld-fb.bsky.social: Jordan Addison (thumb) a surprise questionable"
+   }
+  },
+  "401873064|wilson|q": {
+   "game": "401873064",
+   "start": "2026-11-16T01:20Z",
+   "team": "4",
+   "name": "Wilson",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-11-13T22:17:04.648Z",
+    "own": "2026-11-13T21:28:44.000Z",
+    "why": "@rotoworld-fb.bsky.social: Wilson, Cooper, Mitchell questionable vs. Bills"
    }
   }
  }

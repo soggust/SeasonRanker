@@ -1,28 +1,15 @@
 {
  "sport": "nfl",
  "cursor": {
-  "adamscheftermirror.bsky.social": "2026-11-13T21:55:37.801Z",
+  "adamscheftermirror.bsky.social": "2026-11-13T22:25:36.043Z",
   "rapsheet.bsky.social": "2026-11-13T18:15:27.700Z",
   "nflnewsreposterbot.bsky.social": "2026-11-13T18:01:20.702Z",
-  "insidenflnews.bsky.social": "2026-11-13T21:35:35.613Z",
-  "nflnewsposter.bsky.social": "2026-11-13T22:10:51.128Z",
-  "rotoworld-fb.bsky.social": "2026-11-13T22:13:43.000Z",
-  "rotowirenfl.bsky.social": "2026-11-13T22:12:13.000Z"
+  "insidenflnews.bsky.social": "2026-11-13T22:30:29.242Z",
+  "nflnewsposter.bsky.social": "2026-11-13T22:34:06.227Z",
+  "rotoworld-fb.bsky.social": "2026-11-13T22:18:13.000Z",
+  "rotowirenfl.bsky.social": "2026-11-13T22:17:12.000Z"
  },
  "claims": [
-  {
-   "id": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3myl7rbz54w25|saquonbarkley|limited|status",
-   "at": "2026-10-23T22:23:37.000Z",
-   "seen": "2026-10-23T22:50:14.417Z",
-   "handle": "rotoworld-fb.bsky.social",
-   "post": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3myl7rbz54w25",
-   "player": "Saquon Barkley",
-   "team": "PHI",
-   "status": "limited",
-   "kind": "status",
-   "confidence": 0.75,
-   "text": "Barkley (hamstring) logs second limited session"
-  },
   {
    "id": "at://did:plc:fuqjc7x4gxvnwzksnlxwbe4x/app.bsky.feed.post/3mylaut3n42g3|tremaineedmunds|out|status",
    "at": "2026-10-23T22:43:29.960Z",
@@ -18105,6 +18092,123 @@
    "kind": "status",
    "confidence": 0.9,
    "text": "Deebo Samuel (hamstring) will play in Week 10"
+  },
+  {
+   "id": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3n27z74zhgw2z|georgepickens|active|return",
+   "at": "2026-11-13T22:17:12.000Z",
+   "seen": "2026-11-13T22:34:40.193Z",
+   "handle": "rotowirenfl.bsky.social",
+   "post": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3n27z74zhgw2z",
+   "player": "George Pickens",
+   "team": null,
+   "status": "active",
+   "kind": "return",
+   "confidence": 0.9,
+   "text": "George Pickens: Clear for return in Week 10 \n\n https://www.rotowire.com/football/player/george-pickens-15853"
+  },
+  {
+   "id": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3n27zaxza5q25|trentwilliams|questionable|status",
+   "at": "2026-11-13T22:18:13.000Z",
+   "seen": "2026-11-13T22:34:40.193Z",
+   "handle": "rotoworld-fb.bsky.social",
+   "post": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3n27zaxza5q25",
+   "player": "Trent Williams",
+   "team": "SF",
+   "status": "questionable",
+   "kind": "status",
+   "confidence": 0.9,
+   "text": "Trent Williams (shoulder) questionable to play"
+  },
+  {
+   "id": "at://did:plc:qre6zxbmr3ixhdmgsgdretb5/app.bsky.feed.post/3n27zo5oudh2g|deebosamuel|active|status",
+   "at": "2026-11-13T22:25:36.043Z",
+   "seen": "2026-11-13T22:34:40.193Z",
+   "handle": "adamscheftermirror.bsky.social",
+   "post": "at://did:plc:qre6zxbmr3ixhdmgsgdretb5/app.bsky.feed.post/3n27zo5oudh2g",
+   "player": "Deebo Samuel",
+   "team": "SF",
+   "status": "active",
+   "kind": "status",
+   "confidence": 0.9,
+   "text": "49ers WR Deebo Samuel is off the injury report and good to go for Sunday’s game vs. the Cowboys, however San Francisco WR Mike Evans has been ruled out due to an Achilles injury.\n\nOriginal post"
+  },
+  {
+   "id": "at://did:plc:qre6zxbmr3ixhdmgsgdretb5/app.bsky.feed.post/3n27zo5oudh2g|mikeevans|out|status",
+   "at": "2026-11-13T22:25:36.043Z",
+   "seen": "2026-11-13T22:34:40.193Z",
+   "handle": "adamscheftermirror.bsky.social",
+   "post": "at://did:plc:qre6zxbmr3ixhdmgsgdretb5/app.bsky.feed.post/3n27zo5oudh2g",
+   "player": "Mike Evans",
+   "team": "SF",
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.9,
+   "text": "49ers WR Deebo Samuel is off the injury report and good to go for Sunday’s game vs. the Cowboys, however San Francisco WR Mike Evans has been ruled out due to an Achilles injury.\n\nOriginal post"
+  },
+  {
+   "id": "at://did:plc:mbr4badgf6yu56mquzackzew/app.bsky.feed.post/3n27zwv7r6k2y|mikeevans|out|status",
+   "at": "2026-11-13T22:30:29.242Z",
+   "seen": "2026-11-13T22:34:40.193Z",
+   "handle": "insidenflnews.bsky.social",
+   "post": "at://did:plc:mbr4badgf6yu56mquzackzew/app.bsky.feed.post/3n27zwv7r6k2y",
+   "player": "Mike Evans",
+   "team": "SF",
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.9,
+   "text": "49ers WR Mike Evans (Achilles) has been ruled out for Week 10."
+  },
+  {
+   "id": "at://did:plc:fuqjc7x4gxvnwzksnlxwbe4x/app.bsky.feed.post/3n2a25e5mlsot|georgepickens|active|status",
+   "at": "2026-11-13T22:34:06.227Z",
+   "seen": "2026-11-13T22:34:40.193Z",
+   "handle": "nflnewsposter.bsky.social",
+   "post": "at://did:plc:fuqjc7x4gxvnwzksnlxwbe4x/app.bsky.feed.post/3n2a25e5mlsot",
+   "player": "George Pickens",
+   "team": null,
+   "status": "active",
+   "kind": "status",
+   "confidence": 0.8,
+   "text": "[Archer] George Pickens carries no injury designation and will be available Sunday. Same with DeMarvion Overshown. Joey Porter Jr. is questionable after a limited practice Friday. Daron Bland added wi"
+  },
+  {
+   "id": "at://did:plc:fuqjc7x4gxvnwzksnlxwbe4x/app.bsky.feed.post/3n2a25e5mlsot|demarvionovershown|active|status",
+   "at": "2026-11-13T22:34:06.227Z",
+   "seen": "2026-11-13T22:34:40.193Z",
+   "handle": "nflnewsposter.bsky.social",
+   "post": "at://did:plc:fuqjc7x4gxvnwzksnlxwbe4x/app.bsky.feed.post/3n2a25e5mlsot",
+   "player": "DeMarvion Overshown",
+   "team": null,
+   "status": "active",
+   "kind": "status",
+   "confidence": 0.8,
+   "text": "[Archer] George Pickens carries no injury designation and will be available Sunday. Same with DeMarvion Overshown. Joey Porter Jr. is questionable after a limited practice Friday. Daron Bland added wi"
+  },
+  {
+   "id": "at://did:plc:fuqjc7x4gxvnwzksnlxwbe4x/app.bsky.feed.post/3n2a25e5mlsot|joeyporter|questionable|status",
+   "at": "2026-11-13T22:34:06.227Z",
+   "seen": "2026-11-13T22:34:40.193Z",
+   "handle": "nflnewsposter.bsky.social",
+   "post": "at://did:plc:fuqjc7x4gxvnwzksnlxwbe4x/app.bsky.feed.post/3n2a25e5mlsot",
+   "player": "Joey Porter Jr.",
+   "team": null,
+   "status": "questionable",
+   "kind": "status",
+   "confidence": 0.85,
+   "text": "[Archer] George Pickens carries no injury designation and will be available Sunday. Same with DeMarvion Overshown. Joey Porter Jr. is questionable after a limited practice Friday. Daron Bland added wi"
+  },
+  {
+   "id": "at://did:plc:fuqjc7x4gxvnwzksnlxwbe4x/app.bsky.feed.post/3n2a25e5mlsot|daronbland|questionable|status",
+   "at": "2026-11-13T22:34:06.227Z",
+   "seen": "2026-11-13T22:34:40.193Z",
+   "handle": "nflnewsposter.bsky.social",
+   "post": "at://did:plc:fuqjc7x4gxvnwzksnlxwbe4x/app.bsky.feed.post/3n2a25e5mlsot",
+   "player": "Daron Bland",
+   "team": null,
+   "status": "questionable",
+   "kind": "status",
+   "confidence": 0.85,
+   "text": "[Archer] George Pickens carries no injury designation and will be available Sunday. Same with DeMarvion Overshown. Joey Porter Jr. is questionable after a limited practice Friday. Daron Bland added wi"
   }
  ]
 }

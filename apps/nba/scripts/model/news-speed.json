@@ -19237,6 +19237,11 @@
    "espn": {
     "seen": "2026-11-13T22:15:32.251Z",
     "own": "2026-11-13T21:20:00.000Z"
+   },
+   "bluesky": {
+    "seen": "2026-11-13T22:17:04.648Z",
+    "own": "2026-11-13T21:20:31.000Z",
+    "why": "@rotowirenba.bsky.social: Precious Achiuwa: Ruled out with sore ankle \n\n https:/"
    }
   },
   "401909303|dejountemurray|out": {
@@ -19261,6 +19266,102 @@
     "seen": "2026-11-13T21:17:25.268Z",
     "own": "2026-11-13T20:19:48.000Z",
     "why": "@rotowirenba.bsky.social: Dejounte Murray: Officially ruled out Friday \n\n https:"
+   }
+  },
+  "401909296|preciousachiuwa|out": {
+   "game": "401909296",
+   "start": "2026-11-14T00:00Z",
+   "team": "11",
+   "name": "Precious Achiuwa",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-13T22:17:04.648Z",
+    "own": "2026-11-13T21:20:31.000Z",
+    "why": "@rotowirenba.bsky.social: Precious Achiuwa: Ruled out with sore ankle \n\n https:/"
+   }
+  },
+  "401909297|preciousachiuwa|out": {
+   "game": "401909297",
+   "start": "2026-11-14T00:00Z",
+   "team": "19",
+   "name": "Precious Achiuwa",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-13T22:17:04.648Z",
+    "own": "2026-11-13T21:20:31.000Z",
+    "why": "@rotowirenba.bsky.social: Precious Achiuwa: Ruled out with sore ankle \n\n https:/"
+   }
+  },
+  "401909298|preciousachiuwa|out": {
+   "game": "401909298",
+   "start": "2026-11-14T01:00Z",
+   "team": "14",
+   "name": "Precious Achiuwa",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-13T22:17:04.648Z",
+    "own": "2026-11-13T21:20:31.000Z",
+    "why": "@rotowirenba.bsky.social: Precious Achiuwa: Ruled out with sore ankle \n\n https:/"
+   }
+  },
+  "401909299|preciousachiuwa|out": {
+   "game": "401909299",
+   "start": "2026-11-14T01:00Z",
+   "team": "4",
+   "name": "Precious Achiuwa",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-13T22:17:04.648Z",
+    "own": "2026-11-13T21:20:31.000Z",
+    "why": "@rotowirenba.bsky.social: Precious Achiuwa: Ruled out with sore ankle \n\n https:/"
+   }
+  },
+  "401909300|preciousachiuwa|out": {
+   "game": "401909300",
+   "start": "2026-11-14T01:00Z",
+   "team": "3",
+   "name": "Precious Achiuwa",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-13T22:17:04.648Z",
+    "own": "2026-11-13T21:20:31.000Z",
+    "why": "@rotowirenba.bsky.social: Precious Achiuwa: Ruled out with sore ankle \n\n https:/"
+   }
+  },
+  "401909301|preciousachiuwa|out": {
+   "game": "401909301",
+   "start": "2026-11-14T01:30Z",
+   "team": "10",
+   "name": "Precious Achiuwa",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-13T22:17:04.648Z",
+    "own": "2026-11-13T21:20:31.000Z",
+    "why": "@rotowirenba.bsky.social: Precious Achiuwa: Ruled out with sore ankle \n\n https:/"
+   }
+  },
+  "401909302|preciousachiuwa|out": {
+   "game": "401909302",
+   "start": "2026-11-14T02:30Z",
+   "team": "24",
+   "name": "Precious Achiuwa",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-13T22:17:04.648Z",
+    "own": "2026-11-13T21:20:31.000Z",
+    "why": "@rotowirenba.bsky.social: Precious Achiuwa: Ruled out with sore ankle \n\n https:/"
+   }
+  },
+  "401909304|preciousachiuwa|out": {
+   "game": "401909304",
+   "start": "2026-11-14T03:30Z",
+   "team": "12",
+   "name": "Precious Achiuwa",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-13T22:17:04.648Z",
+    "own": "2026-11-13T21:20:31.000Z",
+    "why": "@rotowirenba.bsky.social: Precious Achiuwa: Ruled out with sore ankle \n\n https:/"
    }
   }
  }
