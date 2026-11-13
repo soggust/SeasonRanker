@@ -1,28 +1,15 @@
 {
  "sport": "nfl",
  "cursor": {
-  "adamscheftermirror.bsky.social": "2026-11-13T17:00:36.883Z",
+  "adamscheftermirror.bsky.social": "2026-11-13T17:35:35.384Z",
   "rapsheet.bsky.social": "2026-11-13T16:47:11.751Z",
   "nflnewsreposterbot.bsky.social": "2026-11-10T18:38:15.366Z",
   "insidenflnews.bsky.social": "2026-11-13T16:50:12.210Z",
   "nflnewsposter.bsky.social": "2026-11-13T17:00:07.179Z",
   "rotoworld-fb.bsky.social": "2026-11-13T17:12:14.000Z",
-  "rotowirenfl.bsky.social": "2026-11-13T17:10:54.000Z"
+  "rotowirenfl.bsky.social": "2026-11-13T17:38:21.000Z"
  },
  "claims": [
-  {
-   "id": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3mykpykfr5h2s|jeremiyahlove|out|status",
-   "at": "2026-10-23T17:41:21.000Z",
-   "seen": "2026-10-23T22:50:14.417Z",
-   "handle": "rotowirenfl.bsky.social",
-   "post": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3mykpykfr5h2s",
-   "player": "Jeremiyah Love",
-   "team": "ARI",
-   "status": "out",
-   "kind": "status",
-   "confidence": 0.95,
-   "text": "Jeremiyah Love: Out again in Week 7 \n\n https://www.rotowire.com/football/player/jeremiyah-love-19235"
-  },
   {
    "id": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3mykq7c46ot2r|jeremiyahlove|out|status",
    "at": "2026-10-23T17:45:07.000Z",
@@ -18092,6 +18079,19 @@
    "kind": "status",
    "confidence": 0.95,
    "text": "Patriots list A.J. Brown questionable for Week 10"
+  },
+  {
+   "id": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3n27jmjpj4l2y|jonathonbrooks|doubtful|status",
+   "at": "2026-11-13T17:38:21.000Z",
+   "seen": "2026-11-13T17:42:20.391Z",
+   "handle": "rotowirenfl.bsky.social",
+   "post": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3n27jmjpj4l2y",
+   "player": "Jonathon Brooks",
+   "team": null,
+   "status": "doubtful",
+   "kind": "status",
+   "confidence": 0.95,
+   "text": "Jonathon Brooks: Listed as doubtful for Week 10 \n\n https://www.rotowire.com/football/player/jonathon-brooks-17747"
   }
  ]
 }
