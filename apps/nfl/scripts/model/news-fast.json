@@ -11,45 +11,6 @@
  },
  "claims": [
   {
-   "id": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3mykh657s4k2k|calebdouglas|active|status",
-   "at": "2026-10-23T15:03:25.000Z",
-   "seen": "2026-10-23T15:27:25.006Z",
-   "handle": "rotoworld-fb.bsky.social",
-   "post": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3mykh657s4k2k",
-   "player": "Caleb Douglas",
-   "team": null,
-   "status": "active",
-   "kind": "status",
-   "confidence": 0.9,
-   "text": "Caleb Douglas (ankle) will play vs. Jets"
-  },
-  {
-   "id": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3mykhbhzg7s25|breecehall|questionable|status",
-   "at": "2026-10-23T15:05:17.000Z",
-   "seen": "2026-10-23T15:27:25.006Z",
-   "handle": "rotowirenfl.bsky.social",
-   "post": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3mykhbhzg7s25",
-   "player": "Breece Hall",
-   "team": null,
-   "status": "questionable",
-   "kind": "status",
-   "confidence": 0.9,
-   "text": "Breece Hall: Listed questionable for Week 7 \n\n https://www.rotowire.com/football/player/breece-hall-15810"
-  },
-  {
-   "id": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3mykhorq5pe26|breecehall|questionable|status",
-   "at": "2026-10-23T15:12:43.000Z",
-   "seen": "2026-10-23T15:27:25.006Z",
-   "handle": "rotoworld-fb.bsky.social",
-   "post": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3mykhorq5pe26",
-   "player": "Breece Hall",
-   "team": null,
-   "status": "questionable",
-   "kind": "status",
-   "confidence": 0.92,
-   "text": "Breece Hall (quad) questionable vs. Dolphins"
-  },
-  {
    "id": "at://did:plc:fuqjc7x4gxvnwzksnlxwbe4x/app.bsky.feed.post/3mykiqx42xs2m|colekmet|out|status",
    "at": "2026-10-23T15:31:50.142Z",
    "seen": "2026-10-23T15:48:39.934Z",
