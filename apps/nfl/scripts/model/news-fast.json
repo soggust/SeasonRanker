@@ -1,41 +1,15 @@
 {
  "sport": "nfl",
  "cursor": {
-  "adamscheftermirror.bsky.social": "2026-11-13T14:30:34.672Z",
+  "adamscheftermirror.bsky.social": "2026-11-13T14:45:35.340Z",
   "rapsheet.bsky.social": "2026-11-13T00:15:15.301Z",
   "nflnewsreposterbot.bsky.social": "2026-11-10T18:38:15.366Z",
   "insidenflnews.bsky.social": "2026-11-13T14:33:06.610Z",
-  "nflnewsposter.bsky.social": "2026-11-13T03:14:16.355Z",
+  "nflnewsposter.bsky.social": "2026-11-13T14:46:30.700Z",
   "rotoworld-fb.bsky.social": "2026-11-13T14:39:01.000Z",
-  "rotowirenfl.bsky.social": "2026-11-13T14:05:07.000Z"
+  "rotowirenfl.bsky.social": "2026-11-13T14:48:29.000Z"
  },
  "claims": [
-  {
-   "id": "at://did:plc:mbr4badgf6yu56mquzackzew/app.bsky.feed.post/3mykg35d67k22|adonaimitchell|active|status",
-   "at": "2026-10-23T14:43:50.989Z",
-   "seen": "2026-10-23T14:52:12.388Z",
-   "handle": "insidenflnews.bsky.social",
-   "post": "at://did:plc:mbr4badgf6yu56mquzackzew/app.bsky.feed.post/3mykg35d67k22",
-   "player": "Adonai Mitchell",
-   "team": "NYJ",
-   "status": "active",
-   "kind": "status",
-   "confidence": 0.93,
-   "text": "Jets WR Adonai Mitchell (finger) will play in Week 7."
-  },
-  {
-   "id": "at://did:plc:mbr4badgf6yu56mquzackzew/app.bsky.feed.post/3mykg4b3v3222|breecehall|questionable|status",
-   "at": "2026-10-23T14:44:28.501Z",
-   "seen": "2026-10-23T14:52:12.388Z",
-   "handle": "insidenflnews.bsky.social",
-   "post": "at://did:plc:mbr4badgf6yu56mquzackzew/app.bsky.feed.post/3mykg4b3v3222",
-   "player": "Breece Hall",
-   "team": "NYJ",
-   "status": "questionable",
-   "kind": "status",
-   "confidence": 0.93,
-   "text": "Jets RB Breece Hall (quad) will be questionable for Week 7."
-  },
   {
    "id": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3mykh657s4k2k|calebdouglas|active|status",
    "at": "2026-10-23T15:03:25.000Z",
@@ -18300,6 +18274,32 @@
    "kind": "status",
    "confidence": 0.95,
    "text": "Minter confirms Jackson (thumb) is out 6-10 weeks"
+  },
+  {
+   "id": "at://did:plc:qre6zxbmr3ixhdmgsgdretb5/app.bsky.feed.post/3n277xlmh5k2s|lamarjackson|out|status",
+   "at": "2026-11-13T14:45:35.340Z",
+   "seen": "2026-11-13T15:01:42.972Z",
+   "handle": "adamscheftermirror.bsky.social",
+   "post": "at://did:plc:qre6zxbmr3ixhdmgsgdretb5/app.bsky.feed.post/3n277xlmh5k2s",
+   "player": "Lamar Jackson",
+   "team": "BAL",
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.9,
+   "text": "Ravens HC Jesse Minter said Lamar Jackson is expected to miss 6 to 10 weeks.\n\nRepost of @Ravens:\n\nOriginal post"
+  },
+  {
+   "id": "at://did:plc:fuqjc7x4gxvnwzksnlxwbe4x/app.bsky.feed.post/3n277zacuz227|lamarjackson|out|status",
+   "at": "2026-11-13T14:46:30.700Z",
+   "seen": "2026-11-13T15:01:42.972Z",
+   "handle": "nflnewsposter.bsky.social",
+   "post": "at://did:plc:fuqjc7x4gxvnwzksnlxwbe4x/app.bsky.feed.post/3n277zacuz227",
+   "player": "Lamar Jackson",
+   "team": "BAL",
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.95,
+   "text": "[Rapoport] Ravens say QB Lamar Jackson had his thumb surgery and confirm that he's out 6-10 weeks. twitter.com/rapsheet/sta..."
   }
  ]
 }
