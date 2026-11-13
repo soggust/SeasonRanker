@@ -4,25 +4,12 @@
   "adamscheftermirror.bsky.social": "2026-11-13T12:40:34.837Z",
   "rapsheet.bsky.social": "2026-11-13T00:15:15.301Z",
   "nflnewsreposterbot.bsky.social": "2026-11-10T18:38:15.366Z",
-  "insidenflnews.bsky.social": "2026-11-13T04:14:09.767Z",
+  "insidenflnews.bsky.social": "2026-11-13T13:37:21.536Z",
   "nflnewsposter.bsky.social": "2026-11-13T03:14:16.355Z",
   "rotoworld-fb.bsky.social": "2026-11-13T06:53:34.000Z",
-  "rotowirenfl.bsky.social": "2026-11-13T13:12:07.000Z"
+  "rotowirenfl.bsky.social": "2026-11-13T13:18:52.000Z"
  },
  "claims": [
-  {
-   "id": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3mykbyxt5t72s|alvinkamara|active|status",
-   "at": "2026-10-23T13:31:02.000Z",
-   "seen": "2026-10-23T13:38:36.294Z",
-   "handle": "rotowirenfl.bsky.social",
-   "post": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3mykbyxt5t72s",
-   "player": "Alvin Kamara",
-   "team": "NO",
-   "status": "active",
-   "kind": "status",
-   "confidence": 0.9,
-   "text": "Alvin Kamara: Cleared from injury report \n\n https://www.rotowire.com/football/player/alvin-kamara-11732"
-  },
   {
    "id": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3mykd6f5aun2v|pukanacua|active|status",
    "at": "2026-10-23T13:51:58.000Z",
@@ -18287,6 +18274,32 @@
    "kind": "status",
    "confidence": 0.9,
    "text": "Status alert: Chig Okonkwo (back) has returned to Thursday's game."
+  },
+  {
+   "id": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3n2734k7oxo2z|treveyonhenderson|out|status",
+   "at": "2026-11-13T13:18:52.000Z",
+   "seen": "2026-11-13T13:37:25.881Z",
+   "handle": "rotowirenfl.bsky.social",
+   "post": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3n2734k7oxo2z",
+   "player": "TreVeyon Henderson",
+   "team": null,
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.7,
+   "text": "TreVeyon Henderson: Working toward return, but timetable TBD \n\n https://www.rotowire.com/football/player/treveyon-henderson-18517"
+  },
+  {
+   "id": "at://did:plc:mbr4badgf6yu56mquzackzew/app.bsky.feed.post/3n2745leg2s2s|kirkcousins|active|starting",
+   "at": "2026-11-13T13:37:21.536Z",
+   "seen": "2026-11-13T13:37:25.881Z",
+   "handle": "insidenflnews.bsky.social",
+   "post": "at://did:plc:mbr4badgf6yu56mquzackzew/app.bsky.feed.post/3n2745leg2s2s",
+   "player": "Kirk Cousins",
+   "team": "MIN",
+   "status": "active",
+   "kind": "starting",
+   "confidence": 0.7,
+   "text": "Rap: Kirk Cousins expected to start for Vikings in Week 10."
   }
  ]
 }
