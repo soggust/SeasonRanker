@@ -2,12 +2,12 @@
  "sport": "nfl",
  "cursor": {
   "adamscheftermirror.bsky.social": "2026-11-12T21:20:28.977Z",
-  "rapsheet.bsky.social": "2026-11-12T22:25:18.125Z",
+  "rapsheet.bsky.social": "2026-11-13T00:15:15.301Z",
   "nflnewsreposterbot.bsky.social": "2026-11-10T18:38:15.366Z",
   "insidenflnews.bsky.social": "2026-11-12T23:20:57.032Z",
   "nflnewsposter.bsky.social": "2026-11-12T23:44:21.588Z",
-  "rotoworld-fb.bsky.social": "2026-11-12T23:44:36.000Z",
-  "rotowirenfl.bsky.social": "2026-11-13T00:03:41.000Z"
+  "rotoworld-fb.bsky.social": "2026-11-13T00:15:43.000Z",
+  "rotowirenfl.bsky.social": "2026-11-13T00:28:11.000Z"
  },
  "claims": [
   {
@@ -18235,6 +18235,32 @@
    "kind": "status",
    "confidence": 0.6,
    "text": "Drew Lock: Remains limited in practice \n\n https://www.rotowire.com/football/player/drew-lock-13736"
+  },
+  {
+   "id": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3n25pe57mcn2d|deebosamuel|limited|status",
+   "at": "2026-11-13T00:15:43.000Z",
+   "seen": "2026-11-13T00:29:58.014Z",
+   "handle": "rotoworld-fb.bsky.social",
+   "post": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3n25pe57mcn2d",
+   "player": "Deebo Samuel",
+   "team": null,
+   "status": "limited",
+   "kind": "status",
+   "confidence": 0.9,
+   "text": "Deebo Samuel (hamstring) limited on Thursday"
+  },
+  {
+   "id": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3n25q2h4v3i2z|mikeevans|none|return",
+   "at": "2026-11-13T00:28:11.000Z",
+   "seen": "2026-11-13T00:29:58.014Z",
+   "handle": "rotowirenfl.bsky.social",
+   "post": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3n25q2h4v3i2z",
+   "player": "Mike Evans",
+   "team": null,
+   "status": "none",
+   "kind": "return",
+   "confidence": 0.3,
+   "text": "Mike Evans: Close to returning from injury \n\n https://www.rotowire.com/football/player/mike-evans-9253"
   }
  ]
 }

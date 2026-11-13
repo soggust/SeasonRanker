@@ -16958,6 +16958,42 @@
     "seen": "2026-11-13T00:00:48.559Z",
     "own": "2026-11-09T02:46:00.000Z"
    }
+  },
+  "401873052|laddmcconkey|out": {
+   "game": "401873052",
+   "start": "2026-11-13T01:15Z",
+   "team": "19",
+   "name": "Ladd McConkey",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-13T00:14:39.242Z",
+    "own": "2026-11-12T23:44:36.000Z",
+    "why": "@rotoworld-fb.bsky.social: Ladd McConkey (back) sits out to begin Week 10"
+   }
+  },
+  "401873061|tylerhigbee|q": {
+   "game": "401873061",
+   "start": "2026-11-15T21:05Z",
+   "team": "14",
+   "name": "Tyler Higbee",
+   "status": "q",
+   "athlete": "2573401",
+   "espn": {
+    "seen": "2026-11-13T00:24:13.634Z",
+    "own": "2026-11-11T00:58:00.000Z"
+   }
+  },
+  "401873063|jonathanmingo|q": {
+   "game": "401873063",
+   "start": "2026-11-15T21:25Z",
+   "team": "6",
+   "name": "Jonathan Mingo",
+   "status": "q",
+   "athlete": "4426485",
+   "espn": {
+    "seen": "2026-11-13T00:24:13.634Z",
+    "own": "2026-11-13T00:13:00.000Z"
+   }
   }
  }
 }

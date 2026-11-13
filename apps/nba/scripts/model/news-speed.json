@@ -21212,6 +21212,11 @@
    "espn": {
     "seen": "2026-11-13T00:04:58.784Z",
     "own": "2026-11-12T23:16:00.000Z"
+   },
+   "bluesky": {
+    "seen": "2026-11-13T00:14:39.242Z",
+    "own": "2026-11-12T23:16:51.000Z",
+    "why": "@rotowirenba.bsky.social: Zach Edey: Ruled out for Friday \n\n https://www.rotowir"
    }
   },
   "401909300|scottypippen|out": {
@@ -22067,6 +22072,126 @@
    "espn": {
     "seen": "2026-11-13T00:04:58.784Z",
     "own": "2026-10-28T23:41:00.000Z"
+   }
+  },
+  "401909978|zachedey|out": {
+   "game": "401909978",
+   "start": "2026-11-13T01:00Z",
+   "team": "16",
+   "name": "Zach Edey",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-13T00:14:39.242Z",
+    "own": "2026-11-12T23:16:51.000Z",
+    "why": "@rotowirenba.bsky.social: Zach Edey: Ruled out for Friday \n\n https://www.rotowir"
+   }
+  },
+  "401909979|zachedey|out": {
+   "game": "401909979",
+   "start": "2026-11-13T02:00Z",
+   "team": "21",
+   "name": "Zach Edey",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-13T00:14:39.242Z",
+    "own": "2026-11-12T23:16:51.000Z",
+    "why": "@rotowirenba.bsky.social: Zach Edey: Ruled out for Friday \n\n https://www.rotowir"
+   }
+  },
+  "401909296|zachedey|out": {
+   "game": "401909296",
+   "start": "2026-11-14T00:00Z",
+   "team": "11",
+   "name": "Zach Edey",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-13T00:14:39.242Z",
+    "own": "2026-11-12T23:16:51.000Z",
+    "why": "@rotowirenba.bsky.social: Zach Edey: Ruled out for Friday \n\n https://www.rotowir"
+   }
+  },
+  "401909297|zachedey|out": {
+   "game": "401909297",
+   "start": "2026-11-14T00:00Z",
+   "team": "19",
+   "name": "Zach Edey",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-13T00:14:39.242Z",
+    "own": "2026-11-12T23:16:51.000Z",
+    "why": "@rotowirenba.bsky.social: Zach Edey: Ruled out for Friday \n\n https://www.rotowir"
+   }
+  },
+  "401909298|zachedey|out": {
+   "game": "401909298",
+   "start": "2026-11-14T01:00Z",
+   "team": "14",
+   "name": "Zach Edey",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-13T00:14:39.242Z",
+    "own": "2026-11-12T23:16:51.000Z",
+    "why": "@rotowirenba.bsky.social: Zach Edey: Ruled out for Friday \n\n https://www.rotowir"
+   }
+  },
+  "401909299|zachedey|out": {
+   "game": "401909299",
+   "start": "2026-11-14T01:00Z",
+   "team": "4",
+   "name": "Zach Edey",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-13T00:14:39.242Z",
+    "own": "2026-11-12T23:16:51.000Z",
+    "why": "@rotowirenba.bsky.social: Zach Edey: Ruled out for Friday \n\n https://www.rotowir"
+   }
+  },
+  "401909301|zachedey|out": {
+   "game": "401909301",
+   "start": "2026-11-14T01:30Z",
+   "team": "10",
+   "name": "Zach Edey",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-13T00:14:39.242Z",
+    "own": "2026-11-12T23:16:51.000Z",
+    "why": "@rotowirenba.bsky.social: Zach Edey: Ruled out for Friday \n\n https://www.rotowir"
+   }
+  },
+  "401909302|zachedey|out": {
+   "game": "401909302",
+   "start": "2026-11-14T02:30Z",
+   "team": "24",
+   "name": "Zach Edey",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-13T00:14:39.242Z",
+    "own": "2026-11-12T23:16:51.000Z",
+    "why": "@rotowirenba.bsky.social: Zach Edey: Ruled out for Friday \n\n https://www.rotowir"
+   }
+  },
+  "401909303|zachedey|out": {
+   "game": "401909303",
+   "start": "2026-11-14T03:00Z",
+   "team": "23",
+   "name": "Zach Edey",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-13T00:14:39.242Z",
+    "own": "2026-11-12T23:16:51.000Z",
+    "why": "@rotowirenba.bsky.social: Zach Edey: Ruled out for Friday \n\n https://www.rotowir"
+   }
+  },
+  "401909304|zachedey|out": {
+   "game": "401909304",
+   "start": "2026-11-14T03:30Z",
+   "team": "12",
+   "name": "Zach Edey",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-13T00:14:39.242Z",
+    "own": "2026-11-12T23:16:51.000Z",
+    "why": "@rotowirenba.bsky.social: Zach Edey: Ruled out for Friday \n\n https://www.rotowir"
    }
   }
  }

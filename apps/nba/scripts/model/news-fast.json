@@ -1,37 +1,11 @@
 {
  "sport": "nba",
  "cursor": {
-  "rotowirenba.bsky.social": "2026-11-12T23:32:07.000Z",
+  "rotowirenba.bsky.social": "2026-11-13T00:23:53.000Z",
   "insidenbanews.bsky.social": "2026-11-12T23:35:00.879Z",
   "shamsbot.bsky.social": "2026-11-08T18:05:20.000Z"
  },
  "claims": [
-  {
-   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3myivlkilik2j|isaiahstewart|questionable|status",
-   "at": "2026-10-23T00:16:08.000Z",
-   "seen": "2026-10-23T00:29:18.410Z",
-   "handle": "rotowirenba.bsky.social",
-   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3myivlkilik2j",
-   "player": "Isaiah Stewart",
-   "team": null,
-   "status": "questionable",
-   "kind": "status",
-   "confidence": 0.95,
-   "text": "Isaiah Stewart: Tagged questionable for Friday \n\n https://www.rotowire.com/basketball/player/isaiah-stewart-5137"
-  },
-  {
-   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3myivvgjvcx2h|cedriccoward|doubtful|status",
-   "at": "2026-10-23T00:21:39.000Z",
-   "seen": "2026-10-23T00:29:18.410Z",
-   "handle": "rotowirenba.bsky.social",
-   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3myivvgjvcx2h",
-   "player": "Cedric Coward",
-   "team": null,
-   "status": "doubtful",
-   "kind": "status",
-   "confidence": 0.95,
-   "text": "Cedric Coward: Doubtful for Friday \n\n https://www.rotowire.com/basketball/player/cedric-coward-6592"
-  },
   {
    "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3myjdidqbbr27|cameronjohnson|out|status",
    "at": "2026-10-23T04:24:52.000Z",
@@ -10002,6 +9976,19 @@
    "kind": "starting",
    "confidence": 0.85,
    "text": "Lineup alert: Raptors will start Quickley, Walter, Barrett, Murray-Boyles, Poeltl."
+  },
+  {
+   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3n25pqiqetx2l|preciousachiuwa|questionable|status",
+   "at": "2026-11-13T00:22:37.000Z",
+   "seen": "2026-11-13T00:29:58.014Z",
+   "handle": "rotowirenba.bsky.social",
+   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3n25pqiqetx2l",
+   "player": "Precious Achiuwa",
+   "team": null,
+   "status": "questionable",
+   "kind": "status",
+   "confidence": 0.95,
+   "text": "Precious Achiuwa: Questionable for Friday \n\n https://www.rotowire.com/basketball/player/precious-achiuwa-5249"
   }
  ]
 }
