@@ -1,37 +1,11 @@
 {
  "sport": "nba",
  "cursor": {
-  "rotowirenba.bsky.social": "2026-11-13T19:57:51.000Z",
+  "rotowirenba.bsky.social": "2026-11-13T20:40:45.000Z",
   "insidenbanews.bsky.social": "2026-11-13T20:00:09.852Z",
   "shamsbot.bsky.social": "2026-11-08T18:05:20.000Z"
  },
  "claims": [
-  {
-   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3myl3cjejhf2i|lebronjames|questionable|status",
-   "at": "2026-10-23T21:03:47.000Z",
-   "seen": "2026-10-23T22:50:14.417Z",
-   "handle": "rotowirenba.bsky.social",
-   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3myl3cjejhf2i",
-   "player": "LeBron James",
-   "team": "LAL",
-   "status": "questionable",
-   "kind": "status",
-   "confidence": 0.9,
-   "text": "LeBron James: Questionable for Saturday \n\n https://www.rotowire.com/basketball/player/lebron-james-2344"
-  },
-  {
-   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3myl3jlenit2x|joelembiid|active|status",
-   "at": "2026-10-23T21:07:44.000Z",
-   "seen": "2026-10-23T22:50:14.417Z",
-   "handle": "rotowirenba.bsky.social",
-   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3myl3jlenit2x",
-   "player": "Joel Embiid",
-   "team": "PHI",
-   "status": "active",
-   "kind": "status",
-   "confidence": 0.85,
-   "text": "Joel Embiid: Will play Saturday, expected to sit Sunday \n\n https://www.rotowire.com/basketball/player/joel-embiid-3572"
-  },
   {
    "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3myl5lrut2g2c|kyrieirving|limited|restriction",
    "at": "2026-10-23T21:44:45.000Z",
@@ -10132,6 +10106,32 @@
    "kind": "status",
    "confidence": 0.9,
    "text": "Giannis Antetokounmpo: Will play Friday \n\n https://www.rotowire.com/basketball/player/giannis-antetokounmpo-3456"
+  },
+  {
+   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3n27sn7whm527|dejountemurray|out|status",
+   "at": "2026-11-13T20:19:48.000Z",
+   "seen": "2026-11-13T21:17:25.268Z",
+   "handle": "rotowirenba.bsky.social",
+   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3n27sn7whm527",
+   "player": "Dejounte Murray",
+   "team": null,
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.95,
+   "text": "Dejounte Murray: Officially ruled out Friday \n\n https://www.rotowire.com/basketball/player/dejounte-murray-3856"
+  },
+  {
+   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3n27tsol4xq2v|austinreaves|questionable|status",
+   "at": "2026-11-13T20:40:45.000Z",
+   "seen": "2026-11-13T21:17:25.268Z",
+   "handle": "rotowirenba.bsky.social",
+   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3n27tsol4xq2v",
+   "player": "Austin Reaves",
+   "team": "LAL",
+   "status": "questionable",
+   "kind": "status",
+   "confidence": 0.85,
+   "text": "Austin Reaves: Listed as day-to-day \n\n https://www.rotowire.com/basketball/player/austin-reaves-5334"
   }
  ]
 }

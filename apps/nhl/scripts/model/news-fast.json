@@ -3,8 +3,8 @@
  "cursor": {
   "johnston-bot.bsky.social": "2026-11-12T16:02:25.547Z",
   "notfriedgehnic.bsky.social": "2026-11-12T16:59:13.353Z",
-  "dailyfaceoff.bsky.social": "2026-11-13T20:08:32.000Z",
-  "dfotoronto.bsky.social": "2026-11-13T18:45:11.000Z",
+  "dailyfaceoff.bsky.social": "2026-11-13T21:15:47.000Z",
+  "dfotoronto.bsky.social": "2026-11-13T20:35:54.000Z",
   "marklazerus.bsky.social": "2026-11-13T19:39:17.134Z"
  },
  "claims": [
@@ -2334,6 +2334,19 @@
    "kind": "status",
    "confidence": 0.95,
    "text": "Stars’ Lian Bichsel out at least two weeks with lower-body injury"
+  },
+  {
+   "id": "at://did:plc:3uus7y6h3rlrk6sbctzxm4bg/app.bsky.feed.post/3n27u24vorx2d|johnathankovacevic|out|status",
+   "at": "2026-11-13T20:44:55.000Z",
+   "seen": "2026-11-13T21:17:25.268Z",
+   "handle": "dailyfaceoff.bsky.social",
+   "post": "at://did:plc:3uus7y6h3rlrk6sbctzxm4bg/app.bsky.feed.post/3n27u24vorx2d",
+   "player": "Johnathan Kovacevic",
+   "team": "NJD",
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.95,
+   "text": "Devils place Johnathan Kovacevic on injured reserve, recall Anton Silaev"
   }
  ]
 }

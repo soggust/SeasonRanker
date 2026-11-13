@@ -17372,6 +17372,354 @@
     "seen": "2026-11-13T20:12:37.918Z",
     "own": "2026-11-13T01:42:00.000Z"
    }
+  },
+  "401873053|travisetienne|q": {
+   "game": "401873053",
+   "start": "2026-11-15T14:30Z",
+   "team": "8",
+   "name": "Travis Etienne",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-11-13T20:16:56.519Z",
+    "own": "2026-11-13T19:23:33.000Z",
+    "why": "@rotoworld-fb.bsky.social: Etienne (hamstring) listed questionable for Wk 10"
+   }
+  },
+  "401873053|garrett|q": {
+   "game": "401873053",
+   "start": "2026-11-15T14:30Z",
+   "team": "8",
+   "name": "Garrett",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-11-13T20:16:56.519Z",
+    "own": "2026-11-13T19:27:27.000Z",
+    "why": "@rotoworld-fb.bsky.social: Garrett (knee) questionable, expected to play"
+   }
+  },
+  "401873058|travisetienne|q": {
+   "game": "401873058",
+   "start": "2026-11-15T18:00Z",
+   "team": "1",
+   "name": "Travis Etienne",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-11-13T20:16:56.519Z",
+    "own": "2026-11-13T19:23:33.000Z",
+    "why": "@rotoworld-fb.bsky.social: Etienne (hamstring) listed questionable for Wk 10"
+   }
+  },
+  "401873058|garrett|q": {
+   "game": "401873058",
+   "start": "2026-11-15T18:00Z",
+   "team": "1",
+   "name": "Garrett",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-11-13T20:16:56.519Z",
+    "own": "2026-11-13T19:27:27.000Z",
+    "why": "@rotoworld-fb.bsky.social: Garrett (knee) questionable, expected to play"
+   }
+  },
+  "401873058|jaylonmoore|out": {
+   "game": "401873058",
+   "start": "2026-11-15T18:00Z",
+   "team": "12",
+   "name": "Jaylon Moore",
+   "status": "out",
+   "athlete": "4043041",
+   "espn": {
+    "seen": "2026-11-13T21:12:39.000Z",
+    "own": "2026-11-13T20:27:00.000Z"
+   }
+  },
+  "401873056|travisetienne|q": {
+   "game": "401873056",
+   "start": "2026-11-15T18:00Z",
+   "team": "5",
+   "name": "Travis Etienne",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-11-13T20:16:56.519Z",
+    "own": "2026-11-13T19:23:33.000Z",
+    "why": "@rotoworld-fb.bsky.social: Etienne (hamstring) listed questionable for Wk 10"
+   }
+  },
+  "401873056|garrett|q": {
+   "game": "401873056",
+   "start": "2026-11-15T18:00Z",
+   "team": "5",
+   "name": "Garrett",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-11-13T20:16:56.519Z",
+    "own": "2026-11-13T19:27:27.000Z",
+    "why": "@rotoworld-fb.bsky.social: Garrett (knee) questionable, expected to play"
+   }
+  },
+  "401873056|brevinjordan|out": {
+   "game": "401873056",
+   "start": "2026-11-15T18:00Z",
+   "team": "34",
+   "name": "Brevin Jordan",
+   "status": "out",
+   "athlete": "4362504",
+   "espn": {
+    "seen": "2026-11-13T21:12:39.000Z",
+    "own": "2026-11-13T21:00:00.000Z"
+   }
+  },
+  "401873056|azeezalshaair|out": {
+   "game": "401873056",
+   "start": "2026-11-15T18:00Z",
+   "team": "34",
+   "name": "Azeez Al-Shaair",
+   "status": "out",
+   "athlete": "3919117",
+   "espn": {
+    "seen": "2026-11-13T21:12:39.000Z",
+    "own": "2026-11-13T21:00:00.000Z"
+   }
+  },
+  "401873056|marvinharrison|out": {
+   "game": "401873056",
+   "start": "2026-11-15T18:00Z",
+   "team": "34",
+   "name": "Marvin Harrison Jr.",
+   "status": "out",
+   "athlete": "4432708",
+   "espn": {
+    "seen": "2026-11-13T21:12:39.000Z",
+    "own": "2026-11-13T17:28:00.000Z"
+   }
+  },
+  "401873056|daniellehunter|out": {
+   "game": "401873056",
+   "start": "2026-11-15T18:00Z",
+   "team": "34",
+   "name": "Danielle Hunter",
+   "status": "out",
+   "athlete": "2976560",
+   "espn": {
+    "seen": "2026-11-13T21:12:39.000Z",
+    "own": "2026-11-12T23:31:00.000Z"
+   }
+  },
+  "401873060|travisetienne|q": {
+   "game": "401873060",
+   "start": "2026-11-15T18:00Z",
+   "team": "9",
+   "name": "Travis Etienne",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-11-13T20:16:56.519Z",
+    "own": "2026-11-13T19:23:33.000Z",
+    "why": "@rotoworld-fb.bsky.social: Etienne (hamstring) listed questionable for Wk 10"
+   }
+  },
+  "401873060|garrett|q": {
+   "game": "401873060",
+   "start": "2026-11-15T18:00Z",
+   "team": "9",
+   "name": "Garrett",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-11-13T20:16:56.519Z",
+    "own": "2026-11-13T19:27:27.000Z",
+    "why": "@rotoworld-fb.bsky.social: Garrett (knee) questionable, expected to play"
+   }
+  },
+  "401873057|travisetienne|q": {
+   "game": "401873057",
+   "start": "2026-11-15T18:00Z",
+   "team": "10",
+   "name": "Travis Etienne",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-11-13T20:16:56.519Z",
+    "own": "2026-11-13T19:23:33.000Z",
+    "why": "@rotoworld-fb.bsky.social: Etienne (hamstring) listed questionable for Wk 10"
+   }
+  },
+  "401873057|garrett|q": {
+   "game": "401873057",
+   "start": "2026-11-15T18:00Z",
+   "team": "10",
+   "name": "Garrett",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-11-13T20:16:56.519Z",
+    "own": "2026-11-13T19:27:27.000Z",
+    "why": "@rotoworld-fb.bsky.social: Garrett (knee) questionable, expected to play"
+   }
+  },
+  "401873059|travisetienne|q": {
+   "game": "401873059",
+   "start": "2026-11-15T18:00Z",
+   "team": "11",
+   "name": "Travis Etienne",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-11-13T20:16:56.519Z",
+    "own": "2026-11-13T19:23:33.000Z",
+    "why": "@rotoworld-fb.bsky.social: Etienne (hamstring) listed questionable for Wk 10"
+   }
+  },
+  "401873059|garrett|q": {
+   "game": "401873059",
+   "start": "2026-11-15T18:00Z",
+   "team": "11",
+   "name": "Garrett",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-11-13T20:16:56.519Z",
+    "own": "2026-11-13T19:27:27.000Z",
+    "why": "@rotoworld-fb.bsky.social: Garrett (knee) questionable, expected to play"
+   }
+  },
+  "401873055|garrett|q": {
+   "game": "401873055",
+   "start": "2026-11-15T18:00Z",
+   "team": "18",
+   "name": "Garrett",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-11-13T20:16:56.519Z",
+    "own": "2026-11-13T19:27:27.000Z",
+    "why": "@rotoworld-fb.bsky.social: Garrett (knee) questionable, expected to play"
+   }
+  },
+  "401873055|travisetienne|q": {
+   "game": "401873055",
+   "start": "2026-11-15T18:00Z",
+   "team": "29",
+   "name": "Travis Etienne",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-11-13T20:16:56.519Z",
+    "own": "2026-11-13T19:23:33.000Z",
+    "why": "@rotoworld-fb.bsky.social: Etienne (hamstring) listed questionable for Wk 10"
+   }
+  },
+  "401873054|travisetienne|q": {
+   "game": "401873054",
+   "start": "2026-11-15T18:00Z",
+   "team": "20",
+   "name": "Travis Etienne",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-11-13T20:16:56.519Z",
+    "own": "2026-11-13T19:23:33.000Z",
+    "why": "@rotoworld-fb.bsky.social: Etienne (hamstring) listed questionable for Wk 10"
+   }
+  },
+  "401873054|garrett|q": {
+   "game": "401873054",
+   "start": "2026-11-15T18:00Z",
+   "team": "20",
+   "name": "Garrett",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-11-13T20:16:56.519Z",
+    "own": "2026-11-13T19:27:27.000Z",
+    "why": "@rotoworld-fb.bsky.social: Garrett (knee) questionable, expected to play"
+   }
+  },
+  "401873062|travisetienne|q": {
+   "game": "401873062",
+   "start": "2026-11-15T21:05Z",
+   "team": "13",
+   "name": "Travis Etienne",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-11-13T20:16:56.519Z",
+    "own": "2026-11-13T19:23:33.000Z",
+    "why": "@rotoworld-fb.bsky.social: Etienne (hamstring) listed questionable for Wk 10"
+   }
+  },
+  "401873062|garrett|q": {
+   "game": "401873062",
+   "start": "2026-11-15T21:05Z",
+   "team": "13",
+   "name": "Garrett",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-11-13T20:16:56.519Z",
+    "own": "2026-11-13T19:27:27.000Z",
+    "why": "@rotoworld-fb.bsky.social: Garrett (knee) questionable, expected to play"
+   }
+  },
+  "401873061|travisetienne|q": {
+   "game": "401873061",
+   "start": "2026-11-15T21:05Z",
+   "team": "22",
+   "name": "Travis Etienne",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-11-13T20:16:56.519Z",
+    "own": "2026-11-13T19:23:33.000Z",
+    "why": "@rotoworld-fb.bsky.social: Etienne (hamstring) listed questionable for Wk 10"
+   }
+  },
+  "401873061|garrett|q": {
+   "game": "401873061",
+   "start": "2026-11-15T21:05Z",
+   "team": "22",
+   "name": "Garrett",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-11-13T20:16:56.519Z",
+    "own": "2026-11-13T19:27:27.000Z",
+    "why": "@rotoworld-fb.bsky.social: Garrett (knee) questionable, expected to play"
+   }
+  },
+  "401873063|travisetienne|q": {
+   "game": "401873063",
+   "start": "2026-11-15T21:25Z",
+   "team": "6",
+   "name": "Travis Etienne",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-11-13T20:16:56.519Z",
+    "own": "2026-11-13T19:23:33.000Z",
+    "why": "@rotoworld-fb.bsky.social: Etienne (hamstring) listed questionable for Wk 10"
+   }
+  },
+  "401873063|garrett|q": {
+   "game": "401873063",
+   "start": "2026-11-15T21:25Z",
+   "team": "6",
+   "name": "Garrett",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-11-13T20:16:56.519Z",
+    "own": "2026-11-13T19:27:27.000Z",
+    "why": "@rotoworld-fb.bsky.social: Garrett (knee) questionable, expected to play"
+   }
+  },
+  "401873064|travisetienne|q": {
+   "game": "401873064",
+   "start": "2026-11-16T01:20Z",
+   "team": "4",
+   "name": "Travis Etienne",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-11-13T20:16:56.519Z",
+    "own": "2026-11-13T19:23:33.000Z",
+    "why": "@rotoworld-fb.bsky.social: Etienne (hamstring) listed questionable for Wk 10"
+   }
+  },
+  "401873064|garrett|q": {
+   "game": "401873064",
+   "start": "2026-11-16T01:20Z",
+   "team": "4",
+   "name": "Garrett",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-11-13T20:16:56.519Z",
+    "own": "2026-11-13T19:27:27.000Z",
+    "why": "@rotoworld-fb.bsky.social: Garrett (knee) questionable, expected to play"
+   }
   }
  }
 }
