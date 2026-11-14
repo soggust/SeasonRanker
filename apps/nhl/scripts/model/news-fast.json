@@ -3,8 +3,8 @@
  "cursor": {
   "johnston-bot.bsky.social": "2026-11-12T16:02:25.547Z",
   "notfriedgehnic.bsky.social": "2026-11-12T16:59:13.353Z",
-  "dailyfaceoff.bsky.social": "2026-11-14T14:01:40.000Z",
-  "dfotoronto.bsky.social": "2026-11-14T15:07:57.000Z",
+  "dailyfaceoff.bsky.social": "2026-11-14T15:14:27.000Z",
+  "dfotoronto.bsky.social": "2026-11-14T15:16:25.000Z",
   "marklazerus.bsky.social": "2026-11-14T14:45:27.203Z"
  },
  "claims": [
@@ -2373,6 +2373,19 @@
    "kind": "return",
    "confidence": 0.9,
    "text": "Canucks activate Filip Chytil from IR, expected to return vs. Rangers"
+  },
+  {
+   "id": "at://did:plc:3uus7y6h3rlrk6sbctzxm4bg/app.bsky.feed.post/3n2bs24t4pi2p|jordanstaal|active|return",
+   "at": "2026-11-14T15:14:27.000Z",
+   "seen": "2026-11-14T15:33:43.665Z",
+   "handle": "dailyfaceoff.bsky.social",
+   "post": "at://did:plc:3uus7y6h3rlrk6sbctzxm4bg/app.bsky.feed.post/3n2bs24t4pi2p",
+   "player": "Jordan Staal",
+   "team": "CAR",
+   "status": "active",
+   "kind": "return",
+   "confidence": 0.95,
+   "text": "Hurricanes activate Jordan Staal from IR, will return vs. Kraken"
   }
  ]
 }
