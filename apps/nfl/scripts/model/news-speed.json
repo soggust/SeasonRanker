@@ -11902,6 +11902,11 @@
    "espn": {
     "seen": "2026-11-10T00:00:42.694Z",
     "own": "2026-11-09T21:14:00.000Z"
+   },
+   "bluesky": {
+    "seen": "2026-11-14T18:28:38.300Z",
+    "own": "2026-11-14T18:25:41.588Z",
+    "why": "@adamscheftermirror.bsky.social: Texans ruled out RB David Montgomery for Sunday"
    }
   },
   "401873056|reedblankenship|out": {
@@ -16034,6 +16039,11 @@
    "espn": {
     "seen": "2026-11-12T01:47:41.033Z",
     "own": "2026-11-12T01:15:00.000Z"
+   },
+   "bluesky": {
+    "seen": "2026-11-14T18:28:38.300Z",
+    "own": "2026-11-14T18:21:26.376Z",
+    "why": "@nflnewsposter.bsky.social: [Rapoport] Texans RB David Montgomery (groin) and CB"
    }
   },
   "401873056|jakehummel|out": {
@@ -19737,6 +19747,11 @@
    "espn": {
     "seen": "2026-11-14T18:26:39.716Z",
     "own": "2026-11-14T18:15:00.000Z"
+   },
+   "bluesky": {
+    "seen": "2026-11-14T18:28:38.300Z",
+    "own": "2026-11-14T18:21:26.376Z",
+    "why": "@nflnewsposter.bsky.social: [Rapoport] Texans RB David Montgomery (groin) and CB"
    }
   },
   "401873066|jakehummel|q": {
@@ -19773,6 +19788,18 @@
    "espn": {
     "seen": "2026-11-14T18:26:39.716Z",
     "own": "2026-11-14T18:15:00.000Z"
+   }
+  },
+  "401873065|jaylinnhawkins|out": {
+   "game": "401873065",
+   "start": "2026-11-17T01:15Z",
+   "team": "33",
+   "name": "Jaylinn Hawkins",
+   "status": "out",
+   "athlete": "3858276",
+   "espn": {
+    "seen": "2026-11-14T18:42:38.370Z",
+    "own": "2026-11-14T18:34:00.000Z"
    }
   }
  }
