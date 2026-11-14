@@ -5,9 +5,9 @@
   "rapsheet.bsky.social": "2026-11-13T18:15:27.700Z",
   "nflnewsreposterbot.bsky.social": "2026-11-13T18:01:20.702Z",
   "insidenflnews.bsky.social": "2026-11-14T15:12:50.713Z",
-  "nflnewsposter.bsky.social": "2026-11-14T02:13:21.487Z",
+  "nflnewsposter.bsky.social": "2026-11-14T16:13:37.947Z",
   "rotoworld-fb.bsky.social": "2026-11-14T01:39:45.000Z",
-  "rotowirenfl.bsky.social": "2026-11-14T14:26:16.000Z"
+  "rotowirenfl.bsky.social": "2026-11-14T16:08:17.000Z"
  },
  "claims": [
   {
@@ -18287,6 +18287,32 @@
    "kind": "status",
    "confidence": 0.6,
    "text": "Pelissero: Kyler Murray (GTA VI) out at least a couple more weeks."
+  },
+  {
+   "id": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3n2bv2fmp4723|travisetienne|active|status",
+   "at": "2026-11-14T16:08:17.000Z",
+   "seen": "2026-11-14T16:24:35.774Z",
+   "handle": "rotowirenfl.bsky.social",
+   "post": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3n2bv2fmp4723",
+   "player": "Travis Etienne",
+   "team": null,
+   "status": "active",
+   "kind": "status",
+   "confidence": 0.6,
+   "text": "Travis Etienne: Expected to be activated from IR \n\n https://www.rotowire.com/football/player/travis-etienne-15385"
+  },
+  {
+   "id": "at://did:plc:fuqjc7x4gxvnwzksnlxwbe4x/app.bsky.feed.post/3n2bvdwukfs2h|travisetienne|active|status",
+   "at": "2026-11-14T16:13:37.947Z",
+   "seen": "2026-11-14T16:24:35.774Z",
+   "handle": "nflnewsposter.bsky.social",
+   "post": "at://did:plc:fuqjc7x4gxvnwzksnlxwbe4x/app.bsky.feed.post/3n2bvdwukfs2h",
+   "player": "Travis Etienne",
+   "team": "NO",
+   "status": "active",
+   "kind": "status",
+   "confidence": 0.8,
+   "text": "[Pelissero] The Saints plan to activate RB Travis Etienne Jr. from injured reserve today, putting him in line to return to action Sunday vs. the Panthers, per source. twitter.com/tompelissero..."
   }
  ]
 }

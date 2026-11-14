@@ -3,50 +3,11 @@
  "cursor": {
   "johnston-bot.bsky.social": "2026-11-12T16:02:25.547Z",
   "notfriedgehnic.bsky.social": "2026-11-12T16:59:13.353Z",
-  "dailyfaceoff.bsky.social": "2026-11-14T15:14:27.000Z",
+  "dailyfaceoff.bsky.social": "2026-11-14T16:05:02.000Z",
   "dfotoronto.bsky.social": "2026-11-14T15:16:25.000Z",
-  "marklazerus.bsky.social": "2026-11-14T14:45:27.203Z"
+  "marklazerus.bsky.social": "2026-11-14T16:20:14.013Z"
  },
  "claims": [
-  {
-   "id": "at://did:plc:3uus7y6h3rlrk6sbctzxm4bg/app.bsky.feed.post/3myn37u7dc42f|samgirard|out|status",
-   "at": "2026-10-24T16:07:37.000Z",
-   "seen": "2026-10-26T05:03:40.538Z",
-   "handle": "dailyfaceoff.bsky.social",
-   "post": "at://did:plc:3uus7y6h3rlrk6sbctzxm4bg/app.bsky.feed.post/3myn37u7dc42f",
-   "player": "Sam Girard",
-   "team": "PIT",
-   "status": "out",
-   "kind": "status",
-   "confidence": 0.95,
-   "text": "Penguins place Sam Girard on injured reserve"
-  },
-  {
-   "id": "at://did:plc:3uus7y6h3rlrk6sbctzxm4bg/app.bsky.feed.post/3myn3xzckj32h|dubois|active|return",
-   "at": "2026-10-24T16:21:07.000Z",
-   "seen": "2026-10-26T05:03:40.538Z",
-   "handle": "dailyfaceoff.bsky.social",
-   "post": "at://did:plc:3uus7y6h3rlrk6sbctzxm4bg/app.bsky.feed.post/3myn3xzckj32h",
-   "player": "Dubois",
-   "team": "WSH",
-   "status": "active",
-   "kind": "return",
-   "confidence": 0.9,
-   "text": "Capitals’ Dubois, Sourdif to return against Sabres"
-  },
-  {
-   "id": "at://did:plc:3uus7y6h3rlrk6sbctzxm4bg/app.bsky.feed.post/3myn3xzckj32h|sourdif|active|return",
-   "at": "2026-10-24T16:21:07.000Z",
-   "seen": "2026-10-26T05:03:40.538Z",
-   "handle": "dailyfaceoff.bsky.social",
-   "post": "at://did:plc:3uus7y6h3rlrk6sbctzxm4bg/app.bsky.feed.post/3myn3xzckj32h",
-   "player": "Sourdif",
-   "team": "WSH",
-   "status": "active",
-   "kind": "return",
-   "confidence": 0.9,
-   "text": "Capitals’ Dubois, Sourdif to return against Sabres"
-  },
   {
    "id": "at://did:plc:3uus7y6h3rlrk6sbctzxm4bg/app.bsky.feed.post/3myn6qgz3ow2h|rasmusristolainen|active|status",
    "at": "2026-10-24T17:10:35.000Z",
