@@ -7,19 +7,6 @@
  },
  "claims": [
   {
-   "id": "at://did:plc:sa73fbx3vxzh2fw5pu5wmief/app.bsky.feed.post/3myn5gdo3fq27|paolobanchero|out|status",
-   "at": "2026-10-24T16:42:03.000Z",
-   "seen": "2026-10-26T05:03:40.538Z",
-   "handle": "shamsbot.bsky.social",
-   "post": "at://did:plc:sa73fbx3vxzh2fw5pu5wmief/app.bsky.feed.post/3myn5gdo3fq27",
-   "player": "Paolo Banchero",
-   "team": "ORL",
-   "status": "out",
-   "kind": "status",
-   "confidence": 0.8,
-   "text": "Orlando Magic star Paolo Banchero has sustained a low-grade right high ankle sprain, sources tell ESPN. This injury diagnosis typically carries a timetable of 4-to-6 weeks."
-  },
-  {
    "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3myogc46yuc27|guisantos|out|status",
    "at": "2026-10-25T04:58:23.000Z",
    "seen": "2026-10-26T05:03:40.538Z",

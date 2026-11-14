@@ -2,9 +2,9 @@
  "sport": "nhl",
  "cursor": {
   "johnston-bot.bsky.social": "2026-11-12T16:02:25.547Z",
-  "notfriedgehnic.bsky.social": "2026-11-12T16:59:13.353Z",
-  "dailyfaceoff.bsky.social": "2026-11-14T16:05:02.000Z",
-  "dfotoronto.bsky.social": "2026-11-14T15:16:25.000Z",
+  "notfriedgehnic.bsky.social": "2026-11-14T16:40:19.557Z",
+  "dailyfaceoff.bsky.social": "2026-11-14T16:40:21.000Z",
+  "dfotoronto.bsky.social": "2026-11-14T16:27:10.000Z",
   "marklazerus.bsky.social": "2026-11-14T16:20:14.013Z"
  },
  "claims": [
@@ -2347,6 +2347,19 @@
    "kind": "return",
    "confidence": 0.95,
    "text": "Hurricanes activate Jordan Staal from IR, will return vs. Kraken"
+  },
+  {
+   "id": "at://did:plc:3uus7y6h3rlrk6sbctzxm4bg/app.bsky.feed.post/3n2bwtq6oto23|chriskreider|out|status",
+   "at": "2026-11-14T16:40:21.000Z",
+   "seen": "2026-11-14T16:45:28.487Z",
+   "handle": "dailyfaceoff.bsky.social",
+   "post": "at://did:plc:3uus7y6h3rlrk6sbctzxm4bg/app.bsky.feed.post/3n2bwtq6oto23",
+   "player": "Chris Kreider",
+   "team": "MTL",
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.95,
+   "text": "Canadiens’ Chris Kreider out 6-8 weeks with lower-body injury"
   }
  ]
 }
