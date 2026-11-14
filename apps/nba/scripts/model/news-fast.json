@@ -1,7 +1,7 @@
 {
  "sport": "nba",
  "cursor": {
-  "rotowirenba.bsky.social": "2026-11-14T23:08:00.000Z",
+  "rotowirenba.bsky.social": "2026-11-14T23:28:08.000Z",
   "insidenbanews.bsky.social": "2026-11-13T20:00:09.852Z",
   "shamsbot.bsky.social": "2026-11-13T20:16:26.000Z"
  },
@@ -10418,6 +10418,45 @@
    "kind": "status",
    "confidence": 0.95,
    "text": "Kingston Flemings: Ruled out for Sunday \n\n https://www.rotowire.com/basketball/player/kingston-flemings-6927"
+  },
+  {
+   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3n2cn5nzins23|michaelporter|questionable|status",
+   "at": "2026-11-14T23:19:37.000Z",
+   "seen": "2026-11-14T23:28:50.975Z",
+   "handle": "rotowirenba.bsky.social",
+   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3n2cn5nzins23",
+   "player": "Michael Porter",
+   "team": null,
+   "status": "questionable",
+   "kind": "status",
+   "confidence": 0.9,
+   "text": "Michael Porter: Now listed as questionable \n\n https://www.rotowire.com/basketball/player/michael-porter-4375"
+  },
+  {
+   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3n2cnjxoyr42t|pellelarsson|out|status",
+   "at": "2026-11-14T23:26:29.000Z",
+   "seen": "2026-11-14T23:28:50.975Z",
+   "handle": "rotowirenba.bsky.social",
+   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3n2cnjxoyr42t",
+   "player": "Pelle Larsson",
+   "team": null,
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.9,
+   "text": "Pelle Larsson: Out Saturday \n\n https://www.rotowire.com/basketball/player/pelle-larsson-6013"
+  },
+  {
+   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3n2cnmvfpqm2t|nolantraore|active|status",
+   "at": "2026-11-14T23:28:08.000Z",
+   "seen": "2026-11-14T23:28:50.975Z",
+   "handle": "rotowirenba.bsky.social",
+   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3n2cnmvfpqm2t",
+   "player": "Nolan Traore",
+   "team": null,
+   "status": "active",
+   "kind": "status",
+   "confidence": 0.85,
+   "text": "Nolan Traore: Cleared to play \n\n https://www.rotowire.com/basketball/player/nolan-traore-6587"
   }
  ]
 }

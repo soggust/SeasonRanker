@@ -11,32 +11,6 @@
  },
  "claims": [
   {
-   "id": "at://did:plc:qre6zxbmr3ixhdmgsgdretb5/app.bsky.feed.post/3myntkggt4a2d|devontasmith|out|status",
-   "at": "2026-10-24T23:23:01.638Z",
-   "seen": "2026-10-26T05:03:40.538Z",
-   "handle": "adamscheftermirror.bsky.social",
-   "post": "at://did:plc:qre6zxbmr3ixhdmgsgdretb5/app.bsky.feed.post/3myntkggt4a2d",
-   "player": "DeVonta Smith",
-   "team": "PHI",
-   "status": "out",
-   "kind": "status",
-   "confidence": 0.9,
-   "text": "More about the Eagles’ top two wide receivers -- DeVonta Smith and Dontayvion Wicks -- being ruled out of Monday night's game against the Dallas Cowboys, via @Tim_McManus:\n\nOriginal post"
-  },
-  {
-   "id": "at://did:plc:qre6zxbmr3ixhdmgsgdretb5/app.bsky.feed.post/3myntkggt4a2d|dontayvionwicks|out|status",
-   "at": "2026-10-24T23:23:01.638Z",
-   "seen": "2026-10-26T05:03:40.538Z",
-   "handle": "adamscheftermirror.bsky.social",
-   "post": "at://did:plc:qre6zxbmr3ixhdmgsgdretb5/app.bsky.feed.post/3myntkggt4a2d",
-   "player": "Dontayvion Wicks",
-   "team": "PHI",
-   "status": "out",
-   "kind": "status",
-   "confidence": 0.9,
-   "text": "More about the Eagles’ top two wide receivers -- DeVonta Smith and Dontayvion Wicks -- being ruled out of Monday night's game against the Dallas Cowboys, via @Tim_McManus:\n\nOriginal post"
-  },
-  {
    "id": "at://did:plc:qre6zxbmr3ixhdmgsgdretb5/app.bsky.feed.post/3mynwdv26y42t|joshjacobs|active|return",
    "at": "2026-10-25T00:13:03.296Z",
    "seen": "2026-10-26T05:03:40.538Z",
