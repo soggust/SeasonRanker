@@ -1,7 +1,7 @@
 {
  "sport": "nfl",
  "cursor": {
-  "adamscheftermirror.bsky.social": "2026-11-14T18:25:41.588Z",
+  "adamscheftermirror.bsky.social": "2026-11-14T19:10:42.347Z",
   "rapsheet.bsky.social": "2026-11-14T18:15:55.381Z",
   "nflnewsreposterbot.bsky.social": "2026-11-13T18:01:20.702Z",
   "insidenflnews.bsky.social": "2026-11-14T18:54:03.001Z",
@@ -18586,6 +18586,19 @@
    "kind": "return",
    "confidence": 0.9,
    "text": "Xavier Legette (knee) to be activated from IR ahead of Week 10."
+  },
+  {
+   "id": "at://did:plc:qre6zxbmr3ixhdmgsgdretb5/app.bsky.feed.post/3n2c7al6bp52v|gracenhalton|out|status",
+   "at": "2026-11-14T19:10:42.347Z",
+   "seen": "2026-11-14T19:15:37.536Z",
+   "handle": "adamscheftermirror.bsky.social",
+   "post": "at://did:plc:qre6zxbmr3ixhdmgsgdretb5/app.bsky.feed.post/3n2c7al6bp52v",
+   "player": "Gracen Halton",
+   "team": "SF",
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.85,
+   "text": "49ers DT Gracen Halton underwent surgery on the broken leg and dislocated ankle he suffered last weekend, and is now expected to back for OTAs.\n\nOriginal post"
   }
  ]
 }
