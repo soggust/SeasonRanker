@@ -1,7 +1,7 @@
 {
  "sport": "nba",
  "cursor": {
-  "rotowirenba.bsky.social": "2026-11-14T03:02:21.000Z",
+  "rotowirenba.bsky.social": "2026-11-14T03:20:04.000Z",
   "insidenbanews.bsky.social": "2026-11-13T20:00:09.852Z",
   "shamsbot.bsky.social": "2026-11-13T20:16:26.000Z"
  },
@@ -10080,6 +10080,19 @@
    "kind": "status",
    "confidence": 0.8,
    "text": "Jaxson Hayes: Won't return Friday \n\n https://www.rotowire.com/basketball/player/jaxson-hayes-4771"
+  },
+  {
+   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3n2ak4pnfy327|kingstonflemings|out|return",
+   "at": "2026-11-14T03:20:04.000Z",
+   "seen": "2026-11-14T03:28:49.486Z",
+   "handle": "rotowirenba.bsky.social",
+   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3n2ak4pnfy327",
+   "player": "Kingston Flemings",
+   "team": null,
+   "status": "out",
+   "kind": "return",
+   "confidence": 0.6,
+   "text": "Kingston Flemings: Will not return Friday \n\n https://www.rotowire.com/basketball/player/kingston-flemings-6927"
   }
  ]
 }
