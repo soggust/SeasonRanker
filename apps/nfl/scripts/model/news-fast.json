@@ -1,7 +1,7 @@
 {
  "sport": "nfl",
  "cursor": {
-  "adamscheftermirror.bsky.social": "2026-11-14T13:15:39.792Z",
+  "adamscheftermirror.bsky.social": "2026-11-14T14:05:39.537Z",
   "rapsheet.bsky.social": "2026-11-13T18:15:27.700Z",
   "nflnewsreposterbot.bsky.social": "2026-11-13T18:01:20.702Z",
   "insidenflnews.bsky.social": "2026-11-13T22:30:29.242Z",
@@ -18261,6 +18261,19 @@
    "kind": "starting",
    "confidence": 0.6,
    "text": "More about Kevin O'Connell confirming that quarterback Kirk Cousins will start Sunday against the Green Bay Packers, via @SeifertESPN:\n\nOriginal post"
+  },
+  {
+   "id": "at://did:plc:qre6zxbmr3ixhdmgsgdretb5/app.bsky.feed.post/3n2bo74c4te2s|lamarjackson|out|status",
+   "at": "2026-11-14T14:05:39.537Z",
+   "seen": "2026-11-14T14:17:37.553Z",
+   "handle": "adamscheftermirror.bsky.social",
+   "post": "at://did:plc:qre6zxbmr3ixhdmgsgdretb5/app.bsky.feed.post/3n2bo74c4te2s",
+   "player": "Lamar Jackson",
+   "team": "BAL",
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.6,
+   "text": "As it turns out, Ravens QB Lamar Jackson underwent thumb surgery last week, per sources. If the 6-10 week injury window that Ravens HC Jesse Minter is applied to last week’s surgery, it would give Jac"
   }
  ]
 }
