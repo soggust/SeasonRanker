@@ -19692,6 +19692,11 @@
    "sleeper": {
     "seen": "2026-11-13T20:15:25.735Z",
     "own": "2026-11-13T18:35:31.107Z"
+   },
+   "bluesky": {
+    "seen": "2026-11-14T18:05:30.915Z",
+    "own": "2026-11-14T17:53:10.000Z",
+    "why": "@rotowirenba.bsky.social: Trey Murphy: Ruled out Saturday \n\n https://www.rotowir"
    }
   },
   "401909980|trendonwatford|out": {
@@ -20399,6 +20404,30 @@
    "espn": {
     "seen": "2026-11-14T18:03:36.639Z",
     "own": "2026-11-14T17:55:00.000Z"
+   }
+  },
+  "401909982|normanpowell|q": {
+   "game": "401909982",
+   "start": "2026-11-15T01:00Z",
+   "team": "14",
+   "name": "Norman Powell",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-11-14T18:05:30.915Z",
+    "own": "2026-11-14T17:57:15.000Z",
+    "why": "@rotowirenba.bsky.social: Norman Powell: Questionable to face Minnesota \n\n https"
+   }
+  },
+  "401909984|nicclaxton|q": {
+   "game": "401909984",
+   "start": "2026-11-15T01:00Z",
+   "team": "4",
+   "name": "Nic Claxton",
+   "status": "q",
+   "athlete": "4278067",
+   "espn": {
+    "seen": "2026-11-14T18:15:20.923Z",
+    "own": "2026-11-14T18:09:00.000Z"
    }
   }
  }
