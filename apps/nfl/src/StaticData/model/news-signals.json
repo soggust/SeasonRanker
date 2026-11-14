@@ -3,6 +3,28 @@
  "days": 2,
  "signals": [
   {
+   "team": "16",
+   "abbr": "MIN",
+   "athlete": "14880",
+   "player": "Kirk Cousins",
+   "kind": "starting",
+   "direction": "up",
+   "confidence": 0.9,
+   "headline": "Vikings to start reacquired QB Kirk Cousins vs. Packers",
+   "at": "2026-11-13T22:41:55.000Z"
+  },
+  {
+   "team": "13",
+   "abbr": "LV",
+   "athlete": "4837248",
+   "player": "Fernando Mendoza",
+   "kind": "starting",
+   "direction": "up",
+   "confidence": 0.8,
+   "headline": "Fernando Mendoza and the Raiders' sit-and-learn plan: Is he ready to start?",
+   "at": "2026-11-13T11:00:10.000Z"
+  },
+  {
    "team": "13",
    "abbr": "LV",
    "athlete": "4837248",
@@ -25,5 +47,5 @@
    "at": "2026-11-12T01:12:02.000Z"
   }
  ],
- "at": "2026-11-13T23:55:26.195Z"
+ "at": "2026-11-14T00:13:02.920Z"
 }

@@ -6,7 +6,7 @@
   "nflnewsreposterbot.bsky.social": "2026-11-13T18:01:20.702Z",
   "insidenflnews.bsky.social": "2026-11-13T22:30:29.242Z",
   "nflnewsposter.bsky.social": "2026-11-13T22:34:06.227Z",
-  "rotoworld-fb.bsky.social": "2026-11-13T23:07:20.000Z",
+  "rotoworld-fb.bsky.social": "2026-11-14T00:05:16.000Z",
   "rotowirenfl.bsky.social": "2026-11-13T23:05:20.000Z"
  },
  "claims": [
@@ -18235,6 +18235,19 @@
    "kind": "status",
    "confidence": 0.5,
    "text": "Ladd McConkey (back) misses another practice"
+  },
+  {
+   "id": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3n2a7aexnpx2o|amonrastbrown|questionable|status",
+   "at": "2026-11-14T00:05:16.000Z",
+   "seen": "2026-11-14T00:13:02.920Z",
+   "handle": "rotoworld-fb.bsky.social",
+   "post": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3n2a7aexnpx2o",
+   "player": "Amon-Ra St. Brown",
+   "team": "DET",
+   "status": "questionable",
+   "kind": "status",
+   "confidence": 0.95,
+   "text": "Amon-Ra St. Brown (ribs) questionable for Week 10"
   }
  ]
 }

@@ -19379,6 +19379,11 @@
    "espn": {
     "seen": "2026-11-13T23:53:33.121Z",
     "own": "2026-11-13T23:21:00.000Z"
+   },
+   "bluesky": {
+    "seen": "2026-11-13T23:55:26.195Z",
+    "own": "2026-11-13T23:21:00.000Z",
+    "why": "@rotowirenba.bsky.social: Klay Thompson: Ruled out Friday \n\n https://www.rotowir"
    }
   },
   "401909298|naeqwantomlin|out": {
@@ -19391,6 +19396,78 @@
    "espn": {
     "seen": "2026-11-13T23:53:33.121Z",
     "own": "2026-10-20T15:11:00.000Z"
+   }
+  },
+  "401909299|klaythompson|out": {
+   "game": "401909299",
+   "start": "2026-11-14T01:00Z",
+   "team": "4",
+   "name": "Klay Thompson",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-13T23:55:26.195Z",
+    "own": "2026-11-13T23:21:00.000Z",
+    "why": "@rotowirenba.bsky.social: Klay Thompson: Ruled out Friday \n\n https://www.rotowir"
+   }
+  },
+  "401909300|klaythompson|out": {
+   "game": "401909300",
+   "start": "2026-11-14T01:00Z",
+   "team": "3",
+   "name": "Klay Thompson",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-13T23:55:26.195Z",
+    "own": "2026-11-13T23:21:00.000Z",
+    "why": "@rotowirenba.bsky.social: Klay Thompson: Ruled out Friday \n\n https://www.rotowir"
+   }
+  },
+  "401909301|klaythompson|out": {
+   "game": "401909301",
+   "start": "2026-11-14T01:30Z",
+   "team": "10",
+   "name": "Klay Thompson",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-13T23:55:26.195Z",
+    "own": "2026-11-13T23:21:00.000Z",
+    "why": "@rotowirenba.bsky.social: Klay Thompson: Ruled out Friday \n\n https://www.rotowir"
+   }
+  },
+  "401909302|klaythompson|out": {
+   "game": "401909302",
+   "start": "2026-11-14T02:30Z",
+   "team": "24",
+   "name": "Klay Thompson",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-13T23:55:26.195Z",
+    "own": "2026-11-13T23:21:00.000Z",
+    "why": "@rotowirenba.bsky.social: Klay Thompson: Ruled out Friday \n\n https://www.rotowir"
+   }
+  },
+  "401909303|klaythompson|out": {
+   "game": "401909303",
+   "start": "2026-11-14T03:00Z",
+   "team": "23",
+   "name": "Klay Thompson",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-13T23:55:26.195Z",
+    "own": "2026-11-13T23:21:00.000Z",
+    "why": "@rotowirenba.bsky.social: Klay Thompson: Ruled out Friday \n\n https://www.rotowir"
+   }
+  },
+  "401909304|klaythompson|out": {
+   "game": "401909304",
+   "start": "2026-11-14T03:30Z",
+   "team": "12",
+   "name": "Klay Thompson",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-13T23:55:26.195Z",
+    "own": "2026-11-13T23:21:00.000Z",
+    "why": "@rotowirenba.bsky.social: Klay Thompson: Ruled out Friday \n\n https://www.rotowir"
    }
   }
  }

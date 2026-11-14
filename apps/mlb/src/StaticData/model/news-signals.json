@@ -1,6 +1,18 @@
 {
  "sport": "mlb",
  "days": 2,
- "signals": [],
- "at": "2026-11-13T20:16:56.519Z"
+ "signals": [
+  {
+   "team": "18",
+   "abbr": "HOU",
+   "athlete": null,
+   "player": "Brad Ausmus",
+   "kind": "coaching",
+   "direction": "none",
+   "confidence": 0.9,
+   "headline": "Astros manager Brad Ausmus sets goal of winning World Series",
+   "at": "2026-11-13T20:40:18.000Z"
+  }
+ ],
+ "at": "2026-11-14T00:13:02.920Z"
 }
