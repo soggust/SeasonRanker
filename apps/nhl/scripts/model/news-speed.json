@@ -8634,6 +8634,11 @@
    "espn": {
     "seen": "2026-11-14T15:57:36.623Z",
     "own": "2026-11-14T15:51:00.000Z"
+   },
+   "bluesky": {
+    "seen": "2026-11-14T16:45:28.487Z",
+    "own": "2026-11-14T16:40:21.000Z",
+    "why": "@dailyfaceoff.bsky.social: Canadiens’ Chris Kreider out 6-8 weeks with lower-bod"
    }
   },
   "401892721|noelacciari|q": {
@@ -8994,6 +8999,18 @@
    "espn": {
     "seen": "2026-11-14T16:43:39.949Z",
     "own": "2026-11-14T14:19:00.000Z"
+   }
+  },
+  "401892711|nathanmackinnon|out": {
+   "game": "401892711",
+   "start": "2026-11-15T00:00Z",
+   "team": "17",
+   "name": "Nathan MacKinnon",
+   "status": "out",
+   "athlete": "3041969",
+   "espn": {
+    "seen": "2026-11-14T17:12:41.527Z",
+    "own": "2026-11-14T17:04:00.000Z"
    }
   }
  }
