@@ -9,19 +9,6 @@
  },
  "claims": [
   {
-   "id": "at://did:plc:3uus7y6h3rlrk6sbctzxm4bg/app.bsky.feed.post/3mynfrssayl2f|jaredmccann|out|status",
-   "at": "2026-10-24T19:16:36.000Z",
-   "seen": "2026-10-26T05:03:40.538Z",
-   "handle": "dailyfaceoff.bsky.social",
-   "post": "at://did:plc:3uus7y6h3rlrk6sbctzxm4bg/app.bsky.feed.post/3mynfrssayl2f",
-   "player": "Jared McCann",
-   "team": "SEA",
-   "status": "out",
-   "kind": "status",
-   "confidence": 0.9,
-   "text": "Kraken’s Jared McCann to miss game against Wild with injury"
-  },
-  {
    "id": "at://did:plc:3uus7y6h3rlrk6sbctzxm4bg/app.bsky.feed.post/3mynyuc26qy2c|victorherman|questionable|status",
    "at": "2026-10-25T00:58:01.000Z",
    "seen": "2026-10-26T05:03:40.538Z",
