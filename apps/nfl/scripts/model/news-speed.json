@@ -12178,6 +12178,11 @@
    "sleeper": {
     "seen": "2026-11-14T21:06:47.070Z",
     "own": "2026-11-14T01:35:19.790Z"
+   },
+   "bluesky": {
+    "seen": "2026-11-14T21:30:29.033Z",
+    "own": "2026-11-14T21:15:43.909Z",
+    "why": "@adamscheftermirror.bsky.social: Titans placed G Peter Skoronski and P Tommy Tow"
    }
   },
   "401873057|tyjaespears|out": {
@@ -14697,6 +14702,11 @@
    "espn": {
     "seen": "2026-11-11T00:00:46.496Z",
     "own": "2026-11-10T00:00:00.000Z"
+   },
+   "bluesky": {
+    "seen": "2026-11-14T21:30:29.033Z",
+    "own": "2026-11-14T21:30:25.000Z",
+    "why": "@rotowirenfl.bsky.social: Ladd McConkey: Questionable for Monday Night Football "
    }
   },
   "401873065|denzelperryman|out": {
@@ -17435,6 +17445,11 @@
    "sleeper": {
     "seen": "2026-11-14T21:06:47.070Z",
     "own": "2026-11-14T01:30:19.782Z"
+   },
+   "bluesky": {
+    "seen": "2026-11-14T21:30:29.033Z",
+    "own": "2026-11-14T21:15:43.909Z",
+    "why": "@adamscheftermirror.bsky.social: Titans placed G Peter Skoronski and P Tommy Tow"
    }
   },
   "401873057|jonathonbrooks|out": {
@@ -20292,6 +20307,210 @@
    "espn": {
     "seen": "2026-11-14T21:25:25.713Z",
     "own": "2026-11-14T21:19:00.000Z"
+   }
+  },
+  "401873053|laddmcconkey|q": {
+   "game": "401873053",
+   "start": "2026-11-15T14:30Z",
+   "team": "8",
+   "name": "Ladd McConkey",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-11-14T21:30:29.033Z",
+    "own": "2026-11-14T21:30:25.000Z",
+    "why": "@rotowirenfl.bsky.social: Ladd McConkey: Questionable for Monday Night Football "
+   }
+  },
+  "401873058|laddmcconkey|q": {
+   "game": "401873058",
+   "start": "2026-11-15T18:00Z",
+   "team": "1",
+   "name": "Ladd McConkey",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-11-14T21:30:29.033Z",
+    "own": "2026-11-14T21:30:25.000Z",
+    "why": "@rotowirenfl.bsky.social: Ladd McConkey: Questionable for Monday Night Football "
+   }
+  },
+  "401873056|laddmcconkey|q": {
+   "game": "401873056",
+   "start": "2026-11-15T18:00Z",
+   "team": "5",
+   "name": "Ladd McConkey",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-11-14T21:30:29.033Z",
+    "own": "2026-11-14T21:30:25.000Z",
+    "why": "@rotowirenfl.bsky.social: Ladd McConkey: Questionable for Monday Night Football "
+   }
+  },
+  "401873060|laddmcconkey|q": {
+   "game": "401873060",
+   "start": "2026-11-15T18:00Z",
+   "team": "9",
+   "name": "Ladd McConkey",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-11-14T21:30:29.033Z",
+    "own": "2026-11-14T21:30:25.000Z",
+    "why": "@rotowirenfl.bsky.social: Ladd McConkey: Questionable for Monday Night Football "
+   }
+  },
+  "401873057|laddmcconkey|q": {
+   "game": "401873057",
+   "start": "2026-11-15T18:00Z",
+   "team": "10",
+   "name": "Ladd McConkey",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-11-14T21:30:29.033Z",
+    "own": "2026-11-14T21:30:25.000Z",
+    "why": "@rotowirenfl.bsky.social: Ladd McConkey: Questionable for Monday Night Football "
+   }
+  },
+  "401873059|laddmcconkey|q": {
+   "game": "401873059",
+   "start": "2026-11-15T18:00Z",
+   "team": "11",
+   "name": "Ladd McConkey",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-11-14T21:30:29.033Z",
+    "own": "2026-11-14T21:30:25.000Z",
+    "why": "@rotowirenfl.bsky.social: Ladd McConkey: Questionable for Monday Night Football "
+   }
+  },
+  "401873055|laddmcconkey|q": {
+   "game": "401873055",
+   "start": "2026-11-15T18:00Z",
+   "team": "18",
+   "name": "Ladd McConkey",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-11-14T21:30:29.033Z",
+    "own": "2026-11-14T21:30:25.000Z",
+    "why": "@rotowirenfl.bsky.social: Ladd McConkey: Questionable for Monday Night Football "
+   }
+  },
+  "401873054|vjpayne|q": {
+   "game": "401873054",
+   "start": "2026-11-15T18:00Z",
+   "team": "20",
+   "name": "VJ Payne",
+   "status": "q",
+   "athlete": "4837388",
+   "espn": {
+    "seen": "2026-11-14T21:44:35.582Z",
+    "own": "2026-11-14T21:18:00.000Z"
+   }
+  },
+  "401873054|laddmcconkey|q": {
+   "game": "401873054",
+   "start": "2026-11-15T18:00Z",
+   "team": "20",
+   "name": "Ladd McConkey",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-11-14T21:30:29.033Z",
+    "own": "2026-11-14T21:30:25.000Z",
+    "why": "@rotowirenfl.bsky.social: Ladd McConkey: Questionable for Monday Night Football "
+   }
+  },
+  "401873062|laddmcconkey|q": {
+   "game": "401873062",
+   "start": "2026-11-15T21:05Z",
+   "team": "13",
+   "name": "Ladd McConkey",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-11-14T21:30:29.033Z",
+    "own": "2026-11-14T21:30:25.000Z",
+    "why": "@rotowirenfl.bsky.social: Ladd McConkey: Questionable for Monday Night Football "
+   }
+  },
+  "401873061|laddmcconkey|q": {
+   "game": "401873061",
+   "start": "2026-11-15T21:05Z",
+   "team": "22",
+   "name": "Ladd McConkey",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-11-14T21:30:29.033Z",
+    "own": "2026-11-14T21:30:25.000Z",
+    "why": "@rotowirenfl.bsky.social: Ladd McConkey: Questionable for Monday Night Football "
+   }
+  },
+  "401873063|laddmcconkey|q": {
+   "game": "401873063",
+   "start": "2026-11-15T21:25Z",
+   "team": "6",
+   "name": "Ladd McConkey",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-11-14T21:30:29.033Z",
+    "own": "2026-11-14T21:30:25.000Z",
+    "why": "@rotowirenfl.bsky.social: Ladd McConkey: Questionable for Monday Night Football "
+   }
+  },
+  "401873064|laddmcconkey|q": {
+   "game": "401873064",
+   "start": "2026-11-16T01:20Z",
+   "team": "4",
+   "name": "Ladd McConkey",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-11-14T21:30:29.033Z",
+    "own": "2026-11-14T21:30:25.000Z",
+    "why": "@rotowirenfl.bsky.social: Ladd McConkey: Questionable for Monday Night Football "
+   }
+  },
+  "401873065|kendallwilliamson|out": {
+   "game": "401873065",
+   "start": "2026-11-17T01:15Z",
+   "team": "24",
+   "name": "Kendall Williamson",
+   "status": "out",
+   "athlete": "4360745",
+   "espn": {
+    "seen": "2026-11-14T21:44:35.582Z",
+    "own": "2026-11-14T21:28:00.000Z"
+   }
+  },
+  "401873065|bransontaylor|out": {
+   "game": "401873065",
+   "start": "2026-11-17T01:15Z",
+   "team": "24",
+   "name": "Branson Taylor",
+   "status": "out",
+   "athlete": "4433914",
+   "espn": {
+    "seen": "2026-11-14T21:44:35.582Z",
+    "own": "2026-11-14T21:28:00.000Z"
+   }
+  },
+  "401873065|brenenthompson|out": {
+   "game": "401873065",
+   "start": "2026-11-17T01:15Z",
+   "team": "24",
+   "name": "Brenen Thompson",
+   "status": "out",
+   "athlete": "4685553",
+   "espn": {
+    "seen": "2026-11-14T21:44:35.582Z",
+    "own": "2026-11-14T21:28:00.000Z"
+   }
+  },
+  "401873065|isaswaxter|out": {
+   "game": "401873065",
+   "start": "2026-11-17T01:15Z",
+   "team": "24",
+   "name": "Isas Waxter",
+   "status": "out",
+   "athlete": "4574105",
+   "espn": {
+    "seen": "2026-11-14T21:44:35.582Z",
+    "own": "2026-11-14T21:28:00.000Z"
    }
   }
  }
