@@ -2,10 +2,10 @@
  "sport": "nhl",
  "cursor": {
   "johnston-bot.bsky.social": "2026-11-12T16:02:25.547Z",
-  "notfriedgehnic.bsky.social": "2026-11-14T19:08:34.753Z",
-  "dailyfaceoff.bsky.social": "2026-11-14T19:08:44.000Z",
-  "dfotoronto.bsky.social": "2026-11-14T18:46:48.000Z",
-  "marklazerus.bsky.social": "2026-11-14T18:44:46.141Z"
+  "notfriedgehnic.bsky.social": "2026-11-14T20:55:34.392Z",
+  "dailyfaceoff.bsky.social": "2026-11-14T21:03:27.000Z",
+  "dfotoronto.bsky.social": "2026-11-14T21:03:24.000Z",
+  "marklazerus.bsky.social": "2026-11-14T20:48:52.559Z"
  },
  "claims": [
   {
@@ -2438,6 +2438,58 @@
    "kind": "coaching",
    "confidence": 0.85,
    "text": "Columbus GM Don Waddell said Don Granato will coach tonight vs Philadelphia and Monday on Long Island.\n\nRick Bowness is getting checked out for the illness that sidelined him this week. Waddell listed"
+  },
+  {
+   "id": "at://did:plc:knaj2vcp4x6t7hr7ewd6e3uz/app.bsky.feed.post/3n2ccgeqa3m2q|stolarz|active|starting",
+   "at": "2026-11-14T20:07:38.000Z",
+   "seen": "2026-11-14T21:15:23.425Z",
+   "handle": "dfotoronto.bsky.social",
+   "post": "at://did:plc:knaj2vcp4x6t7hr7ewd6e3uz/app.bsky.feed.post/3n2ccgeqa3m2q",
+   "player": "Stolarz",
+   "team": "TOR",
+   "status": "active",
+   "kind": "starting",
+   "confidence": 0.7,
+   "text": "Leafs vs Oilers Game 22 Preview: McDavid in Town, Stolarz Starts, Leafs in Crisis & Best Bets"
+  },
+  {
+   "id": "at://did:plc:3uus7y6h3rlrk6sbctzxm4bg/app.bsky.feed.post/3n2cevsmdwd22|artemipanarin|out|status",
+   "at": "2026-11-14T20:52:03.000Z",
+   "seen": "2026-11-14T21:15:23.425Z",
+   "handle": "dailyfaceoff.bsky.social",
+   "post": "at://did:plc:3uus7y6h3rlrk6sbctzxm4bg/app.bsky.feed.post/3n2cevsmdwd22",
+   "player": "Artemi Panarin",
+   "team": "LAK",
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.9,
+   "text": "Kings’ Artemi Panarin to miss game for family reasons"
+  },
+  {
+   "id": "at://did:plc:sdobrsxnvwczrjydmnubhibh/app.bsky.feed.post/3n2cf43polf2q|brockfaber|active|return",
+   "at": "2026-11-14T20:55:34.392Z",
+   "seen": "2026-11-14T21:15:23.425Z",
+   "handle": "notfriedgehnic.bsky.social",
+   "post": "at://did:plc:sdobrsxnvwczrjydmnubhibh/app.bsky.feed.post/3n2cf43polf2q",
+   "player": "Brock Faber",
+   "team": "MIN",
+   "status": "active",
+   "kind": "return",
+   "confidence": 0.9,
+   "text": "Returnees tonight:\nBrock Faber for Minnesota\nMathew Barzal for the Islanders"
+  },
+  {
+   "id": "at://did:plc:sdobrsxnvwczrjydmnubhibh/app.bsky.feed.post/3n2cf43polf2q|mathewbarzal|active|return",
+   "at": "2026-11-14T20:55:34.392Z",
+   "seen": "2026-11-14T21:15:23.425Z",
+   "handle": "notfriedgehnic.bsky.social",
+   "post": "at://did:plc:sdobrsxnvwczrjydmnubhibh/app.bsky.feed.post/3n2cf43polf2q",
+   "player": "Mathew Barzal",
+   "team": "NYI",
+   "status": "active",
+   "kind": "return",
+   "confidence": 0.9,
+   "text": "Returnees tonight:\nBrock Faber for Minnesota\nMathew Barzal for the Islanders"
   }
  ]
 }

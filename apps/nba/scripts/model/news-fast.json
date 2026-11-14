@@ -1,7 +1,7 @@
 {
  "sport": "nba",
  "cursor": {
-  "rotowirenba.bsky.social": "2026-11-14T18:33:51.000Z",
+  "rotowirenba.bsky.social": "2026-11-14T20:36:08.000Z",
   "insidenbanews.bsky.social": "2026-11-13T20:00:09.852Z",
   "shamsbot.bsky.social": "2026-11-13T20:16:26.000Z"
  },
@@ -10223,6 +10223,32 @@
    "kind": "status",
    "confidence": 0.9,
    "text": "Evan Mobley: Ruled out Saturday \n\n https://www.rotowire.com/basketball/player/evan-mobley-5355"
+  },
+  {
+   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3n2cb5els7c2q|tyjerome|out|status",
+   "at": "2026-11-14T19:44:42.000Z",
+   "seen": "2026-11-14T21:15:23.425Z",
+   "handle": "rotowirenba.bsky.social",
+   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3n2cb5els7c2q",
+   "player": "Ty Jerome",
+   "team": null,
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.9,
+   "text": "Ty Jerome: Ruled out Saturday \n\n https://www.rotowire.com/basketball/player/ty-jerome-4774"
+  },
+  {
+   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3n2cdgbqtjl2r|collinsexton|active|status",
+   "at": "2026-11-14T20:25:28.000Z",
+   "seen": "2026-11-14T21:15:23.425Z",
+   "handle": "rotowirenba.bsky.social",
+   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3n2cdgbqtjl2r",
+   "player": "Collin Sexton",
+   "team": null,
+   "status": "active",
+   "kind": "status",
+   "confidence": 0.7,
+   "text": "Collin Sexton: Full participant in practice \n\n https://www.rotowire.com/basketball/player/collin-sexton-4412"
   }
  ]
 }
