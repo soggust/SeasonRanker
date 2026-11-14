@@ -4,7 +4,7 @@
   "adamscheftermirror.bsky.social": "2026-11-14T18:25:41.588Z",
   "rapsheet.bsky.social": "2026-11-14T18:15:55.381Z",
   "nflnewsreposterbot.bsky.social": "2026-11-13T18:01:20.702Z",
-  "insidenflnews.bsky.social": "2026-11-14T16:30:58.245Z",
+  "insidenflnews.bsky.social": "2026-11-14T18:54:03.001Z",
   "nflnewsposter.bsky.social": "2026-11-14T18:21:26.376Z",
   "rotoworld-fb.bsky.social": "2026-11-14T16:44:52.000Z",
   "rotowirenfl.bsky.social": "2026-11-14T18:27:04.000Z"
@@ -18573,6 +18573,19 @@
    "kind": "status",
    "confidence": 0.96,
    "text": "Texans ruled out RB David Montgomery for Sunday’s game at Cleveland due to a groin injury.\n\nOriginal post"
+  },
+  {
+   "id": "at://did:plc:mbr4badgf6yu56mquzackzew/app.bsky.feed.post/3n2c6crzz4c2k|xavierlegette|active|return",
+   "at": "2026-11-14T18:54:03.001Z",
+   "seen": "2026-11-14T18:54:54.780Z",
+   "handle": "insidenflnews.bsky.social",
+   "post": "at://did:plc:mbr4badgf6yu56mquzackzew/app.bsky.feed.post/3n2c6crzz4c2k",
+   "player": "Xavier Legette",
+   "team": "CAR",
+   "status": "active",
+   "kind": "return",
+   "confidence": 0.9,
+   "text": "Xavier Legette (knee) to be activated from IR ahead of Week 10."
   }
  ]
 }

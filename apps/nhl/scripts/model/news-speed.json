@@ -9082,6 +9082,18 @@
     "own": "2026-11-14T17:56:06.797Z",
     "why": "@notfriedgehnic.bsky.social: Columbus GM Don Waddell said Don Granato will coach"
    }
+  },
+  "401892718|nickschmaltz|out": {
+   "game": "401892718",
+   "start": "2026-11-15T02:00Z",
+   "team": "129764",
+   "name": "Nick Schmaltz",
+   "status": "out",
+   "athlete": "3114770",
+   "espn": {
+    "seen": "2026-11-14T18:53:25.671Z",
+    "own": "2026-11-14T18:44:00.000Z"
+   }
   }
  }
 }
