@@ -17979,6 +17979,11 @@
     "seen": "2026-11-13T20:16:56.519Z",
     "own": "2026-11-13T19:23:33.000Z",
     "why": "@rotoworld-fb.bsky.social: Etienne (hamstring) listed questionable for Wk 10"
+   },
+   "athlete": "4239996",
+   "espn": {
+    "seen": "2026-11-14T21:25:25.713Z",
+    "own": "2026-11-14T21:11:00.000Z"
    }
   },
   "401873054|travisetienne|q": {
@@ -20239,6 +20244,54 @@
    "sleeper": {
     "seen": "2026-11-14T21:06:47.070Z",
     "own": "2026-11-14T20:50:12.344Z"
+   }
+  },
+  "401873053|gregvanroten|q": {
+   "game": "401873053",
+   "start": "2026-11-15T14:30Z",
+   "team": "17",
+   "name": "Greg Van Roten",
+   "status": "q",
+   "athlete": "15718",
+   "espn": {
+    "seen": "2026-11-14T21:25:25.713Z",
+    "own": "2026-11-14T21:10:00.000Z"
+   }
+  },
+  "401873053|reggiegilliam|q": {
+   "game": "401873053",
+   "start": "2026-11-15T14:30Z",
+   "team": "17",
+   "name": "Reggie Gilliam",
+   "status": "q",
+   "athlete": "4039505",
+   "espn": {
+    "seen": "2026-11-14T21:25:25.713Z",
+    "own": "2026-11-14T21:10:00.000Z"
+   }
+  },
+  "401873054|jordanhancock|q": {
+   "game": "401873054",
+   "start": "2026-11-15T18:00Z",
+   "team": "2",
+   "name": "Jordan Hancock",
+   "status": "q",
+   "athlete": "4596480",
+   "espn": {
+    "seen": "2026-11-14T21:25:25.713Z",
+    "own": "2026-11-14T21:01:00.000Z"
+   }
+  },
+  "401873061|hunterlong|q": {
+   "game": "401873061",
+   "start": "2026-11-15T21:05Z",
+   "team": "22",
+   "name": "Hunter Long",
+   "status": "q",
+   "athlete": "4239944",
+   "espn": {
+    "seen": "2026-11-14T21:25:25.713Z",
+    "own": "2026-11-14T21:19:00.000Z"
    }
   }
  }

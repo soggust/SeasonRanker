@@ -1,13 +1,13 @@
 {
  "sport": "nfl",
  "cursor": {
-  "adamscheftermirror.bsky.social": "2026-11-14T20:10:43.532Z",
+  "adamscheftermirror.bsky.social": "2026-11-14T21:15:43.909Z",
   "rapsheet.bsky.social": "2026-11-14T21:13:21.040Z",
   "nflnewsreposterbot.bsky.social": "2026-11-13T18:01:20.702Z",
   "insidenflnews.bsky.social": "2026-11-14T21:06:00.144Z",
   "nflnewsposter.bsky.social": "2026-11-14T18:21:26.376Z",
-  "rotoworld-fb.bsky.social": "2026-11-14T16:44:52.000Z",
-  "rotowirenfl.bsky.social": "2026-11-14T21:14:23.000Z"
+  "rotoworld-fb.bsky.social": "2026-11-14T21:17:47.000Z",
+  "rotowirenfl.bsky.social": "2026-11-14T21:30:25.000Z"
  },
  "claims": [
   {
@@ -18339,6 +18339,110 @@
    "kind": "status",
    "confidence": 0.95,
    "text": "TreVeyon Henderson: Placed on IR \n\n https://www.rotowire.com/football/player/treveyon-henderson-18517"
+  },
+  {
+   "id": "at://did:plc:qre6zxbmr3ixhdmgsgdretb5/app.bsky.feed.post/3n2cga2ihc52d|treveyonhenderson|out|status",
+   "at": "2026-11-14T21:15:41.053Z",
+   "seen": "2026-11-14T21:30:29.033Z",
+   "handle": "adamscheftermirror.bsky.social",
+   "post": "at://did:plc:qre6zxbmr3ixhdmgsgdretb5/app.bsky.feed.post/3n2cga2ihc52d",
+   "player": "TreVeyon Henderson",
+   "team": "NE",
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.95,
+   "text": "Patriots placed RB TreVeyon Henderson on injured reserve.\n\nOriginal post"
+  },
+  {
+   "id": "at://did:plc:qre6zxbmr3ixhdmgsgdretb5/app.bsky.feed.post/3n2cga3xznu2d|travisetienne|active|status",
+   "at": "2026-11-14T21:15:42.675Z",
+   "seen": "2026-11-14T21:30:29.033Z",
+   "handle": "adamscheftermirror.bsky.social",
+   "post": "at://did:plc:qre6zxbmr3ixhdmgsgdretb5/app.bsky.feed.post/3n2cga3xznu2d",
+   "player": "Travis Etienne",
+   "team": "NO",
+   "status": "active",
+   "kind": "status",
+   "confidence": 0.93,
+   "text": "Saints activated RB Travis Etienne off injured reserve, and he is expected to play Sunday against Carolina.\n\nOriginal post"
+  },
+  {
+   "id": "at://did:plc:qre6zxbmr3ixhdmgsgdretb5/app.bsky.feed.post/3n2cga4t3um2d|chrisbrooks|active|status",
+   "at": "2026-11-14T21:15:43.563Z",
+   "seen": "2026-11-14T21:30:29.033Z",
+   "handle": "adamscheftermirror.bsky.social",
+   "post": "at://did:plc:qre6zxbmr3ixhdmgsgdretb5/app.bsky.feed.post/3n2cga4t3um2d",
+   "player": "Chris Brooks",
+   "team": "GB",
+   "status": "active",
+   "kind": "status",
+   "confidence": 0.93,
+   "text": "Packers activated RB Chris Brooks and WR Skyy Moore off injured reserve ahead of Sunday’s game against the Vikings.\n\nOriginal post"
+  },
+  {
+   "id": "at://did:plc:qre6zxbmr3ixhdmgsgdretb5/app.bsky.feed.post/3n2cga4t3um2d|skyymoore|active|status",
+   "at": "2026-11-14T21:15:43.563Z",
+   "seen": "2026-11-14T21:30:29.033Z",
+   "handle": "adamscheftermirror.bsky.social",
+   "post": "at://did:plc:qre6zxbmr3ixhdmgsgdretb5/app.bsky.feed.post/3n2cga4t3um2d",
+   "player": "Skyy Moore",
+   "team": "GB",
+   "status": "active",
+   "kind": "status",
+   "confidence": 0.93,
+   "text": "Packers activated RB Chris Brooks and WR Skyy Moore off injured reserve ahead of Sunday’s game against the Vikings.\n\nOriginal post"
+  },
+  {
+   "id": "at://did:plc:qre6zxbmr3ixhdmgsgdretb5/app.bsky.feed.post/3n2cga55qpa2h|peterskoronski|out|status",
+   "at": "2026-11-14T21:15:43.909Z",
+   "seen": "2026-11-14T21:30:29.033Z",
+   "handle": "adamscheftermirror.bsky.social",
+   "post": "at://did:plc:qre6zxbmr3ixhdmgsgdretb5/app.bsky.feed.post/3n2cga55qpa2h",
+   "player": "Peter Skoronski",
+   "team": "TEN",
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.93,
+   "text": "Titans placed G Peter Skoronski and P Tommy Townsend on Injured Reserve.\n\nOriginal post"
+  },
+  {
+   "id": "at://did:plc:qre6zxbmr3ixhdmgsgdretb5/app.bsky.feed.post/3n2cga55qpa2h|tommytownsend|out|status",
+   "at": "2026-11-14T21:15:43.909Z",
+   "seen": "2026-11-14T21:30:29.033Z",
+   "handle": "adamscheftermirror.bsky.social",
+   "post": "at://did:plc:qre6zxbmr3ixhdmgsgdretb5/app.bsky.feed.post/3n2cga55qpa2h",
+   "player": "Tommy Townsend",
+   "team": "TEN",
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.93,
+   "text": "Titans placed G Peter Skoronski and P Tommy Townsend on Injured Reserve.\n\nOriginal post"
+  },
+  {
+   "id": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3n2cgdtddju2t|treveyonhenderson|out|status",
+   "at": "2026-11-14T21:17:47.000Z",
+   "seen": "2026-11-14T21:30:29.033Z",
+   "handle": "rotoworld-fb.bsky.social",
+   "post": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3n2cgdtddju2t",
+   "player": "TreVeyon Henderson",
+   "team": "NE",
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.9,
+   "text": "Pats move TreVeyon Henderson (illness) to IR"
+  },
+  {
+   "id": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3n2ch2fvlhq2g|laddmcconkey|questionable|status",
+   "at": "2026-11-14T21:30:25.000Z",
+   "seen": "2026-11-14T21:30:29.033Z",
+   "handle": "rotowirenfl.bsky.social",
+   "post": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3n2ch2fvlhq2g",
+   "player": "Ladd McConkey",
+   "team": null,
+   "status": "questionable",
+   "kind": "status",
+   "confidence": 0.93,
+   "text": "Ladd McConkey: Questionable for Monday Night Football \n\n https://www.rotowire.com/football/player/ladd-mcconkey-17724"
   }
  ]
 }

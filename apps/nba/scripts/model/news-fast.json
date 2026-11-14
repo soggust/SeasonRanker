@@ -1,7 +1,7 @@
 {
  "sport": "nba",
  "cursor": {
-  "rotowirenba.bsky.social": "2026-11-14T20:36:08.000Z",
+  "rotowirenba.bsky.social": "2026-11-14T21:24:41.000Z",
   "insidenbanews.bsky.social": "2026-11-13T20:00:09.852Z",
   "shamsbot.bsky.social": "2026-11-13T20:16:26.000Z"
  },
@@ -10249,6 +10249,32 @@
    "kind": "status",
    "confidence": 0.7,
    "text": "Collin Sexton: Full participant in practice \n\n https://www.rotowire.com/basketball/player/collin-sexton-4412"
+  },
+  {
+   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3n2cgkj2vl72r|aaronnesmith|questionable|status",
+   "at": "2026-11-14T21:21:31.000Z",
+   "seen": "2026-11-14T21:30:29.033Z",
+   "handle": "rotowirenba.bsky.social",
+   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3n2cgkj2vl72r",
+   "player": "Aaron Nesmith",
+   "team": null,
+   "status": "questionable",
+   "kind": "status",
+   "confidence": 0.9,
+   "text": "Aaron Nesmith: Questionable for Sunday \n\n https://www.rotowire.com/basketball/player/aaron-nesmith-5120"
+  },
+  {
+   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3n2cgq5mxzz23|alexsarr|questionable|status",
+   "at": "2026-11-14T21:24:41.000Z",
+   "seen": "2026-11-14T21:30:29.033Z",
+   "handle": "rotowirenba.bsky.social",
+   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3n2cgq5mxzz23",
+   "player": "Alex Sarr",
+   "team": null,
+   "status": "questionable",
+   "kind": "status",
+   "confidence": 0.9,
+   "text": "Alex Sarr: Questionable for Sunday \n\n https://www.rotowire.com/basketball/player/alex-sarr-6240"
   }
  ]
 }

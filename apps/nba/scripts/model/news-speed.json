@@ -20671,6 +20671,11 @@
    "sleeper": {
     "seen": "2026-11-14T21:13:34.530Z",
     "own": "2026-11-14T19:50:11.852Z"
+   },
+   "bluesky": {
+    "seen": "2026-11-14T21:15:23.425Z",
+    "own": "2026-11-14T19:44:42.000Z",
+    "why": "@rotowirenba.bsky.social: Ty Jerome: Ruled out Saturday \n\n https://www.rotowire."
    }
   },
   "401909980|yvesmissi|q": {
@@ -20698,6 +20703,54 @@
    "sleeper": {
     "seen": "2026-11-14T21:13:34.530Z",
     "own": "2026-11-14T19:50:11.869Z"
+   }
+  },
+  "401909980|tyjerome|out": {
+   "game": "401909980",
+   "start": "2026-11-15T00:00Z",
+   "team": "3",
+   "name": "Ty Jerome",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-14T21:15:23.425Z",
+    "own": "2026-11-14T19:44:42.000Z",
+    "why": "@rotowirenba.bsky.social: Ty Jerome: Ruled out Saturday \n\n https://www.rotowire."
+   }
+  },
+  "401909981|tyjerome|out": {
+   "game": "401909981",
+   "start": "2026-11-15T00:30Z",
+   "team": "5",
+   "name": "Ty Jerome",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-14T21:15:23.425Z",
+    "own": "2026-11-14T19:44:42.000Z",
+    "why": "@rotowirenba.bsky.social: Ty Jerome: Ruled out Saturday \n\n https://www.rotowire."
+   }
+  },
+  "401909982|tyjerome|out": {
+   "game": "401909982",
+   "start": "2026-11-15T01:00Z",
+   "team": "14",
+   "name": "Ty Jerome",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-14T21:15:23.425Z",
+    "own": "2026-11-14T19:44:42.000Z",
+    "why": "@rotowirenba.bsky.social: Ty Jerome: Ruled out Saturday \n\n https://www.rotowire."
+   }
+  },
+  "401909984|tyjerome|out": {
+   "game": "401909984",
+   "start": "2026-11-15T01:00Z",
+   "team": "16",
+   "name": "Ty Jerome",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-14T21:15:23.425Z",
+    "own": "2026-11-14T19:44:42.000Z",
+    "why": "@rotowirenba.bsky.social: Ty Jerome: Ruled out Saturday \n\n https://www.rotowire."
    }
   }
  }
