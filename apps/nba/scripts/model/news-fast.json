@@ -1,7 +1,7 @@
 {
  "sport": "nba",
  "cursor": {
-  "rotowirenba.bsky.social": "2026-11-14T17:33:42.000Z",
+  "rotowirenba.bsky.social": "2026-11-14T18:01:18.000Z",
   "insidenbanews.bsky.social": "2026-11-13T20:00:09.852Z",
   "shamsbot.bsky.social": "2026-11-13T20:16:26.000Z"
  },
@@ -10106,6 +10106,45 @@
    "kind": "status",
    "confidence": 0.95,
    "text": "Scottie Barnes: Questionable for Sunday \n\n https://www.rotowire.com/basketball/player/scottie-barnes-5390"
+  },
+  {
+   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3n2c2vwgfby2a|treymurphy|out|status",
+   "at": "2026-11-14T17:53:10.000Z",
+   "seen": "2026-11-14T18:05:30.915Z",
+   "handle": "rotowirenba.bsky.social",
+   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3n2c2vwgfby2a",
+   "player": "Trey Murphy",
+   "team": "NOP",
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.95,
+   "text": "Trey Murphy: Ruled out Saturday \n\n https://www.rotowire.com/basketball/player/trey-murphy-5401"
+  },
+  {
+   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3n2c357zwte2l|normanpowell|questionable|status",
+   "at": "2026-11-14T17:57:15.000Z",
+   "seen": "2026-11-14T18:05:30.915Z",
+   "handle": "rotowirenba.bsky.social",
+   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3n2c357zwte2l",
+   "player": "Norman Powell",
+   "team": "MIA",
+   "status": "questionable",
+   "kind": "status",
+   "confidence": 0.9,
+   "text": "Norman Powell: Questionable to face Minnesota \n\n https://www.rotowire.com/basketball/player/norman-powell-3726"
+  },
+  {
+   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3n2c3eieh472h|yvesmissi|active|status",
+   "at": "2026-11-14T18:01:18.000Z",
+   "seen": "2026-11-14T18:05:30.915Z",
+   "handle": "rotowirenba.bsky.social",
+   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3n2c3eieh472h",
+   "player": "Yves Missi",
+   "team": "NOP",
+   "status": "active",
+   "kind": "status",
+   "confidence": 0.8,
+   "text": "Yves Missi: Expected to play Saturday \n\n https://www.rotowire.com/basketball/player/yves-missi-6268"
   }
  ]
 }

@@ -2,7 +2,7 @@
  "sport": "nhl",
  "cursor": {
   "johnston-bot.bsky.social": "2026-11-12T16:02:25.547Z",
-  "notfriedgehnic.bsky.social": "2026-11-14T17:33:09.351Z",
+  "notfriedgehnic.bsky.social": "2026-11-14T17:56:06.797Z",
   "dailyfaceoff.bsky.social": "2026-11-14T17:34:18.000Z",
   "dfotoronto.bsky.social": "2026-11-14T17:32:20.000Z",
   "marklazerus.bsky.social": "2026-11-14T17:28:13.947Z"
@@ -2425,6 +2425,32 @@
    "kind": "status",
    "confidence": 0.95,
    "text": "Avalanche’s Nathan MacKinnon, Cale Makar out vs. Canadiens"
+  },
+  {
+   "id": "at://did:plc:sdobrsxnvwczrjydmnubhibh/app.bsky.feed.post/3n2c336wwdd2k|rickbowness|questionable|coaching",
+   "at": "2026-11-14T17:56:06.797Z",
+   "seen": "2026-11-14T18:05:30.915Z",
+   "handle": "notfriedgehnic.bsky.social",
+   "post": "at://did:plc:sdobrsxnvwczrjydmnubhibh/app.bsky.feed.post/3n2c336wwdd2k",
+   "player": "Rick Bowness",
+   "team": "CBJ",
+   "status": "questionable",
+   "kind": "coaching",
+   "confidence": 0.8,
+   "text": "Columbus GM Don Waddell said Don Granato will coach tonight vs Philadelphia and Monday on Long Island.\n\nRick Bowness is getting checked out for the illness that sidelined him this week. Waddell listed"
+  },
+  {
+   "id": "at://did:plc:sdobrsxnvwczrjydmnubhibh/app.bsky.feed.post/3n2c336wwdd2k|dongranato|none|coaching",
+   "at": "2026-11-14T17:56:06.797Z",
+   "seen": "2026-11-14T18:05:30.915Z",
+   "handle": "notfriedgehnic.bsky.social",
+   "post": "at://did:plc:sdobrsxnvwczrjydmnubhibh/app.bsky.feed.post/3n2c336wwdd2k",
+   "player": "Don Granato",
+   "team": "CBJ",
+   "status": "none",
+   "kind": "coaching",
+   "confidence": 0.85,
+   "text": "Columbus GM Don Waddell said Don Granato will coach tonight vs Philadelphia and Monday on Long Island.\n\nRick Bowness is getting checked out for the illness that sidelined him this week. Waddell listed"
   }
  ]
 }

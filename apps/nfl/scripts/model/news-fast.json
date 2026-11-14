@@ -2,10 +2,10 @@
  "sport": "nfl",
  "cursor": {
   "adamscheftermirror.bsky.social": "2026-11-14T17:20:41.785Z",
-  "rapsheet.bsky.social": "2026-11-14T17:08:42.288Z",
+  "rapsheet.bsky.social": "2026-11-14T17:52:34.475Z",
   "nflnewsreposterbot.bsky.social": "2026-11-13T18:01:20.702Z",
   "insidenflnews.bsky.social": "2026-11-14T16:30:58.245Z",
-  "nflnewsposter.bsky.social": "2026-11-14T16:35:06.223Z",
+  "nflnewsposter.bsky.social": "2026-11-14T17:59:59.087Z",
   "rotoworld-fb.bsky.social": "2026-11-14T16:44:52.000Z",
   "rotowirenfl.bsky.social": "2026-11-14T17:39:25.000Z"
  },
@@ -18430,6 +18430,32 @@
    "kind": "status",
    "confidence": 0.9,
    "text": "Colts activated DE Arden Key from injured reserve, signed LB West Weeks to their 53-man roster, and placed TE Mo Alie-Cox and LB Akeem Davis-Gaither on injured reserve.\n\nOriginal post"
+  },
+  {
+   "id": "at://did:plc:hlvr2omhnmvdmfnvmcuhyevz/app.bsky.feed.post/3n2c2uuf6vc2p|ardenkey|active|status",
+   "at": "2026-11-14T17:52:34.475Z",
+   "seen": "2026-11-14T18:05:30.915Z",
+   "handle": "rapsheet.bsky.social",
+   "post": "at://did:plc:hlvr2omhnmvdmfnvmcuhyevz/app.bsky.feed.post/3n2c2uuf6vc2p",
+   "player": "Arden Key",
+   "team": "IND",
+   "status": "active",
+   "kind": "status",
+   "confidence": 0.9,
+   "text": "Colts DE Arden Key (hamstring) has been activated from IR and he has no game designation."
+  },
+  {
+   "id": "at://did:plc:fuqjc7x4gxvnwzksnlxwbe4x/app.bsky.feed.post/3n2c3c4fkfc2p|patfreiermuth|questionable|status",
+   "at": "2026-11-14T17:59:59.087Z",
+   "seen": "2026-11-14T18:05:30.915Z",
+   "handle": "nflnewsposter.bsky.social",
+   "post": "at://did:plc:fuqjc7x4gxvnwzksnlxwbe4x/app.bsky.feed.post/3n2c3c4fkfc2p",
+   "player": "Pat Freiermuth",
+   "team": "PIT",
+   "status": "questionable",
+   "kind": "status",
+   "confidence": 0.9,
+   "text": "[Schefter] Steelers added TE Pat Freiermuth to the injury report and he is questionable for Sunday night’s game against Cincinnati’s due to an illness. twitter.com/adamschefter..."
   }
  ]
 }
