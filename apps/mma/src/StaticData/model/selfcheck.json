@@ -1,10 +1,50 @@
 {
- "at": "2026-11-13T09:21:01.390Z",
+ "at": "2026-11-14T09:25:50.574Z",
  "baseline": {
-  "from": "2026-10-09",
-  "to": "2026-11-06"
+  "from": "2026-10-10",
+  "to": "2026-11-07"
  },
  "checks": [
+  {
+   "examples": [],
+   "headline": "fairFrom unknown: missing on 8 of 23 bets this week (35%) against 27% before; fair chances from betonlineag",
+   "how": "placed this week against the 28 days before: the share of the bets each field applies to that are missing it",
+   "id": "C14",
+   "metric": "share",
+   "n": 23,
+   "needs": null,
+   "rows": [
+    {
+     "key": "fairFrom unknown",
+     "n": 8,
+     "of": 23,
+     "share": 0.3478,
+     "shareBase": 0.2683,
+     "status": "watch"
+    },
+    {
+     "key": "intent",
+     "n": 0,
+     "of": 23,
+     "share": 0,
+     "shareBase": 0,
+     "status": "ok"
+    },
+    {
+     "key": "publishedKelly",
+     "n": 0,
+     "of": 9,
+     "share": 0,
+     "shareBase": 0,
+     "status": "thin"
+    }
+   ],
+   "status": "watch",
+   "tested": null,
+   "threshold": "watch a share up 5 points on the baseline (3+ bets, 20+ both); flag doubled (5+)",
+   "title": "Data holes",
+   "value": 0.3478
+  },
   {
    "examples": [],
    "headline": "3 segments tested on 75 priced rows: none losing to the Book beyond the false discovery rate, none trending worse The priced history (every season, the gate's run of 2026-11-02): 2 leaks: side: under losing 0.08 nats per 100 rows to the Book, shrunk (n 331, z -2.58); price: dog losing 0.04 nats per 100 rows to the Book, shrunk (n 880, z -2.11).",
@@ -73,11 +113,11 @@
   },
   {
    "examples": [],
-   "headline": "No bet placed this week was cut by a guard (15 placed)",
+   "headline": "No bet placed this week was cut by a guard (23 placed)",
    "how": "placed this week against the 28 days before: the bets a guard cut to a half unit, by kind",
    "id": "C8",
    "metric": "ratio",
-   "n": 15,
+   "n": 23,
    "needs": [
     "state.tallies (the guards' skips by day: the Bot keeps only the bets it placed)"
    ],
@@ -304,21 +344,23 @@
    "examples": [
     "401922638:ml:4332765-2516131",
     "401922642:ml:2951202-4867356",
-    "401931773:ml:5302831-5144068"
+    "401931773:ml:5302831-5144068",
+    "401933595:ml:4285679-4421784"
    ],
-   "headline": "3 open bets stale, 0 past their start by 48h ungraded, 0 of 21 graded this week without a close",
+   "headline": "4 open bets stale, 0 past their start by 48h ungraded, 0 of 21 graded this week without a close",
    "how": "open bets on games not started: past the gap now, or published at a band today's trust wouldn't give them; open bets past their start plus VOID_AFTER; this week's graded bets with no close read",
    "id": "C13",
    "metric": "stale",
-   "n": 22,
+   "n": 30,
    "needs": null,
    "rows": [
     {
      "key": "stale",
-     "n": 3,
+     "n": 4,
      "why": [
       "published LOVE, PASS at today's trust",
-      "published LIKE, PASS at today's trust"
+      "published LIKE, PASS at today's trust",
+      "past the gap"
      ]
     },
     {
@@ -335,20 +377,20 @@
    "tested": null,
    "threshold": "watch 5 stale; flag 10 stale or any open 48h past its start",
    "title": "Stale open book and pipeline",
-   "value": 3
+   "value": 4
   },
   {
    "examples": [],
-   "headline": "Model files 56h old, 0 open bets overdue to grade; Odds API credits 90% left; 15 bets placed in a week of 19 games",
+   "headline": "Model files 17h old, 0 open bets overdue to grade; Odds API credits 88% left; 23 bets placed in a week of 19 games",
    "how": "the newest commit of the sport's model files, the open bets started 12 hours ago or more, The Odds API's credits (state.odds), the state's sources",
    "id": "C16",
    "metric": "ageH",
-   "n": 15,
+   "n": 23,
    "needs": null,
    "rows": [
     {
-     "ageH": 56,
-     "at": "2026-11-11T01:17:37Z",
+     "ageH": 17,
+     "at": "2026-11-13T15:59:55Z",
      "key": "files",
      "overdue": 0
     },
@@ -356,8 +398,8 @@
      "cycleEnd": "2026-12-01T00:02:39.102Z",
      "key": "credits",
      "monthly": 20000,
-     "remaining": 17982,
-     "share": 0.8991
+     "remaining": 17627,
+     "share": 0.8814
     },
     {
      "down": [],
@@ -366,22 +408,22 @@
     {
      "games": 19,
      "key": "week",
-     "placed": 15
+     "placed": 23
     }
    ],
    "status": "ok",
    "tested": null,
    "threshold": "watch files 3h old with bets overdue, credits under 20%, a source down, or no bets in a week with games; flag 6h old with bets overdue, or credits under 10%",
    "title": "Ops",
-   "value": 56
+   "value": 17
   },
   {
    "examples": [],
-   "headline": "0 of 15 bets placed this week had the line already moving against them",
+   "headline": "0 of 23 bets placed this week had the line already moving against them",
    "how": "placed this week: a prop's line a point or more against its side since it opened; a game's spread 1.5 (NFL) or 0.5, its total a point, a moneyline without a spread move 3 points of the home chance. A prop moved twice the guard's limit should have been skipped",
    "id": "C2",
    "metric": "roiGap",
-   "n": 15,
+   "n": 23,
    "needs": null,
    "rows": [
     {
@@ -398,7 +440,7 @@
      "e": 0,
      "key": "the rest",
      "n": 0,
-     "placed": 15,
+     "placed": 23,
      "profit": 0,
      "roi": null,
      "w": 0,
@@ -457,15 +499,15 @@
   },
   {
    "examples": [],
-   "headline": "Moneyline: dogs 29% of this week's bets against 45% before",
+   "headline": "Moneyline: dogs 47% of this week's bets against 45% before",
    "how": "placed this week against the 28 days before: a dog is a plus price or a spread side getting points",
    "id": "C5",
    "metric": "moved",
-   "n": 7,
+   "n": 15,
    "needs": null,
    "rows": [
     {
-     "dogShare": 0.2857,
+     "dogShare": 0.4667,
      "dogShareBase": 0.4468,
      "dogs": {
       "e": 0,
@@ -484,8 +526,8 @@
       "z": null
      },
      "key": "ml",
-     "moved": -0.1611,
-     "n": 7,
+     "moved": 0.0199,
+     "n": 15,
      "nBase": 47,
      "status": "thin"
     }
@@ -494,7 +536,7 @@
    "tested": null,
    "threshold": "watch the dog share moved 20 points (20+ bets both); flag also the grown group z -2 (30+ graded)",
    "title": "Favorite/dog drift",
-   "value": -0.1611
+   "value": 0.0199
   },
   {
    "examples": [],
@@ -597,46 +639,6 @@
   },
   {
    "examples": [],
-   "headline": "fairFrom unknown: missing on 8 of 15 bets this week (53%) against 27% before; fair chances from betonlineag",
-   "how": "placed this week against the 28 days before: the share of the bets each field applies to that are missing it",
-   "id": "C14",
-   "metric": "share",
-   "n": 15,
-   "needs": null,
-   "rows": [
-    {
-     "key": "fairFrom unknown",
-     "n": 8,
-     "of": 15,
-     "share": 0.5333,
-     "shareBase": 0.2683,
-     "status": "thin"
-    },
-    {
-     "key": "intent",
-     "n": 0,
-     "of": 15,
-     "share": 0,
-     "shareBase": 0,
-     "status": "thin"
-    },
-    {
-     "key": "publishedKelly",
-     "n": 0,
-     "of": 3,
-     "share": 0,
-     "shareBase": 0,
-     "status": "thin"
-    }
-   ],
-   "status": "thin",
-   "tested": null,
-   "threshold": "watch a share up 5 points on the baseline (3+ bets, 20+ both); flag doubled (5+)",
-   "title": "Data holes",
-   "value": 0.5333
-  },
-  {
-   "examples": [],
    "headline": "No graded props at the Book's price yet",
    "how": "every graded prop bet and CHECK at the Book's own price: the mean its price implies at its line over the Bot's projection (projection.lineRatio since 2026-10-13, else estimated from the line, the fair chance and the projection's dispersion), far over, far under or near (in SDs of the count: props.mjs lineZ), the Bot's side against the market's reading or with it; each row's record against the Book's fair chance (overBook, weighted as zOf). The line alarm's labeled rows (props.mjs lineAlarmOf: a far line with a cause known before the game that the fit doesn't size, on the side against the market's reading; a label, bet or not by the other guards) apart, the bets' set against the near ones. Never applied: it says where to look",
    "id": "C20",
@@ -656,7 +658,7 @@
    "how": "the day's last state.json for 35 days (git), the week's start against now; the changelog's entries this week verbatim",
    "id": "C9",
    "metric": "changes",
-   "n": 27,
+   "n": 28,
    "needs": null,
    "rows": [],
    "status": "info",
@@ -743,17 +745,17 @@
  "sport": "mma",
  "summary": {
   "flag": 0,
-  "headline": "Leaks against the Book (priced history): 3 segments tested on 75 priced rows: none losing to the Book beyond the false discovery rate, none trending worse The priced history (every season, the gate's run of 2026-11-02): 2 leaks: side: under losing 0.08 nats per 100 rows to the Book, shrunk (n 331, z -2.58); price: dog losing 0.04 nats per 100 rows to the Book, shrunk (n 880, z -2.11).",
+  "headline": "Data holes: fairFrom unknown: missing on 8 of 23 bets this week (35%) against 27% before; fair chances from betonlineag; Leaks against the Book (priced history): 3 segments tested on 75 priced rows: none losing to the Book beyond the false discovery rate, none trending worse The priced history (every season, the gate's run of 2026-11-02): 2 leaks: side: under losing 0.08 nats per 100 rows to the Book, shrunk (n 331, z -2.58); price: dog losing 0.04 nats per 100 rows to the Book, shrunk (n 880, z -2.11).",
   "info": 2,
   "ok": 4,
   "partial": 7,
-  "thin": 9,
-  "watch": 1
+  "thin": 8,
+  "watch": 2
  },
  "v": 1,
  "window": {
-  "from": "2026-11-06",
-  "to": "2026-11-13"
+  "from": "2026-11-07",
+  "to": "2026-11-14"
  },
  "writeups": {
   "calls": 0,
