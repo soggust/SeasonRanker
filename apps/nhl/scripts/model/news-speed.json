@@ -9153,6 +9153,11 @@
    "sleeper": {
     "seen": "2026-11-14T21:13:46.518Z",
     "own": "2026-11-14T19:35:10.023Z"
+   },
+   "bluesky": {
+    "seen": "2026-11-14T21:15:23.425Z",
+    "own": "2026-11-14T20:52:03.000Z",
+    "why": "@dailyfaceoff.bsky.social: Kings’ Artemi Panarin to miss game for family reasons"
    }
   },
   "401892715|seanmonahan|out": {
@@ -9212,6 +9217,30 @@
    "sleeper": {
     "seen": "2026-11-14T21:13:46.518Z",
     "own": "2026-11-14T20:00:10.161Z"
+   }
+  },
+  "401892712|erikcernak|out": {
+   "game": "401892712",
+   "start": "2026-11-15T00:00Z",
+   "team": "20",
+   "name": "Erik Cernak",
+   "status": "out",
+   "athlete": "3904178",
+   "espn": {
+    "seen": "2026-11-14T23:13:35.707Z",
+    "own": "2026-11-14T22:54:00.000Z"
+   }
+  },
+  "401892712|anthonycirelli|out": {
+   "game": "401892712",
+   "start": "2026-11-15T00:00Z",
+   "team": "20",
+   "name": "Anthony Cirelli",
+   "status": "out",
+   "athlete": "3941973",
+   "espn": {
+    "seen": "2026-11-14T23:13:35.707Z",
+    "own": "2026-11-14T22:52:00.000Z"
    }
   }
  }

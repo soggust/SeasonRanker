@@ -3,9 +3,9 @@
  "cursor": {
   "johnston-bot.bsky.social": "2026-11-12T16:02:25.547Z",
   "notfriedgehnic.bsky.social": "2026-11-14T20:55:34.392Z",
-  "dailyfaceoff.bsky.social": "2026-11-14T21:03:27.000Z",
-  "dfotoronto.bsky.social": "2026-11-14T21:03:24.000Z",
-  "marklazerus.bsky.social": "2026-11-14T20:48:52.559Z"
+  "dailyfaceoff.bsky.social": "2026-11-14T23:02:39.000Z",
+  "dfotoronto.bsky.social": "2026-11-14T22:31:48.000Z",
+  "marklazerus.bsky.social": "2026-11-14T23:12:02.034Z"
  },
  "claims": [
   {
@@ -2490,6 +2490,19 @@
    "kind": "return",
    "confidence": 0.9,
    "text": "Returnees tonight:\nBrock Faber for Minnesota\nMathew Barzal for the Islanders"
+  },
+  {
+   "id": "at://did:plc:3uus7y6h3rlrk6sbctzxm4bg/app.bsky.feed.post/3n2chwm7jdo2f|alexwennberg|out|status",
+   "at": "2026-11-14T21:46:11.000Z",
+   "seen": "2026-11-14T23:14:54.463Z",
+   "handle": "dailyfaceoff.bsky.social",
+   "post": "at://did:plc:3uus7y6h3rlrk6sbctzxm4bg/app.bsky.feed.post/3n2chwm7jdo2f",
+   "player": "Alex Wennberg",
+   "team": "SJ",
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.95,
+   "text": "Sharks’ Alex Wennberg out with upper-body injury"
   }
  ]
 }

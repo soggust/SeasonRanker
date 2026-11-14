@@ -1,12 +1,12 @@
 {
  "sport": "nfl",
  "cursor": {
-  "adamscheftermirror.bsky.social": "2026-11-14T21:15:43.909Z",
+  "adamscheftermirror.bsky.social": "2026-11-14T21:30:42.658Z",
   "rapsheet.bsky.social": "2026-11-14T21:13:21.040Z",
   "nflnewsreposterbot.bsky.social": "2026-11-13T18:01:20.702Z",
   "insidenflnews.bsky.social": "2026-11-14T21:06:00.144Z",
   "nflnewsposter.bsky.social": "2026-11-14T18:21:26.376Z",
-  "rotoworld-fb.bsky.social": "2026-11-14T21:17:47.000Z",
+  "rotoworld-fb.bsky.social": "2026-11-14T21:31:34.000Z",
   "rotowirenfl.bsky.social": "2026-11-14T21:30:25.000Z"
  },
  "claims": [
@@ -18443,6 +18443,32 @@
    "kind": "status",
    "confidence": 0.93,
    "text": "Ladd McConkey: Questionable for Monday Night Football \n\n https://www.rotowire.com/football/player/ladd-mcconkey-17724"
+  },
+  {
+   "id": "at://did:plc:qre6zxbmr3ixhdmgsgdretb5/app.bsky.feed.post/3n2ch2wd6yv2h|laddmcconkey|questionable|status",
+   "at": "2026-11-14T21:30:42.658Z",
+   "seen": "2026-11-14T23:14:54.463Z",
+   "handle": "adamscheftermirror.bsky.social",
+   "post": "at://did:plc:qre6zxbmr3ixhdmgsgdretb5/app.bsky.feed.post/3n2ch2wd6yv2h",
+   "player": "Ladd McConkey",
+   "team": "LAC",
+   "status": "questionable",
+   "kind": "status",
+   "confidence": 0.95,
+   "text": "Chargers are listing WR Ladd McConkey as questionable for Monday night’s game at Baltimore while WR Tre Harris is off the injury report.\n\nOriginal post"
+  },
+  {
+   "id": "at://did:plc:qre6zxbmr3ixhdmgsgdretb5/app.bsky.feed.post/3n2ch2wd6yv2h|treharris|active|status",
+   "at": "2026-11-14T21:30:42.658Z",
+   "seen": "2026-11-14T23:14:54.463Z",
+   "handle": "adamscheftermirror.bsky.social",
+   "post": "at://did:plc:qre6zxbmr3ixhdmgsgdretb5/app.bsky.feed.post/3n2ch2wd6yv2h",
+   "player": "Tre Harris",
+   "team": "LAC",
+   "status": "active",
+   "kind": "status",
+   "confidence": 0.9,
+   "text": "Chargers are listing WR Ladd McConkey as questionable for Monday night’s game at Baltimore while WR Tre Harris is off the injury report.\n\nOriginal post"
   }
  ]
 }

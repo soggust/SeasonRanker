@@ -1,7 +1,7 @@
 {
  "sport": "nba",
  "cursor": {
-  "rotowirenba.bsky.social": "2026-11-14T21:24:41.000Z",
+  "rotowirenba.bsky.social": "2026-11-14T23:08:00.000Z",
   "insidenbanews.bsky.social": "2026-11-13T20:00:09.852Z",
   "shamsbot.bsky.social": "2026-11-13T20:16:26.000Z"
  },
@@ -10275,6 +10275,149 @@
    "kind": "status",
    "confidence": 0.9,
    "text": "Alex Sarr: Questionable for Sunday \n\n https://www.rotowire.com/basketball/player/alex-sarr-6240"
+  },
+  {
+   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3n2ciazwcxr2m|fredvanvleet|out|status",
+   "at": "2026-11-14T21:52:01.000Z",
+   "seen": "2026-11-14T23:14:54.463Z",
+   "handle": "rotowirenba.bsky.social",
+   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3n2ciazwcxr2m",
+   "player": "Fred VanVleet",
+   "team": null,
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.95,
+   "text": "Fred VanVleet: Ruled out for Sunday \n\n https://www.rotowire.com/basketball/player/fred-vanvleet-3935"
+  },
+  {
+   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3n2cizzb3hv2z|joelembiid|out|status",
+   "at": "2026-11-14T22:05:59.000Z",
+   "seen": "2026-11-14T23:14:54.463Z",
+   "handle": "rotowirenba.bsky.social",
+   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3n2cizzb3hv2z",
+   "player": "Joel Embiid",
+   "team": null,
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.95,
+   "text": "Joel Embiid: Won't play Sunday \n\n https://www.rotowire.com/basketball/player/joel-embiid-3572"
+  },
+  {
+   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3n2cj7fstrx2t|lebronjames|active|status",
+   "at": "2026-11-14T22:09:00.000Z",
+   "seen": "2026-11-14T23:14:54.463Z",
+   "handle": "rotowirenba.bsky.social",
+   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3n2cj7fstrx2t",
+   "player": "LeBron James",
+   "team": null,
+   "status": "active",
+   "kind": "status",
+   "confidence": 0.9,
+   "text": "LeBron James: Off injury report \n\n https://www.rotowire.com/basketball/player/lebron-james-2344"
+  },
+  {
+   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3n2cjczw7ef2z|paulgeorge|active|status",
+   "at": "2026-11-14T22:11:02.000Z",
+   "seen": "2026-11-14T23:14:54.463Z",
+   "handle": "rotowirenba.bsky.social",
+   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3n2cjczw7ef2z",
+   "player": "Paul George",
+   "team": null,
+   "status": "active",
+   "kind": "status",
+   "confidence": 0.85,
+   "text": "Paul George: Fades injury report \n\n https://www.rotowire.com/basketball/player/paul-george-3114"
+  },
+  {
+   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3n2cknb7qus2z|yvesmissi|active|status",
+   "at": "2026-11-14T22:34:39.000Z",
+   "seen": "2026-11-14T23:14:54.463Z",
+   "handle": "rotowirenba.bsky.social",
+   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3n2cknb7qus2z",
+   "player": "Yves Missi",
+   "team": null,
+   "status": "active",
+   "kind": "status",
+   "confidence": 0.95,
+   "text": "Yves Missi: Officially active \n\n https://www.rotowire.com/basketball/player/yves-missi-6268"
+  },
+  {
+   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3n2clnidk4d2q|jarrettallen|out|status",
+   "at": "2026-11-14T22:52:40.000Z",
+   "seen": "2026-11-14T23:14:54.463Z",
+   "handle": "rotowirenba.bsky.social",
+   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3n2clnidk4d2q",
+   "player": "Jarrett Allen",
+   "team": null,
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.95,
+   "text": "Jarrett Allen: Won't play Saturday \n\n https://www.rotowire.com/basketball/player/jarrett-allen-4122"
+  },
+  {
+   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3n2clti5svm23|donovanmitchell|out|status",
+   "at": "2026-11-14T22:56:01.000Z",
+   "seen": "2026-11-14T23:14:54.463Z",
+   "handle": "rotowirenba.bsky.social",
+   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3n2clti5svm23",
+   "player": "Donovan Mitchell",
+   "team": null,
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.95,
+   "text": "Donovan Mitchell: Ruled out Saturday \n\n https://www.rotowire.com/basketball/player/donovan-mitchell-4166"
+  },
+  {
+   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3n2clwut2fd2r|jamesharden|out|status",
+   "at": "2026-11-14T22:57:55.000Z",
+   "seen": "2026-11-14T23:14:54.463Z",
+   "handle": "rotowirenba.bsky.social",
+   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3n2clwut2fd2r",
+   "player": "James Harden",
+   "team": null,
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.95,
+   "text": "James Harden: Ruled out Saturday \n\n https://www.rotowire.com/basketball/player/james-harden-3018"
+  },
+  {
+   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3n2clzyu2zm2b|peytonwatson|out|status",
+   "at": "2026-11-14T22:59:40.000Z",
+   "seen": "2026-11-14T23:14:54.463Z",
+   "handle": "rotowirenba.bsky.social",
+   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3n2clzyu2zm2b",
+   "player": "Peyton Watson",
+   "team": null,
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.95,
+   "text": "Peyton Watson: Out Saturday \n\n https://www.rotowire.com/basketball/player/peyton-watson-5722"
+  },
+  {
+   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3n2cm7st6kh2y|maxchristie|out|status",
+   "at": "2026-11-14T23:02:55.000Z",
+   "seen": "2026-11-14T23:14:54.463Z",
+   "handle": "rotowirenba.bsky.social",
+   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3n2cm7st6kh2y",
+   "player": "Max Christie",
+   "team": null,
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.95,
+   "text": "Max Christie: Ruled out Saturday \n\n https://www.rotowire.com/basketball/player/max-christie-5723"
+  },
+  {
+   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3n2cmivkwdl26|kingstonflemings|out|status",
+   "at": "2026-11-14T23:08:00.000Z",
+   "seen": "2026-11-14T23:14:54.463Z",
+   "handle": "rotowirenba.bsky.social",
+   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3n2cmivkwdl26",
+   "player": "Kingston Flemings",
+   "team": null,
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.95,
+   "text": "Kingston Flemings: Ruled out for Sunday \n\n https://www.rotowire.com/basketball/player/kingston-flemings-6927"
   }
  ]
 }
