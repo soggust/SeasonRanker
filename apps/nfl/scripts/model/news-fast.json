@@ -1,54 +1,15 @@
 {
  "sport": "nfl",
  "cursor": {
-  "adamscheftermirror.bsky.social": "2026-11-14T16:35:41.648Z",
-  "rapsheet.bsky.social": "2026-11-13T18:15:27.700Z",
+  "adamscheftermirror.bsky.social": "2026-11-14T17:20:41.785Z",
+  "rapsheet.bsky.social": "2026-11-14T17:08:42.288Z",
   "nflnewsreposterbot.bsky.social": "2026-11-13T18:01:20.702Z",
   "insidenflnews.bsky.social": "2026-11-14T16:30:58.245Z",
   "nflnewsposter.bsky.social": "2026-11-14T16:35:06.223Z",
   "rotoworld-fb.bsky.social": "2026-11-14T16:44:52.000Z",
-  "rotowirenfl.bsky.social": "2026-11-14T16:37:45.000Z"
+  "rotowirenfl.bsky.social": "2026-11-14T17:18:15.000Z"
  },
  "claims": [
-  {
-   "id": "at://did:plc:mbr4badgf6yu56mquzackzew/app.bsky.feed.post/3myn6jxikk22f|jordanmason|active|return",
-   "at": "2026-10-24T17:06:57.471Z",
-   "seen": "2026-10-26T05:03:40.538Z",
-   "handle": "insidenflnews.bsky.social",
-   "post": "at://did:plc:mbr4badgf6yu56mquzackzew/app.bsky.feed.post/3myn6jxikk22f",
-   "player": "Jordan Mason",
-   "team": "MIN",
-   "status": "active",
-   "kind": "return",
-   "confidence": 0.5,
-   "text": "Fowler: Vikings plan to activate Jordan Mason (thumb) from IR ahead of Week 7."
-  },
-  {
-   "id": "at://did:plc:qre6zxbmr3ixhdmgsgdretb5/app.bsky.feed.post/3myn6ut64z52a|jevonholland|out|status",
-   "at": "2026-10-24T17:13:01.949Z",
-   "seen": "2026-10-26T05:03:40.538Z",
-   "handle": "adamscheftermirror.bsky.social",
-   "post": "at://did:plc:qre6zxbmr3ixhdmgsgdretb5/app.bsky.feed.post/3myn6ut64z52a",
-   "player": "Jevón Holland",
-   "team": "NYG",
-   "status": "out",
-   "kind": "status",
-   "confidence": 0.9,
-   "text": "Giants downgraded S Jevón Holland (concussion) and TE Theo Johnson (neck) to out for Sunday’s game at Houston.\n\nOriginal post"
-  },
-  {
-   "id": "at://did:plc:qre6zxbmr3ixhdmgsgdretb5/app.bsky.feed.post/3myn6ut64z52a|theojohnson|out|status",
-   "at": "2026-10-24T17:13:01.949Z",
-   "seen": "2026-10-26T05:03:40.538Z",
-   "handle": "adamscheftermirror.bsky.social",
-   "post": "at://did:plc:qre6zxbmr3ixhdmgsgdretb5/app.bsky.feed.post/3myn6ut64z52a",
-   "player": "Theo Johnson",
-   "team": "NYG",
-   "status": "out",
-   "kind": "status",
-   "confidence": 0.9,
-   "text": "Giants downgraded S Jevón Holland (concussion) and TE Theo Johnson (neck) to out for Sunday’s game at Houston.\n\nOriginal post"
-  },
   {
    "id": "at://did:plc:qre6zxbmr3ixhdmgsgdretb5/app.bsky.feed.post/3myngp644e52f|lamarjackson|out|status",
    "at": "2026-10-24T19:33:02.025Z",
@@ -18391,6 +18352,84 @@
    "kind": "status",
    "confidence": 0.95,
    "text": "Schultz: Kenneth Walker (groin) out vs. Falcons"
+  },
+  {
+   "id": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3n2byxit5dt26|garrettwilson|active|return",
+   "at": "2026-11-14T17:18:15.000Z",
+   "seen": "2026-11-14T17:23:05.940Z",
+   "handle": "rotowirenfl.bsky.social",
+   "post": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3n2byxit5dt26",
+   "player": "Garrett Wilson",
+   "team": "NYJ",
+   "status": "active",
+   "kind": "return",
+   "confidence": 0.8,
+   "text": "Garrett Wilson: Slated to return Sunday \n\n https://www.rotowire.com/football/player/garrett-wilson-15829"
+  },
+  {
+   "id": "at://did:plc:qre6zxbmr3ixhdmgsgdretb5/app.bsky.feed.post/3n2bz3tj2bj2s|kennethwalker|out|status",
+   "at": "2026-11-14T17:20:40.603Z",
+   "seen": "2026-11-14T17:23:05.940Z",
+   "handle": "adamscheftermirror.bsky.social",
+   "post": "at://did:plc:qre6zxbmr3ixhdmgsgdretb5/app.bsky.feed.post/3n2bz3tj2bj2s",
+   "player": "Kenneth Walker",
+   "team": "KC",
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.9,
+   "text": "More about the Chiefs downgrading RB Kenneth Walker to out and turning to rookie RB Emmett Johnson:\n\nOriginal post"
+  },
+  {
+   "id": "at://did:plc:qre6zxbmr3ixhdmgsgdretb5/app.bsky.feed.post/3n2bz3tj2bj2s|emmettjohnson|none|role",
+   "at": "2026-11-14T17:20:40.603Z",
+   "seen": "2026-11-14T17:23:05.940Z",
+   "handle": "adamscheftermirror.bsky.social",
+   "post": "at://did:plc:qre6zxbmr3ixhdmgsgdretb5/app.bsky.feed.post/3n2bz3tj2bj2s",
+   "player": "Emmett Johnson",
+   "team": "KC",
+   "status": "none",
+   "kind": "role",
+   "confidence": 0.5,
+   "text": "More about the Chiefs downgrading RB Kenneth Walker to out and turning to rookie RB Emmett Johnson:\n\nOriginal post"
+  },
+  {
+   "id": "at://did:plc:qre6zxbmr3ixhdmgsgdretb5/app.bsky.feed.post/3n2bz3uda6k2f|ardenkey|active|return",
+   "at": "2026-11-14T17:20:41.785Z",
+   "seen": "2026-11-14T17:23:05.940Z",
+   "handle": "adamscheftermirror.bsky.social",
+   "post": "at://did:plc:qre6zxbmr3ixhdmgsgdretb5/app.bsky.feed.post/3n2bz3uda6k2f",
+   "player": "Arden Key",
+   "team": "IND",
+   "status": "active",
+   "kind": "return",
+   "confidence": 0.9,
+   "text": "Colts activated DE Arden Key from injured reserve, signed LB West Weeks to their 53-man roster, and placed TE Mo Alie-Cox and LB Akeem Davis-Gaither on injured reserve.\n\nOriginal post"
+  },
+  {
+   "id": "at://did:plc:qre6zxbmr3ixhdmgsgdretb5/app.bsky.feed.post/3n2bz3uda6k2f|moaliecox|out|status",
+   "at": "2026-11-14T17:20:41.785Z",
+   "seen": "2026-11-14T17:23:05.940Z",
+   "handle": "adamscheftermirror.bsky.social",
+   "post": "at://did:plc:qre6zxbmr3ixhdmgsgdretb5/app.bsky.feed.post/3n2bz3uda6k2f",
+   "player": "Mo Alie-Cox",
+   "team": "IND",
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.9,
+   "text": "Colts activated DE Arden Key from injured reserve, signed LB West Weeks to their 53-man roster, and placed TE Mo Alie-Cox and LB Akeem Davis-Gaither on injured reserve.\n\nOriginal post"
+  },
+  {
+   "id": "at://did:plc:qre6zxbmr3ixhdmgsgdretb5/app.bsky.feed.post/3n2bz3uda6k2f|akeemdavisgaither|out|status",
+   "at": "2026-11-14T17:20:41.785Z",
+   "seen": "2026-11-14T17:23:05.940Z",
+   "handle": "adamscheftermirror.bsky.social",
+   "post": "at://did:plc:qre6zxbmr3ixhdmgsgdretb5/app.bsky.feed.post/3n2bz3uda6k2f",
+   "player": "Akeem Davis-Gaither",
+   "team": "IND",
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.9,
+   "text": "Colts activated DE Arden Key from injured reserve, signed LB West Weeks to their 53-man roster, and placed TE Mo Alie-Cox and LB Akeem Davis-Gaither on injured reserve.\n\nOriginal post"
   }
  ]
 }
