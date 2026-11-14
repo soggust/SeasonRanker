@@ -19633,6 +19633,35 @@
    "espn": {
     "seen": "2026-11-14T16:37:36.052Z",
     "own": "2026-11-13T20:32:00.000Z"
+   },
+   "bluesky": {
+    "seen": "2026-11-14T16:45:28.487Z",
+    "own": "2026-11-14T16:44:52.000Z",
+    "why": "@rotoworld-fb.bsky.social: Schultz: Kenneth Walker (groin) out vs. Falcons"
+   }
+  },
+  "401873059|willmallory|out": {
+   "game": "401873059",
+   "start": "2026-11-15T18:00Z",
+   "team": "11",
+   "name": "Will Mallory",
+   "status": "out",
+   "athlete": "4362523",
+   "espn": {
+    "seen": "2026-11-14T17:14:37.380Z",
+    "own": "2026-11-14T17:09:00.000Z"
+   }
+  },
+  "401873066|willmallory|out": {
+   "game": "401873066",
+   "start": "2026-11-20T01:15Z",
+   "team": "11",
+   "name": "Will Mallory",
+   "status": "out",
+   "athlete": "4362523",
+   "espn": {
+    "seen": "2026-11-14T17:14:37.380Z",
+    "own": "2026-11-14T17:09:00.000Z"
    }
   }
  }
