@@ -1,7 +1,7 @@
 {
  "sport": "nfl",
  "cursor": {
-  "adamscheftermirror.bsky.social": "2026-11-14T01:45:37.743Z",
+  "adamscheftermirror.bsky.social": "2026-11-14T12:30:38.798Z",
   "rapsheet.bsky.social": "2026-11-13T18:15:27.700Z",
   "nflnewsreposterbot.bsky.social": "2026-11-13T18:01:20.702Z",
   "insidenflnews.bsky.social": "2026-11-13T22:30:29.242Z",
@@ -18248,6 +18248,19 @@
    "kind": "status",
    "confidence": 0.95,
    "text": "Amon-Ra St. Brown (ribs) questionable for Week 10"
+  },
+  {
+   "id": "at://did:plc:qre6zxbmr3ixhdmgsgdretb5/app.bsky.feed.post/3n2biv7lyxt2f|kirkcousins|active|starting",
+   "at": "2026-11-14T12:30:38.798Z",
+   "seen": "2026-11-14T12:42:56.574Z",
+   "handle": "adamscheftermirror.bsky.social",
+   "post": "at://did:plc:qre6zxbmr3ixhdmgsgdretb5/app.bsky.feed.post/3n2biv7lyxt2f",
+   "player": "Kirk Cousins",
+   "team": "ATL",
+   "status": "active",
+   "kind": "starting",
+   "confidence": 0.6,
+   "text": "More about Kevin O'Connell confirming that quarterback Kirk Cousins will start Sunday against the Green Bay Packers, via @SeifertESPN:\n\nOriginal post"
   }
  ]
 }
