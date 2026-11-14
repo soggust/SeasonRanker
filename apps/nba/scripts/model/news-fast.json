@@ -1,7 +1,7 @@
 {
  "sport": "nba",
  "cursor": {
-  "rotowirenba.bsky.social": "2026-11-14T17:19:47.000Z",
+  "rotowirenba.bsky.social": "2026-11-14T17:33:42.000Z",
   "insidenbanews.bsky.social": "2026-11-13T20:00:09.852Z",
   "shamsbot.bsky.social": "2026-11-13T20:16:26.000Z"
  },
@@ -10093,6 +10093,19 @@
    "kind": "status",
    "confidence": 0.6,
    "text": "Mikel Brown: Upgraded to probable \n\n https://www.rotowire.com/basketball/player/mikel-brown-6929"
+  },
+  {
+   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3n2bzt4kfqk2q|scottiebarnes|questionable|status",
+   "at": "2026-11-14T17:33:42.000Z",
+   "seen": "2026-11-14T17:43:57.474Z",
+   "handle": "rotowirenba.bsky.social",
+   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3n2bzt4kfqk2q",
+   "player": "Scottie Barnes",
+   "team": "TOR",
+   "status": "questionable",
+   "kind": "status",
+   "confidence": 0.95,
+   "text": "Scottie Barnes: Questionable for Sunday \n\n https://www.rotowire.com/basketball/player/scottie-barnes-5390"
   }
  ]
 }

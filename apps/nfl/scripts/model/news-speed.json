@@ -12214,6 +12214,11 @@
    "espn": {
     "seen": "2026-11-10T00:00:42.694Z",
     "own": "2026-11-09T21:15:00.000Z"
+   },
+   "bluesky": {
+    "seen": "2026-11-14T17:23:05.940Z",
+    "own": "2026-11-14T17:20:41.785Z",
+    "why": "@adamscheftermirror.bsky.social: Colts activated DE Arden Key from injured reser"
    }
   },
   "401873059|alecpierce|out": {
@@ -17376,6 +17381,11 @@
    "espn": {
     "seen": "2026-11-13T18:31:54.889Z",
     "own": "2026-11-13T18:13:00.000Z"
+   },
+   "bluesky": {
+    "seen": "2026-11-14T17:23:05.940Z",
+    "own": "2026-11-14T17:20:41.785Z",
+    "why": "@adamscheftermirror.bsky.social: Colts activated DE Arden Key from injured reser"
    }
   },
   "401873058|kennethwalker|q": {
@@ -19686,6 +19696,18 @@
    "espn": {
     "seen": "2026-11-14T17:20:42.970Z",
     "own": "2026-11-14T17:07:00.000Z"
+   }
+  },
+  "401873064|patfreiermuth|q": {
+   "game": "401873064",
+   "start": "2026-11-16T01:20Z",
+   "team": "23",
+   "name": "Pat Freiermuth",
+   "status": "q",
+   "athlete": "4361411",
+   "espn": {
+    "seen": "2026-11-14T17:41:37.833Z",
+    "own": "2026-11-14T17:36:00.000Z"
    }
   }
  }

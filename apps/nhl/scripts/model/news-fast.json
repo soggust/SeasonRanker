@@ -2,10 +2,10 @@
  "sport": "nhl",
  "cursor": {
   "johnston-bot.bsky.social": "2026-11-12T16:02:25.547Z",
-  "notfriedgehnic.bsky.social": "2026-11-14T16:40:19.557Z",
-  "dailyfaceoff.bsky.social": "2026-11-14T17:11:55.000Z",
-  "dfotoronto.bsky.social": "2026-11-14T17:20:48.000Z",
-  "marklazerus.bsky.social": "2026-11-14T16:20:14.013Z"
+  "notfriedgehnic.bsky.social": "2026-11-14T17:33:09.351Z",
+  "dailyfaceoff.bsky.social": "2026-11-14T17:34:18.000Z",
+  "dfotoronto.bsky.social": "2026-11-14T17:32:20.000Z",
+  "marklazerus.bsky.social": "2026-11-14T17:28:13.947Z"
  },
  "claims": [
   {
@@ -2373,6 +2373,58 @@
    "kind": "starting",
    "confidence": 0.9,
    "text": "Maple Leafs lineup news: Anthony Stolarz will start vs. Oilers"
+  },
+  {
+   "id": "at://did:plc:sdobrsxnvwczrjydmnubhibh/app.bsky.feed.post/3n2bzs5ccj423|nathanmackinnon|out|status",
+   "at": "2026-11-14T17:33:09.351Z",
+   "seen": "2026-11-14T17:43:57.474Z",
+   "handle": "notfriedgehnic.bsky.social",
+   "post": "at://did:plc:sdobrsxnvwczrjydmnubhibh/app.bsky.feed.post/3n2bzs5ccj423",
+   "player": "Nathan MacKinnon",
+   "team": "COL",
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.9,
+   "text": "Colorado coach Jared Bednar said this morning Nathan MacKinnon out a month and Cale Makar out a couple of weeks"
+  },
+  {
+   "id": "at://did:plc:sdobrsxnvwczrjydmnubhibh/app.bsky.feed.post/3n2bzs5ccj423|calemakar|out|status",
+   "at": "2026-11-14T17:33:09.351Z",
+   "seen": "2026-11-14T17:43:57.474Z",
+   "handle": "notfriedgehnic.bsky.social",
+   "post": "at://did:plc:sdobrsxnvwczrjydmnubhibh/app.bsky.feed.post/3n2bzs5ccj423",
+   "player": "Cale Makar",
+   "team": "COL",
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.9,
+   "text": "Colorado coach Jared Bednar said this morning Nathan MacKinnon out a month and Cale Makar out a couple of weeks"
+  },
+  {
+   "id": "at://did:plc:3uus7y6h3rlrk6sbctzxm4bg/app.bsky.feed.post/3n2bzu7phyz2t|nathanmackinnon|out|status",
+   "at": "2026-11-14T17:34:18.000Z",
+   "seen": "2026-11-14T17:43:57.474Z",
+   "handle": "dailyfaceoff.bsky.social",
+   "post": "at://did:plc:3uus7y6h3rlrk6sbctzxm4bg/app.bsky.feed.post/3n2bzu7phyz2t",
+   "player": "Nathan MacKinnon",
+   "team": "COL",
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.95,
+   "text": "Avalanche’s Nathan MacKinnon, Cale Makar out vs. Canadiens"
+  },
+  {
+   "id": "at://did:plc:3uus7y6h3rlrk6sbctzxm4bg/app.bsky.feed.post/3n2bzu7phyz2t|calemakar|out|status",
+   "at": "2026-11-14T17:34:18.000Z",
+   "seen": "2026-11-14T17:43:57.474Z",
+   "handle": "dailyfaceoff.bsky.social",
+   "post": "at://did:plc:3uus7y6h3rlrk6sbctzxm4bg/app.bsky.feed.post/3n2bzu7phyz2t",
+   "player": "Cale Makar",
+   "team": "COL",
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.95,
+   "text": "Avalanche’s Nathan MacKinnon, Cale Makar out vs. Canadiens"
   }
  ]
 }
