@@ -4,10 +4,10 @@
   "adamscheftermirror.bsky.social": "2026-11-14T14:05:39.537Z",
   "rapsheet.bsky.social": "2026-11-13T18:15:27.700Z",
   "nflnewsreposterbot.bsky.social": "2026-11-13T18:01:20.702Z",
-  "insidenflnews.bsky.social": "2026-11-13T22:30:29.242Z",
+  "insidenflnews.bsky.social": "2026-11-14T14:21:47.766Z",
   "nflnewsposter.bsky.social": "2026-11-14T02:13:21.487Z",
   "rotoworld-fb.bsky.social": "2026-11-14T01:39:45.000Z",
-  "rotowirenfl.bsky.social": "2026-11-13T23:05:20.000Z"
+  "rotowirenfl.bsky.social": "2026-11-14T14:26:16.000Z"
  },
  "claims": [
   {
@@ -18274,6 +18274,19 @@
    "kind": "status",
    "confidence": 0.6,
    "text": "As it turns out, Ravens QB Lamar Jackson underwent thumb surgery last week, per sources. If the 6-10 week injury window that Ravens HC Jesse Minter is applied to last week’s surgery, it would give Jac"
+  },
+  {
+   "id": "at://did:plc:mbr4badgf6yu56mquzackzew/app.bsky.feed.post/3n2bp3xk5a225|kylermurray|out|status",
+   "at": "2026-11-14T14:21:47.766Z",
+   "seen": "2026-11-14T14:30:39.876Z",
+   "handle": "insidenflnews.bsky.social",
+   "post": "at://did:plc:mbr4badgf6yu56mquzackzew/app.bsky.feed.post/3n2bp3xk5a225",
+   "player": "Kyler Murray",
+   "team": null,
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.6,
+   "text": "Pelissero: Kyler Murray (GTA VI) out at least a couple more weeks."
   }
  ]
 }
