@@ -1,126 +1,6 @@
 {
  "sport": "nhl",
  "entries": {
-  "401892636|anthonymantha|q": {
-   "game": "401892636",
-   "start": "2026-11-04T00:30Z",
-   "team": "11",
-   "name": "Anthony Mantha",
-   "status": "q",
-   "athlete": "3042037",
-   "espn": {
-    "seen": "2026-11-02T16:42:10.664Z",
-    "own": "2026-10-31T01:14:00.000Z"
-   }
-  },
-  "401892636|seamuscasey|out": {
-   "game": "401892636",
-   "start": "2026-11-04T00:30Z",
-   "team": "11",
-   "name": "Seamus Casey",
-   "status": "out",
-   "athlete": "5080212",
-   "espn": {
-    "seen": "2026-11-02T16:42:10.664Z",
-    "own": "2026-10-02T17:31:00.000Z"
-   }
-  },
-  "401892636|isaachoward|q": {
-   "game": "401892636",
-   "start": "2026-11-04T00:30Z",
-   "team": "6",
-   "name": "Isaac Howard",
-   "status": "q",
-   "athlete": "5080179",
-   "espn": {
-    "seen": "2026-11-02T16:42:10.664Z",
-    "own": "2026-11-02T14:13:00.000Z"
-   }
-  },
-  "401892636|zachhyman|out": {
-   "game": "401892636",
-   "start": "2026-11-04T00:30Z",
-   "team": "6",
-   "name": "Zach Hyman",
-   "status": "out",
-   "athlete": "5509",
-   "espn": {
-    "seen": "2026-11-02T16:42:10.664Z",
-    "own": "2026-10-28T16:04:00.000Z"
-   }
-  },
-  "401892636|devonlevi|out": {
-   "game": "401892636",
-   "start": "2026-11-04T00:30Z",
-   "team": "6",
-   "name": "Devon Levi",
-   "status": "out",
-   "athlete": "4894487",
-   "espn": {
-    "seen": "2026-11-02T16:42:10.664Z",
-    "own": "2026-10-24T17:37:00.000Z"
-   }
-  },
-  "401892636|alecregula|out": {
-   "game": "401892636",
-   "start": "2026-11-04T00:30Z",
-   "team": "6",
-   "name": "Alec Regula",
-   "status": "out",
-   "athlete": "4331611",
-   "espn": {
-    "seen": "2026-11-02T16:42:10.664Z",
-    "own": "2026-10-01T14:11:00.000Z"
-   }
-  },
-  "401892636|mattsavoie|out": {
-   "game": "401892636",
-   "start": "2026-11-04T00:30Z",
-   "team": "6",
-   "name": "Matt Savoie",
-   "status": "out",
-   "athlete": "5080153",
-   "espn": {
-    "seen": "2026-11-02T16:42:10.664Z",
-    "own": "2026-10-01T14:05:00.000Z"
-   }
-  },
-  "401892636|frederikandersen|out": {
-   "game": "401892636",
-   "start": "2026-11-04T00:30Z",
-   "team": "6",
-   "name": "Frederik Andersen",
-   "status": "out",
-   "athlete": "2517899",
-   "espn": {
-    "seen": "2026-11-02T16:42:10.664Z",
-    "own": "2026-09-29T17:53:00.000Z"
-   }
-  },
-  "401892636|mattiasjanmark|out": {
-   "game": "401892636",
-   "start": "2026-11-04T00:30Z",
-   "team": "6",
-   "name": "Mattias Janmark",
-   "status": "out",
-   "athlete": "3042085",
-   "espn": {
-    "seen": "2026-11-02T16:42:10.664Z",
-    "own": "2026-09-29T17:52:00.000Z"
-   }
-  },
-  "401892636|atroleppanen|out": {
-   "game": "401892636",
-   "start": "2026-11-04T00:30Z",
-   "team": "6",
-   "name": "Atro Leppanen",
-   "status": "out",
-   "athlete": "5278661",
-   "espn": {
-    "seen": "2026-11-02T16:42:10.664Z",
-    "own": "2026-09-29T16:22:00.000Z"
-   }
-  },
   "401892642|taylorhall|q": {
    "game": "401892642",
    "start": "2026-11-04T01:00Z",
@@ -243,18 +123,6 @@
    "espn": {
     "seen": "2026-11-02T16:42:10.664Z",
     "own": "2026-10-13T17:19:00.000Z"
-   }
-  },
-  "401892636|evanrodrigues|q": {
-   "game": "401892636",
-   "start": "2026-11-04T00:30Z",
-   "team": "11",
-   "name": "Evan Rodrigues",
-   "status": "q",
-   "athlete": "3648008",
-   "espn": {
-    "seen": "2026-11-02T18:27:06.436Z",
-    "own": "2026-11-02T18:01:00.000Z"
    }
   },
   "401892643|ajgreer|out": {
@@ -729,22 +597,6 @@
     "own": "2026-11-03T18:29:00.000Z"
    }
   },
-  "401892636|isaachoward|out": {
-   "game": "401892636",
-   "start": "2026-11-04T00:30Z",
-   "team": "6",
-   "name": "Isaac Howard",
-   "status": "out",
-   "athlete": "5080179",
-   "espn": {
-    "seen": "2026-11-03T23:46:41.055Z",
-    "own": "2026-11-03T19:37:00.000Z"
-   },
-   "sleeper": {
-    "seen": "2026-11-03T20:19:50.553Z",
-    "own": "2026-11-03T19:40:23.131Z"
-   }
-  },
   "401892642|jonathanmarchessault|q": {
    "game": "401892642",
    "start": "2026-11-04T01:00Z",
@@ -754,18 +606,6 @@
    "sleeper": {
     "seen": "2026-11-03T20:19:50.553Z",
     "own": "2026-11-03T17:15:22.742Z"
-   }
-  },
-  "401892636|howard|out": {
-   "game": "401892636",
-   "start": "2026-11-04T00:30Z",
-   "team": "6",
-   "name": "Howard",
-   "status": "out",
-   "bluesky": {
-    "seen": "2026-11-03T23:48:14.330Z",
-    "own": "2026-11-03T18:49:18.000Z",
-    "why": "@dailyfaceoff.bsky.social: Oilers’ Howard out week-to-week with lower-body injur"
    }
   },
   "401892642|jonathanmarchessault|out": {
