@@ -1,13 +1,13 @@
 {
  "sport": "nfl",
  "cursor": {
-  "adamscheftermirror.bsky.social": "2026-11-14T17:20:41.785Z",
-  "rapsheet.bsky.social": "2026-11-14T17:52:34.475Z",
+  "adamscheftermirror.bsky.social": "2026-11-14T18:25:41.588Z",
+  "rapsheet.bsky.social": "2026-11-14T18:15:55.381Z",
   "nflnewsreposterbot.bsky.social": "2026-11-13T18:01:20.702Z",
   "insidenflnews.bsky.social": "2026-11-14T16:30:58.245Z",
-  "nflnewsposter.bsky.social": "2026-11-14T17:59:59.087Z",
+  "nflnewsposter.bsky.social": "2026-11-14T18:21:26.376Z",
   "rotoworld-fb.bsky.social": "2026-11-14T16:44:52.000Z",
-  "rotowirenfl.bsky.social": "2026-11-14T17:39:25.000Z"
+  "rotowirenfl.bsky.social": "2026-11-14T18:27:04.000Z"
  },
  "claims": [
   {
@@ -18456,6 +18456,123 @@
    "kind": "status",
    "confidence": 0.9,
    "text": "[Schefter] Steelers added TE Pat Freiermuth to the injury report and he is questionable for Sunday night’s game against Cincinnati’s due to an illness. twitter.com/adamschefter..."
+  },
+  {
+   "id": "at://did:plc:qre6zxbmr3ixhdmgsgdretb5/app.bsky.feed.post/3n2c3vbqdb72f|patfreiermuth|questionable|status",
+   "at": "2026-11-14T18:10:41.690Z",
+   "seen": "2026-11-14T18:28:38.300Z",
+   "handle": "adamscheftermirror.bsky.social",
+   "post": "at://did:plc:qre6zxbmr3ixhdmgsgdretb5/app.bsky.feed.post/3n2c3vbqdb72f",
+   "player": "Pat Freiermuth",
+   "team": "PIT",
+   "status": "questionable",
+   "kind": "status",
+   "confidence": 0.9,
+   "text": "Steelers added TE Pat Freiermuth (to the injury report and he is questionable for Sunday night’s game against Cincinnati’s due to an illness.\n\nOriginal post"
+  },
+  {
+   "id": "at://did:plc:hlvr2omhnmvdmfnvmcuhyevz/app.bsky.feed.post/3n2c46mfh5s2a|davidmontgomery|out|status",
+   "at": "2026-11-14T18:15:55.381Z",
+   "seen": "2026-11-14T18:28:38.300Z",
+   "handle": "rapsheet.bsky.social",
+   "post": "at://did:plc:hlvr2omhnmvdmfnvmcuhyevz/app.bsky.feed.post/3n2c46mfh5s2a",
+   "player": "David Montgomery",
+   "team": "HOU",
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.97,
+   "text": "Texans RB David Montgomery (groin) and CB Jaylin Smith (hamstring) will not travel with the team to Cleveland and have been ruled out vs the Browns. OT Braden Smith now is questionable with an illness"
+  },
+  {
+   "id": "at://did:plc:hlvr2omhnmvdmfnvmcuhyevz/app.bsky.feed.post/3n2c46mfh5s2a|jaylinsmith|out|status",
+   "at": "2026-11-14T18:15:55.381Z",
+   "seen": "2026-11-14T18:28:38.300Z",
+   "handle": "rapsheet.bsky.social",
+   "post": "at://did:plc:hlvr2omhnmvdmfnvmcuhyevz/app.bsky.feed.post/3n2c46mfh5s2a",
+   "player": "Jaylin Smith",
+   "team": "HOU",
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.97,
+   "text": "Texans RB David Montgomery (groin) and CB Jaylin Smith (hamstring) will not travel with the team to Cleveland and have been ruled out vs the Browns. OT Braden Smith now is questionable with an illness"
+  },
+  {
+   "id": "at://did:plc:hlvr2omhnmvdmfnvmcuhyevz/app.bsky.feed.post/3n2c46mfh5s2a|bradensmith|questionable|status",
+   "at": "2026-11-14T18:15:55.381Z",
+   "seen": "2026-11-14T18:28:38.300Z",
+   "handle": "rapsheet.bsky.social",
+   "post": "at://did:plc:hlvr2omhnmvdmfnvmcuhyevz/app.bsky.feed.post/3n2c46mfh5s2a",
+   "player": "Braden Smith",
+   "team": "HOU",
+   "status": "questionable",
+   "kind": "status",
+   "confidence": 0.94,
+   "text": "Texans RB David Montgomery (groin) and CB Jaylin Smith (hamstring) will not travel with the team to Cleveland and have been ruled out vs the Browns. OT Braden Smith now is questionable with an illness"
+  },
+  {
+   "id": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3n2c4d2gang25|davidmontgomery|out|status",
+   "at": "2026-11-14T18:18:24.000Z",
+   "seen": "2026-11-14T18:28:38.300Z",
+   "handle": "rotowirenfl.bsky.social",
+   "post": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3n2c4d2gang25",
+   "player": "David Montgomery",
+   "team": "HOU",
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.95,
+   "text": "David Montgomery: Won't play against Cleveland \n\n https://www.rotowire.com/football/player/david-montgomery-13556"
+  },
+  {
+   "id": "at://did:plc:fuqjc7x4gxvnwzksnlxwbe4x/app.bsky.feed.post/3n2c4ii2hlc26|davidmontgomery|out|status",
+   "at": "2026-11-14T18:21:26.376Z",
+   "seen": "2026-11-14T18:28:38.300Z",
+   "handle": "nflnewsposter.bsky.social",
+   "post": "at://did:plc:fuqjc7x4gxvnwzksnlxwbe4x/app.bsky.feed.post/3n2c4ii2hlc26",
+   "player": "David Montgomery",
+   "team": "HOU",
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.95,
+   "text": "[Rapoport] Texans RB David Montgomery (groin) and CB Jaylin Smith (hamstring) will not travel with the team to Cleveland and have been ruled out vs the Browns. OT Braden Smith now is questionable with"
+  },
+  {
+   "id": "at://did:plc:fuqjc7x4gxvnwzksnlxwbe4x/app.bsky.feed.post/3n2c4ii2hlc26|jaylinsmith|out|status",
+   "at": "2026-11-14T18:21:26.376Z",
+   "seen": "2026-11-14T18:28:38.300Z",
+   "handle": "nflnewsposter.bsky.social",
+   "post": "at://did:plc:fuqjc7x4gxvnwzksnlxwbe4x/app.bsky.feed.post/3n2c4ii2hlc26",
+   "player": "Jaylin Smith",
+   "team": "HOU",
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.95,
+   "text": "[Rapoport] Texans RB David Montgomery (groin) and CB Jaylin Smith (hamstring) will not travel with the team to Cleveland and have been ruled out vs the Browns. OT Braden Smith now is questionable with"
+  },
+  {
+   "id": "at://did:plc:fuqjc7x4gxvnwzksnlxwbe4x/app.bsky.feed.post/3n2c4ii2hlc26|bradensmith|questionable|status",
+   "at": "2026-11-14T18:21:26.376Z",
+   "seen": "2026-11-14T18:28:38.300Z",
+   "handle": "nflnewsposter.bsky.social",
+   "post": "at://did:plc:fuqjc7x4gxvnwzksnlxwbe4x/app.bsky.feed.post/3n2c4ii2hlc26",
+   "player": "Braden Smith",
+   "team": "HOU",
+   "status": "questionable",
+   "kind": "status",
+   "confidence": 0.93,
+   "text": "[Rapoport] Texans RB David Montgomery (groin) and CB Jaylin Smith (hamstring) will not travel with the team to Cleveland and have been ruled out vs the Browns. OT Braden Smith now is questionable with"
+  },
+  {
+   "id": "at://did:plc:qre6zxbmr3ixhdmgsgdretb5/app.bsky.feed.post/3n2c4q3hqv42q|davidmontgomery|out|status",
+   "at": "2026-11-14T18:25:41.588Z",
+   "seen": "2026-11-14T18:28:38.300Z",
+   "handle": "adamscheftermirror.bsky.social",
+   "post": "at://did:plc:qre6zxbmr3ixhdmgsgdretb5/app.bsky.feed.post/3n2c4q3hqv42q",
+   "player": "David Montgomery",
+   "team": "HOU",
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.96,
+   "text": "Texans ruled out RB David Montgomery for Sunday’s game at Cleveland due to a groin injury.\n\nOriginal post"
   }
  ]
 }

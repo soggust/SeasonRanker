@@ -1,7 +1,7 @@
 {
  "sport": "nba",
  "cursor": {
-  "rotowirenba.bsky.social": "2026-11-14T18:01:18.000Z",
+  "rotowirenba.bsky.social": "2026-11-14T18:28:02.000Z",
   "insidenbanews.bsky.social": "2026-11-13T20:00:09.852Z",
   "shamsbot.bsky.social": "2026-11-13T20:16:26.000Z"
  },
@@ -10145,6 +10145,58 @@
    "kind": "status",
    "confidence": 0.8,
    "text": "Yves Missi: Expected to play Saturday \n\n https://www.rotowire.com/basketball/player/yves-missi-6268"
+  },
+  {
+   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3n2c3pnjxbe2l|giannisantetokounmpo|active|status",
+   "at": "2026-11-14T18:07:33.000Z",
+   "seen": "2026-11-14T18:28:38.300Z",
+   "handle": "rotowirenba.bsky.social",
+   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3n2c3pnjxbe2l",
+   "player": "Giannis Antetokounmpo",
+   "team": "MIL",
+   "status": "active",
+   "kind": "status",
+   "confidence": 0.8,
+   "text": "Giannis Antetokounmpo: Probable Saturday \n\n https://www.rotowire.com/basketball/player/giannis-antetokounmpo-3456"
+  },
+  {
+   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3n2c3qswasr2y|nicclaxton|questionable|status",
+   "at": "2026-11-14T18:08:12.000Z",
+   "seen": "2026-11-14T18:28:38.300Z",
+   "handle": "rotowirenba.bsky.social",
+   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3n2c3qswasr2y",
+   "player": "Nic Claxton",
+   "team": "BKN",
+   "status": "questionable",
+   "kind": "status",
+   "confidence": 0.95,
+   "text": "Nic Claxton: Marked questionable \n\n https://www.rotowire.com/basketball/player/nic-claxton-4827"
+  },
+  {
+   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3n2c3xwr2ij26|pellelarsson|doubtful|status",
+   "at": "2026-11-14T18:12:11.000Z",
+   "seen": "2026-11-14T18:28:38.300Z",
+   "handle": "rotowirenba.bsky.social",
+   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3n2c3xwr2ij26",
+   "player": "Pelle Larsson",
+   "team": null,
+   "status": "doubtful",
+   "kind": "status",
+   "confidence": 0.95,
+   "text": "Pelle Larsson: Doubtful to play Saturday \n\n https://www.rotowire.com/basketball/player/pelle-larsson-6013"
+  },
+  {
+   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3n2c4ubg2dp2q|jamesharden|questionable|status",
+   "at": "2026-11-14T18:28:02.000Z",
+   "seen": "2026-11-14T18:28:38.300Z",
+   "handle": "rotowirenba.bsky.social",
+   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3n2c4ubg2dp2q",
+   "player": "James Harden",
+   "team": null,
+   "status": "questionable",
+   "kind": "status",
+   "confidence": 0.95,
+   "text": "James Harden: Questionable Saturday \n\n https://www.rotowire.com/basketball/player/james-harden-3018"
   }
  ]
 }

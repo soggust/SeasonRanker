@@ -19708,6 +19708,71 @@
    "espn": {
     "seen": "2026-11-14T17:41:37.833Z",
     "own": "2026-11-14T17:36:00.000Z"
+   },
+   "bluesky": {
+    "seen": "2026-11-14T18:05:30.915Z",
+    "own": "2026-11-14T17:59:59.087Z",
+    "why": "@nflnewsposter.bsky.social: [Schefter] Steelers added TE Pat Freiermuth to the i"
+   }
+  },
+  "401873056|jakehummel|q": {
+   "game": "401873056",
+   "start": "2026-11-15T18:00Z",
+   "team": "34",
+   "name": "Jake Hummel",
+   "status": "q",
+   "athlete": "4241250",
+   "espn": {
+    "seen": "2026-11-14T18:26:39.716Z",
+    "own": "2026-11-14T18:21:00.000Z"
+   }
+  },
+  "401873056|bradensmith|q": {
+   "game": "401873056",
+   "start": "2026-11-15T18:00Z",
+   "team": "34",
+   "name": "Braden Smith",
+   "status": "q",
+   "athlete": "3121595",
+   "espn": {
+    "seen": "2026-11-14T18:26:39.716Z",
+    "own": "2026-11-14T18:15:00.000Z"
+   }
+  },
+  "401873066|jakehummel|q": {
+   "game": "401873066",
+   "start": "2026-11-20T01:15Z",
+   "team": "34",
+   "name": "Jake Hummel",
+   "status": "q",
+   "athlete": "4241250",
+   "espn": {
+    "seen": "2026-11-14T18:26:39.716Z",
+    "own": "2026-11-14T18:21:00.000Z"
+   }
+  },
+  "401873066|davidmontgomery|out": {
+   "game": "401873066",
+   "start": "2026-11-20T01:15Z",
+   "team": "34",
+   "name": "David Montgomery",
+   "status": "out",
+   "athlete": "4035538",
+   "espn": {
+    "seen": "2026-11-14T18:26:39.716Z",
+    "own": "2026-11-14T18:18:00.000Z"
+   }
+  },
+  "401873066|bradensmith|q": {
+   "game": "401873066",
+   "start": "2026-11-20T01:15Z",
+   "team": "34",
+   "name": "Braden Smith",
+   "status": "q",
+   "athlete": "3121595",
+   "espn": {
+    "seen": "2026-11-14T18:26:39.716Z",
+    "own": "2026-11-14T18:15:00.000Z"
    }
   }
  }

@@ -9011,6 +9011,11 @@
    "espn": {
     "seen": "2026-11-14T17:12:41.527Z",
     "own": "2026-11-14T17:04:00.000Z"
+   },
+   "bluesky": {
+    "seen": "2026-11-14T17:43:57.474Z",
+    "own": "2026-11-14T17:34:18.000Z",
+    "why": "@dailyfaceoff.bsky.social: Avalanche’s Nathan MacKinnon, Cale Makar out vs. Cana"
    }
   },
   "401892711|mikematheson|q": {
@@ -9035,6 +9040,47 @@
    "espn": {
     "seen": "2026-11-14T17:42:38.694Z",
     "own": "2026-11-14T17:37:00.000Z"
+   },
+   "bluesky": {
+    "seen": "2026-11-14T17:43:57.474Z",
+    "own": "2026-11-14T17:34:18.000Z",
+    "why": "@dailyfaceoff.bsky.social: Avalanche’s Nathan MacKinnon, Cale Makar out vs. Cana"
+   }
+  },
+  "401892714|vladislavkolyachonok|out": {
+   "game": "401892714",
+   "start": "2026-11-15T00:00Z",
+   "team": "11",
+   "name": "Vladislav Kolyachonok",
+   "status": "out",
+   "athlete": "4565274",
+   "espn": {
+    "seen": "2026-11-14T18:27:37.963Z",
+    "own": "2026-11-14T18:20:00.000Z"
+   }
+  },
+  "401892714|brettpesce|out": {
+   "game": "401892714",
+   "start": "2026-11-15T00:00Z",
+   "team": "11",
+   "name": "Brett Pesce",
+   "status": "out",
+   "athlete": "3025535",
+   "espn": {
+    "seen": "2026-11-14T18:27:37.963Z",
+    "own": "2026-11-14T18:16:00.000Z"
+   }
+  },
+  "401892715|rickbowness|q": {
+   "game": "401892715",
+   "start": "2026-11-15T00:00Z",
+   "team": "29",
+   "name": "Rick Bowness",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-11-14T18:05:30.915Z",
+    "own": "2026-11-14T17:56:06.797Z",
+    "why": "@notfriedgehnic.bsky.social: Columbus GM Don Waddell said Don Granato will coach"
    }
   }
  }
