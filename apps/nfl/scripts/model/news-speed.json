@@ -19622,6 +19622,18 @@
     "own": "2026-11-14T14:21:47.766Z",
     "why": "@insidenflnews.bsky.social: Pelissero: Kyler Murray (GTA VI) out at least a coup"
    }
+  },
+  "401873058|kennethwalker|out": {
+   "game": "401873058",
+   "start": "2026-11-15T18:00Z",
+   "team": "12",
+   "name": "Kenneth Walker III",
+   "status": "out",
+   "athlete": "4567048",
+   "espn": {
+    "seen": "2026-11-14T16:37:36.052Z",
+    "own": "2026-11-13T20:32:00.000Z"
+   }
   }
  }
 }
