@@ -7,19 +7,6 @@
  },
  "claims": [
   {
-   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mylhrv3dgz24|paolobanchero|active|return",
-   "at": "2026-10-24T00:47:07.000Z",
-   "seen": "2026-10-24T01:08:03.622Z",
-   "handle": "rotowirenba.bsky.social",
-   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mylhrv3dgz24",
-   "player": "Paolo Banchero",
-   "team": null,
-   "status": "active",
-   "kind": "return",
-   "confidence": 0.85,
-   "text": "Paolo Banchero: Returns to Friday's game \n\n https://www.rotowire.com/basketball/player/paolo-banchero-5700"
-  },
-  {
    "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3myliqalvmi2j|cooperflagg|out|status",
    "at": "2026-10-24T01:04:06.000Z",
    "seen": "2026-10-24T01:08:03.622Z",

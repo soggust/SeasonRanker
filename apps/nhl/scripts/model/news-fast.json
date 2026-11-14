@@ -3,24 +3,11 @@
  "cursor": {
   "johnston-bot.bsky.social": "2026-11-12T16:02:25.547Z",
   "notfriedgehnic.bsky.social": "2026-11-12T16:59:13.353Z",
-  "dailyfaceoff.bsky.social": "2026-11-13T23:12:20.000Z",
+  "dailyfaceoff.bsky.social": "2026-11-14T00:48:08.000Z",
   "dfotoronto.bsky.social": "2026-11-13T22:42:59.000Z",
   "marklazerus.bsky.social": "2026-11-13T21:37:58.871Z"
  },
  "claims": [
-  {
-   "id": "at://did:plc:3uus7y6h3rlrk6sbctzxm4bg/app.bsky.feed.post/3mylh7xvufl2f|devonlevi|out|status",
-   "at": "2026-10-24T00:37:06.000Z",
-   "seen": "2026-10-24T01:08:03.622Z",
-   "handle": "dailyfaceoff.bsky.social",
-   "post": "at://did:plc:3uus7y6h3rlrk6sbctzxm4bg/app.bsky.feed.post/3mylh7xvufl2f",
-   "player": "Devon Levi",
-   "team": "EDM",
-   "status": "out",
-   "kind": "status",
-   "confidence": 0.9,
-   "text": "Oilers place Devon Levi on injured reserve"
-  },
   {
    "id": "at://did:plc:3uus7y6h3rlrk6sbctzxm4bg/app.bsky.feed.post/3myn37u7dc42f|samgirard|out|status",
    "at": "2026-10-24T16:07:37.000Z",
@@ -2373,6 +2360,19 @@
    "kind": "status",
    "confidence": 0.85,
    "text": "Blue Jackets’ Garland placed on IR, Monahan day-to-day with upper-body injuries"
+  },
+  {
+   "id": "at://did:plc:3uus7y6h3rlrk6sbctzxm4bg/app.bsky.feed.post/3n2abmzuw4d2l|filipchytil|active|return",
+   "at": "2026-11-14T00:48:08.000Z",
+   "seen": "2026-11-14T01:01:02.938Z",
+   "handle": "dailyfaceoff.bsky.social",
+   "post": "at://did:plc:3uus7y6h3rlrk6sbctzxm4bg/app.bsky.feed.post/3n2abmzuw4d2l",
+   "player": "Filip Chytil",
+   "team": "VAN",
+   "status": "active",
+   "kind": "return",
+   "confidence": 0.9,
+   "text": "Canucks activate Filip Chytil from IR, expected to return vs. Rangers"
   }
  ]
 }
