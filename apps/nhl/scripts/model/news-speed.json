@@ -1,42 +1,6 @@
 {
  "sport": "nhl",
  "entries": {
-  "401892642|taylorhall|q": {
-   "game": "401892642",
-   "start": "2026-11-04T01:00Z",
-   "team": "7",
-   "name": "Taylor Hall",
-   "status": "q",
-   "athlete": "5428",
-   "espn": {
-    "seen": "2026-11-02T16:42:10.664Z",
-    "own": "2026-11-02T14:13:00.000Z"
-   }
-  },
-  "401892642|alexandernikishin|out": {
-   "game": "401892642",
-   "start": "2026-11-04T01:00Z",
-   "team": "7",
-   "name": "Alexander Nikishin",
-   "status": "out",
-   "athlete": "4915850",
-   "espn": {
-    "seen": "2026-11-02T16:42:10.664Z",
-    "own": "2026-10-26T16:39:00.000Z"
-   }
-  },
-  "401892642|jordanstaal|out": {
-   "game": "401892642",
-   "start": "2026-11-04T01:00Z",
-   "team": "7",
-   "name": "Jordan Staal",
-   "status": "out",
-   "athlete": "3541",
-   "espn": {
-    "seen": "2026-11-02T16:42:10.664Z",
-    "own": "2026-10-15T21:54:00.000Z"
-   }
-  },
   "401892643|filipchytil|out": {
    "game": "401892643",
    "start": "2026-11-04T02:00Z",
@@ -557,22 +521,6 @@
     "own": "2026-10-20T03:51:00.000Z"
    }
   },
-  "401892642|taylorhall|out": {
-   "game": "401892642",
-   "start": "2026-11-04T01:00Z",
-   "team": "7",
-   "name": "Taylor Hall",
-   "status": "out",
-   "athlete": "5428",
-   "espn": {
-    "seen": "2026-11-03T19:04:08.770Z",
-    "own": "2026-11-03T18:57:00.000Z"
-   },
-   "sleeper": {
-    "seen": "2026-11-03T20:19:50.553Z",
-    "own": "2026-11-03T19:10:23.146Z"
-   }
-  },
   "401892644|jirikulich|q": {
    "game": "401892644",
    "start": "2026-11-05T00:30Z",
@@ -595,29 +543,6 @@
    "espn": {
     "seen": "2026-11-03T19:04:08.770Z",
     "own": "2026-11-03T18:29:00.000Z"
-   }
-  },
-  "401892642|jonathanmarchessault|q": {
-   "game": "401892642",
-   "start": "2026-11-04T01:00Z",
-   "team": "27",
-   "name": "Jonathan Marchessault",
-   "status": "q",
-   "sleeper": {
-    "seen": "2026-11-03T20:19:50.553Z",
-    "own": "2026-11-03T17:15:22.742Z"
-   }
-  },
-  "401892642|jonathanmarchessault|out": {
-   "game": "401892642",
-   "start": "2026-11-04T01:00Z",
-   "team": "27",
-   "name": "Jonathan Marchessault",
-   "status": "out",
-   "athlete": "2967072",
-   "espn": {
-    "seen": "2026-11-04T00:34:41.490Z",
-    "own": "2026-11-04T00:32:00.000Z"
    }
   },
   "401892647|brennanothmann|q": {
