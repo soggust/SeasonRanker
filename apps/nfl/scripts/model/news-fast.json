@@ -1,13 +1,13 @@
 {
  "sport": "nfl",
  "cursor": {
-  "adamscheftermirror.bsky.social": "2026-11-15T20:00:50.793Z",
+  "adamscheftermirror.bsky.social": "2026-11-15T20:30:48.642Z",
   "rapsheet.bsky.social": "2026-11-15T19:52:54.029Z",
   "nflnewsreposterbot.bsky.social": "2026-11-15T18:58:56.281Z",
-  "insidenflnews.bsky.social": "2026-11-15T20:09:31.509Z",
-  "nflnewsposter.bsky.social": "2026-11-15T20:11:21.658Z",
-  "rotoworld-fb.bsky.social": "2026-11-15T20:09:40.000Z",
-  "rotowirenfl.bsky.social": "2026-11-15T20:13:48.000Z"
+  "insidenflnews.bsky.social": "2026-11-15T20:19:15.137Z",
+  "nflnewsposter.bsky.social": "2026-11-15T20:37:42.910Z",
+  "rotoworld-fb.bsky.social": "2026-11-15T20:32:02.000Z",
+  "rotowirenfl.bsky.social": "2026-11-15T20:30:17.000Z"
  },
  "claims": [
   {
@@ -19067,6 +19067,84 @@
    "kind": "return",
    "confidence": 0.9,
    "text": "Geno Smith (head) returns to Week 10 against Bills"
+  },
+  {
+   "id": "at://did:plc:fuqjc7x4gxvnwzksnlxwbe4x/app.bsky.feed.post/3n2etjlqcx22a|woodymarks|out|status",
+   "at": "2026-11-15T20:18:59.332Z",
+   "seen": "2026-11-15T20:37:51.964Z",
+   "handle": "nflnewsposter.bsky.social",
+   "post": "at://did:plc:fuqjc7x4gxvnwzksnlxwbe4x/app.bsky.feed.post/3n2etjlqcx22a",
+   "player": "Woody Marks",
+   "team": "HOU",
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.95,
+   "text": "[Texans] Texans Injury Update:\n\n#4 RB Woody Marks has been downgraded to out with a concussion. twitter.com/HoustonTexan..."
+  },
+  {
+   "id": "at://did:plc:mbr4badgf6yu56mquzackzew/app.bsky.feed.post/3n2etk2smk225|woodymarks|out|status",
+   "at": "2026-11-15T20:19:15.137Z",
+   "seen": "2026-11-15T20:37:51.964Z",
+   "handle": "insidenflnews.bsky.social",
+   "post": "at://did:plc:mbr4badgf6yu56mquzackzew/app.bsky.feed.post/3n2etk2smk225",
+   "player": "Woody Marks",
+   "team": "HOU",
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.9,
+   "text": "Status alert: Woody Marks (concussion) won't return."
+  },
+  {
+   "id": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3n2etuvbrtp23|woodymarks|out|status",
+   "at": "2026-11-15T20:25:18.000Z",
+   "seen": "2026-11-15T20:37:51.964Z",
+   "handle": "rotowirenfl.bsky.social",
+   "post": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3n2etuvbrtp23",
+   "player": "Woody Marks",
+   "team": "HOU",
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.9,
+   "text": "Woody Marks: Won't return to Sunday's game \n\n https://www.rotowire.com/football/player/woody-marks-18449"
+  },
+  {
+   "id": "at://did:plc:fuqjc7x4gxvnwzksnlxwbe4x/app.bsky.feed.post/3n2etxlzwjcpn|genosmith|questionable|status",
+   "at": "2026-11-15T20:26:49.409Z",
+   "seen": "2026-11-15T20:37:51.964Z",
+   "handle": "nflnewsposter.bsky.social",
+   "post": "at://did:plc:fuqjc7x4gxvnwzksnlxwbe4x/app.bsky.feed.post/3n2etxlzwjcpn",
+   "player": "Geno Smith",
+   "team": null,
+   "status": "questionable",
+   "kind": "status",
+   "confidence": 0.9,
+   "text": "[Rosenblatt] Geno Smith (ankle) is questionable to return. twitter.com/ZackBlatt/st..."
+  },
+  {
+   "id": "at://did:plc:fuqjc7x4gxvnwzksnlxwbe4x/app.bsky.feed.post/3n2eu5updukpn|saucegardner|questionable|status",
+   "at": "2026-11-15T20:30:19.826Z",
+   "seen": "2026-11-15T20:37:51.964Z",
+   "handle": "nflnewsposter.bsky.social",
+   "post": "at://did:plc:fuqjc7x4gxvnwzksnlxwbe4x/app.bsky.feed.post/3n2eu5updukpn",
+   "player": "Sauce Gardner",
+   "team": "NYJ",
+   "status": "questionable",
+   "kind": "status",
+   "confidence": 0.9,
+   "text": "[Colts] Sauce Gardner (calf) Questionable for return twitter.com/Colts/status..."
+  },
+  {
+   "id": "at://did:plc:qre6zxbmr3ixhdmgsgdretb5/app.bsky.feed.post/3n2eu6qbczj2p|woodymarks|out|status",
+   "at": "2026-11-15T20:30:48.642Z",
+   "seen": "2026-11-15T20:37:51.964Z",
+   "handle": "adamscheftermirror.bsky.social",
+   "post": "at://did:plc:qre6zxbmr3ixhdmgsgdretb5/app.bsky.feed.post/3n2eu6qbczj2p",
+   "player": "Woody Marks",
+   "team": "HOU",
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.95,
+   "text": "Texans RB Woody Marks has been downgraded to out with a concussion.\n\nOriginal post"
   }
  ]
 }

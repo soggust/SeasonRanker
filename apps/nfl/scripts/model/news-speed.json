@@ -21755,6 +21755,131 @@
    "sleeper": {
     "seen": "2026-11-15T20:12:50.037Z",
     "own": "2026-11-15T20:00:31.426Z"
+   },
+   "bluesky": {
+    "seen": "2026-11-15T20:14:52.438Z",
+    "own": "2026-11-15T20:00:50.793Z",
+    "why": "@adamscheftermirror.bsky.social: Chargers WR Ladd McConkey has been downgraded t"
+   }
+  },
+  "401873062|omarcooper|out": {
+   "game": "401873062",
+   "start": "2026-11-15T21:05Z",
+   "team": "13",
+   "name": "Omar Cooper Jr.",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-15T20:14:52.438Z",
+    "own": "2026-11-15T20:00:28.000Z",
+    "why": "@rotoworld-fb.bsky.social: Cooper Jr. (ankle) ruled out for rest of Week 10"
+   }
+  },
+  "401873062|woodymarks|q": {
+   "game": "401873062",
+   "start": "2026-11-15T21:05Z",
+   "team": "13",
+   "name": "Woody Marks",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-11-15T20:14:52.438Z",
+    "own": "2026-11-15T20:05:00.000Z",
+    "why": "@rotoworld-fb.bsky.social: Woody Marks questionable, evaluated for concussion"
+   }
+  },
+  "401873061|omarcooper|out": {
+   "game": "401873061",
+   "start": "2026-11-15T21:05Z",
+   "team": "22",
+   "name": "Omar Cooper Jr.",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-15T20:14:52.438Z",
+    "own": "2026-11-15T20:00:28.000Z",
+    "why": "@rotoworld-fb.bsky.social: Cooper Jr. (ankle) ruled out for rest of Week 10"
+   }
+  },
+  "401873061|woodymarks|q": {
+   "game": "401873061",
+   "start": "2026-11-15T21:05Z",
+   "team": "22",
+   "name": "Woody Marks",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-11-15T20:14:52.438Z",
+    "own": "2026-11-15T20:05:00.000Z",
+    "why": "@rotoworld-fb.bsky.social: Woody Marks questionable, evaluated for concussion"
+   }
+  },
+  "401873063|omarcooper|out": {
+   "game": "401873063",
+   "start": "2026-11-15T21:25Z",
+   "team": "6",
+   "name": "Omar Cooper Jr.",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-15T20:14:52.438Z",
+    "own": "2026-11-15T20:00:28.000Z",
+    "why": "@rotoworld-fb.bsky.social: Cooper Jr. (ankle) ruled out for rest of Week 10"
+   }
+  },
+  "401873063|woodymarks|q": {
+   "game": "401873063",
+   "start": "2026-11-15T21:25Z",
+   "team": "6",
+   "name": "Woody Marks",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-11-15T20:14:52.438Z",
+    "own": "2026-11-15T20:05:00.000Z",
+    "why": "@rotoworld-fb.bsky.social: Woody Marks questionable, evaluated for concussion"
+   }
+  },
+  "401873064|omarcooper|out": {
+   "game": "401873064",
+   "start": "2026-11-16T01:20Z",
+   "team": "4",
+   "name": "Omar Cooper Jr.",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-15T20:14:52.438Z",
+    "own": "2026-11-15T20:00:28.000Z",
+    "why": "@rotoworld-fb.bsky.social: Cooper Jr. (ankle) ruled out for rest of Week 10"
+   }
+  },
+  "401873064|woodymarks|q": {
+   "game": "401873064",
+   "start": "2026-11-16T01:20Z",
+   "team": "4",
+   "name": "Woody Marks",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-11-15T20:14:52.438Z",
+    "own": "2026-11-15T20:05:00.000Z",
+    "why": "@rotoworld-fb.bsky.social: Woody Marks questionable, evaluated for concussion"
+   }
+  },
+  "401873065|omarcooper|out": {
+   "game": "401873065",
+   "start": "2026-11-17T01:15Z",
+   "team": "33",
+   "name": "Omar Cooper Jr.",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-15T20:14:52.438Z",
+    "own": "2026-11-15T20:00:28.000Z",
+    "why": "@rotoworld-fb.bsky.social: Cooper Jr. (ankle) ruled out for rest of Week 10"
+   }
+  },
+  "401873065|woodymarks|q": {
+   "game": "401873065",
+   "start": "2026-11-17T01:15Z",
+   "team": "33",
+   "name": "Woody Marks",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-11-15T20:14:52.438Z",
+    "own": "2026-11-15T20:05:00.000Z",
+    "why": "@rotoworld-fb.bsky.social: Woody Marks questionable, evaluated for concussion"
    }
   }
  }

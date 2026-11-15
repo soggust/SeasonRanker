@@ -1,50 +1,11 @@
 {
  "sport": "nba",
  "cursor": {
-  "rotowirenba.bsky.social": "2026-11-15T19:45:04.000Z",
+  "rotowirenba.bsky.social": "2026-11-15T20:33:05.000Z",
   "insidenbanews.bsky.social": "2026-11-13T20:00:09.852Z",
   "shamsbot.bsky.social": "2026-11-13T20:16:26.000Z"
  },
  "claims": [
-  {
-   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mypzyl2ic624|kyrieirving|active|status",
-   "at": "2026-10-25T20:23:38.000Z",
-   "seen": "2026-10-26T05:03:40.538Z",
-   "handle": "rotowirenba.bsky.social",
-   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mypzyl2ic624",
-   "player": "Kyrie Irving",
-   "team": null,
-   "status": "active",
-   "kind": "status",
-   "confidence": 0.7,
-   "text": "Kyrie Irving: Omitted from injury report \n\n https://www.rotowire.com/basketball/player/kyrie-irving-3186"
-  },
-  {
-   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3myq24j52po27|najimarshall|out|status",
-   "at": "2026-10-25T20:25:50.000Z",
-   "seen": "2026-10-26T05:03:40.538Z",
-   "handle": "rotowirenba.bsky.social",
-   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3myq24j52po27",
-   "player": "Naji Marshall",
-   "team": null,
-   "status": "out",
-   "kind": "status",
-   "confidence": 0.9,
-   "text": "Naji Marshall: Out for Monday \n\n https://www.rotowire.com/basketball/player/naji-marshall-5204"
-  },
-  {
-   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3myq26kvfkw2z|cooperflagg|questionable|status",
-   "at": "2026-10-25T20:26:59.000Z",
-   "seen": "2026-10-26T05:03:40.538Z",
-   "handle": "rotowirenba.bsky.social",
-   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3myq26kvfkw2z",
-   "player": "Cooper Flagg",
-   "team": "DAL",
-   "status": "questionable",
-   "kind": "status",
-   "confidence": 0.9,
-   "text": "Cooper Flagg: Questionable to play Monday \n\n https://www.rotowire.com/basketball/player/cooper-flagg-6548"
-  },
   {
    "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3myq3mmv4yl26|ajdybantsa|out|status",
    "at": "2026-10-25T20:52:44.000Z",
@@ -10756,6 +10717,19 @@
    "kind": "status",
    "confidence": 0.9,
    "text": "Alex Sarr: Cleared to suit up Sunday \n\n https://www.rotowire.com/basketball/player/alex-sarr-6240"
+  },
+  {
+   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3n2eucsensu2b|deaaronfox|out|status",
+   "at": "2026-11-15T20:33:05.000Z",
+   "seen": "2026-11-15T20:37:51.964Z",
+   "handle": "rotowirenba.bsky.social",
+   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3n2eucsensu2b",
+   "player": "De'Aaron Fox",
+   "team": "SAC",
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.8,
+   "text": "De'Aaron Fox: Sitting out Sunday \n\n https://www.rotowire.com/basketball/player/deaaron-fox-4116"
   }
  ]
 }
