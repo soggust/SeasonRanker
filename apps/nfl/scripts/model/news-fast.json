@@ -2,12 +2,12 @@
  "sport": "nfl",
  "cursor": {
   "adamscheftermirror.bsky.social": "2026-11-15T16:10:48.625Z",
-  "rapsheet.bsky.social": "2026-11-15T15:14:55.673Z",
+  "rapsheet.bsky.social": "2026-11-15T16:20:03.792Z",
   "nflnewsreposterbot.bsky.social": "2026-11-13T18:01:20.702Z",
-  "insidenflnews.bsky.social": "2026-11-15T16:03:55.938Z",
-  "nflnewsposter.bsky.social": "2026-11-14T18:21:26.376Z",
-  "rotoworld-fb.bsky.social": "2026-11-15T15:53:15.000Z",
-  "rotowirenfl.bsky.social": "2026-11-15T16:06:33.000Z"
+  "insidenflnews.bsky.social": "2026-11-15T16:28:16.770Z",
+  "nflnewsposter.bsky.social": "2026-11-15T16:34:55.493Z",
+  "rotoworld-fb.bsky.social": "2026-11-15T16:34:00.000Z",
+  "rotowirenfl.bsky.social": "2026-11-15T16:34:54.000Z"
  },
  "claims": [
   {
@@ -18482,6 +18482,45 @@
    "kind": "status",
    "confidence": 0.5,
    "text": "Davante Adams: Reportedly targeting Week 12 return \n\n https://www.rotowire.com/football/player/davante-adams-9455"
+  },
+  {
+   "id": "at://did:plc:hlvr2omhnmvdmfnvmcuhyevz/app.bsky.feed.post/3n2eg6ech3s25|drakemaye|out|status",
+   "at": "2026-11-15T16:20:03.792Z",
+   "seen": "2026-11-15T16:35:36.992Z",
+   "handle": "rapsheet.bsky.social",
+   "post": "at://did:plc:hlvr2omhnmvdmfnvmcuhyevz/app.bsky.feed.post/3n2eg6ech3s25",
+   "player": "Drake Maye",
+   "team": "NE",
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.95,
+   "text": "The Patriots have ruled out QB Drake Maye with an ankle injury."
+  },
+  {
+   "id": "at://did:plc:mbr4badgf6yu56mquzackzew/app.bsky.feed.post/3n2eg6w6zec2g|joshdowns|none|role",
+   "at": "2026-11-15T16:20:22.556Z",
+   "seen": "2026-11-15T16:35:36.992Z",
+   "handle": "insidenflnews.bsky.social",
+   "post": "at://did:plc:mbr4badgf6yu56mquzackzew/app.bsky.feed.post/3n2eg6w6zec2g",
+   "player": "Josh Downs",
+   "team": "KC",
+   "status": "none",
+   "kind": "role",
+   "confidence": 0.8,
+   "text": "Darlington: Josh Downs will play an immediate role in Chiefs offense."
+  },
+  {
+   "id": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3n2egxbufhg26|addison|out|status",
+   "at": "2026-11-15T16:34:00.000Z",
+   "seen": "2026-11-15T16:35:36.992Z",
+   "handle": "rotoworld-fb.bsky.social",
+   "post": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3n2egxbufhg26",
+   "player": "Addison",
+   "team": "MIN",
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.9,
+   "text": "Addison (thumb) inactive for Week 10 vs. Packers"
   }
  ]
 }

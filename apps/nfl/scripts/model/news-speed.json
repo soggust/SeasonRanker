@@ -12926,6 +12926,11 @@
    "sleeper": {
     "seen": "2026-11-13T20:12:37.918Z",
     "own": "2026-11-13T18:30:31.507Z"
+   },
+   "bluesky": {
+    "seen": "2026-11-15T16:14:48.223Z",
+    "own": "2026-11-15T16:00:44.000Z",
+    "why": "@rotowirenfl.bsky.social: Puka Nacua: Has expected return date of mid-December \n"
    }
   },
   "401873061|trentmcduffie|out": {
@@ -14041,6 +14046,11 @@
    "sleeper": {
     "seen": "2026-11-13T20:12:37.918Z",
     "own": "2026-11-13T18:25:33.229Z"
+   },
+   "bluesky": {
+    "seen": "2026-11-15T14:50:45.337Z",
+    "own": "2026-11-15T14:38:13.512Z",
+    "why": "@rapsheet.bsky.social: Panthers edge Jaelan Phillips, who has been out since mid"
    }
   },
   "401873055|willlee|q": {
@@ -20655,6 +20665,114 @@
    "espn": {
     "seen": "2026-11-15T13:17:42.965Z",
     "own": "2026-11-15T13:03:00.000Z"
+   }
+  },
+  "401873058|jaydnott|out": {
+   "game": "401873058",
+   "start": "2026-11-15T18:00Z",
+   "team": "12",
+   "name": "Jaydn Ott",
+   "status": "out",
+   "athlete": "4685489",
+   "espn": {
+    "seen": "2026-11-15T16:32:39.852Z",
+    "own": "2026-11-13T23:28:00.000Z"
+   }
+  },
+  "401873056|wyattteller|out": {
+   "game": "401873056",
+   "start": "2026-11-15T18:00Z",
+   "team": "34",
+   "name": "Wyatt Teller",
+   "status": "out",
+   "athlete": "3045474",
+   "espn": {
+    "seen": "2026-11-15T16:32:39.852Z",
+    "own": "2026-11-13T21:36:00.000Z"
+   }
+  },
+  "401873060|kevinzeitler|out": {
+   "game": "401873060",
+   "start": "2026-11-15T18:00Z",
+   "team": "9",
+   "name": "Kevin Zeitler",
+   "status": "out",
+   "athlete": "14931",
+   "espn": {
+    "seen": "2026-11-15T16:32:39.852Z",
+    "own": "2026-11-14T02:24:00.000Z"
+   }
+  },
+  "401873060|pierrestrong|out": {
+   "game": "401873060",
+   "start": "2026-11-15T18:00Z",
+   "team": "9",
+   "name": "Pierre Strong Jr.",
+   "status": "out",
+   "athlete": "4249836",
+   "espn": {
+    "seen": "2026-11-15T16:32:39.852Z",
+    "own": "2026-11-11T00:49:00.000Z"
+   }
+  },
+  "401873060|jordanaddison|out": {
+   "game": "401873060",
+   "start": "2026-11-15T18:00Z",
+   "team": "16",
+   "name": "Jordan Addison",
+   "status": "out",
+   "athlete": "4429205",
+   "espn": {
+    "seen": "2026-11-15T16:32:39.852Z",
+    "own": "2026-11-15T12:10:00.000Z"
+   }
+  },
+  "401873060|maxbrosmer|out": {
+   "game": "401873060",
+   "start": "2026-11-15T18:00Z",
+   "team": "16",
+   "name": "Max Brosmer",
+   "status": "out",
+   "athlete": "4573398",
+   "espn": {
+    "seen": "2026-11-15T16:32:39.852Z",
+    "own": "2026-11-10T22:36:00.000Z"
+   }
+  },
+  "401873057|nicholassingleton|out": {
+   "game": "401873057",
+   "start": "2026-11-15T18:00Z",
+   "team": "10",
+   "name": "Nicholas Singleton",
+   "status": "out",
+   "athlete": "4685555",
+   "espn": {
+    "seen": "2026-11-15T16:32:39.852Z",
+    "own": "2026-11-09T15:21:00.000Z"
+   }
+  },
+  "401873054|jarvisbrownlee|out": {
+   "game": "401873054",
+   "start": "2026-11-15T18:00Z",
+   "team": "20",
+   "name": "Jarvis Brownlee Jr.",
+   "status": "out",
+   "athlete": "4426817",
+   "espn": {
+    "seen": "2026-11-15T16:32:39.852Z",
+    "own": "2026-11-13T23:54:00.000Z"
+   }
+  },
+  "401873054|shanebuechele|out": {
+   "game": "401873054",
+   "start": "2026-11-15T18:00Z",
+   "team": "2",
+   "name": "Shane Buechele",
+   "status": "out",
+   "athlete": "4039034",
+   "espn": {
+    "seen": "2026-11-15T16:32:39.852Z",
+    "own": "2026-11-14T21:46:00.000Z"
    }
   }
  }
