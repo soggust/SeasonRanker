@@ -3,7 +3,7 @@
  "cursor": {
   "johnston-bot.bsky.social": "2026-11-12T16:02:25.547Z",
   "notfriedgehnic.bsky.social": "2026-11-15T02:20:03.659Z",
-  "dailyfaceoff.bsky.social": "2026-11-15T03:50:38.000Z",
+  "dailyfaceoff.bsky.social": "2026-11-15T17:04:18.000Z",
   "dfotoronto.bsky.social": "2026-11-15T14:06:22.000Z",
   "marklazerus.bsky.social": "2026-11-15T15:22:23.866Z"
  },
@@ -2490,6 +2490,19 @@
    "kind": "status",
    "confidence": 0.95,
    "text": "Sharks’ Alex Wennberg out with upper-body injury"
+  },
+  {
+   "id": "at://did:plc:3uus7y6h3rlrk6sbctzxm4bg/app.bsky.feed.post/3n2einifuca2x|igorshesterkin|out|status",
+   "at": "2026-11-15T17:04:18.000Z",
+   "seen": "2026-11-15T17:05:07.120Z",
+   "handle": "dailyfaceoff.bsky.social",
+   "post": "at://did:plc:3uus7y6h3rlrk6sbctzxm4bg/app.bsky.feed.post/3n2einifuca2x",
+   "player": "Igor Shesterkin",
+   "team": "NYR",
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.95,
+   "text": "Rangers place Igor Shesterkin on season-ending injured reserve"
   }
  ]
 }
