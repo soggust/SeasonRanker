@@ -21901,6 +21901,11 @@
    "espn": {
     "seen": "2026-11-15T18:19:29.963Z",
     "own": "2026-11-15T18:11:00.000Z"
+   },
+   "bluesky": {
+    "seen": "2026-11-15T18:20:57.239Z",
+    "own": "2026-11-15T18:14:26.000Z",
+    "why": "@rotowirenba.bsky.social: Kyrie Irving: Questionable for Sunday \n\n https://www.r"
    }
   },
   "401909992|jocklandale|q": {
@@ -21913,6 +21918,102 @@
    "espn": {
     "seen": "2026-11-15T18:19:29.963Z",
     "own": "2026-11-15T17:55:00.000Z"
+   }
+  },
+  "401909986|kyrieirving|q": {
+   "game": "401909986",
+   "start": "2026-11-15T21:00Z",
+   "team": "21",
+   "name": "Kyrie Irving",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-11-15T18:20:57.239Z",
+    "own": "2026-11-15T18:14:26.000Z",
+    "why": "@rotowirenba.bsky.social: Kyrie Irving: Questionable for Sunday \n\n https://www.r"
+   }
+  },
+  "401909987|kyrieirving|q": {
+   "game": "401909987",
+   "start": "2026-11-15T21:30Z",
+   "team": "12",
+   "name": "Kyrie Irving",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-11-15T18:20:57.239Z",
+    "own": "2026-11-15T18:14:26.000Z",
+    "why": "@rotowirenba.bsky.social: Kyrie Irving: Questionable for Sunday \n\n https://www.r"
+   }
+  },
+  "401909988|kyrieirving|q": {
+   "game": "401909988",
+   "start": "2026-11-15T22:00Z",
+   "team": "26",
+   "name": "Kyrie Irving",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-11-15T18:20:57.239Z",
+    "own": "2026-11-15T18:14:26.000Z",
+    "why": "@rotowirenba.bsky.social: Kyrie Irving: Questionable for Sunday \n\n https://www.r"
+   }
+  },
+  "401909988|deaaronfox|q": {
+   "game": "401909988",
+   "start": "2026-11-15T22:00Z",
+   "team": "24",
+   "name": "De'Aaron Fox",
+   "status": "q",
+   "athlete": "4066259",
+   "espn": {
+    "seen": "2026-11-15T19:13:29.814Z",
+    "own": "2026-11-15T18:27:00.000Z"
+   }
+  },
+  "401909990|kyrieirving|q": {
+   "game": "401909990",
+   "start": "2026-11-15T23:00Z",
+   "team": "28",
+   "name": "Kyrie Irving",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-11-15T18:20:57.239Z",
+    "own": "2026-11-15T18:14:26.000Z",
+    "why": "@rotowirenba.bsky.social: Kyrie Irving: Questionable for Sunday \n\n https://www.r"
+   }
+  },
+  "401909991|kyrieirving|q": {
+   "game": "401909991",
+   "start": "2026-11-16T00:00Z",
+   "team": "27",
+   "name": "Kyrie Irving",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-11-15T18:20:57.239Z",
+    "own": "2026-11-15T18:14:26.000Z",
+    "why": "@rotowirenba.bsky.social: Kyrie Irving: Questionable for Sunday \n\n https://www.r"
+   }
+  },
+  "401909992|kyrieirving|q": {
+   "game": "401909992",
+   "start": "2026-11-16T01:00Z",
+   "team": "15",
+   "name": "Kyrie Irving",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-11-15T18:20:57.239Z",
+    "own": "2026-11-15T18:14:26.000Z",
+    "why": "@rotowirenba.bsky.social: Kyrie Irving: Questionable for Sunday \n\n https://www.r"
+   }
+  },
+  "401909993|kyrieirving|q": {
+   "game": "401909993",
+   "start": "2026-11-16T02:00Z",
+   "team": "23",
+   "name": "Kyrie Irving",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-11-15T18:20:57.239Z",
+    "own": "2026-11-15T18:14:26.000Z",
+    "why": "@rotowirenba.bsky.social: Kyrie Irving: Questionable for Sunday \n\n https://www.r"
    }
   }
  }

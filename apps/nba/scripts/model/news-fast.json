@@ -1,24 +1,11 @@
 {
  "sport": "nba",
  "cursor": {
-  "rotowirenba.bsky.social": "2026-11-15T18:18:14.000Z",
+  "rotowirenba.bsky.social": "2026-11-15T18:27:47.000Z",
   "insidenbanews.bsky.social": "2026-11-13T20:00:09.852Z",
   "shamsbot.bsky.social": "2026-11-13T20:16:26.000Z"
  },
  "claims": [
-  {
-   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mypu22kmmo23|keeganmurray|doubtful|status",
-   "at": "2026-10-25T18:37:05.000Z",
-   "seen": "2026-10-26T05:03:40.538Z",
-   "handle": "rotowirenba.bsky.social",
-   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mypu22kmmo23",
-   "player": "Keegan Murray",
-   "team": "SAC",
-   "status": "doubtful",
-   "kind": "status",
-   "confidence": 0.9,
-   "text": "Keegan Murray: Downgraded to doubtful \n\n https://www.rotowire.com/basketball/player/keegan-murray-5699"
-  },
   {
    "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mypzyl2ic624|kyrieirving|active|status",
    "at": "2026-10-25T20:23:38.000Z",
@@ -10730,6 +10717,19 @@
    "kind": "status",
    "confidence": 0.9,
    "text": "Max Christie: Doubtful to play Sunday \n\n https://www.rotowire.com/basketball/player/max-christie-5723"
+  },
+  {
+   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3n2encrggim23|deaaronfox|questionable|status",
+   "at": "2026-11-15T18:27:47.000Z",
+   "seen": "2026-11-15T19:14:56.611Z",
+   "handle": "rotowirenba.bsky.social",
+   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3n2encrggim23",
+   "player": "De'Aaron Fox",
+   "team": null,
+   "status": "questionable",
+   "kind": "status",
+   "confidence": 0.9,
+   "text": "De'Aaron Fox: Now listed as questionable \n\n https://www.rotowire.com/basketball/player/deaaron-fox-4116"
   }
  ]
 }
