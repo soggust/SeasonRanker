@@ -1,7 +1,7 @@
 {
  "sport": "nba",
  "cursor": {
-  "rotowirenba.bsky.social": "2026-11-15T02:14:33.000Z",
+  "rotowirenba.bsky.social": "2026-11-15T02:31:02.000Z",
   "insidenbanews.bsky.social": "2026-11-13T20:00:09.852Z",
   "shamsbot.bsky.social": "2026-11-13T20:16:26.000Z"
  },
@@ -10678,6 +10678,19 @@
    "kind": "status",
    "confidence": 0.9,
    "text": "Jaylin Williams: Won't play Sunday \n\n https://www.rotowire.com/basketball/player/jaylin-williams-5690"
+  },
+  {
+   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3n2cxtxpprr2z|danielgafford|out|status",
+   "at": "2026-11-15T02:31:02.000Z",
+   "seen": "2026-11-15T02:38:07.181Z",
+   "handle": "rotowirenba.bsky.social",
+   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3n2cxtxpprr2z",
+   "player": "Daniel Gafford",
+   "team": null,
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.8,
+   "text": "Daniel Gafford: Won't return Saturday \n\n https://www.rotowire.com/basketball/player/daniel-gafford-4824"
   }
  ]
 }
