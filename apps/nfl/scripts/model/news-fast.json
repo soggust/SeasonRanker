@@ -1,13 +1,13 @@
 {
  "sport": "nfl",
  "cursor": {
-  "adamscheftermirror.bsky.social": "2026-11-15T14:20:47.747Z",
-  "rapsheet.bsky.social": "2026-11-15T14:39:30.731Z",
+  "adamscheftermirror.bsky.social": "2026-11-15T15:05:50.108Z",
+  "rapsheet.bsky.social": "2026-11-15T14:52:08.618Z",
   "nflnewsreposterbot.bsky.social": "2026-11-13T18:01:20.702Z",
-  "insidenflnews.bsky.social": "2026-11-15T14:47:43.634Z",
+  "insidenflnews.bsky.social": "2026-11-15T14:58:13.611Z",
   "nflnewsposter.bsky.social": "2026-11-14T18:21:26.376Z",
-  "rotoworld-fb.bsky.social": "2026-11-15T14:32:35.000Z",
-  "rotowirenfl.bsky.social": "2026-11-15T13:25:58.000Z"
+  "rotoworld-fb.bsky.social": "2026-11-15T15:04:32.000Z",
+  "rotowirenfl.bsky.social": "2026-11-15T15:02:23.000Z"
  },
  "claims": [
   {
@@ -18261,6 +18261,123 @@
    "kind": "status",
    "confidence": 0.85,
    "text": "Texans star edge Will Anderson Jr., who is questionable after missing practice this week with an ankle injury, is expected to play."
+  },
+  {
+   "id": "at://did:plc:hlvr2omhnmvdmfnvmcuhyevz/app.bsky.feed.post/3n2ebb5is3c2w|garrettwilson|active|status",
+   "at": "2026-11-15T14:52:08.618Z",
+   "seen": "2026-11-15T15:11:37.227Z",
+   "handle": "rapsheet.bsky.social",
+   "post": "at://did:plc:hlvr2omhnmvdmfnvmcuhyevz/app.bsky.feed.post/3n2ebb5is3c2w",
+   "player": "Garrett Wilson",
+   "team": "NYJ",
+   "status": "active",
+   "kind": "status",
+   "confidence": 0.95,
+   "text": "Jets WR Garrett Wilson (concussion) cleared the NFL’s concussion protocol and will play today. Meanwhile, WR Omar Cooper Jr. (ankle) and AD Mitchell (knee) are both expected to go after being listed a"
+  },
+  {
+   "id": "at://did:plc:hlvr2omhnmvdmfnvmcuhyevz/app.bsky.feed.post/3n2ebb5is3c2w|omarcooper|active|status",
+   "at": "2026-11-15T14:52:08.618Z",
+   "seen": "2026-11-15T15:11:37.227Z",
+   "handle": "rapsheet.bsky.social",
+   "post": "at://did:plc:hlvr2omhnmvdmfnvmcuhyevz/app.bsky.feed.post/3n2ebb5is3c2w",
+   "player": "Omar Cooper Jr.",
+   "team": "NYJ",
+   "status": "active",
+   "kind": "status",
+   "confidence": 0.6,
+   "text": "Jets WR Garrett Wilson (concussion) cleared the NFL’s concussion protocol and will play today. Meanwhile, WR Omar Cooper Jr. (ankle) and AD Mitchell (knee) are both expected to go after being listed a"
+  },
+  {
+   "id": "at://did:plc:hlvr2omhnmvdmfnvmcuhyevz/app.bsky.feed.post/3n2ebb5is3c2w|admitchell|active|status",
+   "at": "2026-11-15T14:52:08.618Z",
+   "seen": "2026-11-15T15:11:37.227Z",
+   "handle": "rapsheet.bsky.social",
+   "post": "at://did:plc:hlvr2omhnmvdmfnvmcuhyevz/app.bsky.feed.post/3n2ebb5is3c2w",
+   "player": "AD Mitchell",
+   "team": "NYJ",
+   "status": "active",
+   "kind": "status",
+   "confidence": 0.6,
+   "text": "Jets WR Garrett Wilson (concussion) cleared the NFL’s concussion protocol and will play today. Meanwhile, WR Omar Cooper Jr. (ankle) and AD Mitchell (knee) are both expected to go after being listed a"
+  },
+  {
+   "id": "at://did:plc:mbr4badgf6yu56mquzackzew/app.bsky.feed.post/3n2ebhin7qs25|aidanhutchinson|questionable|status",
+   "at": "2026-11-15T14:55:41.622Z",
+   "seen": "2026-11-15T15:11:37.227Z",
+   "handle": "insidenflnews.bsky.social",
+   "post": "at://did:plc:mbr4badgf6yu56mquzackzew/app.bsky.feed.post/3n2ebhin7qs25",
+   "player": "Aidan Hutchinson",
+   "team": "DET",
+   "status": "questionable",
+   "kind": "status",
+   "confidence": 0.9,
+   "text": "🚨 Status alert: Aidan Hutchinson (knee) questionable to return."
+  },
+  {
+   "id": "at://did:plc:mbr4badgf6yu56mquzackzew/app.bsky.feed.post/3n2ebl46bg225|tommydevito|none|starting",
+   "at": "2026-11-15T14:57:42.768Z",
+   "seen": "2026-11-15T15:11:37.227Z",
+   "handle": "insidenflnews.bsky.social",
+   "post": "at://did:plc:mbr4badgf6yu56mquzackzew/app.bsky.feed.post/3n2ebl46bg225",
+   "player": "Tommy DeVito",
+   "team": "NE",
+   "status": "none",
+   "kind": "starting",
+   "confidence": 0.8,
+   "text": "Lineup alert: Tommy DeVito enters game in place of injured Drake Maye."
+  },
+  {
+   "id": "at://did:plc:mbr4badgf6yu56mquzackzew/app.bsky.feed.post/3n2eblzlikk25|drakemaye|questionable|status",
+   "at": "2026-11-15T14:58:13.611Z",
+   "seen": "2026-11-15T15:11:37.227Z",
+   "handle": "insidenflnews.bsky.social",
+   "post": "at://did:plc:mbr4badgf6yu56mquzackzew/app.bsky.feed.post/3n2eblzlikk25",
+   "player": "Drake Maye",
+   "team": "NE",
+   "status": "questionable",
+   "kind": "status",
+   "confidence": 0.9,
+   "text": "🚨 Status alert: Drake Maye (ankle) questionable to return."
+  },
+  {
+   "id": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3n2ebthn2ep2w|drakemaye|questionable|status",
+   "at": "2026-11-15T15:02:23.000Z",
+   "seen": "2026-11-15T15:11:37.227Z",
+   "handle": "rotowirenfl.bsky.social",
+   "post": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3n2ebthn2ep2w",
+   "player": "Drake Maye",
+   "team": "NE",
+   "status": "questionable",
+   "kind": "status",
+   "confidence": 0.9,
+   "text": "Drake Maye: Injures ankle, questionable to return \n\n https://www.rotowire.com/football/player/drake-maye-17673"
+  },
+  {
+   "id": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3n2ebxaaw7w2b|aidanhutchinson|questionable|status",
+   "at": "2026-11-15T15:04:29.000Z",
+   "seen": "2026-11-15T15:11:37.227Z",
+   "handle": "rotoworld-fb.bsky.social",
+   "post": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3n2ebxaaw7w2b",
+   "player": "Aidan Hutchinson",
+   "team": "DET",
+   "status": "questionable",
+   "kind": "status",
+   "confidence": 0.9,
+   "text": "Hutchinson (knee) questionable to return vs. Pats"
+  },
+  {
+   "id": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3n2ebxctpb526|drakemaye|questionable|status",
+   "at": "2026-11-15T15:04:32.000Z",
+   "seen": "2026-11-15T15:11:37.227Z",
+   "handle": "rotoworld-fb.bsky.social",
+   "post": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3n2ebxctpb526",
+   "player": "Drake Maye",
+   "team": "NE",
+   "status": "questionable",
+   "kind": "status",
+   "confidence": 0.9,
+   "text": "Drake Maye (ankle) questionable to return vs. DET"
   }
  ]
 }
