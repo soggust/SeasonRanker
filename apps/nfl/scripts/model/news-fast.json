@@ -2,27 +2,14 @@
  "sport": "nfl",
  "cursor": {
   "adamscheftermirror.bsky.social": "2026-11-15T14:20:47.747Z",
-  "rapsheet.bsky.social": "2026-11-15T04:31:56.134Z",
+  "rapsheet.bsky.social": "2026-11-15T14:39:30.731Z",
   "nflnewsreposterbot.bsky.social": "2026-11-13T18:01:20.702Z",
-  "insidenflnews.bsky.social": "2026-11-15T13:03:56.964Z",
+  "insidenflnews.bsky.social": "2026-11-15T14:47:43.634Z",
   "nflnewsposter.bsky.social": "2026-11-14T18:21:26.376Z",
-  "rotoworld-fb.bsky.social": "2026-11-15T13:47:27.000Z",
+  "rotoworld-fb.bsky.social": "2026-11-15T14:32:35.000Z",
   "rotowirenfl.bsky.social": "2026-11-15T13:25:58.000Z"
  },
  "claims": [
-  {
-   "id": "at://did:plc:hlvr2omhnmvdmfnvmcuhyevz/app.bsky.feed.post/3myph4uhrdk2i|joshsimmons|out|status",
-   "at": "2026-10-25T14:46:01.247Z",
-   "seen": "2026-10-26T05:03:40.538Z",
-   "handle": "rapsheet.bsky.social",
-   "post": "at://did:plc:hlvr2omhnmvdmfnvmcuhyevz/app.bsky.feed.post/3myph4uhrdk2i",
-   "player": "Josh Simmons",
-   "team": "KC",
-   "status": "out",
-   "kind": "status",
-   "confidence": 0.7,
-   "text": "Before he was placed on IR, Chiefs LT Josh Simmons was told to leave a team meeting by coach Andy Reid and QB Patrick Mahomes. \n\nThe back story from me and Mike Garafolo. [Sources: Josh Simmons told t"
-  },
   {
    "id": "at://did:plc:mbr4badgf6yu56mquzackzew/app.bsky.feed.post/3mypou7vkpc2l|pukanacua|active|status",
    "at": "2026-10-25T17:04:21.176Z",
@@ -18196,6 +18183,84 @@
    "kind": "status",
    "confidence": 0.85,
    "text": "49ers LT Trent Williams, listed as questionable for today’s game vs. the Cowboys due to an ankle injury, is expected to play, per source.\n\nOriginal post"
+  },
+  {
+   "id": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3n2ea66sng62p|trentwilliams|active|status",
+   "at": "2026-11-15T14:32:35.000Z",
+   "seen": "2026-11-15T14:50:45.337Z",
+   "handle": "rotoworld-fb.bsky.social",
+   "post": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3n2ea66sng62p",
+   "player": "Trent Williams",
+   "team": null,
+   "status": "active",
+   "kind": "status",
+   "confidence": 0.7,
+   "text": "Trent Williams (shoulder) expected to play vs. DAL"
+  },
+  {
+   "id": "at://did:plc:hlvr2omhnmvdmfnvmcuhyevz/app.bsky.feed.post/3n2eagacpok2w|jordanaddison|questionable|status",
+   "at": "2026-11-15T14:37:05.593Z",
+   "seen": "2026-11-15T14:50:45.337Z",
+   "handle": "rapsheet.bsky.social",
+   "post": "at://did:plc:hlvr2omhnmvdmfnvmcuhyevz/app.bsky.feed.post/3n2eagacpok2w",
+   "player": "Jordan Addison",
+   "team": "MIN",
+   "status": "questionable",
+   "kind": "status",
+   "confidence": 0.9,
+   "text": "Vikings WR Jordan Addison, who suffered a thumb injury in practice on Friday and is questionable, will have his status determined closed to game-time. But there is some doubt, as MIN elevated WR Jesha"
+  },
+  {
+   "id": "at://did:plc:hlvr2omhnmvdmfnvmcuhyevz/app.bsky.feed.post/3n2eaib3eus2w|jaelanphillips|questionable|status",
+   "at": "2026-11-15T14:38:13.512Z",
+   "seen": "2026-11-15T14:50:45.337Z",
+   "handle": "rapsheet.bsky.social",
+   "post": "at://did:plc:hlvr2omhnmvdmfnvmcuhyevz/app.bsky.feed.post/3n2eaib3eus2w",
+   "player": "Jaelan Phillips",
+   "team": "CAR",
+   "status": "questionable",
+   "kind": "status",
+   "confidence": 0.85,
+   "text": "Panthers edge Jaelan Phillips, who has been out since mid-October with a hamstring injury, is expected to play today, source said. He’s listed as questionable."
+  },
+  {
+   "id": "at://did:plc:hlvr2omhnmvdmfnvmcuhyevz/app.bsky.feed.post/3n2eaj3732s2w|daronbland|questionable|status",
+   "at": "2026-11-15T14:38:40.896Z",
+   "seen": "2026-11-15T14:50:45.337Z",
+   "handle": "rapsheet.bsky.social",
+   "post": "at://did:plc:hlvr2omhnmvdmfnvmcuhyevz/app.bsky.feed.post/3n2eaj3732s2w",
+   "player": "Daron Bland",
+   "team": "DAL",
+   "status": "questionable",
+   "kind": "status",
+   "confidence": 0.9,
+   "text": "Cowboys CBs Daron Bland (ankle) and CB Joey Porter Jr. (ankle/foot) both are questionable and both are trending towards playing, sources say. Porter has had two good practices in two days."
+  },
+  {
+   "id": "at://did:plc:hlvr2omhnmvdmfnvmcuhyevz/app.bsky.feed.post/3n2eaj3732s2w|joeyporter|questionable|status",
+   "at": "2026-11-15T14:38:40.896Z",
+   "seen": "2026-11-15T14:50:45.337Z",
+   "handle": "rapsheet.bsky.social",
+   "post": "at://did:plc:hlvr2omhnmvdmfnvmcuhyevz/app.bsky.feed.post/3n2eaj3732s2w",
+   "player": "Joey Porter Jr.",
+   "team": "DAL",
+   "status": "questionable",
+   "kind": "status",
+   "confidence": 0.9,
+   "text": "Cowboys CBs Daron Bland (ankle) and CB Joey Porter Jr. (ankle/foot) both are questionable and both are trending towards playing, sources say. Porter has had two good practices in two days."
+  },
+  {
+   "id": "at://did:plc:hlvr2omhnmvdmfnvmcuhyevz/app.bsky.feed.post/3n2eakkpwzs2w|willanderson|questionable|status",
+   "at": "2026-11-15T14:39:30.731Z",
+   "seen": "2026-11-15T14:50:45.337Z",
+   "handle": "rapsheet.bsky.social",
+   "post": "at://did:plc:hlvr2omhnmvdmfnvmcuhyevz/app.bsky.feed.post/3n2eakkpwzs2w",
+   "player": "Will Anderson Jr.",
+   "team": "HOU",
+   "status": "questionable",
+   "kind": "status",
+   "confidence": 0.85,
+   "text": "Texans star edge Will Anderson Jr., who is questionable after missing practice this week with an ankle injury, is expected to play."
   }
  ]
 }
