@@ -7,19 +7,6 @@
  },
  "claims": [
   {
-   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3myogc46yuc27|guisantos|out|status",
-   "at": "2026-10-25T04:58:23.000Z",
-   "seen": "2026-10-26T05:03:40.538Z",
-   "handle": "rotowirenba.bsky.social",
-   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3myogc46yuc27",
-   "player": "Gui Santos",
-   "team": "GS",
-   "status": "out",
-   "kind": "status",
-   "confidence": 0.85,
-   "text": "Gui Santos: Doesn't return Saturday \n\n https://www.rotowire.com/basketball/player/gui-santos-5738"
-  },
-  {
    "id": "at://did:plc:ykcnnf6kqnn3lasmobrczoem/app.bsky.feed.post/3mypl6iacss2i|jalenduren|out|status",
    "at": "2026-10-25T15:58:30.493Z",
    "seen": "2026-10-26T05:03:40.538Z",
