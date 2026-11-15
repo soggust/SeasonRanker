@@ -1,28 +1,15 @@
 {
  "sport": "nfl",
  "cursor": {
-  "adamscheftermirror.bsky.social": "2026-11-15T02:20:44.615Z",
+  "adamscheftermirror.bsky.social": "2026-11-15T11:00:48.029Z",
   "rapsheet.bsky.social": "2026-11-15T04:31:56.134Z",
   "nflnewsreposterbot.bsky.social": "2026-11-13T18:01:20.702Z",
   "insidenflnews.bsky.social": "2026-11-14T21:06:00.144Z",
   "nflnewsposter.bsky.social": "2026-11-14T18:21:26.376Z",
   "rotoworld-fb.bsky.social": "2026-11-14T21:31:34.000Z",
-  "rotowirenfl.bsky.social": "2026-11-14T21:30:25.000Z"
+  "rotowirenfl.bsky.social": "2026-11-15T11:14:59.000Z"
  },
  "claims": [
-  {
-   "id": "at://did:plc:qre6zxbmr3ixhdmgsgdretb5/app.bsky.feed.post/3myp37zs5pq2z|jjmccarthy|none|starting",
-   "at": "2026-10-25T11:13:02.509Z",
-   "seen": "2026-10-26T05:03:40.538Z",
-   "handle": "adamscheftermirror.bsky.social",
-   "post": "at://did:plc:qre6zxbmr3ixhdmgsgdretb5/app.bsky.feed.post/3myp37zs5pq2z",
-   "player": "J.J. McCarthy",
-   "team": null,
-   "status": "none",
-   "kind": "starting",
-   "confidence": 0.4,
-   "text": "The Giants once had Eli Manning start 210 straight regular-season games. On Sunday, J.J. McCarthy will become the Giants’ 12th different starting QB since Manning retired after the 2019 season.\n\nOrigi"
-  },
   {
    "id": "at://did:plc:qre6zxbmr3ixhdmgsgdretb5/app.bsky.feed.post/3myp5qfvnmn2z|breecehall|doubtful|status",
    "at": "2026-10-25T11:57:59.560Z",
@@ -18248,6 +18235,32 @@
    "kind": "status",
    "confidence": 0.95,
    "text": "More about the Patriots placing RB TreVeyon Henderson on injured reserve with a still unexplained illness, via @MikeReiss:\n\nOriginal post"
+  },
+  {
+   "id": "at://did:plc:qre6zxbmr3ixhdmgsgdretb5/app.bsky.feed.post/3n2dudh5vzv2e|ajbrown|active|status",
+   "at": "2026-11-15T11:00:47.127Z",
+   "seen": "2026-11-15T11:21:12.252Z",
+   "handle": "adamscheftermirror.bsky.social",
+   "post": "at://did:plc:qre6zxbmr3ixhdmgsgdretb5/app.bsky.feed.post/3n2dudh5vzv2e",
+   "player": "A.J. Brown",
+   "team": "NE",
+   "status": "active",
+   "kind": "status",
+   "confidence": 0.85,
+   "text": "Patriots WR A.J. Brown and RB Rhamondre Stevenson, both listed as questionable for this morning’s game in Munich Germany, both are expected to play, per sources.\n\nOriginal post"
+  },
+  {
+   "id": "at://did:plc:qre6zxbmr3ixhdmgsgdretb5/app.bsky.feed.post/3n2dudh5vzv2e|rhamondrestevenson|active|status",
+   "at": "2026-11-15T11:00:47.127Z",
+   "seen": "2026-11-15T11:21:12.252Z",
+   "handle": "adamscheftermirror.bsky.social",
+   "post": "at://did:plc:qre6zxbmr3ixhdmgsgdretb5/app.bsky.feed.post/3n2dudh5vzv2e",
+   "player": "Rhamondre Stevenson",
+   "team": "NE",
+   "status": "active",
+   "kind": "status",
+   "confidence": 0.85,
+   "text": "Patriots WR A.J. Brown and RB Rhamondre Stevenson, both listed as questionable for this morning’s game in Munich Germany, both are expected to play, per sources.\n\nOriginal post"
   }
  ]
 }
