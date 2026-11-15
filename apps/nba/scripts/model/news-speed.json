@@ -20404,6 +20404,66 @@
     "own": "2026-11-15T02:31:02.000Z",
     "why": "@rotowirenba.bsky.social: Daniel Gafford: Won't return Saturday \n\n https://www.r"
    }
+  },
+  "401909985|duncanrobinson|q": {
+   "game": "401909985",
+   "start": "2026-11-15T18:00Z",
+   "team": "20",
+   "name": "Duncan Robinson",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-11-15T03:09:28.551Z",
+    "own": "2026-11-15T02:40:24.000Z",
+    "why": "@rotowirenba.bsky.social: Duncan Robinson: Questionable to return vs. Heat \n\n ht"
+   }
+  },
+  "401909988|duncanrobinson|q": {
+   "game": "401909988",
+   "start": "2026-11-15T22:00Z",
+   "team": "26",
+   "name": "Duncan Robinson",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-11-15T03:09:28.551Z",
+    "own": "2026-11-15T02:40:24.000Z",
+    "why": "@rotowirenba.bsky.social: Duncan Robinson: Questionable to return vs. Heat \n\n ht"
+   }
+  },
+  "401909990|duncanrobinson|q": {
+   "game": "401909990",
+   "start": "2026-11-15T23:00Z",
+   "team": "28",
+   "name": "Duncan Robinson",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-11-15T03:09:28.551Z",
+    "own": "2026-11-15T02:40:24.000Z",
+    "why": "@rotowirenba.bsky.social: Duncan Robinson: Questionable to return vs. Heat \n\n ht"
+   }
+  },
+  "401909991|duncanrobinson|q": {
+   "game": "401909991",
+   "start": "2026-11-16T00:00Z",
+   "team": "27",
+   "name": "Duncan Robinson",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-11-15T03:09:28.551Z",
+    "own": "2026-11-15T02:40:24.000Z",
+    "why": "@rotowirenba.bsky.social: Duncan Robinson: Questionable to return vs. Heat \n\n ht"
+   }
+  },
+  "401909992|duncanrobinson|q": {
+   "game": "401909992",
+   "start": "2026-11-16T01:00Z",
+   "team": "15",
+   "name": "Duncan Robinson",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-11-15T03:09:28.551Z",
+    "own": "2026-11-15T02:40:24.000Z",
+    "why": "@rotowirenba.bsky.social: Duncan Robinson: Questionable to return vs. Heat \n\n ht"
+   }
   }
  }
 }
