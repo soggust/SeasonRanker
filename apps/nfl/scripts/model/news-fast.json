@@ -1,41 +1,15 @@
 {
  "sport": "nfl",
  "cursor": {
-  "adamscheftermirror.bsky.social": "2026-11-15T11:00:48.029Z",
+  "adamscheftermirror.bsky.social": "2026-11-15T12:20:47.877Z",
   "rapsheet.bsky.social": "2026-11-15T04:31:56.134Z",
   "nflnewsreposterbot.bsky.social": "2026-11-13T18:01:20.702Z",
-  "insidenflnews.bsky.social": "2026-11-14T21:06:00.144Z",
+  "insidenflnews.bsky.social": "2026-11-15T12:15:28.589Z",
   "nflnewsposter.bsky.social": "2026-11-14T18:21:26.376Z",
-  "rotoworld-fb.bsky.social": "2026-11-14T21:31:34.000Z",
-  "rotowirenfl.bsky.social": "2026-11-15T11:14:59.000Z"
+  "rotoworld-fb.bsky.social": "2026-11-15T12:31:46.000Z",
+  "rotowirenfl.bsky.social": "2026-11-15T12:14:43.000Z"
  },
  "claims": [
-  {
-   "id": "at://did:plc:qre6zxbmr3ixhdmgsgdretb5/app.bsky.feed.post/3myp5qfvnmn2z|breecehall|doubtful|status",
-   "at": "2026-10-25T11:57:59.560Z",
-   "seen": "2026-10-26T05:03:40.538Z",
-   "handle": "adamscheftermirror.bsky.social",
-   "post": "at://did:plc:qre6zxbmr3ixhdmgsgdretb5/app.bsky.feed.post/3myp5qfvnmn2z",
-   "player": "Breece Hall",
-   "team": "NYJ",
-   "status": "doubtful",
-   "kind": "status",
-   "confidence": 0.8,
-   "text": "Repost by @AdamSchefter\n\n#Jets star RB Breece Hall, attempting to return from a quad strain after missing three games, is unlikely to play today, sources say. He may work out to see if he can go, but "
-  },
-  {
-   "id": "at://did:plc:qre6zxbmr3ixhdmgsgdretb5/app.bsky.feed.post/3myp5qllh442f|pukanacua|questionable|status",
-   "at": "2026-10-25T11:58:05.579Z",
-   "seen": "2026-10-26T05:03:40.538Z",
-   "handle": "adamscheftermirror.bsky.social",
-   "post": "at://did:plc:qre6zxbmr3ixhdmgsgdretb5/app.bsky.feed.post/3myp5qllh442f",
-   "player": "Puka Nacua",
-   "team": "LAR",
-   "status": "questionable",
-   "kind": "status",
-   "confidence": 0.85,
-   "text": "Rams are optimistic that WR Puka Nacua, who is questionable for Sunday’s game due to a calf injury, will play vs. the Raiders. Nacua was feeling better Saturday and, as one source said, “as long as th"
-  },
   {
    "id": "at://did:plc:hlvr2omhnmvdmfnvmcuhyevz/app.bsky.feed.post/3mype4o5oys22|zadariussmith|questionable|status",
    "at": "2026-10-25T13:52:13.397Z",
@@ -18261,6 +18235,45 @@
    "kind": "status",
    "confidence": 0.85,
    "text": "Patriots WR A.J. Brown and RB Rhamondre Stevenson, both listed as questionable for this morning’s game in Munich Germany, both are expected to play, per sources.\n\nOriginal post"
+  },
+  {
+   "id": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3n2dy7q7oj32w|jordanaddison|questionable|status",
+   "at": "2026-11-15T12:10:17.000Z",
+   "seen": "2026-11-15T12:32:34.938Z",
+   "handle": "rotowirenfl.bsky.social",
+   "post": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3n2dy7q7oj32w",
+   "player": "Jordan Addison",
+   "team": null,
+   "status": "questionable",
+   "kind": "status",
+   "confidence": 0.8,
+   "text": "Jordan Addison: May be game-time call Sunday \n\n https://www.rotowire.com/football/player/jordan-addison-16895"
+  },
+  {
+   "id": "at://did:plc:qre6zxbmr3ixhdmgsgdretb5/app.bsky.feed.post/3n2dysj4msa2z|denzelboston|active|status",
+   "at": "2026-11-15T12:20:47.465Z",
+   "seen": "2026-11-15T12:32:34.938Z",
+   "handle": "adamscheftermirror.bsky.social",
+   "post": "at://did:plc:qre6zxbmr3ixhdmgsgdretb5/app.bsky.feed.post/3n2dysj4msa2z",
+   "player": "Denzel Boston",
+   "team": "CLE",
+   "status": "active",
+   "kind": "status",
+   "confidence": 0.85,
+   "text": "Repost by @AdamSchefter\n\nBrowns WR Denzel Boston (questionable, toe) is expected to play today vs Houston barring a surprise, per source.\n\nClick to see original repost"
+  },
+  {
+   "id": "at://did:plc:qre6zxbmr3ixhdmgsgdretb5/app.bsky.feed.post/3n2dysjhc632p|amonrastbrown|questionable|status",
+   "at": "2026-11-15T12:20:47.877Z",
+   "seen": "2026-11-15T12:32:34.938Z",
+   "handle": "adamscheftermirror.bsky.social",
+   "post": "at://did:plc:qre6zxbmr3ixhdmgsgdretb5/app.bsky.feed.post/3n2dysjhc632p",
+   "player": "Amon-Ra St. Brown",
+   "team": "DET",
+   "status": "questionable",
+   "kind": "status",
+   "confidence": 0.9,
+   "text": "Repost by @AdamSchefter\n\n#Lions WR Amon-Ra St. Brown (ribs) is listed as questionable and expected to play in Detroit’s game in Germany.\n\nClick to see original repost"
   }
  ]
 }
