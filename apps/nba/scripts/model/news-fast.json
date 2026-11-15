@@ -1,7 +1,7 @@
 {
  "sport": "nba",
  "cursor": {
-  "rotowirenba.bsky.social": "2026-11-15T00:17:51.000Z",
+  "rotowirenba.bsky.social": "2026-11-15T00:44:23.000Z",
   "insidenbanews.bsky.social": "2026-11-13T20:00:09.852Z",
   "shamsbot.bsky.social": "2026-11-13T20:16:26.000Z"
  },
@@ -10535,6 +10535,71 @@
    "kind": "status",
    "confidence": 0.9,
    "text": "Austin Reaves: Ruled out for Sunday \n\n https://www.rotowire.com/basketball/player/austin-reaves-5334"
+  },
+  {
+   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3n2cqowp4o22z|quentingrimes|active|return",
+   "at": "2026-11-15T00:22:57.000Z",
+   "seen": "2026-11-15T00:52:29.357Z",
+   "handle": "rotowirenba.bsky.social",
+   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3n2cqowp4o22z",
+   "player": "Quentin Grimes",
+   "team": null,
+   "status": "active",
+   "kind": "return",
+   "confidence": 0.9,
+   "text": "Quentin Grimes: Returning Sunday \n\n https://www.rotowire.com/basketball/player/quentin-grimes-5391"
+  },
+  {
+   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3n2cqrhohin23|collinsexton|questionable|status",
+   "at": "2026-11-15T00:24:22.000Z",
+   "seen": "2026-11-15T00:52:29.357Z",
+   "handle": "rotowirenba.bsky.social",
+   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3n2cqrhohin23",
+   "player": "Collin Sexton",
+   "team": null,
+   "status": "questionable",
+   "kind": "status",
+   "confidence": 0.9,
+   "text": "Collin Sexton: Questionable to play Sunday"
+  },
+  {
+   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3n2crej7pjh2z|jeramigrant|out|status",
+   "at": "2026-11-15T00:35:01.000Z",
+   "seen": "2026-11-15T00:52:29.357Z",
+   "handle": "rotowirenba.bsky.social",
+   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3n2crej7pjh2z",
+   "player": "Jerami Grant",
+   "team": null,
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.9,
+   "text": "Jerami Grant: Won't play Saturday \n\n https://www.rotowire.com/basketball/player/jerami-grant-3588"
+  },
+  {
+   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3n2crswgknz2t|zachedey|out|status",
+   "at": "2026-11-15T00:43:05.000Z",
+   "seen": "2026-11-15T00:52:29.357Z",
+   "handle": "rotowirenba.bsky.social",
+   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3n2crswgknz2t",
+   "player": "Zach Edey",
+   "team": null,
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.9,
+   "text": "Zach Edey: Out again Saturday \n\n https://www.rotowire.com/basketball/player/zach-edey-6263"
+  },
+  {
+   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3n2crvarmjm24|zachcollins|active|starting",
+   "at": "2026-11-15T00:44:23.000Z",
+   "seen": "2026-11-15T00:52:29.357Z",
+   "handle": "rotowirenba.bsky.social",
+   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3n2crvarmjm24",
+   "player": "Zach Collins",
+   "team": null,
+   "status": "active",
+   "kind": "starting",
+   "confidence": 0.9,
+   "text": "Zach Collins: Enters starting lineup Saturday \n\n https://www.rotowire.com/basketball/player/zach-collins-4162"
   }
  ]
 }
