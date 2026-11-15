@@ -21026,6 +21026,114 @@
     "seen": "2026-11-15T16:44:34.140Z",
     "own": "2026-11-15T16:37:00.000Z"
    }
+  },
+  "401873058|benvansumeren|out": {
+   "game": "401873058",
+   "start": "2026-11-15T18:00Z",
+   "team": "12",
+   "name": "Ben VanSumeren",
+   "status": "out",
+   "athlete": "4372070",
+   "espn": {
+    "seen": "2026-11-15T16:47:41.998Z",
+    "own": "2026-11-15T16:46:00.000Z"
+   }
+  },
+  "401873058|garrettnussmeier|out": {
+   "game": "401873058",
+   "start": "2026-11-15T18:00Z",
+   "team": "12",
+   "name": "Garrett Nussmeier",
+   "status": "out",
+   "athlete": "4567747",
+   "espn": {
+    "seen": "2026-11-15T16:47:41.998Z",
+    "own": "2026-11-15T16:46:00.000Z"
+   }
+  },
+  "401873058|melvinsmith|out": {
+   "game": "401873058",
+   "start": "2026-11-15T18:00Z",
+   "team": "12",
+   "name": "Melvin Smith Jr.",
+   "status": "out",
+   "athlete": "5278708",
+   "espn": {
+    "seen": "2026-11-15T16:47:41.998Z",
+    "own": "2026-11-15T16:46:00.000Z"
+   }
+  },
+  "401873057|cjwilliams|out": {
+   "game": "401873057",
+   "start": "2026-11-15T18:00Z",
+   "team": "30",
+   "name": "CJ Williams",
+   "status": "out",
+   "athlete": "5085024",
+   "espn": {
+    "seen": "2026-11-15T16:47:41.998Z",
+    "own": "2026-11-15T16:42:00.000Z"
+   }
+  },
+  "401873057|wesleywilliams|out": {
+   "game": "401873057",
+   "start": "2026-11-15T18:00Z",
+   "team": "30",
+   "name": "Wesley Williams",
+   "status": "out",
+   "athlete": "4832922",
+   "espn": {
+    "seen": "2026-11-15T16:47:41.998Z",
+    "own": "2026-11-15T16:36:00.000Z"
+   }
+  },
+  "401873057|albertregis|out": {
+   "game": "401873057",
+   "start": "2026-11-15T18:00Z",
+   "team": "30",
+   "name": "Albert Regis",
+   "status": "out",
+   "athlete": "4612298",
+   "espn": {
+    "seen": "2026-11-15T16:47:41.998Z",
+    "own": "2026-11-15T16:36:00.000Z"
+   }
+  },
+  "401873054|jelaniwoods|out": {
+   "game": "401873054",
+   "start": "2026-11-15T18:00Z",
+   "team": "20",
+   "name": "Jelani Woods",
+   "status": "out",
+   "athlete": "4241410",
+   "espn": {
+    "seen": "2026-11-15T16:47:41.998Z",
+    "own": "2026-11-15T16:36:00.000Z"
+   }
+  },
+  "401873054|natelynn|out": {
+   "game": "401873054",
+   "start": "2026-11-15T18:00Z",
+   "team": "20",
+   "name": "Nate Lynn",
+   "status": "out",
+   "athlete": "4574142",
+   "espn": {
+    "seen": "2026-11-15T16:47:41.998Z",
+    "own": "2026-11-15T16:36:00.000Z"
+   }
+  },
+  "401873054|timpatrick|out": {
+   "game": "401873054",
+   "start": "2026-11-15T18:00Z",
+   "team": "20",
+   "name": "Tim Patrick",
+   "status": "out",
+   "athlete": "3134353",
+   "espn": {
+    "seen": "2026-11-15T16:47:41.998Z",
+    "own": "2026-11-15T16:36:00.000Z"
+   }
   }
  }
 }
