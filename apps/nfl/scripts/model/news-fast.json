@@ -1,12 +1,12 @@
 {
  "sport": "nfl",
  "cursor": {
-  "adamscheftermirror.bsky.social": "2026-11-15T12:20:47.877Z",
+  "adamscheftermirror.bsky.social": "2026-11-15T12:50:47.751Z",
   "rapsheet.bsky.social": "2026-11-15T04:31:56.134Z",
   "nflnewsreposterbot.bsky.social": "2026-11-13T18:01:20.702Z",
   "insidenflnews.bsky.social": "2026-11-15T12:15:28.589Z",
   "nflnewsposter.bsky.social": "2026-11-14T18:21:26.376Z",
-  "rotoworld-fb.bsky.social": "2026-11-15T12:31:46.000Z",
+  "rotoworld-fb.bsky.social": "2026-11-15T12:53:44.000Z",
   "rotowirenfl.bsky.social": "2026-11-15T12:14:43.000Z"
  },
  "claims": [
@@ -18274,6 +18274,58 @@
    "kind": "status",
    "confidence": 0.9,
    "text": "Repost by @AdamSchefter\n\n#Lions WR Amon-Ra St. Brown (ribs) is listed as questionable and expected to play in Detroit’s game in Germany.\n\nClick to see original repost"
+  },
+  {
+   "id": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3n2dznvoaoc2b|garrettwilson|active|status",
+   "at": "2026-11-15T12:36:06.000Z",
+   "seen": "2026-11-15T12:54:35.762Z",
+   "handle": "rotoworld-fb.bsky.social",
+   "post": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3n2dznvoaoc2b",
+   "player": "Garrett Wilson",
+   "team": "NYJ",
+   "status": "active",
+   "kind": "status",
+   "confidence": 0.9,
+   "text": "Garrett Wilson cleared from concussion protocol"
+  },
+  {
+   "id": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3n2dzvykbrn2t|willanderson|active|status",
+   "at": "2026-11-15T12:40:37.000Z",
+   "seen": "2026-11-15T12:54:35.762Z",
+   "handle": "rotoworld-fb.bsky.social",
+   "post": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3n2dzvykbrn2t",
+   "player": "Will Anderson",
+   "team": "HOU",
+   "status": "active",
+   "kind": "status",
+   "confidence": 0.85,
+   "text": "Will Anderson (ankle) expected to play vs. Browns"
+  },
+  {
+   "id": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3n2e267fv3i2p|jordanaddison|questionable|status",
+   "at": "2026-11-15T12:45:13.000Z",
+   "seen": "2026-11-15T12:54:35.762Z",
+   "handle": "rotoworld-fb.bsky.social",
+   "post": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3n2e267fv3i2p",
+   "player": "Jordan Addison",
+   "team": "MIN",
+   "status": "questionable",
+   "kind": "status",
+   "confidence": 0.9,
+   "text": "Jordan Addison (thumb) remains a game-time call"
+  },
+  {
+   "id": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3n2e2nge7ty2p|jaelanphillips|active|status",
+   "at": "2026-11-15T12:53:44.000Z",
+   "seen": "2026-11-15T12:54:35.762Z",
+   "handle": "rotoworld-fb.bsky.social",
+   "post": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3n2e2nge7ty2p",
+   "player": "Jaelan Phillips",
+   "team": "MIA",
+   "status": "active",
+   "kind": "status",
+   "confidence": 0.85,
+   "text": "Rap: Jaelan Phillips (hamstring) expected to play"
   }
  ]
 }
