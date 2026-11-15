@@ -1,7 +1,7 @@
 {
  "sport": "nfl",
  "cursor": {
-  "adamscheftermirror.bsky.social": "2026-11-15T00:50:44.063Z",
+  "adamscheftermirror.bsky.social": "2026-11-15T02:05:44.888Z",
   "rapsheet.bsky.social": "2026-11-14T21:13:21.040Z",
   "nflnewsreposterbot.bsky.social": "2026-11-13T18:01:20.702Z",
   "insidenflnews.bsky.social": "2026-11-14T21:06:00.144Z",
@@ -18235,6 +18235,19 @@
    "kind": "status",
    "confidence": 0.9,
    "text": "Chargers are listing WR Ladd McConkey as questionable for Monday night’s game at Baltimore while WR Tre Harris is off the injury report.\n\nOriginal post"
+  },
+  {
+   "id": "at://did:plc:qre6zxbmr3ixhdmgsgdretb5/app.bsky.feed.post/3n2cwgq3fdi22|treveyonhenderson|out|status",
+   "at": "2026-11-15T02:05:44.888Z",
+   "seen": "2026-11-15T02:14:53.019Z",
+   "handle": "adamscheftermirror.bsky.social",
+   "post": "at://did:plc:qre6zxbmr3ixhdmgsgdretb5/app.bsky.feed.post/3n2cwgq3fdi22",
+   "player": "TreVeyon Henderson",
+   "team": "NE",
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.95,
+   "text": "More about the Patriots placing RB TreVeyon Henderson on injured reserve with a still unexplained illness, via @MikeReiss:\n\nOriginal post"
   }
  ]
 }
