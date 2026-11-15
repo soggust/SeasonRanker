@@ -20592,6 +20592,66 @@
     "seen": "2026-11-15T02:36:33.421Z",
     "own": "2026-09-21T19:50:00.000Z"
    }
+  },
+  "401909985|danielgafford|out": {
+   "game": "401909985",
+   "start": "2026-11-15T18:00Z",
+   "team": "20",
+   "name": "Daniel Gafford",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-15T02:38:07.181Z",
+    "own": "2026-11-15T02:31:02.000Z",
+    "why": "@rotowirenba.bsky.social: Daniel Gafford: Won't return Saturday \n\n https://www.r"
+   }
+  },
+  "401909988|danielgafford|out": {
+   "game": "401909988",
+   "start": "2026-11-15T22:00Z",
+   "team": "26",
+   "name": "Daniel Gafford",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-15T02:38:07.181Z",
+    "own": "2026-11-15T02:31:02.000Z",
+    "why": "@rotowirenba.bsky.social: Daniel Gafford: Won't return Saturday \n\n https://www.r"
+   }
+  },
+  "401909990|danielgafford|out": {
+   "game": "401909990",
+   "start": "2026-11-15T23:00Z",
+   "team": "28",
+   "name": "Daniel Gafford",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-15T02:38:07.181Z",
+    "own": "2026-11-15T02:31:02.000Z",
+    "why": "@rotowirenba.bsky.social: Daniel Gafford: Won't return Saturday \n\n https://www.r"
+   }
+  },
+  "401909991|danielgafford|out": {
+   "game": "401909991",
+   "start": "2026-11-16T00:00Z",
+   "team": "27",
+   "name": "Daniel Gafford",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-15T02:38:07.181Z",
+    "own": "2026-11-15T02:31:02.000Z",
+    "why": "@rotowirenba.bsky.social: Daniel Gafford: Won't return Saturday \n\n https://www.r"
+   }
+  },
+  "401909992|danielgafford|out": {
+   "game": "401909992",
+   "start": "2026-11-16T01:00Z",
+   "team": "15",
+   "name": "Daniel Gafford",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-15T02:38:07.181Z",
+    "own": "2026-11-15T02:31:02.000Z",
+    "why": "@rotowirenba.bsky.social: Daniel Gafford: Won't return Saturday \n\n https://www.r"
+   }
   }
  }
 }
