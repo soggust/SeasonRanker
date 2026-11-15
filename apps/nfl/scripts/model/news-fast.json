@@ -4,10 +4,10 @@
   "adamscheftermirror.bsky.social": "2026-11-15T22:45:48.781Z",
   "rapsheet.bsky.social": "2026-11-15T21:23:16.739Z",
   "nflnewsreposterbot.bsky.social": "2026-11-15T18:58:56.281Z",
-  "insidenflnews.bsky.social": "2026-11-15T23:02:39.301Z",
-  "nflnewsposter.bsky.social": "2026-11-15T23:07:49.081Z",
-  "rotoworld-fb.bsky.social": "2026-11-15T23:00:09.000Z",
-  "rotowirenfl.bsky.social": "2026-11-15T23:02:23.000Z"
+  "insidenflnews.bsky.social": "2026-11-15T23:16:53.290Z",
+  "nflnewsposter.bsky.social": "2026-11-15T23:15:45.741Z",
+  "rotoworld-fb.bsky.social": "2026-11-15T23:22:26.000Z",
+  "rotowirenfl.bsky.social": "2026-11-15T23:18:16.000Z"
  },
  "claims": [
   {
@@ -19379,6 +19379,19 @@
    "kind": "status",
    "confidence": 0.95,
    "text": "Raiders now have ruled out TE Brock Bowers due to his ankle injury.\n\nOriginal post"
+  },
+  {
+   "id": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3n2f5k6ji5c2g|woodymarks|doubtful|status",
+   "at": "2026-11-15T23:18:16.000Z",
+   "seen": "2026-11-15T23:22:32.885Z",
+   "handle": "rotowirenfl.bsky.social",
+   "post": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3n2f5k6ji5c2g",
+   "player": "Woody Marks",
+   "team": null,
+   "status": "doubtful",
+   "kind": "status",
+   "confidence": 0.7,
+   "text": "Woody Marks: Not likely to be cleared for Thursday's game \n\n https://www.rotowire.com/football/player/woody-marks-18449"
   }
  ]
 }

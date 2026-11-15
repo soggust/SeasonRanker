@@ -22304,6 +22304,270 @@
     "own": "2026-11-15T21:39:25.000Z",
     "why": "@rotowirenba.bsky.social: Sam Merrill: Missing sixth straight game Monday \n\n htt"
    }
+  },
+  "401909991|pellelarsson|q": {
+   "game": "401909991",
+   "start": "2026-11-16T00:00Z",
+   "team": "27",
+   "name": "Pelle Larsson",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-11-15T23:10:51.014Z",
+    "own": "2026-11-15T22:47:47.000Z",
+    "why": "@rotowirenba.bsky.social: Pelle Larsson: Questionable for Monday \n\n https://www."
+   }
+  },
+  "401909991|peytonwatson|q": {
+   "game": "401909991",
+   "start": "2026-11-16T00:00Z",
+   "team": "27",
+   "name": "Peyton Watson",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-11-15T23:10:51.014Z",
+    "own": "2026-11-15T22:04:18.000Z",
+    "why": "@rotowirenba.bsky.social: Peyton Watson: Questionable for Monday \n\n https://www."
+   }
+  },
+  "401909991|zachedey|q": {
+   "game": "401909991",
+   "start": "2026-11-16T00:00Z",
+   "team": "27",
+   "name": "Zach Edey",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-11-15T23:10:51.014Z",
+    "own": "2026-11-15T22:11:48.000Z",
+    "why": "@rotowirenba.bsky.social: Zach Edey: Questionable for Monday \n\n https://www.roto"
+   }
+  },
+  "401909991|evanmobley|out": {
+   "game": "401909991",
+   "start": "2026-11-16T00:00Z",
+   "team": "27",
+   "name": "Evan Mobley",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-15T23:10:51.014Z",
+    "own": "2026-11-15T21:58:39.000Z",
+    "why": "@rotowirenba.bsky.social: Evan Mobley: Ruled out for Monday \n\n https://www.rotow"
+   }
+  },
+  "401909991|jaylontyson|q": {
+   "game": "401909991",
+   "start": "2026-11-16T00:00Z",
+   "team": "27",
+   "name": "Jaylon Tyson",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-11-15T23:10:51.014Z",
+    "own": "2026-11-15T22:09:17.000Z",
+    "why": "@rotowirenba.bsky.social: Jaylon Tyson: Questionable for Monday \n\n https://www.r"
+   }
+  },
+  "401909991|treymurphy|out": {
+   "game": "401909991",
+   "start": "2026-11-16T00:00Z",
+   "team": "27",
+   "name": "Trey Murphy",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-15T23:10:51.014Z",
+    "own": "2026-11-15T22:57:25.000Z",
+    "why": "@rotowirenba.bsky.social: Trey Murphy: Won't play Monday \n\n https://www.rotowire"
+   }
+  },
+  "401909991|bennedictmathurin|out": {
+   "game": "401909991",
+   "start": "2026-11-16T00:00Z",
+   "team": "27",
+   "name": "Bennedict Mathurin",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-15T23:10:51.014Z",
+    "own": "2026-11-15T23:06:36.000Z",
+    "why": "@rotowirenba.bsky.social: Bennedict Mathurin: Out again vs. Warriors \n\n https://"
+   }
+  },
+  "401909992|peytonwatson|q": {
+   "game": "401909992",
+   "start": "2026-11-16T01:00Z",
+   "team": "15",
+   "name": "Peyton Watson",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-11-15T23:10:51.014Z",
+    "own": "2026-11-15T22:04:18.000Z",
+    "why": "@rotowirenba.bsky.social: Peyton Watson: Questionable for Monday \n\n https://www."
+   }
+  },
+  "401909992|pellelarsson|q": {
+   "game": "401909992",
+   "start": "2026-11-16T01:00Z",
+   "team": "15",
+   "name": "Pelle Larsson",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-11-15T23:10:51.014Z",
+    "own": "2026-11-15T22:47:47.000Z",
+    "why": "@rotowirenba.bsky.social: Pelle Larsson: Questionable for Monday \n\n https://www."
+   }
+  },
+  "401909992|zachedey|q": {
+   "game": "401909992",
+   "start": "2026-11-16T01:00Z",
+   "team": "15",
+   "name": "Zach Edey",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-11-15T23:10:51.014Z",
+    "own": "2026-11-15T22:11:48.000Z",
+    "why": "@rotowirenba.bsky.social: Zach Edey: Questionable for Monday \n\n https://www.roto"
+   }
+  },
+  "401909992|evanmobley|out": {
+   "game": "401909992",
+   "start": "2026-11-16T01:00Z",
+   "team": "15",
+   "name": "Evan Mobley",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-15T23:10:51.014Z",
+    "own": "2026-11-15T21:58:39.000Z",
+    "why": "@rotowirenba.bsky.social: Evan Mobley: Ruled out for Monday \n\n https://www.rotow"
+   }
+  },
+  "401909992|jaylontyson|q": {
+   "game": "401909992",
+   "start": "2026-11-16T01:00Z",
+   "team": "15",
+   "name": "Jaylon Tyson",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-11-15T23:10:51.014Z",
+    "own": "2026-11-15T22:09:17.000Z",
+    "why": "@rotowirenba.bsky.social: Jaylon Tyson: Questionable for Monday \n\n https://www.r"
+   }
+  },
+  "401909992|treymurphy|out": {
+   "game": "401909992",
+   "start": "2026-11-16T01:00Z",
+   "team": "15",
+   "name": "Trey Murphy",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-15T23:10:51.014Z",
+    "own": "2026-11-15T22:57:25.000Z",
+    "why": "@rotowirenba.bsky.social: Trey Murphy: Won't play Monday \n\n https://www.rotowire"
+   }
+  },
+  "401909992|bennedictmathurin|out": {
+   "game": "401909992",
+   "start": "2026-11-16T01:00Z",
+   "team": "15",
+   "name": "Bennedict Mathurin",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-15T23:10:51.014Z",
+    "own": "2026-11-15T23:06:36.000Z",
+    "why": "@rotowirenba.bsky.social: Bennedict Mathurin: Out again vs. Warriors \n\n https://"
+   }
+  },
+  "401909993|peytonwatson|q": {
+   "game": "401909993",
+   "start": "2026-11-16T02:00Z",
+   "team": "23",
+   "name": "Peyton Watson",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-11-15T23:10:51.014Z",
+    "own": "2026-11-15T22:04:18.000Z",
+    "why": "@rotowirenba.bsky.social: Peyton Watson: Questionable for Monday \n\n https://www."
+   }
+  },
+  "401909993|pellelarsson|q": {
+   "game": "401909993",
+   "start": "2026-11-16T02:00Z",
+   "team": "23",
+   "name": "Pelle Larsson",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-11-15T23:10:51.014Z",
+    "own": "2026-11-15T22:47:47.000Z",
+    "why": "@rotowirenba.bsky.social: Pelle Larsson: Questionable for Monday \n\n https://www."
+   }
+  },
+  "401909993|zachedey|q": {
+   "game": "401909993",
+   "start": "2026-11-16T02:00Z",
+   "team": "23",
+   "name": "Zach Edey",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-11-15T23:10:51.014Z",
+    "own": "2026-11-15T22:11:48.000Z",
+    "why": "@rotowirenba.bsky.social: Zach Edey: Questionable for Monday \n\n https://www.roto"
+   }
+  },
+  "401909993|evanmobley|out": {
+   "game": "401909993",
+   "start": "2026-11-16T02:00Z",
+   "team": "23",
+   "name": "Evan Mobley",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-15T23:10:51.014Z",
+    "own": "2026-11-15T21:58:39.000Z",
+    "why": "@rotowirenba.bsky.social: Evan Mobley: Ruled out for Monday \n\n https://www.rotow"
+   }
+  },
+  "401909993|jaylontyson|q": {
+   "game": "401909993",
+   "start": "2026-11-16T02:00Z",
+   "team": "23",
+   "name": "Jaylon Tyson",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-11-15T23:10:51.014Z",
+    "own": "2026-11-15T22:09:17.000Z",
+    "why": "@rotowirenba.bsky.social: Jaylon Tyson: Questionable for Monday \n\n https://www.r"
+   }
+  },
+  "401909993|tyjerome|out": {
+   "game": "401909993",
+   "start": "2026-11-16T02:00Z",
+   "team": "23",
+   "name": "Ty Jerome",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-15T23:10:51.014Z",
+    "own": "2026-11-15T22:13:43.000Z",
+    "why": "@rotowirenba.bsky.social: Ty Jerome: Listed out for Monday \n\n https://www.rotowi"
+   }
+  },
+  "401909993|treymurphy|out": {
+   "game": "401909993",
+   "start": "2026-11-16T02:00Z",
+   "team": "23",
+   "name": "Trey Murphy",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-15T23:10:51.014Z",
+    "own": "2026-11-15T22:57:25.000Z",
+    "why": "@rotowirenba.bsky.social: Trey Murphy: Won't play Monday \n\n https://www.rotowire"
+   }
+  },
+  "401909993|bennedictmathurin|out": {
+   "game": "401909993",
+   "start": "2026-11-16T02:00Z",
+   "team": "23",
+   "name": "Bennedict Mathurin",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-15T23:10:51.014Z",
+    "own": "2026-11-15T23:06:36.000Z",
+    "why": "@rotowirenba.bsky.social: Bennedict Mathurin: Out again vs. Warriors \n\n https://"
+   }
   }
  }
 }

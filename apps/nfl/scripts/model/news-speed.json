@@ -21905,6 +21905,18 @@
     "own": "2026-11-15T20:26:49.409Z",
     "why": "@nflnewsposter.bsky.social: [Rosenblatt] Geno Smith (ankle) is questionable to r"
    }
+  },
+  "401873066|woodymarks|out": {
+   "game": "401873066",
+   "start": "2026-11-20T01:15Z",
+   "team": "34",
+   "name": "Woody Marks",
+   "status": "out",
+   "athlete": "4429059",
+   "espn": {
+    "seen": "2026-11-15T23:20:27.576Z",
+    "own": "2026-11-15T23:07:00.000Z"
+   }
   }
  }
 }
