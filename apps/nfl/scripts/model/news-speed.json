@@ -21170,6 +21170,90 @@
     "seen": "2026-11-15T16:50:39.770Z",
     "own": "2026-11-15T16:36:00.000Z"
    }
+  },
+  "401873059|caedanwallace|out": {
+   "game": "401873059",
+   "start": "2026-11-15T18:00Z",
+   "team": "15",
+   "name": "Caedan Wallace",
+   "status": "out",
+   "athlete": "4426446",
+   "espn": {
+    "seen": "2026-11-15T16:53:36.451Z",
+    "own": "2026-11-15T16:36:00.000Z"
+   }
+  },
+  "401873059|justinjoly|out": {
+   "game": "401873059",
+   "start": "2026-11-15T18:00Z",
+   "team": "15",
+   "name": "Justin Joly",
+   "status": "out",
+   "athlete": "4912052",
+   "espn": {
+    "seen": "2026-11-15T16:53:36.451Z",
+    "own": "2026-11-15T16:36:00.000Z"
+   }
+  },
+  "401873059|marcellasdial|out": {
+   "game": "401873059",
+   "start": "2026-11-15T18:00Z",
+   "team": "15",
+   "name": "Marcellas Dial Jr.",
+   "status": "out",
+   "athlete": "4875079",
+   "espn": {
+    "seen": "2026-11-15T16:53:36.451Z",
+    "own": "2026-11-15T16:36:00.000Z"
+   }
+  },
+  "401873055|samhecht|out": {
+   "game": "401873055",
+   "start": "2026-11-15T18:00Z",
+   "team": "29",
+   "name": "Sam Hecht",
+   "status": "out",
+   "athlete": "4874515",
+   "espn": {
+    "seen": "2026-11-15T16:53:36.451Z",
+    "own": "2026-11-15T16:38:00.000Z"
+   }
+  },
+  "401873055|haynesking|out": {
+   "game": "401873055",
+   "start": "2026-11-15T18:00Z",
+   "team": "29",
+   "name": "Haynes King",
+   "status": "out",
+   "athlete": "4428993",
+   "espn": {
+    "seen": "2026-11-15T16:53:36.451Z",
+    "own": "2026-11-15T16:38:00.000Z"
+   }
+  },
+  "401873055|ajdillon|out": {
+   "game": "401873055",
+   "start": "2026-11-15T18:00Z",
+   "team": "29",
+   "name": "AJ Dillon",
+   "status": "out",
+   "athlete": "4239934",
+   "espn": {
+    "seen": "2026-11-15T16:53:36.451Z",
+    "own": "2026-11-15T16:38:00.000Z"
+   }
+  },
+  "401873055|terahedwards|out": {
+   "game": "401873055",
+   "start": "2026-11-15T18:00Z",
+   "team": "29",
+   "name": "TeRah Edwards",
+   "status": "out",
+   "athlete": "4431077",
+   "espn": {
+    "seen": "2026-11-15T16:53:36.451Z",
+    "own": "2026-11-15T16:38:00.000Z"
+   }
   }
  }
 }
