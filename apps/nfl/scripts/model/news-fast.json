@@ -1,28 +1,15 @@
 {
  "sport": "nfl",
  "cursor": {
-  "adamscheftermirror.bsky.social": "2026-11-15T17:40:49.427Z",
+  "adamscheftermirror.bsky.social": "2026-11-15T17:55:49.698Z",
   "rapsheet.bsky.social": "2026-11-15T17:03:26.715Z",
   "nflnewsreposterbot.bsky.social": "2026-11-13T18:01:20.702Z",
-  "insidenflnews.bsky.social": "2026-11-15T17:13:57.769Z",
+  "insidenflnews.bsky.social": "2026-11-15T17:56:52.685Z",
   "nflnewsposter.bsky.social": "2026-11-15T17:17:12.290Z",
   "rotoworld-fb.bsky.social": "2026-11-15T17:13:46.000Z",
-  "rotowirenfl.bsky.social": "2026-11-15T17:34:12.000Z"
+  "rotowirenfl.bsky.social": "2026-11-15T17:54:58.000Z"
  },
  "claims": [
-  {
-   "id": "at://did:plc:mbr4badgf6yu56mquzackzew/app.bsky.feed.post/3mypr7qd7m22g|christianmccaffrey|questionable|status",
-   "at": "2026-10-25T17:46:34.985Z",
-   "seen": "2026-10-26T05:03:40.538Z",
-   "handle": "insidenflnews.bsky.social",
-   "post": "at://did:plc:mbr4badgf6yu56mquzackzew/app.bsky.feed.post/3mypr7qd7m22g",
-   "player": "Christian McCaffrey",
-   "team": "SF",
-   "status": "questionable",
-   "kind": "status",
-   "confidence": 0.85,
-   "text": "Status alert: Christian McCaffrey (thigh) questionable to return Sunday, per the broadcast."
-  },
   {
    "id": "at://did:plc:mbr4badgf6yu56mquzackzew/app.bsky.feed.post/3mypsx7hhwk2g|tyronetracy|questionable|status",
    "at": "2026-10-25T18:17:36.347Z",
