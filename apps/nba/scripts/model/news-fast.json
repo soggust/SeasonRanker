@@ -1,7 +1,7 @@
 {
  "sport": "nba",
  "cursor": {
-  "rotowirenba.bsky.social": "2026-11-15T00:44:23.000Z",
+  "rotowirenba.bsky.social": "2026-11-15T01:12:54.000Z",
   "insidenbanews.bsky.social": "2026-11-13T20:00:09.852Z",
   "shamsbot.bsky.social": "2026-11-13T20:16:26.000Z"
  },
@@ -10600,6 +10600,71 @@
    "kind": "starting",
    "confidence": 0.9,
    "text": "Zach Collins: Enters starting lineup Saturday \n\n https://www.rotowire.com/basketball/player/zach-collins-4162"
+  },
+  {
+   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3n2csn72jjz2k|preciousachiuwa|questionable|status",
+   "at": "2026-11-15T00:57:46.000Z",
+   "seen": "2026-11-15T01:13:40.354Z",
+   "handle": "rotowirenba.bsky.social",
+   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3n2csn72jjz2k",
+   "player": "Precious Achiuwa",
+   "team": null,
+   "status": "questionable",
+   "kind": "status",
+   "confidence": 0.9,
+   "text": "Precious Achiuwa: Questionable for Sunday \n\n https://www.rotowire.com/basketball/player/precious-achiuwa-5249"
+  },
+  {
+   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3n2csrijacs2r|keeganmurray|questionable|status",
+   "at": "2026-11-15T01:00:11.000Z",
+   "seen": "2026-11-15T01:13:40.354Z",
+   "handle": "rotowirenba.bsky.social",
+   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3n2csrijacs2r",
+   "player": "Keegan Murray",
+   "team": null,
+   "status": "questionable",
+   "kind": "status",
+   "confidence": 0.9,
+   "text": "Keegan Murray: Questionable to play Sunday \n\n https://www.rotowire.com/basketball/player/keegan-murray-5699"
+  },
+  {
+   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3n2ct45fxf22y|brandonmiller|active|return",
+   "at": "2026-11-15T01:06:08.000Z",
+   "seen": "2026-11-15T01:13:40.354Z",
+   "handle": "rotowirenba.bsky.social",
+   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3n2ct45fxf22y",
+   "player": "Brandon Miller",
+   "team": null,
+   "status": "active",
+   "kind": "return",
+   "confidence": 0.85,
+   "text": "Brandon Miller: Expected to return Sunday \n\n https://www.rotowire.com/basketball/player/brandon-miller-5896"
+  },
+  {
+   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3n2ctei3zch2q|ajaymitchell|questionable|status",
+   "at": "2026-11-15T01:10:48.000Z",
+   "seen": "2026-11-15T01:13:40.354Z",
+   "handle": "rotowirenba.bsky.social",
+   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3n2ctei3zch2q",
+   "player": "Ajay Mitchell",
+   "team": null,
+   "status": "questionable",
+   "kind": "status",
+   "confidence": 0.9,
+   "text": "Ajay Mitchell: Questionable for Sunday \n\n https://www.rotowire.com/basketball/player/ajay-mitchell-6289"
+  },
+  {
+   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3n2ctiab65l2y|andrewnembhard|questionable|status",
+   "at": "2026-11-15T01:12:54.000Z",
+   "seen": "2026-11-15T01:13:40.354Z",
+   "handle": "rotowirenba.bsky.social",
+   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3n2ctiab65l2y",
+   "player": "Andrew Nembhard",
+   "team": null,
+   "status": "questionable",
+   "kind": "status",
+   "confidence": 0.9,
+   "text": "Andrew Nembhard: Questionable to play Sunday \n\n https://www.rotowire.com/basketball/player/andrew-nembhard-5679"
   }
  ]
 }
