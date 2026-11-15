@@ -1,7 +1,7 @@
 {
  "sport": "nba",
  "cursor": {
-  "rotowirenba.bsky.social": "2026-11-14T23:28:08.000Z",
+  "rotowirenba.bsky.social": "2026-11-15T00:17:51.000Z",
   "insidenbanews.bsky.social": "2026-11-13T20:00:09.852Z",
   "shamsbot.bsky.social": "2026-11-13T20:16:26.000Z"
  },
@@ -10457,6 +10457,84 @@
    "kind": "status",
    "confidence": 0.85,
    "text": "Nolan Traore: Cleared to play \n\n https://www.rotowire.com/basketball/player/nolan-traore-6587"
+  },
+  {
+   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3n2coileq7223|normanpowell|active|status",
+   "at": "2026-11-14T23:43:37.000Z",
+   "seen": "2026-11-15T00:21:01.317Z",
+   "handle": "rotowirenba.bsky.social",
+   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3n2coileq7223",
+   "player": "Norman Powell",
+   "team": null,
+   "status": "active",
+   "kind": "status",
+   "confidence": 0.9,
+   "text": "Norman Powell: Will play Saturday \n\n https://www.rotowire.com/basketball/player/norman-powell-3726"
+  },
+  {
+   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3n2cptfzpxb2t|jaxsonhayes|out|status",
+   "at": "2026-11-15T00:07:34.000Z",
+   "seen": "2026-11-15T00:21:01.317Z",
+   "handle": "rotowirenba.bsky.social",
+   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3n2cptfzpxb2t",
+   "player": "Jaxson Hayes",
+   "team": null,
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.9,
+   "text": "Jaxson Hayes: Ruled out for Sunday \n\n https://www.rotowire.com/basketball/player/jaxson-hayes-4771"
+  },
+  {
+   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3n2cpygkgyx2z|mariohezonja|none|starting",
+   "at": "2026-11-15T00:10:22.000Z",
+   "seen": "2026-11-15T00:21:01.317Z",
+   "handle": "rotowirenba.bsky.social",
+   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3n2cpygkgyx2z",
+   "player": "Mario Hezonja",
+   "team": null,
+   "status": "none",
+   "kind": "starting",
+   "confidence": 0.9,
+   "text": "Mario Hezonja: Starting Saturday \n\n https://www.rotowire.com/basketball/player/mario-hezonja-3578"
+  },
+  {
+   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3n2cq4hcrkq23|thomasbryant|none|starting",
+   "at": "2026-11-15T00:12:37.000Z",
+   "seen": "2026-11-15T00:21:01.317Z",
+   "handle": "rotowirenba.bsky.social",
+   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3n2cq4hcrkq23",
+   "player": "Thomas Bryant",
+   "team": null,
+   "status": "none",
+   "kind": "starting",
+   "confidence": 0.9,
+   "text": "Thomas Bryant: Starting Saturday \n\n https://www.rotowire.com/basketball/player/thomas-bryant-4155"
+  },
+  {
+   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3n2cqb2ez6c2z|michaelporter|out|status",
+   "at": "2026-11-15T00:15:11.000Z",
+   "seen": "2026-11-15T00:21:01.317Z",
+   "handle": "rotowirenba.bsky.social",
+   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3n2cqb2ez6c2z",
+   "player": "Michael Porter",
+   "team": null,
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.9,
+   "text": "Michael Porter: Ruled out Saturday \n\n https://www.rotowire.com/basketball/player/michael-porter-4375"
+  },
+  {
+   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3n2cqfs6brd23|austinreaves|out|status",
+   "at": "2026-11-15T00:17:51.000Z",
+   "seen": "2026-11-15T00:21:01.317Z",
+   "handle": "rotowirenba.bsky.social",
+   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3n2cqfs6brd23",
+   "player": "Austin Reaves",
+   "team": null,
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.9,
+   "text": "Austin Reaves: Ruled out for Sunday \n\n https://www.rotowire.com/basketball/player/austin-reaves-5334"
   }
  ]
 }

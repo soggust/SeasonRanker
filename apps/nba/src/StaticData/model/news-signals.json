@@ -3,16 +3,16 @@
  "days": 2,
  "signals": [
   {
-   "team": "10",
-   "abbr": "HOU",
-   "athlete": "2990992",
-   "player": "Marcus Smart",
-   "kind": "restriction",
+   "team": "18",
+   "abbr": "NY",
+   "athlete": "3062679",
+   "player": "Josh Hart",
+   "kind": "benched",
    "direction": "down",
-   "confidence": 0.9,
-   "headline": "Rockets' Marcus Smart suspended three games for punch",
-   "at": "2026-11-13T00:10:45.000Z"
+   "confidence": 0.6,
+   "headline": "Josh Hart searching for answers after zero-point outing in Knicks loss",
+   "at": "2026-11-14T17:06:59.000Z"
   }
  ],
- "at": "2026-11-14T06:35:24.857Z"
+ "at": "2026-11-15T00:21:01.317Z"
 }

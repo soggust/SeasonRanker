@@ -3,6 +3,105 @@
  "days": 2,
  "signals": [
   {
+   "team": "18",
+   "abbr": "NO",
+   "athlete": null,
+   "player": "Travis Etienne Jr.",
+   "kind": "return",
+   "direction": "up",
+   "confidence": 0.9,
+   "headline": "Saints RB Travis Etienne Jr. activated off IR for game vs. Panthers",
+   "at": "2026-11-14T22:13:44.000Z"
+  },
+  {
+   "team": "17",
+   "abbr": "NE",
+   "athlete": "4432710",
+   "player": "TreVeyon Henderson",
+   "kind": "return",
+   "direction": "down",
+   "confidence": 0.3,
+   "headline": "Patriots place RB TreVeyon Henderson on IR with still unexplained illness",
+   "at": "2026-11-14T22:02:00.000Z"
+  },
+  {
+   "team": "23",
+   "abbr": "PIT",
+   "athlete": "4682980",
+   "player": "Derrick Harmon",
+   "kind": "return",
+   "direction": "up",
+   "confidence": 0.9,
+   "headline": "Steelers activate DT Derrick Harmon from IR ahead of key Bengals clash",
+   "at": "2026-11-14T20:41:30.000Z"
+  },
+  {
+   "team": "29",
+   "abbr": "CAR",
+   "athlete": "4430034",
+   "player": "Xavier Legette",
+   "kind": "return",
+   "direction": "up",
+   "confidence": 0.9,
+   "headline": "Panthers WR Xavier Legette, out since Week 2 with knee injury, activated from IR",
+   "at": "2026-11-14T19:06:19.000Z"
+  },
+  {
+   "team": "13",
+   "abbr": "LV",
+   "athlete": "4837248",
+   "player": "Fernando Mendoza",
+   "kind": "starting",
+   "direction": "up",
+   "confidence": 0.9,
+   "headline": "Why the Raiders named Fernando Mendoza as the starter",
+   "at": "2026-11-14T11:00:00.000Z"
+  },
+  {
+   "team": "26",
+   "abbr": "SEA",
+   "athlete": "3924327",
+   "player": "Drew Lock",
+   "kind": "starting",
+   "direction": "up",
+   "confidence": 0.9,
+   "headline": "Seahawks are hurting with injuries, but two players will return vs. Raiders",
+   "at": "2026-11-14T04:01:15.000Z"
+  },
+  {
+   "team": "26",
+   "abbr": "SEA",
+   "athlete": "3912547",
+   "player": "Sam Darnold",
+   "kind": "benched",
+   "direction": "down",
+   "confidence": 0.9,
+   "headline": "Seahawks are hurting with injuries, but two players will return vs. Raiders",
+   "at": "2026-11-14T04:01:15.000Z"
+  },
+  {
+   "team": "26",
+   "abbr": "SEA",
+   "athlete": "3120358",
+   "player": "Uchenna Nwosu",
+   "kind": "return",
+   "direction": "up",
+   "confidence": 0.9,
+   "headline": "Seahawks are hurting with injuries, but two players will return vs. Raiders",
+   "at": "2026-11-14T04:01:15.000Z"
+  },
+  {
+   "team": "26",
+   "abbr": "SEA",
+   "athlete": "4032473",
+   "player": "Rashid Shaheed",
+   "kind": "return",
+   "direction": "up",
+   "confidence": 0.9,
+   "headline": "Seahawks are hurting with injuries, but two players will return vs. Raiders",
+   "at": "2026-11-14T04:01:15.000Z"
+  },
+  {
    "team": "16",
    "abbr": "MIN",
    "athlete": "14880",
@@ -25,5 +124,5 @@
    "at": "2026-11-13T11:00:10.000Z"
   }
  ],
- "at": "2026-11-14T02:05:24.740Z"
+ "at": "2026-11-15T00:21:01.317Z"
 }
