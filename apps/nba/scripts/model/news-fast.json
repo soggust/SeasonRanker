@@ -1,7 +1,7 @@
 {
  "sport": "nba",
  "cursor": {
-  "rotowirenba.bsky.social": "2026-11-15T01:12:54.000Z",
+  "rotowirenba.bsky.social": "2026-11-15T01:14:15.000Z",
   "insidenbanews.bsky.social": "2026-11-13T20:00:09.852Z",
   "shamsbot.bsky.social": "2026-11-13T20:16:26.000Z"
  },
@@ -10665,6 +10665,19 @@
    "kind": "status",
    "confidence": 0.9,
    "text": "Andrew Nembhard: Questionable to play Sunday \n\n https://www.rotowire.com/basketball/player/andrew-nembhard-5679"
+  },
+  {
+   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3n2ctkng5zx2q|jaylinwilliams|out|status",
+   "at": "2026-11-15T01:14:15.000Z",
+   "seen": "2026-11-15T01:51:40.075Z",
+   "handle": "rotowirenba.bsky.social",
+   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3n2ctkng5zx2q",
+   "player": "Jaylin Williams",
+   "team": null,
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.9,
+   "text": "Jaylin Williams: Won't play Sunday \n\n https://www.rotowire.com/basketball/player/jaylin-williams-5690"
   }
  ]
 }
