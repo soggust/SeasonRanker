@@ -21878,6 +21878,42 @@
     "own": "2026-11-15T17:23:11.000Z",
     "why": "@rotowirenba.bsky.social: Ryan Rollins: Questionable for Sunday \n\n https://www.r"
    }
+  },
+  "401909989|santialdama|q": {
+   "game": "401909989",
+   "start": "2026-11-15T23:00Z",
+   "team": "6",
+   "name": "Santi Aldama",
+   "status": "q",
+   "athlete": "4593125",
+   "espn": {
+    "seen": "2026-11-15T18:19:29.963Z",
+    "own": "2026-11-15T18:15:00.000Z"
+   }
+  },
+  "401909989|kyrieirving|q": {
+   "game": "401909989",
+   "start": "2026-11-15T23:00Z",
+   "team": "6",
+   "name": "Kyrie Irving",
+   "status": "q",
+   "athlete": "6442",
+   "espn": {
+    "seen": "2026-11-15T18:19:29.963Z",
+    "own": "2026-11-15T18:11:00.000Z"
+   }
+  },
+  "401909992|jocklandale|q": {
+   "game": "401909992",
+   "start": "2026-11-16T01:00Z",
+   "team": "1",
+   "name": "Jock Landale",
+   "status": "q",
+   "athlete": "3146557",
+   "espn": {
+    "seen": "2026-11-15T18:19:29.963Z",
+    "own": "2026-11-15T17:55:00.000Z"
+   }
   }
  }
 }
