@@ -1,28 +1,15 @@
 {
  "sport": "nfl",
  "cursor": {
-  "adamscheftermirror.bsky.social": "2026-11-15T21:30:46.358Z",
+  "adamscheftermirror.bsky.social": "2026-11-15T22:45:48.781Z",
   "rapsheet.bsky.social": "2026-11-15T21:23:16.739Z",
   "nflnewsreposterbot.bsky.social": "2026-11-15T18:58:56.281Z",
-  "insidenflnews.bsky.social": "2026-11-15T21:41:42.895Z",
-  "nflnewsposter.bsky.social": "2026-11-15T21:32:23.114Z",
-  "rotoworld-fb.bsky.social": "2026-11-15T21:44:25.000Z",
-  "rotowirenfl.bsky.social": "2026-11-15T21:37:50.000Z"
+  "insidenflnews.bsky.social": "2026-11-15T23:02:39.301Z",
+  "nflnewsposter.bsky.social": "2026-11-15T23:07:49.081Z",
+  "rotoworld-fb.bsky.social": "2026-11-15T23:00:09.000Z",
+  "rotowirenfl.bsky.social": "2026-11-15T23:02:23.000Z"
  },
  "claims": [
-  {
-   "id": "at://did:plc:fuqjc7x4gxvnwzksnlxwbe4x/app.bsky.feed.post/3myq7lj354kbc|seanrhyan|out|status",
-   "at": "2026-10-25T22:03:42.418Z",
-   "seen": "2026-10-26T05:03:40.538Z",
-   "handle": "nflnewsposter.bsky.social",
-   "post": "at://did:plc:fuqjc7x4gxvnwzksnlxwbe4x/app.bsky.feed.post/3myq7lj354kbc",
-   "player": "Sean Rhyan",
-   "team": "GB",
-   "status": "out",
-   "kind": "status",
-   "confidence": 0.95,
-   "text": "[Packers] C Sean Rhyan (ankle) has been ruled out. twitter.com/packers/stat..."
-  },
   {
    "id": "at://did:plc:qre6zxbmr3ixhdmgsgdretb5/app.bsky.feed.post/3myqgsywyzh2p|taylormoton|out|status",
    "at": "2026-10-26T00:13:10.048Z",
@@ -19327,6 +19314,71 @@
    "kind": "return",
    "confidence": 0.6,
    "text": "Status alert: Brock Bowers (ankle) has returned to Sunday's game."
+  },
+  {
+   "id": "at://did:plc:mbr4badgf6yu56mquzackzew/app.bsky.feed.post/3n2f35tiunk27|brockbowers|out|status",
+   "at": "2026-11-15T22:35:34.759Z",
+   "seen": "2026-11-15T23:10:51.014Z",
+   "handle": "insidenflnews.bsky.social",
+   "post": "at://did:plc:mbr4badgf6yu56mquzackzew/app.bsky.feed.post/3n2f35tiunk27",
+   "player": "Brock Bowers",
+   "team": "LV",
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.8,
+   "text": "🚨 Status alert: Brock Bowers (ankle) won't return."
+  },
+  {
+   "id": "at://did:plc:fuqjc7x4gxvnwzksnlxwbe4x/app.bsky.feed.post/3n2f35w4yzs2a|brockbowers|out|status",
+   "at": "2026-11-15T22:35:37.516Z",
+   "seen": "2026-11-15T23:10:51.014Z",
+   "handle": "nflnewsposter.bsky.social",
+   "post": "at://did:plc:fuqjc7x4gxvnwzksnlxwbe4x/app.bsky.feed.post/3n2f35w4yzs2a",
+   "player": "Brock Bowers",
+   "team": "LV",
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.9,
+   "text": "[Raiders] Injury Update: TE Brock Bowers (ankle) is OUT twitter.com/Raiders/stat..."
+  },
+  {
+   "id": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3n2f3k3fkke2b|brockbowers|out|status",
+   "at": "2026-11-15T22:42:25.000Z",
+   "seen": "2026-11-15T23:10:51.014Z",
+   "handle": "rotowirenfl.bsky.social",
+   "post": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3n2f3k3fkke2b",
+   "player": "Brock Bowers",
+   "team": "LV",
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.9,
+   "text": "Brock Bowers: Won't return to action Sunday \n\n https://www.rotowire.com/football/player/brock-bowers-17693"
+  },
+  {
+   "id": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3n2f3k3trd42a|brockbowers|out|status",
+   "at": "2026-11-15T22:42:26.000Z",
+   "seen": "2026-11-15T23:10:51.014Z",
+   "handle": "rotoworld-fb.bsky.social",
+   "post": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3n2f3k3trd42a",
+   "player": "Brock Bowers",
+   "team": "LV",
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.95,
+   "text": "Bowers (ankle) ruled out vs. Seahawks"
+  },
+  {
+   "id": "at://did:plc:qre6zxbmr3ixhdmgsgdretb5/app.bsky.feed.post/3n2f3q6ehuo2n|brockbowers|out|status",
+   "at": "2026-11-15T22:45:48.781Z",
+   "seen": "2026-11-15T23:10:51.014Z",
+   "handle": "adamscheftermirror.bsky.social",
+   "post": "at://did:plc:qre6zxbmr3ixhdmgsgdretb5/app.bsky.feed.post/3n2f3q6ehuo2n",
+   "player": "Brock Bowers",
+   "team": "LV",
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.95,
+   "text": "Raiders now have ruled out TE Brock Bowers due to his ankle injury.\n\nOriginal post"
   }
  ]
 }

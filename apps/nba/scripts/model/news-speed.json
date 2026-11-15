@@ -22220,6 +22220,90 @@
     "own": "2026-11-15T20:33:05.000Z",
     "why": "@rotowirenba.bsky.social: De'Aaron Fox: Sitting out Sunday \n\n https://www.rotowi"
    }
+  },
+  "401909991|trejohnson|out": {
+   "game": "401909991",
+   "start": "2026-11-16T00:00Z",
+   "team": "27",
+   "name": "Tre Johnson",
+   "status": "out",
+   "athlete": "5238230",
+   "espn": {
+    "seen": "2026-11-15T23:09:39.776Z",
+    "own": "2026-11-15T22:31:00.000Z"
+   }
+  },
+  "401909991|kyrieirving|out": {
+   "game": "401909991",
+   "start": "2026-11-16T00:00Z",
+   "team": "27",
+   "name": "Kyrie Irving",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-15T21:44:48.530Z",
+    "own": "2026-11-15T21:20:19.000Z",
+    "why": "@rotowirenba.bsky.social: Kyrie Irving: Won't play Sunday \n\n https://www.rotowir"
+   }
+  },
+  "401909991|sammerrill|out": {
+   "game": "401909991",
+   "start": "2026-11-16T00:00Z",
+   "team": "27",
+   "name": "Sam Merrill",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-15T21:44:48.530Z",
+    "own": "2026-11-15T21:39:25.000Z",
+    "why": "@rotowirenba.bsky.social: Sam Merrill: Missing sixth straight game Monday \n\n htt"
+   }
+  },
+  "401909992|kyrieirving|out": {
+   "game": "401909992",
+   "start": "2026-11-16T01:00Z",
+   "team": "15",
+   "name": "Kyrie Irving",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-15T21:44:48.530Z",
+    "own": "2026-11-15T21:20:19.000Z",
+    "why": "@rotowirenba.bsky.social: Kyrie Irving: Won't play Sunday \n\n https://www.rotowir"
+   }
+  },
+  "401909992|sammerrill|out": {
+   "game": "401909992",
+   "start": "2026-11-16T01:00Z",
+   "team": "15",
+   "name": "Sam Merrill",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-15T21:44:48.530Z",
+    "own": "2026-11-15T21:39:25.000Z",
+    "why": "@rotowirenba.bsky.social: Sam Merrill: Missing sixth straight game Monday \n\n htt"
+   }
+  },
+  "401909993|kyrieirving|out": {
+   "game": "401909993",
+   "start": "2026-11-16T02:00Z",
+   "team": "23",
+   "name": "Kyrie Irving",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-15T21:44:48.530Z",
+    "own": "2026-11-15T21:20:19.000Z",
+    "why": "@rotowirenba.bsky.social: Kyrie Irving: Won't play Sunday \n\n https://www.rotowir"
+   }
+  },
+  "401909993|sammerrill|out": {
+   "game": "401909993",
+   "start": "2026-11-16T02:00Z",
+   "team": "23",
+   "name": "Sam Merrill",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-15T21:44:48.530Z",
+    "own": "2026-11-15T21:39:25.000Z",
+    "why": "@rotowirenba.bsky.social: Sam Merrill: Missing sixth straight game Monday \n\n htt"
+   }
   }
  }
 }
