@@ -22184,6 +22184,42 @@
     "own": "2026-11-15T18:27:47.000Z",
     "why": "@rotowirenba.bsky.social: De'Aaron Fox: Now listed as questionable \n\n https://ww"
    }
+  },
+  "401909988|deaaronfox|out": {
+   "game": "401909988",
+   "start": "2026-11-15T22:00Z",
+   "team": "24",
+   "name": "De'Aaron Fox",
+   "status": "out",
+   "athlete": "4066259",
+   "espn": {
+    "seen": "2026-11-15T21:43:35.441Z",
+    "own": "2026-11-15T20:33:00.000Z"
+   }
+  },
+  "401909989|kyrieirving|out": {
+   "game": "401909989",
+   "start": "2026-11-15T23:00Z",
+   "team": "6",
+   "name": "Kyrie Irving",
+   "status": "out",
+   "athlete": "6442",
+   "espn": {
+    "seen": "2026-11-15T21:43:35.441Z",
+    "own": "2026-11-15T21:20:00.000Z"
+   }
+  },
+  "401909993|deaaronfox|out": {
+   "game": "401909993",
+   "start": "2026-11-16T02:00Z",
+   "team": "23",
+   "name": "De'Aaron Fox",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-15T20:37:51.964Z",
+    "own": "2026-11-15T20:33:05.000Z",
+    "why": "@rotowirenba.bsky.social: De'Aaron Fox: Sitting out Sunday \n\n https://www.rotowi"
+   }
   }
  }
 }

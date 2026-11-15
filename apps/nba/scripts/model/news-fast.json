@@ -1,63 +1,11 @@
 {
  "sport": "nba",
  "cursor": {
-  "rotowirenba.bsky.social": "2026-11-15T20:33:05.000Z",
+  "rotowirenba.bsky.social": "2026-11-15T21:43:11.000Z",
   "insidenbanews.bsky.social": "2026-11-13T20:00:09.852Z",
   "shamsbot.bsky.social": "2026-11-13T20:16:26.000Z"
  },
  "claims": [
-  {
-   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3myq3mmv4yl26|ajdybantsa|out|status",
-   "at": "2026-10-25T20:52:44.000Z",
-   "seen": "2026-10-26T05:03:40.538Z",
-   "handle": "rotowirenba.bsky.social",
-   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3myq3mmv4yl26",
-   "player": "AJ Dybantsa",
-   "team": null,
-   "status": "out",
-   "kind": "status",
-   "confidence": 0.9,
-   "text": "AJ Dybantsa: Ruled out for Monday \n\n https://www.rotowire.com/basketball/player/aj-dybantsa-6925"
-  },
-  {
-   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3myq3z5dbq426|cobywhite|out|status",
-   "at": "2026-10-25T20:59:44.000Z",
-   "seen": "2026-10-26T05:03:40.538Z",
-   "handle": "rotowirenba.bsky.social",
-   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3myq3z5dbq426",
-   "player": "Coby White",
-   "team": "CHI",
-   "status": "out",
-   "kind": "status",
-   "confidence": 0.6,
-   "text": "Coby White: Sidelined once again \n\n https://www.rotowire.com/basketball/player/coby-white-4801"
-  },
-  {
-   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3myq4igxzuz2z|vjedgecombe|questionable|status",
-   "at": "2026-10-25T21:08:18.000Z",
-   "seen": "2026-10-26T05:03:40.538Z",
-   "handle": "rotowirenba.bsky.social",
-   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3myq4igxzuz2z",
-   "player": "VJ Edgecombe",
-   "team": "PHI",
-   "status": "questionable",
-   "kind": "status",
-   "confidence": 0.9,
-   "text": "VJ Edgecombe: Questionable Sunday \n\n https://www.rotowire.com/basketball/player/vj-edgecombe-6550"
-  },
-  {
-   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3myq56a4g2r27|konknueppel|out|status",
-   "at": "2026-10-25T21:20:29.000Z",
-   "seen": "2026-10-26T05:03:40.538Z",
-   "handle": "rotowirenba.bsky.social",
-   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3myq56a4g2r27",
-   "player": "Kon Knueppel",
-   "team": "CHA",
-   "status": "out",
-   "kind": "status",
-   "confidence": 0.9,
-   "text": "Kon Knueppel: Ruled out for Monday \n\n https://www.rotowire.com/basketball/player/kon-knueppel-6540"
-  },
   {
    "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3myq7sdko6v2g|ausarthompson|out|status",
    "at": "2026-10-25T22:07:31.000Z",
@@ -10730,6 +10678,84 @@
    "kind": "status",
    "confidence": 0.8,
    "text": "De'Aaron Fox: Sitting out Sunday \n\n https://www.rotowire.com/basketball/player/deaaron-fox-4116"
+  },
+  {
+   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3n2ewcjittq2r|graysonallen|none|benched",
+   "at": "2026-11-15T21:08:43.000Z",
+   "seen": "2026-11-15T21:44:48.530Z",
+   "handle": "rotowirenba.bsky.social",
+   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3n2ewcjittq2r",
+   "player": "Grayson Allen",
+   "team": null,
+   "status": "none",
+   "kind": "benched",
+   "confidence": 0.9,
+   "text": "Grayson Allen: Not starting Sunday \n\n https://www.rotowire.com/basketball/player/grayson-allen-4454"
+  },
+  {
+   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3n2ewxbntnr2z|kyrieirving|out|status",
+   "at": "2026-11-15T21:20:19.000Z",
+   "seen": "2026-11-15T21:44:48.530Z",
+   "handle": "rotowirenba.bsky.social",
+   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3n2ewxbntnr2z",
+   "player": "Kyrie Irving",
+   "team": null,
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.9,
+   "text": "Kyrie Irving: Won't play Sunday \n\n https://www.rotowire.com/basketball/player/kyrie-irving-3186"
+  },
+  {
+   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3n2ex7ig2dx2b|maxchristie|out|status",
+   "at": "2026-11-15T21:24:55.000Z",
+   "seen": "2026-11-15T21:44:48.530Z",
+   "handle": "rotowirenba.bsky.social",
+   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3n2ex7ig2dx2b",
+   "player": "Max Christie",
+   "team": null,
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.95,
+   "text": "Max Christie: Ruled out again Sunday \n\n https://www.rotowire.com/basketball/player/max-christie-5723"
+  },
+  {
+   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3n2exskm5rj2r|nicclaxton|active|return",
+   "at": "2026-11-15T21:35:35.000Z",
+   "seen": "2026-11-15T21:44:48.530Z",
+   "handle": "rotowirenba.bsky.social",
+   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3n2exskm5rj2r",
+   "player": "Nic Claxton",
+   "team": null,
+   "status": "active",
+   "kind": "return",
+   "confidence": 0.9,
+   "text": "Nic Claxton: Returning Sunday \n\n https://www.rotowire.com/basketball/player/nic-claxton-4827"
+  },
+  {
+   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3n2exzfxmtv2y|sammerrill|out|status",
+   "at": "2026-11-15T21:39:25.000Z",
+   "seen": "2026-11-15T21:44:48.530Z",
+   "handle": "rotowirenba.bsky.social",
+   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3n2exzfxmtv2y",
+   "player": "Sam Merrill",
+   "team": null,
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.9,
+   "text": "Sam Merrill: Missing sixth straight game Monday \n\n https://www.rotowire.com/basketball/player/sam-merrill-5254"
+  },
+  {
+   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3n2eya666mw2t|scottiebarnes|active|status",
+   "at": "2026-11-15T21:43:11.000Z",
+   "seen": "2026-11-15T21:44:48.530Z",
+   "handle": "rotowirenba.bsky.social",
+   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3n2eya666mw2t",
+   "player": "Scottie Barnes",
+   "team": null,
+   "status": "active",
+   "kind": "status",
+   "confidence": 0.6,
+   "text": "Scottie Barnes: Upgraded to probable Sunday \n\n https://www.rotowire.com/basketball/player/scottie-barnes-5390"
   }
  ]
 }
