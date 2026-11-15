@@ -4,10 +4,10 @@
   "adamscheftermirror.bsky.social": "2026-11-15T15:25:48.341Z",
   "rapsheet.bsky.social": "2026-11-15T15:14:55.673Z",
   "nflnewsreposterbot.bsky.social": "2026-11-13T18:01:20.702Z",
-  "insidenflnews.bsky.social": "2026-11-15T15:25:37.152Z",
+  "insidenflnews.bsky.social": "2026-11-15T15:50:27.360Z",
   "nflnewsposter.bsky.social": "2026-11-14T18:21:26.376Z",
-  "rotoworld-fb.bsky.social": "2026-11-15T15:04:32.000Z",
-  "rotowirenfl.bsky.social": "2026-11-15T15:02:23.000Z"
+  "rotoworld-fb.bsky.social": "2026-11-15T15:53:15.000Z",
+  "rotowirenfl.bsky.social": "2026-11-15T15:43:52.000Z"
  },
  "claims": [
   {
@@ -18378,6 +18378,58 @@
    "kind": "status",
    "confidence": 0.9,
    "text": "Drake Maye (ankle) questionable to return vs. DET"
+  },
+  {
+   "id": "at://did:plc:mbr4badgf6yu56mquzackzew/app.bsky.feed.post/3n2edsljrbk2f|kennethwalker|out|status",
+   "at": "2026-11-15T15:37:41.236Z",
+   "seen": "2026-11-15T15:53:27.596Z",
+   "handle": "insidenflnews.bsky.social",
+   "post": "at://did:plc:mbr4badgf6yu56mquzackzew/app.bsky.feed.post/3n2edsljrbk2f",
+   "player": "Kenneth Walker",
+   "team": "KC",
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.9,
+   "text": "Rap: Chiefs believe Kenneth Walker (groin) will be able to play next week as of now.\n\nHe's out for Week 10."
+  },
+  {
+   "id": "at://did:plc:mbr4badgf6yu56mquzackzew/app.bsky.feed.post/3n2edtnftpc2f|drakemaye|out|status",
+   "at": "2026-11-15T15:38:16.762Z",
+   "seen": "2026-11-15T15:53:27.596Z",
+   "handle": "insidenflnews.bsky.social",
+   "post": "at://did:plc:mbr4badgf6yu56mquzackzew/app.bsky.feed.post/3n2edtnftpc2f",
+   "player": "Drake Maye",
+   "team": "NE",
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.8,
+   "text": "Status alert: Drake Maye (ankle) won't return."
+  },
+  {
+   "id": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3n2ee5nyn4o2v|drakemaye|out|status",
+   "at": "2026-11-15T15:43:52.000Z",
+   "seen": "2026-11-15T15:53:27.596Z",
+   "handle": "rotowirenfl.bsky.social",
+   "post": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3n2ee5nyn4o2v",
+   "player": "Drake Maye",
+   "team": "NE",
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.85,
+   "text": "Drake Maye: Won't return Sunday \n\n https://www.rotowire.com/football/player/drake-maye-17673"
+  },
+  {
+   "id": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3n2eeoglx242m|drakemaye|out|status",
+   "at": "2026-11-15T15:53:15.000Z",
+   "seen": "2026-11-15T15:53:27.596Z",
+   "handle": "rotoworld-fb.bsky.social",
+   "post": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3n2eeoglx242m",
+   "player": "Drake Maye",
+   "team": "NE",
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.75,
+   "text": "Drake Maye (ankle) done for the day vs. Detroit"
   }
  ]
 }
