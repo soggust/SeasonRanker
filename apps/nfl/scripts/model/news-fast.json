@@ -1,13 +1,13 @@
 {
  "sport": "nfl",
  "cursor": {
-  "adamscheftermirror.bsky.social": "2026-11-15T17:10:49.116Z",
+  "adamscheftermirror.bsky.social": "2026-11-15T17:40:49.427Z",
   "rapsheet.bsky.social": "2026-11-15T17:03:26.715Z",
   "nflnewsreposterbot.bsky.social": "2026-11-13T18:01:20.702Z",
   "insidenflnews.bsky.social": "2026-11-15T17:13:57.769Z",
   "nflnewsposter.bsky.social": "2026-11-15T17:17:12.290Z",
   "rotoworld-fb.bsky.social": "2026-11-15T17:13:46.000Z",
-  "rotowirenfl.bsky.social": "2026-11-15T17:21:51.000Z"
+  "rotowirenfl.bsky.social": "2026-11-15T17:34:12.000Z"
  },
  "claims": [
   {
@@ -18729,6 +18729,19 @@
    "kind": "status",
    "confidence": 0.95,
    "text": "[Pelissero] Patriots WR A.J. Brown (hamstring) has also been ruled out for the game. twitter.com/tompelissero..."
+  },
+  {
+   "id": "at://did:plc:qre6zxbmr3ixhdmgsgdretb5/app.bsky.feed.post/3n2ekorjwyu24|joeyporter|active|status",
+   "at": "2026-11-15T17:40:49.427Z",
+   "seen": "2026-11-15T17:44:12.759Z",
+   "handle": "adamscheftermirror.bsky.social",
+   "post": "at://did:plc:qre6zxbmr3ixhdmgsgdretb5/app.bsky.feed.post/3n2ekorjwyu24",
+   "player": "Joey Porter Jr.",
+   "team": null,
+   "status": "active",
+   "kind": "status",
+   "confidence": 0.85,
+   "text": "Repost by @adamschefter\n\nNo drama with Joey Porter Jr. today. Told by a source he is playing. He was listed as questionable with ankle/heel issue.\n\nClick to see original repost"
   }
  ]
 }

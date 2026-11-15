@@ -1,7 +1,7 @@
 {
  "sport": "nba",
  "cursor": {
-  "rotowirenba.bsky.social": "2026-11-15T17:16:00.000Z",
+  "rotowirenba.bsky.social": "2026-11-15T17:39:00.000Z",
   "insidenbanews.bsky.social": "2026-11-13T20:00:09.852Z",
   "shamsbot.bsky.social": "2026-11-13T20:16:26.000Z"
  },
@@ -10665,6 +10665,32 @@
    "kind": "status",
    "confidence": 0.93,
    "text": "Andrew Nembhard: Won't play Sunday \n\n https://www.rotowire.com/basketball/player/andrew-nembhard-5679"
+  },
+  {
+   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3n2ejpasdrv24|ryanrollins|questionable|status",
+   "at": "2026-11-15T17:23:11.000Z",
+   "seen": "2026-11-15T17:44:12.759Z",
+   "handle": "rotowirenba.bsky.social",
+   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3n2ejpasdrv24",
+   "player": "Ryan Rollins",
+   "team": null,
+   "status": "questionable",
+   "kind": "status",
+   "confidence": 0.9,
+   "text": "Ryan Rollins: Questionable for Sunday \n\n https://www.rotowire.com/basketball/player/ryan-rollins-5668"
+  },
+  {
+   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3n2ekfssixp26|stevenadams|active|return",
+   "at": "2026-11-15T17:35:48.000Z",
+   "seen": "2026-11-15T17:44:12.759Z",
+   "handle": "rotowirenba.bsky.social",
+   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3n2ekfssixp26",
+   "player": "Steven Adams",
+   "team": null,
+   "status": "active",
+   "kind": "return",
+   "confidence": 0.9,
+   "text": "Steven Adams: Returning Sunday \n\n https://www.rotowire.com/basketball/player/steven-adams-3445"
   }
  ]
 }
