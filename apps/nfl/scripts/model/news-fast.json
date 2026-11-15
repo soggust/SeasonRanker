@@ -1,13 +1,13 @@
 {
  "sport": "nfl",
  "cursor": {
-  "adamscheftermirror.bsky.social": "2026-11-15T15:25:48.341Z",
+  "adamscheftermirror.bsky.social": "2026-11-15T16:10:48.625Z",
   "rapsheet.bsky.social": "2026-11-15T15:14:55.673Z",
   "nflnewsreposterbot.bsky.social": "2026-11-13T18:01:20.702Z",
-  "insidenflnews.bsky.social": "2026-11-15T15:50:27.360Z",
+  "insidenflnews.bsky.social": "2026-11-15T16:03:55.938Z",
   "nflnewsposter.bsky.social": "2026-11-14T18:21:26.376Z",
   "rotoworld-fb.bsky.social": "2026-11-15T15:53:15.000Z",
-  "rotowirenfl.bsky.social": "2026-11-15T15:43:52.000Z"
+  "rotowirenfl.bsky.social": "2026-11-15T16:06:33.000Z"
  },
  "claims": [
   {
@@ -18430,6 +18430,58 @@
    "kind": "status",
    "confidence": 0.75,
    "text": "Drake Maye (ankle) done for the day vs. Detroit"
+  },
+  {
+   "id": "at://did:plc:qre6zxbmr3ixhdmgsgdretb5/app.bsky.feed.post/3n2eesyg5eq2w|drakemaye|out|status",
+   "at": "2026-11-15T15:55:48.406Z",
+   "seen": "2026-11-15T16:14:48.223Z",
+   "handle": "adamscheftermirror.bsky.social",
+   "post": "at://did:plc:qre6zxbmr3ixhdmgsgdretb5/app.bsky.feed.post/3n2eesyg5eq2w",
+   "player": "Drake Maye",
+   "team": "NE",
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.9,
+   "text": "Drake Maye has been ruled out for the remainder of the game.\n\nOriginal post"
+  },
+  {
+   "id": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3n2ef3sdijn2y|pukanacua|out|status",
+   "at": "2026-11-15T16:00:44.000Z",
+   "seen": "2026-11-15T16:14:48.223Z",
+   "handle": "rotowirenfl.bsky.social",
+   "post": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3n2ef3sdijn2y",
+   "player": "Puka Nacua",
+   "team": "LAR",
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.8,
+   "text": "Puka Nacua: Has expected return date of mid-December \n\n https://www.rotowire.com/football/player/puka-nacua-16790"
+  },
+  {
+   "id": "at://did:plc:mbr4badgf6yu56mquzackzew/app.bsky.feed.post/3n2efbjbsak2f|bakermayfield|questionable|status",
+   "at": "2026-11-15T16:03:55.938Z",
+   "seen": "2026-11-15T16:14:48.223Z",
+   "handle": "insidenflnews.bsky.social",
+   "post": "at://did:plc:mbr4badgf6yu56mquzackzew/app.bsky.feed.post/3n2efbjbsak2f",
+   "player": "Baker Mayfield",
+   "team": "TB",
+   "status": "questionable",
+   "kind": "status",
+   "confidence": 0.75,
+   "text": "Garafolo: Baker Mayfield uncertain for next week after suffering an injury to foot/ankle area.\n\nNot considered a long-term issue."
+  },
+  {
+   "id": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3n2efg7ljnu2f|davanteadams|out|status",
+   "at": "2026-11-15T16:06:33.000Z",
+   "seen": "2026-11-15T16:14:48.223Z",
+   "handle": "rotowirenfl.bsky.social",
+   "post": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3n2efg7ljnu2f",
+   "player": "Davante Adams",
+   "team": null,
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.5,
+   "text": "Davante Adams: Reportedly targeting Week 12 return \n\n https://www.rotowire.com/football/player/davante-adams-9455"
   }
  ]
 }
