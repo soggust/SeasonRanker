@@ -9046,6 +9046,18 @@
     "own": "2026-11-14T21:46:11.000Z",
     "why": "@dailyfaceoff.bsky.social: Sharks’ Alex Wennberg out with upper-body injury"
    }
+  },
+  "401892719|jeangabrielpageau|out": {
+   "game": "401892719",
+   "start": "2026-11-15T03:00Z",
+   "team": "12",
+   "name": "Jean-Gabriel Pageau",
+   "status": "out",
+   "athlete": "2593131",
+   "espn": {
+    "seen": "2026-11-15T02:49:51.560Z",
+    "own": "2026-11-15T02:34:00.000Z"
+   }
   }
  }
 }
