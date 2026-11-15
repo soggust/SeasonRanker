@@ -1,7 +1,7 @@
 {
  "sport": "nfl",
  "cursor": {
-  "adamscheftermirror.bsky.social": "2026-11-15T13:05:47.355Z",
+  "adamscheftermirror.bsky.social": "2026-11-15T14:05:48.457Z",
   "rapsheet.bsky.social": "2026-11-15T04:31:56.134Z",
   "nflnewsreposterbot.bsky.social": "2026-11-13T18:01:20.702Z",
   "insidenflnews.bsky.social": "2026-11-15T13:03:56.964Z",
@@ -10,136 +10,6 @@
   "rotowirenfl.bsky.social": "2026-11-15T13:25:58.000Z"
  },
  "claims": [
-  {
-   "id": "at://did:plc:hlvr2omhnmvdmfnvmcuhyevz/app.bsky.feed.post/3mype4o5oys22|zadariussmith|questionable|status",
-   "at": "2026-10-25T13:52:13.397Z",
-   "seen": "2026-10-26T05:03:40.538Z",
-   "handle": "rapsheet.bsky.social",
-   "post": "at://did:plc:hlvr2omhnmvdmfnvmcuhyevz/app.bsky.feed.post/3mype4o5oys22",
-   "player": "Za'Darius Smith",
-   "team": "ATL",
-   "status": "questionable",
-   "kind": "status",
-   "confidence": 0.8,
-   "text": "Falcons DE Za’Darius Smith (neck) and DT Gervon Dexter Sr. (hamstring) are listed as questionable and both are expected to go, sources say. Much less optimism for Olamide Zaccheaus (shoulder)."
-  },
-  {
-   "id": "at://did:plc:hlvr2omhnmvdmfnvmcuhyevz/app.bsky.feed.post/3mype4o5oys22|gervondexter|questionable|status",
-   "at": "2026-10-25T13:52:13.397Z",
-   "seen": "2026-10-26T05:03:40.538Z",
-   "handle": "rapsheet.bsky.social",
-   "post": "at://did:plc:hlvr2omhnmvdmfnvmcuhyevz/app.bsky.feed.post/3mype4o5oys22",
-   "player": "Gervon Dexter Sr.",
-   "team": "ATL",
-   "status": "questionable",
-   "kind": "status",
-   "confidence": 0.8,
-   "text": "Falcons DE Za’Darius Smith (neck) and DT Gervon Dexter Sr. (hamstring) are listed as questionable and both are expected to go, sources say. Much less optimism for Olamide Zaccheaus (shoulder)."
-  },
-  {
-   "id": "at://did:plc:hlvr2omhnmvdmfnvmcuhyevz/app.bsky.feed.post/3mype4o5oys22|olamidezaccheaus|doubtful|status",
-   "at": "2026-10-25T13:52:13.397Z",
-   "seen": "2026-10-26T05:03:40.538Z",
-   "handle": "rapsheet.bsky.social",
-   "post": "at://did:plc:hlvr2omhnmvdmfnvmcuhyevz/app.bsky.feed.post/3mype4o5oys22",
-   "player": "Olamide Zaccheaus",
-   "team": "ATL",
-   "status": "doubtful",
-   "kind": "status",
-   "confidence": 0.6,
-   "text": "Falcons DE Za’Darius Smith (neck) and DT Gervon Dexter Sr. (hamstring) are listed as questionable and both are expected to go, sources say. Much less optimism for Olamide Zaccheaus (shoulder)."
-  },
-  {
-   "id": "at://did:plc:hlvr2omhnmvdmfnvmcuhyevz/app.bsky.feed.post/3mype5iivgc22|buddabaker|questionable|status",
-   "at": "2026-10-25T13:52:41.029Z",
-   "seen": "2026-10-26T05:03:40.538Z",
-   "handle": "rapsheet.bsky.social",
-   "post": "at://did:plc:hlvr2omhnmvdmfnvmcuhyevz/app.bsky.feed.post/3mype5iivgc22",
-   "player": "Budda Baker",
-   "team": "ARI",
-   "status": "questionable",
-   "kind": "status",
-   "confidence": 0.85,
-   "text": "Cardinals S Budda Baker (groin/illness) is listed as questionable and expected to play against the Broncos, source says."
-  },
-  {
-   "id": "at://did:plc:hlvr2omhnmvdmfnvmcuhyevz/app.bsky.feed.post/3mype73wrfc22|breecehall|doubtful|status",
-   "at": "2026-10-25T13:53:34.962Z",
-   "seen": "2026-10-26T05:03:40.538Z",
-   "handle": "rapsheet.bsky.social",
-   "post": "at://did:plc:hlvr2omhnmvdmfnvmcuhyevz/app.bsky.feed.post/3mype73wrfc22",
-   "player": "Breece Hall",
-   "team": "NYJ",
-   "status": "doubtful",
-   "kind": "status",
-   "confidence": 0.8,
-   "text": "Jets star RB Breece Hall, attempting to return from a quad strain after missing three games, is unlikely to play today, sources say. He may work out to see if he can go, but Hall hasn’t been a full pa"
-  },
-  {
-   "id": "at://did:plc:hlvr2omhnmvdmfnvmcuhyevz/app.bsky.feed.post/3mypea4h4fs22|grantdelpit|active|return",
-   "at": "2026-10-25T13:54:09.052Z",
-   "seen": "2026-10-26T05:03:40.538Z",
-   "handle": "rapsheet.bsky.social",
-   "post": "at://did:plc:hlvr2omhnmvdmfnvmcuhyevz/app.bsky.feed.post/3mypea4h4fs22",
-   "player": "Grant Delpit",
-   "team": "CLE",
-   "status": "active",
-   "kind": "return",
-   "confidence": 0.95,
-   "text": "Browns S Grant Delpit cleared the NFL’s concussion protocol and will play today. Meanwhile, CB Denzel Ward will warm up and see if he can go. Ward is questionable with a hand injury."
-  },
-  {
-   "id": "at://did:plc:hlvr2omhnmvdmfnvmcuhyevz/app.bsky.feed.post/3mypea4h4fs22|denzelward|questionable|status",
-   "at": "2026-10-25T13:54:09.052Z",
-   "seen": "2026-10-26T05:03:40.538Z",
-   "handle": "rapsheet.bsky.social",
-   "post": "at://did:plc:hlvr2omhnmvdmfnvmcuhyevz/app.bsky.feed.post/3mypea4h4fs22",
-   "player": "Denzel Ward",
-   "team": "CLE",
-   "status": "questionable",
-   "kind": "status",
-   "confidence": 0.85,
-   "text": "Browns S Grant Delpit cleared the NFL’s concussion protocol and will play today. Meanwhile, CB Denzel Ward will warm up and see if he can go. Ward is questionable with a hand injury."
-  },
-  {
-   "id": "at://did:plc:hlvr2omhnmvdmfnvmcuhyevz/app.bsky.feed.post/3mypeaycaz222|patsurtain|doubtful|status",
-   "at": "2026-10-25T13:54:38.252Z",
-   "seen": "2026-10-26T05:03:40.538Z",
-   "handle": "rapsheet.bsky.social",
-   "post": "at://did:plc:hlvr2omhnmvdmfnvmcuhyevz/app.bsky.feed.post/3mypeaycaz222",
-   "player": "Pat Surtain II",
-   "team": "DEN",
-   "status": "doubtful",
-   "kind": "status",
-   "confidence": 0.8,
-   "text": "Broncos star CB Pat Surtain II, who has missed the last two games with an ankle injury, is unlikely to play today, source says. But there’s a good chance he’s back next week."
-  },
-  {
-   "id": "at://did:plc:hlvr2omhnmvdmfnvmcuhyevz/app.bsky.feed.post/3mypec2tn3c22|uchennanwosu|questionable|status",
-   "at": "2026-10-25T13:55:14.474Z",
-   "seen": "2026-10-26T05:03:40.538Z",
-   "handle": "rapsheet.bsky.social",
-   "post": "at://did:plc:hlvr2omhnmvdmfnvmcuhyevz/app.bsky.feed.post/3mypec2tn3c22",
-   "player": "Uchenna Nwosu",
-   "team": "SEA",
-   "status": "questionable",
-   "kind": "status",
-   "confidence": 0.85,
-   "text": "Seahawks defenders LB Uchenna Nwosu (hip) and S Nick Emmanwori (hip) are both listed as questionable and both expected to go, sources say."
-  },
-  {
-   "id": "at://did:plc:hlvr2omhnmvdmfnvmcuhyevz/app.bsky.feed.post/3mypec2tn3c22|nickemmanwori|questionable|status",
-   "at": "2026-10-25T13:55:14.474Z",
-   "seen": "2026-10-26T05:03:40.538Z",
-   "handle": "rapsheet.bsky.social",
-   "post": "at://did:plc:hlvr2omhnmvdmfnvmcuhyevz/app.bsky.feed.post/3mypec2tn3c22",
-   "player": "Nick Emmanwori",
-   "team": "SEA",
-   "status": "questionable",
-   "kind": "status",
-   "confidence": 0.85,
-   "text": "Seahawks defenders LB Uchenna Nwosu (hip) and S Nick Emmanwori (hip) are both listed as questionable and both expected to go, sources say."
-  },
   {
    "id": "at://did:plc:mbr4badgf6yu56mquzackzew/app.bsky.feed.post/3mypg5moj5s25|joshjacobs|none|starting",
    "at": "2026-10-25T14:28:32.889Z",
@@ -18326,6 +18196,19 @@
    "kind": "status",
    "confidence": 0.85,
    "text": "Rap: Jaelan Phillips (hamstring) expected to play"
+  },
+  {
+   "id": "at://did:plc:qre6zxbmr3ixhdmgsgdretb5/app.bsky.feed.post/3n2e6oc7jm62d|trentwilliams|active|status",
+   "at": "2026-11-15T14:05:48.457Z",
+   "seen": "2026-11-15T14:08:04.215Z",
+   "handle": "adamscheftermirror.bsky.social",
+   "post": "at://did:plc:qre6zxbmr3ixhdmgsgdretb5/app.bsky.feed.post/3n2e6oc7jm62d",
+   "player": "Trent Williams",
+   "team": "SF",
+   "status": "active",
+   "kind": "status",
+   "confidence": 0.85,
+   "text": "49ers LT Trent Williams, listed as questionable for today’s game vs. the Cowboys due to an ankle injury, is expected to play, per source.\n\nOriginal post"
   }
  ]
 }
