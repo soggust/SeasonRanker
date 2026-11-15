@@ -1,7 +1,7 @@
 {
  "sport": "nba",
  "cursor": {
-  "rotowirenba.bsky.social": "2026-11-15T18:27:47.000Z",
+  "rotowirenba.bsky.social": "2026-11-15T19:45:04.000Z",
   "insidenbanews.bsky.social": "2026-11-13T20:00:09.852Z",
   "shamsbot.bsky.social": "2026-11-13T20:16:26.000Z"
  },
@@ -10730,6 +10730,32 @@
    "kind": "status",
    "confidence": 0.9,
    "text": "De'Aaron Fox: Now listed as questionable \n\n https://www.rotowire.com/basketball/player/deaaron-fox-4116"
+  },
+  {
+   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3n2eqzzne5d24|collinsexton|active|status",
+   "at": "2026-11-15T19:34:29.000Z",
+   "seen": "2026-11-15T20:14:52.438Z",
+   "handle": "rotowirenba.bsky.social",
+   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3n2eqzzne5d24",
+   "player": "Collin Sexton",
+   "team": null,
+   "status": "active",
+   "kind": "status",
+   "confidence": 0.9,
+   "text": "Collin Sexton: Will play Sunday \n\n https://www.rotowire.com/basketball/player/collin-sexton-4412"
+  },
+  {
+   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3n2era544ma2z|alexsarr|active|status",
+   "at": "2026-11-15T19:37:54.000Z",
+   "seen": "2026-11-15T20:14:52.438Z",
+   "handle": "rotowirenba.bsky.social",
+   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3n2era544ma2z",
+   "player": "Alex Sarr",
+   "team": null,
+   "status": "active",
+   "kind": "status",
+   "confidence": 0.9,
+   "text": "Alex Sarr: Cleared to suit up Sunday \n\n https://www.rotowire.com/basketball/player/alex-sarr-6240"
   }
  ]
 }
