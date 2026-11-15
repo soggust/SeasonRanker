@@ -1,37 +1,11 @@
 {
  "sport": "nba",
  "cursor": {
-  "rotowirenba.bsky.social": "2026-11-15T16:44:37.000Z",
+  "rotowirenba.bsky.social": "2026-11-15T17:16:00.000Z",
   "insidenbanews.bsky.social": "2026-11-13T20:00:09.852Z",
   "shamsbot.bsky.social": "2026-11-13T20:16:26.000Z"
  },
  "claims": [
-  {
-   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mypoxq7fa72e|lebronjames|active|status",
-   "at": "2026-10-25T17:06:18.000Z",
-   "seen": "2026-10-26T05:03:40.538Z",
-   "handle": "rotowirenba.bsky.social",
-   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mypoxq7fa72e",
-   "player": "LeBron James",
-   "team": "LAL",
-   "status": "active",
-   "kind": "status",
-   "confidence": 0.8,
-   "text": "LeBron James: Off injury report \n\n https://www.rotowire.com/basketball/player/lebron-james-2344"
-  },
-  {
-   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mypp2x57g724|joelembiid|out|status",
-   "at": "2026-10-25T17:08:06.000Z",
-   "seen": "2026-10-26T05:03:40.538Z",
-   "handle": "rotowirenba.bsky.social",
-   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mypp2x57g724",
-   "player": "Joel Embiid",
-   "team": "PHI",
-   "status": "out",
-   "kind": "status",
-   "confidence": 0.95,
-   "text": "Joel Embiid: Out Sunday \n\n https://www.rotowire.com/basketball/player/joel-embiid-3572"
-  },
   {
    "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mypu22kmmo23|keeganmurray|doubtful|status",
    "at": "2026-10-25T18:37:05.000Z",

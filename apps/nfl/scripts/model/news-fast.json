@@ -1,13 +1,13 @@
 {
  "sport": "nfl",
  "cursor": {
-  "adamscheftermirror.bsky.social": "2026-11-15T16:40:47.205Z",
+  "adamscheftermirror.bsky.social": "2026-11-15T17:10:49.116Z",
   "rapsheet.bsky.social": "2026-11-15T17:03:26.715Z",
   "nflnewsreposterbot.bsky.social": "2026-11-13T18:01:20.702Z",
-  "insidenflnews.bsky.social": "2026-11-15T16:57:39.023Z",
-  "nflnewsposter.bsky.social": "2026-11-15T16:45:22.303Z",
-  "rotoworld-fb.bsky.social": "2026-11-15T16:52:04.000Z",
-  "rotowirenfl.bsky.social": "2026-11-15T16:49:34.000Z"
+  "insidenflnews.bsky.social": "2026-11-15T17:13:57.769Z",
+  "nflnewsposter.bsky.social": "2026-11-15T17:17:12.290Z",
+  "rotoworld-fb.bsky.social": "2026-11-15T17:13:46.000Z",
+  "rotowirenfl.bsky.social": "2026-11-15T17:21:51.000Z"
  },
  "claims": [
   {
@@ -18664,6 +18664,71 @@
    "kind": "status",
    "confidence": 0.9,
    "text": "And now: Patriots WR A.J. Brown has a hamstring injury and is questionable to return."
+  },
+  {
+   "id": "at://did:plc:qre6zxbmr3ixhdmgsgdretb5/app.bsky.feed.post/3n2eiz4atig2o|ajbrown|questionable|status",
+   "at": "2026-11-15T17:10:48.718Z",
+   "seen": "2026-11-15T17:22:21.956Z",
+   "handle": "adamscheftermirror.bsky.social",
+   "post": "at://did:plc:qre6zxbmr3ixhdmgsgdretb5/app.bsky.feed.post/3n2eiz4atig2o",
+   "player": "A.J. Brown",
+   "team": "NE",
+   "status": "questionable",
+   "kind": "status",
+   "confidence": 0.9,
+   "text": "Patriots WR A.J. Brown now has a hamstring injury and is questionable to return today.\n\nOriginal post"
+  },
+  {
+   "id": "at://did:plc:qre6zxbmr3ixhdmgsgdretb5/app.bsky.feed.post/3n2eiz4kyto2e|aidanhutchinson|out|status",
+   "at": "2026-11-15T17:10:49.116Z",
+   "seen": "2026-11-15T17:22:21.956Z",
+   "handle": "adamscheftermirror.bsky.social",
+   "post": "at://did:plc:qre6zxbmr3ixhdmgsgdretb5/app.bsky.feed.post/3n2eiz4kyto2e",
+   "player": "Aidan Hutchinson",
+   "team": "DET",
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.95,
+   "text": "Lions now have officially ruled out DE Aidan Hutchinson due to his knee injury.\n\nOriginal post"
+  },
+  {
+   "id": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3n2ej6gdd242a|ajbrown|questionable|status",
+   "at": "2026-11-15T17:13:46.000Z",
+   "seen": "2026-11-15T17:22:21.956Z",
+   "handle": "rotoworld-fb.bsky.social",
+   "post": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3n2ej6gdd242a",
+   "player": "A.J. Brown",
+   "team": "NE",
+   "status": "questionable",
+   "kind": "status",
+   "confidence": 0.9,
+   "text": "A.J. Brown (hamstring) questionable to return"
+  },
+  {
+   "id": "at://did:plc:mbr4badgf6yu56mquzackzew/app.bsky.feed.post/3n2ej6qhhu22y|ajbrown|out|status",
+   "at": "2026-11-15T17:13:57.769Z",
+   "seen": "2026-11-15T17:22:21.956Z",
+   "handle": "insidenflnews.bsky.social",
+   "post": "at://did:plc:mbr4badgf6yu56mquzackzew/app.bsky.feed.post/3n2ej6qhhu22y",
+   "player": "A.J. Brown",
+   "team": "NE",
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.9,
+   "text": "Status alert: A.J. Brown (hamstring) won't return Sunday."
+  },
+  {
+   "id": "at://did:plc:fuqjc7x4gxvnwzksnlxwbe4x/app.bsky.feed.post/3n2ejejxup22r|ajbrown|out|status",
+   "at": "2026-11-15T17:17:12.290Z",
+   "seen": "2026-11-15T17:22:21.956Z",
+   "handle": "nflnewsposter.bsky.social",
+   "post": "at://did:plc:fuqjc7x4gxvnwzksnlxwbe4x/app.bsky.feed.post/3n2ejejxup22r",
+   "player": "A.J. Brown",
+   "team": "NE",
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.95,
+   "text": "[Pelissero] Patriots WR A.J. Brown (hamstring) has also been ruled out for the game. twitter.com/tompelissero..."
   }
  ]
 }
