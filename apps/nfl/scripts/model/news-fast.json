@@ -1,7 +1,7 @@
 {
  "sport": "nfl",
  "cursor": {
-  "adamscheftermirror.bsky.social": "2026-11-15T14:05:48.457Z",
+  "adamscheftermirror.bsky.social": "2026-11-15T14:20:47.747Z",
   "rapsheet.bsky.social": "2026-11-15T04:31:56.134Z",
   "nflnewsreposterbot.bsky.social": "2026-11-13T18:01:20.702Z",
   "insidenflnews.bsky.social": "2026-11-15T13:03:56.964Z",
@@ -10,19 +10,6 @@
   "rotowirenfl.bsky.social": "2026-11-15T13:25:58.000Z"
  },
  "claims": [
-  {
-   "id": "at://did:plc:mbr4badgf6yu56mquzackzew/app.bsky.feed.post/3mypg5moj5s25|joshjacobs|none|starting",
-   "at": "2026-10-25T14:28:32.889Z",
-   "seen": "2026-10-26T05:03:40.538Z",
-   "handle": "insidenflnews.bsky.social",
-   "post": "at://did:plc:mbr4badgf6yu56mquzackzew/app.bsky.feed.post/3mypg5moj5s25",
-   "player": "Josh Jacobs",
-   "team": "GB",
-   "status": "none",
-   "kind": "starting",
-   "confidence": 0.7,
-   "text": "Garafolo: Josh Jacobs expected to get \"normal allotment of reps\" for a starting RB in Week 7."
-  },
   {
    "id": "at://did:plc:hlvr2omhnmvdmfnvmcuhyevz/app.bsky.feed.post/3myph4uhrdk2i|joshsimmons|out|status",
    "at": "2026-10-25T14:46:01.247Z",
