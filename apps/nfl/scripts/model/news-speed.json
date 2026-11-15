@@ -20560,6 +20560,42 @@
     "own": "2026-11-15T12:10:17.000Z",
     "why": "@rotowirenfl.bsky.social: Jordan Addison: May be game-time call Sunday \n\n https:"
    }
+  },
+  "401873053|amenogbongbemiga|out": {
+   "game": "401873053",
+   "start": "2026-11-15T14:30Z",
+   "team": "8",
+   "name": "Amen Ogbongbemiga",
+   "status": "out",
+   "athlete": "4038432",
+   "espn": {
+    "seen": "2026-11-15T13:02:50.921Z",
+    "own": "2026-11-05T21:55:00.000Z"
+   }
+  },
+  "401873053|brendenschooler|out": {
+   "game": "401873053",
+   "start": "2026-11-15T14:30Z",
+   "team": "17",
+   "name": "Brenden Schooler",
+   "status": "out",
+   "athlete": "4047941",
+   "espn": {
+    "seen": "2026-11-15T13:02:50.921Z",
+    "own": "2026-11-13T22:38:00.000Z"
+   }
+  },
+  "401873053|walterrouse|out": {
+   "game": "401873053",
+   "start": "2026-11-15T14:30Z",
+   "team": "17",
+   "name": "Walter Rouse",
+   "status": "out",
+   "athlete": "4428394",
+   "espn": {
+    "seen": "2026-11-15T13:02:50.921Z",
+    "own": "2026-11-11T23:13:00.000Z"
+   }
   }
  }
 }
