@@ -20774,6 +20774,258 @@
     "seen": "2026-11-15T16:32:39.852Z",
     "own": "2026-11-14T21:46:00.000Z"
    }
+  },
+  "401873058|avieonterrell|out": {
+   "game": "401873058",
+   "start": "2026-11-15T18:00Z",
+   "team": "1",
+   "name": "Avieon Terrell",
+   "status": "out",
+   "athlete": "4870988",
+   "espn": {
+    "seen": "2026-11-15T16:44:34.140Z",
+    "own": "2026-11-15T16:34:00.000Z"
+   }
+  },
+  "401873058|jackstrand|out": {
+   "game": "401873058",
+   "start": "2026-11-15T18:00Z",
+   "team": "1",
+   "name": "Jack Strand",
+   "status": "out",
+   "athlete": "5344782",
+   "espn": {
+    "seen": "2026-11-15T16:44:34.140Z",
+    "own": "2026-11-15T16:34:00.000Z"
+   }
+  },
+  "401873058|robertlongerbeam|out": {
+   "game": "401873058",
+   "start": "2026-11-15T18:00Z",
+   "team": "1",
+   "name": "Robert Longerbeam",
+   "status": "out",
+   "athlete": "4575860",
+   "espn": {
+    "seen": "2026-11-15T16:44:34.140Z",
+    "own": "2026-11-15T16:34:00.000Z"
+   }
+  },
+  "401873058|andydalton|out": {
+   "game": "401873058",
+   "start": "2026-11-15T18:00Z",
+   "team": "1",
+   "name": "Andy Dalton",
+   "status": "out",
+   "athlete": "14012",
+   "espn": {
+    "seen": "2026-11-15T16:44:34.140Z",
+    "own": "2026-11-15T16:34:00.000Z"
+   }
+  },
+  "401873056|noahigbinoghene|out": {
+   "game": "401873056",
+   "start": "2026-11-15T18:00Z",
+   "team": "5",
+   "name": "Noah Igbinoghene",
+   "status": "out",
+   "athlete": "4242516",
+   "espn": {
+    "seen": "2026-11-15T16:44:34.140Z",
+    "own": "2026-11-15T16:32:00.000Z"
+   }
+  },
+  "401873056|justinjefferson|out": {
+   "game": "401873056",
+   "start": "2026-11-15T18:00Z",
+   "team": "5",
+   "name": "Justin Jefferson",
+   "status": "out",
+   "athlete": "5150249",
+   "espn": {
+    "seen": "2026-11-15T16:44:34.140Z",
+    "own": "2026-11-15T16:32:00.000Z"
+   }
+  },
+  "401873056|parkerbrailsford|out": {
+   "game": "401873056",
+   "start": "2026-11-15T18:00Z",
+   "team": "5",
+   "name": "Parker Brailsford",
+   "status": "out",
+   "athlete": "4816090",
+   "espn": {
+    "seen": "2026-11-15T16:44:34.140Z",
+    "own": "2026-11-15T16:32:00.000Z"
+   }
+  },
+  "401873056|dillongabriel|out": {
+   "game": "401873056",
+   "start": "2026-11-15T18:00Z",
+   "team": "5",
+   "name": "Dillon Gabriel",
+   "status": "out",
+   "athlete": "4427238",
+   "espn": {
+    "seen": "2026-11-15T16:44:34.140Z",
+    "own": "2026-11-15T16:32:00.000Z"
+   }
+  },
+  "401873056|taylengreen|out": {
+   "game": "401873056",
+   "start": "2026-11-15T18:00Z",
+   "team": "5",
+   "name": "Taylen Green",
+   "status": "out",
+   "athlete": "4431325",
+   "espn": {
+    "seen": "2026-11-15T16:44:34.140Z",
+    "own": "2026-11-15T16:32:00.000Z"
+   }
+  },
+  "401873060|addison|out": {
+   "game": "401873060",
+   "start": "2026-11-15T18:00Z",
+   "team": "16",
+   "name": "Addison",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-15T16:35:36.992Z",
+    "own": "2026-11-15T16:34:00.000Z",
+    "why": "@rotoworld-fb.bsky.social: Addison (thumb) inactive for Week 10 vs. Packers"
+   }
+  },
+  "401873057|jackiemarshall|out": {
+   "game": "401873057",
+   "start": "2026-11-15T18:00Z",
+   "team": "10",
+   "name": "Jackie Marshall",
+   "status": "out",
+   "athlete": "5081785",
+   "espn": {
+    "seen": "2026-11-15T16:44:34.140Z",
+    "own": "2026-11-15T16:34:00.000Z"
+   }
+  },
+  "401873057|brandoncrenshawdickson|out": {
+   "game": "401873057",
+   "start": "2026-11-15T18:00Z",
+   "team": "10",
+   "name": "Brandon Crenshaw-Dickson",
+   "status": "out",
+   "athlete": "4426987",
+   "espn": {
+    "seen": "2026-11-15T16:44:34.140Z",
+    "own": "2026-11-15T16:34:00.000Z"
+   }
+  },
+  "401873055|zachwilson|out": {
+   "game": "401873055",
+   "start": "2026-11-15T18:00Z",
+   "team": "18",
+   "name": "Zach Wilson",
+   "status": "out",
+   "athlete": "4361259",
+   "espn": {
+    "seen": "2026-11-15T16:44:34.140Z",
+    "own": "2026-11-15T16:34:00.000Z"
+   }
+  },
+  "401873055|mikereid|out": {
+   "game": "401873055",
+   "start": "2026-11-15T18:00Z",
+   "team": "18",
+   "name": "Mike Reid",
+   "status": "out",
+   "athlete": "4775268",
+   "espn": {
+    "seen": "2026-11-15T16:44:34.140Z",
+    "own": "2026-11-15T16:34:00.000Z"
+   }
+  },
+  "401873055|jaylanford|out": {
+   "game": "401873055",
+   "start": "2026-11-15T18:00Z",
+   "team": "18",
+   "name": "Jaylan Ford",
+   "status": "out",
+   "athlete": "4566088",
+   "espn": {
+    "seen": "2026-11-15T16:44:34.140Z",
+    "own": "2026-11-15T16:34:00.000Z"
+   }
+  },
+  "401873055|jatavionsanders|out": {
+   "game": "401873055",
+   "start": "2026-11-15T18:00Z",
+   "team": "29",
+   "name": "Ja'Tavion Sanders",
+   "status": "out",
+   "athlete": "4431588",
+   "espn": {
+    "seen": "2026-11-15T16:44:34.140Z",
+    "own": "2026-11-09T22:44:00.000Z"
+   }
+  },
+  "401873054|armajreedadams|out": {
+   "game": "401873054",
+   "start": "2026-11-15T18:00Z",
+   "team": "2",
+   "name": "Ar'maj Reed-Adams",
+   "status": "out",
+   "athlete": "4606712",
+   "espn": {
+    "seen": "2026-11-15T16:44:34.140Z",
+    "own": "2026-11-15T16:35:00.000Z"
+   }
+  },
+  "401873054|judebowry|out": {
+   "game": "401873054",
+   "start": "2026-11-15T18:00Z",
+   "team": "2",
+   "name": "Jude Bowry",
+   "status": "out",
+   "athlete": "4869533",
+   "espn": {
+    "seen": "2026-11-15T16:44:34.140Z",
+    "own": "2026-11-15T16:35:00.000Z"
+   }
+  },
+  "401873064|daltonrisner|q": {
+   "game": "401873064",
+   "start": "2026-11-16T01:20Z",
+   "team": "4",
+   "name": "Dalton Risner",
+   "status": "q",
+   "athlete": "3125082",
+   "espn": {
+    "seen": "2026-11-15T16:44:34.140Z",
+    "own": "2026-11-15T16:29:00.000Z"
+   }
+  },
+  "401873064|myleshinton|q": {
+   "game": "401873064",
+   "start": "2026-11-16T01:20Z",
+   "team": "4",
+   "name": "Myles Hinton",
+   "status": "q",
+   "athlete": "4429000",
+   "espn": {
+    "seen": "2026-11-15T16:44:34.140Z",
+    "own": "2026-11-15T16:28:00.000Z"
+   }
+  },
+  "401873066|wyattteller|out": {
+   "game": "401873066",
+   "start": "2026-11-20T01:15Z",
+   "team": "34",
+   "name": "Wyatt Teller",
+   "status": "out",
+   "athlete": "3045474",
+   "espn": {
+    "seen": "2026-11-15T16:44:34.140Z",
+    "own": "2026-11-15T16:37:00.000Z"
+   }
   }
  }
 }
