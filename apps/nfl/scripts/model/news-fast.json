@@ -5,37 +5,11 @@
   "rapsheet.bsky.social": "2026-11-15T21:23:16.739Z",
   "nflnewsreposterbot.bsky.social": "2026-11-15T18:58:56.281Z",
   "insidenflnews.bsky.social": "2026-11-16T01:00:42.439Z",
-  "nflnewsposter.bsky.social": "2026-11-16T00:38:34.198Z",
-  "rotoworld-fb.bsky.social": "2026-11-16T01:50:21.000Z",
-  "rotowirenfl.bsky.social": "2026-11-16T01:55:38.000Z"
+  "nflnewsposter.bsky.social": "2026-11-16T02:01:03.999Z",
+  "rotoworld-fb.bsky.social": "2026-11-16T02:04:13.000Z",
+  "rotowirenfl.bsky.social": "2026-11-16T02:02:37.000Z"
  },
  "claims": [
-  {
-   "id": "at://did:plc:mbr4badgf6yu56mquzackzew/app.bsky.feed.post/3myqmz6keyc2f|rashidshaheed|questionable|status",
-   "at": "2026-10-26T02:03:59.790Z",
-   "seen": "2026-10-26T05:03:40.538Z",
-   "handle": "insidenflnews.bsky.social",
-   "post": "at://did:plc:mbr4badgf6yu56mquzackzew/app.bsky.feed.post/3myqmz6keyc2f",
-   "player": "Rashid Shaheed",
-   "team": "SEA",
-   "status": "questionable",
-   "kind": "status",
-   "confidence": 0.9,
-   "text": "Status alert: Rashid Shaheed (knee) questionable to return."
-  },
-  {
-   "id": "at://did:plc:fuqjc7x4gxvnwzksnlxwbe4x/app.bsky.feed.post/3myqmzyf5zcbc|rashidshaheed|questionable|status",
-   "at": "2026-10-26T02:04:26.881Z",
-   "seen": "2026-10-26T05:03:40.538Z",
-   "handle": "nflnewsposter.bsky.social",
-   "post": "at://did:plc:fuqjc7x4gxvnwzksnlxwbe4x/app.bsky.feed.post/3myqmzyf5zcbc",
-   "player": "Rashid Shaheed",
-   "team": "SEA",
-   "status": "questionable",
-   "kind": "status",
-   "confidence": 0.95,
-   "text": "[Seahawks] Seahawks injury update: WR Rashid Shaheed is Questionable (knee). twitter.com/seahawksPR/s..."
-  },
   {
    "id": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3myqnkip7si2e|rashidshaheed|questionable|status",
    "at": "2026-10-26T02:13:40.000Z",
