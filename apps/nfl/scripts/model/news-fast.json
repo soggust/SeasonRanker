@@ -4,7 +4,7 @@
   "adamscheftermirror.bsky.social": "2026-11-16T11:20:54.072Z",
   "rapsheet.bsky.social": "2026-11-15T21:23:16.739Z",
   "nflnewsreposterbot.bsky.social": "2026-11-15T18:58:56.281Z",
-  "insidenflnews.bsky.social": "2026-11-16T02:58:37.619Z",
+  "insidenflnews.bsky.social": "2026-11-16T12:50:11.213Z",
   "nflnewsposter.bsky.social": "2026-11-16T04:13:52.078Z",
   "rotoworld-fb.bsky.social": "2026-11-16T12:13:40.000Z",
   "rotowirenfl.bsky.social": "2026-11-16T12:24:56.000Z"
@@ -19340,6 +19340,19 @@
    "kind": "starting",
    "confidence": 0.9,
    "text": "[Holder] Colts QB Daniel Jones posted a 1.7 QBR today, the worst of any QB in any start this season. That includes Carson Wentz's MNF performance last week and Baker Mayfield's zero-completion game.\n\n"
+  },
+  {
+   "id": "at://did:plc:mbr4badgf6yu56mquzackzew/app.bsky.feed.post/3n2gkvyk4pk2d|drakemaye|out|status",
+   "at": "2026-11-16T12:50:11.213Z",
+   "seen": "2026-11-16T13:00:19.906Z",
+   "handle": "insidenflnews.bsky.social",
+   "post": "at://did:plc:mbr4badgf6yu56mquzackzew/app.bsky.feed.post/3n2gkvyk4pk2d",
+   "player": "Drake Maye",
+   "team": "NE",
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.6,
+   "text": "Rap: Drake Maye believed to have suffered significant lower leg injury that will keep him out an extended period of time."
   }
  ]
 }
