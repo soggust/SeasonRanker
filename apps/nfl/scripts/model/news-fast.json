@@ -1,28 +1,15 @@
 {
  "sport": "nfl",
  "cursor": {
-  "adamscheftermirror.bsky.social": "2026-11-16T14:55:56.632Z",
+  "adamscheftermirror.bsky.social": "2026-11-16T16:25:53.278Z",
   "rapsheet.bsky.social": "2026-11-15T21:23:16.739Z",
   "nflnewsreposterbot.bsky.social": "2026-11-15T18:58:56.281Z",
-  "insidenflnews.bsky.social": "2026-11-16T14:20:26.971Z",
-  "nflnewsposter.bsky.social": "2026-11-16T14:47:33.329Z",
+  "insidenflnews.bsky.social": "2026-11-16T16:15:30.626Z",
+  "nflnewsposter.bsky.social": "2026-11-16T16:27:51.537Z",
   "rotoworld-fb.bsky.social": "2026-11-16T15:31:03.000Z",
   "rotowirenfl.bsky.social": "2026-11-16T14:55:54.000Z"
  },
  "claims": [
-  {
-   "id": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3mys73dcdyq2r|jadarianprice|limited|return",
-   "at": "2026-10-26T16:59:58.000Z",
-   "seen": "2026-10-26T17:01:21.826Z",
-   "handle": "rotowirenfl.bsky.social",
-   "post": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3mys73dcdyq2r",
-   "player": "Jadarian Price",
-   "team": "SEA",
-   "status": "limited",
-   "kind": "return",
-   "confidence": 0.5,
-   "text": "Jadarian Price: Return to practice on tap in Week 8 \n\n https://www.rotowire.com/football/player/jadarian-price-19299"
-  },
   {
    "id": "at://did:plc:fuqjc7x4gxvnwzksnlxwbe4x/app.bsky.feed.post/3mys7m6vuqs2u|charlescross|out|status",
    "at": "2026-10-26T17:09:24.789Z",
@@ -19353,6 +19340,32 @@
    "kind": "starting",
    "confidence": 0.7,
    "text": "Geno Smith (ankle) will start vs. LAC if healthy"
+  },
+  {
+   "id": "at://did:plc:mbr4badgf6yu56mquzackzew/app.bsky.feed.post/3n2gwf5ash22k|tylerbooker|out|status",
+   "at": "2026-11-16T16:15:30.626Z",
+   "seen": "2026-11-16T17:02:05.177Z",
+   "handle": "insidenflnews.bsky.social",
+   "post": "at://did:plc:mbr4badgf6yu56mquzackzew/app.bsky.feed.post/3n2gwf5ash22k",
+   "player": "Tyler Booker",
+   "team": "DAL",
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.8,
+   "text": "Rap: Tyler Booker suffered high-ankle sprain.\n\nCowboys hope he can return within 4 weeks."
+  },
+  {
+   "id": "at://did:plc:fuqjc7x4gxvnwzksnlxwbe4x/app.bsky.feed.post/3n2gwzaaq522c|tylerbooker|out|status",
+   "at": "2026-11-16T16:26:44.850Z",
+   "seen": "2026-11-16T17:02:05.177Z",
+   "handle": "nflnewsposter.bsky.social",
+   "post": "at://did:plc:fuqjc7x4gxvnwzksnlxwbe4x/app.bsky.feed.post/3n2gwzaaq522c",
+   "player": "Tyler Booker",
+   "team": "DAL",
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.8,
+   "text": "[Rapoport] Cowboys G Tyler Booker suffered a high-ankle sprain in his team's loss to the 49ers, sources say. While it's generally a 4-6 week injury, the hope is that Booker can be back within that 4 w"
   }
  ]
 }
