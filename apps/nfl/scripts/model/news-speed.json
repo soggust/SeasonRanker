@@ -21989,6 +21989,54 @@
     "own": "2026-11-15T23:18:16.000Z",
     "why": "@rotowirenfl.bsky.social: Woody Marks: Not likely to be cleared for Thursday's g"
    }
+  },
+  "401873064|eliheidenreich|out": {
+   "game": "401873064",
+   "start": "2026-11-16T01:20Z",
+   "team": "23",
+   "name": "Eli Heidenreich",
+   "status": "out",
+   "athlete": "5081508",
+   "espn": {
+    "seen": "2026-11-16T00:20:23.415Z",
+    "own": "2026-11-16T00:02:00.000Z"
+   }
+  },
+  "401873064|willhoward|out": {
+   "game": "401873064",
+   "start": "2026-11-16T01:20Z",
+   "team": "23",
+   "name": "Will Howard",
+   "status": "out",
+   "athlete": "4429955",
+   "espn": {
+    "seen": "2026-11-16T00:20:23.415Z",
+    "own": "2026-11-16T00:02:00.000Z"
+   }
+  },
+  "401873064|seanmurphybunting|out": {
+   "game": "401873064",
+   "start": "2026-11-16T01:20Z",
+   "team": "23",
+   "name": "Sean Murphy-Bunting",
+   "status": "out",
+   "athlete": "3932886",
+   "espn": {
+    "seen": "2026-11-16T00:20:23.415Z",
+    "own": "2026-11-16T00:02:00.000Z"
+   }
+  },
+  "401873064|drewallar|out": {
+   "game": "401873064",
+   "start": "2026-11-16T01:20Z",
+   "team": "23",
+   "name": "Drew Allar",
+   "status": "out",
+   "athlete": "4714771",
+   "espn": {
+    "seen": "2026-11-16T00:20:23.415Z",
+    "own": "2026-11-16T00:02:00.000Z"
+   }
   }
  }
 }

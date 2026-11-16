@@ -1,28 +1,15 @@
 {
  "sport": "nfl",
  "cursor": {
-  "adamscheftermirror.bsky.social": "2026-11-15T22:45:48.781Z",
+  "adamscheftermirror.bsky.social": "2026-11-15T23:50:49.470Z",
   "rapsheet.bsky.social": "2026-11-15T21:23:16.739Z",
   "nflnewsreposterbot.bsky.social": "2026-11-15T18:58:56.281Z",
-  "insidenflnews.bsky.social": "2026-11-15T23:16:53.290Z",
-  "nflnewsposter.bsky.social": "2026-11-15T23:15:45.741Z",
-  "rotoworld-fb.bsky.social": "2026-11-15T23:22:26.000Z",
-  "rotowirenfl.bsky.social": "2026-11-15T23:18:16.000Z"
+  "insidenflnews.bsky.social": "2026-11-15T23:30:16.029Z",
+  "nflnewsposter.bsky.social": "2026-11-16T00:21:48.229Z",
+  "rotoworld-fb.bsky.social": "2026-11-15T23:26:56.000Z",
+  "rotowirenfl.bsky.social": "2026-11-16T00:12:07.000Z"
  },
  "claims": [
-  {
-   "id": "at://did:plc:qre6zxbmr3ixhdmgsgdretb5/app.bsky.feed.post/3myqgsywyzh2p|taylormoton|out|status",
-   "at": "2026-10-26T00:13:10.048Z",
-   "seen": "2026-10-26T05:03:40.538Z",
-   "handle": "adamscheftermirror.bsky.social",
-   "post": "at://did:plc:qre6zxbmr3ixhdmgsgdretb5/app.bsky.feed.post/3myqgsywyzh2p",
-   "player": "Taylor Moton",
-   "team": "CAR",
-   "status": "out",
-   "kind": "status",
-   "confidence": 0.9,
-   "text": "Panthers right tackle Taylor Moton, in his second game back after returning from offseason blood clot treatment, suffered a fractured fibula in Sunday’s 43-13 loss to the Tampa Bay Buccaneers and will"
-  },
   {
    "id": "at://did:plc:mbr4badgf6yu56mquzackzew/app.bsky.feed.post/3myqmz6keyc2f|rashidshaheed|questionable|status",
    "at": "2026-10-26T02:03:59.790Z",
@@ -19392,6 +19379,71 @@
    "kind": "status",
    "confidence": 0.7,
    "text": "Woody Marks: Not likely to be cleared for Thursday's game \n\n https://www.rotowire.com/football/player/woody-marks-18449"
+  },
+  {
+   "id": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3n2f5va37br22|traviskelce|none|status",
+   "at": "2026-11-15T23:24:27.000Z",
+   "seen": "2026-11-16T00:23:10.961Z",
+   "handle": "rotowirenfl.bsky.social",
+   "post": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3n2f5va37br22",
+   "player": "Travis Kelce",
+   "team": "KC",
+   "status": "none",
+   "kind": "status",
+   "confidence": 0.3,
+   "text": "Travis Kelce: Quiet after ankle injury \n\n https://www.rotowire.com/football/player/travis-kelce-8783"
+  },
+  {
+   "id": "at://did:plc:fuqjc7x4gxvnwzksnlxwbe4x/app.bsky.feed.post/3n2f6qcri5k2a|deshonelliott|out|status",
+   "at": "2026-11-15T23:39:35.975Z",
+   "seen": "2026-11-16T00:23:10.961Z",
+   "handle": "nflnewsposter.bsky.social",
+   "post": "at://did:plc:fuqjc7x4gxvnwzksnlxwbe4x/app.bsky.feed.post/3n2f6qcri5k2a",
+   "player": "Deshon Elliott",
+   "team": "PIT",
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.95,
+   "text": "[Lauten] Steelers S Deshon Elliott sustained a pregame injury (knee) and has been ruled out for tonight’s game vs. Cincinnati. twitter.com/SteelersPRBu..."
+  },
+  {
+   "id": "at://did:plc:qre6zxbmr3ixhdmgsgdretb5/app.bsky.feed.post/3n2f7ef5hey22|deshonelliott|out|status",
+   "at": "2026-11-15T23:50:49.470Z",
+   "seen": "2026-11-16T00:23:10.961Z",
+   "handle": "adamscheftermirror.bsky.social",
+   "post": "at://did:plc:qre6zxbmr3ixhdmgsgdretb5/app.bsky.feed.post/3n2f7ef5hey22",
+   "player": "Deshon Elliott",
+   "team": "PIT",
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.95,
+   "text": "Steelers S Deshon Elliott injured his knee during the pregame and has been ruled out for tonight’s game vs. Cincinnati.\n\nOriginal post"
+  },
+  {
+   "id": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3n2f7kkfcug2d|cadeklubnik|none|starting",
+   "at": "2026-11-15T23:54:16.000Z",
+   "seen": "2026-11-16T00:23:10.961Z",
+   "handle": "rotowirenfl.bsky.social",
+   "post": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3n2f7kkfcug2d",
+   "player": "Cade Klubnik",
+   "team": "CLE",
+   "status": "none",
+   "kind": "starting",
+   "confidence": 0.6,
+   "text": "Cade Klubnik: Steps in after Geno's injury \n\n https://www.rotowire.com/football/player/cade-klubnik-19284"
+  },
+  {
+   "id": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3n2f7yjkejb2d|patfreiermuth|active|status",
+   "at": "2026-11-16T00:02:05.000Z",
+   "seen": "2026-11-16T00:23:10.961Z",
+   "handle": "rotowirenfl.bsky.social",
+   "post": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3n2f7yjkejb2d",
+   "player": "Pat Freiermuth",
+   "team": "PIT",
+   "status": "active",
+   "kind": "status",
+   "confidence": 0.7,
+   "text": "Pat Freiermuth: No mention in inactive list \n\n https://www.rotowire.com/football/player/pat-freiermuth-15267"
   }
  ]
 }

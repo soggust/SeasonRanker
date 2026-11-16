@@ -3,6 +3,17 @@
  "days": 2,
  "signals": [
   {
+   "team": "11",
+   "abbr": "IND",
+   "athlete": "3917792",
+   "player": "Daniel Jones",
+   "kind": "starting",
+   "direction": "up",
+   "confidence": 0.9,
+   "headline": "Citing short week, Colts sticking with Daniel Jones at QB despite dreadful start",
+   "at": "2026-11-16T00:18:28.000Z"
+  },
+  {
    "team": "18",
    "abbr": "NO",
    "athlete": null,
@@ -102,5 +113,5 @@
    "at": "2026-11-14T04:01:15.000Z"
   }
  ],
- "at": "2026-11-15T23:10:51.014Z"
+ "at": "2026-11-16T00:23:10.961Z"
 }
