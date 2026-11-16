@@ -1,41 +1,15 @@
 {
  "sport": "nfl",
  "cursor": {
-  "adamscheftermirror.bsky.social": "2026-11-16T13:25:56.279Z",
+  "adamscheftermirror.bsky.social": "2026-11-16T14:55:56.632Z",
   "rapsheet.bsky.social": "2026-11-15T21:23:16.739Z",
   "nflnewsreposterbot.bsky.social": "2026-11-15T18:58:56.281Z",
   "insidenflnews.bsky.social": "2026-11-16T14:20:26.971Z",
-  "nflnewsposter.bsky.social": "2026-11-16T14:38:00.407Z",
-  "rotoworld-fb.bsky.social": "2026-11-16T13:43:44.000Z",
-  "rotowirenfl.bsky.social": "2026-11-16T14:42:22.000Z"
+  "nflnewsposter.bsky.social": "2026-11-16T14:47:33.329Z",
+  "rotoworld-fb.bsky.social": "2026-11-16T14:50:40.000Z",
+  "rotowirenfl.bsky.social": "2026-11-16T14:55:54.000Z"
  },
  "claims": [
-  {
-   "id": "at://did:plc:hlvr2omhnmvdmfnvmcuhyevz/app.bsky.feed.post/3myry2n77322l|seanrhyan|out|status",
-   "at": "2026-10-26T14:54:19.604Z",
-   "seen": "2026-10-26T17:01:21.826Z",
-   "handle": "rapsheet.bsky.social",
-   "post": "at://did:plc:hlvr2omhnmvdmfnvmcuhyevz/app.bsky.feed.post/3myry2n77322l",
-   "player": "Sean Rhyan",
-   "team": "GB",
-   "status": "out",
-   "kind": "status",
-   "confidence": 0.7,
-   "text": "Packers C Sean Rhyan, who left Sunday’s game with an ankle injury, is believed to have suffered a high-ankle sprain, sources say. \n\nX-Rays were negative, and he has an MRI today. But high-ankle sprain"
-  },
-  {
-   "id": "at://did:plc:hlvr2omhnmvdmfnvmcuhyevz/app.bsky.feed.post/3myry7neewk2l|zairefranklin|out|status",
-   "at": "2026-10-26T14:57:07.546Z",
-   "seen": "2026-10-26T17:01:21.826Z",
-   "handle": "rapsheet.bsky.social",
-   "post": "at://did:plc:hlvr2omhnmvdmfnvmcuhyevz/app.bsky.feed.post/3myry7neewk2l",
-   "player": "Zaire Franklin",
-   "team": "GB",
-   "status": "out",
-   "kind": "status",
-   "confidence": 0.75,
-   "text": "Packers LB Zaire Franklin, who missed last week’s game after getting accidentally kicked in practice, suffered a hairline fracture in his leg, sources say.\n\nGreen Bay did not place him on Injured Rese"
-  },
   {
    "id": "at://did:plc:qre6zxbmr3ixhdmgsgdretb5/app.bsky.feed.post/3myryteobhq2z|aaronjones|questionable|status",
    "at": "2026-10-26T15:08:09.433Z",
@@ -19379,6 +19353,32 @@
    "kind": "status",
    "confidence": 0.8,
    "text": "[Rapoport] Raiders star TE Brock Bowers, who did not finish Sunday’s game, is not believed to have suffered a major ankle injury, source says. More day-to-day.\n\nBowers will have more tests today to de"
+  },
+  {
+   "id": "at://did:plc:fuqjc7x4gxvnwzksnlxwbe4x/app.bsky.feed.post/3n2grhugi3s25|aidanhutchinson|out|status",
+   "at": "2026-11-16T14:47:33.329Z",
+   "seen": "2026-11-16T15:06:18.101Z",
+   "handle": "nflnewsposter.bsky.social",
+   "post": "at://did:plc:fuqjc7x4gxvnwzksnlxwbe4x/app.bsky.feed.post/3n2grhugi3s25",
+   "player": "Aidan Hutchinson",
+   "team": "DET",
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.7,
+   "text": "[Schefter] Lions fear that DE Aidan Hutchinson suffered a season-ending torn ACL. The team has declined to confirm the injury, but that is the initial diagnosis, a brutal blow for Hutchinson and Detro"
+  },
+  {
+   "id": "at://did:plc:qre6zxbmr3ixhdmgsgdretb5/app.bsky.feed.post/3n2grwtkbe72n|aidanhutchinson|out|status",
+   "at": "2026-11-16T14:55:55.697Z",
+   "seen": "2026-11-16T15:06:18.101Z",
+   "handle": "adamscheftermirror.bsky.social",
+   "post": "at://did:plc:qre6zxbmr3ixhdmgsgdretb5/app.bsky.feed.post/3n2grwtkbe72n",
+   "player": "Aidan Hutchinson",
+   "team": "DET",
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.8,
+   "text": "More about Lions star Aidan Hutchinson being out for the season with what initial tests showed to be a torn ACL in his right knee:\n\nOriginal post"
   }
  ]
 }
