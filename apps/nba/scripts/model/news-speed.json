@@ -24586,6 +24586,23 @@
    "espn": {
     "seen": "2026-11-16T22:20:07.613Z",
     "own": "2026-11-16T22:10:00.000Z"
+   },
+   "bluesky": {
+    "seen": "2026-11-16T22:21:35.112Z",
+    "own": "2026-11-16T22:10:16.000Z",
+    "why": "@rotowirenba.bsky.social: Neemias Queta: Sitting out Monday \n\n https://www.rotow"
+   }
+  },
+  "401909995|jaylontyson|out": {
+   "game": "401909995",
+   "start": "2026-11-17T00:00Z",
+   "team": "5",
+   "name": "Jaylon Tyson",
+   "status": "out",
+   "athlete": "4683747",
+   "espn": {
+    "seen": "2026-11-16T22:50:37.484Z",
+    "own": "2026-11-16T22:39:00.000Z"
    }
   }
  }
