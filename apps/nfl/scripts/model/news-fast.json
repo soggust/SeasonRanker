@@ -1,28 +1,15 @@
 {
  "sport": "nfl",
  "cursor": {
-  "adamscheftermirror.bsky.social": "2026-11-16T13:05:54.394Z",
+  "adamscheftermirror.bsky.social": "2026-11-16T13:25:56.279Z",
   "rapsheet.bsky.social": "2026-11-15T21:23:16.739Z",
   "nflnewsreposterbot.bsky.social": "2026-11-15T18:58:56.281Z",
   "insidenflnews.bsky.social": "2026-11-16T13:18:45.867Z",
   "nflnewsposter.bsky.social": "2026-11-16T04:13:52.078Z",
   "rotoworld-fb.bsky.social": "2026-11-16T12:13:40.000Z",
-  "rotowirenfl.bsky.social": "2026-11-16T13:16:27.000Z"
+  "rotowirenfl.bsky.social": "2026-11-16T13:25:07.000Z"
  },
  "claims": [
-  {
-   "id": "at://did:plc:mbr4badgf6yu56mquzackzew/app.bsky.feed.post/3myrthnz5nc2p|zairefranklin|out|status",
-   "at": "2026-10-26T13:32:07.953Z",
-   "seen": "2026-10-26T17:01:21.826Z",
-   "handle": "insidenflnews.bsky.social",
-   "post": "at://did:plc:mbr4badgf6yu56mquzackzew/app.bsky.feed.post/3myrthnz5nc2p",
-   "player": "Zaire Franklin",
-   "team": "GB",
-   "status": "out",
-   "kind": "status",
-   "confidence": 0.7,
-   "text": "Rap: Zaire Franklin suffered hairline fracture in leg.\n\nPackers believe Franklin can return while missing \"minimal games.\""
-  },
   {
    "id": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3myrvjwasdg2e|camskattebo|active|status",
    "at": "2026-10-26T14:09:11.000Z",
@@ -19379,6 +19366,32 @@
    "kind": "status",
    "confidence": 0.85,
    "text": "Brock Bowers: Viewed as day-to-day with ankle injury \n\n https://www.rotowire.com/football/player/brock-bowers-17693"
+  },
+  {
+   "id": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3n2gmuhos332a|drakemaye|questionable|status",
+   "at": "2026-11-16T13:25:07.000Z",
+   "seen": "2026-11-16T13:42:36.638Z",
+   "handle": "rotowirenfl.bsky.social",
+   "post": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3n2gmuhos332a",
+   "player": "Drake Maye",
+   "team": "NE",
+   "status": "questionable",
+   "kind": "status",
+   "confidence": 0.5,
+   "text": "Drake Maye: Ankle fracture feared \n\n https://www.rotowire.com/football/player/drake-maye-17673"
+  },
+  {
+   "id": "at://did:plc:qre6zxbmr3ixhdmgsgdretb5/app.bsky.feed.post/3n2gmvvrbby2z|drakemaye|out|status",
+   "at": "2026-11-16T13:25:55.702Z",
+   "seen": "2026-11-16T13:42:36.638Z",
+   "handle": "adamscheftermirror.bsky.social",
+   "post": "at://did:plc:qre6zxbmr3ixhdmgsgdretb5/app.bsky.feed.post/3n2gmvvrbby2z",
+   "player": "Drake Maye",
+   "team": "NE",
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.85,
+   "text": "The Patriots are concerned that QB Drake Maye fractured his ankle, per sources. Maye remained in Germany to undergo additional testing to determine whether he needs surgery. Either way, he is out inde"
   }
  ]
 }
