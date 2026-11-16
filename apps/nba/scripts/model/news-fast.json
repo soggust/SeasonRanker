@@ -1,7 +1,7 @@
 {
  "sport": "nba",
  "cursor": {
-  "rotowirenba.bsky.social": "2026-11-16T00:08:14.000Z",
+  "rotowirenba.bsky.social": "2026-11-16T00:30:04.000Z",
   "insidenbanews.bsky.social": "2026-11-13T20:00:09.852Z",
   "shamsbot.bsky.social": "2026-11-13T20:16:26.000Z"
  },
@@ -10314,6 +10314,19 @@
    "kind": "status",
    "confidence": 0.9,
    "text": "Bennedict Mathurin: Out again vs. Warriors \n\n https://www.rotowire.com/basketball/player/bennedict-mathurin-5698"
+  },
+  {
+   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3n2fbb3hkbz2k|preciousachiuwa|out|status",
+   "at": "2026-11-16T00:24:46.000Z",
+   "seen": "2026-11-16T00:46:04.166Z",
+   "handle": "rotowirenba.bsky.social",
+   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3n2fbb3hkbz2k",
+   "player": "Precious Achiuwa",
+   "team": null,
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.95,
+   "text": "Precious Achiuwa: Ruled out Sunday \n\n https://www.rotowire.com/basketball/player/precious-achiuwa-5249"
   }
  ]
 }
