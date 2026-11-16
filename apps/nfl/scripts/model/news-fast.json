@@ -4,51 +4,12 @@
   "adamscheftermirror.bsky.social": "2026-11-16T13:25:56.279Z",
   "rapsheet.bsky.social": "2026-11-15T21:23:16.739Z",
   "nflnewsreposterbot.bsky.social": "2026-11-15T18:58:56.281Z",
-  "insidenflnews.bsky.social": "2026-11-16T13:18:45.867Z",
+  "insidenflnews.bsky.social": "2026-11-16T14:20:26.971Z",
   "nflnewsposter.bsky.social": "2026-11-16T04:13:52.078Z",
   "rotoworld-fb.bsky.social": "2026-11-16T13:43:44.000Z",
-  "rotowirenfl.bsky.social": "2026-11-16T13:25:07.000Z"
+  "rotowirenfl.bsky.social": "2026-11-16T14:23:24.000Z"
  },
  "claims": [
-  {
-   "id": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3myrvjwasdg2e|camskattebo|active|status",
-   "at": "2026-10-26T14:09:11.000Z",
-   "seen": "2026-10-26T17:01:21.826Z",
-   "handle": "rotowirenfl.bsky.social",
-   "post": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3myrvjwasdg2e",
-   "player": "Cam Skattebo",
-   "team": "NYG",
-   "status": "active",
-   "kind": "status",
-   "confidence": 0.5,
-   "text": "Cam Skattebo: Expected to be OK after hamstring tweak \n\n https://www.rotowire.com/football/player/cam-skattebo-18514"
-  },
-  {
-   "id": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3myrvp7bk5t2d|camskattebo|active|status",
-   "at": "2026-10-26T14:12:08.000Z",
-   "seen": "2026-10-26T17:01:21.826Z",
-   "handle": "rotoworld-fb.bsky.social",
-   "post": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3myrvp7bk5t2d",
-   "player": "Cam Skattebo",
-   "team": "NYG",
-   "status": "active",
-   "kind": "status",
-   "confidence": 0.5,
-   "text": "Skattebo expected to be okay after hammy injury"
-  },
-  {
-   "id": "at://did:plc:mbr4badgf6yu56mquzackzew/app.bsky.feed.post/3myrwewr7f22o|seanrhyan|out|status",
-   "at": "2026-10-26T14:24:17.692Z",
-   "seen": "2026-10-26T17:01:21.826Z",
-   "handle": "insidenflnews.bsky.social",
-   "post": "at://did:plc:mbr4badgf6yu56mquzackzew/app.bsky.feed.post/3myrwewr7f22o",
-   "player": "Sean Rhyan",
-   "team": "GB",
-   "status": "out",
-   "kind": "status",
-   "confidence": 0.65,
-   "text": "Rap: C Sean Rhyan believed to have suffered a high-ankle sprain.\n\nHigh-ankle sprains are often 4-6 week injuries."
-  },
   {
    "id": "at://did:plc:hlvr2omhnmvdmfnvmcuhyevz/app.bsky.feed.post/3myry2n77322l|seanrhyan|out|status",
    "at": "2026-10-26T14:54:19.604Z",
