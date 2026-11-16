@@ -30,18 +30,18 @@
   }
  ],
  "last": {
-  "date": "2026-11-02",
+  "date": "2026-11-16",
   "tried": 0,
   "blocked": [
-   "no fresh held-out days since 2026-10-26 (the earlier weeks' holdouts consumed)",
+   "no fresh held-out days since 2026-11-02 (the earlier weeks' holdouts consumed)",
    "loveUnits changed 2026-10-26: cooling down till 2026-11-23"
   ],
   "shipped": null,
   "top": [],
   "secs": {
-   "champion": 382,
-   "restake": 175.3,
-   "total": 382
+   "champion": 418,
+   "restake": 186.3,
+   "total": 418
   }
  }
 }

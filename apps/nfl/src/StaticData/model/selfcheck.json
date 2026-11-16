@@ -1,5 +1,5 @@
 {
- "at": "2026-11-16T09:21:50.526Z",
+ "at": "2026-11-16T11:08:03.781Z",
  "baseline": {
   "from": "2026-10-12",
   "to": "2026-11-09"
@@ -237,7 +237,7 @@
      "base": {
       "beat": 0.04,
       "ev": -0.0336,
-      "n": 33,
+      "n": 32,
       "prob": -0.0176
      },
      "beat": 0.1429,
@@ -255,10 +255,10 @@
     },
     {
      "base": {
-      "beat": 0.1053,
-      "ev": -0.0371,
-      "n": 39,
-      "prob": -0.0217
+      "beat": 0.1081,
+      "ev": -0.0374,
+      "n": 38,
+      "prob": -0.0218
      },
      "beat": 0.2308,
      "ev": -0.0236,
@@ -410,30 +410,30 @@
   },
   {
    "examples": [
-    "401873005:prop:anyTd:5150247",
-    "401873005:prop:anyTd:4241961",
-    "401873005:prop:anyTd:4045305",
     "401873026:ml",
-    "401873051:prop:anyTd:4262921"
+    "401873051:prop:anyTd:4262921",
+    "401873051:prop:anyTd:4360569",
+    "401873051:prop:anyTd:4036133",
+    "401873051:prop:anyTd:3042519"
    ],
-   "headline": "Worst cell opponent: BUF: 0 won vs 5.2 expected (z -2.75) on 30 bets, ROI -100.0%",
+   "headline": "Worst cell opponent: BUF: 0 won vs 5 expected (z -2.7) on 27 bets, ROI -100.0%",
    "how": "graded in the 28 days, by team, opponent, player, home or away, role depth, the vacated term, teammates out or questionable, back-to-backs, a backup QB, the weather, the lead time, the start hour, the prices, the band, the guard and the disruption",
    "id": "C7",
    "metric": "z",
-   "n": 1120,
+   "n": 1080,
    "needs": null,
    "rows": [
     {
      "dim": "opponent",
-     "e": 5.2297,
+     "e": 4.9811,
      "key": "opponent: BUF",
-     "n": 30,
-     "profit": -15,
+     "n": 27,
+     "profit": -13.5,
      "roi": -1,
      "status": "watch",
      "value": "BUF",
      "w": 0,
-     "z": -2.7491
+     "z": -2.7049
     },
     {
      "dim": "opponent",
@@ -448,47 +448,47 @@
      "z": -2.4833
     },
     {
-     "dim": "disrupted",
-     "e": 4.5691,
-     "key": "disrupted: snaps",
-     "n": 59,
-     "profit": -29.5,
-     "roi": -1,
-     "status": "ok",
-     "value": "snaps",
-     "w": 0,
-     "z": -2.2927
-    },
-    {
      "dim": "start (ET)",
-     "e": 17.8062,
+     "e": 17.7381,
      "key": "start (ET): before 1pm",
-     "n": 71,
-     "profit": -14.722,
-     "roi": -0.4147,
+     "n": 69,
+     "profit": -13.722,
+     "roi": -0.3977,
      "status": "ok",
      "value": "before 1pm",
      "w": 10.6,
-     "z": -2.1829
+     "z": -2.1688
+    },
+    {
+     "dim": "opponent",
+     "e": 10.4513,
+     "key": "opponent: DET",
+     "n": 39,
+     "profit": -12.979,
+     "roi": -0.6656,
+     "status": "ok",
+     "value": "DET",
+     "w": 5,
+     "z": -2.1386
     },
     {
      "dim": "team",
-     "e": 8.0843,
+     "e": 7.9192,
      "key": "team: NYJ",
-     "n": 45,
-     "profit": -16.908,
-     "roi": -0.7515,
+     "n": 42,
+     "profit": -15.408,
+     "roi": -0.7337,
      "status": "ok",
      "value": "NYJ",
      "w": 3,
-     "z": -2.1779
+     "z": -2.138
     }
    ],
    "status": "watch",
    "tested": 113,
    "threshold": "many cells tested: watch z -2.5, flag z -3 (cells of 8+)",
    "title": "Loss clusters",
-   "value": -2.7491
+   "value": -2.7049
   },
   {
    "examples": [],
@@ -1600,7 +1600,7 @@
    "how": "each prop fit's all-player bias (projected - actual over every player) against its mean error; the 28 days' graded props' own miss by side and role",
    "id": "C10",
    "metric": "r",
-   "n": 1019,
+   "n": 979,
    "needs": null,
    "rows": [
     {
@@ -1885,7 +1885,7 @@
     "401873058:prop:anyTd:4430723",
     "401873058:prop:anyTd:4249624"
    ],
-   "headline": "Model files 0h old, 55 open bets overdue to grade; Odds API credits 83% left; 397 bets placed in a week of 14 games",
+   "headline": "Model files 2h old, 61 open bets overdue to grade; Odds API credits 83% left; 397 bets placed in a week of 14 games",
    "how": "the newest commit of the sport's model files, the open bets started 12 hours ago or more, The Odds API's credits (state.odds), the state's sources",
    "id": "C16",
    "metric": "ageH",
@@ -1893,10 +1893,10 @@
    "needs": null,
    "rows": [
     {
-     "ageH": 0,
+     "ageH": 2,
      "at": "2026-11-16T08:54:52Z",
      "key": "files",
-     "overdue": 55
+     "overdue": 61
     },
     {
      "cycleEnd": "2026-12-01T00:02:39.102Z",
@@ -1919,7 +1919,7 @@
    "tested": null,
    "threshold": "watch files 3h old with bets overdue, credits under 20%, a source down, or no bets in a week with games; flag 6h old with bets overdue, or credits under 10%",
    "title": "Ops",
-   "value": 0
+   "value": 2
   },
   {
    "examples": [

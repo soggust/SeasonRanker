@@ -1,5 +1,5 @@
 {
- "at": "2026-11-16T09:21:50.526Z",
+ "at": "2026-11-16T11:08:03.781Z",
  "baseline": {
   "from": "2026-10-12",
   "to": "2026-11-09"
@@ -417,15 +417,15 @@
     {
      "key": "sog prop:sog:over: the bot's own bets there u flat on",
      "n": 166,
-     "ratio": 8.2514,
+     "ratio": 8.234,
      "share": 0.1407,
-     "shareBase": 0.017,
+     "shareBase": 0.0171,
      "status": "watch"
     },
     {
      "key": "starter not confirmed",
      "n": 11,
-     "ratio": 2.4605,
+     "ratio": 2.4553,
      "share": 0.0093,
      "shareBase": 0.0038,
      "status": "watch"
@@ -433,15 +433,15 @@
     {
      "key": "line moved",
      "n": 44,
-     "ratio": 1.0421,
+     "ratio": 1.0399,
      "share": 0.0373,
-     "shareBase": 0.0358,
+     "shareBase": 0.0359,
      "status": "ok"
     },
     {
      "key": "clears only at betmgm price",
      "n": 4,
-     "ratio": 3.221,
+     "ratio": 3.2142,
      "share": 0.0034,
      "shareBase": 0.0011,
      "status": "ok"
@@ -449,7 +449,7 @@
     {
      "key": "clears only at betrivers price",
      "n": 4,
-     "ratio": 2.6842,
+     "ratio": 2.6785,
      "share": 0.0034,
      "shareBase": 0.0013,
      "status": "ok"
@@ -457,7 +457,7 @@
     {
      "key": "clears only at espn bet price",
      "n": 3,
-     "ratio": 6.0394,
+     "ratio": 6.0267,
      "share": 0.0025,
      "shareBase": 0.0004,
      "status": "ok"
@@ -465,7 +465,7 @@
     {
      "key": "clears only at bally bet price",
      "n": 2,
-     "ratio": 4.0263,
+     "ratio": 4.0178,
      "share": 0.0017,
      "shareBase": 0.0004,
      "status": "ok"
@@ -473,7 +473,7 @@
     {
      "key": "clears only at caesars price",
      "n": 2,
-     "ratio": 2.0131,
+     "ratio": 2.0089,
      "share": 0.0017,
      "shareBase": 0.0008,
      "status": "ok"
@@ -481,7 +481,7 @@
     {
      "key": "no odds api price",
      "n": 2,
-     "ratio": 0.183,
+     "ratio": 0.1826,
      "share": 0.0017,
      "shareBase": 0.0093,
      "status": "ok"
@@ -627,7 +627,7 @@
      "n": 0,
      "ratio": 0,
      "share": 0,
-     "shareBase": 0.077,
+     "shareBase": 0.0772,
      "status": "ok"
     },
     {
@@ -715,7 +715,7 @@
      "n": 0,
      "ratio": 0,
      "share": 0,
-     "shareBase": 0.0029,
+     "shareBase": 0.003,
      "status": "ok"
     },
     {
@@ -787,7 +787,7 @@
    "tested": null,
    "threshold": "watch twice the baseline share (10+ bets); flag 3x and a quarter of placements, or a new kind on 20+",
    "title": "Guards cutting unusually often",
-   "value": 8.2514
+   "value": 8.234
   },
   {
    "examples": [],
@@ -1153,7 +1153,7 @@
      "n": 31,
      "of": 137,
      "share": 0.2263,
-     "shareBase": 0.1725,
+     "shareBase": 0.1713,
      "status": "watch"
     },
     {
@@ -1161,7 +1161,7 @@
      "n": 15,
      "of": 137,
      "share": 0.1095,
-     "shareBase": 0.1391,
+     "shareBase": 0.1359,
      "status": "ok"
     },
     {
@@ -1419,7 +1419,7 @@
   },
   {
    "examples": [],
-   "headline": "Moneyline: dogs 38% of this week's bets against 33% before",
+   "headline": "Moneyline: dogs 38% of this week's bets against 34% before",
    "how": "placed this week against the 28 days before: a dog is a plus price or a spread side getting points",
    "id": "C5",
    "metric": "moved",
@@ -1428,7 +1428,7 @@
    "rows": [
     {
      "dogShare": 0.381,
-     "dogShareBase": 0.3333,
+     "dogShareBase": 0.3352,
      "dogs": {
       "e": 6.0057,
       "n": 16,
@@ -1446,9 +1446,9 @@
       "z": 1.0773
      },
      "key": "ml",
-     "moved": 0.0476,
+     "moved": 0.0457,
      "n": 42,
-     "nBase": 177,
+     "nBase": 176,
      "status": "ok"
     },
     {
@@ -1478,7 +1478,7 @@
     },
     {
      "dogShare": 0.3356,
-     "dogShareBase": 0.3234,
+     "dogShareBase": 0.3233,
      "dogs": {
       "e": 151.7186,
       "n": 350,
@@ -1496,9 +1496,9 @@
       "z": -0.4639
      },
      "key": "prop",
-     "moved": 0.0122,
+     "moved": 0.0123,
      "n": 1043,
-     "nBase": 4212,
+     "nBase": 4204,
      "status": "ok"
     }
    ],
@@ -1506,7 +1506,7 @@
    "tested": null,
    "threshold": "watch the dog share moved 20 points (20+ bets both); flag also the grown group z -2 (30+ graded)",
    "title": "Favorite/dog drift",
-   "value": 0.0476
+   "value": 0.0457
   },
   {
    "examples": [
@@ -1570,7 +1570,7 @@
   },
   {
    "examples": [],
-   "headline": "Model files 0h old, 0 open bets overdue to grade; Odds API credits 83% left; 1180 bets placed in a week of 48 games",
+   "headline": "Model files 2h old, 0 open bets overdue to grade; Odds API credits 83% left; 1180 bets placed in a week of 48 games",
    "how": "the newest commit of the sport's model files, the open bets started 12 hours ago or more, The Odds API's credits (state.odds), the state's sources",
    "id": "C16",
    "metric": "ageH",
@@ -1578,7 +1578,7 @@
    "needs": null,
    "rows": [
     {
-     "ageH": 0,
+     "ageH": 2,
      "at": "2026-11-16T08:54:52Z",
      "key": "files",
      "overdue": 0
@@ -1604,7 +1604,7 @@
    "tested": null,
    "threshold": "watch files 3h old with bets overdue, credits under 20%, a source down, or no bets in a week with games; flag 6h old with bets overdue, or credits under 10%",
    "title": "Ops",
-   "value": 0
+   "value": 2
   },
   {
    "examples": [],

@@ -2,7 +2,7 @@
  "v": 1,
  "sport": "nba",
  "epoch": "2026-10-26T15:00:00Z",
- "at": "2026-11-16T09:09:00.429Z",
+ "at": "2026-11-16T09:43:19.260Z",
  "from": "2020-08-01T01:10:00.000Z",
  "through": "2026-06-11T00:40:00.000Z",
  "n": {
@@ -3057,7 +3057,7 @@
    }
   }
  },
- "commit": "a4e05afa",
+ "commit": "8cf8ad65",
  "note": "D119. The Book's bands are the Bot's bets alone: a suggestion is never a LIKE (the owner, 2026-11-09: \"its got likes with no BETS which makes no sense\")",
  "inputs": {
   "v": 1,
@@ -3125,7 +3125,20 @@
     "2024-05-27",
     "2025-03-26"
    ],
-   "planted": 7802.81
+   "planted": 7802.81,
+   "nulls": {
+    "fair": {
+     "mean": -161.87,
+     "sd": 49.7,
+     "z": 5.42
+    },
+    "shuffle": {
+     "mean": -44.15,
+     "sd": 56.65,
+     "z": 2.68
+    }
+   },
+   "actual": 107.65
   },
   "frozen": {
    "props": {
