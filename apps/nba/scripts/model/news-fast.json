@@ -1,63 +1,11 @@
 {
  "sport": "nba",
  "cursor": {
-  "rotowirenba.bsky.social": "2026-11-16T18:15:19.000Z",
+  "rotowirenba.bsky.social": "2026-11-16T19:26:15.000Z",
   "insidenbanews.bsky.social": "2026-11-13T20:00:09.852Z",
   "shamsbot.bsky.social": "2026-11-13T20:16:26.000Z"
  },
  "claims": [
-  {
-   "id": "at://did:plc:sa73fbx3vxzh2fw5pu5wmief/app.bsky.feed.post/3mysevpqt6r2u|jalensuggs|out|status",
-   "at": "2026-10-26T18:40:05.000Z",
-   "seen": "2026-10-26T19:01:27.991Z",
-   "handle": "shamsbot.bsky.social",
-   "post": "at://did:plc:sa73fbx3vxzh2fw5pu5wmief/app.bsky.feed.post/3mysevpqt6r2u",
-   "player": "Jalen Suggs",
-   "team": "ORL",
-   "status": "out",
-   "kind": "status",
-   "confidence": 0.8,
-   "text": "Orlando Magic guard Jalen Suggs has been diagnosed with a mild bone bruise in his right knee and will be re-evaluated in two weeks, sources tell ESPN. Suggs avoided any other major structural damage."
-  },
-  {
-   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mysevvo5cf27|jalensuggs|out|status",
-   "at": "2026-10-26T18:44:19.000Z",
-   "seen": "2026-10-26T19:01:27.991Z",
-   "handle": "rotowirenba.bsky.social",
-   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mysevvo5cf27",
-   "player": "Jalen Suggs",
-   "team": "ORL",
-   "status": "out",
-   "kind": "status",
-   "confidence": 0.9,
-   "text": "Jalen Suggs: Out at least two weeks \n\n https://www.rotowire.com/basketball/player/jalen-suggs-5379"
-  },
-  {
-   "id": "at://did:plc:ykcnnf6kqnn3lasmobrczoem/app.bsky.feed.post/3mysewxen5k2b|jalensuggs|out|status",
-   "at": "2026-10-26T18:44:54.695Z",
-   "seen": "2026-10-26T19:01:27.991Z",
-   "handle": "insidenbanews.bsky.social",
-   "post": "at://did:plc:ykcnnf6kqnn3lasmobrczoem/app.bsky.feed.post/3mysewxen5k2b",
-   "player": "Jalen Suggs",
-   "team": "ORL",
-   "status": "out",
-   "kind": "status",
-   "confidence": 0.7,
-   "text": "BREAKING NEWS\n\nShams: Jalen Suggs diagnosed with a mild bone bruise in his right knee. \n\nHe will be re-evaluated in two weeks."
-  },
-  {
-   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mysgltqdnx2e|zachedey|active|status",
-   "at": "2026-10-26T19:14:29.000Z",
-   "seen": "2026-10-26T19:15:36.014Z",
-   "handle": "rotowirenba.bsky.social",
-   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mysgltqdnx2e",
-   "player": "Zach Edey",
-   "team": null,
-   "status": "active",
-   "kind": "status",
-   "confidence": 0.8,
-   "text": "Zach Edey: Removed from injury report \n\n https://www.rotowire.com/basketball/player/zach-edey-6263"
-  },
   {
    "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mysp7piauy2l|tobiasharris|out|status",
    "at": "2026-10-26T21:48:45.000Z",
@@ -10184,6 +10132,19 @@
    "kind": "status",
    "confidence": 0.9,
    "text": "Fred VanVleet: Removed from injury report \n\n https://www.rotowire.com/basketball/player/fred-vanvleet-3935"
+  },
+  {
+   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3n2hb2aenec2z|tobiasharris|out|status",
+   "at": "2026-11-16T19:26:15.000Z",
+   "seen": "2026-11-16T20:15:12.364Z",
+   "handle": "rotowirenba.bsky.social",
+   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3n2hb2aenec2z",
+   "player": "Tobias Harris",
+   "team": null,
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.6,
+   "text": "Tobias Harris: Likely out through November \n\n https://www.rotowire.com/basketball/player/tobias-harris-3211"
   }
  ]
 }
