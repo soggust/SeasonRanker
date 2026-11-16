@@ -22568,6 +22568,30 @@
     "own": "2026-11-15T23:06:36.000Z",
     "why": "@rotowirenba.bsky.social: Bennedict Mathurin: Out again vs. Warriors \n\n https://"
    }
+  },
+  "401909992|ryanrollins|out": {
+   "game": "401909992",
+   "start": "2026-11-16T01:00Z",
+   "team": "15",
+   "name": "Ryan Rollins",
+   "status": "out",
+   "athlete": "4591725",
+   "espn": {
+    "seen": "2026-11-16T00:03:43.565Z",
+    "own": "2026-11-15T23:19:00.000Z"
+   }
+  },
+  "401909992|jocklandale|out": {
+   "game": "401909992",
+   "start": "2026-11-16T01:00Z",
+   "team": "1",
+   "name": "Jock Landale",
+   "status": "out",
+   "athlete": "3146557",
+   "espn": {
+    "seen": "2026-11-16T00:03:43.565Z",
+    "own": "2026-11-15T23:22:00.000Z"
+   }
   }
  }
 }
