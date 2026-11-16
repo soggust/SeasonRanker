@@ -1,18 +1,6 @@
 {
  "sport": "nhl",
  "days": 2,
- "signals": [
-  {
-   "team": "7",
-   "abbr": "CAR",
-   "athlete": "3541",
-   "player": "Jordan Staal",
-   "kind": "return",
-   "direction": "up",
-   "confidence": 0.9,
-   "headline": "Jordan Staal returns as Hurricanes win second game in Finland",
-   "at": "2026-11-14T20:47:15.000Z"
-  }
- ],
- "at": "2026-11-15T08:27:32.095Z"
+ "signals": [],
+ "at": "2026-11-16T21:33:56.222Z"
 }

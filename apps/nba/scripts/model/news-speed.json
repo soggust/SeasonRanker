@@ -24563,6 +24563,18 @@
     "own": "2026-11-16T19:26:15.000Z",
     "why": "@rotowirenba.bsky.social: Tobias Harris: Likely out through November \n\n https://"
    }
+  },
+  "401910001|ryandunn|q": {
+   "game": "401910001",
+   "start": "2026-11-17T02:00Z",
+   "team": "21",
+   "name": "Ryan Dunn",
+   "status": "q",
+   "athlete": "4888725",
+   "espn": {
+    "seen": "2026-11-16T21:32:07.854Z",
+    "own": "2026-11-16T20:18:00.000Z"
+   }
   }
  }
 }
