@@ -6,8 +6,8 @@
   "nflnewsreposterbot.bsky.social": "2026-11-15T18:58:56.281Z",
   "insidenflnews.bsky.social": "2026-11-16T17:48:34.531Z",
   "nflnewsposter.bsky.social": "2026-11-16T16:27:51.537Z",
-  "rotoworld-fb.bsky.social": "2026-11-16T17:28:42.000Z",
-  "rotowirenfl.bsky.social": "2026-11-16T17:27:28.000Z"
+  "rotoworld-fb.bsky.social": "2026-11-16T18:04:53.000Z",
+  "rotowirenfl.bsky.social": "2026-11-16T18:03:13.000Z"
  },
  "claims": [
   {
@@ -19301,6 +19301,32 @@
    "kind": "status",
    "confidence": 0.35,
    "text": "Seahawks QB Sam Darnold (quad, ribs) is \"really optimistic\" to start in Week 12, per Macdonald."
+  },
+  {
+   "id": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3n2h4fqnm3t2e|samdarnold|active|return",
+   "at": "2026-11-16T18:03:13.000Z",
+   "seen": "2026-11-16T18:08:52.358Z",
+   "handle": "rotowirenfl.bsky.social",
+   "post": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3n2h4fqnm3t2e",
+   "player": "Sam Darnold",
+   "team": null,
+   "status": "active",
+   "kind": "return",
+   "confidence": 0.6,
+   "text": "Sam Darnold: Trending toward Week 12 return \n\n https://www.rotowire.com/football/player/sam-darnold-12490"
+  },
+  {
+   "id": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3n2h4iqmwch2w|samdarnold|active|return",
+   "at": "2026-11-16T18:04:53.000Z",
+   "seen": "2026-11-16T18:08:52.358Z",
+   "handle": "rotoworld-fb.bsky.social",
+   "post": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3n2h4iqmwch2w",
+   "player": "Sam Darnold",
+   "team": null,
+   "status": "active",
+   "kind": "return",
+   "confidence": 0.5,
+   "text": "Macdonald 'optimistic' Darnold will play after bye"
   }
  ]
 }
