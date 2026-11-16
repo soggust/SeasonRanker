@@ -11,32 +11,6 @@
  },
  "claims": [
   {
-   "id": "at://did:plc:qre6zxbmr3ixhdmgsgdretb5/app.bsky.feed.post/3myridynvrr2l|fernandomendoza|none|starting",
-   "at": "2026-10-26T10:13:13.656Z",
-   "seen": "2026-10-26T17:01:21.826Z",
-   "handle": "adamscheftermirror.bsky.social",
-   "post": "at://did:plc:qre6zxbmr3ixhdmgsgdretb5/app.bsky.feed.post/3myridynvrr2l",
-   "player": "Fernando Mendoza",
-   "team": "LV",
-   "status": "none",
-   "kind": "starting",
-   "confidence": 0.6,
-   "text": "Raiders coach Klint Kubiak said the team is evaluating everything, including looking toward the future by starting No. 1 pick Fernando Mendoza over Kirk Cousins. Story via @ryanmcfadden_:\n\nOriginal po"
-  },
-  {
-   "id": "at://did:plc:qre6zxbmr3ixhdmgsgdretb5/app.bsky.feed.post/3myridynvrr2l|kirkcousins|none|benched",
-   "at": "2026-10-26T10:13:13.656Z",
-   "seen": "2026-10-26T17:01:21.826Z",
-   "handle": "adamscheftermirror.bsky.social",
-   "post": "at://did:plc:qre6zxbmr3ixhdmgsgdretb5/app.bsky.feed.post/3myridynvrr2l",
-   "player": "Kirk Cousins",
-   "team": "LV",
-   "status": "none",
-   "kind": "benched",
-   "confidence": 0.5,
-   "text": "Raiders coach Klint Kubiak said the team is evaluating everything, including looking toward the future by starting No. 1 pick Fernando Mendoza over Kirk Cousins. Story via @ryanmcfadden_:\n\nOriginal po"
-  },
-  {
    "id": "at://did:plc:mbr4badgf6yu56mquzackzew/app.bsky.feed.post/3myrthnz5nc2p|zairefranklin|out|status",
    "at": "2026-10-26T13:32:07.953Z",
    "seen": "2026-10-26T17:01:21.826Z",
