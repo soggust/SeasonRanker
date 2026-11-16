@@ -4,25 +4,12 @@
   "adamscheftermirror.bsky.social": "2026-11-16T01:05:48.623Z",
   "rapsheet.bsky.social": "2026-11-15T21:23:16.739Z",
   "nflnewsreposterbot.bsky.social": "2026-11-15T18:58:56.281Z",
-  "insidenflnews.bsky.social": "2026-11-16T02:26:45.305Z",
-  "nflnewsposter.bsky.social": "2026-11-16T02:44:08.097Z",
+  "insidenflnews.bsky.social": "2026-11-16T02:58:37.619Z",
+  "nflnewsposter.bsky.social": "2026-11-16T02:53:41.451Z",
   "rotoworld-fb.bsky.social": "2026-11-16T02:04:13.000Z",
-  "rotowirenfl.bsky.social": "2026-11-16T02:47:22.000Z"
+  "rotowirenfl.bsky.social": "2026-11-16T03:05:06.000Z"
  },
  "claims": [
-  {
-   "id": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3myqpmcqslt2s|rashidshaheed|out|status",
-   "at": "2026-10-26T02:50:29.000Z",
-   "seen": "2026-10-26T05:03:40.538Z",
-   "handle": "rotowirenfl.bsky.social",
-   "post": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3myqpmcqslt2s",
-   "player": "Rashid Shaheed",
-   "team": "SEA",
-   "status": "out",
-   "kind": "status",
-   "confidence": 0.9,
-   "text": "Rashid Shaheed: Ruled out for remainder of SNF \n\n https://www.rotowire.com/football/player/rashid-shaheed-16560"
-  },
   {
    "id": "at://did:plc:qre6zxbmr3ixhdmgsgdretb5/app.bsky.feed.post/3myridynvrr2l|fernandomendoza|none|starting",
    "at": "2026-10-26T10:13:13.656Z",
