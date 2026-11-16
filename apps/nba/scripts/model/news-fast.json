@@ -1,7 +1,7 @@
 {
  "sport": "nba",
  "cursor": {
-  "rotowirenba.bsky.social": "2026-11-16T00:30:04.000Z",
+  "rotowirenba.bsky.social": "2026-11-16T01:18:16.000Z",
   "insidenbanews.bsky.social": "2026-11-13T20:00:09.852Z",
   "shamsbot.bsky.social": "2026-11-13T20:16:26.000Z"
  },
@@ -10184,6 +10184,32 @@
    "kind": "status",
    "confidence": 0.95,
    "text": "Precious Achiuwa: Ruled out Sunday \n\n https://www.rotowire.com/basketball/player/precious-achiuwa-5249"
+  },
+  {
+   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3n2fdmimlqe2z|zachlavine|out|status",
+   "at": "2026-11-16T01:06:56.000Z",
+   "seen": "2026-11-16T01:33:53.376Z",
+   "handle": "rotowirenba.bsky.social",
+   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3n2fdmimlqe2z",
+   "player": "Zach LaVine",
+   "team": null,
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.9,
+   "text": "Zach LaVine: Won't play Sunday \n\n https://www.rotowire.com/basketball/player/zach-lavine-3597"
+  },
+  {
+   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3n2fearbh2u2y|deandrehunter|out|status",
+   "at": "2026-11-16T01:18:16.000Z",
+   "seen": "2026-11-16T01:33:53.376Z",
+   "handle": "rotowirenba.bsky.social",
+   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3n2fearbh2u2y",
+   "player": "De'Andre Hunter",
+   "team": null,
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.9,
+   "text": "De'Andre Hunter: Downgraded to out \n\n https://www.rotowire.com/basketball/player/deandre-hunter-4776"
   }
  ]
 }
