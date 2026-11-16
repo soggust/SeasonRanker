@@ -7,35 +7,9 @@
   "insidenflnews.bsky.social": "2026-11-16T18:48:21.543Z",
   "nflnewsposter.bsky.social": "2026-11-16T20:12:47.090Z",
   "rotoworld-fb.bsky.social": "2026-11-16T19:48:20.000Z",
-  "rotowirenfl.bsky.social": "2026-11-16T19:57:42.000Z"
+  "rotowirenfl.bsky.social": "2026-11-16T20:25:25.000Z"
  },
  "claims": [
-  {
-   "id": "at://did:plc:hlvr2omhnmvdmfnvmcuhyevz/app.bsky.feed.post/3myskg7eg4c2y|fernandomendoza|none|benched",
-   "at": "2026-10-26T20:22:55.098Z",
-   "seen": "2026-10-26T21:42:31.055Z",
-   "handle": "rapsheet.bsky.social",
-   "post": "at://did:plc:hlvr2omhnmvdmfnvmcuhyevz/app.bsky.feed.post/3myskg7eg4c2y",
-   "player": "Fernando Mendoza",
-   "team": "LV",
-   "status": "none",
-   "kind": "benched",
-   "confidence": 0.8,
-   "text": "Raiders coach Klint Kubiak made clear that “there is no controversy” — Kirk Cousins will start this week. \n\nAs for Fernando Mendoza, “Fernando is going to play at some point, but it’s not going to be "
-  },
-  {
-   "id": "at://did:plc:fuqjc7x4gxvnwzksnlxwbe4x/app.bsky.feed.post/3myskng2tg2km|dillongabriel|active|status",
-   "at": "2026-10-26T20:26:57.008Z",
-   "seen": "2026-10-26T21:42:31.055Z",
-   "handle": "nflnewsposter.bsky.social",
-   "post": "at://did:plc:fuqjc7x4gxvnwzksnlxwbe4x/app.bsky.feed.post/3myskng2tg2km",
-   "player": "Dillon Gabriel",
-   "team": "CLE",
-   "status": "active",
-   "kind": "status",
-   "confidence": 0.9,
-   "text": "[Browns] We've activated QB Dillon Gabriel from injured reserve and waived TE Carsen Ryan www.clevelandbrowns.com/news/browns-... [Browns activate QB Dillon Gabriel]"
-  },
   {
    "id": "at://did:plc:qre6zxbmr3ixhdmgsgdretb5/app.bsky.feed.post/3myskps6aya2a|grantcalcaterra|active|status",
    "at": "2026-10-26T20:28:16.724Z",
