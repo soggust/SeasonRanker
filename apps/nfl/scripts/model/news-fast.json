@@ -5,76 +5,11 @@
   "rapsheet.bsky.social": "2026-11-15T21:23:16.739Z",
   "nflnewsreposterbot.bsky.social": "2026-11-15T18:58:56.281Z",
   "insidenflnews.bsky.social": "2026-11-16T02:26:45.305Z",
-  "nflnewsposter.bsky.social": "2026-11-16T02:08:38.048Z",
+  "nflnewsposter.bsky.social": "2026-11-16T02:44:08.097Z",
   "rotoworld-fb.bsky.social": "2026-11-16T02:04:13.000Z",
-  "rotowirenfl.bsky.social": "2026-11-16T02:27:36.000Z"
+  "rotowirenfl.bsky.social": "2026-11-16T02:47:22.000Z"
  },
  "claims": [
-  {
-   "id": "at://did:plc:fuqjc7x4gxvnwzksnlxwbe4x/app.bsky.feed.post/3myqoq2xekkbc|rashidshaheed|out|status",
-   "at": "2026-10-26T02:34:41.514Z",
-   "seen": "2026-10-26T05:03:40.538Z",
-   "handle": "nflnewsposter.bsky.social",
-   "post": "at://did:plc:fuqjc7x4gxvnwzksnlxwbe4x/app.bsky.feed.post/3myqoq2xekkbc",
-   "player": "Rashid Shaheed",
-   "team": "SEA",
-   "status": "out",
-   "kind": "status",
-   "confidence": 0.8,
-   "text": "[Seahawks] Seahawks injury updates: WR Rashid Shaheed will not return; RB Velus Jones Jr. is Out (hamstring). twitter.com/seahawksPR/s..."
-  },
-  {
-   "id": "at://did:plc:fuqjc7x4gxvnwzksnlxwbe4x/app.bsky.feed.post/3myqoq2xekkbc|velusjones|out|status",
-   "at": "2026-10-26T02:34:41.514Z",
-   "seen": "2026-10-26T05:03:40.538Z",
-   "handle": "nflnewsposter.bsky.social",
-   "post": "at://did:plc:fuqjc7x4gxvnwzksnlxwbe4x/app.bsky.feed.post/3myqoq2xekkbc",
-   "player": "Velus Jones Jr.",
-   "team": "SEA",
-   "status": "out",
-   "kind": "status",
-   "confidence": 0.95,
-   "text": "[Seahawks] Seahawks injury updates: WR Rashid Shaheed will not return; RB Velus Jones Jr. is Out (hamstring). twitter.com/seahawksPR/s..."
-  },
-  {
-   "id": "at://did:plc:mbr4badgf6yu56mquzackzew/app.bsky.feed.post/3myqoqmhdis2b|rashidshaheed|out|status",
-   "at": "2026-10-26T02:34:59.862Z",
-   "seen": "2026-10-26T05:03:40.538Z",
-   "handle": "insidenflnews.bsky.social",
-   "post": "at://did:plc:mbr4badgf6yu56mquzackzew/app.bsky.feed.post/3myqoqmhdis2b",
-   "player": "Rashid Shaheed",
-   "team": "SEA",
-   "status": "out",
-   "kind": "status",
-   "confidence": 0.8,
-   "text": "Status alert: Rashid Shaheed (knee) won't return."
-  },
-  {
-   "id": "at://did:plc:qre6zxbmr3ixhdmgsgdretb5/app.bsky.feed.post/3myqpibs76p2t|rashidshaheed|out|status",
-   "at": "2026-10-26T02:48:13.901Z",
-   "seen": "2026-10-26T05:03:40.538Z",
-   "handle": "adamscheftermirror.bsky.social",
-   "post": "at://did:plc:qre6zxbmr3ixhdmgsgdretb5/app.bsky.feed.post/3myqpibs76p2t",
-   "player": "Rashid Shaheed",
-   "team": "SEA",
-   "status": "out",
-   "kind": "status",
-   "confidence": 0.8,
-   "text": "Seattle WR Rashid Shaheed will not return tonight due to a knee injury; Seahawks RB Velus Jones Jr. is out due to a hamstring injury.\n\nOriginal post"
-  },
-  {
-   "id": "at://did:plc:qre6zxbmr3ixhdmgsgdretb5/app.bsky.feed.post/3myqpibs76p2t|velusjones|out|status",
-   "at": "2026-10-26T02:48:13.901Z",
-   "seen": "2026-10-26T05:03:40.538Z",
-   "handle": "adamscheftermirror.bsky.social",
-   "post": "at://did:plc:qre6zxbmr3ixhdmgsgdretb5/app.bsky.feed.post/3myqpibs76p2t",
-   "player": "Velus Jones Jr.",
-   "team": "SEA",
-   "status": "out",
-   "kind": "status",
-   "confidence": 0.85,
-   "text": "Seattle WR Rashid Shaheed will not return tonight due to a knee injury; Seahawks RB Velus Jones Jr. is out due to a hamstring injury.\n\nOriginal post"
-  },
   {
    "id": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3myqpmcqslt2s|rashidshaheed|out|status",
    "at": "2026-10-26T02:50:29.000Z",
