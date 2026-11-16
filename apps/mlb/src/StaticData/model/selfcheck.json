@@ -1,5 +1,5 @@
 {
- "at": "2026-11-16T11:08:03.781Z",
+ "at": "2026-11-16T22:53:02.182Z",
  "baseline": {
   "from": "2026-10-12",
   "to": "2026-11-09"
@@ -215,7 +215,7 @@
   },
   {
    "examples": [],
-   "headline": "Model files 197h old, 0 open bets overdue to grade; Odds API credits 83% left; 0 bets placed in a week of 0 games",
+   "headline": "Model files 208h old, 0 open bets overdue to grade; Odds API credits 82% left; 0 bets placed in a week of 0 games",
    "how": "the newest commit of the sport's model files, the open bets started 12 hours ago or more, The Odds API's credits (state.odds), the state's sources",
    "id": "C16",
    "metric": "ageH",
@@ -223,7 +223,7 @@
    "needs": null,
    "rows": [
     {
-     "ageH": 197,
+     "ageH": 208,
      "at": "2026-11-08T00:06:23-06:00",
      "key": "files",
      "overdue": 0
@@ -232,8 +232,8 @@
      "cycleEnd": "2026-12-01T00:02:39.102Z",
      "key": "credits",
      "monthly": 20000,
-     "remaining": 16671,
-     "share": 0.8336
+     "remaining": 16440,
+     "share": 0.822
     },
     {
      "down": [],
@@ -249,7 +249,7 @@
    "tested": null,
    "threshold": "watch files 3h old with bets overdue, credits under 20%, a source down, or no bets in a week with games; flag 6h old with bets overdue, or credits under 10%",
    "title": "Ops",
-   "value": 197
+   "value": 208
   },
   {
    "examples": [],
@@ -441,7 +441,7 @@
      "n": 0,
      "ratio": 0,
      "share": 0,
-     "shareBase": 0.0579,
+     "shareBase": 0.0628,
      "status": "ok"
     },
     {
@@ -449,7 +449,7 @@
      "n": 0,
      "ratio": 0,
      "share": 0,
-     "shareBase": 0.0124,
+     "shareBase": 0.0135,
      "status": "ok"
     },
     {
@@ -457,7 +457,7 @@
      "n": 0,
      "ratio": 0,
      "share": 0,
-     "shareBase": 0.0041,
+     "shareBase": 0.0045,
      "status": "ok"
     },
     {
@@ -465,7 +465,7 @@
      "n": 0,
      "ratio": 0,
      "share": 0,
-     "shareBase": 0.0248,
+     "shareBase": 0.0269,
      "status": "ok"
     }
    ],
@@ -534,7 +534,7 @@
   },
   {
    "examples": [],
-   "headline": "0 plain write-ups, 0 Claude analyses tried this week (0 ok); AI calls 0, $0.00 this week, $0.00 of $25 this month",
+   "headline": "0 plain write-ups, 0 Claude analyses tried this week (0 ok); AI calls 0, $0.00 this week, $0.25 of $25 this month",
    "how": "writeups.json's plain and Claude write-ups, and the AI usage log's calls this week (ai-budget.mjs: every sport's spend counts against the caps)",
    "id": "C15",
    "metric": "rejectRate",
@@ -567,9 +567,9 @@
     {
      "dayCap": 1.5,
      "key": "ai spend",
-     "month": 0,
+     "month": 0.2535,
      "monthCap": 25,
-     "share": 0
+     "share": 0.0101
     }
    ],
    "status": "thin",
@@ -640,7 +640,7 @@
    "how": "the day's last state.json for 35 days (git), the week's start against now; the changelog's entries this week verbatim",
    "id": "C9",
    "metric": "changes",
-   "n": 35,
+   "n": 34,
    "needs": null,
    "rows": [
     {
