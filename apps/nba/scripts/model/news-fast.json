@@ -1,50 +1,11 @@
 {
  "sport": "nba",
  "cursor": {
-  "rotowirenba.bsky.social": "2026-11-16T18:07:04.000Z",
+  "rotowirenba.bsky.social": "2026-11-16T18:15:19.000Z",
   "insidenbanews.bsky.social": "2026-11-13T20:00:09.852Z",
   "shamsbot.bsky.social": "2026-11-13T20:16:26.000Z"
  },
  "claims": [
-  {
-   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mysdkv2ws226|ivicazubac|out|status",
-   "at": "2026-10-26T18:20:15.000Z",
-   "seen": "2026-10-26T18:40:14.272Z",
-   "handle": "rotowirenba.bsky.social",
-   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mysdkv2ws226",
-   "player": "Ivica Zubac",
-   "team": null,
-   "status": "out",
-   "kind": "status",
-   "confidence": 0.95,
-   "text": "Ivica Zubac: Listed out for Monday \n\n https://www.rotowire.com/basketball/player/ivica-zubac-3888"
-  },
-  {
-   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mysdpi3ufp23|chetholmgren|out|status",
-   "at": "2026-10-26T18:22:49.000Z",
-   "seen": "2026-10-26T18:40:14.272Z",
-   "handle": "rotowirenba.bsky.social",
-   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mysdpi3ufp23",
-   "player": "Chet Holmgren",
-   "team": "OKC",
-   "status": "out",
-   "kind": "status",
-   "confidence": 0.93,
-   "text": "Chet Holmgren: Sitting out Monday \n\n https://www.rotowire.com/basketball/player/chet-holmgren-5697"
-  },
-  {
-   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mysdt2j3jh2q|casonwallace|out|status",
-   "at": "2026-10-26T18:24:49.000Z",
-   "seen": "2026-10-26T18:40:14.272Z",
-   "handle": "rotowirenba.bsky.social",
-   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mysdt2j3jh2q",
-   "player": "Cason Wallace",
-   "team": "OKC",
-   "status": "out",
-   "kind": "status",
-   "confidence": 0.95,
-   "text": "Cason Wallace: Out with sore shoulder \n\n https://www.rotowire.com/basketball/player/cason-wallace-5898"
-  },
   {
    "id": "at://did:plc:sa73fbx3vxzh2fw5pu5wmief/app.bsky.feed.post/3mysevpqt6r2u|jalensuggs|out|status",
    "at": "2026-10-26T18:40:05.000Z",
@@ -10184,6 +10145,45 @@
    "kind": "status",
    "confidence": 0.9,
    "text": "LeBron James: Won't play Monday \n\n https://www.rotowire.com/basketball/player/lebron-james-2344"
+  },
+  {
+   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3n2h4qishpx2z|joelembiid|questionable|status",
+   "at": "2026-11-16T18:09:14.000Z",
+   "seen": "2026-11-16T18:29:57.689Z",
+   "handle": "rotowirenba.bsky.social",
+   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3n2h4qishpx2z",
+   "player": "Joel Embiid",
+   "team": null,
+   "status": "questionable",
+   "kind": "status",
+   "confidence": 0.9,
+   "text": "Joel Embiid: Questionable for Monday \n\n https://www.rotowire.com/basketball/player/joel-embiid-3572"
+  },
+  {
+   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3n2h4xudlmz2x|amenthompson|questionable|status",
+   "at": "2026-11-16T18:13:21.000Z",
+   "seen": "2026-11-16T18:29:57.689Z",
+   "handle": "rotowirenba.bsky.social",
+   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3n2h4xudlmz2x",
+   "player": "Amen Thompson",
+   "team": null,
+   "status": "questionable",
+   "kind": "status",
+   "confidence": 0.9,
+   "text": "Amen Thompson: Questionable to play Monday \n\n https://www.rotowire.com/basketball/player/amen-thompson-5931"
+  },
+  {
+   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3n2h53fbj3x2b|fredvanvleet|active|status",
+   "at": "2026-11-16T18:15:19.000Z",
+   "seen": "2026-11-16T18:29:57.689Z",
+   "handle": "rotowirenba.bsky.social",
+   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3n2h53fbj3x2b",
+   "player": "Fred VanVleet",
+   "team": null,
+   "status": "active",
+   "kind": "status",
+   "confidence": 0.9,
+   "text": "Fred VanVleet: Removed from injury report \n\n https://www.rotowire.com/basketball/player/fred-vanvleet-3935"
   }
  ]
 }

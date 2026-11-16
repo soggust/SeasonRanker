@@ -4,38 +4,12 @@
   "adamscheftermirror.bsky.social": "2026-11-16T17:15:55.232Z",
   "rapsheet.bsky.social": "2026-11-15T21:23:16.739Z",
   "nflnewsreposterbot.bsky.social": "2026-11-15T18:58:56.281Z",
-  "insidenflnews.bsky.social": "2026-11-16T17:48:34.531Z",
+  "insidenflnews.bsky.social": "2026-11-16T18:23:59.466Z",
   "nflnewsposter.bsky.social": "2026-11-16T16:27:51.537Z",
-  "rotoworld-fb.bsky.social": "2026-11-16T18:04:53.000Z",
-  "rotowirenfl.bsky.social": "2026-11-16T18:03:13.000Z"
+  "rotoworld-fb.bsky.social": "2026-11-16T18:27:10.000Z",
+  "rotowirenfl.bsky.social": "2026-11-16T18:18:10.000Z"
  },
  "claims": [
-  {
-   "id": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3mysdsfnput27|danieljones|none|starting",
-   "at": "2026-10-26T18:24:28.000Z",
-   "seen": "2026-10-26T18:40:14.272Z",
-   "handle": "rotowirenfl.bsky.social",
-   "post": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3mysdsfnput27",
-   "player": "Daniel Jones",
-   "team": "IND",
-   "status": "none",
-   "kind": "starting",
-   "confidence": 0.9,
-   "text": "Daniel Jones: Remaining starting quarterback \n\n https://www.rotowire.com/football/player/daniel-jones-13491"
-  },
-  {
-   "id": "at://did:plc:fuqjc7x4gxvnwzksnlxwbe4x/app.bsky.feed.post/3mysdyashqckm|danieljones|none|starting",
-   "at": "2026-10-26T18:27:44.397Z",
-   "seen": "2026-10-26T18:40:14.272Z",
-   "handle": "nflnewsposter.bsky.social",
-   "post": "at://did:plc:fuqjc7x4gxvnwzksnlxwbe4x/app.bsky.feed.post/3mysdyashqckm",
-   "player": "Daniel Jones",
-   "team": "IND",
-   "status": "none",
-   "kind": "starting",
-   "confidence": 0.95,
-   "text": "[Chappell] Colts HC Shane Steichen: Daniel Jones is our starting quarterback. twitter.com/mchappell51/..."
-  },
   {
    "id": "at://did:plc:mbr4badgf6yu56mquzackzew/app.bsky.feed.post/3mysectuvm22b|danieljones|none|starting",
    "at": "2026-10-26T18:33:39.943Z",
@@ -19327,6 +19301,58 @@
    "kind": "return",
    "confidence": 0.5,
    "text": "Macdonald 'optimistic' Darnold will play after bye"
+  },
+  {
+   "id": "at://did:plc:mbr4badgf6yu56mquzackzew/app.bsky.feed.post/3n2h4qwi3qs2h|drakelondon|active|return",
+   "at": "2026-11-16T18:09:28.632Z",
+   "seen": "2026-11-16T18:29:57.689Z",
+   "handle": "insidenflnews.bsky.social",
+   "post": "at://did:plc:mbr4badgf6yu56mquzackzew/app.bsky.feed.post/3n2h4qwi3qs2h",
+   "player": "Drake London",
+   "team": "ATL",
+   "status": "active",
+   "kind": "return",
+   "confidence": 0.9,
+   "text": "Drake London cleared concussion protocol."
+  },
+  {
+   "id": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3n2h5ai7nv22f|drakelondon|active|return",
+   "at": "2026-11-16T18:18:10.000Z",
+   "seen": "2026-11-16T18:29:57.689Z",
+   "handle": "rotowirenfl.bsky.social",
+   "post": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3n2h5ai7nv22f",
+   "player": "Drake London",
+   "team": "ATL",
+   "status": "active",
+   "kind": "return",
+   "confidence": 0.9,
+   "text": "Drake London: Cleared of head injury \n\n https://www.rotowire.com/football/player/drake-london-15868"
+  },
+  {
+   "id": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3n2h5b2duir2s|drakelondon|active|return",
+   "at": "2026-11-16T18:18:29.000Z",
+   "seen": "2026-11-16T18:29:57.689Z",
+   "handle": "rotoworld-fb.bsky.social",
+   "post": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3n2h5b2duir2s",
+   "player": "Drake London",
+   "team": "ATL",
+   "status": "active",
+   "kind": "return",
+   "confidence": 0.9,
+   "text": "Stefanski: London cleared concussion protocol"
+  },
+  {
+   "id": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3n2h5ql4q5c2j|hutchinson|out|status",
+   "at": "2026-11-16T18:27:10.000Z",
+   "seen": "2026-11-16T18:29:57.689Z",
+   "handle": "rotoworld-fb.bsky.social",
+   "post": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3n2h5ql4q5c2j",
+   "player": "Hutchinson",
+   "team": null,
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.85,
+   "text": "Schefter: Hutchinson has torn ACL, out for year"
   }
  ]
 }
