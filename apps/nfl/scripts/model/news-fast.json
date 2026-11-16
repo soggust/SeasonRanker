@@ -6,7 +6,7 @@
   "nflnewsreposterbot.bsky.social": "2026-11-15T18:58:56.281Z",
   "insidenflnews.bsky.social": "2026-11-16T14:20:26.971Z",
   "nflnewsposter.bsky.social": "2026-11-16T14:47:33.329Z",
-  "rotoworld-fb.bsky.social": "2026-11-16T14:50:40.000Z",
+  "rotoworld-fb.bsky.social": "2026-11-16T15:31:03.000Z",
   "rotowirenfl.bsky.social": "2026-11-16T14:55:54.000Z"
  },
  "claims": [
@@ -19340,6 +19340,19 @@
    "kind": "status",
    "confidence": 0.8,
    "text": "More about Lions star Aidan Hutchinson being out for the season with what initial tests showed to be a torn ACL in his right knee:\n\nOriginal post"
+  },
+  {
+   "id": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3n2gtvnj3bh2a|genosmith|questionable|starting",
+   "at": "2026-11-16T15:31:03.000Z",
+   "seen": "2026-11-16T15:49:04.306Z",
+   "handle": "rotoworld-fb.bsky.social",
+   "post": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3n2gtvnj3bh2a",
+   "player": "Geno Smith",
+   "team": null,
+   "status": "questionable",
+   "kind": "starting",
+   "confidence": 0.7,
+   "text": "Geno Smith (ankle) will start vs. LAC if healthy"
   }
  ]
 }
