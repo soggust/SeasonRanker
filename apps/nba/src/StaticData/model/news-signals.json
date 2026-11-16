@@ -1,18 +1,6 @@
 {
  "sport": "nba",
  "days": 2,
- "signals": [
-  {
-   "team": "18",
-   "abbr": "NY",
-   "athlete": "3062679",
-   "player": "Josh Hart",
-   "kind": "benched",
-   "direction": "down",
-   "confidence": 0.6,
-   "headline": "Josh Hart searching for answers after zero-point outing in Knicks loss",
-   "at": "2026-11-14T17:06:59.000Z"
-  }
- ],
- "at": "2026-11-15T00:21:01.317Z"
+ "signals": [],
+ "at": "2026-11-16T17:48:52.525Z"
 }

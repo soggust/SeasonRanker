@@ -1,93 +1,15 @@
 {
  "sport": "nfl",
  "cursor": {
-  "adamscheftermirror.bsky.social": "2026-11-16T16:25:53.278Z",
+  "adamscheftermirror.bsky.social": "2026-11-16T17:15:55.232Z",
   "rapsheet.bsky.social": "2026-11-15T21:23:16.739Z",
   "nflnewsreposterbot.bsky.social": "2026-11-15T18:58:56.281Z",
-  "insidenflnews.bsky.social": "2026-11-16T16:15:30.626Z",
+  "insidenflnews.bsky.social": "2026-11-16T17:48:34.531Z",
   "nflnewsposter.bsky.social": "2026-11-16T16:27:51.537Z",
-  "rotoworld-fb.bsky.social": "2026-11-16T15:31:03.000Z",
-  "rotowirenfl.bsky.social": "2026-11-16T14:55:54.000Z"
+  "rotoworld-fb.bsky.social": "2026-11-16T17:28:42.000Z",
+  "rotowirenfl.bsky.social": "2026-11-16T17:27:28.000Z"
  },
  "claims": [
-  {
-   "id": "at://did:plc:fuqjc7x4gxvnwzksnlxwbe4x/app.bsky.feed.post/3mys7m6vuqs2u|charlescross|out|status",
-   "at": "2026-10-26T17:09:24.789Z",
-   "seen": "2026-10-26T17:24:39.280Z",
-   "handle": "nflnewsposter.bsky.social",
-   "post": "at://did:plc:fuqjc7x4gxvnwzksnlxwbe4x/app.bsky.feed.post/3mys7m6vuqs2u",
-   "player": "Charles Cross",
-   "team": "SEA",
-   "status": "out",
-   "kind": "status",
-   "confidence": 0.7,
-   "text": "[Schultz] Seahawks  LT Charles Cross suffered a high-ankle sprain Sunday night vs the Chiefs and will be week-to-week moving forward as he recovers.\n\nSeattle hosts the Bears on Monday Night Football n"
-  },
-  {
-   "id": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3mys7phbirp25|price|limited|return",
-   "at": "2026-10-26T17:11:14.000Z",
-   "seen": "2026-10-26T17:24:39.280Z",
-   "handle": "rotoworld-fb.bsky.social",
-   "post": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3mys7phbirp25",
-   "player": "Price",
-   "team": "SEA",
-   "status": "limited",
-   "kind": "return",
-   "confidence": 0.4,
-   "text": "Seahawks will open Price's 21-day return window"
-  },
-  {
-   "id": "at://did:plc:mbr4badgf6yu56mquzackzew/app.bsky.feed.post/3mys7x7tee22j|charlescross|out|status",
-   "at": "2026-10-26T17:15:34.856Z",
-   "seen": "2026-10-26T17:24:39.280Z",
-   "handle": "insidenflnews.bsky.social",
-   "post": "at://did:plc:mbr4badgf6yu56mquzackzew/app.bsky.feed.post/3mys7x7tee22j",
-   "player": "Charles Cross",
-   "team": "SEA",
-   "status": "out",
-   "kind": "status",
-   "confidence": 0.6,
-   "text": "Schultz: Seahawks LT Charles Cross suffered high-ankle sprain."
-  },
-  {
-   "id": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3mys7yfok3j2k|charlescross|out|status",
-   "at": "2026-10-26T17:16:14.000Z",
-   "seen": "2026-10-26T17:24:39.280Z",
-   "handle": "rotoworld-fb.bsky.social",
-   "post": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3mys7yfok3j2k",
-   "player": "Charles Cross",
-   "team": "SEA",
-   "status": "out",
-   "kind": "status",
-   "confidence": 0.6,
-   "text": "Schultz: Charles Cross has high-ankle sprain"
-  },
-  {
-   "id": "at://did:plc:mbr4badgf6yu56mquzackzew/app.bsky.feed.post/3mys7yi2dx22j|terrymclaurin|out|status",
-   "at": "2026-10-26T17:16:17.029Z",
-   "seen": "2026-10-26T17:24:39.280Z",
-   "handle": "insidenflnews.bsky.social",
-   "post": "at://did:plc:mbr4badgf6yu56mquzackzew/app.bsky.feed.post/3mys7yi2dx22j",
-   "player": "Terry McLaurin",
-   "team": "WAS",
-   "status": "out",
-   "kind": "status",
-   "confidence": 0.6,
-   "text": "Dan Quinn said Stefon Diggs' workload won't change much with Terry McLaurin out.\n\nCommanders would look to others like Antonio Williams to step up."
-  },
-  {
-   "id": "at://did:plc:hlvr2omhnmvdmfnvmcuhyevz/app.bsky.feed.post/3mysb6bvfrs27|charlescross|out|status",
-   "at": "2026-10-26T17:37:25.642Z",
-   "seen": "2026-10-26T18:17:12.033Z",
-   "handle": "rapsheet.bsky.social",
-   "post": "at://did:plc:hlvr2omhnmvdmfnvmcuhyevz/app.bsky.feed.post/3mysb6bvfrs27",
-   "player": "Charles Cross",
-   "team": "SEA",
-   "status": "out",
-   "kind": "status",
-   "confidence": 0.8,
-   "text": "Seahawks OT Charles Cross, who suffered an ankle injury on Sunday, has a high-ankle sprain and will miss time, the MRI revealed.\n\nThe hope is he’s back in 1-2 weeks, but it depends on how rehab goes."
-  },
   {
    "id": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3mysdsfnput27|danieljones|none|starting",
    "at": "2026-10-26T18:24:28.000Z",
@@ -19366,6 +19288,19 @@
    "kind": "status",
    "confidence": 0.8,
    "text": "[Rapoport] Cowboys G Tyler Booker suffered a high-ankle sprain in his team's loss to the 49ers, sources say. While it's generally a 4-6 week injury, the hope is that Booker can be back within that 4 w"
+  },
+  {
+   "id": "at://did:plc:mbr4badgf6yu56mquzackzew/app.bsky.feed.post/3n2h3lkhxqk2y|samdarnold|questionable|status",
+   "at": "2026-11-16T17:48:34.531Z",
+   "seen": "2026-11-16T17:48:52.525Z",
+   "handle": "insidenflnews.bsky.social",
+   "post": "at://did:plc:mbr4badgf6yu56mquzackzew/app.bsky.feed.post/3n2h3lkhxqk2y",
+   "player": "Sam Darnold",
+   "team": "SEA",
+   "status": "questionable",
+   "kind": "status",
+   "confidence": 0.35,
+   "text": "Seahawks QB Sam Darnold (quad, ribs) is \"really optimistic\" to start in Week 12, per Macdonald."
   }
  ]
 }
