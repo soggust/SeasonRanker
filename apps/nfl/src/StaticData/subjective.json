@@ -143,6 +143,10 @@
     "name": "Joe Fagnano",
     "responsibility": 6
   },
+  "4430841": {
+    "name": "Carson Beck",
+    "responsibility": 6
+  },
   "4431452": {
     "name": "Drake Maye",
     "responsibility": 9
@@ -165,6 +169,10 @@
   },
   "4433970": {
     "name": "J.J. McCarthy",
+    "responsibility": 6
+  },
+  "4433971": {
+    "name": "Kyle McCord",
     "responsibility": 6
   },
   "4434153": {
@@ -190,5 +198,9 @@
   "4689114": {
     "name": "Jaxson Dart",
     "responsibility": 5
+  },
+  "4837248": {
+    "name": "Fernando Mendoza",
+    "responsibility": 6
   }
 }
