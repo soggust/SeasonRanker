@@ -4,25 +4,12 @@
   "adamscheftermirror.bsky.social": "2026-11-16T01:05:48.623Z",
   "rapsheet.bsky.social": "2026-11-15T21:23:16.739Z",
   "nflnewsreposterbot.bsky.social": "2026-11-15T18:58:56.281Z",
-  "insidenflnews.bsky.social": "2026-11-16T01:00:42.439Z",
-  "nflnewsposter.bsky.social": "2026-11-16T02:01:03.999Z",
+  "insidenflnews.bsky.social": "2026-11-16T02:26:45.305Z",
+  "nflnewsposter.bsky.social": "2026-11-16T02:08:38.048Z",
   "rotoworld-fb.bsky.social": "2026-11-16T02:04:13.000Z",
-  "rotowirenfl.bsky.social": "2026-11-16T02:02:37.000Z"
+  "rotowirenfl.bsky.social": "2026-11-16T02:27:36.000Z"
  },
  "claims": [
-  {
-   "id": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3myqnkip7si2e|rashidshaheed|questionable|status",
-   "at": "2026-10-26T02:13:40.000Z",
-   "seen": "2026-10-26T05:03:40.538Z",
-   "handle": "rotowirenfl.bsky.social",
-   "post": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3myqnkip7si2e",
-   "player": "Rashid Shaheed",
-   "team": "SEA",
-   "status": "questionable",
-   "kind": "status",
-   "confidence": 0.9,
-   "text": "Rashid Shaheed: Questionable to return for second half \n\n https://www.rotowire.com/football/player/rashid-shaheed-16560"
-  },
   {
    "id": "at://did:plc:fuqjc7x4gxvnwzksnlxwbe4x/app.bsky.feed.post/3myqoq2xekkbc|rashidshaheed|out|status",
    "at": "2026-10-26T02:34:41.514Z",
@@ -19444,6 +19431,19 @@
    "kind": "status",
    "confidence": 0.7,
    "text": "Drake Maye: Expected to miss time \n\n https://www.rotowire.com/football/player/drake-maye-17673"
+  },
+  {
+   "id": "at://did:plc:fuqjc7x4gxvnwzksnlxwbe4x/app.bsky.feed.post/3n2fh2slxbc2v|danieljones|none|starting",
+   "at": "2026-11-16T02:08:38.048Z",
+   "seen": "2026-11-16T02:27:52.925Z",
+   "handle": "nflnewsposter.bsky.social",
+   "post": "at://did:plc:fuqjc7x4gxvnwzksnlxwbe4x/app.bsky.feed.post/3n2fh2slxbc2v",
+   "player": "Daniel Jones",
+   "team": "IND",
+   "status": "none",
+   "kind": "starting",
+   "confidence": 0.9,
+   "text": "[Holder] Colts QB Daniel Jones posted a 1.7 QBR today, the worst of any QB in any start this season. That includes Carson Wentz's MNF performance last week and Baker Mayfield's zero-completion game.\n\n"
   }
  ]
 }
