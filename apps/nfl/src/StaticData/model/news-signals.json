@@ -67,51 +67,7 @@
    "confidence": 0.9,
    "headline": "Why the Raiders named Fernando Mendoza as the starter",
    "at": "2026-11-14T11:00:00.000Z"
-  },
-  {
-   "team": "26",
-   "abbr": "SEA",
-   "athlete": "3924327",
-   "player": "Drew Lock",
-   "kind": "starting",
-   "direction": "up",
-   "confidence": 0.9,
-   "headline": "Seahawks are hurting with injuries, but two players will return vs. Raiders",
-   "at": "2026-11-14T04:01:15.000Z"
-  },
-  {
-   "team": "26",
-   "abbr": "SEA",
-   "athlete": "3912547",
-   "player": "Sam Darnold",
-   "kind": "benched",
-   "direction": "down",
-   "confidence": 0.9,
-   "headline": "Seahawks are hurting with injuries, but two players will return vs. Raiders",
-   "at": "2026-11-14T04:01:15.000Z"
-  },
-  {
-   "team": "26",
-   "abbr": "SEA",
-   "athlete": "3120358",
-   "player": "Uchenna Nwosu",
-   "kind": "return",
-   "direction": "up",
-   "confidence": 0.9,
-   "headline": "Seahawks are hurting with injuries, but two players will return vs. Raiders",
-   "at": "2026-11-14T04:01:15.000Z"
-  },
-  {
-   "team": "26",
-   "abbr": "SEA",
-   "athlete": "4032473",
-   "player": "Rashid Shaheed",
-   "kind": "return",
-   "direction": "up",
-   "confidence": 0.9,
-   "headline": "Seahawks are hurting with injuries, but two players will return vs. Raiders",
-   "at": "2026-11-14T04:01:15.000Z"
   }
  ],
- "at": "2026-11-16T00:23:10.961Z"
+ "at": "2026-11-16T04:16:22.982Z"
 }
