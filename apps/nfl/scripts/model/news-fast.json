@@ -5,9 +5,9 @@
   "rapsheet.bsky.social": "2026-11-15T21:23:16.739Z",
   "nflnewsreposterbot.bsky.social": "2026-11-15T18:58:56.281Z",
   "insidenflnews.bsky.social": "2026-11-16T14:20:26.971Z",
-  "nflnewsposter.bsky.social": "2026-11-16T04:13:52.078Z",
+  "nflnewsposter.bsky.social": "2026-11-16T14:38:00.407Z",
   "rotoworld-fb.bsky.social": "2026-11-16T13:43:44.000Z",
-  "rotowirenfl.bsky.social": "2026-11-16T14:23:24.000Z"
+  "rotowirenfl.bsky.social": "2026-11-16T14:42:22.000Z"
  },
  "claims": [
   {
@@ -19353,6 +19353,32 @@
    "kind": "status",
    "confidence": 0.85,
    "text": "The Patriots are concerned that QB Drake Maye fractured his ankle, per sources. Maye remained in Germany to undergo additional testing to determine whether he needs surgery. Either way, he is out inde"
+  },
+  {
+   "id": "at://did:plc:fuqjc7x4gxvnwzksnlxwbe4x/app.bsky.feed.post/3n2gqm5fcvk25|drakemaye|out|status",
+   "at": "2026-11-16T14:32:03.203Z",
+   "seen": "2026-11-16T14:45:53.170Z",
+   "handle": "nflnewsposter.bsky.social",
+   "post": "at://did:plc:fuqjc7x4gxvnwzksnlxwbe4x/app.bsky.feed.post/3n2gqm5fcvk25",
+   "player": "Drake Maye",
+   "team": "NE",
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.8,
+   "text": "[Schefter] The Patriots are concerned that QB Drake Maye fractured his ankle, per sources. Maye remained in Germany to undergo additional testing to determine whether he needs surgery. Either way, he "
+  },
+  {
+   "id": "at://did:plc:fuqjc7x4gxvnwzksnlxwbe4x/app.bsky.feed.post/3n2gqws27ys25|brockbowers|questionable|status",
+   "at": "2026-11-16T14:38:00.407Z",
+   "seen": "2026-11-16T14:45:53.170Z",
+   "handle": "nflnewsposter.bsky.social",
+   "post": "at://did:plc:fuqjc7x4gxvnwzksnlxwbe4x/app.bsky.feed.post/3n2gqws27ys25",
+   "player": "Brock Bowers",
+   "team": "LV",
+   "status": "questionable",
+   "kind": "status",
+   "confidence": 0.8,
+   "text": "[Rapoport] Raiders star TE Brock Bowers, who did not finish Sunday’s game, is not believed to have suffered a major ankle injury, source says. More day-to-day.\n\nBowers will have more tests today to de"
   }
  ]
 }
