@@ -8057,6 +8057,18 @@
     "seen": "2026-11-16T00:00:41.535Z",
     "own": "2026-11-15T23:26:00.000Z"
    }
+  },
+  "401892725|jonathanmarchessault|out": {
+   "game": "401892725",
+   "start": "2026-11-16T02:00Z",
+   "team": "27",
+   "name": "Jonathan Marchessault",
+   "status": "out",
+   "athlete": "2967072",
+   "espn": {
+    "seen": "2026-11-16T01:50:37.515Z",
+    "own": "2026-11-16T01:40:00.000Z"
+   }
   }
  }
 }
