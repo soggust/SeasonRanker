@@ -3,7 +3,7 @@
  "cursor": {
   "johnston-bot.bsky.social": "2026-11-12T16:02:25.547Z",
   "notfriedgehnic.bsky.social": "2026-11-16T03:33:57.405Z",
-  "dailyfaceoff.bsky.social": "2026-11-17T15:04:29.000Z",
+  "dailyfaceoff.bsky.social": "2026-11-17T16:03:13.000Z",
   "dfotoronto.bsky.social": "2026-11-17T15:13:32.000Z",
   "marklazerus.bsky.social": "2026-11-17T15:44:50.228Z"
  },
@@ -2438,6 +2438,19 @@
    "kind": "status",
    "confidence": 0.85,
    "text": "Bo Byram won't play in the next two home games. Conceivable he could come on the trip out west. \n\nTyler Bertuzzi will play tonight."
+  },
+  {
+   "id": "at://did:plc:3uus7y6h3rlrk6sbctzxm4bg/app.bsky.feed.post/3n2jg5z7gop2i|isakrosen|out|status",
+   "at": "2026-11-17T16:03:10.000Z",
+   "seen": "2026-11-17T16:08:36.557Z",
+   "handle": "dailyfaceoff.bsky.social",
+   "post": "at://did:plc:3uus7y6h3rlrk6sbctzxm4bg/app.bsky.feed.post/3n2jg5z7gop2i",
+   "player": "Isak Rosen",
+   "team": "WPG",
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.9,
+   "text": "Jets place Isak Rosen on injured reserve"
   }
  ]
 }

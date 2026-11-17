@@ -8722,6 +8722,138 @@
     "seen": "2026-11-17T15:45:39.168Z",
     "own": "2026-11-17T15:15:00.000Z"
    }
+  },
+  "401892728|bobyram|out": {
+   "game": "401892728",
+   "start": "2026-11-18T00:00Z",
+   "team": "1",
+   "name": "Bo Byram",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-17T15:46:47.416Z",
+    "own": "2026-11-17T15:44:50.228Z",
+    "why": "@marklazerus.bsky.social: Bo Byram won't play in the next two home games. Concei"
+   }
+  },
+  "401892730|bobyram|out": {
+   "game": "401892730",
+   "start": "2026-11-18T00:00Z",
+   "team": "26",
+   "name": "Bo Byram",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-17T15:46:47.416Z",
+    "own": "2026-11-17T15:44:50.228Z",
+    "why": "@marklazerus.bsky.social: Bo Byram won't play in the next two home games. Concei"
+   }
+  },
+  "401892731|bobyram|out": {
+   "game": "401892731",
+   "start": "2026-11-18T00:00Z",
+   "team": "12",
+   "name": "Bo Byram",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-17T15:46:47.416Z",
+    "own": "2026-11-17T15:44:50.228Z",
+    "why": "@marklazerus.bsky.social: Bo Byram won't play in the next two home games. Concei"
+   }
+  },
+  "401892732|bobyram|out": {
+   "game": "401892732",
+   "start": "2026-11-18T00:00Z",
+   "team": "15",
+   "name": "Bo Byram",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-17T15:46:47.416Z",
+    "own": "2026-11-17T15:44:50.228Z",
+    "why": "@marklazerus.bsky.social: Bo Byram won't play in the next two home games. Concei"
+   }
+  },
+  "401892736|bobyram|out": {
+   "game": "401892736",
+   "start": "2026-11-18T00:00Z",
+   "team": "28",
+   "name": "Bo Byram",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-17T15:46:47.416Z",
+    "own": "2026-11-17T15:44:50.228Z",
+    "why": "@marklazerus.bsky.social: Bo Byram won't play in the next two home games. Concei"
+   }
+  },
+  "401892729|bobyram|out": {
+   "game": "401892729",
+   "start": "2026-11-18T00:30Z",
+   "team": "20",
+   "name": "Bo Byram",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-17T15:46:47.416Z",
+    "own": "2026-11-17T15:44:50.228Z",
+    "why": "@marklazerus.bsky.social: Bo Byram won't play in the next two home games. Concei"
+   }
+  },
+  "401892733|bobyram|out": {
+   "game": "401892733",
+   "start": "2026-11-18T00:30Z",
+   "team": "4",
+   "name": "Bo Byram",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-17T15:46:47.416Z",
+    "own": "2026-11-17T15:44:50.228Z",
+    "why": "@marklazerus.bsky.social: Bo Byram won't play in the next two home games. Concei"
+   }
+  },
+  "401892734|bobyram|out": {
+   "game": "401892734",
+   "start": "2026-11-18T01:00Z",
+   "team": "19",
+   "name": "Bo Byram",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-17T15:46:47.416Z",
+    "own": "2026-11-17T15:44:50.228Z",
+    "why": "@marklazerus.bsky.social: Bo Byram won't play in the next two home games. Concei"
+   }
+  },
+  "401892735|bobyram|out": {
+   "game": "401892735",
+   "start": "2026-11-18T01:00Z",
+   "team": "30",
+   "name": "Bo Byram",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-17T15:46:47.416Z",
+    "own": "2026-11-17T15:44:50.228Z",
+    "why": "@marklazerus.bsky.social: Bo Byram won't play in the next two home games. Concei"
+   }
+  },
+  "401892737|bobyram|out": {
+   "game": "401892737",
+   "start": "2026-11-18T03:00Z",
+   "team": "37",
+   "name": "Bo Byram",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-17T15:46:47.416Z",
+    "own": "2026-11-17T15:44:50.228Z",
+    "why": "@marklazerus.bsky.social: Bo Byram won't play in the next two home games. Concei"
+   }
+  },
+  "401892738|bobyram|out": {
+   "game": "401892738",
+   "start": "2026-11-18T03:00Z",
+   "team": "18",
+   "name": "Bo Byram",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-17T15:46:47.416Z",
+    "own": "2026-11-17T15:44:50.228Z",
+    "why": "@marklazerus.bsky.social: Bo Byram won't play in the next two home games. Concei"
+   }
   }
  }
 }
