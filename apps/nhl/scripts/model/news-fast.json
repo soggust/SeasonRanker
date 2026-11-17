@@ -3,24 +3,11 @@
  "cursor": {
   "johnston-bot.bsky.social": "2026-11-12T16:02:25.547Z",
   "notfriedgehnic.bsky.social": "2026-11-16T03:33:57.405Z",
-  "dailyfaceoff.bsky.social": "2026-11-17T16:03:13.000Z",
+  "dailyfaceoff.bsky.social": "2026-11-17T16:26:32.000Z",
   "dfotoronto.bsky.social": "2026-11-17T15:13:32.000Z",
   "marklazerus.bsky.social": "2026-11-17T15:44:50.228Z"
  },
  "claims": [
-  {
-   "id": "at://did:plc:3uus7y6h3rlrk6sbctzxm4bg/app.bsky.feed.post/3myunph7blt2h|eastoncowan|none|benched",
-   "at": "2026-10-27T16:27:05.000Z",
-   "seen": "2026-10-27T16:32:15.187Z",
-   "handle": "dailyfaceoff.bsky.social",
-   "post": "at://did:plc:3uus7y6h3rlrk6sbctzxm4bg/app.bsky.feed.post/3myunph7blt2h",
-   "player": "Easton Cowan",
-   "team": "TOR",
-   "status": "none",
-   "kind": "benched",
-   "confidence": 0.8,
-   "text": "Easton Cowan got BENCHED and responded in a big way!\n\nJay Rosehill breaks down how the young Maple Leafs forward bounced back from a rough start against Calgary and why his response speaks volumes abo"
-  },
   {
    "id": "at://did:plc:sdobrsxnvwczrjydmnubhibh/app.bsky.feed.post/3myupr4wdkb2b|connorhellebuyck|active|starting",
    "at": "2026-10-27T17:03:49.716Z",
