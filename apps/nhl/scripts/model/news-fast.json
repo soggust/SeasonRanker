@@ -1,10 +1,10 @@
 {
  "sport": "nhl",
  "cursor": {
-  "johnston-bot.bsky.social": "2026-11-12T16:02:25.547Z",
+  "johnston-bot.bsky.social": "2026-11-17T20:34:20.535Z",
   "notfriedgehnic.bsky.social": "2026-11-16T03:33:57.405Z",
-  "dailyfaceoff.bsky.social": "2026-11-17T19:35:38.000Z",
-  "dfotoronto.bsky.social": "2026-11-17T19:45:00.000Z",
+  "dailyfaceoff.bsky.social": "2026-11-17T21:01:52.000Z",
+  "dfotoronto.bsky.social": "2026-11-17T20:52:17.000Z",
   "marklazerus.bsky.social": "2026-11-17T18:43:21.586Z"
  },
  "claims": [
@@ -2529,6 +2529,58 @@
    "kind": "status",
    "confidence": 0.8,
    "text": "On Tuesday, head coach Sheldon Keefe told reporters, including Kristy Flannery of The Hockey News, that winger Anthony Mantha will be out for about a month after undergoing surgery to address a fractu"
+  },
+  {
+   "id": "at://did:plc:3uus7y6h3rlrk6sbctzxm4bg/app.bsky.feed.post/3n2juc7izyu2o|kiefersherwood|out|status",
+   "at": "2026-11-17T20:16:03.000Z",
+   "seen": "2026-11-17T21:02:57.334Z",
+   "handle": "dailyfaceoff.bsky.social",
+   "post": "at://did:plc:3uus7y6h3rlrk6sbctzxm4bg/app.bsky.feed.post/3n2juc7izyu2o",
+   "player": "Kiefer Sherwood",
+   "team": "SJ",
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.95,
+   "text": "Sharks’ Kiefer Sherwood out week-to-week with upper-body injury"
+  },
+  {
+   "id": "at://did:plc:ma4xzjexknxz7geuggbqbsmi/app.bsky.feed.post/3n2jvcwf6vz2m|adamjecho|active|return",
+   "at": "2026-11-17T20:34:20.535Z",
+   "seen": "2026-11-17T21:02:57.334Z",
+   "handle": "johnston-bot.bsky.social",
+   "post": "at://did:plc:ma4xzjexknxz7geuggbqbsmi/app.bsky.feed.post/3n2jvcwf6vz2m",
+   "player": "Adam Jecho",
+   "team": "STL",
+   "status": "active",
+   "kind": "return",
+   "confidence": 0.85,
+   "text": "St. Louis Blues forward Adam Jecho has been cleared to return from the NHL/NHLPA Player Assistance Program.\n\nHe entered the program on Sept. 11."
+  },
+  {
+   "id": "at://did:plc:3uus7y6h3rlrk6sbctzxm4bg/app.bsky.feed.post/3n2jwcx7ctr2a|miroheiskanen|active|status",
+   "at": "2026-11-17T20:52:16.000Z",
+   "seen": "2026-11-17T21:02:57.334Z",
+   "handle": "dailyfaceoff.bsky.social",
+   "post": "at://did:plc:3uus7y6h3rlrk6sbctzxm4bg/app.bsky.feed.post/3n2jwcx7ctr2a",
+   "player": "Miro Heiskanen",
+   "team": "DAL",
+   "status": "active",
+   "kind": "status",
+   "confidence": 0.9,
+   "text": "Stars’ Miro Heiskanen returns to lineup, Tyler Myers out with upper-body injury"
+  },
+  {
+   "id": "at://did:plc:3uus7y6h3rlrk6sbctzxm4bg/app.bsky.feed.post/3n2jwcx7ctr2a|tylermyers|out|status",
+   "at": "2026-11-17T20:52:16.000Z",
+   "seen": "2026-11-17T21:02:57.334Z",
+   "handle": "dailyfaceoff.bsky.social",
+   "post": "at://did:plc:3uus7y6h3rlrk6sbctzxm4bg/app.bsky.feed.post/3n2jwcx7ctr2a",
+   "player": "Tyler Myers",
+   "team": "DAL",
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.95,
+   "text": "Stars’ Miro Heiskanen returns to lineup, Tyler Myers out with upper-body injury"
   }
  ]
 }

@@ -1,63 +1,11 @@
 {
  "sport": "nba",
  "cursor": {
-  "rotowirenba.bsky.social": "2026-11-17T19:20:07.000Z",
+  "rotowirenba.bsky.social": "2026-11-17T20:57:07.000Z",
   "insidenbanews.bsky.social": "2026-11-13T20:00:09.852Z",
   "shamsbot.bsky.social": "2026-11-17T19:24:56.000Z"
  },
  "claims": [
-  {
-   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3myv26nufxg24|laurimarkkanen|questionable|status",
-   "at": "2026-10-27T20:10:21.000Z",
-   "seen": "2026-10-27T20:21:42.534Z",
-   "handle": "rotowirenba.bsky.social",
-   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3myv26nufxg24",
-   "player": "Lauri Markkanen",
-   "team": "UTA",
-   "status": "questionable",
-   "kind": "status",
-   "confidence": 0.9,
-   "text": "Lauri Markkanen: Day-to-day with wrist sprain \n\n https://www.rotowire.com/basketball/player/lauri-markkanen-4119"
-  },
-  {
-   "id": "at://did:plc:sa73fbx3vxzh2fw5pu5wmief/app.bsky.feed.post/3myv2np3ajs2t|kawhileonard|out|status",
-   "at": "2026-10-27T20:14:48.000Z",
-   "seen": "2026-10-27T20:21:42.534Z",
-   "handle": "shamsbot.bsky.social",
-   "post": "at://did:plc:sa73fbx3vxzh2fw5pu5wmief/app.bsky.feed.post/3myv2np3ajs2t",
-   "player": "Kawhi Leonard",
-   "team": "LAC",
-   "status": "out",
-   "kind": "status",
-   "confidence": 0.75,
-   "text": "RT @ESPNNBA: @shamsbot.bsky.social reports Kawhi Leonard is expected to miss a period of weeks due to swelling in his left knee.\n\nMore details here ⬇️"
-  },
-  {
-   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3myv2prdn7t2q|alperensengun|out|status",
-   "at": "2026-10-27T20:19:55.000Z",
-   "seen": "2026-10-27T20:21:42.534Z",
-   "handle": "rotowirenba.bsky.social",
-   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3myv2prdn7t2q",
-   "player": "Alperen Sengun",
-   "team": "HOU",
-   "status": "out",
-   "kind": "status",
-   "confidence": 0.95,
-   "text": "Alperen Sengun: Won't play vs. Milwaukee \n\n https://www.rotowire.com/basketball/player/alperen-sengun-5404"
-  },
-  {
-   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3myv4c2cfef2n|ajdybantsa|questionable|status",
-   "at": "2026-10-27T20:48:02.000Z",
-   "seen": "2026-10-27T21:03:59.452Z",
-   "handle": "rotowirenba.bsky.social",
-   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3myv4c2cfef2n",
-   "player": "AJ Dybantsa",
-   "team": null,
-   "status": "questionable",
-   "kind": "status",
-   "confidence": 0.95,
-   "text": "AJ Dybantsa: Questionable for Wednesday \n\n https://www.rotowire.com/basketball/player/aj-dybantsa-6925"
-  },
   {
    "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3myv5ezs5pj27|aaronwiggins|questionable|status",
    "at": "2026-10-27T21:07:36.000Z",
@@ -9248,6 +9196,19 @@
    "kind": "status",
    "confidence": 0.9,
    "text": "Deni Avdija: Listed as questionable \n\n https://www.rotowire.com/basketball/player/deni-avdija-5152"
+  },
+  {
+   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3n2jwln5ruo23|jalensmith|active|status",
+   "at": "2026-11-17T20:57:07.000Z",
+   "seen": "2026-11-17T21:02:57.334Z",
+   "handle": "rotowirenba.bsky.social",
+   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3n2jwln5ruo23",
+   "player": "Jalen Smith",
+   "team": null,
+   "status": "active",
+   "kind": "status",
+   "confidence": 0.85,
+   "text": "Jalen Smith: Fades injury report \n\n https://www.rotowire.com/basketball/player/jalen-smith-5169"
   }
  ]
 }
