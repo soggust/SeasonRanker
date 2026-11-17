@@ -1,28 +1,15 @@
 {
  "sport": "nfl",
  "cursor": {
-  "adamscheftermirror.bsky.social": "2026-11-17T12:11:01.716Z",
+  "adamscheftermirror.bsky.social": "2026-11-17T14:01:01.551Z",
   "rapsheet.bsky.social": "2026-11-16T22:08:57.578Z",
   "nflnewsreposterbot.bsky.social": "2026-11-16T18:35:13.806Z",
-  "insidenflnews.bsky.social": "2026-11-17T03:29:46.900Z",
+  "insidenflnews.bsky.social": "2026-11-17T13:56:27.578Z",
   "nflnewsposter.bsky.social": "2026-11-17T04:27:01.723Z",
   "rotoworld-fb.bsky.social": "2026-11-17T05:41:47.000Z",
   "rotowirenfl.bsky.social": "2026-11-17T05:53:44.000Z"
  },
  "claims": [
-  {
-   "id": "at://did:plc:hlvr2omhnmvdmfnvmcuhyevz/app.bsky.feed.post/3myuerp2zks2z|vegaioane|out|status",
-   "at": "2026-10-27T13:47:17.687Z",
-   "seen": "2026-10-27T15:24:09.106Z",
-   "handle": "rapsheet.bsky.social",
-   "post": "at://did:plc:hlvr2omhnmvdmfnvmcuhyevz/app.bsky.feed.post/3myuerp2zks2z",
-   "player": "Vega Ioane",
-   "team": "BAL",
-   "status": "out",
-   "kind": "status",
-   "confidence": 0.8,
-   "text": "Ravens first-round guard Vega Ioane, one of the NFL’s best rookies this season, suffered an MCL sprain against the Bengals, sources tell me and Mike Garafolo.\n\nIt’s considered to be a short-term injur"
-  },
   {
    "id": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3myukxtdbee2s|saquonbarkley|active|status",
    "at": "2026-10-27T15:38:05.000Z",
