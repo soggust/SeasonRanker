@@ -7,22 +7,9 @@
   "insidenflnews.bsky.social": "2026-11-17T00:12:35.162Z",
   "nflnewsposter.bsky.social": "2026-11-16T20:12:47.090Z",
   "rotoworld-fb.bsky.social": "2026-11-17T00:04:59.000Z",
-  "rotowirenfl.bsky.social": "2026-11-16T23:58:17.000Z"
+  "rotowirenfl.bsky.social": "2026-11-17T00:44:06.000Z"
  },
  "claims": [
-  {
-   "id": "at://did:plc:fuqjc7x4gxvnwzksnlxwbe4x/app.bsky.feed.post/3mysyqyjvncrs|britaincovey|questionable|status",
-   "at": "2026-10-27T00:39:29.425Z",
-   "seen": "2026-10-27T00:48:07.665Z",
-   "handle": "nflnewsposter.bsky.social",
-   "post": "at://did:plc:fuqjc7x4gxvnwzksnlxwbe4x/app.bsky.feed.post/3mysyqyjvncrs",
-   "player": "Britain Covey",
-   "team": "PHI",
-   "status": "questionable",
-   "kind": "status",
-   "confidence": 0.9,
-   "text": "[Eagles] Injury Update: WR Britain Covey (knee) is questionable to return. twitter.com/Eagles/statu..."
-  },
   {
    "id": "at://did:plc:fuqjc7x4gxvnwzksnlxwbe4x/app.bsky.feed.post/3myszgmme62rs|covey|out|status",
    "at": "2026-10-27T00:51:35.120Z",

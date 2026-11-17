@@ -1,141 +1,11 @@
 {
  "sport": "nba",
  "cursor": {
-  "rotowirenba.bsky.social": "2026-11-17T00:11:44.000Z",
+  "rotowirenba.bsky.social": "2026-11-17T00:40:40.000Z",
   "insidenbanews.bsky.social": "2026-11-13T20:00:09.852Z",
   "shamsbot.bsky.social": "2026-11-13T20:16:26.000Z"
  },
  "claims": [
-  {
-   "id": "at://did:plc:ykcnnf6kqnn3lasmobrczoem/app.bsky.feed.post/3mysyyvf3mc2b|george|none|starting",
-   "at": "2026-10-27T00:43:54.557Z",
-   "seen": "2026-10-27T00:48:07.665Z",
-   "handle": "insidenbanews.bsky.social",
-   "post": "at://did:plc:ykcnnf6kqnn3lasmobrczoem/app.bsky.feed.post/3mysyyvf3mc2b",
-   "player": "George",
-   "team": "UTA",
-   "status": "none",
-   "kind": "starting",
-   "confidence": 0.85,
-   "text": "Lineup alert: Jazz will start George, Peterson, Bailey, Markkanen, Jackson Jr."
-  },
-  {
-   "id": "at://did:plc:ykcnnf6kqnn3lasmobrczoem/app.bsky.feed.post/3mysyyvf3mc2b|peterson|none|starting",
-   "at": "2026-10-27T00:43:54.557Z",
-   "seen": "2026-10-27T00:48:07.665Z",
-   "handle": "insidenbanews.bsky.social",
-   "post": "at://did:plc:ykcnnf6kqnn3lasmobrczoem/app.bsky.feed.post/3mysyyvf3mc2b",
-   "player": "Peterson",
-   "team": "UTA",
-   "status": "none",
-   "kind": "starting",
-   "confidence": 0.85,
-   "text": "Lineup alert: Jazz will start George, Peterson, Bailey, Markkanen, Jackson Jr."
-  },
-  {
-   "id": "at://did:plc:ykcnnf6kqnn3lasmobrczoem/app.bsky.feed.post/3mysyyvf3mc2b|bailey|none|starting",
-   "at": "2026-10-27T00:43:54.557Z",
-   "seen": "2026-10-27T00:48:07.665Z",
-   "handle": "insidenbanews.bsky.social",
-   "post": "at://did:plc:ykcnnf6kqnn3lasmobrczoem/app.bsky.feed.post/3mysyyvf3mc2b",
-   "player": "Bailey",
-   "team": "UTA",
-   "status": "none",
-   "kind": "starting",
-   "confidence": 0.85,
-   "text": "Lineup alert: Jazz will start George, Peterson, Bailey, Markkanen, Jackson Jr."
-  },
-  {
-   "id": "at://did:plc:ykcnnf6kqnn3lasmobrczoem/app.bsky.feed.post/3mysyyvf3mc2b|markkanen|none|starting",
-   "at": "2026-10-27T00:43:54.557Z",
-   "seen": "2026-10-27T00:48:07.665Z",
-   "handle": "insidenbanews.bsky.social",
-   "post": "at://did:plc:ykcnnf6kqnn3lasmobrczoem/app.bsky.feed.post/3mysyyvf3mc2b",
-   "player": "Markkanen",
-   "team": "UTA",
-   "status": "none",
-   "kind": "starting",
-   "confidence": 0.85,
-   "text": "Lineup alert: Jazz will start George, Peterson, Bailey, Markkanen, Jackson Jr."
-  },
-  {
-   "id": "at://did:plc:ykcnnf6kqnn3lasmobrczoem/app.bsky.feed.post/3mysyyvf3mc2b|jackson|none|starting",
-   "at": "2026-10-27T00:43:54.557Z",
-   "seen": "2026-10-27T00:48:07.665Z",
-   "handle": "insidenbanews.bsky.social",
-   "post": "at://did:plc:ykcnnf6kqnn3lasmobrczoem/app.bsky.feed.post/3mysyyvf3mc2b",
-   "player": "Jackson Jr.",
-   "team": "UTA",
-   "status": "none",
-   "kind": "starting",
-   "confidence": 0.85,
-   "text": "Lineup alert: Jazz will start George, Peterson, Bailey, Markkanen, Jackson Jr."
-  },
-  {
-   "id": "at://did:plc:ykcnnf6kqnn3lasmobrczoem/app.bsky.feed.post/3mysyz5zu2k2b|jerome|none|starting",
-   "at": "2026-10-27T00:44:03.627Z",
-   "seen": "2026-10-27T00:48:07.665Z",
-   "handle": "insidenbanews.bsky.social",
-   "post": "at://did:plc:ykcnnf6kqnn3lasmobrczoem/app.bsky.feed.post/3mysyz5zu2k2b",
-   "player": "Jerome",
-   "team": "MEM",
-   "status": "none",
-   "kind": "starting",
-   "confidence": 0.85,
-   "text": "Lineup alert: Grizzlies will start Jerome, Coward, Wells, Boozer, Edey."
-  },
-  {
-   "id": "at://did:plc:ykcnnf6kqnn3lasmobrczoem/app.bsky.feed.post/3mysyz5zu2k2b|coward|none|starting",
-   "at": "2026-10-27T00:44:03.627Z",
-   "seen": "2026-10-27T00:48:07.665Z",
-   "handle": "insidenbanews.bsky.social",
-   "post": "at://did:plc:ykcnnf6kqnn3lasmobrczoem/app.bsky.feed.post/3mysyz5zu2k2b",
-   "player": "Coward",
-   "team": "MEM",
-   "status": "none",
-   "kind": "starting",
-   "confidence": 0.85,
-   "text": "Lineup alert: Grizzlies will start Jerome, Coward, Wells, Boozer, Edey."
-  },
-  {
-   "id": "at://did:plc:ykcnnf6kqnn3lasmobrczoem/app.bsky.feed.post/3mysyz5zu2k2b|wells|none|starting",
-   "at": "2026-10-27T00:44:03.627Z",
-   "seen": "2026-10-27T00:48:07.665Z",
-   "handle": "insidenbanews.bsky.social",
-   "post": "at://did:plc:ykcnnf6kqnn3lasmobrczoem/app.bsky.feed.post/3mysyz5zu2k2b",
-   "player": "Wells",
-   "team": "MEM",
-   "status": "none",
-   "kind": "starting",
-   "confidence": 0.85,
-   "text": "Lineup alert: Grizzlies will start Jerome, Coward, Wells, Boozer, Edey."
-  },
-  {
-   "id": "at://did:plc:ykcnnf6kqnn3lasmobrczoem/app.bsky.feed.post/3mysyz5zu2k2b|boozer|none|starting",
-   "at": "2026-10-27T00:44:03.627Z",
-   "seen": "2026-10-27T00:48:07.665Z",
-   "handle": "insidenbanews.bsky.social",
-   "post": "at://did:plc:ykcnnf6kqnn3lasmobrczoem/app.bsky.feed.post/3mysyz5zu2k2b",
-   "player": "Boozer",
-   "team": "MEM",
-   "status": "none",
-   "kind": "starting",
-   "confidence": 0.85,
-   "text": "Lineup alert: Grizzlies will start Jerome, Coward, Wells, Boozer, Edey."
-  },
-  {
-   "id": "at://did:plc:ykcnnf6kqnn3lasmobrczoem/app.bsky.feed.post/3mysyz5zu2k2b|edey|none|starting",
-   "at": "2026-10-27T00:44:03.627Z",
-   "seen": "2026-10-27T00:48:07.665Z",
-   "handle": "insidenbanews.bsky.social",
-   "post": "at://did:plc:ykcnnf6kqnn3lasmobrczoem/app.bsky.feed.post/3mysyz5zu2k2b",
-   "player": "Edey",
-   "team": "MEM",
-   "status": "none",
-   "kind": "starting",
-   "confidence": 0.85,
-   "text": "Lineup alert: Grizzlies will start Jerome, Coward, Wells, Boozer, Edey."
-  },
   {
    "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3myt2nmx64d2q|cameronjohnson|out|status",
    "at": "2026-10-27T01:13:24.000Z",
@@ -9521,6 +9391,19 @@
    "kind": "starting",
    "confidence": 0.85,
    "text": "Tari Eason: Slated to start Monday \n\n https://www.rotowire.com/basketball/player/tari-eason-5704"
+  },
+  {
+   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3n2hsmhi4kw2k|ljcryer|none|starting",
+   "at": "2026-11-17T00:40:40.000Z",
+   "seen": "2026-11-17T00:48:16.459Z",
+   "handle": "rotowirenba.bsky.social",
+   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3n2hsmhi4kw2k",
+   "player": "LJ Cryer",
+   "team": null,
+   "status": "none",
+   "kind": "starting",
+   "confidence": 0.85,
+   "text": "LJ Cryer: Enters starting lineup Monday \n\n https://www.rotowire.com/basketball/player/lj-cryer-6644"
   }
  ]
 }
