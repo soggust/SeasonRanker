@@ -3,8 +3,8 @@
  "cursor": {
   "johnston-bot.bsky.social": "2026-11-12T16:02:25.547Z",
   "notfriedgehnic.bsky.social": "2026-11-16T03:33:57.405Z",
-  "dailyfaceoff.bsky.social": "2026-11-17T17:06:33.000Z",
-  "dfotoronto.bsky.social": "2026-11-17T16:48:24.000Z",
+  "dailyfaceoff.bsky.social": "2026-11-17T17:29:30.000Z",
+  "dfotoronto.bsky.social": "2026-11-17T17:34:06.000Z",
   "marklazerus.bsky.social": "2026-11-17T15:44:50.228Z"
  },
  "claims": [
@@ -2425,6 +2425,45 @@
    "kind": "status",
    "confidence": 0.9,
    "text": "Jets place Isak Rosen on injured reserve"
+  },
+  {
+   "id": "at://did:plc:knaj2vcp4x6t7hr7ewd6e3uz/app.bsky.feed.post/3n2jkvlkegz2z|sergeibobrovsky|active|starting",
+   "at": "2026-11-17T17:27:56.000Z",
+   "seen": "2026-11-17T17:36:51.995Z",
+   "handle": "dfotoronto.bsky.social",
+   "post": "at://did:plc:knaj2vcp4x6t7hr7ewd6e3uz/app.bsky.feed.post/3n2jkvlkegz2z",
+   "player": "Sergei Bobrovsky",
+   "team": "TOR",
+   "status": "active",
+   "kind": "starting",
+   "confidence": 0.9,
+   "text": "Maple Leafs lineup news: Sergei Bobrovsky to start vs. Blackhawks, Morgan Rielly returns"
+  },
+  {
+   "id": "at://did:plc:knaj2vcp4x6t7hr7ewd6e3uz/app.bsky.feed.post/3n2jkvlkegz2z|morganrielly|active|return",
+   "at": "2026-11-17T17:27:56.000Z",
+   "seen": "2026-11-17T17:36:51.995Z",
+   "handle": "dfotoronto.bsky.social",
+   "post": "at://did:plc:knaj2vcp4x6t7hr7ewd6e3uz/app.bsky.feed.post/3n2jkvlkegz2z",
+   "player": "Morgan Rielly",
+   "team": "TOR",
+   "status": "active",
+   "kind": "return",
+   "confidence": 0.9,
+   "text": "Maple Leafs lineup news: Sergei Bobrovsky to start vs. Blackhawks, Morgan Rielly returns"
+  },
+  {
+   "id": "at://did:plc:3uus7y6h3rlrk6sbctzxm4bg/app.bsky.feed.post/3n2jkyernzw2e|rossjohnston|out|status",
+   "at": "2026-11-17T17:29:30.000Z",
+   "seen": "2026-11-17T17:36:51.995Z",
+   "handle": "dailyfaceoff.bsky.social",
+   "post": "at://did:plc:3uus7y6h3rlrk6sbctzxm4bg/app.bsky.feed.post/3n2jkyernzw2e",
+   "player": "Ross Johnston",
+   "team": "STL",
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.9,
+   "text": "Blues’ Ross Johnston out with upper-body injury"
   }
  ]
 }
