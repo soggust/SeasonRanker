@@ -1,24 +1,11 @@
 {
  "sport": "nba",
  "cursor": {
-  "rotowirenba.bsky.social": "2026-11-17T00:40:40.000Z",
+  "rotowirenba.bsky.social": "2026-11-17T01:11:15.000Z",
   "insidenbanews.bsky.social": "2026-11-13T20:00:09.852Z",
   "shamsbot.bsky.social": "2026-11-13T20:16:26.000Z"
  },
  "claims": [
-  {
-   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3myt2nmx64d2q|cameronjohnson|out|status",
-   "at": "2026-10-27T01:13:24.000Z",
-   "seen": "2026-10-27T01:37:33.311Z",
-   "handle": "rotowirenba.bsky.social",
-   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3myt2nmx64d2q",
-   "player": "Cameron Johnson",
-   "team": null,
-   "status": "out",
-   "kind": "status",
-   "confidence": 0.85,
-   "text": "Cameron Johnson: Downgraded to out \n\n https://www.rotowire.com/basketball/player/cameron-johnson-4916"
-  },
   {
    "id": "at://did:plc:ykcnnf6kqnn3lasmobrczoem/app.bsky.feed.post/3myt3vkqrs22c|murray|none|starting",
    "at": "2026-10-27T01:35:43.965Z",
@@ -9404,6 +9391,32 @@
    "kind": "starting",
    "confidence": 0.85,
    "text": "LJ Cryer: Enters starting lineup Monday \n\n https://www.rotowire.com/basketball/player/lj-cryer-6644"
+  },
+  {
+   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3n2hubgy7cn2z|walkerkessler|out|status",
+   "at": "2026-11-17T01:10:18.000Z",
+   "seen": "2026-11-17T01:29:59.981Z",
+   "handle": "rotowirenba.bsky.social",
+   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3n2hubgy7cn2z",
+   "player": "Walker Kessler",
+   "team": null,
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.95,
+   "text": "Walker Kessler: Ruled out Tuesday \n\n https://www.rotowire.com/basketball/player/walker-kessler-5644"
+  },
+  {
+   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3n2hud4te2z2z|austinreaves|out|status",
+   "at": "2026-11-17T01:11:15.000Z",
+   "seen": "2026-11-17T01:29:59.981Z",
+   "handle": "rotowirenba.bsky.social",
+   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3n2hud4te2z2z",
+   "player": "Austin Reaves",
+   "team": "LAL",
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.95,
+   "text": "Austin Reaves: Listed out for Tuesday \n\n https://www.rotowire.com/basketball/player/austin-reaves-5334"
   }
  ]
 }
