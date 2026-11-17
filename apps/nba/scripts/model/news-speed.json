@@ -23562,6 +23562,11 @@
    "espn": {
     "seen": "2026-11-17T01:17:53.289Z",
     "own": "2026-11-17T01:06:00.000Z"
+   },
+   "bluesky": {
+    "seen": "2026-11-17T01:29:59.981Z",
+    "own": "2026-11-17T01:11:15.000Z",
+    "why": "@rotowirenba.bsky.social: Austin Reaves: Listed out for Tuesday \n\n https://www.r"
    }
   },
   "401910005|walkerkessler|out": {
@@ -23574,6 +23579,47 @@
    "espn": {
     "seen": "2026-11-17T01:17:53.289Z",
     "own": "2026-11-17T01:05:00.000Z"
+   },
+   "bluesky": {
+    "seen": "2026-11-17T01:29:59.981Z",
+    "own": "2026-11-17T01:10:18.000Z",
+    "why": "@rotowirenba.bsky.social: Walker Kessler: Ruled out Tuesday \n\n https://www.rotow"
+   }
+  },
+  "401910002|walkerkessler|out": {
+   "game": "401910002",
+   "start": "2026-11-18T00:30Z",
+   "team": "28",
+   "name": "Walker Kessler",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-17T01:29:59.981Z",
+    "own": "2026-11-17T01:10:18.000Z",
+    "why": "@rotowirenba.bsky.social: Walker Kessler: Ruled out Tuesday \n\n https://www.rotow"
+   }
+  },
+  "401910004|walkerkessler|out": {
+   "game": "401910004",
+   "start": "2026-11-18T01:00Z",
+   "team": "24",
+   "name": "Walker Kessler",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-17T01:29:59.981Z",
+    "own": "2026-11-17T01:10:18.000Z",
+    "why": "@rotowirenba.bsky.social: Walker Kessler: Ruled out Tuesday \n\n https://www.rotow"
+   }
+  },
+  "401910006|walkerkessler|out": {
+   "game": "401910006",
+   "start": "2026-11-18T03:30Z",
+   "team": "12",
+   "name": "Walker Kessler",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-17T01:29:59.981Z",
+    "own": "2026-11-17T01:10:18.000Z",
+    "why": "@rotowirenba.bsky.social: Walker Kessler: Ruled out Tuesday \n\n https://www.rotow"
    }
   }
  }

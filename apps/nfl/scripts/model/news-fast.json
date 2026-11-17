@@ -4,10 +4,10 @@
   "adamscheftermirror.bsky.social": "2026-11-17T00:25:56.179Z",
   "rapsheet.bsky.social": "2026-11-16T22:08:57.578Z",
   "nflnewsreposterbot.bsky.social": "2026-11-16T18:35:13.806Z",
-  "insidenflnews.bsky.social": "2026-11-17T00:12:35.162Z",
-  "nflnewsposter.bsky.social": "2026-11-16T20:12:47.090Z",
+  "insidenflnews.bsky.social": "2026-11-17T01:40:22.164Z",
+  "nflnewsposter.bsky.social": "2026-11-17T01:36:15.887Z",
   "rotoworld-fb.bsky.social": "2026-11-17T00:04:59.000Z",
-  "rotowirenfl.bsky.social": "2026-11-17T01:07:19.000Z"
+  "rotowirenfl.bsky.social": "2026-11-17T01:47:10.000Z"
  },
  "claims": [
   {
@@ -19158,6 +19158,19 @@
    "kind": "status",
    "confidence": 0.3,
    "text": "Woody Marks: DNP on Monday \n\n https://www.rotowire.com/football/player/woody-marks-18449"
+  },
+  {
+   "id": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3n2hwdembod2b|orondegadsden|questionable|status",
+   "at": "2026-11-17T01:47:10.000Z",
+   "seen": "2026-11-17T02:02:26.618Z",
+   "handle": "rotowirenfl.bsky.social",
+   "post": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3n2hwdembod2b",
+   "player": "Oronde Gadsden",
+   "team": null,
+   "status": "questionable",
+   "kind": "status",
+   "confidence": 0.9,
+   "text": "Oronde Gadsden: Questionable to return Monday \n\n https://www.rotowire.com/football/player/oronde-gadsden-18481"
   }
  ]
 }
