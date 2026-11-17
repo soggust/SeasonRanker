@@ -9043,6 +9043,23 @@
    "espn": {
     "seen": "2026-11-17T18:29:49.682Z",
     "own": "2026-11-17T18:19:00.000Z"
+   },
+   "bluesky": {
+    "seen": "2026-11-17T18:35:21.029Z",
+    "own": "2026-11-17T18:33:01.000Z",
+    "why": "@dailyfaceoff.bsky.social: Lightning place Conor Geekie on injured reserve, acti"
+   }
+  },
+  "401892740|alexandretexier|q": {
+   "game": "401892740",
+   "start": "2026-11-19T00:30Z",
+   "team": "10",
+   "name": "Alexandre Texier",
+   "status": "q",
+   "athlete": "4233880",
+   "espn": {
+    "seen": "2026-11-17T18:54:50.890Z",
+    "own": "2026-11-17T18:35:00.000Z"
    }
   }
  }
