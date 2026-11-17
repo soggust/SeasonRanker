@@ -7,22 +7,9 @@
   "insidenflnews.bsky.social": "2026-11-17T00:12:35.162Z",
   "nflnewsposter.bsky.social": "2026-11-16T20:12:47.090Z",
   "rotoworld-fb.bsky.social": "2026-11-17T00:04:59.000Z",
-  "rotowirenfl.bsky.social": "2026-11-17T00:44:06.000Z"
+  "rotowirenfl.bsky.social": "2026-11-17T01:07:19.000Z"
  },
  "claims": [
-  {
-   "id": "at://did:plc:fuqjc7x4gxvnwzksnlxwbe4x/app.bsky.feed.post/3myszgmme62rs|covey|out|status",
-   "at": "2026-10-27T00:51:35.120Z",
-   "seen": "2026-10-27T01:09:26.145Z",
-   "handle": "nflnewsposter.bsky.social",
-   "post": "at://did:plc:fuqjc7x4gxvnwzksnlxwbe4x/app.bsky.feed.post/3myszgmme62rs",
-   "player": "Covey",
-   "team": "PHI",
-   "status": "out",
-   "kind": "status",
-   "confidence": 0.9,
-   "text": "[Eagles] Covey has been downgraded to out. twitter.com/Eagles/statu..."
-  },
   {
    "id": "at://did:plc:mbr4badgf6yu56mquzackzew/app.bsky.feed.post/3myt7lrsodc2b|saquonbarkley|questionable|status",
    "at": "2026-10-27T02:41:50.792Z",
@@ -19158,6 +19145,19 @@
    "kind": "starting",
    "confidence": 0.6,
    "text": "Seahawks HC Mike Macdonald said today that Sam Darnold is still the team’s starter when healthy, and that he’a on track to play next week against the 49ers following Seattle's bye. Story via @BradyHen"
+  },
+  {
+   "id": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3n2ht3oeops2f|woodymarks|questionable|status",
+   "at": "2026-11-17T00:49:11.000Z",
+   "seen": "2026-11-17T01:09:21.114Z",
+   "handle": "rotowirenfl.bsky.social",
+   "post": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3n2ht3oeops2f",
+   "player": "Woody Marks",
+   "team": null,
+   "status": "questionable",
+   "kind": "status",
+   "confidence": 0.3,
+   "text": "Woody Marks: DNP on Monday \n\n https://www.rotowire.com/football/player/woody-marks-18449"
   }
  ]
 }
