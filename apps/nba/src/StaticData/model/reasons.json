@@ -1,7 +1,7 @@
 {
  "v": 1,
  "sport": "nba",
- "at": "2026-11-16T09:43:19.260Z",
+ "at": "2026-11-17T09:09:28.605Z",
  "epoch": "2026-10-26T15:00:00Z",
  "markets": {
   "spread": {
@@ -882,16 +882,16 @@
     "ev": null,
     "evS": null,
     "beat": null,
-    "roi": 0.073,
-    "rn": 549,
+    "roi": 0.0737,
+    "rn": 561,
     "stats": {
      "n": 0,
      "s": 0,
      "s2": 0,
      "beat": 0,
-     "rn": 549,
-     "rs": 40.0758,
-     "rs2": 631.4859
+     "rn": 561,
+     "rs": 41.3279,
+     "rs2": 651.4476
     },
     "why": "0 with a close, - shrunk",
     "seasons": {
@@ -936,16 +936,16 @@
     "ev": null,
     "evS": null,
     "beat": null,
-    "roi": -0.1251,
-    "rn": 590,
+    "roi": -0.1246,
+    "rn": 592,
     "stats": {
      "n": 0,
      "s": 0,
      "s2": 0,
      "beat": 0,
-     "rn": 590,
+     "rn": 592,
      "rs": -73.7831,
-     "rs2": 580.5555
+     "rs2": 582.5555
     },
     "why": "0 with a close, - shrunk",
     "seasons": {
@@ -1044,16 +1044,16 @@
     "ev": null,
     "evS": null,
     "beat": null,
-    "roi": 0.0785,
-    "rn": 44,
+    "roi": 0.065,
+    "rn": 43,
     "stats": {
      "n": 0,
      "s": 0,
      "s2": 0,
      "beat": 0,
-     "rn": 44,
-     "rs": 3.4543,
-     "rs2": 33.1916
+     "rn": 43,
+     "rs": 2.7964,
+     "rs2": 32.7588
     },
     "why": "0 with a close, - shrunk",
     "seasons": {
@@ -1100,5 +1100,5 @@
   }
  },
  "k": 100,
- "commit": "8cf8ad65"
+ "commit": "7f0f8f6a"
 }

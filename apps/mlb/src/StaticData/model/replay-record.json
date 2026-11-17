@@ -2,7 +2,7 @@
  "v": 1,
  "sport": "mlb",
  "epoch": "2026-10-26T15:00:00Z",
- "at": "2026-11-16T10:13:49.010Z",
+ "at": "2026-11-17T09:20:28.143Z",
  "from": "2021-07-18T17:11:00.000Z",
  "through": "2026-10-16T00:00:00.000Z",
  "n": {
@@ -2873,7 +2873,7 @@
    }
   }
  },
- "commit": "8cf8ad65",
+ "commit": "7f0f8f6a",
  "note": "D119. The Book's bands are the Bot's bets alone: a suggestion is never a LIKE (the owner, 2026-11-09: \"its got likes with no BETS which makes no sense\")",
  "inputs": {
   "v": 1,
@@ -2884,7 +2884,7 @@
    "pricing": "8bd303438afa",
    "record": "46b23ba593dd",
    "harness": "36c8c288f598",
-   "residual": "dea575140dfd2670",
+   "residual": "f50b19b1b8f2ed5f",
    "tuned": "75ba5ef16d4ef1db"
   },
   "fit": {
@@ -2939,20 +2939,7 @@
     "2024-05-11",
     "2026-08-08"
    ],
-   "planted": 9900.13,
-   "nulls": {
-    "fair": {
-     "mean": -13.58,
-     "sd": 20.09,
-     "z": 0.3
-    },
-    "shuffle": {
-     "mean": 5.71,
-     "sd": 19.82,
-     "z": -0.66
-    }
-   },
-   "actual": -7.47
+   "planted": 9900.13
   },
   "frozen": {
    "props": {
@@ -2968,6 +2955,6 @@
     "want": 29
    }
   },
-  "hash": "b5ff7665de349069"
+  "hash": "f5fff83283c6d3af"
  }
 }
