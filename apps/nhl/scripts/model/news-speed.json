@@ -1,70 +1,6 @@
 {
  "sport": "nhl",
  "entries": {
-  "401892663|jonathanmarchessault|q": {
-   "game": "401892663",
-   "start": "2026-11-07T18:00Z",
-   "team": "27",
-   "name": "Jonathan Marchessault",
-   "status": "q",
-   "athlete": "2967072",
-   "espn": {
-    "seen": "2026-11-06T16:42:58.938Z",
-    "own": "2026-11-06T14:10:00.000Z"
-   }
-  },
-  "401892663|loganmailloux|out": {
-   "game": "401892663",
-   "start": "2026-11-07T18:00Z",
-   "team": "19",
-   "name": "Logan Mailloux",
-   "status": "out",
-   "athlete": "4874748",
-   "espn": {
-    "seen": "2026-11-06T16:42:58.938Z",
-    "own": "2026-11-02T21:36:00.000Z"
-   },
-   "sleeper": {
-    "seen": "2026-11-06T20:13:46.438Z",
-    "own": "2026-11-06T19:15:15.502Z"
-   }
-  },
-  "401892663|toreykrug|out": {
-   "game": "401892663",
-   "start": "2026-11-07T18:00Z",
-   "team": "19",
-   "name": "Torey Krug",
-   "status": "out",
-   "athlete": "2952729",
-   "espn": {
-    "seen": "2026-11-06T16:42:58.938Z",
-    "own": "2026-10-13T01:42:00.000Z"
-   }
-  },
-  "401892663|dillondube|out": {
-   "game": "401892663",
-   "start": "2026-11-07T18:00Z",
-   "team": "19",
-   "name": "Dillon Dube",
-   "status": "out",
-   "athlete": "4063268",
-   "espn": {
-    "seen": "2026-11-06T16:42:58.938Z",
-    "own": "2026-10-10T21:13:00.000Z"
-   }
-  },
-  "401892663|tylertucker|out": {
-   "game": "401892663",
-   "start": "2026-11-07T18:00Z",
-   "team": "19",
-   "name": "Tyler Tucker",
-   "status": "out",
-   "athlete": "4587904",
-   "espn": {
-    "seen": "2026-11-06T16:42:58.938Z",
-    "own": "2026-09-30T19:39:00.000Z"
-   }
-  },
   "401892664|curtisdouglas|out": {
    "game": "401892664",
    "start": "2026-11-07T22:00Z",
@@ -1736,18 +1672,6 @@
    "espn": {
     "seen": "2026-11-07T16:50:32.909Z",
     "own": "2026-11-07T16:41:00.000Z"
-   }
-  },
-  "401892663|masonmctavish|q": {
-   "game": "401892663",
-   "start": "2026-11-07T18:00Z",
-   "team": "19",
-   "name": "Mason McTavish",
-   "status": "q",
-   "athlete": "4874718",
-   "espn": {
-    "seen": "2026-11-07T17:11:18.966Z",
-    "own": "2026-11-07T16:55:00.000Z"
    }
   },
   "401892674|antonlundell|q": {
@@ -9107,6 +9031,18 @@
    "espn": {
     "seen": "2026-11-17T17:56:33.637Z",
     "own": "2026-11-17T17:40:00.000Z"
+   }
+  },
+  "401892729|conorgeekie|out": {
+   "game": "401892729",
+   "start": "2026-11-18T00:30Z",
+   "team": "20",
+   "name": "Conor Geekie",
+   "status": "out",
+   "athlete": "5080155",
+   "espn": {
+    "seen": "2026-11-17T18:29:49.682Z",
+    "own": "2026-11-17T18:19:00.000Z"
    }
   }
  }
