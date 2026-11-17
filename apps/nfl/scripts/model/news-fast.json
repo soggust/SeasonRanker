@@ -1,41 +1,15 @@
 {
  "sport": "nfl",
  "cursor": {
-  "adamscheftermirror.bsky.social": "2026-11-16T22:20:55.843Z",
+  "adamscheftermirror.bsky.social": "2026-11-16T23:55:56.492Z",
   "rapsheet.bsky.social": "2026-11-16T22:08:57.578Z",
   "nflnewsreposterbot.bsky.social": "2026-11-16T18:35:13.806Z",
-  "insidenflnews.bsky.social": "2026-11-16T18:48:21.543Z",
+  "insidenflnews.bsky.social": "2026-11-16T23:11:04.823Z",
   "nflnewsposter.bsky.social": "2026-11-16T20:12:47.090Z",
-  "rotoworld-fb.bsky.social": "2026-11-16T21:54:46.000Z",
-  "rotowirenfl.bsky.social": "2026-11-16T22:05:15.000Z"
+  "rotoworld-fb.bsky.social": "2026-11-17T00:04:59.000Z",
+  "rotowirenfl.bsky.social": "2026-11-16T23:58:17.000Z"
  },
  "claims": [
-  {
-   "id": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3mysrtqn6ca2y|deebosamuel|out|return",
-   "at": "2026-10-26T22:35:45.000Z",
-   "seen": "2026-10-26T22:37:11.118Z",
-   "handle": "rotowirenfl.bsky.social",
-   "post": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3mysrtqn6ca2y",
-   "player": "Deebo Samuel",
-   "team": "SF",
-   "status": "out",
-   "kind": "return",
-   "confidence": 0.6,
-   "text": "Deebo Samuel: Eyes Week 9 return \n\n https://www.rotowire.com/football/player/deebo-samuel-13429"
-  },
-  {
-   "id": "at://did:plc:mbr4badgf6yu56mquzackzew/app.bsky.feed.post/3mysshzdujs2i|saquonbarkley|active|status",
-   "at": "2026-10-26T22:47:05.836Z",
-   "seen": "2026-10-26T23:50:51.748Z",
-   "handle": "insidenflnews.bsky.social",
-   "post": "at://did:plc:mbr4badgf6yu56mquzackzew/app.bsky.feed.post/3mysshzdujs2i",
-   "player": "Saquon Barkley",
-   "team": "PHI",
-   "status": "active",
-   "kind": "status",
-   "confidence": 0.95,
-   "text": "Eagles RB Saquon Barkley (hamstring) is officially active for Week 7."
-  },
   {
    "id": "at://did:plc:fuqjc7x4gxvnwzksnlxwbe4x/app.bsky.feed.post/3mysyqyjvncrs|britaincovey|questionable|status",
    "at": "2026-10-27T00:39:29.425Z",
@@ -19145,6 +19119,32 @@
    "kind": "status",
    "confidence": 0.7,
    "text": "Two major injuries on the same play — Aidan Hutchinson and Drake Maye both out indefinitely."
+  },
+  {
+   "id": "at://did:plc:mbr4badgf6yu56mquzackzew/app.bsky.feed.post/3n2hnmae2as2z|aidanhutchinson|out|status",
+   "at": "2026-11-16T23:11:04.823Z",
+   "seen": "2026-11-17T00:08:22.497Z",
+   "handle": "insidenflnews.bsky.social",
+   "post": "at://did:plc:mbr4badgf6yu56mquzackzew/app.bsky.feed.post/3n2hnmae2as2z",
+   "player": "Aidan Hutchinson",
+   "team": "DET",
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.5,
+   "text": "‼️ Pelissero: Aidan Hutchinson suffered no additional significant damage to his knee beyond torn ACL."
+  },
+  {
+   "id": "at://did:plc:qre6zxbmr3ixhdmgsgdretb5/app.bsky.feed.post/3n2hq4hfv5v26|kylemonangai|active|return",
+   "at": "2026-11-16T23:55:56.492Z",
+   "seen": "2026-11-17T00:08:22.497Z",
+   "handle": "adamscheftermirror.bsky.social",
+   "post": "at://did:plc:qre6zxbmr3ixhdmgsgdretb5/app.bsky.feed.post/3n2hq4hfv5v26",
+   "player": "Kyle Monangai",
+   "team": "CHI",
+   "status": "active",
+   "kind": "return",
+   "confidence": 0.7,
+   "text": "Bears RB Kyle Monangai said he’s “on track” to return Sunday vs. the Saints, via @CourtneyRCronin:\n\nOriginal post"
   }
  ]
 }
