@@ -4,51 +4,12 @@
   "adamscheftermirror.bsky.social": "2026-11-17T14:46:05.182Z",
   "rapsheet.bsky.social": "2026-11-17T16:08:28.925Z",
   "nflnewsreposterbot.bsky.social": "2026-11-16T18:35:13.806Z",
-  "insidenflnews.bsky.social": "2026-11-17T13:56:27.578Z",
+  "insidenflnews.bsky.social": "2026-11-17T18:33:24.472Z",
   "nflnewsposter.bsky.social": "2026-11-17T16:49:22.960Z",
-  "rotoworld-fb.bsky.social": "2026-11-17T17:39:30.000Z",
-  "rotowirenfl.bsky.social": "2026-11-17T15:41:48.000Z"
+  "rotoworld-fb.bsky.social": "2026-11-17T18:11:21.000Z",
+  "rotowirenfl.bsky.social": "2026-11-17T18:22:37.000Z"
  },
  "claims": [
-  {
-   "id": "at://did:plc:qre6zxbmr3ixhdmgsgdretb5/app.bsky.feed.post/3myussnmywg2d|tyronetracy|out|status",
-   "at": "2026-10-27T17:58:21.926Z",
-   "seen": "2026-10-27T18:04:36.214Z",
-   "handle": "adamscheftermirror.bsky.social",
-   "post": "at://did:plc:qre6zxbmr3ixhdmgsgdretb5/app.bsky.feed.post/3myussnmywg2d",
-   "player": "Tyrone Tracy Jr.",
-   "team": "NYG",
-   "status": "out",
-   "kind": "status",
-   "confidence": 0.9,
-   "text": "Giants GM Joe Schoen told reporters that RB Tyrone Tracy Jr. is being placed on injured reserve due to a hamstring injury.\n\nOriginal post"
-  },
-  {
-   "id": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3myutbkd2fw2b|tyronetracy|out|status",
-   "at": "2026-10-27T18:06:41.000Z",
-   "seen": "2026-10-27T18:25:15.821Z",
-   "handle": "rotowirenfl.bsky.social",
-   "post": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3myutbkd2fw2b",
-   "player": "Tyrone Tracy",
-   "team": null,
-   "status": "out",
-   "kind": "status",
-   "confidence": 0.9,
-   "text": "Tyrone Tracy: Bound for IR \n\n https://www.rotowire.com/football/player/tyrone-tracy-17967"
-  },
-  {
-   "id": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3myutg6e6ys2y|tyronetracy|out|status",
-   "at": "2026-10-27T18:09:17.000Z",
-   "seen": "2026-10-27T18:25:15.821Z",
-   "handle": "rotoworld-fb.bsky.social",
-   "post": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3myutg6e6ys2y",
-   "player": "Tyrone Tracy",
-   "team": null,
-   "status": "out",
-   "kind": "status",
-   "confidence": 0.9,
-   "text": "Tyrone Tracy (hamstring) to head to IR"
-  },
   {
    "id": "at://did:plc:fuqjc7x4gxvnwzksnlxwbe4x/app.bsky.feed.post/3myuv5joes222|tyronetracy|out|status",
    "at": "2026-10-27T18:40:14.556Z",
@@ -19132,6 +19093,45 @@
    "kind": "status",
    "confidence": 0.4,
    "text": "David Montgomery (groin) practices Tuesday"
+  },
+  {
+   "id": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3n2jnd7oxr62p|lutherburden|active|status",
+   "at": "2026-11-17T18:11:21.000Z",
+   "seen": "2026-11-17T18:35:21.029Z",
+   "handle": "rotoworld-fb.bsky.social",
+   "post": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3n2jnd7oxr62p",
+   "player": "Luther Burden",
+   "team": null,
+   "status": "active",
+   "kind": "status",
+   "confidence": 0.9,
+   "text": "Luther Burden clears concussion protocol"
+  },
+  {
+   "id": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3n2jnxeiwat2g|lutherburden|active|status",
+   "at": "2026-11-17T18:22:37.000Z",
+   "seen": "2026-11-17T18:35:21.029Z",
+   "handle": "rotowirenfl.bsky.social",
+   "post": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3n2jnxeiwat2g",
+   "player": "Luther Burden",
+   "team": null,
+   "status": "active",
+   "kind": "status",
+   "confidence": 0.9,
+   "text": "Luther Burden: Clears concussion protocol \n\n https://www.rotowire.com/football/player/luther-burden-18548"
+  },
+  {
+   "id": "at://did:plc:mbr4badgf6yu56mquzackzew/app.bsky.feed.post/3n2joknbaa22t|lutherburden|active|status",
+   "at": "2026-11-17T18:33:24.472Z",
+   "seen": "2026-11-17T18:35:21.029Z",
+   "handle": "insidenflnews.bsky.social",
+   "post": "at://did:plc:mbr4badgf6yu56mquzackzew/app.bsky.feed.post/3n2joknbaa22t",
+   "player": "Luther Burden III",
+   "team": null,
+   "status": "active",
+   "kind": "status",
+   "confidence": 0.9,
+   "text": "Johnson: Luther Burden III cleared concussion protocol."
   }
  ]
 }
