@@ -6,23 +6,10 @@
   "nflnewsreposterbot.bsky.social": "2026-11-16T18:35:13.806Z",
   "insidenflnews.bsky.social": "2026-11-17T18:33:24.472Z",
   "nflnewsposter.bsky.social": "2026-11-17T18:50:29.176Z",
-  "rotoworld-fb.bsky.social": "2026-11-17T18:11:21.000Z",
-  "rotowirenfl.bsky.social": "2026-11-17T18:22:37.000Z"
+  "rotoworld-fb.bsky.social": "2026-11-17T19:10:06.000Z",
+  "rotowirenfl.bsky.social": "2026-11-17T19:02:59.000Z"
  },
  "claims": [
-  {
-   "id": "at://did:plc:fuqjc7x4gxvnwzksnlxwbe4x/app.bsky.feed.post/3myuxjt64okck|camtaylorbritt|out|status",
-   "at": "2026-10-27T19:22:54.650Z",
-   "seen": "2026-10-27T19:40:27.662Z",
-   "handle": "nflnewsposter.bsky.social",
-   "post": "at://did:plc:fuqjc7x4gxvnwzksnlxwbe4x/app.bsky.feed.post/3myuxjt64okck",
-   "player": "Cam Taylor-Britt",
-   "team": "IND",
-   "status": "out",
-   "kind": "status",
-   "confidence": 0.95,
-   "text": "[Colts] We have signed CB Kenneth Harris to the 53-man roster from the practice squad and placed CB Cam Taylor-Britt on IR.\n\nWe have also signed CB Shemar Bartholomew and CB Natrone Brooks to the prac"
-  },
   {
    "id": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3myv2nrb2yq2y|matthewgolden|questionable|status",
    "at": "2026-10-27T20:18:48.000Z",
@@ -19119,6 +19106,19 @@
    "kind": "status",
    "confidence": 0.9,
    "text": "Johnson: Luther Burden III cleared concussion protocol."
+  },
+  {
+   "id": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3n2jq7jswlh2g|jacorycroskeymerritt|limited|status",
+   "at": "2026-11-17T19:02:59.000Z",
+   "seen": "2026-11-17T19:32:32.244Z",
+   "handle": "rotowirenfl.bsky.social",
+   "post": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3n2jq7jswlh2g",
+   "player": "Jacory Croskey-Merritt",
+   "team": null,
+   "status": "limited",
+   "kind": "status",
+   "confidence": 0.6,
+   "text": "Jacory Croskey-Merritt: Makes return to practice \n\n https://www.rotowire.com/football/player/jacory-croskey-merritt-18811"
   }
  ]
 }

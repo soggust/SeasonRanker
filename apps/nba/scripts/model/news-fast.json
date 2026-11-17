@@ -1,50 +1,11 @@
 {
  "sport": "nba",
  "cursor": {
-  "rotowirenba.bsky.social": "2026-11-17T18:46:15.000Z",
+  "rotowirenba.bsky.social": "2026-11-17T19:20:07.000Z",
   "insidenbanews.bsky.social": "2026-11-13T20:00:09.852Z",
-  "shamsbot.bsky.social": "2026-11-13T20:16:26.000Z"
+  "shamsbot.bsky.social": "2026-11-17T19:24:56.000Z"
  },
  "claims": [
-  {
-   "id": "at://did:plc:sa73fbx3vxzh2fw5pu5wmief/app.bsky.feed.post/3myuxfdcdzc2s|jarenjackson|out|status",
-   "at": "2026-10-27T19:16:34.000Z",
-   "seen": "2026-10-27T19:40:27.662Z",
-   "handle": "shamsbot.bsky.social",
-   "post": "at://did:plc:sa73fbx3vxzh2fw5pu5wmief/app.bsky.feed.post/3myuxfdcdzc2s",
-   "player": "Jaren Jackson Jr.",
-   "team": "UTA",
-   "status": "out",
-   "kind": "status",
-   "confidence": 0.97,
-   "text": "Utah Jazz star Jaren Jackson Jr. has sustained a torn MCL in his right knee and will be sidelined for 6-to-8 weeks, sources tell me and @BannedMacMahon. Jackson will not require surgery."
-  },
-  {
-   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3myuxoayjue2l|jarenjackson|out|status",
-   "at": "2026-10-27T19:25:23.000Z",
-   "seen": "2026-10-27T19:40:27.662Z",
-   "handle": "rotowirenba.bsky.social",
-   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3myuxoayjue2l",
-   "player": "Jaren Jackson",
-   "team": "UTA",
-   "status": "out",
-   "kind": "status",
-   "confidence": 0.93,
-   "text": "Jaren Jackson: Expected to miss at least six weeks \n\n https://www.rotowire.com/basketball/player/jaren-jackson-4384"
-  },
-  {
-   "id": "at://did:plc:ykcnnf6kqnn3lasmobrczoem/app.bsky.feed.post/3myuxqugoj22g|jarenjackson|out|status",
-   "at": "2026-10-27T19:26:50.857Z",
-   "seen": "2026-10-27T19:40:27.662Z",
-   "handle": "insidenbanews.bsky.social",
-   "post": "at://did:plc:ykcnnf6kqnn3lasmobrczoem/app.bsky.feed.post/3myuxqugoj22g",
-   "player": "Jaren Jackson Jr.",
-   "team": "UTA",
-   "status": "out",
-   "kind": "status",
-   "confidence": 0.95,
-   "text": "Shams: Jaren Jackson Jr. to miss at least 6-8 weeks with torn MCL.\n\nHe will not require surgery."
-  },
   {
    "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3myuywfcqh42l|ruihachimura|out|status",
    "at": "2026-10-27T19:47:50.000Z",
@@ -9274,6 +9235,32 @@
    "kind": "status",
    "confidence": 0.6,
    "text": "Tyrese Haliburton: Still without firm timetable for return \n\n https://www.rotowire.com/basketball/player/tyrese-haliburton-5114"
+  },
+  {
+   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3n2jq7ok2ke2t|jonathankuminga|out|status",
+   "at": "2026-11-17T19:03:04.000Z",
+   "seen": "2026-11-17T19:32:32.244Z",
+   "handle": "rotowirenba.bsky.social",
+   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3n2jq7ok2ke2t",
+   "player": "Jonathan Kuminga",
+   "team": "GSW",
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.9,
+   "text": "Jonathan Kuminga: Sitting out Tuesday \n\n https://www.rotowire.com/basketball/player/jonathan-kuminga-5287"
+  },
+  {
+   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3n2jr66di3q2m|deniavdija|questionable|status",
+   "at": "2026-11-17T19:20:07.000Z",
+   "seen": "2026-11-17T19:32:32.244Z",
+   "handle": "rotowirenba.bsky.social",
+   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3n2jr66di3q2m",
+   "player": "Deni Avdija",
+   "team": "WAS",
+   "status": "questionable",
+   "kind": "status",
+   "confidence": 0.9,
+   "text": "Deni Avdija: Listed as questionable \n\n https://www.rotowire.com/basketball/player/deni-avdija-5152"
   }
  ]
 }
