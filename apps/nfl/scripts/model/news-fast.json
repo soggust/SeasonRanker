@@ -6,7 +6,7 @@
   "nflnewsreposterbot.bsky.social": "2026-11-16T18:35:13.806Z",
   "insidenflnews.bsky.social": "2026-11-17T18:33:24.472Z",
   "nflnewsposter.bsky.social": "2026-11-17T18:50:29.176Z",
-  "rotoworld-fb.bsky.social": "2026-11-17T21:20:16.000Z",
+  "rotoworld-fb.bsky.social": "2026-11-17T21:55:56.000Z",
   "rotowirenfl.bsky.social": "2026-11-17T21:26:27.000Z"
  },
  "claims": [
@@ -19093,6 +19093,32 @@
    "kind": "status",
    "confidence": 0.95,
    "text": "Wan'Dale Robinson: Heads to IR with ankle injury \n\n https://www.rotowire.com/football/player/wandale-robinson-15838"
+  },
+  {
+   "id": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3n2jzuqrymg2a|woodymarks|questionable|status",
+   "at": "2026-11-17T21:55:54.000Z",
+   "seen": "2026-11-17T22:06:34.047Z",
+   "handle": "rotoworld-fb.bsky.social",
+   "post": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3n2jzuqrymg2a",
+   "player": "Woody Marks",
+   "team": null,
+   "status": "questionable",
+   "kind": "status",
+   "confidence": 0.6,
+   "text": "Woody Marks (concussion) remains a DNP Tuesday"
+  },
+  {
+   "id": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3n2jzurz6za2w|marvinharrison|questionable|status",
+   "at": "2026-11-17T21:55:56.000Z",
+   "seen": "2026-11-17T22:06:34.047Z",
+   "handle": "rotoworld-fb.bsky.social",
+   "post": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3n2jzurz6za2w",
+   "player": "Marvin Harrison",
+   "team": null,
+   "status": "questionable",
+   "kind": "status",
+   "confidence": 0.6,
+   "text": "Marvin Harrison (hamstring) not practicing Tuesday"
   }
  ]
 }

@@ -1,138 +1,6 @@
 {
  "sport": "nhl",
  "entries": {
-  "401892664|curtisdouglas|out": {
-   "game": "401892664",
-   "start": "2026-11-07T22:00Z",
-   "team": "124292",
-   "name": "Curtis Douglas",
-   "status": "out",
-   "athlete": "4331586",
-   "espn": {
-    "seen": "2026-11-06T16:42:58.938Z",
-    "own": "2026-11-05T01:12:00.000Z"
-   }
-  },
-  "401892664|jaredmccann|out": {
-   "game": "401892664",
-   "start": "2026-11-07T22:00Z",
-   "team": "124292",
-   "name": "Jared McCann",
-   "status": "out",
-   "athlete": "3114777",
-   "espn": {
-    "seen": "2026-11-06T16:42:58.938Z",
-    "own": "2026-10-25T17:08:00.000Z"
-   }
-  },
-  "401892664|jacobmelanson|out": {
-   "game": "401892664",
-   "start": "2026-11-07T22:00Z",
-   "team": "124292",
-   "name": "Jacob Melanson",
-   "status": "out",
-   "athlete": "4894747",
-   "espn": {
-    "seen": "2026-11-06T16:42:58.938Z",
-    "own": "2026-10-10T19:49:00.000Z"
-   }
-  },
-  "401892664|ryanlindgren|out": {
-   "game": "401892664",
-   "start": "2026-11-07T22:00Z",
-   "team": "124292",
-   "name": "Ryan Lindgren",
-   "status": "out",
-   "athlete": "4271998",
-   "espn": {
-    "seen": "2026-11-06T16:42:58.938Z",
-    "own": "2026-10-08T16:38:00.000Z"
-   }
-  },
-  "401892664|jakeobrien|out": {
-   "game": "401892664",
-   "start": "2026-11-07T22:00Z",
-   "team": "124292",
-   "name": "Jake O'Brien",
-   "status": "out",
-   "athlete": "5291944",
-   "espn": {
-    "seen": "2026-11-06T16:42:58.938Z",
-    "own": "2026-10-01T00:06:00.000Z"
-   }
-  },
-  "401892664|seandurzi|out": {
-   "game": "401892664",
-   "start": "2026-11-07T22:00Z",
-   "team": "13",
-   "name": "Sean Durzi",
-   "status": "out",
-   "athlete": "4378683",
-   "espn": {
-    "seen": "2026-11-06T16:42:58.938Z",
-    "own": "2026-11-05T19:23:00.000Z"
-   }
-  },
-  "401892664|joonaskorpisalo|out": {
-   "game": "401892664",
-   "start": "2026-11-07T22:00Z",
-   "team": "13",
-   "name": "Joonas Korpisalo",
-   "status": "out",
-   "athlete": "3069266",
-   "espn": {
-    "seen": "2026-11-06T16:42:58.938Z",
-    "own": "2026-11-04T15:18:00.000Z"
-   }
-  },
-  "401892664|igorshesterkin|out": {
-   "game": "401892664",
-   "start": "2026-11-07T22:00Z",
-   "team": "13",
-   "name": "Igor Shesterkin",
-   "status": "out",
-   "athlete": "3151297",
-   "espn": {
-    "seen": "2026-11-06T16:42:58.938Z",
-    "own": "2026-10-11T21:06:00.000Z"
-   }
-  },
-  "401892664|joeveleno|out": {
-   "game": "401892664",
-   "start": "2026-11-07T22:00Z",
-   "team": "13",
-   "name": "Joe Veleno",
-   "status": "out",
-   "athlete": "4352804",
-   "espn": {
-    "seen": "2026-11-06T16:42:58.938Z",
-    "own": "2026-10-10T17:18:00.000Z"
-   }
-  },
-  "401892664|aidanthompson|out": {
-   "game": "401892664",
-   "start": "2026-11-07T22:00Z",
-   "team": "13",
-   "name": "Aidan Thompson",
-   "status": "out",
-   "athlete": "5136624",
-   "espn": {
-    "seen": "2026-11-06T16:42:58.938Z",
-    "own": "2026-09-29T16:39:00.000Z"
-   }
-  },
-  "401892664|adamsykora|out": {
-   "game": "401892664",
-   "start": "2026-11-07T22:00Z",
-   "team": "13",
-   "name": "Adam Sykora",
-   "status": "out",
-   "athlete": "5080232",
-   "espn": {
-    "seen": "2026-11-06T16:42:58.938Z",
-    "own": "2026-09-29T01:35:00.000Z"
-   }
-  },
   "401892665|johntavares|out": {
    "game": "401892665",
    "start": "2026-11-08T00:00Z",
@@ -1723,18 +1591,6 @@
     "own": "2026-11-07T18:05:06.526Z"
    }
   },
-  "401892664|bobyram|q": {
-   "game": "401892664",
-   "start": "2026-11-07T22:00Z",
-   "team": "124292",
-   "name": "Bo Byram",
-   "status": "q",
-   "bluesky": {
-    "seen": "2026-11-07T18:39:23.242Z",
-    "own": "2026-11-07T17:56:54.257Z",
-    "why": "@marklazerus.bsky.social: Blashill had no update on Bo Byram. Is it getting conc"
-   }
-  },
   "401892665|bobyram|q": {
    "game": "401892665",
    "start": "2026-11-08T00:00Z",
@@ -1893,18 +1749,6 @@
    "sleeper": {
     "seen": "2026-11-07T20:13:35.952Z",
     "own": "2026-11-07T19:00:07.786Z"
-   }
-  },
-  "401892664|nikkekokko|out": {
-   "game": "401892664",
-   "start": "2026-11-07T22:00Z",
-   "team": "124292",
-   "name": "Nikke Kokko",
-   "status": "out",
-   "athlete": "5080225",
-   "espn": {
-    "seen": "2026-11-07T20:23:05.654Z",
-    "own": "2026-11-07T20:12:00.000Z"
    }
   },
   "401892670|michaelmccarron|out": {
@@ -9121,6 +8965,11 @@
    "sleeper": {
     "seen": "2026-11-17T20:15:46.856Z",
     "own": "2026-11-17T19:40:33.682Z"
+   },
+   "bluesky": {
+    "seen": "2026-11-17T21:02:57.334Z",
+    "own": "2026-11-17T20:16:03.000Z",
+    "why": "@dailyfaceoff.bsky.social: Sharks’ Kiefer Sherwood out week-to-week with upper-b"
    }
   },
   "401892741|scottwedgewood|q": {
@@ -9145,6 +8994,11 @@
    "espn": {
     "seen": "2026-11-17T21:01:40.335Z",
     "own": "2026-11-17T20:12:00.000Z"
+   },
+   "bluesky": {
+    "seen": "2026-11-17T21:02:57.334Z",
+    "own": "2026-11-17T20:52:16.000Z",
+    "why": "@dailyfaceoff.bsky.social: Stars’ Miro Heiskanen returns to lineup, Tyler Myers "
    }
   }
  }
