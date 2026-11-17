@@ -8798,6 +8798,11 @@
    "espn": {
     "seen": "2026-11-17T16:32:54.510Z",
     "own": "2026-11-11T22:42:00.000Z"
+   },
+   "bluesky": {
+    "seen": "2026-11-17T18:56:06.644Z",
+    "own": "2026-11-17T18:55:44.000Z",
+    "why": "@dailyfaceoff.bsky.social: On Tuesday, head coach Sheldon Keefe told reporters, "
    }
   },
   "401892740|mikematheson|out": {
@@ -9060,6 +9065,18 @@
    "espn": {
     "seen": "2026-11-17T18:54:50.890Z",
     "own": "2026-11-17T18:35:00.000Z"
+   }
+  },
+  "401892731|loganstanley|out": {
+   "game": "401892731",
+   "start": "2026-11-18T00:00Z",
+   "team": "12",
+   "name": "Logan Stanley",
+   "status": "out",
+   "athlete": "4024968",
+   "espn": {
+    "seen": "2026-11-17T19:11:41.038Z",
+    "own": "2026-11-17T19:05:00.000Z"
    }
   }
  }
