@@ -23415,6 +23415,30 @@
     "seen": "2026-11-17T21:21:48.520Z",
     "own": "2026-11-17T21:08:00.000Z"
    }
+  },
+  "401873070|armajreedadams|out": {
+   "game": "401873070",
+   "start": "2026-11-22T18:00Z",
+   "team": "2",
+   "name": "Ar'maj Reed-Adams",
+   "status": "out",
+   "athlete": "4606712",
+   "espn": {
+    "seen": "2026-11-17T21:42:54.839Z",
+    "own": "2026-11-17T21:17:00.000Z"
+   }
+  },
+  "401873073|wandalerobinson|out": {
+   "game": "401873073",
+   "start": "2026-11-22T18:00Z",
+   "team": "10",
+   "name": "Wan'Dale Robinson",
+   "status": "out",
+   "athlete": "4569587",
+   "espn": {
+    "seen": "2026-11-17T21:42:54.839Z",
+    "own": "2026-11-17T21:26:00.000Z"
+   }
   }
  }
 }
