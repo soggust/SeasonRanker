@@ -9000,6 +9000,18 @@
     "own": "2026-11-17T20:52:16.000Z",
     "why": "@dailyfaceoff.bsky.social: Stars’ Miro Heiskanen returns to lineup, Tyler Myers "
    }
+  },
+  "401892729|brandonhagel|out": {
+   "game": "401892729",
+   "start": "2026-11-18T00:30Z",
+   "team": "20",
+   "name": "Brandon Hagel",
+   "status": "out",
+   "athlete": "4065019",
+   "espn": {
+    "seen": "2026-11-17T23:24:00.786Z",
+    "own": "2026-11-17T23:14:00.000Z"
+   }
   }
  }
 }
