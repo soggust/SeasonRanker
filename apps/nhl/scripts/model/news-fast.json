@@ -3,8 +3,8 @@
  "cursor": {
   "johnston-bot.bsky.social": "2026-11-17T20:34:20.535Z",
   "notfriedgehnic.bsky.social": "2026-11-16T03:33:57.405Z",
-  "dailyfaceoff.bsky.social": "2026-11-17T21:01:52.000Z",
-  "dfotoronto.bsky.social": "2026-11-17T20:52:17.000Z",
+  "dailyfaceoff.bsky.social": "2026-11-17T21:23:52.000Z",
+  "dfotoronto.bsky.social": "2026-11-17T21:14:45.000Z",
   "marklazerus.bsky.social": "2026-11-17T18:43:21.586Z"
  },
  "claims": [
@@ -2581,6 +2581,32 @@
    "kind": "status",
    "confidence": 0.95,
    "text": "Stars’ Miro Heiskanen returns to lineup, Tyler Myers out with upper-body injury"
+  },
+  {
+   "id": "at://did:plc:3uus7y6h3rlrk6sbctzxm4bg/app.bsky.feed.post/3n2jy3ejxxb2z|jonathanmarchessault|active|return",
+   "at": "2026-11-17T21:23:49.000Z",
+   "seen": "2026-11-17T21:27:02.601Z",
+   "handle": "dailyfaceoff.bsky.social",
+   "post": "at://did:plc:3uus7y6h3rlrk6sbctzxm4bg/app.bsky.feed.post/3n2jy3ejxxb2z",
+   "player": "Jonathan Marchessault",
+   "team": "NSH",
+   "status": "active",
+   "kind": "return",
+   "confidence": 0.93,
+   "text": "Predators’ Jonathan Marchessault returns to lineup after seven-game absence"
+  },
+  {
+   "id": "at://did:plc:3uus7y6h3rlrk6sbctzxm4bg/app.bsky.feed.post/3n2jy3h2xig2f|adamjecho|active|return",
+   "at": "2026-11-17T21:23:52.000Z",
+   "seen": "2026-11-17T21:27:02.601Z",
+   "handle": "dailyfaceoff.bsky.social",
+   "post": "at://did:plc:3uus7y6h3rlrk6sbctzxm4bg/app.bsky.feed.post/3n2jy3h2xig2f",
+   "player": "Adam Jecho",
+   "team": "STL",
+   "status": "active",
+   "kind": "return",
+   "confidence": 0.85,
+   "text": "Blues’ Adam Jecho cleared to return from NHL/NHLPA Player Assistance Program"
   }
  ]
 }

@@ -1,5 +1,4 @@
 [
-{"id":"401873062","date":"1993-01-31T23:30Z","season":2026,"type":2,"home":"13","away":"26","homeAbbr":"LV","awayAbbr":"SEA","neutral":false,"final":true,"hs":13,"as":21,"venue":"Las Vegas|NV|USA","indoor":true},
 {"id":"400874484","date":"2016-09-09T00:30Z","season":2016,"type":2,"home":"7","away":"29","homeAbbr":"DEN","awayAbbr":"CAR","neutral":false,"final":true,"hs":21,"as":20},
 {"id":"400874522","date":"2016-09-11T17:00Z","season":2016,"type":2,"home":"1","away":"27","homeAbbr":"ATL","awayAbbr":"TB","neutral":false,"final":true,"hs":24,"as":31},
 {"id":"400874510","date":"2016-09-11T17:00Z","season":2016,"type":2,"home":"33","away":"2","homeAbbr":"BAL","awayAbbr":"BUF","neutral":false,"final":true,"hs":13,"as":7},
@@ -2906,6 +2905,7 @@
 {"id":"401873060","date":"2026-11-15T18:00Z","season":2026,"type":2,"home":"9","away":"16","homeAbbr":"GB","awayAbbr":"MIN","neutral":false,"final":true,"hs":10,"as":30,"venue":"Green Bay|WI|USA","indoor":false},
 {"id":"401873059","date":"2026-11-15T18:00Z","season":2026,"type":2,"home":"11","away":"15","homeAbbr":"IND","awayAbbr":"MIA","neutral":false,"final":true,"hs":24,"as":22,"venue":"Indianapolis|IN|USA","indoor":true},
 {"id":"401873057","date":"2026-11-15T18:00Z","season":2026,"type":2,"home":"10","away":"30","homeAbbr":"TEN","awayAbbr":"JAX","neutral":false,"final":true,"hs":23,"as":40,"venue":"Nashville|TN|USA","indoor":false},
+{"id":"401873062","date":"2026-11-15T21:05Z","season":2026,"type":2,"home":"13","away":"26","homeAbbr":"LV","awayAbbr":"SEA","neutral":false,"final":true,"hs":13,"as":21,"venue":"Las Vegas|NV|USA","indoor":true},
 {"id":"401873061","date":"2026-11-15T21:05Z","season":2026,"type":2,"home":"22","away":"14","homeAbbr":"ARI","awayAbbr":"LAR","neutral":false,"final":true,"hs":6,"as":34,"venue":"Glendale|AZ|USA","indoor":true},
 {"id":"401873063","date":"2026-11-15T21:25Z","season":2026,"type":2,"home":"6","away":"25","homeAbbr":"DAL","awayAbbr":"SF","neutral":false,"final":true,"hs":40,"as":46,"venue":"Arlington|TX|USA","indoor":true},
 {"id":"401873064","date":"2026-11-16T01:20Z","season":2026,"type":2,"home":"4","away":"23","homeAbbr":"CIN","awayAbbr":"PIT","neutral":false,"final":true,"hs":38,"as":18,"venue":"Cincinnati|OH|USA","indoor":false},
