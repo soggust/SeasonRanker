@@ -7,45 +7,6 @@
  },
  "claims": [
   {
-   "id": "at://did:plc:sa73fbx3vxzh2fw5pu5wmief/app.bsky.feed.post/3myukg7rn4d23|kawhileonard|out|status",
-   "at": "2026-10-27T15:27:14.000Z",
-   "seen": "2026-10-27T15:34:14.063Z",
-   "handle": "shamsbot.bsky.social",
-   "post": "at://did:plc:sa73fbx3vxzh2fw5pu5wmief/app.bsky.feed.post/3myukg7rn4d23",
-   "player": "Kawhi Leonard",
-   "team": "TOR",
-   "status": "out",
-   "kind": "status",
-   "confidence": 0.9,
-   "text": "Toronto's Kawhi Leonard is expected to miss a period of weeks due to swelling in his left knee, sources tell ESPN. MRI on Leonard's knee showed no structural damage, but sides will use the shorter ter"
-  },
-  {
-   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3myukleg3zs2z|kawhileonard|out|status",
-   "at": "2026-10-27T15:31:07.000Z",
-   "seen": "2026-10-27T15:34:14.063Z",
-   "handle": "rotowirenba.bsky.social",
-   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3myukleg3zs2z",
-   "player": "Kawhi Leonard",
-   "team": "TOR",
-   "status": "out",
-   "kind": "status",
-   "confidence": 0.9,
-   "text": "Kawhi Leonard: Expected to miss multiple weeks \n\n https://www.rotowire.com/basketball/player/kawhi-leonard-3195"
-  },
-  {
-   "id": "at://did:plc:ykcnnf6kqnn3lasmobrczoem/app.bsky.feed.post/3myulchffvs2a|kawhileonard|out|status",
-   "at": "2026-10-27T15:44:02.521Z",
-   "seen": "2026-10-27T16:15:26.731Z",
-   "handle": "insidenbanews.bsky.social",
-   "post": "at://did:plc:ykcnnf6kqnn3lasmobrczoem/app.bsky.feed.post/3myulchffvs2a",
-   "player": "Kawhi Leonard",
-   "team": null,
-   "status": "out",
-   "kind": "status",
-   "confidence": 0.8,
-   "text": "⚠️ Shams: Kawhi Leonard expected to miss a period of weeks with swelling in his left knee."
-  },
-  {
    "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3myupi32ndd2n|derrickwhite|active|status",
    "at": "2026-10-27T16:58:45.000Z",
    "seen": "2026-10-27T17:01:16.301Z",

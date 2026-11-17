@@ -7,22 +7,9 @@
   "insidenflnews.bsky.social": "2026-11-17T13:56:27.578Z",
   "nflnewsposter.bsky.social": "2026-11-17T04:27:01.723Z",
   "rotoworld-fb.bsky.social": "2026-11-17T14:35:48.000Z",
-  "rotowirenfl.bsky.social": "2026-11-17T05:53:44.000Z"
+  "rotowirenfl.bsky.social": "2026-11-17T15:41:48.000Z"
  },
  "claims": [
-  {
-   "id": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3myukxtdbee2s|saquonbarkley|active|status",
-   "at": "2026-10-27T15:38:05.000Z",
-   "seen": "2026-10-27T16:15:26.731Z",
-   "handle": "rotowirenfl.bsky.social",
-   "post": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3myukxtdbee2s",
-   "player": "Saquon Barkley",
-   "team": null,
-   "status": "active",
-   "kind": "status",
-   "confidence": 0.5,
-   "text": "Saquon Barkley: Plans to play through back, hamstring issues \n\n https://www.rotowire.com/football/player/saquon-barkley-12507"
-  },
   {
    "id": "at://did:plc:fuqjc7x4gxvnwzksnlxwbe4x/app.bsky.feed.post/3myurt56zc22g|erickall|out|status",
    "at": "2026-10-27T17:40:44.703Z",

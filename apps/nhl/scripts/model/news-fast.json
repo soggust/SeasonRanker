@@ -3,37 +3,11 @@
  "cursor": {
   "johnston-bot.bsky.social": "2026-11-12T16:02:25.547Z",
   "notfriedgehnic.bsky.social": "2026-11-16T03:33:57.405Z",
-  "dailyfaceoff.bsky.social": "2026-11-17T14:09:42.000Z",
-  "dfotoronto.bsky.social": "2026-11-17T12:08:46.000Z",
-  "marklazerus.bsky.social": "2026-11-16T23:28:43.848Z"
+  "dailyfaceoff.bsky.social": "2026-11-17T15:04:29.000Z",
+  "dfotoronto.bsky.social": "2026-11-17T15:13:32.000Z",
+  "marklazerus.bsky.social": "2026-11-17T15:44:50.228Z"
  },
  "claims": [
-  {
-   "id": "at://did:plc:3uus7y6h3rlrk6sbctzxm4bg/app.bsky.feed.post/3myuj4mesm526|marchenko|none|status",
-   "at": "2026-10-27T15:04:58.000Z",
-   "seen": "2026-10-27T15:24:09.106Z",
-   "handle": "dailyfaceoff.bsky.social",
-   "post": "at://did:plc:3uus7y6h3rlrk6sbctzxm4bg/app.bsky.feed.post/3myuj4mesm526",
-   "player": "Marchenko",
-   "team": "TOR",
-   "status": "none",
-   "kind": "status",
-   "confidence": 0.4,
-   "text": "Leafs’ Marchenko exited game last night vs. Flames with lower-body injury. #nhl #nhlhockey #dailyfaceoff"
-  },
-  {
-   "id": "at://did:plc:54vdi5eoabhod2vumsbcpi7g/app.bsky.feed.post/3myujvrmoyk2v|olivermoore|active|return",
-   "at": "2026-10-27T15:19:03.293Z",
-   "seen": "2026-10-27T15:24:09.106Z",
-   "handle": "marklazerus.bsky.social",
-   "post": "at://did:plc:54vdi5eoabhod2vumsbcpi7g/app.bsky.feed.post/3myujvrmoyk2v",
-   "player": "Oliver Moore",
-   "team": "CHI",
-   "status": "active",
-   "kind": "return",
-   "confidence": 0.6,
-   "text": "Oliver Moore, scratched last game, is the first skater on the ice for Blackhawks morning skate at the UC."
-  },
   {
    "id": "at://did:plc:3uus7y6h3rlrk6sbctzxm4bg/app.bsky.feed.post/3myunph7blt2h|eastoncowan|none|benched",
    "at": "2026-10-27T16:27:05.000Z",
@@ -2438,6 +2412,32 @@
    "kind": "return",
    "confidence": 0.9,
    "text": "Mammoth’s Logan Cooley returns to lineup vs. Canucks"
+  },
+  {
+   "id": "at://did:plc:54vdi5eoabhod2vumsbcpi7g/app.bsky.feed.post/3n2jf57l5pc2p|bobyram|out|status",
+   "at": "2026-11-17T15:44:50.228Z",
+   "seen": "2026-11-17T15:46:47.416Z",
+   "handle": "marklazerus.bsky.social",
+   "post": "at://did:plc:54vdi5eoabhod2vumsbcpi7g/app.bsky.feed.post/3n2jf57l5pc2p",
+   "player": "Bo Byram",
+   "team": null,
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.8,
+   "text": "Bo Byram won't play in the next two home games. Conceivable he could come on the trip out west. \n\nTyler Bertuzzi will play tonight."
+  },
+  {
+   "id": "at://did:plc:54vdi5eoabhod2vumsbcpi7g/app.bsky.feed.post/3n2jf57l5pc2p|tylerbertuzzi|active|status",
+   "at": "2026-11-17T15:44:50.228Z",
+   "seen": "2026-11-17T15:46:47.416Z",
+   "handle": "marklazerus.bsky.social",
+   "post": "at://did:plc:54vdi5eoabhod2vumsbcpi7g/app.bsky.feed.post/3n2jf57l5pc2p",
+   "player": "Tyler Bertuzzi",
+   "team": null,
+   "status": "active",
+   "kind": "status",
+   "confidence": 0.85,
+   "text": "Bo Byram won't play in the next two home games. Conceivable he could come on the trip out west. \n\nTyler Bertuzzi will play tonight."
   }
  ]
 }
