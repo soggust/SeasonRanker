@@ -23413,6 +23413,66 @@
     "own": "2026-11-17T21:08:25.000Z",
     "why": "@rotowirenba.bsky.social: CJ McCollum: Out four weeks with calf strain \n\n https:"
    }
+  },
+  "401910002|tyjerome|out": {
+   "game": "401910002",
+   "start": "2026-11-18T00:30Z",
+   "team": "28",
+   "name": "Ty Jerome",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-17T22:19:16.935Z",
+    "own": "2026-11-17T22:07:54.000Z",
+    "why": "@rotowirenba.bsky.social: Ty Jerome: Won't play Wednesday \n\n https://www.rotowir"
+   }
+  },
+  "401910003|tyjerome|out": {
+   "game": "401910003",
+   "start": "2026-11-18T01:00Z",
+   "team": "16",
+   "name": "Ty Jerome",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-17T22:19:16.935Z",
+    "own": "2026-11-17T22:07:54.000Z",
+    "why": "@rotowirenba.bsky.social: Ty Jerome: Won't play Wednesday \n\n https://www.rotowir"
+   }
+  },
+  "401910004|tyjerome|out": {
+   "game": "401910004",
+   "start": "2026-11-18T01:00Z",
+   "team": "24",
+   "name": "Ty Jerome",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-17T22:19:16.935Z",
+    "own": "2026-11-17T22:07:54.000Z",
+    "why": "@rotowirenba.bsky.social: Ty Jerome: Won't play Wednesday \n\n https://www.rotowir"
+   }
+  },
+  "401910006|tyjerome|out": {
+   "game": "401910006",
+   "start": "2026-11-18T03:30Z",
+   "team": "12",
+   "name": "Ty Jerome",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-17T22:19:16.935Z",
+    "own": "2026-11-17T22:07:54.000Z",
+    "why": "@rotowirenba.bsky.social: Ty Jerome: Won't play Wednesday \n\n https://www.rotowir"
+   }
+  },
+  "401910005|tyjerome|out": {
+   "game": "401910005",
+   "start": "2026-11-18T04:00Z",
+   "team": "13",
+   "name": "Ty Jerome",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-17T22:19:16.935Z",
+    "own": "2026-11-17T22:07:54.000Z",
+    "why": "@rotowirenba.bsky.social: Ty Jerome: Won't play Wednesday \n\n https://www.rotowir"
+   }
   }
  }
 }
