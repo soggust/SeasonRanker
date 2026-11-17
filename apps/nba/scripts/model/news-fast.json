@@ -1,7 +1,7 @@
 {
  "sport": "nba",
  "cursor": {
-  "rotowirenba.bsky.social": "2026-11-17T02:31:08.000Z",
+  "rotowirenba.bsky.social": "2026-11-17T02:59:13.000Z",
   "insidenbanews.bsky.social": "2026-11-13T20:00:09.852Z",
   "shamsbot.bsky.social": "2026-11-13T20:16:26.000Z"
  },
@@ -9261,6 +9261,45 @@
    "kind": "status",
    "confidence": 0.9,
    "text": "Bam Adebayo: Won't return Monday \n\n https://www.rotowire.com/basketball/player/bam-adebayo-4153"
+  },
+  {
+   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3n2hzfndszt2y|peytonwatson|questionable|status",
+   "at": "2026-11-17T02:42:08.000Z",
+   "seen": "2026-11-17T03:03:31.545Z",
+   "handle": "rotowirenba.bsky.social",
+   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3n2hzfndszt2y",
+   "player": "Peyton Watson",
+   "team": null,
+   "status": "questionable",
+   "kind": "status",
+   "confidence": 0.35,
+   "text": "Peyton Watson: Does not return Monday \n\n https://www.rotowire.com/basketball/player/peyton-watson-5722"
+  },
+  {
+   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3n2hzpasgvu2z|jalensmith|questionable|status",
+   "at": "2026-11-17T02:47:30.000Z",
+   "seen": "2026-11-17T03:03:31.545Z",
+   "handle": "rotowirenba.bsky.social",
+   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3n2hzpasgvu2z",
+   "player": "Jalen Smith",
+   "team": null,
+   "status": "questionable",
+   "kind": "status",
+   "confidence": 0.35,
+   "text": "Jalen Smith: Doesn't return to Monday's loss \n\n https://www.rotowire.com/basketball/player/jalen-smith-5169"
+  },
+  {
+   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3n2i2e777w22r|juliusrandle|active|return",
+   "at": "2026-11-17T02:59:13.000Z",
+   "seen": "2026-11-17T03:03:31.545Z",
+   "handle": "rotowirenba.bsky.social",
+   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3n2i2e777w22r",
+   "player": "Julius Randle",
+   "team": null,
+   "status": "active",
+   "kind": "return",
+   "confidence": 0.9,
+   "text": "Julius Randle: Cleared to return after getting stitches \n\n https://www.rotowire.com/basketball/player/julius-randle-3574"
   }
  ]
 }
