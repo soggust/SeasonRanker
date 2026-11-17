@@ -22703,6 +22703,666 @@
     "seen": "2026-11-17T03:00:46.954Z",
     "own": "2026-11-17T02:39:00.000Z"
    }
+  },
+  "401873066|daniellehunter|q": {
+   "game": "401873066",
+   "start": "2026-11-20T01:15Z",
+   "team": "34",
+   "name": "Danielle Hunter",
+   "status": "q",
+   "athlete": "2976560",
+   "espn": {
+    "seen": "2026-11-17T12:56:45.348Z",
+    "own": "2026-11-17T12:19:00.000Z"
+   }
+  },
+  "401873066|brevinjordan|q": {
+   "game": "401873066",
+   "start": "2026-11-20T01:15Z",
+   "team": "34",
+   "name": "Brevin Jordan",
+   "status": "q",
+   "athlete": "4362504",
+   "espn": {
+    "seen": "2026-11-17T12:56:45.348Z",
+    "own": "2026-11-17T12:19:00.000Z"
+   }
+  },
+  "401873066|azeezalshaair|q": {
+   "game": "401873066",
+   "start": "2026-11-20T01:15Z",
+   "team": "34",
+   "name": "Azeez Al-Shaair",
+   "status": "q",
+   "athlete": "3919117",
+   "espn": {
+    "seen": "2026-11-17T12:56:45.348Z",
+    "own": "2026-11-17T01:03:00.000Z"
+   }
+  },
+  "401873066|marvinharrison|q": {
+   "game": "401873066",
+   "start": "2026-11-20T01:15Z",
+   "team": "34",
+   "name": "Marvin Harrison Jr.",
+   "status": "q",
+   "athlete": "4432708",
+   "espn": {
+    "seen": "2026-11-17T12:56:45.348Z",
+    "own": "2026-11-17T00:44:00.000Z"
+   }
+  },
+  "401873066|lukerhodes|q": {
+   "game": "401873066",
+   "start": "2026-11-20T01:15Z",
+   "team": "11",
+   "name": "Luke Rhodes",
+   "status": "q",
+   "athlete": "2566045",
+   "espn": {
+    "seen": "2026-11-17T12:56:45.348Z",
+    "own": "2026-11-17T12:19:00.000Z"
+   }
+  },
+  "401873066|jerrytillery|q": {
+   "game": "401873066",
+   "start": "2026-11-20T01:15Z",
+   "team": "11",
+   "name": "Jerry Tillery",
+   "status": "q",
+   "athlete": "3863182",
+   "espn": {
+    "seen": "2026-11-17T12:56:45.348Z",
+    "own": "2026-11-17T12:19:00.000Z"
+   }
+  },
+  "401873066|jayloncarlies|q": {
+   "game": "401873066",
+   "start": "2026-11-20T01:15Z",
+   "team": "11",
+   "name": "Jaylon Carlies",
+   "status": "q",
+   "athlete": "4601021",
+   "espn": {
+    "seen": "2026-11-17T12:56:45.348Z",
+    "own": "2026-11-17T12:19:00.000Z"
+   }
+  },
+  "401873070|jaredwayne|q": {
+   "game": "401873070",
+   "start": "2026-11-22T18:00Z",
+   "team": "15",
+   "name": "Jared Wayne",
+   "status": "q",
+   "athlete": "4430681",
+   "espn": {
+    "seen": "2026-11-17T12:56:45.348Z",
+    "own": "2026-11-17T12:19:00.000Z"
+   }
+  },
+  "401873070|chrisbell|q": {
+   "game": "401873070",
+   "start": "2026-11-22T18:00Z",
+   "team": "15",
+   "name": "Chris Bell",
+   "status": "q",
+   "athlete": "4869961",
+   "espn": {
+    "seen": "2026-11-17T12:56:45.348Z",
+    "own": "2026-11-17T12:19:00.000Z"
+   }
+  },
+  "401873070|aaronbrewer|q": {
+   "game": "401873070",
+   "start": "2026-11-22T18:00Z",
+   "team": "15",
+   "name": "Aaron Brewer",
+   "status": "q",
+   "athlete": "4040537",
+   "espn": {
+    "seen": "2026-11-17T12:56:45.348Z",
+    "own": "2026-11-17T12:19:00.000Z"
+   }
+  },
+  "401873071|malikmuhammad|q": {
+   "game": "401873071",
+   "start": "2026-11-22T18:00Z",
+   "team": "3",
+   "name": "Malik Muhammad II",
+   "status": "q",
+   "athlete": "4870953",
+   "espn": {
+    "seen": "2026-11-17T12:56:45.348Z",
+    "own": "2026-11-17T12:19:00.000Z"
+   }
+  },
+  "401873071|kylemonangai|q": {
+   "game": "401873071",
+   "start": "2026-11-22T18:00Z",
+   "team": "3",
+   "name": "Kyle Monangai",
+   "status": "q",
+   "athlete": "4608686",
+   "espn": {
+    "seen": "2026-11-17T12:56:45.348Z",
+    "own": "2026-11-16T23:58:00.000Z"
+   }
+  },
+  "401873071|cjdonaldson|q": {
+   "game": "401873071",
+   "start": "2026-11-22T18:00Z",
+   "team": "18",
+   "name": "CJ Donaldson",
+   "status": "q",
+   "athlete": "5081999",
+   "espn": {
+    "seen": "2026-11-17T12:56:45.348Z",
+    "own": "2026-11-17T12:19:00.000Z"
+   }
+  },
+  "401873073|juanyehthomas|q": {
+   "game": "401873073",
+   "start": "2026-11-22T18:00Z",
+   "team": "6",
+   "name": "Juanyeh Thomas",
+   "status": "q",
+   "athlete": "4360590",
+   "espn": {
+    "seen": "2026-11-17T12:56:45.348Z",
+    "own": "2026-11-17T12:19:00.000Z"
+   }
+  },
+  "401873073|pjlocke|q": {
+   "game": "401873073",
+   "start": "2026-11-22T18:00Z",
+   "team": "6",
+   "name": "P.J. Locke",
+   "status": "q",
+   "athlete": "3929850",
+   "espn": {
+    "seen": "2026-11-17T12:56:45.348Z",
+    "own": "2026-11-17T12:19:00.000Z"
+   }
+  },
+  "401873073|jonathanmingo|q": {
+   "game": "401873073",
+   "start": "2026-11-22T18:00Z",
+   "team": "6",
+   "name": "Jonathan Mingo",
+   "status": "q",
+   "athlete": "4426485",
+   "espn": {
+    "seen": "2026-11-17T12:56:45.348Z",
+    "own": "2026-11-17T12:19:00.000Z"
+   }
+  },
+  "401873073|donovanezeiruaku|q": {
+   "game": "401873073",
+   "start": "2026-11-22T18:00Z",
+   "team": "6",
+   "name": "Donovan Ezeiruaku",
+   "status": "q",
+   "athlete": "4683848",
+   "espn": {
+    "seen": "2026-11-17T12:56:45.348Z",
+    "own": "2026-11-17T12:19:00.000Z"
+   }
+  },
+  "401873073|anthonyhill|q": {
+   "game": "401873073",
+   "start": "2026-11-22T18:00Z",
+   "team": "10",
+   "name": "Anthony Hill Jr.",
+   "status": "q",
+   "athlete": "4870805",
+   "espn": {
+    "seen": "2026-11-17T12:56:45.348Z",
+    "own": "2026-11-17T12:19:00.000Z"
+   }
+  },
+  "401873073|codybarton|q": {
+   "game": "401873073",
+   "start": "2026-11-22T18:00Z",
+   "team": "10",
+   "name": "Cody Barton",
+   "status": "q",
+   "athlete": "3926229",
+   "espn": {
+    "seen": "2026-11-17T12:56:45.348Z",
+    "own": "2026-11-17T12:19:00.000Z"
+   }
+  },
+  "401873073|carnelltate|q": {
+   "game": "401873073",
+   "start": "2026-11-22T18:00Z",
+   "team": "10",
+   "name": "Carnell Tate",
+   "status": "q",
+   "athlete": "4871023",
+   "espn": {
+    "seen": "2026-11-17T12:56:45.348Z",
+    "own": "2026-11-16T14:23:00.000Z"
+   }
+  },
+  "401873072|djreed|q": {
+   "game": "401873072",
+   "start": "2026-11-22T18:00Z",
+   "team": "8",
+   "name": "D.J. Reed",
+   "status": "q",
+   "athlete": "3139387",
+   "espn": {
+    "seen": "2026-11-17T12:56:45.348Z",
+    "own": "2026-11-17T12:19:00.000Z"
+   }
+  },
+  "401873072|cademays|q": {
+   "game": "401873072",
+   "start": "2026-11-22T18:00Z",
+   "team": "8",
+   "name": "Cade Mays",
+   "status": "q",
+   "athlete": "4361788",
+   "espn": {
+    "seen": "2026-11-17T12:56:45.348Z",
+    "own": "2026-11-17T12:19:00.000Z"
+   }
+  },
+  "401873067|peterwoods|q": {
+   "game": "401873067",
+   "start": "2026-11-22T18:00Z",
+   "team": "12",
+   "name": "Peter Woods",
+   "status": "q",
+   "athlete": "4871063",
+   "espn": {
+    "seen": "2026-11-17T12:56:45.348Z",
+    "own": "2026-11-17T12:19:00.000Z"
+   }
+  },
+  "401873067|kennethwalker|q": {
+   "game": "401873067",
+   "start": "2026-11-22T18:00Z",
+   "team": "12",
+   "name": "Kenneth Walker III",
+   "status": "q",
+   "athlete": "4567048",
+   "espn": {
+    "seen": "2026-11-17T12:56:45.348Z",
+    "own": "2026-11-17T12:19:00.000Z"
+   }
+  },
+  "401873067|jaylonmoore|q": {
+   "game": "401873067",
+   "start": "2026-11-22T18:00Z",
+   "team": "12",
+   "name": "Jaylon Moore",
+   "status": "q",
+   "athlete": "4043041",
+   "espn": {
+    "seen": "2026-11-17T12:56:45.348Z",
+    "own": "2026-11-17T12:19:00.000Z"
+   }
+  },
+  "401873067|jaydnott|q": {
+   "game": "401873067",
+   "start": "2026-11-22T18:00Z",
+   "team": "12",
+   "name": "Jaydn Ott",
+   "status": "q",
+   "athlete": "4685489",
+   "espn": {
+    "seen": "2026-11-17T12:56:45.348Z",
+    "own": "2026-11-17T12:19:00.000Z"
+   }
+  },
+  "401873067|jaydenwilliams|q": {
+   "game": "401873067",
+   "start": "2026-11-22T18:00Z",
+   "team": "22",
+   "name": "Jayden Williams",
+   "status": "q",
+   "athlete": "4709718",
+   "espn": {
+    "seen": "2026-11-17T12:56:45.348Z",
+    "own": "2026-11-17T12:19:00.000Z"
+   }
+  },
+  "401873067|hjaltefroholdt|q": {
+   "game": "401873067",
+   "start": "2026-11-22T18:00Z",
+   "team": "22",
+   "name": "Hjalte Froholdt",
+   "status": "q",
+   "athlete": "3886633",
+   "espn": {
+    "seen": "2026-11-17T12:56:45.348Z",
+    "own": "2026-11-17T12:19:00.000Z"
+   }
+  },
+  "401873067|jongaines|q": {
+   "game": "401873067",
+   "start": "2026-11-22T18:00Z",
+   "team": "22",
+   "name": "Jon Gaines II",
+   "status": "q",
+   "athlete": "4367199",
+   "espn": {
+    "seen": "2026-11-17T12:56:45.348Z",
+    "own": "2026-11-17T12:19:00.000Z"
+   }
+  },
+  "401873076|dontayvionwicks|q": {
+   "game": "401873076",
+   "start": "2026-11-22T18:00Z",
+   "team": "21",
+   "name": "Dontayvion Wicks",
+   "status": "q",
+   "athlete": "4428850",
+   "espn": {
+    "seen": "2026-11-17T12:56:45.348Z",
+    "own": "2026-11-17T12:19:00.000Z"
+   }
+  },
+  "401873076|devontasmith|q": {
+   "game": "401873076",
+   "start": "2026-11-22T18:00Z",
+   "team": "21",
+   "name": "DeVonta Smith",
+   "status": "q",
+   "athlete": "4241478",
+   "espn": {
+    "seen": "2026-11-17T12:56:45.348Z",
+    "own": "2026-11-17T12:19:00.000Z"
+   }
+  },
+  "401873076|jonathanjones|q": {
+   "game": "401873076",
+   "start": "2026-11-22T18:00Z",
+   "team": "21",
+   "name": "Jonathan Jones",
+   "status": "q",
+   "athlete": "2971027",
+   "espn": {
+    "seen": "2026-11-17T12:56:45.348Z",
+    "own": "2026-11-17T12:19:00.000Z"
+   }
+  },
+  "401873076|jihaadcampbell|q": {
+   "game": "401873076",
+   "start": "2026-11-22T18:00Z",
+   "team": "21",
+   "name": "Jihaad Campbell",
+   "status": "q",
+   "athlete": "4685287",
+   "espn": {
+    "seen": "2026-11-17T12:56:45.348Z",
+    "own": "2026-11-17T12:19:00.000Z"
+   }
+  },
+  "401873076|michaelcarter|q": {
+   "game": "401873076",
+   "start": "2026-11-22T18:00Z",
+   "team": "21",
+   "name": "Michael Carter II",
+   "status": "q",
+   "athlete": "4240456",
+   "espn": {
+    "seen": "2026-11-17T12:56:45.348Z",
+    "own": "2026-11-17T12:19:00.000Z"
+   }
+  },
+  "401873076|britaincovey|q": {
+   "game": "401873076",
+   "start": "2026-11-22T18:00Z",
+   "team": "21",
+   "name": "Britain Covey",
+   "status": "q",
+   "athlete": "3926231",
+   "espn": {
+    "seen": "2026-11-17T12:56:45.348Z",
+    "own": "2026-11-17T12:19:00.000Z"
+   }
+  },
+  "401873076|deshonelliott|q": {
+   "game": "401873076",
+   "start": "2026-11-22T18:00Z",
+   "team": "23",
+   "name": "DeShon Elliott",
+   "status": "q",
+   "athlete": "3929846",
+   "espn": {
+    "seen": "2026-11-17T12:56:45.348Z",
+    "own": "2026-11-17T12:19:00.000Z"
+   }
+  },
+  "401873068|willlee|q": {
+   "game": "401873068",
+   "start": "2026-11-22T18:00Z",
+   "team": "29",
+   "name": "Will Lee III",
+   "status": "q",
+   "athlete": "5151083",
+   "espn": {
+    "seen": "2026-11-17T12:56:45.348Z",
+    "own": "2026-11-17T12:19:00.000Z"
+   }
+  },
+  "401873068|bobbyokereke|q": {
+   "game": "401873068",
+   "start": "2026-11-22T18:00Z",
+   "team": "29",
+   "name": "Bobby Okereke",
+   "status": "q",
+   "athlete": "3117253",
+   "espn": {
+    "seen": "2026-11-17T12:56:45.348Z",
+    "own": "2026-11-17T12:19:00.000Z"
+   }
+  },
+  "401873068|jaylinnhawkins|q": {
+   "game": "401873068",
+   "start": "2026-11-22T18:00Z",
+   "team": "33",
+   "name": "Jaylinn Hawkins",
+   "status": "q",
+   "athlete": "3858276",
+   "espn": {
+    "seen": "2026-11-17T12:56:45.348Z",
+    "own": "2026-11-17T12:19:00.000Z"
+   }
+  },
+  "401873074|kendallwilliamson|q": {
+   "game": "401873074",
+   "start": "2026-11-22T21:05Z",
+   "team": "24",
+   "name": "Kendall Williamson",
+   "status": "q",
+   "athlete": "4360745",
+   "espn": {
+    "seen": "2026-11-17T12:56:45.348Z",
+    "own": "2026-11-17T12:19:00.000Z"
+   }
+  },
+  "401873074|isaswaxter|q": {
+   "game": "401873074",
+   "start": "2026-11-22T21:05Z",
+   "team": "24",
+   "name": "Isas Waxter",
+   "status": "q",
+   "athlete": "4574105",
+   "espn": {
+    "seen": "2026-11-17T12:56:45.348Z",
+    "own": "2026-11-17T12:19:00.000Z"
+   }
+  },
+  "401873074|laddmcconkey|q": {
+   "game": "401873074",
+   "start": "2026-11-22T21:05Z",
+   "team": "24",
+   "name": "Ladd McConkey",
+   "status": "q",
+   "athlete": "4612826",
+   "espn": {
+    "seen": "2026-11-17T12:56:45.348Z",
+    "own": "2026-11-17T12:19:00.000Z"
+   }
+  },
+  "401873074|trevinwallace|q": {
+   "game": "401873074",
+   "start": "2026-11-22T21:05Z",
+   "team": "20",
+   "name": "Trevin Wallace",
+   "status": "q",
+   "athlete": "4683815",
+   "espn": {
+    "seen": "2026-11-17T12:56:45.348Z",
+    "own": "2026-11-17T12:19:00.000Z"
+   }
+  },
+  "401873074|jarvisbrownlee|q": {
+   "game": "401873074",
+   "start": "2026-11-22T21:05Z",
+   "team": "20",
+   "name": "Jarvis Brownlee Jr.",
+   "status": "q",
+   "athlete": "4426817",
+   "espn": {
+    "seen": "2026-11-17T12:56:45.348Z",
+    "own": "2026-11-17T12:19:00.000Z"
+   }
+  },
+  "401873075|talanoahufanga|q": {
+   "game": "401873075",
+   "start": "2026-11-22T21:25Z",
+   "team": "7",
+   "name": "Talanoa Hufanga",
+   "status": "q",
+   "athlete": "4360853",
+   "espn": {
+    "seen": "2026-11-17T12:56:45.348Z",
+    "own": "2026-11-17T12:19:00.000Z"
+   }
+  },
+  "401873075|brandonjones|q": {
+   "game": "401873075",
+   "start": "2026-11-22T21:25Z",
+   "team": "7",
+   "name": "Brandon Jones",
+   "status": "q",
+   "athlete": "4039059",
+   "espn": {
+    "seen": "2026-11-17T12:56:45.348Z",
+    "own": "2026-11-17T12:19:00.000Z"
+   }
+  },
+  "401873075|krisabramsdraine|q": {
+   "game": "401873075",
+   "start": "2026-11-22T21:25Z",
+   "team": "7",
+   "name": "Kris Abrams-Draine",
+   "status": "q",
+   "athlete": "4429193",
+   "espn": {
+    "seen": "2026-11-17T12:56:45.348Z",
+    "own": "2026-11-17T12:19:00.000Z"
+   }
+  },
+  "401873075|dontethornton|q": {
+   "game": "401873075",
+   "start": "2026-11-22T21:25Z",
+   "team": "13",
+   "name": "Dont'e Thornton Jr.",
+   "status": "q",
+   "athlete": "4432775",
+   "espn": {
+    "seen": "2026-11-17T12:56:45.348Z",
+    "own": "2026-11-17T12:19:00.000Z"
+   }
+  },
+  "401873075|thomasbooker|q": {
+   "game": "401873075",
+   "start": "2026-11-22T21:25Z",
+   "team": "13",
+   "name": "Thomas Booker IV",
+   "status": "q",
+   "athlete": "4360749",
+   "espn": {
+    "seen": "2026-11-17T12:56:45.348Z",
+    "own": "2026-11-17T12:19:00.000Z"
+   }
+  },
+  "401873069|malikharrison|q": {
+   "game": "401873069",
+   "start": "2026-11-22T21:25Z",
+   "team": "19",
+   "name": "Malik Harrison",
+   "status": "q",
+   "athlete": "4040615",
+   "espn": {
+    "seen": "2026-11-17T12:56:45.348Z",
+    "own": "2026-11-17T12:19:00.000Z"
+   }
+  },
+  "401873077|mikeevans|q": {
+   "game": "401873077",
+   "start": "2026-11-23T01:20Z",
+   "team": "25",
+   "name": "Mike Evans",
+   "status": "q",
+   "athlete": "16737",
+   "espn": {
+    "seen": "2026-11-17T12:56:45.348Z",
+    "own": "2026-11-16T22:05:00.000Z"
+   }
+  },
+  "401873077|tyrioningramdawkins|q": {
+   "game": "401873077",
+   "start": "2026-11-23T01:20Z",
+   "team": "16",
+   "name": "Tyrion Ingram-Dawkins",
+   "status": "q",
+   "athlete": "4629149",
+   "espn": {
+    "seen": "2026-11-17T12:56:45.348Z",
+    "own": "2026-11-17T12:19:00.000Z"
+   }
+  },
+  "401873077|jauanjennings|q": {
+   "game": "401873077",
+   "start": "2026-11-23T01:20Z",
+   "team": "16",
+   "name": "Jauan Jennings",
+   "status": "q",
+   "athlete": "3886598",
+   "espn": {
+    "seen": "2026-11-17T12:56:45.348Z",
+    "own": "2026-11-17T12:19:00.000Z"
+   }
+  },
+  "401873077|blakecashman|q": {
+   "game": "401873077",
+   "start": "2026-11-23T01:20Z",
+   "team": "16",
+   "name": "Blake Cashman",
+   "status": "q",
+   "athlete": "3728281",
+   "espn": {
+    "seen": "2026-11-17T12:56:45.348Z",
+    "own": "2026-11-17T12:19:00.000Z"
+   }
+  },
+  "401873077|tjhockenson|q": {
+   "game": "401873077",
+   "start": "2026-11-23T01:20Z",
+   "team": "16",
+   "name": "T.J. Hockenson",
+   "status": "q",
+   "athlete": "4036133",
+   "espn": {
+    "seen": "2026-11-17T12:56:45.348Z",
+    "own": "2026-11-16T18:43:00.000Z"
+   }
   }
  }
 }
