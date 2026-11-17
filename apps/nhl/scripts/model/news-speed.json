@@ -9051,6 +9051,114 @@
     "seen": "2026-11-17T16:32:54.510Z",
     "own": "2026-09-29T16:38:00.000Z"
    }
+  },
+  "401892741|nickschmaltz|out": {
+   "game": "401892741",
+   "start": "2026-11-19T03:00Z",
+   "team": "129764",
+   "name": "Nick Schmaltz",
+   "status": "out",
+   "athlete": "3114770",
+   "espn": {
+    "seen": "2026-11-17T16:53:46.508Z",
+    "own": "2026-11-14T18:48:00.000Z"
+   }
+  },
+  "401892741|nateschmidt|out": {
+   "game": "401892741",
+   "start": "2026-11-19T03:00Z",
+   "team": "129764",
+   "name": "Nate Schmidt",
+   "status": "out",
+   "athlete": "3024798",
+   "espn": {
+    "seen": "2026-11-17T16:53:46.508Z",
+    "own": "2026-11-12T19:30:00.000Z"
+   }
+  },
+  "401892741|dylanguenther|out": {
+   "game": "401892741",
+   "start": "2026-11-19T03:00Z",
+   "team": "129764",
+   "name": "Dylan Guenther",
+   "status": "out",
+   "athlete": "4874723",
+   "espn": {
+    "seen": "2026-11-17T16:53:46.508Z",
+    "own": "2026-11-12T01:21:00.000Z"
+   }
+  },
+  "401892741|johnmarino|out": {
+   "game": "401892741",
+   "start": "2026-11-19T03:00Z",
+   "team": "129764",
+   "name": "John Marino",
+   "status": "out",
+   "athlete": "3941974",
+   "espn": {
+    "seen": "2026-11-17T16:53:46.508Z",
+    "own": "2026-11-01T20:27:00.000Z"
+   }
+  },
+  "401892741|mavericlamoureux|out": {
+   "game": "401892741",
+   "start": "2026-11-19T03:00Z",
+   "team": "129764",
+   "name": "Maveric Lamoureux",
+   "status": "out",
+   "athlete": "5080177",
+   "espn": {
+    "seen": "2026-11-17T16:53:46.508Z",
+    "own": "2026-09-28T21:02:00.000Z"
+   }
+  },
+  "401892741|calemakar|out": {
+   "game": "401892741",
+   "start": "2026-11-19T03:00Z",
+   "team": "17",
+   "name": "Cale Makar",
+   "status": "out",
+   "athlete": "4233563",
+   "espn": {
+    "seen": "2026-11-17T16:53:46.508Z",
+    "own": "2026-11-14T17:37:00.000Z"
+   }
+  },
+  "401892741|nathanmackinnon|out": {
+   "game": "401892741",
+   "start": "2026-11-19T03:00Z",
+   "team": "17",
+   "name": "Nathan MacKinnon",
+   "status": "out",
+   "athlete": "3041969",
+   "espn": {
+    "seen": "2026-11-17T16:53:46.508Z",
+    "own": "2026-11-14T17:30:00.000Z"
+   }
+  },
+  "401892741|joshmanson|out": {
+   "game": "401892741",
+   "start": "2026-11-19T03:00Z",
+   "team": "17",
+   "name": "Josh Manson",
+   "status": "out",
+   "athlete": "2590829",
+   "espn": {
+    "seen": "2026-11-17T16:53:46.508Z",
+    "own": "2026-11-09T22:18:00.000Z"
+   }
+  },
+  "401892741|zacharylheureux|out": {
+   "game": "401892741",
+   "start": "2026-11-19T03:00Z",
+   "team": "17",
+   "name": "Zachary L'Heureux",
+   "status": "out",
+   "athlete": "4874744",
+   "espn": {
+    "seen": "2026-11-17T16:53:46.508Z",
+    "own": "2026-10-23T21:39:00.000Z"
+   }
   }
  }
 }
