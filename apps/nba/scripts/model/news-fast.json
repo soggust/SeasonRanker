@@ -1,63 +1,11 @@
 {
  "sport": "nba",
  "cursor": {
-  "rotowirenba.bsky.social": "2026-11-17T01:59:38.000Z",
+  "rotowirenba.bsky.social": "2026-11-17T02:31:08.000Z",
   "insidenbanews.bsky.social": "2026-11-13T20:00:09.852Z",
   "shamsbot.bsky.social": "2026-11-13T20:16:26.000Z"
  },
  "claims": [
-  {
-   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3myt5mm5sev22|jarenjackson|out|status",
-   "at": "2026-10-27T02:06:30.000Z",
-   "seen": "2026-10-27T02:20:29.119Z",
-   "handle": "rotowirenba.bsky.social",
-   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3myt5mm5sev22",
-   "player": "Jaren Jackson",
-   "team": null,
-   "status": "out",
-   "kind": "status",
-   "confidence": 0.85,
-   "text": "Jaren Jackson: Won't return Monday \n\n https://www.rotowire.com/basketball/player/jaren-jackson-4384"
-  },
-  {
-   "id": "at://did:plc:ykcnnf6kqnn3lasmobrczoem/app.bsky.feed.post/3myt5rfpuhc2i|laurimarkkanen|out|status",
-   "at": "2026-10-27T02:09:11.959Z",
-   "seen": "2026-10-27T02:20:29.119Z",
-   "handle": "insidenbanews.bsky.social",
-   "post": "at://did:plc:ykcnnf6kqnn3lasmobrczoem/app.bsky.feed.post/3myt5rfpuhc2i",
-   "player": "Lauri Markkanen",
-   "team": null,
-   "status": "out",
-   "kind": "status",
-   "confidence": 0.85,
-   "text": "Status alert: Lauri Markkanen (wrist) won't return Monday."
-  },
-  {
-   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3myt5szfjha2v|laurimarkkanen|questionable|status",
-   "at": "2026-10-27T02:10:06.000Z",
-   "seen": "2026-10-27T02:20:29.119Z",
-   "handle": "rotowirenba.bsky.social",
-   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3myt5szfjha2v",
-   "player": "Lauri Markkanen",
-   "team": null,
-   "status": "questionable",
-   "kind": "status",
-   "confidence": 0.6,
-   "text": "Lauri Markkanen: Iffy to return vs. Memphis \n\n https://www.rotowire.com/basketball/player/lauri-markkanen-4119"
-  },
-  {
-   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3myt5zuykoq2v|laurimarkkanen|out|status",
-   "at": "2026-10-27T02:13:56.000Z",
-   "seen": "2026-10-27T02:20:29.119Z",
-   "handle": "rotowirenba.bsky.social",
-   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3myt5zuykoq2v",
-   "player": "Lauri Markkanen",
-   "team": null,
-   "status": "out",
-   "kind": "status",
-   "confidence": 0.85,
-   "text": "Lauri Markkanen: Won't return vs. Memphis \n\n https://www.rotowire.com/basketball/player/lauri-markkanen-4119"
-  },
   {
    "id": "at://did:plc:sa73fbx3vxzh2fw5pu5wmief/app.bsky.feed.post/3myukg7rn4d23|kawhileonard|out|status",
    "at": "2026-10-27T15:27:14.000Z",
@@ -9274,6 +9222,45 @@
    "kind": "status",
    "confidence": 0.95,
    "text": "Austin Reaves: Listed out for Tuesday \n\n https://www.rotowire.com/basketball/player/austin-reaves-5334"
+  },
+  {
+   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3n2hxdbmfya2r|normanpowell|active|return",
+   "at": "2026-11-17T02:05:01.000Z",
+   "seen": "2026-11-17T02:39:57.980Z",
+   "handle": "rotowirenba.bsky.social",
+   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3n2hxdbmfya2r",
+   "player": "Norman Powell",
+   "team": null,
+   "status": "active",
+   "kind": "return",
+   "confidence": 0.9,
+   "text": "Norman Powell: Cleared to return \n\n https://www.rotowire.com/basketball/player/norman-powell-3726"
+  },
+  {
+   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3n2hxdlmp7c26|bamadebayo|questionable|status",
+   "at": "2026-11-17T02:05:12.000Z",
+   "seen": "2026-11-17T02:39:57.980Z",
+   "handle": "rotowirenba.bsky.social",
+   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3n2hxdlmp7c26",
+   "player": "Bam Adebayo",
+   "team": null,
+   "status": "questionable",
+   "kind": "status",
+   "confidence": 0.85,
+   "text": "Bam Adebayo: Questionable to return Monday \n\n https://www.rotowire.com/basketball/player/bam-adebayo-4153"
+  },
+  {
+   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3n2hyrxyl2e2m|bamadebayo|out|status",
+   "at": "2026-11-17T02:31:08.000Z",
+   "seen": "2026-11-17T02:39:57.980Z",
+   "handle": "rotowirenba.bsky.social",
+   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3n2hyrxyl2e2m",
+   "player": "Bam Adebayo",
+   "team": null,
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.9,
+   "text": "Bam Adebayo: Won't return Monday \n\n https://www.rotowire.com/basketball/player/bam-adebayo-4153"
   }
  ]
 }
