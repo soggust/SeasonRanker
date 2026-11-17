@@ -6,7 +6,7 @@
   "nflnewsreposterbot.bsky.social": "2026-11-16T18:35:13.806Z",
   "insidenflnews.bsky.social": "2026-11-17T13:56:27.578Z",
   "nflnewsposter.bsky.social": "2026-11-17T16:49:22.960Z",
-  "rotoworld-fb.bsky.social": "2026-11-17T15:47:17.000Z",
+  "rotoworld-fb.bsky.social": "2026-11-17T17:04:05.000Z",
   "rotowirenfl.bsky.social": "2026-11-17T15:41:48.000Z"
  },
  "claims": [
@@ -19119,6 +19119,19 @@
    "kind": "status",
    "confidence": 0.95,
    "text": "[Rapoport] The Texans place standout LB Azeez Al-Shaair on IR. twitter.com/rapsheet/sta..."
+  },
+  {
+   "id": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3n2jjkwe6ll2b|azeezalshaair|out|status",
+   "at": "2026-11-17T17:04:05.000Z",
+   "seen": "2026-11-17T17:17:08.838Z",
+   "handle": "rotoworld-fb.bsky.social",
+   "post": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3n2jjkwe6ll2b",
+   "player": "Azeez Al-Shaair",
+   "team": null,
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.95,
+   "text": "Azeez Al-Shaair (groin) lands on injured reserve"
   }
  ]
 }

@@ -3,24 +3,11 @@
  "cursor": {
   "johnston-bot.bsky.social": "2026-11-12T16:02:25.547Z",
   "notfriedgehnic.bsky.social": "2026-11-16T03:33:57.405Z",
-  "dailyfaceoff.bsky.social": "2026-11-17T16:26:32.000Z",
+  "dailyfaceoff.bsky.social": "2026-11-17T17:06:33.000Z",
   "dfotoronto.bsky.social": "2026-11-17T16:48:24.000Z",
   "marklazerus.bsky.social": "2026-11-17T15:44:50.228Z"
  },
  "claims": [
-  {
-   "id": "at://did:plc:sdobrsxnvwczrjydmnubhibh/app.bsky.feed.post/3myupr4wdkb2b|connorhellebuyck|active|starting",
-   "at": "2026-10-27T17:03:49.716Z",
-   "seen": "2026-10-27T17:22:29.451Z",
-   "handle": "notfriedgehnic.bsky.social",
-   "post": "at://did:plc:sdobrsxnvwczrjydmnubhibh/app.bsky.feed.post/3myupr4wdkb2b",
-   "player": "Connor Hellebuyck",
-   "team": "NJ",
-   "status": "active",
-   "kind": "starting",
-   "confidence": 0.9,
-   "text": "NJ coach Sheldon Keefe says Connor Hellebuyck starts tonight in Dallas"
-  },
   {
    "id": "at://did:plc:3uus7y6h3rlrk6sbctzxm4bg/app.bsky.feed.post/3myx7jdqne22k|zachhyman|out|status",
    "at": "2026-10-28T16:51:07.000Z",
