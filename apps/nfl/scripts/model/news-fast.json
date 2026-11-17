@@ -6,23 +6,10 @@
   "nflnewsreposterbot.bsky.social": "2026-11-16T18:35:13.806Z",
   "insidenflnews.bsky.social": "2026-11-17T13:56:27.578Z",
   "nflnewsposter.bsky.social": "2026-11-17T16:49:22.960Z",
-  "rotoworld-fb.bsky.social": "2026-11-17T17:04:05.000Z",
+  "rotoworld-fb.bsky.social": "2026-11-17T17:39:30.000Z",
   "rotowirenfl.bsky.social": "2026-11-17T15:41:48.000Z"
  },
  "claims": [
-  {
-   "id": "at://did:plc:fuqjc7x4gxvnwzksnlxwbe4x/app.bsky.feed.post/3myurt56zc22g|erickall|out|status",
-   "at": "2026-10-27T17:40:44.703Z",
-   "seen": "2026-10-27T17:42:51.856Z",
-   "handle": "nflnewsposter.bsky.social",
-   "post": "at://did:plc:fuqjc7x4gxvnwzksnlxwbe4x/app.bsky.feed.post/3myurt56zc22g",
-   "player": "Erick All Jr.",
-   "team": "CIN",
-   "status": "out",
-   "kind": "status",
-   "confidence": 0.9,
-   "text": "[Rapoport] Bengals have placed TE Erick All Jr. on Injured Reserve with what is believed to be a torn ACL. The team signed TE Cam Grandy off the Vikings practice squad. twitter.com/rapsheet/sta..."
-  },
   {
    "id": "at://did:plc:qre6zxbmr3ixhdmgsgdretb5/app.bsky.feed.post/3myussnmywg2d|tyronetracy|out|status",
    "at": "2026-10-27T17:58:21.926Z",
@@ -19132,6 +19119,19 @@
    "kind": "status",
    "confidence": 0.95,
    "text": "Azeez Al-Shaair (groin) lands on injured reserve"
+  },
+  {
+   "id": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3n2jlkbc6y42a|davidmontgomery|limited|status",
+   "at": "2026-11-17T17:39:30.000Z",
+   "seen": "2026-11-17T17:57:44.063Z",
+   "handle": "rotoworld-fb.bsky.social",
+   "post": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3n2jlkbc6y42a",
+   "player": "David Montgomery",
+   "team": null,
+   "status": "limited",
+   "kind": "status",
+   "confidence": 0.4,
+   "text": "David Montgomery (groin) practices Tuesday"
   }
  ]
 }
