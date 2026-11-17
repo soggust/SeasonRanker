@@ -1,10 +1,10 @@
 {
  "sport": "nfl",
  "cursor": {
-  "adamscheftermirror.bsky.social": "2026-11-16T23:55:56.492Z",
+  "adamscheftermirror.bsky.social": "2026-11-17T00:25:56.179Z",
   "rapsheet.bsky.social": "2026-11-16T22:08:57.578Z",
   "nflnewsreposterbot.bsky.social": "2026-11-16T18:35:13.806Z",
-  "insidenflnews.bsky.social": "2026-11-16T23:11:04.823Z",
+  "insidenflnews.bsky.social": "2026-11-17T00:12:35.162Z",
   "nflnewsposter.bsky.social": "2026-11-16T20:12:47.090Z",
   "rotoworld-fb.bsky.social": "2026-11-17T00:04:59.000Z",
   "rotowirenfl.bsky.social": "2026-11-16T23:58:17.000Z"
@@ -19145,6 +19145,32 @@
    "kind": "return",
    "confidence": 0.7,
    "text": "Bears RB Kyle Monangai said he’s “on track” to return Sunday vs. the Saints, via @CourtneyRCronin:\n\nOriginal post"
+  },
+  {
+   "id": "at://did:plc:qre6zxbmr3ixhdmgsgdretb5/app.bsky.feed.post/3n2hrs3pww32t|samdarnold|active|return",
+   "at": "2026-11-17T00:25:56.179Z",
+   "seen": "2026-11-17T00:27:20.992Z",
+   "handle": "adamscheftermirror.bsky.social",
+   "post": "at://did:plc:qre6zxbmr3ixhdmgsgdretb5/app.bsky.feed.post/3n2hrs3pww32t",
+   "player": "Sam Darnold",
+   "team": "SEA",
+   "status": "active",
+   "kind": "return",
+   "confidence": 0.7,
+   "text": "Seahawks HC Mike Macdonald said today that Sam Darnold is still the team’s starter when healthy, and that he’a on track to play next week against the 49ers following Seattle's bye. Story via @BradyHen"
+  },
+  {
+   "id": "at://did:plc:qre6zxbmr3ixhdmgsgdretb5/app.bsky.feed.post/3n2hrs3pww32t|samdarnold|none|starting",
+   "at": "2026-11-17T00:25:56.179Z",
+   "seen": "2026-11-17T00:27:20.992Z",
+   "handle": "adamscheftermirror.bsky.social",
+   "post": "at://did:plc:qre6zxbmr3ixhdmgsgdretb5/app.bsky.feed.post/3n2hrs3pww32t",
+   "player": "Sam Darnold",
+   "team": "SEA",
+   "status": "none",
+   "kind": "starting",
+   "confidence": 0.6,
+   "text": "Seahawks HC Mike Macdonald said today that Sam Darnold is still the team’s starter when healthy, and that he’a on track to play next week against the 49ers following Seattle's bye. Story via @BradyHen"
   }
  ]
 }

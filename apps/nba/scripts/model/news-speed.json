@@ -24178,6 +24178,114 @@
     "seen": "2026-11-16T23:55:39.733Z",
     "own": "2026-11-16T23:48:00.000Z"
    }
+  },
+  "401909999|pellelarsson|out": {
+   "game": "401909999",
+   "start": "2026-11-17T01:00Z",
+   "team": "16",
+   "name": "Pelle Larsson",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-17T00:08:22.497Z",
+    "own": "2026-11-16T22:49:05.000Z",
+    "why": "@rotowirenba.bsky.social: Pelle Larsson: Out sick once again \n\n https://www.roto"
+   }
+  },
+  "401909999|amenthompson|out": {
+   "game": "401909999",
+   "start": "2026-11-17T01:00Z",
+   "team": "16",
+   "name": "Amen Thompson",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-17T00:08:22.497Z",
+    "own": "2026-11-16T23:48:42.000Z",
+    "why": "@rotowirenba.bsky.social: Amen Thompson: Ruled out Monday \n\n https://www.rotowir"
+   }
+  },
+  "401909999|duncanrobinson|out": {
+   "game": "401909999",
+   "start": "2026-11-17T01:00Z",
+   "team": "16",
+   "name": "Duncan Robinson",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-17T00:08:22.497Z",
+    "own": "2026-11-16T22:37:01.000Z",
+    "why": "@rotowirenba.bsky.social: Duncan Robinson: Ruled out vs. Spurs \n\n https://www.ro"
+   }
+  },
+  "401910000|pellelarsson|out": {
+   "game": "401910000",
+   "start": "2026-11-17T01:00Z",
+   "team": "3",
+   "name": "Pelle Larsson",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-17T00:08:22.497Z",
+    "own": "2026-11-16T22:49:05.000Z",
+    "why": "@rotowirenba.bsky.social: Pelle Larsson: Out sick once again \n\n https://www.roto"
+   }
+  },
+  "401910000|amenthompson|out": {
+   "game": "401910000",
+   "start": "2026-11-17T01:00Z",
+   "team": "3",
+   "name": "Amen Thompson",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-17T00:08:22.497Z",
+    "own": "2026-11-16T23:48:42.000Z",
+    "why": "@rotowirenba.bsky.social: Amen Thompson: Ruled out Monday \n\n https://www.rotowir"
+   }
+  },
+  "401910000|duncanrobinson|out": {
+   "game": "401910000",
+   "start": "2026-11-17T01:00Z",
+   "team": "3",
+   "name": "Duncan Robinson",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-17T00:08:22.497Z",
+    "own": "2026-11-16T22:37:01.000Z",
+    "why": "@rotowirenba.bsky.social: Duncan Robinson: Ruled out vs. Spurs \n\n https://www.ro"
+   }
+  },
+  "401910001|pellelarsson|out": {
+   "game": "401910001",
+   "start": "2026-11-17T02:00Z",
+   "team": "7",
+   "name": "Pelle Larsson",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-17T00:08:22.497Z",
+    "own": "2026-11-16T22:49:05.000Z",
+    "why": "@rotowirenba.bsky.social: Pelle Larsson: Out sick once again \n\n https://www.roto"
+   }
+  },
+  "401910001|amenthompson|out": {
+   "game": "401910001",
+   "start": "2026-11-17T02:00Z",
+   "team": "7",
+   "name": "Amen Thompson",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-17T00:08:22.497Z",
+    "own": "2026-11-16T23:48:42.000Z",
+    "why": "@rotowirenba.bsky.social: Amen Thompson: Ruled out Monday \n\n https://www.rotowir"
+   }
+  },
+  "401910001|duncanrobinson|out": {
+   "game": "401910001",
+   "start": "2026-11-17T02:00Z",
+   "team": "7",
+   "name": "Duncan Robinson",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-17T00:08:22.497Z",
+    "own": "2026-11-16T22:37:01.000Z",
+    "why": "@rotowirenba.bsky.social: Duncan Robinson: Ruled out vs. Spurs \n\n https://www.ro"
+   }
   }
  }
 }
