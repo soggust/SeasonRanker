@@ -23237,6 +23237,174 @@
     "own": "2026-11-17T02:31:08.000Z",
     "why": "@rotowirenba.bsky.social: Bam Adebayo: Won't return Monday \n\n https://www.rotowi"
    }
+  },
+  "401910003|jonathankuminga|q": {
+   "game": "401910003",
+   "start": "2026-11-18T01:00Z",
+   "team": "16",
+   "name": "Jonathan Kuminga",
+   "status": "q",
+   "athlete": "4433247",
+   "espn": {
+    "seen": "2026-11-17T04:21:27.607Z",
+    "own": "2026-11-17T03:32:00.000Z"
+   }
+  },
+  "401910003|jaylenclark|out": {
+   "game": "401910003",
+   "start": "2026-11-18T01:00Z",
+   "team": "16",
+   "name": "Jaylen Clark",
+   "status": "out",
+   "athlete": "4432247",
+   "espn": {
+    "seen": "2026-11-17T04:21:27.607Z",
+    "own": "2026-11-15T22:40:00.000Z"
+   }
+  },
+  "401910003|anthonyedwards|out": {
+   "game": "401910003",
+   "start": "2026-11-18T01:00Z",
+   "team": "16",
+   "name": "Anthony Edwards",
+   "status": "out",
+   "athlete": "4594268",
+   "espn": {
+    "seen": "2026-11-17T04:21:27.607Z",
+    "own": "2026-10-29T18:33:00.000Z"
+   }
+  },
+  "401910003|dontedivincenzo|out": {
+   "game": "401910003",
+   "start": "2026-11-18T01:00Z",
+   "team": "16",
+   "name": "Donte DiVincenzo",
+   "status": "out",
+   "athlete": "3934673",
+   "espn": {
+    "seen": "2026-11-17T04:21:27.607Z",
+    "own": "2026-10-05T20:53:00.000Z"
+   }
+  },
+  "401910003|tobiasharris|out": {
+   "game": "401910003",
+   "start": "2026-11-18T01:00Z",
+   "team": "16",
+   "name": "Tobias Harris",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-16T20:15:12.364Z",
+    "own": "2026-11-16T19:26:15.000Z",
+    "why": "@rotowirenba.bsky.social: Tobias Harris: Likely out through November \n\n https://"
+   }
+  },
+  "401910003|duncanrobinson|out": {
+   "game": "401910003",
+   "start": "2026-11-18T01:00Z",
+   "team": "16",
+   "name": "Duncan Robinson",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-17T00:08:22.497Z",
+    "own": "2026-11-16T22:37:01.000Z",
+    "why": "@rotowirenba.bsky.social: Duncan Robinson: Ruled out vs. Spurs \n\n https://www.ro"
+   }
+  },
+  "401910003|pellelarsson|out": {
+   "game": "401910003",
+   "start": "2026-11-18T01:00Z",
+   "team": "16",
+   "name": "Pelle Larsson",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-17T00:08:22.497Z",
+    "own": "2026-11-16T22:49:05.000Z",
+    "why": "@rotowirenba.bsky.social: Pelle Larsson: Out sick once again \n\n https://www.roto"
+   }
+  },
+  "401910003|amenthompson|out": {
+   "game": "401910003",
+   "start": "2026-11-18T01:00Z",
+   "team": "16",
+   "name": "Amen Thompson",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-17T00:08:22.497Z",
+    "own": "2026-11-16T23:48:42.000Z",
+    "why": "@rotowirenba.bsky.social: Amen Thompson: Ruled out Monday \n\n https://www.rotowir"
+   }
+  },
+  "401910003|walkerkessler|out": {
+   "game": "401910003",
+   "start": "2026-11-18T01:00Z",
+   "team": "16",
+   "name": "Walker Kessler",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-17T01:29:59.981Z",
+    "own": "2026-11-17T01:10:18.000Z",
+    "why": "@rotowirenba.bsky.social: Walker Kessler: Ruled out Tuesday \n\n https://www.rotow"
+   }
+  },
+  "401910003|bamadebayo|out": {
+   "game": "401910003",
+   "start": "2026-11-18T01:00Z",
+   "team": "16",
+   "name": "Bam Adebayo",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-17T02:39:57.980Z",
+    "own": "2026-11-17T02:31:08.000Z",
+    "why": "@rotowirenba.bsky.social: Bam Adebayo: Won't return Monday \n\n https://www.rotowi"
+   }
+  },
+  "401910003|chrisyoungblood|out": {
+   "game": "401910003",
+   "start": "2026-11-18T01:00Z",
+   "team": "22",
+   "name": "Chris Youngblood",
+   "status": "out",
+   "athlete": "4706557",
+   "espn": {
+    "seen": "2026-11-17T04:21:27.607Z",
+    "own": "2026-11-15T23:02:00.000Z"
+   }
+  },
+  "401910003|vitkrejci|out": {
+   "game": "401910003",
+   "start": "2026-11-18T01:00Z",
+   "team": "22",
+   "name": "Vit Krejci",
+   "status": "out",
+   "athlete": "4578893",
+   "espn": {
+    "seen": "2026-11-17T04:21:27.607Z",
+    "own": "2026-11-11T19:56:00.000Z"
+   }
+  },
+  "401910003|jamorant|out": {
+   "game": "401910003",
+   "start": "2026-11-18T01:00Z",
+   "team": "22",
+   "name": "Ja Morant",
+   "status": "out",
+   "athlete": "4279888",
+   "espn": {
+    "seen": "2026-11-17T04:21:27.607Z",
+    "own": "2026-11-08T02:18:00.000Z"
+   }
+  },
+  "401910003|shaedonsharpe|out": {
+   "game": "401910003",
+   "start": "2026-11-18T01:00Z",
+   "team": "22",
+   "name": "Shaedon Sharpe",
+   "status": "out",
+   "athlete": "4914336",
+   "espn": {
+    "seen": "2026-11-17T04:21:27.607Z",
+    "own": "2026-08-24T20:23:00.000Z"
+   }
   }
  }
 }
