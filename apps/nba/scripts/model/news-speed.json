@@ -1,138 +1,6 @@
 {
  "sport": "nba",
  "entries": {
-  "401909944|vitkrejci|out": {
-   "game": "401909944",
-   "start": "2026-11-08T03:00Z",
-   "team": "22",
-   "name": "Vit Krejci",
-   "status": "out",
-   "athlete": "4578893",
-   "espn": {
-    "seen": "2026-11-07T03:55:40.270Z",
-    "own": "2026-11-05T05:17:00.000Z"
-   }
-  },
-  "401909944|jamorant|out": {
-   "game": "401909944",
-   "start": "2026-11-08T03:00Z",
-   "team": "22",
-   "name": "Ja Morant",
-   "status": "out",
-   "athlete": "4279888",
-   "espn": {
-    "seen": "2026-11-07T03:55:40.270Z",
-    "own": "2026-10-30T18:45:00.000Z"
-   }
-  },
-  "401909944|shaedonsharpe|out": {
-   "game": "401909944",
-   "start": "2026-11-08T03:00Z",
-   "team": "22",
-   "name": "Shaedon Sharpe",
-   "status": "out",
-   "athlete": "4914336",
-   "espn": {
-    "seen": "2026-11-07T03:55:40.270Z",
-    "own": "2026-08-24T20:23:00.000Z"
-   }
-  },
-  "401909944|immanuelquickley|out": {
-   "game": "401909944",
-   "start": "2026-11-08T03:00Z",
-   "team": "22",
-   "name": "Immanuel Quickley",
-   "status": "out",
-   "bluesky": {
-    "seen": "2026-11-07T00:20:30.381Z",
-    "own": "2026-11-06T23:41:07.000Z",
-    "why": "@rotowirenba.bsky.social: Immanuel Quickley: Ruled out for Friday \n\n https://www"
-   }
-  },
-  "401909944|jarrettallen|out": {
-   "game": "401909944",
-   "start": "2026-11-08T03:00Z",
-   "team": "22",
-   "name": "Jarrett Allen",
-   "status": "out",
-   "bluesky": {
-    "seen": "2026-11-07T00:20:30.381Z",
-    "own": "2026-11-06T23:55:36.000Z",
-    "why": "@rotowirenba.bsky.social: Jarrett Allen: Won't play Friday \n\n https://www.rotowi"
-   }
-  },
-  "401909944|brandonmiller|out": {
-   "game": "401909944",
-   "start": "2026-11-08T03:00Z",
-   "team": "22",
-   "name": "Brandon Miller",
-   "status": "out",
-   "bluesky": {
-    "seen": "2026-11-07T01:12:29.931Z",
-    "own": "2026-11-07T01:07:47.000Z",
-    "why": "@rotowirenba.bsky.social: Brandon Miller: Won't return Friday \n\n https://www.rot"
-   }
-  },
-  "401909944|tobiasharris|out": {
-   "game": "401909944",
-   "start": "2026-11-08T03:00Z",
-   "team": "24",
-   "name": "Tobias Harris",
-   "status": "out",
-   "athlete": "6440",
-   "espn": {
-    "seen": "2026-11-07T03:55:40.270Z",
-    "own": "2026-10-30T21:44:00.000Z"
-   }
-  },
-  "401909944|jaydenquaintance|out": {
-   "game": "401909944",
-   "start": "2026-11-08T03:00Z",
-   "team": "24",
-   "name": "Jayden Quaintance",
-   "status": "out",
-   "athlete": "5101845",
-   "espn": {
-    "seen": "2026-11-07T03:55:40.270Z",
-    "own": "2026-10-05T21:43:00.000Z"
-   }
-  },
-  "401909944|desmondbane|out": {
-   "game": "401909944",
-   "start": "2026-11-08T03:00Z",
-   "team": "22",
-   "name": "Desmond Bane",
-   "status": "out",
-   "bluesky": {
-    "seen": "2026-11-07T19:38:42.361Z",
-    "own": "2026-11-07T19:36:42.000Z",
-    "why": "@rotowirenba.bsky.social: Desmond Bane: Ruled out Saturday \n\n https://www.rotowi"
-   }
-  },
-  "401909944|robertwilliams|out": {
-   "game": "401909944",
-   "start": "2026-11-08T03:00Z",
-   "team": "22",
-   "name": "Robert Williams III",
-   "status": "out",
-   "athlete": "4066211",
-   "espn": {
-    "seen": "2026-11-07T22:13:43.503Z",
-    "own": "2026-11-07T21:12:00.000Z"
-   }
-  },
-  "401909944|tyresehaliburton|out": {
-   "game": "401909944",
-   "start": "2026-11-08T03:00Z",
-   "team": "22",
-   "name": "Tyrese Haliburton",
-   "status": "out",
-   "bluesky": {
-    "seen": "2026-11-07T20:53:08.305Z",
-    "own": "2026-11-07T20:46:11.000Z",
-    "why": "@rotowirenba.bsky.social: Tyrese Haliburton: Still without timetable to return \n"
-   }
-  },
   "401909945|tobeawaka|q": {
    "game": "401909945",
    "start": "2026-11-08T20:30Z",
@@ -361,30 +229,6 @@
     "seen": "2026-11-07T22:13:43.503Z",
     "own": "2026-11-07T22:04:00.000Z"
    },
-   "bluesky": {
-    "seen": "2026-11-07T22:15:42.826Z",
-    "own": "2026-11-07T22:11:34.000Z",
-    "why": "@rotowirenba.bsky.social: Luka Doncic: Questionable for Sunday \n\n https://www.ro"
-   }
-  },
-  "401909944|nicclaxton|q": {
-   "game": "401909944",
-   "start": "2026-11-08T03:00Z",
-   "team": "22",
-   "name": "Nic Claxton",
-   "status": "q",
-   "bluesky": {
-    "seen": "2026-11-07T22:15:42.826Z",
-    "own": "2026-11-07T21:25:59.000Z",
-    "why": "@rotowirenba.bsky.social: Nic Claxton: Downgraded to questionable \n\n https://www"
-   }
-  },
-  "401909944|lukadoncic|q": {
-   "game": "401909944",
-   "start": "2026-11-08T03:00Z",
-   "team": "22",
-   "name": "Luka Doncic",
-   "status": "q",
    "bluesky": {
     "seen": "2026-11-07T22:15:42.826Z",
     "own": "2026-11-07T22:11:34.000Z",
@@ -846,42 +690,6 @@
     "why": "@rotowirenba.bsky.social: Luka Doncic: Questionable for Sunday \n\n https://www.ro"
    }
   },
-  "401909944|joanberinger|q": {
-   "game": "401909944",
-   "start": "2026-11-08T03:00Z",
-   "team": "22",
-   "name": "Joan Beringer",
-   "status": "q",
-   "bluesky": {
-    "seen": "2026-11-08T00:18:20.653Z",
-    "own": "2026-11-07T23:10:56.000Z",
-    "why": "@rotowirenba.bsky.social: Joan Beringer: Questionable for Sunday \n\n https://www."
-   }
-  },
-  "401909944|laurimarkkanen|q": {
-   "game": "401909944",
-   "start": "2026-11-08T03:00Z",
-   "team": "22",
-   "name": "Lauri Markkanen",
-   "status": "q",
-   "bluesky": {
-    "seen": "2026-11-08T00:18:20.653Z",
-    "own": "2026-11-07T23:14:44.000Z",
-    "why": "@rotowirenba.bsky.social: Lauri Markkanen: Questionable for Sunday \n\n https://ww"
-   }
-  },
-  "401909944|anthonydavis|out": {
-   "game": "401909944",
-   "start": "2026-11-08T03:00Z",
-   "team": "22",
-   "name": "Anthony Davis",
-   "status": "out",
-   "bluesky": {
-    "seen": "2026-11-08T00:18:20.653Z",
-    "own": "2026-11-07T23:33:38.000Z",
-    "why": "@rotowirenba.bsky.social: Anthony Davis: Ruled out for Saturday \n\n https://www.r"
-   }
-  },
   "401909945|joanberinger|q": {
    "game": "401909945",
    "start": "2026-11-08T20:30Z",
@@ -1074,30 +882,6 @@
     "why": "@rotowirenba.bsky.social: Anthony Davis: Ruled out for Saturday \n\n https://www.r"
    }
   },
-  "401909944|isaiahjackson|out": {
-   "game": "401909944",
-   "start": "2026-11-08T03:00Z",
-   "team": "22",
-   "name": "Isaiah Jackson",
-   "status": "out",
-   "bluesky": {
-    "seen": "2026-11-08T01:13:25.271Z",
-    "own": "2026-11-08T01:03:39.000Z",
-    "why": "@rotowirenba.bsky.social: Isaiah Jackson: Ruled out for Sunday \n\n https://www.ro"
-   }
-  },
-  "401909944|brandoningram|out": {
-   "game": "401909944",
-   "start": "2026-11-08T03:00Z",
-   "team": "22",
-   "name": "Brandon Ingram",
-   "status": "out",
-   "bluesky": {
-    "seen": "2026-11-08T01:13:25.271Z",
-    "own": "2026-11-08T01:11:34.000Z",
-    "why": "@rotowirenba.bsky.social: Brandon Ingram: Remains out Sunday \n\n https://www.roto"
-   }
-  },
   "401909945|isaiahjackson|out": {
    "game": "401909945",
    "start": "2026-11-08T20:30Z",
@@ -1237,18 +1021,6 @@
     "seen": "2026-11-08T01:13:25.271Z",
     "own": "2026-11-08T01:11:34.000Z",
     "why": "@rotowirenba.bsky.social: Brandon Ingram: Remains out Sunday \n\n https://www.roto"
-   }
-  },
-  "401909944|keeganmurray|q": {
-   "game": "401909944",
-   "start": "2026-11-08T03:00Z",
-   "team": "22",
-   "name": "Keegan Murray",
-   "status": "q",
-   "bluesky": {
-    "seen": "2026-11-08T01:43:55.814Z",
-    "own": "2026-11-08T01:30:40.000Z",
-    "why": "@rotowirenba.bsky.social: Keegan Murray: Questionable for Sunday \n\n https://www."
    }
   },
   "401909945|keeganmurray|q": {
@@ -23917,6 +23689,131 @@
    "espn": {
     "seen": "2026-11-18T02:29:38.670Z",
     "own": "2026-11-18T02:19:00.000Z"
+   },
+   "bluesky": {
+    "seen": "2026-11-18T02:49:20.546Z",
+    "own": "2026-11-18T02:19:03.000Z",
+    "why": "@rotowirenba.bsky.social: Grayson Allen: Late scratch Tuesday \n\n https://www.rot"
+   }
+  },
+  "401910006|graysonallen|out": {
+   "game": "401910006",
+   "start": "2026-11-18T03:30Z",
+   "team": "12",
+   "name": "Grayson Allen",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-18T02:49:20.546Z",
+    "own": "2026-11-18T02:19:03.000Z",
+    "why": "@rotowirenba.bsky.social: Grayson Allen: Late scratch Tuesday \n\n https://www.rot"
+   }
+  },
+  "401910007|graysonallen|out": {
+   "game": "401910007",
+   "start": "2026-11-19T00:00Z",
+   "team": "5",
+   "name": "Grayson Allen",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-18T02:49:20.546Z",
+    "own": "2026-11-18T02:19:03.000Z",
+    "why": "@rotowirenba.bsky.social: Grayson Allen: Late scratch Tuesday \n\n https://www.rot"
+   }
+  },
+  "401910008|graysonallen|out": {
+   "game": "401910008",
+   "start": "2026-11-19T00:00Z",
+   "team": "11",
+   "name": "Grayson Allen",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-18T02:49:20.546Z",
+    "own": "2026-11-18T02:19:03.000Z",
+    "why": "@rotowirenba.bsky.social: Grayson Allen: Late scratch Tuesday \n\n https://www.rot"
+   }
+  },
+  "401910009|graysonallen|out": {
+   "game": "401910009",
+   "start": "2026-11-19T00:00Z",
+   "team": "14",
+   "name": "Grayson Allen",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-18T02:49:20.546Z",
+    "own": "2026-11-18T02:19:03.000Z",
+    "why": "@rotowirenba.bsky.social: Grayson Allen: Late scratch Tuesday \n\n https://www.rot"
+   }
+  },
+  "401910010|graysonallen|out": {
+   "game": "401910010",
+   "start": "2026-11-19T00:00Z",
+   "team": "19",
+   "name": "Grayson Allen",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-18T02:49:20.546Z",
+    "own": "2026-11-18T02:19:03.000Z",
+    "why": "@rotowirenba.bsky.social: Grayson Allen: Late scratch Tuesday \n\n https://www.rot"
+   }
+  },
+  "401910011|graysonallen|out": {
+   "game": "401910011",
+   "start": "2026-11-19T00:30Z",
+   "team": "17",
+   "name": "Grayson Allen",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-18T02:49:20.546Z",
+    "own": "2026-11-18T02:19:03.000Z",
+    "why": "@rotowirenba.bsky.social: Grayson Allen: Late scratch Tuesday \n\n https://www.rot"
+   }
+  },
+  "401910014|graysonallen|out": {
+   "game": "401910014",
+   "start": "2026-11-19T01:00Z",
+   "team": "25",
+   "name": "Grayson Allen",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-18T02:49:20.546Z",
+    "own": "2026-11-18T02:19:03.000Z",
+    "why": "@rotowirenba.bsky.social: Grayson Allen: Late scratch Tuesday \n\n https://www.rot"
+   }
+  },
+  "401910016|graysonallen|out": {
+   "game": "401910016",
+   "start": "2026-11-19T01:00Z",
+   "team": "6",
+   "name": "Grayson Allen",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-18T02:49:20.546Z",
+    "own": "2026-11-18T02:19:03.000Z",
+    "why": "@rotowirenba.bsky.social: Grayson Allen: Late scratch Tuesday \n\n https://www.rot"
+   }
+  },
+  "401910015|graysonallen|out": {
+   "game": "401910015",
+   "start": "2026-11-19T02:30Z",
+   "team": "7",
+   "name": "Grayson Allen",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-18T02:49:20.546Z",
+    "own": "2026-11-18T02:19:03.000Z",
+    "why": "@rotowirenba.bsky.social: Grayson Allen: Late scratch Tuesday \n\n https://www.rot"
+   }
+  },
+  "401910018|graysonallen|out": {
+   "game": "401910018",
+   "start": "2026-11-19T03:00Z",
+   "team": "23",
+   "name": "Grayson Allen",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-18T02:49:20.546Z",
+    "own": "2026-11-18T02:19:03.000Z",
+    "why": "@rotowirenba.bsky.social: Grayson Allen: Late scratch Tuesday \n\n https://www.rot"
    }
   }
  }
