@@ -24488,6 +24488,11 @@
    "espn": {
     "seen": "2026-11-18T18:14:20.732Z",
     "own": "2026-11-18T17:49:00.000Z"
+   },
+   "bluesky": {
+    "seen": "2026-11-18T18:16:10.663Z",
+    "own": "2026-11-18T17:49:12.000Z",
+    "why": "@rotowirenba.bsky.social: RJ Barrett: Questionable to face Washington \n\n https:/"
    }
   },
   "401910012|scottiebarnes|out": {
@@ -24500,6 +24505,299 @@
    "espn": {
     "seen": "2026-11-18T18:14:20.732Z",
     "own": "2026-11-18T17:46:00.000Z"
+   }
+  },
+  "401910007|rjbarrett|q": {
+   "game": "401910007",
+   "start": "2026-11-19T00:00Z",
+   "team": "5",
+   "name": "RJ Barrett",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-11-18T18:16:10.663Z",
+    "own": "2026-11-18T17:49:12.000Z",
+    "why": "@rotowirenba.bsky.social: RJ Barrett: Questionable to face Washington \n\n https:/"
+   }
+  },
+  "401910007|ryanrollins|out": {
+   "game": "401910007",
+   "start": "2026-11-19T00:00Z",
+   "team": "5",
+   "name": "Ryan Rollins",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-18T18:16:10.663Z",
+    "own": "2026-11-18T18:10:16.000Z",
+    "why": "@rotowirenba.bsky.social: Ryan Rollins: Ruled out Wednesday \n\n https://www.rotow"
+   }
+  },
+  "401910008|rjbarrett|q": {
+   "game": "401910008",
+   "start": "2026-11-19T00:00Z",
+   "team": "11",
+   "name": "RJ Barrett",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-11-18T18:16:10.663Z",
+    "own": "2026-11-18T17:49:12.000Z",
+    "why": "@rotowirenba.bsky.social: RJ Barrett: Questionable to face Washington \n\n https:/"
+   }
+  },
+  "401910008|ryanrollins|out": {
+   "game": "401910008",
+   "start": "2026-11-19T00:00Z",
+   "team": "11",
+   "name": "Ryan Rollins",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-18T18:16:10.663Z",
+    "own": "2026-11-18T18:10:16.000Z",
+    "why": "@rotowirenba.bsky.social: Ryan Rollins: Ruled out Wednesday \n\n https://www.rotow"
+   }
+  },
+  "401910009|rjbarrett|q": {
+   "game": "401910009",
+   "start": "2026-11-19T00:00Z",
+   "team": "14",
+   "name": "RJ Barrett",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-11-18T18:16:10.663Z",
+    "own": "2026-11-18T17:49:12.000Z",
+    "why": "@rotowirenba.bsky.social: RJ Barrett: Questionable to face Washington \n\n https:/"
+   }
+  },
+  "401910009|ryanrollins|out": {
+   "game": "401910009",
+   "start": "2026-11-19T00:00Z",
+   "team": "14",
+   "name": "Ryan Rollins",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-18T18:16:10.663Z",
+    "own": "2026-11-18T18:10:16.000Z",
+    "why": "@rotowirenba.bsky.social: Ryan Rollins: Ruled out Wednesday \n\n https://www.rotow"
+   },
+   "athlete": "4591725",
+   "espn": {
+    "seen": "2026-11-18T18:25:36.050Z",
+    "own": "2026-11-18T18:10:00.000Z"
+   }
+  },
+  "401910010|rjbarrett|q": {
+   "game": "401910010",
+   "start": "2026-11-19T00:00Z",
+   "team": "19",
+   "name": "RJ Barrett",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-11-18T18:16:10.663Z",
+    "own": "2026-11-18T17:49:12.000Z",
+    "why": "@rotowirenba.bsky.social: RJ Barrett: Questionable to face Washington \n\n https:/"
+   }
+  },
+  "401910010|ryanrollins|out": {
+   "game": "401910010",
+   "start": "2026-11-19T00:00Z",
+   "team": "19",
+   "name": "Ryan Rollins",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-18T18:16:10.663Z",
+    "own": "2026-11-18T18:10:16.000Z",
+    "why": "@rotowirenba.bsky.social: Ryan Rollins: Ruled out Wednesday \n\n https://www.rotow"
+   }
+  },
+  "401910010|deanwade|q": {
+   "game": "401910010",
+   "start": "2026-11-19T00:00Z",
+   "team": "20",
+   "name": "Dean Wade",
+   "status": "q",
+   "athlete": "3912848",
+   "espn": {
+    "seen": "2026-11-18T18:25:36.050Z",
+    "own": "2026-11-18T18:06:00.000Z"
+   }
+  },
+  "401910011|rjbarrett|q": {
+   "game": "401910011",
+   "start": "2026-11-19T00:30Z",
+   "team": "17",
+   "name": "RJ Barrett",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-11-18T18:16:10.663Z",
+    "own": "2026-11-18T17:49:12.000Z",
+    "why": "@rotowirenba.bsky.social: RJ Barrett: Questionable to face Washington \n\n https:/"
+   }
+  },
+  "401910011|ryanrollins|out": {
+   "game": "401910011",
+   "start": "2026-11-19T00:30Z",
+   "team": "17",
+   "name": "Ryan Rollins",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-18T18:16:10.663Z",
+    "own": "2026-11-18T18:10:16.000Z",
+    "why": "@rotowirenba.bsky.social: Ryan Rollins: Ruled out Wednesday \n\n https://www.rotow"
+   }
+  },
+  "401910012|ryanrollins|out": {
+   "game": "401910012",
+   "start": "2026-11-19T00:30Z",
+   "team": "28",
+   "name": "Ryan Rollins",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-18T18:16:10.663Z",
+    "own": "2026-11-18T18:10:16.000Z",
+    "why": "@rotowirenba.bsky.social: Ryan Rollins: Ruled out Wednesday \n\n https://www.rotow"
+   }
+  },
+  "401910013|rjbarrett|q": {
+   "game": "401910013",
+   "start": "2026-11-19T01:00Z",
+   "team": "3",
+   "name": "RJ Barrett",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-11-18T18:16:10.663Z",
+    "own": "2026-11-18T17:49:12.000Z",
+    "why": "@rotowirenba.bsky.social: RJ Barrett: Questionable to face Washington \n\n https:/"
+   }
+  },
+  "401910013|ryanrollins|out": {
+   "game": "401910013",
+   "start": "2026-11-19T01:00Z",
+   "team": "3",
+   "name": "Ryan Rollins",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-18T18:16:10.663Z",
+    "own": "2026-11-18T18:10:16.000Z",
+    "why": "@rotowirenba.bsky.social: Ryan Rollins: Ruled out Wednesday \n\n https://www.rotow"
+   }
+  },
+  "401910014|rjbarrett|q": {
+   "game": "401910014",
+   "start": "2026-11-19T01:00Z",
+   "team": "25",
+   "name": "RJ Barrett",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-11-18T18:16:10.663Z",
+    "own": "2026-11-18T17:49:12.000Z",
+    "why": "@rotowirenba.bsky.social: RJ Barrett: Questionable to face Washington \n\n https:/"
+   }
+  },
+  "401910014|ryanrollins|out": {
+   "game": "401910014",
+   "start": "2026-11-19T01:00Z",
+   "team": "25",
+   "name": "Ryan Rollins",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-18T18:16:10.663Z",
+    "own": "2026-11-18T18:10:16.000Z",
+    "why": "@rotowirenba.bsky.social: Ryan Rollins: Ruled out Wednesday \n\n https://www.rotow"
+   }
+  },
+  "401910016|rjbarrett|q": {
+   "game": "401910016",
+   "start": "2026-11-19T01:00Z",
+   "team": "6",
+   "name": "RJ Barrett",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-11-18T18:16:10.663Z",
+    "own": "2026-11-18T17:49:12.000Z",
+    "why": "@rotowirenba.bsky.social: RJ Barrett: Questionable to face Washington \n\n https:/"
+   }
+  },
+  "401910016|ryanrollins|out": {
+   "game": "401910016",
+   "start": "2026-11-19T01:00Z",
+   "team": "6",
+   "name": "Ryan Rollins",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-18T18:16:10.663Z",
+    "own": "2026-11-18T18:10:16.000Z",
+    "why": "@rotowirenba.bsky.social: Ryan Rollins: Ruled out Wednesday \n\n https://www.rotow"
+   }
+  },
+  "401910015|rjbarrett|q": {
+   "game": "401910015",
+   "start": "2026-11-19T02:30Z",
+   "team": "7",
+   "name": "RJ Barrett",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-11-18T18:16:10.663Z",
+    "own": "2026-11-18T17:49:12.000Z",
+    "why": "@rotowirenba.bsky.social: RJ Barrett: Questionable to face Washington \n\n https:/"
+   }
+  },
+  "401910015|ryanrollins|out": {
+   "game": "401910015",
+   "start": "2026-11-19T02:30Z",
+   "team": "7",
+   "name": "Ryan Rollins",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-18T18:16:10.663Z",
+    "own": "2026-11-18T18:10:16.000Z",
+    "why": "@rotowirenba.bsky.social: Ryan Rollins: Ruled out Wednesday \n\n https://www.rotow"
+   }
+  },
+  "401910017|rjbarrett|q": {
+   "game": "401910017",
+   "start": "2026-11-19T03:00Z",
+   "team": "13",
+   "name": "RJ Barrett",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-11-18T18:16:10.663Z",
+    "own": "2026-11-18T17:49:12.000Z",
+    "why": "@rotowirenba.bsky.social: RJ Barrett: Questionable to face Washington \n\n https:/"
+   }
+  },
+  "401910017|ryanrollins|out": {
+   "game": "401910017",
+   "start": "2026-11-19T03:00Z",
+   "team": "13",
+   "name": "Ryan Rollins",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-18T18:16:10.663Z",
+    "own": "2026-11-18T18:10:16.000Z",
+    "why": "@rotowirenba.bsky.social: Ryan Rollins: Ruled out Wednesday \n\n https://www.rotow"
+   }
+  },
+  "401910018|rjbarrett|q": {
+   "game": "401910018",
+   "start": "2026-11-19T03:00Z",
+   "team": "23",
+   "name": "RJ Barrett",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-11-18T18:16:10.663Z",
+    "own": "2026-11-18T17:49:12.000Z",
+    "why": "@rotowirenba.bsky.social: RJ Barrett: Questionable to face Washington \n\n https:/"
+   }
+  },
+  "401910018|ryanrollins|out": {
+   "game": "401910018",
+   "start": "2026-11-19T03:00Z",
+   "team": "23",
+   "name": "Ryan Rollins",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-18T18:16:10.663Z",
+    "own": "2026-11-18T18:10:16.000Z",
+    "why": "@rotowirenba.bsky.social: Ryan Rollins: Ruled out Wednesday \n\n https://www.rotow"
    }
   }
  }
