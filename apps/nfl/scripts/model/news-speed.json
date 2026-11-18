@@ -12902,6 +12902,11 @@
    "espn": {
     "seen": "2026-11-14T00:10:36.492Z",
     "own": "2026-11-13T21:13:00.000Z"
+   },
+   "bluesky": {
+    "seen": "2026-11-18T20:14:50.868Z",
+    "own": "2026-11-18T19:49:36.000Z",
+    "why": "@rotoworld-fb.bsky.social: Texans rule out Woody Marks, Marvin Harrison"
    }
   },
   "401873066|davidmontgomery|q": {
@@ -15071,6 +15076,11 @@
    "sleeper": {
     "seen": "2026-11-18T20:12:36.381Z",
     "own": "2026-11-17T22:25:46.680Z"
+   },
+   "bluesky": {
+    "seen": "2026-11-18T20:14:50.868Z",
+    "own": "2026-11-18T19:49:36.000Z",
+    "why": "@rotoworld-fb.bsky.social: Texans rule out Woody Marks, Marvin Harrison"
    }
   },
   "401873064|myleshinton|out": {
@@ -17749,6 +17759,78 @@
    "espn": {
     "seen": "2026-11-18T20:12:36.381Z",
     "own": "2026-11-18T19:04:00.000Z"
+   }
+  },
+  "401873068|isaiahsimmons|q": {
+   "game": "401873068",
+   "start": "2026-11-22T18:00Z",
+   "team": "29",
+   "name": "Isaiah Simmons",
+   "status": "q",
+   "athlete": "4035462",
+   "espn": {
+    "seen": "2026-11-18T20:51:37.550Z",
+    "own": "2026-11-18T20:16:00.000Z"
+   }
+  },
+  "401873068|tommytremble|q": {
+   "game": "401873068",
+   "start": "2026-11-22T18:00Z",
+   "team": "29",
+   "name": "Tommy Tremble",
+   "status": "q",
+   "athlete": "4372780",
+   "espn": {
+    "seen": "2026-11-18T20:51:37.550Z",
+    "own": "2026-11-18T20:11:00.000Z"
+   }
+  },
+  "401873068|darrenwaller|q": {
+   "game": "401873068",
+   "start": "2026-11-22T18:00Z",
+   "team": "29",
+   "name": "Darren Waller",
+   "status": "q",
+   "athlete": "2576925",
+   "espn": {
+    "seen": "2026-11-18T20:51:37.550Z",
+    "own": "2026-11-18T20:11:00.000Z"
+   }
+  },
+  "401873075|caleblohner|out": {
+   "game": "401873075",
+   "start": "2026-11-22T21:25Z",
+   "team": "7",
+   "name": "Caleb Lohner",
+   "status": "out",
+   "athlete": "4432208",
+   "espn": {
+    "seen": "2026-11-18T20:51:37.550Z",
+    "own": "2026-11-18T20:08:00.000Z"
+   }
+  },
+  "401873069|tyronetracy|out": {
+   "game": "401873069",
+   "start": "2026-11-22T21:25Z",
+   "team": "19",
+   "name": "Tyrone Tracy Jr.",
+   "status": "out",
+   "athlete": "4360516",
+   "espn": {
+    "seen": "2026-11-18T20:51:37.550Z",
+    "own": "2026-11-18T20:16:00.000Z"
+   }
+  },
+  "401873077|dezhaunstribling|out": {
+   "game": "401873077",
+   "start": "2026-11-23T01:20Z",
+   "team": "25",
+   "name": "De'Zhaun Stribling",
+   "status": "out",
+   "athlete": "4710714",
+   "espn": {
+    "seen": "2026-11-18T20:51:37.550Z",
+    "own": "2026-11-18T20:26:00.000Z"
    }
   }
  }
