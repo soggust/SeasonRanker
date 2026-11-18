@@ -8796,6 +8796,114 @@
     "seen": "2026-11-18T16:30:48.764Z",
     "own": "2026-09-28T17:58:00.000Z"
    }
+  },
+  "401892740|jonassiegenthaler|q": {
+   "game": "401892740",
+   "start": "2026-11-19T00:30Z",
+   "team": "11",
+   "name": "Jonas Siegenthaler",
+   "status": "q",
+   "athlete": "3904190",
+   "espn": {
+    "seen": "2026-11-18T17:14:49.177Z",
+    "own": "2026-11-18T17:02:00.000Z"
+   }
+  },
+  "401892748|connorbedard|q": {
+   "game": "401892748",
+   "start": "2026-11-20T01:00Z",
+   "team": "4",
+   "name": "Connor Bedard",
+   "status": "q",
+   "athlete": "5149125",
+   "espn": {
+    "seen": "2026-11-18T17:14:49.177Z",
+    "own": "2026-11-18T16:42:00.000Z"
+   }
+  },
+  "401892748|bowenbyram|out": {
+   "game": "401892748",
+   "start": "2026-11-20T01:00Z",
+   "team": "4",
+   "name": "Bowen Byram",
+   "status": "out",
+   "athlete": "4565225",
+   "espn": {
+    "seen": "2026-11-18T17:14:49.177Z",
+    "own": "2026-11-17T15:51:00.000Z"
+   }
+  },
+  "401892748|seanmonahan|out": {
+   "game": "401892748",
+   "start": "2026-11-20T01:00Z",
+   "team": "29",
+   "name": "Sean Monahan",
+   "status": "out",
+   "athlete": "3041996",
+   "espn": {
+    "seen": "2026-11-18T17:14:49.177Z",
+    "own": "2026-11-16T17:42:00.000Z"
+   }
+  },
+  "401892753|noahhanifin|out": {
+   "game": "401892753",
+   "start": "2026-11-20T03:00Z",
+   "team": "37",
+   "name": "Noah Hanifin",
+   "status": "out",
+   "athlete": "3652964",
+   "espn": {
+    "seen": "2026-11-18T17:14:49.177Z",
+    "own": "2026-11-10T20:34:00.000Z"
+   }
+  },
+  "401892753|tylermyers|q": {
+   "game": "401892753",
+   "start": "2026-11-20T03:00Z",
+   "team": "9",
+   "name": "Tyler Myers",
+   "status": "q",
+   "athlete": "5052",
+   "espn": {
+    "seen": "2026-11-18T17:14:49.177Z",
+    "own": "2026-11-18T14:37:00.000Z"
+   }
+  },
+  "401892753|kylecapobianco|out": {
+   "game": "401892753",
+   "start": "2026-11-20T03:00Z",
+   "team": "9",
+   "name": "Kyle Capobianco",
+   "status": "out",
+   "athlete": "3939716",
+   "espn": {
+    "seen": "2026-11-18T17:14:49.177Z",
+    "own": "2026-11-14T15:14:00.000Z"
+   }
+  },
+  "401892753|lianbichsel|out": {
+   "game": "401892753",
+   "start": "2026-11-20T03:00Z",
+   "team": "9",
+   "name": "Lian Bichsel",
+   "status": "out",
+   "athlete": "5080162",
+   "espn": {
+    "seen": "2026-11-18T17:14:49.177Z",
+    "own": "2026-11-14T15:10:00.000Z"
+   }
+  },
+  "401892753|oskarback|out": {
+   "game": "401892753",
+   "start": "2026-11-20T03:00Z",
+   "team": "9",
+   "name": "Oskar Back",
+   "status": "out",
+   "athlete": "4894398",
+   "espn": {
+    "seen": "2026-11-18T17:14:49.177Z",
+    "own": "2026-10-24T18:32:00.000Z"
+   }
   }
  }
 }
