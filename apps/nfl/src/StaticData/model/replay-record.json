@@ -2,7 +2,7 @@
  "v": 1,
  "sport": "nfl",
  "epoch": "2026-10-26T15:00:00Z",
- "at": "2026-11-17T09:04:19.819Z",
+ "at": "2026-11-18T09:04:12.422Z",
  "from": "2020-09-11T00:20:00.000Z",
  "through": "2026-10-19T00:23:00.000Z",
  "n": {
@@ -2935,7 +2935,7 @@
    }
   }
  },
- "commit": "7f0f8f6a",
+ "commit": "5641dca0",
  "note": "D119. The Book's bands are the Bot's bets alone: a suggestion is never a LIKE (the owner, 2026-11-09: \"its got likes with no BETS which makes no sense\")",
  "inputs": {
   "v": 1,

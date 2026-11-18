@@ -2,7 +2,7 @@
  "v": 1,
  "sport": "nba",
  "epoch": "2026-10-26T15:00:00Z",
- "at": "2026-11-17T09:09:28.605Z",
+ "at": "2026-11-18T09:09:12.379Z",
  "from": "2020-08-01T01:10:00.000Z",
  "through": "2026-06-11T00:40:00.000Z",
  "n": {
@@ -2832,7 +2832,7 @@
     "beat": 199,
     "clv": 5.5261,
     "pN": 6479,
-    "p": 3154.044,
+    "p": 3154.0437,
     "wins": 3176
    },
    "spread:home": {
@@ -2932,7 +2932,7 @@
     "beat": 0,
     "clv": 0,
     "pN": 5254,
-    "p": 2733.9702,
+    "p": 2733.9699,
     "wins": 2766
    },
    "prop:pts:over": {
@@ -2972,7 +2972,7 @@
     "beat": 0,
     "clv": 0,
     "pN": 3776,
-    "p": 2009.2111,
+    "p": 2009.2108,
     "wins": 2058
    },
    "prop:reb": {
@@ -2982,7 +2982,7 @@
     "beat": 0,
     "clv": 0,
     "pN": 4368,
-    "p": 2313.055,
+    "p": 2313.0548,
     "wins": 2322
    },
    "prop:pra:over": {
@@ -3032,7 +3032,7 @@
     "beat": 0,
     "clv": 0,
     "pN": 561,
-    "p": 269.3636,
+    "p": 269.3635,
     "wins": 287
    },
    "prop:fg3": {
@@ -3042,7 +3042,7 @@
     "beat": 0,
     "clv": 0,
     "pN": 678,
-    "p": 316.1832,
+    "p": 316.1831,
     "wins": 327
    },
    "prop:fg3:over": {
@@ -3062,12 +3062,12 @@
     "beat": 0,
     "clv": 0,
     "pN": 592,
-    "p": 303.8439,
+    "p": 303.844,
     "wins": 264
    }
   }
  },
- "commit": "7f0f8f6a",
+ "commit": "5641dca0",
  "note": "D119. The Book's bands are the Bot's bets alone: a suggestion is never a LIKE (the owner, 2026-11-09: \"its got likes with no BETS which makes no sense\")",
  "inputs": {
   "v": 1,
