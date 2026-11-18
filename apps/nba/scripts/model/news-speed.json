@@ -23670,6 +23670,246 @@
     "seen": "2026-11-18T00:04:36.298Z",
     "own": "2026-11-12T21:35:00.000Z"
    }
+  },
+  "401910009|myrongardner|q": {
+   "game": "401910009",
+   "start": "2026-11-19T00:00Z",
+   "team": "14",
+   "name": "Myron Gardner",
+   "status": "q",
+   "athlete": "4431772",
+   "espn": {
+    "seen": "2026-11-18T00:25:27.836Z",
+    "own": "2026-11-17T21:35:00.000Z"
+   }
+  },
+  "401910009|nikolajovic|q": {
+   "game": "401910009",
+   "start": "2026-11-19T00:00Z",
+   "team": "14",
+   "name": "Nikola Jovic",
+   "status": "q",
+   "athlete": "4997528",
+   "espn": {
+    "seen": "2026-11-18T00:25:27.836Z",
+    "own": "2026-11-17T21:34:00.000Z"
+   }
+  },
+  "401910009|bamadebayo|q": {
+   "game": "401910009",
+   "start": "2026-11-19T00:00Z",
+   "team": "14",
+   "name": "Bam Adebayo",
+   "status": "q",
+   "athlete": "4066261",
+   "espn": {
+    "seen": "2026-11-18T00:25:27.836Z",
+    "own": "2026-11-17T21:32:00.000Z"
+   }
+  },
+  "401910009|cjmccollum|out": {
+   "game": "401910009",
+   "start": "2026-11-19T00:00Z",
+   "team": "14",
+   "name": "CJ McCollum",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-17T21:27:02.601Z",
+    "own": "2026-11-17T21:08:25.000Z",
+    "why": "@rotowirenba.bsky.social: CJ McCollum: Out four weeks with calf strain \n\n https:"
+   }
+  },
+  "401910009|tyjerome|out": {
+   "game": "401910009",
+   "start": "2026-11-19T00:00Z",
+   "team": "14",
+   "name": "Ty Jerome",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-17T22:19:16.935Z",
+    "own": "2026-11-17T22:07:54.000Z",
+    "why": "@rotowirenba.bsky.social: Ty Jerome: Won't play Wednesday \n\n https://www.rotowir"
+   }
+  },
+  "401910009|kawhileonard|out": {
+   "game": "401910009",
+   "start": "2026-11-19T00:00Z",
+   "team": "14",
+   "name": "Kawhi Leonard",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-17T23:15:23.569Z",
+    "own": "2026-11-17T22:25:16.000Z",
+    "why": "@rotowirenba.bsky.social: Kawhi Leonard: To miss at least one more week \n\n https"
+   }
+  },
+  "401910009|kingstonflemings|out": {
+   "game": "401910009",
+   "start": "2026-11-19T00:00Z",
+   "team": "14",
+   "name": "Kingston Flemings",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-17T23:15:23.569Z",
+    "own": "2026-11-17T23:06:12.000Z",
+    "why": "@rotowirenba.bsky.social: Kingston Flemings: Won't play Wednesday \n\n https://www"
+   }
+  },
+  "401910009|ousmanedieng|out": {
+   "game": "401910009",
+   "start": "2026-11-19T00:00Z",
+   "team": "15",
+   "name": "Ousmane Dieng",
+   "status": "out",
+   "athlete": "4997526",
+   "espn": {
+    "seen": "2026-11-18T00:25:27.836Z",
+    "own": "2026-11-15T23:46:00.000Z"
+   }
+  },
+  "401910010|izaiyahnelson|out": {
+   "game": "401910010",
+   "start": "2026-11-19T00:00Z",
+   "team": "19",
+   "name": "Izaiyah Nelson",
+   "status": "out",
+   "athlete": "5107251",
+   "espn": {
+    "seen": "2026-11-18T00:25:27.836Z",
+    "own": "2026-11-17T21:22:00.000Z"
+   }
+  },
+  "401910010|jonathanisaac|out": {
+   "game": "401910010",
+   "start": "2026-11-19T00:00Z",
+   "team": "19",
+   "name": "Jonathan Isaac",
+   "status": "out",
+   "athlete": "4065654",
+   "espn": {
+    "seen": "2026-11-18T00:25:27.836Z",
+    "own": "2026-11-15T18:22:00.000Z"
+   }
+  },
+  "401910010|noahpenda|out": {
+   "game": "401910010",
+   "start": "2026-11-19T00:00Z",
+   "team": "19",
+   "name": "Noah Penda",
+   "status": "out",
+   "athlete": "5214637",
+   "espn": {
+    "seen": "2026-11-18T00:25:27.836Z",
+    "own": "2026-11-14T17:33:00.000Z"
+   }
+  },
+  "401910010|paolobanchero|out": {
+   "game": "401910010",
+   "start": "2026-11-19T00:00Z",
+   "team": "19",
+   "name": "Paolo Banchero",
+   "status": "out",
+   "athlete": "4432573",
+   "espn": {
+    "seen": "2026-11-18T00:25:27.836Z",
+    "own": "2026-10-24T16:47:00.000Z"
+   }
+  },
+  "401910010|cjmccollum|out": {
+   "game": "401910010",
+   "start": "2026-11-19T00:00Z",
+   "team": "19",
+   "name": "CJ McCollum",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-17T21:27:02.601Z",
+    "own": "2026-11-17T21:08:25.000Z",
+    "why": "@rotowirenba.bsky.social: CJ McCollum: Out four weeks with calf strain \n\n https:"
+   }
+  },
+  "401910010|tyjerome|out": {
+   "game": "401910010",
+   "start": "2026-11-19T00:00Z",
+   "team": "19",
+   "name": "Ty Jerome",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-17T22:19:16.935Z",
+    "own": "2026-11-17T22:07:54.000Z",
+    "why": "@rotowirenba.bsky.social: Ty Jerome: Won't play Wednesday \n\n https://www.rotowir"
+   }
+  },
+  "401910010|kawhileonard|out": {
+   "game": "401910010",
+   "start": "2026-11-19T00:00Z",
+   "team": "19",
+   "name": "Kawhi Leonard",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-17T23:15:23.569Z",
+    "own": "2026-11-17T22:25:16.000Z",
+    "why": "@rotowirenba.bsky.social: Kawhi Leonard: To miss at least one more week \n\n https"
+   }
+  },
+  "401910010|kingstonflemings|out": {
+   "game": "401910010",
+   "start": "2026-11-19T00:00Z",
+   "team": "19",
+   "name": "Kingston Flemings",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-17T23:15:23.569Z",
+    "own": "2026-11-17T23:06:12.000Z",
+    "why": "@rotowirenba.bsky.social: Kingston Flemings: Won't play Wednesday \n\n https://www"
+   }
+  },
+  "401910010|dominickbarlow|out": {
+   "game": "401910010",
+   "start": "2026-11-19T00:00Z",
+   "team": "20",
+   "name": "Dominick Barlow",
+   "status": "out",
+   "athlete": "4870562",
+   "espn": {
+    "seen": "2026-11-18T00:25:27.836Z",
+    "own": "2026-11-17T22:12:00.000Z"
+   }
+  },
+  "401910010|jaylenbrown|out": {
+   "game": "401910010",
+   "start": "2026-11-19T00:00Z",
+   "team": "20",
+   "name": "Jaylen Brown",
+   "status": "out",
+   "athlete": "3917376",
+   "espn": {
+    "seen": "2026-11-18T00:25:27.836Z",
+    "own": "2026-11-17T22:08:00.000Z"
+   }
+  },
+  "401910010|adembona|out": {
+   "game": "401910010",
+   "start": "2026-11-19T00:00Z",
+   "team": "20",
+   "name": "Adem Bona",
+   "status": "out",
+   "athlete": "5105637",
+   "espn": {
+    "seen": "2026-11-18T00:25:27.836Z",
+    "own": "2026-11-12T16:36:00.000Z"
+   }
+  },
+  "401910010|arielhukporti|out": {
+   "game": "401910010",
+   "start": "2026-11-19T00:00Z",
+   "team": "20",
+   "name": "Ariel Hukporti",
+   "status": "out",
+   "athlete": "4871141",
+   "espn": {
+    "seen": "2026-11-18T00:25:27.836Z",
+    "own": "2026-10-06T19:17:00.000Z"
+   }
   }
  }
 }
