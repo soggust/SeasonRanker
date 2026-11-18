@@ -1,7 +1,7 @@
 {
  "sport": "nba",
  "cursor": {
-  "rotowirenba.bsky.social": "2026-11-18T04:12:52.000Z",
+  "rotowirenba.bsky.social": "2026-11-18T05:49:25.000Z",
   "insidenbanews.bsky.social": "2026-11-13T20:00:09.852Z",
   "shamsbot.bsky.social": "2026-11-17T19:24:56.000Z"
  },
@@ -8689,6 +8689,19 @@
    "kind": "starting",
    "confidence": 0.9,
    "text": "Kevon Looney: Starting Tuesday \n\n https://www.rotowire.com/basketball/player/kevon-looney-3722"
+  },
+  {
+   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3n2kudhathm23|draymondgreen|questionable|status",
+   "at": "2026-11-18T05:49:25.000Z",
+   "seen": "2026-11-18T06:01:22.970Z",
+   "handle": "rotowirenba.bsky.social",
+   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3n2kudhathm23",
+   "player": "Draymond Green",
+   "team": "GSW",
+   "status": "questionable",
+   "kind": "status",
+   "confidence": 0.95,
+   "text": "Draymond Green: Questionable for Wednesday \n\n https://www.rotowire.com/basketball/player/draymond-green-3299"
   }
  ]
 }
