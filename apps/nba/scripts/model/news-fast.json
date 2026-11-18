@@ -1,24 +1,11 @@
 {
  "sport": "nba",
  "cursor": {
-  "rotowirenba.bsky.social": "2026-11-18T21:19:26.000Z",
+  "rotowirenba.bsky.social": "2026-11-18T22:21:31.000Z",
   "insidenbanews.bsky.social": "2026-11-13T20:00:09.852Z",
   "shamsbot.bsky.social": "2026-11-17T19:24:56.000Z"
  },
  "claims": [
-  {
-   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3myxr3utjf42g|anthonyblack|active|status",
-   "at": "2026-10-28T22:05:43.000Z",
-   "seen": "2026-10-28T22:14:49.243Z",
-   "handle": "rotowirenba.bsky.social",
-   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3myxr3utjf42g",
-   "player": "Anthony Black",
-   "team": null,
-   "status": "active",
-   "kind": "status",
-   "confidence": 0.9,
-   "text": "Anthony Black: Will play Wednesday \n\n https://www.rotowire.com/basketball/player/anthony-black-5910"
-  },
   {
    "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3myxs65diq62e|ajdybantsa|limited|restriction",
    "at": "2026-10-28T22:24:53.000Z",
@@ -8624,6 +8611,19 @@
    "kind": "status",
    "confidence": 0.9,
    "text": "Jaxson Hayes: Listed as questionable \n\n https://www.rotowire.com/basketball/player/jaxson-hayes-4771"
+  },
+  {
+   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3n2mlrhcljd2r|jaylenbrown|out|status",
+   "at": "2026-11-18T22:21:31.000Z",
+   "seen": "2026-11-18T22:22:12.515Z",
+   "handle": "rotowirenba.bsky.social",
+   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3n2mlrhcljd2r",
+   "player": "Jaylen Brown",
+   "team": "BOS",
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.6,
+   "text": "Jaylen Brown: No timetable for return \n\n https://www.rotowire.com/basketball/player/jaylen-brown-3894"
   }
  ]
 }

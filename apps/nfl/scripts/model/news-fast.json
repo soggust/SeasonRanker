@@ -5,50 +5,11 @@
   "rapsheet.bsky.social": "2026-11-18T19:34:39.202Z",
   "nflnewsreposterbot.bsky.social": "2026-11-16T18:35:13.806Z",
   "insidenflnews.bsky.social": "2026-11-18T17:31:26.437Z",
-  "nflnewsposter.bsky.social": "2026-11-18T21:38:23.034Z",
-  "rotoworld-fb.bsky.social": "2026-11-18T21:47:19.000Z",
-  "rotowirenfl.bsky.social": "2026-11-18T21:50:16.000Z"
+  "nflnewsposter.bsky.social": "2026-11-18T22:00:16.081Z",
+  "rotoworld-fb.bsky.social": "2026-11-18T22:14:31.000Z",
+  "rotowirenfl.bsky.social": "2026-11-18T22:18:10.000Z"
  },
  "claims": [
-  {
-   "id": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3myxqvtdk5k2j|jaylenwaddle|questionable|status",
-   "at": "2026-10-28T22:02:20.000Z",
-   "seen": "2026-10-28T22:14:49.243Z",
-   "handle": "rotowirenfl.bsky.social",
-   "post": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3myxqvtdk5k2j",
-   "player": "Jaylen Waddle",
-   "team": "MIA",
-   "status": "questionable",
-   "kind": "status",
-   "confidence": 0.5,
-   "text": "Jaylen Waddle: Misses Wednesday's practice \n\n https://www.rotowire.com/football/player/jaylen-waddle-15404"
-  },
-  {
-   "id": "at://did:plc:qre6zxbmr3ixhdmgsgdretb5/app.bsky.feed.post/3myxqy35dyw2d|jahmyrgibbs|questionable|status",
-   "at": "2026-10-28T22:03:35.702Z",
-   "seen": "2026-10-28T22:14:49.243Z",
-   "handle": "adamscheftermirror.bsky.social",
-   "post": "at://did:plc:qre6zxbmr3ixhdmgsgdretb5/app.bsky.feed.post/3myxqy35dyw2d",
-   "player": "Jahmyr Gibbs",
-   "team": "DET",
-   "status": "questionable",
-   "kind": "status",
-   "confidence": 0.45,
-   "text": "Repost by @AdamSchefter\n\nChargers safety Derwin James (hamstring), who has not played since Sept. 27, had a setback and could be placed on injured reserve, per Jim Harbaugh\n\nClick to see original repo"
-  },
-  {
-   "id": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3myxrwh7jdy25|georgepickens|limited|status",
-   "at": "2026-10-28T22:20:34.000Z",
-   "seen": "2026-10-28T23:16:00.900Z",
-   "handle": "rotowirenfl.bsky.social",
-   "post": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3myxrwh7jdy25",
-   "player": "George Pickens",
-   "team": null,
-   "status": "limited",
-   "kind": "status",
-   "confidence": 0.8,
-   "text": "George Pickens: Remains limited Wednesday \n\n https://www.rotowire.com/football/player/george-pickens-15853"
-  },
   {
    "id": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3myxsem6wrs25|jeremiyahlove|limited|status",
    "at": "2026-10-28T22:28:29.000Z",
@@ -18950,6 +18911,32 @@
    "kind": "status",
    "confidence": 0.9,
    "text": "Jordyn Tyson (chest) limited to begin Week 11"
+  },
+  {
+   "id": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3n2ml5aso5n2b|tjhockenson|limited|status",
+   "at": "2026-11-18T22:10:13.000Z",
+   "seen": "2026-11-18T22:22:12.515Z",
+   "handle": "rotowirenfl.bsky.social",
+   "post": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3n2ml5aso5n2b",
+   "player": "T.J. Hockenson",
+   "team": null,
+   "status": "limited",
+   "kind": "status",
+   "confidence": 0.9,
+   "text": "T.J. Hockenson: Limited in Wednesday's practice \n\n https://www.rotowire.com/football/player/tj-hockenson-13610"
+  },
+  {
+   "id": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3n2mlexazpt2v|tjhockenson|limited|status",
+   "at": "2026-11-18T22:14:31.000Z",
+   "seen": "2026-11-18T22:22:12.515Z",
+   "handle": "rotoworld-fb.bsky.social",
+   "post": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3n2mlexazpt2v",
+   "player": "T.J. Hockenson",
+   "team": null,
+   "status": "limited",
+   "kind": "status",
+   "confidence": 0.9,
+   "text": "Hockenson (wrist) limited in Wednesday's practice"
   }
  ]
 }
