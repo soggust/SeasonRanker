@@ -23906,6 +23906,18 @@
     "own": "2026-11-17T19:03:04.000Z",
     "why": "@rotowirenba.bsky.social: Jonathan Kuminga: Sitting out Tuesday \n\n https://www.r"
    }
+  },
+  "401910005|graysonallen|out": {
+   "game": "401910005",
+   "start": "2026-11-18T04:00Z",
+   "team": "30",
+   "name": "Grayson Allen",
+   "status": "out",
+   "athlete": "3135045",
+   "espn": {
+    "seen": "2026-11-18T02:29:38.670Z",
+    "own": "2026-11-18T02:19:00.000Z"
+   }
   }
  }
 }
