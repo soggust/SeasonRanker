@@ -307,167 +307,6 @@
     "own": "2026-11-07T19:10:12.015Z"
    }
   },
-  "401909939|jalenjohnson|out": {
-   "game": "401909939",
-   "start": "2026-11-08T00:30Z",
-   "team": "1",
-   "name": "Jalen Johnson",
-   "status": "out",
-   "athlete": "4701230",
-   "espn": {
-    "seen": "2026-11-07T03:14:40.474Z",
-    "own": "2026-11-06T22:06:00.000Z"
-   },
-   "bluesky": {
-    "seen": "2026-11-06T22:15:31.252Z",
-    "own": "2026-11-06T22:06:08.000Z",
-    "why": "@rotowirenba.bsky.social: Jalen Johnson: Ruled out for Friday \n\n https://www.rot"
-   }
-  },
-  "401909939|keshongilbert|out": {
-   "game": "401909939",
-   "start": "2026-11-08T00:30Z",
-   "team": "1",
-   "name": "Keshon Gilbert",
-   "status": "out",
-   "athlete": "4585618",
-   "espn": {
-    "seen": "2026-11-07T03:14:40.474Z",
-    "own": "2026-11-05T22:41:00.000Z"
-   },
-   "sleeper": {
-    "seen": "2026-11-07T20:22:52.800Z",
-    "own": "2026-11-07T18:20:10.997Z"
-   }
-  },
-  "401909939|asanewell|out": {
-   "game": "401909939",
-   "start": "2026-11-08T00:30Z",
-   "team": "1",
-   "name": "Asa Newell",
-   "status": "out",
-   "athlete": "4873201",
-   "espn": {
-    "seen": "2026-11-07T03:14:40.474Z",
-    "own": "2026-11-05T22:33:00.000Z"
-   },
-   "sleeper": {
-    "seen": "2026-11-07T20:22:52.800Z",
-    "own": "2026-11-07T18:20:10.989Z"
-   }
-  },
-  "401909939|jocklandale|out": {
-   "game": "401909939",
-   "start": "2026-11-08T00:30Z",
-   "team": "1",
-   "name": "Jock Landale",
-   "status": "out",
-   "athlete": "3146557",
-   "espn": {
-    "seen": "2026-11-07T03:14:40.474Z",
-    "own": "2026-11-05T22:12:00.000Z"
-   },
-   "sleeper": {
-    "seen": "2026-11-07T20:22:52.800Z",
-    "own": "2026-11-07T18:50:12.021Z"
-   }
-  },
-  "401909939|mouhamedgueye|out": {
-   "game": "401909939",
-   "start": "2026-11-08T00:30Z",
-   "team": "1",
-   "name": "Mouhamed Gueye",
-   "status": "out",
-   "athlete": "4712863",
-   "espn": {
-    "seen": "2026-11-07T03:14:40.474Z",
-    "own": "2026-10-19T19:38:00.000Z"
-   }
-  },
-  "401909939|henriveesaar|out": {
-   "game": "401909939",
-   "start": "2026-11-08T00:30Z",
-   "team": "1",
-   "name": "Henri Veesaar",
-   "status": "out",
-   "athlete": "5105571",
-   "espn": {
-    "seen": "2026-11-07T03:14:40.474Z",
-    "own": "2026-09-21T19:50:00.000Z"
-   }
-  },
-  "401909939|immanuelquickley|out": {
-   "game": "401909939",
-   "start": "2026-11-08T00:30Z",
-   "team": "1",
-   "name": "Immanuel Quickley",
-   "status": "out",
-   "bluesky": {
-    "seen": "2026-11-07T00:20:30.381Z",
-    "own": "2026-11-06T23:41:07.000Z",
-    "why": "@rotowirenba.bsky.social: Immanuel Quickley: Ruled out for Friday \n\n https://www"
-   }
-  },
-  "401909939|jarrettallen|out": {
-   "game": "401909939",
-   "start": "2026-11-08T00:30Z",
-   "team": "1",
-   "name": "Jarrett Allen",
-   "status": "out",
-   "bluesky": {
-    "seen": "2026-11-07T00:20:30.381Z",
-    "own": "2026-11-06T23:55:36.000Z",
-    "why": "@rotowirenba.bsky.social: Jarrett Allen: Won't play Friday \n\n https://www.rotowi"
-   }
-  },
-  "401909939|brandonmiller|out": {
-   "game": "401909939",
-   "start": "2026-11-08T00:30Z",
-   "team": "1",
-   "name": "Brandon Miller",
-   "status": "out",
-   "bluesky": {
-    "seen": "2026-11-07T01:12:29.931Z",
-    "own": "2026-11-07T01:07:47.000Z",
-    "why": "@rotowirenba.bsky.social: Brandon Miller: Won't return Friday \n\n https://www.rot"
-   }
-  },
-  "401909939|dayronsharpe|q": {
-   "game": "401909939",
-   "start": "2026-11-08T00:30Z",
-   "team": "17",
-   "name": "Day'Ron Sharpe",
-   "status": "q",
-   "athlete": "4432194",
-   "espn": {
-    "seen": "2026-11-07T03:14:40.474Z",
-    "own": "2026-11-05T02:29:00.000Z"
-   }
-  },
-  "401909939|egordemin|out": {
-   "game": "401909939",
-   "start": "2026-11-08T00:30Z",
-   "team": "17",
-   "name": "Egor Demin",
-   "status": "out",
-   "athlete": "5175643",
-   "espn": {
-    "seen": "2026-11-07T03:14:40.474Z",
-    "own": "2026-10-29T17:09:00.000Z"
-   }
-  },
-  "401909939|tylerbilodeau|out": {
-   "game": "401909939",
-   "start": "2026-11-08T00:30Z",
-   "team": "17",
-   "name": "Tyler Bilodeau",
-   "status": "out",
-   "athlete": "5105626",
-   "espn": {
-    "seen": "2026-11-07T03:14:40.474Z",
-    "own": "2026-10-25T17:19:00.000Z"
-   }
-  },
   "401909940|sammerrill|out": {
    "game": "401909940",
    "start": "2026-11-08T01:00Z",
@@ -867,46 +706,6 @@
     "own": "2026-11-07T19:15:11.313Z"
    }
   },
-  "401909939|keshongilbert|q": {
-   "game": "401909939",
-   "start": "2026-11-08T00:30Z",
-   "team": "1",
-   "name": "Keshon Gilbert",
-   "status": "q",
-   "athlete": "4585618",
-   "espn": {
-    "seen": "2026-11-07T16:03:57.546Z",
-    "own": "2026-11-07T15:08:00.000Z"
-   }
-  },
-  "401909939|asanewell|q": {
-   "game": "401909939",
-   "start": "2026-11-08T00:30Z",
-   "team": "1",
-   "name": "Asa Newell",
-   "status": "q",
-   "athlete": "4873201",
-   "espn": {
-    "seen": "2026-11-07T16:03:57.546Z",
-    "own": "2026-11-07T15:07:00.000Z"
-   }
-  },
-  "401909939|noahclowney|q": {
-   "game": "401909939",
-   "start": "2026-11-08T00:30Z",
-   "team": "17",
-   "name": "Noah Clowney",
-   "status": "q",
-   "athlete": "4712896",
-   "espn": {
-    "seen": "2026-11-07T16:03:57.546Z",
-    "own": "2026-11-07T15:19:00.000Z"
-   },
-   "sleeper": {
-    "seen": "2026-11-07T20:22:52.800Z",
-    "own": "2026-11-07T19:10:12.036Z"
-   }
-  },
   "401909940|sammerrill|q": {
    "game": "401909940",
    "start": "2026-11-08T01:00Z",
@@ -929,18 +728,6 @@
    "espn": {
     "seen": "2026-11-07T16:03:57.546Z",
     "own": "2026-11-07T15:07:00.000Z"
-   }
-  },
-  "401909939|desmondbane|out": {
-   "game": "401909939",
-   "start": "2026-11-08T00:30Z",
-   "team": "1",
-   "name": "Desmond Bane",
-   "status": "out",
-   "bluesky": {
-    "seen": "2026-11-07T19:38:42.361Z",
-    "own": "2026-11-07T19:36:42.000Z",
-    "why": "@rotowirenba.bsky.social: Desmond Bane: Ruled out Saturday \n\n https://www.rotowi"
    }
   },
   "401909940|desmondbane|out": {
@@ -1010,29 +797,6 @@
     "seen": "2026-11-07T19:38:42.361Z",
     "own": "2026-11-07T19:36:42.000Z",
     "why": "@rotowirenba.bsky.social: Desmond Bane: Ruled out Saturday \n\n https://www.rotowi"
-   }
-  },
-  "401909939|jalenjohnson|q": {
-   "game": "401909939",
-   "start": "2026-11-08T00:30Z",
-   "team": "1",
-   "name": "Jalen Johnson",
-   "status": "q",
-   "sleeper": {
-    "seen": "2026-11-07T20:22:52.800Z",
-    "own": "2026-11-07T18:50:12.035Z"
-   }
-  },
-  "401909939|tyresehaliburton|out": {
-   "game": "401909939",
-   "start": "2026-11-08T00:30Z",
-   "team": "1",
-   "name": "Tyrese Haliburton",
-   "status": "out",
-   "bluesky": {
-    "seen": "2026-11-07T20:53:08.305Z",
-    "own": "2026-11-07T20:46:11.000Z",
-    "why": "@rotowirenba.bsky.social: Tyrese Haliburton: Still without timetable to return \n"
    }
   },
   "401909940|tyresehaliburton|out": {
@@ -1335,30 +1099,6 @@
     "seen": "2026-11-07T22:13:43.503Z",
     "own": "2026-11-07T22:04:00.000Z"
    },
-   "bluesky": {
-    "seen": "2026-11-07T22:15:42.826Z",
-    "own": "2026-11-07T22:11:34.000Z",
-    "why": "@rotowirenba.bsky.social: Luka Doncic: Questionable for Sunday \n\n https://www.ro"
-   }
-  },
-  "401909939|nicclaxton|q": {
-   "game": "401909939",
-   "start": "2026-11-08T00:30Z",
-   "team": "1",
-   "name": "Nic Claxton",
-   "status": "q",
-   "bluesky": {
-    "seen": "2026-11-07T22:15:42.826Z",
-    "own": "2026-11-07T21:25:59.000Z",
-    "why": "@rotowirenba.bsky.social: Nic Claxton: Downgraded to questionable \n\n https://www"
-   }
-  },
-  "401909939|lukadoncic|q": {
-   "game": "401909939",
-   "start": "2026-11-08T00:30Z",
-   "team": "1",
-   "name": "Luka Doncic",
-   "status": "q",
    "bluesky": {
     "seen": "2026-11-07T22:15:42.826Z",
     "own": "2026-11-07T22:11:34.000Z",
@@ -23909,6 +23649,18 @@
    "espn": {
     "seen": "2026-11-18T00:25:27.836Z",
     "own": "2026-10-06T19:17:00.000Z"
+   }
+  },
+  "401910003|deniavdija|out": {
+   "game": "401910003",
+   "start": "2026-11-18T01:00Z",
+   "team": "22",
+   "name": "Deni Avdija",
+   "status": "out",
+   "athlete": "4683021",
+   "espn": {
+    "seen": "2026-11-18T00:35:36.231Z",
+    "own": "2026-11-18T00:24:00.000Z"
    }
   }
  }
