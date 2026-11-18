@@ -15166,6 +15166,90 @@
     "seen": "2026-11-18T21:51:24.060Z",
     "own": "2026-11-18T21:12:00.000Z"
    }
+  },
+  "401873066|jakobimeyers|q": {
+   "game": "401873066",
+   "start": "2026-11-20T01:15Z",
+   "team": "34",
+   "name": "Jakobi Meyers",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-11-18T21:54:02.969Z",
+    "own": "2026-11-18T21:16:19.000Z",
+    "why": "@rotowirenfl.bsky.social: Jakobi Meyers: Limited in Wednesday's practice \n\n http"
+   }
+  },
+  "401873066|bhayshultuten|q": {
+   "game": "401873066",
+   "start": "2026-11-20T01:15Z",
+   "team": "34",
+   "name": "Bhayshul Tuten",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-11-18T21:54:02.969Z",
+    "own": "2026-11-18T21:22:41.000Z",
+    "why": "@rotowirenfl.bsky.social: Bhayshul Tuten: Logs limited practice Wednesday \n\n htt"
+   }
+  },
+  "401873066|daltonkincaid|out": {
+   "game": "401873066",
+   "start": "2026-11-20T01:15Z",
+   "team": "34",
+   "name": "Dalton Kincaid",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-18T21:54:02.969Z",
+    "own": "2026-11-18T21:38:49.000Z",
+    "why": "@rotoworld-fb.bsky.social: Dalton Kincaid (thumb/ankle) sits out on Wed."
+   }
+  },
+  "401873066|jordyntyson|q": {
+   "game": "401873066",
+   "start": "2026-11-20T01:15Z",
+   "team": "34",
+   "name": "Jordyn Tyson",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-11-18T21:54:02.969Z",
+    "own": "2026-11-18T21:47:19.000Z",
+    "why": "@rotoworld-fb.bsky.social: Jordyn Tyson (chest) limited to begin Week 11"
+   }
+  },
+  "401873073|fernandocarmona|out": {
+   "game": "401873073",
+   "start": "2026-11-22T18:00Z",
+   "team": "10",
+   "name": "Fernando Carmona",
+   "status": "out",
+   "athlete": "4710000",
+   "espn": {
+    "seen": "2026-11-18T22:03:28.732Z",
+    "own": "2026-11-18T21:49:00.000Z"
+   }
+  },
+  "401873067|nickbolton|q": {
+   "game": "401873067",
+   "start": "2026-11-22T18:00Z",
+   "team": "12",
+   "name": "Nick Bolton",
+   "status": "q",
+   "athlete": "4362759",
+   "espn": {
+    "seen": "2026-11-18T22:03:28.732Z",
+    "own": "2026-11-18T03:13:00.000Z"
+   }
+  },
+  "401873069|nicjones|q": {
+   "game": "401873069",
+   "start": "2026-11-22T21:25Z",
+   "team": "19",
+   "name": "Nic Jones",
+   "status": "q",
+   "athlete": "4427636",
+   "espn": {
+    "seen": "2026-11-18T22:03:28.732Z",
+    "own": "2026-11-18T21:47:00.000Z"
+   }
   }
  }
 }
