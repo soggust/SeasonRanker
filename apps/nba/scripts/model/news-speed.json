@@ -24087,6 +24087,11 @@
    "espn": {
     "seen": "2026-11-18T06:44:48.861Z",
     "own": "2026-11-17T01:11:00.000Z"
+   },
+   "bluesky": {
+    "seen": "2026-11-18T21:15:05.835Z",
+    "own": "2026-11-18T21:03:50.000Z",
+    "why": "@rotowirenba.bsky.social: Austin Reaves: Won't play Wednesday \n\n https://www.rot"
    }
   },
   "401910017|cjmccollum|out": {
@@ -24275,6 +24280,11 @@
    "espn": {
     "seen": "2026-11-18T15:14:22.165Z",
     "own": "2026-11-18T14:59:00.000Z"
+   },
+   "bluesky": {
+    "seen": "2026-11-18T21:15:05.835Z",
+    "own": "2026-11-18T21:05:29.000Z",
+    "why": "@rotowirenba.bsky.social: Jaxson Hayes: Listed as questionable \n\n https://www.ro"
    }
   },
   "401910013|taureanprince|q": {
@@ -24718,6 +24728,18 @@
    "sleeper": {
     "seen": "2026-11-18T20:13:25.236Z",
     "own": "2026-11-17T23:45:46.191Z"
+   }
+  },
+  "401910008|andrewnembhard|out": {
+   "game": "401910008",
+   "start": "2026-11-19T00:00Z",
+   "team": "11",
+   "name": "Andrew Nembhard",
+   "status": "out",
+   "athlete": "4395712",
+   "espn": {
+    "seen": "2026-11-18T22:31:09.403Z",
+    "own": "2026-11-18T22:24:00.000Z"
    }
   }
  }
