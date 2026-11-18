@@ -23467,6 +23467,535 @@
     "own": "2026-11-18T00:33:08.000Z",
     "why": "@rotowirenba.bsky.social: De'Andre Hunter: Questionable for Wednesday \n\n https:/"
    }
+  },
+  "401910007|naeqwantomlin|out": {
+   "game": "401910007",
+   "start": "2026-11-19T00:00Z",
+   "team": "5",
+   "name": "Nae'Qwan Tomlin",
+   "status": "out",
+   "athlete": "5106268",
+   "espn": {
+    "seen": "2026-11-18T01:29:15.704Z",
+    "own": "2026-11-17T22:18:00.000Z"
+   }
+  },
+  "401910007|jaylontyson|q": {
+   "game": "401910007",
+   "start": "2026-11-19T00:00Z",
+   "team": "5",
+   "name": "Jaylon Tyson",
+   "status": "q",
+   "athlete": "4683747",
+   "espn": {
+    "seen": "2026-11-18T01:29:15.704Z",
+    "own": "2026-11-17T22:15:00.000Z"
+   }
+  },
+  "401910007|sammerrill|out": {
+   "game": "401910007",
+   "start": "2026-11-19T00:00Z",
+   "team": "5",
+   "name": "Sam Merrill",
+   "status": "out",
+   "athlete": "4066757",
+   "espn": {
+    "seen": "2026-11-18T01:29:15.704Z",
+    "own": "2026-11-17T22:15:00.000Z"
+   }
+  },
+  "401910007|peytonwatson|q": {
+   "game": "401910007",
+   "start": "2026-11-19T00:00Z",
+   "team": "5",
+   "name": "Peyton Watson",
+   "status": "q",
+   "athlete": "4576087",
+   "espn": {
+    "seen": "2026-11-18T01:29:15.704Z",
+    "own": "2026-11-17T22:13:00.000Z"
+   }
+  },
+  "401910007|evanmobley|out": {
+   "game": "401910007",
+   "start": "2026-11-19T00:00Z",
+   "team": "5",
+   "name": "Evan Mobley",
+   "status": "out",
+   "athlete": "4432158",
+   "espn": {
+    "seen": "2026-11-18T01:29:15.704Z",
+    "own": "2026-11-16T22:06:00.000Z"
+   }
+  },
+  "401910007|cjmccollum|out": {
+   "game": "401910007",
+   "start": "2026-11-19T00:00Z",
+   "team": "5",
+   "name": "CJ McCollum",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-17T21:27:02.601Z",
+    "own": "2026-11-17T21:08:25.000Z",
+    "why": "@rotowirenba.bsky.social: CJ McCollum: Out four weeks with calf strain \n\n https:"
+   }
+  },
+  "401910007|tyjerome|out": {
+   "game": "401910007",
+   "start": "2026-11-19T00:00Z",
+   "team": "5",
+   "name": "Ty Jerome",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-17T22:19:16.935Z",
+    "own": "2026-11-17T22:07:54.000Z",
+    "why": "@rotowirenba.bsky.social: Ty Jerome: Won't play Wednesday \n\n https://www.rotowir"
+   },
+   "athlete": "4065733",
+   "espn": {
+    "seen": "2026-11-18T01:29:15.704Z",
+    "own": "2026-11-17T22:07:00.000Z"
+   }
+  },
+  "401910007|kawhileonard|out": {
+   "game": "401910007",
+   "start": "2026-11-19T00:00Z",
+   "team": "5",
+   "name": "Kawhi Leonard",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-17T23:15:23.569Z",
+    "own": "2026-11-17T22:25:16.000Z",
+    "why": "@rotowirenba.bsky.social: Kawhi Leonard: To miss at least one more week \n\n https"
+   }
+  },
+  "401910007|kingstonflemings|out": {
+   "game": "401910007",
+   "start": "2026-11-19T00:00Z",
+   "team": "5",
+   "name": "Kingston Flemings",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-17T23:15:23.569Z",
+    "own": "2026-11-17T23:06:12.000Z",
+    "why": "@rotowirenba.bsky.social: Kingston Flemings: Won't play Wednesday \n\n https://www"
+   }
+  },
+  "401910007|deniavdija|out": {
+   "game": "401910007",
+   "start": "2026-11-19T00:00Z",
+   "team": "5",
+   "name": "Deni Avdija",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-18T00:48:54.467Z",
+    "own": "2026-11-18T00:28:32.000Z",
+    "why": "@rotowirenba.bsky.social: Deni Avdija: Ruled out Tuesday \n\n https://www.rotowire"
+   }
+  },
+  "401910007|preciousachiuwa|q": {
+   "game": "401910007",
+   "start": "2026-11-19T00:00Z",
+   "team": "5",
+   "name": "Precious Achiuwa",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-11-18T00:48:54.467Z",
+    "own": "2026-11-18T00:29:37.000Z",
+    "why": "@rotowirenba.bsky.social: Precious Achiuwa: Questionable for Wednesday \n\n https:"
+   }
+  },
+  "401910007|deandrehunter|q": {
+   "game": "401910007",
+   "start": "2026-11-19T00:00Z",
+   "team": "5",
+   "name": "De'Andre Hunter",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-11-18T00:48:54.467Z",
+    "own": "2026-11-18T00:33:08.000Z",
+    "why": "@rotowirenba.bsky.social: De'Andre Hunter: Questionable for Wednesday \n\n https:/"
+   }
+  },
+  "401910007|ggjackson|out": {
+   "game": "401910007",
+   "start": "2026-11-19T00:00Z",
+   "team": "29",
+   "name": "GG Jackson",
+   "status": "out",
+   "athlete": "5105550",
+   "espn": {
+    "seen": "2026-11-18T01:29:15.704Z",
+    "own": "2026-11-17T23:18:00.000Z"
+   }
+  },
+  "401910007|isaiahstewart|out": {
+   "game": "401910007",
+   "start": "2026-11-19T00:00Z",
+   "team": "29",
+   "name": "Isaiah Stewart",
+   "status": "out",
+   "athlete": "4432810",
+   "espn": {
+    "seen": "2026-11-18T01:29:15.704Z",
+    "own": "2026-11-17T22:10:00.000Z"
+   }
+  },
+  "401910007|scottypippen|out": {
+   "game": "401910007",
+   "start": "2026-11-19T00:00Z",
+   "team": "29",
+   "name": "Scotty Pippen Jr.",
+   "status": "out",
+   "athlete": "4431785",
+   "espn": {
+    "seen": "2026-11-18T01:29:15.704Z",
+    "own": "2026-11-16T17:16:00.000Z"
+   }
+  },
+  "401910007|richiesaunders|out": {
+   "game": "401910007",
+   "start": "2026-11-19T00:00Z",
+   "team": "29",
+   "name": "Richie Saunders",
+   "status": "out",
+   "athlete": "5105462",
+   "espn": {
+    "seen": "2026-11-18T01:29:15.704Z",
+    "own": "2026-11-07T17:24:00.000Z"
+   }
+  },
+  "401910014|thomassorber|out": {
+   "game": "401910014",
+   "start": "2026-11-19T01:00Z",
+   "team": "25",
+   "name": "Thomas Sorber",
+   "status": "out",
+   "athlete": "5061603",
+   "espn": {
+    "seen": "2026-11-18T01:29:15.704Z",
+    "own": "2026-11-18T00:01:00.000Z"
+   }
+  },
+  "401910014|jaylinwilliams|out": {
+   "game": "401910014",
+   "start": "2026-11-19T01:00Z",
+   "team": "25",
+   "name": "Jaylin Williams",
+   "status": "out",
+   "athlete": "4432823",
+   "espn": {
+    "seen": "2026-11-18T01:29:15.704Z",
+    "own": "2026-11-17T23:08:00.000Z"
+   }
+  },
+  "401910014|casonwallace|out": {
+   "game": "401910014",
+   "start": "2026-11-19T01:00Z",
+   "team": "25",
+   "name": "Cason Wallace",
+   "status": "out",
+   "athlete": "4683692",
+   "espn": {
+    "seen": "2026-11-18T01:29:15.704Z",
+    "own": "2026-10-31T01:16:00.000Z"
+   }
+  },
+  "401910014|chetholmgren|out": {
+   "game": "401910014",
+   "start": "2026-11-19T01:00Z",
+   "team": "25",
+   "name": "Chet Holmgren",
+   "status": "out",
+   "athlete": "4433255",
+   "espn": {
+    "seen": "2026-11-18T01:29:15.704Z",
+    "own": "2026-10-31T01:02:00.000Z"
+   }
+  },
+  "401910014|jalenwilliams|out": {
+   "game": "401910014",
+   "start": "2026-11-19T01:00Z",
+   "team": "25",
+   "name": "Jalen Williams",
+   "status": "out",
+   "athlete": "4593803",
+   "espn": {
+    "seen": "2026-11-18T01:29:15.704Z",
+    "own": "2026-10-28T23:41:00.000Z"
+   }
+  },
+  "401910014|cjmccollum|out": {
+   "game": "401910014",
+   "start": "2026-11-19T01:00Z",
+   "team": "25",
+   "name": "CJ McCollum",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-17T21:27:02.601Z",
+    "own": "2026-11-17T21:08:25.000Z",
+    "why": "@rotowirenba.bsky.social: CJ McCollum: Out four weeks with calf strain \n\n https:"
+   },
+   "athlete": "2490149",
+   "espn": {
+    "seen": "2026-11-18T01:29:15.704Z",
+    "own": "2026-11-17T21:08:00.000Z"
+   }
+  },
+  "401910014|tyjerome|out": {
+   "game": "401910014",
+   "start": "2026-11-19T01:00Z",
+   "team": "25",
+   "name": "Ty Jerome",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-17T22:19:16.935Z",
+    "own": "2026-11-17T22:07:54.000Z",
+    "why": "@rotowirenba.bsky.social: Ty Jerome: Won't play Wednesday \n\n https://www.rotowir"
+   }
+  },
+  "401910014|kawhileonard|out": {
+   "game": "401910014",
+   "start": "2026-11-19T01:00Z",
+   "team": "25",
+   "name": "Kawhi Leonard",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-17T23:15:23.569Z",
+    "own": "2026-11-17T22:25:16.000Z",
+    "why": "@rotowirenba.bsky.social: Kawhi Leonard: To miss at least one more week \n\n https"
+   }
+  },
+  "401910014|kingstonflemings|out": {
+   "game": "401910014",
+   "start": "2026-11-19T01:00Z",
+   "team": "25",
+   "name": "Kingston Flemings",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-17T23:15:23.569Z",
+    "own": "2026-11-17T23:06:12.000Z",
+    "why": "@rotowirenba.bsky.social: Kingston Flemings: Won't play Wednesday \n\n https://www"
+   },
+   "athlete": "5149077",
+   "espn": {
+    "seen": "2026-11-18T01:29:15.704Z",
+    "own": "2026-11-17T23:06:00.000Z"
+   }
+  },
+  "401910014|deniavdija|out": {
+   "game": "401910014",
+   "start": "2026-11-19T01:00Z",
+   "team": "25",
+   "name": "Deni Avdija",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-18T00:48:54.467Z",
+    "own": "2026-11-18T00:28:32.000Z",
+    "why": "@rotowirenba.bsky.social: Deni Avdija: Ruled out Tuesday \n\n https://www.rotowire"
+   }
+  },
+  "401910014|preciousachiuwa|q": {
+   "game": "401910014",
+   "start": "2026-11-19T01:00Z",
+   "team": "25",
+   "name": "Precious Achiuwa",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-11-18T00:48:54.467Z",
+    "own": "2026-11-18T00:29:37.000Z",
+    "why": "@rotowirenba.bsky.social: Precious Achiuwa: Questionable for Wednesday \n\n https:"
+   }
+  },
+  "401910014|deandrehunter|q": {
+   "game": "401910014",
+   "start": "2026-11-19T01:00Z",
+   "team": "25",
+   "name": "De'Andre Hunter",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-11-18T00:48:54.467Z",
+    "own": "2026-11-18T00:33:08.000Z",
+    "why": "@rotowirenba.bsky.social: De'Andre Hunter: Questionable for Wednesday \n\n https:/"
+   }
+  },
+  "401910014|jocklandale|out": {
+   "game": "401910014",
+   "start": "2026-11-19T01:00Z",
+   "team": "1",
+   "name": "Jock Landale",
+   "status": "out",
+   "athlete": "3146557",
+   "espn": {
+    "seen": "2026-11-18T01:29:15.704Z",
+    "own": "2026-11-17T23:07:00.000Z"
+   }
+  },
+  "401910014|asanewell|out": {
+   "game": "401910014",
+   "start": "2026-11-19T01:00Z",
+   "team": "1",
+   "name": "Asa Newell",
+   "status": "out",
+   "athlete": "4873201",
+   "espn": {
+    "seen": "2026-11-18T01:29:15.704Z",
+    "own": "2026-11-17T21:16:00.000Z"
+   }
+  },
+  "401910014|mouhamedgueye|out": {
+   "game": "401910014",
+   "start": "2026-11-19T01:00Z",
+   "team": "1",
+   "name": "Mouhamed Gueye",
+   "status": "out",
+   "athlete": "4712863",
+   "espn": {
+    "seen": "2026-11-18T01:29:15.704Z",
+    "own": "2026-11-13T00:06:00.000Z"
+   }
+  },
+  "401910014|henriveesaar|out": {
+   "game": "401910014",
+   "start": "2026-11-19T01:00Z",
+   "team": "1",
+   "name": "Henri Veesaar",
+   "status": "out",
+   "athlete": "5105571",
+   "espn": {
+    "seen": "2026-11-18T01:29:15.704Z",
+    "own": "2026-09-21T19:50:00.000Z"
+   }
+  },
+  "401910018|deandrehunter|q": {
+   "game": "401910018",
+   "start": "2026-11-19T03:00Z",
+   "team": "23",
+   "name": "De'Andre Hunter",
+   "status": "q",
+   "athlete": "4065732",
+   "espn": {
+    "seen": "2026-11-18T01:29:15.704Z",
+    "own": "2026-11-18T00:33:00.000Z"
+   },
+   "bluesky": {
+    "seen": "2026-11-18T00:48:54.467Z",
+    "own": "2026-11-18T00:33:08.000Z",
+    "why": "@rotowirenba.bsky.social: De'Andre Hunter: Questionable for Wednesday \n\n https:/"
+   }
+  },
+  "401910018|preciousachiuwa|q": {
+   "game": "401910018",
+   "start": "2026-11-19T03:00Z",
+   "team": "23",
+   "name": "Precious Achiuwa",
+   "status": "q",
+   "athlete": "4431679",
+   "espn": {
+    "seen": "2026-11-18T01:29:15.704Z",
+    "own": "2026-11-18T00:29:00.000Z"
+   },
+   "bluesky": {
+    "seen": "2026-11-18T00:48:54.467Z",
+    "own": "2026-11-18T00:29:37.000Z",
+    "why": "@rotowirenba.bsky.social: Precious Achiuwa: Questionable for Wednesday \n\n https:"
+   }
+  },
+  "401910018|maximeraynaud|out": {
+   "game": "401910018",
+   "start": "2026-11-19T03:00Z",
+   "team": "23",
+   "name": "Maxime Raynaud",
+   "status": "out",
+   "athlete": "4898371",
+   "espn": {
+    "seen": "2026-11-18T01:29:15.704Z",
+    "own": "2026-11-15T01:00:00.000Z"
+   }
+  },
+  "401910018|bensimmons|out": {
+   "game": "401910018",
+   "start": "2026-11-19T03:00Z",
+   "team": "23",
+   "name": "Ben Simmons",
+   "status": "out",
+   "athlete": "3907387",
+   "espn": {
+    "seen": "2026-11-18T01:29:15.704Z",
+    "own": "2026-10-21T04:22:00.000Z"
+   }
+  },
+  "401910018|cjmccollum|out": {
+   "game": "401910018",
+   "start": "2026-11-19T03:00Z",
+   "team": "23",
+   "name": "CJ McCollum",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-17T21:27:02.601Z",
+    "own": "2026-11-17T21:08:25.000Z",
+    "why": "@rotowirenba.bsky.social: CJ McCollum: Out four weeks with calf strain \n\n https:"
+   }
+  },
+  "401910018|tyjerome|out": {
+   "game": "401910018",
+   "start": "2026-11-19T03:00Z",
+   "team": "23",
+   "name": "Ty Jerome",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-17T22:19:16.935Z",
+    "own": "2026-11-17T22:07:54.000Z",
+    "why": "@rotowirenba.bsky.social: Ty Jerome: Won't play Wednesday \n\n https://www.rotowir"
+   }
+  },
+  "401910018|kawhileonard|out": {
+   "game": "401910018",
+   "start": "2026-11-19T03:00Z",
+   "team": "23",
+   "name": "Kawhi Leonard",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-17T23:15:23.569Z",
+    "own": "2026-11-17T22:25:16.000Z",
+    "why": "@rotowirenba.bsky.social: Kawhi Leonard: To miss at least one more week \n\n https"
+   }
+  },
+  "401910018|kingstonflemings|out": {
+   "game": "401910018",
+   "start": "2026-11-19T03:00Z",
+   "team": "23",
+   "name": "Kingston Flemings",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-17T23:15:23.569Z",
+    "own": "2026-11-17T23:06:12.000Z",
+    "why": "@rotowirenba.bsky.social: Kingston Flemings: Won't play Wednesday \n\n https://www"
+   }
+  },
+  "401910018|deniavdija|out": {
+   "game": "401910018",
+   "start": "2026-11-19T03:00Z",
+   "team": "23",
+   "name": "Deni Avdija",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-18T00:48:54.467Z",
+    "own": "2026-11-18T00:28:32.000Z",
+    "why": "@rotowirenba.bsky.social: Deni Avdija: Ruled out Tuesday \n\n https://www.rotowire"
+   }
+  },
+  "401910018|markwilliams|out": {
+   "game": "401910018",
+   "start": "2026-11-19T03:00Z",
+   "team": "21",
+   "name": "Mark Williams",
+   "status": "out",
+   "athlete": "4701232",
+   "espn": {
+    "seen": "2026-11-18T01:29:15.704Z",
+    "own": "2026-09-11T16:03:00.000Z"
+   }
   }
  }
 }

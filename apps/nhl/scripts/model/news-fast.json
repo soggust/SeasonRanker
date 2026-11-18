@@ -3,9 +3,9 @@
  "cursor": {
   "johnston-bot.bsky.social": "2026-11-18T00:51:32.741Z",
   "notfriedgehnic.bsky.social": "2026-11-16T03:33:57.405Z",
-  "dailyfaceoff.bsky.social": "2026-11-18T00:31:09.000Z",
+  "dailyfaceoff.bsky.social": "2026-11-18T01:21:16.000Z",
   "dfotoronto.bsky.social": "2026-11-18T00:48:25.000Z",
-  "marklazerus.bsky.social": "2026-11-18T00:44:25.279Z"
+  "marklazerus.bsky.social": "2026-11-18T01:15:06.725Z"
  },
  "claims": [
   {
@@ -2633,6 +2633,19 @@
    "kind": "starting",
    "confidence": 0.6,
    "text": "Leafs vs Blackhawks Game 23 Preview: Bobrovsky Starts, Rielly Returns & Best Bets"
+  },
+  {
+   "id": "at://did:plc:3uus7y6h3rlrk6sbctzxm4bg/app.bsky.feed.post/3n2kfdy6mtl22|samhonzek|out|status",
+   "at": "2026-11-18T01:21:16.000Z",
+   "seen": "2026-11-18T01:30:16.411Z",
+   "handle": "dailyfaceoff.bsky.social",
+   "post": "at://did:plc:3uus7y6h3rlrk6sbctzxm4bg/app.bsky.feed.post/3n2kfdy6mtl22",
+   "player": "Sam Honzek",
+   "team": "CGY",
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.9,
+   "text": "Flames’ Sam Honzek out week-to-week with wrist injury"
   }
  ]
 }
