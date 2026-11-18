@@ -301,66 +301,6 @@
     "own": "2026-09-27T15:21:00.000Z"
    }
   },
-  "401892675|konstahelenius|out": {
-   "game": "401892675",
-   "start": "2026-11-08T20:30Z",
-   "team": "2",
-   "name": "Konsta Helenius",
-   "status": "out",
-   "athlete": "5216882",
-   "espn": {
-    "seen": "2026-11-07T16:14:09.956Z",
-    "own": "2026-11-02T17:29:00.000Z"
-   }
-  },
-  "401892675|justindanforth|out": {
-   "game": "401892675",
-   "start": "2026-11-08T20:30Z",
-   "team": "2",
-   "name": "Justin Danforth",
-   "status": "out",
-   "athlete": "4894355",
-   "espn": {
-    "seen": "2026-11-07T16:14:09.956Z",
-    "own": "2026-10-29T22:06:00.000Z"
-   }
-  },
-  "401892675|alexlyon|out": {
-   "game": "401892675",
-   "start": "2026-11-08T20:30Z",
-   "team": "2",
-   "name": "Alex Lyon",
-   "status": "out",
-   "athlete": "3654006",
-   "espn": {
-    "seen": "2026-11-07T16:14:09.956Z",
-    "own": "2026-10-15T17:59:00.000Z"
-   }
-  },
-  "401892675|mattgrzelcyk|out": {
-   "game": "401892675",
-   "start": "2026-11-08T20:30Z",
-   "team": "2",
-   "name": "Matt Grzelcyk",
-   "status": "out",
-   "athlete": "3069448",
-   "espn": {
-    "seen": "2026-11-07T16:14:09.956Z",
-    "own": "2026-10-13T20:51:00.000Z"
-   }
-  },
-  "401892675|parkerwotherspoon|out": {
-   "game": "401892675",
-   "start": "2026-11-08T20:30Z",
-   "team": "37",
-   "name": "Parker Wotherspoon",
-   "status": "out",
-   "athlete": "3942638",
-   "espn": {
-    "seen": "2026-11-07T16:14:09.956Z",
-    "own": "2026-10-21T19:24:00.000Z"
-   }
-  },
   "401892677|haydnfleury|q": {
    "game": "401892677",
    "start": "2026-11-08T23:00Z",
@@ -451,18 +391,6 @@
    "sleeper": {
     "seen": "2026-11-07T20:13:35.952Z",
     "own": "2026-11-07T17:55:06.516Z"
-   }
-  },
-  "401892675|bobyram|q": {
-   "game": "401892675",
-   "start": "2026-11-08T20:30Z",
-   "team": "2",
-   "name": "Bo Byram",
-   "status": "q",
-   "bluesky": {
-    "seen": "2026-11-07T18:39:23.242Z",
-    "own": "2026-11-07T17:56:54.257Z",
-    "why": "@marklazerus.bsky.social: Blashill had no update on Bo Byram. Is it getting conc"
    }
   },
   "401892677|bobyram|q": {
@@ -7260,6 +7188,10 @@
    "espn": {
     "seen": "2026-11-17T16:32:54.510Z",
     "own": "2026-11-06T17:30:00.000Z"
+   },
+   "sleeper": {
+    "seen": "2026-11-18T20:13:37.296Z",
+    "own": "2026-11-18T16:20:35.969Z"
    }
   },
   "401892739|dylanlarkin|out": {
@@ -7457,6 +7389,11 @@
    "espn": {
     "seen": "2026-11-17T16:53:46.508Z",
     "own": "2026-11-14T18:48:00.000Z"
+   },
+   "bluesky": {
+    "seen": "2026-11-18T20:14:50.868Z",
+    "own": "2026-11-18T19:17:44.000Z",
+    "why": "@dailyfaceoff.bsky.social: Mammoth’s Nick Schmaltz placed on IR, considered week"
    }
   },
   "401892741|nateschmidt|out": {
@@ -7481,6 +7418,10 @@
    "espn": {
     "seen": "2026-11-17T16:53:46.508Z",
     "own": "2026-11-12T01:21:00.000Z"
+   },
+   "sleeper": {
+    "seen": "2026-11-18T20:13:37.296Z",
+    "own": "2026-11-18T18:35:36.283Z"
    }
   },
   "401892741|johnmarino|out": {
@@ -7493,6 +7434,10 @@
    "espn": {
     "seen": "2026-11-17T16:53:46.508Z",
     "own": "2026-11-01T20:27:00.000Z"
+   },
+   "sleeper": {
+    "seen": "2026-11-18T20:13:37.296Z",
+    "own": "2026-11-18T18:35:36.271Z"
    }
   },
   "401892741|mavericlamoureux|out": {
@@ -7989,6 +7934,11 @@
    "espn": {
     "seen": "2026-11-18T15:55:41.979Z",
     "own": "2026-11-18T14:37:00.000Z"
+   },
+   "bluesky": {
+    "seen": "2026-11-18T19:14:34.869Z",
+    "own": "2026-11-18T19:08:58.000Z",
+    "why": "@dailyfaceoff.bsky.social: Lightning’s Brandon Hagel, Zemgus Girgensons day-to-d"
    }
   },
   "401892744|zemgusgirgensons|q": {
@@ -8001,6 +7951,11 @@
    "espn": {
     "seen": "2026-11-18T15:55:41.979Z",
     "own": "2026-11-18T02:22:00.000Z"
+   },
+   "bluesky": {
+    "seen": "2026-11-18T19:14:34.869Z",
+    "own": "2026-11-18T19:08:58.000Z",
+    "why": "@dailyfaceoff.bsky.social: Lightning’s Brandon Hagel, Zemgus Girgensons day-to-d"
    }
   },
   "401892744|conorgeekie|out": {
@@ -8085,6 +8040,10 @@
    "espn": {
     "seen": "2026-11-18T16:30:48.764Z",
     "own": "2026-11-18T16:16:00.000Z"
+   },
+   "sleeper": {
+    "seen": "2026-11-18T20:13:37.296Z",
+    "own": "2026-11-18T16:20:35.978Z"
    }
   },
   "401892743|nickcousins|q": {
@@ -8685,6 +8644,10 @@
    "espn": {
     "seen": "2026-11-18T17:14:49.177Z",
     "own": "2026-11-18T17:02:00.000Z"
+   },
+   "sleeper": {
+    "seen": "2026-11-18T20:13:37.296Z",
+    "own": "2026-11-18T17:05:36.040Z"
    }
   },
   "401892748|connorbedard|q": {
@@ -8793,6 +8756,18 @@
    "espn": {
     "seen": "2026-11-18T19:13:25.493Z",
     "own": "2026-10-12T16:46:00.000Z"
+   }
+  },
+  "401892753|tylermyers|out": {
+   "game": "401892753",
+   "start": "2026-11-20T03:00Z",
+   "team": "9",
+   "name": "Tyler Myers",
+   "status": "out",
+   "athlete": "5052",
+   "espn": {
+    "seen": "2026-11-18T21:13:47.504Z",
+    "own": "2026-11-18T20:37:00.000Z"
    }
   }
  }

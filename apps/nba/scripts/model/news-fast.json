@@ -1,7 +1,7 @@
 {
  "sport": "nba",
  "cursor": {
-  "rotowirenba.bsky.social": "2026-11-18T18:24:33.000Z",
+  "rotowirenba.bsky.social": "2026-11-18T21:08:24.000Z",
   "insidenbanews.bsky.social": "2026-11-13T20:00:09.852Z",
   "shamsbot.bsky.social": "2026-11-17T19:24:56.000Z"
  },
@@ -8637,6 +8637,32 @@
    "kind": "status",
    "confidence": 0.95,
    "text": "Ryan Rollins: Ruled out Wednesday \n\n https://www.rotowire.com/basketball/player/ryan-rollins-5668"
+  },
+  {
+   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3n2mhgkpfd62k|austinreaves|out|status",
+   "at": "2026-11-18T21:03:50.000Z",
+   "seen": "2026-11-18T21:15:05.835Z",
+   "handle": "rotowirenba.bsky.social",
+   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3n2mhgkpfd62k",
+   "player": "Austin Reaves",
+   "team": "LAL",
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.9,
+   "text": "Austin Reaves: Won't play Wednesday \n\n https://www.rotowire.com/basketball/player/austin-reaves-5334"
+  },
+  {
+   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3n2mhjjhtx42m|jaxsonhayes|questionable|status",
+   "at": "2026-11-18T21:05:29.000Z",
+   "seen": "2026-11-18T21:15:05.835Z",
+   "handle": "rotowirenba.bsky.social",
+   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3n2mhjjhtx42m",
+   "player": "Jaxson Hayes",
+   "team": "LAL",
+   "status": "questionable",
+   "kind": "status",
+   "confidence": 0.9,
+   "text": "Jaxson Hayes: Listed as questionable \n\n https://www.rotowire.com/basketball/player/jaxson-hayes-4771"
   }
  ]
 }
