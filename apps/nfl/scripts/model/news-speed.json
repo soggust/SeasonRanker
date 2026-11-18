@@ -17620,6 +17620,30 @@
     "seen": "2026-11-18T18:35:41.527Z",
     "own": "2026-11-18T17:55:00.000Z"
    }
+  },
+  "401873066|bernhardraimann|out": {
+   "game": "401873066",
+   "start": "2026-11-20T01:15Z",
+   "team": "11",
+   "name": "Bernhard Raimann",
+   "status": "out",
+   "athlete": "4362580",
+   "espn": {
+    "seen": "2026-11-18T18:54:37.623Z",
+    "own": "2026-11-18T18:42:00.000Z"
+   }
+  },
+  "401873066|charvariusward|out": {
+   "game": "401873066",
+   "start": "2026-11-20T01:15Z",
+   "team": "11",
+   "name": "Charvarius Ward",
+   "status": "out",
+   "athlete": "4037361",
+   "espn": {
+    "seen": "2026-11-18T18:54:37.623Z",
+    "own": "2026-11-18T18:42:00.000Z"
+   }
   }
  }
 }
