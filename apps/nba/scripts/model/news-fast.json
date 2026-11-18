@@ -1,141 +1,11 @@
 {
  "sport": "nba",
  "cursor": {
-  "rotowirenba.bsky.social": "2026-11-18T00:43:57.000Z",
+  "rotowirenba.bsky.social": "2026-11-18T02:19:03.000Z",
   "insidenbanews.bsky.social": "2026-11-13T20:00:09.852Z",
   "shamsbot.bsky.social": "2026-11-17T19:24:56.000Z"
  },
  "claims": [
-  {
-   "id": "at://did:plc:ykcnnf6kqnn3lasmobrczoem/app.bsky.feed.post/3myvpqi5pjs2m|jamorant|none|starting",
-   "at": "2026-10-28T02:36:07.788Z",
-   "seen": "2026-10-28T02:37:00.230Z",
-   "handle": "insidenbanews.bsky.social",
-   "post": "at://did:plc:ykcnnf6kqnn3lasmobrczoem/app.bsky.feed.post/3myvpqi5pjs2m",
-   "player": "Ja Morant",
-   "team": "POR",
-   "status": "none",
-   "kind": "starting",
-   "confidence": 0.9,
-   "text": "Lineup alert: Blazers will start Morant, Lillard, Avdija, Camara, Clingan."
-  },
-  {
-   "id": "at://did:plc:ykcnnf6kqnn3lasmobrczoem/app.bsky.feed.post/3myvpqi5pjs2m|damianlillard|none|starting",
-   "at": "2026-10-28T02:36:07.788Z",
-   "seen": "2026-10-28T02:37:00.230Z",
-   "handle": "insidenbanews.bsky.social",
-   "post": "at://did:plc:ykcnnf6kqnn3lasmobrczoem/app.bsky.feed.post/3myvpqi5pjs2m",
-   "player": "Damian Lillard",
-   "team": "POR",
-   "status": "none",
-   "kind": "starting",
-   "confidence": 0.9,
-   "text": "Lineup alert: Blazers will start Morant, Lillard, Avdija, Camara, Clingan."
-  },
-  {
-   "id": "at://did:plc:ykcnnf6kqnn3lasmobrczoem/app.bsky.feed.post/3myvpqi5pjs2m|deniavdija|none|starting",
-   "at": "2026-10-28T02:36:07.788Z",
-   "seen": "2026-10-28T02:37:00.230Z",
-   "handle": "insidenbanews.bsky.social",
-   "post": "at://did:plc:ykcnnf6kqnn3lasmobrczoem/app.bsky.feed.post/3myvpqi5pjs2m",
-   "player": "Deni Avdija",
-   "team": "POR",
-   "status": "none",
-   "kind": "starting",
-   "confidence": 0.9,
-   "text": "Lineup alert: Blazers will start Morant, Lillard, Avdija, Camara, Clingan."
-  },
-  {
-   "id": "at://did:plc:ykcnnf6kqnn3lasmobrczoem/app.bsky.feed.post/3myvpqi5pjs2m|toumanicamara|none|starting",
-   "at": "2026-10-28T02:36:07.788Z",
-   "seen": "2026-10-28T02:37:00.230Z",
-   "handle": "insidenbanews.bsky.social",
-   "post": "at://did:plc:ykcnnf6kqnn3lasmobrczoem/app.bsky.feed.post/3myvpqi5pjs2m",
-   "player": "Toumani Camara",
-   "team": "POR",
-   "status": "none",
-   "kind": "starting",
-   "confidence": 0.9,
-   "text": "Lineup alert: Blazers will start Morant, Lillard, Avdija, Camara, Clingan."
-  },
-  {
-   "id": "at://did:plc:ykcnnf6kqnn3lasmobrczoem/app.bsky.feed.post/3myvpqi5pjs2m|donovanclingan|none|starting",
-   "at": "2026-10-28T02:36:07.788Z",
-   "seen": "2026-10-28T02:37:00.230Z",
-   "handle": "insidenbanews.bsky.social",
-   "post": "at://did:plc:ykcnnf6kqnn3lasmobrczoem/app.bsky.feed.post/3myvpqi5pjs2m",
-   "player": "Donovan Clingan",
-   "team": "POR",
-   "status": "none",
-   "kind": "starting",
-   "confidence": 0.9,
-   "text": "Lineup alert: Blazers will start Morant, Lillard, Avdija, Camara, Clingan."
-  },
-  {
-   "id": "at://did:plc:ykcnnf6kqnn3lasmobrczoem/app.bsky.feed.post/3myvpqwotd22m|lukadoncic|none|starting",
-   "at": "2026-10-28T02:36:23.029Z",
-   "seen": "2026-10-28T02:37:00.230Z",
-   "handle": "insidenbanews.bsky.social",
-   "post": "at://did:plc:ykcnnf6kqnn3lasmobrczoem/app.bsky.feed.post/3myvpqwotd22m",
-   "player": "Luka Doncic",
-   "team": "LAL",
-   "status": "none",
-   "kind": "starting",
-   "confidence": 0.9,
-   "text": "Lineup alert: Lakers will start Doncic, Reaves, Thybulle, Williams, Kessler."
-  },
-  {
-   "id": "at://did:plc:ykcnnf6kqnn3lasmobrczoem/app.bsky.feed.post/3myvpqwotd22m|austinreaves|none|starting",
-   "at": "2026-10-28T02:36:23.029Z",
-   "seen": "2026-10-28T02:37:00.230Z",
-   "handle": "insidenbanews.bsky.social",
-   "post": "at://did:plc:ykcnnf6kqnn3lasmobrczoem/app.bsky.feed.post/3myvpqwotd22m",
-   "player": "Austin Reaves",
-   "team": "LAL",
-   "status": "none",
-   "kind": "starting",
-   "confidence": 0.9,
-   "text": "Lineup alert: Lakers will start Doncic, Reaves, Thybulle, Williams, Kessler."
-  },
-  {
-   "id": "at://did:plc:ykcnnf6kqnn3lasmobrczoem/app.bsky.feed.post/3myvpqwotd22m|matissethybulle|none|starting",
-   "at": "2026-10-28T02:36:23.029Z",
-   "seen": "2026-10-28T02:37:00.230Z",
-   "handle": "insidenbanews.bsky.social",
-   "post": "at://did:plc:ykcnnf6kqnn3lasmobrczoem/app.bsky.feed.post/3myvpqwotd22m",
-   "player": "Matisse Thybulle",
-   "team": "LAL",
-   "status": "none",
-   "kind": "starting",
-   "confidence": 0.9,
-   "text": "Lineup alert: Lakers will start Doncic, Reaves, Thybulle, Williams, Kessler."
-  },
-  {
-   "id": "at://did:plc:ykcnnf6kqnn3lasmobrczoem/app.bsky.feed.post/3myvpqwotd22m|jalenwilliams|none|starting",
-   "at": "2026-10-28T02:36:23.029Z",
-   "seen": "2026-10-28T02:37:00.230Z",
-   "handle": "insidenbanews.bsky.social",
-   "post": "at://did:plc:ykcnnf6kqnn3lasmobrczoem/app.bsky.feed.post/3myvpqwotd22m",
-   "player": "Jalen Williams",
-   "team": "LAL",
-   "status": "none",
-   "kind": "starting",
-   "confidence": 0.9,
-   "text": "Lineup alert: Lakers will start Doncic, Reaves, Thybulle, Williams, Kessler."
-  },
-  {
-   "id": "at://did:plc:ykcnnf6kqnn3lasmobrczoem/app.bsky.feed.post/3myvpqwotd22m|walkerkessler|none|starting",
-   "at": "2026-10-28T02:36:23.029Z",
-   "seen": "2026-10-28T02:37:00.230Z",
-   "handle": "insidenbanews.bsky.social",
-   "post": "at://did:plc:ykcnnf6kqnn3lasmobrczoem/app.bsky.feed.post/3myvpqwotd22m",
-   "player": "Walker Kessler",
-   "team": "LAL",
-   "status": "none",
-   "kind": "starting",
-   "confidence": 0.9,
-   "text": "Lineup alert: Lakers will start Doncic, Reaves, Thybulle, Williams, Kessler."
-  },
   {
    "id": "at://did:plc:sa73fbx3vxzh2fw5pu5wmief/app.bsky.feed.post/3myvt2qud6v2q|anthonyedwards|out|status",
    "at": "2026-10-28T03:33:27.000Z",
@@ -8806,6 +8676,19 @@
    "kind": "starting",
    "confidence": 0.85,
    "text": "Cody Williams: Starting Tuesday \n\n https://www.rotowire.com/basketball/player/cody-williams-6259"
+  },
+  {
+   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3n2kilbxer226|graysonallen|out|status",
+   "at": "2026-11-18T02:19:03.000Z",
+   "seen": "2026-11-18T02:49:20.546Z",
+   "handle": "rotowirenba.bsky.social",
+   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3n2kilbxer226",
+   "player": "Grayson Allen",
+   "team": null,
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.8,
+   "text": "Grayson Allen: Late scratch Tuesday \n\n https://www.rotowire.com/basketball/player/grayson-allen-4454"
   }
  ]
 }
