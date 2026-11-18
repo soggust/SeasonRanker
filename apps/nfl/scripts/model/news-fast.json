@@ -11,19 +11,6 @@
  },
  "claims": [
   {
-   "id": "at://did:plc:fuqjc7x4gxvnwzksnlxwbe4x/app.bsky.feed.post/3myww4kjxi22w|jaylenwaddle|none|status",
-   "at": "2026-10-28T14:02:55.124Z",
-   "seen": "2026-10-28T14:05:31.064Z",
-   "handle": "nflnewsposter.bsky.social",
-   "post": "at://did:plc:fuqjc7x4gxvnwzksnlxwbe4x/app.bsky.feed.post/3myww4kjxi22w",
-   "player": "Jaylen Waddle",
-   "team": "DEN",
-   "status": "none",
-   "kind": "status",
-   "confidence": 0.5,
-   "text": "[Rapoport] Broncos WR Jaylen Waddle, suffered an aggravation of his previous chest injury on the reverse last week and his status for Sunday vs the Chiefs will be determined at a later time, sources s"
-  },
-  {
    "id": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3myx6n6mrod2j|breecehall|limited|status",
    "at": "2026-10-28T16:35:22.000Z",
    "seen": "2026-10-28T16:38:13.107Z",
