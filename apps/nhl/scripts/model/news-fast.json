@@ -3,24 +3,11 @@
  "cursor": {
   "johnston-bot.bsky.social": "2026-11-18T16:07:40.564Z",
   "notfriedgehnic.bsky.social": "2026-11-18T19:08:32.831Z",
-  "dailyfaceoff.bsky.social": "2026-11-18T19:09:00.000Z",
-  "dfotoronto.bsky.social": "2026-11-18T18:59:54.000Z",
+  "dailyfaceoff.bsky.social": "2026-11-18T20:08:16.000Z",
+  "dfotoronto.bsky.social": "2026-11-18T19:38:04.000Z",
   "marklazerus.bsky.social": "2026-11-18T17:10:38.044Z"
  },
  "claims": [
-  {
-   "id": "at://did:plc:3uus7y6h3rlrk6sbctzxm4bg/app.bsky.feed.post/3myxiajravs25|kirillmarchenko|out|status",
-   "at": "2026-10-28T19:27:15.000Z",
-   "seen": "2026-10-28T19:38:45.593Z",
-   "handle": "dailyfaceoff.bsky.social",
-   "post": "at://did:plc:3uus7y6h3rlrk6sbctzxm4bg/app.bsky.feed.post/3myxiajravs25",
-   "player": "Kirill Marchenko",
-   "team": "TOR",
-   "status": "out",
-   "kind": "status",
-   "confidence": 0.95,
-   "text": "Leafs’ Kirill Marchenko out week-to-week with lower-body injury"
-  },
   {
    "id": "at://did:plc:3uus7y6h3rlrk6sbctzxm4bg/app.bsky.feed.post/3myxmrf4d5v2r|kylecapobianco|out|status",
    "at": "2026-10-28T20:48:16.000Z",
@@ -2659,6 +2646,19 @@
    "kind": "status",
    "confidence": 0.9,
    "text": "Lightning’s Brandon Hagel, Zemgus Girgensons day-to-day with injuries"
+  },
+  {
+   "id": "at://did:plc:3uus7y6h3rlrk6sbctzxm4bg/app.bsky.feed.post/3n2mbiugayj2x|nickschmaltz|out|status",
+   "at": "2026-11-18T19:17:44.000Z",
+   "seen": "2026-11-18T20:14:50.868Z",
+   "handle": "dailyfaceoff.bsky.social",
+   "post": "at://did:plc:3uus7y6h3rlrk6sbctzxm4bg/app.bsky.feed.post/3n2mbiugayj2x",
+   "player": "Nick Schmaltz",
+   "team": "UTA",
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.9,
+   "text": "Mammoth’s Nick Schmaltz placed on IR, considered week-to-week"
   }
  ]
 }
