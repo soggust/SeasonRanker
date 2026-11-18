@@ -17596,6 +17596,30 @@
     "own": "2026-11-18T17:01:20.000Z",
     "why": "@rotowirenfl.bsky.social: Geno Smith: Opening Week 11 with limited practice \n\n h"
    }
+  },
+  "401873072|yayadiaby|q": {
+   "game": "401873072",
+   "start": "2026-11-22T18:00Z",
+   "team": "27",
+   "name": "Yaya Diaby",
+   "status": "q",
+   "athlete": "4686334",
+   "espn": {
+    "seen": "2026-11-18T18:35:41.527Z",
+    "own": "2026-11-18T18:29:00.000Z"
+   }
+  },
+  "401873077|brandonaiyuk|out": {
+   "game": "401873077",
+   "start": "2026-11-23T01:20Z",
+   "team": "25",
+   "name": "Brandon Aiyuk",
+   "status": "out",
+   "athlete": "4360438",
+   "espn": {
+    "seen": "2026-11-18T18:35:41.527Z",
+    "own": "2026-11-18T17:55:00.000Z"
+   }
   }
  }
 }
