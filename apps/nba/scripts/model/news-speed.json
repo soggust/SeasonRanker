@@ -23586,6 +23586,90 @@
     "own": "2026-11-17T23:06:12.000Z",
     "why": "@rotowirenba.bsky.social: Kingston Flemings: Won't play Wednesday \n\n https://www"
    }
+  },
+  "401910011|cjmccollum|out": {
+   "game": "401910011",
+   "start": "2026-11-19T00:30Z",
+   "team": "17",
+   "name": "CJ McCollum",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-17T21:27:02.601Z",
+    "own": "2026-11-17T21:08:25.000Z",
+    "why": "@rotowirenba.bsky.social: CJ McCollum: Out four weeks with calf strain \n\n https:"
+   }
+  },
+  "401910011|tyjerome|out": {
+   "game": "401910011",
+   "start": "2026-11-19T00:30Z",
+   "team": "17",
+   "name": "Ty Jerome",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-17T22:19:16.935Z",
+    "own": "2026-11-17T22:07:54.000Z",
+    "why": "@rotowirenba.bsky.social: Ty Jerome: Won't play Wednesday \n\n https://www.rotowir"
+   }
+  },
+  "401910011|kawhileonard|out": {
+   "game": "401910011",
+   "start": "2026-11-19T00:30Z",
+   "team": "17",
+   "name": "Kawhi Leonard",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-17T23:15:23.569Z",
+    "own": "2026-11-17T22:25:16.000Z",
+    "why": "@rotowirenba.bsky.social: Kawhi Leonard: To miss at least one more week \n\n https"
+   }
+  },
+  "401910011|kingstonflemings|out": {
+   "game": "401910011",
+   "start": "2026-11-19T00:30Z",
+   "team": "17",
+   "name": "Kingston Flemings",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-17T23:15:23.569Z",
+    "own": "2026-11-17T23:06:12.000Z",
+    "why": "@rotowirenba.bsky.social: Kingston Flemings: Won't play Wednesday \n\n https://www"
+   }
+  },
+  "401910011|patrickwilliams|q": {
+   "game": "401910011",
+   "start": "2026-11-19T00:30Z",
+   "team": "4",
+   "name": "Patrick Williams",
+   "status": "q",
+   "athlete": "4431687",
+   "espn": {
+    "seen": "2026-11-18T00:04:36.298Z",
+    "own": "2026-11-17T21:04:00.000Z"
+   }
+  },
+  "401910011|tobeawaka|out": {
+   "game": "401910011",
+   "start": "2026-11-19T00:30Z",
+   "team": "4",
+   "name": "Tobe Awaka",
+   "status": "out",
+   "athlete": "5105555",
+   "espn": {
+    "seen": "2026-11-18T00:04:36.298Z",
+    "own": "2026-11-17T20:53:00.000Z"
+   }
+  },
+  "401910011|calebwilson|out": {
+   "game": "401910011",
+   "start": "2026-11-19T00:30Z",
+   "team": "4",
+   "name": "Caleb Wilson",
+   "status": "out",
+   "athlete": "5095151",
+   "espn": {
+    "seen": "2026-11-18T00:04:36.298Z",
+    "own": "2026-11-12T21:35:00.000Z"
+   }
   }
  }
 }

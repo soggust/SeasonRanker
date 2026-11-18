@@ -4,25 +4,12 @@
   "adamscheftermirror.bsky.social": "2026-11-17T21:26:03.423Z",
   "rapsheet.bsky.social": "2026-11-17T16:08:28.925Z",
   "nflnewsreposterbot.bsky.social": "2026-11-16T18:35:13.806Z",
-  "insidenflnews.bsky.social": "2026-11-17T18:33:24.472Z",
+  "insidenflnews.bsky.social": "2026-11-17T23:37:43.405Z",
   "nflnewsposter.bsky.social": "2026-11-17T18:50:29.176Z",
   "rotoworld-fb.bsky.social": "2026-11-17T22:45:10.000Z",
   "rotowirenfl.bsky.social": "2026-11-17T22:48:21.000Z"
  },
  "claims": [
-  {
-   "id": "at://did:plc:mbr4badgf6yu56mquzackzew/app.bsky.feed.post/3myvgwygzy22m|zachcharbonnet|active|status",
-   "at": "2026-10-27T23:58:42.521Z",
-   "seen": "2026-10-28T00:20:38.295Z",
-   "handle": "insidenflnews.bsky.social",
-   "post": "at://did:plc:mbr4badgf6yu56mquzackzew/app.bsky.feed.post/3myvgwygzy22m",
-   "player": "Zach Charbonnet",
-   "team": "SEA",
-   "status": "active",
-   "kind": "status",
-   "confidence": 0.8,
-   "text": "Rap: Seahawks RB Zach Charbonnet (knee) is expected to play in Week 8."
-  },
   {
    "id": "at://did:plc:fuqjc7x4gxvnwzksnlxwbe4x/app.bsky.feed.post/3myww4kjxi22w|jaylenwaddle|none|status",
    "at": "2026-10-28T14:02:55.124Z",

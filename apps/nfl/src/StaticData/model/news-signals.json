@@ -3,6 +3,17 @@
  "days": 2,
  "signals": [
   {
+   "team": "8",
+   "abbr": "DET",
+   "athlete": "4360383",
+   "player": "Kerby Joseph",
+   "kind": "return",
+   "direction": "up",
+   "confidence": 0.7,
+   "headline": "Lions plan for Kerby Joseph to make season debut Sunday, per Dan Campbell",
+   "at": "2026-11-17T16:35:03.000Z"
+  },
+  {
    "team": "3",
    "abbr": "CHI",
    "athlete": "4608686",
@@ -80,5 +91,5 @@
    "at": "2026-11-16T00:18:28.000Z"
   }
  ],
- "at": "2026-11-17T00:08:22.497Z"
+ "at": "2026-11-18T00:06:36.142Z"
 }

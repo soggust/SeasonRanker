@@ -3,9 +3,9 @@
  "cursor": {
   "johnston-bot.bsky.social": "2026-11-17T20:34:20.535Z",
   "notfriedgehnic.bsky.social": "2026-11-16T03:33:57.405Z",
-  "dailyfaceoff.bsky.social": "2026-11-17T22:12:49.000Z",
-  "dfotoronto.bsky.social": "2026-11-17T21:28:56.000Z",
-  "marklazerus.bsky.social": "2026-11-17T18:43:21.586Z"
+  "dailyfaceoff.bsky.social": "2026-11-17T23:37:19.000Z",
+  "dfotoronto.bsky.social": "2026-11-17T23:19:35.000Z",
+  "marklazerus.bsky.social": "2026-11-18T00:05:42.401Z"
  },
  "claims": [
   {
@@ -2607,6 +2607,32 @@
    "kind": "return",
    "confidence": 0.85,
    "text": "Blues’ Adam Jecho cleared to return from NHL/NHLPA Player Assistance Program"
+  },
+  {
+   "id": "at://did:plc:knaj2vcp4x6t7hr7ewd6e3uz/app.bsky.feed.post/3n2k6kfaxn62k|morganrielly|active|return",
+   "at": "2026-11-17T23:19:35.000Z",
+   "seen": "2026-11-18T00:06:36.142Z",
+   "handle": "dfotoronto.bsky.social",
+   "post": "at://did:plc:knaj2vcp4x6t7hr7ewd6e3uz/app.bsky.feed.post/3n2k6kfaxn62k",
+   "player": "Morgan Rielly",
+   "team": "TOR",
+   "status": "active",
+   "kind": "return",
+   "confidence": 0.6,
+   "text": "Leafs vs Blackhawks Game 23 Preview: Bobrovsky Starts, Rielly Returns & Best Bets"
+  },
+  {
+   "id": "at://did:plc:knaj2vcp4x6t7hr7ewd6e3uz/app.bsky.feed.post/3n2k6kfaxn62k|sergeibobrovsky|none|starting",
+   "at": "2026-11-17T23:19:35.000Z",
+   "seen": "2026-11-18T00:06:36.142Z",
+   "handle": "dfotoronto.bsky.social",
+   "post": "at://did:plc:knaj2vcp4x6t7hr7ewd6e3uz/app.bsky.feed.post/3n2k6kfaxn62k",
+   "player": "Sergei Bobrovsky",
+   "team": "TOR",
+   "status": "none",
+   "kind": "starting",
+   "confidence": 0.6,
+   "text": "Leafs vs Blackhawks Game 23 Preview: Bobrovsky Starts, Rielly Returns & Best Bets"
   }
  ]
 }

@@ -23468,6 +23468,126 @@
     "own": "2026-11-17T21:55:54.000Z",
     "why": "@rotoworld-fb.bsky.social: Woody Marks (concussion) remains a DNP Tuesday"
    }
+  },
+  "401873078|jacorycroskeymerritt|out": {
+   "game": "401873078",
+   "start": "2026-11-24T01:15Z",
+   "team": "28",
+   "name": "Jacory Croskey-Merritt",
+   "status": "out",
+   "athlete": "4575131",
+   "espn": {
+    "seen": "2026-11-18T00:00:45.413Z",
+    "own": "2026-11-17T19:02:00.000Z"
+   }
+  },
+  "401873078|colsonyankoff|q": {
+   "game": "401873078",
+   "start": "2026-11-24T01:15Z",
+   "team": "28",
+   "name": "Colson Yankoff",
+   "status": "q",
+   "athlete": "4361088",
+   "espn": {
+    "seen": "2026-11-18T00:00:45.413Z",
+    "own": "2026-11-17T12:19:00.000Z"
+   }
+  },
+  "401873078|lucaspatrick|q": {
+   "game": "401873078",
+   "start": "2026-11-24T01:15Z",
+   "team": "28",
+   "name": "Lucas Patrick",
+   "status": "q",
+   "athlete": "2576736",
+   "espn": {
+    "seen": "2026-11-18T00:00:45.413Z",
+    "own": "2026-11-17T12:19:00.000Z"
+   }
+  },
+  "401873078|laremytunsil|out": {
+   "game": "401873078",
+   "start": "2026-11-24T01:15Z",
+   "team": "28",
+   "name": "Laremy Tunsil",
+   "status": "out",
+   "athlete": "3051890",
+   "espn": {
+    "seen": "2026-11-18T00:00:45.413Z",
+    "own": "2026-11-17T00:42:00.000Z"
+   }
+  },
+  "401873078|kyledugger|q": {
+   "game": "401873078",
+   "start": "2026-11-24T01:15Z",
+   "team": "4",
+   "name": "Kyle Dugger",
+   "status": "q",
+   "athlete": "4401811",
+   "espn": {
+    "seen": "2026-11-18T00:00:45.413Z",
+    "own": "2026-11-17T12:19:00.000Z"
+   }
+  },
+  "401873078|myleshinton|q": {
+   "game": "401873078",
+   "start": "2026-11-24T01:15Z",
+   "team": "4",
+   "name": "Myles Hinton",
+   "status": "q",
+   "athlete": "4429000",
+   "espn": {
+    "seen": "2026-11-18T00:00:45.413Z",
+    "own": "2026-11-17T12:19:00.000Z"
+   }
+  },
+  "401873078|andreiiosivas|out": {
+   "game": "401873078",
+   "start": "2026-11-24T01:15Z",
+   "team": "4",
+   "name": "Andrei Iosivas",
+   "status": "out",
+   "athlete": "4368003",
+   "espn": {
+    "seen": "2026-11-18T00:00:45.413Z",
+    "own": "2026-11-14T20:08:00.000Z"
+   }
+  },
+  "401873078|brianparker|out": {
+   "game": "401873078",
+   "start": "2026-11-24T01:15Z",
+   "team": "4",
+   "name": "Brian Parker II",
+   "status": "out",
+   "athlete": "4689117",
+   "espn": {
+    "seen": "2026-11-18T00:00:45.413Z",
+    "own": "2026-11-12T22:57:00.000Z"
+   }
+  },
+  "401873078|jalendavis|out": {
+   "game": "401873078",
+   "start": "2026-11-24T01:15Z",
+   "team": "4",
+   "name": "Jalen Davis",
+   "status": "out",
+   "athlete": "3125356",
+   "espn": {
+    "seen": "2026-11-18T00:00:45.413Z",
+    "own": "2026-11-12T21:30:00.000Z"
+   }
+  },
+  "401873078|cashiushowell|out": {
+   "game": "401873078",
+   "start": "2026-11-24T01:15Z",
+   "team": "4",
+   "name": "Cashius Howell",
+   "status": "out",
+   "athlete": "4710752",
+   "espn": {
+    "seen": "2026-11-18T00:00:45.413Z",
+    "own": "2026-11-04T01:35:00.000Z"
+   }
   }
  }
 }

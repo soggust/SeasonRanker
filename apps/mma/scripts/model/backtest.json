@@ -1,5 +1,5 @@
 {
- "at": "2026-11-17T00:08:15.939Z",
+ "at": "2026-11-18T00:06:26.709Z",
  "halves": [
   {
    "from": "2023-12-01",
@@ -7,7 +7,7 @@
    "train": 9687,
    "model": {
     "n": 306,
-    "logLoss": 0.6127,
+    "logLoss": 0.6126,
     "acc": 0.6471
    },
    "rating": {
@@ -28,7 +28,7 @@
    "train": 9993,
    "model": {
     "n": 365,
-    "logLoss": 0.6243,
+    "logLoss": 0.6244,
     "acc": 0.6521
    },
    "rating": {
@@ -49,7 +49,7 @@
    "train": 10358,
    "model": {
     "n": 267,
-    "logLoss": 0.6089,
+    "logLoss": 0.609,
     "acc": 0.6404
    },
    "rating": {
@@ -91,7 +91,7 @@
    "train": 10961,
    "model": {
     "n": 280,
-    "logLoss": 0.6033,
+    "logLoss": 0.6034,
     "acc": 0.6571
    },
    "rating": {
@@ -113,7 +113,7 @@
    "model": {
     "n": 328,
     "logLoss": 0.6509,
-    "acc": 0.6555
+    "acc": 0.6524
    },
    "rating": {
     "n": 328,
@@ -132,7 +132,7 @@
   "model": {
    "n": 1882,
    "logLoss": 0.6223,
-   "acc": 0.6552
+   "acc": 0.6546
   },
   "rating": {
    "n": 1882,
@@ -163,50 +163,50 @@
   {
    "from": 0.2,
    "to": 0.3,
-   "n": 249,
-   "mean": 0.2565,
-   "actual": 0.2209
+   "n": 250,
+   "mean": 0.2566,
+   "actual": 0.22
   },
   {
    "from": 0.3,
    "to": 0.4,
-   "n": 333,
+   "n": 331,
    "mean": 0.3533,
-   "actual": 0.3273
+   "actual": 0.3263
   },
   {
    "from": 0.4,
    "to": 0.5,
    "n": 456,
-   "mean": 0.4507,
-   "actual": 0.4145
+   "mean": 0.4505,
+   "actual": 0.4167
   },
   {
    "from": 0.5,
    "to": 0.6,
-   "n": 362,
+   "n": 363,
    "mean": 0.5464,
-   "actual": 0.5414
+   "actual": 0.5399
   },
   {
    "from": 0.6,
    "to": 0.7,
-   "n": 220,
-   "mean": 0.6474,
-   "actual": 0.6455
+   "n": 221,
+   "mean": 0.6476,
+   "actual": 0.6471
   },
   {
    "from": 0.7,
    "to": 0.8,
-   "n": 142,
-   "mean": 0.7405,
-   "actual": 0.7465
+   "n": 141,
+   "mean": 0.7408,
+   "actual": 0.7447
   },
   {
    "from": 0.8,
    "to": 0.9,
    "n": 20,
-   "mean": 0.8346,
+   "mean": 0.8345,
    "actual": 0.95
   },
   {
@@ -219,7 +219,7 @@
  ],
  "note": "held out: each half fit on the bouts before it alone; no odds (none kept on this plan), so it says how the model predicts, not what it would have won",
  "totals": {
-  "at": "2026-11-17T00:08:15.939Z",
+  "at": "2026-11-18T00:06:26.709Z",
   "halves": [
    {
     "from": "2023-12-01",
