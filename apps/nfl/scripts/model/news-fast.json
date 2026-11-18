@@ -1,10 +1,10 @@
 {
  "sport": "nfl",
  "cursor": {
-  "adamscheftermirror.bsky.social": "2026-11-18T14:46:08.105Z",
+  "adamscheftermirror.bsky.social": "2026-11-18T15:21:11.122Z",
   "rapsheet.bsky.social": "2026-11-18T00:17:28.840Z",
   "nflnewsreposterbot.bsky.social": "2026-11-16T18:35:13.806Z",
-  "insidenflnews.bsky.social": "2026-11-18T02:12:24.513Z",
+  "insidenflnews.bsky.social": "2026-11-18T15:34:55.406Z",
   "nflnewsposter.bsky.social": "2026-11-18T15:06:34.009Z",
   "rotoworld-fb.bsky.social": "2026-11-18T14:56:54.000Z",
   "rotowirenfl.bsky.social": "2026-11-17T22:48:21.000Z"
@@ -19119,6 +19119,19 @@
    "kind": "status",
    "confidence": 0.8,
    "text": "Jags C Robert Hainsey (knee) week-to-week"
+  },
+  {
+   "id": "at://did:plc:mbr4badgf6yu56mquzackzew/app.bsky.feed.post/3n2lv2fraws2y|joemilton|none|starting",
+   "at": "2026-11-18T15:34:55.406Z",
+   "seen": "2026-11-18T15:36:58.036Z",
+   "handle": "insidenflnews.bsky.social",
+   "post": "at://did:plc:mbr4badgf6yu56mquzackzew/app.bsky.feed.post/3n2lv2fraws2y",
+   "player": "Joe Milton",
+   "team": "PHI",
+   "status": "none",
+   "kind": "starting",
+   "confidence": 0.35,
+   "text": "\"Signs are pointing\" to Joe Milton making his second straight start for the Eagles in Week 11, per Fowler."
   }
  ]
 }
