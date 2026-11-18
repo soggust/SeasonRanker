@@ -1,7 +1,7 @@
 {
  "sport": "nba",
  "cursor": {
-  "rotowirenba.bsky.social": "2026-11-17T23:22:30.000Z",
+  "rotowirenba.bsky.social": "2026-11-18T00:43:57.000Z",
   "insidenbanews.bsky.social": "2026-11-13T20:00:09.852Z",
   "shamsbot.bsky.social": "2026-11-17T19:24:56.000Z"
  },
@@ -8741,6 +8741,84 @@
    "kind": "status",
    "confidence": 0.85,
    "text": "Neemias Queta: Off injury report \n\n https://www.rotowire.com/basketball/player/neemias-queta-5333"
+  },
+  {
+   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3n2kcfomcd42x|deniavdija|out|status",
+   "at": "2026-11-18T00:28:32.000Z",
+   "seen": "2026-11-18T00:48:54.467Z",
+   "handle": "rotowirenba.bsky.social",
+   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3n2kcfomcd42x",
+   "player": "Deni Avdija",
+   "team": null,
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.95,
+   "text": "Deni Avdija: Ruled out Tuesday \n\n https://www.rotowire.com/basketball/player/deni-avdija-5152"
+  },
+  {
+   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3n2kchltqks2z|preciousachiuwa|questionable|status",
+   "at": "2026-11-18T00:29:37.000Z",
+   "seen": "2026-11-18T00:48:54.467Z",
+   "handle": "rotowirenba.bsky.social",
+   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3n2kchltqks2z",
+   "player": "Precious Achiuwa",
+   "team": null,
+   "status": "questionable",
+   "kind": "status",
+   "confidence": 0.9,
+   "text": "Precious Achiuwa: Questionable for Wednesday \n\n https://www.rotowire.com/basketball/player/precious-achiuwa-5249"
+  },
+  {
+   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3n2kcnv4ce72r|deandrehunter|questionable|status",
+   "at": "2026-11-18T00:33:08.000Z",
+   "seen": "2026-11-18T00:48:54.467Z",
+   "handle": "rotowirenba.bsky.social",
+   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3n2kcnv4ce72r",
+   "player": "De'Andre Hunter",
+   "team": null,
+   "status": "questionable",
+   "kind": "status",
+   "confidence": 0.9,
+   "text": "De'Andre Hunter: Questionable for Wednesday \n\n https://www.rotowire.com/basketball/player/deandre-hunter-4776"
+  },
+  {
+   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3n2kcoualx726|zachlavine|active|status",
+   "at": "2026-11-18T00:33:40.000Z",
+   "seen": "2026-11-18T00:48:54.467Z",
+   "handle": "rotowirenba.bsky.social",
+   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3n2kcoualx726",
+   "player": "Zach LaVine",
+   "team": null,
+   "status": "active",
+   "kind": "status",
+   "confidence": 0.9,
+   "text": "Zach LaVine: Cleared to play Wednesday \n\n https://www.rotowire.com/basketball/player/zach-lavine-3597"
+  },
+  {
+   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3n2kd75iucv2r|jaysonkent|none|starting",
+   "at": "2026-11-18T00:42:47.000Z",
+   "seen": "2026-11-18T00:48:54.467Z",
+   "handle": "rotowirenba.bsky.social",
+   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3n2kd75iucv2r",
+   "player": "Jayson Kent",
+   "team": null,
+   "status": "none",
+   "kind": "starting",
+   "confidence": 0.85,
+   "text": "Jayson Kent: Starting Tuesday \n\n https://www.rotowire.com/basketball/player/jayson-kent-6823"
+  },
+  {
+   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3n2kdbadlk42z|codywilliams|none|starting",
+   "at": "2026-11-18T00:43:57.000Z",
+   "seen": "2026-11-18T00:48:54.467Z",
+   "handle": "rotowirenba.bsky.social",
+   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3n2kdbadlk42z",
+   "player": "Cody Williams",
+   "team": null,
+   "status": "none",
+   "kind": "starting",
+   "confidence": 0.85,
+   "text": "Cody Williams: Starting Tuesday \n\n https://www.rotowire.com/basketball/player/cody-williams-6259"
   }
  ]
 }
