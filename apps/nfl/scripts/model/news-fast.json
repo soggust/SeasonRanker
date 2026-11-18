@@ -1,12 +1,12 @@
 {
  "sport": "nfl",
  "cursor": {
-  "adamscheftermirror.bsky.social": "2026-11-18T14:31:10.171Z",
+  "adamscheftermirror.bsky.social": "2026-11-18T14:46:08.105Z",
   "rapsheet.bsky.social": "2026-11-18T00:17:28.840Z",
   "nflnewsreposterbot.bsky.social": "2026-11-16T18:35:13.806Z",
   "insidenflnews.bsky.social": "2026-11-18T02:12:24.513Z",
-  "nflnewsposter.bsky.social": "2026-11-18T04:36:45.308Z",
-  "rotoworld-fb.bsky.social": "2026-11-18T03:25:19.000Z",
+  "nflnewsposter.bsky.social": "2026-11-18T14:47:50.823Z",
+  "rotoworld-fb.bsky.social": "2026-11-18T14:33:58.000Z",
   "rotowirenfl.bsky.social": "2026-11-17T22:48:21.000Z"
  },
  "claims": [
@@ -19106,6 +19106,19 @@
    "kind": "status",
    "confidence": 0.5,
    "text": "Rap: Kenneth Walker (groin) playing in Week 11 would be a surprise."
+  },
+  {
+   "id": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3n2lrngbp4d2d|roberthainsey|out|status",
+   "at": "2026-11-18T14:33:58.000Z",
+   "seen": "2026-11-18T14:55:58.777Z",
+   "handle": "rotoworld-fb.bsky.social",
+   "post": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3n2lrngbp4d2d",
+   "player": "Robert Hainsey",
+   "team": "JAX",
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.8,
+   "text": "Jags C Robert Hainsey (knee) week-to-week"
   }
  ]
 }
