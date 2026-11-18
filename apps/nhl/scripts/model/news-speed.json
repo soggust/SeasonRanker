@@ -1,83 +1,6 @@
 {
  "sport": "nhl",
  "entries": {
-  "401892674|jameshagens|out": {
-   "game": "401892674",
-   "start": "2026-11-08T18:00Z",
-   "team": "1",
-   "name": "James Hagens",
-   "status": "out",
-   "athlete": "5275337",
-   "espn": {
-    "seen": "2026-11-07T16:04:14.453Z",
-    "own": "2026-11-07T15:15:00.000Z"
-   },
-   "bluesky": {
-    "seen": "2026-11-07T18:39:23.242Z",
-    "own": "2026-11-07T18:15:56.000Z",
-    "why": "@dailyfaceoff.bsky.social: Bruins place James Hagens on injured reserve"
-   }
-  },
-  "401892674|matthewpoitras|q": {
-   "game": "401892674",
-   "start": "2026-11-08T18:00Z",
-   "team": "1",
-   "name": "Matthew Poitras",
-   "status": "q",
-   "athlete": "5080221",
-   "espn": {
-    "seen": "2026-11-07T16:04:14.453Z",
-    "own": "2026-11-06T14:10:00.000Z"
-   }
-  },
-  "401892674|antonlundell|out": {
-   "game": "401892674",
-   "start": "2026-11-08T18:00Z",
-   "team": "26",
-   "name": "Anton Lundell",
-   "status": "out",
-   "athlete": "4697395",
-   "espn": {
-    "seen": "2026-11-07T16:04:14.453Z",
-    "own": "2026-11-07T15:33:00.000Z"
-   }
-  },
-  "401892674|bradmarchand|out": {
-   "game": "401892674",
-   "start": "2026-11-08T18:00Z",
-   "team": "26",
-   "name": "Brad Marchand",
-   "status": "out",
-   "athlete": "3852",
-   "espn": {
-    "seen": "2026-11-07T16:04:14.453Z",
-    "own": "2026-11-06T16:34:00.000Z"
-   }
-  },
-  "401892674|aleksanderbarkov|out": {
-   "game": "401892674",
-   "start": "2026-11-08T18:00Z",
-   "team": "26",
-   "name": "Aleksander Barkov",
-   "status": "out",
-   "athlete": "3041970",
-   "espn": {
-    "seen": "2026-11-07T16:04:14.453Z",
-    "own": "2026-11-06T16:30:00.000Z"
-   }
-  },
-  "401892674|jonahgadjovich|out": {
-   "game": "401892674",
-   "start": "2026-11-08T18:00Z",
-   "team": "26",
-   "name": "Jonah Gadjovich",
-   "status": "out",
-   "athlete": "4233890",
-   "espn": {
-    "seen": "2026-11-07T16:04:14.453Z",
-    "own": "2026-09-17T20:53:00.000Z"
-   }
-  },
   "401892676|johntavares|out": {
    "game": "401892676",
    "start": "2026-11-09T00:00Z",
@@ -514,23 +437,6 @@
     "own": "2026-11-07T16:41:00.000Z"
    }
   },
-  "401892674|antonlundell|q": {
-   "game": "401892674",
-   "start": "2026-11-08T18:00Z",
-   "team": "26",
-   "name": "Anton Lundell",
-   "status": "q",
-   "bluesky": {
-    "seen": "2026-11-07T17:12:14.750Z",
-    "own": "2026-11-07T17:11:58.000Z",
-    "why": "@dailyfaceoff.bsky.social: Panthers’ Anton Lundell day-to-day with undisclosed i"
-   },
-   "athlete": "4697395",
-   "espn": {
-    "seen": "2026-11-08T15:55:46.796Z",
-    "own": "2026-11-08T13:39:00.000Z"
-   }
-  },
   "401892677|eliassalomonsson|out": {
    "game": "401892677",
    "start": "2026-11-08T23:00Z",
@@ -545,18 +451,6 @@
    "sleeper": {
     "seen": "2026-11-07T20:13:35.952Z",
     "own": "2026-11-07T17:55:06.516Z"
-   }
-  },
-  "401892674|bobyram|q": {
-   "game": "401892674",
-   "start": "2026-11-08T18:00Z",
-   "team": "1",
-   "name": "Bo Byram",
-   "status": "q",
-   "bluesky": {
-    "seen": "2026-11-07T18:39:23.242Z",
-    "own": "2026-11-07T17:56:54.257Z",
-    "why": "@marklazerus.bsky.social: Blashill had no update on Bo Byram. Is it getting conc"
    }
   },
   "401892675|bobyram|q": {
@@ -581,22 +475,6 @@
     "seen": "2026-11-07T18:39:23.242Z",
     "own": "2026-11-07T17:56:54.257Z",
     "why": "@marklazerus.bsky.social: Blashill had no update on Bo Byram. Is it getting conc"
-   }
-  },
-  "401892674|sandisvilmanis|out": {
-   "game": "401892674",
-   "start": "2026-11-08T18:00Z",
-   "team": "26",
-   "name": "Sandis Vilmanis",
-   "status": "out",
-   "athlete": "5103599",
-   "espn": {
-    "seen": "2026-11-07T19:03:33.215Z",
-    "own": "2026-11-07T18:57:00.000Z"
-   },
-   "sleeper": {
-    "seen": "2026-11-07T20:13:35.952Z",
-    "own": "2026-11-07T19:00:07.786Z"
    }
   },
   "401892676|morganrielly|q": {
