@@ -1,7 +1,7 @@
 {
  "sport": "nfl",
  "cursor": {
-  "adamscheftermirror.bsky.social": "2026-11-19T00:31:16.110Z",
+  "adamscheftermirror.bsky.social": "2026-11-19T11:31:14.757Z",
   "rapsheet.bsky.social": "2026-11-18T19:34:39.202Z",
   "nflnewsreposterbot.bsky.social": "2026-11-16T18:35:13.806Z",
   "insidenflnews.bsky.social": "2026-11-18T17:31:26.437Z",
@@ -10,19 +10,6 @@
   "rotowirenfl.bsky.social": "2026-11-19T00:17:01.000Z"
  },
  "claims": [
-  {
-   "id": "at://did:plc:mbr4badgf6yu56mquzackzew/app.bsky.feed.post/3myzadahg6s2n|matthewgolden|questionable|status",
-   "at": "2026-10-29T12:10:56.332Z",
-   "seen": "2026-10-29T12:28:37.544Z",
-   "handle": "insidenflnews.bsky.social",
-   "post": "at://did:plc:mbr4badgf6yu56mquzackzew/app.bsky.feed.post/3myzadahg6s2n",
-   "player": "Matthew Golden",
-   "team": "GB",
-   "status": "questionable",
-   "kind": "status",
-   "confidence": 0.5,
-   "text": "Rap: Packers WR Matthew Golden (shoulder, foot) is trending toward playing in Week 8."
-  },
   {
    "id": "at://did:plc:mbr4badgf6yu56mquzackzew/app.bsky.feed.post/3myzgoaskwk2w|jamarrchase|questionable|status",
    "at": "2026-10-29T14:04:28.249Z",
