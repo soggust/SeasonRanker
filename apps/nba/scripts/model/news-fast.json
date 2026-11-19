@@ -1,7 +1,7 @@
 {
  "sport": "nba",
  "cursor": {
-  "rotowirenba.bsky.social": "2026-11-19T02:43:52.000Z",
+  "rotowirenba.bsky.social": "2026-11-19T03:14:27.000Z",
   "insidenbanews.bsky.social": "2026-11-13T20:00:09.852Z",
   "shamsbot.bsky.social": "2026-11-17T19:24:56.000Z"
  },
@@ -7311,6 +7311,19 @@
    "kind": "starting",
    "confidence": 0.8,
    "text": "Ziaire Williams: Starting Wednesday \n\n https://www.rotowire.com/basketball/player/ziaire-williams-5400"
+  },
+  {
+   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3n2n42pmb7z23|alexcaruso|out|status",
+   "at": "2026-11-19T03:13:01.000Z",
+   "seen": "2026-11-19T03:23:21.216Z",
+   "handle": "rotowirenba.bsky.social",
+   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3n2n42pmb7z23",
+   "player": "Alex Caruso",
+   "team": null,
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.7,
+   "text": "Alex Caruso: Won't return Wednesday \n\n https://www.rotowire.com/basketball/player/alex-caruso-3952"
   }
  ]
 }
