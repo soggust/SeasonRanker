@@ -15646,6 +15646,42 @@
     "seen": "2026-11-19T00:56:51.895Z",
     "own": "2026-11-19T00:25:00.000Z"
    }
+  },
+  "401873071|petewerner|q": {
+   "game": "401873071",
+   "start": "2026-11-22T18:00Z",
+   "team": "18",
+   "name": "Pete Werner",
+   "status": "q",
+   "athlete": "4241993",
+   "espn": {
+    "seen": "2026-11-19T01:17:39.869Z",
+    "own": "2026-11-19T00:59:00.000Z"
+   }
+  },
+  "401873073|jalenthompson|out": {
+   "game": "401873073",
+   "start": "2026-11-22T18:00Z",
+   "team": "6",
+   "name": "Jalen Thompson",
+   "status": "out",
+   "athlete": "4043089",
+   "espn": {
+    "seen": "2026-11-19T01:17:39.869Z",
+    "own": "2026-11-19T00:56:00.000Z"
+   }
+  },
+  "401873068|nnamdimadubuike|q": {
+   "game": "401873068",
+   "start": "2026-11-22T18:00Z",
+   "team": "33",
+   "name": "Nnamdi Madubuike",
+   "status": "q",
+   "athlete": "4035245",
+   "espn": {
+    "seen": "2026-11-19T01:17:39.869Z",
+    "own": "2026-11-19T01:11:00.000Z"
+   }
   }
  }
 }

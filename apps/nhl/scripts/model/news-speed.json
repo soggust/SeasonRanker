@@ -1,102 +1,6 @@
 {
  "sport": "nhl",
  "entries": {
-  "401892679|ajgreer|out": {
-   "game": "401892679",
-   "start": "2026-11-09T01:00Z",
-   "team": "25",
-   "name": "A.J. Greer",
-   "status": "out",
-   "athlete": "3648015",
-   "espn": {
-    "seen": "2026-11-07T16:04:14.453Z",
-    "own": "2026-11-02T18:46:00.000Z"
-   }
-  },
-  "401892679|troyterry|out": {
-   "game": "401892679",
-   "start": "2026-11-09T01:00Z",
-   "team": "25",
-   "name": "Troy Terry",
-   "status": "out",
-   "athlete": "3942905",
-   "espn": {
-    "seen": "2026-11-07T16:04:14.453Z",
-    "own": "2026-10-31T19:55:00.000Z"
-   }
-  },
-  "401892679|ianmoore|out": {
-   "game": "401892679",
-   "start": "2026-11-09T01:00Z",
-   "team": "25",
-   "name": "Ian Moore",
-   "status": "out",
-   "athlete": "5188523",
-   "espn": {
-    "seen": "2026-11-07T16:04:14.453Z",
-    "own": "2026-10-16T18:17:00.000Z"
-   }
-  },
-  "401892679|ryanpoehling|out": {
-   "game": "401892679",
-   "start": "2026-11-09T01:00Z",
-   "team": "25",
-   "name": "Ryan Poehling",
-   "status": "out",
-   "athlete": "4233668",
-   "espn": {
-    "seen": "2026-11-07T16:04:14.453Z",
-    "own": "2026-10-13T17:19:00.000Z"
-   }
-  },
-  "401892679|elmersoderblom|out": {
-   "game": "401892679",
-   "start": "2026-11-09T01:00Z",
-   "team": "16",
-   "name": "Elmer Soderblom",
-   "status": "out",
-   "athlete": "5075840",
-   "espn": {
-    "seen": "2026-11-07T16:04:14.453Z",
-    "own": "2026-11-02T15:52:00.000Z"
-   }
-  },
-  "401892679|bryanrust|out": {
-   "game": "401892679",
-   "start": "2026-11-09T01:00Z",
-   "team": "16",
-   "name": "Bryan Rust",
-   "status": "out",
-   "athlete": "2591155",
-   "espn": {
-    "seen": "2026-11-07T16:04:14.453Z",
-    "own": "2026-10-22T15:54:00.000Z"
-   }
-  },
-  "401892679|trevorvanriemsdyk|out": {
-   "game": "401892679",
-   "start": "2026-11-09T01:00Z",
-   "team": "16",
-   "name": "Trevor van Riemsdyk",
-   "status": "out",
-   "athlete": "3025524",
-   "espn": {
-    "seen": "2026-11-07T16:04:14.453Z",
-    "own": "2026-10-12T17:51:00.000Z"
-   }
-  },
-  "401892679|ryangraves|out": {
-   "game": "401892679",
-   "start": "2026-11-09T01:00Z",
-   "team": "16",
-   "name": "Ryan Graves",
-   "status": "out",
-   "athlete": "3042122",
-   "espn": {
-    "seen": "2026-11-07T16:04:14.453Z",
-    "own": "2026-09-27T15:21:00.000Z"
-   }
-  },
   "401892680|coltondach|q": {
    "game": "401892680",
    "start": "2026-11-10T01:00Z",
@@ -455,18 +359,6 @@
    "espn": {
     "seen": "2026-11-08T18:13:47.436Z",
     "own": "2026-10-19T13:56:00.000Z"
-   }
-  },
-  "401892679|villekoivunen|out": {
-   "game": "401892679",
-   "start": "2026-11-09T01:00Z",
-   "team": "16",
-   "name": "Ville Koivunen",
-   "status": "out",
-   "athlete": "4874911",
-   "espn": {
-    "seen": "2026-11-08T23:41:39.098Z",
-    "own": "2026-11-08T23:22:00.000Z"
    }
   },
   "401892680|connorhellebuyck|out": {

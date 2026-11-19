@@ -7,19 +7,6 @@
  },
  "claims": [
   {
-   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3myy2uhljdz2l|brandoningram|out|status",
-   "at": "2026-10-29T01:00:31.000Z",
-   "seen": "2026-10-29T01:21:50.888Z",
-   "handle": "rotowirenba.bsky.social",
-   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3myy2uhljdz2l",
-   "player": "Brandon Ingram",
-   "team": null,
-   "status": "out",
-   "kind": "status",
-   "confidence": 0.9,
-   "text": "Brandon Ingram: To miss at least one more week \n\n https://www.rotowire.com/basketball/player/brandon-ingram-3861"
-  },
-  {
    "id": "at://did:plc:ykcnnf6kqnn3lasmobrczoem/app.bsky.feed.post/3myy6dwhbnc2n|garland|active|starting",
    "at": "2026-10-29T02:02:52.174Z",
    "seen": "2026-10-29T02:16:25.145Z",
