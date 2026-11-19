@@ -2,38 +2,12 @@
  "sport": "nhl",
  "cursor": {
   "johnston-bot.bsky.social": "2026-11-18T16:07:40.564Z",
-  "notfriedgehnic.bsky.social": "2026-11-19T14:26:38.687Z",
-  "dailyfaceoff.bsky.social": "2026-11-19T18:12:20.000Z",
-  "dfotoronto.bsky.social": "2026-11-19T18:21:21.000Z",
+  "notfriedgehnic.bsky.social": "2026-11-19T19:19:40.837Z",
+  "dailyfaceoff.bsky.social": "2026-11-19T20:09:54.000Z",
+  "dfotoronto.bsky.social": "2026-11-19T19:10:28.000Z",
   "marklazerus.bsky.social": "2026-11-19T03:51:49.788Z"
  },
  "claims": [
-  {
-   "id": "at://did:plc:3uus7y6h3rlrk6sbctzxm4bg/app.bsky.feed.post/3myzywvajau2o|dylanlarkin|out|status",
-   "at": "2026-10-29T19:31:25.000Z",
-   "seen": "2026-10-29T19:32:29.879Z",
-   "handle": "dailyfaceoff.bsky.social",
-   "post": "at://did:plc:3uus7y6h3rlrk6sbctzxm4bg/app.bsky.feed.post/3myzywvajau2o",
-   "player": "Dylan Larkin",
-   "team": "DET",
-   "status": "out",
-   "kind": "status",
-   "confidence": 0.6,
-   "text": "‘Dylan’s had enough of the situation’: Larkin to sit out until Red Wings make trade"
-  },
-  {
-   "id": "at://did:plc:3uus7y6h3rlrk6sbctzxm4bg/app.bsky.feed.post/3myzzwwsxbx24|konstahelenius|out|status",
-   "at": "2026-10-29T19:49:20.000Z",
-   "seen": "2026-10-29T19:53:56.581Z",
-   "handle": "dailyfaceoff.bsky.social",
-   "post": "at://did:plc:3uus7y6h3rlrk6sbctzxm4bg/app.bsky.feed.post/3myzzwwsxbx24",
-   "player": "Konsta Helenius",
-   "team": "BUF",
-   "status": "out",
-   "kind": "status",
-   "confidence": 0.93,
-   "text": "Sabres’ Konsta Helenius to miss next two games with upper-body injury"
-  },
   {
    "id": "at://did:plc:sdobrsxnvwczrjydmnubhibh/app.bsky.feed.post/3mz27zpmaw32d|dylanlarkin|out|status",
    "at": "2026-10-29T21:38:15.417Z",
@@ -2542,6 +2516,19 @@
    "kind": "role",
    "confidence": 0.7,
    "text": "Maple Leafs’ Jim Hiller explains lineup changes, William Nylander’s demotion to 3rd line"
+  },
+  {
+   "id": "at://did:plc:3uus7y6h3rlrk6sbctzxm4bg/app.bsky.feed.post/3n2oq2get5t2i|mariephilippoulin|out|status",
+   "at": "2026-11-19T18:43:26.000Z",
+   "seen": "2026-11-19T20:16:04.215Z",
+   "handle": "dailyfaceoff.bsky.social",
+   "post": "at://did:plc:3uus7y6h3rlrk6sbctzxm4bg/app.bsky.feed.post/3n2oq2get5t2i",
+   "player": "Marie-Philip Poulin",
+   "team": null,
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.9,
+   "text": "Victoire’s Marie-Philip Poulin out until spring for headline"
   }
  ]
 }

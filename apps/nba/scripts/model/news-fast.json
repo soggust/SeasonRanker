@@ -1,37 +1,11 @@
 {
  "sport": "nba",
  "cursor": {
-  "rotowirenba.bsky.social": "2026-11-19T17:40:24.000Z",
+  "rotowirenba.bsky.social": "2026-11-19T20:07:25.000Z",
   "insidenbanews.bsky.social": "2026-11-13T20:00:09.852Z",
-  "shamsbot.bsky.social": "2026-11-17T19:24:56.000Z"
+  "shamsbot.bsky.social": "2026-11-19T20:03:07.000Z"
  },
  "claims": [
-  {
-   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3myzwwsjfqk2z|jalensmith|questionable|status",
-   "at": "2026-10-29T18:55:35.000Z",
-   "seen": "2026-10-29T19:12:29.734Z",
-   "handle": "rotowirenba.bsky.social",
-   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3myzwwsjfqk2z",
-   "player": "Jalen Smith",
-   "team": null,
-   "status": "questionable",
-   "kind": "status",
-   "confidence": 0.95,
-   "text": "Jalen Smith: Listed as questionable \n\n https://www.rotowire.com/basketball/player/jalen-smith-5169"
-  },
-  {
-   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3myzwzujysz26|robertwilliams|doubtful|status",
-   "at": "2026-10-29T18:57:17.000Z",
-   "seen": "2026-10-29T19:12:29.734Z",
-   "handle": "rotowirenba.bsky.social",
-   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3myzwzujysz26",
-   "player": "Robert Williams",
-   "team": null,
-   "status": "doubtful",
-   "kind": "status",
-   "confidence": 0.95,
-   "text": "Robert Williams: Doubtful for Thursday \n\n https://www.rotowire.com/basketball/player/robert-williams-4382"
-  },
   {
    "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mz24hodipe2n|alperensengun|questionable|status",
    "at": "2026-10-29T20:34:29.000Z",
@@ -7311,6 +7285,84 @@
    "kind": "status",
    "confidence": 0.7,
    "text": "Alex Caruso: Won't return Wednesday \n\n https://www.rotowire.com/basketball/player/alex-caruso-3952"
+  },
+  {
+   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3n2oqiqqxwo2k|draymondgreen|out|status",
+   "at": "2026-11-19T18:51:27.000Z",
+   "seen": "2026-11-19T20:16:04.215Z",
+   "handle": "rotowirenba.bsky.social",
+   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3n2oqiqqxwo2k",
+   "player": "Draymond Green",
+   "team": "GSW",
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.95,
+   "text": "Draymond Green: Confirmed out Thursday \n\n https://www.rotowire.com/basketball/player/draymond-green-3299"
+  },
+  {
+   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3n2oriqqnph2m|zachedey|out|status",
+   "at": "2026-11-19T19:09:20.000Z",
+   "seen": "2026-11-19T20:16:04.215Z",
+   "handle": "rotowirenba.bsky.social",
+   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3n2oriqqnph2m",
+   "player": "Zach Edey",
+   "team": "MEM",
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.9,
+   "text": "Zach Edey: Sitting out Thursdday \n\n https://www.rotowire.com/basketball/player/zach-edey-6263"
+  },
+  {
+   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3n2orne6dtm2r|isaiahstewart|questionable|status",
+   "at": "2026-11-19T19:11:55.000Z",
+   "seen": "2026-11-19T20:16:04.215Z",
+   "handle": "rotowirenba.bsky.social",
+   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3n2orne6dtm2r",
+   "player": "Isaiah Stewart",
+   "team": "DET",
+   "status": "questionable",
+   "kind": "status",
+   "confidence": 0.93,
+   "text": "Isaiah Stewart: Questionable with illness \n\n https://www.rotowire.com/basketball/player/isaiah-stewart-5137"
+  },
+  {
+   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3n2orzjtglf2r|ryanrollins|active|status",
+   "at": "2026-11-19T19:18:44.000Z",
+   "seen": "2026-11-19T20:16:04.215Z",
+   "handle": "rotowirenba.bsky.social",
+   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3n2orzjtglf2r",
+   "player": "Ryan Rollins",
+   "team": "MIL",
+   "status": "active",
+   "kind": "status",
+   "confidence": 0.92,
+   "text": "Ryan Rollins: Cleared from injury report \n\n https://www.rotowire.com/basketball/player/ryan-rollins-5668"
+  },
+  {
+   "id": "at://did:plc:sa73fbx3vxzh2fw5pu5wmief/app.bsky.feed.post/3n2oumls5ns2i|dylanharper|out|status",
+   "at": "2026-11-19T20:03:07.000Z",
+   "seen": "2026-11-19T20:16:04.215Z",
+   "handle": "shamsbot.bsky.social",
+   "post": "at://did:plc:sa73fbx3vxzh2fw5pu5wmief/app.bsky.feed.post/3n2oumls5ns2i",
+   "player": "Dylan Harper",
+   "team": "SAS",
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.85,
+   "text": "San Antonio Spurs guard Dylan Harper has been diagnosed with a left hip rotator strain, avoiding any major injury, sources tell ESPN. This type of strain will carry a 1-to-3 week timetable for  Harper"
+  },
+  {
+   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3n2ouqlzglz2q|dylanharper|out|status",
+   "at": "2026-11-19T20:07:25.000Z",
+   "seen": "2026-11-19T20:16:04.215Z",
+   "handle": "rotowirenba.bsky.social",
+   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3n2ouqlzglz2q",
+   "player": "Dylan Harper",
+   "team": "SAS",
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.93,
+   "text": "Dylan Harper: Out multiple weeks with hip strain \n\n https://www.rotowire.com/basketball/player/dylan-harper-6549"
   }
  ]
 }
