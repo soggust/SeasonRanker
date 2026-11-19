@@ -8275,6 +8275,18 @@
     "own": "2026-11-19T00:01:46.239Z",
     "why": "@marklazerus.bsky.social: The Blackhawks always knew there was a risk of Connor "
    }
+  },
+  "401892747|zackbolduc|q": {
+   "game": "401892747",
+   "start": "2026-11-20T00:00Z",
+   "team": "10",
+   "name": "Zack Bolduc",
+   "status": "q",
+   "athlete": "4874734",
+   "espn": {
+    "seen": "2026-11-19T03:04:34.942Z",
+    "own": "2026-11-19T02:50:00.000Z"
+   }
   }
  }
 }
