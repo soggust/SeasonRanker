@@ -15215,6 +15215,42 @@
     "seen": "2026-11-19T20:12:55.512Z",
     "own": "2026-11-19T02:13:00.000Z"
    }
+  },
+  "401873066|bakermayfield|q": {
+   "game": "401873066",
+   "start": "2026-11-20T01:15Z",
+   "team": "34",
+   "name": "Baker Mayfield",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-11-19T20:16:04.215Z",
+    "own": "2026-11-19T18:37:42.000Z",
+    "why": "@rotowirenfl.bsky.social: Baker Mayfield: Calls himself 'limited' Thursday \n\n ht"
+   }
+  },
+  "401873066|darrenwaller|q": {
+   "game": "401873066",
+   "start": "2026-11-20T01:15Z",
+   "team": "34",
+   "name": "Darren Waller",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-11-19T20:16:04.215Z",
+    "own": "2026-11-19T20:08:25.000Z",
+    "why": "@rotowirenfl.bsky.social: Darren Waller: Limited Thursday \n\n https://www.rotowir"
+   }
+  },
+  "401873075|rileymoss|q": {
+   "game": "401873075",
+   "start": "2026-11-22T21:25Z",
+   "team": "7",
+   "name": "Riley Moss",
+   "status": "q",
+   "athlete": "4382401",
+   "espn": {
+    "seen": "2026-11-19T21:12:37.609Z",
+    "own": "2026-11-19T20:06:00.000Z"
+   }
   }
  }
 }
