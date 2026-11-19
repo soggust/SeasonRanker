@@ -4,23 +4,10 @@
   "johnston-bot.bsky.social": "2026-11-18T16:07:40.564Z",
   "notfriedgehnic.bsky.social": "2026-11-18T19:08:32.831Z",
   "dailyfaceoff.bsky.social": "2026-11-19T01:46:08.000Z",
-  "dfotoronto.bsky.social": "2026-11-18T22:34:38.000Z",
+  "dfotoronto.bsky.social": "2026-11-19T02:08:42.000Z",
   "marklazerus.bsky.social": "2026-11-19T01:40:13.438Z"
  },
  "claims": [
-  {
-   "id": "at://did:plc:3uus7y6h3rlrk6sbctzxm4bg/app.bsky.feed.post/3myyakckccf24|devincooley|out|status",
-   "at": "2026-10-29T02:42:13.000Z",
-   "seen": "2026-10-29T02:58:38.554Z",
-   "handle": "dailyfaceoff.bsky.social",
-   "post": "at://did:plc:3uus7y6h3rlrk6sbctzxm4bg/app.bsky.feed.post/3myyakckccf24",
-   "player": "Devin Cooley",
-   "team": "CGY",
-   "status": "out",
-   "kind": "status",
-   "confidence": 0.5,
-   "text": "Flames’ Devin Cooley exits game with lower-body injury"
-  },
   {
    "id": "at://did:plc:3uus7y6h3rlrk6sbctzxm4bg/app.bsky.feed.post/3myzn5toe7n2i|benkindel|active|return",
    "at": "2026-10-29T16:00:33.000Z",

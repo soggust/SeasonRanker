@@ -23459,6 +23459,114 @@
     "seen": "2026-11-19T00:46:14.701Z",
     "own": "2026-11-19T00:33:00.000Z"
    }
+  },
+  "401910022|dylanharper|out": {
+   "game": "401910022",
+   "start": "2026-11-20T01:00Z",
+   "team": "24",
+   "name": "Dylan Harper",
+   "status": "out",
+   "athlete": "5037871",
+   "espn": {
+    "seen": "2026-11-19T02:42:44.017Z",
+    "own": "2026-11-18T23:05:00.000Z"
+   }
+  },
+  "401910022|tobiasharris|out": {
+   "game": "401910022",
+   "start": "2026-11-20T01:00Z",
+   "team": "24",
+   "name": "Tobias Harris",
+   "status": "out",
+   "athlete": "6440",
+   "espn": {
+    "seen": "2026-11-19T02:42:44.017Z",
+    "own": "2026-11-16T19:26:00.000Z"
+   }
+  },
+  "401910022|jaydenquaintance|out": {
+   "game": "401910022",
+   "start": "2026-11-20T01:00Z",
+   "team": "24",
+   "name": "Jayden Quaintance",
+   "status": "out",
+   "athlete": "5101845",
+   "espn": {
+    "seen": "2026-11-19T02:42:44.017Z",
+    "own": "2026-10-05T21:43:00.000Z"
+   }
+  },
+  "401910022|deniavdija|q": {
+   "game": "401910022",
+   "start": "2026-11-20T01:00Z",
+   "team": "24",
+   "name": "Deni Avdija",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-11-18T23:17:52.439Z",
+    "own": "2026-11-18T22:54:45.000Z",
+    "why": "@rotowirenba.bsky.social: Deni Avdija: Questionable versus Bucks \n\n https://www."
+   }
+  },
+  "401910022|deanwade|out": {
+   "game": "401910022",
+   "start": "2026-11-20T01:00Z",
+   "team": "24",
+   "name": "Dean Wade",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-19T00:11:37.472Z",
+    "own": "2026-11-18T23:19:53.000Z",
+    "why": "@rotowirenba.bsky.social: Dean Wade: Won't play Wednesday \n\n https://www.rotowir"
+   }
+  },
+  "401910022|tyresemaxey|out": {
+   "game": "401910022",
+   "start": "2026-11-20T01:00Z",
+   "team": "24",
+   "name": "Tyrese Maxey",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-19T00:11:37.472Z",
+    "own": "2026-11-18T23:33:36.000Z",
+    "why": "@rotowirenba.bsky.social: Tyrese Maxey: Ruled out for Wednesday \n\n https://www.r"
+   }
+  },
+  "401910022|brandoningram|out": {
+   "game": "401910022",
+   "start": "2026-11-20T01:00Z",
+   "team": "12",
+   "name": "Brandon Ingram",
+   "status": "out",
+   "athlete": "3913176",
+   "espn": {
+    "seen": "2026-11-19T02:42:44.017Z",
+    "own": "2026-11-18T23:11:00.000Z"
+   }
+  },
+  "401910022|bradleybeal|out": {
+   "game": "401910022",
+   "start": "2026-11-20T01:00Z",
+   "team": "12",
+   "name": "Bradley Beal",
+   "status": "out",
+   "athlete": "6580",
+   "espn": {
+    "seen": "2026-11-19T02:42:44.017Z",
+    "own": "2026-10-15T01:03:00.000Z"
+   }
+  },
+  "401910022|jordanmiller|out": {
+   "game": "401910022",
+   "start": "2026-11-20T01:00Z",
+   "team": "12",
+   "name": "Jordan Miller",
+   "status": "out",
+   "athlete": "4396818",
+   "espn": {
+    "seen": "2026-11-19T02:42:44.017Z",
+    "own": "2026-08-26T20:04:00.000Z"
+   }
   }
  }
 }

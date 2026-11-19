@@ -1,7 +1,7 @@
 {
  "sport": "nba",
  "cursor": {
-  "rotowirenba.bsky.social": "2026-11-19T01:38:48.000Z",
+  "rotowirenba.bsky.social": "2026-11-19T02:43:52.000Z",
   "insidenbanews.bsky.social": "2026-11-13T20:00:09.852Z",
   "shamsbot.bsky.social": "2026-11-17T19:24:56.000Z"
  },
@@ -7298,6 +7298,19 @@
    "kind": "status",
    "confidence": 0.8,
    "text": "Alperen Sengun: Won't return Wednesday \n\n https://www.rotowire.com/basketball/player/alperen-sengun-5404"
+  },
+  {
+   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3n2n2gliw4m2t|ziairewilliams|none|starting",
+   "at": "2026-11-19T02:43:52.000Z",
+   "seen": "2026-11-19T02:44:21.927Z",
+   "handle": "rotowirenba.bsky.social",
+   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3n2n2gliw4m2t",
+   "player": "Ziaire Williams",
+   "team": null,
+   "status": "none",
+   "kind": "starting",
+   "confidence": 0.8,
+   "text": "Ziaire Williams: Starting Wednesday \n\n https://www.rotowire.com/basketball/player/ziaire-williams-5400"
   }
  ]
 }

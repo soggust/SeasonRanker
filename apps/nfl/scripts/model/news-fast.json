@@ -11,19 +11,6 @@
  },
  "claims": [
   {
-   "id": "at://did:plc:fuqjc7x4gxvnwzksnlxwbe4x/app.bsky.feed.post/3myy6l2vob2gv|patsurtain|active|return",
-   "at": "2026-10-29T02:06:51.724Z",
-   "seen": "2026-10-29T02:16:25.145Z",
-   "handle": "nflnewsposter.bsky.social",
-   "post": "at://did:plc:fuqjc7x4gxvnwzksnlxwbe4x/app.bsky.feed.post/3myy6l2vob2gv",
-   "player": "Pat Surtain",
-   "team": "DEN",
-   "status": "active",
-   "kind": "return",
-   "confidence": 0.8,
-   "text": "[Zenitz] Broncos star cornerback Pat Surtain, who has missed the last three games due to an ankle injury, is expected to be able to return to game action this week and play against the Chiefs on Sunda"
-  },
-  {
    "id": "at://did:plc:mbr4badgf6yu56mquzackzew/app.bsky.feed.post/3myzadahg6s2n|matthewgolden|questionable|status",
    "at": "2026-10-29T12:10:56.332Z",
    "seen": "2026-10-29T12:28:37.544Z",
