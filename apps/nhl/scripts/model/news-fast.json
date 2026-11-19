@@ -3,37 +3,11 @@
  "cursor": {
   "johnston-bot.bsky.social": "2026-11-18T16:07:40.564Z",
   "notfriedgehnic.bsky.social": "2026-11-19T14:26:38.687Z",
-  "dailyfaceoff.bsky.social": "2026-11-19T16:55:19.000Z",
+  "dailyfaceoff.bsky.social": "2026-11-19T17:09:02.000Z",
   "dfotoronto.bsky.social": "2026-11-19T17:05:29.000Z",
   "marklazerus.bsky.social": "2026-11-19T03:51:49.788Z"
  },
  "claims": [
-  {
-   "id": "at://did:plc:3uus7y6h3rlrk6sbctzxm4bg/app.bsky.feed.post/3myzrgic5oi26|capobianco|out|status",
-   "at": "2026-10-29T17:16:58.000Z",
-   "seen": "2026-10-29T17:45:41.413Z",
-   "handle": "dailyfaceoff.bsky.social",
-   "post": "at://did:plc:3uus7y6h3rlrk6sbctzxm4bg/app.bsky.feed.post/3myzrgic5oi26",
-   "player": "Capobianco",
-   "team": "DAL",
-   "status": "out",
-   "kind": "status",
-   "confidence": 0.9,
-   "text": "Stars’ Capobianco out four weeks with lower-body injury, Steel returns to lineup"
-  },
-  {
-   "id": "at://did:plc:3uus7y6h3rlrk6sbctzxm4bg/app.bsky.feed.post/3myzrgic5oi26|steel|active|return",
-   "at": "2026-10-29T17:16:58.000Z",
-   "seen": "2026-10-29T17:45:41.413Z",
-   "handle": "dailyfaceoff.bsky.social",
-   "post": "at://did:plc:3uus7y6h3rlrk6sbctzxm4bg/app.bsky.feed.post/3myzrgic5oi26",
-   "player": "Steel",
-   "team": "DAL",
-   "status": "active",
-   "kind": "return",
-   "confidence": 0.9,
-   "text": "Stars’ Capobianco out four weeks with lower-body injury, Steel returns to lineup"
-  },
   {
    "id": "at://did:plc:sdobrsxnvwczrjydmnubhibh/app.bsky.feed.post/3myzuekcirq2h|dylanlarkin|out|status",
    "at": "2026-10-29T18:09:34.500Z",
