@@ -23567,6 +23567,18 @@
     "seen": "2026-11-19T02:42:44.017Z",
     "own": "2026-08-26T20:04:00.000Z"
    }
+  },
+  "401910022|alexcaruso|out": {
+   "game": "401910022",
+   "start": "2026-11-20T01:00Z",
+   "team": "24",
+   "name": "Alex Caruso",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-19T03:23:21.216Z",
+    "own": "2026-11-19T03:13:01.000Z",
+    "why": "@rotowirenba.bsky.social: Alex Caruso: Won't return Wednesday \n\n https://www.rot"
+   }
   }
  }
 }
