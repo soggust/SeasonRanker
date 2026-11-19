@@ -1,8 +1,8 @@
 {
- "at": "2026-11-18T09:21:48.235Z",
+ "at": "2026-11-19T09:22:17.009Z",
  "baseline": {
-  "from": "2026-10-14",
-  "to": "2026-11-11"
+  "from": "2026-10-15",
+  "to": "2026-11-12"
  },
  "checks": [
   {
@@ -215,7 +215,7 @@
   },
   {
    "examples": [],
-   "headline": "Model files 243h old, 0 open bets overdue to grade; Odds API credits 80% left; 0 bets placed in a week of 0 games",
+   "headline": "Model files 267h old, 0 open bets overdue to grade; Odds API credits 77% left; 0 bets placed in a week of 0 games",
    "how": "the newest commit of the sport's model files, the open bets started 12 hours ago or more, The Odds API's credits (state.odds), the state's sources",
    "id": "C16",
    "metric": "ageH",
@@ -223,7 +223,7 @@
    "needs": null,
    "rows": [
     {
-     "ageH": 243,
+     "ageH": 267,
      "at": "2026-11-08T00:06:23-06:00",
      "key": "files",
      "overdue": 0
@@ -232,8 +232,8 @@
      "cycleEnd": "2026-12-01T00:02:39.102Z",
      "key": "credits",
      "monthly": 20000,
-     "remaining": 16059,
-     "share": 0.803
+     "remaining": 15432,
+     "share": 0.7716
     },
     {
      "down": [],
@@ -249,11 +249,11 @@
    "tested": null,
    "threshold": "watch files 3h old with bets overdue, credits under 20%, a source down, or no bets in a week with games; flag 6h old with bets overdue, or credits under 10%",
    "title": "Ops",
-   "value": 243
+   "value": 267
   },
   {
    "examples": [],
-   "headline": "13 segments tested on 285 priced rows: none losing to the Book beyond the false discovery rate, none trending worse The priced history (every season, the gate's run of 2026-11-18): none of 37 segments losing on 276507 rows.",
+   "headline": "13 segments tested on 285 priced rows: none losing to the Book beyond the false discovery rate, none trending worse The priced history (every season, the gate's run of 2026-11-19): none of 37 segments losing on 276507 rows.",
    "how": "each graded row's log loss gain over the Book (its priced chance against the Book's no-vig: on the result and against the close, half each), a game's rows sharing their weight; a segment's mean, its standard error by game, z; the leaks ranked by the units staked into them in the last 28 days. Each leak's fix a candidate only: it ships when the replay gate passes it (node libs/ranker/scripts/model/gate.mjs --candidate <the fix>)",
    "id": "C23",
    "metric": "leaks",
@@ -427,7 +427,7 @@
   },
   {
    "examples": [],
-   "headline": "hits tracked only: clv over the last graded hits props: tracked, not bet, till it's positive: 0 of 0 bets placed this week (0%) against 7% before",
+   "headline": "hits tracked only: clv over the last graded hits props: tracked, not bet, till it's positive: 0 of 0 bets placed this week (0%) against 8% before",
    "how": "placed this week against the 28 days before: the bets a guard cut to a half unit, by kind",
    "id": "C8",
    "metric": "ratio",
@@ -441,7 +441,7 @@
      "n": 0,
      "ratio": 0,
      "share": 0,
-     "shareBase": 0.069,
+     "shareBase": 0.0761,
      "status": "ok"
     },
     {
@@ -449,7 +449,7 @@
      "n": 0,
      "ratio": 0,
      "share": 0,
-     "shareBase": 0.0148,
+     "shareBase": 0.0163,
      "status": "ok"
     },
     {
@@ -457,7 +457,7 @@
      "n": 0,
      "ratio": 0,
      "share": 0,
-     "shareBase": 0.0049,
+     "shareBase": 0.0054,
      "status": "ok"
     },
     {
@@ -465,7 +465,7 @@
      "n": 0,
      "ratio": 0,
      "share": 0,
-     "shareBase": 0.0246,
+     "shareBase": 0.0272,
      "status": "ok"
     }
    ],
@@ -636,13 +636,34 @@
   },
   {
    "examples": [],
-   "headline": "No term, param or trust dropped; 0 changelog entries this week",
+   "headline": "No term, param or trust dropped; 2 changelog entries this week",
    "how": "the day's last state.json for 35 days (git), the week's start against now; the changelog's entries this week verbatim",
    "id": "C9",
    "metric": "changes",
    "n": 35,
    "needs": null,
-   "rows": [],
+   "rows": [
+    {
+     "at": "2026-11-19T03:04:44.137Z",
+     "from": 0,
+     "key": "log:0",
+     "label": "live calibration: k|over|>2.5",
+     "status": "info",
+     "to": -0.03,
+     "what": "changelog",
+     "why": "2 graded rows of its own (own shift 0), the rest pooled from its line class, at most 0.03 a rung a run"
+    },
+    {
+     "at": "2026-11-19T03:04:44.137Z",
+     "from": 0,
+     "key": "log:1",
+     "label": "live calibration: outs|over|>2.5",
+     "status": "info",
+     "to": -0.03,
+     "what": "changelog",
+     "why": "2 graded rows of its own (own shift 0), the rest pooled from its line class, at most 0.03 a rung a run"
+    }
+   ],
    "status": "info",
    "tested": null,
    "threshold": "info; watch a term changed or more than 6 changelog entries of one kind; flag a term kept 3 weeks of 4 now dropped, or a trust gone to 0",
@@ -929,7 +950,7 @@
   },
   {
    "examples": [],
-   "headline": "3 of 7 spots shifted: hits|under|1.5 -0.065 (n 4, pooled only (its own rung: too few rows (200 needed))), tb|over|1.5 -0.065 (n 8, pooled only (its own rung: too few rows (200 needed))), tb|under|1.5 -0.065 (n 23, pooled only (its own rung: too few rows (200 needed)))",
+   "headline": "5 of 7 spots shifted: hits|under|1.5 -0.067 (n 4, pooled only (its own rung: too few rows (200 needed))), k|over|>2.5 -0.030 (n 2, pooled only (its own rung: too few rows (200 needed))), outs|over|>2.5 -0.030 (n 2, pooled only (its own rung: too few rows (200 needed))), tb|over|1.5 -0.067 (n 8, pooled only (its own rung: too few rows (200 needed))), tb|under|1.5 -0.067 (n 23, pooled only (its own rung: too few rows (200 needed)))",
    "how": "state.calib as the last run left it (calib.mjs fitCalib: every graded prop since MODEL_EPOCH, the tracked rows among them, by its raw model chance), each spot's shift, target and held-out gain; the week's graded props of each spot, the sum of their raw chances (said), of the chances as shifted (shifted) and their wins. Never more than the desk applies: it says where the model's been running hot or cold",
    "id": "C21",
    "metric": "spots shifted",
@@ -968,7 +989,7 @@
      "key": "tb|under|1.5",
      "n": 23,
      "said": null,
-     "shift": -0.0649,
+     "shift": -0.0674,
      "shifted": null,
      "target": 0,
      "week": 0,
@@ -981,7 +1002,7 @@
      "key": "tb|over|1.5",
      "n": 8,
      "said": null,
-     "shift": -0.0649,
+     "shift": -0.0674,
      "shifted": null,
      "target": 0,
      "week": 0,
@@ -994,7 +1015,7 @@
      "key": "hits|under|1.5",
      "n": 4,
      "said": null,
-     "shift": -0.0649,
+     "shift": -0.0674,
      "shifted": null,
      "target": 0,
      "week": 0,
@@ -1003,28 +1024,28 @@
     },
     {
      "gain": null,
-     "kept": false,
+     "kept": true,
      "key": "k|over|>2.5",
      "n": 2,
      "said": null,
-     "shift": 0,
+     "shift": -0.03,
      "shifted": null,
      "target": 0,
      "week": 0,
-     "why": "too few rows (200 needed)",
+     "why": "pooled only (its own rung: too few rows (200 needed))",
      "won": 0
     },
     {
      "gain": null,
-     "kept": false,
+     "kept": true,
      "key": "outs|over|>2.5",
      "n": 2,
      "said": null,
-     "shift": 0,
+     "shift": -0.03,
      "shifted": null,
      "target": 0,
      "week": 0,
-     "why": "too few rows (200 needed)",
+     "why": "pooled only (its own rung: too few rows (200 needed))",
      "won": 0
     }
    ],
@@ -1032,7 +1053,7 @@
    "tested": null,
    "threshold": "a report: a spot's shift is 0 under 200 graded rows, pulled toward 0 by its evidence, at most 0.25 on the log-odds and 0.03 a UTC day (toward 0 too), and kept only where the newest rows' log loss is lower with it",
    "title": "Live calibration by spot",
-   "value": 3
+   "value": 5
   }
  ],
  "notes": [
@@ -1161,8 +1182,8 @@
  },
  "v": 1,
  "window": {
-  "from": "2026-11-11",
-  "to": "2026-11-18"
+  "from": "2026-11-12",
+  "to": "2026-11-19"
  },
  "writeups": {
   "calls": 0,
