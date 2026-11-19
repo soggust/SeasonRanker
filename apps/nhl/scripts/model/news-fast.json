@@ -5,7 +5,7 @@
   "notfriedgehnic.bsky.social": "2026-11-18T19:08:32.831Z",
   "dailyfaceoff.bsky.social": "2026-11-18T23:05:00.000Z",
   "dfotoronto.bsky.social": "2026-11-18T22:34:38.000Z",
-  "marklazerus.bsky.social": "2026-11-18T21:39:25.878Z"
+  "marklazerus.bsky.social": "2026-11-19T00:01:46.239Z"
  },
  "claims": [
   {
@@ -2620,6 +2620,19 @@
    "kind": "status",
    "confidence": 0.9,
    "text": "Mammoth’s Nick Schmaltz placed on IR, considered week-to-week"
+  },
+  {
+   "id": "at://did:plc:54vdi5eoabhod2vumsbcpi7g/app.bsky.feed.post/3n2mrepsfvk27|connorbedard|out|status",
+   "at": "2026-11-19T00:01:46.239Z",
+   "seen": "2026-11-19T00:11:37.472Z",
+   "handle": "marklazerus.bsky.social",
+   "post": "at://did:plc:54vdi5eoabhod2vumsbcpi7g/app.bsky.feed.post/3n2mrepsfvk27",
+   "player": "Connor Bedard",
+   "team": "CHI",
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.8,
+   "text": "The Blackhawks always knew there was a risk of Connor Bedard's right shoulder \"coming back out\" after last year's injury. Now they await word on how long he'll be out, and what needs to be done. @scot"
   }
  ]
 }

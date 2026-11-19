@@ -5,24 +5,11 @@
   "rapsheet.bsky.social": "2026-11-18T19:34:39.202Z",
   "nflnewsreposterbot.bsky.social": "2026-11-16T18:35:13.806Z",
   "insidenflnews.bsky.social": "2026-11-18T17:31:26.437Z",
-  "nflnewsposter.bsky.social": "2026-11-18T22:23:51.882Z",
+  "nflnewsposter.bsky.social": "2026-11-19T00:10:30.775Z",
   "rotoworld-fb.bsky.social": "2026-11-18T23:17:50.000Z",
   "rotowirenfl.bsky.social": "2026-11-18T23:05:40.000Z"
  },
  "claims": [
-  {
-   "id": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3myxv5ij7ss25|saquonbarkley|none|status",
-   "at": "2026-10-28T23:18:12.000Z",
-   "seen": "2026-10-29T00:06:10.370Z",
-   "handle": "rotoworld-fb.bsky.social",
-   "post": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3myxv5ij7ss25",
-   "player": "Saquon Barkley",
-   "team": "PHI",
-   "status": "none",
-   "kind": "status",
-   "confidence": 0.3,
-   "text": "Saquon Barkley (hamstring/back) DNP Wednesday"
-  },
   {
    "id": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3myxy6ijsbq2s|michaelwilson|limited|status",
    "at": "2026-10-29T00:12:27.000Z",

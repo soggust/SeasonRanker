@@ -15418,6 +15418,174 @@
     "seen": "2026-11-18T23:15:09.931Z",
     "own": "2026-11-18T23:07:00.000Z"
    }
+  },
+  "401873066|michaelpittman|q": {
+   "game": "401873066",
+   "start": "2026-11-20T01:15Z",
+   "team": "11",
+   "name": "Michael Pittman",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-11-18T23:17:52.439Z",
+    "own": "2026-11-18T22:44:12.000Z",
+    "why": "@rotowirenfl.bsky.social: Michael Pittman: Limited in first practice back \n\n htt"
+   }
+  },
+  "401873067|maxmelton|q": {
+   "game": "401873067",
+   "start": "2026-11-22T18:00Z",
+   "team": "22",
+   "name": "Max Melton",
+   "status": "q",
+   "athlete": "4698113",
+   "espn": {
+    "seen": "2026-11-19T00:08:40.111Z",
+    "own": "2026-11-18T23:45:00.000Z"
+   }
+  },
+  "401873067|walternolen|q": {
+   "game": "401873067",
+   "start": "2026-11-22T18:00Z",
+   "team": "22",
+   "name": "Walter Nolen III",
+   "status": "q",
+   "athlete": "4685503",
+   "espn": {
+    "seen": "2026-11-19T00:08:40.111Z",
+    "own": "2026-11-18T23:44:00.000Z"
+   }
+  },
+  "401873067|roylopez|q": {
+   "game": "401873067",
+   "start": "2026-11-22T18:00Z",
+   "team": "22",
+   "name": "Roy Lopez",
+   "status": "q",
+   "athlete": "4040805",
+   "espn": {
+    "seen": "2026-11-19T00:08:40.111Z",
+    "own": "2026-11-18T23:44:00.000Z"
+   }
+  },
+  "401873075|tonkahemingway|q": {
+   "game": "401873075",
+   "start": "2026-11-22T21:25Z",
+   "team": "13",
+   "name": "Tonka Hemingway",
+   "status": "q",
+   "athlete": "4429109",
+   "espn": {
+    "seen": "2026-11-19T00:08:40.111Z",
+    "own": "2026-11-18T23:14:00.000Z"
+   }
+  },
+  "401873075|folorunsofatukasi|q": {
+   "game": "401873075",
+   "start": "2026-11-22T21:25Z",
+   "team": "13",
+   "name": "Folorunso Fatukasi",
+   "status": "q",
+   "athlete": "3045172",
+   "espn": {
+    "seen": "2026-11-19T00:08:40.111Z",
+    "own": "2026-11-18T23:14:00.000Z"
+   }
+  },
+  "401873075|mattgay|q": {
+   "game": "401873075",
+   "start": "2026-11-22T21:25Z",
+   "team": "13",
+   "name": "Matt Gay",
+   "status": "q",
+   "athlete": "4249087",
+   "espn": {
+    "seen": "2026-11-19T00:08:40.111Z",
+    "own": "2026-11-18T23:13:00.000Z"
+   }
+  },
+  "401873077|uptonstout|q": {
+   "game": "401873077",
+   "start": "2026-11-23T01:20Z",
+   "team": "25",
+   "name": "Upton Stout",
+   "status": "q",
+   "athlete": "4565200",
+   "espn": {
+    "seen": "2026-11-19T00:08:40.111Z",
+    "own": "2026-11-18T23:27:00.000Z"
+   }
+  },
+  "401873077|siranneal|q": {
+   "game": "401873077",
+   "start": "2026-11-23T01:20Z",
+   "team": "25",
+   "name": "Siran Neal",
+   "status": "q",
+   "athlete": "3057524",
+   "espn": {
+    "seen": "2026-11-19T00:08:40.111Z",
+    "own": "2026-11-18T23:27:00.000Z"
+   }
+  },
+  "401873077|macjones|q": {
+   "game": "401873077",
+   "start": "2026-11-23T01:20Z",
+   "team": "25",
+   "name": "Mac Jones",
+   "status": "q",
+   "athlete": "4241464",
+   "espn": {
+    "seen": "2026-11-19T00:08:40.111Z",
+    "own": "2026-11-18T23:26:00.000Z"
+   }
+  },
+  "401873077|khalidkareem|q": {
+   "game": "401873077",
+   "start": "2026-11-23T01:20Z",
+   "team": "25",
+   "name": "Khalid Kareem",
+   "status": "q",
+   "athlete": "4039029",
+   "espn": {
+    "seen": "2026-11-19T00:08:40.111Z",
+    "own": "2026-11-18T23:26:00.000Z"
+   }
+  },
+  "401873077|jiayirbrown|q": {
+   "game": "401873077",
+   "start": "2026-11-23T01:20Z",
+   "team": "25",
+   "name": "Ji'Ayir Brown",
+   "status": "q",
+   "athlete": "4693644",
+   "espn": {
+    "seen": "2026-11-19T00:08:40.111Z",
+    "own": "2026-11-18T23:25:00.000Z"
+   }
+  },
+  "401873077|lukegifford|q": {
+   "game": "401873077",
+   "start": "2026-11-23T01:20Z",
+   "team": "25",
+   "name": "Luke Gifford",
+   "status": "q",
+   "athlete": "3116097",
+   "espn": {
+    "seen": "2026-11-19T00:08:40.111Z",
+    "own": "2026-11-18T23:25:00.000Z"
+   }
+  },
+  "401873077|dregreenlaw|q": {
+   "game": "401873077",
+   "start": "2026-11-23T01:20Z",
+   "team": "25",
+   "name": "Dre Greenlaw",
+   "status": "q",
+   "athlete": "3916903",
+   "espn": {
+    "seen": "2026-11-19T00:08:40.111Z",
+    "own": "2026-11-18T20:26:00.000Z"
+   }
   }
  }
 }
