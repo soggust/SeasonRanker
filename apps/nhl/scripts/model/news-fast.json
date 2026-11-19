@@ -3,37 +3,11 @@
  "cursor": {
   "johnston-bot.bsky.social": "2026-11-18T16:07:40.564Z",
   "notfriedgehnic.bsky.social": "2026-11-19T14:26:38.687Z",
-  "dailyfaceoff.bsky.social": "2026-11-19T16:05:38.000Z",
-  "dfotoronto.bsky.social": "2026-11-19T16:44:25.000Z",
+  "dailyfaceoff.bsky.social": "2026-11-19T16:55:19.000Z",
+  "dfotoronto.bsky.social": "2026-11-19T17:05:29.000Z",
   "marklazerus.bsky.social": "2026-11-19T03:51:49.788Z"
  },
  "claims": [
-  {
-   "id": "at://did:plc:3uus7y6h3rlrk6sbctzxm4bg/app.bsky.feed.post/3myzpoi5rrq2u|victorhedman|active|return",
-   "at": "2026-10-29T16:45:39.000Z",
-   "seen": "2026-10-29T16:51:09.213Z",
-   "handle": "dailyfaceoff.bsky.social",
-   "post": "at://did:plc:3uus7y6h3rlrk6sbctzxm4bg/app.bsky.feed.post/3myzpoi5rrq2u",
-   "player": "Victor Hedman",
-   "team": "TBL",
-   "status": "active",
-   "kind": "return",
-   "confidence": 0.85,
-   "text": "Lightning’s Victor Hedman, Hagel to return against Jets"
-  },
-  {
-   "id": "at://did:plc:3uus7y6h3rlrk6sbctzxm4bg/app.bsky.feed.post/3myzpoi5rrq2u|hagel|active|return",
-   "at": "2026-10-29T16:45:39.000Z",
-   "seen": "2026-10-29T16:51:09.213Z",
-   "handle": "dailyfaceoff.bsky.social",
-   "post": "at://did:plc:3uus7y6h3rlrk6sbctzxm4bg/app.bsky.feed.post/3myzpoi5rrq2u",
-   "player": "Hagel",
-   "team": "TBL",
-   "status": "active",
-   "kind": "return",
-   "confidence": 0.85,
-   "text": "Lightning’s Victor Hedman, Hagel to return against Jets"
-  },
   {
    "id": "at://did:plc:3uus7y6h3rlrk6sbctzxm4bg/app.bsky.feed.post/3myzrgic5oi26|capobianco|out|status",
    "at": "2026-10-29T17:16:58.000Z",
@@ -2568,6 +2542,32 @@
    "kind": "status",
    "confidence": 0.8,
    "text": "The Blackhawks always knew there was a risk of Connor Bedard's right shoulder \"coming back out\" after last year's injury. Now they await word on how long he'll be out, and what needs to be done. @scot"
+  },
+  {
+   "id": "at://did:plc:knaj2vcp4x6t7hr7ewd6e3uz/app.bsky.feed.post/3n2okc6wu7x2t|gavinmckenna|none|role",
+   "at": "2026-11-19T17:00:24.000Z",
+   "seen": "2026-11-19T17:06:22.102Z",
+   "handle": "dfotoronto.bsky.social",
+   "post": "at://did:plc:knaj2vcp4x6t7hr7ewd6e3uz/app.bsky.feed.post/3n2okc6wu7x2t",
+   "player": "Gavin McKenna",
+   "team": "TOR",
+   "status": "none",
+   "kind": "role",
+   "confidence": 0.9,
+   "text": "Maple Leafs lineup news: Gavin McKenna promoted to top power play unit, William Nylander on 3rd line"
+  },
+  {
+   "id": "at://did:plc:knaj2vcp4x6t7hr7ewd6e3uz/app.bsky.feed.post/3n2okc6wu7x2t|williamnylander|none|role",
+   "at": "2026-11-19T17:00:24.000Z",
+   "seen": "2026-11-19T17:06:22.102Z",
+   "handle": "dfotoronto.bsky.social",
+   "post": "at://did:plc:knaj2vcp4x6t7hr7ewd6e3uz/app.bsky.feed.post/3n2okc6wu7x2t",
+   "player": "William Nylander",
+   "team": "TOR",
+   "status": "none",
+   "kind": "role",
+   "confidence": 0.9,
+   "text": "Maple Leafs lineup news: Gavin McKenna promoted to top power play unit, William Nylander on 3rd line"
   }
  ]
 }

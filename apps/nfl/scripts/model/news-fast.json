@@ -1,41 +1,15 @@
 {
  "sport": "nfl",
  "cursor": {
-  "adamscheftermirror.bsky.social": "2026-11-19T11:31:14.757Z",
-  "rapsheet.bsky.social": "2026-11-18T19:34:39.202Z",
+  "adamscheftermirror.bsky.social": "2026-11-19T16:56:17.680Z",
+  "rapsheet.bsky.social": "2026-11-19T16:53:44.892Z",
   "nflnewsreposterbot.bsky.social": "2026-11-16T18:35:13.806Z",
-  "insidenflnews.bsky.social": "2026-11-19T14:59:21.685Z",
-  "nflnewsposter.bsky.social": "2026-11-19T16:39:49.517Z",
-  "rotoworld-fb.bsky.social": "2026-11-19T16:29:06.000Z",
-  "rotowirenfl.bsky.social": "2026-11-19T16:26:41.000Z"
+  "insidenflnews.bsky.social": "2026-11-19T16:49:59.506Z",
+  "nflnewsposter.bsky.social": "2026-11-19T16:55:50.552Z",
+  "rotoworld-fb.bsky.social": "2026-11-19T17:05:53.000Z",
+  "rotowirenfl.bsky.social": "2026-11-19T16:53:13.000Z"
  },
  "claims": [
-  {
-   "id": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3myzpykpxsy2d|egbuka|limited|status",
-   "at": "2026-10-29T16:51:17.000Z",
-   "seen": "2026-10-29T17:12:57.521Z",
-   "handle": "rotoworld-fb.bsky.social",
-   "post": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3myzpykpxsy2d",
-   "player": "Egbuka",
-   "team": null,
-   "status": "limited",
-   "kind": "status",
-   "confidence": 0.6,
-   "text": "Egbuka (concussion/foot) sheds non-contact jersey"
-  },
-  {
-   "id": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3myzqraz7hi22|carnelltate|questionable|status",
-   "at": "2026-10-29T17:05:06.000Z",
-   "seen": "2026-10-29T17:12:57.521Z",
-   "handle": "rotoworld-fb.bsky.social",
-   "post": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3myzqraz7hi22",
-   "player": "Carnell Tate",
-   "team": null,
-   "status": "questionable",
-   "kind": "status",
-   "confidence": 0.3,
-   "text": "Carnell Tate (shoulder) not spotted at practice"
-  },
   {
    "id": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3myzsxsj7ql25|amonrastbrown|active|return",
    "at": "2026-10-29T17:44:33.000Z",
@@ -18885,6 +18859,45 @@
    "kind": "status",
    "confidence": 0.35,
    "text": "Rap: Christian Kirk (knee) recently underwent meniscus surgery."
+  },
+  {
+   "id": "at://did:plc:mbr4badgf6yu56mquzackzew/app.bsky.feed.post/3n2ojoz7i7k27|marlonhumphrey|out|status",
+   "at": "2026-11-19T16:49:41.197Z",
+   "seen": "2026-11-19T17:06:22.102Z",
+   "handle": "insidenflnews.bsky.social",
+   "post": "at://did:plc:mbr4badgf6yu56mquzackzew/app.bsky.feed.post/3n2ojoz7i7k27",
+   "player": "Marlon Humphrey",
+   "team": "BAL",
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.9,
+   "text": "Ravens sent Marlon Humphrey home for week.\n\nJesse Minter says he will be de-activated for Sundays game, via Jeff Zrebiec."
+  },
+  {
+   "id": "at://did:plc:fuqjc7x4gxvnwzksnlxwbe4x/app.bsky.feed.post/3n2ojxv6zxs2u|marlonhumphrey|out|status",
+   "at": "2026-11-19T16:54:38.978Z",
+   "seen": "2026-11-19T17:06:22.102Z",
+   "handle": "nflnewsposter.bsky.social",
+   "post": "at://did:plc:fuqjc7x4gxvnwzksnlxwbe4x/app.bsky.feed.post/3n2ojxv6zxs2u",
+   "player": "Marlon Humphrey",
+   "team": "BAL",
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.8,
+   "text": "[Schefter] Ravens have sent home CB Marlon Humphrey and he will be inactive for Sunday’s game against the Panthers. twitter.com/adamschefter..."
+  },
+  {
+   "id": "at://did:plc:qre6zxbmr3ixhdmgsgdretb5/app.bsky.feed.post/3n2ok2t2kft25|marlonhumphrey|out|status",
+   "at": "2026-11-19T16:56:17.311Z",
+   "seen": "2026-11-19T17:06:22.102Z",
+   "handle": "adamscheftermirror.bsky.social",
+   "post": "at://did:plc:qre6zxbmr3ixhdmgsgdretb5/app.bsky.feed.post/3n2ok2t2kft25",
+   "player": "Marlon Humphrey",
+   "team": "BAL",
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.8,
+   "text": "Ravens have sent home CB Marlon Humphrey and he will be inactive for Sunday’s game against the Panthers.\n\nOriginal post"
   }
  ]
 }
