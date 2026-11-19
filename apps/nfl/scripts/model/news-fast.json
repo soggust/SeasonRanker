@@ -5,7 +5,7 @@
   "rapsheet.bsky.social": "2026-11-18T19:34:39.202Z",
   "nflnewsreposterbot.bsky.social": "2026-11-16T18:35:13.806Z",
   "insidenflnews.bsky.social": "2026-11-18T17:31:26.437Z",
-  "nflnewsposter.bsky.social": "2026-11-19T00:12:29.390Z",
+  "nflnewsposter.bsky.social": "2026-11-19T13:46:20.817Z",
   "rotoworld-fb.bsky.social": "2026-11-19T00:39:15.000Z",
   "rotowirenfl.bsky.social": "2026-11-19T00:17:01.000Z"
  },
@@ -18885,6 +18885,19 @@
    "kind": "status",
    "confidence": 0.9,
    "text": "Ladd McConkey (back) limited Wednesday"
+  },
+  {
+   "id": "at://did:plc:fuqjc7x4gxvnwzksnlxwbe4x/app.bsky.feed.post/3n2o7h6gll22o|christiankirk|out|status",
+   "at": "2026-11-19T13:46:20.817Z",
+   "seen": "2026-11-19T13:53:45.947Z",
+   "handle": "nflnewsposter.bsky.social",
+   "post": "at://did:plc:fuqjc7x4gxvnwzksnlxwbe4x/app.bsky.feed.post/3n2o7h6gll22o",
+   "player": "Christian Kirk",
+   "team": "SF",
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.9,
+   "text": "[Rapoport] 49ers WR Christian Kirk, who was placed on Injured Reserve two weeks ago for the second time this season, recently underwent meniscus surgery. twitter.com/RapSheet/sta..."
   }
  ]
 }
