@@ -1,50 +1,11 @@
 {
  "sport": "nba",
  "cursor": {
-  "rotowirenba.bsky.social": "2026-11-19T21:13:08.000Z",
+  "rotowirenba.bsky.social": "2026-11-19T22:07:49.000Z",
   "insidenbanews.bsky.social": "2026-11-13T20:00:09.852Z",
   "shamsbot.bsky.social": "2026-11-19T20:03:07.000Z"
  },
  "claims": [
-  {
-   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mz27xj74w52v|dennisschroder|questionable|status",
-   "at": "2026-10-29T21:37:02.000Z",
-   "seen": "2026-10-29T21:37:09.530Z",
-   "handle": "rotowirenba.bsky.social",
-   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mz27xj74w52v",
-   "player": "Dennis Schroder",
-   "team": null,
-   "status": "questionable",
-   "kind": "status",
-   "confidence": 0.95,
-   "text": "Dennis Schroder: Questionable for Friday \n\n https://www.rotowire.com/basketball/player/dennis-schroder-3444"
-  },
-  {
-   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mz2bzkhfqd2z|ruihachimura|questionable|status",
-   "at": "2026-10-29T22:13:58.000Z",
-   "seen": "2026-10-29T23:16:27.355Z",
-   "handle": "rotowirenba.bsky.social",
-   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mz2bzkhfqd2z",
-   "player": "Rui Hachimura",
-   "team": null,
-   "status": "questionable",
-   "kind": "status",
-   "confidence": 0.9,
-   "text": "Rui Hachimura: Questionable for Friday \n\n https://www.rotowire.com/basketball/player/rui-hachimura-4778"
-  },
-  {
-   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mz2cjitu7b2c|dejountemurray|out|status",
-   "at": "2026-10-29T22:22:53.000Z",
-   "seen": "2026-10-29T23:16:27.355Z",
-   "handle": "rotowirenba.bsky.social",
-   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mz2cjitu7b2c",
-   "player": "Dejounte Murray",
-   "team": null,
-   "status": "out",
-   "kind": "status",
-   "confidence": 0.9,
-   "text": "Dejounte Murray: Late scratch Thursday \n\n https://www.rotowire.com/basketball/player/dejounte-murray-3856"
-  },
   {
    "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mz2hekdaik2l|cameronjohnson|questionable|status",
    "at": "2026-10-29T23:49:35.000Z",
@@ -7311,6 +7272,45 @@
    "kind": "status",
    "confidence": 0.93,
    "text": "Dylan Harper: Out multiple weeks with hip strain \n\n https://www.rotowire.com/basketball/player/dylan-harper-6549"
+  },
+  {
+   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3n2ozv46fk62q|scottiebarnes|active|status",
+   "at": "2026-11-19T21:39:25.000Z",
+   "seen": "2026-11-19T22:27:37.624Z",
+   "handle": "rotowirenba.bsky.social",
+   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3n2ozv46fk62q",
+   "player": "Scottie Barnes",
+   "team": "TOR",
+   "status": "active",
+   "kind": "status",
+   "confidence": 0.9,
+   "text": "Scottie Barnes: Removed from injury report \n\n https://www.rotowire.com/basketball/player/scottie-barnes-5390"
+  },
+  {
+   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3n2ozy2fd3k2n|collinmurrayboyles|questionable|status",
+   "at": "2026-11-19T21:41:04.000Z",
+   "seen": "2026-11-19T22:27:37.624Z",
+   "handle": "rotowirenba.bsky.social",
+   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3n2ozy2fd3k2n",
+   "player": "Collin Murray-Boyles",
+   "team": "TOR",
+   "status": "questionable",
+   "kind": "status",
+   "confidence": 0.7,
+   "text": "Collin Murray-Boyles: Lands in concussion protocol \n\n https://www.rotowire.com/basketball/player/collin-murray-boyles-6585"
+  },
+  {
+   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3n2p376oczf2g|graysonallen|out|status",
+   "at": "2026-11-19T22:02:57.000Z",
+   "seen": "2026-11-19T22:27:37.624Z",
+   "handle": "rotowirenba.bsky.social",
+   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3n2p376oczf2g",
+   "player": "Grayson Allen",
+   "team": null,
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.9,
+   "text": "Grayson Allen: Out for Friday \n\n https://www.rotowire.com/basketball/player/grayson-allen-4454"
   }
  ]
 }
