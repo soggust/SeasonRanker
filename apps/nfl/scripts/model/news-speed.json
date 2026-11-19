@@ -15251,6 +15251,30 @@
     "seen": "2026-11-19T21:12:37.609Z",
     "own": "2026-11-19T20:06:00.000Z"
    }
+  },
+  "401873066|carnelltate|q": {
+   "game": "401873066",
+   "start": "2026-11-20T01:15Z",
+   "team": "34",
+   "name": "Carnell Tate",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-11-19T21:16:16.756Z",
+    "own": "2026-11-19T21:14:00.000Z",
+    "why": "@rotowirenfl.bsky.social: Carnell Tate: Limited at Thursday's practice \n\n https:"
+   }
+  },
+  "401873073|kevinwinston|q": {
+   "game": "401873073",
+   "start": "2026-11-22T18:00Z",
+   "team": "10",
+   "name": "Kevin Winston Jr.",
+   "status": "q",
+   "athlete": "4685617",
+   "espn": {
+    "seen": "2026-11-19T21:26:21.010Z",
+    "own": "2026-11-19T21:13:00.000Z"
+   }
   }
  }
 }

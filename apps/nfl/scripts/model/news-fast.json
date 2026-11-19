@@ -1,13 +1,13 @@
 {
  "sport": "nfl",
  "cursor": {
-  "adamscheftermirror.bsky.social": "2026-11-19T20:31:22.181Z",
+  "adamscheftermirror.bsky.social": "2026-11-19T21:16:21.238Z",
   "rapsheet.bsky.social": "2026-11-19T20:56:13.342Z",
   "nflnewsreposterbot.bsky.social": "2026-11-16T18:35:13.806Z",
   "insidenflnews.bsky.social": "2026-11-19T20:50:27.919Z",
   "nflnewsposter.bsky.social": "2026-11-19T20:47:27.452Z",
-  "rotoworld-fb.bsky.social": "2026-11-19T21:03:56.000Z",
-  "rotowirenfl.bsky.social": "2026-11-19T21:14:00.000Z"
+  "rotoworld-fb.bsky.social": "2026-11-19T21:22:10.000Z",
+  "rotowirenfl.bsky.social": "2026-11-19T21:26:18.000Z"
  },
  "claims": [
   {
@@ -18716,6 +18716,84 @@
    "kind": "status",
    "confidence": 0.8,
    "text": "Carnell Tate: Limited at Thursday's practice \n\n https://www.rotowire.com/football/player/carnell-tate-19268"
+  },
+  {
+   "id": "at://did:plc:qre6zxbmr3ixhdmgsgdretb5/app.bsky.feed.post/3n2oylu2opv27|kennethwalker|questionable|status",
+   "at": "2026-11-19T21:16:21.238Z",
+   "seen": "2026-11-19T21:28:09.246Z",
+   "handle": "adamscheftermirror.bsky.social",
+   "post": "at://did:plc:qre6zxbmr3ixhdmgsgdretb5/app.bsky.feed.post/3n2oylu2opv27",
+   "player": "Kenneth Walker",
+   "team": "KC",
+   "status": "questionable",
+   "kind": "status",
+   "confidence": 0.6,
+   "text": "For the second straight days Chiefs RB Kenneth Walker did not practice due to his groin injury.\n\nOriginal post"
+  },
+  {
+   "id": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3n2oynj6y7u2s|kennethwalker|out|status",
+   "at": "2026-11-19T21:17:16.000Z",
+   "seen": "2026-11-19T21:28:09.246Z",
+   "handle": "rotoworld-fb.bsky.social",
+   "post": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3n2oynj6y7u2s",
+   "player": "Kenneth Walker",
+   "team": "KC",
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.6,
+   "text": "Kenneth Walker remains sidelined Thursday"
+  },
+  {
+   "id": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3n2oyw7tckg2w|carnelltate|limited|status",
+   "at": "2026-11-19T21:22:09.000Z",
+   "seen": "2026-11-19T21:28:09.246Z",
+   "handle": "rotoworld-fb.bsky.social",
+   "post": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3n2oyw7tckg2w",
+   "player": "Carnell Tate",
+   "team": null,
+   "status": "limited",
+   "kind": "status",
+   "confidence": 0.8,
+   "text": "Carnell Tate (shoulder) remains limited Thursday"
+  },
+  {
+   "id": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3n2oywayqpm2p|bhayshultuten|questionable|status",
+   "at": "2026-11-19T21:22:10.000Z",
+   "seen": "2026-11-19T21:28:09.246Z",
+   "handle": "rotoworld-fb.bsky.social",
+   "post": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3n2oywayqpm2p",
+   "player": "Bhayshul Tuten",
+   "team": null,
+   "status": "questionable",
+   "kind": "status",
+   "confidence": 0.6,
+   "text": "Tuten (ankle/foot) misses Thursday practice"
+  },
+  {
+   "id": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3n2oz2ypa5v25|bhayshultuten|questionable|status",
+   "at": "2026-11-19T21:24:49.000Z",
+   "seen": "2026-11-19T21:28:09.246Z",
+   "handle": "rotowirenfl.bsky.social",
+   "post": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3n2oz2ypa5v25",
+   "player": "Bhayshul Tuten",
+   "team": null,
+   "status": "questionable",
+   "kind": "status",
+   "confidence": 0.6,
+   "text": "Bhayshul Tuten: Logs a 'DNP' Thursday \n\n https://www.rotowire.com/football/player/bhayshul-tuten-18524"
+  },
+  {
+   "id": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3n2oz5ndsxf2t|jordyntyson|limited|status",
+   "at": "2026-11-19T21:26:18.000Z",
+   "seen": "2026-11-19T21:28:09.246Z",
+   "handle": "rotowirenfl.bsky.social",
+   "post": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3n2oz5ndsxf2t",
+   "player": "Jordyn Tyson",
+   "team": null,
+   "status": "limited",
+   "kind": "status",
+   "confidence": 0.8,
+   "text": "Jordyn Tyson: Stays limited Thursday \n\n https://www.rotowire.com/football/player/jordyn-tyson-19233"
   }
  ]
 }
