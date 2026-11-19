@@ -24172,6 +24172,42 @@
     "own": "2026-11-18T23:33:36.000Z",
     "why": "@rotowirenba.bsky.social: Tyrese Maxey: Ruled out for Wednesday \n\n https://www.r"
    }
+  },
+  "401910013|deanwade|out": {
+   "game": "401910013",
+   "start": "2026-11-19T01:00Z",
+   "team": "3",
+   "name": "Dean Wade",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-19T00:11:37.472Z",
+    "own": "2026-11-18T23:19:53.000Z",
+    "why": "@rotowirenba.bsky.social: Dean Wade: Won't play Wednesday \n\n https://www.rotowir"
+   }
+  },
+  "401910013|tyresemaxey|out": {
+   "game": "401910013",
+   "start": "2026-11-19T01:00Z",
+   "team": "3",
+   "name": "Tyrese Maxey",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-19T00:11:37.472Z",
+    "own": "2026-11-18T23:33:36.000Z",
+    "why": "@rotowirenba.bsky.social: Tyrese Maxey: Ruled out for Wednesday \n\n https://www.r"
+   }
+  },
+  "401910013|cadecunningham|out": {
+   "game": "401910013",
+   "start": "2026-11-19T01:00Z",
+   "team": "8",
+   "name": "Cade Cunningham",
+   "status": "out",
+   "athlete": "4432166",
+   "espn": {
+    "seen": "2026-11-19T00:46:14.701Z",
+    "own": "2026-11-19T00:33:00.000Z"
+   }
   }
  }
 }
