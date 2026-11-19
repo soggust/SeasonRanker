@@ -4,7 +4,7 @@
   "adamscheftermirror.bsky.social": "2026-11-19T11:31:14.757Z",
   "rapsheet.bsky.social": "2026-11-18T19:34:39.202Z",
   "nflnewsreposterbot.bsky.social": "2026-11-16T18:35:13.806Z",
-  "insidenflnews.bsky.social": "2026-11-18T17:31:26.437Z",
+  "insidenflnews.bsky.social": "2026-11-19T14:59:21.685Z",
   "nflnewsposter.bsky.social": "2026-11-19T13:46:20.817Z",
   "rotoworld-fb.bsky.social": "2026-11-19T00:39:15.000Z",
   "rotowirenfl.bsky.social": "2026-11-19T00:17:01.000Z"
@@ -18885,6 +18885,19 @@
    "kind": "status",
    "confidence": 0.9,
    "text": "[Rapoport] 49ers WR Christian Kirk, who was placed on Injured Reserve two weeks ago for the second time this season, recently underwent meniscus surgery. twitter.com/RapSheet/sta..."
+  },
+  {
+   "id": "at://did:plc:mbr4badgf6yu56mquzackzew/app.bsky.feed.post/3n2odjqdx322j|christiankirk|out|status",
+   "at": "2026-11-19T14:59:21.685Z",
+   "seen": "2026-11-19T15:05:34.116Z",
+   "handle": "insidenflnews.bsky.social",
+   "post": "at://did:plc:mbr4badgf6yu56mquzackzew/app.bsky.feed.post/3n2odjqdx322j",
+   "player": "Christian Kirk",
+   "team": null,
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.35,
+   "text": "Rap: Christian Kirk (knee) recently underwent meniscus surgery."
   }
  ]
 }

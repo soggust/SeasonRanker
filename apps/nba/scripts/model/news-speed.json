@@ -24037,6 +24037,54 @@
     "own": "2026-11-19T03:13:01.000Z",
     "why": "@rotowirenba.bsky.social: Alex Caruso: Won't return Wednesday \n\n https://www.rot"
    }
+  },
+  "401910019|isaiahstewart|q": {
+   "game": "401910019",
+   "start": "2026-11-20T01:00Z",
+   "team": "29",
+   "name": "Isaiah Stewart",
+   "status": "q",
+   "athlete": "4432810",
+   "espn": {
+    "seen": "2026-11-19T15:03:47.476Z",
+    "own": "2026-11-19T14:44:00.000Z"
+   }
+  },
+  "401910019|draymondgreen|q": {
+   "game": "401910019",
+   "start": "2026-11-20T01:00Z",
+   "team": "9",
+   "name": "Draymond Green",
+   "status": "q",
+   "athlete": "6589",
+   "espn": {
+    "seen": "2026-11-19T15:03:47.476Z",
+    "own": "2026-11-19T14:59:00.000Z"
+   }
+  },
+  "401910019|alhorford|q": {
+   "game": "401910019",
+   "start": "2026-11-20T01:00Z",
+   "team": "9",
+   "name": "Al Horford",
+   "status": "q",
+   "athlete": "3213",
+   "espn": {
+    "seen": "2026-11-19T15:03:47.476Z",
+    "own": "2026-11-19T14:51:00.000Z"
+   }
+  },
+  "401910020|ryanrollins|q": {
+   "game": "401910020",
+   "start": "2026-11-20T01:00Z",
+   "team": "15",
+   "name": "Ryan Rollins",
+   "status": "q",
+   "athlete": "4591725",
+   "espn": {
+    "seen": "2026-11-19T15:03:47.476Z",
+    "own": "2026-11-19T14:45:00.000Z"
+   }
   }
  }
 }
