@@ -23579,6 +23579,464 @@
     "own": "2026-11-19T03:13:01.000Z",
     "why": "@rotowirenba.bsky.social: Alex Caruso: Won't return Wednesday \n\n https://www.rot"
    }
+  },
+  "401910019|ggjackson|out": {
+   "game": "401910019",
+   "start": "2026-11-20T01:00Z",
+   "team": "29",
+   "name": "GG Jackson",
+   "status": "out",
+   "athlete": "5105550",
+   "espn": {
+    "seen": "2026-11-19T05:13:30.709Z",
+    "own": "2026-11-17T23:18:00.000Z"
+   }
+  },
+  "401910019|isaiahstewart|out": {
+   "game": "401910019",
+   "start": "2026-11-20T01:00Z",
+   "team": "29",
+   "name": "Isaiah Stewart",
+   "status": "out",
+   "athlete": "4432810",
+   "espn": {
+    "seen": "2026-11-19T05:13:30.709Z",
+    "own": "2026-11-17T22:10:00.000Z"
+   }
+  },
+  "401910019|tyjerome|out": {
+   "game": "401910019",
+   "start": "2026-11-20T01:00Z",
+   "team": "29",
+   "name": "Ty Jerome",
+   "status": "out",
+   "athlete": "4065733",
+   "espn": {
+    "seen": "2026-11-19T05:13:30.709Z",
+    "own": "2026-11-17T22:07:00.000Z"
+   }
+  },
+  "401910019|scottypippen|out": {
+   "game": "401910019",
+   "start": "2026-11-20T01:00Z",
+   "team": "29",
+   "name": "Scotty Pippen Jr.",
+   "status": "out",
+   "athlete": "4431785",
+   "espn": {
+    "seen": "2026-11-19T05:13:30.709Z",
+    "own": "2026-11-16T17:16:00.000Z"
+   }
+  },
+  "401910019|richiesaunders|out": {
+   "game": "401910019",
+   "start": "2026-11-20T01:00Z",
+   "team": "29",
+   "name": "Richie Saunders",
+   "status": "out",
+   "athlete": "5105462",
+   "espn": {
+    "seen": "2026-11-19T05:13:30.709Z",
+    "own": "2026-11-07T17:24:00.000Z"
+   }
+  },
+  "401910019|deniavdija|q": {
+   "game": "401910019",
+   "start": "2026-11-20T01:00Z",
+   "team": "29",
+   "name": "Deni Avdija",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-11-18T23:17:52.439Z",
+    "own": "2026-11-18T22:54:45.000Z",
+    "why": "@rotowirenba.bsky.social: Deni Avdija: Questionable versus Bucks \n\n https://www."
+   }
+  },
+  "401910019|deanwade|out": {
+   "game": "401910019",
+   "start": "2026-11-20T01:00Z",
+   "team": "29",
+   "name": "Dean Wade",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-19T00:11:37.472Z",
+    "own": "2026-11-18T23:19:53.000Z",
+    "why": "@rotowirenba.bsky.social: Dean Wade: Won't play Wednesday \n\n https://www.rotowir"
+   }
+  },
+  "401910019|tyresemaxey|out": {
+   "game": "401910019",
+   "start": "2026-11-20T01:00Z",
+   "team": "29",
+   "name": "Tyrese Maxey",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-19T00:11:37.472Z",
+    "own": "2026-11-18T23:33:36.000Z",
+    "why": "@rotowirenba.bsky.social: Tyrese Maxey: Ruled out for Wednesday \n\n https://www.r"
+   }
+  },
+  "401910019|alexcaruso|out": {
+   "game": "401910019",
+   "start": "2026-11-20T01:00Z",
+   "team": "29",
+   "name": "Alex Caruso",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-19T03:23:21.216Z",
+    "own": "2026-11-19T03:13:01.000Z",
+    "why": "@rotowirenba.bsky.social: Alex Caruso: Won't return Wednesday \n\n https://www.rot"
+   }
+  },
+  "401910019|alhorford|out": {
+   "game": "401910019",
+   "start": "2026-11-20T01:00Z",
+   "team": "9",
+   "name": "Al Horford",
+   "status": "out",
+   "athlete": "3213",
+   "espn": {
+    "seen": "2026-11-19T05:13:30.709Z",
+    "own": "2026-11-18T23:38:00.000Z"
+   }
+  },
+  "401910019|brandonwilliams|out": {
+   "game": "401910019",
+   "start": "2026-11-20T01:00Z",
+   "team": "9",
+   "name": "Brandon Williams",
+   "status": "out",
+   "athlete": "4397040",
+   "espn": {
+    "seen": "2026-11-19T05:13:30.709Z",
+    "own": "2026-11-18T17:12:00.000Z"
+   }
+  },
+  "401910019|stephencurry|out": {
+   "game": "401910019",
+   "start": "2026-11-20T01:00Z",
+   "team": "9",
+   "name": "Stephen Curry",
+   "status": "out",
+   "athlete": "3975",
+   "espn": {
+    "seen": "2026-11-19T05:13:30.709Z",
+    "own": "2026-11-12T17:03:00.000Z"
+   }
+  },
+  "401910019|kristapsporzingis|out": {
+   "game": "401910019",
+   "start": "2026-11-20T01:00Z",
+   "team": "9",
+   "name": "Kristaps Porzingis",
+   "status": "out",
+   "athlete": "3102531",
+   "espn": {
+    "seen": "2026-11-19T05:13:30.709Z",
+    "own": "2026-11-06T21:26:00.000Z"
+   }
+  },
+  "401910019|mosesmoody|out": {
+   "game": "401910019",
+   "start": "2026-11-20T01:00Z",
+   "team": "9",
+   "name": "Moses Moody",
+   "status": "out",
+   "athlete": "4432171",
+   "espn": {
+    "seen": "2026-11-19T05:13:30.709Z",
+    "own": "2026-10-16T16:14:00.000Z"
+   }
+  },
+  "401910019|jimmybutler|out": {
+   "game": "401910019",
+   "start": "2026-11-20T01:00Z",
+   "team": "9",
+   "name": "Jimmy Butler III",
+   "status": "out",
+   "athlete": "6430",
+   "espn": {
+    "seen": "2026-11-19T05:13:30.709Z",
+    "own": "2026-10-16T16:11:00.000Z"
+   }
+  },
+  "401910019|jonathankuminga|q": {
+   "game": "401910019",
+   "start": "2026-11-20T01:00Z",
+   "team": "9",
+   "name": "Jonathan Kuminga",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-11-18T23:17:52.439Z",
+    "own": "2026-11-18T23:04:07.000Z",
+    "why": "@rotowirenba.bsky.social: Jonathan Kuminga: Questionable for Thursday \n\n https:/"
+   }
+  },
+  "401910020|ryanrollins|out": {
+   "game": "401910020",
+   "start": "2026-11-20T01:00Z",
+   "team": "15",
+   "name": "Ryan Rollins",
+   "status": "out",
+   "athlete": "4591725",
+   "espn": {
+    "seen": "2026-11-19T05:13:30.709Z",
+    "own": "2026-11-18T18:10:00.000Z"
+   },
+   "sleeper": {
+    "seen": "2026-11-18T20:13:25.236Z",
+    "own": "2026-11-18T19:25:52.770Z"
+   }
+  },
+  "401910020|ousmanedieng|out": {
+   "game": "401910020",
+   "start": "2026-11-20T01:00Z",
+   "team": "15",
+   "name": "Ousmane Dieng",
+   "status": "out",
+   "athlete": "4997526",
+   "espn": {
+    "seen": "2026-11-19T05:13:30.709Z",
+    "own": "2026-11-15T23:46:00.000Z"
+   }
+  },
+  "401910020|deniavdija|q": {
+   "game": "401910020",
+   "start": "2026-11-20T01:00Z",
+   "team": "15",
+   "name": "Deni Avdija",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-11-18T23:17:52.439Z",
+    "own": "2026-11-18T22:54:45.000Z",
+    "why": "@rotowirenba.bsky.social: Deni Avdija: Questionable versus Bucks \n\n https://www."
+   },
+   "athlete": "4683021",
+   "espn": {
+    "seen": "2026-11-19T05:13:30.709Z",
+    "own": "2026-11-18T22:54:00.000Z"
+   }
+  },
+  "401910020|deanwade|out": {
+   "game": "401910020",
+   "start": "2026-11-20T01:00Z",
+   "team": "15",
+   "name": "Dean Wade",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-19T00:11:37.472Z",
+    "own": "2026-11-18T23:19:53.000Z",
+    "why": "@rotowirenba.bsky.social: Dean Wade: Won't play Wednesday \n\n https://www.rotowir"
+   }
+  },
+  "401910020|tyresemaxey|out": {
+   "game": "401910020",
+   "start": "2026-11-20T01:00Z",
+   "team": "15",
+   "name": "Tyrese Maxey",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-19T00:11:37.472Z",
+    "own": "2026-11-18T23:33:36.000Z",
+    "why": "@rotowirenba.bsky.social: Tyrese Maxey: Ruled out for Wednesday \n\n https://www.r"
+   }
+  },
+  "401910020|alexcaruso|out": {
+   "game": "401910020",
+   "start": "2026-11-20T01:00Z",
+   "team": "15",
+   "name": "Alex Caruso",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-19T03:23:21.216Z",
+    "own": "2026-11-19T03:13:01.000Z",
+    "why": "@rotowirenba.bsky.social: Alex Caruso: Won't return Wednesday \n\n https://www.rot"
+   }
+  },
+  "401910020|robertwilliams|out": {
+   "game": "401910020",
+   "start": "2026-11-20T01:00Z",
+   "team": "22",
+   "name": "Robert Williams III",
+   "status": "out",
+   "athlete": "4066211",
+   "espn": {
+    "seen": "2026-11-19T05:13:30.709Z",
+    "own": "2026-11-18T22:58:00.000Z"
+   }
+  },
+  "401910020|toumanicamara|q": {
+   "game": "401910020",
+   "start": "2026-11-20T01:00Z",
+   "team": "22",
+   "name": "Toumani Camara",
+   "status": "q",
+   "athlete": "4431736",
+   "espn": {
+    "seen": "2026-11-19T05:13:30.709Z",
+    "own": "2026-11-18T22:53:00.000Z"
+   },
+   "bluesky": {
+    "seen": "2026-11-18T23:17:52.439Z",
+    "own": "2026-11-18T22:53:53.000Z",
+    "why": "@rotowirenba.bsky.social: Toumani Camara: Questionable for Thursday \n\n https://w"
+   }
+  },
+  "401910020|chrisyoungblood|out": {
+   "game": "401910020",
+   "start": "2026-11-20T01:00Z",
+   "team": "22",
+   "name": "Chris Youngblood",
+   "status": "out",
+   "athlete": "4706557",
+   "espn": {
+    "seen": "2026-11-19T05:13:30.709Z",
+    "own": "2026-11-17T19:19:00.000Z"
+   }
+  },
+  "401910020|vitkrejci|out": {
+   "game": "401910020",
+   "start": "2026-11-20T01:00Z",
+   "team": "22",
+   "name": "Vit Krejci",
+   "status": "out",
+   "athlete": "4578893",
+   "espn": {
+    "seen": "2026-11-19T05:13:30.709Z",
+    "own": "2026-11-11T19:56:00.000Z"
+   }
+  },
+  "401910020|jamorant|out": {
+   "game": "401910020",
+   "start": "2026-11-20T01:00Z",
+   "team": "22",
+   "name": "Ja Morant",
+   "status": "out",
+   "athlete": "4279888",
+   "espn": {
+    "seen": "2026-11-19T05:13:30.709Z",
+    "own": "2026-11-08T02:18:00.000Z"
+   }
+  },
+  "401910020|shaedonsharpe|out": {
+   "game": "401910020",
+   "start": "2026-11-20T01:00Z",
+   "team": "22",
+   "name": "Shaedon Sharpe",
+   "status": "out",
+   "athlete": "4914336",
+   "espn": {
+    "seen": "2026-11-19T05:13:30.709Z",
+    "own": "2026-08-24T20:23:00.000Z"
+   }
+  },
+  "401910021|zyonpullin|q": {
+   "game": "401910021",
+   "start": "2026-11-20T01:00Z",
+   "team": "16",
+   "name": "Zyon Pullin",
+   "status": "q",
+   "athlete": "4592979",
+   "espn": {
+    "seen": "2026-11-19T05:13:30.709Z",
+    "own": "2026-11-18T23:11:00.000Z"
+   }
+  },
+  "401910021|jonathankuminga|q": {
+   "game": "401910021",
+   "start": "2026-11-20T01:00Z",
+   "team": "16",
+   "name": "Jonathan Kuminga",
+   "status": "q",
+   "athlete": "4433247",
+   "espn": {
+    "seen": "2026-11-19T05:13:30.709Z",
+    "own": "2026-11-18T23:04:00.000Z"
+   }
+  },
+  "401910021|jaylenclark|out": {
+   "game": "401910021",
+   "start": "2026-11-20T01:00Z",
+   "team": "16",
+   "name": "Jaylen Clark",
+   "status": "out",
+   "athlete": "4432247",
+   "espn": {
+    "seen": "2026-11-19T05:13:30.709Z",
+    "own": "2026-11-15T22:40:00.000Z"
+   }
+  },
+  "401910021|anthonyedwards|out": {
+   "game": "401910021",
+   "start": "2026-11-20T01:00Z",
+   "team": "16",
+   "name": "Anthony Edwards",
+   "status": "out",
+   "athlete": "4594268",
+   "espn": {
+    "seen": "2026-11-19T05:13:30.709Z",
+    "own": "2026-10-29T18:33:00.000Z"
+   }
+  },
+  "401910021|dontedivincenzo|out": {
+   "game": "401910021",
+   "start": "2026-11-20T01:00Z",
+   "team": "16",
+   "name": "Donte DiVincenzo",
+   "status": "out",
+   "athlete": "3934673",
+   "espn": {
+    "seen": "2026-11-19T05:13:30.709Z",
+    "own": "2026-10-05T20:53:00.000Z"
+   }
+  },
+  "401910021|deniavdija|q": {
+   "game": "401910021",
+   "start": "2026-11-20T01:00Z",
+   "team": "16",
+   "name": "Deni Avdija",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-11-18T23:17:52.439Z",
+    "own": "2026-11-18T22:54:45.000Z",
+    "why": "@rotowirenba.bsky.social: Deni Avdija: Questionable versus Bucks \n\n https://www."
+   }
+  },
+  "401910021|deanwade|out": {
+   "game": "401910021",
+   "start": "2026-11-20T01:00Z",
+   "team": "16",
+   "name": "Dean Wade",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-19T00:11:37.472Z",
+    "own": "2026-11-18T23:19:53.000Z",
+    "why": "@rotowirenba.bsky.social: Dean Wade: Won't play Wednesday \n\n https://www.rotowir"
+   }
+  },
+  "401910021|tyresemaxey|out": {
+   "game": "401910021",
+   "start": "2026-11-20T01:00Z",
+   "team": "16",
+   "name": "Tyrese Maxey",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-19T00:11:37.472Z",
+    "own": "2026-11-18T23:33:36.000Z",
+    "why": "@rotowirenba.bsky.social: Tyrese Maxey: Ruled out for Wednesday \n\n https://www.r"
+   }
+  },
+  "401910021|alexcaruso|out": {
+   "game": "401910021",
+   "start": "2026-11-20T01:00Z",
+   "team": "16",
+   "name": "Alex Caruso",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-19T03:23:21.216Z",
+    "own": "2026-11-19T03:13:01.000Z",
+    "why": "@rotowirenba.bsky.social: Alex Caruso: Won't return Wednesday \n\n https://www.rot"
+   }
   }
  }
 }
