@@ -1,28 +1,15 @@
 {
  "sport": "nfl",
  "cursor": {
-  "adamscheftermirror.bsky.social": "2026-11-19T17:26:20.327Z",
-  "rapsheet.bsky.social": "2026-11-19T16:53:44.892Z",
+  "adamscheftermirror.bsky.social": "2026-11-19T17:41:17.386Z",
+  "rapsheet.bsky.social": "2026-11-19T17:37:14.439Z",
   "nflnewsreposterbot.bsky.social": "2026-11-16T18:35:13.806Z",
   "insidenflnews.bsky.social": "2026-11-19T17:11:05.431Z",
   "nflnewsposter.bsky.social": "2026-11-19T16:55:50.552Z",
   "rotoworld-fb.bsky.social": "2026-11-19T17:19:25.000Z",
-  "rotowirenfl.bsky.social": "2026-11-19T16:53:13.000Z"
+  "rotowirenfl.bsky.social": "2026-11-19T17:31:39.000Z"
  },
  "claims": [
-  {
-   "id": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3myzsxsj7ql25|amonrastbrown|active|return",
-   "at": "2026-10-29T17:44:33.000Z",
-   "seen": "2026-10-29T17:45:41.413Z",
-   "handle": "rotowirenfl.bsky.social",
-   "post": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3myzsxsj7ql25",
-   "player": "Amon-Ra St. Brown",
-   "team": "DET",
-   "status": "active",
-   "kind": "return",
-   "confidence": 0.6,
-   "text": "Amon-Ra St. Brown: Returns to practice Thursday \n\n https://www.rotowire.com/football/player/amon-ra-st-brown-15332"
-  },
   {
    "id": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3myzw2hy7732c|treveyonhenderson|limited|status",
    "at": "2026-10-29T18:39:44.000Z",
@@ -18911,6 +18898,32 @@
    "kind": "status",
    "confidence": 0.7,
    "text": "Mayfield (foot) returns to practice on Thursday"
+  },
+  {
+   "id": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3n2om22lhbz2g|bhayshultuten|limited|status",
+   "at": "2026-11-19T17:31:39.000Z",
+   "seen": "2026-11-19T17:49:32.744Z",
+   "handle": "rotowirenfl.bsky.social",
+   "post": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3n2om22lhbz2g",
+   "player": "Bhayshul Tuten",
+   "team": null,
+   "status": "limited",
+   "kind": "status",
+   "confidence": 0.6,
+   "text": "Bhayshul Tuten: Works off to the side at start of Thursday's practice \n\n https://www.rotowire.com/football/player/bhayshul-tuten-18524"
+  },
+  {
+   "id": "at://did:plc:qre6zxbmr3ixhdmgsgdretb5/app.bsky.feed.post/3n2omlc2m6p2e|marlonhumphrey|out|status",
+   "at": "2026-11-19T17:41:17.386Z",
+   "seen": "2026-11-19T17:49:32.744Z",
+   "handle": "adamscheftermirror.bsky.social",
+   "post": "at://did:plc:qre6zxbmr3ixhdmgsgdretb5/app.bsky.feed.post/3n2omlc2m6p2e",
+   "player": "Marlon Humphrey",
+   "team": "BAL",
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.95,
+   "text": "More about the Ravens sending home CB Marlon Humphrey and making him inactive for Sunday’s game against the Panthers following a recent derogatory comment he made about the city of Baltimore, via @jam"
   }
  ]
 }
