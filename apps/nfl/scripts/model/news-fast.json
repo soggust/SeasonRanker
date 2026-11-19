@@ -6,7 +6,7 @@
   "nflnewsreposterbot.bsky.social": "2026-11-16T18:35:13.806Z",
   "insidenflnews.bsky.social": "2026-11-18T17:31:26.437Z",
   "nflnewsposter.bsky.social": "2026-11-19T00:12:29.390Z",
-  "rotoworld-fb.bsky.social": "2026-11-18T23:17:50.000Z",
+  "rotoworld-fb.bsky.social": "2026-11-19T00:39:15.000Z",
   "rotowirenfl.bsky.social": "2026-11-19T00:17:01.000Z"
  },
  "claims": [
@@ -18898,6 +18898,19 @@
    "kind": "status",
    "confidence": 0.9,
    "text": "Ladd McConkey: Limited in Wednesday's practice \n\n https://www.rotowire.com/football/player/ladd-mcconkey-17724"
+  },
+  {
+   "id": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3n2mthqrai22w|laddmcconkey|limited|status",
+   "at": "2026-11-19T00:39:15.000Z",
+   "seen": "2026-11-19T00:59:38.767Z",
+   "handle": "rotoworld-fb.bsky.social",
+   "post": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3n2mthqrai22w",
+   "player": "Ladd McConkey",
+   "team": null,
+   "status": "limited",
+   "kind": "status",
+   "confidence": 0.9,
+   "text": "Ladd McConkey (back) limited Wednesday"
   }
  ]
 }

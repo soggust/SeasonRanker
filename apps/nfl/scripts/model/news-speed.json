@@ -15622,6 +15622,30 @@
     "seen": "2026-11-19T00:29:47.465Z",
     "own": "2026-11-19T00:17:00.000Z"
    }
+  },
+  "401873066|laddmcconkey|q": {
+   "game": "401873066",
+   "start": "2026-11-20T01:15Z",
+   "team": "34",
+   "name": "Ladd McConkey",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-11-19T00:35:17.122Z",
+    "own": "2026-11-19T00:17:01.000Z",
+    "why": "@rotowirenfl.bsky.social: Ladd McConkey: Limited in Wednesday's practice \n\n http"
+   }
+  },
+  "401873074|charliekolar|q": {
+   "game": "401873074",
+   "start": "2026-11-22T21:05Z",
+   "team": "24",
+   "name": "Charlie Kolar",
+   "status": "q",
+   "athlete": "4241263",
+   "espn": {
+    "seen": "2026-11-19T00:56:51.895Z",
+    "own": "2026-11-19T00:25:00.000Z"
+   }
   }
  }
 }

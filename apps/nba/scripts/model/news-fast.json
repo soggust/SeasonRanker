@@ -1,76 +1,11 @@
 {
  "sport": "nba",
  "cursor": {
-  "rotowirenba.bsky.social": "2026-11-18T23:33:36.000Z",
+  "rotowirenba.bsky.social": "2026-11-19T00:48:39.000Z",
   "insidenbanews.bsky.social": "2026-11-13T20:00:09.852Z",
   "shamsbot.bsky.social": "2026-11-17T19:24:56.000Z"
  },
  "claims": [
-  {
-   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3myxzo3g6p52l|karlanthonytowns|active|return",
-   "at": "2026-10-29T00:39:04.000Z",
-   "seen": "2026-10-29T00:52:30.413Z",
-   "handle": "rotowirenba.bsky.social",
-   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3myxzo3g6p52l",
-   "player": "Karl-Anthony Towns",
-   "team": null,
-   "status": "active",
-   "kind": "return",
-   "confidence": 0.5,
-   "text": "Karl-Anthony Towns: Returns to Wednesday's game \n\n https://www.rotowire.com/basketball/player/karl-anthony-towns-3741"
-  },
-  {
-   "id": "at://did:plc:ykcnnf6kqnn3lasmobrczoem/app.bsky.feed.post/3myy2bs6gvc2f|brandoningram|out|status",
-   "at": "2026-10-29T00:50:05.618Z",
-   "seen": "2026-10-29T00:52:30.413Z",
-   "handle": "insidenbanews.bsky.social",
-   "post": "at://did:plc:ykcnnf6kqnn3lasmobrczoem/app.bsky.feed.post/3myy2bs6gvc2f",
-   "player": "Brandon Ingram",
-   "team": null,
-   "status": "out",
-   "kind": "status",
-   "confidence": 0.9,
-   "text": "Brandon Ingram (heel), Max Strus (foot), Yanic Konan Niederhauser (foot) to miss at least 1 more week."
-  },
-  {
-   "id": "at://did:plc:ykcnnf6kqnn3lasmobrczoem/app.bsky.feed.post/3myy2bs6gvc2f|maxstrus|out|status",
-   "at": "2026-10-29T00:50:05.618Z",
-   "seen": "2026-10-29T00:52:30.413Z",
-   "handle": "insidenbanews.bsky.social",
-   "post": "at://did:plc:ykcnnf6kqnn3lasmobrczoem/app.bsky.feed.post/3myy2bs6gvc2f",
-   "player": "Max Strus",
-   "team": null,
-   "status": "out",
-   "kind": "status",
-   "confidence": 0.9,
-   "text": "Brandon Ingram (heel), Max Strus (foot), Yanic Konan Niederhauser (foot) to miss at least 1 more week."
-  },
-  {
-   "id": "at://did:plc:ykcnnf6kqnn3lasmobrczoem/app.bsky.feed.post/3myy2bs6gvc2f|yanickonanniederhauser|out|status",
-   "at": "2026-10-29T00:50:05.618Z",
-   "seen": "2026-10-29T00:52:30.413Z",
-   "handle": "insidenbanews.bsky.social",
-   "post": "at://did:plc:ykcnnf6kqnn3lasmobrczoem/app.bsky.feed.post/3myy2bs6gvc2f",
-   "player": "Yanic Konan Niederhauser",
-   "team": null,
-   "status": "out",
-   "kind": "status",
-   "confidence": 0.9,
-   "text": "Brandon Ingram (heel), Max Strus (foot), Yanic Konan Niederhauser (foot) to miss at least 1 more week."
-  },
-  {
-   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3myy2h7khsa2c|jaxsonhayes|none|starting",
-   "at": "2026-10-29T00:53:07.000Z",
-   "seen": "2026-10-29T01:21:50.888Z",
-   "handle": "rotowirenba.bsky.social",
-   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3myy2h7khsa2c",
-   "player": "Jaxson Hayes",
-   "team": null,
-   "status": "none",
-   "kind": "starting",
-   "confidence": 0.85,
-   "text": "Jaxson Hayes: Starting Wednesday \n\n https://www.rotowire.com/basketball/player/jaxson-hayes-4771"
-  },
   {
    "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3myy2uhljdz2l|brandoningram|out|status",
    "at": "2026-10-29T01:00:31.000Z",
@@ -7467,6 +7402,32 @@
    "kind": "status",
    "confidence": 0.95,
    "text": "Tyrese Maxey: Ruled out for Wednesday \n\n https://www.rotowire.com/basketball/player/tyrese-maxey-5158"
+  },
+  {
+   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3n2mtergjxr2z|cadecunningham|out|status",
+   "at": "2026-11-19T00:37:35.000Z",
+   "seen": "2026-11-19T00:59:38.767Z",
+   "handle": "rotowirenba.bsky.social",
+   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3n2mtergjxr2z",
+   "player": "Cade Cunningham",
+   "team": "DET",
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.93,
+   "text": "Cade Cunningham: Ruled out Wednesday \n\n https://www.rotowire.com/basketball/player/cade-cunningham-5336"
+  },
+  {
+   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3n2mtykmjnu26|javontegreen|none|starting",
+   "at": "2026-11-19T00:48:39.000Z",
+   "seen": "2026-11-19T00:59:38.767Z",
+   "handle": "rotowirenba.bsky.social",
+   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3n2mtykmjnu26",
+   "player": "Javonte Green",
+   "team": null,
+   "status": "none",
+   "kind": "starting",
+   "confidence": 0.9,
+   "text": "Javonte Green: Starting Wednesday \n\n https://www.rotowire.com/basketball/player/javonte-green-4588"
   }
  ]
 }
