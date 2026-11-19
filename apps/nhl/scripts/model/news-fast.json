@@ -4,49 +4,10 @@
   "johnston-bot.bsky.social": "2026-11-18T16:07:40.564Z",
   "notfriedgehnic.bsky.social": "2026-11-19T14:26:38.687Z",
   "dailyfaceoff.bsky.social": "2026-11-19T16:05:38.000Z",
-  "dfotoronto.bsky.social": "2026-11-19T16:19:06.000Z",
+  "dfotoronto.bsky.social": "2026-11-19T16:44:25.000Z",
   "marklazerus.bsky.social": "2026-11-19T03:51:49.788Z"
  },
  "claims": [
-  {
-   "id": "at://did:plc:3uus7y6h3rlrk6sbctzxm4bg/app.bsky.feed.post/3myzog4i23p2u|taylorhall|out|status",
-   "at": "2026-10-29T16:23:05.000Z",
-   "seen": "2026-10-29T16:51:09.213Z",
-   "handle": "dailyfaceoff.bsky.social",
-   "post": "at://did:plc:3uus7y6h3rlrk6sbctzxm4bg/app.bsky.feed.post/3myzog4i23p2u",
-   "player": "Taylor Hall",
-   "team": "CAR",
-   "status": "out",
-   "kind": "status",
-   "confidence": 0.7,
-   "text": "Hurricanes’ Taylor Hall to miss time with upper-body injury"
-  },
-  {
-   "id": "at://did:plc:3uus7y6h3rlrk6sbctzxm4bg/app.bsky.feed.post/3myzow7u4h32g|faber|active|return",
-   "at": "2026-10-29T16:32:05.000Z",
-   "seen": "2026-10-29T16:51:09.213Z",
-   "handle": "dailyfaceoff.bsky.social",
-   "post": "at://did:plc:3uus7y6h3rlrk6sbctzxm4bg/app.bsky.feed.post/3myzow7u4h32g",
-   "player": "Faber",
-   "team": "MIN",
-   "status": "active",
-   "kind": "return",
-   "confidence": 0.8,
-   "text": "Report: Wild’s Faber clears return to play protocol, Spurgeon out week to week"
-  },
-  {
-   "id": "at://did:plc:3uus7y6h3rlrk6sbctzxm4bg/app.bsky.feed.post/3myzow7u4h32g|spurgeon|out|status",
-   "at": "2026-10-29T16:32:05.000Z",
-   "seen": "2026-10-29T16:51:09.213Z",
-   "handle": "dailyfaceoff.bsky.social",
-   "post": "at://did:plc:3uus7y6h3rlrk6sbctzxm4bg/app.bsky.feed.post/3myzow7u4h32g",
-   "player": "Spurgeon",
-   "team": "MIN",
-   "status": "out",
-   "kind": "status",
-   "confidence": 0.85,
-   "text": "Report: Wild’s Faber clears return to play protocol, Spurgeon out week to week"
-  },
   {
    "id": "at://did:plc:3uus7y6h3rlrk6sbctzxm4bg/app.bsky.feed.post/3myzpoi5rrq2u|victorhedman|active|return",
    "at": "2026-10-29T16:45:39.000Z",

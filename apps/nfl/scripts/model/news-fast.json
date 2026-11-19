@@ -5,24 +5,11 @@
   "rapsheet.bsky.social": "2026-11-18T19:34:39.202Z",
   "nflnewsreposterbot.bsky.social": "2026-11-16T18:35:13.806Z",
   "insidenflnews.bsky.social": "2026-11-19T14:59:21.685Z",
-  "nflnewsposter.bsky.social": "2026-11-19T13:46:20.817Z",
-  "rotoworld-fb.bsky.social": "2026-11-19T00:39:15.000Z",
-  "rotowirenfl.bsky.social": "2026-11-19T00:17:01.000Z"
+  "nflnewsposter.bsky.social": "2026-11-19T16:39:49.517Z",
+  "rotoworld-fb.bsky.social": "2026-11-19T16:29:06.000Z",
+  "rotowirenfl.bsky.social": "2026-11-19T16:26:41.000Z"
  },
  "claims": [
-  {
-   "id": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3myzpiy4mdy24|gainwell|active|return",
-   "at": "2026-10-29T16:42:34.000Z",
-   "seen": "2026-10-29T16:51:09.213Z",
-   "handle": "rotoworld-fb.bsky.social",
-   "post": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3myzpiy4mdy24",
-   "player": "Gainwell",
-   "team": null,
-   "status": "active",
-   "kind": "return",
-   "confidence": 0.6,
-   "text": "Gainwell (hip) returns to practice on Thursday"
-  },
   {
    "id": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3myzpykpxsy2d|egbuka|limited|status",
    "at": "2026-10-29T16:51:17.000Z",
