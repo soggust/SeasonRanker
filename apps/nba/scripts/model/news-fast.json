@@ -1,7 +1,7 @@
 {
  "sport": "nba",
  "cursor": {
-  "rotowirenba.bsky.social": "2026-11-19T00:48:39.000Z",
+  "rotowirenba.bsky.social": "2026-11-19T01:38:48.000Z",
   "insidenbanews.bsky.social": "2026-11-13T20:00:09.852Z",
   "shamsbot.bsky.social": "2026-11-17T19:24:56.000Z"
  },
@@ -7415,6 +7415,19 @@
    "kind": "starting",
    "confidence": 0.9,
    "text": "Javonte Green: Starting Wednesday \n\n https://www.rotowire.com/basketball/player/javonte-green-4588"
+  },
+  {
+   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3n2mw6g7bc42k|alperensengun|out|status",
+   "at": "2026-11-19T01:27:43.000Z",
+   "seen": "2026-11-19T01:41:22.351Z",
+   "handle": "rotowirenba.bsky.social",
+   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3n2mw6g7bc42k",
+   "player": "Alperen Sengun",
+   "team": "HOU",
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.8,
+   "text": "Alperen Sengun: Won't return Wednesday \n\n https://www.rotowire.com/basketball/player/alperen-sengun-5404"
   }
  ]
 }
