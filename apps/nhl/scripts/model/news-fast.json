@@ -4,23 +4,10 @@
   "johnston-bot.bsky.social": "2026-11-18T16:07:40.564Z",
   "notfriedgehnic.bsky.social": "2026-11-19T14:26:38.687Z",
   "dailyfaceoff.bsky.social": "2026-11-19T17:31:59.000Z",
-  "dfotoronto.bsky.social": "2026-11-19T17:36:27.000Z",
+  "dfotoronto.bsky.social": "2026-11-19T17:53:59.000Z",
   "marklazerus.bsky.social": "2026-11-19T03:51:49.788Z"
  },
  "claims": [
-  {
-   "id": "at://did:plc:sdobrsxnvwczrjydmnubhibh/app.bsky.feed.post/3myzuekcirq2h|dylanlarkin|out|status",
-   "at": "2026-10-29T18:09:34.500Z",
-   "seen": "2026-10-29T18:30:10.224Z",
-   "handle": "notfriedgehnic.bsky.social",
-   "post": "at://did:plc:sdobrsxnvwczrjydmnubhibh/app.bsky.feed.post/3myzuekcirq2h",
-   "player": "Dylan Larkin",
-   "team": "DET",
-   "status": "out",
-   "kind": "status",
-   "confidence": 0.8,
-   "text": "www.sportsnet.ca [Larkin decides to sit out until Red Wings complete trade]"
-  },
   {
    "id": "at://did:plc:3uus7y6h3rlrk6sbctzxm4bg/app.bsky.feed.post/3myzywvajau2o|dylanlarkin|out|status",
    "at": "2026-10-29T19:31:25.000Z",
@@ -2542,6 +2529,19 @@
    "kind": "role",
    "confidence": 0.9,
    "text": "Maple Leafs lineup news: Gavin McKenna promoted to top power play unit, William Nylander on 3rd line"
+  },
+  {
+   "id": "at://did:plc:knaj2vcp4x6t7hr7ewd6e3uz/app.bsky.feed.post/3n2onbyf4iy26|williamnylander|none|role",
+   "at": "2026-11-19T17:53:59.000Z",
+   "seen": "2026-11-19T18:10:34.183Z",
+   "handle": "dfotoronto.bsky.social",
+   "post": "at://did:plc:knaj2vcp4x6t7hr7ewd6e3uz/app.bsky.feed.post/3n2onbyf4iy26",
+   "player": "William Nylander",
+   "team": "TOR",
+   "status": "none",
+   "kind": "role",
+   "confidence": 0.7,
+   "text": "Maple Leafs’ Jim Hiller explains lineup changes, William Nylander’s demotion to 3rd line"
   }
  ]
 }
