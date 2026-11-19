@@ -8371,6 +8371,18 @@
     "seen": "2026-11-18T21:13:47.504Z",
     "own": "2026-11-18T20:37:00.000Z"
    }
+  },
+  "401892748|connorbedard|out": {
+   "game": "401892748",
+   "start": "2026-11-20T01:00Z",
+   "team": "4",
+   "name": "Connor Bedard",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-19T00:11:37.472Z",
+    "own": "2026-11-19T00:01:46.239Z",
+    "why": "@marklazerus.bsky.social: The Blackhawks always knew there was a risk of Connor "
+   }
   }
  }
 }

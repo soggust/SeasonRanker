@@ -1,54 +1,15 @@
 {
  "sport": "nfl",
  "cursor": {
-  "adamscheftermirror.bsky.social": "2026-11-18T21:41:10.615Z",
+  "adamscheftermirror.bsky.social": "2026-11-19T00:31:16.110Z",
   "rapsheet.bsky.social": "2026-11-18T19:34:39.202Z",
   "nflnewsreposterbot.bsky.social": "2026-11-16T18:35:13.806Z",
   "insidenflnews.bsky.social": "2026-11-18T17:31:26.437Z",
-  "nflnewsposter.bsky.social": "2026-11-19T00:10:30.775Z",
+  "nflnewsposter.bsky.social": "2026-11-19T00:12:29.390Z",
   "rotoworld-fb.bsky.social": "2026-11-18T23:17:50.000Z",
-  "rotowirenfl.bsky.social": "2026-11-18T23:05:40.000Z"
+  "rotowirenfl.bsky.social": "2026-11-19T00:17:01.000Z"
  },
  "claims": [
-  {
-   "id": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3myxy6ijsbq2s|michaelwilson|limited|status",
-   "at": "2026-10-29T00:12:27.000Z",
-   "seen": "2026-10-29T00:32:35.710Z",
-   "handle": "rotowirenfl.bsky.social",
-   "post": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3myxy6ijsbq2s",
-   "player": "Michael Wilson",
-   "team": null,
-   "status": "limited",
-   "kind": "status",
-   "confidence": 0.85,
-   "text": "Michael Wilson: Limited Wednesday \n\n https://www.rotowire.com/football/player/michael-wilson-16957"
-  },
-  {
-   "id": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3myxyfnsf7n2z|tylerallgeier|questionable|status",
-   "at": "2026-10-29T00:16:27.000Z",
-   "seen": "2026-10-29T00:32:35.710Z",
-   "handle": "rotowirenfl.bsky.social",
-   "post": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3myxyfnsf7n2z",
-   "player": "Tyler Allgeier",
-   "team": null,
-   "status": "questionable",
-   "kind": "status",
-   "confidence": 0.5,
-   "text": "Tyler Allgeier: DNP on Wednesday \n\n https://www.rotowire.com/football/player/tyler-allgeier-15976"
-  },
-  {
-   "id": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3myxyng3hon2g|tylerallgeier|questionable|status",
-   "at": "2026-10-29T00:20:48.000Z",
-   "seen": "2026-10-29T00:32:35.710Z",
-   "handle": "rotoworld-fb.bsky.social",
-   "post": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3myxyng3hon2g",
-   "player": "Tyler Allgeier",
-   "team": null,
-   "status": "questionable",
-   "kind": "status",
-   "confidence": 0.55,
-   "text": "Tyler Allgeier (toe) DNP Wednesday"
-  },
   {
    "id": "at://did:plc:fuqjc7x4gxvnwzksnlxwbe4x/app.bsky.feed.post/3myy6l2vob2gv|patsurtain|active|return",
    "at": "2026-10-29T02:06:51.724Z",
@@ -18924,6 +18885,19 @@
    "kind": "status",
    "confidence": 0.7,
    "text": "Jaylen Waddle (concussion) practices in full Wed."
+  },
+  {
+   "id": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3n2ms7ybd3d2b|laddmcconkey|limited|status",
+   "at": "2026-11-19T00:17:01.000Z",
+   "seen": "2026-11-19T00:35:17.122Z",
+   "handle": "rotowirenfl.bsky.social",
+   "post": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3n2ms7ybd3d2b",
+   "player": "Ladd McConkey",
+   "team": null,
+   "status": "limited",
+   "kind": "status",
+   "confidence": 0.9,
+   "text": "Ladd McConkey: Limited in Wednesday's practice \n\n https://www.rotowire.com/football/player/ladd-mcconkey-17724"
   }
  ]
 }
