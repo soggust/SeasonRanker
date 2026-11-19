@@ -8587,6 +8587,42 @@
     "own": "2026-11-19T18:43:26.000Z",
     "why": "@dailyfaceoff.bsky.social: Victoire’s Marie-Philip Poulin out until spring for h"
    }
+  },
+  "401892743|nickcousins|out": {
+   "game": "401892743",
+   "start": "2026-11-20T00:00Z",
+   "team": "14",
+   "name": "Nick Cousins",
+   "status": "out",
+   "athlete": "2563027",
+   "espn": {
+    "seen": "2026-11-19T22:07:38.785Z",
+    "own": "2026-11-19T21:58:00.000Z"
+   }
+  },
+  "401892743|haydenhodgson|out": {
+   "game": "401892743",
+   "start": "2026-11-20T00:00Z",
+   "team": "14",
+   "name": "Hayden Hodgson",
+   "status": "out",
+   "athlete": "3150479",
+   "espn": {
+    "seen": "2026-11-19T22:07:38.785Z",
+    "own": "2026-11-19T21:56:00.000Z"
+   }
+  },
+  "401892751|gavinbrindley|out": {
+   "game": "401892751",
+   "start": "2026-11-20T02:00Z",
+   "team": "17",
+   "name": "Gavin Brindley",
+   "status": "out",
+   "athlete": "5136614",
+   "espn": {
+    "seen": "2026-11-19T22:07:38.785Z",
+    "own": "2026-11-19T21:28:00.000Z"
+   }
   }
  }
 }
