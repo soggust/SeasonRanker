@@ -1,54 +1,15 @@
 {
  "sport": "nfl",
  "cursor": {
-  "adamscheftermirror.bsky.social": "2026-11-20T18:16:25.076Z",
+  "adamscheftermirror.bsky.social": "2026-11-20T18:46:24.765Z",
   "rapsheet.bsky.social": "2026-11-20T18:16:48.312Z",
   "nflnewsreposterbot.bsky.social": "2026-11-16T18:35:13.806Z",
   "insidenflnews.bsky.social": "2026-11-20T18:21:55.804Z",
   "nflnewsposter.bsky.social": "2026-11-20T18:27:32.935Z",
   "rotoworld-fb.bsky.social": "2026-11-20T18:20:41.000Z",
-  "rotowirenfl.bsky.social": "2026-11-20T18:16:24.000Z"
+  "rotowirenfl.bsky.social": "2026-11-20T18:36:36.000Z"
  },
  "claims": [
-  {
-   "id": "at://did:plc:qre6zxbmr3ixhdmgsgdretb5/app.bsky.feed.post/3mz4fvvxxmo2d|emekaegbuka|out|status",
-   "at": "2026-10-30T18:28:50.701Z",
-   "seen": "2026-10-30T18:35:16.530Z",
-   "handle": "adamscheftermirror.bsky.social",
-   "post": "at://did:plc:qre6zxbmr3ixhdmgsgdretb5/app.bsky.feed.post/3mz4fvvxxmo2d",
-   "player": "Emeka Egbuka",
-   "team": "TB",
-   "status": "out",
-   "kind": "status",
-   "confidence": 0.95,
-   "text": "Bucs ruled out WR Emeka Egbuka for Sunday’s game vs. the Falcons.\n\nOriginal post"
-  },
-  {
-   "id": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3mz4fw3bsvt2d|breecehall|questionable|status",
-   "at": "2026-10-30T18:28:56.000Z",
-   "seen": "2026-10-30T18:35:16.530Z",
-   "handle": "rotoworld-fb.bsky.social",
-   "post": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3mz4fw3bsvt2d",
-   "player": "Breece Hall",
-   "team": "NYJ",
-   "status": "questionable",
-   "kind": "status",
-   "confidence": 0.9,
-   "text": "Glenn: Breece Hall (quad) questionable for Week 8"
-  },
-  {
-   "id": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3mz4go57hrt2b|colbyparkinson|questionable|status",
-   "at": "2026-10-30T18:42:23.000Z",
-   "seen": "2026-10-30T18:52:33.286Z",
-   "handle": "rotoworld-fb.bsky.social",
-   "post": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3mz4go57hrt2b",
-   "player": "Colby Parkinson",
-   "team": null,
-   "status": "questionable",
-   "kind": "status",
-   "confidence": 0.95,
-   "text": "Colby Parkinson officially questionable for Week 8"
-  },
   {
    "id": "at://did:plc:hlvr2omhnmvdmfnvmcuhyevz/app.bsky.feed.post/3mz4hxdme5s2i|lamarjackson|active|status",
    "at": "2026-10-30T19:05:26.121Z",
