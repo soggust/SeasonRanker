@@ -1,80 +1,15 @@
 {
  "sport": "nfl",
  "cursor": {
-  "adamscheftermirror.bsky.social": "2026-11-20T15:11:24.767Z",
+  "adamscheftermirror.bsky.social": "2026-11-20T17:16:25.080Z",
   "rapsheet.bsky.social": "2026-11-20T14:54:25.963Z",
   "nflnewsreposterbot.bsky.social": "2026-11-16T18:35:13.806Z",
   "insidenflnews.bsky.social": "2026-11-20T16:10:55.085Z",
-  "nflnewsposter.bsky.social": "2026-11-20T16:18:53.140Z",
-  "rotoworld-fb.bsky.social": "2026-11-20T16:23:02.000Z",
-  "rotowirenfl.bsky.social": "2026-11-20T15:51:46.000Z"
+  "nflnewsposter.bsky.social": "2026-11-20T17:16:49.358Z",
+  "rotoworld-fb.bsky.social": "2026-11-20T17:12:18.000Z",
+  "rotowirenfl.bsky.social": "2026-11-20T17:23:24.000Z"
  },
  "claims": [
-  {
-   "id": "at://did:plc:mbr4badgf6yu56mquzackzew/app.bsky.feed.post/3mz4blj5q2s2c|brianrobinson|out|status",
-   "at": "2026-10-30T17:11:26.845Z",
-   "seen": "2026-10-30T17:17:53.809Z",
-   "handle": "insidenflnews.bsky.social",
-   "post": "at://did:plc:mbr4badgf6yu56mquzackzew/app.bsky.feed.post/3mz4blj5q2s2c",
-   "player": "Brian Robinson Jr.",
-   "team": "ATL",
-   "status": "out",
-   "kind": "status",
-   "confidence": 0.95,
-   "text": "Falcons RB Brian Robinson Jr. (hamstring) has been ruled out for Week 8."
-  },
-  {
-   "id": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3mz4bn5lcsr2d|tylerwarren|active|status",
-   "at": "2026-10-30T17:12:21.000Z",
-   "seen": "2026-10-30T17:17:53.809Z",
-   "handle": "rotoworld-fb.bsky.social",
-   "post": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3mz4bn5lcsr2d",
-   "player": "Tyler Warren",
-   "team": "IND",
-   "status": "active",
-   "kind": "status",
-   "confidence": 0.9,
-   "text": "Tyler Warren (groin) good to go for Week 8"
-  },
-  {
-   "id": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3mz4bn6wy5f25|jonathantaylor|active|status",
-   "at": "2026-10-30T17:12:23.000Z",
-   "seen": "2026-10-30T17:17:53.809Z",
-   "handle": "rotoworld-fb.bsky.social",
-   "post": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3mz4bn6wy5f25",
-   "player": "Jonathan Taylor",
-   "team": "IND",
-   "status": "active",
-   "kind": "status",
-   "confidence": 0.85,
-   "text": "Steichen confirms Taylor will play vs. Jaguars"
-  },
-  {
-   "id": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3mz4bqj3uej2e|ajbrown|questionable|status",
-   "at": "2026-10-30T17:14:14.000Z",
-   "seen": "2026-10-30T17:17:53.809Z",
-   "handle": "rotowirenfl.bsky.social",
-   "post": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3mz4bqj3uej2e",
-   "player": "A.J. Brown",
-   "team": "PHI",
-   "status": "questionable",
-   "kind": "status",
-   "confidence": 0.95,
-   "text": "A.J. Brown: Listed as questionable for Week 8 \n\n https://www.rotowire.com/football/player/aj-brown-13432"
-  },
-  {
-   "id": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3mz4c4vcocz2a|ajbrown|questionable|status",
-   "at": "2026-10-30T17:21:09.000Z",
-   "seen": "2026-10-30T17:52:14.379Z",
-   "handle": "rotoworld-fb.bsky.social",
-   "post": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3mz4c4vcocz2a",
-   "player": "A.J. Brown",
-   "team": null,
-   "status": "questionable",
-   "kind": "status",
-   "confidence": 0.95,
-   "text": "Vrabel: A.J. Brown (knee) questionable for Week 8"
-  },
   {
    "id": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3mz4cfjyqxm2d|brianrobinson|out|status",
    "at": "2026-10-30T17:26:00.000Z",
@@ -18794,6 +18729,58 @@
    "kind": "status",
    "confidence": 0.6,
    "text": "Geno (ankle) trending toward playing vs. Chargers"
+  },
+  {
+   "id": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3n2r3bjkctg2u|pukanacua|out|status",
+   "at": "2026-11-20T17:09:35.000Z",
+   "seen": "2026-11-20T17:24:26.691Z",
+   "handle": "rotowirenfl.bsky.social",
+   "post": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3n2r3bjkctg2u",
+   "player": "Puka Nacua",
+   "team": "LAR",
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.95,
+   "text": "Puka Nacua: Set to miss a \"couple months, \" per coach \n\n https://www.rotowire.com/football/player/puka-nacua-16790"
+  },
+  {
+   "id": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3n2r3gfbyem2b|pukanacua|out|status",
+   "at": "2026-11-20T17:12:18.000Z",
+   "seen": "2026-11-20T17:24:26.691Z",
+   "handle": "rotoworld-fb.bsky.social",
+   "post": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3n2r3gfbyem2b",
+   "player": "Puka Nacua",
+   "team": "LAR",
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.9,
+   "text": "Nacua to have MCL surgery, likely out rest of season"
+  },
+  {
+   "id": "at://did:plc:qre6zxbmr3ixhdmgsgdretb5/app.bsky.feed.post/3n2r3nqhtok2o|pukanacua|out|status",
+   "at": "2026-11-20T17:16:25.080Z",
+   "seen": "2026-11-20T17:24:26.691Z",
+   "handle": "adamscheftermirror.bsky.social",
+   "post": "at://did:plc:qre6zxbmr3ixhdmgsgdretb5/app.bsky.feed.post/3n2r3nqhtok2o",
+   "player": "Puka Nacua",
+   "team": "LAR",
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.85,
+   "text": "Rams standout WR Puka Nacua is undergoing surgery on his MCL surgery and now could miss the rest of the season. Rams HC Sean McVay confirmed the surgery while saying Nacua will be out “a couple of mon"
+  },
+  {
+   "id": "at://did:plc:fuqjc7x4gxvnwzksnlxwbe4x/app.bsky.feed.post/3n2r3ohfs622i|bakermayfield|limited|status",
+   "at": "2026-11-20T17:16:49.358Z",
+   "seen": "2026-11-20T17:24:26.691Z",
+   "handle": "nflnewsposter.bsky.social",
+   "post": "at://did:plc:fuqjc7x4gxvnwzksnlxwbe4x/app.bsky.feed.post/3n2r3ohfs622i",
+   "player": "Baker Mayfield",
+   "team": "TB",
+   "status": "limited",
+   "kind": "status",
+   "confidence": 0.8,
+   "text": "[Smith] Todd Bowles says Baker Mayfield looked good in practice today and is trending in the right direction to start on Sunday. twitter.com/scottsbucs/s..."
   }
  ]
 }
