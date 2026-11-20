@@ -3,37 +3,11 @@
  "cursor": {
   "johnston-bot.bsky.social": "2026-11-20T04:01:20.374Z",
   "notfriedgehnic.bsky.social": "2026-11-19T19:19:40.837Z",
-  "dailyfaceoff.bsky.social": "2026-11-20T15:57:58.000Z",
+  "dailyfaceoff.bsky.social": "2026-11-20T17:01:35.000Z",
   "dfotoronto.bsky.social": "2026-11-20T16:39:50.000Z",
   "marklazerus.bsky.social": "2026-11-20T16:17:05.259Z"
  },
  "claims": [
-  {
-   "id": "at://did:plc:3uus7y6h3rlrk6sbctzxm4bg/app.bsky.feed.post/3mz4asmhdx625|cooley|out|status",
-   "at": "2026-10-30T16:57:31.000Z",
-   "seen": "2026-10-30T17:17:53.809Z",
-   "handle": "dailyfaceoff.bsky.social",
-   "post": "at://did:plc:3uus7y6h3rlrk6sbctzxm4bg/app.bsky.feed.post/3mz4asmhdx625",
-   "player": "Cooley",
-   "team": "CGY",
-   "status": "out",
-   "kind": "status",
-   "confidence": 0.95,
-   "text": "Flames’ Cooley placed on injured reserve; Zary week-to-week after knee surgery"
-  },
-  {
-   "id": "at://did:plc:3uus7y6h3rlrk6sbctzxm4bg/app.bsky.feed.post/3mz4asmhdx625|zary|out|status",
-   "at": "2026-10-30T16:57:31.000Z",
-   "seen": "2026-10-30T17:17:53.809Z",
-   "handle": "dailyfaceoff.bsky.social",
-   "post": "at://did:plc:3uus7y6h3rlrk6sbctzxm4bg/app.bsky.feed.post/3mz4asmhdx625",
-   "player": "Zary",
-   "team": "CGY",
-   "status": "out",
-   "kind": "status",
-   "confidence": 0.85,
-   "text": "Flames’ Cooley placed on injured reserve; Zary week-to-week after knee surgery"
-  },
   {
    "id": "at://did:plc:knaj2vcp4x6t7hr7ewd6e3uz/app.bsky.feed.post/3mz4h4idzt427|christanev|none|role",
    "at": "2026-10-30T18:50:25.000Z",
