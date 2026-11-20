@@ -22916,6 +22916,11 @@
    "espn": {
     "seen": "2026-11-20T00:13:33.267Z",
     "own": "2026-11-17T18:46:00.000Z"
+   },
+   "bluesky": {
+    "seen": "2026-11-20T21:15:09.553Z",
+    "own": "2026-11-20T20:41:13.000Z",
+    "why": "@rotowirenba.bsky.social: Tyrese Haliburton: Expected to miss at least two more "
    }
   },
   "401909307|johnnyfurphy|out": {
@@ -23104,6 +23109,11 @@
    "espn": {
     "seen": "2026-11-20T00:13:33.267Z",
     "own": "2026-11-17T22:25:00.000Z"
+   },
+   "bluesky": {
+    "seen": "2026-11-20T21:15:09.553Z",
+    "own": "2026-11-20T20:42:49.000Z",
+    "why": "@rotowirenba.bsky.social: Kawhi Leonard: Still weeks away from returning \n\n http"
    }
   },
   "401909308|natebittle|out": {
@@ -24153,6 +24163,30 @@
     "seen": "2026-11-20T20:04:51.081Z",
     "own": "2026-11-20T20:02:01.767Z",
     "why": "@insidenbanews.bsky.social: Key news to watch\n\nQuestionable:\nAlperen Sengun, And"
+   }
+  },
+  "401909305|kingstonflemings|out": {
+   "game": "401909305",
+   "start": "2026-11-21T00:00Z",
+   "team": "1",
+   "name": "Kingston Flemings",
+   "status": "out",
+   "athlete": "5149077",
+   "espn": {
+    "seen": "2026-11-20T23:13:40.779Z",
+    "own": "2026-11-20T22:15:00.000Z"
+   }
+  },
+  "401909313|preciousachiuwa|out": {
+   "game": "401909313",
+   "start": "2026-11-21T03:00Z",
+   "team": "23",
+   "name": "Precious Achiuwa",
+   "status": "out",
+   "athlete": "4431679",
+   "espn": {
+    "seen": "2026-11-20T23:13:40.779Z",
+    "own": "2026-11-20T21:21:00.000Z"
    }
   }
  }
