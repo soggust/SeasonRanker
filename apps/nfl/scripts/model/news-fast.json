@@ -5,37 +5,11 @@
   "rapsheet.bsky.social": "2026-11-20T14:54:25.963Z",
   "nflnewsreposterbot.bsky.social": "2026-11-16T18:35:13.806Z",
   "insidenflnews.bsky.social": "2026-11-20T16:10:55.085Z",
-  "nflnewsposter.bsky.social": "2026-11-20T04:07:50.728Z",
-  "rotoworld-fb.bsky.social": "2026-11-20T15:51:26.000Z",
+  "nflnewsposter.bsky.social": "2026-11-20T16:18:53.140Z",
+  "rotoworld-fb.bsky.social": "2026-11-20T16:23:02.000Z",
   "rotowirenfl.bsky.social": "2026-11-20T15:51:46.000Z"
  },
  "claims": [
-  {
-   "id": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3mz46o7bvro2y|ajbrown|limited|status",
-   "at": "2026-10-30T16:19:15.000Z",
-   "seen": "2026-10-30T16:34:46.595Z",
-   "handle": "rotoworld-fb.bsky.social",
-   "post": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3mz46o7bvro2y",
-   "player": "A.J. Brown",
-   "team": null,
-   "status": "limited",
-   "kind": "status",
-   "confidence": 0.45,
-   "text": "A.J. Brown (knee) absent from practice Friday"
-  },
-  {
-   "id": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3mz47frpfis2r|emekaegbuka|out|status",
-   "at": "2026-10-30T16:32:26.000Z",
-   "seen": "2026-10-30T16:34:46.595Z",
-   "handle": "rotowirenfl.bsky.social",
-   "post": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3mz47frpfis2r",
-   "player": "Emeka Egbuka",
-   "team": null,
-   "status": "out",
-   "kind": "status",
-   "confidence": 0.95,
-   "text": "Emeka Egbuka: Ruled out for Week 8 \n\n https://www.rotowire.com/football/player/emeka-egbuka-18549"
-  },
   {
    "id": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3mz4ae5eci72s|tylerwarren|active|status",
    "at": "2026-10-30T16:49:25.000Z",
