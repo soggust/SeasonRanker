@@ -23674,6 +23674,131 @@
     "seen": "2026-11-20T17:22:44.515Z",
     "own": "2026-11-20T17:02:00.000Z"
    }
+  },
+  "401909305|jalensmith|q": {
+   "game": "401909305",
+   "start": "2026-11-21T00:00Z",
+   "team": "1",
+   "name": "Jalen Smith",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-11-20T17:46:31.995Z",
+    "own": "2026-11-20T17:41:24.000Z",
+    "why": "@rotowirenba.bsky.social: Jalen Smith: Now questionable Friday \n\n https://www.ro"
+   }
+  },
+  "401909306|jalensmith|q": {
+   "game": "401909306",
+   "start": "2026-11-21T00:30Z",
+   "team": "17",
+   "name": "Jalen Smith",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-11-20T17:46:31.995Z",
+    "own": "2026-11-20T17:41:24.000Z",
+    "why": "@rotowirenba.bsky.social: Jalen Smith: Now questionable Friday \n\n https://www.ro"
+   }
+  },
+  "401909307|jalensmith|q": {
+   "game": "401909307",
+   "start": "2026-11-21T00:30Z",
+   "team": "5",
+   "name": "Jalen Smith",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-11-20T17:46:31.995Z",
+    "own": "2026-11-20T17:41:24.000Z",
+    "why": "@rotowirenba.bsky.social: Jalen Smith: Now questionable Friday \n\n https://www.ro"
+   }
+  },
+  "401909308|ronaldholland|q": {
+   "game": "401909308",
+   "start": "2026-11-21T00:30Z",
+   "team": "8",
+   "name": "Ronald Holland II",
+   "status": "q",
+   "athlete": "4683771",
+   "espn": {
+    "seen": "2026-11-20T18:04:46.912Z",
+    "own": "2026-11-20T17:46:00.000Z"
+   }
+  },
+  "401909308|jalensmith|q": {
+   "game": "401909308",
+   "start": "2026-11-21T00:30Z",
+   "team": "8",
+   "name": "Jalen Smith",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-11-20T17:46:31.995Z",
+    "own": "2026-11-20T17:41:24.000Z",
+    "why": "@rotowirenba.bsky.social: Jalen Smith: Now questionable Friday \n\n https://www.ro"
+   }
+  },
+  "401909309|jalensmith|q": {
+   "game": "401909309",
+   "start": "2026-11-21T01:00Z",
+   "team": "4",
+   "name": "Jalen Smith",
+   "status": "q",
+   "athlete": "4397189",
+   "espn": {
+    "seen": "2026-11-20T18:04:46.912Z",
+    "own": "2026-11-20T17:41:00.000Z"
+   },
+   "bluesky": {
+    "seen": "2026-11-20T17:46:31.995Z",
+    "own": "2026-11-20T17:41:24.000Z",
+    "why": "@rotowirenba.bsky.social: Jalen Smith: Now questionable Friday \n\n https://www.ro"
+   }
+  },
+  "401909310|jalensmith|q": {
+   "game": "401909310",
+   "start": "2026-11-21T01:00Z",
+   "team": "25",
+   "name": "Jalen Smith",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-11-20T17:46:31.995Z",
+    "own": "2026-11-20T17:41:24.000Z",
+    "why": "@rotowirenba.bsky.social: Jalen Smith: Now questionable Friday \n\n https://www.ro"
+   }
+  },
+  "401909311|jalensmith|q": {
+   "game": "401909311",
+   "start": "2026-11-21T02:30Z",
+   "team": "26",
+   "name": "Jalen Smith",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-11-20T17:46:31.995Z",
+    "own": "2026-11-20T17:41:24.000Z",
+    "why": "@rotowirenba.bsky.social: Jalen Smith: Now questionable Friday \n\n https://www.ro"
+   }
+  },
+  "401909312|jalensmith|q": {
+   "game": "401909312",
+   "start": "2026-11-21T03:00Z",
+   "team": "7",
+   "name": "Jalen Smith",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-11-20T17:46:31.995Z",
+    "own": "2026-11-20T17:41:24.000Z",
+    "why": "@rotowirenba.bsky.social: Jalen Smith: Now questionable Friday \n\n https://www.ro"
+   }
+  },
+  "401909313|jalensmith|q": {
+   "game": "401909313",
+   "start": "2026-11-21T03:00Z",
+   "team": "13",
+   "name": "Jalen Smith",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-11-20T17:46:31.995Z",
+    "own": "2026-11-20T17:41:24.000Z",
+    "why": "@rotowirenba.bsky.social: Jalen Smith: Now questionable Friday \n\n https://www.ro"
+   }
   }
  }
 }
