@@ -408,126 +408,6 @@
     "own": "2026-11-05T20:47:00.000Z"
    }
   },
-  "401909956|sergiodelarrea|out": {
-   "game": "401909956",
-   "start": "2026-11-10T01:00Z",
-   "team": "6",
-   "name": "Sergio de Larrea",
-   "status": "out",
-   "athlete": "5279129",
-   "espn": {
-    "seen": "2026-11-09T04:19:33.426Z",
-    "own": "2026-11-05T22:24:00.000Z"
-   },
-   "sleeper": {
-    "seen": "2026-11-09T20:02:20.733Z",
-    "own": "2026-11-09T03:10:21.900Z"
-   }
-  },
-  "401909956|tarikbiberovic|out": {
-   "game": "401909956",
-   "start": "2026-11-10T01:00Z",
-   "team": "6",
-   "name": "Tarik Biberovic",
-   "status": "out",
-   "athlete": "5148538",
-   "espn": {
-    "seen": "2026-11-09T04:19:33.426Z",
-    "own": "2026-11-01T23:19:00.000Z"
-   },
-   "sleeper": {
-    "seen": "2026-11-09T20:02:20.733Z",
-    "own": "2026-11-09T19:35:46.419Z"
-   }
-  },
-  "401909956|derecklively|out": {
-   "game": "401909956",
-   "start": "2026-11-10T01:00Z",
-   "team": "6",
-   "name": "Dereck Lively II",
-   "status": "out",
-   "athlete": "4683688",
-   "espn": {
-    "seen": "2026-11-09T04:19:33.426Z",
-    "own": "2026-11-01T22:57:00.000Z"
-   }
-  },
-  "401909956|anthonydavis|q": {
-   "game": "401909956",
-   "start": "2026-11-10T01:00Z",
-   "team": "6",
-   "name": "Anthony Davis",
-   "status": "q",
-   "bluesky": {
-    "seen": "2026-11-08T22:15:24.034Z",
-    "own": "2026-11-08T22:08:24.000Z",
-    "why": "@rotowirenba.bsky.social: Anthony Davis: Questionable to suit up Monday \n\n https"
-   }
-  },
-  "401909956|domantassabonis|out": {
-   "game": "401909956",
-   "start": "2026-11-10T01:00Z",
-   "team": "6",
-   "name": "Domantas Sabonis",
-   "status": "out",
-   "bluesky": {
-    "seen": "2026-11-09T01:32:07.446Z",
-    "own": "2026-11-09T01:03:30.000Z",
-    "why": "@rotowirenba.bsky.social: Domantas Sabonis: Out Sunday \n\n https://www.rotowire.c"
-   }
-  },
-  "401909956|tjmcconnell|q": {
-   "game": "401909956",
-   "start": "2026-11-10T01:00Z",
-   "team": "11",
-   "name": "T.J. McConnell",
-   "status": "q",
-   "athlete": "2530530",
-   "espn": {
-    "seen": "2026-11-09T04:19:33.426Z",
-    "own": "2026-11-08T23:24:00.000Z"
-   },
-   "sleeper": {
-    "seen": "2026-11-09T20:02:20.733Z",
-    "own": "2026-11-09T03:10:21.913Z"
-   }
-  },
-  "401909956|tyresehaliburton|out": {
-   "game": "401909956",
-   "start": "2026-11-10T01:00Z",
-   "team": "11",
-   "name": "Tyrese Haliburton",
-   "status": "out",
-   "athlete": "4396993",
-   "espn": {
-    "seen": "2026-11-09T04:19:33.426Z",
-    "own": "2026-11-07T20:46:00.000Z"
-   }
-  },
-  "401909956|johnnyfurphy|out": {
-   "game": "401909956",
-   "start": "2026-11-10T01:00Z",
-   "team": "11",
-   "name": "Johnny Furphy",
-   "status": "out",
-   "athlete": "5157066",
-   "espn": {
-    "seen": "2026-11-09T04:19:33.426Z",
-    "own": "2026-10-30T19:06:00.000Z"
-   }
-  },
-  "401909956|bensheppard|out": {
-   "game": "401909956",
-   "start": "2026-11-10T01:00Z",
-   "team": "11",
-   "name": "Ben Sheppard",
-   "status": "out",
-   "athlete": "4433076",
-   "espn": {
-    "seen": "2026-11-09T04:19:33.426Z",
-    "own": "2026-10-28T21:41:00.000Z"
-   }
-  },
   "401909961|adembona|q": {
    "game": "401909961",
    "start": "2026-11-11T01:00Z",
@@ -554,34 +434,6 @@
    "sleeper": {
     "seen": "2026-11-09T20:02:20.733Z",
     "own": "2026-11-09T17:40:25.786Z"
-   }
-  },
-  "401909956|morezjohnson|q": {
-   "game": "401909956",
-   "start": "2026-11-10T01:00Z",
-   "team": "6",
-   "name": "Morez Johnson Jr.",
-   "status": "q",
-   "athlete": "4873153",
-   "espn": {
-    "seen": "2026-11-09T19:01:38.047Z",
-    "own": "2026-11-09T18:48:00.000Z"
-   },
-   "sleeper": {
-    "seen": "2026-11-09T20:02:20.733Z",
-    "own": "2026-11-09T19:35:46.405Z"
-   }
-  },
-  "401909956|devinvassell|out": {
-   "game": "401909956",
-   "start": "2026-11-10T01:00Z",
-   "team": "6",
-   "name": "Devin Vassell",
-   "status": "out",
-   "bluesky": {
-    "seen": "2026-11-09T18:51:24.405Z",
-    "own": "2026-11-09T18:41:53.000Z",
-    "why": "@rotowirenba.bsky.social: Devin Vassell: Ruled out for Monday \n\n https://www.rot"
    }
   },
   "401909957|devinvassell|out": {
@@ -702,18 +554,6 @@
     "why": "@rotowirenba.bsky.social: Zion Williamson: Sitting out Monday \n\n https://www.rot"
    }
   },
-  "401909956|zionwilliamson|out": {
-   "game": "401909956",
-   "start": "2026-11-10T01:00Z",
-   "team": "6",
-   "name": "Zion Williamson",
-   "status": "out",
-   "bluesky": {
-    "seen": "2026-11-09T22:15:21.812Z",
-    "own": "2026-11-09T21:49:56.000Z",
-    "why": "@rotowirenba.bsky.social: Zion Williamson: Sitting out Monday \n\n https://www.rot"
-   }
-  },
   "401909957|zionwilliamson|out": {
    "game": "401909957",
    "start": "2026-11-10T01:30Z",
@@ -816,18 +656,6 @@
    "espn": {
     "seen": "2026-11-09T22:51:37.887Z",
     "own": "2026-11-09T15:57:00.000Z"
-   }
-  },
-  "401909956|morezjohnson|out": {
-   "game": "401909956",
-   "start": "2026-11-10T01:00Z",
-   "team": "6",
-   "name": "Morez Johnson Jr.",
-   "status": "out",
-   "athlete": "4873153",
-   "espn": {
-    "seen": "2026-11-09T23:22:39.606Z",
-    "own": "2026-11-09T23:07:00.000Z"
    }
   },
   "401909965|robertwilliams|q": {
@@ -940,18 +768,6 @@
    "espn": {
     "seen": "2026-11-10T00:04:23.282Z",
     "own": "2026-10-28T23:41:00.000Z"
-   }
-  },
-  "401909956|brandoningram|out": {
-   "game": "401909956",
-   "start": "2026-11-10T01:00Z",
-   "team": "6",
-   "name": "Brandon Ingram",
-   "status": "out",
-   "bluesky": {
-    "seen": "2026-11-10T00:05:41.407Z",
-    "own": "2026-11-10T00:00:13.000Z",
-    "why": "@rotowirenba.bsky.social: Brandon Ingram: Remains out for Tuesday \n\n https://www"
    }
   },
   "401909957|brandoningram|out": {

@@ -1,7 +1,7 @@
 {
  "sport": "nba",
  "cursor": {
-  "rotowirenba.bsky.social": "2026-11-20T00:28:06.000Z",
+  "rotowirenba.bsky.social": "2026-11-20T01:05:21.000Z",
   "insidenbanews.bsky.social": "2026-11-13T20:00:09.852Z",
   "shamsbot.bsky.social": "2026-11-19T20:03:07.000Z"
  },
@@ -7324,6 +7324,19 @@
    "kind": "status",
    "confidence": 0.85,
    "text": "Deni Avdija: Remains sidelined Thursday \n\n https://www.rotowire.com/basketball/player/deni-avdija-5152"
+  },
+  {
+   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3n2pffdxs2m24|austinreaves|out|status",
+   "at": "2026-11-20T01:05:21.000Z",
+   "seen": "2026-11-20T01:18:20.283Z",
+   "handle": "rotowirenba.bsky.social",
+   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3n2pffdxs2m24",
+   "player": "Austin Reaves",
+   "team": "LAL",
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.9,
+   "text": "Austin Reaves: Still out Friday \n\n https://www.rotowire.com/basketball/player/austin-reaves-5334"
   }
  ]
 }

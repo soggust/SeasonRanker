@@ -11,19 +11,6 @@
  },
  "claims": [
   {
-   "id": "at://did:plc:fuqjc7x4gxvnwzksnlxwbe4x/app.bsky.feed.post/3mz2mc7wu3kcw|christianwatson|questionable|status",
-   "at": "2026-10-30T01:17:46.878Z",
-   "seen": "2026-10-30T01:18:28.075Z",
-   "handle": "nflnewsposter.bsky.social",
-   "post": "at://did:plc:fuqjc7x4gxvnwzksnlxwbe4x/app.bsky.feed.post/3mz2mc7wu3kcw",
-   "player": "Christian Watson",
-   "team": "GB",
-   "status": "questionable",
-   "kind": "status",
-   "confidence": 0.9,
-   "text": "[Packers] WR Christian Watson is questionable to return with a chest injury twitter.com/packers/stat..."
-  },
-  {
    "id": "at://did:plc:mbr4badgf6yu56mquzackzew/app.bsky.feed.post/3mz2mdp6qx22h|christianwatson|questionable|status",
    "at": "2026-10-30T01:18:36.419Z",
    "seen": "2026-10-30T01:38:57.835Z",
