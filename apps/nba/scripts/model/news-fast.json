@@ -1,24 +1,11 @@
 {
  "sport": "nba",
  "cursor": {
-  "rotowirenba.bsky.social": "2026-11-20T17:41:24.000Z",
-  "insidenbanews.bsky.social": "2026-11-13T20:00:09.852Z",
+  "rotowirenba.bsky.social": "2026-11-20T19:31:47.000Z",
+  "insidenbanews.bsky.social": "2026-11-20T20:02:01.767Z",
   "shamsbot.bsky.social": "2026-11-19T20:03:07.000Z"
  },
  "claims": [
-  {
-   "id": "at://did:plc:ykcnnf6kqnn3lasmobrczoem/app.bsky.feed.post/3mz4ij4xbzc25|jamorant|out|status",
-   "at": "2026-10-30T19:15:23.134Z",
-   "seen": "2026-10-30T19:23:48.542Z",
-   "handle": "insidenbanews.bsky.social",
-   "post": "at://did:plc:ykcnnf6kqnn3lasmobrczoem/app.bsky.feed.post/3mz4ij4xbzc25",
-   "player": "Ja Morant",
-   "team": null,
-   "status": "out",
-   "kind": "status",
-   "confidence": 0.9,
-   "text": "🚨 Shams: Ja Morant to miss at least 4 weeks with Grade 2 strained hamstring."
-  },
   {
    "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mz4mcvdg4m2n|jaylenbrown|doubtful|status",
    "at": "2026-10-30T20:23:28.000Z",
@@ -7272,6 +7259,110 @@
    "kind": "status",
    "confidence": 0.9,
    "text": "Jalen Smith: Now questionable Friday \n\n https://www.rotowire.com/basketball/player/jalen-smith-5169"
+  },
+  {
+   "id": "at://did:plc:ykcnnf6kqnn3lasmobrczoem/app.bsky.feed.post/3n2revumg5k2k|alperensengun|questionable|status",
+   "at": "2026-11-20T20:02:01.767Z",
+   "seen": "2026-11-20T20:04:51.081Z",
+   "handle": "insidenbanews.bsky.social",
+   "post": "at://did:plc:ykcnnf6kqnn3lasmobrczoem/app.bsky.feed.post/3n2revumg5k2k",
+   "player": "Alperen Sengun",
+   "team": "HOU",
+   "status": "questionable",
+   "kind": "status",
+   "confidence": 0.85,
+   "text": "Key news to watch\n\nQuestionable:\nAlperen Sengun, Andrew Nembhard, De'Andre Hunter, Jalen Smith, Kingston Flemings, Peyton Watson, Trey Murphy III\n\nProbable:\nCade Cunningham"
+  },
+  {
+   "id": "at://did:plc:ykcnnf6kqnn3lasmobrczoem/app.bsky.feed.post/3n2revumg5k2k|andrewnembhard|questionable|status",
+   "at": "2026-11-20T20:02:01.767Z",
+   "seen": "2026-11-20T20:04:51.081Z",
+   "handle": "insidenbanews.bsky.social",
+   "post": "at://did:plc:ykcnnf6kqnn3lasmobrczoem/app.bsky.feed.post/3n2revumg5k2k",
+   "player": "Andrew Nembhard",
+   "team": "IND",
+   "status": "questionable",
+   "kind": "status",
+   "confidence": 0.85,
+   "text": "Key news to watch\n\nQuestionable:\nAlperen Sengun, Andrew Nembhard, De'Andre Hunter, Jalen Smith, Kingston Flemings, Peyton Watson, Trey Murphy III\n\nProbable:\nCade Cunningham"
+  },
+  {
+   "id": "at://did:plc:ykcnnf6kqnn3lasmobrczoem/app.bsky.feed.post/3n2revumg5k2k|deandrehunter|questionable|status",
+   "at": "2026-11-20T20:02:01.767Z",
+   "seen": "2026-11-20T20:04:51.081Z",
+   "handle": "insidenbanews.bsky.social",
+   "post": "at://did:plc:ykcnnf6kqnn3lasmobrczoem/app.bsky.feed.post/3n2revumg5k2k",
+   "player": "De'Andre Hunter",
+   "team": null,
+   "status": "questionable",
+   "kind": "status",
+   "confidence": 0.85,
+   "text": "Key news to watch\n\nQuestionable:\nAlperen Sengun, Andrew Nembhard, De'Andre Hunter, Jalen Smith, Kingston Flemings, Peyton Watson, Trey Murphy III\n\nProbable:\nCade Cunningham"
+  },
+  {
+   "id": "at://did:plc:ykcnnf6kqnn3lasmobrczoem/app.bsky.feed.post/3n2revumg5k2k|jalensmith|questionable|status",
+   "at": "2026-11-20T20:02:01.767Z",
+   "seen": "2026-11-20T20:04:51.081Z",
+   "handle": "insidenbanews.bsky.social",
+   "post": "at://did:plc:ykcnnf6kqnn3lasmobrczoem/app.bsky.feed.post/3n2revumg5k2k",
+   "player": "Jalen Smith",
+   "team": null,
+   "status": "questionable",
+   "kind": "status",
+   "confidence": 0.85,
+   "text": "Key news to watch\n\nQuestionable:\nAlperen Sengun, Andrew Nembhard, De'Andre Hunter, Jalen Smith, Kingston Flemings, Peyton Watson, Trey Murphy III\n\nProbable:\nCade Cunningham"
+  },
+  {
+   "id": "at://did:plc:ykcnnf6kqnn3lasmobrczoem/app.bsky.feed.post/3n2revumg5k2k|kingstonflemings|questionable|status",
+   "at": "2026-11-20T20:02:01.767Z",
+   "seen": "2026-11-20T20:04:51.081Z",
+   "handle": "insidenbanews.bsky.social",
+   "post": "at://did:plc:ykcnnf6kqnn3lasmobrczoem/app.bsky.feed.post/3n2revumg5k2k",
+   "player": "Kingston Flemings",
+   "team": null,
+   "status": "questionable",
+   "kind": "status",
+   "confidence": 0.85,
+   "text": "Key news to watch\n\nQuestionable:\nAlperen Sengun, Andrew Nembhard, De'Andre Hunter, Jalen Smith, Kingston Flemings, Peyton Watson, Trey Murphy III\n\nProbable:\nCade Cunningham"
+  },
+  {
+   "id": "at://did:plc:ykcnnf6kqnn3lasmobrczoem/app.bsky.feed.post/3n2revumg5k2k|peytonwatson|questionable|status",
+   "at": "2026-11-20T20:02:01.767Z",
+   "seen": "2026-11-20T20:04:51.081Z",
+   "handle": "insidenbanews.bsky.social",
+   "post": "at://did:plc:ykcnnf6kqnn3lasmobrczoem/app.bsky.feed.post/3n2revumg5k2k",
+   "player": "Peyton Watson",
+   "team": "OKC",
+   "status": "questionable",
+   "kind": "status",
+   "confidence": 0.85,
+   "text": "Key news to watch\n\nQuestionable:\nAlperen Sengun, Andrew Nembhard, De'Andre Hunter, Jalen Smith, Kingston Flemings, Peyton Watson, Trey Murphy III\n\nProbable:\nCade Cunningham"
+  },
+  {
+   "id": "at://did:plc:ykcnnf6kqnn3lasmobrczoem/app.bsky.feed.post/3n2revumg5k2k|treymurphy|questionable|status",
+   "at": "2026-11-20T20:02:01.767Z",
+   "seen": "2026-11-20T20:04:51.081Z",
+   "handle": "insidenbanews.bsky.social",
+   "post": "at://did:plc:ykcnnf6kqnn3lasmobrczoem/app.bsky.feed.post/3n2revumg5k2k",
+   "player": "Trey Murphy III",
+   "team": "NOP",
+   "status": "questionable",
+   "kind": "status",
+   "confidence": 0.85,
+   "text": "Key news to watch\n\nQuestionable:\nAlperen Sengun, Andrew Nembhard, De'Andre Hunter, Jalen Smith, Kingston Flemings, Peyton Watson, Trey Murphy III\n\nProbable:\nCade Cunningham"
+  },
+  {
+   "id": "at://did:plc:ykcnnf6kqnn3lasmobrczoem/app.bsky.feed.post/3n2revumg5k2k|cadecunningham|active|status",
+   "at": "2026-11-20T20:02:01.767Z",
+   "seen": "2026-11-20T20:04:51.081Z",
+   "handle": "insidenbanews.bsky.social",
+   "post": "at://did:plc:ykcnnf6kqnn3lasmobrczoem/app.bsky.feed.post/3n2revumg5k2k",
+   "player": "Cade Cunningham",
+   "team": "DET",
+   "status": "active",
+   "kind": "status",
+   "confidence": 0.7,
+   "text": "Key news to watch\n\nQuestionable:\nAlperen Sengun, Andrew Nembhard, De'Andre Hunter, Jalen Smith, Kingston Flemings, Peyton Watson, Trey Murphy III\n\nProbable:\nCade Cunningham"
   }
  ]
 }
