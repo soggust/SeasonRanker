@@ -8393,6 +8393,11 @@
    "espn": {
     "seen": "2026-11-20T16:17:06.991Z",
     "own": "2026-11-20T16:08:00.000Z"
+   },
+   "bluesky": {
+    "seen": "2026-11-20T18:27:45.677Z",
+    "own": "2026-11-20T18:14:54.000Z",
+    "why": "@dailyfaceoff.bsky.social: Penguins place Nick Robertson on IR, Malkin day-to-da"
    }
   },
   "401892757|elmersoderblom|out": {
@@ -9329,6 +9334,30 @@
    "espn": {
     "seen": "2026-11-20T16:38:29.018Z",
     "own": "2026-11-20T16:16:00.000Z"
+   }
+  },
+  "401892757|malkin|q": {
+   "game": "401892757",
+   "start": "2026-11-21T23:00Z",
+   "team": "16",
+   "name": "Malkin",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-11-20T18:27:45.677Z",
+    "own": "2026-11-20T18:14:54.000Z",
+    "why": "@dailyfaceoff.bsky.social: Penguins place Nick Robertson on IR, Malkin day-to-da"
+   }
+  },
+  "401892763|connormcmichael|out": {
+   "game": "401892763",
+   "start": "2026-11-22T00:00Z",
+   "team": "19",
+   "name": "Connor McMichael",
+   "status": "out",
+   "athlete": "4565246",
+   "espn": {
+    "seen": "2026-11-20T18:32:30.271Z",
+    "own": "2026-11-20T18:15:00.000Z"
    }
   }
  }
