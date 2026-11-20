@@ -1746,7 +1746,7 @@
 {"id":"401892743","date":"2026-11-20T00:00Z","season":2027,"type":2,"home":"14","away":"15","homeAbbr":"OTT","awayAbbr":"PHI","neutral":false,"final":true,"hs":5,"as":6,"venue":"Ottawa|ON|Canada","indoor":true},
 {"id":"401892745","date":"2026-11-20T00:00Z","season":2027,"type":2,"home":"16","away":"19","homeAbbr":"PIT","awayAbbr":"STL","neutral":false,"final":true,"hs":2,"as":5,"venue":"Pittsburgh|PA|USA","indoor":true},
 {"id":"401892749","date":"2026-11-20T00:00Z","season":2027,"type":2,"home":"28","away":"12","homeAbbr":"WPG","awayAbbr":"NYI","neutral":false,"final":true,"hs":4,"as":3,"venue":"Winnipeg|MB|Canada","indoor":true},
-{"id":"401892744","date":"2026-11-20T00:30Z","season":2027,"type":2,"home":"20","away":"6","homeAbbr":"TB","awayAbbr":"EDM","neutral":false,"final":false,"hs":null,"as":null,"venue":"Tampa|FL|USA","indoor":true},
+{"id":"401892744","date":"2026-11-20T00:30Z","season":2027,"type":2,"home":"20","away":"6","homeAbbr":"TB","awayAbbr":"EDM","neutral":false,"final":true,"hs":3,"as":1,"venue":"Tampa|FL|USA","indoor":true},
 {"id":"401892750","date":"2026-11-20T01:00Z","season":2027,"type":2,"home":"3","away":"30","homeAbbr":"CGY","awayAbbr":"MIN","neutral":false,"final":false,"hs":null,"as":null,"venue":"Calgary|AB|Canada","indoor":true},
 {"id":"401892748","date":"2026-11-20T01:00Z","season":2027,"type":2,"home":"4","away":"29","homeAbbr":"CHI","awayAbbr":"CBJ","neutral":false,"final":false,"hs":null,"as":null,"venue":"Chicago|IL|USA","indoor":true},
 {"id":"401892751","date":"2026-11-20T02:00Z","season":2027,"type":2,"home":"17","away":"25","homeAbbr":"COL","awayAbbr":"ANA","neutral":false,"final":false,"hs":null,"as":null,"venue":"Denver|CO|USA","indoor":true},

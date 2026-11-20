@@ -3,24 +3,11 @@
  "cursor": {
   "johnston-bot.bsky.social": "2026-11-18T16:07:40.564Z",
   "notfriedgehnic.bsky.social": "2026-11-19T19:19:40.837Z",
-  "dailyfaceoff.bsky.social": "2026-11-20T01:41:54.000Z",
-  "dfotoronto.bsky.social": "2026-11-20T01:14:01.000Z",
+  "dailyfaceoff.bsky.social": "2026-11-20T03:07:04.000Z",
+  "dfotoronto.bsky.social": "2026-11-20T03:02:22.000Z",
   "marklazerus.bsky.social": "2026-11-19T03:51:49.788Z"
  },
  "claims": [
-  {
-   "id": "at://did:plc:3uus7y6h3rlrk6sbctzxm4bg/app.bsky.feed.post/3mz2q3jyho72k|ryanpulock|none|status",
-   "at": "2026-10-30T02:25:37.000Z",
-   "seen": "2026-10-30T02:37:46.611Z",
-   "handle": "dailyfaceoff.bsky.social",
-   "post": "at://did:plc:3uus7y6h3rlrk6sbctzxm4bg/app.bsky.feed.post/3mz2q3jyho72k",
-   "player": "Ryan Pulock",
-   "team": "NYI",
-   "status": "none",
-   "kind": "status",
-   "confidence": 0.35,
-   "text": "Islanders’ Ryan Pulock leaves game with upper-body injury"
-  },
   {
    "id": "at://did:plc:3uus7y6h3rlrk6sbctzxm4bg/app.bsky.feed.post/3mz4asmhdx625|cooley|out|status",
    "at": "2026-10-30T16:57:31.000Z",

@@ -1,54 +1,15 @@
 {
  "sport": "nfl",
  "cursor": {
-  "adamscheftermirror.bsky.social": "2026-11-19T21:46:20.401Z",
+  "adamscheftermirror.bsky.social": "2026-11-20T02:21:18.651Z",
   "rapsheet.bsky.social": "2026-11-20T00:15:08.306Z",
   "nflnewsreposterbot.bsky.social": "2026-11-16T18:35:13.806Z",
-  "insidenflnews.bsky.social": "2026-11-19T20:50:27.919Z",
-  "nflnewsposter.bsky.social": "2026-11-20T01:38:20.875Z",
+  "insidenflnews.bsky.social": "2026-11-20T03:05:02.583Z",
+  "nflnewsposter.bsky.social": "2026-11-20T03:11:08.371Z",
   "rotoworld-fb.bsky.social": "2026-11-20T00:08:46.000Z",
   "rotowirenfl.bsky.social": "2026-11-19T23:18:41.000Z"
  },
  "claims": [
-  {
-   "id": "at://did:plc:mbr4badgf6yu56mquzackzew/app.bsky.feed.post/3mz2q4xmgks25|christianwatson|active|return",
-   "at": "2026-10-30T02:26:25.341Z",
-   "seen": "2026-10-30T02:37:46.611Z",
-   "handle": "insidenflnews.bsky.social",
-   "post": "at://did:plc:mbr4badgf6yu56mquzackzew/app.bsky.feed.post/3mz2q4xmgks25",
-   "player": "Christian Watson",
-   "team": "GB",
-   "status": "active",
-   "kind": "return",
-   "confidence": 0.9,
-   "text": "Status alert: Christian Watson (chest, hospital visit) has returned to Thursday's game. 🥳"
-  },
-  {
-   "id": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3mz2qbig7nf2e|christianwatson|active|return",
-   "at": "2026-10-30T02:28:57.000Z",
-   "seen": "2026-10-30T02:37:46.611Z",
-   "handle": "rotowirenfl.bsky.social",
-   "post": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3mz2qbig7nf2e",
-   "player": "Christian Watson",
-   "team": "GB",
-   "status": "active",
-   "kind": "return",
-   "confidence": 0.9,
-   "text": "Christian Watson: Returns to Thursday's game \n\n https://www.rotowire.com/football/player/christian-watson-15946"
-  },
-  {
-   "id": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3mz2qgr2kxj25|christianwatson|active|return",
-   "at": "2026-10-30T02:31:53.000Z",
-   "seen": "2026-10-30T02:37:46.611Z",
-   "handle": "rotoworld-fb.bsky.social",
-   "post": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3mz2qgr2kxj25",
-   "player": "Christian Watson",
-   "team": "GB",
-   "status": "active",
-   "kind": "return",
-   "confidence": 0.9,
-   "text": "Christian Watson (chest) returns after trip to hospital"
-  },
   {
    "id": "at://did:plc:fuqjc7x4gxvnwzksnlxwbe4x/app.bsky.feed.post/3mz2vikgchc2w|christianwatson|active|status",
    "at": "2026-10-30T04:02:22.873Z",
@@ -18833,6 +18794,45 @@
    "kind": "status",
    "confidence": 0.9,
    "text": "Ladd McConkey (back) limited again on Thursday"
+  },
+  {
+   "id": "at://did:plc:fuqjc7x4gxvnwzksnlxwbe4x/app.bsky.feed.post/3n2pimridds2o|trentbrown|questionable|status",
+   "at": "2026-11-20T02:03:11.987Z",
+   "seen": "2026-11-20T03:13:32.560Z",
+   "handle": "nflnewsposter.bsky.social",
+   "post": "at://did:plc:fuqjc7x4gxvnwzksnlxwbe4x/app.bsky.feed.post/3n2pimridds2o",
+   "player": "Trent Brown",
+   "team": "HOU",
+   "status": "questionable",
+   "kind": "status",
+   "confidence": 0.95,
+   "text": "[Texans] Texans Injury Update:\n\n#77 T Trent Brown is questionable with a back injury. twitter.com/HoustonTexan..."
+  },
+  {
+   "id": "at://did:plc:mbr4badgf6yu56mquzackzew/app.bsky.feed.post/3n2pm3e6pbk22|sethmcgowan|questionable|status",
+   "at": "2026-11-20T03:05:02.583Z",
+   "seen": "2026-11-20T03:13:32.560Z",
+   "handle": "insidenflnews.bsky.social",
+   "post": "at://did:plc:mbr4badgf6yu56mquzackzew/app.bsky.feed.post/3n2pm3e6pbk22",
+   "player": "Seth McGowan",
+   "team": "IND",
+   "status": "questionable",
+   "kind": "status",
+   "confidence": 0.9,
+   "text": "🚨 Status alert: Seth McGowan (hamstring) questionable to return."
+  },
+  {
+   "id": "at://did:plc:fuqjc7x4gxvnwzksnlxwbe4x/app.bsky.feed.post/3n2pmgazo4k2o|sethmcgowan|questionable|status",
+   "at": "2026-11-20T03:11:08.371Z",
+   "seen": "2026-11-20T03:13:32.560Z",
+   "handle": "nflnewsposter.bsky.social",
+   "post": "at://did:plc:fuqjc7x4gxvnwzksnlxwbe4x/app.bsky.feed.post/3n2pmgazo4k2o",
+   "player": "Seth McGowan",
+   "team": "IND",
+   "status": "questionable",
+   "kind": "status",
+   "confidence": 0.95,
+   "text": "[Colts] RB Seth McGowan is Questionable (hamstring) for return twitter.com/Colts/status..."
   }
  ]
 }
