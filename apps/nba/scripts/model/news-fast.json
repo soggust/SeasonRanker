@@ -1,50 +1,11 @@
 {
  "sport": "nba",
  "cursor": {
-  "rotowirenba.bsky.social": "2026-11-20T19:31:47.000Z",
-  "insidenbanews.bsky.social": "2026-11-20T20:02:01.767Z",
-  "shamsbot.bsky.social": "2026-11-19T20:03:07.000Z"
+  "rotowirenba.bsky.social": "2026-11-20T20:42:49.000Z",
+  "insidenbanews.bsky.social": "2026-11-20T20:35:06.661Z",
+  "shamsbot.bsky.social": "2026-11-20T20:29:39.000Z"
  },
  "claims": [
-  {
-   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mz4mcvdg4m2n|jaylenbrown|doubtful|status",
-   "at": "2026-10-30T20:23:28.000Z",
-   "seen": "2026-10-30T20:42:19.301Z",
-   "handle": "rotowirenba.bsky.social",
-   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mz4mcvdg4m2n",
-   "player": "Jaylen Brown",
-   "team": null,
-   "status": "doubtful",
-   "kind": "status",
-   "confidence": 0.9,
-   "text": "Jaylen Brown: Downgraded to doubtful \n\n https://www.rotowire.com/basketball/player/jaylen-brown-3894"
-  },
-  {
-   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mz4n3temn32l|guisantos|questionable|status",
-   "at": "2026-10-30T20:37:25.000Z",
-   "seen": "2026-10-30T20:42:19.301Z",
-   "handle": "rotowirenba.bsky.social",
-   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mz4n3temn32l",
-   "player": "Gui Santos",
-   "team": null,
-   "status": "questionable",
-   "kind": "status",
-   "confidence": 0.9,
-   "text": "Gui Santos: Now questionable \n\n https://www.rotowire.com/basketball/player/gui-santos-5738"
-  },
-  {
-   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mz4nwaclky2q|jaylontyson|out|status",
-   "at": "2026-10-30T20:52:11.000Z",
-   "seen": "2026-10-30T21:03:24.984Z",
-   "handle": "rotowirenba.bsky.social",
-   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mz4nwaclky2q",
-   "player": "Jaylon Tyson",
-   "team": null,
-   "status": "out",
-   "kind": "status",
-   "confidence": 0.95,
-   "text": "Jaylon Tyson: Ruled out for Saturday \n\n https://www.rotowire.com/basketball/player/jaylon-tyson-6277"
-  },
   {
    "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mz4phn3mhe2g|dejountemurray|active|status",
    "at": "2026-10-30T21:19:49.000Z",
@@ -7363,6 +7324,84 @@
    "kind": "status",
    "confidence": 0.7,
    "text": "Key news to watch\n\nQuestionable:\nAlperen Sengun, Andrew Nembhard, De'Andre Hunter, Jalen Smith, Kingston Flemings, Peyton Watson, Trey Murphy III\n\nProbable:\nCade Cunningham"
+  },
+  {
+   "id": "at://did:plc:sa73fbx3vxzh2fw5pu5wmief/app.bsky.feed.post/3n2rfup3ojd2j|brandoningram|active|return",
+   "at": "2026-11-20T20:15:05.000Z",
+   "seen": "2026-11-20T21:15:09.553Z",
+   "handle": "shamsbot.bsky.social",
+   "post": "at://did:plc:sa73fbx3vxzh2fw5pu5wmief/app.bsky.feed.post/3n2rfup3ojd2j",
+   "player": "Brandon Ingram",
+   "team": "LAC",
+   "status": "active",
+   "kind": "return",
+   "confidence": 0.85,
+   "text": "LA Clippers two-time All-Star Brandon Ingram is expected to make his season and team debut on Monday against the Houston Rockets, sources tell ESPN. Ingram returns to action after undergoing surgery f"
+  },
+  {
+   "id": "at://did:plc:ykcnnf6kqnn3lasmobrczoem/app.bsky.feed.post/3n2rgqzkl722k|tyresehaliburton|out|status",
+   "at": "2026-11-20T20:35:06.661Z",
+   "seen": "2026-11-20T21:15:09.553Z",
+   "handle": "insidenbanews.bsky.social",
+   "post": "at://did:plc:ykcnnf6kqnn3lasmobrczoem/app.bsky.feed.post/3n2rgqzkl722k",
+   "player": "Tyrese Haliburton",
+   "team": "IND",
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.8,
+   "text": "Injury updates from Shams: \n\n- Tyrese Haliburton (hamstring) to miss \"at least\" a couple more weeks\n- Raptors optimistic Kawhi Leonard (knee) will be returning to action in \"next few weeks.\" \n- Dylan "
+  },
+  {
+   "id": "at://did:plc:ykcnnf6kqnn3lasmobrczoem/app.bsky.feed.post/3n2rgqzkl722k|kawhileonard|out|status",
+   "at": "2026-11-20T20:35:06.661Z",
+   "seen": "2026-11-20T21:15:09.553Z",
+   "handle": "insidenbanews.bsky.social",
+   "post": "at://did:plc:ykcnnf6kqnn3lasmobrczoem/app.bsky.feed.post/3n2rgqzkl722k",
+   "player": "Kawhi Leonard",
+   "team": "TOR",
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.6,
+   "text": "Injury updates from Shams: \n\n- Tyrese Haliburton (hamstring) to miss \"at least\" a couple more weeks\n- Raptors optimistic Kawhi Leonard (knee) will be returning to action in \"next few weeks.\" \n- Dylan "
+  },
+  {
+   "id": "at://did:plc:ykcnnf6kqnn3lasmobrczoem/app.bsky.feed.post/3n2rgqzkl722k|dylanharper|out|status",
+   "at": "2026-11-20T20:35:06.661Z",
+   "seen": "2026-11-20T21:15:09.553Z",
+   "handle": "insidenbanews.bsky.social",
+   "post": "at://did:plc:ykcnnf6kqnn3lasmobrczoem/app.bsky.feed.post/3n2rgqzkl722k",
+   "player": "Dylan Harper",
+   "team": "SAS",
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.8,
+   "text": "Injury updates from Shams: \n\n- Tyrese Haliburton (hamstring) to miss \"at least\" a couple more weeks\n- Raptors optimistic Kawhi Leonard (knee) will be returning to action in \"next few weeks.\" \n- Dylan "
+  },
+  {
+   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3n2rh3xd7jg2u|tyresehaliburton|out|status",
+   "at": "2026-11-20T20:41:13.000Z",
+   "seen": "2026-11-20T21:15:09.553Z",
+   "handle": "rotowirenba.bsky.social",
+   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3n2rh3xd7jg2u",
+   "player": "Tyrese Haliburton",
+   "team": "IND",
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.85,
+   "text": "Tyrese Haliburton: Expected to miss at least two more weeks \n\n https://www.rotowire.com/basketball/player/tyrese-haliburton-5114"
+  },
+  {
+   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3n2rh6staob2y|kawhileonard|out|status",
+   "at": "2026-11-20T20:42:49.000Z",
+   "seen": "2026-11-20T21:15:09.553Z",
+   "handle": "rotowirenba.bsky.social",
+   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3n2rh6staob2y",
+   "player": "Kawhi Leonard",
+   "team": "TOR",
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.8,
+   "text": "Kawhi Leonard: Still weeks away from returning \n\n https://www.rotowire.com/basketball/player/kawhi-leonard-3195"
   }
  ]
 }

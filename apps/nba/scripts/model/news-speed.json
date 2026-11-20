@@ -22593,6 +22593,11 @@
    "sleeper": {
     "seen": "2026-11-20T20:02:58.249Z",
     "own": "2026-11-19T22:10:00.689Z"
+   },
+   "bluesky": {
+    "seen": "2026-11-20T20:04:51.081Z",
+    "own": "2026-11-20T20:02:01.767Z",
+    "why": "@insidenbanews.bsky.social: Key news to watch\n\nQuestionable:\nAlperen Sengun, And"
    }
   },
   "401909305|asanewell|out": {
@@ -22878,6 +22883,11 @@
    "sleeper": {
     "seen": "2026-11-20T20:02:58.249Z",
     "own": "2026-11-19T22:15:00.691Z"
+   },
+   "bluesky": {
+    "seen": "2026-11-20T20:04:51.081Z",
+    "own": "2026-11-20T20:02:01.767Z",
+    "why": "@insidenbanews.bsky.social: Key news to watch\n\nQuestionable:\nAlperen Sengun, And"
    }
   },
   "401909307|bradensmith|q": {
@@ -23427,6 +23437,11 @@
    "sleeper": {
     "seen": "2026-11-20T20:02:58.249Z",
     "own": "2026-11-20T02:20:02.660Z"
+   },
+   "bluesky": {
+    "seen": "2026-11-20T20:04:51.081Z",
+    "own": "2026-11-20T20:02:01.767Z",
+    "why": "@insidenbanews.bsky.social: Key news to watch\n\nQuestionable:\nAlperen Sengun, And"
    }
   },
   "401909313|maximeraynaud|out": {
@@ -23929,6 +23944,215 @@
    "sleeper": {
     "seen": "2026-11-20T20:02:58.249Z",
     "own": "2026-11-19T22:05:01.340Z"
+   },
+   "bluesky": {
+    "seen": "2026-11-20T20:04:51.081Z",
+    "own": "2026-11-20T20:02:01.767Z",
+    "why": "@insidenbanews.bsky.social: Key news to watch\n\nQuestionable:\nAlperen Sengun, And"
+   }
+  },
+  "401909305|deandrehunter|q": {
+   "game": "401909305",
+   "start": "2026-11-21T00:00Z",
+   "team": "1",
+   "name": "De'Andre Hunter",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-11-20T20:04:51.081Z",
+    "own": "2026-11-20T20:02:01.767Z",
+    "why": "@insidenbanews.bsky.social: Key news to watch\n\nQuestionable:\nAlperen Sengun, And"
+   }
+  },
+  "401909306|deandrehunter|q": {
+   "game": "401909306",
+   "start": "2026-11-21T00:30Z",
+   "team": "17",
+   "name": "De'Andre Hunter",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-11-20T20:04:51.081Z",
+    "own": "2026-11-20T20:02:01.767Z",
+    "why": "@insidenbanews.bsky.social: Key news to watch\n\nQuestionable:\nAlperen Sengun, And"
+   }
+  },
+  "401909306|kingstonflemings|q": {
+   "game": "401909306",
+   "start": "2026-11-21T00:30Z",
+   "team": "17",
+   "name": "Kingston Flemings",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-11-20T20:04:51.081Z",
+    "own": "2026-11-20T20:02:01.767Z",
+    "why": "@insidenbanews.bsky.social: Key news to watch\n\nQuestionable:\nAlperen Sengun, And"
+   }
+  },
+  "401909307|deandrehunter|q": {
+   "game": "401909307",
+   "start": "2026-11-21T00:30Z",
+   "team": "5",
+   "name": "De'Andre Hunter",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-11-20T20:04:51.081Z",
+    "own": "2026-11-20T20:02:01.767Z",
+    "why": "@insidenbanews.bsky.social: Key news to watch\n\nQuestionable:\nAlperen Sengun, And"
+   }
+  },
+  "401909307|kingstonflemings|q": {
+   "game": "401909307",
+   "start": "2026-11-21T00:30Z",
+   "team": "5",
+   "name": "Kingston Flemings",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-11-20T20:04:51.081Z",
+    "own": "2026-11-20T20:02:01.767Z",
+    "why": "@insidenbanews.bsky.social: Key news to watch\n\nQuestionable:\nAlperen Sengun, And"
+   }
+  },
+  "401909308|deandrehunter|q": {
+   "game": "401909308",
+   "start": "2026-11-21T00:30Z",
+   "team": "8",
+   "name": "De'Andre Hunter",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-11-20T20:04:51.081Z",
+    "own": "2026-11-20T20:02:01.767Z",
+    "why": "@insidenbanews.bsky.social: Key news to watch\n\nQuestionable:\nAlperen Sengun, And"
+   }
+  },
+  "401909308|kingstonflemings|q": {
+   "game": "401909308",
+   "start": "2026-11-21T00:30Z",
+   "team": "8",
+   "name": "Kingston Flemings",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-11-20T20:04:51.081Z",
+    "own": "2026-11-20T20:02:01.767Z",
+    "why": "@insidenbanews.bsky.social: Key news to watch\n\nQuestionable:\nAlperen Sengun, And"
+   }
+  },
+  "401909309|deandrehunter|q": {
+   "game": "401909309",
+   "start": "2026-11-21T01:00Z",
+   "team": "4",
+   "name": "De'Andre Hunter",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-11-20T20:04:51.081Z",
+    "own": "2026-11-20T20:02:01.767Z",
+    "why": "@insidenbanews.bsky.social: Key news to watch\n\nQuestionable:\nAlperen Sengun, And"
+   }
+  },
+  "401909309|kingstonflemings|q": {
+   "game": "401909309",
+   "start": "2026-11-21T01:00Z",
+   "team": "4",
+   "name": "Kingston Flemings",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-11-20T20:04:51.081Z",
+    "own": "2026-11-20T20:02:01.767Z",
+    "why": "@insidenbanews.bsky.social: Key news to watch\n\nQuestionable:\nAlperen Sengun, And"
+   }
+  },
+  "401909310|deandrehunter|q": {
+   "game": "401909310",
+   "start": "2026-11-21T01:00Z",
+   "team": "25",
+   "name": "De'Andre Hunter",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-11-20T20:04:51.081Z",
+    "own": "2026-11-20T20:02:01.767Z",
+    "why": "@insidenbanews.bsky.social: Key news to watch\n\nQuestionable:\nAlperen Sengun, And"
+   }
+  },
+  "401909310|kingstonflemings|q": {
+   "game": "401909310",
+   "start": "2026-11-21T01:00Z",
+   "team": "25",
+   "name": "Kingston Flemings",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-11-20T20:04:51.081Z",
+    "own": "2026-11-20T20:02:01.767Z",
+    "why": "@insidenbanews.bsky.social: Key news to watch\n\nQuestionable:\nAlperen Sengun, And"
+   }
+  },
+  "401909310|peytonwatson|q": {
+   "game": "401909310",
+   "start": "2026-11-21T01:00Z",
+   "team": "25",
+   "name": "Peyton Watson",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-11-20T20:04:51.081Z",
+    "own": "2026-11-20T20:02:01.767Z",
+    "why": "@insidenbanews.bsky.social: Key news to watch\n\nQuestionable:\nAlperen Sengun, And"
+   }
+  },
+  "401909311|deandrehunter|q": {
+   "game": "401909311",
+   "start": "2026-11-21T02:30Z",
+   "team": "26",
+   "name": "De'Andre Hunter",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-11-20T20:04:51.081Z",
+    "own": "2026-11-20T20:02:01.767Z",
+    "why": "@insidenbanews.bsky.social: Key news to watch\n\nQuestionable:\nAlperen Sengun, And"
+   }
+  },
+  "401909311|kingstonflemings|q": {
+   "game": "401909311",
+   "start": "2026-11-21T02:30Z",
+   "team": "26",
+   "name": "Kingston Flemings",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-11-20T20:04:51.081Z",
+    "own": "2026-11-20T20:02:01.767Z",
+    "why": "@insidenbanews.bsky.social: Key news to watch\n\nQuestionable:\nAlperen Sengun, And"
+   }
+  },
+  "401909312|deandrehunter|q": {
+   "game": "401909312",
+   "start": "2026-11-21T03:00Z",
+   "team": "7",
+   "name": "De'Andre Hunter",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-11-20T20:04:51.081Z",
+    "own": "2026-11-20T20:02:01.767Z",
+    "why": "@insidenbanews.bsky.social: Key news to watch\n\nQuestionable:\nAlperen Sengun, And"
+   }
+  },
+  "401909312|kingstonflemings|q": {
+   "game": "401909312",
+   "start": "2026-11-21T03:00Z",
+   "team": "7",
+   "name": "Kingston Flemings",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-11-20T20:04:51.081Z",
+    "own": "2026-11-20T20:02:01.767Z",
+    "why": "@insidenbanews.bsky.social: Key news to watch\n\nQuestionable:\nAlperen Sengun, And"
+   }
+  },
+  "401909313|kingstonflemings|q": {
+   "game": "401909313",
+   "start": "2026-11-21T03:00Z",
+   "team": "13",
+   "name": "Kingston Flemings",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-11-20T20:04:51.081Z",
+    "own": "2026-11-20T20:02:01.767Z",
+    "why": "@insidenbanews.bsky.social: Key news to watch\n\nQuestionable:\nAlperen Sengun, And"
    }
   }
  }

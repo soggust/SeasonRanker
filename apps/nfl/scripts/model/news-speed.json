@@ -16403,6 +16403,42 @@
     "seen": "2026-11-20T20:29:47.364Z",
     "own": "2026-11-20T20:25:00.000Z"
    }
+  },
+  "401873070|jaylinsimpson|out": {
+   "game": "401873070",
+   "start": "2026-11-22T18:00Z",
+   "team": "15",
+   "name": "Jaylin Simpson",
+   "status": "out",
+   "athlete": "4567225",
+   "espn": {
+    "seen": "2026-11-20T21:12:34.534Z",
+    "own": "2026-11-20T20:56:00.000Z"
+   }
+  },
+  "401873073|jaishawnbarham|q": {
+   "game": "401873073",
+   "start": "2026-11-22T18:00Z",
+   "team": "6",
+   "name": "Jaishawn Barham",
+   "status": "q",
+   "athlete": "4685266",
+   "espn": {
+    "seen": "2026-11-20T21:12:34.534Z",
+    "own": "2026-11-20T20:32:00.000Z"
+   }
+  },
+  "401873072|antoinewinfield|out": {
+   "game": "401873072",
+   "start": "2026-11-22T18:00Z",
+   "team": "27",
+   "name": "Antoine Winfield Jr.",
+   "status": "out",
+   "athlete": "4034790",
+   "espn": {
+    "seen": "2026-11-20T21:12:34.534Z",
+    "own": "2026-11-20T20:56:00.000Z"
+   }
   }
  }
 }
