@@ -5,24 +5,11 @@
   "rapsheet.bsky.social": "2026-11-20T00:15:08.306Z",
   "nflnewsreposterbot.bsky.social": "2026-11-16T18:35:13.806Z",
   "insidenflnews.bsky.social": "2026-11-20T03:21:20.322Z",
-  "nflnewsposter.bsky.social": "2026-11-20T03:55:36.239Z",
-  "rotoworld-fb.bsky.social": "2026-11-20T00:08:46.000Z",
-  "rotowirenfl.bsky.social": "2026-11-20T03:28:07.000Z"
+  "nflnewsposter.bsky.social": "2026-11-20T04:07:50.728Z",
+  "rotoworld-fb.bsky.social": "2026-11-20T04:54:34.000Z",
+  "rotowirenfl.bsky.social": "2026-11-20T05:01:38.000Z"
  },
  "claims": [
-  {
-   "id": "at://did:plc:fuqjc7x4gxvnwzksnlxwbe4x/app.bsky.feed.post/3mz2vikgchc2w|christianwatson|active|status",
-   "at": "2026-10-30T04:02:22.873Z",
-   "seen": "2026-10-30T04:15:23.486Z",
-   "handle": "nflnewsposter.bsky.social",
-   "post": "at://did:plc:fuqjc7x4gxvnwzksnlxwbe4x/app.bsky.feed.post/3mz2vikgchc2w",
-   "player": "Christian Watson",
-   "team": "GB",
-   "status": "active",
-   "kind": "status",
-   "confidence": 0.85,
-   "text": "[Demovsky] Christian Watson said he was coughing up blood and broke a rib, but everything else checked out fine at the hospital so he got the OK to play. twitter.com/RobDemovsky/..."
-  },
   {
    "id": "at://did:plc:qre6zxbmr3ixhdmgsgdretb5/app.bsky.feed.post/3mz3z2flxv22n|jonathancooley|none|coaching",
    "at": "2026-10-30T14:38:42.660Z",
