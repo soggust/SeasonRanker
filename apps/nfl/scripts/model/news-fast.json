@@ -6,23 +6,10 @@
   "nflnewsreposterbot.bsky.social": "2026-11-16T18:35:13.806Z",
   "insidenflnews.bsky.social": "2026-11-20T15:06:12.249Z",
   "nflnewsposter.bsky.social": "2026-11-20T04:07:50.728Z",
-  "rotoworld-fb.bsky.social": "2026-11-20T04:54:34.000Z",
-  "rotowirenfl.bsky.social": "2026-11-20T05:05:42.000Z"
+  "rotoworld-fb.bsky.social": "2026-11-20T15:28:02.000Z",
+  "rotowirenfl.bsky.social": "2026-11-20T15:24:31.000Z"
  },
  "claims": [
-  {
-   "id": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3mz435bxm5p2r|emekaegbuka|questionable|status",
-   "at": "2026-10-30T15:16:07.000Z",
-   "seen": "2026-10-30T15:31:10.267Z",
-   "handle": "rotowirenfl.bsky.social",
-   "post": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3mz435bxm5p2r",
-   "player": "Emeka Egbuka",
-   "team": null,
-   "status": "questionable",
-   "kind": "status",
-   "confidence": 0.3,
-   "text": "Emeka Egbuka: Sits out Friday's practice \n\n https://www.rotowire.com/football/player/emeka-egbuka-18549"
-  },
   {
    "id": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3mz45fxd4dx2y|emekaegbuka|questionable|status",
    "at": "2026-10-30T15:56:45.000Z",
@@ -18833,6 +18820,58 @@
    "kind": "status",
    "confidence": 0.75,
    "text": "Seth McGowan: Won't return to Thursday Night Football \n\n https://www.rotowire.com/football/player/seth-mcgowan-19303"
+  },
+  {
+   "id": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3n2qv2lnaad25|omarcooper|out|status",
+   "at": "2026-11-20T15:18:20.000Z",
+   "seen": "2026-11-20T15:36:01.222Z",
+   "handle": "rotowirenfl.bsky.social",
+   "post": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3n2qv2lnaad25",
+   "player": "Omar Cooper",
+   "team": null,
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.9,
+   "text": "Omar Cooper: Will miss Week 11 \n\n https://www.rotowire.com/football/player/omar-cooper-19314"
+  },
+  {
+   "id": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3n2qv3rw3cy2p|omarcooper|out|status",
+   "at": "2026-11-20T15:19:00.000Z",
+   "seen": "2026-11-20T15:36:01.222Z",
+   "handle": "rotoworld-fb.bsky.social",
+   "post": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3n2qv3rw3cy2p",
+   "player": "Omar Cooper",
+   "team": null,
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.9,
+   "text": "Omar Cooper (ankle/hip) won't play vs. Chargers"
+  },
+  {
+   "id": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3n2qvduebut2f|isaiahwilliams|out|status",
+   "at": "2026-11-20T15:23:31.000Z",
+   "seen": "2026-11-20T15:36:01.222Z",
+   "handle": "rotoworld-fb.bsky.social",
+   "post": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3n2qvduebut2f",
+   "player": "Isaiah Williams",
+   "team": null,
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.9,
+   "text": "Isaiah Williams (ribs) won't play in Week 11"
+  },
+  {
+   "id": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3n2qvlwrmjw26|geno|questionable|status",
+   "at": "2026-11-20T15:28:02.000Z",
+   "seen": "2026-11-20T15:36:01.222Z",
+   "handle": "rotoworld-fb.bsky.social",
+   "post": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3n2qvlwrmjw26",
+   "player": "Geno",
+   "team": null,
+   "status": "questionable",
+   "kind": "status",
+   "confidence": 0.6,
+   "text": "Geno (ankle) trending toward playing vs. Chargers"
   }
  ]
 }
