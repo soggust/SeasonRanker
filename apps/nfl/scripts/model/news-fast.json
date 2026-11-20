@@ -5,50 +5,11 @@
   "rapsheet.bsky.social": "2026-11-20T00:15:08.306Z",
   "nflnewsreposterbot.bsky.social": "2026-11-16T18:35:13.806Z",
   "insidenflnews.bsky.social": "2026-11-19T20:50:27.919Z",
-  "nflnewsposter.bsky.social": "2026-11-19T22:25:37.480Z",
+  "nflnewsposter.bsky.social": "2026-11-20T01:38:20.875Z",
   "rotoworld-fb.bsky.social": "2026-11-20T00:08:46.000Z",
   "rotowirenfl.bsky.social": "2026-11-19T23:18:41.000Z"
  },
  "claims": [
-  {
-   "id": "at://did:plc:mbr4badgf6yu56mquzackzew/app.bsky.feed.post/3mz2mdp6qx22h|christianwatson|questionable|status",
-   "at": "2026-10-30T01:18:36.419Z",
-   "seen": "2026-10-30T01:38:57.835Z",
-   "handle": "insidenflnews.bsky.social",
-   "post": "at://did:plc:mbr4badgf6yu56mquzackzew/app.bsky.feed.post/3mz2mdp6qx22h",
-   "player": "Christian Watson",
-   "team": "GB",
-   "status": "questionable",
-   "kind": "status",
-   "confidence": 0.93,
-   "text": "🚨 Status alert: Christian Watson (chest) questionable to return Thursday."
-  },
-  {
-   "id": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3mz2mq6zfli2y|christianwatson|questionable|status",
-   "at": "2026-10-30T01:25:35.000Z",
-   "seen": "2026-10-30T01:38:57.835Z",
-   "handle": "rotowirenfl.bsky.social",
-   "post": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3mz2mq6zfli2y",
-   "player": "Christian Watson",
-   "team": "GB",
-   "status": "questionable",
-   "kind": "status",
-   "confidence": 0.93,
-   "text": "Christian Watson: Questionable to return to TNF \n\n https://www.rotowire.com/football/player/christian-watson-15946"
-  },
-  {
-   "id": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3mz2mqkjywz2a|christianwatson|questionable|status",
-   "at": "2026-10-30T01:25:47.000Z",
-   "seen": "2026-10-30T01:38:57.835Z",
-   "handle": "rotoworld-fb.bsky.social",
-   "post": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3mz2mqkjywz2a",
-   "player": "Christian Watson",
-   "team": "GB",
-   "status": "questionable",
-   "kind": "status",
-   "confidence": 0.93,
-   "text": "Christian Watson (chest) questionable to return"
-  },
   {
    "id": "at://did:plc:mbr4badgf6yu56mquzackzew/app.bsky.feed.post/3mz2q4xmgks25|christianwatson|active|return",
    "at": "2026-10-30T02:26:25.341Z",
