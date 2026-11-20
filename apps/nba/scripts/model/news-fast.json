@@ -1,7 +1,7 @@
 {
  "sport": "nba",
  "cursor": {
-  "rotowirenba.bsky.social": "2026-11-20T16:11:25.000Z",
+  "rotowirenba.bsky.social": "2026-11-20T17:41:24.000Z",
   "insidenbanews.bsky.social": "2026-11-13T20:00:09.852Z",
   "shamsbot.bsky.social": "2026-11-19T20:03:07.000Z"
  },
@@ -7298,6 +7298,19 @@
    "kind": "return",
    "confidence": 0.9,
    "text": "Jalen Brunson: Returns Thursday \n\n https://www.rotowire.com/basketball/player/jalen-brunson-4405"
+  },
+  {
+   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3n2r52goccz22|jalensmith|questionable|status",
+   "at": "2026-11-20T17:41:24.000Z",
+   "seen": "2026-11-20T17:46:31.995Z",
+   "handle": "rotowirenba.bsky.social",
+   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3n2r52goccz22",
+   "player": "Jalen Smith",
+   "team": null,
+   "status": "questionable",
+   "kind": "status",
+   "confidence": 0.9,
+   "text": "Jalen Smith: Now questionable Friday \n\n https://www.rotowire.com/basketball/player/jalen-smith-5169"
   }
  ]
 }

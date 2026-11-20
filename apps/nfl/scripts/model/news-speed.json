@@ -11505,6 +11505,11 @@
    "espn": {
     "seen": "2026-11-17T00:04:00.288Z",
     "own": "2026-11-15T16:19:00.000Z"
+   },
+   "bluesky": {
+    "seen": "2026-11-20T17:24:26.691Z",
+    "own": "2026-11-20T17:16:49.358Z",
+    "why": "@nflnewsposter.bsky.social: [Smith] Todd Bowles says Baker Mayfield looked good "
    }
   },
   "401873072|yayadiaby|out": {
@@ -15377,6 +15382,18 @@
     "seen": "2026-11-20T15:36:01.222Z",
     "own": "2026-11-20T15:28:02.000Z",
     "why": "@rotoworld-fb.bsky.social: Geno (ankle) trending toward playing vs. Chargers"
+   }
+  },
+  "401873079|terranceferguson|out": {
+   "game": "401873079",
+   "start": "2026-11-26T01:00Z",
+   "team": "14",
+   "name": "Terrance Ferguson",
+   "status": "out",
+   "athlete": "4570037",
+   "espn": {
+    "seen": "2026-11-20T17:42:49.968Z",
+    "own": "2026-11-20T17:21:00.000Z"
    }
   }
  }
