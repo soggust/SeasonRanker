@@ -1,37 +1,11 @@
 {
  "sport": "nba",
  "cursor": {
-  "rotowirenba.bsky.social": "2026-11-19T22:07:49.000Z",
+  "rotowirenba.bsky.social": "2026-11-20T00:05:17.000Z",
   "insidenbanews.bsky.social": "2026-11-13T20:00:09.852Z",
   "shamsbot.bsky.social": "2026-11-19T20:03:07.000Z"
  },
  "claims": [
-  {
-   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mz2hekdaik2l|cameronjohnson|questionable|status",
-   "at": "2026-10-29T23:49:35.000Z",
-   "seen": "2026-10-30T00:03:45.750Z",
-   "handle": "rotowirenba.bsky.social",
-   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mz2hekdaik2l",
-   "player": "Cameron Johnson",
-   "team": null,
-   "status": "questionable",
-   "kind": "status",
-   "confidence": 0.9,
-   "text": "Cameron Johnson: Listed questionable for Friday \n\n https://www.rotowire.com/basketball/player/cameron-johnson-4916"
-  },
-  {
-   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mz2i6obq7422|lukadoncic|active|return",
-   "at": "2026-10-30T00:04:12.000Z",
-   "seen": "2026-10-30T00:18:44.559Z",
-   "handle": "rotowirenba.bsky.social",
-   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mz2i6obq7422",
-   "player": "Luka Doncic",
-   "team": null,
-   "status": "active",
-   "kind": "return",
-   "confidence": 0.8,
-   "text": "Luka Doncic: Set for Friday return \n\n https://www.rotowire.com/basketball/player/luka-doncic-4396"
-  },
   {
    "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mz2wd6asnw2l|jamorant|questionable|status",
    "at": "2026-10-30T04:17:16.000Z",
@@ -7311,6 +7285,32 @@
    "kind": "status",
    "confidence": 0.9,
    "text": "Grayson Allen: Out for Friday \n\n https://www.rotowire.com/basketball/player/grayson-allen-4454"
+  },
+  {
+   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3n2p7f6pbga2q|alperensengun|questionable|status",
+   "at": "2026-11-19T23:17:53.000Z",
+   "seen": "2026-11-20T00:15:25.760Z",
+   "handle": "rotowirenba.bsky.social",
+   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3n2p7f6pbga2q",
+   "player": "Alperen Sengun",
+   "team": "HOU",
+   "status": "questionable",
+   "kind": "status",
+   "confidence": 0.95,
+   "text": "Alperen Sengun: Tagged questionable for Friday \n\n https://www.rotowire.com/basketball/player/alperen-sengun-5404"
+  },
+  {
+   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3n2pbzwywux24|jusufnurkic|out|status",
+   "at": "2026-11-20T00:05:17.000Z",
+   "seen": "2026-11-20T00:15:25.760Z",
+   "handle": "rotowirenba.bsky.social",
+   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3n2pbzwywux24",
+   "player": "Jusuf Nurkic",
+   "team": null,
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.85,
+   "text": "Jusuf Nurkic: Not ready to return Friday \n\n https://www.rotowire.com/basketball/player/jusuf-nurkic-3580"
   }
  ]
 }

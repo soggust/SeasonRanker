@@ -3,6 +3,50 @@
  "days": 2,
  "signals": [
   {
+   "team": "14",
+   "abbr": "LAR",
+   "athlete": "4426515",
+   "player": "Puka Nacua",
+   "kind": "restriction",
+   "direction": "down",
+   "confidence": 0.9,
+   "headline": "Rams WR Puka Nacua to serve 3-game suspension while on IR",
+   "at": "2026-11-19T22:47:33.000Z"
+  },
+  {
+   "team": "33",
+   "abbr": "BAL",
+   "athlete": "3126356",
+   "player": "Marlon Humphrey",
+   "kind": "benched",
+   "direction": "down",
+   "confidence": 0.9,
+   "headline": "Ravens send CB Humphrey home, say he'll be inactive after 'criminals' comment",
+   "at": "2026-11-19T21:42:20.000Z"
+  },
+  {
+   "team": "6",
+   "abbr": "DAL",
+   "athlete": null,
+   "player": "Christian Parker",
+   "kind": "role",
+   "direction": "down",
+   "confidence": 0.8,
+   "headline": "Cowboys' Parker: I'm still DC, have 'job to do' after losing playcalling duties",
+   "at": "2026-11-19T21:18:07.000Z"
+  },
+  {
+   "team": "2",
+   "abbr": "BUF",
+   "athlete": null,
+   "player": "Kyle McCord",
+   "kind": "starting",
+   "direction": "none",
+   "confidence": 0.3,
+   "headline": "Whether it's against backup QBs or not, the Bills' defense is rolling",
+   "at": "2026-11-19T17:33:20.000Z"
+  },
+  {
    "team": "29",
    "abbr": "CAR",
    "athlete": "3917853",
@@ -47,5 +91,5 @@
    "at": "2026-11-18T18:57:48.000Z"
   }
  ],
- "at": "2026-11-19T16:45:26.134Z"
+ "at": "2026-11-20T00:15:25.760Z"
 }

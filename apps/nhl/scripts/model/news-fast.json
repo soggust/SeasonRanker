@@ -3,24 +3,11 @@
  "cursor": {
   "johnston-bot.bsky.social": "2026-11-18T16:07:40.564Z",
   "notfriedgehnic.bsky.social": "2026-11-19T19:19:40.837Z",
-  "dailyfaceoff.bsky.social": "2026-11-19T22:12:37.000Z",
-  "dfotoronto.bsky.social": "2026-11-19T22:05:05.000Z",
+  "dailyfaceoff.bsky.social": "2026-11-19T23:04:47.000Z",
+  "dfotoronto.bsky.social": "2026-11-19T23:06:03.000Z",
   "marklazerus.bsky.social": "2026-11-19T03:51:49.788Z"
  },
  "claims": [
-  {
-   "id": "at://did:plc:3uus7y6h3rlrk6sbctzxm4bg/app.bsky.feed.post/3mz2ddiaauy2k|kendallcoyneschofield|out|status",
-   "at": "2026-10-29T22:37:25.000Z",
-   "seen": "2026-10-29T23:16:27.355Z",
-   "handle": "dailyfaceoff.bsky.social",
-   "post": "at://did:plc:3uus7y6h3rlrk6sbctzxm4bg/app.bsky.feed.post/3mz2ddiaauy2k",
-   "player": "Kendall Coyne Schofield",
-   "team": "MIN",
-   "status": "out",
-   "kind": "status",
-   "confidence": 0.8,
-   "text": "Frost’s Kendall Coyne Schofield to miss 2026-27 after pregnancy announcement"
-  },
   {
    "id": "at://did:plc:3uus7y6h3rlrk6sbctzxm4bg/app.bsky.feed.post/3mz2q3jyho72k|ryanpulock|none|status",
    "at": "2026-10-30T02:25:37.000Z",
