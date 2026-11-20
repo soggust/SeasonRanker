@@ -11591,6 +11591,11 @@
    "espn": {
     "seen": "2026-11-17T00:04:00.288Z",
     "own": "2026-11-16T19:22:00.000Z"
+   },
+   "bluesky": {
+    "seen": "2026-11-20T21:15:09.553Z",
+    "own": "2026-11-20T20:25:54.067Z",
+    "why": "@rapsheet.bsky.social: The Chiefs have ruled out RB Kenneth Walker, in addition "
    }
   },
   "401873067|jaredwiley|out": {
@@ -11711,6 +11716,11 @@
    "espn": {
     "seen": "2026-11-17T00:04:00.288Z",
     "own": "2026-11-09T21:32:00.000Z"
+   },
+   "bluesky": {
+    "seen": "2026-11-20T21:15:09.553Z",
+    "own": "2026-11-20T21:06:25.949Z",
+    "why": "@adamscheftermirror.bsky.social: Eagles ruled out LB Zack Baun (back) and WR Don"
    }
   },
   "401873076|devontasmith|out": {
@@ -12203,6 +12213,11 @@
    "sleeper": {
     "seen": "2026-11-20T20:01:53.622Z",
     "own": "2026-11-20T18:55:09.321Z"
+   },
+   "bluesky": {
+    "seen": "2026-11-20T21:15:09.553Z",
+    "own": "2026-11-20T20:24:33.000Z",
+    "why": "@rotoworld-fb.bsky.social: Brock Bowers (ankle/quad) questionable in Week 11"
    }
   },
   "401873075|thomasbooker|out": {
@@ -12712,6 +12727,11 @@
    "espn": {
     "seen": "2026-11-17T12:56:45.348Z",
     "own": "2026-11-16T14:23:00.000Z"
+   },
+   "bluesky": {
+    "seen": "2026-11-20T21:15:09.553Z",
+    "own": "2026-11-20T20:44:23.000Z",
+    "why": "@rotowirenfl.bsky.social: Carnell Tate: Full practice, but questionable for Sund"
    }
   },
   "401873072|djreed|q": {
@@ -15669,6 +15689,11 @@
    "sleeper": {
     "seen": "2026-11-20T20:01:53.622Z",
     "own": "2026-11-20T19:25:11.350Z"
+   },
+   "bluesky": {
+    "seen": "2026-11-20T21:15:09.553Z",
+    "own": "2026-11-20T20:31:25.185Z",
+    "why": "@adamscheftermirror.bsky.social: Bills ruled out CB Christian Benford and LB Dor"
    }
   },
   "401873070|daltonkincaid|out": {
@@ -15706,6 +15731,11 @@
    "sleeper": {
     "seen": "2026-11-20T20:01:53.622Z",
     "own": "2026-11-20T19:51:00.074Z"
+   },
+   "bluesky": {
+    "seen": "2026-11-20T21:15:09.553Z",
+    "own": "2026-11-20T20:31:25.185Z",
+    "why": "@adamscheftermirror.bsky.social: Bills ruled out CB Christian Benford and LB Dor"
    }
   },
   "401873070|jonathonbrooks|q": {
@@ -16402,6 +16432,11 @@
    "espn": {
     "seen": "2026-11-20T20:29:47.364Z",
     "own": "2026-11-20T20:25:00.000Z"
+   },
+   "bluesky": {
+    "seen": "2026-11-20T21:15:09.553Z",
+    "own": "2026-11-20T20:25:54.067Z",
+    "why": "@rapsheet.bsky.social: The Chiefs have ruled out RB Kenneth Walker, in addition "
    }
   },
   "401873070|jaylinsimpson|out": {
@@ -16438,6 +16473,54 @@
    "espn": {
     "seen": "2026-11-20T21:12:34.534Z",
     "own": "2026-11-20T20:56:00.000Z"
+   }
+  },
+  "401873076|zackbaun|out": {
+   "game": "401873076",
+   "start": "2026-11-22T18:00Z",
+   "team": "21",
+   "name": "Zack Baun",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-20T21:15:09.553Z",
+    "own": "2026-11-20T21:06:25.949Z",
+    "why": "@adamscheftermirror.bsky.social: Eagles ruled out LB Zack Baun (back) and WR Don"
+   }
+  },
+  "401873074|cooper|out": {
+   "game": "401873074",
+   "start": "2026-11-22T21:05Z",
+   "team": "20",
+   "name": "Cooper",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-20T21:15:09.553Z",
+    "own": "2026-11-20T20:56:08.000Z",
+    "why": "@rotoworld-fb.bsky.social: Jets rule out Cooper, Williams for Wk 11 vs. Bolts"
+   }
+  },
+  "401873074|williams|out": {
+   "game": "401873074",
+   "start": "2026-11-22T21:05Z",
+   "team": "20",
+   "name": "Williams",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-20T21:15:09.553Z",
+    "own": "2026-11-20T20:56:08.000Z",
+    "why": "@rotoworld-fb.bsky.social: Jets rule out Cooper, Williams for Wk 11 vs. Bolts"
+   }
+  },
+  "401873078|rachaadwhite|q": {
+   "game": "401873078",
+   "start": "2026-11-24T01:15Z",
+   "team": "28",
+   "name": "Rachaad White",
+   "status": "q",
+   "athlete": "4697815",
+   "espn": {
+    "seen": "2026-11-20T21:30:30.299Z",
+    "own": "2026-11-20T21:09:00.000Z"
    }
   }
  }

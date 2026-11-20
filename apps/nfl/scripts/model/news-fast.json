@@ -2,40 +2,14 @@
  "sport": "nfl",
  "cursor": {
   "adamscheftermirror.bsky.social": "2026-11-20T21:06:25.949Z",
-  "rapsheet.bsky.social": "2026-11-20T20:30:29.933Z",
+  "rapsheet.bsky.social": "2026-11-20T21:16:12.668Z",
   "nflnewsreposterbot.bsky.social": "2026-11-16T18:35:13.806Z",
   "insidenflnews.bsky.social": "2026-11-20T20:57:02.504Z",
   "nflnewsposter.bsky.social": "2026-11-20T21:11:10.677Z",
-  "rotoworld-fb.bsky.social": "2026-11-20T21:14:25.000Z",
-  "rotowirenfl.bsky.social": "2026-11-20T21:14:23.000Z"
+  "rotoworld-fb.bsky.social": "2026-11-20T21:28:08.000Z",
+  "rotowirenfl.bsky.social": "2026-11-20T21:19:56.000Z"
  },
  "claims": [
-  {
-   "id": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3mz4pf2ghpu2o|georgepickens|questionable|status",
-   "at": "2026-10-30T21:18:22.000Z",
-   "seen": "2026-10-30T21:24:17.121Z",
-   "handle": "rotowirenfl.bsky.social",
-   "post": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3mz4pf2ghpu2o",
-   "player": "George Pickens",
-   "team": null,
-   "status": "questionable",
-   "kind": "status",
-   "confidence": 0.9,
-   "text": "George Pickens: Questionable for Sunday \n\n https://www.rotowire.com/football/player/george-pickens-15853"
-  },
-  {
-   "id": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3mz4pgcf65s2d|georgepickens|questionable|status",
-   "at": "2026-10-30T21:19:04.000Z",
-   "seen": "2026-10-30T21:24:17.121Z",
-   "handle": "rotoworld-fb.bsky.social",
-   "post": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3mz4pgcf65s2d",
-   "player": "George Pickens",
-   "team": null,
-   "status": "questionable",
-   "kind": "status",
-   "confidence": 0.9,
-   "text": "George Pickens officially questionable for Week 8"
-  },
   {
    "id": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3mz4rr5zbvi2s|jaylenwaddle|questionable|status",
    "at": "2026-10-30T22:00:56.000Z",
@@ -18898,6 +18872,45 @@
    "kind": "status",
    "confidence": 0.5,
    "text": "Tuten, per usual, evades final injury report"
+  },
+  {
+   "id": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3n2rjb6glks2u|bhayshultuten|active|status",
+   "at": "2026-11-20T21:19:56.000Z",
+   "seen": "2026-11-20T21:33:00.472Z",
+   "handle": "rotowirenfl.bsky.social",
+   "post": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3n2rjb6glks2u",
+   "player": "Bhayshul Tuten",
+   "team": null,
+   "status": "active",
+   "kind": "status",
+   "confidence": 0.9,
+   "text": "Bhayshul Tuten: Cleared for Sunday's game \n\n https://www.rotowire.com/football/player/bhayshul-tuten-18524"
+  },
+  {
+   "id": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3n2rjptc4yy2b|isaiahlikely|active|status",
+   "at": "2026-11-20T21:28:07.000Z",
+   "seen": "2026-11-20T21:33:00.472Z",
+   "handle": "rotoworld-fb.bsky.social",
+   "post": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3n2rjptc4yy2b",
+   "player": "Isaiah Likely",
+   "team": null,
+   "status": "active",
+   "kind": "status",
+   "confidence": 0.9,
+   "text": "Isaiah Likely (groin) good to go with minor injury"
+  },
+  {
+   "id": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3n2rjpu5r2x2t|laddmcconkey|questionable|status",
+   "at": "2026-11-20T21:28:08.000Z",
+   "seen": "2026-11-20T21:33:00.472Z",
+   "handle": "rotoworld-fb.bsky.social",
+   "post": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3n2rjpu5r2x2t",
+   "player": "Ladd McConkey",
+   "team": null,
+   "status": "questionable",
+   "kind": "status",
+   "confidence": 0.9,
+   "text": "Ladd McConkey (back) draws questionable tag"
   }
  ]
 }

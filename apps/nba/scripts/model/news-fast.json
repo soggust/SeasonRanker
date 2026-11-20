@@ -1,24 +1,11 @@
 {
  "sport": "nba",
  "cursor": {
-  "rotowirenba.bsky.social": "2026-11-20T20:42:49.000Z",
+  "rotowirenba.bsky.social": "2026-11-20T21:21:31.000Z",
   "insidenbanews.bsky.social": "2026-11-20T20:35:06.661Z",
   "shamsbot.bsky.social": "2026-11-20T20:29:39.000Z"
  },
  "claims": [
-  {
-   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mz4phn3mhe2g|dejountemurray|active|status",
-   "at": "2026-10-30T21:19:49.000Z",
-   "seen": "2026-10-30T21:24:17.121Z",
-   "handle": "rotowirenba.bsky.social",
-   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mz4phn3mhe2g",
-   "player": "Dejounte Murray",
-   "team": null,
-   "status": "active",
-   "kind": "status",
-   "confidence": 0.6,
-   "text": "Dejounte Murray: Absent from injury report \n\n https://www.rotowire.com/basketball/player/dejounte-murray-3856"
-  },
   {
    "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mz4q7srdcb2l|ajdybantsa|limited|status",
    "at": "2026-10-30T21:33:20.000Z",
@@ -7402,6 +7389,32 @@
    "kind": "status",
    "confidence": 0.8,
    "text": "Kawhi Leonard: Still weeks away from returning \n\n https://www.rotowire.com/basketball/player/kawhi-leonard-3195"
+  },
+  {
+   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3n2rj7dw45u2n|mylesturner|active|status",
+   "at": "2026-11-20T21:18:54.000Z",
+   "seen": "2026-11-20T21:33:00.472Z",
+   "handle": "rotowirenba.bsky.social",
+   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3n2rj7dw45u2n",
+   "player": "Myles Turner",
+   "team": null,
+   "status": "active",
+   "kind": "status",
+   "confidence": 0.8,
+   "text": "Myles Turner: Absent from injury report \n\n https://www.rotowire.com/basketball/player/myles-turner-3725"
+  },
+  {
+   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3n2rjdztoit2u|kylekuzma|active|status",
+   "at": "2026-11-20T21:21:31.000Z",
+   "seen": "2026-11-20T21:33:00.472Z",
+   "handle": "rotowirenba.bsky.social",
+   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3n2rjdztoit2u",
+   "player": "Kyle Kuzma",
+   "team": null,
+   "status": "active",
+   "kind": "status",
+   "confidence": 0.85,
+   "text": "Kyle Kuzma: Cleared from injury report \n\n https://www.rotowire.com/basketball/player/kyle-kuzma-4167"
   }
  ]
 }
