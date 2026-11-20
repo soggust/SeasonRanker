@@ -3,8 +3,8 @@
  "cursor": {
   "johnston-bot.bsky.social": "2026-11-20T04:01:20.374Z",
   "notfriedgehnic.bsky.social": "2026-11-20T17:39:25.721Z",
-  "dailyfaceoff.bsky.social": "2026-11-20T18:05:19.000Z",
-  "dfotoronto.bsky.social": "2026-11-20T16:39:50.000Z",
+  "dailyfaceoff.bsky.social": "2026-11-20T18:14:54.000Z",
+  "dfotoronto.bsky.social": "2026-11-20T18:14:53.000Z",
   "marklazerus.bsky.social": "2026-11-20T16:17:05.259Z"
  },
  "claims": [
@@ -2425,6 +2425,45 @@
    "kind": "status",
    "confidence": 0.9,
    "text": "Victoire’s Marie-Philip Poulin out until spring for headline"
+  },
+  {
+   "id": "at://did:plc:3uus7y6h3rlrk6sbctzxm4bg/app.bsky.feed.post/3n2r6wbwopw24|albertjohansson|active|return",
+   "at": "2026-11-20T18:14:53.000Z",
+   "seen": "2026-11-20T18:27:45.677Z",
+   "handle": "dailyfaceoff.bsky.social",
+   "post": "at://did:plc:3uus7y6h3rlrk6sbctzxm4bg/app.bsky.feed.post/3n2r6wbwopw24",
+   "player": "Albert Johansson",
+   "team": "DET",
+   "status": "active",
+   "kind": "return",
+   "confidence": 0.93,
+   "text": "Red Wings’ Albert Johansson to return after 11-game absence"
+  },
+  {
+   "id": "at://did:plc:3uus7y6h3rlrk6sbctzxm4bg/app.bsky.feed.post/3n2r6wdmntn2t|nickrobertson|out|status",
+   "at": "2026-11-20T18:14:54.000Z",
+   "seen": "2026-11-20T18:27:45.677Z",
+   "handle": "dailyfaceoff.bsky.social",
+   "post": "at://did:plc:3uus7y6h3rlrk6sbctzxm4bg/app.bsky.feed.post/3n2r6wdmntn2t",
+   "player": "Nick Robertson",
+   "team": "PIT",
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.95,
+   "text": "Penguins place Nick Robertson on IR, Malkin day-to-day with upper-body injury"
+  },
+  {
+   "id": "at://did:plc:3uus7y6h3rlrk6sbctzxm4bg/app.bsky.feed.post/3n2r6wdmntn2t|malkin|questionable|status",
+   "at": "2026-11-20T18:14:54.000Z",
+   "seen": "2026-11-20T18:27:45.677Z",
+   "handle": "dailyfaceoff.bsky.social",
+   "post": "at://did:plc:3uus7y6h3rlrk6sbctzxm4bg/app.bsky.feed.post/3n2r6wdmntn2t",
+   "player": "Malkin",
+   "team": "PIT",
+   "status": "questionable",
+   "kind": "status",
+   "confidence": 0.9,
+   "text": "Penguins place Nick Robertson on IR, Malkin day-to-day with upper-body injury"
   }
  ]
 }

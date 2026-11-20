@@ -15520,6 +15520,30 @@
     "own": "2026-11-20T17:39:35.000Z",
     "why": "@rotoworld-fb.bsky.social: Mayfield (foot) 'trending' to start vs. Lions"
    }
+  },
+  "401873067|carsonbeck|out": {
+   "game": "401873067",
+   "start": "2026-11-22T18:00Z",
+   "team": "22",
+   "name": "Carson Beck",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-20T18:06:37.087Z",
+    "own": "2026-11-20T18:01:24.517Z",
+    "why": "@adamscheftermirror.bsky.social: Cardinals HC Mike LaFleur said rookie QB Carson"
+   }
+  },
+  "401873079|davanteadams|out": {
+   "game": "401873079",
+   "start": "2026-11-26T01:00Z",
+   "team": "14",
+   "name": "Davante Adams",
+   "status": "out",
+   "athlete": "16800",
+   "espn": {
+    "seen": "2026-11-20T18:24:45.760Z",
+    "own": "2026-11-20T17:49:00.000Z"
+   }
   }
  }
 }
