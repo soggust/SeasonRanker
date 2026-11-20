@@ -16391,6 +16391,18 @@
     "own": "2026-11-20T19:57:10.000Z",
     "why": "@rotoworld-fb.bsky.social: Pittman questionable after two full sessions"
    }
+  },
+  "401873067|treysmith|out": {
+   "game": "401873067",
+   "start": "2026-11-22T18:00Z",
+   "team": "12",
+   "name": "Trey Smith",
+   "status": "out",
+   "athlete": "4242459",
+   "espn": {
+    "seen": "2026-11-20T20:29:47.364Z",
+    "own": "2026-11-20T20:25:00.000Z"
+   }
   }
  }
 }
