@@ -1,28 +1,15 @@
 {
  "sport": "nfl",
  "cursor": {
-  "adamscheftermirror.bsky.social": "2026-11-20T14:11:23.765Z",
+  "adamscheftermirror.bsky.social": "2026-11-20T15:11:24.767Z",
   "rapsheet.bsky.social": "2026-11-20T14:54:25.963Z",
   "nflnewsreposterbot.bsky.social": "2026-11-16T18:35:13.806Z",
-  "insidenflnews.bsky.social": "2026-11-20T03:21:20.322Z",
+  "insidenflnews.bsky.social": "2026-11-20T15:06:12.249Z",
   "nflnewsposter.bsky.social": "2026-11-20T04:07:50.728Z",
   "rotoworld-fb.bsky.social": "2026-11-20T04:54:34.000Z",
   "rotowirenfl.bsky.social": "2026-11-20T05:05:42.000Z"
  },
  "claims": [
-  {
-   "id": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3mz42x2bspr2v|breecehall|questionable|status",
-   "at": "2026-10-30T15:12:37.000Z",
-   "seen": "2026-10-30T15:31:10.267Z",
-   "handle": "rotowirenfl.bsky.social",
-   "post": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3mz42x2bspr2v",
-   "player": "Breece Hall",
-   "team": null,
-   "status": "questionable",
-   "kind": "status",
-   "confidence": 0.95,
-   "text": "Breece Hall: Listed questionable for Sunday \n\n https://www.rotowire.com/football/player/breece-hall-15810"
-  },
   {
    "id": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3mz435bxm5p2r|emekaegbuka|questionable|status",
    "at": "2026-10-30T15:16:07.000Z",
