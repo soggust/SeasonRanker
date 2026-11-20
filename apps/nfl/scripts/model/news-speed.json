@@ -15043,6 +15043,11 @@
    "espn": {
     "seen": "2026-11-20T15:20:26.222Z",
     "own": "2026-11-19T22:43:00.000Z"
+   },
+   "bluesky": {
+    "seen": "2026-11-20T15:36:01.222Z",
+    "own": "2026-11-20T15:23:31.000Z",
+    "why": "@rotoworld-fb.bsky.social: Isaiah Williams (ribs) won't play in Week 11"
    }
   },
   "401873074|omarcooper|out": {
@@ -15055,6 +15060,323 @@
    "espn": {
     "seen": "2026-11-20T15:20:26.222Z",
     "own": "2026-11-19T22:37:00.000Z"
+   },
+   "bluesky": {
+    "seen": "2026-11-20T15:36:01.222Z",
+    "own": "2026-11-20T15:19:00.000Z",
+    "why": "@rotoworld-fb.bsky.social: Omar Cooper (ankle/hip) won't play vs. Chargers"
+   }
+  },
+  "401873070|omarcooper|out": {
+   "game": "401873070",
+   "start": "2026-11-22T18:00Z",
+   "team": "2",
+   "name": "Omar Cooper",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-20T15:36:01.222Z",
+    "own": "2026-11-20T15:19:00.000Z",
+    "why": "@rotoworld-fb.bsky.social: Omar Cooper (ankle/hip) won't play vs. Chargers"
+   }
+  },
+  "401873070|isaiahwilliams|out": {
+   "game": "401873070",
+   "start": "2026-11-22T18:00Z",
+   "team": "2",
+   "name": "Isaiah Williams",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-20T15:36:01.222Z",
+    "own": "2026-11-20T15:23:31.000Z",
+    "why": "@rotoworld-fb.bsky.social: Isaiah Williams (ribs) won't play in Week 11"
+   }
+  },
+  "401873070|geno|q": {
+   "game": "401873070",
+   "start": "2026-11-22T18:00Z",
+   "team": "2",
+   "name": "Geno",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-11-20T15:36:01.222Z",
+    "own": "2026-11-20T15:28:02.000Z",
+    "why": "@rotoworld-fb.bsky.social: Geno (ankle) trending toward playing vs. Chargers"
+   }
+  },
+  "401873070|bradleypinion|out": {
+   "game": "401873070",
+   "start": "2026-11-22T18:00Z",
+   "team": "15",
+   "name": "Bradley Pinion",
+   "status": "out",
+   "athlete": "2977680",
+   "espn": {
+    "seen": "2026-11-20T15:51:38.506Z",
+    "own": "2026-11-20T15:43:00.000Z"
+   }
+  },
+  "401873070|dantetrader|out": {
+   "game": "401873070",
+   "start": "2026-11-22T18:00Z",
+   "team": "15",
+   "name": "Dante Trader Jr.",
+   "status": "out",
+   "athlete": "4431664",
+   "espn": {
+    "seen": "2026-11-20T15:51:38.506Z",
+    "own": "2026-11-20T15:39:00.000Z"
+   }
+  },
+  "401873071|omarcooper|out": {
+   "game": "401873071",
+   "start": "2026-11-22T18:00Z",
+   "team": "3",
+   "name": "Omar Cooper",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-20T15:36:01.222Z",
+    "own": "2026-11-20T15:19:00.000Z",
+    "why": "@rotoworld-fb.bsky.social: Omar Cooper (ankle/hip) won't play vs. Chargers"
+   }
+  },
+  "401873071|isaiahwilliams|out": {
+   "game": "401873071",
+   "start": "2026-11-22T18:00Z",
+   "team": "3",
+   "name": "Isaiah Williams",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-20T15:36:01.222Z",
+    "own": "2026-11-20T15:23:31.000Z",
+    "why": "@rotoworld-fb.bsky.social: Isaiah Williams (ribs) won't play in Week 11"
+   }
+  },
+  "401873071|geno|q": {
+   "game": "401873071",
+   "start": "2026-11-22T18:00Z",
+   "team": "3",
+   "name": "Geno",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-11-20T15:36:01.222Z",
+    "own": "2026-11-20T15:28:02.000Z",
+    "why": "@rotoworld-fb.bsky.social: Geno (ankle) trending toward playing vs. Chargers"
+   }
+  },
+  "401873073|omarcooper|out": {
+   "game": "401873073",
+   "start": "2026-11-22T18:00Z",
+   "team": "6",
+   "name": "Omar Cooper",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-20T15:36:01.222Z",
+    "own": "2026-11-20T15:19:00.000Z",
+    "why": "@rotoworld-fb.bsky.social: Omar Cooper (ankle/hip) won't play vs. Chargers"
+   }
+  },
+  "401873073|isaiahwilliams|out": {
+   "game": "401873073",
+   "start": "2026-11-22T18:00Z",
+   "team": "6",
+   "name": "Isaiah Williams",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-20T15:36:01.222Z",
+    "own": "2026-11-20T15:23:31.000Z",
+    "why": "@rotoworld-fb.bsky.social: Isaiah Williams (ribs) won't play in Week 11"
+   }
+  },
+  "401873073|geno|q": {
+   "game": "401873073",
+   "start": "2026-11-22T18:00Z",
+   "team": "6",
+   "name": "Geno",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-11-20T15:36:01.222Z",
+    "own": "2026-11-20T15:28:02.000Z",
+    "why": "@rotoworld-fb.bsky.social: Geno (ankle) trending toward playing vs. Chargers"
+   }
+  },
+  "401873072|omarcooper|out": {
+   "game": "401873072",
+   "start": "2026-11-22T18:00Z",
+   "team": "8",
+   "name": "Omar Cooper",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-20T15:36:01.222Z",
+    "own": "2026-11-20T15:19:00.000Z",
+    "why": "@rotoworld-fb.bsky.social: Omar Cooper (ankle/hip) won't play vs. Chargers"
+   }
+  },
+  "401873072|isaiahwilliams|out": {
+   "game": "401873072",
+   "start": "2026-11-22T18:00Z",
+   "team": "8",
+   "name": "Isaiah Williams",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-20T15:36:01.222Z",
+    "own": "2026-11-20T15:23:31.000Z",
+    "why": "@rotoworld-fb.bsky.social: Isaiah Williams (ribs) won't play in Week 11"
+   }
+  },
+  "401873072|geno|q": {
+   "game": "401873072",
+   "start": "2026-11-22T18:00Z",
+   "team": "8",
+   "name": "Geno",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-11-20T15:36:01.222Z",
+    "own": "2026-11-20T15:28:02.000Z",
+    "why": "@rotoworld-fb.bsky.social: Geno (ankle) trending toward playing vs. Chargers"
+   }
+  },
+  "401873067|omarcooper|out": {
+   "game": "401873067",
+   "start": "2026-11-22T18:00Z",
+   "team": "12",
+   "name": "Omar Cooper",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-20T15:36:01.222Z",
+    "own": "2026-11-20T15:19:00.000Z",
+    "why": "@rotoworld-fb.bsky.social: Omar Cooper (ankle/hip) won't play vs. Chargers"
+   }
+  },
+  "401873067|isaiahwilliams|out": {
+   "game": "401873067",
+   "start": "2026-11-22T18:00Z",
+   "team": "12",
+   "name": "Isaiah Williams",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-20T15:36:01.222Z",
+    "own": "2026-11-20T15:23:31.000Z",
+    "why": "@rotoworld-fb.bsky.social: Isaiah Williams (ribs) won't play in Week 11"
+   }
+  },
+  "401873067|geno|q": {
+   "game": "401873067",
+   "start": "2026-11-22T18:00Z",
+   "team": "12",
+   "name": "Geno",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-11-20T15:36:01.222Z",
+    "own": "2026-11-20T15:28:02.000Z",
+    "why": "@rotoworld-fb.bsky.social: Geno (ankle) trending toward playing vs. Chargers"
+   }
+  },
+  "401873076|omarcooper|out": {
+   "game": "401873076",
+   "start": "2026-11-22T18:00Z",
+   "team": "21",
+   "name": "Omar Cooper",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-20T15:36:01.222Z",
+    "own": "2026-11-20T15:19:00.000Z",
+    "why": "@rotoworld-fb.bsky.social: Omar Cooper (ankle/hip) won't play vs. Chargers"
+   }
+  },
+  "401873076|isaiahwilliams|out": {
+   "game": "401873076",
+   "start": "2026-11-22T18:00Z",
+   "team": "21",
+   "name": "Isaiah Williams",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-20T15:36:01.222Z",
+    "own": "2026-11-20T15:23:31.000Z",
+    "why": "@rotoworld-fb.bsky.social: Isaiah Williams (ribs) won't play in Week 11"
+   }
+  },
+  "401873076|geno|q": {
+   "game": "401873076",
+   "start": "2026-11-22T18:00Z",
+   "team": "21",
+   "name": "Geno",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-11-20T15:36:01.222Z",
+    "own": "2026-11-20T15:28:02.000Z",
+    "why": "@rotoworld-fb.bsky.social: Geno (ankle) trending toward playing vs. Chargers"
+   }
+  },
+  "401873068|omarcooper|out": {
+   "game": "401873068",
+   "start": "2026-11-22T18:00Z",
+   "team": "29",
+   "name": "Omar Cooper",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-20T15:36:01.222Z",
+    "own": "2026-11-20T15:19:00.000Z",
+    "why": "@rotoworld-fb.bsky.social: Omar Cooper (ankle/hip) won't play vs. Chargers"
+   }
+  },
+  "401873068|isaiahwilliams|out": {
+   "game": "401873068",
+   "start": "2026-11-22T18:00Z",
+   "team": "29",
+   "name": "Isaiah Williams",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-20T15:36:01.222Z",
+    "own": "2026-11-20T15:23:31.000Z",
+    "why": "@rotoworld-fb.bsky.social: Isaiah Williams (ribs) won't play in Week 11"
+   }
+  },
+  "401873068|geno|q": {
+   "game": "401873068",
+   "start": "2026-11-22T18:00Z",
+   "team": "29",
+   "name": "Geno",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-11-20T15:36:01.222Z",
+    "own": "2026-11-20T15:28:02.000Z",
+    "why": "@rotoworld-fb.bsky.social: Geno (ankle) trending toward playing vs. Chargers"
+   }
+  },
+  "401873074|geno|q": {
+   "game": "401873074",
+   "start": "2026-11-22T21:05Z",
+   "team": "24",
+   "name": "Geno",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-11-20T15:36:01.222Z",
+    "own": "2026-11-20T15:28:02.000Z",
+    "why": "@rotoworld-fb.bsky.social: Geno (ankle) trending toward playing vs. Chargers"
+   }
+  },
+  "401873075|geno|q": {
+   "game": "401873075",
+   "start": "2026-11-22T21:25Z",
+   "team": "7",
+   "name": "Geno",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-11-20T15:36:01.222Z",
+    "own": "2026-11-20T15:28:02.000Z",
+    "why": "@rotoworld-fb.bsky.social: Geno (ankle) trending toward playing vs. Chargers"
+   }
+  },
+  "401873069|geno|q": {
+   "game": "401873069",
+   "start": "2026-11-22T21:25Z",
+   "team": "19",
+   "name": "Geno",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-11-20T15:36:01.222Z",
+    "own": "2026-11-20T15:28:02.000Z",
+    "why": "@rotoworld-fb.bsky.social: Geno (ankle) trending toward playing vs. Chargers"
    }
   }
  }
