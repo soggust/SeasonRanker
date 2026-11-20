@@ -14772,6 +14772,11 @@
    "espn": {
     "seen": "2026-11-20T00:09:48.622Z",
     "own": "2026-11-19T22:31:00.000Z"
+   },
+   "bluesky": {
+    "seen": "2026-11-20T17:46:31.995Z",
+    "own": "2026-11-20T17:43:12.654Z",
+    "why": "@insidenflnews.bsky.social: Carson Beck (back) won't practice Friday.\n\nCardinals"
    }
   },
   "401873076|smaelmondon|q": {
@@ -15394,6 +15399,126 @@
    "espn": {
     "seen": "2026-11-20T17:42:49.968Z",
     "own": "2026-11-20T17:21:00.000Z"
+   }
+  },
+  "401873070|bakermayfield|q": {
+   "game": "401873070",
+   "start": "2026-11-22T18:00Z",
+   "team": "2",
+   "name": "Baker Mayfield",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-11-20T17:46:31.995Z",
+    "own": "2026-11-20T17:39:35.000Z",
+    "why": "@rotoworld-fb.bsky.social: Mayfield (foot) 'trending' to start vs. Lions"
+   }
+  },
+  "401873071|bakermayfield|q": {
+   "game": "401873071",
+   "start": "2026-11-22T18:00Z",
+   "team": "3",
+   "name": "Baker Mayfield",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-11-20T17:46:31.995Z",
+    "own": "2026-11-20T17:39:35.000Z",
+    "why": "@rotoworld-fb.bsky.social: Mayfield (foot) 'trending' to start vs. Lions"
+   }
+  },
+  "401873073|bakermayfield|q": {
+   "game": "401873073",
+   "start": "2026-11-22T18:00Z",
+   "team": "6",
+   "name": "Baker Mayfield",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-11-20T17:46:31.995Z",
+    "own": "2026-11-20T17:39:35.000Z",
+    "why": "@rotoworld-fb.bsky.social: Mayfield (foot) 'trending' to start vs. Lions"
+   }
+  },
+  "401873067|bakermayfield|q": {
+   "game": "401873067",
+   "start": "2026-11-22T18:00Z",
+   "team": "12",
+   "name": "Baker Mayfield",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-11-20T17:46:31.995Z",
+    "own": "2026-11-20T17:39:35.000Z",
+    "why": "@rotoworld-fb.bsky.social: Mayfield (foot) 'trending' to start vs. Lions"
+   }
+  },
+  "401873076|bakermayfield|q": {
+   "game": "401873076",
+   "start": "2026-11-22T18:00Z",
+   "team": "21",
+   "name": "Baker Mayfield",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-11-20T17:46:31.995Z",
+    "own": "2026-11-20T17:39:35.000Z",
+    "why": "@rotoworld-fb.bsky.social: Mayfield (foot) 'trending' to start vs. Lions"
+   }
+  },
+  "401873068|isaiahsimmons|out": {
+   "game": "401873068",
+   "start": "2026-11-22T18:00Z",
+   "team": "29",
+   "name": "Isaiah Simmons",
+   "status": "out",
+   "athlete": "4035462",
+   "espn": {
+    "seen": "2026-11-20T17:51:37.697Z",
+    "own": "2026-11-20T17:38:00.000Z"
+   }
+  },
+  "401873068|bakermayfield|q": {
+   "game": "401873068",
+   "start": "2026-11-22T18:00Z",
+   "team": "29",
+   "name": "Baker Mayfield",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-11-20T17:46:31.995Z",
+    "own": "2026-11-20T17:39:35.000Z",
+    "why": "@rotoworld-fb.bsky.social: Mayfield (foot) 'trending' to start vs. Lions"
+   }
+  },
+  "401873074|bakermayfield|q": {
+   "game": "401873074",
+   "start": "2026-11-22T21:05Z",
+   "team": "24",
+   "name": "Baker Mayfield",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-11-20T17:46:31.995Z",
+    "own": "2026-11-20T17:39:35.000Z",
+    "why": "@rotoworld-fb.bsky.social: Mayfield (foot) 'trending' to start vs. Lions"
+   }
+  },
+  "401873075|bakermayfield|q": {
+   "game": "401873075",
+   "start": "2026-11-22T21:25Z",
+   "team": "7",
+   "name": "Baker Mayfield",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-11-20T17:46:31.995Z",
+    "own": "2026-11-20T17:39:35.000Z",
+    "why": "@rotoworld-fb.bsky.social: Mayfield (foot) 'trending' to start vs. Lions"
+   }
+  },
+  "401873069|bakermayfield|q": {
+   "game": "401873069",
+   "start": "2026-11-22T21:25Z",
+   "team": "19",
+   "name": "Baker Mayfield",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-11-20T17:46:31.995Z",
+    "own": "2026-11-20T17:39:35.000Z",
+    "why": "@rotoworld-fb.bsky.social: Mayfield (foot) 'trending' to start vs. Lions"
    }
   }
  }
