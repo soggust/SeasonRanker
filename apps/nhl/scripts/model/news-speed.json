@@ -1,94 +1,6 @@
 {
  "sport": "nhl",
  "entries": {
-  "401892681|tomwillander|q": {
-   "game": "401892681",
-   "start": "2026-11-10T02:30Z",
-   "team": "22",
-   "name": "Tom Willander",
-   "status": "q",
-   "athlete": "5149180",
-   "espn": {
-    "seen": "2026-11-08T18:13:47.436Z",
-    "own": "2026-11-08T13:39:00.000Z"
-   }
-  },
-  "401892681|filipchytil|out": {
-   "game": "401892681",
-   "start": "2026-11-10T02:30Z",
-   "team": "22",
-   "name": "Filip Chytil",
-   "status": "out",
-   "athlete": "4233643",
-   "espn": {
-    "seen": "2026-11-08T18:13:47.436Z",
-    "own": "2026-11-03T18:34:00.000Z"
-   },
-   "sleeper": {
-    "seen": "2026-11-09T20:02:32.984Z",
-    "own": "2026-11-09T18:25:45.368Z"
-   }
-  },
-  "401892681|akilthomas|out": {
-   "game": "401892681",
-   "start": "2026-11-10T02:30Z",
-   "team": "22",
-   "name": "Akil Thomas",
-   "status": "out",
-   "athlete": "4378682",
-   "espn": {
-    "seen": "2026-11-08T18:13:47.436Z",
-    "own": "2026-09-29T17:05:00.000Z"
-   }
-  },
-  "401892681|mackenziemaceachern|out": {
-   "game": "401892681",
-   "start": "2026-11-10T02:30Z",
-   "team": "22",
-   "name": "Mackenzie MacEachern",
-   "status": "out",
-   "athlete": "3069342",
-   "espn": {
-    "seen": "2026-11-08T18:13:47.436Z",
-    "own": "2026-09-29T17:03:00.000Z"
-   }
-  },
-  "401892681|thatcherdemko|out": {
-   "game": "401892681",
-   "start": "2026-11-10T02:30Z",
-   "team": "22",
-   "name": "Thatcher Demko",
-   "status": "out",
-   "athlete": "3096217",
-   "espn": {
-    "seen": "2026-11-08T18:13:47.436Z",
-    "own": "2026-09-28T17:58:00.000Z"
-   }
-  },
-  "401892681|rasmusristolainen|out": {
-   "game": "401892681",
-   "start": "2026-11-10T02:30Z",
-   "team": "15",
-   "name": "Rasmus Ristolainen",
-   "status": "out",
-   "athlete": "3041999",
-   "espn": {
-    "seen": "2026-11-08T18:13:47.436Z",
-    "own": "2026-10-27T14:26:00.000Z"
-   }
-  },
-  "401892681|nikitagrebenkin|out": {
-   "game": "401892681",
-   "start": "2026-11-10T02:30Z",
-   "team": "15",
-   "name": "Nikita Grebenkin",
-   "status": "out",
-   "athlete": "5188490",
-   "espn": {
-    "seen": "2026-11-08T18:13:47.436Z",
-    "own": "2026-10-10T16:58:00.000Z"
-   }
-  },
   "401892682|igorchernyshov|out": {
    "game": "401892682",
    "start": "2026-11-10T03:00Z",
@@ -203,18 +115,6 @@
    "espn": {
     "seen": "2026-11-08T18:13:47.436Z",
     "own": "2026-10-19T13:56:00.000Z"
-   }
-  },
-  "401892681|connorhellebuyck|out": {
-   "game": "401892681",
-   "start": "2026-11-10T02:30Z",
-   "team": "22",
-   "name": "Connor Hellebuyck",
-   "status": "out",
-   "bluesky": {
-    "seen": "2026-11-09T13:14:36.673Z",
-    "own": "2026-11-09T13:07:42.000Z",
-    "why": "@dailyfaceoff.bsky.social: This Week in the NHL: Hellebuyck returns to Winnipeg "
    }
   },
   "401892682|connorhellebuyck|out": {
@@ -915,22 +815,6 @@
    "espn": {
     "seen": "2026-11-09T16:49:09.537Z",
     "own": "2026-11-08T13:39:00.000Z"
-   }
-  },
-  "401892681|tomwillander|out": {
-   "game": "401892681",
-   "start": "2026-11-10T02:30Z",
-   "team": "22",
-   "name": "Tom Willander",
-   "status": "out",
-   "athlete": "5149180",
-   "espn": {
-    "seen": "2026-11-09T18:49:57.822Z",
-    "own": "2026-11-09T18:22:00.000Z"
-   },
-   "sleeper": {
-    "seen": "2026-11-09T20:02:32.984Z",
-    "own": "2026-11-09T18:25:45.340Z"
    }
   },
   "401892684|jakeevans|q": {
