@@ -17416,6 +17416,30 @@
     "own": "2026-11-21T19:30:21.000Z",
     "why": "@rotoworld-fb.bsky.social: Carson Beck ruled out, Josh Johnson to start"
    }
+  },
+  "401873070|darrellbaker|q": {
+   "game": "401873070",
+   "start": "2026-11-22T18:00Z",
+   "team": "15",
+   "name": "Darrell Baker Jr.",
+   "status": "q",
+   "athlete": "4036660",
+   "espn": {
+    "seen": "2026-11-21T19:56:46.690Z",
+    "own": "2026-11-21T19:55:00.000Z"
+   }
+  },
+  "401873076|romanwilson|q": {
+   "game": "401873076",
+   "start": "2026-11-22T18:00Z",
+   "team": "23",
+   "name": "Roman Wilson",
+   "status": "q",
+   "athlete": "4431492",
+   "espn": {
+    "seen": "2026-11-21T19:56:46.690Z",
+    "own": "2026-11-21T19:38:00.000Z"
+   }
   }
  }
 }
