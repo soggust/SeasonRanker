@@ -11494,6 +11494,11 @@
    "espn": {
     "seen": "2026-11-17T00:04:00.288Z",
     "own": "2026-11-16T19:12:00.000Z"
+   },
+   "bluesky": {
+    "seen": "2026-11-21T21:23:37.972Z",
+    "own": "2026-11-21T21:21:31.300Z",
+    "why": "@adamscheftermirror.bsky.social: Lions placed C Cade Mays on injured reserve.\n\nO"
    }
   },
   "401873072|kerbyjoseph|out": {
@@ -11946,6 +11951,11 @@
    "sleeper": {
     "seen": "2026-11-20T20:01:53.622Z",
     "own": "2026-11-20T19:00:10.423Z"
+   },
+   "bluesky": {
+    "seen": "2026-11-21T21:23:37.972Z",
+    "own": "2026-11-21T21:21:34.759Z",
+    "why": "@adamscheftermirror.bsky.social: Panthers downgraded RB Jonathon Brooks to out f"
    }
   },
   "401873068|jayceehorn|out": {
@@ -16771,6 +16781,11 @@
    "espn": {
     "seen": "2026-11-20T21:30:30.299Z",
     "own": "2026-11-20T21:09:00.000Z"
+   },
+   "bluesky": {
+    "seen": "2026-11-21T21:23:37.972Z",
+    "own": "2026-11-21T21:21:57.000Z",
+    "why": "@rotowirenfl.bsky.social: Rachaad White: Questionable for Monday \n\n https://www."
    }
   },
   "401873070|laddmcconkey|q": {
@@ -17872,6 +17887,306 @@
     "seen": "2026-11-21T21:02:41.157Z",
     "own": "2026-11-21T21:01:29.025Z",
     "why": "@insidenflnews.bsky.social: Dontayvion Wicks (ankle, foot) placed on IR; will mi"
+   }
+  },
+  "401873070|jacorycroskeymerritt|q": {
+   "game": "401873070",
+   "start": "2026-11-22T18:00Z",
+   "team": "2",
+   "name": "Jacory Croskey-Merritt",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-11-21T21:23:37.972Z",
+    "own": "2026-11-21T21:15:49.000Z",
+    "why": "@rotowirenfl.bsky.social: Jacory Croskey-Merritt: Questionable for Week 11 \n\n ht"
+   }
+  },
+  "401873070|rachaadwhite|q": {
+   "game": "401873070",
+   "start": "2026-11-22T18:00Z",
+   "team": "2",
+   "name": "Rachaad White",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-11-21T21:23:37.972Z",
+    "own": "2026-11-21T21:21:57.000Z",
+    "why": "@rotowirenfl.bsky.social: Rachaad White: Questionable for Monday \n\n https://www."
+   }
+  },
+  "401873071|jacorycroskeymerritt|q": {
+   "game": "401873071",
+   "start": "2026-11-22T18:00Z",
+   "team": "3",
+   "name": "Jacory Croskey-Merritt",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-11-21T21:23:37.972Z",
+    "own": "2026-11-21T21:15:49.000Z",
+    "why": "@rotowirenfl.bsky.social: Jacory Croskey-Merritt: Questionable for Week 11 \n\n ht"
+   }
+  },
+  "401873071|rachaadwhite|q": {
+   "game": "401873071",
+   "start": "2026-11-22T18:00Z",
+   "team": "3",
+   "name": "Rachaad White",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-11-21T21:23:37.972Z",
+    "own": "2026-11-21T21:21:57.000Z",
+    "why": "@rotowirenfl.bsky.social: Rachaad White: Questionable for Monday \n\n https://www."
+   }
+  },
+  "401873073|jacorycroskeymerritt|q": {
+   "game": "401873073",
+   "start": "2026-11-22T18:00Z",
+   "team": "6",
+   "name": "Jacory Croskey-Merritt",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-11-21T21:23:37.972Z",
+    "own": "2026-11-21T21:15:49.000Z",
+    "why": "@rotowirenfl.bsky.social: Jacory Croskey-Merritt: Questionable for Week 11 \n\n ht"
+   }
+  },
+  "401873073|rachaadwhite|q": {
+   "game": "401873073",
+   "start": "2026-11-22T18:00Z",
+   "team": "6",
+   "name": "Rachaad White",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-11-21T21:23:37.972Z",
+    "own": "2026-11-21T21:21:57.000Z",
+    "why": "@rotowirenfl.bsky.social: Rachaad White: Questionable for Monday \n\n https://www."
+   }
+  },
+  "401873072|jacorycroskeymerritt|q": {
+   "game": "401873072",
+   "start": "2026-11-22T18:00Z",
+   "team": "8",
+   "name": "Jacory Croskey-Merritt",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-11-21T21:23:37.972Z",
+    "own": "2026-11-21T21:15:49.000Z",
+    "why": "@rotowirenfl.bsky.social: Jacory Croskey-Merritt: Questionable for Week 11 \n\n ht"
+   }
+  },
+  "401873072|rachaadwhite|q": {
+   "game": "401873072",
+   "start": "2026-11-22T18:00Z",
+   "team": "8",
+   "name": "Rachaad White",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-11-21T21:23:37.972Z",
+    "own": "2026-11-21T21:21:57.000Z",
+    "why": "@rotowirenfl.bsky.social: Rachaad White: Questionable for Monday \n\n https://www."
+   }
+  },
+  "401873067|jacorycroskeymerritt|q": {
+   "game": "401873067",
+   "start": "2026-11-22T18:00Z",
+   "team": "12",
+   "name": "Jacory Croskey-Merritt",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-11-21T21:23:37.972Z",
+    "own": "2026-11-21T21:15:49.000Z",
+    "why": "@rotowirenfl.bsky.social: Jacory Croskey-Merritt: Questionable for Week 11 \n\n ht"
+   }
+  },
+  "401873067|rachaadwhite|q": {
+   "game": "401873067",
+   "start": "2026-11-22T18:00Z",
+   "team": "12",
+   "name": "Rachaad White",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-11-21T21:23:37.972Z",
+    "own": "2026-11-21T21:21:57.000Z",
+    "why": "@rotowirenfl.bsky.social: Rachaad White: Questionable for Monday \n\n https://www."
+   }
+  },
+  "401873076|willshipley|q": {
+   "game": "401873076",
+   "start": "2026-11-22T18:00Z",
+   "team": "21",
+   "name": "Will Shipley",
+   "status": "q",
+   "athlete": "4431545",
+   "espn": {
+    "seen": "2026-11-21T21:41:42.216Z",
+    "own": "2026-11-21T21:30:00.000Z"
+   }
+  },
+  "401873076|jacorycroskeymerritt|q": {
+   "game": "401873076",
+   "start": "2026-11-22T18:00Z",
+   "team": "21",
+   "name": "Jacory Croskey-Merritt",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-11-21T21:23:37.972Z",
+    "own": "2026-11-21T21:15:49.000Z",
+    "why": "@rotowirenfl.bsky.social: Jacory Croskey-Merritt: Questionable for Week 11 \n\n ht"
+   }
+  },
+  "401873076|rachaadwhite|q": {
+   "game": "401873076",
+   "start": "2026-11-22T18:00Z",
+   "team": "21",
+   "name": "Rachaad White",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-11-21T21:23:37.972Z",
+    "own": "2026-11-21T21:21:57.000Z",
+    "why": "@rotowirenfl.bsky.social: Rachaad White: Questionable for Monday \n\n https://www."
+   }
+  },
+  "401873068|jacorycroskeymerritt|q": {
+   "game": "401873068",
+   "start": "2026-11-22T18:00Z",
+   "team": "29",
+   "name": "Jacory Croskey-Merritt",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-11-21T21:23:37.972Z",
+    "own": "2026-11-21T21:15:49.000Z",
+    "why": "@rotowirenfl.bsky.social: Jacory Croskey-Merritt: Questionable for Week 11 \n\n ht"
+   }
+  },
+  "401873068|rachaadwhite|q": {
+   "game": "401873068",
+   "start": "2026-11-22T18:00Z",
+   "team": "29",
+   "name": "Rachaad White",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-11-21T21:23:37.972Z",
+    "own": "2026-11-21T21:21:57.000Z",
+    "why": "@rotowirenfl.bsky.social: Rachaad White: Questionable for Monday \n\n https://www."
+   }
+  },
+  "401873074|jacorycroskeymerritt|q": {
+   "game": "401873074",
+   "start": "2026-11-22T21:05Z",
+   "team": "24",
+   "name": "Jacory Croskey-Merritt",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-11-21T21:23:37.972Z",
+    "own": "2026-11-21T21:15:49.000Z",
+    "why": "@rotowirenfl.bsky.social: Jacory Croskey-Merritt: Questionable for Week 11 \n\n ht"
+   }
+  },
+  "401873074|rachaadwhite|q": {
+   "game": "401873074",
+   "start": "2026-11-22T21:05Z",
+   "team": "24",
+   "name": "Rachaad White",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-11-21T21:23:37.972Z",
+    "own": "2026-11-21T21:21:57.000Z",
+    "why": "@rotowirenfl.bsky.social: Rachaad White: Questionable for Monday \n\n https://www."
+   }
+  },
+  "401873075|jacorycroskeymerritt|q": {
+   "game": "401873075",
+   "start": "2026-11-22T21:25Z",
+   "team": "7",
+   "name": "Jacory Croskey-Merritt",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-11-21T21:23:37.972Z",
+    "own": "2026-11-21T21:15:49.000Z",
+    "why": "@rotowirenfl.bsky.social: Jacory Croskey-Merritt: Questionable for Week 11 \n\n ht"
+   }
+  },
+  "401873075|rachaadwhite|q": {
+   "game": "401873075",
+   "start": "2026-11-22T21:25Z",
+   "team": "7",
+   "name": "Rachaad White",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-11-21T21:23:37.972Z",
+    "own": "2026-11-21T21:21:57.000Z",
+    "why": "@rotowirenfl.bsky.social: Rachaad White: Questionable for Monday \n\n https://www."
+   }
+  },
+  "401873069|jacorycroskeymerritt|q": {
+   "game": "401873069",
+   "start": "2026-11-22T21:25Z",
+   "team": "19",
+   "name": "Jacory Croskey-Merritt",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-11-21T21:23:37.972Z",
+    "own": "2026-11-21T21:15:49.000Z",
+    "why": "@rotowirenfl.bsky.social: Jacory Croskey-Merritt: Questionable for Week 11 \n\n ht"
+   }
+  },
+  "401873069|rachaadwhite|q": {
+   "game": "401873069",
+   "start": "2026-11-22T21:25Z",
+   "team": "19",
+   "name": "Rachaad White",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-11-21T21:23:37.972Z",
+    "own": "2026-11-21T21:21:57.000Z",
+    "why": "@rotowirenfl.bsky.social: Rachaad White: Questionable for Monday \n\n https://www."
+   }
+  },
+  "401873077|jacorycroskeymerritt|q": {
+   "game": "401873077",
+   "start": "2026-11-23T01:20Z",
+   "team": "25",
+   "name": "Jacory Croskey-Merritt",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-11-21T21:23:37.972Z",
+    "own": "2026-11-21T21:15:49.000Z",
+    "why": "@rotowirenfl.bsky.social: Jacory Croskey-Merritt: Questionable for Week 11 \n\n ht"
+   }
+  },
+  "401873077|rachaadwhite|q": {
+   "game": "401873077",
+   "start": "2026-11-23T01:20Z",
+   "team": "25",
+   "name": "Rachaad White",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-11-21T21:23:37.972Z",
+    "own": "2026-11-21T21:21:57.000Z",
+    "why": "@rotowirenfl.bsky.social: Rachaad White: Questionable for Monday \n\n https://www."
+   }
+  },
+  "401873078|jacorycroskeymerritt|q": {
+   "game": "401873078",
+   "start": "2026-11-24T01:15Z",
+   "team": "28",
+   "name": "Jacory Croskey-Merritt",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-11-21T21:23:37.972Z",
+    "own": "2026-11-21T21:15:49.000Z",
+    "why": "@rotowirenfl.bsky.social: Jacory Croskey-Merritt: Questionable for Week 11 \n\n ht"
+   }
+  },
+  "401873080|willshipley|q": {
+   "game": "401873080",
+   "start": "2026-11-26T21:30Z",
+   "team": "21",
+   "name": "Will Shipley",
+   "status": "q",
+   "athlete": "4431545",
+   "espn": {
+    "seen": "2026-11-21T21:41:42.216Z",
+    "own": "2026-11-21T21:30:00.000Z"
    }
   }
  }

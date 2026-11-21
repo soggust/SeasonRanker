@@ -1,28 +1,15 @@
 {
  "sport": "nfl",
  "cursor": {
-  "adamscheftermirror.bsky.social": "2026-11-21T21:21:34.759Z",
+  "adamscheftermirror.bsky.social": "2026-11-21T21:36:31.502Z",
   "rapsheet.bsky.social": "2026-11-20T21:16:12.668Z",
   "nflnewsreposterbot.bsky.social": "2026-11-16T18:35:13.806Z",
   "insidenflnews.bsky.social": "2026-11-21T21:01:29.025Z",
   "nflnewsposter.bsky.social": "2026-11-21T21:21:21.620Z",
   "rotoworld-fb.bsky.social": "2026-11-21T21:22:15.000Z",
-  "rotowirenfl.bsky.social": "2026-11-21T21:21:57.000Z"
+  "rotowirenfl.bsky.social": "2026-11-21T21:30:33.000Z"
  },
  "claims": [
-  {
-   "id": "at://did:plc:qre6zxbmr3ixhdmgsgdretb5/app.bsky.feed.post/3mz7a5viypt2t|rjharvey|out|status",
-   "at": "2026-10-31T21:23:55.412Z",
-   "seen": "2026-10-31T21:29:18.810Z",
-   "handle": "adamscheftermirror.bsky.social",
-   "post": "at://did:plc:qre6zxbmr3ixhdmgsgdretb5/app.bsky.feed.post/3mz7a5viypt2t",
-   "player": "R.J. Harvey",
-   "team": "DEN",
-   "status": "out",
-   "kind": "status",
-   "confidence": 0.95,
-   "text": "Broncos officially placed RB R.J. Harvey on short-term IR after he suffered a knee injury during Thursday’s practice.\n\nOriginal post"
-  },
   {
    "id": "at://did:plc:qre6zxbmr3ixhdmgsgdretb5/app.bsky.feed.post/3mzasqkhsqf2m|braelonallen|none|starting",
    "at": "2026-11-01T12:29:08.527Z",
@@ -18677,6 +18664,32 @@
    "kind": "status",
    "confidence": 0.95,
    "text": "Dontayvion Wicks sent to IR with foot injury"
+  },
+  {
+   "id": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3n2u2d3fcrx2e|joeburrow|active|status",
+   "at": "2026-11-21T21:30:33.000Z",
+   "seen": "2026-11-21T21:45:00.483Z",
+   "handle": "rotowirenfl.bsky.social",
+   "post": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3n2u2d3fcrx2e",
+   "player": "Joe Burrow",
+   "team": "CIN",
+   "status": "active",
+   "kind": "status",
+   "confidence": 0.95,
+   "text": "Joe Burrow: Officially cleared for Monday Night Football \n\n https://www.rotowire.com/football/player/joe-burrow-14442"
+  },
+  {
+   "id": "at://did:plc:qre6zxbmr3ixhdmgsgdretb5/app.bsky.feed.post/3n2u2nqkdhx26|kobieturner|limited|return",
+   "at": "2026-11-21T21:36:30.776Z",
+   "seen": "2026-11-21T21:45:00.483Z",
+   "handle": "adamscheftermirror.bsky.social",
+   "post": "at://did:plc:qre6zxbmr3ixhdmgsgdretb5/app.bsky.feed.post/3n2u2nqkdhx26",
+   "player": "Kobie Turner",
+   "team": "LAR",
+   "status": "limited",
+   "kind": "return",
+   "confidence": 0.8,
+   "text": "Rams designated DE Kobie Turner for return to practice.\n\nOriginal post"
   }
  ]
 }
