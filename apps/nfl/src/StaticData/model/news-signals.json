@@ -3,6 +3,83 @@
  "days": 2,
  "signals": [
   {
+   "team": "20",
+   "abbr": "NYJ",
+   "athlete": "15864",
+   "player": "Geno Smith",
+   "kind": "return",
+   "direction": "up",
+   "confidence": 0.8,
+   "headline": "Jets QB Geno Smith (ankle) cleared to start vs. Chargers",
+   "at": "2026-11-20T22:13:34.000Z"
+  },
+  {
+   "team": "6",
+   "abbr": "DAL",
+   "athlete": null,
+   "player": "Mike Pettine",
+   "kind": "coaching",
+   "direction": "none",
+   "confidence": 0.6,
+   "headline": "Cowboys' Mike Pettine feels for DC Christian Parker, but focused on Titans",
+   "at": "2026-11-20T20:24:06.000Z"
+  },
+  {
+   "team": "3",
+   "abbr": "CHI",
+   "athlete": "4608686",
+   "player": "Kyle Monangai",
+   "kind": "return",
+   "direction": "up",
+   "confidence": 0.7,
+   "headline": "Bears rule out CB Kyler Gordon; RB Kyle Monangai cleared to return",
+   "at": "2026-11-20T20:03:03.000Z"
+  },
+  {
+   "team": "11",
+   "abbr": "IND",
+   "athlete": "3917792",
+   "player": "Daniel Jones",
+   "kind": "benched",
+   "direction": "down",
+   "confidence": 0.9,
+   "headline": "Colts cut QB Daniel Jones, turn to Anthony Richardson Sr. for next start",
+   "at": "2026-11-20T20:00:49.000Z"
+  },
+  {
+   "team": "11",
+   "abbr": "IND",
+   "athlete": "4429084",
+   "player": "Anthony Richardson Sr",
+   "kind": "starting",
+   "direction": "up",
+   "confidence": 0.9,
+   "headline": "Colts cut QB Daniel Jones, turn to Anthony Richardson Sr. for next start",
+   "at": "2026-11-20T20:00:49.000Z"
+  },
+  {
+   "team": "14",
+   "abbr": "LAR",
+   "athlete": "4426515",
+   "player": "Puka Nacua",
+   "kind": "return",
+   "direction": "down",
+   "confidence": 0.3,
+   "headline": "Rams' Puka Nacua has MCL surgery, likely done for regular season",
+   "at": "2026-11-20T18:19:07.000Z"
+  },
+  {
+   "team": "30",
+   "abbr": "JAX",
+   "athlete": "4882093",
+   "player": "Bhayshul Tuten",
+   "kind": "role",
+   "direction": "up",
+   "confidence": 0.7,
+   "headline": "How Bhayshul Tuten became the clear No. 1 running back for the Jaguars",
+   "at": "2026-11-20T11:00:03.000Z"
+  },
+  {
    "team": "14",
    "abbr": "LAR",
    "athlete": "4426515",
@@ -47,5 +124,5 @@
    "at": "2026-11-19T17:33:20.000Z"
   }
  ],
- "at": "2026-11-20T23:15:19.336Z"
+ "at": "2026-11-21T00:18:55.425Z"
 }

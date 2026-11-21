@@ -1,7 +1,7 @@
 {
  "sport": "nba",
  "cursor": {
-  "rotowirenba.bsky.social": "2026-11-20T23:14:21.000Z",
+  "rotowirenba.bsky.social": "2026-11-21T00:13:42.000Z",
   "insidenbanews.bsky.social": "2026-11-20T20:35:06.661Z",
   "shamsbot.bsky.social": "2026-11-20T20:29:39.000Z"
  },
@@ -7415,6 +7415,58 @@
    "kind": "status",
    "confidence": 0.95,
    "text": "Javon Small: Ruled out for Saturday \n\n https://www.rotowire.com/basketball/player/javon-small-6581"
+  },
+  {
+   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3n2rpwsp7wm2n|zachedey|active|status",
+   "at": "2026-11-20T23:19:24.000Z",
+   "seen": "2026-11-21T00:18:55.425Z",
+   "handle": "rotowirenba.bsky.social",
+   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3n2rpwsp7wm2n",
+   "player": "Zach Edey",
+   "team": null,
+   "status": "active",
+   "kind": "status",
+   "confidence": 0.9,
+   "text": "Zach Edey: Cleared to play Saturday \n\n https://www.rotowire.com/basketball/player/zach-edey-6263"
+  },
+  {
+   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3n2rpxupvp72u|jalensmith|out|status",
+   "at": "2026-11-20T23:20:00.000Z",
+   "seen": "2026-11-21T00:18:55.425Z",
+   "handle": "rotowirenba.bsky.social",
+   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3n2rpxupvp72u",
+   "player": "Jalen Smith",
+   "team": null,
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.9,
+   "text": "Jalen Smith: Out sick Friday \n\n https://www.rotowire.com/basketball/player/jalen-smith-5169"
+  },
+  {
+   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3n2rqmiore42l|nicclaxton|none|starting",
+   "at": "2026-11-20T23:31:32.000Z",
+   "seen": "2026-11-21T00:18:55.425Z",
+   "handle": "rotowirenba.bsky.social",
+   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3n2rqmiore42l",
+   "player": "Nic Claxton",
+   "team": null,
+   "status": "none",
+   "kind": "starting",
+   "confidence": 0.9,
+   "text": "Nic Claxton: Starting versus Wizards \n\n https://www.rotowire.com/basketball/player/nic-claxton-4827"
+  },
+  {
+   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3n2rswacats2u|dannywolf|none|starting",
+   "at": "2026-11-21T00:12:46.000Z",
+   "seen": "2026-11-21T00:18:55.425Z",
+   "handle": "rotowirenba.bsky.social",
+   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3n2rswacats2u",
+   "player": "Danny Wolf",
+   "team": null,
+   "status": "none",
+   "kind": "starting",
+   "confidence": 0.9,
+   "text": "Danny Wolf: Starting Friday \n\n https://www.rotowire.com/basketball/player/danny-wolf-6560"
   }
  ]
 }

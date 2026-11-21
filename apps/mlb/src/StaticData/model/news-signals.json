@@ -1,6 +1,18 @@
 {
  "sport": "mlb",
  "days": 2,
- "signals": [],
- "at": "2026-11-20T23:15:19.336Z"
+ "signals": [
+  {
+   "team": "27",
+   "abbr": "COL",
+   "athlete": "4416591",
+   "player": "Hunter Goodman",
+   "kind": "return",
+   "direction": "up",
+   "confidence": 0.6,
+   "headline": "Rockies All-Star Hunter Goodman expected back for spring after shoulder surgery",
+   "at": "2026-11-20T19:20:02.000Z"
+  }
+ ],
+ "at": "2026-11-21T00:18:55.425Z"
 }

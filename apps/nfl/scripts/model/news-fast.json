@@ -7,35 +7,9 @@
   "insidenflnews.bsky.social": "2026-11-20T20:57:02.504Z",
   "nflnewsposter.bsky.social": "2026-11-20T21:11:10.677Z",
   "rotoworld-fb.bsky.social": "2026-11-20T21:28:08.000Z",
-  "rotowirenfl.bsky.social": "2026-11-20T23:13:26.000Z"
+  "rotowirenfl.bsky.social": "2026-11-20T23:18:10.000Z"
  },
  "claims": [
-  {
-   "id": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3mz4w3ieyyx2s|zachcharbonnet|limited|status",
-   "at": "2026-10-30T23:18:17.000Z",
-   "seen": "2026-10-30T23:43:36.469Z",
-   "handle": "rotowirenfl.bsky.social",
-   "post": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3mz4w3ieyyx2s",
-   "player": "Zach Charbonnet",
-   "team": null,
-   "status": "limited",
-   "kind": "status",
-   "confidence": 0.9,
-   "text": "Zach Charbonnet: Practices in limited capacity \n\n https://www.rotowire.com/football/player/zach-charbonnet-16897"
-  },
-  {
-   "id": "at://did:plc:hlvr2omhnmvdmfnvmcuhyevz/app.bsky.feed.post/3mz4xvjpqrk2y|daronpayne|out|status",
-   "at": "2026-10-30T23:50:45.295Z",
-   "seen": "2026-10-31T00:03:35.121Z",
-   "handle": "rapsheet.bsky.social",
-   "post": "at://did:plc:hlvr2omhnmvdmfnvmcuhyevz/app.bsky.feed.post/3mz4xvjpqrk2y",
-   "player": "Daron Payne",
-   "team": "WAS",
-   "status": "out",
-   "kind": "status",
-   "confidence": 0.8,
-   "text": "Commanders standout DT Daron Payne suffered a significant foot injury today in practice that will knock him out for the foreseeable future and likely land him IR, sources tell me and Mike Garafolo.\n\nP"
-  },
   {
    "id": "at://did:plc:qre6zxbmr3ixhdmgsgdretb5/app.bsky.feed.post/3mz6eips6n32n|micahparsons|active|return",
    "at": "2026-10-31T13:08:53.719Z",

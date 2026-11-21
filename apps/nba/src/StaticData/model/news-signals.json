@@ -1,6 +1,18 @@
 {
  "sport": "nba",
  "days": 2,
- "signals": [],
- "at": "2026-11-16T17:48:52.525Z"
+ "signals": [
+  {
+   "team": "12",
+   "abbr": "LAC",
+   "athlete": "3913176",
+   "player": "Brandon Ingram",
+   "kind": "return",
+   "direction": "up",
+   "confidence": 0.6,
+   "headline": "Sources: Brandon Ingram (Achilles) expected to Clippers debut vs. Rockets",
+   "at": "2026-11-20T20:51:15.000Z"
+  }
+ ],
+ "at": "2026-11-21T00:18:55.425Z"
 }
