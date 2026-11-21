@@ -9125,6 +9125,11 @@
    "espn": {
     "seen": "2026-11-21T18:05:35.982Z",
     "own": "2026-11-21T18:00:00.000Z"
+   },
+   "bluesky": {
+    "seen": "2026-11-21T19:11:29.687Z",
+    "own": "2026-11-21T18:49:05.000Z",
+    "why": "@dailyfaceoff.bsky.social: Canucks’ Elias Pettersson out with lower-body injury"
    }
   },
   "401892772|eliaspettersson|out": {
@@ -9221,6 +9226,42 @@
    "espn": {
     "seen": "2026-11-21T18:38:40.117Z",
     "own": "2026-11-21T18:37:00.000Z"
+   }
+  },
+  "401892756|bobyram|out": {
+   "game": "401892756",
+   "start": "2026-11-21T23:00Z",
+   "team": "2",
+   "name": "Bo Byram",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-21T19:11:29.687Z",
+    "own": "2026-11-21T19:08:40.915Z",
+    "why": "@marklazerus.bsky.social: Connor Bedard hasn't made a decision on rehab vs. surg"
+   }
+  },
+  "401892769|bobyram|out": {
+   "game": "401892769",
+   "start": "2026-11-22T22:00Z",
+   "team": "2",
+   "name": "Bo Byram",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-21T19:11:29.687Z",
+    "own": "2026-11-21T19:08:40.915Z",
+    "why": "@marklazerus.bsky.social: Connor Bedard hasn't made a decision on rehab vs. surg"
+   }
+  },
+  "401892771|tylermyers|out": {
+   "game": "401892771",
+   "start": "2026-11-23T00:00Z",
+   "team": "9",
+   "name": "Tyler Myers",
+   "status": "out",
+   "athlete": "5052",
+   "espn": {
+    "seen": "2026-11-21T19:20:15.989Z",
+    "own": "2026-11-21T19:16:00.000Z"
    }
   }
  }
