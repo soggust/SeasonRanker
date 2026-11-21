@@ -1,7 +1,7 @@
 {
  "sport": "nba",
  "cursor": {
-  "rotowirenba.bsky.social": "2026-11-21T01:37:35.000Z",
+  "rotowirenba.bsky.social": "2026-11-21T02:11:58.000Z",
   "insidenbanews.bsky.social": "2026-11-20T20:35:06.661Z",
   "shamsbot.bsky.social": "2026-11-20T20:29:39.000Z"
  },
@@ -7480,6 +7480,19 @@
    "kind": "return",
    "confidence": 0.6,
    "text": "Austin Reaves: Expected to return Monday or Friday \n\n https://www.rotowire.com/basketball/player/austin-reaves-5334"
+  },
+  {
+   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3n2rzlewlst2y|jaxsonhayes|none|starting",
+   "at": "2026-11-21T02:11:58.000Z",
+   "seen": "2026-11-21T02:12:28.467Z",
+   "handle": "rotowirenba.bsky.social",
+   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3n2rzlewlst2y",
+   "player": "Jaxson Hayes",
+   "team": null,
+   "status": "none",
+   "kind": "starting",
+   "confidence": 0.9,
+   "text": "Jaxson Hayes: Starting Friday \n\n https://www.rotowire.com/basketball/player/jaxson-hayes-4771"
   }
  ]
 }
