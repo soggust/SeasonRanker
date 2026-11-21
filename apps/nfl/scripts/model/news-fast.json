@@ -11,19 +11,6 @@
  },
  "claims": [
   {
-   "id": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3mz6gf44c6o24|micahparsons|none|return",
-   "at": "2026-10-31T13:42:39.000Z",
-   "seen": "2026-10-31T14:02:41.461Z",
-   "handle": "rotoworld-fb.bsky.social",
-   "post": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3mz6gf44c6o24",
-   "player": "Micah Parsons",
-   "team": null,
-   "status": "none",
-   "kind": "return",
-   "confidence": 0.6,
-   "text": "Pelissero: Micah Parsons (knee) to practice next week"
-  },
-  {
    "id": "at://did:plc:fuqjc7x4gxvnwzksnlxwbe4x/app.bsky.feed.post/3mz6pvzhplk2f|micahparsons|active|return",
    "at": "2026-10-31T16:33:11.359Z",
    "seen": "2026-10-31T16:36:46.823Z",
