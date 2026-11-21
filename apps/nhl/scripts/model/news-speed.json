@@ -8550,6 +8550,150 @@
     "seen": "2026-11-20T20:03:14.367Z",
     "own": "2026-11-20T19:45:42.436Z"
    }
+  },
+  "401892769|zemgusgirgensons|q": {
+   "game": "401892769",
+   "start": "2026-11-22T22:00Z",
+   "team": "20",
+   "name": "Zemgus Girgensons",
+   "status": "q",
+   "athlete": "2968829",
+   "espn": {
+    "seen": "2026-11-21T15:37:00.144Z",
+    "own": "2026-11-20T14:41:00.000Z"
+   }
+  },
+  "401892769|brandonhagel|out": {
+   "game": "401892769",
+   "start": "2026-11-22T22:00Z",
+   "team": "20",
+   "name": "Brandon Hagel",
+   "status": "out",
+   "athlete": "4065019",
+   "espn": {
+    "seen": "2026-11-21T15:37:00.144Z",
+    "own": "2026-11-19T15:54:00.000Z"
+   }
+  },
+  "401892769|conorgeekie|out": {
+   "game": "401892769",
+   "start": "2026-11-22T22:00Z",
+   "team": "20",
+   "name": "Conor Geekie",
+   "status": "out",
+   "athlete": "5080155",
+   "espn": {
+    "seen": "2026-11-21T15:37:00.144Z",
+    "own": "2026-11-17T18:19:00.000Z"
+   }
+  },
+  "401892769|konstahelenius|out": {
+   "game": "401892769",
+   "start": "2026-11-22T22:00Z",
+   "team": "2",
+   "name": "Konsta Helenius",
+   "status": "out",
+   "athlete": "5216882",
+   "espn": {
+    "seen": "2026-11-21T15:37:00.144Z",
+    "own": "2026-11-12T21:00:00.000Z"
+   }
+  },
+  "401892769|justindanforth|out": {
+   "game": "401892769",
+   "start": "2026-11-22T22:00Z",
+   "team": "2",
+   "name": "Justin Danforth",
+   "status": "out",
+   "athlete": "4894355",
+   "espn": {
+    "seen": "2026-11-21T15:37:00.144Z",
+    "own": "2026-10-29T22:06:00.000Z"
+   }
+  },
+  "401892769|mattgrzelcyk|out": {
+   "game": "401892769",
+   "start": "2026-11-22T22:00Z",
+   "team": "2",
+   "name": "Matt Grzelcyk",
+   "status": "out",
+   "athlete": "3069448",
+   "espn": {
+    "seen": "2026-11-21T15:37:00.144Z",
+    "own": "2026-10-13T20:51:00.000Z"
+   }
+  },
+  "401892772|brendangallagher|q": {
+   "game": "401892772",
+   "start": "2026-11-23T01:00Z",
+   "team": "22",
+   "name": "Brendan Gallagher",
+   "status": "q",
+   "athlete": "5614",
+   "espn": {
+    "seen": "2026-11-21T15:37:00.144Z",
+    "own": "2026-11-20T05:02:00.000Z"
+   }
+  },
+  "401892772|guillaumebrisebois|out": {
+   "game": "401892772",
+   "start": "2026-11-23T01:00Z",
+   "team": "22",
+   "name": "Guillaume Brisebois",
+   "status": "out",
+   "athlete": "3942866",
+   "espn": {
+    "seen": "2026-11-21T15:37:00.144Z",
+    "own": "2026-11-13T22:59:00.000Z"
+   }
+  },
+  "401892772|mackenziemaceachern|out": {
+   "game": "401892772",
+   "start": "2026-11-23T01:00Z",
+   "team": "22",
+   "name": "Mackenzie MacEachern",
+   "status": "out",
+   "athlete": "3069342",
+   "espn": {
+    "seen": "2026-11-21T15:37:00.144Z",
+    "own": "2026-09-29T17:03:00.000Z"
+   }
+  },
+  "401892772|thatcherdemko|out": {
+   "game": "401892772",
+   "start": "2026-11-23T01:00Z",
+   "team": "22",
+   "name": "Thatcher Demko",
+   "status": "out",
+   "athlete": "3096217",
+   "espn": {
+    "seen": "2026-11-21T15:37:00.144Z",
+    "own": "2026-09-28T17:58:00.000Z"
+   }
+  },
+  "401892772|connorbedard|out": {
+   "game": "401892772",
+   "start": "2026-11-23T01:00Z",
+   "team": "4",
+   "name": "Connor Bedard",
+   "status": "out",
+   "athlete": "5149125",
+   "espn": {
+    "seen": "2026-11-21T15:37:00.144Z",
+    "own": "2026-11-19T16:45:00.000Z"
+   }
+  },
+  "401892772|bowenbyram|out": {
+   "game": "401892772",
+   "start": "2026-11-23T01:00Z",
+   "team": "4",
+   "name": "Bowen Byram",
+   "status": "out",
+   "athlete": "4565225",
+   "espn": {
+    "seen": "2026-11-21T15:37:00.144Z",
+    "own": "2026-11-17T15:51:00.000Z"
+   }
   }
  }
 }
