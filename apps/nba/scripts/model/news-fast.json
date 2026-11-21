@@ -1,7 +1,7 @@
 {
  "sport": "nba",
  "cursor": {
-  "rotowirenba.bsky.social": "2026-11-21T02:29:12.000Z",
+  "rotowirenba.bsky.social": "2026-11-21T04:06:10.000Z",
   "insidenbanews.bsky.social": "2026-11-20T20:35:06.661Z",
   "shamsbot.bsky.social": "2026-11-20T20:29:39.000Z"
  },
@@ -7493,6 +7493,19 @@
    "kind": "starting",
    "confidence": 0.9,
    "text": "Jaxson Hayes: Starting Friday \n\n https://www.rotowire.com/basketball/player/jaxson-hayes-4771"
+  },
+  {
+   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3n2s7xldo6e25|ryandunn|out|status",
+   "at": "2026-11-21T04:06:10.000Z",
+   "seen": "2026-11-21T04:15:21.147Z",
+   "handle": "rotowirenba.bsky.social",
+   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3n2s7xldo6e25",
+   "player": "Ryan Dunn",
+   "team": null,
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.8,
+   "text": "Ryan Dunn: Won't return Friday \n\n https://www.rotowire.com/basketball/player/ryan-dunn-6276"
   }
  ]
 }

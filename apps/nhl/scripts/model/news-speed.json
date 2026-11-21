@@ -1,86 +1,6 @@
 {
  "sport": "nhl",
  "entries": {
-  "401892689|matszuccarello|out": {
-   "game": "401892689",
-   "start": "2026-11-11T03:00Z",
-   "team": "8",
-   "name": "Mats Zuccarello",
-   "status": "out",
-   "athlete": "5560",
-   "espn": {
-    "seen": "2026-11-09T16:49:09.537Z",
-    "own": "2026-10-29T18:43:00.000Z"
-   }
-  },
-  "401892689|kevinfiala|out": {
-   "game": "401892689",
-   "start": "2026-11-11T03:00Z",
-   "team": "8",
-   "name": "Kevin Fiala",
-   "status": "out",
-   "athlete": "3114743",
-   "espn": {
-    "seen": "2026-11-09T16:49:09.537Z",
-    "own": "2026-10-29T18:42:00.000Z"
-   },
-   "sleeper": {
-    "seen": "2026-11-10T20:00:19.322Z",
-    "own": "2026-11-10T19:00:46.086Z"
-   }
-  },
-  "401892689|jakubdvorak|out": {
-   "game": "401892689",
-   "start": "2026-11-11T03:00Z",
-   "team": "8",
-   "name": "Jakub Dvorak",
-   "status": "out",
-   "athlete": "5149241",
-   "espn": {
-    "seen": "2026-11-09T16:49:09.537Z",
-    "own": "2026-09-24T19:49:00.000Z"
-   }
-  },
-  "401892689|janjenik|out": {
-   "game": "401892689",
-   "start": "2026-11-11T03:00Z",
-   "team": "8",
-   "name": "Jan Jenik",
-   "status": "out",
-   "athlete": "4587568",
-   "espn": {
-    "seen": "2026-11-09T16:49:09.537Z",
-    "own": "2026-09-24T19:45:00.000Z"
-   }
-  },
-  "401892689|jonathanmarchessault|q": {
-   "game": "401892689",
-   "start": "2026-11-11T03:00Z",
-   "team": "27",
-   "name": "Jonathan Marchessault",
-   "status": "q",
-   "athlete": "2967072",
-   "espn": {
-    "seen": "2026-11-09T16:49:09.537Z",
-    "own": "2026-11-08T13:39:00.000Z"
-   }
-  },
-  "401892689|erikgustafsson|q": {
-   "game": "401892689",
-   "start": "2026-11-11T03:00Z",
-   "team": "8",
-   "name": "Erik Gustafsson",
-   "status": "q",
-   "athlete": "5774",
-   "espn": {
-    "seen": "2026-11-09T21:13:58.195Z",
-    "own": "2026-11-09T20:55:00.000Z"
-   },
-   "sleeper": {
-    "seen": "2026-11-10T20:00:19.322Z",
-    "own": "2026-11-09T21:00:45.758Z"
-   }
-  },
   "401892691|brennanothmann|q": {
    "game": "401892691",
    "start": "2026-11-12T00:30Z",
@@ -628,30 +548,6 @@
    "sleeper": {
     "seen": "2026-11-11T21:14:10.633Z",
     "own": "2026-11-10T20:40:18.731Z"
-   }
-  },
-  "401892689|erikgustafsson|out": {
-   "game": "401892689",
-   "start": "2026-11-11T03:00Z",
-   "team": "8",
-   "name": "Erik Gustafsson",
-   "status": "out",
-   "athlete": "5774",
-   "espn": {
-    "seen": "2026-11-10T21:14:01.550Z",
-    "own": "2026-11-10T20:48:00.000Z"
-   }
-  },
-  "401892689|jonathanmarchessault|out": {
-   "game": "401892689",
-   "start": "2026-11-11T03:00Z",
-   "team": "27",
-   "name": "Jonathan Marchessault",
-   "status": "out",
-   "athlete": "2967072",
-   "espn": {
-    "seen": "2026-11-11T02:51:40.700Z",
-    "own": "2026-11-11T02:39:00.000Z"
    }
   },
   "401892694|jonathanmarchessault|out": {
