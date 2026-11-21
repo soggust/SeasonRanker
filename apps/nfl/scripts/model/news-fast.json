@@ -7,22 +7,9 @@
   "insidenflnews.bsky.social": "2026-11-21T15:20:04.151Z",
   "nflnewsposter.bsky.social": "2026-11-21T02:59:55.542Z",
   "rotoworld-fb.bsky.social": "2026-11-21T15:32:55.000Z",
-  "rotowirenfl.bsky.social": "2026-11-21T15:31:12.000Z"
+  "rotowirenfl.bsky.social": "2026-11-21T16:43:26.000Z"
  },
  "claims": [
-  {
-   "id": "at://did:plc:fuqjc7x4gxvnwzksnlxwbe4x/app.bsky.feed.post/3mz6pvzhplk2f|micahparsons|active|return",
-   "at": "2026-10-31T16:33:11.359Z",
-   "seen": "2026-10-31T16:36:46.823Z",
-   "handle": "nflnewsposter.bsky.social",
-   "post": "at://did:plc:fuqjc7x4gxvnwzksnlxwbe4x/app.bsky.feed.post/3mz6pvzhplk2f",
-   "player": "Micah Parsons",
-   "team": "GB",
-   "status": "active",
-   "kind": "return",
-   "confidence": 0.35,
-   "text": "[Rapoport] Packers and star Micah Parsons are targeting a Thanksgiving Eve return to the field in the showdown against the Rams. www.espn.com/nfl/story/_/... [Sources: Packers, Micah Parsons target re"
-  },
   {
    "id": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3mz6r5npcr52y|kylemonangai|out|status",
    "at": "2026-10-31T16:55:21.000Z",

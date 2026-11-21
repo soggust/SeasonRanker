@@ -24313,6 +24313,23 @@
    "espn": {
     "seen": "2026-11-21T16:22:27.646Z",
     "own": "2026-11-21T16:05:00.000Z"
+   },
+   "bluesky": {
+    "seen": "2026-11-21T16:23:55.101Z",
+    "own": "2026-11-21T16:05:42.000Z",
+    "why": "@rotowirenba.bsky.social: Karl-Anthony Towns: Questionable due to illness \n\n htt"
+   }
+  },
+  "401910024|oganunoby|out": {
+   "game": "401910024",
+   "start": "2026-11-22T00:30Z",
+   "team": "18",
+   "name": "OG Anunoby",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-21T16:23:55.101Z",
+    "own": "2026-11-21T16:09:12.000Z",
+    "why": "@rotowirenba.bsky.social: OG Anunoby: Downgraded to doubtful \n\n https://www.roto"
    }
   }
  }

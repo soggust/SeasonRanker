@@ -1,7 +1,7 @@
 {
  "sport": "nba",
  "cursor": {
-  "rotowirenba.bsky.social": "2026-11-21T16:09:12.000Z",
+  "rotowirenba.bsky.social": "2026-11-21T16:25:34.000Z",
   "insidenbanews.bsky.social": "2026-11-20T20:35:06.661Z",
   "shamsbot.bsky.social": "2026-11-20T20:29:39.000Z"
  },
@@ -7545,6 +7545,19 @@
    "kind": "status",
    "confidence": 0.93,
    "text": "OG Anunoby: Downgraded to doubtful \n\n https://www.rotowire.com/basketball/player/og-anunoby-4121"
+  },
+  {
+   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3n2tjbqgwqd2l|tyresemaxey|questionable|status",
+   "at": "2026-11-21T16:25:34.000Z",
+   "seen": "2026-11-21T16:45:53.572Z",
+   "handle": "rotowirenba.bsky.social",
+   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3n2tjbqgwqd2l",
+   "player": "Tyrese Maxey",
+   "team": "PHI",
+   "status": "questionable",
+   "kind": "status",
+   "confidence": 0.9,
+   "text": "Tyrese Maxey: Game-time decision Saturday \n\n https://www.rotowire.com/basketball/player/tyrese-maxey-5158"
   }
  ]
 }
