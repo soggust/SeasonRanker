@@ -1,7 +1,7 @@
 {
  "sport": "nba",
  "cursor": {
-  "rotowirenba.bsky.social": "2026-11-21T15:53:39.000Z",
+  "rotowirenba.bsky.social": "2026-11-21T16:09:12.000Z",
   "insidenbanews.bsky.social": "2026-11-20T20:35:06.661Z",
   "shamsbot.bsky.social": "2026-11-20T20:29:39.000Z"
  },
@@ -7519,6 +7519,32 @@
    "kind": "status",
    "confidence": 0.6,
    "text": "T.J. McConnell: Exits game with hamstring issue \n\n https://www.rotowire.com/basketball/player/tj-mcconnell-3760"
+  },
+  {
+   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3n2ti67cyuk2q|karlanthonytowns|questionable|status",
+   "at": "2026-11-21T16:05:42.000Z",
+   "seen": "2026-11-21T16:23:55.101Z",
+   "handle": "rotowirenba.bsky.social",
+   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3n2ti67cyuk2q",
+   "player": "Karl-Anthony Towns",
+   "team": "NY",
+   "status": "questionable",
+   "kind": "status",
+   "confidence": 0.93,
+   "text": "Karl-Anthony Towns: Questionable due to illness \n\n https://www.rotowire.com/basketball/player/karl-anthony-towns-3741"
+  },
+  {
+   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3n2tiei2xb62u|oganunoby|doubtful|status",
+   "at": "2026-11-21T16:09:12.000Z",
+   "seen": "2026-11-21T16:23:55.101Z",
+   "handle": "rotowirenba.bsky.social",
+   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3n2tiei2xb62u",
+   "player": "OG Anunoby",
+   "team": "NY",
+   "status": "doubtful",
+   "kind": "status",
+   "confidence": 0.93,
+   "text": "OG Anunoby: Downgraded to doubtful \n\n https://www.rotowire.com/basketball/player/og-anunoby-4121"
   }
  ]
 }
