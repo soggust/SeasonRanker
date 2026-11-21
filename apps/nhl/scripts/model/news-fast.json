@@ -4,23 +4,10 @@
   "johnston-bot.bsky.social": "2026-11-20T04:01:20.374Z",
   "notfriedgehnic.bsky.social": "2026-11-20T23:00:05.613Z",
   "dailyfaceoff.bsky.social": "2026-11-21T15:08:17.000Z",
-  "dfotoronto.bsky.social": "2026-11-21T15:27:24.000Z",
+  "dfotoronto.bsky.social": "2026-11-21T16:01:45.432Z",
   "marklazerus.bsky.social": "2026-11-21T01:11:35.053Z"
  },
  "claims": [
-  {
-   "id": "at://did:plc:3uus7y6h3rlrk6sbctzxm4bg/app.bsky.feed.post/3mz6o2kkfvp2c|mikematheson|out|status",
-   "at": "2026-10-31T15:59:55.000Z",
-   "seen": "2026-10-31T16:15:31.485Z",
-   "handle": "dailyfaceoff.bsky.social",
-   "post": "at://did:plc:3uus7y6h3rlrk6sbctzxm4bg/app.bsky.feed.post/3mz6o2kkfvp2c",
-   "player": "Mike Matheson",
-   "team": "MTL",
-   "status": "out",
-   "kind": "status",
-   "confidence": 0.95,
-   "text": "Canadiens’ Mike Matheson out two weeks with lower-body injury"
-  },
   {
    "id": "at://did:plc:3uus7y6h3rlrk6sbctzxm4bg/app.bsky.feed.post/3mz6psfik3y26|christanev|active|return",
    "at": "2026-10-31T16:31:09.000Z",
