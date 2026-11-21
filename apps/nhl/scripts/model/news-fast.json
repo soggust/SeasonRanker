@@ -3,9 +3,9 @@
  "cursor": {
   "johnston-bot.bsky.social": "2026-11-20T04:01:20.374Z",
   "notfriedgehnic.bsky.social": "2026-11-21T19:10:31.974Z",
-  "dailyfaceoff.bsky.social": "2026-11-21T19:52:34.000Z",
+  "dailyfaceoff.bsky.social": "2026-11-21T20:23:08.000Z",
   "dfotoronto.bsky.social": "2026-11-21T19:38:46.859Z",
-  "marklazerus.bsky.social": "2026-11-21T20:07:42.159Z"
+  "marklazerus.bsky.social": "2026-11-21T20:28:57.777Z"
  },
  "claims": [
   {
@@ -2490,6 +2490,19 @@
    "kind": "starting",
    "confidence": 0.6,
    "text": "Blackhawks in warmups:\n\nDonato-Kantserov-Bertuzzi\nMoore-Nazar-Kane\nSmith-Frondell-Teräväinen\nMangiapane-Greene-Boucher\n\nVlasic-Rinzel\nCole-Levshunov\nKaiser-Del Mastro\n\nKnight\nCommesso (he'll surely st"
+  },
+  {
+   "id": "at://did:plc:3uus7y6h3rlrk6sbctzxm4bg/app.bsky.feed.post/3n2twkjsiat22|hughes|out|status",
+   "at": "2026-11-21T20:23:08.000Z",
+   "seen": "2026-11-21T20:29:00.332Z",
+   "handle": "dailyfaceoff.bsky.social",
+   "post": "at://did:plc:3uus7y6h3rlrk6sbctzxm4bg/app.bsky.feed.post/3n2twkjsiat22",
+   "player": "Hughes",
+   "team": "MIN",
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.85,
+   "text": "Wild’s Hughes to miss remainder of road trip with injury"
   }
  ]
 }

@@ -11285,6 +11285,11 @@
    "sleeper": {
     "seen": "2026-11-21T20:05:38.659Z",
     "own": "2026-11-21T19:40:59.001Z"
+   },
+   "bluesky": {
+    "seen": "2026-11-21T20:08:28.831Z",
+    "own": "2026-11-21T19:51:33.483Z",
+    "why": "@adamscheftermirror.bsky.social: Cowboys placed CB DaRon Bland on injured reserv"
    }
   },
   "401873073|tylerbooker|out": {
@@ -14684,6 +14689,11 @@
    "sleeper": {
     "seen": "2026-11-21T20:05:38.659Z",
     "own": "2026-11-20T22:45:50.449Z"
+   },
+   "bluesky": {
+    "seen": "2026-11-21T20:08:28.831Z",
+    "own": "2026-11-21T19:51:33.483Z",
+    "why": "@adamscheftermirror.bsky.social: Cowboys placed CB DaRon Bland on injured reserv"
    }
   },
   "401873068|nnamdimadubuike|q": {
@@ -17706,6 +17716,18 @@
    "sleeper": {
     "seen": "2026-11-21T20:05:38.659Z",
     "own": "2026-11-21T01:40:51.614Z"
+   }
+  },
+  "401873073|devinmoore|out": {
+   "game": "401873073",
+   "start": "2026-11-22T18:00Z",
+   "team": "6",
+   "name": "Devin Moore",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-21T20:08:28.831Z",
+    "own": "2026-11-21T19:51:33.483Z",
+    "why": "@adamscheftermirror.bsky.social: Cowboys placed CB DaRon Bland on injured reserv"
    }
   }
  }
