@@ -24194,6 +24194,78 @@
     "own": "2026-11-21T01:00:18.000Z",
     "why": "@rotowirenba.bsky.social: Derrick White: Questionable for Saturday \n\n https://ww"
    }
+  },
+  "401910023|tjmcconnell|out": {
+   "game": "401910023",
+   "start": "2026-11-21T18:00Z",
+   "team": "20",
+   "name": "T.J. McConnell",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-21T05:36:39.060Z",
+    "own": "2026-11-21T04:56:52.000Z",
+    "why": "@rotowirenba.bsky.social: T.J. McConnell: Exits game with hamstring issue \n\n htt"
+   }
+  },
+  "401910024|tjmcconnell|out": {
+   "game": "401910024",
+   "start": "2026-11-22T00:30Z",
+   "team": "18",
+   "name": "T.J. McConnell",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-21T05:36:39.060Z",
+    "own": "2026-11-21T04:56:52.000Z",
+    "why": "@rotowirenba.bsky.social: T.J. McConnell: Exits game with hamstring issue \n\n htt"
+   }
+  },
+  "401910025|tjmcconnell|out": {
+   "game": "401910025",
+   "start": "2026-11-22T01:00Z",
+   "team": "6",
+   "name": "T.J. McConnell",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-21T05:36:39.060Z",
+    "own": "2026-11-21T04:56:52.000Z",
+    "why": "@rotowirenba.bsky.social: T.J. McConnell: Exits game with hamstring issue \n\n htt"
+   }
+  },
+  "401910026|tjmcconnell|out": {
+   "game": "401910026",
+   "start": "2026-11-22T01:00Z",
+   "team": "16",
+   "name": "T.J. McConnell",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-21T05:36:39.060Z",
+    "own": "2026-11-21T04:56:52.000Z",
+    "why": "@rotowirenba.bsky.social: T.J. McConnell: Exits game with hamstring issue \n\n htt"
+   }
+  },
+  "401910027|tjmcconnell|out": {
+   "game": "401910027",
+   "start": "2026-11-22T01:00Z",
+   "team": "24",
+   "name": "T.J. McConnell",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-21T05:36:39.060Z",
+    "own": "2026-11-21T04:56:52.000Z",
+    "why": "@rotowirenba.bsky.social: T.J. McConnell: Exits game with hamstring issue \n\n htt"
+   }
+  },
+  "401910028|tjmcconnell|out": {
+   "game": "401910028",
+   "start": "2026-11-22T03:00Z",
+   "team": "23",
+   "name": "T.J. McConnell",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-21T05:36:39.060Z",
+    "own": "2026-11-21T04:56:52.000Z",
+    "why": "@rotowirenba.bsky.social: T.J. McConnell: Exits game with hamstring issue \n\n htt"
+   }
   }
  }
 }
