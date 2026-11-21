@@ -1,50 +1,11 @@
 {
  "sport": "nba",
  "cursor": {
-  "rotowirenba.bsky.social": "2026-11-21T21:49:45.000Z",
+  "rotowirenba.bsky.social": "2026-11-21T22:51:04.000Z",
   "insidenbanews.bsky.social": "2026-11-20T20:35:06.661Z",
   "shamsbot.bsky.social": "2026-11-20T20:29:39.000Z"
  },
  "claims": [
-  {
-   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mz7d6vnrz422|rudygobert|out|status",
-   "at": "2026-10-31T22:18:10.000Z",
-   "seen": "2026-10-31T23:15:27.743Z",
-   "handle": "rotowirenba.bsky.social",
-   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mz7d6vnrz422",
-   "player": "Rudy Gobert",
-   "team": null,
-   "status": "out",
-   "kind": "status",
-   "confidence": 0.95,
-   "text": "Rudy Gobert: Won't play Saturday \n\n https://www.rotowire.com/basketball/player/rudy-gobert-3440"
-  },
-  {
-   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mz7f474bta2q|marcussmart|active|starting",
-   "at": "2026-10-31T22:52:27.000Z",
-   "seen": "2026-10-31T23:15:27.743Z",
-   "handle": "rotowirenba.bsky.social",
-   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mz7f474bta2q",
-   "player": "Marcus Smart",
-   "team": null,
-   "status": "active",
-   "kind": "starting",
-   "confidence": 0.9,
-   "text": "Marcus Smart: Starting Saturday \n\n https://www.rotowire.com/basketball/player/marcus-smart-3575"
-  },
-  {
-   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mz7fusl47j27|stephoncastle|active|return",
-   "at": "2026-10-31T23:06:12.000Z",
-   "seen": "2026-10-31T23:15:27.743Z",
-   "handle": "rotowirenba.bsky.social",
-   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mz7fusl47j27",
-   "player": "Stephon Castle",
-   "team": null,
-   "status": "active",
-   "kind": "return",
-   "confidence": 0.9,
-   "text": "Stephon Castle: Cleared to play versus Minnesota \n\n https://www.rotowire.com/basketball/player/stephon-castle-6250"
-  },
   {
    "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mz7hckvohp2n|joanberinger|none|starting",
    "at": "2026-10-31T23:31:48.000Z",
@@ -7441,6 +7402,97 @@
    "kind": "status",
    "confidence": 0.9,
    "text": "OG Anunoby: Won't play Saturday \n\n https://www.rotowire.com/basketball/player/og-anunoby-4121"
+  },
+  {
+   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3n2u4vw7yh62u|kingstonflemings|questionable|status",
+   "at": "2026-11-21T22:16:52.000Z",
+   "seen": "2026-11-21T23:09:57.634Z",
+   "handle": "rotowirenba.bsky.social",
+   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3n2u4vw7yh62u",
+   "player": "Kingston Flemings",
+   "team": null,
+   "status": "questionable",
+   "kind": "status",
+   "confidence": 0.9,
+   "text": "Kingston Flemings: Questionable for Sunday \n\n https://www.rotowire.com/basketball/player/kingston-flemings-6927"
+  },
+  {
+   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3n2u52ec4z62u|pascalsiakam|questionable|status",
+   "at": "2026-11-21T22:19:21.000Z",
+   "seen": "2026-11-21T23:09:57.634Z",
+   "handle": "rotowirenba.bsky.social",
+   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3n2u52ec4z62u",
+   "player": "Pascal Siakam",
+   "team": null,
+   "status": "questionable",
+   "kind": "status",
+   "confidence": 0.9,
+   "text": "Pascal Siakam: Questionable versus Knicks \n\n https://www.rotowire.com/basketball/player/pascal-siakam-3922"
+  },
+  {
+   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3n2u5b5pmma25|cadecunningham|active|status",
+   "at": "2026-11-21T22:23:09.000Z",
+   "seen": "2026-11-21T23:09:57.634Z",
+   "handle": "rotowirenba.bsky.social",
+   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3n2u5b5pmma25",
+   "player": "Cade Cunningham",
+   "team": null,
+   "status": "active",
+   "kind": "status",
+   "confidence": 0.6,
+   "text": "Cade Cunningham: Probable for Sunday \n\n https://www.rotowire.com/basketball/player/cade-cunningham-5336"
+  },
+  {
+   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3n2u5chc3wn2q|deniavdija|active|return",
+   "at": "2026-11-21T22:23:53.000Z",
+   "seen": "2026-11-21T23:09:57.634Z",
+   "handle": "rotowirenba.bsky.social",
+   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3n2u5chc3wn2q",
+   "player": "Deni Avdija",
+   "team": null,
+   "status": "active",
+   "kind": "return",
+   "confidence": 0.9,
+   "text": "Deni Avdija: Returning Saturday \n\n https://www.rotowire.com/basketball/player/deni-avdija-5152"
+  },
+  {
+   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3n2u5mwlxbi25|alexcaruso|out|status",
+   "at": "2026-11-21T22:29:44.000Z",
+   "seen": "2026-11-21T23:09:57.634Z",
+   "handle": "rotowirenba.bsky.social",
+   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3n2u5mwlxbi25",
+   "player": "Alex Caruso",
+   "team": null,
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.95,
+   "text": "Alex Caruso: Ruled out for Sunday \n\n https://www.rotowire.com/basketball/player/alex-caruso-3952"
+  },
+  {
+   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3n2u6ivs5wu22|shaigilgeousalexander|questionable|status",
+   "at": "2026-11-21T22:45:23.000Z",
+   "seen": "2026-11-21T23:09:57.634Z",
+   "handle": "rotowirenba.bsky.social",
+   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3n2u6ivs5wu22",
+   "player": "Shai Gilgeous-Alexander",
+   "team": null,
+   "status": "questionable",
+   "kind": "status",
+   "confidence": 0.9,
+   "text": "Shai Gilgeous-Alexander: Questionable to play Sunday \n\n https://www.rotowire.com/basketball/player/shai-gilgeous-alexander-4387"
+  },
+  {
+   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3n2u6t2mo7j2v|karlanthonytowns|out|status",
+   "at": "2026-11-21T22:51:04.000Z",
+   "seen": "2026-11-21T23:09:57.634Z",
+   "handle": "rotowirenba.bsky.social",
+   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3n2u6t2mo7j2v",
+   "player": "Karl-Anthony Towns",
+   "team": null,
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.85,
+   "text": "Karl-Anthony Towns: Sidelined against Portland \n\n https://www.rotowire.com/basketball/player/karl-anthony-towns-3741"
   }
  ]
 }

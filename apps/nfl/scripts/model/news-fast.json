@@ -1,12 +1,12 @@
 {
  "sport": "nfl",
  "cursor": {
-  "adamscheftermirror.bsky.social": "2026-11-21T21:51:32.206Z",
+  "adamscheftermirror.bsky.social": "2026-11-21T22:06:32.282Z",
   "rapsheet.bsky.social": "2026-11-20T21:16:12.668Z",
   "nflnewsreposterbot.bsky.social": "2026-11-16T18:35:13.806Z",
   "insidenflnews.bsky.social": "2026-11-21T21:01:29.025Z",
   "nflnewsposter.bsky.social": "2026-11-21T21:21:21.620Z",
-  "rotoworld-fb.bsky.social": "2026-11-21T21:22:15.000Z",
+  "rotoworld-fb.bsky.social": "2026-11-21T22:11:27.000Z",
   "rotowirenfl.bsky.social": "2026-11-21T21:55:50.000Z"
  },
  "claims": [
@@ -18690,6 +18690,19 @@
    "kind": "return",
    "confidence": 0.8,
    "text": "Rams designated DE Kobie Turner for return to practice.\n\nOriginal post"
+  },
+  {
+   "id": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3n2u4maet2o2t|kyren|limited|status",
+   "at": "2026-11-21T22:11:27.000Z",
+   "seen": "2026-11-21T23:09:57.634Z",
+   "handle": "rotoworld-fb.bsky.social",
+   "post": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3n2u4maet2o2t",
+   "player": "Kyren",
+   "team": null,
+   "status": "limited",
+   "kind": "status",
+   "confidence": 0.8,
+   "text": "Kyren limited Saturday, expected to play Wednesday"
   }
  ]
 }

@@ -4,8 +4,8 @@
   "johnston-bot.bsky.social": "2026-11-20T04:01:20.374Z",
   "notfriedgehnic.bsky.social": "2026-11-21T19:10:31.974Z",
   "dailyfaceoff.bsky.social": "2026-11-21T22:00:55.000Z",
-  "dfotoronto.bsky.social": "2026-11-21T21:35:31.360Z",
-  "marklazerus.bsky.social": "2026-11-21T21:57:37.206Z"
+  "dfotoronto.bsky.social": "2026-11-21T22:11:57.000Z",
+  "marklazerus.bsky.social": "2026-11-21T23:09:57.190Z"
  },
  "claims": [
   {
@@ -2542,6 +2542,32 @@
    "kind": "status",
    "confidence": 0.95,
    "text": "Canucks’ Elias Pettersson out with upper-body injury."
+  },
+  {
+   "id": "at://did:plc:54vdi5eoabhod2vumsbcpi7g/app.bsky.feed.post/3n2u5zxosjkue|antonfrondell|out|status",
+   "at": "2026-11-21T22:37:02.230Z",
+   "seen": "2026-11-21T23:09:57.634Z",
+   "handle": "marklazerus.bsky.social",
+   "post": "at://did:plc:54vdi5eoabhod2vumsbcpi7g/app.bsky.feed.post/3n2u5zxosjkue",
+   "player": "Anton Frondell",
+   "team": "CHI",
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.8,
+   "text": "Anton Frondell is out for the game now, too, per the Blackhawks. Blashill said he's been battling a nagging injury or two."
+  },
+  {
+   "id": "at://did:plc:54vdi5eoabhod2vumsbcpi7g/app.bsky.feed.post/3n2u6a4udscue|romankantserov|none|role",
+   "at": "2026-11-21T22:40:28.981Z",
+   "seen": "2026-11-21T23:09:57.634Z",
+   "handle": "marklazerus.bsky.social",
+   "post": "at://did:plc:54vdi5eoabhod2vumsbcpi7g/app.bsky.feed.post/3n2u6a4udscue",
+   "player": "Roman Kantserov",
+   "team": "CHI",
+   "status": "none",
+   "kind": "role",
+   "confidence": 0.6,
+   "text": "Roman Kantserov getting some PK time with Anton Frondell out."
   }
  ]
 }

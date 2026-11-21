@@ -24402,6 +24402,11 @@
     "seen": "2026-11-21T16:23:55.101Z",
     "own": "2026-11-21T16:09:12.000Z",
     "why": "@rotowirenba.bsky.social: OG Anunoby: Downgraded to doubtful \n\n https://www.roto"
+   },
+   "athlete": "3934719",
+   "espn": {
+    "seen": "2026-11-21T23:08:20.703Z",
+    "own": "2026-11-21T21:49:00.000Z"
    }
   },
   "401910027|treymurphy|out": {
@@ -24476,6 +24481,234 @@
     "seen": "2026-11-21T21:02:41.157Z",
     "own": "2026-11-21T20:55:09.000Z",
     "why": "@rotowirenba.bsky.social: Mitchell Robinson: Under the weather, won't play Satur"
+   }
+  },
+  "401910024|karlanthonytowns|out": {
+   "game": "401910024",
+   "start": "2026-11-22T00:30Z",
+   "team": "18",
+   "name": "Karl-Anthony Towns",
+   "status": "out",
+   "athlete": "3136195",
+   "espn": {
+    "seen": "2026-11-21T23:08:20.703Z",
+    "own": "2026-11-21T22:51:00.000Z"
+   }
+  },
+  "401910025|oganunoby|out": {
+   "game": "401910025",
+   "start": "2026-11-22T01:00Z",
+   "team": "6",
+   "name": "OG Anunoby",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-21T22:05:33.976Z",
+    "own": "2026-11-21T21:49:45.000Z",
+    "why": "@rotowirenba.bsky.social: OG Anunoby: Won't play Saturday \n\n https://www.rotowir"
+   }
+  },
+  "401910026|oganunoby|out": {
+   "game": "401910026",
+   "start": "2026-11-22T01:00Z",
+   "team": "16",
+   "name": "OG Anunoby",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-21T22:05:33.976Z",
+    "own": "2026-11-21T21:49:45.000Z",
+    "why": "@rotowirenba.bsky.social: OG Anunoby: Won't play Saturday \n\n https://www.rotowir"
+   }
+  },
+  "401910027|oganunoby|out": {
+   "game": "401910027",
+   "start": "2026-11-22T01:00Z",
+   "team": "24",
+   "name": "OG Anunoby",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-21T22:05:33.976Z",
+    "own": "2026-11-21T21:49:45.000Z",
+    "why": "@rotowirenba.bsky.social: OG Anunoby: Won't play Saturday \n\n https://www.rotowir"
+   }
+  },
+  "401910028|oganunoby|out": {
+   "game": "401910028",
+   "start": "2026-11-22T03:00Z",
+   "team": "23",
+   "name": "OG Anunoby",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-21T22:05:33.976Z",
+    "own": "2026-11-21T21:49:45.000Z",
+    "why": "@rotowirenba.bsky.social: OG Anunoby: Won't play Saturday \n\n https://www.rotowir"
+   }
+  },
+  "401910029|kingstonflemings|out": {
+   "game": "401910029",
+   "start": "2026-11-22T20:30Z",
+   "team": "1",
+   "name": "Kingston Flemings",
+   "status": "out",
+   "athlete": "5149077",
+   "espn": {
+    "seen": "2026-11-21T23:08:20.703Z",
+    "own": "2026-11-21T22:16:00.000Z"
+   }
+  },
+  "401910029|jocklandale|out": {
+   "game": "401910029",
+   "start": "2026-11-22T20:30Z",
+   "team": "1",
+   "name": "Jock Landale",
+   "status": "out",
+   "athlete": "3146557",
+   "espn": {
+    "seen": "2026-11-21T23:08:20.703Z",
+    "own": "2026-11-21T22:12:00.000Z"
+   }
+  },
+  "401910029|asanewell|out": {
+   "game": "401910029",
+   "start": "2026-11-22T20:30Z",
+   "team": "1",
+   "name": "Asa Newell",
+   "status": "out",
+   "athlete": "4873201",
+   "espn": {
+    "seen": "2026-11-21T23:08:20.703Z",
+    "own": "2026-11-17T21:16:00.000Z"
+   }
+  },
+  "401910029|cjmccollum|out": {
+   "game": "401910029",
+   "start": "2026-11-22T20:30Z",
+   "team": "1",
+   "name": "CJ McCollum",
+   "status": "out",
+   "athlete": "2490149",
+   "espn": {
+    "seen": "2026-11-21T23:08:20.703Z",
+    "own": "2026-11-17T21:08:00.000Z"
+   }
+  },
+  "401910029|mouhamedgueye|out": {
+   "game": "401910029",
+   "start": "2026-11-22T20:30Z",
+   "team": "1",
+   "name": "Mouhamed Gueye",
+   "status": "out",
+   "athlete": "4712863",
+   "espn": {
+    "seen": "2026-11-21T23:08:20.703Z",
+    "own": "2026-11-13T00:06:00.000Z"
+   }
+  },
+  "401910029|henriveesaar|out": {
+   "game": "401910029",
+   "start": "2026-11-22T20:30Z",
+   "team": "1",
+   "name": "Henri Veesaar",
+   "status": "out",
+   "athlete": "5105571",
+   "espn": {
+    "seen": "2026-11-21T23:08:20.703Z",
+    "own": "2026-09-21T19:50:00.000Z"
+   }
+  },
+  "401910029|oganunoby|out": {
+   "game": "401910029",
+   "start": "2026-11-22T20:30Z",
+   "team": "1",
+   "name": "OG Anunoby",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-21T22:05:33.976Z",
+    "own": "2026-11-21T21:49:45.000Z",
+    "why": "@rotowirenba.bsky.social: OG Anunoby: Won't play Saturday \n\n https://www.rotowir"
+   }
+  },
+  "401910029|ebukaokorie|out": {
+   "game": "401910029",
+   "start": "2026-11-22T20:30Z",
+   "team": "8",
+   "name": "Ebuka Okorie",
+   "status": "out",
+   "athlete": "5258459",
+   "espn": {
+    "seen": "2026-11-21T23:08:20.703Z",
+    "own": "2026-11-21T22:34:00.000Z"
+   }
+  },
+  "401910029|cadecunningham|q": {
+   "game": "401910029",
+   "start": "2026-11-22T20:30Z",
+   "team": "8",
+   "name": "Cade Cunningham",
+   "status": "q",
+   "athlete": "4432166",
+   "espn": {
+    "seen": "2026-11-21T23:08:20.703Z",
+    "own": "2026-11-21T22:23:00.000Z"
+   }
+  },
+  "401910029|ronaldholland|out": {
+   "game": "401910029",
+   "start": "2026-11-22T20:30Z",
+   "team": "8",
+   "name": "Ronald Holland II",
+   "status": "out",
+   "athlete": "4683771",
+   "espn": {
+    "seen": "2026-11-21T23:08:20.703Z",
+    "own": "2026-11-21T00:34:00.000Z"
+   }
+  },
+  "401910029|taureanprince|out": {
+   "game": "401910029",
+   "start": "2026-11-22T20:30Z",
+   "team": "8",
+   "name": "Taurean Prince",
+   "status": "out",
+   "athlete": "2990962",
+   "espn": {
+    "seen": "2026-11-21T23:08:20.703Z",
+    "own": "2026-11-20T23:02:00.000Z"
+   }
+  },
+  "401910029|ugonnaonyenso|q": {
+   "game": "401910029",
+   "start": "2026-11-22T20:30Z",
+   "team": "8",
+   "name": "Ugonna Onyenso",
+   "status": "q",
+   "athlete": "5037878",
+   "espn": {
+    "seen": "2026-11-21T23:08:20.703Z",
+    "own": "2026-11-19T16:15:00.000Z"
+   }
+  },
+  "401910029|duncanrobinson|out": {
+   "game": "401910029",
+   "start": "2026-11-22T20:30Z",
+   "team": "8",
+   "name": "Duncan Robinson",
+   "status": "out",
+   "athlete": "3157465",
+   "espn": {
+    "seen": "2026-11-21T23:08:20.703Z",
+    "own": "2026-11-17T16:25:00.000Z"
+   }
+  },
+  "401910029|jalenduren|out": {
+   "game": "401910029",
+   "start": "2026-11-22T20:30Z",
+   "team": "8",
+   "name": "Jalen Duren",
+   "status": "out",
+   "athlete": "4433621",
+   "espn": {
+    "seen": "2026-11-21T23:08:20.703Z",
+    "own": "2026-11-08T16:05:00.000Z"
    }
   }
  }

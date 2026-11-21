@@ -9194,6 +9194,11 @@
    "sleeper": {
     "seen": "2026-11-21T20:06:54.721Z",
     "own": "2026-11-21T19:15:52.926Z"
+   },
+   "bluesky": {
+    "seen": "2026-11-21T22:05:33.976Z",
+    "own": "2026-11-21T22:00:55.000Z",
+    "why": "@dailyfaceoff.bsky.social: Canucks’ Elias Pettersson out with upper-body injury."
    }
   },
   "401892759|oliverekmanlarsson|out": {
@@ -9382,6 +9387,18 @@
    "espn": {
     "seen": "2026-11-21T22:03:47.994Z",
     "own": "2026-11-21T21:44:00.000Z"
+   }
+  },
+  "401892772|antonfrondell|q": {
+   "game": "401892772",
+   "start": "2026-11-23T01:00Z",
+   "team": "4",
+   "name": "Anton Frondell",
+   "status": "q",
+   "athlete": "5291935",
+   "espn": {
+    "seen": "2026-11-21T23:08:32.556Z",
+    "own": "2026-11-21T22:45:00.000Z"
    }
   }
  }
