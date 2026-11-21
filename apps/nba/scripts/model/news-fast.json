@@ -1,7 +1,7 @@
 {
  "sport": "nba",
  "cursor": {
-  "rotowirenba.bsky.social": "2026-11-21T20:55:09.000Z",
+  "rotowirenba.bsky.social": "2026-11-21T21:49:45.000Z",
   "insidenbanews.bsky.social": "2026-11-20T20:35:06.661Z",
   "shamsbot.bsky.social": "2026-11-20T20:29:39.000Z"
  },
@@ -7428,6 +7428,19 @@
    "kind": "status",
    "confidence": 0.9,
    "text": "Mitchell Robinson: Under the weather, won't play Saturday \n\n https://www.rotowire.com/basketball/player/mitchell-robinson-4426"
+  },
+  {
+   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3n2u3fgriyp2l|oganunoby|out|status",
+   "at": "2026-11-21T21:49:45.000Z",
+   "seen": "2026-11-21T22:05:33.976Z",
+   "handle": "rotowirenba.bsky.social",
+   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3n2u3fgriyp2l",
+   "player": "OG Anunoby",
+   "team": null,
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.9,
+   "text": "OG Anunoby: Won't play Saturday \n\n https://www.rotowire.com/basketball/player/og-anunoby-4121"
   }
  ]
 }

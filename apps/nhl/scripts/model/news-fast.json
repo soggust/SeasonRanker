@@ -3,9 +3,9 @@
  "cursor": {
   "johnston-bot.bsky.social": "2026-11-20T04:01:20.374Z",
   "notfriedgehnic.bsky.social": "2026-11-21T19:10:31.974Z",
-  "dailyfaceoff.bsky.social": "2026-11-21T21:02:03.000Z",
+  "dailyfaceoff.bsky.social": "2026-11-21T22:00:55.000Z",
   "dfotoronto.bsky.social": "2026-11-21T21:35:31.360Z",
-  "marklazerus.bsky.social": "2026-11-21T21:44:51.235Z"
+  "marklazerus.bsky.social": "2026-11-21T21:57:37.206Z"
  },
  "claims": [
   {
@@ -2516,6 +2516,32 @@
    "kind": "status",
    "confidence": 0.9,
    "text": "Avalanche head coach Jared Bednar has announced that Nathan MacKinnon is expected to miss 12 weeks."
+  },
+  {
+   "id": "at://did:plc:3uus7y6h3rlrk6sbctzxm4bg/app.bsky.feed.post/3n2u3dpi2r62y|nathanmackinnon|out|status",
+   "at": "2026-11-21T21:48:47.000Z",
+   "seen": "2026-11-21T22:05:33.976Z",
+   "handle": "dailyfaceoff.bsky.social",
+   "post": "at://did:plc:3uus7y6h3rlrk6sbctzxm4bg/app.bsky.feed.post/3n2u3dpi2r62y",
+   "player": "Nathan MacKinnon",
+   "team": "COL",
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.95,
+   "text": "Avalanche’s Nathan MacKinnon to miss at least three months"
+  },
+  {
+   "id": "at://did:plc:3uus7y6h3rlrk6sbctzxm4bg/app.bsky.feed.post/3n2u3zfnor42i|eliaspettersson|out|status",
+   "at": "2026-11-21T22:00:55.000Z",
+   "seen": "2026-11-21T22:05:33.976Z",
+   "handle": "dailyfaceoff.bsky.social",
+   "post": "at://did:plc:3uus7y6h3rlrk6sbctzxm4bg/app.bsky.feed.post/3n2u3zfnor42i",
+   "player": "Elias Pettersson",
+   "team": "VAN",
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.95,
+   "text": "Canucks’ Elias Pettersson out with upper-body injury."
   }
  ]
 }
