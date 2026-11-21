@@ -7,19 +7,6 @@
  },
  "claims": [
   {
-   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mz72ynjsj224|draymondgreen|out|status",
-   "at": "2026-10-31T19:51:30.000Z",
-   "seen": "2026-10-31T19:52:45.727Z",
-   "handle": "rotowirenba.bsky.social",
-   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mz72ynjsj224",
-   "player": "Draymond Green",
-   "team": "GS",
-   "status": "out",
-   "kind": "status",
-   "confidence": 0.93,
-   "text": "Draymond Green: Won't play Sunday \n\n https://www.rotowire.com/basketball/player/draymond-green-3299"
-  },
-  {
    "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mz75c7sohn2c|mitchellrobinson|questionable|status",
    "at": "2026-10-31T20:32:39.000Z",
    "seen": "2026-10-31T21:15:46.804Z",

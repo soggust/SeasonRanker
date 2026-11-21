@@ -3,9 +3,9 @@
  "cursor": {
   "johnston-bot.bsky.social": "2026-11-20T04:01:20.374Z",
   "notfriedgehnic.bsky.social": "2026-11-21T19:10:31.974Z",
-  "dailyfaceoff.bsky.social": "2026-11-21T19:41:24.000Z",
+  "dailyfaceoff.bsky.social": "2026-11-21T19:52:34.000Z",
   "dfotoronto.bsky.social": "2026-11-21T19:38:46.859Z",
-  "marklazerus.bsky.social": "2026-11-21T19:45:57.279Z"
+  "marklazerus.bsky.social": "2026-11-21T20:07:42.159Z"
  },
  "claims": [
   {
@@ -2477,6 +2477,19 @@
    "kind": "return",
    "confidence": 0.6,
    "text": "John Tavares is thrilled to welcome Kirill Marchenko back to practice after his injury\n\nRead More Here 💻 | theleafsnation.com/news/john-ta..."
+  },
+  {
+   "id": "at://did:plc:54vdi5eoabhod2vumsbcpi7g/app.bsky.feed.post/3n2tvowp56sue|commesso|none|starting",
+   "at": "2026-11-21T20:07:42.159Z",
+   "seen": "2026-11-21T20:08:28.831Z",
+   "handle": "marklazerus.bsky.social",
+   "post": "at://did:plc:54vdi5eoabhod2vumsbcpi7g/app.bsky.feed.post/3n2tvowp56sue",
+   "player": "Commesso",
+   "team": "CHI",
+   "status": "none",
+   "kind": "starting",
+   "confidence": 0.6,
+   "text": "Blackhawks in warmups:\n\nDonato-Kantserov-Bertuzzi\nMoore-Nazar-Kane\nSmith-Frondell-Teräväinen\nMangiapane-Greene-Boucher\n\nVlasic-Rinzel\nCole-Levshunov\nKaiser-Del Mastro\n\nKnight\nCommesso (he'll surely st"
   }
  ]
 }

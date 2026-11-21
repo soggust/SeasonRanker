@@ -1,41 +1,15 @@
 {
  "sport": "nfl",
  "cursor": {
-  "adamscheftermirror.bsky.social": "2026-11-21T19:01:32.588Z",
+  "adamscheftermirror.bsky.social": "2026-11-21T19:51:33.483Z",
   "rapsheet.bsky.social": "2026-11-20T21:16:12.668Z",
   "nflnewsreposterbot.bsky.social": "2026-11-16T18:35:13.806Z",
-  "insidenflnews.bsky.social": "2026-11-21T19:44:14.561Z",
+  "insidenflnews.bsky.social": "2026-11-21T19:55:58.984Z",
   "nflnewsposter.bsky.social": "2026-11-21T02:59:55.542Z",
   "rotoworld-fb.bsky.social": "2026-11-21T19:30:21.000Z",
-  "rotowirenfl.bsky.social": "2026-11-21T19:25:31.000Z"
+  "rotowirenfl.bsky.social": "2026-11-21T20:06:51.000Z"
  },
  "claims": [
-  {
-   "id": "at://did:plc:fuqjc7x4gxvnwzksnlxwbe4x/app.bsky.feed.post/3mz73krwesco7|derwinjames|out|status",
-   "at": "2026-10-31T20:01:39.253Z",
-   "seen": "2026-10-31T20:19:43.191Z",
-   "handle": "nflnewsposter.bsky.social",
-   "post": "at://did:plc:fuqjc7x4gxvnwzksnlxwbe4x/app.bsky.feed.post/3mz73krwesco7",
-   "player": "Derwin James Jr.",
-   "team": "LAC",
-   "status": "out",
-   "kind": "status",
-   "confidence": 0.97,
-   "text": "[Chargers] Los Angeles Chargers Place Derwin James Jr. on Injured Reserve www.chargers.com/news/place-d..."
-  },
-  {
-   "id": "at://did:plc:qre6zxbmr3ixhdmgsgdretb5/app.bsky.feed.post/3mz73or3omx2p|derwinjames|out|status",
-   "at": "2026-10-31T20:03:52.496Z",
-   "seen": "2026-10-31T20:19:43.191Z",
-   "handle": "adamscheftermirror.bsky.social",
-   "post": "at://did:plc:qre6zxbmr3ixhdmgsgdretb5/app.bsky.feed.post/3mz73or3omx2p",
-   "player": "Derwin James Jr.",
-   "team": "LAC",
-   "status": "out",
-   "kind": "status",
-   "confidence": 0.97,
-   "text": "Chargers placed S Derwin James Jr on injured reserve.\n\nOriginal post"
-  },
   {
    "id": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3mz74je6vkk2s|rjharvey|out|status",
    "at": "2026-10-31T20:18:44.000Z",
@@ -18586,6 +18560,97 @@
    "kind": "status",
    "confidence": 0.95,
    "text": "Carson Beck (back) ruled out Week 11."
+  },
+  {
+   "id": "at://did:plc:qre6zxbmr3ixhdmgsgdretb5/app.bsky.feed.post/3n2tus2af3t2o|carsonbeck|out|status",
+   "at": "2026-11-21T19:51:32.706Z",
+   "seen": "2026-11-21T20:08:28.831Z",
+   "handle": "adamscheftermirror.bsky.social",
+   "post": "at://did:plc:qre6zxbmr3ixhdmgsgdretb5/app.bsky.feed.post/3n2tus2af3t2o",
+   "player": "Carson Beck",
+   "team": "ARI",
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.9,
+   "text": "Cardinals downgraded QB Carson Beck to out due to his back injury, and now will start QB Josh Johnson vs. the Chiefs.\n\nOriginal post"
+  },
+  {
+   "id": "at://did:plc:qre6zxbmr3ixhdmgsgdretb5/app.bsky.feed.post/3n2tus2af3t2o|joshjohnson|none|starting",
+   "at": "2026-11-21T19:51:32.706Z",
+   "seen": "2026-11-21T20:08:28.831Z",
+   "handle": "adamscheftermirror.bsky.social",
+   "post": "at://did:plc:qre6zxbmr3ixhdmgsgdretb5/app.bsky.feed.post/3n2tus2af3t2o",
+   "player": "Josh Johnson",
+   "team": "ARI",
+   "status": "none",
+   "kind": "starting",
+   "confidence": 0.85,
+   "text": "Cardinals downgraded QB Carson Beck to out due to his back injury, and now will start QB Josh Johnson vs. the Chiefs.\n\nOriginal post"
+  },
+  {
+   "id": "at://did:plc:qre6zxbmr3ixhdmgsgdretb5/app.bsky.feed.post/3n2tus2wjcs27|daronbland|out|status",
+   "at": "2026-11-21T19:51:33.483Z",
+   "seen": "2026-11-21T20:08:28.831Z",
+   "handle": "adamscheftermirror.bsky.social",
+   "post": "at://did:plc:qre6zxbmr3ixhdmgsgdretb5/app.bsky.feed.post/3n2tus2wjcs27",
+   "player": "DaRon Bland",
+   "team": "DAL",
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.95,
+   "text": "Cowboys placed CB DaRon Bland on injured reserve. They also elevated RB Jashaun Corbin and CB Derion Kendrick from their practice squad. Both CB Devin Moore and S Jalen Thompson will remain on injured"
+  },
+  {
+   "id": "at://did:plc:qre6zxbmr3ixhdmgsgdretb5/app.bsky.feed.post/3n2tus2wjcs27|devinmoore|out|status",
+   "at": "2026-11-21T19:51:33.483Z",
+   "seen": "2026-11-21T20:08:28.831Z",
+   "handle": "adamscheftermirror.bsky.social",
+   "post": "at://did:plc:qre6zxbmr3ixhdmgsgdretb5/app.bsky.feed.post/3n2tus2wjcs27",
+   "player": "Devin Moore",
+   "team": "DAL",
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.9,
+   "text": "Cowboys placed CB DaRon Bland on injured reserve. They also elevated RB Jashaun Corbin and CB Derion Kendrick from their practice squad. Both CB Devin Moore and S Jalen Thompson will remain on injured"
+  },
+  {
+   "id": "at://did:plc:qre6zxbmr3ixhdmgsgdretb5/app.bsky.feed.post/3n2tus2wjcs27|jalenthompson|out|status",
+   "at": "2026-11-21T19:51:33.483Z",
+   "seen": "2026-11-21T20:08:28.831Z",
+   "handle": "adamscheftermirror.bsky.social",
+   "post": "at://did:plc:qre6zxbmr3ixhdmgsgdretb5/app.bsky.feed.post/3n2tus2wjcs27",
+   "player": "Jalen Thompson",
+   "team": "DAL",
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.9,
+   "text": "Cowboys placed CB DaRon Bland on injured reserve. They also elevated RB Jashaun Corbin and CB Derion Kendrick from their practice squad. Both CB Devin Moore and S Jalen Thompson will remain on injured"
+  },
+  {
+   "id": "at://did:plc:mbr4badgf6yu56mquzackzew/app.bsky.feed.post/3n2tuzy3ysk2c|michaelpittman|out|status",
+   "at": "2026-11-21T19:55:58.984Z",
+   "seen": "2026-11-21T20:08:28.831Z",
+   "handle": "insidenflnews.bsky.social",
+   "post": "at://did:plc:mbr4badgf6yu56mquzackzew/app.bsky.feed.post/3n2tuzy3ysk2c",
+   "player": "Michael Pittman Jr.",
+   "team": "IND",
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.8,
+   "text": "Michael Pittman Jr. (foot) now not expected to be activated off IR for Week 11"
+  },
+  {
+   "id": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3n2tvngkvwi2l|michaelpittman|out|status",
+   "at": "2026-11-21T20:06:51.000Z",
+   "seen": "2026-11-21T20:08:28.831Z",
+   "handle": "rotowirenfl.bsky.social",
+   "post": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3n2tvngkvwi2l",
+   "player": "Michael Pittman",
+   "team": "IND",
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.9,
+   "text": "Michael Pittman: Will not return this week \n\n https://www.rotowire.com/football/player/michael-pittman-14378"
   }
  ]
 }
