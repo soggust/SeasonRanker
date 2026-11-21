@@ -24188,6 +24188,246 @@
     "seen": "2026-11-20T23:13:40.779Z",
     "own": "2026-11-20T21:21:00.000Z"
    }
+  },
+  "401909306|cameronboozer|out": {
+   "game": "401909306",
+   "start": "2026-11-21T00:30Z",
+   "team": "17",
+   "name": "Cameron Boozer",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-20T23:15:19.336Z",
+    "own": "2026-11-20T23:12:38.000Z",
+    "why": "@rotowirenba.bsky.social: Cameron Boozer: Ruled out for Saturday \n\n https://www."
+   }
+  },
+  "401909306|javonsmall|out": {
+   "game": "401909306",
+   "start": "2026-11-21T00:30Z",
+   "team": "17",
+   "name": "Javon Small",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-20T23:15:19.336Z",
+    "own": "2026-11-20T23:14:21.000Z",
+    "why": "@rotowirenba.bsky.social: Javon Small: Ruled out for Saturday \n\n https://www.rot"
+   }
+  },
+  "401909307|deanwade|out": {
+   "game": "401909307",
+   "start": "2026-11-21T00:30Z",
+   "team": "5",
+   "name": "Dean Wade",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-20T23:15:19.336Z",
+    "own": "2026-11-20T22:11:26.000Z",
+    "why": "@rotowirenba.bsky.social: Dean Wade: Ruled out for Saturday \n\n https://www.rotow"
+   }
+  },
+  "401909307|cameronboozer|out": {
+   "game": "401909307",
+   "start": "2026-11-21T00:30Z",
+   "team": "5",
+   "name": "Cameron Boozer",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-20T23:15:19.336Z",
+    "own": "2026-11-20T23:12:38.000Z",
+    "why": "@rotowirenba.bsky.social: Cameron Boozer: Ruled out for Saturday \n\n https://www."
+   }
+  },
+  "401909307|javonsmall|out": {
+   "game": "401909307",
+   "start": "2026-11-21T00:30Z",
+   "team": "5",
+   "name": "Javon Small",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-20T23:15:19.336Z",
+    "own": "2026-11-20T23:14:21.000Z",
+    "why": "@rotowirenba.bsky.social: Javon Small: Ruled out for Saturday \n\n https://www.rot"
+   }
+  },
+  "401909308|cameronboozer|out": {
+   "game": "401909308",
+   "start": "2026-11-21T00:30Z",
+   "team": "8",
+   "name": "Cameron Boozer",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-20T23:15:19.336Z",
+    "own": "2026-11-20T23:12:38.000Z",
+    "why": "@rotowirenba.bsky.social: Cameron Boozer: Ruled out for Saturday \n\n https://www."
+   }
+  },
+  "401909308|javonsmall|out": {
+   "game": "401909308",
+   "start": "2026-11-21T00:30Z",
+   "team": "8",
+   "name": "Javon Small",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-20T23:15:19.336Z",
+    "own": "2026-11-20T23:14:21.000Z",
+    "why": "@rotowirenba.bsky.social: Javon Small: Ruled out for Saturday \n\n https://www.rot"
+   }
+  },
+  "401909309|jalensmith|out": {
+   "game": "401909309",
+   "start": "2026-11-21T01:00Z",
+   "team": "4",
+   "name": "Jalen Smith",
+   "status": "out",
+   "athlete": "4397189",
+   "espn": {
+    "seen": "2026-11-21T00:00:55.556Z",
+    "own": "2026-11-20T23:19:00.000Z"
+   }
+  },
+  "401909309|cameronboozer|out": {
+   "game": "401909309",
+   "start": "2026-11-21T01:00Z",
+   "team": "4",
+   "name": "Cameron Boozer",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-20T23:15:19.336Z",
+    "own": "2026-11-20T23:12:38.000Z",
+    "why": "@rotowirenba.bsky.social: Cameron Boozer: Ruled out for Saturday \n\n https://www."
+   }
+  },
+  "401909309|javonsmall|out": {
+   "game": "401909309",
+   "start": "2026-11-21T01:00Z",
+   "team": "4",
+   "name": "Javon Small",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-20T23:15:19.336Z",
+    "own": "2026-11-20T23:14:21.000Z",
+    "why": "@rotowirenba.bsky.social: Javon Small: Ruled out for Saturday \n\n https://www.rot"
+   }
+  },
+  "401909310|alexcaruso|out": {
+   "game": "401909310",
+   "start": "2026-11-21T01:00Z",
+   "team": "25",
+   "name": "Alex Caruso",
+   "status": "out",
+   "athlete": "2991350",
+   "espn": {
+    "seen": "2026-11-21T00:00:55.556Z",
+    "own": "2026-11-20T23:24:00.000Z"
+   }
+  },
+  "401909310|cameronboozer|out": {
+   "game": "401909310",
+   "start": "2026-11-21T01:00Z",
+   "team": "25",
+   "name": "Cameron Boozer",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-20T23:15:19.336Z",
+    "own": "2026-11-20T23:12:38.000Z",
+    "why": "@rotowirenba.bsky.social: Cameron Boozer: Ruled out for Saturday \n\n https://www."
+   }
+  },
+  "401909310|javonsmall|out": {
+   "game": "401909310",
+   "start": "2026-11-21T01:00Z",
+   "team": "25",
+   "name": "Javon Small",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-20T23:15:19.336Z",
+    "own": "2026-11-20T23:14:21.000Z",
+    "why": "@rotowirenba.bsky.social: Javon Small: Ruled out for Saturday \n\n https://www.rot"
+   }
+  },
+  "401909311|cameronboozer|out": {
+   "game": "401909311",
+   "start": "2026-11-21T02:30Z",
+   "team": "26",
+   "name": "Cameron Boozer",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-20T23:15:19.336Z",
+    "own": "2026-11-20T23:12:38.000Z",
+    "why": "@rotowirenba.bsky.social: Cameron Boozer: Ruled out for Saturday \n\n https://www."
+   }
+  },
+  "401909311|javonsmall|out": {
+   "game": "401909311",
+   "start": "2026-11-21T02:30Z",
+   "team": "26",
+   "name": "Javon Small",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-20T23:15:19.336Z",
+    "own": "2026-11-20T23:14:21.000Z",
+    "why": "@rotowirenba.bsky.social: Javon Small: Ruled out for Saturday \n\n https://www.rot"
+   }
+  },
+  "401909312|cameronboozer|out": {
+   "game": "401909312",
+   "start": "2026-11-21T03:00Z",
+   "team": "7",
+   "name": "Cameron Boozer",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-20T23:15:19.336Z",
+    "own": "2026-11-20T23:12:38.000Z",
+    "why": "@rotowirenba.bsky.social: Cameron Boozer: Ruled out for Saturday \n\n https://www."
+   }
+  },
+  "401909312|javonsmall|out": {
+   "game": "401909312",
+   "start": "2026-11-21T03:00Z",
+   "team": "7",
+   "name": "Javon Small",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-20T23:15:19.336Z",
+    "own": "2026-11-20T23:14:21.000Z",
+    "why": "@rotowirenba.bsky.social: Javon Small: Ruled out for Saturday \n\n https://www.rot"
+   }
+  },
+  "401909312|kingstonflemings|out": {
+   "game": "401909312",
+   "start": "2026-11-21T03:00Z",
+   "team": "10",
+   "name": "Kingston Flemings",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-20T23:15:19.336Z",
+    "own": "2026-11-20T22:15:56.000Z",
+    "why": "@rotowirenba.bsky.social: Kingston Flemings: Ruled out for Friday \n\n https://www"
+   }
+  },
+  "401909313|cameronboozer|out": {
+   "game": "401909313",
+   "start": "2026-11-21T03:00Z",
+   "team": "13",
+   "name": "Cameron Boozer",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-20T23:15:19.336Z",
+    "own": "2026-11-20T23:12:38.000Z",
+    "why": "@rotowirenba.bsky.social: Cameron Boozer: Ruled out for Saturday \n\n https://www."
+   }
+  },
+  "401909313|javonsmall|out": {
+   "game": "401909313",
+   "start": "2026-11-21T03:00Z",
+   "team": "13",
+   "name": "Javon Small",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-20T23:15:19.336Z",
+    "own": "2026-11-20T23:14:21.000Z",
+    "why": "@rotowirenba.bsky.social: Javon Small: Ruled out for Saturday \n\n https://www.rot"
+   }
   }
  }
 }
