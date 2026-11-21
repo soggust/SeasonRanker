@@ -1,7 +1,7 @@
 {
  "sport": "nba",
  "cursor": {
-  "rotowirenba.bsky.social": "2026-11-21T00:13:42.000Z",
+  "rotowirenba.bsky.social": "2026-11-21T00:22:42.000Z",
   "insidenbanews.bsky.social": "2026-11-20T20:35:06.661Z",
   "shamsbot.bsky.social": "2026-11-20T20:29:39.000Z"
  },
@@ -7467,6 +7467,32 @@
    "kind": "starting",
    "confidence": 0.9,
    "text": "Danny Wolf: Starting Friday \n\n https://www.rotowire.com/basketball/player/danny-wolf-6560"
+  },
+  {
+   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3n2rtdss2md25|cadecunningham|active|status",
+   "at": "2026-11-21T00:20:21.000Z",
+   "seen": "2026-11-21T00:36:31.250Z",
+   "handle": "rotowirenba.bsky.social",
+   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3n2rtdss2md25",
+   "player": "Cade Cunningham",
+   "team": "DET",
+   "status": "active",
+   "kind": "status",
+   "confidence": 0.95,
+   "text": "Cade Cunningham: Will play Friday \n\n https://www.rotowire.com/basketball/player/cade-cunningham-5336"
+  },
+  {
+   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3n2rthyvqoa2v|allengraves|none|starting",
+   "at": "2026-11-21T00:22:42.000Z",
+   "seen": "2026-11-21T00:36:31.250Z",
+   "handle": "rotowirenba.bsky.social",
+   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3n2rthyvqoa2v",
+   "player": "Allen Graves",
+   "team": null,
+   "status": "none",
+   "kind": "starting",
+   "confidence": 0.85,
+   "text": "Allen Graves: Earns first career start Friday \n\n https://www.rotowire.com/basketball/player/allen-graves-6975"
   }
  ]
 }

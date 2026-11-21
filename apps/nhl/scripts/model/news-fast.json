@@ -9,19 +9,6 @@
  },
  "claims": [
   {
-   "id": "at://did:plc:3uus7y6h3rlrk6sbctzxm4bg/app.bsky.feed.post/3mz52go5bls2q|haydenhodgson|out|status",
-   "at": "2026-10-31T00:36:07.000Z",
-   "seen": "2026-10-31T00:46:02.806Z",
-   "handle": "dailyfaceoff.bsky.social",
-   "post": "at://did:plc:3uus7y6h3rlrk6sbctzxm4bg/app.bsky.feed.post/3mz52go5bls2q",
-   "player": "Hayden Hodgson",
-   "team": null,
-   "status": "out",
-   "kind": "status",
-   "confidence": 0.9,
-   "text": "Hayden Hodgson has been suspended two games for boarding Brandt Clarke"
-  },
-  {
    "id": "at://did:plc:3uus7y6h3rlrk6sbctzxm4bg/app.bsky.feed.post/3mz6o2kkfvp2c|mikematheson|out|status",
    "at": "2026-10-31T15:59:55.000Z",
    "seen": "2026-10-31T16:15:31.485Z",

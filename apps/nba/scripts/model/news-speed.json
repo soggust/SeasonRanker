@@ -65,74 +65,6 @@
     "why": "@rotowirenba.bsky.social: Zion Williamson: Sitting out Monday \n\n https://www.rot"
    }
   },
-  "401909960|joshhart|q": {
-   "game": "401909960",
-   "start": "2026-11-11T00:30Z",
-   "team": "18",
-   "name": "Josh Hart",
-   "status": "q",
-   "athlete": "3062679",
-   "espn": {
-    "seen": "2026-11-09T22:51:37.887Z",
-    "own": "2026-11-09T22:04:00.000Z"
-   },
-   "sleeper": {
-    "seen": "2026-11-10T20:00:08.211Z",
-    "own": "2026-11-10T19:20:50.045Z"
-   }
-  },
-  "401909960|devinvassell|out": {
-   "game": "401909960",
-   "start": "2026-11-11T00:30Z",
-   "team": "18",
-   "name": "Devin Vassell",
-   "status": "out",
-   "bluesky": {
-    "seen": "2026-11-09T18:51:24.405Z",
-    "own": "2026-11-09T18:41:53.000Z",
-    "why": "@rotowirenba.bsky.social: Devin Vassell: Ruled out for Monday \n\n https://www.rot"
-   }
-  },
-  "401909960|zionwilliamson|out": {
-   "game": "401909960",
-   "start": "2026-11-11T00:30Z",
-   "team": "18",
-   "name": "Zion Williamson",
-   "status": "out",
-   "bluesky": {
-    "seen": "2026-11-09T22:15:21.812Z",
-    "own": "2026-11-09T21:49:56.000Z",
-    "why": "@rotowirenba.bsky.social: Zion Williamson: Sitting out Monday \n\n https://www.rot"
-   }
-  },
-  "401909960|tylerherro|q": {
-   "game": "401909960",
-   "start": "2026-11-11T00:30Z",
-   "team": "15",
-   "name": "Tyler Herro",
-   "status": "q",
-   "athlete": "4395725",
-   "espn": {
-    "seen": "2026-11-09T22:51:37.887Z",
-    "own": "2026-11-09T22:21:00.000Z"
-   },
-   "sleeper": {
-    "seen": "2026-11-10T20:00:08.211Z",
-    "own": "2026-11-09T22:40:48.408Z"
-   }
-  },
-  "401909960|garytrent|q": {
-   "game": "401909960",
-   "start": "2026-11-11T00:30Z",
-   "team": "15",
-   "name": "Gary Trent Jr.",
-   "status": "q",
-   "athlete": "4277843",
-   "espn": {
-    "seen": "2026-11-09T22:51:37.887Z",
-    "own": "2026-11-09T15:57:00.000Z"
-   }
-  },
   "401909965|robertwilliams|q": {
    "game": "401909965",
    "start": "2026-11-11T04:00Z",
@@ -243,18 +175,6 @@
    "espn": {
     "seen": "2026-11-10T00:04:23.282Z",
     "own": "2026-10-28T23:41:00.000Z"
-   }
-  },
-  "401909960|brandoningram|out": {
-   "game": "401909960",
-   "start": "2026-11-11T00:30Z",
-   "team": "18",
-   "name": "Brandon Ingram",
-   "status": "out",
-   "bluesky": {
-    "seen": "2026-11-10T00:05:41.407Z",
-    "own": "2026-11-10T00:00:13.000Z",
-    "why": "@rotowirenba.bsky.social: Brandon Ingram: Remains out for Tuesday \n\n https://www"
    }
   },
   "401909961|brandoningram|out": {
@@ -663,22 +583,6 @@
     "own": "2026-08-26T20:04:00.000Z"
    }
   },
-  "401909960|kelelware|q": {
-   "game": "401909960",
-   "start": "2026-11-11T00:30Z",
-   "team": "15",
-   "name": "Kel'el Ware",
-   "status": "q",
-   "athlete": "5105623",
-   "espn": {
-    "seen": "2026-11-10T17:44:11.588Z",
-    "own": "2026-11-10T17:18:00.000Z"
-   },
-   "sleeper": {
-    "seen": "2026-11-10T20:00:08.211Z",
-    "own": "2026-11-10T17:20:49.331Z"
-   }
-  },
   "401909964|tristandasilva|q": {
    "game": "401909964",
    "start": "2026-11-11T03:00Z",
@@ -722,18 +626,6 @@
     "seen": "2026-11-10T20:00:08.211Z",
     "own": "2026-11-10T18:35:49.717Z"
    },
-   "bluesky": {
-    "seen": "2026-11-10T19:15:16.001Z",
-    "own": "2026-11-10T18:30:16.000Z",
-    "why": "@rotowirenba.bsky.social: Lauri Markkanen: Ruled out with wrist sprain \n\n https:"
-   }
-  },
-  "401909960|laurimarkkanen|out": {
-   "game": "401909960",
-   "start": "2026-11-11T00:30Z",
-   "team": "18",
-   "name": "Lauri Markkanen",
-   "status": "out",
    "bluesky": {
     "seen": "2026-11-10T19:15:16.001Z",
     "own": "2026-11-10T18:30:16.000Z",
@@ -797,23 +689,6 @@
     "seen": "2026-11-10T19:15:16.001Z",
     "own": "2026-11-10T18:30:16.000Z",
     "why": "@rotowirenba.bsky.social: Lauri Markkanen: Ruled out with wrist sprain \n\n https:"
-   }
-  },
-  "401909960|joshhart|out": {
-   "game": "401909960",
-   "start": "2026-11-11T00:30Z",
-   "team": "15",
-   "name": "Josh Hart",
-   "status": "out",
-   "bluesky": {
-    "seen": "2026-11-10T20:01:16.227Z",
-    "own": "2026-11-10T19:20:03.000Z",
-    "why": "@rotowirenba.bsky.social: Josh Hart: Downgraded to doubtful \n\n https://www.rotow"
-   },
-   "athlete": "3062679",
-   "espn": {
-    "seen": "2026-11-10T23:10:46.737Z",
-    "own": "2026-11-10T22:58:00.000Z"
    }
   },
   "401909961|joshhart|out": {
@@ -1390,18 +1265,6 @@
     "own": "2026-10-28T23:41:00.000Z"
    }
   },
-  "401909960|jaylontyson|q": {
-   "game": "401909960",
-   "start": "2026-11-11T00:30Z",
-   "team": "18",
-   "name": "Jaylon Tyson",
-   "status": "q",
-   "bluesky": {
-    "seen": "2026-11-10T22:15:26.504Z",
-    "own": "2026-11-10T22:07:13.000Z",
-    "why": "@rotowirenba.bsky.social: Jaylon Tyson: Questionable for Wednesday \n\n https://ww"
-   }
-  },
   "401909961|jaylontyson|q": {
    "game": "401909961",
    "start": "2026-11-11T01:00Z",
@@ -1564,47 +1427,6 @@
     "seen": "2026-11-10T22:15:26.504Z",
     "own": "2026-11-10T22:07:13.000Z",
     "why": "@rotowirenba.bsky.social: Jaylon Tyson: Questionable for Wednesday \n\n https://ww"
-   }
-  },
-  "401909960|devinvassell|q": {
-   "game": "401909960",
-   "start": "2026-11-11T00:30Z",
-   "team": "18",
-   "name": "Devin Vassell",
-   "status": "q",
-   "bluesky": {
-    "seen": "2026-11-10T23:20:43.421Z",
-    "own": "2026-11-10T22:48:27.000Z",
-    "why": "@rotowirenba.bsky.social: Devin Vassell: Questionable against Chicago \n\n https:/"
-   }
-  },
-  "401909960|normanpowell|q": {
-   "game": "401909960",
-   "start": "2026-11-11T00:30Z",
-   "team": "18",
-   "name": "Norman Powell",
-   "status": "q",
-   "bluesky": {
-    "seen": "2026-11-10T23:20:43.421Z",
-    "own": "2026-11-10T22:21:41.000Z",
-    "why": "@rotowirenba.bsky.social: Norman Powell: Questionable for Wednesday \n\n https://w"
-   }
-  },
-  "401909960|tylerherro|out": {
-   "game": "401909960",
-   "start": "2026-11-11T00:30Z",
-   "team": "15",
-   "name": "Tyler Herro",
-   "status": "out",
-   "athlete": "4395725",
-   "espn": {
-    "seen": "2026-11-10T23:34:43.259Z",
-    "own": "2026-11-10T23:20:00.000Z"
-   },
-   "bluesky": {
-    "seen": "2026-11-11T00:02:50.957Z",
-    "own": "2026-11-10T23:24:09.000Z",
-    "why": "@rotowirenba.bsky.social: Tyler Herro: Sidelined versus Knicks \n\n https://www.ro"
    }
   },
   "401909961|normanpowell|q": {
@@ -24283,6 +24105,11 @@
    "espn": {
     "seen": "2026-11-21T00:00:55.556Z",
     "own": "2026-11-20T23:19:00.000Z"
+   },
+   "bluesky": {
+    "seen": "2026-11-21T00:18:55.425Z",
+    "own": "2026-11-20T23:20:00.000Z",
+    "why": "@rotowirenba.bsky.social: Jalen Smith: Out sick Friday \n\n https://www.rotowire.c"
    }
   },
   "401909309|cameronboozer|out": {
@@ -24427,6 +24254,54 @@
     "seen": "2026-11-20T23:15:19.336Z",
     "own": "2026-11-20T23:14:21.000Z",
     "why": "@rotowirenba.bsky.social: Javon Small: Ruled out for Saturday \n\n https://www.rot"
+   }
+  },
+  "401909310|jalensmith|out": {
+   "game": "401909310",
+   "start": "2026-11-21T01:00Z",
+   "team": "25",
+   "name": "Jalen Smith",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-21T00:18:55.425Z",
+    "own": "2026-11-20T23:20:00.000Z",
+    "why": "@rotowirenba.bsky.social: Jalen Smith: Out sick Friday \n\n https://www.rotowire.c"
+   }
+  },
+  "401909311|jalensmith|out": {
+   "game": "401909311",
+   "start": "2026-11-21T02:30Z",
+   "team": "26",
+   "name": "Jalen Smith",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-21T00:18:55.425Z",
+    "own": "2026-11-20T23:20:00.000Z",
+    "why": "@rotowirenba.bsky.social: Jalen Smith: Out sick Friday \n\n https://www.rotowire.c"
+   }
+  },
+  "401909312|jalensmith|out": {
+   "game": "401909312",
+   "start": "2026-11-21T03:00Z",
+   "team": "7",
+   "name": "Jalen Smith",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-21T00:18:55.425Z",
+    "own": "2026-11-20T23:20:00.000Z",
+    "why": "@rotowirenba.bsky.social: Jalen Smith: Out sick Friday \n\n https://www.rotowire.c"
+   }
+  },
+  "401909313|jalensmith|out": {
+   "game": "401909313",
+   "start": "2026-11-21T03:00Z",
+   "team": "13",
+   "name": "Jalen Smith",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-21T00:18:55.425Z",
+    "own": "2026-11-20T23:20:00.000Z",
+    "why": "@rotowirenba.bsky.social: Jalen Smith: Out sick Friday \n\n https://www.rotowire.c"
    }
   }
  }
