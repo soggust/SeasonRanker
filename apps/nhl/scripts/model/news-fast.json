@@ -3,9 +3,9 @@
  "cursor": {
   "johnston-bot.bsky.social": "2026-11-20T04:01:20.374Z",
   "notfriedgehnic.bsky.social": "2026-11-21T16:57:04.840Z",
-  "dailyfaceoff.bsky.social": "2026-11-21T17:30:01.000Z",
-  "dfotoronto.bsky.social": "2026-11-21T17:45:37.000Z",
-  "marklazerus.bsky.social": "2026-11-21T01:11:35.053Z"
+  "dailyfaceoff.bsky.social": "2026-11-21T18:17:44.000Z",
+  "dfotoronto.bsky.social": "2026-11-21T18:17:43.000Z",
+  "marklazerus.bsky.social": "2026-11-21T18:01:56.920Z"
  },
  "claims": [
   {
@@ -2386,6 +2386,58 @@
    "kind": "starting",
    "confidence": 0.85,
    "text": "Leafs lineup news: Dakota Mermis replaces Oliver Ekman-Larsson, Anthony Stolarz starts vs. Blue Jackets"
+  },
+  {
+   "id": "at://did:plc:3uus7y6h3rlrk6sbctzxm4bg/app.bsky.feed.post/3n2tobbao2r2o|smits|out|status",
+   "at": "2026-11-21T17:54:47.000Z",
+   "seen": "2026-11-21T18:20:52.512Z",
+   "handle": "dailyfaceoff.bsky.social",
+   "post": "at://did:plc:3uus7y6h3rlrk6sbctzxm4bg/app.bsky.feed.post/3n2tobbao2r2o",
+   "player": "Šmits",
+   "team": "NYR",
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.9,
+   "text": "Rangers’ Šmits, Bjorkstrand to miss 2-3 months"
+  },
+  {
+   "id": "at://did:plc:3uus7y6h3rlrk6sbctzxm4bg/app.bsky.feed.post/3n2tobbao2r2o|bjorkstrand|out|status",
+   "at": "2026-11-21T17:54:47.000Z",
+   "seen": "2026-11-21T18:20:52.512Z",
+   "handle": "dailyfaceoff.bsky.social",
+   "post": "at://did:plc:3uus7y6h3rlrk6sbctzxm4bg/app.bsky.feed.post/3n2tobbao2r2o",
+   "player": "Bjorkstrand",
+   "team": "NYR",
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.9,
+   "text": "Rangers’ Šmits, Bjorkstrand to miss 2-3 months"
+  },
+  {
+   "id": "at://did:plc:3uus7y6h3rlrk6sbctzxm4bg/app.bsky.feed.post/3n2tp2isekr2s|oliverekmanlarsson|out|benched",
+   "at": "2026-11-21T18:08:53.000Z",
+   "seen": "2026-11-21T18:20:52.512Z",
+   "handle": "dailyfaceoff.bsky.social",
+   "post": "at://did:plc:3uus7y6h3rlrk6sbctzxm4bg/app.bsky.feed.post/3n2tp2isekr2s",
+   "player": "Oliver Ekman-Larsson",
+   "team": "TOR",
+   "status": "out",
+   "kind": "benched",
+   "confidence": 0.9,
+   "text": "Leafs’ Oliver Ekman-Larsson a healthy scratch against Blue Jackets"
+  },
+  {
+   "id": "at://did:plc:knaj2vcp4x6t7hr7ewd6e3uz/app.bsky.feed.post/3n2tpkc7qnl2p|oliverekmanlarsson|out|benched",
+   "at": "2026-11-21T18:17:43.000Z",
+   "seen": "2026-11-21T18:20:52.512Z",
+   "handle": "dfotoronto.bsky.social",
+   "post": "at://did:plc:knaj2vcp4x6t7hr7ewd6e3uz/app.bsky.feed.post/3n2tpkc7qnl2p",
+   "player": "Oliver Ekman-Larsson",
+   "team": "TOR",
+   "status": "out",
+   "kind": "benched",
+   "confidence": 0.9,
+   "text": "Jim Hiller explains why he is scratching Oliver Ekman-Larsson vs. Blue Jackets"
   }
  ]
 }
