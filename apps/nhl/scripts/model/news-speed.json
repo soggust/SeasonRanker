@@ -9114,6 +9114,30 @@
     "seen": "2026-11-21T17:54:39.044Z",
     "own": "2026-11-21T17:40:00.000Z"
    }
+  },
+  "401892766|eliaspettersson|out": {
+   "game": "401892766",
+   "start": "2026-11-22T03:00Z",
+   "team": "22",
+   "name": "Elias Pettersson",
+   "status": "out",
+   "athlete": "4233566",
+   "espn": {
+    "seen": "2026-11-21T18:05:35.982Z",
+    "own": "2026-11-21T18:00:00.000Z"
+   }
+  },
+  "401892772|eliaspettersson|out": {
+   "game": "401892772",
+   "start": "2026-11-23T01:00Z",
+   "team": "22",
+   "name": "Elias Pettersson",
+   "status": "out",
+   "athlete": "4233566",
+   "espn": {
+    "seen": "2026-11-21T18:05:35.982Z",
+    "own": "2026-11-21T18:00:00.000Z"
+   }
   }
  }
 }
