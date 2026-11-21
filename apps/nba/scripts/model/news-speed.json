@@ -24266,6 +24266,18 @@
     "own": "2026-11-21T04:56:52.000Z",
     "why": "@rotowirenba.bsky.social: T.J. McConnell: Exits game with hamstring issue \n\n htt"
    }
+  },
+  "401910026|jeramigrant|out": {
+   "game": "401910026",
+   "start": "2026-11-22T01:00Z",
+   "team": "29",
+   "name": "Jerami Grant",
+   "status": "out",
+   "athlete": "2991070",
+   "espn": {
+    "seen": "2026-11-21T08:06:35.659Z",
+    "own": "2026-11-21T08:04:00.000Z"
+   }
   }
  }
 }
