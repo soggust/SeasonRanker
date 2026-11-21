@@ -2,10 +2,10 @@
  "sport": "nhl",
  "cursor": {
   "johnston-bot.bsky.social": "2026-11-20T04:01:20.374Z",
-  "notfriedgehnic.bsky.social": "2026-11-21T16:57:04.840Z",
-  "dailyfaceoff.bsky.social": "2026-11-21T18:17:44.000Z",
+  "notfriedgehnic.bsky.social": "2026-11-21T19:10:31.974Z",
+  "dailyfaceoff.bsky.social": "2026-11-21T19:07:10.000Z",
   "dfotoronto.bsky.social": "2026-11-21T18:17:43.000Z",
-  "marklazerus.bsky.social": "2026-11-21T18:39:31.285Z"
+  "marklazerus.bsky.social": "2026-11-21T19:08:40.915Z"
  },
  "claims": [
   {
@@ -2438,6 +2438,32 @@
    "kind": "benched",
    "confidence": 0.9,
    "text": "Jim Hiller explains why he is scratching Oliver Ekman-Larsson vs. Blue Jackets"
+  },
+  {
+   "id": "at://did:plc:3uus7y6h3rlrk6sbctzxm4bg/app.bsky.feed.post/3n2trce7ztm2q|eliaspettersson|out|status",
+   "at": "2026-11-21T18:49:05.000Z",
+   "seen": "2026-11-21T19:11:29.687Z",
+   "handle": "dailyfaceoff.bsky.social",
+   "post": "at://did:plc:3uus7y6h3rlrk6sbctzxm4bg/app.bsky.feed.post/3n2trce7ztm2q",
+   "player": "Elias Pettersson",
+   "team": "VAN",
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.95,
+   "text": "Canucks’ Elias Pettersson out with lower-body injury"
+  },
+  {
+   "id": "at://did:plc:54vdi5eoabhod2vumsbcpi7g/app.bsky.feed.post/3n2tsffix3sue|bobyram|out|status",
+   "at": "2026-11-21T19:08:40.915Z",
+   "seen": "2026-11-21T19:11:29.687Z",
+   "handle": "marklazerus.bsky.social",
+   "post": "at://did:plc:54vdi5eoabhod2vumsbcpi7g/app.bsky.feed.post/3n2tsffix3sue",
+   "player": "Bo Byram",
+   "team": "BUF",
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.85,
+   "text": "Connor Bedard hasn't made a decision on rehab vs. surgery yet. Should come soon. \n\nBo Byram is not on the trip, won't play tomorrow in Vancouver and is doubtful for Seattle. And it's strictly injury-r"
   }
  ]
 }

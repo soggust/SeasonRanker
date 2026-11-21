@@ -1,80 +1,15 @@
 {
  "sport": "nfl",
  "cursor": {
-  "adamscheftermirror.bsky.social": "2026-11-21T18:31:32.392Z",
+  "adamscheftermirror.bsky.social": "2026-11-21T19:01:32.588Z",
   "rapsheet.bsky.social": "2026-11-20T21:16:12.668Z",
   "nflnewsreposterbot.bsky.social": "2026-11-16T18:35:13.806Z",
   "insidenflnews.bsky.social": "2026-11-21T18:39:03.237Z",
   "nflnewsposter.bsky.social": "2026-11-21T02:59:55.542Z",
-  "rotoworld-fb.bsky.social": "2026-11-21T17:56:19.000Z",
+  "rotoworld-fb.bsky.social": "2026-11-21T18:50:03.000Z",
   "rotowirenfl.bsky.social": "2026-11-21T18:44:48.000Z"
  },
  "claims": [
-  {
-   "id": "at://did:plc:fuqjc7x4gxvnwzksnlxwbe4x/app.bsky.feed.post/3mz6xrzwr62o7|colstonloveland|active|status",
-   "at": "2026-10-31T18:54:07.568Z",
-   "seen": "2026-10-31T19:07:11.690Z",
-   "handle": "nflnewsposter.bsky.social",
-   "post": "at://did:plc:fuqjc7x4gxvnwzksnlxwbe4x/app.bsky.feed.post/3mz6xrzwr62o7",
-   "player": "Colston Loveland",
-   "team": "CHI",
-   "status": "active",
-   "kind": "status",
-   "confidence": 0.9,
-   "text": "[Schefter] Bears TE Colston Loveland has no injury designation for Monday night’s game; RB Kyle Monangai officially is out. twitter.com/AdamSchefter..."
-  },
-  {
-   "id": "at://did:plc:fuqjc7x4gxvnwzksnlxwbe4x/app.bsky.feed.post/3mz6xrzwr62o7|kylemonangai|out|status",
-   "at": "2026-10-31T18:54:07.568Z",
-   "seen": "2026-10-31T19:07:11.690Z",
-   "handle": "nflnewsposter.bsky.social",
-   "post": "at://did:plc:fuqjc7x4gxvnwzksnlxwbe4x/app.bsky.feed.post/3mz6xrzwr62o7",
-   "player": "Kyle Monangai",
-   "team": "CHI",
-   "status": "out",
-   "kind": "status",
-   "confidence": 0.9,
-   "text": "[Schefter] Bears TE Colston Loveland has no injury designation for Monday night’s game; RB Kyle Monangai officially is out. twitter.com/AdamSchefter..."
-  },
-  {
-   "id": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3mz6xx6tix22m|colstonloveland|active|status",
-   "at": "2026-10-31T18:57:00.000Z",
-   "seen": "2026-10-31T19:07:11.690Z",
-   "handle": "rotowirenfl.bsky.social",
-   "post": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3mz6xx6tix22m",
-   "player": "Colston Loveland",
-   "team": "CHI",
-   "status": "active",
-   "kind": "status",
-   "confidence": 0.95,
-   "text": "Colston Loveland: Cleared for Monday Night Football \n\n https://www.rotowire.com/football/player/colston-loveland-18460"
-  },
-  {
-   "id": "at://did:plc:qre6zxbmr3ixhdmgsgdretb5/app.bsky.feed.post/3mz6ydzcjo42m|colstonloveland|active|status",
-   "at": "2026-10-31T19:04:10.620Z",
-   "seen": "2026-10-31T19:07:11.690Z",
-   "handle": "adamscheftermirror.bsky.social",
-   "post": "at://did:plc:qre6zxbmr3ixhdmgsgdretb5/app.bsky.feed.post/3mz6ydzcjo42m",
-   "player": "Colston Loveland",
-   "team": "CHI",
-   "status": "active",
-   "kind": "status",
-   "confidence": 0.85,
-   "text": "Bears TE Colston Loveland has no injury designation for Monday night’s game; RB Kyle Monangai officially is out.\n\nRepost of @BearsPR:\n\nOriginal post"
-  },
-  {
-   "id": "at://did:plc:qre6zxbmr3ixhdmgsgdretb5/app.bsky.feed.post/3mz6ydzcjo42m|kylemonangai|out|status",
-   "at": "2026-10-31T19:04:10.620Z",
-   "seen": "2026-10-31T19:07:11.690Z",
-   "handle": "adamscheftermirror.bsky.social",
-   "post": "at://did:plc:qre6zxbmr3ixhdmgsgdretb5/app.bsky.feed.post/3mz6ydzcjo42m",
-   "player": "Kyle Monangai",
-   "team": "CHI",
-   "status": "out",
-   "kind": "status",
-   "confidence": 0.85,
-   "text": "Bears TE Colston Loveland has no injury designation for Monday night’s game; RB Kyle Monangai officially is out.\n\nRepost of @BearsPR:\n\nOriginal post"
-  },
   {
    "id": "at://did:plc:fuqjc7x4gxvnwzksnlxwbe4x/app.bsky.feed.post/3mz6yy5c5bso7|mansoordelane|out|status",
    "at": "2026-10-31T19:15:26.155Z",
@@ -18690,6 +18625,32 @@
    "kind": "status",
    "confidence": 0.93,
    "text": "Tyjae Spears: Lands on injured reserve \n\n https://www.rotowire.com/football/player/tyjae-spears-16941"
+  },
+  {
+   "id": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3n2tre42nif2m|tyjaespears|out|status",
+   "at": "2026-11-21T18:50:03.000Z",
+   "seen": "2026-11-21T19:11:29.687Z",
+   "handle": "rotoworld-fb.bsky.social",
+   "post": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3n2tre42nif2m",
+   "player": "Tyjae Spears",
+   "team": "TEN",
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.95,
+   "text": "Titans send Tyjae Spears (knee) to injured reserve"
+  },
+  {
+   "id": "at://did:plc:qre6zxbmr3ixhdmgsgdretb5/app.bsky.feed.post/3n2tryn3wmk2z|tyjaespears|out|status",
+   "at": "2026-11-21T19:01:32.588Z",
+   "seen": "2026-11-21T19:11:29.687Z",
+   "handle": "adamscheftermirror.bsky.social",
+   "post": "at://did:plc:qre6zxbmr3ixhdmgsgdretb5/app.bsky.feed.post/3n2tryn3wmk2z",
+   "player": "Tyjae Spears",
+   "team": "TEN",
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.97,
+   "text": "Titans placed RB Tyjae Spears on injured reserve and elevated RB Michael Carter for Sunday’s game vs. the Cowboys.\n\nOriginal post"
   }
  ]
 }

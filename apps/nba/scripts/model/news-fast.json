@@ -1,24 +1,11 @@
 {
  "sport": "nba",
  "cursor": {
-  "rotowirenba.bsky.social": "2026-11-21T18:22:13.000Z",
+  "rotowirenba.bsky.social": "2026-11-21T19:00:53.000Z",
   "insidenbanews.bsky.social": "2026-11-20T20:35:06.661Z",
   "shamsbot.bsky.social": "2026-11-20T20:29:39.000Z"
  },
  "claims": [
-  {
-   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mz6yheyup52c|stephoncastle|questionable|status",
-   "at": "2026-10-31T19:06:03.000Z",
-   "seen": "2026-10-31T19:07:11.690Z",
-   "handle": "rotowirenba.bsky.social",
-   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mz6yheyup52c",
-   "player": "Stephon Castle",
-   "team": "SAS",
-   "status": "questionable",
-   "kind": "status",
-   "confidence": 0.95,
-   "text": "Stephon Castle: Questionable for Saturday \n\n https://www.rotowire.com/basketball/player/stephon-castle-6250"
-  },
   {
    "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mz72txehyr24|stephencurry|out|status",
    "at": "2026-10-31T19:48:53.000Z",
@@ -7467,6 +7454,19 @@
    "kind": "status",
    "confidence": 0.9,
    "text": "Trey Murphy: Won't play Saturday \n\n https://www.rotowire.com/basketball/player/trey-murphy-5401"
+  },
+  {
+   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3n2trxhof6v2u|tyjerome|active|status",
+   "at": "2026-11-21T19:00:53.000Z",
+   "seen": "2026-11-21T19:11:29.687Z",
+   "handle": "rotowirenba.bsky.social",
+   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3n2trxhof6v2u",
+   "player": "Ty Jerome",
+   "team": null,
+   "status": "active",
+   "kind": "status",
+   "confidence": 0.9,
+   "text": "Ty Jerome: Cleared to play Saturday \n\n https://www.rotowire.com/basketball/player/ty-jerome-4774"
   }
  ]
 }
