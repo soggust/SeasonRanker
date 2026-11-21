@@ -1,7 +1,7 @@
 {
  "sport": "nba",
  "cursor": {
-  "rotowirenba.bsky.social": "2026-11-21T17:38:29.000Z",
+  "rotowirenba.bsky.social": "2026-11-21T18:22:13.000Z",
   "insidenbanews.bsky.social": "2026-11-20T20:35:06.661Z",
   "shamsbot.bsky.social": "2026-11-20T20:29:39.000Z"
  },
@@ -7454,6 +7454,19 @@
    "kind": "starting",
    "confidence": 0.9,
    "text": "Ryan Rollins: Moving to starting role \n\n https://www.rotowire.com/basketball/player/ryan-rollins-5668"
+  },
+  {
+   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3n2tpsdl4t724|treymurphy|out|status",
+   "at": "2026-11-21T18:22:13.000Z",
+   "seen": "2026-11-21T18:48:15.533Z",
+   "handle": "rotowirenba.bsky.social",
+   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3n2tpsdl4t724",
+   "player": "Trey Murphy",
+   "team": "NOP",
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.9,
+   "text": "Trey Murphy: Won't play Saturday \n\n https://www.rotowire.com/basketball/player/trey-murphy-5401"
   }
  ]
 }

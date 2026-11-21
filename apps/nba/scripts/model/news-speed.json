@@ -24331,6 +24331,18 @@
     "own": "2026-11-21T16:09:12.000Z",
     "why": "@rotowirenba.bsky.social: OG Anunoby: Downgraded to doubtful \n\n https://www.roto"
    }
+  },
+  "401910027|treymurphy|out": {
+   "game": "401910027",
+   "start": "2026-11-22T01:00Z",
+   "team": "3",
+   "name": "Trey Murphy III",
+   "status": "out",
+   "athlete": "4397688",
+   "espn": {
+    "seen": "2026-11-21T18:46:42.040Z",
+    "own": "2026-11-21T18:22:00.000Z"
+   }
   }
  }
 }
