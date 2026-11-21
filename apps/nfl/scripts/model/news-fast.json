@@ -1,28 +1,15 @@
 {
  "sport": "nfl",
  "cursor": {
-  "adamscheftermirror.bsky.social": "2026-11-21T20:21:32.293Z",
+  "adamscheftermirror.bsky.social": "2026-11-21T21:21:34.759Z",
   "rapsheet.bsky.social": "2026-11-20T21:16:12.668Z",
   "nflnewsreposterbot.bsky.social": "2026-11-16T18:35:13.806Z",
   "insidenflnews.bsky.social": "2026-11-21T21:01:29.025Z",
-  "nflnewsposter.bsky.social": "2026-11-21T02:59:55.542Z",
-  "rotoworld-fb.bsky.social": "2026-11-21T19:30:21.000Z",
-  "rotowirenfl.bsky.social": "2026-11-21T20:06:51.000Z"
+  "nflnewsposter.bsky.social": "2026-11-21T21:21:21.620Z",
+  "rotoworld-fb.bsky.social": "2026-11-21T21:22:15.000Z",
+  "rotowirenfl.bsky.social": "2026-11-21T21:21:57.000Z"
  },
  "claims": [
-  {
-   "id": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3mz76zr7vht24|rashidshaheed|out|status",
-   "at": "2026-10-31T21:03:42.000Z",
-   "seen": "2026-10-31T21:15:46.804Z",
-   "handle": "rotoworld-fb.bsky.social",
-   "post": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3mz76zr7vht24",
-   "player": "Rashid Shaheed",
-   "team": "SEA",
-   "status": "out",
-   "kind": "status",
-   "confidence": 0.95,
-   "text": "Rashid Shaheed (knee) out for Week 8 vs. Bears"
-  },
   {
    "id": "at://did:plc:qre6zxbmr3ixhdmgsgdretb5/app.bsky.feed.post/3mz7a5viypt2t|rjharvey|out|status",
    "at": "2026-10-31T21:23:55.412Z",
@@ -18560,6 +18547,136 @@
    "kind": "status",
    "confidence": 0.95,
    "text": "Dontayvion Wicks (ankle, foot) placed on IR; will miss at least 4 games."
+  },
+  {
+   "id": "at://did:plc:qre6zxbmr3ixhdmgsgdretb5/app.bsky.feed.post/3n2tyy5me5v2e|zackbaun|out|status",
+   "at": "2026-11-21T21:06:32.538Z",
+   "seen": "2026-11-21T21:23:37.972Z",
+   "handle": "adamscheftermirror.bsky.social",
+   "post": "at://did:plc:qre6zxbmr3ixhdmgsgdretb5/app.bsky.feed.post/3n2tyy5me5v2e",
+   "player": "Zack Baun",
+   "team": "PHI",
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.95,
+   "text": "Eagles placed LB Zack Baun and WR Dontayvion Wicks on the Injured Reserve List. Each player is out for a minimum of four weeks, which means their season could be over.\n\nOriginal post"
+  },
+  {
+   "id": "at://did:plc:qre6zxbmr3ixhdmgsgdretb5/app.bsky.feed.post/3n2tyy5me5v2e|dontayvionwicks|out|status",
+   "at": "2026-11-21T21:06:32.538Z",
+   "seen": "2026-11-21T21:23:37.972Z",
+   "handle": "adamscheftermirror.bsky.social",
+   "post": "at://did:plc:qre6zxbmr3ixhdmgsgdretb5/app.bsky.feed.post/3n2tyy5me5v2e",
+   "player": "Dontayvion Wicks",
+   "team": "PHI",
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.95,
+   "text": "Eagles placed LB Zack Baun and WR Dontayvion Wicks on the Injured Reserve List. Each player is out for a minimum of four weeks, which means their season could be over.\n\nOriginal post"
+  },
+  {
+   "id": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3n2tz5xchbz26|dontayvionwicks|out|status",
+   "at": "2026-11-21T21:09:47.000Z",
+   "seen": "2026-11-21T21:23:37.972Z",
+   "handle": "rotowirenfl.bsky.social",
+   "post": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3n2tz5xchbz26",
+   "player": "Dontayvion Wicks",
+   "team": "PHI",
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.95,
+   "text": "Dontayvion Wicks: Placed on injured reserve \n\n https://www.rotowire.com/football/player/dontayvion-wicks-16658"
+  },
+  {
+   "id": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3n2tzdqbqan2l|jonathonbrooks|out|status",
+   "at": "2026-11-21T21:13:01.000Z",
+   "seen": "2026-11-21T21:23:37.972Z",
+   "handle": "rotowirenfl.bsky.social",
+   "post": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3n2tzdqbqan2l",
+   "player": "Jonathon Brooks",
+   "team": "CAR",
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.9,
+   "text": "Jonathon Brooks: Staying on IR for Week 11 \n\n https://www.rotowire.com/football/player/jonathon-brooks-17747"
+  },
+  {
+   "id": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3n2tziqpw6625|jacorycroskeymerritt|questionable|status",
+   "at": "2026-11-21T21:15:49.000Z",
+   "seen": "2026-11-21T21:23:37.972Z",
+   "handle": "rotowirenfl.bsky.social",
+   "post": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3n2tziqpw6625",
+   "player": "Jacory Croskey-Merritt",
+   "team": null,
+   "status": "questionable",
+   "kind": "status",
+   "confidence": 0.9,
+   "text": "Jacory Croskey-Merritt: Questionable for Week 11 \n\n https://www.rotowire.com/football/player/jacory-croskey-merritt-18811"
+  },
+  {
+   "id": "at://did:plc:qre6zxbmr3ixhdmgsgdretb5/app.bsky.feed.post/3n2tzswqbji2e|cademays|out|status",
+   "at": "2026-11-21T21:21:31.300Z",
+   "seen": "2026-11-21T21:23:37.972Z",
+   "handle": "adamscheftermirror.bsky.social",
+   "post": "at://did:plc:qre6zxbmr3ixhdmgsgdretb5/app.bsky.feed.post/3n2tzswqbji2e",
+   "player": "Cade Mays",
+   "team": "DET",
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.95,
+   "text": "Lions placed C Cade Mays on injured reserve.\n\nOriginal post"
+  },
+  {
+   "id": "at://did:plc:qre6zxbmr3ixhdmgsgdretb5/app.bsky.feed.post/3n2tzsyjpsm24|brockbowers|questionable|status",
+   "at": "2026-11-21T21:21:33.236Z",
+   "seen": "2026-11-21T21:23:37.972Z",
+   "handle": "adamscheftermirror.bsky.social",
+   "post": "at://did:plc:qre6zxbmr3ixhdmgsgdretb5/app.bsky.feed.post/3n2tzsyjpsm24",
+   "player": "Brock Bowers",
+   "team": "LV",
+   "status": "questionable",
+   "kind": "status",
+   "confidence": 0.85,
+   "text": "With Brock Bowers listed as questionable for Sunday’s game at Denver due to an ankle injury, the Raiders elevated TE Carter Runyon from their practice squad.\n\nOriginal post"
+  },
+  {
+   "id": "at://did:plc:qre6zxbmr3ixhdmgsgdretb5/app.bsky.feed.post/3n2tzszy62o2w|jonathonbrooks|out|status",
+   "at": "2026-11-21T21:21:34.759Z",
+   "seen": "2026-11-21T21:23:37.972Z",
+   "handle": "adamscheftermirror.bsky.social",
+   "post": "at://did:plc:qre6zxbmr3ixhdmgsgdretb5/app.bsky.feed.post/3n2tzszy62o2w",
+   "player": "Jonathon Brooks",
+   "team": "CAR",
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.95,
+   "text": "Panthers downgraded RB Jonathon Brooks to out for Sunday’s game vs. the Ravens due to his groin injury.\n\nOriginal post"
+  },
+  {
+   "id": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3n2tztpm6tk24|rachaadwhite|questionable|status",
+   "at": "2026-11-21T21:21:57.000Z",
+   "seen": "2026-11-21T21:23:37.972Z",
+   "handle": "rotowirenfl.bsky.social",
+   "post": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3n2tztpm6tk24",
+   "player": "Rachaad White",
+   "team": null,
+   "status": "questionable",
+   "kind": "status",
+   "confidence": 0.9,
+   "text": "Rachaad White: Questionable for Monday \n\n https://www.rotowire.com/football/player/rachaad-white-15802"
+  },
+  {
+   "id": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3n2tzub4e2j2m|dontayvionwicks|out|status",
+   "at": "2026-11-21T21:22:15.000Z",
+   "seen": "2026-11-21T21:23:37.972Z",
+   "handle": "rotoworld-fb.bsky.social",
+   "post": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3n2tzub4e2j2m",
+   "player": "Dontayvion Wicks",
+   "team": "PHI",
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.95,
+   "text": "Dontayvion Wicks sent to IR with foot injury"
   }
  ]
 }

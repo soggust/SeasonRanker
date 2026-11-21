@@ -7,32 +7,6 @@
  },
  "claims": [
   {
-   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mz77fafj2l2z|obitoppin|questionable|status",
-   "at": "2026-10-31T21:10:07.000Z",
-   "seen": "2026-10-31T21:15:46.804Z",
-   "handle": "rotowirenba.bsky.social",
-   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mz77fafj2l2z",
-   "player": "Obi Toppin",
-   "team": null,
-   "status": "questionable",
-   "kind": "status",
-   "confidence": 0.95,
-   "text": "Obi Toppin: Questionable for Sunday \n\n https://www.rotowire.com/basketball/player/obi-toppin-5109"
-  },
-  {
-   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mz77mwa5jh2v|ivicazubac|out|status",
-   "at": "2026-10-31T21:14:25.000Z",
-   "seen": "2026-10-31T21:15:46.804Z",
-   "handle": "rotowirenba.bsky.social",
-   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mz77mwa5jh2v",
-   "player": "Ivica Zubac",
-   "team": null,
-   "status": "out",
-   "kind": "status",
-   "confidence": 0.97,
-   "text": "Ivica Zubac: Ruled out for Sunday \n\n https://www.rotowire.com/basketball/player/ivica-zubac-3888"
-  },
-  {
    "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mz7a7a4cxk2g|dejountemurray|out|status",
    "at": "2026-10-31T21:24:40.000Z",
    "seen": "2026-10-31T21:29:18.810Z",

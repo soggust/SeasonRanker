@@ -24442,6 +24442,11 @@
    "espn": {
     "seen": "2026-11-21T21:00:25.590Z",
     "own": "2026-11-21T20:53:00.000Z"
+   },
+   "bluesky": {
+    "seen": "2026-11-21T21:02:41.157Z",
+    "own": "2026-11-21T20:53:39.000Z",
+    "why": "@rotowirenba.bsky.social: Derrick White: Ruled out Saturday \n\n https://www.rotow"
    }
   },
   "401910028|jaysontatum|out": {
@@ -24454,6 +24459,23 @@
    "espn": {
     "seen": "2026-11-21T21:00:25.590Z",
     "own": "2026-11-21T20:51:00.000Z"
+   },
+   "bluesky": {
+    "seen": "2026-11-21T21:02:41.157Z",
+    "own": "2026-11-21T20:51:52.000Z",
+    "why": "@rotowirenba.bsky.social: Jayson Tatum: Won't play Saturday \n\n https://www.rotow"
+   }
+  },
+  "401910024|mitchellrobinson|out": {
+   "game": "401910024",
+   "start": "2026-11-22T00:30Z",
+   "team": "18",
+   "name": "Mitchell Robinson",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-21T21:02:41.157Z",
+    "own": "2026-11-21T20:55:09.000Z",
+    "why": "@rotowirenba.bsky.social: Mitchell Robinson: Under the weather, won't play Satur"
    }
   }
  }
