@@ -1,50 +1,11 @@
 {
  "sport": "nba",
  "cursor": {
-  "rotowirenba.bsky.social": "2026-11-21T00:22:42.000Z",
+  "rotowirenba.bsky.social": "2026-11-21T01:00:18.000Z",
   "insidenbanews.bsky.social": "2026-11-20T20:35:06.661Z",
   "shamsbot.bsky.social": "2026-11-20T20:29:39.000Z"
  },
  "claims": [
-  {
-   "id": "at://did:plc:sa73fbx3vxzh2fw5pu5wmief/app.bsky.feed.post/3mz53rtcjss2d|chetholmgren|out|status",
-   "at": "2026-10-31T00:57:20.000Z",
-   "seen": "2026-10-31T01:07:23.260Z",
-   "handle": "shamsbot.bsky.social",
-   "post": "at://did:plc:sa73fbx3vxzh2fw5pu5wmief/app.bsky.feed.post/3mz53rtcjss2d",
-   "player": "Chet Holmgren",
-   "team": "OKC",
-   "status": "out",
-   "kind": "status",
-   "confidence": 0.95,
-   "text": "Oklahoma City Thunder's Chet Holmgren underwent treatment Friday to address a small patellar tendon tear and is expected to return to play in 8-to-10 weeks."
-  },
-  {
-   "id": "at://did:plc:sa73fbx3vxzh2fw5pu5wmief/app.bsky.feed.post/3mz5434hhdl2b|chetholmgren|out|status",
-   "at": "2026-10-31T01:02:13.000Z",
-   "seen": "2026-10-31T01:07:23.260Z",
-   "handle": "shamsbot.bsky.social",
-   "post": "at://did:plc:sa73fbx3vxzh2fw5pu5wmief/app.bsky.feed.post/3mz5434hhdl2b",
-   "player": "Chet Holmgren",
-   "team": "OKC",
-   "status": "out",
-   "kind": "status",
-   "confidence": 0.9,
-   "text": "Holmgren had a biological treatment for the injury, and now will miss two-plus months with Jalen Williams and Cason Wallace already sidelined for most, if not all of this season."
-  },
-  {
-   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mz53vpyucs26|chetholmgren|out|status",
-   "at": "2026-10-31T01:02:26.000Z",
-   "seen": "2026-10-31T01:07:23.260Z",
-   "handle": "rotowirenba.bsky.social",
-   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mz53vpyucs26",
-   "player": "Chet Holmgren",
-   "team": "OKC",
-   "status": "out",
-   "kind": "status",
-   "confidence": 0.9,
-   "text": "Chet Holmgren: To miss at least 8-10 weeks \n\n https://www.rotowire.com/basketball/player/chet-holmgren-5697"
-  },
   {
    "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mz54od2rev27|casonwallace|out|status",
    "at": "2026-10-31T01:16:12.000Z",
@@ -7493,6 +7454,32 @@
    "kind": "starting",
    "confidence": 0.85,
    "text": "Allen Graves: Earns first career start Friday \n\n https://www.rotowire.com/basketball/player/allen-graves-6975"
+  },
+  {
+   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3n2rvhx6ffq2l|adaymara|none|starting",
+   "at": "2026-11-21T00:58:28.000Z",
+   "seen": "2026-11-21T01:03:27.892Z",
+   "handle": "rotowirenba.bsky.social",
+   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3n2rvhx6ffq2l",
+   "player": "Aday Mara",
+   "team": "SAS",
+   "status": "none",
+   "kind": "starting",
+   "confidence": 0.85,
+   "text": "Aday Mara: Starting Friday \n\n https://www.rotowire.com/basketball/player/aday-mara-6932"
+  },
+  {
+   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3n2rvlanxyv2y|derrickwhite|questionable|status",
+   "at": "2026-11-21T01:00:18.000Z",
+   "seen": "2026-11-21T01:03:27.892Z",
+   "handle": "rotowirenba.bsky.social",
+   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3n2rvlanxyv2y",
+   "player": "Derrick White",
+   "team": "BOS",
+   "status": "questionable",
+   "kind": "status",
+   "confidence": 0.9,
+   "text": "Derrick White: Questionable for Saturday \n\n https://www.rotowire.com/basketball/player/derrick-white-4195"
   }
  ]
 }
