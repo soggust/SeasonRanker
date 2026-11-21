@@ -15671,6 +15671,11 @@
     "seen": "2026-11-20T18:06:37.087Z",
     "own": "2026-11-20T18:01:24.517Z",
     "why": "@adamscheftermirror.bsky.social: Cardinals HC Mike LaFleur said rookie QB Carson"
+   },
+   "athlete": "4430841",
+   "espn": {
+    "seen": "2026-11-21T19:45:04.629Z",
+    "own": "2026-11-21T19:25:00.000Z"
    }
   },
   "401873079|davanteadams|out": {
@@ -17278,6 +17283,138 @@
    "espn": {
     "seen": "2026-11-21T19:22:36.062Z",
     "own": "2026-11-21T01:25:00.000Z"
+   }
+  },
+  "401873070|carsonbeck|out": {
+   "game": "401873070",
+   "start": "2026-11-22T18:00Z",
+   "team": "2",
+   "name": "Carson Beck",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-21T19:35:38.599Z",
+    "own": "2026-11-21T19:30:21.000Z",
+    "why": "@rotoworld-fb.bsky.social: Carson Beck ruled out, Josh Johnson to start"
+   }
+  },
+  "401873071|carsonbeck|out": {
+   "game": "401873071",
+   "start": "2026-11-22T18:00Z",
+   "team": "3",
+   "name": "Carson Beck",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-21T19:35:38.599Z",
+    "own": "2026-11-21T19:30:21.000Z",
+    "why": "@rotoworld-fb.bsky.social: Carson Beck ruled out, Josh Johnson to start"
+   }
+  },
+  "401873073|carsonbeck|out": {
+   "game": "401873073",
+   "start": "2026-11-22T18:00Z",
+   "team": "6",
+   "name": "Carson Beck",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-21T19:35:38.599Z",
+    "own": "2026-11-21T19:30:21.000Z",
+    "why": "@rotoworld-fb.bsky.social: Carson Beck ruled out, Josh Johnson to start"
+   }
+  },
+  "401873072|carsonbeck|out": {
+   "game": "401873072",
+   "start": "2026-11-22T18:00Z",
+   "team": "8",
+   "name": "Carson Beck",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-21T19:35:38.599Z",
+    "own": "2026-11-21T19:30:21.000Z",
+    "why": "@rotoworld-fb.bsky.social: Carson Beck ruled out, Josh Johnson to start"
+   }
+  },
+  "401873076|carsonbeck|out": {
+   "game": "401873076",
+   "start": "2026-11-22T18:00Z",
+   "team": "21",
+   "name": "Carson Beck",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-21T19:35:38.599Z",
+    "own": "2026-11-21T19:30:21.000Z",
+    "why": "@rotoworld-fb.bsky.social: Carson Beck ruled out, Josh Johnson to start"
+   }
+  },
+  "401873068|carsonbeck|out": {
+   "game": "401873068",
+   "start": "2026-11-22T18:00Z",
+   "team": "29",
+   "name": "Carson Beck",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-21T19:35:38.599Z",
+    "own": "2026-11-21T19:30:21.000Z",
+    "why": "@rotoworld-fb.bsky.social: Carson Beck ruled out, Josh Johnson to start"
+   }
+  },
+  "401873074|carsonbeck|out": {
+   "game": "401873074",
+   "start": "2026-11-22T21:05Z",
+   "team": "24",
+   "name": "Carson Beck",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-21T19:35:38.599Z",
+    "own": "2026-11-21T19:30:21.000Z",
+    "why": "@rotoworld-fb.bsky.social: Carson Beck ruled out, Josh Johnson to start"
+   }
+  },
+  "401873075|carsonbeck|out": {
+   "game": "401873075",
+   "start": "2026-11-22T21:25Z",
+   "team": "7",
+   "name": "Carson Beck",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-21T19:35:38.599Z",
+    "own": "2026-11-21T19:30:21.000Z",
+    "why": "@rotoworld-fb.bsky.social: Carson Beck ruled out, Josh Johnson to start"
+   }
+  },
+  "401873069|carsonbeck|out": {
+   "game": "401873069",
+   "start": "2026-11-22T21:25Z",
+   "team": "19",
+   "name": "Carson Beck",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-21T19:35:38.599Z",
+    "own": "2026-11-21T19:30:21.000Z",
+    "why": "@rotoworld-fb.bsky.social: Carson Beck ruled out, Josh Johnson to start"
+   }
+  },
+  "401873077|carsonbeck|out": {
+   "game": "401873077",
+   "start": "2026-11-23T01:20Z",
+   "team": "25",
+   "name": "Carson Beck",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-21T19:35:38.599Z",
+    "own": "2026-11-21T19:30:21.000Z",
+    "why": "@rotoworld-fb.bsky.social: Carson Beck ruled out, Josh Johnson to start"
+   }
+  },
+  "401873078|carsonbeck|out": {
+   "game": "401873078",
+   "start": "2026-11-24T01:15Z",
+   "team": "28",
+   "name": "Carson Beck",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-21T19:35:38.599Z",
+    "own": "2026-11-21T19:30:21.000Z",
+    "why": "@rotoworld-fb.bsky.social: Carson Beck ruled out, Josh Johnson to start"
    }
   }
  }

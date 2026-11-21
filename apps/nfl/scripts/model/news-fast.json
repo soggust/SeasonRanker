@@ -4,7 +4,7 @@
   "adamscheftermirror.bsky.social": "2026-11-21T19:01:32.588Z",
   "rapsheet.bsky.social": "2026-11-20T21:16:12.668Z",
   "nflnewsreposterbot.bsky.social": "2026-11-16T18:35:13.806Z",
-  "insidenflnews.bsky.social": "2026-11-21T18:39:03.237Z",
+  "insidenflnews.bsky.social": "2026-11-21T19:44:14.561Z",
   "nflnewsposter.bsky.social": "2026-11-21T02:59:55.542Z",
   "rotoworld-fb.bsky.social": "2026-11-21T19:30:21.000Z",
   "rotowirenfl.bsky.social": "2026-11-21T19:25:31.000Z"
@@ -18573,6 +18573,19 @@
    "kind": "starting",
    "confidence": 0.85,
    "text": "Carson Beck ruled out, Josh Johnson to start"
+  },
+  {
+   "id": "at://did:plc:mbr4badgf6yu56mquzackzew/app.bsky.feed.post/3n2tueycms225|carsonbeck|out|status",
+   "at": "2026-11-21T19:44:14.561Z",
+   "seen": "2026-11-21T19:49:13.612Z",
+   "handle": "insidenflnews.bsky.social",
+   "post": "at://did:plc:mbr4badgf6yu56mquzackzew/app.bsky.feed.post/3n2tueycms225",
+   "player": "Carson Beck",
+   "team": null,
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.95,
+   "text": "Carson Beck (back) ruled out Week 11."
   }
  ]
 }
