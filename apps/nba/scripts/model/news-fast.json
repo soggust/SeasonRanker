@@ -1,63 +1,11 @@
 {
  "sport": "nba",
  "cursor": {
-  "rotowirenba.bsky.social": "2026-11-21T16:25:34.000Z",
+  "rotowirenba.bsky.social": "2026-11-21T17:38:29.000Z",
   "insidenbanews.bsky.social": "2026-11-20T20:35:06.661Z",
   "shamsbot.bsky.social": "2026-11-20T20:29:39.000Z"
  },
  "claims": [
-  {
-   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mz6sxvb2sq22|alperensengun|active|status",
-   "at": "2026-10-31T17:27:55.000Z",
-   "seen": "2026-10-31T17:46:49.319Z",
-   "handle": "rotowirenba.bsky.social",
-   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mz6sxvb2sq22",
-   "player": "Alperen Sengun",
-   "team": null,
-   "status": "active",
-   "kind": "status",
-   "confidence": 0.7,
-   "text": "Alperen Sengun: Not listed on injury report \n\n https://www.rotowire.com/basketball/player/alperen-sengun-5404"
-  },
-  {
-   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mz6t6f3jba22|fredvanvleet|out|status",
-   "at": "2026-10-31T17:31:33.000Z",
-   "seen": "2026-10-31T17:46:49.319Z",
-   "handle": "rotowirenba.bsky.social",
-   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mz6t6f3jba22",
-   "player": "Fred VanVleet",
-   "team": null,
-   "status": "out",
-   "kind": "status",
-   "confidence": 0.97,
-   "text": "Fred VanVleet: Ruled out for Saturday \n\n https://www.rotowire.com/basketball/player/fred-vanvleet-3935"
-  },
-  {
-   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mz6tbhveb52v|reedsheppard|out|status",
-   "at": "2026-10-31T17:33:16.000Z",
-   "seen": "2026-10-31T17:46:49.319Z",
-   "handle": "rotowirenba.bsky.social",
-   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mz6tbhveb52v",
-   "player": "Reed Sheppard",
-   "team": null,
-   "status": "out",
-   "kind": "status",
-   "confidence": 0.95,
-   "text": "Reed Sheppard: Won't play Saturday \n\n https://www.rotowire.com/basketball/player/reed-sheppard-6257"
-  },
-  {
-   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mz6tvlyxew2n|scoothenderson|none|starting",
-   "at": "2026-10-31T17:44:32.000Z",
-   "seen": "2026-10-31T17:46:49.319Z",
-   "handle": "rotowirenba.bsky.social",
-   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mz6tvlyxew2n",
-   "player": "Scoot Henderson",
-   "team": null,
-   "status": "none",
-   "kind": "starting",
-   "confidence": 0.95,
-   "text": "Scoot Henderson: Starting Saturday \n\n https://www.rotowire.com/basketball/player/scoot-henderson-5377"
-  },
   {
    "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mz6vcqzmtz2g|laurimarkkanen|active|status",
    "at": "2026-10-31T18:09:47.000Z",
@@ -7506,6 +7454,19 @@
    "kind": "status",
    "confidence": 0.9,
    "text": "Tyrese Maxey: Game-time decision Saturday \n\n https://www.rotowire.com/basketball/player/tyrese-maxey-5158"
+  },
+  {
+   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3n2tne4hidw24|ryanrollins|none|starting",
+   "at": "2026-11-21T17:38:29.000Z",
+   "seen": "2026-11-21T17:46:44.462Z",
+   "handle": "rotowirenba.bsky.social",
+   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3n2tne4hidw24",
+   "player": "Ryan Rollins",
+   "team": null,
+   "status": "none",
+   "kind": "starting",
+   "confidence": 0.9,
+   "text": "Ryan Rollins: Moving to starting role \n\n https://www.rotowire.com/basketball/player/ryan-rollins-5668"
   }
  ]
 }

@@ -1,7 +1,7 @@
 {
  "sport": "nfl",
  "cursor": {
-  "adamscheftermirror.bsky.social": "2026-11-21T14:11:32.747Z",
+  "adamscheftermirror.bsky.social": "2026-11-21T17:46:32.937Z",
   "rapsheet.bsky.social": "2026-11-20T21:16:12.668Z",
   "nflnewsreposterbot.bsky.social": "2026-11-16T18:35:13.806Z",
   "insidenflnews.bsky.social": "2026-11-21T15:20:04.151Z",
@@ -18690,6 +18690,32 @@
    "kind": "status",
    "confidence": 0.5,
    "text": "CBS: Carnell Tate (shoulder) likely to play vs. DAL"
+  },
+  {
+   "id": "at://did:plc:qre6zxbmr3ixhdmgsgdretb5/app.bsky.feed.post/3n2tmxpmaey2z|nickherbig|out|status",
+   "at": "2026-11-21T17:31:32.953Z",
+   "seen": "2026-11-21T17:46:44.462Z",
+   "handle": "adamscheftermirror.bsky.social",
+   "post": "at://did:plc:qre6zxbmr3ixhdmgsgdretb5/app.bsky.feed.post/3n2tmxpmaey2z",
+   "player": "Nick Herbig",
+   "team": "PIT",
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.95,
+   "text": "Steelers downgraded LB Nick Herbig to out for Sunday's game vs. the Eagles due to hip and rib injuries.\n\nOriginal post"
+  },
+  {
+   "id": "at://did:plc:qre6zxbmr3ixhdmgsgdretb5/app.bsky.feed.post/3n2tnsjtsdn24|edoliver|questionable|status",
+   "at": "2026-11-21T17:46:32.937Z",
+   "seen": "2026-11-21T17:46:44.462Z",
+   "handle": "adamscheftermirror.bsky.social",
+   "post": "at://did:plc:qre6zxbmr3ixhdmgsgdretb5/app.bsky.feed.post/3n2tnsjtsdn24",
+   "player": "Ed Oliver",
+   "team": "BUF",
+   "status": "questionable",
+   "kind": "status",
+   "confidence": 0.92,
+   "text": "Bills added DL Ed Oliver to their injury report due to an oblique injury, and he now is listed as questionable for Sunday’s game vs. Miami.\n\nOriginal post"
   }
  ]
 }
