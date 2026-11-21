@@ -1,7 +1,7 @@
 {
  "sport": "nba",
  "cursor": {
-  "rotowirenba.bsky.social": "2026-11-21T04:06:10.000Z",
+  "rotowirenba.bsky.social": "2026-11-21T05:21:32.000Z",
   "insidenbanews.bsky.social": "2026-11-20T20:35:06.661Z",
   "shamsbot.bsky.social": "2026-11-20T20:29:39.000Z"
  },
@@ -7506,6 +7506,19 @@
    "kind": "status",
    "confidence": 0.8,
    "text": "Ryan Dunn: Won't return Friday \n\n https://www.rotowire.com/basketball/player/ryan-dunn-6276"
+  },
+  {
+   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3n2scsan42w2n|tjmcconnell|out|status",
+   "at": "2026-11-21T04:56:52.000Z",
+   "seen": "2026-11-21T05:36:39.060Z",
+   "handle": "rotowirenba.bsky.social",
+   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3n2scsan42w2n",
+   "player": "T.J. McConnell",
+   "team": null,
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.6,
+   "text": "T.J. McConnell: Exits game with hamstring issue \n\n https://www.rotowire.com/basketball/player/tj-mcconnell-3760"
   }
  ]
 }
