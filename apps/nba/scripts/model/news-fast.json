@@ -1,37 +1,11 @@
 {
  "sport": "nba",
  "cursor": {
-  "rotowirenba.bsky.social": "2026-11-21T19:22:10.000Z",
+  "rotowirenba.bsky.social": "2026-11-21T20:55:09.000Z",
   "insidenbanews.bsky.social": "2026-11-20T20:35:06.661Z",
   "shamsbot.bsky.social": "2026-11-20T20:29:39.000Z"
  },
  "claims": [
-  {
-   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mz75c7sohn2c|mitchellrobinson|questionable|status",
-   "at": "2026-10-31T20:32:39.000Z",
-   "seen": "2026-10-31T21:15:46.804Z",
-   "handle": "rotowirenba.bsky.social",
-   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mz75c7sohn2c",
-   "player": "Mitchell Robinson",
-   "team": null,
-   "status": "questionable",
-   "kind": "status",
-   "confidence": 0.95,
-   "text": "Mitchell Robinson: Questionable for Sunday \n\n https://www.rotowire.com/basketball/player/mitchell-robinson-4426"
-  },
-  {
-   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mz76q2cprp2l|mikelbrown|out|status",
-   "at": "2026-10-31T20:58:16.000Z",
-   "seen": "2026-10-31T21:15:46.804Z",
-   "handle": "rotowirenba.bsky.social",
-   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mz76q2cprp2l",
-   "player": "Mikel Brown",
-   "team": null,
-   "status": "out",
-   "kind": "status",
-   "confidence": 0.95,
-   "text": "Mikel Brown: Won't play Sunday \n\n https://www.rotowire.com/basketball/player/mikel-brown-6929"
-  },
   {
    "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mz77fafj2l2z|obitoppin|questionable|status",
    "at": "2026-10-31T21:10:07.000Z",
@@ -7441,6 +7415,58 @@
    "kind": "status",
    "confidence": 0.9,
    "text": "Ty Jerome: Cleared to play Saturday \n\n https://www.rotowire.com/basketball/player/ty-jerome-4774"
+  },
+  {
+   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3n2tx5hlhvk2n|giannisantetokounmpo|none|status",
+   "at": "2026-11-21T20:33:43.000Z",
+   "seen": "2026-11-21T21:02:41.157Z",
+   "handle": "rotowirenba.bsky.social",
+   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3n2tx5hlhvk2n",
+   "player": "Giannis Antetokounmpo",
+   "team": null,
+   "status": "none",
+   "kind": "status",
+   "confidence": 0.5,
+   "text": "Giannis Antetokounmpo: Dealing with groin injury \n\n https://www.rotowire.com/basketball/player/giannis-antetokounmpo-3456"
+  },
+  {
+   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3n2ty5wfjuj2y|jaysontatum|out|status",
+   "at": "2026-11-21T20:51:52.000Z",
+   "seen": "2026-11-21T21:02:41.157Z",
+   "handle": "rotowirenba.bsky.social",
+   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3n2ty5wfjuj2y",
+   "player": "Jayson Tatum",
+   "team": "BOS",
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.9,
+   "text": "Jayson Tatum: Won't play Saturday \n\n https://www.rotowire.com/basketball/player/jayson-tatum-4108"
+  },
+  {
+   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3n2tyb3vens2n|derrickwhite|out|status",
+   "at": "2026-11-21T20:53:39.000Z",
+   "seen": "2026-11-21T21:02:41.157Z",
+   "handle": "rotowirenba.bsky.social",
+   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3n2tyb3vens2n",
+   "player": "Derrick White",
+   "team": "BOS",
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.95,
+   "text": "Derrick White: Ruled out Saturday \n\n https://www.rotowire.com/basketball/player/derrick-white-4195"
+  },
+  {
+   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3n2tydrx5nj2q|mitchellrobinson|out|status",
+   "at": "2026-11-21T20:55:09.000Z",
+   "seen": "2026-11-21T21:02:41.157Z",
+   "handle": "rotowirenba.bsky.social",
+   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3n2tydrx5nj2q",
+   "player": "Mitchell Robinson",
+   "team": "NYK",
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.9,
+   "text": "Mitchell Robinson: Under the weather, won't play Saturday \n\n https://www.rotowire.com/basketball/player/mitchell-robinson-4426"
   }
  ]
 }

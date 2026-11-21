@@ -3,9 +3,9 @@
  "cursor": {
   "johnston-bot.bsky.social": "2026-11-20T04:01:20.374Z",
   "notfriedgehnic.bsky.social": "2026-11-21T19:10:31.974Z",
-  "dailyfaceoff.bsky.social": "2026-11-21T20:23:08.000Z",
-  "dfotoronto.bsky.social": "2026-11-21T19:38:46.859Z",
-  "marklazerus.bsky.social": "2026-11-21T20:28:57.777Z"
+  "dailyfaceoff.bsky.social": "2026-11-21T21:02:03.000Z",
+  "dfotoronto.bsky.social": "2026-11-21T20:50:08.185Z",
+  "marklazerus.bsky.social": "2026-11-21T21:00:51.076Z"
  },
  "claims": [
   {
@@ -2503,6 +2503,19 @@
    "kind": "status",
    "confidence": 0.85,
    "text": "Wild’s Hughes to miss remainder of road trip with injury"
+  },
+  {
+   "id": "at://did:plc:3uus7y6h3rlrk6sbctzxm4bg/app.bsky.feed.post/3n2tyq557bg2q|nathanmackinnon|out|status",
+   "at": "2026-11-21T21:02:03.000Z",
+   "seen": "2026-11-21T21:02:41.157Z",
+   "handle": "dailyfaceoff.bsky.social",
+   "post": "at://did:plc:3uus7y6h3rlrk6sbctzxm4bg/app.bsky.feed.post/3n2tyq557bg2q",
+   "player": "Nathan MacKinnon",
+   "team": "COL",
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.9,
+   "text": "Avalanche head coach Jared Bednar has announced that Nathan MacKinnon is expected to miss 12 weeks."
   }
  ]
 }
