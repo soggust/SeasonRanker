@@ -9042,6 +9042,30 @@
     "seen": "2026-11-21T16:22:39.240Z",
     "own": "2026-10-12T16:46:00.000Z"
    }
+  },
+  "401892759|kirillmarchenko|q": {
+   "game": "401892759",
+   "start": "2026-11-22T00:00Z",
+   "team": "21",
+   "name": "Kirill Marchenko",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-11-21T17:07:02.748Z",
+    "own": "2026-11-21T16:56:29.000Z",
+    "why": "@dfotoronto.bsky.social: John Tavares thrilled to welcome Kirill Marchenko back "
+   }
+  },
+  "401892762|ryanpulock|out": {
+   "game": "401892762",
+   "start": "2026-11-22T00:00Z",
+   "team": "12",
+   "name": "Ryan Pulock",
+   "status": "out",
+   "athlete": "3042019",
+   "espn": {
+    "seen": "2026-11-21T17:16:37.583Z",
+    "own": "2026-11-21T17:06:00.000Z"
+   }
   }
  }
 }
