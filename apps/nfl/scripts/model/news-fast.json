@@ -6,36 +6,10 @@
   "nflnewsreposterbot.bsky.social": "2026-11-16T18:35:13.806Z",
   "insidenflnews.bsky.social": "2026-11-21T15:20:04.151Z",
   "nflnewsposter.bsky.social": "2026-11-21T02:59:55.542Z",
-  "rotoworld-fb.bsky.social": "2026-11-21T15:32:55.000Z",
+  "rotoworld-fb.bsky.social": "2026-11-21T17:02:11.000Z",
   "rotowirenfl.bsky.social": "2026-11-21T16:43:26.000Z"
  },
  "claims": [
-  {
-   "id": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3mz6r5npcr52y|kylemonangai|out|status",
-   "at": "2026-10-31T16:55:21.000Z",
-   "seen": "2026-10-31T16:56:51.582Z",
-   "handle": "rotowirenfl.bsky.social",
-   "post": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3mz6r5npcr52y",
-   "player": "Kyle Monangai",
-   "team": null,
-   "status": "out",
-   "kind": "status",
-   "confidence": 0.95,
-   "text": "Kyle Monangai: Won't play against Seattle \n\n https://www.rotowire.com/football/player/kyle-monangai-18520"
-  },
-  {
-   "id": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3mz6rdzlxzk2a|kylemonangai|out|status",
-   "at": "2026-10-31T16:58:54.000Z",
-   "seen": "2026-10-31T17:21:46.995Z",
-   "handle": "rotoworld-fb.bsky.social",
-   "post": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3mz6rdzlxzk2a",
-   "player": "Kyle Monangai",
-   "team": "CHI",
-   "status": "out",
-   "kind": "status",
-   "confidence": 0.95,
-   "text": "Bears RB Kyle Monangai (thumb/toe) ruled out again"
-  },
   {
    "id": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3mz6rsyme762o|ajbrown|out|status",
    "at": "2026-10-31T17:07:17.000Z",
@@ -18807,6 +18781,19 @@
    "kind": "status",
    "confidence": 0.6,
    "text": "Baker Mayfield is dealing with a plantar fascia injury in his foot but remains on track to play this week barring a setback.\n\nIf Mayfield starts in Week 11 he'll wear a special orthotic and new cleats"
+  },
+  {
+   "id": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3n2tld7kcel24|carnelltate|active|status",
+   "at": "2026-11-21T17:02:11.000Z",
+   "seen": "2026-11-21T17:07:02.748Z",
+   "handle": "rotoworld-fb.bsky.social",
+   "post": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3n2tld7kcel24",
+   "player": "Carnell Tate",
+   "team": null,
+   "status": "active",
+   "kind": "status",
+   "confidence": 0.5,
+   "text": "CBS: Carnell Tate (shoulder) likely to play vs. DAL"
   }
  ]
 }
