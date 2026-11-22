@@ -1,13 +1,13 @@
 {
  "sport": "nfl",
  "cursor": {
-  "adamscheftermirror.bsky.social": "2026-11-21T22:06:32.282Z",
+  "adamscheftermirror.bsky.social": "2026-11-22T01:26:33.379Z",
   "rapsheet.bsky.social": "2026-11-20T21:16:12.668Z",
   "nflnewsreposterbot.bsky.social": "2026-11-16T18:35:13.806Z",
   "insidenflnews.bsky.social": "2026-11-21T21:01:29.025Z",
   "nflnewsposter.bsky.social": "2026-11-21T21:21:21.620Z",
-  "rotoworld-fb.bsky.social": "2026-11-21T22:11:27.000Z",
-  "rotowirenfl.bsky.social": "2026-11-21T23:35:09.000Z"
+  "rotoworld-fb.bsky.social": "2026-11-22T01:28:07.000Z",
+  "rotowirenfl.bsky.social": "2026-11-22T01:25:56.000Z"
  },
  "claims": [
   {
@@ -18716,6 +18716,45 @@
    "kind": "return",
    "confidence": 0.75,
    "text": "Jacory Croskey-Merritt: Expected to return for MNF \n\n https://www.rotowire.com/football/player/jacory-croskey-merritt-18811"
+  },
+  {
+   "id": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3n2uhhyj2ri24|pukanacua|out|status",
+   "at": "2026-11-22T01:25:56.000Z",
+   "seen": "2026-11-22T01:33:57.464Z",
+   "handle": "rotowirenfl.bsky.social",
+   "post": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3n2uhhyj2ri24",
+   "player": "Puka Nacua",
+   "team": "LAR",
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.95,
+   "text": "Puka Nacua: Out for remainder of season, including playoffs \n\n https://www.rotowire.com/football/player/puka-nacua-16790"
+  },
+  {
+   "id": "at://did:plc:qre6zxbmr3ixhdmgsgdretb5/app.bsky.feed.post/3n2uhj3qjwo2j|pukanacua|out|status",
+   "at": "2026-11-22T01:26:33.379Z",
+   "seen": "2026-11-22T01:33:57.464Z",
+   "handle": "adamscheftermirror.bsky.social",
+   "post": "at://did:plc:qre6zxbmr3ixhdmgsgdretb5/app.bsky.feed.post/3n2uhj3qjwo2j",
+   "player": "Puka Nacua",
+   "team": "LAR",
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.9,
+   "text": "Puka Nacua’s recovery time from his MCL surgery is considered to be four to five months, sources told ESPN, meaning the Rams star wide receiver will miss the rest of this season, including the playoff"
+  },
+  {
+   "id": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3n2uhlvi24e2t|pukanacua|out|status",
+   "at": "2026-11-22T01:28:07.000Z",
+   "seen": "2026-11-22T01:33:57.464Z",
+   "handle": "rotoworld-fb.bsky.social",
+   "post": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3n2uhlvi24e2t",
+   "player": "Puka Nacua",
+   "team": "LAR",
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.88,
+   "text": "Report: Puka Nacua (knee) sidelined 4-5 months"
   }
  ]
 }
