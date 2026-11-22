@@ -1,7 +1,7 @@
 {
  "sport": "nba",
  "cursor": {
-  "rotowirenba.bsky.social": "2026-11-22T00:11:28.000Z",
+  "rotowirenba.bsky.social": "2026-11-22T00:40:55.000Z",
   "insidenbanews.bsky.social": "2026-11-20T20:35:06.661Z",
   "shamsbot.bsky.social": "2026-11-20T20:29:39.000Z"
  },
@@ -7480,6 +7480,19 @@
    "kind": "status",
    "confidence": 0.95,
    "text": "Norman Powell: Questionable to play Sunday \n\n https://www.rotowire.com/basketball/player/norman-powell-3726"
+  },
+  {
+   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3n2uexiz2wm2u|derikqueen|none|starting",
+   "at": "2026-11-22T00:40:55.000Z",
+   "seen": "2026-11-22T00:45:53.548Z",
+   "handle": "rotowirenba.bsky.social",
+   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3n2uexiz2wm2u",
+   "player": "Derik Queen",
+   "team": null,
+   "status": "none",
+   "kind": "starting",
+   "confidence": 0.8,
+   "text": "Derik Queen: Starting Saturday \n\n https://www.rotowire.com/basketball/player/derik-queen-6541"
   }
  ]
 }
