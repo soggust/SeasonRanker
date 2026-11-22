@@ -19597,6 +19597,54 @@
     "seen": "2026-11-22T16:54:35.994Z",
     "own": "2026-11-22T16:39:00.000Z"
    }
+  },
+  "401873072|billyschrauth|out": {
+   "game": "401873072",
+   "start": "2026-11-22T18:00Z",
+   "team": "27",
+   "name": "Billy Schrauth",
+   "status": "out",
+   "athlete": "4685549",
+   "espn": {
+    "seen": "2026-11-22T16:57:36.371Z",
+    "own": "2026-11-22T16:44:00.000Z"
+   }
+  },
+  "401873072|trevorkeegan|out": {
+   "game": "401873072",
+   "start": "2026-11-22T18:00Z",
+   "team": "27",
+   "name": "Trevor Keegan",
+   "status": "out",
+   "athlete": "4427140",
+   "espn": {
+    "seen": "2026-11-22T16:57:36.371Z",
+    "own": "2026-11-22T16:44:00.000Z"
+   }
+  },
+  "401873072|demontecapehart|out": {
+   "game": "401873072",
+   "start": "2026-11-22T18:00Z",
+   "team": "27",
+   "name": "DeMonte Capehart",
+   "status": "out",
+   "athlete": "4429007",
+   "espn": {
+    "seen": "2026-11-22T16:57:36.371Z",
+    "own": "2026-11-22T16:44:00.000Z"
+   }
+  },
+  "401873072|aydengarnes|out": {
+   "game": "401873072",
+   "start": "2026-11-22T18:00Z",
+   "team": "27",
+   "name": "Ayden Garnes",
+   "status": "out",
+   "athlete": "4890885",
+   "espn": {
+    "seen": "2026-11-22T16:57:36.371Z",
+    "own": "2026-11-22T16:44:00.000Z"
+   }
   }
  }
 }
