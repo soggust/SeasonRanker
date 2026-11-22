@@ -1,24 +1,11 @@
 {
  "sport": "nba",
  "cursor": {
-  "rotowirenba.bsky.social": "2026-11-22T21:02:48.000Z",
+  "rotowirenba.bsky.social": "2026-11-22T22:11:59.000Z",
   "insidenbanews.bsky.social": "2026-11-20T20:35:06.661Z",
   "shamsbot.bsky.social": "2026-11-22T20:01:51.000Z"
  },
  "claims": [
-  {
-   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mzbt3xmpfj2l|konknueppel|out|status",
-   "at": "2026-11-01T22:08:11.000Z",
-   "seen": "2026-11-01T22:15:39.321Z",
-   "handle": "rotowirenba.bsky.social",
-   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mzbt3xmpfj2l",
-   "player": "Kon Knueppel",
-   "team": null,
-   "status": "out",
-   "kind": "status",
-   "confidence": 0.92,
-   "text": "Kon Knueppel: Out against Detroit \n\n https://www.rotowire.com/basketball/player/kon-knueppel-6540"
-  },
   {
    "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mzbwaz3okf2z|rudygobert|active|status",
    "at": "2026-11-01T23:04:41.000Z",
@@ -7597,6 +7584,71 @@
    "kind": "status",
    "confidence": 0.6,
    "text": "Trey Murphy: Probable for Monday \n\n https://www.rotowire.com/basketball/player/trey-murphy-5401"
+  },
+  {
+   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3n2wl22ib5a2p|shaigilgeousalexander|out|status",
+   "at": "2026-11-22T21:35:03.000Z",
+   "seen": "2026-11-22T22:15:08.066Z",
+   "handle": "rotowirenba.bsky.social",
+   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3n2wl22ib5a2p",
+   "player": "Shai Gilgeous-Alexander",
+   "team": "OKC",
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.95,
+   "text": "Shai Gilgeous-Alexander: Ruled out Sunday \n\n https://www.rotowire.com/basketball/player/shai-gilgeous-alexander-4387"
+  },
+  {
+   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3n2wlxxwzlv25|jaylontyson|questionable|status",
+   "at": "2026-11-22T21:51:47.000Z",
+   "seen": "2026-11-22T22:15:08.066Z",
+   "handle": "rotowirenba.bsky.social",
+   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3n2wlxxwzlv25",
+   "player": "Jaylon Tyson",
+   "team": null,
+   "status": "questionable",
+   "kind": "status",
+   "confidence": 0.8,
+   "text": "Jaylon Tyson: Upgraded to probable Monday \n\n https://www.rotowire.com/basketball/player/jaylon-tyson-6277"
+  },
+  {
+   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3n2wmvsqakv2u|graysonallen|out|status",
+   "at": "2026-11-22T22:08:28.000Z",
+   "seen": "2026-11-22T22:15:08.066Z",
+   "handle": "rotowirenba.bsky.social",
+   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3n2wmvsqakv2u",
+   "player": "Grayson Allen",
+   "team": null,
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.85,
+   "text": "Grayson Allen: Missing third straight game Monday \n\n https://www.rotowire.com/basketball/player/grayson-allen-4454"
+  },
+  {
+   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3n2wmx5b2ro2q|giannisantetokounmpo|out|status",
+   "at": "2026-11-22T22:09:12.000Z",
+   "seen": "2026-11-22T22:15:08.066Z",
+   "handle": "rotowirenba.bsky.social",
+   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3n2wmx5b2ro2q",
+   "player": "Giannis Antetokounmpo",
+   "team": "MIL",
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.8,
+   "text": "Giannis Antetokounmpo: Sidelined versus Thunder \n\n https://www.rotowire.com/basketball/player/giannis-antetokounmpo-3456"
+  },
+  {
+   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3n2wn43urcv2u|jalensmith|active|return",
+   "at": "2026-11-22T22:11:59.000Z",
+   "seen": "2026-11-22T22:15:08.066Z",
+   "handle": "rotowirenba.bsky.social",
+   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3n2wn43urcv2u",
+   "player": "Jalen Smith",
+   "team": null,
+   "status": "active",
+   "kind": "return",
+   "confidence": 0.9,
+   "text": "Jalen Smith: Returning Sunday \n\n https://www.rotowire.com/basketball/player/jalen-smith-5169"
   }
  ]
 }

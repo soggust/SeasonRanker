@@ -20395,6 +20395,78 @@
     "own": "2026-11-22T19:38:31.458Z",
     "why": "@insidenflnews.bsky.social: 🚨 Status alert: Chris Bell (chest) questionable to "
    }
+  },
+  "401873077|keatonmitchell|q": {
+   "game": "401873077",
+   "start": "2026-11-23T01:20Z",
+   "team": "25",
+   "name": "Keaton Mitchell",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-11-22T21:27:22.238Z",
+    "own": "2026-11-22T21:26:32.289Z",
+    "why": "@insidenflnews.bsky.social: 🚨 Status alert: Keaton Mitchell (back) and David Nj"
+   }
+  },
+  "401873077|davidnjoku|q": {
+   "game": "401873077",
+   "start": "2026-11-23T01:20Z",
+   "team": "25",
+   "name": "David Njoku",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-11-22T21:27:22.238Z",
+    "own": "2026-11-22T21:26:32.289Z",
+    "why": "@insidenflnews.bsky.social: 🚨 Status alert: Keaton Mitchell (back) and David Nj"
+   }
+  },
+  "401873078|keatonmitchell|q": {
+   "game": "401873078",
+   "start": "2026-11-24T01:15Z",
+   "team": "28",
+   "name": "Keaton Mitchell",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-11-22T21:27:22.238Z",
+    "own": "2026-11-22T21:26:32.289Z",
+    "why": "@insidenflnews.bsky.social: 🚨 Status alert: Keaton Mitchell (back) and David Nj"
+   }
+  },
+  "401873078|davidnjoku|q": {
+   "game": "401873078",
+   "start": "2026-11-24T01:15Z",
+   "team": "28",
+   "name": "David Njoku",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-11-22T21:27:22.238Z",
+    "own": "2026-11-22T21:26:32.289Z",
+    "why": "@insidenflnews.bsky.social: 🚨 Status alert: Keaton Mitchell (back) and David Nj"
+   }
+  },
+  "401873079|bomelton|q": {
+   "game": "401873079",
+   "start": "2026-11-26T01:00Z",
+   "team": "9",
+   "name": "Bo Melton",
+   "status": "q",
+   "athlete": "4259305",
+   "espn": {
+    "seen": "2026-11-22T22:12:47.877Z",
+    "own": "2026-11-22T21:38:00.000Z"
+   }
+  },
+  "401873079|isaiahmcduffie|q": {
+   "game": "401873079",
+   "start": "2026-11-26T01:00Z",
+   "team": "9",
+   "name": "Isaiah McDuffie",
+   "status": "q",
+   "athlete": "4239947",
+   "espn": {
+    "seen": "2026-11-22T22:12:47.877Z",
+    "own": "2026-11-22T21:35:00.000Z"
+   }
   }
  }
 }
