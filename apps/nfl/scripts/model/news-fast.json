@@ -4,10 +4,10 @@
   "adamscheftermirror.bsky.social": "2026-11-22T20:21:38.197Z",
   "rapsheet.bsky.social": "2026-11-22T20:15:29.509Z",
   "nflnewsreposterbot.bsky.social": "2026-11-16T18:35:13.806Z",
-  "insidenflnews.bsky.social": "2026-11-22T21:11:38.713Z",
-  "nflnewsposter.bsky.social": "2026-11-22T21:07:21.711Z",
-  "rotoworld-fb.bsky.social": "2026-11-22T21:12:09.000Z",
-  "rotowirenfl.bsky.social": "2026-11-22T21:04:11.000Z"
+  "insidenflnews.bsky.social": "2026-11-22T21:26:32.289Z",
+  "nflnewsposter.bsky.social": "2026-11-22T21:26:03.222Z",
+  "rotoworld-fb.bsky.social": "2026-11-22T21:25:43.000Z",
+  "rotowirenfl.bsky.social": "2026-11-22T21:26:38.000Z"
  },
  "claims": [
   {
@@ -18144,6 +18144,32 @@
    "kind": "status",
    "confidence": 0.95,
    "text": "[Eagles] Injury Update: CB Quinyon Mitchell (hamstring) is out. twitter.com/Eagles/statu..."
+  },
+  {
+   "id": "at://did:plc:mbr4badgf6yu56mquzackzew/app.bsky.feed.post/3n2wkkt63p22x|keatonmitchell|questionable|status",
+   "at": "2026-11-22T21:26:32.289Z",
+   "seen": "2026-11-22T21:27:22.238Z",
+   "handle": "insidenflnews.bsky.social",
+   "post": "at://did:plc:mbr4badgf6yu56mquzackzew/app.bsky.feed.post/3n2wkkt63p22x",
+   "player": "Keaton Mitchell",
+   "team": null,
+   "status": "questionable",
+   "kind": "status",
+   "confidence": 0.9,
+   "text": "🚨 Status alert: Keaton Mitchell (back) and David Njoku (shoulder) are questionable to return."
+  },
+  {
+   "id": "at://did:plc:mbr4badgf6yu56mquzackzew/app.bsky.feed.post/3n2wkkt63p22x|davidnjoku|questionable|status",
+   "at": "2026-11-22T21:26:32.289Z",
+   "seen": "2026-11-22T21:27:22.238Z",
+   "handle": "insidenflnews.bsky.social",
+   "post": "at://did:plc:mbr4badgf6yu56mquzackzew/app.bsky.feed.post/3n2wkkt63p22x",
+   "player": "David Njoku",
+   "team": null,
+   "status": "questionable",
+   "kind": "status",
+   "confidence": 0.9,
+   "text": "🚨 Status alert: Keaton Mitchell (back) and David Njoku (shoulder) are questionable to return."
   }
  ]
 }

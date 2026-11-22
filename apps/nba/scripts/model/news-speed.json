@@ -23551,6 +23551,78 @@
     "seen": "2026-11-22T21:13:36.053Z",
     "own": "2026-11-22T21:00:07.110Z"
    }
+  },
+  "401910030|nolantraore|out": {
+   "game": "401910030",
+   "start": "2026-11-22T23:00Z",
+   "team": "14",
+   "name": "Nolan Traore",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-22T21:15:00.553Z",
+    "own": "2026-11-22T20:37:14.000Z",
+    "why": "@rotowirenba.bsky.social: Nolan Traore: Ruled out for Monday \n\n https://www.roto"
+   }
+  },
+  "401910031|nolantraore|out": {
+   "game": "401910031",
+   "start": "2026-11-23T00:00Z",
+   "team": "27",
+   "name": "Nolan Traore",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-22T21:15:00.553Z",
+    "own": "2026-11-22T20:37:14.000Z",
+    "why": "@rotowirenba.bsky.social: Nolan Traore: Ruled out for Monday \n\n https://www.roto"
+   }
+  },
+  "401910032|nolantraore|out": {
+   "game": "401910032",
+   "start": "2026-11-23T00:00Z",
+   "team": "4",
+   "name": "Nolan Traore",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-22T21:15:00.553Z",
+    "own": "2026-11-22T20:37:14.000Z",
+    "why": "@rotowirenba.bsky.social: Nolan Traore: Ruled out for Monday \n\n https://www.roto"
+   }
+  },
+  "401910033|nolantraore|out": {
+   "game": "401910033",
+   "start": "2026-11-23T00:00Z",
+   "team": "26",
+   "name": "Nolan Traore",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-22T21:15:00.553Z",
+    "own": "2026-11-22T20:37:14.000Z",
+    "why": "@rotowirenba.bsky.social: Nolan Traore: Ruled out for Monday \n\n https://www.roto"
+   }
+  },
+  "401910034|nolantraore|out": {
+   "game": "401910034",
+   "start": "2026-11-23T01:00Z",
+   "team": "18",
+   "name": "Nolan Traore",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-22T21:15:00.553Z",
+    "own": "2026-11-22T20:37:14.000Z",
+    "why": "@rotowirenba.bsky.social: Nolan Traore: Ruled out for Monday \n\n https://www.roto"
+   }
+  },
+  "401910035|nolantraore|out": {
+   "game": "401910035",
+   "start": "2026-11-23T01:30Z",
+   "team": "9",
+   "name": "Nolan Traore",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-22T21:15:00.553Z",
+    "own": "2026-11-22T20:37:14.000Z",
+    "why": "@rotowirenba.bsky.social: Nolan Traore: Ruled out for Monday \n\n https://www.roto"
+   }
   }
  }
 }

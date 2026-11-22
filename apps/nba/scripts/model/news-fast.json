@@ -7,19 +7,6 @@
  },
  "claims": [
   {
-   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mzbqrwjgdl2q|jaysontatum|active|return",
-   "at": "2026-11-01T21:26:46.000Z",
-   "seen": "2026-11-01T22:15:39.321Z",
-   "handle": "rotowirenba.bsky.social",
-   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mzbqrwjgdl2q",
-   "player": "Jayson Tatum",
-   "team": null,
-   "status": "active",
-   "kind": "return",
-   "confidence": 0.9,
-   "text": "Jayson Tatum: Returns versus Orlando \n\n https://www.rotowire.com/basketball/player/jayson-tatum-4108"
-  },
-  {
    "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mzbt3xmpfj2l|konknueppel|out|status",
    "at": "2026-11-01T22:08:11.000Z",
    "seen": "2026-11-01T22:15:39.321Z",

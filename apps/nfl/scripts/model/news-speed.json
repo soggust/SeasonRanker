@@ -20371,6 +20371,30 @@
     "own": "2026-11-22T19:27:56.000Z",
     "why": "@rotowirenfl.bsky.social: DJ Moore: Questionable to return Sunday \n\n https://www"
    }
+  },
+  "401873077|chrisbell|q": {
+   "game": "401873077",
+   "start": "2026-11-23T01:20Z",
+   "team": "25",
+   "name": "Chris Bell",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-11-22T21:15:00.553Z",
+    "own": "2026-11-22T19:38:31.458Z",
+    "why": "@insidenflnews.bsky.social: 🚨 Status alert: Chris Bell (chest) questionable to "
+   }
+  },
+  "401873078|chrisbell|q": {
+   "game": "401873078",
+   "start": "2026-11-24T01:15Z",
+   "team": "28",
+   "name": "Chris Bell",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-11-22T21:15:00.553Z",
+    "own": "2026-11-22T19:38:31.458Z",
+    "why": "@insidenflnews.bsky.social: 🚨 Status alert: Chris Bell (chest) questionable to "
+   }
   }
  }
 }
