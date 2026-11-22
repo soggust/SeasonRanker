@@ -2,10 +2,10 @@
  "sport": "nhl",
  "cursor": {
   "johnston-bot.bsky.social": "2026-11-20T04:01:20.374Z",
-  "notfriedgehnic.bsky.social": "2026-11-21T19:10:31.974Z",
+  "notfriedgehnic.bsky.social": "2026-11-22T01:50:33.177Z",
   "dailyfaceoff.bsky.social": "2026-11-21T23:10:13.000Z",
   "dfotoronto.bsky.social": "2026-11-22T01:23:26.933Z",
-  "marklazerus.bsky.social": "2026-11-22T00:21:09.432Z"
+  "marklazerus.bsky.social": "2026-11-22T01:54:03.766Z"
  },
  "claims": [
   {
@@ -2594,6 +2594,45 @@
    "kind": "status",
    "confidence": 0.85,
    "text": "It's shoulder surgery for Connor Bedard. Again. Story:\nwww.nytimes.com/athletic/779... [Connor Bedard to undergo shoulder surgery, Blackhawks GM Kyle Davidson says (Gift Article)]"
+  },
+  {
+   "id": "at://did:plc:sdobrsxnvwczrjydmnubhibh/app.bsky.feed.post/3n2uityubmc2x|connorbedard|out|status",
+   "at": "2026-11-22T01:50:33.177Z",
+   "seen": "2026-11-22T01:55:12.389Z",
+   "handle": "notfriedgehnic.bsky.social",
+   "post": "at://did:plc:sdobrsxnvwczrjydmnubhibh/app.bsky.feed.post/3n2uityubmc2x",
+   "player": "Connor Bedard",
+   "team": "CHI",
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.7,
+   "text": "Injury notes today:\n\nConnor Bedard shoulder surgery on Monday. Timeline to be delivered post-op\n\nNathan MacKinnon updated to out 12 weeks\n\nQuinn Hughes sent home from road trip to be evaluated in Minn"
+  },
+  {
+   "id": "at://did:plc:sdobrsxnvwczrjydmnubhibh/app.bsky.feed.post/3n2uityubmc2x|nathanmackinnon|out|status",
+   "at": "2026-11-22T01:50:33.177Z",
+   "seen": "2026-11-22T01:55:12.389Z",
+   "handle": "notfriedgehnic.bsky.social",
+   "post": "at://did:plc:sdobrsxnvwczrjydmnubhibh/app.bsky.feed.post/3n2uityubmc2x",
+   "player": "Nathan MacKinnon",
+   "team": "COL",
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.95,
+   "text": "Injury notes today:\n\nConnor Bedard shoulder surgery on Monday. Timeline to be delivered post-op\n\nNathan MacKinnon updated to out 12 weeks\n\nQuinn Hughes sent home from road trip to be evaluated in Minn"
+  },
+  {
+   "id": "at://did:plc:sdobrsxnvwczrjydmnubhibh/app.bsky.feed.post/3n2uityubmc2x|eliaspettersson|out|status",
+   "at": "2026-11-22T01:50:33.177Z",
+   "seen": "2026-11-22T01:55:12.389Z",
+   "handle": "notfriedgehnic.bsky.social",
+   "post": "at://did:plc:sdobrsxnvwczrjydmnubhibh/app.bsky.feed.post/3n2uityubmc2x",
+   "player": "Elias Pettersson",
+   "team": "VAN",
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.95,
+   "text": "Injury notes today:\n\nConnor Bedard shoulder surgery on Monday. Timeline to be delivered post-op\n\nNathan MacKinnon updated to out 12 weeks\n\nQuinn Hughes sent home from road trip to be evaluated in Minn"
   }
  ]
 }

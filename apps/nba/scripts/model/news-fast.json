@@ -7,19 +7,6 @@
  },
  "claims": [
   {
-   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mz7oorcaxy2e|jalenjohnson|out|status",
-   "at": "2026-11-01T01:43:53.000Z",
-   "seen": "2026-11-01T01:48:35.597Z",
-   "handle": "rotowirenba.bsky.social",
-   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mz7oorcaxy2e",
-   "player": "Jalen Johnson",
-   "team": "ATL",
-   "status": "out",
-   "kind": "status",
-   "confidence": 0.8,
-   "text": "Jalen Johnson: Doesn't return to Saturday's contest \n\n https://www.rotowire.com/basketball/player/jalen-johnson-5329"
-  },
-  {
    "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mzbo6lw4bs2g|fredvanvleet|active|status",
    "at": "2026-11-01T20:40:10.000Z",
    "seen": "2026-11-01T20:40:54.934Z",

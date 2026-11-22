@@ -4,8 +4,8 @@
   "adamscheftermirror.bsky.social": "2026-11-22T01:26:33.379Z",
   "rapsheet.bsky.social": "2026-11-20T21:16:12.668Z",
   "nflnewsreposterbot.bsky.social": "2026-11-16T18:35:13.806Z",
-  "insidenflnews.bsky.social": "2026-11-21T21:01:29.025Z",
-  "nflnewsposter.bsky.social": "2026-11-21T21:21:21.620Z",
+  "insidenflnews.bsky.social": "2026-11-22T01:50:16.268Z",
+  "nflnewsposter.bsky.social": "2026-11-22T01:45:14.334Z",
   "rotoworld-fb.bsky.social": "2026-11-22T01:28:07.000Z",
   "rotowirenfl.bsky.social": "2026-11-22T01:25:56.000Z"
  },
@@ -18755,6 +18755,19 @@
    "kind": "status",
    "confidence": 0.88,
    "text": "Report: Puka Nacua (knee) sidelined 4-5 months"
+  },
+  {
+   "id": "at://did:plc:fuqjc7x4gxvnwzksnlxwbe4x/app.bsky.feed.post/3n2uikioiss2q|pukanacua|out|status",
+   "at": "2026-11-22T01:45:14.334Z",
+   "seen": "2026-11-22T01:55:12.389Z",
+   "handle": "nflnewsposter.bsky.social",
+   "post": "at://did:plc:fuqjc7x4gxvnwzksnlxwbe4x/app.bsky.feed.post/3n2uikioiss2q",
+   "player": "Puka Nacua",
+   "team": "LAR",
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.93,
+   "text": "[Schefter] Puka Nacua’s recovery time from his MCL surgery is considered to be four to five months, sources told ESPN, meaning the Rams star wide receiver will miss the rest of this season, including "
   }
  ]
 }
