@@ -6,23 +6,10 @@
   "nflnewsreposterbot.bsky.social": "2026-11-16T18:35:13.806Z",
   "insidenflnews.bsky.social": "2026-11-22T13:19:32.526Z",
   "nflnewsposter.bsky.social": "2026-11-22T01:45:14.334Z",
-  "rotoworld-fb.bsky.social": "2026-11-22T13:26:18.000Z",
+  "rotoworld-fb.bsky.social": "2026-11-22T13:40:05.000Z",
   "rotowirenfl.bsky.social": "2026-11-22T13:10:50.000Z"
  },
  "claims": [
-  {
-   "id": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3mzawkm2a322z|pickens|active|status",
-   "at": "2026-11-01T13:37:23.000Z",
-   "seen": "2026-11-01T13:48:26.544Z",
-   "handle": "rotoworld-fb.bsky.social",
-   "post": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3mzawkm2a322z",
-   "player": "Pickens",
-   "team": null,
-   "status": "active",
-   "kind": "status",
-   "confidence": 0.8,
-   "text": "Pickens (hamstring/shoulder) is expected to play"
-  },
   {
    "id": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3mzaxsitero2p|braelonallen|none|starting",
    "at": "2026-11-01T13:59:42.000Z",
