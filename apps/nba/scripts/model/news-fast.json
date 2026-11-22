@@ -1,7 +1,7 @@
 {
  "sport": "nba",
  "cursor": {
-  "rotowirenba.bsky.social": "2026-11-22T17:22:26.000Z",
+  "rotowirenba.bsky.social": "2026-11-22T17:24:50.000Z",
   "insidenbanews.bsky.social": "2026-11-20T20:35:06.661Z",
   "shamsbot.bsky.social": "2026-11-20T20:29:39.000Z"
  },
@@ -7519,6 +7519,19 @@
    "kind": "status",
    "confidence": 0.75,
    "text": "Jalen Smith: Upgraded to probable Sunday \n\n https://www.rotowire.com/basketball/player/jalen-smith-5169"
+  },
+  {
+   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3n2w52neph62y|nicclaxton|questionable|status",
+   "at": "2026-11-22T17:24:50.000Z",
+   "seen": "2026-11-22T17:44:26.687Z",
+   "handle": "rotowirenba.bsky.social",
+   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3n2w52neph62y",
+   "player": "Nic Claxton",
+   "team": "BKN",
+   "status": "questionable",
+   "kind": "status",
+   "confidence": 0.9,
+   "text": "Nic Claxton: Questionable Sunday \n\n https://www.rotowire.com/basketball/player/nic-claxton-4827"
   }
  ]
 }

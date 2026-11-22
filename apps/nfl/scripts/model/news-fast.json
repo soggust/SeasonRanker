@@ -11,19 +11,6 @@
  },
  "claims": [
   {
-   "id": "at://did:plc:mbr4badgf6yu56mquzackzew/app.bsky.feed.post/3mzbdskzoj22x|lamarjackson|active|return",
-   "at": "2026-11-01T17:34:29.868Z",
-   "seen": "2026-11-01T17:46:10.975Z",
-   "handle": "insidenflnews.bsky.social",
-   "post": "at://did:plc:mbr4badgf6yu56mquzackzew/app.bsky.feed.post/3mzbdskzoj22x",
-   "player": "Lamar Jackson",
-   "team": "BAL",
-   "status": "active",
-   "kind": "return",
-   "confidence": 0.9,
-   "text": "Lamar Jackson makes his return today vs. the Bills"
-  },
-  {
    "id": "at://did:plc:mbr4badgf6yu56mquzackzew/app.bsky.feed.post/3mzbeuvraxc2v|djmoore|active|status",
    "at": "2026-11-01T17:53:41.977Z",
    "seen": "2026-11-01T18:07:37.463Z",
