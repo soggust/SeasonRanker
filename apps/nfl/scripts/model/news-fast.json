@@ -1,10 +1,10 @@
 {
  "sport": "nfl",
  "cursor": {
-  "adamscheftermirror.bsky.social": "2026-11-22T15:16:37.916Z",
-  "rapsheet.bsky.social": "2026-11-20T21:16:12.668Z",
+  "adamscheftermirror.bsky.social": "2026-11-22T15:31:40.155Z",
+  "rapsheet.bsky.social": "2026-11-22T15:26:15.080Z",
   "nflnewsreposterbot.bsky.social": "2026-11-16T18:35:13.806Z",
-  "insidenflnews.bsky.social": "2026-11-22T13:19:32.526Z",
+  "insidenflnews.bsky.social": "2026-11-22T15:22:59.468Z",
   "nflnewsposter.bsky.social": "2026-11-22T01:45:14.334Z",
   "rotoworld-fb.bsky.social": "2026-11-22T14:52:21.000Z",
   "rotowirenfl.bsky.social": "2026-11-22T14:32:09.000Z"
@@ -18664,6 +18664,97 @@
    "kind": "status",
    "confidence": 0.5,
    "text": "Rapoport: Parsons (knee) on track to play Week 12"
+  },
+  {
+   "id": "at://did:plc:mbr4badgf6yu56mquzackzew/app.bsky.feed.post/3n2vwa2sqzk2b|drakemaye|out|status",
+   "at": "2026-11-22T15:22:36.368Z",
+   "seen": "2026-11-22T15:44:01.712Z",
+   "handle": "insidenflnews.bsky.social",
+   "post": "at://did:plc:mbr4badgf6yu56mquzackzew/app.bsky.feed.post/3n2vwa2sqzk2b",
+   "player": "Drake Maye",
+   "team": "NE",
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.9,
+   "text": "Rap: Drake Maye (fibula) will miss at least 6 weeks."
+  },
+  {
+   "id": "at://did:plc:hlvr2omhnmvdmfnvmcuhyevz/app.bsky.feed.post/3n2vwalfle22i|bakermayfield|active|status",
+   "at": "2026-11-22T15:22:53.768Z",
+   "seen": "2026-11-22T15:44:01.712Z",
+   "handle": "rapsheet.bsky.social",
+   "post": "at://did:plc:hlvr2omhnmvdmfnvmcuhyevz/app.bsky.feed.post/3n2vwalfle22i",
+   "player": "Baker Mayfield",
+   "team": "TB",
+   "status": "active",
+   "kind": "status",
+   "confidence": 0.85,
+   "text": "Bucs starting QB Baker Mayfield will play today against the Lions, per me and Mike Garafolo, fighting off a foot injury that had him in a walking boot for several days."
+  },
+  {
+   "id": "at://did:plc:hlvr2omhnmvdmfnvmcuhyevz/app.bsky.feed.post/3n2vwaxpqn22i|laddmcconkey|active|status",
+   "at": "2026-11-22T15:23:06.685Z",
+   "seen": "2026-11-22T15:44:01.712Z",
+   "handle": "rapsheet.bsky.social",
+   "post": "at://did:plc:hlvr2omhnmvdmfnvmcuhyevz/app.bsky.feed.post/3n2vwaxpqn22i",
+   "player": "Ladd McConkey",
+   "team": "LAC",
+   "status": "active",
+   "kind": "status",
+   "confidence": 0.7,
+   "text": "Chargers WR Ladd McConkey, dealing with back spasms and limited, is expected to play today against the Jets, source says."
+  },
+  {
+   "id": "at://did:plc:hlvr2omhnmvdmfnvmcuhyevz/app.bsky.feed.post/3n2vwbh5mds2i|carnelltate|active|status",
+   "at": "2026-11-22T15:23:22.868Z",
+   "seen": "2026-11-22T15:44:01.712Z",
+   "handle": "rapsheet.bsky.social",
+   "post": "at://did:plc:hlvr2omhnmvdmfnvmcuhyevz/app.bsky.feed.post/3n2vwbh5mds2i",
+   "player": "Carnell Tate",
+   "team": "TEN",
+   "status": "active",
+   "kind": "status",
+   "confidence": 0.7,
+   "text": "Titans WR Carnell Tate (shoulder) is expected to play despite a shoulder injury that has him questionable, source says."
+  },
+  {
+   "id": "at://did:plc:hlvr2omhnmvdmfnvmcuhyevz/app.bsky.feed.post/3n2vwchjonc2i|alecpierce|out|status",
+   "at": "2026-11-22T15:23:56.818Z",
+   "seen": "2026-11-22T15:44:01.712Z",
+   "handle": "rapsheet.bsky.social",
+   "post": "at://did:plc:hlvr2omhnmvdmfnvmcuhyevz/app.bsky.feed.post/3n2vwchjonc2i",
+   "player": "Alec Pierce",
+   "team": "IND",
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.95,
+   "text": "The Colts do the right thing, shutting WR Alec Pierce down for season, with all eyes on a fully healthy 2027. [Sources: Colts shut down Alec Pierce for season, plan for WR's return in 2027]"
+  },
+  {
+   "id": "at://did:plc:hlvr2omhnmvdmfnvmcuhyevz/app.bsky.feed.post/3n2vwf7hgok2o|pukanacua|out|status",
+   "at": "2026-11-22T15:25:29.019Z",
+   "seen": "2026-11-22T15:44:01.712Z",
+   "handle": "rapsheet.bsky.social",
+   "post": "at://did:plc:hlvr2omhnmvdmfnvmcuhyevz/app.bsky.feed.post/3n2vwf7hgok2o",
+   "player": "Puka Nacua",
+   "team": "LAR",
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.95,
+   "text": "Rams WR Puka Nacua is out for the season, while Davante Adams is likely back in mid-December. Plus, Micah Parsons is still on track."
+  },
+  {
+   "id": "at://did:plc:hlvr2omhnmvdmfnvmcuhyevz/app.bsky.feed.post/3n2vwglf44s2o|drakemaye|out|status",
+   "at": "2026-11-22T15:26:15.080Z",
+   "seen": "2026-11-22T15:44:01.712Z",
+   "handle": "rapsheet.bsky.social",
+   "post": "at://did:plc:hlvr2omhnmvdmfnvmcuhyevz/app.bsky.feed.post/3n2vwglf44s2o",
+   "player": "Drake Maye",
+   "team": "NE",
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.9,
+   "text": "The Patriots lost QB Drake Maye for at least six weeks, possibly longer; plus, former Colts QB Daniel Jones is expected to wait to sign in the event of a QB injury on a playoff-ready team."
   }
  ]
 }
