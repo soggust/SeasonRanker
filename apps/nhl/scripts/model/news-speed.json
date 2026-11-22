@@ -9204,6 +9204,18 @@
     "own": "2026-11-21T22:37:02.230Z",
     "why": "@marklazerus.bsky.social: Anton Frondell is out for the game now, too, per the B"
    }
+  },
+  "401892765|claytonkeller|out": {
+   "game": "401892765",
+   "start": "2026-11-22T02:00Z",
+   "team": "129764",
+   "name": "Clayton Keller",
+   "status": "out",
+   "athlete": "4024857",
+   "espn": {
+    "seen": "2026-11-22T01:45:37.708Z",
+    "own": "2026-11-22T01:31:00.000Z"
+   }
   }
  }
 }
