@@ -1,7 +1,7 @@
 {
  "sport": "nba",
  "cursor": {
-  "rotowirenba.bsky.social": "2026-11-22T17:24:50.000Z",
+  "rotowirenba.bsky.social": "2026-11-22T18:05:29.000Z",
   "insidenbanews.bsky.social": "2026-11-20T20:35:06.661Z",
   "shamsbot.bsky.social": "2026-11-20T20:29:39.000Z"
  },
@@ -7532,6 +7532,19 @@
    "kind": "status",
    "confidence": 0.9,
    "text": "Nic Claxton: Questionable Sunday \n\n https://www.rotowire.com/basketball/player/nic-claxton-4827"
+  },
+  {
+   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3n2w7dcvv5k2n|jordanclarkson|out|status",
+   "at": "2026-11-22T18:05:29.000Z",
+   "seen": "2026-11-22T18:06:03.764Z",
+   "handle": "rotowirenba.bsky.social",
+   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3n2w7dcvv5k2n",
+   "player": "Jordan Clarkson",
+   "team": null,
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.95,
+   "text": "Jordan Clarkson: Won't play Sunday \n\n https://www.rotowire.com/basketball/player/jordan-clarkson-3614"
   }
  ]
 }

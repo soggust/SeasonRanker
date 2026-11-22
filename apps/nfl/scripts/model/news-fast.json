@@ -1,41 +1,15 @@
 {
  "sport": "nfl",
  "cursor": {
-  "adamscheftermirror.bsky.social": "2026-11-22T17:16:36.993Z",
+  "adamscheftermirror.bsky.social": "2026-11-22T17:46:39.852Z",
   "rapsheet.bsky.social": "2026-11-22T16:38:34.357Z",
   "nflnewsreposterbot.bsky.social": "2026-11-16T18:35:13.806Z",
   "insidenflnews.bsky.social": "2026-11-22T16:39:55.239Z",
   "nflnewsposter.bsky.social": "2026-11-22T01:45:14.334Z",
   "rotoworld-fb.bsky.social": "2026-11-22T16:48:13.000Z",
-  "rotowirenfl.bsky.social": "2026-11-22T16:58:57.000Z"
+  "rotowirenfl.bsky.social": "2026-11-22T18:00:14.000Z"
  },
  "claims": [
-  {
-   "id": "at://did:plc:mbr4badgf6yu56mquzackzew/app.bsky.feed.post/3mzbeuvraxc2v|djmoore|active|status",
-   "at": "2026-11-01T17:53:41.977Z",
-   "seen": "2026-11-01T18:07:37.463Z",
-   "handle": "insidenflnews.bsky.social",
-   "post": "at://did:plc:mbr4badgf6yu56mquzackzew/app.bsky.feed.post/3mzbeuvraxc2v",
-   "player": "DJ Moore",
-   "team": "BUF",
-   "status": "active",
-   "kind": "status",
-   "confidence": 0.9,
-   "text": "Bills WR DJ Moore (shoulder) has no limitations heading into Week 8."
-  },
-  {
-   "id": "at://did:plc:mbr4badgf6yu56mquzackzew/app.bsky.feed.post/3mzbevgp3t22v|saquonbarkley|limited|restriction",
-   "at": "2026-11-01T17:53:59.733Z",
-   "seen": "2026-11-01T18:07:37.463Z",
-   "handle": "insidenflnews.bsky.social",
-   "post": "at://did:plc:mbr4badgf6yu56mquzackzew/app.bsky.feed.post/3mzbevgp3t22v",
-   "player": "Saquon Barkley",
-   "team": "PHI",
-   "status": "limited",
-   "kind": "restriction",
-   "confidence": 0.85,
-   "text": "Glazer: Eagles plan to have Saquon Barkley (hamstring, back) on snap count in Week 8."
-  },
   {
    "id": "at://did:plc:fuqjc7x4gxvnwzksnlxwbe4x/app.bsky.feed.post/3mzbfy4pm32gz|jakeferguson|questionable|status",
    "at": "2026-11-01T18:13:23.668Z",
