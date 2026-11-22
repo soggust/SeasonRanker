@@ -18691,6 +18691,11 @@
    "espn": {
     "seen": "2026-11-22T16:22:50.615Z",
     "own": "2026-11-22T16:06:00.000Z"
+   },
+   "bluesky": {
+    "seen": "2026-11-22T16:25:09.493Z",
+    "own": "2026-11-22T16:06:05.019Z",
+    "why": "@rapsheet.bsky.social: The Eagles added DT Jalen Carter (quadriceps) to the inju"
    }
   },
   "401873080|jalencarter|q": {
@@ -18703,6 +18708,114 @@
    "espn": {
     "seen": "2026-11-22T16:22:50.615Z",
     "own": "2026-11-22T16:06:00.000Z"
+   }
+  },
+  "401873070|tjsanders|out": {
+   "game": "401873070",
+   "start": "2026-11-22T18:00Z",
+   "team": "2",
+   "name": "T.J. Sanders",
+   "status": "out",
+   "athlete": "4684527",
+   "espn": {
+    "seen": "2026-11-22T16:34:42.915Z",
+    "own": "2026-11-19T21:35:00.000Z"
+   }
+  },
+  "401873071|petewerner|out": {
+   "game": "401873071",
+   "start": "2026-11-22T18:00Z",
+   "team": "18",
+   "name": "Pete Werner",
+   "status": "out",
+   "athlete": "4241993",
+   "espn": {
+    "seen": "2026-11-22T16:34:42.915Z",
+    "own": "2026-11-20T22:03:00.000Z"
+   }
+  },
+  "401873071|audricestime|out": {
+   "game": "401873071",
+   "start": "2026-11-22T18:00Z",
+   "team": "18",
+   "name": "Audric Estime",
+   "status": "out",
+   "athlete": "4569682",
+   "espn": {
+    "seen": "2026-11-22T16:34:42.915Z",
+    "own": "2026-11-16T03:27:00.000Z"
+   }
+  },
+  "401873073|jaishawnbarham|out": {
+   "game": "401873073",
+   "start": "2026-11-22T18:00Z",
+   "team": "6",
+   "name": "Jaishawn Barham",
+   "status": "out",
+   "athlete": "4685266",
+   "espn": {
+    "seen": "2026-11-22T16:34:42.915Z",
+    "own": "2026-11-20T20:32:00.000Z"
+   }
+  },
+  "401873073|jonathanbullard|out": {
+   "game": "401873073",
+   "start": "2026-11-22T18:00Z",
+   "team": "6",
+   "name": "Jonathan Bullard",
+   "status": "out",
+   "athlete": "2980097",
+   "espn": {
+    "seen": "2026-11-22T16:34:42.915Z",
+    "own": "2026-11-15T20:36:00.000Z"
+   }
+  },
+  "401873072|ennisrakestraw|out": {
+   "game": "401873072",
+   "start": "2026-11-22T18:00Z",
+   "team": "8",
+   "name": "Ennis Rakestraw Jr.",
+   "status": "out",
+   "athlete": "4566092",
+   "espn": {
+    "seen": "2026-11-22T16:34:42.915Z",
+    "own": "2026-11-18T21:24:00.000Z"
+   }
+  },
+  "401873072|eastonstick|out": {
+   "game": "401873072",
+   "start": "2026-11-22T18:00Z",
+   "team": "27",
+   "name": "Easton Stick",
+   "status": "out",
+   "athlete": "3120590",
+   "espn": {
+    "seen": "2026-11-22T16:34:42.915Z",
+    "own": "2026-11-16T21:22:00.000Z"
+   }
+  },
+  "401873067|omarrnormanlott|out": {
+   "game": "401873067",
+   "start": "2026-11-22T18:00Z",
+   "team": "12",
+   "name": "Omarr Norman-Lott",
+   "status": "out",
+   "athlete": "4591008",
+   "espn": {
+    "seen": "2026-11-22T16:34:42.915Z",
+    "own": "2026-11-21T01:05:00.000Z"
+   }
+  },
+  "401873068|marcowilson|out": {
+   "game": "401873068",
+   "start": "2026-11-22T18:00Z",
+   "team": "29",
+   "name": "Marco Wilson",
+   "status": "out",
+   "athlete": "4240595",
+   "espn": {
+    "seen": "2026-11-22T16:34:42.915Z",
+    "own": "2026-11-17T00:31:00.000Z"
    }
   }
  }
