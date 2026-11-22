@@ -1,54 +1,15 @@
 {
  "sport": "nfl",
  "cursor": {
-  "adamscheftermirror.bsky.social": "2026-11-22T11:11:37.932Z",
+  "adamscheftermirror.bsky.social": "2026-11-22T12:41:39.196Z",
   "rapsheet.bsky.social": "2026-11-20T21:16:12.668Z",
   "nflnewsreposterbot.bsky.social": "2026-11-16T18:35:13.806Z",
-  "insidenflnews.bsky.social": "2026-11-22T01:50:16.268Z",
+  "insidenflnews.bsky.social": "2026-11-22T12:26:42.123Z",
   "nflnewsposter.bsky.social": "2026-11-22T01:45:14.334Z",
   "rotoworld-fb.bsky.social": "2026-11-22T01:28:07.000Z",
-  "rotowirenfl.bsky.social": "2026-11-22T01:25:56.000Z"
+  "rotowirenfl.bsky.social": "2026-11-22T12:52:33.000Z"
  },
  "claims": [
-  {
-   "id": "at://did:plc:qre6zxbmr3ixhdmgsgdretb5/app.bsky.feed.post/3mzasqkhsqf2m|braelonallen|none|starting",
-   "at": "2026-11-01T12:29:08.527Z",
-   "seen": "2026-11-01T12:35:10.722Z",
-   "handle": "adamscheftermirror.bsky.social",
-   "post": "at://did:plc:qre6zxbmr3ixhdmgsgdretb5/app.bsky.feed.post/3mzasqkhsqf2m",
-   "player": "Braelon Allen",
-   "team": "NYJ",
-   "status": "none",
-   "kind": "starting",
-   "confidence": 0.9,
-   "text": "Repost by @AdamSchefter\n\n#Jets RB Braelon Allen is slated to start again for the Jets, with Breece Hall still dealing with that quad injury. Allen has two 100-yard games as a starter, averaging nearly"
-  },
-  {
-   "id": "at://did:plc:qre6zxbmr3ixhdmgsgdretb5/app.bsky.feed.post/3mzasqkhsqf2m|breecehall|questionable|status",
-   "at": "2026-11-01T12:29:08.527Z",
-   "seen": "2026-11-01T12:35:10.722Z",
-   "handle": "adamscheftermirror.bsky.social",
-   "post": "at://did:plc:qre6zxbmr3ixhdmgsgdretb5/app.bsky.feed.post/3mzasqkhsqf2m",
-   "player": "Breece Hall",
-   "team": "NYJ",
-   "status": "questionable",
-   "kind": "status",
-   "confidence": 0.5,
-   "text": "Repost by @AdamSchefter\n\n#Jets RB Braelon Allen is slated to start again for the Jets, with Breece Hall still dealing with that quad injury. Allen has two 100-yard games as a starter, averaging nearly"
-  },
-  {
-   "id": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3mzasrsgytd2o|braelonallen|none|starting",
-   "at": "2026-11-01T12:29:50.000Z",
-   "seen": "2026-11-01T12:35:10.722Z",
-   "handle": "rotowirenfl.bsky.social",
-   "post": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3mzasrsgytd2o",
-   "player": "Braelon Allen",
-   "team": "NYJ",
-   "status": "none",
-   "kind": "starting",
-   "confidence": 0.9,
-   "text": "Braelon Allen: Set to start Sunday \n\n https://www.rotowire.com/football/player/braelon-allen-17702"
-  },
   {
    "id": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3mzavk7uuhr2f|kirkcousins|none|starting",
    "at": "2026-11-01T13:19:17.000Z",
@@ -18781,6 +18742,32 @@
    "kind": "status",
    "confidence": 0.75,
    "text": "Puka Nacua’s surgery, performed last week by Rams’ team doctor Neal ElAttrache, is expected to have him healthy for the 2027 campaign. Nacua’s right knee checked out clean aside from the MCL. More ⬇️:"
+  },
+  {
+   "id": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3n2vlnp3haq2e|mikeevans|active|return",
+   "at": "2026-11-22T12:13:22.000Z",
+   "seen": "2026-11-22T13:02:03.874Z",
+   "handle": "rotowirenfl.bsky.social",
+   "post": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3n2vlnp3haq2e",
+   "player": "Mike Evans",
+   "team": null,
+   "status": "active",
+   "kind": "return",
+   "confidence": 0.7,
+   "text": "Mike Evans: On track to return Sunday \n\n https://www.rotowire.com/football/player/mike-evans-9253"
+  },
+  {
+   "id": "at://did:plc:mbr4badgf6yu56mquzackzew/app.bsky.feed.post/3n2vmfjir5c2x|alecpierce|out|status",
+   "at": "2026-11-22T12:26:42.123Z",
+   "seen": "2026-11-22T13:02:03.874Z",
+   "handle": "insidenflnews.bsky.social",
+   "post": "at://did:plc:mbr4badgf6yu56mquzackzew/app.bsky.feed.post/3n2vmfjir5c2x",
+   "player": "Alec Pierce",
+   "team": null,
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.85,
+   "text": "Rap: Alec Pierce (heel) expected to miss the remainder of the season."
   }
  ]
 }
