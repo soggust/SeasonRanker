@@ -3,8 +3,8 @@
  "cursor": {
   "johnston-bot.bsky.social": "2026-11-20T04:01:20.374Z",
   "notfriedgehnic.bsky.social": "2026-11-22T01:50:33.177Z",
-  "dailyfaceoff.bsky.social": "2026-11-21T23:10:13.000Z",
-  "dfotoronto.bsky.social": "2026-11-22T01:23:26.933Z",
+  "dailyfaceoff.bsky.social": "2026-11-22T01:56:31.000Z",
+  "dfotoronto.bsky.social": "2026-11-22T02:12:19.950Z",
   "marklazerus.bsky.social": "2026-11-22T01:54:03.766Z"
  },
  "claims": [
@@ -2633,6 +2633,19 @@
    "kind": "status",
    "confidence": 0.95,
    "text": "Injury notes today:\n\nConnor Bedard shoulder surgery on Monday. Timeline to be delivered post-op\n\nNathan MacKinnon updated to out 12 weeks\n\nQuinn Hughes sent home from road trip to be evaluated in Minn"
+  },
+  {
+   "id": "at://did:plc:3uus7y6h3rlrk6sbctzxm4bg/app.bsky.feed.post/3n2uj6ocgdk2s|connorbedard|out|status",
+   "at": "2026-11-22T01:56:31.000Z",
+   "seen": "2026-11-22T02:16:18.071Z",
+   "handle": "dailyfaceoff.bsky.social",
+   "post": "at://did:plc:3uus7y6h3rlrk6sbctzxm4bg/app.bsky.feed.post/3n2uj6ocgdk2s",
+   "player": "Connor Bedard",
+   "team": null,
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.8,
+   "text": "Connor Bedard to undergo shoulder surgery"
   }
  ]
 }
