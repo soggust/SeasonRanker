@@ -1,7 +1,7 @@
 {
  "sport": "nfl",
  "cursor": {
-  "adamscheftermirror.bsky.social": "2026-11-22T01:26:33.379Z",
+  "adamscheftermirror.bsky.social": "2026-11-22T11:11:37.932Z",
   "rapsheet.bsky.social": "2026-11-20T21:16:12.668Z",
   "nflnewsreposterbot.bsky.social": "2026-11-16T18:35:13.806Z",
   "insidenflnews.bsky.social": "2026-11-22T01:50:16.268Z",
@@ -18768,6 +18768,19 @@
    "kind": "status",
    "confidence": 0.93,
    "text": "[Schefter] Puka Nacua’s recovery time from his MCL surgery is considered to be four to five months, sources told ESPN, meaning the Rams star wide receiver will miss the rest of this season, including "
+  },
+  {
+   "id": "at://did:plc:qre6zxbmr3ixhdmgsgdretb5/app.bsky.feed.post/3n2vi7c2ipi26|pukanacua|out|status",
+   "at": "2026-11-22T11:11:37.932Z",
+   "seen": "2026-11-22T11:14:10.913Z",
+   "handle": "adamscheftermirror.bsky.social",
+   "post": "at://did:plc:qre6zxbmr3ixhdmgsgdretb5/app.bsky.feed.post/3n2vi7c2ipi26",
+   "player": "Puka Nacua",
+   "team": "LAR",
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.75,
+   "text": "Puka Nacua’s surgery, performed last week by Rams’ team doctor Neal ElAttrache, is expected to have him healthy for the 2027 campaign. Nacua’s right knee checked out clean aside from the MCL. More ⬇️:"
   }
  ]
 }
