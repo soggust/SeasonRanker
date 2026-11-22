@@ -3,9 +3,9 @@
  "cursor": {
   "johnston-bot.bsky.social": "2026-11-20T04:01:20.374Z",
   "notfriedgehnic.bsky.social": "2026-11-21T19:10:31.974Z",
-  "dailyfaceoff.bsky.social": "2026-11-21T22:00:55.000Z",
+  "dailyfaceoff.bsky.social": "2026-11-21T23:10:13.000Z",
   "dfotoronto.bsky.social": "2026-11-21T22:11:57.000Z",
-  "marklazerus.bsky.social": "2026-11-21T23:09:57.190Z"
+  "marklazerus.bsky.social": "2026-11-22T00:03:15.095Z"
  },
  "claims": [
   {
@@ -2568,6 +2568,19 @@
    "kind": "role",
    "confidence": 0.6,
    "text": "Roman Kantserov getting some PK time with Anton Frondell out."
+  },
+  {
+   "id": "at://did:plc:54vdi5eoabhod2vumsbcpi7g/app.bsky.feed.post/3n2ucu4w4isue|connorbedard|out|status",
+   "at": "2026-11-22T00:03:15.095Z",
+   "seen": "2026-11-22T00:10:54.103Z",
+   "handle": "marklazerus.bsky.social",
+   "post": "at://did:plc:54vdi5eoabhod2vumsbcpi7g/app.bsky.feed.post/3n2ucu4w4isue",
+   "player": "Connor Bedard",
+   "team": "CHI",
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.8,
+   "text": "NEWS: Connor Bedard will have shoulder surgery this week, per Kyle Davidson. Likely the same surgery as over the summer. Took him a little more than three months to recover from that one."
   }
  ]
 }

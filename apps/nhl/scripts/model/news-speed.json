@@ -233,71 +233,6 @@
     "own": "2026-10-10T16:58:00.000Z"
    }
   },
-  "401892690|konstahelenius|out": {
-   "game": "401892690",
-   "start": "2026-11-12T00:00Z",
-   "team": "2",
-   "name": "Konsta Helenius",
-   "status": "out",
-   "athlete": "5216882",
-   "espn": {
-    "seen": "2026-11-10T16:44:22.818Z",
-    "own": "2026-11-02T17:29:00.000Z"
-   }
-  },
-  "401892690|justindanforth|out": {
-   "game": "401892690",
-   "start": "2026-11-12T00:00Z",
-   "team": "2",
-   "name": "Justin Danforth",
-   "status": "out",
-   "athlete": "4894355",
-   "espn": {
-    "seen": "2026-11-10T16:44:22.818Z",
-    "own": "2026-10-29T22:06:00.000Z"
-   }
-  },
-  "401892690|alexlyon|out": {
-   "game": "401892690",
-   "start": "2026-11-12T00:00Z",
-   "team": "2",
-   "name": "Alex Lyon",
-   "status": "out",
-   "athlete": "3654006",
-   "espn": {
-    "seen": "2026-11-10T16:44:22.818Z",
-    "own": "2026-10-15T17:59:00.000Z"
-   }
-  },
-  "401892690|mattgrzelcyk|out": {
-   "game": "401892690",
-   "start": "2026-11-12T00:00Z",
-   "team": "2",
-   "name": "Matt Grzelcyk",
-   "status": "out",
-   "athlete": "3069448",
-   "espn": {
-    "seen": "2026-11-10T16:44:22.818Z",
-    "own": "2026-10-13T20:51:00.000Z"
-   }
-  },
-  "401892690|braydenpoint|out": {
-   "game": "401892690",
-   "start": "2026-11-12T00:00Z",
-   "team": "20",
-   "name": "Brayden Point",
-   "status": "out",
-   "athlete": "3151187",
-   "espn": {
-    "seen": "2026-11-10T16:44:22.818Z",
-    "own": "2026-11-10T15:30:00.000Z"
-   },
-   "bluesky": {
-    "seen": "2026-11-10T19:15:16.001Z",
-    "own": "2026-11-10T19:04:02.000Z",
-    "why": "@dailyfaceoff.bsky.social: Lightning recall Sam O’Reilly from AHL, place Brayden"
-   }
-  },
   "401892693|parkerwotherspoon|out": {
    "game": "401892693",
    "start": "2026-11-12T02:30Z",
@@ -560,18 +495,6 @@
    "espn": {
     "seen": "2026-11-11T02:51:40.700Z",
     "own": "2026-11-11T02:39:00.000Z"
-   }
-  },
-  "401892690|louiscrevier|q": {
-   "game": "401892690",
-   "start": "2026-11-12T00:00Z",
-   "team": "2",
-   "name": "Louis Crevier",
-   "status": "q",
-   "athlete": "4697681",
-   "espn": {
-    "seen": "2026-11-11T16:34:51.817Z",
-    "own": "2026-11-11T16:12:00.000Z"
    }
   },
   "401891808|nikkekokko|out": {
@@ -9399,6 +9322,18 @@
    "espn": {
     "seen": "2026-11-21T23:08:32.556Z",
     "own": "2026-11-21T22:45:00.000Z"
+   }
+  },
+  "401892772|antonfrondell|out": {
+   "game": "401892772",
+   "start": "2026-11-23T01:00Z",
+   "team": "4",
+   "name": "Anton Frondell",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-21T23:09:57.634Z",
+    "own": "2026-11-21T22:37:02.230Z",
+    "why": "@marklazerus.bsky.social: Anton Frondell is out for the game now, too, per the B"
    }
   }
  }

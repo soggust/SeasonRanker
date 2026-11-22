@@ -24397,6 +24397,186 @@
     "seen": "2026-11-22T00:00:38.390Z",
     "own": "2026-10-17T00:52:00.000Z"
    }
+  },
+  "401910031|tristanvukcevic|out": {
+   "game": "401910031",
+   "start": "2026-11-23T00:00Z",
+   "team": "27",
+   "name": "Tristan Vukcevic",
+   "status": "out",
+   "athlete": "4997537",
+   "espn": {
+    "seen": "2026-11-22T00:09:23.113Z",
+    "own": "2026-11-16T18:14:00.000Z"
+   }
+  },
+  "401910031|reecebeekman|out": {
+   "game": "401910031",
+   "start": "2026-11-23T00:00Z",
+   "team": "27",
+   "name": "Reece Beekman",
+   "status": "out",
+   "athlete": "4432187",
+   "espn": {
+    "seen": "2026-11-22T00:09:23.113Z",
+    "own": "2026-11-02T18:22:00.000Z"
+   }
+  },
+  "401910031|justinchampagnie|out": {
+   "game": "401910031",
+   "start": "2026-11-23T00:00Z",
+   "team": "27",
+   "name": "Justin Champagnie",
+   "status": "out",
+   "athlete": "4432907",
+   "espn": {
+    "seen": "2026-11-22T00:09:23.113Z",
+    "own": "2026-10-28T18:38:00.000Z"
+   }
+  },
+  "401910031|jamirwatkins|out": {
+   "game": "401910031",
+   "start": "2026-11-23T00:00Z",
+   "team": "27",
+   "name": "Jamir Watkins",
+   "status": "out",
+   "athlete": "4606840",
+   "espn": {
+    "seen": "2026-11-22T00:09:23.113Z",
+    "own": "2026-07-30T20:11:00.000Z"
+   }
+  },
+  "401910031|oganunoby|out": {
+   "game": "401910031",
+   "start": "2026-11-23T00:00Z",
+   "team": "27",
+   "name": "OG Anunoby",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-21T22:05:33.976Z",
+    "own": "2026-11-21T21:49:45.000Z",
+    "why": "@rotowirenba.bsky.social: OG Anunoby: Won't play Saturday \n\n https://www.rotowir"
+   }
+  },
+  "401910031|kingstonflemings|q": {
+   "game": "401910031",
+   "start": "2026-11-23T00:00Z",
+   "team": "27",
+   "name": "Kingston Flemings",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-11-21T23:09:57.634Z",
+    "own": "2026-11-21T22:16:52.000Z",
+    "why": "@rotowirenba.bsky.social: Kingston Flemings: Questionable for Sunday \n\n https://"
+   }
+  },
+  "401910031|pascalsiakam|q": {
+   "game": "401910031",
+   "start": "2026-11-23T00:00Z",
+   "team": "27",
+   "name": "Pascal Siakam",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-11-21T23:09:57.634Z",
+    "own": "2026-11-21T22:19:21.000Z",
+    "why": "@rotowirenba.bsky.social: Pascal Siakam: Questionable versus Knicks \n\n https://w"
+   }
+  },
+  "401910031|alexcaruso|out": {
+   "game": "401910031",
+   "start": "2026-11-23T00:00Z",
+   "team": "27",
+   "name": "Alex Caruso",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-21T23:09:57.634Z",
+    "own": "2026-11-21T22:29:44.000Z",
+    "why": "@rotowirenba.bsky.social: Alex Caruso: Ruled out for Sunday \n\n https://www.rotow"
+   }
+  },
+  "401910031|shaigilgeousalexander|q": {
+   "game": "401910031",
+   "start": "2026-11-23T00:00Z",
+   "team": "27",
+   "name": "Shai Gilgeous-Alexander",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-11-21T23:09:57.634Z",
+    "own": "2026-11-21T22:45:23.000Z",
+    "why": "@rotowirenba.bsky.social: Shai Gilgeous-Alexander: Questionable to play Sunday \n"
+   }
+  },
+  "401910031|karlanthonytowns|out": {
+   "game": "401910031",
+   "start": "2026-11-23T00:00Z",
+   "team": "27",
+   "name": "Karl-Anthony Towns",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-21T23:09:57.634Z",
+    "own": "2026-11-21T22:51:04.000Z",
+    "why": "@rotowirenba.bsky.social: Karl-Anthony Towns: Sidelined against Portland \n\n http"
+   }
+  },
+  "401910031|jonathanisaac|out": {
+   "game": "401910031",
+   "start": "2026-11-23T00:00Z",
+   "team": "19",
+   "name": "Jonathan Isaac",
+   "status": "out",
+   "athlete": "4065654",
+   "espn": {
+    "seen": "2026-11-22T00:09:23.113Z",
+    "own": "2026-11-21T21:09:00.000Z"
+   }
+  },
+  "401910031|izaiyahnelson|out": {
+   "game": "401910031",
+   "start": "2026-11-23T00:00Z",
+   "team": "19",
+   "name": "Izaiyah Nelson",
+   "status": "out",
+   "athlete": "5107251",
+   "espn": {
+    "seen": "2026-11-22T00:09:23.113Z",
+    "own": "2026-11-18T17:25:00.000Z"
+   }
+  },
+  "401910031|noahpenda|out": {
+   "game": "401910031",
+   "start": "2026-11-23T00:00Z",
+   "team": "19",
+   "name": "Noah Penda",
+   "status": "out",
+   "athlete": "5214637",
+   "espn": {
+    "seen": "2026-11-22T00:09:23.113Z",
+    "own": "2026-11-14T17:33:00.000Z"
+   }
+  },
+  "401910031|paolobanchero|out": {
+   "game": "401910031",
+   "start": "2026-11-23T00:00Z",
+   "team": "19",
+   "name": "Paolo Banchero",
+   "status": "out",
+   "athlete": "4432573",
+   "espn": {
+    "seen": "2026-11-22T00:09:23.113Z",
+    "own": "2026-10-24T16:47:00.000Z"
+   }
+  },
+  "401910032|normanpowell|q": {
+   "game": "401910032",
+   "start": "2026-11-23T00:00Z",
+   "team": "4",
+   "name": "Norman Powell",
+   "status": "q",
+   "athlete": "2595516",
+   "espn": {
+    "seen": "2026-11-22T00:09:23.113Z",
+    "own": "2026-11-22T00:06:00.000Z"
+   }
   }
  }
 }

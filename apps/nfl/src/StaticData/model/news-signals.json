@@ -3,6 +3,39 @@
  "days": 2,
  "signals": [
   {
+   "team": "22",
+   "abbr": "ARI",
+   "athlete": "11394",
+   "player": "Josh Johnson",
+   "kind": "starting",
+   "direction": "up",
+   "confidence": 0.8,
+   "headline": "Cardinals rule out rookie Carson Beck, turn to 40-year-old Josh Johnson vs. Chiefs",
+   "at": "2026-11-21T21:41:11.000Z"
+  },
+  {
+   "team": "22",
+   "abbr": "ARI",
+   "athlete": "4430841",
+   "player": "Carson Beck",
+   "kind": "benched",
+   "direction": "down",
+   "confidence": 0.6,
+   "headline": "Cardinals rule out rookie Carson Beck, turn to 40-year-old Josh Johnson vs. Chiefs",
+   "at": "2026-11-21T21:41:11.000Z"
+  },
+  {
+   "team": "23",
+   "abbr": "PIT",
+   "athlete": "4431492",
+   "player": "Roman Wilson",
+   "kind": "return",
+   "direction": "up",
+   "confidence": 0.9,
+   "headline": "Steelers activate WR Roman Wilson off IR for Eagles game",
+   "at": "2026-11-21T20:54:35.000Z"
+  },
+  {
    "team": "20",
    "abbr": "NYJ",
    "athlete": "15864",
@@ -80,5 +113,5 @@
    "at": "2026-11-20T11:00:03.000Z"
   }
  ],
- "at": "2026-11-21T23:09:57.634Z"
+ "at": "2026-11-22T00:10:54.103Z"
 }

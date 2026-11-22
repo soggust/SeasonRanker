@@ -7,7 +7,7 @@
   "insidenflnews.bsky.social": "2026-11-21T21:01:29.025Z",
   "nflnewsposter.bsky.social": "2026-11-21T21:21:21.620Z",
   "rotoworld-fb.bsky.social": "2026-11-21T22:11:27.000Z",
-  "rotowirenfl.bsky.social": "2026-11-21T21:55:50.000Z"
+  "rotowirenfl.bsky.social": "2026-11-21T23:35:09.000Z"
  },
  "claims": [
   {
@@ -18703,6 +18703,19 @@
    "kind": "status",
    "confidence": 0.8,
    "text": "Kyren limited Saturday, expected to play Wednesday"
+  },
+  {
+   "id": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3n2ubbvtvkn2c|jacorycroskeymerritt|active|return",
+   "at": "2026-11-21T23:35:09.000Z",
+   "seen": "2026-11-22T00:10:54.103Z",
+   "handle": "rotowirenfl.bsky.social",
+   "post": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3n2ubbvtvkn2c",
+   "player": "Jacory Croskey-Merritt",
+   "team": "WAS",
+   "status": "active",
+   "kind": "return",
+   "confidence": 0.75,
+   "text": "Jacory Croskey-Merritt: Expected to return for MNF \n\n https://www.rotowire.com/football/player/jacory-croskey-merritt-18811"
   }
  ]
 }
