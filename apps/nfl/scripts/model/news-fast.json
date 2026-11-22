@@ -1,93 +1,15 @@
 {
  "sport": "nfl",
  "cursor": {
-  "adamscheftermirror.bsky.social": "2026-11-22T16:16:37.320Z",
-  "rapsheet.bsky.social": "2026-11-22T16:06:05.019Z",
+  "adamscheftermirror.bsky.social": "2026-11-22T16:46:40.640Z",
+  "rapsheet.bsky.social": "2026-11-22T16:38:34.357Z",
   "nflnewsreposterbot.bsky.social": "2026-11-16T18:35:13.806Z",
-  "insidenflnews.bsky.social": "2026-11-22T15:22:59.468Z",
+  "insidenflnews.bsky.social": "2026-11-22T16:39:55.239Z",
   "nflnewsposter.bsky.social": "2026-11-22T01:45:14.334Z",
-  "rotoworld-fb.bsky.social": "2026-11-22T16:16:48.000Z",
-  "rotowirenfl.bsky.social": "2026-11-22T15:54:16.000Z"
+  "rotoworld-fb.bsky.social": "2026-11-22T16:48:13.000Z",
+  "rotowirenfl.bsky.social": "2026-11-22T16:58:57.000Z"
  },
  "claims": [
-  {
-   "id": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3mzb7znznjq2j|djmoore|active|return",
-   "at": "2026-11-01T16:26:52.000Z",
-   "seen": "2026-11-01T17:25:28.825Z",
-   "handle": "rotowirenfl.bsky.social",
-   "post": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3mzb7znznjq2j",
-   "player": "DJ Moore",
-   "team": null,
-   "status": "active",
-   "kind": "return",
-   "confidence": 0.8,
-   "text": "DJ Moore: Returning from two-game absence \n\n https://www.rotowire.com/football/player/dj-moore-12477"
-  },
-  {
-   "id": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3mzbadyn3cl2b|breecehall|out|status",
-   "at": "2026-11-01T16:32:39.000Z",
-   "seen": "2026-11-01T17:25:28.825Z",
-   "handle": "rotowirenfl.bsky.social",
-   "post": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3mzbadyn3cl2b",
-   "player": "Breece Hall",
-   "team": null,
-   "status": "out",
-   "kind": "status",
-   "confidence": 0.9,
-   "text": "Breece Hall: Inactive for Sunday's game \n\n https://www.rotowire.com/football/player/breece-hall-15810"
-  },
-  {
-   "id": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3mzbajvv3p72p|pickens|active|status",
-   "at": "2026-11-01T16:35:57.000Z",
-   "seen": "2026-11-01T17:25:28.825Z",
-   "handle": "rotoworld-fb.bsky.social",
-   "post": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3mzbajvv3p72p",
-   "player": "Pickens",
-   "team": null,
-   "status": "active",
-   "kind": "status",
-   "confidence": 0.85,
-   "text": "Pickens (shoulder/hamstring) officially active"
-  },
-  {
-   "id": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3mzbajyfdza2b|breecehall|out|status",
-   "at": "2026-11-01T16:36:00.000Z",
-   "seen": "2026-11-01T17:25:28.825Z",
-   "handle": "rotoworld-fb.bsky.social",
-   "post": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3mzbajyfdza2b",
-   "player": "Breece Hall",
-   "team": null,
-   "status": "out",
-   "kind": "status",
-   "confidence": 0.95,
-   "text": "Breece Hall (quad) officially inactive vs. Raiders"
-  },
-  {
-   "id": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3mzbar6t52d22|aaronjones|active|status",
-   "at": "2026-11-01T16:40:02.000Z",
-   "seen": "2026-11-01T17:25:28.825Z",
-   "handle": "rotoworld-fb.bsky.social",
-   "post": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3mzbar6t52d22",
-   "player": "Aaron Jones",
-   "team": null,
-   "status": "active",
-   "kind": "status",
-   "confidence": 0.9,
-   "text": "Aaron Jones (knee) active vs. Lions"
-  },
-  {
-   "id": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3mzbarbirzn2z|jakobimeyers|active|status",
-   "at": "2026-11-01T16:40:05.000Z",
-   "seen": "2026-11-01T17:25:28.825Z",
-   "handle": "rotoworld-fb.bsky.social",
-   "post": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3mzbarbirzn2z",
-   "player": "Jakobi Meyers",
-   "team": null,
-   "status": "active",
-   "kind": "status",
-   "confidence": 0.85,
-   "text": "Jakobi Meyers (ankle/hamstring) officially active"
-  },
   {
    "id": "at://did:plc:mbr4badgf6yu56mquzackzew/app.bsky.feed.post/3mzbcjvthns2x|fernandomendoza|out|status",
    "at": "2026-11-01T17:11:45.468Z",
@@ -18781,6 +18703,71 @@
    "kind": "status",
    "confidence": 0.9,
    "text": "Rap: Drake Maye (fibula) out at least six weeks"
+  },
+  {
+   "id": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3n2w2aikwyg2u|daltonkincaid|out|status",
+   "at": "2026-11-22T16:34:25.000Z",
+   "seen": "2026-11-22T17:08:48.208Z",
+   "handle": "rotowirenfl.bsky.social",
+   "post": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3n2w2aikwyg2u",
+   "player": "Dalton Kincaid",
+   "team": null,
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.85,
+   "text": "Dalton Kincaid: Sidelined for first time in 2026 \n\n https://www.rotowire.com/football/player/dalton-kincaid-16697"
+  },
+  {
+   "id": "at://did:plc:mbr4badgf6yu56mquzackzew/app.bsky.feed.post/3n2w2kcrnnk2b|brockbowers|doubtful|status",
+   "at": "2026-11-22T16:39:55.239Z",
+   "seen": "2026-11-22T17:08:48.208Z",
+   "handle": "insidenflnews.bsky.social",
+   "post": "at://did:plc:mbr4badgf6yu56mquzackzew/app.bsky.feed.post/3n2w2kcrnnk2b",
+   "player": "Brock Bowers",
+   "team": null,
+   "status": "doubtful",
+   "kind": "status",
+   "confidence": 0.6,
+   "text": "Schefter: Not a lot of optimism Brock Bowers (ankle, quad) will play Week 11 but he is pushing to play."
+  },
+  {
+   "id": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3n2w2rcfzn22b|carsonbeck|out|status",
+   "at": "2026-11-22T16:43:49.000Z",
+   "seen": "2026-11-22T17:08:48.208Z",
+   "handle": "rotoworld-fb.bsky.social",
+   "post": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3n2w2rcfzn22b",
+   "player": "Carson Beck",
+   "team": "ARI",
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.95,
+   "text": "Carson Beck officially out for Cardinals"
+  },
+  {
+   "id": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3n2w2renhfp24|audricestime|out|status",
+   "at": "2026-11-22T16:43:51.000Z",
+   "seen": "2026-11-22T17:08:48.208Z",
+   "handle": "rotoworld-fb.bsky.social",
+   "post": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3n2w2renhfp24",
+   "player": "Audric Estime",
+   "team": null,
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.9,
+   "text": "Audric Estime a healthy scratch for Week 11"
+  },
+  {
+   "id": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3n2w2z6ghsa2s|daltonkincaid|out|status",
+   "at": "2026-11-22T16:48:13.000Z",
+   "seen": "2026-11-22T17:08:48.208Z",
+   "handle": "rotoworld-fb.bsky.social",
+   "post": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3n2w2z6ghsa2s",
+   "player": "Dalton Kincaid",
+   "team": "BUF",
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.97,
+   "text": "Kincaid inactive for Week 11 versus Dolphins"
   }
  ]
 }
