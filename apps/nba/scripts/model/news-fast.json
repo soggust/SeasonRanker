@@ -1,7 +1,7 @@
 {
  "sport": "nba",
  "cursor": {
-  "rotowirenba.bsky.social": "2026-11-21T22:51:04.000Z",
+  "rotowirenba.bsky.social": "2026-11-22T00:11:28.000Z",
   "insidenbanews.bsky.social": "2026-11-20T20:35:06.661Z",
   "shamsbot.bsky.social": "2026-11-20T20:29:39.000Z"
  },
@@ -7467,6 +7467,19 @@
    "kind": "status",
    "confidence": 0.85,
    "text": "Karl-Anthony Towns: Sidelined against Portland \n\n https://www.rotowire.com/basketball/player/karl-anthony-towns-3741"
+  },
+  {
+   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3n2udctoufr2n|normanpowell|questionable|status",
+   "at": "2026-11-22T00:11:28.000Z",
+   "seen": "2026-11-22T00:32:28.725Z",
+   "handle": "rotowirenba.bsky.social",
+   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3n2udctoufr2n",
+   "player": "Norman Powell",
+   "team": null,
+   "status": "questionable",
+   "kind": "status",
+   "confidence": 0.95,
+   "text": "Norman Powell: Questionable to play Sunday \n\n https://www.rotowire.com/basketball/player/norman-powell-3726"
   }
  ]
 }

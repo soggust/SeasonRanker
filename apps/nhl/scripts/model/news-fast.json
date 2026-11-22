@@ -5,7 +5,7 @@
   "notfriedgehnic.bsky.social": "2026-11-21T19:10:31.974Z",
   "dailyfaceoff.bsky.social": "2026-11-21T23:10:13.000Z",
   "dfotoronto.bsky.social": "2026-11-21T22:11:57.000Z",
-  "marklazerus.bsky.social": "2026-11-22T00:03:15.095Z"
+  "marklazerus.bsky.social": "2026-11-22T00:21:09.432Z"
  },
  "claims": [
   {
@@ -2581,6 +2581,19 @@
    "kind": "status",
    "confidence": 0.8,
    "text": "NEWS: Connor Bedard will have shoulder surgery this week, per Kyle Davidson. Likely the same surgery as over the summer. Took him a little more than three months to recover from that one."
+  },
+  {
+   "id": "at://did:plc:54vdi5eoabhod2vumsbcpi7g/app.bsky.feed.post/3n2udu5ibq2ue|connorbedard|out|status",
+   "at": "2026-11-22T00:21:09.432Z",
+   "seen": "2026-11-22T00:32:28.725Z",
+   "handle": "marklazerus.bsky.social",
+   "post": "at://did:plc:54vdi5eoabhod2vumsbcpi7g/app.bsky.feed.post/3n2udu5ibq2ue",
+   "player": "Connor Bedard",
+   "team": "CHI",
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.85,
+   "text": "It's shoulder surgery for Connor Bedard. Again. Story:\nwww.nytimes.com/athletic/779... [Connor Bedard to undergo shoulder surgery, Blackhawks GM Kyle Davidson says (Gift Article)]"
   }
  ]
 }
