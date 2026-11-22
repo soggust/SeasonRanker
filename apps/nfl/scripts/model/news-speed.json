@@ -19453,6 +19453,150 @@
     "seen": "2026-11-22T16:51:40.432Z",
     "own": "2026-11-22T16:42:00.000Z"
    }
+  },
+  "401873076|willhoward|out": {
+   "game": "401873076",
+   "start": "2026-11-22T18:00Z",
+   "team": "23",
+   "name": "Will Howard",
+   "status": "out",
+   "athlete": "4429955",
+   "espn": {
+    "seen": "2026-11-22T16:54:35.994Z",
+    "own": "2026-11-22T16:51:00.000Z"
+   }
+  },
+  "401873076|gabrielrubio|out": {
+   "game": "401873076",
+   "start": "2026-11-22T18:00Z",
+   "team": "23",
+   "name": "Gabriel Rubio",
+   "status": "out",
+   "athlete": "4431533",
+   "espn": {
+    "seen": "2026-11-22T16:54:35.994Z",
+    "own": "2026-11-22T16:39:00.000Z"
+   }
+  },
+  "401873076|kadenwetjen|out": {
+   "game": "401873076",
+   "start": "2026-11-22T18:00Z",
+   "team": "23",
+   "name": "Kaden Wetjen",
+   "status": "out",
+   "athlete": "5081338",
+   "espn": {
+    "seen": "2026-11-22T16:54:35.994Z",
+    "own": "2026-11-22T16:39:00.000Z"
+   }
+  },
+  "401873076|seanmurphybunting|out": {
+   "game": "401873076",
+   "start": "2026-11-22T18:00Z",
+   "team": "23",
+   "name": "Sean Murphy-Bunting",
+   "status": "out",
+   "athlete": "3932886",
+   "espn": {
+    "seen": "2026-11-22T16:54:35.994Z",
+    "own": "2026-11-22T16:39:00.000Z"
+   }
+  },
+  "401873076|eliheidenreich|out": {
+   "game": "401873076",
+   "start": "2026-11-22T18:00Z",
+   "team": "23",
+   "name": "Eli Heidenreich",
+   "status": "out",
+   "athlete": "5081508",
+   "espn": {
+    "seen": "2026-11-22T16:54:35.994Z",
+    "own": "2026-11-22T16:39:00.000Z"
+   }
+  },
+  "401873076|drewallar|out": {
+   "game": "401873076",
+   "start": "2026-11-22T18:00Z",
+   "team": "23",
+   "name": "Drew Allar",
+   "status": "out",
+   "athlete": "4714771",
+   "espn": {
+    "seen": "2026-11-22T16:54:35.994Z",
+    "own": "2026-11-22T16:39:00.000Z"
+   }
+  },
+  "401873083|willhoward|out": {
+   "game": "401873083",
+   "start": "2026-11-27T20:00Z",
+   "team": "23",
+   "name": "Will Howard",
+   "status": "out",
+   "athlete": "4429955",
+   "espn": {
+    "seen": "2026-11-22T16:54:35.994Z",
+    "own": "2026-11-22T16:51:00.000Z"
+   }
+  },
+  "401873083|gabrielrubio|out": {
+   "game": "401873083",
+   "start": "2026-11-27T20:00Z",
+   "team": "23",
+   "name": "Gabriel Rubio",
+   "status": "out",
+   "athlete": "4431533",
+   "espn": {
+    "seen": "2026-11-22T16:54:35.994Z",
+    "own": "2026-11-22T16:39:00.000Z"
+   }
+  },
+  "401873083|kadenwetjen|out": {
+   "game": "401873083",
+   "start": "2026-11-27T20:00Z",
+   "team": "23",
+   "name": "Kaden Wetjen",
+   "status": "out",
+   "athlete": "5081338",
+   "espn": {
+    "seen": "2026-11-22T16:54:35.994Z",
+    "own": "2026-11-22T16:39:00.000Z"
+   }
+  },
+  "401873083|seanmurphybunting|out": {
+   "game": "401873083",
+   "start": "2026-11-27T20:00Z",
+   "team": "23",
+   "name": "Sean Murphy-Bunting",
+   "status": "out",
+   "athlete": "3932886",
+   "espn": {
+    "seen": "2026-11-22T16:54:35.994Z",
+    "own": "2026-11-22T16:39:00.000Z"
+   }
+  },
+  "401873083|eliheidenreich|out": {
+   "game": "401873083",
+   "start": "2026-11-27T20:00Z",
+   "team": "23",
+   "name": "Eli Heidenreich",
+   "status": "out",
+   "athlete": "5081508",
+   "espn": {
+    "seen": "2026-11-22T16:54:35.994Z",
+    "own": "2026-11-22T16:39:00.000Z"
+   }
+  },
+  "401873083|drewallar|out": {
+   "game": "401873083",
+   "start": "2026-11-27T20:00Z",
+   "team": "23",
+   "name": "Drew Allar",
+   "status": "out",
+   "athlete": "4714771",
+   "espn": {
+    "seen": "2026-11-22T16:54:35.994Z",
+    "own": "2026-11-22T16:39:00.000Z"
+   }
   }
  }
 }
