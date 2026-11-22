@@ -22758,6 +22758,382 @@
     "own": "2026-11-21T20:51:52.000Z",
     "why": "@rotowirenba.bsky.social: Jayson Tatum: Won't play Saturday \n\n https://www.rotow"
    }
+  },
+  "401910033|jusufnurkic|out": {
+   "game": "401910033",
+   "start": "2026-11-23T00:00Z",
+   "team": "26",
+   "name": "Jusuf Nurkic",
+   "status": "out",
+   "athlete": "3102530",
+   "espn": {
+    "seen": "2026-11-22T04:28:43.746Z",
+    "own": "2026-11-20T22:40:00.000Z"
+   }
+  },
+  "401910033|laurimarkkanen|out": {
+   "game": "401910033",
+   "start": "2026-11-23T00:00Z",
+   "team": "26",
+   "name": "Lauri Markkanen",
+   "status": "out",
+   "athlete": "4066336",
+   "espn": {
+    "seen": "2026-11-22T04:28:43.746Z",
+    "own": "2026-11-11T18:22:00.000Z"
+   }
+  },
+  "401910033|jarenjackson|out": {
+   "game": "401910033",
+   "start": "2026-11-23T00:00Z",
+   "team": "26",
+   "name": "Jaren Jackson Jr.",
+   "status": "out",
+   "athlete": "4277961",
+   "espn": {
+    "seen": "2026-11-22T04:28:43.746Z",
+    "own": "2026-10-27T19:25:00.000Z"
+   }
+  },
+  "401910033|oganunoby|out": {
+   "game": "401910033",
+   "start": "2026-11-23T00:00Z",
+   "team": "26",
+   "name": "OG Anunoby",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-21T22:05:33.976Z",
+    "own": "2026-11-21T21:49:45.000Z",
+    "why": "@rotowirenba.bsky.social: OG Anunoby: Won't play Saturday \n\n https://www.rotowir"
+   }
+  },
+  "401910033|kingstonflemings|q": {
+   "game": "401910033",
+   "start": "2026-11-23T00:00Z",
+   "team": "26",
+   "name": "Kingston Flemings",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-11-21T23:09:57.634Z",
+    "own": "2026-11-21T22:16:52.000Z",
+    "why": "@rotowirenba.bsky.social: Kingston Flemings: Questionable for Sunday \n\n https://"
+   }
+  },
+  "401910033|pascalsiakam|q": {
+   "game": "401910033",
+   "start": "2026-11-23T00:00Z",
+   "team": "26",
+   "name": "Pascal Siakam",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-11-21T23:09:57.634Z",
+    "own": "2026-11-21T22:19:21.000Z",
+    "why": "@rotowirenba.bsky.social: Pascal Siakam: Questionable versus Knicks \n\n https://w"
+   }
+  },
+  "401910033|alexcaruso|out": {
+   "game": "401910033",
+   "start": "2026-11-23T00:00Z",
+   "team": "26",
+   "name": "Alex Caruso",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-21T23:09:57.634Z",
+    "own": "2026-11-21T22:29:44.000Z",
+    "why": "@rotowirenba.bsky.social: Alex Caruso: Ruled out for Sunday \n\n https://www.rotow"
+   }
+  },
+  "401910033|shaigilgeousalexander|q": {
+   "game": "401910033",
+   "start": "2026-11-23T00:00Z",
+   "team": "26",
+   "name": "Shai Gilgeous-Alexander",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-11-21T23:09:57.634Z",
+    "own": "2026-11-21T22:45:23.000Z",
+    "why": "@rotowirenba.bsky.social: Shai Gilgeous-Alexander: Questionable to play Sunday \n"
+   }
+  },
+  "401910033|karlanthonytowns|out": {
+   "game": "401910033",
+   "start": "2026-11-23T00:00Z",
+   "team": "26",
+   "name": "Karl-Anthony Towns",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-21T23:09:57.634Z",
+    "own": "2026-11-21T22:51:04.000Z",
+    "why": "@rotowirenba.bsky.social: Karl-Anthony Towns: Sidelined against Portland \n\n http"
+   }
+  },
+  "401910033|normanpowell|q": {
+   "game": "401910033",
+   "start": "2026-11-23T00:00Z",
+   "team": "26",
+   "name": "Norman Powell",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-11-22T00:32:28.725Z",
+    "own": "2026-11-22T00:11:28.000Z",
+    "why": "@rotowirenba.bsky.social: Norman Powell: Questionable to play Sunday \n\n https://"
+   }
+  },
+  "401910033|pjwashington|out": {
+   "game": "401910033",
+   "start": "2026-11-23T00:00Z",
+   "team": "6",
+   "name": "P.J. Washington",
+   "status": "out",
+   "athlete": "4278078",
+   "espn": {
+    "seen": "2026-11-22T04:28:43.746Z",
+    "own": "2026-11-21T23:14:00.000Z"
+   }
+  },
+  "401910033|tobilawal|out": {
+   "game": "401910033",
+   "start": "2026-11-23T00:00Z",
+   "team": "6",
+   "name": "Tobi Lawal",
+   "status": "out",
+   "athlete": "5106040",
+   "espn": {
+    "seen": "2026-11-22T04:28:43.746Z",
+    "own": "2026-11-21T15:08:00.000Z"
+   }
+  },
+  "401910033|derecklively|out": {
+   "game": "401910033",
+   "start": "2026-11-23T00:00Z",
+   "team": "6",
+   "name": "Dereck Lively II",
+   "status": "out",
+   "athlete": "4683688",
+   "espn": {
+    "seen": "2026-11-22T04:28:43.746Z",
+    "own": "2026-11-20T19:31:00.000Z"
+   }
+  },
+  "401910033|sergiodelarrea|out": {
+   "game": "401910033",
+   "start": "2026-11-23T00:00Z",
+   "team": "6",
+   "name": "Sergio de Larrea",
+   "status": "out",
+   "athlete": "5279129",
+   "espn": {
+    "seen": "2026-11-22T04:28:43.746Z",
+    "own": "2026-11-17T22:53:00.000Z"
+   }
+  },
+  "401910033|tarikbiberovic|out": {
+   "game": "401910033",
+   "start": "2026-11-23T00:00Z",
+   "team": "6",
+   "name": "Tarik Biberovic",
+   "status": "out",
+   "athlete": "5148538",
+   "espn": {
+    "seen": "2026-11-22T04:28:43.746Z",
+    "own": "2026-11-17T22:42:00.000Z"
+   }
+  },
+  "401910033|pjwashington|q": {
+   "game": "401910033",
+   "start": "2026-11-23T00:00Z",
+   "team": "6",
+   "name": "P.J. Washington",
+   "status": "q",
+   "sleeper": {
+    "seen": "2026-11-21T20:06:41.233Z",
+    "own": "2026-11-21T19:25:57.037Z"
+   }
+  },
+  "401910034|karlanthonytowns|q": {
+   "game": "401910034",
+   "start": "2026-11-23T01:00Z",
+   "team": "18",
+   "name": "Karl-Anthony Towns",
+   "status": "q",
+   "athlete": "3136195",
+   "espn": {
+    "seen": "2026-11-22T04:28:43.746Z",
+    "own": "2026-11-22T03:05:00.000Z"
+   }
+  },
+  "401910034|jordanclarkson|q": {
+   "game": "401910034",
+   "start": "2026-11-23T01:00Z",
+   "team": "18",
+   "name": "Jordan Clarkson",
+   "status": "q",
+   "athlete": "2528426",
+   "espn": {
+    "seen": "2026-11-22T04:28:43.746Z",
+    "own": "2026-11-22T03:05:00.000Z"
+   }
+  },
+  "401910034|oganunoby|q": {
+   "game": "401910034",
+   "start": "2026-11-23T01:00Z",
+   "team": "18",
+   "name": "OG Anunoby",
+   "status": "q",
+   "athlete": "3934719",
+   "espn": {
+    "seen": "2026-11-22T04:28:43.746Z",
+    "own": "2026-11-22T03:04:00.000Z"
+   }
+  },
+  "401910034|mitchellrobinson|out": {
+   "game": "401910034",
+   "start": "2026-11-23T01:00Z",
+   "team": "18",
+   "name": "Mitchell Robinson",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-21T21:02:41.157Z",
+    "own": "2026-11-21T20:55:09.000Z",
+    "why": "@rotowirenba.bsky.social: Mitchell Robinson: Under the weather, won't play Satur"
+   }
+  },
+  "401910034|oganunoby|out": {
+   "game": "401910034",
+   "start": "2026-11-23T01:00Z",
+   "team": "18",
+   "name": "OG Anunoby",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-21T22:05:33.976Z",
+    "own": "2026-11-21T21:49:45.000Z",
+    "why": "@rotowirenba.bsky.social: OG Anunoby: Won't play Saturday \n\n https://www.rotowir"
+   }
+  },
+  "401910034|kingstonflemings|q": {
+   "game": "401910034",
+   "start": "2026-11-23T01:00Z",
+   "team": "18",
+   "name": "Kingston Flemings",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-11-21T23:09:57.634Z",
+    "own": "2026-11-21T22:16:52.000Z",
+    "why": "@rotowirenba.bsky.social: Kingston Flemings: Questionable for Sunday \n\n https://"
+   }
+  },
+  "401910034|pascalsiakam|q": {
+   "game": "401910034",
+   "start": "2026-11-23T01:00Z",
+   "team": "18",
+   "name": "Pascal Siakam",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-11-21T23:09:57.634Z",
+    "own": "2026-11-21T22:19:21.000Z",
+    "why": "@rotowirenba.bsky.social: Pascal Siakam: Questionable versus Knicks \n\n https://w"
+   },
+   "athlete": "3149673",
+   "espn": {
+    "seen": "2026-11-22T04:28:43.746Z",
+    "own": "2026-11-21T22:19:00.000Z"
+   }
+  },
+  "401910034|alexcaruso|out": {
+   "game": "401910034",
+   "start": "2026-11-23T01:00Z",
+   "team": "18",
+   "name": "Alex Caruso",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-21T23:09:57.634Z",
+    "own": "2026-11-21T22:29:44.000Z",
+    "why": "@rotowirenba.bsky.social: Alex Caruso: Ruled out for Sunday \n\n https://www.rotow"
+   }
+  },
+  "401910034|shaigilgeousalexander|q": {
+   "game": "401910034",
+   "start": "2026-11-23T01:00Z",
+   "team": "18",
+   "name": "Shai Gilgeous-Alexander",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-11-21T23:09:57.634Z",
+    "own": "2026-11-21T22:45:23.000Z",
+    "why": "@rotowirenba.bsky.social: Shai Gilgeous-Alexander: Questionable to play Sunday \n"
+   }
+  },
+  "401910034|karlanthonytowns|out": {
+   "game": "401910034",
+   "start": "2026-11-23T01:00Z",
+   "team": "18",
+   "name": "Karl-Anthony Towns",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-21T23:09:57.634Z",
+    "own": "2026-11-21T22:51:04.000Z",
+    "why": "@rotowirenba.bsky.social: Karl-Anthony Towns: Sidelined against Portland \n\n http"
+   }
+  },
+  "401910034|normanpowell|q": {
+   "game": "401910034",
+   "start": "2026-11-23T01:00Z",
+   "team": "18",
+   "name": "Norman Powell",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-11-22T00:32:28.725Z",
+    "own": "2026-11-22T00:11:28.000Z",
+    "why": "@rotowirenba.bsky.social: Norman Powell: Questionable to play Sunday \n\n https://"
+   }
+  },
+  "401910034|tjmcconnell|out": {
+   "game": "401910034",
+   "start": "2026-11-23T01:00Z",
+   "team": "11",
+   "name": "T.J. McConnell",
+   "status": "out",
+   "athlete": "2530530",
+   "espn": {
+    "seen": "2026-11-22T04:28:43.746Z",
+    "own": "2026-11-21T22:29:00.000Z"
+   }
+  },
+  "401910034|tyresehaliburton|out": {
+   "game": "401910034",
+   "start": "2026-11-23T01:00Z",
+   "team": "11",
+   "name": "Tyrese Haliburton",
+   "status": "out",
+   "athlete": "4396993",
+   "espn": {
+    "seen": "2026-11-22T04:28:43.746Z",
+    "own": "2026-11-20T20:41:00.000Z"
+   }
+  },
+  "401910034|johnnyfurphy|out": {
+   "game": "401910034",
+   "start": "2026-11-23T01:00Z",
+   "team": "11",
+   "name": "Johnny Furphy",
+   "status": "out",
+   "athlete": "5157066",
+   "espn": {
+    "seen": "2026-11-22T04:28:43.746Z",
+    "own": "2026-10-30T19:06:00.000Z"
+   }
+  },
+  "401910034|bensheppard|out": {
+   "game": "401910034",
+   "start": "2026-11-23T01:00Z",
+   "team": "11",
+   "name": "Ben Sheppard",
+   "status": "out",
+   "athlete": "4433076",
+   "espn": {
+    "seen": "2026-11-22T04:28:43.746Z",
+    "own": "2026-10-28T21:41:00.000Z"
+   }
   }
  }
 }
