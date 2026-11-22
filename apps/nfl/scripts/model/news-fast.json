@@ -1,28 +1,15 @@
 {
  "sport": "nfl",
  "cursor": {
-  "adamscheftermirror.bsky.social": "2026-11-22T15:31:40.155Z",
+  "adamscheftermirror.bsky.social": "2026-11-22T16:01:41.399Z",
   "rapsheet.bsky.social": "2026-11-22T15:26:15.080Z",
   "nflnewsreposterbot.bsky.social": "2026-11-16T18:35:13.806Z",
   "insidenflnews.bsky.social": "2026-11-22T15:22:59.468Z",
   "nflnewsposter.bsky.social": "2026-11-22T01:45:14.334Z",
   "rotoworld-fb.bsky.social": "2026-11-22T14:52:21.000Z",
-  "rotowirenfl.bsky.social": "2026-11-22T14:32:09.000Z"
+  "rotowirenfl.bsky.social": "2026-11-22T15:54:16.000Z"
  },
  "claims": [
-  {
-   "id": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3mzb6jnxxze2y|jackson|limited|status",
-   "at": "2026-11-01T16:00:02.000Z",
-   "seen": "2026-11-01T16:07:42.194Z",
-   "handle": "rotoworld-fb.bsky.social",
-   "post": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3mzb6jnxxze2y",
-   "player": "Jackson",
-   "team": null,
-   "status": "limited",
-   "kind": "status",
-   "confidence": 0.5,
-   "text": "Wolfe: Jackson (ankle) won't be 100 percent today"
-  },
   {
    "id": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3mzb7znznjq2j|djmoore|active|return",
    "at": "2026-11-01T16:26:52.000Z",
@@ -18755,6 +18742,19 @@
    "kind": "status",
    "confidence": 0.9,
    "text": "The Patriots lost QB Drake Maye for at least six weeks, possibly longer; plus, former Colts QB Daniel Jones is expected to wait to sign in the event of a QB injury on a playoff-ready team."
+  },
+  {
+   "id": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3n2vxjoxq5j2v|drakemaye|out|status",
+   "at": "2026-11-22T15:45:53.000Z",
+   "seen": "2026-11-22T16:03:54.481Z",
+   "handle": "rotowirenfl.bsky.social",
+   "post": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3n2vxjoxq5j2v",
+   "player": "Drake Maye",
+   "team": "NE",
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.9,
+   "text": "Drake Maye: Out at least six weeks, per Rapoport \n\n https://www.rotowire.com/football/player/drake-maye-17673"
   }
  ]
 }
