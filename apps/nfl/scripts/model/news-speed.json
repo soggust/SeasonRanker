@@ -19009,6 +19009,318 @@
     "seen": "2026-11-22T16:42:41.259Z",
     "own": "2026-11-22T16:37:00.000Z"
    }
+  },
+  "401873070|caedanwallace|out": {
+   "game": "401873070",
+   "start": "2026-11-22T18:00Z",
+   "team": "15",
+   "name": "Caedan Wallace",
+   "status": "out",
+   "athlete": "4426446",
+   "espn": {
+    "seen": "2026-11-22T16:45:37.311Z",
+    "own": "2026-11-22T16:40:00.000Z"
+   }
+  },
+  "401873070|justinjoly|out": {
+   "game": "401873070",
+   "start": "2026-11-22T18:00Z",
+   "team": "15",
+   "name": "Justin Joly",
+   "status": "out",
+   "athlete": "4912052",
+   "espn": {
+    "seen": "2026-11-22T16:45:37.311Z",
+    "own": "2026-11-22T16:40:00.000Z"
+   }
+  },
+  "401873070|christianhaynes|out": {
+   "game": "401873070",
+   "start": "2026-11-22T18:00Z",
+   "team": "15",
+   "name": "Christian Haynes",
+   "status": "out",
+   "athlete": "4362135",
+   "espn": {
+    "seen": "2026-11-22T16:45:37.311Z",
+    "own": "2026-11-22T16:40:00.000Z"
+   }
+  },
+  "401873071|casekeenum|out": {
+   "game": "401873071",
+   "start": "2026-11-22T18:00Z",
+   "team": "3",
+   "name": "Case Keenum",
+   "status": "out",
+   "athlete": "15168",
+   "espn": {
+    "seen": "2026-11-22T16:45:37.311Z",
+    "own": "2026-11-22T16:40:00.000Z"
+   }
+  },
+  "401873071|jaydenloving|out": {
+   "game": "401873071",
+   "start": "2026-11-22T18:00Z",
+   "team": "3",
+   "name": "Jayden Loving",
+   "status": "out",
+   "athlete": "4877376",
+   "espn": {
+    "seen": "2026-11-22T16:45:37.311Z",
+    "own": "2026-11-22T16:40:00.000Z"
+   }
+  },
+  "401873071|jordanmcfadden|out": {
+   "game": "401873071",
+   "start": "2026-11-22T18:00Z",
+   "team": "3",
+   "name": "Jordan McFadden",
+   "status": "out",
+   "athlete": "4360319",
+   "espn": {
+    "seen": "2026-11-22T16:45:37.311Z",
+    "own": "2026-11-22T16:40:00.000Z"
+   }
+  },
+  "401873071|keyshaunelliott|out": {
+   "game": "401873071",
+   "start": "2026-11-22T18:00Z",
+   "team": "3",
+   "name": "Keyshaun Elliott",
+   "status": "out",
+   "athlete": "4911952",
+   "espn": {
+    "seen": "2026-11-22T16:45:37.311Z",
+    "own": "2026-11-22T16:40:00.000Z"
+   }
+  },
+  "401873073|nicholassingleton|out": {
+   "game": "401873073",
+   "start": "2026-11-22T18:00Z",
+   "team": "10",
+   "name": "Nicholas Singleton",
+   "status": "out",
+   "athlete": "4685555",
+   "espn": {
+    "seen": "2026-11-22T16:45:37.311Z",
+    "own": "2026-11-22T16:36:00.000Z"
+   }
+  },
+  "401873073|jaylonjones|out": {
+   "game": "401873073",
+   "start": "2026-11-22T18:00Z",
+   "team": "10",
+   "name": "Jaylon Jones",
+   "status": "out",
+   "athlete": "4685145",
+   "espn": {
+    "seen": "2026-11-22T16:45:37.311Z",
+    "own": "2026-11-22T16:36:00.000Z"
+   }
+  },
+  "401873073|jackiemarshall|out": {
+   "game": "401873073",
+   "start": "2026-11-22T18:00Z",
+   "team": "10",
+   "name": "Jackie Marshall",
+   "status": "out",
+   "athlete": "5081785",
+   "espn": {
+    "seen": "2026-11-22T16:45:37.311Z",
+    "own": "2026-11-22T16:36:00.000Z"
+   }
+  },
+  "401873073|brandoncrenshawdickson|out": {
+   "game": "401873073",
+   "start": "2026-11-22T18:00Z",
+   "team": "10",
+   "name": "Brandon Crenshaw-Dickson",
+   "status": "out",
+   "athlete": "4426987",
+   "espn": {
+    "seen": "2026-11-22T16:45:37.311Z",
+    "own": "2026-11-22T16:36:00.000Z"
+   }
+  },
+  "401873073|mohamouddiabate|out": {
+   "game": "401873073",
+   "start": "2026-11-22T18:00Z",
+   "team": "10",
+   "name": "Mohamoud Diabate",
+   "status": "out",
+   "athlete": "4567403",
+   "espn": {
+    "seen": "2026-11-22T16:45:37.311Z",
+    "own": "2026-11-22T16:36:00.000Z"
+   }
+  },
+  "401873076|colepayton|out": {
+   "game": "401873076",
+   "start": "2026-11-22T18:00Z",
+   "team": "21",
+   "name": "Cole Payton",
+   "status": "out",
+   "athlete": "4879250",
+   "espn": {
+    "seen": "2026-11-22T16:45:37.311Z",
+    "own": "2026-11-22T16:38:00.000Z"
+   }
+  },
+  "401873076|jakemajors|out": {
+   "game": "401873076",
+   "start": "2026-11-22T18:00Z",
+   "team": "21",
+   "name": "Jake Majors",
+   "status": "out",
+   "athlete": "4430814",
+   "espn": {
+    "seen": "2026-11-22T16:45:37.311Z",
+    "own": "2026-11-22T16:33:00.000Z"
+   }
+  },
+  "401873076|macmcwilliams|out": {
+   "game": "401873076",
+   "start": "2026-11-22T18:00Z",
+   "team": "21",
+   "name": "Mac McWilliams",
+   "status": "out",
+   "athlete": "4689651",
+   "espn": {
+    "seen": "2026-11-22T16:45:37.311Z",
+    "own": "2026-11-22T16:33:00.000Z"
+   }
+  },
+  "401873076|ajanicornelius|out": {
+   "game": "401873076",
+   "start": "2026-11-22T18:00Z",
+   "team": "21",
+   "name": "Ajani Cornelius",
+   "status": "out",
+   "athlete": "4696203",
+   "espn": {
+    "seen": "2026-11-22T16:45:37.311Z",
+    "own": "2026-11-22T16:33:00.000Z"
+   }
+  },
+  "401873081|casekeenum|out": {
+   "game": "401873081",
+   "start": "2026-11-26T18:00Z",
+   "team": "3",
+   "name": "Case Keenum",
+   "status": "out",
+   "athlete": "15168",
+   "espn": {
+    "seen": "2026-11-22T16:45:37.311Z",
+    "own": "2026-11-22T16:40:00.000Z"
+   }
+  },
+  "401873081|jaydenloving|out": {
+   "game": "401873081",
+   "start": "2026-11-26T18:00Z",
+   "team": "3",
+   "name": "Jayden Loving",
+   "status": "out",
+   "athlete": "4877376",
+   "espn": {
+    "seen": "2026-11-22T16:45:37.311Z",
+    "own": "2026-11-22T16:40:00.000Z"
+   }
+  },
+  "401873081|jordanmcfadden|out": {
+   "game": "401873081",
+   "start": "2026-11-26T18:00Z",
+   "team": "3",
+   "name": "Jordan McFadden",
+   "status": "out",
+   "athlete": "4360319",
+   "espn": {
+    "seen": "2026-11-22T16:45:37.311Z",
+    "own": "2026-11-22T16:40:00.000Z"
+   }
+  },
+  "401873081|keyshaunelliott|out": {
+   "game": "401873081",
+   "start": "2026-11-26T18:00Z",
+   "team": "3",
+   "name": "Keyshaun Elliott",
+   "status": "out",
+   "athlete": "4911952",
+   "espn": {
+    "seen": "2026-11-22T16:45:37.311Z",
+    "own": "2026-11-22T16:40:00.000Z"
+   }
+  },
+  "401873080|jaishawnbarham|out": {
+   "game": "401873080",
+   "start": "2026-11-26T21:30Z",
+   "team": "6",
+   "name": "Jaishawn Barham",
+   "status": "out",
+   "athlete": "4685266",
+   "espn": {
+    "seen": "2026-11-22T16:45:37.311Z",
+    "own": "2026-11-22T16:31:00.000Z"
+   }
+  },
+  "401873080|jonathanbullard|out": {
+   "game": "401873080",
+   "start": "2026-11-26T21:30Z",
+   "team": "6",
+   "name": "Jonathan Bullard",
+   "status": "out",
+   "athlete": "2980097",
+   "espn": {
+    "seen": "2026-11-22T16:45:37.311Z",
+    "own": "2026-11-22T16:31:00.000Z"
+   }
+  },
+  "401873080|colepayton|out": {
+   "game": "401873080",
+   "start": "2026-11-26T21:30Z",
+   "team": "21",
+   "name": "Cole Payton",
+   "status": "out",
+   "athlete": "4879250",
+   "espn": {
+    "seen": "2026-11-22T16:45:37.311Z",
+    "own": "2026-11-22T16:38:00.000Z"
+   }
+  },
+  "401873080|jakemajors|out": {
+   "game": "401873080",
+   "start": "2026-11-26T21:30Z",
+   "team": "21",
+   "name": "Jake Majors",
+   "status": "out",
+   "athlete": "4430814",
+   "espn": {
+    "seen": "2026-11-22T16:45:37.311Z",
+    "own": "2026-11-22T16:33:00.000Z"
+   }
+  },
+  "401873080|macmcwilliams|out": {
+   "game": "401873080",
+   "start": "2026-11-26T21:30Z",
+   "team": "21",
+   "name": "Mac McWilliams",
+   "status": "out",
+   "athlete": "4689651",
+   "espn": {
+    "seen": "2026-11-22T16:45:37.311Z",
+    "own": "2026-11-22T16:33:00.000Z"
+   }
+  },
+  "401873080|ajanicornelius|out": {
+   "game": "401873080",
+   "start": "2026-11-26T21:30Z",
+   "team": "21",
+   "name": "Ajani Cornelius",
+   "status": "out",
+   "athlete": "4696203",
+   "espn": {
+    "seen": "2026-11-22T16:45:37.311Z",
+    "own": "2026-11-22T16:33:00.000Z"
+   }
   }
  }
 }
