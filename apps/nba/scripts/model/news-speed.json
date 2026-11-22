@@ -23623,6 +23623,191 @@
     "own": "2026-11-22T20:37:14.000Z",
     "why": "@rotowirenba.bsky.social: Nolan Traore: Ruled out for Monday \n\n https://www.roto"
    }
+  },
+  "401910030|giannisantetokounmpo|out": {
+   "game": "401910030",
+   "start": "2026-11-22T23:00Z",
+   "team": "14",
+   "name": "Giannis Antetokounmpo",
+   "status": "out",
+   "athlete": "3032977",
+   "espn": {
+    "seen": "2026-11-22T22:46:29.463Z",
+    "own": "2026-11-22T22:09:00.000Z"
+   }
+  },
+  "401910030|jaylontyson|q": {
+   "game": "401910030",
+   "start": "2026-11-22T23:00Z",
+   "team": "14",
+   "name": "Jaylon Tyson",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-11-22T22:15:08.066Z",
+    "own": "2026-11-22T21:51:47.000Z",
+    "why": "@rotowirenba.bsky.social: Jaylon Tyson: Upgraded to probable Monday \n\n https://w"
+   }
+  },
+  "401910030|graysonallen|out": {
+   "game": "401910030",
+   "start": "2026-11-22T23:00Z",
+   "team": "14",
+   "name": "Grayson Allen",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-22T22:15:08.066Z",
+    "own": "2026-11-22T22:08:28.000Z",
+    "why": "@rotowirenba.bsky.social: Grayson Allen: Missing third straight game Monday \n\n h"
+   }
+  },
+  "401910030|adaymara|out": {
+   "game": "401910030",
+   "start": "2026-11-22T23:00Z",
+   "team": "25",
+   "name": "Aday Mara",
+   "status": "out",
+   "athlete": "5174983",
+   "espn": {
+    "seen": "2026-11-22T22:46:29.463Z",
+    "own": "2026-11-22T22:35:00.000Z"
+   }
+  },
+  "401910030|shaigilgeousalexander|out": {
+   "game": "401910030",
+   "start": "2026-11-22T23:00Z",
+   "team": "25",
+   "name": "Shai Gilgeous-Alexander",
+   "status": "out",
+   "athlete": "4278073",
+   "espn": {
+    "seen": "2026-11-22T22:46:29.463Z",
+    "own": "2026-11-22T21:35:00.000Z"
+   },
+   "bluesky": {
+    "seen": "2026-11-22T22:15:08.066Z",
+    "own": "2026-11-22T21:35:03.000Z",
+    "why": "@rotowirenba.bsky.social: Shai Gilgeous-Alexander: Ruled out Sunday \n\n https://w"
+   }
+  },
+  "401910031|jaylontyson|q": {
+   "game": "401910031",
+   "start": "2026-11-23T00:00Z",
+   "team": "27",
+   "name": "Jaylon Tyson",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-11-22T22:15:08.066Z",
+    "own": "2026-11-22T21:51:47.000Z",
+    "why": "@rotowirenba.bsky.social: Jaylon Tyson: Upgraded to probable Monday \n\n https://w"
+   }
+  },
+  "401910031|graysonallen|out": {
+   "game": "401910031",
+   "start": "2026-11-23T00:00Z",
+   "team": "27",
+   "name": "Grayson Allen",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-22T22:15:08.066Z",
+    "own": "2026-11-22T22:08:28.000Z",
+    "why": "@rotowirenba.bsky.social: Grayson Allen: Missing third straight game Monday \n\n h"
+   }
+  },
+  "401910032|jaylontyson|q": {
+   "game": "401910032",
+   "start": "2026-11-23T00:00Z",
+   "team": "4",
+   "name": "Jaylon Tyson",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-11-22T22:15:08.066Z",
+    "own": "2026-11-22T21:51:47.000Z",
+    "why": "@rotowirenba.bsky.social: Jaylon Tyson: Upgraded to probable Monday \n\n https://w"
+   }
+  },
+  "401910032|graysonallen|out": {
+   "game": "401910032",
+   "start": "2026-11-23T00:00Z",
+   "team": "4",
+   "name": "Grayson Allen",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-22T22:15:08.066Z",
+    "own": "2026-11-22T22:08:28.000Z",
+    "why": "@rotowirenba.bsky.social: Grayson Allen: Missing third straight game Monday \n\n h"
+   }
+  },
+  "401910033|jaylontyson|q": {
+   "game": "401910033",
+   "start": "2026-11-23T00:00Z",
+   "team": "26",
+   "name": "Jaylon Tyson",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-11-22T22:15:08.066Z",
+    "own": "2026-11-22T21:51:47.000Z",
+    "why": "@rotowirenba.bsky.social: Jaylon Tyson: Upgraded to probable Monday \n\n https://w"
+   }
+  },
+  "401910033|graysonallen|out": {
+   "game": "401910033",
+   "start": "2026-11-23T00:00Z",
+   "team": "26",
+   "name": "Grayson Allen",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-22T22:15:08.066Z",
+    "own": "2026-11-22T22:08:28.000Z",
+    "why": "@rotowirenba.bsky.social: Grayson Allen: Missing third straight game Monday \n\n h"
+   }
+  },
+  "401910034|jaylontyson|q": {
+   "game": "401910034",
+   "start": "2026-11-23T01:00Z",
+   "team": "18",
+   "name": "Jaylon Tyson",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-11-22T22:15:08.066Z",
+    "own": "2026-11-22T21:51:47.000Z",
+    "why": "@rotowirenba.bsky.social: Jaylon Tyson: Upgraded to probable Monday \n\n https://w"
+   }
+  },
+  "401910034|graysonallen|out": {
+   "game": "401910034",
+   "start": "2026-11-23T01:00Z",
+   "team": "18",
+   "name": "Grayson Allen",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-22T22:15:08.066Z",
+    "own": "2026-11-22T22:08:28.000Z",
+    "why": "@rotowirenba.bsky.social: Grayson Allen: Missing third straight game Monday \n\n h"
+   }
+  },
+  "401910035|jaylontyson|q": {
+   "game": "401910035",
+   "start": "2026-11-23T01:30Z",
+   "team": "9",
+   "name": "Jaylon Tyson",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-11-22T22:15:08.066Z",
+    "own": "2026-11-22T21:51:47.000Z",
+    "why": "@rotowirenba.bsky.social: Jaylon Tyson: Upgraded to probable Monday \n\n https://w"
+   }
+  },
+  "401910035|graysonallen|out": {
+   "game": "401910035",
+   "start": "2026-11-23T01:30Z",
+   "team": "9",
+   "name": "Grayson Allen",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-22T22:15:08.066Z",
+    "own": "2026-11-22T22:08:28.000Z",
+    "why": "@rotowirenba.bsky.social: Grayson Allen: Missing third straight game Monday \n\n h"
+   }
   }
  }
 }

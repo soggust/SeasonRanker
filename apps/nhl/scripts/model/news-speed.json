@@ -9592,6 +9592,18 @@
     "own": "2026-11-22T20:02:53.000Z",
     "why": "@dailyfaceoff.bsky.social: Blackhawks’ Kaiser suspended three games for hit on F"
    }
+  },
+  "401892771|declancarlile|out": {
+   "game": "401892771",
+   "start": "2026-11-23T00:00Z",
+   "team": "16",
+   "name": "Declan Carlile",
+   "status": "out",
+   "athlete": "5103825",
+   "espn": {
+    "seen": "2026-11-22T22:46:48.512Z",
+    "own": "2026-11-22T22:10:00.000Z"
+   }
   }
  }
 }

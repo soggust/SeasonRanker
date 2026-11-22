@@ -2,27 +2,14 @@
  "sport": "nfl",
  "cursor": {
   "adamscheftermirror.bsky.social": "2026-11-22T22:11:43.623Z",
-  "rapsheet.bsky.social": "2026-11-22T21:34:17.309Z",
+  "rapsheet.bsky.social": "2026-11-22T22:47:12.595Z",
   "nflnewsreposterbot.bsky.social": "2026-11-16T18:35:13.806Z",
   "insidenflnews.bsky.social": "2026-11-22T21:43:47.240Z",
-  "nflnewsposter.bsky.social": "2026-11-22T22:12:11.703Z",
-  "rotoworld-fb.bsky.social": "2026-11-22T22:10:59.000Z",
-  "rotowirenfl.bsky.social": "2026-11-22T22:15:01.000Z"
+  "nflnewsposter.bsky.social": "2026-11-22T22:42:08.708Z",
+  "rotoworld-fb.bsky.social": "2026-11-22T22:41:44.000Z",
+  "rotowirenfl.bsky.social": "2026-11-22T22:41:17.000Z"
  },
  "claims": [
-  {
-   "id": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3mzbullqwpq2c|hunterhenry|questionable|status",
-   "at": "2026-11-01T22:34:49.000Z",
-   "seen": "2026-11-01T22:36:29.944Z",
-   "handle": "rotowirenfl.bsky.social",
-   "post": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3mzbullqwpq2c",
-   "player": "Hunter Henry",
-   "team": null,
-   "status": "questionable",
-   "kind": "status",
-   "confidence": 0.9,
-   "text": "Hunter Henry: Questionable to return Sunday \n\n https://www.rotowire.com/football/player/hunter-henry-10735"
-  },
   {
    "id": "at://did:plc:fuqjc7x4gxvnwzksnlxwbe4x/app.bsky.feed.post/3mzbx23ohnk2g|tylerhuntley|questionable|status",
    "at": "2026-11-01T23:18:43.301Z",
@@ -18183,6 +18170,19 @@
    "kind": "status",
    "confidence": 0.9,
    "text": "Derrick Henry cleared concussion protocol"
+  },
+  {
+   "id": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3n2woqi7adz2w|saquonbarkley|questionable|status",
+   "at": "2026-11-22T22:41:17.000Z",
+   "seen": "2026-11-22T22:48:17.276Z",
+   "handle": "rotowirenfl.bsky.social",
+   "post": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3n2woqi7adz2w",
+   "player": "Saquon Barkley",
+   "team": null,
+   "status": "questionable",
+   "kind": "status",
+   "confidence": 0.4,
+   "text": "Saquon Barkley: Dealing with apparent arm injury \n\n https://www.rotowire.com/football/player/saquon-barkley-12507"
   }
  ]
 }

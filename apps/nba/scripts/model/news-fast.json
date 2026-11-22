@@ -1,7 +1,7 @@
 {
  "sport": "nba",
  "cursor": {
-  "rotowirenba.bsky.social": "2026-11-22T22:11:59.000Z",
+  "rotowirenba.bsky.social": "2026-11-22T22:24:16.000Z",
   "insidenbanews.bsky.social": "2026-11-20T20:35:06.661Z",
   "shamsbot.bsky.social": "2026-11-22T20:01:51.000Z"
  },
@@ -7649,6 +7649,45 @@
    "kind": "return",
    "confidence": 0.9,
    "text": "Jalen Smith: Returning Sunday \n\n https://www.rotowire.com/basketball/player/jalen-smith-5169"
+  },
+  {
+   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3n2wnfildmi2v|jaylenbrown|active|status",
+   "at": "2026-11-22T22:17:14.000Z",
+   "seen": "2026-11-22T22:48:17.276Z",
+   "handle": "rotowirenba.bsky.social",
+   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3n2wnfildmi2v",
+   "player": "Jaylen Brown",
+   "team": "BOS",
+   "status": "active",
+   "kind": "status",
+   "confidence": 0.6,
+   "text": "Jaylen Brown: Probable for Monday \n\n https://www.rotowire.com/basketball/player/jaylen-brown-3894"
+  },
+  {
+   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3n2wngukpir2p|cameronboozer|out|status",
+   "at": "2026-11-22T22:18:00.000Z",
+   "seen": "2026-11-22T22:48:17.276Z",
+   "handle": "rotowirenba.bsky.social",
+   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3n2wngukpir2p",
+   "player": "Cameron Boozer",
+   "team": null,
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.9,
+   "text": "Cameron Boozer: Out again Monday \n\n https://www.rotowire.com/basketball/player/cameron-boozer-6923"
+  },
+  {
+   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3n2wns2uarv2u|pjwashington|out|status",
+   "at": "2026-11-22T22:24:16.000Z",
+   "seen": "2026-11-22T22:48:17.276Z",
+   "handle": "rotowirenba.bsky.social",
+   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3n2wns2uarv2u",
+   "player": "P.J. Washington",
+   "team": null,
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.9,
+   "text": "P.J. Washington: Ruled out Sunday \n\n https://www.rotowire.com/basketball/player/pj-washington-4781"
   }
  ]
 }
