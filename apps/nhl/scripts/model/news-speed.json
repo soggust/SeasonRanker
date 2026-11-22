@@ -8916,6 +8916,18 @@
     "own": "2026-11-22T01:56:31.000Z",
     "why": "@dailyfaceoff.bsky.social: Connor Bedard to undergo shoulder surgery"
    }
+  },
+  "401892770|connormcmichael|q": {
+   "game": "401892770",
+   "start": "2026-11-23T00:00Z",
+   "team": "19",
+   "name": "Connor McMichael",
+   "status": "q",
+   "athlete": "4565246",
+   "espn": {
+    "seen": "2026-11-22T13:56:36.282Z",
+    "own": "2026-11-22T13:40:00.000Z"
+   }
   }
  }
 }
