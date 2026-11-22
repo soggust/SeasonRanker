@@ -1,66 +1,6 @@
 {
  "sport": "nhl",
  "entries": {
-  "401892693|parkerwotherspoon|out": {
-   "game": "401892693",
-   "start": "2026-11-12T02:30Z",
-   "team": "37",
-   "name": "Parker Wotherspoon",
-   "status": "out",
-   "athlete": "3942638",
-   "espn": {
-    "seen": "2026-11-10T16:44:22.818Z",
-    "own": "2026-10-21T19:24:00.000Z"
-   }
-  },
-  "401892693|nateschmidt|out": {
-   "game": "401892693",
-   "start": "2026-11-12T02:30Z",
-   "team": "129764",
-   "name": "Nate Schmidt",
-   "status": "out",
-   "athlete": "3024798",
-   "espn": {
-    "seen": "2026-11-10T16:44:22.818Z",
-    "own": "2026-11-09T20:09:00.000Z"
-   }
-  },
-  "401892693|kaileryamamoto|out": {
-   "game": "401892693",
-   "start": "2026-11-12T02:30Z",
-   "team": "129764",
-   "name": "Kailer Yamamoto",
-   "status": "out",
-   "athlete": "4233648",
-   "espn": {
-    "seen": "2026-11-10T16:44:22.818Z",
-    "own": "2026-11-07T15:04:00.000Z"
-   }
-  },
-  "401892693|johnmarino|out": {
-   "game": "401892693",
-   "start": "2026-11-12T02:30Z",
-   "team": "129764",
-   "name": "John Marino",
-   "status": "out",
-   "athlete": "3941974",
-   "espn": {
-    "seen": "2026-11-10T16:44:22.818Z",
-    "own": "2026-11-01T20:27:00.000Z"
-   }
-  },
-  "401892693|mavericlamoureux|out": {
-   "game": "401892693",
-   "start": "2026-11-12T02:30Z",
-   "team": "129764",
-   "name": "Maveric Lamoureux",
-   "status": "out",
-   "athlete": "5080177",
-   "espn": {
-    "seen": "2026-11-10T16:44:22.818Z",
-    "own": "2026-09-28T21:02:00.000Z"
-   }
-  },
   "401892694|ajgreer|out": {
    "game": "401892694",
    "start": "2026-11-12T03:00Z",
@@ -223,34 +163,6 @@
    "espn": {
     "seen": "2026-11-10T16:44:22.818Z",
     "own": "2026-09-27T15:21:00.000Z"
-   }
-  },
-  "401892693|dylanguenther|q": {
-   "game": "401892693",
-   "start": "2026-11-12T02:30Z",
-   "team": "129764",
-   "name": "Dylan Guenther",
-   "status": "q",
-   "athlete": "4874723",
-   "espn": {
-    "seen": "2026-11-10T20:00:19.322Z",
-    "own": "2026-11-10T19:46:00.000Z"
-   }
-  },
-  "401892693|noahhanifin|out": {
-   "game": "401892693",
-   "start": "2026-11-12T02:30Z",
-   "team": "37",
-   "name": "Noah Hanifin",
-   "status": "out",
-   "athlete": "3652964",
-   "espn": {
-    "seen": "2026-11-10T20:44:42.046Z",
-    "own": "2026-11-10T20:34:00.000Z"
-   },
-   "sleeper": {
-    "seen": "2026-11-11T21:14:10.633Z",
-    "own": "2026-11-10T20:40:18.731Z"
    }
   },
   "401892694|jonathanmarchessault|out": {
@@ -1294,18 +1206,6 @@
    "espn": {
     "seen": "2026-11-11T21:14:10.633Z",
     "own": "2026-11-11T20:40:00.000Z"
-   }
-  },
-  "401892693|dylanguenther|out": {
-   "game": "401892693",
-   "start": "2026-11-12T02:30Z",
-   "team": "129764",
-   "name": "Dylan Guenther",
-   "status": "out",
-   "athlete": "4874723",
-   "espn": {
-    "seen": "2026-11-12T01:32:32.443Z",
-    "own": "2026-11-12T01:21:00.000Z"
    }
   },
   "401892704|dylanguenther|out": {
@@ -9119,6 +9019,78 @@
    "espn": {
     "seen": "2026-11-22T01:45:37.708Z",
     "own": "2026-11-22T01:31:00.000Z"
+   }
+  },
+  "401892766|connorbedard|out": {
+   "game": "401892766",
+   "start": "2026-11-22T03:00Z",
+   "team": "22",
+   "name": "Connor Bedard",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-22T02:16:18.071Z",
+    "own": "2026-11-22T01:56:31.000Z",
+    "why": "@dailyfaceoff.bsky.social: Connor Bedard to undergo shoulder surgery"
+   }
+  },
+  "401892767|connorbedard|out": {
+   "game": "401892767",
+   "start": "2026-11-22T03:00Z",
+   "team": "18",
+   "name": "Connor Bedard",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-22T02:16:18.071Z",
+    "own": "2026-11-22T01:56:31.000Z",
+    "why": "@dailyfaceoff.bsky.social: Connor Bedard to undergo shoulder surgery"
+   }
+  },
+  "401892768|connorbedard|out": {
+   "game": "401892768",
+   "start": "2026-11-22T17:30Z",
+   "team": "13",
+   "name": "Connor Bedard",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-22T02:16:18.071Z",
+    "own": "2026-11-22T01:56:31.000Z",
+    "why": "@dailyfaceoff.bsky.social: Connor Bedard to undergo shoulder surgery"
+   }
+  },
+  "401892769|connorbedard|out": {
+   "game": "401892769",
+   "start": "2026-11-22T22:00Z",
+   "team": "20",
+   "name": "Connor Bedard",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-22T02:16:18.071Z",
+    "own": "2026-11-22T01:56:31.000Z",
+    "why": "@dailyfaceoff.bsky.social: Connor Bedard to undergo shoulder surgery"
+   }
+  },
+  "401892770|connorbedard|out": {
+   "game": "401892770",
+   "start": "2026-11-23T00:00Z",
+   "team": "19",
+   "name": "Connor Bedard",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-22T02:16:18.071Z",
+    "own": "2026-11-22T01:56:31.000Z",
+    "why": "@dailyfaceoff.bsky.social: Connor Bedard to undergo shoulder surgery"
+   }
+  },
+  "401892771|connorbedard|out": {
+   "game": "401892771",
+   "start": "2026-11-23T00:00Z",
+   "team": "9",
+   "name": "Connor Bedard",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-22T02:16:18.071Z",
+    "own": "2026-11-22T01:56:31.000Z",
+    "why": "@dailyfaceoff.bsky.social: Connor Bedard to undergo shoulder surgery"
    }
   }
  }
