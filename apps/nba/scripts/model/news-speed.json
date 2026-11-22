@@ -22889,6 +22889,11 @@
    "espn": {
     "seen": "2026-11-22T04:28:43.746Z",
     "own": "2026-11-21T23:14:00.000Z"
+   },
+   "bluesky": {
+    "seen": "2026-11-22T19:09:33.146Z",
+    "own": "2026-11-22T19:07:42.000Z",
+    "why": "@rotowirenba.bsky.social: P.J. Washington: Doubtful to play Sunday \n\n https://ww"
    }
   },
   "401910033|tobilawal|out": {
@@ -23345,6 +23350,90 @@
    "espn": {
     "seen": "2026-11-22T18:46:38.738Z",
     "own": "2026-11-22T18:21:00.000Z"
+   }
+  },
+  "401910029|pjwashington|out": {
+   "game": "401910029",
+   "start": "2026-11-22T20:30Z",
+   "team": "1",
+   "name": "P.J. Washington",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-22T19:09:33.146Z",
+    "own": "2026-11-22T19:07:42.000Z",
+    "why": "@rotowirenba.bsky.social: P.J. Washington: Doubtful to play Sunday \n\n https://ww"
+   }
+  },
+  "401910030|pjwashington|out": {
+   "game": "401910030",
+   "start": "2026-11-22T23:00Z",
+   "team": "14",
+   "name": "P.J. Washington",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-22T19:09:33.146Z",
+    "own": "2026-11-22T19:07:42.000Z",
+    "why": "@rotowirenba.bsky.social: P.J. Washington: Doubtful to play Sunday \n\n https://ww"
+   }
+  },
+  "401910031|pjwashington|out": {
+   "game": "401910031",
+   "start": "2026-11-23T00:00Z",
+   "team": "27",
+   "name": "P.J. Washington",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-22T19:09:33.146Z",
+    "own": "2026-11-22T19:07:42.000Z",
+    "why": "@rotowirenba.bsky.social: P.J. Washington: Doubtful to play Sunday \n\n https://ww"
+   }
+  },
+  "401910032|pjwashington|out": {
+   "game": "401910032",
+   "start": "2026-11-23T00:00Z",
+   "team": "4",
+   "name": "P.J. Washington",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-22T19:09:33.146Z",
+    "own": "2026-11-22T19:07:42.000Z",
+    "why": "@rotowirenba.bsky.social: P.J. Washington: Doubtful to play Sunday \n\n https://ww"
+   }
+  },
+  "401910033|walterclayton|q": {
+   "game": "401910033",
+   "start": "2026-11-23T00:00Z",
+   "team": "6",
+   "name": "Walter Clayton Jr.",
+   "status": "q",
+   "athlete": "4896372",
+   "espn": {
+    "seen": "2026-11-22T19:29:54.540Z",
+    "own": "2026-11-22T19:07:00.000Z"
+   }
+  },
+  "401910034|pjwashington|out": {
+   "game": "401910034",
+   "start": "2026-11-23T01:00Z",
+   "team": "18",
+   "name": "P.J. Washington",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-22T19:09:33.146Z",
+    "own": "2026-11-22T19:07:42.000Z",
+    "why": "@rotowirenba.bsky.social: P.J. Washington: Doubtful to play Sunday \n\n https://ww"
+   }
+  },
+  "401910035|pjwashington|out": {
+   "game": "401910035",
+   "start": "2026-11-23T01:30Z",
+   "team": "9",
+   "name": "P.J. Washington",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-22T19:09:33.146Z",
+    "own": "2026-11-22T19:07:42.000Z",
+    "why": "@rotowirenba.bsky.social: P.J. Washington: Doubtful to play Sunday \n\n https://ww"
    }
   }
  }
