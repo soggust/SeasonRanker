@@ -23013,6 +23013,11 @@
     "seen": "2026-11-21T22:05:33.976Z",
     "own": "2026-11-21T21:49:45.000Z",
     "why": "@rotowirenba.bsky.social: OG Anunoby: Won't play Saturday \n\n https://www.rotowir"
+   },
+   "athlete": "3934719",
+   "espn": {
+    "seen": "2026-11-22T18:15:20.404Z",
+    "own": "2026-11-22T18:09:00.000Z"
    }
   },
   "401910034|kingstonflemings|q": {
@@ -23234,6 +23239,95 @@
    "espn": {
     "seen": "2026-11-22T17:43:20.977Z",
     "own": "2026-11-22T17:24:00.000Z"
+   }
+  },
+  "401910029|jordanclarkson|out": {
+   "game": "401910029",
+   "start": "2026-11-22T20:30Z",
+   "team": "1",
+   "name": "Jordan Clarkson",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-22T18:06:03.764Z",
+    "own": "2026-11-22T18:05:29.000Z",
+    "why": "@rotowirenba.bsky.social: Jordan Clarkson: Won't play Sunday \n\n https://www.roto"
+   }
+  },
+  "401910030|jordanclarkson|out": {
+   "game": "401910030",
+   "start": "2026-11-22T23:00Z",
+   "team": "14",
+   "name": "Jordan Clarkson",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-22T18:06:03.764Z",
+    "own": "2026-11-22T18:05:29.000Z",
+    "why": "@rotowirenba.bsky.social: Jordan Clarkson: Won't play Sunday \n\n https://www.roto"
+   }
+  },
+  "401910031|jordanclarkson|out": {
+   "game": "401910031",
+   "start": "2026-11-23T00:00Z",
+   "team": "27",
+   "name": "Jordan Clarkson",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-22T18:06:03.764Z",
+    "own": "2026-11-22T18:05:29.000Z",
+    "why": "@rotowirenba.bsky.social: Jordan Clarkson: Won't play Sunday \n\n https://www.roto"
+   }
+  },
+  "401910032|jordanclarkson|out": {
+   "game": "401910032",
+   "start": "2026-11-23T00:00Z",
+   "team": "4",
+   "name": "Jordan Clarkson",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-22T18:06:03.764Z",
+    "own": "2026-11-22T18:05:29.000Z",
+    "why": "@rotowirenba.bsky.social: Jordan Clarkson: Won't play Sunday \n\n https://www.roto"
+   }
+  },
+  "401910033|jordanclarkson|out": {
+   "game": "401910033",
+   "start": "2026-11-23T00:00Z",
+   "team": "26",
+   "name": "Jordan Clarkson",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-22T18:06:03.764Z",
+    "own": "2026-11-22T18:05:29.000Z",
+    "why": "@rotowirenba.bsky.social: Jordan Clarkson: Won't play Sunday \n\n https://www.roto"
+   }
+  },
+  "401910034|jordanclarkson|out": {
+   "game": "401910034",
+   "start": "2026-11-23T01:00Z",
+   "team": "18",
+   "name": "Jordan Clarkson",
+   "status": "out",
+   "athlete": "2528426",
+   "espn": {
+    "seen": "2026-11-22T18:15:20.404Z",
+    "own": "2026-11-22T18:05:00.000Z"
+   },
+   "bluesky": {
+    "seen": "2026-11-22T18:06:03.764Z",
+    "own": "2026-11-22T18:05:29.000Z",
+    "why": "@rotowirenba.bsky.social: Jordan Clarkson: Won't play Sunday \n\n https://www.roto"
+   }
+  },
+  "401910035|jordanclarkson|out": {
+   "game": "401910035",
+   "start": "2026-11-23T01:30Z",
+   "team": "9",
+   "name": "Jordan Clarkson",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-22T18:06:03.764Z",
+    "own": "2026-11-22T18:05:29.000Z",
+    "why": "@rotowirenba.bsky.social: Jordan Clarkson: Won't play Sunday \n\n https://www.roto"
    }
   }
  }
