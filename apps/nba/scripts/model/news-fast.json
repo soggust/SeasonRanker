@@ -1,63 +1,11 @@
 {
  "sport": "nba",
  "cursor": {
-  "rotowirenba.bsky.social": "2026-11-22T19:07:42.000Z",
+  "rotowirenba.bsky.social": "2026-11-22T21:02:48.000Z",
   "insidenbanews.bsky.social": "2026-11-20T20:35:06.661Z",
-  "shamsbot.bsky.social": "2026-11-20T20:29:39.000Z"
+  "shamsbot.bsky.social": "2026-11-22T20:01:51.000Z"
  },
  "claims": [
-  {
-   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mzbo6lw4bs2g|fredvanvleet|active|status",
-   "at": "2026-11-01T20:40:10.000Z",
-   "seen": "2026-11-01T20:40:54.934Z",
-   "handle": "rotowirenba.bsky.social",
-   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mzbo6lw4bs2g",
-   "player": "Fred VanVleet",
-   "team": null,
-   "status": "active",
-   "kind": "status",
-   "confidence": 0.7,
-   "text": "Fred VanVleet: Not listed on injury report \n\n https://www.rotowire.com/basketball/player/fred-vanvleet-3935"
-  },
-  {
-   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mzboafdyp72e|reedsheppard|questionable|status",
-   "at": "2026-11-01T20:41:11.000Z",
-   "seen": "2026-11-01T21:01:52.142Z",
-   "handle": "rotowirenba.bsky.social",
-   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mzboafdyp72e",
-   "player": "Reed Sheppard",
-   "team": null,
-   "status": "questionable",
-   "kind": "status",
-   "confidence": 0.9,
-   "text": "Reed Sheppard: Questionable versus Celtics \n\n https://www.rotowire.com/basketball/player/reed-sheppard-6257"
-  },
-  {
-   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mzbollpu2h24|dejountemurray|active|status",
-   "at": "2026-11-01T20:47:26.000Z",
-   "seen": "2026-11-01T21:01:52.142Z",
-   "handle": "rotowirenba.bsky.social",
-   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mzbollpu2h24",
-   "player": "Dejounte Murray",
-   "team": null,
-   "status": "active",
-   "kind": "status",
-   "confidence": 0.8,
-   "text": "Dejounte Murray: Not listed on injury report \n\n https://www.rotowire.com/basketball/player/dejounte-murray-3856"
-  },
-  {
-   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mzbpqeffmm23|nicclaxton|doubtful|status",
-   "at": "2026-11-01T21:08:00.000Z",
-   "seen": "2026-11-01T21:23:48.156Z",
-   "handle": "rotowirenba.bsky.social",
-   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mzbpqeffmm23",
-   "player": "Nic Claxton",
-   "team": "BKN",
-   "status": "doubtful",
-   "kind": "status",
-   "confidence": 0.95,
-   "text": "Nic Claxton: Doubtful against Philadelphia \n\n https://www.rotowire.com/basketball/player/nic-claxton-4827"
-  },
   {
    "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mzbqrwjgdl2q|jaysontatum|active|return",
    "at": "2026-11-01T21:26:46.000Z",
@@ -7597,6 +7545,71 @@
    "kind": "status",
    "confidence": 0.95,
    "text": "P.J. Washington: Doubtful to play Sunday \n\n https://www.rotowire.com/basketball/player/pj-washington-4781"
+  },
+  {
+   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3n2whsov2rc2u|nolantraore|out|status",
+   "at": "2026-11-22T20:37:14.000Z",
+   "seen": "2026-11-22T21:15:00.553Z",
+   "handle": "rotowirenba.bsky.social",
+   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3n2whsov2rc2u",
+   "player": "Nolan Traore",
+   "team": null,
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.95,
+   "text": "Nolan Traore: Ruled out for Monday \n\n https://www.rotowire.com/basketball/player/nolan-traore-6587"
+  },
+  {
+   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3n2wikf4u4q2p|zionwilliamson|active|status",
+   "at": "2026-11-22T20:50:30.000Z",
+   "seen": "2026-11-22T21:15:00.553Z",
+   "handle": "rotowirenba.bsky.social",
+   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3n2wikf4u4q2p",
+   "player": "Zion Williamson",
+   "team": null,
+   "status": "active",
+   "kind": "status",
+   "confidence": 0.6,
+   "text": "Zion Williamson: Probable for Monday \n\n https://www.rotowire.com/basketball/player/zion-williamson-4777"
+  },
+  {
+   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3n2wiukjn6m2e|jaysontatum|active|status",
+   "at": "2026-11-22T20:56:11.000Z",
+   "seen": "2026-11-22T21:15:00.553Z",
+   "handle": "rotowirenba.bsky.social",
+   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3n2wiukjn6m2e",
+   "player": "Jayson Tatum",
+   "team": null,
+   "status": "active",
+   "kind": "status",
+   "confidence": 0.8,
+   "text": "Jayson Tatum: Off injury report Sunday \n\n https://www.rotowire.com/basketball/player/jayson-tatum-4108"
+  },
+  {
+   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3n2wj27kd6z2l|derrickwhite|active|status",
+   "at": "2026-11-22T20:59:21.000Z",
+   "seen": "2026-11-22T21:15:00.553Z",
+   "handle": "rotowirenba.bsky.social",
+   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3n2wj27kd6z2l",
+   "player": "Derrick White",
+   "team": null,
+   "status": "active",
+   "kind": "status",
+   "confidence": 0.8,
+   "text": "Derrick White: Off injury report Sunday \n\n https://www.rotowire.com/basketball/player/derrick-white-4195"
+  },
+  {
+   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3n2wjaey3cs25|treymurphy|active|status",
+   "at": "2026-11-22T21:02:48.000Z",
+   "seen": "2026-11-22T21:15:00.553Z",
+   "handle": "rotowirenba.bsky.social",
+   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3n2wjaey3cs25",
+   "player": "Trey Murphy",
+   "team": null,
+   "status": "active",
+   "kind": "status",
+   "confidence": 0.6,
+   "text": "Trey Murphy: Probable for Monday \n\n https://www.rotowire.com/basketball/player/trey-murphy-5401"
   }
  ]
 }

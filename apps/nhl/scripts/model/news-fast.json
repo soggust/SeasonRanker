@@ -3,50 +3,11 @@
  "cursor": {
   "johnston-bot.bsky.social": "2026-11-22T17:22:51.984Z",
   "notfriedgehnic.bsky.social": "2026-11-22T19:20:36.239Z",
-  "dailyfaceoff.bsky.social": "2026-11-22T19:08:46.000Z",
-  "dfotoronto.bsky.social": "2026-11-22T18:12:30.694Z",
-  "marklazerus.bsky.social": "2026-11-22T19:12:23.822Z"
+  "dailyfaceoff.bsky.social": "2026-11-22T20:43:44.000Z",
+  "dfotoronto.bsky.social": "2026-11-22T20:48:44.076Z",
+  "marklazerus.bsky.social": "2026-11-22T20:26:13.114Z"
  },
  "claims": [
-  {
-   "id": "at://did:plc:3uus7y6h3rlrk6sbctzxm4bg/app.bsky.feed.post/3mzblnd57xv2h|ryanpulock|out|status",
-   "at": "2026-11-01T19:54:43.000Z",
-   "seen": "2026-11-01T19:57:45.897Z",
-   "handle": "dailyfaceoff.bsky.social",
-   "post": "at://did:plc:3uus7y6h3rlrk6sbctzxm4bg/app.bsky.feed.post/3mzblnd57xv2h",
-   "player": "Ryan Pulock",
-   "team": "NYI",
-   "status": "out",
-   "kind": "status",
-   "confidence": 0.95,
-   "text": "Islanders’ Ryan Pulock out 2-4 weeks with upper-body injury"
-  },
-  {
-   "id": "at://did:plc:3uus7y6h3rlrk6sbctzxm4bg/app.bsky.feed.post/3mzbongu7if24|traviskonecny|active|status",
-   "at": "2026-11-01T20:48:28.000Z",
-   "seen": "2026-11-01T21:01:52.142Z",
-   "handle": "dailyfaceoff.bsky.social",
-   "post": "at://did:plc:3uus7y6h3rlrk6sbctzxm4bg/app.bsky.feed.post/3mzbongu7if24",
-   "player": "Travis Konecny",
-   "team": "PHI",
-   "status": "active",
-   "kind": "status",
-   "confidence": 0.95,
-   "text": "Flyers activate Travis Konecny, Owen Tippett off injured reserve"
-  },
-  {
-   "id": "at://did:plc:3uus7y6h3rlrk6sbctzxm4bg/app.bsky.feed.post/3mzbongu7if24|owentippett|active|status",
-   "at": "2026-11-01T20:48:28.000Z",
-   "seen": "2026-11-01T21:01:52.142Z",
-   "handle": "dailyfaceoff.bsky.social",
-   "post": "at://did:plc:3uus7y6h3rlrk6sbctzxm4bg/app.bsky.feed.post/3mzbongu7if24",
-   "player": "Owen Tippett",
-   "team": "PHI",
-   "status": "active",
-   "kind": "status",
-   "confidence": 0.95,
-   "text": "Flyers activate Travis Konecny, Owen Tippett off injured reserve"
-  },
   {
    "id": "at://did:plc:3uus7y6h3rlrk6sbctzxm4bg/app.bsky.feed.post/3mzdrc2jpa32g|jacobmarkstrom|active|return",
    "at": "2026-11-02T16:41:07.000Z",
@@ -2646,6 +2607,19 @@
    "kind": "status",
    "confidence": 0.8,
    "text": "Connor Bedard to undergo shoulder surgery"
+  },
+  {
+   "id": "at://did:plc:3uus7y6h3rlrk6sbctzxm4bg/app.bsky.feed.post/3n2wfvayyvq2f|kaiser|out|status",
+   "at": "2026-11-22T20:02:53.000Z",
+   "seen": "2026-11-22T21:15:00.553Z",
+   "handle": "dailyfaceoff.bsky.social",
+   "post": "at://did:plc:3uus7y6h3rlrk6sbctzxm4bg/app.bsky.feed.post/3n2wfvayyvq2f",
+   "player": "Kaiser",
+   "team": "CHI",
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.9,
+   "text": "Blackhawks’ Kaiser suspended three games for hit on Flames’ Pospisil"
   }
  ]
 }

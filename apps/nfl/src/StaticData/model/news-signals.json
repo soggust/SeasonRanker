@@ -45,51 +45,7 @@
    "confidence": 0.8,
    "headline": "Jets QB Geno Smith (ankle) cleared to start vs. Chargers",
    "at": "2026-11-20T22:13:34.000Z"
-  },
-  {
-   "team": "6",
-   "abbr": "DAL",
-   "athlete": null,
-   "player": "Mike Pettine",
-   "kind": "coaching",
-   "direction": "none",
-   "confidence": 0.6,
-   "headline": "Cowboys' Mike Pettine feels for DC Christian Parker, but focused on Titans",
-   "at": "2026-11-20T20:24:06.000Z"
-  },
-  {
-   "team": "3",
-   "abbr": "CHI",
-   "athlete": "4608686",
-   "player": "Kyle Monangai",
-   "kind": "return",
-   "direction": "up",
-   "confidence": 0.7,
-   "headline": "Bears rule out CB Kyler Gordon; RB Kyle Monangai cleared to return",
-   "at": "2026-11-20T20:03:03.000Z"
-  },
-  {
-   "team": "11",
-   "abbr": "IND",
-   "athlete": "3917792",
-   "player": "Daniel Jones",
-   "kind": "benched",
-   "direction": "down",
-   "confidence": 0.9,
-   "headline": "Colts cut QB Daniel Jones, turn to Anthony Richardson Sr. for next start",
-   "at": "2026-11-20T20:00:49.000Z"
-  },
-  {
-   "team": "11",
-   "abbr": "IND",
-   "athlete": "4429084",
-   "player": "Anthony Richardson Sr",
-   "kind": "starting",
-   "direction": "up",
-   "confidence": 0.9,
-   "headline": "Colts cut QB Daniel Jones, turn to Anthony Richardson Sr. for next start",
-   "at": "2026-11-20T20:00:49.000Z"
   }
  ],
- "at": "2026-11-22T18:26:18.395Z"
+ "at": "2026-11-22T21:15:00.553Z"
 }
