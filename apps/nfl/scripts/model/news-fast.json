@@ -1,12 +1,12 @@
 {
  "sport": "nfl",
  "cursor": {
-  "adamscheftermirror.bsky.social": "2026-11-22T16:01:41.399Z",
-  "rapsheet.bsky.social": "2026-11-22T15:26:15.080Z",
+  "adamscheftermirror.bsky.social": "2026-11-22T16:16:37.320Z",
+  "rapsheet.bsky.social": "2026-11-22T16:06:05.019Z",
   "nflnewsreposterbot.bsky.social": "2026-11-16T18:35:13.806Z",
   "insidenflnews.bsky.social": "2026-11-22T15:22:59.468Z",
   "nflnewsposter.bsky.social": "2026-11-22T01:45:14.334Z",
-  "rotoworld-fb.bsky.social": "2026-11-22T14:52:21.000Z",
+  "rotoworld-fb.bsky.social": "2026-11-22T16:16:48.000Z",
   "rotowirenfl.bsky.social": "2026-11-22T15:54:16.000Z"
  },
  "claims": [
@@ -18755,6 +18755,32 @@
    "kind": "status",
    "confidence": 0.9,
    "text": "Drake Maye: Out at least six weeks, per Rapoport \n\n https://www.rotowire.com/football/player/drake-maye-17673"
+  },
+  {
+   "id": "at://did:plc:hlvr2omhnmvdmfnvmcuhyevz/app.bsky.feed.post/3n2vynsmbvs2o|jalencarter|questionable|status",
+   "at": "2026-11-22T16:06:05.019Z",
+   "seen": "2026-11-22T16:25:09.493Z",
+   "handle": "rapsheet.bsky.social",
+   "post": "at://did:plc:hlvr2omhnmvdmfnvmcuhyevz/app.bsky.feed.post/3n2vynsmbvs2o",
+   "player": "Jalen Carter",
+   "team": "PHI",
+   "status": "questionable",
+   "kind": "status",
+   "confidence": 0.95,
+   "text": "The Eagles added DT Jalen Carter (quadriceps) to the injury report and he is questionable for the game."
+  },
+  {
+   "id": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3n2vyquwma624|drakemaye|out|status",
+   "at": "2026-11-22T16:07:48.000Z",
+   "seen": "2026-11-22T16:25:09.493Z",
+   "handle": "rotoworld-fb.bsky.social",
+   "post": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3n2vyquwma624",
+   "player": "Drake Maye",
+   "team": "NE",
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.9,
+   "text": "Rap: Drake Maye (fibula) out at least six weeks"
   }
  ]
 }
