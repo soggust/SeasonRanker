@@ -1,7 +1,7 @@
 {
  "sport": "nba",
  "cursor": {
-  "rotowirenba.bsky.social": "2026-11-22T00:40:55.000Z",
+  "rotowirenba.bsky.social": "2026-11-22T00:46:01.000Z",
   "insidenbanews.bsky.social": "2026-11-20T20:35:06.661Z",
   "shamsbot.bsky.social": "2026-11-20T20:29:39.000Z"
  },
@@ -7493,6 +7493,19 @@
    "kind": "starting",
    "confidence": 0.8,
    "text": "Derik Queen: Starting Saturday \n\n https://www.rotowire.com/basketball/player/derik-queen-6541"
+  },
+  {
+   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3n2ufamdmcd2n|jahmaimashack|none|starting",
+   "at": "2026-11-22T00:46:01.000Z",
+   "seen": "2026-11-22T01:05:20.281Z",
+   "handle": "rotowirenba.bsky.social",
+   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3n2ufamdmcd2n",
+   "player": "Jahmai Mashack",
+   "team": null,
+   "status": "none",
+   "kind": "starting",
+   "confidence": 0.8,
+   "text": "Jahmai Mashack: Starting Saturday \n\n https://www.rotowire.com/basketball/player/jahmai-mashack-6647"
   }
  ]
 }
