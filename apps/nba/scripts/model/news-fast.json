@@ -1,7 +1,7 @@
 {
  "sport": "nba",
  "cursor": {
-  "rotowirenba.bsky.social": "2026-11-22T15:25:58.000Z",
+  "rotowirenba.bsky.social": "2026-11-22T17:22:26.000Z",
   "insidenbanews.bsky.social": "2026-11-20T20:35:06.661Z",
   "shamsbot.bsky.social": "2026-11-20T20:29:39.000Z"
  },
@@ -7506,6 +7506,19 @@
    "kind": "status",
    "confidence": 0.8,
    "text": "Draymond Green: Not listed on injury report \n\n https://www.rotowire.com/basketball/player/draymond-green-3299"
+  },
+  {
+   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3n2w4we2pan2v|jalensmith|active|status",
+   "at": "2026-11-22T17:22:26.000Z",
+   "seen": "2026-11-22T17:24:36.562Z",
+   "handle": "rotowirenba.bsky.social",
+   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3n2w4we2pan2v",
+   "player": "Jalen Smith",
+   "team": null,
+   "status": "active",
+   "kind": "status",
+   "confidence": 0.75,
+   "text": "Jalen Smith: Upgraded to probable Sunday \n\n https://www.rotowire.com/basketball/player/jalen-smith-5169"
   }
  ]
 }

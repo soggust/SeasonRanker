@@ -18744,6 +18744,11 @@
    "espn": {
     "seen": "2026-11-22T16:34:42.915Z",
     "own": "2026-11-16T03:27:00.000Z"
+   },
+   "bluesky": {
+    "seen": "2026-11-22T17:08:48.208Z",
+    "own": "2026-11-22T16:43:51.000Z",
+    "why": "@rotoworld-fb.bsky.social: Audric Estime a healthy scratch for Week 11"
    }
   },
   "401873073|jaishawnbarham|out": {
@@ -19704,6 +19709,306 @@
    "espn": {
     "seen": "2026-11-22T17:00:37.019Z",
     "own": "2026-11-22T16:46:00.000Z"
+   }
+  },
+  "401873070|brockbowers|out": {
+   "game": "401873070",
+   "start": "2026-11-22T18:00Z",
+   "team": "2",
+   "name": "Brock Bowers",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-22T17:08:48.208Z",
+    "own": "2026-11-22T16:39:55.239Z",
+    "why": "@insidenflnews.bsky.social: Schefter: Not a lot of optimism Brock Bowers (ankle,"
+   }
+  },
+  "401873070|audricestime|out": {
+   "game": "401873070",
+   "start": "2026-11-22T18:00Z",
+   "team": "2",
+   "name": "Audric Estime",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-22T17:08:48.208Z",
+    "own": "2026-11-22T16:43:51.000Z",
+    "why": "@rotoworld-fb.bsky.social: Audric Estime a healthy scratch for Week 11"
+   }
+  },
+  "401873071|brockbowers|out": {
+   "game": "401873071",
+   "start": "2026-11-22T18:00Z",
+   "team": "3",
+   "name": "Brock Bowers",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-22T17:08:48.208Z",
+    "own": "2026-11-22T16:39:55.239Z",
+    "why": "@insidenflnews.bsky.social: Schefter: Not a lot of optimism Brock Bowers (ankle,"
+   }
+  },
+  "401873073|brockbowers|out": {
+   "game": "401873073",
+   "start": "2026-11-22T18:00Z",
+   "team": "6",
+   "name": "Brock Bowers",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-22T17:08:48.208Z",
+    "own": "2026-11-22T16:39:55.239Z",
+    "why": "@insidenflnews.bsky.social: Schefter: Not a lot of optimism Brock Bowers (ankle,"
+   }
+  },
+  "401873073|audricestime|out": {
+   "game": "401873073",
+   "start": "2026-11-22T18:00Z",
+   "team": "6",
+   "name": "Audric Estime",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-22T17:08:48.208Z",
+    "own": "2026-11-22T16:43:51.000Z",
+    "why": "@rotoworld-fb.bsky.social: Audric Estime a healthy scratch for Week 11"
+   }
+  },
+  "401873072|brockbowers|out": {
+   "game": "401873072",
+   "start": "2026-11-22T18:00Z",
+   "team": "8",
+   "name": "Brock Bowers",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-22T17:08:48.208Z",
+    "own": "2026-11-22T16:39:55.239Z",
+    "why": "@insidenflnews.bsky.social: Schefter: Not a lot of optimism Brock Bowers (ankle,"
+   }
+  },
+  "401873072|audricestime|out": {
+   "game": "401873072",
+   "start": "2026-11-22T18:00Z",
+   "team": "8",
+   "name": "Audric Estime",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-22T17:08:48.208Z",
+    "own": "2026-11-22T16:43:51.000Z",
+    "why": "@rotoworld-fb.bsky.social: Audric Estime a healthy scratch for Week 11"
+   }
+  },
+  "401873067|brockbowers|out": {
+   "game": "401873067",
+   "start": "2026-11-22T18:00Z",
+   "team": "12",
+   "name": "Brock Bowers",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-22T17:08:48.208Z",
+    "own": "2026-11-22T16:39:55.239Z",
+    "why": "@insidenflnews.bsky.social: Schefter: Not a lot of optimism Brock Bowers (ankle,"
+   }
+  },
+  "401873067|audricestime|out": {
+   "game": "401873067",
+   "start": "2026-11-22T18:00Z",
+   "team": "12",
+   "name": "Audric Estime",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-22T17:08:48.208Z",
+    "own": "2026-11-22T16:43:51.000Z",
+    "why": "@rotoworld-fb.bsky.social: Audric Estime a healthy scratch for Week 11"
+   }
+  },
+  "401873076|brockbowers|out": {
+   "game": "401873076",
+   "start": "2026-11-22T18:00Z",
+   "team": "21",
+   "name": "Brock Bowers",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-22T17:08:48.208Z",
+    "own": "2026-11-22T16:39:55.239Z",
+    "why": "@insidenflnews.bsky.social: Schefter: Not a lot of optimism Brock Bowers (ankle,"
+   }
+  },
+  "401873076|audricestime|out": {
+   "game": "401873076",
+   "start": "2026-11-22T18:00Z",
+   "team": "21",
+   "name": "Audric Estime",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-22T17:08:48.208Z",
+    "own": "2026-11-22T16:43:51.000Z",
+    "why": "@rotoworld-fb.bsky.social: Audric Estime a healthy scratch for Week 11"
+   }
+  },
+  "401873068|brockbowers|out": {
+   "game": "401873068",
+   "start": "2026-11-22T18:00Z",
+   "team": "29",
+   "name": "Brock Bowers",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-22T17:08:48.208Z",
+    "own": "2026-11-22T16:39:55.239Z",
+    "why": "@insidenflnews.bsky.social: Schefter: Not a lot of optimism Brock Bowers (ankle,"
+   }
+  },
+  "401873068|audricestime|out": {
+   "game": "401873068",
+   "start": "2026-11-22T18:00Z",
+   "team": "29",
+   "name": "Audric Estime",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-22T17:08:48.208Z",
+    "own": "2026-11-22T16:43:51.000Z",
+    "why": "@rotoworld-fb.bsky.social: Audric Estime a healthy scratch for Week 11"
+   }
+  },
+  "401873074|brockbowers|out": {
+   "game": "401873074",
+   "start": "2026-11-22T21:05Z",
+   "team": "24",
+   "name": "Brock Bowers",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-22T17:08:48.208Z",
+    "own": "2026-11-22T16:39:55.239Z",
+    "why": "@insidenflnews.bsky.social: Schefter: Not a lot of optimism Brock Bowers (ankle,"
+   }
+  },
+  "401873074|audricestime|out": {
+   "game": "401873074",
+   "start": "2026-11-22T21:05Z",
+   "team": "24",
+   "name": "Audric Estime",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-22T17:08:48.208Z",
+    "own": "2026-11-22T16:43:51.000Z",
+    "why": "@rotoworld-fb.bsky.social: Audric Estime a healthy scratch for Week 11"
+   }
+  },
+  "401873075|brockbowers|out": {
+   "game": "401873075",
+   "start": "2026-11-22T21:25Z",
+   "team": "7",
+   "name": "Brock Bowers",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-22T17:08:48.208Z",
+    "own": "2026-11-22T16:39:55.239Z",
+    "why": "@insidenflnews.bsky.social: Schefter: Not a lot of optimism Brock Bowers (ankle,"
+   }
+  },
+  "401873075|audricestime|out": {
+   "game": "401873075",
+   "start": "2026-11-22T21:25Z",
+   "team": "7",
+   "name": "Audric Estime",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-22T17:08:48.208Z",
+    "own": "2026-11-22T16:43:51.000Z",
+    "why": "@rotoworld-fb.bsky.social: Audric Estime a healthy scratch for Week 11"
+   }
+  },
+  "401873069|brockbowers|out": {
+   "game": "401873069",
+   "start": "2026-11-22T21:25Z",
+   "team": "19",
+   "name": "Brock Bowers",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-22T17:08:48.208Z",
+    "own": "2026-11-22T16:39:55.239Z",
+    "why": "@insidenflnews.bsky.social: Schefter: Not a lot of optimism Brock Bowers (ankle,"
+   }
+  },
+  "401873069|audricestime|out": {
+   "game": "401873069",
+   "start": "2026-11-22T21:25Z",
+   "team": "19",
+   "name": "Audric Estime",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-22T17:08:48.208Z",
+    "own": "2026-11-22T16:43:51.000Z",
+    "why": "@rotoworld-fb.bsky.social: Audric Estime a healthy scratch for Week 11"
+   }
+  },
+  "401873077|daltonkincaid|out": {
+   "game": "401873077",
+   "start": "2026-11-23T01:20Z",
+   "team": "25",
+   "name": "Dalton Kincaid",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-22T17:08:48.208Z",
+    "own": "2026-11-22T16:34:25.000Z",
+    "why": "@rotowirenfl.bsky.social: Dalton Kincaid: Sidelined for first time in 2026 \n\n ht"
+   }
+  },
+  "401873077|brockbowers|out": {
+   "game": "401873077",
+   "start": "2026-11-23T01:20Z",
+   "team": "25",
+   "name": "Brock Bowers",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-22T17:08:48.208Z",
+    "own": "2026-11-22T16:39:55.239Z",
+    "why": "@insidenflnews.bsky.social: Schefter: Not a lot of optimism Brock Bowers (ankle,"
+   }
+  },
+  "401873077|audricestime|out": {
+   "game": "401873077",
+   "start": "2026-11-23T01:20Z",
+   "team": "25",
+   "name": "Audric Estime",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-22T17:08:48.208Z",
+    "own": "2026-11-22T16:43:51.000Z",
+    "why": "@rotoworld-fb.bsky.social: Audric Estime a healthy scratch for Week 11"
+   }
+  },
+  "401873078|daltonkincaid|out": {
+   "game": "401873078",
+   "start": "2026-11-24T01:15Z",
+   "team": "28",
+   "name": "Dalton Kincaid",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-22T17:08:48.208Z",
+    "own": "2026-11-22T16:34:25.000Z",
+    "why": "@rotowirenfl.bsky.social: Dalton Kincaid: Sidelined for first time in 2026 \n\n ht"
+   }
+  },
+  "401873078|brockbowers|out": {
+   "game": "401873078",
+   "start": "2026-11-24T01:15Z",
+   "team": "28",
+   "name": "Brock Bowers",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-22T17:08:48.208Z",
+    "own": "2026-11-22T16:39:55.239Z",
+    "why": "@insidenflnews.bsky.social: Schefter: Not a lot of optimism Brock Bowers (ankle,"
+   }
+  },
+  "401873078|audricestime|out": {
+   "game": "401873078",
+   "start": "2026-11-24T01:15Z",
+   "team": "28",
+   "name": "Audric Estime",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-22T17:08:48.208Z",
+    "own": "2026-11-22T16:43:51.000Z",
+    "why": "@rotoworld-fb.bsky.social: Audric Estime a healthy scratch for Week 11"
    }
   }
  }
