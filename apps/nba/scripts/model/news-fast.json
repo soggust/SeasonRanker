@@ -1,7 +1,7 @@
 {
  "sport": "nba",
  "cursor": {
-  "rotowirenba.bsky.social": "2026-11-22T18:05:29.000Z",
+  "rotowirenba.bsky.social": "2026-11-22T18:13:14.000Z",
   "insidenbanews.bsky.social": "2026-11-20T20:35:06.661Z",
   "shamsbot.bsky.social": "2026-11-20T20:29:39.000Z"
  },
@@ -7545,6 +7545,32 @@
    "kind": "status",
    "confidence": 0.95,
    "text": "Jordan Clarkson: Won't play Sunday \n\n https://www.rotowire.com/basketball/player/jordan-clarkson-3614"
+  },
+  {
+   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3n2w7knjytc2u|karlanthonytowns|questionable|status",
+   "at": "2026-11-22T18:09:35.000Z",
+   "seen": "2026-11-22T18:26:18.395Z",
+   "handle": "rotowirenba.bsky.social",
+   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3n2w7knjytc2u",
+   "player": "Karl-Anthony Towns",
+   "team": "NYK",
+   "status": "questionable",
+   "kind": "status",
+   "confidence": 0.9,
+   "text": "Karl-Anthony Towns: Questionable for Sunday \n\n https://www.rotowire.com/basketball/player/karl-anthony-towns-3741"
+  },
+  {
+   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3n2w7r74o4b2y|oganunoby|out|status",
+   "at": "2026-11-22T18:13:14.000Z",
+   "seen": "2026-11-22T18:26:18.395Z",
+   "handle": "rotowirenba.bsky.social",
+   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3n2w7r74o4b2y",
+   "player": "OG Anunoby",
+   "team": "NYK",
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.95,
+   "text": "OG Anunoby: Ruled out Sunday \n\n https://www.rotowire.com/basketball/player/og-anunoby-4121"
   }
  ]
 }
