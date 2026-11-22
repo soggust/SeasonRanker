@@ -22965,6 +22965,11 @@
    "espn": {
     "seen": "2026-11-22T04:28:43.746Z",
     "own": "2026-11-22T03:05:00.000Z"
+   },
+   "bluesky": {
+    "seen": "2026-11-22T18:26:18.395Z",
+    "own": "2026-11-22T18:09:35.000Z",
+    "why": "@rotowirenba.bsky.social: Karl-Anthony Towns: Questionable for Sunday \n\n https:/"
    }
   },
   "401910034|jordanclarkson|q": {
@@ -23328,6 +23333,18 @@
     "seen": "2026-11-22T18:06:03.764Z",
     "own": "2026-11-22T18:05:29.000Z",
     "why": "@rotowirenba.bsky.social: Jordan Clarkson: Won't play Sunday \n\n https://www.roto"
+   }
+  },
+  "401910031|bubcarrington|q": {
+   "game": "401910031",
+   "start": "2026-11-23T00:00Z",
+   "team": "27",
+   "name": "Bub Carrington",
+   "status": "q",
+   "athlete": "4845374",
+   "espn": {
+    "seen": "2026-11-22T18:46:38.738Z",
+    "own": "2026-11-22T18:21:00.000Z"
    }
   }
  }
