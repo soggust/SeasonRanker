@@ -1,28 +1,15 @@
 {
  "sport": "nfl",
  "cursor": {
-  "adamscheftermirror.bsky.social": "2026-11-22T12:41:39.196Z",
+  "adamscheftermirror.bsky.social": "2026-11-22T13:26:38.141Z",
   "rapsheet.bsky.social": "2026-11-20T21:16:12.668Z",
   "nflnewsreposterbot.bsky.social": "2026-11-16T18:35:13.806Z",
-  "insidenflnews.bsky.social": "2026-11-22T12:26:42.123Z",
+  "insidenflnews.bsky.social": "2026-11-22T13:19:32.526Z",
   "nflnewsposter.bsky.social": "2026-11-22T01:45:14.334Z",
-  "rotoworld-fb.bsky.social": "2026-11-22T01:28:07.000Z",
-  "rotowirenfl.bsky.social": "2026-11-22T12:52:33.000Z"
+  "rotoworld-fb.bsky.social": "2026-11-22T13:26:18.000Z",
+  "rotowirenfl.bsky.social": "2026-11-22T13:10:50.000Z"
  },
  "claims": [
-  {
-   "id": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3mzavk7uuhr2f|kirkcousins|none|starting",
-   "at": "2026-11-01T13:19:17.000Z",
-   "seen": "2026-11-01T13:27:40.913Z",
-   "handle": "rotoworld-fb.bsky.social",
-   "post": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3mzavk7uuhr2f",
-   "player": "Kirk Cousins",
-   "team": "LV",
-   "status": "none",
-   "kind": "starting",
-   "confidence": 0.7,
-   "text": "Raiders plan to start Cousins as long as possible"
-  },
   {
    "id": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3mzawkm2a322z|pickens|active|status",
    "at": "2026-11-01T13:37:23.000Z",
@@ -18768,6 +18755,32 @@
    "kind": "status",
    "confidence": 0.85,
    "text": "Rap: Alec Pierce (heel) expected to miss the remainder of the season."
+  },
+  {
+   "id": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3n2voymatlj2b|evans|active|status",
+   "at": "2026-11-22T13:13:09.000Z",
+   "seen": "2026-11-22T13:30:42.989Z",
+   "handle": "rotoworld-fb.bsky.social",
+   "post": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3n2voymatlj2b",
+   "player": "Evans",
+   "team": null,
+   "status": "active",
+   "kind": "status",
+   "confidence": 0.9,
+   "text": "Evans (Achilles) will play in Week 11 vs. Vikings"
+  },
+  {
+   "id": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3n2vp7sftqq2p|mayfield|active|status",
+   "at": "2026-11-22T13:17:11.000Z",
+   "seen": "2026-11-22T13:30:42.989Z",
+   "handle": "rotoworld-fb.bsky.social",
+   "post": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3n2vp7sftqq2p",
+   "player": "Mayfield",
+   "team": null,
+   "status": "active",
+   "kind": "status",
+   "confidence": 0.9,
+   "text": "Rapoport: Mayfield (foot) will play vs. the Lions"
   }
  ]
 }
