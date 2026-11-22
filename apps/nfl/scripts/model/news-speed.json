@@ -18668,6 +18668,18 @@
     "own": "2026-11-22T12:26:42.123Z",
     "why": "@insidenflnews.bsky.social: Rap: Alec Pierce (heel) expected to miss the remaind"
    }
+  },
+  "401873079|lukemusgrave|out": {
+   "game": "401873079",
+   "start": "2026-11-26T01:00Z",
+   "team": "9",
+   "name": "Luke Musgrave",
+   "status": "out",
+   "athlete": "4428085",
+   "espn": {
+    "seen": "2026-11-22T14:16:38.224Z",
+    "own": "2026-11-22T14:06:00.000Z"
+   }
   }
  }
 }
