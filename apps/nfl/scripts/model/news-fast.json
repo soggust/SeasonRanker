@@ -1,7 +1,7 @@
 {
  "sport": "nfl",
  "cursor": {
-  "adamscheftermirror.bsky.social": "2026-11-22T13:41:40.465Z",
+  "adamscheftermirror.bsky.social": "2026-11-22T15:16:37.916Z",
   "rapsheet.bsky.social": "2026-11-20T21:16:12.668Z",
   "nflnewsreposterbot.bsky.social": "2026-11-16T18:35:13.806Z",
   "insidenflnews.bsky.social": "2026-11-22T13:19:32.526Z",
@@ -10,19 +10,6 @@
   "rotowirenfl.bsky.social": "2026-11-22T14:32:09.000Z"
  },
  "claims": [
-  {
-   "id": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3mzb4cflwiu2d|djmoore|active|status",
-   "at": "2026-11-01T15:20:11.000Z",
-   "seen": "2026-11-01T15:23:37.685Z",
-   "handle": "rotoworld-fb.bsky.social",
-   "post": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3mzb4cflwiu2d",
-   "player": "DJ Moore",
-   "team": null,
-   "status": "active",
-   "kind": "status",
-   "confidence": 0.85,
-   "text": "DJ Moore (shoulder) expected to play vs. Ravens"
-  },
   {
    "id": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3mzb6jnxxze2y|jackson|limited|status",
    "at": "2026-11-01T16:00:02.000Z",
