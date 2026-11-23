@@ -1,119 +1,15 @@
 {
  "sport": "nfl",
  "cursor": {
-  "adamscheftermirror.bsky.social": "2026-11-23T20:06:49.485Z",
+  "adamscheftermirror.bsky.social": "2026-11-23T21:11:49.069Z",
   "rapsheet.bsky.social": "2026-11-23T19:30:26.244Z",
   "nflnewsreposterbot.bsky.social": "2026-11-16T18:35:13.806Z",
-  "insidenflnews.bsky.social": "2026-11-23T19:31:49.797Z",
-  "nflnewsposter.bsky.social": "2026-11-23T19:23:17.941Z",
-  "rotoworld-fb.bsky.social": "2026-11-23T19:52:28.000Z",
-  "rotowirenfl.bsky.social": "2026-11-23T20:13:16.000Z"
+  "insidenflnews.bsky.social": "2026-11-23T21:00:47.139Z",
+  "nflnewsposter.bsky.social": "2026-11-23T21:01:54.144Z",
+  "rotoworld-fb.bsky.social": "2026-11-23T21:12:52.000Z",
+  "rotowirenfl.bsky.social": "2026-11-23T21:08:27.000Z"
  },
  "claims": [
-  {
-   "id": "at://did:plc:qre6zxbmr3ixhdmgsgdretb5/app.bsky.feed.post/3mze6lychoj2n|jeremymcnichols|questionable|status",
-   "at": "2026-11-02T20:39:19.317Z",
-   "seen": "2026-11-02T21:14:25.858Z",
-   "handle": "adamscheftermirror.bsky.social",
-   "post": "at://did:plc:qre6zxbmr3ixhdmgsgdretb5/app.bsky.feed.post/3mze6lychoj2n",
-   "player": "Jeremy McNichols",
-   "team": "WAS",
-   "status": "questionable",
-   "kind": "status",
-   "confidence": 0.4,
-   "text": "Commanders RB Jeremy McNichols is undergoing additional testing for what the team is concerned is a significant foot injury.\n\nOriginal post"
-  },
-  {
-   "id": "at://did:plc:fuqjc7x4gxvnwzksnlxwbe4x/app.bsky.feed.post/3mze7t5ewoslt|camskattebo|questionable|status",
-   "at": "2026-11-02T21:01:13.359Z",
-   "seen": "2026-11-02T21:14:25.858Z",
-   "handle": "nflnewsposter.bsky.social",
-   "post": "at://did:plc:fuqjc7x4gxvnwzksnlxwbe4x/app.bsky.feed.post/3mze7t5ewoslt",
-   "player": "Cam Skattebo",
-   "team": "NYG",
-   "status": "questionable",
-   "kind": "status",
-   "confidence": 0.9,
-   "text": "[Leonard] John Harbaugh says Abdul Carter has an illness. He also says Cam Skattebo will be “day to day” leading up to the game vs the Eagles twitter.com/PLeonardNYDN..."
-  },
-  {
-   "id": "at://did:plc:mbr4badgf6yu56mquzackzew/app.bsky.feed.post/3mze7vjer2c27|camskattebo|questionable|status",
-   "at": "2026-11-02T21:02:33.045Z",
-   "seen": "2026-11-02T21:14:25.858Z",
-   "handle": "insidenflnews.bsky.social",
-   "post": "at://did:plc:mbr4badgf6yu56mquzackzew/app.bsky.feed.post/3mze7vjer2c27",
-   "player": "Cam Skattebo",
-   "team": "NYG",
-   "status": "questionable",
-   "kind": "status",
-   "confidence": 0.9,
-   "text": "Giants RB Cam Skattebo (hamstring) is considered day-to-day."
-  },
-  {
-   "id": "at://did:plc:fuqjc7x4gxvnwzksnlxwbe4x/app.bsky.feed.post/3mze7yv7gwclt|jadarianprice|active|return",
-   "at": "2026-11-02T21:04:26.117Z",
-   "seen": "2026-11-02T21:14:25.858Z",
-   "handle": "nflnewsposter.bsky.social",
-   "post": "at://did:plc:fuqjc7x4gxvnwzksnlxwbe4x/app.bsky.feed.post/3mze7yv7gwclt",
-   "player": "Jadarian Price",
-   "team": "SEA",
-   "status": "active",
-   "kind": "return",
-   "confidence": 0.8,
-   "text": "[Rapoport] Seahawks plan to activate first-round RB Jadarian Price from Injured Reserve to play tonight against the Bears, source says. His first game action since Sept. 27. twitter.com/RapSheet/sta.."
-  },
-  {
-   "id": "at://did:plc:qre6zxbmr3ixhdmgsgdretb5/app.bsky.feed.post/3mzeabming22p|jadarianprice|active|return",
-   "at": "2026-11-02T21:09:18.870Z",
-   "seen": "2026-11-02T21:14:25.858Z",
-   "handle": "adamscheftermirror.bsky.social",
-   "post": "at://did:plc:qre6zxbmr3ixhdmgsgdretb5/app.bsky.feed.post/3mzeabming22p",
-   "player": "Jadarian Price",
-   "team": "SEA",
-   "status": "active",
-   "kind": "return",
-   "confidence": 0.95,
-   "text": "Seahawks activated rookie RB Jadarian Price ahead of tonight’s game against the Bears. The Seahawks now get back Price and Zach Charbonnet, who will make his 2026 season debut tonight.\n\nOriginal post"
-  },
-  {
-   "id": "at://did:plc:qre6zxbmr3ixhdmgsgdretb5/app.bsky.feed.post/3mzeabming22p|zachcharbonnet|active|return",
-   "at": "2026-11-02T21:09:18.870Z",
-   "seen": "2026-11-02T21:14:25.858Z",
-   "handle": "adamscheftermirror.bsky.social",
-   "post": "at://did:plc:qre6zxbmr3ixhdmgsgdretb5/app.bsky.feed.post/3mzeabming22p",
-   "player": "Zach Charbonnet",
-   "team": "SEA",
-   "status": "active",
-   "kind": "return",
-   "confidence": 0.8,
-   "text": "Seahawks activated rookie RB Jadarian Price ahead of tonight’s game against the Bears. The Seahawks now get back Price and Zach Charbonnet, who will make his 2026 season debut tonight.\n\nOriginal post"
-  },
-  {
-   "id": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3mzeag2q4532s|camskattebo|questionable|status",
-   "at": "2026-11-02T21:11:48.000Z",
-   "seen": "2026-11-02T21:14:25.858Z",
-   "handle": "rotowirenfl.bsky.social",
-   "post": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3mzeag2q4532s",
-   "player": "Cam Skattebo",
-   "team": "NYG",
-   "status": "questionable",
-   "kind": "status",
-   "confidence": 0.7,
-   "text": "Cam Skattebo: Could be game-time call for Week 9 \n\n https://www.rotowire.com/football/player/cam-skattebo-18514"
-  },
-  {
-   "id": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3mzeaiwxyck2f|jadarianprice|active|return",
-   "at": "2026-11-02T21:13:24.000Z",
-   "seen": "2026-11-02T21:14:25.858Z",
-   "handle": "rotoworld-fb.bsky.social",
-   "post": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3mzeaiwxyck2f",
-   "player": "Jadarian Price",
-   "team": "SEA",
-   "status": "active",
-   "kind": "return",
-   "confidence": 0.97,
-   "text": "Jadarian Price activated from IR, will play vs. Bears"
-  },
   {
    "id": "at://did:plc:mbr4badgf6yu56mquzackzew/app.bsky.feed.post/3mzeaw3s2nc27|jadarianprice|active|status",
    "at": "2026-11-02T21:20:46.098Z",
@@ -18144,6 +18040,58 @@
    "kind": "status",
    "confidence": 0.6,
    "text": "Seth McGowan: Will miss time with hamstring injury \n\n https://www.rotowire.com/football/player/seth-mcgowan-19303"
+  },
+  {
+   "id": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3n2yxnkmkh726|drakemaye|out|status",
+   "at": "2026-11-23T20:26:02.000Z",
+   "seen": "2026-11-23T21:15:24.958Z",
+   "handle": "rotowirenfl.bsky.social",
+   "post": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3n2yxnkmkh726",
+   "player": "Drake Maye",
+   "team": null,
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.85,
+   "text": "Drake Maye: Remains on active roster, but out indefinitely \n\n https://www.rotowire.com/football/player/drake-maye-17673"
+  },
+  {
+   "id": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3n2yxvnfwad2c|jordanaddison|out|status",
+   "at": "2026-11-23T20:30:33.000Z",
+   "seen": "2026-11-23T21:15:24.958Z",
+   "handle": "rotowirenfl.bsky.social",
+   "post": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3n2yxvnfwad2c",
+   "player": "Jordan Addison",
+   "team": null,
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.7,
+   "text": "Jordan Addison: 'Progressing really well,' but likely out Week 12 \n\n https://www.rotowire.com/football/player/jordan-addison-16895"
+  },
+  {
+   "id": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3n2yzrhlhee2w|jordanaddison|doubtful|status",
+   "at": "2026-11-23T21:04:00.000Z",
+   "seen": "2026-11-23T21:15:24.958Z",
+   "handle": "rotoworld-fb.bsky.social",
+   "post": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3n2yzrhlhee2w",
+   "player": "Jordan Addison",
+   "team": null,
+   "status": "doubtful",
+   "kind": "status",
+   "confidence": 0.6,
+   "text": "Jordan Addison (thumb) may not return vs. Falcons"
+  },
+  {
+   "id": "at://did:plc:qre6zxbmr3ixhdmgsgdretb5/app.bsky.feed.post/3n2z27gcdva2n|jacorycroskeymerritt|active|return",
+   "at": "2026-11-23T21:11:48.937Z",
+   "seen": "2026-11-23T21:15:24.958Z",
+   "handle": "adamscheftermirror.bsky.social",
+   "post": "at://did:plc:qre6zxbmr3ixhdmgsgdretb5/app.bsky.feed.post/3n2z27gcdva2n",
+   "player": "Jacory Croskey-Merritt",
+   "team": "WAS",
+   "status": "active",
+   "kind": "return",
+   "confidence": 0.95,
+   "text": "Commanders activated RB Jacory Croskey-Merritt from injured reserve and he will play tonight vs. the Bengals.\n\nOriginal post"
   }
  ]
 }

@@ -3,8 +3,8 @@
  "cursor": {
   "johnston-bot.bsky.social": "2026-11-23T02:17:07.040Z",
   "notfriedgehnic.bsky.social": "2026-11-23T19:10:11.309Z",
-  "dailyfaceoff.bsky.social": "2026-11-23T20:07:00.000Z",
-  "dfotoronto.bsky.social": "2026-11-23T18:37:17.000Z",
+  "dailyfaceoff.bsky.social": "2026-11-23T21:09:14.000Z",
+  "dfotoronto.bsky.social": "2026-11-23T20:49:51.966Z",
   "marklazerus.bsky.social": "2026-11-23T19:49:12.516Z"
  },
  "claims": [
@@ -2620,6 +2620,19 @@
    "kind": "status",
    "confidence": 0.9,
    "text": "Mammoth’s Keller, Guenther to return to lineup; Carcone out 3-4 months"
+  },
+  {
+   "id": "at://did:plc:3uus7y6h3rlrk6sbctzxm4bg/app.bsky.feed.post/3n2yzl5zshx24|jordankyrou|out|status",
+   "at": "2026-11-23T21:00:29.000Z",
+   "seen": "2026-11-23T21:15:24.958Z",
+   "handle": "dailyfaceoff.bsky.social",
+   "post": "at://did:plc:3uus7y6h3rlrk6sbctzxm4bg/app.bsky.feed.post/3n2yzl5zshx24",
+   "player": "Jordan Kyrou",
+   "team": "WSH",
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.9,
+   "text": "Capitals’ Jordan Kyrou out at least a week with upper-body injury."
   }
  ]
 }
