@@ -6,23 +6,10 @@
   "nflnewsreposterbot.bsky.social": "2026-11-16T18:35:13.806Z",
   "insidenflnews.bsky.social": "2026-11-23T03:21:25.098Z",
   "nflnewsposter.bsky.social": "2026-11-23T04:58:50.607Z",
-  "rotoworld-fb.bsky.social": "2026-11-23T05:34:02.000Z",
+  "rotoworld-fb.bsky.social": "2026-11-23T13:49:47.000Z",
   "rotowirenfl.bsky.social": "2026-11-23T13:39:55.000Z"
  },
  "claims": [
-  {
-   "id": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3mzdhj7piu625|tylerhuntley|out|status",
-   "at": "2026-11-02T13:46:10.000Z",
-   "seen": "2026-11-02T14:01:44.676Z",
-   "handle": "rotoworld-fb.bsky.social",
-   "post": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3mzdhj7piu625",
-   "player": "Tyler Huntley",
-   "team": "BAL",
-   "status": "out",
-   "kind": "status",
-   "confidence": 0.9,
-   "text": "Rap: Huntley (toe) to miss 'extended time'"
-  },
   {
    "id": "at://did:plc:qre6zxbmr3ixhdmgsgdretb5/app.bsky.feed.post/3mzdl24wsmq2l|davonhamilton|out|status",
    "at": "2026-11-02T14:49:19.095Z",
