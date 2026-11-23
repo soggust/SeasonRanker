@@ -3,7 +3,7 @@
  "cursor": {
   "johnston-bot.bsky.social": "2026-11-23T02:17:07.040Z",
   "notfriedgehnic.bsky.social": "2026-11-23T16:12:11.603Z",
-  "dailyfaceoff.bsky.social": "2026-11-23T16:35:33.000Z",
+  "dailyfaceoff.bsky.social": "2026-11-23T17:35:55.000Z",
   "dfotoronto.bsky.social": "2026-11-23T16:57:40.100Z",
   "marklazerus.bsky.social": "2026-11-23T15:46:01.239Z"
  },
@@ -2594,6 +2594,19 @@
    "kind": "return",
    "confidence": 0.5,
    "text": "Kevin Korchinski has played just 4:48 through two periods. He's a minus-2 and one of the goals went in off his stick. And he took a penalty. Rough first game back after being a healthy scratch the las"
+  },
+  {
+   "id": "at://did:plc:3uus7y6h3rlrk6sbctzxm4bg/app.bsky.feed.post/3n2ynsqvewc2o|jordankyrou|out|status",
+   "at": "2026-11-23T17:29:58.000Z",
+   "seen": "2026-11-23T17:42:10.614Z",
+   "handle": "dailyfaceoff.bsky.social",
+   "post": "at://did:plc:3uus7y6h3rlrk6sbctzxm4bg/app.bsky.feed.post/3n2ynsqvewc2o",
+   "player": "Jordan Kyrou",
+   "team": "WSH",
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.9,
+   "text": "Capitals’ Jordan Kyrou out at least a week with upper-body injury"
   }
  ]
 }
