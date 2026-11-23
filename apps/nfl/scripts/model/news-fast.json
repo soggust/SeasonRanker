@@ -5,102 +5,11 @@
   "rapsheet.bsky.social": "2026-11-22T22:47:12.595Z",
   "nflnewsreposterbot.bsky.social": "2026-11-16T18:35:13.806Z",
   "insidenflnews.bsky.social": "2026-11-22T21:43:47.240Z",
-  "nflnewsposter.bsky.social": "2026-11-22T22:42:08.708Z",
-  "rotoworld-fb.bsky.social": "2026-11-22T22:41:44.000Z",
-  "rotowirenfl.bsky.social": "2026-11-22T22:41:17.000Z"
+  "nflnewsposter.bsky.social": "2026-11-22T23:55:28.584Z",
+  "rotoworld-fb.bsky.social": "2026-11-22T23:22:09.000Z",
+  "rotowirenfl.bsky.social": "2026-11-22T23:57:22.000Z"
  },
  "claims": [
-  {
-   "id": "at://did:plc:fuqjc7x4gxvnwzksnlxwbe4x/app.bsky.feed.post/3mzbx23ohnk2g|tylerhuntley|questionable|status",
-   "at": "2026-11-01T23:18:43.301Z",
-   "seen": "2026-11-01T23:34:02.494Z",
-   "handle": "nflnewsposter.bsky.social",
-   "post": "at://did:plc:fuqjc7x4gxvnwzksnlxwbe4x/app.bsky.feed.post/3mzbx23ohnk2g",
-   "player": "Tyler Huntley",
-   "team": "BAL",
-   "status": "questionable",
-   "kind": "status",
-   "confidence": 0.5,
-   "text": "[Schefter] Ravens QB Tyler “Snoop” Huntley suffered what is thought to be a turf toe injury today at Buffalo. He is expected to undergo an MRI tomorrow to determine how much time if any he could miss."
-  },
-  {
-   "id": "at://did:plc:fuqjc7x4gxvnwzksnlxwbe4x/app.bsky.feed.post/3mzbx23ohnk2g|lamarjackson|out|status",
-   "at": "2026-11-01T23:18:43.301Z",
-   "seen": "2026-11-01T23:34:02.494Z",
-   "handle": "nflnewsposter.bsky.social",
-   "post": "at://did:plc:fuqjc7x4gxvnwzksnlxwbe4x/app.bsky.feed.post/3mzbx23ohnk2g",
-   "player": "Lamar Jackson",
-   "team": "BAL",
-   "status": "out",
-   "kind": "status",
-   "confidence": 0.9,
-   "text": "[Schefter] Ravens QB Tyler “Snoop” Huntley suffered what is thought to be a turf toe injury today at Buffalo. He is expected to undergo an MRI tomorrow to determine how much time if any he could miss."
-  },
-  {
-   "id": "at://did:plc:mbr4badgf6yu56mquzackzew/app.bsky.feed.post/3mzbx2cqd6s26|jaylenwatson|out|status",
-   "at": "2026-11-01T23:18:50.702Z",
-   "seen": "2026-11-01T23:34:02.494Z",
-   "handle": "insidenflnews.bsky.social",
-   "post": "at://did:plc:mbr4badgf6yu56mquzackzew/app.bsky.feed.post/3mzbx2cqd6s26",
-   "player": "Jaylen Watson",
-   "team": null,
-   "status": "out",
-   "kind": "status",
-   "confidence": 0.8,
-   "text": "Status alert: Jaylen Watson (shoulder) won't return."
-  },
-  {
-   "id": "at://did:plc:mbr4badgf6yu56mquzackzew/app.bsky.feed.post/3mzbx2up3rc26|tylerhuntley|questionable|status",
-   "at": "2026-11-01T23:19:09.538Z",
-   "seen": "2026-11-01T23:34:02.494Z",
-   "handle": "insidenflnews.bsky.social",
-   "post": "at://did:plc:mbr4badgf6yu56mquzackzew/app.bsky.feed.post/3mzbx2up3rc26",
-   "player": "Tyler Huntley",
-   "team": "BAL",
-   "status": "questionable",
-   "kind": "status",
-   "confidence": 0.4,
-   "text": "Schefter: Tyler Huntley believed to have suffered turf toe injury."
-  },
-  {
-   "id": "at://did:plc:qre6zxbmr3ixhdmgsgdretb5/app.bsky.feed.post/3mzbxmrmgty2z|tylerhuntley|questionable|status",
-   "at": "2026-11-01T23:29:10.183Z",
-   "seen": "2026-11-01T23:34:02.494Z",
-   "handle": "adamscheftermirror.bsky.social",
-   "post": "at://did:plc:qre6zxbmr3ixhdmgsgdretb5/app.bsky.feed.post/3mzbxmrmgty2z",
-   "player": "Tyler Huntley",
-   "team": "BAL",
-   "status": "questionable",
-   "kind": "status",
-   "confidence": 0.5,
-   "text": "Ravens QB Tyler “Snoop” Huntley suffered what is thought to be a turf toe injury today at Buffalo, per source. He is expected to undergo an MRI tomorrow to determine how much time if any he could miss"
-  },
-  {
-   "id": "at://did:plc:qre6zxbmr3ixhdmgsgdretb5/app.bsky.feed.post/3mzbxmrmgty2z|lamarjackson|out|status",
-   "at": "2026-11-01T23:29:10.183Z",
-   "seen": "2026-11-01T23:34:02.494Z",
-   "handle": "adamscheftermirror.bsky.social",
-   "post": "at://did:plc:qre6zxbmr3ixhdmgsgdretb5/app.bsky.feed.post/3mzbxmrmgty2z",
-   "player": "Lamar Jackson",
-   "team": "BAL",
-   "status": "out",
-   "kind": "status",
-   "confidence": 0.9,
-   "text": "Ravens QB Tyler “Snoop” Huntley suffered what is thought to be a turf toe injury today at Buffalo, per source. He is expected to undergo an MRI tomorrow to determine how much time if any he could miss"
-  },
-  {
-   "id": "at://did:plc:fuqjc7x4gxvnwzksnlxwbe4x/app.bsky.feed.post/3mzbzbn2kvcdb|jakeferguson|none|status",
-   "at": "2026-11-01T23:58:43.889Z",
-   "seen": "2026-11-02T00:03:52.901Z",
-   "handle": "nflnewsposter.bsky.social",
-   "post": "at://did:plc:fuqjc7x4gxvnwzksnlxwbe4x/app.bsky.feed.post/3mzbzbn2kvcdb",
-   "player": "Jake Ferguson",
-   "team": "DAL",
-   "status": "none",
-   "kind": "status",
-   "confidence": 0.6,
-   "text": "[Fowler] Cowboys TE Jake Ferguson suffered a low ankle sprain Sunday in Arizona, per source. twitter.com/JFowlerESPN/..."
-  },
   {
    "id": "at://did:plc:mbr4badgf6yu56mquzackzew/app.bsky.feed.post/3mzbzhcqwhk26|jakeferguson|none|status",
    "at": "2026-11-02T00:01:54.415Z",
@@ -18183,6 +18092,32 @@
    "kind": "status",
    "confidence": 0.4,
    "text": "Saquon Barkley: Dealing with apparent arm injury \n\n https://www.rotowire.com/football/player/saquon-barkley-12507"
+  },
+  {
+   "id": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3n2wsc23uvn26|kyrenwilliams|limited|status",
+   "at": "2026-11-22T23:44:47.000Z",
+   "seen": "2026-11-23T00:00:19.600Z",
+   "handle": "rotowirenfl.bsky.social",
+   "post": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3n2wsc23uvn26",
+   "player": "Kyren Williams",
+   "team": null,
+   "status": "limited",
+   "kind": "status",
+   "confidence": 0.9,
+   "text": "Kyren Williams: Limited at practice \n\n https://www.rotowire.com/football/player/kyren-williams-15807"
+  },
+  {
+   "id": "at://did:plc:fuqjc7x4gxvnwzksnlxwbe4x/app.bsky.feed.post/3n2wsv5i2es22|gregnewsome|out|status",
+   "at": "2026-11-22T23:55:28.584Z",
+   "seen": "2026-11-23T00:00:19.600Z",
+   "handle": "nflnewsposter.bsky.social",
+   "post": "at://did:plc:fuqjc7x4gxvnwzksnlxwbe4x/app.bsky.feed.post/3n2wsv5i2es22",
+   "player": "Greg Newsome II",
+   "team": null,
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.95,
+   "text": "[Salomone] Injury Update: CB Greg Newsome II (ankle) has been downgraded to OUT. twitter.com/Dan_Salomone..."
   }
  ]
 }

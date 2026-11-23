@@ -1,5 +1,5 @@
 {
- "at": "2026-11-22T00:10:47.737Z",
+ "at": "2026-11-23T00:00:12.449Z",
  "halves": [
   {
    "from": "2023-12-01",
@@ -111,17 +111,17 @@
    "to": "2026-12-01",
    "train": 11241,
    "model": {
-    "n": 339,
-    "logLoss": 0.6503,
-    "acc": 0.649
+    "n": 340,
+    "logLoss": 0.6502,
+    "acc": 0.65
    },
    "rating": {
-    "n": 339,
-    "logLoss": 0.6913,
-    "acc": 0.5501
+    "n": 340,
+    "logLoss": 0.692,
+    "acc": 0.5485
    },
    "coin": {
-    "n": 339,
+    "n": 340,
     "logLoss": 0.6931,
     "acc": 0.5
    },
@@ -130,17 +130,17 @@
  ],
  "all": {
   "model": {
-   "n": 1893,
+   "n": 1894,
    "logLoss": 0.6225,
-   "acc": 0.6535
+   "acc": 0.6536
   },
   "rating": {
-   "n": 1893,
-   "logLoss": 0.6573,
-   "acc": 0.5998
+   "n": 1894,
+   "logLoss": 0.6574,
+   "acc": 0.5995
   },
   "coin": {
-   "n": 1893,
+   "n": 1894,
    "logLoss": 0.6931,
    "acc": 0.5
   }
@@ -177,9 +177,9 @@
   {
    "from": 0.4,
    "to": 0.5,
-   "n": 461,
+   "n": 462,
    "mean": 0.4505,
-   "actual": 0.4208
+   "actual": 0.4199
   },
   {
    "from": 0.5,
@@ -219,7 +219,7 @@
  ],
  "note": "held out: each half fit on the bouts before it alone; no odds (none kept on this plan), so it says how the model predicts, not what it would have won",
  "totals": {
-  "at": "2026-11-22T00:10:47.737Z",
+  "at": "2026-11-23T00:00:12.449Z",
   "halves": [
    {
     "from": "2023-12-01",
@@ -345,7 +345,7 @@
     "from": "2026-06-01",
     "to": "2026-12-01",
     "train": 10984,
-    "bouts": 341,
+    "bouts": 342,
     "kept": 6,
     "line25": {
      "model": {
@@ -368,19 +368,19 @@
   ],
   "all": {
    "model": {
-    "n": 4220,
-    "logLoss": 0.6301,
-    "acc": 0.6443
+    "n": 4224,
+    "logLoss": 0.63,
+    "acc": 0.6444
    },
    "byClass": {
-    "n": 4220,
-    "logLoss": 0.65,
-    "acc": 0.6201
+    "n": 4224,
+    "logLoss": 0.6499,
+    "acc": 0.6203
    },
    "base": {
-    "n": 4220,
-    "logLoss": 0.66,
-    "acc": 0.6073
+    "n": 4224,
+    "logLoss": 0.6599,
+    "acc": 0.6075
    }
   },
   "line25": {

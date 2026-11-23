@@ -1,24 +1,11 @@
 {
  "sport": "nba",
  "cursor": {
-  "rotowirenba.bsky.social": "2026-11-22T22:24:16.000Z",
+  "rotowirenba.bsky.social": "2026-11-22T23:29:49.000Z",
   "insidenbanews.bsky.social": "2026-11-20T20:35:06.661Z",
   "shamsbot.bsky.social": "2026-11-22T20:01:51.000Z"
  },
  "claims": [
-  {
-   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mzbwaz3okf2z|rudygobert|active|status",
-   "at": "2026-11-01T23:04:41.000Z",
-   "seen": "2026-11-01T23:04:42.619Z",
-   "handle": "rotowirenba.bsky.social",
-   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mzbwaz3okf2z",
-   "player": "Rudy Gobert",
-   "team": null,
-   "status": "active",
-   "kind": "status",
-   "confidence": 0.8,
-   "text": "Rudy Gobert: Missing from injury report \n\n https://www.rotowire.com/basketball/player/rudy-gobert-3440"
-  },
   {
    "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mzc76rklf52n|jakobpoeltl|out|status",
    "at": "2026-11-02T01:44:30.000Z",
@@ -7688,6 +7675,19 @@
    "kind": "status",
    "confidence": 0.9,
    "text": "P.J. Washington: Ruled out Sunday \n\n https://www.rotowire.com/basketball/player/pj-washington-4781"
+  },
+  {
+   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3n2wqqhkpzp2u|brandoningram|active|status",
+   "at": "2026-11-22T23:17:03.000Z",
+   "seen": "2026-11-23T00:00:19.600Z",
+   "handle": "rotowirenba.bsky.social",
+   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3n2wqqhkpzp2u",
+   "player": "Brandon Ingram",
+   "team": null,
+   "status": "active",
+   "kind": "status",
+   "confidence": 0.9,
+   "text": "Brandon Ingram: Removed from injury report \n\n https://www.rotowire.com/basketball/player/brandon-ingram-3861"
   }
  ]
 }

@@ -3,6 +3,17 @@
  "days": 2,
  "signals": [
   {
+   "team": "11",
+   "abbr": "IND",
+   "athlete": "4360078",
+   "player": "Alec Pierce",
+   "kind": "restriction",
+   "direction": "down",
+   "confidence": 0.9,
+   "headline": "Sources: Colts shut down Alec Pierce for season, plan for WR's return in 2027",
+   "at": "2026-11-22T16:20:24.000Z"
+  },
+  {
    "team": "22",
    "abbr": "ARI",
    "athlete": "11394",
@@ -36,5 +47,5 @@
    "at": "2026-11-21T20:54:35.000Z"
   }
  ],
- "at": "2026-11-22T22:15:08.066Z"
+ "at": "2026-11-23T00:00:19.600Z"
 }
