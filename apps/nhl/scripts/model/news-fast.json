@@ -3,24 +3,11 @@
  "cursor": {
   "johnston-bot.bsky.social": "2026-11-23T02:17:07.040Z",
   "notfriedgehnic.bsky.social": "2026-11-23T16:12:11.603Z",
-  "dailyfaceoff.bsky.social": "2026-11-23T16:14:03.000Z",
-  "dfotoronto.bsky.social": "2026-11-23T15:21:17.201Z",
+  "dailyfaceoff.bsky.social": "2026-11-23T16:35:33.000Z",
+  "dfotoronto.bsky.social": "2026-11-23T16:48:07.721Z",
   "marklazerus.bsky.social": "2026-11-23T15:46:01.239Z"
  },
  "claims": [
-  {
-   "id": "at://did:plc:3uus7y6h3rlrk6sbctzxm4bg/app.bsky.feed.post/3mzdrc2jpa32g|jacobmarkstrom|active|return",
-   "at": "2026-11-02T16:41:07.000Z",
-   "seen": "2026-11-02T16:43:39.620Z",
-   "handle": "dailyfaceoff.bsky.social",
-   "post": "at://did:plc:3uus7y6h3rlrk6sbctzxm4bg/app.bsky.feed.post/3mzdrc2jpa32g",
-   "player": "Jacob Markstrom",
-   "team": "FLA",
-   "status": "active",
-   "kind": "return",
-   "confidence": 0.85,
-   "text": "Jacob Markstrom set for Panthers’ return against Red Wings"
-  },
   {
    "id": "at://did:plc:3uus7y6h3rlrk6sbctzxm4bg/app.bsky.feed.post/3mzdrzmjdld2f|evgenimalkin|questionable|status",
    "at": "2026-11-02T16:54:17.000Z",
