@@ -5,9 +5,9 @@
   "rapsheet.bsky.social": "2026-11-23T00:40:04.629Z",
   "nflnewsreposterbot.bsky.social": "2026-11-16T18:35:13.806Z",
   "insidenflnews.bsky.social": "2026-11-23T03:21:25.098Z",
-  "nflnewsposter.bsky.social": "2026-11-23T04:27:25.449Z",
-  "rotoworld-fb.bsky.social": "2026-11-23T02:53:43.000Z",
-  "rotowirenfl.bsky.social": "2026-11-23T04:41:43.000Z"
+  "nflnewsposter.bsky.social": "2026-11-23T04:58:50.607Z",
+  "rotoworld-fb.bsky.social": "2026-11-23T05:03:05.000Z",
+  "rotowirenfl.bsky.social": "2026-11-23T05:02:19.000Z"
  },
  "claims": [
   {
@@ -18222,6 +18222,19 @@
    "kind": "status",
    "confidence": 0.9,
    "text": "[Vikings] Darrisaw has been ruled out for the remainder of #MINvsSF twitter.com/Vikings/stat..."
+  },
+  {
+   "id": "at://did:plc:fuqjc7x4gxvnwzksnlxwbe4x/app.bsky.feed.post/3n2xdtmbqgsu2|coltonmckivitz|out|status",
+   "at": "2026-11-23T04:58:50.607Z",
+   "seen": "2026-11-23T05:03:25.871Z",
+   "handle": "nflnewsposter.bsky.social",
+   "post": "at://did:plc:fuqjc7x4gxvnwzksnlxwbe4x/app.bsky.feed.post/3n2xdtmbqgsu2",
+   "player": "Colton McKivitz",
+   "team": "SF",
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.95,
+   "text": "[Wagoner] 49ers RT Colton McKivitz suffered a fractured and dislocated left ankle, similar to what Fred Warner had last year per Kyle Shanahan. \n\nHe will, of course, miss the rest of the season. twitt"
   }
  ]
 }
