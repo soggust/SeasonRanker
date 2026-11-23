@@ -23504,6 +23504,150 @@
     "own": "2026-11-23T01:04:43.000Z",
     "why": "@rotowirenba.bsky.social: Jaxson Hayes: Questionable to return Sunday \n\n https:/"
    }
+  },
+  "401910039|collinmurrayboyles|q": {
+   "game": "401910039",
+   "start": "2026-11-24T00:30Z",
+   "team": "28",
+   "name": "Collin Murray-Boyles",
+   "status": "q",
+   "athlete": "5093267",
+   "espn": {
+    "seen": "2026-11-23T01:22:51.959Z",
+    "own": "2026-11-22T21:15:00.000Z"
+   }
+  },
+  "401910039|natebittle|out": {
+   "game": "401910039",
+   "start": "2026-11-24T00:30Z",
+   "team": "28",
+   "name": "Nate Bittle",
+   "status": "out",
+   "athlete": "4432586",
+   "espn": {
+    "seen": "2026-11-23T01:22:51.959Z",
+    "own": "2026-11-22T21:13:00.000Z"
+   }
+  },
+  "401910039|kawhileonard|out": {
+   "game": "401910039",
+   "start": "2026-11-24T00:30Z",
+   "team": "28",
+   "name": "Kawhi Leonard",
+   "status": "out",
+   "athlete": "6450",
+   "espn": {
+    "seen": "2026-11-23T01:22:51.959Z",
+    "own": "2026-11-20T20:42:00.000Z"
+   }
+  },
+  "401910039|rjbarrett|out": {
+   "game": "401910039",
+   "start": "2026-11-24T00:30Z",
+   "team": "28",
+   "name": "RJ Barrett",
+   "status": "out",
+   "athlete": "4395625",
+   "espn": {
+    "seen": "2026-11-23T01:22:51.959Z",
+    "own": "2026-11-19T21:13:00.000Z"
+   }
+  },
+  "401910039|pjwashington|out": {
+   "game": "401910039",
+   "start": "2026-11-24T00:30Z",
+   "team": "28",
+   "name": "P.J. Washington",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-22T22:48:17.276Z",
+    "own": "2026-11-22T22:24:16.000Z",
+    "why": "@rotowirenba.bsky.social: P.J. Washington: Ruled out Sunday \n\n https://www.rotow"
+   }
+  },
+  "401910039|nolantraore|out": {
+   "game": "401910039",
+   "start": "2026-11-24T00:30Z",
+   "team": "28",
+   "name": "Nolan Traore",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-22T21:15:00.553Z",
+    "own": "2026-11-22T20:37:14.000Z",
+    "why": "@rotowirenba.bsky.social: Nolan Traore: Ruled out for Monday \n\n https://www.roto"
+   }
+  },
+  "401910039|jaylontyson|q": {
+   "game": "401910039",
+   "start": "2026-11-24T00:30Z",
+   "team": "28",
+   "name": "Jaylon Tyson",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-11-22T22:15:08.066Z",
+    "own": "2026-11-22T21:51:47.000Z",
+    "why": "@rotowirenba.bsky.social: Jaylon Tyson: Upgraded to probable Monday \n\n https://w"
+   }
+  },
+  "401910039|graysonallen|out": {
+   "game": "401910039",
+   "start": "2026-11-24T00:30Z",
+   "team": "28",
+   "name": "Grayson Allen",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-22T22:15:08.066Z",
+    "own": "2026-11-22T22:08:28.000Z",
+    "why": "@rotowirenba.bsky.social: Grayson Allen: Missing third straight game Monday \n\n h"
+   }
+  },
+  "401910039|cameronboozer|out": {
+   "game": "401910039",
+   "start": "2026-11-24T00:30Z",
+   "team": "28",
+   "name": "Cameron Boozer",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-22T22:48:17.276Z",
+    "own": "2026-11-22T22:18:00.000Z",
+    "why": "@rotowirenba.bsky.social: Cameron Boozer: Out again Monday \n\n https://www.rotowi"
+   }
+  },
+  "401910039|jaxsonhayes|q": {
+   "game": "401910039",
+   "start": "2026-11-24T00:30Z",
+   "team": "28",
+   "name": "Jaxson Hayes",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-11-23T01:10:22.342Z",
+    "own": "2026-11-23T01:04:43.000Z",
+    "why": "@rotowirenba.bsky.social: Jaxson Hayes: Questionable to return Sunday \n\n https:/"
+   }
+  },
+  "401910039|ousmanedieng|out": {
+   "game": "401910039",
+   "start": "2026-11-24T00:30Z",
+   "team": "15",
+   "name": "Ousmane Dieng",
+   "status": "out",
+   "athlete": "4997526",
+   "espn": {
+    "seen": "2026-11-23T01:22:51.959Z",
+    "own": "2026-11-22T21:37:00.000Z"
+   }
+  },
+  "401910039|giannisantetokounmpo|out": {
+   "game": "401910039",
+   "start": "2026-11-24T00:30Z",
+   "team": "15",
+   "name": "Giannis Antetokounmpo",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-22T22:15:08.066Z",
+    "own": "2026-11-22T22:09:12.000Z",
+    "why": "@rotowirenba.bsky.social: Giannis Antetokounmpo: Sidelined versus Thunder \n\n htt"
+   }
   }
  }
 }
