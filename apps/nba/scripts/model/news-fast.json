@@ -1,7 +1,7 @@
 {
  "sport": "nba",
  "cursor": {
-  "rotowirenba.bsky.social": "2026-11-23T00:37:27.000Z",
+  "rotowirenba.bsky.social": "2026-11-23T01:09:09.000Z",
   "insidenbanews.bsky.social": "2026-11-20T20:35:06.661Z",
   "shamsbot.bsky.social": "2026-11-22T20:01:51.000Z"
  },
@@ -7701,6 +7701,32 @@
    "kind": "status",
    "confidence": 0.9,
    "text": "Karl-Anthony Towns: Cleared to play Sunday \n\n https://www.rotowire.com/basketball/player/karl-anthony-towns-3741"
+  },
+  {
+   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3n2wwqyew2u2e|jaxsonhayes|questionable|status",
+   "at": "2026-11-23T01:04:43.000Z",
+   "seen": "2026-11-23T01:10:22.342Z",
+   "handle": "rotowirenba.bsky.social",
+   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3n2wwqyew2u2e",
+   "player": "Jaxson Hayes",
+   "team": null,
+   "status": "questionable",
+   "kind": "status",
+   "confidence": 0.9,
+   "text": "Jaxson Hayes: Questionable to return Sunday \n\n https://www.rotowire.com/basketball/player/jaxson-hayes-4771"
+  },
+  {
+   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3n2wwyvilqx2v|austinreaves|out|status",
+   "at": "2026-11-23T01:09:09.000Z",
+   "seen": "2026-11-23T01:10:22.342Z",
+   "handle": "rotowirenba.bsky.social",
+   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3n2wwyvilqx2v",
+   "player": "Austin Reaves",
+   "team": "LAL",
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.9,
+   "text": "Austin Reaves: Remains out Monday \n\n https://www.rotowire.com/basketball/player/austin-reaves-5334"
   }
  ]
 }
