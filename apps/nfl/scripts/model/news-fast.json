@@ -1,7 +1,7 @@
 {
  "sport": "nfl",
  "cursor": {
-  "adamscheftermirror.bsky.social": "2026-11-23T11:11:44.178Z",
+  "adamscheftermirror.bsky.social": "2026-11-23T11:26:44.285Z",
   "rapsheet.bsky.social": "2026-11-23T00:40:04.629Z",
   "nflnewsreposterbot.bsky.social": "2026-11-16T18:35:13.806Z",
   "insidenflnews.bsky.social": "2026-11-23T03:21:25.098Z",
@@ -10,19 +10,6 @@
   "rotowirenfl.bsky.social": "2026-11-23T05:02:19.000Z"
  },
  "claims": [
-  {
-   "id": "at://did:plc:qre6zxbmr3ixhdmgsgdretb5/app.bsky.feed.post/3mzdapblhsr2p|lamarjackson|out|status",
-   "at": "2026-11-02T11:44:17.452Z",
-   "seen": "2026-11-02T12:49:30.972Z",
-   "handle": "adamscheftermirror.bsky.social",
-   "post": "at://did:plc:qre6zxbmr3ixhdmgsgdretb5/app.bsky.feed.post/3mzdapblhsr2p",
-   "player": "Lamar Jackson",
-   "team": "BAL",
-   "status": "out",
-   "kind": "status",
-   "confidence": 0.9,
-   "text": "More about Ravens QB Lamar Jackson needing surgery on his injured right thumb and having to go on injured reserve, via @jamisonhensley:\n\nOriginal post"
-  },
   {
    "id": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3mzdhj7piu625|tylerhuntley|out|status",
    "at": "2026-11-02T13:46:10.000Z",
