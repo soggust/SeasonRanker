@@ -23323,6 +23323,187 @@
     "seen": "2026-11-23T01:08:41.031Z",
     "own": "2026-11-07T17:24:00.000Z"
    }
+  },
+  "401910035|jaxsonhayes|q": {
+   "game": "401910035",
+   "start": "2026-11-23T01:30Z",
+   "team": "9",
+   "name": "Jaxson Hayes",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-11-23T01:10:22.342Z",
+    "own": "2026-11-23T01:04:43.000Z",
+    "why": "@rotowirenba.bsky.social: Jaxson Hayes: Questionable to return Sunday \n\n https:/"
+   }
+  },
+  "401910036|jaxsonhayes|q": {
+   "game": "401910036",
+   "start": "2026-11-24T00:00Z",
+   "team": "30",
+   "name": "Jaxson Hayes",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-11-23T01:10:22.342Z",
+    "own": "2026-11-23T01:04:43.000Z",
+    "why": "@rotowirenba.bsky.social: Jaxson Hayes: Questionable to return Sunday \n\n https:/"
+   }
+  },
+  "401910037|jaxsonhayes|q": {
+   "game": "401910037",
+   "start": "2026-11-24T00:00Z",
+   "team": "20",
+   "name": "Jaxson Hayes",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-11-23T01:10:22.342Z",
+    "own": "2026-11-23T01:04:43.000Z",
+    "why": "@rotowirenba.bsky.social: Jaxson Hayes: Questionable to return Sunday \n\n https:/"
+   }
+  },
+  "401910040|jaylenclark|out": {
+   "game": "401910040",
+   "start": "2026-11-24T00:30Z",
+   "team": "16",
+   "name": "Jaylen Clark",
+   "status": "out",
+   "athlete": "4432247",
+   "espn": {
+    "seen": "2026-11-23T01:20:37.327Z",
+    "own": "2026-11-15T22:40:00.000Z"
+   }
+  },
+  "401910040|anthonyedwards|out": {
+   "game": "401910040",
+   "start": "2026-11-24T00:30Z",
+   "team": "16",
+   "name": "Anthony Edwards",
+   "status": "out",
+   "athlete": "4594268",
+   "espn": {
+    "seen": "2026-11-23T01:20:37.327Z",
+    "own": "2026-10-29T18:33:00.000Z"
+   }
+  },
+  "401910040|dontedivincenzo|out": {
+   "game": "401910040",
+   "start": "2026-11-24T00:30Z",
+   "team": "16",
+   "name": "Donte DiVincenzo",
+   "status": "out",
+   "athlete": "3934673",
+   "espn": {
+    "seen": "2026-11-23T01:20:37.327Z",
+    "own": "2026-10-05T20:53:00.000Z"
+   }
+  },
+  "401910040|pjwashington|out": {
+   "game": "401910040",
+   "start": "2026-11-24T00:30Z",
+   "team": "16",
+   "name": "P.J. Washington",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-22T22:48:17.276Z",
+    "own": "2026-11-22T22:24:16.000Z",
+    "why": "@rotowirenba.bsky.social: P.J. Washington: Ruled out Sunday \n\n https://www.rotow"
+   }
+  },
+  "401910040|nolantraore|out": {
+   "game": "401910040",
+   "start": "2026-11-24T00:30Z",
+   "team": "16",
+   "name": "Nolan Traore",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-22T21:15:00.553Z",
+    "own": "2026-11-22T20:37:14.000Z",
+    "why": "@rotowirenba.bsky.social: Nolan Traore: Ruled out for Monday \n\n https://www.roto"
+   },
+   "athlete": "5279130",
+   "espn": {
+    "seen": "2026-11-23T01:20:37.327Z",
+    "own": "2026-11-22T20:37:00.000Z"
+   },
+   "sleeper": {
+    "seen": "2026-11-22T21:13:36.053Z",
+    "own": "2026-11-22T20:40:06.473Z"
+   }
+  },
+  "401910040|jaylontyson|q": {
+   "game": "401910040",
+   "start": "2026-11-24T00:30Z",
+   "team": "16",
+   "name": "Jaylon Tyson",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-11-22T22:15:08.066Z",
+    "own": "2026-11-22T21:51:47.000Z",
+    "why": "@rotowirenba.bsky.social: Jaylon Tyson: Upgraded to probable Monday \n\n https://w"
+   }
+  },
+  "401910040|graysonallen|out": {
+   "game": "401910040",
+   "start": "2026-11-24T00:30Z",
+   "team": "16",
+   "name": "Grayson Allen",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-22T22:15:08.066Z",
+    "own": "2026-11-22T22:08:28.000Z",
+    "why": "@rotowirenba.bsky.social: Grayson Allen: Missing third straight game Monday \n\n h"
+   }
+  },
+  "401910040|cameronboozer|out": {
+   "game": "401910040",
+   "start": "2026-11-24T00:30Z",
+   "team": "16",
+   "name": "Cameron Boozer",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-22T22:48:17.276Z",
+    "own": "2026-11-22T22:18:00.000Z",
+    "why": "@rotowirenba.bsky.social: Cameron Boozer: Out again Monday \n\n https://www.rotowi"
+   }
+  },
+  "401910040|jaxsonhayes|q": {
+   "game": "401910040",
+   "start": "2026-11-24T00:30Z",
+   "team": "16",
+   "name": "Jaxson Hayes",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-11-23T01:10:22.342Z",
+    "own": "2026-11-23T01:04:43.000Z",
+    "why": "@rotowirenba.bsky.social: Jaxson Hayes: Questionable to return Sunday \n\n https:/"
+   }
+  },
+  "401910040|grantnelson|q": {
+   "game": "401910040",
+   "start": "2026-11-24T00:30Z",
+   "team": "17",
+   "name": "Grant Nelson",
+   "status": "q",
+   "athlete": "4702670",
+   "espn": {
+    "seen": "2026-11-23T01:20:37.327Z",
+    "own": "2026-11-22T20:39:00.000Z"
+   },
+   "sleeper": {
+    "seen": "2026-11-22T21:13:36.053Z",
+    "own": "2026-11-22T20:45:06.517Z"
+   }
+  },
+  "401910043|jaxsonhayes|q": {
+   "game": "401910043",
+   "start": "2026-11-24T01:30Z",
+   "team": "10",
+   "name": "Jaxson Hayes",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-11-23T01:10:22.342Z",
+    "own": "2026-11-23T01:04:43.000Z",
+    "why": "@rotowirenba.bsky.social: Jaxson Hayes: Questionable to return Sunday \n\n https:/"
+   }
   }
  }
 }
