@@ -2,7 +2,7 @@
  "v": 1,
  "sport": "nfl",
  "epoch": "2026-10-26T15:00:00Z",
- "at": "2026-11-22T09:04:10.941Z",
+ "at": "2026-11-23T09:04:25.131Z",
  "from": "2020-09-11T00:20:00.000Z",
  "through": "2026-10-19T00:23:00.000Z",
  "n": {
@@ -2550,7 +2550,7 @@
     "beat": 25,
     "clv": 0.4326,
     "pN": 3025,
-    "p": 1485.0119,
+    "p": 1485.0124,
     "wins": 1445
    },
    "spread:away": {
@@ -2650,7 +2650,7 @@
     "beat": 0,
     "clv": 0,
     "pN": 2344,
-    "p": 1223.5906,
+    "p": 1223.5911,
     "wins": 1203
    },
    "prop:recYds:under": {
@@ -2750,7 +2750,7 @@
     "beat": 0,
     "clv": 0,
     "pN": 259,
-    "p": 139.4672,
+    "p": 139.4673,
     "wins": 140
    },
    "prop:rushAtt": {
@@ -2760,7 +2760,7 @@
     "beat": 0,
     "clv": 0,
     "pN": 265,
-    "p": 142.4132,
+    "p": 142.4133,
     "wins": 142
    },
    "prop:rushYds:under": {
@@ -2860,7 +2860,7 @@
     "beat": 0,
     "clv": 0,
     "pN": 196,
-    "p": 99.4146,
+    "p": 99.4149,
     "wins": 86
    },
    "prop:passTd:under": {
@@ -2870,7 +2870,7 @@
     "beat": 0,
     "clv": 0,
     "pN": 44,
-    "p": 21.7219,
+    "p": 21.7223,
     "wins": 19
    },
    "prop:passTd": {
@@ -2880,7 +2880,7 @@
     "beat": 0,
     "clv": 0,
     "pN": 177,
-    "p": 86.7874,
+    "p": 86.7875,
     "wins": 74
    },
    "prop:passTd:over": {
@@ -2890,7 +2890,7 @@
     "beat": 0,
     "clv": 0,
     "pN": 133,
-    "p": 65.0655,
+    "p": 65.0652,
     "wins": 55
    },
    "prop:rushRecYds:over": {
@@ -2920,7 +2920,7 @@
     "beat": 0,
     "clv": 0,
     "pN": 119,
-    "p": 60.7419,
+    "p": 60.7422,
     "wins": 56
    },
    "prop:rushRecYds:under": {
@@ -2935,7 +2935,7 @@
    }
   }
  },
- "commit": "21ce2b50",
+ "commit": "71ca2127",
  "note": "D119. The Book's bands are the Bot's bets alone: a suggestion is never a LIKE (the owner, 2026-11-09: \"its got likes with no BETS which makes no sense\")",
  "inputs": {
   "v": 1,

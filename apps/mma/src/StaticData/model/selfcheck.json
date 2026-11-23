@@ -1,8 +1,8 @@
 {
- "at": "2026-11-22T09:21:07.069Z",
+ "at": "2026-11-23T09:21:53.095Z",
  "baseline": {
-  "from": "2026-10-18",
-  "to": "2026-11-15"
+  "from": "2026-10-19",
+  "to": "2026-11-16"
  },
  "checks": [
   {
@@ -70,23 +70,6 @@
    "threshold": "watch 30% (15+ bets), flag 40% or the changed group z -2 (20+)",
    "title": "Inputs changed after placement",
    "value": 0.0556
-  },
-  {
-   "examples": [],
-   "headline": "No bet placed this week was cut by a guard (13 placed)",
-   "how": "placed this week against the 28 days before: the bets a guard cut to a half unit, by kind",
-   "id": "C8",
-   "metric": "ratio",
-   "n": 13,
-   "needs": [
-    "state.tallies (the guards' skips by day: the Bot keeps only the bets it placed)"
-   ],
-   "rows": [],
-   "status": "partial",
-   "tested": null,
-   "threshold": "watch twice the baseline share (10+ bets); flag 3x and a quarter of placements, or a new kind on 20+",
-   "title": "Guards cutting unusually often",
-   "value": null
   },
   {
    "examples": [],
@@ -206,66 +189,66 @@
   },
   {
    "examples": [
-    "401911633:ml:4293517-3948572",
-    "401911634:ml:5147737-4895691",
     "401922638:ml:4332765-2516131",
     "401931615:ml:5060394-4898914",
-    "401913647:ml:2615077-4416297"
+    "401913647:ml:2615077-4416297",
+    "401931773:ml:5302831-5144068",
+    "401922277:ml:3156612-5216713"
    ],
-   "headline": "Worst cell intent: edge: 6 won vs 8.3 expected (z -1.24) on 15 bets, ROI -42.4%",
+   "headline": "Worst cell intent: edge: 4 won vs 6.3 expected (z -1.5) on 11 bets, ROI -50.7%",
    "how": "graded in the 28 days, by team, opponent, player, home or away, role depth, the vacated term, teammates out or questionable, back-to-backs, a backup QB, the weather, the lead time, the start hour, the prices, the band, the guard and the disruption",
    "id": "C7",
    "metric": "z",
-   "n": 100,
+   "n": 79,
    "needs": null,
    "rows": [
     {
      "dim": "intent",
-     "e": 8.2935,
+     "e": 6.3454,
      "key": "intent: edge",
-     "n": 15,
-     "profit": -4.457,
-     "roi": -0.4245,
+     "n": 11,
+     "profit": -4.309,
+     "roi": -0.5069,
      "status": "ok",
      "value": "edge",
-     "w": 6,
-     "z": -1.2385
+     "w": 4,
+     "z": -1.502
     },
     {
      "dim": "band",
-     "e": 7.8914,
+     "e": 5.9433,
      "key": "band: LIKE",
-     "n": 14,
-     "profit": -2.957,
-     "roi": -0.3286,
+     "n": 10,
+     "profit": -2.809,
+     "roi": -0.4013,
      "status": "ok",
      "value": "LIKE",
-     "w": 6,
-     "z": -1.0592
+     "w": 4,
+     "z": -1.3108
     },
     {
      "dim": "home/away",
-     "e": 13.5839,
+     "e": 10.5398,
      "key": "home/away: home",
-     "n": 24,
-     "profit": -1.002,
-     "roi": -0.0589,
+     "n": 18,
+     "profit": -1.964,
+     "roi": -0.1637,
      "status": "ok",
      "value": "home",
-     "w": 13,
-     "z": -0.2563
+     "w": 9,
+     "z": -0.7809
     },
     {
      "dim": "start (ET)",
-     "e": 5.9527,
-     "key": "start (ET): 4-7pm",
-     "n": 10,
-     "profit": -0.048,
-     "roi": -0.008,
+     "e": 10.5052,
+     "key": "start (ET): before 1pm",
+     "n": 20,
+     "profit": -1.439,
+     "roi": -0.1151,
      "status": "ok",
-     "value": "4-7pm",
-     "w": 6,
-     "z": 0.0315
+     "value": "before 1pm",
+     "w": 10,
+     "z": -0.2323
     },
     {
      "dim": "fair from",
@@ -284,27 +267,27 @@
    "tested": 17,
    "threshold": "many cells tested: watch z -2.5, flag z -3 (cells of 8+)",
    "title": "Loss clusters",
-   "value": -1.2385
+   "value": -1.502
   },
   {
    "examples": [],
-   "headline": "LIKE: 6 won vs 7.9 expected (z -1.06) at the published chances (14 bets)",
+   "headline": "LIKE: 4 won vs 5.9 expected (z -1.31) at the published chances (10 bets)",
    "how": "the 28 days' published bets by the band they were published at, against the chance they were published with; the prop fits' calibration rows",
    "id": "C11",
    "metric": "z",
-   "n": 15,
+   "n": 11,
    "needs": null,
    "rows": [
     {
-     "e": 7.8914,
+     "e": 5.9433,
      "key": "medium",
      "label": "LIKE",
-     "n": 14,
-     "profit": -2.957,
-     "roi": -0.3286,
+     "n": 10,
+     "profit": -2.809,
+     "roi": -0.4013,
      "status": "ok",
-     "w": 6,
-     "z": -1.0592
+     "w": 4,
+     "z": -1.3108
     },
     {
      "e": 0.4021,
@@ -322,7 +305,7 @@
    "tested": null,
    "threshold": "watch a band's z -2 (10+) or a prop fit's calibration row off 7 points (30+); flag LOVE or LOCK at z -2 (20+)",
    "title": "Band calibration",
-   "value": -1.0592
+   "value": -1.3108
   },
   {
    "examples": [],
@@ -375,15 +358,15 @@
   },
   {
    "examples": [],
-   "headline": "Model files 11h old, 0 open bets overdue to grade; Odds API credits 71% left; 13 bets placed in a week of 12 games",
+   "headline": "Model files 35h old, 0 open bets overdue to grade; Odds API credits 68% left; 9 bets placed in a week of 12 games",
    "how": "the newest commit of the sport's model files, the open bets started 12 hours ago or more, The Odds API's credits (state.odds), the state's sources",
    "id": "C16",
    "metric": "ageH",
-   "n": 13,
+   "n": 9,
    "needs": null,
    "rows": [
     {
-     "ageH": 11,
+     "ageH": 35,
      "at": "2026-11-21T21:26:22Z",
      "key": "files",
      "overdue": 0
@@ -392,8 +375,8 @@
      "cycleEnd": "2026-12-01T00:02:39.102Z",
      "key": "credits",
      "monthly": 20000,
-     "remaining": 14133,
-     "share": 0.7067
+     "remaining": 13582,
+     "share": 0.6791
     },
     {
      "down": [],
@@ -402,22 +385,22 @@
     {
      "games": 12,
      "key": "week",
-     "placed": 13
+     "placed": 9
     }
    ],
    "status": "ok",
    "tested": null,
    "threshold": "watch files 3h old with bets overdue, credits under 20%, a source down, or no bets in a week with games; flag 6h old with bets overdue, or credits under 10%",
    "title": "Ops",
-   "value": 11
+   "value": 35
   },
   {
    "examples": [],
-   "headline": "0 of 13 bets placed this week had the line already moving against them",
+   "headline": "0 of 9 bets placed this week had the line already moving against them",
    "how": "placed this week: a prop's line a point or more against its side since it opened; a game's spread 1.5 (NFL) or 0.5, its total a point, a moneyline without a spread move 3 points of the home chance. A prop moved twice the guard's limit should have been skipped",
    "id": "C2",
    "metric": "roiGap",
-   "n": 13,
+   "n": 9,
    "needs": null,
    "rows": [
     {
@@ -431,14 +414,14 @@
      "z": null
     },
     {
-     "e": 6.8227,
+     "e": 4.4941,
      "key": "the rest",
-     "n": 12,
-     "placed": 13,
-     "profit": 0.706,
-     "roi": 0.0941,
-     "w": 7,
-     "z": 0.1041
+     "n": 8,
+     "placed": 9,
+     "profit": 0.206,
+     "roi": 0.0375,
+     "w": 4,
+     "z": -0.355
     },
     {
      "key": "guard bugs",
@@ -580,6 +563,23 @@
   },
   {
    "examples": [],
+   "headline": "No bet placed this week was cut by a guard (9 placed)",
+   "how": "placed this week against the 28 days before: the bets a guard cut to a half unit, by kind",
+   "id": "C8",
+   "metric": "ratio",
+   "n": 9,
+   "needs": [
+    "state.tallies (the guards' skips by day: the Bot keeps only the bets it placed)"
+   ],
+   "rows": [],
+   "status": "thin",
+   "tested": null,
+   "threshold": "watch twice the baseline share (10+ bets); flag 3x and a quarter of placements, or a new kind on 20+",
+   "title": "Guards cutting unusually often",
+   "value": null
+  },
+  {
+   "examples": [],
    "headline": "No prop fit with a check yet",
    "how": "each prop fit's all-player bias (projected - actual over every player) against its mean error; the 28 days' graded props' own miss by side and role",
    "id": "C10",
@@ -595,25 +595,25 @@
   },
   {
    "examples": [],
-   "headline": "fairFrom unknown: missing on 7 of 13 bets this week (54%) against 33% before; fair chances from betonlineag",
+   "headline": "fairFrom unknown: missing on 3 of 9 bets this week (33%) against 35% before; fair chances from betonlineag",
    "how": "placed this week against the 28 days before: the share of the bets each field applies to that are missing it",
    "id": "C14",
    "metric": "share",
-   "n": 13,
+   "n": 9,
    "needs": null,
    "rows": [
     {
      "key": "fairFrom unknown",
-     "n": 7,
-     "of": 13,
-     "share": 0.5385,
-     "shareBase": 0.3261,
+     "n": 3,
+     "of": 9,
+     "share": 0.3333,
+     "shareBase": 0.3542,
      "status": "thin"
     },
     {
      "key": "intent",
      "n": 0,
-     "of": 13,
+     "of": 9,
      "share": 0,
      "shareBase": 0,
      "status": "thin"
@@ -629,7 +629,7 @@
     {
      "key": "seen",
      "n": 0,
-     "of": 12,
+     "of": 8,
      "share": 0,
      "shareBase": 0,
      "status": "thin"
@@ -639,7 +639,7 @@
    "tested": null,
    "threshold": "watch a share up 5 points on the baseline (3+ bets, 20+ both); flag doubled (5+)",
    "title": "Data holes",
-   "value": 0.5385
+   "value": 0.3333
   },
   {
    "examples": [],
@@ -752,14 +752,14 @@
   "headline": "Leaks against the Book (priced history): 5 segments tested on 114 priced rows: none losing to the Book beyond the false discovery rate, none trending worse The priced history (every season, the gate's run of 2026-11-02): 2 leaks: side: under losing 0.08 nats per 100 rows to the Book, shrunk (n 331, z -2.58); price: dog losing 0.04 nats per 100 rows to the Book, shrunk (n 880, z -2.11).",
   "info": 2,
   "ok": 5,
-  "partial": 7,
-  "thin": 8,
+  "partial": 6,
+  "thin": 9,
   "watch": 1
  },
  "v": 1,
  "window": {
-  "from": "2026-11-15",
-  "to": "2026-11-22"
+  "from": "2026-11-16",
+  "to": "2026-11-23"
  },
  "writeups": {
   "calls": 0,
