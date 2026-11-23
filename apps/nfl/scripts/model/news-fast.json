@@ -5,24 +5,11 @@
   "rapsheet.bsky.social": "2026-11-23T00:40:04.629Z",
   "nflnewsreposterbot.bsky.social": "2026-11-16T18:35:13.806Z",
   "insidenflnews.bsky.social": "2026-11-23T14:44:03.595Z",
-  "nflnewsposter.bsky.social": "2026-11-23T14:58:30.121Z",
+  "nflnewsposter.bsky.social": "2026-11-23T16:15:35.563Z",
   "rotoworld-fb.bsky.social": "2026-11-23T14:48:02.000Z",
   "rotowirenfl.bsky.social": "2026-11-23T14:43:01.000Z"
  },
  "claims": [
-  {
-   "id": "at://did:plc:fuqjc7x4gxvnwzksnlxwbe4x/app.bsky.feed.post/3mzdpt3667s2g|jalynarmourdavis|none|role",
-   "at": "2026-11-02T16:14:51.168Z",
-   "seen": "2026-11-02T16:22:44.450Z",
-   "handle": "nflnewsposter.bsky.social",
-   "post": "at://did:plc:fuqjc7x4gxvnwzksnlxwbe4x/app.bsky.feed.post/3mzdpt3667s2g",
-   "player": "Jalyn Armour-Davis",
-   "team": "LAC",
-   "status": "none",
-   "kind": "role",
-   "confidence": 0.3,
-   "text": "[Schultz] Chargers are signing former Ravens and Titans CB Jalyn Armour-Davis.\n\nThe former Alabama standout started 10 games for Tennessee last season before suffering a torn Achilles. He’s now fully "
-  },
   {
    "id": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3mzdshtzi242p|ajbrown|questionable|status",
    "at": "2026-11-02T17:02:15.000Z",
