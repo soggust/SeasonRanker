@@ -7,22 +7,9 @@
   "insidenflnews.bsky.social": "2026-11-23T14:44:03.595Z",
   "nflnewsposter.bsky.social": "2026-11-23T16:15:35.563Z",
   "rotoworld-fb.bsky.social": "2026-11-23T14:48:02.000Z",
-  "rotowirenfl.bsky.social": "2026-11-23T16:39:17.000Z"
+  "rotowirenfl.bsky.social": "2026-11-23T17:03:50.000Z"
  },
  "claims": [
-  {
-   "id": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3mzdshtzi242p|ajbrown|questionable|status",
-   "at": "2026-11-02T17:02:15.000Z",
-   "seen": "2026-11-02T17:03:44.457Z",
-   "handle": "rotoworld-fb.bsky.social",
-   "post": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3mzdshtzi242p",
-   "player": "A.J. Brown",
-   "team": null,
-   "status": "questionable",
-   "kind": "status",
-   "confidence": 0.4,
-   "text": "'We'll see' if AJB (knee) practices this week"
-  },
   {
    "id": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3mzduyd3dew25|tyson|questionable|status",
    "at": "2026-11-02T17:47:15.000Z",
