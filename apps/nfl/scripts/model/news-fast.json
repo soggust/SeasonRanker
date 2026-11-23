@@ -7,61 +7,9 @@
   "insidenflnews.bsky.social": "2026-11-23T21:00:47.139Z",
   "nflnewsposter.bsky.social": "2026-11-23T21:01:54.144Z",
   "rotoworld-fb.bsky.social": "2026-11-23T21:12:52.000Z",
-  "rotowirenfl.bsky.social": "2026-11-23T21:08:27.000Z"
+  "rotowirenfl.bsky.social": "2026-11-23T21:20:43.000Z"
  },
  "claims": [
-  {
-   "id": "at://did:plc:mbr4badgf6yu56mquzackzew/app.bsky.feed.post/3mzeaw3s2nc27|jadarianprice|active|status",
-   "at": "2026-11-02T21:20:46.098Z",
-   "seen": "2026-11-02T21:57:32.011Z",
-   "handle": "insidenflnews.bsky.social",
-   "post": "at://did:plc:mbr4badgf6yu56mquzackzew/app.bsky.feed.post/3mzeaw3s2nc27",
-   "player": "Jadarian Price",
-   "team": null,
-   "status": "active",
-   "kind": "status",
-   "confidence": 0.9,
-   "text": "Jadarian Price officially activated to 53-man roster."
-  },
-  {
-   "id": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3mzeawit4gw2s|jadarianprice|active|status",
-   "at": "2026-11-02T21:20:59.000Z",
-   "seen": "2026-11-02T21:57:32.011Z",
-   "handle": "rotowirenfl.bsky.social",
-   "post": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3mzeawit4gw2s",
-   "player": "Jadarian Price",
-   "team": null,
-   "status": "active",
-   "kind": "status",
-   "confidence": 0.9,
-   "text": "Jadarian Price: Activated for Monday night game \n\n https://www.rotowire.com/football/player/jadarian-price-19299"
-  },
-  {
-   "id": "at://did:plc:mbr4badgf6yu56mquzackzew/app.bsky.feed.post/3mzeawpfdv227|tannermckee|none|starting",
-   "at": "2026-11-02T21:21:06.652Z",
-   "seen": "2026-11-02T21:57:32.011Z",
-   "handle": "insidenflnews.bsky.social",
-   "post": "at://did:plc:mbr4badgf6yu56mquzackzew/app.bsky.feed.post/3mzeawpfdv227",
-   "player": "Tanner McKee",
-   "team": "PHI",
-   "status": "none",
-   "kind": "starting",
-   "confidence": 0.9,
-   "text": "Sirianni: Tanner McKee will remain starting QB."
-  },
-  {
-   "id": "at://did:plc:hlvr2omhnmvdmfnvmcuhyevz/app.bsky.feed.post/3mzebefy65c26|jadarianprice|active|status",
-   "at": "2026-11-02T21:28:46.544Z",
-   "seen": "2026-11-02T21:57:32.011Z",
-   "handle": "rapsheet.bsky.social",
-   "post": "at://did:plc:hlvr2omhnmvdmfnvmcuhyevz/app.bsky.feed.post/3mzebefy65c26",
-   "player": "Jadarian Price",
-   "team": "SEA",
-   "status": "active",
-   "kind": "status",
-   "confidence": 0.85,
-   "text": "The Seahawks plan to activate first-round RB Jadarian Price from Injured Reserve to play tonight against the Bears, source says. His first game action since Sept. 27."
-  },
   {
    "id": "at://did:plc:rx22hq465sfe5g2qyyf5gzu2/app.bsky.feed.post/3mzebkd33zk2q|gardnerminshew|none|starting",
    "at": "2026-11-02T21:32:04.821Z",
@@ -18092,6 +18040,19 @@
    "kind": "return",
    "confidence": 0.95,
    "text": "Commanders activated RB Jacory Croskey-Merritt from injured reserve and he will play tonight vs. the Bengals.\n\nOriginal post"
+  },
+  {
+   "id": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3n2z2pe3gig2x|jacorycroskeymerritt|active|status",
+   "at": "2026-11-23T21:20:43.000Z",
+   "seen": "2026-11-23T21:29:36.179Z",
+   "handle": "rotowirenfl.bsky.social",
+   "post": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3n2z2pe3gig2x",
+   "player": "Jacory Croskey-Merritt",
+   "team": null,
+   "status": "active",
+   "kind": "status",
+   "confidence": 0.95,
+   "text": "Jacory Croskey-Merritt: Activated, cleared to play Monday \n\n https://www.rotowire.com/football/player/jacory-croskey-merritt-18811"
   }
  ]
 }
