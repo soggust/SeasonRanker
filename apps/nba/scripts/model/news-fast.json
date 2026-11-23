@@ -1,7 +1,7 @@
 {
  "sport": "nba",
  "cursor": {
-  "rotowirenba.bsky.social": "2026-11-22T23:29:49.000Z",
+  "rotowirenba.bsky.social": "2026-11-23T00:19:53.000Z",
   "insidenbanews.bsky.social": "2026-11-20T20:35:06.661Z",
   "shamsbot.bsky.social": "2026-11-22T20:01:51.000Z"
  },
@@ -7688,6 +7688,19 @@
    "kind": "status",
    "confidence": 0.9,
    "text": "Brandon Ingram: Removed from injury report \n\n https://www.rotowire.com/basketball/player/brandon-ingram-3861"
+  },
+  {
+   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3n2wuasook42q|karlanthonytowns|active|status",
+   "at": "2026-11-23T00:19:53.000Z",
+   "seen": "2026-11-23T00:33:12.472Z",
+   "handle": "rotowirenba.bsky.social",
+   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3n2wuasook42q",
+   "player": "Karl-Anthony Towns",
+   "team": null,
+   "status": "active",
+   "kind": "status",
+   "confidence": 0.9,
+   "text": "Karl-Anthony Towns: Cleared to play Sunday \n\n https://www.rotowire.com/basketball/player/karl-anthony-towns-3741"
   }
  ]
 }
