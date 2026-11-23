@@ -5,7 +5,7 @@
   "notfriedgehnic.bsky.social": "2026-11-22T19:20:36.239Z",
   "dailyfaceoff.bsky.social": "2026-11-23T02:25:39.000Z",
   "dfotoronto.bsky.social": "2026-11-23T01:16:53.000Z",
-  "marklazerus.bsky.social": "2026-11-23T02:52:30.149Z"
+  "marklazerus.bsky.social": "2026-11-23T03:04:08.475Z"
  },
  "claims": [
   {
@@ -2620,6 +2620,19 @@
    "kind": "status",
    "confidence": 0.9,
    "text": "Blackhawks’ Kaiser suspended three games for hit on Flames’ Pospisil"
+  },
+  {
+   "id": "at://did:plc:54vdi5eoabhod2vumsbcpi7g/app.bsky.feed.post/3n2x5gixqfszq|kevinkorchinski|active|return",
+   "at": "2026-11-23T03:04:08.475Z",
+   "seen": "2026-11-23T03:15:19.626Z",
+   "handle": "marklazerus.bsky.social",
+   "post": "at://did:plc:54vdi5eoabhod2vumsbcpi7g/app.bsky.feed.post/3n2x5gixqfszq",
+   "player": "Kevin Korchinski",
+   "team": null,
+   "status": "active",
+   "kind": "return",
+   "confidence": 0.5,
+   "text": "Kevin Korchinski has played just 4:48 through two periods. He's a minus-2 and one of the goals went in off his stick. And he took a penalty. Rough first game back after being a healthy scratch the las"
   }
  ]
 }
