@@ -1,89 +1,11 @@
 {
  "sport": "nba",
  "cursor": {
-  "rotowirenba.bsky.social": "2026-11-23T16:49:56.000Z",
+  "rotowirenba.bsky.social": "2026-11-23T18:45:19.000Z",
   "insidenbanews.bsky.social": "2026-11-20T20:35:06.661Z",
   "shamsbot.bsky.social": "2026-11-22T20:01:51.000Z"
  },
  "claims": [
-  {
-   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mzdvvd3rgm2n|alexsarr|out|status",
-   "at": "2026-11-02T18:03:28.000Z",
-   "seen": "2026-11-02T18:07:21.599Z",
-   "handle": "rotowirenba.bsky.social",
-   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mzdvvd3rgm2n",
-   "player": "Alex Sarr",
-   "team": "WAS",
-   "status": "out",
-   "kind": "status",
-   "confidence": 0.95,
-   "text": "Alex Sarr: Confirmed out for Monday \n\n https://www.rotowire.com/basketball/player/alex-sarr-6240"
-  },
-  {
-   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mzdwrwwbzo27|ivicazubac|out|status",
-   "at": "2026-11-02T18:19:29.000Z",
-   "seen": "2026-11-02T18:28:24.590Z",
-   "handle": "rotowirenba.bsky.social",
-   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mzdwrwwbzo27",
-   "player": "Ivica Zubac",
-   "team": null,
-   "status": "out",
-   "kind": "status",
-   "confidence": 0.93,
-   "text": "Ivica Zubac: Remains out indefinitely \n\n https://www.rotowire.com/basketball/player/ivica-zubac-3888"
-  },
-  {
-   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mzdykrquxv27|kyrieirving|doubtful|status",
-   "at": "2026-11-02T18:51:16.000Z",
-   "seen": "2026-11-02T19:11:10.777Z",
-   "handle": "rotowirenba.bsky.social",
-   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mzdykrquxv27",
-   "player": "Kyrie Irving",
-   "team": null,
-   "status": "doubtful",
-   "kind": "status",
-   "confidence": 0.9,
-   "text": "Kyrie Irving: Downgraded to doubtful \n\n https://www.rotowire.com/basketball/player/kyrie-irving-3186"
-  },
-  {
-   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mzdyp2bln62l|treymurphy|active|status",
-   "at": "2026-11-02T18:53:39.000Z",
-   "seen": "2026-11-02T19:11:10.777Z",
-   "handle": "rotowirenba.bsky.social",
-   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mzdyp2bln62l",
-   "player": "Trey Murphy",
-   "team": null,
-   "status": "active",
-   "kind": "status",
-   "confidence": 0.9,
-   "text": "Trey Murphy: Will play Monday \n\n https://www.rotowire.com/basketball/player/trey-murphy-5401"
-  },
-  {
-   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mzdyrwvgwx2g|dejountemurray|questionable|status",
-   "at": "2026-11-02T18:55:16.000Z",
-   "seen": "2026-11-02T19:11:10.777Z",
-   "handle": "rotowirenba.bsky.social",
-   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mzdyrwvgwx2g",
-   "player": "Dejounte Murray",
-   "team": null,
-   "status": "questionable",
-   "kind": "status",
-   "confidence": 0.9,
-   "text": "Dejounte Murray: Downgraded to questionable \n\n https://www.rotowire.com/basketball/player/dejounte-murray-3856"
-  },
-  {
-   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mzdzgkxicw27|paulgeorge|out|status",
-   "at": "2026-11-02T19:06:48.000Z",
-   "seen": "2026-11-02T19:11:10.777Z",
-   "handle": "rotowirenba.bsky.social",
-   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mzdzgkxicw27",
-   "player": "Paul George",
-   "team": null,
-   "status": "out",
-   "kind": "status",
-   "confidence": 0.9,
-   "text": "Paul George: Will sit out Monday \n\n https://www.rotowire.com/basketball/player/paul-george-3114"
-  },
   {
    "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mze7zulzvf26|stephencurry|active|return",
    "at": "2026-11-02T21:04:58.000Z",
@@ -7727,6 +7649,58 @@
    "kind": "status",
    "confidence": 0.9,
    "text": "De'Aaron Fox: Questionable for Monday \n\n https://www.rotowire.com/basketball/player/deaaron-fox-4116"
+  },
+  {
+   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3n2yrhygxr22u|nicclaxton|questionable|status",
+   "at": "2026-11-23T18:35:32.000Z",
+   "seen": "2026-11-23T19:15:26.553Z",
+   "handle": "rotowirenba.bsky.social",
+   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3n2yrhygxr22u",
+   "player": "Nic Claxton",
+   "team": "BKN",
+   "status": "questionable",
+   "kind": "status",
+   "confidence": 0.9,
+   "text": "Nic Claxton: Listed as questionable \n\n https://www.rotowire.com/basketball/player/nic-claxton-4827"
+  },
+  {
+   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3n2yruvafus22|shaigilgeousalexander|active|status",
+   "at": "2026-11-23T18:42:45.000Z",
+   "seen": "2026-11-23T19:15:26.553Z",
+   "handle": "rotowirenba.bsky.social",
+   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3n2yruvafus22",
+   "player": "Shai Gilgeous-Alexander",
+   "team": "OKC",
+   "status": "active",
+   "kind": "status",
+   "confidence": 0.85,
+   "text": "Shai Gilgeous-Alexander: Off injury report \n\n https://www.rotowire.com/basketball/player/shai-gilgeous-alexander-4387"
+  },
+  {
+   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3n2yrwbwdos22|treymurphy|active|status",
+   "at": "2026-11-23T18:43:32.000Z",
+   "seen": "2026-11-23T19:15:26.553Z",
+   "handle": "rotowirenba.bsky.social",
+   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3n2yrwbwdos22",
+   "player": "Trey Murphy",
+   "team": "NOP",
+   "status": "active",
+   "kind": "status",
+   "confidence": 0.9,
+   "text": "Trey Murphy: Will play Monday \n\n https://www.rotowire.com/basketball/player/trey-murphy-5401"
+  },
+  {
+   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3n2yrzhtbga2u|adaymara|out|status",
+   "at": "2026-11-23T18:45:19.000Z",
+   "seen": "2026-11-23T19:15:26.553Z",
+   "handle": "rotowirenba.bsky.social",
+   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3n2yrzhtbga2u",
+   "player": "Aday Mara",
+   "team": null,
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.9,
+   "text": "Aday Mara: Remaining out Monday \n\n https://www.rotowire.com/basketball/player/aday-mara-6932"
   }
  ]
 }

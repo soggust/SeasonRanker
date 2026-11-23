@@ -2,38 +2,12 @@
  "sport": "nhl",
  "cursor": {
   "johnston-bot.bsky.social": "2026-11-23T02:17:07.040Z",
-  "notfriedgehnic.bsky.social": "2026-11-23T16:12:11.603Z",
-  "dailyfaceoff.bsky.social": "2026-11-23T17:35:55.000Z",
-  "dfotoronto.bsky.social": "2026-11-23T16:57:40.100Z",
+  "notfriedgehnic.bsky.social": "2026-11-23T19:10:11.309Z",
+  "dailyfaceoff.bsky.social": "2026-11-23T19:08:41.000Z",
+  "dfotoronto.bsky.social": "2026-11-23T18:37:17.000Z",
   "marklazerus.bsky.social": "2026-11-23T15:46:01.239Z"
  },
  "claims": [
-  {
-   "id": "at://did:plc:knaj2vcp4x6t7hr7ewd6e3uz/app.bsky.feed.post/3mzdut46xai27|sergeibobrovsky|active|starting",
-   "at": "2026-11-02T17:44:20.000Z",
-   "seen": "2026-11-02T17:46:49.923Z",
-   "handle": "dfotoronto.bsky.social",
-   "post": "at://did:plc:knaj2vcp4x6t7hr7ewd6e3uz/app.bsky.feed.post/3mzdut46xai27",
-   "player": "Sergei Bobrovsky",
-   "team": "TOR",
-   "status": "active",
-   "kind": "starting",
-   "confidence": 0.8,
-   "text": "Leafs Practice Notes: Forward lines shuffled, Sergei Bobrovsky gets the start vs Mammoth"
-  },
-  {
-   "id": "at://did:plc:3uus7y6h3rlrk6sbctzxm4bg/app.bsky.feed.post/3mzdwecetir24|konstahelenius|out|status",
-   "at": "2026-11-02T18:11:51.000Z",
-   "seen": "2026-11-02T18:28:24.590Z",
-   "handle": "dailyfaceoff.bsky.social",
-   "post": "at://did:plc:3uus7y6h3rlrk6sbctzxm4bg/app.bsky.feed.post/3mzdwecetir24",
-   "player": "Konsta Helenius",
-   "team": "BUF",
-   "status": "out",
-   "kind": "status",
-   "confidence": 0.95,
-   "text": "Sabres’ Konsta Helenius out week-to-week with upper-body injury"
-  },
   {
    "id": "at://did:plc:knaj2vcp4x6t7hr7ewd6e3uz/app.bsky.feed.post/3mzegi3h5el2n|sergeibobrovsky|none|starting",
    "at": "2026-11-02T23:00:18.000Z",
@@ -2607,6 +2581,45 @@
    "kind": "status",
    "confidence": 0.9,
    "text": "Capitals’ Jordan Kyrou out at least a week with upper-body injury"
+  },
+  {
+   "id": "at://did:plc:3uus7y6h3rlrk6sbctzxm4bg/app.bsky.feed.post/3n2ysdlqxj62b|keller|active|return",
+   "at": "2026-11-23T18:50:58.000Z",
+   "seen": "2026-11-23T19:15:26.553Z",
+   "handle": "dailyfaceoff.bsky.social",
+   "post": "at://did:plc:3uus7y6h3rlrk6sbctzxm4bg/app.bsky.feed.post/3n2ysdlqxj62b",
+   "player": "Keller",
+   "team": "UTA",
+   "status": "active",
+   "kind": "return",
+   "confidence": 0.9,
+   "text": "Mammoth’s Keller, Guenther to return to lineup; Carcone out 3-4 months"
+  },
+  {
+   "id": "at://did:plc:3uus7y6h3rlrk6sbctzxm4bg/app.bsky.feed.post/3n2ysdlqxj62b|guenther|active|return",
+   "at": "2026-11-23T18:50:58.000Z",
+   "seen": "2026-11-23T19:15:26.553Z",
+   "handle": "dailyfaceoff.bsky.social",
+   "post": "at://did:plc:3uus7y6h3rlrk6sbctzxm4bg/app.bsky.feed.post/3n2ysdlqxj62b",
+   "player": "Guenther",
+   "team": "UTA",
+   "status": "active",
+   "kind": "return",
+   "confidence": 0.9,
+   "text": "Mammoth’s Keller, Guenther to return to lineup; Carcone out 3-4 months"
+  },
+  {
+   "id": "at://did:plc:3uus7y6h3rlrk6sbctzxm4bg/app.bsky.feed.post/3n2ysdlqxj62b|carcone|out|status",
+   "at": "2026-11-23T18:50:58.000Z",
+   "seen": "2026-11-23T19:15:26.553Z",
+   "handle": "dailyfaceoff.bsky.social",
+   "post": "at://did:plc:3uus7y6h3rlrk6sbctzxm4bg/app.bsky.feed.post/3n2ysdlqxj62b",
+   "player": "Carcone",
+   "team": "UTA",
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.9,
+   "text": "Mammoth’s Keller, Guenther to return to lineup; Carcone out 3-4 months"
   }
  ]
 }

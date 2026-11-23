@@ -1,18 +1,6 @@
 {
  "sport": "nba",
  "days": 2,
- "signals": [
-  {
-   "team": "20",
-   "abbr": "PHI",
-   "athlete": "4431678",
-   "player": "Tyrese Maxey",
-   "kind": "starting",
-   "direction": "up",
-   "confidence": 0.9,
-   "headline": "76ers' Jaylen Brown, Dean Wade out, Tyrese Maxey starting vs. Bucks",
-   "at": "2026-11-21T18:02:43.000Z"
-  }
- ],
- "at": "2026-11-22T21:15:00.553Z"
+ "signals": [],
+ "at": "2026-11-23T19:15:26.553Z"
 }
