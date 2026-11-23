@@ -5,24 +5,11 @@
   "rapsheet.bsky.social": "2026-11-23T00:40:04.629Z",
   "nflnewsreposterbot.bsky.social": "2026-11-16T18:35:13.806Z",
   "insidenflnews.bsky.social": "2026-11-23T14:44:03.595Z",
-  "nflnewsposter.bsky.social": "2026-11-23T04:58:50.607Z",
-  "rotoworld-fb.bsky.social": "2026-11-23T13:49:47.000Z",
+  "nflnewsposter.bsky.social": "2026-11-23T14:58:30.121Z",
+  "rotoworld-fb.bsky.social": "2026-11-23T14:48:02.000Z",
   "rotowirenfl.bsky.social": "2026-11-23T14:43:01.000Z"
  },
  "claims": [
-  {
-   "id": "at://did:plc:qre6zxbmr3ixhdmgsgdretb5/app.bsky.feed.post/3mzdl24wsmq2l|davonhamilton|out|status",
-   "at": "2026-11-02T14:49:19.095Z",
-   "seen": "2026-11-02T15:05:11.035Z",
-   "handle": "adamscheftermirror.bsky.social",
-   "post": "at://did:plc:qre6zxbmr3ixhdmgsgdretb5/app.bsky.feed.post/3mzdl24wsmq2l",
-   "player": "DaVon Hamilton",
-   "team": "JAX",
-   "status": "out",
-   "kind": "status",
-   "confidence": 0.9,
-   "text": "Repost by @AdamSchefter\n\nSources: #Jaguars standout DT DaVon Hamilton suffered a torn quad in Sunday’s win over the #Colts, and he’s expected to be out for the season. Hamilton will undergo more tests"
-  },
   {
    "id": "at://did:plc:fuqjc7x4gxvnwzksnlxwbe4x/app.bsky.feed.post/3mzdnu2cmls2q|yayadiaby|questionable|status",
    "at": "2026-11-02T15:39:36.337Z",
