@@ -4,25 +4,12 @@
   "adamscheftermirror.bsky.social": "2026-11-23T02:31:39.047Z",
   "rapsheet.bsky.social": "2026-11-23T00:40:04.629Z",
   "nflnewsreposterbot.bsky.social": "2026-11-16T18:35:13.806Z",
-  "insidenflnews.bsky.social": "2026-11-23T02:58:16.294Z",
-  "nflnewsposter.bsky.social": "2026-11-23T02:55:47.927Z",
+  "insidenflnews.bsky.social": "2026-11-23T03:21:25.098Z",
+  "nflnewsposter.bsky.social": "2026-11-23T03:21:18.770Z",
   "rotoworld-fb.bsky.social": "2026-11-23T02:53:43.000Z",
   "rotowirenfl.bsky.social": "2026-11-23T02:57:45.000Z"
  },
  "claims": [
-  {
-   "id": "at://did:plc:fuqjc7x4gxvnwzksnlxwbe4x/app.bsky.feed.post/3mzcep26wes2e|michaelcarter|questionable|status",
-   "at": "2026-11-02T03:23:05.032Z",
-   "seen": "2026-11-02T03:29:25.915Z",
-   "handle": "nflnewsposter.bsky.social",
-   "post": "at://did:plc:fuqjc7x4gxvnwzksnlxwbe4x/app.bsky.feed.post/3mzcep26wes2e",
-   "player": "Michael Carter II",
-   "team": "PHI",
-   "status": "questionable",
-   "kind": "status",
-   "confidence": 0.9,
-   "text": "[Eagles] Injury Update: DB Michael Carter II (abdomen) is questionable to return. twitter.com/Eagles/statu..."
-  },
   {
    "id": "at://did:plc:qre6zxbmr3ixhdmgsgdretb5/app.bsky.feed.post/3mzdapblhsr2p|lamarjackson|out|status",
    "at": "2026-11-02T11:44:17.452Z",
@@ -18209,6 +18196,19 @@
    "kind": "status",
    "confidence": 0.85,
    "text": "[Vikings] T Christian Darrisaw (shoulder) is questionable to return twitter.com/Vikings/stat..."
+  },
+  {
+   "id": "at://did:plc:fuqjc7x4gxvnwzksnlxwbe4x/app.bsky.feed.post/3n2x67gelhs22|darrisaw|active|return",
+   "at": "2026-11-23T03:18:04.612Z",
+   "seen": "2026-11-23T03:28:48.166Z",
+   "handle": "nflnewsposter.bsky.social",
+   "post": "at://did:plc:fuqjc7x4gxvnwzksnlxwbe4x/app.bsky.feed.post/3n2x67gelhs22",
+   "player": "Darrisaw",
+   "team": null,
+   "status": "active",
+   "kind": "return",
+   "confidence": 0.8,
+   "text": "[Seifert] Darrisaw is back to start the second half. twitter.com/SeifertESPN/..."
   }
  ]
 }
