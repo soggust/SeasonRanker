@@ -1,13 +1,13 @@
 {
  "sport": "nfl",
  "cursor": {
-  "adamscheftermirror.bsky.social": "2026-11-23T00:11:40.981Z",
-  "rapsheet.bsky.social": "2026-11-23T00:06:32.599Z",
+  "adamscheftermirror.bsky.social": "2026-11-23T00:41:39.105Z",
+  "rapsheet.bsky.social": "2026-11-23T00:40:04.629Z",
   "nflnewsreposterbot.bsky.social": "2026-11-16T18:35:13.806Z",
   "insidenflnews.bsky.social": "2026-11-23T00:16:18.820Z",
-  "nflnewsposter.bsky.social": "2026-11-23T00:31:14.438Z",
-  "rotoworld-fb.bsky.social": "2026-11-23T00:02:24.000Z",
-  "rotowirenfl.bsky.social": "2026-11-23T00:32:04.000Z"
+  "nflnewsposter.bsky.social": "2026-11-23T00:34:53.379Z",
+  "rotoworld-fb.bsky.social": "2026-11-23T00:38:14.000Z",
+  "rotowirenfl.bsky.social": "2026-11-23T00:45:41.000Z"
  },
  "claims": [
   {
@@ -18144,6 +18144,45 @@
    "kind": "status",
    "confidence": 0.5,
    "text": "Justin Herbert: In concussion protocol \n\n https://www.rotowire.com/football/player/justin-herbert-14446"
+  },
+  {
+   "id": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3n2wvbmd4q62d|justinherbert|questionable|status",
+   "at": "2026-11-23T00:38:14.000Z",
+   "seen": "2026-11-23T00:49:44.316Z",
+   "handle": "rotoworld-fb.bsky.social",
+   "post": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3n2wvbmd4q62d",
+   "player": "Justin Herbert",
+   "team": "LAC",
+   "status": "questionable",
+   "kind": "status",
+   "confidence": 0.6,
+   "text": "Herbert enters concussion protocol after loss"
+  },
+  {
+   "id": "at://did:plc:hlvr2omhnmvdmfnvmcuhyevz/app.bsky.feed.post/3n2wvevktc22b|justinherbert|questionable|status",
+   "at": "2026-11-23T00:40:04.629Z",
+   "seen": "2026-11-23T00:49:44.316Z",
+   "handle": "rapsheet.bsky.social",
+   "post": "at://did:plc:hlvr2omhnmvdmfnvmcuhyevz/app.bsky.feed.post/3n2wvevktc22b",
+   "player": "Justin Herbert",
+   "team": "LAC",
+   "status": "questionable",
+   "kind": "status",
+   "confidence": 0.6,
+   "text": "Chargers QB Justin Herbert is now in the NFL’s concussion protocol, per a team official."
+  },
+  {
+   "id": "at://did:plc:qre6zxbmr3ixhdmgsgdretb5/app.bsky.feed.post/3n2wvhpqncz2n|justinherbert|questionable|status",
+   "at": "2026-11-23T00:41:39.105Z",
+   "seen": "2026-11-23T00:49:44.316Z",
+   "handle": "adamscheftermirror.bsky.social",
+   "post": "at://did:plc:qre6zxbmr3ixhdmgsgdretb5/app.bsky.feed.post/3n2wvhpqncz2n",
+   "player": "Justin Herbert",
+   "team": "LAC",
+   "status": "questionable",
+   "kind": "status",
+   "confidence": 0.6,
+   "text": "Chargers QB Justin Herbert is now in concussion protocol.\n\nOriginal post"
   }
  ]
 }
