@@ -1,13 +1,13 @@
 {
  "sport": "nfl",
  "cursor": {
-  "adamscheftermirror.bsky.social": "2026-11-23T01:41:40.888Z",
+  "adamscheftermirror.bsky.social": "2026-11-23T02:31:39.047Z",
   "rapsheet.bsky.social": "2026-11-23T00:40:04.629Z",
   "nflnewsreposterbot.bsky.social": "2026-11-16T18:35:13.806Z",
-  "insidenflnews.bsky.social": "2026-11-23T00:16:18.820Z",
-  "nflnewsposter.bsky.social": "2026-11-23T02:24:13.370Z",
-  "rotoworld-fb.bsky.social": "2026-11-23T02:22:21.000Z",
-  "rotowirenfl.bsky.social": "2026-11-23T02:26:26.000Z"
+  "insidenflnews.bsky.social": "2026-11-23T02:34:09.545Z",
+  "nflnewsposter.bsky.social": "2026-11-23T02:39:04.088Z",
+  "rotoworld-fb.bsky.social": "2026-11-23T02:40:26.000Z",
+  "rotowirenfl.bsky.social": "2026-11-23T02:52:14.000Z"
  },
  "claims": [
   {
@@ -18196,6 +18196,19 @@
    "kind": "status",
    "confidence": 0.45,
    "text": "[Inman] 49ers right tackle Colton McKivitz right lower leg is severly injured and getting put into aircast twitter.com/CamInman/sta..."
+  },
+  {
+   "id": "at://did:plc:fuqjc7x4gxvnwzksnlxwbe4x/app.bsky.feed.post/3n2x3zobii2u2|christiandarrisaw|questionable|status",
+   "at": "2026-11-23T02:39:04.088Z",
+   "seen": "2026-11-23T02:52:52.810Z",
+   "handle": "nflnewsposter.bsky.social",
+   "post": "at://did:plc:fuqjc7x4gxvnwzksnlxwbe4x/app.bsky.feed.post/3n2x3zobii2u2",
+   "player": "Christian Darrisaw",
+   "team": "MIN",
+   "status": "questionable",
+   "kind": "status",
+   "confidence": 0.85,
+   "text": "[Vikings] T Christian Darrisaw (shoulder) is questionable to return twitter.com/Vikings/stat..."
   }
  ]
 }
