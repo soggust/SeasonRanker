@@ -1,106 +1,6 @@
 {
  "sport": "nhl",
  "entries": {
-  "401892704|dylanguenther|q": {
-   "game": "401892704",
-   "start": "2026-11-13T02:00Z",
-   "team": "129764",
-   "name": "Dylan Guenther",
-   "status": "q",
-   "athlete": "4874723",
-   "espn": {
-    "seen": "2026-11-11T16:34:51.817Z",
-    "own": "2026-11-10T19:46:00.000Z"
-   }
-  },
-  "401892704|nateschmidt|out": {
-   "game": "401892704",
-   "start": "2026-11-13T02:00Z",
-   "team": "129764",
-   "name": "Nate Schmidt",
-   "status": "out",
-   "athlete": "3024798",
-   "espn": {
-    "seen": "2026-11-11T16:34:51.817Z",
-    "own": "2026-11-09T20:09:00.000Z"
-   },
-   "sleeper": {
-    "seen": "2026-11-12T20:19:52.772Z",
-    "own": "2026-11-12T19:35:22.350Z"
-   }
-  },
-  "401892704|kaileryamamoto|out": {
-   "game": "401892704",
-   "start": "2026-11-13T02:00Z",
-   "team": "129764",
-   "name": "Kailer Yamamoto",
-   "status": "out",
-   "athlete": "4233648",
-   "espn": {
-    "seen": "2026-11-11T16:34:51.817Z",
-    "own": "2026-11-07T15:04:00.000Z"
-   }
-  },
-  "401892704|johnmarino|out": {
-   "game": "401892704",
-   "start": "2026-11-13T02:00Z",
-   "team": "129764",
-   "name": "John Marino",
-   "status": "out",
-   "athlete": "3941974",
-   "espn": {
-    "seen": "2026-11-11T16:34:51.817Z",
-    "own": "2026-11-01T20:27:00.000Z"
-   }
-  },
-  "401892704|mavericlamoureux|out": {
-   "game": "401892704",
-   "start": "2026-11-13T02:00Z",
-   "team": "129764",
-   "name": "Maveric Lamoureux",
-   "status": "out",
-   "athlete": "5080177",
-   "espn": {
-    "seen": "2026-11-11T16:34:51.817Z",
-    "own": "2026-09-28T21:02:00.000Z"
-   }
-  },
-  "401892704|toreykrug|out": {
-   "game": "401892704",
-   "start": "2026-11-13T02:00Z",
-   "team": "19",
-   "name": "Torey Krug",
-   "status": "out",
-   "athlete": "2952729",
-   "espn": {
-    "seen": "2026-11-11T16:34:51.817Z",
-    "own": "2026-10-13T01:42:00.000Z"
-   }
-  },
-  "401892704|dillondube|out": {
-   "game": "401892704",
-   "start": "2026-11-13T02:00Z",
-   "team": "19",
-   "name": "Dillon Dube",
-   "status": "out",
-   "athlete": "4063268",
-   "espn": {
-    "seen": "2026-11-11T16:34:51.817Z",
-    "own": "2026-10-10T21:13:00.000Z"
-   }
-  },
-  "401892704|tylertucker|out": {
-   "game": "401892704",
-   "start": "2026-11-13T02:00Z",
-   "team": "19",
-   "name": "Tyler Tucker",
-   "status": "out",
-   "athlete": "4587904",
-   "espn": {
-    "seen": "2026-11-11T16:34:51.817Z",
-    "own": "2026-09-30T19:39:00.000Z"
-   }
-  },
   "401892705|erikgustafsson|q": {
    "game": "401892705",
    "start": "2026-11-13T03:00Z",
@@ -207,67 +107,6 @@
    "espn": {
     "seen": "2026-11-11T21:14:10.633Z",
     "own": "2026-11-11T20:40:00.000Z"
-   }
-  },
-  "401892704|dylanguenther|out": {
-   "game": "401892704",
-   "start": "2026-11-13T02:00Z",
-   "team": "129764",
-   "name": "Dylan Guenther",
-   "status": "out",
-   "athlete": "4874723",
-   "espn": {
-    "seen": "2026-11-12T01:32:32.443Z",
-    "own": "2026-11-12T01:21:00.000Z"
-   },
-   "bluesky": {
-    "seen": "2026-11-12T05:14:14.028Z",
-    "own": "2026-11-12T05:04:42.000Z",
-    "why": "@dailyfaceoff.bsky.social: Mammoth’s Dylan Guenther out 2-4 weeks with upper-bod"
-   }
-  },
-  "401892704|logancooley|out": {
-   "game": "401892704",
-   "start": "2026-11-13T02:00Z",
-   "team": "129764",
-   "name": "Logan Cooley",
-   "status": "out",
-   "athlete": "5080143",
-   "espn": {
-    "seen": "2026-11-12T02:27:36.368Z",
-    "own": "2026-11-12T02:10:00.000Z"
-   },
-   "sleeper": {
-    "seen": "2026-11-12T20:19:52.772Z",
-    "own": "2026-11-12T19:25:22.239Z"
-   }
-  },
-  "401892704|nickschmaltz|q": {
-   "game": "401892704",
-   "start": "2026-11-13T02:00Z",
-   "team": "129764",
-   "name": "Nick Schmaltz",
-   "status": "q",
-   "athlete": "3114770",
-   "espn": {
-    "seen": "2026-11-12T05:12:47.674Z",
-    "own": "2026-11-12T04:45:00.000Z"
-   },
-   "sleeper": {
-    "seen": "2026-11-12T20:19:52.772Z",
-    "own": "2026-11-12T19:25:22.223Z"
-   }
-  },
-  "401892704|logancooley|q": {
-   "game": "401892704",
-   "start": "2026-11-13T02:00Z",
-   "team": "129764",
-   "name": "Logan Cooley",
-   "status": "q",
-   "athlete": "5080143",
-   "espn": {
-    "seen": "2026-11-12T14:28:57.904Z",
-    "own": "2026-11-12T14:09:00.000Z"
    }
   },
   "401892706|tomwillander|q": {
@@ -472,18 +311,6 @@
     "seen": "2026-11-12T22:14:58.283Z",
     "own": "2026-11-12T21:09:20.000Z",
     "why": "@dailyfaceoff.bsky.social: Islanders’ Pageau out with lower-body injury, Maccell"
-   }
-  },
-  "401892704|nickschmaltz|out": {
-   "game": "401892704",
-   "start": "2026-11-13T02:00Z",
-   "team": "129764",
-   "name": "Nick Schmaltz",
-   "status": "out",
-   "athlete": "3114770",
-   "espn": {
-    "seen": "2026-11-13T01:42:17.239Z",
-    "own": "2026-11-13T01:30:00.000Z"
    }
   },
   "401891809|jordanstaal|out": {
