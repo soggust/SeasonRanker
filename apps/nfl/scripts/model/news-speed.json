@@ -20707,6 +20707,114 @@
     "seen": "2026-11-22T23:57:52.776Z",
     "own": "2026-11-22T20:01:00.000Z"
    }
+  },
+  "401873077|kurtisrourke|out": {
+   "game": "401873077",
+   "start": "2026-11-23T01:20Z",
+   "team": "25",
+   "name": "Kurtis Rourke",
+   "status": "out",
+   "athlete": "4430431",
+   "espn": {
+    "seen": "2026-11-23T00:25:42.498Z",
+    "own": "2026-11-23T00:02:00.000Z"
+   }
+  },
+  "401873077|enriquecruz|out": {
+   "game": "401873077",
+   "start": "2026-11-23T01:20Z",
+   "team": "25",
+   "name": "Enrique Cruz Jr.",
+   "status": "out",
+   "athlete": "4691556",
+   "espn": {
+    "seen": "2026-11-23T00:25:42.498Z",
+    "own": "2026-11-23T00:02:00.000Z"
+   }
+  },
+  "401873077|kyrenwilliams|q": {
+   "game": "401873077",
+   "start": "2026-11-23T01:20Z",
+   "team": "25",
+   "name": "Kyren Williams",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-11-23T00:00:19.600Z",
+    "own": "2026-11-22T23:44:47.000Z",
+    "why": "@rotowirenfl.bsky.social: Kyren Williams: Limited at practice \n\n https://www.rot"
+   }
+  },
+  "401873077|gregnewsome|out": {
+   "game": "401873077",
+   "start": "2026-11-23T01:20Z",
+   "team": "25",
+   "name": "Greg Newsome II",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-23T00:00:19.600Z",
+    "own": "2026-11-22T23:55:28.584Z",
+    "why": "@nflnewsposter.bsky.social: [Salomone] Injury Update: CB Greg Newsome II (ankle)"
+   }
+  },
+  "401873077|maxbrosmer|out": {
+   "game": "401873077",
+   "start": "2026-11-23T01:20Z",
+   "team": "16",
+   "name": "Max Brosmer",
+   "status": "out",
+   "athlete": "4573398",
+   "espn": {
+    "seen": "2026-11-23T00:25:42.498Z",
+    "own": "2026-11-23T00:06:00.000Z"
+   }
+  },
+  "401873078|kyrenwilliams|q": {
+   "game": "401873078",
+   "start": "2026-11-24T01:15Z",
+   "team": "28",
+   "name": "Kyren Williams",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-11-23T00:00:19.600Z",
+    "own": "2026-11-22T23:44:47.000Z",
+    "why": "@rotowirenfl.bsky.social: Kyren Williams: Limited at practice \n\n https://www.rot"
+   }
+  },
+  "401873078|gregnewsome|out": {
+   "game": "401873078",
+   "start": "2026-11-24T01:15Z",
+   "team": "28",
+   "name": "Greg Newsome II",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-23T00:00:19.600Z",
+    "own": "2026-11-22T23:55:28.584Z",
+    "why": "@nflnewsposter.bsky.social: [Salomone] Injury Update: CB Greg Newsome II (ankle)"
+   }
+  },
+  "401873079|mylesgarrett|q": {
+   "game": "401873079",
+   "start": "2026-11-26T01:00Z",
+   "team": "14",
+   "name": "Myles Garrett",
+   "status": "q",
+   "athlete": "3122132",
+   "espn": {
+    "seen": "2026-11-23T00:25:42.498Z",
+    "own": "2026-11-23T00:09:00.000Z"
+   }
+  },
+  "401873079|kamcurl|q": {
+   "game": "401873079",
+   "start": "2026-11-26T01:00Z",
+   "team": "14",
+   "name": "Kam Curl",
+   "status": "q",
+   "athlete": "4242154",
+   "espn": {
+    "seen": "2026-11-23T00:25:42.498Z",
+    "own": "2026-11-23T00:08:00.000Z"
+   }
   }
  }
 }
