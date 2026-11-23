@@ -1,7 +1,7 @@
 {
  "sport": "nba",
  "cursor": {
-  "rotowirenba.bsky.social": "2026-11-23T21:11:06.000Z",
+  "rotowirenba.bsky.social": "2026-11-23T22:15:23.000Z",
   "insidenbanews.bsky.social": "2026-11-20T20:35:06.661Z",
   "shamsbot.bsky.social": "2026-11-22T20:01:51.000Z"
  },
@@ -7675,6 +7675,19 @@
    "kind": "status",
    "confidence": 0.8,
    "text": "Paul George: Omitted from injury report \n\n https://www.rotowire.com/basketball/player/paul-george-3114"
+  },
+  {
+   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3n2z5flx5sx22|jalenduren|out|status",
+   "at": "2026-11-23T22:08:57.000Z",
+   "seen": "2026-11-23T22:15:28.805Z",
+   "handle": "rotowirenba.bsky.social",
+   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3n2z5flx5sx22",
+   "player": "Jalen Duren",
+   "team": null,
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.9,
+   "text": "Jalen Duren: Remaining out for Tuesday \n\n https://www.rotowire.com/basketball/player/jalen-duren-5703"
   }
  ]
 }
