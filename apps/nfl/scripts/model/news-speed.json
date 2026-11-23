@@ -20175,6 +20175,126 @@
     "own": "2026-11-23T21:04:00.000Z",
     "why": "@rotoworld-fb.bsky.social: Jordan Addison (thumb) may not return vs. Falcons"
    }
+  },
+  "401873078|saquonbarkley|q": {
+   "game": "401873078",
+   "start": "2026-11-24T01:15Z",
+   "team": "28",
+   "name": "Saquon Barkley",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-11-23T22:15:28.805Z",
+    "own": "2026-11-23T22:04:30.000Z",
+    "why": "@rotowirenfl.bsky.social: Saquon Barkley: Limited in first Week 12 practice \n\n h"
+   }
+  },
+  "401873078|swayzebozeman|q": {
+   "game": "401873078",
+   "start": "2026-11-24T01:15Z",
+   "team": "4",
+   "name": "Swayze Bozeman",
+   "status": "q",
+   "athlete": "4570546",
+   "espn": {
+    "seen": "2026-11-23T23:12:36.012Z",
+    "own": "2026-11-23T22:39:00.000Z"
+   }
+  },
+  "401873078|brianparker|q": {
+   "game": "401873078",
+   "start": "2026-11-24T01:15Z",
+   "team": "4",
+   "name": "Brian Parker II",
+   "status": "q",
+   "athlete": "4689117",
+   "espn": {
+    "seen": "2026-11-23T23:12:36.012Z",
+    "own": "2026-11-23T22:38:00.000Z"
+   }
+  },
+  "401873079|joshjacobs|q": {
+   "game": "401873079",
+   "start": "2026-11-26T01:00Z",
+   "team": "14",
+   "name": "Josh Jacobs",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-11-23T22:15:28.805Z",
+    "own": "2026-11-23T21:35:54.000Z",
+    "why": "@rotowirenfl.bsky.social: Josh Jacobs: Practices in limited fashion \n\n https://w"
+   }
+  },
+  "401873079|saquonbarkley|q": {
+   "game": "401873079",
+   "start": "2026-11-26T01:00Z",
+   "team": "14",
+   "name": "Saquon Barkley",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-11-23T22:15:28.805Z",
+    "own": "2026-11-23T22:04:30.000Z",
+    "why": "@rotowirenfl.bsky.social: Saquon Barkley: Limited in first Week 12 practice \n\n h"
+   }
+  },
+  "401873079|travisglover|q": {
+   "game": "401873079",
+   "start": "2026-11-26T01:00Z",
+   "team": "9",
+   "name": "Travis Glover",
+   "status": "q",
+   "athlete": "4361904",
+   "espn": {
+    "seen": "2026-11-23T23:12:36.012Z",
+    "own": "2026-11-23T22:18:00.000Z"
+   }
+  },
+  "401873079|micahparsons|q": {
+   "game": "401873079",
+   "start": "2026-11-26T01:00Z",
+   "team": "9",
+   "name": "Micah Parsons",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-11-23T22:15:28.805Z",
+    "own": "2026-11-23T21:41:48.178Z",
+    "why": "@adamscheftermirror.bsky.social: For the second straight day, the Packers listed"
+   }
+  },
+  "401873080|tannermckee|q": {
+   "game": "401873080",
+   "start": "2026-11-26T21:30Z",
+   "team": "21",
+   "name": "Tanner McKee",
+   "status": "q",
+   "athlete": "4685201",
+   "espn": {
+    "seen": "2026-11-23T23:12:36.012Z",
+    "own": "2026-11-23T22:14:00.000Z"
+   }
+  },
+  "401873080|arnoldebiketie|q": {
+   "game": "401873080",
+   "start": "2026-11-26T21:30Z",
+   "team": "21",
+   "name": "Arnold Ebiketie",
+   "status": "q",
+   "athlete": "4257591",
+   "espn": {
+    "seen": "2026-11-23T23:12:36.012Z",
+    "own": "2026-11-23T22:13:00.000Z"
+   }
+  },
+  "401873080|dallasgoedert|q": {
+   "game": "401873080",
+   "start": "2026-11-26T21:30Z",
+   "team": "21",
+   "name": "Dallas Goedert",
+   "status": "q",
+   "athlete": "3121023",
+   "espn": {
+    "seen": "2026-11-23T23:12:36.012Z",
+    "own": "2026-11-23T22:07:00.000Z"
+   }
   }
  }
 }

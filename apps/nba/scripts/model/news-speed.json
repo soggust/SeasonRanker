@@ -24919,6 +24919,18 @@
     "own": "2026-11-23T22:08:57.000Z",
     "why": "@rotowirenba.bsky.social: Jalen Duren: Remaining out for Tuesday \n\n https://www."
    }
+  },
+  "401910037|joelembiid|out": {
+   "game": "401910037",
+   "start": "2026-11-24T00:00Z",
+   "team": "20",
+   "name": "Joel Embiid",
+   "status": "out",
+   "athlete": "3059318",
+   "espn": {
+    "seen": "2026-11-23T23:13:32.355Z",
+    "own": "2026-11-23T22:49:00.000Z"
+   }
   }
  }
 }

@@ -3,24 +3,11 @@
  "cursor": {
   "johnston-bot.bsky.social": "2026-11-23T02:17:07.040Z",
   "notfriedgehnic.bsky.social": "2026-11-23T19:10:11.309Z",
-  "dailyfaceoff.bsky.social": "2026-11-23T22:04:19.000Z",
-  "dfotoronto.bsky.social": "2026-11-23T22:09:53.000Z",
+  "dailyfaceoff.bsky.social": "2026-11-23T23:03:27.000Z",
+  "dfotoronto.bsky.social": "2026-11-23T23:03:53.000Z",
   "marklazerus.bsky.social": "2026-11-23T19:49:12.516Z"
  },
  "claims": [
-  {
-   "id": "at://did:plc:knaj2vcp4x6t7hr7ewd6e3uz/app.bsky.feed.post/3mzegi3h5el2n|sergeibobrovsky|none|starting",
-   "at": "2026-11-02T23:00:18.000Z",
-   "seen": "2026-11-02T23:17:52.532Z",
-   "handle": "dfotoronto.bsky.social",
-   "post": "at://did:plc:knaj2vcp4x6t7hr7ewd6e3uz/app.bsky.feed.post/3mzegi3h5el2n",
-   "player": "Sergei Bobrovsky",
-   "team": null,
-   "status": "none",
-   "kind": "starting",
-   "confidence": 0.8,
-   "text": "Jim Hiller defends decision to return the net to Sergei Bobrovsky vs. Mammoth on Tuesday: ‘We have a plan’"
-  },
   {
    "id": "at://did:plc:3uus7y6h3rlrk6sbctzxm4bg/app.bsky.feed.post/3mzes5gtrtc24|brittacurlsalemme|out|status",
    "at": "2026-11-03T02:29:05.000Z",
@@ -2633,6 +2620,32 @@
    "kind": "status",
    "confidence": 0.9,
    "text": "Capitals’ Jordan Kyrou out at least a week with upper-body injury."
+  },
+  {
+   "id": "at://did:plc:3uus7y6h3rlrk6sbctzxm4bg/app.bsky.feed.post/3n2z6n72ua72y|jacobtrouba|out|status",
+   "at": "2026-11-23T22:31:06.000Z",
+   "seen": "2026-11-23T23:15:11.377Z",
+   "handle": "dailyfaceoff.bsky.social",
+   "post": "at://did:plc:3uus7y6h3rlrk6sbctzxm4bg/app.bsky.feed.post/3n2z6n72ua72y",
+   "player": "Jacob Trouba",
+   "team": "SJ",
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.9,
+   "text": "Sharks’ Jacob Trouba out a week with lower-body injury"
+  },
+  {
+   "id": "at://did:plc:3uus7y6h3rlrk6sbctzxm4bg/app.bsky.feed.post/3n2z7wlg6sy24|erikgustafsson|out|status",
+   "at": "2026-11-23T22:54:14.000Z",
+   "seen": "2026-11-23T23:15:11.377Z",
+   "handle": "dailyfaceoff.bsky.social",
+   "post": "at://did:plc:3uus7y6h3rlrk6sbctzxm4bg/app.bsky.feed.post/3n2z7wlg6sy24",
+   "player": "Erik Gustafsson",
+   "team": "LA",
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.9,
+   "text": "Kings’ Erik Gustafsson out 2-4 weeks with fracture in hand"
   }
  ]
 }
