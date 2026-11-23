@@ -1,7 +1,7 @@
 {
  "sport": "nfl",
  "cursor": {
-  "adamscheftermirror.bsky.social": "2026-11-23T02:31:39.047Z",
+  "adamscheftermirror.bsky.social": "2026-11-23T11:11:44.178Z",
   "rapsheet.bsky.social": "2026-11-23T00:40:04.629Z",
   "nflnewsreposterbot.bsky.social": "2026-11-16T18:35:13.806Z",
   "insidenflnews.bsky.social": "2026-11-23T03:21:25.098Z",
@@ -18235,6 +18235,19 @@
    "kind": "status",
    "confidence": 0.95,
    "text": "[Wagoner] 49ers RT Colton McKivitz suffered a fractured and dislocated left ankle, similar to what Fred Warner had last year per Kyle Shanahan. \n\nHe will, of course, miss the rest of the season. twitt"
+  },
+  {
+   "id": "at://did:plc:qre6zxbmr3ixhdmgsgdretb5/app.bsky.feed.post/3n2xyoforao2o|coltonmckivitz|out|status",
+   "at": "2026-11-23T11:11:44.178Z",
+   "seen": "2026-11-23T11:25:47.640Z",
+   "handle": "adamscheftermirror.bsky.social",
+   "post": "at://did:plc:qre6zxbmr3ixhdmgsgdretb5/app.bsky.feed.post/3n2xyoforao2o",
+   "player": "Colton McKivitz",
+   "team": "SF",
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.9,
+   "text": "49ers RT Colton McKivitz suffered what is believed to be a season-ending fractured and dislocated left ankle. “We think it’s broken and dislocated, similar probably to Fred [Warner]’s last year,” said"
   }
  ]
 }
