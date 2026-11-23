@@ -4,17 +4,17 @@
  "knobs": {},
  "changes": [],
  "last": {
-  "date": "2026-11-16",
+  "date": "2026-11-23",
   "tried": 0,
   "blocked": [
-   "no fresh held-out days since 2026-11-09 (the earlier weeks' holdouts consumed)"
+   "no fresh held-out days since 2026-11-16 (the earlier weeks' holdouts consumed)"
   ],
   "shipped": null,
   "top": [],
   "secs": {
-   "champion": 696,
-   "restake": 378.3,
-   "total": 696
+   "champion": 620,
+   "restake": 336,
+   "total": 620
   }
  }
 }
