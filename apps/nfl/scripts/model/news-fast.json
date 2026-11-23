@@ -7,7 +7,7 @@
   "insidenflnews.bsky.social": "2026-11-23T03:21:25.098Z",
   "nflnewsposter.bsky.social": "2026-11-23T04:58:50.607Z",
   "rotoworld-fb.bsky.social": "2026-11-23T05:34:02.000Z",
-  "rotowirenfl.bsky.social": "2026-11-23T05:02:19.000Z"
+  "rotowirenfl.bsky.social": "2026-11-23T12:56:22.000Z"
  },
  "claims": [
   {
@@ -18235,6 +18235,19 @@
    "kind": "status",
    "confidence": 0.9,
    "text": "49ers RT Colton McKivitz suffered what is believed to be a season-ending fractured and dislocated left ankle. “We think it’s broken and dislocated, similar probably to Fred [Warner]’s last year,” said"
+  },
+  {
+   "id": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3n2y6jiy7pt2e|bhayshultuten|none|status",
+   "at": "2026-11-23T12:56:22.000Z",
+   "seen": "2026-11-23T13:01:04.161Z",
+   "handle": "rotowirenfl.bsky.social",
+   "post": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3n2y6jiy7pt2e",
+   "player": "Bhayshul Tuten",
+   "team": null,
+   "status": "none",
+   "kind": "status",
+   "confidence": 0.4,
+   "text": "Bhayshul Tuten: Sustains fourth-quarter injury Sunday \n\n https://www.rotowire.com/football/player/bhayshul-tuten-18524"
   }
  ]
 }
