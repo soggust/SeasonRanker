@@ -6,36 +6,10 @@
   "nflnewsreposterbot.bsky.social": "2026-11-16T18:35:13.806Z",
   "insidenflnews.bsky.social": "2026-11-24T04:20:52.046Z",
   "nflnewsposter.bsky.social": "2026-11-24T18:12:14.532Z",
-  "rotoworld-fb.bsky.social": "2026-11-24T18:31:10.000Z",
+  "rotoworld-fb.bsky.social": "2026-11-24T19:20:36.000Z",
   "rotowirenfl.bsky.social": "2026-11-24T18:27:49.000Z"
  },
  "claims": [
-  {
-   "id": "at://did:plc:mbr4badgf6yu56mquzackzew/app.bsky.feed.post/3mzgjqzufyk2j|jeremiyahlove|out|status",
-   "at": "2026-11-03T19:04:19.457Z",
-   "seen": "2026-11-03T23:48:14.330Z",
-   "handle": "insidenflnews.bsky.social",
-   "post": "at://did:plc:mbr4badgf6yu56mquzackzew/app.bsky.feed.post/3mzgjqzufyk2j",
-   "player": "Jeremiyah Love",
-   "team": "ARI",
-   "status": "out",
-   "kind": "status",
-   "confidence": 0.96,
-   "text": "‼️ Rap: Jeremiyah Love (high-ankle sprain) to be placed on IR; will miss at least 4-5 weeks."
-  },
-  {
-   "id": "at://did:plc:qre6zxbmr3ixhdmgsgdretb5/app.bsky.feed.post/3mzgk24savr2l|jeremiyahlove|out|status",
-   "at": "2026-11-03T19:09:24.433Z",
-   "seen": "2026-11-03T23:48:14.330Z",
-   "handle": "adamscheftermirror.bsky.social",
-   "post": "at://did:plc:qre6zxbmr3ixhdmgsgdretb5/app.bsky.feed.post/3mzgk24savr2l",
-   "player": "Jeremiyah Love",
-   "team": "ARI",
-   "status": "out",
-   "kind": "status",
-   "confidence": 0.96,
-   "text": "Repost by @adamschefter\n\nSources: #AZCardinals RB Jeremiyah Love is headed to Injured Reserve because of a high-ankle sprain that knocks him out 4-5 weeks. Arizona’s first-round pick has previously be"
-  },
   {
    "id": "at://did:plc:mbr4badgf6yu56mquzackzew/app.bsky.feed.post/3mzgp37ides2q|joefagnano|active|starting",
    "at": "2026-11-03T20:39:29.606Z",
@@ -18014,6 +17988,19 @@
    "kind": "status",
    "confidence": 0.95,
    "text": "Micah Parsons officially questionable for Week 12"
+  },
+  {
+   "id": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3n33ehify4t2g|kyrenwilliams|active|status",
+   "at": "2026-11-24T19:20:36.000Z",
+   "seen": "2026-11-24T19:23:39.628Z",
+   "handle": "rotoworld-fb.bsky.social",
+   "post": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3n33ehify4t2g",
+   "player": "Kyren Williams",
+   "team": "LAR",
+   "status": "active",
+   "kind": "status",
+   "confidence": 0.9,
+   "text": "Kyren Williams cleared off injury report"
   }
  ]
 }

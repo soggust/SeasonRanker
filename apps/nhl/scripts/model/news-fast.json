@@ -2,9 +2,9 @@
  "sport": "nhl",
  "cursor": {
   "johnston-bot.bsky.social": "2026-11-24T02:44:36.491Z",
-  "notfriedgehnic.bsky.social": "2026-11-24T03:59:39.525Z",
-  "dailyfaceoff.bsky.social": "2026-11-24T18:13:36.000Z",
-  "dfotoronto.bsky.social": "2026-11-24T18:40:40.000Z",
+  "notfriedgehnic.bsky.social": "2026-11-24T19:12:46.578Z",
+  "dailyfaceoff.bsky.social": "2026-11-24T19:15:10.000Z",
+  "dfotoronto.bsky.social": "2026-11-24T19:21:39.000Z",
   "marklazerus.bsky.social": "2026-11-24T18:39:26.393Z"
  },
  "claims": [
@@ -2711,6 +2711,45 @@
    "kind": "return",
    "confidence": 0.9,
    "text": "Oilers’ Ryan Nugent-Hopkins to return to lineup after five-game absence"
+  },
+  {
+   "id": "at://did:plc:3uus7y6h3rlrk6sbctzxm4bg/app.bsky.feed.post/3n33dybl27p2i|ryanpulock|out|status",
+   "at": "2026-11-24T19:12:05.000Z",
+   "seen": "2026-11-24T19:23:39.628Z",
+   "handle": "dailyfaceoff.bsky.social",
+   "post": "at://did:plc:3uus7y6h3rlrk6sbctzxm4bg/app.bsky.feed.post/3n33dybl27p2i",
+   "player": "Ryan Pulock",
+   "team": "NYI",
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.95,
+   "text": "Islanders’ Ryan Pulock out 1-2 weeks with upper-body injury"
+  },
+  {
+   "id": "at://did:plc:knaj2vcp4x6t7hr7ewd6e3uz/app.bsky.feed.post/3n33ejebod52l|ryantverberg|none|role",
+   "at": "2026-11-24T19:21:39.000Z",
+   "seen": "2026-11-24T19:23:39.628Z",
+   "handle": "dfotoronto.bsky.social",
+   "post": "at://did:plc:knaj2vcp4x6t7hr7ewd6e3uz/app.bsky.feed.post/3n33ejebod52l",
+   "player": "Ryan Tverberg",
+   "team": "TOR",
+   "status": "none",
+   "kind": "role",
+   "confidence": 0.85,
+   "text": "Maple Leafs return Ryan Tverberg, Brendan Brisson to AHL, keep Aatu Raty: ‘He was just really good’"
+  },
+  {
+   "id": "at://did:plc:knaj2vcp4x6t7hr7ewd6e3uz/app.bsky.feed.post/3n33ejebod52l|brendanbrisson|none|role",
+   "at": "2026-11-24T19:21:39.000Z",
+   "seen": "2026-11-24T19:23:39.628Z",
+   "handle": "dfotoronto.bsky.social",
+   "post": "at://did:plc:knaj2vcp4x6t7hr7ewd6e3uz/app.bsky.feed.post/3n33ejebod52l",
+   "player": "Brendan Brisson",
+   "team": "TOR",
+   "status": "none",
+   "kind": "role",
+   "confidence": 0.85,
+   "text": "Maple Leafs return Ryan Tverberg, Brendan Brisson to AHL, keep Aatu Raty: ‘He was just really good’"
   }
  ]
 }
