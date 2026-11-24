@@ -3,6 +3,83 @@
  "days": 2,
  "signals": [
   {
+   "team": "28",
+   "abbr": "WSH",
+   "athlete": "4575131",
+   "player": "Jacory Croskey-Merritt",
+   "kind": "return",
+   "direction": "up",
+   "confidence": 0.9,
+   "headline": "Commanders RB Jacory Croskey-Merritt activated from IR ahead of MNF",
+   "at": "2026-11-23T23:48:49.000Z"
+  },
+  {
+   "team": "9",
+   "abbr": "GB",
+   "athlete": "4361423",
+   "player": "Micah Parsons",
+   "kind": "return",
+   "direction": "up",
+   "confidence": 0.7,
+   "headline": "Sources: Packers' Micah Parsons cleared to make season debut Wednesday vs. Rams",
+   "at": "2026-11-23T23:37:43.000Z"
+  },
+  {
+   "team": "22",
+   "abbr": "ARI",
+   "athlete": null,
+   "player": "Nick Rallis",
+   "kind": "coaching",
+   "direction": "none",
+   "confidence": 0.9,
+   "headline": "Cardinals fire DC Nick Rallis; Teryl Austin takes over on interim basis",
+   "at": "2026-11-23T22:57:19.000Z"
+  },
+  {
+   "team": "19",
+   "abbr": "NYG",
+   "athlete": "4361266",
+   "player": "Greg Newsome II",
+   "kind": "role",
+   "direction": "down",
+   "confidence": 0.3,
+   "headline": "Giants' Greg Newsome out 'multiple weeks' with ankle sprain",
+   "at": "2026-11-23T21:59:39.000Z"
+  },
+  {
+   "team": "17",
+   "abbr": "NE",
+   "athlete": "4240391",
+   "player": "Tommy DeVito",
+   "kind": "starting",
+   "direction": "up",
+   "confidence": 0.9,
+   "headline": "Vrabel: Patriots sticking with DeVito as QB1, not looking for outside help",
+   "at": "2026-11-23T19:41:05.000Z"
+  },
+  {
+   "team": "13",
+   "abbr": "LV",
+   "athlete": "4837248",
+   "player": "Fernando Mendoza",
+   "kind": "starting",
+   "direction": "up",
+   "confidence": 0.6,
+   "headline": "Despite loss to Broncos, Fernando Mendoza settling in as Raiders' starting QB",
+   "at": "2026-11-23T05:08:33.000Z"
+  },
+  {
+   "team": "21",
+   "abbr": "PHI",
+   "athlete": "4245185",
+   "player": "Riq Woolen",
+   "kind": "benched",
+   "direction": "down",
+   "confidence": 0.5,
+   "headline": "Eagles' Riq Woolen benched after missed tackles vs. Steelers",
+   "at": "2026-11-23T00:14:53.000Z"
+  },
+  {
    "team": "11",
    "abbr": "IND",
    "athlete": "4360078",
@@ -14,5 +91,5 @@
    "at": "2026-11-22T16:20:24.000Z"
   }
  ],
- "at": "2026-11-23T22:15:28.805Z"
+ "at": "2026-11-24T00:03:48.082Z"
 }

@@ -1,6 +1,18 @@
 {
  "sport": "nba",
  "days": 2,
- "signals": [],
- "at": "2026-11-23T19:15:26.553Z"
+ "signals": [
+  {
+   "team": "20",
+   "abbr": "PHI",
+   "athlete": "3059318",
+   "player": "Joel Embiid",
+   "kind": "restriction",
+   "direction": "down",
+   "confidence": 0.3,
+   "headline": "76ers rule out Joel Embiid (illness) for game vs. Trail Blazers",
+   "at": "2026-11-23T23:53:39.000Z"
+  }
+ ],
+ "at": "2026-11-24T00:03:48.082Z"
 }
