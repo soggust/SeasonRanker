@@ -1,37 +1,11 @@
 {
  "sport": "nba",
  "cursor": {
-  "rotowirenba.bsky.social": "2026-11-23T23:44:19.000Z",
+  "rotowirenba.bsky.social": "2026-11-24T00:35:34.000Z",
   "insidenbanews.bsky.social": "2026-11-20T20:35:06.661Z",
   "shamsbot.bsky.social": "2026-11-23T23:02:11.000Z"
  },
  "claims": [
-  {
-   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mzeko5ms4r2v|cobywhite|active|starting",
-   "at": "2026-11-03T00:15:16.000Z",
-   "seen": "2026-11-03T00:30:00.539Z",
-   "handle": "rotowirenba.bsky.social",
-   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mzeko5ms4r2v",
-   "player": "Coby White",
-   "team": null,
-   "status": "active",
-   "kind": "starting",
-   "confidence": 0.85,
-   "text": "Coby White: Starting after all \n\n https://www.rotowire.com/basketball/player/coby-white-4801"
-  },
-  {
-   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mzelol4lbh23|lameloball|active|status",
-   "at": "2026-11-03T00:33:24.000Z",
-   "seen": "2026-11-03T00:45:42.890Z",
-   "handle": "rotowirenba.bsky.social",
-   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mzelol4lbh23",
-   "player": "LaMelo Ball",
-   "team": null,
-   "status": "active",
-   "kind": "status",
-   "confidence": 0.95,
-   "text": "LaMelo Ball: Cleared to play Monday \n\n https://www.rotowire.com/basketball/player/lamelo-ball-5151"
-  },
   {
    "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mzelw6z67x2g|braydenburries|none|starting",
    "at": "2026-11-03T00:37:40.000Z",
@@ -7688,6 +7662,45 @@
    "kind": "starting",
    "confidence": 0.6,
    "text": "Kris Murray: Starting Monday \n\n https://www.rotowire.com/basketball/player/kris-murray-5943"
+  },
+  {
+   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3n2zegs6qek22|collinmurrayboyles|active|return",
+   "at": "2026-11-24T00:14:53.000Z",
+   "seen": "2026-11-24T00:35:55.560Z",
+   "handle": "rotowirenba.bsky.social",
+   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3n2zegs6qek22",
+   "player": "Collin Murray-Boyles",
+   "team": null,
+   "status": "active",
+   "kind": "return",
+   "confidence": 0.7,
+   "text": "Collin Murray-Boyles: Manning bench role in return \n\n https://www.rotowire.com/basketball/player/collin-murray-boyles-6585"
+  },
+  {
+   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3n2zfgqj6nc2u|zionwilliamson|active|status",
+   "at": "2026-11-24T00:32:45.000Z",
+   "seen": "2026-11-24T00:35:55.560Z",
+   "handle": "rotowirenba.bsky.social",
+   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3n2zfgqj6nc2u",
+   "player": "Zion Williamson",
+   "team": null,
+   "status": "active",
+   "kind": "status",
+   "confidence": 0.9,
+   "text": "Zion Williamson: Cleared to play Monday \n\n https://www.rotowire.com/basketball/player/zion-williamson-4777"
+  },
+  {
+   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3n2zfj6ulyi25|sammerrill|none|starting",
+   "at": "2026-11-24T00:34:07.000Z",
+   "seen": "2026-11-24T00:35:55.560Z",
+   "handle": "rotowirenba.bsky.social",
+   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3n2zfj6ulyi25",
+   "player": "Sam Merrill",
+   "team": null,
+   "status": "none",
+   "kind": "starting",
+   "confidence": 0.85,
+   "text": "Sam Merrill: Starting Monday \n\n https://www.rotowire.com/basketball/player/sam-merrill-5254"
   }
  ]
 }

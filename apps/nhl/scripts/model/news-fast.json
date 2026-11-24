@@ -2,10 +2,10 @@
  "sport": "nhl",
  "cursor": {
   "johnston-bot.bsky.social": "2026-11-23T02:17:07.040Z",
-  "notfriedgehnic.bsky.social": "2026-11-23T19:10:11.309Z",
+  "notfriedgehnic.bsky.social": "2026-11-24T00:20:53.629Z",
   "dailyfaceoff.bsky.social": "2026-11-23T23:03:27.000Z",
   "dfotoronto.bsky.social": "2026-11-23T23:43:39.000Z",
-  "marklazerus.bsky.social": "2026-11-23T19:49:12.516Z"
+  "marklazerus.bsky.social": "2026-11-24T00:13:30.727Z"
  },
  "claims": [
   {
@@ -2646,6 +2646,32 @@
    "kind": "status",
    "confidence": 0.9,
    "text": "Kings’ Erik Gustafsson out 2-4 weeks with fracture in hand"
+  },
+  {
+   "id": "at://did:plc:sdobrsxnvwczrjydmnubhibh/app.bsky.feed.post/3n2zerjmgeq24|anthonystolarz|active|starting",
+   "at": "2026-11-24T00:20:53.629Z",
+   "seen": "2026-11-24T00:35:55.560Z",
+   "handle": "notfriedgehnic.bsky.social",
+   "post": "at://did:plc:sdobrsxnvwczrjydmnubhibh/app.bsky.feed.post/3n2zerjmgeq24",
+   "player": "Anthony Stolarz",
+   "team": "TOR",
+   "status": "active",
+   "kind": "starting",
+   "confidence": 0.8,
+   "text": "Hockey Central pre-game underway with /DavidAmber on /Sportsnet\n\nKings/Wings...Islanders/Maple Leafs...Mammoth/Jets...Flames/Senators\n\nDylan Larkin Montreal debut\n\nAnthony Stolarz makes third-straight"
+  },
+  {
+   "id": "at://did:plc:sdobrsxnvwczrjydmnubhibh/app.bsky.feed.post/3n2zerjmgeq24|sergeibobrovsky|none|benched",
+   "at": "2026-11-24T00:20:53.629Z",
+   "seen": "2026-11-24T00:35:55.560Z",
+   "handle": "notfriedgehnic.bsky.social",
+   "post": "at://did:plc:sdobrsxnvwczrjydmnubhibh/app.bsky.feed.post/3n2zerjmgeq24",
+   "player": "Sergei Bobrovsky",
+   "team": "TOR",
+   "status": "none",
+   "kind": "benched",
+   "confidence": 0.5,
+   "text": "Hockey Central pre-game underway with /DavidAmber on /Sportsnet\n\nKings/Wings...Islanders/Maple Leafs...Mammoth/Jets...Flames/Senators\n\nDylan Larkin Montreal debut\n\nAnthony Stolarz makes third-straight"
   }
  ]
 }

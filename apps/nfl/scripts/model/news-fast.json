@@ -2,7 +2,7 @@
  "sport": "nfl",
  "cursor": {
   "adamscheftermirror.bsky.social": "2026-11-23T23:11:48.103Z",
-  "rapsheet.bsky.social": "2026-11-23T22:48:43.021Z",
+  "rapsheet.bsky.social": "2026-11-24T00:21:42.451Z",
   "nflnewsreposterbot.bsky.social": "2026-11-16T18:35:13.806Z",
   "insidenflnews.bsky.social": "2026-11-23T22:05:35.729Z",
   "nflnewsposter.bsky.social": "2026-11-23T23:06:07.625Z",
@@ -10,45 +10,6 @@
   "rotowirenfl.bsky.social": "2026-11-23T23:52:02.000Z"
  },
  "claims": [
-  {
-   "id": "at://did:plc:fuqjc7x4gxvnwzksnlxwbe4x/app.bsky.feed.post/3mzekh25r2c2f|tylerloop|out|status",
-   "at": "2026-11-03T00:11:18.485Z",
-   "seen": "2026-11-03T00:30:00.539Z",
-   "handle": "nflnewsposter.bsky.social",
-   "post": "at://did:plc:fuqjc7x4gxvnwzksnlxwbe4x/app.bsky.feed.post/3mzekh25r2c2f",
-   "player": "Tyler Loop",
-   "team": "BAL",
-   "status": "out",
-   "kind": "status",
-   "confidence": 0.35,
-   "text": "[Hensley] Ravens coach Jesse Minter said kicker Tyler Loop could go on injured reserve.  Baltimore has Jake Moody on the practice squad. twitter.com/jamisonhensl..."
-  },
-  {
-   "id": "at://did:plc:fuqjc7x4gxvnwzksnlxwbe4x/app.bsky.feed.post/3mzekqfjoo22f|kirkcousins|active|return",
-   "at": "2026-11-03T00:16:32.400Z",
-   "seen": "2026-11-03T00:30:00.539Z",
-   "handle": "nflnewsposter.bsky.social",
-   "post": "at://did:plc:fuqjc7x4gxvnwzksnlxwbe4x/app.bsky.feed.post/3mzekqfjoo22f",
-   "player": "Kirk Cousins",
-   "team": null,
-   "status": "active",
-   "kind": "return",
-   "confidence": 0.4,
-   "text": "[McFadden] Kubiak on the return of Kirko Chainz: \n\n“I think Kirk called the shot in the locker room after the game. ... I want our guys to enjoy the moment. I want our guys to enjoy winning because wi"
-  },
-  {
-   "id": "at://did:plc:mbr4badgf6yu56mquzackzew/app.bsky.feed.post/3mzel3nmtus2f|jeremymcnichols|out|status",
-   "at": "2026-11-03T00:22:49.991Z",
-   "seen": "2026-11-03T00:30:00.539Z",
-   "handle": "insidenflnews.bsky.social",
-   "post": "at://did:plc:mbr4badgf6yu56mquzackzew/app.bsky.feed.post/3mzel3nmtus2f",
-   "player": "Jeremy McNichols",
-   "team": null,
-   "status": "out",
-   "kind": "status",
-   "confidence": 0.8,
-   "text": "Jeremy McNichols (foot) expected to miss multiple months, per @tashanreed.bsky.social."
-  },
   {
    "id": "at://did:plc:fuqjc7x4gxvnwzksnlxwbe4x/app.bsky.feed.post/3mzem7fx2426c|loop|out|status",
    "at": "2026-11-03T00:42:49.896Z",
@@ -18105,6 +18066,19 @@
    "kind": "status",
    "confidence": 0.8,
    "text": "Kincaid (thumb/ankle) listed as limited on Monday"
+  },
+  {
+   "id": "at://did:plc:hlvr2omhnmvdmfnvmcuhyevz/app.bsky.feed.post/3n2zesxvht225|samdarnold|none|starting",
+   "at": "2026-11-24T00:21:42.451Z",
+   "seen": "2026-11-24T00:35:55.560Z",
+   "handle": "rapsheet.bsky.social",
+   "post": "at://did:plc:hlvr2omhnmvdmfnvmcuhyevz/app.bsky.feed.post/3n2zesxvht225",
+   "player": "Sam Darnold",
+   "team": "SEA",
+   "status": "none",
+   "kind": "starting",
+   "confidence": 0.6,
+   "text": "Seahawks coach Mike Macdonald on Sam Darnold: “The plan is for Sam to start. Nothing official yet, we’ll see how Wednesday goes, but that’s the plan.“"
   }
  ]
 }

@@ -24397,6 +24397,227 @@
     "seen": "2026-11-23T23:13:32.355Z",
     "own": "2026-11-23T22:49:00.000Z"
    }
+  },
+  "401909314|jonathanisaac|out": {
+   "game": "401909314",
+   "start": "2026-11-25T00:00Z",
+   "team": "19",
+   "name": "Jonathan Isaac",
+   "status": "out",
+   "athlete": "4065654",
+   "espn": {
+    "seen": "2026-11-24T00:34:27.303Z",
+    "own": "2026-11-21T21:09:00.000Z"
+   }
+  },
+  "401909314|izaiyahnelson|out": {
+   "game": "401909314",
+   "start": "2026-11-25T00:00Z",
+   "team": "19",
+   "name": "Izaiyah Nelson",
+   "status": "out",
+   "athlete": "5107251",
+   "espn": {
+    "seen": "2026-11-24T00:34:27.303Z",
+    "own": "2026-11-18T17:25:00.000Z"
+   }
+  },
+  "401909314|noahpenda|out": {
+   "game": "401909314",
+   "start": "2026-11-25T00:00Z",
+   "team": "19",
+   "name": "Noah Penda",
+   "status": "out",
+   "athlete": "5214637",
+   "espn": {
+    "seen": "2026-11-24T00:34:27.303Z",
+    "own": "2026-11-14T17:33:00.000Z"
+   }
+  },
+  "401909314|paolobanchero|out": {
+   "game": "401909314",
+   "start": "2026-11-25T00:00Z",
+   "team": "19",
+   "name": "Paolo Banchero",
+   "status": "out",
+   "athlete": "4432573",
+   "espn": {
+    "seen": "2026-11-24T00:34:27.303Z",
+    "own": "2026-10-24T16:47:00.000Z"
+   }
+  },
+  "401909314|adaymara|out": {
+   "game": "401909314",
+   "start": "2026-11-25T00:00Z",
+   "team": "19",
+   "name": "Aday Mara",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-23T19:15:26.553Z",
+    "own": "2026-11-23T18:45:19.000Z",
+    "why": "@rotowirenba.bsky.social: Aday Mara: Remaining out Monday \n\n https://www.rotowir"
+   }
+  },
+  "401909314|jaxsonhayes|out": {
+   "game": "401909314",
+   "start": "2026-11-25T00:00Z",
+   "team": "19",
+   "name": "Jaxson Hayes",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-23T21:15:24.958Z",
+    "own": "2026-11-23T21:04:20.000Z",
+    "why": "@rotowirenba.bsky.social: Jaxson Hayes: Out with knee strain \n\n https://www.roto"
+   }
+  },
+  "401909314|jalenduren|out": {
+   "game": "401909314",
+   "start": "2026-11-25T00:00Z",
+   "team": "19",
+   "name": "Jalen Duren",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-23T22:15:28.805Z",
+    "own": "2026-11-23T22:08:57.000Z",
+    "why": "@rotowirenba.bsky.social: Jalen Duren: Remaining out for Tuesday \n\n https://www."
+   },
+   "athlete": "4433621",
+   "espn": {
+    "seen": "2026-11-24T00:34:27.303Z",
+    "own": "2026-11-23T22:08:00.000Z"
+   }
+  },
+  "401909314|ebukaokorie|out": {
+   "game": "401909314",
+   "start": "2026-11-25T00:00Z",
+   "team": "8",
+   "name": "Ebuka Okorie",
+   "status": "out",
+   "athlete": "5258459",
+   "espn": {
+    "seen": "2026-11-24T00:34:27.303Z",
+    "own": "2026-11-23T22:10:00.000Z"
+   }
+  },
+  "401909314|cadecunningham|q": {
+   "game": "401909314",
+   "start": "2026-11-25T00:00Z",
+   "team": "8",
+   "name": "Cade Cunningham",
+   "status": "q",
+   "athlete": "4432166",
+   "espn": {
+    "seen": "2026-11-24T00:34:27.303Z",
+    "own": "2026-11-23T22:07:00.000Z"
+   }
+  },
+  "401909314|taureanprince|out": {
+   "game": "401909314",
+   "start": "2026-11-25T00:00Z",
+   "team": "8",
+   "name": "Taurean Prince",
+   "status": "out",
+   "athlete": "2990962",
+   "espn": {
+    "seen": "2026-11-24T00:34:27.303Z",
+    "own": "2026-11-20T23:02:00.000Z"
+   }
+  },
+  "401909314|duncanrobinson|out": {
+   "game": "401909314",
+   "start": "2026-11-25T00:00Z",
+   "team": "8",
+   "name": "Duncan Robinson",
+   "status": "out",
+   "athlete": "3157465",
+   "espn": {
+    "seen": "2026-11-24T00:34:27.303Z",
+    "own": "2026-11-17T16:25:00.000Z"
+   }
+  },
+  "401909315|tristanvukcevic|out": {
+   "game": "401909315",
+   "start": "2026-11-25T01:00Z",
+   "team": "27",
+   "name": "Tristan Vukcevic",
+   "status": "out",
+   "athlete": "4997537",
+   "espn": {
+    "seen": "2026-11-24T00:34:27.303Z",
+    "own": "2026-11-23T22:10:00.000Z"
+   }
+  },
+  "401909315|reecebeekman|out": {
+   "game": "401909315",
+   "start": "2026-11-25T01:00Z",
+   "team": "27",
+   "name": "Reece Beekman",
+   "status": "out",
+   "athlete": "4432187",
+   "espn": {
+    "seen": "2026-11-24T00:34:27.303Z",
+    "own": "2026-11-02T18:22:00.000Z"
+   }
+  },
+  "401909315|justinchampagnie|out": {
+   "game": "401909315",
+   "start": "2026-11-25T01:00Z",
+   "team": "27",
+   "name": "Justin Champagnie",
+   "status": "out",
+   "athlete": "4432907",
+   "espn": {
+    "seen": "2026-11-24T00:34:27.303Z",
+    "own": "2026-10-28T18:38:00.000Z"
+   }
+  },
+  "401909315|jamirwatkins|out": {
+   "game": "401909315",
+   "start": "2026-11-25T01:00Z",
+   "team": "27",
+   "name": "Jamir Watkins",
+   "status": "out",
+   "athlete": "4606840",
+   "espn": {
+    "seen": "2026-11-24T00:34:27.303Z",
+    "own": "2026-07-30T20:11:00.000Z"
+   }
+  },
+  "401909315|jaxsonhayes|out": {
+   "game": "401909315",
+   "start": "2026-11-25T01:00Z",
+   "team": "27",
+   "name": "Jaxson Hayes",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-23T21:15:24.958Z",
+    "own": "2026-11-23T21:04:20.000Z",
+    "why": "@rotowirenba.bsky.social: Jaxson Hayes: Out with knee strain \n\n https://www.roto"
+   }
+  },
+  "401909315|jalenduren|out": {
+   "game": "401909315",
+   "start": "2026-11-25T01:00Z",
+   "team": "27",
+   "name": "Jalen Duren",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-23T22:15:28.805Z",
+    "own": "2026-11-23T22:08:57.000Z",
+    "why": "@rotowirenba.bsky.social: Jalen Duren: Remaining out for Tuesday \n\n https://www."
+   }
+  },
+  "401909315|mitchellrobinson|out": {
+   "game": "401909315",
+   "start": "2026-11-25T01:00Z",
+   "team": "2",
+   "name": "Mitchell Robinson",
+   "status": "out",
+   "athlete": "4351852",
+   "espn": {
+    "seen": "2026-11-24T00:34:27.303Z",
+    "own": "2026-11-23T21:09:00.000Z"
+   }
   }
  }
 }
