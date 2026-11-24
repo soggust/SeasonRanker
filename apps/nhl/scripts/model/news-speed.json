@@ -1,46 +1,6 @@
 {
  "sport": "nhl",
  "entries": {
-  "401892707|noahhanifin|out": {
-   "game": "401892707",
-   "start": "2026-11-14T03:00Z",
-   "team": "37",
-   "name": "Noah Hanifin",
-   "status": "out",
-   "athlete": "3652964",
-   "espn": {
-    "seen": "2026-11-12T16:13:59.085Z",
-    "own": "2026-11-10T20:34:00.000Z"
-   }
-  },
-  "401892707|jonathanmarchessault|out": {
-   "game": "401892707",
-   "start": "2026-11-14T03:00Z",
-   "team": "27",
-   "name": "Jonathan Marchessault",
-   "status": "out",
-   "athlete": "2967072",
-   "espn": {
-    "seen": "2026-11-12T16:13:59.085Z",
-    "own": "2026-11-12T02:37:00.000Z"
-   },
-   "sleeper": {
-    "seen": "2026-11-13T20:15:39.341Z",
-    "own": "2026-11-13T19:40:25.473Z"
-   }
-  },
-  "401892707|jonathanmarchessault|q": {
-   "game": "401892707",
-   "start": "2026-11-14T03:00Z",
-   "team": "27",
-   "name": "Jonathan Marchessault",
-   "status": "q",
-   "athlete": "2967072",
-   "espn": {
-    "seen": "2026-11-12T17:16:55.087Z",
-    "own": "2026-11-12T17:02:00.000Z"
-   }
-  },
   "401891809|jordanstaal|out": {
    "game": "401891809",
    "start": "2026-11-14T18:00Z",
