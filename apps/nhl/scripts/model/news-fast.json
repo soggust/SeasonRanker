@@ -3,7 +3,7 @@
  "cursor": {
   "johnston-bot.bsky.social": "2026-11-24T02:44:36.491Z",
   "notfriedgehnic.bsky.social": "2026-11-24T03:59:39.525Z",
-  "dailyfaceoff.bsky.social": "2026-11-24T15:36:22.000Z",
+  "dailyfaceoff.bsky.social": "2026-11-24T15:59:11.000Z",
   "dfotoronto.bsky.social": "2026-11-24T11:11:49.000Z",
   "marklazerus.bsky.social": "2026-11-24T02:35:36.897Z"
  },
@@ -2698,6 +2698,19 @@
    "kind": "status",
    "confidence": 0.35,
    "text": "Islanders’ Kyle Palmieri leaves game with lower-body injury"
+  },
+  {
+   "id": "at://did:plc:3uus7y6h3rlrk6sbctzxm4bg/app.bsky.feed.post/3n32z7d3lok2y|conorgeekie|out|status",
+   "at": "2026-11-24T15:59:11.000Z",
+   "seen": "2026-11-24T16:16:19.689Z",
+   "handle": "dailyfaceoff.bsky.social",
+   "post": "at://did:plc:3uus7y6h3rlrk6sbctzxm4bg/app.bsky.feed.post/3n32z7d3lok2y",
+   "player": "Conor Geekie",
+   "team": "TBL",
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.93,
+   "text": "Lightning’s Conor Geekie undergoes shoulder surgery, out 4-5 months"
   }
  ]
 }
