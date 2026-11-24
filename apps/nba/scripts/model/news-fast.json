@@ -1,7 +1,7 @@
 {
  "sport": "nba",
  "cursor": {
-  "rotowirenba.bsky.social": "2026-11-24T01:09:49.000Z",
+  "rotowirenba.bsky.social": "2026-11-24T01:31:19.000Z",
   "insidenbanews.bsky.social": "2026-11-20T20:35:06.661Z",
   "shamsbot.bsky.social": "2026-11-23T23:02:11.000Z"
  },
@@ -7714,6 +7714,32 @@
    "kind": "starting",
    "confidence": 0.8,
    "text": "Brandon Ingram: Starting in season debut \n\n https://www.rotowire.com/basketball/player/brandon-ingram-3861"
+  },
+  {
+   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3n2zidmhrwx2n|victorwembanyama|out|status",
+   "at": "2026-11-24T01:24:42.000Z",
+   "seen": "2026-11-24T01:36:16.149Z",
+   "handle": "rotowirenba.bsky.social",
+   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3n2zidmhrwx2n",
+   "player": "Victor Wembanyama",
+   "team": "SAS",
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.95,
+   "text": "Victor Wembanyama: Ruled out for Monday \n\n https://www.rotowire.com/basketball/player/victor-wembanyama-5809"
+  },
+  {
+   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3n2zidogyq52v|deaaronfox|out|status",
+   "at": "2026-11-24T01:24:44.000Z",
+   "seen": "2026-11-24T01:36:16.149Z",
+   "handle": "rotowirenba.bsky.social",
+   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3n2zidogyq52v",
+   "player": "De'Aaron Fox",
+   "team": "SAC",
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.93,
+   "text": "De'Aaron Fox: Won't play Monday \n\n https://www.rotowire.com/basketball/player/deaaron-fox-4116"
   }
  ]
 }

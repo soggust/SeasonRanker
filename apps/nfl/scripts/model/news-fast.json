@@ -4,25 +4,12 @@
   "adamscheftermirror.bsky.social": "2026-11-23T23:11:48.103Z",
   "rapsheet.bsky.social": "2026-11-24T00:21:42.451Z",
   "nflnewsreposterbot.bsky.social": "2026-11-16T18:35:13.806Z",
-  "insidenflnews.bsky.social": "2026-11-23T22:05:35.729Z",
+  "insidenflnews.bsky.social": "2026-11-24T01:35:16.435Z",
   "nflnewsposter.bsky.social": "2026-11-23T23:06:07.625Z",
   "rotoworld-fb.bsky.social": "2026-11-23T23:05:20.000Z",
   "rotowirenfl.bsky.social": "2026-11-24T00:38:35.000Z"
  },
  "claims": [
-  {
-   "id": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3mzeokalosn2z|bhayshultuten|none|status",
-   "at": "2026-11-03T01:24:40.000Z",
-   "seen": "2026-11-03T01:29:34.247Z",
-   "handle": "rotoworld-fb.bsky.social",
-   "post": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3mzeokalosn2z",
-   "player": "Bhayshul Tuten",
-   "team": null,
-   "status": "none",
-   "kind": "status",
-   "confidence": 0.3,
-   "text": "Bhayshul Tuten 'DNP' on Monday's practice report"
-  },
   {
    "id": "at://did:plc:fuqjc7x4gxvnwzksnlxwbe4x/app.bsky.feed.post/3mzevfmphus27|leonardwilliams|questionable|status",
    "at": "2026-11-03T03:27:21.992Z",
