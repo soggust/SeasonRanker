@@ -23115,6 +23115,102 @@
     "own": "2026-11-24T22:07:22.000Z",
     "why": "@rotowirenba.bsky.social: Giannis Antetokounmpo: Questionable for Wednesday \n\n h"
    }
+  },
+  "401909314|ryankalkbrenner|out": {
+   "game": "401909314",
+   "start": "2026-11-25T00:00Z",
+   "team": "19",
+   "name": "Ryan Kalkbrenner",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-24T23:17:40.348Z",
+    "own": "2026-11-24T22:33:39.000Z",
+    "why": "@rotowirenba.bsky.social: Ryan Kalkbrenner: Doubtful for Wednesday \n\n https://ww"
+   }
+  },
+  "401909315|ryankalkbrenner|out": {
+   "game": "401909315",
+   "start": "2026-11-25T01:00Z",
+   "team": "27",
+   "name": "Ryan Kalkbrenner",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-24T23:17:40.348Z",
+    "own": "2026-11-24T22:33:39.000Z",
+    "why": "@rotowirenba.bsky.social: Ryan Kalkbrenner: Doubtful for Wednesday \n\n https://ww"
+   }
+  },
+  "401909316|ryankalkbrenner|out": {
+   "game": "401909316",
+   "start": "2026-11-25T03:00Z",
+   "team": "7",
+   "name": "Ryan Kalkbrenner",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-24T23:17:40.348Z",
+    "own": "2026-11-24T22:33:39.000Z",
+    "why": "@rotowirenba.bsky.social: Ryan Kalkbrenner: Doubtful for Wednesday \n\n https://ww"
+   }
+  },
+  "401909317|ryankalkbrenner|out": {
+   "game": "401909317",
+   "start": "2026-11-25T22:00Z",
+   "team": "20",
+   "name": "Ryan Kalkbrenner",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-24T23:17:40.348Z",
+    "own": "2026-11-24T22:33:39.000Z",
+    "why": "@rotowirenba.bsky.social: Ryan Kalkbrenner: Doubtful for Wednesday \n\n https://ww"
+   }
+  },
+  "401909319|ryankalkbrenner|out": {
+   "game": "401909319",
+   "start": "2026-11-26T00:30Z",
+   "team": "18",
+   "name": "Ryan Kalkbrenner",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-24T23:17:40.348Z",
+    "own": "2026-11-24T22:33:39.000Z",
+    "why": "@rotowirenba.bsky.social: Ryan Kalkbrenner: Doubtful for Wednesday \n\n https://ww"
+   }
+  },
+  "401909320|adaymara|out": {
+   "game": "401909320",
+   "start": "2026-11-26T00:30Z",
+   "team": "25",
+   "name": "Aday Mara",
+   "status": "out",
+   "athlete": "5174983",
+   "espn": {
+    "seen": "2026-11-24T23:26:47.927Z",
+    "own": "2026-11-24T23:18:00.000Z"
+   }
+  },
+  "401909320|ryankalkbrenner|out": {
+   "game": "401909320",
+   "start": "2026-11-26T00:30Z",
+   "team": "25",
+   "name": "Ryan Kalkbrenner",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-24T23:17:40.348Z",
+    "own": "2026-11-24T22:33:39.000Z",
+    "why": "@rotowirenba.bsky.social: Ryan Kalkbrenner: Doubtful for Wednesday \n\n https://ww"
+   }
+  },
+  "401909323|ryankalkbrenner|out": {
+   "game": "401909323",
+   "start": "2026-11-26T01:30Z",
+   "team": "10",
+   "name": "Ryan Kalkbrenner",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-24T23:17:40.348Z",
+    "own": "2026-11-24T22:33:39.000Z",
+    "why": "@rotowirenba.bsky.social: Ryan Kalkbrenner: Doubtful for Wednesday \n\n https://ww"
+   }
   }
  }
 }
