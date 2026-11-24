@@ -23428,6 +23428,11 @@
    "espn": {
     "seen": "2026-11-24T01:34:35.970Z",
     "own": "2026-11-24T01:23:00.000Z"
+   },
+   "bluesky": {
+    "seen": "2026-11-24T01:36:16.149Z",
+    "own": "2026-11-24T01:24:42.000Z",
+    "why": "@rotowirenba.bsky.social: Victor Wembanyama: Ruled out for Monday \n\n https://www"
    }
   },
   "401910045|deaaronfox|out": {
@@ -23440,6 +23445,71 @@
    "espn": {
     "seen": "2026-11-24T01:34:35.970Z",
     "own": "2026-11-24T01:23:00.000Z"
+   },
+   "bluesky": {
+    "seen": "2026-11-24T01:36:16.149Z",
+    "own": "2026-11-24T01:24:44.000Z",
+    "why": "@rotowirenba.bsky.social: De'Aaron Fox: Won't play Monday \n\n https://www.rotowir"
+   }
+  },
+  "401910044|larrynance|out": {
+   "game": "401910044",
+   "start": "2026-11-24T03:00Z",
+   "team": "13",
+   "name": "Larry Nance",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-24T02:18:34.142Z",
+    "own": "2026-11-24T02:00:20.000Z",
+    "why": "@rotowirenba.bsky.social: Larry Nance: Won't return Monday \n\n https://www.rotowi"
+   }
+  },
+  "401910045|larrynance|out": {
+   "game": "401910045",
+   "start": "2026-11-24T03:00Z",
+   "team": "23",
+   "name": "Larry Nance",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-24T02:18:34.142Z",
+    "own": "2026-11-24T02:00:20.000Z",
+    "why": "@rotowirenba.bsky.social: Larry Nance: Won't return Monday \n\n https://www.rotowi"
+   }
+  },
+  "401909314|larrynance|out": {
+   "game": "401909314",
+   "start": "2026-11-25T00:00Z",
+   "team": "19",
+   "name": "Larry Nance",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-24T02:18:34.142Z",
+    "own": "2026-11-24T02:00:20.000Z",
+    "why": "@rotowirenba.bsky.social: Larry Nance: Won't return Monday \n\n https://www.rotowi"
+   }
+  },
+  "401909315|larrynance|out": {
+   "game": "401909315",
+   "start": "2026-11-25T01:00Z",
+   "team": "27",
+   "name": "Larry Nance",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-24T02:18:34.142Z",
+    "own": "2026-11-24T02:00:20.000Z",
+    "why": "@rotowirenba.bsky.social: Larry Nance: Won't return Monday \n\n https://www.rotowi"
+   }
+  },
+  "401909316|larrynance|out": {
+   "game": "401909316",
+   "start": "2026-11-25T03:00Z",
+   "team": "7",
+   "name": "Larry Nance",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-24T02:18:34.142Z",
+    "own": "2026-11-24T02:00:20.000Z",
+    "why": "@rotowirenba.bsky.social: Larry Nance: Won't return Monday \n\n https://www.rotowi"
    }
   }
  }
