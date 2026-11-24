@@ -5,22 +5,9 @@
   "notfriedgehnic.bsky.social": "2026-11-24T00:20:53.629Z",
   "dailyfaceoff.bsky.social": "2026-11-24T01:41:22.000Z",
   "dfotoronto.bsky.social": "2026-11-24T01:54:09.522Z",
-  "marklazerus.bsky.social": "2026-11-24T00:13:30.727Z"
+  "marklazerus.bsky.social": "2026-11-24T02:35:36.897Z"
  },
  "claims": [
-  {
-   "id": "at://did:plc:3uus7y6h3rlrk6sbctzxm4bg/app.bsky.feed.post/3mzes5gtrtc24|brittacurlsalemme|out|status",
-   "at": "2026-11-03T02:29:05.000Z",
-   "seen": "2026-11-03T02:54:47.610Z",
-   "handle": "dailyfaceoff.bsky.social",
-   "post": "at://did:plc:3uus7y6h3rlrk6sbctzxm4bg/app.bsky.feed.post/3mzes5gtrtc24",
-   "player": "Britta Curl-Salemme",
-   "team": "DET",
-   "status": "out",
-   "kind": "status",
-   "confidence": 0.8,
-   "text": "PWHL Detroit’s Britta Curl-Salemme to miss 2026-27 after pregnancy announcement"
-  },
   {
    "id": "at://did:plc:3uus7y6h3rlrk6sbctzxm4bg/app.bsky.feed.post/3mzfvko2y3624|patrickkane|out|status",
    "at": "2026-11-03T13:02:50.000Z",
@@ -2672,6 +2659,19 @@
    "kind": "benched",
    "confidence": 0.5,
    "text": "Hockey Central pre-game underway with /DavidAmber on /Sportsnet\n\nKings/Wings...Islanders/Maple Leafs...Mammoth/Jets...Flames/Senators\n\nDylan Larkin Montreal debut\n\nAnthony Stolarz makes third-straight"
+  },
+  {
+   "id": "at://did:plc:54vdi5eoabhod2vumsbcpi7g/app.bsky.feed.post/3n2zmcg5dhs2e|connorbedard|out|status",
+   "at": "2026-11-24T02:35:36.897Z",
+   "seen": "2026-11-24T02:36:00.188Z",
+   "handle": "marklazerus.bsky.social",
+   "post": "at://did:plc:54vdi5eoabhod2vumsbcpi7g/app.bsky.feed.post/3n2zmcg5dhs2e",
+   "player": "Connor Bedard",
+   "team": null,
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.9,
+   "text": "Connor Bedard had his shoulder surgery today. Expected timetable is \"approximately\" four months."
   }
  ]
 }
