@@ -22538,6 +22538,246 @@
     "own": "2026-11-24T02:00:20.000Z",
     "why": "@rotowirenba.bsky.social: Larry Nance: Won't return Monday \n\n https://www.rotowi"
    }
+  },
+  "401909317|joelembiid|q": {
+   "game": "401909317",
+   "start": "2026-11-25T22:00Z",
+   "team": "20",
+   "name": "Joel Embiid",
+   "status": "q",
+   "athlete": "3059318",
+   "espn": {
+    "seen": "2026-11-24T10:08:35.372Z",
+    "own": "2026-11-24T04:33:00.000Z"
+   }
+  },
+  "401909317|arielhukporti|out": {
+   "game": "401909317",
+   "start": "2026-11-25T22:00Z",
+   "team": "20",
+   "name": "Ariel Hukporti",
+   "status": "out",
+   "athlete": "4871141",
+   "espn": {
+    "seen": "2026-11-24T10:08:35.372Z",
+    "own": "2026-10-06T19:17:00.000Z"
+   }
+  },
+  "401909317|giannisantetokounmpo|q": {
+   "game": "401909317",
+   "start": "2026-11-25T22:00Z",
+   "team": "14",
+   "name": "Giannis Antetokounmpo",
+   "status": "q",
+   "athlete": "3032977",
+   "espn": {
+    "seen": "2026-11-24T10:08:35.372Z",
+    "own": "2026-11-23T15:04:00.000Z"
+   }
+  },
+  "401909319|milesmcbride|q": {
+   "game": "401909319",
+   "start": "2026-11-26T00:30Z",
+   "team": "18",
+   "name": "Miles McBride",
+   "status": "q",
+   "athlete": "4431823",
+   "espn": {
+    "seen": "2026-11-24T10:08:35.372Z",
+    "own": "2026-11-23T15:07:00.000Z"
+   }
+  },
+  "401909319|oganunoby|q": {
+   "game": "401909319",
+   "start": "2026-11-26T00:30Z",
+   "team": "18",
+   "name": "OG Anunoby",
+   "status": "q",
+   "athlete": "3934719",
+   "espn": {
+    "seen": "2026-11-24T10:08:35.372Z",
+    "own": "2026-11-23T15:07:00.000Z"
+   }
+  },
+  "401909319|jordanclarkson|out": {
+   "game": "401909319",
+   "start": "2026-11-26T00:30Z",
+   "team": "18",
+   "name": "Jordan Clarkson",
+   "status": "out",
+   "athlete": "2528426",
+   "espn": {
+    "seen": "2026-11-24T10:08:35.372Z",
+    "own": "2026-11-22T18:05:00.000Z"
+   }
+  },
+  "401909319|naeqwantomlin|out": {
+   "game": "401909319",
+   "start": "2026-11-26T00:30Z",
+   "team": "5",
+   "name": "Nae'Qwan Tomlin",
+   "status": "out",
+   "athlete": "5106268",
+   "espn": {
+    "seen": "2026-11-24T10:08:35.372Z",
+    "own": "2026-11-17T22:18:00.000Z"
+   }
+  },
+  "401909319|evanmobley|out": {
+   "game": "401909319",
+   "start": "2026-11-26T00:30Z",
+   "team": "5",
+   "name": "Evan Mobley",
+   "status": "out",
+   "athlete": "4432158",
+   "espn": {
+    "seen": "2026-11-24T10:08:35.372Z",
+    "own": "2026-11-16T22:06:00.000Z"
+   }
+  },
+  "401909320|jaylinwilliams|q": {
+   "game": "401909320",
+   "start": "2026-11-26T00:30Z",
+   "team": "25",
+   "name": "Jaylin Williams",
+   "status": "q",
+   "athlete": "4432823",
+   "espn": {
+    "seen": "2026-11-24T10:08:35.372Z",
+    "own": "2026-11-24T04:36:00.000Z"
+   }
+  },
+  "401909320|adaymara|q": {
+   "game": "401909320",
+   "start": "2026-11-26T00:30Z",
+   "team": "25",
+   "name": "Aday Mara",
+   "status": "q",
+   "athlete": "5174983",
+   "espn": {
+    "seen": "2026-11-24T10:08:35.372Z",
+    "own": "2026-11-24T04:36:00.000Z"
+   }
+  },
+  "401909320|nikolatopic|out": {
+   "game": "401909320",
+   "start": "2026-11-26T00:30Z",
+   "team": "25",
+   "name": "Nikola Topic",
+   "status": "out",
+   "athlete": "5159925",
+   "espn": {
+    "seen": "2026-11-24T10:08:35.372Z",
+    "own": "2026-11-23T18:49:00.000Z"
+   }
+  },
+  "401909320|jalenwilliams|out": {
+   "game": "401909320",
+   "start": "2026-11-26T00:30Z",
+   "team": "25",
+   "name": "Jalen Williams",
+   "status": "out",
+   "athlete": "4593803",
+   "espn": {
+    "seen": "2026-11-24T10:08:35.372Z",
+    "own": "2026-11-23T18:43:00.000Z"
+   }
+  },
+  "401909320|alexcaruso|out": {
+   "game": "401909320",
+   "start": "2026-11-26T00:30Z",
+   "team": "25",
+   "name": "Alex Caruso",
+   "status": "out",
+   "athlete": "2991350",
+   "espn": {
+    "seen": "2026-11-24T10:08:35.372Z",
+    "own": "2026-11-23T18:38:00.000Z"
+   }
+  },
+  "401909320|thomassorber|out": {
+   "game": "401909320",
+   "start": "2026-11-26T00:30Z",
+   "team": "25",
+   "name": "Thomas Sorber",
+   "status": "out",
+   "athlete": "5061603",
+   "espn": {
+    "seen": "2026-11-24T10:08:35.372Z",
+    "own": "2026-11-18T00:01:00.000Z"
+   }
+  },
+  "401909320|casonwallace|out": {
+   "game": "401909320",
+   "start": "2026-11-26T00:30Z",
+   "team": "25",
+   "name": "Cason Wallace",
+   "status": "out",
+   "athlete": "4683692",
+   "espn": {
+    "seen": "2026-11-24T10:08:35.372Z",
+    "own": "2026-10-31T01:16:00.000Z"
+   }
+  },
+  "401909320|chetholmgren|out": {
+   "game": "401909320",
+   "start": "2026-11-26T00:30Z",
+   "team": "25",
+   "name": "Chet Holmgren",
+   "status": "out",
+   "athlete": "4433255",
+   "espn": {
+    "seen": "2026-11-24T10:08:35.372Z",
+    "own": "2026-10-31T01:02:00.000Z"
+   }
+  },
+  "401909320|jaylenclark|out": {
+   "game": "401909320",
+   "start": "2026-11-26T00:30Z",
+   "team": "16",
+   "name": "Jaylen Clark",
+   "status": "out",
+   "athlete": "4432247",
+   "espn": {
+    "seen": "2026-11-24T10:08:35.372Z",
+    "own": "2026-11-15T22:40:00.000Z"
+   }
+  },
+  "401909320|anthonyedwards|out": {
+   "game": "401909320",
+   "start": "2026-11-26T00:30Z",
+   "team": "16",
+   "name": "Anthony Edwards",
+   "status": "out",
+   "athlete": "4594268",
+   "espn": {
+    "seen": "2026-11-24T10:08:35.372Z",
+    "own": "2026-10-29T18:33:00.000Z"
+   }
+  },
+  "401909320|dontedivincenzo|out": {
+   "game": "401909320",
+   "start": "2026-11-26T00:30Z",
+   "team": "16",
+   "name": "Donte DiVincenzo",
+   "status": "out",
+   "athlete": "3934673",
+   "espn": {
+    "seen": "2026-11-24T10:08:35.372Z",
+    "own": "2026-10-05T20:53:00.000Z"
+   }
+  },
+  "401909323|markwilliams|out": {
+   "game": "401909323",
+   "start": "2026-11-26T01:30Z",
+   "team": "21",
+   "name": "Mark Williams",
+   "status": "out",
+   "athlete": "4701232",
+   "espn": {
+    "seen": "2026-11-24T10:08:35.372Z",
+    "own": "2026-09-11T16:03:00.000Z"
+   }
   }
  }
 }
