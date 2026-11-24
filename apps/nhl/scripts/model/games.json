@@ -1773,7 +1773,7 @@
 {"id":"401892772","date":"2026-11-23T01:00Z","season":2027,"type":2,"home":"22","away":"4","homeAbbr":"VAN","awayAbbr":"CHI","neutral":false,"final":true,"hs":3,"as":6,"venue":"Vancouver|BC|Canada","indoor":true},
 {"id":"401892773","date":"2026-11-24T00:00Z","season":2027,"type":2,"home":"11","away":"29","homeAbbr":"NJ","awayAbbr":"CBJ","neutral":false,"final":true,"hs":3,"as":2,"venue":"Newark|NJ|USA","indoor":true},
 {"id":"401892775","date":"2026-11-24T00:30Z","season":2027,"type":2,"home":"14","away":"3","homeAbbr":"OTT","awayAbbr":"CGY","neutral":false,"final":true,"hs":2,"as":1,"venue":"Ottawa|ON|Canada","indoor":true},
-{"id":"401892774","date":"2026-11-24T00:30Z","season":2027,"type":2,"home":"10","away":"8","homeAbbr":"MTL","awayAbbr":"LA","neutral":false,"final":false,"hs":null,"as":null,"venue":"Montreal|QC|Canada","indoor":true},
+{"id":"401892774","date":"2026-11-24T00:30Z","season":2027,"type":2,"home":"10","away":"8","homeAbbr":"MTL","awayAbbr":"LA","neutral":false,"final":true,"hs":1,"as":2,"venue":"Montreal|QC|Canada","indoor":true},
 {"id":"401892776","date":"2026-11-24T00:30Z","season":2027,"type":2,"home":"12","away":"21","homeAbbr":"NYI","awayAbbr":"TOR","neutral":false,"final":true,"hs":2,"as":4,"venue":"Elmont|NY|USA","indoor":true},
 {"id":"401892777","date":"2026-11-24T00:30Z","season":2027,"type":2,"home":"28","away":"129764","homeAbbr":"WPG","awayAbbr":"UTA","neutral":false,"final":true,"hs":4,"as":2,"venue":"Winnipeg|MB|Canada","indoor":true},
 {"id":"401892778","date":"2026-11-24T02:40Z","season":2027,"type":2,"home":"124292","away":"25","homeAbbr":"SEA","awayAbbr":"ANA","neutral":false,"final":false,"hs":null,"as":null,"venue":"Seattle|WA|USA","indoor":true},

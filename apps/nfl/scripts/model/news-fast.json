@@ -1,41 +1,15 @@
 {
  "sport": "nfl",
  "cursor": {
-  "adamscheftermirror.bsky.social": "2026-11-23T23:11:48.103Z",
+  "adamscheftermirror.bsky.social": "2026-11-24T03:16:49.707Z",
   "rapsheet.bsky.social": "2026-11-24T00:21:42.451Z",
   "nflnewsreposterbot.bsky.social": "2026-11-16T18:35:13.806Z",
-  "insidenflnews.bsky.social": "2026-11-24T02:28:05.888Z",
+  "insidenflnews.bsky.social": "2026-11-24T03:03:27.417Z",
   "nflnewsposter.bsky.social": "2026-11-23T23:06:07.625Z",
   "rotoworld-fb.bsky.social": "2026-11-23T23:05:20.000Z",
   "rotowirenfl.bsky.social": "2026-11-24T00:38:35.000Z"
  },
  "claims": [
-  {
-   "id": "at://did:plc:fuqjc7x4gxvnwzksnlxwbe4x/app.bsky.feed.post/3mzevfmphus27|leonardwilliams|questionable|status",
-   "at": "2026-11-03T03:27:21.992Z",
-   "seen": "2026-11-03T03:44:07.137Z",
-   "handle": "nflnewsposter.bsky.social",
-   "post": "at://did:plc:fuqjc7x4gxvnwzksnlxwbe4x/app.bsky.feed.post/3mzevfmphus27",
-   "player": "Leonard Williams",
-   "team": "SEA",
-   "status": "questionable",
-   "kind": "status",
-   "confidence": 0.95,
-   "text": "[Seahawks] Seahawks injury update: DT Leonard Williams is Questionable (stinger). twitter.com/seahawksPR/s..."
-  },
-  {
-   "id": "at://did:plc:mbr4badgf6yu56mquzackzew/app.bsky.feed.post/3mzevg5jycc2c|leonardwilliams|questionable|status",
-   "at": "2026-11-03T03:27:39.636Z",
-   "seen": "2026-11-03T03:44:07.137Z",
-   "handle": "insidenflnews.bsky.social",
-   "post": "at://did:plc:mbr4badgf6yu56mquzackzew/app.bsky.feed.post/3mzevg5jycc2c",
-   "player": "Leonard Williams",
-   "team": "SEA",
-   "status": "questionable",
-   "kind": "status",
-   "confidence": 0.85,
-   "text": "🚨 Status alert: Leonard Williams (stinger) questionable to return."
-  },
   {
    "id": "at://did:plc:fuqjc7x4gxvnwzksnlxwbe4x/app.bsky.feed.post/3mzexxbzf6c27|kentaviusstreet|out|status",
    "at": "2026-11-03T04:13:02.244Z",

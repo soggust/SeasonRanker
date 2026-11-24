@@ -3,8 +3,8 @@
  "cursor": {
   "johnston-bot.bsky.social": "2026-11-24T02:44:36.491Z",
   "notfriedgehnic.bsky.social": "2026-11-24T00:20:53.629Z",
-  "dailyfaceoff.bsky.social": "2026-11-24T02:47:51.000Z",
-  "dfotoronto.bsky.social": "2026-11-24T02:50:42.596Z",
+  "dailyfaceoff.bsky.social": "2026-11-24T02:56:56.000Z",
+  "dfotoronto.bsky.social": "2026-11-24T03:28:00.000Z",
   "marklazerus.bsky.social": "2026-11-24T02:35:36.897Z"
  },
  "claims": [
@@ -2698,6 +2698,19 @@
    "kind": "status",
    "confidence": 0.85,
    "text": "Connor Bedard underwent successful surgery to repair his right shoulder and is expected to make a full recovery in approximately four months."
+  },
+  {
+   "id": "at://did:plc:3uus7y6h3rlrk6sbctzxm4bg/app.bsky.feed.post/3n2znikarwe2q|connorbedard|out|status",
+   "at": "2026-11-24T02:56:56.000Z",
+   "seen": "2026-11-24T03:31:22.631Z",
+   "handle": "dailyfaceoff.bsky.social",
+   "post": "at://did:plc:3uus7y6h3rlrk6sbctzxm4bg/app.bsky.feed.post/3n2znikarwe2q",
+   "player": "Connor Bedard",
+   "team": "CHI",
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.9,
+   "text": "Blackhawks’ Connor Bedard to miss four months following shoulder surgery"
   }
  ]
 }
