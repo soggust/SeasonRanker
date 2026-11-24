@@ -1,7 +1,7 @@
 {
  "sport": "nba",
  "cursor": {
-  "rotowirenba.bsky.social": "2026-11-24T01:31:19.000Z",
+  "rotowirenba.bsky.social": "2026-11-24T01:49:26.000Z",
   "insidenbanews.bsky.social": "2026-11-20T20:35:06.661Z",
   "shamsbot.bsky.social": "2026-11-23T23:02:11.000Z"
  },
@@ -7740,6 +7740,19 @@
    "kind": "status",
    "confidence": 0.93,
    "text": "De'Aaron Fox: Won't play Monday \n\n https://www.rotowire.com/basketball/player/deaaron-fox-4116"
+  },
+  {
+   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3n2zjpuijtu2q|lukekornet|none|starting",
+   "at": "2026-11-24T01:49:26.000Z",
+   "seen": "2026-11-24T01:57:11.145Z",
+   "handle": "rotowirenba.bsky.social",
+   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3n2zjpuijtu2q",
+   "player": "Luke Kornet",
+   "team": null,
+   "status": "none",
+   "kind": "starting",
+   "confidence": 0.9,
+   "text": "Luke Kornet: Enters starting lineup Monday \n\n https://www.rotowire.com/basketball/player/luke-kornet-4151"
   }
  ]
 }
