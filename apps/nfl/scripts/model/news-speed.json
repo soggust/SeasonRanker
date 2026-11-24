@@ -20263,6 +20263,11 @@
     "seen": "2026-11-23T22:15:28.805Z",
     "own": "2026-11-23T21:41:48.178Z",
     "why": "@adamscheftermirror.bsky.social: For the second straight day, the Packers listed"
+   },
+   "athlete": "4361423",
+   "espn": {
+    "seen": "2026-11-24T19:39:40.331Z",
+    "own": "2026-11-24T18:27:00.000Z"
    }
   },
   "401873080|tannermckee|q": {
@@ -22651,6 +22656,30 @@
     "seen": "2026-11-24T18:33:22.254Z",
     "own": "2026-11-24T18:03:50.000Z",
     "why": "@rotowirenfl.bsky.social: Kenneth Walker: Returning to practice Tuesday \n\n https"
+   }
+  },
+  "401873081|skylergillhoward|out": {
+   "game": "401873081",
+   "start": "2026-11-26T18:00Z",
+   "team": "8",
+   "name": "Skyler Gill-Howard",
+   "status": "out",
+   "athlete": "5103940",
+   "espn": {
+    "seen": "2026-11-24T19:39:40.331Z",
+    "own": "2026-11-24T19:25:00.000Z"
+   }
+  },
+  "401873082|benvansumeren|out": {
+   "game": "401873082",
+   "start": "2026-11-27T01:20Z",
+   "team": "12",
+   "name": "Ben VanSumeren",
+   "status": "out",
+   "athlete": "4372070",
+   "espn": {
+    "seen": "2026-11-24T19:39:40.331Z",
+    "own": "2026-11-24T19:33:00.000Z"
    }
   }
  }
