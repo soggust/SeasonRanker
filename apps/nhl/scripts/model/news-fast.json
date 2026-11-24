@@ -1,10 +1,10 @@
 {
  "sport": "nhl",
  "cursor": {
-  "johnston-bot.bsky.social": "2026-11-23T02:17:07.040Z",
+  "johnston-bot.bsky.social": "2026-11-24T02:44:36.491Z",
   "notfriedgehnic.bsky.social": "2026-11-24T00:20:53.629Z",
-  "dailyfaceoff.bsky.social": "2026-11-24T01:41:22.000Z",
-  "dfotoronto.bsky.social": "2026-11-24T01:54:09.522Z",
+  "dailyfaceoff.bsky.social": "2026-11-24T02:47:51.000Z",
+  "dfotoronto.bsky.social": "2026-11-24T02:50:42.596Z",
   "marklazerus.bsky.social": "2026-11-24T02:35:36.897Z"
  },
  "claims": [
@@ -2672,6 +2672,32 @@
    "kind": "status",
    "confidence": 0.9,
    "text": "Connor Bedard had his shoulder surgery today. Expected timetable is \"approximately\" four months."
+  },
+  {
+   "id": "at://did:plc:ma4xzjexknxz7geuggbqbsmi/app.bsky.feed.post/3n2zmskejic2k|connorbedard|out|status",
+   "at": "2026-11-24T02:44:36.491Z",
+   "seen": "2026-11-24T02:56:23.042Z",
+   "handle": "johnston-bot.bsky.social",
+   "post": "at://did:plc:ma4xzjexknxz7geuggbqbsmi/app.bsky.feed.post/3n2zmskejic2k",
+   "player": "Connor Bedard",
+   "team": "CHI",
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.93,
+   "text": "Connor Bedard will be out four months after right shoulder surgery, according to the Blackhawks [Chicago Blackhawks (@NHLBlackhawks) on X]"
+  },
+  {
+   "id": "at://did:plc:3uus7y6h3rlrk6sbctzxm4bg/app.bsky.feed.post/3n2zmycr52224|connorbedard|out|status",
+   "at": "2026-11-24T02:47:51.000Z",
+   "seen": "2026-11-24T02:56:23.042Z",
+   "handle": "dailyfaceoff.bsky.social",
+   "post": "at://did:plc:3uus7y6h3rlrk6sbctzxm4bg/app.bsky.feed.post/3n2zmycr52224",
+   "player": "Connor Bedard",
+   "team": "CHI",
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.85,
+   "text": "Connor Bedard underwent successful surgery to repair his right shoulder and is expected to make a full recovery in approximately four months."
   }
  ]
 }

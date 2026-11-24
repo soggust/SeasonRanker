@@ -8615,6 +8615,30 @@
     "seen": "2026-11-24T00:21:55.859Z",
     "own": "2026-11-24T00:08:00.000Z"
    }
+  },
+  "401892779|connorbedard|out": {
+   "game": "401892779",
+   "start": "2026-11-24T03:00Z",
+   "team": "18",
+   "name": "Connor Bedard",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-24T02:36:00.188Z",
+    "own": "2026-11-24T02:35:36.897Z",
+    "why": "@marklazerus.bsky.social: Connor Bedard had his shoulder surgery today. Expected"
+   }
+  },
+  "401892780|connorbedard|out": {
+   "game": "401892780",
+   "start": "2026-11-25T01:00Z",
+   "team": "6",
+   "name": "Connor Bedard",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-24T02:36:00.188Z",
+    "own": "2026-11-24T02:35:36.897Z",
+    "why": "@marklazerus.bsky.social: Connor Bedard had his shoulder surgery today. Expected"
+   }
   }
  }
 }
