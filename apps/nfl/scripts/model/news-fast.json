@@ -1,13 +1,13 @@
 {
  "sport": "nfl",
  "cursor": {
-  "adamscheftermirror.bsky.social": "2026-11-24T21:56:55.056Z",
+  "adamscheftermirror.bsky.social": "2026-11-24T22:26:55.448Z",
   "rapsheet.bsky.social": "2026-11-24T21:40:28.473Z",
   "nflnewsreposterbot.bsky.social": "2026-11-24T21:39:05.332Z",
-  "insidenflnews.bsky.social": "2026-11-24T21:53:04.560Z",
+  "insidenflnews.bsky.social": "2026-11-24T22:24:22.719Z",
   "nflnewsposter.bsky.social": "2026-11-24T18:12:14.532Z",
-  "rotoworld-fb.bsky.social": "2026-11-24T21:52:47.000Z",
-  "rotowirenfl.bsky.social": "2026-11-24T21:57:41.000Z"
+  "rotoworld-fb.bsky.social": "2026-11-24T22:15:26.000Z",
+  "rotowirenfl.bsky.social": "2026-11-24T22:25:41.000Z"
  },
  "claims": [
   {
@@ -17988,6 +17988,71 @@
    "kind": "status",
    "confidence": 0.6,
    "text": "Bills TE Dalton Kincaid (thumb, ankle) said he's \"most likely\" to play in Week 12, per Matt Parrino."
+  },
+  {
+   "id": "at://did:plc:mbr4badgf6yu56mquzackzew/app.bsky.feed.post/3n33nwziyes2s|samlaporta|active|status",
+   "at": "2026-11-24T22:10:21.511Z",
+   "seen": "2026-11-24T22:31:05.083Z",
+   "handle": "insidenflnews.bsky.social",
+   "post": "at://did:plc:mbr4badgf6yu56mquzackzew/app.bsky.feed.post/3n33nwziyes2s",
+   "player": "Sam LaPorta",
+   "team": "DET",
+   "status": "active",
+   "kind": "status",
+   "confidence": 0.7,
+   "text": "Lions TE Sam LaPorta (ankle) was a full participant in Tuesday's practice."
+  },
+  {
+   "id": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3n33o7zzngy2x|daltonkincaid|limited|status",
+   "at": "2026-11-24T22:15:23.000Z",
+   "seen": "2026-11-24T22:31:05.083Z",
+   "handle": "rotoworld-fb.bsky.social",
+   "post": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3n33o7zzngy2x",
+   "player": "Dalton Kincaid",
+   "team": "BUF",
+   "status": "limited",
+   "kind": "status",
+   "confidence": 0.8,
+   "text": "Kincaid limited again, says he'll most likely play"
+  },
+  {
+   "id": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3n33oa44qtl2o|samlaporta|active|status",
+   "at": "2026-11-24T22:15:26.000Z",
+   "seen": "2026-11-24T22:31:05.083Z",
+   "handle": "rotoworld-fb.bsky.social",
+   "post": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3n33oa44qtl2o",
+   "player": "Sam LaPorta",
+   "team": "DET",
+   "status": "active",
+   "kind": "status",
+   "confidence": 0.75,
+   "text": "LaPorta (ankle) upgrades to full practice"
+  },
+  {
+   "id": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3n33osgsmki2t|daltonkincaid|limited|status",
+   "at": "2026-11-24T22:25:41.000Z",
+   "seen": "2026-11-24T22:31:05.083Z",
+   "handle": "rotowirenfl.bsky.social",
+   "post": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3n33osgsmki2t",
+   "player": "Dalton Kincaid",
+   "team": "BUF",
+   "status": "limited",
+   "kind": "status",
+   "confidence": 0.8,
+   "text": "Dalton Kincaid: Limited Tuesday, plans to play Thursday \n\n https://www.rotowire.com/football/player/dalton-kincaid-16697"
+  },
+  {
+   "id": "at://did:plc:qre6zxbmr3ixhdmgsgdretb5/app.bsky.feed.post/3n33oungq7x24|tylerbadie|limited|return",
+   "at": "2026-11-24T22:26:55.448Z",
+   "seen": "2026-11-24T22:31:05.083Z",
+   "handle": "adamscheftermirror.bsky.social",
+   "post": "at://did:plc:qre6zxbmr3ixhdmgsgdretb5/app.bsky.feed.post/3n33oungq7x24",
+   "player": "Tyler Badie",
+   "team": "DEN",
+   "status": "limited",
+   "kind": "return",
+   "confidence": 0.6,
+   "text": "Broncos now have designated RB Tyler Badie for return from injured reserve.\n\nOriginal post"
   }
  ]
 }

@@ -22613,6 +22613,11 @@
    "sleeper": {
     "seen": "2026-11-24T20:09:42.623Z",
     "own": "2026-11-24T19:00:48.289Z"
+   },
+   "bluesky": {
+    "seen": "2026-11-24T22:10:03.053Z",
+    "own": "2026-11-24T22:07:22.000Z",
+    "why": "@rotowirenba.bsky.social: Giannis Antetokounmpo: Questionable for Wednesday \n\n h"
    }
   },
   "401909319|milesmcbride|q": {
@@ -22948,6 +22953,11 @@
    "espn": {
     "seen": "2026-11-24T22:08:45.006Z",
     "own": "2026-11-24T21:53:00.000Z"
+   },
+   "bluesky": {
+    "seen": "2026-11-24T22:10:03.053Z",
+    "own": "2026-11-24T21:53:18.000Z",
+    "why": "@rotowirenba.bsky.social: OG Anunoby: Ruled out for Wednesday \n\n https://www.rot"
    }
   },
   "401909319|karlanthonytowns|q": {
@@ -22960,6 +22970,150 @@
    "espn": {
     "seen": "2026-11-24T22:08:45.006Z",
     "own": "2026-11-24T21:50:00.000Z"
+   }
+  },
+  "401909314|oganunoby|out": {
+   "game": "401909314",
+   "start": "2026-11-25T00:00Z",
+   "team": "19",
+   "name": "OG Anunoby",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-24T22:10:03.053Z",
+    "own": "2026-11-24T21:53:18.000Z",
+    "why": "@rotowirenba.bsky.social: OG Anunoby: Ruled out for Wednesday \n\n https://www.rot"
+   }
+  },
+  "401909314|giannisantetokounmpo|q": {
+   "game": "401909314",
+   "start": "2026-11-25T00:00Z",
+   "team": "19",
+   "name": "Giannis Antetokounmpo",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-11-24T22:10:03.053Z",
+    "own": "2026-11-24T22:07:22.000Z",
+    "why": "@rotowirenba.bsky.social: Giannis Antetokounmpo: Questionable for Wednesday \n\n h"
+   }
+  },
+  "401909315|oganunoby|out": {
+   "game": "401909315",
+   "start": "2026-11-25T01:00Z",
+   "team": "27",
+   "name": "OG Anunoby",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-24T22:10:03.053Z",
+    "own": "2026-11-24T21:53:18.000Z",
+    "why": "@rotowirenba.bsky.social: OG Anunoby: Ruled out for Wednesday \n\n https://www.rot"
+   }
+  },
+  "401909315|giannisantetokounmpo|q": {
+   "game": "401909315",
+   "start": "2026-11-25T01:00Z",
+   "team": "27",
+   "name": "Giannis Antetokounmpo",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-11-24T22:10:03.053Z",
+    "own": "2026-11-24T22:07:22.000Z",
+    "why": "@rotowirenba.bsky.social: Giannis Antetokounmpo: Questionable for Wednesday \n\n h"
+   }
+  },
+  "401909316|oganunoby|out": {
+   "game": "401909316",
+   "start": "2026-11-25T03:00Z",
+   "team": "7",
+   "name": "OG Anunoby",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-24T22:10:03.053Z",
+    "own": "2026-11-24T21:53:18.000Z",
+    "why": "@rotowirenba.bsky.social: OG Anunoby: Ruled out for Wednesday \n\n https://www.rot"
+   }
+  },
+  "401909316|giannisantetokounmpo|q": {
+   "game": "401909316",
+   "start": "2026-11-25T03:00Z",
+   "team": "7",
+   "name": "Giannis Antetokounmpo",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-11-24T22:10:03.053Z",
+    "own": "2026-11-24T22:07:22.000Z",
+    "why": "@rotowirenba.bsky.social: Giannis Antetokounmpo: Questionable for Wednesday \n\n h"
+   }
+  },
+  "401909317|oganunoby|out": {
+   "game": "401909317",
+   "start": "2026-11-25T22:00Z",
+   "team": "20",
+   "name": "OG Anunoby",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-24T22:10:03.053Z",
+    "own": "2026-11-24T21:53:18.000Z",
+    "why": "@rotowirenba.bsky.social: OG Anunoby: Ruled out for Wednesday \n\n https://www.rot"
+   }
+  },
+  "401909319|giannisantetokounmpo|q": {
+   "game": "401909319",
+   "start": "2026-11-26T00:30Z",
+   "team": "18",
+   "name": "Giannis Antetokounmpo",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-11-24T22:10:03.053Z",
+    "own": "2026-11-24T22:07:22.000Z",
+    "why": "@rotowirenba.bsky.social: Giannis Antetokounmpo: Questionable for Wednesday \n\n h"
+   }
+  },
+  "401909320|oganunoby|out": {
+   "game": "401909320",
+   "start": "2026-11-26T00:30Z",
+   "team": "25",
+   "name": "OG Anunoby",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-24T22:10:03.053Z",
+    "own": "2026-11-24T21:53:18.000Z",
+    "why": "@rotowirenba.bsky.social: OG Anunoby: Ruled out for Wednesday \n\n https://www.rot"
+   }
+  },
+  "401909320|giannisantetokounmpo|q": {
+   "game": "401909320",
+   "start": "2026-11-26T00:30Z",
+   "team": "25",
+   "name": "Giannis Antetokounmpo",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-11-24T22:10:03.053Z",
+    "own": "2026-11-24T22:07:22.000Z",
+    "why": "@rotowirenba.bsky.social: Giannis Antetokounmpo: Questionable for Wednesday \n\n h"
+   }
+  },
+  "401909323|oganunoby|out": {
+   "game": "401909323",
+   "start": "2026-11-26T01:30Z",
+   "team": "10",
+   "name": "OG Anunoby",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-24T22:10:03.053Z",
+    "own": "2026-11-24T21:53:18.000Z",
+    "why": "@rotowirenba.bsky.social: OG Anunoby: Ruled out for Wednesday \n\n https://www.rot"
+   }
+  },
+  "401909323|giannisantetokounmpo|q": {
+   "game": "401909323",
+   "start": "2026-11-26T01:30Z",
+   "team": "10",
+   "name": "Giannis Antetokounmpo",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-11-24T22:10:03.053Z",
+    "own": "2026-11-24T22:07:22.000Z",
+    "why": "@rotowirenba.bsky.social: Giannis Antetokounmpo: Questionable for Wednesday \n\n h"
    }
   }
  }
