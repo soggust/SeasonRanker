@@ -3,8 +3,8 @@
  "cursor": {
   "johnston-bot.bsky.social": "2026-11-24T02:44:36.491Z",
   "notfriedgehnic.bsky.social": "2026-11-24T19:12:46.578Z",
-  "dailyfaceoff.bsky.social": "2026-11-24T19:15:10.000Z",
-  "dfotoronto.bsky.social": "2026-11-24T19:30:43.000Z",
+  "dailyfaceoff.bsky.social": "2026-11-24T20:06:00.000Z",
+  "dfotoronto.bsky.social": "2026-11-24T19:56:12.049Z",
   "marklazerus.bsky.social": "2026-11-24T19:47:11.423Z"
  },
  "claims": [
@@ -2750,6 +2750,19 @@
    "kind": "role",
    "confidence": 0.85,
    "text": "Maple Leafs return Ryan Tverberg, Brendan Brisson to AHL, keep Aatu Raty: ‘He was just really good’"
+  },
+  {
+   "id": "at://did:plc:3uus7y6h3rlrk6sbctzxm4bg/app.bsky.feed.post/3n33gykgjud2f|connorbedard|out|status",
+   "at": "2026-11-24T20:05:56.000Z",
+   "seen": "2026-11-24T20:11:24.621Z",
+   "handle": "dailyfaceoff.bsky.social",
+   "post": "at://did:plc:3uus7y6h3rlrk6sbctzxm4bg/app.bsky.feed.post/3n33gykgjud2f",
+   "player": "Connor Bedard",
+   "team": "CHI",
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.8,
+   "text": "With Bedard out 4 months. Is this a 'Lost Season' for Chicago?\n\nDaily Faceoff Live\n\nPresented by: bet365 (@bet365_ca)\nhttps://bet365.ca - #bet365"
   }
  ]
 }
