@@ -1,63 +1,11 @@
 {
  "sport": "nba",
  "cursor": {
-  "rotowirenba.bsky.social": "2026-11-24T21:15:42.000Z",
+  "rotowirenba.bsky.social": "2026-11-24T22:09:28.000Z",
   "insidenbanews.bsky.social": "2026-11-20T20:35:06.661Z",
   "shamsbot.bsky.social": "2026-11-23T23:02:11.000Z"
  },
  "claims": [
-  {
-   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mzgsu5vhru2q|alexsarr|questionable|status",
-   "at": "2026-11-03T21:47:07.000Z",
-   "seen": "2026-11-03T23:48:14.330Z",
-   "handle": "rotowirenba.bsky.social",
-   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mzgsu5vhru2q",
-   "player": "Alex Sarr",
-   "team": null,
-   "status": "questionable",
-   "kind": "status",
-   "confidence": 0.95,
-   "text": "Alex Sarr: Listed as questionable \n\n https://www.rotowire.com/basketball/player/alex-sarr-6240"
-  },
-  {
-   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mzgtwdavm227|cobywhite|active|status",
-   "at": "2026-11-03T22:06:14.000Z",
-   "seen": "2026-11-03T23:48:14.330Z",
-   "handle": "rotowirenba.bsky.social",
-   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mzgtwdavm227",
-   "player": "Coby White",
-   "team": null,
-   "status": "active",
-   "kind": "status",
-   "confidence": 0.7,
-   "text": "Coby White: Probable for Wednesday \n\n https://www.rotowire.com/basketball/player/coby-white-4801"
-  },
-  {
-   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mzgtxhkhen24|jalenjohnson|questionable|status",
-   "at": "2026-11-03T22:06:52.000Z",
-   "seen": "2026-11-03T23:48:14.330Z",
-   "handle": "rotowirenba.bsky.social",
-   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mzgtxhkhen24",
-   "player": "Jalen Johnson",
-   "team": null,
-   "status": "questionable",
-   "kind": "status",
-   "confidence": 0.95,
-   "text": "Jalen Johnson: Questionable for Wednesday \n\n https://www.rotowire.com/basketball/player/jalen-johnson-5329"
-  },
-  {
-   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mzgu47uiyk2v|peytonwatson|out|status",
-   "at": "2026-11-03T22:09:32.000Z",
-   "seen": "2026-11-03T23:48:14.330Z",
-   "handle": "rotowirenba.bsky.social",
-   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mzgu47uiyk2v",
-   "player": "Peyton Watson",
-   "team": null,
-   "status": "out",
-   "kind": "status",
-   "confidence": 0.95,
-   "text": "Peyton Watson: Ruled out for Wednesday \n\n https://www.rotowire.com/basketball/player/peyton-watson-5722"
-  },
   {
    "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mzguqmxs542g|kyrieirving|active|status",
    "at": "2026-11-03T22:20:56.000Z",
@@ -7675,6 +7623,32 @@
    "kind": "status",
    "confidence": 0.85,
    "text": "Duncan Robinson: Considered day-to-day \n\n https://www.rotowire.com/basketball/player/duncan-robinson-4470"
+  },
+  {
+   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3n33mykcy2g2q|oganunoby|out|status",
+   "at": "2026-11-24T21:53:18.000Z",
+   "seen": "2026-11-24T22:10:03.053Z",
+   "handle": "rotowirenba.bsky.social",
+   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3n33mykcy2g2q",
+   "player": "OG Anunoby",
+   "team": null,
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.95,
+   "text": "OG Anunoby: Ruled out for Wednesday \n\n https://www.rotowire.com/basketball/player/og-anunoby-4121"
+  },
+  {
+   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3n33nrofzfw22|giannisantetokounmpo|questionable|status",
+   "at": "2026-11-24T22:07:22.000Z",
+   "seen": "2026-11-24T22:10:03.053Z",
+   "handle": "rotowirenba.bsky.social",
+   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3n33nrofzfw22",
+   "player": "Giannis Antetokounmpo",
+   "team": null,
+   "status": "questionable",
+   "kind": "status",
+   "confidence": 0.95,
+   "text": "Giannis Antetokounmpo: Questionable for Wednesday \n\n https://www.rotowire.com/basketball/player/giannis-antetokounmpo-3456"
   }
  ]
 }
