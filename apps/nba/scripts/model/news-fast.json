@@ -1,7 +1,7 @@
 {
  "sport": "nba",
  "cursor": {
-  "rotowirenba.bsky.social": "2026-11-24T00:45:52.000Z",
+  "rotowirenba.bsky.social": "2026-11-24T01:09:49.000Z",
   "insidenbanews.bsky.social": "2026-11-20T20:35:06.661Z",
   "shamsbot.bsky.social": "2026-11-23T23:02:11.000Z"
  },
@@ -7701,6 +7701,19 @@
    "kind": "starting",
    "confidence": 0.9,
    "text": "Trey Murphy: Returning to starting five \n\n https://www.rotowire.com/basketball/player/trey-murphy-5401"
+  },
+  {
+   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3n2zhizlgai2l|brandoningram|active|starting",
+   "at": "2026-11-24T01:09:49.000Z",
+   "seen": "2026-11-24T01:15:25.246Z",
+   "handle": "rotowirenba.bsky.social",
+   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3n2zhizlgai2l",
+   "player": "Brandon Ingram",
+   "team": null,
+   "status": "active",
+   "kind": "starting",
+   "confidence": 0.8,
+   "text": "Brandon Ingram: Starting in season debut \n\n https://www.rotowire.com/basketball/player/brandon-ingram-3861"
   }
  ]
 }
