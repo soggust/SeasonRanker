@@ -8716,6 +8716,11 @@
    "sleeper": {
     "seen": "2026-11-23T20:13:50.252Z",
     "own": "2026-11-23T19:40:59.238Z"
+   },
+   "bluesky": {
+    "seen": "2026-11-23T23:15:11.377Z",
+    "own": "2026-11-23T22:31:06.000Z",
+    "why": "@dailyfaceoff.bsky.social: Sharks’ Jacob Trouba out a week with lower-body injur"
    }
   },
   "401892774|erikgustafsson|out": {
@@ -8728,6 +8733,23 @@
    "espn": {
     "seen": "2026-11-23T22:13:57.600Z",
     "own": "2026-11-23T22:00:00.000Z"
+   },
+   "bluesky": {
+    "seen": "2026-11-23T23:15:11.377Z",
+    "own": "2026-11-23T22:54:14.000Z",
+    "why": "@dailyfaceoff.bsky.social: Kings’ Erik Gustafsson out 2-4 weeks with fracture in"
+   }
+  },
+  "401892776|jackroslovic|out": {
+   "game": "401892776",
+   "start": "2026-11-24T00:30Z",
+   "team": "21",
+   "name": "Jack Roslovic",
+   "status": "out",
+   "athlete": "3904098",
+   "espn": {
+    "seen": "2026-11-24T00:21:55.859Z",
+    "own": "2026-11-24T00:08:00.000Z"
    }
   }
  }
