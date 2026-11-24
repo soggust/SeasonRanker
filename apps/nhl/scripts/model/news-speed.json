@@ -9750,6 +9750,23 @@
    "sleeper": {
     "seen": "2026-11-24T20:05:46.801Z",
     "own": "2026-11-24T20:00:46.798Z"
+   },
+   "bluesky": {
+    "seen": "2026-11-24T20:35:01.434Z",
+    "own": "2026-11-24T20:33:08.000Z",
+    "why": "@dailyfaceoff.bsky.social: Islanders place Kyle Palmieri on injured reserve"
+   }
+  },
+  "401892788|mathieuolivier|out": {
+   "game": "401892788",
+   "start": "2026-11-26T00:00Z",
+   "team": "29",
+   "name": "Mathieu Olivier",
+   "status": "out",
+   "athlete": "4064781",
+   "espn": {
+    "seen": "2026-11-24T22:20:36.730Z",
+    "own": "2026-11-24T22:08:00.000Z"
    }
   }
  }
