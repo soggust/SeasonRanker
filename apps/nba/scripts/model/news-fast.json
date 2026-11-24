@@ -1,37 +1,11 @@
 {
  "sport": "nba",
  "cursor": {
-  "rotowirenba.bsky.social": "2026-11-24T19:41:01.000Z",
+  "rotowirenba.bsky.social": "2026-11-24T21:15:42.000Z",
   "insidenbanews.bsky.social": "2026-11-20T20:35:06.661Z",
   "shamsbot.bsky.social": "2026-11-23T23:02:11.000Z"
  },
  "claims": [
-  {
-   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mzgqh2coo72e|nicclaxton|questionable|status",
-   "at": "2026-11-03T21:04:00.000Z",
-   "seen": "2026-11-03T23:48:14.330Z",
-   "handle": "rotowirenba.bsky.social",
-   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mzgqh2coo72e",
-   "player": "Nic Claxton",
-   "team": null,
-   "status": "questionable",
-   "kind": "status",
-   "confidence": 0.95,
-   "text": "Nic Claxton: Upgraded to questionable \n\n https://www.rotowire.com/basketball/player/nic-claxton-4827"
-  },
-  {
-   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mzgqtydahu27|paulgeorge|active|status",
-   "at": "2026-11-03T21:11:14.000Z",
-   "seen": "2026-11-03T23:48:14.330Z",
-   "handle": "rotowirenba.bsky.social",
-   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mzgqtydahu27",
-   "player": "Paul George",
-   "team": null,
-   "status": "active",
-   "kind": "status",
-   "confidence": 0.85,
-   "text": "Paul George: Absent from injury report \n\n https://www.rotowire.com/basketball/player/paul-george-3114"
-  },
   {
    "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mzgsu5vhru2q|alexsarr|questionable|status",
    "at": "2026-11-03T21:47:07.000Z",

@@ -3,9 +3,9 @@
  "cursor": {
   "johnston-bot.bsky.social": "2026-11-24T02:44:36.491Z",
   "notfriedgehnic.bsky.social": "2026-11-24T19:12:46.578Z",
-  "dailyfaceoff.bsky.social": "2026-11-24T20:33:08.000Z",
+  "dailyfaceoff.bsky.social": "2026-11-24T21:04:35.000Z",
   "dfotoronto.bsky.social": "2026-11-24T20:33:08.000Z",
-  "marklazerus.bsky.social": "2026-11-24T19:47:11.423Z"
+  "marklazerus.bsky.social": "2026-11-24T21:09:25.348Z"
  },
  "claims": [
   {
@@ -2776,6 +2776,19 @@
    "kind": "status",
    "confidence": 0.95,
    "text": "Islanders place Kyle Palmieri on injured reserve"
+  },
+  {
+   "id": "at://did:plc:54vdi5eoabhod2vumsbcpi7g/app.bsky.feed.post/3n33kk2ppps2j|antonfrondell|active|return",
+   "at": "2026-11-24T21:09:25.348Z",
+   "seen": "2026-11-24T21:17:23.931Z",
+   "handle": "marklazerus.bsky.social",
+   "post": "at://did:plc:54vdi5eoabhod2vumsbcpi7g/app.bsky.feed.post/3n33kk2ppps2j",
+   "player": "Anton Frondell",
+   "team": null,
+   "status": "active",
+   "kind": "return",
+   "confidence": 0.8,
+   "text": "Anton Frondell is skating at today's practice. Appears he'll be a full participant."
   }
  ]
 }
