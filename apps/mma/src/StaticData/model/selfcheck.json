@@ -1,8 +1,8 @@
 {
- "at": "2026-11-23T10:56:22.150Z",
+ "at": "2026-11-24T00:47:50.014Z",
  "baseline": {
-  "from": "2026-10-19",
-  "to": "2026-11-16"
+  "from": "2026-10-20",
+  "to": "2026-11-17"
  },
  "checks": [
   {
@@ -73,7 +73,7 @@
   },
   {
    "examples": [],
-   "headline": "0 plain write-ups, 0 Claude analyses tried this week (0 ok); AI calls 0, $0.00 this week, $0.00 of $25 this month",
+   "headline": "0 plain write-ups, 0 Claude analyses tried this week (0 ok); AI calls 0, $0.00 this week, $0.57 of $25 this month",
    "how": "writeups.json's plain and Claude write-ups, and the AI usage log's calls this week (ai-budget.mjs: every sport's spend counts against the caps)",
    "id": "C15",
    "metric": "rejectRate",
@@ -108,9 +108,9 @@
     {
      "dayCap": 1.5,
      "key": "ai spend",
-     "month": 0,
+     "month": 0.5686,
      "monthCap": 25,
-     "share": 0
+     "share": 0.0227
     }
    ],
    "status": "partial",
@@ -358,15 +358,15 @@
   },
   {
    "examples": [],
-   "headline": "Model files 37h old, 0 open bets overdue to grade; Odds API credits 68% left; 9 bets placed in a week of 12 games",
+   "headline": "Model files 51h old, 0 open bets overdue to grade; Odds API credits 66% left; 6 bets placed in a week of 12 games",
    "how": "the newest commit of the sport's model files, the open bets started 12 hours ago or more, The Odds API's credits (state.odds), the state's sources",
    "id": "C16",
    "metric": "ageH",
-   "n": 9,
+   "n": 6,
    "needs": null,
    "rows": [
     {
-     "ageH": 37,
+     "ageH": 51,
      "at": "2026-11-21T21:26:22Z",
      "key": "files",
      "overdue": 0
@@ -375,8 +375,8 @@
      "cycleEnd": "2026-12-01T00:02:39.102Z",
      "key": "credits",
      "monthly": 20000,
-     "remaining": 13582,
-     "share": 0.6791
+     "remaining": 13102,
+     "share": 0.6551
     },
     {
      "down": [],
@@ -385,22 +385,22 @@
     {
      "games": 12,
      "key": "week",
-     "placed": 9
+     "placed": 6
     }
    ],
    "status": "ok",
    "tested": null,
    "threshold": "watch files 3h old with bets overdue, credits under 20%, a source down, or no bets in a week with games; flag 6h old with bets overdue, or credits under 10%",
    "title": "Ops",
-   "value": 37
+   "value": 51
   },
   {
    "examples": [],
-   "headline": "0 of 9 bets placed this week had the line already moving against them",
+   "headline": "0 of 6 bets placed this week had the line already moving against them",
    "how": "placed this week: a prop's line a point or more against its side since it opened; a game's spread 1.5 (NFL) or 0.5, its total a point, a moneyline without a spread move 3 points of the home chance. A prop moved twice the guard's limit should have been skipped",
    "id": "C2",
    "metric": "roiGap",
-   "n": 9,
+   "n": 6,
    "needs": null,
    "rows": [
     {
@@ -414,14 +414,14 @@
      "z": null
     },
     {
-     "e": 4.4941,
+     "e": 2.9204,
      "key": "the rest",
-     "n": 8,
-     "placed": 9,
-     "profit": 0.206,
-     "roi": 0.0375,
-     "w": 4,
-     "z": -0.355
+     "n": 5,
+     "placed": 6,
+     "profit": 0.951,
+     "roi": 0.2378,
+     "w": 3,
+     "z": 0.0724
     },
     {
      "key": "guard bugs",
@@ -476,7 +476,7 @@
   },
   {
    "examples": [],
-   "headline": "Moneyline: dogs 33% of this week's bets against 38% before",
+   "headline": "Moneyline: dogs 33% of this week's bets against 34% before",
    "how": "placed this week against the 28 days before: a dog is a plus price or a spread side getting points",
    "id": "C5",
    "metric": "moved",
@@ -485,7 +485,7 @@
    "rows": [
     {
      "dogShare": 0.3333,
-     "dogShareBase": 0.3774,
+     "dogShareBase": 0.3409,
      "dogs": {
       "e": 0,
       "n": 0,
@@ -503,9 +503,9 @@
       "z": 1.1702
      },
      "key": "ml",
-     "moved": -0.044,
+     "moved": -0.0076,
      "n": 3,
-     "nBase": 53,
+     "nBase": 44,
      "status": "thin"
     }
    ],
@@ -513,7 +513,7 @@
    "tested": null,
    "threshold": "watch the dog share moved 20 points (20+ bets both); flag also the grown group z -2 (30+ graded)",
    "title": "Favorite/dog drift",
-   "value": -0.044
+   "value": -0.0076
   },
   {
    "examples": [],
@@ -563,11 +563,11 @@
   },
   {
    "examples": [],
-   "headline": "No bet placed this week was cut by a guard (9 placed)",
+   "headline": "No bet placed this week was cut by a guard (6 placed)",
    "how": "placed this week against the 28 days before: the bets a guard cut to a half unit, by kind",
    "id": "C8",
    "metric": "ratio",
-   "n": 9,
+   "n": 6,
    "needs": [
     "state.tallies (the guards' skips by day: the Bot keeps only the bets it placed)"
    ],
@@ -595,25 +595,17 @@
   },
   {
    "examples": [],
-   "headline": "fairFrom unknown: missing on 3 of 9 bets this week (33%) against 35% before; fair chances from betonlineag",
+   "headline": "intent: missing on 0 of 6 bets this week (0%) against 0% before",
    "how": "placed this week against the 28 days before: the share of the bets each field applies to that are missing it",
    "id": "C14",
    "metric": "share",
-   "n": 9,
+   "n": 6,
    "needs": null,
    "rows": [
     {
-     "key": "fairFrom unknown",
-     "n": 3,
-     "of": 9,
-     "share": 0.3333,
-     "shareBase": 0.3542,
-     "status": "thin"
-    },
-    {
      "key": "intent",
      "n": 0,
-     "of": 9,
+     "of": 6,
      "share": 0,
      "shareBase": 0,
      "status": "thin"
@@ -629,9 +621,17 @@
     {
      "key": "seen",
      "n": 0,
-     "of": 8,
+     "of": 5,
      "share": 0,
      "shareBase": 0,
+     "status": "thin"
+    },
+    {
+     "key": "fairFrom unknown",
+     "n": 0,
+     "of": 6,
+     "share": 0,
+     "shareBase": 0.3537,
      "status": "thin"
     }
    ],
@@ -639,7 +639,7 @@
    "tested": null,
    "threshold": "watch a share up 5 points on the baseline (3+ bets, 20+ both); flag doubled (5+)",
    "title": "Data holes",
-   "value": 0.3333
+   "value": 0
   },
   {
    "examples": [],
@@ -758,8 +758,8 @@
  },
  "v": 1,
  "window": {
-  "from": "2026-11-16",
-  "to": "2026-11-23"
+  "from": "2026-11-17",
+  "to": "2026-11-24"
  },
  "writeups": {
   "calls": 0,
