@@ -3,8 +3,8 @@
  "cursor": {
   "johnston-bot.bsky.social": "2026-11-24T02:44:36.491Z",
   "notfriedgehnic.bsky.social": "2026-11-24T03:59:39.525Z",
-  "dailyfaceoff.bsky.social": "2026-11-24T17:33:54.000Z",
-  "dfotoronto.bsky.social": "2026-11-24T16:47:59.220Z",
+  "dailyfaceoff.bsky.social": "2026-11-24T18:00:28.000Z",
+  "dfotoronto.bsky.social": "2026-11-24T17:37:49.000Z",
   "marklazerus.bsky.social": "2026-11-24T02:35:36.897Z"
  },
  "claims": [
@@ -2711,6 +2711,19 @@
    "kind": "starting",
    "confidence": 0.6,
    "text": "Bruce Boudreau doesn't expect the Leafs to ease back on Anthony Stolarz's starts anytime soon"
+  },
+  {
+   "id": "at://did:plc:3uus7y6h3rlrk6sbctzxm4bg/app.bsky.feed.post/3n336xry7c32s|ryannugenthopkins|active|return",
+   "at": "2026-11-24T17:42:20.000Z",
+   "seen": "2026-11-24T18:03:30.675Z",
+   "handle": "dailyfaceoff.bsky.social",
+   "post": "at://did:plc:3uus7y6h3rlrk6sbctzxm4bg/app.bsky.feed.post/3n336xry7c32s",
+   "player": "Ryan Nugent-Hopkins",
+   "team": "EDM",
+   "status": "active",
+   "kind": "return",
+   "confidence": 0.9,
+   "text": "Oilers’ Ryan Nugent-Hopkins to return to lineup after five-game absence"
   }
  ]
 }

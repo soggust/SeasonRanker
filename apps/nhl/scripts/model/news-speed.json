@@ -1,102 +1,6 @@
 {
  "sport": "nhl",
  "entries": {
-  "401891809|jordanstaal|out": {
-   "game": "401891809",
-   "start": "2026-11-14T18:00Z",
-   "team": "7",
-   "name": "Jordan Staal",
-   "status": "out",
-   "athlete": "3541",
-   "espn": {
-    "seen": "2026-11-13T16:15:29.044Z",
-    "own": "2026-11-13T14:30:00.000Z"
-   },
-   "sleeper": {
-    "seen": "2026-11-13T20:15:39.341Z",
-    "own": "2026-11-13T14:35:24.816Z"
-   }
-  },
-  "401891809|jacobmelanson|out": {
-   "game": "401891809",
-   "start": "2026-11-14T18:00Z",
-   "team": "124292",
-   "name": "Jacob Melanson",
-   "status": "out",
-   "athlete": "4894747",
-   "espn": {
-    "seen": "2026-11-13T16:15:29.044Z",
-    "own": "2026-11-13T14:39:00.000Z"
-   },
-   "sleeper": {
-    "seen": "2026-11-13T20:15:39.341Z",
-    "own": "2026-11-13T14:45:24.904Z"
-   }
-  },
-  "401891809|ryanlindgren|out": {
-   "game": "401891809",
-   "start": "2026-11-14T18:00Z",
-   "team": "124292",
-   "name": "Ryan Lindgren",
-   "status": "out",
-   "athlete": "4271998",
-   "espn": {
-    "seen": "2026-11-13T16:15:29.044Z",
-    "own": "2026-11-13T14:36:00.000Z"
-   },
-   "sleeper": {
-    "seen": "2026-11-13T20:15:39.341Z",
-    "own": "2026-11-13T14:40:24.838Z"
-   }
-  },
-  "401891809|nikkekokko|out": {
-   "game": "401891809",
-   "start": "2026-11-14T18:00Z",
-   "team": "124292",
-   "name": "Nikke Kokko",
-   "status": "out",
-   "athlete": "5080225",
-   "espn": {
-    "seen": "2026-11-13T16:15:29.044Z",
-    "own": "2026-11-07T20:12:00.000Z"
-   }
-  },
-  "401891809|curtisdouglas|out": {
-   "game": "401891809",
-   "start": "2026-11-14T18:00Z",
-   "team": "124292",
-   "name": "Curtis Douglas",
-   "status": "out",
-   "athlete": "4331586",
-   "espn": {
-    "seen": "2026-11-13T16:15:29.044Z",
-    "own": "2026-11-05T01:12:00.000Z"
-   }
-  },
-  "401891809|jaredmccann|out": {
-   "game": "401891809",
-   "start": "2026-11-14T18:00Z",
-   "team": "124292",
-   "name": "Jared McCann",
-   "status": "out",
-   "athlete": "3114777",
-   "espn": {
-    "seen": "2026-11-13T16:15:29.044Z",
-    "own": "2026-10-25T17:08:00.000Z"
-   }
-  },
-  "401891809|jakeobrien|out": {
-   "game": "401891809",
-   "start": "2026-11-14T18:00Z",
-   "team": "124292",
-   "name": "Jake O'Brien",
-   "status": "out",
-   "athlete": "5291944",
-   "espn": {
-    "seen": "2026-11-13T16:15:29.044Z",
-    "own": "2026-10-01T00:06:00.000Z"
-   }
-  },
   "401892708|bowenbyram|out": {
    "game": "401892708",
    "start": "2026-11-14T20:30Z",
@@ -9810,6 +9714,30 @@
    "espn": {
     "seen": "2026-11-24T17:33:32.416Z",
     "own": "2026-11-24T17:11:00.000Z"
+   }
+  },
+  "401892782|tysonkozak|q": {
+   "game": "401892782",
+   "start": "2026-11-26T00:00Z",
+   "team": "2",
+   "name": "Tyson Kozak",
+   "status": "q",
+   "athlete": "4895527",
+   "espn": {
+    "seen": "2026-11-24T18:02:03.181Z",
+    "own": "2026-11-24T17:37:00.000Z"
+   }
+  },
+  "401892783|nikolajehlers|out": {
+   "game": "401892783",
+   "start": "2026-11-26T00:00Z",
+   "team": "7",
+   "name": "Nikolaj Ehlers",
+   "status": "out",
+   "athlete": "3114741",
+   "espn": {
+    "seen": "2026-11-24T18:02:03.181Z",
+    "own": "2026-11-24T17:27:00.000Z"
    }
   }
  }
