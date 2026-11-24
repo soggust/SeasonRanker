@@ -24618,6 +24618,90 @@
     "seen": "2026-11-24T00:34:27.303Z",
     "own": "2026-11-23T21:09:00.000Z"
    }
+  },
+  "401909316|jaxsonhayes|out": {
+   "game": "401909316",
+   "start": "2026-11-25T03:00Z",
+   "team": "7",
+   "name": "Jaxson Hayes",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-23T21:15:24.958Z",
+    "own": "2026-11-23T21:04:20.000Z",
+    "why": "@rotowirenba.bsky.social: Jaxson Hayes: Out with knee strain \n\n https://www.roto"
+   }
+  },
+  "401909316|jalenduren|out": {
+   "game": "401909316",
+   "start": "2026-11-25T03:00Z",
+   "team": "7",
+   "name": "Jalen Duren",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-23T22:15:28.805Z",
+    "own": "2026-11-23T22:08:57.000Z",
+    "why": "@rotowirenba.bsky.social: Jalen Duren: Remaining out for Tuesday \n\n https://www."
+   }
+  },
+  "401909316|tobilawal|out": {
+   "game": "401909316",
+   "start": "2026-11-25T03:00Z",
+   "team": "6",
+   "name": "Tobi Lawal",
+   "status": "out",
+   "athlete": "5106040",
+   "espn": {
+    "seen": "2026-11-24T00:52:40.046Z",
+    "own": "2026-11-23T23:25:00.000Z"
+   }
+  },
+  "401909316|pjwashington|q": {
+   "game": "401909316",
+   "start": "2026-11-25T03:00Z",
+   "team": "6",
+   "name": "P.J. Washington",
+   "status": "q",
+   "athlete": "4278078",
+   "espn": {
+    "seen": "2026-11-24T00:52:40.046Z",
+    "own": "2026-11-23T23:21:00.000Z"
+   }
+  },
+  "401909316|derecklively|out": {
+   "game": "401909316",
+   "start": "2026-11-25T03:00Z",
+   "team": "6",
+   "name": "Dereck Lively II",
+   "status": "out",
+   "athlete": "4683688",
+   "espn": {
+    "seen": "2026-11-24T00:52:40.046Z",
+    "own": "2026-11-20T19:31:00.000Z"
+   }
+  },
+  "401909316|sergiodelarrea|out": {
+   "game": "401909316",
+   "start": "2026-11-25T03:00Z",
+   "team": "6",
+   "name": "Sergio de Larrea",
+   "status": "out",
+   "athlete": "5279129",
+   "espn": {
+    "seen": "2026-11-24T00:52:40.046Z",
+    "own": "2026-11-17T22:53:00.000Z"
+   }
+  },
+  "401909316|tarikbiberovic|out": {
+   "game": "401909316",
+   "start": "2026-11-25T03:00Z",
+   "team": "6",
+   "name": "Tarik Biberovic",
+   "status": "out",
+   "athlete": "5148538",
+   "espn": {
+    "seen": "2026-11-24T00:52:40.046Z",
+    "own": "2026-11-17T22:42:00.000Z"
+   }
   }
  }
 }

@@ -1,24 +1,11 @@
 {
  "sport": "nba",
  "cursor": {
-  "rotowirenba.bsky.social": "2026-11-24T00:35:34.000Z",
+  "rotowirenba.bsky.social": "2026-11-24T00:45:52.000Z",
   "insidenbanews.bsky.social": "2026-11-20T20:35:06.661Z",
   "shamsbot.bsky.social": "2026-11-23T23:02:11.000Z"
  },
  "claims": [
-  {
-   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mzelw6z67x2g|braydenburries|none|starting",
-   "at": "2026-11-03T00:37:40.000Z",
-   "seen": "2026-11-03T00:45:42.890Z",
-   "handle": "rotowirenba.bsky.social",
-   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mzelw6z67x2g",
-   "player": "Brayden Burries",
-   "team": null,
-   "status": "none",
-   "kind": "starting",
-   "confidence": 0.9,
-   "text": "Brayden Burries: Starting Monday \n\n https://www.rotowire.com/basketball/player/brayden-burries-6967"
-  },
   {
    "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mzerjgnnjg2l|scottiebarnes|active|status",
    "at": "2026-11-03T02:17:54.000Z",
@@ -7701,6 +7688,19 @@
    "kind": "starting",
    "confidence": 0.85,
    "text": "Sam Merrill: Starting Monday \n\n https://www.rotowire.com/basketball/player/sam-merrill-5254"
+  },
+  {
+   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3n2zg2vzufv2n|treymurphy|active|starting",
+   "at": "2026-11-24T00:44:02.000Z",
+   "seen": "2026-11-24T00:54:16.889Z",
+   "handle": "rotowirenba.bsky.social",
+   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3n2zg2vzufv2n",
+   "player": "Trey Murphy",
+   "team": null,
+   "status": "active",
+   "kind": "starting",
+   "confidence": 0.9,
+   "text": "Trey Murphy: Returning to starting five \n\n https://www.rotowire.com/basketball/player/trey-murphy-5401"
   }
  ]
 }
