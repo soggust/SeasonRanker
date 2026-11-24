@@ -1,13 +1,13 @@
 {
  "sport": "nfl",
  "cursor": {
-  "adamscheftermirror.bsky.social": "2026-11-24T22:26:55.448Z",
+  "adamscheftermirror.bsky.social": "2026-11-24T23:16:55.245Z",
   "rapsheet.bsky.social": "2026-11-24T21:40:28.473Z",
   "nflnewsreposterbot.bsky.social": "2026-11-24T21:39:05.332Z",
   "insidenflnews.bsky.social": "2026-11-24T22:24:22.719Z",
   "nflnewsposter.bsky.social": "2026-11-24T18:12:14.532Z",
-  "rotoworld-fb.bsky.social": "2026-11-24T22:15:26.000Z",
-  "rotowirenfl.bsky.social": "2026-11-24T22:25:41.000Z"
+  "rotoworld-fb.bsky.social": "2026-11-24T23:09:00.000Z",
+  "rotowirenfl.bsky.social": "2026-11-24T23:12:43.000Z"
  },
  "claims": [
   {
@@ -18053,6 +18053,32 @@
    "kind": "return",
    "confidence": 0.6,
    "text": "Broncos now have designated RB Tyler Badie for return from injured reserve.\n\nOriginal post"
+  },
+  {
+   "id": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3n33r7vl4q42i|saquonbarkley|active|status",
+   "at": "2026-11-24T23:09:00.000Z",
+   "seen": "2026-11-24T23:17:40.348Z",
+   "handle": "rotoworld-fb.bsky.social",
+   "post": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3n33r7vl4q42i",
+   "player": "Saquon Barkley",
+   "team": "PHI",
+   "status": "active",
+   "kind": "status",
+   "confidence": 0.8,
+   "text": "Saquon Barkley (neck/illness) practices in full"
+  },
+  {
+   "id": "at://did:plc:qre6zxbmr3ixhdmgsgdretb5/app.bsky.feed.post/3n33ro2d2x32x|saquonbarkley|active|status",
+   "at": "2026-11-24T23:16:55.245Z",
+   "seen": "2026-11-24T23:17:40.348Z",
+   "handle": "adamscheftermirror.bsky.social",
+   "post": "at://did:plc:qre6zxbmr3ixhdmgsgdretb5/app.bsky.feed.post/3n33ro2d2x32x",
+   "player": "Saquon Barkley",
+   "team": "PHI",
+   "status": "active",
+   "kind": "status",
+   "confidence": 0.8,
+   "text": "Eagles listed RB Saquon Barkley as a full participant in today’s practice.\n\nRepost of @Eagles:\n\nOriginal post"
   }
  ]
 }

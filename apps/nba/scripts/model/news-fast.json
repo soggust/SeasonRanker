@@ -1,63 +1,11 @@
 {
  "sport": "nba",
  "cursor": {
-  "rotowirenba.bsky.social": "2026-11-24T22:09:28.000Z",
+  "rotowirenba.bsky.social": "2026-11-24T22:33:39.000Z",
   "insidenbanews.bsky.social": "2026-11-20T20:35:06.661Z",
   "shamsbot.bsky.social": "2026-11-23T23:02:11.000Z"
  },
  "claims": [
-  {
-   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mzgvndl7bh27|alexcaruso|active|status",
-   "at": "2026-11-03T22:37:00.000Z",
-   "seen": "2026-11-03T23:48:14.330Z",
-   "handle": "rotowirenba.bsky.social",
-   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mzgvndl7bh27",
-   "player": "Alex Caruso",
-   "team": null,
-   "status": "active",
-   "kind": "status",
-   "confidence": 0.9,
-   "text": "Alex Caruso: Cleared from injury report \n\n https://www.rotowire.com/basketball/player/alex-caruso-3952"
-  },
-  {
-   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mzgwhl3my42q|dejountemurray|active|status",
-   "at": "2026-11-03T22:51:40.000Z",
-   "seen": "2026-11-03T23:48:14.330Z",
-   "handle": "rotowirenba.bsky.social",
-   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mzgwhl3my42q",
-   "player": "Dejounte Murray",
-   "team": null,
-   "status": "active",
-   "kind": "status",
-   "confidence": 0.9,
-   "text": "Dejounte Murray: Removed from injury report \n\n https://www.rotowire.com/basketball/player/dejounte-murray-3856"
-  },
-  {
-   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mzgwj7pwe524|treymurphy|active|status",
-   "at": "2026-11-03T22:52:35.000Z",
-   "seen": "2026-11-03T23:48:14.330Z",
-   "handle": "rotowirenba.bsky.social",
-   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mzgwj7pwe524",
-   "player": "Trey Murphy",
-   "team": null,
-   "status": "active",
-   "kind": "status",
-   "confidence": 0.7,
-   "text": "Trey Murphy: Probable for Wednesday \n\n https://www.rotowire.com/basketball/player/trey-murphy-5401"
-  },
-  {
-   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mzgx6wrlru2n|mobamba|questionable|status",
-   "at": "2026-11-03T23:04:44.000Z",
-   "seen": "2026-11-03T23:48:14.330Z",
-   "handle": "rotowirenba.bsky.social",
-   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mzgx6wrlru2n",
-   "player": "Mo Bamba",
-   "team": null,
-   "status": "questionable",
-   "kind": "status",
-   "confidence": 0.95,
-   "text": "Mo Bamba: Questionable for Wednesday \n\n https://www.rotowire.com/basketball/player/mo-bamba-4371"
-  },
   {
    "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mzgxyvi3eb2r|scottypippen|out|status",
    "at": "2026-11-03T23:19:15.000Z",
@@ -7623,6 +7571,19 @@
    "kind": "status",
    "confidence": 0.95,
    "text": "Giannis Antetokounmpo: Questionable for Wednesday \n\n https://www.rotowire.com/basketball/player/giannis-antetokounmpo-3456"
+  },
+  {
+   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3n33pap53e22n|ryankalkbrenner|doubtful|status",
+   "at": "2026-11-24T22:33:39.000Z",
+   "seen": "2026-11-24T23:17:40.348Z",
+   "handle": "rotowirenba.bsky.social",
+   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3n33pap53e22n",
+   "player": "Ryan Kalkbrenner",
+   "team": null,
+   "status": "doubtful",
+   "kind": "status",
+   "confidence": 0.9,
+   "text": "Ryan Kalkbrenner: Doubtful for Wednesday \n\n https://www.rotowire.com/basketball/player/ryan-kalkbrenner-6567"
   }
  ]
 }

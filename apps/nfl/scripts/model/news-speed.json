@@ -21968,6 +21968,11 @@
    "espn": {
     "seen": "2026-11-24T13:15:02.976Z",
     "own": "2026-11-23T22:53:00.000Z"
+   },
+   "bluesky": {
+    "seen": "2026-11-24T22:31:05.083Z",
+    "own": "2026-11-24T22:25:41.000Z",
+    "why": "@rotowirenfl.bsky.social: Dalton Kincaid: Limited Tuesday, plans to play Thursda"
    }
   },
   "401873082|treysmith|q": {
@@ -22004,6 +22009,11 @@
    "espn": {
     "seen": "2026-11-24T13:15:02.976Z",
     "own": "2026-11-23T22:45:00.000Z"
+   },
+   "bluesky": {
+    "seen": "2026-11-24T22:10:03.053Z",
+    "own": "2026-11-24T21:49:40.000Z",
+    "why": "@rotowirenfl.bsky.social: Kenneth Walker: Turns in limited practice Tuesday \n\n h"
    }
   },
   "401873083|nickherbig|q": {
@@ -22784,6 +22794,30 @@
    "espn": {
     "seen": "2026-11-24T22:03:38.732Z",
     "own": "2026-11-24T01:02:00.000Z"
+   }
+  },
+  "401873083|saivionjones|q": {
+   "game": "401873083",
+   "start": "2026-11-27T20:00Z",
+   "team": "7",
+   "name": "Sai'vion Jones",
+   "status": "q",
+   "athlete": "4603189",
+   "espn": {
+    "seen": "2026-11-24T23:14:58.734Z",
+    "own": "2026-11-24T23:00:00.000Z"
+   }
+  },
+  "401873083|taylorrapp|q": {
+   "game": "401873083",
+   "start": "2026-11-27T20:00Z",
+   "team": "7",
+   "name": "Taylor Rapp",
+   "status": "q",
+   "athlete": "4039007",
+   "espn": {
+    "seen": "2026-11-24T23:14:58.734Z",
+    "own": "2026-11-24T22:59:00.000Z"
    }
   }
  }
