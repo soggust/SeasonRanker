@@ -4,38 +4,12 @@
   "adamscheftermirror.bsky.social": "2026-11-24T03:16:49.707Z",
   "rapsheet.bsky.social": "2026-11-24T00:21:42.451Z",
   "nflnewsreposterbot.bsky.social": "2026-11-16T18:35:13.806Z",
-  "insidenflnews.bsky.social": "2026-11-24T03:43:51.854Z",
-  "nflnewsposter.bsky.social": "2026-11-24T04:03:50.579Z",
+  "insidenflnews.bsky.social": "2026-11-24T04:20:52.046Z",
+  "nflnewsposter.bsky.social": "2026-11-24T04:20:23.291Z",
   "rotoworld-fb.bsky.social": "2026-11-23T23:05:20.000Z",
   "rotowirenfl.bsky.social": "2026-11-24T00:38:35.000Z"
  },
  "claims": [
-  {
-   "id": "at://did:plc:fuqjc7x4gxvnwzksnlxwbe4x/app.bsky.feed.post/3mzexxbzf6c27|kentaviusstreet|out|status",
-   "at": "2026-11-03T04:13:02.244Z",
-   "seen": "2026-11-03T04:22:53.094Z",
-   "handle": "nflnewsposter.bsky.social",
-   "post": "at://did:plc:fuqjc7x4gxvnwzksnlxwbe4x/app.bsky.feed.post/3mzexxbzf6c27",
-   "player": "Kentavius Street",
-   "team": "CHI",
-   "status": "out",
-   "kind": "status",
-   "confidence": 0.95,
-   "text": "[Bears] Bears DL Kentavius Street (Knee) is ruled OUT and DL Grady Jarrett (Groin) is DOUBTFUL to return. twitter.com/BearsPR/stat..."
-  },
-  {
-   "id": "at://did:plc:fuqjc7x4gxvnwzksnlxwbe4x/app.bsky.feed.post/3mzexxbzf6c27|gradyjarrett|doubtful|status",
-   "at": "2026-11-03T04:13:02.244Z",
-   "seen": "2026-11-03T04:22:53.094Z",
-   "handle": "nflnewsposter.bsky.social",
-   "post": "at://did:plc:fuqjc7x4gxvnwzksnlxwbe4x/app.bsky.feed.post/3mzexxbzf6c27",
-   "player": "Grady Jarrett",
-   "team": "CHI",
-   "status": "doubtful",
-   "kind": "status",
-   "confidence": 0.95,
-   "text": "[Bears] Bears DL Kentavius Street (Knee) is ruled OUT and DL Grady Jarrett (Groin) is DOUBTFUL to return. twitter.com/BearsPR/stat..."
-  },
   {
    "id": "at://did:plc:qre6zxbmr3ixhdmgsgdretb5/app.bsky.feed.post/3mzfqdlwfbf2t|lamarjackson|out|status",
    "at": "2026-11-03T11:29:25.052Z",
