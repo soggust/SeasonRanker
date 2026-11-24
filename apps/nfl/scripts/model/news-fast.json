@@ -4,25 +4,12 @@
   "adamscheftermirror.bsky.social": "2026-11-24T20:56:56.390Z",
   "rapsheet.bsky.social": "2026-11-24T00:21:42.451Z",
   "nflnewsreposterbot.bsky.social": "2026-11-16T18:35:13.806Z",
-  "insidenflnews.bsky.social": "2026-11-24T20:48:34.546Z",
+  "insidenflnews.bsky.social": "2026-11-24T21:29:57.637Z",
   "nflnewsposter.bsky.social": "2026-11-24T18:12:14.532Z",
-  "rotoworld-fb.bsky.social": "2026-11-24T19:38:47.000Z",
+  "rotoworld-fb.bsky.social": "2026-11-24T21:34:50.000Z",
   "rotowirenfl.bsky.social": "2026-11-24T19:46:42.000Z"
  },
  "claims": [
-  {
-   "id": "at://did:plc:qre6zxbmr3ixhdmgsgdretb5/app.bsky.feed.post/3mzgrukb7us2a|tylerloop|out|status",
-   "at": "2026-11-03T21:29:27.219Z",
-   "seen": "2026-11-03T23:48:14.330Z",
-   "handle": "adamscheftermirror.bsky.social",
-   "post": "at://did:plc:qre6zxbmr3ixhdmgsgdretb5/app.bsky.feed.post/3mzgrukb7us2a",
-   "player": "Tyler Loop",
-   "team": "BAL",
-   "status": "out",
-   "kind": "status",
-   "confidence": 0.95,
-   "text": "Ravens now have placed K Tyler Loop on Injured Reserve.\n\nOriginal post"
-  },
   {
    "id": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3mzgsmdqlod2p|tylerloop|out|status",
    "at": "2026-11-03T21:42:45.000Z",
@@ -17910,6 +17897,32 @@
    "kind": "return",
    "confidence": 0.9,
    "text": "Green Bay Packers now have activated EDGE Micah Parsons off of reserve/physically unable to perform. He’s expected to make his season debut Wednesday night at Los Angeles.\n\nOriginal post"
+  },
+  {
+   "id": "at://did:plc:mbr4badgf6yu56mquzackzew/app.bsky.feed.post/3n33lnyo3l22s|jakeferguson|questionable|status",
+   "at": "2026-11-24T21:29:31.156Z",
+   "seen": "2026-11-24T21:37:29.926Z",
+   "handle": "insidenflnews.bsky.social",
+   "post": "at://did:plc:mbr4badgf6yu56mquzackzew/app.bsky.feed.post/3n33lnyo3l22s",
+   "player": "Jake Ferguson",
+   "team": "DAL",
+   "status": "questionable",
+   "kind": "status",
+   "confidence": 0.4,
+   "text": "Cowboys TE Jake Ferguson (knee, ankle) missed Tuesday's practice again."
+  },
+  {
+   "id": "at://did:plc:mbr4badgf6yu56mquzackzew/app.bsky.feed.post/3n33lorw7wc2s|michaelpittman|active|status",
+   "at": "2026-11-24T21:29:57.637Z",
+   "seen": "2026-11-24T21:37:29.926Z",
+   "handle": "insidenflnews.bsky.social",
+   "post": "at://did:plc:mbr4badgf6yu56mquzackzew/app.bsky.feed.post/3n33lorw7wc2s",
+   "player": "Michael Pittman Jr.",
+   "team": "PIT",
+   "status": "active",
+   "kind": "status",
+   "confidence": 0.7,
+   "text": "Steelers WR Michael Pittman Jr. (foot) was a full participant in Tuesday's practice."
   }
  ]
 }
