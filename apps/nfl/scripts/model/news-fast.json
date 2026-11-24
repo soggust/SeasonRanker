@@ -11,45 +11,6 @@
  },
  "claims": [
   {
-   "id": "at://did:plc:qre6zxbmr3ixhdmgsgdretb5/app.bsky.feed.post/3mzfqdlwfbf2t|lamarjackson|out|status",
-   "at": "2026-11-03T11:29:25.052Z",
-   "seen": "2026-11-03T12:44:38.708Z",
-   "handle": "adamscheftermirror.bsky.social",
-   "post": "at://did:plc:qre6zxbmr3ixhdmgsgdretb5/app.bsky.feed.post/3mzfqdlwfbf2t",
-   "player": "Lamar Jackson",
-   "team": "BAL",
-   "status": "out",
-   "kind": "status",
-   "confidence": 0.95,
-   "text": "In addition to Lamar Jackson and Tyler Huntley being ruled out for Thursday’s game vs. the Jaguars, the Ravens' No. 3 quarterback Joe Fagnano is dealing with an ankle injury. Story via @jamisonhensley"
-  },
-  {
-   "id": "at://did:plc:qre6zxbmr3ixhdmgsgdretb5/app.bsky.feed.post/3mzfqdlwfbf2t|tylerhuntley|out|status",
-   "at": "2026-11-03T11:29:25.052Z",
-   "seen": "2026-11-03T12:44:38.708Z",
-   "handle": "adamscheftermirror.bsky.social",
-   "post": "at://did:plc:qre6zxbmr3ixhdmgsgdretb5/app.bsky.feed.post/3mzfqdlwfbf2t",
-   "player": "Tyler Huntley",
-   "team": "BAL",
-   "status": "out",
-   "kind": "status",
-   "confidence": 0.95,
-   "text": "In addition to Lamar Jackson and Tyler Huntley being ruled out for Thursday’s game vs. the Jaguars, the Ravens' No. 3 quarterback Joe Fagnano is dealing with an ankle injury. Story via @jamisonhensley"
-  },
-  {
-   "id": "at://did:plc:qre6zxbmr3ixhdmgsgdretb5/app.bsky.feed.post/3mzfqdlwfbf2t|joefagnano|questionable|status",
-   "at": "2026-11-03T11:29:25.052Z",
-   "seen": "2026-11-03T12:44:38.708Z",
-   "handle": "adamscheftermirror.bsky.social",
-   "post": "at://did:plc:qre6zxbmr3ixhdmgsgdretb5/app.bsky.feed.post/3mzfqdlwfbf2t",
-   "player": "Joe Fagnano",
-   "team": "BAL",
-   "status": "questionable",
-   "kind": "status",
-   "confidence": 0.6,
-   "text": "In addition to Lamar Jackson and Tyler Huntley being ruled out for Thursday’s game vs. the Jaguars, the Ravens' No. 3 quarterback Joe Fagnano is dealing with an ankle injury. Story via @jamisonhensley"
-  },
-  {
    "id": "at://did:plc:qre6zxbmr3ixhdmgsgdretb5/app.bsky.feed.post/3mzg5zogawh2t|cashiushowell|out|status",
    "at": "2026-11-03T15:34:24.447Z",
    "seen": "2026-11-03T23:48:14.330Z",
