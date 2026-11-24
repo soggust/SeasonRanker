@@ -1,28 +1,15 @@
 {
  "sport": "nfl",
  "cursor": {
-  "adamscheftermirror.bsky.social": "2026-11-24T14:46:52.316Z",
+  "adamscheftermirror.bsky.social": "2026-11-24T15:36:51.654Z",
   "rapsheet.bsky.social": "2026-11-24T00:21:42.451Z",
   "nflnewsreposterbot.bsky.social": "2026-11-16T18:35:13.806Z",
   "insidenflnews.bsky.social": "2026-11-24T04:20:52.046Z",
   "nflnewsposter.bsky.social": "2026-11-24T04:45:30.392Z",
   "rotoworld-fb.bsky.social": "2026-11-24T13:31:42.000Z",
-  "rotowirenfl.bsky.social": "2026-11-24T05:14:30.000Z"
+  "rotowirenfl.bsky.social": "2026-11-24T15:31:46.000Z"
  },
  "claims": [
-  {
-   "id": "at://did:plc:qre6zxbmr3ixhdmgsgdretb5/app.bsky.feed.post/3mzg5zogawh2t|cashiushowell|out|status",
-   "at": "2026-11-03T15:34:24.447Z",
-   "seen": "2026-11-03T23:48:14.330Z",
-   "handle": "adamscheftermirror.bsky.social",
-   "post": "at://did:plc:qre6zxbmr3ixhdmgsgdretb5/app.bsky.feed.post/3mzg5zogawh2t",
-   "player": "Cashius Howell",
-   "team": "CIN",
-   "status": "out",
-   "kind": "status",
-   "confidence": 0.95,
-   "text": "Bengals have placed rookie DE Cashius Howell on injured reserve.\n\nOriginal post"
-  },
   {
    "id": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3mzgjfnyj2u2m|jeremiyahlove|out|status",
    "at": "2026-11-03T18:57:57.000Z",
@@ -17923,6 +17910,19 @@
    "kind": "return",
    "confidence": 0.9,
    "text": "More about Packers standout pass rusher Micah Parsons being cleared to make his season debut Wednesday night vs. the Rams, via @RobDemovsky:\n\nOriginal post"
+  },
+  {
+   "id": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3n32xoc3cet2p|samdarnold|active|starting",
+   "at": "2026-11-24T15:31:46.000Z",
+   "seen": "2026-11-24T15:54:27.729Z",
+   "handle": "rotowirenfl.bsky.social",
+   "post": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3n32xoc3cet2p",
+   "player": "Sam Darnold",
+   "team": null,
+   "status": "active",
+   "kind": "starting",
+   "confidence": 0.5,
+   "text": "Sam Darnold: Still tracking toward Week 12 start \n\n https://www.rotowire.com/football/player/sam-darnold-12490"
   }
  ]
 }
