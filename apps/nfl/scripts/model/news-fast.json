@@ -1,13 +1,13 @@
 {
  "sport": "nfl",
  "cursor": {
-  "adamscheftermirror.bsky.social": "2026-11-24T17:51:53.016Z",
+  "adamscheftermirror.bsky.social": "2026-11-24T18:21:53.479Z",
   "rapsheet.bsky.social": "2026-11-24T00:21:42.451Z",
   "nflnewsreposterbot.bsky.social": "2026-11-16T18:35:13.806Z",
   "insidenflnews.bsky.social": "2026-11-24T04:20:52.046Z",
-  "nflnewsposter.bsky.social": "2026-11-24T04:45:30.392Z",
-  "rotoworld-fb.bsky.social": "2026-11-24T16:16:26.000Z",
-  "rotowirenfl.bsky.social": "2026-11-24T15:31:46.000Z"
+  "nflnewsposter.bsky.social": "2026-11-24T18:12:14.532Z",
+  "rotoworld-fb.bsky.social": "2026-11-24T18:31:10.000Z",
+  "rotowirenfl.bsky.social": "2026-11-24T18:27:49.000Z"
  },
  "claims": [
   {
@@ -17923,6 +17923,136 @@
    "kind": "starting",
    "confidence": 0.5,
    "text": "Sam Darnold: Still tracking toward Week 12 start \n\n https://www.rotowire.com/football/player/sam-darnold-12490"
+  },
+  {
+   "id": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3n33a67zcpa2u|kennethwalker|limited|return",
+   "at": "2026-11-24T18:03:50.000Z",
+   "seen": "2026-11-24T18:33:22.254Z",
+   "handle": "rotowirenfl.bsky.social",
+   "post": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3n33a67zcpa2u",
+   "player": "Kenneth Walker",
+   "team": null,
+   "status": "limited",
+   "kind": "return",
+   "confidence": 0.6,
+   "text": "Kenneth Walker: Returning to practice Tuesday \n\n https://www.rotowire.com/football/player/kenneth-walker-15909"
+  },
+  {
+   "id": "at://did:plc:qre6zxbmr3ixhdmgsgdretb5/app.bsky.feed.post/3n33adpearq2d|micahparsons|questionable|status",
+   "at": "2026-11-24T18:06:54.591Z",
+   "seen": "2026-11-24T18:33:22.254Z",
+   "handle": "adamscheftermirror.bsky.social",
+   "post": "at://did:plc:qre6zxbmr3ixhdmgsgdretb5/app.bsky.feed.post/3n33adpearq2d",
+   "player": "Micah Parsons",
+   "team": "GB",
+   "status": "questionable",
+   "kind": "status",
+   "confidence": 0.95,
+   "text": "Packers are listing edge rusher Micah Parsons (knee) and running back Josh Jacobs (finger) as questionable for Wednesday night‘s game in Los Angeles against the Rams.\n\nOriginal post"
+  },
+  {
+   "id": "at://did:plc:qre6zxbmr3ixhdmgsgdretb5/app.bsky.feed.post/3n33adpearq2d|joshjacobs|questionable|status",
+   "at": "2026-11-24T18:06:54.591Z",
+   "seen": "2026-11-24T18:33:22.254Z",
+   "handle": "adamscheftermirror.bsky.social",
+   "post": "at://did:plc:qre6zxbmr3ixhdmgsgdretb5/app.bsky.feed.post/3n33adpearq2d",
+   "player": "Josh Jacobs",
+   "team": "GB",
+   "status": "questionable",
+   "kind": "status",
+   "confidence": 0.95,
+   "text": "Packers are listing edge rusher Micah Parsons (knee) and running back Josh Jacobs (finger) as questionable for Wednesday night‘s game in Los Angeles against the Rams.\n\nOriginal post"
+  },
+  {
+   "id": "at://did:plc:fuqjc7x4gxvnwzksnlxwbe4x/app.bsky.feed.post/3n33aernhzk2i|gregnewsome|out|status",
+   "at": "2026-11-24T18:07:30.644Z",
+   "seen": "2026-11-24T18:33:22.254Z",
+   "handle": "nflnewsposter.bsky.social",
+   "post": "at://did:plc:fuqjc7x4gxvnwzksnlxwbe4x/app.bsky.feed.post/3n33aernhzk2i",
+   "player": "Greg Newsome",
+   "team": "NYG",
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.9,
+   "text": "[Schultz] Giants CB Greg Newsome will undergo tightrope surgery this week for a high-ankle sprain and will be out roughly 4–6 weeks.\n\nA big loss, as Newsome has been a top corner for the Giants this s"
+  },
+  {
+   "id": "at://did:plc:fuqjc7x4gxvnwzksnlxwbe4x/app.bsky.feed.post/3n33anaeyh22i|micahparsons|questionable|status",
+   "at": "2026-11-24T18:12:14.532Z",
+   "seen": "2026-11-24T18:33:22.254Z",
+   "handle": "nflnewsposter.bsky.social",
+   "post": "at://did:plc:fuqjc7x4gxvnwzksnlxwbe4x/app.bsky.feed.post/3n33anaeyh22i",
+   "player": "Micah Parsons",
+   "team": "GB",
+   "status": "questionable",
+   "kind": "status",
+   "confidence": 0.9,
+   "text": "[Schefter] Packers are listing edge rusher Micah Parsons (knee) and running back Josh Jacobs (finger) as questionable for Wednesday night‘s game in Los Angeles against the Rams. twitter.com/adamscheft"
+  },
+  {
+   "id": "at://did:plc:fuqjc7x4gxvnwzksnlxwbe4x/app.bsky.feed.post/3n33anaeyh22i|joshjacobs|questionable|status",
+   "at": "2026-11-24T18:12:14.532Z",
+   "seen": "2026-11-24T18:33:22.254Z",
+   "handle": "nflnewsposter.bsky.social",
+   "post": "at://did:plc:fuqjc7x4gxvnwzksnlxwbe4x/app.bsky.feed.post/3n33anaeyh22i",
+   "player": "Josh Jacobs",
+   "team": "GB",
+   "status": "questionable",
+   "kind": "status",
+   "confidence": 0.9,
+   "text": "[Schefter] Packers are listing edge rusher Micah Parsons (knee) and running back Josh Jacobs (finger) as questionable for Wednesday night‘s game in Los Angeles against the Rams. twitter.com/adamscheft"
+  },
+  {
+   "id": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3n33b2x4dpa2l|joshjacobs|questionable|status",
+   "at": "2026-11-24T18:19:54.000Z",
+   "seen": "2026-11-24T18:33:22.254Z",
+   "handle": "rotowirenfl.bsky.social",
+   "post": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3n33b2x4dpa2l",
+   "player": "Josh Jacobs",
+   "team": "GB",
+   "status": "questionable",
+   "kind": "status",
+   "confidence": 0.95,
+   "text": "Josh Jacobs: Officially questionable for Wednesday \n\n https://www.rotowire.com/football/player/josh-jacobs-13582"
+  },
+  {
+   "id": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3n33bh4r3y525|joshjacobs|questionable|status",
+   "at": "2026-11-24T18:26:43.000Z",
+   "seen": "2026-11-24T18:33:22.254Z",
+   "handle": "rotoworld-fb.bsky.social",
+   "post": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3n33bh4r3y525",
+   "player": "Josh Jacobs",
+   "team": "GB",
+   "status": "questionable",
+   "kind": "status",
+   "confidence": 0.9,
+   "text": "Josh Jacobs (thumb) questionable for Wednesday"
+  },
+  {
+   "id": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3n33bj3np3y2e|micahparsons|questionable|status",
+   "at": "2026-11-24T18:27:49.000Z",
+   "seen": "2026-11-24T18:33:22.254Z",
+   "handle": "rotowirenfl.bsky.social",
+   "post": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3n33bj3np3y2e",
+   "player": "Micah Parsons",
+   "team": "GB",
+   "status": "questionable",
+   "kind": "status",
+   "confidence": 0.9,
+   "text": "Micah Parsons: Questionable, but should debut Wednesday \n\n https://www.rotowire.com/football/player/micah-parsons-15182"
+  },
+  {
+   "id": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3n33bp3j72t2g|micahparsons|questionable|status",
+   "at": "2026-11-24T18:31:10.000Z",
+   "seen": "2026-11-24T18:33:22.254Z",
+   "handle": "rotoworld-fb.bsky.social",
+   "post": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3n33bp3j72t2g",
+   "player": "Micah Parsons",
+   "team": "GB",
+   "status": "questionable",
+   "kind": "status",
+   "confidence": 0.95,
+   "text": "Micah Parsons officially questionable for Week 12"
   }
  ]
 }

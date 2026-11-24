@@ -1,7 +1,7 @@
 {
  "sport": "nba",
  "cursor": {
-  "rotowirenba.bsky.social": "2026-11-24T17:10:33.000Z",
+  "rotowirenba.bsky.social": "2026-11-24T18:30:18.000Z",
   "insidenbanews.bsky.social": "2026-11-20T20:35:06.661Z",
   "shamsbot.bsky.social": "2026-11-23T23:02:11.000Z"
  },
@@ -7688,6 +7688,19 @@
    "kind": "starting",
    "confidence": 0.7,
    "text": "Jake LaRavia: Starting Monday \n\n https://www.rotowire.com/basketball/player/jake-laravia-5694"
+  },
+  {
+   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3n33bnjygpb2l|duncanrobinson|questionable|status",
+   "at": "2026-11-24T18:30:18.000Z",
+   "seen": "2026-11-24T18:33:22.254Z",
+   "handle": "rotowirenba.bsky.social",
+   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3n33bnjygpb2l",
+   "player": "Duncan Robinson",
+   "team": null,
+   "status": "questionable",
+   "kind": "status",
+   "confidence": 0.85,
+   "text": "Duncan Robinson: Considered day-to-day \n\n https://www.rotowire.com/basketball/player/duncan-robinson-4470"
   }
  ]
 }
