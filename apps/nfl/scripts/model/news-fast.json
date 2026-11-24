@@ -1,7 +1,7 @@
 {
  "sport": "nfl",
  "cursor": {
-  "adamscheftermirror.bsky.social": "2026-11-24T03:16:49.707Z",
+  "adamscheftermirror.bsky.social": "2026-11-24T13:01:51.139Z",
   "rapsheet.bsky.social": "2026-11-24T00:21:42.451Z",
   "nflnewsreposterbot.bsky.social": "2026-11-16T18:35:13.806Z",
   "insidenflnews.bsky.social": "2026-11-24T04:20:52.046Z",
@@ -17910,6 +17910,19 @@
    "kind": "status",
    "confidence": 0.9,
    "text": "Sam LaPorta: Listed as limited Monday \n\n https://www.rotowire.com/football/player/sam-laporta-17033"
+  },
+  {
+   "id": "at://did:plc:qre6zxbmr3ixhdmgsgdretb5/app.bsky.feed.post/3n32nmkczxc2p|micahparsons|active|return",
+   "at": "2026-11-24T12:31:50.205Z",
+   "seen": "2026-11-24T13:05:58.628Z",
+   "handle": "adamscheftermirror.bsky.social",
+   "post": "at://did:plc:qre6zxbmr3ixhdmgsgdretb5/app.bsky.feed.post/3n32nmkczxc2p",
+   "player": "Micah Parsons",
+   "team": "GB",
+   "status": "active",
+   "kind": "return",
+   "confidence": 0.9,
+   "text": "More about Packers standout pass rusher Micah Parsons being cleared to make his season debut Wednesday night vs. the Rams, via @RobDemovsky:\n\nOriginal post"
   }
  ]
 }
