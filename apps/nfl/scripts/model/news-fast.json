@@ -4,51 +4,12 @@
   "adamscheftermirror.bsky.social": "2026-11-24T20:11:54.948Z",
   "rapsheet.bsky.social": "2026-11-24T00:21:42.451Z",
   "nflnewsreposterbot.bsky.social": "2026-11-16T18:35:13.806Z",
-  "insidenflnews.bsky.social": "2026-11-24T20:20:57.492Z",
+  "insidenflnews.bsky.social": "2026-11-24T20:48:34.546Z",
   "nflnewsposter.bsky.social": "2026-11-24T18:12:14.532Z",
   "rotoworld-fb.bsky.social": "2026-11-24T19:38:47.000Z",
   "rotowirenfl.bsky.social": "2026-11-24T19:46:42.000Z"
  },
  "claims": [
-  {
-   "id": "at://did:plc:mbr4badgf6yu56mquzackzew/app.bsky.feed.post/3mzgp37ides2q|joefagnano|active|starting",
-   "at": "2026-11-03T20:39:29.606Z",
-   "seen": "2026-11-03T23:48:14.330Z",
-   "handle": "insidenflnews.bsky.social",
-   "post": "at://did:plc:mbr4badgf6yu56mquzackzew/app.bsky.feed.post/3mzgp37ides2q",
-   "player": "Joe Fagnano",
-   "team": "BAL",
-   "status": "active",
-   "kind": "starting",
-   "confidence": 0.9,
-   "text": "Ravens QB Joe Fagnano (ankle) will start in Week 9."
-  },
-  {
-   "id": "at://did:plc:qre6zxbmr3ixhdmgsgdretb5/app.bsky.feed.post/3mzgpe4s6c62a|joefagnano|active|starting",
-   "at": "2026-11-03T20:44:28.685Z",
-   "seen": "2026-11-03T23:48:14.330Z",
-   "handle": "adamscheftermirror.bsky.social",
-   "post": "at://did:plc:qre6zxbmr3ixhdmgsgdretb5/app.bsky.feed.post/3mzgpe4s6c62a",
-   "player": "Joe Fagnano",
-   "team": "BAL",
-   "status": "active",
-   "kind": "starting",
-   "confidence": 0.92,
-   "text": "Ravens HC Jesse Minter announced QB Joe Fagnano will start Thursday night vs the Jaguars.\n\nOriginal post"
-  },
-  {
-   "id": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3mzgpejjz5f2a|joefagnano|active|starting",
-   "at": "2026-11-03T20:44:42.000Z",
-   "seen": "2026-11-03T23:48:14.330Z",
-   "handle": "rotoworld-fb.bsky.social",
-   "post": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3mzgpejjz5f2a",
-   "player": "Joe Fagnano",
-   "team": "BAL",
-   "status": "active",
-   "kind": "starting",
-   "confidence": 0.9,
-   "text": "Minter confirms Fagnano will start vs. Jaguars"
-  },
   {
    "id": "at://did:plc:mbr4badgf6yu56mquzackzew/app.bsky.feed.post/3mzgqhahgic2f|jeremymcnichols|out|status",
    "at": "2026-11-03T21:04:07.021Z",
