@@ -1,71 +1,6 @@
 {
  "sport": "nhl",
  "entries": {
-  "401892708|bowenbyram|out": {
-   "game": "401892708",
-   "start": "2026-11-14T20:30Z",
-   "team": "4",
-   "name": "Bowen Byram",
-   "status": "out",
-   "athlete": "4565225",
-   "espn": {
-    "seen": "2026-11-13T16:15:29.044Z",
-    "own": "2026-11-03T17:31:00.000Z"
-   }
-  },
-  "401892708|dylandemelo|out": {
-   "game": "401892708",
-   "start": "2026-11-14T20:30Z",
-   "team": "28",
-   "name": "Dylan DeMelo",
-   "status": "out",
-   "athlete": "2590861",
-   "espn": {
-    "seen": "2026-11-13T16:15:29.044Z",
-    "own": "2026-11-13T04:29:00.000Z"
-   },
-   "bluesky": {
-    "seen": "2026-11-13T18:03:42.951Z",
-    "own": "2026-11-13T17:47:32.000Z",
-    "why": "@dailyfaceoff.bsky.social: Jets place Dylan DeMelo on injured reserve"
-   }
-  },
-  "401892708|eliassalomonsson|out": {
-   "game": "401892708",
-   "start": "2026-11-14T20:30Z",
-   "team": "28",
-   "name": "Elias Salomonsson",
-   "status": "out",
-   "athlete": "5080223",
-   "espn": {
-    "seen": "2026-11-13T16:15:29.044Z",
-    "own": "2026-11-08T00:05:00.000Z"
-   }
-  },
-  "401892708|vladislavnamestnikov|out": {
-   "game": "401892708",
-   "start": "2026-11-14T20:30Z",
-   "team": "28",
-   "name": "Vladislav Namestnikov",
-   "status": "out",
-   "athlete": "2562622",
-   "espn": {
-    "seen": "2026-11-13T16:15:29.044Z",
-    "own": "2026-10-23T18:11:00.000Z"
-   }
-  },
-  "401892708|nickbjugstad|out": {
-   "game": "401892708",
-   "start": "2026-11-14T20:30Z",
-   "team": "28",
-   "name": "Nick Bjugstad",
-   "status": "out",
-   "athlete": "5828",
-   "espn": {
-    "seen": "2026-11-13T16:15:29.044Z",
-    "own": "2026-10-23T16:48:00.000Z"
-   }
-  },
   "401892709|jameshagens|out": {
    "game": "401892709",
    "start": "2026-11-15T00:00Z",
@@ -1037,22 +972,6 @@
    "sleeper": {
     "seen": "2026-11-14T21:13:46.518Z",
     "own": "2026-11-14T18:00:10.879Z"
-   }
-  },
-  "401892708|isakrosen|out": {
-   "game": "401892708",
-   "start": "2026-11-14T20:30Z",
-   "team": "28",
-   "name": "Isak Rosen",
-   "status": "out",
-   "athlete": "4874731",
-   "espn": {
-    "seen": "2026-11-13T20:15:39.341Z",
-    "own": "2026-11-13T19:25:00.000Z"
-   },
-   "sleeper": {
-    "seen": "2026-11-13T20:15:39.341Z",
-    "own": "2026-11-13T19:30:25.410Z"
    }
   },
   "401892711|chriskreider|q": {

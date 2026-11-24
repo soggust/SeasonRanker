@@ -3,8 +3,8 @@
  "cursor": {
   "johnston-bot.bsky.social": "2026-11-24T02:44:36.491Z",
   "notfriedgehnic.bsky.social": "2026-11-24T19:12:46.578Z",
-  "dailyfaceoff.bsky.social": "2026-11-24T20:06:00.000Z",
-  "dfotoronto.bsky.social": "2026-11-24T19:56:12.049Z",
+  "dailyfaceoff.bsky.social": "2026-11-24T20:33:08.000Z",
+  "dfotoronto.bsky.social": "2026-11-24T20:33:08.000Z",
   "marklazerus.bsky.social": "2026-11-24T19:47:11.423Z"
  },
  "claims": [
@@ -2763,6 +2763,19 @@
    "kind": "status",
    "confidence": 0.8,
    "text": "With Bedard out 4 months. Is this a 'Lost Season' for Chicago?\n\nDaily Faceoff Live\n\nPresented by: bet365 (@bet365_ca)\nhttps://bet365.ca - #bet365"
+  },
+  {
+   "id": "at://did:plc:3uus7y6h3rlrk6sbctzxm4bg/app.bsky.feed.post/3n33ij6hwlv2o|kylepalmieri|out|status",
+   "at": "2026-11-24T20:33:08.000Z",
+   "seen": "2026-11-24T20:35:01.434Z",
+   "handle": "dailyfaceoff.bsky.social",
+   "post": "at://did:plc:3uus7y6h3rlrk6sbctzxm4bg/app.bsky.feed.post/3n33ij6hwlv2o",
+   "player": "Kyle Palmieri",
+   "team": "NYI",
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.95,
+   "text": "Islanders place Kyle Palmieri on injured reserve"
   }
  ]
 }
