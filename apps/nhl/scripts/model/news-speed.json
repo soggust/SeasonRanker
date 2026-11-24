@@ -9739,6 +9739,54 @@
     "seen": "2026-11-24T18:02:03.181Z",
     "own": "2026-11-24T17:27:00.000Z"
    }
+  },
+  "401892785|connormcmichael|out": {
+   "game": "401892785",
+   "start": "2026-11-26T00:00Z",
+   "team": "19",
+   "name": "Connor McMichael",
+   "status": "out",
+   "athlete": "4565246",
+   "espn": {
+    "seen": "2026-11-24T19:01:43.597Z",
+    "own": "2026-11-24T18:41:00.000Z"
+   }
+  },
+  "401892785|brandoncarlo|q": {
+   "game": "401892785",
+   "start": "2026-11-26T00:00Z",
+   "team": "19",
+   "name": "Brandon Carlo",
+   "status": "q",
+   "athlete": "3904175",
+   "espn": {
+    "seen": "2026-11-24T19:01:43.597Z",
+    "own": "2026-11-24T18:41:00.000Z"
+   }
+  },
+  "401892785|pavelbuchnevich|q": {
+   "game": "401892785",
+   "start": "2026-11-26T00:00Z",
+   "team": "19",
+   "name": "Pavel Buchnevich",
+   "status": "q",
+   "athlete": "3042081",
+   "espn": {
+    "seen": "2026-11-24T19:01:43.597Z",
+    "own": "2026-11-24T18:33:00.000Z"
+   }
+  },
+  "401892785|jimmysnuggerud|q": {
+   "game": "401892785",
+   "start": "2026-11-26T00:00Z",
+   "team": "19",
+   "name": "Jimmy Snuggerud",
+   "status": "q",
+   "athlete": "5080171",
+   "espn": {
+    "seen": "2026-11-24T19:01:43.597Z",
+    "own": "2026-11-24T18:31:00.000Z"
+   }
   }
  }
 }

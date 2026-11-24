@@ -22790,6 +22790,78 @@
     "seen": "2026-11-24T17:17:39.265Z",
     "own": "2026-11-24T16:47:00.000Z"
    }
+  },
+  "401909314|duncanrobinson|q": {
+   "game": "401909314",
+   "start": "2026-11-25T00:00Z",
+   "team": "19",
+   "name": "Duncan Robinson",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-11-24T18:33:22.254Z",
+    "own": "2026-11-24T18:30:18.000Z",
+    "why": "@rotowirenba.bsky.social: Duncan Robinson: Considered day-to-day \n\n https://www."
+   }
+  },
+  "401909315|duncanrobinson|q": {
+   "game": "401909315",
+   "start": "2026-11-25T01:00Z",
+   "team": "27",
+   "name": "Duncan Robinson",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-11-24T18:33:22.254Z",
+    "own": "2026-11-24T18:30:18.000Z",
+    "why": "@rotowirenba.bsky.social: Duncan Robinson: Considered day-to-day \n\n https://www."
+   }
+  },
+  "401909316|duncanrobinson|q": {
+   "game": "401909316",
+   "start": "2026-11-25T03:00Z",
+   "team": "7",
+   "name": "Duncan Robinson",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-11-24T18:33:22.254Z",
+    "own": "2026-11-24T18:30:18.000Z",
+    "why": "@rotowirenba.bsky.social: Duncan Robinson: Considered day-to-day \n\n https://www."
+   }
+  },
+  "401909317|duncanrobinson|q": {
+   "game": "401909317",
+   "start": "2026-11-25T22:00Z",
+   "team": "20",
+   "name": "Duncan Robinson",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-11-24T18:33:22.254Z",
+    "own": "2026-11-24T18:30:18.000Z",
+    "why": "@rotowirenba.bsky.social: Duncan Robinson: Considered day-to-day \n\n https://www."
+   }
+  },
+  "401909319|duncanrobinson|q": {
+   "game": "401909319",
+   "start": "2026-11-26T00:30Z",
+   "team": "18",
+   "name": "Duncan Robinson",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-11-24T18:33:22.254Z",
+    "own": "2026-11-24T18:30:18.000Z",
+    "why": "@rotowirenba.bsky.social: Duncan Robinson: Considered day-to-day \n\n https://www."
+   }
+  },
+  "401909320|duncanrobinson|q": {
+   "game": "401909320",
+   "start": "2026-11-26T00:30Z",
+   "team": "25",
+   "name": "Duncan Robinson",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-11-24T18:33:22.254Z",
+    "own": "2026-11-24T18:30:18.000Z",
+    "why": "@rotowirenba.bsky.social: Duncan Robinson: Considered day-to-day \n\n https://www."
+   }
   }
  }
 }
