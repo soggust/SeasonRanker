@@ -8401,6 +8401,30 @@
     "seen": "2026-11-25T16:03:10.441Z",
     "own": "2026-11-25T15:54:00.000Z"
    }
+  },
+  "401892786|egorchinakhov|out": {
+   "game": "401892786",
+   "start": "2026-11-26T00:00Z",
+   "team": "16",
+   "name": "Egor Chinakhov",
+   "status": "out",
+   "athlete": "4697404",
+   "espn": {
+    "seen": "2026-11-25T16:35:37.822Z",
+    "own": "2026-11-25T16:25:00.000Z"
+   }
+  },
+  "401892789|eliaspettersson|out": {
+   "game": "401892789",
+   "start": "2026-11-26T00:30Z",
+   "team": "22",
+   "name": "Elias Pettersson",
+   "status": "out",
+   "athlete": "4233566",
+   "espn": {
+    "seen": "2026-11-25T16:35:37.822Z",
+    "own": "2026-11-25T16:25:00.000Z"
+   }
   }
  }
 }
