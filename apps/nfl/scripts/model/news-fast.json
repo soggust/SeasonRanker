@@ -4,7 +4,7 @@
   "adamscheftermirror.bsky.social": "2026-11-25T15:22:00.758Z",
   "rapsheet.bsky.social": "2026-11-25T15:12:50.823Z",
   "nflnewsreposterbot.bsky.social": "2026-11-24T21:39:05.332Z",
-  "insidenflnews.bsky.social": "2026-11-25T15:09:03.956Z",
+  "insidenflnews.bsky.social": "2026-11-25T16:03:59.882Z",
   "nflnewsposter.bsky.social": "2026-11-25T15:10:22.225Z",
   "rotoworld-fb.bsky.social": "2026-11-25T15:39:29.000Z",
   "rotowirenfl.bsky.social": "2026-11-25T04:25:26.000Z"
@@ -18014,6 +18014,19 @@
    "kind": "benched",
    "confidence": 0.8,
    "text": "Stunning news from late night: Aaron Rodgers was benched."
+  },
+  {
+   "id": "at://did:plc:mbr4badgf6yu56mquzackzew/app.bsky.feed.post/3n35jwtnnsk2g|jalenmcmillan|out|return",
+   "at": "2026-11-25T16:03:59.882Z",
+   "seen": "2026-11-25T16:04:44.029Z",
+   "handle": "insidenflnews.bsky.social",
+   "post": "at://did:plc:mbr4badgf6yu56mquzackzew/app.bsky.feed.post/3n35jwtnnsk2g",
+   "player": "Jalen McMillan",
+   "team": "TB",
+   "status": "out",
+   "kind": "return",
+   "confidence": 0.7,
+   "text": "Jalen McMillan (knee) to have 21-day practice window opened, per Greg Auman."
   }
  ]
 }
