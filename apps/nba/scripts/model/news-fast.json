@@ -1,24 +1,11 @@
 {
  "sport": "nba",
  "cursor": {
-  "rotowirenba.bsky.social": "2026-11-24T23:36:08.000Z",
+  "rotowirenba.bsky.social": "2026-11-25T01:27:12.000Z",
   "insidenbanews.bsky.social": "2026-11-20T20:35:06.661Z",
   "shamsbot.bsky.social": "2026-11-23T23:02:11.000Z"
  },
  "claims": [
-  {
-   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mzh5wwabsh2z|giannisantetokounmpo|active|status",
-   "at": "2026-11-04T01:05:31.000Z",
-   "seen": "2026-11-04T01:15:12.866Z",
-   "handle": "rotowirenba.bsky.social",
-   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mzh5wwabsh2z",
-   "player": "Giannis Antetokounmpo",
-   "team": null,
-   "status": "active",
-   "kind": "status",
-   "confidence": 0.6,
-   "text": "Giannis Antetokounmpo: Probable for Wednesday \n\n https://www.rotowire.com/basketball/player/giannis-antetokounmpo-3456"
-  },
   {
    "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mzivxzzbos2n|jaysontatum|out|status",
    "at": "2026-11-04T17:48:18.000Z",
@@ -7545,6 +7532,32 @@
    "kind": "status",
    "confidence": 0.95,
    "text": "Cade Cunningham: Ruled out Tuesday \n\n https://www.rotowire.com/basketball/player/cade-cunningham-5336"
+  },
+  {
+   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3n33yqqn2xg2r|victorwembanyama|questionable|status",
+   "at": "2026-11-25T01:23:41.000Z",
+   "seen": "2026-11-25T02:15:46.259Z",
+   "handle": "rotowirenba.bsky.social",
+   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3n33yqqn2xg2r",
+   "player": "Victor Wembanyama",
+   "team": "SAS",
+   "status": "questionable",
+   "kind": "status",
+   "confidence": 0.95,
+   "text": "Victor Wembanyama: Questionable for Wednesday \n\n https://www.rotowire.com/basketball/player/victor-wembanyama-5809"
+  },
+  {
+   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3n33ywzlpa72r|deaaronfox|questionable|status",
+   "at": "2026-11-25T01:27:12.000Z",
+   "seen": "2026-11-25T02:15:46.259Z",
+   "handle": "rotowirenba.bsky.social",
+   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3n33ywzlpa72r",
+   "player": "De'Aaron Fox",
+   "team": "SAC",
+   "status": "questionable",
+   "kind": "status",
+   "confidence": 0.95,
+   "text": "De'Aaron Fox: Questionable for Wednesday \n\n https://www.rotowire.com/basketball/player/deaaron-fox-4116"
   }
  ]
 }
