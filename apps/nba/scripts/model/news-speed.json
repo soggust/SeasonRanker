@@ -20723,6 +20723,18 @@
     "own": "2026-11-25T20:49:31.000Z",
     "why": "@rotowirenba.bsky.social: Zach LaVine: Downgraded to questionable \n\n https://www"
    }
+  },
+  "401909324|zachlavine|out": {
+   "game": "401909324",
+   "start": "2026-11-26T03:00Z",
+   "team": "23",
+   "name": "Zach LaVine",
+   "status": "out",
+   "athlete": "3064440",
+   "espn": {
+    "seen": "2026-11-25T22:47:40.464Z",
+    "own": "2026-11-25T22:40:00.000Z"
+   }
   }
  }
 }
