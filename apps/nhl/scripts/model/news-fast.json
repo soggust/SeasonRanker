@@ -3,7 +3,7 @@
  "cursor": {
   "johnston-bot.bsky.social": "2026-11-24T02:44:36.491Z",
   "notfriedgehnic.bsky.social": "2026-11-24T19:12:46.578Z",
-  "dailyfaceoff.bsky.social": "2026-11-25T00:08:40.000Z",
+  "dailyfaceoff.bsky.social": "2026-11-25T13:03:49.000Z",
   "dfotoronto.bsky.social": "2026-11-25T11:06:11.000Z",
   "marklazerus.bsky.social": "2026-11-24T21:54:41.028Z"
  },
@@ -2789,6 +2789,19 @@
    "kind": "return",
    "confidence": 0.8,
    "text": "Anton Frondell is skating at today's practice. Appears he'll be a full participant."
+  },
+  {
+   "id": "at://did:plc:3uus7y6h3rlrk6sbctzxm4bg/app.bsky.feed.post/3n357unqwyk2n|calemakar|questionable|return",
+   "at": "2026-11-25T13:03:49.000Z",
+   "seen": "2026-11-25T13:06:46.526Z",
+   "handle": "dailyfaceoff.bsky.social",
+   "post": "at://did:plc:3uus7y6h3rlrk6sbctzxm4bg/app.bsky.feed.post/3n357unqwyk2n",
+   "player": "Cale Makar",
+   "team": "COL",
+   "status": "questionable",
+   "kind": "return",
+   "confidence": 0.35,
+   "text": "Cale Makar is hoping to make his return to the Avalanche lineup against the Montreal Canadiens."
   }
  ]
 }
