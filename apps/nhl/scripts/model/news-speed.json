@@ -8449,6 +8449,42 @@
     "seen": "2026-11-25T17:37:11.427Z",
     "own": "2026-11-25T17:25:00.000Z"
    }
+  },
+  "401892785|pavelbuchnevich|out": {
+   "game": "401892785",
+   "start": "2026-11-26T00:00Z",
+   "team": "19",
+   "name": "Pavel Buchnevich",
+   "status": "out",
+   "athlete": "3042081",
+   "espn": {
+    "seen": "2026-11-25T19:09:38.029Z",
+    "own": "2026-11-25T19:01:00.000Z"
+   }
+  },
+  "401892785|jimmysnuggerud|out": {
+   "game": "401892785",
+   "start": "2026-11-26T00:00Z",
+   "team": "19",
+   "name": "Jimmy Snuggerud",
+   "status": "out",
+   "athlete": "5080171",
+   "espn": {
+    "seen": "2026-11-25T19:09:38.029Z",
+    "own": "2026-11-25T18:58:00.000Z"
+   }
+  },
+  "401892793|leocarlsson|out": {
+   "game": "401892793",
+   "start": "2026-11-26T03:00Z",
+   "team": "25",
+   "name": "Leo Carlsson",
+   "status": "out",
+   "athlete": "5149153",
+   "espn": {
+    "seen": "2026-11-25T19:09:38.029Z",
+    "own": "2026-11-25T19:06:00.000Z"
+   }
   }
  }
 }
