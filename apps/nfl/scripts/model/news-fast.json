@@ -6,49 +6,10 @@
   "nflnewsreposterbot.bsky.social": "2026-11-24T21:39:05.332Z",
   "insidenflnews.bsky.social": "2026-11-25T14:23:21.651Z",
   "nflnewsposter.bsky.social": "2026-11-25T14:27:00.422Z",
-  "rotoworld-fb.bsky.social": "2026-11-25T04:43:21.000Z",
+  "rotoworld-fb.bsky.social": "2026-11-25T14:40:38.000Z",
   "rotowirenfl.bsky.social": "2026-11-25T04:25:26.000Z"
  },
  "claims": [
-  {
-   "id": "at://did:plc:fuqjc7x4gxvnwzksnlxwbe4x/app.bsky.feed.post/3mzilq5diq22i|deshaunwatson|questionable|status",
-   "at": "2026-11-04T14:44:56.500Z",
-   "seen": "2026-11-04T15:41:29.919Z",
-   "handle": "nflnewsposter.bsky.social",
-   "post": "at://did:plc:fuqjc7x4gxvnwzksnlxwbe4x/app.bsky.feed.post/3mzilq5diq22i",
-   "player": "Deshaun Watson",
-   "team": "CLE",
-   "status": "questionable",
-   "kind": "status",
-   "confidence": 0.8,
-   "text": "[Browns] Deshaun Watson has been placed in concussion protocol twitter.com/Browns/statu..."
-  },
-  {
-   "id": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3mzilrtbvwf2e|deshaunwatson|questionable|status",
-   "at": "2026-11-04T14:45:52.000Z",
-   "seen": "2026-11-04T15:41:29.919Z",
-   "handle": "rotowirenfl.bsky.social",
-   "post": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3mzilrtbvwf2e",
-   "player": "Deshaun Watson",
-   "team": "CLE",
-   "status": "questionable",
-   "kind": "status",
-   "confidence": 0.8,
-   "text": "Deshaun Watson: Placed in concussion protocol \n\n https://www.rotowire.com/football/player/deshaun-watson-11712"
-  },
-  {
-   "id": "at://did:plc:qre6zxbmr3ixhdmgsgdretb5/app.bsky.feed.post/3mzimb7deof2r|shedeursanders|none|starting",
-   "at": "2026-11-04T14:54:28.931Z",
-   "seen": "2026-11-04T15:41:29.919Z",
-   "handle": "adamscheftermirror.bsky.social",
-   "post": "at://did:plc:qre6zxbmr3ixhdmgsgdretb5/app.bsky.feed.post/3mzimb7deof2r",
-   "player": "Shedeur Sanders",
-   "team": "CLE",
-   "status": "none",
-   "kind": "starting",
-   "confidence": 0.8,
-   "text": "With Deshaun Watson in concussion protocol, Browns QB Sheduer Sanders is next in line to start on Sunday’s game vs. the Saints.\n\nOriginal post"
-  },
   {
    "id": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3mzin3ts23425|deshaunwatson|questionable|status",
    "at": "2026-11-04T15:09:22.000Z",
