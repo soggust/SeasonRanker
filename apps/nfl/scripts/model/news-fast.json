@@ -1,54 +1,15 @@
 {
  "sport": "nfl",
  "cursor": {
-  "adamscheftermirror.bsky.social": "2026-11-25T15:22:00.758Z",
-  "rapsheet.bsky.social": "2026-11-25T16:37:59.087Z",
+  "adamscheftermirror.bsky.social": "2026-11-25T17:07:00.910Z",
+  "rapsheet.bsky.social": "2026-11-25T16:50:56.473Z",
   "nflnewsreposterbot.bsky.social": "2026-11-24T21:39:05.332Z",
   "insidenflnews.bsky.social": "2026-11-25T16:44:09.810Z",
   "nflnewsposter.bsky.social": "2026-11-25T16:35:14.590Z",
-  "rotoworld-fb.bsky.social": "2026-11-25T16:41:04.000Z",
-  "rotowirenfl.bsky.social": "2026-11-25T04:25:26.000Z"
+  "rotoworld-fb.bsky.social": "2026-11-25T16:59:24.000Z",
+  "rotowirenfl.bsky.social": "2026-11-25T17:05:24.000Z"
  },
  "claims": [
-  {
-   "id": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3mzitdodntm2y|shedeursanders|none|starting",
-   "at": "2026-11-04T17:01:07.000Z",
-   "seen": "2026-11-04T17:11:28.965Z",
-   "handle": "rotoworld-fb.bsky.social",
-   "post": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3mzitdodntm2y",
-   "player": "Shedeur Sanders",
-   "team": "CLE",
-   "status": "none",
-   "kind": "starting",
-   "confidence": 0.4,
-   "text": "Cabot: 'Vibe' is that Shedeur will start vs. NO"
-  },
-  {
-   "id": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3mzitdpzuhc2q|deshaunwatson|questionable|status",
-   "at": "2026-11-04T17:01:09.000Z",
-   "seen": "2026-11-04T17:11:28.965Z",
-   "handle": "rotowirenfl.bsky.social",
-   "post": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3mzitdpzuhc2q",
-   "player": "Deshaun Watson",
-   "team": "CLE",
-   "status": "questionable",
-   "kind": "status",
-   "confidence": 0.4,
-   "text": "Deshaun Watson: May not clear concussion protocol in time \n\n https://www.rotowire.com/football/player/deshaun-watson-11712"
-  },
-  {
-   "id": "at://did:plc:fuqjc7x4gxvnwzksnlxwbe4x/app.bsky.feed.post/3mzitgjo3g22p|bhayshultuten|questionable|status",
-   "at": "2026-11-04T17:02:43.823Z",
-   "seen": "2026-11-04T17:11:28.965Z",
-   "handle": "nflnewsposter.bsky.social",
-   "post": "at://did:plc:fuqjc7x4gxvnwzksnlxwbe4x/app.bsky.feed.post/3mzitgjo3g22p",
-   "player": "Bhayshul Tuten",
-   "team": "JAX",
-   "status": "questionable",
-   "kind": "status",
-   "confidence": 0.95,
-   "text": "[Wolfe] Jaguars RB Bhayshul Tuten will be a game-time decision Thursday vs. Ravens with ankle & foot injuries, per HC Liam Coen.\n\nCoen said Tuten told him he feels better & will do limited practice. t"
-  },
   {
    "id": "at://did:plc:mbr4badgf6yu56mquzackzew/app.bsky.feed.post/3mzitr34k722q|garrettwilson|questionable|status",
    "at": "2026-11-04T17:08:37.666Z",
@@ -18027,6 +17988,58 @@
    "kind": "status",
    "confidence": 0.93,
    "text": "Schultz: KWIII (groin) out for Thanksgiving game"
+  },
+  {
+   "id": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3n35mfnnbit2d|kennethwalker|questionable|status",
+   "at": "2026-11-25T16:48:04.000Z",
+   "seen": "2026-11-25T17:08:32.912Z",
+   "handle": "rotowirenfl.bsky.social",
+   "post": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3n35mfnnbit2d",
+   "player": "Kenneth Walker",
+   "team": null,
+   "status": "questionable",
+   "kind": "status",
+   "confidence": 0.4,
+   "text": "Kenneth Walker: In line to be out for Thursday's game \n\n https://www.rotowire.com/football/player/kenneth-walker-15909"
+  },
+  {
+   "id": "at://did:plc:hlvr2omhnmvdmfnvmcuhyevz/app.bsky.feed.post/3n35mkrr6xc2z|kennethwalker|out|status",
+   "at": "2026-11-25T16:50:56.473Z",
+   "seen": "2026-11-25T17:08:32.912Z",
+   "handle": "rapsheet.bsky.social",
+   "post": "at://did:plc:hlvr2omhnmvdmfnvmcuhyevz/app.bsky.feed.post/3n35mkrr6xc2z",
+   "player": "Kenneth Walker III",
+   "team": "KC",
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.85,
+   "text": "The Chiefs are ruling out RB Kenneth Walker III for Thursday. Not quite ready yet."
+  },
+  {
+   "id": "at://did:plc:qre6zxbmr3ixhdmgsgdretb5/app.bsky.feed.post/3n35nhjlxvq2z|kennethwalker|out|status",
+   "at": "2026-11-25T17:07:00.910Z",
+   "seen": "2026-11-25T17:08:32.912Z",
+   "handle": "adamscheftermirror.bsky.social",
+   "post": "at://did:plc:qre6zxbmr3ixhdmgsgdretb5/app.bsky.feed.post/3n35nhjlxvq2z",
+   "player": "Kenneth Walker",
+   "team": "KC",
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.97,
+   "text": "Chiefs officially ruled out RB Kenneth Walker for the Thursday night matchup versus the Bills due to his groin injury. Rookie RB Emmett Johnson will start in place of Walker for the third straight gam"
+  },
+  {
+   "id": "at://did:plc:qre6zxbmr3ixhdmgsgdretb5/app.bsky.feed.post/3n35nhjlxvq2z|emmettjohnson|active|starting",
+   "at": "2026-11-25T17:07:00.910Z",
+   "seen": "2026-11-25T17:08:32.912Z",
+   "handle": "adamscheftermirror.bsky.social",
+   "post": "at://did:plc:qre6zxbmr3ixhdmgsgdretb5/app.bsky.feed.post/3n35nhjlxvq2z",
+   "player": "Emmett Johnson",
+   "team": "KC",
+   "status": "active",
+   "kind": "starting",
+   "confidence": 0.93,
+   "text": "Chiefs officially ruled out RB Kenneth Walker for the Thursday night matchup versus the Bills due to his groin injury. Rookie RB Emmett Johnson will start in place of Walker for the third straight gam"
   }
  ]
 }

@@ -3,8 +3,8 @@
  "cursor": {
   "johnston-bot.bsky.social": "2026-11-24T02:44:36.491Z",
   "notfriedgehnic.bsky.social": "2026-11-25T16:14:53.144Z",
-  "dailyfaceoff.bsky.social": "2026-11-25T16:34:36.000Z",
-  "dfotoronto.bsky.social": "2026-11-25T15:39:56.000Z",
+  "dailyfaceoff.bsky.social": "2026-11-25T17:01:25.000Z",
+  "dfotoronto.bsky.social": "2026-11-25T17:05:32.278Z",
   "marklazerus.bsky.social": "2026-11-25T15:31:55.447Z"
  },
  "claims": [
@@ -2828,6 +2828,32 @@
    "kind": "status",
    "confidence": 0.9,
    "text": "Florida coach Paul Maurice said both Aleksander Barkov and Brad Marchand will play tonight"
+  },
+  {
+   "id": "at://did:plc:3uus7y6h3rlrk6sbctzxm4bg/app.bsky.feed.post/3n35merfkl225|brandonhagel|active|return",
+   "at": "2026-11-25T16:47:34.000Z",
+   "seen": "2026-11-25T17:08:32.912Z",
+   "handle": "dailyfaceoff.bsky.social",
+   "post": "at://did:plc:3uus7y6h3rlrk6sbctzxm4bg/app.bsky.feed.post/3n35merfkl225",
+   "player": "Brandon Hagel",
+   "team": "TB",
+   "status": "active",
+   "kind": "return",
+   "confidence": 0.8,
+   "text": "Lightning’s Brandon Hagel, Zemgus Girgensons expected to return against Hurricanes"
+  },
+  {
+   "id": "at://did:plc:3uus7y6h3rlrk6sbctzxm4bg/app.bsky.feed.post/3n35merfkl225|zemgusgirgensons|active|return",
+   "at": "2026-11-25T16:47:34.000Z",
+   "seen": "2026-11-25T17:08:32.912Z",
+   "handle": "dailyfaceoff.bsky.social",
+   "post": "at://did:plc:3uus7y6h3rlrk6sbctzxm4bg/app.bsky.feed.post/3n35merfkl225",
+   "player": "Zemgus Girgensons",
+   "team": "TB",
+   "status": "active",
+   "kind": "return",
+   "confidence": 0.8,
+   "text": "Lightning’s Brandon Hagel, Zemgus Girgensons expected to return against Hurricanes"
   }
  ]
 }
