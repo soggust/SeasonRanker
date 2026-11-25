@@ -16923,6 +16923,30 @@
     "seen": "2026-11-25T20:12:37.480Z",
     "own": "2026-11-25T19:57:00.000Z"
    }
+  },
+  "401873081|roschonjohnson|out": {
+   "game": "401873081",
+   "start": "2026-11-26T18:00Z",
+   "team": "3",
+   "name": "Roschon Johnson",
+   "status": "out",
+   "athlete": "4426386",
+   "espn": {
+    "seen": "2026-11-25T20:23:58.730Z",
+    "own": "2026-11-25T00:44:00.000Z"
+   }
+  },
+  "401873094|tetairoamcmillan|q": {
+   "game": "401873094",
+   "start": "2026-12-01T01:15Z",
+   "team": "29",
+   "name": "Tetairoa McMillan",
+   "status": "q",
+   "athlete": "4685472",
+   "espn": {
+    "seen": "2026-11-25T20:23:58.730Z",
+    "own": "2026-11-25T18:50:00.000Z"
+   }
   }
  }
 }
