@@ -2,27 +2,14 @@
  "sport": "nfl",
  "cursor": {
   "adamscheftermirror.bsky.social": "2026-11-25T15:22:00.758Z",
-  "rapsheet.bsky.social": "2026-11-25T15:12:50.823Z",
+  "rapsheet.bsky.social": "2026-11-25T16:37:59.087Z",
   "nflnewsreposterbot.bsky.social": "2026-11-24T21:39:05.332Z",
-  "insidenflnews.bsky.social": "2026-11-25T16:03:59.882Z",
-  "nflnewsposter.bsky.social": "2026-11-25T15:10:22.225Z",
-  "rotoworld-fb.bsky.social": "2026-11-25T16:05:44.000Z",
+  "insidenflnews.bsky.social": "2026-11-25T16:44:09.810Z",
+  "nflnewsposter.bsky.social": "2026-11-25T16:35:14.590Z",
+  "rotoworld-fb.bsky.social": "2026-11-25T16:41:04.000Z",
   "rotowirenfl.bsky.social": "2026-11-25T04:25:26.000Z"
  },
  "claims": [
-  {
-   "id": "at://did:plc:fuqjc7x4gxvnwzksnlxwbe4x/app.bsky.feed.post/3mzisfpu5kk24|jordyntyson|active|return",
-   "at": "2026-11-04T16:44:23.016Z",
-   "seen": "2026-11-04T16:58:28.511Z",
-   "handle": "nflnewsposter.bsky.social",
-   "post": "at://did:plc:fuqjc7x4gxvnwzksnlxwbe4x/app.bsky.feed.post/3mzisfpu5kk24",
-   "player": "Jordyn Tyson",
-   "team": null,
-   "status": "active",
-   "kind": "return",
-   "confidence": 0.6,
-   "text": "[Underhill] Jordyn Tyson is returning to practice today, per source twitter.com/nick_underhi..."
-  },
   {
    "id": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3mzitdodntm2y|shedeursanders|none|starting",
    "at": "2026-11-04T17:01:07.000Z",
@@ -18014,6 +18001,32 @@
    "kind": "return",
    "confidence": 0.7,
    "text": "Jalen McMillan (knee) to have 21-day practice window opened, per Greg Auman."
+  },
+  {
+   "id": "at://did:plc:fuqjc7x4gxvnwzksnlxwbe4x/app.bsky.feed.post/3n35lopjbc22d|kennethwalker|out|status",
+   "at": "2026-11-25T16:35:14.590Z",
+   "seen": "2026-11-25T16:46:23.907Z",
+   "handle": "nflnewsposter.bsky.social",
+   "post": "at://did:plc:fuqjc7x4gxvnwzksnlxwbe4x/app.bsky.feed.post/3n35lopjbc22d",
+   "player": "Kenneth Walker",
+   "team": "KC",
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.95,
+   "text": "[Schultz] Chiefs star RB Kenneth Walker will be OUT for Thursday’s showdown vs the Bills. twitter.com/schultz_repo..."
+  },
+  {
+   "id": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3n35lz5qagy2h|kennethwalker|out|status",
+   "at": "2026-11-25T16:41:04.000Z",
+   "seen": "2026-11-25T16:46:23.907Z",
+   "handle": "rotoworld-fb.bsky.social",
+   "post": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3n35lz5qagy2h",
+   "player": "Kenneth Walker",
+   "team": "KC",
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.93,
+   "text": "Schultz: KWIII (groin) out for Thanksgiving game"
   }
  ]
 }
