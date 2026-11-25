@@ -11,19 +11,6 @@
  },
  "claims": [
   {
-   "id": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3mzivdc2mcd2q|breecehall|limited|status",
-   "at": "2026-11-04T17:36:42.000Z",
-   "seen": "2026-11-04T19:15:38.243Z",
-   "handle": "rotowirenfl.bsky.social",
-   "post": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3mzivdc2mcd2q",
-   "player": "Breece Hall",
-   "team": "NYJ",
-   "status": "limited",
-   "kind": "status",
-   "confidence": 0.85,
-   "text": "Breece Hall: To be limited at practice Wednesday \n\n https://www.rotowire.com/football/player/breece-hall-15810"
-  },
-  {
    "id": "at://did:plc:fuqjc7x4gxvnwzksnlxwbe4x/app.bsky.feed.post/3mzivmtt6is2c|micahparsons|active|status",
    "at": "2026-11-04T17:42:03.286Z",
    "seen": "2026-11-04T19:15:38.243Z",
