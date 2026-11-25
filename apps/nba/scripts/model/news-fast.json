@@ -1,7 +1,7 @@
 {
  "sport": "nba",
  "cursor": {
-  "rotowirenba.bsky.social": "2026-11-25T20:07:55.000Z",
+  "rotowirenba.bsky.social": "2026-11-25T20:49:31.000Z",
   "insidenbanews.bsky.social": "2026-11-20T20:35:06.661Z",
   "shamsbot.bsky.social": "2026-11-25T18:32:56.000Z"
  },
@@ -7532,6 +7532,32 @@
    "kind": "status",
    "confidence": 0.9,
    "text": "Joel Embiid: Out sick again Wednesday \n\n https://www.rotowire.com/basketball/player/joel-embiid-3572"
+  },
+  {
+   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3n35yc2yywj2e|giannisantetokounmpo|active|status",
+   "at": "2026-11-25T20:20:48.000Z",
+   "seen": "2026-11-25T21:16:26.900Z",
+   "handle": "rotowirenba.bsky.social",
+   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3n35yc2yywj2e",
+   "player": "Giannis Antetokounmpo",
+   "team": null,
+   "status": "active",
+   "kind": "status",
+   "confidence": 0.6,
+   "text": "Giannis Antetokounmpo: Now probable Wednesday \n\n https://www.rotowire.com/basketball/player/giannis-antetokounmpo-3456"
+  },
+  {
+   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3n35zvfyqtg2r|zachlavine|questionable|status",
+   "at": "2026-11-25T20:49:31.000Z",
+   "seen": "2026-11-25T21:16:26.900Z",
+   "handle": "rotowirenba.bsky.social",
+   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3n35zvfyqtg2r",
+   "player": "Zach LaVine",
+   "team": null,
+   "status": "questionable",
+   "kind": "status",
+   "confidence": 0.9,
+   "text": "Zach LaVine: Downgraded to questionable \n\n https://www.rotowire.com/basketball/player/zach-lavine-3597"
   }
  ]
 }
