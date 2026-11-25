@@ -1,7 +1,7 @@
 {
  "sport": "nfl",
  "cursor": {
-  "adamscheftermirror.bsky.social": "2026-11-24T23:16:55.245Z",
+  "adamscheftermirror.bsky.social": "2026-11-25T00:31:56.885Z",
   "rapsheet.bsky.social": "2026-11-24T21:40:28.473Z",
   "nflnewsreposterbot.bsky.social": "2026-11-24T21:39:05.332Z",
   "insidenflnews.bsky.social": "2026-11-24T23:43:54.908Z",
@@ -18092,6 +18092,19 @@
    "kind": "return",
    "confidence": 0.5,
    "text": "Rap: Sam Darnold (quad, ribs) expected to return in Week 12, barring an unforeseen setback."
+  },
+  {
+   "id": "at://did:plc:qre6zxbmr3ixhdmgsgdretb5/app.bsky.feed.post/3n33vu7duo62y|jkdobbins|out|status",
+   "at": "2026-11-25T00:31:56.885Z",
+   "seen": "2026-11-25T00:33:31.447Z",
+   "handle": "adamscheftermirror.bsky.social",
+   "post": "at://did:plc:qre6zxbmr3ixhdmgsgdretb5/app.bsky.feed.post/3n33vu7duo62y",
+   "player": "J.K. Dobbins",
+   "team": "DEN",
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.9,
+   "text": "More about Broncos running back J.K. Dobbins being suspended one game for detrimental conduct, via @Jeff_Legwold:\n\nOriginal post"
   }
  ]
 }
