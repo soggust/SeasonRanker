@@ -2,7 +2,7 @@
  "v": 1,
  "sport": "nhl",
  "epoch": "2026-10-26T15:00:00Z",
- "at": "2026-11-24T09:13:57.170Z",
+ "at": "2026-11-25T09:14:01.560Z",
  "from": "2021-01-27T00:00:00.000Z",
  "through": "2026-10-14T01:55:00.000Z",
  "n": {
@@ -2894,7 +2894,7 @@
     "beat": 360,
     "clv": 2.6384,
     "pN": 3977,
-    "p": 1878.438,
+    "p": 1878.4391,
     "wins": 1818
    },
    "ml:home": {
@@ -2984,7 +2984,7 @@
     "beat": 0,
     "clv": 0,
     "pN": 2271,
-    "p": 1102.1162,
+    "p": 1102.117,
     "wins": 1068
    },
    "props": {
@@ -2994,7 +2994,7 @@
     "beat": 0,
     "clv": 0,
     "pN": 2518,
-    "p": 1212.3593,
+    "p": 1212.3604,
     "wins": 1174
    },
    "prop:pts:over": {
@@ -3014,7 +3014,7 @@
     "beat": 0,
     "clv": 0,
     "pN": 225,
-    "p": 98.495,
+    "p": 98.4953,
     "wins": 92
    },
    "prop:sog:under": {
@@ -3024,7 +3024,7 @@
     "beat": 0,
     "clv": 0,
     "pN": 2157,
-    "p": 1050.6963,
+    "p": 1050.6971,
     "wins": 1019
    },
    "prop:pts:under": {
@@ -3034,7 +3034,7 @@
     "beat": 0,
     "clv": 0,
     "pN": 220,
-    "p": 97.3762,
+    "p": 97.3765,
     "wins": 91
    },
    "prop:saves:under": {
@@ -3069,7 +3069,7 @@
    }
   }
  },
- "commit": "0d46b6d6",
+ "commit": "2b4e1c8d",
  "note": "D119. The Book's bands are the Bot's bets alone: a suggestion is never a LIKE (the owner, 2026-11-09: \"its got likes with no BETS which makes no sense\")",
  "inputs": {
   "v": 1,
