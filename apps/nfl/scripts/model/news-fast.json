@@ -1,41 +1,15 @@
 {
  "sport": "nfl",
  "cursor": {
-  "adamscheftermirror.bsky.social": "2026-11-25T12:47:00.227Z",
+  "adamscheftermirror.bsky.social": "2026-11-25T13:31:59.180Z",
   "rapsheet.bsky.social": "2026-11-24T21:40:28.473Z",
   "nflnewsreposterbot.bsky.social": "2026-11-24T21:39:05.332Z",
-  "insidenflnews.bsky.social": "2026-11-25T04:54:44.545Z",
+  "insidenflnews.bsky.social": "2026-11-25T13:22:07.330Z",
   "nflnewsposter.bsky.social": "2026-11-25T04:30:22.998Z",
   "rotoworld-fb.bsky.social": "2026-11-25T04:43:21.000Z",
   "rotowirenfl.bsky.social": "2026-11-25T04:25:26.000Z"
  },
  "claims": [
-  {
-   "id": "at://did:plc:fuqjc7x4gxvnwzksnlxwbe4x/app.bsky.feed.post/3mzihi5tl522x|tylerhuntley|out|status",
-   "at": "2026-11-04T13:28:53.626Z",
-   "seen": "2026-11-04T13:36:25.300Z",
-   "handle": "nflnewsposter.bsky.social",
-   "post": "at://did:plc:fuqjc7x4gxvnwzksnlxwbe4x/app.bsky.feed.post/3mzihi5tl522x",
-   "player": "Tyler Huntley",
-   "team": "BAL",
-   "status": "out",
-   "kind": "status",
-   "confidence": 0.95,
-   "text": "[Schefter] Tests revealed that Ravens’ QB Tyler “Snoop” Huntley suffered a season-ending turf toe injury. \n\nRavens QB Lamar Jackson is out indefinitely with a thumb injury, Huntley’s season is over du"
-  },
-  {
-   "id": "at://did:plc:fuqjc7x4gxvnwzksnlxwbe4x/app.bsky.feed.post/3mzihi5tl522x|lamarjackson|out|status",
-   "at": "2026-11-04T13:28:53.626Z",
-   "seen": "2026-11-04T13:36:25.300Z",
-   "handle": "nflnewsposter.bsky.social",
-   "post": "at://did:plc:fuqjc7x4gxvnwzksnlxwbe4x/app.bsky.feed.post/3mzihi5tl522x",
-   "player": "Lamar Jackson",
-   "team": "BAL",
-   "status": "out",
-   "kind": "status",
-   "confidence": 0.95,
-   "text": "[Schefter] Tests revealed that Ravens’ QB Tyler “Snoop” Huntley suffered a season-ending turf toe injury. \n\nRavens QB Lamar Jackson is out indefinitely with a thumb injury, Huntley’s season is over du"
-  },
   {
    "id": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3mzii4fwarf2b|mackhollins|limited|return",
    "at": "2026-11-04T13:40:13.000Z",
@@ -18053,6 +18027,58 @@
    "kind": "benched",
    "confidence": 0.8,
    "text": "Aaron Rodgers previously told reporters in May that he will retire after this season, his 22nd in the NFL and his second in Pittsburgh. So his NFL career possibly ended overnight, with a team statemen"
+  },
+  {
+   "id": "at://did:plc:mbr4badgf6yu56mquzackzew/app.bsky.feed.post/3n35avf25p22z|aaronrodgers|none|benched",
+   "at": "2026-11-25T13:22:07.330Z",
+   "seen": "2026-11-25T13:36:21.299Z",
+   "handle": "insidenflnews.bsky.social",
+   "post": "at://did:plc:mbr4badgf6yu56mquzackzew/app.bsky.feed.post/3n35avf25p22z",
+   "player": "Aaron Rodgers",
+   "team": "PIT",
+   "status": "none",
+   "kind": "benched",
+   "confidence": 0.9,
+   "text": "Schefter: There were a series of meetings throughout the day Tuesday described as \"some good, some bad.\"\n\nAfter those meetings, Steelers made the decision to bench Aaron Rodgers and start Mason Rudolp"
+  },
+  {
+   "id": "at://did:plc:mbr4badgf6yu56mquzackzew/app.bsky.feed.post/3n35avf25p22z|masonrudolph|none|starting",
+   "at": "2026-11-25T13:22:07.330Z",
+   "seen": "2026-11-25T13:36:21.299Z",
+   "handle": "insidenflnews.bsky.social",
+   "post": "at://did:plc:mbr4badgf6yu56mquzackzew/app.bsky.feed.post/3n35avf25p22z",
+   "player": "Mason Rudolph",
+   "team": "PIT",
+   "status": "none",
+   "kind": "starting",
+   "confidence": 0.9,
+   "text": "Schefter: There were a series of meetings throughout the day Tuesday described as \"some good, some bad.\"\n\nAfter those meetings, Steelers made the decision to bench Aaron Rodgers and start Mason Rudolp"
+  },
+  {
+   "id": "at://did:plc:qre6zxbmr3ixhdmgsgdretb5/app.bsky.feed.post/3n35bgzkmri2x|aaronrodgers|none|benched",
+   "at": "2026-11-25T13:31:59.180Z",
+   "seen": "2026-11-25T13:36:21.299Z",
+   "handle": "adamscheftermirror.bsky.social",
+   "post": "at://did:plc:qre6zxbmr3ixhdmgsgdretb5/app.bsky.feed.post/3n35bgzkmri2x",
+   "player": "Aaron Rodgers",
+   "team": "PIT",
+   "status": "none",
+   "kind": "benched",
+   "confidence": 0.8,
+   "text": "There were a series of meetings throughout the day yesterday - “some good, some bad”, as they were described - and after all those meetings, the Steelers made the decision to bench Aaron Rodgers and s"
+  },
+  {
+   "id": "at://did:plc:qre6zxbmr3ixhdmgsgdretb5/app.bsky.feed.post/3n35bgzkmri2x|masonrudolph|none|starting",
+   "at": "2026-11-25T13:31:59.180Z",
+   "seen": "2026-11-25T13:36:21.299Z",
+   "handle": "adamscheftermirror.bsky.social",
+   "post": "at://did:plc:qre6zxbmr3ixhdmgsgdretb5/app.bsky.feed.post/3n35bgzkmri2x",
+   "player": "Mason Rudolph",
+   "team": "PIT",
+   "status": "none",
+   "kind": "starting",
+   "confidence": 0.8,
+   "text": "There were a series of meetings throughout the day yesterday - “some good, some bad”, as they were described - and after all those meetings, the Steelers made the decision to bench Aaron Rodgers and s"
   }
  ]
 }
