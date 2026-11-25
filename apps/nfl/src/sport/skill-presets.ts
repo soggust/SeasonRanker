@@ -41,8 +41,8 @@ const FRONT_PRESETS: SkillPresetDef[] = [
   {
     key: 'runStopper',
     label: 'Run Stopper',
-    description: 'Holding the line against the run: tackles and TFL, few missed tackles, and the snaps he plays',
-    weights: { tackles: 100, tfl: 100, missedTacklePct: 75, snapPct: 50 },
+    description: 'Holding the line against the run: stops, tackles and TFL, few missed tackles, and the snaps he plays',
+    weights: { stops: 100, tackles: 100, tfl: 100, missedTacklePct: 75, snapPct: 50 },
   },
   {
     key: 'playmaker',
@@ -324,8 +324,8 @@ export const SKILL_PRESETS: Record<SkillPosition, SkillPresetDef[]> = {
     {
       key: 'tackler',
       label: 'Tackler',
-      description: 'The tackling: tackles and TFL, solo tackles, and few missed tackles',
-      weights: { tackles: 100, tfl: 80, soloTackles: 60, missedTacklePct: 75 },
+      description: 'The tackling: tackles, stops and TFL, solo tackles, and few missed tackles',
+      weights: { tackles: 100, stops: 90, tfl: 80, soloTackles: 60, missedTacklePct: 75 },
     },
     {
       key: 'blitzer',
@@ -360,8 +360,8 @@ export const SKILL_PRESETS: Record<SkillPosition, SkillPresetDef[]> = {
     {
       key: 'enforcer',
       label: 'Enforcer',
-      description: 'The hitter: tackles, TFL, forced fumbles and few missed tackles',
-      weights: { tackles: 100, tfl: 80, forcedFumbles: 70, missedTacklePct: 75 },
+      description: 'The hitter: tackles, stops, TFL, forced fumbles and few missed tackles',
+      weights: { tackles: 100, stops: 80, tfl: 80, forcedFumbles: 70, missedTacklePct: 75 },
     },
     {
       key: 'coverage',

@@ -25,7 +25,7 @@
 //                                          see unrankedRows and unrankedQbs)
 //        DEF_ONLY=1                       (only the defensive player tabs, written into the season's
 //                                          skill-players files and their unranked ones as they are: the
-//                                          backfill of those tabs; no play-by-play, ESPN only for the season
+//                                          backfill of those tabs; play-by-play for the stops, ESPN only for the season
 //                                          being played's injury report; see defenseOnly)
 //        OFFST_ONLY=1                     (only the Team Offense and Team Special Teams tabs, OFF and ST,
 //                                          written into the season's skill-players files as they are: the
@@ -413,7 +413,20 @@ function defenseInputs(season, part) {
   )) {
     snaps.set(id, { snaps: t.defense_snaps, pct: round(t.defense_pct / t.games, 3) });
   }
-  return { pfr: totalsBy(def, (r) => r.pfr_player_id, PFR_DEF_FIELDS), snaps };
+  return { pfr: totalsBy(def, (r) => r.pfr_player_id, PFR_DEF_FIELDS), snaps, stops: season.seasonPbp ? stopsBy(season.seasonPbp, part) : null };
+}
+
+// Stops, by gsis id: the tackles (solo, shared or assisted, and the TFL credits) on a run or pass the offense lost,
+// the play-by-play's success flag (its EPA below zero); a man in two of a play's tackle columns counts once; a
+// sack is the pass rush's, never a stop (nflverse puts the sacker in a tackle column too)
+const STOP_TACKLERS = ['solo_tackle_1_player_id', 'solo_tackle_2_player_id', 'assist_tackle_1_player_id', 'assist_tackle_2_player_id', 'assist_tackle_3_player_id', 'assist_tackle_4_player_id', 'tackle_with_assist_1_player_id', 'tackle_with_assist_2_player_id', 'tackle_for_loss_1_player_id', 'tackle_for_loss_2_player_id'];
+function stopsBy(pbp, part) {
+  const stops = new Map();
+  for (const play of pbp) {
+    if (!inPart(part, play.season_type) || (play.play_type !== 'run' && play.play_type !== 'pass') || play.success !== '0' || play.sack === '1') continue;
+    for (const id of new Set(STOP_TACKLERS.map((c) => play[c]).filter((id) => id && id !== 'NA'))) stops.set(id, (stops.get(id) ?? 0) + 1);
+  }
+  return stops;
 }
 
 
@@ -1595,7 +1608,7 @@ async function secondaryInputs(shared, { partStats, snaps, pfrDef, ...maps }) {
 
 // A defender's season: nflverse's box stats (combined tackles are solo + shared + assisted, as PFR counts
 // them), his defensive snaps and PFR's charting, each null where the season has no source for it
-function defenseStats(n, { pfr, snaps }) {
+function defenseStats(n, { pfr, snaps, stops }) {
   const solo = n('def_tackles_solo');
   const tackles = solo + n('def_tackles_with_assist') + n('def_tackle_assists');
   const sacks = n('def_sacks');
@@ -1610,6 +1623,7 @@ function defenseStats(n, { pfr, snaps }) {
   return {
     tackles,
     soloTackles: solo,
+    stops,
     tfl: n('def_tackles_for_loss'),
     sacks,
     qbHits: n('def_qb_hits'),
@@ -1644,7 +1658,7 @@ function defensePlayers(nflverse) {
     const icon = TEAM_ICONS[row.recent_team];
     if (!icon) throw new Error(`Unknown team abbreviation "${row.recent_team}" for ${row.player_display_name}`);
     const pfrId = pfrByGsis.get(row.player_id);
-    const stats = defenseStats(n, { pfr: defense.pfr.get(pfrId), snaps: defense.snaps.get(pfrId) });
+    const stats = defenseStats(n, { pfr: defense.pfr.get(pfrId), snaps: defense.snaps.get(pfrId), stops: defense.stops ? (defense.stops.get(row.player_id) ?? 0) : null });
     const tab = defenseTab(row, stats, nflverse);
     if (!tab) continue;
     out[tab].push({
@@ -2199,12 +2213,13 @@ async function main() {
 // DEF_ONLY: the defensive player tabs alone (defensePlayers), each part's, written into the season's ranked
 // and unranked files as they are (every other tab untouched): the backfill of the tabs over the seasons the
 // site has. It reads only what they need, the player list, the part's player stats, PFR's defensive charting
-// and the snap counts (no play-by-play, no ESPN), so a season takes seconds. A part with no ranked file (no
+// and the snap counts, and the play-by-play for the stops (no ESPN), so a season takes a minute or so. A part with no ranked file (no
 // playoffs played) gets nothing. A past season's injury flags are its injured-reserve finishers, as updatePart's.
 async function defenseOnly() {
   const shared = {};
-  const [players, pfrDefWeekly, snaps, ...partStats] = await Promise.all([
+  const [players, pbp, pfrDefWeekly, snaps, ...partStats] = await Promise.all([
     loadPlayers(shared),
+    loadPbp(shared),
     loadPfrWeekly(shared, 'def'),
     loadSnaps(shared),
     ...PARTS.map((part) => loadPartStats(shared, part, false)),
@@ -2213,6 +2228,7 @@ async function defenseOnly() {
   const pfrDef = weekly ? pfrDefWeekly : sameTeamAbbrs(await pfrSeasonRows('def', new Map()));
   const maps = playerMaps(players);
   const season = {
+    seasonPbp: pbp,
     playerStatsByPart: Object.fromEntries(PARTS.map((part, i) => [part, partStats[i]])),
     pfrRows: { def: pfrDef, weekly },
     snaps,

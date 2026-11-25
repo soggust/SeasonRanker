@@ -165,6 +165,7 @@ export type SkillStatKey =
   // tackles and the coverage "allowed" stats from Pro Football Reference's charting, 2018 on)
   | 'tackles'
   | 'soloTackles'
+  | 'stops'
   | 'tfl'
   | 'qbHits'
   | 'pressures'
@@ -421,6 +422,7 @@ export const STAT_NAMES: Partial<Record<SkillColumnKey, string>> = {
   timeToThrow: 'QB Time to Throw (Seconds)',
   tackles: 'Combined Tackles',
   soloTackles: 'Solo Tackles',
+  stops: 'Stops',
   tfl: 'Tackles for Loss',
   qbHits: 'Quarterback Hits',
   pressures: 'Pressures',
@@ -489,6 +491,7 @@ export const PER_GAME_LABELS: Partial<Record<SkillColumnKey, string>> = {
   sacksAllowed: 'Sacks / Game',
   tackles: 'Tackles / Game',
   soloTackles: 'Solo / Game',
+  stops: 'Stops / Game',
   tfl: 'TFL / Game',
   qbHits: 'QB Hits / Game',
   pressures: 'Pressures / Game',
@@ -938,6 +941,15 @@ const DEF_SNAP_PCT_STAT: SkillStat = {
 };
 const TACKLES_STAT: SkillStat = { key: 'tackles', label: 'Tackles', description: 'Combined tackles, solo and assisted', kind: 'volume', format: 'int' };
 const SOLO_TACKLES_STAT: SkillStat = { key: 'soloTackles', label: 'Solo Tkl', description: 'Solo tackles', kind: 'volume', format: 'int' };
+// (a tackle that ends a play the offense lost: the play-by-play's success flag, its EPA below zero; a shared
+// tackle counts in full, as Tackles counts it; a sack is the pass rush's, not a stop)
+const STOPS_STAT: SkillStat = {
+  key: 'stops',
+  label: 'Stops',
+  description: 'Tackles on a play the offense lost: a run or catch stopped short of what it needed to stay on schedule (from the play-by-play)',
+  kind: 'volume',
+  format: 'int',
+};
 const TFL_STAT: SkillStat = { key: 'tfl', label: 'TFL', description: 'Tackles for loss', kind: 'volume', format: 'int' };
 const DEF_SACKS_STAT: SkillStat = { key: 'sacks', label: 'Sacks', description: 'Sacks (a shared sack counts a half)', kind: 'volume', format: 'dec1' };
 const QB_HITS_STAT: SkillStat = { key: 'qbHits', label: 'QB Hits', description: 'Hits on the quarterback, sacks included (from the play-by-play)', kind: 'volume', format: 'int' };
@@ -1058,6 +1070,7 @@ const FRONT_STATS: SkillStat[] = [
   DEF_SACKS_STAT,
   TFL_STAT,
   TACKLES_STAT,
+  STOPS_STAT,
   QB_HITS_STAT,
   FRONT_PASSES_DEFENDED_STAT,
   FORCED_FUMBLES_STAT,
@@ -1540,6 +1553,7 @@ export const SKILL_STATS: Record<SkillPosition, SkillStat[]> = {
     DEF_SNAPS_STAT,
     TACKLES_STAT,
     SOLO_TACKLES_STAT,
+    STOPS_STAT,
     TFL_STAT,
     DEF_SACKS_STAT,
     QB_HITS_STAT,
@@ -1557,7 +1571,7 @@ export const SKILL_STATS: Record<SkillPosition, SkillStat[]> = {
   ],
   CB: SECONDARY_STATS,
   // (a safety's sacks too: the blitz off the edge)
-  S: [...SECONDARY_STATS.slice(0, 6), SOLO_TACKLES_STAT, DEF_SACKS_STAT, ...SECONDARY_STATS.slice(6)],
+  S: [...SECONDARY_STATS.slice(0, 6), SOLO_TACKLES_STAT, STOPS_STAT, DEF_SACKS_STAT, ...SECONDARY_STATS.slice(6)],
   // Lower is better for everything "allowed", and for stuffs and penalties
   OL: [
     GAMES_STAT,
@@ -1774,7 +1788,7 @@ const RECEIVER_GROUPS: Group[] = [
 ];
 const RUSHER_GROUPS: Group[] = [
   results(['games']),
-  basic(['snaps', 'sacks', 'tfl', 'tackles', 'qbHits', 'passesDefended', 'forcedFumbles', 'takeaways', 'splashPlays', 'defTds']),
+  basic(['snaps', 'sacks', 'tfl', 'tackles', 'stops', 'qbHits', 'passesDefended', 'forcedFumbles', 'takeaways', 'splashPlays', 'defTds']),
   advanced(['pressures', 'hurries', 'pressureRate', 'missedTacklePct', 'snapPct']),
 ];
 const COVERAGE_ADVANCED: SkillColumnKey[] = ['compPctAllowed', 'yardsAllowed', 'yardsPerTargetAllowed', 'tdsAllowed', 'passerRatingAllowed', 'missedTacklePct', 'snapPct'];
@@ -1823,7 +1837,7 @@ export const GROUPS: Record<SkillPosition, Group[]> = {
   DL: RUSHER_GROUPS,
   LB: [
     results(['games']),
-    basic(['snaps', 'tackles', 'soloTackles', 'tfl', 'sacks', 'qbHits', 'interceptions', 'passesDefended', 'forcedFumbles', 'takeaways', 'splashPlays', 'defTds', 'targets']),
+    basic(['snaps', 'tackles', 'soloTackles', 'stops', 'tfl', 'sacks', 'qbHits', 'interceptions', 'passesDefended', 'forcedFumbles', 'takeaways', 'splashPlays', 'defTds', 'targets']),
     advanced(['pressures', 'hurries', ...COVERAGE_ADVANCED]),
   ],
   CB: [
@@ -1833,7 +1847,7 @@ export const GROUPS: Record<SkillPosition, Group[]> = {
   ],
   S: [
     results(['games']),
-    basic(['snaps', 'interceptions', 'passesDefended', 'tackles', 'tfl', 'soloTackles', 'sacks', 'forcedFumbles', 'takeaways', 'splashPlays', 'defTds', 'targets']),
+    basic(['snaps', 'interceptions', 'passesDefended', 'tackles', 'tfl', 'soloTackles', 'stops', 'sacks', 'forcedFumbles', 'takeaways', 'splashPlays', 'defTds', 'targets']),
     advanced(COVERAGE_ADVANCED),
   ],
   ST: [

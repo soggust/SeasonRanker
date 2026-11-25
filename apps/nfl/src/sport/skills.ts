@@ -7,7 +7,7 @@ import { SkillPlayer, SkillPosition } from '@sport/positions';
 // Edge rushers and interior linemen: the rush, the run stop, the tackling, the plays that turn games
 const FRONT_SKILLS: SkillDef[] = [
   { id: 'rush', name: 'Pass Rush', short: 'Pass Rush', parts: [['sacks', 1], ['pressures', 1], ['qbHits', 1], ['hurries', 1], ['pressureRate', 1]] },
-  { id: 'runStop', name: 'Run Stopping', short: 'Run Stop', parts: [['tfl', 1], ['tackles', 1]] },
+  { id: 'runStop', name: 'Run Stopping', short: 'Run Stop', parts: [['stops', 1], ['tfl', 1], ['tackles', 1]] },
   { id: 'tackling', name: 'Tackling', short: 'Tackling', parts: [['missedTacklePct', -1]] },
   { id: 'playmaking', name: 'Playmaking', short: 'Playmaking', parts: [['takeaways', 1], ['forcedFumbles', 1], ['splashPlays', 1]] },
   { id: 'workload', name: 'Workload', short: 'Workload', parts: [['snapPct', 1]] },
@@ -98,7 +98,7 @@ export const SKILLS: Record<SkillPosition, SkillDef[]> = {
   DL: FRONT_SKILLS,
   LB: [
     { id: 'tackling', name: 'Tackling', short: 'Tackling', parts: [['tackles', 1], ['soloTackles', 1], ['missedTacklePct', -1]] },
-    { id: 'runStop', name: 'Run Stopping', short: 'Run Stop', parts: [['tfl', 1], ['tackles', 1]] },
+    { id: 'runStop', name: 'Run Stopping', short: 'Run Stop', parts: [['stops', 1], ['tfl', 1], ['tackles', 1]] },
     { id: 'blitz', name: 'Blitzing', short: 'Blitz', parts: [['sacks', 1], ['pressures', 1], ['qbHits', 1], ['hurries', 1]] },
     { id: 'coverage', name: 'Coverage', short: 'Coverage', parts: [['passerRatingAllowed', -1], ['compPctAllowed', -1], ['yardsPerTargetAllowed', -1], ['passesDefended', 1]] },
     { id: 'playmaking', name: 'Playmaking', short: 'Playmaking', parts: [['takeaways', 1], ['forcedFumbles', 1], ['splashPlays', 1]] },
