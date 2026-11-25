@@ -1,41 +1,15 @@
 {
  "sport": "nfl",
  "cursor": {
-  "adamscheftermirror.bsky.social": "2026-11-25T13:31:59.180Z",
+  "adamscheftermirror.bsky.social": "2026-11-25T14:37:01.440Z",
   "rapsheet.bsky.social": "2026-11-24T21:40:28.473Z",
   "nflnewsreposterbot.bsky.social": "2026-11-24T21:39:05.332Z",
-  "insidenflnews.bsky.social": "2026-11-25T14:14:43.755Z",
-  "nflnewsposter.bsky.social": "2026-11-25T04:30:22.998Z",
+  "insidenflnews.bsky.social": "2026-11-25T14:23:21.651Z",
+  "nflnewsposter.bsky.social": "2026-11-25T14:27:00.422Z",
   "rotoworld-fb.bsky.social": "2026-11-25T04:43:21.000Z",
   "rotowirenfl.bsky.social": "2026-11-25T04:25:26.000Z"
  },
  "claims": [
-  {
-   "id": "at://did:plc:rx22hq465sfe5g2qyyf5gzu2/app.bsky.feed.post/3mzil43e2422v|deshaunwatson|questionable|status",
-   "at": "2026-11-04T14:33:43.335Z",
-   "seen": "2026-11-04T15:41:29.919Z",
-   "handle": "nflnewsreposterbot.bsky.social",
-   "post": "at://did:plc:rx22hq465sfe5g2qyyf5gzu2/app.bsky.feed.post/3mzil43e2422v",
-   "player": "Deshaun Watson",
-   "team": "CLE",
-   "status": "questionable",
-   "kind": "status",
-   "confidence": 0.8,
-   "text": "Adam Schefter: Browns QB Deshaun Watson has been placed in concussion protocol."
-  },
-  {
-   "id": "at://did:plc:qre6zxbmr3ixhdmgsgdretb5/app.bsky.feed.post/3mzil5do6hw2a|deshaunwatson|questionable|status",
-   "at": "2026-11-04T14:34:25.522Z",
-   "seen": "2026-11-04T15:41:29.919Z",
-   "handle": "adamscheftermirror.bsky.social",
-   "post": "at://did:plc:qre6zxbmr3ixhdmgsgdretb5/app.bsky.feed.post/3mzil5do6hw2a",
-   "player": "Deshaun Watson",
-   "team": "CLE",
-   "status": "questionable",
-   "kind": "status",
-   "confidence": 0.8,
-   "text": "Browns QB Deshaun Watson has been placed in concussion protocol.\n\nOriginal post"
-  },
   {
    "id": "at://did:plc:fuqjc7x4gxvnwzksnlxwbe4x/app.bsky.feed.post/3mzilq5diq22i|deshaunwatson|questionable|status",
    "at": "2026-11-04T14:44:56.500Z",
@@ -18053,6 +18027,32 @@
    "kind": "starting",
    "confidence": 0.8,
    "text": "There were a series of meetings throughout the day yesterday - “some good, some bad”, as they were described - and after all those meetings, the Steelers made the decision to bench Aaron Rodgers and s"
+  },
+  {
+   "id": "at://did:plc:mbr4badgf6yu56mquzackzew/app.bsky.feed.post/3n35ecv5hts26|aaronrodgers|none|benched",
+   "at": "2026-11-25T14:23:21.651Z",
+   "seen": "2026-11-25T14:40:28.257Z",
+   "handle": "insidenflnews.bsky.social",
+   "post": "at://did:plc:mbr4badgf6yu56mquzackzew/app.bsky.feed.post/3n35ecv5hts26",
+   "player": "Aaron Rodgers",
+   "team": "PIT",
+   "status": "none",
+   "kind": "benched",
+   "confidence": 0.9,
+   "text": "Aaron Rodgers situation has been \"brewing for a while\" and \"reached the point of no return\" Tuesday night when Steelers announced the benching.\n\nRodgers' future with the Steelers is uncertain, per Ger"
+  },
+  {
+   "id": "at://did:plc:fuqjc7x4gxvnwzksnlxwbe4x/app.bsky.feed.post/3n35ejfrve22c|aaronrodgers|none|benched",
+   "at": "2026-11-25T14:27:00.422Z",
+   "seen": "2026-11-25T14:40:28.257Z",
+   "handle": "nflnewsposter.bsky.social",
+   "post": "at://did:plc:fuqjc7x4gxvnwzksnlxwbe4x/app.bsky.feed.post/3n35ejfrve22c",
+   "player": "Aaron Rodgers",
+   "team": "PIT",
+   "status": "none",
+   "kind": "benched",
+   "confidence": 0.9,
+   "text": "[Dulac] The situation with Aaron Rodgers has been “brewing for a while” and “reached the point of no return” Tuesday night when the Steelers announced they were benching him. Rodgers did not report to"
   }
  ]
 }
