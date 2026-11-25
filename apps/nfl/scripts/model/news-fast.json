@@ -6,23 +6,10 @@
   "nflnewsreposterbot.bsky.social": "2026-11-24T21:39:05.332Z",
   "insidenflnews.bsky.social": "2026-11-25T16:03:59.882Z",
   "nflnewsposter.bsky.social": "2026-11-25T15:10:22.225Z",
-  "rotoworld-fb.bsky.social": "2026-11-25T15:39:29.000Z",
+  "rotoworld-fb.bsky.social": "2026-11-25T16:05:44.000Z",
   "rotowirenfl.bsky.social": "2026-11-25T04:25:26.000Z"
  },
  "claims": [
-  {
-   "id": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3mziqxzvrnz2q|jordyntyson|active|return",
-   "at": "2026-11-04T16:18:49.000Z",
-   "seen": "2026-11-04T16:25:16.420Z",
-   "handle": "rotowirenfl.bsky.social",
-   "post": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3mziqxzvrnz2q",
-   "player": "Jordyn Tyson",
-   "team": null,
-   "status": "active",
-   "kind": "return",
-   "confidence": 0.5,
-   "text": "Jordyn Tyson: Returning to practice Wednesday \n\n https://www.rotowire.com/football/player/jordyn-tyson-19233"
-  },
   {
    "id": "at://did:plc:fuqjc7x4gxvnwzksnlxwbe4x/app.bsky.feed.post/3mzisfpu5kk24|jordyntyson|active|return",
    "at": "2026-11-04T16:44:23.016Z",

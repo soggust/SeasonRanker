@@ -2,7 +2,7 @@
  "sport": "nhl",
  "cursor": {
   "johnston-bot.bsky.social": "2026-11-24T02:44:36.491Z",
-  "notfriedgehnic.bsky.social": "2026-11-24T19:12:46.578Z",
+  "notfriedgehnic.bsky.social": "2026-11-25T16:14:53.144Z",
   "dailyfaceoff.bsky.social": "2026-11-25T15:35:26.000Z",
   "dfotoronto.bsky.social": "2026-11-25T15:39:56.000Z",
   "marklazerus.bsky.social": "2026-11-25T15:31:55.447Z"
@@ -2802,6 +2802,32 @@
    "kind": "status",
    "confidence": 0.3,
    "text": "Maple Leafs Prospect Roundup: Akhtyamov on call, Moldenhauer injured in fight-filled affair"
+  },
+  {
+   "id": "at://did:plc:sdobrsxnvwczrjydmnubhibh/app.bsky.feed.post/3n35kkcqcdq2f|aleksanderbarkov|active|status",
+   "at": "2026-11-25T16:14:53.144Z",
+   "seen": "2026-11-25T16:25:11.823Z",
+   "handle": "notfriedgehnic.bsky.social",
+   "post": "at://did:plc:sdobrsxnvwczrjydmnubhibh/app.bsky.feed.post/3n35kkcqcdq2f",
+   "player": "Aleksander Barkov",
+   "team": "FLA",
+   "status": "active",
+   "kind": "status",
+   "confidence": 0.9,
+   "text": "Florida coach Paul Maurice said both Aleksander Barkov and Brad Marchand will play tonight"
+  },
+  {
+   "id": "at://did:plc:sdobrsxnvwczrjydmnubhibh/app.bsky.feed.post/3n35kkcqcdq2f|bradmarchand|active|status",
+   "at": "2026-11-25T16:14:53.144Z",
+   "seen": "2026-11-25T16:25:11.823Z",
+   "handle": "notfriedgehnic.bsky.social",
+   "post": "at://did:plc:sdobrsxnvwczrjydmnubhibh/app.bsky.feed.post/3n35kkcqcdq2f",
+   "player": "Brad Marchand",
+   "team": "FLA",
+   "status": "active",
+   "kind": "status",
+   "confidence": 0.9,
+   "text": "Florida coach Paul Maurice said both Aleksander Barkov and Brad Marchand will play tonight"
   }
  ]
 }
