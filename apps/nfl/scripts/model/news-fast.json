@@ -1,41 +1,15 @@
 {
  "sport": "nfl",
  "cursor": {
-  "adamscheftermirror.bsky.social": "2026-11-25T14:37:01.440Z",
-  "rapsheet.bsky.social": "2026-11-24T21:40:28.473Z",
+  "adamscheftermirror.bsky.social": "2026-11-25T15:22:00.758Z",
+  "rapsheet.bsky.social": "2026-11-25T15:12:50.823Z",
   "nflnewsreposterbot.bsky.social": "2026-11-24T21:39:05.332Z",
-  "insidenflnews.bsky.social": "2026-11-25T14:23:21.651Z",
-  "nflnewsposter.bsky.social": "2026-11-25T14:27:00.422Z",
-  "rotoworld-fb.bsky.social": "2026-11-25T14:40:38.000Z",
+  "insidenflnews.bsky.social": "2026-11-25T15:09:03.956Z",
+  "nflnewsposter.bsky.social": "2026-11-25T15:10:22.225Z",
+  "rotoworld-fb.bsky.social": "2026-11-25T15:03:27.000Z",
   "rotowirenfl.bsky.social": "2026-11-25T04:25:26.000Z"
  },
  "claims": [
-  {
-   "id": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3mzin3ts23425|deshaunwatson|questionable|status",
-   "at": "2026-11-04T15:09:22.000Z",
-   "seen": "2026-11-04T15:41:29.919Z",
-   "handle": "rotoworld-fb.bsky.social",
-   "post": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3mzin3ts23425",
-   "player": "Deshaun Watson",
-   "team": "CLE",
-   "status": "questionable",
-   "kind": "status",
-   "confidence": 0.8,
-   "text": "Browns put Deshaun Watson in concussion protocol"
-  },
-  {
-   "id": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3mzinm3ki3h25|tylerhuntley|out|status",
-   "at": "2026-11-04T15:18:27.000Z",
-   "seen": "2026-11-04T15:41:29.919Z",
-   "handle": "rotoworld-fb.bsky.social",
-   "post": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3mzinm3ki3h25",
-   "player": "Tyler Huntley",
-   "team": null,
-   "status": "out",
-   "kind": "status",
-   "confidence": 0.9,
-   "text": "Huntley done for season with toe injury"
-  },
   {
    "id": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3mziopo53362q|bhayshultuten|questionable|status",
    "at": "2026-11-04T15:38:21.000Z",
@@ -18014,6 +17988,45 @@
    "kind": "benched",
    "confidence": 0.9,
    "text": "[Dulac] The situation with Aaron Rodgers has been “brewing for a while” and “reached the point of no return” Tuesday night when the Steelers announced they were benching him. Rodgers did not report to"
+  },
+  {
+   "id": "at://did:plc:fuqjc7x4gxvnwzksnlxwbe4x/app.bsky.feed.post/3n35gwx2mls2c|aaronrodgers|none|benched",
+   "at": "2026-11-25T15:10:22.225Z",
+   "seen": "2026-11-25T15:22:23.020Z",
+   "handle": "nflnewsposter.bsky.social",
+   "post": "at://did:plc:fuqjc7x4gxvnwzksnlxwbe4x/app.bsky.feed.post/3n35gwx2mls2c",
+   "player": "Aaron Rodgers",
+   "team": "PIT",
+   "status": "none",
+   "kind": "benched",
+   "confidence": 0.85,
+   "text": "[Pelissero] The Steelers excused Aaron Rodgers from coming to the facility today in the aftermath of his benching, per sources.\n\nThe team is preparing Mason Rudolph to start Friday vs. Denver. twitter"
+  },
+  {
+   "id": "at://did:plc:fuqjc7x4gxvnwzksnlxwbe4x/app.bsky.feed.post/3n35gwx2mls2c|masonrudolph|active|starting",
+   "at": "2026-11-25T15:10:22.225Z",
+   "seen": "2026-11-25T15:22:23.020Z",
+   "handle": "nflnewsposter.bsky.social",
+   "post": "at://did:plc:fuqjc7x4gxvnwzksnlxwbe4x/app.bsky.feed.post/3n35gwx2mls2c",
+   "player": "Mason Rudolph",
+   "team": "PIT",
+   "status": "active",
+   "kind": "starting",
+   "confidence": 0.8,
+   "text": "[Pelissero] The Steelers excused Aaron Rodgers from coming to the facility today in the aftermath of his benching, per sources.\n\nThe team is preparing Mason Rudolph to start Friday vs. Denver. twitter"
+  },
+  {
+   "id": "at://did:plc:hlvr2omhnmvdmfnvmcuhyevz/app.bsky.feed.post/3n35h3ergu225|aaronrodgers|none|benched",
+   "at": "2026-11-25T15:12:50.823Z",
+   "seen": "2026-11-25T15:22:23.020Z",
+   "handle": "rapsheet.bsky.social",
+   "post": "at://did:plc:hlvr2omhnmvdmfnvmcuhyevz/app.bsky.feed.post/3n35h3ergu225",
+   "player": "Aaron Rodgers",
+   "team": null,
+   "status": "none",
+   "kind": "benched",
+   "confidence": 0.8,
+   "text": "Stunning news from late night: Aaron Rodgers was benched."
   }
  ]
 }

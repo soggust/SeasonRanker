@@ -3,24 +3,11 @@
  "cursor": {
   "johnston-bot.bsky.social": "2026-11-24T02:44:36.491Z",
   "notfriedgehnic.bsky.social": "2026-11-24T19:12:46.578Z",
-  "dailyfaceoff.bsky.social": "2026-11-25T14:01:25.000Z",
-  "dfotoronto.bsky.social": "2026-11-25T14:50:53.000Z",
+  "dailyfaceoff.bsky.social": "2026-11-25T15:13:18.000Z",
+  "dfotoronto.bsky.social": "2026-11-25T15:13:17.000Z",
   "marklazerus.bsky.social": "2026-11-24T21:54:41.028Z"
  },
  "claims": [
-  {
-   "id": "at://did:plc:3uus7y6h3rlrk6sbctzxm4bg/app.bsky.feed.post/3mzimuiohgs2r|johngibson|none|status",
-   "at": "2026-11-04T15:05:16.000Z",
-   "seen": "2026-11-04T15:41:29.919Z",
-   "handle": "dailyfaceoff.bsky.social",
-   "post": "at://did:plc:3uus7y6h3rlrk6sbctzxm4bg/app.bsky.feed.post/3mzimuiohgs2r",
-   "player": "John Gibson",
-   "team": "DET",
-   "status": "none",
-   "kind": "status",
-   "confidence": 0.3,
-   "text": "Red Wings’ John Gibson left the game last night with a lower-body injury. #nhl #nhlhockey #dailyfaceoff"
-  },
   {
    "id": "at://did:plc:knaj2vcp4x6t7hr7ewd6e3uz/app.bsky.feed.post/3mziz6krzli26|jackroslovic|none|restriction",
    "at": "2026-11-04T18:45:38.000Z",
@@ -2802,6 +2789,19 @@
    "kind": "return",
    "confidence": 0.35,
    "text": "Cale Makar is hoping to make his return to the Avalanche lineup against the Montreal Canadiens."
+  },
+  {
+   "id": "at://did:plc:knaj2vcp4x6t7hr7ewd6e3uz/app.bsky.feed.post/3n35h45udhm2u|moldenhauer|none|status",
+   "at": "2026-11-25T15:13:17.000Z",
+   "seen": "2026-11-25T15:22:23.020Z",
+   "handle": "dfotoronto.bsky.social",
+   "post": "at://did:plc:knaj2vcp4x6t7hr7ewd6e3uz/app.bsky.feed.post/3n35h45udhm2u",
+   "player": "Moldenhauer",
+   "team": "TOR",
+   "status": "none",
+   "kind": "status",
+   "confidence": 0.3,
+   "text": "Maple Leafs Prospect Roundup: Akhtyamov on call, Moldenhauer injured in fight-filled affair"
   }
  ]
 }
