@@ -1,7 +1,7 @@
 {
  "sport": "nfl",
  "cursor": {
-  "adamscheftermirror.bsky.social": "2026-11-25T03:06:58.061Z",
+  "adamscheftermirror.bsky.social": "2026-11-25T06:41:58.481Z",
   "rapsheet.bsky.social": "2026-11-24T21:40:28.473Z",
   "nflnewsreposterbot.bsky.social": "2026-11-24T21:39:05.332Z",
   "insidenflnews.bsky.social": "2026-11-25T04:54:44.545Z",
@@ -18144,6 +18144,58 @@
    "kind": "starting",
    "confidence": 0.9,
    "text": "Mason Rudolph: Will start Friday against Denver \n\n https://www.rotowire.com/football/player/mason-rudolph-12629"
+  },
+  {
+   "id": "at://did:plc:qre6zxbmr3ixhdmgsgdretb5/app.bsky.feed.post/3n34jp2ijum2w|masonrudolph|active|starting",
+   "at": "2026-11-25T06:26:58.800Z",
+   "seen": "2026-11-25T06:50:31.611Z",
+   "handle": "adamscheftermirror.bsky.social",
+   "post": "at://did:plc:qre6zxbmr3ixhdmgsgdretb5/app.bsky.feed.post/3n34jp2ijum2w",
+   "player": "Mason Rudolph",
+   "team": "PIT",
+   "status": "active",
+   "kind": "starting",
+   "confidence": 0.95,
+   "text": "Steelers announced that Mason Rudolph is starting Friday against the Denver Broncos and Aaron Rodgers will be inactive\n\nOriginal post"
+  },
+  {
+   "id": "at://did:plc:qre6zxbmr3ixhdmgsgdretb5/app.bsky.feed.post/3n34jp2ijum2w|aaronrodgers|out|status",
+   "at": "2026-11-25T06:26:58.800Z",
+   "seen": "2026-11-25T06:50:31.611Z",
+   "handle": "adamscheftermirror.bsky.social",
+   "post": "at://did:plc:qre6zxbmr3ixhdmgsgdretb5/app.bsky.feed.post/3n34jp2ijum2w",
+   "player": "Aaron Rodgers",
+   "team": "PIT",
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.95,
+   "text": "Steelers announced that Mason Rudolph is starting Friday against the Denver Broncos and Aaron Rodgers will be inactive\n\nOriginal post"
+  },
+  {
+   "id": "at://did:plc:qre6zxbmr3ixhdmgsgdretb5/app.bsky.feed.post/3n34kjuionn2y|aaronrodgers|none|benched",
+   "at": "2026-11-25T06:41:58.481Z",
+   "seen": "2026-11-25T06:50:31.611Z",
+   "handle": "adamscheftermirror.bsky.social",
+   "post": "at://did:plc:qre6zxbmr3ixhdmgsgdretb5/app.bsky.feed.post/3n34kjuionn2y",
+   "player": "Aaron Rodgers",
+   "team": "PIT",
+   "status": "none",
+   "kind": "benched",
+   "confidence": 0.9,
+   "text": "More about the Pittsburgh Steelers benching Aaron Rodgers and starting Mason Rudolph, via @bepryor:\n\nOriginal post"
+  },
+  {
+   "id": "at://did:plc:qre6zxbmr3ixhdmgsgdretb5/app.bsky.feed.post/3n34kjuionn2y|masonrudolph|none|starting",
+   "at": "2026-11-25T06:41:58.481Z",
+   "seen": "2026-11-25T06:50:31.611Z",
+   "handle": "adamscheftermirror.bsky.social",
+   "post": "at://did:plc:qre6zxbmr3ixhdmgsgdretb5/app.bsky.feed.post/3n34kjuionn2y",
+   "player": "Mason Rudolph",
+   "team": "PIT",
+   "status": "none",
+   "kind": "starting",
+   "confidence": 0.9,
+   "text": "More about the Pittsburgh Steelers benching Aaron Rodgers and starting Mason Rudolph, via @bepryor:\n\nOriginal post"
   }
  ]
 }
