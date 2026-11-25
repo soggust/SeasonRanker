@@ -21298,6 +21298,663 @@
     "own": "2026-11-24T23:19:41.000Z",
     "why": "@rotowirenba.bsky.social: Aday Mara: Ruled out for Wednesday \n\n https://www.roto"
    }
+  },
+  "401909318|dennisschroder|out": {
+   "game": "401909318",
+   "start": "2026-11-26T00:00Z",
+   "team": "30",
+   "name": "Dennis Schroder",
+   "status": "out",
+   "athlete": "3032979",
+   "espn": {
+    "seen": "2026-11-25T02:41:44.443Z",
+    "own": "2026-11-24T22:32:00.000Z"
+   }
+  },
+  "401909318|sionjames|q": {
+   "game": "401909318",
+   "start": "2026-11-26T00:00Z",
+   "team": "30",
+   "name": "Sion James",
+   "status": "q",
+   "athlete": "4602025",
+   "espn": {
+    "seen": "2026-11-25T02:41:44.443Z",
+    "own": "2026-11-24T22:30:00.000Z"
+   }
+  },
+  "401909318|graysonallen|out": {
+   "game": "401909318",
+   "start": "2026-11-26T00:00Z",
+   "team": "30",
+   "name": "Grayson Allen",
+   "status": "out",
+   "athlete": "3135045",
+   "espn": {
+    "seen": "2026-11-25T02:41:44.443Z",
+    "own": "2026-11-24T22:29:00.000Z"
+   }
+  },
+  "401909318|konknueppel|out": {
+   "game": "401909318",
+   "start": "2026-11-26T00:00Z",
+   "team": "30",
+   "name": "Kon Knueppel",
+   "status": "out",
+   "athlete": "5061575",
+   "espn": {
+    "seen": "2026-11-25T02:41:44.443Z",
+    "own": "2026-11-08T22:31:00.000Z"
+   }
+  },
+  "401909318|duncanrobinson|q": {
+   "game": "401909318",
+   "start": "2026-11-26T00:00Z",
+   "team": "30",
+   "name": "Duncan Robinson",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-11-24T18:33:22.254Z",
+    "own": "2026-11-24T18:30:18.000Z",
+    "why": "@rotowirenba.bsky.social: Duncan Robinson: Considered day-to-day \n\n https://www."
+   }
+  },
+  "401909318|oganunoby|out": {
+   "game": "401909318",
+   "start": "2026-11-26T00:00Z",
+   "team": "30",
+   "name": "OG Anunoby",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-24T22:10:03.053Z",
+    "own": "2026-11-24T21:53:18.000Z",
+    "why": "@rotowirenba.bsky.social: OG Anunoby: Ruled out for Wednesday \n\n https://www.rot"
+   }
+  },
+  "401909318|giannisantetokounmpo|q": {
+   "game": "401909318",
+   "start": "2026-11-26T00:00Z",
+   "team": "30",
+   "name": "Giannis Antetokounmpo",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-11-24T22:10:03.053Z",
+    "own": "2026-11-24T22:07:22.000Z",
+    "why": "@rotowirenba.bsky.social: Giannis Antetokounmpo: Questionable for Wednesday \n\n h"
+   }
+  },
+  "401909318|ryankalkbrenner|out": {
+   "game": "401909318",
+   "start": "2026-11-26T00:00Z",
+   "team": "30",
+   "name": "Ryan Kalkbrenner",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-24T23:17:40.348Z",
+    "own": "2026-11-24T22:33:39.000Z",
+    "why": "@rotowirenba.bsky.social: Ryan Kalkbrenner: Doubtful for Wednesday \n\n https://ww"
+   }
+  },
+  "401909318|adaymara|out": {
+   "game": "401909318",
+   "start": "2026-11-26T00:00Z",
+   "team": "30",
+   "name": "Aday Mara",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-25T00:06:16.183Z",
+    "own": "2026-11-24T23:19:41.000Z",
+    "why": "@rotowirenba.bsky.social: Aday Mara: Ruled out for Wednesday \n\n https://www.roto"
+   }
+  },
+  "401909318|jalensmith|q": {
+   "game": "401909318",
+   "start": "2026-11-26T00:00Z",
+   "team": "4",
+   "name": "Jalen Smith",
+   "status": "q",
+   "athlete": "4397189",
+   "espn": {
+    "seen": "2026-11-25T02:41:44.443Z",
+    "own": "2026-11-24T18:21:00.000Z"
+   },
+   "sleeper": {
+    "seen": "2026-11-24T20:09:42.623Z",
+    "own": "2026-11-24T18:25:48.088Z"
+   }
+  },
+  "401909318|normanpowell|out": {
+   "game": "401909318",
+   "start": "2026-11-26T00:00Z",
+   "team": "4",
+   "name": "Norman Powell",
+   "status": "out",
+   "athlete": "2595516",
+   "espn": {
+    "seen": "2026-11-25T02:41:44.443Z",
+    "own": "2026-11-22T15:25:00.000Z"
+   }
+  },
+  "401909318|calebwilson|out": {
+   "game": "401909318",
+   "start": "2026-11-26T00:00Z",
+   "team": "4",
+   "name": "Caleb Wilson",
+   "status": "out",
+   "athlete": "5095151",
+   "espn": {
+    "seen": "2026-11-25T02:41:44.443Z",
+    "own": "2026-11-12T21:35:00.000Z"
+   }
+  },
+  "401909321|scottypippen|out": {
+   "game": "401909321",
+   "start": "2026-11-26T01:00Z",
+   "team": "29",
+   "name": "Scotty Pippen Jr.",
+   "status": "out",
+   "athlete": "4431785",
+   "espn": {
+    "seen": "2026-11-25T02:41:44.443Z",
+    "own": "2026-11-24T23:04:00.000Z"
+   }
+  },
+  "401909321|cameronboozer|out": {
+   "game": "401909321",
+   "start": "2026-11-26T01:00Z",
+   "team": "29",
+   "name": "Cameron Boozer",
+   "status": "out",
+   "athlete": "5041935",
+   "espn": {
+    "seen": "2026-11-25T02:41:44.443Z",
+    "own": "2026-11-23T23:07:00.000Z"
+   }
+  },
+  "401909321|jeramigrant|out": {
+   "game": "401909321",
+   "start": "2026-11-26T01:00Z",
+   "team": "29",
+   "name": "Jerami Grant",
+   "status": "out",
+   "athlete": "2991070",
+   "espn": {
+    "seen": "2026-11-25T02:41:44.443Z",
+    "own": "2026-11-23T04:04:00.000Z"
+   }
+  },
+  "401909321|ggjackson|out": {
+   "game": "401909321",
+   "start": "2026-11-26T01:00Z",
+   "team": "29",
+   "name": "GG Jackson",
+   "status": "out",
+   "athlete": "5105550",
+   "espn": {
+    "seen": "2026-11-25T02:41:44.443Z",
+    "own": "2026-11-17T23:18:00.000Z"
+   }
+  },
+  "401909321|richiesaunders|out": {
+   "game": "401909321",
+   "start": "2026-11-26T01:00Z",
+   "team": "29",
+   "name": "Richie Saunders",
+   "status": "out",
+   "athlete": "5105462",
+   "espn": {
+    "seen": "2026-11-25T02:41:44.443Z",
+    "own": "2026-11-07T17:24:00.000Z"
+   }
+  },
+  "401909321|oganunoby|out": {
+   "game": "401909321",
+   "start": "2026-11-26T01:00Z",
+   "team": "29",
+   "name": "OG Anunoby",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-24T22:10:03.053Z",
+    "own": "2026-11-24T21:53:18.000Z",
+    "why": "@rotowirenba.bsky.social: OG Anunoby: Ruled out for Wednesday \n\n https://www.rot"
+   }
+  },
+  "401909321|giannisantetokounmpo|q": {
+   "game": "401909321",
+   "start": "2026-11-26T01:00Z",
+   "team": "29",
+   "name": "Giannis Antetokounmpo",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-11-24T22:10:03.053Z",
+    "own": "2026-11-24T22:07:22.000Z",
+    "why": "@rotowirenba.bsky.social: Giannis Antetokounmpo: Questionable for Wednesday \n\n h"
+   }
+  },
+  "401909321|ryankalkbrenner|out": {
+   "game": "401909321",
+   "start": "2026-11-26T01:00Z",
+   "team": "29",
+   "name": "Ryan Kalkbrenner",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-24T23:17:40.348Z",
+    "own": "2026-11-24T22:33:39.000Z",
+    "why": "@rotowirenba.bsky.social: Ryan Kalkbrenner: Doubtful for Wednesday \n\n https://ww"
+   }
+  },
+  "401909321|adaymara|out": {
+   "game": "401909321",
+   "start": "2026-11-26T01:00Z",
+   "team": "29",
+   "name": "Aday Mara",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-25T00:06:16.183Z",
+    "own": "2026-11-24T23:19:41.000Z",
+    "why": "@rotowirenba.bsky.social: Aday Mara: Ruled out for Wednesday \n\n https://www.roto"
+   }
+  },
+  "401909321|bradleybeal|out": {
+   "game": "401909321",
+   "start": "2026-11-26T01:00Z",
+   "team": "12",
+   "name": "Bradley Beal",
+   "status": "out",
+   "athlete": "6580",
+   "espn": {
+    "seen": "2026-11-25T02:41:44.443Z",
+    "own": "2026-10-15T01:03:00.000Z"
+   }
+  },
+  "401909321|jordanmiller|out": {
+   "game": "401909321",
+   "start": "2026-11-26T01:00Z",
+   "team": "12",
+   "name": "Jordan Miller",
+   "status": "out",
+   "athlete": "4396818",
+   "espn": {
+    "seen": "2026-11-25T02:41:44.443Z",
+    "own": "2026-08-26T20:04:00.000Z"
+   }
+  },
+  "401909322|oganunoby|out": {
+   "game": "401909322",
+   "start": "2026-11-26T01:00Z",
+   "team": "15",
+   "name": "OG Anunoby",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-24T22:10:03.053Z",
+    "own": "2026-11-24T21:53:18.000Z",
+    "why": "@rotowirenba.bsky.social: OG Anunoby: Ruled out for Wednesday \n\n https://www.rot"
+   }
+  },
+  "401909322|giannisantetokounmpo|q": {
+   "game": "401909322",
+   "start": "2026-11-26T01:00Z",
+   "team": "15",
+   "name": "Giannis Antetokounmpo",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-11-24T22:10:03.053Z",
+    "own": "2026-11-24T22:07:22.000Z",
+    "why": "@rotowirenba.bsky.social: Giannis Antetokounmpo: Questionable for Wednesday \n\n h"
+   }
+  },
+  "401909322|ryankalkbrenner|out": {
+   "game": "401909322",
+   "start": "2026-11-26T01:00Z",
+   "team": "15",
+   "name": "Ryan Kalkbrenner",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-24T23:17:40.348Z",
+    "own": "2026-11-24T22:33:39.000Z",
+    "why": "@rotowirenba.bsky.social: Ryan Kalkbrenner: Doubtful for Wednesday \n\n https://ww"
+   }
+  },
+  "401909322|adaymara|out": {
+   "game": "401909322",
+   "start": "2026-11-26T01:00Z",
+   "team": "15",
+   "name": "Aday Mara",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-25T00:06:16.183Z",
+    "own": "2026-11-24T23:19:41.000Z",
+    "why": "@rotowirenba.bsky.social: Aday Mara: Ruled out for Wednesday \n\n https://www.roto"
+   }
+  },
+  "401909322|nolantraore|out": {
+   "game": "401909322",
+   "start": "2026-11-26T01:00Z",
+   "team": "17",
+   "name": "Nolan Traore",
+   "status": "out",
+   "athlete": "5279130",
+   "espn": {
+    "seen": "2026-11-25T02:41:44.443Z",
+    "own": "2026-11-23T15:22:00.000Z"
+   }
+  },
+  "401909324|yaxellendeborg|q": {
+   "game": "401909324",
+   "start": "2026-11-26T03:00Z",
+   "team": "9",
+   "name": "Yaxel Lendeborg",
+   "status": "q",
+   "athlete": "5175737",
+   "espn": {
+    "seen": "2026-11-25T02:41:44.443Z",
+    "own": "2026-11-24T23:20:00.000Z"
+   }
+  },
+  "401909324|brandonwilliams|out": {
+   "game": "401909324",
+   "start": "2026-11-26T03:00Z",
+   "team": "9",
+   "name": "Brandon Williams",
+   "status": "out",
+   "athlete": "4397040",
+   "espn": {
+    "seen": "2026-11-25T02:41:44.443Z",
+    "own": "2026-11-24T20:58:00.000Z"
+   }
+  },
+  "401909324|stephencurry|out": {
+   "game": "401909324",
+   "start": "2026-11-26T03:00Z",
+   "team": "9",
+   "name": "Stephen Curry",
+   "status": "out",
+   "athlete": "3975",
+   "espn": {
+    "seen": "2026-11-25T02:41:44.443Z",
+    "own": "2026-11-12T17:03:00.000Z"
+   }
+  },
+  "401909324|kristapsporzingis|out": {
+   "game": "401909324",
+   "start": "2026-11-26T03:00Z",
+   "team": "9",
+   "name": "Kristaps Porzingis",
+   "status": "out",
+   "athlete": "3102531",
+   "espn": {
+    "seen": "2026-11-25T02:41:44.443Z",
+    "own": "2026-11-06T21:26:00.000Z"
+   }
+  },
+  "401909324|mosesmoody|out": {
+   "game": "401909324",
+   "start": "2026-11-26T03:00Z",
+   "team": "9",
+   "name": "Moses Moody",
+   "status": "out",
+   "athlete": "4432171",
+   "espn": {
+    "seen": "2026-11-25T02:41:44.443Z",
+    "own": "2026-10-16T16:14:00.000Z"
+   }
+  },
+  "401909324|jimmybutler|out": {
+   "game": "401909324",
+   "start": "2026-11-26T03:00Z",
+   "team": "9",
+   "name": "Jimmy Butler III",
+   "status": "out",
+   "athlete": "6430",
+   "espn": {
+    "seen": "2026-11-25T02:41:44.443Z",
+    "own": "2026-10-16T16:11:00.000Z"
+   }
+  },
+  "401909324|oganunoby|out": {
+   "game": "401909324",
+   "start": "2026-11-26T03:00Z",
+   "team": "9",
+   "name": "OG Anunoby",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-24T22:10:03.053Z",
+    "own": "2026-11-24T21:53:18.000Z",
+    "why": "@rotowirenba.bsky.social: OG Anunoby: Ruled out for Wednesday \n\n https://www.rot"
+   }
+  },
+  "401909324|giannisantetokounmpo|q": {
+   "game": "401909324",
+   "start": "2026-11-26T03:00Z",
+   "team": "9",
+   "name": "Giannis Antetokounmpo",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-11-24T22:10:03.053Z",
+    "own": "2026-11-24T22:07:22.000Z",
+    "why": "@rotowirenba.bsky.social: Giannis Antetokounmpo: Questionable for Wednesday \n\n h"
+   }
+  },
+  "401909324|ryankalkbrenner|out": {
+   "game": "401909324",
+   "start": "2026-11-26T03:00Z",
+   "team": "9",
+   "name": "Ryan Kalkbrenner",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-24T23:17:40.348Z",
+    "own": "2026-11-24T22:33:39.000Z",
+    "why": "@rotowirenba.bsky.social: Ryan Kalkbrenner: Doubtful for Wednesday \n\n https://ww"
+   }
+  },
+  "401909324|adaymara|out": {
+   "game": "401909324",
+   "start": "2026-11-26T03:00Z",
+   "team": "9",
+   "name": "Aday Mara",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-25T00:06:16.183Z",
+    "own": "2026-11-24T23:19:41.000Z",
+    "why": "@rotowirenba.bsky.social: Aday Mara: Ruled out for Wednesday \n\n https://www.roto"
+   }
+  },
+  "401909324|maximeraynaud|out": {
+   "game": "401909324",
+   "start": "2026-11-26T03:00Z",
+   "team": "23",
+   "name": "Maxime Raynaud",
+   "status": "out",
+   "athlete": "4898371",
+   "espn": {
+    "seen": "2026-11-25T02:41:44.443Z",
+    "own": "2026-11-18T05:54:00.000Z"
+   }
+  },
+  "401909324|bensimmons|out": {
+   "game": "401909324",
+   "start": "2026-11-26T03:00Z",
+   "team": "23",
+   "name": "Ben Simmons",
+   "status": "out",
+   "athlete": "3907387",
+   "espn": {
+    "seen": "2026-11-25T02:41:44.443Z",
+    "own": "2026-10-21T04:22:00.000Z"
+   }
+  },
+  "401909324|deaaronfox|q": {
+   "game": "401909324",
+   "start": "2026-11-26T03:00Z",
+   "team": "23",
+   "name": "De'Aaron Fox",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-11-25T02:15:46.259Z",
+    "own": "2026-11-25T01:27:12.000Z",
+    "why": "@rotowirenba.bsky.social: De'Aaron Fox: Questionable for Wednesday \n\n https://ww"
+   }
+  },
+  "401909325|chrisyoungblood|out": {
+   "game": "401909325",
+   "start": "2026-11-26T03:00Z",
+   "team": "22",
+   "name": "Chris Youngblood",
+   "status": "out",
+   "athlete": "4706557",
+   "espn": {
+    "seen": "2026-11-25T02:41:44.443Z",
+    "own": "2026-11-20T22:18:00.000Z"
+   }
+  },
+  "401909325|vitkrejci|out": {
+   "game": "401909325",
+   "start": "2026-11-26T03:00Z",
+   "team": "22",
+   "name": "Vit Krejci",
+   "status": "out",
+   "athlete": "4578893",
+   "espn": {
+    "seen": "2026-11-25T02:41:44.443Z",
+    "own": "2026-11-11T19:56:00.000Z"
+   }
+  },
+  "401909325|jamorant|out": {
+   "game": "401909325",
+   "start": "2026-11-26T03:00Z",
+   "team": "22",
+   "name": "Ja Morant",
+   "status": "out",
+   "athlete": "4279888",
+   "espn": {
+    "seen": "2026-11-25T02:41:44.443Z",
+    "own": "2026-11-08T02:18:00.000Z"
+   }
+  },
+  "401909325|shaedonsharpe|out": {
+   "game": "401909325",
+   "start": "2026-11-26T03:00Z",
+   "team": "22",
+   "name": "Shaedon Sharpe",
+   "status": "out",
+   "athlete": "4914336",
+   "espn": {
+    "seen": "2026-11-25T02:41:44.443Z",
+    "own": "2026-08-24T20:23:00.000Z"
+   }
+  },
+  "401909325|oganunoby|out": {
+   "game": "401909325",
+   "start": "2026-11-26T03:00Z",
+   "team": "22",
+   "name": "OG Anunoby",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-24T22:10:03.053Z",
+    "own": "2026-11-24T21:53:18.000Z",
+    "why": "@rotowirenba.bsky.social: OG Anunoby: Ruled out for Wednesday \n\n https://www.rot"
+   }
+  },
+  "401909325|giannisantetokounmpo|q": {
+   "game": "401909325",
+   "start": "2026-11-26T03:00Z",
+   "team": "22",
+   "name": "Giannis Antetokounmpo",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-11-24T22:10:03.053Z",
+    "own": "2026-11-24T22:07:22.000Z",
+    "why": "@rotowirenba.bsky.social: Giannis Antetokounmpo: Questionable for Wednesday \n\n h"
+   }
+  },
+  "401909325|ryankalkbrenner|out": {
+   "game": "401909325",
+   "start": "2026-11-26T03:00Z",
+   "team": "22",
+   "name": "Ryan Kalkbrenner",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-24T23:17:40.348Z",
+    "own": "2026-11-24T22:33:39.000Z",
+    "why": "@rotowirenba.bsky.social: Ryan Kalkbrenner: Doubtful for Wednesday \n\n https://ww"
+   }
+  },
+  "401909325|adaymara|out": {
+   "game": "401909325",
+   "start": "2026-11-26T03:00Z",
+   "team": "22",
+   "name": "Aday Mara",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-25T00:06:16.183Z",
+    "own": "2026-11-24T23:19:41.000Z",
+    "why": "@rotowirenba.bsky.social: Aday Mara: Ruled out for Wednesday \n\n https://www.roto"
+   }
+  },
+  "401909325|deaaronfox|q": {
+   "game": "401909325",
+   "start": "2026-11-26T03:00Z",
+   "team": "24",
+   "name": "De'Aaron Fox",
+   "status": "q",
+   "athlete": "4066259",
+   "espn": {
+    "seen": "2026-11-25T02:41:44.443Z",
+    "own": "2026-11-25T01:27:00.000Z"
+   }
+  },
+  "401909325|victorwembanyama|q": {
+   "game": "401909325",
+   "start": "2026-11-26T03:00Z",
+   "team": "24",
+   "name": "Victor Wembanyama",
+   "status": "q",
+   "athlete": "5104157",
+   "espn": {
+    "seen": "2026-11-25T02:41:44.443Z",
+    "own": "2026-11-25T01:23:00.000Z"
+   },
+   "bluesky": {
+    "seen": "2026-11-25T02:15:46.259Z",
+    "own": "2026-11-25T01:23:41.000Z",
+    "why": "@rotowirenba.bsky.social: Victor Wembanyama: Questionable for Wednesday \n\n https"
+   }
+  },
+  "401909325|dylanharper|out": {
+   "game": "401909325",
+   "start": "2026-11-26T03:00Z",
+   "team": "24",
+   "name": "Dylan Harper",
+   "status": "out",
+   "athlete": "5037871",
+   "espn": {
+    "seen": "2026-11-25T02:41:44.443Z",
+    "own": "2026-11-19T20:07:00.000Z"
+   }
+  },
+  "401909325|tobiasharris|out": {
+   "game": "401909325",
+   "start": "2026-11-26T03:00Z",
+   "team": "24",
+   "name": "Tobias Harris",
+   "status": "out",
+   "athlete": "6440",
+   "espn": {
+    "seen": "2026-11-25T02:41:44.443Z",
+    "own": "2026-11-16T19:26:00.000Z"
+   }
+  },
+  "401909325|jaydenquaintance|out": {
+   "game": "401909325",
+   "start": "2026-11-26T03:00Z",
+   "team": "24",
+   "name": "Jayden Quaintance",
+   "status": "out",
+   "athlete": "5101845",
+   "espn": {
+    "seen": "2026-11-25T02:41:44.443Z",
+    "own": "2026-10-05T21:43:00.000Z"
+   }
   }
  }
 }
