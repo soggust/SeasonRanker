@@ -3,7 +3,7 @@
  "cursor": {
   "johnston-bot.bsky.social": "2026-11-24T02:44:36.491Z",
   "notfriedgehnic.bsky.social": "2026-11-25T16:14:53.144Z",
-  "dailyfaceoff.bsky.social": "2026-11-25T17:39:57.000Z",
+  "dailyfaceoff.bsky.social": "2026-11-25T18:12:53.000Z",
   "dfotoronto.bsky.social": "2026-11-25T17:23:25.000Z",
   "marklazerus.bsky.social": "2026-11-25T15:31:55.447Z"
  },
@@ -2854,6 +2854,32 @@
    "kind": "return",
    "confidence": 0.8,
    "text": "Lightning’s Brandon Hagel, Zemgus Girgensons expected to return against Hurricanes"
+  },
+  {
+   "id": "at://did:plc:3uus7y6h3rlrk6sbctzxm4bg/app.bsky.feed.post/3n35qn5yhjg2i|aleksanderbarkov|active|return",
+   "at": "2026-11-25T18:03:51.000Z",
+   "seen": "2026-11-25T18:19:37.845Z",
+   "handle": "dailyfaceoff.bsky.social",
+   "post": "at://did:plc:3uus7y6h3rlrk6sbctzxm4bg/app.bsky.feed.post/3n35qn5yhjg2i",
+   "player": "Aleksander Barkov",
+   "team": "FLA",
+   "status": "active",
+   "kind": "return",
+   "confidence": 0.9,
+   "text": "Barkov, Marchand to return for Panthers against Senators"
+  },
+  {
+   "id": "at://did:plc:3uus7y6h3rlrk6sbctzxm4bg/app.bsky.feed.post/3n35qn5yhjg2i|bradmarchand|active|return",
+   "at": "2026-11-25T18:03:51.000Z",
+   "seen": "2026-11-25T18:19:37.845Z",
+   "handle": "dailyfaceoff.bsky.social",
+   "post": "at://did:plc:3uus7y6h3rlrk6sbctzxm4bg/app.bsky.feed.post/3n35qn5yhjg2i",
+   "player": "Brad Marchand",
+   "team": "FLA",
+   "status": "active",
+   "kind": "return",
+   "confidence": 0.9,
+   "text": "Barkov, Marchand to return for Panthers against Senators"
   }
  ]
 }

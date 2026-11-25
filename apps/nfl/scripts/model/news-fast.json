@@ -5,89 +5,11 @@
   "rapsheet.bsky.social": "2026-11-25T16:50:56.473Z",
   "nflnewsreposterbot.bsky.social": "2026-11-24T21:39:05.332Z",
   "insidenflnews.bsky.social": "2026-11-25T17:52:57.714Z",
-  "nflnewsposter.bsky.social": "2026-11-25T16:35:14.590Z",
-  "rotoworld-fb.bsky.social": "2026-11-25T17:52:47.000Z",
-  "rotowirenfl.bsky.social": "2026-11-25T17:17:00.000Z"
+  "nflnewsposter.bsky.social": "2026-11-25T18:19:36.265Z",
+  "rotoworld-fb.bsky.social": "2026-11-25T18:06:57.000Z",
+  "rotowirenfl.bsky.social": "2026-11-25T18:16:08.000Z"
  },
  "claims": [
-  {
-   "id": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3mziwmn4cwx2v|micahparsons|limited|status",
-   "at": "2026-11-04T17:59:49.000Z",
-   "seen": "2026-11-04T19:15:38.243Z",
-   "handle": "rotowirenfl.bsky.social",
-   "post": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3mziwmn4cwx2v",
-   "player": "Micah Parsons",
-   "team": "GB",
-   "status": "limited",
-   "kind": "status",
-   "confidence": 0.8,
-   "text": "Micah Parsons: Making return to practice Wednesday \n\n https://www.rotowire.com/football/player/micah-parsons-15182"
-  },
-  {
-   "id": "at://did:plc:mbr4badgf6yu56mquzackzew/app.bsky.feed.post/3mziwt47kxk2p|ajbrown|questionable|status",
-   "at": "2026-11-04T18:03:27.150Z",
-   "seen": "2026-11-04T19:15:38.243Z",
-   "handle": "insidenflnews.bsky.social",
-   "post": "at://did:plc:mbr4badgf6yu56mquzackzew/app.bsky.feed.post/3mziwt47kxk2p",
-   "player": "A.J. Brown",
-   "team": "NE",
-   "status": "questionable",
-   "kind": "status",
-   "confidence": 0.5,
-   "text": "Patriots WR A.J. Brown (ankle, knee) and RB TreVeyon Henderson (illness) will not practice Wednesday."
-  },
-  {
-   "id": "at://did:plc:mbr4badgf6yu56mquzackzew/app.bsky.feed.post/3mziwt47kxk2p|treveyonhenderson|questionable|status",
-   "at": "2026-11-04T18:03:27.150Z",
-   "seen": "2026-11-04T19:15:38.243Z",
-   "handle": "insidenflnews.bsky.social",
-   "post": "at://did:plc:mbr4badgf6yu56mquzackzew/app.bsky.feed.post/3mziwt47kxk2p",
-   "player": "TreVeyon Henderson",
-   "team": "NE",
-   "status": "questionable",
-   "kind": "status",
-   "confidence": 0.5,
-   "text": "Patriots WR A.J. Brown (ankle, knee) and RB TreVeyon Henderson (illness) will not practice Wednesday."
-  },
-  {
-   "id": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3mzix3cpy6w25|ajbrown|questionable|status",
-   "at": "2026-11-04T18:08:02.000Z",
-   "seen": "2026-11-04T19:15:38.243Z",
-   "handle": "rotoworld-fb.bsky.social",
-   "post": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3mzix3cpy6w25",
-   "player": "A.J. Brown",
-   "team": "NE",
-   "status": "questionable",
-   "kind": "status",
-   "confidence": 0.5,
-   "text": "Vrabel: A.J. Brown (knee) won't practice Wednesday"
-  },
-  {
-   "id": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3mzixeqgxna2s|ajbrown|questionable|status",
-   "at": "2026-11-04T18:13:18.000Z",
-   "seen": "2026-11-04T19:15:38.243Z",
-   "handle": "rotowirenfl.bsky.social",
-   "post": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3mzixeqgxna2s",
-   "player": "A.J. Brown",
-   "team": "NE",
-   "status": "questionable",
-   "kind": "status",
-   "confidence": 0.5,
-   "text": "A.J. Brown: Set to miss Wednesday's practice \n\n https://www.rotowire.com/football/player/aj-brown-13432"
-  },
-  {
-   "id": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3mzixlftzri25|treveyonhenderson|questionable|status",
-   "at": "2026-11-04T18:17:02.000Z",
-   "seen": "2026-11-04T19:15:38.243Z",
-   "handle": "rotoworld-fb.bsky.social",
-   "post": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3mzixlftzri25",
-   "player": "TreVeyon Henderson",
-   "team": "NE",
-   "status": "questionable",
-   "kind": "status",
-   "confidence": 0.5,
-   "text": "Henderson (illness) not practicing on Wednesday"
-  },
   {
    "id": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3mziylmehty2b|tuten|questionable|status",
    "at": "2026-11-04T18:35:03.000Z",
@@ -17897,6 +17819,19 @@
    "kind": "starting",
    "confidence": 0.93,
    "text": "Chiefs officially ruled out RB Kenneth Walker for the Thursday night matchup versus the Bills due to his groin injury. Rookie RB Emmett Johnson will start in place of Walker for the third straight gam"
+  },
+  {
+   "id": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3n35qkfazt62q|cooper|none|status",
+   "at": "2026-11-25T18:02:18.000Z",
+   "seen": "2026-11-25T18:19:37.845Z",
+   "handle": "rotoworld-fb.bsky.social",
+   "post": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3n35qkfazt62q",
+   "player": "Cooper",
+   "team": null,
+   "status": "none",
+   "kind": "status",
+   "confidence": 0.6,
+   "text": "Cooper (ankle) does not practice Wednesday"
   }
  ]
 }
