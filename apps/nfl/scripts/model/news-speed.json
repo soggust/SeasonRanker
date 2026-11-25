@@ -14711,6 +14711,186 @@
     "seen": "2026-11-25T21:27:24.925Z",
     "own": "2026-11-25T17:02:00.000Z"
    }
+  },
+  "401873088|druphillips|q": {
+   "game": "401873088",
+   "start": "2026-11-29T18:00Z",
+   "team": "19",
+   "name": "Dru Phillips",
+   "status": "q",
+   "athlete": "4431321",
+   "espn": {
+    "seen": "2026-11-25T22:12:43.719Z",
+    "own": "2026-11-25T21:15:00.000Z"
+   }
+  },
+  "401873088|arvellreese|q": {
+   "game": "401873088",
+   "start": "2026-11-29T18:00Z",
+   "team": "19",
+   "name": "Arvell Reese",
+   "status": "q",
+   "athlete": "4950400",
+   "espn": {
+    "seen": "2026-11-25T22:12:43.719Z",
+    "own": "2026-11-25T21:15:00.000Z"
+   }
+  },
+  "401873088|isaiahlikely|q": {
+   "game": "401873088",
+   "start": "2026-11-29T18:00Z",
+   "team": "19",
+   "name": "Isaiah Likely",
+   "status": "q",
+   "athlete": "4361050",
+   "espn": {
+    "seen": "2026-11-25T22:12:43.719Z",
+    "own": "2026-11-25T21:14:00.000Z"
+   }
+  },
+  "401873089|jacksonwoodard|q": {
+   "game": "401873089",
+   "start": "2026-11-29T18:00Z",
+   "team": "15",
+   "name": "Jackson Woodard",
+   "status": "q",
+   "athlete": "4685637",
+   "espn": {
+    "seen": "2026-11-25T22:12:43.719Z",
+    "own": "2026-11-25T21:30:00.000Z"
+   }
+  },
+  "401873089|rodneymcgraw|q": {
+   "game": "401873089",
+   "start": "2026-11-29T18:00Z",
+   "team": "15",
+   "name": "Rodney McGraw",
+   "status": "q",
+   "athlete": "4433974",
+   "espn": {
+    "seen": "2026-11-25T22:12:43.719Z",
+    "own": "2026-11-25T21:30:00.000Z"
+   }
+  },
+  "401873089|austinjackson|q": {
+   "game": "401873089",
+   "start": "2026-11-29T18:00Z",
+   "team": "15",
+   "name": "Austin Jackson",
+   "status": "q",
+   "athlete": "4271632",
+   "espn": {
+    "seen": "2026-11-25T22:12:43.719Z",
+    "own": "2026-11-25T21:29:00.000Z"
+   }
+  },
+  "401873084|jamespearce|q": {
+   "game": "401873084",
+   "start": "2026-11-29T18:00Z",
+   "team": "1",
+   "name": "James Pearce Jr.",
+   "status": "q",
+   "athlete": "5081394",
+   "espn": {
+    "seen": "2026-11-25T22:12:43.719Z",
+    "own": "2026-11-25T21:41:00.000Z"
+   }
+  },
+  "401873084|jahandotson|q": {
+   "game": "401873084",
+   "start": "2026-11-29T18:00Z",
+   "team": "1",
+   "name": "Jahan Dotson",
+   "status": "q",
+   "athlete": "4361409",
+   "espn": {
+    "seen": "2026-11-25T22:12:43.719Z",
+    "own": "2026-11-25T21:37:00.000Z"
+   }
+  },
+  "401873084|demarccohellams|q": {
+   "game": "401873084",
+   "start": "2026-11-29T18:00Z",
+   "team": "1",
+   "name": "DeMarcco Hellams",
+   "status": "q",
+   "athlete": "4567111",
+   "espn": {
+    "seen": "2026-11-25T22:12:43.719Z",
+    "own": "2026-11-25T21:37:00.000Z"
+   }
+  },
+  "401873084|matthewbergeron|q": {
+   "game": "401873084",
+   "start": "2026-11-29T18:00Z",
+   "team": "1",
+   "name": "Matthew Bergeron",
+   "status": "q",
+   "athlete": "4568510",
+   "espn": {
+    "seen": "2026-11-25T22:12:43.719Z",
+    "own": "2026-11-25T21:36:00.000Z"
+   }
+  },
+  "401873084|billybowman|q": {
+   "game": "401873084",
+   "start": "2026-11-29T18:00Z",
+   "team": "1",
+   "name": "Billy Bowman Jr.",
+   "status": "q",
+   "athlete": "4431194",
+   "espn": {
+    "seen": "2026-11-25T22:12:43.719Z",
+    "own": "2026-11-25T21:36:00.000Z"
+   }
+  },
+  "401873090|colevanlanen|q": {
+   "game": "401873090",
+   "start": "2026-11-29T18:00Z",
+   "team": "30",
+   "name": "Cole Van Lanen",
+   "status": "q",
+   "athlete": "4035791",
+   "espn": {
+    "seen": "2026-11-25T22:12:43.719Z",
+    "own": "2026-11-25T21:19:00.000Z"
+   }
+  },
+  "401873090|jonahmonheim|q": {
+   "game": "401873090",
+   "start": "2026-11-29T18:00Z",
+   "team": "30",
+   "name": "Jonah Monheim",
+   "status": "q",
+   "athlete": "4430481",
+   "espn": {
+    "seen": "2026-11-25T22:12:43.719Z",
+    "own": "2026-11-25T21:19:00.000Z"
+   }
+  },
+  "401873090|dennisgardeck|q": {
+   "game": "401873090",
+   "start": "2026-11-29T18:00Z",
+   "team": "30",
+   "name": "Dennis Gardeck",
+   "status": "q",
+   "athlete": "4334300",
+   "espn": {
+    "seen": "2026-11-25T22:12:43.719Z",
+    "own": "2026-11-25T21:19:00.000Z"
+   }
+  },
+  "401873090|johnfranklinmyers|q": {
+   "game": "401873090",
+   "start": "2026-11-29T18:00Z",
+   "team": "10",
+   "name": "John Franklin-Myers",
+   "status": "q",
+   "athlete": "3120464",
+   "espn": {
+    "seen": "2026-11-25T22:12:43.719Z",
+    "own": "2026-11-25T21:55:00.000Z"
+   }
   }
  }
 }
