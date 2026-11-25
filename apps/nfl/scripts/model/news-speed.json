@@ -16947,6 +16947,42 @@
     "seen": "2026-11-25T20:23:58.730Z",
     "own": "2026-11-25T18:50:00.000Z"
    }
+  },
+  "401873081|tyriquestevenson|q": {
+   "game": "401873081",
+   "start": "2026-11-26T18:00Z",
+   "team": "3",
+   "name": "Tyrique Stevenson Sr.",
+   "status": "q",
+   "athlete": "4426374",
+   "espn": {
+    "seen": "2026-11-25T20:31:37.873Z",
+    "own": "2026-11-25T20:29:00.000Z"
+   }
+  },
+  "401873080|jalenthompson|q": {
+   "game": "401873080",
+   "start": "2026-11-26T21:30Z",
+   "team": "6",
+   "name": "Jalen Thompson",
+   "status": "q",
+   "athlete": "4043089",
+   "espn": {
+    "seen": "2026-11-25T20:31:37.873Z",
+    "own": "2026-11-25T20:22:00.000Z"
+   }
+  },
+  "401873092|stefondiggs|q": {
+   "game": "401873092",
+   "start": "2026-11-29T21:25Z",
+   "team": "28",
+   "name": "Stefon Diggs",
+   "status": "q",
+   "athlete": "2976212",
+   "espn": {
+    "seen": "2026-11-25T20:31:37.873Z",
+    "own": "2026-11-25T20:20:00.000Z"
+   }
   }
  }
 }
