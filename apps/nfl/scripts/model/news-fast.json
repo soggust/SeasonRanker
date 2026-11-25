@@ -4,7 +4,7 @@
   "adamscheftermirror.bsky.social": "2026-11-24T23:16:55.245Z",
   "rapsheet.bsky.social": "2026-11-24T21:40:28.473Z",
   "nflnewsreposterbot.bsky.social": "2026-11-24T21:39:05.332Z",
-  "insidenflnews.bsky.social": "2026-11-24T22:24:22.719Z",
+  "insidenflnews.bsky.social": "2026-11-24T23:43:54.908Z",
   "nflnewsposter.bsky.social": "2026-11-24T18:12:14.532Z",
   "rotoworld-fb.bsky.social": "2026-11-24T23:09:00.000Z",
   "rotowirenfl.bsky.social": "2026-11-24T23:12:43.000Z"
@@ -18079,6 +18079,19 @@
    "kind": "status",
    "confidence": 0.8,
    "text": "Eagles listed RB Saquon Barkley as a full participant in today’s practice.\n\nRepost of @Eagles:\n\nOriginal post"
+  },
+  {
+   "id": "at://did:plc:mbr4badgf6yu56mquzackzew/app.bsky.feed.post/3n33t6cuecs2d|samdarnold|active|return",
+   "at": "2026-11-24T23:43:54.908Z",
+   "seen": "2026-11-25T00:06:16.183Z",
+   "handle": "insidenflnews.bsky.social",
+   "post": "at://did:plc:mbr4badgf6yu56mquzackzew/app.bsky.feed.post/3n33t6cuecs2d",
+   "player": "Sam Darnold",
+   "team": null,
+   "status": "active",
+   "kind": "return",
+   "confidence": 0.5,
+   "text": "Rap: Sam Darnold (quad, ribs) expected to return in Week 12, barring an unforeseen setback."
   }
  ]
 }

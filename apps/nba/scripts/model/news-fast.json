@@ -1,63 +1,11 @@
 {
  "sport": "nba",
  "cursor": {
-  "rotowirenba.bsky.social": "2026-11-24T22:33:39.000Z",
+  "rotowirenba.bsky.social": "2026-11-24T23:36:08.000Z",
   "insidenbanews.bsky.social": "2026-11-20T20:35:06.661Z",
   "shamsbot.bsky.social": "2026-11-23T23:02:11.000Z"
  },
  "claims": [
-  {
-   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mzgxyvi3eb2r|scottypippen|out|status",
-   "at": "2026-11-03T23:19:15.000Z",
-   "seen": "2026-11-03T23:48:14.330Z",
-   "handle": "rotowirenba.bsky.social",
-   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mzgxyvi3eb2r",
-   "player": "Scotty Pippen",
-   "team": null,
-   "status": "out",
-   "kind": "status",
-   "confidence": 0.95,
-   "text": "Scotty Pippen: Ruled out for Wednesday \n\n https://www.rotowire.com/basketball/player/scotty-pippen-5685"
-  },
-  {
-   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mzgyzjwfz22l|andrewnembhard|active|status",
-   "at": "2026-11-03T23:37:30.000Z",
-   "seen": "2026-11-03T23:48:14.330Z",
-   "handle": "rotowirenba.bsky.social",
-   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mzgyzjwfz22l",
-   "player": "Andrew Nembhard",
-   "team": null,
-   "status": "active",
-   "kind": "status",
-   "confidence": 0.85,
-   "text": "Andrew Nembhard: Not listed on injury report \n\n https://www.rotowire.com/basketball/player/andrew-nembhard-5679"
-  },
-  {
-   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mzgz6uxmc527|aaronnesmith|active|status",
-   "at": "2026-11-03T23:40:30.000Z",
-   "seen": "2026-11-03T23:48:14.330Z",
-   "handle": "rotowirenba.bsky.social",
-   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mzgz6uxmc527",
-   "player": "Aaron Nesmith",
-   "team": null,
-   "status": "active",
-   "kind": "status",
-   "confidence": 0.85,
-   "text": "Aaron Nesmith: Not listed on injury report \n\n https://www.rotowire.com/basketball/player/aaron-nesmith-5120"
-  },
-  {
-   "id": "at://did:plc:ykcnnf6kqnn3lasmobrczoem/app.bsky.feed.post/3mzh2mfpouc2r|kawhileonard|out|status",
-   "at": "2026-11-04T00:05:57.726Z",
-   "seen": "2026-11-04T00:09:10.690Z",
-   "handle": "insidenbanews.bsky.social",
-   "post": "at://did:plc:ykcnnf6kqnn3lasmobrczoem/app.bsky.feed.post/3mzh2mfpouc2r",
-   "player": "Kawhi Leonard",
-   "team": "LAC",
-   "status": "out",
-   "kind": "status",
-   "confidence": 0.6,
-   "text": "Kawhi Leonard to be re-evaluated in 1 week after completing treatment for left knee swelling."
-  },
   {
    "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mzh4ehvpdo2g|dylancardwell|active|status",
    "at": "2026-11-04T00:37:18.000Z",
@@ -7584,6 +7532,45 @@
    "kind": "status",
    "confidence": 0.9,
    "text": "Ryan Kalkbrenner: Doubtful for Wednesday \n\n https://www.rotowire.com/basketball/player/ryan-kalkbrenner-6567"
+  },
+  {
+   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3n33rsypzxs2r|adaymara|out|status",
+   "at": "2026-11-24T23:19:41.000Z",
+   "seen": "2026-11-25T00:06:16.183Z",
+   "handle": "rotowirenba.bsky.social",
+   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3n33rsypzxs2r",
+   "player": "Aday Mara",
+   "team": null,
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.95,
+   "text": "Aday Mara: Ruled out for Wednesday \n\n https://www.rotowire.com/basketball/player/aday-mara-6932"
+  },
+  {
+   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3n33rz5frf22q|alexcaruso|active|status",
+   "at": "2026-11-24T23:23:07.000Z",
+   "seen": "2026-11-25T00:06:16.183Z",
+   "handle": "rotowirenba.bsky.social",
+   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3n33rz5frf22q",
+   "player": "Alex Caruso",
+   "team": null,
+   "status": "active",
+   "kind": "status",
+   "confidence": 0.92,
+   "text": "Alex Caruso: Cleared from injury report \n\n https://www.rotowire.com/basketball/player/alex-caruso-3952"
+  },
+  {
+   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3n33sqfwvon2u|cadecunningham|out|status",
+   "at": "2026-11-24T23:36:08.000Z",
+   "seen": "2026-11-25T00:06:16.183Z",
+   "handle": "rotowirenba.bsky.social",
+   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3n33sqfwvon2u",
+   "player": "Cade Cunningham",
+   "team": "DET",
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.95,
+   "text": "Cade Cunningham: Ruled out Tuesday \n\n https://www.rotowire.com/basketball/player/cade-cunningham-5336"
   }
  ]
 }

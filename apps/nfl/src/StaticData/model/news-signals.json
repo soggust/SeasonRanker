@@ -3,6 +3,28 @@
  "days": 2,
  "signals": [
   {
+   "team": "33",
+   "abbr": "BAL",
+   "athlete": "4690143",
+   "player": "LaJohntay Wester",
+   "kind": "benched",
+   "direction": "down",
+   "confidence": 0.8,
+   "headline": "Ravens cut punt returner LaJohntay Wester after his two muffs in loss",
+   "at": "2026-11-24T21:05:41.000Z"
+  },
+  {
+   "team": "26",
+   "abbr": "SEA",
+   "athlete": "3912547",
+   "player": "Sam Darnold",
+   "kind": "starting",
+   "direction": "up",
+   "confidence": 0.6,
+   "headline": "Seahawks to monitor Sam Darnold status this week before final call vs. 49ers",
+   "at": "2026-11-24T02:21:45.000Z"
+  },
+  {
    "team": "28",
    "abbr": "WSH",
    "athlete": "4575131",
@@ -80,5 +102,5 @@
    "at": "2026-11-23T00:14:53.000Z"
   }
  ],
- "at": "2026-11-24T16:37:41.844Z"
+ "at": "2026-11-25T00:06:16.183Z"
 }

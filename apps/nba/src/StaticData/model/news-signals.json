@@ -3,6 +3,28 @@
  "days": 2,
  "signals": [
   {
+   "team": "28",
+   "abbr": "TOR",
+   "athlete": "6450",
+   "player": "Kawhi Leonard",
+   "kind": "return",
+   "direction": "none",
+   "confidence": 0.3,
+   "headline": "Kawhi Leonard's return from knee swelling still at least week away",
+   "at": "2026-11-24T23:50:41.000Z"
+  },
+  {
+   "team": "8",
+   "abbr": "DET",
+   "athlete": "4433621",
+   "player": "Jalen Duren",
+   "kind": "return",
+   "direction": "up",
+   "confidence": 0.6,
+   "headline": "Jalen Duren to begin rehab assignment in next step to return from injury",
+   "at": "2026-11-24T23:32:42.000Z"
+  },
+  {
    "team": "20",
    "abbr": "PHI",
    "athlete": "3059318",
@@ -14,5 +36,5 @@
    "at": "2026-11-23T23:53:39.000Z"
   }
  ],
- "at": "2026-11-24T00:03:48.082Z"
+ "at": "2026-11-25T00:06:16.183Z"
 }

@@ -3,6 +3,28 @@
  "days": 2,
  "signals": [
   {
+   "team": "19",
+   "abbr": "STL",
+   "athlete": "4587909",
+   "player": "Joel Hofer",
+   "kind": "starting",
+   "direction": "up",
+   "confidence": 0.9,
+   "headline": "Joel Hofer supplants Jordan Binnington as Blues' starting goaltender",
+   "at": "2026-11-24T22:12:58.000Z"
+  },
+  {
+   "team": "19",
+   "abbr": "STL",
+   "athlete": "2590874",
+   "player": "Jordan Binnington",
+   "kind": "benched",
+   "direction": "down",
+   "confidence": 0.9,
+   "headline": "Joel Hofer supplants Jordan Binnington as Blues' starting goaltender",
+   "at": "2026-11-24T22:12:58.000Z"
+  },
+  {
    "team": "10",
    "abbr": "MTL",
    "athlete": "3114755",
@@ -14,5 +36,5 @@
    "at": "2026-11-23T21:45:25.000Z"
   }
  ],
- "at": "2026-11-24T00:03:48.082Z"
+ "at": "2026-11-25T00:06:16.183Z"
 }
