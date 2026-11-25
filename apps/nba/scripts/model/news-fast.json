@@ -3,35 +3,9 @@
  "cursor": {
   "rotowirenba.bsky.social": "2026-11-25T17:57:30.000Z",
   "insidenbanews.bsky.social": "2026-11-20T20:35:06.661Z",
-  "shamsbot.bsky.social": "2026-11-23T23:02:11.000Z"
+  "shamsbot.bsky.social": "2026-11-25T18:32:56.000Z"
  },
  "claims": [
-  {
-   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mziyl2togn24|treymurphy|questionable|status",
-   "at": "2026-11-04T18:34:44.000Z",
-   "seen": "2026-11-04T19:15:38.243Z",
-   "handle": "rotowirenba.bsky.social",
-   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mziyl2togn24",
-   "player": "Trey Murphy",
-   "team": "NOP",
-   "status": "questionable",
-   "kind": "status",
-   "confidence": 0.9,
-   "text": "Trey Murphy: Downgraded to questionable \n\n https://www.rotowire.com/basketball/player/trey-murphy-5401"
-  },
-  {
-   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mzj2cqbllw2g|anthonyblack|active|status",
-   "at": "2026-11-04T19:05:52.000Z",
-   "seen": "2026-11-04T19:15:38.243Z",
-   "handle": "rotowirenba.bsky.social",
-   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mzj2cqbllw2g",
-   "player": "Anthony Black",
-   "team": "ORL",
-   "status": "active",
-   "kind": "status",
-   "confidence": 0.85,
-   "text": "Anthony Black: Removed from injury report \n\n https://www.rotowire.com/basketball/player/anthony-black-5910"
-  },
   {
    "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mzj5y6jbps26|isaiahjackson|none|status",
    "at": "2026-11-04T20:11:33.000Z",

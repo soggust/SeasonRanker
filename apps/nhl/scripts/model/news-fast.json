@@ -2,38 +2,12 @@
  "sport": "nhl",
  "cursor": {
   "johnston-bot.bsky.social": "2026-11-24T02:44:36.491Z",
-  "notfriedgehnic.bsky.social": "2026-11-25T16:14:53.144Z",
-  "dailyfaceoff.bsky.social": "2026-11-25T18:12:53.000Z",
-  "dfotoronto.bsky.social": "2026-11-25T17:23:25.000Z",
-  "marklazerus.bsky.social": "2026-11-25T15:31:55.447Z"
+  "notfriedgehnic.bsky.social": "2026-11-25T19:09:05.875Z",
+  "dailyfaceoff.bsky.social": "2026-11-25T18:31:05.000Z",
+  "dfotoronto.bsky.social": "2026-11-25T19:07:26.000Z",
+  "marklazerus.bsky.social": "2026-11-25T18:42:28.623Z"
  },
  "claims": [
-  {
-   "id": "at://did:plc:knaj2vcp4x6t7hr7ewd6e3uz/app.bsky.feed.post/3mziz6krzli26|jackroslovic|none|restriction",
-   "at": "2026-11-04T18:45:38.000Z",
-   "seen": "2026-11-04T19:15:38.243Z",
-   "handle": "dfotoronto.bsky.social",
-   "post": "at://did:plc:knaj2vcp4x6t7hr7ewd6e3uz/app.bsky.feed.post/3mziz6krzli26",
-   "player": "Jack Roslovic",
-   "team": "TOR",
-   "status": "none",
-   "kind": "restriction",
-   "confidence": 0.6,
-   "text": "Maple Leafs lineup news: Jack Roslovic receives maintenance day, Vinni Lettieri takes reps on 1st line"
-  },
-  {
-   "id": "at://did:plc:knaj2vcp4x6t7hr7ewd6e3uz/app.bsky.feed.post/3mziz6krzli26|vinnilettieri|none|role",
-   "at": "2026-11-04T18:45:38.000Z",
-   "seen": "2026-11-04T19:15:38.243Z",
-   "handle": "dfotoronto.bsky.social",
-   "post": "at://did:plc:knaj2vcp4x6t7hr7ewd6e3uz/app.bsky.feed.post/3mziz6krzli26",
-   "player": "Vinni Lettieri",
-   "team": "TOR",
-   "status": "none",
-   "kind": "role",
-   "confidence": 0.7,
-   "text": "Maple Leafs lineup news: Jack Roslovic receives maintenance day, Vinni Lettieri takes reps on 1st line"
-  },
   {
    "id": "at://did:plc:knaj2vcp4x6t7hr7ewd6e3uz/app.bsky.feed.post/3mzl5k4xtc42e|johntavares|active|return",
    "at": "2026-11-05T15:09:01.000Z",
@@ -2880,6 +2854,45 @@
    "kind": "return",
    "confidence": 0.9,
    "text": "Barkov, Marchand to return for Panthers against Senators"
+  },
+  {
+   "id": "at://did:plc:3uus7y6h3rlrk6sbctzxm4bg/app.bsky.feed.post/3n35s5sbdh62f|calemakar|active|return",
+   "at": "2026-11-25T18:31:03.000Z",
+   "seen": "2026-11-25T19:16:54.331Z",
+   "handle": "dailyfaceoff.bsky.social",
+   "post": "at://did:plc:3uus7y6h3rlrk6sbctzxm4bg/app.bsky.feed.post/3n35s5sbdh62f",
+   "player": "Cale Makar",
+   "team": "COL",
+   "status": "active",
+   "kind": "return",
+   "confidence": 0.9,
+   "text": "Cale Makar to return to Avalanche lineup after three-game absence"
+  },
+  {
+   "id": "at://did:plc:sdobrsxnvwczrjydmnubhibh/app.bsky.feed.post/3n35tkw7dk62z|bobrovsky|none|starting",
+   "at": "2026-11-25T18:56:17.152Z",
+   "seen": "2026-11-25T19:16:54.331Z",
+   "handle": "notfriedgehnic.bsky.social",
+   "post": "at://did:plc:sdobrsxnvwczrjydmnubhibh/app.bsky.feed.post/3n35tkw7dk62z",
+   "player": "Bobrovsky",
+   "team": "FLA",
+   "status": "none",
+   "kind": "starting",
+   "confidence": 0.7,
+   "text": "Never mind...looks like Bobrovsky starts Saturday in Pittsburgh"
+  },
+  {
+   "id": "at://did:plc:sdobrsxnvwczrjydmnubhibh/app.bsky.feed.post/3n35ubjg6up2g|calemakar|active|return",
+   "at": "2026-11-25T19:08:55.605Z",
+   "seen": "2026-11-25T19:16:54.331Z",
+   "handle": "notfriedgehnic.bsky.social",
+   "post": "at://did:plc:sdobrsxnvwczrjydmnubhibh/app.bsky.feed.post/3n35ubjg6up2g",
+   "player": "Cale Makar",
+   "team": "COL",
+   "status": "active",
+   "kind": "return",
+   "confidence": 0.9,
+   "text": "Cale Makar returns tonight against Montreal"
   }
  ]
 }
