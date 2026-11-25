@@ -1,41 +1,15 @@
 {
  "sport": "nfl",
  "cursor": {
-  "adamscheftermirror.bsky.social": "2026-11-25T17:07:00.910Z",
+  "adamscheftermirror.bsky.social": "2026-11-25T17:57:00.447Z",
   "rapsheet.bsky.social": "2026-11-25T16:50:56.473Z",
   "nflnewsreposterbot.bsky.social": "2026-11-24T21:39:05.332Z",
-  "insidenflnews.bsky.social": "2026-11-25T16:44:09.810Z",
+  "insidenflnews.bsky.social": "2026-11-25T17:52:57.714Z",
   "nflnewsposter.bsky.social": "2026-11-25T16:35:14.590Z",
-  "rotoworld-fb.bsky.social": "2026-11-25T16:59:24.000Z",
+  "rotoworld-fb.bsky.social": "2026-11-25T17:52:47.000Z",
   "rotowirenfl.bsky.social": "2026-11-25T17:17:00.000Z"
  },
  "claims": [
-  {
-   "id": "at://did:plc:fuqjc7x4gxvnwzksnlxwbe4x/app.bsky.feed.post/3mzivmtt6is2c|micahparsons|active|status",
-   "at": "2026-11-04T17:42:03.286Z",
-   "seen": "2026-11-04T19:15:38.243Z",
-   "handle": "nflnewsposter.bsky.social",
-   "post": "at://did:plc:fuqjc7x4gxvnwzksnlxwbe4x/app.bsky.feed.post/3mzivmtt6is2c",
-   "player": "Micah Parsons",
-   "team": "GB",
-   "status": "active",
-   "kind": "status",
-   "confidence": 0.8,
-   "text": "[Rapoport] Today is the day for Micah Parsons. Individual drills today. But Matt LaFleur was clear: Parsons has been fully cleared. twitter.com/RapSheet/sta..."
-  },
-  {
-   "id": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3mziwctkfxa2s|alecpierce|out|status",
-   "at": "2026-11-04T17:54:21.000Z",
-   "seen": "2026-11-04T19:15:38.243Z",
-   "handle": "rotowirenfl.bsky.social",
-   "post": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3mziwctkfxa2s",
-   "player": "Alec Pierce",
-   "team": "IND",
-   "status": "out",
-   "kind": "status",
-   "confidence": 0.6,
-   "text": "Alec Pierce: No timetable for return \n\n https://www.rotowire.com/football/player/alec-pierce-16022"
-  },
   {
    "id": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3mziwmn4cwx2v|micahparsons|limited|status",
    "at": "2026-11-04T17:59:49.000Z",

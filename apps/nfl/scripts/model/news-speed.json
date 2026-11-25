@@ -15998,6 +15998,11 @@
    "espn": {
     "seen": "2026-11-21T00:15:55.685Z",
     "own": "2026-11-20T20:13:00.000Z"
+   },
+   "bluesky": {
+    "seen": "2026-11-25T17:08:32.912Z",
+    "own": "2026-11-25T17:07:00.910Z",
+    "why": "@adamscheftermirror.bsky.social: Chiefs officially ruled out RB Kenneth Walker f"
    }
   },
   "401873082|omarrnormanlott|q": {
@@ -22202,6 +22207,30 @@
    "espn": {
     "seen": "2026-11-25T16:22:45.038Z",
     "own": "2026-11-25T15:55:00.000Z"
+   }
+  },
+  "401873080|jonathanjones|out": {
+   "game": "401873080",
+   "start": "2026-11-26T21:30Z",
+   "team": "21",
+   "name": "Jonathan Jones",
+   "status": "out",
+   "athlete": "2971027",
+   "espn": {
+    "seen": "2026-11-25T17:56:49.916Z",
+    "own": "2026-11-25T17:45:00.000Z"
+   }
+  },
+  "401873080|arnoldebiketie|out": {
+   "game": "401873080",
+   "start": "2026-11-26T21:30Z",
+   "team": "21",
+   "name": "Arnold Ebiketie",
+   "status": "out",
+   "athlete": "4257591",
+   "espn": {
+    "seen": "2026-11-25T17:56:49.916Z",
+    "own": "2026-11-25T02:19:00.000Z"
    }
   }
  }

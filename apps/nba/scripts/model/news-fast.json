@@ -1,24 +1,11 @@
 {
  "sport": "nba",
  "cursor": {
-  "rotowirenba.bsky.social": "2026-11-25T11:18:21.000Z",
+  "rotowirenba.bsky.social": "2026-11-25T17:57:30.000Z",
   "insidenbanews.bsky.social": "2026-11-20T20:35:06.661Z",
   "shamsbot.bsky.social": "2026-11-23T23:02:11.000Z"
  },
  "claims": [
-  {
-   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mzivxzzbos2n|jaysontatum|out|status",
-   "at": "2026-11-04T17:48:18.000Z",
-   "seen": "2026-11-04T19:15:38.243Z",
-   "handle": "rotowirenba.bsky.social",
-   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mzivxzzbos2n",
-   "player": "Jayson Tatum",
-   "team": "BOS",
-   "status": "out",
-   "kind": "status",
-   "confidence": 0.95,
-   "text": "Jayson Tatum: Confirmed out for Wednesday \n\n https://www.rotowire.com/basketball/player/jayson-tatum-4108"
-  },
   {
    "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mziwrxt3jw26|konknueppel|active|status",
    "at": "2026-11-04T18:02:48.000Z",
@@ -7558,6 +7545,45 @@
    "kind": "status",
    "confidence": 0.95,
    "text": "De'Aaron Fox: Questionable for Wednesday \n\n https://www.rotowire.com/basketball/player/deaaron-fox-4116"
+  },
+  {
+   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3n35pbqihq32e|graysonallen|out|status",
+   "at": "2026-11-25T17:39:34.000Z",
+   "seen": "2026-11-25T17:59:34.578Z",
+   "handle": "rotowirenba.bsky.social",
+   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3n35pbqihq32e",
+   "player": "Grayson Allen",
+   "team": null,
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.95,
+   "text": "Grayson Allen: Out Wednesday \n\n https://www.rotowire.com/basketball/player/grayson-allen-4454"
+  },
+  {
+   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3n35q2gkvt62l|jalenbrunson|questionable|status",
+   "at": "2026-11-25T17:53:22.000Z",
+   "seen": "2026-11-25T17:59:34.578Z",
+   "handle": "rotowirenba.bsky.social",
+   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3n35q2gkvt62l",
+   "player": "Jalen Brunson",
+   "team": null,
+   "status": "questionable",
+   "kind": "status",
+   "confidence": 0.9,
+   "text": "Jalen Brunson: Now questionable for Wednesday \n\n https://www.rotowire.com/basketball/player/jalen-brunson-4405"
+  },
+  {
+   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3n35qbskqym2c|joshhart|active|status",
+   "at": "2026-11-25T17:57:30.000Z",
+   "seen": "2026-11-25T17:59:34.578Z",
+   "handle": "rotowirenba.bsky.social",
+   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3n35qbskqym2c",
+   "player": "Josh Hart",
+   "team": null,
+   "status": "active",
+   "kind": "status",
+   "confidence": 0.6,
+   "text": "Josh Hart: Upgraded to probable \n\n https://www.rotowire.com/basketball/player/josh-hart-4136"
   }
  ]
 }
