@@ -4,10 +4,10 @@
   "adamscheftermirror.bsky.social": "2026-11-25T03:06:58.061Z",
   "rapsheet.bsky.social": "2026-11-24T21:40:28.473Z",
   "nflnewsreposterbot.bsky.social": "2026-11-24T21:39:05.332Z",
-  "insidenflnews.bsky.social": "2026-11-25T01:09:23.842Z",
-  "nflnewsposter.bsky.social": "2026-11-24T18:12:14.532Z",
+  "insidenflnews.bsky.social": "2026-11-25T04:22:45.320Z",
+  "nflnewsposter.bsky.social": "2026-11-25T04:30:22.998Z",
   "rotoworld-fb.bsky.social": "2026-11-25T02:51:12.000Z",
-  "rotowirenfl.bsky.social": "2026-11-24T23:12:43.000Z"
+  "rotowirenfl.bsky.social": "2026-11-25T04:25:26.000Z"
  },
  "claims": [
   {
@@ -18105,6 +18105,45 @@
    "kind": "status",
    "confidence": 0.9,
    "text": "More about Broncos running back J.K. Dobbins being suspended one game for detrimental conduct, via @Jeff_Legwold:\n\nOriginal post"
+  },
+  {
+   "id": "at://did:plc:mbr4badgf6yu56mquzackzew/app.bsky.feed.post/3n34cdwvx2k2z|aaronrodgers|none|benched",
+   "at": "2026-11-25T04:15:29.833Z",
+   "seen": "2026-11-25T04:33:34.467Z",
+   "handle": "insidenflnews.bsky.social",
+   "post": "at://did:plc:mbr4badgf6yu56mquzackzew/app.bsky.feed.post/3n34cdwvx2k2z",
+   "player": "Aaron Rodgers",
+   "team": null,
+   "status": "none",
+   "kind": "benched",
+   "confidence": 0.9,
+   "text": "Aaron Rodgers being benched for Mason Rudolph in Week 12."
+  },
+  {
+   "id": "at://did:plc:mbr4badgf6yu56mquzackzew/app.bsky.feed.post/3n34cdwvx2k2z|masonrudolph|none|starting",
+   "at": "2026-11-25T04:15:29.833Z",
+   "seen": "2026-11-25T04:33:34.467Z",
+   "handle": "insidenflnews.bsky.social",
+   "post": "at://did:plc:mbr4badgf6yu56mquzackzew/app.bsky.feed.post/3n34cdwvx2k2z",
+   "player": "Mason Rudolph",
+   "team": null,
+   "status": "none",
+   "kind": "starting",
+   "confidence": 0.8,
+   "text": "Aaron Rodgers being benched for Mason Rudolph in Week 12."
+  },
+  {
+   "id": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3n34cvqafch2m|masonrudolph|none|starting",
+   "at": "2026-11-25T04:25:26.000Z",
+   "seen": "2026-11-25T04:33:34.467Z",
+   "handle": "rotowirenfl.bsky.social",
+   "post": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3n34cvqafch2m",
+   "player": "Mason Rudolph",
+   "team": null,
+   "status": "none",
+   "kind": "starting",
+   "confidence": 0.9,
+   "text": "Mason Rudolph: Will start Friday against Denver \n\n https://www.rotowire.com/football/player/mason-rudolph-12629"
   }
  ]
 }
