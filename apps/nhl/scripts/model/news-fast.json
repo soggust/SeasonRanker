@@ -3,9 +3,9 @@
  "cursor": {
   "johnston-bot.bsky.social": "2026-11-24T02:44:36.491Z",
   "notfriedgehnic.bsky.social": "2026-11-25T19:09:05.875Z",
-  "dailyfaceoff.bsky.social": "2026-11-25T18:31:05.000Z",
-  "dfotoronto.bsky.social": "2026-11-25T19:07:26.000Z",
-  "marklazerus.bsky.social": "2026-11-25T18:42:28.623Z"
+  "dailyfaceoff.bsky.social": "2026-11-25T20:10:21.000Z",
+  "dfotoronto.bsky.social": "2026-11-25T20:12:49.514Z",
+  "marklazerus.bsky.social": "2026-11-25T19:46:53.791Z"
  },
  "claims": [
   {
@@ -2893,6 +2893,84 @@
    "kind": "return",
    "confidence": 0.9,
    "text": "Cale Makar returns tonight against Montreal"
+  },
+  {
+   "id": "at://did:plc:3uus7y6h3rlrk6sbctzxm4bg/app.bsky.feed.post/3n35vym4ihl2n|aleksanderbarkov|active|return",
+   "at": "2026-11-25T19:39:43.000Z",
+   "seen": "2026-11-25T20:14:41.094Z",
+   "handle": "dailyfaceoff.bsky.social",
+   "post": "at://did:plc:3uus7y6h3rlrk6sbctzxm4bg/app.bsky.feed.post/3n35vym4ihl2n",
+   "player": "Aleksander Barkov",
+   "team": "FLA",
+   "status": "active",
+   "kind": "return",
+   "confidence": 0.9,
+   "text": "Barkov, Marchand to return for Panthers against Senators."
+  },
+  {
+   "id": "at://did:plc:3uus7y6h3rlrk6sbctzxm4bg/app.bsky.feed.post/3n35vym4ihl2n|brandonmarchand|active|return",
+   "at": "2026-11-25T19:39:43.000Z",
+   "seen": "2026-11-25T20:14:41.094Z",
+   "handle": "dailyfaceoff.bsky.social",
+   "post": "at://did:plc:3uus7y6h3rlrk6sbctzxm4bg/app.bsky.feed.post/3n35vym4ihl2n",
+   "player": "Brandon Marchand",
+   "team": "FLA",
+   "status": "active",
+   "kind": "return",
+   "confidence": 0.9,
+   "text": "Barkov, Marchand to return for Panthers against Senators."
+  },
+  {
+   "id": "at://did:plc:3uus7y6h3rlrk6sbctzxm4bg/app.bsky.feed.post/3n35wxijkdu2n|aleksanderbarkov|active|return",
+   "at": "2026-11-25T19:57:00.000Z",
+   "seen": "2026-11-25T20:14:41.094Z",
+   "handle": "dailyfaceoff.bsky.social",
+   "post": "at://did:plc:3uus7y6h3rlrk6sbctzxm4bg/app.bsky.feed.post/3n35wxijkdu2n",
+   "player": "Aleksander Barkov",
+   "team": "FLA",
+   "status": "active",
+   "kind": "return",
+   "confidence": 0.85,
+   "text": "Barkov, Marchand returns coming at perfect time for Panthers"
+  },
+  {
+   "id": "at://did:plc:3uus7y6h3rlrk6sbctzxm4bg/app.bsky.feed.post/3n35wxijkdu2n|brandonmarchand|active|return",
+   "at": "2026-11-25T19:57:00.000Z",
+   "seen": "2026-11-25T20:14:41.094Z",
+   "handle": "dailyfaceoff.bsky.social",
+   "post": "at://did:plc:3uus7y6h3rlrk6sbctzxm4bg/app.bsky.feed.post/3n35wxijkdu2n",
+   "player": "Brandon Marchand",
+   "team": "FLA",
+   "status": "active",
+   "kind": "return",
+   "confidence": 0.85,
+   "text": "Barkov, Marchand returns coming at perfect time for Panthers"
+  },
+  {
+   "id": "at://did:plc:knaj2vcp4x6t7hr7ewd6e3uz/app.bsky.feed.post/3n35xtrokzc2e|anthonystolarz|none|starting",
+   "at": "2026-11-25T20:12:49.514Z",
+   "seen": "2026-11-25T20:14:41.094Z",
+   "handle": "dfotoronto.bsky.social",
+   "post": "at://did:plc:knaj2vcp4x6t7hr7ewd6e3uz/app.bsky.feed.post/3n35xtrokzc2e",
+   "player": "Anthony Stolarz",
+   "team": null,
+   "status": "none",
+   "kind": "starting",
+   "confidence": 0.85,
+   "text": "Jim Hiller confirms that Anthony Stolarz will start on Friday against the Bruins and Sergei Bobrovsky will start on Saturday against the Penguins"
+  },
+  {
+   "id": "at://did:plc:knaj2vcp4x6t7hr7ewd6e3uz/app.bsky.feed.post/3n35xtrokzc2e|sergeibobrovsky|none|starting",
+   "at": "2026-11-25T20:12:49.514Z",
+   "seen": "2026-11-25T20:14:41.094Z",
+   "handle": "dfotoronto.bsky.social",
+   "post": "at://did:plc:knaj2vcp4x6t7hr7ewd6e3uz/app.bsky.feed.post/3n35xtrokzc2e",
+   "player": "Sergei Bobrovsky",
+   "team": null,
+   "status": "none",
+   "kind": "starting",
+   "confidence": 0.85,
+   "text": "Jim Hiller confirms that Anthony Stolarz will start on Friday against the Bruins and Sergei Bobrovsky will start on Saturday against the Penguins"
   }
  ]
 }
