@@ -16791,6 +16791,18 @@
     "seen": "2026-11-25T17:56:49.916Z",
     "own": "2026-11-25T02:19:00.000Z"
    }
+  },
+  "401873083|aaronrodgers|out": {
+   "game": "401873083",
+   "start": "2026-11-27T20:00Z",
+   "team": "23",
+   "name": "Aaron Rodgers",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-25T19:16:54.331Z",
+    "own": "2026-11-25T18:46:48.065Z",
+    "why": "@nflnewsposter.bsky.social: [Garafolo] Aaron Rodgers on Pat McAfee Show: “This h"
+   }
   }
  }
 }
