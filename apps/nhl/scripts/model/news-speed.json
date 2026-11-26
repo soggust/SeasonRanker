@@ -8317,6 +8317,47 @@
     "seen": "2026-11-25T23:47:40.997Z",
     "own": "2026-11-25T23:35:00.000Z"
    }
+  },
+  "401892792|tylerbertuzzi|out": {
+   "game": "401892792",
+   "start": "2026-11-26T02:30Z",
+   "team": "17",
+   "name": "Tyler Bertuzzi",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-26T01:34:28.417Z",
+    "own": "2026-11-26T01:18:45.121Z",
+    "why": "@marklazerus.bsky.social: Anton Frondell is in tonight. Tyler Bertuzzi is sick a"
+   }
+  },
+  "401892794|tylerbertuzzi|out": {
+   "game": "401892794",
+   "start": "2026-11-26T02:40Z",
+   "team": "124292",
+   "name": "Tyler Bertuzzi",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-26T01:34:28.417Z",
+    "own": "2026-11-26T01:18:45.121Z",
+    "why": "@marklazerus.bsky.social: Anton Frondell is in tonight. Tyler Bertuzzi is sick a"
+   },
+   "athlete": "3042056",
+   "espn": {
+    "seen": "2026-11-26T01:44:33.618Z",
+    "own": "2026-11-26T01:21:00.000Z"
+   }
+  },
+  "401892793|tylerbertuzzi|out": {
+   "game": "401892793",
+   "start": "2026-11-26T03:00Z",
+   "team": "25",
+   "name": "Tyler Bertuzzi",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-26T01:34:28.417Z",
+    "own": "2026-11-26T01:18:45.121Z",
+    "why": "@marklazerus.bsky.social: Anton Frondell is in tonight. Tyler Bertuzzi is sick a"
+   }
   }
  }
 }
