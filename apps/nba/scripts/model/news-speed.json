@@ -18200,6 +18200,11 @@
    "espn": {
     "seen": "2026-11-26T04:58:13.475Z",
     "own": "2026-11-25T23:19:00.000Z"
+   },
+   "bluesky": {
+    "seen": "2026-11-26T22:03:49.098Z",
+    "own": "2026-11-26T21:57:55.000Z",
+    "why": "@rotowirenba.bsky.social: OG Anunoby: Doubtful to play Friday \n\n https://www.rot"
    }
   },
   "401909326|milesmcbride|out": {
@@ -19051,6 +19056,138 @@
    "espn": {
     "seen": "2026-11-26T22:02:33.048Z",
     "own": "2026-11-26T21:18:00.000Z"
+   }
+  },
+  "401909327|cadecunningham|out": {
+   "game": "401909327",
+   "start": "2026-11-28T00:30Z",
+   "team": "8",
+   "name": "Cade Cunningham",
+   "status": "out",
+   "athlete": "4432166",
+   "espn": {
+    "seen": "2026-11-26T22:22:46.500Z",
+    "own": "2026-11-26T22:20:00.000Z"
+   }
+  },
+  "401909327|oganunoby|out": {
+   "game": "401909327",
+   "start": "2026-11-28T00:30Z",
+   "team": "8",
+   "name": "OG Anunoby",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-26T22:03:49.098Z",
+    "own": "2026-11-26T21:57:55.000Z",
+    "why": "@rotowirenba.bsky.social: OG Anunoby: Doubtful to play Friday \n\n https://www.rot"
+   }
+  },
+  "401909328|oganunoby|out": {
+   "game": "401909328",
+   "start": "2026-11-28T00:30Z",
+   "team": "11",
+   "name": "OG Anunoby",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-26T22:03:49.098Z",
+    "own": "2026-11-26T21:57:55.000Z",
+    "why": "@rotowirenba.bsky.social: OG Anunoby: Doubtful to play Friday \n\n https://www.rot"
+   }
+  },
+  "401909329|oganunoby|out": {
+   "game": "401909329",
+   "start": "2026-11-28T00:30Z",
+   "team": "28",
+   "name": "OG Anunoby",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-26T22:03:49.098Z",
+    "own": "2026-11-26T21:57:55.000Z",
+    "why": "@rotowirenba.bsky.social: OG Anunoby: Doubtful to play Friday \n\n https://www.rot"
+   }
+  },
+  "401909330|oganunoby|out": {
+   "game": "401909330",
+   "start": "2026-11-28T01:00Z",
+   "team": "2",
+   "name": "OG Anunoby",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-26T22:03:49.098Z",
+    "own": "2026-11-26T21:57:55.000Z",
+    "why": "@rotowirenba.bsky.social: OG Anunoby: Doubtful to play Friday \n\n https://www.rot"
+   }
+  },
+  "401909331|oganunoby|out": {
+   "game": "401909331",
+   "start": "2026-11-28T01:30Z",
+   "team": "16",
+   "name": "OG Anunoby",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-26T22:03:49.098Z",
+    "own": "2026-11-26T21:57:55.000Z",
+    "why": "@rotowirenba.bsky.social: OG Anunoby: Doubtful to play Friday \n\n https://www.rot"
+   }
+  },
+  "401909332|oganunoby|out": {
+   "game": "401909332",
+   "start": "2026-11-28T02:00Z",
+   "team": "21",
+   "name": "OG Anunoby",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-26T22:03:49.098Z",
+    "own": "2026-11-26T21:57:55.000Z",
+    "why": "@rotowirenba.bsky.social: OG Anunoby: Doubtful to play Friday \n\n https://www.rot"
+   }
+  },
+  "401909333|oganunoby|out": {
+   "game": "401909333",
+   "start": "2026-11-28T02:30Z",
+   "team": "24",
+   "name": "OG Anunoby",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-26T22:03:49.098Z",
+    "own": "2026-11-26T21:57:55.000Z",
+    "why": "@rotowirenba.bsky.social: OG Anunoby: Doubtful to play Friday \n\n https://www.rot"
+   }
+  },
+  "401909334|oganunoby|out": {
+   "game": "401909334",
+   "start": "2026-11-28T02:30Z",
+   "team": "26",
+   "name": "OG Anunoby",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-26T22:03:49.098Z",
+    "own": "2026-11-26T21:57:55.000Z",
+    "why": "@rotowirenba.bsky.social: OG Anunoby: Doubtful to play Friday \n\n https://www.rot"
+   }
+  },
+  "401909335|oganunoby|out": {
+   "game": "401909335",
+   "start": "2026-11-28T02:30Z",
+   "team": "12",
+   "name": "OG Anunoby",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-26T22:03:49.098Z",
+    "own": "2026-11-26T21:57:55.000Z",
+    "why": "@rotowirenba.bsky.social: OG Anunoby: Doubtful to play Friday \n\n https://www.rot"
+   }
+  },
+  "401909336|oganunoby|out": {
+   "game": "401909336",
+   "start": "2026-11-28T02:30Z",
+   "team": "22",
+   "name": "OG Anunoby",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-26T22:03:49.098Z",
+    "own": "2026-11-26T21:57:55.000Z",
+    "why": "@rotowirenba.bsky.social: OG Anunoby: Doubtful to play Friday \n\n https://www.rot"
    }
   }
  }

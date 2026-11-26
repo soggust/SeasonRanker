@@ -1,41 +1,15 @@
 {
  "sport": "nfl",
  "cursor": {
-  "adamscheftermirror.bsky.social": "2026-11-26T22:02:08.881Z",
-  "rapsheet.bsky.social": "2026-11-26T20:55:11.582Z",
+  "adamscheftermirror.bsky.social": "2026-11-26T22:17:08.681Z",
+  "rapsheet.bsky.social": "2026-11-26T22:11:28.538Z",
   "nflnewsreposterbot.bsky.social": "2026-11-25T21:41:32.820Z",
   "insidenflnews.bsky.social": "2026-11-26T21:11:30.186Z",
   "nflnewsposter.bsky.social": "2026-11-26T22:00:50.742Z",
-  "rotoworld-fb.bsky.social": "2026-11-26T22:02:00.000Z",
-  "rotowirenfl.bsky.social": "2026-11-26T22:01:53.000Z"
+  "rotoworld-fb.bsky.social": "2026-11-26T22:05:59.000Z",
+  "rotowirenfl.bsky.social": "2026-11-26T22:24:13.000Z"
  },
  "claims": [
-  {
-   "id": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3mzluqiazai27|djmoore|limited|status",
-   "at": "2026-11-05T22:04:10.000Z",
-   "seen": "2026-11-05T22:20:33.483Z",
-   "handle": "rotowirenfl.bsky.social",
-   "post": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3mzluqiazai27",
-   "player": "DJ Moore",
-   "team": null,
-   "status": "limited",
-   "kind": "status",
-   "confidence": 0.9,
-   "text": "DJ Moore: Limited participant Thursday \n\n https://www.rotowire.com/football/player/dj-moore-12477"
-  },
-  {
-   "id": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3mzlv3jysge2s|daltonkincaid|limited|status",
-   "at": "2026-11-05T22:10:21.000Z",
-   "seen": "2026-11-05T22:20:33.483Z",
-   "handle": "rotowirenfl.bsky.social",
-   "post": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3mzlv3jysge2s",
-   "player": "Dalton Kincaid",
-   "team": null,
-   "status": "limited",
-   "kind": "status",
-   "confidence": 0.9,
-   "text": "Dalton Kincaid: Limited at practice Thursday \n\n https://www.rotowire.com/football/player/dalton-kincaid-16697"
-  },
   {
    "id": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3mzlw7ymcl525|rasheerice|active|status",
    "at": "2026-11-05T22:30:44.000Z",
@@ -17611,6 +17585,110 @@
    "kind": "status",
    "confidence": 0.6,
    "text": "Brock Purdy (ankle) misses Thursday practice"
+  },
+  {
+   "id": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3n3aon2gllx2q|jaxonsmithnjigba|limited|status",
+   "at": "2026-11-26T22:05:59.000Z",
+   "seen": "2026-11-26T22:24:30.918Z",
+   "handle": "rotoworld-fb.bsky.social",
+   "post": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3n3aon2gllx2q",
+   "player": "Jaxon Smith-Njigba",
+   "team": "SEA",
+   "status": "limited",
+   "kind": "status",
+   "confidence": 0.85,
+   "text": "JSN (ankle) limited again during Thursday practice"
+  },
+  {
+   "id": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3n3aorhcz6b2h|mikeevans|limited|status",
+   "at": "2026-11-26T22:08:27.000Z",
+   "seen": "2026-11-26T22:24:30.918Z",
+   "handle": "rotowirenfl.bsky.social",
+   "post": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3n3aorhcz6b2h",
+   "player": "Mike Evans",
+   "team": "TB",
+   "status": "limited",
+   "kind": "status",
+   "confidence": 0.9,
+   "text": "Mike Evans: Listed as limited Thursday \n\n https://www.rotowire.com/football/player/mike-evans-9253"
+  },
+  {
+   "id": "at://did:plc:hlvr2omhnmvdmfnvmcuhyevz/app.bsky.feed.post/3n3aowudxhc2c|cooperdejean|out|status",
+   "at": "2026-11-26T22:11:28.538Z",
+   "seen": "2026-11-26T22:24:30.918Z",
+   "handle": "rapsheet.bsky.social",
+   "post": "at://did:plc:hlvr2omhnmvdmfnvmcuhyevz/app.bsky.feed.post/3n3aowudxhc2c",
+   "player": "Cooper DeJean",
+   "team": "PHI",
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.95,
+   "text": "Eagles DB Cooper DeJean has been ruled out with a concussion."
+  },
+  {
+   "id": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3n3ap47u6pu2m|jaxonsmithnjigba|limited|status",
+   "at": "2026-11-26T22:14:28.000Z",
+   "seen": "2026-11-26T22:24:30.918Z",
+   "handle": "rotowirenfl.bsky.social",
+   "post": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3n3ap47u6pu2m",
+   "player": "Jaxon Smith-Njigba",
+   "team": "SEA",
+   "status": "limited",
+   "kind": "status",
+   "confidence": 0.9,
+   "text": "Jaxon Smith-Njigba: Listed as limited again \n\n https://www.rotowire.com/football/player/jaxon-smith-njigba-16654"
+  },
+  {
+   "id": "at://did:plc:qre6zxbmr3ixhdmgsgdretb5/app.bsky.feed.post/3n3apayh5wh2y|cooperdejean|out|status",
+   "at": "2026-11-26T22:17:08.299Z",
+   "seen": "2026-11-26T22:24:30.918Z",
+   "handle": "adamscheftermirror.bsky.social",
+   "post": "at://did:plc:qre6zxbmr3ixhdmgsgdretb5/app.bsky.feed.post/3n3apayh5wh2y",
+   "player": "Cooper DeJean",
+   "team": "PHI",
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.95,
+   "text": "Eagles DB Cooper DeJean has been ruled out today due to a concussion.\n\nOriginal post"
+  },
+  {
+   "id": "at://did:plc:qre6zxbmr3ixhdmgsgdretb5/app.bsky.feed.post/3n3apayqy262x|brockpurdy|questionable|status",
+   "at": "2026-11-26T22:17:08.681Z",
+   "seen": "2026-11-26T22:24:30.918Z",
+   "handle": "adamscheftermirror.bsky.social",
+   "post": "at://did:plc:qre6zxbmr3ixhdmgsgdretb5/app.bsky.feed.post/3n3apayqy262x",
+   "player": "Brock Purdy",
+   "team": "SF",
+   "status": "questionable",
+   "kind": "status",
+   "confidence": 0.5,
+   "text": "For the second straight day, 49ers QB Brock Purdy did not practice due to his sprained ankle.\n\nOriginal post"
+  },
+  {
+   "id": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3n3apludupu2m|brockbowers|limited|status",
+   "at": "2026-11-26T22:23:13.000Z",
+   "seen": "2026-11-26T22:24:30.918Z",
+   "handle": "rotowirenfl.bsky.social",
+   "post": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3n3apludupu2m",
+   "player": "Brock Bowers",
+   "team": "LV",
+   "status": "limited",
+   "kind": "status",
+   "confidence": 0.9,
+   "text": "Brock Bowers: Another limited listing Thursday \n\n https://www.rotowire.com/football/player/brock-bowers-17693"
+  },
+  {
+   "id": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3n3apnnyg6j2h|haroldfannin|active|status",
+   "at": "2026-11-26T22:24:13.000Z",
+   "seen": "2026-11-26T22:24:30.918Z",
+   "handle": "rotowirenfl.bsky.social",
+   "post": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3n3apnnyg6j2h",
+   "player": "Harold Fannin",
+   "team": "CLE",
+   "status": "active",
+   "kind": "status",
+   "confidence": 0.8,
+   "text": "Harold Fannin: Estimated as full participant Thursday \n\n https://www.rotowire.com/football/player/harold-fannin-18472"
   }
  ]
 }

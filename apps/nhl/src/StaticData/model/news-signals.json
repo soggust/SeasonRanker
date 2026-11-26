@@ -34,29 +34,7 @@
    "confidence": 0.9,
    "headline": "Aleksander Barkov, Brad Marchand returning from injuries against Senators",
    "at": "2026-11-25T18:56:46.000Z"
-  },
-  {
-   "team": "19",
-   "abbr": "STL",
-   "athlete": "4587909",
-   "player": "Joel Hofer",
-   "kind": "starting",
-   "direction": "up",
-   "confidence": 0.9,
-   "headline": "Joel Hofer supplants Jordan Binnington as Blues' starting goaltender",
-   "at": "2026-11-24T22:12:58.000Z"
-  },
-  {
-   "team": "19",
-   "abbr": "STL",
-   "athlete": "2590874",
-   "player": "Jordan Binnington",
-   "kind": "benched",
-   "direction": "down",
-   "confidence": 0.9,
-   "headline": "Joel Hofer supplants Jordan Binnington as Blues' starting goaltender",
-   "at": "2026-11-24T22:12:58.000Z"
   }
  ],
- "at": "2026-11-26T00:07:16.438Z"
+ "at": "2026-11-26T22:24:30.918Z"
 }
