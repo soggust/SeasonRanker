@@ -1,7 +1,7 @@
 {
  "sport": "nba",
  "cursor": {
-  "rotowirenba.bsky.social": "2026-11-26T23:24:25.000Z",
+  "rotowirenba.bsky.social": "2026-11-26T23:41:39.000Z",
   "insidenbanews.bsky.social": "2026-11-20T20:35:06.661Z",
   "shamsbot.bsky.social": "2026-11-25T18:32:56.000Z"
  },
@@ -7480,6 +7480,32 @@
    "kind": "status",
    "confidence": 0.9,
    "text": "Austin Reaves: Officially listed as questionable \n\n https://www.rotowire.com/basketball/player/austin-reaves-5334"
+  },
+  {
+   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3n3atnypt5e2r|deaaronfox|questionable|status",
+   "at": "2026-11-26T23:35:59.000Z",
+   "seen": "2026-11-26T23:48:34.153Z",
+   "handle": "rotowirenba.bsky.social",
+   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3n3atnypt5e2r",
+   "player": "De'Aaron Fox",
+   "team": "SAS",
+   "status": "questionable",
+   "kind": "status",
+   "confidence": 0.9,
+   "text": "De'Aaron Fox: Questionable for Friday \n\n https://www.rotowire.com/basketball/player/deaaron-fox-4116"
+  },
+  {
+   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3n3aty4am562e|dylanharper|questionable|status",
+   "at": "2026-11-26T23:41:39.000Z",
+   "seen": "2026-11-26T23:48:34.153Z",
+   "handle": "rotowirenba.bsky.social",
+   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3n3aty4am562e",
+   "player": "Dylan Harper",
+   "team": "SAS",
+   "status": "questionable",
+   "kind": "status",
+   "confidence": 0.9,
+   "text": "Dylan Harper: Officially questionable for Friday \n\n https://www.rotowire.com/basketball/player/dylan-harper-6549"
   }
  ]
 }
