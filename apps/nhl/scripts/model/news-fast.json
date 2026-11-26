@@ -3,37 +3,11 @@
  "cursor": {
   "johnston-bot.bsky.social": "2026-11-26T15:03:47.542Z",
   "notfriedgehnic.bsky.social": "2026-11-26T15:07:30.929Z",
-  "dailyfaceoff.bsky.social": "2026-11-26T20:13:49.000Z",
-  "dfotoronto.bsky.social": "2026-11-26T20:11:24.902Z",
+  "dailyfaceoff.bsky.social": "2026-11-26T21:08:49.000Z",
+  "dfotoronto.bsky.social": "2026-11-26T21:48:59.000Z",
   "marklazerus.bsky.social": "2026-11-26T16:54:28.277Z"
  },
  "claims": [
-  {
-   "id": "at://did:plc:3uus7y6h3rlrk6sbctzxm4bg/app.bsky.feed.post/3mzlrfopfmh26|cooley|active|return",
-   "at": "2026-11-05T21:04:27.000Z",
-   "seen": "2026-11-05T21:06:21.731Z",
-   "handle": "dailyfaceoff.bsky.social",
-   "post": "at://did:plc:3uus7y6h3rlrk6sbctzxm4bg/app.bsky.feed.post/3mzlrfopfmh26",
-   "player": "Cooley",
-   "team": null,
-   "status": "active",
-   "kind": "return",
-   "confidence": 0.9,
-   "text": "Cooley has been activated off IR after missing the past week and a half with a lower-body injury. The 29-year-old was riding a four-game winning streak before his injury and has posted a 2.69 GAA and "
-  },
-  {
-   "id": "at://did:plc:sdobrsxnvwczrjydmnubhibh/app.bsky.feed.post/3mzlrn7c4bs2b|reimer|active|return",
-   "at": "2026-11-05T21:08:39.466Z",
-   "seen": "2026-11-05T21:26:14.152Z",
-   "handle": "notfriedgehnic.bsky.social",
-   "post": "at://did:plc:sdobrsxnvwczrjydmnubhibh/app.bsky.feed.post/3mzlrn7c4bs2b",
-   "player": "Reimer",
-   "team": "NYR",
-   "status": "active",
-   "kind": "return",
-   "confidence": 0.85,
-   "text": "Cleared\n\nNew: Reimer (NYR)\n\nSorry for the delay, long drive"
-  },
   {
    "id": "at://did:plc:54vdi5eoabhod2vumsbcpi7g/app.bsky.feed.post/3mzm22zeqok5t|greenway|out|status",
    "at": "2026-11-05T23:39:33.050Z",
@@ -3036,6 +3010,19 @@
    "kind": "status",
    "confidence": 0.9,
    "text": "Devils’ Dillon suspended four games for illegal check to Blue Jackets’ Mateychuk."
+  },
+  {
+   "id": "at://did:plc:3uus7y6h3rlrk6sbctzxm4bg/app.bsky.feed.post/3n3ako3h7hm25|mathieuolivier|out|status",
+   "at": "2026-11-26T20:54:58.000Z",
+   "seen": "2026-11-26T22:03:49.098Z",
+   "handle": "dailyfaceoff.bsky.social",
+   "post": "at://did:plc:3uus7y6h3rlrk6sbctzxm4bg/app.bsky.feed.post/3n3ako3h7hm25",
+   "player": "Mathieu Olivier",
+   "team": "CBJ",
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.95,
+   "text": "Blue Jackets’ Mathieu Olivier out week-to-week with upper-body injury"
   }
  ]
 }

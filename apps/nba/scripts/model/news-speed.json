@@ -19016,6 +19016,42 @@
     "seen": "2026-11-26T20:09:40.750Z",
     "own": "2026-11-26T19:05:16.100Z"
    }
+  },
+  "401909326|giannisantetokounmpo|q": {
+   "game": "401909326",
+   "start": "2026-11-28T00:00Z",
+   "team": "14",
+   "name": "Giannis Antetokounmpo",
+   "status": "q",
+   "athlete": "3032977",
+   "espn": {
+    "seen": "2026-11-26T22:02:33.048Z",
+    "own": "2026-11-26T21:15:00.000Z"
+   }
+  },
+  "401909326|andrewwiggins|q": {
+   "game": "401909326",
+   "start": "2026-11-28T00:00Z",
+   "team": "14",
+   "name": "Andrew Wiggins",
+   "status": "q",
+   "athlete": "3059319",
+   "espn": {
+    "seen": "2026-11-26T22:02:33.048Z",
+    "own": "2026-11-26T21:08:00.000Z"
+   }
+  },
+  "401909329|alijahmartin|q": {
+   "game": "401909329",
+   "start": "2026-11-28T00:30Z",
+   "team": "28",
+   "name": "Alijah Martin",
+   "status": "q",
+   "athlete": "4702656",
+   "espn": {
+    "seen": "2026-11-26T22:02:33.048Z",
+    "own": "2026-11-26T21:18:00.000Z"
+   }
   }
  }
 }

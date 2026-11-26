@@ -15256,6 +15256,174 @@
     "seen": "2026-11-26T20:21:41.796Z",
     "own": "2026-11-26T20:14:00.000Z"
    }
+  },
+  "401873090|parkerwashington|q": {
+   "game": "401873090",
+   "start": "2026-11-29T18:00Z",
+   "team": "30",
+   "name": "Parker Washington",
+   "status": "q",
+   "athlete": "4432620",
+   "espn": {
+    "seen": "2026-11-26T22:00:41.882Z",
+    "own": "2026-11-26T20:29:00.000Z"
+   }
+  },
+  "401873090|dorianmausi|q": {
+   "game": "401873090",
+   "start": "2026-11-29T18:00Z",
+   "team": "10",
+   "name": "Dorian Mausi",
+   "status": "q",
+   "athlete": "4573318",
+   "espn": {
+    "seen": "2026-11-26T22:00:41.882Z",
+    "own": "2026-11-26T21:08:00.000Z"
+   }
+  },
+  "401873085|daltonschultz|q": {
+   "game": "401873085",
+   "start": "2026-11-29T18:00Z",
+   "team": "34",
+   "name": "Dalton Schultz",
+   "status": "q",
+   "athlete": "3117256",
+   "espn": {
+    "seen": "2026-11-26T22:00:41.882Z",
+    "own": "2026-11-26T21:44:00.000Z"
+   }
+  },
+  "401873085|olaivavegaioane|q": {
+   "game": "401873085",
+   "start": "2026-11-29T18:00Z",
+   "team": "33",
+   "name": "Olaivavega Ioane",
+   "status": "q",
+   "athlete": "4832793",
+   "espn": {
+    "seen": "2026-11-26T22:00:41.882Z",
+    "own": "2026-11-26T21:39:00.000Z"
+   }
+  },
+  "401873085|chidobeawuzie|q": {
+   "game": "401873085",
+   "start": "2026-11-29T18:00Z",
+   "team": "33",
+   "name": "Chidobe Awuzie",
+   "status": "q",
+   "athlete": "3052101",
+   "espn": {
+    "seen": "2026-11-26T22:00:41.882Z",
+    "own": "2026-11-26T21:37:00.000Z"
+   }
+  },
+  "401873092|karsonsharar|q": {
+   "game": "401873092",
+   "start": "2026-11-29T21:25Z",
+   "team": "22",
+   "name": "Karson Sharar",
+   "status": "q",
+   "athlete": "4709695",
+   "espn": {
+    "seen": "2026-11-26T22:00:41.882Z",
+    "own": "2026-11-26T20:31:00.000Z"
+   }
+  },
+  "401873092|hunterlong|q": {
+   "game": "401873092",
+   "start": "2026-11-29T21:25Z",
+   "team": "22",
+   "name": "Hunter Long",
+   "status": "q",
+   "athlete": "4239944",
+   "espn": {
+    "seen": "2026-11-26T22:00:41.882Z",
+    "own": "2026-11-26T20:30:00.000Z"
+   }
+  },
+  "401873094|darrenwaller|q": {
+   "game": "401873094",
+   "start": "2026-12-01T01:15Z",
+   "team": "29",
+   "name": "Darren Waller",
+   "status": "q",
+   "athlete": "2576925",
+   "espn": {
+    "seen": "2026-11-26T22:00:41.882Z",
+    "own": "2026-11-26T21:43:00.000Z"
+   }
+  },
+  "401873094|tommytremble|q": {
+   "game": "401873094",
+   "start": "2026-12-01T01:15Z",
+   "team": "29",
+   "name": "Tommy Tremble",
+   "status": "q",
+   "athlete": "4372780",
+   "espn": {
+    "seen": "2026-11-26T22:00:41.882Z",
+    "own": "2026-11-26T21:36:00.000Z"
+   }
+  },
+  "401873094|jaelanphillips|q": {
+   "game": "401873094",
+   "start": "2026-12-01T01:15Z",
+   "team": "29",
+   "name": "Jaelan Phillips",
+   "status": "q",
+   "athlete": "4242975",
+   "espn": {
+    "seen": "2026-11-26T22:00:41.882Z",
+    "own": "2026-11-26T21:36:00.000Z"
+   }
+  },
+  "401873094|feleipefranks|q": {
+   "game": "401873094",
+   "start": "2026-12-01T01:15Z",
+   "team": "29",
+   "name": "Feleipe Franks",
+   "status": "q",
+   "athlete": "4034948",
+   "espn": {
+    "seen": "2026-11-26T22:00:41.882Z",
+    "own": "2026-11-26T21:36:00.000Z"
+   }
+  },
+  "401873094|jacksonkuwatch|q": {
+   "game": "401873094",
+   "start": "2026-12-01T01:15Z",
+   "team": "29",
+   "name": "Jackson Kuwatch",
+   "status": "q",
+   "athlete": "4875592",
+   "espn": {
+    "seen": "2026-11-26T22:00:41.882Z",
+    "own": "2026-11-26T21:35:00.000Z"
+   }
+  },
+  "401873094|mitchellevans|q": {
+   "game": "401873094",
+   "start": "2026-12-01T01:15Z",
+   "team": "29",
+   "name": "Mitchell Evans",
+   "status": "q",
+   "athlete": "4683243",
+   "espn": {
+    "seen": "2026-11-26T22:00:41.882Z",
+    "own": "2026-11-26T21:35:00.000Z"
+   }
+  },
+  "401873094|patrickjones|q": {
+   "game": "401873094",
+   "start": "2026-12-01T01:15Z",
+   "team": "29",
+   "name": "Patrick Jones II",
+   "status": "q",
+   "athlete": "4036063",
+   "espn": {
+    "seen": "2026-11-26T22:00:41.882Z",
+    "own": "2026-11-26T21:35:00.000Z"
+   }
   }
  }
 }
