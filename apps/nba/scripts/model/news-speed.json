@@ -18177,6 +18177,114 @@
     "seen": "2026-11-26T02:27:47.556Z",
     "own": "2026-11-26T02:20:00.000Z"
    }
+  },
+  "401909326|andredrummond|q": {
+   "game": "401909326",
+   "start": "2026-11-28T00:00Z",
+   "team": "18",
+   "name": "Andre Drummond",
+   "status": "q",
+   "athlete": "6585",
+   "espn": {
+    "seen": "2026-11-26T04:58:13.475Z",
+    "own": "2026-11-26T03:40:00.000Z"
+   }
+  },
+  "401909326|oganunoby|out": {
+   "game": "401909326",
+   "start": "2026-11-28T00:00Z",
+   "team": "18",
+   "name": "OG Anunoby",
+   "status": "out",
+   "athlete": "3934719",
+   "espn": {
+    "seen": "2026-11-26T04:58:13.475Z",
+    "own": "2026-11-25T23:19:00.000Z"
+   }
+  },
+  "401909326|milesmcbride|out": {
+   "game": "401909326",
+   "start": "2026-11-28T00:00Z",
+   "team": "18",
+   "name": "Miles McBride",
+   "status": "out",
+   "athlete": "4431823",
+   "espn": {
+    "seen": "2026-11-26T04:58:13.475Z",
+    "own": "2026-11-25T17:57:00.000Z"
+   }
+  },
+  "401909326|jordanclarkson|out": {
+   "game": "401909326",
+   "start": "2026-11-28T00:00Z",
+   "team": "18",
+   "name": "Jordan Clarkson",
+   "status": "out",
+   "athlete": "2528426",
+   "espn": {
+    "seen": "2026-11-26T04:58:13.475Z",
+    "own": "2026-11-24T21:56:00.000Z"
+   }
+  },
+  "401909333|deaaronfox|out": {
+   "game": "401909333",
+   "start": "2026-11-28T02:30Z",
+   "team": "24",
+   "name": "De'Aaron Fox",
+   "status": "out",
+   "athlete": "4066259",
+   "espn": {
+    "seen": "2026-11-26T04:58:13.475Z",
+    "own": "2026-11-26T02:20:00.000Z"
+   }
+  },
+  "401909333|dylanharper|out": {
+   "game": "401909333",
+   "start": "2026-11-28T02:30Z",
+   "team": "24",
+   "name": "Dylan Harper",
+   "status": "out",
+   "athlete": "5037871",
+   "espn": {
+    "seen": "2026-11-26T04:58:13.475Z",
+    "own": "2026-11-19T20:07:00.000Z"
+   }
+  },
+  "401909333|tobiasharris|out": {
+   "game": "401909333",
+   "start": "2026-11-28T02:30Z",
+   "team": "24",
+   "name": "Tobias Harris",
+   "status": "out",
+   "athlete": "6440",
+   "espn": {
+    "seen": "2026-11-26T04:58:13.475Z",
+    "own": "2026-11-16T19:26:00.000Z"
+   }
+  },
+  "401909333|jaydenquaintance|out": {
+   "game": "401909333",
+   "start": "2026-11-28T02:30Z",
+   "team": "24",
+   "name": "Jayden Quaintance",
+   "status": "out",
+   "athlete": "5101845",
+   "espn": {
+    "seen": "2026-11-26T04:58:13.475Z",
+    "own": "2026-10-05T21:43:00.000Z"
+   }
+  },
+  "401909333|austinreaves|out": {
+   "game": "401909333",
+   "start": "2026-11-28T02:30Z",
+   "team": "13",
+   "name": "Austin Reaves",
+   "status": "out",
+   "athlete": "4066457",
+   "espn": {
+    "seen": "2026-11-26T04:58:13.475Z",
+    "own": "2026-11-25T20:33:00.000Z"
+   }
   }
  }
 }
