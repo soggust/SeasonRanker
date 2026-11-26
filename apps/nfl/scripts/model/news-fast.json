@@ -6,8 +6,8 @@
   "nflnewsreposterbot.bsky.social": "2026-11-25T21:41:32.820Z",
   "insidenflnews.bsky.social": "2026-11-26T04:33:57.071Z",
   "nflnewsposter.bsky.social": "2026-11-26T04:42:00.145Z",
-  "rotoworld-fb.bsky.social": "2026-11-26T04:42:33.000Z",
-  "rotowirenfl.bsky.social": "2026-11-26T04:59:31.000Z"
+  "rotoworld-fb.bsky.social": "2026-11-26T05:44:53.000Z",
+  "rotowirenfl.bsky.social": "2026-11-26T05:24:39.000Z"
  },
  "claims": [
   {
@@ -17975,6 +17975,19 @@
    "kind": "status",
    "confidence": 0.6,
    "text": "Rams now have ruled out TE Tyler Higbee due to a chest injury. They already had ruled out TE Davis Allen.\n\nOriginal post"
+  },
+  {
+   "id": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3n36vlalg5s25|tuckerkraft|limited|restriction",
+   "at": "2026-11-26T05:04:55.000Z",
+   "seen": "2026-11-26T06:17:57.180Z",
+   "handle": "rotowirenfl.bsky.social",
+   "post": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3n36vlalg5s25",
+   "player": "Tucker Kraft",
+   "team": null,
+   "status": "limited",
+   "kind": "restriction",
+   "confidence": 0.3,
+   "text": "Tucker Kraft: Limited to three catches in loss \n\n https://www.rotowire.com/football/player/tucker-kraft-16649"
   }
  ]
 }
