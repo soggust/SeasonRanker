@@ -15448,6 +15448,78 @@
     "seen": "2026-11-26T00:24:42.235Z",
     "own": "2026-11-26T00:12:00.000Z"
    }
+  },
+  "401873091|nickkallerup|q": {
+   "game": "401873091",
+   "start": "2026-11-29T21:25Z",
+   "team": "26",
+   "name": "Nick Kallerup",
+   "status": "q",
+   "athlete": "4569547",
+   "espn": {
+    "seen": "2026-11-26T00:51:41.280Z",
+    "own": "2026-11-26T00:28:00.000Z"
+   }
+  },
+  "401873091|drewlock|q": {
+   "game": "401873091",
+   "start": "2026-11-29T21:25Z",
+   "team": "26",
+   "name": "Drew Lock",
+   "status": "q",
+   "athlete": "3924327",
+   "espn": {
+    "seen": "2026-11-26T00:51:41.280Z",
+    "own": "2026-11-26T00:28:00.000Z"
+   }
+  },
+  "401873091|ernestjones|q": {
+   "game": "401873091",
+   "start": "2026-11-29T21:25Z",
+   "team": "26",
+   "name": "Ernest Jones IV",
+   "status": "q",
+   "athlete": "4362851",
+   "espn": {
+    "seen": "2026-11-26T00:51:41.280Z",
+    "own": "2026-11-26T00:27:00.000Z"
+   }
+  },
+  "401873091|anthonybradford|q": {
+   "game": "401873091",
+   "start": "2026-11-29T21:25Z",
+   "team": "26",
+   "name": "Anthony Bradford",
+   "status": "q",
+   "athlete": "4429211",
+   "espn": {
+    "seen": "2026-11-26T00:51:41.280Z",
+    "own": "2026-11-26T00:27:00.000Z"
+   }
+  },
+  "401873091|demarcuslawrence|q": {
+   "game": "401873091",
+   "start": "2026-11-29T21:25Z",
+   "team": "26",
+   "name": "DeMarcus Lawrence",
+   "status": "q",
+   "athlete": "16802",
+   "espn": {
+    "seen": "2026-11-26T00:51:41.280Z",
+    "own": "2026-11-26T00:26:00.000Z"
+   }
+  },
+  "401873091|jalenmilroe|q": {
+   "game": "401873091",
+   "start": "2026-11-29T21:25Z",
+   "team": "26",
+   "name": "Jalen Milroe",
+   "status": "q",
+   "athlete": "4432734",
+   "espn": {
+    "seen": "2026-11-26T00:51:41.280Z",
+    "own": "2026-11-26T00:26:00.000Z"
+   }
   }
  }
 }

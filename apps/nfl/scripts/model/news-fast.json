@@ -1,12 +1,12 @@
 {
  "sport": "nfl",
  "cursor": {
-  "adamscheftermirror.bsky.social": "2026-11-26T00:01:59.621Z",
+  "adamscheftermirror.bsky.social": "2026-11-26T00:47:03.115Z",
   "rapsheet.bsky.social": "2026-11-26T00:19:30.575Z",
   "nflnewsreposterbot.bsky.social": "2026-11-25T21:41:32.820Z",
   "insidenflnews.bsky.social": "2026-11-25T23:20:44.622Z",
   "nflnewsposter.bsky.social": "2026-11-25T23:40:26.602Z",
-  "rotoworld-fb.bsky.social": "2026-11-26T00:23:33.000Z",
+  "rotoworld-fb.bsky.social": "2026-11-26T00:41:47.000Z",
   "rotowirenfl.bsky.social": "2026-11-25T23:53:18.000Z"
  },
  "claims": [
@@ -17845,6 +17845,32 @@
    "kind": "status",
    "confidence": 0.85,
    "text": "JSN (ankle) limited Wednesday"
+  },
+  {
+   "id": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3n36gupsjpy2i|keatonmitchell|questionable|status",
+   "at": "2026-11-26T00:41:47.000Z",
+   "seen": "2026-11-26T00:53:47.059Z",
+   "handle": "rotoworld-fb.bsky.social",
+   "post": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3n36gupsjpy2i",
+   "player": "Keaton Mitchell",
+   "team": null,
+   "status": "questionable",
+   "kind": "status",
+   "confidence": 0.5,
+   "text": "Keaton Mitchell (knee) DNP Wednesday"
+  },
+  {
+   "id": "at://did:plc:qre6zxbmr3ixhdmgsgdretb5/app.bsky.feed.post/3n36h652h472x|brockpurdy|questionable|status",
+   "at": "2026-11-26T00:47:03.115Z",
+   "seen": "2026-11-26T00:53:47.059Z",
+   "handle": "adamscheftermirror.bsky.social",
+   "post": "at://did:plc:qre6zxbmr3ixhdmgsgdretb5/app.bsky.feed.post/3n36h652h472x",
+   "player": "Brock Purdy",
+   "team": "SF",
+   "status": "questionable",
+   "kind": "status",
+   "confidence": 0.5,
+   "text": "49ers QB Brock Purdy did not practice Wednesday as he deals with an ankle injury suffered in Sunday night’s game against the Vikings. More via @nwagoner:\n\nOriginal post"
   }
  ]
 }
