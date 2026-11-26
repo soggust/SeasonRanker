@@ -1,24 +1,11 @@
 {
  "sport": "nba",
  "cursor": {
-  "rotowirenba.bsky.social": "2026-11-26T03:47:08.000Z",
+  "rotowirenba.bsky.social": "2026-11-26T04:07:25.000Z",
   "insidenbanews.bsky.social": "2026-11-20T20:35:06.661Z",
   "shamsbot.bsky.social": "2026-11-25T18:32:56.000Z"
  },
  "claims": [
-  {
-   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mzjyu2mgv52q|vitkrejci|out|status",
-   "at": "2026-11-05T04:12:26.000Z",
-   "seen": "2026-11-05T05:22:49.752Z",
-   "handle": "rotowirenba.bsky.social",
-   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mzjyu2mgv52q",
-   "player": "Vit Krejci",
-   "team": null,
-   "status": "out",
-   "kind": "status",
-   "confidence": 0.8,
-   "text": "Vit Krejci: Won't return Wednesday \n\n https://www.rotowire.com/basketball/player/vit-krejci-5233"
-  },
   {
    "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mzlrnid3fb2q|jaysontatum|active|status",
    "at": "2026-11-05T21:08:48.000Z",
