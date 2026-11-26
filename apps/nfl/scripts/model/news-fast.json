@@ -1,13 +1,13 @@
 {
  "sport": "nfl",
  "cursor": {
-  "adamscheftermirror.bsky.social": "2026-11-26T18:42:10.587Z",
-  "rapsheet.bsky.social": "2026-11-26T16:57:37.475Z",
+  "adamscheftermirror.bsky.social": "2026-11-26T18:57:08.614Z",
+  "rapsheet.bsky.social": "2026-11-26T18:58:49.812Z",
   "nflnewsreposterbot.bsky.social": "2026-11-25T21:41:32.820Z",
-  "insidenflnews.bsky.social": "2026-11-26T18:45:13.774Z",
-  "nflnewsposter.bsky.social": "2026-11-26T18:32:39.082Z",
-  "rotoworld-fb.bsky.social": "2026-11-26T18:37:24.000Z",
-  "rotowirenfl.bsky.social": "2026-11-26T18:45:04.000Z"
+  "insidenflnews.bsky.social": "2026-11-26T18:48:17.149Z",
+  "nflnewsposter.bsky.social": "2026-11-26T18:46:35.909Z",
+  "rotoworld-fb.bsky.social": "2026-11-26T18:50:53.000Z",
+  "rotowirenfl.bsky.social": "2026-11-26T18:59:14.000Z"
  },
  "claims": [
   {
@@ -17767,6 +17767,58 @@
    "kind": "status",
    "confidence": 0.9,
    "text": "Colston Loveland: Won't return Thursday \n\n https://www.rotowire.com/football/player/colston-loveland-18460"
+  },
+  {
+   "id": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3n3adq6wa7u2i|colstonloveland|out|status",
+   "at": "2026-11-26T18:50:53.000Z",
+   "seen": "2026-11-26T19:06:29.913Z",
+   "handle": "rotoworld-fb.bsky.social",
+   "post": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3n3adq6wa7u2i",
+   "player": "Colston Loveland",
+   "team": "CHI",
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.97,
+   "text": "Colston Loveland (knee) ruled out vs. Lions"
+  },
+  {
+   "id": "at://did:plc:qre6zxbmr3ixhdmgsgdretb5/app.bsky.feed.post/3n3ae3ebatm2q|colstonloveland|out|status",
+   "at": "2026-11-26T18:57:08.202Z",
+   "seen": "2026-11-26T19:06:29.913Z",
+   "handle": "adamscheftermirror.bsky.social",
+   "post": "at://did:plc:qre6zxbmr3ixhdmgsgdretb5/app.bsky.feed.post/3n3ae3ebatm2q",
+   "player": "Colston Loveland",
+   "team": "CHI",
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.97,
+   "text": "Bears ruled out TE Colston Loveland due to a knee injury.\n\nOriginal post"
+  },
+  {
+   "id": "at://did:plc:qre6zxbmr3ixhdmgsgdretb5/app.bsky.feed.post/3n3ae3elykp2w|justinherbert|questionable|status",
+   "at": "2026-11-26T18:57:08.614Z",
+   "seen": "2026-11-26T19:06:29.913Z",
+   "handle": "adamscheftermirror.bsky.social",
+   "post": "at://did:plc:qre6zxbmr3ixhdmgsgdretb5/app.bsky.feed.post/3n3ae3elykp2w",
+   "player": "Justin Herbert",
+   "team": "LAC",
+   "status": "questionable",
+   "kind": "status",
+   "confidence": 0.6,
+   "text": "With Justin Herbert in concussion protocol, the Chargers signed QB veteran Jake Browning to their active roster.\n\nOriginal post"
+  },
+  {
+   "id": "at://did:plc:hlvr2omhnmvdmfnvmcuhyevz/app.bsky.feed.post/3n3ae6f3p2c2q|justinherbert|questionable|status",
+   "at": "2026-11-26T18:58:49.812Z",
+   "seen": "2026-11-26T19:06:29.913Z",
+   "handle": "rapsheet.bsky.social",
+   "post": "at://did:plc:hlvr2omhnmvdmfnvmcuhyevz/app.bsky.feed.post/3n3ae6f3p2c2q",
+   "player": "Justin Herbert",
+   "team": "LAC",
+   "status": "questionable",
+   "kind": "status",
+   "confidence": 0.6,
+   "text": "With Justin Herbert in the NFL’s concussion protocol, the Chargers signed QB Jake Browning to the active roster"
   }
  ]
 }
