@@ -5,7 +5,7 @@
   "notfriedgehnic.bsky.social": "2026-11-25T19:09:05.875Z",
   "dailyfaceoff.bsky.social": "2026-11-25T23:43:09.000Z",
   "dfotoronto.bsky.social": "2026-11-25T23:00:07.754Z",
-  "marklazerus.bsky.social": "2026-11-26T00:40:29.007Z"
+  "marklazerus.bsky.social": "2026-11-26T01:18:45.121Z"
  },
  "claims": [
   {
@@ -2997,6 +2997,32 @@
    "kind": "status",
    "confidence": 0.75,
    "text": "With NYR Dorofeyev and Bjorkstrand out, would it make sense to give Greentree a call up in the Top Six for a couple of games? \n\nWhy not?\n\nArthur and Jonny discussed today. \n\nPresented by @bet365_ca #b"
+  },
+  {
+   "id": "at://did:plc:54vdi5eoabhod2vumsbcpi7g/app.bsky.feed.post/3n36iwswj2227|antonfrondell|active|status",
+   "at": "2026-11-26T01:18:45.121Z",
+   "seen": "2026-11-26T01:34:28.417Z",
+   "handle": "marklazerus.bsky.social",
+   "post": "at://did:plc:54vdi5eoabhod2vumsbcpi7g/app.bsky.feed.post/3n36iwswj2227",
+   "player": "Anton Frondell",
+   "team": null,
+   "status": "active",
+   "kind": "status",
+   "confidence": 0.8,
+   "text": "Anton Frondell is in tonight. Tyler Bertuzzi is sick and is out."
+  },
+  {
+   "id": "at://did:plc:54vdi5eoabhod2vumsbcpi7g/app.bsky.feed.post/3n36iwswj2227|tylerbertuzzi|out|status",
+   "at": "2026-11-26T01:18:45.121Z",
+   "seen": "2026-11-26T01:34:28.417Z",
+   "handle": "marklazerus.bsky.social",
+   "post": "at://did:plc:54vdi5eoabhod2vumsbcpi7g/app.bsky.feed.post/3n36iwswj2227",
+   "player": "Tyler Bertuzzi",
+   "team": null,
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.9,
+   "text": "Anton Frondell is in tonight. Tyler Bertuzzi is sick and is out."
   }
  ]
 }

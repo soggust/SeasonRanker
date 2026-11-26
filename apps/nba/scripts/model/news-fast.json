@@ -1,7 +1,7 @@
 {
  "sport": "nba",
  "cursor": {
-  "rotowirenba.bsky.social": "2026-11-26T01:08:55.000Z",
+  "rotowirenba.bsky.social": "2026-11-26T01:23:50.000Z",
   "insidenbanews.bsky.social": "2026-11-20T20:35:06.661Z",
   "shamsbot.bsky.social": "2026-11-25T18:32:56.000Z"
  },
@@ -7545,6 +7545,19 @@
    "kind": "status",
    "confidence": 0.3,
    "text": "Jaylen Brown: Set for imaging of hamstring \n\n https://www.rotowire.com/basketball/player/jaylen-brown-3894"
+  },
+  {
+   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3n36j7vrndl2u|yaxellendeborg|active|status",
+   "at": "2026-11-26T01:23:50.000Z",
+   "seen": "2026-11-26T01:34:28.417Z",
+   "handle": "rotowirenba.bsky.social",
+   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3n36j7vrndl2u",
+   "player": "Yaxel Lendeborg",
+   "team": null,
+   "status": "active",
+   "kind": "status",
+   "confidence": 0.9,
+   "text": "Yaxel Lendeborg: Will play Wednesday \n\n https://www.rotowire.com/basketball/player/yaxel-lendeborg-6562"
   }
  ]
 }

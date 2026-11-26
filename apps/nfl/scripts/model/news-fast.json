@@ -4,25 +4,12 @@
   "adamscheftermirror.bsky.social": "2026-11-26T00:47:03.115Z",
   "rapsheet.bsky.social": "2026-11-26T00:19:30.575Z",
   "nflnewsreposterbot.bsky.social": "2026-11-25T21:41:32.820Z",
-  "insidenflnews.bsky.social": "2026-11-26T00:54:54.391Z",
-  "nflnewsposter.bsky.social": "2026-11-25T23:40:26.602Z",
-  "rotoworld-fb.bsky.social": "2026-11-26T00:54:50.000Z",
-  "rotowirenfl.bsky.social": "2026-11-25T23:53:18.000Z"
+  "insidenflnews.bsky.social": "2026-11-26T01:29:39.017Z",
+  "nflnewsposter.bsky.social": "2026-11-26T01:33:50.783Z",
+  "rotoworld-fb.bsky.social": "2026-11-26T01:26:02.000Z",
+  "rotowirenfl.bsky.social": "2026-11-26T01:30:17.000Z"
  },
  "claims": [
-  {
-   "id": "at://did:plc:qre6zxbmr3ixhdmgsgdretb5/app.bsky.feed.post/3mzjp73zae32z|malachitoney|out|status",
-   "at": "2026-11-05T01:19:39.310Z",
-   "seen": "2026-11-05T01:40:31.478Z",
-   "handle": "adamscheftermirror.bsky.social",
-   "post": "at://did:plc:qre6zxbmr3ixhdmgsgdretb5/app.bsky.feed.post/3mzjp73zae32z",
-   "player": "Malachi Toney",
-   "team": null,
-   "status": "out",
-   "kind": "status",
-   "confidence": 0.8,
-   "text": "Repost by @AdamSchefter\n\nSources: Malachi Toney has a high ankle sprain and will have surgery, which will allow him to return for the College Football Playoff. The timeline for return from this injury"
-  },
   {
    "id": "at://did:plc:qre6zxbmr3ixhdmgsgdretb5/app.bsky.feed.post/3mzjqujjwuh2r|joshjacobs|active|status",
    "at": "2026-11-05T01:49:31.871Z",
@@ -17884,6 +17871,71 @@
    "kind": "return",
    "confidence": 0.75,
    "text": "Romeo Doubs (shoulder) returns to practice"
+  },
+  {
+   "id": "at://did:plc:fuqjc7x4gxvnwzksnlxwbe4x/app.bsky.feed.post/3n36j5haq3ctt|christianwatson|questionable|status",
+   "at": "2026-11-26T01:22:27.753Z",
+   "seen": "2026-11-26T01:34:28.417Z",
+   "handle": "nflnewsposter.bsky.social",
+   "post": "at://did:plc:fuqjc7x4gxvnwzksnlxwbe4x/app.bsky.feed.post/3n36j5haq3ctt",
+   "player": "Christian Watson",
+   "team": "GB",
+   "status": "questionable",
+   "kind": "status",
+   "confidence": 0.9,
+   "text": "[Packers] WR Christian Watson (thigh) is questionable to return twitter.com/packers/stat..."
+  },
+  {
+   "id": "at://did:plc:mbr4badgf6yu56mquzackzew/app.bsky.feed.post/3n36j6aa5522q|christianwatson|questionable|status",
+   "at": "2026-11-26T01:22:53.949Z",
+   "seen": "2026-11-26T01:34:28.417Z",
+   "handle": "insidenflnews.bsky.social",
+   "post": "at://did:plc:mbr4badgf6yu56mquzackzew/app.bsky.feed.post/3n36j6aa5522q",
+   "player": "Christian Watson",
+   "team": "GB",
+   "status": "questionable",
+   "kind": "status",
+   "confidence": 0.9,
+   "text": "Status alert: Christian Watson (thigh) questionable to returnn."
+  },
+  {
+   "id": "at://did:plc:fuqjc7x4gxvnwzksnlxwbe4x/app.bsky.feed.post/3n36jjwrei227|christianwatson|active|return",
+   "at": "2026-11-26T01:29:26.681Z",
+   "seen": "2026-11-26T01:34:28.417Z",
+   "handle": "nflnewsposter.bsky.social",
+   "post": "at://did:plc:fuqjc7x4gxvnwzksnlxwbe4x/app.bsky.feed.post/3n36jjwrei227",
+   "player": "Christian Watson",
+   "team": "GB",
+   "status": "active",
+   "kind": "return",
+   "confidence": 0.8,
+   "text": "[Hodkiewicz] Christian Watson is returning to the game twitter.com/WesHod/statu..."
+  },
+  {
+   "id": "at://did:plc:mbr4badgf6yu56mquzackzew/app.bsky.feed.post/3n36jkcjudc2q|christianwatson|active|return",
+   "at": "2026-11-26T01:29:39.017Z",
+   "seen": "2026-11-26T01:34:28.417Z",
+   "handle": "insidenflnews.bsky.social",
+   "post": "at://did:plc:mbr4badgf6yu56mquzackzew/app.bsky.feed.post/3n36jkcjudc2q",
+   "player": "Christian Watson",
+   "team": "GB",
+   "status": "active",
+   "kind": "return",
+   "confidence": 0.85,
+   "text": "Status alert: Christian Watson (thigh) has returned to Wednesday's game."
+  },
+  {
+   "id": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3n36jlh44oo2m|christianwatson|active|return",
+   "at": "2026-11-26T01:30:17.000Z",
+   "seen": "2026-11-26T01:34:28.417Z",
+   "handle": "rotowirenfl.bsky.social",
+   "post": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3n36jlh44oo2m",
+   "player": "Christian Watson",
+   "team": "GB",
+   "status": "active",
+   "kind": "return",
+   "confidence": 0.85,
+   "text": "Christian Watson: Returns to Wednesday's game \n\n https://www.rotowire.com/football/player/christian-watson-15946"
   }
  ]
 }
