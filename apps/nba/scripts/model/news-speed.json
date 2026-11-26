@@ -18165,6 +18165,18 @@
     "own": "2026-11-25T23:30:27.000Z",
     "why": "@rotowirenba.bsky.social: Jaylen Brown: Won't return Wednesday \n\n https://www.ro"
    }
+  },
+  "401909325|deaaronfox|out": {
+   "game": "401909325",
+   "start": "2026-11-26T03:00Z",
+   "team": "24",
+   "name": "De'Aaron Fox",
+   "status": "out",
+   "athlete": "4066259",
+   "espn": {
+    "seen": "2026-11-26T02:27:47.556Z",
+    "own": "2026-11-26T02:20:00.000Z"
+   }
   }
  }
 }
