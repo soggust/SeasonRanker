@@ -1,11 +1,11 @@
 {
  "sport": "nfl",
  "cursor": {
-  "adamscheftermirror.bsky.social": "2026-11-26T02:52:02.972Z",
+  "adamscheftermirror.bsky.social": "2026-11-26T03:52:03.938Z",
   "rapsheet.bsky.social": "2026-11-26T02:38:50.958Z",
   "nflnewsreposterbot.bsky.social": "2026-11-25T21:41:32.820Z",
-  "insidenflnews.bsky.social": "2026-11-26T03:13:27.526Z",
-  "nflnewsposter.bsky.social": "2026-11-26T03:06:10.615Z",
+  "insidenflnews.bsky.social": "2026-11-26T03:45:35.036Z",
+  "nflnewsposter.bsky.social": "2026-11-26T03:47:30.242Z",
   "rotoworld-fb.bsky.social": "2026-11-26T02:41:51.000Z",
   "rotowirenfl.bsky.social": "2026-11-26T03:09:21.000Z"
  },
@@ -17910,6 +17910,71 @@
    "kind": "status",
    "confidence": 0.95,
    "text": "Christian Watson: Ruled out Wednesday \n\n https://www.rotowire.com/football/player/christian-watson-15946"
+  },
+  {
+   "id": "at://did:plc:qre6zxbmr3ixhdmgsgdretb5/app.bsky.feed.post/3n36ptaj5hx2p|christianwatson|out|status",
+   "at": "2026-11-26T03:22:01.034Z",
+   "seen": "2026-11-26T03:54:35.472Z",
+   "handle": "adamscheftermirror.bsky.social",
+   "post": "at://did:plc:qre6zxbmr3ixhdmgsgdretb5/app.bsky.feed.post/3n36ptaj5hx2p",
+   "player": "Christian Watson",
+   "team": "GB",
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.95,
+   "text": "Packers now have ruled out Christian Watson.\n\nOriginal post"
+  },
+  {
+   "id": "at://did:plc:mbr4badgf6yu56mquzackzew/app.bsky.feed.post/3n36r5eprns2z|tylerhigbee|out|status",
+   "at": "2026-11-26T03:45:35.036Z",
+   "seen": "2026-11-26T03:54:35.472Z",
+   "handle": "insidenflnews.bsky.social",
+   "post": "at://did:plc:mbr4badgf6yu56mquzackzew/app.bsky.feed.post/3n36r5eprns2z",
+   "player": "Tyler Higbee",
+   "team": "LAR",
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.9,
+   "text": "🚨 Status alert: Tyler Higbee (chest) won't return."
+  },
+  {
+   "id": "at://did:plc:fuqjc7x4gxvnwzksnlxwbe4x/app.bsky.feed.post/3n36raslmiktt|tylerhigbee|out|status",
+   "at": "2026-11-26T03:47:30.242Z",
+   "seen": "2026-11-26T03:54:35.472Z",
+   "handle": "nflnewsposter.bsky.social",
+   "post": "at://did:plc:fuqjc7x4gxvnwzksnlxwbe4x/app.bsky.feed.post/3n36raslmiktt",
+   "player": "Tyler Higbee",
+   "team": "LAR",
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.95,
+   "text": "[Rams] Rams Injury Update: TE Tyler Higbee (chest) is out. twitter.com/RamsNFL/stat..."
+  },
+  {
+   "id": "at://did:plc:qre6zxbmr3ixhdmgsgdretb5/app.bsky.feed.post/3n36rixoff42w|tylerhigbee|out|status",
+   "at": "2026-11-26T03:52:03.938Z",
+   "seen": "2026-11-26T03:54:35.472Z",
+   "handle": "adamscheftermirror.bsky.social",
+   "post": "at://did:plc:qre6zxbmr3ixhdmgsgdretb5/app.bsky.feed.post/3n36rixoff42w",
+   "player": "Tyler Higbee",
+   "team": "LAR",
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.95,
+   "text": "Rams now have ruled out TE Tyler Higbee due to a chest injury. They already had ruled out TE Davis Allen.\n\nOriginal post"
+  },
+  {
+   "id": "at://did:plc:qre6zxbmr3ixhdmgsgdretb5/app.bsky.feed.post/3n36rixoff42w|davisallen|out|status",
+   "at": "2026-11-26T03:52:03.938Z",
+   "seen": "2026-11-26T03:54:35.472Z",
+   "handle": "adamscheftermirror.bsky.social",
+   "post": "at://did:plc:qre6zxbmr3ixhdmgsgdretb5/app.bsky.feed.post/3n36rixoff42w",
+   "player": "Davis Allen",
+   "team": "LAR",
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.6,
+   "text": "Rams now have ruled out TE Tyler Higbee due to a chest injury. They already had ruled out TE Davis Allen.\n\nOriginal post"
   }
  ]
 }

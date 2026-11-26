@@ -1,24 +1,11 @@
 {
  "sport": "nba",
  "cursor": {
-  "rotowirenba.bsky.social": "2026-11-26T03:17:42.000Z",
+  "rotowirenba.bsky.social": "2026-11-26T03:47:08.000Z",
   "insidenbanews.bsky.social": "2026-11-20T20:35:06.661Z",
   "shamsbot.bsky.social": "2026-11-25T18:32:56.000Z"
  },
  "claims": [
-  {
-   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mzjwucqoim23|jarrettallen|out|status",
-   "at": "2026-11-05T03:36:47.000Z",
-   "seen": "2026-11-05T03:47:40.055Z",
-   "handle": "rotowirenba.bsky.social",
-   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mzjwucqoim23",
-   "player": "Jarrett Allen",
-   "team": null,
-   "status": "out",
-   "kind": "status",
-   "confidence": 0.85,
-   "text": "Jarrett Allen: Doesn't return Wednesday \n\n https://www.rotowire.com/basketball/player/jarrett-allen-4122"
-  },
   {
    "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mzjyu2mgv52q|vitkrejci|out|status",
    "at": "2026-11-05T04:12:26.000Z",
@@ -7493,6 +7480,32 @@
    "kind": "status",
    "confidence": 0.8,
    "text": "Zach Edey: Not expected to return Wednesday \n\n https://www.rotowire.com/basketball/player/zach-edey-6263"
+  },
+  {
+   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3n36qosnn2b2u|lameloball|out|status",
+   "at": "2026-11-26T03:37:26.000Z",
+   "seen": "2026-11-26T03:54:35.472Z",
+   "handle": "rotowirenba.bsky.social",
+   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3n36qosnn2b2u",
+   "player": "LaMelo Ball",
+   "team": null,
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.9,
+   "text": "LaMelo Ball: Doesn't return Wednesday \n\n https://www.rotowire.com/basketball/player/lamelo-ball-5151"
+  },
+  {
+   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3n36r275vrq2r|zachedey|out|status",
+   "at": "2026-11-26T03:43:48.000Z",
+   "seen": "2026-11-26T03:54:35.472Z",
+   "handle": "rotowirenba.bsky.social",
+   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3n36r275vrq2r",
+   "player": "Zach Edey",
+   "team": null,
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.9,
+   "text": "Zach Edey: Does not return Wednesday \n\n https://www.rotowire.com/basketball/player/zach-edey-6263"
   }
  ]
 }
