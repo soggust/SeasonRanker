@@ -1,37 +1,11 @@
 {
  "sport": "nba",
  "cursor": {
-  "rotowirenba.bsky.social": "2026-11-26T01:38:46.000Z",
+  "rotowirenba.bsky.social": "2026-11-26T03:17:42.000Z",
   "insidenbanews.bsky.social": "2026-11-20T20:35:06.661Z",
   "shamsbot.bsky.social": "2026-11-25T18:32:56.000Z"
  },
  "claims": [
-  {
-   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mzjt6o6bjk2v|isaiahstewart|doubtful|status",
-   "at": "2026-11-05T02:30:59.000Z",
-   "seen": "2026-11-05T02:47:04.959Z",
-   "handle": "rotowirenba.bsky.social",
-   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mzjt6o6bjk2v",
-   "player": "Isaiah Stewart",
-   "team": null,
-   "status": "doubtful",
-   "kind": "status",
-   "confidence": 0.9,
-   "text": "Isaiah Stewart: Doubtful to return \n\n https://www.rotowire.com/basketball/player/isaiah-stewart-5137"
-  },
-  {
-   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mzjummzdz62v|paytonpritchard|out|status",
-   "at": "2026-11-05T02:56:42.000Z",
-   "seen": "2026-11-05T03:47:40.055Z",
-   "handle": "rotowirenba.bsky.social",
-   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mzjummzdz62v",
-   "player": "Payton Pritchard",
-   "team": null,
-   "status": "out",
-   "kind": "status",
-   "confidence": 0.85,
-   "text": "Payton Pritchard: Doesn't return Wednesday \n\n https://www.rotowire.com/basketball/player/payton-pritchard-5131"
-  },
   {
    "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mzjwucqoim23|jarrettallen|out|status",
    "at": "2026-11-05T03:36:47.000Z",
@@ -7480,6 +7454,45 @@
    "kind": "status",
    "confidence": 0.9,
    "text": "Yaxel Lendeborg: Will play Wednesday \n\n https://www.rotowire.com/basketball/player/yaxel-lendeborg-6562"
+  },
+  {
+   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3n36mfi5m5k2e|deaaronfox|out|status",
+   "at": "2026-11-26T02:20:38.000Z",
+   "seen": "2026-11-26T03:18:10.138Z",
+   "handle": "rotowirenba.bsky.social",
+   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3n36mfi5m5k2e",
+   "player": "De'Aaron Fox",
+   "team": "SAS",
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.93,
+   "text": "De'Aaron Fox: Out again Wednesday \n\n https://www.rotowire.com/basketball/player/deaaron-fox-4116"
+  },
+  {
+   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3n36nkn5ua72q|emanuelsharp|none|starting",
+   "at": "2026-11-26T02:41:25.000Z",
+   "seen": "2026-11-26T03:18:10.138Z",
+   "handle": "rotowirenba.bsky.social",
+   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3n36nkn5ua72q",
+   "player": "Emanuel Sharp",
+   "team": null,
+   "status": "none",
+   "kind": "starting",
+   "confidence": 0.9,
+   "text": "Emanuel Sharp: Earning first career start Wednesday \n\n https://www.rotowire.com/basketball/player/emanuel-sharp-7004"
+  },
+  {
+   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3n36nxeavde2e|zachedey|out|status",
+   "at": "2026-11-26T02:48:31.000Z",
+   "seen": "2026-11-26T03:18:10.138Z",
+   "handle": "rotowirenba.bsky.social",
+   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3n36nxeavde2e",
+   "player": "Zach Edey",
+   "team": "MEM",
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.8,
+   "text": "Zach Edey: Not expected to return Wednesday \n\n https://www.rotowire.com/basketball/player/zach-edey-6263"
   }
  ]
 }

@@ -3,9 +3,9 @@
  "cursor": {
   "johnston-bot.bsky.social": "2026-11-24T02:44:36.491Z",
   "notfriedgehnic.bsky.social": "2026-11-25T19:09:05.875Z",
-  "dailyfaceoff.bsky.social": "2026-11-25T23:43:09.000Z",
-  "dfotoronto.bsky.social": "2026-11-25T23:00:07.754Z",
-  "marklazerus.bsky.social": "2026-11-26T01:18:45.121Z"
+  "dailyfaceoff.bsky.social": "2026-11-26T02:43:28.000Z",
+  "dfotoronto.bsky.social": "2026-11-26T03:08:45.000Z",
+  "marklazerus.bsky.social": "2026-11-26T03:14:02.754Z"
  },
  "claims": [
   {
@@ -3023,6 +3023,32 @@
    "kind": "status",
    "confidence": 0.9,
    "text": "Anton Frondell is in tonight. Tyler Bertuzzi is sick and is out."
+  },
+  {
+   "id": "at://did:plc:54vdi5eoabhod2vumsbcpi7g/app.bsky.feed.post/3n36oxoeygc3g|tylerbertuzzi|out|status",
+   "at": "2026-11-26T03:06:36.357Z",
+   "seen": "2026-11-26T03:18:10.138Z",
+   "handle": "marklazerus.bsky.social",
+   "post": "at://did:plc:54vdi5eoabhod2vumsbcpi7g/app.bsky.feed.post/3n36oxoeygc3g",
+   "player": "Tyler Bertuzzi",
+   "team": "CHI",
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.85,
+   "text": "With Tyler Bertuzzi out and Connor Bedard injured, I believe Patrick Kane is the only Blackhawks player with a letter on his sweater today. No temps."
+  },
+  {
+   "id": "at://did:plc:54vdi5eoabhod2vumsbcpi7g/app.bsky.feed.post/3n36oxoeygc3g|connorbedard|out|status",
+   "at": "2026-11-26T03:06:36.357Z",
+   "seen": "2026-11-26T03:18:10.138Z",
+   "handle": "marklazerus.bsky.social",
+   "post": "at://did:plc:54vdi5eoabhod2vumsbcpi7g/app.bsky.feed.post/3n36oxoeygc3g",
+   "player": "Connor Bedard",
+   "team": "CHI",
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.5,
+   "text": "With Tyler Bertuzzi out and Connor Bedard injured, I believe Patrick Kane is the only Blackhawks player with a letter on his sweater today. No temps."
   }
  ]
 }
