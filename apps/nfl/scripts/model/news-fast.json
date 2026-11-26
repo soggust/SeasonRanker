@@ -1,12 +1,12 @@
 {
  "sport": "nfl",
  "cursor": {
-  "adamscheftermirror.bsky.social": "2026-11-26T04:57:04.854Z",
+  "adamscheftermirror.bsky.social": "2026-11-26T14:22:07.579Z",
   "rapsheet.bsky.social": "2026-11-26T04:18:23.365Z",
   "nflnewsreposterbot.bsky.social": "2026-11-25T21:41:32.820Z",
   "insidenflnews.bsky.social": "2026-11-26T14:10:58.218Z",
   "nflnewsposter.bsky.social": "2026-11-26T04:42:00.145Z",
-  "rotoworld-fb.bsky.social": "2026-11-26T05:44:53.000Z",
+  "rotoworld-fb.bsky.social": "2026-11-26T14:17:47.000Z",
   "rotowirenfl.bsky.social": "2026-11-26T05:24:39.000Z"
  },
  "claims": [
@@ -17975,6 +17975,19 @@
    "kind": "restriction",
    "confidence": 0.3,
    "text": "Tucker Kraft: Limited to three catches in loss \n\n https://www.rotowire.com/football/player/tucker-kraft-16649"
+  },
+  {
+   "id": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3n37uhu2y2z2x|christianwatson|questionable|status",
+   "at": "2026-11-26T14:17:47.000Z",
+   "seen": "2026-11-26T14:32:35.566Z",
+   "handle": "rotoworld-fb.bsky.social",
+   "post": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3n37uhu2y2z2x",
+   "player": "Christian Watson",
+   "team": "GB",
+   "status": "questionable",
+   "kind": "status",
+   "confidence": 0.6,
+   "text": "Christian Watson in concussion protocol Thursday"
   }
  ]
 }
