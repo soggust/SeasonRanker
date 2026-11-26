@@ -1,24 +1,11 @@
 {
  "sport": "nba",
  "cursor": {
-  "rotowirenba.bsky.social": "2026-11-26T22:16:35.000Z",
+  "rotowirenba.bsky.social": "2026-11-26T22:31:10.000Z",
   "insidenbanews.bsky.social": "2026-11-20T20:35:06.661Z",
   "shamsbot.bsky.social": "2026-11-25T18:32:56.000Z"
  },
  "claims": [
-  {
-   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mzlvv4scjt22|santialdama|active|status",
-   "at": "2026-11-05T22:24:40.000Z",
-   "seen": "2026-11-05T22:41:34.641Z",
-   "handle": "rotowirenba.bsky.social",
-   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mzlvv4scjt22",
-   "player": "Santi Aldama",
-   "team": "MEM",
-   "status": "active",
-   "kind": "status",
-   "confidence": 0.85,
-   "text": "Santi Aldama: Upgraded to Probable Friday \n\n https://www.rotowire.com/basketball/player/santi-aldama-5428"
-  },
   {
    "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mzlxfw7y7s2n|anthonydavis|questionable|status",
    "at": "2026-11-05T22:51:57.000Z",
@@ -7480,6 +7467,19 @@
    "kind": "status",
    "confidence": 0.9,
    "text": "Joel Embiid: Carrying questionable tag \n\n https://www.rotowire.com/basketball/player/joel-embiid-3572"
+  },
+  {
+   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3n3aq24452x2r|aaronnesmith|none|return",
+   "at": "2026-11-26T22:31:10.000Z",
+   "seen": "2026-11-26T22:44:22.546Z",
+   "handle": "rotowirenba.bsky.social",
+   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3n3aq24452x2r",
+   "player": "Aaron Nesmith",
+   "team": null,
+   "status": "none",
+   "kind": "return",
+   "confidence": 0.3,
+   "text": "Aaron Nesmith: Could return Friday \n\n https://www.rotowire.com/basketball/player/aaron-nesmith-5120"
   }
  ]
 }
