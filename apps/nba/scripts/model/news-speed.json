@@ -18477,6 +18477,54 @@
     "seen": "2026-11-26T06:13:17.265Z",
     "own": "2026-11-26T06:01:00.000Z"
    }
+  },
+  "401909334|jaxsonhayes|q": {
+   "game": "401909334",
+   "start": "2026-11-28T02:30Z",
+   "team": "26",
+   "name": "Jaxson Hayes",
+   "status": "q",
+   "athlete": "4397077",
+   "espn": {
+    "seen": "2026-11-26T07:13:48.582Z",
+    "own": "2026-11-24T06:07:00.000Z"
+   }
+  },
+  "401909334|jusufnurkic|out": {
+   "game": "401909334",
+   "start": "2026-11-28T02:30Z",
+   "team": "26",
+   "name": "Jusuf Nurkic",
+   "status": "out",
+   "athlete": "3102530",
+   "espn": {
+    "seen": "2026-11-26T07:13:48.582Z",
+    "own": "2026-11-20T22:40:00.000Z"
+   }
+  },
+  "401909334|laurimarkkanen|out": {
+   "game": "401909334",
+   "start": "2026-11-28T02:30Z",
+   "team": "26",
+   "name": "Lauri Markkanen",
+   "status": "out",
+   "athlete": "4066336",
+   "espn": {
+    "seen": "2026-11-26T07:13:48.582Z",
+    "own": "2026-11-11T18:22:00.000Z"
+   }
+  },
+  "401909334|jarenjackson|out": {
+   "game": "401909334",
+   "start": "2026-11-28T02:30Z",
+   "team": "26",
+   "name": "Jaren Jackson Jr.",
+   "status": "out",
+   "athlete": "4277961",
+   "espn": {
+    "seen": "2026-11-26T07:13:48.582Z",
+    "own": "2026-10-27T19:25:00.000Z"
+   }
   }
  }
 }
