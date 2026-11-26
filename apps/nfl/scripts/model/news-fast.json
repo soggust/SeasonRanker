@@ -2,12 +2,12 @@
  "sport": "nfl",
  "cursor": {
   "adamscheftermirror.bsky.social": "2026-11-26T19:27:08.350Z",
-  "rapsheet.bsky.social": "2026-11-26T18:58:49.812Z",
+  "rapsheet.bsky.social": "2026-11-26T19:59:24.753Z",
   "nflnewsreposterbot.bsky.social": "2026-11-25T21:41:32.820Z",
   "insidenflnews.bsky.social": "2026-11-26T19:19:10.190Z",
   "nflnewsposter.bsky.social": "2026-11-26T19:36:27.596Z",
   "rotoworld-fb.bsky.social": "2026-11-26T18:50:53.000Z",
-  "rotowirenfl.bsky.social": "2026-11-26T19:36:43.000Z"
+  "rotowirenfl.bsky.social": "2026-11-26T20:11:21.000Z"
  },
  "claims": [
   {
@@ -17845,6 +17845,45 @@
    "kind": "status",
    "confidence": 0.9,
    "text": "Steelers activated wide receiver Michael Pittman Jr. from injured reserve and signed wide receiver Max Hurleman from their practice squad to their active roster. The team also placed wide receiver Ben"
+  },
+  {
+   "id": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3n3ah7zqmum2t|michaelpittman|active|status",
+   "at": "2026-11-26T19:53:26.000Z",
+   "seen": "2026-11-26T20:11:22.863Z",
+   "handle": "rotowirenfl.bsky.social",
+   "post": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3n3ah7zqmum2t",
+   "player": "Michael Pittman",
+   "team": "IND",
+   "status": "active",
+   "kind": "status",
+   "confidence": 0.9,
+   "text": "Michael Pittman: Cleared for Friday's game \n\n https://www.rotowire.com/football/player/michael-pittman-14378"
+  },
+  {
+   "id": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3n3ahwb2azs24|juwanjohnson|questionable|status",
+   "at": "2026-11-26T20:05:52.000Z",
+   "seen": "2026-11-26T20:11:22.863Z",
+   "handle": "rotowirenfl.bsky.social",
+   "post": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3n3ahwb2azs24",
+   "player": "Juwan Johnson",
+   "team": "NO",
+   "status": "questionable",
+   "kind": "status",
+   "confidence": 0.85,
+   "text": "Juwan Johnson: Day-to-day ahead of Sunday's contest \n\n https://www.rotowire.com/football/player/juwan-johnson-14630"
+  },
+  {
+   "id": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3n3aia2xrvv2m|carsonbeck|questionable|status",
+   "at": "2026-11-26T20:11:21.000Z",
+   "seen": "2026-11-26T20:11:22.863Z",
+   "handle": "rotowirenfl.bsky.social",
+   "post": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3n3aia2xrvv2m",
+   "player": "Carson Beck",
+   "team": "MIA",
+   "status": "questionable",
+   "kind": "status",
+   "confidence": 0.35,
+   "text": "Carson Beck: Stays DNP on Thursday \n\n https://www.rotowire.com/football/player/carson-beck-19287"
   }
  ]
 }

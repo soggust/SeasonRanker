@@ -3,24 +3,11 @@
  "cursor": {
   "johnston-bot.bsky.social": "2026-11-26T15:03:47.542Z",
   "notfriedgehnic.bsky.social": "2026-11-26T15:07:30.929Z",
-  "dailyfaceoff.bsky.social": "2026-11-26T19:20:00.000Z",
+  "dailyfaceoff.bsky.social": "2026-11-26T19:58:47.000Z",
   "dfotoronto.bsky.social": "2026-11-26T19:15:20.163Z",
   "marklazerus.bsky.social": "2026-11-26T16:54:28.277Z"
  },
  "claims": [
-  {
-   "id": "at://did:plc:3uus7y6h3rlrk6sbctzxm4bg/app.bsky.feed.post/3mzlo42c7zi2f|seandurzi|out|status",
-   "at": "2026-11-05T20:05:22.000Z",
-   "seen": "2026-11-05T20:24:12.731Z",
-   "handle": "dailyfaceoff.bsky.social",
-   "post": "at://did:plc:3uus7y6h3rlrk6sbctzxm4bg/app.bsky.feed.post/3mzlo42c7zi2f",
-   "player": "Sean Durzi",
-   "team": "NYR",
-   "status": "out",
-   "kind": "status",
-   "confidence": 0.9,
-   "text": "Rangers waive James Reimer, place Sean Durzi on injured reserve"
-  },
   {
    "id": "at://did:plc:3uus7y6h3rlrk6sbctzxm4bg/app.bsky.feed.post/3mzlrfopfmh26|cooley|active|return",
    "at": "2026-11-05T21:04:27.000Z",
@@ -3036,6 +3023,19 @@
    "kind": "status",
    "confidence": 0.95,
    "text": "Rangers’ Gabe Perreault out 4-6 weeks with lower-body injury"
+  },
+  {
+   "id": "at://did:plc:3uus7y6h3rlrk6sbctzxm4bg/app.bsky.feed.post/3n3ahjlz3dc2f|dillon|out|status",
+   "at": "2026-11-26T19:58:47.000Z",
+   "seen": "2026-11-26T20:11:22.863Z",
+   "handle": "dailyfaceoff.bsky.social",
+   "post": "at://did:plc:3uus7y6h3rlrk6sbctzxm4bg/app.bsky.feed.post/3n3ahjlz3dc2f",
+   "player": "Dillon",
+   "team": "NJ",
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.9,
+   "text": "Devils’ Dillon suspended four games for illegal check to Blue Jackets’ Mateychuk."
   }
  ]
 }

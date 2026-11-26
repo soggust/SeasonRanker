@@ -19005,6 +19005,17 @@
     "own": "2026-11-26T19:00:58.000Z",
     "why": "@rotowirenba.bsky.social: Mitchell Robinson: Questionable for Friday \n\n https://"
    }
+  },
+  "401909330|mitchellrobinson|q": {
+   "game": "401909330",
+   "start": "2026-11-28T01:00Z",
+   "team": "2",
+   "name": "Mitchell Robinson",
+   "status": "q",
+   "sleeper": {
+    "seen": "2026-11-26T20:09:40.750Z",
+    "own": "2026-11-26T19:05:16.100Z"
+   }
   }
  }
 }
