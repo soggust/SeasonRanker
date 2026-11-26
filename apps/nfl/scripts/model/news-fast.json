@@ -1,12 +1,12 @@
 {
  "sport": "nfl",
  "cursor": {
-  "adamscheftermirror.bsky.social": "2026-11-26T14:37:09.968Z",
+  "adamscheftermirror.bsky.social": "2026-11-26T17:42:05.915Z",
   "rapsheet.bsky.social": "2026-11-26T16:57:37.475Z",
   "nflnewsreposterbot.bsky.social": "2026-11-25T21:41:32.820Z",
-  "insidenflnews.bsky.social": "2026-11-26T14:10:58.218Z",
-  "nflnewsposter.bsky.social": "2026-11-26T04:42:00.145Z",
-  "rotoworld-fb.bsky.social": "2026-11-26T14:17:47.000Z",
+  "insidenflnews.bsky.social": "2026-11-26T17:31:39.638Z",
+  "nflnewsposter.bsky.social": "2026-11-26T17:44:40.909Z",
+  "rotoworld-fb.bsky.social": "2026-11-26T17:39:00.000Z",
   "rotowirenfl.bsky.social": "2026-11-26T05:24:39.000Z"
  },
  "claims": [
@@ -17923,6 +17923,19 @@
    "kind": "status",
    "confidence": 0.6,
    "text": "Christian Watson in concussion protocol Thursday"
+  },
+  {
+   "id": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3n3a67ghtkz2c|brockpurdy|questionable|status",
+   "at": "2026-11-26T17:12:02.000Z",
+   "seen": "2026-11-26T18:03:26.180Z",
+   "handle": "rotoworld-fb.bsky.social",
+   "post": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3n3a67ghtkz2c",
+   "player": "Brock Purdy",
+   "team": "SF",
+   "status": "questionable",
+   "kind": "status",
+   "confidence": 0.9,
+   "text": "Rap: Purdy considered day-to-day with ankle injury"
   }
  ]
 }

@@ -3,24 +3,11 @@
  "cursor": {
   "johnston-bot.bsky.social": "2026-11-26T15:03:47.542Z",
   "notfriedgehnic.bsky.social": "2026-11-26T15:07:30.929Z",
-  "dailyfaceoff.bsky.social": "2026-11-26T16:55:44.000Z",
-  "dfotoronto.bsky.social": "2026-11-26T16:15:23.000Z",
+  "dailyfaceoff.bsky.social": "2026-11-26T17:27:28.000Z",
+  "dfotoronto.bsky.social": "2026-11-26T17:49:57.000Z",
   "marklazerus.bsky.social": "2026-11-26T16:54:28.277Z"
  },
  "claims": [
-  {
-   "id": "at://did:plc:3uus7y6h3rlrk6sbctzxm4bg/app.bsky.feed.post/3mzldtkk5ib2i|ivandemidov|out|status",
-   "at": "2026-11-05T17:01:40.000Z",
-   "seen": "2026-11-05T17:16:28.547Z",
-   "handle": "dailyfaceoff.bsky.social",
-   "post": "at://did:plc:3uus7y6h3rlrk6sbctzxm4bg/app.bsky.feed.post/3mzldtkk5ib2i",
-   "player": "Ivan Demidov",
-   "team": "MTL",
-   "status": "out",
-   "kind": "status",
-   "confidence": 0.4,
-   "text": "Canadiens’ Ivan Demidov fractured ankle in preseason. #nhl #nhlhockey #dailyfaceoff"
-  },
   {
    "id": "at://did:plc:3uus7y6h3rlrk6sbctzxm4bg/app.bsky.feed.post/3mzlo42c7zi2f|seandurzi|out|status",
    "at": "2026-11-05T20:05:22.000Z",
@@ -3010,6 +2997,32 @@
    "kind": "status",
    "confidence": 0.5,
    "text": "With Tyler Bertuzzi out and Connor Bedard injured, I believe Patrick Kane is the only Blackhawks player with a letter on his sweater today. No temps."
+  },
+  {
+   "id": "at://did:plc:knaj2vcp4x6t7hr7ewd6e3uz/app.bsky.feed.post/3n3aa34fugc2q|kirillmarchenko|none|role",
+   "at": "2026-11-26T17:45:24.000Z",
+   "seen": "2026-11-26T18:03:26.180Z",
+   "handle": "dfotoronto.bsky.social",
+   "post": "at://did:plc:knaj2vcp4x6t7hr7ewd6e3uz/app.bsky.feed.post/3n3aa34fugc2q",
+   "player": "Kirill Marchenko",
+   "team": "TOR",
+   "status": "none",
+   "kind": "role",
+   "confidence": 0.9,
+   "text": "Maple Leafs lineup news: Kirill Marchenko replaces William Nylander on top power-play unit"
+  },
+  {
+   "id": "at://did:plc:knaj2vcp4x6t7hr7ewd6e3uz/app.bsky.feed.post/3n3aa34fugc2q|williamnylander|none|role",
+   "at": "2026-11-26T17:45:24.000Z",
+   "seen": "2026-11-26T18:03:26.180Z",
+   "handle": "dfotoronto.bsky.social",
+   "post": "at://did:plc:knaj2vcp4x6t7hr7ewd6e3uz/app.bsky.feed.post/3n3aa34fugc2q",
+   "player": "William Nylander",
+   "team": "TOR",
+   "status": "none",
+   "kind": "role",
+   "confidence": 0.8,
+   "text": "Maple Leafs lineup news: Kirill Marchenko replaces William Nylander on top power-play unit"
   }
  ]
 }
