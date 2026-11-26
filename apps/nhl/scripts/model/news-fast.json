@@ -2,25 +2,12 @@
  "sport": "nhl",
  "cursor": {
   "johnston-bot.bsky.social": "2026-11-26T15:03:47.542Z",
-  "notfriedgehnic.bsky.social": "2026-11-26T05:38:22.722Z",
-  "dailyfaceoff.bsky.social": "2026-11-26T15:01:16.000Z",
-  "dfotoronto.bsky.social": "2026-11-26T13:10:39.000Z",
+  "notfriedgehnic.bsky.social": "2026-11-26T15:07:30.929Z",
+  "dailyfaceoff.bsky.social": "2026-11-26T15:52:42.000Z",
+  "dfotoronto.bsky.social": "2026-11-26T15:34:51.000Z",
   "marklazerus.bsky.social": "2026-11-26T14:14:59.344Z"
  },
  "claims": [
-  {
-   "id": "at://did:plc:knaj2vcp4x6t7hr7ewd6e3uz/app.bsky.feed.post/3mzl5k4xtc42e|johntavares|active|return",
-   "at": "2026-11-05T15:09:01.000Z",
-   "seen": "2026-11-05T15:19:39.886Z",
-   "handle": "dfotoronto.bsky.social",
-   "post": "at://did:plc:knaj2vcp4x6t7hr7ewd6e3uz/app.bsky.feed.post/3mzl5k4xtc42e",
-   "player": "John Tavares",
-   "team": "TOR",
-   "status": "active",
-   "kind": "return",
-   "confidence": 0.3,
-   "text": "Nick Paul looking forward to playing with John Tavares ahead of veteran’s hopeful return vs. Canadiens"
-  },
   {
    "id": "at://did:plc:3uus7y6h3rlrk6sbctzxm4bg/app.bsky.feed.post/3mzld3ocrbd24|suzuki|active|return",
    "at": "2026-11-05T16:48:18.000Z",
