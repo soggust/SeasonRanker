@@ -1,28 +1,15 @@
 {
  "sport": "nfl",
  "cursor": {
-  "adamscheftermirror.bsky.social": "2026-11-26T00:47:03.115Z",
+  "adamscheftermirror.bsky.social": "2026-11-26T01:37:02.339Z",
   "rapsheet.bsky.social": "2026-11-26T00:19:30.575Z",
   "nflnewsreposterbot.bsky.social": "2026-11-25T21:41:32.820Z",
   "insidenflnews.bsky.social": "2026-11-26T01:29:39.017Z",
-  "nflnewsposter.bsky.social": "2026-11-26T01:33:50.783Z",
+  "nflnewsposter.bsky.social": "2026-11-26T01:47:57.057Z",
   "rotoworld-fb.bsky.social": "2026-11-26T01:26:02.000Z",
   "rotowirenfl.bsky.social": "2026-11-26T01:30:17.000Z"
  },
  "claims": [
-  {
-   "id": "at://did:plc:qre6zxbmr3ixhdmgsgdretb5/app.bsky.feed.post/3mzjqujjwuh2r|joshjacobs|active|status",
-   "at": "2026-11-05T01:49:31.871Z",
-   "seen": "2026-11-05T02:01:03.010Z",
-   "handle": "adamscheftermirror.bsky.social",
-   "post": "at://did:plc:qre6zxbmr3ixhdmgsgdretb5/app.bsky.feed.post/3mzjqujjwuh2r",
-   "player": "Josh Jacobs",
-   "team": "GB",
-   "status": "active",
-   "kind": "status",
-   "confidence": 0.4,
-   "text": "Packers RB Josh Jacobs is not anticipating missing more time despite additional allegations. Story via @RobDemovsky:\n\nOriginal post"
-  },
   {
    "id": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3mzjrcide7i2g|joshjacobs|active|status",
    "at": "2026-11-05T01:57:20.000Z",
@@ -17936,6 +17923,32 @@
    "kind": "return",
    "confidence": 0.85,
    "text": "Christian Watson: Returns to Wednesday's game \n\n https://www.rotowire.com/football/player/christian-watson-15946"
+  },
+  {
+   "id": "at://did:plc:qre6zxbmr3ixhdmgsgdretb5/app.bsky.feed.post/3n36jxhsv4i2p|christianwatson|active|return",
+   "at": "2026-11-26T01:37:00.687Z",
+   "seen": "2026-11-26T01:54:18.374Z",
+   "handle": "adamscheftermirror.bsky.social",
+   "post": "at://did:plc:qre6zxbmr3ixhdmgsgdretb5/app.bsky.feed.post/3n36jxhsv4i2p",
+   "player": "Christian Watson",
+   "team": "GB",
+   "status": "active",
+   "kind": "return",
+   "confidence": 0.75,
+   "text": "And now Christian Watson has returned.\n\nOriginal post"
+  },
+  {
+   "id": "at://did:plc:qre6zxbmr3ixhdmgsgdretb5/app.bsky.feed.post/3n36jxjdk6t2e|christianwatson|questionable|status",
+   "at": "2026-11-26T01:37:02.339Z",
+   "seen": "2026-11-26T01:54:18.374Z",
+   "handle": "adamscheftermirror.bsky.social",
+   "post": "at://did:plc:qre6zxbmr3ixhdmgsgdretb5/app.bsky.feed.post/3n36jxjdk6t2e",
+   "player": "Christian Watson",
+   "team": "GB",
+   "status": "questionable",
+   "kind": "status",
+   "confidence": 0.9,
+   "text": "Packers WR Christian Watson is questionable to return tonight due to a thigh injury.\n\nOriginal post"
   }
  ]
 }
