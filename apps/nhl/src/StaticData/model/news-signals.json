@@ -3,6 +3,39 @@
  "days": 2,
  "signals": [
   {
+   "team": "17",
+   "abbr": "COL",
+   "athlete": "4233563",
+   "player": "Cale Makar",
+   "kind": "return",
+   "direction": "up",
+   "confidence": 0.9,
+   "headline": "Cale Makar rejoining Avalanche lineup after 'fluke' injury",
+   "at": "2026-11-25T20:12:00.000Z"
+  },
+  {
+   "team": "26",
+   "abbr": "FLA",
+   "athlete": "3041970",
+   "player": "Aleksander Barkov",
+   "kind": "return",
+   "direction": "up",
+   "confidence": 0.9,
+   "headline": "Aleksander Barkov, Brad Marchand returning from injuries against Senators",
+   "at": "2026-11-25T18:56:46.000Z"
+  },
+  {
+   "team": "26",
+   "abbr": "FLA",
+   "athlete": "3852",
+   "player": "Brad Marchand",
+   "kind": "return",
+   "direction": "up",
+   "confidence": 0.9,
+   "headline": "Aleksander Barkov, Brad Marchand returning from injuries against Senators",
+   "at": "2026-11-25T18:56:46.000Z"
+  },
+  {
    "team": "19",
    "abbr": "STL",
    "athlete": "4587909",
@@ -25,5 +58,5 @@
    "at": "2026-11-24T22:12:58.000Z"
   }
  ],
- "at": "2026-11-25T22:15:13.332Z"
+ "at": "2026-11-26T00:07:16.438Z"
 }

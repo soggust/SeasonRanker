@@ -3,6 +3,50 @@
  "days": 2,
  "signals": [
   {
+   "team": "23",
+   "abbr": "PIT",
+   "athlete": "3116407",
+   "player": "Mason Rudolph",
+   "kind": "starting",
+   "direction": "up",
+   "confidence": 0.9,
+   "headline": "What Aaron Rodgers' benching means for Steelers, his future",
+   "at": "2026-11-25T20:14:17.000Z"
+  },
+  {
+   "team": "23",
+   "abbr": "PIT",
+   "athlete": "8439",
+   "player": "Aaron Rodgers",
+   "kind": "benched",
+   "direction": "down",
+   "confidence": 0.9,
+   "headline": "What Aaron Rodgers' benching means for Steelers, his future",
+   "at": "2026-11-25T20:14:17.000Z"
+  },
+  {
+   "team": "23",
+   "abbr": "PIT",
+   "athlete": "8439",
+   "player": "Aaron Rodgers",
+   "kind": "benched",
+   "direction": "down",
+   "confidence": 0.9,
+   "headline": "Sources: Aaron Rodgers excused from Steelers facility to process benching",
+   "at": "2026-11-25T16:00:18.000Z"
+  },
+  {
+   "team": "9",
+   "abbr": "GB",
+   "athlete": "4361423",
+   "player": "Micah Parsons",
+   "kind": "return",
+   "direction": "up",
+   "confidence": 0.5,
+   "headline": "How will Packers use Micah Parsons in return from torn ACL?",
+   "at": "2026-11-25T11:49:50.000Z"
+  },
+  {
    "team": "33",
    "abbr": "BAL",
    "athlete": "4690143",
@@ -23,40 +67,7 @@
    "confidence": 0.6,
    "headline": "Seahawks to monitor Sam Darnold status this week before final call vs. 49ers",
    "at": "2026-11-24T02:21:45.000Z"
-  },
-  {
-   "team": "28",
-   "abbr": "WSH",
-   "athlete": "4575131",
-   "player": "Jacory Croskey-Merritt",
-   "kind": "return",
-   "direction": "up",
-   "confidence": 0.9,
-   "headline": "Commanders RB Jacory Croskey-Merritt activated from IR ahead of MNF",
-   "at": "2026-11-23T23:48:49.000Z"
-  },
-  {
-   "team": "9",
-   "abbr": "GB",
-   "athlete": "4361423",
-   "player": "Micah Parsons",
-   "kind": "return",
-   "direction": "up",
-   "confidence": 0.7,
-   "headline": "Sources: Packers' Micah Parsons cleared to make season debut Wednesday vs. Rams",
-   "at": "2026-11-23T23:37:43.000Z"
-  },
-  {
-   "team": "22",
-   "abbr": "ARI",
-   "athlete": null,
-   "player": "Nick Rallis",
-   "kind": "coaching",
-   "direction": "none",
-   "confidence": 0.9,
-   "headline": "Cardinals fire DC Nick Rallis; Teryl Austin takes over on interim basis",
-   "at": "2026-11-23T22:57:19.000Z"
   }
  ],
- "at": "2026-11-25T22:15:13.332Z"
+ "at": "2026-11-26T00:07:16.438Z"
 }

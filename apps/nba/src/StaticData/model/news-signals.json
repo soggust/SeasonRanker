@@ -3,6 +3,17 @@
  "days": 2,
  "signals": [
   {
+   "team": "13",
+   "abbr": "LAL",
+   "athlete": "4066457",
+   "player": "Austin Reaves",
+   "kind": "return",
+   "direction": "up",
+   "confidence": 0.6,
+   "headline": "Austin Reaves rejoins Lakers for full practice, no call yet on facing Spurs",
+   "at": "2026-11-25T22:13:32.000Z"
+  },
+  {
    "team": "28",
    "abbr": "TOR",
    "athlete": "6450",
@@ -23,18 +34,7 @@
    "confidence": 0.6,
    "headline": "Jalen Duren to begin rehab assignment in next step to return from injury",
    "at": "2026-11-24T23:32:42.000Z"
-  },
-  {
-   "team": "20",
-   "abbr": "PHI",
-   "athlete": "3059318",
-   "player": "Joel Embiid",
-   "kind": "restriction",
-   "direction": "down",
-   "confidence": 0.3,
-   "headline": "76ers rule out Joel Embiid (illness) for game vs. Trail Blazers",
-   "at": "2026-11-23T23:53:39.000Z"
   }
  ],
- "at": "2026-11-25T00:06:16.183Z"
+ "at": "2026-11-26T00:07:16.438Z"
 }

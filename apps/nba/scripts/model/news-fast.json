@@ -1,76 +1,11 @@
 {
  "sport": "nba",
  "cursor": {
-  "rotowirenba.bsky.social": "2026-11-25T21:35:51.000Z",
+  "rotowirenba.bsky.social": "2026-11-25T23:39:52.000Z",
   "insidenbanews.bsky.social": "2026-11-20T20:35:06.661Z",
   "shamsbot.bsky.social": "2026-11-25T18:32:56.000Z"
  },
  "claims": [
-  {
-   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mzjfy35j7h27|nicclaxton|out|status",
-   "at": "2026-11-04T22:34:39.000Z",
-   "seen": "2026-11-04T23:17:25.660Z",
-   "handle": "rotowirenba.bsky.social",
-   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mzjfy35j7h27",
-   "player": "Nic Claxton",
-   "team": null,
-   "status": "out",
-   "kind": "status",
-   "confidence": 0.9,
-   "text": "Nic Claxton: Won't return from absence Wednesday \n\n https://www.rotowire.com/basketball/player/nic-claxton-4827"
-  },
-  {
-   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mzjhozhfr72c|jalenjohnson|out|status",
-   "at": "2026-11-04T23:05:23.000Z",
-   "seen": "2026-11-04T23:17:25.660Z",
-   "handle": "rotowirenba.bsky.social",
-   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mzjhozhfr72c",
-   "player": "Jalen Johnson",
-   "team": null,
-   "status": "out",
-   "kind": "status",
-   "confidence": 0.9,
-   "text": "Jalen Johnson: Out again Wednesday \n\n https://www.rotowire.com/basketball/player/jalen-johnson-5329"
-  },
-  {
-   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mzjhy3jved22|treymurphy|out|status",
-   "at": "2026-11-04T23:10:27.000Z",
-   "seen": "2026-11-04T23:17:25.660Z",
-   "handle": "rotowirenba.bsky.social",
-   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mzjhy3jved22",
-   "player": "Trey Murphy",
-   "team": null,
-   "status": "out",
-   "kind": "status",
-   "confidence": 0.9,
-   "text": "Trey Murphy: Won't play Wednesday \n\n https://www.rotowire.com/basketball/player/trey-murphy-5401"
-  },
-  {
-   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mzjjvsvwdv2v|kingstonflemings|none|starting",
-   "at": "2026-11-04T23:44:59.000Z",
-   "seen": "2026-11-05T00:06:23.384Z",
-   "handle": "rotowirenba.bsky.social",
-   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mzjjvsvwdv2v",
-   "player": "Kingston Flemings",
-   "team": null,
-   "status": "none",
-   "kind": "starting",
-   "confidence": 0.9,
-   "text": "Kingston Flemings: Starting Wednesday \n\n https://www.rotowire.com/basketball/player/kingston-flemings-6927"
-  },
-  {
-   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mzjjyolc5l2c|cjmccollum|none|benched",
-   "at": "2026-11-04T23:46:34.000Z",
-   "seen": "2026-11-05T00:06:23.384Z",
-   "handle": "rotowirenba.bsky.social",
-   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mzjjyolc5l2c",
-   "player": "CJ McCollum",
-   "team": null,
-   "status": "none",
-   "kind": "benched",
-   "confidence": 0.85,
-   "text": "CJ McCollum: Not starting Wednesday \n\n https://www.rotowire.com/basketball/player/cj-mccollum-3437"
-  },
   {
    "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mzjm3few4y2n|ivicazubac|active|return",
    "at": "2026-11-05T00:23:53.000Z",
@@ -7545,6 +7480,58 @@
    "kind": "status",
    "confidence": 0.9,
    "text": "Zach LaVine: Downgraded to questionable \n\n https://www.rotowire.com/basketball/player/zach-lavine-3597"
+  },
+  {
+   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3n36a3cxopo2l|zachlavine|out|status",
+   "at": "2026-11-25T22:40:12.000Z",
+   "seen": "2026-11-26T00:07:16.438Z",
+   "handle": "rotowirenba.bsky.social",
+   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3n36a3cxopo2l",
+   "player": "Zach LaVine",
+   "team": null,
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.95,
+   "text": "Zach LaVine: Ruled out Wednesday \n\n https://www.rotowire.com/basketball/player/zach-lavine-3597"
+  },
+  {
+   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3n36box7mb72r|joshhart|active|status",
+   "at": "2026-11-25T23:09:04.000Z",
+   "seen": "2026-11-26T00:07:16.438Z",
+   "handle": "rotowirenba.bsky.social",
+   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3n36box7mb72r",
+   "player": "Josh Hart",
+   "team": null,
+   "status": "active",
+   "kind": "status",
+   "confidence": 0.9,
+   "text": "Josh Hart: Will play Wednesday \n\n https://www.rotowire.com/basketball/player/josh-hart-4136"
+  },
+  {
+   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3n36cv6kdh32r|jaylenbrown|out|status",
+   "at": "2026-11-25T23:30:27.000Z",
+   "seen": "2026-11-26T00:07:16.438Z",
+   "handle": "rotowirenba.bsky.social",
+   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3n36cv6kdh32r",
+   "player": "Jaylen Brown",
+   "team": null,
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.8,
+   "text": "Jaylen Brown: Won't return Wednesday \n\n https://www.rotowire.com/basketball/player/jaylen-brown-3894"
+  },
+  {
+   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3n36dfzajjj2e|nicclaxton|none|starting",
+   "at": "2026-11-25T23:39:52.000Z",
+   "seen": "2026-11-26T00:07:16.438Z",
+   "handle": "rotowirenba.bsky.social",
+   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3n36dfzajjj2e",
+   "player": "Nic Claxton",
+   "team": null,
+   "status": "none",
+   "kind": "starting",
+   "confidence": 0.9,
+   "text": "Nic Claxton: Starting Wednesday sans Smith \n\n https://www.rotowire.com/basketball/player/nic-claxton-4827"
   }
  ]
 }
