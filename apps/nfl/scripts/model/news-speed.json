@@ -15107,6 +15107,138 @@
     "seen": "2026-11-25T23:17:39.428Z",
     "own": "2026-11-25T23:08:00.000Z"
    }
+  },
+  "401873085|rashodbateman|q": {
+   "game": "401873085",
+   "start": "2026-11-29T18:00Z",
+   "team": "33",
+   "name": "Rashod Bateman",
+   "status": "q",
+   "athlete": "4360939",
+   "espn": {
+    "seen": "2026-11-26T00:00:40.483Z",
+    "own": "2026-11-25T23:42:00.000Z"
+   }
+  },
+  "401873085|zayflowers|q": {
+   "game": "401873085",
+   "start": "2026-11-29T18:00Z",
+   "team": "33",
+   "name": "Zay Flowers",
+   "status": "q",
+   "athlete": "4429615",
+   "espn": {
+    "seen": "2026-11-26T00:00:40.483Z",
+    "own": "2026-11-25T23:25:00.000Z"
+   }
+  },
+  "401873085|aeneaspeebles|q": {
+   "game": "401873085",
+   "start": "2026-11-29T18:00Z",
+   "team": "33",
+   "name": "Aeneas Peebles",
+   "status": "q",
+   "athlete": "4565311",
+   "espn": {
+    "seen": "2026-11-26T00:00:40.483Z",
+    "own": "2026-11-25T23:20:00.000Z"
+   }
+  },
+  "401873085|johnsimpson|q": {
+   "game": "401873085",
+   "start": "2026-11-29T18:00Z",
+   "team": "33",
+   "name": "John Simpson",
+   "status": "q",
+   "athlete": "4035479",
+   "espn": {
+    "seen": "2026-11-26T00:00:40.483Z",
+    "own": "2026-11-25T23:20:00.000Z"
+   }
+  },
+  "401873085|mikegreen|q": {
+   "game": "401873085",
+   "start": "2026-11-29T18:00Z",
+   "team": "33",
+   "name": "Mike Green",
+   "status": "q",
+   "athlete": "4683188",
+   "espn": {
+    "seen": "2026-11-26T00:00:40.483Z",
+    "own": "2026-11-25T02:24:00.000Z"
+   }
+  },
+  "401873093|dalvintomlinson|q": {
+   "game": "401873093",
+   "start": "2026-11-29T21:05Z",
+   "team": "24",
+   "name": "Dalvin Tomlinson",
+   "status": "q",
+   "athlete": "2979860",
+   "espn": {
+    "seen": "2026-11-26T00:00:40.483Z",
+    "own": "2026-11-25T23:54:00.000Z"
+   }
+  },
+  "401873093|tulituipulotu|q": {
+   "game": "401873093",
+   "start": "2026-11-29T21:05Z",
+   "team": "24",
+   "name": "Tuli Tuipulotu",
+   "status": "q",
+   "athlete": "4431442",
+   "espn": {
+    "seen": "2026-11-26T00:00:40.483Z",
+    "own": "2026-11-25T23:54:00.000Z"
+   }
+  },
+  "401873093|deaneleonard|q": {
+   "game": "401873093",
+   "start": "2026-11-29T21:05Z",
+   "team": "24",
+   "name": "Deane Leonard",
+   "status": "q",
+   "athlete": "4690171",
+   "espn": {
+    "seen": "2026-11-26T00:00:40.483Z",
+    "own": "2026-11-25T23:54:00.000Z"
+   }
+  },
+  "401873093|davidnjoku|q": {
+   "game": "401873093",
+   "start": "2026-11-29T21:05Z",
+   "team": "24",
+   "name": "David Njoku",
+   "status": "q",
+   "athlete": "3123076",
+   "espn": {
+    "seen": "2026-11-26T00:00:40.483Z",
+    "own": "2026-11-25T23:45:00.000Z"
+   }
+  },
+  "401873093|keatonmitchell|q": {
+   "game": "401873093",
+   "start": "2026-11-29T21:05Z",
+   "team": "24",
+   "name": "Keaton Mitchell",
+   "status": "q",
+   "athlete": "4596334",
+   "espn": {
+    "seen": "2026-11-26T00:00:40.483Z",
+    "own": "2026-11-25T23:44:00.000Z"
+   }
+  },
+  "401873091|jaxonsmithnjigba|q": {
+   "game": "401873091",
+   "start": "2026-11-29T21:25Z",
+   "team": "26",
+   "name": "Jaxon Smith-Njigba",
+   "status": "q",
+   "athlete": "4430878",
+   "espn": {
+    "seen": "2026-11-26T00:00:40.483Z",
+    "own": "2026-11-25T23:36:00.000Z"
+   }
   }
  }
 }
