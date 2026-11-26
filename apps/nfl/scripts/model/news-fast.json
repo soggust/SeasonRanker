@@ -4,38 +4,12 @@
   "adamscheftermirror.bsky.social": "2026-11-26T22:17:08.681Z",
   "rapsheet.bsky.social": "2026-11-26T22:11:28.538Z",
   "nflnewsreposterbot.bsky.social": "2026-11-25T21:41:32.820Z",
-  "insidenflnews.bsky.social": "2026-11-26T21:11:30.186Z",
-  "nflnewsposter.bsky.social": "2026-11-26T22:40:58.805Z",
-  "rotoworld-fb.bsky.social": "2026-11-26T22:37:16.000Z",
-  "rotowirenfl.bsky.social": "2026-11-26T22:41:45.000Z"
+  "insidenflnews.bsky.social": "2026-11-26T23:01:02.061Z",
+  "nflnewsposter.bsky.social": "2026-11-26T23:01:47.021Z",
+  "rotoworld-fb.bsky.social": "2026-11-26T23:04:16.000Z",
+  "rotowirenfl.bsky.social": "2026-11-26T23:03:14.000Z"
  },
  "claims": [
-  {
-   "id": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3mzlx66o2dw2s|christianmccaffrey|limited|status",
-   "at": "2026-11-05T22:47:37.000Z",
-   "seen": "2026-11-05T23:03:44.610Z",
-   "handle": "rotowirenfl.bsky.social",
-   "post": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3mzlx66o2dw2s",
-   "player": "Christian McCaffrey",
-   "team": null,
-   "status": "limited",
-   "kind": "status",
-   "confidence": 0.8,
-   "text": "Christian McCaffrey: Officially limited Thrusday \n\n https://www.rotowire.com/football/player/christian-mccaffrey-11690"
-  },
-  {
-   "id": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3mzlxrf7meh2v|deebosamuel|out|status",
-   "at": "2026-11-05T22:58:22.000Z",
-   "seen": "2026-11-05T23:03:44.610Z",
-   "handle": "rotowirenfl.bsky.social",
-   "post": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3mzlxrf7meh2v",
-   "player": "Deebo Samuel",
-   "team": null,
-   "status": "out",
-   "kind": "status",
-   "confidence": 0.5,
-   "text": "Deebo Samuel: DNP on Thursday \n\n https://www.rotowire.com/football/player/deebo-samuel-13429"
-  },
   {
    "id": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3mzlyqde4zv2f|maliknabers|active|status",
    "at": "2026-11-05T23:15:40.000Z",
@@ -17702,6 +17676,58 @@
    "kind": "status",
    "confidence": 0.95,
    "text": "[Eagles] Injury Update: RB Saquon Barkley (stinger) is questionable to return. twitter.com/Eagles/statu..."
+  },
+  {
+   "id": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3n3aquv3gon2i|saquonbarkley|questionable|status",
+   "at": "2026-11-26T22:46:09.000Z",
+   "seen": "2026-11-26T23:06:11.860Z",
+   "handle": "rotoworld-fb.bsky.social",
+   "post": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3n3aquv3gon2i",
+   "player": "Saquon Barkley",
+   "team": "PHI",
+   "status": "questionable",
+   "kind": "status",
+   "confidence": 0.85,
+   "text": "Saquon Barkley questionable to return with stinger"
+  },
+  {
+   "id": "at://did:plc:mbr4badgf6yu56mquzackzew/app.bsky.feed.post/3n3aro4jd5c2f|dallasgoedert|out|status",
+   "at": "2026-11-26T23:00:16.337Z",
+   "seen": "2026-11-26T23:06:11.860Z",
+   "handle": "insidenflnews.bsky.social",
+   "post": "at://did:plc:mbr4badgf6yu56mquzackzew/app.bsky.feed.post/3n3aro4jd5c2f",
+   "player": "Dallas Goedert",
+   "team": "PHI",
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.9,
+   "text": "Status alert: Eagles TE Dallas Goedert (shoulder) will not return to Thursday's game."
+  },
+  {
+   "id": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3n3artg34fy2m|dallasgoedert|out|status",
+   "at": "2026-11-26T23:03:14.000Z",
+   "seen": "2026-11-26T23:06:11.860Z",
+   "handle": "rotowirenfl.bsky.social",
+   "post": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3n3artg34fy2m",
+   "player": "Dallas Goedert",
+   "team": "PHI",
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.9,
+   "text": "Dallas Goedert: Won't return Thursday \n\n https://www.rotowire.com/football/player/dallas-goedert-12860"
+  },
+  {
+   "id": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3n3arvbyb2q2c|dallasgoedert|out|status",
+   "at": "2026-11-26T23:04:16.000Z",
+   "seen": "2026-11-26T23:06:11.860Z",
+   "handle": "rotoworld-fb.bsky.social",
+   "post": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3n3arvbyb2q2c",
+   "player": "Dallas Goedert",
+   "team": "PHI",
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.97,
+   "text": "Dallas Goedert (shoulder) ruled out vs. Cowboys"
   }
  ]
 }
