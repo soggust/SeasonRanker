@@ -5900,6 +5900,11 @@
    "sleeper": {
     "seen": "2026-11-24T20:08:42.633Z",
     "own": "2026-11-24T18:30:48.281Z"
+   },
+   "bluesky": {
+    "seen": "2026-11-26T00:07:16.438Z",
+    "own": "2026-11-25T23:53:18.000Z",
+    "why": "@rotowirenfl.bsky.social: Josh Jacobs: Inactive in Week 12 \n\n https://www.rotowi"
    }
   },
   "401873079|kevinzeitler|out": {
@@ -15238,6 +15243,186 @@
    "espn": {
     "seen": "2026-11-26T00:00:40.483Z",
     "own": "2026-11-25T23:36:00.000Z"
+   }
+  },
+  "401873079|tysimpson|out": {
+   "game": "401873079",
+   "start": "2026-11-26T01:00Z",
+   "team": "14",
+   "name": "Ty Simpson",
+   "status": "out",
+   "athlete": "4685522",
+   "espn": {
+    "seen": "2026-11-26T00:18:51.812Z",
+    "own": "2026-11-26T00:04:00.000Z"
+   }
+  },
+  "401873079|darrylpeterson|out": {
+   "game": "401873079",
+   "start": "2026-11-26T01:00Z",
+   "team": "14",
+   "name": "Darryl Peterson III",
+   "status": "out",
+   "athlete": "4598574",
+   "espn": {
+    "seen": "2026-11-26T00:18:51.812Z",
+    "own": "2026-11-26T00:01:00.000Z"
+   }
+  },
+  "401873079|desjuanjohnson|out": {
+   "game": "401873079",
+   "start": "2026-11-26T01:00Z",
+   "team": "14",
+   "name": "Desjuan Johnson",
+   "status": "out",
+   "athlete": "4362294",
+   "espn": {
+    "seen": "2026-11-26T00:18:51.812Z",
+    "own": "2026-11-26T00:01:00.000Z"
+   }
+  },
+  "401873079|larrellmurchison|out": {
+   "game": "401873079",
+   "start": "2026-11-26T01:00Z",
+   "team": "14",
+   "name": "Larrell Murchison",
+   "status": "out",
+   "athlete": "4240123",
+   "espn": {
+    "seen": "2026-11-26T00:18:51.812Z",
+    "own": "2026-11-26T00:01:00.000Z"
+   }
+  },
+  "401873079|haroldfannin|q": {
+   "game": "401873079",
+   "start": "2026-11-26T01:00Z",
+   "team": "14",
+   "name": "Harold Fannin",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-11-26T00:07:16.438Z",
+    "own": "2026-11-25T22:30:26.000Z",
+    "why": "@rotowirenfl.bsky.social: Harold Fannin: Limited in Wednesday's practice \n\n http"
+   }
+  },
+  "401873079|donovanjennings|out": {
+   "game": "401873079",
+   "start": "2026-11-26T01:00Z",
+   "team": "9",
+   "name": "Donovan Jennings",
+   "status": "out",
+   "athlete": "4360887",
+   "espn": {
+    "seen": "2026-11-26T00:18:51.812Z",
+    "own": "2026-11-25T23:56:00.000Z"
+   }
+  },
+  "401873079|jagerburton|out": {
+   "game": "401873079",
+   "start": "2026-11-26T01:00Z",
+   "team": "9",
+   "name": "Jager Burton",
+   "status": "out",
+   "athlete": "4569661",
+   "espn": {
+    "seen": "2026-11-26T00:18:51.812Z",
+    "own": "2026-11-25T23:56:00.000Z"
+   }
+  },
+  "401873079|mekhibecton|out": {
+   "game": "401873079",
+   "start": "2026-11-26T01:00Z",
+   "team": "9",
+   "name": "Mekhi Becton",
+   "status": "out",
+   "athlete": "4240090",
+   "espn": {
+    "seen": "2026-11-26T00:18:51.812Z",
+    "own": "2026-11-25T23:56:00.000Z"
+   }
+  },
+  "401873081|haroldfannin|q": {
+   "game": "401873081",
+   "start": "2026-11-26T18:00Z",
+   "team": "8",
+   "name": "Harold Fannin",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-11-26T00:07:16.438Z",
+    "own": "2026-11-25T22:30:26.000Z",
+    "why": "@rotowirenfl.bsky.social: Harold Fannin: Limited in Wednesday's practice \n\n http"
+   }
+  },
+  "401873080|haroldfannin|q": {
+   "game": "401873080",
+   "start": "2026-11-26T21:30Z",
+   "team": "6",
+   "name": "Harold Fannin",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-11-26T00:07:16.438Z",
+    "own": "2026-11-25T22:30:26.000Z",
+    "why": "@rotowirenfl.bsky.social: Harold Fannin: Limited in Wednesday's practice \n\n http"
+   }
+  },
+  "401873082|haroldfannin|q": {
+   "game": "401873082",
+   "start": "2026-11-27T01:20Z",
+   "team": "2",
+   "name": "Harold Fannin",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-11-26T00:07:16.438Z",
+    "own": "2026-11-25T22:30:26.000Z",
+    "why": "@rotowirenfl.bsky.social: Harold Fannin: Limited in Wednesday's practice \n\n http"
+   }
+  },
+  "401873083|haroldfannin|q": {
+   "game": "401873083",
+   "start": "2026-11-27T20:00Z",
+   "team": "23",
+   "name": "Harold Fannin",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-11-26T00:07:16.438Z",
+    "own": "2026-11-25T22:30:26.000Z",
+    "why": "@rotowirenfl.bsky.social: Harold Fannin: Limited in Wednesday's practice \n\n http"
+   }
+  },
+  "401873084|jalenredmond|q": {
+   "game": "401873084",
+   "start": "2026-11-29T18:00Z",
+   "team": "16",
+   "name": "Jalen Redmond",
+   "status": "q",
+   "athlete": "4360277",
+   "espn": {
+    "seen": "2026-11-26T00:18:51.812Z",
+    "own": "2026-11-26T00:15:00.000Z"
+   }
+  },
+  "401873084|christiandarrisaw|q": {
+   "game": "401873084",
+   "start": "2026-11-29T18:00Z",
+   "team": "16",
+   "name": "Christian Darrisaw",
+   "status": "q",
+   "athlete": "4361985",
+   "espn": {
+    "seen": "2026-11-26T00:18:51.812Z",
+    "own": "2026-11-26T00:15:00.000Z"
+   }
+  },
+  "401873092|charlesomenihu|q": {
+   "game": "401873092",
+   "start": "2026-11-29T21:25Z",
+   "team": "28",
+   "name": "Charles Omenihu",
+   "status": "q",
+   "athlete": "3929865",
+   "espn": {
+    "seen": "2026-11-26T00:18:51.812Z",
+    "own": "2026-11-26T00:12:00.000Z"
    }
   }
  }
