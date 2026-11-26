@@ -18285,6 +18285,186 @@
     "seen": "2026-11-26T04:58:13.475Z",
     "own": "2026-11-25T20:33:00.000Z"
    }
+  },
+  "401909326|milesmcbride|q": {
+   "game": "401909326",
+   "start": "2026-11-28T00:00Z",
+   "team": "18",
+   "name": "Miles McBride",
+   "status": "q",
+   "athlete": "4431823",
+   "espn": {
+    "seen": "2026-11-26T05:44:36.654Z",
+    "own": "2026-11-26T05:31:00.000Z"
+   }
+  },
+  "401909328|tjmcconnell|q": {
+   "game": "401909328",
+   "start": "2026-11-28T00:30Z",
+   "team": "11",
+   "name": "T.J. McConnell",
+   "status": "q",
+   "athlete": "2530530",
+   "espn": {
+    "seen": "2026-11-26T05:44:36.654Z",
+    "own": "2026-11-24T19:43:00.000Z"
+   }
+  },
+  "401909328|tyresehaliburton|out": {
+   "game": "401909328",
+   "start": "2026-11-28T00:30Z",
+   "team": "11",
+   "name": "Tyrese Haliburton",
+   "status": "out",
+   "athlete": "4396993",
+   "espn": {
+    "seen": "2026-11-26T05:44:36.654Z",
+    "own": "2026-11-24T19:41:00.000Z"
+   }
+  },
+  "401909328|aaronnesmith|q": {
+   "game": "401909328",
+   "start": "2026-11-28T00:30Z",
+   "team": "11",
+   "name": "Aaron Nesmith",
+   "status": "q",
+   "athlete": "4396909",
+   "espn": {
+    "seen": "2026-11-26T05:44:36.654Z",
+    "own": "2026-11-24T04:40:00.000Z"
+   }
+  },
+  "401909328|larrynance|q": {
+   "game": "401909328",
+   "start": "2026-11-28T00:30Z",
+   "team": "11",
+   "name": "Larry Nance Jr.",
+   "status": "q",
+   "athlete": "2580365",
+   "espn": {
+    "seen": "2026-11-26T05:44:36.654Z",
+    "own": "2026-11-24T02:00:00.000Z"
+   }
+  },
+  "401909328|bensheppard|out": {
+   "game": "401909328",
+   "start": "2026-11-28T00:30Z",
+   "team": "11",
+   "name": "Ben Sheppard",
+   "status": "out",
+   "athlete": "4433076",
+   "espn": {
+    "seen": "2026-11-26T05:44:36.654Z",
+    "own": "2026-10-28T21:41:00.000Z"
+   }
+  },
+  "401909328|joelembiid|q": {
+   "game": "401909328",
+   "start": "2026-11-28T00:30Z",
+   "team": "20",
+   "name": "Joel Embiid",
+   "status": "q",
+   "athlete": "3059318",
+   "espn": {
+    "seen": "2026-11-26T05:44:36.654Z",
+    "own": "2026-11-26T01:06:00.000Z"
+   }
+  },
+  "401909328|jaylenbrown|q": {
+   "game": "401909328",
+   "start": "2026-11-28T00:30Z",
+   "team": "20",
+   "name": "Jaylen Brown",
+   "status": "q",
+   "athlete": "3917376",
+   "espn": {
+    "seen": "2026-11-26T05:44:36.654Z",
+    "own": "2026-11-26T01:06:00.000Z"
+   }
+  },
+  "401909328|arielhukporti|out": {
+   "game": "401909328",
+   "start": "2026-11-28T00:30Z",
+   "team": "20",
+   "name": "Ariel Hukporti",
+   "status": "out",
+   "athlete": "4871141",
+   "espn": {
+    "seen": "2026-11-26T05:44:36.654Z",
+    "own": "2026-10-06T19:17:00.000Z"
+   }
+  },
+  "401909330|mitchellrobinson|out": {
+   "game": "401909330",
+   "start": "2026-11-28T01:00Z",
+   "team": "2",
+   "name": "Mitchell Robinson",
+   "status": "out",
+   "athlete": "4351852",
+   "espn": {
+    "seen": "2026-11-26T05:44:36.654Z",
+    "own": "2026-11-23T21:09:00.000Z"
+   }
+  },
+  "401909330|jocklandale|out": {
+   "game": "401909330",
+   "start": "2026-11-28T01:00Z",
+   "team": "1",
+   "name": "Jock Landale",
+   "status": "out",
+   "athlete": "3146557",
+   "espn": {
+    "seen": "2026-11-26T05:44:36.654Z",
+    "own": "2026-11-21T22:12:00.000Z"
+   }
+  },
+  "401909330|asanewell|out": {
+   "game": "401909330",
+   "start": "2026-11-28T01:00Z",
+   "team": "1",
+   "name": "Asa Newell",
+   "status": "out",
+   "athlete": "4873201",
+   "espn": {
+    "seen": "2026-11-26T05:44:36.654Z",
+    "own": "2026-11-17T21:16:00.000Z"
+   }
+  },
+  "401909330|cjmccollum|out": {
+   "game": "401909330",
+   "start": "2026-11-28T01:00Z",
+   "team": "1",
+   "name": "CJ McCollum",
+   "status": "out",
+   "athlete": "2490149",
+   "espn": {
+    "seen": "2026-11-26T05:44:36.654Z",
+    "own": "2026-11-17T21:08:00.000Z"
+   }
+  },
+  "401909330|mouhamedgueye|out": {
+   "game": "401909330",
+   "start": "2026-11-28T01:00Z",
+   "team": "1",
+   "name": "Mouhamed Gueye",
+   "status": "out",
+   "athlete": "4712863",
+   "espn": {
+    "seen": "2026-11-26T05:44:36.654Z",
+    "own": "2026-11-13T00:06:00.000Z"
+   }
+  },
+  "401909330|henriveesaar|out": {
+   "game": "401909330",
+   "start": "2026-11-28T01:00Z",
+   "team": "1",
+   "name": "Henri Veesaar",
+   "status": "out",
+   "athlete": "5105571",
+   "espn": {
+    "seen": "2026-11-26T05:44:36.654Z",
+    "own": "2026-09-21T19:50:00.000Z"
+   }
   }
  }
 }
