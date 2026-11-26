@@ -1,90 +1,6 @@
 {
  "sport": "nhl",
  "entries": {
-  "401892721|noelacciari|q": {
-   "game": "401892721",
-   "start": "2026-11-16T00:30Z",
-   "team": "15",
-   "name": "Noel Acciari",
-   "status": "q",
-   "athlete": "3096237",
-   "espn": {
-    "seen": "2026-11-14T16:43:39.949Z",
-    "own": "2026-11-12T04:11:00.000Z"
-   }
-  },
-  "401892721|nikitagrebenkin|out": {
-   "game": "401892721",
-   "start": "2026-11-16T00:30Z",
-   "team": "15",
-   "name": "Nikita Grebenkin",
-   "status": "out",
-   "athlete": "5188490",
-   "espn": {
-    "seen": "2026-11-14T16:43:39.949Z",
-    "own": "2026-10-10T16:58:00.000Z"
-   }
-  },
-  "401892721|isaachoward|out": {
-   "game": "401892721",
-   "start": "2026-11-16T00:30Z",
-   "team": "6",
-   "name": "Isaac Howard",
-   "status": "out",
-   "athlete": "5080179",
-   "espn": {
-    "seen": "2026-11-14T16:43:39.949Z",
-    "own": "2026-11-06T00:04:00.000Z"
-   }
-  },
-  "401892721|alecregula|out": {
-   "game": "401892721",
-   "start": "2026-11-16T00:30Z",
-   "team": "6",
-   "name": "Alec Regula",
-   "status": "out",
-   "athlete": "4331611",
-   "espn": {
-    "seen": "2026-11-14T16:43:39.949Z",
-    "own": "2026-10-01T14:11:00.000Z"
-   }
-  },
-  "401892721|mattsavoie|out": {
-   "game": "401892721",
-   "start": "2026-11-16T00:30Z",
-   "team": "6",
-   "name": "Matt Savoie",
-   "status": "out",
-   "athlete": "5080153",
-   "espn": {
-    "seen": "2026-11-14T16:43:39.949Z",
-    "own": "2026-10-01T14:05:00.000Z"
-   }
-  },
-  "401892721|frederikandersen|out": {
-   "game": "401892721",
-   "start": "2026-11-16T00:30Z",
-   "team": "6",
-   "name": "Frederik Andersen",
-   "status": "out",
-   "athlete": "2517899",
-   "espn": {
-    "seen": "2026-11-14T16:43:39.949Z",
-    "own": "2026-09-29T17:53:00.000Z"
-   }
-  },
-  "401892721|mattiasjanmark|out": {
-   "game": "401892721",
-   "start": "2026-11-16T00:30Z",
-   "team": "6",
-   "name": "Mattias Janmark",
-   "status": "out",
-   "athlete": "3042085",
-   "espn": {
-    "seen": "2026-11-14T16:43:39.949Z",
-    "own": "2026-09-29T17:52:00.000Z"
-   }
-  },
   "401892722|kylecapobianco|out": {
    "game": "401892722",
    "start": "2026-11-16T01:00Z",
@@ -681,30 +597,6 @@
     "seen": "2026-11-15T23:10:51.014Z",
     "own": "2026-11-15T22:42:26.000Z",
     "why": "@dailyfaceoff.bsky.social: Canadiens’ Josh Anderson, Mike Matheson to miss time "
-   }
-  },
-  "401892721|denverbarkey|out": {
-   "game": "401892721",
-   "start": "2026-11-16T00:30Z",
-   "team": "15",
-   "name": "Denver Barkey",
-   "status": "out",
-   "athlete": "5173105",
-   "espn": {
-    "seen": "2026-11-15T23:09:50.047Z",
-    "own": "2026-11-15T22:26:00.000Z"
-   }
-  },
-  "401892721|ryannugenthopkins|out": {
-   "game": "401892721",
-   "start": "2026-11-16T00:30Z",
-   "team": "6",
-   "name": "Ryan Nugent-Hopkins",
-   "status": "out",
-   "athlete": "2562624",
-   "espn": {
-    "seen": "2026-11-16T00:00:41.535Z",
-    "own": "2026-11-15T23:26:00.000Z"
    }
   },
   "401892725|jonathanmarchessault|out": {
