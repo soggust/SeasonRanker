@@ -3,8 +3,8 @@
  "cursor": {
   "johnston-bot.bsky.social": "2026-11-26T15:03:47.542Z",
   "notfriedgehnic.bsky.social": "2026-11-26T15:07:30.929Z",
-  "dailyfaceoff.bsky.social": "2026-11-26T19:04:15.000Z",
-  "dfotoronto.bsky.social": "2026-11-26T18:35:25.000Z",
+  "dailyfaceoff.bsky.social": "2026-11-26T19:20:00.000Z",
+  "dfotoronto.bsky.social": "2026-11-26T19:15:20.163Z",
   "marklazerus.bsky.social": "2026-11-26T16:54:28.277Z"
  },
  "claims": [
@@ -3023,6 +3023,19 @@
    "kind": "role",
    "confidence": 0.8,
    "text": "Maple Leafs lineup news: Kirill Marchenko replaces William Nylander on top power-play unit"
+  },
+  {
+   "id": "at://did:plc:3uus7y6h3rlrk6sbctzxm4bg/app.bsky.feed.post/3n3afeaslfd2u|gabeperreault|out|status",
+   "at": "2026-11-26T19:20:00.000Z",
+   "seen": "2026-11-26T19:50:37.637Z",
+   "handle": "dailyfaceoff.bsky.social",
+   "post": "at://did:plc:3uus7y6h3rlrk6sbctzxm4bg/app.bsky.feed.post/3n3afeaslfd2u",
+   "player": "Gabe Perreault",
+   "team": "NYR",
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.95,
+   "text": "Rangers’ Gabe Perreault out 4-6 weeks with lower-body injury"
   }
  ]
 }

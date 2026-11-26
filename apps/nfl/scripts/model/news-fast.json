@@ -1,67 +1,15 @@
 {
  "sport": "nfl",
  "cursor": {
-  "adamscheftermirror.bsky.social": "2026-11-26T18:57:08.614Z",
+  "adamscheftermirror.bsky.social": "2026-11-26T19:27:08.350Z",
   "rapsheet.bsky.social": "2026-11-26T18:58:49.812Z",
   "nflnewsreposterbot.bsky.social": "2026-11-25T21:41:32.820Z",
-  "insidenflnews.bsky.social": "2026-11-26T18:48:17.149Z",
-  "nflnewsposter.bsky.social": "2026-11-26T18:46:35.909Z",
+  "insidenflnews.bsky.social": "2026-11-26T19:19:10.190Z",
+  "nflnewsposter.bsky.social": "2026-11-26T19:36:27.596Z",
   "rotoworld-fb.bsky.social": "2026-11-26T18:50:53.000Z",
-  "rotowirenfl.bsky.social": "2026-11-26T18:59:14.000Z"
+  "rotowirenfl.bsky.social": "2026-11-26T19:36:43.000Z"
  },
  "claims": [
-  {
-   "id": "at://did:plc:hlvr2omhnmvdmfnvmcuhyevz/app.bsky.feed.post/3mzllbvdszs22|carsonwentz|none|starting",
-   "at": "2026-11-05T19:14:57.575Z",
-   "seen": "2026-11-05T19:20:30.017Z",
-   "handle": "rapsheet.bsky.social",
-   "post": "at://did:plc:hlvr2omhnmvdmfnvmcuhyevz/app.bsky.feed.post/3mzllbvdszs22",
-   "player": "Carson Wentz",
-   "team": "MIN",
-   "status": "none",
-   "kind": "starting",
-   "confidence": 0.6,
-   "text": "The Vikings are planning to start Carson Wentz on MNF against the Bills, as Kyler Murray’s hamstring injury would limit his mobility. Murray could also make it worse by playing. \n\nWhen healthy, Wentz "
-  },
-  {
-   "id": "at://did:plc:hlvr2omhnmvdmfnvmcuhyevz/app.bsky.feed.post/3mzlldgmh6k22|kylermurray|out|status",
-   "at": "2026-11-05T19:15:49.242Z",
-   "seen": "2026-11-05T19:20:30.017Z",
-   "handle": "rapsheet.bsky.social",
-   "post": "at://did:plc:hlvr2omhnmvdmfnvmcuhyevz/app.bsky.feed.post/3mzlldgmh6k22",
-   "player": "Kyler Murray",
-   "team": "MIN",
-   "status": "out",
-   "kind": "status",
-   "confidence": 0.8,
-   "text": "Vikings coach Kevin O'Connell says Kyler Murray is week-to-week with his hamstring strain, so Max Brosmer will be the backup."
-  },
-  {
-   "id": "at://did:plc:hlvr2omhnmvdmfnvmcuhyevz/app.bsky.feed.post/3mzlldgmh6k22|maxbrosmer|none|role",
-   "at": "2026-11-05T19:15:49.242Z",
-   "seen": "2026-11-05T19:20:30.017Z",
-   "handle": "rapsheet.bsky.social",
-   "post": "at://did:plc:hlvr2omhnmvdmfnvmcuhyevz/app.bsky.feed.post/3mzlldgmh6k22",
-   "player": "Max Brosmer",
-   "team": "MIN",
-   "status": "none",
-   "kind": "role",
-   "confidence": 0.7,
-   "text": "Vikings coach Kevin O'Connell says Kyler Murray is week-to-week with his hamstring strain, so Max Brosmer will be the backup."
-  },
-  {
-   "id": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3mzlna7pm5f2b|saquonbarkley|limited|return",
-   "at": "2026-11-05T19:49:48.000Z",
-   "seen": "2026-11-05T20:02:02.236Z",
-   "handle": "rotoworld-fb.bsky.social",
-   "post": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3mzlna7pm5f2b",
-   "player": "Saquon Barkley",
-   "team": "PHI",
-   "status": "limited",
-   "kind": "return",
-   "confidence": 0.5,
-   "text": "Saquon Barkley (hamstring/back) back at practice"
-  },
   {
    "id": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3mzlq2x7bib2s|kylemonangai|questionable|status",
    "at": "2026-11-05T20:40:33.000Z",
@@ -17819,6 +17767,84 @@
    "kind": "status",
    "confidence": 0.6,
    "text": "With Justin Herbert in the NFL’s concussion protocol, the Chargers signed QB Jake Browning to the active roster"
+  },
+  {
+   "id": "at://did:plc:mbr4badgf6yu56mquzackzew/app.bsky.feed.post/3n3afcqwmic2g|michaelpittman|active|status",
+   "at": "2026-11-26T19:19:10.190Z",
+   "seen": "2026-11-26T19:50:37.637Z",
+   "handle": "insidenflnews.bsky.social",
+   "post": "at://did:plc:mbr4badgf6yu56mquzackzew/app.bsky.feed.post/3n3afcqwmic2g",
+   "player": "Michael Pittman Jr.",
+   "team": "PIT",
+   "status": "active",
+   "kind": "status",
+   "confidence": 0.97,
+   "text": "Michael Pittman Jr. (foot) officially activated from IR."
+  },
+  {
+   "id": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3n3afir33sl25|michaelpittman|active|status",
+   "at": "2026-11-26T19:22:31.000Z",
+   "seen": "2026-11-26T19:50:37.637Z",
+   "handle": "rotowirenfl.bsky.social",
+   "post": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3n3afir33sl25",
+   "player": "Michael Pittman Jr.",
+   "team": "PIT",
+   "status": "active",
+   "kind": "status",
+   "confidence": 0.96,
+   "text": "Michael Pittman: Activated from IR \n\n https://www.rotowire.com/football/player/michael-pittman-14378"
+  },
+  {
+   "id": "at://did:plc:fuqjc7x4gxvnwzksnlxwbe4x/app.bsky.feed.post/3n3afn2vgd22a|michaelpittman|active|status",
+   "at": "2026-11-26T19:24:56.181Z",
+   "seen": "2026-11-26T19:50:37.637Z",
+   "handle": "nflnewsposter.bsky.social",
+   "post": "at://did:plc:fuqjc7x4gxvnwzksnlxwbe4x/app.bsky.feed.post/3n3afn2vgd22a",
+   "player": "Michael Pittman Jr.",
+   "team": "PIT",
+   "status": "active",
+   "kind": "status",
+   "confidence": 0.95,
+   "text": "[Pryor] The Steelers signed WR Max Hurleman to the active roster and activated Michael Pittman Jr. from IR. The team also placed Ben Skowronek on IR. twitter.com/bepryor/stat..."
+  },
+  {
+   "id": "at://did:plc:fuqjc7x4gxvnwzksnlxwbe4x/app.bsky.feed.post/3n3afn2vgd22a|benskowronek|out|status",
+   "at": "2026-11-26T19:24:56.181Z",
+   "seen": "2026-11-26T19:50:37.637Z",
+   "handle": "nflnewsposter.bsky.social",
+   "post": "at://did:plc:fuqjc7x4gxvnwzksnlxwbe4x/app.bsky.feed.post/3n3afn2vgd22a",
+   "player": "Ben Skowronek",
+   "team": "PIT",
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.9,
+   "text": "[Pryor] The Steelers signed WR Max Hurleman to the active roster and activated Michael Pittman Jr. from IR. The team also placed Ben Skowronek on IR. twitter.com/bepryor/stat..."
+  },
+  {
+   "id": "at://did:plc:qre6zxbmr3ixhdmgsgdretb5/app.bsky.feed.post/3n3afqyzfsx2x|michaelpittman|active|status",
+   "at": "2026-11-26T19:27:08.350Z",
+   "seen": "2026-11-26T19:50:37.637Z",
+   "handle": "adamscheftermirror.bsky.social",
+   "post": "at://did:plc:qre6zxbmr3ixhdmgsgdretb5/app.bsky.feed.post/3n3afqyzfsx2x",
+   "player": "Michael Pittman Jr.",
+   "team": "PIT",
+   "status": "active",
+   "kind": "status",
+   "confidence": 0.95,
+   "text": "Steelers activated wide receiver Michael Pittman Jr. from injured reserve and signed wide receiver Max Hurleman from their practice squad to their active roster. The team also placed wide receiver Ben"
+  },
+  {
+   "id": "at://did:plc:qre6zxbmr3ixhdmgsgdretb5/app.bsky.feed.post/3n3afqyzfsx2x|benskowronek|out|status",
+   "at": "2026-11-26T19:27:08.350Z",
+   "seen": "2026-11-26T19:50:37.637Z",
+   "handle": "adamscheftermirror.bsky.social",
+   "post": "at://did:plc:qre6zxbmr3ixhdmgsgdretb5/app.bsky.feed.post/3n3afqyzfsx2x",
+   "player": "Ben Skowronek",
+   "team": "PIT",
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.9,
+   "text": "Steelers activated wide receiver Michael Pittman Jr. from injured reserve and signed wide receiver Max Hurleman from their practice squad to their active roster. The team also placed wide receiver Ben"
   }
  ]
 }
