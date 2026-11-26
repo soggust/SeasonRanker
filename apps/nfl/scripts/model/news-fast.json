@@ -4,9 +4,9 @@
   "adamscheftermirror.bsky.social": "2026-11-26T00:47:03.115Z",
   "rapsheet.bsky.social": "2026-11-26T00:19:30.575Z",
   "nflnewsreposterbot.bsky.social": "2026-11-25T21:41:32.820Z",
-  "insidenflnews.bsky.social": "2026-11-25T23:20:44.622Z",
+  "insidenflnews.bsky.social": "2026-11-26T00:54:54.391Z",
   "nflnewsposter.bsky.social": "2026-11-25T23:40:26.602Z",
-  "rotoworld-fb.bsky.social": "2026-11-26T00:41:47.000Z",
+  "rotoworld-fb.bsky.social": "2026-11-26T00:54:50.000Z",
   "rotowirenfl.bsky.social": "2026-11-25T23:53:18.000Z"
  },
  "claims": [
@@ -17871,6 +17871,19 @@
    "kind": "status",
    "confidence": 0.5,
    "text": "49ers QB Brock Purdy did not practice Wednesday as he deals with an ankle injury suffered in Sunday night’s game against the Vikings. More via @nwagoner:\n\nOriginal post"
+  },
+  {
+   "id": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3n36hm36p2k2g|romeodoubs|active|return",
+   "at": "2026-11-26T00:54:50.000Z",
+   "seen": "2026-11-26T01:14:28.912Z",
+   "handle": "rotoworld-fb.bsky.social",
+   "post": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3n36hm36p2k2g",
+   "player": "Romeo Doubs",
+   "team": null,
+   "status": "active",
+   "kind": "return",
+   "confidence": 0.75,
+   "text": "Romeo Doubs (shoulder) returns to practice"
   }
  ]
 }
