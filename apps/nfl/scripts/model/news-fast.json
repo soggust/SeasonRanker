@@ -1,41 +1,15 @@
 {
  "sport": "nfl",
  "cursor": {
-  "adamscheftermirror.bsky.social": "2026-11-26T17:42:05.915Z",
+  "adamscheftermirror.bsky.social": "2026-11-26T18:12:10.808Z",
   "rapsheet.bsky.social": "2026-11-26T16:57:37.475Z",
   "nflnewsreposterbot.bsky.social": "2026-11-25T21:41:32.820Z",
-  "insidenflnews.bsky.social": "2026-11-26T17:31:39.638Z",
+  "insidenflnews.bsky.social": "2026-11-26T18:21:35.036Z",
   "nflnewsposter.bsky.social": "2026-11-26T17:44:40.909Z",
   "rotoworld-fb.bsky.social": "2026-11-26T17:39:00.000Z",
-  "rotowirenfl.bsky.social": "2026-11-26T05:24:39.000Z"
+  "rotowirenfl.bsky.social": "2026-11-26T18:20:17.000Z"
  },
  "claims": [
-  {
-   "id": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3mzlhp2tbib25|deshaunwatson|questionable|status",
-   "at": "2026-11-05T18:10:44.000Z",
-   "seen": "2026-11-05T18:30:31.240Z",
-   "handle": "rotowirenfl.bsky.social",
-   "post": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3mzlhp2tbib25",
-   "player": "Deshaun Watson",
-   "team": null,
-   "status": "questionable",
-   "kind": "status",
-   "confidence": 0.3,
-   "text": "Deshaun Watson: Missing another practice \n\n https://www.rotowire.com/football/player/deshaun-watson-11712"
-  },
-  {
-   "id": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3mzlhxmwsoa2p|garrettwilson|questionable|status",
-   "at": "2026-11-05T18:15:31.000Z",
-   "seen": "2026-11-05T18:30:31.240Z",
-   "handle": "rotoworld-fb.bsky.social",
-   "post": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3mzlhxmwsoa2p",
-   "player": "Garrett Wilson",
-   "team": "NYJ",
-   "status": "questionable",
-   "kind": "status",
-   "confidence": 0.5,
-   "text": "Garrett Wilson (concussion) not at practice again"
-  },
   {
    "id": "at://did:plc:rx22hq465sfe5g2qyyf5gzu2/app.bsky.feed.post/3mzlihuyepc2x|carsonwentz|active|starting",
    "at": "2026-11-05T18:24:37.305Z",
