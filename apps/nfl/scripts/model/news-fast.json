@@ -4,25 +4,12 @@
   "adamscheftermirror.bsky.social": "2026-11-26T22:17:08.681Z",
   "rapsheet.bsky.social": "2026-11-26T22:11:28.538Z",
   "nflnewsreposterbot.bsky.social": "2026-11-25T21:41:32.820Z",
-  "insidenflnews.bsky.social": "2026-11-26T23:01:02.061Z",
-  "nflnewsposter.bsky.social": "2026-11-26T23:01:47.021Z",
-  "rotoworld-fb.bsky.social": "2026-11-26T23:04:16.000Z",
-  "rotowirenfl.bsky.social": "2026-11-26T23:03:14.000Z"
+  "insidenflnews.bsky.social": "2026-11-26T23:08:21.711Z",
+  "nflnewsposter.bsky.social": "2026-11-26T23:25:28.027Z",
+  "rotoworld-fb.bsky.social": "2026-11-26T23:08:54.000Z",
+  "rotowirenfl.bsky.social": "2026-11-26T23:20:08.000Z"
  },
  "claims": [
-  {
-   "id": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3mzlyqde4zv2f|maliknabers|active|status",
-   "at": "2026-11-05T23:15:40.000Z",
-   "seen": "2026-11-06T00:18:02.557Z",
-   "handle": "rotoworld-fb.bsky.social",
-   "post": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3mzlyqde4zv2f",
-   "player": "Malik Nabers",
-   "team": "NYG",
-   "status": "active",
-   "kind": "status",
-   "confidence": 0.8,
-   "text": "Malik Nabers (knee) DNP, says he is good for Wk 9"
-  },
   {
    "id": "at://did:plc:hlvr2omhnmvdmfnvmcuhyevz/app.bsky.feed.post/3mzm24537bk2m|lamarjackson|out|status",
    "at": "2026-11-05T23:40:10.485Z",
