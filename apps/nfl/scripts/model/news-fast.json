@@ -2,27 +2,14 @@
  "sport": "nfl",
  "cursor": {
   "adamscheftermirror.bsky.social": "2026-11-26T00:01:59.621Z",
-  "rapsheet.bsky.social": "2026-11-25T20:24:04.266Z",
+  "rapsheet.bsky.social": "2026-11-26T00:19:30.575Z",
   "nflnewsreposterbot.bsky.social": "2026-11-25T21:41:32.820Z",
   "insidenflnews.bsky.social": "2026-11-25T23:20:44.622Z",
   "nflnewsposter.bsky.social": "2026-11-25T23:40:26.602Z",
-  "rotoworld-fb.bsky.social": "2026-11-26T00:05:44.000Z",
+  "rotoworld-fb.bsky.social": "2026-11-26T00:23:33.000Z",
   "rotowirenfl.bsky.social": "2026-11-25T23:53:18.000Z"
  },
  "claims": [
-  {
-   "id": "at://did:plc:fuqjc7x4gxvnwzksnlxwbe4x/app.bsky.feed.post/3mzjm6vund224|jalenhurts|out|status",
-   "at": "2026-11-05T00:25:51.730Z",
-   "seen": "2026-11-05T00:44:23.968Z",
-   "handle": "nflnewsposter.bsky.social",
-   "post": "at://did:plc:fuqjc7x4gxvnwzksnlxwbe4x/app.bsky.feed.post/3mzjm6vund224",
-   "player": "Jalen Hurts",
-   "team": "PHI",
-   "status": "out",
-   "kind": "status",
-   "confidence": 0.6,
-   "text": "[McManus] Eagles QB Jalen Hurts was at the practice facility today. He sat in on both the team meeting and other meetings.\n\nHe did not address the team but his presence did provide a morale boost for "
-  },
   {
    "id": "at://did:plc:qre6zxbmr3ixhdmgsgdretb5/app.bsky.feed.post/3mzjp73zae32z|malachitoney|out|status",
    "at": "2026-11-05T01:19:39.310Z",
@@ -17832,6 +17819,32 @@
    "kind": "status",
    "confidence": 0.9,
    "text": "Zay Flowers (ankle) limited Wednesday"
+  },
+  {
+   "id": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3n36flym43p24|kayshonboutte|questionable|status",
+   "at": "2026-11-26T00:19:00.000Z",
+   "seen": "2026-11-26T00:27:37.003Z",
+   "handle": "rotoworld-fb.bsky.social",
+   "post": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3n36flym43p24",
+   "player": "Kayshon Boutte",
+   "team": null,
+   "status": "questionable",
+   "kind": "status",
+   "confidence": 0.5,
+   "text": "Kayshon Boutte (hip) DNP Wednesday"
+  },
+  {
+   "id": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3n36fu4hexh24|jaxonsmithnjigba|limited|status",
+   "at": "2026-11-26T00:23:33.000Z",
+   "seen": "2026-11-26T00:27:37.003Z",
+   "handle": "rotoworld-fb.bsky.social",
+   "post": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3n36fu4hexh24",
+   "player": "Jaxon Smith-Njigba",
+   "team": "SEA",
+   "status": "limited",
+   "kind": "status",
+   "confidence": 0.85,
+   "text": "JSN (ankle) limited Wednesday"
   }
  ]
 }
