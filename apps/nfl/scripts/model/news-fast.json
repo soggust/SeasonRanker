@@ -1,13 +1,13 @@
 {
  "sport": "nfl",
  "cursor": {
-  "adamscheftermirror.bsky.social": "2026-11-26T19:27:08.350Z",
+  "adamscheftermirror.bsky.social": "2026-11-26T20:17:06.068Z",
   "rapsheet.bsky.social": "2026-11-26T19:59:24.753Z",
   "nflnewsreposterbot.bsky.social": "2026-11-25T21:41:32.820Z",
   "insidenflnews.bsky.social": "2026-11-26T19:19:10.190Z",
-  "nflnewsposter.bsky.social": "2026-11-26T19:36:27.596Z",
+  "nflnewsposter.bsky.social": "2026-11-26T20:28:49.416Z",
   "rotoworld-fb.bsky.social": "2026-11-26T18:50:53.000Z",
-  "rotowirenfl.bsky.social": "2026-11-26T20:11:21.000Z"
+  "rotowirenfl.bsky.social": "2026-11-26T20:29:26.000Z"
  },
  "claims": [
   {
@@ -17884,6 +17884,32 @@
    "kind": "status",
    "confidence": 0.35,
    "text": "Carson Beck: Stays DNP on Thursday \n\n https://www.rotowire.com/football/player/carson-beck-19287"
+  },
+  {
+   "id": "at://did:plc:qre6zxbmr3ixhdmgsgdretb5/app.bsky.feed.post/3n3aikdsrcy24|justinherbert|questionable|status",
+   "at": "2026-11-26T20:17:06.068Z",
+   "seen": "2026-11-26T20:31:25.879Z",
+   "handle": "adamscheftermirror.bsky.social",
+   "post": "at://did:plc:qre6zxbmr3ixhdmgsgdretb5/app.bsky.feed.post/3n3aikdsrcy24",
+   "player": "Justin Herbert",
+   "team": "LAC",
+   "status": "questionable",
+   "kind": "status",
+   "confidence": 0.5,
+   "text": "Justin Herbert did not practice again today.\n\nOriginal post"
+  },
+  {
+   "id": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3n3ajafkuol22|parkerwashington|none|status",
+   "at": "2026-11-26T20:29:26.000Z",
+   "seen": "2026-11-26T20:31:25.879Z",
+   "handle": "rotowirenfl.bsky.social",
+   "post": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3n3ajafkuol22",
+   "player": "Parker Washington",
+   "team": null,
+   "status": "none",
+   "kind": "status",
+   "confidence": 0.4,
+   "text": "Parker Washington: Added to Week 12 injury report \n\n https://www.rotowire.com/football/player/parker-washington-16690"
   }
  ]
 }
