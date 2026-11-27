@@ -7,35 +7,9 @@
   "insidenflnews.bsky.social": "2026-11-27T17:31:30.707Z",
   "nflnewsposter.bsky.social": "2026-11-27T19:10:03.642Z",
   "rotoworld-fb.bsky.social": "2026-11-27T19:20:01.000Z",
-  "rotowirenfl.bsky.social": "2026-11-27T19:15:15.000Z"
+  "rotowirenfl.bsky.social": "2026-11-27T19:43:01.000Z"
  },
  "claims": [
-  {
-   "id": "at://did:plc:mbr4badgf6yu56mquzackzew/app.bsky.feed.post/3mzo4oebm6225|maliknabers|active|status",
-   "at": "2026-11-06T19:31:28.974Z",
-   "seen": "2026-11-06T20:15:14.447Z",
-   "handle": "insidenflnews.bsky.social",
-   "post": "at://did:plc:mbr4badgf6yu56mquzackzew/app.bsky.feed.post/3mzo4oebm6225",
-   "player": "Malik Nabers",
-   "team": "NYG",
-   "status": "active",
-   "kind": "status",
-   "confidence": 0.85,
-   "text": "Harbaugh: Malik Nabers (knee) will be full-go in Week 9."
-  },
-  {
-   "id": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3mzo5l2llv22e|denzelboston|active|status",
-   "at": "2026-11-06T19:47:31.000Z",
-   "seen": "2026-11-06T20:15:14.447Z",
-   "handle": "rotowirenfl.bsky.social",
-   "post": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3mzo5l2llv22e",
-   "player": "Denzel Boston",
-   "team": null,
-   "status": "active",
-   "kind": "status",
-   "confidence": 0.9,
-   "text": "Denzel Boston: Cleared for Sunday \n\n https://www.rotowire.com/football/player/denzel-boston-19298"
-  },
   {
    "id": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3mzo65zgxry2s|kylemonangai|questionable|status",
    "at": "2026-11-06T19:58:08.000Z",
@@ -17481,6 +17455,19 @@
    "kind": "status",
    "confidence": 0.9,
    "text": "Quinn: Brandon Aiyuk will be inactive in Week 12"
+  },
+  {
+   "id": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3n3cx4dwgkj25|romeodoubs|out|return",
+   "at": "2026-11-27T19:43:01.000Z",
+   "seen": "2026-11-27T19:49:12.473Z",
+   "handle": "rotowirenfl.bsky.social",
+   "post": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3n3cx4dwgkj25",
+   "player": "Romeo Doubs",
+   "team": null,
+   "status": "out",
+   "kind": "return",
+   "confidence": 0.8,
+   "text": "Romeo Doubs: Won't return in Week 12 \n\n https://www.rotowire.com/football/player/romeo-doubs-16027"
   }
  ]
 }

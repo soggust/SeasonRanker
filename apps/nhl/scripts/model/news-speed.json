@@ -10549,6 +10549,11 @@
    "espn": {
     "seen": "2026-11-27T16:47:40.289Z",
     "own": "2026-11-27T16:31:00.000Z"
+   },
+   "bluesky": {
+    "seen": "2026-11-27T19:28:51.757Z",
+    "own": "2026-11-27T18:57:19.000Z",
+    "why": "@dailyfaceoff.bsky.social: Sabres’ Zach Benson, Noah Ostlund out against Penguin"
    }
   },
   "401892808|zachbenson|out": {
@@ -10561,6 +10566,11 @@
    "espn": {
     "seen": "2026-11-27T16:47:40.289Z",
     "own": "2026-11-27T16:30:00.000Z"
+   },
+   "bluesky": {
+    "seen": "2026-11-27T19:28:51.757Z",
+    "own": "2026-11-27T18:57:19.000Z",
+    "why": "@dailyfaceoff.bsky.social: Sabres’ Zach Benson, Noah Ostlund out against Penguin"
    }
   },
   "401892804|leocarlsson|out": {
@@ -10727,6 +10737,18 @@
    "espn": {
     "seen": "2026-11-27T19:13:36.492Z",
     "own": "2026-11-27T18:45:00.000Z"
+   }
+  },
+  "401892808|tysonkozak|out": {
+   "game": "401892808",
+   "start": "2026-11-28T01:00Z",
+   "team": "2",
+   "name": "Tyson Kozak",
+   "status": "out",
+   "athlete": "4895527",
+   "espn": {
+    "seen": "2026-11-27T19:47:52.011Z",
+    "own": "2026-11-27T19:25:00.000Z"
    }
   }
  }
