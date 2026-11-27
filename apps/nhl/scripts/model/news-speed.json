@@ -10461,6 +10461,78 @@
     "seen": "2026-11-27T15:51:17.870Z",
     "own": "2026-09-29T17:52:00.000Z"
    }
+  },
+  "401892796|declanchisholm|out": {
+   "game": "401892796",
+   "start": "2026-11-27T18:00Z",
+   "team": "11",
+   "name": "Declan Chisholm",
+   "status": "out",
+   "athlete": "4587929",
+   "espn": {
+    "seen": "2026-11-27T16:14:41.030Z",
+    "own": "2026-11-27T15:58:00.000Z"
+   }
+  },
+  "401892813|declanchisholm|out": {
+   "game": "401892813",
+   "start": "2026-11-29T00:00Z",
+   "team": "11",
+   "name": "Declan Chisholm",
+   "status": "out",
+   "athlete": "4587929",
+   "espn": {
+    "seen": "2026-11-27T16:14:41.030Z",
+    "own": "2026-11-27T15:58:00.000Z"
+   }
+  },
+  "401892818|nikitagrebenkin|out": {
+   "game": "401892818",
+   "start": "2026-11-29T00:30Z",
+   "team": "15",
+   "name": "Nikita Grebenkin",
+   "status": "out",
+   "athlete": "5188490",
+   "espn": {
+    "seen": "2026-11-27T16:14:41.030Z",
+    "own": "2026-10-10T16:58:00.000Z"
+   }
+  },
+  "401892818|kylepalmieri|out": {
+   "game": "401892818",
+   "start": "2026-11-29T00:30Z",
+   "team": "12",
+   "name": "Kyle Palmieri",
+   "status": "out",
+   "athlete": "5517",
+   "espn": {
+    "seen": "2026-11-27T16:14:41.030Z",
+    "own": "2026-11-27T15:49:00.000Z"
+   }
+  },
+  "401892818|ryanpulock|out": {
+   "game": "401892818",
+   "start": "2026-11-29T00:30Z",
+   "team": "12",
+   "name": "Ryan Pulock",
+   "status": "out",
+   "athlete": "3042019",
+   "espn": {
+    "seen": "2026-11-27T16:14:41.030Z",
+    "own": "2026-11-24T17:11:00.000Z"
+   }
+  },
+  "401892818|alexanderromanov|out": {
+   "game": "401892818",
+   "start": "2026-11-29T00:30Z",
+   "team": "12",
+   "name": "Alexander Romanov",
+   "status": "out",
+   "athlete": "4587854",
+   "espn": {
+    "seen": "2026-11-27T16:14:41.030Z",
+    "own": "2026-10-19T13:56:00.000Z"
+   }
   }
  }
 }
