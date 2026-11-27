@@ -1,119 +1,15 @@
 {
  "sport": "nfl",
  "cursor": {
-  "adamscheftermirror.bsky.social": "2026-11-27T21:32:16.214Z",
+  "adamscheftermirror.bsky.social": "2026-11-27T21:47:16.914Z",
   "rapsheet.bsky.social": "2026-11-27T20:26:16.005Z",
   "nflnewsreposterbot.bsky.social": "2026-11-25T21:41:32.820Z",
   "insidenflnews.bsky.social": "2026-11-27T20:54:05.331Z",
   "nflnewsposter.bsky.social": "2026-11-27T21:16:46.797Z",
   "rotoworld-fb.bsky.social": "2026-11-27T21:03:41.000Z",
-  "rotowirenfl.bsky.social": "2026-11-27T21:14:18.000Z"
+  "rotowirenfl.bsky.social": "2026-11-27T21:53:53.000Z"
  },
  "claims": [
-  {
-   "id": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3mzodm5gfle2l|maliknabers|active|status",
-   "at": "2026-11-06T21:35:30.000Z",
-   "seen": "2026-11-06T22:15:31.252Z",
-   "handle": "rotoworld-fb.bsky.social",
-   "post": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3mzodm5gfle2l",
-   "player": "Malik Nabers",
-   "team": "NYG",
-   "status": "active",
-   "kind": "status",
-   "confidence": 0.95,
-   "text": "Malik Nabers (knee) cleared to face Eagles in Wk 9"
-  },
-  {
-   "id": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3mzoe3hzlrr22|amonrastbrown|questionable|status",
-   "at": "2026-11-06T21:44:05.000Z",
-   "seen": "2026-11-06T22:15:31.252Z",
-   "handle": "rotoworld-fb.bsky.social",
-   "post": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3mzoe3hzlrr22",
-   "player": "Amon-Ra St. Brown",
-   "team": null,
-   "status": "questionable",
-   "kind": "status",
-   "confidence": 0.95,
-   "text": "Amon-Ra St. Brown (ribs) questionable for Week 9"
-  },
-  {
-   "id": "at://did:plc:mbr4badgf6yu56mquzackzew/app.bsky.feed.post/3mzoemzh35c2r|mikeevans|out|status",
-   "at": "2026-11-06T21:53:53.999Z",
-   "seen": "2026-11-06T22:15:31.252Z",
-   "handle": "insidenflnews.bsky.social",
-   "post": "at://did:plc:mbr4badgf6yu56mquzackzew/app.bsky.feed.post/3mzoemzh35c2r",
-   "player": "Mike Evans",
-   "team": null,
-   "status": "out",
-   "kind": "status",
-   "confidence": 0.95,
-   "text": "Mike Evans (Achilles), Deebo Samuel (hamstring), Christian Kirk (knee) ruled out for Week 9."
-  },
-  {
-   "id": "at://did:plc:mbr4badgf6yu56mquzackzew/app.bsky.feed.post/3mzoemzh35c2r|deebosamuel|out|status",
-   "at": "2026-11-06T21:53:53.999Z",
-   "seen": "2026-11-06T22:15:31.252Z",
-   "handle": "insidenflnews.bsky.social",
-   "post": "at://did:plc:mbr4badgf6yu56mquzackzew/app.bsky.feed.post/3mzoemzh35c2r",
-   "player": "Deebo Samuel",
-   "team": null,
-   "status": "out",
-   "kind": "status",
-   "confidence": 0.95,
-   "text": "Mike Evans (Achilles), Deebo Samuel (hamstring), Christian Kirk (knee) ruled out for Week 9."
-  },
-  {
-   "id": "at://did:plc:mbr4badgf6yu56mquzackzew/app.bsky.feed.post/3mzoemzh35c2r|christiankirk|out|status",
-   "at": "2026-11-06T21:53:53.999Z",
-   "seen": "2026-11-06T22:15:31.252Z",
-   "handle": "insidenflnews.bsky.social",
-   "post": "at://did:plc:mbr4badgf6yu56mquzackzew/app.bsky.feed.post/3mzoemzh35c2r",
-   "player": "Christian Kirk",
-   "team": null,
-   "status": "out",
-   "kind": "status",
-   "confidence": 0.95,
-   "text": "Mike Evans (Achilles), Deebo Samuel (hamstring), Christian Kirk (knee) ruled out for Week 9."
-  },
-  {
-   "id": "at://did:plc:fuqjc7x4gxvnwzksnlxwbe4x/app.bsky.feed.post/3mzoepgmmjs2c|nickbosa|active|status",
-   "at": "2026-11-06T21:55:14.923Z",
-   "seen": "2026-11-06T22:15:31.252Z",
-   "handle": "nflnewsposter.bsky.social",
-   "post": "at://did:plc:fuqjc7x4gxvnwzksnlxwbe4x/app.bsky.feed.post/3mzoepgmmjs2c",
-   "player": "Nick Bosa",
-   "team": "SF",
-   "status": "active",
-   "kind": "status",
-   "confidence": 0.9,
-   "text": "[Wagoner] DE Nick Bosa and RB Christian McCaffrey have no injury designations and are good to go Sunday against the Raiders.\n\nKyle Shanahan says WR Demarcus Robinson will most likely be activated for "
-  },
-  {
-   "id": "at://did:plc:fuqjc7x4gxvnwzksnlxwbe4x/app.bsky.feed.post/3mzoepgmmjs2c|christianmccaffrey|active|status",
-   "at": "2026-11-06T21:55:14.923Z",
-   "seen": "2026-11-06T22:15:31.252Z",
-   "handle": "nflnewsposter.bsky.social",
-   "post": "at://did:plc:fuqjc7x4gxvnwzksnlxwbe4x/app.bsky.feed.post/3mzoepgmmjs2c",
-   "player": "Christian McCaffrey",
-   "team": "SF",
-   "status": "active",
-   "kind": "status",
-   "confidence": 0.9,
-   "text": "[Wagoner] DE Nick Bosa and RB Christian McCaffrey have no injury designations and are good to go Sunday against the Raiders.\n\nKyle Shanahan says WR Demarcus Robinson will most likely be activated for "
-  },
-  {
-   "id": "at://did:plc:fuqjc7x4gxvnwzksnlxwbe4x/app.bsky.feed.post/3mzoepgmmjs2c|demarcusrobinson|active|status",
-   "at": "2026-11-06T21:55:14.923Z",
-   "seen": "2026-11-06T22:15:31.252Z",
-   "handle": "nflnewsposter.bsky.social",
-   "post": "at://did:plc:fuqjc7x4gxvnwzksnlxwbe4x/app.bsky.feed.post/3mzoepgmmjs2c",
-   "player": "Demarcus Robinson",
-   "team": "SF",
-   "status": "active",
-   "kind": "status",
-   "confidence": 0.8,
-   "text": "[Wagoner] DE Nick Bosa and RB Christian McCaffrey have no injury designations and are good to go Sunday against the Raiders.\n\nKyle Shanahan says WR Demarcus Robinson will most likely be activated for "
-  },
   {
    "id": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3mzoepsimy62f|djmoore|limited|status",
    "at": "2026-11-06T21:55:27.000Z",
@@ -17507,6 +17403,19 @@
    "kind": "status",
    "confidence": 0.93,
    "text": "Jaguars ruled out RB Bhayshul Tuten for Sunday’s game against the Titans. The Jaguars now will be without Tuten and WR Parker Washington.\n\nOriginal post"
+  },
+  {
+   "id": "at://did:plc:qre6zxbmr3ixhdmgsgdretb5/app.bsky.feed.post/3n3d62jjdtj2j|samdarnold|active|status",
+   "at": "2026-11-27T21:47:16.914Z",
+   "seen": "2026-11-27T21:55:25.614Z",
+   "handle": "adamscheftermirror.bsky.social",
+   "post": "at://did:plc:qre6zxbmr3ixhdmgsgdretb5/app.bsky.feed.post/3n3d62jjdtj2j",
+   "player": "Sam Darnold",
+   "team": "SEA",
+   "status": "active",
+   "kind": "status",
+   "confidence": 0.9,
+   "text": "Seahawks QB Sam Darnold is off the injury report and set to start Sunday vs. San Francisco.\n\nOriginal post"
   }
  ]
 }
