@@ -7,19 +7,6 @@
  },
  "claims": [
   {
-   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mzo7gu7pjd2t|brandoningram|none|return",
-   "at": "2026-11-06T20:20:58.000Z",
-   "seen": "2026-11-06T21:05:24.842Z",
-   "handle": "rotowirenba.bsky.social",
-   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mzo7gu7pjd2t",
-   "player": "Brandon Ingram",
-   "team": "NOP",
-   "status": "none",
-   "kind": "return",
-   "confidence": 0.4,
-   "text": "Brandon Ingram: Nearing return \n\n https://www.rotowire.com/basketball/player/brandon-ingram-3861"
-  },
-  {
    "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3mzob2nxd362x|guisantos|questionable|status",
    "at": "2026-11-06T20:49:56.000Z",
    "seen": "2026-11-06T21:05:24.842Z",

@@ -12,29 +12,7 @@
    "confidence": 0.9,
    "headline": "Steelers activate Michael Pittman Jr. off IR, sign Max Hurleman to active roster",
    "at": "2026-11-26T22:36:50.000Z"
-  },
-  {
-   "team": "23",
-   "abbr": "PIT",
-   "athlete": "3116407",
-   "player": "Mason Rudolph",
-   "kind": "starting",
-   "direction": "up",
-   "confidence": 0.9,
-   "headline": "What Aaron Rodgers' benching means for Steelers, his future",
-   "at": "2026-11-25T20:14:17.000Z"
-  },
-  {
-   "team": "23",
-   "abbr": "PIT",
-   "athlete": "8439",
-   "player": "Aaron Rodgers",
-   "kind": "benched",
-   "direction": "down",
-   "confidence": 0.9,
-   "headline": "What Aaron Rodgers' benching means for Steelers, his future",
-   "at": "2026-11-25T20:14:17.000Z"
   }
  ],
- "at": "2026-11-27T16:26:55.758Z"
+ "at": "2026-11-27T20:30:34.755Z"
 }

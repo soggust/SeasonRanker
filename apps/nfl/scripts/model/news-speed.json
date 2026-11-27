@@ -11159,6 +11159,11 @@
    "sleeper": {
     "seen": "2026-11-27T20:07:42.536Z",
     "own": "2026-11-27T20:00:28.565Z"
+   },
+   "bluesky": {
+    "seen": "2026-11-27T20:10:26.993Z",
+    "own": "2026-11-27T20:02:21.000Z",
+    "why": "@rotowirenfl.bsky.social: Jordan Addison: Out again in Week 12 \n\n https://www.ro"
    }
   },
   "401873084|kylermurray|out": {
@@ -11195,6 +11200,11 @@
    "espn": {
     "seen": "2026-11-24T00:00:46.285Z",
     "own": "2026-11-23T00:09:00.000Z"
+   },
+   "bluesky": {
+    "seen": "2026-11-27T20:10:26.993Z",
+    "own": "2026-11-27T20:02:15.924Z",
+    "why": "@adamscheftermirror.bsky.social: Vikings ruled out WR Jordan Addison, OT Christi"
    }
   },
   "401873084|borichter|out": {
@@ -15682,6 +15692,155 @@
    "sleeper": {
     "seen": "2026-11-27T20:07:42.536Z",
     "own": "2026-11-27T19:25:28.074Z"
+   }
+  },
+  "401873087|teehiggins|q": {
+   "game": "401873087",
+   "start": "2026-11-29T18:00Z",
+   "team": "4",
+   "name": "Tee Higgins",
+   "status": "q",
+   "athlete": "4239993",
+   "espn": {
+    "seen": "2026-11-27T20:28:42.982Z",
+    "own": "2026-11-27T20:12:00.000Z"
+   }
+  },
+  "401873087|tetairoamcmillan|q": {
+   "game": "401873087",
+   "start": "2026-11-29T18:00Z",
+   "team": "4",
+   "name": "Tetairoa McMillan",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-11-27T20:10:26.993Z",
+    "own": "2026-11-27T20:09:08.000Z",
+    "why": "@rotoworld-fb.bsky.social: Tetairoa McMillan (foot) limited on Friday"
+   }
+  },
+  "401873088|tetairoamcmillan|q": {
+   "game": "401873088",
+   "start": "2026-11-29T18:00Z",
+   "team": "11",
+   "name": "Tetairoa McMillan",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-11-27T20:10:26.993Z",
+    "own": "2026-11-27T20:09:08.000Z",
+    "why": "@rotoworld-fb.bsky.social: Tetairoa McMillan (foot) limited on Friday"
+   }
+  },
+  "401873089|tetairoamcmillan|q": {
+   "game": "401873089",
+   "start": "2026-11-29T18:00Z",
+   "team": "15",
+   "name": "Tetairoa McMillan",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-11-27T20:10:26.993Z",
+    "own": "2026-11-27T20:09:08.000Z",
+    "why": "@rotoworld-fb.bsky.social: Tetairoa McMillan (foot) limited on Friday"
+   }
+  },
+  "401873084|christiandarrisaw|out": {
+   "game": "401873084",
+   "start": "2026-11-29T18:00Z",
+   "team": "16",
+   "name": "Christian Darrisaw",
+   "status": "out",
+   "athlete": "4361985",
+   "espn": {
+    "seen": "2026-11-27T20:28:42.982Z",
+    "own": "2026-11-27T20:11:00.000Z"
+   },
+   "bluesky": {
+    "seen": "2026-11-27T20:10:26.993Z",
+    "own": "2026-11-27T20:02:15.924Z",
+    "why": "@adamscheftermirror.bsky.social: Vikings ruled out WR Jordan Addison, OT Christi"
+   }
+  },
+  "401873084|tetairoamcmillan|q": {
+   "game": "401873084",
+   "start": "2026-11-29T18:00Z",
+   "team": "16",
+   "name": "Tetairoa McMillan",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-11-27T20:10:26.993Z",
+    "own": "2026-11-27T20:09:08.000Z",
+    "why": "@rotoworld-fb.bsky.social: Tetairoa McMillan (foot) limited on Friday"
+   }
+  },
+  "401873090|tetairoamcmillan|q": {
+   "game": "401873090",
+   "start": "2026-11-29T18:00Z",
+   "team": "30",
+   "name": "Tetairoa McMillan",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-11-27T20:10:26.993Z",
+    "own": "2026-11-27T20:09:08.000Z",
+    "why": "@rotoworld-fb.bsky.social: Tetairoa McMillan (foot) limited on Friday"
+   }
+  },
+  "401873085|tetairoamcmillan|q": {
+   "game": "401873085",
+   "start": "2026-11-29T18:00Z",
+   "team": "34",
+   "name": "Tetairoa McMillan",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-11-27T20:10:26.993Z",
+    "own": "2026-11-27T20:09:08.000Z",
+    "why": "@rotoworld-fb.bsky.social: Tetairoa McMillan (foot) limited on Friday"
+   }
+  },
+  "401873093|tetairoamcmillan|q": {
+   "game": "401873093",
+   "start": "2026-11-29T21:05Z",
+   "team": "24",
+   "name": "Tetairoa McMillan",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-11-27T20:10:26.993Z",
+    "own": "2026-11-27T20:09:08.000Z",
+    "why": "@rotoworld-fb.bsky.social: Tetairoa McMillan (foot) limited on Friday"
+   }
+  },
+  "401873092|tetairoamcmillan|q": {
+   "game": "401873092",
+   "start": "2026-11-29T21:25Z",
+   "team": "22",
+   "name": "Tetairoa McMillan",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-11-27T20:10:26.993Z",
+    "own": "2026-11-27T20:09:08.000Z",
+    "why": "@rotoworld-fb.bsky.social: Tetairoa McMillan (foot) limited on Friday"
+   }
+  },
+  "401873091|tetairoamcmillan|q": {
+   "game": "401873091",
+   "start": "2026-11-29T21:25Z",
+   "team": "25",
+   "name": "Tetairoa McMillan",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-11-27T20:10:26.993Z",
+    "own": "2026-11-27T20:09:08.000Z",
+    "why": "@rotoworld-fb.bsky.social: Tetairoa McMillan (foot) limited on Friday"
+   }
+  },
+  "401873086|tetairoamcmillan|q": {
+   "game": "401873086",
+   "start": "2026-11-30T01:20Z",
+   "team": "5",
+   "name": "Tetairoa McMillan",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-11-27T20:10:26.993Z",
+    "own": "2026-11-27T20:09:08.000Z",
+    "why": "@rotoworld-fb.bsky.social: Tetairoa McMillan (foot) limited on Friday"
    }
   }
  }
