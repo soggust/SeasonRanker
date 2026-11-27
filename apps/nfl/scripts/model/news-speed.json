@@ -12966,6 +12966,11 @@
    "sleeper": {
     "seen": "2026-11-27T20:07:42.536Z",
     "own": "2026-11-27T19:25:28.106Z"
+   },
+   "bluesky": {
+    "seen": "2026-11-27T20:52:39.887Z",
+    "own": "2026-11-27T20:49:29.000Z",
+    "why": "@rotoworld-fb.bsky.social: Brock Bowers (ankle) officially questionable"
    }
   },
   "401873086|raheimsanders|out": {
@@ -15704,6 +15709,11 @@
    "espn": {
     "seen": "2026-11-27T20:28:42.982Z",
     "own": "2026-11-27T20:12:00.000Z"
+   },
+   "bluesky": {
+    "seen": "2026-11-27T20:30:34.755Z",
+    "own": "2026-11-27T20:26:16.005Z",
+    "why": "@rapsheet.bsky.social: Bengals WR Tee Higgins did not practice today and is ques"
    }
   },
   "401873087|tetairoamcmillan|q": {
@@ -15841,6 +15851,78 @@
     "seen": "2026-11-27T20:10:26.993Z",
     "own": "2026-11-27T20:09:08.000Z",
     "why": "@rotoworld-fb.bsky.social: Tetairoa McMillan (foot) limited on Friday"
+   }
+  },
+  "401873090|bhayshultuten|out": {
+   "game": "401873090",
+   "start": "2026-11-29T18:00Z",
+   "team": "30",
+   "name": "Bhayshul Tuten",
+   "status": "out",
+   "athlete": "4882093",
+   "espn": {
+    "seen": "2026-11-27T21:10:39.080Z",
+    "own": "2026-11-27T20:58:00.000Z"
+   }
+  },
+  "401873085|keylanrutledge|out": {
+   "game": "401873085",
+   "start": "2026-11-29T18:00Z",
+   "team": "34",
+   "name": "Keylan Rutledge",
+   "status": "out",
+   "athlete": "4839498",
+   "espn": {
+    "seen": "2026-11-27T21:10:39.080Z",
+    "own": "2026-11-27T20:56:00.000Z"
+   }
+  },
+  "401873085|kayshonboutte|out": {
+   "game": "401873085",
+   "start": "2026-11-29T18:00Z",
+   "team": "34",
+   "name": "Kayshon Boutte",
+   "status": "out",
+   "athlete": "4429022",
+   "espn": {
+    "seen": "2026-11-27T21:10:39.080Z",
+    "own": "2026-11-27T17:47:00.000Z"
+   }
+  },
+  "401873086|jacksonpowersjohnson|out": {
+   "game": "401873086",
+   "start": "2026-11-30T01:20Z",
+   "team": "13",
+   "name": "Jackson Powers-Johnson",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-27T20:52:39.887Z",
+    "own": "2026-11-27T20:41:35.701Z",
+    "why": "@nflnewsposter.bsky.social: [Warren] Raiders HC Klint Kubiak said that OL Jackso"
+   }
+  },
+  "401873094|tezjohnson|q": {
+   "game": "401873094",
+   "start": "2026-12-01T01:15Z",
+   "team": "27",
+   "name": "Tez Johnson",
+   "status": "q",
+   "athlete": "4608810",
+   "espn": {
+    "seen": "2026-11-27T21:10:39.080Z",
+    "own": "2026-11-27T20:42:00.000Z"
+   }
+  },
+  "401873094|sirvoceadennis|q": {
+   "game": "401873094",
+   "start": "2026-12-01T01:15Z",
+   "team": "27",
+   "name": "SirVocea Dennis",
+   "status": "q",
+   "athlete": "4429511",
+   "espn": {
+    "seen": "2026-11-27T21:10:39.080Z",
+    "own": "2026-11-27T20:42:00.000Z"
    }
   }
  }
