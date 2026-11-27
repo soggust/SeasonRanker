@@ -11603,6 +11603,11 @@
    "espn": {
     "seen": "2026-11-24T00:00:46.285Z",
     "own": "2026-11-23T15:17:00.000Z"
+   },
+   "bluesky": {
+    "seen": "2026-11-27T17:56:57.882Z",
+    "own": "2026-11-27T17:42:17.022Z",
+    "why": "@adamscheftermirror.bsky.social: Cardinals ruled out rookie QB Carson Beck for S"
    }
   },
   "401873092|zacharycarter|out": {
@@ -15315,6 +15320,42 @@
    "espn": {
     "seen": "2026-11-27T17:40:37.281Z",
     "own": "2026-11-27T17:25:00.000Z"
+   }
+  },
+  "401873084|demarccohellams|out": {
+   "game": "401873084",
+   "start": "2026-11-29T18:00Z",
+   "team": "1",
+   "name": "DeMarcco Hellams",
+   "status": "out",
+   "athlete": "4567111",
+   "espn": {
+    "seen": "2026-11-27T18:31:37.353Z",
+    "own": "2026-11-27T18:27:00.000Z"
+   }
+  },
+  "401873084|matthewbergeron|out": {
+   "game": "401873084",
+   "start": "2026-11-29T18:00Z",
+   "team": "1",
+   "name": "Matthew Bergeron",
+   "status": "out",
+   "athlete": "4568510",
+   "espn": {
+    "seen": "2026-11-27T18:31:37.353Z",
+    "own": "2026-11-27T18:27:00.000Z"
+   }
+  },
+  "401873084|billybowman|out": {
+   "game": "401873084",
+   "start": "2026-11-29T18:00Z",
+   "team": "1",
+   "name": "Billy Bowman Jr.",
+   "status": "out",
+   "athlete": "4431194",
+   "espn": {
+    "seen": "2026-11-27T18:31:37.353Z",
+    "own": "2026-11-27T18:27:00.000Z"
    }
   }
  }
