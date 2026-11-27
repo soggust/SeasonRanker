@@ -8956,6 +8956,11 @@
    "espn": {
     "seen": "2026-11-26T16:13:47.658Z",
     "own": "2026-11-24T20:00:00.000Z"
+   },
+   "bluesky": {
+    "seen": "2026-11-27T16:53:46.620Z",
+    "own": "2026-11-27T16:38:05.000Z",
+    "why": "@dailyfaceoff.bsky.social: Islanders’ Kyle Palmieri out 6-8 months with torn ACL"
    }
   },
   "401892807|ryanpulock|out": {
@@ -10556,6 +10561,30 @@
    "espn": {
     "seen": "2026-11-27T16:47:40.289Z",
     "own": "2026-11-27T16:30:00.000Z"
+   }
+  },
+  "401892804|leocarlsson|out": {
+   "game": "401892804",
+   "start": "2026-11-27T21:00Z",
+   "team": "25",
+   "name": "Leo Carlsson",
+   "status": "out",
+   "athlete": "5149153",
+   "espn": {
+    "seen": "2026-11-27T17:26:09.958Z",
+    "own": "2026-11-27T17:05:00.000Z"
+   }
+  },
+  "401892821|leocarlsson|out": {
+   "game": "401892821",
+   "start": "2026-11-29T02:00Z",
+   "team": "25",
+   "name": "Leo Carlsson",
+   "status": "out",
+   "athlete": "5149153",
+   "espn": {
+    "seen": "2026-11-27T17:26:09.958Z",
+    "own": "2026-11-27T17:05:00.000Z"
    }
   }
  }
