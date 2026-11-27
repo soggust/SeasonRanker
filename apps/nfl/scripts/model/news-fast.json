@@ -11,19 +11,6 @@
  },
  "claims": [
   {
-   "id": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3mznjchkkgr2d|brianrobinson|out|status",
-   "at": "2026-11-06T13:44:48.000Z",
-   "seen": "2026-11-06T13:57:44.383Z",
-   "handle": "rotowirenfl.bsky.social",
-   "post": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3mznjchkkgr2d",
-   "player": "Brian Robinson",
-   "team": "ATL",
-   "status": "out",
-   "kind": "status",
-   "confidence": 0.95,
-   "text": "Brian Robinson: Ruled out for Sunday's game \n\n https://www.rotowire.com/football/player/brian-robinson-15907"
-  },
-  {
    "id": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3mznmruwxhs22|camskattebo|out|status",
    "at": "2026-11-06T14:47:07.000Z",
    "seen": "2026-11-06T15:00:49.460Z",
