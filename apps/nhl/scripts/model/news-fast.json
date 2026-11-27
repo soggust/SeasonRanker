@@ -2,25 +2,12 @@
  "sport": "nhl",
  "cursor": {
   "johnston-bot.bsky.social": "2026-11-26T15:03:47.542Z",
-  "notfriedgehnic.bsky.social": "2026-11-27T18:36:07.382Z",
-  "dailyfaceoff.bsky.social": "2026-11-27T18:34:49.000Z",
+  "notfriedgehnic.bsky.social": "2026-11-27T19:05:35.891Z",
+  "dailyfaceoff.bsky.social": "2026-11-27T19:06:20.000Z",
   "dfotoronto.bsky.social": "2026-11-27T18:53:02.000Z",
   "marklazerus.bsky.social": "2026-11-27T01:33:34.863Z"
  },
  "claims": [
-  {
-   "id": "at://did:plc:sdobrsxnvwczrjydmnubhibh/app.bsky.feed.post/3mzo4ecdabp2d|rathbone|active|status",
-   "at": "2026-11-06T19:25:51.202Z",
-   "seen": "2026-11-06T20:15:14.447Z",
-   "handle": "notfriedgehnic.bsky.social",
-   "post": "at://did:plc:sdobrsxnvwczrjydmnubhibh/app.bsky.feed.post/3mzo4ecdabp2d",
-   "player": "Rathbone",
-   "team": "BUF",
-   "status": "active",
-   "kind": "status",
-   "confidence": 0.8,
-   "text": "Cleared \n\nRathbone (BUF) on waivers"
-  },
   {
    "id": "at://did:plc:knaj2vcp4x6t7hr7ewd6e3uz/app.bsky.feed.post/3mzqddnswjw2f|johntavares|active|return",
    "at": "2026-11-07T16:36:05.000Z",
@@ -3062,6 +3049,32 @@
    "kind": "status",
    "confidence": 0.95,
    "text": "Ducks place Leo Carlsson on injured reserve"
+  },
+  {
+   "id": "at://did:plc:3uus7y6h3rlrk6sbctzxm4bg/app.bsky.feed.post/3n3cukmjtm72u|zachbenson|out|status",
+   "at": "2026-11-27T18:57:19.000Z",
+   "seen": "2026-11-27T19:28:51.757Z",
+   "handle": "dailyfaceoff.bsky.social",
+   "post": "at://did:plc:3uus7y6h3rlrk6sbctzxm4bg/app.bsky.feed.post/3n3cukmjtm72u",
+   "player": "Zach Benson",
+   "team": "BUF",
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.95,
+   "text": "Sabres’ Zach Benson, Noah Ostlund out against Penguins with injuries"
+  },
+  {
+   "id": "at://did:plc:3uus7y6h3rlrk6sbctzxm4bg/app.bsky.feed.post/3n3cukmjtm72u|noahostlund|out|status",
+   "at": "2026-11-27T18:57:19.000Z",
+   "seen": "2026-11-27T19:28:51.757Z",
+   "handle": "dailyfaceoff.bsky.social",
+   "post": "at://did:plc:3uus7y6h3rlrk6sbctzxm4bg/app.bsky.feed.post/3n3cukmjtm72u",
+   "player": "Noah Ostlund",
+   "team": "BUF",
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.95,
+   "text": "Sabres’ Zach Benson, Noah Ostlund out against Penguins with injuries"
   }
  ]
 }

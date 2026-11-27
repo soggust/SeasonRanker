@@ -1,41 +1,15 @@
 {
  "sport": "nfl",
  "cursor": {
-  "adamscheftermirror.bsky.social": "2026-11-27T17:42:17.389Z",
+  "adamscheftermirror.bsky.social": "2026-11-27T19:17:15.988Z",
   "rapsheet.bsky.social": "2026-11-27T17:41:52.772Z",
   "nflnewsreposterbot.bsky.social": "2026-11-25T21:41:32.820Z",
   "insidenflnews.bsky.social": "2026-11-27T17:31:30.707Z",
-  "nflnewsposter.bsky.social": "2026-11-27T18:52:03.100Z",
-  "rotoworld-fb.bsky.social": "2026-11-27T18:35:15.000Z",
-  "rotowirenfl.bsky.social": "2026-11-27T18:36:59.000Z"
+  "nflnewsposter.bsky.social": "2026-11-27T19:10:03.642Z",
+  "rotoworld-fb.bsky.social": "2026-11-27T19:20:01.000Z",
+  "rotowirenfl.bsky.social": "2026-11-27T19:15:15.000Z"
  },
  "claims": [
-  {
-   "id": "at://did:plc:qre6zxbmr3ixhdmgsgdretb5/app.bsky.feed.post/3mzo36khpt22t|shedeursanders|active|starting",
-   "at": "2026-11-06T19:04:44.768Z",
-   "seen": "2026-11-06T19:07:07.485Z",
-   "handle": "adamscheftermirror.bsky.social",
-   "post": "at://did:plc:qre6zxbmr3ixhdmgsgdretb5/app.bsky.feed.post/3mzo36khpt22t",
-   "player": "Shedeur Sanders",
-   "team": "CLE",
-   "status": "active",
-   "kind": "starting",
-   "confidence": 0.9,
-   "text": "Browns QB Shedeur Sanders will start his first game of the season Sunday at New Orleans.\n\nOriginal post"
-  },
-  {
-   "id": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3mzo3ksvi5x2s|jordyntyson|questionable|status",
-   "at": "2026-11-06T19:11:36.000Z",
-   "seen": "2026-11-06T20:15:14.447Z",
-   "handle": "rotoworld-fb.bsky.social",
-   "post": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3mzo3ksvi5x2s",
-   "player": "Jordyn Tyson",
-   "team": null,
-   "status": "questionable",
-   "kind": "status",
-   "confidence": 0.9,
-   "text": "Jordyn Tyson (hamstring) questionable for Week 9"
-  },
   {
    "id": "at://did:plc:mbr4badgf6yu56mquzackzew/app.bsky.feed.post/3mzo4oebm6225|maliknabers|active|status",
    "at": "2026-11-06T19:31:28.974Z",
@@ -17442,6 +17416,71 @@
    "kind": "status",
    "confidence": 0.95,
    "text": "Denzel Boston: Listed as questionable Sunday \n\n https://www.rotowire.com/football/player/denzel-boston-19298"
+  },
+  {
+   "id": "at://did:plc:fuqjc7x4gxvnwzksnlxwbe4x/app.bsky.feed.post/3n3cv5zsjok2e|brockbowers|questionable|status",
+   "at": "2026-11-27T19:08:11.067Z",
+   "seen": "2026-11-27T19:28:51.757Z",
+   "handle": "nflnewsposter.bsky.social",
+   "post": "at://did:plc:fuqjc7x4gxvnwzksnlxwbe4x/app.bsky.feed.post/3n3cv5zsjok2e",
+   "player": "Brock Bowers",
+   "team": "LV",
+   "status": "questionable",
+   "kind": "status",
+   "confidence": 0.5,
+   "text": "[McFadden] Raiders TE Brock Bowers (ankle) is not on the field during the media viewing period of practice after being a limited participant on Wednesday and Thursday. twitter.com/ryanmcfadden..."
+  },
+  {
+   "id": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3n3cvkxj6oa2i|loveland|out|status",
+   "at": "2026-11-27T19:15:24.000Z",
+   "seen": "2026-11-27T19:28:51.757Z",
+   "handle": "rotoworld-fb.bsky.social",
+   "post": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3n3cvkxj6oa2i",
+   "player": "Loveland",
+   "team": "CHI",
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.7,
+   "text": "Bears announce Loveland (knee) 'week to week'"
+  },
+  {
+   "id": "at://did:plc:qre6zxbmr3ixhdmgsgdretb5/app.bsky.feed.post/3n3cvobnssm2x|brockbowers|questionable|status",
+   "at": "2026-11-27T19:17:15.988Z",
+   "seen": "2026-11-27T19:28:51.757Z",
+   "handle": "adamscheftermirror.bsky.social",
+   "post": "at://did:plc:qre6zxbmr3ixhdmgsgdretb5/app.bsky.feed.post/3n3cvobnssm2x",
+   "player": "Brock Bowers",
+   "team": "LV",
+   "status": "questionable",
+   "kind": "status",
+   "confidence": 0.5,
+   "text": "Repost by @AdamSchefter\n\n#Raiders TE Brock Bowers (ankle) is not on the field during the media viewing period of practice after being a limited participant on Wednesday and Thursday.\n\nClick to see ori"
+  },
+  {
+   "id": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3n3cvt622i424|brockbowers|questionable|status",
+   "at": "2026-11-27T19:20:00.000Z",
+   "seen": "2026-11-27T19:28:51.757Z",
+   "handle": "rotoworld-fb.bsky.social",
+   "post": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3n3cvt622i424",
+   "player": "Brock Bowers",
+   "team": "LV",
+   "status": "questionable",
+   "kind": "status",
+   "confidence": 0.5,
+   "text": "Brock Bowers (ankle) not seen practicing on Friday"
+  },
+  {
+   "id": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3n3cvt77z3z2x|brandonaiyuk|out|status",
+   "at": "2026-11-27T19:20:01.000Z",
+   "seen": "2026-11-27T19:28:51.757Z",
+   "handle": "rotoworld-fb.bsky.social",
+   "post": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3n3cvt77z3z2x",
+   "player": "Brandon Aiyuk",
+   "team": "SF",
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.9,
+   "text": "Quinn: Brandon Aiyuk will be inactive in Week 12"
   }
  ]
 }
