@@ -3,8 +3,8 @@
  "cursor": {
   "johnston-bot.bsky.social": "2026-11-26T15:03:47.542Z",
   "notfriedgehnic.bsky.social": "2026-11-27T19:05:35.891Z",
-  "dailyfaceoff.bsky.social": "2026-11-27T20:10:44.000Z",
-  "dfotoronto.bsky.social": "2026-11-27T20:16:57.938Z",
+  "dailyfaceoff.bsky.social": "2026-11-27T20:40:34.000Z",
+  "dfotoronto.bsky.social": "2026-11-27T20:39:30.044Z",
   "marklazerus.bsky.social": "2026-11-27T01:33:34.863Z"
  },
  "claims": [
@@ -3075,6 +3075,32 @@
    "kind": "status",
    "confidence": 0.95,
    "text": "Sabres’ Zach Benson, Noah Ostlund out against Penguins with injuries"
+  },
+  {
+   "id": "at://did:plc:3uus7y6h3rlrk6sbctzxm4bg/app.bsky.feed.post/3n3d2d6ljim2u|christanev|questionable|status",
+   "at": "2026-11-27T20:40:32.000Z",
+   "seen": "2026-11-27T20:52:39.887Z",
+   "handle": "dailyfaceoff.bsky.social",
+   "post": "at://did:plc:3uus7y6h3rlrk6sbctzxm4bg/app.bsky.feed.post/3n3d2d6ljim2u",
+   "player": "Chris Tanev",
+   "team": "TOR",
+   "status": "questionable",
+   "kind": "status",
+   "confidence": 0.3,
+   "text": "Leafs’ Chris Tanev leaves game against Bruins with injury"
+  },
+  {
+   "id": "at://did:plc:3uus7y6h3rlrk6sbctzxm4bg/app.bsky.feed.post/3n3d2dadoki2d|patrickkane|out|status",
+   "at": "2026-11-27T20:40:34.000Z",
+   "seen": "2026-11-27T20:52:39.887Z",
+   "handle": "dailyfaceoff.bsky.social",
+   "post": "at://did:plc:3uus7y6h3rlrk6sbctzxm4bg/app.bsky.feed.post/3n3d2dadoki2d",
+   "player": "Patrick Kane",
+   "team": "CHI",
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.9,
+   "text": "Blackhawks place Patrick Kane on injured reserve"
   }
  ]
 }

@@ -1,41 +1,15 @@
 {
  "sport": "nfl",
  "cursor": {
-  "adamscheftermirror.bsky.social": "2026-11-27T20:02:15.924Z",
+  "adamscheftermirror.bsky.social": "2026-11-27T20:47:16.809Z",
   "rapsheet.bsky.social": "2026-11-27T20:26:16.005Z",
   "nflnewsreposterbot.bsky.social": "2026-11-25T21:41:32.820Z",
   "insidenflnews.bsky.social": "2026-11-27T17:31:30.707Z",
-  "nflnewsposter.bsky.social": "2026-11-27T20:24:59.061Z",
-  "rotoworld-fb.bsky.social": "2026-11-27T20:18:28.000Z",
-  "rotowirenfl.bsky.social": "2026-11-27T20:21:45.000Z"
+  "nflnewsposter.bsky.social": "2026-11-27T20:52:04.909Z",
+  "rotoworld-fb.bsky.social": "2026-11-27T20:49:29.000Z",
+  "rotowirenfl.bsky.social": "2026-11-27T20:47:15.000Z"
  },
  "claims": [
-  {
-   "id": "at://did:plc:mbr4badgf6yu56mquzackzew/app.bsky.feed.post/3mzoandagrk2p|micahparsons|out|status",
-   "at": "2026-11-06T20:42:29.301Z",
-   "seen": "2026-11-06T21:05:24.842Z",
-   "handle": "insidenflnews.bsky.social",
-   "post": "at://did:plc:mbr4badgf6yu56mquzackzew/app.bsky.feed.post/3mzoandagrk2p",
-   "player": "Micah Parsons",
-   "team": "GB",
-   "status": "out",
-   "kind": "status",
-   "confidence": 0.95,
-   "text": "Packers EDGE Micah Parsons (knee) has been ruled out for Week 9."
-  },
-  {
-   "id": "at://did:plc:qre6zxbmr3ixhdmgsgdretb5/app.bsky.feed.post/3mzob2cdybr2u|mylesgarrett|active|status",
-   "at": "2026-11-06T20:49:44.488Z",
-   "seen": "2026-11-06T21:05:24.842Z",
-   "handle": "adamscheftermirror.bsky.social",
-   "post": "at://did:plc:qre6zxbmr3ixhdmgsgdretb5/app.bsky.feed.post/3mzob2cdybr2u",
-   "player": "Myles Garrett",
-   "team": "CLE",
-   "status": "active",
-   "kind": "status",
-   "confidence": 0.7,
-   "text": "More about outside linebacker Myles Garrett being expected to play Sunday against the Commanders “barring any sort of setbacks” with his knee injury, via @sarahbarshop:\n\nOriginal post"
-  },
   {
    "id": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3mzoblo2dd62q|christianwatson|active|status",
    "at": "2026-11-06T20:59:27.000Z",
@@ -17611,6 +17585,45 @@
    "kind": "status",
    "confidence": 0.95,
    "text": "Bengals WR Tee Higgins did not practice today and is questionable because of a hamstring injury."
+  },
+  {
+   "id": "at://did:plc:fuqjc7x4gxvnwzksnlxwbe4x/app.bsky.feed.post/3n3d2f2sf322e|jacksonpowersjohnson|out|status",
+   "at": "2026-11-27T20:41:35.701Z",
+   "seen": "2026-11-27T20:52:39.887Z",
+   "handle": "nflnewsposter.bsky.social",
+   "post": "at://did:plc:fuqjc7x4gxvnwzksnlxwbe4x/app.bsky.feed.post/3n3d2f2sf322e",
+   "player": "Jackson Powers-Johnson",
+   "team": "LV",
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.95,
+   "text": "[Warren] Raiders HC Klint Kubiak said that OL Jackson Powers-Johnson had a potential significant injury at practice on Friday.\n\nHe’s ruled out for Sunday’s game against the Browns. twitter.com/samwarr"
+  },
+  {
+   "id": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3n3d2p6ycfw2n|brockbowers|questionable|status",
+   "at": "2026-11-27T20:47:15.000Z",
+   "seen": "2026-11-27T20:52:39.887Z",
+   "handle": "rotowirenfl.bsky.social",
+   "post": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3n3d2p6ycfw2n",
+   "player": "Brock Bowers",
+   "team": "LV",
+   "status": "questionable",
+   "kind": "status",
+   "confidence": 0.97,
+   "text": "Brock Bowers: Questionable for Sunday night game \n\n https://www.rotowire.com/football/player/brock-bowers-17693"
+  },
+  {
+   "id": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3n3d2t6ruob2g|brockbowers|questionable|status",
+   "at": "2026-11-27T20:49:29.000Z",
+   "seen": "2026-11-27T20:52:39.887Z",
+   "handle": "rotoworld-fb.bsky.social",
+   "post": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3n3d2t6ruob2g",
+   "player": "Brock Bowers",
+   "team": "LV",
+   "status": "questionable",
+   "kind": "status",
+   "confidence": 0.97,
+   "text": "Brock Bowers (ankle) officially questionable"
   }
  ]
 }
