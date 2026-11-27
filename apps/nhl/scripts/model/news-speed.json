@@ -10573,6 +10573,11 @@
    "espn": {
     "seen": "2026-11-27T17:26:09.958Z",
     "own": "2026-11-27T17:05:00.000Z"
+   },
+   "bluesky": {
+    "seen": "2026-11-27T18:56:03.046Z",
+    "own": "2026-11-27T18:34:49.000Z",
+    "why": "@dailyfaceoff.bsky.social: Ducks place Leo Carlsson on injured reserve"
    }
   },
   "401892821|leocarlsson|out": {
@@ -10633,6 +10638,11 @@
    "espn": {
     "seen": "2026-11-27T18:43:37.577Z",
     "own": "2026-11-27T18:32:00.000Z"
+   },
+   "bluesky": {
+    "seen": "2026-11-27T18:56:03.046Z",
+    "own": "2026-11-27T18:05:20.000Z",
+    "why": "@dailyfaceoff.bsky.social: Per Elliotte Friedman, Matvei Michkov is expected to "
    }
   },
   "401892818|matveimichkov|out": {
@@ -10669,6 +10679,54 @@
    "espn": {
     "seen": "2026-11-27T18:54:18.951Z",
     "own": "2026-11-27T18:38:00.000Z"
+   }
+  },
+  "401892806|patrickkane|out": {
+   "game": "401892806",
+   "start": "2026-11-27T22:30Z",
+   "team": "4",
+   "name": "Patrick Kane",
+   "status": "out",
+   "athlete": "3735",
+   "espn": {
+    "seen": "2026-11-27T19:13:36.492Z",
+    "own": "2026-11-27T18:55:00.000Z"
+   }
+  },
+  "401892809|filiphallander|out": {
+   "game": "401892809",
+   "start": "2026-11-28T01:00Z",
+   "team": "6",
+   "name": "Filip Hallander",
+   "status": "out",
+   "athlete": "4588331",
+   "espn": {
+    "seen": "2026-11-27T19:13:36.492Z",
+    "own": "2026-11-27T18:45:00.000Z"
+   }
+  },
+  "401892810|kaidenguhle|out": {
+   "game": "401892810",
+   "start": "2026-11-28T21:00Z",
+   "team": "10",
+   "name": "Kaiden Guhle",
+   "status": "out",
+   "athlete": "4697399",
+   "espn": {
+    "seen": "2026-11-27T19:13:36.492Z",
+    "own": "2026-11-27T19:07:00.000Z"
+   }
+  },
+  "401892822|filiphallander|out": {
+   "game": "401892822",
+   "start": "2026-11-29T03:00Z",
+   "team": "6",
+   "name": "Filip Hallander",
+   "status": "out",
+   "athlete": "4588331",
+   "espn": {
+    "seen": "2026-11-27T19:13:36.492Z",
+    "own": "2026-11-27T18:45:00.000Z"
    }
   }
  }
