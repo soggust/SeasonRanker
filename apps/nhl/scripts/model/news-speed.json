@@ -1,150 +1,6 @@
 {
  "sport": "nhl",
  "entries": {
-  "401892726|albertssmits|out": {
-   "game": "401892726",
-   "start": "2026-11-17T00:30Z",
-   "team": "13",
-   "name": "Alberts Smits",
-   "status": "out",
-   "athlete": "5334662",
-   "espn": {
-    "seen": "2026-11-15T17:03:25.926Z",
-    "own": "2026-11-10T22:13:00.000Z"
-   }
-  },
-  "401892726|seandurzi|out": {
-   "game": "401892726",
-   "start": "2026-11-17T00:30Z",
-   "team": "13",
-   "name": "Sean Durzi",
-   "status": "out",
-   "athlete": "4378683",
-   "espn": {
-    "seen": "2026-11-15T17:03:25.926Z",
-    "own": "2026-11-05T19:23:00.000Z"
-   }
-  },
-  "401892726|igorshesterkin|out": {
-   "game": "401892726",
-   "start": "2026-11-17T00:30Z",
-   "team": "13",
-   "name": "Igor Shesterkin",
-   "status": "out",
-   "athlete": "3151297",
-   "espn": {
-    "seen": "2026-11-15T17:03:25.926Z",
-    "own": "2026-10-11T21:06:00.000Z"
-   }
-  },
-  "401892726|joeveleno|out": {
-   "game": "401892726",
-   "start": "2026-11-17T00:30Z",
-   "team": "13",
-   "name": "Joe Veleno",
-   "status": "out",
-   "athlete": "4352804",
-   "espn": {
-    "seen": "2026-11-15T17:03:25.926Z",
-    "own": "2026-10-10T17:18:00.000Z"
-   }
-  },
-  "401892726|aidanthompson|out": {
-   "game": "401892726",
-   "start": "2026-11-17T00:30Z",
-   "team": "13",
-   "name": "Aidan Thompson",
-   "status": "out",
-   "athlete": "5136624",
-   "espn": {
-    "seen": "2026-11-15T17:03:25.926Z",
-    "own": "2026-09-29T16:39:00.000Z"
-   }
-  },
-  "401892726|adamsykora|out": {
-   "game": "401892726",
-   "start": "2026-11-17T00:30Z",
-   "team": "13",
-   "name": "Adam Sykora",
-   "status": "out",
-   "athlete": "5080232",
-   "espn": {
-    "seen": "2026-11-15T17:03:25.926Z",
-    "own": "2026-09-29T01:35:00.000Z"
-   }
-  },
-  "401892726|mikematheson|q": {
-   "game": "401892726",
-   "start": "2026-11-17T00:30Z",
-   "team": "10",
-   "name": "Mike Matheson",
-   "status": "q",
-   "athlete": "2976851",
-   "espn": {
-    "seen": "2026-11-15T17:03:25.926Z",
-    "own": "2026-11-15T14:13:00.000Z"
-   }
-  },
-  "401892726|chriskreider|out": {
-   "game": "401892726",
-   "start": "2026-11-17T00:30Z",
-   "team": "10",
-   "name": "Chris Kreider",
-   "status": "out",
-   "athlete": "5833",
-   "espn": {
-    "seen": "2026-11-15T17:03:25.926Z",
-    "own": "2026-11-14T15:55:00.000Z"
-   }
-  },
-  "401892726|ivandemidov|out": {
-   "game": "401892726",
-   "start": "2026-11-17T00:30Z",
-   "team": "10",
-   "name": "Ivan Demidov",
-   "status": "out",
-   "athlete": "5216860",
-   "espn": {
-    "seen": "2026-11-15T17:03:25.926Z",
-    "own": "2026-11-04T21:04:00.000Z"
-   }
-  },
-  "401892726|sammontembeault|out": {
-   "game": "401892726",
-   "start": "2026-11-17T00:30Z",
-   "team": "10",
-   "name": "Sam Montembeault",
-   "status": "out",
-   "athlete": "3942714",
-   "espn": {
-    "seen": "2026-11-15T17:03:25.926Z",
-    "own": "2026-10-31T15:25:00.000Z"
-   }
-  },
-  "401892726|brycepickford|out": {
-   "game": "401892726",
-   "start": "2026-11-17T00:30Z",
-   "team": "10",
-   "name": "Bryce Pickford",
-   "status": "out",
-   "athlete": "5329651",
-   "espn": {
-    "seen": "2026-11-15T17:03:25.926Z",
-    "own": "2026-09-29T16:39:00.000Z"
-   }
-  },
-  "401892726|lucascondotta|out": {
-   "game": "401892726",
-   "start": "2026-11-17T00:30Z",
-   "team": "10",
-   "name": "Lucas Condotta",
-   "status": "out",
-   "athlete": "4997129",
-   "espn": {
-    "seen": "2026-11-15T17:03:25.926Z",
-    "own": "2026-09-29T16:38:00.000Z"
-   }
-  },
   "401892727|logancooley|q": {
    "game": "401892727",
    "start": "2026-11-17T02:30Z",
@@ -251,44 +107,6 @@
    "espn": {
     "seen": "2026-11-15T17:03:25.926Z",
     "own": "2026-09-28T17:58:00.000Z"
-   }
-  },
-  "401892726|joshanderson|out": {
-   "game": "401892726",
-   "start": "2026-11-17T00:30Z",
-   "team": "10",
-   "name": "Josh Anderson",
-   "status": "out",
-   "athlete": "3069687",
-   "espn": {
-    "seen": "2026-11-15T18:19:41.835Z",
-    "own": "2026-11-15T18:09:00.000Z"
-   },
-   "bluesky": {
-    "seen": "2026-11-15T23:10:51.014Z",
-    "own": "2026-11-15T22:42:26.000Z",
-    "why": "@dailyfaceoff.bsky.social: Canadiens’ Josh Anderson, Mike Matheson to miss time "
-   }
-  },
-  "401892726|mikematheson|out": {
-   "game": "401892726",
-   "start": "2026-11-17T00:30Z",
-   "team": "10",
-   "name": "Mike Matheson",
-   "status": "out",
-   "athlete": "2976851",
-   "espn": {
-    "seen": "2026-11-15T18:48:36.890Z",
-    "own": "2026-11-15T18:42:00.000Z"
-   },
-   "sleeper": {
-    "seen": "2026-11-15T20:13:45.835Z",
-    "own": "2026-11-15T18:45:27.860Z"
-   },
-   "bluesky": {
-    "seen": "2026-11-15T23:10:51.014Z",
-    "own": "2026-11-15T22:42:26.000Z",
-    "why": "@dailyfaceoff.bsky.social: Canadiens’ Josh Anderson, Mike Matheson to miss time "
    }
   },
   "401892728|jameshagens|out": {
@@ -1270,18 +1088,6 @@
    "sleeper": {
     "seen": "2026-11-17T20:15:46.856Z",
     "own": "2026-11-16T20:40:30.983Z"
-   }
-  },
-  "401892726|paveldorofeyev|out": {
-   "game": "401892726",
-   "start": "2026-11-17T00:30Z",
-   "team": "13",
-   "name": "Pavel Dorofeyev",
-   "status": "out",
-   "athlete": "4587588",
-   "espn": {
-    "seen": "2026-11-17T00:20:41.338Z",
-    "own": "2026-11-17T00:12:00.000Z"
    }
   },
   "401892736|isakrosen|out": {
@@ -8857,6 +8663,11 @@
    "sleeper": {
     "seen": "2026-11-26T20:09:52.726Z",
     "own": "2026-11-26T17:50:07.682Z"
+   },
+   "bluesky": {
+    "seen": "2026-11-26T22:03:49.098Z",
+    "own": "2026-11-26T20:54:58.000Z",
+    "why": "@dailyfaceoff.bsky.social: Blue Jackets’ Mathieu Olivier out week-to-week with u"
    }
   },
   "401892802|williamwallinder|q": {
