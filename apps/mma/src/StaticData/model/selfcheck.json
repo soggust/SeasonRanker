@@ -1,8 +1,8 @@
 {
- "at": "2026-11-26T09:24:40.187Z",
+ "at": "2026-11-27T09:21:20.161Z",
  "baseline": {
-  "from": "2026-10-22",
-  "to": "2026-11-19"
+  "from": "2026-10-23",
+  "to": "2026-11-20"
  },
  "checks": [
   {
@@ -347,7 +347,7 @@
    "how": "open bets on games not started: past the gap now, or published at a band today's trust wouldn't give them; open bets past their start plus VOID_AFTER; this week's graded bets with no close read",
    "id": "C13",
    "metric": "stale",
-   "n": 12,
+   "n": 14,
    "needs": null,
    "rows": [
     {
@@ -375,7 +375,7 @@
   },
   {
    "examples": [],
-   "headline": "Model files 29h old, 0 open bets overdue to grade; Odds API credits 61% left; 11 bets placed in a week of 12 games",
+   "headline": "Model files 3h old, 0 open bets overdue to grade; Odds API credits 60% left; 11 bets placed in a week of 12 games",
    "how": "the newest commit of the sport's model files, the open bets started 12 hours ago or more, The Odds API's credits (state.odds), the state's sources",
    "id": "C16",
    "metric": "ageH",
@@ -383,8 +383,8 @@
    "needs": null,
    "rows": [
     {
-     "ageH": 29,
-     "at": "2026-11-25T03:28:27Z",
+     "ageH": 3,
+     "at": "2026-11-27T05:26:56Z",
      "key": "files",
      "overdue": 0
     },
@@ -392,8 +392,8 @@
      "cycleEnd": "2026-12-01T00:02:39.102Z",
      "key": "credits",
      "monthly": 20000,
-     "remaining": 12167,
-     "share": 0.6083
+     "remaining": 11999,
+     "share": 0.6
     },
     {
      "down": [],
@@ -409,7 +409,7 @@
    "tested": null,
    "threshold": "watch files 3h old with bets overdue, credits under 20%, a source down, or no bets in a week with games; flag 6h old with bets overdue, or credits under 10%",
    "title": "Ops",
-   "value": 29
+   "value": 3
   },
   {
    "examples": [],
@@ -431,14 +431,14 @@
      "z": null
     },
     {
-     "e": 1.1329,
+     "e": 0.5714,
      "key": "the rest",
-     "n": 2,
+     "n": 1,
      "placed": 11,
-     "profit": -0.13,
-     "roi": -0.13,
-     "w": 1,
-     "z": -0.1896
+     "profit": -0.5,
+     "roi": -1,
+     "w": 0,
+     "z": -1.1546
     },
     {
      "key": "guard bugs",
@@ -493,16 +493,16 @@
   },
   {
    "examples": [],
-   "headline": "Moneyline: dogs 29% of this week's bets against 29% before",
+   "headline": "Moneyline: dogs 20% of this week's bets against 30% before",
    "how": "placed this week against the 28 days before: a dog is a plus price or a spread side getting points",
    "id": "C5",
    "metric": "moved",
-   "n": 7,
+   "n": 5,
    "needs": null,
    "rows": [
     {
-     "dogShare": 0.2857,
-     "dogShareBase": 0.2927,
+     "dogShare": 0.2,
+     "dogShareBase": 0.3023,
      "dogs": {
       "e": 0,
       "n": 0,
@@ -512,17 +512,17 @@
       "z": null
      },
      "favorites": {
-      "e": 0.5615,
-      "n": 1,
-      "profit": 0.37,
-      "roi": 0.74,
-      "w": 1,
-      "z": 0.8837
+      "e": 0,
+      "n": 0,
+      "profit": 0,
+      "roi": null,
+      "w": 0,
+      "z": null
      },
      "key": "ml",
-     "moved": -0.007,
-     "n": 7,
-     "nBase": 41,
+     "moved": -0.1023,
+     "n": 5,
+     "nBase": 43,
      "status": "thin"
     }
    ],
@@ -530,7 +530,7 @@
    "tested": null,
    "threshold": "watch the dog share moved 20 points (20+ bets both); flag also the grown group z -2 (30+ graded)",
    "title": "Favorite/dog drift",
-   "value": -0.007
+   "value": -0.1023
   },
   {
    "examples": [],
@@ -595,7 +595,7 @@
   },
   {
    "examples": [],
-   "headline": "fairFrom unknown: missing on 3 of 11 bets this week (27%) against 37% before; fair chances from betonlineag",
+   "headline": "fairFrom unknown: missing on 5 of 11 bets this week (45%) against 36% before; fair chances from betonlineag",
    "how": "placed this week against the 28 days before: the share of the bets each field applies to that are missing it",
    "id": "C14",
    "metric": "share",
@@ -604,10 +604,10 @@
    "rows": [
     {
      "key": "fairFrom unknown",
-     "n": 3,
+     "n": 5,
      "of": 11,
-     "share": 0.2727,
-     "shareBase": 0.3671,
+     "share": 0.4545,
+     "shareBase": 0.358,
      "status": "thin"
     },
     {
@@ -621,7 +621,7 @@
     {
      "key": "publishedKelly",
      "n": 0,
-     "of": 3,
+     "of": 2,
      "share": 0,
      "shareBase": 0,
      "status": "thin"
@@ -629,7 +629,7 @@
     {
      "key": "seen",
      "n": 0,
-     "of": 2,
+     "of": 1,
      "share": 0,
      "shareBase": 0,
      "status": "thin"
@@ -639,7 +639,7 @@
    "tested": null,
    "threshold": "watch a share up 5 points on the baseline (3+ bets, 20+ both); flag doubled (5+)",
    "title": "Data holes",
-   "value": 0.2727
+   "value": 0.4545
   },
   {
    "examples": [],
@@ -758,8 +758,8 @@
  },
  "v": 1,
  "window": {
-  "from": "2026-11-19",
-  "to": "2026-11-26"
+  "from": "2026-11-20",
+  "to": "2026-11-27"
  },
  "writeups": {
   "calls": 0,
