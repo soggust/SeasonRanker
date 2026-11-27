@@ -3,8 +3,8 @@
  "cursor": {
   "johnston-bot.bsky.social": "2026-11-26T15:03:47.542Z",
   "notfriedgehnic.bsky.social": "2026-11-26T15:07:30.929Z",
-  "dailyfaceoff.bsky.social": "2026-11-27T17:02:36.000Z",
-  "dfotoronto.bsky.social": "2026-11-27T14:36:51.000Z",
+  "dailyfaceoff.bsky.social": "2026-11-27T17:54:25.000Z",
+  "dfotoronto.bsky.social": "2026-11-27T17:18:42.000Z",
   "marklazerus.bsky.social": "2026-11-27T01:33:34.863Z"
  },
  "claims": [
@@ -2997,6 +2997,71 @@
    "kind": "starting",
    "confidence": 0.9,
    "text": "Connor Hellebuyck will start against the Winnipeg Jets in New Jersey on Saturday, marking his first start against his former team!"
+  },
+  {
+   "id": "at://did:plc:knaj2vcp4x6t7hr7ewd6e3uz/app.bsky.feed.post/3n3cp2by3ua2r|kirillmarchenko|active|return",
+   "at": "2026-11-27T17:18:42.000Z",
+   "seen": "2026-11-27T17:56:57.882Z",
+   "handle": "dfotoronto.bsky.social",
+   "post": "at://did:plc:knaj2vcp4x6t7hr7ewd6e3uz/app.bsky.feed.post/3n3cp2by3ua2r",
+   "player": "Kirill Marchenko",
+   "team": "TOR",
+   "status": "active",
+   "kind": "return",
+   "confidence": 0.95,
+   "text": "Maple Leafs activate Kirill Marchenko and Colton Sissons from IR, assign Artur Akhtyamov to AHL’s Toronto Marlies"
+  },
+  {
+   "id": "at://did:plc:knaj2vcp4x6t7hr7ewd6e3uz/app.bsky.feed.post/3n3cp2by3ua2r|coltonsissons|active|return",
+   "at": "2026-11-27T17:18:42.000Z",
+   "seen": "2026-11-27T17:56:57.882Z",
+   "handle": "dfotoronto.bsky.social",
+   "post": "at://did:plc:knaj2vcp4x6t7hr7ewd6e3uz/app.bsky.feed.post/3n3cp2by3ua2r",
+   "player": "Colton Sissons",
+   "team": "TOR",
+   "status": "active",
+   "kind": "return",
+   "confidence": 0.95,
+   "text": "Maple Leafs activate Kirill Marchenko and Colton Sissons from IR, assign Artur Akhtyamov to AHL’s Toronto Marlies"
+  },
+  {
+   "id": "at://did:plc:knaj2vcp4x6t7hr7ewd6e3uz/app.bsky.feed.post/3n3cp2by3ua2r|arturakhtyamov|none|role",
+   "at": "2026-11-27T17:18:42.000Z",
+   "seen": "2026-11-27T17:56:57.882Z",
+   "handle": "dfotoronto.bsky.social",
+   "post": "at://did:plc:knaj2vcp4x6t7hr7ewd6e3uz/app.bsky.feed.post/3n3cp2by3ua2r",
+   "player": "Artur Akhtyamov",
+   "team": "TOR",
+   "status": "none",
+   "kind": "role",
+   "confidence": 0.8,
+   "text": "Maple Leafs activate Kirill Marchenko and Colton Sissons from IR, assign Artur Akhtyamov to AHL’s Toronto Marlies"
+  },
+  {
+   "id": "at://did:plc:3uus7y6h3rlrk6sbctzxm4bg/app.bsky.feed.post/3n3cr25ils72d|kirillmarchenko|active|return",
+   "at": "2026-11-27T17:54:25.000Z",
+   "seen": "2026-11-27T17:56:57.882Z",
+   "handle": "dailyfaceoff.bsky.social",
+   "post": "at://did:plc:3uus7y6h3rlrk6sbctzxm4bg/app.bsky.feed.post/3n3cr25ils72d",
+   "player": "Kirill Marchenko",
+   "team": "TOR",
+   "status": "active",
+   "kind": "return",
+   "confidence": 0.9,
+   "text": "Leafs’ Kirill Marchenko, Colton Sissons to return to lineup"
+  },
+  {
+   "id": "at://did:plc:3uus7y6h3rlrk6sbctzxm4bg/app.bsky.feed.post/3n3cr25ils72d|coltonsissons|active|return",
+   "at": "2026-11-27T17:54:25.000Z",
+   "seen": "2026-11-27T17:56:57.882Z",
+   "handle": "dailyfaceoff.bsky.social",
+   "post": "at://did:plc:3uus7y6h3rlrk6sbctzxm4bg/app.bsky.feed.post/3n3cr25ils72d",
+   "player": "Colton Sissons",
+   "team": "TOR",
+   "status": "active",
+   "kind": "return",
+   "confidence": 0.9,
+   "text": "Leafs’ Kirill Marchenko, Colton Sissons to return to lineup"
   }
  ]
 }
