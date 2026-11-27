@@ -15357,6 +15357,42 @@
     "seen": "2026-11-27T18:31:37.353Z",
     "own": "2026-11-27T18:27:00.000Z"
    }
+  },
+  "401873083|coleholcomb|out": {
+   "game": "401873083",
+   "start": "2026-11-27T20:00Z",
+   "team": "23",
+   "name": "Cole Holcomb",
+   "status": "out",
+   "athlete": "3116689",
+   "espn": {
+    "seen": "2026-11-27T18:40:40.094Z",
+    "own": "2026-11-27T01:54:00.000Z"
+   }
+  },
+  "401873084|jahandotson|out": {
+   "game": "401873084",
+   "start": "2026-11-29T18:00Z",
+   "team": "1",
+   "name": "Jahan Dotson",
+   "status": "out",
+   "athlete": "4361409",
+   "espn": {
+    "seen": "2026-11-27T18:40:40.094Z",
+    "own": "2026-11-27T17:51:00.000Z"
+   }
+  },
+  "401873086|derekbarnett|out": {
+   "game": "401873086",
+   "start": "2026-11-30T01:20Z",
+   "team": "5",
+   "name": "Derek Barnett",
+   "status": "out",
+   "athlete": "3115336",
+   "espn": {
+    "seen": "2026-11-27T18:40:40.094Z",
+    "own": "2026-11-27T18:26:00.000Z"
+   }
   }
  }
 }
