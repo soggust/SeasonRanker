@@ -2926,7 +2926,7 @@
 {"id":"401873079","date":"2026-11-26T01:00Z","season":2026,"type":2,"home":"14","away":"9","homeAbbr":"LAR","awayAbbr":"GB","neutral":false,"final":true,"hs":26,"as":13,"venue":"Inglewood|CA|USA","indoor":false},
 {"id":"401873081","date":"2026-11-26T18:00Z","season":2026,"type":2,"home":"8","away":"3","homeAbbr":"DET","awayAbbr":"CHI","neutral":false,"final":true,"hs":35,"as":39,"venue":"Detroit|MI|USA","indoor":true},
 {"id":"401873080","date":"2026-11-26T21:30Z","season":2026,"type":2,"home":"6","away":"21","homeAbbr":"DAL","awayAbbr":"PHI","neutral":false,"final":true,"hs":38,"as":39,"venue":"Arlington|TX|USA","indoor":true},
-{"id":"401873082","date":"2026-11-27T01:20Z","season":2026,"type":2,"home":"2","away":"12","homeAbbr":"BUF","awayAbbr":"KC","neutral":false,"final":false,"hs":null,"as":null,"venue":"Orchard Park|NY|USA","indoor":false},
+{"id":"401873082","date":"2026-11-27T01:20Z","season":2026,"type":2,"home":"2","away":"12","homeAbbr":"BUF","awayAbbr":"KC","neutral":false,"final":true,"hs":13,"as":10,"venue":"Orchard Park|NY|USA","indoor":false},
 {"id":"401873083","date":"2026-11-27T20:00Z","season":2026,"type":2,"home":"23","away":"7","homeAbbr":"PIT","awayAbbr":"DEN","neutral":false,"final":false,"hs":null,"as":null,"venue":"Pittsburgh|PA|USA","indoor":false},
 {"id":"401873084","date":"2026-11-29T18:00Z","season":2026,"type":2,"home":"16","away":"1","homeAbbr":"MIN","awayAbbr":"ATL","neutral":false,"final":false,"hs":null,"as":null,"venue":"Minneapolis|MN|USA","indoor":true},
 {"id":"401873085","date":"2026-11-29T18:00Z","season":2026,"type":2,"home":"34","away":"33","homeAbbr":"HOU","awayAbbr":"BAL","neutral":false,"final":false,"hs":null,"as":null,"venue":"Houston|TX|USA","indoor":true},
