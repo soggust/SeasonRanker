@@ -9453,6 +9453,11 @@
    "sleeper": {
     "seen": "2026-11-27T20:08:48.475Z",
     "own": "2026-11-27T19:40:10.530Z"
+   },
+   "bluesky": {
+    "seen": "2026-11-27T21:13:17.058Z",
+    "own": "2026-11-27T21:03:35.000Z",
+    "why": "@dailyfaceoff.bsky.social: Lightning’s Pontus Holmberg out a month with lower-bo"
    }
   },
   "401892811|conorgeekie|out": {
@@ -10729,6 +10734,11 @@
    "sleeper": {
     "seen": "2026-11-27T20:08:48.475Z",
     "own": "2026-11-27T19:00:10.440Z"
+   },
+   "bluesky": {
+    "seen": "2026-11-27T20:52:39.887Z",
+    "own": "2026-11-27T20:40:34.000Z",
+    "why": "@dailyfaceoff.bsky.social: Blackhawks place Patrick Kane on injured reserve"
    }
   },
   "401892809|filiphallander|out": {
@@ -10829,6 +10839,42 @@
    "espn": {
     "seen": "2026-11-27T20:51:03.782Z",
     "own": "2026-11-27T20:20:00.000Z"
+   }
+  },
+  "401892806|tylerbertuzzi|out": {
+   "game": "401892806",
+   "start": "2026-11-27T22:30Z",
+   "team": "4",
+   "name": "Tyler Bertuzzi",
+   "status": "out",
+   "athlete": "3042056",
+   "espn": {
+    "seen": "2026-11-27T21:33:10.742Z",
+    "own": "2026-11-27T21:13:00.000Z"
+   }
+  },
+  "401892818|owentippett|out": {
+   "game": "401892818",
+   "start": "2026-11-29T00:30Z",
+   "team": "15",
+   "name": "Owen Tippett",
+   "status": "out",
+   "athlete": "4392072",
+   "espn": {
+    "seen": "2026-11-27T21:33:10.742Z",
+    "own": "2026-11-27T21:10:00.000Z"
+   }
+  },
+  "401892820|martinnecas|out": {
+   "game": "401892820",
+   "start": "2026-11-29T02:00Z",
+   "team": "17",
+   "name": "Martin Necas",
+   "status": "out",
+   "athlete": "4233586",
+   "espn": {
+    "seen": "2026-11-27T21:33:10.742Z",
+    "own": "2026-11-27T21:01:00.000Z"
    }
   }
  }
