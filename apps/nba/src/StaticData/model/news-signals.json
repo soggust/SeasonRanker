@@ -1,18 +1,6 @@
 {
  "sport": "nba",
  "days": 2,
- "signals": [
-  {
-   "team": "13",
-   "abbr": "LAL",
-   "athlete": "4066457",
-   "player": "Austin Reaves",
-   "kind": "return",
-   "direction": "up",
-   "confidence": 0.6,
-   "headline": "Austin Reaves rejoins Lakers for full practice, no call yet on facing Spurs",
-   "at": "2026-11-25T22:13:32.000Z"
-  }
- ],
- "at": "2026-11-27T00:03:19.682Z"
+ "signals": [],
+ "at": "2026-11-27T22:22:11.968Z"
 }
