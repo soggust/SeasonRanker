@@ -2,38 +2,12 @@
  "sport": "nhl",
  "cursor": {
   "johnston-bot.bsky.social": "2026-11-26T15:03:47.542Z",
-  "notfriedgehnic.bsky.social": "2026-11-26T15:07:30.929Z",
-  "dailyfaceoff.bsky.social": "2026-11-27T17:54:25.000Z",
-  "dfotoronto.bsky.social": "2026-11-27T17:18:42.000Z",
+  "notfriedgehnic.bsky.social": "2026-11-27T18:36:07.382Z",
+  "dailyfaceoff.bsky.social": "2026-11-27T18:34:49.000Z",
+  "dfotoronto.bsky.social": "2026-11-27T18:53:02.000Z",
   "marklazerus.bsky.social": "2026-11-27T01:33:34.863Z"
  },
  "claims": [
-  {
-   "id": "at://did:plc:3uus7y6h3rlrk6sbctzxm4bg/app.bsky.feed.post/3mznxiuoc7i2a|ryanmcleod|none|benched",
-   "at": "2026-11-06T17:58:55.000Z",
-   "seen": "2026-11-06T18:25:34.331Z",
-   "handle": "dailyfaceoff.bsky.social",
-   "post": "at://did:plc:3uus7y6h3rlrk6sbctzxm4bg/app.bsky.feed.post/3mznxiuoc7i2a",
-   "player": "Ryan McLeod",
-   "team": "BUF",
-   "status": "none",
-   "kind": "benched",
-   "confidence": 0.95,
-   "text": "Sabres’ Ryan McLeod, Louis Crevier healthy scratches Friday against Columbus"
-  },
-  {
-   "id": "at://did:plc:3uus7y6h3rlrk6sbctzxm4bg/app.bsky.feed.post/3mznxiuoc7i2a|louiscrevier|none|benched",
-   "at": "2026-11-06T17:58:55.000Z",
-   "seen": "2026-11-06T18:25:34.331Z",
-   "handle": "dailyfaceoff.bsky.social",
-   "post": "at://did:plc:3uus7y6h3rlrk6sbctzxm4bg/app.bsky.feed.post/3mznxiuoc7i2a",
-   "player": "Louis Crevier",
-   "team": "BUF",
-   "status": "none",
-   "kind": "benched",
-   "confidence": 0.95,
-   "text": "Sabres’ Ryan McLeod, Louis Crevier healthy scratches Friday against Columbus"
-  },
   {
    "id": "at://did:plc:sdobrsxnvwczrjydmnubhibh/app.bsky.feed.post/3mzo4ecdabp2d|rathbone|active|status",
    "at": "2026-11-06T19:25:51.202Z",
@@ -3062,6 +3036,32 @@
    "kind": "return",
    "confidence": 0.9,
    "text": "Leafs’ Kirill Marchenko, Colton Sissons to return to lineup"
+  },
+  {
+   "id": "at://did:plc:3uus7y6h3rlrk6sbctzxm4bg/app.bsky.feed.post/3n3crnoe3ya25|matveimichkov|out|status",
+   "at": "2026-11-27T18:05:20.000Z",
+   "seen": "2026-11-27T18:56:03.046Z",
+   "handle": "dailyfaceoff.bsky.social",
+   "post": "at://did:plc:3uus7y6h3rlrk6sbctzxm4bg/app.bsky.feed.post/3n3crnoe3ya25",
+   "player": "Matvei Michkov",
+   "team": "PHI",
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.85,
+   "text": "Per Elliotte Friedman, Matvei Michkov is expected to miss this afternoon’s game against the Vancouver Canucks due to a violation of team rules, with an official announcement from the Flyers expected s"
+  },
+  {
+   "id": "at://did:plc:3uus7y6h3rlrk6sbctzxm4bg/app.bsky.feed.post/3n3ctcfdwpe2x|leocarlsson|out|status",
+   "at": "2026-11-27T18:34:49.000Z",
+   "seen": "2026-11-27T18:56:03.046Z",
+   "handle": "dailyfaceoff.bsky.social",
+   "post": "at://did:plc:3uus7y6h3rlrk6sbctzxm4bg/app.bsky.feed.post/3n3ctcfdwpe2x",
+   "player": "Leo Carlsson",
+   "team": "ANA",
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.95,
+   "text": "Ducks place Leo Carlsson on injured reserve"
   }
  ]
 }
