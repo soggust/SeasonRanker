@@ -15994,6 +15994,83 @@
     "seen": "2026-11-27T22:18:43.392Z",
     "own": "2026-11-27T21:56:00.000Z"
    }
+  },
+  "401873093|akheemmesidor|out": {
+   "game": "401873093",
+   "start": "2026-11-29T21:05Z",
+   "team": "24",
+   "name": "Akheem Mesidor",
+   "status": "out",
+   "athlete": "4429190",
+   "espn": {
+    "seen": "2026-11-27T23:12:38.022Z",
+    "own": "2026-11-27T22:30:00.000Z"
+   }
+  },
+  "401873093|justinherbert|out": {
+   "game": "401873093",
+   "start": "2026-11-29T21:05Z",
+   "team": "24",
+   "name": "Justin Herbert",
+   "status": "out",
+   "athlete": "4038941",
+   "espn": {
+    "seen": "2026-11-27T23:12:38.022Z",
+    "own": "2026-11-27T22:24:00.000Z"
+   },
+   "bluesky": {
+    "seen": "2026-11-27T22:22:11.968Z",
+    "own": "2026-11-27T22:19:55.114Z",
+    "why": "@rapsheet.bsky.social: Chargers QB Justin Herbert (concussion) has been official"
+   }
+  },
+  "401873093|keatonmitchell|out": {
+   "game": "401873093",
+   "start": "2026-11-29T21:05Z",
+   "team": "24",
+   "name": "Keaton Mitchell",
+   "status": "out",
+   "athlete": "4596334",
+   "espn": {
+    "seen": "2026-11-27T23:12:38.022Z",
+    "own": "2026-11-27T22:20:00.000Z"
+   }
+  },
+  "401873091|jordanwatkins|out": {
+   "game": "401873091",
+   "start": "2026-11-29T21:25Z",
+   "team": "25",
+   "name": "Jordan Watkins",
+   "status": "out",
+   "athlete": "4431466",
+   "espn": {
+    "seen": "2026-11-27T23:12:38.022Z",
+    "own": "2026-11-27T23:00:00.000Z"
+   }
+  },
+  "401873091|brockpurdy|out": {
+   "game": "401873091",
+   "start": "2026-11-29T21:25Z",
+   "team": "25",
+   "name": "Brock Purdy",
+   "status": "out",
+   "athlete": "4361741",
+   "espn": {
+    "seen": "2026-11-27T23:12:38.022Z",
+    "own": "2026-11-27T22:25:00.000Z"
+   }
+  },
+  "401873091|jarranreed|out": {
+   "game": "401873091",
+   "start": "2026-11-29T21:25Z",
+   "team": "26",
+   "name": "Jarran Reed",
+   "status": "out",
+   "athlete": "3115312",
+   "espn": {
+    "seen": "2026-11-27T23:12:38.022Z",
+    "own": "2026-11-27T22:22:00.000Z"
+   }
   }
  }
 }
