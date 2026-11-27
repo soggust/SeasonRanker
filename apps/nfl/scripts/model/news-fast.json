@@ -1,28 +1,15 @@
 {
  "sport": "nfl",
  "cursor": {
-  "adamscheftermirror.bsky.social": "2026-11-26T22:17:08.681Z",
+  "adamscheftermirror.bsky.social": "2026-11-26T23:52:08.012Z",
   "rapsheet.bsky.social": "2026-11-26T22:11:28.538Z",
   "nflnewsreposterbot.bsky.social": "2026-11-25T21:41:32.820Z",
   "insidenflnews.bsky.social": "2026-11-26T23:08:21.711Z",
-  "nflnewsposter.bsky.social": "2026-11-26T23:25:28.027Z",
-  "rotoworld-fb.bsky.social": "2026-11-26T23:26:33.000Z",
-  "rotowirenfl.bsky.social": "2026-11-26T23:43:46.000Z"
+  "nflnewsposter.bsky.social": "2026-11-27T00:00:42.190Z",
+  "rotoworld-fb.bsky.social": "2026-11-26T23:57:29.000Z",
+  "rotowirenfl.bsky.social": "2026-11-26T23:55:39.000Z"
  },
  "claims": [
-  {
-   "id": "at://did:plc:qre6zxbmr3ixhdmgsgdretb5/app.bsky.feed.post/3mzm2n6wew52a|bhayshultuten|active|status",
-   "at": "2026-11-05T23:49:42.812Z",
-   "seen": "2026-11-06T00:18:02.557Z",
-   "handle": "adamscheftermirror.bsky.social",
-   "post": "at://did:plc:qre6zxbmr3ixhdmgsgdretb5/app.bsky.feed.post/3mzm2n6wew52a",
-   "player": "Bhayshul Tuten",
-   "team": "JAX",
-   "status": "active",
-   "kind": "status",
-   "confidence": 0.95,
-   "text": "Jaguars RB Bhayshul Tuten, who is listed as questionable for tonight, officially is active versus the Ravens.\n\nRepost of @Jaguars:\n\nOriginal post"
-  },
   {
    "id": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3mzm3xc3tsq2y|drewlock|limited|status",
    "at": "2026-11-06T00:13:15.000Z",
@@ -17637,6 +17624,19 @@
    "kind": "status",
    "confidence": 0.97,
    "text": "Dallas Goedert (shoulder) ruled out vs. Cowboys"
+  },
+  {
+   "id": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3n3auugomu72i|daltonkincaid|active|status",
+   "at": "2026-11-26T23:57:29.000Z",
+   "seen": "2026-11-27T00:03:19.682Z",
+   "handle": "rotoworld-fb.bsky.social",
+   "post": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3n3auugomu72i",
+   "player": "Dalton Kincaid",
+   "team": "BUF",
+   "status": "active",
+   "kind": "status",
+   "confidence": 0.9,
+   "text": "Dalton Kincaid (thumb/ankle) active vs. Chiefs"
   }
  ]
 }
