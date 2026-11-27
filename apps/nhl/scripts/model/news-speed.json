@@ -10598,6 +10598,30 @@
     "seen": "2026-11-27T17:55:40.847Z",
     "own": "2026-11-27T17:39:00.000Z"
    }
+  },
+  "401892798|jimmysnuggerud|out": {
+   "game": "401892798",
+   "start": "2026-11-27T19:00Z",
+   "team": "19",
+   "name": "Jimmy Snuggerud",
+   "status": "out",
+   "athlete": "5080171",
+   "espn": {
+    "seen": "2026-11-27T18:10:40.109Z",
+    "own": "2026-11-27T17:51:00.000Z"
+   }
+  },
+  "401892817|jimmysnuggerud|out": {
+   "game": "401892817",
+   "start": "2026-11-29T00:00Z",
+   "team": "19",
+   "name": "Jimmy Snuggerud",
+   "status": "out",
+   "athlete": "5080171",
+   "espn": {
+    "seen": "2026-11-27T18:10:40.109Z",
+    "own": "2026-11-27T17:51:00.000Z"
+   }
   }
  }
 }
