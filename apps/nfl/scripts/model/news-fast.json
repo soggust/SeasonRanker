@@ -1,41 +1,15 @@
 {
  "sport": "nfl",
  "cursor": {
-  "adamscheftermirror.bsky.social": "2026-11-27T19:17:15.988Z",
+  "adamscheftermirror.bsky.social": "2026-11-27T20:02:15.924Z",
   "rapsheet.bsky.social": "2026-11-27T17:41:52.772Z",
   "nflnewsreposterbot.bsky.social": "2026-11-25T21:41:32.820Z",
   "insidenflnews.bsky.social": "2026-11-27T17:31:30.707Z",
-  "nflnewsposter.bsky.social": "2026-11-27T19:10:03.642Z",
-  "rotoworld-fb.bsky.social": "2026-11-27T19:20:01.000Z",
-  "rotowirenfl.bsky.social": "2026-11-27T19:43:01.000Z"
+  "nflnewsposter.bsky.social": "2026-11-27T19:50:23.547Z",
+  "rotoworld-fb.bsky.social": "2026-11-27T20:09:08.000Z",
+  "rotowirenfl.bsky.social": "2026-11-27T20:08:35.000Z"
  },
  "claims": [
-  {
-   "id": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3mzo65zgxry2s|kylemonangai|questionable|status",
-   "at": "2026-11-06T19:58:08.000Z",
-   "seen": "2026-11-06T20:15:14.447Z",
-   "handle": "rotowirenfl.bsky.social",
-   "post": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3mzo65zgxry2s",
-   "player": "Kyle Monangai",
-   "team": null,
-   "status": "questionable",
-   "kind": "status",
-   "confidence": 0.9,
-   "text": "Kyle Monangai: Questionable for Sunday \n\n https://www.rotowire.com/football/player/kyle-monangai-18520"
-  },
-  {
-   "id": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3mzo6snb5b225|georgepickens|questionable|status",
-   "at": "2026-11-06T20:09:40.000Z",
-   "seen": "2026-11-06T20:15:14.447Z",
-   "handle": "rotowirenfl.bsky.social",
-   "post": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3mzo6snb5b225",
-   "player": "George Pickens",
-   "team": null,
-   "status": "questionable",
-   "kind": "status",
-   "confidence": 0.9,
-   "text": "George Pickens: Questionable for Week 9 \n\n https://www.rotowire.com/football/player/george-pickens-15853"
-  },
   {
    "id": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3mzo6zp52a225|jakeferguson|questionable|status",
    "at": "2026-11-06T20:13:36.000Z",
@@ -17468,6 +17442,136 @@
    "kind": "return",
    "confidence": 0.8,
    "text": "Romeo Doubs: Won't return in Week 12 \n\n https://www.rotowire.com/football/player/romeo-doubs-16027"
+  },
+  {
+   "id": "at://did:plc:fuqjc7x4gxvnwzksnlxwbe4x/app.bsky.feed.post/3n3cxjixpnsj4|romeodoubs|out|status",
+   "at": "2026-11-27T19:50:23.547Z",
+   "seen": "2026-11-27T20:10:26.993Z",
+   "handle": "nflnewsposter.bsky.social",
+   "post": "at://did:plc:fuqjc7x4gxvnwzksnlxwbe4x/app.bsky.feed.post/3n3cxjixpnsj4",
+   "player": "Romeo Doubs",
+   "team": "NE",
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.95,
+   "text": "[Patriots] WR Romeo Doubs has been downgraded to OUT for NE vs. LAC. twitter.com/Patriots/sta..."
+  },
+  {
+   "id": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3n3cxsc52zr2m|juwanjohnson|out|status",
+   "at": "2026-11-27T19:55:18.000Z",
+   "seen": "2026-11-27T20:10:26.993Z",
+   "handle": "rotowirenfl.bsky.social",
+   "post": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3n3cxsc52zr2m",
+   "player": "Juwan Johnson",
+   "team": "NO",
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.95,
+   "text": "Juwan Johnson: Won't play Sunday \n\n https://www.rotowire.com/football/player/juwan-johnson-14630"
+  },
+  {
+   "id": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3n3cxsyssnw2g|juwanjohnson|out|status",
+   "at": "2026-11-27T19:55:42.000Z",
+   "seen": "2026-11-27T20:10:26.993Z",
+   "handle": "rotoworld-fb.bsky.social",
+   "post": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3n3cxsyssnw2g",
+   "player": "Juwan Johnson",
+   "team": "NO",
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.97,
+   "text": "Saints rule out Juwan Johnson (hamstring)"
+  },
+  {
+   "id": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3n3cy2vt7mn2i|jordanaddison|out|status",
+   "at": "2026-11-27T20:00:07.000Z",
+   "seen": "2026-11-27T20:10:26.993Z",
+   "handle": "rotoworld-fb.bsky.social",
+   "post": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3n3cy2vt7mn2i",
+   "player": "Jordan Addison",
+   "team": "MIN",
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.97,
+   "text": "Vikings rule out Addison (thumb) for Week 12"
+  },
+  {
+   "id": "at://did:plc:qre6zxbmr3ixhdmgsgdretb5/app.bsky.feed.post/3n3cy6qgjdi2c|jordanaddison|out|status",
+   "at": "2026-11-27T20:02:15.924Z",
+   "seen": "2026-11-27T20:10:26.993Z",
+   "handle": "adamscheftermirror.bsky.social",
+   "post": "at://did:plc:qre6zxbmr3ixhdmgsgdretb5/app.bsky.feed.post/3n3cy6qgjdi2c",
+   "player": "Jordan Addison",
+   "team": "MIN",
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.97,
+   "text": "Vikings ruled out WR Jordan Addison, OT Christian Darrisaw and CB Isaiah Rodgers for Sunday’s game vs. the Falcons.\n\nOriginal post"
+  },
+  {
+   "id": "at://did:plc:qre6zxbmr3ixhdmgsgdretb5/app.bsky.feed.post/3n3cy6qgjdi2c|christiandarrisaw|out|status",
+   "at": "2026-11-27T20:02:15.924Z",
+   "seen": "2026-11-27T20:10:26.993Z",
+   "handle": "adamscheftermirror.bsky.social",
+   "post": "at://did:plc:qre6zxbmr3ixhdmgsgdretb5/app.bsky.feed.post/3n3cy6qgjdi2c",
+   "player": "Christian Darrisaw",
+   "team": "MIN",
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.97,
+   "text": "Vikings ruled out WR Jordan Addison, OT Christian Darrisaw and CB Isaiah Rodgers for Sunday’s game vs. the Falcons.\n\nOriginal post"
+  },
+  {
+   "id": "at://did:plc:qre6zxbmr3ixhdmgsgdretb5/app.bsky.feed.post/3n3cy6qgjdi2c|isaiahrodgers|out|status",
+   "at": "2026-11-27T20:02:15.924Z",
+   "seen": "2026-11-27T20:10:26.993Z",
+   "handle": "adamscheftermirror.bsky.social",
+   "post": "at://did:plc:qre6zxbmr3ixhdmgsgdretb5/app.bsky.feed.post/3n3cy6qgjdi2c",
+   "player": "Isaiah Rodgers",
+   "team": "MIN",
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.97,
+   "text": "Vikings ruled out WR Jordan Addison, OT Christian Darrisaw and CB Isaiah Rodgers for Sunday’s game vs. the Falcons.\n\nOriginal post"
+  },
+  {
+   "id": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3n3cy6w64rj25|jordanaddison|out|status",
+   "at": "2026-11-27T20:02:21.000Z",
+   "seen": "2026-11-27T20:10:26.993Z",
+   "handle": "rotowirenfl.bsky.social",
+   "post": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3n3cy6w64rj25",
+   "player": "Jordan Addison",
+   "team": "MIN",
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.95,
+   "text": "Jordan Addison: Out again in Week 12 \n\n https://www.rotowire.com/football/player/jordan-addison-16895"
+  },
+  {
+   "id": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3n3cyjzxnln2n|tetairoamcmillan|limited|status",
+   "at": "2026-11-27T20:08:35.000Z",
+   "seen": "2026-11-27T20:10:26.993Z",
+   "handle": "rotowirenfl.bsky.social",
+   "post": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3n3cyjzxnln2n",
+   "player": "Tetairoa McMillan",
+   "team": null,
+   "status": "limited",
+   "kind": "status",
+   "confidence": 0.9,
+   "text": "Tetairoa McMillan: Limited at Friday's practice \n\n https://www.rotowire.com/football/player/tetairoa-mcmillan-18547"
+  },
+  {
+   "id": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3n3cyl2dmdu2b|tetairoamcmillan|limited|status",
+   "at": "2026-11-27T20:09:08.000Z",
+   "seen": "2026-11-27T20:10:26.993Z",
+   "handle": "rotoworld-fb.bsky.social",
+   "post": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3n3cyl2dmdu2b",
+   "player": "Tetairoa McMillan",
+   "team": null,
+   "status": "limited",
+   "kind": "status",
+   "confidence": 0.92,
+   "text": "Tetairoa McMillan (foot) limited on Friday"
   }
  ]
 }
