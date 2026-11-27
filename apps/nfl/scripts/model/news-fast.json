@@ -1,54 +1,15 @@
 {
  "sport": "nfl",
  "cursor": {
-  "adamscheftermirror.bsky.social": "2026-11-27T16:12:14.828Z",
+  "adamscheftermirror.bsky.social": "2026-11-27T16:57:14.967Z",
   "rapsheet.bsky.social": "2026-11-27T16:49:01.939Z",
   "nflnewsreposterbot.bsky.social": "2026-11-25T21:41:32.820Z",
   "insidenflnews.bsky.social": "2026-11-27T15:48:26.252Z",
-  "nflnewsposter.bsky.social": "2026-11-27T16:46:24.926Z",
-  "rotoworld-fb.bsky.social": "2026-11-27T15:59:16.000Z",
-  "rotowirenfl.bsky.social": "2026-11-27T15:56:23.000Z"
+  "nflnewsposter.bsky.social": "2026-11-27T17:12:47.625Z",
+  "rotoworld-fb.bsky.social": "2026-11-27T17:06:09.000Z",
+  "rotowirenfl.bsky.social": "2026-11-27T17:13:34.000Z"
  },
  "claims": [
-  {
-   "id": "at://did:plc:fuqjc7x4gxvnwzksnlxwbe4x/app.bsky.feed.post/3mznudonz7s2b|deshaunwatson|limited|status",
-   "at": "2026-11-06T17:02:20.836Z",
-   "seen": "2026-11-06T17:13:43.994Z",
-   "handle": "nflnewsposter.bsky.social",
-   "post": "at://did:plc:fuqjc7x4gxvnwzksnlxwbe4x/app.bsky.feed.post/3mznudonz7s2b",
-   "player": "Deshaun Watson",
-   "team": "CLE",
-   "status": "limited",
-   "kind": "status",
-   "confidence": 0.6,
-   "text": "[Petrak] Browns QB Deshaun Watson (concussion) back practicing. twitter.com/ScottPetrak/..."
-  },
-  {
-   "id": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3mznutb4qmy2k|maliknabers|limited|status",
-   "at": "2026-11-06T17:11:03.000Z",
-   "seen": "2026-11-06T17:13:43.994Z",
-   "handle": "rotoworld-fb.bsky.social",
-   "post": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3mznutb4qmy2k",
-   "player": "Malik Nabers",
-   "team": "NYG",
-   "status": "limited",
-   "kind": "status",
-   "confidence": 0.6,
-   "text": "Malik Nabers (knee) back practicing on Friday"
-  },
-  {
-   "id": "at://did:plc:fuqjc7x4gxvnwzksnlxwbe4x/app.bsky.feed.post/3mznuzqzyek3a|saquonbarkley|limited|status",
-   "at": "2026-11-06T17:14:41.522Z",
-   "seen": "2026-11-06T17:34:12.366Z",
-   "handle": "nflnewsposter.bsky.social",
-   "post": "at://did:plc:fuqjc7x4gxvnwzksnlxwbe4x/app.bsky.feed.post/3mznuzqzyek3a",
-   "player": "Saquon Barkley",
-   "team": "PHI",
-   "status": "limited",
-   "kind": "status",
-   "confidence": 0.5,
-   "text": "[Zangaro] Saquon Barkley (hamstring/back) is practicing again. twitter.com/DZangaroNBCS..."
-  },
   {
    "id": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3mznvbunuzq25|deshaunwatson|limited|status",
    "at": "2026-11-06T17:19:13.000Z",
@@ -17481,6 +17442,45 @@
    "kind": "status",
    "confidence": 0.3,
    "text": "Rams TE Davis Allen suffered a high-ankle sprain in Wednesday night’s win over the Packers, sources say. \n\nAllen will head into the building today for a full evaluation, but these can often be 4-6 wee"
+  },
+  {
+   "id": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3n3co3rkoni2i|davisallen|out|status",
+   "at": "2026-11-27T17:01:39.000Z",
+   "seen": "2026-11-27T17:14:52.465Z",
+   "handle": "rotoworld-fb.bsky.social",
+   "post": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3n3co3rkoni2i",
+   "player": "Davis Allen",
+   "team": null,
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.8,
+   "text": "Davis Allen week-to-week with sprained ankle"
+  },
+  {
+   "id": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3n3codtikrs2x|tylerhigbee|out|status",
+   "at": "2026-11-27T17:06:09.000Z",
+   "seen": "2026-11-27T17:14:52.465Z",
+   "handle": "rotoworld-fb.bsky.social",
+   "post": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3n3codtikrs2x",
+   "player": "Tyler Higbee",
+   "team": null,
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.7,
+   "text": "Tyler Higbee (chest) considered week-to-week"
+  },
+  {
+   "id": "at://did:plc:fuqjc7x4gxvnwzksnlxwbe4x/app.bsky.feed.post/3n3copp3wrs22|colstonloveland|out|status",
+   "at": "2026-11-27T17:12:47.625Z",
+   "seen": "2026-11-27T17:14:52.465Z",
+   "handle": "nflnewsposter.bsky.social",
+   "post": "at://did:plc:fuqjc7x4gxvnwzksnlxwbe4x/app.bsky.feed.post/3n3copp3wrs22",
+   "player": "Colston Loveland",
+   "team": "CHI",
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.7,
+   "text": "[Schefter] The knee injury that Bears TE Colston Loveland suffered is expected to land him on IR, which would sideline him a minimum of 4 weeks. There still is additional testing to be done, but the c"
   }
  ]
 }
