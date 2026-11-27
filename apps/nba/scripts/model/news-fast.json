@@ -2,8 +2,8 @@
  "sport": "nba",
  "cursor": {
   "rotowirenba.bsky.social": "2026-11-26T23:41:39.000Z",
-  "insidenbanews.bsky.social": "2026-11-20T20:35:06.661Z",
-  "shamsbot.bsky.social": "2026-11-25T18:32:56.000Z"
+  "insidenbanews.bsky.social": "2026-11-27T15:03:25.671Z",
+  "shamsbot.bsky.social": "2026-11-27T14:55:11.000Z"
  },
  "claims": [
   {
@@ -7506,6 +7506,19 @@
    "kind": "status",
    "confidence": 0.9,
    "text": "Dylan Harper: Officially questionable for Friday \n\n https://www.rotowire.com/basketball/player/dylan-harper-6549"
+  },
+  {
+   "id": "at://did:plc:ykcnnf6kqnn3lasmobrczoem/app.bsky.feed.post/3n3chhzxyp22x|dylanharper|out|status",
+   "at": "2026-11-27T15:03:14.405Z",
+   "seen": "2026-11-27T15:03:27.414Z",
+   "handle": "insidenbanews.bsky.social",
+   "post": "at://did:plc:ykcnnf6kqnn3lasmobrczoem/app.bsky.feed.post/3n3chhzxyp22x",
+   "player": "Dylan Harper",
+   "team": "SA",
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.5,
+   "text": "Dylan Harper (hip) was reported likely to miss 2 weeks with a 1-3 week range.\n\nFriday's game (against the Lakers) is 10 days out from his injury."
   }
  ]
 }
