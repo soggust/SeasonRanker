@@ -4,8 +4,8 @@
   "adamscheftermirror.bsky.social": "2026-11-27T00:07:06.552Z",
   "rapsheet.bsky.social": "2026-11-27T00:35:40.849Z",
   "nflnewsreposterbot.bsky.social": "2026-11-25T21:41:32.820Z",
-  "insidenflnews.bsky.social": "2026-11-27T00:40:15.052Z",
-  "nflnewsposter.bsky.social": "2026-11-27T00:40:03.350Z",
+  "insidenflnews.bsky.social": "2026-11-27T01:00:31.255Z",
+  "nflnewsposter.bsky.social": "2026-11-27T01:04:01.003Z",
   "rotoworld-fb.bsky.social": "2026-11-26T23:57:29.000Z",
   "rotowirenfl.bsky.social": "2026-11-26T23:55:39.000Z"
  },
@@ -17559,6 +17559,19 @@
    "kind": "status",
    "confidence": 0.9,
    "text": "Dalton Kincaid (thumb/ankle) active vs. Chiefs"
+  },
+  {
+   "id": "at://did:plc:mbr4badgf6yu56mquzackzew/app.bsky.feed.post/3n3ayf576i227|devontasmith|active|return",
+   "at": "2026-11-27T01:00:31.255Z",
+   "seen": "2026-11-27T01:07:31.379Z",
+   "handle": "insidenflnews.bsky.social",
+   "post": "at://did:plc:mbr4badgf6yu56mquzackzew/app.bsky.feed.post/3n3ayf576i227",
+   "player": "DeVonta Smith",
+   "team": "PHI",
+   "status": "active",
+   "kind": "return",
+   "confidence": 0.8,
+   "text": "Status alert: DeVonta Smith (tailbone) has returned to Thursday's game."
   }
  ]
 }
