@@ -15292,6 +15292,30 @@
     "own": "2026-11-27T17:06:09.000Z",
     "why": "@rotoworld-fb.bsky.social: Tyler Higbee (chest) considered week-to-week"
    }
+  },
+  "401873090|cordaleflott|out": {
+   "game": "401873090",
+   "start": "2026-11-29T18:00Z",
+   "team": "10",
+   "name": "Cor'Dale Flott",
+   "status": "out",
+   "athlete": "4429607",
+   "espn": {
+    "seen": "2026-11-27T17:40:37.281Z",
+    "own": "2026-11-27T17:25:00.000Z"
+   }
+  },
+  "401873090|terrellburgess|out": {
+   "game": "401873090",
+   "start": "2026-11-29T18:00Z",
+   "team": "10",
+   "name": "Terrell Burgess",
+   "status": "out",
+   "athlete": "4035663",
+   "espn": {
+    "seen": "2026-11-27T17:40:37.281Z",
+    "own": "2026-11-27T17:25:00.000Z"
+   }
   }
  }
 }
