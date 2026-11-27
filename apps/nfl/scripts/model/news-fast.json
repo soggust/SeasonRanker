@@ -1,80 +1,15 @@
 {
  "sport": "nfl",
  "cursor": {
-  "adamscheftermirror.bsky.social": "2026-11-27T14:22:14.702Z",
+  "adamscheftermirror.bsky.social": "2026-11-27T15:42:15.526Z",
   "rapsheet.bsky.social": "2026-11-27T04:31:06.043Z",
   "nflnewsreposterbot.bsky.social": "2026-11-25T21:41:32.820Z",
-  "insidenflnews.bsky.social": "2026-11-27T15:02:22.584Z",
+  "insidenflnews.bsky.social": "2026-11-27T15:48:26.252Z",
   "nflnewsposter.bsky.social": "2026-11-27T06:05:09.178Z",
-  "rotoworld-fb.bsky.social": "2026-11-27T15:18:58.000Z",
-  "rotowirenfl.bsky.social": "2026-11-27T05:35:21.000Z"
+  "rotoworld-fb.bsky.social": "2026-11-27T15:50:13.000Z",
+  "rotowirenfl.bsky.social": "2026-11-27T15:51:15.000Z"
  },
  "claims": [
-  {
-   "id": "at://did:plc:mbr4badgf6yu56mquzackzew/app.bsky.feed.post/3mznpovnxls2a|garrettwilson|out|status",
-   "at": "2026-11-06T15:39:08.564Z",
-   "seen": "2026-11-06T15:49:54.587Z",
-   "handle": "insidenflnews.bsky.social",
-   "post": "at://did:plc:mbr4badgf6yu56mquzackzew/app.bsky.feed.post/3mznpovnxls2a",
-   "player": "Garrett Wilson",
-   "team": "NYJ",
-   "status": "out",
-   "kind": "status",
-   "confidence": 0.95,
-   "text": "Jets WR Garrett Wilson (concussion) has been ruled out for Week 9."
-  },
-  {
-   "id": "at://did:plc:fuqjc7x4gxvnwzksnlxwbe4x/app.bsky.feed.post/3mznprkkq4k2j|brianrobinson|out|status",
-   "at": "2026-11-06T15:40:37.585Z",
-   "seen": "2026-11-06T15:49:54.587Z",
-   "handle": "nflnewsposter.bsky.social",
-   "post": "at://did:plc:fuqjc7x4gxvnwzksnlxwbe4x/app.bsky.feed.post/3mznprkkq4k2j",
-   "player": "Brian Robinson Jr.",
-   "team": "ATL",
-   "status": "out",
-   "kind": "status",
-   "confidence": 0.9,
-   "text": "[McElhaney] A change to the injury report: RB Brian Robinson Jr. (hamstring) has been ruled OUT. James Pearce Jr. is dealing with a back issue that the Falcons will monitor throughout the weekend, per"
-  },
-  {
-   "id": "at://did:plc:fuqjc7x4gxvnwzksnlxwbe4x/app.bsky.feed.post/3mznprkkq4k2j|billybowman|active|status",
-   "at": "2026-11-06T15:40:37.585Z",
-   "seen": "2026-11-06T15:49:54.587Z",
-   "handle": "nflnewsposter.bsky.social",
-   "post": "at://did:plc:fuqjc7x4gxvnwzksnlxwbe4x/app.bsky.feed.post/3mznprkkq4k2j",
-   "player": "Billy Bowman Jr.",
-   "team": "ATL",
-   "status": "active",
-   "kind": "status",
-   "confidence": 0.85,
-   "text": "[McElhaney] A change to the injury report: RB Brian Robinson Jr. (hamstring) has been ruled OUT. James Pearce Jr. is dealing with a back issue that the Falcons will monitor throughout the weekend, per"
-  },
-  {
-   "id": "at://did:plc:fuqjc7x4gxvnwzksnlxwbe4x/app.bsky.feed.post/3mznprkkq4k2j|jamespearce|questionable|status",
-   "at": "2026-11-06T15:40:37.585Z",
-   "seen": "2026-11-06T15:49:54.587Z",
-   "handle": "nflnewsposter.bsky.social",
-   "post": "at://did:plc:fuqjc7x4gxvnwzksnlxwbe4x/app.bsky.feed.post/3mznprkkq4k2j",
-   "player": "James Pearce Jr.",
-   "team": "ATL",
-   "status": "questionable",
-   "kind": "status",
-   "confidence": 0.3,
-   "text": "[McElhaney] A change to the injury report: RB Brian Robinson Jr. (hamstring) has been ruled OUT. James Pearce Jr. is dealing with a back issue that the Falcons will monitor throughout the weekend, per"
-  },
-  {
-   "id": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3mznqczxcxl2q|garrettwilson|out|status",
-   "at": "2026-11-06T15:50:24.000Z",
-   "seen": "2026-11-06T16:11:46.072Z",
-   "handle": "rotoworld-fb.bsky.social",
-   "post": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3mznqczxcxl2q",
-   "player": "Garrett Wilson",
-   "team": "NYJ",
-   "status": "out",
-   "kind": "status",
-   "confidence": 0.9,
-   "text": "Garrett Wilson (concussion) won't play vs. Chiefs"
-  },
   {
    "id": "at://did:plc:qre6zxbmr3ixhdmgsgdretb5/app.bsky.feed.post/3mznroljdyr2t|garrettwilson|out|status",
    "at": "2026-11-06T16:14:45.325Z",
@@ -17429,6 +17364,84 @@
    "kind": "return",
    "confidence": 0.8,
    "text": "Status alert: DeVonta Smith (tailbone) has returned to Thursday's game."
+  },
+  {
+   "id": "at://did:plc:mbr4badgf6yu56mquzackzew/app.bsky.feed.post/3n3cjbfo7oc2s|parkerwashington|out|status",
+   "at": "2026-11-27T15:35:19.269Z",
+   "seen": "2026-11-27T15:52:56.163Z",
+   "handle": "insidenflnews.bsky.social",
+   "post": "at://did:plc:mbr4badgf6yu56mquzackzew/app.bsky.feed.post/3n3cjbfo7oc2s",
+   "player": "Parker Washington",
+   "team": "JAX",
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.97,
+   "text": "Jaguars WR Parker Washington (shoulder) has been ruled out for Week 12 and is considered week-to-week."
+  },
+  {
+   "id": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3n3cjmehn772i|parkerwashington|out|status",
+   "at": "2026-11-27T15:41:27.000Z",
+   "seen": "2026-11-27T15:52:56.163Z",
+   "handle": "rotoworld-fb.bsky.social",
+   "post": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3n3cjmehn772i",
+   "player": "Parker Washington",
+   "team": "JAX",
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.96,
+   "text": "Parker Washington (shoulder) ruled out vs. Titans"
+  },
+  {
+   "id": "at://did:plc:qre6zxbmr3ixhdmgsgdretb5/app.bsky.feed.post/3n3cjnspxpc22|parkerwashington|out|status",
+   "at": "2026-11-27T15:42:15.526Z",
+   "seen": "2026-11-27T15:52:56.163Z",
+   "handle": "adamscheftermirror.bsky.social",
+   "post": "at://did:plc:qre6zxbmr3ixhdmgsgdretb5/app.bsky.feed.post/3n3cjnspxpc22",
+   "player": "Parker Washington",
+   "team": "JAX",
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.98,
+   "text": "Jaguars ruled out WR Parker Washington for Sunday’s game vs the Titans due to a shoulder injury he suffered during Thursday’s practice. Jaguars HC Liam Coen said the team considers Washington week to "
+  },
+  {
+   "id": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3n3cjrsteqk2q|parkerwashington|out|status",
+   "at": "2026-11-27T15:44:29.000Z",
+   "seen": "2026-11-27T15:52:56.163Z",
+   "handle": "rotowirenfl.bsky.social",
+   "post": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3n3cjrsteqk2q",
+   "player": "Parker Washington",
+   "team": "JAX",
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.96,
+   "text": "Parker Washington: Out vs. Titans, considered week-to-week \n\n https://www.rotowire.com/football/player/parker-washington-16690"
+  },
+  {
+   "id": "at://did:plc:mbr4badgf6yu56mquzackzew/app.bsky.feed.post/3n3cjyu72qc2r|omarcooper|out|status",
+   "at": "2026-11-27T15:48:26.252Z",
+   "seen": "2026-11-27T15:52:56.163Z",
+   "handle": "insidenflnews.bsky.social",
+   "post": "at://did:plc:mbr4badgf6yu56mquzackzew/app.bsky.feed.post/3n3cjyu72qc2r",
+   "player": "Omar Cooper Jr.",
+   "team": "NYJ",
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.96,
+   "text": "Jets WR Omar Cooper Jr. (ankle, hip) has been ruled out for Week 12."
+  },
+  {
+   "id": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3n3ck42xgam2z|tuten|questionable|status",
+   "at": "2026-11-27T15:50:13.000Z",
+   "seen": "2026-11-27T15:52:56.163Z",
+   "handle": "rotoworld-fb.bsky.social",
+   "post": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3n3ck42xgam2z",
+   "player": "Tuten",
+   "team": "JAX",
+   "status": "questionable",
+   "kind": "status",
+   "confidence": 0.6,
+   "text": "Coen 'not sure' if Tuten (foot/ankle) plays Wk 12"
   }
  ]
 }
