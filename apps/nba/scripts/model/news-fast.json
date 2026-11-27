@@ -1,7 +1,7 @@
 {
  "sport": "nba",
  "cursor": {
-  "rotowirenba.bsky.social": "2026-11-26T23:41:39.000Z",
+  "rotowirenba.bsky.social": "2026-11-27T16:51:35.000Z",
   "insidenbanews.bsky.social": "2026-11-27T15:03:25.671Z",
   "shamsbot.bsky.social": "2026-11-27T14:55:11.000Z"
  },
@@ -7519,6 +7519,19 @@
    "kind": "status",
    "confidence": 0.5,
    "text": "Dylan Harper (hip) was reported likely to miss 2 weeks with a 1-3 week range.\n\nFriday's game (against the Lakers) is 10 days out from his injury."
+  },
+  {
+   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3n3cnj3zekv2o|karlanthonytowns|questionable|status",
+   "at": "2026-11-27T16:51:12.000Z",
+   "seen": "2026-11-27T16:53:46.620Z",
+   "handle": "rotowirenba.bsky.social",
+   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3n3cnj3zekv2o",
+   "player": "Karl-Anthony Towns",
+   "team": null,
+   "status": "questionable",
+   "kind": "status",
+   "confidence": 0.9,
+   "text": "Karl-Anthony Towns: Downgraded to questionable \n\n https://www.rotowire.com/basketball/player/karl-anthony-towns-3741"
   }
  ]
 }

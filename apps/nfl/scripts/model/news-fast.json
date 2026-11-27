@@ -2,10 +2,10 @@
  "sport": "nfl",
  "cursor": {
   "adamscheftermirror.bsky.social": "2026-11-27T16:12:14.828Z",
-  "rapsheet.bsky.social": "2026-11-27T16:23:49.260Z",
+  "rapsheet.bsky.social": "2026-11-27T16:49:01.939Z",
   "nflnewsreposterbot.bsky.social": "2026-11-25T21:41:32.820Z",
   "insidenflnews.bsky.social": "2026-11-27T15:48:26.252Z",
-  "nflnewsposter.bsky.social": "2026-11-27T16:02:45.734Z",
+  "nflnewsposter.bsky.social": "2026-11-27T16:46:24.926Z",
   "rotoworld-fb.bsky.social": "2026-11-27T15:59:16.000Z",
   "rotowirenfl.bsky.social": "2026-11-27T15:56:23.000Z"
  },
@@ -17455,6 +17455,32 @@
    "kind": "status",
    "confidence": 0.9,
    "text": "Jaguars star WR Parker Washington is week-to-week after aggravating an AC joint injury in practice. He’s out this week, Coach Liam Coen confirmed."
+  },
+  {
+   "id": "at://did:plc:fuqjc7x4gxvnwzksnlxwbe4x/app.bsky.feed.post/3n3cnajpsc224|davisallen|questionable|status",
+   "at": "2026-11-27T16:46:24.926Z",
+   "seen": "2026-11-27T16:53:46.620Z",
+   "handle": "nflnewsposter.bsky.social",
+   "post": "at://did:plc:fuqjc7x4gxvnwzksnlxwbe4x/app.bsky.feed.post/3n3cnajpsc224",
+   "player": "Davis Allen",
+   "team": "LAR",
+   "status": "questionable",
+   "kind": "status",
+   "confidence": 0.3,
+   "text": "[Rapoport] Rams TE Davis Allen suffered a high-ankle sprain in Wednesday night’s win over the Packers, sources say. \n\nAllen will head into the building today for a full evaluation, but these can often"
+  },
+  {
+   "id": "at://did:plc:hlvr2omhnmvdmfnvmcuhyevz/app.bsky.feed.post/3n3cnf7hhcc26|davisallen|questionable|status",
+   "at": "2026-11-27T16:49:01.939Z",
+   "seen": "2026-11-27T16:53:46.620Z",
+   "handle": "rapsheet.bsky.social",
+   "post": "at://did:plc:hlvr2omhnmvdmfnvmcuhyevz/app.bsky.feed.post/3n3cnf7hhcc26",
+   "player": "Davis Allen",
+   "team": "LAR",
+   "status": "questionable",
+   "kind": "status",
+   "confidence": 0.3,
+   "text": "Rams TE Davis Allen suffered a high-ankle sprain in Wednesday night’s win over the Packers, sources say. \n\nAllen will head into the building today for a full evaluation, but these can often be 4-6 wee"
   }
  ]
 }

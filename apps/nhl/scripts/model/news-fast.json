@@ -3,24 +3,11 @@
  "cursor": {
   "johnston-bot.bsky.social": "2026-11-26T15:03:47.542Z",
   "notfriedgehnic.bsky.social": "2026-11-26T15:07:30.929Z",
-  "dailyfaceoff.bsky.social": "2026-11-27T15:35:24.000Z",
+  "dailyfaceoff.bsky.social": "2026-11-27T16:44:29.000Z",
   "dfotoronto.bsky.social": "2026-11-27T14:36:51.000Z",
   "marklazerus.bsky.social": "2026-11-27T01:33:34.863Z"
  },
  "claims": [
-  {
-   "id": "at://did:plc:knaj2vcp4x6t7hr7ewd6e3uz/app.bsky.feed.post/3mzntbiq3w22h|johntavares|none|role",
-   "at": "2026-11-06T16:43:13.000Z",
-   "seen": "2026-11-06T16:44:25.828Z",
-   "handle": "dfotoronto.bsky.social",
-   "post": "at://did:plc:knaj2vcp4x6t7hr7ewd6e3uz/app.bsky.feed.post/3mzntbiq3w22h",
-   "player": "John Tavares",
-   "team": "TOR",
-   "status": "none",
-   "kind": "role",
-   "confidence": 0.4,
-   "text": "Maple Leafs lineup news: John Tavares skates in regular jersey on line with Nick Paul, William Nylander"
-  },
   {
    "id": "at://did:plc:3uus7y6h3rlrk6sbctzxm4bg/app.bsky.feed.post/3mznxiuoc7i2a|ryanmcleod|none|benched",
    "at": "2026-11-06T17:58:55.000Z",
@@ -2984,6 +2971,32 @@
    "kind": "status",
    "confidence": 0.95,
    "text": "Blue Jackets’ Mathieu Olivier out week-to-week with upper-body injury"
+  },
+  {
+   "id": "at://did:plc:3uus7y6h3rlrk6sbctzxm4bg/app.bsky.feed.post/3n3cmrn7vdn25|kylepalmieri|out|status",
+   "at": "2026-11-27T16:38:05.000Z",
+   "seen": "2026-11-27T16:53:46.620Z",
+   "handle": "dailyfaceoff.bsky.social",
+   "post": "at://did:plc:3uus7y6h3rlrk6sbctzxm4bg/app.bsky.feed.post/3n3cmrn7vdn25",
+   "player": "Kyle Palmieri",
+   "team": "NYI",
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.95,
+   "text": "Islanders’ Kyle Palmieri out 6-8 months with torn ACL"
+  },
+  {
+   "id": "at://did:plc:3uus7y6h3rlrk6sbctzxm4bg/app.bsky.feed.post/3n3cn53pbln2u|connorhellebuyck|none|starting",
+   "at": "2026-11-27T16:44:29.000Z",
+   "seen": "2026-11-27T16:53:46.620Z",
+   "handle": "dailyfaceoff.bsky.social",
+   "post": "at://did:plc:3uus7y6h3rlrk6sbctzxm4bg/app.bsky.feed.post/3n3cn53pbln2u",
+   "player": "Connor Hellebuyck",
+   "team": "NJ",
+   "status": "none",
+   "kind": "starting",
+   "confidence": 0.9,
+   "text": "Connor Hellebuyck will start against the Winnipeg Jets in New Jersey on Saturday, marking his first start against his former team!"
   }
  ]
 }
