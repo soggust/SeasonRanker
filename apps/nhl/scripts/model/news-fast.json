@@ -3,7 +3,7 @@
  "cursor": {
   "johnston-bot.bsky.social": "2026-11-26T15:03:47.542Z",
   "notfriedgehnic.bsky.social": "2026-11-27T23:36:27.619Z",
-  "dailyfaceoff.bsky.social": "2026-11-28T04:13:48.000Z",
+  "dailyfaceoff.bsky.social": "2026-11-28T06:32:59.000Z",
   "dfotoronto.bsky.social": "2026-11-28T00:26:53.563Z",
   "marklazerus.bsky.social": "2026-11-28T04:28:02.838Z"
  },
@@ -3153,6 +3153,19 @@
    "kind": "status",
    "confidence": 0.85,
    "text": "Report: Flyers scratched Michkov because of another teammate altercation"
+  },
+  {
+   "id": "at://did:plc:3uus7y6h3rlrk6sbctzxm4bg/app.bsky.feed.post/3n3e3gl6uio2r|noahostlund|out|status",
+   "at": "2026-11-28T06:32:59.000Z",
+   "seen": "2026-11-28T06:53:26.430Z",
+   "handle": "dailyfaceoff.bsky.social",
+   "post": "at://did:plc:3uus7y6h3rlrk6sbctzxm4bg/app.bsky.feed.post/3n3e3gl6uio2r",
+   "player": "Noah Ostlund",
+   "team": "BUF",
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.9,
+   "text": "Sabres’ Noah Ostlund out ‘at least a month’ with injury"
   }
  ]
 }
