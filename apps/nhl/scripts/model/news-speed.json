@@ -9655,6 +9655,18 @@
     "own": "2026-11-28T02:17:55.000Z",
     "why": "@dailyfaceoff.bsky.social: Report: Flyers scratched Michkov because of another t"
    }
+  },
+  "401892822|philippgrubauer|q": {
+   "game": "401892822",
+   "start": "2026-11-29T03:00Z",
+   "team": "124292",
+   "name": "Philipp Grubauer",
+   "status": "q",
+   "athlete": "5657",
+   "espn": {
+    "seen": "2026-11-28T03:40:56.551Z",
+    "own": "2026-11-28T03:10:00.000Z"
+   }
   }
  }
 }
