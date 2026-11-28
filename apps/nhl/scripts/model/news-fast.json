@@ -3,7 +3,7 @@
  "cursor": {
   "johnston-bot.bsky.social": "2026-11-26T15:03:47.542Z",
   "notfriedgehnic.bsky.social": "2026-11-27T23:36:27.619Z",
-  "dailyfaceoff.bsky.social": "2026-11-28T01:54:52.000Z",
+  "dailyfaceoff.bsky.social": "2026-11-28T02:17:55.000Z",
   "dfotoronto.bsky.social": "2026-11-28T00:26:53.563Z",
   "marklazerus.bsky.social": "2026-11-27T21:34:22.223Z"
  },
@@ -3140,6 +3140,19 @@
    "kind": "status",
    "confidence": 0.9,
    "text": "Following the Flyers 5-2 win over Vancouver, head coach Rick Tocchet said Matvei Michkov will play tomorrow against the Islanders"
+  },
+  {
+   "id": "at://did:plc:3uus7y6h3rlrk6sbctzxm4bg/app.bsky.feed.post/3n3dn6hfpaw25|michkov|out|status",
+   "at": "2026-11-28T02:17:55.000Z",
+   "seen": "2026-11-28T02:18:28.720Z",
+   "handle": "dailyfaceoff.bsky.social",
+   "post": "at://did:plc:3uus7y6h3rlrk6sbctzxm4bg/app.bsky.feed.post/3n3dn6hfpaw25",
+   "player": "Michkov",
+   "team": "PHI",
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.85,
+   "text": "Report: Flyers scratched Michkov because of another teammate altercation"
   }
  ]
 }

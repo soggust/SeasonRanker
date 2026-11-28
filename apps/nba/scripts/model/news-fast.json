@@ -1,7 +1,7 @@
 {
  "sport": "nba",
  "cursor": {
-  "rotowirenba.bsky.social": "2026-11-28T01:54:46.000Z",
+  "rotowirenba.bsky.social": "2026-11-28T02:13:20.000Z",
   "insidenbanews.bsky.social": "2026-11-27T15:03:25.671Z",
   "shamsbot.bsky.social": "2026-11-27T14:55:11.000Z"
  },
@@ -6505,6 +6505,19 @@
    "kind": "status",
    "confidence": 0.95,
    "text": "Norman Powell: Out vs. Indiana \n\n https://www.rotowire.com/basketball/player/norman-powell-3726"
+  },
+  {
+   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3n3dmwbhewd2r|jusufnurkic|none|starting",
+   "at": "2026-11-28T02:13:20.000Z",
+   "seen": "2026-11-28T02:18:28.720Z",
+   "handle": "rotowirenba.bsky.social",
+   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3n3dmwbhewd2r",
+   "player": "Jusuf Nurkic",
+   "team": null,
+   "status": "none",
+   "kind": "starting",
+   "confidence": 0.85,
+   "text": "Jusuf Nurkic: Starting in season debut \n\n https://www.rotowire.com/basketball/player/jusuf-nurkic-3580"
   }
  ]
 }

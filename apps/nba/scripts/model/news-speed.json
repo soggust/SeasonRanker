@@ -16873,6 +16873,11 @@
    "espn": {
     "seen": "2026-11-28T01:31:44.081Z",
     "own": "2026-11-22T15:25:00.000Z"
+   },
+   "bluesky": {
+    "seen": "2026-11-28T01:58:38.070Z",
+    "own": "2026-11-28T01:54:43.000Z",
+    "why": "@rotowirenba.bsky.social: Norman Powell: Out vs. Indiana \n\n https://www.rotowire"
    }
   },
   "401910048|calebwilson|out": {
@@ -17064,6 +17069,102 @@
    "espn": {
     "seen": "2026-11-28T01:48:39.308Z",
     "own": "2026-11-28T01:37:00.000Z"
+   }
+  },
+  "401909333|normanpowell|out": {
+   "game": "401909333",
+   "start": "2026-11-28T02:30Z",
+   "team": "24",
+   "name": "Norman Powell",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-28T01:58:38.070Z",
+    "own": "2026-11-28T01:54:43.000Z",
+    "why": "@rotowirenba.bsky.social: Norman Powell: Out vs. Indiana \n\n https://www.rotowire"
+   }
+  },
+  "401909334|normanpowell|out": {
+   "game": "401909334",
+   "start": "2026-11-28T02:30Z",
+   "team": "26",
+   "name": "Norman Powell",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-28T01:58:38.070Z",
+    "own": "2026-11-28T01:54:43.000Z",
+    "why": "@rotowirenba.bsky.social: Norman Powell: Out vs. Indiana \n\n https://www.rotowire"
+   }
+  },
+  "401909335|normanpowell|out": {
+   "game": "401909335",
+   "start": "2026-11-28T02:30Z",
+   "team": "12",
+   "name": "Norman Powell",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-28T01:58:38.070Z",
+    "own": "2026-11-28T01:54:43.000Z",
+    "why": "@rotowirenba.bsky.social: Norman Powell: Out vs. Indiana \n\n https://www.rotowire"
+   }
+  },
+  "401909336|normanpowell|out": {
+   "game": "401909336",
+   "start": "2026-11-28T02:30Z",
+   "team": "22",
+   "name": "Norman Powell",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-28T01:58:38.070Z",
+    "own": "2026-11-28T01:54:43.000Z",
+    "why": "@rotowirenba.bsky.social: Norman Powell: Out vs. Indiana \n\n https://www.rotowire"
+   }
+  },
+  "401910046|normanpowell|out": {
+   "game": "401910046",
+   "start": "2026-11-28T22:00Z",
+   "team": "27",
+   "name": "Norman Powell",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-28T01:58:38.070Z",
+    "own": "2026-11-28T01:54:43.000Z",
+    "why": "@rotowirenba.bsky.social: Norman Powell: Out vs. Indiana \n\n https://www.rotowire"
+   }
+  },
+  "401910046|colincastleton|out": {
+   "game": "401910046",
+   "start": "2026-11-28T22:00Z",
+   "team": "19",
+   "name": "Colin Castleton",
+   "status": "out",
+   "athlete": "4397204",
+   "espn": {
+    "seen": "2026-11-28T02:16:47.807Z",
+    "own": "2026-11-28T01:53:00.000Z"
+   }
+  },
+  "401910047|normanpowell|out": {
+   "game": "401910047",
+   "start": "2026-11-28T23:00Z",
+   "team": "30",
+   "name": "Norman Powell",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-28T01:58:38.070Z",
+    "own": "2026-11-28T01:54:43.000Z",
+    "why": "@rotowirenba.bsky.social: Norman Powell: Out vs. Indiana \n\n https://www.rotowire"
+   }
+  },
+  "401910049|normanpowell|out": {
+   "game": "401910049",
+   "start": "2026-11-29T01:00Z",
+   "team": "15",
+   "name": "Norman Powell",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-28T01:58:38.070Z",
+    "own": "2026-11-28T01:54:43.000Z",
+    "why": "@rotowirenba.bsky.social: Norman Powell: Out vs. Indiana \n\n https://www.rotowire"
    }
   }
  }
