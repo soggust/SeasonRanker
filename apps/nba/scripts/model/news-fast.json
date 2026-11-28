@@ -1,7 +1,7 @@
 {
  "sport": "nba",
  "cursor": {
-  "rotowirenba.bsky.social": "2026-11-28T04:57:06.000Z",
+  "rotowirenba.bsky.social": "2026-11-28T05:48:01.000Z",
   "insidenbanews.bsky.social": "2026-11-27T15:03:25.671Z",
   "shamsbot.bsky.social": "2026-11-27T14:55:11.000Z"
  },
@@ -6518,6 +6518,32 @@
    "kind": "starting",
    "confidence": 0.85,
    "text": "Jusuf Nurkic: Starting in season debut \n\n https://www.rotowire.com/basketball/player/jusuf-nurkic-3580"
+  },
+  {
+   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3n3dysudkoz2o|lebronjames|out|status",
+   "at": "2026-11-28T05:46:10.000Z",
+   "seen": "2026-11-28T05:57:07.889Z",
+   "handle": "rotowirenba.bsky.social",
+   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3n3dysudkoz2o",
+   "player": "LeBron James",
+   "team": "LAL",
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.9,
+   "text": "LeBron James: Won't play Saturday \n\n https://www.rotowire.com/basketball/player/lebron-james-2344"
+  },
+  {
+   "id": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3n3dyw64xn22i|joelembiid|out|status",
+   "at": "2026-11-28T05:48:01.000Z",
+   "seen": "2026-11-28T05:57:07.889Z",
+   "handle": "rotowirenba.bsky.social",
+   "post": "at://did:plc:eq53tkcoi7ekg7ytlqwt7zcq/app.bsky.feed.post/3n3dyw64xn22i",
+   "player": "Joel Embiid",
+   "team": "PHI",
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.9,
+   "text": "Joel Embiid: Won't play Saturday \n\n https://www.rotowire.com/basketball/player/joel-embiid-3572"
   }
  ]
 }
