@@ -1,7 +1,7 @@
 {
  "sport": "nfl",
  "cursor": {
-  "adamscheftermirror.bsky.social": "2026-11-28T00:22:15.658Z",
+  "adamscheftermirror.bsky.social": "2026-11-28T01:22:17.577Z",
   "rapsheet.bsky.social": "2026-11-27T22:22:47.352Z",
   "nflnewsreposterbot.bsky.social": "2026-11-25T21:41:32.820Z",
   "insidenflnews.bsky.social": "2026-11-27T22:34:45.583Z",
@@ -17481,6 +17481,58 @@
    "kind": "return",
    "confidence": 0.6,
    "text": "Michael Pittman: Just one catch in return to lineup \n\n https://www.rotowire.com/football/player/michael-pittman-14378"
+  },
+  {
+   "id": "at://did:plc:qre6zxbmr3ixhdmgsgdretb5/app.bsky.feed.post/3n3dk2xg6m62z|brockpurdy|out|status",
+   "at": "2026-11-28T01:22:16.388Z",
+   "seen": "2026-11-28T01:33:34.216Z",
+   "handle": "adamscheftermirror.bsky.social",
+   "post": "at://did:plc:qre6zxbmr3ixhdmgsgdretb5/app.bsky.feed.post/3n3dk2xg6m62z",
+   "player": "Brock Purdy",
+   "team": "SF",
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.9,
+   "text": "More about the 49ers ruling out QB Brock Purdy with Mac Jones now set to start Sunday vs. the Seahawks, via @nwagoner:\n\nOriginal post"
+  },
+  {
+   "id": "at://did:plc:qre6zxbmr3ixhdmgsgdretb5/app.bsky.feed.post/3n3dk2xg6m62z|macjones|active|starting",
+   "at": "2026-11-28T01:22:16.388Z",
+   "seen": "2026-11-28T01:33:34.216Z",
+   "handle": "adamscheftermirror.bsky.social",
+   "post": "at://did:plc:qre6zxbmr3ixhdmgsgdretb5/app.bsky.feed.post/3n3dk2xg6m62z",
+   "player": "Mac Jones",
+   "team": "SF",
+   "status": "active",
+   "kind": "starting",
+   "confidence": 0.85,
+   "text": "More about the 49ers ruling out QB Brock Purdy with Mac Jones now set to start Sunday vs. the Seahawks, via @nwagoner:\n\nOriginal post"
+  },
+  {
+   "id": "at://did:plc:qre6zxbmr3ixhdmgsgdretb5/app.bsky.feed.post/3n3dk2yihaw23|djuiagalelei|active|starting",
+   "at": "2026-11-28T01:22:17.577Z",
+   "seen": "2026-11-28T01:33:34.216Z",
+   "handle": "adamscheftermirror.bsky.social",
+   "post": "at://did:plc:qre6zxbmr3ixhdmgsgdretb5/app.bsky.feed.post/3n3dk2yihaw23",
+   "player": "DJ Uiagalelei",
+   "team": "LAC",
+   "status": "active",
+   "kind": "starting",
+   "confidence": 0.85,
+   "text": "More about DJ Uiagalelei being set to start for the Chargers vs. the Patriots with Justin Herbert in concussion protocol, via @MikeReiss:\n\nOriginal post"
+  },
+  {
+   "id": "at://did:plc:qre6zxbmr3ixhdmgsgdretb5/app.bsky.feed.post/3n3dk2yihaw23|justinherbert|questionable|status",
+   "at": "2026-11-28T01:22:17.577Z",
+   "seen": "2026-11-28T01:33:34.216Z",
+   "handle": "adamscheftermirror.bsky.social",
+   "post": "at://did:plc:qre6zxbmr3ixhdmgsgdretb5/app.bsky.feed.post/3n3dk2yihaw23",
+   "player": "Justin Herbert",
+   "team": "LAC",
+   "status": "questionable",
+   "kind": "status",
+   "confidence": 0.6,
+   "text": "More about DJ Uiagalelei being set to start for the Chargers vs. the Patriots with Justin Herbert in concussion protocol, via @MikeReiss:\n\nOriginal post"
   }
  ]
 }

@@ -15474,6 +15474,11 @@
    "espn": {
     "seen": "2026-11-26T18:01:59.258Z",
     "own": "2026-11-26T01:36:00.000Z"
+   },
+   "bluesky": {
+    "seen": "2026-11-28T01:17:29.956Z",
+    "own": "2026-11-28T00:47:46.000Z",
+    "why": "@rotowirenba.bsky.social: Stephen Curry: Will miss next three games \n\n https://w"
    }
   },
   "401909336|kristapsporzingis|out": {
@@ -16740,6 +16745,313 @@
     "seen": "2026-11-28T00:42:51.431Z",
     "own": "2026-11-28T00:30:23.000Z",
     "why": "@rotowirenba.bsky.social: Kyrie Irving: Won't play Friday \n\n https://www.rotowir"
+   }
+  },
+  "401910047|graysonallen|out": {
+   "game": "401910047",
+   "start": "2026-11-28T23:00Z",
+   "team": "30",
+   "name": "Grayson Allen",
+   "status": "out",
+   "athlete": "3135045",
+   "espn": {
+    "seen": "2026-11-28T01:31:44.081Z",
+    "own": "2026-11-27T22:17:00.000Z"
+   }
+  },
+  "401910047|ryankalkbrenner|q": {
+   "game": "401910047",
+   "start": "2026-11-28T23:00Z",
+   "team": "30",
+   "name": "Ryan Kalkbrenner",
+   "status": "q",
+   "athlete": "4576060",
+   "espn": {
+    "seen": "2026-11-28T01:31:44.081Z",
+    "own": "2026-11-27T22:04:00.000Z"
+   }
+  },
+  "401910047|dennisschroder|out": {
+   "game": "401910047",
+   "start": "2026-11-28T23:00Z",
+   "team": "30",
+   "name": "Dennis Schroder",
+   "status": "out",
+   "athlete": "3032979",
+   "espn": {
+    "seen": "2026-11-28T01:31:44.081Z",
+    "own": "2026-11-24T22:32:00.000Z"
+   }
+  },
+  "401910047|konknueppel|out": {
+   "game": "401910047",
+   "start": "2026-11-28T23:00Z",
+   "team": "30",
+   "name": "Kon Knueppel",
+   "status": "out",
+   "athlete": "5061575",
+   "espn": {
+    "seen": "2026-11-28T01:31:44.081Z",
+    "own": "2026-11-08T22:31:00.000Z"
+   }
+  },
+  "401910047|kyrieirving|out": {
+   "game": "401910047",
+   "start": "2026-11-28T23:00Z",
+   "team": "30",
+   "name": "Kyrie Irving",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-28T00:42:51.431Z",
+    "own": "2026-11-28T00:30:23.000Z",
+    "why": "@rotowirenba.bsky.social: Kyrie Irving: Won't play Friday \n\n https://www.rotowir"
+   }
+  },
+  "401910047|moritzwagner|out": {
+   "game": "401910047",
+   "start": "2026-11-28T23:00Z",
+   "team": "17",
+   "name": "Moritz Wagner",
+   "status": "out",
+   "athlete": "3150844",
+   "espn": {
+    "seen": "2026-11-28T01:31:44.081Z",
+    "own": "2026-11-26T21:33:00.000Z"
+   }
+  },
+  "401910047|nolantraore|out": {
+   "game": "401910047",
+   "start": "2026-11-28T23:00Z",
+   "team": "17",
+   "name": "Nolan Traore",
+   "status": "out",
+   "athlete": "5279130",
+   "espn": {
+    "seen": "2026-11-28T01:31:44.081Z",
+    "own": "2026-11-23T15:22:00.000Z"
+   }
+  },
+  "401910048|noaessengue|q": {
+   "game": "401910048",
+   "start": "2026-11-29T01:00Z",
+   "team": "4",
+   "name": "Noa Essengue",
+   "status": "q",
+   "athlete": "5242496",
+   "espn": {
+    "seen": "2026-11-28T01:31:44.081Z",
+    "own": "2026-11-27T19:06:00.000Z"
+   },
+   "sleeper": {
+    "seen": "2026-11-27T20:08:30.594Z",
+    "own": "2026-11-27T19:10:23.635Z"
+   }
+  },
+  "401910048|jalensmith|q": {
+   "game": "401910048",
+   "start": "2026-11-29T01:00Z",
+   "team": "4",
+   "name": "Jalen Smith",
+   "status": "q",
+   "athlete": "4397189",
+   "espn": {
+    "seen": "2026-11-28T01:31:44.081Z",
+    "own": "2026-11-27T18:36:00.000Z"
+   },
+   "sleeper": {
+    "seen": "2026-11-27T20:08:30.594Z",
+    "own": "2026-11-27T20:00:24.527Z"
+   }
+  },
+  "401910048|normanpowell|out": {
+   "game": "401910048",
+   "start": "2026-11-29T01:00Z",
+   "team": "4",
+   "name": "Norman Powell",
+   "status": "out",
+   "athlete": "2595516",
+   "espn": {
+    "seen": "2026-11-28T01:31:44.081Z",
+    "own": "2026-11-22T15:25:00.000Z"
+   }
+  },
+  "401910048|calebwilson|out": {
+   "game": "401910048",
+   "start": "2026-11-29T01:00Z",
+   "team": "4",
+   "name": "Caleb Wilson",
+   "status": "out",
+   "athlete": "5095151",
+   "espn": {
+    "seen": "2026-11-28T01:31:44.081Z",
+    "own": "2026-11-12T21:35:00.000Z"
+   }
+  },
+  "401910048|kyrieirving|out": {
+   "game": "401910048",
+   "start": "2026-11-29T01:00Z",
+   "team": "4",
+   "name": "Kyrie Irving",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-28T00:42:51.431Z",
+    "own": "2026-11-28T00:30:23.000Z",
+    "why": "@rotowirenba.bsky.social: Kyrie Irving: Won't play Friday \n\n https://www.rotowir"
+   }
+  },
+  "401910048|tjmcconnell|out": {
+   "game": "401910048",
+   "start": "2026-11-29T01:00Z",
+   "team": "11",
+   "name": "T.J. McConnell",
+   "status": "out",
+   "athlete": "2530530",
+   "espn": {
+    "seen": "2026-11-28T01:31:44.081Z",
+    "own": "2026-11-27T23:02:00.000Z"
+   }
+  },
+  "401910048|tyresehaliburton|out": {
+   "game": "401910048",
+   "start": "2026-11-29T01:00Z",
+   "team": "11",
+   "name": "Tyrese Haliburton",
+   "status": "out",
+   "athlete": "4396993",
+   "espn": {
+    "seen": "2026-11-28T01:31:44.081Z",
+    "own": "2026-11-27T16:20:00.000Z"
+   }
+  },
+  "401910048|bensheppard|out": {
+   "game": "401910048",
+   "start": "2026-11-29T01:00Z",
+   "team": "11",
+   "name": "Ben Sheppard",
+   "status": "out",
+   "athlete": "4433076",
+   "espn": {
+    "seen": "2026-11-28T01:31:44.081Z",
+    "own": "2026-10-28T21:41:00.000Z"
+   }
+  },
+  "401910048|larrynance|q": {
+   "game": "401910048",
+   "start": "2026-11-29T01:00Z",
+   "team": "11",
+   "name": "Larry Nance Jr.",
+   "status": "q",
+   "sleeper": {
+    "seen": "2026-11-27T20:08:30.594Z",
+    "own": "2026-11-27T20:00:24.486Z"
+   }
+  },
+  "401910049|kasparasjakucionis|out": {
+   "game": "401910049",
+   "start": "2026-11-29T01:00Z",
+   "team": "15",
+   "name": "Kasparas Jakucionis",
+   "status": "out",
+   "athlete": "5214640",
+   "espn": {
+    "seen": "2026-11-28T01:31:44.081Z",
+    "own": "2026-11-27T17:58:00.000Z"
+   }
+  },
+  "401910049|kyrieirving|out": {
+   "game": "401910049",
+   "start": "2026-11-29T01:00Z",
+   "team": "15",
+   "name": "Kyrie Irving",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-28T00:42:51.431Z",
+    "own": "2026-11-28T00:30:23.000Z",
+    "why": "@rotowirenba.bsky.social: Kyrie Irving: Won't play Friday \n\n https://www.rotowir"
+   }
+  },
+  "401910049|nikolatopic|out": {
+   "game": "401910049",
+   "start": "2026-11-29T01:00Z",
+   "team": "25",
+   "name": "Nikola Topic",
+   "status": "out",
+   "athlete": "5159925",
+   "espn": {
+    "seen": "2026-11-28T01:31:44.081Z",
+    "own": "2026-11-27T23:49:00.000Z"
+   }
+  },
+  "401910049|adaymara|out": {
+   "game": "401910049",
+   "start": "2026-11-29T01:00Z",
+   "team": "25",
+   "name": "Aday Mara",
+   "status": "out",
+   "athlete": "5174983",
+   "espn": {
+    "seen": "2026-11-28T01:31:44.081Z",
+    "own": "2026-11-27T23:10:00.000Z"
+   }
+  },
+  "401910049|jaylinwilliams|out": {
+   "game": "401910049",
+   "start": "2026-11-29T01:00Z",
+   "team": "25",
+   "name": "Jaylin Williams",
+   "status": "out",
+   "athlete": "4432823",
+   "espn": {
+    "seen": "2026-11-28T01:31:44.081Z",
+    "own": "2026-11-24T23:24:00.000Z"
+   }
+  },
+  "401910049|jalenwilliams|out": {
+   "game": "401910049",
+   "start": "2026-11-29T01:00Z",
+   "team": "25",
+   "name": "Jalen Williams",
+   "status": "out",
+   "athlete": "4593803",
+   "espn": {
+    "seen": "2026-11-28T01:31:44.081Z",
+    "own": "2026-11-23T18:43:00.000Z"
+   }
+  },
+  "401910049|thomassorber|out": {
+   "game": "401910049",
+   "start": "2026-11-29T01:00Z",
+   "team": "25",
+   "name": "Thomas Sorber",
+   "status": "out",
+   "athlete": "5061603",
+   "espn": {
+    "seen": "2026-11-28T01:31:44.081Z",
+    "own": "2026-11-18T00:01:00.000Z"
+   }
+  },
+  "401910049|casonwallace|out": {
+   "game": "401910049",
+   "start": "2026-11-29T01:00Z",
+   "team": "25",
+   "name": "Cason Wallace",
+   "status": "out",
+   "athlete": "4683692",
+   "espn": {
+    "seen": "2026-11-28T01:31:44.081Z",
+    "own": "2026-10-31T01:16:00.000Z"
+   }
+  },
+  "401910049|chetholmgren|out": {
+   "game": "401910049",
+   "start": "2026-11-29T01:00Z",
+   "team": "25",
+   "name": "Chet Holmgren",
+   "status": "out",
+   "athlete": "4433255",
+   "espn": {
+    "seen": "2026-11-28T01:31:44.081Z",
+    "own": "2026-10-31T01:02:00.000Z"
    }
   }
  }
