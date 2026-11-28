@@ -1,41 +1,15 @@
 {
  "sport": "nfl",
  "cursor": {
-  "adamscheftermirror.bsky.social": "2026-11-27T23:07:15.025Z",
+  "adamscheftermirror.bsky.social": "2026-11-28T00:22:15.658Z",
   "rapsheet.bsky.social": "2026-11-27T22:22:47.352Z",
   "nflnewsreposterbot.bsky.social": "2026-11-25T21:41:32.820Z",
   "insidenflnews.bsky.social": "2026-11-27T22:34:45.583Z",
-  "nflnewsposter.bsky.social": "2026-11-27T23:53:38.617Z",
+  "nflnewsposter.bsky.social": "2026-11-28T00:30:30.546Z",
   "rotoworld-fb.bsky.social": "2026-11-27T23:05:03.000Z",
-  "rotowirenfl.bsky.social": "2026-11-28T00:18:08.000Z"
+  "rotowirenfl.bsky.social": "2026-11-28T00:26:51.000Z"
  },
  "claims": [
-  {
-   "id": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3mzon2sd5j22n|traviskelce|active|status",
-   "at": "2026-11-07T00:24:46.000Z",
-   "seen": "2026-11-07T00:35:22.619Z",
-   "handle": "rotoworld-fb.bsky.social",
-   "post": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3mzon2sd5j22n",
-   "player": "Travis Kelce",
-   "team": "KC",
-   "status": "active",
-   "kind": "status",
-   "confidence": 0.9,
-   "text": "Travis Kelce (ankle) ready to face Jets, 2 FPs"
-  },
-  {
-   "id": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3mzonk53gtt2p|georgepickens|questionable|status",
-   "at": "2026-11-07T00:33:20.000Z",
-   "seen": "2026-11-07T00:35:22.619Z",
-   "handle": "rotoworld-fb.bsky.social",
-   "post": "at://did:plc:lbe3b7ce6n7oa6cbl5jwoifo/app.bsky.feed.post/3mzonk53gtt2p",
-   "player": "George Pickens",
-   "team": null,
-   "status": "questionable",
-   "kind": "status",
-   "confidence": 0.85,
-   "text": "George Pickens (hamstring) questionable in Week 9"
-  },
   {
    "id": "at://did:plc:mbr4badgf6yu56mquzackzew/app.bsky.feed.post/3mzq4dnx3is2j|kylermurray|none|status",
    "at": "2026-11-07T14:30:49.496Z",
