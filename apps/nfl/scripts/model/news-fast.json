@@ -1,11 +1,11 @@
 {
  "sport": "nfl",
  "cursor": {
-  "adamscheftermirror.bsky.social": "2026-11-28T01:22:17.577Z",
+  "adamscheftermirror.bsky.social": "2026-11-28T01:37:14.479Z",
   "rapsheet.bsky.social": "2026-11-27T22:22:47.352Z",
   "nflnewsreposterbot.bsky.social": "2026-11-25T21:41:32.820Z",
   "insidenflnews.bsky.social": "2026-11-27T22:34:45.583Z",
-  "nflnewsposter.bsky.social": "2026-11-28T00:30:30.546Z",
+  "nflnewsposter.bsky.social": "2026-11-28T01:52:29.708Z",
   "rotoworld-fb.bsky.social": "2026-11-27T23:05:03.000Z",
   "rotowirenfl.bsky.social": "2026-11-28T00:54:12.000Z"
  },
@@ -17533,6 +17533,19 @@
    "kind": "status",
    "confidence": 0.6,
    "text": "More about DJ Uiagalelei being set to start for the Chargers vs. the Patriots with Justin Herbert in concussion protocol, via @MikeReiss:\n\nOriginal post"
+  },
+  {
+   "id": "at://did:plc:fuqjc7x4gxvnwzksnlxwbe4x/app.bsky.feed.post/3n3dlqynkqc2y|billmurray|out|status",
+   "at": "2026-11-28T01:52:29.708Z",
+   "seen": "2026-11-28T01:58:38.070Z",
+   "handle": "nflnewsposter.bsky.social",
+   "post": "at://did:plc:fuqjc7x4gxvnwzksnlxwbe4x/app.bsky.feed.post/3n3dlqynkqc2y",
+   "player": "Bill Murray",
+   "team": "LAR",
+   "status": "out",
+   "kind": "status",
+   "confidence": 0.9,
+   "text": "[Fowler] Rams offensive guard Bill Murray tore his Achilles tendon Wednesday vs. Green Bay, per sources. Murray started the game at left guard and acquitted himself well. \n\nLos Angeles down another of"
   }
  ]
 }
