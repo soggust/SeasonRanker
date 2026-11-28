@@ -16728,6 +16728,35 @@
     "seen": "2026-11-28T04:33:31.698Z",
     "own": "2026-10-06T19:17:00.000Z"
    }
+  },
+  "401910050|joelembiid|out": {
+   "game": "401910050",
+   "start": "2026-11-29T01:30Z",
+   "team": "20",
+   "name": "Joel Embiid",
+   "status": "out",
+   "athlete": "3059318",
+   "espn": {
+    "seen": "2026-11-28T06:08:09.596Z",
+    "own": "2026-11-28T05:48:00.000Z"
+   },
+   "bluesky": {
+    "seen": "2026-11-28T05:57:07.889Z",
+    "own": "2026-11-28T05:48:01.000Z",
+    "why": "@rotowirenba.bsky.social: Joel Embiid: Won't play Saturday \n\n https://www.rotowi"
+   }
+  },
+  "401910050|lebronjames|out": {
+   "game": "401910050",
+   "start": "2026-11-29T01:30Z",
+   "team": "20",
+   "name": "LeBron James",
+   "status": "out",
+   "athlete": "1966",
+   "espn": {
+    "seen": "2026-11-28T06:08:09.596Z",
+    "own": "2026-11-28T05:46:00.000Z"
+   }
   }
  }
 }
