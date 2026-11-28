@@ -1,6 +1,18 @@
 {
  "sport": "nba",
  "days": 2,
- "signals": [],
- "at": "2026-11-27T22:22:11.968Z"
+ "signals": [
+  {
+   "team": "13",
+   "abbr": "LAL",
+   "athlete": "4066457",
+   "player": "Austin Reaves",
+   "kind": "return",
+   "direction": "up",
+   "confidence": 0.9,
+   "headline": "Lakers' Austin Reaves available vs. Spurs after missing 5 games with heel bruise",
+   "at": "2026-11-27T20:25:53.000Z"
+  }
+ ],
+ "at": "2026-11-28T00:18:15.661Z"
 }

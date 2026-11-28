@@ -17139,6 +17139,162 @@
     "seen": "2026-11-28T00:00:41.151Z",
     "own": "2026-11-27T23:33:00.000Z"
    }
+  },
+  "401909331|isaiahstewart|out": {
+   "game": "401909331",
+   "start": "2026-11-28T01:30Z",
+   "team": "29",
+   "name": "Isaiah Stewart",
+   "status": "out",
+   "athlete": "4432810",
+   "espn": {
+    "seen": "2026-11-28T00:16:35.172Z",
+    "own": "2026-11-28T00:10:00.000Z"
+   }
+  },
+  "401910046|tristanvukcevic|out": {
+   "game": "401910046",
+   "start": "2026-11-28T22:00Z",
+   "team": "27",
+   "name": "Tristan Vukcevic",
+   "status": "out",
+   "athlete": "4997537",
+   "espn": {
+    "seen": "2026-11-28T00:16:35.172Z",
+    "own": "2026-11-23T22:10:00.000Z"
+   }
+  },
+  "401910046|reecebeekman|out": {
+   "game": "401910046",
+   "start": "2026-11-28T22:00Z",
+   "team": "27",
+   "name": "Reece Beekman",
+   "status": "out",
+   "athlete": "4432187",
+   "espn": {
+    "seen": "2026-11-28T00:16:35.172Z",
+    "own": "2026-11-02T18:22:00.000Z"
+   }
+  },
+  "401910046|justinchampagnie|out": {
+   "game": "401910046",
+   "start": "2026-11-28T22:00Z",
+   "team": "27",
+   "name": "Justin Champagnie",
+   "status": "out",
+   "athlete": "4432907",
+   "espn": {
+    "seen": "2026-11-28T00:16:35.172Z",
+    "own": "2026-10-28T18:38:00.000Z"
+   }
+  },
+  "401910046|jamirwatkins|out": {
+   "game": "401910046",
+   "start": "2026-11-28T22:00Z",
+   "team": "27",
+   "name": "Jamir Watkins",
+   "status": "out",
+   "athlete": "4606840",
+   "espn": {
+    "seen": "2026-11-28T00:16:35.172Z",
+    "own": "2026-07-30T20:11:00.000Z"
+   }
+  },
+  "401910046|karlanthonytowns|q": {
+   "game": "401910046",
+   "start": "2026-11-28T22:00Z",
+   "team": "27",
+   "name": "Karl-Anthony Towns",
+   "status": "q",
+   "bluesky": {
+    "seen": "2026-11-27T16:53:46.620Z",
+    "own": "2026-11-27T16:51:12.000Z",
+    "why": "@rotowirenba.bsky.social: Karl-Anthony Towns: Downgraded to questionable \n\n http"
+   }
+  },
+  "401910046|kevinporter|out": {
+   "game": "401910046",
+   "start": "2026-11-28T22:00Z",
+   "team": "19",
+   "name": "Kevin Porter Jr.",
+   "status": "out",
+   "athlete": "4397140",
+   "espn": {
+    "seen": "2026-11-28T00:16:35.172Z",
+    "own": "2026-11-27T21:08:00.000Z"
+   }
+  },
+  "401910046|anthonyblack|q": {
+   "game": "401910046",
+   "start": "2026-11-28T22:00Z",
+   "team": "19",
+   "name": "Anthony Black",
+   "status": "q",
+   "athlete": "4712849",
+   "espn": {
+    "seen": "2026-11-28T00:16:35.172Z",
+    "own": "2026-11-27T21:05:00.000Z"
+   }
+  },
+  "401910046|colincastleton|q": {
+   "game": "401910046",
+   "start": "2026-11-28T22:00Z",
+   "team": "19",
+   "name": "Colin Castleton",
+   "status": "q",
+   "athlete": "4397204",
+   "espn": {
+    "seen": "2026-11-28T00:16:35.172Z",
+    "own": "2026-11-26T16:10:00.000Z"
+   }
+  },
+  "401910046|jonathanisaac|out": {
+   "game": "401910046",
+   "start": "2026-11-28T22:00Z",
+   "team": "19",
+   "name": "Jonathan Isaac",
+   "status": "out",
+   "athlete": "4065654",
+   "espn": {
+    "seen": "2026-11-28T00:16:35.172Z",
+    "own": "2026-11-21T21:09:00.000Z"
+   }
+  },
+  "401910046|izaiyahnelson|out": {
+   "game": "401910046",
+   "start": "2026-11-28T22:00Z",
+   "team": "19",
+   "name": "Izaiyah Nelson",
+   "status": "out",
+   "athlete": "5107251",
+   "espn": {
+    "seen": "2026-11-28T00:16:35.172Z",
+    "own": "2026-11-18T17:25:00.000Z"
+   }
+  },
+  "401910046|noahpenda|out": {
+   "game": "401910046",
+   "start": "2026-11-28T22:00Z",
+   "team": "19",
+   "name": "Noah Penda",
+   "status": "out",
+   "athlete": "5214637",
+   "espn": {
+    "seen": "2026-11-28T00:16:35.172Z",
+    "own": "2026-11-14T17:33:00.000Z"
+   }
+  },
+  "401910046|paolobanchero|out": {
+   "game": "401910046",
+   "start": "2026-11-28T22:00Z",
+   "team": "19",
+   "name": "Paolo Banchero",
+   "status": "out",
+   "athlete": "4432573",
+   "espn": {
+    "seen": "2026-11-28T00:16:35.172Z",
+    "own": "2026-10-24T16:47:00.000Z"
+   }
   }
  }
 }

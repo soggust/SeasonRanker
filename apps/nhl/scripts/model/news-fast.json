@@ -2,7 +2,7 @@
  "sport": "nhl",
  "cursor": {
   "johnston-bot.bsky.social": "2026-11-26T15:03:47.542Z",
-  "notfriedgehnic.bsky.social": "2026-11-27T19:05:35.891Z",
+  "notfriedgehnic.bsky.social": "2026-11-27T23:36:27.619Z",
   "dailyfaceoff.bsky.social": "2026-11-27T23:05:32.000Z",
   "dfotoronto.bsky.social": "2026-11-27T22:02:58.000Z",
   "marklazerus.bsky.social": "2026-11-27T21:34:22.223Z"
@@ -3127,6 +3127,19 @@
    "kind": "status",
    "confidence": 0.95,
    "text": "Anaheim Ducks place Leo Carlsson on injured reserve."
+  },
+  {
+   "id": "at://did:plc:sdobrsxnvwczrjydmnubhibh/app.bsky.feed.post/3n3de5qsxg425|matveimichkov|active|status",
+   "at": "2026-11-27T23:36:27.619Z",
+   "seen": "2026-11-28T00:18:15.661Z",
+   "handle": "notfriedgehnic.bsky.social",
+   "post": "at://did:plc:sdobrsxnvwczrjydmnubhibh/app.bsky.feed.post/3n3de5qsxg425",
+   "player": "Matvei Michkov",
+   "team": "PHI",
+   "status": "active",
+   "kind": "status",
+   "confidence": 0.9,
+   "text": "Following the Flyers 5-2 win over Vancouver, head coach Rick Tocchet said Matvei Michkov will play tomorrow against the Islanders"
   }
  ]
 }

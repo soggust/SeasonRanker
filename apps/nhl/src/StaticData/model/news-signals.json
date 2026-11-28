@@ -1,6 +1,18 @@
 {
  "sport": "nhl",
  "days": 2,
- "signals": [],
- "at": "2026-11-27T20:30:34.755Z"
+ "signals": [
+  {
+   "team": "15",
+   "abbr": "PHI",
+   "athlete": "5149170",
+   "player": "Matvei Michkov",
+   "kind": "return",
+   "direction": "up",
+   "confidence": 0.9,
+   "headline": "Flyers' Matvei Michkov out due to 'internal team matter,' expected back Saturday",
+   "at": "2026-11-27T23:44:54.000Z"
+  }
+ ],
+ "at": "2026-11-28T00:18:15.661Z"
 }

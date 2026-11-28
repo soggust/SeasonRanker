@@ -3,6 +3,105 @@
  "days": 2,
  "signals": [
   {
+   "team": "25",
+   "abbr": "SF",
+   "athlete": "4241464",
+   "player": "Mac Jones",
+   "kind": "starting",
+   "direction": "up",
+   "confidence": 0.9,
+   "headline": "49ers rule QB Brock Purdy (ankle) out; Mac Jones to start vs. Seahawks",
+   "at": "2026-11-28T00:13:51.000Z"
+  },
+  {
+   "team": "25",
+   "abbr": "SF",
+   "athlete": "4361741",
+   "player": "Brock Purdy",
+   "kind": "return",
+   "direction": "down",
+   "confidence": 0.3,
+   "headline": "49ers rule QB Brock Purdy (ankle) out; Mac Jones to start vs. Seahawks",
+   "at": "2026-11-28T00:13:51.000Z"
+  },
+  {
+   "team": "24",
+   "abbr": "LAC",
+   "athlete": "4429020",
+   "player": "DJ Uiagalelei",
+   "kind": "starting",
+   "direction": "up",
+   "confidence": 0.9,
+   "headline": "DJ Uiagalelei to start for Chargers with Justin Herbert in concussion protocol",
+   "at": "2026-11-28T00:13:16.000Z"
+  },
+  {
+   "team": "24",
+   "abbr": "LAC",
+   "athlete": "4038941",
+   "player": "Justin Herbert",
+   "kind": "benched",
+   "direction": "down",
+   "confidence": 0.8,
+   "headline": "DJ Uiagalelei to start for Chargers with Justin Herbert in concussion protocol",
+   "at": "2026-11-28T00:13:16.000Z"
+  },
+  {
+   "team": "33",
+   "abbr": "BAL",
+   "athlete": "3126356",
+   "player": "Marlon Humphrey",
+   "kind": "return",
+   "direction": "up",
+   "confidence": 0.8,
+   "headline": "Ravens' Marlon Humphrey to return to lineup; role uncertain",
+   "at": "2026-11-27T21:33:18.000Z"
+  },
+  {
+   "team": "22",
+   "abbr": "ARI",
+   "athlete": "11394",
+   "player": "Josh Johnson",
+   "kind": "starting",
+   "direction": "up",
+   "confidence": 0.9,
+   "headline": "Cardinals to start QB Josh Johnson again with Carson Beck (back spasms) out",
+   "at": "2026-11-27T20:50:14.000Z"
+  },
+  {
+   "team": "22",
+   "abbr": "ARI",
+   "athlete": "4430841",
+   "player": "Carson Beck",
+   "kind": "benched",
+   "direction": "down",
+   "confidence": 0.8,
+   "headline": "Cardinals to start QB Josh Johnson again with Carson Beck (back spasms) out",
+   "at": "2026-11-27T20:50:14.000Z"
+  },
+  {
+   "team": "21",
+   "abbr": "PHI",
+   "athlete": "4360698",
+   "player": "Joe Milton",
+   "kind": "role",
+   "direction": "up",
+   "confidence": 0.3,
+   "headline": "Eagles QB Joe Milton wows teammates with breakout game in Dallas",
+   "at": "2026-11-27T06:10:08.000Z"
+  },
+  {
+   "team": "6",
+   "abbr": "DAL",
+   "athlete": null,
+   "player": "Brian Schottenheimer",
+   "kind": "coaching",
+   "direction": "none",
+   "confidence": 0.3,
+   "headline": "Jerry Jones backs Schottenheimer despite 'damning setbacks' in loss",
+   "at": "2026-11-27T05:17:22.000Z"
+  },
+  {
    "team": "23",
    "abbr": "PIT",
    "athlete": "4035687",
@@ -14,5 +113,5 @@
    "at": "2026-11-26T22:36:50.000Z"
   }
  ],
- "at": "2026-11-27T20:30:34.755Z"
+ "at": "2026-11-28T00:18:15.661Z"
 }

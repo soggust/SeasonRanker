@@ -16058,6 +16058,11 @@
    "espn": {
     "seen": "2026-11-27T23:12:38.022Z",
     "own": "2026-11-27T22:25:00.000Z"
+   },
+   "bluesky": {
+    "seen": "2026-11-27T23:15:42.395Z",
+    "own": "2026-11-27T22:37:19.322Z",
+    "why": "@adamscheftermirror.bsky.social: 49ers ruled out QB Brock Purdy, who did not pra"
    }
   },
   "401873091|jarranreed|out": {
@@ -16070,6 +16075,78 @@
    "espn": {
     "seen": "2026-11-27T23:12:38.022Z",
     "own": "2026-11-27T22:22:00.000Z"
+   }
+  },
+  "401873096|davisallen|out": {
+   "game": "401873096",
+   "start": "2026-12-04T01:15Z",
+   "team": "14",
+   "name": "Davis Allen",
+   "status": "out",
+   "athlete": "4426553",
+   "espn": {
+    "seen": "2026-11-28T00:15:47.327Z",
+    "own": "2026-11-27T20:01:00.000Z"
+   }
+  },
+  "401873096|tylerhigbee|q": {
+   "game": "401873096",
+   "start": "2026-12-04T01:15Z",
+   "team": "14",
+   "name": "Tyler Higbee",
+   "status": "q",
+   "athlete": "2573401",
+   "espn": {
+    "seen": "2026-11-28T00:15:47.327Z",
+    "own": "2026-11-27T19:53:00.000Z"
+   }
+  },
+  "401873096|billmurray|q": {
+   "game": "401873096",
+   "start": "2026-12-04T01:15Z",
+   "team": "14",
+   "name": "Bill Murray",
+   "status": "q",
+   "athlete": "3912189",
+   "espn": {
+    "seen": "2026-11-28T00:15:47.327Z",
+    "own": "2026-11-26T15:09:00.000Z"
+   }
+  },
+  "401873096|terranceferguson|out": {
+   "game": "401873096",
+   "start": "2026-12-04T01:15Z",
+   "team": "14",
+   "name": "Terrance Ferguson",
+   "status": "out",
+   "athlete": "4570037",
+   "espn": {
+    "seen": "2026-11-28T00:15:47.327Z",
+    "own": "2026-11-23T19:35:00.000Z"
+   }
+  },
+  "401873096|treysmith|q": {
+   "game": "401873096",
+   "start": "2026-12-04T01:15Z",
+   "team": "12",
+   "name": "Trey Smith",
+   "status": "q",
+   "athlete": "4242459",
+   "espn": {
+    "seen": "2026-11-28T00:15:47.327Z",
+    "own": "2026-11-27T05:22:00.000Z"
+   }
+  },
+  "401873096|benvansumeren|out": {
+   "game": "401873096",
+   "start": "2026-12-04T01:15Z",
+   "team": "12",
+   "name": "Ben VanSumeren",
+   "status": "out",
+   "athlete": "4372070",
+   "espn": {
+    "seen": "2026-11-28T00:15:47.327Z",
+    "own": "2026-11-24T21:28:00.000Z"
    }
   }
  }
