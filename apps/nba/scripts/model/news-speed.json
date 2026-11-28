@@ -16656,6 +16656,78 @@
     "own": "2026-11-28T01:54:43.000Z",
     "why": "@rotowirenba.bsky.social: Norman Powell: Out vs. Indiana \n\n https://www.rotowire"
    }
+  },
+  "401910050|stevenadams|q": {
+   "game": "401910050",
+   "start": "2026-11-29T01:30Z",
+   "team": "10",
+   "name": "Steven Adams",
+   "status": "q",
+   "athlete": "2991235",
+   "espn": {
+    "seen": "2026-11-28T04:33:31.698Z",
+    "own": "2026-11-27T22:06:00.000Z"
+   }
+  },
+  "401910050|kyrieirving|out": {
+   "game": "401910050",
+   "start": "2026-11-29T01:30Z",
+   "team": "10",
+   "name": "Kyrie Irving",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-28T00:42:51.431Z",
+    "own": "2026-11-28T00:30:23.000Z",
+    "why": "@rotowirenba.bsky.social: Kyrie Irving: Won't play Friday \n\n https://www.rotowir"
+   }
+  },
+  "401910050|normanpowell|out": {
+   "game": "401910050",
+   "start": "2026-11-29T01:30Z",
+   "team": "10",
+   "name": "Norman Powell",
+   "status": "out",
+   "bluesky": {
+    "seen": "2026-11-28T01:58:38.070Z",
+    "own": "2026-11-28T01:54:43.000Z",
+    "why": "@rotowirenba.bsky.social: Norman Powell: Out vs. Indiana \n\n https://www.rotowire"
+   }
+  },
+  "401910050|deanwade|out": {
+   "game": "401910050",
+   "start": "2026-11-29T01:30Z",
+   "team": "20",
+   "name": "Dean Wade",
+   "status": "out",
+   "athlete": "3912848",
+   "espn": {
+    "seen": "2026-11-28T04:33:31.698Z",
+    "own": "2026-11-27T23:33:00.000Z"
+   }
+  },
+  "401910050|jaylenbrown|out": {
+   "game": "401910050",
+   "start": "2026-11-29T01:30Z",
+   "team": "20",
+   "name": "Jaylen Brown",
+   "status": "out",
+   "athlete": "3917376",
+   "espn": {
+    "seen": "2026-11-28T04:33:31.698Z",
+    "own": "2026-11-27T23:15:00.000Z"
+   }
+  },
+  "401910050|arielhukporti|out": {
+   "game": "401910050",
+   "start": "2026-11-29T01:30Z",
+   "team": "20",
+   "name": "Ariel Hukporti",
+   "status": "out",
+   "athlete": "4871141",
+   "espn": {
+    "seen": "2026-11-28T04:33:31.698Z",
+    "own": "2026-10-06T19:17:00.000Z"
+   }
   }
  }
 }
