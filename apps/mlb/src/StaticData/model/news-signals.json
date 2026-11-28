@@ -1,18 +1,6 @@
 {
  "sport": "mlb",
  "days": 2,
- "signals": [
-  {
-   "team": "21",
-   "abbr": "NYM",
-   "athlete": "42409",
-   "player": "Tarik Skubal",
-   "kind": "starting",
-   "direction": "up",
-   "confidence": 0.7,
-   "headline": "Mets owners 'thrilled' to add 'impressive' Tarik Skubal to rotation",
-   "at": "2026-11-26T01:15:29.000Z"
-  }
- ],
- "at": "2026-11-27T00:03:19.682Z"
+ "signals": [],
+ "at": "2026-11-28T01:17:29.956Z"
 }

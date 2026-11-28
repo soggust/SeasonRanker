@@ -7,7 +7,7 @@
   "insidenflnews.bsky.social": "2026-11-27T22:34:45.583Z",
   "nflnewsposter.bsky.social": "2026-11-28T00:30:30.546Z",
   "rotoworld-fb.bsky.social": "2026-11-27T23:05:03.000Z",
-  "rotowirenfl.bsky.social": "2026-11-28T00:26:51.000Z"
+  "rotowirenfl.bsky.social": "2026-11-28T00:54:12.000Z"
  },
  "claims": [
   {
@@ -17468,6 +17468,19 @@
    "kind": "status",
    "confidence": 0.95,
    "text": "Mike Evans (Achilles) questionable vs. Seahawks"
+  },
+  {
+   "id": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3n3diirn5gd2j|michaelpittman|active|return",
+   "at": "2026-11-28T00:54:12.000Z",
+   "seen": "2026-11-28T01:17:29.956Z",
+   "handle": "rotowirenfl.bsky.social",
+   "post": "at://did:plc:jitd4nqasdhftyqsw25mjhl2/app.bsky.feed.post/3n3diirn5gd2j",
+   "player": "Michael Pittman",
+   "team": null,
+   "status": "active",
+   "kind": "return",
+   "confidence": 0.6,
+   "text": "Michael Pittman: Just one catch in return to lineup \n\n https://www.rotowire.com/football/player/michael-pittman-14378"
   }
  ]
 }
